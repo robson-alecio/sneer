@@ -4,11 +4,13 @@
 
 package sovereign.remote;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.prevayler.foundation.Cool;
 
 import sovereign.LifeView;
+import sovereign.NoneOfYourBusiness;
 
 public class MethodInvocationQuery implements Query {
 
@@ -25,7 +27,12 @@ public class MethodInvocationQuery implements Query {
     public Object executeOn(LifeView life) {
         try {
             Method method = LifeView.class.getMethod(_methodName, _argTypes);
-            return method.invoke(life, _args);
+			return method.invoke(life, _args);
+        } catch (InvocationTargetException e) {
+			Throwable cause = e.getCause();
+			if (cause instanceof NoneOfYourBusiness) return cause;
+			Cool.unexpected(e);
+			return null;
         } catch (Exception e) {
             Cool.unexpected(e);
             return null;

@@ -18,7 +18,6 @@ public class LifeImpl implements Life {
 
     private final Map _messagesSentByContact = new HashMap();
 
-	
 	public LifeImpl(String name) {
 		changeName(name);
 	}
@@ -39,7 +38,7 @@ public class LifeImpl implements Life {
 	}
 
 	public void changeNickname(String oldNickname, String newNickname) throws IllegalArgumentException {
-		LifeView lifeView = (LifeView)_contactsByNickname.get(oldNickname);
+		LifeView lifeView = contact(oldNickname);
 		giveSomebodyANickname(lifeView, newNickname);
 		forgetNickname(oldNickname);
 	}
@@ -72,19 +71,37 @@ public class LifeImpl implements Life {
         return _contactInfo;
     }
 
-    public void send(String message, String toContact) {
-        if (!nicknames().contains(toContact)) throw new IllegalArgumentException("Unknown contact: " + toContact);
-        messagesSentTo(toContact).add(message);
+    public void send(String message, String toNickname) {
+        if (!nicknames().contains(toNickname)) throw new IllegalArgumentException("Unknown contact: " + toNickname);
+        innerMessagesSentTo(contact(toNickname)).add(message);
     }
 
-    public List messagesSentTo(String contact) {
-        List result = (List)_messagesSentByContact.get(contact);
-        if (result == null) {
+    public List messagesSentTo(String nickname) {
+		return messagesSentTo(contact(nickname));
+    }
+
+	private List messagesSentTo(LifeView contact) {
+		if (!isAccessAllowed(contact)) throw new NoneOfYourBusiness();
+        return innerMessagesSentTo(contact);
+    }
+
+	private boolean isAccessAllowed(LifeView life) {
+		if (CALLING_CONTACT.life() == this) return true;
+		if (life == CALLING_CONTACT.life()) return true; //FIXME: This is the root of intermittent errors.
+		return false;
+	}
+
+	private List innerMessagesSentTo(LifeView contact) {
+		List result = (List)_messagesSentByContact.get(contact);
+		if (result == null) {
             result = new ArrayList();
             _messagesSentByContact.put(contact, result);
         }
-        return result;
-    }
+		return result;
+	}
 
+	public List messagesSentToMe() {
+		return messagesSentTo(CALLING_CONTACT.life());
+    }
 
 }

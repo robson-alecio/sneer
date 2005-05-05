@@ -13,13 +13,22 @@ public class Freedoms2_5Messaging extends Freedom2  {
 		} catch (IllegalArgumentException expected) {}
 		
 		_ziba.send("Hello Klaus", "Zezo");
+		
+		LifeView.CALLING_CONTACT.life(_ziba);
 	    assertTrue(_ziba.messagesSentTo("Zezo").contains("Hello Klaus"));
 
 	    assertTrue(myContact("Ziba").messagesSentTo("Zezo").contains("Hello Klaus"));
 	}
 
 	public void testPrivateMessaging() throws Exception {
-	    //TODO
+		_ziba.send("Hello Klaus", "Zezo");
+		
+		assertTrue(myContact("Ziba").messagesSentToMe().contains("Hello Klaus"));
+		try {
+			myContact("Ziba").messagesSentTo("Sweetie");
+			fail("The messages Ziba sends to 'Sweetie' are none of your business.");
+		} catch (NoneOfYourBusiness expected) {}
+	   
 	}
 
 }

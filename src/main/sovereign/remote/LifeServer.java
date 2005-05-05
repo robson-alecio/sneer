@@ -9,6 +9,7 @@ import org.prevayler.foundation.network.ObjectServerSocket;
 import org.prevayler.foundation.network.ObjectSocket;
 
 import sovereign.Life;
+import sovereign.LifeView;
 
 public class LifeServer implements Runnable {
 
@@ -40,6 +41,8 @@ public class LifeServer implements Runnable {
 	}
 
 	private void serve(ObjectSocket socket) throws Exception {
+		LifeView.CALLING_CONTACT.life(_life.contact("Zezo"));
+		
 		while (true) {
 			Query sovereignQuery = (Query)socket.readObject();
 			socket.writeObject(sovereignQuery.executeOn(_life));

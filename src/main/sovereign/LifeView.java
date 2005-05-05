@@ -18,5 +18,9 @@ public interface LifeView {
     public String contactInfo();
 
     public List messagesSentTo(String contact);
-
+	public List messagesSentToMe();
+	
+	public static final
+	
+	CallingContact CALLING_CONTACT = new CallingContact(); 
 }

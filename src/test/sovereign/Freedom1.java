@@ -6,7 +6,7 @@ package sovereign;
 
 import junit.framework.TestCase;
 
-public abstract class Freedom1 extends TestCase {
+public class Freedom1 extends TestCase {
 
 	protected Life _me;
 

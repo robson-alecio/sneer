@@ -4,6 +4,7 @@
 
 package sovereign.remote;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -13,6 +14,7 @@ import java.util.Map;
 import org.prevayler.foundation.network.ObjectSocket;
 
 import sovereign.LifeView;
+import sovereign.NoneOfYourBusiness;
 
 public class RemoteLife implements InvocationHandler {
 
@@ -40,17 +42,24 @@ public class RemoteLife implements InvocationHandler {
 	}
 
     private Object executeRemote(Query query) {
-        try {
+		Object result;
+		try {
             _socket.writeObject(query);
-			return _socket.readObject();
+			result = _socket.readObject();
 		} catch (Exception x) {
 			x.printStackTrace();
 			return null;
 			//TODO Exception handling.
 		}
+		if (result instanceof NoneOfYourBusiness) throw new NoneOfYourBusiness((NoneOfYourBusiness)result);
+		return result;
     }
 
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        if (method.getName().equals("hashCode"))
+            return hashCode();
+        if (method.getName().equals("toString"))
+            return toString();
         if (method.getName().equals("contact"))
             return remoteContact((LifeView)proxy, (String)args[0]);
         return executeRemote(new MethodInvocationQuery(method, args));

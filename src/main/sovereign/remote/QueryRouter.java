@@ -18,8 +18,9 @@ public class QueryRouter implements ObjectSocket {
         _nickname = nickname;
     }
 
-    public void writeObject(Object object) throws IOException {
-        _delegate.writeObject(new RoutedQuery(_nickname,(Query)object));
+	public void writeObject(Object object) throws IOException {
+
+		_delegate.writeObject(new RoutedQuery(_nickname,(Query)object));
     }
 
     public Object readObject() throws IOException, ClassNotFoundException {

@@ -85,11 +85,15 @@ public class LifeImpl implements Life {
 		if (!isAccessAllowed(contact)) throw new NoneOfYourBusiness();
         return innerMessagesSentTo(contact);
     }
+	
+	private LifeView callingContact() {
+		// FIXME: CALLING_CONTACT.life() should return this instead of null
+		return CALLING_CONTACT.life() == null ? this : CALLING_CONTACT.life();
+	}
 
 	private boolean isAccessAllowed(LifeView life) {
-		if (CALLING_CONTACT.life() == null) return true;
-		//System.out.println (Thread.currentThread().getId() +": "+ life + " " + CALLING_CONTACT.life());
-		if (life == CALLING_CONTACT.life()) return true; //FIXME: This is the root of intermittent errors.
+		if (callingContact() == this) return true; 
+		if (callingContact() == life) return true;
 		return false;
 	}
 

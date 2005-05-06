@@ -12,6 +12,7 @@ import org.prevayler.foundation.network.ObjectSocket;
 import sovereign.Life;
 import sovereign.LifeView;
 
+// FIXME: this class could use a more meaningful name
 public class LifeResponder implements Runnable {
 
 	private final Life life;

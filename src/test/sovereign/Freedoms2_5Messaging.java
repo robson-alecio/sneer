@@ -5,8 +5,6 @@
 package sovereign;
 
 
-
-
 public class Freedoms2_5Messaging extends Freedom2  {
 
 	public void testMessaging() throws Exception {

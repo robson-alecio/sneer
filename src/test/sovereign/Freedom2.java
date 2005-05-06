@@ -7,7 +7,6 @@ package sovereign;
 import java.io.IOException;
 
 import org.prevayler.foundation.network.NetworkMock;
-import org.prevayler.foundation.network.ObjectSocket;
 import org.prevayler.foundation.network.OldNetwork;
 
 import sovereign.remote.LifeResponder;

@@ -1,6 +1,6 @@
 //Copyright (C) 2004 Klaus Wuestefeld
 //This is free software. It is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the license distributed along with this file for more details.
-//Contributions: Kalecser Kurtz.
+//Contributions: Kalecser Kurtz, Fabio Roger Manera.
 
 package sovereign;
 
@@ -11,12 +11,12 @@ public class LifeImpl implements Life {
 
 	private String _name;
 
-	private final Map _contactsByNickname = new HashMap();
+	private final Map<String, LifeView> _contactsByNickname = new HashMap<String, LifeView>();
 
     private String _profile;
     private String _contactInfo;
 
-    private final Map _messagesSentByContact = new HashMap();
+    private final Map<LifeView, List<String>> _messagesSentByContact = new HashMap<LifeView, List<String>>();
 
 	public LifeImpl(String name) {
 		changeName(name);
@@ -27,10 +27,11 @@ public class LifeImpl implements Life {
 	}
 
 	public Set nicknames() {
-		return new HashSet(_contactsByNickname.keySet());
+		return new HashSet<String>(_contactsByNickname.keySet());
 	}
 
 	public void giveSomebodyANickname(LifeView somebody, String nickname) throws IllegalArgumentException {
+		//System.out.println ("give: " + nickname +" " + somebody+ " ("+this+")");
 		if (somebody == null || nickname == null) throw new IllegalArgumentException();
 		if (_contactsByNickname.containsKey(nickname)) throw new IllegalArgumentException();
 		
@@ -52,7 +53,7 @@ public class LifeImpl implements Life {
 	}
 
 	public LifeView contact(String nickname) {
-		return (LifeView)_contactsByNickname.get(nickname);
+		return _contactsByNickname.get(nickname);
 	}
 
     public void profile(String profile) {
@@ -86,15 +87,16 @@ public class LifeImpl implements Life {
     }
 
 	private boolean isAccessAllowed(LifeView life) {
-		if (CALLING_CONTACT.life() == this) return true;
+		if (CALLING_CONTACT.life() == null) return true;
+		//System.out.println (Thread.currentThread().getId() +": "+ life + " " + CALLING_CONTACT.life());
 		if (life == CALLING_CONTACT.life()) return true; //FIXME: This is the root of intermittent errors.
 		return false;
 	}
 
-	private List innerMessagesSentTo(LifeView contact) {
-		List result = (List)_messagesSentByContact.get(contact);
+	private List<String> innerMessagesSentTo(LifeView contact) {
+		List<String> result = _messagesSentByContact.get(contact);
 		if (result == null) {
-            result = new ArrayList();
+            result = new ArrayList<String>();
             _messagesSentByContact.put(contact, result);
         }
 		return result;
@@ -103,5 +105,10 @@ public class LifeImpl implements Life {
 	public List messagesSentToMe() {
 		return messagesSentTo(CALLING_CONTACT.life());
     }
+	
+	public boolean somebodyAskingToBeYourFriend (LifeView somebody) {
+		giveSomebodyANickname(somebody, somebody.name());
+		return true;
+	}
 
 }

@@ -1,5 +1,6 @@
 //Copyright (C) 2004 Klaus Wuestefeld
 //This is free software. It is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the license distributed along with this file for more details.
+//Contributions: Fabio Roger Manera.
 
 package views;
 
@@ -11,7 +12,7 @@ import java.util.Set;
 public class StringHolder implements StringView {
 
 	private String _contents;
-	private final Set _observers = new HashSet();
+	private final Set<Observer> _observers = new HashSet<Observer>();
 
 	
 	public synchronized void hold(String newContents) {
@@ -20,8 +21,8 @@ public class StringHolder implements StringView {
 	}
 
 	private void notifyObservers() {
-		Iterator it = _observers.iterator();
-		while (it.hasNext()) notifyObserver((Observer)it.next());
+		Iterator<Observer> it = _observers.iterator();
+		while (it.hasNext()) notifyObserver(it.next());
 	}
 
 	private void notifyObserver(Observer observer) {

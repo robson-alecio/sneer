@@ -1,16 +1,18 @@
 //Copyright (C) 2004 Klaus Wuestefeld
 //This is free software. It is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the license distributed along with this file for more details.
-//Contributions: Rodrigo B de Oliveira.
+//Contributions: Rodrigo B de Oliveira, Fabio Roger Manera.
 
 package sovereign;
 
 import java.io.IOException;
 
 import org.prevayler.foundation.network.NetworkMock;
+import org.prevayler.foundation.network.ObjectSocket;
 import org.prevayler.foundation.network.OldNetwork;
 
-import sovereign.remote.RemoteLife;
+import sovereign.remote.LifeResponder;
 import sovereign.remote.LifeServer;
+import sovereign.remote.RemoteLife;
 
 
 public class Freedom2 extends Freedom1 {
@@ -18,6 +20,7 @@ public class Freedom2 extends Freedom1 {
 	protected Life _ziba;
 	protected Life _fefe;
 	protected Life _roberts;
+	
 
 	protected OldNetwork _ipNetwork;
 
@@ -56,25 +59,48 @@ public class Freedom2 extends Freedom1 {
     	assertNull("Contact 'Zabumba' does not exist!", myContact("Ziba").contact("Zabumba"));
     }
     
+	public void testLinks() throws Exception {
+		
+		Life fabio = newSovereignFriend("Fabio Roger Manera", 7004);
+		Life ju = newSovereignFriend("Julinna Saraiva Correia", 7005);
+		
+		createLink(fabio, "Ju", 7005);
+
+		assertNotNull(ju.contact("Fabio Roger Manera"));
+		
+		assertEquals(fabio.name(), ju.contact("Fabio Roger Manera").name());
+		
+		try {
+			// FIXME: currently this next call would succeed.. and it shouldnt
+			// createLink(ju, "Fabio", 7004);
+		} catch (Exception expected) {}
+	
+		
+		ju.changeNickname("Fabio Roger Manera", "Fabio");
+		
+		ju.changeName("Julinna Correia");
+		
+		assertEquals(ju.contact("Fabio").contact("Ju").name(), "Julinna Correia");
+	}
     
 	protected void helpFriendsAchieveSovereignty() throws Exception {
 		_ziba = newSovereignFriend("Humberto Francisco Soares", 7001);
 		_fefe = newSovereignFriend("Luiz Fernando dos Santos Sabino", 7002);
 		_roberts = newSovereignFriend("Roberto Jover Lázaro", 7003);
 
-		_me.giveSomebodyANickname(lifeClient(7001), "Ziba");
-		_me.giveSomebodyANickname(lifeClient(7002), "Fefe");
-		_me.giveSomebodyANickname(lifeClient(7003), "Roberts");
+		createLink(_me, "Ziba", 7001);
+		createLink(_me, "Fefe", 7002);
+		createLink(_me, "Roberts", 7003);
 
-		_ziba.giveSomebodyANickname(lifeClient(7000), "Zezo");
-    	_fefe.giveSomebodyANickname(lifeClient(7000), "Klaus");
-    	_roberts.giveSomebodyANickname(lifeClient(7000), "Klaus");
+		_ziba.changeNickname(_me.name(), "Zezo");
+		_fefe.changeNickname(_me.name(), "Klaus");
+		_roberts.changeNickname(_me.name(), "Klaus");
+		
+		createLink(_ziba, "Roberts", 7003);
+    	_roberts.changeNickname(_ziba.name(), "Humberto");
 
-		_ziba.giveSomebodyANickname(lifeClient(7003), "Roberts");
-    	_roberts.giveSomebodyANickname(lifeClient(7001), "Humberto");
-
-    	_roberts.giveSomebodyANickname(lifeClient(7002), "Fefe");
-		_fefe.giveSomebodyANickname(lifeClient(7003), "Doctor");
+    	createLink(_roberts, "Fefe", 7002);
+		_fefe.changeNickname(_roberts.name(), "Doctor");
 	}
 
 	private Life newSovereignFriend(String name, int port) throws Exception {
@@ -83,8 +109,17 @@ public class Freedom2 extends Freedom1 {
 		return result;
     }
 
-	private LifeView lifeClient(int port) throws IOException {
-        return RemoteLife.createWith(_ipNetwork.openSocket("localhost", port));
+	private void createLink(Life life, String nickname, int port) throws IOException {
+		ObjectSocket socket = _ipNetwork.openSocket("localhost", port);
+		
+		LifeResponder responder = new LifeResponder(life, socket);
+		String ticket = responder.getServerTicket();
+		
+		socket = _ipNetwork.openSocket("localhost", port);
+		LifeView remoteLife = RemoteLife.createWith(socket, ticket);
+		responder.setRemoteLife(remoteLife);
+		
+		life.giveSomebodyANickname(remoteLife, nickname);
 	}
 	
 	protected LifeView myContact(String nickname) {

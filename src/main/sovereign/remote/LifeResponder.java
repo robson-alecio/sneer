@@ -12,7 +12,7 @@ import org.prevayler.foundation.network.ObjectSocket;
 import sovereign.Life;
 import sovereign.LifeView;
 
-// FIXME: this class could use a more meaningful name
+// XXX: this class could use a more meaningful name
 public class LifeResponder implements Runnable {
 
 	private final Life life;
@@ -65,11 +65,14 @@ public class LifeResponder implements Runnable {
 		}
 		try {
 			socket.writeObject(LifeServer.REQUEST_FOR_CLIENT);
+
+			// XXX: a better design is welcome 
 			Object object = socket.readObject();
 			while (object instanceof Query) {
 				executeQueryOnSocket((Query) object);
 				object = socket.readObject();
 			}
+			
 			return (String) object;
 		} catch (Exception e) {
 			Cool.unexpected(e);

@@ -109,14 +109,13 @@ public class Freedom2 extends Freedom1 {
 		return result;
     }
 
+	// FIXME: this linking stuff could be done in a better way ... say inside a LifeUtil class.. or .. LifeWorld.. LifeEnvironment.. Playground..
 	private void createLink(Life life, String nickname, int port) throws IOException {
-		ObjectSocket socket = _ipNetwork.openSocket("localhost", port);
+
+		LifeResponder responder = new LifeResponder(life, _ipNetwork.openSocket("localhost", port));
 		
-		LifeResponder responder = new LifeResponder(life, socket);
-		String ticket = responder.getServerTicket();
+		LifeView remoteLife = RemoteLife.createWith(_ipNetwork.openSocket("localhost", port), responder.getServerTicket());
 		
-		socket = _ipNetwork.openSocket("localhost", port);
-		LifeView remoteLife = RemoteLife.createWith(socket, ticket);
 		responder.setRemoteLife(remoteLife);
 		
 		life.giveSomebodyANickname(remoteLife, nickname);

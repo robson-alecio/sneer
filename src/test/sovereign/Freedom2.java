@@ -6,6 +6,8 @@ package sovereign;
 
 import java.io.IOException;
 
+import junit.textui.TestRunner;
+
 import org.prevayler.foundation.network.NetworkMock;
 import org.prevayler.foundation.network.OldNetwork;
 
@@ -107,6 +109,10 @@ public class Freedom2 extends Freedom1 {
 		new LifeServer(result, _ipNetwork.openObjectServerSocket(port));
 		return result;
     }
+	
+	public static void main(String[] args) {
+		TestRunner.run(Freedom2.class);
+	}
 
 	// FIXME: this linking stuff could be done in a better way ... say inside a LifeUtil class.. or .. LifeWorld.. LifeEnvironment.. Playground..
 	private void createLink(Life life, String nickname, int port) throws IOException {

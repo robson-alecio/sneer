@@ -4,6 +4,7 @@
 
 package sovereign.remote;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,13 +22,27 @@ public class LifeServer implements Runnable {
 	
 	private final Life _life;
 	
-	private LifeView _remoteLife;
-
 	private final ObjectServerSocket _serverSocket;
 	
 	private Map<String,LifeView> _remoteLifes = new HashMap<String,LifeView>();
 
-	private String addRemoteLife(LifeView remoteLife) {
+	public LifeServer(Life life, ObjectServerSocket serverSocket) {
+		_life = life;
+		_serverSocket = serverSocket;
+		Cool.startDaemon(this);
+	}
+
+	public void run() {
+		while (true) {
+			try {
+				Cool.startDaemon(new Handler(_serverSocket.accept()));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private synchronized String addRemoteLife(LifeView remoteLife) {
 		String id = Integer.toString(_remoteLifes.size()); // FIXME: this creates a securty hole... a better (bug still not 100%) approach would be generating a like random 32bits unique id here ... or maybe change the design to reach something else safer 
 		_remoteLifes.put(id, remoteLife);
 		return id; 
@@ -37,37 +52,42 @@ public class LifeServer implements Runnable {
 		return _remoteLifes.get(id);
 	}
 	
-	public LifeServer(Life life, ObjectServerSocket serverSocket) {
-		_life = life;
-		_serverSocket = serverSocket;
-		Cool.startDaemon(this);
-	}
+	private final class Handler implements Runnable {
 
-	public void run() {
-		while (true)
+		private final ObjectSocket socket;
+
+		private Handler(ObjectSocket socket) {
+			this.socket = socket;
+		}
+
+		public void run() {
 			try {
-				final ObjectSocket socket = _serverSocket.accept();
-
-				int kindOfRequest = (Integer)socket.readObject();
-				
-				if (kindOfRequest == REQUEST_FOR_CLIENT) {
-					
-					_remoteLife = RemoteLife.createWith(socket, null);
-					if (_life.somebodyAskingToBeYourFriend(_remoteLife)) {
-						socket.writeObject(addRemoteLife(_remoteLife));
-					} else {
-						socket.close();
-					}
-					
-				} else {
-					
-					_remoteLife = remoteLife((String) socket.readObject());
-
-					new LifeResponder(_life, _remoteLife, socket);
-				}
+				handle();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-	}
+		}
 
+		private void handle() throws IOException, ClassNotFoundException {
+			
+			int kindOfRequest = (Integer)socket.readObject();
+			
+			if (kindOfRequest == REQUEST_FOR_CLIENT) {
+		
+				LifeView remoteLife = RemoteLife.createWith(socket, null);
+				if (_life.somebodyAskingToBeYourFriend(remoteLife)) {
+					
+					socket.writeObject(addRemoteLife(remoteLife));
+				} else {
+					socket.close();
+				}
+		
+			} else {
+		
+				LifeView remoteLife = remoteLife((String) socket.readObject());
+				
+				new LifeResponder(_life, remoteLife, socket);
+			}
+		}
+	}
 }

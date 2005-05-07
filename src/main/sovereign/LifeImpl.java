@@ -86,8 +86,8 @@ public class LifeImpl implements Life {
     }
 
 	private boolean isAccessAllowed(LifeView life) {
-		if (CALLING_CONTACT.life() == this) return true;
-		if (life == CALLING_CONTACT.life()) return true; //FIXME: This is the root of intermittent errors.
+		if (CALLING_CONTACT.get() == this) return true;
+		if (life == CALLING_CONTACT.get()) return true; //FIXME: This is the root of intermittent errors.
 		return false;
 	}
 
@@ -101,7 +101,7 @@ public class LifeImpl implements Life {
 	}
 
 	public List<String> messagesSentToMe() {
-		return messagesSentTo(CALLING_CONTACT.life());
+		return messagesSentTo(CALLING_CONTACT.get());
     }
 
 }

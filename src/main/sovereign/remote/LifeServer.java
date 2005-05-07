@@ -41,10 +41,10 @@ public class LifeServer implements Runnable {
 	}
 
 	private void serve(ObjectSocket socket) throws Exception {
-		LifeView.CALLING_CONTACT.life(_life.contact("Zezo"));
 		
 		while (true) {
 			Query sovereignQuery = (Query)socket.readObject();
+			LifeView.CALLING_CONTACT.set(_life.contact("Zezo")); //FIXME: Put this line before socket.readObject to provoke intermittent errors. Find their cause.
 			socket.writeObject(sovereignQuery.executeOn(_life));
 		}
 	}

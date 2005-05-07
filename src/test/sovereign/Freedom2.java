@@ -28,6 +28,8 @@ public class Freedom2 extends Freedom1 {
 		new LifeServer(_me, _ipNetwork.openObjectServerSocket(7000));
 
 		helpFriendsAchieveSovereignty();
+		
+		LifeView.CALLING_CONTACT.set(null);
 	}
 
     public void testNicknames() throws Exception {

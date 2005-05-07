@@ -14,7 +14,7 @@ public class Freedoms2_5Messaging extends Freedom2  {
 		
 		_ziba.send("Hello Klaus", "Zezo");
 		
-		LifeView.CALLING_CONTACT.life(_ziba);
+		LifeView.CALLING_CONTACT.set(_ziba);
 	    assertTrue(_ziba.messagesSentTo("Zezo").contains("Hello Klaus"));
 
 	    assertTrue(myContact("Ziba").messagesSentTo("Zezo").contains("Hello Klaus"));

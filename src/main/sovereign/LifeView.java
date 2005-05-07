@@ -22,5 +22,5 @@ public interface LifeView {
 	
 	public static final
 	
-	CallingContact CALLING_CONTACT = new CallingContact(); 
+	ThreadLocal<LifeView> CALLING_CONTACT = new ThreadLocal<LifeView>();
 }

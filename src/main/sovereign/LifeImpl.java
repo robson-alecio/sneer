@@ -1,6 +1,6 @@
 //Copyright (C) 2004 Klaus Wuestefeld
 //This is free software. It is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the license distributed along with this file for more details.
-//Contributions: Kalecser Kurtz, Fabio Roger Manera.
+//Contributions: Kalecser Kurtz.
 
 package sovereign;
 
@@ -11,12 +11,12 @@ public class LifeImpl implements Life {
 
 	private String _name;
 
-	private final Map<String, LifeView> _contactsByNickname = new HashMap<String, LifeView>();
+	private final Map _contactsByNickname = new HashMap();
 
     private String _profile;
     private String _contactInfo;
 
-    private final Map<LifeView, List<String>> _messagesSentByContact = new HashMap<LifeView, List<String>>();
+    private final Map _messagesSentByContact = new HashMap();
 
 	public LifeImpl(String name) {
 		changeName(name);
@@ -26,12 +26,11 @@ public class LifeImpl implements Life {
 		_name = newName;
 	}
 
-	public Set<String> nicknames() {
-		return new HashSet<String>(_contactsByNickname.keySet());
+	public Set nicknames() {
+		return new HashSet(_contactsByNickname.keySet());
 	}
 
 	public void giveSomebodyANickname(LifeView somebody, String nickname) throws IllegalArgumentException {
-		//System.out.println ("give: " + nickname +" " + somebody+ " ("+this+")");
 		if (somebody == null || nickname == null) throw new IllegalArgumentException();
 		if (_contactsByNickname.containsKey(nickname)) throw new IllegalArgumentException();
 		
@@ -53,7 +52,7 @@ public class LifeImpl implements Life {
 	}
 
 	public LifeView contact(String nickname) {
-		return _contactsByNickname.get(nickname);
+		return (LifeView)_contactsByNickname.get(nickname);
 	}
 
     public void profile(String profile) {
@@ -77,43 +76,32 @@ public class LifeImpl implements Life {
         innerMessagesSentTo(contact(toNickname)).add(message);
     }
 
-    public List messagesSentTo(String nickname) {
+    public List<String> messagesSentTo(String nickname) {
 		return messagesSentTo(contact(nickname));
     }
 
-	private List messagesSentTo(LifeView contact) {
+	private List<String> messagesSentTo(LifeView contact) {
 		if (!isAccessAllowed(contact)) throw new NoneOfYourBusiness();
         return innerMessagesSentTo(contact);
     }
-	
-	private LifeView callingContact() {
-		// FIXME: CALLING_CONTACT.life() should return this instead of null. Fabio.
-		//I don't see how that can be done? Klaus.
-		return CALLING_CONTACT.life() == null ? this : CALLING_CONTACT.life(); //FIXME: null is too weak. It cannot be open by default. Klaus.
-	}
 
 	private boolean isAccessAllowed(LifeView life) {
-		if (callingContact() == this) return true; 
-		if (callingContact() == life) return true;
+		if (CALLING_CONTACT.life() == this) return true;
+		if (life == CALLING_CONTACT.life()) return true; //FIXME: This is the root of intermittent errors.
 		return false;
 	}
 
-	private List<String> innerMessagesSentTo(LifeView contact) {
-		List<String> result = _messagesSentByContact.get(contact);
+	private List innerMessagesSentTo(LifeView contact) {
+		List result = (List)_messagesSentByContact.get(contact);
 		if (result == null) {
-            result = new ArrayList<String>();
+            result = new ArrayList();
             _messagesSentByContact.put(contact, result);
         }
 		return result;
 	}
 
-	public List messagesSentToMe() {
+	public List<String> messagesSentToMe() {
 		return messagesSentTo(CALLING_CONTACT.life());
     }
-	
-	public boolean somebodyAskingToBeYourFriend (LifeView somebody) {
-		giveSomebodyANickname(somebody, somebody.name());
-		return true;
-	}
 
 }

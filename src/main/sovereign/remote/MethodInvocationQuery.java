@@ -23,10 +23,6 @@ public class MethodInvocationQuery implements Query {
         _argTypes = method.getParameterTypes();
         _args = args;
     }
-	
-	public String getMethodName() {
-		return _methodName;
-	}
 
     public Object executeOn(LifeView life) {
         try {

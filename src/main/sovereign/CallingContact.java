@@ -6,7 +6,7 @@ package sovereign;
 
 public class CallingContact extends ThreadLocal<LifeView> {
 
-	public synchronized LifeView life() {
+	public synchronized LifeView life() { //TODO Use generic get and set instead of this.
 		return get();
 	}
 

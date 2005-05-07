@@ -12,15 +12,16 @@ public interface LifeView {
 
 	public String name();
 	
-	public Set nicknames();
+	public Set<String> nicknames();
 	public LifeView contact(String nickname);
 
     public String profile();
     public String contactInfo();
 
-    public List messagesSentTo(String contact);
-	public List messagesSentToMe();
+    public List<String> messagesSentTo(String contact);
+	public List<String> messagesSentToMe();
 	
-	//FIXME: this should be somewhere else, owned by LiveResponder
+	//This should be somewhere else, owned by LiveResponder. Fabio.
+	//Why? The contracts of the methods in this interface already has an implicit dependency on CallingContact. Klaus. 
 	public static final	CallingContact CALLING_CONTACT = new CallingContact(); 
 }

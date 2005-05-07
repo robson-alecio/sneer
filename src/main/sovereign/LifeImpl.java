@@ -26,7 +26,7 @@ public class LifeImpl implements Life {
 		_name = newName;
 	}
 
-	public Set nicknames() {
+	public Set<String> nicknames() {
 		return new HashSet<String>(_contactsByNickname.keySet());
 	}
 
@@ -87,8 +87,9 @@ public class LifeImpl implements Life {
     }
 	
 	private LifeView callingContact() {
-		// FIXME: CALLING_CONTACT.life() should return this instead of null
-		return CALLING_CONTACT.life() == null ? this : CALLING_CONTACT.life();
+		// FIXME: CALLING_CONTACT.life() should return this instead of null. Fabio.
+		//I don't see how that can be done? Klaus.
+		return CALLING_CONTACT.life() == null ? this : CALLING_CONTACT.life(); //FIXME: null is too weak. It cannot be open by default. Klaus.
 	}
 
 	private boolean isAccessAllowed(LifeView life) {

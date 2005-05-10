@@ -13,16 +13,19 @@ public class Freedoms2_5Messaging extends Freedom2  {
 		} catch (IllegalArgumentException expected) {}
 		
 		_ziba.send("Hello Klaus", "Zezo");
+		_ziba.send("Hello Roberts", "Roberts");
 		
 		LifeView.CALLING_CONTACT.set(_ziba);
 	    assertTrue(_ziba.messagesSentTo("Zezo").contains("Hello Klaus"));
 
-	    assertTrue(myContact("Ziba").messagesSentTo("Zezo").contains("Hello Klaus"));
+		LifeView.CALLING_CONTACT.set(_roberts);
+	    assertTrue(_roberts.contact("Humberto").messagesSentTo("Roberts").contains("Hello Roberts"));
 	}
 
 	public void testPrivateMessaging() throws Exception {
 		_ziba.send("Hello Klaus", "Zezo");
 		
+		LifeView.CALLING_CONTACT.set(_me);
 		assertTrue(myContact("Ziba").messagesSentToMe().contains("Hello Klaus"));
 		try {
 			myContact("Ziba").messagesSentTo("Sweetie");

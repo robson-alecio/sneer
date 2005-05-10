@@ -20,13 +20,15 @@ public class RemoteLife implements InvocationHandler {
 
     private final ObjectSocket _socket;
     private final Map _remoteContactsByNickname = new HashMap();
+	private final String _callingNickname;
 	
 	
-    static public LifeView createWith(ObjectSocket socket) {
-        return (LifeView)Proxy.newProxyInstance(LifeView.class.getClassLoader(), new Class[] { LifeView.class }, new RemoteLife(socket));
+    static public LifeView createWith(String callingNickname, ObjectSocket socket) {
+        return (LifeView)Proxy.newProxyInstance(LifeView.class.getClassLoader(), new Class[] { LifeView.class }, new RemoteLife(callingNickname, socket));
     }
     
-	private RemoteLife(ObjectSocket socket) {
+	private RemoteLife(String callingNickname, ObjectSocket socket) {
+		_callingNickname = callingNickname;
 		_socket = socket;		
 	}
 
@@ -36,7 +38,7 @@ public class RemoteLife implements InvocationHandler {
 	    
 	    if (!contact.nicknames().contains(nickname)) return null;
         
-	    result = createWith(new QueryRouter(_socket, nickname));
+	    result = createWith("TODO: find the correct nickname", new QueryRouter(_socket, nickname));
         _remoteContactsByNickname.put(nickname, result);
         return result;
 	}
@@ -62,6 +64,6 @@ public class RemoteLife implements InvocationHandler {
             return toString();
         if (method.getName().equals("contact"))
             return remoteContact((LifeView)proxy, (String)args[0]);
-        return executeRemote(new MethodInvocationQuery(method, args));
+        return executeRemote(new MethodInvocationQuery(method, args, _callingNickname));
     }
 }

@@ -17,15 +17,18 @@ public class MethodInvocationQuery implements Query {
     private final String _methodName;
     private final Class[] _argTypes;
     private final Object[] _args;
+	private final String _callingNickname;
 
-    public MethodInvocationQuery(Method method, Object[] args) {
+    public MethodInvocationQuery(Method method, Object[] args, String callingNickname) {
         _methodName = method.getName();
         _argTypes = method.getParameterTypes();
         _args = args;
+		_callingNickname = callingNickname;
     }
 
     public Object executeOn(LifeView life) {
         try {
+			LifeView.CALLING_CONTACT.set(life.contact(_callingNickname));
             Method method = LifeView.class.getMethod(_methodName, _argTypes);
 			return method.invoke(life, _args);
         } catch (InvocationTargetException e) {

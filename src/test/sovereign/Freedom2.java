@@ -86,7 +86,7 @@ public class Freedom2 extends Freedom1 {
     }
 
 	private LifeView lifeClient(int port) throws IOException {
-        return RemoteLife.createWith(_ipNetwork.openSocket("localhost", port));
+        return RemoteLife.createWith("TODO: find the correct nickname", _ipNetwork.openSocket("localhost", port));
 	}
 	
 	protected LifeView myContact(String nickname) {

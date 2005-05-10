@@ -11,16 +11,14 @@ public interface LifeView {
 
 	public String name();
 	
-	public Set nicknames();
+	public Set<String> nicknames();
 	public LifeView contact(String nickname);
 
     public String profile();
     public String contactInfo();
 
-    public List messagesSentTo(String contact);
-	public List messagesSentToMe();
+    public List<String> messagesSentTo(String contact);
+	public List<String> messagesSentToMe();
 	
-	public static final
-	
-	ThreadLocal<LifeView> CALLING_CONTACT = new ThreadLocal<LifeView>();
+	public static final	ThreadLocal<LifeView> CALLING_CONTACT = new ThreadLocal<LifeView>();
 }

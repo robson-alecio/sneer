@@ -87,7 +87,7 @@ public class LifeImpl implements Life {
 
 	private boolean isAccessAllowed(LifeView life) {
 		if (CALLING_CONTACT.get() == this) return true;
-		if (life == CALLING_CONTACT.get()) return true; //FIXME: This is the root of intermittent errors.
+		if (life == CALLING_CONTACT.get()) return true;
 		return false;
 	}
 

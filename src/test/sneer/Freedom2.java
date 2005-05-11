@@ -6,8 +6,9 @@ package sneer;
 
 import java.io.IOException;
 
-import org.prevayler.foundation.network.NetworkMock;
+//import org.prevayler.foundation.network.NetworkMock;
 import org.prevayler.foundation.network.OldNetwork;
+import org.prevayler.foundation.network.OldNetworkImpl;
 
 import sneer.Life;
 import sneer.LifeImpl;
@@ -27,7 +28,7 @@ public class Freedom2 extends Freedom1 {
 	
 	public void setUp() throws Exception {
 		super.setUp();
-		_ipNetwork = new NetworkMock();
+		_ipNetwork = new OldNetworkImpl();
 		new LifeServer(_me, _ipNetwork.openObjectServerSocket(7000));
 
 		helpFriendsAchieveSovereignty();

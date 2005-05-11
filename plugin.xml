@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="sneer"
+   name="sneer"
+   version="1.0.0">
+   <requires>
+      <import plugin="org.junit"/>
+   </requires>
+   
+   <runtime>
+      <library name="sneer.jar">
+         <export name="*"/>
+      </library>
+
+   </runtime>
+
+</plugin>

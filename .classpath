@@ -8,15 +8,15 @@
 		<attributes>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/junit-3.8.1.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="src" path="/prevayler">
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins">
 		<attributes>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/prevayler-2.03.000.jar">
 		<attributes>
 		</attributes>
 	</classpathentry>

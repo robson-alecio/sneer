@@ -2,15 +2,18 @@
 //This is free software. It is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the license distributed along with this file for more details.
 //Contributions: Rodrigo B de Oliveira.
 
-package sovereign;
+package sneer;
 
 import java.io.IOException;
 
 import org.prevayler.foundation.network.NetworkMock;
 import org.prevayler.foundation.network.OldNetwork;
 
-import sovereign.remote.RemoteLife;
-import sovereign.remote.LifeServer;
+import sneer.Life;
+import sneer.LifeImpl;
+import sneer.LifeView;
+import sneer.remote.LifeServer;
+import sneer.remote.RemoteLife;
 
 
 public class Freedom2 extends Freedom1 {

@@ -2,9 +2,9 @@
 //This is free software. It is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the license distributed along with this file for more details.
 //Contributions: Rodrigo B de Oliveira.
 
-package sovereign.remote;
+package sneer.remote;
 
-import sovereign.LifeView;
+import sneer.LifeView;
 
 public class RoutedQuery implements Query {
 	

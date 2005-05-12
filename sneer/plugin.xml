@@ -12,6 +12,9 @@
       <library name="sneer.jar">
          <export name="*"/>
       </library>
+      <library name="lib/prevayler-2.03.000.jar">
+         <export name="*"/>
+      </library>
 
    </runtime>
 

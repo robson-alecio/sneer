@@ -50,7 +50,7 @@ import sneer.ui.SneerUIPlugin;
  */
 
 public class ContactsView extends ViewPart {
-	private TreeViewer viewer;
+	private TreeViewer _treeViewer;
 	private DrillDownAdapter drillDownAdapter;
 	private Action action1;
 	private Action action2;
@@ -117,12 +117,12 @@ public class ContactsView extends ViewPart {
 	 */
 	public void createPartControl(Composite parent) {
 		
-		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
-		drillDownAdapter = new DrillDownAdapter(viewer);
-		viewer.setContentProvider(new ContactsTreeContentProvider());
-		viewer.setLabelProvider(new ContactsTreeLabelProvider());
-		viewer.setSorter(new NameSorter());
-		viewer.setInput(getViewSite());
+		_treeViewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		drillDownAdapter = new DrillDownAdapter(_treeViewer);
+		_treeViewer.setContentProvider(new ContactsTreeContentProvider());
+		_treeViewer.setLabelProvider(new ContactsTreeLabelProvider());
+		_treeViewer.setSorter(new NameSorter());
+		_treeViewer.setInput(getViewSite());
 		makeActions();
 		hookContextMenu();
 		hookDoubleClickAction();
@@ -137,9 +137,9 @@ public class ContactsView extends ViewPart {
 				ContactsView.this.fillContextMenu(manager);
 			}
 		});
-		Menu menu = menuMgr.createContextMenu(viewer.getControl());
-		viewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuMgr, viewer);
+		Menu menu = menuMgr.createContextMenu(_treeViewer.getControl());
+		_treeViewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuMgr, _treeViewer);
 	}
 
 	private void contributeToActionBars() {
@@ -169,17 +169,19 @@ public class ContactsView extends ViewPart {
 		manager.add(new Separator());
 		drillDownAdapter.addNavigationActions(manager);
 	}
-
+	
 	private void makeActions() {
 		action1 = new Action() {
 			public void run() {
-				showMessage("Action 1 executed");
+				SneerUIPlugin.sneer().addContact();
+				_treeViewer.refresh();
 			}
+
 		};
-		action1.setText("Action 1");
-		action1.setToolTipText("Action 1 tooltip");
+		action1.setText("Add Contact...");
+		action1.setToolTipText("Give a nickname to a sovereign contact.");
 		action1.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
-			getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
+			getImageDescriptor(ISharedImages.IMG_OBJ_ELEMENT));
 		
 		action2 = new Action() {
 			public void run() {
@@ -192,7 +194,7 @@ public class ContactsView extends ViewPart {
 				getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
 		doubleClickAction = new Action() {
 			public void run() {
-				ISelection selection = viewer.getSelection();
+				ISelection selection = _treeViewer.getSelection();
 				Object obj = ((IStructuredSelection)selection).getFirstElement();
 				showMessage("Double-click detected on "+obj.toString());
 			}
@@ -200,7 +202,7 @@ public class ContactsView extends ViewPart {
 	}
 
 	private void hookDoubleClickAction() {
-		viewer.addDoubleClickListener(new IDoubleClickListener() {
+		_treeViewer.addDoubleClickListener(new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
 				doubleClickAction.run();
 			}
@@ -208,7 +210,7 @@ public class ContactsView extends ViewPart {
 	}
 	private void showMessage(String message) {
 		MessageDialog.openInformation(
-			viewer.getControl().getShell(),
+			_treeViewer.getControl().getShell(),
 			"Contacts View",
 			message);
 	}
@@ -217,6 +219,6 @@ public class ContactsView extends ViewPart {
 	 * Passing the focus request to the viewer's control.
 	 */
 	public void setFocus() {
-		viewer.getControl().setFocus();
+		_treeViewer.getControl().setFocus();
 	}
 }

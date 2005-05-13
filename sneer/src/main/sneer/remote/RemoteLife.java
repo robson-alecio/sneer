@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.prevayler.foundation.network.ObjectSocket;
+import org.prevayler.foundation.network.OldNetwork;
 
 import sneer.LifeView;
 import sneer.NoneOfYourBusiness;
@@ -32,6 +33,12 @@ public class RemoteLife implements InvocationHandler {
 		_socket = socket;		
 	}
 
+	public RemoteLife() {
+		_callingNickname = "Testing";
+		_socket = null;
+		// TODO Auto-generated constructor stub
+	}
+	
 	private LifeView remoteContact(LifeView contact, String nickname) {
 	    LifeView result = (LifeView)_remoteContactsByNickname.get(nickname); 
 	    if (result != null) return result;
@@ -66,4 +73,18 @@ public class RemoteLife implements InvocationHandler {
             return remoteContact((LifeView)proxy, (String)args[0]);
         return executeRemote(new MethodInvocationQuery(method, args, _callingNickname));
     }
+
+
+	public static LifeView createWith(String string, OldNetwork _network, String ipAddress, int port) {
+		// objectSocket = _network.openSocket(ipAddress, port);
+        return (LifeView)Proxy.newProxyInstance(LifeView.class.getClassLoader(), new Class[] { LifeView.class }, new RemoteLife());
+	}
+	
+	static boolean dunha;
+	public ConnectionStatus connectionStatus() {
+		dunha = !dunha;
+		return dunha
+			? ConnectionStatus.OFFLINE
+			: ConnectionStatus.ONLINE;
+	}
 }

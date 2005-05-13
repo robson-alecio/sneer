@@ -1,11 +1,13 @@
 package sneer;
 
 import java.io.IOException;
+import java.lang.reflect.Proxy;
 
-import org.prevayler.foundation.network.ObjectSocket;
+import org.prevayler.foundation.Cool;
 import org.prevayler.foundation.network.OldNetwork;
 import org.prevayler.foundation.network.OldNetworkImpl;
 
+import sneer.remote.ConnectionStatus;
 import sneer.remote.RemoteLife;
 
 public class Sneer {
@@ -19,7 +21,7 @@ public class Sneer {
 
 		void lamentException(IOException e);
 
-		void checkOutNewContacts();
+		void lookAtMe();
 	}
 	
 	private final Life _life;
@@ -30,6 +32,14 @@ public class Sneer {
 		if (null == user) throw new IllegalArgumentException();
 		_user = user;
 		_life = new LifeImpl(_user.name());
+		Cool.startDaemon(new Runnable() {
+			public void run() {
+				while (true) {
+					_user.lookAtMe();
+					Cool.sleep(500);
+				}				
+			}
+		});
 	}
 	
 	public Life life() {
@@ -45,15 +55,12 @@ public class Sneer {
 		if (addressParts.length > 1) {
 			port = Integer.parseInt(addressParts[1]);
 		}
-		ObjectSocket objectSocket;
-		try {
-			objectSocket = _network.openSocket(ipAddress, port);
-		} catch (IOException e) {
-			_user.lamentException(e);
-			return;
-		}
-		LifeView contact = RemoteLife.createWith("ignored", objectSocket);
+		LifeView contact = RemoteLife.createWith("ignored", _network, ipAddress, port);
 		_life.giveSomebodyANickname(contact, nickname);
-		_user.checkOutNewContacts();
+		_user.lookAtMe();
+	}
+
+	public ConnectionStatus connectionStatus(String nickname) {
+		return ((RemoteLife)Proxy.getInvocationHandler(_life.contact(nickname))).connectionStatus();
 	}
 }

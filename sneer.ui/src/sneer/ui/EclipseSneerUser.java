@@ -7,13 +7,20 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import sneer.Sneer.User;
+import sneer.ui.views.ContactsView;
 
 public class EclipseSneerUser implements User {
 
 	private Shell _shell;
+	
+	private ContactsView _contactsView;
 
 	public EclipseSneerUser(Shell shell) {
 		_shell = shell;
+	}
+	
+	public void contactsView(ContactsView view) {
+		_contactsView = view;
 	}
 
 	public String name() {
@@ -42,9 +49,10 @@ public class EclipseSneerUser implements User {
 		MessageDialog.openError(_shell, "Sorry", e.toString());
 	}
 
-	public void checkOutNewContacts() {
-		// TODO Auto-generated method stub
-		
+	public void lookAtMe() {
+		// o klaus que mandou
+		if (null == _contactsView) return;
+		_contactsView.refresh();
 	}
 
 }

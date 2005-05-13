@@ -1,5 +1,8 @@
 package sneer.ui.views;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -27,7 +30,9 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.DrillDownAdapter;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.progress.UIJob;
 
+import sneer.remote.ConnectionStatus;
 import sneer.ui.SneerUIPlugin;
 
 
@@ -98,7 +103,10 @@ public class ContactsView extends ViewPart {
 			return obj.toString();
 		}
 		public Image getImage(Object obj) {
-			String imageKey = ISharedImages.IMG_OBJ_ELEMENT;
+			ConnectionStatus status = SneerUIPlugin.sneer().connectionStatus(obj.toString());
+			String imageKey = status == ConnectionStatus.OFFLINE
+				? ISharedImages.IMG_OBJS_WARN_TSK
+				: ISharedImages.IMG_OBJ_ELEMENT;
 			return PlatformUI.getWorkbench().getSharedImages().getImage(imageKey);
 		}
 	}
@@ -117,6 +125,7 @@ public class ContactsView extends ViewPart {
 	 */
 	public void createPartControl(Composite parent) {
 		
+		SneerUIPlugin.sneerUser().contactsView(this);
 		_treeViewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		drillDownAdapter = new DrillDownAdapter(_treeViewer);
 		_treeViewer.setContentProvider(new ContactsTreeContentProvider());
@@ -174,7 +183,6 @@ public class ContactsView extends ViewPart {
 		action1 = new Action() {
 			public void run() {
 				SneerUIPlugin.sneer().addContact();
-				_treeViewer.refresh();
 			}
 
 		};
@@ -220,5 +228,17 @@ public class ContactsView extends ViewPart {
 	 */
 	public void setFocus() {
 		_treeViewer.getControl().setFocus();
+	}
+
+	public void refresh() {
+		if (null == _treeViewer) return;
+		UIJob job = new UIJob("Contact refresh") {
+			public IStatus runInUIThread(IProgressMonitor monitor) {
+				_treeViewer.refresh();
+				return Status.OK_STATUS;
+			}
+		};
+		job.setSystem(true);
+		job.schedule();
 	}
 }

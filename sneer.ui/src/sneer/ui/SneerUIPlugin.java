@@ -20,6 +20,7 @@ public class SneerUIPlugin extends AbstractUIPlugin {
 	//Resource bundle.
 	private ResourceBundle resourceBundle;
 	private Sneer _sneer;
+	private EclipseSneerUser _user;
 	
 	/**
 	 * The constructor.
@@ -36,7 +37,8 @@ public class SneerUIPlugin extends AbstractUIPlugin {
 		super.start(context);
 		
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-		_sneer = new Sneer(new EclipseSneerUser(shell));		
+		_user = new EclipseSneerUser(shell);
+		_sneer = new Sneer(_user);		
 	}
 
 	/**
@@ -94,5 +96,9 @@ public class SneerUIPlugin extends AbstractUIPlugin {
 
 	public static Sneer sneer() {
 		return plugin._sneer;
+	}
+	
+	public static EclipseSneerUser sneerUser() {
+		return plugin._user;
 	}
 }

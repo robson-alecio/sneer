@@ -1,14 +1,16 @@
 package sneer;
 
 import java.io.IOException;
-import java.lang.reflect.Proxy;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.prevayler.foundation.Cool;
 import org.prevayler.foundation.network.OldNetwork;
 import org.prevayler.foundation.network.OldNetworkImpl;
 
-import sneer.remote.ConnectionStatus;
-import sneer.remote.RemoteLife;
+import sneer.life.Life;
+import sneer.life.LifeImpl;
+import sneer.remote.Connection;
 
 public class Sneer {
 	
@@ -27,6 +29,7 @@ public class Sneer {
 	private final Life _life;
 	private final User _user;
 	private final OldNetwork _network = new OldNetworkImpl();
+	private final Map<String, Connection> _connectionsByNickname = new HashMap<String, Connection>();
 
 	public Sneer(User user) {
 		if (null == user) throw new IllegalArgumentException();
@@ -48,6 +51,16 @@ public class Sneer {
 
 	public void addContact() {
 		String nickname = _user.giveNickname();
+		
+		Connection connection = createConnection(nickname);
+		_connectionsByNickname.put(nickname, connection);
+		
+		_life.giveSomebodyANickname(connection.lifeView(), nickname);
+		
+		_user.lookAtMe();
+	}
+
+	private Connection createConnection(String nickname) {
 		String tcpAddress = _user.informTcpAddress();
 		String[] addressParts = tcpAddress.split(":");
 		String ipAddress = addressParts[0];
@@ -55,12 +68,11 @@ public class Sneer {
 		if (addressParts.length > 1) {
 			port = Integer.parseInt(addressParts[1]);
 		}
-		LifeView contact = RemoteLife.createWith("ignored", _network, ipAddress, port);
-		_life.giveSomebodyANickname(contact, nickname);
-		_user.lookAtMe();
+		Connection result = new Connection(_network, ipAddress, port);
+		return result;
 	}
 
-	public ConnectionStatus connectionStatus(String nickname) {
-		return ((RemoteLife)Proxy.getInvocationHandler(_life.contact(nickname))).connectionStatus();
+	public boolean isOnline(String nickname) {
+		return _connectionsByNickname.get(nickname).isOnline();
 	}
 }

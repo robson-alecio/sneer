@@ -2,7 +2,7 @@
 //This is free software. It is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the license distributed along with this file for more details.
 //Contributions: Kalecser Kurtz.
 
-package sneer;
+package sneer.life;
 
 import java.util.*;
 
@@ -10,24 +10,29 @@ import java.util.*;
 public class LifeImpl implements Life {
 
 	private String _name;
+	private String _thoughtOfTheDay;
 
-	private final Map _contactsByNickname = new HashMap();
+	private final Map<String, LifeView> _contactsByNickname = new HashMap<String, LifeView>();
 
     private String _profile;
     private String _contactInfo;
 
-    private final Map _messagesSentByContact = new HashMap();
+    private final Map<LifeView, List<String>> _messagesSentByContact = new HashMap<LifeView, List<String>>();
 
 	public LifeImpl(String name) {
-		changeName(name);
+		name(name);
 	}
-
-	public void changeName(String newName) {
+	
+	public void name(String newName) {
 		_name = newName;
 	}
 
-	public Set nicknames() {
-		return new HashSet(_contactsByNickname.keySet());
+	public void thoughtOfTheDay(String thought) {
+		_thoughtOfTheDay = thought;
+	}
+
+	public Set<String> nicknames() {
+		return new HashSet<String>(_contactsByNickname.keySet());
 	}
 
 	public void giveSomebodyANickname(LifeView somebody, String nickname) throws IllegalArgumentException {
@@ -51,9 +56,14 @@ public class LifeImpl implements Life {
 		return _name;
 	}
 
+	public String thoughtOfTheDay() {
+		return _thoughtOfTheDay;
+	}
+
 	public LifeView contact(String nickname) {
 		return (LifeView)_contactsByNickname.get(nickname);
 	}
+
 
     public void profile(String profile) {
         _profile = profile;
@@ -86,15 +96,16 @@ public class LifeImpl implements Life {
     }
 
 	private boolean isAccessAllowed(LifeView life) {
+		if (1 == 1) return true; //FIXME Recover calling contact logic.
 		if (CALLING_CONTACT.get() == this) return true;
 		if (life == CALLING_CONTACT.get()) return true;
 		return false;
 	}
 
-	private List innerMessagesSentTo(LifeView contact) {
-		List result = (List)_messagesSentByContact.get(contact);
+	private List<String> innerMessagesSentTo(LifeView contact) {
+		List<String> result = _messagesSentByContact.get(contact);
 		if (result == null) {
-            result = new ArrayList();
+            result = new ArrayList<String>();
             _messagesSentByContact.put(contact, result);
         }
 		return result;

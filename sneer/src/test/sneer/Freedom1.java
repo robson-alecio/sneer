@@ -4,9 +4,9 @@
 package sneer;
 
 
-import sneer.Life;
-import sneer.LifeImpl;
-import sneer.LifeView;
+import sneer.life.Life;
+import sneer.life.LifeImpl;
+import sneer.life.LifeView;
 import junit.framework.TestCase;
 
 public class Freedom1 extends TestCase {
@@ -47,7 +47,7 @@ public class Freedom1 extends TestCase {
     }
 
     private void changeMyNameTo(String newName) {
-    	_me.changeName(newName);
+    	_me.name(newName);
     	checkMyName(newName);
     }
 

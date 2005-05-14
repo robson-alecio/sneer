@@ -4,10 +4,12 @@
 
 package sneer.remote;
 
-import sneer.LifeView;
+import sneer.life.LifeView;
 
 public class RoutedQuery implements Query {
 	
+	private static final long serialVersionUID = 1L;
+
 	private String _nickname;
 	private Query _delegate;
 

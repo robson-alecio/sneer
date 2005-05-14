@@ -3,7 +3,7 @@
 
 package sneer;
 
-import sneer.NoneOfYourBusiness;
+import sneer.life.NoneOfYourBusiness;
 
 
 public class Freedoms2_5Messaging extends Freedom2  {

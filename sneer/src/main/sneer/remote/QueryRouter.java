@@ -4,32 +4,19 @@
 
 package sneer.remote;
 
-import java.io.IOException;
 
-import org.prevayler.foundation.network.ObjectSocket;
+public class QueryRouter implements QueryExecuter {
 
-public class QueryRouter implements ObjectSocket {
-
-    private final ObjectSocket _delegate;
     private final String _nickname;
+    private final QueryExecuter _delegate;
 
-    public QueryRouter(ObjectSocket socket, String nickname) {
-        _delegate = socket;
+	public QueryRouter(String nickname, QueryExecuter queryExecuter) {
+        _delegate = queryExecuter;
         _nickname = nickname;
+	}
+
+	public Object execute(Query query) {
+		return _delegate.execute(new RoutedQuery(_nickname, query));
     }
-
-	public void writeObject(Object object) throws IOException {
-
-		_delegate.writeObject(new RoutedQuery(_nickname,(Query)object));
-    }
-
-    public Object readObject() throws IOException, ClassNotFoundException {
-        return _delegate.readObject();
-    }
-
-    public void close() throws IOException {
-        _delegate.close();
-    }
-
  
 }

@@ -6,15 +6,14 @@ package sneer;
 
 import java.io.IOException;
 
-//import org.prevayler.foundation.network.NetworkMock;
+import org.prevayler.foundation.network.NetworkMock;
 import org.prevayler.foundation.network.OldNetwork;
-import org.prevayler.foundation.network.OldNetworkImpl;
 
-import sneer.Life;
-import sneer.LifeImpl;
-import sneer.LifeView;
-import sneer.remote.LifeServer;
-import sneer.remote.RemoteLife;
+import sneer.life.Life;
+import sneer.life.LifeImpl;
+import sneer.life.LifeView;
+import sneer.remote.Connection;
+import sneer.remote.Server;
 
 
 public class Freedom2 extends Freedom1 {
@@ -28,8 +27,9 @@ public class Freedom2 extends Freedom1 {
 	
 	public void setUp() throws Exception {
 		super.setUp();
-		_ipNetwork = new OldNetworkImpl();
-		new LifeServer(_me, _ipNetwork.openObjectServerSocket(7000));
+		//_ipNetwork = new OldNetworkImpl();
+		_ipNetwork = new NetworkMock();
+		new Server(_me, _ipNetwork.openObjectServerSocket(7000));
 
 		helpFriendsAchieveSovereignty();
 		
@@ -43,13 +43,13 @@ public class Freedom2 extends Freedom1 {
     }
 	
     public void testContactsChangingTheirNames() throws Exception {
-    	_ziba.changeName("humberto_francisco_soares");
+    	_ziba.name("humberto_francisco_soares");
     	checkName("humberto_francisco_soares", myContact("Ziba"));
     
-    	_fefe.changeName("luiz fernando dos s sabino");
+    	_fefe.name("luiz fernando dos s sabino");
     	checkName("luiz fernando dos s sabino", myContact("Fefe"));
     
-    	_ziba.changeName("humberto f soares");
+    	_ziba.name("humberto f soares");
     	checkName("humberto f soares", myContact("Ziba"));
     }
 
@@ -85,12 +85,12 @@ public class Freedom2 extends Freedom1 {
 
 	private Life newSovereignFriend(String name, int port) throws Exception {
         Life result = new LifeImpl(name);
-		new LifeServer(result, _ipNetwork.openObjectServerSocket(port));
+		new Server(result, _ipNetwork.openObjectServerSocket(port));
 		return result;
     }
 
 	private LifeView lifeClient(int port) throws IOException {
-        return RemoteLife.createWith("TODO: find the correct nickname", _ipNetwork.openSocket("localhost", port));
+        return new Connection(_ipNetwork, "localhost", port).lifeView();
 	}
 	
 	protected LifeView myContact(String nickname) {

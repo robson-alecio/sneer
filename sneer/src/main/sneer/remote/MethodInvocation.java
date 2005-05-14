@@ -9,33 +9,33 @@ import java.lang.reflect.Method;
 
 import org.prevayler.foundation.Cool;
 
-import sneer.LifeView;
-import sneer.NoneOfYourBusiness;
+import sneer.life.LifeView;
+import sneer.life.NoneOfYourBusiness;
 
-public class MethodInvocationQuery implements Query {
 
-    private final String _methodName;
+public class MethodInvocation implements Query {
+
+	private static final long serialVersionUID = 1L;
+	
+	private final String _methodName;
     private final Class[] _argTypes;
     private final Object[] _args;
-	private final String _callingNickname;
 
-    public MethodInvocationQuery(Method method, Object[] args, String callingNickname) {
+    public MethodInvocation(Method method, Object[] args) {
         _methodName = method.getName();
         _argTypes = method.getParameterTypes();
         _args = args;
-		_callingNickname = callingNickname;
     }
 
     public Object executeOn(LifeView life) {
         try {
-			LifeView.CALLING_CONTACT.set(life.contact(_callingNickname));
-            Method method = LifeView.class.getMethod(_methodName, _argTypes);
-			return method.invoke(life, _args);
-        } catch (InvocationTargetException e) {
-			Throwable cause = e.getCause();
-			if (cause instanceof NoneOfYourBusiness) return cause;
-			Cool.unexpected(e);
-			return null;
+        	try {
+		        Method method = LifeView.class.getMethod(_methodName, _argTypes);
+				return method.invoke(life, _args);
+	        } catch (InvocationTargetException e) {
+				if (e.getCause() instanceof NoneOfYourBusiness) return e.getCause();
+				throw e;
+	        }
         } catch (Exception e) {
             Cool.unexpected(e);
             return null;

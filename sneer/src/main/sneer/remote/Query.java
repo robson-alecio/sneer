@@ -6,7 +6,7 @@ package sneer.remote;
 
 import java.io.Serializable;
 
-import sneer.LifeView;
+import sneer.life.LifeView;
 
 public interface Query extends Serializable {
 

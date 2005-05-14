@@ -8,15 +8,15 @@ import org.prevayler.foundation.Cool;
 import org.prevayler.foundation.network.ObjectServerSocket;
 import org.prevayler.foundation.network.ObjectSocket;
 
-import sneer.Life;
-import sneer.LifeView;
+import sneer.life.Life;
 
-public class LifeServer implements Runnable {
+
+public class Server implements Runnable {
 
 	private final Life _life;
 	private final ObjectServerSocket _serverSocket;
 
-	public LifeServer(Life life, ObjectServerSocket serverSocket) {
+	public Server(Life life, ObjectServerSocket serverSocket) {
 		_life = life;
 		_serverSocket = serverSocket;
 		Cool.startDaemon(this);
@@ -43,8 +43,9 @@ public class LifeServer implements Runnable {
 	private void serve(ObjectSocket socket) throws Exception {
 		
 		while (true) {
-			Query sovereignQuery = (Query)socket.readObject();
-			socket.writeObject(sovereignQuery.executeOn(_life));
+			Query query = (Query)socket.readObject();
+			Object result = query.executeOn(_life);
+			socket.writeObject(result);
 		}
 	}
 	

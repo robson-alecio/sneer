@@ -32,7 +32,6 @@ import org.eclipse.ui.part.DrillDownAdapter;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.UIJob;
 
-import sneer.remote.ConnectionStatus;
 import sneer.ui.SneerUIPlugin;
 
 
@@ -103,8 +102,7 @@ public class ContactsView extends ViewPart {
 			return obj.toString();
 		}
 		public Image getImage(Object obj) {
-			ConnectionStatus status = SneerUIPlugin.sneer().connectionStatus(obj.toString());
-			String imageKey = status == ConnectionStatus.OFFLINE
+			String imageKey = SneerUIPlugin.sneer().isOnline(obj.toString()) 
 				? ISharedImages.IMG_OBJS_WARN_TSK
 				: ISharedImages.IMG_OBJ_ELEMENT;
 			return PlatformUI.getWorkbench().getSharedImages().getImage(imageKey);

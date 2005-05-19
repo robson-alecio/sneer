@@ -33,7 +33,7 @@ public class Freedom2 extends Freedom1 {
 
 		helpFriendsAchieveSovereignty();
 		
-		LifeView.CALLING_CONTACT.set(null);
+		LifeView.CALLING_NICKNAME.set(null);
 	}
 
     public void testNicknames() throws Exception {
@@ -59,7 +59,7 @@ public class Freedom2 extends Freedom1 {
     	
     	checkName("Luiz Fernando dos Santos Sabino", myContact("Ziba").contact("Roberts").contact("Fefe"));
     	
-    	assertNull("Contact 'Zabumba' does not exist!", myContact("Ziba").contact("Zabumba"));
+    	assertNull("Contact 'Zabumba' should not exist!", myContact("Ziba").contact("Zabumba"));
     }
     
     

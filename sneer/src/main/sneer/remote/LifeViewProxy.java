@@ -25,11 +25,17 @@ class LifeViewProxy implements InvocationHandler {
             return "LifeView proxy " + hashCode();
         if (method.getName().equals("contact"))
             return routingProxy((String)args[0]);
-        return _queryExecuter.execute(new MethodInvocation(method, args));
+        return _queryExecuter.execute(new MethodInvocation(method, args, LifeView.CALLING_NICKNAME.get()));
     }
 
 	private LifeView routingProxy(String nickname) {
-		return createBackedBy(new QueryRouter(nickname, _queryExecuter));
+		LifeView candidate = createBackedBy(new QueryRouter(nickname, _queryExecuter));
+		if (isNavigationBroken(candidate)) return null;
+		return candidate;
+	}
+
+	private boolean isNavigationBroken(LifeView candidate) {
+		return candidate.name() == null;
 	}
 
 }

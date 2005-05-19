@@ -3,6 +3,7 @@
 
 package sneer;
 
+import sneer.life.LifeView;
 import sneer.life.NoneOfYourBusiness;
 
 
@@ -25,6 +26,7 @@ public class Freedoms2_5Messaging extends Freedom2  {
 	public void testPrivateMessaging() throws Exception {
 		_ziba.send("Hello Klaus", "Zezo");
 		
+		LifeView.CALLING_NICKNAME.set("Zezo");
 		assertTrue(myContact("Ziba").messagesSentToMe().contains("Hello Klaus"));
 		try {
 			myContact("Ziba").messagesSentTo("Sweetie");

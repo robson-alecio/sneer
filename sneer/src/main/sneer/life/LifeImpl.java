@@ -95,10 +95,9 @@ public class LifeImpl implements Life {
         return innerMessagesSentTo(contact);
     }
 
-	private boolean isAccessAllowed(LifeView life) {
-		if (1 == 1) return true; //FIXME Recover calling contact logic.
-		if (CALLING_CONTACT.get() == this) return true;
-		if (life == CALLING_CONTACT.get()) return true;
+	private boolean isAccessAllowed(LifeView caller) {
+		if (CALLING_NICKNAME.get() == null) return true; //FIXME Use something safer than null to signal access by the local life.
+		if (caller == contact(CALLING_NICKNAME.get())) return true;
 		return false;
 	}
 
@@ -112,7 +111,7 @@ public class LifeImpl implements Life {
 	}
 
 	public List<String> messagesSentToMe() {
-		return messagesSentTo(CALLING_CONTACT.get());
+		return messagesSentTo(CALLING_NICKNAME.get());
     }
 
 }

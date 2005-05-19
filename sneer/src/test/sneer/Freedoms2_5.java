@@ -4,9 +4,6 @@
 
 package sneer;
 
-import sneer.life.LifeView;
-
-
 public class Freedoms2_5 extends Freedom2  {
 
 	public void testProfileSharing() throws Exception {

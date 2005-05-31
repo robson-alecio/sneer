@@ -66,19 +66,19 @@ public class Connection implements QueryExecuter {
 					ping();
 				}
 			}
+			
+			private void ping() {
+				try {
+					_lifeView.name();
+				} catch (RuntimeException provoked) {
+					//This exception already caused this connection to go offline on its own.
+				}
+			}
 		};
 	}
 
 	public LifeView lifeView() {
 		return	_lifeView;
-	}
-
-	private void ping() {
-		try {
-			_lifeView.name();
-		} catch (RuntimeException provoked) {
-			//This exception already caused this connection to go offline on its own.
-		}
 	}
 
 }

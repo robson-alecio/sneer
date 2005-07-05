@@ -62,7 +62,7 @@ public class Connection implements QueryExecuter {
 		return new Runnable() {
 			public void run() {
 				while (true) {
-					Cool.sleep(1000 * 60); //TODO Optimize - Sleep again if this connection was used recently.
+					Cool.sleep(1000 * 60); //TODO Optimize - Sleep again instead of pinging, if this connection was used recently.
 					ping();
 				}
 			}

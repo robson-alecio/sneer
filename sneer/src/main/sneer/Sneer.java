@@ -11,7 +11,6 @@ import org.prevayler.foundation.network.OldNetworkImpl;
 import sneer.life.Life;
 import sneer.life.LifeImpl;
 import sneer.remote.*;
-import sneer.remote.Connection;
 
 public class Sneer {
 	
@@ -25,6 +24,8 @@ public class Sneer {
 		void lamentException(IOException e);
 
 		void lookAtMe();
+
+		String thoughtOfDay(String current);
 	}
 	
 	private final Life _life;
@@ -53,7 +54,7 @@ public class Sneer {
 			public void run() {
 				while (true) {
 					_user.lookAtMe();
-					Cool.sleep(500);
+					Cool.sleep(1000*10);
 				}				
 			}
 		});
@@ -72,6 +73,10 @@ public class Sneer {
 		_life.giveSomebodyANickname(connection.lifeView(), nickname);
 		
 		_user.lookAtMe();
+	}
+	
+	public void editPersonalInfo() {
+		_life.thoughtOfTheDay(_user.thoughtOfDay(_life.thoughtOfTheDay()));
 	}
 
 	private Connection createConnection(String nickname) {

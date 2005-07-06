@@ -46,6 +46,7 @@ public class SneerUIPlugin extends AbstractUIPlugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
+		
 		plugin = null;
 		resourceBundle = null;
 	}

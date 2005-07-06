@@ -32,6 +32,8 @@ import org.eclipse.ui.part.DrillDownAdapter;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.UIJob;
 
+import sneer.*;
+import sneer.life.*;
 import sneer.ui.SneerUIPlugin;
 
 
@@ -56,8 +58,8 @@ import sneer.ui.SneerUIPlugin;
 public class ContactsView extends ViewPart {
 	private TreeViewer _treeViewer;
 	private DrillDownAdapter drillDownAdapter;
-	private Action action1;
-	private Action action2;
+	private Action _addContactAction;
+	private Action _personalInfoAction;
 	private Action doubleClickAction;
 
 	/*
@@ -99,10 +101,30 @@ public class ContactsView extends ViewPart {
 	class ContactsTreeLabelProvider extends LabelProvider {
 
 		public String getText(Object obj) {
-			return obj.toString();
+			String nickname = (String)obj;
+			return sneer().isOnline(nickname)
+				? onlineLabel(nickname)
+				: nickname;
 		}
+		
+		private String onlineLabel(String nickname) {
+			LifeView contact = sneer().life().contact(nickname);
+			// nickname (Real Name) - thought of the day
+			
+			StringBuilder label = new StringBuilder(nickname);
+			label.append(" (");
+			label.append(contact.name());
+			label.append(")");
+			String thought = contact.thoughtOfTheDay();
+			if (null != thought) {
+				label.append(" - ");
+				label.append(thought);
+			}
+			return label.toString();
+		}
+		
 		public Image getImage(Object obj) {
-			String imageKey = SneerUIPlugin.sneer().isOnline(obj.toString()) 
+			String imageKey = sneer().isOnline(obj.toString()) 
 				? ISharedImages.IMG_OBJ_ELEMENT
 				: ISharedImages.IMG_OBJS_WARN_TSK;
 			return PlatformUI.getWorkbench().getSharedImages().getImage(imageKey);
@@ -115,6 +137,10 @@ public class ContactsView extends ViewPart {
 	 * The constructor.
 	 */
 	public ContactsView() {
+	}
+	
+	private Sneer sneer() {
+		return SneerUIPlugin.sneer();
 	}
 
 	/**
@@ -156,47 +182,46 @@ public class ContactsView extends ViewPart {
 	}
 
 	private void fillLocalPullDown(IMenuManager manager) {
-		manager.add(action1);
+		manager.add(_addContactAction);
 		manager.add(new Separator());
-		manager.add(action2);
+		manager.add(_personalInfoAction);
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
-		manager.add(action1);
-		manager.add(action2);
+		manager.add(_addContactAction);
 		manager.add(new Separator());
+		manager.add(_personalInfoAction);
 		drillDownAdapter.addNavigationActions(manager);
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 	
 	private void fillLocalToolBar(IToolBarManager manager) {
-		manager.add(action1);
-		manager.add(action2);
+		manager.add(_addContactAction);
+		manager.add(_personalInfoAction);
 		manager.add(new Separator());
 		drillDownAdapter.addNavigationActions(manager);
 	}
 	
 	private void makeActions() {
-		action1 = new Action() {
+		_addContactAction = new Action() {
 			public void run() {
-				SneerUIPlugin.sneer().addContact();
+				sneer().addContact();
 			}
-
 		};
-		action1.setText("Add Contact...");
-		action1.setToolTipText("Give a nickname to a sovereign contact.");
-		action1.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
+		_addContactAction.setText("Add Contact...");
+		_addContactAction.setToolTipText("Give a nickname to a sovereign contact.");
+		_addContactAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
 			getImageDescriptor(ISharedImages.IMG_OBJ_ELEMENT));
 		
-		action2 = new Action() {
+		_personalInfoAction = new Action() {
 			public void run() {
-				showMessage("Action 2 executed");
+				sneer().editPersonalInfo();
 			}
 		};
-		action2.setText("Action 2");
-		action2.setToolTipText("Action 2 tooltip");
-		action2.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
+		_personalInfoAction.setText("Personal Info...");
+		_personalInfoAction.setToolTipText("Edit your sovereign info.");
+		_personalInfoAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
 				getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
 		doubleClickAction = new Action() {
 			public void run() {

@@ -28,7 +28,7 @@ public class EclipseSneerUser implements User {
 	}
 
 	private String input(String defaultValue, String message) {
-		InputDialog dialog = new InputDialog(_shell, "Sneer", message, null, null);
+		InputDialog dialog = new InputDialog(_shell, "Sneer", message, defaultValue, null);
 		dialog.setBlockOnOpen(true);
 		if (InputDialog.OK == dialog.open()) {
 			return dialog.getValue();
@@ -41,7 +41,7 @@ public class EclipseSneerUser implements User {
 	}
 
 	public String informTcpAddress() {
-		return input("localhost", "What is your contact's address? host:port");
+		return input("localhost:5909", "What is your contact's address? host:port");
 	}
 
 	public void lamentException(IOException e) {
@@ -50,9 +50,12 @@ public class EclipseSneerUser implements User {
 	}
 
 	public void lookAtMe() {
-		// o klaus que mandou
 		if (null == _contactsView) return;
 		_contactsView.refresh();
+	}
+
+	public String thoughtOfDay(String current) {
+		return input(current, "Thought of the Day");
 	}
 
 }

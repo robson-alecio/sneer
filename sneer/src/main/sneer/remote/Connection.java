@@ -22,16 +22,21 @@ public class Connection implements QueryExecuter {
 	private final String _ipAddress;
 	private final int _port;
 
-    private ObjectSocket _socket;
+    private ParallelSocket _socket;
 
-    public synchronized Object execute(Query query) {
+    public Object execute(Query query) {
 		Object result;
+		ParallelSocket mySocket = null;
 		try {
-	    	if (!isOnline()) goOnline();
-            _socket.writeObject(query);
-			result = _socket.readObject();
+	    	synchronized (this) {
+	    		while (mySocket == null) {
+	    			goOnline();
+					mySocket = _socket;
+	    		}
+	    	}
+	    	result = mySocket.getReply(query);
 		} catch (Exception x) {
-			goOffline();
+			if (_socket == mySocket) _socket = null;
 			throw new RuntimeException(x);
 		}
 		if (result instanceof NoneOfYourBusiness) throw new NoneOfYourBusiness((NoneOfYourBusiness)result);
@@ -43,11 +48,7 @@ public class Connection implements QueryExecuter {
 	}
 
 	private void goOnline() throws IOException {
-		_socket = _network.openSocket(_ipAddress, _port);
-	}
-
-	private void goOffline() {
-		_socket = null;
+		_socket = new ParallelSocket(_network.openSocket(_ipAddress, _port));
 	}
 
 	public Connection(OldNetwork network, String ipAddress, int port) {

@@ -13,12 +13,14 @@ import sneer.remote.*;
 
 public class Sneer {
 	
+	private static final int DEFAULT_PORT = 5905;
+
 	public interface User {
 		String name();
 
 		String giveNickname();
 
-		String informTcpAddress();
+		String informTcpAddress(String defaultAddress);
 
 		void lamentException(IOException e);
 
@@ -42,7 +44,7 @@ public class Sneer {
 
 	private void startServer() {
 		try {
-			new Server(_life, _network.openObjectServerSocket(5909));
+			new ParallelServer(_life, _network.openObjectServerSocket(DEFAULT_PORT));
 		} catch (IOException e) {
 			_user.lamentException(e);
 		}
@@ -79,10 +81,10 @@ public class Sneer {
 	}
 
 	private Connection createConnection(String nickname) {
-		String tcpAddress = _user.informTcpAddress();
+		String tcpAddress = _user.informTcpAddress("localhost:" + DEFAULT_PORT);
 		String[] addressParts = tcpAddress.split(":");
 		String ipAddress = addressParts[0];
-		int port = 5901;
+		int port = DEFAULT_PORT;
 		if (addressParts.length > 1) {
 			port = Integer.parseInt(addressParts[1]);
 		}

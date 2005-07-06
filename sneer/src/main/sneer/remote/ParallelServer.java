@@ -4,6 +4,8 @@
 
 package sneer.remote;
 
+import java.io.IOException;
+
 import org.prevayler.foundation.Cool;
 import org.prevayler.foundation.network.ObjectServerSocket;
 import org.prevayler.foundation.network.ObjectSocket;
@@ -11,12 +13,12 @@ import org.prevayler.foundation.network.ObjectSocket;
 import sneer.life.Life;
 
 
-public class Server implements Runnable {
+public class ParallelServer implements Runnable {
 
 	private final Life _life;
 	private final ObjectServerSocket _serverSocket;
 
-	public Server(Life life, ObjectServerSocket serverSocket) {
+	public ParallelServer(Life life, ObjectServerSocket serverSocket) {
 		_life = life;
 		_serverSocket = serverSocket;
 		Cool.startDaemon(this);
@@ -40,13 +42,29 @@ public class Server implements Runnable {
 			}
 	}
 
-	private void serve(ObjectSocket socket) throws Exception {
-		
+	private void serve(final ObjectSocket socket) throws Exception {
 		while (true) {
-			Query query = (Query)socket.readObject();
-			Object result = query.executeOn(_life);
-			socket.writeObject(result);
+			final Envelope envelope = (Envelope)socket.readObject();
+			Cool.startDaemon(new Runnable() {
+				public void run() {
+					reply(socket, envelope);
+				}
+			});
 		}
 	}
+
+	private void reply(final ObjectSocket socket, final Envelope envelope) {
+		Query query = (Query)envelope.contents();
+		Object result = query.executeOn(_life);
+		envelope.contents(result);
+		try {
+			synchronized (socket) {
+				socket.writeObject(envelope);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	
 }

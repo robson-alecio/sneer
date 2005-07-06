@@ -13,7 +13,7 @@ import sneer.life.Life;
 import sneer.life.LifeImpl;
 import sneer.life.LifeView;
 import sneer.remote.Connection;
-import sneer.remote.Server;
+import sneer.remote.ParallelServer;
 
 
 public class Freedom2 extends Freedom1 {
@@ -29,7 +29,7 @@ public class Freedom2 extends Freedom1 {
 		super.setUp();
 		//_ipNetwork = new OldNetworkImpl();
 		_ipNetwork = new NetworkMock();
-		new Server(_me, _ipNetwork.openObjectServerSocket(7000));
+		new ParallelServer(_me, _ipNetwork.openObjectServerSocket(7000));
 
 		helpFriendsAchieveSovereignty();
 		
@@ -85,7 +85,7 @@ public class Freedom2 extends Freedom1 {
 
 	private Life newSovereignFriend(String name, int port) throws Exception {
         Life result = new LifeImpl(name);
-		new Server(result, _ipNetwork.openObjectServerSocket(port));
+		new ParallelServer(result, _ipNetwork.openObjectServerSocket(port));
 		return result;
     }
 

@@ -40,8 +40,8 @@ public class EclipseSneerUser implements User {
 		return input("friend", "Give your new contact a nickname");
 	}
 
-	public String informTcpAddress() {
-		return input("localhost:5909", "What is your contact's address? host:port");
+	public String informTcpAddress(String defaultAddress) {
+		return input(defaultAddress, "What is your contact's address? host:port");
 	}
 
 	public void lamentException(IOException e) {

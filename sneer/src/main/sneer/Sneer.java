@@ -1,8 +1,7 @@
 package sneer;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.prevayler.foundation.Cool;
 import org.prevayler.foundation.network.OldNetwork;
@@ -91,7 +90,12 @@ public class Sneer {
 		return result;
 	}
 
-	public boolean isOnline(String nickname) {
-		return _connectionsByNickname.get(nickname).isOnline();
+	public boolean isOnline(List<String> path) {
+		if (path.size() == 0) return true;
+		if (path.size() != 1) return false;
+		String nickname = path.get(0);
+		Connection connection = _connectionsByNickname.get(nickname);
+		if (null == connection) throw new IllegalArgumentException("nickname: " + nickname);
+		return connection.isOnline();
 	}
 }

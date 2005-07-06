@@ -103,8 +103,8 @@ public class ContactsView extends ViewPart {
 		}
 		public Image getImage(Object obj) {
 			String imageKey = SneerUIPlugin.sneer().isOnline(obj.toString()) 
-				? ISharedImages.IMG_OBJS_WARN_TSK
-				: ISharedImages.IMG_OBJ_ELEMENT;
+				? ISharedImages.IMG_OBJ_ELEMENT
+				: ISharedImages.IMG_OBJS_WARN_TSK;
 			return PlatformUI.getWorkbench().getSharedImages().getImage(imageKey);
 		}
 	}

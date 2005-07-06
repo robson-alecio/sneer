@@ -10,6 +10,7 @@ import org.prevayler.foundation.network.OldNetworkImpl;
 
 import sneer.life.Life;
 import sneer.life.LifeImpl;
+import sneer.remote.*;
 import sneer.remote.Connection;
 
 public class Sneer {
@@ -35,6 +36,19 @@ public class Sneer {
 		if (null == user) throw new IllegalArgumentException();
 		_user = user;
 		_life = new LifeImpl(_user.name());
+		startUserNotificationDaemon();
+		startServer();
+	}
+
+	private void startServer() {
+		try {
+			new Server(_life, _network.openObjectServerSocket(5909));
+		} catch (IOException e) {
+			_user.lamentException(e);
+		}
+	}
+
+	private void startUserNotificationDaemon() {
 		Cool.startDaemon(new Runnable() {
 			public void run() {
 				while (true) {

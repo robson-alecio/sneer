@@ -62,13 +62,14 @@ public class Connection implements QueryExecuter {
 		return new Runnable() {
 			public void run() {
 				while (true) {
-					Cool.sleep(1000 * 60); //TODO Optimize - Sleep again instead of pinging, if this connection was used recently.
 					ping();
+					Cool.sleep(1000 * 60); //TODO Optimize - Sleep again instead of pinging, if this connection was used recently.
 				}
 			}
 			
 			private void ping() {
 				try {
+					// force a remote query to be executed (see execute method above)
 					_lifeView.name();
 				} catch (RuntimeException provoked) {
 					//This exception already caused this connection to go offline on its own.

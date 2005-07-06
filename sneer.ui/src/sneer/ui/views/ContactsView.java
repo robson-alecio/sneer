@@ -1,5 +1,7 @@
 package sneer.ui.views;
 
+import java.util.*;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -72,6 +74,58 @@ public class ContactsView extends ViewPart {
 	 * (like Task List, for example).
 	 */
 	
+	static class Contact {
+		
+		final private String _nickname;
+		final private LifeView _lifeView;
+		final private Contact _parent;
+		
+		public Contact(LifeView lifeView) {
+			this("me", lifeView, null);
+		}
+		public Contact(String nickname, Contact parent) {
+			this(nickname, parent._lifeView.contact(nickname), parent);
+		}
+		
+		private Contact(String nickname, LifeView lifeView, Contact parent) {
+			_nickname = nickname;
+			_lifeView = lifeView;
+			_parent = parent;
+		}
+		
+		public String nickname() {
+			return _nickname;
+		}
+		
+		public LifeView lifeView() {
+			return _lifeView;
+		}
+
+		public boolean isOnline() {
+			return sneer().isOnline(nicknamePath());
+		}
+		
+		private List<String> nicknamePath() {
+			if (_parent == null) return new ArrayList<String>();
+			List<String> result = _parent.nicknamePath();
+			result.add(_nickname);
+			return result;
+		}
+
+		public Contact[] contacts() {
+			if (!isOnline()) return new Contact[0];
+			
+			Set<String> nicknames = _lifeView.nicknames();
+			
+			Contact[] contacts = new Contact[nicknames.size()];
+			int i = 0;
+			for (String nickname : nicknames) {
+				contacts[i++] = new Contact(nickname, this);
+			}
+			return contacts;
+		}
+	}
+	
 	class ContactsTreeContentProvider implements IStructuredContentProvider, 
 										   ITreeContentProvider {
 
@@ -83,39 +137,41 @@ public class ContactsView extends ViewPart {
 		
 		public Object[] getElements(Object parent) {
 			if (parent.equals(getViewSite())) {
-				return SneerUIPlugin.sneer().life().nicknames().toArray();
+				Contact me = new Contact(life());
+				return me.contacts();
 			}
 			return getChildren(parent);
 		}
+		
 		public Object getParent(Object child) {
 			return null;
 		}
-		public Object [] getChildren(Object parent) {
-			return new Object[0];
+		
+		public Object[] getChildren(Object parent) {
+			return ((Contact)parent).contacts();
 		}
+		
 		public boolean hasChildren(Object parent) {
-			return false;
+			return ((Contact)parent).isOnline();
 		}
 	}
 	
 	class ContactsTreeLabelProvider extends LabelProvider {
 
 		public String getText(Object obj) {
-			String nickname = (String)obj;
-			return sneer().isOnline(nickname)
-				? onlineLabel(nickname)
-				: nickname;
+			Contact contact = (Contact)obj;
+			return contact.isOnline()
+				? onlineLabel(contact)
+				: contact.nickname();
 		}
 		
-		private String onlineLabel(String nickname) {
-			LifeView contact = sneer().life().contact(nickname);
+		private String onlineLabel(Contact contact) {
 			// nickname (Real Name) - thought of the day
-			
-			StringBuilder label = new StringBuilder(nickname);
+			StringBuilder label = new StringBuilder(contact.nickname());
 			label.append(" (");
-			label.append(contact.name());
+			label.append(contact.lifeView().name());
 			label.append(")");
-			String thought = contact.thoughtOfTheDay();
+			String thought = contact.lifeView().thoughtOfTheDay();
 			if (null != thought) {
 				label.append(" - ");
 				label.append(thought);
@@ -124,7 +180,7 @@ public class ContactsView extends ViewPart {
 		}
 		
 		public Image getImage(Object obj) {
-			String imageKey = sneer().isOnline(obj.toString()) 
+			String imageKey = ((Contact)obj).isOnline() 
 				? ISharedImages.IMG_OBJ_ELEMENT
 				: ISharedImages.IMG_OBJS_WARN_TSK;
 			return PlatformUI.getWorkbench().getSharedImages().getImage(imageKey);
@@ -139,9 +195,14 @@ public class ContactsView extends ViewPart {
 	public ContactsView() {
 	}
 	
-	private Sneer sneer() {
+	private static Sneer sneer() {
 		return SneerUIPlugin.sneer();
 	}
+	
+	private static Life life() {
+		return sneer().life();
+	}
+
 
 	/**
 	 * This is a callback that will allow us

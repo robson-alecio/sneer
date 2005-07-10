@@ -1,10 +1,6 @@
 package sneer;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.prevayler.foundation.Cool;
 import org.prevayler.foundation.network.OldNetwork;
@@ -37,7 +33,6 @@ public class Sneer {
 	private final Life _life;
 	private final User _user;
 	private final OldNetwork _network = new OldNetworkImpl();
-	private final Map<String, Connection> _connectionsByNickname = new HashMap<String, Connection>();
 
 	public Sneer(User user) {
 		if (null == user) throw new IllegalArgumentException();
@@ -72,12 +67,8 @@ public class Sneer {
 
 	public void addContact() {
 		String nickname = _user.giveNickname();
-		
-		Connection connection = createConnection(nickname);
-		_connectionsByNickname.put(nickname, connection);
-		
-		_life.giveSomebodyANickname(connection.lifeView(), nickname);
-		
+		_life.giveSomebodyANickname(remoteContact(), nickname);
+
 		_user.lookAtMe();
 	}
 	
@@ -85,7 +76,7 @@ public class Sneer {
 		_life.thoughtOfTheDay(_user.thoughtOfDay(_life.thoughtOfTheDay()));
 	}
 
-	private Connection createConnection(String nickname) {
+	private LifeView remoteContact() {
 		String tcpAddress = _user.informTcpAddress("localhost:" + DEFAULT_PORT);
 		String[] addressParts = tcpAddress.split(":");
 		String ipAddress = addressParts[0];
@@ -93,17 +84,8 @@ public class Sneer {
 		if (addressParts.length > 1) {
 			port = Integer.parseInt(addressParts[1]);
 		}
-		Connection result = new Connection(_network, ipAddress, port);
-		return result;
+		Connection connection = new Connection(_network, ipAddress, port); //TODO: Refactor this. Consider hiding Connection inside LifeViewProxy.
+		return connection.lifeView();
 	}
 
-	public boolean isOnline(List<String> path) { //TODO: Remove this path and do isOnline(LifeView);
-		LifeView current = _life;
-		for (String nickname : path) {
-			current = current.contact(nickname);
-		}
-		Date lastSighting = current.lastSighting();
-		if (lastSighting == null) return false;
-		return System.currentTimeMillis() - lastSighting.getTime() < 1000 * 10;
-	}
 }

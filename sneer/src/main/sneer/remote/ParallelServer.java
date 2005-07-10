@@ -44,7 +44,9 @@ public class ParallelServer implements Runnable {
 
 	private void serve(final ObjectSocket socket) throws Exception {
 		while (true) {
+			
 			final Envelope envelope = (Envelope)socket.readObject();
+			
 			Cool.startDaemon(new Runnable() {
 				public void run() {
 					reply(socket, envelope);

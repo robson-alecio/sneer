@@ -28,10 +28,8 @@ public class Connection implements QueryExecuter {
 		ParallelSocket mySocket = null;
 		try {
 	    	synchronized (this) {
-	    		while (mySocket == null) {
-	    			goOnline();
-					mySocket = _socket;
-	    		}
+	    		if (!isOnline()) goOnline();
+				mySocket = _socket;
 	    	}
 	    	result = mySocket.getReply(query);
 		} catch (Exception x) {
@@ -42,7 +40,7 @@ public class Connection implements QueryExecuter {
 		return result;
     }
 
-	public boolean isOnline() {
+	private boolean isOnline() {
 		return _socket != null;
 	}
 

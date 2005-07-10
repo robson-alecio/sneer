@@ -19,7 +19,7 @@ class LifeViewProxy implements InvocationHandler {
 		return (LifeView)Proxy.newProxyInstance(LifeView.class.getClassLoader(), new Class[] { LifeView.class }, new LifeViewProxy(queryExecuter));
 	}
 
-	public LifeViewProxy(QueryExecuter queryExecuter) {
+	private LifeViewProxy(QueryExecuter queryExecuter) {
 		_queryExecuter = queryExecuter;
 	}
 

@@ -78,40 +78,34 @@ public class ContactsView extends ViewPart {
 		
 		final private String _nickname;
 		final private LifeView _lifeView;
-		final private Contact _parent;
 		
-		public Contact(LifeView lifeView) {
-			this("me", lifeView, null);
-		}
-		public Contact(String nickname, Contact parent) {
-			this(nickname, parent._lifeView.contact(nickname), parent);
+		Contact(LifeView lifeView) {
+			this("me", lifeView);
 		}
 		
-		private Contact(String nickname, LifeView lifeView, Contact parent) {
+		Contact(String nickname, Contact parent) {
+			this(nickname, parent._lifeView.contact(nickname));
+		}
+		
+		private Contact(String nickname, LifeView lifeView) {
 			_nickname = nickname;
 			_lifeView = lifeView;
-			_parent = parent;
 		}
 		
-		public String nickname() {
+		String nickname() {
 			return _nickname;
 		}
 		
-		public LifeView lifeView() {
+		LifeView lifeView() {
 			return _lifeView;
 		}
 
 		public boolean isOnline() {
-			return sneer().isOnline(nicknamePath());
+			Date lastSighting = _lifeView.lastSighting();
+			if (lastSighting == null) return false;
+			return System.currentTimeMillis() - lastSighting.getTime() < 1000 * 10;
 		}
 		
-		private List<String> nicknamePath() {
-			if (_parent == null) return new ArrayList<String>();
-			List<String> result = _parent.nicknamePath();
-			result.add(_nickname);
-			return result;
-		}
-
 		public Contact[] contacts() {
 			if (!isOnline()) return new Contact[0];
 			

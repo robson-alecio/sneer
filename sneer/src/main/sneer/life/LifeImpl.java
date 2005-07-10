@@ -114,4 +114,8 @@ public class LifeImpl implements Life {
 		return messagesSentTo(CALLING_NICKNAME.get());
     }
 
+	public Date lastSighting() {
+		return new Date(); //A local LifeView is always up-to-date.
+	}
+
 }

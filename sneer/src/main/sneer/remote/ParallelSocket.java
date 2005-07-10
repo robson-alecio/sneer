@@ -32,6 +32,7 @@ class ParallelSocket {
 					checkOpen();
 					try {
 						if (_envelopeRead == null) _envelopeRead = (Envelope)_delegate.readObject();
+						//FIXME: Check whether this is a valid envelope to prevent all threads from waiting forever.
 					} catch (Exception x) {
 						closeBecauseOf(x);
 						throw x;

@@ -7,7 +7,6 @@ package sneer.remote;
 import java.io.IOException;
 
 import org.prevayler.foundation.Cool;
-import org.prevayler.foundation.network.ObjectSocket;
 import org.prevayler.foundation.network.OldNetwork;
 
 import sneer.life.LifeView;
@@ -64,7 +63,8 @@ public class Connection implements QueryExecuter {
 			public void run() {
 				while (true) {
 					ping();
-					Cool.sleep(1000 * 60); //TODO Optimize - Sleep again instead of pinging, if this connection was used recently.
+//					Cool.sleep(1000 * 60); //TODO Optimize - Sleep again instead of pinging, if this connection was used recently.
+					Cool.sleep(1000 * 4);
 				}
 			}
 			

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 
-public interface LifeView {
+public interface LifeView extends View {
 
 	public String name();
 	public String thoughtOfTheDay();

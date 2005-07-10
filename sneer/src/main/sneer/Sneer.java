@@ -1,7 +1,10 @@
 package sneer;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.prevayler.foundation.Cool;
 import org.prevayler.foundation.network.OldNetwork;
@@ -9,7 +12,9 @@ import org.prevayler.foundation.network.OldNetworkImpl;
 
 import sneer.life.Life;
 import sneer.life.LifeImpl;
-import sneer.remote.*;
+import sneer.life.LifeView;
+import sneer.remote.Connection;
+import sneer.remote.ParallelServer;
 
 public class Sneer {
 	
@@ -92,12 +97,13 @@ public class Sneer {
 		return result;
 	}
 
-	public boolean isOnline(List<String> path) {
-		if (path.size() == 0) return true;
-		if (path.size() != 1) return false;
-		String nickname = path.get(0);
-		Connection connection = _connectionsByNickname.get(nickname);
-		if (null == connection) throw new IllegalArgumentException("nickname: " + nickname);
-		return connection.isOnline();
+	public boolean isOnline(List<String> path) { //TODO: Remove this path and do isOnline(LifeView);
+		LifeView current = _life;
+		for (String nickname : path) {
+			current = current.contact(nickname);
+		}
+		Date lastSighting = current.lastSighting();
+		if (lastSighting == null) return false;
+		return System.currentTimeMillis() - lastSighting.getTime() < 1000 * 10;
 	}
 }

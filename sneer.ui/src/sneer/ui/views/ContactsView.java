@@ -88,6 +88,7 @@ public class ContactsView extends ViewPart {
 		}
 		
 		private Contact(String nickname, LifeView lifeView) {
+lifeView.toString();			
 			_nickname = nickname;
 			_lifeView = lifeView;
 		}

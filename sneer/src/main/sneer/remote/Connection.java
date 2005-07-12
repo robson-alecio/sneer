@@ -6,7 +6,6 @@ package sneer.remote;
 
 import java.io.IOException;
 
-import org.prevayler.foundation.Cool;
 import org.prevayler.foundation.network.OldNetwork;
 
 import sneer.life.LifeView;
@@ -52,30 +51,8 @@ public class Connection implements QueryExecuter {
 		_network = network;
 		_ipAddress = ipAddress;
 		_port = port;
-		
-		Cool.startDaemon(watchDog());
 	}
 	
-	private Runnable watchDog() {
-		return new Runnable() {
-			public void run() {
-				while (true) {
-					ping();
-//					Cool.sleep(1000 * 60); //TODO Optimize - Sleep again instead of pinging, if this connection was used recently.
-					Cool.sleep(1000 * 4);
-				}
-			}
-			
-			private void ping() {
-				try {
-					// force a remote query to be executed (see execute method above)
-					_lifeView.name();
-				} catch (RuntimeException provoked) {
-					//This exception already caused this connection to go offline on its own.
-				}
-			}
-		};
-	}
 
 	public LifeView lifeView() {
 		return	_lifeView;

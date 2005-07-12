@@ -7,16 +7,21 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.prevayler.foundation.Cool;
+
 import sneer.life.LifeView;
 
 class LifeViewProxy implements InvocationHandler {
 
 	private final QueryExecuter _queryExecuter;
 	private Date _lastSighting;
-	private Map<String,Object> _methodInvocationCache = new HashMap<String, Object>();
+	private Map<String, Object> _methodInvocationCache = new HashMap<String, Object>(); //FIXME: Argument to the method is not being taken into account. MessagesSentTo(nickname) for example.
+	private Map<String, LifeView> _contactCache = new HashMap<String, LifeView>();
 
 	public static LifeView createBackedBy(QueryExecuter queryExecuter) {
-		return (LifeView)Proxy.newProxyInstance(LifeView.class.getClassLoader(), new Class[] { LifeView.class }, new LifeViewProxy(queryExecuter));
+		LifeView lifeView = (LifeView)Proxy.newProxyInstance(LifeView.class.getClassLoader(), new Class[] { LifeView.class }, new LifeViewProxy(queryExecuter));
+		Cool.startDaemon(pinger(lifeView));
+		return lifeView;
 	}
 
 	private LifeViewProxy(QueryExecuter queryExecuter) {
@@ -31,7 +36,7 @@ class LifeViewProxy implements InvocationHandler {
             return "LifeView proxy " + hashCode();
         
         if (methodName.equals("contact")) //FIXME: Check the LifeView interface through reflection to guarantee this method has not been renamed.
-            return routingProxy((String)args[0]);
+        	return routingProxy((String)args[0]);
         
         if (methodName.equals("lastSighting")) //FIXME: Check the LifeView interface through reflection to guarantee this method has not been renamed.
             return _lastSighting;
@@ -52,13 +57,25 @@ class LifeViewProxy implements InvocationHandler {
 	}
 
 	private LifeView routingProxy(String nickname) {
-		LifeView candidate = createBackedBy(new QueryRouter(nickname, _queryExecuter));
-		if (isNavigationBroken(candidate)) return null;
-		return candidate;
-	}
+    	LifeView cached = _contactCache.get(nickname);
+    	if (cached != null) return cached;
 
-	private boolean isNavigationBroken(LifeView candidate) {
-		return candidate.name() == null;
+    	LifeView proxy = createBackedBy(new QueryRouter(nickname, _queryExecuter));
+		_contactCache.put(nickname, proxy);
+    	return proxy;
+	}
+	
+	static private Runnable pinger(final LifeView lifeView) {
+		return new Runnable() {
+			public void run() {
+				while (true) {
+					// force a remote query to be executed (see execute method above)
+					lifeView.name();
+//					Cool.sleep(1000 * 60); //TODO Optimize - Sleep again instead of pinging, if this connection was used recently.
+					Cool.sleep(1000 * 4);
+				}
+			}
+		};
 	}
 
 }

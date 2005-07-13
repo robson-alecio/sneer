@@ -14,15 +14,16 @@ import sneer.life.NoneOfYourBusiness;
 
 public class Connection implements QueryExecuter {
 
-	private LifeView _lifeView = LifeViewProxy.createBackedBy(this); 
-
 	private final OldNetwork _network;
 	private final String _ipAddress;
 	private final int _port;
 
+	private final LifeView _lifeView; 
+
     private ParallelSocket _socket;
 
-    public Object execute(Query query) {
+    @SuppressWarnings("unchecked")
+	public <T> T execute(Query<T> query) {
 		Object result;
 		ParallelSocket mySocket = null;
 		try {
@@ -31,12 +32,12 @@ public class Connection implements QueryExecuter {
 				mySocket = _socket;
 	    	}
 	    	result = mySocket.getReply(query);
-		} catch (Exception x) {
+		} catch (IOException x) {
 			if (_socket == mySocket) _socket = null;
 			throw new RuntimeException(x);
 		}
 		if (result instanceof NoneOfYourBusiness) throw new NoneOfYourBusiness((NoneOfYourBusiness)result);
-		return result;
+		return (T)result;
     }
 
 	private boolean isOnline() {
@@ -51,8 +52,9 @@ public class Connection implements QueryExecuter {
 		_network = network;
 		_ipAddress = ipAddress;
 		_port = port;
+		
+		_lifeView = new LifeViewProxy(this);
 	}
-	
 
 	public LifeView lifeView() {
 		return	_lifeView;

@@ -2,6 +2,6 @@ package sneer.remote;
 
 interface QueryExecuter {
 
-	Object execute(Query query);
+	<T> T execute(Query<T> query);
 
 }

@@ -5,7 +5,7 @@
 package sneer.remote;
 
 
-public class QueryRouter implements QueryExecuter {
+public class QueryRouter<T> implements QueryExecuter {
 
     private final String _nickname;
     private final QueryExecuter _delegate;
@@ -15,8 +15,8 @@ public class QueryRouter implements QueryExecuter {
         _nickname = nickname;
 	}
 
-	public Object execute(Query query) {
-		return _delegate.execute(new RoutedQuery(_nickname, query));
+	public <T> T execute(Query<T> query) {
+		return _delegate.execute(new RoutedQuery<T>(_nickname, query));
     }
  
 }

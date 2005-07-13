@@ -20,7 +20,7 @@ class ParallelSocket {
 		_delegate = delegate;
 	}
 
-	public Object getReply(Object request) throws Exception {
+	public Object getReply(Object request) throws IOException {
 		Envelope myEnvelope;
 		synchronized (_writeMonitor) {
 			myEnvelope = new Envelope(request, _stamp++);
@@ -31,9 +31,15 @@ class ParallelSocket {
 				while (true) {
 					checkOpen();
 					try {
-						if (_envelopeRead == null) _envelopeRead = (Envelope)_delegate.readObject();
+						if (_envelopeRead == null)
+							try {
+								_envelopeRead = (Envelope)_delegate.readObject();
+							} catch (ClassNotFoundException e) {
+								e.printStackTrace();
+								throw new IOException("ClassNotFoundException thrown");
+							}
 						//FIXME: Check whether this is a valid envelope to prevent all threads from waiting forever.
-					} catch (Exception x) {
+					} catch (IOException x) {
 						closeBecauseOf(x);
 						throw x;
 					}

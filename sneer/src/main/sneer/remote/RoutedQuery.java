@@ -6,19 +6,19 @@ package sneer.remote;
 
 import sneer.life.LifeView;
 
-public class RoutedQuery implements Query {
+public class RoutedQuery<T> implements Query<T> {
 	
 	private static final long serialVersionUID = 1L;
 
 	private String _nickname;
-	private Query _delegate;
+	private Query<T> _delegate;
 
-	public RoutedQuery(String nickname, Query query) {
+	public RoutedQuery(String nickname, Query<T> query) {
 		_nickname = nickname;
 		_delegate = query;
 	}
 
-	public Object executeOn(LifeView life) {
+	public T executeOn(LifeView life) {
 		LifeView destination = life.contact(_nickname);
 		if (destination == null)
 		    return null;

@@ -5,6 +5,7 @@
 package sneer;
 
 import java.io.IOException;
+import java.util.Date;
 
 import org.prevayler.foundation.network.NetworkMock;
 import org.prevayler.foundation.network.OldNetwork;
@@ -94,7 +95,15 @@ public class Freedom2 extends Freedom1 {
 	}
 	
 	protected LifeView myContact(String nickname) {
-		return _me.contact(nickname);
+		LifeView result = _me.contact(nickname);
+		waitForUpdate(result);
+		return result;
+	}
+
+	protected void waitForUpdate(LifeView result) {
+		Date previousSightingDate = result.lastSightingDate();
+		while (result.lastSightingDate() == null) Thread.yield();
+		while (result.lastSightingDate().equals(previousSightingDate)) Thread.yield();
 	}
 
 	protected void checkNicknameExists(String nickname) {
@@ -135,5 +144,11 @@ public class Freedom2 extends Freedom1 {
     		fail("Should not have allowed duplication of Doctor.");
     	} catch(IllegalArgumentException expected) {}
     }
+
+	@Override
+	protected void checkName(String expected, LifeView lifeView) {
+		waitForUpdate(lifeView);
+		super.checkName(expected, lifeView);
+	}
 
 }

@@ -4,7 +4,6 @@
 
 package sneer;
 
-import sneer.life.LifeView;
 
 public class Freedoms2_5 extends Freedom2  {
 
@@ -30,10 +29,10 @@ public class Freedoms2_5 extends Freedom2  {
 		_ziba.contactInfo(zibasContactInfo);
 
 		assertEquals(zibasContactInfo, myContact("Ziba").contactInfo());
-		LifeView contact = myContact("Ziba")
-				.contact("Zezo")
-				.contact("Ziba");
-		assertEquals(zibasContactInfo, contact.contactInfo());
+		
+		waitForUpdate(myContact("Ziba").contact("Zezo"));
+		waitForUpdate(myContact("Ziba").contact("Zezo").contact("Ziba"));
+		assertEquals(zibasContactInfo, myContact("Ziba").contact("Zezo").contact("Ziba").contactInfo());
 	}
 	
 }

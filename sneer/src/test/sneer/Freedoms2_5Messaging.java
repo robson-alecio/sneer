@@ -19,7 +19,8 @@ public class Freedoms2_5Messaging extends Freedom2  {
 		_ziba.send("Hello Roberts", "Roberts");
 		
 	    assertTrue(_ziba.messagesSentTo("Zezo").contains("Hello Klaus"));
-		
+
+	    waitForUpdate(_roberts.contact("Humberto"));
 	    assertTrue(_roberts.contact("Humberto").messagesSentTo("Roberts").contains("Hello Roberts"));
 	}
 

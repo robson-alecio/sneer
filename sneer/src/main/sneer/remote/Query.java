@@ -8,8 +8,8 @@ import java.io.Serializable;
 
 import sneer.life.LifeView;
 
-public interface Query extends Serializable {
+public interface Query<T> extends Serializable {
 
-	Object executeOn(LifeView life);
+	T executeOn(LifeView lifeView);
 	
 }

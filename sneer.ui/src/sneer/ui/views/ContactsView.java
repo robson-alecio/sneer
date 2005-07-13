@@ -102,7 +102,7 @@ lifeView.toString();
 		}
 
 		public boolean isOnline() {
-			Date lastSighting = _lifeView.lastSighting();
+			Date lastSighting = _lifeView.lastSightingDate();
 			if (lastSighting == null) return false;
 			return System.currentTimeMillis() - lastSighting.getTime() < 1000 * 10;
 		}

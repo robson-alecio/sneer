@@ -23,7 +23,7 @@ public class Connection implements QueryExecuter {
     private ParallelSocket _socket;
 
     @SuppressWarnings("unchecked")
-	public <T> T execute(Query<T> query) {
+	public <T> T execute(Query<T> query) throws IOException {
 		Object result;
 		ParallelSocket mySocket = null;
 		try {
@@ -34,7 +34,7 @@ public class Connection implements QueryExecuter {
 	    	result = mySocket.getReply(query);
 		} catch (IOException x) {
 			if (_socket == mySocket) _socket = null;
-			throw new RuntimeException(x);
+			throw x;
 		}
 		if (result instanceof NoneOfYourBusiness) throw new NoneOfYourBusiness((NoneOfYourBusiness)result);
 		return (T)result;

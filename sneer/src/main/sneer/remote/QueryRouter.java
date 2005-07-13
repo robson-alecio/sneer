@@ -4,6 +4,8 @@
 
 package sneer.remote;
 
+import java.io.IOException;
+
 
 public class QueryRouter<T> implements QueryExecuter {
 
@@ -15,7 +17,7 @@ public class QueryRouter<T> implements QueryExecuter {
         _nickname = nickname;
 	}
 
-	public <T> T execute(Query<T> query) {
+	public <T> T execute(Query<T> query) throws IOException {
 		return _delegate.execute(new RoutedQuery<T>(_nickname, query));
     }
  

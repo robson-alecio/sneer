@@ -1,5 +1,6 @@
 package sneer.remote;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -42,8 +43,8 @@ class LifeViewProxy implements LifeView {
 			if (newCache.lastSightingDate() == null) return;
 			_cache = newCache;
 			_lastSightingDate = new Date();
-		} catch (RuntimeException rx) {
-			rx.printStackTrace(); //Consider simply ignoring this exception, since the connection will reconnect anyway.
+		} catch (IOException ignored) {
+			//Simply ignore this exception, since the connection will try to reconnect anyway.
 		}
 	}
 

@@ -1,17 +1,16 @@
 package sneer.ui;
 
-import java.io.IOException;
 
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 
-import sneer.Sneer.User;
+import sneer.SimpleUser;
 import sneer.ui.views.ContactsView;
 
-public class EclipseSneerUser implements User {
+public class EclipseSneerUser extends SimpleUser {
 
-	private Shell _shell;
+	public Shell _shell;
 	
 	private ContactsView _contactsView;
 
@@ -23,11 +22,7 @@ public class EclipseSneerUser implements User {
 		_contactsView = view;
 	}
 
-	public String name() {
-		return input("Sneer User", "Your name");
-	}
-
-	private String input(String defaultValue, String message) {
+	protected String answer(String message, String defaultValue) {
 		InputDialog dialog = new InputDialog(_shell, "Sneer", message, defaultValue, null);
 		dialog.setBlockOnOpen(true);
 		if (InputDialog.OK == dialog.open()) {
@@ -36,26 +31,14 @@ public class EclipseSneerUser implements User {
 		return defaultValue;
 	}
 
-	public String giveNickname() {
-		return input("friend", "Give your new contact a nickname");
-	}
-
-	public String informTcpAddress(String defaultAddress) {
-		return input(defaultAddress, "What is your contact's address? host:port");
-	}
-
-	public void lamentException(IOException e) {
-		e.printStackTrace();
-		MessageDialog.openError(_shell, "Sorry", e.toString());
-	}
-
 	public void lookAtMe() {
 		if (null == _contactsView) return;
 		_contactsView.refresh();
 	}
 
-	public String thoughtOfDay(String current) {
-		return input(current, "Thought of the Day");
+	@Override
+	protected void lamentError(String message) {
+		MessageDialog.openError(_shell, "Sorry", message);
 	}
 
 }

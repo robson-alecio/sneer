@@ -37,8 +37,8 @@ public class ParallelServer implements Runnable {
 						}
 					}
 				});
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (IOException ignored) {
+				//The client will reconnect, if this connection was really important. :)
 			}
 	}
 

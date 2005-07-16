@@ -17,7 +17,7 @@ public class Sneer {
 	private static final int DEFAULT_PORT = 5905;
 
 	public interface User {
-		String name();
+		String confirmName(String currentName);
 
 		String giveNickname();
 
@@ -27,7 +27,7 @@ public class Sneer {
 
 		void lookAtMe();
 
-		String thoughtOfDay(String current);
+		String thoughtOfDay(String currentThought);
 	}
 	
 	private final Life _life;
@@ -37,7 +37,7 @@ public class Sneer {
 	public Sneer(User user) {
 		if (null == user) throw new IllegalArgumentException();
 		_user = user;
-		_life = new LifeImpl(_user.name());
+		_life = new LifeImpl(_user.confirmName("Sneer User"));
 		startUserNotificationDaemon();
 		startServer();
 	}

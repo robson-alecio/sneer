@@ -30,8 +30,8 @@ public class Freedoms2_5 extends Freedom2  {
 
 		assertEquals(zibasContactInfo, myContact("Ziba").contactInfo());
 		
-		waitForUpdate(myContact("Ziba").contact("Zezo"));
-		waitForUpdate(myContact("Ziba").contact("Zezo").contact("Ziba"));
+		waitForUpdates(myContact("Ziba").contact("Zezo"));
+		waitForUpdates(myContact("Ziba").contact("Zezo").contact("Ziba"));
 		assertEquals(zibasContactInfo, myContact("Ziba").contact("Zezo").contact("Ziba").contactInfo());
 	}
 	

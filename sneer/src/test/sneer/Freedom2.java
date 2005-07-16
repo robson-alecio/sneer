@@ -96,11 +96,16 @@ public class Freedom2 extends Freedom1 {
 	
 	protected LifeView myContact(String nickname) {
 		LifeView result = _me.contact(nickname);
-		waitForUpdate(result);
+		waitForUpdates(result);
 		return result;
 	}
 
-	protected void waitForUpdate(LifeView result) {
+	protected void waitForUpdates(LifeView result) {  //TODO: Optimize this making Sneer use a ClockMock or have a synchronous mode for testing or something.
+		waitForOneUpdate(result);
+		waitForOneUpdate(result); //It is rare but it is possible for an "old" update to start coming before the remote object was changed and arrive after. This does not mean Sneer is broken, of course.
+	}
+
+	private void waitForOneUpdate(LifeView result) {
 		Date previousSightingDate = result.lastSightingDate();
 		while (result.lastSightingDate() == null) Thread.yield();
 		while (result.lastSightingDate().equals(previousSightingDate)) Thread.yield();
@@ -147,7 +152,7 @@ public class Freedom2 extends Freedom1 {
 
 	@Override
 	protected void checkName(String expected, LifeView lifeView) {
-		waitForUpdate(lifeView);
+		waitForUpdates(lifeView);
 		super.checkName(expected, lifeView);
 	}
 

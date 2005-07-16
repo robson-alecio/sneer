@@ -10,7 +10,7 @@ import sneer.ui.views.ContactsView;
 
 public class EclipseSneerUser extends SimpleUser {
 
-	public Shell _shell;
+	private final Shell _shell;
 	
 	private ContactsView _contactsView;
 
@@ -38,7 +38,12 @@ public class EclipseSneerUser extends SimpleUser {
 
 	@Override
 	protected void lamentError(String message) {
-		MessageDialog.openError(_shell, "Sorry", message);
+		MessageDialog.openError(_shell, "Sneer", message);
+	}
+
+	@Override
+	protected void acknowledge(String fact) {
+		MessageDialog.openInformation(_shell, "Sneer", fact);
 	}
 
 }

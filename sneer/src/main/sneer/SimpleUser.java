@@ -1,6 +1,7 @@
-package sneer;
+//Copyright (C) 2005 Klaus Wuestefeld
+//This is free software. It is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the license distributed along with this file for more details.
 
-import java.io.IOException;
+package sneer;
 
 import sneer.Sneer.User;
 
@@ -43,7 +44,7 @@ public abstract class SimpleUser implements User {
 		return answer("What is your contact's address? host:port", defaultAddress);
 	}
 
-	public void lamentException(IOException e) {
+	public void lamentException(Exception e) {
 		e.printStackTrace();
 		lamentError(e.toString());
 	}

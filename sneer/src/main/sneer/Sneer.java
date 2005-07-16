@@ -14,20 +14,19 @@ import sneer.remote.ParallelServer;
 
 public class Sneer {
 	
-	private static final int DEFAULT_PORT = 5905;
+	static private final int DEFAULT_PORT = 5905;
 
-	public interface User {
+	static public interface User {
 		String confirmName(String currentName);
-
+		int confirmServerPort(int currentPort);
+		String thoughtOfDay(String currentThought);
+		
 		String giveNickname();
-
 		String informTcpAddress(String defaultAddress);
-
-		void lamentException(IOException e);
 
 		void lookAtMe();
 
-		String thoughtOfDay(String currentThought);
+		void lamentException(IOException e);
 	}
 	
 	private final Life _life;
@@ -44,7 +43,8 @@ public class Sneer {
 
 	private void startServer() {
 		try {
-			new ParallelServer(_life, _network.openObjectServerSocket(DEFAULT_PORT));
+			int serverPort = _user.confirmServerPort(DEFAULT_PORT);
+			new ParallelServer(_life, _network.openObjectServerSocket(serverPort));
 		} catch (IOException e) {
 			_user.lamentException(e);
 		}

@@ -25,24 +25,31 @@ public class ParallelServer implements Runnable {
 	}
 
     public void run() {
-		while (true)
+		while (true) {
+			final ObjectSocket socket;
+			
 			try {
-				final ObjectSocket socket = _serverSocket.accept();
-				Cool.startDaemon(new Runnable() {
-					public void run() {
-						try {
-							serve(socket);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-				});
-			} catch (IOException ignored) {
-				//The client will reconnect, if this connection was really important. :)
+				socket = _serverSocket.accept();
+			} catch (IOException iox) {
+				iox.printStackTrace();
+				break;
 			}
+
+			Cool.startDaemon(new Runnable() {
+				public void run() {
+					try {
+						serve(socket);
+					} catch (IOException ignored) {
+						//The client will reconnect, if this connection was really important. :)
+					} catch (ClassNotFoundException cnfx) {
+						cnfx.printStackTrace();
+					}
+				}
+			});
+		}
 	}
 
-	private void serve(final ObjectSocket socket) throws Exception {
+	private void serve(final ObjectSocket socket) throws IOException, ClassNotFoundException {
 		while (true) {
 			
 			final Envelope envelope = (Envelope)socket.readObject();

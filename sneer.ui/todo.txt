@@ -1,0 +1,37 @@
+[Sneer is not test-driven. It is GUI-driven and test-certified.]
+
+TODO:
+
+Persistence
+
+Contact Info and Profile GUI
+
+Milestone: Sneer is Usable -------------------------
+
+Fotographs  :)
+
+Messages
+
+Trust Metric
+
+Disk sharing
+  - Simple file replication
+  - Encryption
+
+Top Ten plugin
+  - File Rating for ED2K links (Sharereactor-like)
+
+Installer
+  - Milestone: Sneer downloadable -----------------------
+
+Bandwidth sharing/management
+  - Quotas by Priority
+    - Priority Zero (Ex: Voice, chat, games, etc (+ X% priority One))
+    - Priority One (Ex: interactive apps, etc (+ Y% priority Two))
+    - Priority Two (Downloads, etc (+ Z% priority Three))
+
+CPU sharing
+  - Fault-tolerance
+  - Load Balancing
+    - Automated test distribution
+    - 3D rendering

@@ -1,6 +1,8 @@
-[Sneer is not test-driven. It is GUI-driven and test-certified.]
+[Sneer is not test-driven. It is GUI-driven and test-verified.]
 
 TODO:
+
+Better refresh algorithm for the ContactsView (try to only update the changed elements)
 
 Persistence
 

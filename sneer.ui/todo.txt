@@ -17,14 +17,15 @@ Milestone: Sneer is Presentable -------------------------
 Messages
   - Make messaging private
 
+Top Ten plugin
+  - User defined categories
+  - File Rating for ED2K links (Sharereactor-like)
+
 Trust Metric
 
 Disk sharing
   - Simple file replication
   - Encryption
-
-Top Ten plugin
-  - File Rating for ED2K links (Sharereactor-like)
 
 Installer
   - Milestone: Sneer downloadable -----------------------

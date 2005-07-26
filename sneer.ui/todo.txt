@@ -41,3 +41,8 @@ CPU sharing
   - Load Balancing
     - Automated test distribution
     - 3D rendering
+
+Google Earth awareness
+  - Top Ten restaurants close by
+  - Where are my friends
+  

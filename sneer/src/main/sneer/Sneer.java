@@ -4,6 +4,9 @@
 package sneer;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.prevayler.foundation.Cool;
 import org.prevayler.foundation.network.OldNetwork;
@@ -30,11 +33,14 @@ public class Sneer {
 		void lookAtMe();
 
 		void lamentException(Exception e);
+		void acknowledge(String fact);
+		String writePublicMessage();
 	}
 	
 	private final Life _life;
 	private final User _user;
 	private final OldNetwork _network = new OldNetworkImpl();
+	private Set<String> _knownMessages = new HashSet<String>();
 
 	public Sneer(User user) {
 		if (null == user) throw new IllegalArgumentException();
@@ -89,6 +95,28 @@ public class Sneer {
 		}
 		Connection connection = new Connection(_network, ipAddress, port); //TODO: Refactor this. Consider hiding Connection inside LifeViewProxy.
 		return connection.lifeView();
+	}
+
+	public void sendPublicMessage() {
+		String message = _user.writePublicMessage();
+		_life.send(message);
+	}
+
+	public void checkNewMessages() {
+		for (String nickname : _life.nicknames()) {
+			LifeView contact = _life.contact(nickname);
+			if (contact.lastSightingDate() == null) continue;
+			showMessages(nickname, contact.publicMessages());
+		}
+	}
+
+	private void showMessages(String sender, List<String> messages) {
+		for (String message : messages) {
+			if (_knownMessages.contains(message)) continue;
+			_knownMessages.add(message);
+			_user.acknowledge("Message sent from " + sender + ":\n\n" + message);
+		}
+		
 	}
 
 }

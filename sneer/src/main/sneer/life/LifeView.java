@@ -18,8 +18,7 @@ public interface LifeView extends View {
     public String profile();
     public String contactInfo();
 
-    public List<String> messagesSentTo(String contact);
-	public List<String> messagesSentToMe();
+	public List<String> publicMessages();
 	
 	public static final	ThreadLocal<String> CALLING_NICKNAME = new ThreadLocal<String>();
 }

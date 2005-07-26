@@ -14,6 +14,7 @@ class LifeSighting implements LifeView, Serializable {
 	private final Set<String> _nicknames;
 	private final String _profile;
 	private final String _contactInfo;
+	private final List<String> _publicMessages;
 	private final Date _creation;
 
 	public LifeSighting(LifeView lifeView) {
@@ -23,6 +24,7 @@ class LifeSighting implements LifeView, Serializable {
 			_nicknames = null;
 			_profile = null;
 			_contactInfo = null;
+			_publicMessages = null;
 			_creation = null;
 		} else {
 			_name = lifeView.name();
@@ -30,6 +32,7 @@ class LifeSighting implements LifeView, Serializable {
 			_nicknames = lifeView.nicknames();
 			_profile = lifeView.profile();
 			_contactInfo = lifeView.contactInfo();
+			_publicMessages = lifeView.publicMessages();
 			_creation = new Date();
 		}
 	}
@@ -62,8 +65,8 @@ class LifeSighting implements LifeView, Serializable {
 		throw new RuntimeException("To be implemented");
 	}
 
-	public List<String> messagesSentToMe() {
-		throw new RuntimeException("To be implemented");
+	public List<String> publicMessages() {
+		return _publicMessages;
 	}
 
 	public Date lastSightingDate() {

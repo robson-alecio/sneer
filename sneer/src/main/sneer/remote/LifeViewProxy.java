@@ -83,8 +83,8 @@ class LifeViewProxy implements LifeView {
 		return _cache.messagesSentTo(contact);
 	}
 
-	public List<String> messagesSentToMe() {
-		return _cache.messagesSentToMe();
+	public List<String> publicMessages() {
+		return _cache.publicMessages();
 	}
 
 	public Date lastSightingDate() {

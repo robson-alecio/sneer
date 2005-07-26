@@ -17,7 +17,7 @@ public class LifeImpl implements Life {
     private String _profile;
     private String _contactInfo;
 
-    private final Map<LifeView, List<String>> _messagesSentByContact = new HashMap<LifeView, List<String>>();
+    private final List<String> _publicMessages = new ArrayList<String>();
 
 	public LifeImpl(String name) {
 		name(name);
@@ -81,37 +81,12 @@ public class LifeImpl implements Life {
         return _contactInfo;
     }
 
-    public void send(String message, String toNickname) {
-        if (!nicknames().contains(toNickname)) throw new IllegalArgumentException("Unknown contact: " + toNickname);
-        innerMessagesSentTo(contact(toNickname)).add(message);
+    public void send(String message) {
+        _publicMessages.add(message);
     }
 
-    public List<String> messagesSentTo(String nickname) {
-		return messagesSentTo(contact(nickname));
-    }
-
-	private List<String> messagesSentTo(LifeView contact) {
-		if (!isAccessAllowed(contact)) throw new NoneOfYourBusiness();
-        return innerMessagesSentTo(contact);
-    }
-
-	private boolean isAccessAllowed(LifeView caller) {
-		if (CALLING_NICKNAME.get() == null) return true; //FIXME Use something safer than null to signal access by the local life.
-		if (caller == contact(CALLING_NICKNAME.get())) return true;
-		return false;
-	}
-
-	private List<String> innerMessagesSentTo(LifeView contact) {
-		List<String> result = _messagesSentByContact.get(contact);
-		if (result == null) {
-            result = new ArrayList<String>();
-            _messagesSentByContact.put(contact, result);
-        }
-		return result;
-	}
-
-	public List<String> messagesSentToMe() {
-		return messagesSentTo(CALLING_NICKNAME.get());
+	public List<String> publicMessages() {
+		return _publicMessages;
     }
 
 	public Date lastSightingDate() {

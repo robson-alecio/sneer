@@ -44,8 +44,7 @@ public class EclipseSneerUser extends SimpleUser {
 		MessageDialog.openError(_shell, "Sneer", message);
 	}
 
-	@Override
-	protected void acknowledge(String fact) {
+	public void acknowledge(String fact) {
 		MessageDialog.openInformation(_shell, "Sneer", fact);
 	}
 

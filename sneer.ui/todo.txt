@@ -6,13 +6,16 @@ Better refresh algorithm for the ContactsView (try to only update the changed el
 
 Persistence
 
-Contact Info and Profile GUI
-
 Milestone: Sneer is Usable -------------------------
+
+Contact Info and Profile
 
 Fotographs  :)
 
+Milestone: Sneer is Presentable -------------------------
+
 Messages
+  - Make messaging private
 
 Trust Metric
 

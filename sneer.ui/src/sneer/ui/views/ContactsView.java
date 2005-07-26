@@ -3,7 +3,8 @@
 
 package sneer.ui.views;
 
-import java.util.*;
+import java.util.Date;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -14,7 +15,6 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -37,8 +37,9 @@ import org.eclipse.ui.part.DrillDownAdapter;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.UIJob;
 
-import sneer.*;
-import sneer.life.*;
+import sneer.Sneer;
+import sneer.life.Life;
+import sneer.life.LifeView;
 import sneer.ui.SneerUIPlugin;
 
 
@@ -62,10 +63,10 @@ import sneer.ui.SneerUIPlugin;
 
 public class ContactsView extends ViewPart {
 	private TreeViewer _treeViewer;
-	private DrillDownAdapter drillDownAdapter;
+	private DrillDownAdapter _drillDownAdapter;
 	private Action _addContactAction;
 	private Action _personalInfoAction;
-	private Action doubleClickAction;
+	private Action _doubleClickAction;
 
 	/*
 	 * The content provider class is responsible for
@@ -210,7 +211,7 @@ lifeView.toString();
 		
 		SneerUIPlugin.sneerUser().contactsView(this);
 		_treeViewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
-		drillDownAdapter = new DrillDownAdapter(_treeViewer);
+		_drillDownAdapter = new DrillDownAdapter(_treeViewer);
 		_treeViewer.setContentProvider(new ContactsTreeContentProvider());
 		_treeViewer.setLabelProvider(new ContactsTreeLabelProvider());
 		_treeViewer.setSorter(new NameSorter());
@@ -250,7 +251,7 @@ lifeView.toString();
 		manager.add(_addContactAction);
 		manager.add(new Separator());
 		manager.add(_personalInfoAction);
-		drillDownAdapter.addNavigationActions(manager);
+		_drillDownAdapter.addNavigationActions(manager);
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
@@ -259,7 +260,7 @@ lifeView.toString();
 		manager.add(_addContactAction);
 		manager.add(_personalInfoAction);
 		manager.add(new Separator());
-		drillDownAdapter.addNavigationActions(manager);
+		_drillDownAdapter.addNavigationActions(manager);
 	}
 	
 	private void makeActions() {
@@ -282,11 +283,12 @@ lifeView.toString();
 		_personalInfoAction.setToolTipText("Edit your sovereign info.");
 		_personalInfoAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
 				getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
-		doubleClickAction = new Action() {
+		_doubleClickAction = new Action() {
 			public void run() {
 				ISelection selection = _treeViewer.getSelection();
-				Object obj = ((IStructuredSelection)selection).getFirstElement();
-				showMessage("Double-click detected on "+obj.toString());
+				Contact contact = (Contact)((IStructuredSelection)selection).getFirstElement();
+				if (contact == null) return; //The tree view node might have been closed.
+				sneer().sendPublicMessage(); //TODO: Make this a private message to the chosen contact.
 			}
 		};
 	}
@@ -294,15 +296,9 @@ lifeView.toString();
 	private void hookDoubleClickAction() {
 		_treeViewer.addDoubleClickListener(new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
-				doubleClickAction.run();
+				_doubleClickAction.run();
 			}
 		});
-	}
-	private void showMessage(String message) {
-		MessageDialog.openInformation(
-			_treeViewer.getControl().getShell(),
-			"Contacts View",
-			message);
 	}
 
 	/**
@@ -316,9 +312,15 @@ lifeView.toString();
 		if (null == _treeViewer) return;
 		UIJob job = new UIJob("Contact refresh") {
 			public IStatus runInUIThread(IProgressMonitor monitor) {
-				_treeViewer.refresh();
+				try {
+					_treeViewer.refresh();
+					sneer().checkNewMessages();
+				} catch (RuntimeException e) {
+					e.printStackTrace(); // Eclipse does not show the stack trace.
+				}
 				return Status.OK_STATUS;
 			}
+
 		};
 		job.setSystem(true);
 		job.schedule();

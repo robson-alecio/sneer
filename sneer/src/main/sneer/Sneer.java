@@ -64,7 +64,7 @@ public class Sneer {
 			public void run() {
 				while (true) {
 					_user.lookAtMe();
-					Cool.sleep(1000*10);
+					Cool.sleep(1000*3);
 				}				
 			}
 		});

@@ -92,7 +92,7 @@ public class ContactsView extends ViewPart {
 		}
 		
 		private Contact(String nickname, LifeView lifeView) {
-lifeView.toString();			
+			lifeView.toString();			
 			_nickname = nickname;
 			_lifeView = lifeView;
 		}
@@ -122,6 +122,18 @@ lifeView.toString();
 				contacts[i++] = new Contact(nickname, this);
 			}
 			return contacts;
+		}
+		
+		@Override
+		public int hashCode() {
+			return _lifeView.hashCode();
+		}
+		
+		@Override
+		public boolean equals(Object other) {
+			return other instanceof Contact
+				? _lifeView.equals(((Contact)other)._lifeView)
+				: false;
 		}
 	}
 	
@@ -313,7 +325,8 @@ lifeView.toString();
 		UIJob job = new UIJob("Contact refresh") {
 			public IStatus runInUIThread(IProgressMonitor monitor) {
 				try {
-					_treeViewer.refresh();
+					//_treeViewer.refresh();
+					refreshTree();
 					sneer().checkNewMessages();
 				} catch (RuntimeException e) {
 					e.printStackTrace(); // Eclipse does not show the stack trace.
@@ -324,5 +337,18 @@ lifeView.toString();
 		};
 		job.setSystem(true);
 		job.schedule();
+	}
+
+	protected void refreshTree() {		
+		Object[] elements = _treeViewer.getVisibleExpandedElements();
+		if (elements.length == 0) {
+			_treeViewer.refresh();
+			return;
+		}
+		
+		for (Object element : elements) {
+			_treeViewer.refresh(element, true);
+		}
+		_treeViewer.setExpandedElements(elements);
 	}
 }

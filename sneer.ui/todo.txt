@@ -2,8 +2,6 @@
 
 TODO:
 
-Better refresh algorithm for the ContactsView (try to only update the changed elements)
-
 Persistence
 
 Milestone: Sneer is Usable -------------------------
@@ -42,7 +40,9 @@ CPU sharing
     - Automated test distribution
     - 3D rendering
 
+Better refresh algorithm for the ContactsView (try to only update the changed elements)
+
 Google Earth awareness
   - Top Ten restaurants close by
-  - Where are my friends
+  - Where are my friends?
   

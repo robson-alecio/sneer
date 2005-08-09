@@ -8,7 +8,7 @@ import sneer.Sneer.User;
 public abstract class SimpleUser implements User {
 
 	public String confirmName(String currentName) {
-		return answer("Your name", "Sneer User");
+		return answer("Your name", currentName);
 	}
 
 	public int confirmServerPort(int currentPort) {
@@ -32,7 +32,7 @@ public abstract class SimpleUser implements User {
 		return Integer.parseInt(portString);
 	}
 
-	public String thoughtOfDay(String currentThought) {
+	public String thoughtOfTheDay(String currentThought) {
 		return answer("Thought of the Day", currentThought);
 	}
 

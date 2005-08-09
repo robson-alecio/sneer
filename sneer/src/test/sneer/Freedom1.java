@@ -20,9 +20,7 @@ public class Freedom1 extends TestCase {
 	public void testNaming() throws Exception {
     	checkMyName("Klaus Wuestefeld");
     	changeMyNameAFewTimes();
-    }
-
-	
+    }	
 	
 	private void getALife() {
 		_me = getALifeFor("Klaus Wuestefeld");

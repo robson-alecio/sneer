@@ -75,5 +75,9 @@ public class ParallelServer implements Runnable {
 		}
 	}
 
+	public void close() throws IOException {
+		_serverSocket.close();
+	}
+
 	
 }

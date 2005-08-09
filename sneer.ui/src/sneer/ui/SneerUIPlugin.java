@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+import org.prevayler.foundation.network.OldNetworkImpl;
 
 import sneer.Sneer;
 
@@ -41,7 +42,7 @@ public class SneerUIPlugin extends AbstractUIPlugin {
 		
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		_user = new EclipseSneerUser(shell);
-		_sneer = new Sneer(_user);
+		_sneer = new Sneer(_user, new OldNetworkImpl());
 	}
 
 	/**

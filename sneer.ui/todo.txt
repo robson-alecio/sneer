@@ -2,13 +2,17 @@
 
 TODO:
 
-Persistence
+Remove contacts.
 
 Milestone: Sneer is Usable -------------------------
 
 Contact Info and Profile
 
 Fotographs  :)
+
+Notifications
+	Level 1 contact "WhatsHisNickname" is online
+	Level 2 contact "WhatsHisNickname>Nickname" is now sovereign
 
 Milestone: Sneer is Presentable -------------------------
 

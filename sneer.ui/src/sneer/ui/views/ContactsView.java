@@ -27,6 +27,8 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
@@ -38,28 +40,11 @@ import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.UIJob;
 
 import sneer.Sneer;
+import sneer.life.JpgImage;
 import sneer.life.Life;
 import sneer.life.LifeView;
 import sneer.ui.SneerUIPlugin;
 
-
-/**
- * This sample class demonstrates how to plug-in a new
- * workbench view. The view shows data obtained from the
- * model. The sample creates a dummy model on the fly,
- * but a real implementation would connect to the model
- * available either in this or another plug-in (e.g. the workspace).
- * The view is connected to the model using a content provider.
- * <p>
- * The view uses a label provider to define how model
- * objects should be presented in the view. Each
- * view can present the same model objects using
- * different labels and icons, if needed. Alternatively,
- * a single label provider can be shared between views
- * in order to ensure that objects of the same type are
- * presented in the same way everywhere.
- * <p>
- */
 
 public class ContactsView extends ViewPart {
 	private TreeViewer _treeViewer;
@@ -68,20 +53,15 @@ public class ContactsView extends ViewPart {
 	private Action _personalInfoAction;
 	private Action _doubleClickAction;
 
-	/*
-	 * The content provider class is responsible for
-	 * providing objects to the view. It can wrap
-	 * existing objects in adapters or simply return
-	 * objects as-is. These objects may be sensitive
-	 * to the current input of the view, or ignore
-	 * it and always show the same content 
-	 * (like Task List, for example).
-	 */
-	
 	static class Contact {
 		
+		private static final Image YELLOW_EXCLAMATION_MARK = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_WARN_TSK);
+		private static final Image DEFAULT_IMAGE = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
+
 		final private String _nickname;
 		final private LifeView _lifeView;
+
+		private Image _image;
 		
 		Contact(LifeView lifeView) {
 			this("me", lifeView);
@@ -135,6 +115,25 @@ public class ContactsView extends ViewPart {
 				? _lifeView.equals(((Contact)other)._lifeView)
 				: false;
 		}
+
+		public Image image() {
+			return isOnline() 
+				? onlineImage()
+				: YELLOW_EXCLAMATION_MARK;
+		}
+
+		private Image onlineImage() {
+			if (_image == null) _image = produceImage();
+			return _image;
+		}
+
+		private Image produceImage() {
+			ImageLoader loader = new ImageLoader();
+			JpgImage jpg = _lifeView.picture();
+			if (jpg == null) return DEFAULT_IMAGE;
+			ImageData data = loader.load(jpg.jpegFileContents())[0];
+			return new Image(null, data.scaledTo(32, 32));
+		}
 	}
 	
 	class ContactsTreeContentProvider implements IStructuredContentProvider, 
@@ -177,25 +176,19 @@ public class ContactsView extends ViewPart {
 		}
 		
 		private String onlineLabel(Contact contact) {
-			// nickname (Real Name) - thought of the day
-			StringBuilder label = new StringBuilder(contact.nickname());
-			label.append(" (");
-			label.append(contact.lifeView().name());
-			label.append(")");
+			//nickname (Full Name) - Thought of the day
+			String result = contact.nickname() + " (" + contact.lifeView().name() + ")";
+			
 			String thought = contact.lifeView().thoughtOfTheDay();
-			if (null != thought) {
-				label.append(" - ");
-				label.append(thought);
-			}
-			return label.toString();
+			if (thought == null) return result;
+			
+			return result + " - " + thought;
 		}
 		
 		public Image getImage(Object obj) {
-			String imageKey = ((Contact)obj).isOnline() 
-				? ISharedImages.IMG_OBJ_ELEMENT
-				: ISharedImages.IMG_OBJS_WARN_TSK;
-			return PlatformUI.getWorkbench().getSharedImages().getImage(imageKey);
+			return ((Contact)obj).image();
 		}
+
 	}
 	class NameSorter extends ViewerSorter {
 	}

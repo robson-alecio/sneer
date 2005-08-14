@@ -48,4 +48,9 @@ public class EclipseSneerUser extends SimpleUser {
 		MessageDialog.openInformation(_shell, "Sneer", fact);
 	}
 
+	@Override
+	protected boolean confirm(String proposition) {
+		return MessageDialog.openQuestion(_shell, "Sneer", proposition);
+	}
+
 }

@@ -50,6 +50,7 @@ public class ContactsView extends ViewPart {
 	private TreeViewer _treeViewer;
 	private DrillDownAdapter _drillDownAdapter;
 	private Action _addContactAction;
+	private Action _removeContactAction;
 	private Action _personalInfoAction;
 	private Action _doubleClickAction;
 
@@ -134,6 +135,12 @@ public class ContactsView extends ViewPart {
 			ImageData data = loader.load(jpg.jpegFileContents())[0];
 			return new Image(null, data.scaledTo(32, 32));
 		}
+	}
+
+	private Contact selectedContact() {
+		ISelection selection = _treeViewer.getSelection();
+		Contact contact = (Contact)((IStructuredSelection)selection).getFirstElement();
+		return contact;
 	}
 	
 	class ContactsTreeContentProvider implements IStructuredContentProvider, 
@@ -253,9 +260,8 @@ public class ContactsView extends ViewPart {
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
-		manager.add(_addContactAction);
+		manager.add(_removeContactAction);
 		manager.add(new Separator());
-		manager.add(_personalInfoAction);
 		_drillDownAdapter.addNavigationActions(manager);
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
@@ -278,6 +284,17 @@ public class ContactsView extends ViewPart {
 		_addContactAction.setToolTipText("Give a nickname to a sovereign contact.");
 		_addContactAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
 			getImageDescriptor(ISharedImages.IMG_OBJ_ELEMENT));
+
+		_removeContactAction = new Action() {
+			public void run() {
+				sneer().removeContact(selectedContact().nickname());
+				
+			}
+		};
+		_removeContactAction.setText("Remove Contact");
+		_removeContactAction.setToolTipText("Remove selected contact.");
+		_removeContactAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
+			getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
 		
 		_personalInfoAction = new Action() {
 			public void run() {
@@ -290,11 +307,11 @@ public class ContactsView extends ViewPart {
 				getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
 		_doubleClickAction = new Action() {
 			public void run() {
-				ISelection selection = _treeViewer.getSelection();
-				Contact contact = (Contact)((IStructuredSelection)selection).getFirstElement();
+				Contact contact = selectedContact();
 				if (contact == null) return; //The tree view node might have been closed.
 				sneer().sendPublicMessage(); //TODO: Make this a private message to the chosen contact.
 			}
+
 		};
 	}
 

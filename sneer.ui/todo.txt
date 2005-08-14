@@ -2,10 +2,6 @@
 
 TODO:
 
-Remove contacts.
-
-Milestone: Sneer is Usable -------------------------
-
 Contact Info and Profile
 
 Large photographs
@@ -15,6 +11,10 @@ Notifications
 	Level 2 contact "WhatsHisNickname>Nickname" is now sovereign
 
 Server Port - Allow change. MUST WORK WITHOUT RESTART.  ;)
+
+Contact removal only level one
+
+Fix: Level one changes are not properly reflected when any element is expanded
 
 Milestone: Sneer is Presentable -------------------------
 

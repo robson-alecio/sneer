@@ -4,28 +4,23 @@
 package sneer;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Properties;
 import java.util.Set;
-import java.util.Map.Entry;
 
+import org.prevayler.Prevayler;
+import org.prevayler.PrevaylerFactory;
 import org.prevayler.foundation.Cool;
 import org.prevayler.foundation.network.OldNetwork;
 
 import sneer.life.Life;
-import sneer.life.LifeImpl;
 import sneer.life.LifeView;
-import sneer.remote.Connection;
 import sneer.remote.ParallelServer;
 
 public class Sneer {
 	
-	static final int DEFAULT_PORT = 5905;
+	private static final String SNEER_DIRECTORY = System.getProperty("user.home") + File.separator + ".sneer";
 
 	public interface User {
 		String confirmName(String currentName);
@@ -44,91 +39,54 @@ public class Sneer {
 	
 	private final Life _life;
 	private final User _user;
-	private final OldNetwork _network;
 	private Set<String> _knownMessages = new HashSet<String>();
+
+	private final Prevayler _prevayler;
+
 	private ParallelServer _server;
+	private final OldNetwork _network;
+
+	private Home _home;
+
 
 	public Sneer(User user, OldNetwork network) throws IOException {
 		if (null == user) throw new IllegalArgumentException();
 		_user = user;
 		_network = network;
-		_life = new LifeImpl(confirmName());
 
-		restoreContacts();
-		restorePersonalInfo();
+		Home._network = _network; //FIXME: Remove this static dependency. Transaction journal should be recoverable regardless of the network.
+		
+		_prevayler = prevayler();
+		_home = (Home)_prevayler.prevalentSystem();
+
+		if (_home.life() == null) getALife(); 
+		_life = _home.life();
+
 		
 		startUserNotificationDaemon();
 		startServer();
 	}
 
-	private void restorePersonalInfo() {
-		String thoughtOfTheDay = loadMainProperty("thoughtOfTheDay", "");
-		_life.thoughtOfTheDay(thoughtOfTheDay);
+	private Prevayler prevayler() throws IOException {
+		try {
+			return PrevaylerFactory.createPrevayler(new Home(), SNEER_DIRECTORY);
+		} catch (ClassNotFoundException e) {
+			throw new IOException("Class not found: " + e.getMessage());
+		}
 	}
 
-	private String confirmName() throws IOException {
-		String name = loadMainProperty("name", "Sneer User");
-		name = _user.confirmName(name);
-		storeMainProperty("name", name);
-		return name;
-	}	
-
-	private void restoreContacts() {
-		Properties p = loadProperties(nicknamesFile());
-
-		for (Entry entry : p.entrySet()) {
-			String nickname = (String)entry.getKey();
-			String tcpAddress = (String)entry.getValue();
-			addContact(nickname, tcpAddress);
-		}
+	private void getALife() {
+		_prevayler.execute(new Birth(_user));
 	}
 
 	private void startServer() {
 		try {
-			_server = new ParallelServer(_life, _network.openObjectServerSocket(serverPort()));
+			_server = new ParallelServer(_life, _network.openObjectServerSocket(_home.serverPort()));
 		} catch (IOException e) {
 			_user.lamentException(e);
 		}
 	}
 
-	private int serverPort() throws IOException {
-		int port = Integer.parseInt(loadMainProperty("serverPort", Integer.toString(DEFAULT_PORT)));
-		port = _user.confirmServerPort(port);
-
-		storeMainProperty("serverPort", Integer.toString(port));
-		
-		return port;
-	}
-
-	private void storeMainProperty(String key, String value) throws IOException {
-		Properties p = loadProperties(mainPropertiesFile());
-		p.setProperty(key, value);
-		p.store(new FileOutputStream(mainPropertiesFile()), "");
-	}
-
-	private String loadMainProperty(String key, String defaultValue) {
-		Properties p = loadProperties(mainPropertiesFile());
-		return p.getProperty(key, defaultValue);
-	}
-
-	private Properties loadProperties(File propertiesFile) {
-		Properties p = new Properties();
-		try {
-			p.load(new FileInputStream(propertiesFile));
-		} catch (FileNotFoundException ignored) {
-		} catch (IOException e) {
-			_user.lamentException(e);
-		}
-		return p;
-	}
-
-	static File mainPropertiesFile() {
-		return new File(homeDirectory(), ".sneer");
-	}
-
-	private static String homeDirectory() {
-		return System.getProperty("user.home");
-	}
 
 	private void startUserNotificationDaemon() {
 		Cool.startDaemon(new Runnable() {
@@ -146,61 +104,14 @@ public class Sneer {
 	}
 
 	public void addContact() {
-		String nickname = _user.giveNickname();
-		String tcpAddress = _user.informTcpAddress("localhost:" + DEFAULT_PORT);
-		Properties p1 = new Properties();
-		try {
-			p1.load(new FileInputStream(nicknamesFile()));
-		} catch (FileNotFoundException ignored) {
-		} catch (IOException e1) {
-			_user.lamentException(e1);
-		}
-		
-		Properties p = p1;
-		
-		p.setProperty(nickname, tcpAddress);
-		try {
-			p.store(new FileOutputStream(nicknamesFile()), "");
-		} catch (IOException e) {
-			_user.lamentException(e);
-			return;
-		}
-
-		addContact(nickname, tcpAddress);
-	}
-
-	static File nicknamesFile() {
-		return new File(homeDirectory(), ".sneernicknames");
-	}
-
-	private void addContact(String nickname, String tcpAddress) {
-		_life.giveSomebodyANickname(remoteContact(tcpAddress), nickname);
+		_prevayler.execute(new ContactAddition(_user));
 		_user.lookAtMe();
 	}
-	
+
 	public void editPersonalInfo() {
-		String thoughtOfTheDay = loadMainProperty("thoughtOfTheDay", _life.thoughtOfTheDay());
-		thoughtOfTheDay = _user.thoughtOfTheDay(thoughtOfTheDay);
-
-		try {
-			storeMainProperty("thoughtOfTheDay", thoughtOfTheDay);
-		} catch (IOException e) {
-			_user.lamentException(e);
-			return;
-		}
-		_life.thoughtOfTheDay(thoughtOfTheDay);
+		_prevayler.execute(new PersonalInfoEditting(_user, _life));
 	}
 
-	private LifeView remoteContact(String tcpAddress) {
-		String[] addressParts = tcpAddress.split(":");
-		String ipAddress = addressParts[0];
-		int port = DEFAULT_PORT;
-		if (addressParts.length > 1) {
-			port = Integer.parseInt(addressParts[1]);
-		}
-		Connection connection = new Connection(_network, ipAddress, port); //TODO: Refactor this. Consider hiding Connection inside LifeViewProxy.
-		return connection.lifeView();
-	}
 
 	public void sendPublicMessage() {
 		String message = _user.writePublicMessage();

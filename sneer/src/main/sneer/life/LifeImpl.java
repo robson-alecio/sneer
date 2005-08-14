@@ -4,10 +4,17 @@
 
 package sneer.life;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
-public class LifeImpl implements Life {
+public class LifeImpl implements Life, Serializable {
 
 	private String _name;
 	private String _thoughtOfTheDay;
@@ -61,7 +68,7 @@ public class LifeImpl implements Life {
 	}
 
 	public LifeView contact(String nickname) {
-		return (LifeView)_contactsByNickname.get(nickname);
+		return _contactsByNickname.get(nickname);
 	}
 
 
@@ -92,5 +99,7 @@ public class LifeImpl implements Life {
 	public Date lastSightingDate() {
 		return new Date(); //A local LifeView is always up-to-date.
 	}
+
+	private static final long serialVersionUID = 1L;
 
 }

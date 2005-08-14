@@ -1,6 +1,7 @@
 package sneer.remote;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,9 +12,9 @@ import org.prevayler.foundation.Cool;
 
 import sneer.life.LifeView;
 
-class LifeViewProxy implements LifeView {
+class LifeViewProxy implements LifeView, Serializable {
 
-	private final QueryExecuter _queryExecuter;
+	transient private final QueryExecuter _queryExecuter;
 	private Date _lastSightingDate;
 	private Map<String, LifeView> _contactCache = new HashMap<String, LifeView>();
 	private LifeSighting _cache;
@@ -90,5 +91,7 @@ class LifeViewProxy implements LifeView {
 	public Date lastSightingDate() {
         return _lastSightingDate;
 	}
+
+	private static final long serialVersionUID = 1L;
 
 }

@@ -10,14 +10,6 @@ import sneer.Sneer.User;
 
 public class SneerTestCase extends MockObjectTestCase {
 	
-	@Override
-	public void setUp(){
-		
-		Sneer.mainPropertiesFile().delete();
-		Sneer.nicknamesFile().delete();
-		
-	}
-	
 	public void testPersistence() throws IOException {
 		
 		Mock mocker = mock(User.class);
@@ -28,7 +20,7 @@ public class SneerTestCase extends MockObjectTestCase {
 		mocker.expects(once()).method("confirmName")
 			.will(returnValue("Neide da Silva"));
 		mocker.expects(once()).method("confirmServerPort")
-			.with(eq(Sneer.DEFAULT_PORT))
+			.with(eq(Home.DEFAULT_PORT))
 			.will(returnValue(4242));
 		mocker.expects(once()).method("thoughtOfTheDay")
 			.will(returnValue("Las llamas son majores que las ranas!"));

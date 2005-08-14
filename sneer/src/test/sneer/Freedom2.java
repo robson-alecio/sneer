@@ -26,6 +26,7 @@ public class Freedom2 extends Freedom1 {
 	protected OldNetwork _ipNetwork;
 
 	
+	@Override
 	public void setUp() throws Exception {
 		super.setUp();
 		//_ipNetwork = new OldNetworkImpl();

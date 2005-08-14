@@ -13,6 +13,7 @@ public class Freedom1 extends TestCase {
 
 	protected Life _me;
 
+	@Override
 	public void setUp() throws Exception {
 		getALife();
 	}

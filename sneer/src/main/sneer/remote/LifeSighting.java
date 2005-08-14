@@ -62,6 +62,7 @@ class LifeSighting implements LifeView, Serializable {
 	}
 
 	public List<String> messagesSentTo(String contact) {
+		contact.toString();
 		throw new RuntimeException("To be implemented");
 	}
 

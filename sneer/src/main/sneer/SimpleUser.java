@@ -3,7 +3,10 @@
 
 package sneer;
 
+import java.io.IOException;
+
 import sneer.Sneer.User;
+import sneer.life.JpgImage;
 
 public abstract class SimpleUser implements User {
 
@@ -44,6 +47,19 @@ public abstract class SimpleUser implements User {
 		return answer("What is your contact's address? host:port", defaultAddress);
 	}
 
+	public JpgImage confirmPicture(JpgImage picture) {
+		if (!confirm("Do you want to change your picture?")) return picture;
+
+		String path = answer("File path to your new picture:", "");
+		
+		try {
+			return new JpgImage(path);
+		} catch (IOException e) {
+			lamentException(e);
+			return picture;
+		}
+	}
+	
 	public void lamentException(Exception e) {
 		e.printStackTrace();
 		lamentError(e.toString());
@@ -54,6 +70,8 @@ public abstract class SimpleUser implements User {
 	}
 	
 	abstract protected String answer(String prompt, String defaultAnswer);
+
+	abstract protected boolean confirm(String proposition);
 
 	abstract protected void lamentError(String message);
 

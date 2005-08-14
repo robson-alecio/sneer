@@ -14,6 +14,7 @@ import org.prevayler.PrevaylerFactory;
 import org.prevayler.foundation.Cool;
 import org.prevayler.foundation.network.OldNetwork;
 
+import sneer.life.JpgImage;
 import sneer.life.Life;
 import sneer.life.LifeView;
 import sneer.remote.ParallelServer;
@@ -24,17 +25,20 @@ public class Sneer {
 
 	public interface User {
 		String confirmName(String currentName);
-		int confirmServerPort(int currentPort);
 		String thoughtOfTheDay(String currentThought);
+		JpgImage confirmPicture(JpgImage image);
+
+		String writePublicMessage();
 		
 		String giveNickname();
 		String informTcpAddress(String defaultAddress);
 
-		void lookAtMe();
-
 		void lamentException(Exception e);
 		void acknowledge(String fact);
-		String writePublicMessage();
+
+		int confirmServerPort(int currentPort);
+
+		void lookAtMe();
 	}
 	
 	private final Life _life;

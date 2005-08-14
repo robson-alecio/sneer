@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.prevayler.foundation.Cool;
 
+import sneer.life.JpgImage;
 import sneer.life.LifeView;
 
 class LifeViewProxy implements LifeView, Serializable {
@@ -88,10 +89,15 @@ class LifeViewProxy implements LifeView, Serializable {
 		return _cache.publicMessages();
 	}
 
+	public JpgImage picture() {
+		return _cache.picture();
+	}
+
 	public Date lastSightingDate() {
         return _lastSightingDate;
 	}
 
 	private static final long serialVersionUID = 1L;
+
 
 }

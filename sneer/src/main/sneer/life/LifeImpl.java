@@ -18,11 +18,12 @@ public class LifeImpl implements Life, Serializable {
 
 	private String _name;
 	private String _thoughtOfTheDay;
+	private JpgImage _picture;
+
+	private String _profile;
+    private String _contactInfo;
 
 	private final Map<String, LifeView> _contactsByNickname = new HashMap<String, LifeView>();
-
-    private String _profile;
-    private String _contactInfo;
 
     private final List<String> _publicMessages = new ArrayList<String>();
 
@@ -100,6 +101,14 @@ public class LifeImpl implements Life, Serializable {
 		return new Date(); //A local LifeView is always up-to-date.
 	}
 
+	public JpgImage picture() {
+		return _picture;
+	}
+
+	public void picture(JpgImage picture) {
+		_picture = picture;
+	}
+	
 	private static final long serialVersionUID = 1L;
 
 }

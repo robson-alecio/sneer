@@ -8,6 +8,7 @@ public interface Life extends LifeView {
 
 	public void name(String newName);
 	public void thoughtOfTheDay(String newName);
+	public void picture(JpgImage _picture);
 
 	public void giveSomebodyANickname(LifeView somebody, String nickname);
 	public void changeNickname(String oldNickname, String newNickname);

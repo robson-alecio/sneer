@@ -11,6 +11,7 @@ public interface LifeView extends View {
 
 	public String name();
 	public String thoughtOfTheDay();
+	public JpgImage picture();
 	
 	public Set<String> nicknames();
 	public LifeView contact(String nickname);
@@ -21,4 +22,5 @@ public interface LifeView extends View {
 	public List<String> publicMessages();
 	
 	public static final	ThreadLocal<String> CALLING_NICKNAME = new ThreadLocal<String>();
+
 }

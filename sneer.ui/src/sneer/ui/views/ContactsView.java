@@ -325,7 +325,6 @@ public class ContactsView extends ViewPart {
 		UIJob job = new UIJob("Contact refresh") {
 			public IStatus runInUIThread(IProgressMonitor monitor) {
 				try {
-					//_treeViewer.refresh();
 					refreshTree();
 					sneer().checkNewMessages();
 				} catch (RuntimeException e) {
@@ -339,7 +338,7 @@ public class ContactsView extends ViewPart {
 		job.schedule();
 	}
 
-	protected void refreshTree() {		
+	protected void refreshTree() {
 		Object[] elements = _treeViewer.getVisibleExpandedElements();
 		if (elements.length == 0) {
 			_treeViewer.refresh();

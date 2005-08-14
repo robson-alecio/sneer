@@ -11,9 +11,9 @@ public class ContactAddition implements Transaction {
 	private final String _nickname;
 	private final String _tcpAddress;
 	
-	public ContactAddition(User _user) {
-		_nickname = _user.giveNickname();
-		_tcpAddress = _user.informTcpAddress("localhost:" + Home.DEFAULT_PORT);
+	public ContactAddition(User user) {
+		_nickname = user.giveNickname();
+		_tcpAddress = user.informTcpAddress("localhost:" + Home.DEFAULT_PORT);
 	}
 
 	public void executeOn(Object home, Date ignored) {

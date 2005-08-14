@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
+import org.prevayler.Transaction;
 import org.prevayler.foundation.Cool;
 import org.prevayler.foundation.network.OldNetwork;
 
@@ -80,7 +81,12 @@ public class Sneer {
 	}
 
 	private void getALife() {
-		_prevayler.execute(new Birth(_user));
+		execute(new Birth(_user));
+	}
+
+	private void execute(Transaction transaction) {
+		_prevayler.execute(transaction);
+		_user.lookAtMe();
 	}
 
 	private void startServer() {
@@ -108,12 +114,15 @@ public class Sneer {
 	}
 
 	public void addContact() {
-		_prevayler.execute(new ContactAddition(_user));
-		_user.lookAtMe();
+		execute(new ContactAddition(_user));
+	}
+
+	public void removeContact(String nickname) {
+		execute(new ContactRemoval(nickname));
 	}
 
 	public void editPersonalInfo() {
-		_prevayler.execute(new PersonalInfoEditting(_user, _life));
+		execute(new PersonalInfoEditting(_user, _life));
 	}
 
 
@@ -146,4 +155,5 @@ public class Sneer {
 		}
 		
 	}
+
 }

@@ -6,9 +6,7 @@ Contact Info and Profile
 
 Large photographs
 
-Notifications
-	Level 1 contact "WhatsHisNickname" is online
-	Level 2 contact "WhatsHisNickname>Nickname" is now sovereign
+Notifications -	Level 2 contact "WhatsHisNickname>Nickname" is now sovereign
 
 Server Port - Allow change. MUST WORK WITHOUT RESTART.  ;)
 
@@ -28,6 +26,8 @@ Top Ten plugin
   - File Rating for ED2K links (Sharereactor-like)
 
 Trust Metric
+
+Consider XML-RPC
 
 Disk sharing
   - Simple file replication

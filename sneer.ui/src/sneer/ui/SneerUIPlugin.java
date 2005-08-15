@@ -3,6 +3,7 @@
 
 package sneer.ui;
 
+import java.io.File;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -42,7 +43,7 @@ public class SneerUIPlugin extends AbstractUIPlugin {
 		
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		_user = new EclipseSneerUser(shell);
-		_sneer = new Sneer(_user, new OldNetworkImpl());
+		_sneer = new Sneer(_user, new OldNetworkImpl(), System.getProperty("user.home") + File.separator + ".sneer");
 	}
 
 	/**

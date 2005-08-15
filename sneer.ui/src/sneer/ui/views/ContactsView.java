@@ -4,6 +4,7 @@
 package sneer.ui.views;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -47,35 +48,42 @@ import sneer.ui.SneerUIPlugin;
 
 
 public class ContactsView extends ViewPart {
+
+	private static final Image YELLOW_EXCLAMATION_MARK = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_WARN_TSK);
+	private static final Image DEFAULT_IMAGE = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
+
 	private TreeViewer _treeViewer;
 	private DrillDownAdapter _drillDownAdapter;
 	private Action _addContactAction;
 	private Action _removeContactAction;
 	private Action _personalInfoAction;
 	private Action _doubleClickAction;
+	
+	private Set<String> _onlineContacts = new HashSet<String>();
+	private long _startupTime = 0;
 
-	static class Contact {
-		
-		private static final Image YELLOW_EXCLAMATION_MARK = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_WARN_TSK);
-		private static final Image DEFAULT_IMAGE = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
+	class GuiContact {
 
 		final private String _nickname;
 		final private LifeView _lifeView;
 
 		private Image _image;
+		private final int _level;
 		
-		Contact(LifeView lifeView) {
-			this("me", lifeView);
+		
+		GuiContact(LifeView lifeView) {
+			this("me", lifeView, 0);
 		}
 		
-		Contact(String nickname, Contact parent) {
-			this(nickname, parent._lifeView.contact(nickname));
+		GuiContact(String nickname, GuiContact parent) {
+			this(nickname, parent._lifeView.contact(nickname), parent._level + 1);
 		}
 		
-		private Contact(String nickname, LifeView lifeView) {
+		private GuiContact(String nickname, LifeView lifeView, int level) {
 			lifeView.toString();			
 			_nickname = nickname;
 			_lifeView = lifeView;
+			_level = level;
 		}
 		
 		String nickname() {
@@ -87,20 +95,41 @@ public class ContactsView extends ViewPart {
 		}
 
 		public boolean isOnline() {
+			boolean isOnline = calculateOnline();
+			notifyOnline(isOnline);
+			return isOnline;
+		}
+
+		private void notifyOnline(boolean isOnline) {
+			if (_level != 1) return;
+
+			boolean wasOnline = _onlineContacts.contains(_nickname);
+			if (!isOnline) {
+				_onlineContacts.remove(_nickname);
+				return;
+			}
+			_onlineContacts.add(_nickname);
+
+			if (wasOnline) return;
+			if (System.currentTimeMillis() - startupTime() < 1000 * 30) return;
+			sneer().acknowledgeContactOnline(_nickname);
+		}
+
+		private boolean calculateOnline() {
 			Date lastSighting = _lifeView.lastSightingDate();
 			if (lastSighting == null) return false;
-			return System.currentTimeMillis() - lastSighting.getTime() < 1000 * 10;
+			return System.currentTimeMillis() - lastSighting.getTime() < 1000 * 60;
 		}
 		
-		public Contact[] contacts() {
-			if (!isOnline()) return new Contact[0];
+		public GuiContact[] contacts() {
+			if (!isOnline()) return new GuiContact[0];
 			
 			Set<String> nicknames = _lifeView.nicknames();
 			
-			Contact[] contacts = new Contact[nicknames.size()];
+			GuiContact[] contacts = new GuiContact[nicknames.size()];
 			int i = 0;
 			for (String nickname : nicknames) {
-				contacts[i++] = new Contact(nickname, this);
+				contacts[i++] = new GuiContact(nickname, this);
 			}
 			return contacts;
 		}
@@ -112,8 +141,8 @@ public class ContactsView extends ViewPart {
 		
 		@Override
 		public boolean equals(Object other) {
-			return other instanceof Contact
-				? _lifeView.equals(((Contact)other)._lifeView)
+			return other instanceof GuiContact
+				? _lifeView.equals(((GuiContact)other)._lifeView)
 				: false;
 		}
 
@@ -137,12 +166,17 @@ public class ContactsView extends ViewPart {
 		}
 	}
 
-	private Contact selectedContact() {
+	private GuiContact selectedContact() {
 		ISelection selection = _treeViewer.getSelection();
-		Contact contact = (Contact)((IStructuredSelection)selection).getFirstElement();
+		GuiContact contact = (GuiContact)((IStructuredSelection)selection).getFirstElement();
 		return contact;
 	}
 	
+	private long startupTime() {
+		if (_startupTime == 0) _startupTime = System.currentTimeMillis();
+		return _startupTime;
+	}
+
 	class ContactsTreeContentProvider implements IStructuredContentProvider, 
 										   ITreeContentProvider {
 
@@ -154,7 +188,7 @@ public class ContactsView extends ViewPart {
 		
 		public Object[] getElements(Object parent) {
 			if (parent.equals(getViewSite())) {
-				Contact me = new Contact(life());
+				GuiContact me = new GuiContact(life());
 				return me.contacts();
 			}
 			return getChildren(parent);
@@ -165,24 +199,24 @@ public class ContactsView extends ViewPart {
 		}
 		
 		public Object[] getChildren(Object parent) {
-			return ((Contact)parent).contacts();
+			return ((GuiContact)parent).contacts();
 		}
 		
 		public boolean hasChildren(Object parent) {
-			return ((Contact)parent).isOnline();
+			return ((GuiContact)parent).isOnline();
 		}
 	}
 	
 	class ContactsTreeLabelProvider extends LabelProvider {
 
 		public String getText(Object obj) {
-			Contact contact = (Contact)obj;
+			GuiContact contact = (GuiContact)obj;
 			return contact.isOnline()
 				? onlineLabel(contact)
 				: contact.nickname();
 		}
 		
-		private String onlineLabel(Contact contact) {
+		private String onlineLabel(GuiContact contact) {
 			//nickname (Full Name) - Thought of the day
 			String result = contact.nickname() + " (" + contact.lifeView().name() + ")";
 			
@@ -193,7 +227,7 @@ public class ContactsView extends ViewPart {
 		}
 		
 		public Image getImage(Object obj) {
-			return ((Contact)obj).image();
+			return ((GuiContact)obj).image();
 		}
 
 	}
@@ -307,7 +341,7 @@ public class ContactsView extends ViewPart {
 				getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
 		_doubleClickAction = new Action() {
 			public void run() {
-				Contact contact = selectedContact();
+				GuiContact contact = selectedContact();
 				if (contact == null) return; //The tree view node might have been closed.
 				sneer().sendPublicMessage(); //TODO: Make this a private message to the chosen contact.
 			}

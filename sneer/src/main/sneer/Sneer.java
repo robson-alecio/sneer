@@ -3,7 +3,6 @@
 
 package sneer;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
@@ -22,8 +21,6 @@ import sneer.remote.ParallelServer;
 
 public class Sneer {
 	
-	private static final String SNEER_DIRECTORY = System.getProperty("user.home") + File.separator + ".sneer";
-
 	public interface User {
 		String confirmName(String currentName);
 		String thoughtOfTheDay(String currentThought);
@@ -54,14 +51,13 @@ public class Sneer {
 	private Home _home;
 
 
-	public Sneer(User user, OldNetwork network) throws IOException {
+	public Sneer(User user, OldNetwork network, String directory) throws IOException {
 		if (null == user) throw new IllegalArgumentException();
 		_user = user;
 		_network = network;
 
 		Home._network = _network; //FIXME: Remove this static dependency. Transaction journal should be recoverable regardless of the network.
-		
-		_prevayler = prevayler();
+		_prevayler = prevayler(directory);
 		_home = (Home)_prevayler.prevalentSystem();
 
 		if (_home.life() == null) getALife(); 
@@ -72,9 +68,9 @@ public class Sneer {
 		startServer();
 	}
 
-	private Prevayler prevayler() throws IOException {
+	private Prevayler prevayler(String directory) throws IOException {
 		try {
-			return PrevaylerFactory.createPrevayler(new Home(), SNEER_DIRECTORY);
+			return PrevaylerFactory.createPrevayler(new Home(), directory);
 		} catch (ClassNotFoundException e) {
 			throw new IOException("Class not found: " + e.getMessage());
 		}
@@ -114,7 +110,12 @@ public class Sneer {
 	}
 
 	public void addContact() {
-		execute(new ContactAddition(_user));
+		executeWizard(new ContactAddition(_user));
+	}
+
+	private void executeWizard(ContactAddition addition) {
+		if (addition.cancelled()) return;
+		execute(addition);
 	}
 
 	public void removeContact(String nickname) {
@@ -154,6 +155,10 @@ public class Sneer {
 			_user.acknowledge("Message sent from " + sender + ":\n\n" + message);
 		}
 		
+	}
+
+	public void acknowledgeContactOnline(String nickname) {
+		_user.acknowledge(nickname + " has come online.");
 	}
 
 }

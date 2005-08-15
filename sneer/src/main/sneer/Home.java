@@ -33,17 +33,11 @@ public class Home implements Serializable {
 		return _serverPort;
 	}
 	
-	void addContact(String nickname, String tcpAddress) {
-		_life.giveSomebodyANickname(remoteContact(tcpAddress), nickname);
+	void addContact(String nickname, String ipAddress, int port) {
+		_life.giveSomebodyANickname(remoteContact(ipAddress, port), nickname);
 	}
 
-	private LifeView remoteContact(String tcpAddress) {
-		String[] addressParts = tcpAddress.split(":");
-		String ipAddress = addressParts[0];
-		int port = Home.DEFAULT_PORT;
-		if (addressParts.length > 1) {
-			port = Integer.parseInt(addressParts[1]);
-		}
+	private LifeView remoteContact(String ipAddress, int port) {
 		Connection connection = new Connection(_network, ipAddress, port); //TODO: Refactor this. Consider hiding Connection inside LifeViewProxy.
 		return connection.lifeView();
 	}

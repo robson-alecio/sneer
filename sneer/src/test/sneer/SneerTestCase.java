@@ -10,6 +10,13 @@ import sneer.Sneer.User;
 
 public class SneerTestCase extends MockObjectTestCase {
 	
+	private String _testDirectory;
+
+	@Override
+	protected void setUp() {
+		_testDirectory = "testdirectory" + System.nanoTime();
+	}
+	
 	public void testPersistence() throws IOException {
 		
 		Mock mocker = mock(User.class);
@@ -22,19 +29,16 @@ public class SneerTestCase extends MockObjectTestCase {
 		mocker.expects(once()).method("confirmServerPort")
 			.with(eq(Home.DEFAULT_PORT))
 			.will(returnValue(4242));
+		Sneer sneer = new Sneer(user, new NetworkMock(), _testDirectory);
+
+		mocker.expects(once()).method("confirmName")
+			.will(returnValue("Neide da Silva"));
 		mocker.expects(once()).method("thoughtOfTheDay")
 			.will(returnValue("Las llamas son majores que las ranas!"));
+		mocker.stubs().method("confirmPicture");
+		sneer.editPersonalInfo();		
 		
-		new Sneer(user, new NetworkMock()).editPersonalInfo();		
-		
-		mocker.expects(once()).method("confirmName")
-			.with(eq("Neide da Silva"))
-			.will(returnValue("ignored"));
-		mocker.expects(once()).method("confirmServerPort")
-			.with(eq(4242))
-			.will(returnValue(4242));
-
-		Sneer sneer = new Sneer(user, new NetworkMock());
+		sneer = new Sneer(user, new NetworkMock(), _testDirectory);
 		assertEquals("Las llamas son majores que las ranas!", sneer.life().thoughtOfTheDay()); 
 	}
 
@@ -49,7 +53,7 @@ public class SneerTestCase extends MockObjectTestCase {
 		mocker.stubs().method("confirmServerPort")
 			.will(returnValue(4242));
 		
-		Sneer sneer = new Sneer(user, new NetworkMock());		
+		Sneer sneer = new Sneer(user, new NetworkMock(), _testDirectory);		
 		
 		mocker.expects(once()).method("giveNickname")
 			.will(returnValue("fefe"));
@@ -66,10 +70,9 @@ public class SneerTestCase extends MockObjectTestCase {
 		assertTrue(sneer.life().nicknames().contains("fefe"));
 		assertTrue(sneer.life().nicknames().contains("bamboo"));
 
-		sneer = new Sneer(user, new NetworkMock());		
+		sneer = new Sneer(user, new NetworkMock(), _testDirectory);		
 		assertTrue(sneer.life().nicknames().contains("fefe"));
 		assertTrue(sneer.life().nicknames().contains("bamboo"));
 	}
-	
 	
 }

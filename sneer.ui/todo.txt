@@ -2,12 +2,14 @@
 
 TODO:
 
-Refactor: Move Contact to Sneer (facade). Make GUI truly only a skin.
+XML - XStream serialization on the wire
 
 Profile
   - Profile Info
   - Contact Info
-  - Large photographs
+  - Large photograph
+
+Refactor: Move Contact to Sneer (facade). Make GUI truly only a skin.
 
 Notifications -	Level 2 contact "WhatsHisNickname>Nickname" is now sovereign
 
@@ -29,6 +31,9 @@ Top Ten plugin
   - File Rating for ED2K links (Sharereactor-like)
 
 Trust Metric
+
+Photograph sharing.
+
 
 Consider XML-RPC
 

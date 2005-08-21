@@ -18,6 +18,9 @@ import sneer.life.JpgImage;
 import sneer.life.Life;
 import sneer.life.LifeView;
 import sneer.remote.ParallelServer;
+import sneer.remote.xstream.XStreamNetwork;
+
+import com.thoughtworks.xstream.XStream;
 
 public class Sneer {
 	
@@ -54,7 +57,7 @@ public class Sneer {
 	public Sneer(User user, OldNetwork network, String directory) throws IOException {
 		if (null == user) throw new IllegalArgumentException();
 		_user = user;
-		_network = network;
+		_network = new XStreamNetwork(new XStream(), network);
 
 		Home._network = _network; //FIXME: Remove this static dependency. Transaction journal should be recoverable regardless of the network.
 		_prevayler = prevayler(directory);

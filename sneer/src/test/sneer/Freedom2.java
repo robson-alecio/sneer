@@ -15,6 +15,9 @@ import sneer.life.LifeImpl;
 import sneer.life.LifeView;
 import sneer.remote.Connection;
 import sneer.remote.ParallelServer;
+import sneer.remote.xstream.XStreamNetwork;
+
+import com.thoughtworks.xstream.XStream;
 
 
 public class Freedom2 extends Freedom1 {
@@ -29,13 +32,16 @@ public class Freedom2 extends Freedom1 {
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		//_ipNetwork = new OldNetworkImpl();
-		_ipNetwork = new NetworkMock();
-		new ParallelServer(_me, _ipNetwork.openObjectServerSocket(7000));
+		_ipNetwork = new XStreamNetwork(new XStream(), new NetworkMock());
+		startServer(_me, 7000);
 
 		helpFriendsAchieveSovereignty();
 		
 		LifeView.CALLING_NICKNAME.set(null);
+	}
+
+	private void startServer(Life life, int port) throws IOException {
+		new ParallelServer(life, _ipNetwork.openObjectServerSocket(port));
 	}
 
     public void testNicknames() throws Exception {
@@ -86,9 +92,9 @@ public class Freedom2 extends Freedom1 {
 	}
 
 	private Life newSovereignFriend(String name, int port) throws Exception {
-        Life result = new LifeImpl(name);
-		new ParallelServer(result, _ipNetwork.openObjectServerSocket(port));
-		return result;
+        Life friend = new LifeImpl(name);
+        startServer(friend, port);
+		return friend;
     }
 
 	private LifeView lifeClient(int port) throws IOException {

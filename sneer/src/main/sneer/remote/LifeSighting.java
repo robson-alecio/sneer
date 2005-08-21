@@ -1,6 +1,5 @@
 package sneer.remote;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -8,7 +7,7 @@ import java.util.Set;
 import sneer.life.JpgImage;
 import sneer.life.LifeView;
 
-class LifeSighting implements LifeView, Serializable {
+class LifeSighting implements LifeView {
 
 	private final String _name;
 	private final String _thoughtOfTheDay;
@@ -23,8 +22,9 @@ class LifeSighting implements LifeView, Serializable {
 
 	private final Date _creation;
 
+	
 	public LifeSighting(LifeView lifeView) {
-		if (lifeView.lastSightingDate() == null) {
+		if (lifeView == null || lifeView.lastSightingDate() == null) {
 			_name = null;
 			_thoughtOfTheDay = null;
 			_picture = null;
@@ -86,6 +86,8 @@ class LifeSighting implements LifeView, Serializable {
 		return _picture;
 	}
 
-	private static final long serialVersionUID = 1L;
+	private LifeSighting() {  //Required by XStream to run on JVMs other than Sun's.
+		this(null);
+	}
 
 }

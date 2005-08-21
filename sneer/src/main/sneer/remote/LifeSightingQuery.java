@@ -8,6 +8,6 @@ class LifeSightingQuery implements Query<LifeSighting> {
 		return new LifeSighting(lifeView);
 	}
 
-	private static final long serialVersionUID = 1L;
+	LifeSightingQuery() {}  //Required by XStream to run on JVMs other than Sun's.
 
 }

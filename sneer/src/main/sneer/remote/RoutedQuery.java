@@ -8,10 +8,8 @@ import sneer.life.LifeView;
 
 public class RoutedQuery<T> implements Query<T> {
 	
-	private static final long serialVersionUID = 1L;
-
-	private String _nickname;
-	private Query<T> _delegate;
+	private final String _nickname;
+	private final Query<T> _delegate;
 
 	public RoutedQuery(String nickname, Query<T> query) {
 		_nickname = nickname;
@@ -23,6 +21,11 @@ public class RoutedQuery<T> implements Query<T> {
 		if (destination == null)
 		    return null;
         return _delegate.executeOn(destination);
+	}
+
+	private RoutedQuery() {  //Required by XStream to run on JVMs other than Sun's.
+		_nickname = null;
+		_delegate = null;
 	}
 
 }

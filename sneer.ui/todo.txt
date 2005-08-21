@@ -2,9 +2,14 @@
 
 TODO:
 
-Contact Info and Profile
+GUI treeview root is me
 
-Large photographs
+Refactor: Move Contact to Sneer (facade). Make GUI truly only a skin.
+
+Profile
+  - Profile Info
+  - Contact Info
+  - Large photographs
 
 Notifications -	Level 2 contact "WhatsHisNickname>Nickname" is now sovereign
 

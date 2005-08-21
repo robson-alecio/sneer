@@ -2,8 +2,6 @@
 
 TODO:
 
-GUI treeview root is me
-
 Refactor: Move Contact to Sneer (facade). Make GUI truly only a skin.
 
 Profile

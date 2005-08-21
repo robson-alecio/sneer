@@ -68,22 +68,22 @@ public class ContactsView extends ViewPart {
 		final private LifeView _lifeView;
 
 		private Image _image;
-		private final int _level;
+		private final int _distance;
 		
 		
 		GuiContact(LifeView lifeView) {
-			this("me", lifeView, 0);
+			this("Me", lifeView, 0);
 		}
 		
 		GuiContact(String nickname, GuiContact parent) {
-			this(nickname, parent._lifeView.contact(nickname), parent._level + 1);
+			this(nickname, parent._lifeView.contact(nickname), parent._distance + 1);
 		}
 		
-		private GuiContact(String nickname, LifeView lifeView, int level) {
+		private GuiContact(String nickname, LifeView lifeView, int distance) {
 			lifeView.toString();			
 			_nickname = nickname;
 			_lifeView = lifeView;
-			_level = level;
+			_distance = distance;
 		}
 		
 		String nickname() {
@@ -101,7 +101,7 @@ public class ContactsView extends ViewPart {
 		}
 
 		private void notifyOnline(boolean isOnline) {
-			if (_level != 1) return;
+			if (_distance != 1) return;
 
 			boolean wasOnline = _onlineContacts.contains(_nickname);
 			if (!isOnline) {
@@ -111,8 +111,13 @@ public class ContactsView extends ViewPart {
 			_onlineContacts.add(_nickname);
 
 			if (wasOnline) return;
-			if (System.currentTimeMillis() - startupTime() < 1000 * 30) return;
+			if (ignoringInitialConnections()) return;
+			
 			sneer().acknowledgeContactOnline(_nickname);
+		}
+
+		private boolean ignoringInitialConnections() {
+			return System.currentTimeMillis() - startupTime() < 1000 * 30;
 		}
 
 		private boolean calculateOnline() {
@@ -189,7 +194,7 @@ public class ContactsView extends ViewPart {
 		public Object[] getElements(Object parent) {
 			if (parent.equals(getViewSite())) {
 				GuiContact me = new GuiContact(life());
-				return me.contacts();
+				return new Object[]{me};
 			}
 			return getChildren(parent);
 		}
@@ -231,15 +236,10 @@ public class ContactsView extends ViewPart {
 		}
 
 	}
+	
 	class NameSorter extends ViewerSorter {
 	}
 
-	/**
-	 * The constructor.
-	 */
-	public ContactsView() {
-	}
-	
 	private static Sneer sneer() {
 		return SneerUIPlugin.sneer();
 	}
@@ -247,7 +247,6 @@ public class ContactsView extends ViewPart {
 	private static Life life() {
 		return sneer().life();
 	}
-
 
 	/**
 	 * This is a callback that will allow us

@@ -28,11 +28,13 @@ public class Freedom2 extends Freedom1 {
 
 	protected OldNetwork _ipNetwork;
 
+	private static final XStream XSTREAM = new XStream();
+
 	
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		_ipNetwork = new XStreamNetwork(new XStream(), new NetworkMock());
+		_ipNetwork = new XStreamNetwork(XSTREAM, new NetworkMock());
 		startServer(_me, 7000);
 
 		helpFriendsAchieveSovereignty();

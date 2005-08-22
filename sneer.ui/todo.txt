@@ -2,8 +2,6 @@
 
 TODO:
 
-XML - XStream serialization on the wire
-
 Profile
   - Profile Info
   - Contact Info

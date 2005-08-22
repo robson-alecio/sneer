@@ -27,11 +27,13 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
@@ -64,26 +66,26 @@ public class ContactsView extends ViewPart {
 
 	class GuiContact {
 
+		private final GuiContact _parent;
+
+		private Image _image;
+		
 		final private String _nickname;
 		final private LifeView _lifeView;
 
-		private Image _image;
-		private final int _distance;
-		
 		
 		GuiContact(LifeView lifeView) {
-			this("Me", lifeView, 0);
+			this("Me", lifeView, null);
 		}
 		
 		GuiContact(String nickname, GuiContact parent) {
-			this(nickname, parent._lifeView.contact(nickname), parent._distance + 1);
+			this(nickname, parent._lifeView.contact(nickname), parent);
 		}
 		
-		private GuiContact(String nickname, LifeView lifeView, int distance) {
-			lifeView.toString();			
+		private GuiContact(String nickname, LifeView lifeView, GuiContact parent) {
 			_nickname = nickname;
 			_lifeView = lifeView;
-			_distance = distance;
+			_parent = parent;
 		}
 		
 		String nickname() {
@@ -101,7 +103,7 @@ public class ContactsView extends ViewPart {
 		}
 
 		private void notifyOnline(boolean isOnline) {
-			if (_distance != 1) return;
+			if (distance() != 1) return;
 
 			boolean wasOnline = _onlineContacts.contains(_nickname);
 			if (!isOnline) {
@@ -114,6 +116,12 @@ public class ContactsView extends ViewPart {
 			if (ignoringInitialConnections()) return;
 			
 			sneer().acknowledgeContactOnline(_nickname);
+		}
+
+		private int distance() {
+			return _parent == null
+				? 0
+				: _parent.distance() + 1;
 		}
 
 		private boolean ignoringInitialConnections() {
@@ -188,8 +196,7 @@ public class ContactsView extends ViewPart {
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
 		}
 		
-		public void dispose() {
-		}
+		public void dispose() {}
 		
 		public Object[] getElements(Object parent) {
 			if (parent.equals(getViewSite())) {
@@ -200,7 +207,7 @@ public class ContactsView extends ViewPart {
 		}
 		
 		public Object getParent(Object child) {
-			return null;
+			return ((GuiContact)child)._parent;
 		}
 		
 		public Object[] getChildren(Object parent) {
@@ -253,9 +260,11 @@ public class ContactsView extends ViewPart {
 	 * to create the viewer and initialize it.
 	 */
 	public void createPartControl(Composite parent) {
-		
+
+		Composite sashForm = new SashForm(parent, SWT.HORIZONTAL | SWT.SMOOTH);
+
 		SneerUIPlugin.sneerUser().contactsView(this);
-		_treeViewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		_treeViewer = new TreeViewer(sashForm, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		_drillDownAdapter = new DrillDownAdapter(_treeViewer);
 		_treeViewer.setContentProvider(new ContactsTreeContentProvider());
 		_treeViewer.setLabelProvider(new ContactsTreeLabelProvider());
@@ -265,6 +274,9 @@ public class ContactsView extends ViewPart {
 		hookContextMenu();
 		hookDoubleClickAction();
 		contributeToActionBars();
+
+		new Text(sashForm, SWT.MULTI).setText("Todo:\n\nDisplay info about the selected contact here.");
+
 	}
 
 	private void hookContextMenu() {
@@ -381,7 +393,9 @@ public class ContactsView extends ViewPart {
 		job.schedule();
 	}
 
-	protected void refreshTree() {
+	private void refreshTree() {
+		if (_treeViewer.getControl().isDisposed()) return;
+		
 		Object[] elements = _treeViewer.getVisibleExpandedElements();
 		if (elements.length == 0) {
 			_treeViewer.refresh();

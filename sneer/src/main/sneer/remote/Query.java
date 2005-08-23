@@ -4,9 +4,11 @@
 
 package sneer.remote;
 
+import java.io.Serializable;
+
 import sneer.life.LifeView;
 
-public interface Query<T> {
+public interface Query<T>  extends Serializable {
 
 	T executeOn(LifeView lifeView);
 	

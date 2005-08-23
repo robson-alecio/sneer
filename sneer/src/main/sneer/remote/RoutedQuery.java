@@ -28,4 +28,6 @@ public class RoutedQuery<T> implements Query<T> {
 		_delegate = null;
 	}
 
+	private static final long serialVersionUID = 1L;
+
 }

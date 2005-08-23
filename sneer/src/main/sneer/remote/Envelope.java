@@ -1,6 +1,8 @@
 package sneer.remote;
 
-class Envelope {
+import java.io.Serializable;
+
+class Envelope implements Serializable {
 
 	private Object _contents;
 	private final int _stamp;
@@ -26,5 +28,7 @@ class Envelope {
 	private Envelope() {  //Required by XStream to run on JVMs other than Sun's 1.4 and superior.
 		_stamp = 0;
 	}
+
+	private static final long serialVersionUID = 1L;
 
 }

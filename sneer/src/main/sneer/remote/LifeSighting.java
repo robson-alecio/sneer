@@ -1,5 +1,6 @@
 package sneer.remote;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -7,7 +8,7 @@ import java.util.Set;
 import sneer.life.JpgImage;
 import sneer.life.LifeView;
 
-class LifeSighting implements LifeView {
+class LifeSighting implements LifeView, Serializable {
 
 	private final String _name;
 	private final String _thoughtOfTheDay;
@@ -89,5 +90,7 @@ class LifeSighting implements LifeView {
 	private LifeSighting() {  //Required by XStream to run on JVMs other than Sun's.
 		this(null);
 	}
+
+	private static final long serialVersionUID = 1L;
 
 }

@@ -12,9 +12,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-import org.prevayler.foundation.network.OldNetworkImpl;
 
 import sneer.Sneer;
+import wheel.experiments.environment.network.OldNetworkImpl;
 
 /**
  * The main plugin class to be used in the desktop.

@@ -6,10 +6,9 @@ package sneer.remote;
 
 import java.io.IOException;
 
-import org.prevayler.foundation.network.OldNetwork;
-
 import sneer.life.LifeView;
 import sneer.life.NoneOfYourBusiness;
+import wheel.experiments.environment.network.OldNetwork;
 
 
 public class Connection implements QueryExecuter {

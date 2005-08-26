@@ -11,14 +11,14 @@ import java.util.Set;
 import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
 import org.prevayler.Transaction;
-import org.prevayler.foundation.Cool;
-import org.prevayler.foundation.network.OldNetwork;
 
 import sneer.life.JpgImage;
 import sneer.life.Life;
 import sneer.life.LifeView;
 import sneer.remote.ParallelServer;
 import sneer.remote.xstream.XStreamNetwork;
+import wheel.experiments.Cool;
+import wheel.experiments.environment.network.OldNetwork;
 
 import com.thoughtworks.xstream.XStream;
 

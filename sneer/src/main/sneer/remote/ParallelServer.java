@@ -6,11 +6,10 @@ package sneer.remote;
 
 import java.io.IOException;
 
-import org.prevayler.foundation.Cool;
-import org.prevayler.foundation.network.ObjectServerSocket;
-import org.prevayler.foundation.network.ObjectSocket;
-
 import sneer.life.Life;
+import wheel.experiments.Cool;
+import wheel.experiments.environment.network.ObjectServerSocket;
+import wheel.experiments.environment.network.ObjectSocket;
 
 
 public class ParallelServer implements Runnable {

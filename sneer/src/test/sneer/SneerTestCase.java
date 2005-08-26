@@ -4,9 +4,9 @@ import java.io.IOException;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.prevayler.foundation.network.NetworkMock;
 
 import sneer.Sneer.User;
+import wheel.experiments.environment.network.mocks.NetworkMock;
 
 public class SneerTestCase extends MockObjectTestCase {
 	

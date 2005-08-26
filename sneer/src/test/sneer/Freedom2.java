@@ -7,15 +7,14 @@ package sneer;
 import java.io.IOException;
 import java.util.Date;
 
-import org.prevayler.foundation.network.NetworkMock;
-import org.prevayler.foundation.network.OldNetwork;
-
 import sneer.life.Life;
 import sneer.life.LifeImpl;
 import sneer.life.LifeView;
 import sneer.remote.Connection;
 import sneer.remote.ParallelServer;
 import sneer.remote.xstream.XStreamNetwork;
+import wheel.experiments.environment.network.OldNetwork;
+import wheel.experiments.environment.network.mocks.NetworkMock;
 
 import com.thoughtworks.xstream.XStream;
 

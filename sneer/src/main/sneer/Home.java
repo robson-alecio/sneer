@@ -2,12 +2,11 @@ package sneer;
 
 import java.io.Serializable;
 
-import org.prevayler.foundation.network.OldNetwork;
-
 import sneer.life.Life;
 import sneer.life.LifeImpl;
 import sneer.life.LifeView;
 import sneer.remote.Connection;
+import wheel.experiments.environment.network.OldNetwork;
 
 public class Home implements Serializable {
 

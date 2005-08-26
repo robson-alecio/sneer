@@ -2,9 +2,9 @@ package sneer.remote.xstream;
 
 import java.io.IOException;
 
-import org.prevayler.foundation.network.ObjectServerSocket;
-import org.prevayler.foundation.network.ObjectSocket;
-import org.prevayler.foundation.network.OldNetwork;
+import wheel.experiments.environment.network.ObjectServerSocket;
+import wheel.experiments.environment.network.ObjectSocket;
+import wheel.experiments.environment.network.OldNetwork;
 
 import com.thoughtworks.xstream.XStream;
 

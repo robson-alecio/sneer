@@ -3,7 +3,8 @@ package sneer.remote;
 import java.io.IOException;
 
 import org.prevayler.foundation.Cool;
-import org.prevayler.foundation.network.ObjectSocket;
+
+import wheel.experiments.environment.network.ObjectSocket;
 
 class ParallelSocket {
 

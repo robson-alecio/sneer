@@ -18,7 +18,6 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -54,12 +53,14 @@ public class ContactsView extends ViewPart {
 	private static final Image YELLOW_EXCLAMATION_MARK = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_WARN_TSK);
 	private static final Image DEFAULT_IMAGE = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
 
-	private TreeViewer _treeViewer;
+	private TreeViewer _contactsViewer;
 	private DrillDownAdapter _drillDownAdapter;
 	private Action _addContactAction;
 	private Action _removeContactAction;
 	private Action _personalInfoAction;
 	private Action _doubleClickAction;
+
+	private Text _profileText;
 	
 	private Set<String> _onlineContacts = new HashSet<String>();
 	private long _startupTime = 0;
@@ -180,9 +181,9 @@ public class ContactsView extends ViewPart {
 	}
 
 	private GuiContact selectedContact() {
-		ISelection selection = _treeViewer.getSelection();
-		GuiContact contact = (GuiContact)((IStructuredSelection)selection).getFirstElement();
-		return contact;
+		IStructuredSelection selection = (IStructuredSelection)_contactsViewer.getSelection();
+		if (selection.size() != 1) return null;
+		return (GuiContact)selection.getFirstElement();
 	}
 	
 	private long startupTime() {
@@ -256,27 +257,35 @@ public class ContactsView extends ViewPart {
 	}
 
 	/**
-	 * This is a callback that will allow us
+	 * This is a callback that will allow Eclipse
 	 * to create the viewer and initialize it.
 	 */
 	public void createPartControl(Composite parent) {
 
 		Composite sashForm = new SashForm(parent, SWT.HORIZONTAL | SWT.SMOOTH);
 
-		SneerUIPlugin.sneerUser().contactsView(this);
-		_treeViewer = new TreeViewer(sashForm, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
-		_drillDownAdapter = new DrillDownAdapter(_treeViewer);
-		_treeViewer.setContentProvider(new ContactsTreeContentProvider());
-		_treeViewer.setLabelProvider(new ContactsTreeLabelProvider());
-		_treeViewer.setSorter(new NameSorter());
-		_treeViewer.setInput(getViewSite());
+		createContactsViewer(sashForm);
+		createProfileForm(sashForm);
+
 		makeActions();
 		hookContextMenu();
 		hookDoubleClickAction();
 		contributeToActionBars();
 
-		new Text(sashForm, SWT.MULTI).setText("Todo:\n\nDisplay info about the selected contact here.");
+		SneerUIPlugin.sneerUser().contactsView(this);
+	}
 
+	private void createProfileForm(Composite sashForm) {
+		_profileText = new Text(sashForm, SWT.MULTI | SWT.WRAP);
+	}
+
+	private void createContactsViewer(Composite sashForm) {
+		_contactsViewer = new TreeViewer(sashForm, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		_drillDownAdapter = new DrillDownAdapter(_contactsViewer);
+		_contactsViewer.setContentProvider(new ContactsTreeContentProvider());
+		_contactsViewer.setLabelProvider(new ContactsTreeLabelProvider());
+		_contactsViewer.setSorter(new NameSorter());
+		_contactsViewer.setInput(getViewSite());
 	}
 
 	private void hookContextMenu() {
@@ -287,9 +296,9 @@ public class ContactsView extends ViewPart {
 				ContactsView.this.fillContextMenu(manager);
 			}
 		});
-		Menu menu = menuMgr.createContextMenu(_treeViewer.getControl());
-		_treeViewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuMgr, _treeViewer);
+		Menu menu = menuMgr.createContextMenu(_contactsViewer.getControl());
+		_contactsViewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuMgr, _contactsViewer);
 	}
 
 	private void contributeToActionBars() {
@@ -305,8 +314,10 @@ public class ContactsView extends ViewPart {
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
-		manager.add(_removeContactAction);
-		manager.add(new Separator());
+		if (selectedContact() != null) {
+			manager.add(_removeContactAction);
+			manager.add(new Separator());
+		}
 		_drillDownAdapter.addNavigationActions(manager);
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
@@ -332,8 +343,9 @@ public class ContactsView extends ViewPart {
 
 		_removeContactAction = new Action() {
 			public void run() {
-				sneer().removeContact(selectedContact().nickname());
-				
+				GuiContact contact = selectedContact();
+				if (contact == null) return;
+				sneer().removeContact(contact.nickname());
 			}
 		};
 		_removeContactAction.setText("Remove Contact");
@@ -361,7 +373,7 @@ public class ContactsView extends ViewPart {
 	}
 
 	private void hookDoubleClickAction() {
-		_treeViewer.addDoubleClickListener(new IDoubleClickListener() {
+		_contactsViewer.addDoubleClickListener(new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
 				_doubleClickAction.run();
 			}
@@ -372,15 +384,16 @@ public class ContactsView extends ViewPart {
 	 * Passing the focus request to the viewer's control.
 	 */
 	public void setFocus() {
-		_treeViewer.getControl().setFocus();
+		_contactsViewer.getControl().setFocus();
 	}
 
 	public void refresh() {
-		if (null == _treeViewer) return;
+		if (null == _contactsViewer) return;
 		UIJob job = new UIJob("Contact refresh") {
 			public IStatus runInUIThread(IProgressMonitor monitor) {
 				try {
-					refreshTree();
+					refreshContacts();
+					refreshProfile();
 					sneer().checkNewMessages();
 				} catch (RuntimeException e) {
 					e.printStackTrace(); // Eclipse does not show the stack trace.
@@ -393,18 +406,23 @@ public class ContactsView extends ViewPart {
 		job.schedule();
 	}
 
-	private void refreshTree() {
-		if (_treeViewer.getControl().isDisposed()) return;
+	private void refreshProfile() {
+		GuiContact contact = selectedContact();
+		_profileText.setText(contact == null ? "" : contact.nickname());
+	}
+
+	private void refreshContacts() {
+		if (_contactsViewer.getControl().isDisposed()) return;
 		
-		Object[] elements = _treeViewer.getVisibleExpandedElements();
+		Object[] elements = _contactsViewer.getVisibleExpandedElements();
 		if (elements.length == 0) {
-			_treeViewer.refresh();
+			_contactsViewer.refresh();
 			return;
 		}
 		
 		for (Object element : elements) {
-			_treeViewer.refresh(element, true);
+			_contactsViewer.refresh(element, true);
 		}
-		_treeViewer.setExpandedElements(elements);
+		_contactsViewer.setExpandedElements(elements);
 	}
 }

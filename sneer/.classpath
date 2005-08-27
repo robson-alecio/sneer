@@ -6,7 +6,8 @@
 	<classpathentry kind="lib" path="lib/jmock-1.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/xpp3_min-1.1.3.4.O.jar"/>
 	<classpathentry kind="lib" path="lib/xstream/xstream-1.1.2.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/wheel"/>
 	<classpathentry kind="lib" path="lib/prevayler-2.02.006.jar"/>
+	<classpathentry kind="lib" path="lib/wheel.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/wheel"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

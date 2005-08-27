@@ -9,19 +9,19 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import sneer.SimpleUser;
-import sneer.ui.views.ContactsView;
+import sneer.ui.views.SneerView;
 
 public class EclipseSneerUser extends SimpleUser {
 
 	private final Shell _shell;
 	
-	private ContactsView _contactsView;
+	private SneerView _contactsView;
 
 	public EclipseSneerUser(Shell shell) {
 		_shell = shell;
 	}
 	
-	public void contactsView(ContactsView view) {
+	public void contactsView(SneerView view) {
 		_contactsView = view;
 	}
 

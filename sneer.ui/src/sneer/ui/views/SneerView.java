@@ -48,7 +48,7 @@ import sneer.life.LifeView;
 import sneer.ui.SneerUIPlugin;
 
 
-public class ContactsView extends ViewPart {
+public class SneerView extends ViewPart {
 
 	private static final Image YELLOW_EXCLAMATION_MARK = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_WARN_TSK);
 	private static final Image DEFAULT_IMAGE = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
@@ -60,6 +60,10 @@ public class ContactsView extends ViewPart {
 	private Action _personalInfoAction;
 	private Action _doubleClickAction;
 
+	private Text _nicknameText;
+	private Text _nameText;
+	private Text _thoughtOfTheDayText;
+	private Text _contactInfoText;
 	private Text _profileText;
 	
 	private Set<String> _onlineContacts = new HashSet<String>();
@@ -178,6 +182,11 @@ public class ContactsView extends ViewPart {
 			ImageData data = loader.load(jpg.jpegFileContents())[0];
 			return new Image(null, data.scaledTo(32, 32));
 		}
+
+		public String nicknamePath() {
+			if (distance() <= 1) return nickname();
+			return _parent.nicknamePath() + " > " + nickname(); 
+		}
 	}
 
 	private GuiContact selectedContact() {
@@ -275,8 +284,14 @@ public class ContactsView extends ViewPart {
 		SneerUIPlugin.sneerUser().contactsView(this);
 	}
 
-	private void createProfileForm(Composite sashForm) {
-		_profileText = new Text(sashForm, SWT.MULTI | SWT.WRAP);
+	private void createProfileForm(Composite parent) {
+		Composite form = new SashForm(parent, SWT.VERTICAL | SWT.SMOOTH);
+		
+		_nicknameText = new Text(form, SWT.MULTI | SWT.WRAP);
+		_nameText = new Text(form, SWT.MULTI | SWT.WRAP);
+		_thoughtOfTheDayText = new Text(form, SWT.MULTI | SWT.WRAP);
+		_contactInfoText = new Text(form, SWT.MULTI | SWT.WRAP);
+		_profileText = new Text(form, SWT.MULTI | SWT.WRAP);
 	}
 
 	private void createContactsViewer(Composite sashForm) {
@@ -293,7 +308,7 @@ public class ContactsView extends ViewPart {
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {
-				ContactsView.this.fillContextMenu(manager);
+				SneerView.this.fillContextMenu(manager);
 			}
 		});
 		Menu menu = menuMgr.createContextMenu(_contactsViewer.getControl());
@@ -393,7 +408,7 @@ public class ContactsView extends ViewPart {
 			public IStatus runInUIThread(IProgressMonitor monitor) {
 				try {
 					refreshContacts();
-					refreshProfile();
+					refreshContactForm();
 					sneer().checkNewMessages();
 				} catch (RuntimeException e) {
 					e.printStackTrace(); // Eclipse does not show the stack trace.
@@ -406,9 +421,41 @@ public class ContactsView extends ViewPart {
 		job.schedule();
 	}
 
-	private void refreshProfile() {
+	private void refreshContactForm() {
+		if (_nicknameText.isDisposed()) return;
+		
 		GuiContact contact = selectedContact();
-		_profileText.setText(contact == null ? "" : contact.nickname());
+		if (contact == null) {
+			clearContactForm();
+			return;
+		}
+		_nicknameText.setText(contact.nicknamePath());
+
+		LifeView lifeView = contact.lifeView();
+		if (lifeView == null || lifeView.lastSightingDate() == null) {
+			clearSightedContactFields();
+			return;
+		}
+		_nameText.setText(nullToEmptyString(lifeView.name()));
+		_thoughtOfTheDayText.setText(nullToEmptyString(lifeView.thoughtOfTheDay()));
+		_contactInfoText.setText(nullToEmptyString(lifeView.contactInfo()));
+		_profileText.setText(nullToEmptyString(lifeView.profile()));
+	}
+
+	private String nullToEmptyString(String string) {
+		return string == null ? "" : string;
+	}
+
+	private void clearContactForm() {
+		_nicknameText.setText("");
+		clearSightedContactFields();
+	}
+
+	private void clearSightedContactFields() {
+		_nameText.setText("");
+		_thoughtOfTheDayText.setText("");
+		_contactInfoText.setText("");
+		_profileText.setText("");
 	}
 
 	private void refreshContacts() {

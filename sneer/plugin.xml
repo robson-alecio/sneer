@@ -5,7 +5,6 @@
    name="sneer"
    version="1.0.0">
    <requires>
-      <import plugin="org.junit"/>
    </requires>
    
    <runtime>

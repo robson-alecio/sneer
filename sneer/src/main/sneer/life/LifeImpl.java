@@ -44,7 +44,7 @@ public class LifeImpl implements Life, Serializable {
 	}
 
 	public void giveSomebodyANickname(LifeView somebody, String nickname) throws IllegalArgumentException {
-		if (somebody == null || nickname == null) throw new IllegalArgumentException();
+		if (somebody == null || nickname == null || nickname.equals("")) throw new IllegalArgumentException();
 		if (_contactsByNickname.containsKey(nickname)) throw new IllegalArgumentException();
 		
 		_contactsByNickname.put(nickname, somebody);

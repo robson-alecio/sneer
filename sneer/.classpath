@@ -8,6 +8,6 @@
 	<classpathentry kind="lib" path="lib/xstream/xstream-1.1.2.jar"/>
 	<classpathentry kind="lib" path="lib/prevayler-2.02.006.jar"/>
 	<classpathentry kind="lib" path="lib/wheel.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/wheel"/>
+	<classpathentry kind="lib" path="lib/junit-3.8.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

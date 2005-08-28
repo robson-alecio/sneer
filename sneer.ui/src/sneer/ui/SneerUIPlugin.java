@@ -54,6 +54,8 @@ public class SneerUIPlugin extends AbstractUIPlugin {
 		
 		plugin = null;
 		resourceBundle = null;
+		
+		//TODO Stop the threads in SneerView.
 	}
 
 	/**

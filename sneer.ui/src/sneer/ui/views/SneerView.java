@@ -30,7 +30,10 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
+import org.eclipse.swt.layout.RowData;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IActionBars;
@@ -52,6 +55,7 @@ public class SneerView extends ViewPart {
 
 	private static final Image YELLOW_EXCLAMATION_MARK = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_WARN_TSK);
 	private static final Image DEFAULT_IMAGE = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
+	private static final int AS_WIDE_AS_POSSIBLE = 50000;
 
 	private TreeViewer _contactsViewer;
 	private DrillDownAdapter _drillDownAdapter;
@@ -285,13 +289,29 @@ public class SneerView extends ViewPart {
 	}
 
 	private void createProfileForm(Composite parent) {
-		Composite form = new SashForm(parent, SWT.VERTICAL | SWT.SMOOTH);
+		Composite form = new Composite(parent, 0);
+		form.setLayout(new RowLayout(SWT.VERTICAL));
 		
-		_nicknameText = new Text(form, SWT.MULTI | SWT.WRAP);
-		_nameText = new Text(form, SWT.MULTI | SWT.WRAP);
-		_thoughtOfTheDayText = new Text(form, SWT.MULTI | SWT.WRAP);
-		_contactInfoText = new Text(form, SWT.MULTI | SWT.WRAP);
-		_profileText = new Text(form, SWT.MULTI | SWT.WRAP);
+		_nicknameText = createTextFieldWithLabel(form, "Nickname:");
+		_nicknameText.setLayoutData(new RowData(AS_WIDE_AS_POSSIBLE, SWT.DEFAULT));
+		
+		_nameText = createTextFieldWithLabel(form, "Name:");
+		_nameText.setLayoutData(new RowData(AS_WIDE_AS_POSSIBLE, SWT.DEFAULT));
+		
+		_thoughtOfTheDayText = createTextFieldWithLabel(form, "Thought of the Day:");
+		_thoughtOfTheDayText.setLayoutData(new RowData(AS_WIDE_AS_POSSIBLE, SWT.DEFAULT));
+		
+		_contactInfoText =  createTextFieldWithLabel(form, "Contact Information:");
+		_contactInfoText.setLayoutData(new RowData(AS_WIDE_AS_POSSIBLE, 60));
+
+		_profileText =  createTextFieldWithLabel(form, "Profile:");
+		_profileText.setLayoutData(new RowData(AS_WIDE_AS_POSSIBLE, 60));
+	}
+
+	private Text createTextFieldWithLabel(Composite parent, String label) {
+		new Label(parent, 0).setText(label);
+		Text textField = new Text(parent, SWT.MULTI | SWT.WRAP | SWT.BORDER);
+		return textField;
 	}
 
 	private void createContactsViewer(Composite sashForm) {

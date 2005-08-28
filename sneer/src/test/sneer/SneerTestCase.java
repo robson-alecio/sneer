@@ -1,5 +1,6 @@
 package sneer;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.jmock.Mock;
@@ -14,7 +15,7 @@ public class SneerTestCase extends MockObjectTestCase {
 
 	@Override
 	protected void setUp() {
-		_testDirectory = "testdirectory" + System.nanoTime();
+		_testDirectory = "testruns" + File.separator + System.nanoTime();
 	}
 	
 	public void testPersistence() throws IOException {

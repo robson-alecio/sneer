@@ -18,7 +18,7 @@ class LifeViewProxy implements LifeView, Serializable {
 	transient private final QueryExecuter _queryExecuter;
 	private Date _lastSightingDate;
 	private Map<String, LifeView> _contactCache = new HashMap<String, LifeView>();
-	private LifeSighting _cache;
+	private LifeCache _cache;
 
 	public LifeViewProxy(QueryExecuter queryExecuter) {
 		_queryExecuter = queryExecuter;
@@ -40,7 +40,7 @@ class LifeViewProxy implements LifeView, Serializable {
 
 	private void update() {
 		try {
-			LifeSighting newCache = _queryExecuter.execute(new LifeSightingQuery());
+			LifeCache newCache = _queryExecuter.execute(new LifeSightingQuery());
 			if (newCache == null) return;
 			if (newCache.lastSightingDate() == null) return;
 			_cache = newCache;

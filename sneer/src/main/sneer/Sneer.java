@@ -40,6 +40,8 @@ public class Sneer {
 		int confirmServerPort(int currentPort);
 
 		void lookAtMe();
+		
+		void goodbye();
 	}
 	
 	private final Life _life;

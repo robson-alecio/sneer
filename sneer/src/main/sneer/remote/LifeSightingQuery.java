@@ -2,10 +2,10 @@ package sneer.remote;
 
 import sneer.life.LifeView;
 
-class LifeSightingQuery implements Query<LifeSighting> {
+class LifeSightingQuery implements Query<LifeCache> {
 
-	public LifeSighting executeOn(LifeView lifeView) {
-		return new LifeSighting(lifeView);
+	public LifeCache executeOn(LifeView lifeView) {
+		return new LifeCache(lifeView);
 	}
 
 	LifeSightingQuery() {}  //Required by XStream to run on JVMs other than Sun's.

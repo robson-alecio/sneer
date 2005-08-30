@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.Set;
 
 import sneer.life.JpgImage;
+import sneer.life.LifeSighting;
 import sneer.life.LifeView;
 
-class LifeSighting implements LifeView, Serializable {
+class LifeCache implements LifeSighting, Serializable {
 
 	private final String _name;
 	private final String _thoughtOfTheDay;
@@ -24,7 +25,7 @@ class LifeSighting implements LifeView, Serializable {
 	private final Date _creation;
 
 	
-	public LifeSighting(LifeView lifeView) {
+	public LifeCache(LifeView lifeView) {
 		if (lifeView == null || lifeView.lastSightingDate() == null) {
 			_name = null;
 			_thoughtOfTheDay = null;
@@ -87,7 +88,7 @@ class LifeSighting implements LifeView, Serializable {
 		return _picture;
 	}
 
-	private LifeSighting() {  //Required by XStream to run on JVMs other than Sun's.
+	private LifeCache() {  //Required by XStream to run on JVMs other than Sun's.
 		this(null);
 	}
 

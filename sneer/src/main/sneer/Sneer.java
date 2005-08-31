@@ -166,4 +166,8 @@ public class Sneer {
 		_user.acknowledge(nickname + " has come online.");
 	}
 
+	public void stop() {
+		_user.goodbye();
+	}
+
 }

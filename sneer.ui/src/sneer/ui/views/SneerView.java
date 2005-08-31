@@ -49,7 +49,6 @@ import sneer.life.JpgImage;
 import sneer.life.Life;
 import sneer.life.LifeView;
 import sneer.ui.SneerUIPlugin;
-import wheelexperiments.views.SetView.Observer;
 
 
 public class SneerView extends ViewPart {

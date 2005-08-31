@@ -14,13 +14,13 @@ public interface MapView<K, V> {
 		
 		public void entryAdded(Ko newKey, Vo newValue);
 
-		public void keyRemoved(Ko key);
+		public void keyRemoved(Ko key, Vo value);
 		
 	}
 
 	SetView keys();
 
-	Map<K, V> currentValue();
+	Map<K, V> sighting();  //TODO: Consider returning a MapSighting.
 
 
 }

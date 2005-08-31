@@ -20,21 +20,26 @@ public class SetHolder<T> implements SetView<T> {
 
 	public void add(T key) {
 		_contents.add(key);
-		notifyObservers(key);
+		notifyOfAddition(key);
 	}
 
-	private void notifyObservers(T key) {
+	public void remove(T key) {
+		_contents.remove(key);
+		notifyOfRemoval(key);
+	}
+
+	private void notifyOfRemoval(T key) {
 		Iterator<Observer<T>> it = _observers.iterator();
-		while (it.hasNext()) notifyObserver(it.next(), key);
+		while (it.hasNext()) it.next().elementRemoved(key);
 	}
 
-	private void notifyObserver(Observer<T> observer, T key) {
-		observer.elementAdded(key);
+	private void notifyOfAddition(T key) {
+		Iterator<Observer<T>> it = _observers.iterator();
+		while (it.hasNext()) it.next().elementAdded(key);
 	}
 
 	public synchronized void addObserver(Observer<T> observer) {
 		_observers.add(observer);
 	}
 
-	
 }

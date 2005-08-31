@@ -17,16 +17,16 @@ public class MapHolder<K,V> implements MapView<K,V> {
 	private final Set<Observer<K,V>> _observers = new HashSet<Observer<K,V>>();
 	
 	
-	private void notifyEntryAddition(K key, V value) {
+	private void notifyAddition(K key, V value) {
 		Iterator<Observer<K,V>> it = _observers.iterator();
 		while (it.hasNext())
 			it.next().entryAdded(key, value);
 	}
 
-	private void notifyKeyRemoval(K key) {
+	private void notifyRemoval(K key, V value) {
 		Iterator<Observer<K,V>> it = _observers.iterator();
 		while (it.hasNext())
-			it.next().keyRemoved(key);
+			it.next().keyRemoved(key, value);
 	}
 
 	public synchronized void addObserver(Observer<K,V> observer) {
@@ -35,13 +35,16 @@ public class MapHolder<K,V> implements MapView<K,V> {
 
 	public void put(K key, V value) {
 		_keys.add(key);
+		
 		_contents.put(key, value);
-		notifyEntryAddition(key, value);
+		notifyAddition(key, value);
 	}
 
 	public void remove(K key) {
-		_contents.remove(key);
-		notifyKeyRemoval(key);
+		_keys.remove(key);
+		
+		V value = _contents.remove(key);
+		notifyRemoval(key, value);
 	}
 
 	public SetView<K> keys() {
@@ -52,11 +55,11 @@ public class MapHolder<K,V> implements MapView<K,V> {
 		return _keys.contains(key);
 	}
 
-	public Object get(K key) {
+	public V get(K key) {
 		return _contents.get(key);
 	}
 
-	public Map<K, V> currentValue() {
+	public Map<K, V> sighting() {
 		return new HashMap<K, V>(_contents);
 	}
 

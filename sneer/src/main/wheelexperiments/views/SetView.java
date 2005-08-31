@@ -7,10 +7,11 @@ package wheelexperiments.views;
 
 public interface SetView<T>  {
 
-	public interface Observer<To> {
-		public void elementAdded(To newElement);
+	public interface Observer<TO> {
+		public void elementAdded(TO newElement);
+		public void elementRemoved(TO removedElement);
 	}
 	
 	void addObserver(Observer<T> observer);
-	
+
 }

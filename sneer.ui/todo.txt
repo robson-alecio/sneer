@@ -1,11 +1,18 @@
 [Sneer is not test-driven. It is GUI-driven and test-verified.]
 
-TODO:
+============ FIX:
+
+Contact changes are not being refreshed in the tree view.
+
+
+============ TODO:
 
 Profile
   - Profile Info
   - Contact Info
   - Large photograph
+
+Use less bandwidth (push instead of poll (use View concept)).
 
 Refactor: Move Contact to Sneer (facade). Make GUI truly only a skin.
 

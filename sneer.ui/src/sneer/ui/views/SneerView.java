@@ -49,6 +49,7 @@ import sneer.life.JpgImage;
 import sneer.life.Life;
 import sneer.life.LifeView;
 import sneer.ui.SneerUIPlugin;
+import wheelexperiments.views.SetView.Observer;
 
 
 public class SneerView extends ViewPart {
@@ -70,8 +71,13 @@ public class SneerView extends ViewPart {
 	private Text _contactInfoText;
 	private Text _profileText;
 	
+	private GuiContact _me;
+
 	private Set<String> _onlineContacts = new HashSet<String>();
 	private long _startupTime = 0;
+
+	private boolean _isStopped = false;
+	
 
 	class GuiContact {
 
@@ -81,6 +87,8 @@ public class SneerView extends ViewPart {
 		
 		final private String _nickname;
 		final private LifeView _lifeView;
+
+		private GuiContact[] _contacts;
 
 		
 		GuiContact(LifeView lifeView) {
@@ -144,6 +152,12 @@ public class SneerView extends ViewPart {
 		}
 		
 		public GuiContact[] contacts() {
+			if (_contacts == null) _contacts = refreshContacts();
+
+			return _contacts;
+		}
+
+		private GuiContact[] refreshContacts() {
 			if (!isOnline()) return new GuiContact[0];
 			
 			Set<String> nicknames = _lifeView.nicknames();
@@ -214,12 +228,11 @@ public class SneerView extends ViewPart {
 		
 		public Object[] getElements(Object parent) {
 			if (parent.equals(getViewSite())) {
-				GuiContact me = new GuiContact(life());
-				return new Object[]{me};
+				return me();
 			}
 			return getChildren(parent);
 		}
-		
+
 		public Object getParent(Object child) {
 			return ((GuiContact)child)._parent;
 		}
@@ -231,6 +244,12 @@ public class SneerView extends ViewPart {
 		public boolean hasChildren(Object parent) {
 			return ((GuiContact)parent).isOnline();
 		}
+	}
+
+	private Object[] me() {
+		if (_me == null) _me = new GuiContact(life());
+		
+		return new Object[]{_me};
 	}
 	
 	class ContactsTreeLabelProvider extends LabelProvider {
@@ -437,6 +456,8 @@ public class SneerView extends ViewPart {
 			}
 
 		};
+		if (_isStopped) return;
+		
 		job.setSystem(true);
 		job.schedule();
 	}
@@ -491,5 +512,9 @@ public class SneerView extends ViewPart {
 			_contactsViewer.refresh(element, true);
 		}
 		_contactsViewer.setExpandedElements(elements);
+	}
+
+	public void stop() {
+		_isStopped = true;
 	}
 }

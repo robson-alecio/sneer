@@ -53,4 +53,9 @@ public class EclipseSneerUser extends SimpleUser {
 		return MessageDialog.openQuestion(_shell, "Sneer", proposition);
 	}
 
+	public void goodbye() {
+		if (null == _contactsView) return;
+		_contactsView.stop();		
+	}
+
 }

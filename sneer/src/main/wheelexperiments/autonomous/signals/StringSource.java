@@ -2,14 +2,15 @@
 //This is free software. It is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the license distributed along with this file for more details.
 //Contributions: Fabio Roger Manera.
 
-package wheelexperiments.views;
+package wheelexperiments.autonomous.signals;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 
-public class StringHolder implements StringView {
+
+public class StringSource implements StringSignal {
 
 	private String _contents;
 	private final Set<Observer> _observers = new HashSet<Observer>();

@@ -2,13 +2,14 @@
 //This is free software. It is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the license distributed along with this file for more details.
 //Contributions: Kalecser Kurtz, Fabio Roger Manera.
 
-package wheelexperiments.views;
+package wheelexperiments.autonomous.signals;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class SetHolder<T> implements SetView<T> {
+
+public class SetSource<T> implements SetSignal<T> {
 
 	private Set<T> _contents = new HashSet<T>();
 

@@ -2,7 +2,7 @@
 //This is free software. It is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the license distributed along with this file for more details.
 //Contributions: Kalecser Kurtz, Fabio Roger Manera.
 
-package wheelexperiments.views;
+package wheelexperiments.autonomous.signals;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,10 +10,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public class MapHolder<K,V> implements MapView<K,V> {
+
+public class MapSource<K,V> implements MapSignal<K,V> {
 
 	private final Map<K, V> _contents = new HashMap<K, V>(); 
-	private final SetHolder<K> _keys = new SetHolder<K>(); 
+	private final SetSource<K> _keys = new SetSource<K>(); 
 	private final Set<Observer<K,V>> _observers = new HashSet<Observer<K,V>>();
 	
 	
@@ -47,7 +48,7 @@ public class MapHolder<K,V> implements MapView<K,V> {
 		notifyRemoval(key, value);
 	}
 
-	public SetView<K> keys() {
+	public SetSignal<K> keys() {
 		return _keys;
 	}
 

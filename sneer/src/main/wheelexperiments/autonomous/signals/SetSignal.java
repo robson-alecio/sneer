@@ -2,25 +2,16 @@
 //This is free software. It is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the license distributed along with this file for more details.
 //Contributions: Kalecser Kurtz, Fabio Roger Manera.
 
-package wheelexperiments.views;
+package wheelexperiments.autonomous.signals;
 
-import java.util.Map;
 
-public interface MapView<K, V> {
+public interface SetSignal<T>  {
 
-	void addObserver(Observer<K, V> observer);
-
-	public interface Observer<Ko, Vo> {
-		
-		public void entryAdded(Ko newKey, Vo newValue);
-
-		public void keyRemoved(Ko key, Vo value);
-		
+	public interface Observer<TO> {
+		public void elementAdded(TO newElement);
+		public void elementRemoved(TO removedElement);
 	}
-
-	SetView keys();
-
-	Map<K, V> sighting();  //TODO: Consider returning a MapSighting.
-
+	
+	void addObserver(Observer<T> observer);
 
 }

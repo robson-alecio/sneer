@@ -2,9 +2,9 @@
 //This is free software. It is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the license distributed along with this file for more details.
 //Contributions: Fabio Roger Manera.
 
-package wheelexperiments.views;
+package wheelexperiments.autonomous.signals;
 
-public interface StringView {
+public interface StringSignal {
 
 	void addObserver(Observer observer);
 

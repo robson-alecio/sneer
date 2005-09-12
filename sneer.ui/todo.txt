@@ -12,7 +12,7 @@ Profile
   - Contact Info
   - Large photograph
 
-Use less bandwidth (push instead of poll (use View concept)).
+Use less bandwidth (push instead of poll (use reactive paradigm)).
 
 Refactor: Move Contact to Sneer (facade). Make GUI truly only a skin.
 

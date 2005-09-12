@@ -49,6 +49,7 @@ import sneer.life.JpgImage;
 import sneer.life.Life;
 import sneer.life.LifeView;
 import sneer.ui.SneerUIPlugin;
+import wheelexperiments.reactive.Signal.Receiver;
 
 
 public class SneerView extends ViewPart {
@@ -86,9 +87,9 @@ public class SneerView extends ViewPart {
 		
 		final private String _nickname;
 		final private LifeView _lifeView;
+		private String _cachedThoughtOfTheDay;
 
 		private GuiContact[] _contacts;
-
 		
 		GuiContact(LifeView lifeView) {
 			this("Me", lifeView, null);
@@ -102,6 +103,24 @@ public class SneerView extends ViewPart {
 			_nickname = nickname;
 			_lifeView = lifeView;
 			_parent = parent;
+			
+			_lifeView.thoughtOfTheDay().addReceiver(new Receiver<String>() {
+				public void receive(String newValue) {
+					if (_isStopped) return;
+					
+					_cachedThoughtOfTheDay = newValue;
+					UIJob job = new UIJob("Contact refresh") {
+						public IStatus runInUIThread(IProgressMonitor monitor) {
+							_contactsViewer.refresh(GuiContact.this, true);
+							return Status.OK_STATUS;
+						}						
+					};
+					
+					job.setSystem(true);
+					job.schedule();
+					
+				}
+			});
 		}
 		
 		String nickname() {
@@ -204,6 +223,10 @@ public class SneerView extends ViewPart {
 			if (distance() <= 1) return nickname();
 			return _parent.nicknamePath() + " > " + nickname(); 
 		}
+
+		public String thoughtOfTheDay() {
+			return _cachedThoughtOfTheDay;
+		}
 	}
 
 	private GuiContact selectedContact() {
@@ -264,7 +287,7 @@ public class SneerView extends ViewPart {
 			//nickname (Full Name) - Thought of the day
 			String result = contact.nickname() + " (" + contact.lifeView().name() + ")";
 			
-			String thought = contact.lifeView().thoughtOfTheDay();
+			String thought = contact.thoughtOfTheDay();
 			if (thought == null) return result;
 			
 			return result + " - " + thought;
@@ -477,7 +500,7 @@ public class SneerView extends ViewPart {
 			return;
 		}
 		_nameText.setText(nullToEmptyString(lifeView.name()));
-		_thoughtOfTheDayText.setText(nullToEmptyString(lifeView.thoughtOfTheDay()));
+		_thoughtOfTheDayText.setText(nullToEmptyString(lifeView.thoughtOfTheDay().currentValue()));
 		_contactInfoText.setText(nullToEmptyString(lifeView.contactInfo()));
 		_profileText.setText(nullToEmptyString(lifeView.profile()));
 	}

@@ -8,10 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import wheel.experiments.Cool;
-
 import sneer.life.JpgImage;
 import sneer.life.LifeView;
+import wheel.experiments.Cool;
+import wheelexperiments.reactive.Signal;
+import wheelexperiments.reactive.Source;
+import wheelexperiments.reactive.SourceImpl;
 
 class LifeViewProxy implements LifeView, Serializable {
 
@@ -19,6 +21,7 @@ class LifeViewProxy implements LifeView, Serializable {
 	private Date _lastSightingDate;
 	private Map<String, LifeView> _contactCache = new HashMap<String, LifeView>();
 	private LifeCache _cache;
+	private Source<String> _thoughtOfTheDay = new SourceImpl<String>();
 
 	public LifeViewProxy(QueryExecuter queryExecuter) {
 		_queryExecuter = queryExecuter;
@@ -45,6 +48,7 @@ class LifeViewProxy implements LifeView, Serializable {
 			if (newCache.lastSightingDate() == null) return;
 			_cache = newCache;
 			_lastSightingDate = new Date();
+			_thoughtOfTheDay.supply(newCache.thoughtOfTheDay());
 		} catch (IOException ignored) {
 			//Simply ignore this exception, since the connection will try to reconnect anyway.
 		}
@@ -54,8 +58,8 @@ class LifeViewProxy implements LifeView, Serializable {
 		return _cache.name();
 	}
 
-	public String thoughtOfTheDay() {
-		return _cache.thoughtOfTheDay();
+	public Signal<String> thoughtOfTheDay() {
+		return _thoughtOfTheDay;
 	}
 
 	public Set<String> nicknames() {

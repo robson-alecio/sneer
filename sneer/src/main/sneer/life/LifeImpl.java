@@ -13,11 +13,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import wheelexperiments.reactive.Signal;
+import wheelexperiments.reactive.Source;
+import wheelexperiments.reactive.SourceImpl;
+
 
 public class LifeImpl implements Life, Serializable {
 
 	private String _name;
-	private String _thoughtOfTheDay;
+	private final Source<String> _thoughtOfTheDay = new SourceImpl<String>();
 	private JpgImage _picture;
 
 	private String _profile;
@@ -36,7 +40,7 @@ public class LifeImpl implements Life, Serializable {
 	}
 
 	public void thoughtOfTheDay(String thought) {
-		_thoughtOfTheDay = thought;
+		_thoughtOfTheDay.supply(thought);
 	}
 
 	public Set<String> nicknames() {
@@ -64,7 +68,7 @@ public class LifeImpl implements Life, Serializable {
 		return _name;
 	}
 
-	public String thoughtOfTheDay() {
+	public Signal<String> thoughtOfTheDay() {
 		return _thoughtOfTheDay;
 	}
 

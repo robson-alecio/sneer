@@ -3,14 +3,17 @@
 
 package sneer.life;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import wheelexperiments.reactive.Signal;
 
-public interface LifeView extends View {
+
+public interface LifeView {
 
 	public String name();
-	public String thoughtOfTheDay();
+	public Signal<String> thoughtOfTheDay();
 	public JpgImage picture();
 	
 	public Set<String> nicknames();
@@ -20,6 +23,8 @@ public interface LifeView extends View {
     public String contactInfo();
 
 	public List<String> publicMessages();
+	
+	public Date lastSightingDate();
 	
 	public static final	ThreadLocal<String> CALLING_NICKNAME = new ThreadLocal<String>();
 

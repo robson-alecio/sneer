@@ -6,10 +6,9 @@ import java.util.List;
 import java.util.Set;
 
 import sneer.life.JpgImage;
-import sneer.life.LifeSighting;
 import sneer.life.LifeView;
 
-class LifeCache implements LifeSighting, Serializable {
+class LifeCache implements Serializable {
 
 	private final String _name;
 	private final String _thoughtOfTheDay;
@@ -37,7 +36,7 @@ class LifeCache implements LifeSighting, Serializable {
 			_creation = null;
 		} else {
 			_name = lifeView.name();
-			_thoughtOfTheDay = lifeView.thoughtOfTheDay();
+			_thoughtOfTheDay = lifeView.thoughtOfTheDay().currentValue();
 			_profile = lifeView.profile();
 			_picture = lifeView.picture();
 			_contactInfo = lifeView.contactInfo();
@@ -57,10 +56,6 @@ class LifeCache implements LifeSighting, Serializable {
 
 	public Set<String> nicknames() {
 		return _nicknames;
-	}
-
-	public LifeView contact(String nickname) {
-		throw new UnsupportedOperationException();
 	}
 
 	public String profile() {

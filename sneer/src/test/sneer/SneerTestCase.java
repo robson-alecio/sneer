@@ -40,7 +40,7 @@ public class SneerTestCase extends MockObjectTestCase {
 		sneer.editPersonalInfo();		
 		
 		sneer = new Sneer(user, new NetworkMock(), _testDirectory);
-		assertEquals("Las llamas son majores que las ranas!", sneer.life().thoughtOfTheDay()); 
+		assertEquals("Las llamas son majores que las ranas!", sneer.life().thoughtOfTheDay().currentValue()); 
 	}
 
 	public void testAddContact() throws IOException {

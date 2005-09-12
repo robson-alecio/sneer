@@ -3,8 +3,7 @@
 
 package wheelexperiments.reactive.signals;
 
-import sneer.life.Sighting;
 
-public interface SetValue<T> extends SetSignal<T>, Sighting {
+public interface SetValue<T> extends SetSignal<T>, Value {
 
 }

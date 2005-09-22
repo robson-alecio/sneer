@@ -27,6 +27,7 @@ public class LifeImpl implements Life, Serializable {
     private String _contactInfo;
 
 	private final Map<String, LifeView> _contactsByNickname = new HashMap<String, LifeView>();
+	private final Map<String, Object> _thingsByName = new HashMap<String, Object>();
 
 
 	public LifeImpl(String name) {
@@ -106,6 +107,14 @@ public class LifeImpl implements Life, Serializable {
 
 	public void picture(JpgImage picture) {
 		_picture = picture;
+	}
+
+	public Object thing(String name) {
+		return _thingsByName.get(name);
+	}
+
+	public void thing(String name, Object thing) {
+		_thingsByName.put(name, thing);
 	}
 	
 	private static final long serialVersionUID = 1L;

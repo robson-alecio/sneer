@@ -1,6 +1,7 @@
 package sneer.remote;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -67,7 +68,8 @@ class LifeCache implements Serializable {
 	}
 
 	public List<String> messagesSentToMe() {
-		throw new RuntimeException("To be implemented");
+		return new ArrayList<String>();
+		//FIXME To be implemented.
 	}
 
 	public List<String> publicMessages() {

@@ -3,6 +3,8 @@
 
 package sneer.life;
 
+import java.util.ArrayList;
+
 
 public interface Life extends LifeView {
 
@@ -16,6 +18,8 @@ public interface Life extends LifeView {
 
     public void profile(String profile);
     public void contactInfo(String contactInfo);
+
+    public void thing(String name, Object thing);
 
 }
 

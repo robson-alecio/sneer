@@ -3,6 +3,7 @@
 
 package sneer.life;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -21,9 +22,11 @@ public interface LifeView {
 
     public String profile();
     public String contactInfo();
-
+    
 	public List<String> messagesSentToMe();
 
+	public Object thing(String name);
+	
 	public Date lastSightingDate();
 	
 	public static final	ThreadLocal<String> CALLING_NICKNAME = new ThreadLocal<String>();

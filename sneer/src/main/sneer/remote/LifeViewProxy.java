@@ -101,7 +101,11 @@ class LifeViewProxy implements LifeView, Serializable {
         return _lastSightingDate;
 	}
 
-	private static final long serialVersionUID = 1L;
+	public Object thing(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
+	private static final long serialVersionUID = 1L;
 
 }

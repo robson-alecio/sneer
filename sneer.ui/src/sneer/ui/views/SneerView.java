@@ -5,6 +5,7 @@ package sneer.ui.views;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -25,11 +26,14 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
@@ -47,6 +51,7 @@ import sneer.life.JpgImage;
 import sneer.life.Life;
 import sneer.life.LifeView;
 import sneer.ui.SneerUIPlugin;
+import sneer.ui.topten.TopTen;
 import wheelexperiments.reactive.Signal.Receiver;
 
 
@@ -75,6 +80,9 @@ public class SneerView extends ViewPart {
 	private long _startupTime = 0;
 
 	private boolean _isStopped = false;
+
+	private final TopTen _topTen = new TopTen(sneer());
+	private Combo _categories;
 	
 
 	class GuiContact {
@@ -314,10 +322,12 @@ public class SneerView extends ViewPart {
 	 */
 	public void createPartControl(Composite parent) {
 
-		Composite sashForm = new SashForm(parent, SWT.HORIZONTAL | SWT.SMOOTH);
-
-		createContactsViewer(sashForm);
-		createProfileForm(sashForm);
+		Composite mainForm = new SashForm(parent, SWT.HORIZONTAL | SWT.SMOOTH);
+		createContactsViewer(mainForm);
+		
+		Composite contactForm = new SashForm(mainForm, SWT.VERTICAL | SWT.SMOOTH); //TODO Ricardo Birmann, please make the divider bar between both forms visible.
+		createProfileForm(contactForm);
+		createTopTenForm(contactForm);
 
 		makeActions();
 		hookContextMenu();
@@ -345,6 +355,23 @@ public class SneerView extends ViewPart {
 
 		_profileText =  createTextFieldWithLabel(form, "Profile:");
 		_profileText.setLayoutData(new RowData(AS_WIDE_AS_POSSIBLE, 60));
+	}
+
+	private void createTopTenForm(Composite parent) {
+		Composite form = new Composite(parent, 0);
+		form.setLayout(new RowLayout(SWT.VERTICAL));
+		
+		new Label(form, 0).setText("'TopTen' Categories:");
+		_categories = new Combo(form, SWT.DROP_DOWN);
+		_categories.setLayoutData(new RowData(100, SWT.DEFAULT));
+		
+		_categories.addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent e) {
+				if (e.keyCode != 13) return;
+				_topTen.newCategory(_categories.getText());
+				refreshTopTenForm(_me);
+			}
+		});
 	}
 
 	private Text createTextFieldWithLabel(Composite parent, String label) {
@@ -476,8 +503,13 @@ public class SneerView extends ViewPart {
 			public IStatus runInUIThread(IProgressMonitor monitor) {
 				try {
 					refreshContacts();
-					refreshContactForm();
+					
+					GuiContact contact = selectedContact();
+					refreshContactForm(contact);
+					refreshTopTenForm(contact);
+					
 					sneer().checkNewMessages();
+					
 				} catch (RuntimeException e) {
 					e.printStackTrace(); // Eclipse does not show the stack trace.
 				}
@@ -491,10 +523,9 @@ public class SneerView extends ViewPart {
 		job.schedule();
 	}
 
-	private void refreshContactForm() {
+	private void refreshContactForm(GuiContact contact) {
 		if (_nicknameText.isDisposed()) return;
 		
-		GuiContact contact = selectedContact();
 		if (contact == null) {
 			clearContactForm();
 			return;
@@ -510,6 +541,32 @@ public class SneerView extends ViewPart {
 		_thoughtOfTheDayText.setText(nullToEmptyString(lifeView.thoughtOfTheDay().currentValue()));
 		_contactInfoText.setText(nullToEmptyString(lifeView.contactInfo()));
 		_profileText.setText(nullToEmptyString(lifeView.profile()));
+	}
+	
+	private void refreshTopTenForm(GuiContact contact) {
+		if (_categories.isDisposed()) return;
+		
+		if (contact == null) {
+			clearTopTenForm();
+			return;
+		}
+		_categories.setItems(topTenCategories(contact.lifeView()));
+	}
+
+	@SuppressWarnings("unchecked")
+	public String[] topTenCategories(LifeView lifeView) {
+		List<String> list = _topTen.categoriesList(lifeView);
+		if (list == null) return new String[]{"<TopTen not installed>"};
+
+		String[] result = new String[list.size()];
+		for (int i = 0; i < result.length; i++)
+			result[i] = list.get(i);
+
+		return result;
+	}
+	
+	private void clearTopTenForm() {
+		_categories.setItems(new String[0]);
 	}
 
 	private String nullToEmptyString(String string) {

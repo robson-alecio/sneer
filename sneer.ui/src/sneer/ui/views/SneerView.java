@@ -16,8 +16,6 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -61,9 +59,9 @@ public class SneerView extends ViewPart {
 	private TreeViewer _contactsViewer;
 	private DrillDownAdapter _drillDownAdapter;
 	private Action _addContactAction;
+	private Action _sendMessageAction;
 	private Action _removeContactAction;
 	private Action _personalInfoAction;
-	private Action _doubleClickAction;
 
 	private Text _nicknameText;
 	private Text _nameText;
@@ -391,6 +389,7 @@ public class SneerView extends ViewPart {
 
 	private void fillContextMenu(IMenuManager manager) {
 		if (selectedContact() != null) {
+			manager.add(_sendMessageAction);
 			manager.add(_removeContactAction);
 			manager.add(new Separator());
 		}
@@ -417,6 +416,22 @@ public class SneerView extends ViewPart {
 		_addContactAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
 			getImageDescriptor(ISharedImages.IMG_OBJ_ELEMENT));
 
+		
+		
+		_sendMessageAction = new Action() {
+			public void run() {
+				GuiContact contact = selectedContact();
+				if (contact == null) return;
+				sneer().sendMessage(contact.nickname());
+			}
+		};
+		_sendMessageAction.setText("Send Message");
+		_sendMessageAction.setToolTipText("Send a pop-up message to this contact.");
+		_sendMessageAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
+			getImageDescriptor(ISharedImages.IMG_TOOL_COPY));
+
+		
+		
 		_removeContactAction = new Action() {
 			public void run() {
 				GuiContact contact = selectedContact();
@@ -438,22 +453,14 @@ public class SneerView extends ViewPart {
 		_personalInfoAction.setToolTipText("Edit your sovereign info.");
 		_personalInfoAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
 				getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
-		_doubleClickAction = new Action() {
-			public void run() {
-				GuiContact contact = selectedContact();
-				if (contact == null) return; //The tree view node might have been closed.
-				sneer().sendPublicMessage(); //TODO: Make this a private message to the chosen contact.
-			}
-
-		};
 	}
 
 	private void hookDoubleClickAction() {
-		_contactsViewer.addDoubleClickListener(new IDoubleClickListener() {
-			public void doubleClick(DoubleClickEvent event) {
-				_doubleClickAction.run();
-			}
-		});
+//		_contactsViewer.addDoubleClickListener(new IDoubleClickListener() {
+//			public void doubleClick(DoubleClickEvent event) {
+//				_xyzAction.run();
+//			}
+//		});
 	}
 
 	/**

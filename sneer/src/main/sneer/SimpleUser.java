@@ -65,8 +65,8 @@ public abstract class SimpleUser implements User {
 		lamentError(e.toString());
 	}
 
-	public String writePublicMessage() {
-		return answer("Write your public message: ", "");
+	public String writeMessage() {
+		return answer("Write a message: ", "");
 	}
 	
 	abstract protected String answer(String prompt, String defaultAnswer);

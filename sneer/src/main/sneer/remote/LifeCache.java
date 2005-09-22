@@ -19,7 +19,7 @@ class LifeCache implements Serializable {
 	
 	private final Set<String> _nicknames;
 
-	private final List<String> _publicMessages;
+	private final List<String> _messagesSentToMe;
 
 	private final Date _creation;
 
@@ -32,7 +32,7 @@ class LifeCache implements Serializable {
 			_profile = null;
 			_contactInfo = null;
 			_nicknames = null;
-			_publicMessages = null;
+			_messagesSentToMe = null;
 			_creation = null;
 		} else {
 			_name = lifeView.name();
@@ -41,7 +41,7 @@ class LifeCache implements Serializable {
 			_picture = lifeView.picture();
 			_contactInfo = lifeView.contactInfo();
 			_nicknames = lifeView.nicknames();
-			_publicMessages = lifeView.publicMessages();
+			_messagesSentToMe = lifeView.messagesSentToMe();
 			_creation = new Date();
 		}
 	}
@@ -66,13 +66,12 @@ class LifeCache implements Serializable {
 		return _contactInfo;
 	}
 
-	public List<String> messagesSentTo(String contact) {
-		contact.toString();
+	public List<String> messagesSentToMe() {
 		throw new RuntimeException("To be implemented");
 	}
 
 	public List<String> publicMessages() {
-		return _publicMessages;
+		return _messagesSentToMe;
 	}
 
 	public Date lastSightingDate() {

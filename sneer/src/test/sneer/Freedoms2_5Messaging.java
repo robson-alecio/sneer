@@ -22,9 +22,5 @@ public class Freedoms2_5Messaging extends Freedom2  {
 	}
 */
 
-	public void testPublicMessaging() throws Exception {
-		_ziba.send("Hello World");
-		assertTrue(myContact("Ziba").publicMessages().contains("Hello World"));
-	}
 
 }

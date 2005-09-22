@@ -85,8 +85,8 @@ class LifeViewProxy implements LifeView, Serializable {
 		return _cache.contactInfo();
 	}
 
-	public List<String> messagesSentTo(String contact) {
-		return _cache.messagesSentTo(contact);
+	public List<String> messagesSentToMe() {
+		return _cache.messagesSentToMe();
 	}
 
 	public List<String> publicMessages() {

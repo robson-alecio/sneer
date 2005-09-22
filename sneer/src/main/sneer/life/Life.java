@@ -17,7 +17,5 @@ public interface Life extends LifeView {
     public void profile(String profile);
     public void contactInfo(String contactInfo);
 
-    public void send(String message);
-
 }
 

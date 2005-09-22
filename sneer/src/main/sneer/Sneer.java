@@ -29,7 +29,7 @@ public class Sneer {
 		String thoughtOfTheDay(String currentThought);
 		JpgImage confirmPicture(JpgImage image);
 
-		String writePublicMessage();
+		String writeMessage();
 		
 		String giveNickname();
 		String informTcpAddress(String defaultAddress);
@@ -131,17 +131,11 @@ public class Sneer {
 		execute(new PersonalInfoEditting(_user, _life));
 	}
 
-
-	public void sendPublicMessage() {
-		String message = _user.writePublicMessage();
-		_life.send(message);
-	}
-
 	public void checkNewMessages() {
 		for (String nickname : _life.nicknames()) {
 			LifeView contact = _life.contact(nickname);
 			if (contact.lastSightingDate() == null) continue;
-			showMessages(nickname, contact.publicMessages());
+			showMessages(nickname, contact.messagesSentToMe());
 		}
 	}
 	
@@ -168,6 +162,10 @@ public class Sneer {
 
 	public void stop() {
 		_user.goodbye();
+	}
+
+	public void sendMessage(String message) {
+		
 	}
 
 }

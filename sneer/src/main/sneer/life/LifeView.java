@@ -22,8 +22,8 @@ public interface LifeView {
     public String profile();
     public String contactInfo();
 
-	public List<String> publicMessages();
-	
+	public List<String> messagesSentToMe();
+
 	public Date lastSightingDate();
 	
 	public static final	ThreadLocal<String> CALLING_NICKNAME = new ThreadLocal<String>();

@@ -5,7 +5,6 @@
 package sneer.life;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,7 +28,6 @@ public class LifeImpl implements Life, Serializable {
 
 	private final Map<String, LifeView> _contactsByNickname = new HashMap<String, LifeView>();
 
-    private final List<String> _publicMessages = new ArrayList<String>();
 
 	public LifeImpl(String name) {
 		name(name);
@@ -93,14 +91,11 @@ public class LifeImpl implements Life, Serializable {
         return _contactInfo;
     }
 
-    public void send(String message) {
-        _publicMessages.add(message);
-    }
-
-	public List<String> publicMessages() {
-		return _publicMessages;
-    }
-
+	public List<String> messagesSentToMe() {
+		// FIXME Auto-generated method stub
+		return null;
+	}
+    
 	public Date lastSightingDate() {
 		return new Date(); //A local LifeView is always up-to-date.
 	}

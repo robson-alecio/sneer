@@ -31,6 +31,7 @@ public class TopTen {
 	}
 
 	public @SuppressWarnings("unchecked") ArrayList<String> categoriesList(LifeView lifeView) {
+		if (lifeView.lastSightingDate() == null) return null;
 		return (ArrayList<String>)lifeView.thing("TopTenCategoryList");
 	}
 

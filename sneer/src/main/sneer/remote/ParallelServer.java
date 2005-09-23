@@ -70,7 +70,7 @@ public class ParallelServer implements Runnable {
 				socket.writeObject(envelope);
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			//If it was really important, the remote peer will ask again.  :)
 		}
 	}
 

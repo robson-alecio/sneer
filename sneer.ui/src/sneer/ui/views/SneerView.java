@@ -453,7 +453,7 @@ public class SneerView extends ViewPart {
 					SneerUIPlugin.sneerUser().acknowledge("For now, you can only send messages to first level contacts.");
 					return;
 				}
-				sneer().sendMessage(contact.lifeView());
+				SneerUIPlugin.sneerUser().getChatForContact(contact.nickname());
 			}
 		};
 		_sendMessageAction.setText("Send Message");

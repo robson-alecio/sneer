@@ -4,8 +4,14 @@
 package sneer.ui;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import sneer.SimpleUser;
@@ -16,6 +22,8 @@ public class EclipseSneerUser extends SimpleUser {
 	private final Shell _shell;
 	
 	private SneerView _contactsView;
+
+	private Map<String, Chat> chats = new HashMap<String,Chat>();
 
 	public EclipseSneerUser(Shell shell) {
 		_shell = shell;
@@ -56,6 +64,56 @@ public class EclipseSneerUser extends SimpleUser {
 	public void goodbye() {
 		if (null == _contactsView) return;
 		_contactsView.stop();		
+	}
+	
+	public Chat getChatForContact(final String contact) {
+		if (chats.get(contact) == null) {
+			Shell chatShell = new Shell(_shell.getDisplay());
+			chatShell.setLayout(new FillLayout());
+			chatShell.setText("Chat with "+ contact);
+			chatShell.setSize(400, 500);
+			Chat chat = new Chat(chatShell, SWT.NONE) {
+
+				@Override
+				protected void sendMessage(String text) {
+					SneerUIPlugin.sneer().sendMessage(contact, text);
+					
+				}
+				
+			};
+			chatShell.open();
+			chats.put(contact, chat);
+			return getChatForContact(contact);
+		}
+		return chats.get(contact);
+		
+	}
+
+	public void receiveMessage(String message, String sender) {
+		getChatForContact(sender).addCorrespondence(message);
+	}
+	
+	public static void main(String[] args) {
+		Display d = Display.getDefault();
+		
+		Shell chatShell = new Shell(d);
+		chatShell.setSize(400, 500);
+		Chat chat = new Chat(chatShell, SWT.NONE) {
+
+			@Override
+			protected void sendMessage(String text) {
+			}
+			
+		};
+		
+		
+		chatShell.open();
+		while(!chatShell.isDisposed() && !d.isDisposed()) {
+			if (!d.readAndDispatch()) {
+				d.sleep();
+			}
+		}
+		d.dispose();
 	}
 
 }

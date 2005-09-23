@@ -41,6 +41,8 @@ public class Sneer {
 		void acknowledge(String fact);
 
 		int confirmServerPort(int currentPort);
+		
+		void receiveMessage(String message, String sender);
 
 		void lookAtMe();
 		
@@ -163,7 +165,7 @@ public class Sneer {
 		for (String message : messages) {
 		if (_knownMessages.contains(message)) continue;
 			_knownMessages.add(message);
-			_user.acknowledge("Message sent from " + sender + ":\n\n" + message);
+			_user.receiveMessage(message, sender);
 		}
 		
 	}
@@ -176,8 +178,8 @@ public class Sneer {
 		_user.goodbye();
 	}
 
-	public void sendMessage(LifeView lifeView) {
-		String message = _user.writeMessage();
+	public void sendMessage(String nickname, String message) {
+		LifeView lifeView = _life.contact(nickname);
 		if (message == null || message.length() == 0) return;
 		List<String> messages = getMessagesTo(lifeView);
 		messages.add(message);

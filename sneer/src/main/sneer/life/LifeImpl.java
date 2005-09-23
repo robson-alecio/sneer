@@ -117,6 +117,10 @@ public class LifeImpl implements Life, Serializable {
 		_thingsByName.put(name, thing);
 	}
 	
+	public Map<String, Object> things() {
+		return _thingsByName;
+	}
+
 	private static final long serialVersionUID = 1L;
 
 }

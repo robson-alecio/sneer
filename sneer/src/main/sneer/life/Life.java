@@ -3,8 +3,6 @@
 
 package sneer.life;
 
-import java.util.ArrayList;
-
 
 public interface Life extends LifeView {
 

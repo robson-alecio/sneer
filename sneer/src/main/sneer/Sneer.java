@@ -4,8 +4,11 @@
 package sneer;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.prevayler.Prevayler;
@@ -135,8 +138,17 @@ public class Sneer {
 		for (String nickname : _life.nicknames()) {
 			LifeView contact = _life.contact(nickname);
 			if (contact.lastSightingDate() == null) continue;
-			showMessages(nickname, contact.messagesSentToMe());
+			if (allSentMessages(contact) == null) continue;
+			List<String> messages = allSentMessages(contact).get(_life.name());
+			if (messages == null) continue;
+			showMessages(nickname, messages);
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private Map<String, List<String>> allSentMessages(LifeView contact) {
+		Map<String, List<String>> allMessages = (Map<String, List<String>>)contact.thing("Messages");
+		return allMessages;
 	}
 	
 	public void close() {
@@ -164,8 +176,28 @@ public class Sneer {
 		_user.goodbye();
 	}
 
-	public void sendMessage(String message) {
-		
+	public void sendMessage(LifeView lifeView) {
+		String message = _user.writeMessage();
+		if (message == null || message.length() == 0) return;
+		List<String> messages = getMessagesTo(lifeView);
+		messages.add(message);
+	}
+
+	private List<String> getMessagesTo(LifeView contact) {
+		List<String> messagesToContact = allMySentMessages().get(contact.name());
+		if (messagesToContact == null) {
+			allMySentMessages().put(contact.name(), new ArrayList<String>());
+			return getMessagesTo(contact);
+		}
+		return messagesToContact;
+	}
+
+	private Map<String, List<String>> allMySentMessages() {
+		if (allSentMessages(_life) == null) {
+			_life.thing("Messages", new HashMap<String, List<String>>());
+			return allMySentMessages();
+		}
+		return allSentMessages(_life);
 	}
 
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import sneer.life.JpgImage;
@@ -20,7 +21,7 @@ class LifeCache implements Serializable {
 	
 	private final Set<String> _nicknames;
 
-	private final List<String> _messagesSentToMe;
+	private Map<String, Object> _things;
 
 	private final Date _creation;
 
@@ -33,7 +34,7 @@ class LifeCache implements Serializable {
 			_profile = null;
 			_contactInfo = null;
 			_nicknames = null;
-			_messagesSentToMe = null;
+			_things = null;
 			_creation = null;
 		} else {
 			_name = lifeView.name();
@@ -42,7 +43,7 @@ class LifeCache implements Serializable {
 			_picture = lifeView.picture();
 			_contactInfo = lifeView.contactInfo();
 			_nicknames = lifeView.nicknames();
-			_messagesSentToMe = lifeView.messagesSentToMe();
+			_things = lifeView.things();
 			_creation = new Date();
 		}
 	}
@@ -72,16 +73,20 @@ class LifeCache implements Serializable {
 		//FIXME To be implemented.
 	}
 
-	public List<String> publicMessages() {
-		return _messagesSentToMe;
-	}
-
 	public Date lastSightingDate() {
 		return _creation;
 	}
 
 	public JpgImage picture() {
 		return _picture;
+	}
+
+	public Object thing(String name) {
+		return _things.get(name);
+	}
+	
+	public Map<String, Object> things() {
+		return _things;
 	}
 
 	private LifeCache() {  //Required by XStream to run on JVMs other than Sun's.

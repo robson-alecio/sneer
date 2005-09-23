@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -85,27 +84,23 @@ class LifeViewProxy implements LifeView, Serializable {
 		return _cache.contactInfo();
 	}
 
-	public List<String> messagesSentToMe() {
-		return _cache.messagesSentToMe();
-	}
-
-	public List<String> publicMessages() {
-		return _cache.publicMessages();
-	}
-
 	public JpgImage picture() {
 		return _cache.picture();
+	}
+
+	public Object thing(String name) {
+		return _cache.thing(name);
+	}
+
+	public Map<String, Object> things() {
+		return _cache.things();
 	}
 
 	public Date lastSightingDate() {
         return _lastSightingDate;
 	}
 
-	public Object thing(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	private static final long serialVersionUID = 1L;
+
 
 }

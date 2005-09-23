@@ -3,9 +3,8 @@
 
 package sneer.life;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import wheelexperiments.reactive.Signal;
@@ -23,8 +22,7 @@ public interface LifeView {
     public String profile();
     public String contactInfo();
     
-	public List<String> messagesSentToMe();
-
+	public Map<String, Object> things(); //FIXME Move to Life and make LifeCache work given a Life.
 	public Object thing(String name);
 	
 	public Date lastSightingDate();

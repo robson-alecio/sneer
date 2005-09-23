@@ -10,6 +10,8 @@ import java.util.Map;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -81,6 +83,13 @@ public class EclipseSneerUser extends SimpleUser {
 				}
 				
 			};
+			chatShell.addDisposeListener(new DisposeListener() {
+
+				public void widgetDisposed(DisposeEvent e) {
+					chats.remove(contact);
+				}
+				
+			});
 			chatShell.open();
 			chats.put(contact, chat);
 			return getChatForContact(contact);

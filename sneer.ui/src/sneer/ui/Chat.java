@@ -26,7 +26,7 @@ public abstract class Chat extends Composite {
 		setLayout(new GridLayout());
 		
 		GridData gd;
-		correspondence = new Text(this, SWT.MULTI | SWT.READ_ONLY);
+		correspondence = new Text(this, SWT.MULTI | SWT.READ_ONLY | SWT.WRAP | SWT.V_SCROLL | SWT.BORDER);
 		gd = new GridData();
 		gd.grabExcessHorizontalSpace = true;
 		gd.grabExcessVerticalSpace = true;
@@ -34,17 +34,21 @@ public abstract class Chat extends Composite {
 		gd.verticalAlignment = GridData.FILL;
 		correspondence.setLayoutData(gd);
 		
-		draft = new Text(this, SWT.SINGLE);
+		draft = new Text(this, SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
 		gd = new GridData();
 		gd.grabExcessHorizontalSpace = true;
 		gd.horizontalAlignment = GridData.FILL;
 		gd.verticalAlignment = GridData.FILL;
+		gd.heightHint = 60;
 		draft.setLayoutData(gd);
 		draft.addKeyListener(new KeyAdapter() {
 
 			public void keyPressed(KeyEvent e) {
 				if (e.keyCode == 13) {
 					sendDraft();
+					e.keyCode = 0;
+					e.doit = false;
+					e.character = 0;
 				}
 			}
 			
@@ -60,11 +64,8 @@ public abstract class Chat extends Composite {
 	}
 
 	private void addTextToCorrespondence(String msg) {
-		String before = correspondence.getText();
-		if (before.length() > 0) {
-			before += "\n";
-		}
-		correspondence.setText(before+ msg);
+		correspondence.setText(correspondence.getText()+ msg+"\n");
+		correspondence.setSelection(correspondence.getText().length()-1);
 	}
 	
 	public void addCorrespondence(String received) {

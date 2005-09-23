@@ -449,7 +449,11 @@ public class SneerView extends ViewPart {
 			public void run() {
 				GuiContact contact = selectedContact();
 				if (contact == null) return;
-				sneer().sendMessage(contact.nickname());
+				if (contact.distance() != 1) {
+					SneerUIPlugin.sneerUser().acknowledge("For now, you can only send messages to first level contacts.");
+					return;
+				}
+				sneer().sendMessage(contact.lifeView());
 			}
 		};
 		_sendMessageAction.setText("Send Message");

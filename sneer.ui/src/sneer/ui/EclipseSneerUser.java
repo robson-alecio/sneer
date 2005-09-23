@@ -13,7 +13,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import sneer.SimpleUser;
@@ -74,7 +73,7 @@ public class EclipseSneerUser extends SimpleUser {
 			chatShell.setLayout(new FillLayout());
 			chatShell.setText("Chat with "+ contact);
 			chatShell.setSize(400, 500);
-			Chat chat = new Chat(chatShell, SWT.NONE) {
+			Chat chat = new Chat(chatShell, SWT.NONE, contact) {
 
 				@Override
 				protected void sendMessage(String text) {
@@ -100,29 +99,6 @@ public class EclipseSneerUser extends SimpleUser {
 
 	public void receiveMessage(String message, String sender) {
 		getChatForContact(sender).addCorrespondence(message);
-	}
-	
-	public static void main(String[] args) {
-		Display d = Display.getDefault();
-		
-		Shell chatShell = new Shell(d);
-		chatShell.setSize(400, 500);
-		Chat chat = new Chat(chatShell, SWT.NONE) {
-
-			@Override
-			protected void sendMessage(String text) {
-			}
-			
-		};
-		
-		
-		chatShell.open();
-		while(!chatShell.isDisposed() && !d.isDisposed()) {
-			if (!d.readAndDispatch()) {
-				d.sleep();
-			}
-		}
-		d.dispose();
 	}
 
 }

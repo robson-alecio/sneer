@@ -10,11 +10,13 @@ import org.eclipse.swt.widgets.Text;
 
 public abstract class Chat extends Composite {
 
-	private Text correspondence;
-	private Text draft;
+	private Text _correspondence;
+	private Text _draft;
+	private final String _contact;
 
-	public Chat(Composite parent, int style) {
+	public Chat(Composite parent, int style, String contact) {
 		super(parent, style);
+		_contact = contact;
 		
 		initialize();
 		
@@ -26,22 +28,22 @@ public abstract class Chat extends Composite {
 		setLayout(new GridLayout());
 		
 		GridData gd;
-		correspondence = new Text(this, SWT.MULTI | SWT.READ_ONLY | SWT.WRAP | SWT.V_SCROLL | SWT.BORDER);
+		_correspondence = new Text(this, SWT.MULTI | SWT.READ_ONLY | SWT.WRAP | SWT.V_SCROLL | SWT.BORDER);
 		gd = new GridData();
 		gd.grabExcessHorizontalSpace = true;
 		gd.grabExcessVerticalSpace = true;
 		gd.horizontalAlignment = GridData.FILL;
 		gd.verticalAlignment = GridData.FILL;
-		correspondence.setLayoutData(gd);
+		_correspondence.setLayoutData(gd);
 		
-		draft = new Text(this, SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
+		_draft = new Text(this, SWT.BORDER | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
 		gd = new GridData();
 		gd.grabExcessHorizontalSpace = true;
 		gd.horizontalAlignment = GridData.FILL;
 		gd.verticalAlignment = GridData.FILL;
 		gd.heightHint = 60;
-		draft.setLayoutData(gd);
-		draft.addKeyListener(new KeyAdapter() {
+		_draft.setLayoutData(gd);
+		_draft.addKeyListener(new KeyAdapter() {
 
 			public void keyPressed(KeyEvent e) {
 				if (e.keyCode == 13) {
@@ -57,19 +59,19 @@ public abstract class Chat extends Composite {
 	}
 
 	protected void sendDraft() {
-		String msg = draft.getText();
-		draft.setText("");
+		String msg = _draft.getText();
+		_draft.setText("");
 		sendMessage(msg);
-		addTextToCorrespondence("sent: " + msg);
+		addTextToCorrespondence("You: " + msg);
 	}
 
 	private void addTextToCorrespondence(String msg) {
-		correspondence.setText(correspondence.getText()+ msg+"\n");
-		correspondence.setSelection(correspondence.getText().length()-1);
+		_correspondence.setText(_correspondence.getText()+ msg+"\r\n");
+		_correspondence.setSelection(_correspondence.getText().length()-1);
 	}
 	
 	public void addCorrespondence(String received) {
-		addTextToCorrespondence("received: "+received);
+		addTextToCorrespondence(_contact + ": " + received);
 	}
 	
 	protected abstract void sendMessage(String text);

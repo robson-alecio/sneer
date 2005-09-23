@@ -10,6 +10,8 @@ public class SourceImpl<T> extends Notifier<T> implements Source<T>, Serializabl
 
 	public void supply(T newValue) {
 		if (newValue == _currentValue) return;
+		if (newValue != null && newValue.equals(_currentValue)) return;
+		
 		_currentValue = newValue;
 		notifyReceivers();
 	}
@@ -19,5 +21,6 @@ public class SourceImpl<T> extends Notifier<T> implements Source<T>, Serializabl
 	}
 
 	private static final long serialVersionUID = 1L;
+
 
 }

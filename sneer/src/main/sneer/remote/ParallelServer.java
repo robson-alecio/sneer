@@ -11,10 +11,10 @@ import wheel.experiments.Cool;
 import wheel.experiments.environment.network.ObjectServerSocket;
 import wheel.experiments.environment.network.ObjectSocket;
 
-
 public class ParallelServer implements Runnable {
 
 	private final Life _life;
+
 	private final ObjectServerSocket _serverSocket;
 
 	public ParallelServer(Life life, ObjectServerSocket serverSocket) {
@@ -23,10 +23,10 @@ public class ParallelServer implements Runnable {
 		Cool.startDaemon(this);
 	}
 
-    public void run() {
+	public void run() {
 		while (true) {
 			final ObjectSocket socket;
-			
+
 			try {
 				socket = _serverSocket.accept();
 			} catch (IOException iox) {
@@ -39,7 +39,8 @@ public class ParallelServer implements Runnable {
 					try {
 						serve(socket);
 					} catch (IOException ignored) {
-						//The client will reconnect, if this connection was really important. :)
+						// The client will reconnect, if this connection was
+						// really important. :)
 					} catch (ClassNotFoundException cnfx) {
 						cnfx.printStackTrace();
 					}
@@ -48,11 +49,12 @@ public class ParallelServer implements Runnable {
 		}
 	}
 
-	private void serve(final ObjectSocket socket) throws IOException, ClassNotFoundException {
+	private void serve(final ObjectSocket socket) throws IOException,
+			ClassNotFoundException {
 		while (true) {
-			
-			final Envelope envelope = (Envelope)socket.readObject();
-			
+
+			final Envelope envelope = (Envelope) socket.readObject();
+
 			Cool.startDaemon(new Runnable() {
 				public void run() {
 					reply(socket, envelope);
@@ -62,15 +64,24 @@ public class ParallelServer implements Runnable {
 	}
 
 	private void reply(final ObjectSocket socket, final Envelope envelope) {
-		Query query = (Query)envelope.contents();
-		Object result = query.executeOn(_life);
-		envelope.contents(result);
+		Object contents = envelope.contents();
+		
+		if (contents instanceof Indian) {
+			Indian scout = ((Indian)contents);
+			scout.reportAbout(_life, socket);
+			envelope.contents("Indian settled");
+		} else {
+			Query query = (Query) contents;
+			Object result = query.executeOn(_life);
+			envelope.contents(result);
+		}
+
 		try {
 			synchronized (socket) {
 				socket.writeObject(envelope);
 			}
 		} catch (IOException e) {
-			//If it was really important, the remote peer will ask again.  :)
+			// If it was really important, the remote peer will ask again. :)
 		}
 	}
 
@@ -78,5 +89,4 @@ public class ParallelServer implements Runnable {
 		_serverSocket.close();
 	}
 
-	
 }

@@ -20,9 +20,11 @@ public class Connection implements QueryExecuter {
 	private final LifeView _lifeView; 
 
     private ParallelSocket _socket;
+    
 
     @SuppressWarnings("unchecked")
 	public <T> T execute(Query<T> query) throws IOException {
+    	
 		Object result;
 		ParallelSocket mySocket = null;
 		try {

@@ -1,4 +1,4 @@
-package wheelexperiments.reactive.radio;
+package wheelexperiments.reactive.smoke;
 
 import java.io.IOException;
 

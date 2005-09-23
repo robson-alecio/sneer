@@ -11,16 +11,25 @@ public abstract class Notifier<T> implements Signal<T> {
 
 	private final Set<Receiver<T>> _receivers = new HashSet<Receiver<T>>();
 
-	public synchronized void notifyReceivers() {
+	@SuppressWarnings("unchecked")
+	public void notifyReceivers() {
 		T newValue = currentValue();
-		for (Receiver<T> receiver : _receivers) {
-			receiver.receive(newValue);
+		Receiver<T>[] copy;
+		synchronized (_receivers) {
+			copy = new Receiver[_receivers.size()];
+			_receivers.toArray(copy);
 		}
+
+		for (Receiver<T> receiver : copy) receiver.receive(newValue);
 	}
 
-	public synchronized void addReceiver(Receiver<T> receiver) {
-		_receivers.add(receiver);
+	public void addReceiver(Receiver<T> receiver) {
+		synchronized (_receivers) { _receivers.add(receiver); }
 		receiver.receive(currentValue());
+	}
+
+	public void removeReceiver(Receiver<T> receiver) {
+		synchronized (_receivers) { _receivers.remove(receiver); }
 	}
 	
 }

@@ -4,6 +4,7 @@
 package sneer;
 
 import java.io.IOException;
+import java.net.BindException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -38,7 +39,9 @@ public class Sneer {
 		String informTcpAddress(String defaultAddress);
 
 		void lamentException(Exception e);
+		void lamentError(String error, String help);
 		void acknowledge(String fact);
+		boolean confirm(String proposition);
 
 		int confirmServerPort(int currentPort);
 		
@@ -66,7 +69,7 @@ public class Sneer {
 		_user = user;
 		_network = new XStreamNetwork(new XStream(), network);
 
-		Home._network = _network; //FIXME: Remove this static dependency. Transaction journal should be recoverable regardless of the network.
+		Home._network = _network; //FIXME: Remove this static dependency to Home. Transaction journal should be recoverable regardless of the network.
 		_prevayler = prevayler(directory);
 		_home = (Home)_prevayler.prevalentSystem();
 
@@ -96,8 +99,11 @@ public class Sneer {
 	}
 
 	private void startServer() {
+		int port = _home.serverPort();
 		try {
-			_server = new ParallelServer(_life, _network.openObjectServerSocket(_home.serverPort()));
+			_server = new ParallelServer(_life, _network.openObjectServerSocket(port));
+		} catch (BindException ignored) {
+			_user.lamentError("Port " + port + " is already being used by another application.", "You can have two instances of Sneer running if you like, for two people for example, but each one has to use a different port. If there is another application using that same port, you have either to close it, configure it to use a different port, or configure Sneer to use a different port.");
 		} catch (IOException e) {
 			_user.lamentException(e);
 		}

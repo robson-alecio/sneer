@@ -64,14 +64,17 @@ public abstract class SimpleUser implements User {
 		e.printStackTrace();
 		lamentError(e.toString());
 	}
+	
+	public void lamentError(String error, String help) {
+		if (confirm(error + "\n\nWould you like some help?"))
+			acknowledge(help);
+	}
 
 	public String writeMessage() {
 		return answer("Write a message: ", "");
 	}
-	
-	abstract protected String answer(String prompt, String defaultAnswer);
 
-	abstract protected boolean confirm(String proposition);
+	abstract protected String answer(String prompt, String defaultAnswer);
 
 	abstract protected void lamentError(String message);
 

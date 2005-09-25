@@ -14,15 +14,14 @@ public interface LifeView {
 
 	public String name();
 	public Signal<String> thoughtOfTheDay();
-	public JpgImage picture();
+	public Signal<JpgImage> picture();
 	
 	public Set<String> nicknames();
 	public LifeView contact(String nickname);
 
-    public String profile();
     public String contactInfo();
     
-	public Map<String, Object> things(); //FIXME Move to Life and make LifeCache work given a Life.
+	public Map<String, Object> things(); //FIXME Move to Life because it is modifiable.
 	public Object thing(String name);
 	
 	public Date lastSightingDate();

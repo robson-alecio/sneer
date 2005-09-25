@@ -25,7 +25,7 @@ public class PersonalInfoEditting implements Transaction {
 	}
 
 	private JpgImage confirmPicture(User _user, LifeView life) {
-		JpgImage currentPicture = life.picture();
+		JpgImage currentPicture = life.picture().currentValue();
 		JpgImage result = _user.confirmPicture(currentPicture);
 		return result == currentPicture	? null : result;
 	}

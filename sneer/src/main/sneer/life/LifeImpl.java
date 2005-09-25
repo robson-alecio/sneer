@@ -21,7 +21,8 @@ public class LifeImpl implements Life, Serializable {
 
 	private String _name;
 	private final Source<String> _thoughtOfTheDay = new SourceImpl<String>();
-	private JpgImage _picture;
+	private JpgImage _pictureOld;
+	private final Source<JpgImage> _picture = new SourceImpl<JpgImage>();
 
 	private String _profile;
     private String _contactInfo;
@@ -41,7 +42,7 @@ public class LifeImpl implements Life, Serializable {
 	public void thoughtOfTheDay(String thought) {
 		_thoughtOfTheDay.supply(thought);
 	}
-
+	
 	public Set<String> nicknames() {
 		return new HashSet<String>(_contactsByNickname.keySet());
 	}
@@ -101,12 +102,17 @@ public class LifeImpl implements Life, Serializable {
 		return new Date(); //A local LifeView is always up-to-date.
 	}
 
-	public JpgImage picture() {
+	public JpgImage pictureOld() {
+		return _pictureOld;
+	}
+
+	public Signal<JpgImage> picture() {
 		return _picture;
 	}
 
 	public void picture(JpgImage picture) {
-		_picture = picture;
+		_pictureOld = picture;
+		_picture.supply(picture);
 	}
 
 	public Object thing(String name) {

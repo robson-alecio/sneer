@@ -7,16 +7,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import sneer.life.JpgImage;
 import sneer.life.LifeView;
 
 class LifeCache implements Serializable {
 
 	private final String _name;
 	private final String _thoughtOfTheDay;
-	private JpgImage _picture;
 
-	private final String _profile;
 	private final String _contactInfo;
 	
 	private final Set<String> _nicknames;
@@ -30,8 +27,6 @@ class LifeCache implements Serializable {
 		if (lifeView == null || lifeView.lastSightingDate() == null) {
 			_name = null;
 			_thoughtOfTheDay = null;
-			_picture = null;
-			_profile = null;
 			_contactInfo = null;
 			_nicknames = null;
 			_things = null;
@@ -39,8 +34,6 @@ class LifeCache implements Serializable {
 		} else {
 			_name = lifeView.name();
 			_thoughtOfTheDay = lifeView.thoughtOfTheDay().currentValue();
-			_profile = lifeView.profile();
-			_picture = lifeView.picture();
 			_contactInfo = lifeView.contactInfo();
 			_nicknames = lifeView.nicknames();
 			_things = lifeView.things();
@@ -60,10 +53,6 @@ class LifeCache implements Serializable {
 		return _nicknames;
 	}
 
-	public String profile() {
-		return _profile;
-	}
-
 	public String contactInfo() {
 		return _contactInfo;
 	}
@@ -75,10 +64,6 @@ class LifeCache implements Serializable {
 
 	public Date lastSightingDate() {
 		return _creation;
-	}
-
-	public JpgImage picture() {
-		return _picture;
 	}
 
 	public Object thing(String name) {

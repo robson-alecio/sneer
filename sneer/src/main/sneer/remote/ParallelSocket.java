@@ -38,6 +38,7 @@ class ParallelSocket {
 		});
 	}
 
+	@SuppressWarnings("unchecked")
 	private void readObject() throws IOException {
 		try {
 			try {
@@ -46,7 +47,7 @@ class ParallelSocket {
 					_poBox.add((Envelope)object);
 					return;
 				}
-				SmokeSignal smokeSignal = (SmokeSignal)object;  //FIXME Class cast Exceptions are possible if other side is malicious.
+				SmokeSignal<?> smokeSignal = (SmokeSignal)object;  //FIXME Class cast Exceptions are possible if other side is malicious.
 				Indian indian = _indians.get(smokeSignal.indianId());
 				indian.receive(smokeSignal);
 			} catch (ClassNotFoundException e) {

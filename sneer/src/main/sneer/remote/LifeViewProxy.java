@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import sneer.life.JpgImage;
+import sneer.life.Life;
 import sneer.life.LifeView;
 import wheel.experiments.Cool;
 import wheelexperiments.reactive.Signal;
@@ -17,25 +18,37 @@ import wheelexperiments.reactive.SourceImpl;
 class LifeViewProxy implements LifeView, Serializable {
 
 	transient private final QueryExecuter _queryExecuter;
+	transient private boolean _updaterStarted;
+	transient private boolean _scoutsSent = false;
+	
 	private Date _lastSightingDate;
 	private Map<String, LifeView> _contactCache = new HashMap<String, LifeView>();
 	private LifeCache _cache;
 	private Source<String> _thoughtOfTheDay = new SourceImpl<String>();
-	private boolean _updaterStarted;
-	private boolean _scoutSent = false;
+	private Source<JpgImage> _picture = new SourceImpl<JpgImage>();
 
 	public LifeViewProxy(QueryExecuter queryExecuter) {
 		_queryExecuter = queryExecuter;
 	}
 
-	private void sendScout() {
-		if (_scoutSent) return;
-		
-		System.out.println("Sending Scout...");
+	private void sendScouts() {
+		if (_scoutsSent) return;
 		try {
-			_queryExecuter.execute(new Indian(_thoughtOfTheDay));
-			_scoutSent = true;
-			System.out.println("Scout Sent OK.");
+			_queryExecuter.execute(new Indian<String>(_thoughtOfTheDay){
+				@Override
+				protected Signal<String> signalToObserveOn(Life life) {
+					return life.thoughtOfTheDay();
+				}
+				private static final long serialVersionUID = 1L;
+			});
+			_queryExecuter.execute(new Indian<JpgImage>(_picture){
+				@Override
+				protected Signal<JpgImage> signalToObserveOn(Life life) {
+					return life.picture();
+				}
+				private static final long serialVersionUID = 1L;
+			});
+			_scoutsSent = true;
 		} catch (IOException ignored) {
 			ignored.printStackTrace();
 			//Simply ignore this exception, since the connection will try to reconnect anyway.
@@ -57,7 +70,7 @@ class LifeViewProxy implements LifeView, Serializable {
 
 	private void update() {
 		try {
-			sendScout();
+			sendScouts();
 
 			LifeCache newCache = _queryExecuter.execute(new LifeSightingQuery());
 			if (newCache == null) return;
@@ -65,7 +78,7 @@ class LifeViewProxy implements LifeView, Serializable {
 			_cache = newCache;
 			_lastSightingDate = new Date();
 		} catch (IOException ignored) {
-			_scoutSent = false;
+			_scoutsSent = false;
 			//Simply ignore this exception, since the connection will try to reconnect anyway.
 		}
 	}
@@ -93,16 +106,12 @@ class LifeViewProxy implements LifeView, Serializable {
 		return proxy;
 	}
 
-	public String profile() {
-		return _cache.profile();
-	}
-
 	public String contactInfo() {
 		return _cache.contactInfo();
 	}
 
-	public JpgImage picture() {
-		return _cache.picture();
+	public Signal<JpgImage> picture() {
+		return _picture;
 	}
 
 	public Object thing(String name) {

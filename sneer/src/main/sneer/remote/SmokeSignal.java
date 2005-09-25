@@ -2,13 +2,14 @@ package sneer.remote;
 
 import java.io.Serializable;
 
-public class SmokeSignal implements Serializable {
+public class SmokeSignal<T> implements Serializable {
 
 	private final int _indianId;
-	private final String _newValue;
+	private final T _newValue;
 
-	SmokeSignal(int indianId, String newValue) {
-		_newValue = newValue;
+	@SuppressWarnings("unchecked")
+	SmokeSignal(int indianId, Object newValue) {
+		_newValue = (T)newValue;
 		_indianId = indianId;
 	}
 	
@@ -16,7 +17,7 @@ public class SmokeSignal implements Serializable {
 		return _indianId;
 	}
 
-	String newValue() {
+	T newValue() {
 		return _newValue;
 	}
 

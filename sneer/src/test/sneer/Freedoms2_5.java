@@ -7,19 +7,6 @@ package sneer;
 
 public class Freedoms2_5 extends Freedom2  {
 
-	public void testProfileSharing() throws Exception {
-		String zibasProfile =
-		    "passions: simplicity\n" +
-		    "sports: soccer\n" +
-		    "activities: gym, voley\n" +
-		    "books: Dune, Lord of the Flies, Shibumi\n" +
-		    "movies: Matrix, Instinct\n" +
-		    "cuisines: Italian"; 
-		_ziba.profile(zibasProfile);
-
-		assertEquals(zibasProfile, myContact("Ziba").profile());
-	}
-
 	public void testContactInfoSharing() throws Exception {
 		String zibasContactInfo =
 		    "E-mail:ziba@soares.net\n" +

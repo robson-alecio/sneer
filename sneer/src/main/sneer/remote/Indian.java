@@ -9,33 +9,34 @@ import sneer.life.Life;
 import sneer.life.LifeView;
 import wheel.experiments.environment.network.ObjectSocket;
 import wheelexperiments.reactive.Signal;
+import wheelexperiments.reactive.Signals;
 import wheelexperiments.reactive.Source;
 import wheelexperiments.reactive.Signal.Receiver;
 
-public class Indian implements Query<String>, Serializable {
+abstract class Indian<T> implements Query<String>, Serializable {
 
 	static private int _nextId = 1;
 
 	private final int _id = _nextId++;
 
-	transient Signal<String> _observedSignal;
+	transient Signal<T> _observedSignal;
 	transient private ObjectSocket _socket;
 
-	transient final private Source<String> _sourceToNotify;
+	transient final private Source<T> _sourceToNotify;
 
-	Indian(Source<String> sourceToNotify) {
+	Indian(Source<T> sourceToNotify) {
 		_sourceToNotify = sourceToNotify;
 	}
 	
 	public void reportAbout(Life life, ObjectSocket socket) {
 		System.out.println("Sitting Bull reporting, sir.");
 		_socket = socket;
-		_observedSignal = life.thoughtOfTheDay();
-		_observedSignal.addReceiver(new Receiver<String>() {
-			public void receive(String newThoughtOfTheDay) {
+		_observedSignal = signalToObserveOn(life);
+		Signals.transientReception(_observedSignal, new Receiver<T>() {
+			public void receive(T newThoughtOfTheDay) {
 				try {
 					System.out.println("Sending smoke signal..." + newThoughtOfTheDay);
-					_socket.writeObject(new SmokeSignal(_id, newThoughtOfTheDay));
+					_socket.writeObject(new SmokeSignal<String>(_id, newThoughtOfTheDay));
 				} catch (IOException e) {
 					e.printStackTrace();
 					_observedSignal.removeReceiver(this);
@@ -45,11 +46,13 @@ public class Indian implements Query<String>, Serializable {
 		
 	}
 
+	abstract protected Signal<T> signalToObserveOn(Life life);
+
 	public int id() {
 		return _id;
 	}
 
-	public void receive(SmokeSignal smokeSignal) {
+	public void receive(SmokeSignal<T> smokeSignal) {
 		_sourceToNotify.supply(smokeSignal.newValue());
 	}
 

@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class JpgImage implements Serializable {
 
@@ -29,6 +30,17 @@ public class JpgImage implements Serializable {
 		return new ByteArrayInputStream(_jpegFileBytes);
 	}
 
+	@Override
+	public boolean equals(Object other) {
+		if (!(other instanceof JpgImage)) return false;
+		return Arrays.equals(_jpegFileBytes, ((JpgImage)other)._jpegFileBytes);
+	}
+
+	@Override
+	public int hashCode() {
+		return Arrays.hashCode(_jpegFileBytes);
+	}
+	
 	private static final long serialVersionUID = 1L;
 
 }

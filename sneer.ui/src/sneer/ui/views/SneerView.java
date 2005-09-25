@@ -72,7 +72,6 @@ public class SneerView extends ViewPart {
 	private Text _nameText;
 	private Text _thoughtOfTheDayText;
 	private Text _contactInfoText;
-	private Text _profileText;
 	
 	private GuiContact _me;
 
@@ -219,7 +218,7 @@ public class SneerView extends ViewPart {
 
 		private Image produceImage() {
 			ImageLoader loader = new ImageLoader();
-			JpgImage jpg = _lifeView.picture();
+			JpgImage jpg = _lifeView.picture().currentValue();
 			if (jpg == null) return DEFAULT_IMAGE;
 			ImageData data = loader.load(jpg.jpegFileContents())[0];
 			return new Image(null, data.scaledTo(32, 32));
@@ -352,9 +351,6 @@ public class SneerView extends ViewPart {
 		
 		_contactInfoText =  createTextFieldWithLabel(form, "Contact Information:");
 		_contactInfoText.setLayoutData(new RowData(AS_WIDE_AS_POSSIBLE, 60));
-
-		_profileText =  createTextFieldWithLabel(form, "Profile:");
-		_profileText.setLayoutData(new RowData(AS_WIDE_AS_POSSIBLE, 60));
 	}
 
 	private void createTopTenForm(Composite parent) {
@@ -544,7 +540,6 @@ public class SneerView extends ViewPart {
 		_nameText.setText(nullToEmptyString(lifeView.name()));
 		_thoughtOfTheDayText.setText(nullToEmptyString(lifeView.thoughtOfTheDay().currentValue()));
 		_contactInfoText.setText(nullToEmptyString(lifeView.contactInfo()));
-		_profileText.setText(nullToEmptyString(lifeView.profile()));
 	}
 	
 	private void refreshTopTenForm(GuiContact contact) {
@@ -586,7 +581,6 @@ public class SneerView extends ViewPart {
 		_nameText.setText("");
 		_thoughtOfTheDayText.setText("");
 		_contactInfoText.setText("");
-		_profileText.setText("");
 	}
 
 	private void refreshContacts() {

@@ -34,20 +34,8 @@ class LifeViewProxy implements LifeView, Serializable {
 	private void sendScouts() {
 		if (_scoutsSent) return;
 		try {
-			_queryExecuter.execute(new Indian<String>(_thoughtOfTheDay){
-				@Override
-				protected Signal<String> signalToObserveOn(Life life) {
-					return life.thoughtOfTheDay();
-				}
-				private static final long serialVersionUID = 1L;
-			});
-			_queryExecuter.execute(new Indian<JpgImage>(_picture){
-				@Override
-				protected Signal<JpgImage> signalToObserveOn(Life life) {
-					return life.picture();
-				}
-				private static final long serialVersionUID = 1L;
-			});
+			_queryExecuter.execute(new IndianForThoughtOfTheDay(_thoughtOfTheDay));
+			_queryExecuter.execute(new IndianForPicture(_picture));
 			_scoutsSent = true;
 		} catch (IOException ignored) {
 			ignored.printStackTrace();
@@ -135,5 +123,31 @@ class LifeViewProxy implements LifeView, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	
+	static private class IndianForThoughtOfTheDay extends Indian<String> {
+		private IndianForThoughtOfTheDay(Source<String> thoughtOfTheDay) {
+			super(thoughtOfTheDay);
+		}
+		
+		@Override
+		protected Signal<String> signalToObserveOn(Life life) {
+			return life.thoughtOfTheDay();
+		}
+
+		private static final long serialVersionUID = 1L;
+	}
+
+	static private class IndianForPicture extends Indian<JpgImage> {
+		private IndianForPicture(Source<JpgImage> picture) {
+			super(picture);
+		}
+		
+		@Override
+		protected Signal<JpgImage> signalToObserveOn(Life life) {
+			return life.picture();
+		}
+
+		private static final long serialVersionUID = 1L;
+	}
 
 }

@@ -114,20 +114,31 @@ public class SneerView extends ViewPart {
 					if (_isStopped) return;
 					
 					_cachedThoughtOfTheDay = newValue;
-					UIJob job = new UIJob("Contact refresh") {
-						public IStatus runInUIThread(IProgressMonitor monitor) {
-							_contactsViewer.refresh(GuiContact.this, true);
-							return Status.OK_STATUS;
-						}						
-					};
+					refreshMyTreeItem();
+				}
+			});
+
+			_lifeView.picture().addReceiver(new Receiver<JpgImage>() {
+				public void receive(JpgImage newValue) {
+					if (_isStopped) return;
 					
-					job.setSystem(true);
-					job.schedule();
-					
+					_image = null;
+					refreshMyTreeItem();
 				}
 			});
 		}
-		
+
+		private void refreshMyTreeItem() {
+			UIJob job = new UIJob("Contact refresh") {
+				public IStatus runInUIThread(IProgressMonitor monitor) {
+					_contactsViewer.refresh(GuiContact.this, true);
+					return Status.OK_STATUS;
+				}						
+			};
+			job.setSystem(true);
+			job.schedule();
+		}
+
 		String nickname() {
 			return _nickname;
 		}

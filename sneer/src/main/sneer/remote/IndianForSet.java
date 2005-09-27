@@ -19,7 +19,7 @@ abstract class IndianForSet<T> extends AbstractIndian {
 	}
 
 	public void reportAbout(Life life, ObjectSocket socket) {
-		System.out.println("Sitting Bull reporting, sir.");
+		System.out.println("Dances With Wolves reporting, sir.");
 		_socket = socket;
 		_observedSignal = setSignalToObserveOn(life);
 		Signals.transientReception(_observedSignal, new Receiver<T>() {
@@ -54,7 +54,10 @@ abstract class IndianForSet<T> extends AbstractIndian {
 	private static final long serialVersionUID = 1L;
 
 	abstract protected SetSignal<T> setSignalToObserveOn(Life life);
-	abstract protected SetSource<T> createLocalSetSourceToNotify();
+	
+	protected SetSource<T> createLocalSetSourceToNotify() {
+		return new SetSource<T>();
+	}
 
 	@SuppressWarnings("unchecked")
 	public void receive(SmokeSignal smokeSignal) {

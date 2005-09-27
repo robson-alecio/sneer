@@ -9,6 +9,7 @@ import wheel.experiments.environment.network.ObjectSocket;
 import wheelexperiments.reactive.Signal;
 import wheelexperiments.reactive.Signals;
 import wheelexperiments.reactive.Source;
+import wheelexperiments.reactive.SourceImpl;
 import wheelexperiments.reactive.Signal.Receiver;
 
 abstract class IndianForObject<T> extends AbstractIndian {
@@ -39,7 +40,10 @@ abstract class IndianForObject<T> extends AbstractIndian {
 	}
 	
 	abstract protected Signal<T> signalToObserveOn(Life life);
-	abstract protected Source<T> createLocalSourceToNotify();
+	
+	protected Source<T> createLocalSourceToNotify() {
+		return new SourceImpl<T>();
+	}
 
 	@SuppressWarnings("unchecked")
 	public void receive(SmokeSignal smokeSignal) {

@@ -23,15 +23,14 @@ class LifeViewProxy implements LifeView, Serializable {
 	transient private boolean _scoutsSent = false;
 	
 	private Date _lastSightingDate;
-
-	private IndianForSet<String> _indianForNicknames = new IndianForNicknames();
+	
 	private Map<String, LifeView> _contactCache = new HashMap<String, LifeView>();
 
 	private LifeCache _cache;
 	
 	private final IndianForObject<String> _indianForThoughtOfTheDay = new IndianForThoughtOfTheDay();
 	private final IndianForObject<JpgImage> _indianForPicture = new IndianForPicture();
-
+	private final IndianForSet<String> _indianForNicknames = new IndianForNicknames();
 	
 	public LifeViewProxy(QueryExecuter queryExecuter) {
 		_queryExecuter = queryExecuter;
@@ -42,9 +41,10 @@ class LifeViewProxy implements LifeView, Serializable {
 		try {
 			_queryExecuter.execute(_indianForThoughtOfTheDay);
 			_queryExecuter.execute(_indianForPicture);
+			_queryExecuter.execute(_indianForNicknames);
 			_scoutsSent = true;
 		} catch (IOException ignored) {
-			ignored.printStackTrace();
+//			ignored.printStackTrace();
 			//Simply ignore this exception, since the connection will try to reconnect anyway.
 		}
 	}
@@ -128,19 +128,14 @@ class LifeViewProxy implements LifeView, Serializable {
 	}
 
 	private static final long serialVersionUID = 1L;
-
 	
 	static private class IndianForThoughtOfTheDay extends IndianForObject<String> {
+		
 		@Override
 		protected Signal<String> signalToObserveOn(Life life) {
 			return life.thoughtOfTheDay();
 		}
-
-		@Override
-		protected Source<String> createLocalSourceToNotify() {
-			return new SourceImpl<String>();
-		}
-
+		
 		private static final long serialVersionUID = 1L;
 	}
 
@@ -152,12 +147,6 @@ class LifeViewProxy implements LifeView, Serializable {
 		protected SetSignal<String> setSignalToObserveOn(Life life) {
 			return life.nicknames();
 		}
-
-		@Override
-		protected SetSource<String> createLocalSetSourceToNotify() {
-			return new SetSource<String>();
-		}
-
 	}
 
 	static private class IndianForPicture extends IndianForObject<JpgImage> {
@@ -165,12 +154,7 @@ class LifeViewProxy implements LifeView, Serializable {
 		protected Signal<JpgImage> signalToObserveOn(Life life) {
 			return life.picture();
 		}
-
-		@Override
-		protected Source<JpgImage> createLocalSourceToNotify() {
-			return new SourceImpl<JpgImage>();
-		}
-
+		
 		private static final long serialVersionUID = 1L;
 	}
 

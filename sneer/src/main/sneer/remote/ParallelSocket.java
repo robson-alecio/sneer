@@ -46,7 +46,7 @@ class ParallelSocket {
 					_poBox.add((Envelope)object);
 					return;
 				}
-				ObjectSmokeSignal smokeSignal = (ObjectSmokeSignal)object;  //FIXME Class cast Exceptions are possible if other side is malicious.
+				SmokeSignal smokeSignal = (SmokeSignal)object;  //FIXME Class cast Exceptions are possible if other side is malicious.
 				Indian indian = _indians.get(smokeSignal.indianId());
 				indian.receive(smokeSignal);
 			} catch (ClassNotFoundException e) {

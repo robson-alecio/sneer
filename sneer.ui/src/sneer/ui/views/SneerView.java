@@ -5,6 +5,7 @@ package sneer.ui.views;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -52,7 +53,9 @@ import sneer.life.Life;
 import sneer.life.LifeView;
 import sneer.ui.SneerUIPlugin;
 import sneer.ui.topten.TopTen;
+import wheelexperiments.reactive.Signals;
 import wheelexperiments.reactive.Signal.Receiver;
+import wheelexperiments.reactive.signals.SetSignal;
 
 
 public class SneerView extends ViewPart {
@@ -94,7 +97,7 @@ public class SneerView extends ViewPart {
 		final private LifeView _lifeView;
 		private String _cachedThoughtOfTheDay;
 
-		private GuiContact[] _contacts;
+		private Set<GuiContact> _contacts = new HashSet<GuiContact>();
 		
 		GuiContact(LifeView lifeView) {
 			this("Me", lifeView, null);
@@ -109,7 +112,7 @@ public class SneerView extends ViewPart {
 			_lifeView = lifeView;
 			_parent = parent;
 			
-			_lifeView.thoughtOfTheDay().addReceiver(new Receiver<String>() {
+			Signals.transientReception(_lifeView.thoughtOfTheDay(), new Receiver<String>() {
 				public void receive(String newValue) {
 					if (_isStopped) return;
 					
@@ -118,11 +121,30 @@ public class SneerView extends ViewPart {
 				}
 			});
 
-			_lifeView.picture().addReceiver(new Receiver<JpgImage>() {
+			Signals.transientReception(_lifeView.picture(), new Receiver<JpgImage>() {
 				public void receive(JpgImage newValue) {
 					if (_isStopped) return;
 					
 					_image = null;
+					refreshMyTreeItem();
+				}
+			});
+
+			Signals.transientReception(_lifeView.nicknames(), new SetSignal.Receiver<String>() {
+				public void elementAdded(String newNickname) {
+					if (_isStopped) return;
+					_contacts.add(new GuiContact(newNickname, GuiContact.this));
+					refreshMyTreeItem();
+				}
+
+				public void elementRemoved(String removedNickname) {
+					if (_isStopped) return;
+					
+					for (Iterator it = _contacts.iterator(); it.hasNext();) {
+						GuiContact contact = (GuiContact) it.next();
+						if (contact.nickname().equals(removedNickname)) it.remove();
+					}
+
 					refreshMyTreeItem();
 				}
 			});
@@ -186,23 +208,10 @@ public class SneerView extends ViewPart {
 		}
 		
 		public GuiContact[] contacts() {
-			if (_contacts == null) _contacts = refreshContacts();
-
-			return _contacts;
+			GuiContact[] result = new GuiContact[_contacts.size()];
+			return _contacts.toArray(result);
 		}
 
-		private GuiContact[] refreshContacts() {
-			if (!isOnline()) return new GuiContact[0];
-			
-			Set<String> nicknames = _lifeView.nicknames();
-			
-			GuiContact[] contacts = new GuiContact[nicknames.size()];
-			int i = 0;
-			for (String nickname : nicknames) {
-				contacts[i++] = new GuiContact(nickname, this);
-			}
-			return contacts;
-		}
 		
 		@Override
 		public int hashCode() {

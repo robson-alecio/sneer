@@ -55,7 +55,7 @@ class LifeViewProxy implements LifeView, Serializable {
 					update();
 //					Cool.sleep(1000 * 60);
 //					Cool.sleep(1000 * 4);
-					Cool.sleep(100);
+					Cool.sleep(1000 * 10);
 				}
 			}
 		};

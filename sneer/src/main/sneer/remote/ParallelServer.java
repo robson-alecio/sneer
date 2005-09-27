@@ -66,8 +66,8 @@ public class ParallelServer implements Runnable {
 	private void reply(final ObjectSocket socket, final Envelope envelope) {
 		Object contents = envelope.contents();
 		
-		if (contents instanceof Indian) {
-			Indian scout = ((Indian)contents);
+		if (contents instanceof IndianForObject) {
+			IndianForObject scout = ((IndianForObject)contents);
 			scout.reportAbout(_life, socket);
 			envelope.contents("Indian settled");
 		} else {

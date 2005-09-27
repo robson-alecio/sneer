@@ -143,7 +143,7 @@ public class Sneer {
 	}
 
 	public void checkNewMessages() {
-		for (String nickname : _life.nicknames()) {
+		for (String nickname : _life.nicknames().currentValue()) {
 			LifeView contact = _life.contact(nickname);
 			if (contact.lastSightingDate() == null) continue;
 			if (allSentMessages(contact) == null) continue;

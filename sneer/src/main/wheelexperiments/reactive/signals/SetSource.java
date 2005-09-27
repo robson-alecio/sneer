@@ -4,43 +4,52 @@
 
 package wheelexperiments.reactive.signals;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 
-public class SetSource<T> implements SetSignal<T> {
+public class SetSource<T> implements SetSignal<T>, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private Set<T> _contents = new HashSet<T>();
 
-	private final Set<Observer<T>> _observers = new HashSet<Observer<T>>();
+	private final Set<Receiver<T>> _receivers = new HashSet<Receiver<T>>();
 
-	public boolean contains(T key) {
-		return _contents.contains(key);
+	public void add(T element) {
+		_contents.add(element);
+		notifyOfAddition(element);
 	}
 
-	public void add(T key) {
-		_contents.add(key);
-		notifyOfAddition(key);
+	public void remove(T element) {
+		_contents.remove(element);
+		notifyOfRemoval(element);
 	}
 
-	public void remove(T key) {
-		_contents.remove(key);
-		notifyOfRemoval(key);
+	private void notifyOfRemoval(T element) {
+		Iterator<Receiver<T>> it = _receivers.iterator();
+		while (it.hasNext()) it.next().elementRemoved(element);
 	}
 
-	private void notifyOfRemoval(T key) {
-		Iterator<Observer<T>> it = _observers.iterator();
-		while (it.hasNext()) it.next().elementRemoved(key);
+	private void notifyOfAddition(T element) {
+		Iterator<Receiver<T>> it = _receivers.iterator();
+		while (it.hasNext()) it.next().elementAdded(element);
 	}
 
-	private void notifyOfAddition(T key) {
-		Iterator<Observer<T>> it = _observers.iterator();
-		while (it.hasNext()) it.next().elementAdded(key);
+	public synchronized void addReceiver(Receiver<T> receiver) {
+		_receivers.add(receiver);
+		for (T element : _contents)
+			notifyOfAddition(element);
 	}
 
-	public synchronized void addObserver(Observer<T> observer) {
-		_observers.add(observer);
+	public void removeReceiver(Receiver<T> receiver) {
+		_receivers.remove(receiver);
+	}
+
+	public Set<T> currentValue() {
+		return _contents;
 	}
 
 }

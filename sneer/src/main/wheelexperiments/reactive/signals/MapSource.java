@@ -52,10 +52,6 @@ public class MapSource<K,V> implements MapSignal<K,V> {
 		return _keys;
 	}
 
-	public boolean containsKey(K key) {
-		return _keys.contains(key);
-	}
-
 	public V get(K key) {
 		return _contents.get(key);
 	}

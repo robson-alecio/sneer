@@ -5,9 +5,9 @@ package sneer.life;
 
 import java.util.Date;
 import java.util.Map;
-import java.util.Set;
 
 import wheelexperiments.reactive.Signal;
+import wheelexperiments.reactive.signals.SetSignal;
 
 
 public interface LifeView {
@@ -16,7 +16,7 @@ public interface LifeView {
 	public Signal<String> thoughtOfTheDay();
 	public Signal<JpgImage> picture();
 	
-	public Set<String> nicknames();
+	public SetSignal<String> nicknames();
 	public LifeView contact(String nickname);
 
     public String contactInfo();

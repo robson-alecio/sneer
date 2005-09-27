@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import sneer.life.LifeView;
 
@@ -16,8 +15,6 @@ class LifeCache implements Serializable {
 
 	private final String _contactInfo;
 	
-	private final Set<String> _nicknames;
-
 	private Map<String, Object> _things;
 
 	private final Date _creation;
@@ -28,14 +25,12 @@ class LifeCache implements Serializable {
 			_name = null;
 			_thoughtOfTheDay = null;
 			_contactInfo = null;
-			_nicknames = null;
 			_things = null;
 			_creation = null;
 		} else {
 			_name = lifeView.name();
 			_thoughtOfTheDay = lifeView.thoughtOfTheDay().currentValue();
 			_contactInfo = lifeView.contactInfo();
-			_nicknames = lifeView.nicknames();
 			_things = lifeView.things();
 			_creation = new Date();
 		}
@@ -47,10 +42,6 @@ class LifeCache implements Serializable {
 
 	public String thoughtOfTheDay() {
 		return _thoughtOfTheDay;
-	}
-
-	public Set<String> nicknames() {
-		return _nicknames;
 	}
 
 	public String contactInfo() {

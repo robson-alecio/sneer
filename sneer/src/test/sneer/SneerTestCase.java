@@ -68,12 +68,12 @@ public class SneerTestCase extends MockObjectTestCase {
 			.will(returnValue("localhost:4243"));
 		sneer.addContact();
 
-		assertTrue(sneer.life().nicknames().contains("fefe"));
-		assertTrue(sneer.life().nicknames().contains("bamboo"));
+		assertTrue(sneer.life().nicknames().currentValue().contains("fefe"));
+		assertTrue(sneer.life().nicknames().currentValue().contains("bamboo"));
 
 		sneer = new Sneer(user, new NetworkMock(), _testDirectory);		
-		assertTrue(sneer.life().nicknames().contains("fefe"));
-		assertTrue(sneer.life().nicknames().contains("bamboo"));
+		assertTrue(sneer.life().nicknames().currentValue().contains("fefe"));
+		assertTrue(sneer.life().nicknames().currentValue().contains("bamboo"));
 	}
 	
 }

@@ -3,25 +3,17 @@ package sneer.remote;
 
 
 import java.io.IOException;
-import java.io.Serializable;
 
 import sneer.life.Life;
-import sneer.life.LifeView;
 import wheel.experiments.environment.network.ObjectSocket;
 import wheelexperiments.reactive.Signal;
 import wheelexperiments.reactive.Signals;
 import wheelexperiments.reactive.Source;
 import wheelexperiments.reactive.Signal.Receiver;
 
-abstract class Indian<T> implements Query<String>, Serializable {
-
-	static private int _nextId = 1;
-
-	private final int _id = _nextId++;
+abstract class IndianForObject<T> extends AbstractIndian {
 
 	transient Signal<T> _observedSignal;
-	transient private ObjectSocket _socket;
-
 	transient final private Source<T> _sourceToNotify = createLocalSourceToNotify(); 
 	
 	public void reportAbout(Life life, ObjectSocket socket) {
@@ -29,10 +21,10 @@ abstract class Indian<T> implements Query<String>, Serializable {
 		_socket = socket;
 		_observedSignal = signalToObserveOn(life);
 		Signals.transientReception(_observedSignal, new Receiver<T>() {
-			public void receive(T newThoughtOfTheDay) {
+			public void receive(T newValue) {
 				try {
-					System.out.println("Sending smoke signal..." + newThoughtOfTheDay);
-					_socket.writeObject(new SmokeSignal<String>(_id, newThoughtOfTheDay));
+					System.out.println("Sending smoke signal..." + newValue);
+					_socket.writeObject(new ObjectSmokeSignal(_id, newValue));
 				} catch (IOException e) {
 					e.printStackTrace();
 					_observedSignal.removeReceiver(this);
@@ -49,18 +41,12 @@ abstract class Indian<T> implements Query<String>, Serializable {
 	abstract protected Signal<T> signalToObserveOn(Life life);
 	abstract protected Source<T> createLocalSourceToNotify();
 
-	public int id() {
-		return _id;
-	}
-
-	public void receive(SmokeSignal<T> smokeSignal) {
-		_sourceToNotify.supply(smokeSignal.newValue());
+	@SuppressWarnings("unchecked")
+	public void receive(SmokeSignal smokeSignal) {
+		ObjectSmokeSignal objectSmokeSignal = (ObjectSmokeSignal) smokeSignal;
+		_sourceToNotify.supply((T)objectSmokeSignal.newValue());
 	}
 
 	private static final long serialVersionUID = 1L;
-
-	public String executeOn(LifeView ignored) {
-		return "Ignored";
-	}
 
 }

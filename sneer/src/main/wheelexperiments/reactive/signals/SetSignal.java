@@ -4,14 +4,19 @@
 
 package wheelexperiments.reactive.signals;
 
+import java.util.Set;
+
 
 public interface SetSignal<T>  {
 
-	public interface Observer<TO> {
+	public interface Receiver<TO> {
 		public void elementAdded(TO newElement);
 		public void elementRemoved(TO removedElement);
 	}
 	
-	void addObserver(Observer<T> observer);
+	void addReceiver(Receiver<T> receiver);
+	void removeReceiver(Receiver<T> receiver);
+
+	Set<T> currentValue();
 
 }

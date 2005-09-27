@@ -7,14 +7,14 @@ package sneer.life;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import wheelexperiments.reactive.Signal;
 import wheelexperiments.reactive.Source;
 import wheelexperiments.reactive.SourceImpl;
+import wheelexperiments.reactive.signals.SetSignal;
+import wheelexperiments.reactive.signals.SetSource;
 
 
 public class LifeImpl implements Life, Serializable {
@@ -27,6 +27,7 @@ public class LifeImpl implements Life, Serializable {
 	private String _profile;
     private String _contactInfo;
 
+	private SetSource<String> _nicknames = new SetSource<String>();
 	private final Map<String, LifeView> _contactsByNickname = new HashMap<String, LifeView>();
 	private final Map<String, Object> _thingsByName = new HashMap<String, Object>();
 
@@ -43,8 +44,8 @@ public class LifeImpl implements Life, Serializable {
 		_thoughtOfTheDay.supply(thought);
 	}
 	
-	public Set<String> nicknames() {
-		return new HashSet<String>(_contactsByNickname.keySet());
+	public SetSignal<String> nicknames() {
+		return _nicknames;
 	}
 
 	public void giveSomebodyANickname(LifeView somebody, String nickname) throws IllegalArgumentException {
@@ -52,6 +53,7 @@ public class LifeImpl implements Life, Serializable {
 		if (_contactsByNickname.containsKey(nickname)) throw new IllegalArgumentException();
 		
 		_contactsByNickname.put(nickname, somebody);
+		_nicknames.add(nickname);
 	}
 
 	public void changeNickname(String oldNickname, String newNickname) throws IllegalArgumentException {
@@ -62,6 +64,7 @@ public class LifeImpl implements Life, Serializable {
 
 	public void forgetNickname(String oldNickname) {
 		_contactsByNickname.remove(oldNickname);
+		_nicknames.remove(oldNickname);
 	}
 
 	public String name() {
@@ -128,5 +131,4 @@ public class LifeImpl implements Life, Serializable {
 	}
 
 	private static final long serialVersionUID = 1L;
-
 }

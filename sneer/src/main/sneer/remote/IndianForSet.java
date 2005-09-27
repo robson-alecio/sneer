@@ -29,7 +29,6 @@ abstract class IndianForSet<T> extends AbstractIndian {
 					System.out.println("Sending smoke signal for elementAdded..." + newElement);
 					_socket.writeObject(new SetSmokeSignal(_id, newElement, null));
 				} catch (IOException e) {
-					e.printStackTrace();
 					_observedSignal.removeReceiver(this);
 				}
 				

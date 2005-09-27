@@ -27,7 +27,6 @@ abstract class IndianForObject<T> extends AbstractIndian {
 					System.out.println("Sending smoke signal..." + newValue);
 					_socket.writeObject(new ObjectSmokeSignal(_id, newValue));
 				} catch (IOException e) {
-					e.printStackTrace();
 					_observedSignal.removeReceiver(this);
 				}
 			}

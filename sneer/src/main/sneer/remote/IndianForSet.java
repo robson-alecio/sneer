@@ -2,7 +2,7 @@ package sneer.remote;
 
 import java.io.IOException;
 
-import sneer.life.Life;
+import sneer.life.LifeView;
 import wheel.experiments.environment.network.ObjectSocket;
 import wheelexperiments.reactive.Signals;
 import wheelexperiments.reactive.signals.SetSignal;
@@ -18,7 +18,7 @@ abstract class IndianForSet<T> extends AbstractIndian {
 		return _setSourceToNotify;
 	}
 
-	public void reportAbout(Life life, ObjectSocket socket) {
+	public void reportAbout(LifeView life, ObjectSocket socket) {
 		System.out.println("Dances With Wolves reporting, sir.");
 		_socket = socket;
 		_observedSignal = setSignalToObserveOn(life);
@@ -53,7 +53,7 @@ abstract class IndianForSet<T> extends AbstractIndian {
 
 	private static final long serialVersionUID = 1L;
 
-	abstract protected SetSignal<T> setSignalToObserveOn(Life life);
+	abstract protected SetSignal<T> setSignalToObserveOn(LifeView life);
 	
 	protected SetSource<T> createLocalSetSourceToNotify() {
 		return new SetSource<T>();

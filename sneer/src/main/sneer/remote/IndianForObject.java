@@ -4,7 +4,7 @@ package sneer.remote;
 
 import java.io.IOException;
 
-import sneer.life.Life;
+import sneer.life.LifeView;
 import wheel.experiments.environment.network.ObjectSocket;
 import wheelexperiments.reactive.Signal;
 import wheelexperiments.reactive.Signals;
@@ -17,7 +17,7 @@ abstract class IndianForObject<T> extends AbstractIndian {
 	transient Signal<T> _observedSignal;
 	transient final private Source<T> _sourceToNotify = createLocalSourceToNotify(); 
 	
-	public void reportAbout(Life life, ObjectSocket socket) {
+	public void reportAbout(LifeView life, ObjectSocket socket) {
 		System.out.println("Sitting Bull reporting, sir.");
 		_socket = socket;
 		_observedSignal = signalToObserveOn(life);
@@ -39,7 +39,7 @@ abstract class IndianForObject<T> extends AbstractIndian {
 		return _sourceToNotify;
 	}
 	
-	abstract protected Signal<T> signalToObserveOn(Life life);
+	abstract protected Signal<T> signalToObserveOn(LifeView life);
 	
 	protected Source<T> createLocalSourceToNotify() {
 		return new SourceImpl<T>();

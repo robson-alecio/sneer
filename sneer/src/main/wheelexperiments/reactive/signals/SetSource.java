@@ -5,8 +5,8 @@
 package wheelexperiments.reactive.signals;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 
@@ -19,23 +19,29 @@ public class SetSource<T> implements SetSignal<T>, Serializable {
 	private final Set<Receiver<T>> _receivers = new HashSet<Receiver<T>>();
 
 	public void add(T element) {
-		_contents.add(element);
+		synchronized (_contents) {
+			_contents.add(element);
+		}
 		notifyOfAddition(element);
 	}
 
 	public void remove(T element) {
-		_contents.remove(element);
+		synchronized (_contents) {
+			_contents.remove(element);
+		}
 		notifyOfRemoval(element);
 	}
 
 	private void notifyOfRemoval(T element) {
-		Iterator<Receiver<T>> it = _receivers.iterator();
-		while (it.hasNext()) it.next().elementRemoved(element);
+		for (Receiver<T> item : receiversCopy()) {
+			item.elementRemoved(element);
+		}
 	}
-
+	
 	private void notifyOfAddition(T element) {
-		Iterator<Receiver<T>> it = _receivers.iterator();
-		while (it.hasNext()) it.next().elementAdded(element);
+		for (Receiver<T> item : receiversCopy()) {
+			item.elementAdded(element);
+		}
 	}
 
 	public synchronized void addReceiver(Receiver<T> receiver) {
@@ -44,12 +50,18 @@ public class SetSource<T> implements SetSignal<T>, Serializable {
 			notifyOfAddition(element);
 	}
 
-	public void removeReceiver(Receiver<T> receiver) {
+	public synchronized void removeReceiver(Receiver<T> receiver) {
 		_receivers.remove(receiver);
+	}
+	
+	private synchronized Iterable<Receiver<T>> receiversCopy() {
+		return new ArrayList<Receiver<T>>(_receivers);
 	}
 
 	public Set<T> currentValue() {
-		return _contents;
+		synchronized (_contents) {
+			return new HashSet<T>(_contents);
+		}
 	}
 
 }

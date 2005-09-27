@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import sneer.life.JpgImage;
-import sneer.life.Life;
 import sneer.life.LifeView;
 import wheel.experiments.Cool;
 import wheelexperiments.reactive.Signal;
@@ -132,7 +131,7 @@ class LifeViewProxy implements LifeView, Serializable {
 	static private class IndianForThoughtOfTheDay extends IndianForObject<String> {
 		
 		@Override
-		protected Signal<String> signalToObserveOn(Life life) {
+		protected Signal<String> signalToObserveOn(LifeView life) {
 			return life.thoughtOfTheDay();
 		}
 		
@@ -144,14 +143,14 @@ class LifeViewProxy implements LifeView, Serializable {
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		protected SetSignal<String> setSignalToObserveOn(Life life) {
+		protected SetSignal<String> setSignalToObserveOn(LifeView life) {
 			return life.nicknames();
 		}
 	}
 
 	static private class IndianForPicture extends IndianForObject<JpgImage> {
 		@Override
-		protected Signal<JpgImage> signalToObserveOn(Life life) {
+		protected Signal<JpgImage> signalToObserveOn(LifeView life) {
 			return life.picture();
 		}
 		

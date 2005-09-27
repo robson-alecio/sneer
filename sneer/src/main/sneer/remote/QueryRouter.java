@@ -17,8 +17,11 @@ public class QueryRouter<T> implements QueryExecuter {
         _nickname = nickname;
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T> T execute(Query<T> query) throws IOException {
-		return _delegate.execute(new RoutedQuery<T>(_nickname, query));
-    }
- 
+		return _delegate.execute(
+			(query instanceof Indian)
+			? (Query<T>)new ForwardingIndian(_nickname, (Indian)query)
+			: new RoutedQuery<T>(_nickname, query));
+    } 
 }

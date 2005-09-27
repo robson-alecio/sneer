@@ -22,11 +22,7 @@ abstract class Indian<T> implements Query<String>, Serializable {
 	transient Signal<T> _observedSignal;
 	transient private ObjectSocket _socket;
 
-	transient final private Source<T> _sourceToNotify;
-
-	Indian(Source<T> sourceToNotify) {
-		_sourceToNotify = sourceToNotify;
-	}
+	transient final private Source<T> _sourceToNotify = createLocalSourceToNotify(); 
 	
 	public void reportAbout(Life life, ObjectSocket socket) {
 		System.out.println("Sitting Bull reporting, sir.");
@@ -46,7 +42,12 @@ abstract class Indian<T> implements Query<String>, Serializable {
 		
 	}
 
+	Source<T> localSourceToNotify() {
+		return _sourceToNotify;
+	}
+	
 	abstract protected Signal<T> signalToObserveOn(Life life);
+	abstract protected Source<T> createLocalSourceToNotify();
 
 	public int id() {
 		return _id;

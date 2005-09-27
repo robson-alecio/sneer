@@ -10,7 +10,10 @@ public class XStreamSocket implements ObjectSocket {
 	
 	private final ObjectSocket _delegate;
 	private final XStream _xStream;
-
+	
+	private final Object _readMonitor = new Object();
+	private final Object _writeMonitor = new Object();
+	
 	public XStreamSocket(XStream xstream, ObjectSocket delegate) {
 		_xStream = xstream;
 		_delegate = delegate;
@@ -21,14 +24,17 @@ public class XStreamSocket implements ObjectSocket {
 	}
 
 	public Object readObject() throws IOException, ClassNotFoundException {
-		String xml = (String)_delegate.readObject();
-		return _xStream.fromXML(xml);
+		synchronized (_readMonitor) {
+			String xml = (String)_delegate.readObject();
+			return _xStream.fromXML(xml);
+		}
 	}
 
 	public void writeObject(Object obj) throws IOException {
-		String xml = _xStream.toXML(obj);
-		_delegate.writeObject(xml);
+		synchronized (_writeMonitor) {
+			String xml = _xStream.toXML(obj);
+			_delegate.writeObject(xml);
+		}
 	}
-
 	
 }

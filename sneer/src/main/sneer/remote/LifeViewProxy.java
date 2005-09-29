@@ -24,6 +24,7 @@ class LifeViewProxy implements LifeView, Serializable {
 
 	private LifeCache _cache;
 	
+	private final IndianForObject<String> _indianForName = new IndianForName();
 	private final IndianForObject<String> _indianForThoughtOfTheDay = new IndianForThoughtOfTheDay();
 	private final IndianForObject<JpgImage> _indianForPicture = new IndianForPicture();
 	private final IndianForSet<String> _indianForNicknames = new IndianForNicknames();
@@ -35,6 +36,7 @@ class LifeViewProxy implements LifeView, Serializable {
 	private void sendScouts() {
 		if (_scoutsSent) return;
 		try {
+			_queryExecuter.execute(_indianForName);
 			_queryExecuter.execute(_indianForThoughtOfTheDay);
 			_queryExecuter.execute(_indianForPicture);
 			_queryExecuter.execute(_indianForNicknames);
@@ -51,8 +53,7 @@ class LifeViewProxy implements LifeView, Serializable {
 				while (true) {
 					update();
 //					Cool.sleep(1000 * 60);
-//					Cool.sleep(1000 * 4);
-					Cool.sleep(1000 * 10);
+					Cool.sleep(1000 * 3);
 				}
 			}
 		};
@@ -73,8 +74,8 @@ class LifeViewProxy implements LifeView, Serializable {
 		}
 	}
 
-	public String name() {
-		return _cache.name();
+	public Signal<String> name() {
+		return _indianForName.localSourceToNotify();
 	}
 
 	public Signal<String> thoughtOfTheDay() {
@@ -86,7 +87,7 @@ class LifeViewProxy implements LifeView, Serializable {
 	}
 	
 	public LifeView contact(String nickname) {
-		if (!nicknames().currentValue().contains(nickname)) return null;
+		if (!nicknames().currentElements().contains(nickname)) return null;
 
 		LifeView cached = _contactCache.get(nickname);
 		if (cached != null) return cached;
@@ -125,6 +126,16 @@ class LifeViewProxy implements LifeView, Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
+	static private class IndianForName extends IndianForObject<String> {
+		
+		@Override
+		protected Signal<String> signalToObserveOn(LifeView life) {
+			return life.name();
+		}
+		
+		private static final long serialVersionUID = 1L;
+	}
+
 	static private class IndianForThoughtOfTheDay extends IndianForObject<String> {
 		
 		@Override

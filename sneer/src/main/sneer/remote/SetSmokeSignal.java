@@ -1,22 +1,14 @@
 package sneer.remote;
 
+import wheelexperiments.reactive.signals.SetSignal.SetValueChange;
+
 public class SetSmokeSignal extends AbstractSmokeSignal {
 
-	private final Object _elementAdded;
-	private final Object _elementRemoved;
+	final SetValueChange<?> _change;
 
-	protected SetSmokeSignal(int indianId, Object elementAdded, Object elementRemoved) {
+	protected SetSmokeSignal(int indianId, SetValueChange<?> change) {
 		super(indianId);
-		_elementAdded = elementAdded;
-		_elementRemoved = elementRemoved;
-	}
-	
-	public Object getElementAdded() {
-		return _elementAdded;
-	}
-
-	public Object getElementRemoved() {
-		return _elementRemoved;
+		_change = change;
 	}
 
 	private static final long serialVersionUID = 1L;

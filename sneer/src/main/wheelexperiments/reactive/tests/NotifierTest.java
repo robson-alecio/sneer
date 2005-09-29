@@ -1,8 +1,8 @@
 package wheelexperiments.reactive.tests;
 
-import wheelexperiments.reactive.Notifier;
+import wheelexperiments.reactive.AbstractSignal;
+import wheelexperiments.reactive.Receiver;
 import wheelexperiments.reactive.Signal;
-import wheelexperiments.reactive.Signal.Receiver;
 
 public class NotifierTest extends ConnectionTest {
 
@@ -18,18 +18,25 @@ public class NotifierTest extends ConnectionTest {
 		return new Receiver<Object>() {
 			public void receive(Object newValue) {
 				_notifier._value = newValue;
-				_notifier.notifyReceivers();
+				_notifier.notifyReceivers(newValue);
 			}
 		};
 	}
 
-	private static class MyNotifier extends Notifier<Object> {
+	private static class MyNotifier extends AbstractSignal<Object> {
 
 		private Object _value;
 
 		public Object currentValue() {
 			return _value;
 		}
+
+		@Override
+		public void notifyReceivers(Object newValue) {
+			super.notifyReceivers(newValue);
+		}
+		
+		
 
 	}
 	

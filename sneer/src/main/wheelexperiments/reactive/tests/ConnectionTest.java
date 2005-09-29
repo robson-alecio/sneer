@@ -1,8 +1,8 @@
 package wheelexperiments.reactive.tests;
 
 import junit.framework.TestCase;
+import wheelexperiments.reactive.Receiver;
 import wheelexperiments.reactive.Signal;
-import wheelexperiments.reactive.Signal.Receiver;
 
 public abstract class ConnectionTest extends TestCase {
 

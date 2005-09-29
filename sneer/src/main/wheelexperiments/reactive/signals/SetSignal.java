@@ -4,19 +4,24 @@
 
 package wheelexperiments.reactive.signals;
 
+import java.util.Collection;
 import java.util.Set;
 
+import wheelexperiments.reactive.Receiver;
 
-public interface SetSignal<T>  {
+public interface SetSignal<T>  {  //TODO Refactor: Move to same package as Signal.
 
-	public interface Receiver<TO> {
-		public void elementAdded(TO newElement);
-		public void elementRemoved(TO removedElement);
+	void addSetReceiver(Receiver<SetValueChange<T>> receiver);
+	void removeSetReceiver(Receiver<SetValueChange<T>> receiver);
+
+	void addTransientSetReceiver(Receiver<SetValueChange<T>> receiver);
+	void removeTransientSetReceiver(Receiver<SetValueChange<T>> receiver);
+
+	public interface SetValueChange<E> {
+		Collection<E> elementsAdded();
+		Collection<E> elementsRemoved();
 	}
+
+	Set<T> currentElements();
 	
-	void addReceiver(Receiver<T> receiver);
-	void removeReceiver(Receiver<T> receiver);
-
-	Set<T> currentValue();
-
 }

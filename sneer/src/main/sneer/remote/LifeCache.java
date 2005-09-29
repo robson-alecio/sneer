@@ -10,9 +10,6 @@ import sneer.life.LifeView;
 
 class LifeCache implements Serializable {
 
-	private final String _name;
-	private final String _thoughtOfTheDay;
-
 	private final String _contactInfo;
 	
 	private Map<String, Object> _things;
@@ -22,26 +19,14 @@ class LifeCache implements Serializable {
 	
 	public LifeCache(LifeView lifeView) {
 		if (lifeView == null || lifeView.lastSightingDate() == null) {
-			_name = null;
-			_thoughtOfTheDay = null;
 			_contactInfo = null;
 			_things = null;
 			_creation = null;
 		} else {
-			_name = lifeView.name();
-			_thoughtOfTheDay = lifeView.thoughtOfTheDay().currentValue();
 			_contactInfo = lifeView.contactInfo();
 			_things = lifeView.things();
 			_creation = new Date();
 		}
-	}
-
-	public String name() {
-		return _name;
-	}
-
-	public String thoughtOfTheDay() {
-		return _thoughtOfTheDay;
 	}
 
 	public String contactInfo() {

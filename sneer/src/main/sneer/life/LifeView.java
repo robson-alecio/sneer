@@ -12,7 +12,7 @@ import wheelexperiments.reactive.signals.SetSignal;
 
 public interface LifeView {
 
-	public String name();
+	public Signal<String> name();
 	public Signal<String> thoughtOfTheDay();
 	public Signal<JpgImage> picture();
 	

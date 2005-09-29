@@ -1,15 +1,17 @@
 package wheelexperiments.reactive;
 
+import wheelexperiments.reactive.signals.SetSignal;
 
-public interface Signal<T> {
+
+/** @invariant this.toString().equals(this.currentValue().toString()) */
+public interface Signal<T> extends SetSignal<T> {
 	
 	public void addReceiver(Receiver<T> receiver);
 	public void removeReceiver(Receiver<T> name);
 
-	public interface Receiver<RT> {
-		void receive(RT newValue);
-	}
+	public void addTransientReceiver(Receiver<T> receiver);
+	public void removeTransientReceiver(Receiver<T> receiver);
 
 	public T currentValue();
-
+	
 }

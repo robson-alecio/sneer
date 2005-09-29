@@ -2,7 +2,7 @@ package wheelexperiments.reactive;
 
 import java.io.Serializable;
 
-public class SourceImpl<T> extends Notifier<T> implements Source<T>, Serializable  {
+public class SourceImpl<T> extends AbstractSignal<T> implements Source<T>, Serializable  {
 
 	private T _currentValue;
 	
@@ -13,7 +13,7 @@ public class SourceImpl<T> extends Notifier<T> implements Source<T>, Serializabl
 		if (newValue != null && newValue.equals(_currentValue)) return;
 		
 		_currentValue = newValue;
-		notifyReceivers();
+		notifyReceivers(newValue);
 	}
 
 	public T currentValue() {

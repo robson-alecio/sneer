@@ -2,8 +2,8 @@ package wheelexperiments.reactive.smoke.tests;
 
 import wheel.experiments.environment.network.OldNetwork;
 import wheel.experiments.environment.network.mocks.NetworkMock;
+import wheelexperiments.reactive.Receiver;
 import wheelexperiments.reactive.Signal;
-import wheelexperiments.reactive.Signal.Receiver;
 import wheelexperiments.reactive.smoke.RemoteSignal;
 import wheelexperiments.reactive.smoke.RemoteTransmitter;
 import wheelexperiments.reactive.tests.ConnectionTest;

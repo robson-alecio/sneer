@@ -47,7 +47,7 @@ class ParallelSocket {
 					return;
 				}
 				SmokeSignal smokeSignal = (SmokeSignal)object;  //FIXME Class cast Exceptions are possible if other side is malicious.
-				Indian indian = _indians.get(smokeSignal.indianId());
+				Indian indian = _indians.get(smokeSignal._indianId);
 				indian.receive(smokeSignal);
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();

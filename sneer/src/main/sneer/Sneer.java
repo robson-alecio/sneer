@@ -143,7 +143,7 @@ public class Sneer {
 	}
 
 	public void checkNewMessages() {
-		for (String nickname : _life.nicknames().currentValue()) {
+		for (String nickname : _life.nicknames().currentElements()) {
 			LifeView contact = _life.contact(nickname);
 			if (contact.lastSightingDate() == null) continue;
 			if (allSentMessages(contact) == null) continue;
@@ -194,7 +194,7 @@ public class Sneer {
 	private List<String> getMessagesTo(LifeView contact) {
 		List<String> messagesToContact = allMySentMessages().get(contact.name());
 		if (messagesToContact == null) {
-			allMySentMessages().put(contact.name(), new ArrayList<String>());
+			allMySentMessages().put(contact.name().currentValue(), new ArrayList<String>());
 			return getMessagesTo(contact);
 		}
 		return messagesToContact;

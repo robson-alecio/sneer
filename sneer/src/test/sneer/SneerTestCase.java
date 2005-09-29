@@ -40,7 +40,7 @@ public class SneerTestCase extends MockObjectTestCase {
 		sneer.editPersonalInfo();		
 		
 		sneer = new Sneer(user, new NetworkMock(), _testDirectory);
-		assertEquals("Las llamas son majores que las ranas!", sneer.life().thoughtOfTheDay().currentValue()); 
+		assertEquals("Las llamas son majores que las ranas!", sneer.life().thoughtOfTheDay().currentElements()); 
 	}
 
 	public void testAddContact() throws IOException {
@@ -68,12 +68,12 @@ public class SneerTestCase extends MockObjectTestCase {
 			.will(returnValue("localhost:4243"));
 		sneer.addContact();
 
-		assertTrue(sneer.life().nicknames().currentValue().contains("fefe"));
-		assertTrue(sneer.life().nicknames().currentValue().contains("bamboo"));
+		assertTrue(sneer.life().nicknames().currentElements().contains("fefe"));
+		assertTrue(sneer.life().nicknames().currentElements().contains("bamboo"));
 
 		sneer = new Sneer(user, new NetworkMock(), _testDirectory);		
-		assertTrue(sneer.life().nicknames().currentValue().contains("fefe"));
-		assertTrue(sneer.life().nicknames().currentValue().contains("bamboo"));
+		assertTrue(sneer.life().nicknames().currentElements().contains("fefe"));
+		assertTrue(sneer.life().nicknames().currentElements().contains("bamboo"));
 	}
 	
 }

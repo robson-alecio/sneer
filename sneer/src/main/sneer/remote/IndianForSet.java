@@ -4,10 +4,10 @@ import java.io.IOException;
 
 import sneer.life.LifeView;
 import wheel.experiments.environment.network.ObjectSocket;
-import wheelexperiments.reactive.Signals;
+import wheelexperiments.reactive.Receiver;
 import wheelexperiments.reactive.signals.SetSignal;
 import wheelexperiments.reactive.signals.SetSource;
-import wheelexperiments.reactive.signals.SetSignal.Receiver;
+import wheelexperiments.reactive.signals.SetSignal.SetValueChange;
 
 abstract class IndianForSet<T> extends AbstractIndian {
 
@@ -22,27 +22,14 @@ abstract class IndianForSet<T> extends AbstractIndian {
 		System.out.println("Dances With Wolves reporting, sir.");
 		_socket = socket;
 		_observedSignal = setSignalToObserveOn(life);
-		Signals.transientReception(_observedSignal, new Receiver<T>() {
-
-			public void elementAdded(T newElement) {
+		_observedSignal.addTransientSetReceiver(new Receiver<SetValueChange<T>>() {
+			public void receive(SetValueChange<T> valueChange) {
 				try {
-					System.out.println("Sending smoke signal for elementAdded..." + newElement);
-					_socket.writeObject(new SetSmokeSignal(_id, newElement, null));
+					System.out.println("Sending smoke signal for set change..." + valueChange);
+					_socket.writeObject(new SetSmokeSignal(_id, valueChange));
 				} catch (IOException e) {
-					_observedSignal.removeReceiver(this);
+					_observedSignal.removeTransientSetReceiver(this);
 				}
-				
-			}
-
-			public void elementRemoved(T removedElement) {
-				try {
-					System.out.println("Sending smoke signal for elementAdded..." + removedElement);
-					_socket.writeObject(new SetSmokeSignal(_id, null, removedElement));
-				} catch (IOException e) {
-					e.printStackTrace();
-					_observedSignal.removeReceiver(this);
-				}
-				
 			}
 		});
 		
@@ -61,11 +48,6 @@ abstract class IndianForSet<T> extends AbstractIndian {
 	@SuppressWarnings("unchecked")
 	public void receive(SmokeSignal smokeSignal) {
 		SetSmokeSignal setSmokeSignal = (SetSmokeSignal) smokeSignal;
-		if (setSmokeSignal.getElementAdded() != null) {
-			_setSourceToNotify.add((T) setSmokeSignal.getElementAdded());
-		}
-		if (setSmokeSignal.getElementRemoved() != null) {
-			_setSourceToNotify.remove((T) setSmokeSignal.getElementRemoved());
-		}
+		_setSourceToNotify.change((SetValueChange<T>)setSmokeSignal._change);
 	}
 }

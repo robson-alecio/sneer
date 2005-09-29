@@ -18,7 +18,7 @@ public class PersonalInfoEditting implements Transaction {
 	
 
 	public PersonalInfoEditting(User _user, LifeView life) {
-		_name = _user.confirmName(life.name());
+		_name = _user.confirmName(life.name().currentValue());
 		_thoughtOfTheDay = _user.thoughtOfTheDay(life.thoughtOfTheDay().currentValue());
 		_newPicture = confirmPicture(_user, life);
 		_hasPictureChanged = _newPicture != null;

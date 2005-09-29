@@ -63,7 +63,7 @@ public class Freedom2 extends Freedom1 {
     }
 
     public void testContactNavigation() throws Exception {
-    	assertTrue(myContact("Ziba").nicknames().currentValue().contains("Roberts"));
+    	assertTrue(myContact("Ziba").nicknames().currentElements().contains("Roberts"));
     	checkName("Roberto Jover Lázaro", myContact("Ziba").contact("Roberts"));
     	
     	checkName("Luiz Fernando dos Santos Sabino", myContact("Ziba").contact("Roberts").contact("Fefe"));
@@ -120,7 +120,7 @@ public class Freedom2 extends Freedom1 {
 	}
 
 	protected void checkNicknameExists(String nickname) {
-		assertTrue(_me.nicknames().currentValue().contains(nickname));
+		assertTrue(_me.nicknames().currentElements().contains(nickname));
 	}
 
 	protected void checkNickname(String nickname, String name) {
@@ -135,7 +135,7 @@ public class Freedom2 extends Freedom1 {
     	checkNicknameExists("Fefe");
     	checkNicknameExists("Humba");
     	checkNicknameExists("Doctor");
-    	assertEquals(3, _me.nicknames().currentValue().size());
+    	assertEquals(3, _me.nicknames().currentElements().size());
     }
 
     private void forgetAFewNicknames() throws Exception {
@@ -143,7 +143,7 @@ public class Freedom2 extends Freedom1 {
     	_me.giveSomebodyANickname(new LifeImpl("Any Name"), "Mike");
     	_me.forgetNickname("Bob");
     	_me.forgetNickname("Mike");
-    	assertEquals(3, _me.nicknames().currentValue().size());
+    	assertEquals(3, _me.nicknames().currentElements().size());
     }
 
     private void tryToDuplicateNicknames() throws Exception {

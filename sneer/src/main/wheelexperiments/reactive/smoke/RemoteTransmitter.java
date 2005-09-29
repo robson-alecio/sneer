@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import wheel.experiments.environment.network.ObjectSocket;
 import wheel.experiments.environment.network.OldNetwork;
-import wheelexperiments.reactive.Signal.Receiver;
+import wheelexperiments.reactive.Receiver;
 
 public class RemoteTransmitter<T> implements Receiver<T> {
 

@@ -19,9 +19,8 @@ import wheelexperiments.reactive.signals.SetSource;
 
 public class LifeImpl implements Life, Serializable {
 
-	private String _name;
+	private final Source<String> _name = new SourceImpl<String>();
 	private final Source<String> _thoughtOfTheDay = new SourceImpl<String>();
-	private JpgImage _pictureOld;
 	private final Source<JpgImage> _picture = new SourceImpl<JpgImage>();
 
 	private String _profile;
@@ -37,7 +36,7 @@ public class LifeImpl implements Life, Serializable {
 	}
 	
 	public void name(String newName) {
-		_name = newName;
+		_name.supply(newName);
 	}
 
 	public void thoughtOfTheDay(String thought) {
@@ -67,7 +66,7 @@ public class LifeImpl implements Life, Serializable {
 		_nicknames.remove(oldNickname);
 	}
 
-	public String name() {
+	public Signal<String> name() {
 		return _name;
 	}
 
@@ -105,16 +104,11 @@ public class LifeImpl implements Life, Serializable {
 		return new Date(); //A local LifeView is always up-to-date.
 	}
 
-	public JpgImage pictureOld() {
-		return _pictureOld;
-	}
-
 	public Signal<JpgImage> picture() {
 		return _picture;
 	}
 
 	public void picture(JpgImage picture) {
-		_pictureOld = picture;
 		_picture.supply(picture);
 	}
 

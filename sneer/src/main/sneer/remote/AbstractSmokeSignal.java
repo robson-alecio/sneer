@@ -2,15 +2,10 @@ package sneer.remote;
 
 import java.io.Serializable;
 
-public abstract class AbstractSmokeSignal implements SmokeSignal, Serializable {
-
-	protected final int _indianId;
+public abstract class AbstractSmokeSignal extends SmokeSignal implements Serializable {
 
 	protected AbstractSmokeSignal(int indianId) {
-		_indianId = indianId;
-	}
-	public int indianId() {
-		return _indianId;
+		super(indianId);
 	}
 
 }

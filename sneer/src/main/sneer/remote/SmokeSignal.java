@@ -1,7 +1,11 @@
 package sneer.remote;
 
-public interface SmokeSignal {
+abstract class SmokeSignal {
 	
-	int indianId();
+	protected final int _indianId;
+
+	protected SmokeSignal(int indianId){
+		_indianId = indianId;
+	}
 
 }

@@ -6,9 +6,9 @@ import wheel.experiments.Cool;
 import wheel.experiments.environment.network.ObjectServerSocket;
 import wheel.experiments.environment.network.ObjectSocket;
 import wheel.experiments.environment.network.OldNetwork;
-import wheelexperiments.reactive.Notifier;
+import wheelexperiments.reactive.AbstractSignal;
 
-public class RemoteSignal<T> extends Notifier<T> {
+public class RemoteSignal<T> extends AbstractSignal<T> {
 
 	private ObjectSocket _socket;
 	private T _currentValue;

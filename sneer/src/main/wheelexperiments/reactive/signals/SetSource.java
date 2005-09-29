@@ -5,68 +5,71 @@
 package wheelexperiments.reactive.signals;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import wheelexperiments.reactive.AbstractNotifier;
+import wheelexperiments.reactive.Receiver;
+import wheelexperiments.reactive.SetValueChangeImpl;
+import wheelexperiments.reactive.signals.SetSignal.SetValueChange;
 
-public class SetSource<T> implements SetSignal<T>, Serializable {
 
-	private static final long serialVersionUID = 1L;
+public class SetSource<T> extends AbstractNotifier<SetValueChange<T>>  implements SetSignal<T>, Serializable {
+
 
 	private Set<T> _contents = new HashSet<T>();
 
-	private final Set<Receiver<T>> _receivers = new HashSet<Receiver<T>>();
-
-	public void add(T element) {
-		synchronized (_contents) {
-			_contents.add(element);
-		}
-		notifyOfAddition(element);
+	public void addSetReceiver(Receiver<SetValueChange<T>> receiver) {
+		addReceiver(receiver);
 	}
 
-	public void remove(T element) {
-		synchronized (_contents) {
-			_contents.remove(element);
-		}
-		notifyOfRemoval(element);
-	}
-
-	private void notifyOfRemoval(T element) {
-		for (Receiver<T> item : receiversCopy()) {
-			item.elementRemoved(element);
-		}
+	public void removeSetReceiver(Receiver<SetValueChange<T>> receiver) {
+		removeReceiver(receiver);
 	}
 	
-	private void notifyOfAddition(T element) {
-		for (Receiver<T> item : receiversCopy()) {
-			item.elementAdded(element);
-		}
-	}
-
-	public synchronized void addReceiver(Receiver<T> receiver) {
-		_receivers.add(receiver);
-		for (T element : contentsCopy())
-			notifyOfAddition(element);
-	}
-
-	public synchronized void removeReceiver(Receiver<T> receiver) {
-		_receivers.remove(receiver);
-	}
-	
-	public Set<T> currentValue() {
+	public Set<T> currentElements() {
 		synchronized (_contents) {
-			return new HashSet<T>(_contents);
+			return contentsCopy();
 		}
 	}
 
-	private synchronized Iterable<Receiver<T>> receiversCopy() {
-		return new ArrayList<Receiver<T>>(_receivers);
+	private Set<T> contentsCopy() {
+		return new HashSet<T>(_contents);
 	}
 
-	private synchronized Iterable<T> contentsCopy() {
-		return new ArrayList<T>(_contents);
+	public void add(T elementAdded) {
+		change(new SetValueChangeImpl<T>(elementAdded, null));
 	}
+
+	public void remove(T elementRemoved) {
+		change(new SetValueChangeImpl<T>(null, elementRemoved));
+	}
+
 	
+	public void change(SetValueChange<T> change) {
+		synchronized (_contents) {
+			_contents.addAll(change.elementsAdded());
+			_contents.removeAll(change.elementsAdded());
+			notifyReceivers(change);
+		}
+	}
+
+	private static final long serialVersionUID = 1L;
+
+	@Override
+	protected void initReceiver(Receiver<SetValueChange<T>> receiver) {
+		receiver.receive(new SetValueChangeImpl<T>(contentsCopy(), null));
+		
+	}
+
+	public void addTransientSetReceiver(Receiver<SetValueChange<T>> receiver) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void removeTransientSetReceiver(Receiver<SetValueChange<T>> receiver) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

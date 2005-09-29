@@ -46,7 +46,7 @@ public class SetSource<T> implements SetSignal<T>, Serializable {
 
 	public synchronized void addReceiver(Receiver<T> receiver) {
 		_receivers.add(receiver);
-		for (T element : _contents)
+		for (T element : contentsCopy())
 			notifyOfAddition(element);
 	}
 
@@ -54,14 +54,19 @@ public class SetSource<T> implements SetSignal<T>, Serializable {
 		_receivers.remove(receiver);
 	}
 	
-	private synchronized Iterable<Receiver<T>> receiversCopy() {
-		return new ArrayList<Receiver<T>>(_receivers);
-	}
-
 	public Set<T> currentValue() {
 		synchronized (_contents) {
 			return new HashSet<T>(_contents);
 		}
 	}
+
+	private synchronized Iterable<Receiver<T>> receiversCopy() {
+		return new ArrayList<Receiver<T>>(_receivers);
+	}
+
+	private synchronized Iterable<T> contentsCopy() {
+		return new ArrayList<T>(_contents);
+	}
+	
 
 }

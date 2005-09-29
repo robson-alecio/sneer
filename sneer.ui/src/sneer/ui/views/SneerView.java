@@ -53,9 +53,9 @@ import sneer.life.Life;
 import sneer.life.LifeView;
 import sneer.ui.SneerUIPlugin;
 import sneer.ui.topten.TopTen;
-import wheelexperiments.reactive.Signals;
-import wheelexperiments.reactive.Signal.Receiver;
-import wheelexperiments.reactive.signals.SetSignal;
+import wheelexperiments.reactive.Receiver;
+import wheelexperiments.reactive.Signal;
+import wheelexperiments.reactive.signals.SetSignal.SetValueChange;
 
 
 public class SneerView extends ViewPart {
@@ -95,6 +95,7 @@ public class SneerView extends ViewPart {
 		
 		final private String _nickname;
 		final private LifeView _lifeView;
+		private String _cachedName;
 		private String _cachedThoughtOfTheDay;
 
 		private Set<GuiContact> _contacts = new HashSet<GuiContact>();
@@ -112,7 +113,16 @@ public class SneerView extends ViewPart {
 			_lifeView = lifeView;
 			_parent = parent;
 			
-			Signals.transientReception(_lifeView.thoughtOfTheDay(), new Receiver<String>() {
+			_lifeView.name().addTransientReceiver(new Receiver<String>() {
+				public void receive(String newValue) {
+					if (_isStopped) return;
+					
+					_cachedName = newValue;
+					refreshMyTreeItem();
+				}
+			});
+
+			_lifeView.thoughtOfTheDay().addTransientReceiver(new Receiver<String>() {
 				public void receive(String newValue) {
 					if (_isStopped) return;
 					
@@ -121,7 +131,7 @@ public class SneerView extends ViewPart {
 				}
 			});
 
-			Signals.transientReception(_lifeView.picture(), new Receiver<JpgImage>() {
+			_lifeView.picture().addTransientReceiver(new Receiver<JpgImage>() {
 				public void receive(JpgImage newValue) {
 					if (_isStopped) return;
 					
@@ -130,21 +140,19 @@ public class SneerView extends ViewPart {
 				}
 			});
 
-			Signals.transientReception(_lifeView.nicknames(), new SetSignal.Receiver<String>() {
-				public void elementAdded(String newNickname) {
-					if (_isStopped) return;
-					_contacts.add(new GuiContact(newNickname, GuiContact.this));
-					refreshMyTreeItem();
-				}
-
-				public void elementRemoved(String removedNickname) {
+			_lifeView.nicknames().addTransientSetReceiver(new Receiver<SetValueChange<String>>() {
+				public void receive(SetValueChange<String> valueChange) {
 					if (_isStopped) return;
 					
-					for (Iterator it = _contacts.iterator(); it.hasNext();) {
-						GuiContact contact = (GuiContact) it.next();
-						if (contact.nickname().equals(removedNickname)) it.remove();
+					for (String newNickname : valueChange.elementsAdded()) {
+						_contacts.add(new GuiContact(newNickname, GuiContact.this));
 					}
 
+					for (Iterator it = _contacts.iterator(); it.hasNext();) {
+						GuiContact contact = (GuiContact) it.next();
+						if (valueChange.elementsRemoved().contains(contact.nickname())) it.remove();
+					}
+					
 					refreshMyTreeItem();
 				}
 			});
@@ -204,7 +212,7 @@ public class SneerView extends ViewPart {
 		private boolean calculateOnline() {
 			Date lastSighting = _lifeView.lastSightingDate();
 			if (lastSighting == null) return false;
-			return System.currentTimeMillis() - lastSighting.getTime() < 1000 * 60;
+			return System.currentTimeMillis() - lastSighting.getTime() < 1000 * 60 * 2;
 		}
 		
 		public GuiContact[] contacts() {
@@ -247,6 +255,10 @@ public class SneerView extends ViewPart {
 		public String nicknamePath() {
 			if (distance() <= 1) return nickname();
 			return _parent.nicknamePath() + " > " + nickname(); 
+		}
+
+		public String name() {
+			return _cachedName;
 		}
 
 		public String thoughtOfTheDay() {
@@ -310,7 +322,7 @@ public class SneerView extends ViewPart {
 		
 		private String onlineLabel(GuiContact contact) {
 			//nickname (Full Name) - Thought of the day
-			String result = contact.nickname() + " (" + contact.lifeView().name() + ")";
+			String result = contact.nickname() + " (" + contact.name() + ")";
 			
 			String thought = contact.thoughtOfTheDay();
 			if (thought == null) return result;
@@ -518,12 +530,9 @@ public class SneerView extends ViewPart {
 	}
 
 	public void refresh() {
-		if (null == _contactsViewer) return;
 		UIJob job = new UIJob("Contact refresh") {
 			public IStatus runInUIThread(IProgressMonitor monitor) {
 				try {
-					refreshContacts();
-					
 					GuiContact contact = selectedContact();
 					refreshContactForm(contact);
 					refreshTopTenForm(contact);
@@ -558,7 +567,7 @@ public class SneerView extends ViewPart {
 			return;
 		}
 		_nameText.setText(nullToEmptyString(lifeView.name()));
-		_thoughtOfTheDayText.setText(nullToEmptyString(lifeView.thoughtOfTheDay().currentValue()));
+		_thoughtOfTheDayText.setText(nullToEmptyString(lifeView.thoughtOfTheDay()));
 		_contactInfoText.setText(nullToEmptyString(lifeView.contactInfo()));
 	}
 	
@@ -588,6 +597,10 @@ public class SneerView extends ViewPart {
 		_categories.setItems(new String[0]);
 	}
 
+	private String nullToEmptyString(Signal<String> signal) {
+		return nullToEmptyString(signal.currentValue());
+	}
+
 	private String nullToEmptyString(String string) {
 		return string == null ? "" : string;
 	}
@@ -601,21 +614,6 @@ public class SneerView extends ViewPart {
 		_nameText.setText("");
 		_thoughtOfTheDayText.setText("");
 		_contactInfoText.setText("");
-	}
-
-	private void refreshContacts() {
-		if (_contactsViewer.getControl().isDisposed()) return;
-		
-		Object[] elements = _contactsViewer.getVisibleExpandedElements();
-		if (elements.length == 0) {
-			_contactsViewer.refresh();
-			return;
-		}
-		
-		for (Object element : elements) {
-			_contactsViewer.refresh(element, true);
-		}
-		_contactsViewer.setExpandedElements(elements);
 	}
 
 	public void stop() {

@@ -6,29 +6,41 @@ import wheelexperiments.reactive.Signal;
 
 public abstract class ConnectionTest extends TestCase {
 
-	private Object _outputValue;
+	protected abstract Signal<Object> output();
+	protected abstract Receiver<Object> input();
+
+	private Object _outputValue1;
+	private Object _outputValue2;
+	private Object _outputValue3;
+
+	public void testConnection() {
+		testConnectionWith("banana");
+		testConnectionWith(new Integer(42));
+	}
+	private void testConnectionWith(Object object) {
+		input().receive(object);
+		assertEquals(object, _outputValue1);
+		assertEquals(object, _outputValue2);
+		assertEquals(object, _outputValue3);
+	}
 
 	@Override
 	protected void setUp() throws Exception {
 		output().addReceiver(new Receiver<Object>(){
 			public void receive(Object newValue) {
-				_outputValue = newValue;
+				_outputValue1 = newValue;
+			}
+		});
+		output().addReceiver(new Receiver<Object>(){
+			public void receive(Object newValue) {
+				_outputValue2 = newValue;
+			}
+		});
+		output().addReceiver(new Receiver<Object>(){
+			public void receive(Object newValue) {
+				_outputValue3 = newValue;
 			}
 		});
 	}
 
-	protected abstract Signal<Object> output();
-
-	public void testConnection() {
-		input().receive("banana");
-		assertEquals("banana", _outputValue);
-		
-		input().receive(new Integer(42));
-		assertEquals(new Integer(42), _outputValue);
-	}
-
-	protected abstract Receiver<Object> input();
-
-
-	
 }

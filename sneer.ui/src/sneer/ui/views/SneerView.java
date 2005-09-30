@@ -5,7 +5,6 @@ package sneer.ui.views;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -113,6 +112,7 @@ public class SneerView extends ViewPart {
 			_lifeView = lifeView;
 			_parent = parent;
 			
+			_lifeView.toString();
 			_lifeView.name().addTransientReceiver(new Receiver<String>() {
 				public void receive(String newValue) {
 					if (_isStopped) return;
@@ -141,16 +141,20 @@ public class SneerView extends ViewPart {
 			});
 
 			_lifeView.nicknames().addTransientSetReceiver(new Receiver<SetValueChange<String>>() {
-				public void receive(SetValueChange<String> valueChange) {
+				public void receive(SetValueChange<String> nicknamesChanged) {
 					if (_isStopped) return;
 					
-					for (String newNickname : valueChange.elementsAdded()) {
+					for (String newNickname : nicknamesChanged.elementsAdded()) {
 						_contacts.add(new GuiContact(newNickname, GuiContact.this));
 					}
 
-					for (Iterator it = _contacts.iterator(); it.hasNext();) {
-						GuiContact contact = (GuiContact) it.next();
-						if (valueChange.elementsRemoved().contains(contact.nickname())) it.remove();
+					for (String removedNickname : nicknamesChanged.elementsRemoved()) {
+						for (GuiContact contact : _contacts) {
+							if (contact.nickname().equals(removedNickname)) {
+								_contacts.remove(contact);
+								break;
+							}
+						}
 					}
 					
 					refreshMyTreeItem();
@@ -210,7 +214,7 @@ public class SneerView extends ViewPart {
 		}
 
 		private boolean calculateOnline() {
-			Date lastSighting = _lifeView.lastSightingDate();
+			Date lastSighting = _lifeView.lastSightingDate();   //FIXME Use the name signal.currency() intead of lastSightingDate().
 			if (lastSighting == null) return false;
 			return System.currentTimeMillis() - lastSighting.getTime() < 1000 * 60 * 2;
 		}
@@ -300,8 +304,8 @@ public class SneerView extends ViewPart {
 			return ((GuiContact)parent).contacts();
 		}
 		
-		public boolean hasChildren(Object parent) {
-			return ((GuiContact)parent).isOnline();
+		public boolean hasChildren(Object contact) {
+			return ((GuiContact)contact).contacts().length != 0;
 		}
 	}
 
@@ -498,7 +502,7 @@ public class SneerView extends ViewPart {
 				sneer().removeContact(contact.nickname());
 			}
 		};
-		_removeContactAction.setText("Remove Contact");
+		_removeContactAction.setText("Remove Contact");  //FIXME Removing any contact causes NullPointerException.
 		_removeContactAction.setToolTipText("Remove selected contact.");
 		_removeContactAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
 			getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));

@@ -5,9 +5,9 @@ import java.io.IOException;
 import sneer.life.LifeView;
 import wheel.experiments.environment.network.ObjectSocket;
 import wheelexperiments.reactive.Receiver;
-import wheelexperiments.reactive.signals.SetSignal;
-import wheelexperiments.reactive.signals.SetSource;
-import wheelexperiments.reactive.signals.SetSignal.SetValueChange;
+import wheelexperiments.reactive.SetSignal;
+import wheelexperiments.reactive.SetSource;
+import wheelexperiments.reactive.SetSignal.SetValueChange;
 
 abstract class IndianForSet<T> extends AbstractIndian {
 

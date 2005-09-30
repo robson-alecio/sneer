@@ -1,6 +1,5 @@
 package wheelexperiments.reactive;
 
-import wheelexperiments.reactive.signals.SetSignal;
 
 
 /** @invariant this.toString().equals(this.currentValue().toString()) */

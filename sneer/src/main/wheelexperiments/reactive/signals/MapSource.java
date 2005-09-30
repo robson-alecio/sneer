@@ -10,6 +10,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import wheelexperiments.reactive.SetSignal;
+import wheelexperiments.reactive.SetSource;
+
 
 public class MapSource<K,V> implements MapSignal<K,V> {
 

@@ -6,8 +6,8 @@ package sneer.life;
 import java.util.Date;
 import java.util.Map;
 
+import wheelexperiments.reactive.SetSignal;
 import wheelexperiments.reactive.Signal;
-import wheelexperiments.reactive.signals.SetSignal;
 
 
 public interface LifeView {

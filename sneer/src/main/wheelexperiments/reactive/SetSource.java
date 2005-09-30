@@ -2,16 +2,13 @@
 //This is free software. It is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the license distributed along with this file for more details.
 //Contributions: Kalecser Kurtz, Fabio Roger Manera.
 
-package wheelexperiments.reactive.signals;
+package wheelexperiments.reactive;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import wheelexperiments.reactive.AbstractNotifier;
-import wheelexperiments.reactive.Receiver;
-import wheelexperiments.reactive.SetValueChangeImpl;
-import wheelexperiments.reactive.signals.SetSignal.SetValueChange;
+import wheelexperiments.reactive.SetSignal.SetValueChange;
 
 
 public class SetSource<T> extends AbstractNotifier<SetValueChange<T>>  implements SetSignal<T>, Serializable {

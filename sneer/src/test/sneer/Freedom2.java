@@ -124,7 +124,7 @@ public class Freedom2 extends Freedom1 {
 	}
 
 	protected void checkNickname(String nickname, String name) {
-		assertEquals(name, myContact(nickname).name());
+		assertEquals(name, myContact(nickname).name().currentValue());
 	}
 
 

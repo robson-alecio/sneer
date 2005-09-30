@@ -10,11 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import wheelexperiments.reactive.SetSignal;
+import wheelexperiments.reactive.SetSource;
 import wheelexperiments.reactive.Signal;
 import wheelexperiments.reactive.Source;
 import wheelexperiments.reactive.SourceImpl;
-import wheelexperiments.reactive.signals.SetSignal;
-import wheelexperiments.reactive.signals.SetSource;
 
 
 public class LifeImpl implements Life, Serializable {

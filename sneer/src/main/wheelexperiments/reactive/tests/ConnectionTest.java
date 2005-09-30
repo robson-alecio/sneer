@@ -31,7 +31,7 @@ public abstract class ConnectionTest extends TestCase {
 				_outputValue1 = newValue;
 			}
 		});
-		output().addReceiver(new Receiver<Object>(){
+		output().addTransientReceiver(new Receiver<Object>(){
 			public void receive(Object newValue) {
 				_outputValue2 = newValue;
 			}

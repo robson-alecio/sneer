@@ -4,7 +4,7 @@ import wheelexperiments.reactive.AbstractSignal;
 import wheelexperiments.reactive.Receiver;
 import wheelexperiments.reactive.Signal;
 
-public class NotifierTest extends ConnectionTest {
+public class NotificationTest extends ConnectionTest {
 
 	private MyNotifier _notifier = new MyNotifier();
 
@@ -35,9 +35,6 @@ public class NotifierTest extends ConnectionTest {
 		public void notifyReceivers(Object newValue) {
 			super.notifyReceivers(newValue);
 		}
-		
-		
-
 	}
 	
 }

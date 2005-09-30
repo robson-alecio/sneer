@@ -3,7 +3,7 @@ package wheelexperiments.reactive;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import wheelexperiments.reactive.signals.SetSignal.SetValueChange;
+import wheelexperiments.reactive.SetSignal.SetValueChange;
 
 public class SetValueChangeImpl<T> implements SetValueChange<T> {
 

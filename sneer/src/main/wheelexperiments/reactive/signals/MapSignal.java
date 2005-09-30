@@ -6,6 +6,8 @@ package wheelexperiments.reactive.signals;
 
 import java.util.Map;
 
+import wheelexperiments.reactive.SetSignal;
+
 public interface MapSignal<K, V> {
 
 	void addObserver(Observer<K, V> observer);

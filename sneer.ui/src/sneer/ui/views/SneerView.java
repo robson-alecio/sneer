@@ -55,7 +55,7 @@ import sneer.ui.SneerUIPlugin;
 import sneer.ui.topten.TopTen;
 import wheelexperiments.reactive.Receiver;
 import wheelexperiments.reactive.Signal;
-import wheelexperiments.reactive.signals.SetSignal.SetValueChange;
+import wheelexperiments.reactive.SetSignal.SetValueChange;
 
 
 public class SneerView extends ViewPart {

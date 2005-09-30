@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Set;
 
 
-public interface SetSignal<T>  {  //TODO Refactor: Move to same package as Signal.
+public interface SetSignal<T>  {
 
 	void addSetReceiver(Receiver<SetValueChange<T>> receiver);
 	void removeSetReceiver(Receiver<SetValueChange<T>> receiver);

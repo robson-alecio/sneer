@@ -13,16 +13,14 @@ import wheelexperiments.reactive.SourceImpl;
 abstract class IndianForObject<T> extends AbstractIndian {
 
 	transient Signal<T> _observedSignal;
-	transient final private Source<T> _sourceToNotify = createLocalSourceToNotify(); 
+	transient private Source<T> _localSourceToNotify; 
 	
 	public void reportAbout(LifeView life, ObjectSocket socket) {
-		System.out.println("Sitting Bull reporting, sir.");
 		_socket = socket;
 		_observedSignal = signalToObserveOn(life);
 		_observedSignal.addTransientReceiver(new Receiver<T>() {
 			public void receive(T newValue) {
 				try {
-					System.out.println("Sending smoke signal..." + newValue);
 					_socket.writeObject(new ObjectSmokeSignal(_id, newValue));
 				} catch (IOException e) {
 					_observedSignal.removeReceiver(this);
@@ -33,19 +31,16 @@ abstract class IndianForObject<T> extends AbstractIndian {
 	}
 
 	Source<T> localSourceToNotify() {
-		return _sourceToNotify;
+		if (_localSourceToNotify == null) _localSourceToNotify = new SourceImpl<T>();
+		return _localSourceToNotify;
 	}
 	
 	abstract protected Signal<T> signalToObserveOn(LifeView life);
-	
-	protected Source<T> createLocalSourceToNotify() {
-		return new SourceImpl<T>();
-	}
 
 	@SuppressWarnings("unchecked")
 	public void receive(SmokeSignal smokeSignal) {
 		ObjectSmokeSignal objectSmokeSignal = (ObjectSmokeSignal) smokeSignal;
-		_sourceToNotify.supply((T)objectSmokeSignal.newValue());
+		localSourceToNotify().supply((T)objectSmokeSignal.newValue());
 	}
 
 	private static final long serialVersionUID = 1L;

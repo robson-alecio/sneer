@@ -1,11 +1,13 @@
 package wheelexperiments.reactive;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import wheelexperiments.reactive.SetSignal.SetValueChange;
 
-public class SetValueChangeImpl<T> implements SetValueChange<T> {
+public class SetValueChangeImpl<T> implements SetValueChange<T>, Serializable {
 
 	private final Collection<T> _elementsAdded;
 	private final Collection<T> _elementsRemoved;
@@ -18,8 +20,12 @@ public class SetValueChangeImpl<T> implements SetValueChange<T> {
 	}
 
 	public SetValueChangeImpl(Collection<T> added, Collection<T> removed) {
-		_elementsAdded = added;
-		_elementsRemoved = removed;
+		_elementsAdded = nullToEmpty(added);
+		_elementsRemoved = nullToEmpty(removed);
+	}
+
+	private Collection<T> nullToEmpty(Collection<T> collection) {
+		return collection == null ? Collections.EMPTY_LIST : collection;
 	}
 
 	public Collection<T> elementsAdded() {
@@ -30,4 +36,5 @@ public class SetValueChangeImpl<T> implements SetValueChange<T> {
 		return _elementsRemoved;
 	}
 
+	private static final long serialVersionUID = 1L;
 }

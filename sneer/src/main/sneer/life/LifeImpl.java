@@ -7,7 +7,6 @@ package sneer.life;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import wheelexperiments.reactive.SetSignal;
@@ -94,12 +93,7 @@ public class LifeImpl implements Life, Serializable {
     public String contactInfo() {
         return _contactInfo;
     }
-
-	public List<String> messagesSentToMe() {
-		// FIXME Auto-generated method stub
-		return null;
-	}
-    
+  
 	public Date lastSightingDate() {
 		return new Date(); //A local LifeView is always up-to-date.
 	}

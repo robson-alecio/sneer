@@ -6,8 +6,6 @@ public class SourceImpl<T> extends AbstractSignal<T> implements Source<T>, Seria
 
 	private T _currentValue;
 	
-	public SourceImpl() {}
-
 	public void supply(T newValue) {
 		if (newValue == _currentValue) return;
 		if (newValue != null && newValue.equals(_currentValue)) return;

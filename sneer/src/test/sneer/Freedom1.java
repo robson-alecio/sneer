@@ -36,7 +36,7 @@ public class Freedom1 extends TestCase {
     }
 
     protected void checkName(String expected, LifeView lifeView) {
-		assertEquals(expected, lifeView.name());
+		assertEquals(expected, lifeView.name().currentValue());
 	}
 
     private void changeMyNameAFewTimes() {

@@ -1,9 +1,7 @@
 package sneer.remote;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import sneer.life.LifeView;
@@ -31,11 +29,6 @@ class LifeCache implements Serializable {
 
 	public String contactInfo() {
 		return _contactInfo;
-	}
-
-	public List<String> messagesSentToMe() {
-		return new ArrayList<String>();
-		//FIXME To be implemented.
 	}
 
 	public Date lastSightingDate() {

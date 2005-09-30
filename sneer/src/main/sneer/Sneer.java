@@ -147,7 +147,7 @@ public class Sneer {
 			LifeView contact = _life.contact(nickname);
 			if (contact.lastSightingDate() == null) continue;
 			if (allSentMessages(contact) == null) continue;
-			List<String> messages = allSentMessages(contact).get(_life.name());
+			List<String> messages = allSentMessages(contact).get(_life.name().currentValue());
 			if (messages == null) continue;
 			showMessages(nickname, messages);
 		}
@@ -192,7 +192,7 @@ public class Sneer {
 	}
 
 	private List<String> getMessagesTo(LifeView contact) {
-		List<String> messagesToContact = allMySentMessages().get(contact.name());
+		List<String> messagesToContact = allMySentMessages().get(contact.name().currentValue());
 		if (messagesToContact == null) {
 			allMySentMessages().put(contact.name().currentValue(), new ArrayList<String>());
 			return getMessagesTo(contact);

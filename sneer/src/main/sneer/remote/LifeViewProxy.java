@@ -2,6 +2,7 @@ package sneer.remote;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.ConnectException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,15 +36,17 @@ class LifeViewProxy implements LifeView, Serializable {
 
 	private void sendScouts() {
 		if (_scoutsSent) return;
+
 		try {
 			_queryExecuter.execute(_indianForName);
 			_queryExecuter.execute(_indianForThoughtOfTheDay);
 			_queryExecuter.execute(_indianForPicture);
 			_queryExecuter.execute(_indianForNicknames);
 			_scoutsSent = true;
-		} catch (IOException ignored) {
-//			ignored.printStackTrace();
-			//Simply ignore this exception, since the connection will try to reconnect anyway.
+		} catch (ConnectException ignored) {
+			//Simply ignore this exception, since we will try to reconnect anyway.
+		} catch (IOException x) {
+			x.printStackTrace();
 		}
 	}
 
@@ -61,13 +64,14 @@ class LifeViewProxy implements LifeView, Serializable {
 
 	private void update() {
 		try {
-			sendScouts();
-
 			LifeCache newCache = _queryExecuter.execute(new LifeSightingQuery());
 			if (newCache == null) return;
 			if (newCache.lastSightingDate() == null) return;
 			_cache = newCache;
 			_lastSightingDate = new Date();
+
+			sendScouts();
+
 		} catch (IOException ignored) {
 			_scoutsSent = false;
 			//Simply ignore this exception, since the connection will try to reconnect anyway.
@@ -148,12 +152,12 @@ class LifeViewProxy implements LifeView, Serializable {
 
 	static private class IndianForNicknames extends IndianForSet<String> {
 
-		private static final long serialVersionUID = 1L;
-
 		@Override
 		protected SetSignal<String> setSignalToObserveOn(LifeView life) {
 			return life.nicknames();
 		}
+
+		private static final long serialVersionUID = 1L;
 	}
 
 	static private class IndianForPicture extends IndianForObject<JpgImage> {

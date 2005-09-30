@@ -13,7 +13,6 @@ import wheelexperiments.reactive.SetSignal.SetValueChange;
 
 public class SetSource<T> extends AbstractNotifier<SetValueChange<T>>  implements SetSignal<T>, Serializable {
 
-
 	private Set<T> _contents = new HashSet<T>();
 
 	public void addSetReceiver(Receiver<SetValueChange<T>> receiver) {
@@ -24,6 +23,14 @@ public class SetSource<T> extends AbstractNotifier<SetValueChange<T>>  implement
 		removeReceiver(receiver);
 	}
 	
+	public void addTransientSetReceiver(Receiver<SetValueChange<T>> receiver) {
+		addTransientReceiver(receiver);
+	}
+
+	public void removeTransientSetReceiver(Receiver<SetValueChange<T>> receiver) {
+		removeTransientReceiver(receiver);
+	}
+
 	public Set<T> currentElements() {
 		synchronized (_contents) {
 			return contentsCopy();
@@ -46,27 +53,16 @@ public class SetSource<T> extends AbstractNotifier<SetValueChange<T>>  implement
 	public void change(SetValueChange<T> change) {
 		synchronized (_contents) {
 			_contents.addAll(change.elementsAdded());
-			_contents.removeAll(change.elementsAdded());
+			_contents.removeAll(change.elementsRemoved());
 			notifyReceivers(change);
 		}
 	}
 
-	private static final long serialVersionUID = 1L;
-
 	@Override
 	protected void initReceiver(Receiver<SetValueChange<T>> receiver) {
 		receiver.receive(new SetValueChangeImpl<T>(contentsCopy(), null));
-		
 	}
 
-	public void addTransientSetReceiver(Receiver<SetValueChange<T>> receiver) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void removeTransientSetReceiver(Receiver<SetValueChange<T>> receiver) {
-		// TODO Auto-generated method stub
-		
-	}
+	private static final long serialVersionUID = 1L;
 
 }

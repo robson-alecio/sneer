@@ -52,10 +52,18 @@ public class SetSource<T> extends AbstractNotifier<SetValueChange<T>>  implement
 	
 	public void change(SetValueChange<T> change) {
 		synchronized (_contents) {
+			assertValidChange(change);
 			_contents.addAll(change.elementsAdded());
 			_contents.removeAll(change.elementsRemoved());
 			notifyReceivers(change);
 		}
+	}
+
+	private void assertValidChange(SetValueChange<T> change) {
+		if (change.elementsAdded().removeAll(_contents))
+			throw new IllegalArgumentException("SetSource already contained at least one element being added.");
+		if (!_contents.containsAll(change.elementsRemoved()))
+			throw new IllegalArgumentException("SetSource did not contain all elements being removed.");
 	}
 
 	@Override

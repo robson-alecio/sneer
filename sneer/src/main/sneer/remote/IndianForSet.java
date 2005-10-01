@@ -1,12 +1,14 @@
 package sneer.remote;
 
 import java.io.IOException;
+import java.util.Set;
 
 import sneer.life.LifeView;
 import wheel.experiments.environment.network.ObjectSocket;
 import wheelexperiments.reactive.Receiver;
 import wheelexperiments.reactive.SetSignal;
 import wheelexperiments.reactive.SetSource;
+import wheelexperiments.reactive.SetValueChangeImpl;
 import wheelexperiments.reactive.SetSignal.SetValueChange;
 
 abstract class IndianForSet<T> extends AbstractIndian {
@@ -39,7 +41,19 @@ abstract class IndianForSet<T> extends AbstractIndian {
 	@SuppressWarnings("unchecked")
 	public void receive(SmokeSignal smokeSignal) {
 		SetSmokeSignal setSmokeSignal = (SetSmokeSignal) smokeSignal;
-		_localSetSourceToNotify.change((SetValueChange<T>)setSmokeSignal._change);
+		SetValueChange<T> reportedChange = (SetValueChange<T>)setSmokeSignal._change;
+		SetValueChange<T> delta = delta(reportedChange);
+		if (delta == null) return;
+		localSetSourceToNotify().change(delta);
+	}
+
+	private SetValueChange<T> delta(SetValueChange<T> reportedChange) {
+		Set<T> current = localSetSourceToNotify().currentElements();
+		reportedChange.elementsAdded().removeAll(current);
+		reportedChange.elementsRemoved().retainAll(current);
+		if (reportedChange.elementsAdded().isEmpty() && reportedChange.elementsRemoved().isEmpty())
+			return null;
+		return reportedChange;
 	}
 
 	private static final long serialVersionUID = 1L;

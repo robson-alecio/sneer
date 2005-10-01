@@ -13,10 +13,7 @@ public class SetValueChangeImpl<T> implements SetValueChange<T>, Serializable {
 	private final Collection<T> _elementsRemoved;
 
 	public SetValueChangeImpl(T elementAdded, T elementRemoved) {
-		_elementsAdded = new ArrayList<T>(1);
-		_elementsAdded.add(elementAdded);
-		_elementsRemoved = new ArrayList<T>(1);
-		_elementsRemoved.add(elementRemoved);
+		this(wrap(elementAdded), wrap(elementRemoved));
 	}
 
 	public SetValueChangeImpl(Collection<T> added, Collection<T> removed) {
@@ -24,7 +21,14 @@ public class SetValueChangeImpl<T> implements SetValueChange<T>, Serializable {
 		_elementsRemoved = nullToEmpty(removed);
 	}
 
-	private Collection<T> nullToEmpty(Collection<T> collection) {
+	private static <CT> Collection<CT> wrap(CT element) {
+		if (element == null) return null;
+		Collection<CT> result = new ArrayList<CT>(1);
+		result.add(element);
+		return result;
+	}
+
+	private static <CT> Collection<CT> nullToEmpty(Collection<CT> collection) {
 		return collection == null ? Collections.EMPTY_LIST : collection;
 	}
 

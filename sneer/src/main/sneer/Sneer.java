@@ -135,6 +135,10 @@ public class Sneer {
 	}
 
 	public void removeContact(String nickname) {
+		if (!_life.nicknames().currentElements().contains(nickname)) {
+			_user.acknowledge("" + nickname + " is not one of your first level contacts.");
+			return;
+		}
 		execute(new ContactRemoval(nickname));
 	}
 
@@ -145,6 +149,7 @@ public class Sneer {
 	public void checkNewMessages() {
 		for (String nickname : _life.nicknames().currentElements()) {
 			LifeView contact = _life.contact(nickname);
+			if (contact == null) continue;
 			if (contact.lastSightingDate() == null) continue;
 			if (allSentMessages(contact) == null) continue;
 			List<String> messages = allSentMessages(contact).get(_life.name().currentValue());

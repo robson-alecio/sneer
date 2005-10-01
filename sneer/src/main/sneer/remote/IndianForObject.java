@@ -40,7 +40,16 @@ abstract class IndianForObject<T> extends AbstractIndian {
 	@SuppressWarnings("unchecked")
 	public void receive(SmokeSignal smokeSignal) {
 		ObjectSmokeSignal objectSmokeSignal = (ObjectSmokeSignal) smokeSignal;
-		localSourceToNotify().supply((T)objectSmokeSignal.newValue());
+		T newValue = (T)objectSmokeSignal.newValue();
+		if (sameValue(newValue)) return;
+		localSourceToNotify().supply(newValue);
+	}
+
+	private boolean sameValue(T newValue) {
+		T currentValue = localSourceToNotify().currentValue();
+		if (currentValue == newValue) return true;
+		if (currentValue != null && currentValue.equals(newValue)) return true;
+		return false;
 	}
 
 	private static final long serialVersionUID = 1L;

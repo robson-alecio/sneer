@@ -50,6 +50,7 @@ import sneer.Sneer;
 import sneer.life.JpgImage;
 import sneer.life.Life;
 import sneer.life.LifeView;
+import sneer.ui.EclipseSneerUser;
 import sneer.ui.SneerUIPlugin;
 import sneer.ui.topten.TopTen;
 import wheelexperiments.reactive.Receiver;
@@ -59,8 +60,8 @@ import wheelexperiments.reactive.SetSignal.SetValueChange;
 
 public class SneerView extends ViewPart {
 
-	private static final Image YELLOW_EXCLAMATION_MARK = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_WARN_TSK);
-	private static final Image DEFAULT_IMAGE = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
+	private static final Image YELLOW_EXCLAMATION_MARK = scaleImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_WARN_TSK));
+	private static final Image DEFAULT_IMAGE = scaleImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT));
 	private static final int AS_WIDE_AS_POSSIBLE = 50000;
 
 	private TreeViewer _contactsViewer;
@@ -112,7 +113,6 @@ public class SneerView extends ViewPart {
 			_lifeView = lifeView;
 			_parent = parent;
 			
-			_lifeView.toString();
 			_lifeView.name().addTransientReceiver(new Receiver<String>() {
 				public void receive(String newValue) {
 					if (_isStopped) return;
@@ -143,7 +143,7 @@ public class SneerView extends ViewPart {
 			_lifeView.nicknames().addTransientSetReceiver(new Receiver<SetValueChange<String>>() {
 				public void receive(SetValueChange<String> nicknamesChanged) {
 					if (_isStopped) return;
-					
+
 					for (String newNickname : nicknamesChanged.elementsAdded()) {
 						_contacts.add(new GuiContact(newNickname, GuiContact.this));
 					}
@@ -253,9 +253,9 @@ public class SneerView extends ViewPart {
 			JpgImage jpg = _lifeView.picture().currentValue();
 			if (jpg == null) return DEFAULT_IMAGE;
 			ImageData data = loader.load(jpg.jpegFileContents())[0];
-			return new Image(null, data.scaledTo(32, 32));
+			return new Image(null, scaleImageData(data));
 		}
-
+		
 		public String nicknamePath() {
 			if (distance() <= 1) return nickname();
 			return _parent.nicknamePath() + " > " + nickname(); 
@@ -311,7 +311,6 @@ public class SneerView extends ViewPart {
 
 	private Object[] me() {
 		if (_me == null) _me = new GuiContact(life());
-		
 		return new Object[]{_me};
 	}
 	
@@ -482,10 +481,10 @@ public class SneerView extends ViewPart {
 				GuiContact contact = selectedContact();
 				if (contact == null) return;
 				if (contact.distance() != 1) {
-					SneerUIPlugin.sneerUser().acknowledge("For now, you can only send messages to first level contacts.");
+					user().acknowledge("For now, you can only send messages to your immediate contacts.");
 					return;
 				}
-				SneerUIPlugin.sneerUser().getChatForContact(contact.nickname());
+				user().getChatForContact(contact.nickname());
 			}
 		};
 		_sendMessageAction.setText("Send Message");
@@ -499,6 +498,10 @@ public class SneerView extends ViewPart {
 			public void run() {
 				GuiContact contact = selectedContact();
 				if (contact == null) return;
+				if (contact.distance() != 1) {
+					user().acknowledge("You can only remove your immediate contacts.");
+					return;
+				}
 				sneer().removeContact(contact.nickname());
 			}
 		};
@@ -601,6 +604,14 @@ public class SneerView extends ViewPart {
 		_categories.setItems(new String[0]);
 	}
 
+	private static Image scaleImage(Image image) {
+		return new Image(null, scaleImageData(image.getImageData()));
+	}
+
+	static private ImageData scaleImageData(ImageData data) {
+		return data.scaledTo(32, 32);
+	}
+	
 	private String nullToEmptyString(Signal<String> signal) {
 		return nullToEmptyString(signal.currentValue());
 	}
@@ -622,5 +633,9 @@ public class SneerView extends ViewPart {
 
 	public void stop() {
 		_isStopped = true;
+	}
+
+	private EclipseSneerUser user() {
+		return SneerUIPlugin.sneerUser();
 	}
 }

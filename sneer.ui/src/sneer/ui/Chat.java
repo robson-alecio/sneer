@@ -19,9 +19,13 @@ public abstract class Chat extends Composite {
 		_contact = contact;
 		
 		initialize();
-		
+		showDisclaimer();
 	}
 
+	private void showDisclaimer() {
+		addTextToCorrespondence("[Do NOT use this for sensitive or private information yet. This is just a chat prototype. At the moment, it is VERY easy for other people to see this chat.]");
+	}
+	
 	private void initialize() {
 		setSize(400, 300);
 		

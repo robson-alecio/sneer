@@ -2,7 +2,7 @@ package wheelexperiments.reactive;
 
 
 
-/** @invariant this.toString().equals(this.currentValue().toString()) */
+/** @invariant this.toString().equals("" + this.currentValue()) */
 public interface Signal<T> extends SetSignal<T> {
 	
 	public void addReceiver(Receiver<T> receiver);

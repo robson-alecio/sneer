@@ -23,7 +23,7 @@ abstract class IndianForObject<T> extends AbstractIndian {
 				try {
 					_socket.writeObject(new ObjectSmokeSignal(_id, newValue));
 				} catch (IOException e) {
-					_observedSignal.removeReceiver(this);
+					_observedSignal.removeTransientReceiver(this);
 				}
 			}
 		});

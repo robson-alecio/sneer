@@ -7,14 +7,15 @@ public class SourceImpl<T> extends AbstractSignal<T> implements Source<T>, Seria
 	private T _currentValue;
 	
 	public void supply(T newValue) {
-		assertValueChanging(newValue);
+		if (isSameValue(newValue)) throw new IllegalArgumentException("New value must be different.");
 		_currentValue = newValue;
 		notifyReceivers(newValue);
 	}
 
-	private void assertValueChanging(T newValue) {
-		if (newValue == _currentValue) throw new IllegalArgumentException("New value must be different.");
-		if (newValue != null && newValue.equals(_currentValue))  throw new IllegalArgumentException("New value must be different.");
+	public boolean isSameValue(T value) {
+		if (value == _currentValue) return true; 
+		if (value != null && value.equals(_currentValue)) return true;
+		return false;
 	}
 
 	public T currentValue() {

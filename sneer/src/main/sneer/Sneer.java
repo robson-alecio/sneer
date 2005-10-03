@@ -143,7 +143,12 @@ public class Sneer {
 	}
 
 	public void editPersonalInfo() {
-		execute(new PersonalInfoEditting(_user, _life));
+		try {
+			execute(new PersonalInfoEditting(_user, _life));
+		} catch (RuntimeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void checkNewMessages() {

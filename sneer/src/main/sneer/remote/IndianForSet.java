@@ -8,7 +8,6 @@ import wheel.experiments.environment.network.ObjectSocket;
 import wheelexperiments.reactive.Receiver;
 import wheelexperiments.reactive.SetSignal;
 import wheelexperiments.reactive.SetSource;
-import wheelexperiments.reactive.SetValueChangeImpl;
 import wheelexperiments.reactive.SetSignal.SetValueChange;
 
 abstract class IndianForSet<T> extends AbstractIndian {

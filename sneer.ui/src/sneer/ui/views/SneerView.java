@@ -114,8 +114,8 @@ public class SneerView extends ViewPart {
 			_parent = parent;
 			
 			_lifeView.name().addTransientReceiver(new Receiver<String>() {
-				public void receive(String newValue) {
-					if (_isStopped) return;
+				public void receive(String newValue) { 
+					if (_isStopped) return;   //TODO Will the GuiContacts never remove their receivers from the signals? Will they be garbage collected normally?
 					
 					_cachedName = newValue;
 					refreshMyTreeItem();
@@ -249,9 +249,9 @@ public class SneerView extends ViewPart {
 		}
 
 		private Image produceImage() {
-			ImageLoader loader = new ImageLoader();
 			JpgImage jpg = _lifeView.picture().currentValue();
 			if (jpg == null) return DEFAULT_IMAGE;
+			ImageLoader loader = new ImageLoader();
 			ImageData data = loader.load(jpg.jpegFileContents())[0];
 			return new Image(null, scaleImageData(data));
 		}

@@ -50,7 +50,7 @@ public abstract class SimpleUser implements User {
 	public JpgImage confirmPicture(JpgImage picture) {
 		if (!confirm("Do you want to change your picture?")) return picture;
 
-		String path = answer("File path to your new picture:", "");
+		String path = browseForFile("File path to your new picture:");
 		
 		try {
 			return new JpgImage(path);
@@ -58,6 +58,10 @@ public abstract class SimpleUser implements User {
 			lamentException(e);
 			return picture;
 		}
+	}
+
+	protected String browseForFile(String message) {
+		return answer(message, "");
 	}
 	
 	public void lamentException(Exception e) {

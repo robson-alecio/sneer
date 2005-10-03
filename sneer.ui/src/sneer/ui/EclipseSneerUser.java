@@ -13,6 +13,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
 import sneer.SimpleUser;
@@ -41,6 +42,15 @@ public class EclipseSneerUser extends SimpleUser {
 			return dialog.getValue();
 		}
 		return defaultValue;
+	}
+	
+	@Override
+	protected String browseForFile(String message) {
+		FileDialog fileDialog = new FileDialog(_shell, SWT.OPEN);
+		fileDialog.setText(message);
+		fileDialog.setFilterExtensions(new String[] { "*.jpg", "*.*" });
+		fileDialog.setFilterNames(new String[] { "JPEG Image (*.jpg)", "All Files (*.*)" });
+        return fileDialog.open();
 	}
 
 	public void lookAtMe() {

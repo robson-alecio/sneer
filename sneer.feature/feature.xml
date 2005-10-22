@@ -2,7 +2,7 @@
 <feature
       id="sneer.feature"
       label="sneer.feature"
-      version="0.0.2"
+      version="0.0.3"
       provider-name="Klaus Wuestefeld and Rodrigo B de Oliveira"
       os="aix,hpux,linux,macosx,qnx,solaris,win32"
       ws="carbon,gtk,motif,photon,win32"
@@ -324,12 +324,12 @@ END OF TERMS AND CONDITIONS
          id="sneer"
          download-size="0"
          install-size="0"
-         version="0.0.2"/>
+         version="0.0.3"/>
 
    <plugin
          id="sneer.ui"
          download-size="0"
          install-size="0"
-         version="0.0.2"/>
+         version="0.0.3"/>
 
 </feature>

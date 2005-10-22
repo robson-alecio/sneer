@@ -1,6 +1,9 @@
 package sneer.remote;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.Serializable;
 import java.net.ConnectException;
 import java.util.Date;
@@ -66,11 +69,34 @@ class LifeViewProxy implements LifeView, Serializable {
 
 			sendScouts();
 		} catch (ConnectException ignored) {
+			log(ignored);
 			_scoutsSent = false;
 			//Simply ignore this exception, since the connection will try to reconnect anyway.
 		} catch (IOException x) {
+			log(x);
 			_scoutsSent = false;
 			x.printStackTrace();
+		}
+	}
+
+	synchronized static void log(Exception x) {
+		PrintStream log = produceLog();
+		log.println("===========================================================================");
+		log.println(new Date());
+		log.println();
+		x.printStackTrace(log);
+	}
+
+	static private PrintStream _log;
+	private static PrintStream produceLog() {
+		if (_log != null) return _log;
+
+		try {
+			File file = new File("SneerExceptions.txt");
+			System.out.println("Exceptions are being logged here: " + file.getAbsolutePath());
+			return _log = new PrintStream(file);
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
 		}
 	}
 

@@ -50,6 +50,7 @@ class ParallelSocket {
 			}
 			//FIXME: Check whether this is a valid envelope to prevent all threads from waiting forever.
 		} catch (IOException x) {
+			LifeViewProxy.log(x);
 			closeBecauseOf(x);
 			synchronized (_poBox) {
 				_poBox.notifyAll();

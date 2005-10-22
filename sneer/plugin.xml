@@ -3,12 +3,24 @@
 <plugin
    id="sneer"
    name="sneer"
-   version="1.0.0">
+   version="0.0.2">
    <requires>
    </requires>
    
    <runtime>
       <library name="sneer.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/wheel.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/prevayler-2.02.006.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/xstream/xstream-1.1.2.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/junit-3.8.1.jar">
          <export name="*"/>
       </library>
 

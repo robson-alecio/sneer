@@ -3,7 +3,7 @@
 <plugin
    id="sneer.ui"
    name="Sneer UI Plug-in"
-   version="1.0.0"
+   version="0.0.2"
    provider-name="Klaus Wuestefeld and Rodrigo B. de Oliveira"
    class="sneer.ui.SneerUIPlugin">
 

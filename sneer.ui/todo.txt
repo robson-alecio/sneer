@@ -2,8 +2,7 @@
 
 ============ FIX:
 
-Contact changes are not being refreshed in the tree view.
-
+Contacts' online status changes are not being detected. (make isOnline a reactive Signal))
 
 ============ TODO:
 
@@ -12,17 +11,13 @@ Profile
   - Contact Info
   - Large photograph
 
-Use less bandwidth (push instead of poll (use reactive paradigm)).
+Use less bandwidth (push instead of poll (use reactive paradigm) for everything).
 
 Refactor: Move Contact to Sneer (facade). Make GUI truly only a skin.
 
 Notifications -	Level 2 contact "WhatsHisNickname>Nickname" is now sovereign
 
 Server Port - Allow change. MUST WORK WITHOUT RESTART.  ;)
-
-Contact removal only level one
-
-Fix: Level one changes are not properly reflected when any element is expanded
 
 Milestone: Sneer is Presentable -------------------------
 

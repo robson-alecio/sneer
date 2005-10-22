@@ -34,20 +34,14 @@ class LifeViewProxy implements LifeView, Serializable {
 		_queryExecuter = queryExecuter;
 	}
 
-	private void sendScouts() {
+	private void sendScouts() throws IOException {
 		if (_scoutsSent) return;
 
-		try {
-			_queryExecuter.execute(_indianForName);
-			_queryExecuter.execute(_indianForThoughtOfTheDay);
-			_queryExecuter.execute(_indianForPicture);
-			_queryExecuter.execute(_indianForNicknames);
-			_scoutsSent = true;
-		} catch (ConnectException ignored) {
-			//Simply ignore this exception, since we will try to reconnect anyway.
-		} catch (IOException x) {
-			x.printStackTrace();
-		}
+		_queryExecuter.execute(_indianForName);
+		_queryExecuter.execute(_indianForThoughtOfTheDay);
+		_queryExecuter.execute(_indianForPicture);
+		_queryExecuter.execute(_indianForNicknames);
+		_scoutsSent = true;
 	}
 
 	private Runnable updater() {
@@ -71,10 +65,12 @@ class LifeViewProxy implements LifeView, Serializable {
 			_lastSightingDate = new Date();
 
 			sendScouts();
-
-		} catch (IOException ignored) {
+		} catch (ConnectException ignored) {
 			_scoutsSent = false;
 			//Simply ignore this exception, since the connection will try to reconnect anyway.
+		} catch (IOException x) {
+			_scoutsSent = false;
+			x.printStackTrace();
 		}
 	}
 

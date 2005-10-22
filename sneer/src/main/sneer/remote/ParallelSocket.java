@@ -27,28 +27,23 @@ class ParallelSocket {
 		_delegate = delegate;
 		Cool.startDaemon(new Runnable() {
 			public void run() {
-				while (true)
-					try {
-						readObject();
-					} catch (IOException e) {
-						//Connection will be reopened if necessary.
-						return;
-					}
+				while (readObject());
 			}
 		});
 	}
 
-	private void readObject() throws IOException {
+	private boolean readObject() {
 		try {
 			try {
 				Object object = _delegate.readObject();
 				if (object instanceof Envelope) {
 					_poBox.add((Envelope)object);
-					return;
+					return true;
 				}
 				SmokeSignal smokeSignal = (SmokeSignal)object;  //FIXME Class cast Exceptions are possible if other side is malicious.
 				Indian indian = _indians.get(smokeSignal._indianId);
 				indian.receive(smokeSignal);
+				return true;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 				throw new IOException("ClassNotFoundException thrown");
@@ -59,7 +54,7 @@ class ParallelSocket {
 			synchronized (_poBox) {
 				_poBox.notifyAll();
 			}
-			throw x;
+			return false;
 		}
 	}
 

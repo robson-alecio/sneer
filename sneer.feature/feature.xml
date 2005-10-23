@@ -2,7 +2,7 @@
 <feature
       id="sneer.feature"
       label="sneer.feature"
-      version="0.0.4"
+      version="0.0.5"
       provider-name="Klaus Wuestefeld and Rodrigo B de Oliveira">
 
    <description url="http://www.advogato.org/article/808.html">
@@ -320,12 +320,12 @@ END OF TERMS AND CONDITIONS
          id="sneer"
          download-size="0"
          install-size="0"
-         version="0.0.4"/>
+         version="0.0.5"/>
 
    <plugin
          id="sneer.ui"
          download-size="0"
          install-size="0"
-         version="0.0.4"/>
+         version="0.0.5"/>
 
 </feature>

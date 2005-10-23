@@ -3,9 +3,13 @@
 
 package sneer;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.BindException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -22,6 +26,8 @@ import sneer.life.LifeView;
 import sneer.remote.ParallelServer;
 import sneer.remote.xstream.XStreamNetwork;
 import wheel.experiments.Cool;
+import wheel.experiments.environment.network.ObjectServerSocket;
+import wheel.experiments.environment.network.ObjectSocket;
 import wheel.experiments.environment.network.OldNetwork;
 
 import com.thoughtworks.xstream.XStream;
@@ -62,6 +68,7 @@ public class Sneer {
 	private final OldNetwork _network;
 
 	private Home _home;
+	static private PrintStream _log;
 
 
 	public Sneer(User user, OldNetwork network, String directory) throws IOException {
@@ -69,6 +76,14 @@ public class Sneer {
 		_user = user;
 		_network = new XStreamNetwork(new XStream(), network);
 
+		
+try {
+	testEclipseSandbox();
+} catch (Exception e) {
+	log(e);
+}
+
+		
 		Home._network = _network; //FIXME: Remove this static dependency to Home. Transaction journal should be recoverable regardless of the network.
 		_prevayler = prevayler(directory);
 		_home = (Home)_prevayler.prevalentSystem();
@@ -76,9 +91,27 @@ public class Sneer {
 		if (_home.life() == null) getALife(); 
 		_life = _home.life();
 
-		
 		startUserNotificationDaemon();
 		startServer();
+		
+	}
+
+	private void testEclipseSandbox() throws IOException, ClassNotFoundException {
+		final ObjectServerSocket server = _network.openObjectServerSocket(6070);
+		Cool.startDaemon(new Runnable(){
+			public void run() {
+				try {
+					ObjectSocket serverSocket = server.accept();
+					produceLog().println(serverSocket.readObject());
+					serverSocket.writeObject("Goodbye");
+				} catch (Exception e) {
+					log(e);
+				}
+			}
+		});
+		ObjectSocket clientSocket = _network.openSocket("localhost", 6070);
+		clientSocket.writeObject("Hello");
+		produceLog().println(clientSocket.readObject());
 	}
 
 	private Prevayler prevayler(String directory) throws IOException {
@@ -216,6 +249,26 @@ public class Sneer {
 			return allMySentMessages();
 		}
 		return allSentMessages(_life);
+	}
+
+	synchronized public static void log(Exception x) {
+		PrintStream log = produceLog();
+		log.println("===========================================================================");
+		log.println(new Date());
+		log.println();
+		x.printStackTrace(log);
+	}
+
+	private static PrintStream produceLog() {
+		if (_log != null) return _log;
+	
+		try {
+			File file = new File("SneerExceptions.txt");
+			System.out.println("Exceptions are being logged here: " + file.getAbsolutePath());
+			return _log = new PrintStream(file);
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }

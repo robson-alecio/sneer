@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.Sneer;
 import sneer.life.JpgImage;
 import sneer.life.LifeView;
 import wheel.experiments.Cool;
@@ -67,13 +66,11 @@ class LifeViewProxy implements LifeView, Serializable {
 
 			sendScouts();
 		} catch (ConnectException ignored) {
-			Sneer.log(ignored);
 			_scoutsSent = false;
 			//Simply ignore this exception, since the connection will try to reconnect anyway.
 		} catch (IOException x) {
-			Sneer.log(x);
 			_scoutsSent = false;
-			x.printStackTrace();
+			x.printStackTrace(); //TODO Implement logging using wheel.environment.Environment.err().
 		}
 	}
 

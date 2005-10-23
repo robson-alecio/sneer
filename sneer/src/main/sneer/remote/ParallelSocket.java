@@ -6,8 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import sneer.Sneer;
-
 import wheel.experiments.Cool;
 import wheel.experiments.environment.network.ObjectSocket;
 
@@ -52,7 +50,6 @@ class ParallelSocket {
 			}
 			//FIXME: Check whether this is a valid envelope to prevent all threads from waiting forever.
 		} catch (IOException x) {
-			Sneer.log(x);
 			closeBecauseOf(x);
 			synchronized (_poBox) {
 				_poBox.notifyAll();

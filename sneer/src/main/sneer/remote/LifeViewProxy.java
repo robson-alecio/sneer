@@ -9,11 +9,12 @@ import java.util.Map;
 
 import sneer.life.JpgImage;
 import sneer.life.LifeView;
+import sneer.remote.Connection.Closable;
 import wheel.experiments.Cool;
 import wheelexperiments.reactive.SetSignal;
 import wheelexperiments.reactive.Signal;
 
-class LifeViewProxy implements LifeView, Serializable {
+class LifeViewProxy implements LifeView, Closable, Serializable {
 
 	transient private final QueryExecuter _queryExecuter;
 	transient private boolean _updaterStarted;
@@ -29,6 +30,8 @@ class LifeViewProxy implements LifeView, Serializable {
 	private final IndianForObject<String> _indianForThoughtOfTheDay = new IndianForThoughtOfTheDay();
 	private final IndianForObject<JpgImage> _indianForPicture = new IndianForPicture();
 	private final IndianForSet<String> _indianForNicknames = new IndianForNicknames();
+
+	private boolean _closed;
 	
 	public LifeViewProxy(QueryExecuter queryExecuter) {
 		_queryExecuter = queryExecuter;
@@ -47,7 +50,7 @@ class LifeViewProxy implements LifeView, Serializable {
 	private Runnable updater() {
 		return new Runnable() {
 			public void run() {
-				while (true) {
+				while (!_closed) {
 					update();
 //					Cool.sleep(1000 * 60);
 					Cool.sleep(1000 * 3);
@@ -163,6 +166,10 @@ class LifeViewProxy implements LifeView, Serializable {
 		}
 		
 		private static final long serialVersionUID = 1L;
+	}
+
+	public void close() { //FIXME Apparently this is never being called.
+		_closed = true;
 	}
 
 

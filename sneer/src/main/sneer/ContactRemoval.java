@@ -13,7 +13,7 @@ public class ContactRemoval implements Transaction {
 	}
 
 	public void executeOn(Object home, Date ignored) {
-		((Home)home).life().forgetNickname(_nickname);
+		((Home)home).removeContact(_nickname);
 	}
 
 	private static final long serialVersionUID = 1L;

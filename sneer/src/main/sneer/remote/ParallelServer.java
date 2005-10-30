@@ -5,6 +5,8 @@
 package sneer.remote;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import sneer.life.Life;
 import wheel.experiments.Cool;
@@ -13,13 +15,22 @@ import wheel.experiments.environment.network.ObjectSocket;
 
 public class ParallelServer implements Runnable {
 
+	public interface User {
+		boolean authorizeConnectionFrom(String name);
+	}
+
 	private final Life _life;
 
 	private final ObjectServerSocket _serverSocket;
 
-	public ParallelServer(Life life, ObjectServerSocket serverSocket) {
+	private final Set<Long> _sentPeerIds = new HashSet<Long>();
+
+	private final User _user;
+
+	public ParallelServer(Life life, ObjectServerSocket serverSocket, User user) {
 		_life = life;
 		_serverSocket = serverSocket;
+		_user = user;
 		Cool.startDaemon(this);
 	}
 
@@ -51,6 +62,8 @@ public class ParallelServer implements Runnable {
 
 	private void serve(final ObjectSocket socket) throws IOException,
 			ClassNotFoundException {
+		shakeHands(socket);
+		
 		while (true) {
 
 			final Envelope envelope = (Envelope) socket.readObject();
@@ -63,11 +76,39 @@ public class ParallelServer implements Runnable {
 		}
 	}
 
+	private void shakeHands(final ObjectSocket socket) throws IOException, ClassNotFoundException {
+		Long sentId = (Long)socket.readObject();
+		System.out.println("sentId: " + sentId);
+		
+		if (sentId == null) {
+			String name = (String)socket.readObject();
+			if (!_user.authorizeConnectionFrom("" + name)) {
+				socket.close();
+				return;
+			}
+
+			socket.writeObject(generateNewId());
+			return;
+		}
+		
+		if (_sentPeerIds.contains(sentId)) return;
+		
+		socket.close();
+		throw new IOException("Peer identification failed."); //TODO: Separate security from IOExceptions.
+	}
+
+	private Long generateNewId() {
+		long result;
+		do { result = System.currentTimeMillis(); } while (_sentPeerIds.contains(result));
+		_sentPeerIds.add(result);
+		return result;
+	}
+
 	private void reply(final ObjectSocket socket, final Envelope envelope) {
 		Object contents = envelope.contents();
-		
+
 		if (contents instanceof Indian) {
-			Indian scout = ((Indian)contents);
+			Indian scout = ((Indian) contents);
 			scout.reportAbout(_life, socket);
 			envelope.contents("Indian settled");
 		} else {

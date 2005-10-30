@@ -8,7 +8,9 @@ import java.io.IOException;
 
 import sneer.life.LifeView;
 import sneer.life.NoneOfYourBusiness;
+import wheel.experiments.environment.network.ObjectSocket;
 import wheel.experiments.environment.network.OldNetwork;
+import wheelexperiments.reactive.Signal;
 
 
 public class Connection implements QueryExecuter {
@@ -20,8 +22,9 @@ public class Connection implements QueryExecuter {
 	private final LifeView _lifeView; 
 
     private ParallelSocket _socket;
+	private Long _receivedId;
+	private final Signal<String> _name;
     
-
     @SuppressWarnings("unchecked")
 	public <T> T execute(Query<T> query) throws IOException {
     	
@@ -46,13 +49,32 @@ public class Connection implements QueryExecuter {
 	}
 
 	private void goOnline() throws IOException {
-		_socket = new ParallelSocket(_network.openSocket(_ipAddress, _port));
+		ObjectSocket objectSocket = _network.openSocket(_ipAddress, _port);
+		shakeHands(objectSocket);
+		_socket = new ParallelSocket(objectSocket);
 	}
 
-	public Connection(OldNetwork network, String ipAddress, int port) {
+	private void shakeHands(ObjectSocket otherSide) throws IOException {
+		System.out.println("------------------------------");
+		System.out.println("_receivedId " + _receivedId);
+		otherSide.writeObject(_receivedId);
+		if (_receivedId != null) return;
+		
+		try {
+			otherSide.writeObject(_name.currentValue());
+			_receivedId = (Long)otherSide.readObject();
+			System.out.println("_receivedId " + _receivedId);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			throw new IOException("Class not found Exception thrown: " + e.getMessage());
+		}
+	}
+
+	public Connection(OldNetwork network, String ipAddress, int port, Signal<String> name) {
 		_network = network;
 		_ipAddress = ipAddress;
 		_port = port;
+		_name = name;
 		
 		_lifeView = new LifeViewProxy(this);
 	}

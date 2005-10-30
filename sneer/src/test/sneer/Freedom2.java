@@ -42,7 +42,11 @@ public class Freedom2 extends Freedom1 {
 	}
 
 	private void startServer(Life life, int port) throws IOException {
-		new ParallelServer(life, _ipNetwork.openObjectServerSocket(port));
+		new ParallelServer(life, _ipNetwork.openObjectServerSocket(port), new ParallelServer.User() {
+			public boolean authorizeConnectionFrom(String name) {
+				return true;
+			}
+		});
 	}
 
     public void testNicknames() throws Exception {
@@ -99,7 +103,7 @@ public class Freedom2 extends Freedom1 {
     }
 
 	private LifeView lifeClient(int port) throws IOException {
-        return new Connection(_ipNetwork, "localhost", port).lifeView();
+        return new Connection(_ipNetwork, "localhost", port, _me.name()).lifeView();
 	}
 	
 	protected LifeView myContact(String nickname) {

@@ -101,7 +101,11 @@ public class Sneer {
 	private void startServer() {
 		int port = _home.serverPort();
 		try {
-			_server = new ParallelServer(_life, _network.openObjectServerSocket(port));
+			_server = new ParallelServer(_life, _network.openObjectServerSocket(port), new ParallelServer.User(){
+				public boolean authorizeConnectionFrom(String name) {
+					return _user.confirm("Somebody claiming to be '" + name + "' is trying to connect here. Do you want to accept this connection? Were you expecting this connection right now?");
+				}
+			});
 		} catch (BindException ignored) {
 			_user.lamentError("Port " + port + " is already being used by another application.", "You can have two instances of Sneer running if you like, for two people for example, but each one has to use a different port. If there is another application using that same port, you have either to close it, configure it to use a different port, or configure Sneer to use a different port.");
 		} catch (IOException e) {

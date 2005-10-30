@@ -37,7 +37,7 @@ public class Home implements Serializable {
 	}
 
 	private LifeView remoteContact(String ipAddress, int port) {
-		Connection connection = new Connection(_network, ipAddress, port); //TODO: Refactor this. Consider hiding Connection inside LifeViewProxy.
+		Connection connection = new Connection(_network, ipAddress, port, _life.name()); //TODO: Refactor this. Consider hiding Connection inside LifeViewProxy.
 		return connection.lifeView();
 	}
 	

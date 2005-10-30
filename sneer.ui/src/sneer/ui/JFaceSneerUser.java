@@ -7,6 +7,9 @@ package sneer.ui;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -15,6 +18,7 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.progress.UIJob;
 
 import sneer.SimpleUser;
 import sneer.ui.views.SneerView;
@@ -67,8 +71,23 @@ public class JFaceSneerUser extends SimpleUser {
 		MessageDialog.openInformation(_shell, "Sneer", fact);
 	}
 
-	public boolean confirm(String proposition) {
-		return MessageDialog.openQuestion(_shell, "Sneer", proposition);
+	public boolean confirm(final String proposition) {
+		final boolean[] resultHolder = new boolean[1];
+		UIJob job = new UIJob("Contact refresh") {
+			public IStatus runInUIThread(IProgressMonitor monitor) {
+				resultHolder[0] = MessageDialog.openQuestion(_shell, "Sneer", proposition);
+				return Status.OK_STATUS;
+			}						
+		};
+		job.setSystem(true);
+		job.schedule();
+		
+		try {
+			job.join();
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e); //TODO Change to wheel's SpanishInquisition.
+		}
+		return resultHolder[0];
 	}
 
 	public void goodbye() {

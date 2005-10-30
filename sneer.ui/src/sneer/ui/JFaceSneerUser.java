@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Shell;
 import sneer.SimpleUser;
 import sneer.ui.views.SneerView;
 
-public class EclipseSneerUser extends SimpleUser {
+public class JFaceSneerUser extends SimpleUser {
 
 	private final Shell _shell;
 	
@@ -27,7 +27,7 @@ public class EclipseSneerUser extends SimpleUser {
 
 	private Map<String, Chat> chats = new HashMap<String,Chat>();
 
-	public EclipseSneerUser(Shell shell) {
+	public JFaceSneerUser(Shell shell) {
 		_shell = shell;
 	}
 	

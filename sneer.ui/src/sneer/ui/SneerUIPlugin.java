@@ -25,7 +25,7 @@ public class SneerUIPlugin extends AbstractUIPlugin {
 	//Resource bundle.
 	private ResourceBundle resourceBundle;
 	private Sneer _sneer;
-	private EclipseSneerUser _user;
+	private JFaceSneerUser _user;
 	
 	/**
 	 * The constructor.
@@ -42,7 +42,7 @@ public class SneerUIPlugin extends AbstractUIPlugin {
 		super.start(context);
 		
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-		_user = new EclipseSneerUser(shell);
+		_user = new JFaceSneerUser(shell);
 		_sneer = new Sneer(_user, new OldNetworkImpl(), System.getProperty("user.home") + File.separator + ".sneer");
 	}
 
@@ -107,7 +107,7 @@ public class SneerUIPlugin extends AbstractUIPlugin {
 		return plugin._sneer;
 	}
 	
-	public static EclipseSneerUser sneerUser() {
+	public static JFaceSneerUser sneerUser() {
 		return plugin._user;
 	}
 }

@@ -50,7 +50,7 @@ import sneer.Sneer;
 import sneer.life.JpgImage;
 import sneer.life.Life;
 import sneer.life.LifeView;
-import sneer.ui.EclipseSneerUser;
+import sneer.ui.JFaceSneerUser;
 import sneer.ui.SneerUIPlugin;
 import sneer.ui.topten.TopTen;
 import wheelexperiments.reactive.Receiver;
@@ -635,7 +635,7 @@ public class SneerView extends ViewPart {
 		_isStopped = true;
 	}
 
-	private EclipseSneerUser user() {
+	private JFaceSneerUser user() {
 		return SneerUIPlugin.sneerUser();
 	}
 }

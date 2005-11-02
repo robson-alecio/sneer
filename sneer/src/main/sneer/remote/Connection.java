@@ -15,10 +15,6 @@ import wheelexperiments.reactive.Signal;
 
 public class Connection implements QueryExecuter {
 
-	public interface Closable {
-		void close();
-	}
-
 	private final OldNetwork _network;
 	private final String _ipAddress;
 	private final int _port;

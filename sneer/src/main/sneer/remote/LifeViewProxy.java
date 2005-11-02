@@ -9,16 +9,17 @@ import java.util.Map;
 
 import sneer.life.JpgImage;
 import sneer.life.LifeView;
-import sneer.remote.Connection.Closable;
 import wheel.experiments.Cool;
+import wheelexperiments.Actor;
 import wheelexperiments.reactive.SetSignal;
 import wheelexperiments.reactive.Signal;
 
-class LifeViewProxy implements LifeView, Closable, Serializable {
+class LifeViewProxy implements LifeView, Actor, Serializable {
 
 	transient private final QueryExecuter _queryExecuter;
-	transient private boolean _updaterStarted;
 	transient private boolean _scoutsSent = false;
+	transient private boolean _active = false;
+	transient private final Object _activeMonitor = new Object();
 	
 	private Date _lastSightingDate;
 	
@@ -31,7 +32,6 @@ class LifeViewProxy implements LifeView, Closable, Serializable {
 	private final IndianForObject<JpgImage> _indianForPicture = new IndianForPicture();
 	private final IndianForSet<String> _indianForNicknames = new IndianForNicknames();
 
-	private boolean _closed;
 	
 	public LifeViewProxy(QueryExecuter queryExecuter) {
 		_queryExecuter = queryExecuter;
@@ -50,10 +50,14 @@ class LifeViewProxy implements LifeView, Closable, Serializable {
 	private Runnable updater() {
 		return new Runnable() {
 			public void run() {
-				while (!_closed) {
+				while (_active) {
 					update();
 //					Cool.sleep(1000 * 60);
 					Cool.sleep(1000 * 3);
+				}
+				
+				synchronized (_activeMonitor) {
+					_activeMonitor.notify();
 				}
 			}
 		};
@@ -117,14 +121,7 @@ class LifeViewProxy implements LifeView, Closable, Serializable {
 	}
 
 	public Date lastSightingDate() {
-		triggerUpdater();  //LifeViewProxies are recreated when the transactions get replayed. Only the ones that are actually used must start their thread.
         return _lastSightingDate;
-	}
-
-	private void triggerUpdater() {
-		if (_updaterStarted) return;
-		_updaterStarted = true;
-		Cool.startDaemon(updater());
 	}
 
 	private static final long serialVersionUID = 1L;
@@ -168,9 +165,20 @@ class LifeViewProxy implements LifeView, Closable, Serializable {
 		private static final long serialVersionUID = 1L;
 	}
 
-	public void close() { //FIXME Apparently this is never being called.
-		_closed = true;
+	public void start() {
+		synchronized (_activeMonitor) {
+			_active = true;
+			Cool.startDaemon(updater());
+		}
 	}
+
+	public void stop() {
+		synchronized (_activeMonitor) {
+			_active = false;
+			Cool.wait(_activeMonitor);
+		}
+	}
+
 
 
 }

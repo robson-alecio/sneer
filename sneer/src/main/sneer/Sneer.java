@@ -23,6 +23,7 @@ import sneer.remote.ParallelServer;
 import sneer.remote.xstream.XStreamNetwork;
 import wheel.experiments.Cool;
 import wheel.experiments.environment.network.OldNetwork;
+import wheelexperiments.Actor;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -78,7 +79,18 @@ public class Sneer {
 
 		startUserNotificationDaemon();
 		startServer();
-		
+
+		startActors();
+	}
+
+	private void startActors() {
+		for (String nickname : _life.nicknames().currentElements())
+			startActor(_life.contact(nickname));
+	}
+
+	private void startActor(LifeView candidate) {
+		if (!(candidate instanceof Actor)) return;
+		((Actor)candidate).start();
 	}
 
 	private Prevayler prevayler(String directory) throws IOException {
@@ -136,14 +148,18 @@ public class Sneer {
 	private void executeWizard(ContactAddition addition) {
 		if (addition.cancelled()) return;
 		execute(addition);
+		((Actor)_life.contact(addition.nickname())).start();
 	}
 
 	public void removeContact(String nickname) {
-		if (!_life.nicknames().currentElements().contains(nickname)) {
+		LifeView contact = _life.contact(nickname);
+
+		if (contact == null) {
 			_user.acknowledge("" + nickname + " is not one of your first level contacts.");
 			return;
 		}
 		execute(new ContactRemoval(nickname));
+		if (contact instanceof Actor) ((Actor)contact).stop();
 	}
 
 	public void editPersonalInfo() {

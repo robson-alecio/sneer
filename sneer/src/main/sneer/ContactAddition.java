@@ -42,9 +42,14 @@ public class ContactAddition implements Transaction {
 	}
 
 	public void executeOn(Object home, Date ignored) {
+		System.out.println("Executed");
 		((Home)home).addContact(_nickname, _ipAddress, _port);
 	}
 
 	private static final long serialVersionUID = 1L;
+
+	public String nickname() {
+		return _nickname;
+	}
 
 }

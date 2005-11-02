@@ -6,8 +6,8 @@ import sneer.life.Life;
 import sneer.life.LifeImpl;
 import sneer.life.LifeView;
 import sneer.remote.Connection;
-import sneer.remote.Connection.Closable;
 import wheel.experiments.environment.network.OldNetwork;
+import wheelexperiments.Actor;
 
 public class Home implements Serializable {
 
@@ -45,8 +45,6 @@ public class Home implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public void removeContact(String nickname) {
-		LifeView contact = _life.contact(nickname);
-		if (contact instanceof Closable) ((Closable)contact).close();
 		_life.forgetNickname(nickname);
 	}
 

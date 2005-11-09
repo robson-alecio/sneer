@@ -13,8 +13,8 @@ import sneer.life.LifeView;
 import sneer.remote.Connection;
 import sneer.remote.ParallelServer;
 import sneer.remote.xstream.XStreamNetwork;
-import wheel.experiments.environment.network.OldNetwork;
-import wheel.experiments.environment.network.mocks.NetworkMock;
+import wheelexperiments.environment.network.OldNetwork;
+import wheelexperiments.environment.network.mocks.OldNetworkMock;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -33,7 +33,7 @@ public class Freedom2 extends Freedom1 {
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		_ipNetwork = new XStreamNetwork(XSTREAM, new NetworkMock());
+		_ipNetwork = new XStreamNetwork(XSTREAM, new OldNetworkMock());
 		startServer(_me, 7000);
 
 		helpFriendsAchieveSovereignty();

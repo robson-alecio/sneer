@@ -1,7 +1,7 @@
 package wheelexperiments.reactive.smoke.tests;
 
-import wheel.experiments.environment.network.OldNetwork;
-import wheel.experiments.environment.network.mocks.NetworkMock;
+import wheelexperiments.environment.network.OldNetwork;
+import wheelexperiments.environment.network.mocks.OldNetworkMock;
 import wheelexperiments.reactive.Receiver;
 import wheelexperiments.reactive.Signal;
 import wheelexperiments.reactive.smoke.RemoteSignal;
@@ -17,7 +17,7 @@ public class SmokeSignalTest extends ConnectionTest {
 	
     @Override
     protected void setUp() throws Exception {
-    	_network = new NetworkMock();
+    	_network = new OldNetworkMock();
     	
     	_remoteSignal = new RemoteSignal<Object>(_network);
     	_remoteTransmitter = new RemoteTransmitter<Object>(_network);

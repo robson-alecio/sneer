@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import sneer.life.LifeView;
 
-import wheel.experiments.environment.network.ObjectSocket;
+import wheelexperiments.environment.network.ObjectSocket;
 
 abstract class AbstractIndian implements Indian, Serializable {
 

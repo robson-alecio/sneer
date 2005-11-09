@@ -8,8 +8,8 @@ import java.io.IOException;
 
 import sneer.life.LifeView;
 import sneer.life.NoneOfYourBusiness;
-import wheel.experiments.environment.network.ObjectSocket;
-import wheel.experiments.environment.network.OldNetwork;
+import wheelexperiments.environment.network.ObjectSocket;
+import wheelexperiments.environment.network.OldNetwork;
 import wheelexperiments.reactive.Signal;
 
 

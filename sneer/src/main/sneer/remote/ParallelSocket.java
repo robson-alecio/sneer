@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import wheel.experiments.Cool;
-import wheel.experiments.environment.network.ObjectSocket;
+import wheelexperiments.Cool;
+import wheelexperiments.environment.network.ObjectSocket;
 
 class ParallelSocket {
 

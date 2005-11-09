@@ -9,9 +9,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import sneer.life.Life;
-import wheel.experiments.Cool;
-import wheel.experiments.environment.network.ObjectServerSocket;
-import wheel.experiments.environment.network.ObjectSocket;
+import wheelexperiments.Cool;
+import wheelexperiments.environment.network.ObjectServerSocket;
+import wheelexperiments.environment.network.ObjectSocket;
 
 public class ParallelServer implements Runnable {
 

@@ -21,9 +21,9 @@ import sneer.life.Life;
 import sneer.life.LifeView;
 import sneer.remote.ParallelServer;
 import sneer.remote.xstream.XStreamNetwork;
-import wheel.experiments.Cool;
-import wheel.experiments.environment.network.OldNetwork;
 import wheelexperiments.Actor;
+import wheelexperiments.Cool;
+import wheelexperiments.environment.network.OldNetwork;
 
 import com.thoughtworks.xstream.XStream;
 

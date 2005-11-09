@@ -2,10 +2,10 @@ package wheelexperiments.reactive.smoke;
 
 import java.io.IOException;
 
-import wheel.experiments.Cool;
-import wheel.experiments.environment.network.ObjectServerSocket;
-import wheel.experiments.environment.network.ObjectSocket;
-import wheel.experiments.environment.network.OldNetwork;
+import wheelexperiments.Cool;
+import wheelexperiments.environment.network.ObjectServerSocket;
+import wheelexperiments.environment.network.ObjectSocket;
+import wheelexperiments.environment.network.OldNetwork;
 import wheelexperiments.reactive.AbstractSignal;
 
 public class RemoteSignal<T> extends AbstractSignal<T> {

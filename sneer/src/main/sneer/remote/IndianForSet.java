@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Set;
 
 import sneer.life.LifeView;
-import wheel.experiments.environment.network.ObjectSocket;
+import wheelexperiments.environment.network.ObjectSocket;
 import wheelexperiments.reactive.Receiver;
 import wheelexperiments.reactive.SetSignal;
 import wheelexperiments.reactive.SetSource;

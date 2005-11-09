@@ -3,7 +3,7 @@ package sneer.remote;
 import java.io.IOException;
 
 import sneer.life.LifeView;
-import wheel.experiments.environment.network.ObjectSocket;
+import wheelexperiments.environment.network.ObjectSocket;
 import wheelexperiments.reactive.Receiver;
 import wheelexperiments.reactive.Signal;
 import wheelexperiments.reactive.Source;

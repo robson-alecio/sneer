@@ -2,8 +2,8 @@ package sneer.remote.xstream;
 
 import java.io.IOException;
 
-import wheel.experiments.environment.network.ObjectServerSocket;
-import wheel.experiments.environment.network.ObjectSocket;
+import wheelexperiments.environment.network.ObjectServerSocket;
+import wheelexperiments.environment.network.ObjectSocket;
 
 import com.thoughtworks.xstream.XStream;
 

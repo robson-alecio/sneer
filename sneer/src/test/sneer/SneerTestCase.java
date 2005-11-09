@@ -7,7 +7,7 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import sneer.Sneer.User;
-import wheel.experiments.environment.network.mocks.NetworkMock;
+import wheelexperiments.environment.network.mocks.OldNetworkMock;
 
 public class SneerTestCase extends MockObjectTestCase {
 	
@@ -30,7 +30,7 @@ public class SneerTestCase extends MockObjectTestCase {
 		mocker.expects(once()).method("confirmServerPort")
 			.with(eq(Home.DEFAULT_PORT))
 			.will(returnValue(4242));
-		Sneer sneer = new Sneer(user, new NetworkMock(), _testDirectory);
+		Sneer sneer = new Sneer(user, new OldNetworkMock(), _testDirectory);
 
 		mocker.expects(once()).method("confirmName")
 			.will(returnValue("Neide da Silva"));
@@ -39,7 +39,7 @@ public class SneerTestCase extends MockObjectTestCase {
 		mocker.stubs().method("confirmPicture");
 		sneer.editPersonalInfo();		
 		
-		sneer = new Sneer(user, new NetworkMock(), _testDirectory);
+		sneer = new Sneer(user, new OldNetworkMock(), _testDirectory);
 		assertEquals("Las llamas son majores que las ranas!", sneer.life().thoughtOfTheDay().currentElements()); 
 	}
 
@@ -54,7 +54,7 @@ public class SneerTestCase extends MockObjectTestCase {
 		mocker.stubs().method("confirmServerPort")
 			.will(returnValue(4242));
 		
-		Sneer sneer = new Sneer(user, new NetworkMock(), _testDirectory);		
+		Sneer sneer = new Sneer(user, new OldNetworkMock(), _testDirectory);		
 		
 		mocker.expects(once()).method("giveNickname")
 			.will(returnValue("fefe"));
@@ -71,7 +71,7 @@ public class SneerTestCase extends MockObjectTestCase {
 		assertTrue(sneer.life().nicknames().currentElements().contains("fefe"));
 		assertTrue(sneer.life().nicknames().currentElements().contains("bamboo"));
 
-		sneer = new Sneer(user, new NetworkMock(), _testDirectory);		
+		sneer = new Sneer(user, new OldNetworkMock(), _testDirectory);		
 		assertTrue(sneer.life().nicknames().currentElements().contains("fefe"));
 		assertTrue(sneer.life().nicknames().currentElements().contains("bamboo"));
 	}

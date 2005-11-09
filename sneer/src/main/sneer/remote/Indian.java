@@ -1,7 +1,7 @@
 package sneer.remote;
 
 import sneer.life.LifeView;
-import wheel.experiments.environment.network.ObjectSocket;
+import wheelexperiments.environment.network.ObjectSocket;
 
 interface Indian extends Query<String> {
 	

@@ -2,8 +2,8 @@ package wheelexperiments.reactive.smoke;
 
 import java.io.IOException;
 
-import wheel.experiments.environment.network.ObjectSocket;
-import wheel.experiments.environment.network.OldNetwork;
+import wheelexperiments.environment.network.ObjectSocket;
+import wheelexperiments.environment.network.OldNetwork;
 import wheelexperiments.reactive.Receiver;
 
 public class RemoteTransmitter<T> implements Receiver<T> {

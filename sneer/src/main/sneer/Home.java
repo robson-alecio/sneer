@@ -6,8 +6,7 @@ import sneer.life.Life;
 import sneer.life.LifeImpl;
 import sneer.life.LifeView;
 import sneer.remote.Connection;
-import wheel.experiments.environment.network.OldNetwork;
-import wheelexperiments.Actor;
+import wheelexperiments.environment.network.OldNetwork;
 
 public class Home implements Serializable {
 

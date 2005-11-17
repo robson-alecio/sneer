@@ -21,13 +21,13 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.progress.UIJob;
 
 import sneer.SimpleUser;
-import sneer.ui.views.SneerView;
+import sneer.ui.views.SneerViewOld;
 
 public class JFaceSneerUser extends SimpleUser {
 
 	private final Shell _shell;
 	
-	private SneerView _contactsView;
+	private SneerViewOld _contactsView;
 
 	private Map<String, Chat> chats = new HashMap<String,Chat>();
 
@@ -35,7 +35,7 @@ public class JFaceSneerUser extends SimpleUser {
 		_shell = shell;
 	}
 	
-	public void contactsView(SneerView view) {
+	public void contactsView(SneerViewOld view) {
 		_contactsView = view;
 	}
 

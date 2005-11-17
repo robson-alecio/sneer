@@ -58,7 +58,7 @@ import wheelexperiments.reactive.Signal;
 import wheelexperiments.reactive.SetSignal.SetValueChange;
 
 
-public class SneerView extends ViewPart {
+public class SneerViewOld extends ViewPart {
 
 	private static final Image YELLOW_EXCLAMATION_MARK = scaleImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_WARN_TSK));
 	private static final Image DEFAULT_IMAGE = scaleImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT));
@@ -425,7 +425,7 @@ public class SneerView extends ViewPart {
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {
-				SneerView.this.fillContextMenu(manager);
+				SneerViewOld.this.fillContextMenu(manager);
 			}
 		});
 		Menu menu = menuMgr.createContextMenu(_contactsViewer.getControl());

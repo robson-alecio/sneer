@@ -14,7 +14,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 import sneer.Sneer;
-import wheel.experiments.environment.network.OldNetworkImpl;
+import wheelexperiments.environment.network.OldNetworkImpl;
 
 /**
  * The main plugin class to be used in the desktop.

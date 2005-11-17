@@ -5,13 +5,12 @@
    name="sneer"
    version="0.0.7">
    <requires>
+      <import plugin="wheel_java1.4" export="true"/>
+      <import plugin="wheel_java5" export="true"/>
    </requires>
    
    <runtime>
       <library name="sneer.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/wheel.jar">
          <export name="*"/>
       </library>
       <library name="lib/prevayler-2.02.006.jar">

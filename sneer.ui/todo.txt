@@ -1,10 +1,6 @@
-[Sneer is not test-driven. It is GUI-driven and test-verified.]
-
-============ FIX:
-
-Contacts' online status changes are not being detected. (make isOnline a reactive Signal))
-
 ============ TODO:
+
+Full reactive remake.
 
 Profile
   - Profile Info

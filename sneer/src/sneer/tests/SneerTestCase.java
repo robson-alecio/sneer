@@ -20,7 +20,7 @@ public class SneerTestCase extends MockObjectTestCase {
 		_testDirectory = "testruns" + File.separator + System.nanoTime();
 	}
 	
-	public void testPersistence() throws IOException {
+	public void testStartup() throws IOException {
 		
 		Mock mocker = mock(User.class);
 		User user = (User) mocker.proxy();

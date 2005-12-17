@@ -6,7 +6,7 @@
    version="0.0.7">
    <requires>
       <import plugin="wheel_java1.4" export="true"/>
-      <import plugin="wheel_java5" export="true"/>
+      <import plugin="wheel_java5"/>
    </requires>
    
    <runtime>

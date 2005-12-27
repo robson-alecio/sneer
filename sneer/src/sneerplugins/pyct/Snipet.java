@@ -52,34 +52,18 @@ public class Snipet {
 
 		private static void elastico(final Label label) {
 			Listener listener = new Listener () {
-				//Point point = null;
-				//static final int JITTER = 8;
+				
 				public void handleEvent (Event event) {
 					switch (event.type) {
 						case SWT.MouseDown:
-						//	point = new Point (event.x, event.y);
-						//	break;
-						//case SWT.MouseMove:
-						//	if (point == null) return;
-						//	int deltaX = point.x - event.x, deltaY = point.y - event.y;
-						//	if (Math.abs (deltaX) < JITTER && Math.abs (deltaY) < JITTER) {
-						//		return;
-						//	}
+						
 							Tracker tracker = new Tracker(label.getParent(), SWT.RESIZE);
-							//Rectangle rect = display.map(shell, shell, shell.getClientArea ());
 							Rectangle rect = new Rectangle(event.x, event.y, 0, 0);
-							//rect.x -= deltaX;
-							//rect.y -= deltaY;
-
 							printRectangle(rect);
 							tracker.setRectangles (new Rectangle [] {rect});
 							tracker.open ();  //Blocks thread.
-
 							printRectangle(tracker.getRectangles()[0]);
-							//FALL THROUGH
-						//case SWT.MouseUp:
-						//	point = null;
-						//	break;
+							
 					}
 				}
 				
@@ -88,10 +72,5 @@ public class Snipet {
 				}
 			};
 			label.addListener (SWT.MouseDown, listener);
-			//figura.addListener (SWT.MouseMove, listener);
-			//figura.addListener (SWT.MouseUp, listener);
-			
 		}
-
-		
 }

@@ -15,9 +15,9 @@ public class Snipet {
 	
 		public static void main(String[] args) throws FileNotFoundException {
 			
-			String nome;
+			String nome ;
 			
-			nome=JOptionPane.showInputDialog("Digite:");
+			nome=JOptionPane.showInputDialog("Digite o caminho:");
 			
 			Display display = new Display ();
 			
@@ -75,7 +75,6 @@ public class Snipet {
 							try {
 								salvarCordenadas(tracker.getRectangles()[0]);
 							} catch (IOException e) {
-								
 								e.printStackTrace();
 							}		
 					}
@@ -83,15 +82,12 @@ public class Snipet {
 				
 				private void salvarCordenadas(Rectangle rect) throws IOException {
 					
-					FileOutputStream is = new FileOutputStream("C:\\cordenadas.txt");
-					DataOutputStream ds = new DataOutputStream(is);
-					ds.writeChars(rect.width+"\n"+rect.height);
-					System.out.println("" + rect.width + ", " + rect.height);
-				}	
+						FileOutputStream is = new FileOutputStream("C:\\cordenadas.txt");
+						DataOutputStream ds = new DataOutputStream(is);
+						ds.writeChars(rect.width+"\n"+rect.height);
+						System.out.println("" + rect.width + ", " + rect.height);
+				}		
 			};
 			label.addListener (SWT.MouseDown, listener);
-		}
-		
-		
-				
+		}		
 }

@@ -1,9 +1,12 @@
 package exercicios;
 
+
+
+import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
-
+import java.io.FileOutputStream;
+import java.io.IOException;
 import javax.swing.JOptionPane;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.*;
@@ -17,6 +20,7 @@ public class Snipet {
 			nome=JOptionPane.showInputDialog("Digite:");
 			
 			Display display = new Display ();
+			
 			
 			final Shell shell = new Shell (display);
 			Label label = new Label (shell, SWT.NONE);
@@ -59,18 +63,35 @@ public class Snipet {
 						
 							Tracker tracker = new Tracker(label.getParent(), SWT.RESIZE);
 							Rectangle rect = new Rectangle(event.x, event.y, 0, 0);
-							printRectangle(rect);
-							tracker.setRectangles (new Rectangle [] {rect});
-							tracker.open ();  //Blocks thread.
-							printRectangle(tracker.getRectangles()[0]);
 							
+							try {
+								salvarCordenadas(rect);
+							} catch (IOException e) {
+								
+								e.printStackTrace();
+							}
+							tracker.setRectangles (new Rectangle [] {rect});
+							tracker.open ();  
+							try {
+								salvarCordenadas(tracker.getRectangles()[0]);
+							} catch (IOException e) {
+								
+								e.printStackTrace();
+							}		
 					}
 				}
 				
-				private void printRectangle(Rectangle rect) {
+				private void salvarCordenadas(Rectangle rect) throws IOException {
+					
+					FileOutputStream is = new FileOutputStream("C:\\cordenadas.txt");
+					DataOutputStream ds = new DataOutputStream(is);
+					ds.writeChars(rect.width+"\n"+rect.height);
 					System.out.println("" + rect.width + ", " + rect.height);
-				}
+				}	
 			};
 			label.addListener (SWT.MouseDown, listener);
 		}
+		
+		
+				
 }

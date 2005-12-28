@@ -3,13 +3,26 @@ package exercicios;
 
 
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Properties;
+
 import javax.swing.JOptionPane;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.ImageLoader;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Tracker;
 
 public class Snipet {
 	
@@ -57,6 +70,15 @@ public class Snipet {
 		private static void elastico(final Label label) {
 			Listener listener = new Listener () {
 				
+				private long _contador = System.currentTimeMillis();
+				private Properties _properties = new Properties();
+				
+				{
+					try {
+						_properties.load(new FileInputStream("C:\\cordenadas.properties"));
+					} catch (IOException x) {x.printStackTrace();}
+				}
+
 				public void handleEvent (Event event) {
 					switch (event.type) {
 						case SWT.MouseDown:
@@ -81,6 +103,9 @@ public class Snipet {
 				}
 				
 				private void salvarCordenadas(Rectangle rect) throws IOException {
+					
+					_properties.put("" + _contador++, rect.width + "," + rect.height);
+					_properties.store(new FileOutputStream("C:\\cordenadas.properties"), "Cabecalho");
 					
 						FileOutputStream is = new FileOutputStream("C:\\cordenadas.txt");
 						DataOutputStream ds = new DataOutputStream(is);

@@ -3,63 +3,12 @@
 
 package sneer.ui.views;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IMenuListener;
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerSorter;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.ImageLoader;
-import org.eclipse.swt.layout.RowData;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.part.DrillDownAdapter;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.ui.progress.UIJob;
-
-import sneer.Sneer;
-import sneer.life.JpgImage;
-import sneer.life.Life;
-import sneer.life.LifeView;
-import sneer.ui.JFaceSneerUser;
-import sneer.ui.SneerUIPlugin;
-import sneer.ui.topten.TopTen;
-import wheelexperiments.reactive.Receiver;
-import wheelexperiments.reactive.Signal;
-import wheelexperiments.reactive.SetSignal.SetValueChange;
 
 
-public class SneerViewOld extends ViewPart {
-
+//public class SneerViewOld extends ViewPart {
+public abstract class SneerViewOld extends ViewPart {
+/*
 	private static final Image YELLOW_EXCLAMATION_MARK = scaleImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_WARN_TSK));
 	private static final Image DEFAULT_IMAGE = scaleImage(PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT));
 	private static final int AS_WIDE_AS_POSSIBLE = 50000;
@@ -350,10 +299,10 @@ public class SneerViewOld extends ViewPart {
 		return sneer().life();
 	}
 
-	/**
-	 * This is a callback that will allow Eclipse
-	 * to create the viewer and initialize it.
-	 */
+//	
+//	 * This is a callback that will allow Eclipse
+//	 * to create the viewer and initialize it.
+//	 
 	public void createPartControl(Composite parent) {
 
 		Composite mainForm = new SashForm(parent, SWT.HORIZONTAL | SWT.SMOOTH);
@@ -529,9 +478,7 @@ public class SneerViewOld extends ViewPart {
 //		});
 	}
 
-	/**
-	 * Passing the focus request to the viewer's control.
-	 */
+	 // Passing the focus request to the viewer's control.
 	public void setFocus() {
 		_contactsViewer.getControl().setFocus();
 	}
@@ -638,4 +585,6 @@ public class SneerViewOld extends ViewPart {
 	private JFaceSneerUser user() {
 		return SneerUIPlugin.sneerUser();
 	}
+	
+	*/
 }

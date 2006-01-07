@@ -20,25 +20,21 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.progress.UIJob;
 
-import sneer.SimpleUser;
-import sneer.ui.views.SneerViewOld;
+import sneer.old.SimpleUser;
 
 public class JFaceSneerUser extends SimpleUser {
 
 	private final Shell _shell;
+	private final Thread _uiThread;
 	
-	private SneerViewOld _contactsView;
-
 	private Map<String, Chat> chats = new HashMap<String,Chat>();
+
 
 	public JFaceSneerUser(Shell shell) {
 		_shell = shell;
+		_uiThread = Thread.currentThread();
 	}
 	
-	public void contactsView(SneerViewOld view) {
-		_contactsView = view;
-	}
-
 	protected String answer(String message, String defaultValue) {
 		InputDialog dialog = new InputDialog(_shell, "Sneer", message, defaultValue, null);
 		dialog.setBlockOnOpen(true);
@@ -57,11 +53,6 @@ public class JFaceSneerUser extends SimpleUser {
         return fileDialog.open();
 	}
 
-	public void lookAtMe() {
-		if (null == _contactsView) return;
-		_contactsView.refresh();
-	}
-
 	@Override
 	protected void lamentError(String message) {
 		MessageDialog.openError(_shell, "Sneer", message);
@@ -72,10 +63,12 @@ public class JFaceSneerUser extends SimpleUser {
 	}
 
 	public boolean confirm(final String proposition) {
+		if (Thread.currentThread() == _uiThread) return confirm2(proposition);
+		
 		final boolean[] resultHolder = new boolean[1];
-		UIJob job = new UIJob("Contact refresh") {
+		UIJob job = new UIJob("Sneer Dialog") {
 			public IStatus runInUIThread(IProgressMonitor monitor) {
-				resultHolder[0] = MessageDialog.openQuestion(_shell, "Sneer", proposition);
+				resultHolder[0] = confirm2(proposition);
 				return Status.OK_STATUS;
 			}						
 		};
@@ -90,11 +83,10 @@ public class JFaceSneerUser extends SimpleUser {
 		return resultHolder[0];
 	}
 
-	public void goodbye() {
-		if (null == _contactsView) return;
-		_contactsView.stop();		
+	private boolean confirm2(final String proposition) {
+		return MessageDialog.openQuestion(_shell, "Sneer", proposition);
 	}
-	
+
 	public Chat getChatForContact(final String contact) {
 		if (chats.get(contact) == null) {
 			Shell chatShell = new Shell(_shell.getDisplay());

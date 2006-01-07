@@ -3,8 +3,8 @@ package sneer.ui.topten;
 import java.util.ArrayList;
 import java.util.List;
 
-import sneer.Sneer;
-import sneer.life.LifeView;
+import sneer.old.Sneer;
+import sneer.old.life.LifeView;
 
 public class TopTen {
 

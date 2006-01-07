@@ -13,7 +13,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import sneer.Sneer;
+import sneer.old.Sneer;
 import wheelexperiments.environment.network.OldNetworkImpl;
 
 /**
@@ -54,9 +54,6 @@ public class SneerUIPlugin extends AbstractUIPlugin {
 		
 		plugin = null;
 		resourceBundle = null;
-		
-		_sneer.stop();
-		//TODO Stop the threads in SneerView.
 	}
 
 	/**

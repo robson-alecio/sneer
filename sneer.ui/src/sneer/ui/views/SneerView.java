@@ -17,6 +17,6 @@ public class SneerView extends ViewPart {
 
 	@Override
 	public void setFocus() {
-		System.out.println("Pass focus to some control."); //Example: _contactsViewer.getControl().setFocus();
+		System.out.println("TODO: Pass focus to some control."); //Example: _contactsViewer.getControl().setFocus();
 	}
 }

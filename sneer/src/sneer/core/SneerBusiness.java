@@ -1,4 +1,4 @@
-package sneer.business;
+package sneer.core;
 
 import wheelexperiments.reactive.SetSignal;
 import wheelexperiments.reactive.SetSource;

@@ -1,7 +1,7 @@
-package sneer.transactions;
+package sneer.core.transactions;
 
 import prevalence.Transaction;
-import sneer.business.SneerBusiness;
+import sneer.core.SneerBusiness;
 
 public class NameChange implements Transaction {
 

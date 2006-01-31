@@ -9,12 +9,11 @@ import java.util.Map;
 
 import sneer.old.life.JpgImage;
 import sneer.old.life.LifeView;
-import wheelexperiments.Actor;
 import wheelexperiments.Cool;
 import wheelexperiments.reactive.SetSignal;
 import wheelexperiments.reactive.Signal;
 
-class LifeViewProxy implements LifeView, Actor, Serializable {
+class LifeViewProxy implements LifeView, Serializable {
 
 	transient private final QueryExecuter _queryExecuter;
 	transient private boolean _scoutsSent = false;

@@ -15,7 +15,7 @@ public class Home implements Serializable {
 	private Life _life;
 	private int _serverPort;  //TODO Refactoring - Move this to Life.thing("sneer.configuration.serverport") and eliminate the need for persisting this Home class.
 
-	static OldNetwork _network;
+	public static OldNetwork _network;
 
 	public Life life() {
 		return _life;

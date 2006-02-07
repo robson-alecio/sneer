@@ -31,10 +31,9 @@ public class MouseTracker extends JFrame implements MouseListener, MouseMotionLi
 	private String  cordenadas ;
 	private Properties _properties = new Properties();
 	private Properties relations = new Properties();
-	private String nome;
+	private String _nome;
 	private String nomeImagemGeral;
 	private Container container;
-	private String nomeArquivo = "C:\\pyct\\";
 	
 	public MouseTracker()
 	{
@@ -128,7 +127,7 @@ public class MouseTracker extends JFrame implements MouseListener, MouseMotionLi
 		String nomePasta = pasta+nomeImagem+".properties";
 		
 		cordenadas = nomePasta;
-		_properties.put(_contador ++ + "", " "+cordenadaInicialX+" "+ cordenadaInicialY+ " " + cordenadaFinalX+ " " + cordenadaFinalY + " " + nome+"" );
+		_properties.put(_contador ++ + "", " "+cordenadaInicialX+" "+ cordenadaInicialY+ " " + cordenadaFinalX+ " " + cordenadaFinalY + " " + _nome+"" );
 		_properties.store(new FileOutputStream(cordenadas), " ");
 	}	
 	
@@ -140,7 +139,7 @@ public class MouseTracker extends JFrame implements MouseListener, MouseMotionLi
 		String nomePasta = pastaRelacionamento+nomeImagemRelacionamento+".relations";
 		
 		
-		relations.put(_contador ++ + "", " "+nome+"" );
+		relations.put(_contador ++ + "", " "+_nome+"" );
 		try {
 			relations.store(new FileOutputStream(nomePasta), " Relations");
 		} 
@@ -160,13 +159,13 @@ public class MouseTracker extends JFrame implements MouseListener, MouseMotionLi
 	    fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY );
 	    
 	    
-	    int result = fileChooser.showSaveDialog( this );
+	    fileChooser.showSaveDialog( this );
 	   
 	    File file = fileChooser.getSelectedFile();
 	    
-	    nome = fileChooser.getName(file);
+	    _nome = fileChooser.getName(file);
 	   
-	    System.out.println(nome);
+	    System.out.println(_nome);
 	}  
 	
 	public void mouseClicked( MouseEvent event )

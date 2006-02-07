@@ -8,7 +8,6 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -16,7 +15,6 @@ import java.util.Properties;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -27,13 +25,9 @@ public class Navegacao extends JFrame implements MouseListener, MouseMotionListe
 	private JLabel statusBar;
 	private JLabel foto;
 	private JComboBox imagesComboBox;
-	private int cordenadaInicialX;
-	private int cordenadaFinalX;
-	private int cordenadaInicialY;
-	private int cordenadaFinalY;
 	private String  cordenadas ;
 	private Properties _properties = new Properties();
-	public String nome ;
+	public String _nome ;
 	public AbreArquivos abreArquivo = new AbreArquivos() ;
 	String vetorCaminho[]	 = new String[20];
 	Container container = getContentPane();
@@ -51,7 +45,7 @@ public class Navegacao extends JFrame implements MouseListener, MouseMotionListe
 	AbreRelations _relations = new AbreRelations();
 	String relationsNome;
 	
-	public void  Navegacao()
+	public void  navegacao()
 	{
 		if(cont == 0)	
 		{
@@ -108,19 +102,19 @@ public class Navegacao extends JFrame implements MouseListener, MouseMotionListe
 		cont ++;
 	}
 	
-	private void openFile()
-	{
-		JFileChooser fileChooser = new JFileChooser();
-	    fileChooser.setFileSelectionMode(JFileChooser.OPEN_DIALOG );
-	    
-	    int result = fileChooser.showSaveDialog( this );
-	   
-	    File file = fileChooser.getSelectedFile();
-	    
-	    nome = fileChooser.getName(file);
-	   
-	    System.out.println(nome);
-	}  
+//	private void openFile()
+//	{
+//		JFileChooser fileChooser = new JFileChooser();
+//	    fileChooser.setFileSelectionMode(JFileChooser.OPEN_DIALOG );
+//	    
+//	    fileChooser.showSaveDialog( this );
+//	   
+//	    File file = fileChooser.getSelectedFile();
+//	    
+//	    _nome = fileChooser.getName(file);
+//	   
+//	    System.out.println(_nome);
+//	}  
 	
 	
 	private void abreRelations()
@@ -172,7 +166,7 @@ public class Navegacao extends JFrame implements MouseListener, MouseMotionListe
 	
 	public static void main(String[] args) {
 		Navegacao navegacao = new Navegacao();
-		navegacao.Navegacao();
+		navegacao.navegacao();
 	}
 
 	public void mouseClicked(MouseEvent e) {
@@ -199,7 +193,7 @@ public class Navegacao extends JFrame implements MouseListener, MouseMotionListe
 				nomeImagem2 = abreArquivo.vetorCaminho[indice];
 				nomeFoto5 = abreArquivo.nome;
 				System.out.println("**"+nomeFoto5);
-				Navegacao();
+				navegacao();
 				
 				
 			}

@@ -15,7 +15,7 @@ public class RunnerConfiguracao {
 		JFileChooser fileChooser = new JFileChooser();
 	    fileChooser.setFileSelectionMode(JFileChooser.OPEN_DIALOG );
 	    
-	    int result = fileChooser.showSaveDialog(fileChooser  );
+	    fileChooser.showSaveDialog(fileChooser  );
 	   
 	    File file = fileChooser.getSelectedFile();
 	    

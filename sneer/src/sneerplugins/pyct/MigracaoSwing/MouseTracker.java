@@ -64,7 +64,7 @@ public class MouseTracker extends JFrame implements MouseListener, MouseMotionLi
 
 		   );
 		   
-		   JMenuItem criarFotoRelacionada = new JMenuItem( "Criar Rela��o" );
+		   JMenuItem criarFotoRelacionada = new JMenuItem( "Create Link" );
 		   abrirFoto.setMnemonic( 'F' );
 
 		   criarFotoRelacionada.addActionListener(

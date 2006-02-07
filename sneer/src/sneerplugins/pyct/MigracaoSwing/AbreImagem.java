@@ -10,10 +10,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import TestesMigracao.LabelTest;
-
 
 public class AbreImagem extends JFrame {
+
 	private JLabel label2;
 
 
@@ -35,14 +34,7 @@ public class AbreImagem extends JFrame {
 	   setSize( 275, 170 );
 	   setVisible( true );
 	}
-
-
-	public static void main( String args[] )
-	{ 
-	   LabelTest application = new LabelTest();
-
-	   application.setDefaultCloseOperation(
-	      JFrame.EXIT_ON_CLOSE );
-	}
+	
+	private static final long serialVersionUID = 1L;
 
 	}  

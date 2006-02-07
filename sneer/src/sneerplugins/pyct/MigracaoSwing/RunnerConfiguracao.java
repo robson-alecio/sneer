@@ -1,17 +1,19 @@
-package MigracaoSwing;
+package sneerplugins.pyct.MigracaoSwing;
 
 import java.io.File;
 
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 
 
 public class RunnerConfiguracao {
-
-	public static void main(String[] args) {
+	
+	public void executa()
+	{
 		String nome ="C:\\pyct\\";
 		String nomeArquivo;
 		JFileChooser fileChooser = new JFileChooser();
-	    fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY );
+	    fileChooser.setFileSelectionMode(JFileChooser.OPEN_DIALOG );
 	    
 	    int result = fileChooser.showSaveDialog(fileChooser  );
 	   
@@ -20,9 +22,19 @@ public class RunnerConfiguracao {
 	    nomeArquivo= fileChooser.getName(file);
 	    nome+=nomeArquivo;
 	    System.out.println(nome);
-	    
 	    MouseTracker configuracao = new MouseTracker();
 	    configuracao.executa(nome,nomeArquivo);
+	}
+	
+	public static void main(String[] args) {
+		
+		String nome ="C:\\pyct\\a";
+		String nomeArquivo = "a";
+		
+	    MouseTracker configuracao = new MouseTracker();
+	    configuracao.executa(nome,nomeArquivo);
+	    
+	    configuracao.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 	}
 
 }

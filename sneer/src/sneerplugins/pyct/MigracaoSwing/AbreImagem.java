@@ -1,4 +1,4 @@
-package MigracaoSwing;
+package sneerplugins.pyct.MigracaoSwing;
 
 
 import java.awt.Container;

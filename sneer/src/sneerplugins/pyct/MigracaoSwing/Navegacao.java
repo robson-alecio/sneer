@@ -1,8 +1,10 @@
-package MigracaoSwing;
+package sneerplugins.pyct.MigracaoSwing;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -13,6 +15,7 @@ import java.util.Properties;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,8 +23,10 @@ import javax.swing.SwingConstants;
 
 public class Navegacao extends JFrame implements MouseListener, MouseMotionListener {
 
+	private static final long serialVersionUID = 1L;
 	private JLabel statusBar;
 	private JLabel foto;
+	private JComboBox imagesComboBox;
 	private int cordenadaInicialX;
 	private int cordenadaFinalX;
 	private int cordenadaInicialY;
@@ -41,26 +46,41 @@ public class Navegacao extends JFrame implements MouseListener, MouseMotionListe
 	String nomeImagem2 = "a";
 	String nomeImagem = "C:\\pyct\\";
 	String nomeFoto5 = "a";
+	int cont = 0;
+	String imageRelations ;
+	AbreRelations _relations = new AbreRelations();
+	String relationsNome;
+	
 	public void  Navegacao()
 	{
-	
+		if(cont == 0)	
+		{
+			cordenadas = "C:\\pyct\\"+nomeFoto5+".properties";
+			imageRelations = "C:\\pyct\\"+nomeFoto5+".relations";
+		}
+		
+		if(cont > 0)
+		{
+			cordenadas = "C:\\pyct\\"+nomeFoto5;
+			imageRelations = "C:\\pyct\\"+nomeFoto5;
+		}
+		
+		abreRelations();
+		
 		
 		String nome = "C:\\pyct\\";
-		
 		try {
 			
 			abreArquivo.abreCordenadas(nome+nomeFoto5+".properties");
 			
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+				
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+				
 		}
+			
 		
-		
-		
+
 		statusBar = new JLabel();
 		getContentPane().add( statusBar, BorderLayout.SOUTH );
  
@@ -79,16 +99,13 @@ public class Navegacao extends JFrame implements MouseListener, MouseMotionListe
 		setSize( 800,600 );
 		setVisible( true );
 		
-		
 		nomeImagem+=nomeImagem2;
-		
-		cordenadas = "C:\\pyct\\"+nomeFoto5+".properties";
 		
 		try {
 			_properties.load(new FileInputStream(cordenadas));
 				
 		} catch (IOException x) {x.printStackTrace();}
-		
+		cont ++;
 	}
 	
 	private void openFile()
@@ -104,6 +121,54 @@ public class Navegacao extends JFrame implements MouseListener, MouseMotionListe
 	   
 	    System.out.println(nome);
 	}  
+	
+	
+	private void abreRelations()
+	{
+		String imagemRelation = null;
+		
+		
+		try {
+			
+			_relations.abreCordenadas("C:\\pyct\\"+nomeFoto5+".relations");
+			imagemRelation = _relations.caminho;
+			
+		}
+		catch (NumberFormatException e) 
+		{
+				
+		} 
+		catch (IOException e) 
+		{
+				
+		}
+	
+		
+		String names[] = { "Fotos relacionadas", imagemRelation};
+		final Icon icons[] = { new ImageIcon( names[ 0 ] ), new ImageIcon( names[ 1 ] ) };
+		imagesComboBox = new JComboBox( names );
+		imagesComboBox.setMaximumRowCount( 3 );
+		imagesComboBox.addItemListener(
+        
+		     
+		      new ItemListener() {
+
+		     
+		         public void itemStateChanged( ItemEvent event )
+		         {
+		     
+					   if ( event.getStateChange() == ItemEvent.SELECTED )
+		               foto.setIcon( icons[ imagesComboBox.getSelectedIndex() ] );
+		         }
+
+		      }  
+
+		   ); 
+
+		   container.add( imagesComboBox );
+
+	}
+	
 	
 	public static void main(String[] args) {
 		Navegacao navegacao = new Navegacao();
@@ -128,11 +193,12 @@ public class Navegacao extends JFrame implements MouseListener, MouseMotionListe
 				System.out.println("***********");
 				
 				container.remove(foto);
+				container.remove(imagesComboBox);
 				String nomeImagemAberta = abreArquivo.vetorCaminho[indice];
 				nomeFoto = nomeImagemAberta;
 				nomeImagem2 = abreArquivo.vetorCaminho[indice];
 				nomeFoto5 = abreArquivo.nome;
-				System.out.println("**"+abreArquivo.nome);
+				System.out.println("**"+nomeFoto5);
 				Navegacao();
 				
 				

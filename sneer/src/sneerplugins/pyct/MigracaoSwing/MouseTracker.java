@@ -1,4 +1,4 @@
-package MigracaoSwing;
+package sneerplugins.pyct.MigracaoSwing;
 
 
 
@@ -6,17 +6,22 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
 import javax.swing.*;
 
-import Desenhando.SelfContainerPanel;
+
 
 
 public class MouseTracker extends JFrame implements MouseListener, MouseMotionListener
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JLabel statusBar;
 	private JLabel foto;
 	private int cordenadaInicialX;
@@ -25,48 +30,95 @@ public class MouseTracker extends JFrame implements MouseListener, MouseMotionLi
 	private int cordenadaFinalY;
 	private String  cordenadas ;
 	private Properties _properties = new Properties();
-	public String nome;
-	public String nomeImagemGeral;
-	SelfContainerPanel desenho;
+	private Properties relations = new Properties();
+	private String nome;
+	private String nomeImagemGeral;
+	private Container container;
+	private String nomeArquivo = "C:\\pyct\\";
+	
 	public MouseTracker()
 	{
-		
 		super( "pyct" );
-
-		
-		
 	}
 	
 	public void executa(String nome, String nomeArquivo)
 	{
-		statusBar = new JLabel();
-		getContentPane().add( statusBar, BorderLayout.SOUTH );
+		   JMenu abrir = new JMenu( "Arquivo" );
+		   abrir.setMnemonic( 'A' );
+
+		  
+		   JMenuItem abrirFoto = new JMenuItem( "Abrir Foto" );
+		   abrirFoto.setMnemonic( 'F' );
+
+		   abrirFoto.addActionListener(
+		     
+		      new ActionListener() {
+
+		         
+		         public void actionPerformed( ActionEvent event )
+		         {
+		            RunnerConfiguracao executa = new RunnerConfiguracao();
+		            executa.executa();
+		         }
+
+		      } 
+
+		   );
+		   
+		   JMenuItem criarFotoRelacionada = new JMenuItem( "Criar Rela��o" );
+		   abrirFoto.setMnemonic( 'F' );
+
+		   criarFotoRelacionada.addActionListener(
+		     
+		      new ActionListener() {
+
+		         
+		         public void actionPerformed( ActionEvent event )
+		         {
+		        	 openFile();
+		        	 salvaFotosRelacionadas();
+		         }
+
+		      } 
+
+		   );
+
+		   abrir.add( abrirFoto );
+		   abrir.add(criarFotoRelacionada);
+		   
+		   JMenuBar bar = new JMenuBar();  
+		   setJMenuBar( bar );  
+		   bar.add( abrir );   
+		
+		   statusBar = new JLabel();
+		   getContentPane().add( statusBar, BorderLayout.SOUTH );
  
-		Container container = getContentPane();
-		container.setLayout( new FlowLayout() );
-
-		Icon bug = new ImageIcon( nome );
-		foto = new JLabel( bug, SwingConstants.CENTER );
-		foto.setToolTipText( "************" );
+		   container = getContentPane();
+		   container.setLayout( new FlowLayout() );
+		
+		   Icon bug = new ImageIcon( nome );
+		   foto = new JLabel( bug, SwingConstants.CENTER );
+		   foto.setToolTipText( "*******" );
    
-		foto.addMouseListener( this );
-		foto.addMouseMotionListener( this );
-		container.add( foto );
+		   foto.addMouseListener( this );
+		   foto.addMouseMotionListener( this );
+		   container.add( foto );
 
-		setSize( 1024, 760 );
-		setVisible( true );
-		String nomeImagem = "C:\\pyct\\" ;
+		   setSize( 1024, 760 );
+		   setVisible( true );
+		   String nomeImagem = "C:\\pyct\\" ;
 		
-		nomeImagem+=nomeArquivo;
+		   nomeImagem+=nomeArquivo;
 		
-		cordenadas = nomeArquivo+".properties";
+		   cordenadas = nomeArquivo+".properties";
 		
-		try {
-			_properties.load(new FileInputStream(cordenadas));
+		
+		   try {
+			   _properties.load(new FileInputStream(nomeImagem+".properties"));
 				
-		} catch (IOException x) {x.printStackTrace();}
-		nomeImagemGeral = nomeArquivo;
-	}
+		   } catch (IOException x) {x.printStackTrace();}
+		   nomeImagemGeral = nomeArquivo;
+		}
 
 	private void salvarCordenadas() throws IOException 
 	{
@@ -76,16 +128,36 @@ public class MouseTracker extends JFrame implements MouseListener, MouseMotionLi
 		String nomePasta = pasta+nomeImagem+".properties";
 		
 		cordenadas = nomePasta;
-		
 		_properties.put(_contador ++ + "", " "+cordenadaInicialX+" "+ cordenadaInicialY+ " " + cordenadaFinalX+ " " + cordenadaFinalY + " " + nome+"" );
 		_properties.store(new FileOutputStream(cordenadas), " ");
 	}	
+	
+	private void salvaFotosRelacionadas()
+	{
+		int _contador = 0;
+		String pastaRelacionamento = "C:\\pyct\\" ;
+		String nomeImagemRelacionamento = nomeImagemGeral;
+		String nomePasta = pastaRelacionamento+nomeImagemRelacionamento+".relations";
+		
+		
+		relations.put(_contador ++ + "", " "+nome+"" );
+		try {
+			relations.store(new FileOutputStream(nomePasta), " Relations");
+		} 
+		catch (FileNotFoundException e) 
+		{
+			
+		}
+		catch (IOException e) 
+		{
+			
+		}
+	}
 		
 	private void openFile()
 	{
 		JFileChooser fileChooser = new JFileChooser();
 	    fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY );
-	    
 	    
 	    
 	    int result = fileChooser.showSaveDialog( this );

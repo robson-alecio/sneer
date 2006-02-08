@@ -1,0 +1,19 @@
+
+FileSharing
+  - Hardcoded directory
+  - Hardcoded IP address
+  - Polling
+  - New file
+  - Set same modified date
+  - Atomic transfers always (file rename)
+  - Chunked transfers.
+  - File deletion detected (recover from remote)
+  - Changed file (based on date)
+  - File deletion requested by user (delete on both sides)
+  - subdirectories
+  - Limitação de uso de banda hardcoded
+  - Smaller files first
+  - Conflict detection
+  - access control
+  - File hashes to detect changes and renames
+  - diff

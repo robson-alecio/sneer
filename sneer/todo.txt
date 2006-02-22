@@ -1,7 +1,6 @@
 
 FileSharing
   - Hardcoded directory
-  - Hardcoded IP address
   - Polling
   - New file
   - Set same modified date

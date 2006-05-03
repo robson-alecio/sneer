@@ -8,8 +8,7 @@ import javax.swing.JFrame;
 
 public class RunnerConfiguracao {
 	
-	public void executa()
-	{
+	public void executa() {
 		String nome ="C:\\pyct\\";
 		String nomeArquivo;
 		JFileChooser fileChooser = new JFileChooser();

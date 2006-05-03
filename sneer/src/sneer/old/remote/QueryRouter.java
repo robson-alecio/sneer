@@ -18,10 +18,10 @@ public class QueryRouter<T> implements QueryExecuter {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T execute(Query<T> query) throws IOException {
+	public <U> U execute(Query<U> query) throws IOException {
 		return _delegate.execute(
 			(query instanceof Indian)
-			? (Query<T>)new ForwardingIndian(_nickname, (Indian)query)
-			: new RoutedQuery<T>(_nickname, query));
+			? (Query<U>)new ForwardingIndian(_nickname, (Indian)query)
+			: new RoutedQuery<U>(_nickname, query));
     } 
 }

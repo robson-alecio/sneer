@@ -38,26 +38,15 @@ public class SovereignVirus {
 			return;
 		}
 		
-		byte[] jarBytes = getJarBytes(clazz);
-		
 		OutputStream os = socket.getOutputStream();
 		writeUTF8(os, "HTTP/1.1 200 OK\n");
 		writeUTF8(os, "Content-Type: binary/octet-stream\n");
 		writeUTF8(os, "Content-Disposition: attachment; filename=sneer.jar\n");
-		writeUTF8(os, "content-length: " + jarBytes.length + "\n");
-		writeUTF8(os, "Transfer-Encoding: identity\n");
 		writeUTF8(os, "\n");
 		os.flush();
-		os.write(jarBytes);
+		writeClassJar(os, clazz);
 		os.flush();
 		os.close();
-	}
-
-	private static byte[] getJarBytes(Class clazz) throws IOException {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		writeClassJar(baos, clazz);
-		byte[] jarBytes = baos.toByteArray();
-		return jarBytes;
 	}
 
 	private static void writeUTF8(OutputStream os, String s) throws IOException, UnsupportedEncodingException {

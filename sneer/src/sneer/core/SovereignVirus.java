@@ -65,7 +65,7 @@ public class SovereignVirus {
 
 	private static void sendPage(Socket socket, String body) throws IOException {
 		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		writer.write("HTTP 1/0\n");
+		writer.write("HTTP 1.0\n");
 		writer.write("Content-Type: text/html\n");
 		writer.write("\n");
 		writer.write("<html><head><title>Sneer - The Sovereign Peer</title></head>");

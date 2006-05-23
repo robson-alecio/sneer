@@ -15,8 +15,8 @@ public class TransparentDecorator implements Decorator {
 
 	TransparentPanel pnl;
 	
-	public TransparentDecorator(TransparentPanel pnl){
-		this.pnl = pnl;
+	public TransparentDecorator(TransparentPanel pnlt){
+		this.pnl = pnlt;
 	}
 	
 	public void paintComponent(Graphics g) {

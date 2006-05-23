@@ -15,9 +15,9 @@ public class TitleBarDecorator implements Decorator {
 	TransparentPanel pnl;
 	String title;
 	
-	public TitleBarDecorator(TransparentPanel pnl, String title){
-		this.pnl = pnl;
-		this.title=title;
+	public TitleBarDecorator(TransparentPanel pnlt, String txt){
+		this.pnl = pnlt;
+		this.title=txt;
 	}
 	
 	public void paintComponent(Graphics g) {

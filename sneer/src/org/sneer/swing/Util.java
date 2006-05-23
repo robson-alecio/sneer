@@ -30,7 +30,7 @@ public abstract class Util {
 		try {
 			Component c = src.getParent();					
 			while(c.getParent()!=null) c=c.getParent();				
-			return (Window) javax.swing.SwingUtilities.getWindowAncestor(src);	
+			return javax.swing.SwingUtilities.getWindowAncestor(src);	
 		} catch (Exception ex) {
 			return null;
 		} 	

@@ -72,7 +72,7 @@ public abstract class IconFactory {
 
 	@SuppressWarnings("serial")
 	private static void loadImage(Image image) throws InterruptedException, IllegalArgumentException {
-        Component dummy = new Component(){};
+        Component dummy = new Component(){ private static final long serialVersionUID = 1L; };
         MediaTracker tracker = new MediaTracker(dummy);
         tracker.addImage(image, 0);
         tracker.waitForID(0);

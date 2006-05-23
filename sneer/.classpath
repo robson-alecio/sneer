@@ -11,5 +11,6 @@
 			<accessrule kind="accessible" pattern="**"/>
 		</accessrules>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/Filters.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

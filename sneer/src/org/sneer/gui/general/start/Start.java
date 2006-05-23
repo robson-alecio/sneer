@@ -52,46 +52,47 @@ public class Start{
 		    MouseListener mouseListener = new MouseListener() {
 		                
 		        public void mouseClicked(MouseEvent e) {
-		            Point p = e.getPoint();
-		    		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-
-		            if(p.x<dim.width/2){
-			            if(p.y<dim.height/2){
-			            	win.setBounds(p.x, p.y, 500, 130);
+		        	if(e.getButton()==MouseEvent.BUTTON1){
+			            Point p = e.getPoint();
+			    		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+	
+			            if(p.x<dim.width/2){
+				            if(p.y<dim.height/2){
+				            	win.setBounds(p.x, p.y, 500, 130);
+				            }else{
+				            	win.setBounds(p.x, p.y-150, 500, 130);
+				            }
 			            }else{
-			            	win.setBounds(p.x, p.y-150, 500, 130);
+				            if(p.y<dim.height/2){
+				            	win.setBounds(dim.width-500, p.y, 500, 130); //1o Quadrante
+				            }else{
+				            	win.setBounds(dim.width-500, p.y-150, 500, 130); //4o Quadrante
+				            }	            	
 			            }
-		            }else{
-			            if(p.y<dim.height/2){
-			            	win.setBounds(dim.width-500, p.y, 500, 130); //1o Quadrante
-			            }else{
-			            	win.setBounds(dim.width-500, p.y-150, 500, 130); //4o Quadrante
-			            }	            	
-		            }
-		            win.updateBackground();
-		            win.setVisible(true);	
-		            win.requestFocus();
-		        	
+			            win.updateBackground();
+			            win.setVisible(true);	
+			            win.requestFocus();
+		        	}
 		        }
 		        public void mouseEntered(MouseEvent e) {}
 		        public void mouseExited(MouseEvent e) {}
 		        public void mousePressed(MouseEvent e) {}
 		        public void mouseReleased(MouseEvent e) {}
 		    };
-
-		    ActionListener exitListener = new ActionListener() {
-		        public void actionPerformed(ActionEvent e) {
-		            System.out.println("Exiting...");
-		            System.exit(0);
-		        }
-		    };
 		            
 		    PopupMenu popup = new PopupMenu();
 		    MenuItem defaultItem = new MenuItem("Exit");
-		    defaultItem.addActionListener(exitListener);
+		    defaultItem.addActionListener(
+		    	new ActionListener() {
+		    		public void actionPerformed(ActionEvent e) {	        	
+		    			System.out.println("Exiting...");
+		    			System.exit(0);
+		    		}
+		    	}
+		    );
 		    popup.add(defaultItem);
 
-		    trayIcon = new TrayIcon(image, "Sneer 1.0.0", popup);	            
+		    trayIcon = new TrayIcon(image, "Sneer", popup);	            
 		    trayIcon.setImageAutoSize(false);
 		    trayIcon.addMouseListener(mouseListener);
 		    tray.add(trayIcon);

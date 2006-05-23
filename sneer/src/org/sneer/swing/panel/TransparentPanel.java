@@ -82,6 +82,7 @@ public class TransparentPanel extends JPanel implements ComponentListener,
 	}
 
 	// JComponent --------------------------------------------------------------
+	@Override
 	protected void paintComponent(Graphics g) {
 		for (Decorator decorator : decorators) {
 			decorator.paintComponent(g);
@@ -127,15 +128,15 @@ public class TransparentPanel extends JPanel implements ComponentListener,
 
 	// Getters/Setters ----------------------------------------------------
 	public float getBlur() {return blur;}
-	public void setBlur(float blur) {this.blur = blur;}
+	public void setBlur(float pblur) {this.blur = pblur;}
 	public boolean isAutoRefresh() {return autoRefresh;}
-	public void setAutoRefresh(boolean autoRefresh) {this.autoRefresh = autoRefresh;}
+	public void setAutoRefresh(boolean pautoRefresh) {this.autoRefresh = pautoRefresh;}
 	public int getBrightness() {return brightness;}
-	public void setBrightness(int brightness) {this.brightness = brightness;}
+	public void setBrightness(int pbrightness) {this.brightness = pbrightness;}
 	public int getRefreshFactor() {return refreshFactor;}
-	public void setRefreshFactor(int refreshFactor) {this.refreshFactor = refreshFactor;}
+	public void setRefreshFactor(int prefreshFactor) {this.refreshFactor = prefreshFactor;}
 	public int getRefreshSleep() {return refreshSleep;	}
-	public void setRefreshSleep(int refreshSleep) {this.refreshSleep = refreshSleep;}
+	public void setRefreshSleep(int prefreshSleep) {this.refreshSleep = prefreshSleep;}
 	public ArrayList<Decorator> getDecorators() {return decorators;}
 
 	// Main ----------------------------------------------------

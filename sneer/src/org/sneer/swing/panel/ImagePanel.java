@@ -29,8 +29,8 @@ public class ImagePanel extends JLabel {
 		super.setIcon(icon);
 	}
 
-	public ImagePanel(ImageIcon icon) {
-		this.icon=icon;
+	public ImagePanel(ImageIcon img) {
+		this.icon=img;
 		this.setMinimumSize(new Dimension(icon.getIconWidth(),
 										  icon.getIconWidth()));
 		this.setOpaque(false);
@@ -65,8 +65,8 @@ public class ImagePanel extends JLabel {
 		return alpha;
 	}
 
-	public void setAlpha(float alpha) {
-		this.alpha = alpha;
+	public void setAlpha(float palpha) {
+		this.alpha = palpha;
 		try {
 			this.getParent().repaint();
 		} catch (Exception e) {
@@ -74,12 +74,13 @@ public class ImagePanel extends JLabel {
 		}
 	}
 
+	@Override
 	public ImageIcon getIcon() {
 		return icon;
 	}
 
-	public void setIcon(ImageIcon icon) {
-		this.icon = icon;
+	public void setIcon(ImageIcon img) {
+		this.icon = img;
 		try {
 			this.getParent().repaint();
 		} catch (Exception e) {
@@ -91,8 +92,8 @@ public class ImagePanel extends JLabel {
 		return scale;
 	}
 
-	public void setScale(float scale) {
-		this.scale = scale;
+	public void setScale(float pscale) {
+		this.scale = pscale;
 		try {
 			this.getParent().repaint();
 		} catch (Exception e) {

@@ -26,9 +26,9 @@ public class TwoColmunsPanel extends JPanel {
 	
 	private int lineNumber = 0;
 	
-	public TwoColmunsPanel(JPanel leftPanel, JPanel rightPanel) {
-		this.leftPanel=leftPanel;
-		this.rightPanel=rightPanel;
+	public TwoColmunsPanel(JPanel pleftPanel, JPanel prightPanel) {
+		this.leftPanel=pleftPanel;
+		this.rightPanel=prightPanel;
 		botton = new JPanel();
 		top = new JPanel();
 		initialize();

@@ -1,6 +1,5 @@
 package org.sneer.swing.panel;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
@@ -24,15 +23,6 @@ public class TransparentCurvesPanel extends TransparentPanel {
 	private RenderingHints hints;
 	private int counter = 0;
 	
-	
-	public TransparentCurvesPanel(Color start, Color end, int type) {
-		init();
-	}
-	
-	public TransparentCurvesPanel(Color start, Color end) {
-		init();
-	}
-
 	public TransparentCurvesPanel() {
 		init();
 	}
@@ -57,6 +47,7 @@ public class TransparentCurvesPanel extends TransparentPanel {
 		animation.start();	
 	}
 
+	@Override
 	public void paintComponent(Graphics g) {
 		counter++;
 		Graphics2D g2 = (Graphics2D) g;
@@ -73,7 +64,7 @@ public class TransparentCurvesPanel extends TransparentPanel {
 				0.0f, -5.0f,
 				width / 2.0f + 40, 1.0f,
 				0.0f, 5.0f,
-				50.0f, 5.0f, false);
+				50.0f, 5.0f);
 		g2.translate(0, 30);
 
 		g2.translate(0, height - 60);
@@ -83,7 +74,7 @@ public class TransparentCurvesPanel extends TransparentPanel {
 				15.0f, -25.0f,
 				width / 2.0f, 1.0f / 2.0f,
 				0.0f, 25.0f,
-				15.0f, 6.0f, false);
+				15.0f, 6.0f);
 		g2.translate(0, -height + 60);
 
 		drawCurve(g2,
@@ -92,7 +83,7 @@ public class TransparentCurvesPanel extends TransparentPanel {
 				height - 35.0f, -25.0f,
 				width / 2.0f, 1.0f / 2.0f,
 				height - 20.0f, 25.0f,
-				25.0f, 4.0f, true);
+				25.0f, 4.0f);
 	}
 
 	private void drawCurve(Graphics2D g2, 
@@ -103,8 +94,7 @@ public class TransparentCurvesPanel extends TransparentPanel {
 			float cx2, float cx2_offset,
 			float cy2, float cy2_offset,
 			float thickness,
-			float speed,
-			boolean invert) {
+			float speed) {
 
 		float width = getWidth();
 		float height = getHeight();
@@ -147,9 +137,7 @@ public class TransparentCurvesPanel extends TransparentPanel {
 	public static void main(String[] args){	
 		
 		JFrame frame = new JFrame();		
-		final TransparentCurvesPanel tp = new TransparentCurvesPanel(Color.black, 
-											   Color.red, 
-											   GradientPanel._TOP_CENTER_DONW);	
+		final TransparentCurvesPanel tp = new TransparentCurvesPanel();	
 		
 		frame.getContentPane().setLayout(new StackLayout());		
 		frame.getContentPane().add(tp, StackLayout.BOTTOM);

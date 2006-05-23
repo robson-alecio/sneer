@@ -45,10 +45,8 @@ public class Start{
 		TrayIcon trayIcon;
 
 		if (SystemTray.isSupported()) {
-
 		    SystemTray tray = SystemTray.getSystemTray();   
 		    Image image = IconFactory.getIcon("logo16.png").getImage();
-
 		    MouseListener mouseListener = new MouseListener() {
 		                
 		        public void mouseClicked(MouseEvent e) {
@@ -91,12 +89,10 @@ public class Start{
 		    	}
 		    );
 		    popup.add(defaultItem);
-
 		    trayIcon = new TrayIcon(image, "Sneer", popup);	            
 		    trayIcon.setImageAutoSize(false);
 		    trayIcon.addMouseListener(mouseListener);
 		    tray.add(trayIcon);
-
 		}
 	}
 

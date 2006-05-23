@@ -41,7 +41,7 @@ public class SacredLoader {
 		
 		File appFile = new File(applicationPath(), application);
 		String mainClass = getMainClass(appFile);
-		Class<?> clazz = new URLClassLoader(new URL[] { appFile.toURL() }).loadClass(mainClass);
+		Class<?> clazz = new URLClassLoader(new URL[] { appFile.toURI().toURL() }).loadClass(mainClass);
 		clazz.getMethod("main", new Class[] { String[].class }).invoke(null, new Object[] { new String[0] });
 	}
 

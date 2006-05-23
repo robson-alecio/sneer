@@ -29,13 +29,13 @@ public class CurvesPanel extends GradientPanel {
 	protected Color start = new Color(255,255,255, 200);
 	protected Color end = new Color(255,255,255, 0);
 	
-	public CurvesPanel(Color start, Color end, int type) {
-		super(start, end, type);
+	public CurvesPanel(Color cstart, Color cend, int tp) {
+		super(cstart, cend, tp);
 		init();
 	}
 	
-	public CurvesPanel(Color start, Color end) {
-		super(start, end);
+	public CurvesPanel(Color cstart, Color cend) {
+		super(cstart, cend);
 		init();
 	}
 
@@ -63,6 +63,7 @@ public class CurvesPanel extends GradientPanel {
 		animation.start();	
 	}
 
+	@Override
 	public void paintComponent(Graphics g) {
 		counter++;
 

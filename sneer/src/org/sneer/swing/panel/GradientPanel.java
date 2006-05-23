@@ -29,15 +29,16 @@ public class GradientPanel extends JPanel {
 		this.gradientEnd = end;
 	}
 
-	public GradientPanel(Color start, Color end, int type) {
+	public GradientPanel(Color start, Color end, int tp) {
 		this(start,end);
-		this.type=type;
+		this.type=tp;
 	}
 
-	public GradientPanel(int type) {
-		this.type=type;
+	public GradientPanel(int tp) {
+		this.type=tp;
 	}
 
+	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
         int w = getWidth();

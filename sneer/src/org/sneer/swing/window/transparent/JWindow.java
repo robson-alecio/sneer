@@ -19,9 +19,9 @@ public class JWindow<CORE extends Core> extends javax.swing.JWindow {
 	private String title = "";
 	
 	
-	public JWindow(int titleH, String title) {
+	public JWindow(int titleH, String txt) {
 		this(titleH);
-		this.title = title;
+		this.title = txt;
 	}
 	
 	public JWindow(int titleH) {
@@ -30,14 +30,14 @@ public class JWindow<CORE extends Core> extends javax.swing.JWindow {
 		init();
 	}
 
-	protected JWindow(CORE core, String title) {
-		this(core);
-		this.title = title;
+	protected JWindow(CORE pcore, String txt) {
+		this(pcore);
+		this.title = txt;
 	}
 	
-	protected JWindow(CORE core) {
+	protected JWindow(CORE pcore) {
 		enableEvents(AWTEvent.MOUSE_MOTION_EVENT_MASK|AWTEvent.FOCUS_EVENT_MASK);
-		this.core = core;
+		this.core = pcore;
 		init();
 	}
 

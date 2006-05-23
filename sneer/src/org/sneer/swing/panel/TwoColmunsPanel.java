@@ -139,17 +139,17 @@ public class TwoColmunsPanel extends JPanel {
 		
 		TwoColmunsPanel panel = new TwoColmunsPanel(gradientPnl, descPnl);
 		
-		TransparentPanel tp =new TransparentPanel();
-		tp.setRefreshFactor(10000);
-		frame.setContentPane(tp);
+//		TransparentPanel tp =new TransparentPanel();
+//		tp.setRefreshFactor(10000);
+//		frame.setContentPane(tp);
 		frame.getContentPane().setBackground(c2);
 		frame.getContentPane().setLayout(new StackLayout());		
 		frame.getContentPane().add(panel, StackLayout.TOP);
 
-		JPanel pnlVideo = new SharePanel("Vídeos","Compartilhe seus Vídeos! Quem sabe alguma vídeo cassetada, ou aquela aula que você gravou.");
-		JPanel pnlFoto = new SharePanel("Fotos","Compartilhe suas Fotos! Que tal compartilhar as fotos da turma toda depois da viagem de férias?");
-		JPanel pnlAudio = new SharePanel("Audio", "Você pode compartilhar alguma gravação ou mesmo suas músicas preferidas");
-		JPanel pnlFile = new SharePanel("Arquivos", "Aqui você disponibiliza, programas, arquivos ou mesmo jogos.");
+		JPanel pnlVideo = new SharePanel("Vï¿½deos","Compartilhe seus Vï¿½deos! Quem sabe alguma vï¿½deo cassetada, ou aquela aula que vocï¿½ gravou.");
+		JPanel pnlFoto = new SharePanel("Fotos","Compartilhe suas Fotos! Que tal compartilhar as fotos da turma toda depois da viagem de fï¿½rias?");
+		JPanel pnlAudio = new SharePanel("Audio", "Vocï¿½ pode compartilhar alguma gravaï¿½ï¿½o ou mesmo suas mï¿½sicas preferidas");
+		JPanel pnlFile = new SharePanel("Arquivos", "Aqui vocï¿½ disponibiliza, programas, arquivos ou mesmo jogos.");
 	
 		panel.addLine("small/cam.png",   "big/cam.png", pnlVideo);
 		panel.addLine("small/camera.png","big/camera.png", pnlFoto);

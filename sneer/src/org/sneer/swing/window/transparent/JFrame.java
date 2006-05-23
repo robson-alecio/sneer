@@ -19,8 +19,8 @@ public class JFrame<CORE extends Core> extends javax.swing.JFrame {
 		init();
 	}
 	
-	protected JFrame(CORE core) {
-		this.core = core;
+	protected JFrame(CORE pcore) {
+		this.core = pcore;
 		init();
 	}
 

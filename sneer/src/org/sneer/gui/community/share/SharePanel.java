@@ -14,9 +14,9 @@ import org.sneer.swing.panel.GradientPanel;
 public class SharePanel extends GradientPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JLabel title = new JLabel("Título");
-	private JTextArea description = new JTextArea("blá, blá, blá, blá, blá, blá, blá, " +
-											      "blá, blá, blá, blá, blá, blá, blá, blá...");	
+	private JLabel _title = new JLabel("Tï¿½tulo");
+	private JTextArea _description = new JTextArea("blï¿½, blï¿½, blï¿½, blï¿½, blï¿½, blï¿½, blï¿½, " +
+											      "blï¿½, blï¿½, blï¿½, blï¿½, blï¿½, blï¿½, blï¿½, blï¿½...");	
 	private JLabel sizeLabel = new JLabel("Quantidade:");
 	private JLabel sizeText = new JLabel("XX Arquivos, 30MG");
 	
@@ -31,18 +31,18 @@ public class SharePanel extends GradientPanel {
 		setDescription(description);
 	}
 	
-	public void setTitle(String txt){title.setText(txt);}
-	public void setDescription(String txt){description.setText(txt);}
+	public void setTitle(String txt){_title.setText(txt);}
+	public void setDescription(String txt){_description.setText(txt);}
 	public void setSizeLabel(String txt) { sizeLabel.setText(txt);}
 	public void setSizeText(String txt) { this.sizeText.setText(txt);}
 	public void setUpdateDateLabel(String txt) { this.updateDateLabel.setText(txt); }
 	public void setUpdateDateText(String txt) { this.updateDateText.setText(txt); }
 
 	private void initialize() {
-		description.setEditable(false);
-		description.setOpaque(false);
-		description.setLineWrap(true);
-		description.setWrapStyleWord(true);
+		_description.setEditable(false);
+		_description.setOpaque(false);
+		_description.setLineWrap(true);
+		_description.setWrapStyleWord(true);
 		
 		this.setLayout(new GridBagLayout());
 		this.setOpaque(false);
@@ -50,23 +50,23 @@ public class SharePanel extends GradientPanel {
 		GridBagConstraints c00 = newConstraints(0,0, 1.0,1.0, 5,15,0,10);
 		c00.gridwidth = 2;
 		c00.anchor = GridBagConstraints.SOUTHWEST;
-		this.add(title, c00);
+		this.add(_title, c00);
 		
 		GridBagConstraints c01 = newConstraints(0,1, 1.0,3.0, 0,15,5,10);
 		c01.gridwidth = 2;
 		c01.anchor = GridBagConstraints.SOUTHWEST;
 		c01.fill = GridBagConstraints.BOTH;
-		this.add(description, c01);
+		this.add(_description, c01);
 
 		//Fontes
 		Font font12Plain = new Font("Dialog", Font.PLAIN, 12);
 		Font font14Bold = new Font("Dialog", Font.BOLD, 14);
 		
-		title.setFont(font14Bold);
-		title.setForeground(Color.DARK_GRAY);
+		_title.setFont(font14Bold);
+		_title.setForeground(Color.DARK_GRAY);
 		updateDateText.setFont(font12Plain);
 		sizeText.setFont(font12Plain);
-		description.setFont(font12Plain);
+		_description.setFont(font12Plain);
 
 		//Dados
 		GridBagConstraints c1 = newConstraints(0, 2, 0.0, 0.0, 0,15,5,10);
@@ -85,8 +85,8 @@ public class SharePanel extends GradientPanel {
 		this.add(updateDateLabel, c1);
 		this.add(updateDateText, c2);		
 		
-		prepareLabels(sizeLabel, sizeText, 2, 0.0, GridBagConstraints.NORTHEAST,0);
-		prepareLabels(updateDateLabel, updateDateText, 3, 1.0,GridBagConstraints.SOUTHEAST,5);
+		prepareLabels(sizeLabel, sizeText, 2, 0.0, 0);
+		prepareLabels(updateDateLabel, updateDateText, 3, 1.0, 5);
 	}	
 	
 	private GridBagConstraints newConstraints(int gridX, int gridY, 
@@ -105,7 +105,7 @@ public class SharePanel extends GradientPanel {
 	}
 	
 	private void prepareLabels(JLabel lb, JLabel txt,
-							  int gridY, double weightY, int anchor, int botton){
+							  int gridY, double weightY, int botton){
 		
 		GridBagConstraints c1 = newConstraints(0, gridY, 0.0, weightY, 0,15,botton,10);
 		GridBagConstraints c2 = newConstraints(1, gridY, 1.0, weightY, 0,15,botton,10);

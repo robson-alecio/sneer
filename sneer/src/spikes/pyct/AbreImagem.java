@@ -1,4 +1,4 @@
-package sneerplugins.pyct.MigracaoSwing;
+package spikes.pyct;
 
 
 import java.awt.Container;

@@ -9,39 +9,51 @@ import java.io.StringWriter;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Arrays;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 
 import javax.swing.JOptionPane;
 
-public class SacredLoader {
+public class Bootstrap {
 	
 	private static final int DEFAULT_DOWNLOAD_PORT = 42;
 
-	public static void main(String[] args) {
-		String path = applicationPath();
-		
+	public static void main(String[] ignored) {
 		try {
-			String application = findNewestApp(path);
-			if (null == application) {
-				downloadApp();
-				application = findNewestApp(path);
-			}
-			executeApp(application);
+			boot();
 		} catch (Exception e) {			
-			StringWriter message = new StringWriter();
-			message.write(e.toString() + "\n");
-			e.printStackTrace(new PrintWriter(message));
-			JOptionPane.showMessageDialog(null, message.toString(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			showExceptionDialog(e);
 		}
 	}
 
-	private static void executeApp(String application) throws Exception {
-		
-		File appFile = new File(applicationPath(), application);
-		String mainClass = getMainClass(appFile);
-		Class<?> clazz = new URLClassLoader(new URL[] { appFile.toURI().toURL() }).loadClass(mainClass);
+	private static void boot() throws Exception {
+		downloadMainAppIfNecessary();
+		executeMainApp();
+	}
+
+
+	private static void downloadMainAppIfNecessary() throws Exception {
+		if (isMainAppAlreadyDownloaded()) return;
+		downloadMainApp();
+	}
+
+	private static boolean isMainAppAlreadyDownloaded() {
+		return mainAppJarFile().exists();
+	}
+
+	private static File mainAppJarFile() {
+		String path =
+			System.getProperty("user.home") + File.separator +
+			".sneer" + File.separator +
+			"application" + File.separator +
+			"MainApplication.jar";
+		return new File(path);
+	}
+
+	private static void executeMainApp() throws Exception {
+		File jar = mainAppJarFile();
+		String mainClass = getMainClass(jar);
+		Class<?> clazz = new URLClassLoader(new URL[] { jar.toURI().toURL() }).loadClass(mainClass);
 		clazz.getMethod("main", new Class[] { String[].class }).invoke(null, new Object[] { new String[0] });
 	}
 
@@ -54,16 +66,13 @@ public class SacredLoader {
 		}
 	}
 	
-	private static void downloadApp() throws IOException {
-		
+	private static void downloadMainApp() throws Exception {
 		String hostnameAndPort = askHostnameAndPort();
 		
 		Socket socket = new Socket(host(hostnameAndPort), port(hostnameAndPort));
 		try {
 			Object newVersion = new ObjectInputStream(socket.getInputStream()).readObject();
 			saveApp(newVersion);
-		} catch (ClassNotFoundException e) {			
-			throw new RuntimeException(e);
 		} finally {
 			socket.close();
 		}
@@ -86,7 +95,9 @@ public class SacredLoader {
 	}
 
 	private static void saveApp(Object newVersion) throws IOException {
-		FileOutputStream fos = new FileOutputStream(firstJarName());
+//		File directory = new File(path);
+//		directory.mkdirs();
+		FileOutputStream fos = new FileOutputStream(mainAppJarFile());
 		try {
 			fos.write((byte[])newVersion);
 		} finally {
@@ -94,25 +105,13 @@ public class SacredLoader {
 		}
 	}
 
-	private static String firstJarName() {
-		return applicationPath() + File.separator + "0000000000000000000.jar"; 
-	}
 
-	private static String applicationPath() {
-		String userHome = System.getProperty("user.home");
-		String separator = File.separator;
-		return userHome + separator + ".sneer" + separator + "application";
-	}
 
-	private static String findNewestApp(String path) throws IOException {
-		File directory = new File(path);
-		directory.mkdirs();
-		
-		String[] fileNames = directory.list();
-		if (fileNames.length == 0) return null;
-		
-		Arrays.sort(fileNames);
-		return fileNames[fileNames.length-1];
+	private static void showExceptionDialog(Exception e) {
+		StringWriter message = new StringWriter();
+		message.write(e.toString() + "\n");
+		e.printStackTrace(new PrintWriter(message));
+		JOptionPane.showMessageDialog(null, message.toString(), "ERROR", JOptionPane.ERROR_MESSAGE);
 	}
 
 }

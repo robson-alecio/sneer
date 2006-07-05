@@ -14,7 +14,7 @@ import java.util.jar.JarFile;
 
 import javax.swing.JOptionPane;
 
-public class Bootstrap {
+public class BootstrapOld {
 	
 	private static final int DEFAULT_DOWNLOAD_PORT = 42;
 

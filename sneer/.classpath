@@ -12,5 +12,8 @@
 		</accessrules>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/Filters.jar"/>
+	<classpathentry kind="lib" path="bootstrap/lib/ecj_3.2RC3.jar"/>
+	<classpathentry kind="src" path="bootstrap/src"/>
+	<classpathentry kind="lib" path="bootstrap/ecj"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

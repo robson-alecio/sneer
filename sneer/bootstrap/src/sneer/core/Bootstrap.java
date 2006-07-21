@@ -38,34 +38,23 @@ public class Bootstrap {
 	}
 
 	private static void boot() throws Exception {
-		acquireMainAppIfNecessary();
+		while (!mainAppAvailable()) acquireMainAppFromPeer();
 		executeMainApp();
 	}
 
-	private static void acquireMainAppIfNecessary() throws Exception {
-		valid replacement? replace
-		valid main return
-		download replacement
-		goto top
-		
-		
-		replaceMainAppWithReplacementIfAvailable();
-		acquireMainAppFromPeerIfNecessary();
+	private static boolean mainAppAvailable() {
+		return lastValidAppJarFile() != null;
 	}
 
-	private static void replaceMainAppWithReplacementIfAvailable() throws Exception {
-		if (!mainAppReplacementJarFile().exists()) return;
-		
-		if (!checkSignature(mainAppReplacementJarFile())) return;
-		
-		replaceMainAppWithReplacement();
+	private static File lastValidAppJarFile() {
+		while (true) {
+			File candidate = lastAppJarFile();
+			if (candidate == null) return null;
+			if (isValidSignature(candidate)) return candidate;
+			deleteSignedFile(candidate);
+		}
 	}
 
-	private static void replaceMainAppWithReplacement() throws Exception {
-		mainAppJarFile().delete();
-		boolean done = mainAppReplacementJarFile().renameTo(mainAppJarFile());
-		if (!done) throw new Exception("Unable to replace main application with newer version.");
-	}
 
 	private static void acquireMainAppFromPeer() throws Exception {
 		try{
@@ -158,17 +147,20 @@ public class Bootstrap {
 	private static void receiveMainApp() throws Exception {
 		byte[] jarContents = receiveByteArray();
 		byte[] signature = receiveByteArray();
-		
-		saveSignedFile(mainAppReplacementJarFile(), jarContents, signature);
-		replaceMainAppWithReplacementIfAvailable();
+	
+		saveSignedFile(firstAppJar(), jarContents, signature);
+	}
+
+	private static File firstAppJar() {
+		return new File(appDirectory(), "0000000000.jar");
 	}
 
 
 
 	private static void saveSignedFile(File file, byte[] contents, byte[] signature) throws IOException {
 		File signatureFile = new File(file.getAbsolutePath() + ".signature");
-		save(file, contents);
 		save(signatureFile, signature);
+		save(file, contents);
 	}
 
 	private static void checkSignature(byte[] jarContents, byte[] signature) {
@@ -179,14 +171,24 @@ public class Bootstrap {
 		return new File(sneerDirectory(), "MainApplication.zip");
 	}
 	
-	private static File mainAppJarFile() {
-		return new File(sneerDirectory(), "MainApplication.jar");
+	private static File lastAppJarFile() {
+		File[] versions = appDirectory().listFiles();
+
+		File result = null;
+		for (File version : versions) {
+			String name = version.getName();
+			if (!name.endsWith(".jar")) continue;
+			if (result == null) result = version;
+			if (name.compareTo(result.getName()) > 0) result = version;
+		}
+		return result;
 	}
 	
-	private static File mainAppReplacementJarFile() {
-		return new File(sneerDirectory(), "MainApplicationReplacement.jar");
+	private static File appDirectory() {
+		File result = new File(sneerDirectory(), "application");
+		result.mkdir();
+		return result;
 	}
-
 
 	private static void closeConnectionToPeer() throws IOException {
 		if (_objectInput != null) _objectInput.close();
@@ -226,7 +228,7 @@ public class Bootstrap {
 
 
 	private static void acquireMainAppFromPeerIfNecessary() throws Exception {
-		if (mainAppJarFile().exists()) return;
+		if (lastAppJarFile().exists()) return;
 		
 		acquireMainAppFromPeer();
 	}
@@ -249,7 +251,7 @@ public class Bootstrap {
 
 
 	private static void executeMainApp() throws Exception {
-		executeClass(mainAppJarFile(), "Main");
+		executeClass(lastAppJarFile(), "Main");
 	}
 
 	private static void executeClass(File jar, String className, String... args) throws ClassNotFoundException, MalformedURLException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {

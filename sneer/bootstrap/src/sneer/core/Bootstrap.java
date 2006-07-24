@@ -25,7 +25,6 @@ import javax.swing.JOptionPane;
 
 public class Bootstrap {
 	
-	private static final int DEFAULT_DOWNLOAD_PORT = 42;
 	private static Socket _socket;
 	private static ObjectInputStream _objectInput;
 
@@ -56,6 +55,17 @@ public class Bootstrap {
 	}
 
 
+	private static void deleteSignedFile(File candidate) {
+		// TODO Auto-generated method stub
+	}
+
+	
+	private static boolean isValidSignature(File candidate) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
 	private static void acquireMainAppFromPeer() throws Exception {
 		try{
 			openConnectionToPeer();
@@ -64,6 +74,7 @@ public class Bootstrap {
 			closeConnectionToPeer();
 		}
 	}
+
 
 	private static void compileMainApp() throws Exception {
 		delete(tempDirectory());
@@ -266,13 +277,13 @@ public class Bootstrap {
 	
 	public static int portGiven(String s) {
 		String[] addressParts = s.split(":");
-		return addressParts.length > 1 
-			? Integer.parseInt(addressParts[1])
-			: DEFAULT_DOWNLOAD_PORT;
+		return Integer.parseInt(addressParts[1]);
 	}
 
 	private static String promptForHostnameAndPort() {
-		return JOptionPane.showInputDialog(null, "What is your contact's address? host:port", "localhost:42");
+		String message = "To install Sneer and become sovereign, \n" +
+			"you will need a sovereign friend to help you.";
+		return (String)JOptionPane.showInputDialog(null, message, "Welcome to Sneer", JOptionPane.INFORMATION_MESSAGE, null, null, "hostaddress:1234");
 	}
 
 	private static void save(File file, byte[] contents) throws IOException {

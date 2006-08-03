@@ -20,9 +20,9 @@ public class Main {
 		
 		long t0;
 
-//		t0 = System.nanoTime();
-//		KeyTools.main(new String[]{pub, priv});
-//		System.out.println(System.nanoTime() - t0);
+		t0 = System.nanoTime();
+		KeyTools.main(new String[]{pub, priv});
+		System.out.println(System.nanoTime() - t0);
 		
 		t0 = System.nanoTime();
 		Sign.main(new String[]{priv, message, signature});

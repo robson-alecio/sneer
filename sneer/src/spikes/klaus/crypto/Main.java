@@ -10,13 +10,13 @@ public class Main {
 
 	public static void main(String[] args) {
 
-//		printProvidersAndServices();
-//		System.out.println("\n\n");
+		printProvidersAndServices();
+		System.out.println("\n\n");
 
-		String priv = "privateKey";
-		String pub = "publicKey";
-		String message = "c:/temp/lixo";
-		String signature = "signature";
+		String priv = "c:/temp/privateKey";
+		String pub = "c:/temp/publicKey";
+		String message = "c:/temp/message";
+		String signature = "c:/temp/signature";
 		
 		long t0;
 

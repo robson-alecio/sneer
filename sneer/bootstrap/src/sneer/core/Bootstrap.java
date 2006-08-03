@@ -270,12 +270,12 @@ public class Bootstrap {
 		clazz.getMethod("main", new Class[] { String[].class }).invoke(null, new Object[] { args });
 	}
 	
-	public static String hostGiven(String s) {
+	private static String hostGiven(String s) {
 		String[] addressParts = s.split(":");
 		return addressParts[0];
 	}
 	
-	public static int portGiven(String s) {
+	private static int portGiven(String s) {
 		String[] addressParts = s.split(":");
 		return Integer.parseInt(addressParts[1]);
 	}

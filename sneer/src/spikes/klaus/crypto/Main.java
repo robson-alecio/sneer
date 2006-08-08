@@ -13,6 +13,8 @@ import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.Provider;
 import java.security.PublicKey;
@@ -26,42 +28,39 @@ import java.util.Set;
 
 public class Main {
 
-	static final String SIGNATURE_ALGORITHM = "SHA512WITHRSA";
-
 	public static void main(String[] args) throws Exception {
 
 		printProvidersAndServices();
 		System.out.println("\n\n");
 
-		byte[] message = new SecureRandom().generateSeed(10000000);
+		byte[] bytecodeDummy = new SecureRandom().generateSeed(10000000);
 		
-		long t0;
+		testSHA512(bytecodeDummy);
+		
+		testRSA(bytecodeDummy);
 
-		
-		MessageDigest digester = MessageDigest.getInstance("SHA-512");
-		System.out.println(digester);
-		digester.update(message);
-		byte[] digest = digester.digest();
-		System.out.println(digest.length);
-		
-		byte[] digest2 = MessageDigest.getInstance("SHA-512").digest(message);
-		System.out.println("Same digest: " + Arrays.equals(digest, digest2));
-		
+	}
+
+	private static void testSHA512(byte[] bytecodeDummy) throws NoSuchAlgorithmException, NoSuchProviderException {
+		MessageDigest digester = MessageDigest.getInstance("SHA-512", "SUN");
+		byte[] digest = digester.digest(bytecodeDummy);
+	}
+
+	private static void testRSA(byte[] bytecodeDummy) throws Exception {
+		long t0;
 		
 		t0 = System.currentTimeMillis();
 		KeyPair keys = generateKeyPair();
 		System.out.println(System.currentTimeMillis() - t0);
 		
 		t0 = System.currentTimeMillis();
-		byte[] signature = generateSignature(keys.getPrivate(), new ByteArrayInputStream(message));
-		System.out.println(signature.length + " " + signature);
+		byte[] signature = generateSignature(keys.getPrivate(), bytecodeDummy);
 		System.out.println(System.currentTimeMillis() - t0);
 		
 		t0 = System.currentTimeMillis();
-		boolean ok = verifySignature(keys.getPublic(), new ByteArrayInputStream(message), signature);
-		System.out.println(ok);
+		boolean ok = verifySignature(keys.getPublic(), bytecodeDummy, signature);
+		System.out.println("Signature ok: " + ok);
 		System.out.println(System.currentTimeMillis() - t0);
-
 	}
 
 	private static void printProvidersAndServices() {
@@ -88,28 +87,21 @@ public class Main {
 		}
 	}
 
-	public static byte[] generateSignature(PrivateKey privatekey, InputStream message) throws Exception {
-		Signature signer = Signature.getInstance(SIGNATURE_ALGORITHM);
-		
-		System.out.println("Signature algorithm: " + signer.getAlgorithm());
-	
+	public static byte[] generateSignature(PrivateKey privatekey, byte[] message) throws Exception {
+		Signature signer = Signature.getInstance("SHA512WITHRSA", "SunRsaSign");
 		signer.initSign(privatekey);
 	
-		int n;
-		byte[] buffer = new byte[1000];
-	
-		while ((n = message.read(buffer)) > -1)
-			signer.update(buffer, 0, n);
+		signer.update(message);
 	
 		return signer.sign();
 	}
 
 	public static KeyPair generateKeyPair() throws Exception {
 		byte[] seed = "KLAUS WUESTEFELD".getBytes("UTF-8");
-		SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+		SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
 		random.setSeed(seed);
 
-		KeyPairGenerator keypairgenerator = KeyPairGenerator.getInstance("RSA");
+		KeyPairGenerator keypairgenerator = KeyPairGenerator.getInstance("RSA", "SunRsaSign");
 		keypairgenerator.initialize(4096, random);
 		
 		return keypairgenerator.generateKeyPair();
@@ -143,14 +135,11 @@ public class Main {
 		new ObjectOutputStream(outputstream).writeObject(key);
 	}
 
-	public static boolean verifySignature(PublicKey publickey, InputStream message, byte[] signature) throws Exception {
-		Signature verifier = Signature.getInstance(SIGNATURE_ALGORITHM);
+	public static boolean verifySignature(PublicKey publickey, byte[] message, byte[] signature) throws Exception {
+		Signature verifier = Signature.getInstance("SHA512WITHRSA", "SunRsaSign");
 		verifier.initVerify(publickey);
 	
-		int n;
-		byte[] buf = new byte[1000];
-		while ((n = message.read(buf)) > -1)
-			verifier.update(buf, 0, n);
+		verifier.update(message);
 	
 		return verifier.verify(signature);
 	}

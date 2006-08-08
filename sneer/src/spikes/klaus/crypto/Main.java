@@ -9,19 +9,18 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
+import java.security.MessageDigest;
 import java.security.PrivateKey;
 import java.security.Provider;
 import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.security.Signature;
-import java.security.SignatureException;
 import java.security.Provider.Service;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,6 +37,17 @@ public class Main {
 		
 		long t0;
 
+		
+		MessageDigest digester = MessageDigest.getInstance("SHA-512");
+		System.out.println(digester);
+		digester.update(message);
+		byte[] digest = digester.digest();
+		System.out.println(digest.length);
+		
+		byte[] digest2 = MessageDigest.getInstance("SHA-512").digest(message);
+		System.out.println("Same digest: " + Arrays.equals(digest, digest2));
+		
+		
 		t0 = System.currentTimeMillis();
 		KeyPair keys = generateKeyPair();
 		System.out.println(System.currentTimeMillis() - t0);
@@ -78,7 +88,7 @@ public class Main {
 		}
 	}
 
-	public static byte[] generateSignature(PrivateKey privatekey, InputStream message) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException, IOException {
+	public static byte[] generateSignature(PrivateKey privatekey, InputStream message) throws Exception {
 		Signature signer = Signature.getInstance(SIGNATURE_ALGORITHM);
 		
 		System.out.println("Signature algorithm: " + signer.getAlgorithm());
@@ -95,10 +105,13 @@ public class Main {
 	}
 
 	public static KeyPair generateKeyPair() throws Exception {
-		KeyPairGenerator keypairgenerator = KeyPairGenerator.getInstance("RSA");
-	
 		byte[] seed = "KLAUS WUESTEFELD".getBytes("UTF-8");
-		keypairgenerator.initialize(4096, new SecureRandom(seed));
+		SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+		random.setSeed(seed);
+
+		KeyPairGenerator keypairgenerator = KeyPairGenerator.getInstance("RSA");
+		keypairgenerator.initialize(4096, random);
+		
 		return keypairgenerator.generateKeyPair();
 	}
 
@@ -130,7 +143,7 @@ public class Main {
 		new ObjectOutputStream(outputstream).writeObject(key);
 	}
 
-	public static boolean verifySignature(PublicKey publickey, InputStream message, byte[] signature) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException, IOException {
+	public static boolean verifySignature(PublicKey publickey, InputStream message, byte[] signature) throws Exception {
 		Signature verifier = Signature.getInstance(SIGNATURE_ALGORITHM);
 		verifier.initVerify(publickey);
 	

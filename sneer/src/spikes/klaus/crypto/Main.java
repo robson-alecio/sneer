@@ -1,7 +1,26 @@
 package spikes.klaus.crypto;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.security.Provider;
+import java.security.PublicKey;
+import java.security.SecureRandom;
 import java.security.Security;
+import java.security.Signature;
+import java.security.SignatureException;
 import java.security.Provider.Service;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,28 +29,27 @@ public class Main {
 
 	static final String SIGNATURE_ALGORITHM = "SHA512WITHRSA";
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 
 		printProvidersAndServices();
 		System.out.println("\n\n");
 
-		String priv = "c:/temp/privateKey";
-		String pub = "c:/temp/publicKey";
-		String message = "c:/temp/message";
-		String signature = "c:/temp/signature";
+		byte[] message = new SecureRandom().generateSeed(10000000);
 		
 		long t0;
 
-//		t0 = System.currentTimeMillis();
-//		KeyTools.main(new String[]{pub, priv});
-//		System.out.println(System.currentTimeMillis() - t0);
-		
 		t0 = System.currentTimeMillis();
-		Sign.main(new String[]{priv, message, signature});
+		KeyPair keys = generateKeyPair();
 		System.out.println(System.currentTimeMillis() - t0);
 		
 		t0 = System.currentTimeMillis();
-		Verify.main(new String[]{pub, message, signature});
+		byte[] signature = generateSignature(keys.getPrivate(), new ByteArrayInputStream(message));
+		System.out.println(signature.length + " " + signature);
+		System.out.println(System.currentTimeMillis() - t0);
+		
+		t0 = System.currentTimeMillis();
+		boolean ok = verifySignature(keys.getPublic(), new ByteArrayInputStream(message), signature);
+		System.out.println(ok);
 		System.out.println(System.currentTimeMillis() - t0);
 
 	}
@@ -60,32 +78,27 @@ public class Main {
 		}
 	}
 
-	public static byte[] generateSignature(PrivateKey privatekey,
-			InputStream inputstreamMessage) throws NoSuchAlgorithmException,
-			InvalidKeyException, SignatureException, IOException {
-		Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
+	public static byte[] generateSignature(PrivateKey privatekey, InputStream message) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException, IOException {
+		Signature signer = Signature.getInstance(SIGNATURE_ALGORITHM);
 		
-		System.out.println("Signature algorithm: " + signature.getAlgorithm());
+		System.out.println("Signature algorithm: " + signer.getAlgorithm());
 	
-		signature.initSign(privatekey);
+		signer.initSign(privatekey);
 	
-		int n = 0;
-		byte[] rgb = new byte[1000];
+		int n;
+		byte[] buffer = new byte[1000];
 	
-		while ((n = inputstreamMessage.read(rgb)) > -1) {
-			signature.update(rgb, 0, n);
-		}
+		while ((n = message.read(buffer)) > -1)
+			signer.update(buffer, 0, n);
 	
-		rgb = signature.sign();
-	
-		return rgb;
+		return signer.sign();
 	}
 
-	public static KeyPair generateKeyPair() throws NoSuchAlgorithmException {
+	public static KeyPair generateKeyPair() throws Exception {
 		KeyPairGenerator keypairgenerator = KeyPairGenerator.getInstance("RSA");
 	
-		keypairgenerator.initialize(4096, new SecureRandom(new byte[]{1}));
-	
+		byte[] seed = "KLAUS WUESTEFELD".getBytes("UTF-8");
+		keypairgenerator.initialize(4096, new SecureRandom(seed));
 		return keypairgenerator.generateKeyPair();
 	}
 
@@ -117,22 +130,16 @@ public class Main {
 		new ObjectOutputStream(outputstream).writeObject(key);
 	}
 
-	public static boolean verifySignature(PublicKey publickey,
-			InputStream inputstreamMessage, byte[] signatureBytes)
-			throws NoSuchAlgorithmException, InvalidKeyException,
-			SignatureException, IOException {
-		Signature signatureAlgorithm = Signature.getInstance(Sign.SIGNATURE_ALGORITHM);
+	public static boolean verifySignature(PublicKey publickey, InputStream message, byte[] signature) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException, IOException {
+		Signature verifier = Signature.getInstance(SIGNATURE_ALGORITHM);
+		verifier.initVerify(publickey);
 	
-		signatureAlgorithm.initVerify(publickey);
-	
-		int n = 0;
+		int n;
 		byte[] buf = new byte[1000];
+		while ((n = message.read(buf)) > -1)
+			verifier.update(buf, 0, n);
 	
-		while ((n = inputstreamMessage.read(buf)) > -1) {
-			signatureAlgorithm.update(buf, 0, n);
-		}
-	
-		return signatureAlgorithm.verify(signatureBytes);
+		return verifier.verify(signature);
 	}
 
 }

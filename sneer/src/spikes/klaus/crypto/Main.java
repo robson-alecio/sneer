@@ -4,18 +4,49 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
 import java.security.PrivateKey;
+import java.security.Provider;
 import java.security.PublicKey;
 import java.security.SecureRandom;
+import java.security.Security;
 import java.security.Signature;
+import java.security.Provider.Service;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Main {
 
 	public static void main(String[] args) throws Exception {
+		printProvidersAndServices();
+		
 		byte[] bytecodeDummy = new SecureRandom().generateSeed(10000000);
 		
 		testSHA512(bytecodeDummy);
 		testRSA(bytecodeDummy);
 	}
+
+	private static void printProvidersAndServices() {
+		HashSet<String> serviceTypes = new HashSet<String>();
+
+		Provider[] provs = Security.getProviders();
+		for (Provider prov : provs) {
+			System.out.println();
+			System.out.println("===========" + prov);
+			Set<Service> services = prov.getServices();
+			for (Service service : services) {
+				String type = service.getType();
+				serviceTypes.add(type);
+				System.out.println("\n Type: " + type);
+				System.out.println(" Algo: " + service.getAlgorithm());
+			}
+		}
+
+		for (String type : serviceTypes) {
+			System.out.println("\n=====Type: " + type);
+			for (String alg : Security.getAlgorithms(type)) {
+				System.out.println(alg);
+			}
+		}
+		}
 
 	private static void testSHA512(byte[] bytecodeDummy) throws Exception {
 		MessageDigest digester = MessageDigest.getInstance("SHA-512", "SUN");

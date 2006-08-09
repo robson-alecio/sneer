@@ -282,7 +282,8 @@ public class Bootstrap {
 
 	private static String promptForHostnameAndPort() {
 		String message = "To install Sneer and become sovereign, \n" +
-			"you will need a sovereign friend to help you.";
+			"you will need a sovereign friend to help you. \n" +
+			"Please enter your friend's host address and port.";
 		return (String)JOptionPane.showInputDialog(null, message, "Welcome to Sneer", JOptionPane.INFORMATION_MESSAGE, null, null, "hostaddress:1234");
 	}
 

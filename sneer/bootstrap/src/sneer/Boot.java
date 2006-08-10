@@ -1,4 +1,4 @@
-package sneer.core;
+package sneer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -23,7 +23,7 @@ import java.util.zip.ZipFile;
 
 import javax.swing.JOptionPane;
 
-public class Bootstrap {
+public class Boot {
 	
 	private static Socket _socket;
 	private static ObjectInputStream _objectInput;

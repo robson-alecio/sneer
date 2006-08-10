@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry path="src" kind="src"/>
-	<classpathentry path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre6" kind="con"/>
-	<classpathentry path="lib/jmock-1.0.1.jar" kind="lib"/>
-	<classpathentry path="lib/xpp3_min-1.1.3.4.O.jar" kind="lib"/>
-	<classpathentry path="lib/xstream/xstream-1.1.2.jar" kind="lib"/>
-	<classpathentry path="lib/prevayler-2.02.006.jar" kind="lib"/>
-	<classpathentry path="bootstrap/lib/ecj_3.2RC3.jar" kind="lib"/>
-	<classpathentry path="org.eclipse.pde.core.requiredPlugins" kind="con">
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre6"/>
+	<classpathentry kind="lib" path="lib/jmock-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/xpp3_min-1.1.3.4.O.jar"/>
+	<classpathentry kind="lib" path="lib/xstream/xstream-1.1.2.jar"/>
+	<classpathentry kind="lib" path="lib/prevayler-2.02.006.jar"/>
+	<classpathentry kind="lib" path="bootstrap/lib/ecj_3.2RC3.jar"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins">
 		<accessrules>
-			<accessrule pattern="**" kind="accessible"/>
+			<accessrule kind="accessible" pattern="**"/>
 		</accessrules>
 	</classpathentry>
-	<classpathentry path="lib/Filters.jar" kind="lib"/>
-	<classpathentry path="bootstrap/src" kind="src"/>
-	<classpathentry path="bootstrap/ecj" kind="lib"/>
-	<classpathentry path="bin" kind="output"/>
+	<classpathentry kind="lib" path="lib/Filters.jar"/>
+	<classpathentry kind="src" path="bootstrap/src"/>
+	<classpathentry kind="lib" path="bootstrap/ecj"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/crypto"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>

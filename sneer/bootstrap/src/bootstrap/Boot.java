@@ -1,4 +1,4 @@
-package sneer;
+package bootstrap;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

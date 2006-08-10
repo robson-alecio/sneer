@@ -14,7 +14,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/Filters.jar"/>
 	<classpathentry kind="src" path="bootstrap/src"/>
-	<classpathentry kind="lib" path="bootstrap/ecj"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/crypto"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

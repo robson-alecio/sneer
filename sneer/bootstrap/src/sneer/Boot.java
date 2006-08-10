@@ -1,4 +1,4 @@
-package bootstrap;
+package sneer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.Socket;
@@ -297,8 +295,6 @@ public class Boot {
 	}
 
 	private static void showErrorDialog(Throwable t) {
-		StringWriter message = new StringWriter();
-		t.printStackTrace(new PrintWriter(message));
-		JOptionPane.showMessageDialog(null, message.toString(), "ERROR", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, t.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 	}
 }

@@ -1,6 +1,5 @@
 package sneer;
 
-import java.awt.Dialog;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,7 +12,6 @@ import java.net.URLClassLoader;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 public class Boot {
@@ -33,7 +31,7 @@ public class Boot {
 	}
 
 	private static void boot() throws Exception {
-		if (!mainAppInstalled()) installMainAppFromPeer();
+		while (!mainAppInstalled()) tryToInstallMainAppFromPeer();
 		executeMainApp();
 	}
 
@@ -55,28 +53,20 @@ public class Boot {
 //	}
 
 
-	private static void installMainAppFromPeer() throws Exception {
-		welcome();
+	private static void tryToInstallMainAppFromPeer() throws Exception, IOException {
+		String address = promptForHostnameAndPort();
+		if (address == null) System.exit(0);
+
 		try{
-			openConnectionToPeer();
+			openConnectionToPeer(address);
 			receiveMainApp();
+		} catch (Exception x) {
+			System.err.println("TODO: There has been an error. [ <Back ] [ Close ]");
 		} finally {
 			closeConnectionToPeer();
 		}
 	}
 
-
-	private static void welcome() {
-		String message =
-			" Do you have a sovereign friend to help you\n" +
-			" install Sneer and guide your first steps in\n" +
-			" sovereign computing?";
-		int hasFriend = JOptionPane.showConfirmDialog(null, message, TITLE, JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-		if (hasFriend == JOptionPane.YES_OPTION) return;
-		
-		showMessage(" You will need one.  :)", JOptionPane.INFORMATION_MESSAGE, "Close");
-		System.exit(0);
-	}
 
 	private static void showMessage(String message, int type, String okButton) {
 		JOptionPane.showOptionDialog(null, message, TITLE, 0, type, null, new Object[]{okButton}, okButton);
@@ -228,9 +218,7 @@ public class Boot {
 		return result;
 	}
 
-	private static void openConnectionToPeer() throws Exception {
-		String address = promptForHostnameAndPort();
-		if (address == null) System.exit(0);
+	private static void openConnectionToPeer(String address) throws Exception {
 		_socket = new Socket(hostGiven(address), portGiven(address));
 		_objectIn = new ObjectInputStream(_socket.getInputStream());
 		
@@ -276,8 +264,13 @@ public class Boot {
 
 	private static String promptForHostnameAndPort() {
 		String message =
-			"Ask your friend what you have to enter below and why.";
-		return (String)JOptionPane.showInputDialog(null, message, TITLE, JOptionPane.INFORMATION_MESSAGE, null, null, "hostaddress:1234");
+			" Welcome.  :)\n\n" +
+			" Get a sovereign friend to help you install Sneer\n" +
+			" and guide your first steps.\n\n" +
+			" Sneer will be downloaded from your friend's\n" +
+			" machine, authenticated, and installed.\n\n" +
+			" Enter your friend's host address and Sneer port:";
+		return (String)JOptionPane.showInputDialog(null, message, TITLE, JOptionPane.INFORMATION_MESSAGE, null, null, "hostaddress:12345");
 	}
 
 //	private static void save(File file, byte[] contents) throws IOException {
@@ -290,9 +283,9 @@ public class Boot {
 //	}
 
 	private static void showError(Throwable t) {
-		String message = "There was an error:\n" +
+		String message = "There was an unexpected error:\n" +
 			t + "\n\n" +
-			"The Sneer installation will now exit.";
-		showMessage(message, JOptionPane.ERROR_MESSAGE, "Whatever");
+			"Sneer will now close.";
+		showMessage(message, JOptionPane.ERROR_MESSAGE, "Close");
 	}
 }

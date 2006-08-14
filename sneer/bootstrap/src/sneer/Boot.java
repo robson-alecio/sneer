@@ -21,6 +21,9 @@ public class Boot {
 	private static Socket _socket;
 	private static ObjectInputStream _objectIn;
 
+	private static String _host = "hostaddress";
+	private static int _port = 12345;
+
 	
 	public static void main(String[] ignored) {
 		try {
@@ -54,19 +57,22 @@ public class Boot {
 
 
 	private static void tryToInstallMainAppFromPeer() throws Exception, IOException {
-		String address = promptForHostnameAndPort();
-		if (address == null) System.exit(0);
-
 		try{
-			openConnectionToPeer(address);
+			promptForHostnameAndPort();
+			openConnectionToPeer();
 			receiveMainApp();
 		} catch (Exception x) {
-			System.err.println("TODO: There has been an error. [ <Back ] [ Close ]");
+			int option = JOptionPane.showOptionDialog(null, interpret(x), "Error", JOptionPane.NO_OPTION, JOptionPane.ERROR_MESSAGE, null, new Object[]{"< Back", "Close"}, "< Back");
+			if (option != 0) System.exit(0);
 		} finally {
 			closeConnectionToPeer();
 		}
 	}
 
+
+	private static String interpret(Exception x) {
+		return x.getClass().getSimpleName().replaceAll("Exception", " ") + x.getMessage();
+	}
 
 	private static void showMessage(String message, int type, String okButton) {
 		JOptionPane.showOptionDialog(null, message, TITLE, 0, type, null, new Object[]{okButton}, okButton);
@@ -218,8 +224,8 @@ public class Boot {
 		return result;
 	}
 
-	private static void openConnectionToPeer(String address) throws Exception {
-		_socket = new Socket(hostGiven(address), portGiven(address));
+	private static void openConnectionToPeer() throws Exception {
+		_socket = new Socket(_host, _port);
 		_objectIn = new ObjectInputStream(_socket.getInputStream());
 		
 		ObjectOutputStream output = new ObjectOutputStream(_socket.getOutputStream());
@@ -252,17 +258,7 @@ public class Boot {
 		clazz.getMethod("main", new Class[] { String[].class }).invoke(null, new Object[] { args });
 	}
 	
-	private static String hostGiven(String s) {
-		String[] addressParts = s.split(":");
-		return addressParts[0];
-	}
-	
-	private static int portGiven(String s) {
-		String[] addressParts = s.split(":");
-		return Integer.parseInt(addressParts[1]);
-	}
-
-	private static String promptForHostnameAndPort() {
+	private static void promptForHostnameAndPort() throws Exception {
 		String message =
 			" Welcome.  :)\n\n" +
 			" Get a sovereign friend to help you install Sneer\n" +
@@ -270,7 +266,23 @@ public class Boot {
 			" Sneer will be downloaded from your friend's\n" +
 			" machine, authenticated, and installed.\n\n" +
 			" Enter your friend's host address and Sneer port:";
-		return (String)JOptionPane.showInputDialog(null, message, TITLE, JOptionPane.INFORMATION_MESSAGE, null, null, "hostaddress:12345");
+		String address = (String)JOptionPane.showInputDialog(null, message, TITLE, JOptionPane.PLAIN_MESSAGE, null, null, _host + ":" + _port);
+		if (address == null) System.exit(0);
+		parse(address);
+	}
+
+	private static void parse(String address) throws Exception {
+		try {
+			tryToParse(address);
+		} catch (RuntimeException e) {
+			throw new Exception("Address must be in hostaddress:port format.");
+		}
+	}
+
+	private static void tryToParse(String address) {
+		String[] parts = address.split(":");
+		_host = parts[0];
+		_port = Integer.parseInt(parts[1]);
 	}
 
 //	private static void save(File file, byte[] contents) throws IOException {

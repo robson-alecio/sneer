@@ -21,8 +21,10 @@ public class Boot {
 	private static Socket _socket;
 	private static ObjectInputStream _objectIn;
 
-	private static String _host = "hostaddress";
-	private static int _port = 12345;
+	private static String _host = null;
+	private static int _port = 0;
+
+	private static String _address = "Ask your friend what to type in here.";
 
 	
 	public static void main(String[] ignored) {
@@ -259,16 +261,21 @@ public class Boot {
 	}
 	
 	private static void promptForHostnameAndPort() throws Exception {
+//		String message =
+//			" Welcome.  :)\n\n" +
+//			" Get a sovereign friend to help you install Sneer\n" +
+//			" and guide your first steps.\n\n" +
+//			" Sneer will be downloaded from your friend's\n" +
+//			" machine, authenticated, and installed.\n\n" +
+//			" Enter your friend's host address and Sneer port:";
 		String message =
 			" Welcome.  :)\n\n" +
-			" Get a sovereign friend to help you install Sneer\n" +
-			" and guide your first steps.\n\n" +
-			" Sneer will be downloaded from your friend's\n" +
-			" machine, authenticated, and installed.\n\n" +
-			" Enter your friend's host address and Sneer port:";
-		String address = (String)JOptionPane.showInputDialog(null, message, TITLE, JOptionPane.PLAIN_MESSAGE, null, null, _host + ":" + _port);
-		if (address == null) System.exit(0);
-		parse(address);
+			" You will need an expert sovereign friend to guide\n" +
+			" your first steps in sovereign computing.\n\n" +
+			" Ask your friend what to type here:";
+		_address = (String)JOptionPane.showInputDialog(null, message, TITLE, JOptionPane.PLAIN_MESSAGE, null, null, null);
+		if (_address == null) System.exit(0);
+		parse(_address);
 	}
 
 	private static void parse(String address) throws Exception {

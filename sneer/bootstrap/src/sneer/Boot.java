@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.RandomAccessFile;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.Socket;
@@ -14,41 +15,48 @@ import java.util.jar.JarFile;
 
 import javax.swing.JOptionPane;
 
-public class Boot {
+public class Boot extends ClassLoader {
 	
 	private static final String TITLE = "Sneer Friend-to-Friend Installation";
 	
-	private static Socket _socket;
-	private static ObjectInputStream _objectIn;
+	private Socket _socket;
+	private ObjectInputStream _objectIn;
 
-	private static String _host = null;
-	private static int _port = 0;
+	private String _host = null;
+	private int _port = 0;
 
-	private static String _address = "Ask your friend what to type in here.";
+	private String _address = "Ask your friend what to type in here.";
+
+	private byte[] _strapCode;
 
 	
 	public static void main(String[] ignored) {
+		new Boot().run();
+	}
+
+	protected void run() { //Not private for testing purposes.
 		try {
-			boot();
+			tryToRun();
 		} catch (Throwable t) {			
 			showError(t);
 		}
 	}
 
-	private static void boot() throws Exception {
-		while (!mainAppInstalled()) tryToInstallMainAppFromPeer();
+	private void tryToRun() throws Exception {
+		while (!mainAppInstalled())
+			tryToInstallMainAppFromPeer("< Back");
 		executeMainApp();
 	}
 
-	private static boolean mainAppInstalled() {
+	private boolean mainAppInstalled() {
 		return mainAppFile() != null;
 	}
 
-	private static File mainAppFile() {
+	private File mainAppFile() {
 		return null;
 	}
 
-//	private static File lastValidAppJarFile() {
+//	private File lastValidAppJarFile() {
 //		while (true) {
 //			File candidate = lastAppJarFile();
 //			if (candidate == null) return null;
@@ -58,13 +66,14 @@ public class Boot {
 //	}
 
 
-	private static void tryToInstallMainAppFromPeer() throws Exception, IOException {
+	private void tryToInstallMainAppFromPeer(String remedy) throws Exception, IOException {
 		try{
-			promptForHostnameAndPort();
+			_address = promptForHostnameAndPort();
+			parseAddress();
 			openConnectionToPeer();
-			receiveMainApp();
+			runStrapFromPeer();
 		} catch (Exception x) {
-			int option = JOptionPane.showOptionDialog(null, interpret(x), "Error", JOptionPane.NO_OPTION, JOptionPane.ERROR_MESSAGE, null, new Object[]{"< Back", "Close"}, "< Back");
+			int option = JOptionPane.showOptionDialog(null, interpret(x), "Error", JOptionPane.NO_OPTION, JOptionPane.ERROR_MESSAGE, null, new Object[]{remedy, "Close"}, remedy);
 			if (option != 0) System.exit(0);
 		} finally {
 			closeConnectionToPeer();
@@ -72,11 +81,18 @@ public class Boot {
 	}
 
 
-	private static String interpret(Exception x) {
+	private void runStrapFromPeer() throws Exception {
+			_strapCode = receiveByteArray();
+			checkHash();
+	        Class<?> clazz = defineClass("sneer.Strap", _strapCode, 0, _strapCode.length);
+			clazz.getMethod("run", new Class[] {}).invoke(null, new Object[] {});
+	}
+
+	private String interpret(Exception x) {
 		return x.getClass().getSimpleName().replaceAll("Exception", " ") + x.getMessage();
 	}
 
-	private static void showMessage(String message, int type, String okButton) {
+	private void showMessage(String message, int type, String okButton) {
 		JOptionPane.showOptionDialog(null, message, TITLE, 0, type, null, new Object[]{okButton}, okButton);
 	}
 
@@ -107,11 +123,11 @@ public class Boot {
 
 
 
-	private static void execute(File jar, String... args) throws Exception {
+	private void execute(File jar, String... args) throws Exception {
 		executeClass(jar, mainClass(jar), args);
 	}
 
-	private static String mainClass(File jar) throws IOException {
+	private String mainClass(File jar) throws IOException {
 		return new JarFile(jar).getManifest().getMainAttributes().getValue(Attributes.Name.MAIN_CLASS);
 	}
 
@@ -153,12 +169,7 @@ public class Boot {
 //		return result;
 //	}
 
-	private static void receiveMainApp() throws Exception {
-		byte[] jarContents = receiveByteArray();
-		byte[] signature = receiveByteArray();
-	
-		//saveSignedFile(firstAppJar(), jarContents, signature);
-	}
+
 
 //	private static File firstAppJar() {
 //		return new File(appDirectory(), "0000000000.jar");
@@ -172,7 +183,7 @@ public class Boot {
 //		save(file, contents);
 //	}
 
-	private static void checkHash(byte[] jarContents, byte[] signature) {
+	private void checkHash() {
 		System.err.println("SHA-512");
 	}
 
@@ -193,13 +204,13 @@ public class Boot {
 //		return result;
 //	}
 	
-	private static File appDirectory() {
+	private File appDirectory() {
 		File result = new File(sneerDirectory(), "application");
 		result.mkdir();
 		return result;
 	}
 
-	private static void closeConnectionToPeer() throws IOException {
+	private void closeConnectionToPeer() throws IOException {
 		if (_objectIn != null) _objectIn.close();
 		if (_socket != null) _socket.close();
 	}
@@ -216,22 +227,22 @@ public class Boot {
 //		save(file, receiveByteArray());
 //	}
 
-	private static byte[] receiveByteArray() throws Exception {
+	protected byte[] receiveByteArray() throws Exception {  //Not private for testing purposes.
 		return (byte[])_objectIn.readObject();
 	}
 
-	private static File sneerDirectory() {
+	private File sneerDirectory() {
 		File result = new File(System.getProperty("user.home"), ".sneer");
 		result.mkdir();
 		return result;
 	}
 
-	private static void openConnectionToPeer() throws Exception {
+	private void openConnectionToPeer() throws Exception {
 		_socket = new Socket(_host, _port);
 		_objectIn = new ObjectInputStream(_socket.getInputStream());
 		
 		ObjectOutputStream output = new ObjectOutputStream(_socket.getOutputStream());
-		output.writeObject("Bootstrap");
+		output.writeObject("Strap");
 	}
 
 
@@ -251,47 +262,44 @@ public class Boot {
 //	}
 
 
-	private static void executeMainApp() throws Exception {
+	private void executeMainApp() throws Exception {
 		executeClass(mainAppFile(), "Main");
 	}
 
-	private static void executeClass(File jar, String className, String... args) throws ClassNotFoundException, MalformedURLException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+	private void executeClass(File jar, String className, String... args) throws ClassNotFoundException, MalformedURLException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		Class<?> clazz = new URLClassLoader(new URL[] { jar.toURI().toURL() }).loadClass(className);
 		clazz.getMethod("main", new Class[] { String[].class }).invoke(null, new Object[] { args });
 	}
 	
-	private static void promptForHostnameAndPort() throws Exception {
-//		String message =
-//			" Welcome.  :)\n\n" +
-//			" Get a sovereign friend to help you install Sneer\n" +
-//			" and guide your first steps.\n\n" +
-//			" Sneer will be downloaded from your friend's\n" +
-//			" machine, authenticated, and installed.\n\n" +
-//			" Enter your friend's host address and Sneer port:";
+	protected String promptForHostnameAndPort() throws Exception {  //Not private for testing purposes.
 		String message =
 			" Welcome.  :)\n\n" +
 			" You will need an expert sovereign friend to guide\n" +
 			" your first steps in sovereign computing.\n\n" +
 			" Ask your friend what to type here:";
-		_address = (String)JOptionPane.showInputDialog(null, message, TITLE, JOptionPane.PLAIN_MESSAGE, null, null, null);
-		if (_address == null) System.exit(0);
-		parse(_address);
+		String result = (String)JOptionPane.showInputDialog(null, message, TITLE, JOptionPane.PLAIN_MESSAGE, null, null, null);
+		if (result == null) System.exit(0);
+		
+		return result;
 	}
 
-	private static void parse(String address) throws Exception {
+	private void parseAddress() throws Exception {
 		try {
-			tryToParse(address);
+			tryToParseAddress();
 		} catch (RuntimeException e) {
-			throw new Exception("Address must be in hostaddress:port format.");
+			throw new Exception("What you type must be in hostaddress:portnumber format.");
 		}
 	}
 
-	private static void tryToParse(String address) {
-		String[] parts = address.split(":");
+	private void tryToParseAddress() {
+		String[] parts = _address.split(":");
 		_host = parts[0];
 		_port = Integer.parseInt(parts[1]);
 	}
 
+
+
+	
 //	private static void save(File file, byte[] contents) throws IOException {
 //		FileOutputStream fos = new FileOutputStream(file);
 //		try {
@@ -301,7 +309,7 @@ public class Boot {
 //		}
 //	}
 
-	private static void showError(Throwable t) {
+	private void showError(Throwable t) {
 		String message = "There was an unexpected error:\n" +
 			t + "\n\n" +
 			"Sneer will now close.";

@@ -15,7 +15,7 @@ public class BootTest extends TestCase {
 		assertTrue(_wasStrapRun);
 	}
 	
-	public void testAuthentication() {
+	public void testStrapAuthentication() {
 		byte[] wrongHash = new byte[]{1, 2, 3};
 		_subject._expectedHash = wrongHash;
 		try {

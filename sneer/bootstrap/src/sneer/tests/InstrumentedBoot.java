@@ -4,7 +4,9 @@ import java.io.RandomAccessFile;
 
 import sneer.Boot;
 
-class BootHarness extends Boot {
+class InstrumentedBoot extends Boot {
+
+	byte[] _expectedHash;
 
 	@Override
 	protected byte[] receiveByteArray() throws Exception {
@@ -15,13 +17,19 @@ class BootHarness extends Boot {
 	}
 
 	@Override
-	protected void run() {
-		super.run();
+	protected String strapClassName() {
+		return StrapMock.class.getName();
 	}
 
 	@Override
-	protected String promptForHostnameAndPort() throws Exception {
-		return "testing:123";
+	protected void runStrapFromPeer() throws Exception {
+		// TODO Auto-generated method stub
+		super.runStrapFromPeer();
+	}
+
+	@Override
+	protected byte[] expectedHash() {
+		return _expectedHash;
 	}
 
 	

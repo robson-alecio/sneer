@@ -26,6 +26,7 @@ public class Main {
 		printProvidersAndServices();
 		
 		byte[] bytecodeDummy = new SecureRandom().generateSeed(10000000);
+		
 		testSHA512(bytecodeDummy);
 		testRSA(bytecodeDummy);
 	}
@@ -55,8 +56,8 @@ public class Main {
 		}
 
 	private static void testSHA512(byte[] bytecodeDummy) throws Exception {
-//		MessageDigest digester = MessageDigest.getInstance("SHA-512", "SUN");
-		MessageDigest digester = MessageDigest.getInstance("SHA-512", "BC");
+		MessageDigest digester = MessageDigest.getInstance("SHA-512", "SUN");
+//		MessageDigest digester = MessageDigest.getInstance("SHA-512", "BC");
 		byte[] digest = digester.digest(bytecodeDummy);
 		System.out.println("Digest length: " + digest.length * 8 + " bits");
 	}

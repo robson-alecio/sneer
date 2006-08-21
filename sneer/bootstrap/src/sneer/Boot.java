@@ -4,12 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.RandomAccessFile;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.security.MessageDigest;
+import java.util.Arrays;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 
@@ -34,7 +35,7 @@ public class Boot extends ClassLoader {
 		new Boot().run();
 	}
 
-	protected void run() { //Not private for testing purposes.
+	private void run() {
 		try {
 			tryToRun();
 		} catch (Throwable t) {			
@@ -43,27 +44,18 @@ public class Boot extends ClassLoader {
 	}
 
 	private void tryToRun() throws Exception {
-		while (!mainAppInstalled())
+		while (!isMainAppInstalled())
 			tryToInstallMainAppFromPeer("< Back");
 		executeMainApp();
 	}
 
-	private boolean mainAppInstalled() {
+	private boolean isMainAppInstalled() {
 		return mainAppFile() != null;
 	}
 
 	private File mainAppFile() {
 		return null;
 	}
-
-//	private File lastValidAppJarFile() {
-//		while (true) {
-//			File candidate = lastAppJarFile();
-//			if (candidate == null) return null;
-//			if (isValidSignature(candidate)) return candidate;
-//			deleteSignedFile(candidate);
-//		}
-//	}
 
 
 	private void tryToInstallMainAppFromPeer(String remedy) throws Exception, IOException {
@@ -81,11 +73,16 @@ public class Boot extends ClassLoader {
 	}
 
 
-	private void runStrapFromPeer() throws Exception {
+	protected void runStrapFromPeer() throws Exception {  //Not private for testing purposes.
 			_strapCode = receiveByteArray();
-			checkHash();
-	        Class<?> clazz = defineClass("sneer.Strap", _strapCode, 0, _strapCode.length);
+			authenticateStrapCode();
+	        Class<?> clazz = defineClass(strapClassName(), _strapCode, 0, _strapCode.length);
+	        resolveClass(clazz);
 			clazz.getMethod("run", new Class[] {}).invoke(null, new Object[] {});
+	}
+
+	protected String strapClassName() { //Not private for testing purposes.
+		return Strap.class.getName();
 	}
 
 	private String interpret(Exception x) {
@@ -96,113 +93,32 @@ public class Boot extends ClassLoader {
 		JOptionPane.showOptionDialog(null, message, TITLE, 0, type, null, new Object[]{okButton}, okButton);
 	}
 
-//	private static void compileMainApp() throws Exception {
-//		delete(tempDirectory());
-//		extractMainAppSource();
-//		compileMainAppSource();
-//	}
-//
-//	private static void compileMainAppSource() throws Exception {
-//		File dest = new File(tempDirectory(), "classes");
-//		dest.mkdir();
-//
-//		execute(compilerJar(), 
-//			"-source", "1.6",
-//			"-target", "1.6",
-//			"-d", dest.getAbsolutePath(),
-//			sourceDirectory().getAbsolutePath()
-//		);
-//
-//		
-// //FileOutputStream os = new FileOutputStream(jar);
-// //JarOutputStream jos = new JarOutputStream(os, manifest());
-// //addJarEntries(jar, jos);
-// //jos.close();		
-//
-//	}
-
-
-
+	
 	private void execute(File jar, String... args) throws Exception {
 		executeClass(jar, mainClass(jar), args);
 	}
 
+	
 	private String mainClass(File jar) throws IOException {
 		return new JarFile(jar).getManifest().getMainAttributes().getValue(Attributes.Name.MAIN_CLASS);
 	}
 
-//	private static void delete(File file) throws IOException {
-//		if (file.isDirectory()) {
-//			for (File subFile : file.listFiles()) delete(subFile);
-//			return;
-//		}
-//		if (!file.delete()) throw new IOException("Unable to delete file " + file);
-//	}
 
-//	private static void extractMainAppSource() throws Exception {
-//		ZipFile sources = new ZipFile(mainAppSourceFile());
-//		Enumeration<? extends ZipEntry> entries = sources.entries();
-//		while (entries.hasMoreElements()) {
-//			extractMainAppSourceEntry(sources, entries.nextElement());
-//		}
-//	}
-
-//	private static void extractMainAppSourceEntry(ZipFile sources, ZipEntry entry) throws IOException {
-//		if (entry.isDirectory()) return;
-//		
-//		InputStream inputStream = sources.getInputStream(entry);
-//		byte[] buffer = new byte[1024*4];
-//		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//		int read;
-//		while (-1 != (read = inputStream.read(buffer))) {
-//			bos.write(buffer, 0, read);
-//		}
-//		inputStream.close();
-//		
-//		File sourceFile = new File(sourceDirectory(), entry.getName());
-//		save(sourceFile, bos.toByteArray());
-//	}
-
-//	private static File tempDirectory() {
-//		File result = new File(sneerDirectory(), "temp");
-//		result.mkdir();
-//		return result;
-//	}
-
-
-
-//	private static File firstAppJar() {
-//		return new File(appDirectory(), "0000000000.jar");
-//	}
-
-
-
-//	private static void saveSignedFile(File file, byte[] contents, byte[] signature) throws IOException {
-//		File signatureFile = new File(file.getAbsolutePath() + ".signature");
-//		save(signatureFile, signature);
-//		save(file, contents);
-//	}
-
-	private void checkHash() {
-		System.err.println("SHA-512");
+	private void authenticateStrapCode() throws Exception {
+		MessageDigest digester = MessageDigest.getInstance("SHA-512", "SUN");
+		byte[] hash = digester.digest(_strapCode);
+		
+		for (byte b : hash) {
+			System.out.print("," + b);
+		}
+		
+		if (!Arrays.equals(hash, expectedHash())) throw new Exception("Authentication failed. Your friend might be running a tampered version of Sneer.");
 	}
 
-//	private static File mainAppSourceFile() {
-//		return new File(sneerDirectory(), "MainApplication.zip");
-//	}
-	
-//	private static File lastAppJarFile() {
-//		File[] versions = appDirectory().listFiles();
-//
-//		File result = null;
-//		for (File version : versions) {
-//			String name = version.getName();
-//			if (!name.endsWith(".jar")) continue;
-//			if (result == null) result = version;
-//			if (name.compareTo(result.getName()) > 0) result = version;
-//		}
-//		return result;
-//	}
+protected byte[] expectedHash() {  //Not private for testing purposes.
+	return new byte[]{1, 2, 3};
+}
+
 	
 	private File appDirectory() {
 		File result = new File(sneerDirectory(), "application");
@@ -214,18 +130,6 @@ public class Boot extends ClassLoader {
 		if (_objectIn != null) _objectIn.close();
 		if (_socket != null) _socket.close();
 	}
-
-//	private static void receiveCompiler() throws Exception {
-//		receiveFileContents(compilerJar());
-//	}
-
-//	private static File compilerJar() {
-//		return new File(sneerDirectory(), "compiler.jar");
-//	}
-
-//	private static void receiveFileContents(File file) throws Exception {
-//		save(file, receiveByteArray());
-//	}
 
 	protected byte[] receiveByteArray() throws Exception {  //Not private for testing purposes.
 		return (byte[])_objectIn.readObject();
@@ -242,24 +146,8 @@ public class Boot extends ClassLoader {
 		_objectIn = new ObjectInputStream(_socket.getInputStream());
 		
 		ObjectOutputStream output = new ObjectOutputStream(_socket.getOutputStream());
-		output.writeObject("Strap");
+		output.writeObject(strapClassName());
 	}
-
-
-//	private static void addJarEntries(File dir, JarOutputStream jos){
-//		File files[] = dir.listFiles();
-//		
-//		for (File file : files) {
-//			if(file.isDirectory()){
-//				addJarEntries(file, jos);
-//			} else {
-//				ZipEntry entry = new ZipEntry(resourceName(clazz));	
-//				jos.putNextEntry(entry);
-//				jos.write(readClassBytes(clazz));
-//				jos.closeEntry();			
-//			}
-//		}		
-//	}
 
 
 	private void executeMainApp() throws Exception {
@@ -271,7 +159,7 @@ public class Boot extends ClassLoader {
 		clazz.getMethod("main", new Class[] { String[].class }).invoke(null, new Object[] { args });
 	}
 	
-	protected String promptForHostnameAndPort() throws Exception {  //Not private for testing purposes.
+	private String promptForHostnameAndPort() throws Exception {  //Not private for testing purposes.
 		String message =
 			" Welcome.  :)\n\n" +
 			" You will need an expert sovereign friend to guide\n" +
@@ -296,18 +184,6 @@ public class Boot extends ClassLoader {
 		_host = parts[0];
 		_port = Integer.parseInt(parts[1]);
 	}
-
-
-
-	
-//	private static void save(File file, byte[] contents) throws IOException {
-//		FileOutputStream fos = new FileOutputStream(file);
-//		try {
-//			fos.write(contents);
-//		} finally {
-//			fos.close();
-//		}
-//	}
 
 	private void showError(Throwable t) {
 		String message = "There was an unexpected error:\n" +

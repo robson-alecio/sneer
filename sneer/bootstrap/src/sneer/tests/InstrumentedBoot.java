@@ -10,7 +10,8 @@ class InstrumentedBoot extends Boot {
 
 	@Override
 	protected byte[] receiveByteArray() throws Exception {
-		RandomAccessFile file = new RandomAccessFile("bin/sneer/tests/StrapMock.class", "r");
+		String mockStrap = getResource("sneer/tests/StrapMock.class").toURI().getPath();
+		RandomAccessFile file = new RandomAccessFile(mockStrap, "r");
 		byte[] bytecode = new byte[(int)file.length()];
 		file.readFully(bytecode);
 		return bytecode;
@@ -23,7 +24,6 @@ class InstrumentedBoot extends Boot {
 
 	@Override
 	protected void runStrapFromPeer() throws Exception {
-		// TODO Auto-generated method stub
 		super.runStrapFromPeer();
 	}
 
@@ -31,7 +31,5 @@ class InstrumentedBoot extends Boot {
 	protected byte[] expectedHash() {
 		return _expectedHash;
 	}
-
-	
 
 }

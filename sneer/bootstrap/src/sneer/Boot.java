@@ -108,10 +108,6 @@ public class Boot extends ClassLoader {
 		MessageDigest digester = MessageDigest.getInstance("SHA-512", "SUN");
 		byte[] hash = digester.digest(_strapCode);
 		
-		for (byte b : hash) {
-			System.out.print("," + b);
-		}
-		
 		if (!Arrays.equals(hash, expectedHash())) throw new Exception("Authentication failed. Your friend might be running a tampered version of Sneer.");
 	}
 

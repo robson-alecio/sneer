@@ -4,11 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
 import java.net.Socket;
-import java.net.URL;
-import java.net.URLClassLoader;
+import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.jar.Attributes;
@@ -28,7 +25,7 @@ public class Boot extends ClassLoader {
 
 	private String _address = "Ask your friend what to type in here.";
 
-	private byte[] _strapCode;
+	protected byte[] _strapCode; //Not private for testing purposes.
 
 	
 	public static void main(String[] ignored) {
@@ -46,43 +43,41 @@ public class Boot extends ClassLoader {
 	private void tryToRun() throws Exception {
 		while (!isMainAppInstalled())
 			tryToInstallMainAppFromPeer("< Back");
-		executeMainApp();
+		executeMainJar();
 	}
 
 	private boolean isMainAppInstalled() {
-		return mainAppFile() != null;
+		return mainJar().exists();
 	}
 
-	private File mainAppFile() {
-		return null;
+	private File mainJar() {
+		return new File(programsDirectory(), "Main.jar");
 	}
 
 
-	private void tryToInstallMainAppFromPeer(String remedy) throws Exception, IOException {
+	private void tryToInstallMainAppFromPeer(String remedy) throws Exception {
 		try{
-			_address = promptForHostnameAndPort();
-			parseAddress();
-			openConnectionToPeer();
-			runStrapFromPeer();
+			downloadStrapFromPeer();
+			closeConnectionToPeer();
+			runStrap();
 		} catch (Exception x) {
 			int option = JOptionPane.showOptionDialog(null, interpret(x), "Error", JOptionPane.NO_OPTION, JOptionPane.ERROR_MESSAGE, null, new Object[]{remedy, "Close"}, remedy);
 			if (option != 0) System.exit(0);
-		} finally {
 			closeConnectionToPeer();
 		}
 	}
 
 
-	protected void runStrapFromPeer() throws Exception {  //Not private for testing purposes.
-			_strapCode = receiveByteArray();
-			authenticateStrapCode();
-	        Class<?> clazz = defineClass(strapClassName(), _strapCode, 0, _strapCode.length);
-	        resolveClass(clazz);
-			clazz.getMethod("run", new Class[] {}).invoke(null, new Object[] {});
+	protected void runStrap() throws Exception {  //Not private for testing purposes.
+		authenticateStrapCode();
+
+        Class<?> clazz = defineClass(strapClassName(), _strapCode, 0, _strapCode.length);
+        resolveClass(clazz);
+		clazz.getMethod("run", new Class[] {}).invoke(null, new Object[] {});
 	}
 
-	protected String strapClassName() { //Not private for testing purposes.
-		return Strap.class.getName();
+	private String strapClassName() {
+		return "sneer.Strap";
 	}
 
 	private String interpret(Exception x) {
@@ -91,11 +86,6 @@ public class Boot extends ClassLoader {
 
 	private void showMessage(String message, int type, String okButton) {
 		JOptionPane.showOptionDialog(null, message, TITLE, 0, type, null, new Object[]{okButton}, okButton);
-	}
-
-	
-	private void execute(File jar, String... args) throws Exception {
-		executeClass(jar, mainClass(jar), args);
 	}
 
 	
@@ -111,33 +101,42 @@ public class Boot extends ClassLoader {
 		if (!Arrays.equals(hash, expectedHash())) throw new Exception("Authentication failed. Your friend might be running a tampered version of Sneer.");
 	}
 
-protected byte[] expectedHash() {  //Not private for testing purposes.
-	return new byte[]{1, 2, 3};
-}
+	
+	protected byte[] expectedHash() {  //Not private for testing purposes.
+		return new byte[]{1, 2, 3};
+	}
 
 	
-	private File appDirectory() {
-		File result = new File(sneerDirectory(), "application");
-		result.mkdir();
-		return result;
+	private File programsDirectory() {
+		return new File(sneerDirectory(), "programs");
 	}
 
 	private void closeConnectionToPeer() throws IOException {
 		if (_objectIn != null) _objectIn.close();
 		if (_socket != null) _socket.close();
+
+		_objectIn = null;
+		_socket = null;
 	}
 
-	protected byte[] receiveByteArray() throws Exception {  //Not private for testing purposes.
+	private byte[] receiveByteArray() throws Exception {
 		return (byte[])_objectIn.readObject();
 	}
 
 	private File sneerDirectory() {
-		File result = new File(System.getProperty("user.home"), ".sneer");
-		result.mkdir();
-		return result;
+		return new File(System.getProperty("user.home"), ".sneer");
 	}
 
-	private void openConnectionToPeer() throws Exception {
+	private void downloadStrapFromPeer() throws Exception {
+		_address = promptForHostnameAndPort();
+		parseAddress();
+
+		openConnectionToPeer();
+
+		_strapCode = receiveByteArray();
+	}
+
+	private void openConnectionToPeer() throws UnknownHostException, IOException {
 		_socket = new Socket(_host, _port);
 		_objectIn = new ObjectInputStream(_socket.getInputStream());
 		
@@ -146,15 +145,12 @@ protected byte[] expectedHash() {  //Not private for testing purposes.
 	}
 
 
-	private void executeMainApp() throws Exception {
-		executeClass(mainAppFile(), "Main");
-	}
-
-	private void executeClass(File jar, String className, String... args) throws ClassNotFoundException, MalformedURLException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		Class<?> clazz = new URLClassLoader(new URL[] { jar.toURI().toURL() }).loadClass(className);
+	private void executeMainJar() throws Exception {
+		Class<?> clazz = loadClass(mainClass(mainJar()));
+		String[] args = {};
 		clazz.getMethod("main", new Class[] { String[].class }).invoke(null, new Object[] { args });
 	}
-	
+
 	private String promptForHostnameAndPort() throws Exception {  //Not private for testing purposes.
 		String message =
 			" Welcome.  :)\n\n" +

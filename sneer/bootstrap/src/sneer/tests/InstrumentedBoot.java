@@ -4,8 +4,6 @@ import sneer.Boot;
 
 class InstrumentedBoot extends Boot {
 
-	byte[] _expectedHash;
-	
 	{
 		_strapCode = new byte[]{10,20,30};
 	}
@@ -17,7 +15,8 @@ class InstrumentedBoot extends Boot {
 
 	@Override
 	protected byte[] expectedHash() {
-		return _expectedHash;
+		byte[] wrongHash = new byte[]{42};
+		return wrongHash;
 	}
 
 }

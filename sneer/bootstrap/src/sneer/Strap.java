@@ -3,13 +3,53 @@ package sneer;
 public class Strap {
 
 	public static void run() {
-		downloadBouncyCastle();
-		downloadCompiler();
-		downloadCompileAndRunMain();
+		getBouncyCastle();
+		getCompiler();
+		getMain();
+		runMain();
 	}
 
-	private static void downloadCompileAndRunMain() {
+	private static void runMain() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static void getCompiler() {
+		downloadCompiler();
+		authenticateCompilerWithPK();
+		saveCompiler();
+	}
+
+	private static void saveCompiler() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static void getBouncyCastle() {
+		downloadBouncyCastle();
+		authenticateBouncyCastleWithHash();
+		saveBouncyCastle();
+	}
+
+	private static void saveBouncyCastle() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static void getMain() {
+		downloadMain();
 		authenticateMainWithPK();
+		saveMain();
+	}
+
+	private static void saveMain() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static void downloadMain() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private static void authenticateMainWithPK() {

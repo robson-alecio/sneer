@@ -3,8 +3,37 @@ package sneer;
 public class Strap {
 
 	public static void run() {
-		System.out.println("Hello World - By Strap");
+		downloadBouncyCastle();
+		downloadCompiler();
+		downloadCompileAndRunMain();
 	}
+
+	private static void downloadCompileAndRunMain() {
+		authenticateMainWithPK();
+	}
+
+	private static void authenticateMainWithPK() {
+		throw new RuntimeException();
+	}
+
+	private static void downloadCompiler() {
+		authenticateCompilerWithPK();
+		
+	}
+
+	private static void authenticateCompilerWithPK() {
+		throw new RuntimeException();		
+	}
+
+	private static void downloadBouncyCastle() {
+		authenticateBouncyCastleWithHash();
+	}
+
+	private static void authenticateBouncyCastleWithHash() {
+		throw new RuntimeException();		
+	}
+	
+
 
 //	private File lastValidAppJarFile() {
 //	while (true) {

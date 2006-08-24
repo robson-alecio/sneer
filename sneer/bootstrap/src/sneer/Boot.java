@@ -71,13 +71,9 @@ public class Boot extends ClassLoader {
 	protected void runStrap() throws Exception {  //Not private for testing purposes.
 		authenticateStrapCode();
 
-        Class<?> clazz = defineClass(strapClassName(), _strapCode, 0, _strapCode.length);
+        Class<?> clazz = defineClass(Strap.class.getName(), _strapCode, 0, _strapCode.length);
         resolveClass(clazz);
 		clazz.getMethod("run", new Class[] {}).invoke(null, new Object[] {});
-	}
-
-	private String strapClassName() {
-		return "sneer.Strap";
 	}
 
 	private String interpret(Exception x) {
@@ -141,7 +137,7 @@ public class Boot extends ClassLoader {
 		_objectIn = new ObjectInputStream(_socket.getInputStream());
 		
 		ObjectOutputStream output = new ObjectOutputStream(_socket.getOutputStream());
-		output.writeObject(strapClassName());
+		output.writeObject("Boot");
 	}
 
 

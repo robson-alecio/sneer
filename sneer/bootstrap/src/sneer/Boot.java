@@ -8,8 +8,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.util.Arrays;
-import java.util.jar.Attributes;
-import java.util.jar.JarFile;
 
 import javax.swing.JOptionPane;
 
@@ -43,14 +41,14 @@ public class Boot extends ClassLoader {
 	private void tryToRun() throws Exception {
 		while (!isMainAppInstalled())
 			tryToInstallMainAppFromPeer("< Back");
-		executeMainJar();
+		executeMainApp();
 	}
 
 	private boolean isMainAppInstalled() {
-		return mainJar().exists();
+		return coachJar().exists();
 	}
 
-	protected File mainJar() {
+	protected File coachJar() {
 		return new File(programsDirectory(), "Main.jar");
 	}
 
@@ -85,11 +83,6 @@ public class Boot extends ClassLoader {
 	}
 
 	
-	private String mainClass(File jar) throws IOException {
-		return new JarFile(jar).getManifest().getMainAttributes().getValue(Attributes.Name.MAIN_CLASS);
-	}
-
-
 	private void authenticateStrapCode() throws Exception {
 		MessageDigest digester = MessageDigest.getInstance("SHA-512", "SUN");
 		byte[] hash = digester.digest(_strapCode);
@@ -141,8 +134,8 @@ public class Boot extends ClassLoader {
 	}
 
 
-	private void executeMainJar() throws Exception {
-		Class<?> clazz = loadClass(mainClass(mainJar()));
+	private void executeMainApp() throws Exception {
+		Class<?> clazz = loadClass("sneer.Main");
 		String[] args = {};
 		clazz.getMethod("main", new Class[] { String[].class }).invoke(null, new Object[] { args });
 	}
@@ -177,6 +170,10 @@ public class Boot extends ClassLoader {
 		String message = "There was an unexpected error:\n" +
 			t + "\n\n" +
 			"Sneer will now close.";
-		showMessage(message, JOptionPane.ERROR_MESSAGE, "Close");
+		showError(message);
+	}
+
+	protected void showError(String message) {
+		showMessage(message, JOptionPane.ERROR_MESSAGE, "Whatever");
 	}
 }

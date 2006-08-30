@@ -1,6 +1,5 @@
 package sneer;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 
@@ -19,7 +18,7 @@ public class Strap extends Boot {
 	
 	private void run() throws Exception {
 		openConnectionToPeer("Strap");
-		getBouncyCastle();
+		getCryptoLibrary();
 		getCompiler();
 		getMain();
 	}
@@ -35,13 +34,13 @@ public class Strap extends Boot {
 		
 	}
 
-	private void getBouncyCastle() {
-		downloadBouncyCastle();
-		authenticateBouncyCastleWithHash();
-		saveBouncyCastle();
+	private void getCryptoLibrary() {
+		downloadCryptoLibrary();
+		authenticateCryptoLibraryWithHash();
+		saveCryptoLibrary();
 	}
 
-	private void saveBouncyCastle() {
+	private void saveCryptoLibrary() {
 		// TODO Auto-generated method stub
 		
 	}
@@ -59,7 +58,7 @@ public class Strap extends Boot {
 	}
 
 	private void saveMain() throws Exception {
-		FileOutputStream out = new FileOutputStream(mainJar());
+		FileOutputStream out = new FileOutputStream(coachJar());
 		try {
 			out.write(_mainJarContents, 0, _mainJarContents.length);
 		} finally {
@@ -73,23 +72,28 @@ public class Strap extends Boot {
 	}
 
 	private void authenticateMainWithPK() {
-		throw new RuntimeException();
+		showNonAuthenticatedMessage();
+	}
+
+	private boolean _nonAuthenticatedMessageShown = false;
+	private void showNonAuthenticatedMessage() {
+		if (_nonAuthenticatedMessageShown) return;
+		_nonAuthenticatedMessageShown = true;
+		showError("Sneer Alfa-version Warning:\nInstalling non-authenticated code downloaded from your friend.");
 	}
 
 	private void downloadCompiler() {
-		
-		
 	}
 
 	private void authenticateCompilerWithPK() {
-		throw new RuntimeException();		
+		showNonAuthenticatedMessage();
 	}
 
-	private void downloadBouncyCastle() {
+	private void downloadCryptoLibrary() {
 	}
 
-	private void authenticateBouncyCastleWithHash() {
-		throw new RuntimeException();		
+	private void authenticateCryptoLibraryWithHash() {
+		showNonAuthenticatedMessage();
 	}
 	
 

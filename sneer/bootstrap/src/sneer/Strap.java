@@ -53,12 +53,12 @@ public class Strap extends Boot {
 	}
 
 	private void compileMain() {
-		// TODO Auto-generated method stub
+
 		
 	}
 
 	private void saveMain() throws Exception {
-		FileOutputStream out = new FileOutputStream(coachJar());
+		FileOutputStream out = new FileOutputStream(mainJar());
 		try {
 			out.write(_mainJarContents, 0, _mainJarContents.length);
 		} finally {
@@ -97,50 +97,6 @@ public class Strap extends Boot {
 	}
 	
 
-
-//	private File lastValidAppJarFile() {
-//	while (true) {
-//		File candidate = lastAppJarFile();
-//		if (candidate == null) return null;
-//		if (isValidSignature(candidate)) return candidate;
-//		deleteSignedFile(candidate);
-//	}
-//	}
-
-//	private static void compileMainApp() throws Exception {
-//	delete(tempDirectory());
-//	extractMainAppSource();
-//	compileMainAppSource();
-//	}
-	//
-//	private static void compileMainAppSource() throws Exception {
-//	File dest = new File(tempDirectory(), "classes");
-//	dest.mkdir();
-	//
-//	execute(compilerJar(), 
-//		"-source", "1.6",
-//		"-target", "1.6",
-//		"-d", dest.getAbsolutePath(),
-//		sourceDirectory().getAbsolutePath()
-//	);
-	//
-	//
-////	FileOutputStream os = new FileOutputStream(jar);
-////	JarOutputStream jos = new JarOutputStream(os, manifest());
-////	addJarEntries(jar, jos);
-////	jos.close();		
-	//
-//	}
-
-
-//	private static void delete(File file) throws IOException {
-//		if (file.isDirectory()) {
-//			for (File subFile : file.listFiles()) delete(subFile);
-//			return;
-//		}
-//		if (!file.delete()) throw new IOException("Unable to delete file " + file);
-//	}
-
 //	private static void extractMainAppSource() throws Exception {
 //		ZipFile sources = new ZipFile(mainAppSourceFile());
 //		Enumeration<? extends ZipEntry> entries = sources.entries();
@@ -178,28 +134,37 @@ public class Strap extends Boot {
 //	}
 
 
-
-//	private static void saveSignedFile(File file, byte[] contents, byte[] signature) throws IOException {
-//		File signatureFile = new File(file.getAbsolutePath() + ".signature");
-//		save(signatureFile, signature);
-//		save(file, contents);
+//	private static void compileMainApp() throws Exception {
+//	delete(tempDirectory());
+//	extractMainAppSource();
+//	compileMainAppSource();
 //	}
-//		private static File mainAppSourceFile() {
-//			return new File(sneerDirectory(), "MainApplication.zip");
-//		}
-		
-//		private static File lastAppJarFile() {
-//			File[] versions = appDirectory().listFiles();
 	//
-//			File result = null;
-//			for (File version : versions) {
-//				String name = version.getName();
-//				if (!name.endsWith(".jar")) continue;
-//				if (result == null) result = version;
-//				if (name.compareTo(result.getName()) > 0) result = version;
-//			}
-//			return result;
-//		}
+//	private static void compileMainAppSource() throws Exception {
+//	File dest = new File(tempDirectory(), "classes");
+//	dest.mkdir();
+	//
+//	execute(compilerJar(), 
+//		"-source", "1.6",
+//		"-target", "1.6",
+//		"-d", dest.getAbsolutePath(),
+//		sourceDirectory().getAbsolutePath()
+//	);
+	//
+	//
+////	FileOutputStream os = new FileOutputStream(jar);
+////	JarOutputStream jos = new JarOutputStream(os, manifest());
+////	addJarEntries(jar, jos);
+////	jos.close();		
+	//
+//	}
+
+	
+//	private static File mainAppSourceFile() {
+//	return new File(sneerDirectory(), "MainApplication.zip");
+//}
+
+	
 //	private static void addJarEntries(File dir, JarOutputStream jos){
 //	File files[] = dir.listFiles();
 	//
@@ -215,25 +180,4 @@ public class Strap extends Boot {
 //	}		
 //	}
 
-//	private static void receiveCompiler() throws Exception {
-//	receiveFileContents(compilerJar());
-//	}
-
-//	private static File compilerJar() {
-//	return new File(sneerDirectory(), "compiler.jar");
-//	}
-
-//	private static void receiveFileContents(File file) throws Exception {
-//	save(file, receiveByteArray());
-//	}
-//	private static void save(File file, byte[] contents) throws IOException {
-//	FileOutputStream fos = new FileOutputStream(file);
-//	try {
-//	fos.write(contents);
-//	} finally {
-//	fos.close();
-//	}
-//	}
-
-	
 }

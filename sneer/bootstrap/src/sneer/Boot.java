@@ -45,10 +45,10 @@ public class Boot extends ClassLoader {
 	}
 
 	private boolean isMainAppInstalled() {
-		return coachJar().exists();
+		return mainJar().exists();
 	}
 
-	protected File coachJar() {
+	protected File mainJar() {
 		return new File(programsDirectory(), "Main.jar");
 	}
 

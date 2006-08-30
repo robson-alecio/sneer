@@ -1,75 +1,94 @@
 package sneer;
 
-public class Strap {
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
-	public static void run() {
+
+public class Strap extends Boot {
+
+	static void run(String host, int port) throws Exception {
+		new Strap(host, port).run();
+	}
+
+	private byte[] _mainJarContents;
+	
+	Strap(String host, int port) {
+		_host = host;
+		_port = port;
+	}
+	
+	private void run() throws Exception {
+		openConnectionToPeer("Strap");
 		getBouncyCastle();
 		getCompiler();
 		getMain();
-		runMain();
 	}
 
-	private static void runMain() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private static void getCompiler() {
+	private void getCompiler() {
 		downloadCompiler();
 		authenticateCompilerWithPK();
 		saveCompiler();
 	}
 
-	private static void saveCompiler() {
+	private void saveCompiler() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	private static void getBouncyCastle() {
+	private void getBouncyCastle() {
 		downloadBouncyCastle();
 		authenticateBouncyCastleWithHash();
 		saveBouncyCastle();
 	}
 
-	private static void saveBouncyCastle() {
+	private void saveBouncyCastle() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	private static void getMain() {
+	private void getMain() throws Exception {
 		downloadMain();
 		authenticateMainWithPK();
+		compileMain();
 		saveMain();
 	}
 
-	private static void saveMain() {
+	private void compileMain() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	private static void downloadMain() {
-		// TODO Auto-generated method stub
+	private void saveMain() throws Exception {
+		FileOutputStream out = new FileOutputStream(mainJar());
+		try {
+			out.write(_mainJarContents, 0, _mainJarContents.length);
+		} finally {
+			out.close();
+		}
+	}
+
+	private void downloadMain() throws Exception {
+		_mainJarContents = receiveByteArray();
 		
 	}
 
-	private static void authenticateMainWithPK() {
+	private void authenticateMainWithPK() {
 		throw new RuntimeException();
 	}
 
-	private static void downloadCompiler() {
-		authenticateCompilerWithPK();
+	private void downloadCompiler() {
+		
 		
 	}
 
-	private static void authenticateCompilerWithPK() {
+	private void authenticateCompilerWithPK() {
 		throw new RuntimeException();		
 	}
 
-	private static void downloadBouncyCastle() {
-		authenticateBouncyCastleWithHash();
+	private void downloadBouncyCastle() {
 	}
 
-	private static void authenticateBouncyCastleWithHash() {
+	private void authenticateBouncyCastleWithHash() {
 		throw new RuntimeException();		
 	}
 	

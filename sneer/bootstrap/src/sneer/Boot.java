@@ -20,8 +20,8 @@ public class Boot extends ClassLoader {
 	private Socket _socket;
 	private ObjectInputStream _objectIn;
 
-	private String _host = null;
-	private int _port = 0;
+	protected String _host = null;
+	protected int _port = 0;
 
 	private String _address = "Ask your friend what to type in here.";
 
@@ -50,7 +50,7 @@ public class Boot extends ClassLoader {
 		return mainJar().exists();
 	}
 
-	private File mainJar() {
+	protected File mainJar() {
 		return new File(programsDirectory(), "Main.jar");
 	}
 
@@ -71,9 +71,9 @@ public class Boot extends ClassLoader {
 	protected void runStrap() throws Exception {  //Not private for testing purposes.
 		authenticateStrapCode();
 
-        Class<?> clazz = defineClass(Strap.class.getName(), _strapCode, 0, _strapCode.length);
+        Class<?> clazz = defineClass("sneer.Strap", _strapCode, 0, _strapCode.length);
         resolveClass(clazz);
-		clazz.getMethod("run", new Class[] {}).invoke(null, new Object[] {});
+		clazz.getMethod("run", new Class[] {String.class, Integer.TYPE}).invoke(null, new Object[] {_host, _port});
 	}
 
 	private String interpret(Exception x) {
@@ -115,7 +115,7 @@ public class Boot extends ClassLoader {
 		_socket = null;
 	}
 
-	private byte[] receiveByteArray() throws Exception {
+	protected byte[] receiveByteArray() throws Exception {
 		return (byte[])_objectIn.readObject();
 	}
 
@@ -127,17 +127,17 @@ public class Boot extends ClassLoader {
 		_address = promptForHostnameAndPort();
 		parseAddress();
 
-		openConnectionToPeer();
+		openConnectionToPeer("Boot");
 
 		_strapCode = receiveByteArray();
 	}
 
-	private void openConnectionToPeer() throws UnknownHostException, IOException {
+	protected void openConnectionToPeer(String greeting) throws UnknownHostException, IOException {
 		_socket = new Socket(_host, _port);
 		_objectIn = new ObjectInputStream(_socket.getInputStream());
 		
 		ObjectOutputStream output = new ObjectOutputStream(_socket.getOutputStream());
-		output.writeObject("Boot");
+		output.writeObject(greeting);
 	}
 
 

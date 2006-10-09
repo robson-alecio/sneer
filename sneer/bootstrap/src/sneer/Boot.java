@@ -21,7 +21,7 @@ public class Boot extends ClassLoader {
 	protected String _host = null;
 	protected int _port = 0;
 
-	private String _address = "Ask your friend what to type in here.";
+	private String _address = "";
 
 	protected byte[] _strapCode; //Not private for testing purposes.
 
@@ -140,13 +140,13 @@ public class Boot extends ClassLoader {
 		clazz.getMethod("main", new Class[] { String[].class }).invoke(null, new Object[] { args });
 	}
 
-	private String promptForHostnameAndPort() throws Exception {  //Not private for testing purposes.
+	private String promptForHostnameAndPort() throws Exception {
 		String message =
 			" Welcome.  :)\n\n" +
 			" You will need an expert sovereign friend to guide\n" +
 			" your first steps in sovereign computing.\n\n" +
 			" Ask your friend what to type here:";
-		String result = (String)JOptionPane.showInputDialog(null, message, TITLE, JOptionPane.PLAIN_MESSAGE, null, null, null);
+		String result = (String)JOptionPane.showInputDialog(null, message, TITLE, JOptionPane.PLAIN_MESSAGE, null, null, _address);
 		if (result == null) System.exit(0);
 		
 		return result;

@@ -1,4 +1,4 @@
-package sneer;
+package sneer.old.bootstrap;
 
 import java.io.FileOutputStream;
 

@@ -11,17 +11,21 @@ import javax.swing.JOptionPane;
 
 public class Bootstrap {
 
-	private static final String JAR = ".jar";
-	private static final String SNEER = "sneer";
-	private static final String ZEROS = "000000";
-	private static final int FILENAME_LENGTH = SNEER.length() + ZEROS.length() + JAR.length();
+	private static final String PREFIX = "sneer";
+	private static final String ZERO_MASK = "000000";
+	private static final String SUFFIX = ".jar";
+	private static final int FILENAME_LENGTH = PREFIX.length() + ZERO_MASK.length() + SUFFIX.length();
+	
 	private static ObjectInputStream _objectIn;
 	private static Socket _socket;
+	
+	private static File _mainApp;
 
 	public static void main(String[] ignored) {
 			try {
 				tryToRun();
-			} catch (Throwable t) {			
+			} catch (Throwable t) {
+				t.printStackTrace();
 				JOptionPane.showMessageDialog(null, t.toString(), "Sneer - Unexpected Problem", JOptionPane.ERROR_MESSAGE);
 			}
 	}
@@ -40,29 +44,37 @@ public class Bootstrap {
 	}
 
 	private static File mainApp() {
-		int lastNumber = 0;
-
-		for (String filename : programsDirectory().list())
-			if (validNumber(filename) > lastNumber) lastNumber = validNumber(filename);  
-		
-		if (lastNumber == 0) return null;
-		return new File(SNEER + zeroPad(lastNumber) + JAR);
+		if (_mainApp == null) _mainApp = findNewestMainApp();
+		return _mainApp;
 	}
 
+	private static File findNewestMainApp() {
+		int newest = 0;
+		for (String filename : listFilenames(programsDirectory()))
+			if (validNumber(filename) > newest) newest = validNumber(filename);  
+		
+		if (newest == 0) return null;
+		return new File(PREFIX + zeroPad(newest) + SUFFIX);
+	}
 
+	private static String[] listFilenames(File directory) {
+		String[] result = directory.list();
+		if (result == null) return new String[0];
+		return result;
+	}
 
 	private static String zeroPad(int fileNumber) {
-		String concat = ZEROS + fileNumber;
-		return concat.substring(concat.length() - ZEROS.length());
+		String concat = ZERO_MASK + fileNumber;
+		return concat.substring(concat.length() - ZERO_MASK.length());
 	}
 
-	private static int validNumber(String mainJar) {
-		if (!mainJar.startsWith(SNEER)) return -1;
-		if (!mainJar.endsWith(JAR)) return -1;
-		if (mainJar.length() != FILENAME_LENGTH) return -1;
+	private static int validNumber(String mainAppCandidate) {
+		if (!mainAppCandidate.startsWith(PREFIX)) return -1;
+		if (!mainAppCandidate.endsWith(SUFFIX)) return -1;
+		if (mainAppCandidate.length() != FILENAME_LENGTH) return -1;
 		
 		try {
-			return Integer.parseInt(mainJar.substring(5, 11));
+			return Integer.parseInt(mainAppCandidate.substring(PREFIX.length(), PREFIX.length() + ZERO_MASK.length()));
 		} catch (NumberFormatException e) {
 			return -1;
 		}
@@ -73,21 +85,21 @@ public class Bootstrap {
 			try {
 				tryToDownloadMainApp();
 				return;
-			} catch (IOException e) {}
+			} catch (IOException e) {System.out.println("" + System.currentTimeMillis() + " - " + e.getMessage());}
 
 			int oneHour = 1000 * 60 * 60;
 			sleep(oneHour);
 		}
 	}
 
-	private static void sleep(int oneHour) {
+	private static void sleep(int millis) {
 		try {
-			Thread.sleep(oneHour);
+			Thread.sleep(millis);
 		} catch (InterruptedException e) {}
 	}
 
 	private static void tryToDownloadMainApp() throws IOException {
-		byte[] jarContents = getMainAppJarContents();
+		byte[] jarContents = downloadMainAppJarContents();
 		writeToMainAppFile(jarContents);
 	}
 
@@ -95,11 +107,12 @@ public class Bootstrap {
 		File part = new File(programsDirectory(), "Sneer.part");
 		FileOutputStream fos = new FileOutputStream(part);
 		fos.write(jarContents);
+		fos.close();
 		
-		part.renameTo(new File(programsDirectory(), SNEER + zeroPad(1) + JAR));
+		part.renameTo(new File(programsDirectory(), PREFIX + zeroPad(1) + SUFFIX));
 	}
 
-	private static byte[] getMainAppJarContents() throws IOException {
+	private static byte[] downloadMainAppJarContents() throws IOException {
 		try {
 			openDownloadConnection();
 			return getMainAppJarContentsFromConnection();

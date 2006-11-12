@@ -5,7 +5,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.Socket;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 import javax.swing.JOptionPane;
 
@@ -16,8 +19,11 @@ public class Bootstrap {
 	private static final String SUFFIX = ".jar";
 	private static final int FILENAME_LENGTH = PREFIX.length() + ZERO_MASK.length() + SUFFIX.length();
 	
-	private static ObjectInputStream _objectIn;
 	private static Socket _socket;
+	private static ObjectOutputStream _objectOut;
+	private static ObjectInputStream _objectIn;
+
+	public static final String MAIN_JAR_REQUEST = "Please send Sneer jar";
 	
 	private static File _mainApp;
 
@@ -30,13 +36,14 @@ public class Bootstrap {
 			}
 	}
 
-	private static void tryToRun() {
+	private static void tryToRun() throws Exception {
 		if (!hasMainApp()) downloadMainApp();
 		runMainApp();
 	}
 
-	private static void runMainApp() {
-		String continueCodingFromHere;
+	private static void runMainApp() throws Exception {
+		Class<?> clazz = new URLClassLoader(new URL[] { mainApp().toURI().toURL() }).loadClass("sneer.Main");
+		clazz.getMethod("main", new Class[] { String[].class }).invoke(null, new Object[] { new String[0] });
 	}
 
 	private static boolean hasMainApp() {
@@ -87,7 +94,8 @@ public class Bootstrap {
 				return;
 			} catch (IOException e) {System.out.println("" + System.currentTimeMillis() + " - " + e.getMessage());}
 
-			int oneHour = 1000 * 60 * 60;
+//			int oneHour = 1000 * 60 * 60;
+			int oneHour = 1000 * 5;
 			sleep(oneHour);
 		}
 	}
@@ -124,10 +132,8 @@ public class Bootstrap {
 
 	
 	private static byte[] getMainAppJarContentsFromConnection() throws IOException {
-		ObjectOutputStream objectOut = new ObjectOutputStream(_socket.getOutputStream());
-		objectOut.writeObject("Please send Sneer jar");
-		objectOut.close();
-
+		_objectOut.writeObject(MAIN_JAR_REQUEST);
+		_objectOut.flush();
 		return receiveByteArray();
 	}
 
@@ -140,15 +146,21 @@ public class Bootstrap {
 	}
 
 	private static void closeDownloadConnection() throws IOException {
+		if (_objectOut != null) _objectOut.close();
 		if (_objectIn != null) _objectIn.close();
 		if (_socket != null) _socket.close();
 
+		_objectOut = null;
 		_objectIn = null;
 		_socket = null;
 	}
 
 	private static void openDownloadConnection() throws IOException {
-		_socket = new Socket("klaus.selfip.net", 4242);
+//		String host = "klaus.selfip.net";
+		String host = "localhost";
+		System.err.println("localhost");
+		_socket = new Socket(host, 4242);
+		_objectOut = new ObjectOutputStream(_socket.getOutputStream());
 		_objectIn = new ObjectInputStream(_socket.getInputStream());
 	}
 

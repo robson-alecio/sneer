@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 
 public class Bootstrap {
 
+	private static File _mainApp;
 	private static final String PREFIX = "main";
 	private static final String ZERO_MASK = "000000";
 	private static final String SUFFIX = ".jar";
@@ -20,10 +21,8 @@ public class Bootstrap {
 	
 	private static Socket _socket;
 	private static ObjectInputStream _objectIn;
-
 	public static final String GREETING = "Sneer Bootstrap";
 	
-	private static File _mainApp;
 
 	public static void main(String[] ignored) {
 			try {
@@ -34,25 +33,30 @@ public class Bootstrap {
 			}
 	}
 
+	
 	private static void tryToRun() throws Exception {
 		if (!hasMainApp()) downloadMainApp();
 		runMainApp();
 	}
 
+	
 	private static void runMainApp() throws Exception {
 		Class<?> clazz = new URLClassLoader(new URL[] { mainApp().toURI().toURL() }).loadClass("sneer.Main");
 		clazz.getMethod("main", new Class[] { String[].class }).invoke(null, new Object[] { new String[0] });
 	}
 
+	
 	private static boolean hasMainApp() {
 		return mainApp() != null;
 	}
 
+	
 	private static File mainApp() {
 		if (_mainApp == null) _mainApp = findNewestMainApp();
 		return _mainApp;
 	}
 
+	
 	private static File findNewestMainApp() {
 		int newest = 0;
 		for (String filename : listFilenames(programsDirectory()))
@@ -62,17 +66,20 @@ public class Bootstrap {
 		return new File(PREFIX + zeroPad(newest) + SUFFIX);
 	}
 
+	
 	private static String[] listFilenames(File directory) {
 		String[] result = directory.list();
 		if (result == null) return new String[0];
 		return result;
 	}
 
+	
 	private static String zeroPad(int fileNumber) {
 		String concat = ZERO_MASK + fileNumber;
 		return concat.substring(concat.length() - ZERO_MASK.length());
 	}
 
+	
 	private static int validNumber(String mainAppCandidate) {
 		if (!mainAppCandidate.startsWith(PREFIX)) return -1;
 		if (!mainAppCandidate.endsWith(SUFFIX)) return -1;
@@ -85,6 +92,7 @@ public class Bootstrap {
 		}
 	}
 
+	
 	private static void downloadMainApp() {
 		while (true) {
 			try {
@@ -92,23 +100,18 @@ public class Bootstrap {
 				return;
 			} catch (IOException e) {System.out.println("" + System.currentTimeMillis() + " - " + e.getMessage()); e.printStackTrace();}
 
-//			int oneHour = 1000 * 60 * 60;
-			int oneHour = 1000 * 5;
+			int oneHour = 1000 * 60 * 60;
 			sleep(oneHour);
 		}
 	}
 
-	private static void sleep(int millis) {
-		try {
-			Thread.sleep(millis);
-		} catch (InterruptedException e) {}
-	}
-
+	
 	private static void tryToDownloadMainApp() throws IOException {
 		byte[] jarContents = downloadMainAppJarContents();
 		writeToMainAppFile(jarContents);
 	}
 
+	
 	private static void writeToMainAppFile(byte[] jarContents) throws IOException {
 		programsDirectory().mkdirs();
 		File part = new File(programsDirectory(), "sneer.part");
@@ -119,6 +122,17 @@ public class Bootstrap {
 		part.renameTo(new File(programsDirectory(), PREFIX + zeroPad(1) + SUFFIX));
 	}
 
+	
+	static private File programsDirectory() {
+		return new File(sneerDirectory(), "programs");
+	}
+	
+	
+	static private File sneerDirectory() {
+		return new File(System.getProperty("user.home"), ".sneer");
+	}
+
+	
 	private static byte[] downloadMainAppJarContents() throws IOException {
 		try {
 			openDownloadConnection();
@@ -129,33 +143,25 @@ public class Bootstrap {
 	}
 
 	
-	static private File programsDirectory() {
-		return new File(sneerDirectory(), "programs");
-	}
-	
-	static private File sneerDirectory() {
-		return new File(System.getProperty("user.home"), ".sneer");
-	}
-
-	private static void closeDownloadConnection() throws IOException {
-		if (_objectIn != null) _objectIn.close();
-		if (_socket != null) _socket.close();
-		_objectIn = null;
-		_socket = null;
-	}
-
 	private static void openDownloadConnection() throws IOException {
-//		String host = "klaus.selfip.net";
-		String host = "localhost";
-		System.err.println("localhost");
+		_socket = new Socket("klaus.selfip.net", 4242);
 		
-		_socket = new Socket(host, 4242);
+		new ObjectOutputStream(_socket.getOutputStream()).writeObject(GREETING);
 		
-		ObjectOutputStream objectOut = new ObjectOutputStream(_socket.getOutputStream());
-		objectOut.writeObject(GREETING);
 		_objectIn = new ObjectInputStream(_socket.getInputStream());
 	}
 
+	
+	private static void closeDownloadConnection() {
+		try {
+			if (_socket != null) _socket.close();
+		} catch (IOException ignored) {}
+
+		_objectIn = null;
+		_socket = null;
+	}
+	
+	
 	static private byte[] receiveByteArray() throws IOException {
 		try {
 			return (byte[])_objectIn.readObject();
@@ -165,5 +171,10 @@ public class Bootstrap {
 	}
 
 	
+	private static void sleep(int millis) {
+		try {
+			Thread.sleep(millis);
+		} catch (InterruptedException e) {}
+	}
 	
 }

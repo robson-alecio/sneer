@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -14,16 +13,15 @@ import javax.swing.JOptionPane;
 
 public class Bootstrap {
 
-	private static final String PREFIX = "sneer";
+	private static final String PREFIX = "main";
 	private static final String ZERO_MASK = "000000";
 	private static final String SUFFIX = ".jar";
 	private static final int FILENAME_LENGTH = PREFIX.length() + ZERO_MASK.length() + SUFFIX.length();
 	
 	private static Socket _socket;
-	private static ObjectOutputStream _objectOut;
 	private static ObjectInputStream _objectIn;
 
-	public static final String MAIN_JAR_REQUEST = "Please send Sneer jar";
+	public static final String GREETING = "Sneer Bootstrap";
 	
 	private static File _mainApp;
 
@@ -92,7 +90,7 @@ public class Bootstrap {
 			try {
 				tryToDownloadMainApp();
 				return;
-			} catch (IOException e) {System.out.println("" + System.currentTimeMillis() + " - " + e.getMessage());}
+			} catch (IOException e) {System.out.println("" + System.currentTimeMillis() + " - " + e.getMessage()); e.printStackTrace();}
 
 //			int oneHour = 1000 * 60 * 60;
 			int oneHour = 1000 * 5;
@@ -112,7 +110,8 @@ public class Bootstrap {
 	}
 
 	private static void writeToMainAppFile(byte[] jarContents) throws IOException {
-		File part = new File(programsDirectory(), "Sneer.part");
+		programsDirectory().mkdirs();
+		File part = new File(programsDirectory(), "sneer.part");
 		FileOutputStream fos = new FileOutputStream(part);
 		fos.write(jarContents);
 		fos.close();
@@ -123,20 +122,13 @@ public class Bootstrap {
 	private static byte[] downloadMainAppJarContents() throws IOException {
 		try {
 			openDownloadConnection();
-			return getMainAppJarContentsFromConnection();
+			return receiveByteArray();
 		} finally {
 			closeDownloadConnection();
 		}
 	}
 
-
 	
-	private static byte[] getMainAppJarContentsFromConnection() throws IOException {
-		_objectOut.writeObject(MAIN_JAR_REQUEST);
-		_objectOut.flush();
-		return receiveByteArray();
-	}
-
 	static private File programsDirectory() {
 		return new File(sneerDirectory(), "programs");
 	}
@@ -146,11 +138,8 @@ public class Bootstrap {
 	}
 
 	private static void closeDownloadConnection() throws IOException {
-		if (_objectOut != null) _objectOut.close();
 		if (_objectIn != null) _objectIn.close();
 		if (_socket != null) _socket.close();
-
-		_objectOut = null;
 		_objectIn = null;
 		_socket = null;
 	}
@@ -159,8 +148,11 @@ public class Bootstrap {
 //		String host = "klaus.selfip.net";
 		String host = "localhost";
 		System.err.println("localhost");
+		
 		_socket = new Socket(host, 4242);
-		_objectOut = new ObjectOutputStream(_socket.getOutputStream());
+		
+		ObjectOutputStream objectOut = new ObjectOutputStream(_socket.getOutputStream());
+		objectOut.writeObject(GREETING);
 		_objectIn = new ObjectInputStream(_socket.getInputStream());
 	}
 

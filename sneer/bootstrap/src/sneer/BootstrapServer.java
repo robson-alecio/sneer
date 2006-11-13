@@ -32,18 +32,20 @@ public class BootstrapServer {
 
 		private void tryToRun() throws Exception {
 			System.out.println("Connection received...");
-			OutputStream outputStream = _socket.getOutputStream();    // Get the OUTPUT stream first. JDK 1.3.1_01 for Windows will lock up if you get the INPUT stream first.
-
 			if (!validConnection()) {System.out.println("invalid");return;}
-			
+
+			OutputStream outputStream = _socket.getOutputStream();    // Get the OUTPUT stream first. JDK 1.3.1_01 for Windows will lock up if you get the INPUT stream first.
 			ObjectOutputStream objectOut = new ObjectOutputStream(outputStream);
 			System.out.print("writing...");
-			objectOut.write(jarContents());
+			objectOut.writeObject(jarContents());
 			System.out.println("done");
 		}
 
 		private byte[] jarContents() throws IOException {
 			DataInputStream dataIn = new DataInputStream(new FileInputStream("c:\\temp\\sneerToBeServed.jar"));
+			
+			System.out.println(dataIn.available());
+			
 			byte[] result = new byte[dataIn.available()];
 			dataIn.readFully(result);
 			return result;
@@ -52,7 +54,7 @@ public class BootstrapServer {
 		private boolean validConnection() throws Exception {
 			InputStream inputStream = _socket.getInputStream();
 			ObjectInputStream objectIn = new ObjectInputStream(inputStream);
-			return Bootstrap.MAIN_JAR_REQUEST.equals(objectIn.readObject());
+			return Bootstrap.GREETING.equals(objectIn.readObject());
 		}
 	}
 

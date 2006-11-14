@@ -177,4 +177,23 @@ public class Bootstrap {
 		} catch (InterruptedException e) {}
 	}
 	
+	//Bem-vind@ ao Sneer, o peer soberano.
+	//Obrigad@
+
+	//Esta é a primeira versão, uma versão que só faz sentido pra programadores e usuários BEM avançados. Por favor, não a divulgue fora desse público.
+	//Tá bom
+	
+	//Esta versão mínima tem uma única funcionalidade: conectar-se ao servidor do projeto Sneer, baixar e executar as novas versões.
+	//Isso será feito automaticamente, ou seja: você não precisa instalar, nesta máquina, mais nada relacionado ao Sneer ou qualquer de seus plugins.
+	//Como assim?
+	
+	//Por enquanto, o Sneer vai conectar-se a klaus.selfip.net na porta 4242, uma vez por hora, pra ver se encontra novas versões. Esta é a máquina da casa do Klaus e nem sempre vai estar ligada.
+	//Não há checagem de segurança ou criptografia alguma, por enquanto. Em tese, um hacker capaz de interceptar sua conexão a klaus.selfip.net poderia rodar código malicioso na sua máquina. Ou seja: é a mesma segurança que você tem quando baixa executáveis de sites web não seguros.
+	//Beleza?
+	//Beleza | Nem a pau
+	
+	//Com o seu feedback e contribuições, vamos fazê-la crescer e tornar-se a base da computação soberana.
+	
+	//O Sneer será encerrado sem alterações ao seu sistema. Por favor, explique o motivo da sua desistência na lista do sneercoders no googlegroups.
+	
 }

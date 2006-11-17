@@ -167,9 +167,18 @@ public class Bootstrap {
 	//Você é um(a) pioneir@ da computação soberana e poderá contar pros seus netos que participou da revolução desde a primeira versão da primeira plataforma soberana.
 	//Legal  :)
 
-	//Esta primeira versão exibe informações técnicas detalhadas e só faz sentido pra usuários BEM avançados.
+	//Esta primeira versão é pouco mais que vaporware, exibe informações técnicas detalhadas e só faz sentido pra usuários BEM avançados.
 	//Por favor, não a divulgue fora desse público.
 	//Tá bom
+
+	//Será criado um diretório chamado ".sneer" dentro do diretório ><><><><><><><><><><><>.
+	//Todos os dados e programas do Sneer, quando houver, para este usuário, serão guardados lá.
+	//Este diálogo não será exibido novamente enquanto existir esse diretório.
+	//Criar diretório | Não criar
+
+	//Esta versão mínima do Sneer tem uma única funcionalidade: conectar-se ao servidor do projeto, baixar e executar as suas atualizações. Isso será feito automaticamente.
+	//Em se tratando do Sneer e todos seus plugins soberanos, para este usuário, nesta máquina, você nunca mais vai precisar instalar nada.
+	//Massa
 
 	//Sabe aqueles textos gigantescos e pentelhos de licença, que aparecem na instalação de todo software e que ninguém lê?
 	//Usando software soberano, você nunca mais vai precisar ver um texto daquele na sua frente.
@@ -179,22 +188,13 @@ public class Bootstrap {
 	//http://www.gnu.org/copyleft/gpl.html
 	//Todas as versões do Sneer e de todos os plugins soberanos, que também forem licenciados pela GPL 2, serão instalados sem exibir o texto da licença.
 	//Você aceita esses termos?
-	//Aceito | Não Aceito
-
-	//Será criado um diretório chamado ".sneer" dentro do diretório ><><><><><><><><><><><>.
-	//Todos os dados e programas do Sneer, quando houver, para este usuário, serão guardados lá.
-	//Este diálogo não será exibido novamente enquanto existir esse diretório.
-	//Criar diretório | Não criar
-
-	//Esta versão mínima do Sneer tem uma única funcionalidade: conectar-se ao servidor do projeto, baixar e executar as suas atualizações.
-	//Isso será feito automaticamente, ou seja: você não precisa instalar manualmente, para este usuário, nesta máquina, mais nada relacionado ao Sneer ou qualquer de seus plugins.
-	//Legal
+	//Claro | Claro que não
 	
 	//Futuramente, o Sneer será capaz de baixar suas atualizações com segurança, através de qualquer contato soberano que você tenha.
 	//Por enquanto, o Sneer vai baixar atualizações, quando houver, de klaus.selfip.net na porta 4242.
 	//Ainda não há checagem de segurança ou criptografia alguma para as atualizações. A segurança é a mesma que você tem quando baixa executáveis de sites web sem o cadeadinho (ex: sourceforge).
 	//Beleza?
-	//Beleza | Não
+	//Beleza | Nem ferrando
 
 	//Quando não encontra atualização, o Sneer simplesmente encerra em silêncio. Não consome recursos da máquina, portanto.
 	//Por favor coloque o Sneer para ser executado quando sua máquina é iniciada.

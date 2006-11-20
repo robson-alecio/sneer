@@ -28,19 +28,20 @@ public class Bootstrap {
 			try {
 				tryToRun();
 			} catch (Throwable t) {
-				t.printStackTrace();
-				JOptionPane.showMessageDialog(null, t.toString(), "Sneer - Unexpected Problem", JOptionPane.ERROR_MESSAGE);
+				log(t);
 			}
 	}
 
-	private int logErrorInLogTxtFile;
+
+	private static void log(Throwable t) {
+		logDirectory().mkdir(); int continueCodingFromHere;
+		t.printStackTrace(); //To the log
+		JOptionPane.showMessageDialog(null, t.toString(), "Sneer - Unexpected Problem", JOptionPane.ERROR_MESSAGE);
+	}
+
 	
 	private static void tryToRun() throws Exception {
-		if (!hasMainApp()) {
-			tryToDownloadMainApp();
-			if (!hasMainApp()) return;
-		}
-
+		if (!hasMainApp()) tryToDownloadMainApp();
 		runMainApp();
 	}
 
@@ -115,6 +116,10 @@ public class Bootstrap {
 	}
 
 	
+	static private File logDirectory() {
+		return new File(sneerDirectory(), "logs");
+	}
+
 	static private File programsDirectory() {
 		return new File(sneerDirectory(), "programs");
 	}
@@ -172,11 +177,11 @@ public class Bootstrap {
 	//Tá bom
 
 	//Será criado um diretório chamado ".sneer" dentro do diretório ><><><><><><><><><><><>.
-	//Todos os dados e programas do Sneer, quando houver, para este usuário, serão guardados lá.
+	//Todos os dados e programas do Sneer, para este usuário, quando houver, serão guardados lá.
 	//Este diálogo não será exibido novamente enquanto existir esse diretório.
 	//Criar diretório | Não criar
 
-	//Esta versão mínima do Sneer tem uma única funcionalidade: conectar-se ao servidor do projeto, baixar e executar as suas atualizações. Isso será feito automaticamente.
+	//Esta versão mínima do Sneer tem uma única funcionalidade: conectar-se ao servidor do projeto, baixar e executar suas atualizações. Isso será feito automaticamente.
 	//Em se tratando do Sneer e todos seus plugins soberanos, para este usuário, nesta máquina, você nunca mais vai precisar instalar nada.
 	//Massa
 

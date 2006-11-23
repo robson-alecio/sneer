@@ -5,9 +5,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Date;
 
 import javax.swing.JOptionPane;
 
@@ -26,6 +28,8 @@ public class Bootstrap {
 
 	public static void main(String[] ignored) {
 			try {
+				sneerDirectory().mkdir();
+				if (1==1) throw new RuntimeException();
 				tryToRun();
 			} catch (Throwable t) {
 				log(t);
@@ -33,13 +37,35 @@ public class Bootstrap {
 	}
 
 
-	private static void log(Throwable t) {
-		logDirectory().mkdir(); int continueCodingFromHere;
-		t.printStackTrace(); //To the log
-		JOptionPane.showMessageDialog(null, t.toString(), "Sneer - Unexpected Problem", JOptionPane.ERROR_MESSAGE);
+	private static void log(Throwable throwable) {
+			try {
+				tryToLog(throwable);
+			} catch (IOException e) {
+				show(throwable);
+				show(e);
+			}
+	}
+
+
+	private static void tryToLog(Throwable throwable) throws IOException {
+		logDirectory().mkdir();
+		FileOutputStream logStream = new FileOutputStream(new File(logDirectory(), "log.txt"), true);
+		PrintWriter logWriter = new PrintWriter(logStream);
+		logWriter.println("========================= " + new Date());
+		throwable.printStackTrace(logWriter);
+		logWriter.println();
+		logWriter.println();
+		logWriter.flush();
+		logStream.close();
 	}
 
 	
+	private static void show(Throwable t) {
+		t.printStackTrace();
+		JOptionPane.showMessageDialog(null, t.toString(), "Sneer - Unexpected Problem", JOptionPane.ERROR_MESSAGE);
+	}
+
+
 	private static void tryToRun() throws Exception {
 		if (!hasMainApp()) tryToDownloadMainApp();
 		runMainApp();
@@ -169,7 +195,7 @@ public class Bootstrap {
 
 	
 	//Bem-vind@ ao Sneer, o peer soberano.
-	//Você é um(a) pioneir@ da computação soberana e poderá contar pros seus netos que participou da revolução desde a primeira versão da primeira plataforma soberana.
+	//Pioneir@ da computação soberana, você poderá contar pros seus netos que participou da revolução desde a primeira versão da primeira plataforma soberana.
 	//Legal  :)
 
 	//Esta primeira versão é pouco mais que vaporware, exibe informações técnicas detalhadas e só faz sentido pra usuários BEM avançados.
@@ -177,12 +203,12 @@ public class Bootstrap {
 	//Tá bom
 
 	//Será criado um diretório chamado ".sneer" dentro do diretório ><><><><><><><><><><><>.
-	//Todos os dados e programas do Sneer, para este usuário, quando houver, serão guardados lá.
+	//Lá serão guardados, para este usuário, todos os dados e programas do Sneer.
 	//Este diálogo não será exibido novamente enquanto existir esse diretório.
 	//Criar diretório | Não criar
 
 	//Esta versão mínima do Sneer tem uma única funcionalidade: conectar-se ao servidor do projeto, baixar e executar suas atualizações. Isso será feito automaticamente.
-	//Em se tratando do Sneer e todos seus plugins soberanos, para este usuário, nesta máquina, você nunca mais vai precisar instalar nada.
+	//Tratando-se do Sneer e todos seus plugins soberanos, para este usuário, nesta máquina, você nunca mais vai precisar instalar nada.
 	//Massa
 
 	//Sabe aqueles textos gigantescos e pentelhos de licença, que aparecem na instalação de todo software e que ninguém lê?
@@ -197,12 +223,12 @@ public class Bootstrap {
 	
 	//Futuramente, o Sneer será capaz de baixar suas atualizações com segurança, através de qualquer contato soberano que você tenha.
 	//Por enquanto, o Sneer vai baixar atualizações, quando houver, de klaus.selfip.net na porta 4242.
-	//Ainda não há checagem de segurança ou criptografia alguma para as atualizações. A segurança é a mesma que você tem quando baixa executáveis de sites web sem o cadeadinho (ex: sourceforge).
+	//Ainda não há checagem de segurança ou criptografia alguma para as atualizações. A segurança é a mesma que você tem quando baixa executáveis de sites web sem o cadeadinho (ex.: Sourceforge).
 	//Beleza?
-	//Beleza | Nem ferrando
+	//Beleza | Nem a pau
 
 	//Quando não encontra atualização, o Sneer simplesmente encerra em silêncio. Não consome recursos da máquina, portanto.
-	//Por favor coloque o Sneer para ser executado quando sua máquina é iniciada.
+	//Por favor, coloque o Sneer para ser executado na inicialização da sua máquina.
 	//Linux: Chamar "java -jar Sneer.jar" num Runlevel Script.
 	//Windows: Criar atalho para Sneer.jar no menu "Iniciar > Programas > Inicializar".
 	//Já coloquei
@@ -211,10 +237,15 @@ public class Bootstrap {
 	//Não entre em pânico. O servidor de atualizações nem sempre está ligado.
 	//OK
 	
-	//Obrigado e até a próxima atualização do Sneer.  :)
-	//Sair
+	//Obrigado e até a próxima atualização do Sneer.  ;)
+	//Falou
 	
-	//O Sneer será encerrado sem alterações a seu sistema. Por favor, informe-nos o motivo da sua desistência na lista do sneercoders no googlegroups.
-	//Sair
+	//O Sneer será encerrado sem alterações em seu sistema. Por favor, conte-nos o motivo da sua desistência na lista do sneercoders no googlegroups.
+	//Falou
+	
+
+	
+	
+	
 	
 }

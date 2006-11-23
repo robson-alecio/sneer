@@ -233,7 +233,7 @@ public class Bootstrap {
 	//Windows: Criar atalho para Sneer.jar no menu "Iniciar > Programas > Inicializar".
 	//Já coloquei
 	
-	//As tentativas de atualização serão logadas em algum arquivo de log fácil de achar, dentro do diretório do Sneer.
+	//As tentativas de atualização são logadas num arquivo de log fácil de achar, dentro do diretório do Sneer.
 	//Não entre em pânico. O servidor de atualizações nem sempre está ligado.
 	//OK
 	

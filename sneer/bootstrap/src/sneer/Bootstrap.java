@@ -65,7 +65,7 @@ public class Bootstrap {
 
 
 	private static void tryToRun() throws Exception {
-		if (!hasMainApp()) tryToInstallMainApp();
+		if (!hasMainApp()) tryToInstallMainAppOtherwiseExit();
 		runMainApp();
 	}
 
@@ -123,31 +123,45 @@ public class Bootstrap {
 	}
 
 	
-	private static void tryToInstallMainApp() throws IOException {
+	private static void tryToInstallMainAppOtherwiseExit() throws IOException {
 		if (!sneerDirectory().exists()) {
-			tryToApproveInstallationWithUser();
+			approveInstallationWithUserOtherwiseExit();
 			tryToCreateSneerDirectory();
 		}
 		tryToDownloadMainApp();
 	}
 
 
-	private static void tryToApproveInstallationWithUser() {
+	private static void approveInstallationWithUserOtherwiseExit() {
 
-		int continueCodingFromHere;
 		
-		//Bem-vind@ ao Sneer, o peer soberano.
-		//Pioneir@ da computação soberana, você poderá contar pros seus netos que participou da revolução desde a primeira versão da primeira plataforma soberana.
-		//Legal  :)
+		approveConditionWithUserOtherwiseExit(
+				" Bem-vind@ ao Sneer, o peer soberano.\n\n" +
+				" Pioneir@ da computação soberana, você poderá contar\n" +
+				" para seus netos que participou da revolução desde a\n" +
+				" primeira versão da primeira plataforma soberana.",
+				"Legal  :)"
+		);
 
-		//Esta primeira versão é pouco mais que vaporware, exibe informações técnicas detalhadas e só faz sentido pra usuários BEM avançados.
-		//Por favor, não a divulgue fora desse público.
-		//Tá bom
+		approveConditionWithUserOtherwiseExit(
+				" Esta primeira versão é pouco mais que vaporware,\n" +
+				" exibe informações técnicas detalhadas e só faz\n" +
+				" sentido pra usuários avançados.\n\n" +
+				" Por favor, não a divulgue fora desse público.",
+				"Tá bom"
+		);
 
-		//Será criado um diretório chamado ".sneer" dentro do diretório ><><><><><><><><><><><>.
-		//Lá serão guardados, para este usuário, todos os dados e programas do Sneer.
-		//Este diálogo não será exibido novamente enquanto existir esse diretório.
-		//Criar diretório | Não criar
+		approveConditionWithUserOtherwiseExit(
+				" Será criado um diretório chamado \".sneer\" dentro do diretório\n" +
+				" " + userHome() + "\n\n" + 
+				" Lá serão guardados, para este usuário, todos os dados e\n" +
+				" programas do Sneer.\n\n" +
+				" Este diálogo não será exibido novamente enquanto existir esse\n" +
+				" diretório.",
+				"Criar diretório", "Não criar"
+		);
+		
+
 
 		//Esta versão mínima do Sneer tem uma única funcionalidade: conectar-se ao servidor do projeto, baixar e executar suas atualizações. Isso será feito automaticamente.
 		//Tratando-se do Sneer e todos seus plugins soberanos, para este usuário, nesta máquina, você nunca mais vai precisar instalar nada.
@@ -182,9 +196,30 @@ public class Bootstrap {
 		//Obrigado e até a próxima atualização do Sneer.  ;)
 		//Falou
 		
-		//O Sneer será encerrado sem alterações em seu sistema. Por favor, conte-nos o motivo da sua desistência na lista do sneercoders no googlegroups.
-		//Falou
 
+	}
+
+
+	private static void approveConditionWithUserOtherwiseExit(String condition, Object... options) {
+		boolean approved = showOptionDialog(condition, options);
+		if (!approved) exit();
+	}
+
+
+	private static boolean showOptionDialog(String message, Object... options) {
+		int chosen = JOptionPane.showOptionDialog(null, message + "\n\n", "Sneer", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+		return chosen == 0;
+	}
+
+
+	private static void exit() {
+		showOptionDialog(
+				" O Sneer será encerrado sem alterações em seu sistema.\n\n" +
+				" Por favor, conte-nos o motivo da sua desistência na\n" +
+				" lista do sneercoders no googlegroups.",
+				"Falou"
+		);
+		System.exit(0);
 	}
 
 
@@ -221,7 +256,12 @@ public class Bootstrap {
 	
 	
 	static private File sneerDirectory() {
-		return new File(System.getProperty("user.home"), ".sneer");
+		return new File(userHome(), ".sneer");
+	}
+
+
+	private static String userHome() {
+		return System.getProperty("user.home");
 	}
 
 	

@@ -25,7 +25,7 @@ public class Bootstrap {
 	private static ObjectInputStream _objectIn;
 	public static final String GREETING = "Sneer Bootstrap";
 	
-
+	// Oi
 	public static void main(String[] ignored) {
 			try {
 				tryToRun();

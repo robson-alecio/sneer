@@ -93,7 +93,7 @@ public class Bootstrap {
 			if (validNumber(filename) > newest) newest = validNumber(filename);  
 		
 		if (newest == 0) return null;
-		return new File(PREFIX + zeroPad(newest) + SUFFIX);
+		return new File(programsDirectory(), PREFIX + zeroPad(newest) + SUFFIX);
 	}
 
 	

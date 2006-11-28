@@ -133,7 +133,6 @@ public class Bootstrap {
 
 
 	private static void approveInstallationWithUserOtherwiseExit() {
-
 		
 		approveConditionWithUserOtherwiseExit(
 				" Bem-vind@ ao Sneer, o peer soberano.\n\n" +
@@ -152,6 +151,61 @@ public class Bootstrap {
 		);
 
 		approveConditionWithUserOtherwiseExit(
+				" Esta versão mínima do Sneer tem uma única funcionalidade:\n" +
+				" conectar-se ao servidor do projeto, baixar e executar suas atualizações.\n\n" +
+				" Isso será feito automaticamente. Tratando-se do Sneer e todos seus\n" +
+				" plugins soberanos, portanto, você nunca mais vai precisar instalar nada\n" +
+				" para este usuário, nesta máquina.",
+				"Massa"
+		);
+
+		approveConditionWithUserOtherwiseExit(
+				" Futuramente, o Sneer será capaz de baixar suas atualizações com\n" +
+				" segurança, através de qualquer contato soberano que você tenha.\n\n" +
+				" Por enquanto, o Sneer vai baixar atualizações, quando houver, de\n" +
+				" klaus.selfip.net na porta 4242.\n\n" +
+				" Ainda não há checagem de segurança ou criptografia alguma para as\n" +
+				" atualizações. A segurança é a mesma que você tem quando baixa\n" +
+				" executáveis de sites web sem o cadeadinho (ex.: Sourceforge).\n\n" +
+				" Beleza?",
+				"Beleza", "Nem a pau"
+		);
+
+		approveConditionWithUserOtherwiseExit(
+				" As tentativas de atualização são logadas num arquivo de log fácil de\n" +
+				" achar, dentro do diretório do Sneer.\n\n" +
+				" Não entre em pânico. O servidor de atualizações nem sempre está ligado.",
+				"OK"
+		);
+
+		approveConditionWithUserOtherwiseExit(
+				" Quando não encontra atualização, o Sneer simplesmente encerra em silêncio. Não\n" +
+				" consome recursos da máquina, portanto.\n\n" +
+				" Por favor, coloque o Sneer para ser executado na inicialização da sua máquina.\n" +
+				" Linux: Chamar \"java -jar Sneer.jar\" num runlevel script.\n" +
+				" Windows: Criar atalho para Sneer.jar no menu \"Iniciar > Programas > Inicializar\"",
+				"Já coloquei", "Não sei colocar"
+		);
+
+		approveConditionWithUserOtherwiseExit(
+				" Sabe aqueles textos gigantescos e pentelhos de licença, que aparecem\n" +
+				" na instalação de todo software e que ninguém lê?\n\n" +
+				" Usando software soberano, você nunca mais vai precisar ver um texto\n" +
+				" daquele na sua frente.",
+				" Uhu! Por que não?"
+		);
+		
+		approveConditionWithUserOtherwiseExit(
+				" O Sneer é software livre, licenciado pela General Public License 2 (GPL 2):\n" +
+				" http://www.gnu.org/copyleft/gpl.html\n\n" +
+				" Todas as versões do Sneer e de todos os plugins soberanos, que também\n" +
+				" forem licenciados pela GPL 2, serão instalados e executados sem exibir o\n" +
+				" texto da licença.\n\n" +
+				" Você aceita esses termos?",
+				"Claro", "Claro que não"
+		);
+
+		approveConditionWithUserOtherwiseExit(
 				" Será criado um diretório chamado \".sneer\" dentro do diretório\n" +
 				" " + userHome() + "\n\n" + 
 				" Lá serão guardados, para este usuário, todos os dados e\n" +
@@ -161,41 +215,10 @@ public class Bootstrap {
 				"Criar diretório", "Não criar"
 		);
 		
-
-
-		//Esta versão mínima do Sneer tem uma única funcionalidade: conectar-se ao servidor do projeto, baixar e executar suas atualizações. Isso será feito automaticamente.
-		//Tratando-se do Sneer e todos seus plugins soberanos, para este usuário, nesta máquina, você nunca mais vai precisar instalar nada.
-		//Massa
-
-		//Sabe aqueles textos gigantescos e pentelhos de licença, que aparecem na instalação de todo software e que ninguém lê?
-		//Usando software soberano, você nunca mais vai precisar ver um texto daquele na sua frente.
-		//Uhu! Por que não?
-		
-		//O Sneer é software livre, licenciado pela General Public License 2 (GPL 2):
-		//http://www.gnu.org/copyleft/gpl.html
-		//Todas as versões do Sneer e de todos os plugins soberanos, que também forem licenciados pela GPL 2, serão instalados sem exibir o texto da licença.
-		//Você aceita esses termos?
-		//Claro | Claro que não
-		
-		//Futuramente, o Sneer será capaz de baixar suas atualizações com segurança, através de qualquer contato soberano que você tenha.
-		//Por enquanto, o Sneer vai baixar atualizações, quando houver, de klaus.selfip.net na porta 4242.
-		//Ainda não há checagem de segurança ou criptografia alguma para as atualizações. A segurança é a mesma que você tem quando baixa executáveis de sites web sem o cadeadinho (ex.: Sourceforge).
-		//Beleza?
-		//Beleza | Nem a pau
-
-		//Quando não encontra atualização, o Sneer simplesmente encerra em silêncio. Não consome recursos da máquina, portanto.
-		//Por favor, coloque o Sneer para ser executado na inicialização da sua máquina.
-		//Linux: Chamar "java -jar Sneer.jar" num Runlevel Script.
-		//Windows: Criar atalho para Sneer.jar no menu "Iniciar > Programas > Inicializar".
-		//Já coloquei
-		
-		//As tentativas de atualização são logadas num arquivo de log fácil de achar, dentro do diretório do Sneer.
-		//Não entre em pânico. O servidor de atualizações nem sempre está ligado.
-		//OK
-		
-		//Obrigado e até a próxima atualização do Sneer.  ;)
-		//Falou
-		
+		approveConditionWithUserOtherwiseExit(
+				" Obrigado e até a próxima atualização do Sneer.  ;)",
+				"Falou"
+		);
 
 	}
 

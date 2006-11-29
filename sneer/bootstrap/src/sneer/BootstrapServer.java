@@ -3,13 +3,17 @@ package sneer;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Date;
 
 public class BootstrapServer {
 
@@ -34,12 +38,12 @@ public class BootstrapServer {
 		}
 
 		private void tryToRun() throws Exception {
-			System.out.println("Connection received...");
-			if (!validConnection()) {System.out.println("invalid");return;}
+			log("Connection received from " + _socket.getRemoteSocketAddress());
+			if (!validConnection()) {log("invalid");return;}
 			File mainApp = newestMainApp();
-			System.out.println("Uploading " + mainApp.getName() + "...");
+			log("Uploading " + mainApp.getName() + "...");
 			upload(mainApp);
-			System.out.println("done");
+			log("done");
 		}
 
 		private void upload(File file) throws IOException {
@@ -56,10 +60,27 @@ public class BootstrapServer {
 		}
 	}
 
+	private static PrintWriter _log;
+
 	public static void main(String[] args) throws IOException {
+		initLog();
+
 		ServerSocket serverSocket = new ServerSocket(PORT);
-		System.out.println("Waiting for connections on port " + PORT + "...");
+		log("Waiting for connections on port " + PORT + "...");
 		while (true) new Connection(serverSocket.accept());
+	}
+
+
+	private static void initLog() throws FileNotFoundException {
+		_log = new PrintWriter(new FileOutputStream(new File("c:\\sneer\\serverlog.txt"), true));
+	}
+
+
+	private static void log(String string) {
+		String entry = "" + new Date() + "   " + string;
+		System.out.println(entry);
+		_log.println(entry);
+		_log.flush();
 	}
 
 	private static int version(File mainApp) {

@@ -24,8 +24,8 @@ public class Bootstrap {
 	private static Socket _socket;
 	private static ObjectInputStream _objectIn;
 	public static final String GREETING = "Sneer Bootstrap";
+
 	
-	// Oi
 	public static void main(String[] ignored) {
 			try {
 				tryToRun();
@@ -82,18 +82,18 @@ public class Bootstrap {
 
 	
 	private static File mainApp() {
-		if (_mainApp == null) _mainApp = findNewestMainApp();
+		if (_mainApp == null) _mainApp = findNewestMainApp(programsDirectory());
 		return _mainApp;
 	}
 
 	
-	private static File findNewestMainApp() {
+	static File findNewestMainApp(File directory) {
 		int newest = 0;
-		for (String filename : listFilenames(programsDirectory()))
+		for (String filename : listFilenames(directory))
 			if (validNumber(filename) > newest) newest = validNumber(filename);  
 		
 		if (newest == 0) return null;
-		return new File(programsDirectory(), PREFIX + zeroPad(newest) + SUFFIX);
+		return new File(directory, PREFIX + zeroPad(newest) + SUFFIX);
 	}
 
 	
@@ -110,7 +110,7 @@ public class Bootstrap {
 	}
 
 	
-	private static int validNumber(String mainAppCandidate) {
+	static int validNumber(String mainAppCandidate) {
 		if (!mainAppCandidate.startsWith(PREFIX)) return -1;
 		if (!mainAppCandidate.endsWith(SUFFIX)) return -1;
 		if (mainAppCandidate.length() != FILENAME_LENGTH) return -1;
@@ -253,19 +253,28 @@ public class Bootstrap {
 
 
 	private static void tryToDownloadMainApp() throws IOException {
-		byte[] jarContents = downloadMainAppJarContents();
-		writeToMainAppFile(jarContents);
+		int mainAppVersion;
+		byte[] mainAppContents;
+		try {
+			openDownloadConnection();
+			mainAppVersion = (Integer)receiveObject();
+			mainAppContents = (byte[])receiveObject();
+		} finally {
+			closeDownloadConnection();
+		}
+
+		writeToMainAppFile(mainAppVersion, mainAppContents);
 	}
 
 	
-	private static void writeToMainAppFile(byte[] jarContents) throws IOException {
-		programsDirectory().mkdirs();
+	private static void writeToMainAppFile(int version, byte[] contents) throws IOException {
+		programsDirectory().mkdir();
 		File part = new File(programsDirectory(), "sneer.part");
 		FileOutputStream fos = new FileOutputStream(part);
-		fos.write(jarContents);
+		fos.write(contents);
 		fos.close();
 		
-		part.renameTo(new File(programsDirectory(), PREFIX + zeroPad(1) + SUFFIX));
+		part.renameTo(new File(programsDirectory(), PREFIX + zeroPad(version) + SUFFIX));
 	}
 
 	
@@ -288,16 +297,6 @@ public class Bootstrap {
 	}
 
 	
-	private static byte[] downloadMainAppJarContents() throws IOException {
-		try {
-			openDownloadConnection();
-			return receiveByteArray();
-		} finally {
-			closeDownloadConnection();
-		}
-	}
-
-	
 	private static void openDownloadConnection() throws IOException {
 		_socket = new Socket("klaus.selfip.net", 4242);
 		
@@ -317,9 +316,9 @@ public class Bootstrap {
 	}
 	
 	
-	static private byte[] receiveByteArray() throws IOException {
+	static private Object receiveObject() throws IOException {
 		try {
-			return (byte[])_objectIn.readObject();
+			return _objectIn.readObject();
 		} catch (ClassNotFoundException e) {
 			throw new IOException(e.getMessage());
 		}

@@ -1,6 +1,7 @@
 package sneer;
 
 import java.io.DataInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +12,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class BootstrapServer {
+
+	private static final int PORT = 4242;
 
 	static class Connection extends Thread {
 		private final Socket _socket;
@@ -33,22 +36,17 @@ public class BootstrapServer {
 		private void tryToRun() throws Exception {
 			System.out.println("Connection received...");
 			if (!validConnection()) {System.out.println("invalid");return;}
-
-			OutputStream outputStream = _socket.getOutputStream();    // Get the OUTPUT stream first. JDK 1.3.1_01 for Windows will lock up if you get the INPUT stream first.
-			ObjectOutputStream objectOut = new ObjectOutputStream(outputStream);
-			System.out.print("writing...");
-			objectOut.writeObject(jarContents());
+			File mainApp = newestMainApp();
+			System.out.println("Uploading " + mainApp.getName() + "...");
+			upload(mainApp);
 			System.out.println("done");
 		}
 
-		private byte[] jarContents() throws IOException {
-			DataInputStream dataIn = new DataInputStream(new FileInputStream("c:\\temp\\sneerToBeServed.jar"));
-			
-			System.out.println(dataIn.available());
-			
-			byte[] result = new byte[dataIn.available()];
-			dataIn.readFully(result);
-			return result;
+		private void upload(File file) throws IOException {
+			OutputStream outputStream = _socket.getOutputStream();
+			ObjectOutputStream objectOut = new ObjectOutputStream(outputStream);
+			objectOut.writeObject(version(file));
+			objectOut.writeObject(contents(file));
 		}
 
 		private boolean validConnection() throws Exception {
@@ -59,9 +57,24 @@ public class BootstrapServer {
 	}
 
 	public static void main(String[] args) throws IOException {
-		ServerSocket serverSocket = new ServerSocket(4242);
-		System.out.println("Waiting...");
+		ServerSocket serverSocket = new ServerSocket(PORT);
+		System.out.println("Waiting for connections on port " + PORT + "...");
 		while (true) new Connection(serverSocket.accept());
+	}
+
+	private static int version(File mainApp) {
+		return Bootstrap.validNumber(mainApp.getName());
+	}
+
+	private static File newestMainApp() {
+		return Bootstrap.findNewestMainApp(new File("c:\\sneer\\mainapps"));
+	}
+
+	private static byte[] contents(File mainApp) throws IOException {
+		DataInputStream dataIn = new DataInputStream(new FileInputStream(mainApp));
+		byte[] result = new byte[dataIn.available()];
+		dataIn.readFully(result);
+		return result;
 	}
 
 }

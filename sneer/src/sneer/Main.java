@@ -18,6 +18,8 @@ public class Main extends Bootstrap2 {
 	}
 
 	private static void tryToRun() throws IOException {
+		Bootstrap2.checkJavaVersionOtherwiseExit(); //TODO: Remove this call when nobody is downloading the old Bootstrap any longer.
+		
 		if (!hasName()) {
 			showOptionDialog("Foi encontrada uma nova atualização do Sneer.", "Já?");
 			enterName();

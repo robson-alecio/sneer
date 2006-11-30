@@ -72,11 +72,23 @@ public class Bootstrap2 {
 
 
 	private static void tryToRun() throws Exception {
+		checkJavaVersionOtherwiseExit();
+		
 		if (!hasMainApp()) tryToInstallMainAppOtherwiseExit();
 		runMainApp();
 	}
 
 	
+	static void checkJavaVersionOtherwiseExit() {
+		String version = System.getProperty("java.specification.version");
+		System.out.println(version);
+		if (Float.parseFloat(version) >= 1.6f) return;
+		
+		showOptionDialog("Você precisa usar Java versão 6 ou mais recente.", "Sair");
+		System.exit(-1);
+	}
+
+
 	private static void runMainApp() throws Exception {
 		Class<?> clazz = new URLClassLoader(new URL[] { mainApp().toURI().toURL() }).loadClass("sneer.Main");
 		clazz.getMethod("main", new Class[] { String[].class }).invoke(null, new Object[] { new String[0] });

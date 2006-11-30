@@ -4,7 +4,6 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -34,16 +33,24 @@ public class BootstrapServer {
 				tryToRun();
 			} catch (Exception e) {
 				e.printStackTrace();
+				e.printStackTrace(_log);
 			}
 		}
 
 		private void tryToRun() throws Exception {
 			log("Connection received from " + _socket.getRemoteSocketAddress());
-			if (!validConnection()) {log("invalid");return;}
+			
 			File mainApp = newestMainApp();
+			int newestVersion = Bootstrap2.validNumber(mainApp.getName());
+			if (requestedVersion() > newestVersion) {
+				log("Already up to date.");
+				return;
+			}
+				
 			log("Uploading " + mainApp.getName() + "...");
 			upload(mainApp);
-			log("done");
+			
+			log("done.");
 		}
 
 		private void upload(File file) throws IOException {
@@ -53,10 +60,12 @@ public class BootstrapServer {
 			objectOut.writeObject(contents(file));
 		}
 
-		private boolean validConnection() throws Exception {
+		private int requestedVersion() throws Exception {
 			InputStream inputStream = _socket.getInputStream();
 			ObjectInputStream objectIn = new ObjectInputStream(inputStream);
-			return Bootstrap.GREETING.equals(objectIn.readObject());
+			Object received = objectIn.readObject();
+			if (Bootstrap2.GREETING.equals(received)) return 1;
+			return (Integer)received;
 		}
 	}
 
@@ -72,7 +81,7 @@ public class BootstrapServer {
 
 
 	private static void initLog() throws FileNotFoundException {
-		_log = new PrintWriter(new FileOutputStream(new File("c:\\sneer\\serverlog.txt"), true));
+		_log = Bootstrap2.printWriterFor(new File("c:\\sneer\\serverlog.txt"));
 	}
 
 
@@ -84,11 +93,11 @@ public class BootstrapServer {
 	}
 
 	private static int version(File mainApp) {
-		return Bootstrap.validNumber(mainApp.getName());
+		return Bootstrap2.validNumber(mainApp.getName());
 	}
 
 	private static File newestMainApp() {
-		return Bootstrap.findNewestMainApp(new File("c:\\sneer\\mainapps"));
+		return Bootstrap2.findNewestMainApp(new File("c:\\sneer\\mainapps"));
 	}
 
 	private static byte[] contents(File mainApp) throws IOException {

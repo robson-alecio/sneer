@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -20,6 +19,7 @@ public class BootstrapServer {
 
 	static class Connection extends Thread {
 		private final Socket _socket;
+		private ObjectOutputStream _objectOut;
 
 		Connection(Socket socket) {
 			_socket = socket;
@@ -38,12 +38,21 @@ public class BootstrapServer {
 		}
 
 		private void tryToRun() throws Exception {
+			try {
+				tryToServe();
+			} finally {
+				_socket.close();
+			}
+		}
+
+		private void tryToServe() throws Exception {
 			log("Connection received from " + _socket.getRemoteSocketAddress());
 			
 			File mainApp = newestMainApp();
 			int newestVersion = Bootstrap2.validNumber(mainApp.getName());
 			if (requestedVersion() > newestVersion) {
-				log("Already up to date.");
+				log(Bootstrap2.UP_TO_DATE);
+				send(Bootstrap2.UP_TO_DATE);
 				return;
 			}
 				
@@ -54,17 +63,22 @@ public class BootstrapServer {
 		}
 
 		private void upload(File file) throws IOException {
-			OutputStream outputStream = _socket.getOutputStream();
-			ObjectOutputStream objectOut = new ObjectOutputStream(outputStream);
-			objectOut.writeObject(version(file));
-			objectOut.writeObject(contents(file));
+			send(version(file));
+			send(contents(file));
 		}
+
+		private void send(Object toSend) throws IOException {
+			if (_objectOut == null)
+				_objectOut = new ObjectOutputStream(_socket.getOutputStream());
+			_objectOut.writeObject(toSend);
+		}
+
 
 		private int requestedVersion() throws Exception {
 			InputStream inputStream = _socket.getInputStream();
 			ObjectInputStream objectIn = new ObjectInputStream(inputStream);
 			Object received = objectIn.readObject();
-			if (Bootstrap2.GREETING.equals(received)) return 1;
+			if (Bootstrap.GREETING.equals(received)) return 1;
 			return (Integer)received;
 		}
 	}

@@ -28,8 +28,9 @@ public class Main extends Bootstrap2 {
 
 	private static void enterName() throws FileNotFoundException {
 		String prompt =
-			" Você acaba de alcançar a liberdade 1 da computação\n" +
-			" soberana: Nome Próprio. Digite seu nome abaixo.\n\n";
+			" Você acaba de alcançar a liberdade 1\n" +
+			" da computação soberana: Nome Próprio.\n\n" +
+			" Digite seu nome";
 		String name = JOptionPane.showInputDialog(prompt);
 		if (name == null || name.trim().isEmpty()) return;
 		name = name.trim();

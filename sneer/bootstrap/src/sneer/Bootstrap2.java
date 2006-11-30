@@ -24,7 +24,7 @@ public class Bootstrap2 {
 	
 	private static Socket _socket;
 	private static ObjectInputStream _objectIn;
-	public static final String GREETING = "Sneer Bootstrap";
+	public static final String UP_TO_DATE = "UP TO DATE";
 
 	
 	public static void main(String[] ignored) {
@@ -269,7 +269,9 @@ public class Bootstrap2 {
 		byte[] mainAppContents;
 		try {
 			openDownloadConnectionForVersion(version);
-			mainAppVersion = (Integer)receiveObject();
+			Object received = receiveObject();
+			if (UP_TO_DATE.equals(received)) log(UP_TO_DATE);
+			mainAppVersion = (Integer)received;
 			mainAppContents = (byte[])receiveObject();
 		} finally {
 			closeDownloadConnection();
@@ -279,6 +281,11 @@ public class Bootstrap2 {
 	}
 
 	
+	private static void log(String upToDate) {
+int continueCodeFromHere;		
+	}
+
+
 	private static void writeToMainAppFile(int version, byte[] contents) throws IOException {
 		programsDirectory().mkdir();
 		File part = new File(programsDirectory(), "sneer.part");

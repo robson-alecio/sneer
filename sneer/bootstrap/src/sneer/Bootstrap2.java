@@ -282,7 +282,7 @@ public class Bootstrap2 {
 		try {
 			openDownloadConnectionForVersion(version);
 			Object received = receiveObject();
-			if (UP_TO_DATE.equals(received)) log(UP_TO_DATE);
+			if (UP_TO_DATE.equals(received)) { log(UP_TO_DATE); return; }
 			mainAppVersion = (Integer)received;
 			mainAppContents = (byte[])receiveObject();
 		} finally {

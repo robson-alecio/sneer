@@ -1,5 +1,6 @@
 package sneer;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -26,6 +27,8 @@ public class Bootstrap2 {
 	private static ObjectInputStream _objectIn;
 	public static final String UP_TO_DATE = "UP TO DATE";
 
+	private static PrintWriter _log;
+
 	
 	public static void main(String[] ignored) {
 			try {
@@ -38,27 +41,30 @@ public class Bootstrap2 {
 
 	static void log(Throwable throwable) {
 			try {
-				tryToLog(throwable);
-			} catch (IOException e) {
+				log("\n" + stackToString(throwable));
+			} catch (FileNotFoundException e) {
 				show(throwable);
 				show(e);
 			}
 	}
 
 
-	private static void tryToLog(Throwable throwable) throws IOException {
-		logDirectory().mkdir();
-		PrintWriter logWriter = printWriterFor(new File(logDirectory(), "log.txt"));
-		logWriter.println("========================= " + new Date());
-		throwable.printStackTrace(logWriter);
-		logWriter.println();
-		logWriter.println();
-		logWriter.flush();
+	private static String stackToString(Throwable throwable) {
+		ByteArrayOutputStream result = new ByteArrayOutputStream();
+		throwable.printStackTrace(new PrintWriter(result));
+		return result.toString();
 	}
 
 
-	static PrintWriter printWriterFor(File file)
-			throws FileNotFoundException {
+	private static PrintWriter log() throws FileNotFoundException {
+		if (_log != null) return _log;
+		logDirectory().mkdir();
+		PrintWriter logWriter = printWriterFor(new File(logDirectory(), "log.txt"));
+		return logWriter;
+	}
+
+
+	static PrintWriter printWriterFor(File file) throws FileNotFoundException {
 		FileOutputStream logStream = new FileOutputStream(file, true);
 		PrintWriter logWriter = new PrintWriter(logStream);
 		return logWriter;
@@ -282,7 +288,12 @@ public class Bootstrap2 {
 		try {
 			openDownloadConnectionForVersion(version);
 			Object received = receiveObject();
-			if (UP_TO_DATE.equals(received)) { log(UP_TO_DATE); return; }
+			if (UP_TO_DATE.equals(received)) {
+				log("Servidor encontrado. Não há atualização para o Sneer no momento.");
+				return;
+			}
+
+			log("Servidor encontrado. Baixando atualização para o Sneer...");
 			mainAppVersion = (Integer)received;
 			mainAppContents = (byte[])receiveObject();
 		} finally {
@@ -290,11 +301,15 @@ public class Bootstrap2 {
 		}
 
 		writeToMainAppFile(mainAppVersion, mainAppContents);
+		log("Atualização baixada.");
 	}
 
 	
-	private static void log(String upToDate) {
-int continueCodeFromHere;		
+	private static void log(String entry) throws FileNotFoundException {
+		log().println("" + new Date() + "  " + entry);
+		log().println();
+		log().println();
+		log().flush();
 	}
 
 

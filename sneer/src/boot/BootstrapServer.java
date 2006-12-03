@@ -1,4 +1,4 @@
-package sneer;
+package boot;
 
 import java.io.DataInputStream;
 import java.io.File;
@@ -57,10 +57,10 @@ public class BootstrapServer {
 			log("Connection received from " + _socket.getRemoteSocketAddress());
 			
 			File mainApp = newestMainApp();
-			int newestVersion = Bootstrap2.validNumber(mainApp.getName());
+			int newestVersion = Boot.validNumber(mainApp.getName());
 			if (requestedVersion() > newestVersion) {
-				log(Bootstrap2.UP_TO_DATE);
-				send(Bootstrap2.UP_TO_DATE);
+				log(Boot.UP_TO_DATE);
+				send(Boot.UP_TO_DATE);
 				return;
 			}
 				
@@ -105,7 +105,7 @@ public class BootstrapServer {
 
 
 	private static void initLog() throws FileNotFoundException {
-		_log = Bootstrap2.printWriterFor(new File("c:\\sneer\\serverlog.txt"));
+		_log = Boot.printWriterFor(new File("c:\\sneer\\serverlog.txt"));
 	}
 
 
@@ -118,12 +118,12 @@ public class BootstrapServer {
 
 	
 	private static int version(File mainApp) {
-		return Bootstrap2.validNumber(mainApp.getName());
+		return Boot.validNumber(mainApp.getName());
 	}
 
 	
 	private static File newestMainApp() {
-		return Bootstrap2.findNewestMainApp(new File("c:\\sneer\\mainapps"));
+		return Boot.findNewestMainApp(new File("c:\\sneer\\mainapps"));
 	}
 
 	

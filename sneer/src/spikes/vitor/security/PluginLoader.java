@@ -33,7 +33,7 @@ public class PluginLoader {
 		return new URLClassLoader(new URL[] {binaryDirectory()});
 	}
 	
-	public Class loadPlugin(ClassLoader loader) {
+	public Class<?> loadPlugin(ClassLoader loader) {
 		try {
 			clazz = loader.loadClass(_plugin);
 		} catch (ClassNotFoundException e) {
@@ -44,7 +44,7 @@ public class PluginLoader {
 		return clazz;
 	}
 
-	public Class getPlugin() {
+	public Class<?> getPlugin() {
 		return clazz;
 	}
 	

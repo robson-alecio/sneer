@@ -9,7 +9,9 @@ import java.io.PrintWriter;
 
 import javax.swing.JOptionPane;
 
-public class Main extends Bootstrap2 {
+import boot.Boot;
+
+public class Main extends Boot {
 
 	public static void main(String[] args) {
 		try {
@@ -20,7 +22,7 @@ public class Main extends Bootstrap2 {
 	}
 
 	private static void tryToRun() throws IOException {
-		Bootstrap2.checkJavaVersionOtherwiseExit(); //TODO: Remove this call when nobody is using the first Bootstrap any longer. The new bootstrap does that already.
+		Boot.checkJavaVersionOtherwiseExit(); //TODO: Remove this call when nobody is using the first Bootstrap any longer. The new bootstrap does that already.
 		
 		if (!hasName()) {
 			showOptionDialog("Foi encontrada uma nova atualização do Sneer.", "Já?");

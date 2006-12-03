@@ -7,7 +7,7 @@ package sneer.old.remote;
 import java.io.IOException;
 
 
-public class QueryRouter<T> implements QueryExecuter {
+public class QueryRouter implements QueryExecuter {
 
     private final String _nickname;
     private final QueryExecuter _delegate;

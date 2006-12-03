@@ -6,7 +6,7 @@ public class PluginRunner extends Thread {
 	Class<?> _clazz;
 	ThreadGroup group;
 	
-	public PluginRunner (ThreadGroup pluginGroup, Class clazz) {
+	public PluginRunner (ThreadGroup pluginGroup, Class<?> clazz) {
 		super (pluginGroup, clazz.getName());
 		this._clazz = clazz;
 		this.group = pluginGroup;

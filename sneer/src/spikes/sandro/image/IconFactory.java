@@ -34,7 +34,7 @@ public abstract class IconFactory {
 		return getIcon(IconFactory.class, relativeImagePath, hasShadow);
 	}
 
-	public static ImageIcon getIcon(Class anchor, String relativeImagePath, boolean hasShadow){
+	public static ImageIcon getIcon(Class<?> anchor, String relativeImagePath, boolean hasShadow){
 		String id = new StringBuffer().append(hasShadow).append(anchor.getName()).append("|").append(relativeImagePath).toString(); 
 		if(map.containsKey(id)){
 			return map.get(id);

@@ -1,7 +1,9 @@
 package sneer;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -18,7 +20,7 @@ public class Main extends Bootstrap2 {
 	}
 
 	private static void tryToRun() throws IOException {
-		Bootstrap2.checkJavaVersionOtherwiseExit(); //TODO: Remove this call when nobody is downloading the old Bootstrap any longer.
+		Bootstrap2.checkJavaVersionOtherwiseExit(); //TODO: Remove this call when nobody is using the first Bootstrap any longer. The new bootstrap does that already.
 		
 		if (!hasName()) {
 			showOptionDialog("Foi encontrada uma nova atualização do Sneer.", "Já?");
@@ -55,16 +57,26 @@ public class Main extends Bootstrap2 {
 	}
 
 	private static boolean hasName() {
-		return nameFile().exists();
+		return name() != null;
 	}
 
 	private static File nameFile() {
 		return new File(sneerDirectory(), "name.txt");
 	}
 
+	private static String name()  {
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(nameFile()));
+			return reader.readLine();
+		} catch (IOException e) {
+			return null;
+		}
+	}
+
 	private static void tryToDownloadNextVersion() throws IOException {
 		int currentVersion = validNumber(mainApp().getName());
 		tryToDownloadMainAppVersion(currentVersion + 1);
 	}
+
 	
 }

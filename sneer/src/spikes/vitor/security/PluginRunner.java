@@ -3,18 +3,18 @@ package spikes.vitor.security;
 import java.lang.reflect.InvocationTargetException;
 
 public class PluginRunner extends Thread {
-	Class<?> clazz;
+	Class<?> _clazz;
 	ThreadGroup group;
 	
 	public PluginRunner (ThreadGroup pluginGroup, Class clazz) {
 		super (pluginGroup, clazz.getName());
-		this.clazz = clazz;
+		this._clazz = clazz;
 		this.group = pluginGroup;
 	}
 	
 	public void invokeSneerMainMethod() {
 		try {
-			clazz.getMethod("run", new Class[] { }).invoke(null, new Object[] { });
+			_clazz.getMethod("run", new Class[] { }).invoke(null, new Object[] { });
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (SecurityException e) {
@@ -28,6 +28,7 @@ public class PluginRunner extends Thread {
 		}
 	}
 	
+	@Override
 	public void run() {
 		invokeSneerMainMethod();
 	}

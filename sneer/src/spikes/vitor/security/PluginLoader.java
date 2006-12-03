@@ -1,20 +1,18 @@
 package spikes.vitor.security;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
 public class PluginLoader {
 	
-	String plugin;
+	String _plugin;
 	Class<?> clazz;
-	ThreadGroup group;
 	
-	public PluginLoader(ThreadGroup group, String plugin) {
+	public PluginLoader(String plugin) {
 		super();
-		this.plugin = plugin;
+		_plugin = plugin;
 		
 		ClassLoader loader = createLoader();
 		clazz = loadPlugin(loader);
@@ -22,7 +20,7 @@ public class PluginLoader {
 	
 	public URL binaryDirectory() {
 		try {
-			return new File("bin").toURL();
+			return new File("bin").toURI().toURL();
 		} catch (MalformedURLException e) {
 			System.out.println("Diretório Incorreto: " + new File("bin"));
 			e.printStackTrace();
@@ -37,7 +35,7 @@ public class PluginLoader {
 	
 	public Class loadPlugin(ClassLoader loader) {
 		try {
-			clazz = loader.loadClass(plugin);
+			clazz = loader.loadClass(_plugin);
 		} catch (ClassNotFoundException e) {
 			System.out.println("Classe não existe: " + "spikes.klaus.classloading.HelloWorld");
 			e.printStackTrace();

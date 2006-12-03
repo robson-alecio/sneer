@@ -289,7 +289,7 @@ public class Bootstrap2 {
 			openDownloadConnectionForVersion(version);
 			Object received = receiveObject();
 			if (UP_TO_DATE.equals(received)) {
-				log("Servidor encontrado. Não há atualização para o Sneer no momento.");
+				log("Servidor encontrado. Não há atualização nova para o Sneer.");
 				return;
 			}
 

@@ -18,34 +18,42 @@ public class BootstrapServer {
 	private static final int PORT = 4242;
 
 	static class Connection extends Thread {
+		
 		private final Socket _socket;
 		private ObjectOutputStream _objectOut;
 
+		
 		Connection(Socket socket) {
 			_socket = socket;
 			setDaemon(true);
 			start();
 		}
+	
 		
 		@Override
 		public void run() {
 			try {
-				tryToRun();
+				tryToServeSocket();
 			} catch (Exception e) {
+				e.printStackTrace();
+				e.printStackTrace(_log);
+			} finally {
+				closeSocket();
+			}
+		}
+
+		
+		private void closeSocket() {
+			try {
+				_socket.close();
+			} catch (IOException e) {
 				e.printStackTrace();
 				e.printStackTrace(_log);
 			}
 		}
 
-		private void tryToRun() throws Exception {
-			try {
-				tryToServe();
-			} finally {
-				_socket.close();
-			}
-		}
-
-		private void tryToServe() throws Exception {
+		
+		private void tryToServeSocket() throws Exception {
 			log("Connection received from " + _socket.getRemoteSocketAddress());
 			
 			File mainApp = newestMainApp();
@@ -62,11 +70,13 @@ public class BootstrapServer {
 			log("done.");
 		}
 
+		
 		private void upload(File file) throws IOException {
 			send(version(file));
 			send(contents(file));
 		}
 
+		
 		private void send(Object toSend) throws IOException {
 			if (_objectOut == null)
 				_objectOut = new ObjectOutputStream(_socket.getOutputStream());
@@ -106,14 +116,17 @@ public class BootstrapServer {
 		_log.flush();
 	}
 
+	
 	private static int version(File mainApp) {
 		return Bootstrap2.validNumber(mainApp.getName());
 	}
 
+	
 	private static File newestMainApp() {
 		return Bootstrap2.findNewestMainApp(new File("c:\\sneer\\mainapps"));
 	}
 
+	
 	private static byte[] contents(File mainApp) throws IOException {
 		DataInputStream dataIn = new DataInputStream(new FileInputStream(mainApp));
 		byte[] result = new byte[dataIn.available()];

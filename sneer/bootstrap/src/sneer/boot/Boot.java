@@ -64,7 +64,7 @@ public class Boot {
 	}
 
 
-	protected static PrintWriter printWriterFor(File file) throws FileNotFoundException {
+	public static PrintWriter printWriterFor(File file) throws FileNotFoundException {
 		FileOutputStream logStream = new FileOutputStream(file, true);
 		PrintWriter logWriter = new PrintWriter(logStream);
 		return logWriter;
@@ -112,7 +112,7 @@ public class Boot {
 	}
 
 	
-	static File findNewestMainApp(File directory) {
+	public static File findNewestMainApp(File directory) {
 		int newest = 0;
 		for (String filename : listFilenames(directory))
 			if (validNumber(filename) > newest) newest = validNumber(filename);  
@@ -135,7 +135,7 @@ public class Boot {
 	}
 
 	
-	protected static int validNumber(String mainAppCandidate) {
+	public static int validNumber(String mainAppCandidate) {
 		if (!mainAppCandidate.startsWith(PREFIX)) return -1;
 		if (!mainAppCandidate.endsWith(SUFFIX)) return -1;
 		if (mainAppCandidate.length() != FILENAME_LENGTH) return -1;

@@ -1,4 +1,4 @@
-package boot;
+package sneer.boot;
 
 import java.io.DataInputStream;
 import java.io.File;

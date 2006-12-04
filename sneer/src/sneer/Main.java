@@ -9,7 +9,8 @@ import java.io.PrintWriter;
 
 import javax.swing.JOptionPane;
 
-import boot.Boot;
+import sneer.boot.Boot;
+
 
 public class Main extends Boot {
 

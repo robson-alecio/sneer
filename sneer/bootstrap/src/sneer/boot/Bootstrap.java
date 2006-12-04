@@ -1,8 +1,6 @@
-package boot;
+package sneer.boot;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -15,7 +13,7 @@ import java.util.Date;
 
 import javax.swing.JOptionPane;
 
-public class Boot {
+public class Bootstrap {
 
 	private static File _mainApp;
 	private static final String PREFIX = "main";
@@ -25,9 +23,7 @@ public class Boot {
 	
 	private static Socket _socket;
 	private static ObjectInputStream _objectIn;
-	public static final String UP_TO_DATE = "UP TO DATE";
-
-	private static PrintWriter _log;
+	public static final String GREETING = "Sneer Bootstrap";
 
 	
 	public static void main(String[] ignored) {
@@ -39,35 +35,26 @@ public class Boot {
 	}
 
 
-	protected static void log(Throwable throwable) {
+	private static void log(Throwable throwable) {
 			try {
-				log("\n" + stackToString(throwable));
-			} catch (FileNotFoundException e) {
+				tryToLog(throwable);
+			} catch (IOException e) {
 				show(throwable);
 				show(e);
 			}
 	}
 
 
-	private static String stackToString(Throwable throwable) {
-		ByteArrayOutputStream result = new ByteArrayOutputStream();
-		throwable.printStackTrace(new PrintWriter(result));
-		return result.toString();
-	}
-
-
-	private static PrintWriter log() throws FileNotFoundException {
-		if (_log != null) return _log;
+	private static void tryToLog(Throwable throwable) throws IOException {
 		logDirectory().mkdir();
-		PrintWriter logWriter = printWriterFor(new File(logDirectory(), "log.txt"));
-		return logWriter;
-	}
-
-
-	protected static PrintWriter printWriterFor(File file) throws FileNotFoundException {
-		FileOutputStream logStream = new FileOutputStream(file, true);
+		FileOutputStream logStream = new FileOutputStream(new File(logDirectory(), "log.txt"), true);
 		PrintWriter logWriter = new PrintWriter(logStream);
-		return logWriter;
+		logWriter.println("========================= " + new Date());
+		throwable.printStackTrace(logWriter);
+		logWriter.println();
+		logWriter.println();
+		logWriter.flush();
+		logStream.close();
 	}
 
 	
@@ -78,23 +65,11 @@ public class Boot {
 
 
 	private static void tryToRun() throws Exception {
-		checkJavaVersionOtherwiseExit();
-		
 		if (!hasMainApp()) tryToInstallMainAppOtherwiseExit();
 		runMainApp();
 	}
 
 	
-	protected static void checkJavaVersionOtherwiseExit() {
-		String version = System.getProperty("java.specification.version");
-		System.out.println(version);
-		if (Float.parseFloat(version) >= 1.6f) return;
-		
-		showOptionDialog("Você precisa usar Java versão 6 ou mais recente.", "Sair");
-		System.exit(-1);
-	}
-
-
 	private static void runMainApp() throws Exception {
 		Class<?> clazz = new URLClassLoader(new URL[] { mainApp().toURI().toURL() }).loadClass("sneer.Main");
 		clazz.getMethod("main", new Class[] { String[].class }).invoke(null, new Object[] { new String[0] });
@@ -106,7 +81,7 @@ public class Boot {
 	}
 
 	
-	protected static File mainApp() {
+	private static File mainApp() {
 		if (_mainApp == null) _mainApp = findNewestMainApp(programsDirectory());
 		return _mainApp;
 	}
@@ -135,7 +110,7 @@ public class Boot {
 	}
 
 	
-	protected static int validNumber(String mainAppCandidate) {
+	static int validNumber(String mainAppCandidate) {
 		if (!mainAppCandidate.startsWith(PREFIX)) return -1;
 		if (!mainAppCandidate.endsWith(SUFFIX)) return -1;
 		if (mainAppCandidate.length() != FILENAME_LENGTH) return -1;
@@ -153,7 +128,7 @@ public class Boot {
 			approveInstallationWithUserOtherwiseExit();
 			tryToCreateSneerDirectory();
 		}
-		tryToDownloadMainAppVersion(1);
+		tryToDownloadMainApp();
 	}
 
 
@@ -240,16 +215,11 @@ public class Boot {
 				"Criar diretório", "Não criar"
 		);
 		
-		sayGoodbye();
-
-	}
-
-
-	protected static void sayGoodbye() {
-		showOptionDialog(
+		approveConditionWithUserOtherwiseExit(
 				" Obrigado e até a próxima atualização do Sneer.  ;)",
 				"Falou"
 		);
+
 	}
 
 
@@ -259,7 +229,7 @@ public class Boot {
 	}
 
 
-	protected static boolean showOptionDialog(String message, Object... options) {
+	private static boolean showOptionDialog(String message, Object... options) {
 		int chosen = JOptionPane.showOptionDialog(null, message + "\n\n", "Sneer", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 		return chosen == 0;
 	}
@@ -282,37 +252,21 @@ public class Boot {
 	}
 
 
-	protected static void tryToDownloadMainAppVersion(int version) throws IOException {
+	private static void tryToDownloadMainApp() throws IOException {
 		int mainAppVersion;
 		byte[] mainAppContents;
 		try {
-			openDownloadConnectionForVersion(version);
-			Object received = receiveObject();
-			if (UP_TO_DATE.equals(received)) {
-				log("Servidor encontrado. Não há atualização nova para o Sneer.");
-				return;
-			}
-
-			log("Servidor encontrado. Baixando atualização para o Sneer...");
-			mainAppVersion = (Integer)received;
+			openDownloadConnection();
+			mainAppVersion = (Integer)receiveObject();
 			mainAppContents = (byte[])receiveObject();
 		} finally {
 			closeDownloadConnection();
 		}
 
 		writeToMainAppFile(mainAppVersion, mainAppContents);
-		log("Atualização baixada.");
 	}
 
 	
-	private static void log(String entry) throws FileNotFoundException {
-		log().println("" + new Date() + "  " + entry);
-		log().println();
-		log().println();
-		log().flush();
-	}
-
-
 	private static void writeToMainAppFile(int version, byte[] contents) throws IOException {
 		programsDirectory().mkdir();
 		File part = new File(programsDirectory(), "sneer.part");
@@ -333,7 +287,7 @@ public class Boot {
 	}
 	
 	
-	protected static File sneerDirectory() {
+	static private File sneerDirectory() {
 		return new File(userHome(), ".sneer");
 	}
 
@@ -343,10 +297,10 @@ public class Boot {
 	}
 
 	
-	private static void openDownloadConnectionForVersion(int version) throws IOException {
+	private static void openDownloadConnection() throws IOException {
 		_socket = new Socket("klaus.selfip.net", 4242);
 		
-		new ObjectOutputStream(_socket.getOutputStream()).writeObject(version);
+		new ObjectOutputStream(_socket.getOutputStream()).writeObject(GREETING);
 		
 		_objectIn = new ObjectInputStream(_socket.getInputStream());
 	}

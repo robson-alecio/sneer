@@ -22,7 +22,7 @@ public class PluginLoader {
 		try {
 			return new File("bin").toURI().toURL();
 		} catch (MalformedURLException e) {
-			System.out.println("Diretório Incorreto: " + new File("bin"));
+			System.out.println("Ivalid Directory: " + new File("bin"));
 			e.printStackTrace();
 			System.exit(1);
 		}
@@ -37,7 +37,7 @@ public class PluginLoader {
 		try {
 			clazz = loader.loadClass(_plugin);
 		} catch (ClassNotFoundException e) {
-			System.out.println("Classe não existe: " + "spikes.klaus.classloading.HelloWorld");
+			System.out.println("Class not found: " + _plugin);
 			e.printStackTrace();
 			System.exit(1);
 		}

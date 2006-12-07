@@ -30,9 +30,9 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkAccess(Thread t) {
-    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    		throw new SecurityException("You can't access Threads");
-    	}
+    	//if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
+    	//	throw new SecurityException("You can't access Threads");
+    	//}
     	if (hasDefaultSM()) {
     	    defaultManager.checkAccess(t);
 	   	}
@@ -40,9 +40,9 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkAccess(ThreadGroup g) {
-    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    		throw new SecurityException("You can't access Groups of Threads");
-    	}
+    	//if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
+    	//	throw new SecurityException("You can't access Groups of Threads");
+    	//}
     	if (hasDefaultSM()) {
     	    defaultManager.checkAccess(g);
 	   	}
@@ -110,9 +110,9 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkLink(String lib) {
-    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    		throw new SecurityException("You can't check link");
-    	}
+    	//if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
+    	//	throw new SecurityException("You can't check link");
+    	//}
     	if (hasDefaultSM()) {
     	    defaultManager.checkLink(lib);
 	   	}
@@ -130,9 +130,9 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkMemberAccess(Class<?> clazz, int which) {
-    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    		throw new SecurityException("You can't do multicast");
-    	}	
+    	//if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
+    	//	throw new SecurityException("You can't do multicast");
+    	//}	
     	if (hasDefaultSM()) {
     	    defaultManager.checkMemberAccess(clazz, which);
 	   	}
@@ -182,6 +182,7 @@ public class SneerSecurityManager extends SecurityManager {
 	@Override
 	public void checkPermission(Permission perm) {
 		System.out.println(perm.getName());
+		System.out.println(perm.getClass().getName());
 		if (hasDefaultSM()) {
 		    defaultManager.checkPermission(perm);
 	   	}
@@ -260,9 +261,9 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public boolean checkTopLevelWindow(Object window) {
-    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    		throw new SecurityException("You can't access Windows");
-    	}
+    	//if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
+    	//	throw new SecurityException("You can't access Windows");
+    	//}
     	if (hasDefaultSM()) {
     		return defaultManager.checkTopLevelWindow(window);
 	   	}
@@ -283,9 +284,9 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkRead(String property) {
-    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    		throw new SecurityException("You can't read file");
-    	}
+    	//if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
+    	//	throw new SecurityException("You can't read file " + property);
+    	//}
     	if (hasDefaultSM()) {
     	    defaultManager.checkRead(property);
 	   	}
@@ -303,9 +304,9 @@ public class SneerSecurityManager extends SecurityManager {
 	
 	@Override
 	public void checkPropertyAccess(String property) {
-    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    		throw new SecurityException("You can't access System properties");
-    	}
+    	//if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
+    	//	throw new SecurityException("You can't access System properties");
+    	//}
     	if (hasDefaultSM()) {
     	    defaultManager.checkPropertyAccess(property);
 	   	}
@@ -313,9 +314,9 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkCreateClassLoader() {
-    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    		throw new SecurityException("You can't access Class Loader");
-    	}
+    	//if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
+    	//	throw new SecurityException("You can't access Class Loader");
+    	//}
     	if (hasDefaultSM()) {
     	    defaultManager.checkCreateClassLoader();
 	   	}

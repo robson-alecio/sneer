@@ -8,18 +8,18 @@ public class Main {
 		
 		System.setSecurityManager(new SneerSecurityManager(System.getSecurityManager(),plugins));
 		
-		PluginLoader loader = new PluginLoader("spikes.klaus.classloading.HelloWorld");
-		PluginRunner runner = new PluginRunner(plugins, loader.getPlugin());
+		//PluginLoader loader = new PluginLoader("spikes.klaus.classloading.HelloWorld");
+		//PluginRunner runner = new PluginRunner(plugins, loader.getPlugin());
 
-		runner.start();
+		//runner.start();
 		
-		loader = new PluginLoader("spikes.vitor.security.BadFilePlugin");
-		runner = new PluginRunner(plugins, loader.getPlugin());		
+		//loader = new PluginLoader("spikes.vitor.security.BadFilePlugin");
+		//runner = new PluginRunner(plugins, loader.getPlugin());		
 		
-		runner.start();
+		//runner.start();
 		
-		loader = new PluginLoader("spikes.vitor.security.BadImportPlugin");
-		runner = new PluginRunner(plugins, loader.getPlugin());		
+		PluginLoader loader = new PluginLoader("spikes.vitor.security.BadImportPlugin");
+		PluginRunner runner = new PluginRunner(plugins, loader.getPlugin());		
 		
 		runner.start();	
 	}

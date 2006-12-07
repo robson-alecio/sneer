@@ -130,6 +130,9 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkMemberAccess(Class<?> clazz, int which) {
+    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
+    		throw new SecurityException("You can't do multicast");
+    	}	
     	if (hasDefaultSM()) {
     	    defaultManager.checkMemberAccess(clazz, which);
 	   	}
@@ -168,6 +171,8 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkPermission(Permission perm, Object context) {
+		System.out.println(perm.getName());
+		
 		if (hasDefaultSM()) {
 	
 		    defaultManager.checkPermission(perm, context);
@@ -176,7 +181,7 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkPermission(Permission perm) {
-		
+		System.out.println(perm.getName());
 		if (hasDefaultSM()) {
 		    defaultManager.checkPermission(perm);
 	   	}
@@ -234,8 +239,11 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkSetFactory() {
+    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
+    		throw new SecurityException("You can't access the Clipboard");
+    	}		
+		
 		if (hasDefaultSM()) {
-	
 		    defaultManager.checkSetFactory();
 	   	}
 	}
@@ -319,14 +327,14 @@ public class SneerSecurityManager extends SecurityManager {
     		return;
     	}
     	
-    	if (!pkg.startsWith("javax.swing"))
+    	//if (!pkg.startsWith("javax.swing"))
     		return;
     	
-    	if (hasDefaultSM()) {
-    	    defaultManager.checkPackageAccess(pkg);
-    	}
+    	//if (hasDefaultSM()) {
+    	 //   defaultManager.checkPackageAccess(pkg);
+    	//}
     	
-   		throw new SecurityException("Can't access swing classes");
+   		//throw new SecurityException("Can't access swing classes");
     }
 
 }

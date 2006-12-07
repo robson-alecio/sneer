@@ -12,6 +12,7 @@ import java.util.Date;
 
 import sneer.boot.Boot;
 import sneer.boot.Bootstrap;
+import wheelexperiments.Cool;
 
 public class Server {
 
@@ -25,16 +26,17 @@ public class Server {
 
 		ServerSocket serverSocket = new ServerSocket(PORT);
 		log("Waiting for connections on port " + PORT + "...");
-		while (true) new Connection(serverSocket.accept());
+		while (true) Cool.startDaemon(new Connection(serverSocket.accept()));
 	}
 
 
 	private static void initLog() throws FileNotFoundException {
-		_log = Boot.printWriterFor(new File("c:\\sneer\\serverlog.txt"));
+		int uncomment;
+		//_log = Boot.printWriterFor(new File("c:\\sneer\\serverlog.txt"));
 	}
 
 
-	static void log(String string) {
+	public static void log(String string) {
 		String entry = "" + new Date() + "   " + string;
 		System.out.println(entry);
 		_log.println(entry);
@@ -42,19 +44,16 @@ public class Server {
 	}
 
 	
-	static class Connection extends Thread {
+	static class Connection implements Runnable {
 		
 		private final Socket _socket;
 
 		
 		Connection(Socket socket) {
 			_socket = socket;
-			setDaemon(true);
-			start();
 		}
 	
 		
-		@Override
 		public void run() {
 			try {
 				tryToServeSocket();

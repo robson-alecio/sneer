@@ -6,7 +6,7 @@ public class Main {
 	public static void main (String[] args) {
 		ThreadGroup plugins = new ThreadGroup("Threads of Plugins");
 		
-		System.setSecurityManager(new SneerSecurityManager(System.getSecurityManager(), plugins));
+		System.setSecurityManager(new SneerSecurityManager(plugins));
 		
 		PluginLoader loader = new PluginLoader("spikes.klaus.classloading.HelloWorld");
 		PluginRunner runner = new PluginRunner(plugins, loader.getPlugin());

@@ -3,12 +3,9 @@ package sneer.server;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
-import java.util.Date;
 
 import sneer.boot.Boot;
 
@@ -57,15 +54,16 @@ public class VersionUpdateAgent implements Agent {
 		File mainApp = newestMainApp();
 		int newestVersion = Boot.validNumber(mainApp.getName());
 		if (_requestedVersion > newestVersion) {
-			log(Boot.UP_TO_DATE);
-			send(Boot.UP_TO_DATE);
+			int uncomment;
+//			Server.logOtherwiseShow(Boot.UP_TO_DATE);
+//			send(Boot.UP_TO_DATE);
 			return;
 		}
 		
-		log("Uploading " + mainApp.getName() + "...");
+		Server.log("Uploading " + mainApp.getName() + "...");
 		upload(mainApp);
 		
-		log("done.");
+		Server.log("done.");
 	}
 
 }

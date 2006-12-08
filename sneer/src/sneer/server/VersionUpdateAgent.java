@@ -27,16 +27,16 @@ public class VersionUpdateAgent implements Agent {
 		File mainApp = newestMainApp();
 		int newestVersion = Boot.validNumber(mainApp.getName());
 		if (_requestedVersion > newestVersion) {
-			int uncomment;
+			int TODO_uncommentAllBelow;
 //			Server.logOtherwiseShow(Boot.UP_TO_DATE);
 //			send(Boot.UP_TO_DATE);
 			return;
 		}
 		
-		Server.log("Uploading " + mainApp.getName() + "...");
+//		Server._log.log("Uploading " + mainApp.getName() + "...");
 		upload(mainApp);
 		
-		Server.log("done.");
+//		Server._log.log("done.");
 	}
 
 	private void upload(File file) throws IOException {

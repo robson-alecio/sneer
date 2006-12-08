@@ -1,18 +1,10 @@
 package sneer;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.swing.JOptionPane;
 
 
 public class Main extends sneer.boot.Boot {
 	
-	private int uncomment;
+	private int TODO_uncomment;
 
 //	public static void main(String[] args) {
 //		try {

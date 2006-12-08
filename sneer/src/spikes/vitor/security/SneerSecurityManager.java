@@ -138,6 +138,7 @@ public class SneerSecurityManager extends SecurityManager {
 	   	}
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void checkMulticast(InetAddress maddr, byte ttl) {
     	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {

@@ -1,7 +1,6 @@
 package sneer.boot;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -103,12 +102,12 @@ public class Boot {
 	
 	private static void tryToInstallMainAppOtherwiseExit() throws IOException {
 		if (!sneerDirectory().exists()) {
-			int uncomment;
+			int TODO_uncomment;
 //			approveInstallationWithUserOtherwiseExit();
 			tryToCreateSneerDirectory();
 			tryToCreateLog();
 		}
-		//new VersionUpdater(1, _log);
+		new VersionUpdater(1, _log);
 	}
 
 
@@ -142,18 +141,8 @@ public class Boot {
 
 
 	private static void logOtherwiseShow(Throwable throwable) {
-		Log log = log();
-		int uncomment;
-//		try {
-			log = tryToCreateLog();
-//		} catch (FileNotFoundException ignored) {
-//			showFailureToLog(throwable);
-//			return;
-//		}
-		
-		log.log(throwable);
-		
-		if (log.hasError()) showFailureToLog(throwable);
+		log().log(throwable);
+		if (log().hasError()) showFailureToLog(throwable);
 	}
 	
 	
@@ -166,11 +155,11 @@ public class Boot {
 	private static Log tryToCreateLog() {
 		logDirectory().mkdir();
 		File logfile = new File(logDirectory(), "log.txt");
-		try {
-			return new Log(logfile);
-		} catch (FileNotFoundException e) {
-			throw new RuntimeException("Unable to open or create log file: " + logfile);
-		}
+		
+		Log result = new Log(logfile);
+		
+		if (result.hasError()) throw new RuntimeException("Unable to open or create log file: " + logfile);
+		return result;
 	}
 
 

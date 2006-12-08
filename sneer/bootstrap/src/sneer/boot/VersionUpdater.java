@@ -1,41 +1,38 @@
 package sneer.boot;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Date;
 
-import javax.swing.JOptionPane;
+import sneer.server.Server;
+import wheelexperiments.Log;
 
 public class VersionUpdater {
 
-	private static File _mainApp;
 	private static final String PREFIX = "main";
 	private static final String ZERO_MASK = "000000";
 	private static final String SUFFIX = ".jar";
-	private static final int FILENAME_LENGTH = PREFIX.length() + ZERO_MASK.length() + SUFFIX.length();
 	
 	private static Socket _socket;
 	private static ObjectInputStream _objectIn;
 	public static final String UP_TO_DATE = "UP TO DATE";
 
-	private static PrintWriter _log;
 
 	
-	public VersionUpdater(int nextVersion) {
+	public VersionUpdater(int nextVersion, Log log) throws IOException {
 		_nextVersion = nextVersion;
+		_log = log;
+		
+		tryToDownloadMainApp();
 	}
 
 	
 	private final int _nextVersion;
+
+	private final Log _log;
 
 	
 	private static String zeroPad(int fileNumber) {
@@ -45,18 +42,18 @@ public class VersionUpdater {
 
 
 
-	protected static void tryToDownloadMainAppVersion(int version) throws IOException {
+	private void tryToDownloadMainApp() throws IOException {
 		int mainAppVersion;
 		byte[] mainAppContents;
 		try {
-			openDownloadConnectionForVersion(version);
+			openDownloadConnectionForVersion(_nextVersion);
 			Object received = receiveObject();
 			if (UP_TO_DATE.equals(received)) {
-				log("Servidor encontrado. Não há atualização nova para o Sneer.");
+				_log.log("Servidor encontrado. Não há atualização nova para o Sneer.");
 				return;
 			}
 
-			log("Servidor encontrado. Baixando atualização para o Sneer...");
+			_log.log("Servidor encontrado. Baixando atualização para o Sneer...");
 			mainAppVersion = (Integer)received;
 			mainAppContents = (byte[])receiveObject();
 		} finally {
@@ -64,16 +61,7 @@ public class VersionUpdater {
 		}
 
 		writeToMainAppFile(mainAppVersion, mainAppContents);
-		log("Atualização baixada.");
-	}
-
-	
-	private static void log(String entry) throws FileNotFoundException {
-		int uncomment;
-//		log().println("" + new Date() + "  " + entry);
-//		log().println();
-//		log().println();
-//		log().flush();
+		_log.log("Atualização baixada.");
 	}
 
 
@@ -87,10 +75,6 @@ public class VersionUpdater {
 		part.renameTo(new File(programsDirectory(), PREFIX + zeroPad(version) + SUFFIX));
 	}
 
-	
-	static private File logDirectory() {
-		return new File(sneerDirectory(), "logs");
-	}
 
 	static private File programsDirectory() {
 		return new File(sneerDirectory(), "programs");
@@ -108,7 +92,7 @@ public class VersionUpdater {
 
 	
 	private static void openDownloadConnectionForVersion(int version) throws IOException {
-		_socket = new Socket("sovereigncomputing.net", 4242);
+		_socket = new Socket("sovereigncomputing.net", Server.PORT);
 		
 		new ObjectOutputStream(_socket.getOutputStream()).writeObject(version);
 		

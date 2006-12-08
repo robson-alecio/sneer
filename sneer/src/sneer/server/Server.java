@@ -1,47 +1,36 @@
 package sneer.server;
 
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Date;
 
-import sneer.boot.Bootstrap;
 import wheelexperiments.Cool;
+import wheelexperiments.Log;
 
 public class Server {
 
-	private static final int PORT = 4242;
+	static public final int PORT = 4242;
 
-	private static PrintWriter _log;
+	private static Log _log;
 	
 	
 	public static void main(String[] args) throws IOException {
 		initLog();
 
 		ServerSocket serverSocket = new ServerSocket(PORT);
-		log("Waiting for connections on port " + PORT + "...");
+		_log.log("Waiting for connections on port " + PORT + "...");
 		while (true) Cool.startDaemon(new Connection(serverSocket.accept()));
 	}
 
 
-	private static void initLog() throws FileNotFoundException {
-		int uncomment;
-		//_log = Boot.printWriterFor(new File("c:\\sneer\\serverlog.txt"));
+	private static void initLog() {
+		_log = new Log(new File("c:\\sneer\\serverlog.txt"));
 	}
 
 
-	public static void log(String string) {
-		String entry = "" + new Date() + "   " + string;
-		System.out.println(entry);
-		_log.println(entry);
-		_log.flush();
-	}
-
-	
 	static class Connection implements Runnable {
 		
 		private final Socket _socket;
@@ -57,7 +46,7 @@ public class Server {
 				tryToServeSocket();
 			} catch (Exception e) {
 				e.printStackTrace();
-				e.printStackTrace(_log);
+				_log.log(e);
 			} finally {
 				closeSocket();
 			}
@@ -70,30 +59,12 @@ public class Server {
 
 		
 		private void tryToServeSocket() throws Exception {
-			log("Connection received from " + _socket.getRemoteSocketAddress());
+			_log.log("Connection received from " + _socket.getRemoteSocketAddress());
 			
 			ObjectInputStream objectIn = new ObjectInputStream(_socket.getInputStream());
 			ObjectOutputStream objectOut = new ObjectOutputStream(_socket.getOutputStream());
 
-			receivePeerAgent(objectIn).helpYourself(objectIn, objectOut);
-		}
-
-
-		private Agent receivePeerAgent(ObjectInputStream objectIn) throws IOException, ClassNotFoundException {
-			Object candidate = objectIn.readObject();
-			
-			return candidate instanceof Agent
-				? (Agent)candidate
-				: backwardCompatiblePeerAgent(candidate);
-		}
-
-
-		private Agent backwardCompatiblePeerAgent(Object greeting) {
-			int requestedVersion =	Bootstrap.GREETING.equals(greeting)
-				? 1
-				: (Integer)greeting;
-			
-			return new VersionUpdateAgent(requestedVersion);
+			((Agent)objectIn.readObject()).helpYourself(objectIn, objectOut);
 		}
 
 	}

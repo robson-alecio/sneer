@@ -1,6 +1,5 @@
 package sneer.server;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -10,7 +9,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
 
-import sneer.boot.Boot;
 import sneer.boot.Bootstrap;
 import wheelexperiments.Cool;
 
@@ -77,20 +75,20 @@ public class Server {
 			ObjectInputStream objectIn = new ObjectInputStream(_socket.getInputStream());
 			ObjectOutputStream objectOut = new ObjectOutputStream(_socket.getOutputStream());
 
-			receivePeerRep(objectIn).helpYourself(objectIn, objectOut);
+			receivePeerAgent(objectIn).helpYourself(objectIn, objectOut);
 		}
 
 
-		private Agent receivePeerRep(ObjectInputStream objectIn) throws IOException, ClassNotFoundException {
+		private Agent receivePeerAgent(ObjectInputStream objectIn) throws IOException, ClassNotFoundException {
 			Object candidate = objectIn.readObject();
 			
 			return candidate instanceof Agent
 				? (Agent)candidate
-				: backwardCompatiblePeerRep(candidate);
+				: backwardCompatiblePeerAgent(candidate);
 		}
 
 
-		private Agent backwardCompatiblePeerRep(Object greeting) {
+		private Agent backwardCompatiblePeerAgent(Object greeting) {
 			int requestedVersion =	Bootstrap.GREETING.equals(greeting)
 				? 1
 				: (Integer)greeting;

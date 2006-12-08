@@ -10,24 +10,45 @@ import java.io.ObjectOutputStream;
 import sneer.boot.Boot;
 
 public class VersionUpdateAgent implements Agent {
-		
-		private void upload(File file) throws IOException {
-			send(version(file));
-			send(contents(file));
-		}
-
-		
-		private void send(Object toSend) throws IOException {
-			_objectOut.writeObject(toSend);
-		}
-
-	private transient ObjectOutputStream _objectOut;
-
-	private final int _requestedVersion;
 
 	public VersionUpdateAgent(int requestedVersion) {
 		_requestedVersion = requestedVersion;
 	}
+
+	
+	private final int _requestedVersion;
+	
+	private transient ObjectOutputStream _objectOut;
+	
+		
+	public void helpYourself(ObjectInputStream ignored, ObjectOutputStream objectOut) throws Exception {
+		_objectOut = objectOut;
+		
+		File mainApp = newestMainApp();
+		int newestVersion = Boot.validNumber(mainApp.getName());
+		if (_requestedVersion > newestVersion) {
+			int uncomment;
+//			Server.logOtherwiseShow(Boot.UP_TO_DATE);
+//			send(Boot.UP_TO_DATE);
+			return;
+		}
+		
+		Server.log("Uploading " + mainApp.getName() + "...");
+		upload(mainApp);
+		
+		Server.log("done.");
+	}
+
+	private void upload(File file) throws IOException {
+		send(version(file));
+		send(contents(file));
+	}
+		
+	private void send(Object toSend) throws IOException {
+		_objectOut.writeObject(toSend);
+	}
+
+
 
 
 	private static int version(File mainApp) {
@@ -48,22 +69,5 @@ public class VersionUpdateAgent implements Agent {
 	}
 
 
-	public void helpYourself(ObjectInputStream ignored, ObjectOutputStream objectOut) throws Exception {
-		_objectOut = objectOut;
-
-		File mainApp = newestMainApp();
-		int newestVersion = Boot.validNumber(mainApp.getName());
-		if (_requestedVersion > newestVersion) {
-			int uncomment;
-//			Server.logOtherwiseShow(Boot.UP_TO_DATE);
-//			send(Boot.UP_TO_DATE);
-			return;
-		}
-		
-		Server.log("Uploading " + mainApp.getName() + "...");
-		upload(mainApp);
-		
-		Server.log("done.");
-	}
 
 }

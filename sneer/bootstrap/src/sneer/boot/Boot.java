@@ -3,12 +3,8 @@ package sneer.boot;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-
-import javax.swing.JOptionPane;
 
 import wheelexperiments.Log;
 
@@ -17,10 +13,13 @@ public class Boot {
 	private static final User _user = new User();
 
 	private static File _mainApp;
+
 	private static final String PREFIX = "main";
 	private static final String ZERO_MASK = "000000";
 	private static final String SUFFIX = ".jar";
 	private static final int FILENAME_LENGTH = PREFIX.length() + ZERO_MASK.length() + SUFFIX.length();
+
+	private static Log _log;
 
 	
 	public static void main(String[] ignored) {
@@ -107,18 +106,12 @@ public class Boot {
 			int uncomment;
 //			approveInstallationWithUserOtherwiseExit();
 			tryToCreateSneerDirectory();
-			createLog();
+			tryToCreateLog();
 		}
-		new VersionUpdater(1);
+		//new VersionUpdater(1, _log);
 	}
 
 
-	private static Log createLog() throws FileNotFoundException {
-		logDirectory().mkdir();
-		return new Log(new File(logDirectory(), "log.txt"));
-	}
-
-	
 	private static void tryToCreateSneerDirectory() throws IOException {
 		if (!sneerDirectory().mkdir())
 			throw new IOException("Unable to create Sneer directory\n" + sneerDirectory());
@@ -149,13 +142,14 @@ public class Boot {
 
 
 	private static void logOtherwiseShow(Throwable throwable) {
-		Log log;
-		try {
-			log = createLog();
-		} catch (FileNotFoundException ignored) {
-			showFailureToLog(throwable);
-			return;
-		}
+		Log log = log();
+		int uncomment;
+//		try {
+			log = tryToCreateLog();
+//		} catch (FileNotFoundException ignored) {
+//			showFailureToLog(throwable);
+//			return;
+//		}
 		
 		log.log(throwable);
 		
@@ -163,6 +157,23 @@ public class Boot {
 	}
 	
 	
+	private static Log log() {
+		if (_log == null) _log = tryToCreateLog();
+		return _log;
+	}
+
+
+	private static Log tryToCreateLog() {
+		logDirectory().mkdir();
+		File logfile = new File(logDirectory(), "log.txt");
+		try {
+			return new Log(logfile);
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException("Unable to open or create log file: " + logfile);
+		}
+	}
+
+
 	private static void showFailureToLog(Throwable throwable) {
 		throwable.printStackTrace();
 		_user.acknowledgeUnexpectedProblem(throwable.toString() + "\n\n (Unable to write this Exception to log file)\n");

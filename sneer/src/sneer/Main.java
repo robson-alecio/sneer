@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 public class Main extends sneer.boot.Boot {
 	
 	private int uncomment;
-//
+
 //	public static void main(String[] args) {
 //		try {
 //			tryToRun();

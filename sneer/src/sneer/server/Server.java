@@ -1,6 +1,8 @@
 package sneer.server;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -12,22 +14,20 @@ import wheelexperiments.Log;
 
 public class Server {
 
-	static public final int PORT = 4242;
+	static public final int PORT = 22086;
 
-	private static Log _log;
-	
 	
 	public static void main(String[] args) throws IOException {
 		initLog();
 
 		ServerSocket serverSocket = new ServerSocket(PORT);
-		_log.log("Waiting for connections on port " + PORT + "...");
+		Log.log("Waiting for connections on port " + PORT + "...");
 		while (true) Cool.startDaemon(new Connection(serverSocket.accept()));
 	}
 
 
-	private static void initLog() {
-		_log = new Log(new File("c:\\sneer\\serverlog.txt"));
+	private static void initLog() throws FileNotFoundException {
+		Log.redirectTo(new FileOutputStream(new File("c:\\sneer\\serverlog.txt")));
 	}
 
 
@@ -45,8 +45,7 @@ public class Server {
 			try {
 				tryToServeSocket();
 			} catch (Exception e) {
-				e.printStackTrace();
-				_log.log(e);
+				Log.log(e);
 			} finally {
 				closeSocket();
 			}
@@ -59,7 +58,7 @@ public class Server {
 
 		
 		private void tryToServeSocket() throws Exception {
-			_log.log("Connection received from " + _socket.getRemoteSocketAddress());
+			Log.log("Connection received from " + _socket.getRemoteSocketAddress());
 			
 			ObjectInputStream objectIn = new ObjectInputStream(_socket.getInputStream());
 			ObjectOutputStream objectOut = new ObjectOutputStream(_socket.getOutputStream());

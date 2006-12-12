@@ -7,7 +7,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import sneer.boot.Boot;
+import sneer.boot.VersionUpdateCommand;
+import wheelexperiments.Log;
+
+import static sneer.boot.SneerDirectories.*;
 
 public class VersionUpdateAgent implements Agent {
 
@@ -25,23 +28,21 @@ public class VersionUpdateAgent implements Agent {
 		_objectOut = objectOut;
 		
 		File mainApp = newestMainApp();
-		int newestVersion = Boot.validNumber(mainApp.getName());
+		int newestVersion = validNumber(mainApp.getName());
 		if (_requestedVersion > newestVersion) {
-			int TODO_uncommentAllBelow;
-//			Server.logOtherwiseShow(Boot.UP_TO_DATE);
-//			send(Boot.UP_TO_DATE);
+			Log.log("Up to date.");
+			send(new LogMessage("Não há atualização nova para o Sneer."));
 			return;
 		}
 		
-//		Server._log.log("Uploading " + mainApp.getName() + "...");
+		Log.log("Uploading " + mainApp.getName() + "...");
 		upload(mainApp);
 		
-//		Server._log.log("done.");
+		Log.log("done.");
 	}
 
 	private void upload(File file) throws IOException {
-		send(version(file));
-		send(contents(file));
+		send(new VersionUpdateCommand(version(file), contents(file)));
 	}
 		
 	private void send(Object toSend) throws IOException {
@@ -49,15 +50,13 @@ public class VersionUpdateAgent implements Agent {
 	}
 
 
-
-
 	private static int version(File mainApp) {
-		return Boot.validNumber(mainApp.getName());
+		return validNumber(mainApp.getName());
 	}
 
 	
 	private static File newestMainApp() {
-		return Boot.findNewestMainApp(new File("c:\\sneer\\mainapps"));
+		return findNewestMainApp(new File("c:\\sneer\\mainapps"));
 	}
 
 	
@@ -68,6 +67,6 @@ public class VersionUpdateAgent implements Agent {
 		return result;
 	}
 
-
+	private static final long serialVersionUID = 1L;
 
 }

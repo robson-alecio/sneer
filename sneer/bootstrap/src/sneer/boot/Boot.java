@@ -30,6 +30,8 @@ public class Boot {
 		checkJavaVersionOtherwiseExit();
 		
 		if (!hasMainApp()) new InstallationAttempt(_user);
+		if (!hasMainApp()) return;
+		
 		runMainApp();
 	}
 

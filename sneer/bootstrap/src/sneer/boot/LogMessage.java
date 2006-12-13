@@ -1,5 +1,6 @@
-package sneer.server;
+package sneer.boot;
 
+import sneer.server.Command;
 import wheelexperiments.Log;
 
 public class LogMessage implements Command {
@@ -15,4 +16,5 @@ public class LogMessage implements Command {
 		return;
 	}
 
+	private static final long serialVersionUID = 1L;
 }

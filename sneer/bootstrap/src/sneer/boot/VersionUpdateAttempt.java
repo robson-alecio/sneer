@@ -7,7 +7,6 @@ import java.net.Socket;
 
 import sneer.server.Command;
 import sneer.server.Server;
-import sneer.server.VersionUpdateAgent;
 import wheelexperiments.Log;
 
 public class VersionUpdateAttempt {

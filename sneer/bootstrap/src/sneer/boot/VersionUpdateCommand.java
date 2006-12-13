@@ -28,6 +28,6 @@ public class VersionUpdateCommand implements Command {
 		}
 	}
 
-
+	private static final long serialVersionUID = 1L;
 
 }

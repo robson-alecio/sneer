@@ -14,7 +14,7 @@ import wheelexperiments.Log;
 
 public class Server {
 
-	static public final int PORT = 22087; //
+	static public final int PORT = 22086;
 
 	
 	public static void main(String[] args) throws IOException {
@@ -22,7 +22,6 @@ public class Server {
 
 		ServerSocket serverSocket = new ServerSocket(PORT);
 		Log.log("Waiting for connections on port " + PORT + "...");
-		Log.log("Testing Commit Script 3...");
 		while (true) Cool.startDaemon(new Connection(serverSocket.accept()));
 	}
 

@@ -14,7 +14,7 @@ import wheelexperiments.Log;
 
 public class Server {
 
-	static public final int PORT = 22086;
+	static public final int PORT = 22087;
 
 	
 	public static void main(String[] args) throws IOException {
@@ -28,7 +28,7 @@ public class Server {
 
 
 	private static void initLog() throws FileNotFoundException {
-		Log.redirectTo(new FileOutputStream(new File("c:\\sneer\\serverlog.txt")));
+		Log.redirectTo(new FileOutputStream(new File("serverlog.txt")));
 	}
 
 

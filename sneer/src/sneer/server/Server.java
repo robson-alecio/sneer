@@ -22,7 +22,7 @@ public class Server {
 
 		ServerSocket serverSocket = new ServerSocket(PORT);
 		Log.log("Waiting for connections on port " + PORT + "...");
-		Log.log("Testing Commit Script...");
+		Log.log("Testing Commit Script 2...");
 		while (true) Cool.startDaemon(new Connection(serverSocket.accept()));
 	}
 

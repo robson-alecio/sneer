@@ -8,9 +8,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import sneer.boot.Dialog;
-import sneer.boot.User;
 import sneer.boot.VersionUpdateAttempt;
 import wheelexperiments.Log;
+import wheelexperiments.environment.ui.User;
 
 import static sneer.boot.SneerDirectories.*;
 

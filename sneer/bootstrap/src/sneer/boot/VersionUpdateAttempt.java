@@ -6,7 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import sneer.server.Command;
-import sneer.server.Server;
+import sneer.server.ServerAddress;
 import wheelexperiments.Log;
 
 public class VersionUpdateAttempt {
@@ -41,7 +41,7 @@ public class VersionUpdateAttempt {
 
 	
 	private void openDownloadConnectionForVersion(int version) throws IOException {
-		_socket = new Socket("sovereigncomputing.net", Server.PORT);
+		_socket = new Socket(ServerAddress.HOST, ServerAddress.PORT);
 		
 		ObjectOutputStream objectOut = new ObjectOutputStream(_socket.getOutputStream());
 		objectOut.writeObject(new VersionUpdateAgent(version));

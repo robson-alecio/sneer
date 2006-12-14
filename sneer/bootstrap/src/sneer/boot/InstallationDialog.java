@@ -1,6 +1,7 @@
 package sneer.boot;
 
-import sneer.server.Server;
+import sneer.server.ServerAddress;
+import wheelexperiments.environment.ui.User;
 
 public class InstallationDialog extends Dialog {
 
@@ -42,7 +43,7 @@ public class InstallationDialog extends Dialog {
 
 		approveConditionOtherwiseExit(
 				" Será criado um diretório chamado \".sneer\" dentro do diretório\n" +
-				" " + _user.homeDirectory() + "\n\n" + 
+				" " + SneerDirectories.userHome() + "\n\n" + 
 				" Lá serão guardados, para este usuário, todos os dados e\n" +
 				" programas do Sneer.\n\n" +
 				" Este diálogo não será exibido novamente enquanto existir esse\n" +
@@ -63,7 +64,7 @@ public class InstallationDialog extends Dialog {
 				" Futuramente, o Sneer será capaz de baixar suas atualizações com\n" +
 				" segurança, através de qualquer contato soberano que você tenha.\n\n" +
 				" Por enquanto, o Sneer vai baixar atualizações, quando houver, de\n" +
-				" sovereigncomputing.net na porta " + Server.PORT + ".\n\n" +
+				" " + ServerAddress.HOST + " na porta " + ServerAddress.PORT + ".\n\n" +
 				" Ainda não há checagem de segurança ou criptografia alguma para as\n" +
 				" atualizações. A segurança é a mesma que você tem quando baixa\n" +
 				" executáveis de sites web sem o cadeadinho (ex.: Sourceforge).\n\n" +

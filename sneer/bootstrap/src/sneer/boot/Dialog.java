@@ -1,5 +1,7 @@
 package sneer.boot;
 
+import wheelexperiments.environment.ui.User;
+
 public class Dialog {
 
 	protected final User _user;

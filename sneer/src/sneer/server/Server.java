@@ -12,11 +12,10 @@ import java.net.Socket;
 import wheelexperiments.Cool;
 import wheelexperiments.Log;
 
+import static sneer.server.ServerAddress.PORT;
+
 public class Server {
 
-	static public final int PORT = 22086;
-
-	
 	public static void main(String[] args) throws IOException {
 		initLog();
 

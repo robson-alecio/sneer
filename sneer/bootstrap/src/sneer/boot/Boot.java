@@ -7,6 +7,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 import wheelexperiments.Log;
+import wheelexperiments.environment.ui.User;
 
 import static sneer.boot.SneerDirectories.*;
 

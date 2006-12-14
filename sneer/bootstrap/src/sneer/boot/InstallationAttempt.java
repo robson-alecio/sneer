@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import wheelexperiments.Log;
+import wheelexperiments.environment.ui.User;
 
 public class InstallationAttempt {
 

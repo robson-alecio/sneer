@@ -59,6 +59,7 @@ public class VersionUpdateAgent implements Agent {
 		
 	private void send(Object toSend) throws IOException {
 		_objectOut.writeObject(toSend);
+		_objectOut.flush();
 	}
 
 

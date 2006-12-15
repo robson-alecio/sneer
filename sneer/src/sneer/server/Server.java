@@ -12,7 +12,7 @@ import java.net.Socket;
 import wheelexperiments.Cool;
 import wheelexperiments.Log;
 
-import static sneer.server.ServerAddress.PORT;
+import static sneer.server.ServerConfig.PORT;
 
 public class Server {
 

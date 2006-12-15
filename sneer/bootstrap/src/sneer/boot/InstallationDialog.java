@@ -1,6 +1,6 @@
 package sneer.boot;
 
-import sneer.server.ServerAddress;
+import sneer.server.ServerConfig;
 import wheelexperiments.environment.ui.User;
 
 public class InstallationDialog extends Dialog {
@@ -64,7 +64,7 @@ public class InstallationDialog extends Dialog {
 				" Futuramente, o Sneer será capaz de baixar suas atualizações com\n" +
 				" segurança, através de qualquer contato soberano que você tenha.\n\n" +
 				" Por enquanto, o Sneer vai baixar atualizações, quando houver, de\n" +
-				" " + ServerAddress.HOST + " na porta " + ServerAddress.PORT + ".\n\n" +
+				" " + ServerConfig.HOST + " na porta " + ServerConfig.PORT + ".\n\n" +
 				" Ainda não há checagem de segurança ou criptografia alguma para as\n" +
 				" atualizações. A segurança é a mesma que você tem quando baixa\n" +
 				" executáveis de sites web sem o cadeadinho (ex.: Sourceforge).\n\n" +

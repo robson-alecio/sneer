@@ -54,6 +54,7 @@ public class SneerDirectories {
 		return findNewestMainApp(programsDirectory());
 	}
 
+	
 	public static File findNewestMainApp(File directory) {
 		int newest = 0;
 		for (String filename : listFilenames(directory))

@@ -1,5 +1,8 @@
 package sneer.boot;
 
+import static sneer.boot.SneerDirectories.findNewestMainApp;
+import static sneer.boot.SneerDirectories.validNumber;
+
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,9 +12,8 @@ import java.io.ObjectOutputStream;
 
 import sneer.server.Agent;
 import sneer.server.Command;
+import sneer.server.ServerConfig;
 import wheelexperiments.Log;
-
-import static sneer.boot.SneerDirectories.*;
 
 public class VersionUpdateAgent implements Agent {
 
@@ -51,7 +53,7 @@ public class VersionUpdateAgent implements Agent {
 
 
 	private LogMessage noNewVersionCommand() {
-		return new LogMessage("Não há atualização nova para o Sneer.");
+		return new LogMessage("Não há atualização nova para o Sneer em " + ServerConfig.MAIN_APP_DIRECTORY);
 	}
 
 		
@@ -66,7 +68,7 @@ public class VersionUpdateAgent implements Agent {
 
 	
 	private static File newestMainApp() {
-		return findNewestMainApp(new File("c:\\sneer\\mainapps"));
+		return findNewestMainApp(ServerConfig.MAIN_APP_DIRECTORY);
 	}
 
 	

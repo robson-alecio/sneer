@@ -1,15 +1,13 @@
 package sneer.boot;
 
+import static sneer.boot.SneerDirectories.findNewestMainApp;
+
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
 
 import wheelexperiments.Log;
 import wheelexperiments.environment.ui.User;
-
-import static sneer.boot.SneerDirectories.*;
 
 public class Boot {
 
@@ -38,7 +36,7 @@ public class Boot {
 
 
 	private static void runMainApp() throws Exception {
-		tryToRedirectLog();
+		InstallationAttempt.tryToRedirectLog();
 		invokeMainMethodOn(mainClass(mainApp()));
 	}
 
@@ -69,14 +67,6 @@ public class Boot {
 		if (Float.parseFloat(version) >= 1.6f) return;
 		
 		new Dialog(_user).exit("O Sneer precisa ser rodado com o Java versão 6 ou mais recente.");
-	}
-
-
-	private static void tryToRedirectLog() throws FileNotFoundException {
-		logDirectory().mkdir();
-		File logfile = new File(logDirectory(), "log.txt");
-		
-		Log.redirectTo(new FileOutputStream(logfile, true));
 	}
 
 

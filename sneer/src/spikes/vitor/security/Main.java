@@ -34,8 +34,9 @@ public class Main {
 		//runner.start();
 		
 		Thread runner = new Thread(plugins, "Swing plugin") {
+			@Override
 			public void run() {
-				Plugin plugin = new Plugin(mainFrame);
+				new Plugin(mainFrame);
 			}
 		};
 		runner.start();

@@ -1,6 +1,5 @@
 package spikes.vitor.security;
 
-import javax.swing.JFrame;
 
 public class BadImportPlugin {
 

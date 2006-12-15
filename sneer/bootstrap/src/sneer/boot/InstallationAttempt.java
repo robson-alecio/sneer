@@ -5,7 +5,6 @@ import static sneer.boot.SneerDirectories.sneerDirectory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import wheelexperiments.Log;
@@ -27,11 +26,9 @@ public class InstallationAttempt {
 			throw new IOException("Unable to create Sneer directory\n" + sneerDirectory());
 	}
 
-	private static void tryToRedirectLog() throws FileNotFoundException {
+	static void tryToRedirectLog() throws FileNotFoundException {
 		logDirectory().mkdir();
-		File logfile = new File(logDirectory(), "log.txt");
-		
-		Log.redirectTo(new FileOutputStream(logfile, true));
+		Log.redirectTo(new File(logDirectory(), "log.txt"));
 	}
 
 }

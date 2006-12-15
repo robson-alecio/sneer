@@ -1,8 +1,9 @@
 package sneer.server;
 
+import static sneer.server.ServerConfig.PORT;
+
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -11,8 +12,6 @@ import java.net.Socket;
 
 import wheelexperiments.Cool;
 import wheelexperiments.Log;
-
-import static sneer.server.ServerConfig.PORT;
 
 public class Server {
 
@@ -26,7 +25,7 @@ public class Server {
 
 
 	private static void initLog() throws FileNotFoundException {
-		Log.redirectTo(new FileOutputStream(new File("serverlog.txt"), true));
+		Log.redirectTo(new File("serverlog.txt"));
 	}
 
 

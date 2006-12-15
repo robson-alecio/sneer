@@ -18,11 +18,15 @@ public class SneerSecurityManager extends SecurityManager {
 		return defaultManager != null;
 	}
 	
+	public void checkSneerPermission() {
+		if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
+	   		throw new SecurityException("BUM!");
+	   	}		
+	}
+	
 	@Override
 	public void checkAccept(String host, int port) {
-	   	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-	   		throw new SecurityException("You can't accept connections");
-	   	}		
+		checkSneerPermission();
 	   	if (hasDefaultSM()) {
 		    defaultManager.checkAccept(host, port);
 	   	}
@@ -30,19 +34,12 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkAccess(Thread t) {
-    	//if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    	//	throw new SecurityException("You can't access Threads");
-    	//}
-    	if (hasDefaultSM()) {
-    	    defaultManager.checkAccess(t);
-	   	}
+		checkSneerPermission();
 	}
 
 	@Override
 	public void checkAccess(ThreadGroup g) {
-    	//if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    	//	throw new SecurityException("You can't access Groups of Threads");
-    	//}
+		checkSneerPermission();
     	if (hasDefaultSM()) {
     	    defaultManager.checkAccess(g);
 	   	}
@@ -50,9 +47,7 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkAwtEventQueueAccess() {
-    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    		throw new SecurityException("You can't access AWT");
-    	}		
+		checkSneerPermission();
     	if (hasDefaultSM()) {
     	    defaultManager.checkAwtEventQueueAccess();
 	   	}
@@ -60,9 +55,7 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkConnect(String host, int port, Object context) {
-    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    		throw new SecurityException("You can't accept the Connections");
-    	}		
+		checkSneerPermission();
     	if (hasDefaultSM()) {
     	    defaultManager.checkConnect(host, port, context);
 	   	}
@@ -70,9 +63,7 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkConnect(String host, int port) {
-    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    		throw new SecurityException("You can't accept Connections");
-    	}		
+		checkSneerPermission();	
     	if (hasDefaultSM()) {
     	    defaultManager.checkConnect(host, port);
 	   	}
@@ -80,9 +71,7 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkDelete(String file) {
-		if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-			throw new SecurityException("You can't delete Files");
-		}		
+		checkSneerPermission();
 		if (hasDefaultSM()) {
 		    defaultManager.checkDelete(file);
 	   	}
@@ -90,9 +79,7 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkExec(String cmd) {
-    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    		throw new SecurityException("You can't execute anything");
-    	}		
+		checkSneerPermission();
     	if (hasDefaultSM()) {
     	    defaultManager.checkExec(cmd);
 	   	}
@@ -100,9 +87,7 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkExit(int status) {
-    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    		throw new SecurityException("You can't exit");
-    	}		
+		checkSneerPermission();		
     	if (hasDefaultSM()) {
     	    defaultManager.checkExit(status);
 	   	}
@@ -110,9 +95,7 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkLink(String lib) {
-    	//if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    	//	throw new SecurityException("You can't check link");
-    	//}
+		checkSneerPermission();
     	if (hasDefaultSM()) {
     	    defaultManager.checkLink(lib);
 	   	}
@@ -120,9 +103,7 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkListen(int port) {
-    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    		throw new SecurityException("You can't Listen ports");
-    	}		
+		checkSneerPermission();	
     	if (hasDefaultSM()) {
     	    defaultManager.checkListen(port);
 	   	}
@@ -130,9 +111,7 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkMemberAccess(Class<?> clazz, int which) {
-    	//if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    	//	throw new SecurityException("You can't do multicast");
-    	//}	
+		checkSneerPermission();	
     	if (hasDefaultSM()) {
     	    defaultManager.checkMemberAccess(clazz, which);
 	   	}
@@ -141,9 +120,7 @@ public class SneerSecurityManager extends SecurityManager {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void checkMulticast(InetAddress maddr, byte ttl) {
-    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    		throw new SecurityException("You can't do multicast");
-    	}	
+		checkSneerPermission();
     	if (hasDefaultSM()) {
     	    defaultManager.checkMulticast(maddr, ttl);
 	   	}
@@ -151,9 +128,7 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkMulticast(InetAddress maddr) {
-    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    		throw new SecurityException("You can't do multicast");
-    	}
+		checkSneerPermission();
     	if (hasDefaultSM()) {
     	    defaultManager.checkMulticast(maddr);
 	   	}
@@ -165,6 +140,7 @@ public class SneerSecurityManager extends SecurityManager {
     		if (pkg.startsWith("sneer."))
     			throw new SecurityException("You can't use the packages of Sneer");
     	}	
+    	checkSneerPermission();
     	if (hasDefaultSM()) {
     	    defaultManager.checkPackageDefinition(pkg);
 	   	}
@@ -173,9 +149,8 @@ public class SneerSecurityManager extends SecurityManager {
 	@Override
 	public void checkPermission(Permission perm, Object context) {
 		System.out.println(perm.getName());
-		
+		checkSneerPermission();
 		if (hasDefaultSM()) {
-	
 		    defaultManager.checkPermission(perm, context);
 	   	}
 	}
@@ -184,6 +159,7 @@ public class SneerSecurityManager extends SecurityManager {
 	public void checkPermission(Permission perm) {
 		System.out.println(perm.getName());
 		System.out.println(perm.getClass().getName());
+		checkSneerPermission();
 		if (hasDefaultSM()) {
 		    defaultManager.checkPermission(perm);
 	   	}
@@ -191,9 +167,7 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkPrintJobAccess() {
-    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    		throw new SecurityException("You can't access the Printer");
-    	}		
+		checkSneerPermission();
     	if (hasDefaultSM()) {
     	    defaultManager.checkPrintJobAccess();
 	   	}
@@ -201,9 +175,7 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkPropertiesAccess() {
-    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    		throw new SecurityException("You can't access the properties");
-    	}
+		checkSneerPermission();
     	if (hasDefaultSM()) {
     	    defaultManager.checkPropertiesAccess();
 	   	}
@@ -211,9 +183,7 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkRead(FileDescriptor fd) {
-    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    		throw new SecurityException("You can't read");
-    	}
+		checkSneerPermission();
     	if (hasDefaultSM()) {
     	    defaultManager.checkRead(fd);
 	   	}
@@ -221,9 +191,7 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkRead(String file, Object context) {
-    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    		throw new SecurityException("You can't read");
-    	}		
+		checkSneerPermission();
     	if (hasDefaultSM()) {
     	    defaultManager.checkRead(file);
 	   	}
@@ -231,9 +199,7 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkSecurityAccess(String target) {
-    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    		throw new SecurityException("You can't check the Security");
-    	}	
+		checkSneerPermission();
     	if (hasDefaultSM()) {
     	    defaultManager.checkSecurityAccess(target);
 	   	}
@@ -241,9 +207,7 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkSetFactory() {
-    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    		throw new SecurityException("You can't access the Clipboard");
-    	}		
+		checkSneerPermission();
 		
 		if (hasDefaultSM()) {
 		    defaultManager.checkSetFactory();
@@ -252,9 +216,7 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkSystemClipboardAccess() {
-    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    		throw new SecurityException("You can't access the Clipboard");
-    	}
+		checkSneerPermission();
     	if (hasDefaultSM()) {
     	    defaultManager.checkSystemClipboardAccess();
 	   	}
@@ -262,9 +224,7 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public boolean checkTopLevelWindow(Object window) {
-    	//if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    	//	throw new SecurityException("You can't access Windows");
-    	//}
+		checkSneerPermission();
     	if (hasDefaultSM()) {
     		return defaultManager.checkTopLevelWindow(window);
 	   	}
@@ -273,9 +233,7 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkWrite(FileDescriptor fd) {
-    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    		throw new SecurityException("You can't write files");
-    	}
+		checkSneerPermission();
     	if (hasDefaultSM()) {
     	    defaultManager.checkWrite(fd);
 	   	}
@@ -285,9 +243,7 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkRead(String property) {
-    	//if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    	//	throw new SecurityException("You can't read file " + property);
-    	//}
+		checkSneerPermission();
     	if (hasDefaultSM()) {
     	    defaultManager.checkRead(property);
 	   	}
@@ -295,9 +251,7 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkWrite(String property) {
-    	if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    		throw new SecurityException("You can't write File");
-    	}
+		checkSneerPermission();
     	if (hasDefaultSM()) {
     	    defaultManager.checkWrite(property);
    		}
@@ -305,9 +259,7 @@ public class SneerSecurityManager extends SecurityManager {
 	
 	@Override
 	public void checkPropertyAccess(String property) {
-    	//if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    	//	throw new SecurityException("You can't access System properties");
-    	//}
+		checkSneerPermission();
     	if (hasDefaultSM()) {
     	    defaultManager.checkPropertyAccess(property);
 	   	}
@@ -315,9 +267,7 @@ public class SneerSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkCreateClassLoader() {
-    	//if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-    	//	throw new SecurityException("You can't access Class Loader");
-    	//}
+		checkSneerPermission();
     	if (hasDefaultSM()) {
     	    defaultManager.checkCreateClassLoader();
 	   	}
@@ -325,18 +275,12 @@ public class SneerSecurityManager extends SecurityManager {
 	
     @Override
 	public void checkPackageAccess(String pkg) throws SecurityException {
-    	if (Thread.currentThread().getThreadGroup() != _pluginGroup) {
-    		return;
-    	}
+    	if (!pkg.equals("spikes.vitor.security.plugins"))
+    		checkSneerPermission();
     	
-    	//if (!pkg.startsWith("javax.swing"))
-    		return;
     	
-    	//if (hasDefaultSM()) {
-    	 //   defaultManager.checkPackageAccess(pkg);
-    	//}
+    	System.out.println("CheckAccess: " + pkg);
     	
-   		//throw new SecurityException("Can't access swing classes");
     }
 
 }

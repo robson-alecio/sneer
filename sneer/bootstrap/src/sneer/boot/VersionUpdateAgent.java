@@ -53,7 +53,7 @@ public class VersionUpdateAgent implements Agent {
 
 
 	private LogMessage noNewVersionCommand() {
-		return new LogMessage("Não há atualização nova para o Sneer em " + ServerConfig.MAIN_APP_DIRECTORY);
+		return new LogMessage("Não há atualização nova para o Sneer em " + ServerConfig.MAIN_APP_DIRECTORY.getAbsolutePath());
 	}
 
 		

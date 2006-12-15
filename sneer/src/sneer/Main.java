@@ -74,7 +74,7 @@ public class Main extends sneer.boot.Boot {
 	private static String name()  {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(nameFile()));
-			return reader.readLine();
+			return reader.readLine().trim();
 		} catch (IOException e) {
 			return null;
 		}

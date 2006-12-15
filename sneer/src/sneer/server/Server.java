@@ -26,7 +26,7 @@ public class Server {
 
 
 	private static void initLog() throws FileNotFoundException {
-		Log.redirectTo(new FileOutputStream(new File("serverlog.txt")));
+		Log.redirectTo(new FileOutputStream(new File("serverlog.txt"), true));
 	}
 
 

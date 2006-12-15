@@ -31,7 +31,7 @@ public class InstallationAttempt {
 		logDirectory().mkdir();
 		File logfile = new File(logDirectory(), "log.txt");
 		
-		Log.redirectTo(new FileOutputStream(logfile));
+		Log.redirectTo(new FileOutputStream(logfile, true));
 	}
 
 }

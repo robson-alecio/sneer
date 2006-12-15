@@ -35,8 +35,6 @@ public class VersionUpdateAgent implements Agent {
 
 	
 	private Command commandToSend() throws IOException {
-		if (1==1) return noNewVersionCommand();
-		
 		File mainApp = newestMainApp();
 		if (mainApp == null) {
 			Log.log("No mainApp files found.");

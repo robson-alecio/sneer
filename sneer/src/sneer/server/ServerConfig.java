@@ -12,7 +12,7 @@ public class ServerConfig {
 
 	private static File mainAppDirectory() {
 		try {
-			return new File("../mainapps").getCanonicalFile();
+			return new File("../canmainapps").getCanonicalFile();
 		} catch (IOException e) {
 			throw new RuntimeException(e); 
 		}

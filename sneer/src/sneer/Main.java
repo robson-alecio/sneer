@@ -15,7 +15,6 @@ import wheelexperiments.environment.ui.User;
 import static sneer.boot.SneerDirectories.*;
 
 
-
 public class Main extends sneer.boot.Boot {
 	
 	public static void main(String[] args) {
@@ -29,7 +28,6 @@ public class Main extends sneer.boot.Boot {
 	private static void tryToRun() throws IOException {
 		if (!hasName()) {
 			User user = new User();
-			user.choose("Foi encontrada uma nova atualização do Sneer.", "Já?");
 			enterName(user);
 			new Dialog(user).goodbye();
 		}

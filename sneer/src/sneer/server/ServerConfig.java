@@ -1,21 +1,16 @@
 package sneer.server;
 
 import java.io.File;
-import java.io.IOException;
 
 public class ServerConfig {
 
 	static public final String HOST = "sovereigncomputing.net";
 	static public final int PORT = 22086;
 	
-	static public final File MAIN_APP_DIRECTORY = mainAppDirectory();
+	static public final File MAIN_APP_DIRECTORY = new File(sneerProjectDirectory(), "mainapps");
 
-	private static File mainAppDirectory() {
-		try {
-			return new File("../canmainapps").getCanonicalFile();
-		} catch (IOException e) {
-			return new File("../mainapps2");
-		}
+	private static File sneerProjectDirectory() {   //The server runs in .../sneer/bin
+		return new File("whatever").getParentFile().getParentFile();  //Returns .../sneer
 	}
 
 }

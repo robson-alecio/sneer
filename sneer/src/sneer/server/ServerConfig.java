@@ -14,7 +14,7 @@ public class ServerConfig {
 		try {
 			return new File("../canmainapps").getCanonicalFile();
 		} catch (IOException e) {
-			throw new RuntimeException(e); 
+			throw new RuntimeException(e);
 		}
 	}
 

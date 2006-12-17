@@ -11,13 +11,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import sneer.strap.Dialog;
-import sneer.strap.OldBoot;
 import sneer.strap.VersionUpdateAttempt;
 import wheelexperiments.Log;
 import wheelexperiments.environment.ui.User;
 
 
-public class Main extends OldBoot {
+public class Main extends sneer.strap.Main {
 	
 	public static void main(String[] args) {
 		try {

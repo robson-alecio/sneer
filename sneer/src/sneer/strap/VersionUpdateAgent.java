@@ -24,17 +24,15 @@ public class VersionUpdateAgent implements Agent {
 	
 	private final int _requestedVersion;
 	
-	private transient ObjectOutputStream _objectOut;
-	
 		
 	public void helpYourself(ObjectInputStream ignored, ObjectOutputStream objectOut) throws Exception {
-		_objectOut = objectOut;
-		send(commandToSend());
+		objectOut.writeObject(updateCommand());
+		objectOut.flush();
 		Log.log("Done.");
 	}
 
 	
-	private Command commandToSend() throws IOException {
+	private Command updateCommand() throws IOException {
 		File mainApp = newestMainApp();
 		if (mainApp == null) {
 			Log.log("No mainApp files found.");
@@ -57,12 +55,6 @@ public class VersionUpdateAgent implements Agent {
 	}
 
 		
-	private void send(Object toSend) throws IOException {
-		_objectOut.writeObject(toSend);
-		_objectOut.flush();
-	}
-
-
 	private static int version(File mainApp) {
 		return validNumber(mainApp.getName());
 	}

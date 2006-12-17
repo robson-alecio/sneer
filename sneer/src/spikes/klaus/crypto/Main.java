@@ -13,15 +13,13 @@ import java.security.Provider.Service;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-
 public class Main {
 
 	public static void main(String[] args) throws Exception {
 		System.out.println(System.getProperty("java.runtime.name"));
 		System.out.println(System.getProperty("java.runtime.version"));
 		
-		Security.addProvider(new BouncyCastleProvider());
+		System.err.println("Security.addProvider(new BouncyCastleProvider())");
 		
 		printProvidersAndServices();
 		

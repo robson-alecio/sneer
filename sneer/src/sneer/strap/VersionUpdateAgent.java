@@ -1,7 +1,7 @@
-package sneer.boot;
+package sneer.strap;
 
-import static sneer.boot.SneerDirectories.findNewestMainApp;
-import static sneer.boot.SneerDirectories.validNumber;
+import static sneer.strap.SneerDirectories.findNewestMainApp;
+import static sneer.strap.SneerDirectories.validNumber;
 
 import java.io.DataInputStream;
 import java.io.File;

@@ -1,4 +1,4 @@
-package sneer.boot;
+package sneer.strap;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

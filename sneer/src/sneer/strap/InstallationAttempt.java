@@ -1,7 +1,7 @@
-package sneer.boot;
+package sneer.strap;
 
-import static sneer.boot.SneerDirectories.logDirectory;
-import static sneer.boot.SneerDirectories.sneerDirectory;
+import static sneer.strap.SneerDirectories.logDirectory;
+import static sneer.strap.SneerDirectories.sneerDirectory;
 
 import java.io.File;
 import java.io.FileNotFoundException;

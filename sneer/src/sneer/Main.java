@@ -1,5 +1,8 @@
 package sneer;
 
+import static sneer.strap.SneerDirectories.sneerDirectory;
+import static sneer.strap.SneerDirectories.validNumber;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,15 +10,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import sneer.boot.Dialog;
-import sneer.boot.VersionUpdateAttempt;
+import sneer.strap.Dialog;
+import sneer.strap.OldBoot;
+import sneer.strap.VersionUpdateAttempt;
 import wheelexperiments.Log;
 import wheelexperiments.environment.ui.User;
 
-import static sneer.boot.SneerDirectories.*;
 
-
-public class Main extends sneer.boot.Boot {
+public class Main extends OldBoot {
 	
 	public static void main(String[] args) {
 		try {

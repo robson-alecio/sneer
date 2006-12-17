@@ -1,6 +1,6 @@
-package sneer.boot;
+package sneer.strap;
 
-import static sneer.boot.SneerDirectories.writeMainAppFile;
+import static sneer.strap.SneerDirectories.writeMainAppFile;
 
 import java.io.IOException;
 

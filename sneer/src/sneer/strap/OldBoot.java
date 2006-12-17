@@ -1,15 +1,17 @@
-package sneer.boot;
+package sneer.strap;
 
-import static sneer.boot.SneerDirectories.findNewestMainApp;
+import static sneer.strap.SneerDirectories.findNewestMainApp;
 
+import java.awt.HeadlessException;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import wheelexperiments.Log;
+import javax.swing.JOptionPane;
+
 import wheelexperiments.environment.ui.User;
 
-public class Boot {
+public class OldBoot {
 
 	private static final User _user = new User();
 
@@ -20,7 +22,8 @@ public class Boot {
 		try {
 			tryToRun();
 		} catch (Throwable t) {
-			Log.log(t);
+			t.printStackTrace();
+			showError(t.toString());
 		}
 	}
 
@@ -66,7 +69,19 @@ public class Boot {
 		String version = System.getProperty("java.specification.version");
 		if (Float.parseFloat(version) >= 1.6f) return;
 		
-		new Dialog(_user).exit("O Sneer precisa ser rodado com o Java versão 6 ou mais recente.");
+		String message = "You are running Sneer on Java version " + version + ". You need Java version 6 or newer.";
+		showError(message);
+		System.exit(-1);
+	}
+
+
+	private static void showError(String message) {
+		try {
+			JOptionPane.showConfirmDialog(null, message, "Sneer", JOptionPane.ERROR_MESSAGE);
+		} catch (HeadlessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 

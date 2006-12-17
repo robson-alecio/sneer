@@ -1,4 +1,4 @@
-package sneer.boot;
+package sneer.strap;
 
 import sneer.server.ServerConfig;
 import wheelexperiments.environment.ui.User;

@@ -23,19 +23,12 @@ public class Boot {
 
 
 	private static void strap() throws Exception {
-		URLClassLoader loader = independentClassLoaderFor(strapURL());
-		setContextClassLoaderJustToMakeSure(loader);
-
+		URLClassLoader loader = garbageCollectableClassLoaderFor(strapURL());
 		invokeMainMethodOn(loader.loadClass("sneer.strap.Main"));
 	}
 
 
-	private static void setContextClassLoaderJustToMakeSure(URLClassLoader loader) {
-		Thread.currentThread().setContextClassLoader(loader);
-	}
-
-
-	private static URLClassLoader independentClassLoaderFor(URL jar) {
+	private static URLClassLoader garbageCollectableClassLoaderFor(URL jar) {
 		return new URLClassLoader(new URL[]{jar});
 	}
 

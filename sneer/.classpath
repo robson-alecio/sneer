@@ -12,5 +12,6 @@
 		</accessrules>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/Filters.jar"/>
+	<classpathentry kind="src" path="src_old"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

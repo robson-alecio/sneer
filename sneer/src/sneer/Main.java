@@ -27,12 +27,18 @@ public class Main extends sneer.strap.Main {
 	}
 
 	private static void tryToRun() throws IOException {
+		freeCallingThreadForGarbageCollection();
+		
 		if (!hasName()) {
 			User user = new User();
 			enterName(user);
 			new Dialog(user).goodbye();
 		}
 		tryToDownloadNextVersion();
+	}
+
+	private static void freeCallingThreadForGarbageCollection() {
+		int TODO;
 	}
 
 	private static void enterName(User user) throws FileNotFoundException {

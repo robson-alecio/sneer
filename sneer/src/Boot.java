@@ -24,6 +24,7 @@ public class Boot {
 
 	private static void strap() throws Exception {
 		URLClassLoader loader = garbageCollectableClassLoaderFor(strapURL());
+		Thread.currentThread().setContextClassLoader(loader);
 		invokeMainMethodOn(loader.loadClass("sneer.strap.Main"));
 	}
 

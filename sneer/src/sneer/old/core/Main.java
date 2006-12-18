@@ -1,4 +1,4 @@
-package sneer.core;
+package sneer.old.core;
 
 import java.io.IOException;
 

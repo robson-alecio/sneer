@@ -1,4 +1,3 @@
-import java.awt.HeadlessException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -46,7 +45,7 @@ public class Boot {
 	}
 
 
-	private static void invokeMainMethodOn(Class<?> clazz) throws Exception {
+	private static void invokeMainMethodOn(Class clazz) throws Exception {
 		clazz.getMethod("main", new Class[] { String[].class }).invoke(null, new Object[] { new String[0] });
 	}
 
@@ -55,7 +54,8 @@ public class Boot {
 		String version = System.getProperty("java.specification.version");
 		if (Float.parseFloat(version) >= 1.6f) return;
 		
-		String message = "You are running Sneer on Java version " + version + ". You need Java version 6 or newer.";
+		String message = "You are running Sneer on Java version " + version + ".\n\n" +
+				" You need Java version 6 or newer.";
 		showError(message);
 		System.exit(-1);
 	}
@@ -63,8 +63,8 @@ public class Boot {
 
 	private static void showError(String message) {
 		try {
-			JOptionPane.showConfirmDialog(null, message, "Sneer", JOptionPane.ERROR_MESSAGE);
-		} catch (HeadlessException e) {
+			JOptionPane.showOptionDialog(null, " " + message + "\n\n", "Sneer", JOptionPane.ERROR_MESSAGE, 0, null, new Object[]{"Exit"}, "Exit");
+		} catch (RuntimeException headlessExceptionDoesNotExistInOlderJREs) {
 			System.out.println("ERROR: " + message);
 		}
 	}

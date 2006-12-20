@@ -39,6 +39,7 @@ public class Boot {
 	}
 
 
+	@SuppressWarnings("unchecked") //Must run on JREs since 1.2
 	private static void invokeMainMethodOn(Class clazz) throws Exception {
 		clazz.getMethod("main", new Class[] { String[].class }).invoke(null, new Object[] { new String[0] });
 	}

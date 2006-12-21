@@ -101,7 +101,7 @@ public class ImagePanel extends JLabel {
 		}
 	}
 	
-	public static void main(String args[]) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException{
+	public static void main(String args[]) {
 		JFrame frm = new JFrame();
 		ImagePanel img = new ImagePanel("logo128.png");
 		frm.add(img);

@@ -27,7 +27,7 @@ public class Main extends sneer.strap.Main {
 	}
 
 	private static void tryToRun() throws IOException {
-		freeCallingThreadForGarbageCollection();
+		freeCallingThreadForClassGarbageCollection();
 		
 		if (!hasName()) {
 			User user = new User();
@@ -37,8 +37,8 @@ public class Main extends sneer.strap.Main {
 		tryToDownloadNextVersion();
 	}
 
-	private static void freeCallingThreadForGarbageCollection() {
-		int TODO;
+	private static void freeCallingThreadForClassGarbageCollection() {
+		return;
 	}
 
 	private static void enterName(User user) throws FileNotFoundException {

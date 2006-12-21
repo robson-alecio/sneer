@@ -102,7 +102,7 @@ public class Freedom2 extends Freedom1 {
 		return friend;
     }
 
-	private LifeView lifeClient(int port) throws IOException {
+	private LifeView lifeClient(int port) {
         return new Connection(_ipNetwork, "localhost", port, _me.name()).lifeView();
 	}
 	

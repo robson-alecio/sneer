@@ -23,14 +23,21 @@ public class Boot {
 
 
 	private static void strap() throws Exception {
-		URLClassLoader loader = garbageCollectableClassLoaderFor(strapURL());
+		URLClassLoader loader = createIndependentClassLoaderFor(strapURL());
 		Thread.currentThread().setContextClassLoader(loader);
 		invokeMainMethodOn(loader.loadClass("sneer.strap.Main"));
 	}
 
 
-	private static URLClassLoader garbageCollectableClassLoaderFor(URL jar) {
-		return new URLClassLoader(new URL[]{jar});
+	private static URLClassLoader createIndependentClassLoaderFor(URL jar) {
+		return new URLClassLoader(new URL[]{jar}, vmBootstrapClassLoader());
+	}
+
+
+	private static ClassLoader vmBootstrapClassLoader() {
+		ClassLoader candidate = ClassLoader.getSystemClassLoader();
+		while (candidate.getParent() != null) candidate = candidate.getParent();
+		return candidate;
 	}
 
 
@@ -39,7 +46,6 @@ public class Boot {
 	}
 
 
-	@SuppressWarnings("unchecked") //Must run on JREs since 1.2
 	private static void invokeMainMethodOn(Class clazz) throws Exception {
 		clazz.getMethod("main", new Class[] { String[].class }).invoke(null, new Object[] { new String[0] });
 	}

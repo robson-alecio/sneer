@@ -2,7 +2,7 @@ rmdir .\bin\sneerjartemp /s /q
 mkdir .\bin\sneerjartemp
 
 mkdir .\bin\sneerjartemp\strapjartemp
-javac -target 1.5 -source 1.5 -encoding UTF-8 -sourcepath .\src;..\wheel\src -d .\bin\sneerjartemp\strapjartemp .\src\sneer\strap\Main.java
+javac -target 1.5 -source 1.5 -encoding UTF-8 -sourcepath .\src;..\wheel\src -d .\bin\sneerjartemp\strapjartemp .\src\sneer\strap\Strap.java
 jar cf .\bin\sneerjartemp\strap.jar -C .\bin\sneerjartemp\strapjartemp .
 rmdir .\bin\sneerjartemp\strapjartemp /s /q
 

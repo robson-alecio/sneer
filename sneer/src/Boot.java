@@ -24,8 +24,7 @@ public class Boot {
 
 	private static void strap() throws Exception {
 		URLClassLoader loader = createGarbageCollectableClassLoaderFor(strapURL());
-		Thread.currentThread().setContextClassLoader(loader);
-		invokeMainMethodOn(loader.loadClass("sneer.strap.Main"));
+		loader.loadClass("sneer.strap.Strap").newInstance();
 	}
 
 
@@ -39,11 +38,6 @@ public class Boot {
 	}
 
 
-	private static void invokeMainMethodOn(Class clazz) throws Exception {
-		clazz.getMethod("main", new Class[] { String[].class }).invoke(null, new Object[] { new String[0] });
-	}
-
-	
 	private static void checkJavaVersionOtherwiseExit() {
 		String version = System.getProperty("java.specification.version");
 		if (Float.parseFloat(version) >= 1.6f) return;

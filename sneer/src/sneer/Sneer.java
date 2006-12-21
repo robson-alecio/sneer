@@ -11,12 +11,34 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import sneer.strap.Dialog;
+import sneer.strap.Strap;
 import sneer.strap.VersionUpdateAttempt;
 import wheelexperiments.Log;
 import wheelexperiments.environment.ui.User;
 
 
-public class Main extends sneer.strap.Main {
+public class Sneer extends Strap implements Runnable {
+	
+	public Sneer() {
+		Thread thread = new Thread(this);
+		thread.setContextClassLoader(Sneer.class.getClassLoader());
+		thread.start();
+		
+		freeCallingThreadForClassGarbageCollection();
+	}
+
+	
+	private void freeCallingThreadForClassGarbageCollection() {}
+
+
+	public void run() {
+		try {
+			tryToRun();
+		} catch (Throwable t) {
+			Log.log(t);
+		}
+	}
+
 	
 	public static void main(String[] args) {
 		try {
@@ -27,8 +49,6 @@ public class Main extends sneer.strap.Main {
 	}
 
 	private static void tryToRun() throws IOException {
-		freeCallingThreadForClassGarbageCollection();
-		
 		if (!hasName()) {
 			User user = new User();
 			enterName(user);
@@ -37,9 +57,6 @@ public class Main extends sneer.strap.Main {
 		tryToDownloadNextVersion();
 	}
 
-	private static void freeCallingThreadForClassGarbageCollection() {
-		return;
-	}
 
 	private static void enterName(User user) throws FileNotFoundException {
 		String name = user.answer(

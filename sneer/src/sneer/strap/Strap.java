@@ -1,22 +1,26 @@
 package sneer.strap;
 
 import static sneer.strap.SneerDirectories.findNewestMainApp;
+import static sneer.strap.SneerDirectories.logDirectory;
+import static sneer.strap.SneerDirectories.sneerDirectory;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
 import wheelexperiments.Log;
 import wheelexperiments.environment.ui.User;
 
-public class Main {
+public class Strap {
 
 	private static final User _user = new User();
 
 	private static File _mainApp;
 
 	
-	public static void main(String[] ignored) {
+	public Strap() {
 		try {
 			tryToRun();
 		} catch (Throwable t) {
@@ -24,22 +28,27 @@ public class Main {
 		}
 	}
 
-	private static ClassLoader vmBootstrapClassLoader() {
-		ClassLoader candidate = ClassLoader.getSystemClassLoader();
-		while (candidate.getParent() != null) candidate = candidate.getParent();
-		return candidate;
-	}
 
 	private static void tryToRun() throws Exception {
-		if (!hasMainApp()) new InstallationAttempt(_user);
+		if (!sneerDirectory().exists()) tryToInstall();
+		if (!sneerDirectory().exists()) return;
+
+		tryToRedirectLogToSneerLogFile();
+
+		if (!hasMainApp()) new VersionUpdateAttempt(1);
 		if (!hasMainApp()) return;
 		
 		runMainApp();
 	}
 
 
+	private static void tryToInstall() {
+		new InstallationDialog(_user);
+		sneerDirectory().mkdir();
+	}
+
+
 	private static void runMainApp() throws Exception {
-		InstallationAttempt.tryToRedirectLog();
 		invokeMainMethodOn(mainClass(mainApp()));
 	}
 
@@ -62,6 +71,18 @@ public class Main {
 	protected static File mainApp() {
 		if (_mainApp == null) _mainApp = findNewestMainApp();
 		return _mainApp;
+	}
+
+	private static ClassLoader vmBootstrapClassLoader() {
+		ClassLoader candidate = ClassLoader.getSystemClassLoader();
+		while (candidate.getParent() != null) candidate = candidate.getParent();
+		return candidate;
+	}
+
+
+	static void tryToRedirectLogToSneerLogFile() throws FileNotFoundException {
+		logDirectory().mkdir();
+		Log.redirectTo(new File(logDirectory(), "log.txt"));
 	}
 
 

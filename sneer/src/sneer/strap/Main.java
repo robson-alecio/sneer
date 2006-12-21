@@ -24,6 +24,11 @@ public class Main {
 		}
 	}
 
+	private static ClassLoader vmBootstrapClassLoader() {
+		ClassLoader candidate = ClassLoader.getSystemClassLoader();
+		while (candidate.getParent() != null) candidate = candidate.getParent();
+		return candidate;
+	}
 
 	private static void tryToRun() throws Exception {
 		if (!hasMainApp()) new InstallationAttempt(_user);

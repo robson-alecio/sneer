@@ -23,21 +23,14 @@ public class Boot {
 
 
 	private static void strap() throws Exception {
-		URLClassLoader loader = createIndependentClassLoaderFor(strapURL());
+		URLClassLoader loader = createGarbageCollectableClassLoaderFor(strapURL());
 		Thread.currentThread().setContextClassLoader(loader);
 		invokeMainMethodOn(loader.loadClass("sneer.strap.Main"));
 	}
 
 
-	private static URLClassLoader createIndependentClassLoaderFor(URL jar) {
-		return new URLClassLoader(new URL[]{jar}, vmBootstrapClassLoader());
-	}
-
-
-	private static ClassLoader vmBootstrapClassLoader() {
-		ClassLoader candidate = ClassLoader.getSystemClassLoader();
-		while (candidate.getParent() != null) candidate = candidate.getParent();
-		return candidate;
+	private static URLClassLoader createGarbageCollectableClassLoaderFor(URL jar) {
+		return new URLClassLoader(new URL[]{jar});
 	}
 
 

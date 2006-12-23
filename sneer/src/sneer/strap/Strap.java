@@ -73,11 +73,11 @@ public class Strap {
 		return _mainApp;
 	}
 
-	private static ClassLoader vmBootstrapClassLoader() {
-		ClassLoader candidate = ClassLoader.getSystemClassLoader();
-		while (candidate.getParent() != null) candidate = candidate.getParent();
-		return candidate;
-	}
+//	private static ClassLoader vmBootstrapClassLoader() {
+//		ClassLoader candidate = ClassLoader.getSystemClassLoader();
+//		while (candidate.getParent() != null) candidate = candidate.getParent();
+//		return candidate;
+//	}
 
 
 	static void tryToRedirectLogToSneerLogFile() throws FileNotFoundException {

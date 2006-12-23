@@ -112,7 +112,7 @@ public class ParallelServer implements Runnable {
 			scout.reportAbout(_life, socket);
 			envelope.contents("Indian settled");
 		} else {
-			Query<?> query = (Query) contents;
+			Query<?> query = (Query<?>) contents;
 			Object result = query.executeOn(_life);
 			envelope.contents(result);
 		}

@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+
 public class SneerDirectories {
 
 	private static final String PREFIX = "main";
@@ -56,6 +57,8 @@ public class SneerDirectories {
 
 	
 	public static File findNewestMainApp(File directory) {
+		System.out.println("Looking for new apps in:" + directory.getAbsolutePath());
+
 		int newest = 0;
 		for (String filename : listFilenames(directory))
 			if (validNumber(filename) > newest) newest = validNumber(filename);  

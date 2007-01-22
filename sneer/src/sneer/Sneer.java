@@ -17,21 +17,9 @@ import wheelexperiments.Log;
 import wheelexperiments.environment.ui.User;
 
 
-public class Sneer extends Strap implements Runnable {
+public class Sneer extends Strap {
 	
 	public Sneer() {
-		Thread thread = new Thread(this);
-		thread.setContextClassLoader(Sneer.class.getClassLoader());
-		thread.start();
-		
-		freeCallingThreadForClassGarbageCollection();
-	}
-
-	
-	private void freeCallingThreadForClassGarbageCollection() {}
-
-
-	public void run() {
 		try {
 			tryToRun();
 		} catch (Throwable t) {
@@ -39,16 +27,8 @@ public class Sneer extends Strap implements Runnable {
 		}
 	}
 
-	
-	public static void main(String[] args) {
-		try {
-			tryToRun();
-		} catch (Throwable t) {
-			Log.log(t);
-		}
-	}
 
-	private static void tryToRun() throws IOException {
+	private void tryToRun() throws IOException {
 		if (!hasName()) {
 			User user = new User();
 			enterName(user);
@@ -58,7 +38,7 @@ public class Sneer extends Strap implements Runnable {
 	}
 
 
-	private static void enterName(User user) throws FileNotFoundException {
+	private void enterName(User user) throws FileNotFoundException {
 		String name = user.answer(
 			" Você acaba de alcançar a liberdade 1\n" +
 			" da computação soberana: Nome Próprio.\n\n" +
@@ -79,21 +59,21 @@ public class Sneer extends Strap implements Runnable {
 	}
 
 
-	private static void saveName(String name) throws FileNotFoundException {
+	private void saveName(String name) throws FileNotFoundException {
 		PrintWriter writer = new PrintWriter(nameFile());
 		writer.println(name);
 		writer.close();
 	}
 
-	private static boolean hasName() {
+	private boolean hasName() {
 		return name() != null;
 	}
 
-	private static File nameFile() {
+	private File nameFile() {
 		return new File(sneerDirectory(), "name.txt");
 	}
 
-	private static String name()  {
+	private String name()  {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(nameFile()));
 			return reader.readLine().trim();
@@ -102,7 +82,7 @@ public class Sneer extends Strap implements Runnable {
 		}
 	}
 
-	private static void tryToDownloadNextVersion() throws IOException {
+	private void tryToDownloadNextVersion() throws IOException {
 		int currentVersion = validNumber(mainApp().getName());
 		new VersionUpdateAttempt(currentVersion + 1);
 	}

@@ -1,3 +1,11 @@
+
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -6,44 +14,59 @@ import javax.swing.JOptionPane;
 
 public class Boot {
 	
+	private static final String SUCCESSOR_JAR_PROPERTY = "sneer.sucessor.JarPath";
+	private static final String SUCCESSOR_MAIN_CLASS_PROPERTY = "sneer.sucessor.MainClass";
+
+
 	public static void main(String[] ignored) {
 		try {
 			tryToRun();
 		} catch (Throwable t) {
-			t.printStackTrace();
-			showError(t.toString());
+			tryToHide(t);
 		}
 	}
 
 
 	private static void tryToRun() throws Exception {
-		checkJavaVersionOtherwiseExit();
-		strap();
+		checkJavaVersion6OtherwiseExit();
+		
+		setSuccessor(sneerJarPath(), "sneer.strap.Strap");
+		while (true) executeSuccessor();
 	}
-
-
-	private static void strap() throws Exception {
+	
+	
+	private static void executeSuccessor() throws Exception {
+		String successorJarPath = System.clearProperty(SUCCESSOR_JAR_PROPERTY);
+		if (successorJarPath == null) System.exit(0);
 		
-		System.out.println(strapURL());
-		System.out.println(strapURL().getContent());
-		
-		URLClassLoader loader = createGarbageCollectableClassLoaderFor(strapURL());
+		URLClassLoader loader = createGarbageCollectableClassLoader(successorJarPath);
 		Thread.currentThread().setContextClassLoader(loader);
-		loader.loadClass("sneer.strap.Strap").newInstance();
+		
+		String mainClassName = System.getProperty(SUCCESSOR_MAIN_CLASS_PROPERTY);
+		loader.loadClass(mainClassName).newInstance();
+	}
+
+	
+	private static URLClassLoader createGarbageCollectableClassLoader(String path) throws MalformedURLException {
+		return new URLClassLoader(new URL[]{new URL(path)}, vmBootstrapClassLoader());
+	}
+	
+	
+	private static ClassLoader vmBootstrapClassLoader() {
+		ClassLoader candidate = ClassLoader.getSystemClassLoader();
+		while (candidate.getParent() != null) candidate = candidate.getParent();
+		return candidate;
 	}
 
 
-	private static URLClassLoader createGarbageCollectableClassLoaderFor(URL jar) {
-		return new URLClassLoader(new URL[]{jar});
+	private static String sneerJarPath() {
+		URL url = Boot.class.getResource(Boot.class.getSimpleName() + ".class");
+		String fullPath = url.getPath();
+		return fullPath.substring(0, fullPath.indexOf("!"));
 	}
 
 
-	private static URL strapURL() {
-		return Boot.class.getClassLoader().getResource("strap.jar");
-	}
-
-
-	private static void checkJavaVersionOtherwiseExit() {
+	private static void checkJavaVersion6OtherwiseExit() {
 		String version = System.getProperty("java.specification.version");
 		if (Float.parseFloat(version) >= 1.6f) return;
 		
@@ -54,12 +77,24 @@ public class Boot {
 	}
 
 
+	private static void tryToHide(Throwable t) {
+		t.printStackTrace();
+		showError(t.toString());
+	}
+
+	
 	private static void showError(String message) {
 		try {
 			JOptionPane.showOptionDialog(null, " " + message + "\n\n", "Sneer", JOptionPane.ERROR_MESSAGE, 0, null, new Object[]{"Exit"}, "Exit");
 		} catch (RuntimeException headlessExceptionDoesNotExistInOlderJREs) {
 			System.out.println("ERROR: " + message);
 		}
+	}
+
+
+	private static void setSuccessor(String jarPath, String mainClass) {
+		System.setProperty(SUCCESSOR_JAR_PROPERTY, jarPath);
+		System.setProperty(SUCCESSOR_MAIN_CLASS_PROPERTY, mainClass);
 	}
 
 }

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Sneer" default="main" basedir=".">
+	
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- Some properties                                                  -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="setLocalProperties" description="sets a number of common properties">		
+		<echo message="seting properties and classpath...."/>	
+		
+		<!-- Setar as Variaveis Obrigatorias-->
+		<property name="project.home" location="."/>		
+		<property name="project.name" value="sneer"/>
+		<property name="project.version" value="beta"/>
+		<property name="project.dist" location="${project.home}/build/dist"/>
+		<property name="project.bin" location="${project.home}/build/bin"/>
+		<property name="project.classes.jar" location="${project.dist}/${project.name}.jar"/>
+		
+		<!-- Setar as Variaveis Locais-->
+		<property name="project.src" location="${project.home}/src"/>
+		<property name="project.lib" location="${project.home}/lib"/>
+		<property name="project.classes" location="${project.home}/build/classesAnt"/>
+		<property name="project.tmp" location="${project.home}/temp"/>
+		
+		<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<!-- The classpath when the release is done. Todo: Set values         -->
+		<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<path id="classpath">
+			<fileset dir="${project.lib}">
+				<include name="**/*.jar"/>
+				<include name="**/*.zip"/>
+			</fileset>	
+		</path>			
+		
+		<path id="run.classpath">
+		    <path refid="classpath"/>
+		    <pathelement location="${project.src}/resources"/>
+		    <pathelement location="${project.classes}"/>
+		</path>
+		
+		<echo message="seting properties and classpath, done."/>
+	</target>	
+
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- Cleanning directories                                            -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="cleanDirectories" depends="setLocalProperties" description="clean the temporary directories">
+		<echo message="cleanning directories...."/>		
+		<delete dir="${project.classes}"/>
+		<delete dir="${project.dist}"/>
+		<mkdir dir="${project.dist}"/>
+		<mkdir dir="${project.classes}"/>
+		<echo message="cleanning directories, done"/>
+	</target>	
+	
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- Compile Code                                                     -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="compileSourceCode" depends="cleanDirectories" description="compile the source code">
+		<echo message="compiling...."/>		
+			
+		<javac srcdir="${project.src}:${project.src.mvc}:${project.src.examples}" 
+			   destdir="${project.classes}" classpathref="classpath" 
+			   debug="on" source="1.5" target="1.5">
+		</javac>
+		<echo message="compiling, done"/>
+	</target>
+	
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- Make Jar Files                                                   -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="makeJarFiles" depends="compileSourceCode" description="jarring compiled project files">
+		<echo message="jarring files..."/>
+
+		<jar destfile="${project.classes.jar}">
+			<fileset dir="${project.classes}">
+				<exclude name="examples/*.class"/>
+			</fileset>		
+			<fileset dir="${project.src}">
+				<include name="**/*.properties"/>
+				<include name="**/*.xml"/>
+				<include name="**/*.xsl"/>
+				<include name="**/*.txt"/>
+			</fileset>	
+			<fileset dir="${project.src.mvc}">
+				<include name="**/*.properties"/>
+			</fileset>	
+			<fileset dir="${project.src.examples}">
+				<include name="**/*.properties"/>
+			</fileset>	
+			<manifest>
+				<attribute name="Built-By" value="${project.name}"/>
+				<attribute name="Manifest-Version" value="${project.version}"/>
+			</manifest>
+		</jar>				
+
+		<echo message="jarring commons jsenna files, done."/>
+	</target>	
+		
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!--Make Release                                                                                                                          -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->	
+	<target name="makeRelease"  depends="makeJarFiles" description="generate the release">
+		<echo message="making release..."/>
+		
+		<mkdir dir="${project.releaseDirectory}/lib"/>
+		<mkdir dir="${project.releaseDirectory}/log"/>	
+		
+		<copy todir="${project.releaseDirectory}/conf" file="${project.src}/resources/log4j.xml"/>		
+		<copy todir="${project.releaseDirectory}/lib" file="${project.classes.jar}"/>		
+		<copy todir="${project.releaseDirectory}" file="${project.home}/build.xml"/>
+		<copy todir="${project.releaseDirectory}">
+			<fileset dir="${project.home}">
+				<include name="src/**/*.*"/>
+				<include name="lib/*.*"/>
+				<exclude name="lib/servlet.*"/>
+			</fileset>	
+		</copy>
+		
+		<zip destfile="${project.releaseName}" basedir="${project.tmp}">			
+			<include name="**/**"/>
+		</zip>		
+		
+		<delete dir="${project.tmp}"/>
+		
+		<echo message="making release, done."/>
+	</target>
+		
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- Example Simple Log                                               -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="run.simpleLog" depends="setLocalProperties, compileSourceCode">
+		<echo message="************************************************************"/>
+		<echo message="Example Simple Log "/>
+		<echo message="************************************************************"/>
+		<java classname="junit.log.SimpleLogTest"
+			  fork="yes" 
+			  classpathref="run.classpath"/>
+		<echo message="The End."/>
+	</target>	
+	
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- Example SQL Log                                                  -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="run.sqlLog" depends="setLocalProperties, compileSourceCode">
+		<echo message="************************************************************"/>
+		<echo message="Example SQL Log "/>
+		<echo message="************************************************************"/>
+		<java classname="junit.log.LogSQLTest"
+			  fork="yes" 
+			  classpathref="run.classpath"/>
+		<echo message="The End."/>
+	</target>	
+		
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- Example CachedDAO                                                -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="run.cachedDAO" depends="setLocalProperties, compileSourceCode">
+		<echo message="************************************************************"/>
+		<echo message="Example CachedDAO"/>
+		<echo message="************************************************************"/>
+		<java classname="junit.dao.DAOTest"
+			  fork="yes" 
+			  classpathref="run.classpath"/>
+		<echo message="The End."/>
+	</target>	
+	
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- Main                                                             -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<target name="main">	
+		<antcall target="makeJarFiles"/>
+		<!--antcall target="makeRelease"/-->
+	</target>
+
+</project>

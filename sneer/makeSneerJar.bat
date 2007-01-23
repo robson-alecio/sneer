@@ -7,6 +7,7 @@ jar cfe .\bin\Sneer.jar Boot -C .\bin\sneerjartemp .
 rmdir .\bin\mainjartemp /s /q
 mkdir .\bin\mainjartemp
 javac -target 1.6 -source 1.6 -encoding UTF-8 -sourcepath .\src;.\bootstrap\src;..\wheel\src -d .\bin\mainjartemp .\src\sneer\Sneer.java
+copy .\bin\sneer\*.png .\bin\mainjartemp\sneer
 rmdir .\bin\mainapps /s /q
 mkdir .\bin\mainapps
 jar cf .\bin\mainapps\main000001.jar -C .\bin\mainjartemp .

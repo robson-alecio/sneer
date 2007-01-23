@@ -29,6 +29,17 @@ public class VersionUpdateAgent implements Agent {
 		objectOut.writeObject(updateCommand());
 		objectOut.flush();
 		Log.log("Done.");
+		if (TestMode.isInTestMode()) exitAfterAWhile();
+	}
+
+
+	private void exitAfterAWhile() {
+		try {
+			Thread.sleep(4000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+		System.exit(0);
 	}
 
 	

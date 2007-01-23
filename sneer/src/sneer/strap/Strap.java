@@ -4,7 +4,7 @@ import static sneer.strap.SneerDirectories.findNewestMainApp;
 import static sneer.strap.SneerDirectories.logDirectory;
 import static sneer.strap.SneerDirectories.sneerDirectory;
 
-import static sneer.strap.TestMode.isInTestMode;
+import static sneer.strap.TestMode.createUser;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,7 +14,6 @@ import java.net.URLClassLoader;
 
 import wheelexperiments.Log;
 import wheelexperiments.environment.ui.User;
-import wheelexperiments.environment.ui.tests.TestUser;
 
 public class Strap {
 
@@ -32,13 +31,6 @@ public class Strap {
 	}
 
 	
-	private static User createUser() {
-		return isInTestMode()
-			? new TestUser()
-			: new User();
-	}
-
-
 	private static void tryToRun() throws Exception {
 		if (!sneerDirectory().exists()) tryToInstall();
 		if (!sneerDirectory().exists()) return;

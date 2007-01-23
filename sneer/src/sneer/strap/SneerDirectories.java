@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import static sneer.strap.TestMode.isInTestMode;
 
 public class SneerDirectories {
 
@@ -25,10 +26,11 @@ public class SneerDirectories {
 
 
 	static String userHome() {
+		if (isInTestMode()) return ".";
 		return System.getProperty("user.home");
 	}
 
-	
+
 	private static String zeroPad(int fileNumber) {
 		String concat = SneerDirectories.ZERO_MASK + fileNumber;
 		return concat.substring(concat.length() - SneerDirectories.ZERO_MASK.length());

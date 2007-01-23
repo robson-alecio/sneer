@@ -1,10 +1,4 @@
 
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -17,12 +11,12 @@ public class Boot {
 	private static final String SUCCESSOR_JAR_PROPERTY = "sneer.sucessor.JarPath";
 	private static final String SUCCESSOR_MAIN_CLASS_PROPERTY = "sneer.sucessor.MainClass";
 
-
+	
 	public static void main(String[] ignored) {
 		try {
 			tryToRun();
 		} catch (Throwable t) {
-			tryToHide(t);
+			show(t);
 		}
 	}
 
@@ -77,7 +71,7 @@ public class Boot {
 	}
 
 
-	private static void tryToHide(Throwable t) {
+	private static void show(Throwable t) {
 		t.printStackTrace();
 		showError(t.toString());
 	}

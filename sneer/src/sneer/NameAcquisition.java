@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import sneer.strap.Dialog;
-import sneer.strap.TestMode;
 import wheelexperiments.environment.ui.User;
 
 public class NameAcquisition {

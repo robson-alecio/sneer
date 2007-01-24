@@ -1,10 +1,10 @@
 package sneer.strap;
 
+import static sneer.TestMode.createUser;
 import static sneer.strap.SneerDirectories.findNewestMainApp;
 import static sneer.strap.SneerDirectories.logDirectory;
 import static sneer.strap.SneerDirectories.sneerDirectory;
 
-import static sneer.strap.TestMode.createUser;
 
 import java.io.File;
 import java.io.FileNotFoundException;

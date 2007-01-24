@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import static sneer.strap.TestMode.isInTestMode;
+import static sneer.TestMode.isInTestMode;
 
 public class SneerDirectories {
 

@@ -1,8 +1,7 @@
-package sneer.strap;
+package sneer;
 
 import java.net.URL;
 
-import sneer.Sneer;
 import wheelexperiments.environment.ui.User;
 import wheelexperiments.environment.ui.tests.TestUser;
 

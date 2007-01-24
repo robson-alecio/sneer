@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import sneer.TestMode;
 import sneer.server.Agent;
 import sneer.server.Command;
 import sneer.server.ServerConfig;

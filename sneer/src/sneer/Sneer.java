@@ -5,7 +5,6 @@ import static sneer.strap.SneerDirectories.validNumber;
 import java.io.File;
 
 import sneer.strap.SneerDirectories;
-import sneer.strap.TestMode;
 import sneer.strap.VersionUpdateAttempt;
 import wheelexperiments.Log;
 import wheelexperiments.environment.ui.User;

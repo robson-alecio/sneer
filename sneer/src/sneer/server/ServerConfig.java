@@ -2,7 +2,7 @@ package sneer.server;
 
 import java.io.File;
 
-import sneer.strap.TestMode;
+import sneer.TestMode;
 
 public class ServerConfig {
 

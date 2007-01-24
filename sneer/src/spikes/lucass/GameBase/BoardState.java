@@ -1,4 +1,4 @@
-package spikes.lucass.PieceSet;
+package spikes.lucass.GameBase;
 
 import java.io.Serializable;
 

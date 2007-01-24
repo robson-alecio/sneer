@@ -1,4 +1,4 @@
-package spikes.lucass.PieceSet;
+package spikes.lucass.GameBase.GameTypes;
 
 import java.awt.Image;
 

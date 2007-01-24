@@ -7,8 +7,9 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
-import spikes.lucass.PieceSet.ChessOptions;
-import spikes.lucass.PieceSet.Game;
+import spikes.lucass.GameBase.Game;
+import spikes.lucass.GameBase.GameTypes.ChessOptions;
+import spikes.lucass.GameBase.GameTypes.GoOptions;
 
 public class GameFrame extends JFrame implements Runnable{
 
@@ -17,10 +18,13 @@ public class GameFrame extends JFrame implements Runnable{
 	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Máximo fps 30
+	 */
 	private static final int SLEEP= 30;
 	
 	/**
-	 * O Graphics onde vai ser pintado ao inv�s do Graphics padr�o
+	 * O Graphics onde vai ser pintado ao invés do Graphics padr�ããããããão
 	 */
 	protected Graphics _bufferGraphics;
 	
@@ -35,7 +39,7 @@ public class GameFrame extends JFrame implements Runnable{
     private Thread _ticker;
     
     /**
-     * Marca se a Thread principal est� rodando. 
+     * Marca se a Thread principal est�ááááááááááá´´âáá rodando. 
      */
     protected boolean _running;
 	
@@ -49,11 +53,9 @@ public class GameFrame extends JFrame implements Runnable{
 		addMouseListener(_chessGame);
 		addMouseMotionListener(_chessGame);
 		
-        startThread();
-        
         createBufferImage();
-        
         setSize(_chessGame.getBoard().getBoardWidth(),_chessGame.getBoard().getBoardHeight());
+        startThread();
 	}
 
 	private void createBufferImage() {

@@ -1,4 +1,4 @@
-package spikes.lucass.PieceSet;
+package spikes.lucass.GameBase;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -15,6 +15,7 @@ public class PieceSprite {
 	private int _y;
 	
 	private Image _pieceSet;
+	private boolean _isVisible= true;
 	
 	private int _pieceWidth;
 	private int _pieceHeight;
@@ -64,14 +65,19 @@ public class PieceSprite {
 	}
 
 	public void paint(Graphics g) {
-//		Color c= g.getColor();
-//		g.setColor(Color.WHITE);
-		int xCalc= _x-_pieceTransX;
-		int yCalc= _y-_pieceTransY;
-		g.drawImage(_pieceSet, xCalc, yCalc, xCalc+_pieceWidth, yCalc+_pieceHeight, 
-				_pieceWidth*_pieceIndex, 0, (_pieceWidth*_pieceIndex)+_pieceWidth, _pieceHeight, null);
-//		g.drawString("x: "+_x+" y: "+_y, _x, _y);
-//		g.setColor(c);
-		
+		if(_isVisible){
+			int xCalc= _x-_pieceTransX;
+			int yCalc= _y-_pieceTransY;
+			g.drawImage(_pieceSet, xCalc, yCalc, xCalc+_pieceWidth, yCalc+_pieceHeight, 
+					_pieceWidth*_pieceIndex, 0, (_pieceWidth*_pieceIndex)+_pieceWidth, _pieceHeight, null);
+		}
+	}
+
+	public void setVisible(boolean b) {
+		_isVisible= b;
+	}
+	
+	public boolean getVisible() {
+		return _isVisible;
 	}
 }

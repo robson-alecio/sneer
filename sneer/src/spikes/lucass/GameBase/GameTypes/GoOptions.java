@@ -1,8 +1,9 @@
-package spikes.lucass.PieceSet;
+package spikes.lucass.GameBase.GameTypes;
 
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
+
 
 
 public class GoOptions extends GameOptions{
@@ -12,8 +13,8 @@ public class GoOptions extends GameOptions{
 	private static final int EMPTY= -1;
 	private static final int DOT=  0;
 	
-	private Image _boardImage= new ImageIcon( getClass().getResource("/res/boardGo74x74.png") ).getImage();
-	private Image _piecesImage= new ImageIcon( getClass().getResource("/res/pecasGo74x74.png") ).getImage();
+	private Image _boardImage= new ImageIcon( getClass().getResource("/spikes/lucass/res/boardGo74x74.png") ).getImage();
+	private Image _piecesImage= new ImageIcon( getClass().getResource("/spikes/lucass/res/pecasGo74x74.png") ).getImage();
 	
 	private int[][] _defaultPositions= {
 			{DOT,EMPTY,DOT,EMPTY,DOT},

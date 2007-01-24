@@ -1,8 +1,9 @@
-package spikes.lucass.PieceSet;
+package spikes.lucass.GameBase.GameTypes;
 
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
+
 
 
 public class ChessOptions extends GameOptions{
@@ -40,8 +41,8 @@ public class ChessOptions extends GameOptions{
 	private static final int W_K_INDEX=   10;
 	private static final int W_P_INDEX=   11;
 	
-	private Image _boardImage= new ImageIcon( getClass().getResource("/res/board74x74.png") ).getImage();
-	private Image _piecesImage= new ImageIcon( getClass().getResource("/res/pecas74x74.png") ).getImage();
+	private Image _boardImage= new ImageIcon( getClass().getResource("/spikes/lucass/res/board74x74.png") ).getImage();
+	private Image _piecesImage= new ImageIcon( getClass().getResource("/spikes/lucass/res/pecas74x74.png") ).getImage();
 	
 	private int[][] _defaultPositions= {
 			{B_T_INDEX,B_H_INDEX,B_B_INDEX,B_Q_INDEX,B_K_INDEX,B_B_INDEX,B_H_INDEX,B_T_INDEX,B_T_INDEX},

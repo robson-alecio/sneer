@@ -1,4 +1,4 @@
-package spikes.lucass.PieceSet;
+package spikes.lucass.GameBase;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -14,17 +14,17 @@ public class Board{
 	private int _colNumber;
 	private int _rowNumber;
 	
+	
 	public Board(Image boardImage) {
 		_boardSquares= new BufferedImage(boardImage.getWidth(null),boardImage.getHeight(null),BufferedImage.TYPE_INT_ARGB);
 		_boardSquares.getGraphics().drawImage(boardImage, 0, 0, null);
 	}
 
-
 	public void generateBoard(int colNumber, int rowNumber,int boardCellVariation ) {
 		_colNumber= colNumber;
 		_rowNumber= rowNumber;
 		
-		int boardWidth=  (colNumber* (_boardSquares.getWidth()/2));
+		int boardWidth=  (colNumber* (_boardSquares.getWidth()/boardCellVariation));
 		int boardHeight= (rowNumber* _boardSquares.getHeight());
 		
 		int boardCellWidth=  (boardWidth / colNumber);
@@ -75,5 +75,13 @@ public class Board{
 
 	public void setY(int y) {
 		_y = y;
+	}
+	
+	public int getCellY(int atRow){
+		return _y+(getCellBoardHeight()*atRow);
+	}
+	
+	public int getCellX(int atCol){
+		return _x+(getCellBoardWidth()*atCol);
 	}
 }

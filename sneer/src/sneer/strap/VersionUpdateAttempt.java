@@ -3,11 +3,13 @@ package sneer.strap;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
 import java.net.Socket;
 
 import sneer.server.Command;
 import sneer.server.ServerConfig;
 import wheelexperiments.Log;
+import wheelexperiments.environment.ui.User;
 
 public class VersionUpdateAttempt {
 
@@ -17,13 +19,15 @@ public class VersionUpdateAttempt {
 
 
 	
-	public VersionUpdateAttempt(int nextVersion) throws IOException {
+	public VersionUpdateAttempt(int nextVersion, User user) throws IOException {
 		_nextVersion = nextVersion;
+		_user = user;
 		tryToDownloadMainApp();
 	}
 
 	
 	private final int _nextVersion;
+	private final User _user;
 
 	
 	private void tryToDownloadMainApp() throws IOException {
@@ -33,6 +37,9 @@ public class VersionUpdateAttempt {
 			
 			((Command)receiveObject()).execute();
 
+		} catch (ConnectException x) {
+			Log.log("Servidor não enconrado.");
+			
 		} finally {
 			closeDownloadConnection();
 		}
@@ -41,6 +48,8 @@ public class VersionUpdateAttempt {
 
 	
 	private void openDownloadConnectionForVersion(int version) throws IOException {
+		_user.acnowledgeNotification("Procurando atualização...");
+		
 		_socket = new Socket(ServerConfig.HOST, ServerConfig.PORT);
 		
 		ObjectOutputStream objectOut = new ObjectOutputStream(_socket.getOutputStream());

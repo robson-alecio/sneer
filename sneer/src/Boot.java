@@ -30,10 +30,7 @@ public class Boot {
 	
 	
 	private static void executeSuccessor() throws Exception {
-		System.out.println("> > > > > > " + System.getProperty(SUCCESSOR_JAR_PROPERTY));
 		String successorJarPath = System.clearProperty(SUCCESSOR_JAR_PROPERTY);
-		System.out.println("> > > > > > " + System.getProperty(SUCCESSOR_JAR_PROPERTY));
-		System.out.println("> > > > > > " + successorJarPath);
 		if (successorJarPath == null) System.exit(0);
 		
 		URLClassLoader loader = createGarbageCollectableClassLoader(successorJarPath);

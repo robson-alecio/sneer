@@ -37,7 +37,7 @@ public class Strap {
 
 		tryToRedirectLogToSneerLogFile();
 
-		if (!hasMainApp()) new VersionUpdateAttempt(1);
+		if (!hasMainApp()) new VersionUpdateAttempt(1, _user);
 		if (!hasMainApp()) return;
 		
 		prepareSuccessor();

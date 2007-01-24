@@ -15,14 +15,13 @@ import wheelexperiments.environment.ui.User;
 
 public class NameAcquisition {
 
-	NameAcquisition() throws FileNotFoundException {
-		acquireOwnNameIfNecessary();
+	NameAcquisition(User user) throws FileNotFoundException {
+		acquireOwnNameIfNecessary(user);
 	}
 	
-	private void acquireOwnNameIfNecessary() throws FileNotFoundException {
+	private void acquireOwnNameIfNecessary(User user) throws FileNotFoundException {
 		if (hasName()) return;
 	
-		User user = TestMode.createUser();
 		enterName(user);
 		new Dialog(user).goodbye();
 	}

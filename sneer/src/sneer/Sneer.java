@@ -4,6 +4,7 @@ import static sneer.strap.SneerDirectories.validNumber;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Date;
 
 import sneer.strap.SneerDirectories;
 import sneer.strap.VersionUpdateAttempt;
@@ -32,30 +33,35 @@ public class Sneer {
 		
 		registerUserActions();
 		
-		while (true) Thread.sleep(5000);
+		int arbitraryLargeNumber = 5000;
+		while (true) Thread.sleep(arbitraryLargeNumber);
 	}
 
 	
 	private void registerUserActions() {
-		_user.addActions(nameChangeAction());
-		_user.addActions(exitAction());
+		_user.addAction(nameChangeAction());
+		_user.addAction(exitAction());
 	}
 
 	private User.Action exitAction() {
 		return new User.Action() {
+			
+			public String caption() {
+				return "Sair";
+			}
 
 			public void run() {
 				System.exit(0);
-			}
-
-			public String getCaption() {
-				return "Sair";
 			}
 		};
 	}
 
 	private User.Action nameChangeAction() {
 		return new User.Action() {
+			
+			public String caption() {
+				return "Mudar Meu Nome";
+			}
 
 			public void run() {
 				try {
@@ -63,10 +69,6 @@ public class Sneer {
 				} catch (FileNotFoundException e) {
 					Log.log(e);
 				}
-			}
-
-			public String getCaption() {
-				return "Mudar Meu Nome";
 			}
 		};
 	}

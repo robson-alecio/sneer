@@ -12,9 +12,11 @@ public class TestMode {
 	}
 
 	public static User createUser(URL trayIconURL) {
-		return isInTestMode()
-			? new TestUser()
-			: new User(trayIconURL);
+//		return isInTestMode()
+//			? new TestUser()
+//			: new User(trayIconURL);
+		return new User(trayIconURL);
+		
 	}
 
 	public static User createUser() {

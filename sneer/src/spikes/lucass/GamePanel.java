@@ -6,13 +6,15 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import spikes.lucass.GameBase.Game;
 import spikes.lucass.GameBase.GameTypes.ChessOptions;
 import spikes.lucass.GameBase.GameTypes.GoOptions;
 
-public class GameFrame extends JFrame implements Runnable{
-
+public class GamePanel extends JPanel implements Runnable{
+//TODO: Change to JPanel
+	
 	/**
 	 * 
 	 */
@@ -47,7 +49,7 @@ public class GameFrame extends JFrame implements Runnable{
 	
 	Image _piecesImage;
 	
-	public GameFrame() {
+	public GamePanel() {
 		_chessGame = new Game(new ChessOptions());
 		
 		addMouseListener(_chessGame);

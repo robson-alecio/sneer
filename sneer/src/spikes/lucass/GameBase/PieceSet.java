@@ -22,6 +22,7 @@ public class PieceSet {
 				gO.getPiecesImage().getHeight(null),
 				gO.getDefaultPositions()[row][col]);
 				wrapPieceToCell(row, col);
+				_pieces[row][col].setVisible(true);
 			}
 		}
 		

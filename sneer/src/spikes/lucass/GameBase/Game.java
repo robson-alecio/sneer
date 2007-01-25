@@ -73,7 +73,9 @@ public class Game implements MouseListener, MouseMotionListener{
 	}
 
 	public void mousePressed(MouseEvent e) {
-		_movingPiece= _pieceSet.removePieceAtPosition(e.getX(), e.getY());
+		PieceSprite tmp= _pieceSet.removePieceAtPosition(e.getX(), e.getY());
+		if(tmp!=null)
+			_movingPiece= tmp;
 	}
 
 	public void mouseReleased(MouseEvent e) {

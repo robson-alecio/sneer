@@ -10,6 +10,7 @@ import sneer.strap.SneerDirectories;
 import sneer.strap.VersionUpdateAttempt;
 import wheelexperiments.Log;
 import wheelexperiments.environment.ui.User;
+import wheelexperiments.environment.ui.User.Action;
 
 
 public class Sneer {
@@ -32,6 +33,8 @@ public class Sneer {
 		new NameChange(_user, false);
 		
 		registerUserActions();
+		
+		new IngredientMixup();
 		
 		int arbitraryLargeNumber = 5000;
 		while (true) Thread.sleep(arbitraryLargeNumber);
@@ -60,7 +63,7 @@ public class Sneer {
 		return new User.Action() {
 			
 			public String caption() {
-				return "Mudar Meu Nome";
+				return "Mudar Meu Nome...";
 			}
 
 			public void run() {

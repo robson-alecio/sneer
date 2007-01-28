@@ -3,6 +3,8 @@ package spikes.lucass;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
@@ -12,78 +14,70 @@ import spikes.lucass.GameBase.Game;
 import spikes.lucass.GameBase.GameTypes.ChessOptions;
 import spikes.lucass.GameBase.GameTypes.GoOptions;
 
-public class GamePanel extends JPanel implements Runnable{
-//TODO: Change to JPanel
+public class GamePanel extends JPanel implements Runnable, FocusListener{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * Máximo fps 30
-	 */
-	private static final int SLEEP= 30;
+	private static final int FRAMES_PER_SECOND= 30;
 	
-	/**
-	 * O Graphics onde vai ser pintado ao invés do Graphics padr�ããããããão
-	 */
-	protected Graphics _bufferGraphics;
-	
-	/**
-	 * A imagem q vai conter o bufferGraphics.
-	 */
-    private BufferedImage _offscreen;
+    private BufferedImage _bufferImage;
+    protected Graphics _bufferImageGraphics;
     
     /**
      * A Thread principal do jogo.
      */
     private Thread _ticker;
     
-    /**
-     * Marca se a Thread principal est�ááááááááááá´´âáá rodando. 
-     */
-    protected boolean _running;
-	
-	private Game _chessGame;
-	
-	Image _piecesImage;
+    private boolean _isThreadRunning;
+    private boolean _isGamePanelFocused;
+    
+	private Game _game;
 	
 	public GamePanel() {
-		_chessGame = new Game(new ChessOptions());
-		
-		addMouseListener(_chessGame);
-		addMouseMotionListener(_chessGame);
-		
+		setFocusable(true);
+		createGame();
         createBufferImage();
-        setSize(_chessGame.getBoard().getBoardWidth(),_chessGame.getBoard().getBoardHeight());
+        setSize(_game.getBoard().getBoardWidth(),_game.getBoard().getBoardHeight());
         startThread();
 	}
 
+	private void createGame() {
+		_game = new Game(new ChessOptions());
+		
+		addMouseListener(_game.getMouseListener());
+		addMouseMotionListener(_game.getMouseMotionListener());
+		
+		addFocusListener(this);
+	}
+
 	private void createBufferImage() {
-		_offscreen = new BufferedImage(_chessGame.getBoard().getBoardWidth(),_chessGame.getBoard().getBoardHeight(),BufferedImage.TYPE_INT_ARGB);
-        _bufferGraphics = _offscreen.getGraphics();
+		_bufferImage = new BufferedImage(_game.getBoard().getBoardWidth(),_game.getBoard().getBoardHeight(),BufferedImage.TYPE_INT_ARGB);
+        _bufferImageGraphics = _bufferImage.getGraphics();
         setBackground(Color.white);
 	}
 
 	private void startThread() {
 		if (_ticker == null || _ticker.isAlive()){
-            _running= true;
+            _isThreadRunning= true;
             _ticker = new Thread(this);
             _ticker.start();
         }
 	}
 	
     public synchronized void stop(){
-        _running= false;
+        _isThreadRunning= false;
     }
 
     public void run() {
-        while(_running){
+        while(_isThreadRunning){
             step();
-            repaint();
+            if(_isGamePanelFocused)
+            	repaint();
             try{
-                Thread.sleep(1000/SLEEP);
+                Thread.sleep(1000/FRAMES_PER_SECOND);
             }
             catch (InterruptedException e){}
         }
@@ -92,22 +86,22 @@ public class GamePanel extends JPanel implements Runnable{
     @Override
     public void repaint() {
     	if(getGraphics()!=null){
-    		paint(_bufferGraphics);
-    		getGraphics().drawImage(_offscreen,0,0,this);
+    		paint(_bufferImageGraphics);
+    		getGraphics().drawImage(_bufferImage,0,0,this);
     	}
     }
     
     @Override
     public void paint(Graphics g) {
-    	_chessGame.paint(g);
+    	_game.paint(g);
     }
     
     @Override
 	public void setBackground(Color color){
     	if(getGraphics()!=null)
     		getGraphics().setColor(color);
-    	if(_bufferGraphics!=null)
-    		_bufferGraphics.setColor(color);
+    	if(_bufferImageGraphics!=null)
+    		_bufferImageGraphics.setColor(color);
     }
     
     /**
@@ -119,7 +113,15 @@ public class GamePanel extends JPanel implements Runnable{
     
     public void destroy()
     {
-    	_running= false;
+    	_isThreadRunning= false;
         _ticker= null;
     }
+
+	public void focusGained(FocusEvent ignored) {
+		_isGamePanelFocused= true;		
+	}
+
+	public void focusLost(FocusEvent ignored) {
+		_isGamePanelFocused= false;
+	}
 }

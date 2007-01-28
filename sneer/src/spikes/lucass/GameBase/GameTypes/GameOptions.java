@@ -2,21 +2,21 @@ package spikes.lucass.GameBase.GameTypes;
 
 import java.awt.Image;
 
-public abstract class GameOptions {
-	//TODO: n�o pode ser uma interface
-	public abstract int[][] getDefaultPositions();
+public interface GameOptions {
+
+	public int[][] getDefaultPositions();
 	
-	public abstract int getRowNumber();
+	public int getRowNumber();
 	
-	public abstract int getColNumber();
+	public int getColNumber();
 	
-	public abstract Image getBoardImage();
+	public Image getBoardImage();
 	
-	public abstract Image getPiecesImage();
+	public Image getPiecesImage();
 	
-	public abstract int getPieceIndex(int pieceID);
+	public int getPieceIndex(int pieceID);
 	
-	public abstract int getPieceTypesNumber();
+	public int getPieceTypesNumber();
 	
-	public abstract int getBoardCellVariation();
+	public int getBoardCellVariation();
 }

@@ -14,19 +14,20 @@ public class MainChessS{
 	
 	
 	public static void main(String args[]){
-		GamePanel cb= new GamePanel();
+		GamePanel gamePanel= new GamePanel();
 		
-		JFrame frameTeste= new JFrame();
+		JFrame gameFrame= new JFrame();
 		
-		JMenuBar teste= new JMenuBar();
-		JMenu file= new JMenu("teste");
-		teste.add(file);
+		JMenuBar mainMenuBar= new JMenuBar();
+		JMenu subMenuOpcoes= new JMenu("Opções");
+		subMenuOpcoes.add(new JMenu("Mudar jogo"));
+		mainMenuBar.add(subMenuOpcoes);
 		
-		frameTeste.setJMenuBar(teste);
-		frameTeste.add(cb);
-		frameTeste.setSize(500,500);
-		frameTeste.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frameTeste.setVisible(true);
+		gameFrame.setJMenuBar(mainMenuBar);
+		gameFrame.add(gamePanel);
+		gameFrame.setSize(500,500);
+		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		gameFrame.setVisible(true);
 	}
 	 
 }

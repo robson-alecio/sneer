@@ -15,6 +15,7 @@ public class PieceSet {
 		_boardInUse= belongsTo;
 		int[][] piecesIds= gO.getDefaultPositions();
 		_pieces= new PieceSprite[piecesIds.length][piecesIds[0].length];
+		
 		for(int row= 0; row<piecesIds.length; row++){
 			for(int col= 0; col<piecesIds[row].length; col++){
 				_pieces[row][col]= new PieceSprite(gO.getPiecesImage(),
@@ -22,21 +23,10 @@ public class PieceSet {
 				gO.getPiecesImage().getHeight(null),
 				gO.getDefaultPositions()[row][col]);
 				wrapPieceToCell(row, col);
-				_pieces[row][col].setVisible(true);
 			}
 		}
 		
 	}
-	
-//	private void wrapAllPiecesToCell(){
-//		for(int row = 0; row <= _pieces.length; row++){
-//			for(int col = 0; col <= _pieces[row].length; col++){
-//				if(_pieces[row][col]!=null){
-//					wrapPieceToCell(row,col);
-//				}
-//			}
-//		}
-//	}
 	
 	private void wrapPieceToCell(int inRow,int inCol){
 		int pieceXCenter= _boardInUse.getCellX(inCol)+(_boardInUse.getCellBoardWidth()/2);

@@ -9,42 +9,22 @@ import java.util.Vector;
 
 import spikes.lucass.GameBase.GameTypes.GameOptions;
 
-public class Game implements MouseListener, MouseMotionListener{		
+public class Game{		
 	public static final int EMPTY= -1;
 	
 	private Board _board;
 	private PieceSet _pieceSet;
+	
+	private GameMouseListener _mouseEvents;
 
 	private PieceSprite _movingPiece= newInvisiblePiece();
 
-	
-//	private void debug_printSaveState() {
-//		for(int i=0; i<_boardModel.length; i++){
-//			for(int j=0; j<_boardModel[i].length; j++){
-//				System.out.print(" - " + _boardModel[i][j]);
-//			}
-//			System.out.println();
-//		}
-//	}
-
 	public Game(GameOptions gameOptions){
-		//creates board
 		_board= new Board(gameOptions.getBoardImage());
 		_board.generateBoard(gameOptions.getColNumber(), gameOptions.getRowNumber(), gameOptions.getBoardCellVariation());
 		
-		//creates pieceSet
 		_pieceSet= new PieceSet(_board, gameOptions);
 	}
-	
-//	public void saveBoardState(){		
-//		for(int i=0; i<_boardModel.length; i++){
-//			System.arraycopy(_boardModel[i], 0, _tmpBoardModel[i], 0, _boardModel[i].length);
-//		}
-//	}
-
-//	public void loadBoardState(/*BoardState bs*/){
-//		createAndArrangePieces(_tmpBoardModel);
-//	}
 	
 	public Board getBoard(){
 		return _board;
@@ -56,45 +36,53 @@ public class Game implements MouseListener, MouseMotionListener{
 		_movingPiece.paint(g);
 	}
 
-	public void mouseClicked(MouseEvent e) {
-//		if(e.getButton()==MouseEvent.BUTTON1){
-//			saveBoardState();
-//		}else{
-//			loadBoardState();
-//		}
-	}
-
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-	}
-
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-	}
-
-	public void mousePressed(MouseEvent e) {
-		PieceSprite tmp= _pieceSet.removePieceAtPosition(e.getX(), e.getY());
-		if(tmp!=null)
-			_movingPiece= tmp;
-	}
-
-	public void mouseReleased(MouseEvent e) {
-		_movingPiece.setPosition(e.getX(), e.getY());
-		_pieceSet.insertPieceIfOnTheBoard(_movingPiece);
-		_movingPiece= newInvisiblePiece();
-	}
-
 	private PieceSprite newInvisiblePiece() {
 		PieceSprite p= new PieceSprite(null,0,0,0);
 		p.setVisible(false);
 		return p;
 	}
 
-	public void mouseDragged(MouseEvent e) {
-		_movingPiece.setPosition(e.getX(), e.getY());
+	public MouseListener getMouseListener(){
+		return getMouseEventsListener();
 	}
+	
+	public MouseMotionListener getMouseMotionListener(){
+		return getMouseEventsListener();
+	}
+	
+	private GameMouseListener getMouseEventsListener(){
+		return (_mouseEvents==null)?
+				(_mouseEvents= new GameMouseListener())
+				:_mouseEvents;
+	}
+	
+	
+	
+	
+	class GameMouseListener implements MouseListener, MouseMotionListener{
+		public void mouseClicked(MouseEvent e) {
+		}
+		public void mouseEntered(MouseEvent e) {
+		}
+		public void mouseExited(MouseEvent e) {
+		}
+		public void mouseMoved(MouseEvent e) {
+		}
 
-	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
+		public void mousePressed(MouseEvent e) {
+			PieceSprite tmp= _pieceSet.removePieceAtPosition(e.getX(), e.getY());
+			if(tmp!=null)
+				_movingPiece= tmp;
+		}
+
+		public void mouseReleased(MouseEvent e) {
+			_movingPiece.setPosition(e.getX(), e.getY());
+			_pieceSet.insertPieceIfOnTheBoard(_movingPiece);
+			_movingPiece= newInvisiblePiece();
+		}
+		
+		public void mouseDragged(MouseEvent e) {
+			_movingPiece.setPosition(e.getX(), e.getY());
+		}
 	}
 }

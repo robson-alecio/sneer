@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 
 
 
-public class ChessOptions extends GameOptions{
+public class ChessOptions implements GameOptions{
 	
 	private static final int PIECE_TYPES_NUMBER= 12;
 	
@@ -45,52 +45,44 @@ public class ChessOptions extends GameOptions{
 	private Image _piecesImage= new ImageIcon( getClass().getResource("/spikes/lucass/res/pecas74x74.png") ).getImage();
 	
 	private int[][] _defaultPositions= {
-			{B_T_INDEX,B_H_INDEX,B_B_INDEX,B_Q_INDEX,B_K_INDEX,B_B_INDEX,B_H_INDEX,B_T_INDEX,B_T_INDEX},
-			{B_P_INDEX,B_P_INDEX,B_P_INDEX,B_P_INDEX,B_P_INDEX,B_P_INDEX,B_P_INDEX,B_P_INDEX,B_T_INDEX},
-			{EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    },
-			{EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    },
-			{EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    },
-			{EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    },
-			{W_P_INDEX,W_P_INDEX,W_P_INDEX,W_P_INDEX,W_P_INDEX,W_P_INDEX,W_P_INDEX,W_P_INDEX,B_T_INDEX},
-			{W_T_INDEX,W_H_INDEX,W_B_INDEX,W_Q_INDEX,W_K_INDEX,W_B_INDEX,W_H_INDEX,W_T_INDEX,B_T_INDEX},
+			{B_T_INDEX,B_H_INDEX,B_B_INDEX,B_Q_INDEX,B_K_INDEX,B_B_INDEX,B_H_INDEX,B_T_INDEX},
+			{B_P_INDEX,B_P_INDEX,B_P_INDEX,B_P_INDEX,B_P_INDEX,B_P_INDEX,B_P_INDEX,B_P_INDEX},
+			{EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    },
+			{EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    },
+			{EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    },
+			{EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    ,EMPTY    },
+			{W_P_INDEX,W_P_INDEX,W_P_INDEX,W_P_INDEX,W_P_INDEX,W_P_INDEX,W_P_INDEX,W_P_INDEX},
+			{W_T_INDEX,W_H_INDEX,W_B_INDEX,W_Q_INDEX,W_K_INDEX,W_B_INDEX,W_H_INDEX,W_T_INDEX},
 	};
 	
-	@Override
 	public int[][] getDefaultPositions(){
 		return _defaultPositions;
 	}
 	
-	@Override
 	public int getRowNumber(){
 		return _defaultPositions.length;
 	}
 	
-	@Override
 	public int getColNumber(){
 		return _defaultPositions[0].length;
 	}
 
-	@Override
 	public int getPieceTypesNumber() {
 		return PIECE_TYPES_NUMBER;
 	}
 
-	@Override
 	public Image getBoardImage() {
 		return _boardImage;
 	}
 
-	@Override
 	public Image getPiecesImage() {
 		return _piecesImage;
 	}
 	
-	@Override
 	public int getBoardCellVariation() {
 		return 2;
 	}
 
-	@Override
 	public int getPieceIndex(int pieceID) {
 		// TODO Auto-generated method stub
 		return 0;

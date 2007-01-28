@@ -19,15 +19,15 @@ public class PieceSprite {
 	
 	private int _pieceWidth;
 	private int _pieceHeight;
-	private int _pieceTransX;
-	private int _pieceTransY;
+	private int _pieceTranslationX;
+	private int _pieceTranslationY;
 	
 	public PieceSprite(Image pieceSet,int pieceWidth, int pieceHeight,int index) {
 		_pieceSet= pieceSet;
 		_pieceWidth= pieceWidth;
-		_pieceTransX= _pieceWidth/2;
+		_pieceTranslationX= _pieceWidth/2;
 		_pieceHeight= pieceHeight;
-		_pieceTransY= _pieceHeight/2;
+		_pieceTranslationY= _pieceHeight/2;
 		setPieceIndex(index); 
 	}
 
@@ -48,7 +48,7 @@ public class PieceSprite {
 	}
 	
 	public Rectangle getCollisionRectangle(){
-		return new Rectangle(_x-_pieceTransX,_y-_pieceTransY,_pieceWidth,_pieceHeight);
+		return new Rectangle(_x-_pieceTranslationX,_y-_pieceTranslationY,_pieceWidth,_pieceHeight);
 	}
 	
 	public void setPosition(int x, int y){
@@ -65,9 +65,9 @@ public class PieceSprite {
 	}
 
 	public void paint(Graphics g) {
-		if(_isVisible){
-			int xCalc= _x-_pieceTransX;
-			int yCalc= _y-_pieceTransY;
+		if(_isVisible && _pieceIndex>=0){
+			int xCalc= _x-_pieceTranslationX;
+			int yCalc= _y-_pieceTranslationY;
 			g.drawImage(_pieceSet, xCalc, yCalc, xCalc+_pieceWidth, yCalc+_pieceHeight, 
 					_pieceWidth*_pieceIndex, 0, (_pieceWidth*_pieceIndex)+_pieceWidth, _pieceHeight, null);
 		}

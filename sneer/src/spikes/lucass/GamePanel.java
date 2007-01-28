@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 
 import spikes.lucass.GameBase.Game;
 import spikes.lucass.GameBase.GameTypes.ChessOptions;
+import spikes.lucass.GameBase.GameTypes.GameOptions;
 import spikes.lucass.GameBase.GameTypes.GoOptions;
 
 public class GamePanel extends JPanel implements Runnable, FocusListener{
@@ -20,8 +21,8 @@ public class GamePanel extends JPanel implements Runnable, FocusListener{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	private static final int FRAMES_PER_SECOND= 30;
+	
+	private static final int FRAMES_PER_SECOND= 15;
 	
     private BufferedImage _bufferImage;
     protected Graphics _bufferImageGraphics;
@@ -36,16 +37,20 @@ public class GamePanel extends JPanel implements Runnable, FocusListener{
     
 	private Game _game;
 	
-	public GamePanel() {
+	public GamePanel(GameOptions gameType) {
 		setFocusable(true);
-		createGame();
-        createBufferImage();
-        setSize(_game.getBoard().getBoardWidth(),_game.getBoard().getBoardHeight());
-        startThread();
+		setGame(gameType);
+		startThread();
 	}
 
-	private void createGame() {
-		_game = new Game(new ChessOptions());
+	public void setGame(GameOptions gameType) {
+		createGame(gameType);
+        createBufferImage();
+        setSize(_game.getBoard().getBoardWidth(),_game.getBoard().getBoardHeight());
+	}
+
+	private void createGame(GameOptions gameType) {
+		_game = new Game(gameType);
 		
 		addMouseListener(_game.getMouseListener());
 		addMouseMotionListener(_game.getMouseMotionListener());

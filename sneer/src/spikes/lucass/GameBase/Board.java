@@ -41,10 +41,6 @@ public class Board{
 		}
 	}
 	
-	public void paint(Graphics g){
-		g.drawImage(_board,_x,_y , null);
-	}
-
 	public int getBoardHeight() {
 		return (_rowNumber* _boardSquares.getHeight());
 	}
@@ -61,27 +57,31 @@ public class Board{
 		return getBoardHeight()/_rowNumber;
 	}
 
+	public void setX(int x) {
+		_x = x;
+	}
+	
 	public int getX() {
 		return _x;
 	}
 
-	public void setX(int x) {
-		_x = x;
+	public void setY(int y) {
+		_y = y;
 	}
 
 	public int getY() {
 		return _y;
 	}
 
-	public void setY(int y) {
-		_y = y;
-	}
-	
 	public int getCellY(int atRow){
 		return _y+(getCellBoardHeight()*atRow);
 	}
 	
 	public int getCellX(int atCol){
 		return _x+(getCellBoardWidth()*atCol);
+	}
+	
+	public void paint(Graphics g){
+		g.drawImage(_board,_x,_y , null);
 	}
 }

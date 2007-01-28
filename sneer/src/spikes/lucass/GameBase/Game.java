@@ -14,8 +14,6 @@ public class Game{
 	
 	private Board _board;
 	private PieceSet _pieceSet;
-	
-	private GameMouseListener _mouseEvents;
 
 	private PieceSprite _movingPiece= newInvisiblePiece();
 
@@ -30,59 +28,46 @@ public class Game{
 		return _board;
 	}
 	
-	public void paint(Graphics g){
-		_board.paint(g);
-		_pieceSet.paint(g);
-		_movingPiece.paint(g);
-	}
-
 	private PieceSprite newInvisiblePiece() {
-		PieceSprite p= new PieceSprite(null,0,0,0);
+		PieceSprite p= new PieceSprite(null,0,0,-1);
 		p.setVisible(false);
 		return p;
 	}
 
 	public MouseListener getMouseListener(){
-		return getMouseEventsListener();
+		return new MouseListener(){
+			public void mouseClicked(MouseEvent e){}
+			public void mouseEntered(MouseEvent e){}
+			public void mouseExited(MouseEvent e){}
+			
+			public void mousePressed(MouseEvent e) {
+				PieceSprite tmp= _pieceSet.removePieceAtPosition(e.getX(), e.getY());
+				if(tmp!=null)
+					_movingPiece= tmp;
+			}
+			public void mouseReleased(MouseEvent e) {
+				if(_movingPiece.getPieceIndex()>=0){
+					_movingPiece.setPosition(e.getX(), e.getY());
+					_pieceSet.insertPieceIfOnTheBoard(_movingPiece);
+					_movingPiece= newInvisiblePiece();
+				}
+			}
+		};
 	}
 	
 	public MouseMotionListener getMouseMotionListener(){
-		return getMouseEventsListener();
+		return new MouseMotionListener(){
+			public void mouseMoved(MouseEvent e) {
+			}
+			public void mouseDragged(MouseEvent e) {
+				_movingPiece.setPosition(e.getX(), e.getY());
+			}
+		};
 	}
-	
-	private GameMouseListener getMouseEventsListener(){
-		return (_mouseEvents==null)?
-				(_mouseEvents= new GameMouseListener())
-				:_mouseEvents;
-	}
-	
-	
-	
-	
-	class GameMouseListener implements MouseListener, MouseMotionListener{
-		public void mouseClicked(MouseEvent e) {
-		}
-		public void mouseEntered(MouseEvent e) {
-		}
-		public void mouseExited(MouseEvent e) {
-		}
-		public void mouseMoved(MouseEvent e) {
-		}
 
-		public void mousePressed(MouseEvent e) {
-			PieceSprite tmp= _pieceSet.removePieceAtPosition(e.getX(), e.getY());
-			if(tmp!=null)
-				_movingPiece= tmp;
-		}
-
-		public void mouseReleased(MouseEvent e) {
-			_movingPiece.setPosition(e.getX(), e.getY());
-			_pieceSet.insertPieceIfOnTheBoard(_movingPiece);
-			_movingPiece= newInvisiblePiece();
-		}
-		
-		public void mouseDragged(MouseEvent e) {
-			_movingPiece.setPosition(e.getX(), e.getY());
-		}
+	public void paint(Graphics g){
+		_board.paint(g);
+		_pieceSet.paint(g);
+		_movingPiece.paint(g);
 	}
 }

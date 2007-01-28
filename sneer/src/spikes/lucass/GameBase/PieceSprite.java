@@ -31,31 +31,39 @@ public class PieceSprite {
 		setPieceIndex(index); 
 	}
 
-	public int getX() {
-		return _x;
+	public void setVisible(boolean b) {
+		_isVisible= b;
+	}
+
+	public boolean getVisible() {
+		return _isVisible;
 	}
 
 	public void setX(int x) {
 		_x = x;
 	}
 
-	public int getY() {
-		return _y;
+	public int getX() {
+		return _x;
 	}
 
 	public void setY(int y) {
 		_y = y;
 	}
-	
-	public Rectangle getCollisionRectangle(){
-		return new Rectangle(_x-_pieceTranslationX,_y-_pieceTranslationY,_pieceWidth,_pieceHeight);
+
+	public int getY() {
+		return _y;
 	}
-	
+
 	public void setPosition(int x, int y){
 		setX(x);
 		setY(y);
 	}
 
+	public Rectangle getCollisionRectangle(){
+		return new Rectangle(_x-_pieceTranslationX,_y-_pieceTranslationY,_pieceWidth,_pieceHeight);
+	}
+	
 	private void setPieceIndex(int index) {
 		_pieceIndex = index;
 	}
@@ -71,13 +79,5 @@ public class PieceSprite {
 			g.drawImage(_pieceSet, xCalc, yCalc, xCalc+_pieceWidth, yCalc+_pieceHeight, 
 					_pieceWidth*_pieceIndex, 0, (_pieceWidth*_pieceIndex)+_pieceWidth, _pieceHeight, null);
 		}
-	}
-
-	public void setVisible(boolean b) {
-		_isVisible= b;
-	}
-	
-	public boolean getVisible() {
-		return _isVisible;
 	}
 }

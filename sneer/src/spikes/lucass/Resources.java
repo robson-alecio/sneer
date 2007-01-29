@@ -14,7 +14,6 @@ public class Resources {
 	
 	private static Vector<StringWithId> _stringsDictionary;
 	
-	
 	public static int YES = 1;
 	public static int NO = 2;
 	public static int OPTIONS = 3;
@@ -22,6 +21,9 @@ public class Resources {
 	public static int CHESS = 5;
 	public static int GO = 6;
 	public static int ABOUT = 7;
+	
+	public static int ADD_PIECE = 8;
+	public static int DELETE_PIECE = 9;
 	
 	//init resources
 	static{
@@ -33,6 +35,8 @@ public class Resources {
 		_stringsDictionary.add(new StringWithId(CHESS,"Xadrez"));
 		_stringsDictionary.add(new StringWithId(GO,"Go"));
 		_stringsDictionary.add(new StringWithId(ABOUT,"Sobre"));
+		_stringsDictionary.add(new StringWithId(ADD_PIECE,"Adicionar peça"));
+		_stringsDictionary.add(new StringWithId(DELETE_PIECE,"Remover peça"));
 	}
 	
 	public static String getString(int id){

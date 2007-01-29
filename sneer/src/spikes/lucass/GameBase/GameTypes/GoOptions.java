@@ -55,8 +55,13 @@ public class GoOptions implements GameOptions{
 		return 1;
 	}
 
-	public int getPieceIndex(int pieceID) {
+	public int getPieceIndex(String pieceName) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public String[] getPieceList() {
+		// TODO Auto-generated method stub
+		return new String[]{"LALALALA","LALALAL4","LALd","LAssssd"};
 	}
 }

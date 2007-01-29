@@ -18,10 +18,17 @@ public class Game{
 	private PieceSprite _movingPiece= newInvisiblePiece();
 
 	public Game(GameOptions gameOptions){
+		createBoard(gameOptions);
+		createPieceSet(gameOptions);
+	}
+
+	private void createPieceSet(GameOptions gameOptions) {
+		_pieceSet= new PieceSet(_board, gameOptions);
+	}
+
+	private void createBoard(GameOptions gameOptions) {
 		_board= new Board(gameOptions.getBoardImage());
 		_board.generateBoard(gameOptions.getColNumber(), gameOptions.getRowNumber(), gameOptions.getBoardCellVariation());
-		
-		_pieceSet= new PieceSet(_board, gameOptions);
 	}
 	
 	public Board getBoard(){
@@ -41,15 +48,19 @@ public class Game{
 			public void mouseExited(MouseEvent e){}
 			
 			public void mousePressed(MouseEvent e) {
-				PieceSprite tmp= _pieceSet.removePieceAtPosition(e.getX(), e.getY());
-				if(tmp!=null)
-					_movingPiece= tmp;
+				if(e.getButton()==MouseEvent.BUTTON1){
+					PieceSprite tmp= _pieceSet.removePieceAtPosition(e.getX(), e.getY());
+					if(tmp!=null)
+						_movingPiece= tmp;
+				}
 			}
 			public void mouseReleased(MouseEvent e) {
-				if(_movingPiece.getPieceIndex()>=0){
-					_movingPiece.setPosition(e.getX(), e.getY());
-					_pieceSet.insertPieceIfOnTheBoard(_movingPiece);
-					_movingPiece= newInvisiblePiece();
+				if(e.getButton()==MouseEvent.BUTTON1){
+					if(_movingPiece.getPieceIndex()>=0){
+						_movingPiece.setPosition(e.getX(), e.getY());
+						_pieceSet.insertPieceIfOnTheBoard(_movingPiece);
+						_movingPiece= newInvisiblePiece();
+					}
 				}
 			}
 		};

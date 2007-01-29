@@ -3,19 +3,24 @@ package spikes.lucass;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
 import spikes.lucass.GameBase.Game;
 import spikes.lucass.GameBase.GameTypes.ChessOptions;
 import spikes.lucass.GameBase.GameTypes.GameOptions;
 import spikes.lucass.GameBase.GameTypes.GoOptions;
 
-public class GamePanel extends JPanel implements Runnable, FocusListener{
+public class GamePanel extends JPanel implements Runnable{
 	
 	/**
 	 * 
@@ -47,6 +52,32 @@ public class GamePanel extends JPanel implements Runnable, FocusListener{
 		createGame(gameType);
         createBufferImage();
         setSize(_game.getBoard().getBoardWidth(),_game.getBoard().getBoardHeight());
+        setContextOptions(gameType);
+	}
+
+	private void setContextOptions(GameOptions gameType) {
+		JPopupMenu contextOptions= new JPopupMenu();
+		
+		JMenu addPieces= new JMenu(Resources.getString(Resources.ADD_PIECE));
+		
+		String[] pieces= gameType.getPieceList();
+		for(int i=0; i<pieces.length; i++){
+			JMenuItem newPieceName= new JMenuItem(pieces[i]);
+			
+			newPieceName.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e) {
+					System.out.println(((JMenuItem)e.getSource()).getText());
+				}
+			});
+			
+			addPieces.add(newPieceName);
+		}
+		
+		contextOptions.add(addPieces);
+		
+		contextOptions.add(new JMenuItem(Resources.getString(Resources.DELETE_PIECE)));
+		
+        this.setComponentPopupMenu(contextOptions);
 	}
 
 	private void createGame(GameOptions gameType) {
@@ -54,8 +85,14 @@ public class GamePanel extends JPanel implements Runnable, FocusListener{
 		
 		addMouseListener(_game.getMouseListener());
 		addMouseMotionListener(_game.getMouseMotionListener());
-		
-		addFocusListener(this);
+		addFocusListener(new FocusListener(){
+			public void focusGained(FocusEvent ignored) {
+				_isGamePanelFocused= true;		
+			}
+			public void focusLost(FocusEvent ignored) {
+				_isGamePanelFocused= false;
+			}
+		});
 	}
 
 	private void createBufferImage() {
@@ -121,12 +158,4 @@ public class GamePanel extends JPanel implements Runnable, FocusListener{
     	_isThreadRunning= false;
         _ticker= null;
     }
-
-	public void focusGained(FocusEvent ignored) {
-		_isGamePanelFocused= true;		
-	}
-
-	public void focusLost(FocusEvent ignored) {
-		_isGamePanelFocused= false;
-	}
 }

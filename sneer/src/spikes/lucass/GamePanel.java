@@ -30,7 +30,7 @@ public class GamePanel extends JPanel implements Runnable{
 	private static final int FRAMES_PER_SECOND= 15;
 	
     private BufferedImage _bufferImage;
-    protected Graphics _bufferImageGraphics;
+    private Graphics _bufferImageGraphics;
     
     /**
      * A Thread principal do jogo.

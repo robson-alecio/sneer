@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import sneer.strap.Dialog;
-import wheelexperiments.environment.ui.User;
+import wheel.io.ui.User;
 
 public class NameChange {
 

@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.util.Set;
 
 import sneer.old.life.LifeView;
-import wheelexperiments.environment.network.ObjectSocket;
-import wheelexperiments.reactive.Receiver;
-import wheelexperiments.reactive.SetSignal;
-import wheelexperiments.reactive.SetSource;
-import wheelexperiments.reactive.SetSignal.SetValueChange;
+import wheel.io.network.ObjectSocket;
+import wheel.reactive.Receiver;
+import wheel.reactive.SetSignal;
+import wheel.reactive.SetSource;
+import wheel.reactive.SetSignal.SetValueChange;
 
 abstract class IndianForSet<T> extends AbstractIndian {
 

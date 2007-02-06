@@ -12,8 +12,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import wheelexperiments.Log;
-import wheelexperiments.environment.ui.User;
+import wheel.io.Log;
+import wheel.io.ui.User;
 
 public class Strap {
 

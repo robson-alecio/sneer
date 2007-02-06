@@ -1,7 +1,7 @@
 package sneer.strap;
 
 import sneer.server.ServerConfig;
-import wheelexperiments.environment.ui.User;
+import wheel.io.ui.User;
 
 public class InstallationDialog extends Dialog {
 

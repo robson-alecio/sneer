@@ -8,9 +8,9 @@ import java.util.Date;
 
 import sneer.strap.SneerDirectories;
 import sneer.strap.VersionUpdateAttempt;
-import wheelexperiments.Log;
-import wheelexperiments.environment.ui.User;
-import wheelexperiments.environment.ui.User.Action;
+import wheel.io.Log;
+import wheel.io.ui.User;
+import wheel.io.ui.User.Action;
 
 
 public class Sneer {

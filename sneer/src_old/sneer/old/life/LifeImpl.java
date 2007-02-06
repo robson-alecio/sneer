@@ -9,11 +9,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import wheelexperiments.reactive.SetSignal;
-import wheelexperiments.reactive.SetSource;
-import wheelexperiments.reactive.Signal;
-import wheelexperiments.reactive.Source;
-import wheelexperiments.reactive.SourceImpl;
+import wheel.reactive.SetSignal;
+import wheel.reactive.SetSource;
+import wheel.reactive.Signal;
+import wheel.reactive.Source;
+import wheel.reactive.SourceImpl;
 
 
 public class LifeImpl implements Life, Serializable {

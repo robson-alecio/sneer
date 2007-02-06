@@ -8,9 +8,9 @@ import java.io.IOException;
 
 import sneer.old.life.LifeView;
 import sneer.old.life.NoneOfYourBusiness;
-import wheelexperiments.environment.network.ObjectSocket;
-import wheelexperiments.environment.network.OldNetwork;
-import wheelexperiments.reactive.Signal;
+import wheel.io.network.ObjectSocket;
+import wheel.io.network.OldNetwork;
+import wheel.reactive.Signal;
 
 
 public class Connection implements QueryExecuter {

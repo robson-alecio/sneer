@@ -10,8 +10,8 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import wheelexperiments.Cool;
-import wheelexperiments.Log;
+import wheel.io.Log;
+import wheel.lang.Threads;
 
 public class Server {
 
@@ -20,7 +20,7 @@ public class Server {
 
 		ServerSocket serverSocket = new ServerSocket(PORT);
 		Log.log("Waiting for connections on port " + PORT + "...");
-		while (true) Cool.startDaemon(new Connection(serverSocket.accept()));
+		while (true) Threads.startDaemon(new Connection(serverSocket.accept()));
 	}
 
 

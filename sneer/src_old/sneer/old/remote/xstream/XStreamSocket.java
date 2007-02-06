@@ -2,7 +2,7 @@ package sneer.old.remote.xstream;
 
 import java.io.IOException;
 
-import wheelexperiments.environment.network.ObjectSocket;
+import wheel.io.network.ObjectSocket;
 
 import com.thoughtworks.xstream.XStream;
 

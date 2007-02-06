@@ -1,7 +1,7 @@
 package sneer.strap;
 
 import sneer.server.Command;
-import wheelexperiments.Log;
+import wheel.io.Log;
 
 public class LogMessage implements Command {
 

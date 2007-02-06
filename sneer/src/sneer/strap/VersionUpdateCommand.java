@@ -5,7 +5,7 @@ import static sneer.strap.SneerDirectories.writeMainAppFile;
 import java.io.IOException;
 
 import sneer.server.Command;
-import wheelexperiments.Log;
+import wheel.io.Log;
 
 public class VersionUpdateCommand implements Command {
 

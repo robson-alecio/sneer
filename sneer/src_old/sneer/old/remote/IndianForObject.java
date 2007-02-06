@@ -3,11 +3,11 @@ package sneer.old.remote;
 import java.io.IOException;
 
 import sneer.old.life.LifeView;
-import wheelexperiments.environment.network.ObjectSocket;
-import wheelexperiments.reactive.Receiver;
-import wheelexperiments.reactive.Signal;
-import wheelexperiments.reactive.Source;
-import wheelexperiments.reactive.SourceImpl;
+import wheel.io.network.ObjectSocket;
+import wheel.reactive.Receiver;
+import wheel.reactive.Signal;
+import wheel.reactive.Source;
+import wheel.reactive.SourceImpl;
 
 
 abstract class IndianForObject<T> extends AbstractIndian {

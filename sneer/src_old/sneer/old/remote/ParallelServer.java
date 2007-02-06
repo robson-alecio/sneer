@@ -9,9 +9,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import sneer.old.life.Life;
-import wheelexperiments.Cool;
-import wheelexperiments.environment.network.ObjectServerSocket;
-import wheelexperiments.environment.network.ObjectSocket;
+import wheel.io.network.ObjectServerSocket;
+import wheel.io.network.ObjectSocket;
+import wheel.lang.Threads;
 
 public class ParallelServer implements Runnable {
 
@@ -31,7 +31,7 @@ public class ParallelServer implements Runnable {
 		_life = life;
 		_serverSocket = serverSocket;
 		_user = user;
-		Cool.startDaemon(this);
+		Threads.startDaemon(this);
 	}
 
 	public void run() {
@@ -45,7 +45,7 @@ public class ParallelServer implements Runnable {
 				break;
 			}
 
-			Cool.startDaemon(new Runnable() {
+			Threads.startDaemon(new Runnable() {
 				public void run() {
 					try {
 						serve(socket);
@@ -68,7 +68,7 @@ public class ParallelServer implements Runnable {
 
 			final Envelope envelope = (Envelope) socket.readObject();
 
-			Cool.startDaemon(new Runnable() {
+			Threads.startDaemon(new Runnable() {
 				public void run() {
 					reply(socket, envelope);
 				}

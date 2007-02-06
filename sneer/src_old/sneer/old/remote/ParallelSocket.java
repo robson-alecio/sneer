@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import wheelexperiments.Cool;
-import wheelexperiments.environment.network.ObjectSocket;
+import wheel.io.network.ObjectSocket;
+import wheel.lang.Threads;
 
 class ParallelSocket {
 
@@ -25,7 +25,7 @@ class ParallelSocket {
 
 	ParallelSocket(ObjectSocket delegate) {
 		_delegate = delegate;
-		Cool.startDaemon(new Runnable() {
+		Threads.startDaemon(new Runnable() {
 			public void run() {
 				while (readObject());
 			}
@@ -77,7 +77,7 @@ class ParallelSocket {
 						_envelopeRead = null;
 						return result;
 					}
-					Cool.wait(_readMonitor);
+					Threads.waitWithoutInterruptions(_readMonitor);
 				}
 			} finally {
 				_readMonitor.notifyAll();
@@ -114,7 +114,7 @@ class ParallelSocket {
 		}
 
 	    synchronized Envelope remove() throws IOException {
-	       if (_buffer.isEmpty()) Cool.wait(this);
+	       if (_buffer.isEmpty()) Threads.waitWithoutInterruptions(this);
 	       checkOpen();
 	       return _buffer.remove(0);
 	    }

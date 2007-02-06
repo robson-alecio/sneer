@@ -14,7 +14,7 @@ import sneer.TestMode;
 import sneer.server.Agent;
 import sneer.server.Command;
 import sneer.server.ServerConfig;
-import wheelexperiments.Log;
+import wheel.io.Log;
 
 public class VersionUpdateAgent implements Agent {
 

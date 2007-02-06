@@ -8,8 +8,8 @@ import java.net.Socket;
 
 import sneer.server.Command;
 import sneer.server.ServerConfig;
-import wheelexperiments.Log;
-import wheelexperiments.environment.ui.User;
+import wheel.io.Log;
+import wheel.io.ui.User;
 
 public class VersionUpdateAttempt {
 

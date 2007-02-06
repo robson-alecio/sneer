@@ -1,6 +1,6 @@
 package sneer.strap;
 
-import wheelexperiments.environment.ui.User;
+import wheel.io.ui.User;
 
 public class Dialog {
 

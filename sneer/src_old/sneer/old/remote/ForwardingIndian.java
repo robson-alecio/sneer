@@ -1,7 +1,7 @@
 package sneer.old.remote;
 
 import sneer.old.life.LifeView;
-import wheelexperiments.environment.network.ObjectSocket;
+import wheel.io.network.ObjectSocket;
 
 public class ForwardingIndian implements Indian {
 	

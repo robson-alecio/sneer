@@ -9,9 +9,9 @@ import java.util.Map;
 
 import sneer.old.life.JpgImage;
 import sneer.old.life.LifeView;
-import wheelexperiments.Cool;
-import wheelexperiments.reactive.SetSignal;
-import wheelexperiments.reactive.Signal;
+import wheel.lang.Threads;
+import wheel.reactive.SetSignal;
+import wheel.reactive.Signal;
 
 class LifeViewProxy implements LifeView, Serializable {
 
@@ -52,7 +52,7 @@ class LifeViewProxy implements LifeView, Serializable {
 				while (_active) {
 					update();
 //					Cool.sleep(1000 * 60);
-					Cool.sleep(1000 * 3);
+					Threads.sleepWithoutInterruptions(1000 * 3);
 				}
 				
 				synchronized (_activeMonitor) {
@@ -167,14 +167,14 @@ class LifeViewProxy implements LifeView, Serializable {
 	public void start() {
 		synchronized (_activeMonitor) {
 			_active = true;
-			Cool.startDaemon(updater());
+			Threads.startDaemon(updater());
 		}
 	}
 
 	public void stop() {
 		synchronized (_activeMonitor) {
 			_active = false;
-			Cool.wait(_activeMonitor);
+			Threads.waitWithoutInterruptions(_activeMonitor);
 		}
 	}
 

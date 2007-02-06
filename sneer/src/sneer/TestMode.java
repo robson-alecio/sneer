@@ -2,11 +2,13 @@ package sneer;
 
 import java.net.URL;
 
-import wheelexperiments.environment.ui.User;
-import wheelexperiments.environment.ui.tests.TestUser;
+import wheel.io.ui.User;
+import wheel.io.ui.tests.TestUser;
 
 public class TestMode {
 
+	private int _TODO_Eliminate_this_class_Mock_everything_instead;
+	
 	public static boolean isInTestMode() {
 		return "true".equals(System.getProperty("sneer.testmode"));
 	}

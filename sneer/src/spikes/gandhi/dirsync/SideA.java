@@ -17,7 +17,7 @@ public class SideA {
             sync.sync("/tmp/sidea",socket.getInputStream(),socket.getOutputStream());
             
             while(!sync.isFinished()){
-                Thread.sleep(100);
+                Thread.sleep(3000);
             }
             
         } catch (Exception e) {

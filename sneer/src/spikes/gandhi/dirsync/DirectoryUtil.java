@@ -18,7 +18,7 @@ public class DirectoryUtil {
     private static void fillList(List<FileInfo> result, String currentPath, String originalPath){
         File file=new File(currentPath);
         if (!file.exists())
-            throw new RuntimeException("Directory does not exist...");
+            throw new RuntimeException("Directory does not exist: " + file.getAbsolutePath());
         for(File temp:file.listFiles()){
             if (temp.isDirectory()){
                 fillList(result,temp.getPath(),originalPath);

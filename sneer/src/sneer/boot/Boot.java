@@ -3,7 +3,7 @@ package sneer.boot;
 import javax.swing.JOptionPane;
 
 
-public class SneerLoader {
+public class Boot {
 	
 	public static void main(String[] ignored) {
 		try {

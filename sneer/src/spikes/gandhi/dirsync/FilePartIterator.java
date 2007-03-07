@@ -11,7 +11,10 @@ public class FilePartIterator {
     private long _offset = 0;
     private File _file;
     private FileInfo _info;
+    
+    //Never read.
     private String _readPath;
+    //Never read.
     private String _writePath;
     
     public FilePartIterator(FileInfo info,String readPath,String writePath) {

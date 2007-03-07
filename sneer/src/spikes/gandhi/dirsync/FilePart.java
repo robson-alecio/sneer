@@ -6,7 +6,8 @@ import java.io.RandomAccessFile;
 import java.io.Serializable;
 
 public class FilePart implements Serializable{
-    private byte[] _data;
+
+	private byte[] _data;
     private FileInfo _info;
     private long _offset;
     
@@ -35,5 +36,7 @@ public class FilePart implements Serializable{
     public byte[] getData() {
         return _data;
     }
-    
+
+    private static final long serialVersionUID = 1L;
+
 }

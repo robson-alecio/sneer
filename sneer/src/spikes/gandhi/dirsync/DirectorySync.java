@@ -129,7 +129,10 @@ public class DirectorySync {
         
         @SuppressWarnings("unchecked")
         private void writeFileParts(FileInfo item, ObjectOutputStream outObj) throws IOException{
-            File localFile=new File(localPath+item.getPath());
+        	
+            //Never read.
+        	File localFile=new File(localPath+item.getPath());
+            
             FilePartIterator iterator=new FilePartIterator(item,localPath+item.getPath(),remotePath+item.getPath());
             outObj.writeLong(iterator.count());
             outObj.flush();

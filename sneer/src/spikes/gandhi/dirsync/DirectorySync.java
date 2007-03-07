@@ -1,11 +1,11 @@
 package spikes.gandhi.dirsync;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 public class DirectorySync {
@@ -26,7 +26,7 @@ public class DirectorySync {
     public void sync(String path, InputStream in, OutputStream out) {
         this.localPath=path;
         this._in = in;
-        this._out = out; 
+        this._out = out;
         localList=DirectoryUtil.list(path);
         
         Receiver receiver=new Receiver();
@@ -42,48 +42,64 @@ public class DirectorySync {
     }
     
     private class Receiver extends Thread{
-		@Override
-		public void run(){
+        @Override
+        public void run(){
             try{
                 ObjectInputStream inObj=new ObjectInputStream(_in);
-
+                
                 remotePath=(String)inObj.readObject();
                 remoteList=readListOfFileInfo(inObj);
                 
                 diff=DirectoryUtil.diff(localList,remoteList);
-                 
+                
                 wait=false;
                 
-                List<TransferableFile> transferables=readListOfTrasferableFile(inObj);
-                for(TransferableFile item:transferables){
-                    System.out.println("transferred: "+item.getReadPath()+" to "+item.getWritePath());
-                }
-                              
+                readFileInfos(inObj);
+                
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
             
             receiverFinished=true;
         }
-
-		@SuppressWarnings("unchecked")
-		private List<TransferableFile> readListOfTrasferableFile(	ObjectInputStream inObj) throws IOException, ClassNotFoundException {
-			return (List<TransferableFile>)inObj.readObject();
-		}
-
-		@SuppressWarnings("unchecked")
-		private List<FileInfo> readListOfFileInfo(ObjectInputStream inObj) throws IOException,
-				ClassNotFoundException {
-			return (List)inObj.readObject();
-		}
+        
+        @SuppressWarnings("unchecked")
+        private void readFileInfos( ObjectInputStream inObj) throws IOException, ClassNotFoundException {
+            int size=inObj.readInt();
+            for(int t=0;t<size;t++){
+                FileInfo info = (FileInfo)inObj.readObject();
+                File localFile = new File(localPath+info.getPath());
+                localFile.delete();
+                System.out.println("materializando arquivo "+info.getPath());
+                materializeFileParts(inObj);
+                localFile.setLastModified(info.getLastModified());
+            }
+        }
+        
+        @SuppressWarnings("unchecked")
+        private void materializeFileParts( ObjectInputStream inObj) throws IOException, ClassNotFoundException {
+            long count=inObj.readLong();
+            for(long y=0;y<count;y++){
+                FilePart part = (FilePart)inObj.readObject();
+                System.out.println("materializando bytes "+part.getOffset()+" a "+(part.getOffset()+part.getData().length)+" do arquivo "+part.getInfo().getPath());
+                part.materialize(localPath);
+            }
+        }
+        
+        
+        @SuppressWarnings("unchecked")
+        private List<FileInfo> readListOfFileInfo(ObjectInputStream inObj) throws IOException,
+                ClassNotFoundException {
+            return (List)inObj.readObject();
+        }
     }
     
     private class Sender extends Thread{
         @Override
-		public void run(){
+        public void run(){
             try{
                 ObjectOutputStream outObj=new ObjectOutputStream(_out);
-
+                
                 outObj.writeObject(localPath);
                 outObj.writeObject(localList);
                 outObj.flush();
@@ -92,12 +108,7 @@ public class DirectorySync {
                     Thread.sleep(100);
                 }
                 
-                List<TransferableFile> transferables=new ArrayList<TransferableFile>();
-                for(FileInfo item:diff){
-                    TransferableFile transfer=new TransferableFile(localPath+item.getPath(),remotePath+item.getPath());
-                    transferables.add(transfer);
-                }
-                outObj.writeObject(transferables);
+                writeFileInfos(outObj);
                 
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -105,6 +116,28 @@ public class DirectorySync {
             
             senderFinished=true;
         }
+        
+        @SuppressWarnings("unchecked")
+        private void writeFileInfos(ObjectOutputStream outObj) throws IOException{
+            outObj.writeInt(diff.size());
+            outObj.flush();
+            for(FileInfo item:diff){
+                outObj.writeObject(item);
+                writeFileParts(item, outObj);
+            }
+        }
+        
+        @SuppressWarnings("unchecked")
+        private void writeFileParts(FileInfo item, ObjectOutputStream outObj) throws IOException{
+            File localFile=new File(localPath+item.getPath());
+            FilePartIterator iterator=new FilePartIterator(item,localPath+item.getPath(),remotePath+item.getPath());
+            outObj.writeLong(iterator.count());
+            outObj.flush();
+            while(iterator.hasNext()){
+                outObj.writeObject(iterator.next());
+            }
+        }
+        
     }
     
     

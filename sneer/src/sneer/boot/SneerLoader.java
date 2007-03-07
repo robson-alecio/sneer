@@ -1,9 +1,9 @@
-package sneer;
+package sneer.boot;
 
 import javax.swing.JOptionPane;
 
 
-public class Main {
+public class SneerLoader {
 	
 	public static void main(String[] ignored) {
 		try {
@@ -16,7 +16,7 @@ public class Main {
 
 	private static void tryToRun() throws Exception {
 		checkJavaVersion6OtherwiseExit();
-		new SneerLoader();
+		new PlatformJockey();
 	}
 
 

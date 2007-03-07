@@ -1,6 +1,6 @@
-package sneer.server;
+package sneer.platform.server;
 
-import static sneer.server.ServerConfig.PORT;
+import static sneer.platform.server.ServerConfig.PORT;
 
 import java.io.File;
 import java.io.FileNotFoundException;

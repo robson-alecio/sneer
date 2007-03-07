@@ -1,4 +1,4 @@
-package sneerboot;
+package sneer.boot;
 
 import java.io.File;
 import java.net.URL;

@@ -1,11 +1,11 @@
-package sneer.strap;
+package sneer.platform.strap;
 
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import static sneer.TestMode.isInTestMode;
+import static sneer.platform.TestMode.isInTestMode;
 
 public class SneerDirectories {
 

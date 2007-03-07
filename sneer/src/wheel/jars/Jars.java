@@ -7,8 +7,6 @@ import java.net.URLClassLoader;
 
 import javax.swing.JOptionPane;
 
-import sneerboot.PlatformJockey;
-
 
 public class Jars {
 

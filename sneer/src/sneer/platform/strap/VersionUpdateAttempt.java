@@ -1,4 +1,4 @@
-package sneer.strap;
+package sneer.platform.strap;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -6,8 +6,8 @@ import java.io.ObjectOutputStream;
 import java.net.ConnectException;
 import java.net.Socket;
 
-import sneer.server.Command;
-import sneer.server.ServerConfig;
+import sneer.platform.server.Command;
+import sneer.platform.server.ServerConfig;
 import wheel.io.Log;
 import wheel.io.ui.User;
 

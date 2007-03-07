@@ -1,4 +1,4 @@
-package sneer.strap;
+package sneer.platform.strap;
 
 import wheel.io.ui.User;
 

@@ -1,8 +1,8 @@
-package sneer.server;
+package sneer.platform.server;
 
 import java.io.File;
 
-import sneer.TestMode;
+import sneer.platform.TestMode;
 
 public class ServerConfig {
 

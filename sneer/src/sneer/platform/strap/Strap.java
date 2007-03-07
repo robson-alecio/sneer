@@ -1,9 +1,9 @@
-package sneer.strap;
+package sneer.platform.strap;
 
-import static sneer.TestMode.createUser;
-import static sneer.strap.SneerDirectories.findNewestMainApp;
-import static sneer.strap.SneerDirectories.logDirectory;
-import static sneer.strap.SneerDirectories.sneerDirectory;
+import static sneer.platform.TestMode.createUser;
+import static sneer.platform.strap.SneerDirectories.findNewestMainApp;
+import static sneer.platform.strap.SneerDirectories.logDirectory;
+import static sneer.platform.strap.SneerDirectories.sneerDirectory;
 
 
 import java.io.File;

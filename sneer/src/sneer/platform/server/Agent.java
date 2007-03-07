@@ -1,4 +1,4 @@
-package sneer.server;
+package sneer.platform.server;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

@@ -1,4 +1,4 @@
-package sneer;
+package sneer.platform;
 
 import java.net.URL;
 

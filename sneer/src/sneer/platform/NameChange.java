@@ -1,6 +1,6 @@
-package sneer;
+package sneer.platform;
 
-import static sneer.strap.SneerDirectories.sneerDirectory;
+import static sneer.platform.strap.SneerDirectories.sneerDirectory;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,7 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import sneer.strap.Dialog;
+import sneer.platform.strap.Dialog;
 import wheel.io.ui.User;
 
 public class NameChange {

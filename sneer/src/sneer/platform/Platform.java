@@ -1,24 +1,24 @@
-package sneer;
+package sneer.platform;
 
-import static sneer.strap.SneerDirectories.validNumber;
+import static sneer.platform.strap.SneerDirectories.validNumber;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Date;
 
-import sneer.strap.SneerDirectories;
-import sneer.strap.VersionUpdateAttempt;
+import sneer.platform.strap.SneerDirectories;
+import sneer.platform.strap.VersionUpdateAttempt;
 import wheel.io.Log;
 import wheel.io.ui.User;
 import wheel.io.ui.User.Action;
 
 
-public class Sneer {
+public class Platform {
 	
-	private User _user = TestMode.createUser(Sneer.class.getResource("logo16.png"));
+	private User _user = TestMode.createUser(Platform.class.getResource("logo16.png"));
 
 
-	public Sneer() {
+	public Platform() {
 		try {
 			tryToRun();
 		} catch (Throwable t) {

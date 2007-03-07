@@ -1,6 +1,6 @@
-package sneer;
+package sneer.platform;
 
-import sneer.strap.SneerDirectories;
+import sneer.platform.strap.SneerDirectories;
 
 public class IngredientMixup {
 

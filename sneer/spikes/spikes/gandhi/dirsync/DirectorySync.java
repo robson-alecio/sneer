@@ -12,7 +12,6 @@ public class DirectorySync {
     private InputStream _in;
     private OutputStream _out;
     private String localPath;
-    private String remotePath;
     private boolean receiverFinished;
     private boolean senderFinished;
     private List<FileInfo> localList;
@@ -47,7 +46,6 @@ public class DirectorySync {
             try{
                 ObjectInputStream inObj=new ObjectInputStream(_in);
                 
-                remotePath=(String)inObj.readObject();
                 remoteList=readListOfFileInfo(inObj);
                 
                 diff=DirectoryUtil.diff(localList,remoteList);
@@ -100,7 +98,6 @@ public class DirectorySync {
             try{
                 ObjectOutputStream outObj=new ObjectOutputStream(_out);
                 
-                outObj.writeObject(localPath);
                 outObj.writeObject(localList);
                 outObj.flush();
                 
@@ -130,10 +127,7 @@ public class DirectorySync {
         @SuppressWarnings("unchecked")
         private void writeFileParts(FileInfo item, ObjectOutputStream outObj) throws IOException{
         	
-            //Never read.
-        	File localFile=new File(localPath+item.getPath());
-            
-            FilePartIterator iterator=new FilePartIterator(item,localPath+item.getPath(),remotePath+item.getPath());
+            FilePartIterator iterator=new FilePartIterator(item,localPath+item.getPath());
             outObj.writeLong(iterator.count());
             outObj.flush();
             while(iterator.hasNext()){

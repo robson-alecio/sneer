@@ -12,16 +12,10 @@ public class FilePartIterator {
     private File _file;
     private FileInfo _info;
     
-    //Never read.
-    private String _readPath;
-    //Never read.
-    private String _writePath;
     
-    public FilePartIterator(FileInfo info,String readPath,String writePath) {
-        this._info=info;
-        this._readPath=readPath;
-        this._writePath=writePath;
-        this._file = new File(readPath);
+    public FilePartIterator(FileInfo info,String readPath) {
+        _info=info;
+        _file = new File(readPath);
     }
     
     public long count(){

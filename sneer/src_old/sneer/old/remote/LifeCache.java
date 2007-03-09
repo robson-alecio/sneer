@@ -43,6 +43,7 @@ class LifeCache implements Serializable {
 		return _things;
 	}
 
+	@SuppressWarnings("unused")
 	private LifeCache() {  //Required by XStream to run on JVMs other than Sun's.
 		this(null);
 	}

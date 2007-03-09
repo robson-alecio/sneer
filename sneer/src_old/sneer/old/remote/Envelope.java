@@ -25,6 +25,7 @@ class Envelope implements Serializable {
 		return _stamp;
 	}
 
+	@SuppressWarnings("unused")
 	private Envelope() {  //Required by XStream to run on JVMs other than Sun's 1.4 and superior.
 		_stamp = 0;
 	}

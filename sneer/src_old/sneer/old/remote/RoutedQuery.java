@@ -23,6 +23,7 @@ public class RoutedQuery<T> implements Query<T> {
         return _delegate.executeOn(destination);
 	}
 
+	@SuppressWarnings("unused")
 	private RoutedQuery() {  //Required by XStream to run on JVMs other than Sun's.
 		_nickname = null;
 		_delegate = null;

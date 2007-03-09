@@ -1,5 +1,6 @@
 package sneer.platform.strap;
 
+import sneer.platform.SneerDirectories;
 import sneer.platform.server.ServerConfig;
 import wheel.io.ui.User;
 
@@ -42,8 +43,8 @@ public class InstallationDialog extends Dialog {
 		);
 
 		approveConditionOtherwiseExit(
-				" Será criado um diretório chamado \".sneer\" dentro do diretório\n" +
-				" " + SneerDirectories.userHome() + "\n\n" + 
+				" Será criado o diretório\n" +
+				" " + SneerDirectories.sneerDirectory() + "\n\n" + 
 				" Lá serão guardados, para este usuário, todos os dados e\n" +
 				" programas do Sneer.\n\n" +
 				" Este diálogo não será exibido novamente enquanto existir esse\n" +

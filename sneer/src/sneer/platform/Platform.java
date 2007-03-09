@@ -1,12 +1,11 @@
 package sneer.platform;
 
-import static sneer.platform.strap.SneerDirectories.validNumber;
+import static sneer.platform.SneerDirectories.validNumber;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Date;
 
-import sneer.platform.strap.SneerDirectories;
 import sneer.platform.strap.VersionUpdateAttempt;
 import wheel.io.Log;
 import wheel.io.ui.User;
@@ -34,7 +33,8 @@ public class Platform {
 		
 		registerUserActions();
 		
-		new IngredientMixup();
+		int TODO;
+		//new Recipe();
 		
 		int arbitraryLargeNumber = 5000;
 		while (true) Thread.sleep(arbitraryLargeNumber);
@@ -77,7 +77,7 @@ public class Platform {
 	}
 
 	private void tryToDownloadNextVersion() throws Exception {
-		File mainApp = SneerDirectories.findNewestMainApp();
+		File mainApp = SneerDirectories.latestInstalledPlatformJar();
 		int currentVersion = validNumber(mainApp.getName());
 		new VersionUpdateAttempt(currentVersion + 1, _user);
 	}

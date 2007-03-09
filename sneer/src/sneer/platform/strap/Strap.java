@@ -1,9 +1,9 @@
 package sneer.platform.strap;
 
+import static sneer.platform.SneerDirectories.latestInstalledPlatformJar;
+import static sneer.platform.SneerDirectories.logDirectory;
+import static sneer.platform.SneerDirectories.sneerDirectory;
 import static sneer.platform.TestMode.createUser;
-import static sneer.platform.strap.SneerDirectories.findNewestMainApp;
-import static sneer.platform.strap.SneerDirectories.logDirectory;
-import static sneer.platform.strap.SneerDirectories.sneerDirectory;
 
 
 import java.io.File;
@@ -62,7 +62,7 @@ public class Strap {
 
 	
 	protected static File mainApp() {
-		if (_mainApp == null) _mainApp = findNewestMainApp();
+		if (_mainApp == null) _mainApp = latestInstalledPlatformJar();
 		return _mainApp;
 	}
 

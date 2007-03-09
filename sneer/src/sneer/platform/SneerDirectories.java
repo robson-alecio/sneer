@@ -1,4 +1,4 @@
-package sneer.platform.strap;
+package sneer.platform;
 
 
 import java.io.File;
@@ -25,7 +25,7 @@ public class SneerDirectories {
 	}
 
 
-	static String userHome() {
+	private static String userHome() {
 		if (isInTestMode()) return ".";
 		return System.getProperty("user.home");
 	}
@@ -37,12 +37,12 @@ public class SneerDirectories {
 	}
 
 	
-	static File logDirectory() {
+	public static File logDirectory() {
 		return new File(sneerDirectory(), "logs");
 	}
 
 	
-	static void writeMainAppFile(byte[] contents, int version) throws IOException {
+	public static void writeMainAppFile(byte[] contents, int version) throws IOException {
 		programsDirectory().mkdir();
 		File part = new File(programsDirectory(), "sneer.part");
 		FileOutputStream fos = new FileOutputStream(part);
@@ -53,12 +53,12 @@ public class SneerDirectories {
 	}
 
 	
-	public static File findNewestMainApp() {
-		return findNewestMainApp(programsDirectory());
+	public static File latestInstalledPlatformJar() {
+		return latestInstalledPlatformJar(programsDirectory());
 	}
 
 	
-	public static File findNewestMainApp(File directory) {
+	public static File latestInstalledPlatformJar(File directory) {
 		System.out.println("Looking for new apps in:" + directory.getAbsolutePath());
 
 		int newest = 0;

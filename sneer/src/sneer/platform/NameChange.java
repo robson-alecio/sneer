@@ -1,6 +1,6 @@
 package sneer.platform;
 
-import static sneer.platform.strap.SneerDirectories.sneerDirectory;
+import static sneer.platform.SneerDirectories.sneerDirectory;
 
 import java.io.BufferedReader;
 import java.io.File;

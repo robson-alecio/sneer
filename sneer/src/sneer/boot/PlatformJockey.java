@@ -5,6 +5,9 @@ import java.net.URL;
 
 import wheel.jars.Jars;
 
+import static sneer.platform.SneerDirectories.latestInstalledPlatformJar; 
+
+
 /** This guy "plays" (runs) the latest version of the Platform, one after the other. */
 public class PlatformJockey {
 
@@ -13,7 +16,7 @@ public class PlatformJockey {
 	}
 
 	private void play(File platformJar) throws Exception {
-		Jars.runAllowingForClassGC(platformJar, "sneer.Platform");
+		Jars.runAllowingForClassGC(platformJar, "sneer.platform.Platform");
 	}
 
 	private File latestPlatformJar() {
@@ -27,9 +30,5 @@ public class PlatformJockey {
 		return Jars.jarGiven(PlatformJockey.class);
 	}
 
-	private File latestInstalledPlatformJar() {
-		int TODO;
-		return null;
-	}
 
 }

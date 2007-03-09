@@ -1,7 +1,7 @@
 package sneer.platform.strap;
 
-import static sneer.platform.strap.SneerDirectories.findNewestMainApp;
-import static sneer.platform.strap.SneerDirectories.validNumber;
+import static sneer.platform.SneerDirectories.latestInstalledPlatformJar;
+import static sneer.platform.SneerDirectories.validNumber;
 
 import java.io.DataInputStream;
 import java.io.File;
@@ -73,7 +73,7 @@ public class VersionUpdateAgent implements Agent {
 
 	
 	private static File newestMainApp() {
-		return findNewestMainApp(ServerConfig.MAIN_APP_DIRECTORY);
+		return latestInstalledPlatformJar(ServerConfig.MAIN_APP_DIRECTORY);
 	}
 
 	

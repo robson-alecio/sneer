@@ -3,6 +3,8 @@ package sneer.boot;
 import java.io.File;
 import java.net.URL;
 
+import sneer.platform.Platform;
+
 import wheel.jars.Jars;
 
 import static sneer.platform.SneerDirectories.latestInstalledPlatformJar; 
@@ -23,7 +25,7 @@ public class PlatformJockey {
 	}
 
 	private void play(File platformJar) throws Exception {
-		Jars.runAllowingForClassGC(platformJar, "sneer.platform.Platform");
+		Jars.runAllowingForClassGC(platformJar, Platform.class.getName());
 	}
 
 	private File latestPlatformJar() {

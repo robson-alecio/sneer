@@ -12,8 +12,6 @@ public class Jars {
 
 	public static void runAllowingForClassGC(File jar, String classToInstantiate) throws Exception {
 		URLClassLoader loader = createGarbageCollectableClassLoader(jar);
-		Thread.currentThread().setContextClassLoader(loader);
-		
 		loader.loadClass(classToInstantiate).newInstance();
 	}
 	

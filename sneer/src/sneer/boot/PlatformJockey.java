@@ -12,7 +12,14 @@ import static sneer.platform.SneerDirectories.latestInstalledPlatformJar;
 public class PlatformJockey {
 
 	public PlatformJockey() throws Exception {
-		while (true) play(latestPlatformJar());
+		File previousPlatformJar = null;
+		while (true) {
+			File latestPlatformJar = latestPlatformJar();
+			if (latestPlatformJar.equals(previousPlatformJar)) break;
+			previousPlatformJar = latestPlatformJar;
+			
+			play(latestPlatformJar);
+		}
 	}
 
 	private void play(File platformJar) throws Exception {

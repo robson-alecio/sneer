@@ -1,9 +1,9 @@
-package sneer.platform.tests;
+package sneeringredients.ownname.tests;
 
 import sneer.platform.Platform;
 import junit.framework.TestCase;
 
-public class PlatformTest extends TestCase {
+public class OwnNameTest extends TestCase {
 
 	public void testIngredientLoading(){
 		

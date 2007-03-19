@@ -1,4 +1,4 @@
-package sneer.platform.tests;
+package sneeringredients.ownname;
 
 public interface UserAnswer {
 

@@ -1,7 +1,7 @@
-package sneer.platform.strap;
+package sneer.kernel.install;
 
-import static sneer.platform.SneerDirectories.latestInstalledPlatformJar;
-import static sneer.platform.SneerDirectories.validNumber;
+import static sneer.kernel.SneerDirectories.latestInstalledPlatformJar;
+import static sneer.kernel.SneerDirectories.validNumber;
 
 import java.io.DataInputStream;
 import java.io.File;
@@ -10,10 +10,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import sneer.platform.TestMode;
-import sneer.platform.server.Agent;
-import sneer.platform.server.Command;
-import sneer.platform.server.ServerConfig;
+import sneer.kernel.TestMode;
+import sneer.kernel.server.Agent;
+import sneer.kernel.server.Command;
+import sneer.kernel.server.ServerConfig;
 import wheel.io.Log;
 
 public class VersionUpdateAgent implements Agent {

@@ -3,11 +3,11 @@ package sneer.boot;
 import java.io.File;
 import java.net.URL;
 
-import sneer.platform.Platform;
+import sneer.kernel.Platform;
 
 import wheel.jars.Jars;
 
-import static sneer.platform.SneerDirectories.latestInstalledPlatformJar; 
+import static sneer.kernel.SneerDirectories.latestInstalledPlatformJar;
 
 
 /** This guy "plays" (runs) the latest version of the Platform, one after the other. */
@@ -25,7 +25,7 @@ public class PlatformJockey {
 	}
 
 	private void play(File platformJar) throws Exception {
-		Jars.runAllowingForClassGC(platformJar, Platform.class.getName());
+		Jars.runAllowingForClassGC(platformJar, "sneer.platform.Platform");
 	}
 
 	private File latestPlatformJar() {

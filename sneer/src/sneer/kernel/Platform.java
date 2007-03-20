@@ -1,4 +1,4 @@
-package sneer.platform;
+package sneer.kernel;
 
 import wheel.io.Log;
 

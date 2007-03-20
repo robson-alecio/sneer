@@ -1,10 +1,10 @@
-package sneer.platform.strap;
+package sneer.kernel.install;
 
-import static sneer.platform.SneerDirectories.writeMainAppFile;
+import static sneer.kernel.SneerDirectories.writeMainAppFile;
 
 import java.io.IOException;
 
-import sneer.platform.server.Command;
+import sneer.kernel.server.Command;
 import wheel.io.Log;
 
 public class VersionUpdateCommand implements Command {

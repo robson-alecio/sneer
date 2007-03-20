@@ -1,9 +1,9 @@
-package sneer.platform.strap;
+package sneer.kernel.install;
 
-import static sneer.platform.SneerDirectories.latestInstalledPlatformJar;
-import static sneer.platform.SneerDirectories.logDirectory;
-import static sneer.platform.SneerDirectories.sneerDirectory;
-import static sneer.platform.TestMode.createUser;
+import static sneer.kernel.SneerDirectories.latestInstalledPlatformJar;
+import static sneer.kernel.SneerDirectories.logDirectory;
+import static sneer.kernel.SneerDirectories.sneerDirectory;
+import static sneer.kernel.TestMode.createUser;
 
 
 import java.io.File;

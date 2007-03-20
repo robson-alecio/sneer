@@ -1,4 +1,4 @@
-package sneer.platform.strap;
+package sneer.kernel.install;
 
 import wheel.io.ui.User;
 

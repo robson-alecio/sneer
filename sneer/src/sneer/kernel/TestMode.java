@@ -1,4 +1,4 @@
-package sneer.platform;
+package sneer.kernel;
 
 import java.net.URL;
 

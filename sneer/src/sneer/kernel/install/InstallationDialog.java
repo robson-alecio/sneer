@@ -1,7 +1,7 @@
-package sneer.platform.strap;
+package sneer.kernel.install;
 
-import sneer.platform.SneerDirectories;
-import sneer.platform.server.ServerConfig;
+import sneer.kernel.SneerDirectories;
+import sneer.kernel.server.ServerConfig;
 import wheel.io.ui.User;
 
 public class InstallationDialog extends Dialog {

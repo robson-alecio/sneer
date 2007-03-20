@@ -1,4 +1,4 @@
-package sneer.platform.server;
+package sneer.kernel.server;
 
 import java.io.Serializable;
 

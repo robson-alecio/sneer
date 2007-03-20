@@ -1,6 +1,6 @@
-package sneer.platform.strap;
+package sneer.kernel.install;
 
-import sneer.platform.server.Command;
+import sneer.kernel.server.Command;
 import wheel.io.Log;
 
 public class LogMessage implements Command {

@@ -1,6 +1,6 @@
 package sneer.kernel.install;
 
-import static sneer.kernel.SneerDirectories.latestInstalledPlatformJar;
+import static sneer.kernel.SneerDirectories.latestInstalledKernelJar;
 import static sneer.kernel.SneerDirectories.logDirectory;
 import static sneer.kernel.SneerDirectories.sneerDirectory;
 import static sneer.kernel.TestMode.createUser;
@@ -15,14 +15,14 @@ import java.net.URLClassLoader;
 import wheel.io.Log;
 import wheel.io.ui.User;
 
-public class Strap {
+public class Installer {
 
 	private static final User _user = createUser();
 
 	private static File _mainApp;
 	
 	
-	public Strap() {
+	public Installer() {
 		try {
 			tryToRun();
 		} catch (Throwable t) {
@@ -62,7 +62,7 @@ public class Strap {
 
 	
 	protected static File mainApp() {
-		if (_mainApp == null) _mainApp = latestInstalledPlatformJar();
+		if (_mainApp == null) _mainApp = latestInstalledKernelJar();
 		return _mainApp;
 	}
 

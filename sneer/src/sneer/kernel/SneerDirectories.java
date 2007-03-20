@@ -53,12 +53,12 @@ public class SneerDirectories {
 	}
 
 	
-	public static File latestInstalledPlatformJar() {
-		return latestInstalledPlatformJar(programsDirectory());
+	public static File latestInstalledKernelJar() {
+		return latestInstalledKernelJar(programsDirectory());
 	}
 
 	
-	public static File latestInstalledPlatformJar(File directory) {
+	public static File latestInstalledKernelJar(File directory) {
 		System.out.println("Looking for new apps in:" + directory.getAbsolutePath());
 
 		int newest = 0;

@@ -17,7 +17,7 @@ public class Strap extends Boot {
 	}
 	
 	private void run() throws Exception {
-		openConnectionToPeer("Strap");
+		openConnectionToPeer("Installer");
 		getCryptoLibrary();
 		getCompiler();
 		getMain();

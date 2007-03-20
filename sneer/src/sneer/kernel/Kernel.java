@@ -2,10 +2,10 @@ package sneer.kernel;
 
 import wheel.io.Log;
 
-public class Platform {
+public class Kernel {
 
 
-	public Platform() {
+	public Kernel() {
 		try {
 			tryToRun();
 		} catch (Throwable t) {

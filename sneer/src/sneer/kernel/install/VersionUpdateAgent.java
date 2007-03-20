@@ -1,6 +1,6 @@
 package sneer.kernel.install;
 
-import static sneer.kernel.SneerDirectories.latestInstalledPlatformJar;
+import static sneer.kernel.SneerDirectories.latestInstalledKernelJar;
 import static sneer.kernel.SneerDirectories.validNumber;
 
 import java.io.DataInputStream;
@@ -73,7 +73,7 @@ public class VersionUpdateAgent implements Agent {
 
 	
 	private static File newestMainApp() {
-		return latestInstalledPlatformJar(ServerConfig.MAIN_APP_DIRECTORY);
+		return latestInstalledKernelJar(ServerConfig.MAIN_APP_DIRECTORY);
 	}
 
 	

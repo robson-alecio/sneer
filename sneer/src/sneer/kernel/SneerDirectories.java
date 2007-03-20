@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import static sneer.kernel.TestMode.isInTestMode;
-
 public class SneerDirectories {
 
 	private static final String PREFIX = "main";
@@ -26,7 +24,6 @@ public class SneerDirectories {
 
 
 	private static String userHome() {
-		if (isInTestMode()) return ".";
 		return System.getProperty("user.home");
 	}
 

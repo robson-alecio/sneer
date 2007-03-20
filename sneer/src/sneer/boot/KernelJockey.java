@@ -25,6 +25,7 @@ public class KernelJockey {
 	}
 
 	private void play(File kernelJar) throws Exception {
+		System.out.println(kernelJar);
 		Jars.runAllowingForClassGC(kernelJar, "sneer.kernel.Kernel");
 	}
 

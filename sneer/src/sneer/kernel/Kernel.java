@@ -1,5 +1,11 @@
 package sneer.kernel;
 
+import static sneer.kernel.SneerDirectories.logDirectory;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+
+import sneer.kernel.install.Installer;
 import wheel.io.Log;
 import wheel.io.ui.User;
 import wheel.io.ui.User.Action;
@@ -16,12 +22,20 @@ public class Kernel {
 		}
 	}
 
-	private void tryToRun() {
+	private void tryToRun() throws Exception {
 		User user = new User(Kernel.class.getResource("yourIconGoesHere.png"));
-		
+
+		new Installer(user);
+		tryToRedirectLogToSneerLogFile();
+
 		user.addAction(exitAction());
-		
 		while (true) Threads.sleepWithoutInterruptions(5000);
+	}
+
+	
+	private void tryToRedirectLogToSneerLogFile() throws FileNotFoundException {
+		logDirectory().mkdir();
+		Log.redirectTo(new File(logDirectory(), "log.txt"));
 	}
 
 	

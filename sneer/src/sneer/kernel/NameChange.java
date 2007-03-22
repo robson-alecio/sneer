@@ -14,13 +14,17 @@ import wheel.io.ui.User;
 
 public class NameChange {
 
-	NameChange(User user, boolean forceChange) throws FileNotFoundException {
-		if (hasName() && !forceChange) return;
-		
-		changeOwnName(user);
+	public NameChange(User user, boolean forceChange) {
+		try {
+			if (hasName() && !forceChange) return;
+			
+			changeOwnName(user);
+		} catch (IOException e) {
+			user.acknowledgeUnexpectedProblem(e.getMessage());
+		}
 	}
 	
-	private void changeOwnName(User user) throws FileNotFoundException {
+	private void changeOwnName(User user) throws IOException {
 		String name = user.answer(" Digite seu nome", name());
 		if (name == null || name.trim().isEmpty()) return;
 		name = name.trim();
@@ -28,16 +32,19 @@ public class NameChange {
 		saveName(name);
 	}
 
-	private boolean hasName() {
+	private boolean hasName() throws IOException {
 		return name() != null;
 	}
 
-	private String name()  {
+	private String name() throws IOException  {
+		BufferedReader reader = null;
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(nameFile()));
+			reader = new BufferedReader(new FileReader(nameFile()));
 			return reader.readLine().trim();
-		} catch (IOException e) {
+		} catch (FileNotFoundException ignored) {
 			return null;
+		} finally {
+			if (reader != null) reader.close();
 		}
 	}
 

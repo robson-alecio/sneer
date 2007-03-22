@@ -20,7 +20,7 @@ public class TestUser extends User {
 	}
 
 	@Override
-	public void acnowledgeNotification(String description) {
+	public void acknowledgeNotification(String description) {
 		System.out.println(description);
 	}
 

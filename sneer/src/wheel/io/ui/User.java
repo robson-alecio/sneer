@@ -40,7 +40,7 @@ public class User {
 	}
 
 
-	void acknowledgeUnexpectedProblem(String description) {
+	public void acknowledgeUnexpectedProblem(String description) {
 		JOptionPane.showMessageDialog(null, description, "Sneer - Unexpected Problem", JOptionPane.ERROR_MESSAGE);
 	}
 
@@ -55,7 +55,7 @@ public class User {
 	}
 
 	
-	public void acnowledgeNotification(String description) {
+	public void acknowledgeNotification(String description) {
 		trayIcon().displayMessage("Sneer", description, MessageType.NONE);		
 	}
 

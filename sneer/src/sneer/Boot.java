@@ -16,11 +16,11 @@ public class Boot {
 
 	private static void tryToRun() throws Exception {
 		checkJavaVersion6OtherwiseExit();
-		newPlatformJockey();
+		startSneerJockey();
 	}
 
 
-	private static void newPlatformJockey() throws Exception {
+	private static void startSneerJockey() throws Exception {
 		//Boot is compiled to run on Java 1.1 to show the "You need Java6 message", so it cannot propagate compilation dependencies.
 		Boot.class.getClassLoader().loadClass("sneer.SneerJockey").newInstance();
 	}

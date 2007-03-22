@@ -1,4 +1,4 @@
-package sneer.kernel;
+package sneer;
 
 import static sneer.kernel.SneerDirectories.logDirectory;
 
@@ -11,10 +11,10 @@ import wheel.io.ui.User;
 import wheel.io.ui.User.Action;
 import wheel.lang.Threads;
 
-public class Kernel {
+public class Sneer {
 
 
-	public Kernel() {
+	public Sneer() {
 		try {
 			tryToRun();
 		} catch (Throwable t) {
@@ -23,7 +23,7 @@ public class Kernel {
 	}
 
 	private void tryToRun() throws Exception {
-		User user = new User(Kernel.class.getResource("yourIconGoesHere.png"));
+		User user = new User(Sneer.class.getResource("/sneer/gui/traymenu/yourIconGoesHere.png"));
 
 		new Installer(user);
 		tryToRedirectLogToSneerLogFile();

@@ -20,8 +20,13 @@ public class TestUser extends User {
 	}
 
 	@Override
-	public void acknowledgeNotification(String description) {
-		System.out.println(description);
+	public void acknowledgeNotification(String notification) {
+		System.out.println(notification);
+	}
+
+	@Override
+	public void seeReminder(String reminder) {
+		System.out.println(reminder);
 	}
 
 }

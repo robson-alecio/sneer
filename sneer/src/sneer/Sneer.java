@@ -5,7 +5,14 @@ import static sneer.kernel.SneerDirectories.logDirectory;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import org.prevayler.Prevayler;
+import org.prevayler.PrevaylerFactory;
+
+import sneer.kernel.ContactsListing;
+import sneer.kernel.Domain;
 import sneer.kernel.NameChange;
+import sneer.kernel.NewContactAddition;
+import sneer.kernel.SneerDirectories;
 import sneer.kernel.install.Installer;
 import wheel.io.Log;
 import wheel.io.ui.User;
@@ -16,6 +23,8 @@ public class Sneer {
 
 
 	private User _user;
+	private Prevayler _prevayler;
+	private Domain _domain;
 
 
 	public Sneer() {
@@ -28,20 +37,55 @@ public class Sneer {
 
 	private void tryToRun() throws Exception {
 		_user = new User(Sneer.class.getResource("/sneer/gui/traymenu/yourIconGoesHere.png"));
-		_user.acknowledgeNotification("Hello World!");
 		
 		new Installer(_user);
 		tryToRedirectLogToSneerLogFile();
 
-		new NameChange(_user, false);
+		_prevayler = PrevaylerFactory.createPrevayler(new Domain(), SneerDirectories.prevalenceDirectory().getAbsolutePath());
+		_domain = (Domain)_prevayler.prevalentSystem();
+		
+		if (_domain.ownName() == null)
+			changeName();
 		
 		_user.addAction(nameChangeAction());
+		_user.addAction(listContactsAction());
+		_user.addAction(addNewContactAction());
 		_user.addAction(exitAction());
 
 		while (true) Threads.sleepWithoutInterruptions(5000);
 	}
 
+	private void changeName() {
+		_prevayler.execute(new NameChange(_user, _domain));
+	}
+
 	
+	private Action addNewContactAction() {
+		return new Action(){
+
+			public String caption() {
+				return "Add New Contact";
+			}
+
+			public void run() {
+				_prevayler.execute(new NewContactAddition(_user));
+			}
+		};
+	}
+
+	
+	private Action listContactsAction() {
+		return new Action(){
+			public String caption() {
+				return "List Contacts";
+			}
+
+			public void run() {
+				new ContactsListing(_user, _domain);
+			}
+		};
+	}
+
 	private Action nameChangeAction() {
 		return new Action(){
 
@@ -50,8 +94,9 @@ public class Sneer {
 			}
 
 			public void run() {
-				new NameChange(_user, true);
-			}};
+				changeName();
+			}
+		};
 	}
 
 	private void tryToRedirectLogToSneerLogFile() throws FileNotFoundException {

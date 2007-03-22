@@ -55,8 +55,8 @@ public class User {
 	}
 
 	
-	public void acknowledgeNotification(String description) {
-		trayIcon().displayMessage("Sneer", description, MessageType.NONE);		
+	public void seeReminder(String reminder) {
+		trayIcon().displayMessage("Sneer", reminder, MessageType.NONE);		
 	}
 
 
@@ -97,5 +97,9 @@ public class User {
 	private TrayIcon trayIcon() {
 		if (_trayIcon == null) throw new UnsupportedOperationException("SystemTray support required.");
 		return _trayIcon;
+	}
+
+	public void acknowledgeNotification(String notification) {
+		choose(notification, "OK");
 	}
 }

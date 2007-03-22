@@ -8,54 +8,26 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
+
+import org.prevayler.Transaction;
 
 import sneer.kernel.install.Dialog;
 import wheel.io.ui.User;
 
-public class NameChange {
+public class NameChange implements Transaction {
 
-	public NameChange(User user, boolean forceChange) {
-		try {
-			if (hasName() && !forceChange) return;
-			
-			changeOwnName(user);
-		} catch (IOException e) {
-			user.acknowledgeUnexpectedProblem(e.getMessage());
-		}
+	private final String _name;
+
+	public NameChange(User user, Domain domain) {
+		_name = user.answer(" What is your name?" +
+			"\n (You can change it any time you like)", domain.ownName());
 	}
 	
-	private void changeOwnName(User user) throws IOException {
-		String name = user.answer(" Digite seu nome", name());
-		if (name == null || name.trim().isEmpty()) return;
-		name = name.trim();
+	public void executeOn(Object domain, Date ignored) {
+		((Domain)domain).ownName(_name);
+	}
 	
-		saveName(name);
-	}
 
-	private boolean hasName() throws IOException {
-		return name() != null;
-	}
-
-	private String name() throws IOException  {
-		BufferedReader reader = null;
-		try {
-			reader = new BufferedReader(new FileReader(nameFile()));
-			return reader.readLine().trim();
-		} catch (FileNotFoundException ignored) {
-			return null;
-		} finally {
-			if (reader != null) reader.close();
-		}
-	}
-
-	private File nameFile() {
-		return new File(sneerDirectory(), "name.txt");
-	}
-
-	private void saveName(String name) throws FileNotFoundException {
-		PrintWriter writer = new PrintWriter(nameFile());
-		writer.println(name);
-		writer.close();
-	}
-
+	private static final long serialVersionUID = 1L;
 }

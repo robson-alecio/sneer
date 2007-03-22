@@ -16,6 +16,11 @@ public class SneerDirectories {
 	private static File programsDirectory() {
 		return new File(sneerDirectory(), "programs");
 	}
+
+	
+	public static File prevalenceDirectory() {
+		return new File(sneerDirectory(), "prevalence");
+	}
 	
 	
 	public static File sneerDirectory() {

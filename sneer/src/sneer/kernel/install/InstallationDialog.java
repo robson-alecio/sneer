@@ -9,38 +9,22 @@ public class InstallationDialog extends Dialog {
 		super(user);
 		
 		approveConditionOtherwiseExit(
-				" Bem-vind@ ao Sneer, o peer soberano.\n\n" +
-				" Pioneir@ da computação soberana, você poderá contar\n" +
-				" para seus netos que participou da revolução desde o início.",
-				"Legal  :)"
+				" Welcome to the Sneer Setup Wizard\n\n" +
+				" This will install Sneer on your computer.",
+				"Next >", "Cancel"
 		);
 
 		approveConditionOtherwiseExit(
-				" Esta primeira versão é pouco mais que vaporware,\n" +
-				" exibe informações técnicas detalhadas e só faz\n" +
-				" sentido pra usuários avançados.\n\n" +
-				" Por favor, não a divulgue fora desse público.",
-				"Tá bom"
-		);
-
-		approveConditionOtherwiseExit(
-				" Sabe aqueles textos gigantescos e pentelhos de licença, que aparecem\n" +
-				" na instalação de todo software e que ninguém lê?\n\n" +
-				" Usando software soberano, você nunca mais vai precisar ver um texto\n" +
-				" daquele na sua frente.",
-				" Uhu! Por que não?"
-		);
-		
-		approveConditionOtherwiseExit(
-				" O Sneer é software livre, licenciado pela General Public License 2 (GPL 2):\n" +
+				" Sneer is free software.\n\n" +
+				" It is licensed under the terms of the General Public License version 2" +
+				" as published by the Free Software Foundation:\n" +
 				" http://www.gnu.org/copyleft/gpl.html\n\n" +
-				" Todas as versões do Sneer e de todos os plugins soberanos, que também\n" +
-				" forem licenciados pela GPL 2, serão instalados e executados sem exibir o\n" +
-				" texto da licença.\n\n" +
-				" Você aceita esses termos?",
-				"Claro", "Claro que não"
+				" Do you accept these terms?",
+				"I Accept", "No"
 		);
 
+		int TODO;
+		
 		approveConditionOtherwiseExit(
 				" Será criado o diretório\n" +
 				" " + SneerDirectories.sneerDirectory() + "\n\n" + 

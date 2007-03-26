@@ -1,11 +1,11 @@
 package sneer.kernel.install;
 
 import sneer.kernel.SneerDirectories;
-import wheel.io.ui.SwingUser;
+import wheel.io.ui.User;
 
 public class InstallationDialog extends Dialog {
 
-	public InstallationDialog(SwingUser user) {
+	public InstallationDialog(User user) {
 		super(user);
 		
 		approveConditionOtherwiseExit(

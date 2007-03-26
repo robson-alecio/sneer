@@ -15,14 +15,19 @@ import sneer.kernel.NewContactAddition;
 import sneer.kernel.SneerDirectories;
 import sneer.kernel.install.Installer;
 import wheel.io.Log;
-import wheel.io.ui.SwingUser;
-import wheel.io.ui.SwingUser.Action;
+import wheel.io.ui.TrayIcon;
+import wheel.io.ui.TrayIcon.Action;
+import wheel.io.ui.User;
+import wheel.io.ui.impl.JOptionPaneUser;
+import wheel.io.ui.impl.TrayIconImpl;
 import wheel.lang.Threads;
 
 public class Sneer {
 
 
-	private SwingUser _swingUser;
+	private User _user;
+	private TrayIcon _trayIcon;
+
 	private Prevayler _prevayler;
 	private Domain _domain;
 
@@ -36,9 +41,10 @@ public class Sneer {
 	}
 
 	private void tryToRun() throws Exception {
-		_swingUser = new SwingUser(Sneer.class.getResource("/sneer/gui/traymenu/yourIconGoesHere.png"));
+		_user = new JOptionPaneUser();
+		_trayIcon = new TrayIconImpl(Sneer.class.getResource("/sneer/gui/traymenu/yourIconGoesHere.png"));
 		
-		new Installer(_swingUser);
+		new Installer(_user);
 		tryToRedirectLogToSneerLogFile();
 
 		_prevayler = PrevaylerFactory.createPrevayler(new Domain(), SneerDirectories.prevalenceDirectory().getAbsolutePath());
@@ -47,16 +53,16 @@ public class Sneer {
 		if (_domain.ownName() == null)
 			changeName();
 		
-		_swingUser.addAction(nameChangeAction());
-		_swingUser.addAction(listContactsAction());
-		_swingUser.addAction(addNewContactAction());
-		_swingUser.addAction(exitAction());
+		_trayIcon.addAction(nameChangeAction());
+		_trayIcon.addAction(listContactsAction());
+		_trayIcon.addAction(addNewContactAction());
+		_trayIcon.addAction(exitAction());
 
 		while (true) Threads.sleepWithoutInterruptions(5000);
 	}
 
 	private void changeName() {
-		_prevayler.execute(new NameChange(_swingUser, _domain));
+		_prevayler.execute(new NameChange(_user, _domain));
 	}
 
 	
@@ -68,7 +74,7 @@ public class Sneer {
 			}
 
 			public void run() {
-				_prevayler.execute(new NewContactAddition(_swingUser));
+				_prevayler.execute(new NewContactAddition(_user));
 			}
 		};
 	}
@@ -81,7 +87,7 @@ public class Sneer {
 			}
 
 			public void run() {
-				new ContactsListing(_swingUser, _domain);
+				new ContactsListing(_user, _domain);
 			}
 		};
 	}

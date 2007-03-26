@@ -1,30 +1,12 @@
-package wheel.io.ui;
-
-import java.awt.SystemTray;
-import java.net.URL;
+package wheel.io.ui.impl;
 
 import javax.swing.JOptionPane;
 
-import wheel.io.ui.TrayIcon.SystemTrayNotSupported;
+import wheel.io.ui.User;
 
-public class SwingUser {
+public class JOptionPaneUser implements User {
 
-	private final TrayIcon _trayIcon;
-
-	public interface Action {
-
-		String caption();
-
-		void run();
-
-	}
-
-
-	public SwingUser(URL iconURL) throws SystemTrayNotSupported {
-		_trayIcon = new TrayIcon(iconURL);
-	}
-
-	public boolean choose(String proposition, Object... options) {
+	public boolean choose(String proposition, Object... options) {	int todo_revise_this_signature;
 		int chosen = JOptionPane.showOptionDialog(null, proposition + "\n\n", "Sneer", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 		return chosen == 0;
 	}
@@ -45,17 +27,6 @@ public class SwingUser {
 	}
 
 	
-	public void seeReminder(String reminder) {
-		_trayIcon.seeReminder(reminder);		
-	}
-
-
-	public void addAction(final Action action) {
-		_trayIcon.addAction(action);
-	}
-
-	
-
 	public void acknowledgeNotification(String notification) {
 		choose(notification, "OK");
 	}

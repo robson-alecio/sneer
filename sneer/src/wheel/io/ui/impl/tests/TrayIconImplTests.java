@@ -1,4 +1,4 @@
-package wheel.io.ui.tests;
+package wheel.io.ui.impl.tests;
 
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
@@ -8,17 +8,17 @@ import java.awt.event.ActionListener;
 import java.net.URL;
 
 import junit.framework.TestCase;
-import wheel.io.ui.SwingUser;
-import wheel.io.ui.SwingUser.Action;
+import wheel.io.ui.TrayIcon.Action;
+import wheel.io.ui.impl.TrayIconImpl;
 
-public class UserTests extends TestCase {
+public class TrayIconImplTests extends TestCase {
 
-	public void testUser() throws Exception {
+	public void test() throws Exception {
 		URL userIcon = getClass().getResource("testIcon.png");
-		SwingUser swingUser = new SwingUser(userIcon);
+		TrayIconImpl subject = new TrayIconImpl(userIcon);
 
 		SayHelloAction sayHelloAction = new SayHelloAction();
-		swingUser.addAction(sayHelloAction);
+		subject.addAction(sayHelloAction);
 		
 		final MenuItem sayHelloActionMenuItem = getSayHelloMenuItem();
 		assertEquals(SayHelloAction.CAPTION, sayHelloActionMenuItem.getLabel());
@@ -29,12 +29,11 @@ public class UserTests extends TestCase {
 	}
 
 	private MenuItem getSayHelloMenuItem() {
-		final PopupMenu userMenu = SystemTray.getSystemTray().getTrayIcons()[0].getPopupMenu();
-		final MenuItem sayHelloActionMenuItem = userMenu.getItem(0);
-		return sayHelloActionMenuItem;
+		PopupMenu menu = SystemTray.getSystemTray().getTrayIcons()[0].getPopupMenu();
+		return menu.getItem(0);
 	}
 
-	private void clickMenuItem(final MenuItem menuItem) {
+	private void clickMenuItem(MenuItem menuItem) {
 		ActionListener[] actionListeners = menuItem.getListeners(ActionListener.class);
 		int foo = 42;
 		for (ActionListener listener : actionListeners)

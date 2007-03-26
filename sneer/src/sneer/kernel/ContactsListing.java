@@ -1,10 +1,10 @@
 package sneer.kernel;
 
-import wheel.io.ui.SwingUser;
+import wheel.io.ui.User;
 
 public class ContactsListing {
 
-	public ContactsListing(SwingUser user, Domain domain) {
+	public ContactsListing(User user, Domain domain) {
 		String message = "Your contacts:";
 		for (String contact : domain.contacts())
 			message = message + "\n    " + contact;

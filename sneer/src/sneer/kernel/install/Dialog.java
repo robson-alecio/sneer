@@ -1,12 +1,12 @@
 package sneer.kernel.install;
 
-import wheel.io.ui.SwingUser;
+import wheel.io.ui.User;
 
 public class Dialog {
 
-	protected final SwingUser _user;
+	protected final User _user;
 
-	public Dialog(SwingUser user) {
+	public Dialog(User user) {
 		_user = user;
 	}
 

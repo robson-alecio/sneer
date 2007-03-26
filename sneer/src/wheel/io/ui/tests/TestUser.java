@@ -1,8 +1,13 @@
 package wheel.io.ui.tests;
 
-import wheel.io.ui.User;
+import wheel.io.ui.SwingUser;
+import wheel.io.ui.TrayIcon.SystemTrayNotSupported;
 
-public class TestUser extends User {
+public class TestUser extends SwingUser {
+
+	public TestUser() throws SystemTrayNotSupported {
+		super(null); int todo_clean_this_mess;
+	}
 
 	@Override
 	public String answer(String prompt, String defaultAnswer) {

@@ -15,14 +15,14 @@ import sneer.kernel.NewContactAddition;
 import sneer.kernel.SneerDirectories;
 import sneer.kernel.install.Installer;
 import wheel.io.Log;
-import wheel.io.ui.User;
-import wheel.io.ui.User.Action;
+import wheel.io.ui.SwingUser;
+import wheel.io.ui.SwingUser.Action;
 import wheel.lang.Threads;
 
 public class Sneer {
 
 
-	private User _user;
+	private SwingUser _swingUser;
 	private Prevayler _prevayler;
 	private Domain _domain;
 
@@ -36,9 +36,9 @@ public class Sneer {
 	}
 
 	private void tryToRun() throws Exception {
-		_user = new User(Sneer.class.getResource("/sneer/gui/traymenu/yourIconGoesHere.png"));
+		_swingUser = new SwingUser(Sneer.class.getResource("/sneer/gui/traymenu/yourIconGoesHere.png"));
 		
-		new Installer(_user);
+		new Installer(_swingUser);
 		tryToRedirectLogToSneerLogFile();
 
 		_prevayler = PrevaylerFactory.createPrevayler(new Domain(), SneerDirectories.prevalenceDirectory().getAbsolutePath());
@@ -47,16 +47,16 @@ public class Sneer {
 		if (_domain.ownName() == null)
 			changeName();
 		
-		_user.addAction(nameChangeAction());
-		_user.addAction(listContactsAction());
-		_user.addAction(addNewContactAction());
-		_user.addAction(exitAction());
+		_swingUser.addAction(nameChangeAction());
+		_swingUser.addAction(listContactsAction());
+		_swingUser.addAction(addNewContactAction());
+		_swingUser.addAction(exitAction());
 
 		while (true) Threads.sleepWithoutInterruptions(5000);
 	}
 
 	private void changeName() {
-		_prevayler.execute(new NameChange(_user, _domain));
+		_prevayler.execute(new NameChange(_swingUser, _domain));
 	}
 
 	
@@ -68,7 +68,7 @@ public class Sneer {
 			}
 
 			public void run() {
-				_prevayler.execute(new NewContactAddition(_user));
+				_prevayler.execute(new NewContactAddition(_swingUser));
 			}
 		};
 	}
@@ -81,7 +81,7 @@ public class Sneer {
 			}
 
 			public void run() {
-				new ContactsListing(_user, _domain);
+				new ContactsListing(_swingUser, _domain);
 			}
 		};
 	}

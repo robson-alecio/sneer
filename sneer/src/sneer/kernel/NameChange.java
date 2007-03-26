@@ -13,13 +13,13 @@ import java.util.Date;
 import org.prevayler.Transaction;
 
 import sneer.kernel.install.Dialog;
-import wheel.io.ui.User;
+import wheel.io.ui.SwingUser;
 
 public class NameChange implements Transaction {
 
 	private final String _name;
 
-	public NameChange(User user, Domain domain) {
+	public NameChange(SwingUser user, Domain domain) {
 		_name = user.answer(" What is your name?" +
 			"\n (You can change it any time you like)", domain.ownName());
 	}

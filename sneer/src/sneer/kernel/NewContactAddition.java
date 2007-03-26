@@ -4,13 +4,13 @@ import java.util.Date;
 
 import org.prevayler.Transaction;
 
-import wheel.io.ui.User;
+import wheel.io.ui.SwingUser;
 
 public class NewContactAddition implements Transaction {
 
 	private final String _nick;
 
-	public NewContactAddition(User user) {
+	public NewContactAddition(SwingUser user) {
 		_nick = user.answer("New contact's nickname:");
 	}
 

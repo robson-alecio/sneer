@@ -27,21 +27,11 @@ public class Log {
 			logHeader("");
 			throwable.printStackTrace();
 			throwable.printStackTrace(_log);
-			if (hasError()) showIfPossible(throwable);
 		} finally {
 			flush();
 		}
 	}
 	
-	
-	private static void showIfPossible(Throwable throwable) {
-		try {
-			JOptionPane.showConfirmDialog(null, throwable.toString() +
-					"\n\n (Unable to write this Exception to the log)\n",
-					"Error", JOptionPane.ERROR_MESSAGE);
-		} catch (RuntimeException ignored) {}
-	}
-
 
 	static public boolean hasError() {
 		return _log.checkError();

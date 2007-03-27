@@ -14,19 +14,12 @@ import static sneer.kernel.SneerDirectories.latestInstalledSneerJar;
 public class SneerJockey {
 
 	public SneerJockey() throws Exception {
-		File previousSneerJar = null;
-		while (true) {
-			File latestSneerJar = latestSneerJar();
-			if (latestSneerJar.equals(previousSneerJar)) break;
-			previousSneerJar = latestSneerJar;
-			
-			play(latestSneerJar);
-		}
+		while (true) play(latestSneerJar());
 	}
 
 	private void play(File SneerJar) throws Exception {
 		System.out.println(SneerJar);
-		Jars.runAllowingForClassGC(SneerJar, "sneer.Sneer");
+		Jars.runAllowingForClassGC(SneerJar, "sneer.SneerLive");
 	}
 
 	private File latestSneerJar() {

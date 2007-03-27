@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import org.prevayler.Prevayler;
-import org.prevayler.PrevaylerFactory;
 
 import sneer.kernel.ContactsListing;
 import sneer.kernel.Domain;
@@ -20,39 +19,63 @@ import wheel.io.ui.TrayIcon.Action;
 import wheel.io.ui.User;
 import wheel.io.ui.impl.JOptionPaneUser;
 import wheel.io.ui.impl.TrayIconImpl;
+import wheel.io.ui.impl.TrayIconImpl.SystemTrayNotSupported;
 import wheel.lang.Threads;
 
 public class Sneer {
 
-
-	private User _user;
-	private TrayIcon _trayIcon;
-
-	private Prevayler _prevayler;
-	private Domain _domain;
-
-
-	public Sneer() {
-		try {
-			tryToRun();
-		} catch (Throwable t) {
-			Log.log(t);
-		}
+	
+	public interface Context {
+		User user();
+		TrayIcon trayIcon() throws SystemTrayNotSupported;
+		Prevayler prevaylerFor(Domain domain) throws Exception;
 	}
 
-	private void tryToRun() throws Exception {
-		_user = new JOptionPaneUser();
-		_trayIcon = new TrayIconImpl(Sneer.class.getResource("/sneer/gui/traymenu/yourIconGoesHere.png"));
+
+	public Sneer(Context context) {
+		_context = context;
+		_user = context.user();
 		
+		try {
+			
+			tryToRun();
+			 
+		} catch (Throwable t) {
+			Log.log(t);
+			showRestartMessage(t);
+		}
+
+	}
+
+	
+	private final Context _context;
+	
+	private final User _user;
+	private TrayIcon _trayIcon;
+	
+	private Prevayler _prevayler;
+	private Domain _domain;
+	
+	
+	private void showRestartMessage(Throwable t) {
+		String description = " " + t.toString() + "\n\n Sneer will now restart.";
+
+		try {
+			_user.acknowledgeUnexpectedProblem(description);
+		} catch (RuntimeException ignoreHeadlessExceptionForExample) {}
+	}
+
+
+	private void tryToRun() throws Exception {
 		new Installer(_user);
 		tryToRedirectLogToSneerLogFile();
 
-		_prevayler = PrevaylerFactory.createPrevayler(new Domain(), SneerDirectories.prevalenceDirectory().getAbsolutePath());
+		_prevayler = _context.prevaylerFor(new Domain());
 		_domain = (Domain)_prevayler.prevalentSystem();
 		
-		if (_domain.ownName() == null)
-			changeName();
+		if (_domain.ownName() == null) changeName();
 		
+		_trayIcon = _context.trayIcon();
 		_trayIcon.addAction(nameChangeAction());
 		_trayIcon.addAction(listContactsAction());
 		_trayIcon.addAction(addNewContactAction());
@@ -123,4 +146,10 @@ public class Sneer {
 			}
 		};
 	}
+
+
+	public static void main(String[] args) {
+		new SneerLive();
+	}
+	
 }

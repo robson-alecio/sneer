@@ -4,9 +4,9 @@ import wheel.io.ui.User;
 
 public class ContactsListing {
 
-	public ContactsListing(User user, Domain domain) {
+	public ContactsListing(User user, Essence essence) {
 		String message = "Your contacts:";
-		for (String contact : domain.contacts())
+		for (String contact : essence.contacts())
 			message = message + "\n    " + contact;
 		user.acknowledgeNotification(message);
 	}

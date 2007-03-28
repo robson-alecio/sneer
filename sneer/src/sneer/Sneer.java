@@ -4,21 +4,19 @@ import static sneer.kernel.SneerDirectories.logDirectory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 
 import org.prevayler.Prevayler;
 
 import sneer.kernel.ContactsListing;
-import sneer.kernel.Domain;
+import sneer.kernel.Essence;
 import sneer.kernel.NameChange;
 import sneer.kernel.NewContactAddition;
-import sneer.kernel.SneerDirectories;
 import sneer.kernel.install.Installer;
 import wheel.io.Log;
 import wheel.io.ui.TrayIcon;
-import wheel.io.ui.TrayIcon.Action;
 import wheel.io.ui.User;
-import wheel.io.ui.impl.JOptionPaneUser;
-import wheel.io.ui.impl.TrayIconImpl;
+import wheel.io.ui.TrayIcon.Action;
 import wheel.io.ui.impl.TrayIconImpl.SystemTrayNotSupported;
 import wheel.lang.Threads;
 
@@ -28,7 +26,7 @@ public class Sneer {
 	public interface Context {
 		User user();
 		TrayIcon trayIcon() throws SystemTrayNotSupported;
-		Prevayler prevaylerFor(Domain domain) throws Exception;
+		Prevayler prevaylerFor(Serializable rootObject) throws Exception;
 	}
 
 
@@ -54,7 +52,7 @@ public class Sneer {
 	private TrayIcon _trayIcon;
 	
 	private Prevayler _prevayler;
-	private Domain _domain;
+	private Essence _essence;
 	
 	
 	private void showRestartMessage(Throwable t) {
@@ -70,10 +68,10 @@ public class Sneer {
 		new Installer(_user);
 		tryToRedirectLogToSneerLogFile();
 
-		_prevayler = _context.prevaylerFor(new Domain());
-		_domain = (Domain)_prevayler.prevalentSystem();
+		_prevayler = _context.prevaylerFor(new Essence());
+		_essence = (Essence)_prevayler.prevalentSystem();
 		
-		if (_domain.ownName() == null) changeName();
+		if (_essence.ownName() == null) changeName();
 		
 		_trayIcon = _context.trayIcon();
 		_trayIcon.addAction(nameChangeAction());
@@ -85,7 +83,7 @@ public class Sneer {
 	}
 
 	private void changeName() {
-		_prevayler.execute(new NameChange(_user, _domain));
+		_prevayler.execute(new NameChange(_user, _essence));
 	}
 
 	
@@ -110,7 +108,7 @@ public class Sneer {
 			}
 
 			public void run() {
-				new ContactsListing(_user, _domain);
+				new ContactsListing(_user, _essence);
 			}
 		};
 	}
@@ -145,11 +143,6 @@ public class Sneer {
 				System.exit(0);
 			}
 		};
-	}
-
-
-	public static void main(String[] args) {
-		new SneerLive();
 	}
 	
 }

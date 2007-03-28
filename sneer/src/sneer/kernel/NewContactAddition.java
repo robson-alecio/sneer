@@ -15,7 +15,7 @@ public class NewContactAddition implements Transaction {
 	}
 
 	public void executeOn(Object domain, Date ignored) {
-		((Domain)domain).addContact(_nick);
+		((Essence)domain).addContact(_nick);
 	}
 
 	private static final long serialVersionUID = 1L;

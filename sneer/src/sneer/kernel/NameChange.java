@@ -19,13 +19,13 @@ public class NameChange implements Transaction {
 
 	private final String _name;
 
-	public NameChange(User user, Domain domain) {
+	public NameChange(User user, Essence essence) {
 		_name = user.answer(" What is your name?" +
-			"\n (You can change it any time you like)", domain.ownName());
+			"\n (You can change it any time you like)", essence.ownName());
 	}
 	
 	public void executeOn(Object domain, Date ignored) {
-		((Domain)domain).ownName(_name);
+		((Essence)domain).ownName(_name);
 	}
 	
 

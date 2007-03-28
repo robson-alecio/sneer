@@ -1,10 +1,11 @@
 package sneer.tests;
 
+import java.io.Serializable;
+
 import org.prevayler.Prevayler;
 
 import sneer.Sneer;
 import sneer.Sneer.Context;
-import sneer.kernel.Domain;
 import wheel.io.ui.TrayIcon;
 import wheel.io.ui.User;
 import wheel.io.ui.tests.TestUser;
@@ -19,7 +20,7 @@ public class SneerTestMain implements Context {
 		new Sneer(this);
 	}
 
-	public Prevayler prevaylerFor(Domain domain) throws Exception {
+	public Prevayler prevaylerFor(Serializable rootObject) throws Exception {
 		
 		return null;
 	}

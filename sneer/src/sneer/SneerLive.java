@@ -1,12 +1,11 @@
 package sneer;
 
-import java.io.IOException;
+import java.io.Serializable;
 
 import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
 
 import sneer.Sneer.Context;
-import sneer.kernel.Domain;
 import sneer.kernel.SneerDirectories;
 import wheel.io.ui.TrayIcon;
 import wheel.io.ui.User;
@@ -20,8 +19,8 @@ public class SneerLive implements Context {
 		new Sneer(this);
 	}
 
-	public Prevayler prevaylerFor(Domain domain) throws Exception {
-		return PrevaylerFactory.createPrevayler(domain, SneerDirectories.prevalenceDirectory().getAbsolutePath());
+	public Prevayler prevaylerFor(Serializable rootObject) throws Exception {
+		return PrevaylerFactory.createPrevayler(rootObject, SneerDirectories.prevalenceDirectory().getAbsolutePath());
 	}
 
 	public TrayIcon trayIcon() throws SystemTrayNotSupported {

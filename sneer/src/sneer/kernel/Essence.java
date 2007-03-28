@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Domain implements Serializable {
+public class Essence implements Serializable {
 
 	private String _ownName;
 

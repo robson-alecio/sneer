@@ -1,18 +1,9 @@
 package sneer.kernel;
 
-import static sneer.kernel.SneerDirectories.sneerDirectory;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Date;
 
 import org.prevayler.Transaction;
 
-import sneer.kernel.install.Dialog;
 import wheel.io.ui.User;
 
 public class NameChange implements Transaction {

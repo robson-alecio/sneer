@@ -1,35 +1,35 @@
 package sneer;
 
-import java.io.File;
-import java.net.URL;
+import static sneer.kernel.SneerDirectories.latestInstalledSneerJar;
+import static sneer.kernel.SneerDirectories.sneerDirectory;
 
-import sneer.Sneer;
+import java.io.File;
 
 import wheel.jars.Jars;
-
-import static sneer.kernel.SneerDirectories.latestInstalledSneerJar;
 
 
 /** This guy "plays" (runs) the latest version of Sneer, one after the other. */
 public class SneerJockey {
 
 	public SneerJockey() throws Exception {
+		new InstallationWizard(sneerDirectory());
+		
 		while (true) play(latestSneerJar());
 	}
 
 	private void play(File SneerJar) throws Exception {
 		System.out.println(SneerJar);
-		Jars.runAllowingForClassGC(SneerJar, "sneer.SneerLive");
+		Jars.runAllowingForClassGC(SneerJar, "sneer.Sneer");
 	}
 
 	private File latestSneerJar() {
-		File installed = latestInstalledSneerJar();
-		if (installed != null) return installed;
+		File installedJar = latestInstalledSneerJar();
+		if (installedJar != null) return installedJar;
 		
-		return myOwnJar();
+		return currentJar();
 	}
 
-	private File myOwnJar() {
+	private File currentJar() {
 		return Jars.jarGiven(SneerJockey.class);
 	}
 

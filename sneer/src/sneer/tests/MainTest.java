@@ -4,20 +4,20 @@ import java.io.Serializable;
 
 import org.prevayler.Prevayler;
 
-import sneer.Sneer;
-import sneer.Sneer.Context;
+import sneer.SneerImpl;
+import sneer.SneerImpl.Context;
 import wheel.io.ui.TrayIcon;
 import wheel.io.ui.User;
 import wheel.io.ui.tests.TestUser;
 
-public class SneerTestMain implements Context {
+public class MainTest implements Context {
 
 	public static void main(String[] args) {
-		new SneerTestMain();
+		new MainTest();
 	}
 
-	public SneerTestMain() {
-		new Sneer(this);
+	public MainTest() {
+		new SneerImpl(this);
 	}
 
 	public Prevayler prevaylerFor(Serializable rootObject) throws Exception {

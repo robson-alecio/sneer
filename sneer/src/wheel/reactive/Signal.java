@@ -14,3 +14,7 @@ public interface Signal<VO> extends SetSignal<VO> {
 	public VO currentValue();
 	
 }
+
+class Todo2 {
+	private int todo_make_signal_extend_list_signal;
+}

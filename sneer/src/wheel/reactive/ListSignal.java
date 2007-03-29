@@ -1,11 +1,16 @@
 package wheel.reactive;
 
-public interface ListSignal {
+import java.util.List;
+
+public interface ListSignal<VO> {
 	
-	public interface Receiver {
-		public void elementAdded(Object element);
+	public interface Receiver<VO> {
+		void elementAdded(int index);
+		void elementRemoved(int index, VO element);
+		void elementReplaced(int index, VO oldElement);
+		void listReplaced(List<VO> newList);
 	}
 
-	public void addReceiver(Receiver receiver);
+	public void addReceiver(Receiver<VO> receiver);
 
 }

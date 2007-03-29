@@ -3,20 +3,28 @@ package org.friends.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import wheel.io.ui.TrayIcon.Action;
+import wheel.reactive.ListSignal;
+
 public class FriendsModelImpl implements FriendsModel {
+	public interface AddFriendAction {
+		void addFriend(String name);
+	}
 
-	private List<String> _friends;
+	private final ListSignal<String> _friendsList;
+	private final AddFriendAction _addFriendAction;
 
-	public FriendsModelImpl() {
-		_friends = new ArrayList<String>();
+	public FriendsModelImpl(ListSignal<String> friendsList, AddFriendAction addFriendAction) {
+		_friendsList = friendsList;
+		_addFriendAction = addFriendAction;
 	}
 
 	public void addFriend(String name) {
-		_friends.add(name);
+		_addFriendAction.addFriend(name);
 	}
 
-	public String[] friends() {
-		return _friends.toArray(new String[] {});
+	public ListSignal<String> friends() {
+		return _friendsList;
 	}
 
 }

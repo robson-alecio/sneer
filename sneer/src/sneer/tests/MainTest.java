@@ -21,7 +21,7 @@ public class MainTest implements Context {
 	}
 
 	public Prevayler prevaylerFor(Serializable rootObject) throws Exception {
-		
+		int todo_transient;
 		return null;
 	}
 

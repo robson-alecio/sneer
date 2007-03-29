@@ -1,13 +1,10 @@
 package org.friends.ui;
 
+import wheel.reactive.ListSignal;
+
 public interface FriendsModel {
 
-	/**
-	 * @param name
-	 *            REQUIRED
-	 */
 	void addFriend(String name);
-
-	String[] friends();
+	ListSignal<String> friends();
 
 }

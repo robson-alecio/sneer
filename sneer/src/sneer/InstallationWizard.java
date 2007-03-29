@@ -16,7 +16,7 @@ public class InstallationWizard {
 
 	private void install(File sneerDirectory) {
 		approveConditionOtherwiseExit(
-				" Welcome to Sneer. :)\n\n" +
+				" Welcome to Sneer :)\n\n" +
 				" This wizard will prepare Sneer to run for you."
 		);
 
@@ -39,8 +39,6 @@ public class InstallationWizard {
 		
 		_user.acknowledgeNotification(
 				" This is an alpha-testing release for ADVANCED Java users.\n\n" +
-				" Do NOT use Sneer to store critical data because we DO NOT yet worry about\n" +
-				" backward compatibility of future releases.\n\n" +
 				" If you really want to tell your grandchildren you were a Sovereign Computing\n" +
 				" pioneer, configure Sneer to run on your system startup and help keep the\n" +
 				" sovereign network up and alive, now in its early days:\n" +
@@ -51,7 +49,7 @@ public class InstallationWizard {
 		_user.choose(
 				" Congratulations!\n\n" +
 				" You are no longer a slave. You have just\n" +
-				" claimed your own share of the internet. ;)",
+				" claimed your own share of the internet.",
 				"Enjoy"
 		);
 	}

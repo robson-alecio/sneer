@@ -1,6 +1,7 @@
 package sneer;
 
 import java.io.File;
+import java.io.IOException;
 
 import wheel.io.ui.User;
 import wheel.io.ui.impl.JOptionPaneUser;
@@ -8,13 +9,13 @@ import wheel.io.ui.impl.JOptionPaneUser;
 public class InstallationWizard {
 
 	
-	public InstallationWizard(File sneerDirectory) {
+	public InstallationWizard(File sneerDirectory) throws IOException {
 		if (sneerDirectory.exists()) return;
 		install(sneerDirectory);
 	}
 
 
-	private void install(File sneerDirectory) {
+	private void install(File sneerDirectory) throws IOException {
 		approveConditionOtherwiseExit(
 				" Welcome to Sneer :)\n\n" +
 				" This wizard will prepare Sneer to run for you."
@@ -35,12 +36,11 @@ public class InstallationWizard {
 				" " + sneerDirectory
 		);
 
-		sneerDirectory.mkdir();
+		if (!sneerDirectory.mkdir()) throw new IOException("Unable to create folder " + sneerDirectory);
 		
 		_user.acknowledgeNotification(
 				" This is an alpha-testing release for ADVANCED Java users.\n\n" +
-				" If you really want to tell your grandchildren you were a Sovereign Computing\n" +
-				" pioneer, configure Sneer to run on your system startup and help keep the\n" +
+				" Please configure Sneer to run on your system startup and help keep the\n" +
 				" sovereign network up and alive, now in its early days:\n" +
 				"   Linux: Call \"java -jar Sneer.jar\" from a runlevel script.\n" +
 				"   Windows: Add a shortcut to Sneer.jar in \"Start > All Programs > Startup\"."

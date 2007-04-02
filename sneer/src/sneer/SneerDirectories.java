@@ -1,4 +1,4 @@
-package sneer.kernel;
+package sneer;
 
 
 import java.io.File;

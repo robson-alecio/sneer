@@ -1,7 +1,7 @@
 package sneer;
 
-import static sneer.kernel.SneerDirectories.latestInstalledSneerJar;
-import static sneer.kernel.SneerDirectories.sneerDirectory;
+import static sneer.SneerDirectories.latestInstalledSneerJar;
+import static sneer.SneerDirectories.sneerDirectory;
 
 import java.io.File;
 
@@ -17,6 +17,7 @@ public class SneerJockey {
 		while (true) play(latestSneerJar());
 	}
 
+	
 	private void play(File SneerJar) throws Exception {
 		System.out.println(SneerJar);
 		Jars.runAllowingForClassGC(SneerJar, "sneer.Sneer");

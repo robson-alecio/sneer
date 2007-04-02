@@ -1,6 +1,6 @@
 package sneer;
 
-import static sneer.kernel.SneerDirectories.logDirectory;
+import static sneer.SneerDirectories.logDirectory;
 
 import java.io.File;
 import java.io.FileNotFoundException;

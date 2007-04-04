@@ -12,6 +12,8 @@ public class Essence implements Serializable {
 	private final List<Contact> _contactSources = new ArrayList<Contact>();
 	private final List<Contact> _contactSourcesReadOnly = Collections.unmodifiableList(_contactSources);
 
+	private int _sneerPortNumber = 0;
+	
 	
 	public String ownName() {
 		return _ownName;
@@ -20,6 +22,10 @@ public class Essence implements Serializable {
 	public void ownName(String newOwnName) {
 		int TODO_throw_exception_if_empty_or_null;
 		_ownName = newOwnName.trim();
+	}
+
+	public int sneerPortNumber() {
+		return _sneerPortNumber;
 	}
 	
 	public List<Contact> contacts() {

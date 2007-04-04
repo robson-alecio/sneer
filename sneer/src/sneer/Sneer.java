@@ -5,7 +5,8 @@ import java.io.Serializable;
 import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
 
-import sneer.SneerImpl.Context;
+import sneer.kernel.SneerImpl;
+import sneer.kernel.SneerImpl.Context;
 import wheel.io.ui.TrayIcon;
 import wheel.io.ui.User;
 import wheel.io.ui.impl.JOptionPaneUser;

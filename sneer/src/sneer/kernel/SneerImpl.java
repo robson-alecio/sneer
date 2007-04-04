@@ -1,4 +1,4 @@
-package sneer;
+package sneer.kernel;
 
 import static sneer.SneerDirectories.logDirectory;
 
@@ -65,6 +65,8 @@ public class SneerImpl {
 		_business = new Business(_essence);
 		
 		if (_essence.ownName() == null) changeName();
+		if (_essence.sneerPortNumber() == 0) changeSneerPort();
+
 		
 		_trayIcon = _context.trayIcon();
 		_trayIcon.addAction(nameChangeAction());
@@ -79,6 +81,10 @@ public class SneerImpl {
 		try {
 			_prevayler.execute(new NameChange(_user, _essence.ownName()));
 		} catch (CancelledByUser e) {}
+	}
+
+	private void changeSneerPort() {
+		int todo;
 	}
 
 	

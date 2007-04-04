@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 import org.prevayler.Prevayler;
 
+import sneer.kernel.business.Business;
 import sneer.kernel.business.essence.Essence;
 import sneer.kernel.gui.ContactsListing;
 import sneer.kernel.gui.NameChange;
@@ -53,6 +54,7 @@ public class SneerImpl {
 	
 	private Prevayler _prevayler;
 	private Essence _essence;
+	private Business _business;
 	
 	
 	private void tryToRun() throws Exception {
@@ -60,13 +62,14 @@ public class SneerImpl {
 
 		_prevayler = _context.prevaylerFor(new Essence());
 		_essence = (Essence)_prevayler.prevalentSystem();
+		_business = new Business(_essence);
 		
 		if (_essence.ownName() == null) changeName();
 		
 		_trayIcon = _context.trayIcon();
 		_trayIcon.addAction(nameChangeAction());
-		_trayIcon.addAction(listContactsAction());
 		_trayIcon.addAction(addNewContactAction());
+		_trayIcon.addAction(listContactsAction());
 		_trayIcon.addAction(exitAction());
 
 		while (true) Threads.sleepWithoutInterruptions(5000);
@@ -102,7 +105,7 @@ public class SneerImpl {
 			}
 
 			public void run() {
-				new ContactsListing(_user, _essence);
+				new ContactsListing(_user, _business);
 			}
 		};
 	}

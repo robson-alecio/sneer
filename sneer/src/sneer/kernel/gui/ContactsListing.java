@@ -1,18 +1,30 @@
 package sneer.kernel.gui;
 
+import sneer.kernel.business.Business;
 import sneer.kernel.business.essence.Contact;
-import sneer.kernel.business.essence.Essence;
 import wheel.io.ui.User;
 
 public class ContactsListing {
 
-	public ContactsListing(User user, Essence essence) {
-		String message = " Your contacts:";
+	public ContactsListing(User user, Business business) {
+		StringBuffer onlineList = new StringBuffer();
+		StringBuffer offlineList = new StringBuffer();
 		
-		for (Contact contact : essence.contacts())
-			message = message + "\n    " + contact;
+		for (Contact contact : business.essence().contacts()) {
+			StringBuffer list = business.isOnline(contact)
+				? onlineList
+				: offlineList;
+			list.append("\n    " + contact);
+		}
 		
-		user.acknowledgeNotification(message);
+		if (onlineList.length() == 0) onlineList.append("\n    None");
+		if (offlineList.length() == 0) offlineList.append("\n    None");
+
+		String fullList =
+			" Online Contacts:" + onlineList + "\n\n"+
+			" Offline Contacts:" + offlineList;
+		
+		user.acknowledgeNotification(fullList);
 	}
 
 }

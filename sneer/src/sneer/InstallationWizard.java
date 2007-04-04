@@ -3,6 +3,7 @@ package sneer;
 import java.io.File;
 import java.io.IOException;
 
+import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.io.ui.impl.JOptionPaneUser;
 
@@ -46,7 +47,7 @@ public class InstallationWizard {
 				"   Windows: Add a shortcut to Sneer.jar in \"Start > All Programs > Startup\"."
 		);
 
-		_user.choose(
+		_user.acknowledgeNotification(
 				" Congratulations!\n\n" +
 				" You are no longer a slave. You have just\n" +
 				" claimed your own share of the internet.",
@@ -64,13 +65,19 @@ public class InstallationWizard {
 
 	
 	private void approveConditionOtherwiseExit(String condition, Object... options) {
-		boolean approved = _user.choose(condition, options);
-		if (!approved) exit();
+		try {
+			Object approved = _user.choose(condition, options);
+			if (approved != options[0]) exit();
+		} catch (CancelledByUser e) {
+			exit();
+		}
 	}
 
 	private void exit() {
 		String message = " This wizard will now exit with no changes to your system.";
-		_user.choose(message, "Exit");
+		try {
+			_user.choose(message, "Exit");
+		} catch (CancelledByUser e) {}
 		System.exit(0);
 	}
 

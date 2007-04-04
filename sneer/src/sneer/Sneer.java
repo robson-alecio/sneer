@@ -23,7 +23,7 @@ public class Sneer implements Context {
 	}
 
 	public TrayIcon trayIcon() throws SystemTrayNotSupported {
-		return new TrayIconImpl(Sneer.class.getResource("/sneer/gui/traymenu/yourIconGoesHere.png"));
+		return new TrayIconImpl(Sneer.class.getResource("/sneer/kernel/gui/traymenu/yourIconGoesHere.png"));
 	}
 
 	public User user() {

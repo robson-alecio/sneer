@@ -8,11 +8,12 @@ import java.io.Serializable;
 
 import org.prevayler.Prevayler;
 
-import sneer.kernel.ContactsListing;
-import sneer.kernel.Essence;
-import sneer.kernel.NameChange;
-import sneer.kernel.NewContactAddition;
+import sneer.kernel.business.essence.Essence;
+import sneer.kernel.gui.ContactsListing;
+import sneer.kernel.gui.NameChange;
+import sneer.kernel.gui.NewContactAddition;
 import wheel.io.Log;
+import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.TrayIcon;
 import wheel.io.ui.User;
 import wheel.io.ui.TrayIcon.Action;
@@ -54,15 +55,6 @@ public class SneerImpl {
 	private Essence _essence;
 	
 	
-	private void showRestartMessage(Throwable t) {
-		String description = " " + t.toString() + "\n\n Sneer will now restart.";
-
-		try {
-			_user.acknowledgeUnexpectedProblem(description);
-		} catch (RuntimeException ignoreHeadlessExceptionForExample) {}
-	}
-
-
 	private void tryToRun() throws Exception {
 		tryToRedirectLogToSneerLogFile();
 
@@ -81,7 +73,9 @@ public class SneerImpl {
 	}
 
 	private void changeName() {
-		_prevayler.execute(new NameChange(_user, _essence));
+		try {
+			_prevayler.execute(new NameChange(_user, _essence.ownName()));
+		} catch (CancelledByUser e) {}
 	}
 
 	
@@ -93,7 +87,9 @@ public class SneerImpl {
 			}
 
 			public void run() {
-				_prevayler.execute(new NewContactAddition(_user));
+				try {
+					_prevayler.execute(new NewContactAddition(_user));
+				} catch (CancelledByUser e) {}
 			}
 		};
 	}
@@ -142,5 +138,15 @@ public class SneerImpl {
 			}
 		};
 	}
+
+	
+	private void showRestartMessage(Throwable t) {
+		String description = " " + t.toString() + "\n\n Sneer will now restart.";
+
+		try {
+			_user.acknowledgeUnexpectedProblem(description);
+		} catch (RuntimeException ignoreHeadlessExceptionForExample) {}
+	}
+
 	
 }

@@ -40,7 +40,7 @@ public class FriendsScreen extends JFrame {
 	private void initComponents() {
 		this.setLayout(new BorderLayout());
 		
-		final ListModel friendsListModel = new ListModel();
+		final ListModel<String> friendsListModel = new ListModel<String>();
 		int todo;//_model.friends().addReceiver(friendsListModel);
 		final List<String> names = new ArrayList<String>();
 		friendsListModel.listReplaced(names);

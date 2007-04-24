@@ -36,12 +36,12 @@ public class LifeImpl implements Life, Serializable {
 	
 	public void name(String newName) {
 		if (_name.isSameValue(newName)) return;
-		_name.supply(newName);
+		_name.setter().consume(newName);
 	}
 
 	public void thoughtOfTheDay(String thought) {
 		if (_thoughtOfTheDay.isSameValue(thought)) return;
-		_thoughtOfTheDay.supply(thought);
+		_thoughtOfTheDay.setter().consume(thought);
 	}
 	
 	public SetSignal<String> nicknames() {
@@ -68,11 +68,11 @@ public class LifeImpl implements Life, Serializable {
 	}
 
 	public Signal<String> name() {
-		return _name;
+		return _name.output();
 	}
 
 	public Signal<String> thoughtOfTheDay() {
-		return _thoughtOfTheDay;
+		return _thoughtOfTheDay.output();
 	}
 
 	public LifeView contact(String nickname) {
@@ -101,12 +101,12 @@ public class LifeImpl implements Life, Serializable {
 	}
 
 	public Signal<JpgImage> picture() {
-		return _picture;
+		return _picture.output();
 	}
 
 	public void picture(JpgImage picture) {
 		if (_picture.isSameValue(picture)) return;
-		_picture.supply(picture);
+		_picture.setter().consume(picture);
 	}
 
 	public Object thing(String name) {

@@ -21,7 +21,7 @@ public class Business implements Serializable {
 	}
 	
 	public void ownName(String newOwnName) {
-		int TODO_throw_exception_if_empty_or_null;
+		//Implement. throw exception if empty or null;
 		_ownName = newOwnName.trim();
 	}
 
@@ -41,7 +41,7 @@ public class Business implements Serializable {
 
 
 	public boolean isOnline(Contact contact) {
-		int todo;
+		//Implement
 		return false;
 	}
 

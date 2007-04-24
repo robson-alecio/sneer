@@ -24,21 +24,22 @@ public class JournalImpl<VO> implements Journal<VO> {
 	}
 
 	private void initReceiver(Receiver<VO> receiver) {
-		for (VO entry : _contents) notify(receiver, entry);
+		for (int i = _contents.size() - 1; i >= 0; i--)
+			notify(receiver, i);
 	}
 
 	public synchronized void add(VO element) {
 		_contents.add(element);
-		notifyReceivers(element);
+		notifyReceivers(_contents.size() - 1);
 	}
 
-	private void notifyReceivers(VO element) {
-		for (Receiver<VO> receiver : _receivers) notify(receiver, element);
+	private void notifyReceivers(int index) {
+		for (Receiver<VO> receiver : _receivers) notify(receiver, index);
 	}
 
-	private void notify(Receiver<VO> receiver, VO elementAdded) {
+	private void notify(Receiver<VO> receiver, int index) {
 		try {
-			receiver.elementAdded(_contents.size() - 1);
+			receiver.elementAdded(index);
 		} catch (Throwable t) {
 			_notificationExceptionCatcher.catchThis(t);
 		}

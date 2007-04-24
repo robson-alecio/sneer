@@ -42,11 +42,11 @@ abstract class IndianForObject<T> extends AbstractIndian {
 		ObjectSmokeSignal objectSmokeSignal = (ObjectSmokeSignal) smokeSignal;
 		T newValue = (T)objectSmokeSignal.newValue();
 		if (sameValue(newValue)) return;
-		localSourceToNotify().supply(newValue);
+		localSourceToNotify().setter().consume(newValue);
 	}
 
 	private boolean sameValue(T newValue) {
-		T currentValue = localSourceToNotify().currentValue();
+		T currentValue = localSourceToNotify().output().currentValue();
 		if (currentValue == newValue) return true;
 		if (currentValue != null && currentValue.equals(newValue)) return true;
 		return false;

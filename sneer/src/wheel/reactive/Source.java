@@ -1,9 +1,11 @@
 package wheel.reactive;
 
-public interface Source<T> extends Signal<T> {
+public interface Source<T> {
 
-	public void supply(T value);
+	Signal<T> output();
 	
-	public boolean isSameValue(T value);
+	Consumer<T> setter();
+	
+	boolean isSameValue(T value);
 
 }

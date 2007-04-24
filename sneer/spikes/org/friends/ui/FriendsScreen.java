@@ -41,7 +41,7 @@ public class FriendsScreen extends JFrame {
 		this.setLayout(new BorderLayout());
 		
 		final ListModel<String> friendsListModel = new ListModel<String>();
-		int todo;//_model.friends().addReceiver(friendsListModel);
+		//TODO _model.friends().addReceiver(friendsListModel);
 		final List<String> names = new ArrayList<String>();
 		friendsListModel.listReplaced(names);
 		

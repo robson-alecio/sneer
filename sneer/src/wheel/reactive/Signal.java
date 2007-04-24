@@ -3,7 +3,7 @@ package wheel.reactive;
 
 
 /** @invariant this.toString().equals("" + this.currentValue()) */
-public interface Signal<VO> extends SetSignal<VO> {
+public interface Signal<VO> extends SetSignal<VO> {  //TODO make_signal_extend_list_signal;
 	
 	public void addReceiver(Receiver<VO> receiver);
 	public void removeReceiver(Receiver<VO> name);
@@ -15,6 +15,3 @@ public interface Signal<VO> extends SetSignal<VO> {
 	
 }
 
-class Todo2 {
-	private int todo_make_signal_extend_list_signal;
-}

@@ -9,7 +9,7 @@ public interface User {
 	Object choose(String proposition, Object... options) throws CancelledByUser;
 
 	void acknowledgeNotification(String notification);
-	void acknowledgeNotification(String notification, String acknowledgement);
+	void acknowledgeNotification(String notification, String replacementForBoringOK);
 	void acknowledgeUnexpectedProblem(String description);
 
 }

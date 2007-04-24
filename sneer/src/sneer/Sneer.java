@@ -1,34 +1,67 @@
 package sneer;
 
+import static sneer.SneerDirectories.logDirectory;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 
 import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
 
-import sneer.kernel.SneerImpl;
-import sneer.kernel.SneerImpl.Context;
-import wheel.io.ui.TrayIcon;
+import sneer.kernel.business.Business;
+import sneer.kernel.gui.Gui;
+import wheel.io.Log;
 import wheel.io.ui.User;
 import wheel.io.ui.impl.JOptionPaneUser;
-import wheel.io.ui.impl.TrayIconImpl;
-import wheel.io.ui.impl.TrayIconImpl.SystemTrayNotSupported;
+import wheel.lang.Threads;
 
-public class Sneer implements Context {
-	
+public class Sneer {
+
 	public Sneer() {
-		new SneerImpl(this);
+		try {
+			
+			tryToRun();
+			 
+		} catch (Throwable t) {
+			Log.log(t);
+			showRestartMessage(t);
+		}
 	}
 
-	public Prevayler prevaylerFor(Serializable rootObject) throws Exception {
+	
+	private JOptionPaneUser _user = new JOptionPaneUser("Sneer");
+
+	
+	private void tryToRun() throws Exception {
+		tryToRedirectLogToSneerLogFile();
+
+		startGui();
+		
+		while (true) Threads.sleepWithoutInterruptions(5000);
+	}
+
+	private void startGui() throws Exception {
+		Prevayler prevayler = prevaylerFor(new Business());
+		new Gui(_user, prevayler);
+	}
+
+	private void tryToRedirectLogToSneerLogFile() throws FileNotFoundException {
+		logDirectory().mkdir();
+		Log.redirectTo(new File(logDirectory(), "log.txt"));
+	}
+
+	
+	private void showRestartMessage(Throwable t) {
+		String description = " " + t.toString() + "\n\n Sneer will now restart.";
+
+		try {
+			_user.acknowledgeUnexpectedProblem(description);
+		} catch (RuntimeException ignoreHeadlessExceptionForExample) {}
+	}
+
+	private Prevayler prevaylerFor(Serializable rootObject) throws Exception {
 		return PrevaylerFactory.createPrevayler(rootObject, SneerDirectories.prevalenceDirectory().getAbsolutePath());
-	}
-
-	public TrayIcon trayIcon() throws SystemTrayNotSupported {
-		return new TrayIconImpl(Sneer.class.getResource("/sneer/kernel/gui/traymenu/yourIconGoesHere.png"));
-	}
-
-	public User user() {
-		return new JOptionPaneUser("Sneer");
 	}
 
 	public static void main(String[] args) {

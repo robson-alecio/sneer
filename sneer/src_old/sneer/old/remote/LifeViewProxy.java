@@ -81,11 +81,11 @@ class LifeViewProxy implements LifeView, Serializable {
 	}
 
 	public Signal<String> name() {
-		return _indianForName.localSourceToNotify();
+		return _indianForName.localSourceToNotify().output();
 	}
 
 	public Signal<String> thoughtOfTheDay() {
-		return _indianForThoughtOfTheDay.localSourceToNotify();
+		return _indianForThoughtOfTheDay.localSourceToNotify().output();
 	}
 
 	public SetSignal<String> nicknames() {
@@ -108,7 +108,7 @@ class LifeViewProxy implements LifeView, Serializable {
 	}
 
 	public Signal<JpgImage> picture() {
-		return _indianForPicture.localSourceToNotify();
+		return _indianForPicture.localSourceToNotify().output();
 	}
 
 	public Object thing(String name) {

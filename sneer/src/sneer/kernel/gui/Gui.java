@@ -1,77 +1,53 @@
-package sneer.kernel;
+package sneer.kernel.gui;
 
 import static sneer.SneerDirectories.logDirectory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.Serializable;
 
 import org.prevayler.Prevayler;
 
+import sneer.Sneer;
 import sneer.kernel.business.Business;
-import sneer.kernel.gui.ContactsListing;
-import sneer.kernel.gui.NameChange;
-import sneer.kernel.gui.NewContactAddition;
 import wheel.io.Log;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.TrayIcon;
 import wheel.io.ui.User;
 import wheel.io.ui.TrayIcon.Action;
+import wheel.io.ui.impl.TrayIconImpl;
 import wheel.io.ui.impl.TrayIconImpl.SystemTrayNotSupported;
 import wheel.lang.Threads;
 
-public class SneerImpl {
+public class Gui {
 
-	
-	public interface Context {
-		User user();
-		TrayIcon trayIcon() throws SystemTrayNotSupported;
-		Prevayler prevaylerFor(Serializable rootObject) throws Exception;
-	}
+	public Gui(User user, Prevayler prevayler) throws Exception {
+		_user = user;
 
+		_prevayler = prevayler;
+		_business = (Business)_prevayler.prevalentSystem();
 
-	public SneerImpl(Context context) {
-		_context = context;
-		_user = context.user();
+		_trayIcon = new TrayIconImpl(Gui.class.getResource("/sneer/kernel/gui/traymenu/yourIconGoesHere.png"));
 		
-		try {
-			
-			tryToRun();
-			 
-		} catch (Throwable t) {
-			Log.log(t);
-			showRestartMessage(t);
-		}
-
+		tryToRun();
 	}
 
-	
-	private final Context _context;
-	
+
 	private final User _user;
-	private TrayIcon _trayIcon;
+	private final TrayIcon _trayIcon;
 	
-	private Prevayler _prevayler;
-	private Business _business;
+	private final Prevayler _prevayler;
+	private final Business _business;
 	
 	
 	private void tryToRun() throws Exception {
-		tryToRedirectLogToSneerLogFile();
-
-		_prevayler = _context.prevaylerFor(new Business());
-		_business = (Business)_prevayler.prevalentSystem();
-		
+		//Refactor remove this logic from the gui;
 		if (_business.ownName() == null) changeName();
 		if (_business.sneerPortNumber() == 0) changeSneerPort();
 
-		
-		_trayIcon = _context.trayIcon();
 		_trayIcon.addAction(nameChangeAction());
 		_trayIcon.addAction(addNewContactAction());
 		_trayIcon.addAction(listContactsAction());
 		_trayIcon.addAction(exitAction());
-
-		while (true) Threads.sleepWithoutInterruptions(5000);
 	}
 
 	private void changeName() {
@@ -81,7 +57,7 @@ public class SneerImpl {
 	}
 
 	private void changeSneerPort() {
-		int todo;
+		//Implement
 	}
 
 	
@@ -126,11 +102,6 @@ public class SneerImpl {
 		};
 	}
 
-	private void tryToRedirectLogToSneerLogFile() throws FileNotFoundException {
-		logDirectory().mkdir();
-		Log.redirectTo(new File(logDirectory(), "log.txt"));
-	}
-
 	
 	private Action exitAction() {
 		return new Action(){
@@ -143,15 +114,6 @@ public class SneerImpl {
 				System.exit(0);
 			}
 		};
-	}
-
-	
-	private void showRestartMessage(Throwable t) {
-		String description = " " + t.toString() + "\n\n Sneer will now restart.";
-
-		try {
-			_user.acknowledgeUnexpectedProblem(description);
-		} catch (RuntimeException ignoreHeadlessExceptionForExample) {}
 	}
 
 	

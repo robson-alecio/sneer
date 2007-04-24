@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.prevayler.Transaction;
 
-import sneer.kernel.business.essence.Essence;
+import sneer.kernel.business.Business;
 
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
@@ -19,7 +19,7 @@ public class NameChange implements Transaction {
 	}
 	
 	public void executeOn(Object domain, Date ignored) {
-		((Essence)domain).ownName(_name);
+		((Business)domain).ownName(_name);
 	}
 	
 

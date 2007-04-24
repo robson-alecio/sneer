@@ -1,7 +1,7 @@
 package sneer.kernel.gui;
 
 import sneer.kernel.business.Business;
-import sneer.kernel.business.essence.Contact;
+import sneer.kernel.business.Contact;
 import wheel.io.ui.User;
 
 public class ContactsListing {
@@ -10,7 +10,7 @@ public class ContactsListing {
 		StringBuffer onlineList = new StringBuffer();
 		StringBuffer offlineList = new StringBuffer();
 		
-		for (Contact contact : business.essence().contacts()) {
+		for (Contact contact : business.contacts()) {
 			StringBuffer list = business.isOnline(contact)
 				? onlineList
 				: offlineList;

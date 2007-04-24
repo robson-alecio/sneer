@@ -1,4 +1,4 @@
-package sneer.kernel.business.essence;
+package sneer.kernel.business;
 
 import java.io.Serializable;
 

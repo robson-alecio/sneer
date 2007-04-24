@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.prevayler.Transaction;
 
-import sneer.kernel.business.essence.Essence;
+import sneer.kernel.business.Business;
 
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
@@ -26,7 +26,7 @@ public class NewContactAddition implements Transaction {
 	}
 
 	public void executeOn(Object essence, Date ignored) {
-		((Essence)essence).addContact(_nick, _host, _port);
+		((Business)essence).addContact(_nick, _host, _port);
 	}
 
 	private static final long serialVersionUID = 1L;

@@ -2,6 +2,7 @@ package sneer.kernel.gui;
 
 import java.net.URL;
 
+import org.friends.ui.ShowContactsScreenAction;
 import org.prevayler.Prevayler;
 
 import sneer.kernel.business.Business;
@@ -41,8 +42,11 @@ public class Gui {
 		_trayIcon.addAction(nameChangeAction());
 		_trayIcon.addAction(addNewContactAction());
 		_trayIcon.addAction(listContactsAction());
+		_trayIcon.addAction(new ShowContactsScreenAction(_business));
 		_trayIcon.addAction(exitAction());
 	}
+
+	
 
 	private Action nameChangeAction() {
 		return new NameChange(_user, _business.ownName(), _business.ownNameSetter());

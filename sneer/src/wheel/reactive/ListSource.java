@@ -37,13 +37,14 @@ public class ListSource<VO> extends AbstractNotifier<wheel.reactive.ListSignal.L
 		return Collections.unmodifiableList(_list); 
 	}
 
-	public void remove(VO element) {
+	public boolean remove(VO element) {
 		synchronized (_list){
 			int index = _list.indexOf(element);
 			if (!_list.remove(element))
-				throw new RuntimeException();
+				return false;
 			
 			notifyReceivers(new ListElementRemoved<VO>(index, element));
+			return true;
 		}
 	}
 }

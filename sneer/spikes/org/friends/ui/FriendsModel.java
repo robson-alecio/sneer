@@ -1,10 +1,13 @@
 package org.friends.ui;
 
+import sneer.kernel.business.Contact;
 import wheel.reactive.ListSignal;
 
 public interface FriendsModel {
 
 	void addFriend(String name);
-	ListSignal<String> friends();
+	void removeFriend(Contact contact);
+	
+	ListSignal<Contact> friends();
 
 }

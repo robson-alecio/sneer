@@ -1,30 +1,28 @@
 package org.friends.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import wheel.io.ui.TrayIcon.Action;
+import sneer.kernel.business.Business;
+import sneer.kernel.business.Contact;
 import wheel.reactive.ListSignal;
 
 public class FriendsModelImpl implements FriendsModel {
-	public interface AddFriendAction {
-		void addFriend(String name);
-	}
 
-	private final ListSignal<String> _friendsList;
-	private final AddFriendAction _addFriendAction;
+	private final Business _business;
 
-	public FriendsModelImpl(ListSignal<String> friendsList, AddFriendAction addFriendAction) {
-		_friendsList = friendsList;
-		_addFriendAction = addFriendAction;
+	public FriendsModelImpl(Business business) {
+		_business = business;
 	}
 
 	public void addFriend(String name) {
-		_addFriendAction.addFriend(name);
+		_business.addContact(name, "", 0);
 	}
 
-	public ListSignal<String> friends() {
-		return _friendsList;
+	public ListSignal<Contact> friends() {
+		return _business.contactsSignal();
+	}
+
+	@Override
+	public void removeFriend(Contact contact) {
+		_business.removeContact(contact);
 	}
 
 }

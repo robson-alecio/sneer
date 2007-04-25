@@ -6,22 +6,22 @@ import wheel.reactive.ListValueChangeVisitorAdapter;
 import wheel.reactive.Receiver;
 import wheel.reactive.ListSignal.ListValueChange;
 
-public final class LogListReceiver<T> implements
-		Receiver<ListValueChange<T>> {
+public final class LogListReceiver<VO> implements
+		Receiver<ListValueChange<VO>> {
 
 	private StringBuilder _log = new StringBuilder();
-	protected List<T> _list;
+	protected List<?> _list;
 	
 	@Override
-	public synchronized void receive(ListValueChange<T> valueChange) {
+	public synchronized void receive(ListValueChange<VO> valueChange) {
 		updateListFieldOnListReplaced(valueChange);
 		_log.append(valueChange.toString() +  ", list is: " + _list +"\n");		
 	}
 
 	private void updateListFieldOnListReplaced(
-			ListValueChange<T> valueChange) {
-		valueChange.accept(new ListValueChangeVisitorAdapter<T>(){@Override
-			public void listReplaced(List<T> newList) {
+			ListValueChange<VO> valueChange) {
+		valueChange.accept(new ListValueChangeVisitorAdapter<VO>(){@Override
+			public void listReplaced(List<VO> newList) {
 				_list = newList;
 			}});
 	}

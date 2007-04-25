@@ -58,7 +58,6 @@ public class BusinessImpl implements Serializable, Business {
 	private static final long serialVersionUID = 1L;
 
 
-	@Override
 	public void removeContact(Contact contact) {
 		
 		if (!_contactSources.remove(contact))

@@ -13,7 +13,6 @@ public class ListElementRemoved<VO> implements ListValueChange<VO> {
 		_element = element;
 	}
 
-	@Override
 	public void accept(ListValueChangeVisitor<VO> visitor) {
 		visitor.elementRemoved(_index, _element);
 	}

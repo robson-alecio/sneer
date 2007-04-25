@@ -12,7 +12,6 @@ public final class LogListReceiver<VO> implements
 	private StringBuilder _log = new StringBuilder();
 	protected List<?> _list;
 	
-	@Override
 	public synchronized void receive(ListValueChange<VO> valueChange) {
 		updateListFieldOnListReplaced(valueChange);
 		_log.append(valueChange.toString() +  ", list is: " + _list +"\n");		

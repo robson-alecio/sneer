@@ -11,7 +11,6 @@ public final class ListElementAdded<VO> implements ListValueChange<VO> {
 		_index = index;
 	}
 
-	@Override
 	public void accept(ListValueChangeVisitor<VO> visitor) {
 		visitor.elementAdded(_index);
 	}

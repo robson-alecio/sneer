@@ -10,12 +10,10 @@ public class ShowContactsScreenAction implements Action {
 		_business = business;		
 	}
 
-	@Override
 	public String caption() {
 		return "Show contacts screen";
 	}
 
-	@Override
 	public void run() {
 		new FriendsScreen(new FriendsModelImpl(_business));
 	}

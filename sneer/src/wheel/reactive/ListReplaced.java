@@ -13,7 +13,6 @@ public final class ListReplaced<VO> implements ListValueChange<VO> {
 		_contents = contents;
 	}
 
-	@Override
 	public void accept(ListValueChangeVisitor<VO> visitor) {
 		visitor.listReplaced(_contents);
 	}

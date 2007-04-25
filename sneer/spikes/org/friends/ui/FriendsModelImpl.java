@@ -20,7 +20,6 @@ public class FriendsModelImpl implements FriendsModel {
 		return _business.contactsSignal();
 	}
 
-	@Override
 	public void removeFriend(Contact contact) {
 		_business.removeContact(contact);
 	}

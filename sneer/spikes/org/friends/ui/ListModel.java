@@ -19,7 +19,6 @@ public class ListModel<VO> extends AbstractListModel implements Receiver<ListVal
 		_list = Collections.EMPTY_LIST;
 	}
 
-	@Override
 	public void receive(ListValueChange<VO> valueChange) {
 		valueChange.accept(getListModelValueChangeVisitor());
 	}

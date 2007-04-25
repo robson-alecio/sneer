@@ -106,7 +106,6 @@ public class FriendsScreen extends JFrame {
 	private JMenuItem getRemoveFriendMenuItem(final JList friendsList) {
 		final JMenuItem removeFriendMenuItem = new JMenuItem(FRIEND_MENU_REMOVE_TEXT);
 		removeFriendMenuItem.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent ignored) {
 				Contact selectedFriend = (Contact)friendsList.getSelectedValue();
 				int answer = JOptionPane.showConfirmDialog(FriendsScreen.this, 

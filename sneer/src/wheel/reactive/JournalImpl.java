@@ -41,7 +41,6 @@ public class JournalImpl<VO> implements Journal<VO> {
 		}
 	}
 
-	@Override
 	public void addListReceiver(
 			Receiver<wheel.reactive.ListSignal.ListValueChange<VO>> receiver) {
 		_receivers.add(receiver);
@@ -49,7 +48,6 @@ public class JournalImpl<VO> implements Journal<VO> {
 		
 	}
 
-	@Override
 	public List<VO> currentValue() {
 		return Collections.unmodifiableList(_contents);		
 	}

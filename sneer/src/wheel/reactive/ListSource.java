@@ -17,7 +17,6 @@ public class ListSource<VO> extends AbstractNotifier<wheel.reactive.ListSignal.L
 		
 	}
 
-	@Override
 	public void addListReceiver(
 			Receiver<wheel.reactive.ListSignal.ListValueChange<VO>> receiver) {
 		addReceiver(receiver);		
@@ -32,7 +31,6 @@ public class ListSource<VO> extends AbstractNotifier<wheel.reactive.ListSignal.L
 	
 	private static final long serialVersionUID = 0L;
 
-	@Override
 	public List<VO> currentValue() {
 		return Collections.unmodifiableList(_list); 
 	}

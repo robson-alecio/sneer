@@ -1,22 +1,15 @@
 package sneer.kernel.gui;
 
-import static sneer.SneerDirectories.logDirectory;
-
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.net.URL;
 
 import org.prevayler.Prevayler;
 
-import sneer.Sneer;
 import sneer.kernel.business.Business;
-import wheel.io.Log;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.TrayIcon;
 import wheel.io.ui.User;
 import wheel.io.ui.TrayIcon.Action;
 import wheel.io.ui.impl.TrayIconImpl;
-import wheel.io.ui.impl.TrayIconImpl.SystemTrayNotSupported;
-import wheel.lang.Threads;
 
 public class Gui {
 
@@ -26,8 +19,9 @@ public class Gui {
 		_prevayler = prevayler;
 		_business = (Business)_prevayler.prevalentSystem();
 
-		_trayIcon = new TrayIconImpl(Gui.class.getResource("/sneer/kernel/gui/traymenu/yourIconGoesHere.png"));
-		
+		URL icon = Gui.class.getResource("/sneer/kernel/gui/traymenu/yourIconGoesHere.png");
+		_trayIcon = new TrayIconImpl(icon, _user.catcher());
+	
 		tryToRun();
 	}
 
@@ -39,9 +33,9 @@ public class Gui {
 	private final Business _business;
 	
 	
-	private void tryToRun() throws Exception {
+	private void tryToRun() {
 		//Refactor remove this logic from the gui;
-		if (_business.ownName() == null) changeName();
+		if (_business.ownName() == null) nameChangeAction().run();
 		if (_business.sneerPortNumber() == 0) changeSneerPort();
 
 		_trayIcon.addAction(nameChangeAction());
@@ -50,10 +44,8 @@ public class Gui {
 		_trayIcon.addAction(exitAction());
 	}
 
-	private void changeName() {
-		try {
-			_prevayler.execute(new NameChange(_user, _business.ownName()));
-		} catch (CancelledByUser e) {}
+	private Action nameChangeAction() {
+		return new NameChange(_user, _business.ownName(), _business.ownNameSetter());
 	}
 
 	private void changeSneerPort() {
@@ -62,16 +54,15 @@ public class Gui {
 
 	
 	private Action addNewContactAction() {
-		return new Action(){
+		return new CancellableAction(){
 
 			public String caption() {
 				return "Add New Contact";
 			}
 
-			public void run() {
-				try {
-					_prevayler.execute(new NewContactAddition(_user));
-				} catch (CancelledByUser e) {}
+			@Override
+			public void tryToRun() throws CancelledByUser {
+				_prevayler.execute(new NewContactAddition(_user));
 			}
 		};
 	}
@@ -85,19 +76,6 @@ public class Gui {
 
 			public void run() {
 				new ContactsListing(_user, _business);
-			}
-		};
-	}
-
-	private Action nameChangeAction() {
-		return new Action(){
-
-			public String caption() {
-				return "Change your Name";
-			}
-
-			public void run() {
-				changeName();
 			}
 		};
 	}

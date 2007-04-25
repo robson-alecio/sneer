@@ -5,10 +5,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import wheel.lang.Omnivore;
+import wheel.reactive.Signal;
+import wheel.reactive.SourceImpl;
+
 
 public class Business implements Serializable {
 
-	private String _ownName;
+	private SourceImpl<String> _ownName = new SourceImpl<String>();
 
 	private final List<Contact> _contactSources = new ArrayList<Contact>();
 	private final List<Contact> _contactSourcesReadOnly = Collections.unmodifiableList(_contactSources);
@@ -16,13 +20,12 @@ public class Business implements Serializable {
 	private int _sneerPortNumber = 0;
 	
 	
-	public String ownName() {
-		return _ownName;
+	public Signal<String> ownName() {
+		return _ownName.output();
 	}
 	
-	public void ownName(String newOwnName) {
-		//Implement. throw exception if empty or null;
-		_ownName = newOwnName.trim();
+	public Omnivore<String> ownNameSetter() {
+		return _ownName.setter();
 	}
 
 	public int sneerPortNumber() {
@@ -37,13 +40,11 @@ public class Business implements Serializable {
 		_contactSources.add(new ContactSource(nick, host, port));
 	}
 
-	private static final long serialVersionUID = 1L;
-
-
 	public boolean isOnline(Contact contact) {
 		//Implement
 		return false;
 	}
 
 
+	private static final long serialVersionUID = 1L;
 }

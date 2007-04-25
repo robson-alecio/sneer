@@ -12,7 +12,11 @@ import java.awt.event.ActionListener;
 import java.net.URL;
 import java.security.InvalidParameterException;
 
+import wheel.io.Log;
+import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.TrayIcon;
+import wheel.lang.exceptions.Catcher;
+import wheel.lang.exceptions.PrintStackTracer;
 
 public class TrayIconImpl implements TrayIcon {
 
@@ -20,9 +24,9 @@ public class TrayIconImpl implements TrayIcon {
 
 	
 	private final java.awt.TrayIcon _trayIcon;
+	private final Catcher _catcher;
 	
-	public TrayIconImpl(URL icon) throws SystemTrayNotSupported {
-		
+	public TrayIconImpl(URL icon, Catcher catcherForThrowsDuringActionExecution) throws SystemTrayNotSupported {
 		if (icon == null) throw new InvalidParameterException("Icon must not be null.");
 		
 		if (!SystemTray.isSupported()) throw new SystemTrayNotSupported();
@@ -40,8 +44,14 @@ public class TrayIconImpl implements TrayIcon {
 		}
 		
 		_trayIcon = trayIcon;
+		_catcher = catcherForThrowsDuringActionExecution;
 	}
 	
+
+	public TrayIconImpl(URL userIcon) throws SystemTrayNotSupported {
+		this(userIcon, new PrintStackTracer());
+	}
+
 
 	public void addAction(final Action action) {
 		PopupMenu popup = _trayIcon.getPopupMenu();
@@ -51,8 +61,13 @@ public class TrayIconImpl implements TrayIcon {
 
 		menuItem.addActionListener(
 		    new ActionListener() {
-		    	public void actionPerformed(ActionEvent ignored) {
-		    		action.run();
+
+				public void actionPerformed(ActionEvent ignored) {
+		    		try {
+						action.run();
+					} catch (Throwable t) {
+						_catcher.catchThis(t);
+					}
 		    	}
 		    }
 		);

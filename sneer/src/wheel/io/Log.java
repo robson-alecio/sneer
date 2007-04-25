@@ -9,6 +9,8 @@ import java.util.Date;
 
 import javax.swing.JOptionPane;
 
+import wheel.lang.exceptions.Catcher;
+
 
 public class Log {
 
@@ -64,5 +66,5 @@ public class Log {
 	public static void redirectTo(File file) throws FileNotFoundException {
 		redirectTo(new FileOutputStream(file, true));
 	}
-	
+
 }

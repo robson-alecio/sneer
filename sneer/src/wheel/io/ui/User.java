@@ -1,5 +1,7 @@
 package wheel.io.ui;
 
+import wheel.lang.exceptions.Catcher;
+
 public interface User {
 
 	String answer(String prompt) throws CancelledByUser;
@@ -11,5 +13,6 @@ public interface User {
 	void acknowledgeNotification(String notification);
 	void acknowledgeNotification(String notification, String replacementForBoringOK);
 	void acknowledgeUnexpectedProblem(String description);
+	Catcher catcher();
 
 }

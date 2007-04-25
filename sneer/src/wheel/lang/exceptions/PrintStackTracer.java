@@ -8,6 +8,10 @@ public class PrintStackTracer implements Catcher {
 		_printStream = printStream;
 	}
 
+	public PrintStackTracer() {
+		this(System.err);
+	}
+
 	private final PrintStream _printStream;
 
 	public void catchThis(Throwable throwable) {

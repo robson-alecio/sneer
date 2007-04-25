@@ -1,7 +1,8 @@
 package wheel.io.ui.tests;
 
-import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
+import wheel.lang.exceptions.Catcher;
+import wheel.lang.exceptions.PrintStackTracer;
 
 public class TestUser implements User {
 
@@ -9,7 +10,8 @@ public class TestUser implements User {
 
 	public void acknowledgeNotification(String notification) {}
 	public void acknowledgeUnexpectedProblem(String description) {}
-
+	public Catcher catcher() {return new PrintStackTracer(); }
+	
 	public String answer(String prompt) { return MY_ANSWER; }
 	public String answer(String prompt, String defaultAnswer) { return MY_ANSWER; }
 

@@ -4,6 +4,7 @@ import javax.swing.JOptionPane;
 
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
+import wheel.lang.exceptions.Catcher;
 
 public class JOptionPaneUser implements User {
 	
@@ -61,5 +62,14 @@ public class JOptionPaneUser implements User {
 				fullPrompt = " Invalid number: " + answer + "\n\n Retry: " + prompt;
 			}
 		}
+	}
+
+
+	public Catcher catcher() {
+		return new Catcher() {
+			public void catchThis(Throwable throwable) {
+				acknowledgeUnexpectedProblem(throwable.getMessage());
+			}
+		};
 	}
 }

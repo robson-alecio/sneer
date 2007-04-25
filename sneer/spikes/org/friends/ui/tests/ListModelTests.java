@@ -9,6 +9,9 @@ import javax.swing.event.ListDataListener;
 
 import org.friends.ui.ListModel;
 
+import wheel.reactive.ListElementAdded;
+import wheel.reactive.ListReplaced;
+
 import junit.framework.TestCase;
 
 public class ListModelTests extends TestCase {
@@ -20,10 +23,10 @@ public class ListModelTests extends TestCase {
 		_subject.addListDataListener(logListDataListener);
 		
 		List<String> names = new ArrayList<String>();
-		_subject.listReplaced(names);
+		_subject.receive(new ListReplaced<String>(names));
 		
 		names.add("Banana");
-		_subject.elementAdded(0);
+		_subject.receive(new ListElementAdded<String>(0));
 		
 		assertEquals("added at 0", logListDataListener.log());
 		assertEquals("Banana", _subject.getElementAt(0));

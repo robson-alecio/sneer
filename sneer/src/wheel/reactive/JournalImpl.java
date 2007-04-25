@@ -1,11 +1,13 @@
 package wheel.reactive;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
 import wheel.lang.exceptions.Catcher;
+import wheel.reactive.ListSignal.ListValueChange;
 
 
 public class JournalImpl<VO> implements Journal<VO> {
@@ -14,34 +16,43 @@ public class JournalImpl<VO> implements Journal<VO> {
 		_notificationExceptionCatcher = notificationExceptionCatcher;
 	}
 	
-	private final Set<Receiver<VO>> _receivers = new HashSet<Receiver<VO>>();
+	private final Set<Receiver<ListValueChange<VO>>> _receivers = new HashSet<Receiver<ListValueChange<VO>>>();
 	private final List<VO> _contents = new LinkedList<VO>();
 	private final Catcher _notificationExceptionCatcher;
 
-	public synchronized void addReceiver(Receiver<VO> receiver) {
-		_receivers.add(receiver);
-		initReceiver(receiver);
-	}
-
-	private void initReceiver(Receiver<VO> receiver) {
-		for (int i = _contents.size() - 1; i >= 0; i--)
-			notify(receiver, i);
+	private void initReceiver(Receiver<ListValueChange<VO>> receiver) {
+		receiver.receive(new ListReplaced<VO>(_contents));
 	}
 
 	public synchronized void add(VO element) {
 		_contents.add(element);
-		notifyReceivers(_contents.size() - 1);
+		notifyReceivers();
 	}
 
-	private void notifyReceivers(int index) {
-		for (Receiver<VO> receiver : _receivers) notify(receiver, index);
+	private void notifyReceivers() {
+		for (Receiver<ListValueChange<VO>> receiver : _receivers) notify(receiver);
 	}
 
-	private void notify(Receiver<VO> receiver, int index) {
+	private void notify(Receiver<ListValueChange<VO>> receiver) {
 		try {
-			receiver.elementAdded(index);
+			receiver.receive(new ListElementAdded<VO>(_contents.size() - 1));
 		} catch (Throwable t) {
 			_notificationExceptionCatcher.catchThis(t);
 		}
 	}
+
+	@Override
+	public void addListReceiver(
+			Receiver<wheel.reactive.ListSignal.ListValueChange<VO>> receiver) {
+		_receivers.add(receiver);
+		initReceiver(receiver);
+		
+	}
+
+	@Override
+	public List<VO> currentValue() {
+		return Collections.unmodifiableList(_contents);		
+	}
+	
+	
 }

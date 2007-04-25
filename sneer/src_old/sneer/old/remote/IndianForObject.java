@@ -31,7 +31,7 @@ abstract class IndianForObject<T> extends AbstractIndian {
 	}
 
 	Source<T> localSourceToNotify() {
-		if (_localSourceToNotify == null) _localSourceToNotify = new SourceImpl<T>();
+		if (_localSourceToNotify == null) _localSourceToNotify = new SourceImpl<T>(null);
 		return _localSourceToNotify;
 	}
 	

@@ -18,9 +18,9 @@ import wheel.reactive.SourceImpl;
 
 public class LifeImpl implements Life, Serializable {
 
-	private final Source<String> _name = new SourceImpl<String>();
-	private final Source<String> _thoughtOfTheDay = new SourceImpl<String>();
-	private final Source<JpgImage> _picture = new SourceImpl<JpgImage>();
+	private final Source<String> _name = new SourceImpl<String>("");
+	private final Source<String> _thoughtOfTheDay = new SourceImpl<String>("");
+	private final Source<JpgImage> _picture = new SourceImpl<JpgImage>(null);
 
 	private String _profile;
     private String _contactInfo;

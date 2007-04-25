@@ -76,7 +76,7 @@ class LifeViewProxy implements LifeView, Serializable {
 			//Simply ignore this exception, since the connection will try to reconnect anyway.
 		} catch (IOException x) {
 			_scoutsSent = false;
-			x.printStackTrace(); //TODO Implement logging using wheel.environment.Environment.err().
+			x.printStackTrace();
 		}
 	}
 

@@ -9,10 +9,9 @@ import java.io.Serializable;
 import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
 
-import sneer.kernel.business.Business;
+import sneer.kernel.business.BusinessImpl;
 import sneer.kernel.gui.Gui;
 import wheel.io.Log;
-import wheel.io.ui.User;
 import wheel.io.ui.impl.JOptionPaneUser;
 import wheel.lang.Threads;
 
@@ -42,7 +41,7 @@ public class Sneer {
 	}
 
 	private void startGui() throws Exception {
-		Prevayler prevayler = prevaylerFor(new Business());
+		Prevayler prevayler = prevaylerFor(new BusinessImpl());
 		new Gui(_user, prevayler);
 	}
 

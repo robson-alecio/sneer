@@ -11,7 +11,7 @@ public class ContactsListing {
 		StringBuffer offlineList = new StringBuffer();
 		
 		for (Contact contact : business.contacts()) {
-			StringBuffer list = business.isOnline(contact)
+			StringBuffer list = contact.isOnline().currentValue().booleanValue()
 				? onlineList
 				: offlineList;
 			list.append("\n    " + contact);

@@ -51,7 +51,7 @@ public class ObjectSocketMock implements ObjectSocket {
 	}
 
 	public void close() {
-		//TODO Implement this close.
+		//Implement.
 	}
 
 	public ObjectSocket counterpart() {

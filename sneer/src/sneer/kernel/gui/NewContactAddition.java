@@ -22,7 +22,9 @@ public class NewContactAddition implements Transaction {
 	}
 
 	private int port(User user) throws CancelledByUser {
-		return user.answerWithNumber("Sneer Port Number for " + _nick);
+		String answer = user.answer("Sneer Port Number for " + _nick);
+		return Integer.parseInt(answer);
+		//Fix: Deal with parse errors. Use same logic as SneerPortChange action.
 	}
 
 	public void executeOn(Object essence, Date ignored) {

@@ -23,7 +23,14 @@ public class ContactSource implements Contact, Serializable { private static fin
 
 	@Override
 	public String toString() {
-		return _nick + " - " + _host + ":" + _port;
+		return onlineTag() + " " + _nick + " - " + _host + ":" + _port;
+	}
+
+
+	private String onlineTag() {
+		return isOnline().currentValue().booleanValue()
+			? "On  :) "
+			: "Off :( ";
 	}
 
 

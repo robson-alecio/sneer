@@ -17,6 +17,6 @@ public class TestUser implements User {
 
 	public Object choose(String proposition, Object... options) { return options[0]; }
 	public void acknowledgeNotification(String notification, String acknowledgement) {}
-	public int answerWithNumber(String prompt) { return 0; }
+	public int answerWithNumber(@SuppressWarnings("unused") String prompt) { return 0; }
 
 }

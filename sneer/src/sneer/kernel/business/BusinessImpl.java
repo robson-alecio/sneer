@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.reactive.ListSignal;
 import wheel.reactive.ListSource;
@@ -16,11 +17,11 @@ public class BusinessImpl implements Serializable, Business {
 
 	private SourceImpl<String> _ownName = new SourceImpl<String>("");
 
+	private SourceImpl<Integer> _sneerPortNumber = new SourceImpl<Integer>(0);
+
 	private final List<Contact> _contactSources = new ArrayList<Contact>();
 	private final List<Contact> _contactSourcesReadOnly = Collections.unmodifiableList(_contactSources);
 	private final ListSource<Contact> _contactSourcesSignal = new ListSource<Contact>();
-	
-	private int _sneerPortNumber = 0;
 	
 	
 	public Signal<String> ownName() {
@@ -31,10 +32,14 @@ public class BusinessImpl implements Serializable, Business {
 		return _ownName.setter();
 	}
 
-	public int sneerPortNumber() {
-		return _sneerPortNumber;
+	public Signal<Integer> sneerPort() {
+		return _sneerPortNumber.output();
 	}
 	
+	public Consumer<Integer> sneerPortSetter() {
+		return _sneerPortNumber.setter();
+	}
+
 	public List<Contact> contacts() {
 		return _contactSourcesReadOnly;
 	}

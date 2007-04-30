@@ -35,25 +35,20 @@ public class Gui {
 	
 	
 	private void tryToRun() {
-		//Refactor remove this logic from the gui;
+		//Refactor: remove this logic from the gui;
 		if (_business.ownName() == null) nameChangeAction().run();
-		if (_business.sneerPortNumber() == 0) changeSneerPort();
 
 		_trayIcon.addAction(nameChangeAction());
 		_trayIcon.addAction(addNewContactAction());
-		_trayIcon.addAction(listContactsAction());
+		_trayIcon.addAction(listContactsAction()); //Refactor: delete
 		_trayIcon.addAction(new ShowContactsScreenAction(_business));
+		_trayIcon.addAction(new SneerPortChange(_user, _business.sneerPort(), _business.sneerPortSetter()));
 		_trayIcon.addAction(exitAction());
 	}
 
 	
-
 	private Action nameChangeAction() {
 		return new NameChange(_user, _business.ownName(), _business.ownNameSetter());
-	}
-
-	private void changeSneerPort() {
-		//Implement
 	}
 
 	

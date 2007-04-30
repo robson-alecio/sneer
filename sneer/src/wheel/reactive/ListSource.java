@@ -5,20 +5,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ListSource<VO> extends AbstractNotifier<wheel.reactive.ListSignal.ListValueChange<VO>> 
+import wheel.reactive.ListSignal.ListValueChange;
+
+public class ListSource<VO> extends AbstractNotifier<ListValueChange<VO>> 
 	implements ListSignal<VO>, Serializable {
 
 	private final List<VO> _list = new ArrayList<VO>();
 	
 	@Override
 	protected void initReceiver(
-			Receiver<wheel.reactive.ListSignal.ListValueChange<VO>> receiver) {
+			Receiver<ListValueChange<VO>> receiver) {
 		receiver.receive(new ListReplaced<VO>(_list));
 		
 	}
 
 	public void addListReceiver(
-			Receiver<wheel.reactive.ListSignal.ListValueChange<VO>> receiver) {
+			Receiver<ListValueChange<VO>> receiver) {
 		addReceiver(receiver);		
 	}
 

@@ -11,6 +11,7 @@ import wheel.io.ui.TrayIcon;
 import wheel.io.ui.User;
 import wheel.io.ui.TrayIcon.Action;
 import wheel.io.ui.impl.TrayIconImpl;
+import wheel.io.ui.impl.ValueChangePane;
 import wheel.lang.IntegerParser;
 
 public class Gui {
@@ -47,17 +48,17 @@ public class Gui {
 	}
 
 
-	private ValueChange sneerPortChangeAction() {
+	private ValueChangePane sneerPortChangeAction() {
 		String prompt = " Change this only if you know what you are doing." +
 						"\n Sneer IP port to listen:";
-		return new ValueChange("Sneer Port Configuration",prompt, _user, _business.sneerPort(), new IntegerParser(_business.sneerPortSetter()));
+		return new ValueChangePane("Sneer Port Configuration",prompt, _user, _business.sneerPort(), new IntegerParser(_business.sneerPortSetter()));
 	}
 
 	
 	private Action nameChangeAction() {
 		String prompt = " What is your name?" +
 						"\n (You can change it any time you like)";
-		return new ValueChange("Name Change",prompt, _user, _business.ownName(), _business.ownNameSetter());
+		return new ValueChangePane("Name Change",prompt, _user, _business.ownName(), _business.ownNameSetter());
 	}
 
 	

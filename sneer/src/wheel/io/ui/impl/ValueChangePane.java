@@ -1,14 +1,15 @@
-package sneer.kernel.gui;
+package wheel.io.ui.impl;
 
+import sneer.kernel.gui.CancellableAction;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.lang.Consumer;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 
-public class ValueChange extends CancellableAction {
+public class ValueChangePane extends CancellableAction {
 	
-	ValueChange(String caption, String prompt, User user, Signal<?> signal, Consumer<String> setter) {
+	public ValueChangePane(String caption, String prompt, User user, Signal<?> signal, Consumer<String> setter) {
 		_caption = caption;
 		_prompt = prompt;
 		_user = user;

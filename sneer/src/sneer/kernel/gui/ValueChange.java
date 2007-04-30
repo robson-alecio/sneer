@@ -3,24 +3,27 @@ package sneer.kernel.gui;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.lang.Consumer;
-import wheel.lang.IntegerParser;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 
-public class SneerPortChange extends CancellableAction {
+public class ValueChange extends CancellableAction {
 	
-	SneerPortChange(User user, Signal<?> signal, Consumer<Integer> setter) {
+	ValueChange(String caption, String prompt, User user, Signal<?> signal, Consumer<String> setter) {
+		_caption = caption;
+		_prompt = prompt;
 		_user = user;
 		_signal = signal;
-		_setter = new IntegerParser(setter); //Fix: limit to 65535.
+		_setter = setter;
 	}
 	
-	private final User _user;
 	private final Signal<?> _signal;
+	private final User _user;
 	private final Consumer<String> _setter;
+	private final String _caption;
+	private final String _prompt;
 
 	public String caption() {
-		return "Sneer Port Configuration";
+		return _caption;
 	}
 
 	@Override
@@ -29,8 +32,7 @@ public class SneerPortChange extends CancellableAction {
 		String current = _signal.currentValue().toString();
 		
 		while (true) {
-			String newValue = _user.answer(errorMessage + " Change this only if you know what you are doing." +
-					"\n Sneer IP port to listen:", current);
+			String newValue = _user.answer(errorMessage + _prompt, current);
 			try {
 				_setter.consume(newValue);
 				return;
@@ -39,6 +41,7 @@ public class SneerPortChange extends CancellableAction {
 				current = newValue;
 			}
 		}
+
 	}
 
 }

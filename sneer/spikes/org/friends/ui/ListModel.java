@@ -9,7 +9,7 @@ import wheel.reactive.Receiver;
 import wheel.reactive.ListSignal.ListValueChange;
 import wheel.reactive.ListSignal.ListValueChangeVisitor;
 
-public class ListModel<VO> extends AbstractListModel implements Receiver<ListValueChange<VO>> {
+public class ListModel<VO> extends AbstractListModel implements Receiver<ListValueChange<VO>> { //Refactor: Rename to ListSignalModel.
 
 	private List<VO> _list;
 	private ListModelValueChangeVisitor _listModelVisitor;

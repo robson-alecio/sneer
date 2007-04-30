@@ -27,8 +27,8 @@ public class NewContactAddition implements Transaction {
 		//Fix: Deal with parse errors. Use same logic as SneerPortChange action.
 	}
 
-	public void executeOn(Object essence, Date ignored) {
-		((Business)essence).addContact(_nick, _host, _port);
+	public void executeOn(Object business, Date ignored) {
+		((Business)business).addContact(_nick, _host, _port);
 	}
 
 	private static final long serialVersionUID = 1L;

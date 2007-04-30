@@ -20,7 +20,18 @@ import wheel.lang.exceptions.PrintStackTracer;
 
 public class TrayIconImpl implements TrayIcon {
 
-	public static class SystemTrayNotSupported extends Exception { private static final long serialVersionUID = 1L; }
+	public static class SystemTrayNotSupported extends Exception {
+		
+		public SystemTrayNotSupported() {
+			super("System Tray Icon not supported by your current windows manager." +
+					"\n If you are using Linux and a windows manager such as Beryl," +
+					"\n you might want to use a different one." +
+					"\n Sneer is tested on KDE and Gnome windows managers."
+			);
+		}
+		
+		private static final long serialVersionUID = 1L;
+	}
 
 	
 	private final java.awt.TrayIcon _trayIcon;

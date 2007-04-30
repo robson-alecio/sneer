@@ -40,7 +40,6 @@ public class Gui {
 
 		_trayIcon.addAction(nameChangeAction());
 		_trayIcon.addAction(addNewContactAction());
-		_trayIcon.addAction(listContactsAction()); //Refactor: delete
 		_trayIcon.addAction(new ShowContactsScreenAction(_business));
 		_trayIcon.addAction(new SneerPortChange(_user, _business.sneerPort(), _business.sneerPortSetter()));
 		_trayIcon.addAction(exitAction());
@@ -62,19 +61,6 @@ public class Gui {
 			@Override
 			public void tryToRun() throws CancelledByUser {
 				_prevayler.execute(new NewContactAddition(_user));
-			}
-		};
-	}
-
-	
-	private Action listContactsAction() {
-		return new Action(){
-			public String caption() {
-				return "List Contacts";
-			}
-
-			public void run() {
-				new ContactsListing(_user, _business);
 			}
 		};
 	}

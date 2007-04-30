@@ -52,7 +52,7 @@ public class Sneer {
 
 	
 	private void showRestartMessage(Throwable t) {
-		String description = " " + t.toString() + "\n\n Sneer will now restart.";
+		String description = " " + t.getLocalizedMessage() + "\n\n Sneer will now restart.";
 
 		try {
 			_user.acknowledgeUnexpectedProblem(description);

@@ -34,6 +34,7 @@ public class ValueChangePane extends CancellableAction {
 		
 		while (true) {
 			String newValue = _user.answer(errorMessage + _prompt, current);
+			if (newValue.equals(_signal.currentValue().toString())) return;
 			try {
 				_setter.consume(newValue);
 				return;

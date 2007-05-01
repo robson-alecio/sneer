@@ -20,7 +20,7 @@ public class Gui {
 		_user = user;
 
 		_prevayler = prevayler;
-		_business = (Business)_prevayler.prevalentSystem();
+		_business = PersistenceHandler.persistentProxyFor(_prevayler);
 
 		URL icon = Gui.class.getResource("/sneer/kernel/gui/traymenu/yourIconGoesHere.png");
 		_trayIcon = new TrayIconImpl(icon, _user.catcher());

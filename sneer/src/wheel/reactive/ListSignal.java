@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface ListSignal<VO> {
 	
-	public interface ListValueChangeVisitor<VO> {
+	public interface ListValueChangeVisitor<VO> { //Refactor: remove elements, keep only indexes. For removal do a "pre"Removal notification.
 		void elementAdded(int index);
 		void elementRemoved(int index, VO element);
 		void elementReplaced(int index, VO oldElement);

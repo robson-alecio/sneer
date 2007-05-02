@@ -3,32 +3,36 @@ package org.friends.ui.tests;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JList;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
-import org.friends.ui.ListModel;
+import junit.framework.TestCase;
+
+import org.friends.ui.ListSignalModel;
 
 import wheel.reactive.ListElementAdded;
 import wheel.reactive.ListReplaced;
+import wheel.reactive.ListSignal;
+import wheel.reactive.Receiver;
+import wheel.reactive.ListSignal.ListValueChange;
 
-import junit.framework.TestCase;
+public class ListModelTests extends TestCase implements ListSignal<String> {
 
-public class ListModelTests extends TestCase {
-
-
+	private Receiver<ListValueChange<String>> _receiver;
+	private List<String> _names = new ArrayList<String>();
+	
 	public void testAddition() {
-		ListModel<String> _subject =new ListModel<String>();
-		LogListDataListener logListDataListener = new LogListDataListener();
-		_subject.addListDataListener(logListDataListener);
+		ListSignalModel<String> _subject =new ListSignalModel<String>(this);
 		
-		List<String> names = new ArrayList<String>();
-		_subject.receive(new ListReplaced<String>(names));
+		LogListDataListener probe = new LogListDataListener();
+		_subject.addListDataListener(probe);
 		
-		names.add("Banana");
-		_subject.receive(new ListElementAdded<String>(0));
+		_receiver.receive(new ListReplaced<String>(_names));
 		
-		assertEquals("added at 0", logListDataListener.log());
+		_names.add("Banana");
+		_receiver.receive(new ListElementAdded<String>(0));
+		
+		assertEquals("added at 0", probe.log());
 		assertEquals("Banana", _subject.getElementAt(0));
 	}
 
@@ -57,6 +61,14 @@ public class ListModelTests extends TestCase {
 			public String log(){
 				return _log;
 			}
+	}
+
+	public void addListReceiver(Receiver<wheel.reactive.ListSignal.ListValueChange<String>> receiver) {
+		_receiver = receiver;
+	}
+
+	public List<String> currentValue() {
+		return _names;
 	}
 	
 }

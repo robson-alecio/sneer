@@ -5,22 +5,32 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
+import sneer.kernel.business.Contact;
+
+import wheel.reactive.ListSignal;
 import wheel.reactive.Receiver;
 import wheel.reactive.ListSignal.ListValueChange;
 import wheel.reactive.ListSignal.ListValueChangeVisitor;
 
-public class ListModel<VO> extends AbstractListModel implements Receiver<ListValueChange<VO>> { //Refactor: Rename to ListSignalModel.
+public class ListSignalModel<VO> extends AbstractListModel {
+
+	private class MyReceiver<T> implements Receiver<ListValueChange<VO>> {
+
+		public void receive(ListValueChange<VO> valueChange) {
+			valueChange.accept(getListModelValueChangeVisitor());
+		}
+
+	}
 
 	private List<VO> _list;
 	private ListModelValueChangeVisitor _listModelVisitor;
 	
+	private Receiver<ListValueChange<VO>> _receiver = new MyReceiver<ListValueChange<VO>>();
+	
 	@SuppressWarnings("unchecked")
-	public ListModel(){
+	public ListSignalModel(ListSignal<VO> input){
 		_list = Collections.EMPTY_LIST;
-	}
-
-	public void receive(ListValueChange<VO> valueChange) {
-		valueChange.accept(getListModelValueChangeVisitor());
+		input.addListReceiver(_receiver);
 	}
 
 	private ListModelValueChangeVisitor getListModelValueChangeVisitor() {

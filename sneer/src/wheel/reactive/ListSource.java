@@ -8,7 +8,7 @@ import java.util.List;
 import wheel.reactive.ListSignal.ListValueChange;
 
 public class ListSource<VO> extends AbstractNotifier<ListValueChange<VO>> 
-	implements ListSignal<VO>, Serializable {
+	implements ListSignal<VO>, Serializable {  //Refactor: Make into interface with a ListSignal output() instead of implementing ListSignal.
 
 	private final List<VO> _list = new ArrayList<VO>();
 	

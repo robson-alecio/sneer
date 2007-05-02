@@ -14,7 +14,6 @@ public interface Business {
 	Signal<Integer> sneerPort();
 
 	ListSignal<Contact> contactsSignal();
-	List<Contact> contacts();
 
 //----------------------------------
 	

@@ -20,7 +20,6 @@ public class BusinessImpl implements Serializable, Business {
 	private SourceImpl<Integer> _sneerPortNumber = new SourceImpl<Integer>(0);
 
 	private final List<Contact> _contactSources = new ArrayList<Contact>();
-	private final List<Contact> _contactSourcesReadOnly = Collections.unmodifiableList(_contactSources);
 	private final ListSource<Contact> _contactSourcesSignal = new ListSource<Contact>();
 	
 	
@@ -40,10 +39,6 @@ public class BusinessImpl implements Serializable, Business {
 		return _sneerPortNumber.setter();
 	}
 
-	public List<Contact> contacts() {
-		return _contactSourcesReadOnly;
-	}
-	
 	public ListSignal<Contact> contactsSignal() {
 		return _contactSourcesSignal;
 	}
@@ -52,11 +47,6 @@ public class BusinessImpl implements Serializable, Business {
 		ContactSource contactSource = new ContactSource(nick, host, port);
 		_contactSources.add(contactSource);
 		_contactSourcesSignal.add(contactSource);
-	}
-
-	public boolean isOnline(Contact contact) {
-		//Implement
-		return false;
 	}
 
 

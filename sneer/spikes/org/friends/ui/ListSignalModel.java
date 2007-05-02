@@ -12,23 +12,23 @@ import wheel.reactive.Receiver;
 import wheel.reactive.ListSignal.ListValueChange;
 import wheel.reactive.ListSignal.ListValueChangeVisitor;
 
-public class ListSignalModel<VO> extends AbstractListModel {
+public class ListSignalModel extends AbstractListModel {
 
-	private class MyReceiver<T> implements Receiver<ListValueChange<VO>> {
+	private class MyReceiver implements Receiver<ListValueChange<Object>> {
 
-		public void receive(ListValueChange<VO> valueChange) {
+		public void receive(ListValueChange<Object> valueChange) {
 			valueChange.accept(getListModelValueChangeVisitor());
 		}
 
 	}
 
-	private List<VO> _list;
+	private List _list;
 	private ListModelValueChangeVisitor _listModelVisitor;
 	
-	private Receiver<ListValueChange<VO>> _receiver = new MyReceiver<ListValueChange<VO>>();
+	private Receiver<ListValueChange<Object>> _receiver = new MyReceiver();
 	
 	@SuppressWarnings("unchecked")
-	public ListSignalModel(ListSignal<VO> input){
+	public ListSignalModel(ListSignal input){
 		_list = Collections.EMPTY_LIST;
 		input.addListReceiver(_receiver);
 	}
@@ -39,9 +39,9 @@ public class ListSignalModel<VO> extends AbstractListModel {
 		return _listModelVisitor;
 	}
 
-	private class ListModelValueChangeVisitor implements ListValueChangeVisitor<VO>{
+	private class ListModelValueChangeVisitor implements ListValueChangeVisitor<Object> {
 
-		public void listReplaced(List<VO> newList) {
+		public void listReplaced(List newList) {
 			fireIntervalRemoved(this, 0, _list.size());
 			_list = newList;
 			fireContentsChanged(this, 0, newList.size());
@@ -51,11 +51,11 @@ public class ListSignalModel<VO> extends AbstractListModel {
 			fireIntervalAdded(this, index, index);
 		}
 
-		public void elementRemoved(int index, VO oldElement) {
+		public void elementRemoved(int index, Object oldElement) {
 			fireIntervalRemoved(this, index, index);
 		}
 
-		public void elementReplaced(int index, VO oldElement) {
+		public void elementReplaced(int index, Object oldElement) {
 			fireContentsChanged(this, index, index);
 		}
 	

@@ -22,7 +22,7 @@ import javax.swing.JTextField;
 
 import sneer.kernel.business.Contact;
 
-public class FriendsScreen extends JFrame {
+public class FriendsScreen extends JFrame {  //Fix: Changes made here are not persistent.
 
 	private static final String TITLE = "Amigos";
 	private static final String ADD_FRIEND_BUTTON_TEXT = "+";
@@ -73,7 +73,7 @@ public class FriendsScreen extends JFrame {
 	}
 
 	private JList createFriendsList() {
-		final ListSignalModel<Contact> friendsListModel = new ListSignalModel<Contact>(_model.friends());
+		final ListSignalModel friendsListModel = new ListSignalModel(_model.friends());
 		final JList friendsList = new JList(friendsListModel);
 		
 		friendsList.addMouseListener(new MouseAdapter() {

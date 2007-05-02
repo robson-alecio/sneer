@@ -22,7 +22,7 @@ public class ListModelTests extends TestCase implements ListSignal<String> {
 	private List<String> _names = new ArrayList<String>();
 	
 	public void testAddition() {
-		ListSignalModel<String> _subject =new ListSignalModel<String>(this);
+		ListSignalModel _subject =new ListSignalModel(this);
 		
 		LogListDataListener probe = new LogListDataListener();
 		_subject.addListDataListener(probe);

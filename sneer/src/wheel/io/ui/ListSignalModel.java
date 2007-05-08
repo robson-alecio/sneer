@@ -22,15 +22,17 @@ public class ListSignalModel extends AbstractListModel {
 
 	}
 
-	private List<String> _list;
+	//private List<?> _list;
 	private ListModelValueChangeVisitor _listModelVisitor;
 	
 	private Receiver<ListValueChange> _receiver = new MyReceiver();
-	private final ListSignal<String> _input;
+	private final ListSignal<?> _input;
+
+	private int _currentListSize = 0;
 	
 	@SuppressWarnings("unchecked")
-	public ListSignalModel(ListSignal<String> input){
-		_list = Collections.EMPTY_LIST;
+	public ListSignalModel(ListSignal<?> input){
+		//_list = Collections.EMPTY_LIST;
 		_input = input;
 		_input.addListReceiver(_receiver);
 	}
@@ -44,16 +46,18 @@ public class ListSignalModel extends AbstractListModel {
 	private class ListModelValueChangeVisitor implements ListValueChangeVisitor {
 
 		public void listReplaced() {
-			fireIntervalRemoved(this, 0, _list.size());
-			_list = _input.currentValue();
-			fireContentsChanged(this, 0, _list.size());
+			fireIntervalRemoved(this, 0, _currentListSize );
+			_currentListSize = _input.currentValue().size();
+			fireContentsChanged(this, 0, _currentListSize);
 		}
 		
 		public void elementAdded(int index) {
+			_currentListSize++;
 			fireIntervalAdded(this, index, index);
 		}
 
 		public void elementRemoved(int index) {
+			_currentListSize--;
 			fireIntervalRemoved(this, index, index);
 		}
 
@@ -64,11 +68,11 @@ public class ListSignalModel extends AbstractListModel {
 	}
 	
 	public Object getElementAt(int index) {
-		return _list.get(index);
+		return _input.currentValue().get(index);
 	}
 
 	public int getSize() {
-		return _list.size();
+		return _currentListSize;
 	}
 	
 	private static final long serialVersionUID = 1L;

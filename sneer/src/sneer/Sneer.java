@@ -10,8 +10,11 @@ import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
 
 import sneer.kernel.business.BusinessImpl;
+import sneer.kernel.communication.Communicator;
 import sneer.kernel.gui.Gui;
 import wheel.io.Log;
+import wheel.io.network.OldNetworkImpl;
+import wheel.io.ui.User;
 import wheel.io.ui.impl.JOptionPaneUser;
 import wheel.lang.Threads;
 
@@ -29,20 +32,18 @@ public class Sneer {
 	}
 
 	
-	private JOptionPaneUser _user = new JOptionPaneUser("Sneer");
+	private User _user = new JOptionPaneUser("Sneer");
 
 	
 	private void tryToRun() throws Exception {
 		tryToRedirectLogToSneerLogFile();
 
-		startGui();
+		Prevayler prevayler = prevaylerFor(new BusinessImpl());
+		new Communicator(_user, new OldNetworkImpl(), prevayler);
+		new Gui(_user, prevayler);
+		
 		
 		while (true) Threads.sleepWithoutInterruptions(5000);
-	}
-
-	private void startGui() throws Exception {
-		Prevayler prevayler = prevaylerFor(new BusinessImpl());
-		new Gui(_user, prevayler);
 	}
 
 	private void tryToRedirectLogToSneerLogFile() throws FileNotFoundException {

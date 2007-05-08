@@ -1,5 +1,6 @@
 package wheel.io.ui.tests;
 
+import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.lang.exceptions.Catcher;
 import wheel.lang.exceptions.PrintStackTracer;
@@ -18,5 +19,9 @@ public class TestUser implements User {
 	public Object choose(String proposition, Object... options) { return options[0]; }
 	public void acknowledgeNotification(String notification, String acknowledgement) {}
 	public int answerWithNumber(@SuppressWarnings("unused") String prompt) { return 0; }
+	public void acknowledgeUnexpectedProblem(String description, String help) {}
+	
+	public boolean confirm(String proposition) { return false; }
+	public void acknowledge(Throwable t) {}
 
 }

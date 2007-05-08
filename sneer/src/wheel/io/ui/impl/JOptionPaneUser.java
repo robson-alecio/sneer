@@ -8,7 +8,7 @@ import wheel.lang.exceptions.Catcher;
 
 public class JOptionPaneUser implements User {
 	
-	public JOptionPaneUser(String title) {
+	public JOptionPaneUser(String title) { //Fix: receive the parent component instead of passing null to the JOptionPane in order not to lose the focus.
 		_title = title;
 	}
 
@@ -24,7 +24,7 @@ public class JOptionPaneUser implements User {
 
 
 	public void acknowledgeUnexpectedProblem(String description) {
-		JOptionPane.showMessageDialog(null, description + "\n\n", _title + " - Unexpected Problem", JOptionPane.ERROR_MESSAGE);
+		acknowledgeUnexpectedProblem(description, null);
 	}
 
 	
@@ -71,5 +71,25 @@ public class JOptionPaneUser implements User {
 				acknowledgeUnexpectedProblem(throwable.getMessage());
 			}
 		};
+	}
+
+
+	public boolean confirm(String proposition) throws CancelledByUser {
+		int option = JOptionPane.showConfirmDialog(null, proposition);
+		if (option == JOptionPane.CANCEL_OPTION) throw new CancelledByUser();
+		return option == JOptionPane.YES_OPTION;
+	}
+
+
+	public void acknowledgeUnexpectedProblem(String description, String help) {
+		JOptionPane.showMessageDialog(null, description + "\n\n", _title + " - Unexpected Problem", JOptionPane.ERROR_MESSAGE);
+		if (help == null) return;
+		acknowledgeNotification(help);
+		//Fix: Add a "Help" button to the dialog to show the help message.
+	}
+
+
+	public void acknowledge(Throwable t) {
+		acknowledgeUnexpectedProblem(t.getLocalizedMessage());
 	}
 }

@@ -22,7 +22,6 @@ public class ListSignalModel extends AbstractListModel {
 
 	}
 
-	//private List<?> _list;
 	private ListModelValueChangeVisitor _listModelVisitor;
 	
 	private Receiver<ListValueChange> _receiver = new MyReceiver();
@@ -32,7 +31,6 @@ public class ListSignalModel extends AbstractListModel {
 	
 	@SuppressWarnings("unchecked")
 	public ListSignalModel(ListSignal<?> input){
-		//_list = Collections.EMPTY_LIST;
 		_input = input;
 		_input.addListReceiver(_receiver);
 	}

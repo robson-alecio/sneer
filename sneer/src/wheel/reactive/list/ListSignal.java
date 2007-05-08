@@ -7,7 +7,7 @@ import wheel.reactive.Receiver;
 
 public interface ListSignal<VO> {
 	
-	public interface ListValueChangeVisitor { //Refactor: remove elements, keep only indexes. For removal do a "pre"Removal notification.
+	public interface ListValueChangeVisitor { //Refactor: Consider: For removal and replacement do a "pre"Removal/Replacement notification.
 		void elementAdded(int index);
 		void elementRemoved(int index);
 		void elementReplaced(int index);

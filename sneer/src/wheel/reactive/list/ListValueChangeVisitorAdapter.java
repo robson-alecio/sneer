@@ -1,8 +1,8 @@
-package wheel.reactive;
+package wheel.reactive.list;
 
 import java.util.List;
 
-import wheel.reactive.ListSignal.ListValueChangeVisitor;
+import wheel.reactive.list.ListSignal.ListValueChangeVisitor;
 
 public abstract class ListValueChangeVisitorAdapter<T> implements
 		ListValueChangeVisitor<T> {

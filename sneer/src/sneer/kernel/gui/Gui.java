@@ -2,10 +2,10 @@ package sneer.kernel.gui;
 
 import java.net.URL;
 
-import org.friends.ui.ShowContactsScreenAction;
 import org.prevayler.Prevayler;
 
 import sneer.kernel.business.Business;
+import sneer.kernel.gui.contacts.ShowContactsScreenAction;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.TrayIcon;
 import wheel.io.ui.User;
@@ -61,7 +61,6 @@ public class Gui {
 		return new ValueChangePane("Name Change",prompt, _user, _business.ownName(), _business.ownNameSetter());
 	}
 
-	
 	private Action addNewContactAction() {
 		return new CancellableAction(){
 
@@ -71,7 +70,7 @@ public class Gui {
 
 			@Override
 			public void tryToRun() throws CancelledByUser {
-				_prevayler.execute(new NewContactAddition(_user));
+				new NewContactAddition(_user, _business);
 			}
 		};
 	}

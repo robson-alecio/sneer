@@ -1,4 +1,4 @@
-package org.friends.ui;
+package sneer.kernel.gui.contacts;
 
 import sneer.kernel.business.Business;
 import wheel.io.ui.TrayIcon.Action;

@@ -1,4 +1,4 @@
-package org.friends.ui;
+package wheel.io.ui;
 
 import java.util.Collections;
 import java.util.List;
@@ -7,10 +7,10 @@ import javax.swing.AbstractListModel;
 
 import sneer.kernel.business.Contact;
 
-import wheel.reactive.ListSignal;
 import wheel.reactive.Receiver;
-import wheel.reactive.ListSignal.ListValueChange;
-import wheel.reactive.ListSignal.ListValueChangeVisitor;
+import wheel.reactive.list.ListSignal;
+import wheel.reactive.list.ListSignal.ListValueChange;
+import wheel.reactive.list.ListSignal.ListValueChangeVisitor;
 
 public class ListSignalModel extends AbstractListModel {
 

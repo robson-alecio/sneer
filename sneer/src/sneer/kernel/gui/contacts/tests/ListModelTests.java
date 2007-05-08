@@ -1,4 +1,4 @@
-package org.friends.ui.tests;
+package sneer.kernel.gui.contacts.tests;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,13 +8,13 @@ import javax.swing.event.ListDataListener;
 
 import junit.framework.TestCase;
 
-import org.friends.ui.ListSignalModel;
 
-import wheel.reactive.ListElementAdded;
-import wheel.reactive.ListReplaced;
-import wheel.reactive.ListSignal;
+import wheel.io.ui.ListSignalModel;
 import wheel.reactive.Receiver;
-import wheel.reactive.ListSignal.ListValueChange;
+import wheel.reactive.list.ListElementAdded;
+import wheel.reactive.list.ListReplaced;
+import wheel.reactive.list.ListSignal;
+import wheel.reactive.list.ListSignal.ListValueChange;
 
 public class ListModelTests extends TestCase implements ListSignal<String> {
 
@@ -63,7 +63,7 @@ public class ListModelTests extends TestCase implements ListSignal<String> {
 			}
 	}
 
-	public void addListReceiver(Receiver<wheel.reactive.ListSignal.ListValueChange<String>> receiver) {
+	public void addListReceiver(Receiver<wheel.reactive.list.ListSignal.ListValueChange<String>> receiver) {
 		_receiver = receiver;
 	}
 

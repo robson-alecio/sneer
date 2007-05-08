@@ -7,10 +7,11 @@ import java.util.List;
 
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
-import wheel.reactive.ListSignal;
-import wheel.reactive.ListSource;
+import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Signal;
 import wheel.reactive.SourceImpl;
+import wheel.reactive.list.ListSignal;
+import wheel.reactive.list.ListSource;
 
 
 public class BusinessImpl implements Serializable, Business {
@@ -19,9 +20,8 @@ public class BusinessImpl implements Serializable, Business {
 
 	private SourceImpl<Integer> _sneerPortNumber = new SourceImpl<Integer>(0);
 
-	private final List<Contact> _contactSources = new ArrayList<Contact>();
-	private final ListSource<Contact> _contactSourcesSignal = new ListSource<Contact>();
-	
+	private final ListSource<Contact> _contacts = new ListSource<Contact>();
+
 	
 	public Signal<String> ownName() {
 		return _ownName.output();
@@ -40,14 +40,9 @@ public class BusinessImpl implements Serializable, Business {
 	}
 
 	public ListSignal<Contact> contactsSignal() {
-		return _contactSourcesSignal;
+		return _contacts;
 	}
 
-	public void addContact(String nick, String host, int port) {
-		ContactSource contactSource = new ContactSource(nick, host, port);
-		_contactSources.add(contactSource);
-		_contactSourcesSignal.add(contactSource);
-	}
 
 
 	private static final long serialVersionUID = 1L;
@@ -55,10 +50,12 @@ public class BusinessImpl implements Serializable, Business {
 
 	public void removeContact(Contact contact) {
 		
-		if (!_contactSources.remove(contact))
-			throw new IllegalArgumentException("Impossible to remove contact");
-		if (!_contactSourcesSignal.remove(contact))
+		if (!_contacts.remove(contact))
 			throw new IllegalArgumentException("Impossible to remove contact");
 		
+	}
+
+	public Consumer<ContactInfo> contactAdder() {
+		return new ContactAdder(_contacts);
 	}
 }

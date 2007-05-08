@@ -1,4 +1,4 @@
-package org.friends.ui;
+package sneer.kernel.gui.contacts;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -21,6 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import sneer.kernel.business.Contact;
+import wheel.io.ui.ListSignalModel;
 
 public class FriendsScreen extends JFrame {  //Fix: Changes made here are not persistent.
 

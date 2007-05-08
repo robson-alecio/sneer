@@ -1,6 +1,7 @@
 package sneer.kernel.gui;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
@@ -19,12 +20,20 @@ public class PersistenceHandler implements InvocationHandler {
 		_prevayler = prevayler;
 	}
 
-	public Object invoke(Object proxyImplied, Method method, Object[] args) throws Throwable {
-		Object obj = method.invoke(_delegate, args);
-		if (Consumer.class.isAssignableFrom(method.getReturnType())) {
-			return wrap(obj, method.getName());
+	public Object invoke(Object proxyImplied, Method method, Object[] args) {
+		Object result;
+		try {
+			result = method.invoke(_delegate, args);
+		} catch (InvocationTargetException e) {
+			throw (RuntimeException)e.getCause();
+		} catch (Exception c) {
+			throw new IllegalStateException(c);
 		}
-		return obj;
+		
+		if (Consumer.class.isAssignableFrom(method.getReturnType())) {
+			return wrap(result, method.getName());
+		}
+		return result;
 	}
 
 	private Object wrap(Object obj, String methodName) {
@@ -35,7 +44,7 @@ public class PersistenceHandler implements InvocationHandler {
 	@SuppressWarnings("unchecked")
 	public static <PREVALENT_SYSTEM> PREVALENT_SYSTEM persistentProxyFor(Prevayler prevayler) {
 		Object instance = prevayler.prevalentSystem();
-		return (PREVALENT_SYSTEM)Proxy.newProxyInstance(Gui.class.getClassLoader(), instance.getClass().getInterfaces(), new PersistenceHandler(instance, prevayler));
+		return (PREVALENT_SYSTEM)Proxy.newProxyInstance(instance.getClass().getClassLoader(), instance.getClass().getInterfaces(), new PersistenceHandler(instance, prevayler));
 	}
 
 }

@@ -1,11 +1,13 @@
-package wheel.reactive;
+package wheel.reactive.list;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import wheel.reactive.ListSignal.ListValueChange;
+import wheel.reactive.AbstractNotifier;
+import wheel.reactive.Receiver;
+import wheel.reactive.list.ListSignal.ListValueChange;
 
 public class ListSource<VO> extends AbstractNotifier<ListValueChange<VO>> 
 	implements ListSignal<VO>, Serializable {  //Refactor: Make into interface with a ListSignal output() instead of implementing ListSignal.

@@ -39,7 +39,7 @@ public class ValueChangePane extends CancellableAction {
 				_setter.consume(newValue);
 				return;
 			} catch (IllegalParameter e) {
-				errorMessage = e.getMessage() + "\n Try again.\n\n";
+				errorMessage = " " + e.getMessage() + "\n Try again.\n\n";
 				current = newValue;
 			}
 		}

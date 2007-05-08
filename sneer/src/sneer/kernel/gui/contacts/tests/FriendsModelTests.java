@@ -1,13 +1,11 @@
-package org.friends.ui.tests;
+package sneer.kernel.gui.contacts.tests;
 
 import junit.framework.TestCase;
-
-import org.friends.ui.FriendsModel;
-import org.friends.ui.FriendsModelImpl;
-
 import sneer.kernel.business.Business;
-import sneer.kernel.business.BusinessImpl;
+import sneer.kernel.business.BusinessFactory;
 import sneer.kernel.business.Contact;
+import sneer.kernel.gui.contacts.FriendsModel;
+import sneer.kernel.gui.contacts.FriendsModelImpl;
 import wheel.reactive.tests.LogListReceiver;
 
 public class FriendsModelTests extends TestCase {
@@ -19,7 +17,7 @@ public class FriendsModelTests extends TestCase {
 
 	@Override
 	protected void setUp() throws Exception {
-		_business = new BusinessImpl();
+		_business = new BusinessFactory().createBusiness();
 		_model = new FriendsModelImpl(_business);
 		_logListReceiver = new LogListReceiver<Contact>();
 		_model.friends().addListReceiver(_logListReceiver);

@@ -2,9 +2,9 @@ package wheel.reactive.tests;
 
 import java.util.List;
 
-import wheel.reactive.ListValueChangeVisitorAdapter;
 import wheel.reactive.Receiver;
-import wheel.reactive.ListSignal.ListValueChange;
+import wheel.reactive.list.ListValueChangeVisitorAdapter;
+import wheel.reactive.list.ListSignal.ListValueChange;
 
 public final class LogListReceiver<VO> implements
 		Receiver<ListValueChange<VO>> {

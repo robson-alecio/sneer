@@ -1,7 +1,9 @@
-package wheel.reactive;
+package wheel.reactive.list;
 
 import java.util.Calendar;
 import java.util.List;
+
+import wheel.reactive.Receiver;
 
 public interface ListSignal<VO> {
 	

@@ -1,7 +1,7 @@
-package org.friends.ui;
+package sneer.kernel.gui.contacts;
 
 import sneer.kernel.business.Contact;
-import wheel.reactive.ListSignal;
+import wheel.reactive.list.ListSignal;
 
 public interface FriendsModel {
 

@@ -68,6 +68,7 @@ public class JOptionPaneUser implements User {
 	public Catcher catcher() {
 		return new Catcher() {
 			public void catchThis(Throwable throwable) {
+				throwable.printStackTrace();
 				acknowledgeUnexpectedProblem(throwable.getMessage());
 			}
 		};

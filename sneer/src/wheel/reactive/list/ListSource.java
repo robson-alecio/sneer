@@ -9,27 +9,25 @@ import wheel.reactive.AbstractNotifier;
 import wheel.reactive.Receiver;
 import wheel.reactive.list.ListSignal.ListValueChange;
 
-public class ListSource<VO> extends AbstractNotifier<ListValueChange<VO>> 
+public class ListSource<VO> extends AbstractNotifier<ListValueChange> 
 	implements ListSignal<VO>, Serializable {  //Refactor: Make into interface with a ListSignal output() instead of implementing ListSignal.
 
 	private final List<VO> _list = new ArrayList<VO>();
 	
 	@Override
-	protected void initReceiver(
-			Receiver<ListValueChange<VO>> receiver) {
-		receiver.receive(new ListReplaced<VO>(_list));
+	protected void initReceiver(Receiver<ListValueChange> receiver) {
+		receiver.receive(new ListReplaced());
 		
 	}
 
-	public void addListReceiver(
-			Receiver<ListValueChange<VO>> receiver) {
+	public void addListReceiver(Receiver<ListValueChange> receiver) {
 		addReceiver(receiver);		
 	}
 
 	public void add(VO element){
 		synchronized (_list){
 			_list.add(element);
-			notifyReceivers(new ListElementAdded<VO>(_list.size() - 1));
+			notifyReceivers(new ListElementAdded(_list.size() - 1));
 		}
 	}
 	
@@ -45,7 +43,7 @@ public class ListSource<VO> extends AbstractNotifier<ListValueChange<VO>>
 			if (!_list.remove(element))
 				return false;
 			
-			notifyReceivers(new ListElementRemoved<VO>(index, element));
+			notifyReceivers(new ListElementRemoved(index));
 			return true;
 		}
 	}

@@ -18,12 +18,12 @@ public class JournalImpl<VO> implements Journal<VO> {
 		_notificationExceptionCatcher = notificationExceptionCatcher;
 	}
 	
-	private final Set<Receiver<ListValueChange<VO>>> _receivers = new HashSet<Receiver<ListValueChange<VO>>>();
+	private final Set<Receiver<ListValueChange>> _receivers = new HashSet<Receiver<ListValueChange>>();
 	private final List<VO> _contents = new LinkedList<VO>();
 	private final Catcher _notificationExceptionCatcher;
 
-	private void initReceiver(Receiver<ListValueChange<VO>> receiver) {
-		receiver.receive(new ListReplaced<VO>(_contents));
+	private void initReceiver(Receiver<ListValueChange> receiver) {
+		receiver.receive(new ListReplaced());
 	}
 
 	public synchronized void add(VO element) {
@@ -32,19 +32,19 @@ public class JournalImpl<VO> implements Journal<VO> {
 	}
 
 	private void notifyReceivers() {
-		for (Receiver<ListValueChange<VO>> receiver : _receivers) notify(receiver);
+		for (Receiver<ListValueChange> receiver : _receivers) notifyReceiver(receiver);
 	}
 
-	private void notify(Receiver<ListValueChange<VO>> receiver) {
+	private void notifyReceiver(Receiver<ListValueChange> receiver) {
 		try {
-			receiver.receive(new ListElementAdded<VO>(_contents.size() - 1));
+			receiver.receive(new ListElementAdded(_contents.size() - 1));
 		} catch (Throwable t) {
 			_notificationExceptionCatcher.catchThis(t);
 		}
 	}
 
 	public void addListReceiver(
-			Receiver<wheel.reactive.list.ListSignal.ListValueChange<VO>> receiver) {
+			Receiver<wheel.reactive.list.ListSignal.ListValueChange> receiver) {
 		_receivers.add(receiver);
 		initReceiver(receiver);
 		

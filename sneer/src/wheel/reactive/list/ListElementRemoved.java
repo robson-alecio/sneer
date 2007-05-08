@@ -3,18 +3,16 @@ package wheel.reactive.list;
 import wheel.reactive.list.ListSignal.ListValueChange;
 import wheel.reactive.list.ListSignal.ListValueChangeVisitor;
 
-public class ListElementRemoved<VO> implements ListValueChange<VO> {
+public class ListElementRemoved implements ListValueChange {
 
 	private final int _index;
-	private final VO _element;
 
-	public ListElementRemoved(int index, VO element) {
+	public ListElementRemoved(int index) {
 		_index = index;
-		_element = element;
 	}
 
-	public void accept(ListValueChangeVisitor<VO> visitor) {
-		visitor.elementRemoved(_index, _element);
+	public void accept(ListValueChangeVisitor visitor) {
+		visitor.elementRemoved(_index);
 	}
 
 	@Override

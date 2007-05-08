@@ -14,23 +14,25 @@ import wheel.reactive.list.ListSignal.ListValueChangeVisitor;
 
 public class ListSignalModel extends AbstractListModel {
 
-	private class MyReceiver implements Receiver<ListValueChange<Object>> {
+	private class MyReceiver implements Receiver<ListValueChange> {
 
-		public void receive(ListValueChange<Object> valueChange) {
+		public void receive(ListValueChange valueChange) {
 			valueChange.accept(getListModelValueChangeVisitor());
 		}
 
 	}
 
-	private List<Object> _list;
+	private List<String> _list;
 	private ListModelValueChangeVisitor _listModelVisitor;
 	
-	private Receiver<ListValueChange<Object>> _receiver = new MyReceiver();
+	private Receiver<ListValueChange> _receiver = new MyReceiver();
+	private final ListSignal<String> _input;
 	
 	@SuppressWarnings("unchecked")
-	public ListSignalModel(ListSignal input){
+	public ListSignalModel(ListSignal<String> input){
 		_list = Collections.EMPTY_LIST;
-		input.addListReceiver(_receiver);
+		_input = input;
+		_input.addListReceiver(_receiver);
 	}
 
 	private ListModelValueChangeVisitor getListModelValueChangeVisitor() {
@@ -39,23 +41,23 @@ public class ListSignalModel extends AbstractListModel {
 		return _listModelVisitor;
 	}
 
-	private class ListModelValueChangeVisitor implements ListValueChangeVisitor<Object> {
+	private class ListModelValueChangeVisitor implements ListValueChangeVisitor {
 
-		public void listReplaced(List<Object> newList) {
+		public void listReplaced() {
 			fireIntervalRemoved(this, 0, _list.size());
-			_list = newList;
-			fireContentsChanged(this, 0, newList.size());
+			_list = _input.currentValue();
+			fireContentsChanged(this, 0, _list.size());
 		}
 		
 		public void elementAdded(int index) {
 			fireIntervalAdded(this, index, index);
 		}
 
-		public void elementRemoved(int index, Object oldElement) {
+		public void elementRemoved(int index) {
 			fireIntervalRemoved(this, index, index);
 		}
 
-		public void elementReplaced(int index, Object oldElement) {
+		public void elementReplaced(int index) {
 			fireContentsChanged(this, index, index);
 		}
 	

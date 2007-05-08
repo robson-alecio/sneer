@@ -4,16 +4,15 @@ import java.util.List;
 
 import wheel.reactive.list.ListSignal.ListValueChangeVisitor;
 
-public abstract class ListValueChangeVisitorAdapter<T> implements
-		ListValueChangeVisitor<T> {
+public abstract class ListValueChangeVisitorAdapter implements ListValueChangeVisitor {
 
 	public void elementAdded(int index) {}
 
-	public void elementRemoved(int index, T element) {}
+	public void elementRemoved(int index) {}
 
-	public void elementReplaced(int index, T oldElement) {}
+	public void elementReplaced(int index) {}
 
-	public void listReplaced(List<T> newList) {}
+	public void listReplaced() {}
 
 
 }

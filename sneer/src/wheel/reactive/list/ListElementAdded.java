@@ -3,7 +3,7 @@ package wheel.reactive.list;
 import wheel.reactive.list.ListSignal.ListValueChange;
 import wheel.reactive.list.ListSignal.ListValueChangeVisitor;
 
-public final class ListElementAdded<VO> implements ListValueChange<VO> {
+public final class ListElementAdded implements ListValueChange {
 
 	private final int _index;
 
@@ -11,13 +11,8 @@ public final class ListElementAdded<VO> implements ListValueChange<VO> {
 		_index = index;
 	}
 
-	public void accept(ListValueChangeVisitor<VO> visitor) {
+	public void accept(ListValueChangeVisitor visitor) {
 		visitor.elementAdded(_index);
-	}
-	
-	@Override
-	public String toString() {
-		return "List element added at " + _index;
 	}
 
 }

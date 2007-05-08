@@ -22,7 +22,7 @@ public class ListSignalModel extends AbstractListModel {
 
 	}
 
-	private List _list;
+	private List<Object> _list;
 	private ListModelValueChangeVisitor _listModelVisitor;
 	
 	private Receiver<ListValueChange<Object>> _receiver = new MyReceiver();
@@ -41,7 +41,7 @@ public class ListSignalModel extends AbstractListModel {
 
 	private class ListModelValueChangeVisitor implements ListValueChangeVisitor<Object> {
 
-		public void listReplaced(List newList) {
+		public void listReplaced(List<Object> newList) {
 			fireIntervalRemoved(this, 0, _list.size());
 			_list = newList;
 			fireContentsChanged(this, 0, newList.size());

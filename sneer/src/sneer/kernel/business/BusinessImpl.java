@@ -39,7 +39,7 @@ public class BusinessImpl implements Serializable, Business {
 		return _sneerPortNumber.setter();
 	}
 
-	public ListSignal<Contact> contactsSignal() {
+	public ListSignal<Contact> contacts() {
 		return _contacts;
 	}
 

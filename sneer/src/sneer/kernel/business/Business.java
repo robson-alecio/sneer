@@ -14,7 +14,7 @@ public interface Business extends Serializable{
 	
 	Signal<Integer> sneerPort();
 
-	ListSignal<Contact> contactsSignal();
+	ListSignal<Contact> contacts();
 
 //----------------------------------
 	

@@ -18,7 +18,7 @@ public class FriendsModelImpl implements FriendsModel {
 	}
 
 	public ListSignal<Contact> friends() {
-		return _business.contactsSignal();
+		return _business.contacts();
 	}
 
 	public void removeFriend(Contact contact) {

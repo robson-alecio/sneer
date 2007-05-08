@@ -30,7 +30,7 @@ public class ParallelServer implements Runnable {
 
 	private final Catcher _catcher;
 
-	private boolean _isClosed = false;
+	private volatile boolean _isClosed = false;
 
 	public ParallelServer(Business business, ObjectServerSocket serverSocket, User user, Catcher catcher) {
 		_business = business;
@@ -134,11 +134,8 @@ public class ParallelServer implements Runnable {
 	}
 
 	public void close() throws IOException {
-		try {
-			_serverSocket.close();
-		} finally {
-			_isClosed  = true;
-		}
+		_isClosed  = true;
+		_serverSocket.close();
 	}
 
 }

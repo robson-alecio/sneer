@@ -74,7 +74,7 @@ public class FriendsScreen extends JFrame {  //Fix: Changes made here are not pe
 	}
 
 	private JList createFriendsList() {
-		final ListSignalModel friendsListModel = new ListSignalModel(_model.friends());
+		final ListSignalModel friendsListModel = new ListSignalModel(new ContactListPrinter(_model.friends()));
 		final JList friendsList = new JList(friendsListModel);
 		
 		friendsList.addMouseListener(new MouseAdapter() {

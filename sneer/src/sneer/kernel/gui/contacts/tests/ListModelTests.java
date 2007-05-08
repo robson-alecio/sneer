@@ -18,7 +18,7 @@ import wheel.reactive.list.ListSignal.ListValueChange;
 
 public class ListModelTests extends TestCase implements ListSignal<String> {
 
-	private Receiver<ListValueChange<String>> _receiver;
+	private Receiver<ListValueChange> _receiver;
 	private List<String> _names = new ArrayList<String>();
 	
 	public void testAddition() {
@@ -27,10 +27,10 @@ public class ListModelTests extends TestCase implements ListSignal<String> {
 		LogListDataListener probe = new LogListDataListener();
 		_subject.addListDataListener(probe);
 		
-		_receiver.receive(new ListReplaced<String>(_names));
+		_receiver.receive(new ListReplaced());
 		
 		_names.add("Banana");
-		_receiver.receive(new ListElementAdded<String>(0));
+		_receiver.receive(new ListElementAdded(0));
 		
 		assertEquals("added at 0", probe.log());
 		assertEquals("Banana", _subject.getElementAt(0));
@@ -63,7 +63,7 @@ public class ListModelTests extends TestCase implements ListSignal<String> {
 			}
 	}
 
-	public void addListReceiver(Receiver<wheel.reactive.list.ListSignal.ListValueChange<String>> receiver) {
+	public void addListReceiver(Receiver<ListValueChange> receiver) {
 		_receiver = receiver;
 	}
 

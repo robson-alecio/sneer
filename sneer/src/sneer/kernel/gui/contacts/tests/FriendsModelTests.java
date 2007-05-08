@@ -19,8 +19,7 @@ public class FriendsModelTests extends TestCase {
 	protected void setUp() throws Exception {
 		_business = new BusinessFactory().createBusiness();
 		_model = new FriendsModelImpl(_business);
-		_logListReceiver = new LogListReceiver<Contact>();
-		_model.friends().addListReceiver(_logListReceiver);
+		_logListReceiver = new LogListReceiver<Contact>(_model.friends());
 	}
 	
 	public void testFriendAddition(){

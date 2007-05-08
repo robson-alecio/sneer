@@ -9,29 +9,16 @@ import wheel.reactive.SourceImpl;
 public class ContactSource implements Contact, Serializable { private static final long serialVersionUID = 1L;
 
 	public ContactSource(String nick, String host, int port) {
-		_nick = nick;
-		_host = host;
-		_port = port;
+		_nick = new SourceImpl<String>(nick);
+		_host = new SourceImpl<String>(host);
+		_port = new SourceImpl<Integer>(port);
 	}
 
 	
-	private final String _nick;
-	private final String _host;
-	private final int _port;
-	private transient Source<Boolean> _isOnline;
-
-
-	@Override
-	public String toString() {
-		return onlineTag() + " " + _nick + " - " + _host + ":" + _port;
-	}
-
-
-	private String onlineTag() {
-		return isOnline().currentValue().booleanValue()
-			? "On  :) "
-			: "Off :( ";
-	}
+	private final Source<String> _nick;
+	private final Source<String> _host;
+	private final Source<Integer> _port;
+	private transient Source<Boolean> _isOnline;  //Fix: consider removing transient and using transient listeners.
 
 
 	public Signal<Boolean> isOnline() {
@@ -43,6 +30,24 @@ public class ContactSource implements Contact, Serializable { private static fin
 		if (_isOnline == null) _isOnline = new SourceImpl<Boolean>(Boolean.FALSE);
 		
 		return _isOnline;
+	}
+
+
+	@Override
+	public Signal<String> host() {
+		return _host.output();
+	}
+
+
+	@Override
+	public Signal<String> nick() {
+		return _nick.output();
+	}
+
+
+	@Override
+	public Signal<Integer> port() {
+		return _port.output();
 	}
 
 }

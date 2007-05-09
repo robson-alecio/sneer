@@ -25,9 +25,9 @@ public class Sneer {
 			
 			tryToRun();
 			 
-		} catch (Throwable t) {
-			Log.log(t);
-			showRestartMessage(t);
+		} catch (Throwable throwable) {
+			Log.log(throwable);
+			showRestartMessage(throwable);
 		}
 	}
 

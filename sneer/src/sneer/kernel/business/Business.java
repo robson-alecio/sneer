@@ -8,7 +8,7 @@ import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.list.ListSignal;
 
-public interface Business extends Serializable{
+public interface Business {
 
 	Signal<String> ownName();
 	

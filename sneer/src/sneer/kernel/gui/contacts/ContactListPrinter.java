@@ -37,14 +37,14 @@ public class ContactListPrinter implements ListSignal<String> {
 	}
 
 	private String print(Contact contact) { //Fix: this must be reactive.
-		return onlineTag(contact) + " ** " + contact.nick().currentValue() + " - " + contact.host().currentValue() + ":" + contact.port().currentValue();
+		return onlineTag(contact) + " - " + contact.nick().currentValue() + " - " + contact.host().currentValue() + ":" + contact.port().currentValue();
 	}
 
 	
 	private String onlineTag(Contact contact) {
 		return contact.isOnline().currentValue().booleanValue()
-			? "On  :) "
-			: "Off :( ";
+			? "On  :)"
+			: "Off :(";
 	}
 
 }

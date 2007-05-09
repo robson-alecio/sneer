@@ -1,15 +1,15 @@
 package sneer.kernel.gui.contacts;
 
-import sneer.kernel.business.Business;
+import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.Contact;
 import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.list.ListSignal;
 
 public class FriendsModelImpl implements FriendsModel {
 
-	private final Business _business;
+	private final BusinessSource _business;
 
-	public FriendsModelImpl(Business business) {//refactor
+	public FriendsModelImpl(BusinessSource business) {//refactor
 		_business = business;
 	}
 
@@ -18,7 +18,7 @@ public class FriendsModelImpl implements FriendsModel {
 	}
 
 	public ListSignal<Contact> friends() {
-		return _business.contacts();
+		return _business.output().contacts();
 	}
 
 	public void removeFriend(Contact contact) {

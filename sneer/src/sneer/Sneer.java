@@ -38,7 +38,7 @@ public class Sneer {
 	private void tryToRun() throws Exception {
 		tryToRedirectLogToSneerLogFile();
 
-		Prevayler prevayler = prevaylerFor((Serializable)new BusinessFactory().createBusiness());
+		Prevayler prevayler = prevaylerFor((Serializable)new BusinessFactory().createBusinessSource());
 		new Communicator(_user, new OldNetworkImpl(), prevayler);
 		new Gui(_user, prevayler);
 		

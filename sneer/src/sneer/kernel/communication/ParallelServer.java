@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import sneer.kernel.business.Business;
+import sneer.kernel.business.BusinessSource;
 import wheel.io.network.ObjectServerSocket;
 import wheel.io.network.ObjectSocket;
 import wheel.lang.Threads;
@@ -20,7 +20,7 @@ public class ParallelServer implements Runnable {
 		boolean authorizeConnectionFrom(String name);
 	}
 
-	private final Business _business;
+	private final BusinessSource _business;
 
 	private final ObjectServerSocket _serverSocket;
 
@@ -32,7 +32,7 @@ public class ParallelServer implements Runnable {
 
 	private volatile boolean _isClosed = false;
 
-	public ParallelServer(Business business, ObjectServerSocket serverSocket, User user, Catcher catcher) {
+	public ParallelServer(BusinessSource business, ObjectServerSocket serverSocket, User user, Catcher catcher) {
 		_business = business;
 		_serverSocket = serverSocket;
 		_user = user;

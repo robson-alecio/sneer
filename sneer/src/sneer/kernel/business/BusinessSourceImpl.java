@@ -14,7 +14,7 @@ import wheel.reactive.list.ListSignal;
 import wheel.reactive.list.ListSource;
 
 
-public class BusinessImpl implements Serializable, Business {
+public class BusinessSourceImpl implements BusinessSource, Business, Serializable { //Refactor: Create a separate class for BusinessImpl.
 
 	private SourceImpl<String> _ownName = new SourceImpl<String>("");
 
@@ -57,5 +57,9 @@ public class BusinessImpl implements Serializable, Business {
 
 	public Consumer<ContactInfo> contactAdder() {
 		return new ContactAdder(_contacts);
+	}
+
+	public Business output() {
+		return this;
 	}
 }

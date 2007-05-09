@@ -5,7 +5,7 @@ import java.net.BindException;
 
 import org.prevayler.Prevayler;
 
-import sneer.kernel.business.Business;
+import sneer.kernel.business.BusinessSource;
 import wheel.io.network.OldNetwork;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
@@ -13,7 +13,7 @@ import wheel.reactive.Receiver;
 
 public class Communicator {
 
-	private final Business _business;
+	private final BusinessSource _business;
 	private ParallelServer _server;
 	private final User _user;
 	private final OldNetwork _network;
@@ -21,8 +21,8 @@ public class Communicator {
 	public Communicator(User user, OldNetwork network, Prevayler prevayler) {
 		_user = user;
 		_network = network;
-		_business = (Business)prevayler.prevalentSystem();
-		_business.sneerPort().addReceiver(new Receiver<Integer>(){
+		_business = (BusinessSource)prevayler.prevalentSystem();
+		_business.output().sneerPort().addReceiver(new Receiver<Integer>(){
 			public void receive(Integer newPort) {
 				stopServer();
 				startServer(newPort);

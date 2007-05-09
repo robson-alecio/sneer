@@ -7,7 +7,7 @@ import java.lang.reflect.Proxy;
 
 import org.prevayler.Prevayler;
 
-import sneer.kernel.business.Business;
+import sneer.kernel.business.BusinessSource;
 import wheel.lang.Consumer;
 
 public class PersistenceHandler implements InvocationHandler {

@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class BusinessFactory {
 
-	public Business createBusiness() {
-		return new BusinessImpl();
+	public BusinessSource createBusinessSource() {
+		return new BusinessSourceImpl();
 	}
 
 }

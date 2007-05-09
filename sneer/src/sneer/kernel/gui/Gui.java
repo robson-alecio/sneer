@@ -4,7 +4,7 @@ import java.net.URL;
 
 import org.prevayler.Prevayler;
 
-import sneer.kernel.business.Business;
+import sneer.kernel.business.BusinessSource;
 import sneer.kernel.gui.contacts.ShowContactsScreenAction;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.TrayIcon;
@@ -33,12 +33,12 @@ public class Gui {
 	private final TrayIcon _trayIcon;
 	
 	private final Prevayler _prevayler;
-	private final Business _business;
+	private final BusinessSource _business;
 	
 	
 	private void tryToRun() {
 		//Refactor: remove this logic from the gui;
-		if (_business.ownName() == null) nameChangeAction().run();
+		if (_business.output().ownName() == null) nameChangeAction().run();
 
 		_trayIcon.addAction(nameChangeAction());
 		_trayIcon.addAction(addNewContactAction());
@@ -51,14 +51,14 @@ public class Gui {
 	private ValueChangePane sneerPortChangeAction() {
 		String prompt = " Change this only if you know what you are doing." +
 						"\n Sneer IP port to listen:";
-		return new ValueChangePane("Sneer Port Configuration",prompt, _user, _business.sneerPort(), new IntegerParser(_business.sneerPortSetter()));
+		return new ValueChangePane("Sneer Port Configuration",prompt, _user, _business.output().sneerPort(), new IntegerParser(_business.sneerPortSetter()));
 	}
 
 	
 	private Action nameChangeAction() {
 		String prompt = " What is your name?" +
 						"\n (You can change it any time you like)";
-		return new ValueChangePane("Name Change",prompt, _user, _business.ownName(), _business.ownNameSetter());
+		return new ValueChangePane("Name Change",prompt, _user, _business.output().ownName(), _business.ownNameSetter());
 	}
 
 	private Action addNewContactAction() {

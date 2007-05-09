@@ -1,7 +1,7 @@
 package sneer.kernel.gui.contacts.tests;
 
 import junit.framework.TestCase;
-import sneer.kernel.business.Business;
+import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.BusinessFactory;
 import sneer.kernel.business.Contact;
 import sneer.kernel.gui.contacts.FriendsModel;
@@ -13,11 +13,11 @@ public class FriendsModelTests extends TestCase {
 	
 	private FriendsModel _model;
 	private LogListReceiver<Contact> _logListReceiver;
-	private Business _business;
+	private BusinessSource _business;
 
 	@Override
 	protected void setUp() throws Exception {
-		_business = new BusinessFactory().createBusiness();
+		_business = new BusinessFactory().createBusinessSource();
 		_model = new FriendsModelImpl(_business);
 		_logListReceiver = new LogListReceiver<Contact>(_model.friends());
 	}

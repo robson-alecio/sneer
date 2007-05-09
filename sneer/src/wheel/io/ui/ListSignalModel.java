@@ -45,7 +45,7 @@ public class ListSignalModel extends AbstractListModel {
 
 		public void listReplaced() {
 			fireIntervalRemoved(this, 0, _currentListSize );
-			_currentListSize = _input.currentValue().size();
+			_currentListSize = _input.currentValue().size(); //Optimize: get only size, not entire list.
 			fireContentsChanged(this, 0, _currentListSize);
 		}
 		
@@ -66,7 +66,7 @@ public class ListSignalModel extends AbstractListModel {
 	}
 	
 	public Object getElementAt(int index) {
-		return _input.currentValue().get(index);
+		return _input.currentValue().get(index); //Optimize: get only necessary element, not entire list.
 	}
 
 	public int getSize() {

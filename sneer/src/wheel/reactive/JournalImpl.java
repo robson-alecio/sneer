@@ -23,7 +23,7 @@ public class JournalImpl<VO> implements Journal<VO> {
 	private final Catcher _notificationExceptionCatcher;
 
 	private void initReceiver(Receiver<ListValueChange> receiver) {
-		receiver.receive(new ListReplaced());
+		receiver.receive(ListReplaced.SINGLETON);
 	}
 
 	public synchronized void add(VO element) {

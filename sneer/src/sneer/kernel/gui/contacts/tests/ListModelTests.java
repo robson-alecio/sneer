@@ -27,7 +27,7 @@ public class ListModelTests extends TestCase implements ListSignal<String> {
 		LogListDataListener probe = new LogListDataListener();
 		_subject.addListDataListener(probe);
 		
-		_receiver.receive(new ListReplaced());
+		_receiver.receive(ListReplaced.SINGLETON);
 		
 		_names.add("Banana");
 		_receiver.receive(new ListElementAdded(0));

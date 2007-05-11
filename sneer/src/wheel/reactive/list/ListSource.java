@@ -16,7 +16,7 @@ public class ListSource<VO> extends AbstractNotifier<ListValueChange>
 	
 	@Override
 	protected void initReceiver(Receiver<ListValueChange> receiver) {
-		receiver.receive(new ListReplaced());
+		receiver.receive(ListReplaced.SINGLETON);
 		
 	}
 

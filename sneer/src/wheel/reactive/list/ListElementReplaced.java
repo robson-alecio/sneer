@@ -3,21 +3,21 @@ package wheel.reactive.list;
 import wheel.reactive.list.ListSignal.ListValueChange;
 import wheel.reactive.list.ListSignal.ListValueChangeVisitor;
 
-public final class ListElementRemoved implements ListValueChange {
+public final class ListElementReplaced implements ListValueChange {
 
 	private final int _index;
 
-	public ListElementRemoved(int index) {
+	public ListElementReplaced(int index) {
 		_index = index;
 	}
 
 	public void accept(ListValueChangeVisitor visitor) {
-		visitor.elementRemoved(_index);
+		visitor.elementReplaced(_index);
 	}
 
 	@Override
 	public String toString() {
-		return "List element removed at " + _index;
+		return "List element replaced at " + _index;
 	}
 	
 }

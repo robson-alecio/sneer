@@ -18,7 +18,7 @@ public class InstallationWizard {
 
 	private void install(File sneerDirectory) throws IOException {
 		approveConditionOtherwiseExit(
-				" Welcome to Sneer  :)\n\n" +
+				" Welcome to Sneer, the first sovereign computing peer.  :)\n\n" +
 				" This wizard will prepare Sneer to run for you."
 		);
 

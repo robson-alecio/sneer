@@ -26,7 +26,7 @@ public class ContactSource implements Contact, Serializable { private static fin
 	}
 
 
-	private Source<Boolean> lazyIsOnline() {
+	private synchronized Source<Boolean> lazyIsOnline() {
 		if (_isOnline == null) _isOnline = new SourceImpl<Boolean>(Boolean.FALSE);
 		
 		return _isOnline;

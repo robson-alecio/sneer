@@ -15,4 +15,8 @@ public final class ListElementAdded implements ListValueChange {
 		visitor.elementAdded(_index);
 	}
 
+	@Override
+	public String toString() {
+		return "List element added at " + _index;
+	}
 }

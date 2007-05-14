@@ -47,4 +47,9 @@ public class ListSource<VO> extends AbstractNotifier<ListValueChange>
 			return true;
 		}
 	}
+
+	@Override
+	public VO get(int index) {
+		return _list.get(index);
+	}
 }

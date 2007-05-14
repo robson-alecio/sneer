@@ -40,7 +40,7 @@ public class ContactListPrinter extends AbstractNotifier<ListValueChange> implem
 
 		@Override
 		public void elementAdded(int index) {
-			_input.currentValue().get(index).nick().addReceiver(new MyContactReceiver(index));
+			_input.get(index).nick().addReceiver(new MyContactReceiver(index));
 			notifyReceivers(new ListElementAdded(index));
 		}
 
@@ -105,6 +105,11 @@ public class ContactListPrinter extends AbstractNotifier<ListValueChange> implem
 	@Override
 	protected void initReceiver(Receiver<ListValueChange> receiver) {
 		receiver.receive(ListReplaced.SINGLETON);
+	}
+
+	@Override
+	public String get(int index) {
+		return currentValue().get(index);
 	}
 
 }

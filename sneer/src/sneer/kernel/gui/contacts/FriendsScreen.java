@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.security.InvalidParameterException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,26 +19,39 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import sneer.kernel.business.Contact;
-import wheel.io.ui.ListSignalModel;
+import org.jmock.util.NotImplementedException;
 
-public class FriendsScreen extends JFrame {  //Fix: Changes made here are not persistent.
+import sneer.kernel.business.Contact;
+import sneer.kernel.business.ContactInfo;
+import sneer.kernel.gui.NewContactAddition;
+import wheel.io.ui.CancelledByUser;
+import wheel.io.ui.ListSignalModel;
+import wheel.io.ui.User;
+import wheel.lang.Consumer;
+import wheel.reactive.list.ListSignal;
+
+public class FriendsScreen extends JFrame {
 
 	private static final String TITLE = "Amigos";
 	private static final String ADD_FRIEND_BUTTON_TEXT = "+";
 	private static final String FRIEND_MENU_REMOVE_TEXT = "remover";
 
 	private static final long serialVersionUID = 1L;
+	private final ListSignal<Contact> _contacts;
+	protected final Consumer<ContactInfo> _contactAdder;
+	protected final User _user;
 
-	private final FriendsModel _model;
 
-	public FriendsScreen(FriendsModel model) {
+	public FriendsScreen(ListSignal<Contact> contacts, Consumer<ContactInfo> contactAdder, User user) {
 
-		if (model == null) {
-			throw new InvalidParameterException("Model must not be null");
-		}
+		if (contacts == null) throw new IllegalArgumentException();
+		if (contactAdder == null) throw new IllegalArgumentException();
+		if (user == null) throw new IllegalArgumentException();
+		
+		_contacts = contacts;
+		_contactAdder = contactAdder;
+		_user = user;
 
-		_model = model;
 		initComponents();
 		setVisible(true);
 	}
@@ -53,7 +65,7 @@ public class FriendsScreen extends JFrame {  //Fix: Changes made here are not pe
 		JPanel editPanel = new JPanel();
 		editPanel.setLayout(new BorderLayout());
 		editPanel.add(nameText, BorderLayout.CENTER);
-		editPanel.add(createAddButton(nameText), BorderLayout.EAST);
+		editPanel.add(createAddButton(), BorderLayout.EAST);
 
 		this.add(new JScrollPane(createFriendsList()), BorderLayout.CENTER);
 		this.add(editPanel, BorderLayout.SOUTH);
@@ -74,7 +86,7 @@ public class FriendsScreen extends JFrame {  //Fix: Changes made here are not pe
 	}
 
 	private JList createFriendsList() {
-		final ListSignalModel friendsListModel = new ListSignalModel(new ContactListPrinter(_model.friends()));
+		final ListSignalModel friendsListModel = new ListSignalModel(new ContactListPrinter(_contacts));
 		final JList friendsList = new JList(friendsListModel);
 		
 		friendsList.addMouseListener(new MouseAdapter() {
@@ -111,19 +123,23 @@ public class FriendsScreen extends JFrame {  //Fix: Changes made here are not pe
 				int answer = JOptionPane.showConfirmDialog(FriendsScreen.this, 
 						"Deseja remover o amigo " + selectedFriend + "?");
 				if (answer == JOptionPane.YES_OPTION){
-					_model.removeFriend(selectedFriend);
+					throw new NotImplementedException();
 				}
 			}
 		});
 		return removeFriendMenuItem;
 	}
 
-	private JButton createAddButton(final JTextField nameText) {
+	private JButton createAddButton() {
 		JButton addButton = new JButton(ADD_FRIEND_BUTTON_TEXT);
 		addButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				_model.addFriend(nameText.getText());
+				try {
+					new NewContactAddition(_user, _contactAdder);
+				} catch (CancelledByUser e1) {
+					//Why should I care?
+				}
 			}
 
 		});

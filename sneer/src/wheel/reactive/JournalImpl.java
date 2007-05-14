@@ -53,6 +53,11 @@ public class JournalImpl<VO> implements Journal<VO> {
 	public List<VO> currentValue() {
 		return Collections.unmodifiableList(_contents);		
 	}
+
+	@Override
+	public VO get(int index) {
+		return currentValue().get(index);
+	}
 	
 	
 }

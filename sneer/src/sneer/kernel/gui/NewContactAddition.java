@@ -9,19 +9,20 @@ import sneer.kernel.business.ContactInfo;
 
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
+import wheel.lang.Consumer;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.lang.exceptions.NotImplementedYet;
 
 public class NewContactAddition {
 
-	public NewContactAddition(User user, BusinessSource business) throws CancelledByUser {
+	public NewContactAddition(User user, Consumer<ContactInfo> contactAdder) throws CancelledByUser {
 		while(true){
 			String nick = user.answer("New contact's nickname");
 			String host = user.answer("Host Address for " + nick, nick + ".dyndns.org");
 			int port = port(user, nick);
 			
 			try {
-				business.contactAdder().consume(new ContactInfo(nick, host, port));
+				contactAdder.consume(new ContactInfo(nick, host, port));
 				return;
 			} catch (IllegalParameter e) {
 				user.acknowledgeNotification(e.getMessage());

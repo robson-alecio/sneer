@@ -42,7 +42,7 @@ public class Gui {
 
 		_trayIcon.addAction(nameChangeAction());
 		_trayIcon.addAction(addNewContactAction());
-		_trayIcon.addAction(new ShowContactsScreenAction(_business));
+		_trayIcon.addAction(new ShowContactsScreenAction(_business.output().contacts(), _business.contactAdder(), _user));
 		_trayIcon.addAction(sneerPortChangeAction());
 		_trayIcon.addAction(exitAction());
 	}
@@ -70,7 +70,7 @@ public class Gui {
 
 			@Override
 			public void tryToRun() throws CancelledByUser {
-				new NewContactAddition(_user, _business);
+				new NewContactAddition(_user, _business.contactAdder());
 			}
 		};
 	}

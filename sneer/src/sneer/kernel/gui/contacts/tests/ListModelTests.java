@@ -10,6 +10,7 @@ import junit.framework.TestCase;
 
 
 import wheel.io.ui.ListSignalModel;
+import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Receiver;
 import wheel.reactive.list.ListElementAdded;
 import wheel.reactive.list.ListReplaced;
@@ -69,6 +70,11 @@ public class ListModelTests extends TestCase implements ListSignal<String> {
 
 	public List<String> currentValue() {
 		return _names;
+	}
+
+	@Override
+	public String get(int index) {
+		throw new NotImplementedYet(); 
 	}
 	
 }

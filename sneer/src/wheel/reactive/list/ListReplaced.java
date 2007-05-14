@@ -15,4 +15,8 @@ public final class ListReplaced implements ListValueChange {
 		visitor.listReplaced();
 	}
 
+	@Override
+	public String toString() {
+		return "List replaced";
+	}
 }

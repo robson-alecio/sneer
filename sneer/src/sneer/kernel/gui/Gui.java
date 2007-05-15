@@ -38,10 +38,10 @@ public class Gui {
 	
 	private void tryToRun() {
 		//Refactor: remove this logic from the gui;
-		if (_business.output().ownName() == null) nameChangeAction().run();
+		String ownName = _business.output().ownName().currentValue();
+		if (ownName == null || ownName.isEmpty()) nameChangeAction().run();
 
 		_trayIcon.addAction(nameChangeAction());
-		_trayIcon.addAction(addNewContactAction());
 		_trayIcon.addAction(new ShowContactsScreenAction(_business.output().contacts(), _business.contactAdder(), _user));
 		_trayIcon.addAction(sneerPortChangeAction());
 		_trayIcon.addAction(exitAction());
@@ -59,20 +59,6 @@ public class Gui {
 		String prompt = " What is your name?" +
 						"\n (You can change it any time you like)";
 		return new ValueChangePane("Name Change",prompt, _user, _business.output().ownName(), _business.ownNameSetter());
-	}
-
-	private Action addNewContactAction() {
-		return new CancellableAction(){
-
-			public String caption() {
-				return "Add New Contact";
-			}
-
-			@Override
-			public void tryToRun() throws CancelledByUser {
-				new NewContactAddition(_user, _business.contactAdder());
-			}
-		};
 	}
 
 	

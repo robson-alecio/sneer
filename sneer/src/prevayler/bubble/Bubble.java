@@ -52,12 +52,15 @@ public class Bubble implements InvocationHandler {
 	
 	private Object wrapIfNecessary(Object object, Method method) {
 		Class<?> type = method.getReturnType();
+		String methodName = method.getName();
 		
 		if (Omnivore.class.isAssignableFrom(type))
-			return new OmnivoreBubble(_prevayler, method.getName()); 
+			return new OmnivoreBubble(_prevayler, methodName);
 		if (Consumer.class.isAssignableFrom(type))
-			return new ConsumerBubble(_prevayler, method.getName());
+			return new ConsumerBubble(_prevayler, methodName);
 		
+		if (!methodName.equals("output")) throw new IllegalStateException();
+			
 		return object;
 	}
 

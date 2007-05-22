@@ -18,11 +18,9 @@ import wheel.lang.IntegerParser;
 
 public class Gui {
 
-	public Gui(User user, Prevayler prevayler) throws Exception {
+	public Gui(User user, BusinessSource businessSource) throws Exception {
 		_user = user;
-
-		_prevayler = prevayler;
-		_business = Bubble.wrapStateMachine(_prevayler);
+		_business = businessSource;
 
 		URL icon = Gui.class.getResource("/sneer/kernel/gui/traymenu/yourIconGoesHere.png");
 		_trayIcon = new TrayIconImpl(icon, _user.catcher());
@@ -34,7 +32,6 @@ public class Gui {
 	private final User _user;
 	private final TrayIcon _trayIcon;
 	
-	private final Prevayler _prevayler;
 	private final BusinessSource _business;
 	
 	

@@ -9,7 +9,9 @@ import java.io.Serializable;
 import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
 
+import prevayler.bubble.Bubble;
 import sneer.kernel.business.BusinessFactory;
+import sneer.kernel.business.BusinessSource;
 import sneer.kernel.communication.Communicator;
 import sneer.kernel.gui.Gui;
 import wheel.io.Log;
@@ -40,7 +42,9 @@ public class Sneer {
 
 		Prevayler prevayler = prevaylerFor((Serializable)new BusinessFactory().createBusinessSource());
 		new Communicator(_user, new OldNetworkImpl(), prevayler);
-		new Gui(_user, prevayler);
+		
+		BusinessSource persistentBusinessSource = Bubble.wrapStateMachine(prevayler);
+		new Gui(_user, persistentBusinessSource);
 		
 		
 		while (true) Threads.sleepWithoutInterruptions(5000);

@@ -4,6 +4,8 @@ import java.net.URL;
 
 import org.prevayler.Prevayler;
 
+import prevayler.bubble.Bubble;
+
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.gui.contacts.ShowContactsScreenAction;
 import wheel.io.ui.CancelledByUser;
@@ -20,7 +22,7 @@ public class Gui {
 		_user = user;
 
 		_prevayler = prevayler;
-		_business = PersistenceHandler.persistentProxyFor(_prevayler);
+		_business = Bubble.wrapStateMachine(_prevayler);
 
 		URL icon = Gui.class.getResource("/sneer/kernel/gui/traymenu/yourIconGoesHere.png");
 		_trayIcon = new TrayIconImpl(icon, _user.catcher());

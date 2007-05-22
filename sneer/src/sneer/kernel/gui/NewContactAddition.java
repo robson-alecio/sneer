@@ -32,8 +32,11 @@ public class NewContactAddition {
 
 	private int port(User user, String nick) throws CancelledByUser {
 		String answer = user.answer("Sneer Port Number for " + nick);
-		return Integer.parseInt(answer);
-		//Fix: Deal with parse errors. Use same logic as own SneerPortChange action.
+		try {
+			return Integer.parseInt(answer);
+		} catch (NumberFormatException e) {
+			return 0; //Fix: Deal with parse errors. Share logic with SneerPortChange action.
+		}
 	}
 
 	private static final long serialVersionUID = 1L;

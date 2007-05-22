@@ -1,6 +1,10 @@
-The copyright of all files in this repository or distribution, unless otherwise stated in the file itself, is held by Klaus Wuestefeld.
+Sneer is free software, licensed under the terms of the GNU General Public License, below.  
 
-They are licensed under the GNU General Public License as follows.
+The copyright of all files in this repository or distribution, except the files contained in the lib directory and subdirectories, is held by Klaus Wuestefeld.
+
+BY COMMITTING ANY FILES, INCLUDING, BUT NOT LIMITED TO, SOURCE CODE, IMAGES, DOCUMENTS, DESIGNS AND DRAWINGS, TO THE SNEER PROJECT REPOSITORY YOU ARE TRANFERRING ALL RIGHTS YOU HAVE ON THE CONTENTS OF THOSE FILES INCLUDING, BUT NOT LIMITED TO, COPYRIGHTS, PATENTS AND ALL OTHER INTELLECTUAL PROPERTY RIGHTS, IMMEDIATELY, ETERNALLY AND IRREVOCABLY TO KLAUS WUESTEFELD.
+YOU ARE NOT ALLOWED TO COMMIT TO THE SNEER PROJECT REPOSITORY ANY FILE IF YOU DO NOT OWN ALL INTELLECTUAL PROPERTY RIGHTS TO THE CONTENTS OF THAT FILE, INCLUDING, BUT NOT LIMITED TO, ALL MENTIONED ABOVE. IF YOU WANT THE SNEER PROJECT REPOSITORY TO INCLUDE A CLASS LIBRARY OR ANY OTHER MATERIAL OWNED BY A THIRD PARTY, YOU MUST ASK KLAUS WUESTEFELD TO COMMIT IT.
+
 
 -----------------------------------------
 

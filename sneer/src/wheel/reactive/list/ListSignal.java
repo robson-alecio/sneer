@@ -22,12 +22,8 @@ public interface ListSignal<VO> {
 
 	public void addListReceiver(Receiver<ListValueChange> receiver);
 
-	//Refactor consider not exposing a java list.
-	//Exposing only methods like get, contains and size seems less coupled 
-	//and better to use, doesn't it?
-	public List<VO> currentValue();
-
-	public VO get(int index);
+	public VO currentGet(int index);
+	public int currentSize();
 	
 
 }

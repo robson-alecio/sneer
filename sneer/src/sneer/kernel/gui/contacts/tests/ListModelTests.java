@@ -22,6 +22,8 @@ public class ListModelTests extends TestCase implements ListSignal<String> {
 	private Receiver<ListValueChange> _receiver;
 	private List<String> _names = new ArrayList<String>();
 	
+	
+	//Fix: use a ListSource in this test
 	public void testAddition() {
 		ListSignalModel _subject =new ListSignalModel(this);
 		
@@ -56,7 +58,6 @@ public class ListModelTests extends TestCase implements ListSignal<String> {
 		
 			public void contentsChanged(ListDataEvent list) {
 				// TODO Auto-generated method stub
-		
 			}
 		
 			public String log(){
@@ -73,8 +74,13 @@ public class ListModelTests extends TestCase implements ListSignal<String> {
 	}
 
 	@Override
-	public String get(int index) {
-		throw new NotImplementedYet(); 
+	public String currentGet(int index) {
+		return _names.get(index);
+	}
+
+	@Override
+	public int currentSize() {
+		return _names.size();
 	}
 	
 }

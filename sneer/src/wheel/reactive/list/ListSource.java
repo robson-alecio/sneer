@@ -9,6 +9,7 @@ import wheel.reactive.AbstractNotifier;
 import wheel.reactive.Receiver;
 import wheel.reactive.list.ListSignal.ListValueChange;
 
+//Fix: make all methods synchronized
 public class ListSource<VO> extends AbstractNotifier<ListValueChange> 
 	implements ListSignal<VO>, Serializable {  //Refactor: Make into interface with a ListSignal output() instead of implementing ListSignal.
 
@@ -33,10 +34,6 @@ public class ListSource<VO> extends AbstractNotifier<ListValueChange>
 	
 	private static final long serialVersionUID = 0L;
 
-	public List<VO> currentValue() {
-		return Collections.unmodifiableList(_list); 
-	}
-
 	public boolean remove(VO element) {
 		synchronized (_list){
 			int index = _list.indexOf(element);
@@ -49,7 +46,12 @@ public class ListSource<VO> extends AbstractNotifier<ListValueChange>
 	}
 
 	@Override
-	public VO get(int index) {
+	public VO currentGet(int index) {
 		return _list.get(index);
+	}
+
+	@Override
+	public int currentSize() {
+		return _list.size();
 	}
 }

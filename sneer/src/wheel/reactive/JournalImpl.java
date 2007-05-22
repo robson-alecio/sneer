@@ -50,13 +50,14 @@ public class JournalImpl<VO> implements Journal<VO> {
 		
 	}
 
-	public List<VO> currentValue() {
-		return Collections.unmodifiableList(_contents);		
+	@Override
+	public VO currentGet(int index) {
+		return _contents.get(index);
 	}
 
 	@Override
-	public VO get(int index) {
-		return currentValue().get(index);
+	public int currentSize() {
+		return _contents.size();
 	}
 	
 	

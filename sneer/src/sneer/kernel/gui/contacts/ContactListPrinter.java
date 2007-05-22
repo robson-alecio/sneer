@@ -40,7 +40,7 @@ public class ContactListPrinter extends AbstractNotifier<ListValueChange> implem
 
 		@Override
 		public void elementAdded(int index) {
-			_input.get(index).nick().addReceiver(new MyContactReceiver(index));
+			_input.currentGet(index).nick().addReceiver(new MyContactReceiver(index));
 			notifyReceivers(new ListElementAdded(index));
 		}
 
@@ -77,20 +77,6 @@ public class ContactListPrinter extends AbstractNotifier<ListValueChange> implem
 		addReceiver(receiver);
 	}
 
-	@Override
-	public List<String> currentValue() {
-		return printList(_input.currentValue());
-	}
-
-	private List<String> printList(List<Contact> input) {
-		List<Contact> inputList = input;
-		ArrayList<String> result = new ArrayList<String>(inputList.size());
-		
-		for (Contact contact : inputList) result.add(print(contact));
-		
-		return result;
-	}
-
 	private String print(Contact contact) { //Fix: this must be reactive.
 		return onlineTag(contact) + " - " + contact.nick().currentValue() + " - " + contact.host().currentValue() + ":" + contact.port().currentValue();
 	}
@@ -108,8 +94,13 @@ public class ContactListPrinter extends AbstractNotifier<ListValueChange> implem
 	}
 
 	@Override
-	public String get(int index) {
-		return currentValue().get(index);
+	public String currentGet(int index) {
+		return print(_input.currentGet(index));
+	}
+
+	@Override
+	public int currentSize() {
+		return _input.currentSize();
 	}
 
 }

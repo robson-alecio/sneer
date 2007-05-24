@@ -1,7 +1,5 @@
 package wheel.reactive.lists;
 
-import wheel.reactive.lists.ListSignal.ListValueChange;
-import wheel.reactive.lists.ListSignal.ListValueChangeVisitor;
 
 public final class ListElementAdded implements ListValueChange {
 
@@ -11,7 +9,7 @@ public final class ListElementAdded implements ListValueChange {
 		_index = index;
 	}
 
-	public void accept(ListValueChangeVisitor visitor) {
+	public void accept(Visitor visitor) {
 		visitor.elementAdded(_index);
 	}
 

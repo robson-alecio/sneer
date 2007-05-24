@@ -1,16 +1,11 @@
 package wheel.io.ui.impl;
 
-import java.util.Collections;
-import java.util.List;
-
 import javax.swing.AbstractListModel;
-
-import sneer.kernel.business.Contact;
 
 import wheel.reactive.Receiver;
 import wheel.reactive.lists.ListSignal;
-import wheel.reactive.lists.ListSignal.ListValueChange;
-import wheel.reactive.lists.ListSignal.ListValueChangeVisitor;
+import wheel.reactive.lists.ListValueChange;
+import wheel.reactive.lists.ListValueChange.Visitor;
 
 public class ListSignalModel extends AbstractListModel {
 
@@ -41,7 +36,7 @@ public class ListSignalModel extends AbstractListModel {
 		return _listModelVisitor;
 	}
 
-	private class ListModelValueChangeVisitor implements ListValueChangeVisitor {
+	private class ListModelValueChangeVisitor implements Visitor {
 
 		public void listReplaced() {
 			fireIntervalRemoved(this, 0, _currentListSize );

@@ -2,8 +2,6 @@ package wheel.reactive.lists;
 
 import java.util.List;
 
-import wheel.reactive.lists.ListSignal.ListValueChange;
-import wheel.reactive.lists.ListSignal.ListValueChangeVisitor;
 
 public final class ListReplaced implements ListValueChange {
 	
@@ -11,7 +9,7 @@ public final class ListReplaced implements ListValueChange {
 
 	private ListReplaced(){}
 	
-	public void accept(ListValueChangeVisitor visitor) {
+	public void accept(Visitor visitor) {
 		visitor.listReplaced();
 	}
 

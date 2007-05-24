@@ -7,7 +7,6 @@ import java.util.List;
 
 import wheel.reactive.AbstractNotifier;
 import wheel.reactive.Receiver;
-import wheel.reactive.lists.ListSignal.ListValueChange;
 
 //Fix: make all methods synchronized
 public class ListSource<VO> extends AbstractNotifier<ListValueChange> 

@@ -9,7 +9,7 @@ import java.util.Set;
 import wheel.lang.exceptions.Catcher;
 import wheel.reactive.lists.ListElementAdded;
 import wheel.reactive.lists.ListReplaced;
-import wheel.reactive.lists.ListSignal.ListValueChange;
+import wheel.reactive.lists.ListValueChange;
 
 
 public class JournalImpl<VO> implements Journal<VO> {
@@ -44,7 +44,7 @@ public class JournalImpl<VO> implements Journal<VO> {
 	}
 
 	public void addListReceiver(
-			Receiver<wheel.reactive.lists.ListSignal.ListValueChange> receiver) {
+			Receiver<wheel.reactive.lists.ListValueChange> receiver) {
 		_receivers.add(receiver);
 		initReceiver(receiver);
 		

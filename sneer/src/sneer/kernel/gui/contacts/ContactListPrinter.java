@@ -3,12 +3,12 @@ package sneer.kernel.gui.contacts;
 import sneer.kernel.business.Contact;
 import wheel.reactive.AbstractNotifier;
 import wheel.reactive.Receiver;
-import wheel.reactive.lists.ListElementAdded;
-import wheel.reactive.lists.ListElementReplaced;
-import wheel.reactive.lists.ListReplaced;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListValueChange;
 import wheel.reactive.lists.ListValueChange.Visitor;
+import wheel.reactive.lists.impl.ListElementAdded;
+import wheel.reactive.lists.impl.ListElementReplaced;
+import wheel.reactive.lists.impl.ListReplaced;
 
 public class ContactListPrinter {
 

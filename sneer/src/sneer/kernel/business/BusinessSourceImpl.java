@@ -1,17 +1,14 @@
 package sneer.kernel.business;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
-import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Signal;
 import wheel.reactive.SourceImpl;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListSource;
+import wheel.reactive.lists.impl.ListSourceImpl;
 
 
 public class BusinessSourceImpl implements BusinessSource, Business, Serializable { //Refactor: Create a separate class for BusinessImpl.
@@ -20,7 +17,7 @@ public class BusinessSourceImpl implements BusinessSource, Business, Serializabl
 
 	private SourceImpl<Integer> _sneerPortNumber = new SourceImpl<Integer>(0);
 
-	private final ListSource<Contact> _contacts = new ListSource<Contact>();
+	private final ListSource<Contact> _contacts = new ListSourceImpl<Contact>();
 
 	
 	public Signal<String> ownName() {
@@ -40,7 +37,7 @@ public class BusinessSourceImpl implements BusinessSource, Business, Serializabl
 	}
 
 	public ListSignal<Contact> contacts() {
-		return _contacts;
+		return _contacts.output();
 	}
 
 

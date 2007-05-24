@@ -1,6 +1,9 @@
-package wheel.reactive.lists;
+package wheel.reactive.lists.impl;
 
 import java.util.List;
+
+import wheel.reactive.lists.ListValueChange;
+import wheel.reactive.lists.ListValueChange.Visitor;
 
 
 public final class ListReplaced implements ListValueChange {

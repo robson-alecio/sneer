@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Set;
 
 import wheel.lang.exceptions.Catcher;
-import wheel.reactive.lists.ListElementAdded;
-import wheel.reactive.lists.ListReplaced;
 import wheel.reactive.lists.ListValueChange;
+import wheel.reactive.lists.impl.ListElementAdded;
+import wheel.reactive.lists.impl.ListReplaced;
 
 
 public class JournalImpl<VO> implements Journal<VO> {

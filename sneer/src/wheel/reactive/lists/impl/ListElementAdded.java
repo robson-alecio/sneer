@@ -1,4 +1,7 @@
-package wheel.reactive.lists;
+package wheel.reactive.lists.impl;
+
+import wheel.reactive.lists.ListValueChange;
+import wheel.reactive.lists.ListValueChange.Visitor;
 
 
 public final class ListElementAdded implements ListValueChange {

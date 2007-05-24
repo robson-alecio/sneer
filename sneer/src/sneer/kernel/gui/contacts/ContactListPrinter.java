@@ -1,8 +1,5 @@
 package sneer.kernel.gui.contacts;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import sneer.kernel.business.Contact;
 import wheel.reactive.AbstractNotifier;
 import wheel.reactive.Receiver;
@@ -12,8 +9,38 @@ import wheel.reactive.lists.ListReplaced;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListValueChangeVisitorAdapter;
 import wheel.reactive.lists.ListSignal.ListValueChange;
+import wheel.reactive.lists.ListSignal.ListValueChangeVisitor;
 
-public class ContactListPrinter extends AbstractNotifier<ListValueChange> implements ListSignal<String> {
+public class ContactListPrinter {
+
+	private class MyOutput extends AbstractNotifier<ListValueChange> implements ListSignal<String> {
+
+		@Override
+		public void addListReceiver(Receiver<ListValueChange> receiver) {
+			addReceiver(receiver);
+		}
+
+		@Override
+		public String currentGet(int index) {
+			return print(_input.currentGet(index));
+		}
+
+		@Override
+		public int currentSize() {
+			return _input.currentSize();
+		}
+
+		@Override
+		protected void initReceiver(Receiver<ListValueChange> receiver) {
+			receiver.receive(ListReplaced.SINGLETON);
+		}
+
+		@Override
+		protected void notifyReceivers(ListValueChange valueChange) {
+			super.notifyReceivers(valueChange);
+		}
+	}
+
 
 	private class MyContactReceiver implements Receiver<String> {
 
@@ -25,7 +52,7 @@ public class ContactListPrinter extends AbstractNotifier<ListValueChange> implem
 
 		@Override
 		public void receive(String valueChange) {
-			notifyReceivers(new ListElementReplaced(_contactIndex));
+			_output.notifyReceivers(new ListElementReplaced(_contactIndex));
 		}
 
 	}
@@ -41,7 +68,7 @@ public class ContactListPrinter extends AbstractNotifier<ListValueChange> implem
 		@Override
 		public void elementAdded(int index) {
 			_input.currentGet(index).nick().addReceiver(new MyContactReceiver(index));
-			notifyReceivers(new ListElementAdded(index));
+			_output.notifyReceivers(new ListElementAdded(index));
 		}
 
 		@Override
@@ -66,15 +93,11 @@ public class ContactListPrinter extends AbstractNotifier<ListValueChange> implem
 
 
 	private final ListSignal<Contact> _input;
+	private MyOutput _output = new MyOutput();
 
 	public ContactListPrinter(ListSignal<Contact> input) {
 		_input = input;
 		_input.addListReceiver(new MyListReceiver());
-	}
-
-	@Override
-	public void addListReceiver(Receiver<ListValueChange> receiver) {
-		addReceiver(receiver);
 	}
 
 	private String print(Contact contact) { //Fix: this must be reactive.
@@ -88,19 +111,8 @@ public class ContactListPrinter extends AbstractNotifier<ListValueChange> implem
 			: "Off :(";
 	}
 
-	@Override
-	protected void initReceiver(Receiver<ListValueChange> receiver) {
-		receiver.receive(ListReplaced.SINGLETON);
-	}
-
-	@Override
-	public String currentGet(int index) {
-		return print(_input.currentGet(index));
-	}
-
-	@Override
-	public int currentSize() {
-		return _input.currentSize();
+	public ListSignal<String> output() {
+		return _output;
 	}
 
 }

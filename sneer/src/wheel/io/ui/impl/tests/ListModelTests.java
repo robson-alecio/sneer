@@ -1,4 +1,4 @@
-package sneer.kernel.gui.contacts.tests;
+package wheel.io.ui.impl.tests;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import javax.swing.event.ListDataListener;
 import junit.framework.TestCase;
 
 
-import wheel.io.ui.ListSignalModel;
+import wheel.io.ui.impl.ListSignalModel;
 import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Receiver;
 import wheel.reactive.lists.ListElementAdded;

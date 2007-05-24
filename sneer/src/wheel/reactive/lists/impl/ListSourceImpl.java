@@ -33,7 +33,6 @@ public class ListSourceImpl<VO> implements ListSource<VO>, Serializable {
 		@Override
 		protected void initReceiver(Receiver<ListValueChange> receiver) {
 			receiver.receive(ListReplaced.SINGLETON);
-			
 		}
 
 		@Override
@@ -69,4 +68,6 @@ public class ListSourceImpl<VO> implements ListSource<VO>, Serializable {
 	public ListSignal<VO> output() {
 		return _output;
 	}
+	
+	
 }

@@ -15,7 +15,7 @@ class ContactAdder implements Consumer<ContactInfo> {
 	}
 
 	public void consume(ContactInfo info) {
-		Contact contact = new ContactSource(info._nick, info._host, info._port);
+		Contact contact = new ContactSourceImpl(info._nick, info._host, info._port);
 		_contacts.add(contact);
 	}
 

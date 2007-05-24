@@ -6,7 +6,7 @@ import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.lang.exceptions.IllegalParameter;
 
-public class SourceImpl<VO> extends AbstractSignal<VO> implements Source<VO>, Signal<VO>, Omnivore<VO>, Serializable  {
+public class SourceImpl<VO> extends AbstractSignal<VO> implements Source<VO>, Signal<VO>, Omnivore<VO>, Serializable  { //Fix: Do not implement Signal. Only the output() is Signal.
 
 	
 	private VO _currentValue;

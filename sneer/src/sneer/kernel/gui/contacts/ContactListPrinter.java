@@ -103,7 +103,7 @@ public class ContactListPrinter {
 		_input.addListReceiver(new MyListReceiver());
 	}
 
-	private String print(Contact contact) { //Fix Use ContactPrinter instead of this.
+	private String print(Contact contact) { //Fix: Use ContactPrinter instead of this.
 		return onlineTag(contact) + " - " + contact.nick().currentValue() + " - " + contact.host().currentValue() + ":" + contact.port().currentValue();
 	}
 

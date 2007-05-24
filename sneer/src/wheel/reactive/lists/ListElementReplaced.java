@@ -1,7 +1,7 @@
-package wheel.reactive.list;
+package wheel.reactive.lists;
 
-import wheel.reactive.list.ListSignal.ListValueChange;
-import wheel.reactive.list.ListSignal.ListValueChangeVisitor;
+import wheel.reactive.lists.ListSignal.ListValueChange;
+import wheel.reactive.lists.ListSignal.ListValueChangeVisitor;
 
 public final class ListElementReplaced implements ListValueChange {
 

@@ -5,7 +5,7 @@ import sneer.kernel.business.ContactInfo;
 import wheel.io.ui.User;
 import wheel.io.ui.TrayIcon.Action;
 import wheel.lang.Consumer;
-import wheel.reactive.list.ListSignal;
+import wheel.reactive.lists.ListSignal;
 
 public class ShowContactsScreenAction implements Action {
 

@@ -1,6 +1,6 @@
 package wheel.reactive;
 
-import wheel.reactive.list.ListSignal;
+import wheel.reactive.lists.ListSignal;
 
 
 /** A List that can only be added to. Its elements cannot be removed or changed. */

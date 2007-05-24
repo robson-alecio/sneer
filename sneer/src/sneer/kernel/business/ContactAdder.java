@@ -4,7 +4,7 @@ import java.util.List;
 
 import wheel.lang.Consumer;
 import wheel.lang.exceptions.IllegalParameter;
-import wheel.reactive.list.ListSource;
+import wheel.reactive.lists.ListSource;
 
 class ContactAdder implements Consumer<ContactInfo> {
 

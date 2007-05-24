@@ -28,7 +28,7 @@ import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.ListSignalModel;
 import wheel.io.ui.User;
 import wheel.lang.Consumer;
-import wheel.reactive.list.ListSignal;
+import wheel.reactive.lists.ListSignal;
 
 public class FriendsScreen extends JFrame {
 

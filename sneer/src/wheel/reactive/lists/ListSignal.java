@@ -1,4 +1,4 @@
-package wheel.reactive.list;
+package wheel.reactive.lists;
 
 import java.util.Calendar;
 import java.util.List;

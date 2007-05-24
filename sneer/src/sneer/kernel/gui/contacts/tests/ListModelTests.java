@@ -12,10 +12,10 @@ import junit.framework.TestCase;
 import wheel.io.ui.ListSignalModel;
 import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Receiver;
-import wheel.reactive.list.ListElementAdded;
-import wheel.reactive.list.ListReplaced;
-import wheel.reactive.list.ListSignal;
-import wheel.reactive.list.ListSignal.ListValueChange;
+import wheel.reactive.lists.ListElementAdded;
+import wheel.reactive.lists.ListReplaced;
+import wheel.reactive.lists.ListSignal;
+import wheel.reactive.lists.ListSignal.ListValueChange;
 
 public class ListModelTests extends TestCase implements ListSignal<String> {
 

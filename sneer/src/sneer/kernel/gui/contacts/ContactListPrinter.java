@@ -6,12 +6,12 @@ import java.util.List;
 import sneer.kernel.business.Contact;
 import wheel.reactive.AbstractNotifier;
 import wheel.reactive.Receiver;
-import wheel.reactive.list.ListElementAdded;
-import wheel.reactive.list.ListElementReplaced;
-import wheel.reactive.list.ListReplaced;
-import wheel.reactive.list.ListSignal;
-import wheel.reactive.list.ListValueChangeVisitorAdapter;
-import wheel.reactive.list.ListSignal.ListValueChange;
+import wheel.reactive.lists.ListElementAdded;
+import wheel.reactive.lists.ListElementReplaced;
+import wheel.reactive.lists.ListReplaced;
+import wheel.reactive.lists.ListSignal;
+import wheel.reactive.lists.ListValueChangeVisitorAdapter;
+import wheel.reactive.lists.ListSignal.ListValueChange;
 
 public class ContactListPrinter extends AbstractNotifier<ListValueChange> implements ListSignal<String> {
 

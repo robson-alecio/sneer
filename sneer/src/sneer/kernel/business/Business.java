@@ -1,7 +1,7 @@
 package sneer.kernel.business;
 
 import wheel.reactive.Signal;
-import wheel.reactive.list.ListSignal;
+import wheel.reactive.lists.ListSignal;
 
 public interface Business {
 

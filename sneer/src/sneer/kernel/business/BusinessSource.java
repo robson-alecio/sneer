@@ -6,7 +6,7 @@ import java.util.List;
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
-import wheel.reactive.list.ListSignal;
+import wheel.reactive.lists.ListSignal;
 
 public interface BusinessSource {
 

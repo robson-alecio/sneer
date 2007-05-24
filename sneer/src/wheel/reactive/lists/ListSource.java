@@ -1,4 +1,4 @@
-package wheel.reactive.list;
+package wheel.reactive.lists;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,7 +7,7 @@ import java.util.List;
 
 import wheel.reactive.AbstractNotifier;
 import wheel.reactive.Receiver;
-import wheel.reactive.list.ListSignal.ListValueChange;
+import wheel.reactive.lists.ListSignal.ListValueChange;
 
 //Fix: make all methods synchronized
 public class ListSource<VO> extends AbstractNotifier<ListValueChange> 

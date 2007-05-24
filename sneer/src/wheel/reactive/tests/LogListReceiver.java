@@ -5,9 +5,9 @@ import java.util.List;
 import sneer.kernel.business.Contact;
 
 import wheel.reactive.Receiver;
-import wheel.reactive.list.ListSignal;
-import wheel.reactive.list.ListValueChangeVisitorAdapter;
-import wheel.reactive.list.ListSignal.ListValueChange;
+import wheel.reactive.lists.ListSignal;
+import wheel.reactive.lists.ListValueChangeVisitorAdapter;
+import wheel.reactive.lists.ListSignal.ListValueChange;
 
 public final class LogListReceiver<VO> implements Receiver<ListValueChange> {
 

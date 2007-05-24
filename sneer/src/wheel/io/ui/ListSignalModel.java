@@ -8,9 +8,9 @@ import javax.swing.AbstractListModel;
 import sneer.kernel.business.Contact;
 
 import wheel.reactive.Receiver;
-import wheel.reactive.list.ListSignal;
-import wheel.reactive.list.ListSignal.ListValueChange;
-import wheel.reactive.list.ListSignal.ListValueChangeVisitor;
+import wheel.reactive.lists.ListSignal;
+import wheel.reactive.lists.ListSignal.ListValueChange;
+import wheel.reactive.lists.ListSignal.ListValueChangeVisitor;
 
 public class ListSignalModel extends AbstractListModel {
 

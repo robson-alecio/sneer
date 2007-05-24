@@ -10,8 +10,8 @@ import wheel.lang.Omnivore;
 import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Signal;
 import wheel.reactive.SourceImpl;
-import wheel.reactive.list.ListSignal;
-import wheel.reactive.list.ListSource;
+import wheel.reactive.lists.ListSignal;
+import wheel.reactive.lists.ListSource;
 
 
 public class BusinessSourceImpl implements BusinessSource, Business, Serializable { //Refactor: Create a separate class for BusinessImpl.

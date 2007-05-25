@@ -15,8 +15,8 @@ public class ContactListPrinterTest extends TestCase {
 
 		ContactSource klaus = new ContactSourceImpl("Klaus","klaus.dyndns.org", 42);
 		ContactSource kalecser = new ContactSourceImpl("Kalecser","kalecser.dyndns.org", 42);
-		contacts.add(klaus); 
-		contacts.add(kalecser);
+		contacts.add(klaus.output()); 
+		contacts.add(kalecser.output());
 
 		ContactListPrinter subject = new ContactListPrinter(contacts.output());
 			
@@ -47,13 +47,13 @@ public class ContactListPrinterTest extends TestCase {
 		
 		sentinel.expect(
 				"Off :( - Kalecser - localhost:43");
-		contacts.remove(klaus);
+		contacts.remove(klaus.output());
 
 		ContactSource humberto = new ContactSourceImpl("Humba","humba.selfip.org", 8080);
 		sentinel.expect(
 		"Off :( - Kalecser - localhost:43," +
 		"Off :( - Humba - humba.selfip.org:8080");
-		contacts.add(humberto);
+		contacts.add(humberto.output());
 		
 		//Fix: test contacts.replace(...);
 		

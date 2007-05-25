@@ -13,7 +13,7 @@ import wheel.reactive.lists.ListValueChange;
 //Fix: make all methods synchronized
 public class ListSourceImpl<VO> implements ListSource<VO>, Serializable {
 
-	private class MyOutput extends AbstractNotifier<ListValueChange> implements ListSignal<VO> {
+	private class MyOutput extends AbstractNotifier<ListValueChange> implements ListSignal<VO>, Serializable {
 
 		@Override
 		public VO currentGet(int index) {
@@ -39,6 +39,8 @@ public class ListSourceImpl<VO> implements ListSource<VO>, Serializable {
 		protected void notifyReceivers(ListValueChange valueChange) {
 			super.notifyReceivers(valueChange);
 		}
+
+		private static final long serialVersionUID = 1L;
 
 	}
 

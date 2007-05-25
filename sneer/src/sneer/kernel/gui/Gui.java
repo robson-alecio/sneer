@@ -49,7 +49,7 @@ public class Gui {
 
 	private ValueChangePane sneerPortChangeAction() {
 		String prompt = " Change this only if you know what you are doing." +
-						"\n Sneer IP port to listen:";
+						"\n Sneer TCP port to listen:";
 		return new ValueChangePane("Sneer Port Configuration",prompt, _user, _business.output().sneerPort(), new IntegerParser(_business.sneerPortSetter()));
 	}
 

@@ -19,18 +19,11 @@ public class ContactSourceImpl implements Contact, Serializable, ContactSource {
 	private final Source<String> _nick;
 	private final Source<String> _host;
 	private final Source<Integer> _port;
-	private transient Source<Boolean> _isOnline;  //Fix: consider removing transient and using transient listeners.
+	private final Source<Boolean> _isOnline = new SourceImpl<Boolean>(false);  //Optimize: Do not store online events in the transaction log. Make this transient or remove it from the business logic.
 
 
 	public Signal<Boolean> isOnline() {
-		return lazyIsOnline().output();
-	}
-
-
-	private synchronized Source<Boolean> lazyIsOnline() {
-		if (_isOnline == null) _isOnline = new SourceImpl<Boolean>(Boolean.FALSE);
-		
-		return _isOnline;
+		return _isOnline.output();
 	}
 
 
@@ -77,7 +70,7 @@ public class ContactSourceImpl implements Contact, Serializable, ContactSource {
 
 	@Override
 	public Consumer<Boolean> isOnlineSetter() {
-		return lazyIsOnline().setter();
+		return _isOnline.setter();
 	}
 
 }

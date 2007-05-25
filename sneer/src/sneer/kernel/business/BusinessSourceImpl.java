@@ -3,6 +3,7 @@ package sneer.kernel.business;
 import java.io.Serializable;
 
 import wheel.lang.Consumer;
+import wheel.lang.IntegerConsumerBoundaries;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.SourceImpl;
@@ -33,7 +34,7 @@ public class BusinessSourceImpl implements BusinessSource, Business, Serializabl
 	}
 	
 	public Consumer<Integer> sneerPortSetter() {
-		return _sneerPortNumber.setter();
+		return new IntegerConsumerBoundaries("Sneer Port", _sneerPortNumber.setter(), 0, 65535);
 	}
 
 	public ListSignal<Contact> contacts() {

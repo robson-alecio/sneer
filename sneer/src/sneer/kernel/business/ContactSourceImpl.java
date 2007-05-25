@@ -7,7 +7,36 @@ import wheel.reactive.Signal;
 import wheel.reactive.Source;
 import wheel.reactive.SourceImpl;
 
-public class ContactSourceImpl implements Contact, Serializable, ContactSource { private static final long serialVersionUID = 1L;
+public class ContactSourceImpl implements Serializable, ContactSource {
+	
+	public class MyOutput implements Contact, Serializable {
+
+		@Override
+		public Signal<String> host() {
+			return _host.output();
+		}
+
+		@Override
+		public Signal<String> nick() {
+			return _nick.output();
+		}
+
+		@Override
+		public Signal<Integer> port() {
+			return _port.output();
+		}
+
+		@Override
+		public Signal<Boolean> isOnline() {
+			return _isOnline.output();
+		}
+
+		private static final long serialVersionUID = 1L;
+
+	}
+
+
+private static final long serialVersionUID = 1L;
 
 	public ContactSourceImpl(String nick, String host, int port) {
 		_nick = new SourceImpl<String>(nick);
@@ -15,6 +44,7 @@ public class ContactSourceImpl implements Contact, Serializable, ContactSource {
 		_port = new SourceImpl<Integer>(port);
 	}
 
+	private final Contact _output = new MyOutput();
 	
 	private final Source<String> _nick;
 	private final Source<String> _host;
@@ -22,31 +52,9 @@ public class ContactSourceImpl implements Contact, Serializable, ContactSource {
 	private final Source<Boolean> _isOnline = new SourceImpl<Boolean>(false);  //Optimize: Do not store online events in the transaction log. Make this transient or remove it from the business logic.
 
 
-	public Signal<Boolean> isOnline() {
-		return _isOnline.output();
-	}
-
-
-	@Override
-	public Signal<String> host() {
-		return _host.output();
-	}
-
-
-	@Override
-	public Signal<String> nick() {
-		return _nick.output();
-	}
-
-
-	@Override
-	public Signal<Integer> port() {
-		return _port.output();
-	}
-
 	@Override
 	public Contact output() {
-		return this;
+		return _output;
 	}
 
 

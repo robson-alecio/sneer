@@ -8,15 +8,18 @@ import wheel.reactive.lists.ListSource;
 
 class ContactAdder implements Consumer<ContactInfo> {
 
+	private final ListSource<ContactSource> _contactSources;
 	private final ListSource<Contact> _contacts;
 
-	public ContactAdder(ListSource<Contact> contacts) {
+	public ContactAdder(ListSource<ContactSource> contactSources, ListSource<Contact> contacts) {
+		_contactSources = contactSources;
 		_contacts = contacts;
 	}
 
 	public void consume(ContactInfo info) {
-		Contact contact = new ContactSourceImpl(info._nick, info._host, info._port);
-		_contacts.add(contact);
+		ContactSource contact = new ContactSourceImpl(info._nick, info._host, info._port);
+		_contactSources.add(contact);
+		_contacts.add(contact.output());
 	}
 
 }

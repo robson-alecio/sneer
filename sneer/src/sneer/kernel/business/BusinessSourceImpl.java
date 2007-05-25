@@ -5,6 +5,7 @@ import java.io.Serializable;
 import wheel.lang.Consumer;
 import wheel.lang.IntegerConsumerBoundaries;
 import wheel.lang.Omnivore;
+import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Signal;
 import wheel.reactive.SourceImpl;
 import wheel.reactive.lists.ListSignal;
@@ -18,7 +19,9 @@ public class BusinessSourceImpl implements BusinessSource, Business, Serializabl
 
 	private SourceImpl<Integer> _sneerPortNumber = new SourceImpl<Integer>(0);
 
-	private final ListSource<Contact> _contacts = new ListSourceImpl<Contact>();
+	private final ListSource<ContactSource> _contactSources = new ListSourceImpl<ContactSource>();
+	private final ListSource<Contact> _contacts = new ListSourceImpl<Contact>(); 	//Refactor: use a reactive "ListCollector" instead of keeping this redundant list.
+
 
 	
 	public Signal<String> ownName() {
@@ -46,15 +49,12 @@ public class BusinessSourceImpl implements BusinessSource, Business, Serializabl
 	private static final long serialVersionUID = 1L;
 
 
-	public void removeContact(Contact contact) {
-		
-		if (!_contacts.remove(contact))
-			throw new IllegalArgumentException("Impossible to remove contact");
-		
+	public void removeContact(Contact contact) {	//Implement: do this with a Consumer<String> for the nick.
+		throw new NotImplementedYet();
 	}
 
 	public Consumer<ContactInfo> contactAdder() {
-		return new ContactAdder(_contacts);
+		return new ContactAdder(_contactSources, _contacts);
 	}
 
 	public Business output() {

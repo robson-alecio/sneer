@@ -41,11 +41,10 @@ public class Sneer {
 		tryToRedirectLogToSneerLogFile();
 
 		Prevayler prevayler = prevaylerFor(new BusinessFactory().createBusinessSource());
-		new Communicator(_user, new OldNetworkImpl(), prevayler);
-		
 		BusinessSource persistentBusinessSource = Bubble.wrapStateMachine(prevayler);
+
 		new Gui(_user, persistentBusinessSource);
-		
+		new Communicator(_user, new OldNetworkImpl(), persistentBusinessSource.output());
 		
 		while (true) Threads.sleepWithoutInterruptions(5000);
 	}

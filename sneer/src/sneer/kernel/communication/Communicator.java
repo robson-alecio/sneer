@@ -3,26 +3,22 @@ package sneer.kernel.communication;
 import java.io.IOException;
 import java.net.BindException;
 
-import org.prevayler.Prevayler;
-
-import sneer.kernel.business.BusinessSource;
+import sneer.kernel.business.Business;
+import wheel.io.network.ObjectServerSocket;
 import wheel.io.network.OldNetwork;
-import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.reactive.Receiver;
 
 public class Communicator {
 
-	private final BusinessSource _business;
-	private ParallelServer _server;
+	private ObjectServerSocket _server;
 	private final User _user;
 	private final OldNetwork _network;
 
-	public Communicator(User user, OldNetwork network, Prevayler prevayler) {
+	public Communicator(User user, OldNetwork network, Business business) {
 		_user = user;
 		_network = network;
-		_business = (BusinessSource)prevayler.prevalentSystem();
-		_business.output().sneerPort().addTransientReceiver(myReceiver());
+		business.sneerPort().addTransientReceiver(myReceiver());
 	}
 
 	private Receiver<Integer> myReceiver() {
@@ -46,7 +42,7 @@ public class Communicator {
 
 	private void startServer(int port) {
 		try {
-			_server = new ParallelServer(_business, _network.openObjectServerSocket(port), serverUser(), _user.catcher());
+			_server = _network.openObjectServerSocket(port);
 		} catch (BindException ignored) {
 			_user.acknowledgeUnexpectedProblem("Unable to listen on port " + port + ".", help(port));
 		} catch (IOException e) {
@@ -65,18 +61,6 @@ public class Communicator {
 		" that same port, you have either to close it, configure\n" +
 		" it to use a different port, or configure Sneer to use a\n" +
 		" different port.";
-	}
-
-	private ParallelServer.User serverUser() {
-		return new ParallelServer.User(){
-			public boolean authorizeConnectionFrom(String name) {
-				try {
-					return _user.confirm("Somebody claiming to be '" + name + "' is trying to connect here. Do you want to accept this connection? Were you expecting this connection right now?");
-				} catch (CancelledByUser ignored) {
-					return false;
-				}
-			}
-		};
 	}
 
 }

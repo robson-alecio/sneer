@@ -28,6 +28,7 @@ import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.io.ui.impl.ListSignalModel;
 import wheel.lang.Consumer;
+import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.lists.ListSignal;
 
 public class FriendsScreen extends JFrame {
@@ -119,12 +120,7 @@ public class FriendsScreen extends JFrame {
 		final JMenuItem removeFriendMenuItem = new JMenuItem(FRIEND_MENU_REMOVE_TEXT);
 		removeFriendMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ignored) {
-				Contact selectedFriend = (Contact)friendsList.getSelectedValue();
-				int answer = JOptionPane.showConfirmDialog(FriendsScreen.this, 
-						"Deseja remover o amigo " + selectedFriend + "?");
-				if (answer == JOptionPane.YES_OPTION){
-					throw new NotImplementedException();
-				}
+				throw new NotImplementedYet(); //Implement
 			}
 		});
 		return removeFriendMenuItem;
@@ -138,7 +134,7 @@ public class FriendsScreen extends JFrame {
 				try {
 					new NewContactAddition(_user, _contactAdder);
 				} catch (CancelledByUser e1) {
-					//Why should I care?
+					//Fair enough.
 				}
 			}
 

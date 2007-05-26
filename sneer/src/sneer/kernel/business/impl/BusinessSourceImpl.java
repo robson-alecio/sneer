@@ -52,13 +52,8 @@ public class BusinessSourceImpl implements BusinessSource, Business, Serializabl
 	}
 
 
-
 	private static final long serialVersionUID = 1L;
 
-
-	public void removeContact(Contact contact) {	//Implement: do this with a Consumer<String> for the nick.
-		throw new NotImplementedYet();
-	}
 
 	public Consumer<ContactInfo> contactAdder() {
 		return new ContactAdder(_contactSources, _contacts);

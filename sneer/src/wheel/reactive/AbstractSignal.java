@@ -5,7 +5,6 @@
 package wheel.reactive;
 
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -46,7 +45,7 @@ public abstract class AbstractSignal<T> extends AbstractNotifier<T> implements S
 		return result;
 	}
 
-	static private class SetReceiverAdapter<AT> implements Receiver<AT>, Serializable {
+	static private class SetReceiverAdapter<AT> implements Receiver<AT> {
 		
 		private final Receiver<SetValueChange<AT>> _delegate;
 		private AT _oldValue;
@@ -69,8 +68,6 @@ public abstract class AbstractSignal<T> extends AbstractNotifier<T> implements S
 		public int hashCode() {
 			return _delegate.hashCode();
 		}
-		
-		private static final long serialVersionUID = 1L;
 		
 	}
 	

@@ -4,14 +4,13 @@
 
 package wheel.reactive;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 import wheel.reactive.SetSignal.SetValueChange;
 
 
-public class SetSource<T> extends AbstractNotifier<SetValueChange<T>>  implements SetSignal<T>, Serializable {
+public class SetSource<T> extends AbstractNotifier<SetValueChange<T>>  implements SetSignal<T> {
 
 	private Set<T> _contents = new HashSet<T>();
 
@@ -70,7 +69,5 @@ public class SetSource<T> extends AbstractNotifier<SetValueChange<T>>  implement
 	protected void initReceiver(Receiver<SetValueChange<T>> receiver) {
 		receiver.receive(new SetValueChangeImpl<T>(contentsCopy(), null));
 	}
-
-	private static final long serialVersionUID = 1L;
 
 }

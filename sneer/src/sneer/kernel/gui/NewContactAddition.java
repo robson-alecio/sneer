@@ -7,9 +7,12 @@ import org.prevayler.Transaction;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.contacts.ContactInfo;
 
+import wheel.io.network.PortNumberSource;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
+import wheel.io.ui.impl.ValueChangePane;
 import wheel.lang.Consumer;
+import wheel.lang.IntegerParser;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.lang.exceptions.NotImplementedYet;
 
@@ -31,12 +34,11 @@ public class NewContactAddition {
 	}
 
 	private int port(User user, String nick) throws CancelledByUser {
-		String answer = user.answer("Sneer Port Number for " + nick);
-		try {
-			return Integer.parseInt(answer);
-		} catch (NumberFormatException e) {
-			return 0; //Fix: Deal with parse errors. Share logic with SneerPortChange action.
-		}
+		String prompt = "Sneer Port Number for " + nick;
+
+		PortNumberSource result = new PortNumberSource(0);
+		new ValueChangePane("Port Number", prompt, user, result.output(), new IntegerParser(result.setter())).tryToRun();
+		return result.output().currentValue();
 	}
 
 	private static final long serialVersionUID = 1L;

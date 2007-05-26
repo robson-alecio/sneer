@@ -2,7 +2,7 @@ package sneer.kernel.communication;
 
 import java.io.Serializable;
 
-class Envelope implements Serializable {
+class Envelope {
 
 	private Object _contents;
 	private final int _stamp;
@@ -24,12 +24,5 @@ class Envelope implements Serializable {
 	int stamp() {
 		return _stamp;
 	}
-
-	@SuppressWarnings("unused")
-	private Envelope() {  //Required by XStream to run on JVMs other than Sun's 1.4 and superior.
-		_stamp = 0;
-	}
-
-	private static final long serialVersionUID = 1L;
 
 }

@@ -120,6 +120,7 @@ public class FriendsScreen extends JFrame {
 		final JMenuItem removeFriendMenuItem = new JMenuItem(FRIEND_MENU_REMOVE_TEXT);
 		removeFriendMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ignored) {
+				friendsList.toString(); //Just to avoid "unused parameter" warning.
 				throw new NotImplementedYet(); //Implement
 			}
 		});

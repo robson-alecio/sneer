@@ -1,13 +1,12 @@
 package wheel.reactive;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
 import wheel.reactive.SetSignal.SetValueChange;
 
-public class SetValueChangeImpl<T> implements SetValueChange<T>, Serializable {
+public class SetValueChangeImpl<T> implements SetValueChange<T> {
 
 	private final Collection<T> _elementsAdded;
 	private final Collection<T> _elementsRemoved;
@@ -41,5 +40,4 @@ public class SetValueChangeImpl<T> implements SetValueChange<T>, Serializable {
 		return _elementsRemoved;
 	}
 
-	private static final long serialVersionUID = 1L;
 }

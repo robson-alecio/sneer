@@ -1,6 +1,5 @@
 package wheel.reactive.lists.impl;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,9 +10,9 @@ import wheel.reactive.lists.ListSource;
 import wheel.reactive.lists.ListValueChange;
 
 //Fix: make all methods synchronized
-public class ListSourceImpl<VO> implements ListSource<VO>, Serializable {
+public class ListSourceImpl<VO> implements ListSource<VO> {
 
-	private class MyOutput extends AbstractNotifier<ListValueChange> implements ListSignal<VO>, Serializable {
+	private class MyOutput extends AbstractNotifier<ListValueChange> implements ListSignal<VO> {
 
 		@Override
 		public VO currentGet(int index) {
@@ -40,8 +39,6 @@ public class ListSourceImpl<VO> implements ListSource<VO>, Serializable {
 			super.notifyReceivers(valueChange);
 		}
 
-		private static final long serialVersionUID = 1L;
-
 	}
 
 	private final List<VO> _list = new ArrayList<VO>();
@@ -54,8 +51,6 @@ public class ListSourceImpl<VO> implements ListSource<VO>, Serializable {
 		}
 	}
 	
-	private static final long serialVersionUID = 0L;
-
 	public boolean remove(VO element) {
 		synchronized (_list){
 			int index = _list.indexOf(element);

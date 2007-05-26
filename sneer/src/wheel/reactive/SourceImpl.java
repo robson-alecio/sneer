@@ -1,15 +1,40 @@
 package wheel.reactive;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.lang.exceptions.IllegalParameter;
+import wheel.reactive.SetSignal.SetValueChange;
 
-public class SourceImpl<VO> extends AbstractSignal<VO> implements Source<VO>, Signal<VO>, Omnivore<VO>, Serializable  { //Fix: Do not implement Signal. Only the output() is Signal.
+public class SourceImpl<VO> implements Source<VO> {
 
-	
+	class MyOutput extends AbstractSignal<VO> {
+
+		@Override
+		public VO currentValue() {
+			return _currentValue;
+		}
+
+	}
+
+
+	class MySetter implements Omnivore<VO> {
+
+		@Override
+		public void consume(VO newValue) {
+			if (isSameValue(newValue)) throw new IllegalArgumentException("New value must be different.");
+			_currentValue = newValue;
+			_output.notifyReceivers(newValue);
+		}
+		
+	}
+
+
 	private VO _currentValue;
+	private final Omnivore<VO> _setter = new MySetter();
+	private final AbstractSignal<VO> _output = new MyOutput();
 	
 	
 	public SourceImpl(VO initialValue) {
@@ -17,13 +42,6 @@ public class SourceImpl<VO> extends AbstractSignal<VO> implements Source<VO>, Si
 	}
 
 
-	public void consume(VO newValue) {
-		if (isSameValue(newValue)) throw new IllegalArgumentException("New value must be different.");
-		_currentValue = newValue;
-		notifyReceivers(newValue);
-	}
-
-	
 	public boolean isSameValue(VO value) {
 		if (value == _currentValue) return true; 
 		if (value != null && value.equals(_currentValue)) return true;
@@ -31,21 +49,13 @@ public class SourceImpl<VO> extends AbstractSignal<VO> implements Source<VO>, Si
 	}
 
 
-	public VO currentValue() {
-		return _currentValue;
-	}
-
-
 	public Signal<VO> output() {
-		return this;
+		return _output;
 	}
 
 
 	public Omnivore<VO> setter() {
-		return this;
+		return _setter;
 	}
-	
-	
-	private static final long serialVersionUID = 1L;
 
 }

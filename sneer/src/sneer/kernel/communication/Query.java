@@ -9,7 +9,7 @@ import java.io.Serializable;
 import sneer.kernel.business.BusinessSource;
 import sneer.old.life.LifeView;
 
-public interface Query<T>  extends Serializable {
+public interface Query<T> {
 
 	T executeOn(BusinessSource _business);
 	

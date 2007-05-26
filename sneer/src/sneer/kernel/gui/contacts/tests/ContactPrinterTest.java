@@ -1,9 +1,9 @@
 package sneer.kernel.gui.contacts.tests;
 
 import junit.framework.TestCase;
-import sneer.kernel.business.Contact;
-import sneer.kernel.business.ContactSource;
-import sneer.kernel.business.ContactSourceImpl;
+import sneer.kernel.business.contacts.Contact;
+import sneer.kernel.business.contacts.ContactSource;
+import sneer.kernel.business.contacts.impl.ContactSourceImpl;
 import sneer.kernel.gui.contacts.ContactPrinter;
 import wheel.lang.exceptions.IllegalParameter;
 

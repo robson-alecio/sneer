@@ -2,7 +2,7 @@ package wheel.reactive.tests;
 
 import java.util.List;
 
-import sneer.kernel.business.Contact;
+import sneer.kernel.business.contacts.Contact;
 
 import wheel.reactive.Receiver;
 import wheel.reactive.lists.ListSignal;

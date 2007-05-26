@@ -21,8 +21,8 @@ import javax.swing.JTextField;
 
 import org.jmock.util.NotImplementedException;
 
-import sneer.kernel.business.Contact;
-import sneer.kernel.business.ContactInfo;
+import sneer.kernel.business.contacts.Contact;
+import sneer.kernel.business.contacts.ContactInfo;
 import sneer.kernel.gui.NewContactAddition;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;

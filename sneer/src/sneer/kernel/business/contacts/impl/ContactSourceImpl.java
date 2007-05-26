@@ -1,6 +1,9 @@
-package sneer.kernel.business;
+package sneer.kernel.business.contacts.impl;
 
 import java.io.Serializable;
+
+import sneer.kernel.business.contacts.Contact;
+import sneer.kernel.business.contacts.ContactSource;
 
 import wheel.lang.Consumer;
 import wheel.reactive.Signal;

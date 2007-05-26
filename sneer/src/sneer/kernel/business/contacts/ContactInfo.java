@@ -1,12 +1,12 @@
-package sneer.kernel.business;
+package sneer.kernel.business.contacts;
 
 import java.io.Serializable;
 
 public class ContactInfo implements Serializable {
 
-	final String _nick;
-	final String _host;
-	final int _port;
+	public final String _nick;
+	public final String _host;
+	public final int _port;
 
 	public ContactInfo(String nick, String host, int port) {
 		_nick = nick;

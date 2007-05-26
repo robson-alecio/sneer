@@ -2,7 +2,7 @@ package sneer.kernel.gui.contacts.tests;
 
 import static junit.framework.Assert.*;
 
-import sneer.kernel.business.Contact;
+import sneer.kernel.business.contacts.Contact;
 import wheel.reactive.Receiver;
 import wheel.reactive.Signal;
 

@@ -1,6 +1,6 @@
 package sneer.kernel.gui.contacts;
 
-import sneer.kernel.business.Contact;
+import sneer.kernel.business.contacts.Contact;
 import wheel.reactive.AbstractNotifier;
 import wheel.reactive.Receiver;
 import wheel.reactive.lists.ListSignal;

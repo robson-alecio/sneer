@@ -1,4 +1,4 @@
-package sneer.kernel.business;
+package sneer.kernel.business.contacts;
 
 import wheel.lang.Consumer;
 

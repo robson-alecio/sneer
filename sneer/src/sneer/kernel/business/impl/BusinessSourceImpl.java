@@ -1,6 +1,13 @@
-package sneer.kernel.business;
+package sneer.kernel.business.impl;
 
 import java.io.Serializable;
+
+import sneer.kernel.business.Business;
+import sneer.kernel.business.BusinessSource;
+import sneer.kernel.business.contacts.Contact;
+import sneer.kernel.business.contacts.ContactInfo;
+import sneer.kernel.business.contacts.ContactSource;
+import sneer.kernel.business.contacts.impl.ContactAdder;
 
 import wheel.lang.Consumer;
 import wheel.lang.IntegerConsumerBoundaries;

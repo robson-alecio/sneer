@@ -1,6 +1,8 @@
-package sneer.kernel.business;
+package sneer.kernel.business.impl;
 
 import java.io.Serializable;
+
+import sneer.kernel.business.BusinessSource;
 
 public class BusinessFactory {
 

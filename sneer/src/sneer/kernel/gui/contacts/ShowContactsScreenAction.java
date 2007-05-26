@@ -1,7 +1,7 @@
 package sneer.kernel.gui.contacts;
 
-import sneer.kernel.business.Contact;
-import sneer.kernel.business.ContactInfo;
+import sneer.kernel.business.contacts.Contact;
+import sneer.kernel.business.contacts.ContactInfo;
 import wheel.io.ui.User;
 import wheel.io.ui.TrayIcon.Action;
 import wheel.lang.Consumer;

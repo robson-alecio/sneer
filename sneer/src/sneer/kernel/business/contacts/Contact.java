@@ -1,4 +1,4 @@
-package sneer.kernel.business;
+package sneer.kernel.business.contacts;
 
 import sneer.kernel.gui.contacts.ContactListPrinter;
 import wheel.reactive.Signal;

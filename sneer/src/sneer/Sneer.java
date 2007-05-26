@@ -10,8 +10,8 @@ import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
 
 import prevayler.bubble.Bubble;
-import sneer.kernel.business.BusinessFactory;
 import sneer.kernel.business.BusinessSource;
+import sneer.kernel.business.impl.BusinessFactory;
 import sneer.kernel.communication.Communicator;
 import sneer.kernel.gui.Gui;
 import wheel.io.Log;

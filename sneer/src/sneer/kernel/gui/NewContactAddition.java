@@ -5,7 +5,7 @@ import java.util.Date;
 import org.prevayler.Transaction;
 
 import sneer.kernel.business.BusinessSource;
-import sneer.kernel.business.ContactInfo;
+import sneer.kernel.business.contacts.ContactInfo;
 
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
@@ -16,7 +16,7 @@ import wheel.lang.exceptions.NotImplementedYet;
 public class NewContactAddition {
 
 	public NewContactAddition(User user, Consumer<ContactInfo> contactAdder) throws CancelledByUser {
-		while(true){
+		while (true) {
 			String nick = user.answer("New contact's nickname");
 			String host = user.answer("Host Address for " + nick, nick + ".dyndns.org");
 			int port = port(user, nick);

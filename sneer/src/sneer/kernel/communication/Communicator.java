@@ -22,12 +22,16 @@ public class Communicator {
 		_user = user;
 		_network = network;
 		_business = (BusinessSource)prevayler.prevalentSystem();
-		_business.output().sneerPort().addReceiver(new Receiver<Integer>(){
+		_business.output().sneerPort().addTransientReceiver(myReceiver());
+	}
+
+	private Receiver<Integer> myReceiver() {
+		return new Receiver<Integer>(){
 			public void receive(Integer newPort) {
 				stopServer();
 				startServer(newPort);
 			}
-		});
+		};
 	}
 	
 	private void stopServer() {
@@ -42,31 +46,37 @@ public class Communicator {
 
 	private void startServer(int port) {
 		try {
-			ParallelServer.User user = new ParallelServer.User(){
-				public boolean authorizeConnectionFrom(String name) {
-					try {
-						return _user.confirm("Somebody claiming to be '" + name + "' is trying to connect here. Do you want to accept this connection? Were you expecting this connection right now?");
-					} catch (CancelledByUser ignored) {
-						return false;
-					}
-				}
-			};
-			_server = new ParallelServer(_business, _network.openObjectServerSocket(port), user, _user.catcher());
+			_server = new ParallelServer(_business, _network.openObjectServerSocket(port), serverUser(), _user.catcher());
 		} catch (BindException ignored) {
-			String help =
-				" The port you chose ("+ port + ") might be blocked or in use by\n" +
-				" another application, including another Sneer instance.\n" +
-				"\n" +
-				" You can have two instances of Sneer running if you like,\n" +
-				" for two people for example, but each one has to use a\n" +
-				" different port. If there is another application using\n" +
-				" that same port, you have either to close it, configure\n" +
-				" it to use a different port, or configure Sneer to use a\n" +
-				" different port.";
-			_user.acknowledgeUnexpectedProblem("Unable to listen on port " + port + ".", help);
+			_user.acknowledgeUnexpectedProblem("Unable to listen on port " + port + ".", help(port));
 		} catch (IOException e) {
 			_user.acknowledge(e);
 		}
+	}
+
+	private String help(int port) {
+		return
+		" The port you chose ("+ port + ") might be blocked or in use by\n" +
+		" another application, including another Sneer instance.\n" +
+		"\n" +
+		" You can have two instances of Sneer running if you like,\n" +
+		" for two people for example, but each one has to use a\n" +
+		" different port. If there is another application using\n" +
+		" that same port, you have either to close it, configure\n" +
+		" it to use a different port, or configure Sneer to use a\n" +
+		" different port.";
+	}
+
+	private ParallelServer.User serverUser() {
+		return new ParallelServer.User(){
+			public boolean authorizeConnectionFrom(String name) {
+				try {
+					return _user.confirm("Somebody claiming to be '" + name + "' is trying to connect here. Do you want to accept this connection? Were you expecting this connection right now?");
+				} catch (CancelledByUser ignored) {
+					return false;
+				}
+			}
+		};
 	}
 
 }

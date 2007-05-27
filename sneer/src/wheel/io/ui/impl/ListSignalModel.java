@@ -6,20 +6,11 @@ import wheel.reactive.Receiver;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListValueChange;
 import wheel.reactive.lists.ListValueChange.Visitor;
+import wheel.reactive.lists.impl.AbstractListReceiver;
 
 public class ListSignalModel extends AbstractListModel {
 
-	private class MyReceiver implements Receiver<ListValueChange> {
-
-		public void receive(ListValueChange valueChange) {
-			valueChange.accept(getListModelValueChangeVisitor());
-		}
-
-	}
-
-	private ListModelValueChangeVisitor _listModelVisitor;
-	
-	private Receiver<ListValueChange> _receiver = new MyReceiver();
+	private Receiver<ListValueChange> _receiver = new ListChangeReceiver();
 	private final ListSignal<?> _input;
 
 	private int _currentListSize = 0;
@@ -30,13 +21,7 @@ public class ListSignalModel extends AbstractListModel {
 		_input.addListReceiver(_receiver);
 	}
 
-	private ListModelValueChangeVisitor getListModelValueChangeVisitor() {
-		if (_listModelVisitor == null)
-			_listModelVisitor = new ListModelValueChangeVisitor();
-		return _listModelVisitor;
-	}
-
-	private class ListModelValueChangeVisitor implements Visitor {
+	private class ListChangeReceiver extends AbstractListReceiver {
 
 		public void listReplaced() {
 			fireIntervalRemoved(this, 0, _currentListSize );

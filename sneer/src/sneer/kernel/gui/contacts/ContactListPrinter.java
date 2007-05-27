@@ -6,6 +6,7 @@ import wheel.reactive.Receiver;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListValueChange;
 import wheel.reactive.lists.ListValueChange.Visitor;
+import wheel.reactive.lists.impl.AbstractListReceiver;
 import wheel.reactive.lists.impl.ListElementAdded;
 import wheel.reactive.lists.impl.ListElementRemoved;
 import wheel.reactive.lists.impl.ListElementReplaced;
@@ -58,12 +59,7 @@ public class ContactListPrinter {
 	}
 
 
-	private class MyListReceiver implements Receiver<ListValueChange>, Visitor {
-
-		@Override
-		public void receive(ListValueChange listChange) {
-			listChange.accept(this);
-		}
+	private class MyListReceiver extends AbstractListReceiver {
 
 		@Override
 		public void elementAdded(int index) {

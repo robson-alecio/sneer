@@ -18,7 +18,11 @@ import wheel.lang.IntegerParser;
 
 public class Gui {
 
-	public Gui(User user, BusinessSource businessSource) throws Exception {
+	public static void start(User user, BusinessSource persistentBusinessSource) throws Exception {
+		new Gui(user, persistentBusinessSource);
+	}
+	
+	private Gui(User user, BusinessSource businessSource) throws Exception {
 		_user = user;
 		_business = businessSource;
 
@@ -73,6 +77,7 @@ public class Gui {
 			}
 		};
 	}
+
 
 	
 }

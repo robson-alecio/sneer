@@ -23,22 +23,26 @@ public class ListSignalModel extends AbstractListModel {
 
 	private class ListChangeReceiver extends AbstractListReceiver {
 
+		@Override
 		public void listReplaced() {
 			fireIntervalRemoved(this, 0, _currentListSize );
 			_currentListSize = _input.currentSize(); //Optimize: get only size, not entire list.
-			fireContentsChanged(this, 0, _currentListSize);
+			fireIntervalAdded(this, 0, _currentListSize);
 		}
 		
+		@Override
 		public void elementAdded(int index) {
 			_currentListSize++;
 			fireIntervalAdded(this, index, index);
 		}
 
+		@Override
 		public void elementRemoved(int index) {
 			_currentListSize--;
 			fireIntervalRemoved(this, index, index);
 		}
 
+		@Override
 		public void elementReplaced(int index) {
 			fireContentsChanged(this, index, index);
 		}

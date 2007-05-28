@@ -31,7 +31,7 @@ import wheel.lang.Consumer;
 import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.lists.ListSignal;
 
-public class FriendsScreen extends JFrame {
+public class ContactsScreen extends JFrame {
 
 	private static final String TITLE = "Amigos";
 	private static final String ADD_FRIEND_BUTTON_TEXT = "+";
@@ -43,7 +43,7 @@ public class FriendsScreen extends JFrame {
 	protected final User _user;
 
 
-	public FriendsScreen(ListSignal<Contact> contacts, Consumer<ContactInfo> contactAdder, User user) {
+	public ContactsScreen(ListSignal<Contact> contacts, Consumer<ContactInfo> contactAdder, User user) {
 
 		if (contacts == null) throw new IllegalArgumentException();
 		if (contactAdder == null) throw new IllegalArgumentException();

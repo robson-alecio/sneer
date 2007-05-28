@@ -24,7 +24,7 @@ public class ShowContactsScreenAction implements Action {
 	}
 
 	public void run() {
-		new FriendsScreen(_contacts, _contactAdder, _user);
+		new ContactsScreen(_contacts, _contactAdder, _user);
 	}
 
 }

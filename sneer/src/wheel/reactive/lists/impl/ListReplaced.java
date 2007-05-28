@@ -8,16 +8,16 @@ import wheel.reactive.lists.ListValueChange.Visitor;
 
 public final class ListReplaced implements ListValueChange {
 	
-	static public final ListReplaced SINGLETON = new ListReplaced();
+	private final int _oldListSize;
+	private final int _newListSize;
 
-	private ListReplaced(){}
+	public ListReplaced(int oldListSize, int newListSize) {
+		_oldListSize = oldListSize;
+		_newListSize = newListSize;
+	}
 	
 	public void accept(Visitor visitor) {
-		visitor.listReplaced();
+		visitor.listReplaced(_oldListSize, _newListSize);
 	}
 
-	@Override
-	public String toString() {
-		return "List replaced";
-	}
 }

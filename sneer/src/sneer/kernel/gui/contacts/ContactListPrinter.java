@@ -11,6 +11,7 @@ import wheel.reactive.lists.impl.ListElementAdded;
 import wheel.reactive.lists.impl.ListElementRemoved;
 import wheel.reactive.lists.impl.ListElementReplaced;
 import wheel.reactive.lists.impl.ListReplaced;
+import wheel.reactive.lists.impl.SimpleListReceiver;
 
 public class ContactListPrinter {
 
@@ -33,7 +34,7 @@ public class ContactListPrinter {
 
 		@Override
 		protected void initReceiver(Receiver<ListValueChange> receiver) {
-			receiver.receive(ListReplaced.SINGLETON);
+			receiver.receive(new ListReplaced(0, currentSize()));
 		}
 
 		@Override
@@ -59,7 +60,7 @@ public class ContactListPrinter {
 	}
 
 
-	private class MyListReceiver extends AbstractListReceiver {
+	private class MyListReceiver extends SimpleListReceiver {
 
 		@Override
 		public void elementAdded(int index) {
@@ -75,17 +76,6 @@ public class ContactListPrinter {
 		@Override
 		public void elementRemoved(int index) {
 			_output.notifyReceivers(new ListElementRemoved(index));
-		}
-
-		@Override
-		public void elementReplaced(int index) {
-			
-		}
-
-		@Override
-		public void listReplaced() {
-			int size = _input.currentSize();
-			for (int i = 0; i < size; i++) elementAdded(i);
 		}
 
 	}

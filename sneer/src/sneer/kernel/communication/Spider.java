@@ -2,8 +2,7 @@ package sneer.kernel.communication;
 
 import sneer.kernel.business.Business;
 import wheel.io.network.OldNetwork;
-import wheel.reactive.Receiver;
-import wheel.reactive.lists.ListValueChange;
+import wheel.reactive.lists.impl.SimpleListReceiver;
 
 class Spider {
 
@@ -20,12 +19,18 @@ class Spider {
 	private final OldNetwork _network;
 	private final Business _business;
 
-	private class MyContactReceiver implements Receiver<ListValueChange> {
+	private class MyContactReceiver extends SimpleListReceiver {
 
 		@Override
-		public void receive(ListValueChange valueChange) {
+		public void elementAdded(int index) {
 			// Implement Auto-generated method stub
+			
+		}
 
+		@Override
+		public void elementRemoved(int index) {
+			// Implement Auto-generated method stub
+			
 		}
 
 	}

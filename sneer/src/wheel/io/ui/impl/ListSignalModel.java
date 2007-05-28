@@ -13,8 +13,6 @@ public class ListSignalModel extends AbstractListModel {
 	private Receiver<ListValueChange> _receiver = new ListChangeReceiver();
 	private final ListSignal<?> _input;
 
-	private int _currentListSize = 0;
-	
 	@SuppressWarnings("unchecked")
 	public ListSignalModel(ListSignal<?> input){
 		_input = input;
@@ -24,21 +22,19 @@ public class ListSignalModel extends AbstractListModel {
 	private class ListChangeReceiver extends AbstractListReceiver {
 
 		@Override
-		public void listReplaced() {
-			fireIntervalRemoved(this, 0, _currentListSize );
-			_currentListSize = _input.currentSize(); //Optimize: get only size, not entire list.
-			fireIntervalAdded(this, 0, _currentListSize);
+		public void listReplaced(int oldSize, int newSize) {
+			if (newSize > oldSize) fireIntervalAdded(this, oldSize, newSize);
+			if (newSize < oldSize) fireIntervalRemoved(this, newSize, oldSize);
+			fireContentsChanged(this, 0, Math.min(oldSize, newSize));
 		}
 		
 		@Override
 		public void elementAdded(int index) {
-			_currentListSize++;
 			fireIntervalAdded(this, index, index);
 		}
 
 		@Override
 		public void elementRemoved(int index) {
-			_currentListSize--;
 			fireIntervalRemoved(this, index, index);
 		}
 
@@ -46,7 +42,7 @@ public class ListSignalModel extends AbstractListModel {
 		public void elementReplaced(int index) {
 			fireContentsChanged(this, index, index);
 		}
-	
+
 	}
 	
 	public Object getElementAt(int index) {
@@ -54,7 +50,7 @@ public class ListSignalModel extends AbstractListModel {
 	}
 
 	public int getSize() {
-		return _currentListSize;
+		return _input.currentSize();
 	}
 	
 	private static final long serialVersionUID = 1L;

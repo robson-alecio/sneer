@@ -31,7 +31,7 @@ public class ListSourceImpl<VO> implements ListSource<VO> {
 
 		@Override
 		protected void initReceiver(Receiver<ListValueChange> receiver) {
-			receiver.receive(ListReplaced.SINGLETON);
+			receiver.receive(new ListReplaced(0, currentSize()));
 		}
 
 		@Override

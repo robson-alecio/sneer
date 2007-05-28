@@ -9,7 +9,6 @@ import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListSource;
 import wheel.reactive.lists.ListValueChange;
 
-//Fix: make all methods synchronized
 public class ListSourceImpl<VO> implements ListSource<VO> {
 
 	private class MyOutput extends AbstractNotifier<ListValueChange> implements ListSignal<VO> {

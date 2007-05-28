@@ -1,5 +1,6 @@
 package wheel.io.ui.impl;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import wheel.io.ui.CancelledByUser;
@@ -8,7 +9,8 @@ import wheel.lang.exceptions.Catcher;
 
 public class JOptionPaneUser implements User {
 	
-	public JOptionPaneUser(String title) { //Fix: receive the parent component instead of passing null to the JOptionPane in order not to lose the focus.
+	public JOptionPaneUser(String title) { 
+		//Fix: receive the parent component instead of passing null to the JOptionPane in order not to be application modal.
 		_title = title;
 	}
 
@@ -93,4 +95,6 @@ public class JOptionPaneUser implements User {
 	public void acknowledge(Throwable t) {
 		acknowledgeUnexpectedProblem(t.getLocalizedMessage());
 	}
+	
+
 }

@@ -14,7 +14,7 @@ public interface BusinessSource {
 
 	Business output();
 
-	Omnivore<String> ownNameSetter();
+	Consumer<String> ownNameSetter();
 	
 	Consumer<Integer> sneerPortSetter();
 	

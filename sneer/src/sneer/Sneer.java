@@ -16,6 +16,7 @@ import sneer.kernel.communication.Communicator;
 import sneer.kernel.gui.Gui;
 import wheel.io.Log;
 import wheel.io.network.OldNetworkImpl;
+import wheel.io.network.impl.XStreamNetwork;
 import wheel.io.ui.User;
 import wheel.io.ui.impl.JOptionPaneUser;
 import wheel.lang.Threads;
@@ -43,8 +44,8 @@ public class Sneer {
 		Prevayler prevayler = prevaylerFor(new BusinessFactory().createBusinessSource());
 		BusinessSource persistentBusinessSource = Bubble.wrapStateMachine(prevayler);
 
-		Gui.start(_user, persistentBusinessSource);
-		Communicator.start(_user, new OldNetworkImpl(), persistentBusinessSource.output());
+		Gui.start(_user, persistentBusinessSource); //Implement: start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
+		Communicator.start(_user, new XStreamNetwork(new OldNetworkImpl()), persistentBusinessSource);
 		
 		while (true) Threads.sleepWithoutInterruptions(5000);
 	}

@@ -3,72 +3,46 @@ package sneer.kernel.communication;
 import java.io.IOException;
 import java.net.BindException;
 
-import sneer.kernel.business.Business;
+import wheel.io.Log;
 import wheel.io.network.ObjectServerSocket;
 import wheel.io.network.OldNetwork;
 import wheel.io.ui.User;
 import wheel.lang.Threads;
-import wheel.reactive.Receiver;
 
 class Server {
 
-	static void start(User user, OldNetwork network, Business business) {
-		new Server(user, network, business);
+	static Server start(User user, OldNetwork network, int port) {
+		return new Server(user, network, port);
 	}
 
-	private Server(User user, OldNetwork network, Business business) {
-		_user = user;
-		_network = network;
-		business.sneerPort().addTransientReceiver(mySneerPortReceiver());
-	}
-
-	private ObjectServerSocket _server;
-	private final User _user;
-	private final OldNetwork _network;
-	
-	private Receiver<Integer> mySneerPortReceiver() {
-		return new Receiver<Integer>(){
-			public void receive(Integer newPort) {
-				stopServer();
-				startServer(newPort);
-			}
-		};
-	}
-	
-	private void stopServer() {
-		if (_server == null) return;
+	private Server(User user, OldNetwork network, int port) {
 		try {
-			_server.close();
-		} catch (IOException e) {
-			_user.acknowledge(e);
-		}
-		_server = null;
-	}
-
-	private void startServer(int port) {
-		try {
-			_server = _network.openObjectServerSocket(port);
+			_serverSocket = network.openObjectServerSocket(port);
 			startAccepting();
 		} catch (BindException ignored) {
-			_user.acknowledgeUnexpectedProblem("Unable to listen on port " + port + ".", help(port));
+			user.acknowledgeUnexpectedProblem("Unable to listen on port " + port + ".", help(port)); //Refactor: Make user have consumers of messages.
 		} catch (IOException e) {
-			_user.acknowledge(e);
+			user.acknowledge(e);
 		}
 	}
 
+	private ObjectServerSocket _serverSocket;
+	
 	private void startAccepting() {
 		Threads.startDaemon(new Runnable(){
 			@Override
 			public void run() {
-				while (true) {
-					try {
-						_server.accept();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
+				while (true) accept();
 			}
 		});
+	}
+
+	private void accept() {
+		try {
+			_serverSocket.accept();
+		} catch (IOException e) {
+			Log.log(e);
+		}
 	}
 
 	private String help(int port) {
@@ -82,6 +56,12 @@ class Server {
 		" that same port, you either have to close it, configure\n" +
 		" it to use a different port, or configure Sneer to use a\n" +
 		" different port.";
+	}
+
+	void stop() {
+		try {
+			_serverSocket.close();
+		} catch (IOException ignored) {}
 	}
 
 }

@@ -11,19 +11,17 @@ import wheel.reactive.lists.impl.SimpleListReceiver;
 
 class Spider {
 
-	static void start(OldNetwork network, Business business) {
-		new Spider(network, business);
+	static void start(OldNetwork network, ListSignal<Contact> contacts) {
+		new Spider(network, contacts);
 	}
 	
-	private Spider(OldNetwork network, Business business) {
+	private Spider(OldNetwork network, ListSignal<Contact> contacts) {
 		_network = network;
-		_business = business;
-		_contacts = _business.contacts();
+		_contacts = contacts;
 		_contacts.addListReceiver(new MyContactReceiver());
 	}
 	
 	private final OldNetwork _network;
-	private final Business _business;
 	private ListSignal<Contact> _contacts;
 
 	private class MyContactReceiver extends SimpleListReceiver {

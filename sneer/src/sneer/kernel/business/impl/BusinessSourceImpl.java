@@ -8,6 +8,7 @@ import sneer.kernel.business.contacts.ContactSource;
 import sneer.kernel.business.contacts.impl.ContactAdder;
 import wheel.io.network.PortNumberSource;
 import wheel.lang.Consumer;
+import wheel.lang.Omnivore;
 import wheel.lang.StringConsumerNotNullNonBlank;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
@@ -50,8 +51,8 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 	private final Business _output = new MyOutput();
 
 	@Override
-	public Consumer<String> ownNameSetter() {
-		return new StringConsumerNotNullNonBlank(_ownName.setter(), "Own name");
+	public Omnivore<String> ownNameSetter() {
+		return  _ownName.setter();
 	}
 	
 	@Override

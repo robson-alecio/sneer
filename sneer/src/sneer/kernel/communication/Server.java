@@ -7,6 +7,7 @@ import sneer.kernel.business.Business;
 import wheel.io.network.ObjectServerSocket;
 import wheel.io.network.OldNetwork;
 import wheel.io.ui.User;
+import wheel.lang.Threads;
 import wheel.reactive.Receiver;
 
 class Server {
@@ -47,11 +48,27 @@ class Server {
 	private void startServer(int port) {
 		try {
 			_server = _network.openObjectServerSocket(port);
+			startAccepting();
 		} catch (BindException ignored) {
 			_user.acknowledgeUnexpectedProblem("Unable to listen on port " + port + ".", help(port));
 		} catch (IOException e) {
 			_user.acknowledge(e);
 		}
+	}
+
+	private void startAccepting() {
+		Threads.startDaemon(new Runnable(){
+			@Override
+			public void run() {
+				while (true) {
+					try {
+						_server.accept();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
 	}
 
 	private String help(int port) {

@@ -7,7 +7,7 @@ import java.util.Set;
 
 public abstract class AbstractNotifier<VC> {
 
-	private final Set<Receiver<VC>> _receivers = new HashSet<Receiver<VC>>();
+	private final Set<Receiver<VC>> _receivers = new HashSet<Receiver<VC>>(); //Fix: Potential object leak. Receivers must be weak referenced. This is equivalent to the whiteboard pattern too, from a receiver referencing perspective. Conceptually, it is only the receiver that references the signal.  
 	private transient Set<Receiver<VC>> _transientReceivers;
 	private final Object _monitor = new Object();
 

@@ -39,7 +39,9 @@ public class Communicator {
 	}
 
 	private void startServing(Signal<Integer> sneerPort) {
-		sneerPort.addTransientReceiver(new ServerStarter());
+		ServerStarter serverStarter = new ServerStarter();
+		Threads.preventFromBeingGarbageCollected(serverStarter);
+		sneerPort.addTransientReceiver(serverStarter);
 	}
 	
 }

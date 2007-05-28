@@ -1,7 +1,12 @@
 package wheel.lang;
 
+import java.util.HashSet;
+import java.util.Set;
+
 
 public class Threads {
+
+	private static final Set<Object> _reactors = new HashSet<Object>();
 
 	public static void waitWithoutInterruptions(Object object) {
 		try {
@@ -25,5 +30,10 @@ public class Threads {
         daemon.setDaemon(true);
         daemon.start();
     }
+
+	/** @param reactor An object that listens to others (is weak referenced by them), such as a Signal Receiver, and has to react. It does not need a actual thread of its own but it cannot be garbage collected.*/
+    public static void preventFromBeingGarbageCollected(Object reactor) {
+		_reactors.add(reactor);
+	}
 
 }

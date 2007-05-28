@@ -42,12 +42,13 @@ class Spider {
 	}
 
 	private void tryToReachAssynchronously(final Contact contact) {
-		Threads.sleepWithoutInterruptions(3000); //Fix: Remove this pause. It is here just for testing.
-		
 		Threads.startDaemon(new Runnable(){
 			@Override
 			public void run() {
-				tryToReach(contact);
+				while (true) {
+					tryToReach(contact);
+					Threads.sleepWithoutInterruptions(5000);
+				}
 			}
 		});
 	}

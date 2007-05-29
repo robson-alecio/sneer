@@ -1,11 +1,10 @@
 package sneer.kernel.business.contacts.impl;
 
-import java.io.Serializable;
-
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.ContactSource;
 import wheel.io.network.PortNumberSource;
 import wheel.lang.Consumer;
+import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
 import wheel.reactive.SourceImpl;
@@ -58,13 +57,13 @@ public class ContactSourceImpl implements ContactSource {
 
 
 	@Override
-	public Consumer<String> nickSetter() {
+	public Omnivore<String> nickSetter() {
 		return _nick.setter();
 	}
 
 	
 	@Override
-	public Consumer<String> hostSetter() {
+	public Omnivore<String> hostSetter() {
 		return _host.setter();
 	}
 
@@ -76,7 +75,7 @@ public class ContactSourceImpl implements ContactSource {
 
 
 	@Override
-	public Consumer<Boolean> isOnlineSetter() {
+	public Omnivore<Boolean> isOnlineSetter() {
 		return _isOnline.setter();
 	}
 

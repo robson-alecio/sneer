@@ -8,31 +8,32 @@ import wheel.io.network.ObjectServerSocket;
 import wheel.io.network.OldNetwork;
 import wheel.io.ui.User;
 import wheel.lang.Threads;
+import wheel.lang.exceptions.FriendlyException;
 
 class Server {
 
-	static Server start(User user, OldNetwork network, int port) {
-		return new Server(user, network, port);
+	static Server start(OldNetwork network, int port) throws IOException, FriendlyException {
+		return new Server(network, port);
 	}
 
-	private Server(User user, OldNetwork network, int port) {
+	private Server(OldNetwork network, int port) throws IOException, FriendlyException {
 		try {
 			_serverSocket = network.openObjectServerSocket(port);
-			startAccepting();
-		} catch (BindException ignored) {
-			user.acknowledgeUnexpectedProblem("Unable to listen on port " + port + ".", help(port)); //Refactor: Make user have consumers of messages.
-		} catch (IOException e) {
-			user.acknowledge(e);
+		} catch (BindException e) {
+			throw new FriendlyException("Unable to listen on port " + port + ".", help(port));
 		}
+		startAccepting();
 	}
 
-	private ObjectServerSocket _serverSocket;
+	private final ObjectServerSocket _serverSocket;
+	private volatile boolean _isStopped = false;
+	
 	
 	private void startAccepting() {
 		Threads.startDaemon(new Runnable(){
 			@Override
 			public void run() {
-				while (true) accept();
+				while (!_isStopped) accept();
 			}
 		});
 	}
@@ -41,8 +42,16 @@ class Server {
 		try {
 			_serverSocket.accept();
 		} catch (IOException e) {
+			if (_isStopped) return;
 			Log.log(e);
 		}
+	}
+	
+	void stop() {
+		try {
+			_isStopped = true;
+			_serverSocket.close();
+		} catch (IOException ignored) {}
 	}
 
 	private String help(int port) {
@@ -56,12 +65,6 @@ class Server {
 		" that same port, you either have to close it, configure\n" +
 		" it to use a different port, or configure Sneer to use a\n" +
 		" different port.";
-	}
-
-	void stop() {
-		try {
-			_serverSocket.close();
-		} catch (IOException ignored) {}
 	}
 
 }

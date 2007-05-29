@@ -1,14 +1,15 @@
 package sneer.kernel.business.contacts;
 
 import wheel.lang.Consumer;
+import wheel.lang.Omnivore;
 
 public interface ContactSource {
 
 	Contact output();
 
-	Consumer<String> nickSetter();
-	Consumer<String> hostSetter();
+	Omnivore<String> nickSetter();
+	Omnivore<String> hostSetter();
 	Consumer<Integer> portSetter();
-	Consumer<Boolean> isOnlineSetter();
+	Omnivore<Boolean> isOnlineSetter();
 
 }

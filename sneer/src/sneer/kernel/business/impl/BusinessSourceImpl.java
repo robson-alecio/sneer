@@ -5,6 +5,7 @@ import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.ContactInfo;
 import sneer.kernel.business.contacts.ContactSource;
+import sneer.kernel.business.contacts.OnlineEvent;
 import sneer.kernel.business.contacts.impl.ContactAdder;
 import wheel.io.network.PortNumberSource;
 import wheel.lang.Consumer;
@@ -69,4 +70,32 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 	public Business output() {
 		return _output;
 	}
+
+	@Override
+	public Omnivore<OnlineEvent> contactOnlineSetter() {
+		return new Omnivore<OnlineEvent>(){
+			@Override
+			public void consume(OnlineEvent onlineEvent) {
+				ContactSource contactSource = findContactSource(onlineEvent._nick);
+				if (contactSource != null) setIsOnline(contactSource, onlineEvent._isOnline);
+			}
+		};
+	}
+	
+	private void setIsOnline(ContactSource contactSource, boolean isOnline) {
+		Boolean wasOnline = contactSource.output().isOnline().currentValue();
+		if (isOnline == wasOnline) return;
+		contactSource.isOnlineSetter().consume(isOnline);
+	}
+
+	private ContactSource findContactSource(String nick) {
+		int size = _contactSources.output().currentSize();
+		for (int i = 0; i < size; i++) { // Optimize
+			ContactSource candidate = _contactSources.output().currentGet(i);
+			if (candidate.output().nick().currentValue().equals(nick))
+				return candidate;
+		}
+		return null;
+	}
+
 }

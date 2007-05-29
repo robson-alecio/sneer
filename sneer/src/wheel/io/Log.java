@@ -29,6 +29,7 @@ public class Log {
 			logHeader("");
 			throwable.printStackTrace();
 			throwable.printStackTrace(_log);
+			logSeparator();
 		} finally {
 			flush();
 		}

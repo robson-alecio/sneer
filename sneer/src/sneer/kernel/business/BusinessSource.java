@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import sneer.kernel.business.contacts.ContactInfo;
+import sneer.kernel.business.contacts.OnlineEvent;
 
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
@@ -19,5 +20,6 @@ public interface BusinessSource {
 	Consumer<Integer> sneerPortSetter();
 	
 	Consumer<ContactInfo> contactAdder();
+	Omnivore<OnlineEvent> contactOnlineSetter();
 
 }

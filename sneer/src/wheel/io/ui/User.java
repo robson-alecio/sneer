@@ -3,6 +3,7 @@ package wheel.io.ui;
 import java.io.IOException;
 
 import wheel.lang.exceptions.Catcher;
+import wheel.lang.exceptions.FriendlyException;
 
 public interface User {
 
@@ -19,6 +20,7 @@ public interface User {
 	void acknowledgeUnexpectedProblem(String description, String help);
 
 	void acknowledge(Throwable t);
+	void acknowledgeFriendlyException(FriendlyException e);
 	Catcher catcher();
 
 }

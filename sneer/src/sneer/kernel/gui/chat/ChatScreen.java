@@ -19,21 +19,21 @@ import wheel.reactive.Signal;
 public class ChatScreen extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
-	private final Omnivore<ChatEvent> _chatEventConsumer;
-	private final Omnivore<ChatEvent> _receivedMessagesOmnivore;
+	private final Omnivore<ChatEvent> _eventsReceived;
+	private final Omnivore<ChatEvent> _eventsToSend;
 
 	private JTextArea _chatArea;
 
-	public ChatScreen(Omnivore<ChatEvent> chatEventConsumer){
-		_chatEventConsumer = chatEventConsumer;
+	public ChatScreen(Omnivore<ChatEvent> chatEventsReceived){
+		_eventsReceived = chatEventsReceived;
 		
 		initComponents();
 		
-		_receivedMessagesOmnivore = new Omnivore<ChatEvent>() {
+		_eventsToSend = new Omnivore<ChatEvent>() {
 			
 			@Override
 			public void consume(ChatEvent chatEvent) {
-				appendTextToChatArea("Other: " + chatEvent.text());	
+				appendTextToChatArea("Other: " + chatEvent._text);	
 			}
 		
 		};
@@ -62,8 +62,8 @@ public class ChatScreen extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ChatEvent chatEvent = new ChatEvent(chatInput.getText());
-				_chatEventConsumer.consume(chatEvent);
-				appendTextToChatArea("Me: " + chatEvent.text());
+				_eventsReceived.consume(chatEvent);
+				appendTextToChatArea("Me: " + chatEvent._text);
 				chatInput.setText("");
 			}
 		});
@@ -78,8 +78,8 @@ public class ChatScreen extends JFrame {
 		return chatArea;
 	}
 	
-	public Omnivore<ChatEvent> consumer(){
-		return _receivedMessagesOmnivore;
+	public Omnivore<ChatEvent> eventsToSend(){
+		return _eventsToSend;
 	}
 	
 	private synchronized void appendTextToChatArea(final String text) {
@@ -96,24 +96,20 @@ public class ChatScreen extends JFrame {
 	public static void main(String[] args) {
 		
 		final ChatScreen chatScreen = new ChatScreen(new Omnivore<ChatEvent>() {
-		
 			@Override
 			public void consume(ChatEvent chatEvent) {
-				System.out.println(chatEvent);
+				System.out.println(chatEvent._text);
 			}
-		
 		});
 		
 		Threads.startDaemon(new Runnable() {
-		
 			@Override
 			public void run() {
 				while (true){
-					chatScreen.consumer().consume(new ChatEvent("ping"));
+					chatScreen.eventsToSend().consume(new ChatEvent("ping " + System.currentTimeMillis()));
 					Threads.sleepWithoutInterruptions(3000);
 				}
 			}
-		
 		});
 	}
 }

@@ -73,7 +73,7 @@ public class ChatScreen extends JFrame {
 		};
 	}
 	
-	private synchronized void appendToChatText(final String text) {
+	private void appendToChatText(final String text) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {

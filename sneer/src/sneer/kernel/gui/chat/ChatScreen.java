@@ -17,41 +17,27 @@ import wheel.lang.Threads;
 import wheel.reactive.Signal;
 
 public class ChatScreen extends JFrame {
-	private static final long serialVersionUID = 1L;
 	
-	private final Omnivore<ChatEvent> _eventsReceived;
-	private final Omnivore<ChatEvent> _eventsToSend;
-
-	private JTextArea _chatArea;
-
-	public ChatScreen(Omnivore<ChatEvent> chatEventsReceived){
-		_eventsReceived = chatEventsReceived;
+	public ChatScreen(String otherGuysNick, Omnivore<ChatEvent> chatEventSender){
+		_otherGuysNick = otherGuysNick;
+		_chatSender = chatEventSender;
 		
 		initComponents();
-		
-		_eventsToSend = new Omnivore<ChatEvent>() {
-			
-			@Override
-			public void consume(ChatEvent chatEvent) {
-				appendTextToChatArea("Other: " + chatEvent._text);	
-			}
-		
-		};
-		
-		setTitle("Chat");
+		setTitle(otherGuysNick);
 		setVisible(true);
 	}
 
+	
+	private final String _otherGuysNick;
+	private final Omnivore<ChatEvent> _chatSender;
+	private final JTextArea _chatText = createChatText();
+
+	
 	private void initComponents() {
-		
 		setLayout(new BorderLayout());
 		
-		_chatArea = createChatArea();
-		final JTextField chatInput = createChatInput();
-		
-		add(new JScrollPane(_chatArea), BorderLayout.CENTER);
-		add(chatInput, BorderLayout.SOUTH);
-		
+		add(new JScrollPane(_chatText), BorderLayout.CENTER);
+		add(createChatInput(), BorderLayout.SOUTH);
 		
 		setSize(300, 200);
 	}
@@ -60,34 +46,39 @@ public class ChatScreen extends JFrame {
 		final JTextField chatInput = new JTextField();
 		chatInput.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent ignored) {
 				ChatEvent chatEvent = new ChatEvent(chatInput.getText());
-				_eventsReceived.consume(chatEvent);
-				appendTextToChatArea("Me: " + chatEvent._text);
 				chatInput.setText("");
+				_chatSender.consume(chatEvent);
+				appendToChatText("Me: " + chatEvent._text);
 			}
 		});
 		return chatInput;
 	}
 
-	private JTextArea createChatArea() {
+	private JTextArea createChatText() {
 		final JTextArea chatArea = new JTextArea();
-		chatArea.setFocusable(false);
+		chatArea.setFocusable(true);
 		chatArea.setEditable(false);
 		
 		return chatArea;
 	}
 	
-	public Omnivore<ChatEvent> eventsToSend(){
-		return _eventsToSend;
+	public Omnivore<ChatEvent> chatEventReceiver(){
+		return new Omnivore<ChatEvent>() {
+			@Override
+			public void consume(ChatEvent chatEvent) {
+				appendToChatText(_otherGuysNick + ": " + chatEvent._text);	
+			}
+		};
 	}
 	
-	private synchronized void appendTextToChatArea(final String text) {
+	private synchronized void appendToChatText(final String text) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				_chatArea.append(text + "\n");
-				_chatArea.setCaretPosition(_chatArea.getDocument().getLength());		
+				_chatText.append(text + "\n");
+				_chatText.setCaretPosition(_chatText.getDocument().getLength());		
 			}
 		
 		});		
@@ -95,7 +86,7 @@ public class ChatScreen extends JFrame {
 
 	public static void main(String[] args) {
 		
-		final ChatScreen chatScreen = new ChatScreen(new Omnivore<ChatEvent>() {
+		final ChatScreen chatScreen = new ChatScreen("Depressed Robot", new Omnivore<ChatEvent>() {
 			@Override
 			public void consume(ChatEvent chatEvent) {
 				System.out.println(chatEvent._text);
@@ -105,11 +96,13 @@ public class ChatScreen extends JFrame {
 		Threads.startDaemon(new Runnable() {
 			@Override
 			public void run() {
-				while (true){
-					chatScreen.eventsToSend().consume(new ChatEvent("ping " + System.currentTimeMillis()));
+				while (true) {
+					chatScreen.chatEventReceiver().consume(new ChatEvent("life sucks " + System.currentTimeMillis()));
 					Threads.sleepWithoutInterruptions(3000);
 				}
 			}
 		});
 	}
+	
+	private static final long serialVersionUID = 1L;
 }

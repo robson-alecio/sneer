@@ -3,6 +3,7 @@ package wheel.reactive.lists.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import wheel.lang.Omnivore;
 import wheel.reactive.AbstractNotifier;
 import wheel.reactive.Receiver;
 import wheel.reactive.lists.ListSignal;
@@ -63,6 +64,16 @@ public class ListSourceImpl<VO> implements ListSource<VO> {
 
 	public ListSignal<VO> output() {
 		return _output;
+	}
+
+	@Override
+	public Omnivore<VO> adder() {
+		return new Omnivore<VO>(){
+			@Override
+			public void consume(VO valueObject) {
+				add(valueObject);
+			}
+		};
 	}
 	
 	

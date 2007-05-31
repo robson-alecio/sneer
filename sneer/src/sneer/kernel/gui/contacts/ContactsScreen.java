@@ -21,29 +21,34 @@ import javax.swing.JTextField;
 
 import org.jmock.util.NotImplementedException;
 
+import sneer.kernel.business.chat.ChatEvent;
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.ContactInfo;
 import sneer.kernel.gui.NewContactAddition;
+import sneer.kernel.gui.chat.ChatScreen;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.io.ui.impl.ListSignalModel;
 import wheel.lang.Consumer;
+import wheel.lang.Omnivore;
 import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.lists.ListSignal;
 
 public class ContactsScreen extends JFrame {
 
-	private static final String TITLE = "Amigos";
+	private static final String TITLE = "Amigos"; //Refactor: Inline all constants. Use debian i18n scheme.
 	private static final String ADD_FRIEND_BUTTON_TEXT = "+";
-	private static final String FRIEND_MENU_REMOVE_TEXT = "remover";
+	private static final String FRIEND_MENU_REMOVE_TEXT = "Delete";
+	private static final String FRIEND_MENU_CHAT_TEXT = "Chat";
 
 	private static final long serialVersionUID = 1L;
 	private final ListSignal<Contact> _contacts;
-	protected final Consumer<ContactInfo> _contactAdder;
-	protected final User _user;
+	private final Consumer<ContactInfo> _contactAdder;
+	private final User _user;
+	private final Consumer<ChatEvent> _chatSender;
 
 
-	public ContactsScreen(ListSignal<Contact> contacts, Consumer<ContactInfo> contactAdder, User user) {
+	public ContactsScreen(User user, ListSignal<Contact> contacts, Consumer<ContactInfo> contactAdder, Consumer<ChatEvent> sender) {
 
 		if (contacts == null) throw new IllegalArgumentException();
 		if (contactAdder == null) throw new IllegalArgumentException();
@@ -52,6 +57,7 @@ public class ContactsScreen extends JFrame {
 		_contacts = contacts;
 		_contactAdder = contactAdder;
 		_user = user;
+		_chatSender = sender;
 
 		initComponents();
 		setVisible(true);
@@ -112,19 +118,30 @@ public class ContactsScreen extends JFrame {
 
 	private JPopupMenu getFriendPopUpMenu(final JList friendsList) {
 		final JPopupMenu friendMenu = new JPopupMenu();
-		friendMenu.add(getRemoveFriendMenuItem(friendsList));
+		friendMenu.add(getRemoveFriendMenuItem());
+		friendMenu.add(getChatMenuItem(friendsList));
 		return friendMenu;
 	}
 
-	private JMenuItem getRemoveFriendMenuItem(final JList friendsList) {
+	private JMenuItem getRemoveFriendMenuItem() {
 		final JMenuItem removeFriendMenuItem = new JMenuItem(FRIEND_MENU_REMOVE_TEXT);
 		removeFriendMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ignored) {
-				friendsList.toString(); //Just to avoid "unused parameter" warning.
 				throw new NotImplementedYet(); //Implement
 			}
 		});
 		return removeFriendMenuItem;
+	}
+	
+	private JMenuItem getChatMenuItem(final JList friendsList) {
+		final JMenuItem chatFriendMenuItem = new JMenuItem(FRIEND_MENU_CHAT_TEXT);
+		chatFriendMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ignored) {
+				Contact contact = _contacts.currentGet(friendsList.getSelectedIndex());
+				new ChatScreen(contact.nick(), contact.chatEventsPending(), _chatSender);
+			}
+		});
+		return chatFriendMenuItem;
 	}
 
 	private JButton createAddButton() {

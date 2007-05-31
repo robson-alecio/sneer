@@ -12,7 +12,5 @@ public interface Business {
 	Signal<Integer> sneerPort();
 
 	ListSignal<Contact> contacts();
-	
-	ListSignal<ChatEvent> chatEventsPending();
 
 }

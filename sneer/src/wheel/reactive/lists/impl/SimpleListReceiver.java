@@ -15,5 +15,9 @@ public abstract class SimpleListReceiver extends AbstractListReceiver {
 		i = 0;
 		while (i < newListSize) elementAdded(i++);
 	}
+	
+	@Override
+	public void elementRemoved(int index) {		
+	}
 
 }

@@ -22,6 +22,7 @@ class Server {
 		} catch (BindException e) {
 			throw new FriendlyException("Unable to listen on port " + port + ".", help(port));
 		}
+		
 		startAccepting();
 	}
 
@@ -36,6 +37,7 @@ class Server {
 				while (!_isStopped) accept();
 			}
 		});
+		
 	}
 
 	private void accept() {

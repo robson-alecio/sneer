@@ -3,6 +3,7 @@ package sneer.kernel.business;
 import java.io.Serializable;
 import java.util.List;
 
+import sneer.kernel.business.chat.ChatEvent;
 import sneer.kernel.business.contacts.ContactInfo;
 import sneer.kernel.business.contacts.OnlineEvent;
 
@@ -21,5 +22,7 @@ public interface BusinessSource {
 	
 	Consumer<ContactInfo> contactAdder();
 	Omnivore<OnlineEvent> contactOnlineSetter();
+
+	Consumer<ChatEvent> chatSender();
 
 }

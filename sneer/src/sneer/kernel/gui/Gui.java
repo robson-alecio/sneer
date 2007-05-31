@@ -21,7 +21,7 @@ public class Gui {
 	
 	private Gui(User user, BusinessSource businessSource) throws Exception {
 		_user = user;
-		_business = businessSource;
+		_businessSource = businessSource;
 
 		URL icon = Gui.class.getResource("/sneer/kernel/gui/traymenu/yourIconGoesHere.png");
 		_trayIcon = new TrayIconImpl(icon, _user.catcher());
@@ -33,30 +33,30 @@ public class Gui {
 	private final User _user;
 	private final TrayIcon _trayIcon;
 	
-	private final BusinessSource _business;
+	private final BusinessSource _businessSource;
 	
 	
 	private void tryToRun() {
 		filloutInitialValues();
 
 		_trayIcon.addAction(nameChangeAction());
-		_trayIcon.addAction(new ShowContactsScreenAction(_business.output().contacts(), _business.contactAdder(), _user));
+		_trayIcon.addAction(new ShowContactsScreenAction(_businessSource.output().contacts(), _businessSource.contactAdder(), _user, _businessSource.chatSender()));
 		_trayIcon.addAction(sneerPortChangeAction());
 		_trayIcon.addAction(exitAction());
 	}
 
 	private void filloutInitialValues() { //Refactor: remove this logic from the gui;
-		String ownName = _business.output().ownName().currentValue();
+		String ownName = _businessSource.output().ownName().currentValue();
 		if (ownName == null || ownName.isEmpty()) nameChangeAction().run();
 
-		int sneerPort = _business.output().sneerPort().currentValue();
+		int sneerPort = _businessSource.output().sneerPort().currentValue();
 		if (sneerPort == 0) initSneerPort();
 	}
 
 	private void initSneerPort() {
 		int randomPort = 10000 + new Random().nextInt(50000);
 		try {
-			_business.sneerPortSetter().consume(randomPort);
+			_businessSource.sneerPortSetter().consume(randomPort);
 		} catch (IllegalParameter e) {
 			throw new IllegalStateException();
 		}
@@ -67,14 +67,14 @@ public class Gui {
 	private ValueChangePane sneerPortChangeAction() {
 		String prompt = " Change this only if you know what you are doing." +
 						"\n Sneer TCP port to listen:";
-		return new ValueChangePane("Sneer Port Configuration",prompt, _user, _business.output().sneerPort(), new IntegerParser(_business.sneerPortSetter()));
+		return new ValueChangePane("Sneer Port Configuration",prompt, _user, _businessSource.output().sneerPort(), new IntegerParser(_businessSource.sneerPortSetter()));
 	}
 
 	
 	private Action nameChangeAction() {
 		String prompt = " What is your name?" +
 						"\n (You can change it any time you like)";
-		return new ValueChangePane("Name Change",prompt, _user, _business.output().ownName(), _business.ownNameSetter());
+		return new ValueChangePane("Name Change",prompt, _user, _businessSource.output().ownName(), _businessSource.ownNameSetter());
 	}
 
 	

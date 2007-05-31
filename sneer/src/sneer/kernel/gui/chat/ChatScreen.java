@@ -12,24 +12,46 @@ import javax.swing.SwingUtilities;
 
 import sneer.kernel.business.chat.ChatEvent;
 
+import wheel.io.Log;
+import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
+import wheel.lang.exceptions.IllegalParameter;
+import wheel.reactive.Receiver;
 import wheel.reactive.Signal;
+import wheel.reactive.SourceImpl;
+import wheel.reactive.lists.ListSignal;
+import wheel.reactive.lists.impl.SimpleListReceiver;
 
 public class ChatScreen extends JFrame {
 	
-	public ChatScreen(String otherGuysNick, Omnivore<ChatEvent> chatEventSender){
+	public ChatScreen(Signal<String> otherGuysNick, final ListSignal<ChatEvent> chatEvents, Consumer<ChatEvent> sender){
 		_otherGuysNick = otherGuysNick;
-		_chatSender = chatEventSender;
+		_chatSender = sender;
 		
 		initComponents();
-		setTitle(otherGuysNick);
+		
+		otherGuysNick.addReceiver(new Receiver<String>() {
+			@Override
+			public void receive(String valueChange) {
+				setTitle(valueChange);
+			}
+		});
+		
+		chatEvents.addListReceiver(new SimpleListReceiver() {
+			@Override
+			public void elementAdded(int index) {
+				ChatEvent chatEvent = chatEvents.currentGet(index);
+				appendToChatText("To " + chatEvent._destination + ": " + chatEvent._text);
+			}
+		});
+		
 		setVisible(true);
 	}
 
 	
-	private final String _otherGuysNick;
-	private final Omnivore<ChatEvent> _chatSender;
+	private final Signal<String> _otherGuysNick;
+	private final Consumer<ChatEvent> _chatSender;
 	private final JTextArea _chatText = createChatText();
 
 	
@@ -47,10 +69,21 @@ public class ChatScreen extends JFrame {
 		chatInput.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ignored) {
-				ChatEvent chatEvent = new ChatEvent(chatInput.getText());
+				final ChatEvent chatEvent = new ChatEvent(chatInput.getText(), _otherGuysNick.currentValue());
 				chatInput.setText("");
-				_chatSender.consume(chatEvent);
-				appendToChatText("Me: " + chatEvent._text);
+				
+				Threads.startDaemon(new Runnable() {		
+					@Override
+					public void run() {
+						try {
+							_chatSender.consume(chatEvent);
+						} catch (IllegalParameter e) {
+							Log.log(e);
+							//Fix: the nick of the contact might have changed just before the event was consumed. Use some sort of timestamp associated with the nick.
+						}
+					}
+				});
+				
 			}
 		});
 		return chatInput;
@@ -67,7 +100,7 @@ public class ChatScreen extends JFrame {
 		return new Omnivore<ChatEvent>() {
 			@Override
 			public void consume(ChatEvent chatEvent) {
-				appendToChatText(_otherGuysNick + ": " + chatEvent._text);	
+				appendToChatText(_otherGuysNick.currentValue() + ": " + chatEvent._text);	
 			}
 		};
 	}
@@ -83,25 +116,6 @@ public class ChatScreen extends JFrame {
 		});		
 	}
 
-	public static void main(String[] args) {
-		
-		final ChatScreen chatScreen = new ChatScreen("Depressed Robot", new Omnivore<ChatEvent>() {
-			@Override
-			public void consume(ChatEvent chatEvent) {
-				System.out.println(chatEvent._text);
-			}
-		});
-		
-		Threads.startDaemon(new Runnable() {
-			@Override
-			public void run() {
-				while (true) {
-					chatScreen.chatEventReceiver().consume(new ChatEvent("life sucks " + System.currentTimeMillis()));
-					Threads.sleepWithoutInterruptions(3000);
-				}
-			}
-		});
-	}
 	
 	private static final long serialVersionUID = 1L;
 }

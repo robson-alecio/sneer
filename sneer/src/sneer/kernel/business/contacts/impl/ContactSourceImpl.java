@@ -1,5 +1,6 @@
 package sneer.kernel.business.contacts.impl;
 
+import sneer.kernel.business.chat.ChatEvent;
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.ContactSource;
 import wheel.io.network.PortNumberSource;
@@ -8,9 +9,15 @@ import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
 import wheel.reactive.SourceImpl;
+import wheel.reactive.lists.ListSignal;
+import wheel.reactive.lists.ListSource;
+import wheel.reactive.lists.impl.ListSourceImpl;
 
 public class ContactSourceImpl implements ContactSource {
 	
+	public ListSource<ChatEvent> _chatEventsPending = new ListSourceImpl<ChatEvent>();
+
+
 	public class MyOutput implements Contact {
 
 		@Override
@@ -31,6 +38,11 @@ public class ContactSourceImpl implements ContactSource {
 		@Override
 		public Signal<Boolean> isOnline() {
 			return _isOnline.output();
+		}
+
+		@Override
+		public ListSignal<ChatEvent> chatEventsPending() {
+			return _chatEventsPending.output();
 		}
 
 	}
@@ -77,6 +89,12 @@ public class ContactSourceImpl implements ContactSource {
 	@Override
 	public Omnivore<Boolean> isOnlineSetter() {
 		return _isOnline.setter();
+	}
+
+
+	@Override
+	public Omnivore<ChatEvent> chatEventAdder() {
+		return _chatEventsPending.adder();
 	}
 
 }

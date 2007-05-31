@@ -17,7 +17,7 @@ public class Communicator {
 	private Communicator(User user, OldNetwork network, BusinessSource businessSource) {
 		Business business = businessSource.output();
 		
-		ServerStarter.start(user, network, business.sneerPort());
+		ServerStarter.start(user, network, business.sneerPort(), businessSource.chatSender());
 		Spider.start(network, business.contacts(), businessSource.contactOnlineSetter());
 	}
 	

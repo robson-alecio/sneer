@@ -66,6 +66,7 @@ public class Sneer {
 
 	private Prevayler prevaylerFor(Object rootObject) throws Exception {
 		PrevaylerFactory factory = new PrevaylerFactory();
+		factory.configureTransactionFiltering(false);
 		factory.configurePrevalentSystem(rootObject);
 		factory.configurePrevalenceDirectory(SneerDirectories.prevalenceDirectory().getAbsolutePath());
 		factory.configureJournalSerializer(new XStreamSerializer());

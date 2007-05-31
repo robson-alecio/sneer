@@ -11,5 +11,10 @@ public class ChatEvent {
 
 	public final String _text;
 	public final String _destination;
+	
+	@Override
+	public String toString() {
+		return "To " + _destination + ": " + _text;
+	}
 
 }

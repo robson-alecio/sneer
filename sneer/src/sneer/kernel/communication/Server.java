@@ -3,20 +3,24 @@ package sneer.kernel.communication;
 import java.io.IOException;
 import java.net.BindException;
 
+import sneer.kernel.business.chat.ChatEvent;
 import wheel.io.Log;
 import wheel.io.network.ObjectServerSocket;
+import wheel.io.network.ObjectSocket;
 import wheel.io.network.OldNetwork;
-import wheel.io.ui.User;
+import wheel.lang.Consumer;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.FriendlyException;
+import wheel.lang.exceptions.IllegalParameter;
 
 class Server {
 
-	static Server start(OldNetwork network, int port) throws IOException, FriendlyException {
-		return new Server(network, port);
+	static Server start(OldNetwork network, int port, Consumer<ChatEvent> chatSender) throws IOException, FriendlyException {
+		return new Server(network, port, chatSender);
 	}
 
-	private Server(OldNetwork network, int port) throws IOException, FriendlyException {
+	private Server(OldNetwork network, int port, Consumer<ChatEvent> chatSender) throws IOException, FriendlyException {
+		_chatSender = chatSender;
 		try {
 			_serverSocket = network.openObjectServerSocket(port);
 		} catch (BindException e) {
@@ -28,6 +32,7 @@ class Server {
 
 	private final ObjectServerSocket _serverSocket;
 	private volatile boolean _isStopped = false;
+	private final Consumer<ChatEvent> _chatSender;
 	
 	
 	private void startAccepting() {
@@ -42,13 +47,49 @@ class Server {
 
 	private void accept() {
 		try {
-			_serverSocket.accept();
+			serve(_serverSocket.accept());
 		} catch (IOException e) {
 			if (_isStopped) return;
 			Log.log(e);
 		}
 	}
 	
+	private void serve(final ObjectSocket socket) {
+		Threads.startDaemon(new Runnable() {
+
+			@Override
+			public void run() {
+				while (true){
+					try {
+						Object readObject = socket.readObject();
+						
+						if (readObject instanceof ChatEvent)
+							consumeChatEvent((ChatEvent)readObject);
+						
+						System.out.println("Received: " + readObject);
+					} catch (IOException e) {
+						// Implement Auto-generated catch block
+						e.printStackTrace();
+					} catch (ClassNotFoundException e) {
+						// Implement Auto-generated catch block
+						e.printStackTrace();
+					} 
+				}
+			}
+
+			private void consumeChatEvent(ChatEvent chatEvent) {
+				try {
+					ChatEvent incoming = new ChatEvent(chatEvent._text, null);
+					_chatSender.consume(incoming);
+				} catch (IllegalParameter e) {
+					// Implement chat event might have out-of-date _source or _destination
+					e.printStackTrace();
+				}
+			}
+		});
+		
+	}
+
 	void stop() {
 		try {
 			_isStopped = true;

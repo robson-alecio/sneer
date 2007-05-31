@@ -1,20 +1,17 @@
 package sneer.kernel.gui;
 
 import java.net.URL;
-
-import org.prevayler.Prevayler;
-
-import prevayler.bubble.Bubble;
+import java.util.Random;
 
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.gui.contacts.ShowContactsScreenAction;
-import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.TrayIcon;
 import wheel.io.ui.User;
 import wheel.io.ui.TrayIcon.Action;
 import wheel.io.ui.impl.TrayIconImpl;
 import wheel.io.ui.impl.ValueChangePane;
 import wheel.lang.IntegerParser;
+import wheel.lang.exceptions.IllegalParameter;
 
 public class Gui {
 
@@ -40,14 +37,30 @@ public class Gui {
 	
 	
 	private void tryToRun() {
-		//Refactor: remove this logic from the gui;
-		String ownName = _business.output().ownName().currentValue();
-		if (ownName == null || ownName.isEmpty()) nameChangeAction().run();
+		filloutInitialValues();
 
 		_trayIcon.addAction(nameChangeAction());
 		_trayIcon.addAction(new ShowContactsScreenAction(_business.output().contacts(), _business.contactAdder(), _user));
 		_trayIcon.addAction(sneerPortChangeAction());
 		_trayIcon.addAction(exitAction());
+	}
+
+	private void filloutInitialValues() { //Refactor: remove this logic from the gui;
+		String ownName = _business.output().ownName().currentValue();
+		if (ownName == null || ownName.isEmpty()) nameChangeAction().run();
+
+		int sneerPort = _business.output().sneerPort().currentValue();
+		if (sneerPort == 0) initSneerPort();
+	}
+
+	private void initSneerPort() {
+		int randomPort = 10000 + new Random().nextInt(50000);
+		try {
+			_business.sneerPortSetter().consume(randomPort);
+		} catch (IllegalParameter e) {
+			throw new IllegalStateException();
+		}
+		sneerPortChangeAction().run();
 	}
 
 

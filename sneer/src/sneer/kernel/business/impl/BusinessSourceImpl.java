@@ -2,6 +2,7 @@ package sneer.kernel.business.impl;
 
 import sneer.kernel.business.Business;
 import sneer.kernel.business.BusinessSource;
+import sneer.kernel.business.chat.ChatEvent;
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.ContactInfo;
 import sneer.kernel.business.contacts.ContactSource;
@@ -39,6 +40,11 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 			return _sneerPortNumber.output();
 		}
 
+		@Override
+		public ListSignal<ChatEvent> chatEventsPending() {
+			return _chatEventsPending.output();
+		}
+
 	}
 
 	private Source<String> _ownName = new SourceImpl<String>("");
@@ -47,6 +53,8 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 
 	private final ListSource<ContactSource> _contactSources = new ListSourceImpl<ContactSource>();
 	private final ListSource<Contact> _contacts = new ListSourceImpl<Contact>(); 	//Refactor: use a reactive "ListCollector" instead of keeping this redundant list.
+
+	private final ListSource<ChatEvent> _chatEventsPending = new ListSourceImpl<ChatEvent>();
 
 	
 	private final Business _output = new MyOutput();

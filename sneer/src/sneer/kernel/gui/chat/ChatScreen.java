@@ -58,7 +58,6 @@ public class ChatScreen extends JFrame {
 
 	private JTextArea createChatText() {
 		final JTextArea chatArea = new JTextArea();
-		chatArea.setFocusable(true);
 		chatArea.setEditable(false);
 		
 		return chatArea;

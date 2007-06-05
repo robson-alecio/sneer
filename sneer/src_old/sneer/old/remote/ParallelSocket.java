@@ -72,8 +72,8 @@ class ParallelSocket {
 				while (true) {
 					checkOpen();
 					if (_envelopeRead == null) _envelopeRead = _poBox.remove();
-					if (_envelopeRead.stamp() == myEnvelope.stamp()) {
-						Object result = _envelopeRead.contents();
+					if (_envelopeRead._stamp == myEnvelope._stamp) {
+						Object result = _envelopeRead._contents;
 						_envelopeRead = null;
 						return result;
 					}

@@ -40,7 +40,7 @@ class ParallelSocket {
 					_poBox.add((Envelope)object);
 					return true;
 				}
-				SmokeSignal smokeSignal = (SmokeSignal)object;  //FIXME Class cast Exceptions are possible if other side is malicious.
+				SmokeSignal smokeSignal = (SmokeSignal)object;  //Fix: Class cast Exceptions are possible if other side is malicious.
 				Indian indian = _indians.get(smokeSignal._indianId);
 				indian.receive(smokeSignal);
 				return true;
@@ -48,7 +48,7 @@ class ParallelSocket {
 				e.printStackTrace();
 				throw new IOException("ClassNotFoundException thrown");
 			}
-			//FIXME: Check whether this is a valid envelope to prevent all threads from waiting forever.
+			//Fix: Check whether this is a valid envelope to prevent all threads from waiting forever.
 		} catch (IOException x) {
 			closeBecauseOf(x);
 			synchronized (_poBox) {
@@ -87,8 +87,8 @@ class ParallelSocket {
 
 	private void checkForIndian(Object request) {
     	if (!(request instanceof Indian)) return;
-    		Indian indian = (Indian)request;
-			_indians.put(indian.id(), indian);
+    	Indian indian = (Indian)request;
+		_indians.put(indian.id(), indian);
 	}
 
 	private void checkOpen() throws IOException {
@@ -122,11 +122,3 @@ class ParallelSocket {
 	}
 	
 }
-
-
-
-
-
-
-
-

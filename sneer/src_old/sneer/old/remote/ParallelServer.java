@@ -60,8 +60,7 @@ public class ParallelServer implements Runnable {
 		}
 	}
 
-	private void serve(final ObjectSocket socket) throws IOException,
-			ClassNotFoundException {
+	private void serve(final ObjectSocket socket) throws IOException, ClassNotFoundException {
 		shakeHands(socket);
 		
 		while (true) {
@@ -99,7 +98,7 @@ public class ParallelServer implements Runnable {
 
 	private Long generateNewId() {
 		long result;
-		do { result = System.currentTimeMillis(); } while (_sentPeerIds.contains(result));
+		do { result = System.nanoTime(); } while (_sentPeerIds.contains(result));
 		_sentPeerIds.add(result);
 		return result;
 	}

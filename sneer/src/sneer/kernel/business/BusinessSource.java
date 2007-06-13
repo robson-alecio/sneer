@@ -1,16 +1,10 @@
 package sneer.kernel.business;
 
-import java.io.Serializable;
-import java.util.List;
-
-import sneer.kernel.business.chat.ChatEvent;
+import sneer.apps.messages.ChatEvent;
 import sneer.kernel.business.contacts.ContactInfo;
 import sneer.kernel.business.contacts.OnlineEvent;
-
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
-import wheel.reactive.Signal;
-import wheel.reactive.lists.ListSignal;
 
 public interface BusinessSource {
 

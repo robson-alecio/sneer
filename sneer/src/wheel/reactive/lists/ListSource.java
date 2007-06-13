@@ -1,8 +1,6 @@
 package wheel.reactive.lists;
 
-import sneer.kernel.business.chat.ChatEvent;
 import wheel.lang.Omnivore;
-import wheel.reactive.Receiver;
 
 public interface ListSource<VO> {
 

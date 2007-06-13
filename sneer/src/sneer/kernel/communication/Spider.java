@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.kernel.business.chat.ChatEvent;
+import sneer.apps.messages.ChatEvent;
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.OnlineEvent;
 import wheel.io.network.ObjectSocket;

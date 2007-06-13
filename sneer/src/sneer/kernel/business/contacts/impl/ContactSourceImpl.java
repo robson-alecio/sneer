@@ -1,6 +1,6 @@
 package sneer.kernel.business.contacts.impl;
 
-import sneer.kernel.business.chat.ChatEvent;
+import sneer.apps.messages.ChatEvent;
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.ContactSource;
 import wheel.io.network.PortNumberSource;

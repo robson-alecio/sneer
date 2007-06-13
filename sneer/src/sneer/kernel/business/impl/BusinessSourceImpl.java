@@ -1,8 +1,8 @@
 package sneer.kernel.business.impl;
 
+import sneer.apps.messages.ChatEvent;
 import sneer.kernel.business.Business;
 import sneer.kernel.business.BusinessSource;
-import sneer.kernel.business.chat.ChatEvent;
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.ContactInfo;
 import sneer.kernel.business.contacts.ContactSource;

@@ -1,4 +1,4 @@
-package sneer.kernel.gui.chat;
+package sneer.apps.messages.gui;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -10,7 +10,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import sneer.kernel.business.chat.ChatEvent;
+import sneer.apps.messages.ChatEvent;
 
 import wheel.io.Log;
 import wheel.lang.Consumer;

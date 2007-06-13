@@ -1,4 +1,4 @@
-package sneer.kernel.business.chat;
+package sneer.apps.messages;
 
 import org.jmock.util.NotImplementedException;
 

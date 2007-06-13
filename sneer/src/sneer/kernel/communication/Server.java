@@ -3,7 +3,7 @@ package sneer.kernel.communication;
 import java.io.IOException;
 import java.net.BindException;
 
-import sneer.kernel.business.chat.ChatEvent;
+import sneer.apps.messages.ChatEvent;
 import wheel.io.Log;
 import wheel.io.network.ObjectServerSocket;
 import wheel.io.network.ObjectSocket;

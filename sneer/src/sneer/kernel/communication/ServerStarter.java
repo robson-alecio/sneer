@@ -2,8 +2,7 @@ package sneer.kernel.communication;
 
 import java.io.IOException;
 
-import sneer.kernel.business.chat.ChatEvent;
-
+import sneer.apps.messages.ChatEvent;
 import wheel.io.Log;
 import wheel.io.network.OldNetwork;
 import wheel.io.ui.User;

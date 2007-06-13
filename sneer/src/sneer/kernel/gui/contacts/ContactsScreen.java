@@ -13,24 +13,20 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import org.jmock.util.NotImplementedException;
-
-import sneer.kernel.business.chat.ChatEvent;
+import sneer.apps.messages.ChatEvent;
+import sneer.apps.messages.gui.ChatScreen;
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.ContactInfo;
 import sneer.kernel.gui.NewContactAddition;
-import sneer.kernel.gui.chat.ChatScreen;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.io.ui.impl.ListSignalModel;
 import wheel.lang.Consumer;
-import wheel.lang.Omnivore;
 import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.lists.ListSignal;
 

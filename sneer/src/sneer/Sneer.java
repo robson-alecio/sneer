@@ -45,7 +45,7 @@ public class Sneer {
 		BusinessSource persistentBusinessSource = Bubble.wrapStateMachine(prevayler);
 
 		Gui.start(_user, persistentBusinessSource); //Implement: start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
-		Communicator.start(_user, new XStreamNetwork(new OldNetworkImpl()), persistentBusinessSource);
+		new Communicator(_user, new XStreamNetwork(new OldNetworkImpl()), persistentBusinessSource);
 		
 		while (true) Threads.sleepWithoutInterruptions(5000);
 	}

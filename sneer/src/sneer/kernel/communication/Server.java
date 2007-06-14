@@ -15,12 +15,11 @@ import wheel.lang.exceptions.IllegalParameter;
 
 class Server {
 
-	static Server start(OldNetwork network, int port, Consumer<ChatEvent> chatSender) throws IOException, FriendlyException {
-		return new Server(network, port, chatSender);
+	static Server start(OldNetwork network, int port) throws IOException, FriendlyException {
+		return new Server(network, port);
 	}
 
-	private Server(OldNetwork network, int port, Consumer<ChatEvent> chatSender) throws IOException, FriendlyException {
-		_chatSender = chatSender;
+	private Server(OldNetwork network, int port) throws IOException, FriendlyException {
 		try {
 			_serverSocket = network.openObjectServerSocket(port);
 		} catch (BindException e) {
@@ -32,7 +31,6 @@ class Server {
 
 	private final ObjectServerSocket _serverSocket;
 	private volatile boolean _isStopped = false;
-	private final Consumer<ChatEvent> _chatSender;
 	
 	
 	private void startAccepting() {
@@ -62,10 +60,6 @@ class Server {
 				while (true){
 					try {
 						Object readObject = socket.readObject();
-						
-						if (readObject instanceof ChatEvent)
-							consumeChatEvent((ChatEvent)readObject);
-						
 						System.out.println("Received: " + readObject);
 					} catch (IOException e) {
 						// Implement Auto-generated catch block
@@ -74,16 +68,6 @@ class Server {
 						// Implement Auto-generated catch block
 						e.printStackTrace();
 					} 
-				}
-			}
-
-			private void consumeChatEvent(ChatEvent chatEvent) {
-				try {
-					ChatEvent incoming = new ChatEvent(chatEvent._text, null);
-					_chatSender.consume(incoming);
-				} catch (IllegalParameter e) {
-					// Implement chat event might have out-of-date _source or _destination
-					e.printStackTrace();
 				}
 			}
 		});

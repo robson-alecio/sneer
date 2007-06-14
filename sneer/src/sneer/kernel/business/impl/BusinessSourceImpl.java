@@ -102,16 +102,4 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 		return null;
 	}
 
-	@Override
-	public Consumer<ChatEvent> chatSender() {
-		return new Consumer<ChatEvent>(){
-			@Override
-			public void consume(ChatEvent chatEvent) throws IllegalParameter {
-				ContactSource contactSource = findContactSource(chatEvent._destination);
-				if (contactSource == null) throw new IllegalParameter("Destination cannot be null.");
-				contactSource.chatEventAdder().consume(chatEvent);
-			}
-		};
-	}
-
 }

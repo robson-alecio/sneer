@@ -40,7 +40,7 @@ public class Gui {
 		filloutInitialValues();
 
 		_trayIcon.addAction(nameChangeAction());
-		_trayIcon.addAction(new ShowContactsScreenAction(_businessSource.output().contacts(), _businessSource.contactAdder(), _user, _businessSource.chatSender()));
+		_trayIcon.addAction(new ShowContactsScreenAction(_businessSource.output().contacts(), _businessSource.contactAdder(), _user, null));
 		_trayIcon.addAction(sneerPortChangeAction());
 		_trayIcon.addAction(exitAction());
 	}

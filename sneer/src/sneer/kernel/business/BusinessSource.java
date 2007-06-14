@@ -17,6 +17,4 @@ public interface BusinessSource {
 	Consumer<ContactInfo> contactAdder();
 	Omnivore<OnlineEvent> contactOnlineSetter();
 
-	Consumer<ChatEvent> chatSender();
-
 }

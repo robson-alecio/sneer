@@ -12,7 +12,5 @@ public interface ContactSource {
 	Omnivore<String> hostSetter();
 	Consumer<Integer> portSetter();
 	Omnivore<Boolean> isOnlineSetter();
-	
-	Omnivore<ChatEvent> chatEventAdder();
 
 }

@@ -17,16 +17,11 @@ class ServerStarter implements Receiver<Integer> {
 	private final User _user;
 	private final OldNetwork _network;
 	private volatile Server _server;
-	private final Consumer<ChatEvent> _chatSender;
 
-	public static void start(User user, OldNetwork network, Signal<Integer> sneerPort, Consumer<ChatEvent> chatSender) {
-		new ServerStarter(user, network, sneerPort, chatSender);
-	}
 
-	private ServerStarter(User user, OldNetwork network, Signal<Integer> sneerPort, Consumer<ChatEvent> chatSender) {
+	ServerStarter(User user, OldNetwork network, Signal<Integer> sneerPort) {
 		_user = user;
 		_network = network;
-		_chatSender = chatSender;
 
 		sneerPort.addTransientReceiver(this);
 		Threads.preventFromBeingGarbageCollected(this);
@@ -37,7 +32,7 @@ class ServerStarter implements Receiver<Integer> {
 		if (_server != null) _server.stop();
 		
 		try {
-			_server = Server.start(_network, newPort, _chatSender);
+			_server = Server.start(_network, newPort);
 		} catch (IOException e) {
 			Log.log(e);
 		} catch (FriendlyException e) {

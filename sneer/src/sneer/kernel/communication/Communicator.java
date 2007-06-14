@@ -10,14 +10,10 @@ import wheel.reactive.Signal;
 
 public class Communicator {
 
-	static public void start(User user, OldNetwork network, BusinessSource businessSource) {
-		new Communicator(user, network, businessSource);
-	}
-
-	private Communicator(User user, OldNetwork network, BusinessSource businessSource) {
+	public Communicator(User user, OldNetwork network, BusinessSource businessSource) {
 		Business business = businessSource.output();
 		
-		ServerStarter.start(user, network, business.sneerPort(), businessSource.chatSender());
+		new ServerStarter(user, network, business.sneerPort());
 		Spider.start(network, business.contacts(), businessSource.contactOnlineSetter());
 	}
 	

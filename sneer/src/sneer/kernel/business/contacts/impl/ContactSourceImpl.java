@@ -15,9 +15,6 @@ import wheel.reactive.lists.impl.ListSourceImpl;
 
 public class ContactSourceImpl implements ContactSource {
 	
-	public ListSource<ChatEvent> _chatEventsPending = new ListSourceImpl<ChatEvent>();
-
-
 	public class MyOutput implements Contact {
 
 		@Override
@@ -38,11 +35,6 @@ public class ContactSourceImpl implements ContactSource {
 		@Override
 		public Signal<Boolean> isOnline() {
 			return _isOnline.output();
-		}
-
-		@Override
-		public ListSignal<ChatEvent> chatEventsPending() {
-			return _chatEventsPending.output();
 		}
 
 	}
@@ -89,12 +81,6 @@ public class ContactSourceImpl implements ContactSource {
 	@Override
 	public Omnivore<Boolean> isOnlineSetter() {
 		return _isOnline.setter();
-	}
-
-
-	@Override
-	public Omnivore<ChatEvent> chatEventAdder() {
-		return _chatEventsPending.adder();
 	}
 
 }

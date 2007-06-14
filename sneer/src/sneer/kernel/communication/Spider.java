@@ -17,38 +17,6 @@ import wheel.reactive.lists.impl.SimpleListReceiver;
 
 class Spider {
 
-	private class MyChatEventSender extends SimpleListReceiver { //Does not extend SimpeListRecceiver. Make an inner class MyReceiver that does.
-
-		private final Signal<String> _host;
-		private final Signal<Integer> _port;
-		private final ListSignal<ChatEvent> _chatEvents;
-		private volatile boolean _working = false;
-
-		public MyChatEventSender(Signal<String> host, Signal<Integer> port, ListSignal<ChatEvent> chatEvents) {
-			_host = host;
-			_port = port;
-			_chatEvents = chatEvents;
-		}
-
-		@Override
-		public void elementAdded(int index) {
-			if (!_working) return;
-			try {
-				ObjectSocket socket = produceSocket(_host.currentValue(), _port.currentValue());
-				ChatEvent chatEvent = _chatEvents.currentGet(index);
-				if (chatEvent._destination == null) return;
-				socket.writeObject(chatEvent);
-			} catch (IOException e) {
-				//Fix: deal with the lost event.
-			}
-		}
-
-		public void startWorking() { //Refactor: clean this crap.
-			_working = true;			
-		}
-
-	}
-
 	static void start(OldNetwork network, ListSignal<Contact> contacts, Omnivore<OnlineEvent> onlineSetter) {
 		new Spider(network, contacts, onlineSetter);
 	}
@@ -72,9 +40,6 @@ class Spider {
 		public void elementAdded(int index) {
 			Contact contact = _contacts.currentGet(index);
 			startIsOnlineWatchdog(contact);
-			MyChatEventSender myChatEventSender = new MyChatEventSender(contact.host(), contact.port(), contact.chatEventsPending());
-			contact.chatEventsPending().addListReceiver(myChatEventSender);
-			myChatEventSender.startWorking();
 		}
 
 		@Override

@@ -134,7 +134,7 @@ public class ContactsScreen extends JFrame {
 		chatFriendMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ignored) {
 				Contact contact = _contacts.currentGet(friendsList.getSelectedIndex());
-				new ChatScreen(contact.nick(), contact.chatEventsPending(), _chatSender);
+				new ChatScreen(contact.nick(), null, _chatSender);
 			}
 		});
 		return chatFriendMenuItem;

@@ -2,11 +2,9 @@ package sneer.kernel.communication;
 
 import java.io.IOException;
 
-import sneer.apps.messages.ChatEvent;
 import wheel.io.Log;
 import wheel.io.network.OldNetwork;
 import wheel.io.ui.User;
-import wheel.lang.Consumer;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.FriendlyException;
 import wheel.reactive.Receiver;

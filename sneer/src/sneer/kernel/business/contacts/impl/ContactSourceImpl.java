@@ -1,6 +1,5 @@
 package sneer.kernel.business.contacts.impl;
 
-import sneer.apps.messages.ChatEvent;
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.ContactSource;
 import wheel.io.network.PortNumberSource;
@@ -9,9 +8,6 @@ import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
 import wheel.reactive.SourceImpl;
-import wheel.reactive.lists.ListSignal;
-import wheel.reactive.lists.ListSource;
-import wheel.reactive.lists.impl.ListSourceImpl;
 
 public class ContactSourceImpl implements ContactSource {
 	

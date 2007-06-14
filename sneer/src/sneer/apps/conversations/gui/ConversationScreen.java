@@ -1,4 +1,4 @@
-package sneer.apps.messages.gui;
+package sneer.apps.conversations.gui;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -10,8 +10,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import sneer.apps.messages.ChatEvent;
-
+import sneer.apps.conversations.Message;
 import wheel.io.Log;
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
@@ -19,13 +18,10 @@ import wheel.lang.Threads;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Receiver;
 import wheel.reactive.Signal;
-import wheel.reactive.SourceImpl;
-import wheel.reactive.lists.ListSignal;
-import wheel.reactive.lists.impl.SimpleListReceiver;
 
-public class ChatScreen extends JFrame {
+public class ConversationScreen extends JFrame {
 	
-	public ChatScreen(Signal<String> otherGuysNick, final ListSignal<ChatEvent> chatEvents, Consumer<ChatEvent> sender){
+	public ConversationScreen(Signal<String> otherGuysNick, final Signal<Message> lastIncomingMessage, Consumer<Message> sender){
 		_otherGuysNick = otherGuysNick;
 		_chatSender = sender;
 		
@@ -38,11 +34,10 @@ public class ChatScreen extends JFrame {
 			}
 		});
 		
-		chatEvents.addListReceiver(new SimpleListReceiver() {
+		lastIncomingMessage.addReceiver(new Receiver<Message>() {
 			@Override
-			public void elementAdded(int index) {
-				ChatEvent chatEvent = chatEvents.currentGet(index);
-				appendToChatText("To " + chatEvent._destination + ": " + chatEvent._text);
+			public void receive(Message message) {
+				appendToChatText("To " + message._destination + ": " + message._text);
 			}
 		});
 		
@@ -51,7 +46,7 @@ public class ChatScreen extends JFrame {
 
 	
 	private final Signal<String> _otherGuysNick;
-	private final Consumer<ChatEvent> _chatSender;
+	private final Consumer<Message> _chatSender;
 	private final JTextArea _chatText = createChatText();
 
 	
@@ -69,7 +64,7 @@ public class ChatScreen extends JFrame {
 		chatInput.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ignored) {
-				final ChatEvent chatEvent = new ChatEvent(chatInput.getText(), _otherGuysNick.currentValue());
+				final Message chatEvent = new Message(chatInput.getText(), _otherGuysNick.currentValue());
 				chatInput.setText("");
 				
 				Threads.startDaemon(new Runnable() {		
@@ -96,10 +91,10 @@ public class ChatScreen extends JFrame {
 		return chatArea;
 	}
 	
-	public Omnivore<ChatEvent> chatEventReceiver(){
-		return new Omnivore<ChatEvent>() {
+	public Omnivore<Message> chatEventReceiver(){
+		return new Omnivore<Message>() {
 			@Override
-			public void consume(ChatEvent chatEvent) {
+			public void consume(Message chatEvent) {
 				appendToChatText(_otherGuysNick.currentValue() + ": " + chatEvent._text);	
 			}
 		};

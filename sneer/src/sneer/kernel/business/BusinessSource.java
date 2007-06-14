@@ -1,6 +1,5 @@
 package sneer.kernel.business;
 
-import sneer.apps.messages.ChatEvent;
 import sneer.kernel.business.contacts.ContactInfo;
 import sneer.kernel.business.contacts.OnlineEvent;
 import wheel.lang.Consumer;

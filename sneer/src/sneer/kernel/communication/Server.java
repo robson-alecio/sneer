@@ -3,15 +3,12 @@ package sneer.kernel.communication;
 import java.io.IOException;
 import java.net.BindException;
 
-import sneer.apps.messages.ChatEvent;
 import wheel.io.Log;
 import wheel.io.network.ObjectServerSocket;
 import wheel.io.network.ObjectSocket;
 import wheel.io.network.OldNetwork;
-import wheel.lang.Consumer;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.FriendlyException;
-import wheel.lang.exceptions.IllegalParameter;
 
 class Server {
 

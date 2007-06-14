@@ -1,6 +1,5 @@
 package sneer.kernel.business.impl;
 
-import sneer.apps.messages.ChatEvent;
 import sneer.kernel.business.Business;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.contacts.Contact;
@@ -11,9 +10,6 @@ import sneer.kernel.business.contacts.impl.ContactAdder;
 import wheel.io.network.PortNumberSource;
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
-import wheel.lang.StringConsumerNotNullNonBlank;
-import wheel.lang.exceptions.IllegalParameter;
-import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
 import wheel.reactive.SourceImpl;

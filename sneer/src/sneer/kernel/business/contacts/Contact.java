@@ -1,8 +1,6 @@
 package sneer.kernel.business.contacts;
 
-import sneer.apps.messages.ChatEvent;
 import wheel.reactive.Signal;
-import wheel.reactive.lists.ListSignal;
 
 public interface Contact {
 

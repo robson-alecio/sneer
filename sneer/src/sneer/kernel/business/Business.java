@@ -1,6 +1,5 @@
 package sneer.kernel.business;
 
-import sneer.apps.messages.ChatEvent;
 import sneer.kernel.business.contacts.Contact;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;

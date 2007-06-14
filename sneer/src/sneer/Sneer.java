@@ -12,7 +12,7 @@ import org.prevayler.PrevaylerFactory;
 import org.prevayler.foundation.serialization.XStreamSerializer;
 
 import prevayler.bubble.Bubble;
-import sneer.apps.messages.MessagesApp;
+import sneer.apps.conversations.MessagesApp;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.impl.BusinessFactory;
 import sneer.kernel.communication.Communicator;

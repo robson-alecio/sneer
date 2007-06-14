@@ -1,4 +1,4 @@
-package sneer.apps.messages;
+package sneer.apps.conversations;
 
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.gui.contacts.ContactAction;
@@ -16,7 +16,7 @@ public class MessagesApp {
 
 			@Override
 			public String caption() {
-				return "Send Message";
+				return "Start Conversation";
 			}
 			
 		};

@@ -2,7 +2,6 @@ package sneer.kernel.gui.contacts;
 
 import java.util.List;
 
-import sneer.apps.messages.ChatEvent;
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.ContactInfo;
 import wheel.io.ui.User;

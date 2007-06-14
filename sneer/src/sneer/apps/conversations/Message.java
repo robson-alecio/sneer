@@ -1,10 +1,10 @@
-package sneer.apps.messages;
+package sneer.apps.conversations;
 
 import org.jmock.util.NotImplementedException;
 
-public class ChatEvent {
+public class Message {
 
-	public ChatEvent(String text, String destination) {
+	public Message(String text, String destination) {
 		_text = text;
 		_destination = destination;
 	}

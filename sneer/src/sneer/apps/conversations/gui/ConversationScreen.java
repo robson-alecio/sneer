@@ -91,15 +91,6 @@ public class ConversationScreen extends JFrame {
 		return chatArea;
 	}
 	
-	public Omnivore<Message> chatEventReceiver(){
-		return new Omnivore<Message>() {
-			@Override
-			public void consume(Message chatEvent) {
-				appendToChatText(_otherGuysNick.currentValue() + ": " + chatEvent._text);	
-			}
-		};
-	}
-	
 	private void appendToChatText(final String text) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override

@@ -12,7 +12,7 @@ import org.prevayler.PrevaylerFactory;
 import org.prevayler.foundation.serialization.XStreamSerializer;
 
 import prevayler.bubble.Bubble;
-import sneer.apps.conversations.MessagesApp;
+import sneer.apps.conversations.ConversationsApp;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.impl.BusinessFactory;
 import sneer.kernel.communication.Communicator;
@@ -40,6 +40,7 @@ public class Sneer {
 
 	
 	private User _user = new JOptionPaneUser("Sneer");
+	private Communicator _communicator;
 
 	
 	private void tryToRun() throws Exception {
@@ -49,14 +50,14 @@ public class Sneer {
 		BusinessSource persistentBusinessSource = Bubble.wrapStateMachine(prevayler);
 
 		new Gui(_user, persistentBusinessSource, contactActions()); //Implement: start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
-		new Communicator(_user, new XStreamNetwork(new OldNetworkImpl()), persistentBusinessSource);
+		_communicator = new Communicator(_user, new XStreamNetwork(new OldNetworkImpl()), persistentBusinessSource);
 		
 		while (true) Threads.sleepWithoutInterruptions(5000);
 	}
 
 	private List<ContactAction> contactActions() {
 		List<ContactAction> result = new ArrayList<ContactAction>();
-		result.add(new MessagesApp().contactAction());
+		result.add(new ConversationsApp(_communicator.operatorFor(ConversationsApp.class.getName())).contactAction());
 		return result;
 	}
 

@@ -1,9 +1,11 @@
 package sneer.kernel.gui;
 
 import java.net.URL;
+import java.util.List;
 import java.util.Random;
 
 import sneer.kernel.business.BusinessSource;
+import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.gui.contacts.ShowContactsScreenAction;
 import wheel.io.ui.TrayIcon;
 import wheel.io.ui.User;
@@ -15,13 +17,10 @@ import wheel.lang.exceptions.IllegalParameter;
 
 public class Gui {
 
-	public static void start(User user, BusinessSource persistentBusinessSource) throws Exception {
-		new Gui(user, persistentBusinessSource);
-	}
-	
-	private Gui(User user, BusinessSource businessSource) throws Exception {
+	public Gui(User user, BusinessSource businessSource, List<ContactAction> contactActions) throws Exception {
 		_user = user;
 		_businessSource = businessSource;
+		_contactActions = contactActions;
 
 		URL icon = Gui.class.getResource("/sneer/kernel/gui/traymenu/yourIconGoesHere.png");
 		_trayIcon = new TrayIconImpl(icon, _user.catcher());
@@ -34,13 +33,14 @@ public class Gui {
 	private final TrayIcon _trayIcon;
 	
 	private final BusinessSource _businessSource;
+	private final List<ContactAction> _contactActions;
 	
 	
 	private void tryToRun() {
 		filloutInitialValues();
 
 		_trayIcon.addAction(nameChangeAction());
-		_trayIcon.addAction(new ShowContactsScreenAction(_businessSource.output().contacts(), _businessSource.contactAdder(), _user, null));
+		_trayIcon.addAction(new ShowContactsScreenAction(_businessSource.output().contacts(), _businessSource.contactAdder(), _user, _contactActions));
 		_trayIcon.addAction(sneerPortChangeAction());
 		_trayIcon.addAction(exitAction());
 	}

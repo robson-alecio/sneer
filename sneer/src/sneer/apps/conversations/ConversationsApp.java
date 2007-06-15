@@ -2,25 +2,26 @@ package sneer.apps.conversations;
 
 import sneer.apps.conversations.gui.ConversationScreen;
 import sneer.kernel.business.contacts.Contact;
+import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Connection;
-import sneer.kernel.communication.Operator;
+import sneer.kernel.communication.Channel;
 import sneer.kernel.gui.contacts.ContactAction;
 import wheel.lang.exceptions.NotImplementedYet;
 
 public class ConversationsApp {
 
-	public ConversationsApp(Operator operator) {
+	public ConversationsApp(Channel operator) {
 		_operator = operator;
 	}
 
-	private final Operator _operator;
+	private final Channel _operator;
 
 	public ContactAction contactAction() {
 		return new ContactAction(){
 
 			@Override
 			public void actUpon(Contact contact) {
-				Connection<Message> connection = _operator.establishConnectionTo(contact);
+				Connection connection = _operator.connectionTo(contact.id());
 				new ConversationScreen(contact.nick(), connection.input(), connection.output());
 			}
 

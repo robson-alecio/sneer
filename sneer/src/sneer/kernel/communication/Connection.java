@@ -1,12 +1,11 @@
 package sneer.kernel.communication;
 
-import sneer.apps.conversations.Message;
-import wheel.lang.Consumer;
+import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 
-public interface Connection<T> {
+public interface Connection {
 
-	Signal<T> input();
-	Consumer<T> output();
+	Signal<Object> input();
+	Omnivore<Object> output();
 
 }

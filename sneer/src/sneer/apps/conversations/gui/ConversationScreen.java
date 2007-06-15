@@ -21,7 +21,7 @@ import wheel.reactive.Signal;
 
 public class ConversationScreen extends JFrame {
 	
-	public ConversationScreen(Signal<String> otherGuysNick, final Signal<Message> lastIncomingMessage, Consumer<Message> sender){
+	public ConversationScreen(Signal<String> otherGuysNick, final Signal<Object> lastIncomingMessage, Consumer<Object> sender){
 		_otherGuysNick = otherGuysNick;
 		_chatSender = sender;
 		
@@ -34,9 +34,10 @@ public class ConversationScreen extends JFrame {
 			}
 		});
 		
-		lastIncomingMessage.addReceiver(new Receiver<Message>() {
+		lastIncomingMessage.addReceiver(new Receiver<Object>() {
 			@Override
-			public void receive(Message message) {
+			public void receive(Object messageObj) {
+				Message message = (Message)messageObj; //Refactor Try to eliminate casting.
 				appendToChatText("To " + message._destination + ": " + message._text);
 			}
 		});
@@ -46,7 +47,7 @@ public class ConversationScreen extends JFrame {
 
 	
 	private final Signal<String> _otherGuysNick;
-	private final Consumer<Message> _chatSender;
+	private final Consumer<Object> _chatSender;
 	private final JTextArea _chatText = createChatText();
 
 	

@@ -1,6 +1,7 @@
-package sneer.kernel.communication;
+package sneer.kernel.communication.impl;
 
 import java.io.IOException;
+
 
 import wheel.io.Log;
 import wheel.io.network.OldNetwork;

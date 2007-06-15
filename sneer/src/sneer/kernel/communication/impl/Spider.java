@@ -1,4 +1,4 @@
-package sneer.kernel.communication;
+package sneer.kernel.communication.impl;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -15,11 +15,7 @@ import wheel.reactive.lists.impl.SimpleListReceiver;
 
 class Spider {
 
-	static void start(OldNetwork network, ListSignal<Contact> contacts, Omnivore<OnlineEvent> onlineSetter) {
-		new Spider(network, contacts, onlineSetter);
-	}
-	
-	private Spider(OldNetwork network, ListSignal<Contact> contacts,  Omnivore<OnlineEvent> onlineSetter) {
+	Spider(OldNetwork network, ListSignal<Contact> contacts,  Omnivore<OnlineEvent> onlineSetter) {
 		_network = network;
 		_contacts = contacts;
 		_onlineSetter = onlineSetter;

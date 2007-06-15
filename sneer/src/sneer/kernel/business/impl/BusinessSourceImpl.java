@@ -9,6 +9,7 @@ import sneer.kernel.business.contacts.OnlineEvent;
 import sneer.kernel.business.contacts.impl.ContactAdder;
 import wheel.io.network.PortNumberSource;
 import wheel.lang.Consumer;
+import wheel.lang.Counter;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
@@ -46,9 +47,10 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 
 	private final ListSource<ContactSource> _contactSources = new ListSourceImpl<ContactSource>();
 	private final ListSource<Contact> _contacts = new ListSourceImpl<Contact>(); 	//Refactor: use a reactive "ListCollector" instead of keeping this redundant list.
-
+	private final Counter _contactIdSource = new Counter();
 	
 	private final Business _output = new MyOutput();
+
 
 
 	@Override
@@ -63,7 +65,7 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 
 	@Override
 	public Consumer<ContactInfo> contactAdder() {
-		return new ContactAdder(_contactSources, _contacts);
+		return new ContactAdder(_contactSources, _contacts, _contactIdSource);
 	}
 
 	@Override

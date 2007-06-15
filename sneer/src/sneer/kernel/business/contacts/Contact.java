@@ -9,4 +9,6 @@ public interface Contact {
 	Signal<Integer> port();
 
 	Signal<Boolean> isOnline();
+
+	ContactId id();
 }

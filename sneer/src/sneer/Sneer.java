@@ -15,7 +15,7 @@ import prevayler.bubble.Bubble;
 import sneer.apps.conversations.ConversationsApp;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.impl.BusinessFactory;
-import sneer.kernel.communication.Communicator;
+import sneer.kernel.communication.impl.Communicator;
 import sneer.kernel.gui.Gui;
 import sneer.kernel.gui.contacts.ContactAction;
 import wheel.io.Log;
@@ -57,7 +57,7 @@ public class Sneer {
 
 	private List<ContactAction> contactActions() {
 		List<ContactAction> result = new ArrayList<ContactAction>();
-		result.add(new ConversationsApp(_communicator.operatorFor(ConversationsApp.class.getName())).contactAction());
+		result.add(new ConversationsApp(_communicator.getChannel(ConversationsApp.class.getName())).contactAction());
 		return result;
 	}
 

@@ -1,4 +1,4 @@
-package sneer.kernel.communication;
+package sneer.kernel.communication.impl;
 
 import java.io.IOException;
 import java.net.BindException;

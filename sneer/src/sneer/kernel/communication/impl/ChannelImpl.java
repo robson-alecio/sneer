@@ -8,7 +8,7 @@ import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Connection;
 import wheel.lang.exceptions.NotImplementedYet;
 
-public class ChannelImpl implements Channel {
+class ChannelImpl implements Channel {
 
 	private final String _channelId;
 

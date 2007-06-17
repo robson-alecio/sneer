@@ -1,11 +1,11 @@
 package sneer.tests;
 
-import sneer.Sneer;
+import sneer.SneerLauncher;
 
 public class MainSkippingBoot {
 
 	public static void main(String[] args) {
-		new Sneer();
+		new SneerLauncher();
 	}
 
 }

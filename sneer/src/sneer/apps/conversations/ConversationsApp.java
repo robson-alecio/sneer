@@ -11,6 +11,8 @@ import wheel.lang.exceptions.NotImplementedYet;
 public class ConversationsApp {
 
 	public ConversationsApp(Channel operator) {
+		if (operator == null)
+			throw new IllegalArgumentException();
 		_operator = operator;
 	}
 

@@ -27,7 +27,11 @@ public class Communicator {
 	public Channel getChannel(String channelId) {
 		Channel result = _channelsById.get(channelId);
 		if (result != null) return result;
-		return _channelsById.put(channelId, new ChannelImpl(channelId));
+		
+		ChannelImpl newChannel = new ChannelImpl(channelId);
+		_channelsById.put(channelId, newChannel);
+		return newChannel;
+		
 	}
 
 

@@ -24,7 +24,7 @@ public class ShowContactsScreenAction implements Action {
 	}
 
 	public String caption() {
-		return "Show contacts screen";
+		return "Contacts Screen";
 	}
 
 	public void run() {

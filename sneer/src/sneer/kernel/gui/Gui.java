@@ -74,7 +74,7 @@ public class Gui {
 	private Action nameChangeAction() {
 		String prompt = " What is your name?" +
 						"\n (You can change it any time you like)";
-		return new ValueChangePane("Name Change",prompt, _user, _businessSource.output().ownName(), _businessSource.ownNameSetter());
+		return new ValueChangePane("Own Name",prompt, _user, _businessSource.output().ownName(), _businessSource.ownNameSetter());
 	}
 
 	

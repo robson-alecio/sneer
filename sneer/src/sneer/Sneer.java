@@ -34,7 +34,8 @@ public class Sneer {
 			 
 		} catch (Throwable throwable) {
 			Log.log(throwable);
-			showRestartMessage(throwable);
+			showExitMessage(throwable);
+			System.exit(-1);
 		}
 	}
 
@@ -49,8 +50,8 @@ public class Sneer {
 		Prevayler prevayler = prevaylerFor(new BusinessFactory().createBusinessSource());
 		BusinessSource persistentBusinessSource = Bubble.wrapStateMachine(prevayler);
 
-		new Gui(_user, persistentBusinessSource, contactActions()); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
 		_communicator = new Communicator(_user, new XStreamNetwork(new OldNetworkImpl()), persistentBusinessSource);
+		new Gui(_user, persistentBusinessSource, contactActions()); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
 		
 		while (true) Threads.sleepWithoutInterruptions(5000);
 	}
@@ -67,8 +68,8 @@ public class Sneer {
 	}
 
 	
-	private void showRestartMessage(Throwable t) {
-		String description = " " + t.getLocalizedMessage() + "\n\n Sneer will now restart.";
+	private void showExitMessage(Throwable t) {
+		String description = " " + t.getLocalizedMessage() + "\n\n Sneer will now exit.";
 
 		try {
 			_user.acknowledgeUnexpectedProblem(description);
@@ -80,13 +81,9 @@ public class Sneer {
 		factory.configureTransactionFiltering(false);
 		factory.configurePrevalentSystem(rootObject);
 		factory.configurePrevalenceDirectory(SneerDirectories.prevalenceDirectory().getAbsolutePath());
-		factory.configureJournalSerializer(new XStreamSerializer());
 		factory.configureSnapshotSerializer(new XStreamSerializer());
+		factory.configureJournalSerializer(new XStreamSerializer());
 		return factory.create();
-	}
-
-	public static void main(String[] args) {
-		new Sneer();
 	}
 
 }

@@ -1,4 +1,4 @@
-package sneer.kernel.communication;
+package wheel.io;
 
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;

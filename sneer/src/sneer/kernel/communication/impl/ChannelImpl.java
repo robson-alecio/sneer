@@ -5,20 +5,30 @@ import java.util.Map;
 
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
-import sneer.kernel.communication.Connection;
+import wheel.io.Connection;
 import wheel.lang.exceptions.NotImplementedYet;
 
 class ChannelImpl implements Channel {
 
+	interface MuxProvider {
+		Mux muxFor(ContactId contactId);
+	}
+	
 	private final String _channelId;
+	private final MuxProvider _muxProvider;
 
-	ChannelImpl(String channelId) {
+	ChannelImpl(String channelId, MuxProvider muxProvider) {
 		_channelId = channelId;
+		_muxProvider = muxProvider;
 	}
 
 	@Override
 	public Connection connectionTo(ContactId contactId) {
-		throw new NotImplementedYet();
+		return muxFor(contactId).muxedConnectionFor(_channelId);
+	}
+
+	private Mux muxFor(ContactId contactId) {
+		return _muxProvider.muxFor(contactId);
 	}
 
 }

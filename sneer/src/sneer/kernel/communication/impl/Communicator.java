@@ -8,14 +8,13 @@ import sneer.kernel.business.Business;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
+import sneer.kernel.communication.impl.ChannelImpl.MuxProvider;
+import wheel.io.Connection;
 import wheel.io.network.OldNetwork;
 import wheel.io.ui.User;
-import wheel.lang.Omnivore;
+import wheel.lang.exceptions.NotImplementedYet;
 
 public class Communicator {
-
-	private Map<String, Channel> _channelsById = new HashMap<String, Channel>();
-	private Spider _spider;
 
 	public Communicator(User user, OldNetwork network, BusinessSource businessSource) {
 		Business business = businessSource.output();
@@ -24,14 +23,35 @@ public class Communicator {
 		_spider = new Spider(network, business.contacts(), businessSource.contactOnlineSetter());
 	}
 
+	private Spider _spider;
+	private Map<String, Channel> _channelsById = new HashMap<String, Channel>();
+	private Map<ContactId, Mux> _muxesByContactId = new HashMap<ContactId, Mux>();
+
+
 	public Channel getChannel(String channelId) {
 		Channel result = _channelsById.get(channelId);
 		if (result != null) return result;
 		
-		ChannelImpl newChannel = new ChannelImpl(channelId);
-		_channelsById.put(channelId, newChannel);
-		return newChannel;
-		
+		result = new ChannelImpl(channelId, myMuxProvider());
+		_channelsById.put(channelId, result);
+		return result;
+	}
+
+	private MuxProvider myMuxProvider() {
+		return new MuxProvider() {
+			public Mux muxFor(ContactId contactId) {
+				Mux result = _muxesByContactId.get(contactId);
+				if (result != null) return result;
+				
+				result = new Mux(produceConnectionFor(contactId));
+				_muxesByContactId.put(contactId, result);
+				return result;
+			}
+		};
+	}
+
+	private Connection produceConnectionFor(ContactId contactId) {
+		throw new NotImplementedYet();
 	}
 
 

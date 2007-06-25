@@ -63,7 +63,7 @@ public class ContactsScreen extends JFrame {
 		
 		JPanel editPanel = new JPanel();
 		editPanel.setLayout(new BorderLayout());
-		editPanel.add(nameText, BorderLayout.CENTER);
+		//editPanel.add(nameText, BorderLayout.CENTER);
 		editPanel.add(createAddButton(), BorderLayout.EAST);
 
 		this.add(new JScrollPane(createFriendsList()), BorderLayout.CENTER);

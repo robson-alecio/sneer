@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import sneer.kernel.business.contacts.Contact;
+import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.business.contacts.OnlineEvent;
+import wheel.io.Connection;
 import wheel.io.network.ObjectSocket;
 import wheel.io.network.OldNetwork;
 import wheel.lang.Omnivore;
@@ -15,7 +17,9 @@ import wheel.reactive.lists.impl.SimpleListReceiver;
 
 class Spider {
 
-	Spider(OldNetwork network, ListSignal<Contact> contacts,  Omnivore<OnlineEvent> onlineSetter) {
+	Spider(String publicKey, OldNetwork network,  ListSignal<Contact> contacts, Omnivore<OnlineEvent> onlineSetter) {
+		_publicKey = publicKey;
+		
 		_network = network;
 		_contacts = contacts;
 		_onlineSetter = onlineSetter;
@@ -27,19 +31,22 @@ class Spider {
 	private final ListSignal<Contact> _contacts;
 	private final Omnivore<OnlineEvent> _onlineSetter;
 	private final Map<String, ObjectSocket> _socketsByAddress = new HashMap<String, ObjectSocket>();
+	private final String _publicKey;
+	private Map<ContactId, Connection> _connectionsByContactId = new HashMap<ContactId, Connection>();
 
 	private class MyContactReceiver extends SimpleListReceiver {
 
 		@Override
 		public void elementAdded(int index) {
 			Contact contact = _contacts.currentGet(index);
+			_connectionsByContactId.put(contact.id(), new ConnectionImpl(contact));
+			
 			startIsOnlineWatchdog(contact);
 		}
 
 		@Override
 		public void elementRemoved(int index) {
 			// Implement Auto-generated method stub
-			
 		}
 
 	}
@@ -88,15 +95,25 @@ class Spider {
 		ObjectSocket result = _socketsByAddress.get(address);
 		
 		if (result == null) {
-			result = _network.openSocket(host, port);
+			result = openSocket(host, port);
 			_socketsByAddress.put(address, result);
 		}
 		
 		return result;
 	}
 
+	private ObjectSocket openSocket(String host, int port) throws IOException {
+		ObjectSocket result = _network.openSocket(host, port);
+		result.writeObject(_publicKey);
+		return result;
+	}
+
 	private String address(String host, int port) {
 		return host + ":" + port;
+	}
+
+	Connection connectionFor(ContactId contactId) {
+		return _connectionsByContactId.get(contactId);
 	}
 	
 }

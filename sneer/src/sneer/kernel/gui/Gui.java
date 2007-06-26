@@ -48,31 +48,7 @@ public class Gui {
 	private void filloutInitialValues() { //Refactor: remove this logic from the gui. Maybe move to Communicator;
 		String ownName = _businessSource.output().ownName().currentValue();
 		if (ownName == null || ownName.isEmpty()) nameChangeAction().run();
-
-		int sneerPort = _businessSource.output().sneerPort().currentValue();
-		if (sneerPort == 0) initSneerPort();
-
-		String id = _businessSource.output().publicKey().currentValue();
-		System.out.println("id: " + id);
-		if (id.isEmpty()) initId();
-		
 	}
-
-	private void initId() {
-		String id = "" + System.currentTimeMillis() + "/" + System.nanoTime();
-		_businessSource.publicKeySetter().consume(id);
-	}
-
-	private void initSneerPort() {
-		int randomPort = 10000 + new Random().nextInt(50000);
-		try {
-			_businessSource.sneerPortSetter().consume(randomPort);
-		} catch (IllegalParameter e) {
-			throw new IllegalStateException();
-		}
-		sneerPortChangeAction().run();
-	}
-
 
 	private ValueChangePane sneerPortChangeAction() {
 		String prompt = " Change this only if you know what you are doing." +

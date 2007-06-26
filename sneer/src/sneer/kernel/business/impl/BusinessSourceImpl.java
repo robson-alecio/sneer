@@ -39,11 +39,17 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 			return _sneerPortNumber.output();
 		}
 
+		@Override
+		public Signal<String> publicKey() {
+			return _id.output();
+		}
+
 	}
 
 	private Source<String> _ownName = new SourceImpl<String>("");
+	private final Source<String> _id = new SourceImpl<String>("");
 
-	private PortNumberSource _sneerPortNumber = new PortNumberSource(0);
+	private final PortNumberSource _sneerPortNumber = new PortNumberSource(0);
 
 	private final ListSource<ContactSource> _contactSources = new ListSourceImpl<ContactSource>();
 	private final ListSource<Contact> _contacts = new ListSourceImpl<Contact>(); 	//Refactor: use a reactive "ListCollector" instead of keeping this redundant list.
@@ -98,6 +104,10 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 				return candidate;
 		}
 		return null;
+	}
+
+	public Omnivore<String> publicKeySetter() {
+		return _id.setter();
 	}
 
 }

@@ -7,6 +7,7 @@ import wheel.reactive.lists.ListSignal;
 public interface Business {
 
 	Signal<String> ownName();
+	Signal<String> publicKey();
 	
 	Signal<Integer> sneerPort();
 

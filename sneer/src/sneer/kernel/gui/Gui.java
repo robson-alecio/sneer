@@ -60,7 +60,7 @@ public class Gui {
 
 				Object[] options = { "English", "Português" }; // Implement:detect available languages
 				try {
-					String choice = (String) _user.choose(Language.string("LANGUAGESCREEN_AVAILABLE_LANGUAGES"),options);
+					String choice = (String) _user.choose(string("LANGUAGESCREEN_AVAILABLE_LANGUAGES"),options);
 					if (choice.equals("Português")) {
 						changeLocale(new Locale("pt", "BR"));
 					} else {
@@ -83,18 +83,18 @@ public class Gui {
 	}
 
 	private ValueChangePane sneerPortChangeAction() {
-		return new ValueChangePane(Language.string("TRAYICON_SNEER_PORT_CONFIGURATION"), Language.string("SNEERPORTCHANGE_PROMPT"), _user, _businessSource.output().sneerPort(), new IntegerParser(_businessSource.sneerPortSetter()));
+		return new ValueChangePane(string("TRAYICON_SNEER_PORT_CONFIGURATION"), string("SNEERPORTCHANGE_PROMPT"), _user, _businessSource.output().sneerPort(), new IntegerParser(_businessSource.sneerPortSetter()));
 	}
 
 	private Action nameChangeAction() {
-		return new ValueChangePane(Language.string("TRAYICON_OWNNAME"),Language.string("NAMECHANGE_PROMPT"), _user, _businessSource.output().ownName(), _businessSource.ownNameSetter());
+		return new ValueChangePane(string("TRAYICON_OWNNAME"),string("NAMECHANGE_PROMPT"), _user, _businessSource.output().ownName(), _businessSource.ownNameSetter());
 	}
 
 	private Action exitAction() {
 		return new Action() {
 
 			public String caption() {
-				return Language.string("TRAYICON_EXIT");
+				return string("TRAYICON_EXIT");
 			}
 
 			public void run() {

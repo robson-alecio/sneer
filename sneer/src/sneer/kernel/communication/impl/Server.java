@@ -59,7 +59,7 @@ class Server {
 						Object readObject = socket.readObject();
 						System.out.println("Received: " + readObject);
 					} catch (IOException e) {
-						// Implement Auto-generated catch block
+						// Implement This is the moment where occurs a disconnection, a contact refresh could be trigged here.
 						e.printStackTrace();
 					} catch (ClassNotFoundException e) {
 						// Implement Auto-generated catch block

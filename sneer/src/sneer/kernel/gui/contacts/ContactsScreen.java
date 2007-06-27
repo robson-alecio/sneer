@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,6 +21,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import sneer.Language;
 import sneer.apps.conversations.gui.ConversationScreen;
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.ContactInfo;
@@ -31,8 +34,6 @@ import wheel.reactive.lists.ListSignal;
 
 public class ContactsScreen extends JFrame {
 
-	private static final String TITLE = "Amigos"; //Refactor: Inline all constants. Use debian i18n scheme.
-	private static final String ADD_FRIEND_BUTTON_TEXT = "+";
 	private static final long serialVersionUID = 1L;
 	private final ListSignal<Contact> _contacts;
 	private final Consumer<ContactInfo> _contactAdder;
@@ -69,7 +70,7 @@ public class ContactsScreen extends JFrame {
 		this.add(new JScrollPane(createFriendsList()), BorderLayout.CENTER);
 		this.add(editPanel, BorderLayout.SOUTH);
 
-		setTitle(TITLE);
+		setTitle(Language.string("CONTACTSCREEN_TITLE"));
 		setSize(200, 400);
 	}
 
@@ -127,7 +128,7 @@ public class ContactsScreen extends JFrame {
 	}
 
 	private JButton createAddButton() {
-		JButton addButton = new JButton(ADD_FRIEND_BUTTON_TEXT);
+		JButton addButton = new JButton(Language.string("CONTACTSCREEN_ADD_FRIEND"));
 		addButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {

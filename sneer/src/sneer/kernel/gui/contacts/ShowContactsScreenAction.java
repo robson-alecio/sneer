@@ -1,7 +1,9 @@
 package sneer.kernel.gui.contacts;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
+import sneer.Language;
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.ContactInfo;
 import wheel.io.ui.User;
@@ -24,7 +26,7 @@ public class ShowContactsScreenAction implements Action {
 	}
 
 	public String caption() {
-		return "Contacts Screen";
+		return Language.string("CONTACTSSCREEN_CAPTION");
 	}
 
 	public void run() {

@@ -9,6 +9,8 @@ public interface TrayIcon {
 	}
 
 	void addAction(Action action);
+	
+	void clearActions();
 
 	void seeReminder(String reminder);
 

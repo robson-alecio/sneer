@@ -41,13 +41,13 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 
 		@Override
 		public Signal<String> publicKey() {
-			return _id.output();
+			return _publicKey.output();
 		}
 
 	}
 
 	private Source<String> _ownName = new SourceImpl<String>("");
-	private final Source<String> _id = new SourceImpl<String>("");
+	private final Source<String> _publicKey = new SourceImpl<String>("");
 
 	private final PortNumberSource _sneerPortNumber = new PortNumberSource(0);
 
@@ -97,9 +97,7 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 	}
 
 	private ContactSource findContactSource(String nick) {
-		int size = _contactSources.output().currentSize();
-		for (int i = 0; i < size; i++) { // Optimize
-			ContactSource candidate = _contactSources.output().currentGet(i);
+		for (ContactSource candidate:_contactSources) { // Optimize
 			if (candidate.output().nick().currentValue().equals(nick))
 				return candidate;
 		}
@@ -107,7 +105,7 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 	}
 
 	public Omnivore<String> publicKeySetter() {
-		return _id.setter();
+		return _publicKey.setter();
 	}
 
 }

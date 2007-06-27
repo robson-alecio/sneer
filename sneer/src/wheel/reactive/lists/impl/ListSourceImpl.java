@@ -1,6 +1,8 @@
 package wheel.reactive.lists.impl;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
 import java.util.List;
 
 import wheel.lang.Omnivore;
@@ -10,8 +12,8 @@ import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListSource;
 import wheel.reactive.lists.ListValueChange;
 
-public class ListSourceImpl<VO> implements ListSource<VO> {
-
+public class ListSourceImpl<VO> extends AbstractListSource<VO>{
+	
 	private class MyOutput extends AbstractNotifier<ListValueChange> implements ListSignal<VO> {
 
 		@Override
@@ -75,6 +77,5 @@ public class ListSourceImpl<VO> implements ListSource<VO> {
 			}
 		};
 	}
-	
-	
+
 }

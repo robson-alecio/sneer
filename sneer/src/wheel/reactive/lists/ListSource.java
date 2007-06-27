@@ -1,8 +1,10 @@
 package wheel.reactive.lists;
 
+import java.util.Iterator;
+
 import wheel.lang.Omnivore;
 
-public interface ListSource<VO> {
+public interface ListSource<VO> extends Iterable<VO>{
 
 	ListSignal<VO> output();
 
@@ -11,5 +13,7 @@ public interface ListSource<VO> {
 	boolean remove(VO element);
 
 	Omnivore<VO> adder();
+	
+	public Iterator<VO> iterator();
 
 }

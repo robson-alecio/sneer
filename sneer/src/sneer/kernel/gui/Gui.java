@@ -2,11 +2,15 @@ package sneer.kernel.gui;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
+import java.util.ResourceBundle;
 
+import sneer.Language;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.gui.contacts.ShowContactsScreenAction;
+import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.TrayIcon;
 import wheel.io.ui.User;
 import wheel.io.ui.TrayIcon.Action;
@@ -24,51 +28,74 @@ public class Gui {
 
 		URL icon = Gui.class.getResource("/sneer/kernel/gui/traymenu/yourIconGoesHere.png");
 		_trayIcon = new TrayIconImpl(icon, _user.catcher());
-	
+
 		tryToRun();
 	}
 
-
 	private final User _user;
-	private final TrayIcon _trayIcon;
-	
-	private final BusinessSource _businessSource;
-	private final List<ContactAction> _contactActions;
-	
-	
-	private void tryToRun() {
-		filloutInitialValues();
 
+	private final TrayIcon _trayIcon;
+
+	private final BusinessSource _businessSource;
+
+	private final List<ContactAction> _contactActions;
+
+	private void tryToRun() {
+		
+		filloutInitialValues();
+		bindActionsToTrayIcon();
+		
+	}
+
+	void bindActionsToTrayIcon() {
+		_trayIcon.clearActions();
 		_trayIcon.addAction(nameChangeAction());
-		_trayIcon.addAction(new ShowContactsScreenAction(_businessSource.output().contacts(), _businessSource.contactAdder(), _user, _contactActions));
+		_trayIcon.addAction(new ShowContactsScreenAction(_businessSource.output().contacts(), _businessSource.contactAdder(), _user,_contactActions));
 		_trayIcon.addAction(sneerPortChangeAction());
+		_trayIcon.addAction(new Action() { //Refactor: This action should be moved to a class and the trayicon refresh trigged by a callback  
+			public String caption() {
+				return Language.string("LANGUAGESCREEN_CAPTION");
+			}
+
+			public void run() {
+
+				Object[] options = { "English", "Português" }; // Implement:detect available languages
+				try {
+					String choice = (String) _user.choose(Language.string("LANGUAGESCREEN_AVAILABLE_LANGUAGES"),options);
+					if (choice.equals("Português")) {
+						Language.change(new Locale("pt", "BR"));
+					} else {
+						Language.change(new Locale("en"));
+					}
+					//Fix: trayicon refresh disabled
+					//bindActionsToTrayIcon(); 
+				} catch (CancelledByUser cbu) {
+
+				}
+			}
+		});
 		_trayIcon.addAction(exitAction());
 	}
 
-	private void filloutInitialValues() { //Refactor: remove this logic from the gui. Maybe move to Communicator;
+	private void filloutInitialValues() { // Refactor: remove this logic from the gui. Maybe move to Communicator;
 		String ownName = _businessSource.output().ownName().currentValue();
-		if (ownName == null || ownName.isEmpty()) nameChangeAction().run();
+		if (ownName == null || ownName.isEmpty())
+			nameChangeAction().run();
 	}
 
 	private ValueChangePane sneerPortChangeAction() {
-		String prompt = " Change this only if you know what you are doing." +
-						"\n Sneer TCP port to listen:";
-		return new ValueChangePane("Sneer Port Configuration",prompt, _user, _businessSource.output().sneerPort(), new IntegerParser(_businessSource.sneerPortSetter()));
+		return new ValueChangePane(Language.string("TRAYICON_SNEER_PORT_CONFIGURATION"), Language.string("SNEERPORTCHANGE_PROMPT"), _user, _businessSource.output().sneerPort(), new IntegerParser(_businessSource.sneerPortSetter()));
 	}
 
-	
 	private Action nameChangeAction() {
-		String prompt = " What is your name?" +
-						"\n (You can change it any time you like)";
-		return new ValueChangePane("Own Name",prompt, _user, _businessSource.output().ownName(), _businessSource.ownNameSetter());
+		return new ValueChangePane(Language.string("TRAYICON_OWNNAME"),Language.string("NAMECHANGE_PROMPT"), _user, _businessSource.output().ownName(), _businessSource.ownNameSetter());
 	}
 
-	
 	private Action exitAction() {
-		return new Action(){
+		return new Action() {
 
 			public String caption() {
-				return "Exit";
+				return Language.string("TRAYICON_EXIT");
 			}
 
 			public void run() {
@@ -77,6 +104,4 @@ public class Gui {
 		};
 	}
 
-
-	
 }

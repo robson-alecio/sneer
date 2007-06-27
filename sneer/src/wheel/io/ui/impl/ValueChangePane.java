@@ -1,5 +1,8 @@
 package wheel.io.ui.impl;
 
+import java.util.ResourceBundle;
+
+import sneer.Language;
 import sneer.kernel.gui.CancellableAction;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
@@ -8,7 +11,7 @@ import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 
 public class ValueChangePane extends CancellableAction {
-	
+
 	public ValueChangePane(String caption, String prompt, User user, Signal<?> signal, Consumer<String> setter) {
 		_caption = caption;
 		_prompt = prompt;
@@ -39,7 +42,7 @@ public class ValueChangePane extends CancellableAction {
 				_setter.consume(newValue);
 				return;
 			} catch (IllegalParameter e) {
-				errorMessage = " " + e.getMessage() + "\n Try again.\n\n";
+				errorMessage = " " + e.getMessage() + "\n "+Language.string("TRY_AGAIN")+"\n\n";
 				current = newValue;
 			}
 		}

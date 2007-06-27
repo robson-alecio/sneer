@@ -2,7 +2,9 @@ package sneer;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
+import static sneer.Language.*;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.io.ui.impl.JOptionPaneUser;
@@ -19,49 +21,28 @@ public class InstallationWizard {
 	private void install(File sneerDirectory) throws IOException {
 		defineLanguage();
 		
-		approveConditionOtherwiseExit(
-				" Welcome to Sneer, the first sovereign computing peer.  :)\n\n" +
-				" This wizard will prepare Sneer to run for you."
-		);
+		approveConditionOtherwiseExit(string("INSTALLWIZARD_WELCOME"));
 
-		approveConditionOtherwiseExit(
-				" Sneer is free software.\n\n" +
-				" It is licensed under the terms of the General Public License version 2\n" +
-				" as published by the Free Software Foundation:\n" +
-				" http://www.gnu.org/copyleft/gpl.html\n\n" +
-				" Do you accept these terms?",
-				"I Accept >", "No"
-		);
+		approveConditionOtherwiseExit(string("INSTALLWIZARD_LICENSE"), string("INSTALLWIZARD_LICENSE_ACCEPT"), string("INSTALLWIZARD_LICENSE_NO"));
 
-		approveConditionOtherwiseExit(
-				" Each user of this computer can have his own Sneer setup.\n\n" +
-				" To store your setup, the following folder will be created:\n" +
-				" " + sneerDirectory
-		);
+		approveConditionOtherwiseExit(string("INSTALLWIZARD_FOLDER_CREATION", sneerDirectory));
 
 		if (!sneerDirectory.mkdir()) throw new IOException("Unable to create folder " + sneerDirectory);
 		
-		_user.acknowledgeNotification(
-				" This is an alpha-testing release for ADVANCED Java users.\n\n" +
-				" Please configure Sneer to run on your system startup and help keep the\n" +
-				" sovereign network up and alive, now in its early days:\n" +
-				"   Linux: Call \"java -jar Sneer.jar\" from a runlevel script.\n" +
-				"   Windows: Add a shortcut to Sneer.jar in \"Start > All Programs > Startup\"."
-		);
+		_user.acknowledgeNotification(string("INSTALLWIZARD_STARTUP"));
 
-		_user.acknowledgeNotification(
-				" Congratulations!\n\n" +
-				" You are no longer a slave. You have just\n" +
-				" claimed your own share of the internet.",
-				"Enjoy"
-		);
+		_user.acknowledgeNotification(string("INSTALLWIZARD_CONGRATULATIONS"),string("INSTALLWIZARD_CONGRATULATIONS_ENJOY"));
 	}
 
 
 	private void defineLanguage() {
 		try {
-			Object language = _user.choose("Choose a language:", "English", "Português");
-			// Implement
+			String language = (String)_user.choose("Choose a language:", "English", "Português");
+			if (language.equals("English")){
+				changeLocale(new Locale("en"));
+			}else{
+				changeLocale(new Locale("pt","BR"));
+			}
 		} catch (CancelledByUser e) {
 			exit();
 		}
@@ -72,7 +53,7 @@ public class InstallationWizard {
 
 	
 	private void approveConditionOtherwiseExit(String condition) {
-		approveConditionOtherwiseExit(condition, "Next >", "Cancel");
+		approveConditionOtherwiseExit(condition, string("INSTALLWIZARD_NEXT"), string("INSTALLWIZARD_CANCEL"));
 	}
 
 	
@@ -86,9 +67,8 @@ public class InstallationWizard {
 	}
 
 	private void exit() {
-		String message = " This wizard will now exit with no changes to your system.";
 		try {
-			_user.choose(message, "Exit");
+			_user.choose(string("INSTALLWIZARD_EXIT_NO_CHANGES"), string("INSTALLWIZARD_EXIT"));
 		} catch (CancelledByUser e) {}
 		System.exit(0);
 	}

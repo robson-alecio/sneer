@@ -18,5 +18,9 @@ public class Language {
 	public static String string(String key){
 		return instance.res.getString(key);
 	}
+	
+	public static String string(String key, Object...args){
+		return String.format(string(key), args);
+	}
 
 }

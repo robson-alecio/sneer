@@ -22,7 +22,7 @@ public class NewContactAddition {
 	public NewContactAddition(User user, Consumer<ContactInfo> contactAdder) throws CancelledByUser {
 		while (true) {
 			String nick = user.answer(string("NEWCONTACT_PROMPT_NICK"));
-			String host = user.answer(String.format(string("NEWCONTACT_PROMPT_HOST"),nick), nick + ".dyndns.org");
+			String host = user.answer(string("NEWCONTACT_PROMPT_HOST",nick), nick + ".dyndns.org");
 			int port = port(user, nick);
 			
 			try {
@@ -37,7 +37,7 @@ public class NewContactAddition {
 	private int port(User user, String nick) throws CancelledByUser {
 
 		PortNumberSource result = new PortNumberSource(0);
-		new ValueChangePane(string("NEWCONTACT_PORT_PANEL_TITLE"), String.format(string("NEWCONTACT_PROMPT_PORT"),nick), user, result.output(), new IntegerParser(result.setter())).tryToRun();
+		new ValueChangePane(string("NEWCONTACT_PORT_PANEL_TITLE"), string("NEWCONTACT_PROMPT_PORT",nick), user, result.output(), new IntegerParser(result.setter())).tryToRun();
 		return result.output().currentValue();
 	}
 

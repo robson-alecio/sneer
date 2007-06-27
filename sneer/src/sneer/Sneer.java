@@ -30,7 +30,7 @@ public class Sneer {
 	public Sneer() {
 		try {
 			
-			tryToRun();
+			tryToRun(); 
 			 
 		} catch (Throwable throwable) {
 			Log.log(throwable);

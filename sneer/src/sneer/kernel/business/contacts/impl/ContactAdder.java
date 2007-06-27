@@ -3,7 +3,6 @@ package sneer.kernel.business.contacts.impl;
 import java.util.Iterator;
 import java.util.List;
 
-import sneer.Language;
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.ContactInfo;
 import sneer.kernel.business.contacts.ContactSource;
@@ -44,7 +43,7 @@ public class ContactAdder implements Consumer<ContactInfo> {
 		for (ContactSource contactSource:_contactSources) { // Optimize
 			String existingNick = contactSource.output().nick().currentValue();
 			if (info._nick.equals(existingNick))
-				throw new IllegalParameter(String.format(Language.string("CONTACTADDER_NICKNAME_ALREADY_EXISTS"),info._nick));
+				throw new IllegalParameter(String.format("There already is a contact with this nickname: %1$s",info._nick));
 		}
 	}
 

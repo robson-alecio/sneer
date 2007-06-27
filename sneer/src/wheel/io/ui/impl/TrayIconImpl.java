@@ -39,7 +39,7 @@ public class TrayIconImpl implements TrayIcon {
 	public TrayIconImpl(URL icon, Catcher catcherForThrowsDuringActionExecution)
 			throws SystemTrayNotSupported {
 		if (icon == null)
-			throw new InvalidParameterException("Icon cannot be null"));
+			throw new InvalidParameterException("Icon cannot be null");
 
 		if (!SystemTray.isSupported())
 			throw new SystemTrayNotSupported();

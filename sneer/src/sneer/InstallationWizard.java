@@ -17,6 +17,8 @@ public class InstallationWizard {
 
 
 	private void install(File sneerDirectory) throws IOException {
+		defineLanguage();
+		
 		approveConditionOtherwiseExit(
 				" Welcome to Sneer, the first sovereign computing peer.  :)\n\n" +
 				" This wizard will prepare Sneer to run for you."
@@ -53,6 +55,16 @@ public class InstallationWizard {
 				" claimed your own share of the internet.",
 				"Enjoy"
 		);
+	}
+
+
+	private void defineLanguage() {
+		try {
+			Object language = _user.choose("Choose a language:", "English", "Português");
+			// Implement
+		} catch (CancelledByUser e) {
+			exit();
+		}
 	}
 
 	

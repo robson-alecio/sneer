@@ -4,9 +4,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
-import java.util.ResourceBundle;
 
-import sneer.Language;
+import static sneer.Language.*;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.gui.contacts.ShowContactsScreenAction;
@@ -54,7 +53,7 @@ public class Gui {
 		_trayIcon.addAction(sneerPortChangeAction());
 		_trayIcon.addAction(new Action() { //Refactor: This action should be moved to a class and the trayicon refresh trigged by a callback  
 			public String caption() {
-				return Language.string("LANGUAGESCREEN_CAPTION");
+				return string("LANGUAGESCREEN_CAPTION");
 			}
 
 			public void run() {
@@ -63,9 +62,9 @@ public class Gui {
 				try {
 					String choice = (String) _user.choose(Language.string("LANGUAGESCREEN_AVAILABLE_LANGUAGES"),options);
 					if (choice.equals("Português")) {
-						Language.change(new Locale("pt", "BR"));
+						changeLocale(new Locale("pt", "BR"));
 					} else {
-						Language.change(new Locale("en"));
+						changeLocale(new Locale("en"));
 					}
 					//Fix: trayicon refresh disabled
 					//bindActionsToTrayIcon(); 

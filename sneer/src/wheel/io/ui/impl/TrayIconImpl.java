@@ -13,7 +13,7 @@ import java.net.URL;
 import java.security.InvalidParameterException;
 import java.util.ResourceBundle;
 
-import sneer.Language;
+import static sneer.Language.*;
 
 import wheel.io.Log;
 import wheel.io.ui.CancelledByUser;
@@ -26,7 +26,7 @@ public class TrayIconImpl implements TrayIcon {
 	public static class SystemTrayNotSupported extends Exception {
 
 		public SystemTrayNotSupported() {
-			super(Language.string("TRAYICON_NOTSUPPORTED"));
+			super(string("TRAYICON_NOTSUPPORTED"));
 		}
 
 		private static final long serialVersionUID = 1L;
@@ -46,7 +46,7 @@ public class TrayIconImpl implements TrayIcon {
 
 		SystemTray tray = SystemTray.getSystemTray();
 		Image image = Toolkit.getDefaultToolkit().getImage(icon);
-		java.awt.TrayIcon trayIcon = new java.awt.TrayIcon(image, Language.string("APPLICATION_NAME"),
+		java.awt.TrayIcon trayIcon = new java.awt.TrayIcon(image, string("APPLICATION_NAME"),
 				new PopupMenu());
 		trayIcon.setImageAutoSize(false);
 		// trayIcon.addMouseListener(mouseListener);
@@ -87,7 +87,7 @@ public class TrayIconImpl implements TrayIcon {
 	}
 
 	public void seeReminder(String reminder) {
-		_trayIcon.displayMessage(Language.string("APPLICATION_NAME"), reminder, MessageType.NONE);
+		_trayIcon.displayMessage(string("APPLICATION_NAME"), reminder, MessageType.NONE);
 	}
 	
 	public void clearActions(){

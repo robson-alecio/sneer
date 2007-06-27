@@ -10,17 +10,13 @@ public class Language {
 	private Language(){
 	}
 	
-	public static Language getInstance(){
-		return instance;
-	}
-	
-	public static void change(Locale locale){
+	public static void changeLocale(Locale locale){
 		Locale.setDefault(locale);
-		getInstance().res = ResourceBundle.getBundle("sneer.AppResource");
+		instance.res = ResourceBundle.getBundle("sneer.AppResource");
 	}
 	
 	public static String string(String key){
-		return getInstance().res.getString(key);
+		return instance.res.getString(key);
 	}
 
 }

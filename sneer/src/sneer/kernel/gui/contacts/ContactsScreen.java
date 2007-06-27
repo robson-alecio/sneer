@@ -21,7 +21,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import sneer.Language;
+import static sneer.Language.*;
 import sneer.apps.conversations.gui.ConversationScreen;
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.ContactInfo;
@@ -70,7 +70,7 @@ public class ContactsScreen extends JFrame {
 		this.add(new JScrollPane(createFriendsList()), BorderLayout.CENTER);
 		this.add(editPanel, BorderLayout.SOUTH);
 
-		setTitle(Language.string("CONTACTSCREEN_TITLE"));
+		setTitle(string("CONTACTSCREEN_TITLE"));
 		setSize(200, 400);
 	}
 
@@ -128,7 +128,7 @@ public class ContactsScreen extends JFrame {
 	}
 
 	private JButton createAddButton() {
-		JButton addButton = new JButton(Language.string("CONTACTSCREEN_ADD_FRIEND"));
+		JButton addButton = new JButton(string("CONTACTSCREEN_ADD_FRIEND"));
 		addButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {

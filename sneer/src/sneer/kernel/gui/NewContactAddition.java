@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.prevayler.Transaction;
 
-import sneer.Language;
+import static sneer.Language.*;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.contacts.ContactInfo;
 
@@ -21,8 +21,8 @@ public class NewContactAddition {
 
 	public NewContactAddition(User user, Consumer<ContactInfo> contactAdder) throws CancelledByUser {
 		while (true) {
-			String nick = user.answer(Language.string("NEWCONTACT_PROMPT_NICK"));
-			String host = user.answer(String.format(Language.string("NEWCONTACT_PROMPT_HOST"),nick), nick + ".dyndns.org");
+			String nick = user.answer(string("NEWCONTACT_PROMPT_NICK"));
+			String host = user.answer(String.format(string("NEWCONTACT_PROMPT_HOST"),nick), nick + ".dyndns.org");
 			int port = port(user, nick);
 			
 			try {
@@ -37,7 +37,7 @@ public class NewContactAddition {
 	private int port(User user, String nick) throws CancelledByUser {
 
 		PortNumberSource result = new PortNumberSource(0);
-		new ValueChangePane(Language.string("NEWCONTACT_PORT_PANEL_TITLE"), String.format(Language.string("NEWCONTACT_PROMPT_PORT"),nick), user, result.output(), new IntegerParser(result.setter())).tryToRun();
+		new ValueChangePane(string("NEWCONTACT_PORT_PANEL_TITLE"), String.format(string("NEWCONTACT_PROMPT_PORT"),nick), user, result.output(), new IntegerParser(result.setter())).tryToRun();
 		return result.output().currentValue();
 	}
 

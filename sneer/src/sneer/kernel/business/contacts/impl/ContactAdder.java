@@ -32,8 +32,7 @@ public class ContactAdder implements Consumer<ContactInfo> {
 	public void consume(ContactInfo info) throws IllegalParameter {
 		checkDuplicateNickname(info);
 
-		ContactSource contact = new ContactSourceImpl(info._nick, info._host,
-				info._port, _idSource.next());
+		ContactSource contact = new ContactSourceImpl(info._nick, info._host, info._port, info._publicKey, _idSource.next());
 		_contactSources.add(contact);
 		_contacts.add(contact.output());
 	}

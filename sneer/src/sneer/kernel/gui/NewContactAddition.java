@@ -26,7 +26,7 @@ public class NewContactAddition {
 			int port = port(user, nick);
 			
 			try {
-				contactAdder.consume(new ContactInfo(nick, host, port));
+				contactAdder.consume(new ContactInfo(nick, host, port, ""));
 				return;
 			} catch (IllegalParameter e) {
 				user.acknowledgeNotification(e.getMessage());

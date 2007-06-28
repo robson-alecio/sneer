@@ -13,8 +13,8 @@ public class ContactListPrinterTest extends TestCase {
 	public void testContactListPrinter() throws Exception {
 		ListSource<Contact> contacts = new ListSourceImpl<Contact>();
 
-		ContactSource klaus = new ContactSourceImpl("Klaus","klaus.dyndns.org", 42, 0);
-		ContactSource kalecser = new ContactSourceImpl("Kalecser","kalecser.dyndns.org", 42, 0);
+		ContactSource klaus = new ContactSourceImpl("Klaus","klaus.dyndns.org", 42, "", 0);
+		ContactSource kalecser = new ContactSourceImpl("Kalecser","kalecser.dyndns.org", 42, "", 0);
 		contacts.add(klaus.output()); 
 		contacts.add(kalecser.output());
 
@@ -49,7 +49,7 @@ public class ContactListPrinterTest extends TestCase {
 				"Off :( - Kalecser - localhost:43");
 		contacts.remove(klaus.output());
 
-		ContactSource humberto = new ContactSourceImpl("Humba","humba.selfip.org", 8080, 0);
+		ContactSource humberto = new ContactSourceImpl("Humba","humba.selfip.org", 8080, "", 0);
 		sentinel.expect(
 		"Off :( - Kalecser - localhost:43," +
 		"Off :( - Humba - humba.selfip.org:8080");

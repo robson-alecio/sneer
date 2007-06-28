@@ -72,8 +72,16 @@ public class JOptionPaneUser implements User {
 	}
 
 
+	public boolean confirm(String proposition) {
+		try {
+			return confirmOrCancel(proposition);
+		} catch (CancelledByUser e) {
+			return false;
+		}
+	}
+
 	@Override
-	public boolean confirm(String proposition) throws CancelledByUser {
+	public boolean confirmOrCancel(String proposition) throws CancelledByUser {
 		int option = JOptionPane.showConfirmDialog(null, proposition);
 		if (option == JOptionPane.CANCEL_OPTION) throw new CancelledByUser();
 		return option == JOptionPane.YES_OPTION;
@@ -100,6 +108,6 @@ public class JOptionPaneUser implements User {
 		acknowledgeUnexpectedProblem(e.getMessage(), e.getHelp());
 		
 	}
-	
+
 
 }

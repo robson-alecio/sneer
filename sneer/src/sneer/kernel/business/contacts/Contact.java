@@ -8,6 +8,8 @@ public interface Contact {
 	Signal<String> host();
 	Signal<Integer> port();
 
+	Signal<String> publicKey();
+
 	Signal<Boolean> isOnline();
 
 	ContactId id();

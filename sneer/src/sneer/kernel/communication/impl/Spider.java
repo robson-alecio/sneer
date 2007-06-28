@@ -13,13 +13,15 @@ import wheel.io.network.OldNetwork;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.NotImplementedYet;
+import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
 class Spider {
 
-	Spider(String publicKey, OldNetwork network,  ListSignal<Contact> contacts, Omnivore<OnlineEvent> onlineSetter) {
+	Spider(String publicKey, Signal<String> ownName, OldNetwork network,  ListSignal<Contact> contacts, Omnivore<OnlineEvent> onlineSetter) {
 		_publicKey = publicKey;
+		_ownName = ownName;
 		
 		_network = network;
 		_contacts = contacts;
@@ -32,7 +34,8 @@ class Spider {
 	private final ListSignal<Contact> _contacts;
 	private final Omnivore<OnlineEvent> _onlineSetter;
 	private final String _publicKey;
-	private Map<ContactId, Connection> _connectionsByContactId = new HashMap<ContactId, Connection>();
+	private final Signal<String> _ownName;
+	private Map<ContactId, ConnectionImpl> _connectionsByContactId = new HashMap<ContactId, ConnectionImpl>();
 
 	private class MyContactReceiver extends SimpleListReceiver {
 
@@ -51,12 +54,12 @@ class Spider {
 
 	
 	private void connectTo(Contact contact) {
-		ConnectionImpl newConnection = new ConnectionImpl(contact, _network, _publicKey, _onlineSetter);
+		ConnectionImpl newConnection = new ConnectionImpl(contact, _network, _publicKey, _ownName, _onlineSetter);
 		_connectionsByContactId.put(contact.id(), newConnection);
 	}
 
 	
-	Connection connectionFor(ContactId contactId) {
+	ConnectionImpl connectionFor(ContactId contactId) {
 		return _connectionsByContactId.get(contactId);
 	}
 	

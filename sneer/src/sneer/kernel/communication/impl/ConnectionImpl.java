@@ -5,6 +5,7 @@ import java.io.IOException;
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.OnlineEvent;
 import wheel.io.Connection;
+import wheel.io.Log;
 import wheel.io.network.ObjectSocket;
 import wheel.io.network.OldNetwork;
 import wheel.lang.Omnivore;
@@ -16,13 +17,15 @@ public class ConnectionImpl implements Connection {
 	private final Contact _contact;
 	private final OldNetwork _network;
 	private ObjectSocket _socket;
-	private final String _publicKey;
+	private final String _ownPublicKey;
+	private final Signal<String> _ownName;
 	private final Omnivore<OnlineEvent> _onlineSetter;
 
-	public ConnectionImpl(Contact contact, OldNetwork network, String publicKey, Omnivore<OnlineEvent> onlineSetter) {
+	public ConnectionImpl(Contact contact, OldNetwork network, String publicKey, Signal<String> ownName, Omnivore<OnlineEvent> onlineSetter) {
 		_contact = contact;
 		_network = network;
-		_publicKey = publicKey;
+		_ownPublicKey = publicKey;
+		_ownName = ownName;
 		_onlineSetter = onlineSetter;
 		
 		startIsOnlineWatchdog();
@@ -68,7 +71,7 @@ public class ConnectionImpl implements Connection {
 	}
 
 	private ObjectSocket produceSocket() throws IOException {
-		if (_socket == null) _socket = openSocket();
+		if (_socket == null) setSocketIfNecessary(openSocket());
 		return _socket;
 	}
 
@@ -77,8 +80,35 @@ public class ConnectionImpl implements Connection {
 		int port = _contact.port().currentValue();
 
 		ObjectSocket result = _network.openSocket(host, port);
-		result.writeObject(_publicKey);
+		result.writeObject(_ownPublicKey);
+		result.writeObject(_ownName.currentValue());
 		return result;
 	}
-	
+
+	void serveIncomingSocket(ObjectSocket socket) {
+		setSocketIfNecessary(socket);
+	}
+
+	synchronized private void setSocketIfNecessary(ObjectSocket socket) {
+		if (_socket != null) return;
+		_socket = socket;
+		lixo();
+	}
+
+	void lixo() {
+		Threads.startDaemon(new Runnable() { @Override public void run() {
+			while (true){
+				try {
+					Object readObject = _socket.readObject();
+					System.out.println("Received: " + readObject);
+				} catch (IOException e) {
+					// Implement This is the moment where a disconnection occurs. Inform the online watchdog to set the contact offline.
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					Log.log(e);
+				} 
+			}
+		}});
+	}
+
 }

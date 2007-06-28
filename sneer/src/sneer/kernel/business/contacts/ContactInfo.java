@@ -7,11 +7,13 @@ public class ContactInfo implements Serializable {
 	public final String _nick;
 	public final String _host;
 	public final int _port;
+	public final String _publicKey;
 
-	public ContactInfo(String nick, String host, int port) {
+	public ContactInfo(String nick, String host, int port, String publicKey) {
 		_nick = nick;
 		_host = host;
 		_port = port;
+		_publicKey = publicKey;
 	}
 
 	private static final long serialVersionUID = 1L;

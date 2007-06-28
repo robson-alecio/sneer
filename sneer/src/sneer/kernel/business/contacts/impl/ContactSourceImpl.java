@@ -38,13 +38,18 @@ public class ContactSourceImpl implements ContactSource {
 			return new ContactIdImpl(_id);
 		}
 
+		public Signal<String> publicKey() {
+			return _publicKey.output();
+		}
+
 	}
 
 
-	public ContactSourceImpl(String nick, String host, int port, long id) {
+	public ContactSourceImpl(String nick, String host, int port, String publicKey, long id) {
 		_nick = new SourceImpl<String>(nick);
 		_host = new SourceImpl<String>(host);
 		_port = new PortNumberSource(port);
+		_publicKey = new SourceImpl<String>(publicKey);
 		_id = id;
 	}
 
@@ -53,6 +58,8 @@ public class ContactSourceImpl implements ContactSource {
 	private final Source<String> _nick;
 	private final Source<String> _host;
 	private final PortNumberSource _port;
+
+	private final Source<String> _publicKey;
 	
 	private final Source<Boolean> _isOnline = new SourceImpl<Boolean>(false);  //Optimize: Do not store online events in the transaction log. Make this transient or remove it from the business logic.
 	

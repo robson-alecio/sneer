@@ -37,7 +37,7 @@ public class NewContactAddition {
 	private int port(User user, String nick) throws CancelledByUser {
 
 		PortNumberSource result = new PortNumberSource(0);
-		new ValueChangePane(string("NEWCONTACT_PORT_PANEL_TITLE"), string("NEWCONTACT_PROMPT_PORT",nick), user, result.output(), new IntegerParser(result.setter())).tryToRun();
+		new ValueChangePane("Port Number", "Sneer Port for "+nick, user, result.output(), new IntegerParser(result.setter())).tryToRun();
 		return result.output().currentValue();
 	}
 

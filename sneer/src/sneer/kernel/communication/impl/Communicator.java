@@ -25,8 +25,6 @@ import wheel.lang.exceptions.IllegalParameter;
 
 public class Communicator {
 
-
-
 	public Communicator(User user, OldNetwork network, BusinessSource businessSource) {
 		_user = user;
 		_businessSource = businessSource;

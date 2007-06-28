@@ -7,12 +7,11 @@ import sneer.kernel.business.contacts.Contact;
 
 import wheel.reactive.Receiver;
 
-public interface ListSignal<VO> {
+public interface ListSignal<VO> extends Iterable<VO> {
 	
 	public void addListReceiver(Receiver<ListValueChange> receiver);
 
 	public VO currentGet(int index);
 	public int currentSize();
-	
 
 }

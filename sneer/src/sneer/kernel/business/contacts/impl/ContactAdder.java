@@ -40,7 +40,7 @@ public class ContactAdder implements Consumer<ContactInfo> {
 
 	private void checkDuplicateNickname(ContactInfo info)
 			throws IllegalParameter {
-		for (ContactSource contactSource:_contactSources) { // Optimize
+		for (ContactSource contactSource : _contactSources.output()) { // Optimize
 			String existingNick = contactSource.output().nick().currentValue();
 			if (info._nick.equals(existingNick))
 				throw new IllegalParameter(String.format("There already is a contact with this nickname: %1$s",info._nick));

@@ -12,7 +12,7 @@ import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListSource;
 import wheel.reactive.lists.ListValueChange;
 
-public class ListSourceImpl<VO> extends AbstractListSource<VO>{
+public class ListSourceImpl<VO> implements ListSource<VO> {
 	
 	private class MyOutput extends AbstractNotifier<ListValueChange> implements ListSignal<VO> {
 
@@ -39,6 +39,10 @@ public class ListSourceImpl<VO> extends AbstractListSource<VO>{
 		@Override
 		protected void notifyReceivers(ListValueChange valueChange) {
 			super.notifyReceivers(valueChange);
+		}
+
+		public Iterator<VO> iterator() {
+			return _list.iterator();
 		}
 
 	}

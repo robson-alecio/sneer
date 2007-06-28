@@ -97,7 +97,7 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 	}
 
 	private ContactSource findContactSource(String nick) {
-		for (ContactSource candidate:_contactSources) { // Optimize
+		for (ContactSource candidate:_contactSources.output()) { // Optimize
 			if (candidate.output().nick().currentValue().equals(nick))
 				return candidate;
 		}

@@ -1,6 +1,9 @@
 package sneer.kernel.gui.contacts;
 
+import java.util.Iterator;
+
 import sneer.kernel.business.contacts.Contact;
+import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.AbstractNotifier;
 import wheel.reactive.Receiver;
 import wheel.reactive.lists.ListSignal;
@@ -40,6 +43,10 @@ public class ContactListPrinter {
 		@Override
 		protected void notifyReceivers(ListValueChange valueChange) {
 			super.notifyReceivers(valueChange);
+		}
+
+		public Iterator<String> iterator() {
+			throw new NotImplementedYet();  //Implement
 		}
 	}
 

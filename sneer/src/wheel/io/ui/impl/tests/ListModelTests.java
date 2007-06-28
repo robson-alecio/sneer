@@ -1,6 +1,7 @@
 package wheel.io.ui.impl.tests;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.event.ListDataEvent;
@@ -81,6 +82,10 @@ public class ListModelTests extends TestCase implements ListSignal<String> {
 	@Override
 	public int currentSize() {
 		return _names.size();
+	}
+
+	public Iterator<String> iterator() {
+		throw new UnsupportedOperationException();
 	}
 	
 }

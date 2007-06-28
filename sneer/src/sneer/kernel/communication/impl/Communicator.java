@@ -150,7 +150,7 @@ public class Communicator {
 
 	private Contact findContactGivenPublicKey(String publicKey) {
 		for (Contact contact : _businessSource.output().contacts())
-			if (publicKey.equals(contact.publicKey())) return contact;
+			if (publicKey.equals(contact.publicKey().currentValue())) return contact;
 		return null;
 	}
 

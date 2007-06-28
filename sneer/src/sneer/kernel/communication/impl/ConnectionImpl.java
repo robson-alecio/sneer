@@ -101,11 +101,9 @@ public class ConnectionImpl implements Connection {
 				try {
 					Object readObject = _socket.readObject();
 					System.out.println("Received: " + readObject);
-				} catch (IOException e) {
+				} catch (Exception e) {
+					break;
 					// Implement This is the moment where a disconnection occurs. Inform the online watchdog to set the contact offline.
-					e.printStackTrace();
-				} catch (ClassNotFoundException e) {
-					Log.log(e);
 				} 
 			}
 		}});

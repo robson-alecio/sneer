@@ -38,15 +38,12 @@ public class ConnectionImpl implements Connection {
 
 
 	private void startIsOnlineWatchdog() {
-		Threads.startDaemon(new Runnable(){
-			@Override
-			public void run() {
-				while (true) {
-					bark();
-					Threads.sleepWithoutInterruptions(5000);
-				}
+		Threads.startDaemon(new Runnable(){	@Override public void run() {
+			while (true) {
+				bark();
+				Threads.sleepWithoutInterruptions(15000);
 			}
-		});
+		} } );
 	}
 
 	private void bark() {

@@ -81,8 +81,6 @@ public class Sneer {
 		factory.configureTransactionFiltering(false);
 		factory.configurePrevalentSystem(rootObject);
 		factory.configurePrevalenceDirectory(SneerDirectories.prevalenceDirectory().getAbsolutePath());
-		factory.configureSnapshotSerializer(new XStreamSerializer());
-		factory.configureJournalSerializer(new XStreamSerializer());
 		return factory.create();
 	}
 

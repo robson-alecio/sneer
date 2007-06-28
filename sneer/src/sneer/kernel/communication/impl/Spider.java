@@ -12,6 +12,7 @@ import wheel.io.network.ObjectSocket;
 import wheel.io.network.OldNetwork;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
+import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
@@ -43,7 +44,7 @@ class Spider {
 
 		@Override
 		public void elementRemoved(int index) {
-			// Implement Auto-generated method stub
+			throw new NotImplementedYet(); // Implement
 		}
 
 	}

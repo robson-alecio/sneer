@@ -1,6 +1,7 @@
 package sneer.kernel.communication.impl;
 
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -11,10 +12,13 @@ import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.impl.ChannelImpl.MuxProvider;
 import wheel.io.Connection;
+import wheel.io.Log;
+import wheel.io.network.ObjectSocket;
 import wheel.io.network.OldNetwork;
 import wheel.io.ui.User;
+import wheel.lang.Omnivore;
+import wheel.lang.Threads;
 import wheel.lang.exceptions.IllegalParameter;
-import wheel.lang.exceptions.NotImplementedYet;
 
 public class Communicator {
 
@@ -23,7 +27,7 @@ public class Communicator {
 		
 		prepareBusiness(businessSource);
 		
-		new ServerStarter(user, network, business.sneerPort());
+		new SocketAccepter(user, network, business.sneerPort(), mySocketServer());
 		_spider = new Spider(business.publicKey().currentValue(), network, business.contacts(), businessSource.contactOnlineSetter());
 	}
 
@@ -82,4 +86,27 @@ public class Communicator {
 			throw new IllegalStateException();
 		}
 	}
+
+	private Omnivore<ObjectSocket> mySocketServer() {
+		return new Omnivore<ObjectSocket>() { public void consume(ObjectSocket socket) {
+			serve(socket);
+		} };
+	}
+
+	private void serve(final ObjectSocket socket) {
+		Threads.startDaemon(new Runnable() { @Override public void run() {
+			while (true){
+				try {
+					Object readObject = socket.readObject();
+					System.out.println("Received: " + readObject);
+				} catch (IOException e) {
+					// Implement This is the moment where a disconnection occurs. Check to see whether the online watchdog ("Bark") is necessary.
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					Log.log(e);
+				} 
+			}
+		}});
+	}
+
 }

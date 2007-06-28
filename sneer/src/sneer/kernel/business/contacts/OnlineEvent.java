@@ -1,6 +1,8 @@
 package sneer.kernel.business.contacts;
 
-public class OnlineEvent {
+import java.io.Serializable;
+
+public class OnlineEvent implements Serializable {
 
 	public final String _nick;
 	public final boolean _isOnline;
@@ -10,4 +12,5 @@ public class OnlineEvent {
 		_isOnline = isOnline;
 	}
 
+	private static final long serialVersionUID = 1L;
 }

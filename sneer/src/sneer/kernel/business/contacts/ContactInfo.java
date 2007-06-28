@@ -1,6 +1,8 @@
 package sneer.kernel.business.contacts;
 
-public class ContactInfo {
+import java.io.Serializable;
+
+public class ContactInfo implements Serializable {
 
 	public final String _nick;
 	public final String _host;
@@ -11,5 +13,7 @@ public class ContactInfo {
 		_host = host;
 		_port = port;
 	}
+
+	private static final long serialVersionUID = 1L;
 
 }

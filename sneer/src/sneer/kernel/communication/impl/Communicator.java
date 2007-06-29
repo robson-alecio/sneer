@@ -2,6 +2,7 @@ package sneer.kernel.communication.impl;
 
 
 import java.io.IOException;
+import java.nio.channels.CancelledKeyException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -112,30 +113,32 @@ public class Communicator {
 		
 		Contact contact = findContactGivenPublicKey(publicKey);
 		
-		if (contact == null) {
-			String prompt = " Someone claiming to be\n\n" + name + "\n\n is trying to connect to you. Do you want\n" +
-			" to accept the connection?";
-			if (!_user.confirm(prompt)) return;
-			
-			String nick;
-			try {
-				nick = _user.answer("Enter a nickname for your new contact:", name);
-			} catch (CancelledByUser e) {
-				return;
-			}
-			
-			try {
-				_businessSource.contactAdder().consume(new ContactInfo(nick, "", 0, publicKey)); //Implement: get actual host addresses from contact.
-			} catch (IllegalParameter e) {
-				_user.acknowledge(e);
-				return;
-			}
-			
-			contact = findContactGivenNick(nick);
+		try {
+			if (contact == null) contact = serveNewContact(name, publicKey);
+		} catch (CancelledByUser e) {
+			return;
 		}
 		
 		_spider.connectionFor(contact.id()).serveIncomingSocket(socket);
 		
+	}
+
+
+	private Contact serveNewContact(String name, String publicKey) throws CancelledByUser {
+		String prompt = " Someone claiming to be\n\n" + name + "\n\n is trying to connect to you. Do you want\n" +
+		" to accept the connection?";
+		if (!_user.confirm(prompt)) throw new CancelledByUser();
+		
+		String nick = _user.answer("Enter a nickname for your new contact:", name);
+		
+		try {
+			_businessSource.contactAdder().consume(new ContactInfo(nick, "", 0, publicKey)); //Implement: get actual host addresses from contact.
+		} catch (IllegalParameter e) {
+			_user.acknowledge(e);
+			throw new CancelledByUser();
+		}
+		
+		return findContactGivenNick(nick);
 	}
 
 

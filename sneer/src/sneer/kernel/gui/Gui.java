@@ -44,12 +44,13 @@ public class Gui {
 		filloutInitialValues();
 		bindActionsToTrayIcon();
 		
+		showContactsScreenAction().run();
 	}
 
 	void bindActionsToTrayIcon() {
 		_trayIcon.clearActions();
 		_trayIcon.addAction(nameChangeAction());
-		_trayIcon.addAction(new ShowContactsScreenAction(_businessSource.output().contacts(), _businessSource.contactAdder(), _user,_contactActions));
+		_trayIcon.addAction(showContactsScreenAction());
 		_trayIcon.addAction(sneerPortChangeAction());
 		_trayIcon.addAction(new Action() { //Refactor: This action should be moved to a class and the trayicon refresh trigged by a callback  
 			public String caption() {
@@ -74,6 +75,10 @@ public class Gui {
 			}
 		});
 		_trayIcon.addAction(exitAction());
+	}
+
+	private ShowContactsScreenAction showContactsScreenAction() {
+		return new ShowContactsScreenAction(_businessSource.output().contacts(), _businessSource.contactAdder(), _user,_contactActions);
 	}
 
 	private void filloutInitialValues() { // Refactor: remove this logic from the gui. Maybe move to Communicator;

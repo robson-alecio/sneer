@@ -84,10 +84,7 @@ class SocketAccepter implements Receiver<Integer> {
 		private void accept() {
 			try {
 				_socketOmnivore.consume(_serverSocket.accept());
-			} catch (IOException e) {
-				if (_isStopped) return;
-				Log.log(e);
-			}
+			} catch (IOException e) {}
 		}
 		
 

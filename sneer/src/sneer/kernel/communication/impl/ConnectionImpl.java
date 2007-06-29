@@ -92,10 +92,10 @@ public class ConnectionImpl implements Connection {
 	synchronized private void setSocketIfNecessary(ObjectSocket socket) {
 		if (_socket != null) return;
 		_socket = socket;
-		lixo();
+		startReceiving();
 	}
 
-	void lixo() {
+	void startReceiving() {
 		Threads.startDaemon(new Runnable() { @Override public void run() {
 			while (true){
 				try {

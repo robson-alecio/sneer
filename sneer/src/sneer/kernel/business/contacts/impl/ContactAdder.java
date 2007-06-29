@@ -30,19 +30,19 @@ public class ContactAdder implements Consumer<ContactInfo> {
 
 	@Override
 	public void consume(ContactInfo info) throws IllegalParameter {
-		checkDuplicateNickname(info);
+		checkDuplicateNickname(info._nick);
 
 		ContactSource contact = new ContactSourceImpl(info._nick, info._host, info._port, info._publicKey, _idSource.next());
 		_contactSources.add(contact);
 		_contacts.add(contact.output());
 	}
 
-	private void checkDuplicateNickname(ContactInfo info)
+	private void checkDuplicateNickname(String nick)
 			throws IllegalParameter {
 		for (ContactSource contactSource : _contactSources.output()) { // Optimize
 			String existingNick = contactSource.output().nick().currentValue();
-			if (info._nick.equals(existingNick))
-				throw new IllegalParameter(String.format("There already is a contact with this nickname: %1$s",info._nick));
+			if (nick.equals(existingNick))
+				throw new IllegalParameter(String.format("There already is a contact with this nickname: %1$s", nick));
 		}
 	}
 

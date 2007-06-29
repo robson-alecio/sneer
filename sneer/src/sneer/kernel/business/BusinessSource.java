@@ -1,9 +1,9 @@
 package sneer.kernel.business;
 
 import sneer.kernel.business.contacts.ContactInfo;
+import sneer.kernel.business.contacts.ContactPublicKeyInfo;
 import sneer.kernel.business.contacts.OnlineEvent;
 import wheel.lang.Consumer;
-import wheel.lang.IntegerParser;
 import wheel.lang.Omnivore;
 
 public interface BusinessSource {
@@ -16,6 +16,7 @@ public interface BusinessSource {
 	Consumer<Integer> sneerPortSetter();
 	
 	Consumer<ContactInfo> contactAdder();
+	Omnivore<ContactPublicKeyInfo> contactUpdater();
 	Omnivore<OnlineEvent> contactOnlineSetter();
 
 }

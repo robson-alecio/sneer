@@ -97,4 +97,9 @@ public class ContactSourceImpl implements ContactSource {
 		return _isOnline.setter();
 	}
 
+	@Override
+	public Omnivore<String> publicKeySetter() {
+		return _publicKey.setter();
+	}
+
 }

@@ -1,8 +1,6 @@
 package sneer.kernel.communication.impl;
 
 
-import java.io.IOException;
-import java.nio.channels.CancelledKeyException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -12,16 +10,15 @@ import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.business.contacts.ContactInfo;
+import sneer.kernel.business.contacts.ContactPublicKeyInfo;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.impl.ChannelImpl.MuxProvider;
 import wheel.io.Connection;
-import wheel.io.Log;
 import wheel.io.network.ObjectSocket;
 import wheel.io.network.OldNetwork;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.lang.Omnivore;
-import wheel.lang.Threads;
 import wheel.lang.exceptions.IllegalParameter;
 
 public class Communicator {
@@ -114,7 +111,7 @@ public class Communicator {
 		Contact contact = findContactGivenPublicKey(publicKey);
 		
 		try {
-			if (contact == null) contact = serveNewContact(name, publicKey);
+			if (contact == null) contact = createContact(name, publicKey);
 		} catch (CancelledByUser e) {
 			return;
 		}
@@ -124,12 +121,18 @@ public class Communicator {
 	}
 
 
-	private Contact serveNewContact(String name, String publicKey) throws CancelledByUser {
+	private Contact createContact(String name, String publicKey) throws CancelledByUser {
 		String prompt = " Someone claiming to be\n\n" + name + "\n\n is trying to connect to you. Do you want\n" +
 		" to accept the connection?";
 		if (!_user.confirm(prompt)) throw new CancelledByUser();
 		
 		String nick = _user.answer("Enter a nickname for your new contact:", name);
+		
+		Contact existing = findContactGivenNick(nick);
+		if (existing.publicKey().currentValue().isEmpty()) {
+			_businessSource.contactUpdater().consume(new ContactPublicKeyInfo(nick, publicKey)); //Refactor: Use contactId instead of nick;
+			return existing;
+		}
 		
 		try {
 			_businessSource.contactAdder().consume(new ContactInfo(nick, "", 0, publicKey)); //Implement: get actual host addresses from contact.

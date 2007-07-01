@@ -31,7 +31,13 @@ public class Communicator {
 		prepareBusiness();
 		
 		new SocketAccepter(user, network, business.sneerPort(), mySocketServer());
-		_spider = new Spider(business.publicKey().currentValue(), business.ownName(), network, business.contacts(), businessSource.contactOnlineSetter());
+		_spider = new Spider(business.publicKey().currentValue(), business.ownName(), network, business.contacts(), businessSource.contactOnlineSetter(), outgoingConnectionHandler());
+	}
+
+	private Omnivore<Connection> outgoingConnectionHandler() {
+		return new Omnivore<Connection>() { public void consume(Connection outgoingConnection) {
+			System.out.println("Check duplicate public key: " + outgoingConnection);
+		}};
 	}
 
 	private final BusinessSource _businessSource;
@@ -111,7 +117,7 @@ public class Communicator {
 		Contact contact = findContactGivenPublicKey(publicKey);
 		
 		try {
-			if (contact == null) contact = createContact(name, publicKey);
+			if (contact == null) contact = produceContactWithNewPublicKey(name, publicKey);
 		} catch (CancelledByUser e) {
 			return;
 		}
@@ -121,7 +127,7 @@ public class Communicator {
 	}
 
 
-	private Contact createContact(String name, String publicKey) throws CancelledByUser {
+	private Contact produceContactWithNewPublicKey(String name, String publicKey) throws CancelledByUser {
 		String prompt = " Someone claiming to be\n\n" + name + "\n\n is trying to connect to you. Do you want\n" +
 		" to accept the connection?";
 		if (!_user.confirm(prompt)) throw new CancelledByUser();
@@ -129,26 +135,32 @@ public class Communicator {
 		String nick = _user.answer("Enter a nickname for your new contact:", name);
 		
 		Contact existing = findContactGivenNick(nick);
-		if (existing.publicKey().currentValue().isEmpty()) {
-			_businessSource.contactUpdater().consume(new ContactPublicKeyInfo(nick, publicKey)); //Refactor: Use contactId instead of nick;
-			return existing;
+		if (existing == null) return createContact(publicKey, nick);
+		
+		if (!existing.publicKey().currentValue().isEmpty()) {
+			_user.acknowledgeNotification("There already is another contact with this nickname:\n\n" + nick);
 		}
 		
+		_businessSource.contactUpdater().consume(new ContactPublicKeyInfo(nick, publicKey)); //Refactor: Use contactId instead of nick;
+		return existing;
+	}
+
+
+	private Contact createContact(String publicKey, String nick) throws CancelledByUser {
 		try {
 			_businessSource.contactAdder().consume(new ContactInfo(nick, "", 0, publicKey)); //Implement: get actual host addresses from contact.
+			return findContactGivenNick(nick);
 		} catch (IllegalParameter e) {
 			_user.acknowledge(e);
 			throw new CancelledByUser();
 		}
-		
-		return findContactGivenNick(nick);
 	}
 
 
 	private Contact findContactGivenNick(String nick) {
 		for (Contact contact : _businessSource.output().contacts())
 			if (nick.equals(contact.nick().currentValue())) return contact;
-		throw new IllegalStateException();
+		return null;
 	}
 
 

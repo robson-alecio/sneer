@@ -20,13 +20,15 @@ public class ConnectionImpl implements Connection {
 	private final String _ownPublicKey;
 	private final Signal<String> _ownName;
 	private final Omnivore<OnlineEvent> _onlineSetter;
+	private final Omnivore<Connection> _connectionHandler;
 
-	public ConnectionImpl(Contact contact, OldNetwork network, String publicKey, Signal<String> ownName, Omnivore<OnlineEvent> onlineSetter) {
+	public ConnectionImpl(Contact contact, OldNetwork network, String publicKey, Signal<String> ownName, Omnivore<OnlineEvent> onlineSetter, Omnivore<Connection> connectionHandler) { //Refactor: Use the same Omnivore<Connection> to do online notification instead of having separate onlineSetter.
 		_contact = contact;
 		_network = network;
 		_ownPublicKey = publicKey;
 		_ownName = ownName;
 		_onlineSetter = onlineSetter;
+		_connectionHandler = connectionHandler;
 		
 		startIsOnlineWatchdog();
 	}
@@ -82,6 +84,9 @@ public class ConnectionImpl implements Connection {
 		ObjectSocket result = _network.openSocket(host, port);
 		result.writeObject(_ownPublicKey);
 		result.writeObject(_ownName.currentValue());
+		
+		_connectionHandler.consume(this);
+		
 		return result;
 	}
 

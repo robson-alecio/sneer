@@ -34,6 +34,9 @@ public class ListSignalModel extends AbstractListModel {
 		}
 
 		@Override
+		public void elementToBeRemoved(int index) {}
+
+		@Override
 		public void elementRemoved(int index) {
 			fireIntervalRemoved(this, index, index);
 		}

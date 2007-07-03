@@ -186,8 +186,7 @@ public class Communicator {
 		} catch (CancelledByUser e) {
 			try {
 				socket.close();
-			} catch (IOException ignored) {
-			}
+			} catch (IOException ignored) {}
 			return;
 		}
 

@@ -113,4 +113,11 @@ public class ConnectionImpl implements Connection {
 		}});
 	}
 
+	void close() {
+		try {
+			if (_socket != null) _socket.close();
+		} catch (IOException ignored) {
+		}
+	}
+
 }

@@ -60,10 +60,12 @@ public class ListSourceImpl<VO> implements ListSource<VO> {
 	public boolean remove(VO element) {
 		synchronized (_list){
 			int index = _list.indexOf(element);
-			if (!_list.remove(element))
-				return false;
+			if (index == -1) return false;
 			
+			_output.notifyReceivers(new ListElementToBeRemoved(index));
+			_list.remove(index);
 			_output.notifyReceivers(new ListElementRemoved(index));
+
 			return true;
 		}
 	}

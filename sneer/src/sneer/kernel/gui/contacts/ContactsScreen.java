@@ -1,5 +1,7 @@
 package sneer.kernel.gui.contacts;
 
+import static sneer.Language.string;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
@@ -9,8 +11,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,15 +21,15 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import static sneer.Language.*;
-import sneer.apps.conversations.gui.ConversationScreen;
 import sneer.kernel.business.contacts.Contact;
+import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.business.contacts.ContactInfo;
 import sneer.kernel.gui.NewContactAddition;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.io.ui.impl.ListSignalModel;
 import wheel.lang.Consumer;
+import wheel.lang.Omnivore;
 import wheel.reactive.lists.ListSignal;
 
 public class ContactsScreen extends JFrame {
@@ -39,17 +39,15 @@ public class ContactsScreen extends JFrame {
 	private final Consumer<ContactInfo> _contactAdder;
 	private final User _user;
 	private final List<ContactAction> _contactActions;
+	private final Omnivore<ContactId> _contactRemover;
 
 
-	public ContactsScreen(User user, ListSignal<Contact> contacts, Consumer<ContactInfo> contactAdder, List<ContactAction> contactActions) {
+	public ContactsScreen(User user, ListSignal<Contact> contacts, Consumer<ContactInfo> contactAdder, Omnivore<ContactId> contactRemover, List<ContactAction> contactActions) {
 
-		if (contacts == null) throw new IllegalArgumentException();
-		if (contactAdder == null) throw new IllegalArgumentException();
-		if (user == null) throw new IllegalArgumentException();
-		
 		_user = user;
 		_contacts = contacts;
 		_contactAdder = contactAdder;
+		_contactRemover = contactRemover;
 		_contactActions = contactActions;
 
 		initComponents();
@@ -111,6 +109,7 @@ public class ContactsScreen extends JFrame {
 
 	private JPopupMenu getFriendPopUpMenu(final JList friendsList) {
 		final JPopupMenu result = new JPopupMenu();
+		addToContactMenu(result, new ContactRemovalAction(_contactRemover), friendsList);
 		for (ContactAction action : _contactActions) addToContactMenu(result, action, friendsList);
 		return result;
 	}

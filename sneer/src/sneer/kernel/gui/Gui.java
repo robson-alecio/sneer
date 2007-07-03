@@ -78,7 +78,7 @@ public class Gui {
 	}
 
 	private ShowContactsScreenAction showContactsScreenAction() {
-		return new ShowContactsScreenAction(_businessSource.output().contacts(), _businessSource.contactAdder(), _user,_contactActions);
+		return new ShowContactsScreenAction(_businessSource.output().contacts(), _businessSource.contactAdder(), _businessSource.contactRemover(), _user,_contactActions);
 	}
 
 	private void filloutInitialValues() { // Refactor: remove this logic from the gui. Maybe move to Communicator;

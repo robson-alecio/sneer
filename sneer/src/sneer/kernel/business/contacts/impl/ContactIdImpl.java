@@ -9,4 +9,6 @@ public class ContactIdImpl extends Id implements ContactId {
 		super(id);
 	}
 
+	private static final long serialVersionUID = 1L;
+
 }

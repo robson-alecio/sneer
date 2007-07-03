@@ -1,6 +1,8 @@
 package wheel.lang;
 
-public class Id {
+import java.io.Serializable;
+
+public class Id implements Serializable {
 
 	private final long _id;
 
@@ -20,4 +22,6 @@ public class Id {
 		return new Long(_id).hashCode(); //Optimize Do not create the Long. Just copy the logic from there.
 	}
 
+	private static final long serialVersionUID = 1L;
+	
 }

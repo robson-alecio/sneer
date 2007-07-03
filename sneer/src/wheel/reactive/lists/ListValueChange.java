@@ -6,6 +6,7 @@ public interface ListValueChange {
 	
 	public interface Visitor { //Refactor: Consider: For removal and replacement do a "pre"Removal/Replacement notification.
 		void elementAdded(int index);
+		void elementToBeRemoved(int index);
 		void elementRemoved(int index);
 		void elementReplaced(int index);
 		void listReplaced(int oldListSize, int newListSize);

@@ -1,0 +1,23 @@
+package sneer.kernel.gui.contacts;
+
+import sneer.kernel.business.contacts.Contact;
+import sneer.kernel.business.contacts.ContactId;
+import wheel.lang.Omnivore;
+
+public class ContactRemovalAction implements ContactAction {
+
+	private final Omnivore<ContactId> _contactRemover;
+
+	public ContactRemovalAction(Omnivore<ContactId> contactRemover) {
+		_contactRemover = contactRemover;
+	}
+
+	public void actUpon(Contact contact) {
+		_contactRemover.consume(contact.id());
+	}
+
+	public String caption() {
+		return "Delete";
+	}
+
+}

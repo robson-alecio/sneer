@@ -3,12 +3,14 @@ package sneer.kernel.business.impl;
 import sneer.kernel.business.Business;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.contacts.Contact;
+import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.business.contacts.ContactInfo;
 import sneer.kernel.business.contacts.ContactPublicKeyInfo;
 import sneer.kernel.business.contacts.ContactSource;
 import sneer.kernel.business.contacts.OnlineEvent;
 import sneer.kernel.business.contacts.impl.ContactAdder;
 import sneer.kernel.business.contacts.impl.ContactPublicKeyUpdater;
+import sneer.kernel.gui.contacts.ContactRemovalAction;
 import wheel.io.network.PortNumberSource;
 import wheel.lang.Consumer;
 import wheel.lang.Counter;
@@ -114,6 +116,10 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 
 	public Omnivore<String> publicKeySetter() {
 		return _publicKey.setter();
+	}
+
+	public Omnivore<ContactId> contactRemover() {
+		return new ContactRemover(_contactSources, _contacts);
 	}
 
 }

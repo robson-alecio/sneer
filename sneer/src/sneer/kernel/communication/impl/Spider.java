@@ -43,8 +43,9 @@ class Spider {
 		}
 
 		@Override
-		public void elementRemoved(int index) {
-			throw new NotImplementedYet(); // Implement
+		public void elementToBeRemoved(int index) {
+			Contact contact = _contacts.currentGet(index);
+			disconnect(contact);
 		}
 
 	}
@@ -56,6 +57,12 @@ class Spider {
 	}
 
 	
+	private void disconnect(Contact contact) {
+		connectionFor(contact.id()).close();
+		_connectionsByContactId.remove(contact.id());
+	}
+
+
 	ConnectionImpl connectionFor(ContactId contactId) {
 		return _connectionsByContactId.get(contactId);
 	}

@@ -184,6 +184,10 @@ public class Communicator {
 		try {
 			if (contact == null) contact = produceContactWithNewPublicKey(name, publicKey);
 		} catch (CancelledByUser e) {
+			try {
+				socket.close();
+			} catch (IOException ignored) {
+			}
 			return;
 		}
 

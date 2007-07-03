@@ -77,7 +77,7 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 	}
 
 	@Override
-	public Omnivore<ContactPublicKeyInfo> contactUpdater() {
+	public Omnivore<ContactPublicKeyInfo> contactPublicKeyUpdater() {
 		return new ContactPublicKeyUpdater(_contactSources);
 	}
 

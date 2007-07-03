@@ -16,7 +16,7 @@ public interface BusinessSource {
 	Consumer<Integer> sneerPortSetter();
 	
 	Consumer<ContactInfo> contactAdder();
-	Omnivore<ContactPublicKeyInfo> contactUpdater();
+	Omnivore<ContactPublicKeyInfo> contactPublicKeyUpdater();
 	Omnivore<OnlineEvent> contactOnlineSetter();
 
 }

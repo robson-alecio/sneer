@@ -5,30 +5,29 @@ import java.io.IOException;
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.OnlineEvent;
 import wheel.io.Connection;
-import wheel.io.Log;
 import wheel.io.network.ObjectSocket;
 import wheel.io.network.OldNetwork;
+import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
+import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 
 public class ConnectionImpl implements Connection {
 
+	private static class InvalidConnectionAttempt extends Exception { private static final long serialVersionUID = 1L; }
+
 	private final Contact _contact;
 	private final OldNetwork _network;
 	private ObjectSocket _socket;
-	private final String _ownPublicKey;
-	private final Signal<String> _ownName;
 	private final Omnivore<OnlineEvent> _onlineSetter;
-	private final Omnivore<Connection> _connectionHandler;
+	private final Consumer<OutgoingConnectionAttempt> _connectionValidator;
 
-	public ConnectionImpl(Contact contact, OldNetwork network, String publicKey, Signal<String> ownName, Omnivore<OnlineEvent> onlineSetter, Omnivore<Connection> connectionHandler) { //Refactor: Use the same Omnivore<Connection> to do online notification instead of having separate onlineSetter.
+	public ConnectionImpl(Contact contact, OldNetwork network, Omnivore<OnlineEvent> onlineSetter, Consumer<OutgoingConnectionAttempt> connectionValidator) { //Refactor: Use the same Omnivore<Connection> to do online notification instead of having separate onlineSetter.
 		_contact = contact;
 		_network = network;
-		_ownPublicKey = publicKey;
-		_ownName = ownName;
 		_onlineSetter = onlineSetter;
-		_connectionHandler = connectionHandler;
+		_connectionValidator = connectionValidator;
 		
 		startIsOnlineWatchdog();
 	}
@@ -62,30 +61,30 @@ public class ConnectionImpl implements Connection {
 	}
 
 	private boolean isOnline() {
-		
 		try {
 			produceSocket().writeObject("Bark");
 			return true;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			_socket = null;
 			return false;
 		}
 	}
 
-	private ObjectSocket produceSocket() throws IOException {
+	private ObjectSocket produceSocket() throws IOException, InvalidConnectionAttempt {
 		if (_socket == null) setSocketIfNecessary(openSocket());
 		return _socket;
 	}
 
-	private ObjectSocket openSocket() throws IOException {
+	private ObjectSocket openSocket() throws IOException, InvalidConnectionAttempt {
 		String host = _contact.host().currentValue();
 		int port = _contact.port().currentValue();
 
 		ObjectSocket result = _network.openSocket(host, port);
-		result.writeObject(_ownPublicKey);
-		result.writeObject(_ownName.currentValue());
-		
-		_connectionHandler.consume(this);
+		try {
+			_connectionValidator.consume(new OutgoingConnectionAttempt(_contact, result));
+		} catch (IllegalParameter e) {
+			throw new InvalidConnectionAttempt();
+		}
 		
 		return result;
 	}

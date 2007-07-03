@@ -1,6 +1,5 @@
 package sneer.kernel.communication.impl;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,12 +7,10 @@ import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.business.contacts.OnlineEvent;
 import wheel.io.Connection;
-import wheel.io.network.ObjectSocket;
 import wheel.io.network.OldNetwork;
+import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
-import wheel.lang.Threads;
 import wheel.lang.exceptions.NotImplementedYet;
-import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
@@ -21,14 +18,11 @@ class Spider {
 
 
 
-	Spider(String publicKey, Signal<String> ownName, OldNetwork network,  ListSignal<Contact> contacts, Omnivore<OnlineEvent> onlineSetter, Omnivore<Connection> newConnectionHandler) {
-		_publicKey = publicKey;
-		_ownName = ownName;
-		
+	Spider(OldNetwork network, ListSignal<Contact> contacts, Omnivore<OnlineEvent> onlineSetter,  Consumer<OutgoingConnectionAttempt> outgoingConnectionValidator) {
 		_network = network;
 		_contacts = contacts;
 		_onlineSetter = onlineSetter;
-		_newConnectionHandler = newConnectionHandler;
+		_outgoingConnectionValidator = outgoingConnectionValidator;
 		
 		_contacts.addListReceiver(new MyContactReceiver());
 	}
@@ -36,9 +30,7 @@ class Spider {
 	private final OldNetwork _network;
 	private final ListSignal<Contact> _contacts;
 	private final Omnivore<OnlineEvent> _onlineSetter;
-	private final String _publicKey;
-	private final Signal<String> _ownName;
-	private final Omnivore<Connection> _newConnectionHandler;
+	private final Consumer<OutgoingConnectionAttempt> _outgoingConnectionValidator;
 
 	private Map<ContactId, ConnectionImpl> _connectionsByContactId = new HashMap<ContactId, ConnectionImpl>();
 
@@ -59,7 +51,7 @@ class Spider {
 
 	
 	private void connectTo(Contact contact) {
-		ConnectionImpl newConnection = new ConnectionImpl(contact, _network, _publicKey, _ownName, _onlineSetter, _newConnectionHandler);
+		ConnectionImpl newConnection = new ConnectionImpl(contact, _network, _onlineSetter, _outgoingConnectionValidator);
 		_connectionsByContactId.put(contact.id(), newConnection);
 	}
 

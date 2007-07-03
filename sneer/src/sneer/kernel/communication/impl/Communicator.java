@@ -1,6 +1,20 @@
+//Entrando - PK Novo - Rejeitado (HD)
+//Entrando - PK Novo - Aceito - Nick Novo (HD)
+//Entrando - PK Novo - Aceito - Nick Existente - Sem PK (HD)
+//Entrando - PK Novo - Aceito - Nick Existente - Com PK: Repete ateh escolher nick novo ou nick sem PK.
+//Entrando - PK Existente (HD)
+//Saindo - Sem PK - Veio Novo (HD)
+//Saindo - Sem PK - Veio De Outro Contato (HD): Deleta o contato que originou (está sem pk mesmo)
+//Saindo - Com PK - Bateu (HD)
+//Saindo - Com PK - Nao Bateu - Veio Novo
+//Saindo - Com PK - Nao Bateu - Veio De Outro Contato
+
+
 package sneer.kernel.communication.impl;
 
 
+import java.io.IOException;
+import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -18,8 +32,11 @@ import wheel.io.network.ObjectSocket;
 import wheel.io.network.OldNetwork;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
+import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
+import wheel.lang.exceptions.FriendlyException;
 import wheel.lang.exceptions.IllegalParameter;
+import wheel.reactive.Signal;
 
 public class Communicator {
 
@@ -31,13 +48,60 @@ public class Communicator {
 		prepareBusiness();
 		
 		new SocketAccepter(user, network, business.sneerPort(), mySocketServer());
-		_spider = new Spider(business.publicKey().currentValue(), business.ownName(), network, business.contacts(), businessSource.contactOnlineSetter(), outgoingConnectionHandler());
+		_spider = new Spider(network, business.contacts(), businessSource.contactOnlineSetter(), outgoingConnectionValidator());
 	}
 
-	private Omnivore<Connection> outgoingConnectionHandler() {
-		return new Omnivore<Connection>() { public void consume(Connection outgoingConnection) {
-			System.out.println("Check duplicate public key: " + outgoingConnection);
-		}};
+	private Consumer<OutgoingConnectionAttempt> outgoingConnectionValidator() {
+		return new Consumer<OutgoingConnectionAttempt>() { public void consume(OutgoingConnectionAttempt attempt) throws IllegalParameter {
+			ObjectSocket socket = attempt._outgoingSocket;
+			String remotePK;
+			try {
+				socket.writeObject(ownPublicKey().currentValue());
+				socket.writeObject(ownName().currentValue());
+				remotePK = (String)socket.readObject();
+			} catch (Exception e) {
+				throw new IllegalParameter("Socket threw IOException");
+			}
+
+			String contactsPK = attempt._contact.publicKey().currentValue();
+			if (remotePK.equals(contactsPK)) return;
+
+			String nick = attempt._contact.nick().currentValue();
+			
+			Contact existing = findContactGivenPublicKey(remotePK);
+			if (existing != null) {
+				handleDuplicatePK(nick, existing);
+				throw new IllegalParameter("Remote contact has same public key as another contact.");
+			}
+			
+			if (!contactsPK.isEmpty()) notifyUserOfPKMismatch(nick);
+			
+			_businessSource.contactPublicKeyUpdater().consume(new ContactPublicKeyInfo(nick, remotePK));
+		} };
+
+	}
+
+	private void handleDuplicatePK(String nick, Contact existing) {
+		_user.acknowledgeNotification(nick + " has the same public key as " + existing.nick().currentValue() + ". You must delete one of them."); //Fix: Create an error state for the contact. 
+	}
+
+	private void notifyUserOfPKMismatch(String nick) {
+		 //Fix: Security implementation: Revert the status of the contact to "unconfirmed" or something of the sort, so that the user has to confirm the remote PK again.
+		String notification =
+			" SECURITY ALERT FOR CONTACT: " + nick + "\n\n" +
+			" Either this contact has changed its public key or\n" +
+			" someone else is trying to trick you and impersonate it.\n\n" +
+			" This contact's status will be changed to 'UNCONFIRMED',\n" +
+			" so that you can confirm its public key again.";
+		_user.acknowledgeNotification(notification);
+	}
+
+	private Signal<String> ownPublicKey() {
+		return _businessSource.output().publicKey();
+	}
+
+	private Signal<String> ownName() {
+		return _businessSource.output().ownName();
 	}
 
 	private final BusinessSource _businessSource;
@@ -121,9 +185,14 @@ public class Communicator {
 		} catch (CancelledByUser e) {
 			return;
 		}
+
+		try {
+			socket.writeObject(ownPublicKey().currentValue());
+		} catch (IOException ignored) {
+			return;
+		}
 		
 		_spider.connectionFor(contact.id()).serveIncomingSocket(socket);
-		
 	}
 
 
@@ -131,17 +200,21 @@ public class Communicator {
 		String prompt = " Someone claiming to be\n\n" + name + "\n\n is trying to connect to you. Do you want\n" +
 		" to accept the connection?";
 		if (!_user.confirm(prompt)) throw new CancelledByUser();
-		
-		String nick = _user.answer("Enter a nickname for your new contact:", name);
-		
-		Contact existing = findContactGivenNick(nick);
-		if (existing == null) return createContact(publicKey, nick);
-		
-		if (!existing.publicKey().currentValue().isEmpty()) {
-			_user.acknowledgeNotification("There already is another contact with this nickname:\n\n" + nick);
+
+		String nick;
+		Contact existing;
+		while (true) {
+			nick = _user.answer("Enter a nickname for your new contact:", name);
+			
+			existing = findContactGivenNick(nick);
+			if (existing == null) return createContact(publicKey, nick);
+			
+			if (existing.publicKey().currentValue().isEmpty()) break;
+			_user.acknowledgeNotification("There already is another contact with this nickname:\n\n" + nick, "Choose Another...");
 		}
 		
-		_businessSource.contactUpdater().consume(new ContactPublicKeyInfo(nick, publicKey)); //Refactor: Use contactId instead of nick;
+		_businessSource.contactPublicKeyUpdater().consume(new ContactPublicKeyInfo(nick, publicKey)); //Refactor: Use contactId instead of nick;
+		
 		return existing;
 	}
 

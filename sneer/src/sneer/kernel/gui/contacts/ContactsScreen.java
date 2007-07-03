@@ -1,6 +1,6 @@
 package sneer.kernel.gui.contacts;
 
-import static sneer.Language.string;
+import static sneer.Language.translate;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -68,7 +68,7 @@ public class ContactsScreen extends JFrame {
 		this.add(new JScrollPane(createFriendsList()), BorderLayout.CENTER);
 		this.add(editPanel, BorderLayout.SOUTH);
 
-		setTitle(string("CONTACTSCREEN_TITLE"));
+		setTitle(translate("Contacts"));
 		setSize(200, 400);
 	}
 
@@ -127,7 +127,7 @@ public class ContactsScreen extends JFrame {
 	}
 
 	private JButton createAddButton() {
-		JButton addButton = new JButton(string("CONTACTSCREEN_ADD_FRIEND"));
+		JButton addButton = new JButton("+");
 		addButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {

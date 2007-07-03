@@ -26,7 +26,7 @@ public class TrayIconImpl implements TrayIcon {
 	public static class SystemTrayNotSupported extends Exception {
 
 		public SystemTrayNotSupported() {
-			super(string("TRAYICON_NOTSUPPORTED"));
+			super(translate("Icon cannot be null"));
 		}
 
 		private static final long serialVersionUID = 1L;
@@ -46,7 +46,7 @@ public class TrayIconImpl implements TrayIcon {
 
 		SystemTray tray = SystemTray.getSystemTray();
 		Image image = Toolkit.getDefaultToolkit().getImage(icon);
-		java.awt.TrayIcon trayIcon = new java.awt.TrayIcon(image, string("APPLICATION_NAME"),
+		java.awt.TrayIcon trayIcon = new java.awt.TrayIcon(image, translate("Sneer"),
 				new PopupMenu());
 		trayIcon.setImageAutoSize(false);
 		// trayIcon.addMouseListener(mouseListener);
@@ -87,7 +87,7 @@ public class TrayIconImpl implements TrayIcon {
 	}
 
 	public void seeReminder(String reminder) {
-		_trayIcon.displayMessage(string("APPLICATION_NAME"), reminder, MessageType.NONE);
+		_trayIcon.displayMessage(translate("Sneer"), reminder, MessageType.NONE);
 	}
 	
 	public void clearActions(){

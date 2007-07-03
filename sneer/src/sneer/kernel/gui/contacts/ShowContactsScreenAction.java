@@ -30,7 +30,7 @@ public class ShowContactsScreenAction implements Action {
 	}
 
 	public String caption() {
-		return string("CONTACTSSCREEN_CAPTION");
+		return translate("Contacts");
 	}
 
 	public void run() {

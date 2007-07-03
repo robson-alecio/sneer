@@ -54,14 +54,14 @@ public class Gui {
 		_trayIcon.addAction(sneerPortChangeAction());
 		_trayIcon.addAction(new Action() { //Refactor: This action should be moved to a class and the trayicon refresh trigged by a callback  
 			public String caption() {
-				return string("LANGUAGESCREEN_CAPTION");
+				return translate("Language");
 			}
 
 			public void run() {
 
 				Object[] options = { "English", "Português" }; // Implement:detect available languages
 				try {
-					String choice = (String) _user.choose(string("LANGUAGESCREEN_AVAILABLE_LANGUAGES"),options);
+					String choice = (String) _user.choose(translate("Available Languages:"),options);
 					if (choice.equals("Português")) {
 						changeLocale(new Locale("pt", "BR"));
 					} else {
@@ -88,18 +88,25 @@ public class Gui {
 	}
 
 	private ValueChangePane sneerPortChangeAction() {
-		return new ValueChangePane(string("TRAYICON_SNEER_PORT_CONFIGURATION"), string("SNEERPORTCHANGE_PROMPT"), _user, _businessSource.output().sneerPort(), new IntegerParser(_businessSource.sneerPortSetter()));
+		String prompt=translate(
+				" Change this only if you know what you are doing.\n" +
+				" Sneer TCP port to listen:");
+		return new ValueChangePane(translate("Sneer Port Configuration"), prompt, _user, _businessSource.output().sneerPort(), new IntegerParser(_businessSource.sneerPortSetter()));
 	}
 
 	private Action nameChangeAction() {
-		return new ValueChangePane(string("TRAYICON_OWNNAME"),string("NAMECHANGE_PROMPT"), _user, _businessSource.output().ownName(), _businessSource.ownNameSetter());
+		String prompt = translate(
+				" What is your name?\n" + 
+				" (You can change it any time you like)");
+		
+		return new ValueChangePane(translate("Own Name"),prompt, _user, _businessSource.output().ownName(), _businessSource.ownNameSetter());
 	}
 
 	private Action exitAction() {
 		return new Action() {
 
 			public String caption() {
-				return string("TRAYICON_EXIT");
+				return translate("Exit");
 			}
 
 			public void run() {

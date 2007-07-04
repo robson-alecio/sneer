@@ -21,21 +21,17 @@ class MuxedConnection implements Connection {
 	private Source<Object> _myInput = new SourceImpl<Object>(null);
 
 	private Receiver<Object> myReceiver() {
-		return new Receiver<Object>() {
-			public void receive(Object packetObject) {
-				MuxedPacket packet = (MuxedPacket)packetObject; //Refactor: Eliminate this cast using generics.
-				if (packet._muxedConnectionId == _id)
-					_myInput.setter().consume(packet._contents);
-			}
-		};
+		return new Receiver<Object>() { public void receive(Object packetObject) {
+			MuxedPacket packet = (MuxedPacket)packetObject; //Refactor: Eliminate this cast using generics.
+			if (packet._muxedConnectionId == _id)
+				_myInput.setter().consume(packet._contents);
+		} };
 	}
 
 	private Omnivore<Object> createMyOutput() {
-		return new Omnivore<Object>() {
-			public void consume(Object valueObject) {
-				_sharedConnection.output().consume(new MuxedPacket(_id, valueObject));
-			}
-		};
+		return new Omnivore<Object>() {	public void consume(Object object) {
+			_sharedConnection.output().consume(new MuxedPacket(_id, object));
+		} };
 	}
 
 	public Signal<Object> input() {

@@ -7,6 +7,7 @@ import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import wheel.io.Connection;
 import wheel.lang.exceptions.NotImplementedYet;
+import wheel.reactive.Signal;
 
 class ChannelImpl implements Channel {
 
@@ -29,6 +30,10 @@ class ChannelImpl implements Channel {
 
 	private Mux muxFor(ContactId contactId) {
 		return _muxProvider.muxFor(contactId);
+	}
+
+	public Signal<ContactId> lastContactRequestingConnection() {
+		throw new NotImplementedYet();
 	}
 
 }

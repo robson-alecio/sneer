@@ -50,7 +50,7 @@ public class ConnectionImpl implements Connection {
 	private void startIsOnlineWatchdog() {
 		Threads.startDaemon(new Runnable(){	@Override public void run() {
 			while (!_isClosed) {
-				sendIamAliveBarkMessage();
+				bark();
 				if ((System.currentTimeMillis() -_lastBark)>6000){
 					Boolean wasOnline = _contact.isOnline().currentValue();
 					if (wasOnline) 	_onlineSetter.consume(new OnlineEvent(_contact.nick().currentValue(), false));
@@ -61,7 +61,7 @@ public class ConnectionImpl implements Connection {
 		} } );
 	}
 
-	private void sendIamAliveBarkMessage() {
+	private void bark() {
 		try {
 			produceSocket().writeObject(BARK);
 		} catch (IOException e) {

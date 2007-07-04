@@ -22,6 +22,7 @@ public class ConnectionImpl implements Connection {
 	private ObjectSocket _socket;
 	private final Omnivore<OnlineEvent> _onlineSetter;
 	private final Consumer<OutgoingConnectionAttempt> _connectionValidator;
+	private volatile boolean _isClosed;
 
 	public ConnectionImpl(Contact contact, OldNetwork network, Omnivore<OnlineEvent> onlineSetter, Consumer<OutgoingConnectionAttempt> connectionValidator) { //Refactor: Use the same Omnivore<Connection> to do online notification instead of having separate onlineSetter.
 		_contact = contact;
@@ -43,7 +44,7 @@ public class ConnectionImpl implements Connection {
 
 	private void startIsOnlineWatchdog() {
 		Threads.startDaemon(new Runnable(){	@Override public void run() {
-			while (true) {
+			while (!_isClosed) {
 				bark();
 				Threads.sleepWithoutInterruptions(15000);
 			}
@@ -55,7 +56,7 @@ public class ConnectionImpl implements Connection {
 
 		Boolean wasOnline = _contact.isOnline().currentValue();
 		if (isOnline == wasOnline) return;
-		
+				
 		String nick = _contact.nick().currentValue();
 		_onlineSetter.consume(new OnlineEvent(nick, isOnline));
 	}
@@ -115,6 +116,7 @@ public class ConnectionImpl implements Connection {
 
 	void close() {
 		try {
+			_isClosed = true;
 			if (_socket != null) _socket.close();
 		} catch (IOException ignored) {
 		}

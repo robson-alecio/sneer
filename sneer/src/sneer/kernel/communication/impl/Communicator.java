@@ -112,14 +112,12 @@ public class Communicator {
 	private Map<ContactId, Mux> _muxesByContactId = new HashMap<ContactId, Mux>();
 
 	
-	private String prepareBusiness() {
+	private void prepareBusiness() {
 		int sneerPort = _businessSource.output().sneerPort().currentValue();
 		if (sneerPort == 0) initSneerPort(_businessSource);
 
-		String id = _businessSource.output().publicKey().currentValue();
-		System.out.println("id: " + id);
-		if (id.isEmpty()) initId(_businessSource);
-		return id;
+		String ownPublicKey = _businessSource.output().publicKey().currentValue();
+		if (ownPublicKey.isEmpty()) initPublicKey(_businessSource);
 	}
 
 
@@ -149,9 +147,9 @@ public class Communicator {
 		return _spider.connectionFor(contactId);
 	}
 
-	private void initId(BusinessSource businessSource) {
-		String id = "" + System.currentTimeMillis() + "/" + System.nanoTime();
-		businessSource.publicKeySetter().consume(id);
+	private void initPublicKey(BusinessSource businessSource) {
+		String ownPK = "" + System.currentTimeMillis() + "/" + System.nanoTime();
+		businessSource.publicKeySetter().consume(ownPK);
 	}
 
 	private void initSneerPort(BusinessSource businessSource) {

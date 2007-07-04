@@ -64,9 +64,9 @@ public class InstallationWizard {
 		try {
 			String language = (String)_user.choose("Choose a language:", "English", "Português");
 			if (language.equals("English")){
-				changeLocale(new Locale("en"));
+				Language.reset();
 			}else{
-				changeLocale(new Locale("pt","BR"));
+				Language.load("pt", "BR");
 			}
 		} catch (CancelledByUser e) {
 			exit();

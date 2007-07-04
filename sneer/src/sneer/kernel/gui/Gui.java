@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.Random;
 
 import static sneer.Language.*;
+import sneer.Language;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.gui.contacts.ShowContactsScreenAction;
@@ -63,9 +64,9 @@ public class Gui {
 				try {
 					String choice = (String) _user.choose(translate("Available Languages:"),options);
 					if (choice.equals("Português")) {
-						changeLocale(new Locale("pt", "BR"));
+						Language.load("pt","BR");
 					} else {
-						changeLocale(new Locale("en"));
+						Language.reset();
 					}
 					//Fix: trayicon refresh disabled
 					//bindActionsToTrayIcon(); 

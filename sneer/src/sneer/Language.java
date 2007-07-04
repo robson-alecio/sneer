@@ -47,23 +47,14 @@ public class Language {
 	public Hashtable<String, String> translationMap = new Hashtable<String, String>();
 
 	private Language() {
+			loadTranslationTemplate();
 	}
 
-	public static void init() {
-		System.err.println("Language.init(). Fazer init estatica e fazer robusto mesmo n tendo arquivo de trad.");
+	public static void load(String language, String country) {
 		try {
-			instance.loadTranslationTemplate();
-		} catch (IOException ioe) {
-			throw new IllegalStateException("Could not find translation file. Was it created?");
-		}
-	}
-
-	public static void changeLocale(Locale locale) {
-		Locale.setDefault(locale); // the locale is changed to sync time/date/money conversions
-		try {
-			instance.loadTranslation(locale.getLanguage() + "_" + locale.getCountry());
+			instance.loadTranslation(language,country);
 		} catch (Exception ioe) {
-			ioe.printStackTrace();
+			System.err.println("Could not find Translation file for " + language + "/" + country + " . Please generate it. Sneer still works normally without it.");
 		}
 	}
 
@@ -77,11 +68,19 @@ public class Language {
 	public static String translate(String key, Object... args) {
 		return String.format(translate(key), args);
 	}
+	
+	public static void reset(){
+		instance.loadTranslationTemplate();
+	}
 
-	public void loadTranslationTemplate() throws IOException {
-		InputStream stream = this.getClass().getResourceAsStream("/" + TRANSLATION_FILENAME + ".pot");
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		parseTranslation(reader);
+	public void loadTranslationTemplate() {
+		try {
+			InputStream stream = this.getClass().getResourceAsStream("/" + TRANSLATION_FILENAME + ".pot");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			parseTranslation(reader);
+		} catch (Exception anything) {
+			System.err.println("Could not find Translation file. Please generate it. Sneer still works normally without it.");
+		}
 	}
 
 	private void parseTranslation(BufferedReader reader) throws IOException {
@@ -96,8 +95,8 @@ public class Language {
 		}
 	}
 
-	public void loadTranslation(String name) throws IOException {
-		InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(TRANSLATION_FILENAME + "_" + name + ".po");
+	private void loadTranslation(String language, String country) throws IOException {
+		InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(TRANSLATION_FILENAME + "_" + language + "_" + country + ".po");
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 		parseTranslation(reader);
 	}
@@ -148,7 +147,7 @@ public class Language {
 		frame.setVisible(true);
 	}
 
-	protected static void createLanguageFile() { //Refactor: low priority. lots of redundant code in this class... unify...
+	private static void createLanguageFile() { //Refactor: low priority. lots of redundant code in this class... unify...
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		chooser.setDialogTitle("Choose the Sources Directory");
@@ -287,7 +286,7 @@ public class Language {
 		return buffer.toString();
 	}
 
-	public static class ExtractedString {
+	private static class ExtractedString {
 		private String _filename;
 
 		private int _lineNumber;

@@ -1,6 +1,7 @@
 package sneer.kernel.communication.impl;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.OnlineEvent;
@@ -66,6 +67,9 @@ public class ConnectionImpl implements Connection {
 		try {
 			produceSocket().writeObject("Bark");
 			return true;
+		} catch (UnknownHostException uhe) {
+			System.err.println("Unknown host: " + uhe.getMessage());
+			return false;
 		} catch (IOException e) {
 			e.printStackTrace();
 			_socket = null;

@@ -17,6 +17,7 @@ import wheel.reactive.Signal;
 
 public class ConnectionImpl implements Connection {
 
+	private static final int BARK_PERIOD_MILLIS = 5000;
 	private static final String BARK = "Bark";
 
 	private static class InvalidConnectionAttempt extends Exception { private static final long serialVersionUID = 1L; }
@@ -27,7 +28,7 @@ public class ConnectionImpl implements Connection {
 	private final Omnivore<OnlineEvent> _onlineSetter;
 	private final Consumer<OutgoingConnectionAttempt> _connectionValidator;
 	private volatile boolean _isClosed = false;
-	private volatile long _lastBark;
+	private volatile long _lastReceivedBarkTime;
 
 	public ConnectionImpl(Contact contact, OldNetwork network, Omnivore<OnlineEvent> onlineSetter, Consumer<OutgoingConnectionAttempt> connectionValidator) { //Refactor: Use the same Omnivore<Connection> to do online notification instead of having separate onlineSetter.
 		_contact = contact;
@@ -51,12 +52,11 @@ public class ConnectionImpl implements Connection {
 		Threads.startDaemon(new Runnable(){	@Override public void run() {
 			while (!_isClosed) {
 				bark();
-				if ((System.currentTimeMillis() -_lastBark)>6000){
-					Boolean wasOnline = _contact.isOnline().currentValue();
-					if (wasOnline) 	_onlineSetter.consume(new OnlineEvent(_contact.nick().currentValue(), false));
-					
-				}
-				Threads.sleepWithoutInterruptions(3000);
+				
+				if ((System.currentTimeMillis() -_lastReceivedBarkTime) > (BARK_PERIOD_MILLIS * 2))
+					setIsOnline(false);
+				
+				Threads.sleepWithoutInterruptions(BARK_PERIOD_MILLIS);
 			}
 		} } );
 	}
@@ -108,13 +108,8 @@ public class ConnectionImpl implements Connection {
 					Object readObject = mySocket.readObject();
 					System.out.println("Received: " + readObject);
 					
-					if (readObject.equals(BARK)){
-						Boolean wasOnline = _contact.isOnline().currentValue();
-						if (!wasOnline) 	_onlineSetter.consume(new OnlineEvent(_contact.nick().currentValue(), true));
-						_lastBark = System.currentTimeMillis();
-					}
-					
-					
+					if (readObject.equals(BARK)) handleBark();
+
 				} catch (IOException e) {
 					e.printStackTrace();
 					break;
@@ -134,6 +129,16 @@ public class ConnectionImpl implements Connection {
 			_socket = null;
 		} catch (IOException ignored) {
 		}
+	}
+
+	private void setIsOnline(boolean isOnline) {
+		Boolean wasOnline = _contact.isOnline().currentValue();
+		if (wasOnline != isOnline) 	_onlineSetter.consume(new OnlineEvent(_contact.nick().currentValue(), isOnline));
+	}
+
+	private void handleBark() {
+		_lastReceivedBarkTime = System.currentTimeMillis();
+		setIsOnline(true);
 	}
 
 }

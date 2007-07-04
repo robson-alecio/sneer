@@ -17,6 +17,8 @@ import wheel.reactive.Signal;
 
 public class ConnectionImpl implements Connection {
 
+	private static final String BARK = "Bark";
+
 	private static class InvalidConnectionAttempt extends Exception { private static final long serialVersionUID = 1L; }
 
 	private final Contact _contact;
@@ -25,6 +27,7 @@ public class ConnectionImpl implements Connection {
 	private final Omnivore<OnlineEvent> _onlineSetter;
 	private final Consumer<OutgoingConnectionAttempt> _connectionValidator;
 	private volatile boolean _isClosed = false;
+	private volatile long _lastBark;
 
 	public ConnectionImpl(Contact contact, OldNetwork network, Omnivore<OnlineEvent> onlineSetter, Consumer<OutgoingConnectionAttempt> connectionValidator) { //Refactor: Use the same Omnivore<Connection> to do online notification instead of having separate onlineSetter.
 		_contact = contact;
@@ -47,31 +50,25 @@ public class ConnectionImpl implements Connection {
 	private void startIsOnlineWatchdog() {
 		Threads.startDaemon(new Runnable(){	@Override public void run() {
 			while (!_isClosed) {
-				bark();
-				Threads.sleepWithoutInterruptions(15000);
+				sendIamAliveBarkMessage();
+				Threads.sleepWithoutInterruptions(3000);
+				if ((System.currentTimeMillis() -_lastBark)>6000){
+					Boolean wasOnline = _contact.isOnline().currentValue();
+					if (wasOnline) 	_onlineSetter.consume(new OnlineEvent(_contact.nick().currentValue(), false));
+					
+				}
 			}
 		} } );
 	}
 
-	private void bark() {
-		boolean isOnline = isOnline();
-
-		Boolean wasOnline = _contact.isOnline().currentValue();
-		if (isOnline == wasOnline) return;
-				
-		String nick = _contact.nick().currentValue();
-		_onlineSetter.consume(new OnlineEvent(nick, isOnline));
-	}
-
-	private boolean isOnline() {
+	private void sendIamAliveBarkMessage() {
 		try {
-			produceSocket().writeObject("Bark");
-			return true;
+			produceSocket().writeObject(BARK);
 		} catch (IOException e) {
+			_socket = null;
 		} catch (InvalidConnectionAttempt e) {
+			_socket = null;
 		}
-		_socket = null;
-		return false;
 	}
 
 	private ObjectSocket produceSocket() throws IOException, InvalidConnectionAttempt {
@@ -110,6 +107,14 @@ public class ConnectionImpl implements Connection {
 				try {
 					Object readObject = mySocket.readObject();
 					System.out.println("Received: " + readObject);
+					
+					if (readObject.equals(BARK)){
+						Boolean wasOnline = _contact.isOnline().currentValue();
+						if (!wasOnline) 	_onlineSetter.consume(new OnlineEvent(_contact.nick().currentValue(), true));
+						_lastBark = System.currentTimeMillis();
+					}
+					
+					
 				} catch (IOException e) {
 					e.printStackTrace();
 					break;

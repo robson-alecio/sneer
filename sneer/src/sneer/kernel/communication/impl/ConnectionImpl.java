@@ -5,6 +5,7 @@ import java.io.IOException;
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.OnlineEvent;
 import wheel.io.Connection;
+import wheel.io.Log;
 import wheel.io.network.ObjectSocket;
 import wheel.io.network.OldNetwork;
 import wheel.lang.Consumer;
@@ -65,8 +66,12 @@ public class ConnectionImpl implements Connection {
 		try {
 			produceSocket().writeObject("Bark");
 			return true;
-		} catch (Exception e) {
+		} catch (IOException e) {
+			e.printStackTrace();
 			_socket = null;
+			return false;
+		} catch (InvalidConnectionAttempt e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -106,9 +111,13 @@ public class ConnectionImpl implements Connection {
 				try {
 					Object readObject = _socket.readObject();
 					System.out.println("Received: " + readObject);
-				} catch (Exception e) {
+				} catch (IOException e) {
+					e.printStackTrace();
 					break;
 					// Implement This is the moment where a disconnection occurs. Inform the online watchdog to set the contact offline.
+				} catch (ClassNotFoundException e) {
+					Log.log(e);
+					break;
 				} 
 			}
 		}});

@@ -60,8 +60,12 @@ public class Communicator {
 				socket.writeObject(ownPublicKey().currentValue());
 				socket.writeObject(ownName().currentValue());
 				remotePK = (String)socket.readObject();
-			} catch (Exception e) {
-				throw new IllegalParameter("Socket threw IOException");
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw new IllegalParameter("");
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+				throw new IllegalParameter("");
 			}
 
 			String contactsPK = attempt._contact.publicKey().currentValue();
@@ -173,7 +177,11 @@ public class Communicator {
 		try {
 			publicKey = (String)socket.readObject();
 			name = (String)socket.readObject();
-		} catch (Exception ignored) {
+		} catch (IOException ignored) {
+			ignored.printStackTrace();
+			return;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 			return;
 		}
 		

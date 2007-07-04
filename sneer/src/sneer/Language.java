@@ -52,7 +52,7 @@ public class Language {
 	public static void init() {
 		try {
 			instance.loadTranslationTemplate();
-		} catch (Exception ioe) {
+		} catch (IOException ioe) {
 			throw new IllegalStateException("Could not find translation file. Was it created?");
 		}
 	}

@@ -1,7 +1,5 @@
 package sneer.apps.conversations;
 
-import org.jmock.util.NotImplementedException;
-
 public class Message {
 
 	public Message(String text, String destination) {

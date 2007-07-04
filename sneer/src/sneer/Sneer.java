@@ -45,7 +45,6 @@ public class Sneer {
 
 	
 	private void tryToRun() throws Exception {
-		Language.init();
 		tryToRedirectLogToSneerLogFile();
 
 		Prevayler prevayler = prevaylerFor(new BusinessFactory().createBusinessSource());

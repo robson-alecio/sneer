@@ -1,0 +1,37 @@
+#: sneer\kernel\gui\contacts\ContactsScreen.java\ContactsScreen.java:0
+msgid "Contacts"
+msgstr "Amigos"
+
+#: sneer\kernel\gui\Gui.java\Gui.java:0
+msgid "Language"
+msgstr ""
+
+#: sneer\kernel\gui\Gui.java\Gui.java:0
+msgid "Available Languages:"
+msgstr ""
+
+#: sneer\kernel\gui\Gui.java\Gui.java:0
+msgid " Change this only if you know what you are doing.\n Sneer TCP port to listen:"
+msgstr ""
+
+#: sneer\kernel\gui\Gui.java\Gui.java:0
+msgid "Sneer Port Configuration"
+msgstr ""
+
+#: sneer\kernel\gui\Gui.java\Gui.java:0
+msgid " What is your name?\n (You can change it any time you like)"
+msgstr ""
+
+#: sneer\kernel\gui\Gui.java\Gui.java:0
+msgid "Own Name"
+msgstr "Nome Próprio"
+
+#: wheel\io\ui\impl\TrayIconImpl.java\TrayIconImpl.java:0
+msgid "Icon cannot be null"
+msgstr ""
+
+#: wheel\io\ui\impl\TrayIconImpl.java\TrayIconImpl.java:0
+#: wheel\io\ui\impl\TrayIconImpl.java\TrayIconImpl.java:0
+msgid "Sneer"
+msgstr ""
+

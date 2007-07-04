@@ -50,6 +50,7 @@ public class Language {
 	}
 
 	public static void init() {
+		System.err.println("Language.init(). Fazer init estatica e fazer robusto mesmo n tendo arquivo de trad.");
 		try {
 			instance.loadTranslationTemplate();
 		} catch (IOException ioe) {

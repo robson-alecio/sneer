@@ -21,10 +21,10 @@ public class ConnectionImpl implements Connection {
 
 	private final Contact _contact;
 	private final OldNetwork _network;
-	private ObjectSocket _socket;
+	private volatile ObjectSocket _socket;
 	private final Omnivore<OnlineEvent> _onlineSetter;
 	private final Consumer<OutgoingConnectionAttempt> _connectionValidator;
-	private volatile boolean _isClosed;
+	private volatile boolean _isClosed = false;
 
 	public ConnectionImpl(Contact contact, OldNetwork network, Omnivore<OnlineEvent> onlineSetter, Consumer<OutgoingConnectionAttempt> connectionValidator) { //Refactor: Use the same Omnivore<Connection> to do online notification instead of having separate onlineSetter.
 		_contact = contact;
@@ -67,17 +67,11 @@ public class ConnectionImpl implements Connection {
 		try {
 			produceSocket().writeObject("Bark");
 			return true;
-		} catch (UnknownHostException uhe) {
-			System.err.println("Unknown host: " + uhe.getMessage());
-			return false;
 		} catch (IOException e) {
-			e.printStackTrace();
-			_socket = null;
-			return false;
 		} catch (InvalidConnectionAttempt e) {
-			e.printStackTrace();
-			return false;
 		}
+		_socket = null;
+		return false;
 	}
 
 	private ObjectSocket produceSocket() throws IOException, InvalidConnectionAttempt {
@@ -111,9 +105,10 @@ public class ConnectionImpl implements Connection {
 
 	void startReceiving() {
 		Threads.startDaemon(new Runnable() { @Override public void run() {
-			while (true){
+			ObjectSocket mySocket = _socket;
+			while (mySocket == _socket) {
 				try {
-					Object readObject = _socket.readObject();
+					Object readObject = mySocket.readObject();
 					System.out.println("Received: " + readObject);
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -131,6 +126,7 @@ public class ConnectionImpl implements Connection {
 		try {
 			_isClosed = true;
 			if (_socket != null) _socket.close();
+			_socket = null;
 		} catch (IOException ignored) {
 		}
 	}

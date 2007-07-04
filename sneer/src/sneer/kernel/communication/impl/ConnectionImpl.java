@@ -51,12 +51,12 @@ public class ConnectionImpl implements Connection {
 		Threads.startDaemon(new Runnable(){	@Override public void run() {
 			while (!_isClosed) {
 				sendIamAliveBarkMessage();
-				Threads.sleepWithoutInterruptions(3000);
 				if ((System.currentTimeMillis() -_lastBark)>6000){
 					Boolean wasOnline = _contact.isOnline().currentValue();
 					if (wasOnline) 	_onlineSetter.consume(new OnlineEvent(_contact.nick().currentValue(), false));
 					
 				}
+				Threads.sleepWithoutInterruptions(3000);
 			}
 		} } );
 	}

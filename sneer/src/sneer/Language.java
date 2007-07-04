@@ -253,7 +253,7 @@ public class Language {
 			while (offset > -1) {
 				int pointer = offset + MARK_START.length();
 				if (!Character.isJavaIdentifierPart(source.charAt(offset - 1))) {// make
-					// make sure it does not match another method. ie.: Somethingtranslate(
+					// make sure it does not match another method. ie.: somethingtranslate(
 					StringBuffer extracted = new StringBuffer();
 					boolean insideBlockString = false;
 					while (pointer < source.length()) {
@@ -267,7 +267,7 @@ public class Language {
 						pointer++;
 					}
 					String name = file.getPath().substring(rootDir.getAbsolutePath().length() + 1) + File.separator + file.getName();
-					ExtractedString extractedString = new ExtractedString(name, 0, extracted.toString()); //Implement: low priority. fill line number. 
+					ExtractedString extractedString = new ExtractedString(name, countLineBreaks(source,offset), extracted.toString()); //Implement: low priority. fill line number. 
 					extractedList.add(extractedString);
 				}
 				offset = source.indexOf(MARK_START, pointer);
@@ -275,6 +275,15 @@ public class Language {
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Unexpected IO problem!");
 		}
+	}
+	
+	private static int countLineBreaks(String source, int offset){
+		int counter = 1;
+		for(int t = 0; t<offset; t++){
+			if (source.charAt(t)=='\n')
+				counter++;
+		}
+		return counter;
 	}
 
 	private static String asString(BufferedReader reader) throws IOException {

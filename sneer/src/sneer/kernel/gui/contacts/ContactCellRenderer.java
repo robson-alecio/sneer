@@ -9,16 +9,18 @@ import java.awt.*;
 import java.util.*;
 
 public class ContactCellRenderer extends DefaultListCellRenderer {
+	
+	final static String IMAGE_PATH = "/sneer/kernel/gui/contacts/images/";
 
-	final static ImageIcon ONLINE_ICON = new ImageIcon(ContactCellRenderer.class.getResource("/images/operator.gif"));
+	final static ImageIcon ONLINE_ICON = new ImageIcon(ContactCellRenderer.class.getResource(IMAGE_PATH + "operator.gif"));
 
-	final static ImageIcon OFFLINE_ICON = new ImageIcon(ContactCellRenderer.class.getResource("/images/operator_disabled.gif"));
+	final static ImageIcon OFFLINE_ICON = new ImageIcon(ContactCellRenderer.class.getResource(IMAGE_PATH + "operator_disabled.gif"));
 
-	final static ImageIcon ERROR_ICON = new ImageIcon(ContactCellRenderer.class.getResource("/images/redled.gif"));
+	final static ImageIcon ERROR_ICON = new ImageIcon(ContactCellRenderer.class.getResource(IMAGE_PATH + "redled.gif"));
 
-	final static ImageIcon UNCONFIRMED_ICON = new ImageIcon(ContactCellRenderer.class.getResource("/images/yellowled.gif"));
+	final static ImageIcon UNCONFIRMED_ICON = new ImageIcon(ContactCellRenderer.class.getResource(IMAGE_PATH + "yellowled.gif"));
 
-	final static ImageIcon CONFIRMED_ICON = new ImageIcon(ContactCellRenderer.class.getResource("/images/greenled.gif"));
+	final static ImageIcon CONFIRMED_ICON = new ImageIcon(ContactCellRenderer.class.getResource(IMAGE_PATH + "greenled.gif"));
 	
 	final static Color selected = new Color(230,240,255);
 

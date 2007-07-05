@@ -14,7 +14,7 @@ import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListValueChange;
 import wheel.reactive.lists.impl.ListElementAdded;
 
-public class ListModelTests extends TestCase implements ListSignal<String> {
+public class ListSignalModelTests extends TestCase implements ListSignal<String> {
 
 	private Receiver<ListValueChange> _receiver;
 	private List<String> _names = new ArrayList<String>();

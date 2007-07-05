@@ -75,7 +75,7 @@ public class ListSignalModel extends AbstractListModel {
 	}
 
 	private void addReceiverToElement(int index) {
-		Contact contact = (Contact)getElementAt(index);
+		Contact contact = (Contact)getElementAt(index); //Fix: Make generic, not only for Contact.
 		Receiver<?> receiver = createElementReceiver(index);
 		_elementReceivers.add(index, receiver);
 		

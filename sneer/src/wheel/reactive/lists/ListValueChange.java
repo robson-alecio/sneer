@@ -8,6 +8,7 @@ public interface ListValueChange {
 		void elementAdded(int index);
 		void elementToBeRemoved(int index);
 		void elementRemoved(int index);
+		void elementToBeReplaced(int index);
 		void elementReplaced(int index);
 	}
 }

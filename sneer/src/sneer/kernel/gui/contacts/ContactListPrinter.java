@@ -97,7 +97,7 @@ public class ContactListPrinter {
 	}
 
 	private String print(Contact contact) { //Fix: Use ContactPrinter instead of this.
-		return onlineTag(contact) + " - " + contact.nick().currentValue() + " - " + contact.host().currentValue() + ":" + contact.port().currentValue();
+		return onlineTag(contact) + " - " + contact.nick().currentValue() + " - " + contact.host().currentValue() + ":" + contact.port().currentValue() + " - " + contact.state().currentValue();
 	}
 
 	

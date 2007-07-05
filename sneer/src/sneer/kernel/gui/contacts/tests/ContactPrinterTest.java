@@ -11,7 +11,7 @@ public class ContactPrinterTest extends TestCase {
 
 	public void testContactPrinter() throws Exception {
 		
-		ContactSource contactSource =new ContactSourceImpl("Klaus","klaus.dyndns.org", 42, "", 0); 
+		ContactSource contactSource =new ContactSourceImpl("Klaus","klaus.dyndns.org", 42, "", Contact.UNCONFIRMED_STATE, 0); 
 		Contact contact = contactSource.output();
 				
 		ContactPrinter printer = new ContactPrinter(contact);

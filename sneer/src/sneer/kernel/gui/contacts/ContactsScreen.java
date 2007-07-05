@@ -84,8 +84,9 @@ public class ContactsScreen extends JFrame {
 	}
 
 	private JList createFriendsList() {
-		final ListSignalModel friendsListModel = new ListSignalModel(new ContactListPrinter(_contacts).output());
+		final ListSignalModel friendsListModel = new ListSignalModel(_contacts);
 		final JList friendsList = new JList(friendsListModel);
+		friendsList.setCellRenderer(new ContactCellRenderer());
 		
 		friendsList.addMouseListener(new MouseAdapter() {
 			@Override
@@ -141,5 +142,8 @@ public class ContactsScreen extends JFrame {
 		});
 		return addButton;
 	}
+	
+
+	
 	
 }

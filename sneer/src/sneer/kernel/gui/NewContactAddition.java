@@ -5,6 +5,7 @@ import java.util.Date;
 import org.prevayler.Transaction;
 
 import sneer.kernel.business.BusinessSource;
+import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.ContactInfo;
 
 import wheel.io.network.PortNumberSource;
@@ -26,7 +27,7 @@ public class NewContactAddition {
 			int port = port(user, nick);
 			
 			try {
-				contactAdder.consume(new ContactInfo(nick, host, port, ""));
+				contactAdder.consume(new ContactInfo(nick, host, port, "", Contact.UNCONFIRMED_STATE));
 				return;
 			} catch (IllegalParameter e) {
 				user.acknowledgeNotification(e.getMessage());

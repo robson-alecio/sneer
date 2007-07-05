@@ -11,7 +11,8 @@ import wheel.reactive.Source;
 import wheel.reactive.SourceImpl;
 
 public class ContactSourceImpl implements ContactSource {
-	
+
+
 	public class MyOutput implements Contact {
 
 		@Override
@@ -42,14 +43,19 @@ public class ContactSourceImpl implements ContactSource {
 			return _publicKey.output();
 		}
 
+		public Signal<String> state() {
+			return _state.output();
+		}
+
 	}
 
 
-	public ContactSourceImpl(String nick, String host, int port, String publicKey, long id) {
+	public ContactSourceImpl(String nick, String host, int port, String publicKey, String state, long id) {
 		_nick = new SourceImpl<String>(nick);
 		_host = new SourceImpl<String>(host);
 		_port = new PortNumberSource(port);
 		_publicKey = new SourceImpl<String>(publicKey);
+		_state = new SourceImpl<String>(state);
 		_id = id;
 	}
 
@@ -58,15 +64,13 @@ public class ContactSourceImpl implements ContactSource {
 	private final Source<String> _nick;
 	private final Source<String> _host;
 	private final PortNumberSource _port;
+	private final Source<String> _state;
 
 	private final Source<String> _publicKey;
 	
 	private final Source<Boolean> _isOnline = new SourceImpl<Boolean>(false);  //Optimize: Do not store online events in the transaction log. Make this transient or remove it from the business logic.
 	
 	private final long _id;
-
-
-
 
 	@Override
 	public Contact output() {
@@ -100,6 +104,11 @@ public class ContactSourceImpl implements ContactSource {
 	@Override
 	public Omnivore<String> publicKeySetter() {
 		return _publicKey.setter();
+	}
+
+
+	public Omnivore<String> stateSetter() {
+		return _state.setter();
 	}
 
 }

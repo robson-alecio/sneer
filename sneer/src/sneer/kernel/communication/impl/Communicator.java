@@ -231,7 +231,7 @@ public class Communicator {
 
 	private Contact createContact(String publicKey, String nick) throws CancelledByUser {
 		try {
-			_businessSource.contactAdder().consume(new ContactInfo(nick, "", 0, publicKey)); //Implement: get actual host addresses from contact.
+			_businessSource.contactAdder().consume(new ContactInfo(nick, "", 0, publicKey, Contact.CONFIRMED_STATE)); //Implement: get actual host addresses from contact.
 			return findContactGivenNick(nick);
 		} catch (IllegalParameter e) {
 			_user.acknowledge(e);

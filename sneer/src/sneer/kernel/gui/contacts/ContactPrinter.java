@@ -18,6 +18,7 @@ public class ContactPrinter {
 		 Receiver<String> myReceiver = myReceiver();
 		_contact.nick().addReceiver(myReceiver);
 		 _contact.host().addReceiver(myReceiver);
+		 _contact.state().addReceiver(myReceiver);
 
 		 Receiver<Integer> myIntReceiver = myReceiver();
 		 _contact.port().addReceiver(myIntReceiver);
@@ -39,7 +40,7 @@ public class ContactPrinter {
 	}
 
 	private String print(Contact contact) { //Fix: this must be reactive.
-		return onlineTag(contact) + " - " + contact.nick().currentValue() + " - " + contact.host().currentValue() + ":" + contact.port().currentValue();
+		return onlineTag(contact) + " - " + contact.nick().currentValue() + " - " + contact.host().currentValue() + ":" + contact.port().currentValue() + " - " + contact.state().currentValue();
 	}
 
 	private String onlineTag(Contact contact) {

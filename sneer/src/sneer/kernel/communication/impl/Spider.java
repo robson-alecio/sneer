@@ -16,15 +16,13 @@ import wheel.reactive.lists.impl.SimpleListReceiver;
 
 class Spider {
 
-
-
 	Spider(OldNetwork network, ListSignal<Contact> contacts, Omnivore<OnlineEvent> onlineSetter,  Consumer<OutgoingConnectionAttempt> outgoingConnectionValidator) {
 		_network = network;
 		_contacts = contacts;
 		_onlineSetter = onlineSetter;
 		_outgoingConnectionValidator = outgoingConnectionValidator;
 		
-		_contacts.addListReceiver(new MyContactReceiver());
+		new MyContactReceiver(_contacts);
 	}
 	
 	private final OldNetwork _network;
@@ -32,25 +30,31 @@ class Spider {
 	private final Omnivore<OnlineEvent> _onlineSetter;
 	private final Consumer<OutgoingConnectionAttempt> _outgoingConnectionValidator;
 
-	private Map<ContactId, ConnectionImpl> _connectionsByContactId = new HashMap<ContactId, ConnectionImpl>();
+	private final Map<ContactId, ConnectionImpl> _connectionsByContactId = new HashMap<ContactId, ConnectionImpl>();
 
-	private class MyContactReceiver extends SimpleListReceiver {
+	private class MyContactReceiver extends SimpleListReceiver<Contact> {
+
+		public MyContactReceiver(ListSignal<Contact> contacts) {
+			super(contacts);
+		}
 
 		@Override
-		public void elementAdded(int index) {
-			Contact newContact = _contacts.currentGet(index);
+		public void elementPresent(Contact contact) {
+			connectTo(contact);
+		}
+		
+		@Override
+		public void elementAdded(Contact newContact) {
 			connectTo(newContact);
 		}
 
 		@Override
-		public void elementToBeRemoved(int index) {
-			Contact contact = _contacts.currentGet(index);
+		public void elementToBeRemoved(Contact contact) {
 			disconnect(contact);
 		}
 
 	}
 
-	
 	private void connectTo(Contact contact) {
 		ConnectionImpl newConnection = new ConnectionImpl(contact, _network, _onlineSetter, _outgoingConnectionValidator);
 		_connectionsByContactId.put(contact.id(), newConnection);

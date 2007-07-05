@@ -7,12 +7,12 @@ import wheel.reactive.SourceImpl;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListValueChange;
 
-public class ListPrinter {
+public class ListPrinterWithCommas {
 
 	private final ListSignal<?> _list;
 	protected Source<String> _output;
 
-	public ListPrinter(ListSignal<?> list) {
+	public ListPrinterWithCommas(ListSignal<?> list) {
 		_list = list;
 		_output = new SourceImpl<String>(_list.toString());
 		_list.addListReceiver(myReceiver());

@@ -1,7 +1,25 @@
 package wheel.reactive.lists.impl;
 
-public abstract class SimpleListReceiver extends VisitingListReceiver {
+import sneer.kernel.business.contacts.Contact;
+import wheel.reactive.lists.ListSignal;
+
+public abstract class SimpleListReceiver<T> extends VisitingListReceiver {
 	
+	public SimpleListReceiver(ListSignal<T> listSignal) {
+		_listSignal = listSignal;
+	}
+
+	private final ListSignal<T> _listSignal;
+
+	protected abstract void elementPresent(T element);
+	protected abstract void elementAdded(T newElement);
+	protected abstract void elementToBeRemoved(T element);
+
+	@Override
+	public void elementAdded(int index){
+		elementAdded(_listSignal.currentGet(index));
+	}
+
 	@Override
 	public void elementToBeReplaced(int index) {
 		elementToBeRemoved(index);
@@ -9,16 +27,18 @@ public abstract class SimpleListReceiver extends VisitingListReceiver {
 
 	@Override
 	public void elementReplaced(int index) {
-		elementRemoved(index);
 		elementAdded(index);
 	}
 
 	@Override
-	public void elementToBeRemoved(int index) {		
+	public void elementToBeRemoved(int index) {
+		elementToBeRemoved(_listSignal.currentGet(index));
 	}
 
 	@Override
 	public void elementRemoved(int index) {		
 	}
+	
+
 
 }

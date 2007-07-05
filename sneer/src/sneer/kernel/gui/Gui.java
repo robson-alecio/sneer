@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
-import static sneer.Language.*;
-import sneer.Language;
+import static wheel.i18n.Language.*;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.gui.contacts.ShowContactsScreenAction;
+import wheel.i18n.Language;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.TrayIcon;
 import wheel.io.ui.User;

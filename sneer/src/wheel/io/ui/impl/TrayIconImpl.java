@@ -13,7 +13,7 @@ import java.net.URL;
 import java.security.InvalidParameterException;
 import java.util.ResourceBundle;
 
-import static sneer.Language.*;
+import static wheel.i18n.Language.*;
 
 import wheel.io.Log;
 import wheel.io.ui.CancelledByUser;

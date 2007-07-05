@@ -3,7 +3,7 @@ package sneer.kernel.gui.contacts;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static sneer.Language.*;
+import static wheel.i18n.Language.*;
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.business.contacts.ContactInfo;

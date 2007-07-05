@@ -4,7 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
-import static sneer.Language.*;
+import static wheel.i18n.Language.*;
+import wheel.i18n.Language;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.io.ui.impl.JOptionPaneUser;

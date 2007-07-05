@@ -1,4 +1,4 @@
-package sneer;
+package wheel.i18n;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -31,12 +31,13 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+//Refactor: Break this into several classes.
 public class Language {
 	private static final String MSGSTR = "msgstr \"";
 
 	private static final String MSGID = "msgid \"";
 
-	private static final String MARK_START = "translate("; // important! change this when the method is refatored.
+	private static final String MARK_START = "translate("; //This must be changed when the method is refatored.
 
 	private static final String MARK_END = ")";
 

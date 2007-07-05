@@ -1,6 +1,6 @@
 package sneer.kernel.gui.contacts;
 
-import static sneer.Language.translate;
+import static wheel.i18n.Language.translate;
 
 import java.awt.BorderLayout;
 import java.awt.Component;

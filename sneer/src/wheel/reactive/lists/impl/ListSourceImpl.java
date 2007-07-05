@@ -32,9 +32,7 @@ public class ListSourceImpl<VO> implements ListSource<VO> {
 		}
 
 		@Override
-		protected void initReceiver(Receiver<ListValueChange> receiver) {
-			receiver.receive(new ListReplaced(0, currentSize()));
-		}
+		protected void initReceiver(Receiver<ListValueChange> receiver) {}
 
 		@Override
 		protected void notifyReceivers(ListValueChange valueChange) {

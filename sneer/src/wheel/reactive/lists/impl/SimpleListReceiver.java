@@ -9,14 +9,6 @@ public abstract class SimpleListReceiver extends AbstractListReceiver {
 	}
 
 	@Override
-	public void listReplaced(int oldListSize, int newListSize) {
-		int i = 0;
-		while (i < oldListSize) elementRemoved(i++);
-		i = 0;
-		while (i < newListSize) elementAdded(i++);
-	}
-	
-	@Override
 	public void elementToBeRemoved(int index) {		
 	}
 

@@ -27,13 +27,6 @@ public class ListSignalModel extends AbstractListModel {
 	protected class ListChangeReceiver extends AbstractListReceiver {
 
 		@Override
-		public void listReplaced(int oldSize, int newSize) {
-			if (newSize > oldSize) fireIntervalAdded(this, oldSize, newSize);
-			if (newSize < oldSize) fireIntervalRemoved(this, newSize, oldSize);
-			fireContentsChanged(this, 0, Math.min(oldSize, newSize));
-		}
-		
-		@Override
 		public void elementAdded(int index) {
 			addReceiverToElement(getElementAt(index), index);
 			fireIntervalAdded(this, index, index);

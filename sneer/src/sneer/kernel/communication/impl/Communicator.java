@@ -4,6 +4,7 @@
 //Entrando - PK Novo - Aceito - Nick Existente - Sem PK (HD)
 //Entrando - PK Novo - Aceito - Nick Existente - Com PK: Repete ateh escolher nick novo ou nick sem PK.
 //Entrando - PK Existente (HD)
+//Entrando - PK Igual a minha propria (localhost) - Rejeita conexao
 //Saindo - Sem PK - Veio Novo (HD)
 //Saindo - Sem PK - Veio De Outro Contato (HD): Deleta o contato que originou (está sem pk mesmo)
 //Saindo - Com PK - Bateu (HD)
@@ -184,6 +185,8 @@ public class Communicator {
 			e.printStackTrace();
 			return;
 		}
+		
+		if (ownPublicKey().currentValue().equals(publicKey)) return;
 		
 		Contact contact = findContactGivenPublicKey(publicKey);
 		

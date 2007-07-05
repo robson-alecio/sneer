@@ -8,12 +8,9 @@ import wheel.reactive.AbstractNotifier;
 import wheel.reactive.Receiver;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListValueChange;
-import wheel.reactive.lists.ListValueChange.Visitor;
-import wheel.reactive.lists.impl.AbstractListReceiver;
 import wheel.reactive.lists.impl.ListElementAdded;
 import wheel.reactive.lists.impl.ListElementRemoved;
 import wheel.reactive.lists.impl.ListElementReplaced;
-import wheel.reactive.lists.impl.ListReplaced;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
 public class ContactListPrinter {
@@ -36,9 +33,7 @@ public class ContactListPrinter {
 		}
 
 		@Override
-		protected void initReceiver(Receiver<ListValueChange> receiver) {
-			receiver.receive(new ListReplaced(0, currentSize()));
-		}
+		protected void initReceiver(Receiver<ListValueChange> receiver) {}
 
 		@Override
 		protected void notifyReceivers(ListValueChange valueChange) {

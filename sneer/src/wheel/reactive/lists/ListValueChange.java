@@ -9,6 +9,5 @@ public interface ListValueChange {
 		void elementToBeRemoved(int index);
 		void elementRemoved(int index);
 		void elementReplaced(int index);
-		void listReplaced(int oldListSize, int newListSize);
 	}
 }

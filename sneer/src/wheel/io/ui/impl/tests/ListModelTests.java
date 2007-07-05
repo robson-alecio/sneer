@@ -8,15 +8,11 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import junit.framework.TestCase;
-
-
 import wheel.io.ui.impl.ListSignalModel;
-import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Receiver;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListValueChange;
 import wheel.reactive.lists.impl.ListElementAdded;
-import wheel.reactive.lists.impl.ListReplaced;
 
 public class ListModelTests extends TestCase implements ListSignal<String> {
 
@@ -30,8 +26,6 @@ public class ListModelTests extends TestCase implements ListSignal<String> {
 		
 		LogListDataListener probe = new LogListDataListener();
 		_subject.addListDataListener(probe);
-		
-		_receiver.receive(new ListReplaced(0, 0));
 		
 		_names.add("Banana");
 		_receiver.receive(new ListElementAdded(0));

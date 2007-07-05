@@ -28,7 +28,8 @@ public class ConnectionImpl implements Connection {
 	private final Omnivore<OnlineEvent> _onlineSetter;
 	private final Consumer<OutgoingConnectionAttempt> _connectionValidator;
 	private volatile boolean _isClosed = false;
-	private volatile long _lastReceivedBarkTime;
+	private volatile long _lastReceivedObjectTime;
+	private volatile long _lastSentObjectTime;
 
 	public ConnectionImpl(Contact contact, OldNetwork network, Omnivore<OnlineEvent> onlineSetter, Consumer<OutgoingConnectionAttempt> connectionValidator) { //Refactor: Use the same Omnivore<Connection> to do online notification instead of having separate onlineSetter.
 		_contact = contact;
@@ -51,9 +52,10 @@ public class ConnectionImpl implements Connection {
 	private void startIsOnlineWatchdog() {
 		Threads.startDaemon(new Runnable(){	@Override public void run() {
 			while (!_isClosed) {
-				bark();
+				if ((System.currentTimeMillis() - _lastSentObjectTime) > BARK_PERIOD_MILLIS)
+					bark();
 				
-				if ((System.currentTimeMillis() -_lastReceivedBarkTime) > (BARK_PERIOD_MILLIS * 2))
+				if ((System.currentTimeMillis() - _lastReceivedObjectTime) > (BARK_PERIOD_MILLIS * 2))
 					setIsOnline(false);
 				
 				Threads.sleepWithoutInterruptions(BARK_PERIOD_MILLIS);
@@ -64,6 +66,7 @@ public class ConnectionImpl implements Connection {
 	private void bark() {
 		try {
 			produceSocket().writeObject(BARK);
+			_lastSentObjectTime = System.currentTimeMillis(); //Fix: This is generic for any object sent not only bark.
 		} catch (IOException e) {
 			_socket = null;
 		} catch (InvalidConnectionAttempt e) {
@@ -108,7 +111,8 @@ public class ConnectionImpl implements Connection {
 					Object readObject = mySocket.readObject();
 					System.out.println("Received: " + readObject);
 					
-					if (readObject.equals(BARK)) handleBark();
+					_lastReceivedObjectTime = System.currentTimeMillis();
+					setIsOnline(true);
 
 				} catch (IOException e) {
 					break;
@@ -133,11 +137,6 @@ public class ConnectionImpl implements Connection {
 	private void setIsOnline(boolean isOnline) {
 		Boolean wasOnline = _contact.isOnline().currentValue();
 		if (wasOnline != isOnline) 	_onlineSetter.consume(new OnlineEvent(_contact.nick().currentValue(), isOnline));
-	}
-
-	private void handleBark() {
-		_lastReceivedBarkTime = System.currentTimeMillis();
-		setIsOnline(true);
 	}
 
 }

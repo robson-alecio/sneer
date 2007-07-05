@@ -23,35 +23,33 @@ public class ContactCellRenderer extends DefaultListCellRenderer {
 	final static Color selected = new Color(230,240,255);
 
 	@Override
-	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean hasFocus) {
+	public Component getListCellRendererComponent(JList list, Object contactObject, int index, boolean isSelected, boolean hasFocus) {
 
-		if (value instanceof Contact) {
-			Contact contact = (Contact) value;
+		Contact contact = (Contact) contactObject;
 
-			ImageIcon stateIcon = ERROR_ICON;
-			if (contact.state().currentValue().equals(Contact.UNCONFIRMED_STATE))
-				stateIcon = UNCONFIRMED_ICON;
-			if (contact.state().currentValue().equals(Contact.CONFIRMED_STATE))
-				stateIcon = CONFIRMED_ICON;
+		ImageIcon stateIcon = ERROR_ICON;
+		if (contact.state().currentValue().equals(Contact.UNCONFIRMED_STATE))
+			stateIcon = UNCONFIRMED_ICON;
+		if (contact.state().currentValue().equals(Contact.CONFIRMED_STATE))
+			stateIcon = CONFIRMED_ICON;
 
-			ImageIcon onlineIcon = OFFLINE_ICON;
-			if (contact.isOnline().currentValue())
-				onlineIcon = ONLINE_ICON;
+		System.out.println("Renderer: " + contact.isOnline().currentValue());
+		ImageIcon onlineIcon = contact.isOnline().currentValue()
+			? ONLINE_ICON
+			: OFFLINE_ICON;
 
-			FlowLayout layout = new FlowLayout();
-			JPanel panel = new JPanel(layout);
-			//if (isSelected) //uncomment this if selection is needed
-			//	panel.setBackground(selected);
-			//else
-				panel.setBackground(Color.white);
-			panel.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
-			layout.setAlignment(FlowLayout.LEFT);
-			panel.add(new JLabel(onlineIcon));
-			panel.add(new JLabel(stateIcon));
-			panel.add(new JLabel(contact.nick().currentValue() + " - " + contact.host().currentValue() + ":" + contact.port().currentValue())); //Fix: should use respective printer
-			return panel;
-		}
-		return new JLabel("what?");
+		FlowLayout layout = new FlowLayout();
+		JPanel panel = new JPanel(layout);
+		//if (isSelected) //uncomment this if selection is needed
+		//	panel.setBackground(selected);
+		//else
+			panel.setBackground(Color.white);
+		panel.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		layout.setAlignment(FlowLayout.LEFT);
+		panel.add(new JLabel(onlineIcon));
+		panel.add(new JLabel(stateIcon));
+		panel.add(new JLabel(contact.nick().currentValue() + " - " + contact.host().currentValue() + ":" + contact.port().currentValue())); //Fix: should use respective printer
+		return panel;
 	}
 
 	private static final long serialVersionUID = 1L;

@@ -111,7 +111,6 @@ public class ConnectionImpl implements Connection {
 					if (readObject.equals(BARK)) handleBark();
 
 				} catch (IOException e) {
-					e.printStackTrace();
 					break;
 					// Implement This is the moment where a disconnection occurs. Inform the online watchdog to set the contact offline.
 				} catch (ClassNotFoundException e) {

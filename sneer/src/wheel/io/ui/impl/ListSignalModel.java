@@ -2,15 +2,16 @@ package wheel.io.ui.impl;
 
 import javax.swing.AbstractListModel;
 
+import sneer.kernel.business.contacts.Contact;
 import wheel.reactive.Receiver;
+import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListValueChange;
-import wheel.reactive.lists.ListValueChange.Visitor;
 import wheel.reactive.lists.impl.AbstractListReceiver;
 
 public class ListSignalModel extends AbstractListModel {
 
-	private Receiver<ListValueChange> _receiver = new ListChangeReceiver();
+	private Receiver<ListValueChange> _receiver = listChangeReceiver();
 	private final ListSignal<?> _input;
 
 	@SuppressWarnings("unchecked")
@@ -19,7 +20,11 @@ public class ListSignalModel extends AbstractListModel {
 		_input.addListReceiver(_receiver);
 	}
 
-	private class ListChangeReceiver extends AbstractListReceiver {
+	protected Receiver<ListValueChange> listChangeReceiver() {
+		return new ListChangeReceiver();
+	}
+
+	protected class ListChangeReceiver extends AbstractListReceiver {
 
 		@Override
 		public void listReplaced(int oldSize, int newSize) {
@@ -30,6 +35,7 @@ public class ListSignalModel extends AbstractListModel {
 		
 		@Override
 		public void elementAdded(int index) {
+			addReceiverToElement(getElementAt(index), index);
 			fireIntervalAdded(this, index, index);
 		}
 
@@ -50,6 +56,29 @@ public class ListSignalModel extends AbstractListModel {
 	
 	public Object getElementAt(int index) {
 		return _input.currentGet(index); //Optimize: get only necessary element, not entire list.
+	}
+
+	private void addReceiverToElement(Object element, int index) {
+		Contact contact = (Contact)element;
+		addReceiverToSignal(contact.isOnline(), index); //Optimize: use a single receiver for all signals maybe using Casts.uncheckedGenericCast();
+		addReceiverToSignal(contact.state(), index);
+		addReceiverToSignal(contact.nick(), index);
+		addReceiverToSignal(contact.host(), index);
+		addReceiverToSignal(contact.port(), index);
+	}
+
+	private <T> void addReceiverToSignal(Signal<T> signal, int index) {
+		Receiver<T> r = elementReceiver(index);
+		signal.addReceiver(r);
+	}
+
+	private <T> Receiver<T> elementReceiver(final int index) {
+		return new Receiver<T>() {
+			int _index = index;
+			public void receive(T ignored) {
+				fireContentsChanged(this, _index, _index);
+				System.out.println("---------");
+			}};
 	}
 
 	public int getSize() {

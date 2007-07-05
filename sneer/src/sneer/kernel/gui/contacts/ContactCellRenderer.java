@@ -19,6 +19,8 @@ public class ContactCellRenderer extends DefaultListCellRenderer {
 	final static ImageIcon UNCONFIRMED_ICON = new ImageIcon(ContactCellRenderer.class.getResource("/images/yellowled.gif"));
 
 	final static ImageIcon CONFIRMED_ICON = new ImageIcon(ContactCellRenderer.class.getResource("/images/greenled.gif"));
+	
+	final static Color selected = new Color(230,240,255);
 
 	@Override
 	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean hasFocus) {
@@ -38,8 +40,11 @@ public class ContactCellRenderer extends DefaultListCellRenderer {
 
 			FlowLayout layout = new FlowLayout();
 			JPanel panel = new JPanel(layout);
-			panel.setBackground(Color.white);
-			panel.setBorder(new LineBorder(Color.LIGHT_GRAY,1));
+			//if (isSelected) //uncomment this if selection is needed
+			//	panel.setBackground(selected);
+			//else
+				panel.setBackground(Color.white);
+			panel.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 			layout.setAlignment(FlowLayout.LEFT);
 			panel.add(new JLabel(onlineIcon));
 			panel.add(new JLabel(stateIcon));

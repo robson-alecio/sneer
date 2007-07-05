@@ -56,7 +56,7 @@ public class ContactsScreen extends JFrame {
 
 	private void initComponents() {
 		this.setLayout(new BorderLayout());
-		
+
 		final JTextField nameText = new JTextField();
 		makeNameTextTheFirstFocusComponent(nameText);
 		
@@ -64,8 +64,9 @@ public class ContactsScreen extends JFrame {
 		editPanel.setLayout(new BorderLayout());
 		//editPanel.add(nameText, BorderLayout.CENTER);
 		editPanel.add(createAddButton(), BorderLayout.EAST);
-
-		this.add(new JScrollPane(createFriendsList()), BorderLayout.CENTER);
+		JScrollPane scrollpane = new JScrollPane(createFriendsList());
+		scrollpane.setBackground(java.awt.Color.black);
+		this.add(scrollpane, BorderLayout.CENTER);
 		this.add(editPanel, BorderLayout.SOUTH);
 
 		setTitle(translate("Contacts"));
@@ -86,6 +87,7 @@ public class ContactsScreen extends JFrame {
 	private JList createFriendsList() {
 		final ListSignalModel friendsListModel = new ListSignalModel(_contacts);
 		final JList friendsList = new JList(friendsListModel);
+		friendsList.setBackground(java.awt.Color.black);
 		friendsList.setCellRenderer(new ContactCellRenderer());
 		
 		friendsList.addMouseListener(new MouseAdapter() {

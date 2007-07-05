@@ -1,6 +1,6 @@
 package wheel.reactive.lists.impl;
 
-public abstract class SimpleListReceiver extends AbstractListReceiver {
+public abstract class SimpleListReceiver extends VisitingListReceiver {
 	
 	@Override
 	public void elementToBeReplaced(int index) {

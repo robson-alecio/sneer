@@ -11,25 +11,20 @@ import wheel.reactive.Receiver;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListValueChange;
-import wheel.reactive.lists.impl.AbstractListReceiver;
+import wheel.reactive.lists.impl.VisitingListReceiver;
 
 public class ListSignalModel extends AbstractListModel {
 
-	private Receiver<ListValueChange> _receiver = listChangeReceiver();
 	private final ListSignal<?> _input;
 	private final List<Receiver<?>> _elementReceivers = new LinkedList<Receiver<?>>();
 
 	@SuppressWarnings("unchecked")
 	public ListSignalModel(ListSignal<?> input){
 		_input = input;
-		_input.addListReceiver(_receiver);
+		_input.addListReceiver(new ListChangeReceiver());
 	}
 
-	protected Receiver<ListValueChange> listChangeReceiver() {
-		return new ListChangeReceiver();
-	}
-
-	protected class ListChangeReceiver extends AbstractListReceiver {
+	private class ListChangeReceiver extends VisitingListReceiver {
 
 		@Override
 		public void elementAdded(int index) {
@@ -60,11 +55,15 @@ public class ListSignalModel extends AbstractListModel {
 
 	}
 	
+	public int getSize() {
+		return _input.currentSize();
+	}
+	
 	public Object getElementAt(int index) {
-		return _input.currentGet(index); //Optimize: get only necessary element, not entire list.
+		return _input.currentGet(index);
 	}
 
-	public void removeReceiverFromElement(int index) {
+	private void removeReceiverFromElement(int index) {
 		Contact contact = (Contact)getElementAt(index);
 		Receiver<?> receiver = _elementReceivers.remove(index);
 
@@ -80,7 +79,7 @@ public class ListSignalModel extends AbstractListModel {
 		Receiver<?> receiver = createElementReceiver(index);
 		_elementReceivers.add(index, receiver);
 		
-		addReceiverToSignal(receiver, contact.isOnline()); //Optimize: use a single receiver for all signals maybe using Casts.uncheckedGenericCast();
+		addReceiverToSignal(receiver, contact.isOnline());
 		addReceiverToSignal(receiver, contact.state());
 		addReceiverToSignal(receiver, contact.nick());
 		addReceiverToSignal(receiver, contact.host());
@@ -101,15 +100,12 @@ public class ListSignalModel extends AbstractListModel {
 		return new Receiver<T>() {
 			int _index = index;
 			public void receive(T ignored) {
-				System.out.println("---------");
+				System.out.println("element receiver notified");
 				fireContentsChanged(this, _index, _index);
-			}};
+			}
+		};
 	}
 
-	public int getSize() {
-		return _input.currentSize();
-	}
-	
 	private static final long serialVersionUID = 1L;
 
 }

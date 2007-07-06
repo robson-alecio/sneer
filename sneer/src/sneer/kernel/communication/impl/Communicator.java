@@ -172,7 +172,15 @@ public class Communicator {
 		} };
 	}
 
-	private void serve(final ObjectSocket socket) {
+	private void serve(ObjectSocket socket) {
+		if (tryToServe(socket)) return;
+		
+		try {
+			socket.close();
+		} catch (IOException e) {}
+	};
+
+	private boolean tryToServe(final ObjectSocket socket) {
 		String publicKey;
 		String name;
 		try {
@@ -180,32 +188,30 @@ public class Communicator {
 			name = (String)socket.readObject();
 		} catch (IOException ignored) {
 			ignored.printStackTrace();
-			return;
+			return false;
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-			return;
+			return false;
 		}
 		
-		if (ownPublicKey().currentValue().equals(publicKey)) return;
+		if (ownPublicKey().currentValue().equals(publicKey)) return false;
 		
 		Contact contact = findContactGivenPublicKey(publicKey);
 		
 		try {
 			if (contact == null) contact = produceContactWithNewPublicKey(name, publicKey);
 		} catch (CancelledByUser e) {
-			try {
-				socket.close();
-			} catch (IOException ignored) {}
-			return;
+			return false;
 		}
 
 		try {
 			socket.writeObject(ownPublicKey().currentValue());
 		} catch (IOException ignored) {
-			return;
+			return false;
 		}
 		
 		_spider.connectionFor(contact.id()).serveIncomingSocket(socket);
+		return true;
 	}
 
 

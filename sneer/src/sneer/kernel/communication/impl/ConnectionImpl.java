@@ -57,6 +57,9 @@ public class ConnectionImpl implements Connection {
 				
 				if ((System.currentTimeMillis() - _lastReceivedObjectTime) > (BARK_PERIOD_MILLIS * 2))
 					setIsOnline(false);
+
+				if ((System.currentTimeMillis() - _lastReceivedObjectTime) > (BARK_PERIOD_MILLIS * 4))
+					closeSocket();
 				
 				Threads.sleepWithoutInterruptions(BARK_PERIOD_MILLIS);
 			}
@@ -65,6 +68,7 @@ public class ConnectionImpl implements Connection {
 
 	private void bark() {
 		try {
+			System.out.println("Enviando bark " + _socket);
 			produceSocket().writeObject(BARK);
 			_lastSentObjectTime = System.currentTimeMillis(); //Fix: This is generic for any object sent not only bark.
 		} catch (IOException e) {
@@ -126,11 +130,18 @@ public class ConnectionImpl implements Connection {
 	}
 
 	void close() {
+		_isClosed = true;
+		closeSocket();
+	}
+
+	private void closeSocket() {
+		System.out.println("Fechando socket: " + _socket);
+		if (_socket == null) return;
 		try {
-			_isClosed = true;
-			if (_socket != null) _socket.close();
+			_socket.close();
+		} catch (IOException e) {
+		} finally {
 			_socket = null;
-		} catch (IOException ignored) {
 		}
 	}
 

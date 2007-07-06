@@ -110,6 +110,8 @@ public class ConnectionImpl implements Connection {
 	void startReceiving() {
 		Threads.startDaemon(new Runnable() { @Override public void run() {
 			ObjectSocket mySocket = _socket;
+			if (mySocket == null) return;
+
 			while (mySocket == _socket) {
 				try {
 					Object readObject = mySocket.readObject();

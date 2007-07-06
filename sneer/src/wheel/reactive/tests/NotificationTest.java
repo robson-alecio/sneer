@@ -1,7 +1,7 @@
 package wheel.reactive.tests;
 
+import wheel.lang.Omnivore;
 import wheel.reactive.AbstractSignal;
-import wheel.reactive.Receiver;
 import wheel.reactive.Signal;
 
 public class NotificationTest extends ConnectionTest {
@@ -14,9 +14,9 @@ public class NotificationTest extends ConnectionTest {
 	}
 
 	@Override
-	protected Receiver<Object> input() {
-		return new Receiver<Object>() {
-			public void receive(Object newValue) {
+	protected Omnivore<Object> input() {
+		return new Omnivore<Object>() {
+			public void consume(Object newValue) {
 				_notifier._value = newValue;
 				_notifier.notifyReceivers(newValue);
 			}

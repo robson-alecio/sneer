@@ -5,7 +5,7 @@ import java.util.Set;
 
 import sneer.old.life.LifeView;
 import wheel.io.network.ObjectSocket;
-import wheel.reactive.Receiver;
+import wheel.lang.Omnivore;
 import wheel.reactive.SetSignal;
 import wheel.reactive.SetSource;
 import wheel.reactive.SetSignal.SetValueChange;
@@ -23,8 +23,8 @@ abstract class IndianForSet<T> extends AbstractIndian {
 	public void reportAbout(LifeView life, ObjectSocket socket) {
 		_socket = socket;
 		_observedSignal = setSignalToObserveOn(life);
-		_observedSignal.addTransientSetReceiver(new Receiver<SetValueChange<T>>() {
-			public void receive(SetValueChange<T> valueChange) {
+		_observedSignal.addTransientSetReceiver(new Omnivore<SetValueChange<T>>() {
+			public void consume(SetValueChange<T> valueChange) {
 				try {
 					_socket.writeObject(new SetSmokeSignal(_id, valueChange));
 				} catch (IOException e) {

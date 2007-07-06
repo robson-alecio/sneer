@@ -8,6 +8,8 @@ package wheel.reactive;
 import java.util.HashSet;
 import java.util.Set;
 
+import wheel.lang.Omnivore;
+
 public abstract class AbstractSignal<T> extends AbstractNotifier<T> implements Signal<T> {
 
 	@Override
@@ -18,25 +20,25 @@ public abstract class AbstractSignal<T> extends AbstractNotifier<T> implements S
 		return currentValue.toString();
 	}
 
-	public void addSetReceiver(Receiver<SetValueChange<T>> receiver) {
+	public void addSetReceiver(Omnivore<SetValueChange<T>> receiver) {
 		addReceiver(new SetReceiverAdapter<T>(receiver));
 	}
 
-	public void removeSetReceiver(Receiver<SetValueChange<T>> receiver) {
+	public void removeSetReceiver(Omnivore<SetValueChange<T>> receiver) {
 		removeReceiver(new SetReceiverAdapter<T>(receiver));
 	}
 
-	public void addTransientSetReceiver(Receiver<SetValueChange<T>> receiver) {
+	public void addTransientSetReceiver(Omnivore<SetValueChange<T>> receiver) {
 		addTransientReceiver(new SetReceiverAdapter<T>(receiver));
 	}
 
-	public void removeTransientSetReceiver(Receiver<SetValueChange<T>> receiver) {
+	public void removeTransientSetReceiver(Omnivore<SetValueChange<T>> receiver) {
 		removeTransientReceiver(new SetReceiverAdapter<T>(receiver));
 	}
 	
 	@Override
-	protected void initReceiver(Receiver<T> receiver) {
-		receiver.receive(currentValue());
+	protected void initReceiver(Omnivore<T> receiver) {
+		receiver.consume(currentValue());
 	}
 	
 	public Set<T> currentElements() {
@@ -45,17 +47,17 @@ public abstract class AbstractSignal<T> extends AbstractNotifier<T> implements S
 		return result;
 	}
 
-	static private class SetReceiverAdapter<AT> implements Receiver<AT> {
+	static private class SetReceiverAdapter<AT> implements Omnivore<AT> {
 		
-		private final Receiver<SetValueChange<AT>> _delegate;
+		private final Omnivore<SetValueChange<AT>> _delegate;
 		private AT _oldValue;
 		
-		public SetReceiverAdapter(Receiver<SetValueChange<AT>> receiver) {
+		public SetReceiverAdapter(Omnivore<SetValueChange<AT>> receiver) {
 			_delegate = receiver;
 		}
 		
-		public void receive(AT newValue) {
-			_delegate.receive(new SetValueChangeImpl<AT>(newValue, _oldValue));
+		public void consume(AT newValue) {
+			_delegate.consume(new SetValueChangeImpl<AT>(newValue, _oldValue));
 			_oldValue = newValue;
 		}
 

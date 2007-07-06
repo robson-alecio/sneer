@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import sneer.old.life.LifeView;
 import wheel.io.network.ObjectSocket;
-import wheel.reactive.Receiver;
+import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
 import wheel.reactive.SourceImpl;
@@ -18,8 +18,8 @@ abstract class IndianForObject<T> extends AbstractIndian {
 	public void reportAbout(LifeView life, ObjectSocket socket) {
 		_socket = socket;
 		_observedSignal = signalToObserveOn(life);
-		_observedSignal.addTransientReceiver(new Receiver<T>() {
-			public void receive(T newValue) {
+		_observedSignal.addTransientReceiver(new Omnivore<T>() {
+			public void consume(T newValue) {
 				try {
 					_socket.writeObject(new ObjectSmokeSignal(_id, newValue));
 				} catch (IOException e) {

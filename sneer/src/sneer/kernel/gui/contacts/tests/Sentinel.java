@@ -1,9 +1,8 @@
 package sneer.kernel.gui.contacts.tests;
 
-import static junit.framework.Assert.*;
-
-import sneer.kernel.business.contacts.Contact;
-import wheel.reactive.Receiver;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 
 public class Sentinel {
@@ -17,7 +16,7 @@ public class Sentinel {
 		assertEquals(initialValue, _signal.currentValue().toString());
 		
 		expect(initialValue);
-		Receiver<VO> myReceiver = myReceiver();
+		Omnivore<VO> myReceiver = myReceiver();
 		signal.addReceiver(myReceiver);
 	}
 
@@ -27,10 +26,10 @@ public class Sentinel {
 		_isExpecting = true;
 	}
 
-	private <VO>Receiver<VO> myReceiver() {
-		return new Receiver<VO>(){
+	private <VO>Omnivore<VO> myReceiver() {
+		return new Omnivore<VO>(){
 			@Override
-			public void receive(VO valueChange) {
+			public void consume(VO valueChange) {
 				assertTrue(_isExpecting);
 				_isExpecting = false;
 				

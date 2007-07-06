@@ -7,14 +7,16 @@ package wheel.reactive;
 import java.util.Collection;
 import java.util.Set;
 
+import wheel.lang.Omnivore;
+
 
 public interface SetSignal<T>  {
 
-	void addSetReceiver(Receiver<SetValueChange<T>> receiver);
-	void removeSetReceiver(Receiver<SetValueChange<T>> receiver);
+	void addSetReceiver(Omnivore<SetValueChange<T>> receiver);
+	void removeSetReceiver(Omnivore<SetValueChange<T>> receiver);
 
-	void addTransientSetReceiver(Receiver<SetValueChange<T>> receiver);
-	void removeTransientSetReceiver(Receiver<SetValueChange<T>> receiver);
+	void addTransientSetReceiver(Omnivore<SetValueChange<T>> receiver);
+	void removeTransientSetReceiver(Omnivore<SetValueChange<T>> receiver);
 
 	public interface SetValueChange<E> {
 		Collection<E> elementsAdded();

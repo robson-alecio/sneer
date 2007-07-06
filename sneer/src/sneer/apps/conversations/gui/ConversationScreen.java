@@ -16,7 +16,6 @@ import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.IllegalParameter;
-import wheel.reactive.Receiver;
 import wheel.reactive.Signal;
 
 public class ConversationScreen extends JFrame {
@@ -27,16 +26,16 @@ public class ConversationScreen extends JFrame {
 		
 		initComponents();
 		
-		otherGuysNick.addReceiver(new Receiver<String>() {
+		otherGuysNick.addReceiver(new Omnivore<String>() {
 			@Override
-			public void receive(String valueChange) {
+			public void consume(String valueChange) {
 				setTitle(valueChange);
 			}
 		});
 		
-		lastIncomingMessage.addReceiver(new Receiver<Object>() {
+		lastIncomingMessage.addReceiver(new Omnivore<Object>() {
 			@Override
-			public void receive(Object messageObj) {
+			public void consume(Object messageObj) {
 				Message message = (Message)messageObj; //Refactor Try to eliminate casting.
 				appendToChatText("To " + message._destination + ": " + message._text);
 			}

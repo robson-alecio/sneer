@@ -1,6 +1,6 @@
 package sneer.kernel.gui.contacts.tests;
 
-import wheel.reactive.Receiver;
+import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
 import wheel.reactive.SourceImpl;
@@ -18,10 +18,10 @@ public class ListPrinterWithCommas {
 		_list.addListReceiver(myReceiver());
 	}
 
-	private Receiver<ListValueChange> myReceiver() {
-		return new Receiver<ListValueChange>() {
+	private Omnivore<ListValueChange> myReceiver() {
+		return new Omnivore<ListValueChange>() {
 			@Override
-			public void receive(ListValueChange valueChange) {
+			public void consume(ListValueChange valueChange) {
 				//Optimize
 				String listToString = listToString();
 				if (!_output.output().currentValue().equals(listToString))

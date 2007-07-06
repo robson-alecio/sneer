@@ -11,10 +11,9 @@ import wheel.io.ui.User;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.FriendlyException;
-import wheel.reactive.Receiver;
 import wheel.reactive.Signal;
 
-class SocketAccepter implements Receiver<Integer> {
+class SocketAccepter implements Omnivore<Integer> {
 	
 	private final User _user;
 	private final OldNetwork _network;
@@ -32,7 +31,7 @@ class SocketAccepter implements Receiver<Integer> {
 	}
 
 	@Override
-	public void receive(Integer newPort) {
+	public void consume(Integer newPort) {
 		if (_current != null) _current.stop();
 		
 		try {

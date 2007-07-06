@@ -9,14 +9,14 @@ import javax.swing.event.ListDataListener;
 
 import junit.framework.TestCase;
 import wheel.io.ui.impl.ListSignalModel;
-import wheel.reactive.Receiver;
+import wheel.lang.Omnivore;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListValueChange;
 import wheel.reactive.lists.impl.ListElementAdded;
 
 public class ListSignalModelTests extends TestCase implements ListSignal<String> {
 
-	private Receiver<ListValueChange> _receiver;
+	private Omnivore<ListValueChange> _receiver;
 	private List<String> _names = new ArrayList<String>();
 	
 	
@@ -28,7 +28,7 @@ public class ListSignalModelTests extends TestCase implements ListSignal<String>
 		_subject.addListDataListener(probe);
 		
 		_names.add("Banana");
-		_receiver.receive(new ListElementAdded(0));
+		_receiver.consume(new ListElementAdded(0));
 		
 		assertEquals("added at 0", probe.log());
 		assertEquals("Banana", _subject.getElementAt(0));
@@ -60,7 +60,7 @@ public class ListSignalModelTests extends TestCase implements ListSignal<String>
 			}
 	}
 
-	public void addListReceiver(Receiver<ListValueChange> receiver) {
+	public void addListReceiver(Omnivore<ListValueChange> receiver) {
 		_receiver = receiver;
 	}
 

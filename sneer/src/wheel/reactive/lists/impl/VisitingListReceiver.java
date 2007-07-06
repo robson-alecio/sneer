@@ -1,13 +1,13 @@
 package wheel.reactive.lists.impl;
 
-import wheel.reactive.Receiver;
+import wheel.lang.Omnivore;
 import wheel.reactive.lists.ListValueChange;
 import wheel.reactive.lists.ListValueChange.Visitor;
 
-public abstract class VisitingListReceiver implements Receiver<ListValueChange>, Visitor {
+public abstract class VisitingListReceiver implements Omnivore<ListValueChange>, Visitor {
 
 	@Override
-	public void receive(ListValueChange listChange) {
+	public void consume(ListValueChange listChange) {
 		listChange.accept(this);
 	}
 

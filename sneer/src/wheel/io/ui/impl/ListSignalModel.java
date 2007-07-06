@@ -7,16 +7,15 @@ import javax.swing.AbstractListModel;
 
 import sneer.kernel.business.contacts.Contact;
 import wheel.lang.Casts;
-import wheel.reactive.Receiver;
+import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
-import wheel.reactive.lists.ListValueChange;
 import wheel.reactive.lists.impl.VisitingListReceiver;
 
 public class ListSignalModel extends AbstractListModel {
 
 	private final ListSignal<?> _input;
-	private final List<Receiver<?>> _elementReceivers = new LinkedList<Receiver<?>>();
+	private final List<Omnivore<?>> _elementReceivers = new LinkedList<Omnivore<?>>();
 
 	@SuppressWarnings("unchecked")
 	public ListSignalModel(ListSignal<?> input){
@@ -69,7 +68,7 @@ public class ListSignalModel extends AbstractListModel {
 
 	private void removeReceiverFromElement(int index) {
 		Contact contact = (Contact)getElementAt(index);
-		Receiver<?> receiver = _elementReceivers.remove(index);
+		Omnivore<?> receiver = _elementReceivers.remove(index);
 
 		removeReceiverFromSignal(receiver, contact.isOnline());
 		removeReceiverFromSignal(receiver, contact.state());
@@ -80,7 +79,7 @@ public class ListSignalModel extends AbstractListModel {
 
 	private void addReceiverToElement(int index) {
 		Contact contact = (Contact)getElementAt(index); //Fix: Make generic, not only for Contact.
-		Receiver<?> receiver = createElementReceiver(index);
+		Omnivore<?> receiver = createElementReceiver(index);
 		_elementReceivers.add(index, receiver);
 		
 		addReceiverToSignal(receiver, contact.isOnline());
@@ -90,20 +89,20 @@ public class ListSignalModel extends AbstractListModel {
 		addReceiverToSignal(receiver, contact.port());
 	}
 
-	private <T> void addReceiverToSignal(Receiver<?> receiver, Signal<T> signal) {
-		Receiver<T> castedReceiver =	Casts.uncheckedGenericCast(receiver);
+	private <T> void addReceiverToSignal(Omnivore<?> receiver, Signal<T> signal) {
+		Omnivore<T> castedReceiver =	Casts.uncheckedGenericCast(receiver);
 		signal.addReceiver(castedReceiver);
 	}
 	
-	private <T> void removeReceiverFromSignal(Receiver<?> receiver, Signal<T> signal) {
-		Receiver<T> casted = Casts.uncheckedGenericCast(receiver);
+	private <T> void removeReceiverFromSignal(Omnivore<?> receiver, Signal<T> signal) {
+		Omnivore<T> casted = Casts.uncheckedGenericCast(receiver);
 		signal.removeReceiver(casted);
 	}
 
-	private <T> Receiver<T> createElementReceiver(final int index) {
-		return new Receiver<T>() {
+	private <T> Omnivore<T> createElementReceiver(final int index) {
+		return new Omnivore<T>() {
 			int _index = index;
-			public void receive(T ignored) {
+			public void consume(T ignored) {
 				System.out.println("element receiver notified");
 				fireContentsChanged(this, _index, _index);
 			}

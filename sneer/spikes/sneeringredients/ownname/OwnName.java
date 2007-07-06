@@ -1,6 +1,6 @@
 package sneeringredients.ownname;
 
-import wheel.reactive.Receiver;
+import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 
 public interface OwnName {
@@ -8,5 +8,5 @@ public interface OwnName {
 	public Signal<String> name();
 	public Signal<QuestionForUser> question();
 	
-	public Receiver<UserAnswer> answerReceiver();
+	public Omnivore<UserAnswer> answerReceiver();
 }

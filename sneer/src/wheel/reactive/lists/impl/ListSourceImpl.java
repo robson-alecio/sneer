@@ -7,7 +7,6 @@ import java.util.List;
 
 import wheel.lang.Omnivore;
 import wheel.reactive.AbstractNotifier;
-import wheel.reactive.Receiver;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListSource;
 import wheel.reactive.lists.ListValueChange;
@@ -27,12 +26,12 @@ public class ListSourceImpl<VO> implements ListSource<VO> {
 		}
 
 		@Override
-		public void addListReceiver(Receiver<ListValueChange> receiver) {
+		public void addListReceiver(Omnivore<ListValueChange> receiver) {
 			addReceiver(receiver);		
 		}
 
 		@Override
-		protected void initReceiver(Receiver<ListValueChange> receiver) {}
+		protected void initReceiver(Omnivore<ListValueChange> receiver) {}
 
 		@Override
 		protected void notifyReceivers(ListValueChange valueChange) {

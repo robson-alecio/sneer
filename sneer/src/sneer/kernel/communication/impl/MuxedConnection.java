@@ -2,7 +2,6 @@ package sneer.kernel.communication.impl;
 
 import wheel.io.Connection;
 import wheel.lang.Omnivore;
-import wheel.reactive.Receiver;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
 import wheel.reactive.SourceImpl;
@@ -20,8 +19,8 @@ class MuxedConnection implements Connection {
 	private final Omnivore<Object> _myOutput = createMyOutput();
 	private Source<Object> _myInput = new SourceImpl<Object>(null);
 
-	private Receiver<Object> myReceiver() {
-		return new Receiver<Object>() { public void receive(Object packetObject) {
+	private Omnivore<Object> myReceiver() {
+		return new Omnivore<Object>() { public void consume(Object packetObject) {
 			MuxedPacket packet = (MuxedPacket)packetObject; //Refactor: Eliminate this cast using generics.
 			if (packet._muxedConnectionId == _id)
 				_myInput.setter().consume(packet._contents);

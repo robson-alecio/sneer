@@ -7,6 +7,7 @@ package wheel.reactive;
 import java.util.HashSet;
 import java.util.Set;
 
+import wheel.lang.Omnivore;
 import wheel.reactive.SetSignal.SetValueChange;
 
 
@@ -14,19 +15,19 @@ public class SetSource<T> extends AbstractNotifier<SetValueChange<T>>  implement
 
 	private Set<T> _contents = new HashSet<T>();
 
-	public void addSetReceiver(Receiver<SetValueChange<T>> receiver) {
+	public void addSetReceiver(Omnivore<SetValueChange<T>> receiver) {
 		addReceiver(receiver);
 	}
 
-	public void removeSetReceiver(Receiver<SetValueChange<T>> receiver) {
+	public void removeSetReceiver(Omnivore<SetValueChange<T>> receiver) {
 		removeReceiver(receiver);
 	}
 	
-	public void addTransientSetReceiver(Receiver<SetValueChange<T>> receiver) {
+	public void addTransientSetReceiver(Omnivore<SetValueChange<T>> receiver) {
 		addTransientReceiver(receiver);
 	}
 
-	public void removeTransientSetReceiver(Receiver<SetValueChange<T>> receiver) {
+	public void removeTransientSetReceiver(Omnivore<SetValueChange<T>> receiver) {
 		removeTransientReceiver(receiver);
 	}
 
@@ -66,8 +67,8 @@ public class SetSource<T> extends AbstractNotifier<SetValueChange<T>>  implement
 	}
 
 	@Override
-	protected void initReceiver(Receiver<SetValueChange<T>> receiver) {
-		receiver.receive(new SetValueChangeImpl<T>(contentsCopy(), null));
+	protected void initReceiver(Omnivore<SetValueChange<T>> receiver) {
+		receiver.consume(new SetValueChangeImpl<T>(contentsCopy(), null));
 	}
 
 }

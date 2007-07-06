@@ -21,8 +21,8 @@ public class ConversationsApp {
 
 			@Override
 			public void actUpon(Contact contact) {
-				Connection connection = _channel.connectionTo(contact.id());
-				new ConversationScreen(contact.nick(), connection.input(), connection.output());
+				//Connection connection = _channel.connectionTo(contact.id());
+				//new ConversationScreen(contact.nick(), connection.input(), connection.output());
 			}
 
 			@Override

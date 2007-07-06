@@ -5,7 +5,9 @@ import java.util.Map;
 
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
+import sneer.kernel.communication.Packet;
 import wheel.io.Connection;
+import wheel.lang.Omnivore;
 import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Signal;
 
@@ -23,10 +25,10 @@ class ChannelImpl implements Channel {
 		_muxProvider = muxProvider;
 	}
 
-	@Override
-	public Connection connectionTo(ContactId contactId) {
-		return muxFor(contactId).muxedConnectionFor(_channelId);
-	}
+//	@Override
+//	public Connection connectionTo(ContactId contactId) {
+//		return muxFor(contactId).muxedConnectionFor(_channelId);
+//	}
 
 	private Mux muxFor(ContactId contactId) {
 		return _muxProvider.muxFor(contactId);
@@ -34,6 +36,16 @@ class ChannelImpl implements Channel {
 
 	public Signal<ContactId> lastContactRequestingConnection() {
 		throw new NotImplementedYet();
+	}
+
+	public Signal<Packet> input() {
+		// Implement Auto-generated method stub
+		return null;
+	}
+
+	public Omnivore<Packet> output() {
+		// Implement Auto-generated method stub
+		return null;
 	}
 
 }

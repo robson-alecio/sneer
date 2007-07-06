@@ -21,6 +21,10 @@ public class ListSignalModel extends AbstractListModel {
 	@SuppressWarnings("unchecked")
 	public ListSignalModel(ListSignal<?> input){
 		_input = input;
+		
+		int size = _input.currentSize();
+		for (int i = 0; i < size; i++) addReceiverToElement(i);
+			
 		_input.addListReceiver(new ListChangeReceiver());
 	}
 

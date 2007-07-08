@@ -18,37 +18,32 @@ import wheel.lang.Threads;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 
-public class ConversationScreen extends JFrame {
+public class ConversationFrame extends JFrame {
 	
-	public ConversationScreen(Signal<String> otherGuysNick, final Signal<Object> lastIncomingMessage, Consumer<Object> sender){
+	public ConversationFrame(Signal<String> otherGuysNick, final Signal<Message> messageInput, Omnivore<Message> messageOutput){
 		_otherGuysNick = otherGuysNick;
-		_chatSender = sender;
+		_messageOutput = messageOutput;
 		
 		initComponents();
 		
-		otherGuysNick.addReceiver(new Omnivore<String>() {
-			@Override
-			public void consume(String valueChange) {
-				setTitle(valueChange);
-			}
-		});
+		otherGuysNick.addReceiver(new Omnivore<String>() { @Override public void consume(String nick) {
+			setTitle(nick);
+		}});
 		
-		lastIncomingMessage.addReceiver(new Omnivore<Object>() {
-			@Override
-			public void consume(Object messageObj) {
-				Message message = (Message)messageObj; //Refactor Try to eliminate casting.
-				appendToChatText("To " + message._destination + ": " + message._text);
-			}
-		});
+		messageInput.addReceiver(new Omnivore<Message>() { @Override public void consume(Message message) {
+			appendToChatText(_otherGuysNick.currentValue(), message);
+		}});
 		
 		setVisible(true);
 	}
 
-	
 	private final Signal<String> _otherGuysNick;
-	private final Consumer<Object> _chatSender;
+	private final Omnivore<Message> _messageOutput;
 	private final JTextArea _chatText = createChatText();
 
+	private void appendToChatText(String sender, Message message) {
+		appendToChatText(sender + ": " + message);
+	}
 	
 	private void initComponents() {
 		setLayout(new BorderLayout());
@@ -64,21 +59,13 @@ public class ConversationScreen extends JFrame {
 		chatInput.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ignored) {
-				final Message chatEvent = new Message(chatInput.getText(), _otherGuysNick.currentValue());
+				final Message message = new Message(chatInput.getText());
 				chatInput.setText("");
 				
-				Threads.startDaemon(new Runnable() {		
-					@Override
-					public void run() {
-						try {
-							_chatSender.consume(chatEvent);
-						} catch (IllegalParameter e) {
-							Log.log(e);
-							//Fix: the nick of the contact might have changed just before the event was consumed. Use some sort of timestamp associated with the nick.
-						}
-					}
-				});
-				
+				Threads.startDaemon(new Runnable() { @Override public void run() {
+					_messageOutput.consume(message);
+					appendToChatText("Me: ", message);
+				}});
 			}
 		});
 		return chatInput;
@@ -91,11 +78,11 @@ public class ConversationScreen extends JFrame {
 		return chatArea;
 	}
 	
-	private void appendToChatText(final String text) {
+	private void appendToChatText(final String entry) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				_chatText.append(text + "\n");
+				_chatText.append(entry + "\n");
 				_chatText.setCaretPosition(_chatText.getDocument().getLength());		
 			}
 		

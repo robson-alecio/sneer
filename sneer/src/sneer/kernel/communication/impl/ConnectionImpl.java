@@ -104,7 +104,7 @@ public class ConnectionImpl {
 					_lastActivityTime = System.currentTimeMillis();
 					setIsOnline(true);
 					
-					if (BARK.equals(received)) return;
+					if (BARK.equals(received)) continue;
 
 					_objectReceiver.consume(received);
 				} catch (IOException e) {

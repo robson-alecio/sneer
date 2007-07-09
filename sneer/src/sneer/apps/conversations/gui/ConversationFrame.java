@@ -38,7 +38,7 @@ public class ConversationFrame extends JFrame {
 		messageInput.addReceiver(new Omnivore<Message>() { @Override public void consume(Message message) {
 			String nick = _otherGuysNick.currentValue();
 			
-			if (message._text.equals(TYPING)) {
+			if (message._text.equals(TYPING)) { //Refactor :)
 				_statusLabel.setText(nick + " is typing... :)");
 				return;
 			}
@@ -96,11 +96,11 @@ public class ConversationFrame extends JFrame {
 		return new ActionListener() { @Override public void actionPerformed(ActionEvent ignored) {
 			final Message message = new Message(chatInput.getText());
 			chatInput.setText("");
-			_isTyping = false;
 				
 			Threads.startDaemon(new Runnable() { @Override public void run() {
 				_messageOutput.consume(message);
 				appendToChatText("Me", message);
+				_isTyping = false;
 			}});
 		}};
 	}

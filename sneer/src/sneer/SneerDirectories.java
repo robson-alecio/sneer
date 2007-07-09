@@ -29,6 +29,9 @@ public class SneerDirectories {
 
 
 	private static String userHome() {
+		String override = System.getProperty("sneer.user_home_override");
+		if (override != null) return override;
+		
 		return System.getProperty("user.home");
 	}
 

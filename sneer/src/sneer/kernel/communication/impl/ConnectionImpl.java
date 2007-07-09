@@ -28,8 +28,7 @@ public class ConnectionImpl {
 	private final Omnivore<Object> _objectReceiver;
 
 	private volatile boolean _isClosed = false;
-	private volatile long _lastReceivedObjectTime;
-	private volatile long _lastSentObjectTime;
+	private volatile long _lastActivityTime;
 
 	public ConnectionImpl(Contact contact, OldNetwork network, Omnivore<OnlineEvent> onlineSetter, Consumer<OutgoingConnectionAttempt> connectionValidator, Omnivore<Object> objectReceiver) { //Refactor: move online notification to the objectReceiver instead of having separate onlineSetter.
 		_contact = contact;
@@ -44,13 +43,13 @@ public class ConnectionImpl {
 	private void startIsOnlineWatchdog() {
 		Threads.startDaemon(new Runnable(){	@Override public void run() {
 			while (!_isClosed) {
-				if ((System.currentTimeMillis() - _lastSentObjectTime) > BARK_PERIOD_MILLIS)
+				if ((System.currentTimeMillis() - _lastActivityTime) > BARK_PERIOD_MILLIS)
 					bark();
 				
-				if ((System.currentTimeMillis() - _lastReceivedObjectTime) > (BARK_PERIOD_MILLIS * 2))
+				if ((System.currentTimeMillis() - _lastActivityTime) > (BARK_PERIOD_MILLIS * 2))
 					setIsOnline(false);
 
-				if ((System.currentTimeMillis() - _lastReceivedObjectTime) > (BARK_PERIOD_MILLIS * 4))
+				if ((System.currentTimeMillis() - _lastActivityTime) > (BARK_PERIOD_MILLIS * 4))
 					closeSocket();
 				
 				Threads.sleepWithoutInterruptions(BARK_PERIOD_MILLIS);
@@ -102,7 +101,7 @@ public class ConnectionImpl {
 					Object received = mySocket.readObject();
 					System.out.println("Received: " + received);
 					
-					_lastReceivedObjectTime = System.currentTimeMillis();
+					_lastActivityTime = System.currentTimeMillis();
 					setIsOnline(true);
 					
 					if (BARK.equals(received)) return;
@@ -143,7 +142,7 @@ public class ConnectionImpl {
 	void send(Object toSend) { // Fix: keep in a queue not to lose objects.
 		try {
 			produceSocket().writeObject(toSend);
-			_lastSentObjectTime = System.currentTimeMillis();
+			_lastActivityTime = System.currentTimeMillis();
 		} catch (IOException e) {
 			_socket = null;
 		} catch (InvalidConnectionAttempt e) {

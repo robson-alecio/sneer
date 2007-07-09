@@ -35,7 +35,6 @@ public class ContactCellRenderer extends DefaultListCellRenderer {
 		if (contact.state().currentValue().equals(Contact.CONFIRMED_STATE))
 			stateIcon = CONFIRMED_ICON;
 
-		System.out.println("Renderer: " + contact.isOnline().currentValue());
 		ImageIcon onlineIcon = contact.isOnline().currentValue()
 			? ONLINE_ICON
 			: OFFLINE_ICON;

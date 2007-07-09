@@ -44,7 +44,7 @@ public class ConnectionImpl {
 		Threads.startDaemon(new Runnable(){	@Override public void run() {
 			while (!_isClosed) {
 				if ((System.currentTimeMillis() - _lastActivityTime) > BARK_PERIOD_MILLIS)
-					bark();
+					send(BARK);
 				
 				if ((System.currentTimeMillis() - _lastActivityTime) > (BARK_PERIOD_MILLIS * 2))
 					setIsOnline(false);
@@ -55,11 +55,6 @@ public class ConnectionImpl {
 				Threads.sleepWithoutInterruptions(BARK_PERIOD_MILLIS);
 			}
 		} } );
-	}
-
-	private void bark() {
-		System.out.println("Enviando bark " + _socket);
-		send(BARK);
 	}
 
 	private ObjectSocket produceSocket() throws IOException, InvalidConnectionAttempt {
@@ -99,12 +94,12 @@ public class ConnectionImpl {
 			while (mySocket == _socket) {
 				try {
 					Object received = mySocket.readObject();
-					System.out.println("Received: " + received);
 					
 					_lastActivityTime = System.currentTimeMillis();
 					setIsOnline(true);
 					
 					if (BARK.equals(received)) continue;
+					System.out.println("Received: " + received);
 
 					ChannelPacket packet = (ChannelPacket)received;
 					packet._packet._contactId = _contact.id();
@@ -126,7 +121,6 @@ public class ConnectionImpl {
 	}
 
 	private void closeSocket() {
-		System.out.println("Fechando socket: " + _socket);
 		if (_socket == null) return;
 		try {
 			_socket.close();

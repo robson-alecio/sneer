@@ -103,7 +103,6 @@ public class ListSignalModel extends AbstractListModel {
 		return new Omnivore<T>() {
 			int _index = index;
 			public void consume(T ignored) {
-				System.out.println("element receiver notified");
 				fireContentsChanged(this, _index, _index);
 			}
 		};

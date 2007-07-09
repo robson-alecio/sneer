@@ -39,7 +39,7 @@ public class ConversationFrame extends JFrame {
 			String nick = _otherGuysNick.currentValue();
 			
 			if (message._text.equals(TYPING)) { //Refactor :)
-				_statusLabel.setText(nick + " is typing... :)");
+				_statusLabel.setText(" " + nick + " is typing... :)");
 				return;
 			}
 			_statusLabel.setText(" ");

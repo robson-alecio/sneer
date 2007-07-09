@@ -15,6 +15,7 @@ import prevayler.bubble.Bubble;
 import sneer.apps.conversations.ConversationsApp;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.impl.BusinessFactory;
+import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.impl.Communicator;
 import sneer.kernel.gui.Gui;
 import sneer.kernel.gui.contacts.ContactAction;
@@ -42,23 +43,25 @@ public class Sneer {
 	
 	private User _user = new JOptionPaneUser("Sneer");
 	private Communicator _communicator;
+	private BusinessSource _businessSource;
 
 	
 	private void tryToRun() throws Exception {
 		tryToRedirectLogToSneerLogFile();
 
 		Prevayler prevayler = prevaylerFor(new BusinessFactory().createBusinessSource());
-		BusinessSource persistentBusinessSource = Bubble.wrapStateMachine(prevayler);
+		_businessSource = Bubble.wrapStateMachine(prevayler);
 
-		_communicator = new Communicator(_user, new XStreamNetwork(new OldNetworkImpl()), persistentBusinessSource);
-		new Gui(_user, persistentBusinessSource, contactActions()); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
+		_communicator = new Communicator(_user, new XStreamNetwork(new OldNetworkImpl()), _businessSource);
+		new Gui(_user, _businessSource, contactActions()); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
 		
 		while (true) Threads.sleepWithoutInterruptions(5000);
 	}
 
 	private List<ContactAction> contactActions() {
 		List<ContactAction> result = new ArrayList<ContactAction>();
-		result.add(new ConversationsApp(_communicator.getChannel(ConversationsApp.class.getName())).contactAction());
+		Channel channel = _communicator.getChannel(ConversationsApp.class.getName());
+		result.add(new ConversationsApp(channel, _businessSource.output().contacts()).contactAction());
 		return result;
 	}
 

@@ -26,13 +26,12 @@ public class ConversationFrame extends JFrame {
 		
 		initComponents();
 		
-//		_otherGuysNick.addReceiver(new Omnivore<String>() { @Override public void consume(String nick) {
-//			setTitle(nick);
-//		}});
+		_otherGuysNick.addReceiver(new Omnivore<String>() { @Override public void consume(String nick) {
+			setTitle(nick);
+		}});
 		
 		messageInput.addReceiver(new Omnivore<Message>() { @Override public void consume(Message message) {
-//			appendToChatText(_otherGuysNick.currentValue(), message);
-			appendToChatText("nick", message);
+			appendToChatText(_otherGuysNick.currentValue(), message);
 		}});
 		
 		setVisible(true);
@@ -65,7 +64,7 @@ public class ConversationFrame extends JFrame {
 				
 				Threads.startDaemon(new Runnable() { @Override public void run() {
 					_messageOutput.consume(message);
-					appendToChatText("Me: ", message);
+					appendToChatText("Me", message);
 				}});
 			}
 		});

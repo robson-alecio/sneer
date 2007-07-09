@@ -1,6 +1,7 @@
 package sneer.apps.conversations;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import sneer.apps.conversations.gui.ConversationFrame;
@@ -13,15 +14,19 @@ import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
 import wheel.reactive.SourceImpl;
+import wheel.reactive.lists.ListSignal;
 
 public class ConversationsApp {
 
-	public ConversationsApp(Channel channel) {
+	public ConversationsApp(Channel channel, ListSignal<Contact> contacts) {
 		_channel = channel;
+		_contacts = contacts;
+		
 		_channel.input().addReceiver(messageReceiver());
 	}
 
 	private final Channel _channel;
+	private final ListSignal<Contact> _contacts;
 	private final Map<ContactId, ConversationFrame>_framesByContactId = new HashMap<ContactId, ConversationFrame>();
 	private final Map<ContactId, SourceImpl<Message>>_inputsByContactId = new HashMap<ContactId, SourceImpl<Message>>();
 
@@ -60,10 +65,16 @@ public class ConversationsApp {
 	private ConversationFrame produceFrameFor(ContactId contactId) {
 		ConversationFrame frame = _framesByContactId.get(contactId);
 		if (frame == null) {
-			frame = new ConversationFrame(null, inputFrom(contactId), outputTo(contactId));
+			frame = new ConversationFrame(findContact(contactId).nick(), inputFrom(contactId), outputTo(contactId));
 			_framesByContactId.put(contactId, frame);
 		}
 		return frame;
+	}
+
+	private Contact findContact(ContactId id) {
+		for (Contact candidate : _contacts)
+			if (candidate.id().equals(id)) return candidate;
+		return null;
 	}
 
 	private Signal<Message> inputFrom(ContactId contactId) {

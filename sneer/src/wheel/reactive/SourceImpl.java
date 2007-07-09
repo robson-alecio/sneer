@@ -38,6 +38,7 @@ public class SourceImpl<VO> implements Source<VO> {
 	
 	
 	public SourceImpl(VO initialValue) {
+		if (initialValue == null) return;
 		setter().consume(initialValue);
 	}
 

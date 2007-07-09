@@ -1,11 +1,9 @@
 package sneer.kernel.communication.impl;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.OnlineEvent;
-import wheel.io.Connection;
 import wheel.io.Log;
 import wheel.io.network.ObjectSocket;
 import wheel.io.network.OldNetwork;
@@ -15,7 +13,7 @@ import wheel.lang.Threads;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 
-public class ConnectionImpl implements Connection {
+public class ConnectionImpl {
 
 	private static final int BARK_PERIOD_MILLIS = 5000;
 	private static final String BARK = "Bark";
@@ -27,27 +25,21 @@ public class ConnectionImpl implements Connection {
 	private volatile ObjectSocket _socket;
 	private final Omnivore<OnlineEvent> _onlineSetter;
 	private final Consumer<OutgoingConnectionAttempt> _connectionValidator;
+	private final Omnivore<Object> _objectReceiver;
+
 	private volatile boolean _isClosed = false;
 	private volatile long _lastReceivedObjectTime;
 	private volatile long _lastSentObjectTime;
 
-	public ConnectionImpl(Contact contact, OldNetwork network, Omnivore<OnlineEvent> onlineSetter, Consumer<OutgoingConnectionAttempt> connectionValidator) { //Refactor: Use the same Omnivore<Connection> to do online notification instead of having separate onlineSetter.
+	public ConnectionImpl(Contact contact, OldNetwork network, Omnivore<OnlineEvent> onlineSetter, Consumer<OutgoingConnectionAttempt> connectionValidator, Omnivore<Object> objectReceiver) { //Refactor: move online notification to the objectReceiver instead of having separate onlineSetter.
 		_contact = contact;
 		_network = network;
 		_onlineSetter = onlineSetter;
 		_connectionValidator = connectionValidator;
+		_objectReceiver = objectReceiver;
 		
 		startIsOnlineWatchdog();
 	}
-
-	public Signal<Object> input() {
-		return null;
-	}
-
-	public Omnivore<Object> output() {
-		return null;
-	}
-
 
 	private void startIsOnlineWatchdog() {
 		Threads.startDaemon(new Runnable(){	@Override public void run() {
@@ -67,15 +59,8 @@ public class ConnectionImpl implements Connection {
 	}
 
 	private void bark() {
-		try {
-			System.out.println("Enviando bark " + _socket);
-			produceSocket().writeObject(BARK);
-			_lastSentObjectTime = System.currentTimeMillis(); //Fix: This is generic for any object sent not only bark.
-		} catch (IOException e) {
-			_socket = null;
-		} catch (InvalidConnectionAttempt e) {
-			_socket = null;
-		}
+		System.out.println("Enviando bark " + _socket);
+		send(BARK);
 	}
 
 	private ObjectSocket produceSocket() throws IOException, InvalidConnectionAttempt {
@@ -114,12 +99,15 @@ public class ConnectionImpl implements Connection {
 
 			while (mySocket == _socket) {
 				try {
-					Object readObject = mySocket.readObject();
-					System.out.println("Received: " + readObject);
+					Object received = mySocket.readObject();
+					System.out.println("Received: " + received);
 					
 					_lastReceivedObjectTime = System.currentTimeMillis();
 					setIsOnline(true);
+					
+					if (BARK.equals(received)) return;
 
+					_objectReceiver.consume(received);
 				} catch (IOException e) {
 					break;
 					// Implement This is the moment where a disconnection occurs. Inform the online watchdog to set the contact offline.
@@ -150,6 +138,17 @@ public class ConnectionImpl implements Connection {
 	private void setIsOnline(boolean isOnline) {
 		Boolean wasOnline = _contact.isOnline().currentValue();
 		if (wasOnline != isOnline) 	_onlineSetter.consume(new OnlineEvent(_contact.nick().currentValue(), isOnline));
+	}
+
+	void send(Object toSend) { // Fix: keep in a queue not to lose objects.
+		try {
+			produceSocket().writeObject(toSend);
+			_lastSentObjectTime = System.currentTimeMillis();
+		} catch (IOException e) {
+			_socket = null;
+		} catch (InvalidConnectionAttempt e) {
+			_socket = null;
+		}
 	}
 
 }

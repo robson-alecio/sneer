@@ -16,7 +16,6 @@ package sneer.kernel.communication.impl;
 
 
 import java.io.IOException;
-import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -24,19 +23,16 @@ import java.util.Random;
 import sneer.kernel.business.Business;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.contacts.Contact;
-import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.business.contacts.ContactInfo;
 import sneer.kernel.business.contacts.ContactPublicKeyInfo;
 import sneer.kernel.communication.Channel;
-import sneer.kernel.communication.impl.ChannelImpl.MuxProvider;
-import wheel.io.Connection;
+import sneer.kernel.communication.Packet;
 import wheel.io.network.ObjectSocket;
 import wheel.io.network.OldNetwork;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
-import wheel.lang.exceptions.FriendlyException;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 
@@ -50,7 +46,19 @@ public class Communicator {
 		prepareBusiness();
 		
 		new SocketAccepter(user, network, business.sneerPort(), mySocketServer());
-		_spider = new Spider(network, business.contacts(), businessSource.contactOnlineSetter(), outgoingConnectionValidator());
+		_spider = new Spider(network, business.contacts(), businessSource.contactOnlineSetter(), outgoingConnectionValidator(), myObjectReceiver());
+	}
+
+	private Omnivore<Object> myObjectReceiver() {
+		return new Omnivore<Object>() { public void consume(Object received) {
+			if (!(received instanceof ChannelPacket)) return;
+			receive((ChannelPacket)received);
+		}};
+	}
+
+	private void receive(ChannelPacket receivedPacket) {
+		ChannelImpl channel = _channelsById.get(receivedPacket._channelId);
+		channel.receive(receivedPacket._packet);
 	}
 
 	private Consumer<OutgoingConnectionAttempt> outgoingConnectionValidator() {
@@ -113,8 +121,7 @@ public class Communicator {
 	private final BusinessSource _businessSource;
 	private final User _user;
 	private Spider _spider;
-	private Map<String, Channel> _channelsById = new HashMap<String, Channel>();
-	private Map<ContactId, Mux> _muxesByContactId = new HashMap<ContactId, Mux>();
+	private Map<String, ChannelImpl> _channelsById = new HashMap<String, ChannelImpl>();
 
 	
 	private void prepareBusiness() {
@@ -127,29 +134,19 @@ public class Communicator {
 
 
 	public Channel getChannel(String channelId) {
-		Channel result = _channelsById.get(channelId);
+		ChannelImpl result = _channelsById.get(channelId);
 		if (result != null) return result;
 		
-		result = new ChannelImpl(channelId, myMuxProvider());
+		result = new ChannelImpl(outputFor(channelId));
 		_channelsById.put(channelId, result);
 		return result;
 	}
 
-	private MuxProvider myMuxProvider() {
-		return new MuxProvider() {
-			public Mux muxFor(ContactId contactId) {
-				Mux result = _muxesByContactId.get(contactId);
-				if (result != null) return result;
-				
-				result = new Mux(connectionFor(contactId));
-				_muxesByContactId.put(contactId, result);
-				return result;
-			}
-		};
-	}
-
-	private Connection connectionFor(ContactId contactId) {
-		return _spider.connectionFor(contactId);
+	private Omnivore<Packet> outputFor(final String channelId) {
+		return new Omnivore<Packet>() { public void consume(Packet packet) {
+			ConnectionImpl connection = _spider.connectionFor(packet._contactId);
+			connection.send(new ChannelPacket(channelId, packet));
+		}};
 	}
 
 	private void initPublicKey(BusinessSource businessSource) {

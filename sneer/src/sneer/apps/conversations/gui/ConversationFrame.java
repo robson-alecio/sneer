@@ -42,7 +42,7 @@ public class ConversationFrame extends JFrame {
 	private final JTextArea _chatText = createChatText();
 
 	private void appendToChatText(String sender, Message message) {
-		appendToChatText(sender + ": " + message);
+		appendToChatText(sender + ": " + message._text);
 	}
 	
 	private void initComponents() {

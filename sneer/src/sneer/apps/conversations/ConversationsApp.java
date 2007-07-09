@@ -43,20 +43,24 @@ public class ConversationsApp {
 
 	private Omnivore<Packet> messageReceiver() {
 		return new Omnivore<Packet>() { public void consume(Packet packet) {
+			openFrameFor(packet._contactId);
 			produceInputFor(packet._contactId).setter().consume((Message)packet._contents);
 		}};
 	}
 	
 	private void actUponContact(Contact contact) {
-		ConversationFrame frame = produceFrameFor(contact);
+		openFrameFor(contact.id());
+	}
+
+	private void openFrameFor(ContactId contactId) {
+		ConversationFrame frame = produceFrameFor(contactId);
 		frame.setVisible(true);
 	}
 
-	private ConversationFrame produceFrameFor(Contact contact) {
-		ContactId contactId = contact.id();
+	private ConversationFrame produceFrameFor(ContactId contactId) {
 		ConversationFrame frame = _framesByContactId.get(contactId);
 		if (frame == null) {
-			frame = new ConversationFrame(contact.nick(), inputFrom(contactId), outputTo(contactId));
+			frame = new ConversationFrame(null, inputFrom(contactId), outputTo(contactId));
 			_framesByContactId.put(contactId, frame);
 		}
 		return frame;

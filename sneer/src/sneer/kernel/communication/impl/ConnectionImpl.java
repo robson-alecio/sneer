@@ -106,7 +106,9 @@ public class ConnectionImpl {
 					
 					if (BARK.equals(received)) continue;
 
-					_objectReceiver.consume(received);
+					ChannelPacket packet = (ChannelPacket)received;
+					packet._packet._contactId = _contact.id();
+					_objectReceiver.consume(packet);
 				} catch (IOException e) {
 					break;
 					// Implement This is the moment where a disconnection occurs. Inform the online watchdog to set the contact offline.

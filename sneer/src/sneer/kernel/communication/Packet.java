@@ -9,7 +9,7 @@ public class Packet {
 		_contents = contents;
 	}
 	
-	public final ContactId _contactId;
+	public ContactId _contactId;
 	public final Object _contents;
 	
 }

@@ -9,31 +9,31 @@ msgstr ""
 
 #: sneer/kernel/gui/contacts/ContactsScreen.java/ContactsScreen.java:72
 msgid "Contacts"
-msgstr "Amigos"
+msgstr "Contatos"
 
 #: sneer/kernel/gui/Gui.java/Gui.java:71
 msgid " Change this only if you know what you are doing.\n Sneer TCP port to listen:"
-msgstr " Mude isto somente se soubre oquê está fazendo.\n Port TCP para escutar:"
+msgstr " Mude isto somente se souber o que está fazendo.\n Porta TCP para escutar:"
 
 #: sneer/kernel/gui/Gui.java/Gui.java:74
 msgid "Sneer Port Configuration"
-msgstr "Configuração do port do sneer"
+msgstr "Configuração da Porta do Sneer"
 
 #: sneer/kernel/gui/Gui.java/Gui.java:78
 msgid " What is your name?\n (You can change it any time you like)"
-msgstr " Qual o seu nome?\n (Você pode alterar o nome a qualquer hora)"
+msgstr " Qual o seu nome?\n (Você pode alterá-lo quando quiser)"
 
 #: sneer/kernel/gui/Gui.java/Gui.java:82
 msgid "Own Name"
-msgstr "Próprio nome"
+msgstr "Nome Próprio"
 
 #: sneer/kernel/gui/Gui.java/Gui.java:89
 msgid "Choose your Language"
-msgstr "Escolha sua Língua"
+msgstr "Escolha seu Idioma"
 
 #: sneer/kernel/gui/Gui.java/Gui.java:97
 msgid "Available Languages:"
-msgstr "Línguas disponiveis:"
+msgstr "Idiomas Disponiveis:"
 
 #: sneer/kernel/gui/Gui.java/Gui.java:118
 msgid "Exit"
@@ -41,11 +41,11 @@ msgstr "Sair"
 
 #: sneer/InstallationWizard.java/InstallationWizard.java:25
 msgid " Welcome to Sneer, the first sovereign computing peer.  :)\n\n This wizard will prepare Sneer to run for you."
-msgstr " Bemvindo ao Sneer, o primeiro peer de computação soberana.  :)\n\n Este aplicativo irá instalar o Sneer para você."
+msgstr " Bem-vindo ao Sneer, o primeiro peer de computação soberana.  :)\n\n Este aplicativo irá preparar o Sneer pra rodar pra você."
 
 #: sneer/InstallationWizard.java/InstallationWizard.java:30
 msgid " Sneer is free software.\n\n It is licensed under the terms of the General Public License version 2\n as published by the Free Software Foundation:\n http://www.gnu.org/copyleft/gpl.html\n\n Do you accept these terms?"
-msgstr " Sneer é software livre.\n\n Ele é licenciado sob os termos da General Public License versão 2\n como publicado pela Free Software Foundation:\n http://www.gnu.org/copyleft/gpl.html\n\n VocÊ aceita estes termos?"
+msgstr " O Sneer é software livre.\n\n Ele é licenciado nos termos da General Public License versão 2\n como publicado pela Free Software Foundation:\n http://www.gnu.org/copyleft/gpl.html\n\n Você aceita estes termos?"
 
 #: sneer/InstallationWizard.java/InstallationWizard.java:36
 msgid "I Accept >"
@@ -57,15 +57,15 @@ msgstr "Não"
 
 #: sneer/InstallationWizard.java/InstallationWizard.java:40
 msgid " Each user of this computer can have his own Sneer setup.\n\n To store your setup, the following folder will be created:\n %1$s"
-msgstr "Cada usuário deste computador pode ter sua própria configuração de Sneer.\n\n Para guardar a sua configuração, a seguinte pasta será criada:\n %1$s"
+msgstr " Cada usuário deste computador pode ter sua própria configuração de Sneer.\n\n Para guardar a sua configuração, a seguinte pasta será criada:\n %1$s"
 
 #: sneer/InstallationWizard.java/InstallationWizard.java:56
 msgid " Congratulations!\n\n You are no longer a slave. You have just\n claimed your own share of the internet."
-msgstr "Parabéns!\n\n Você não é mais um escravo. Você acaba de\n conquistar o seu espaço na internet."
+msgstr " Parabéns!\n\n Você não é mais um escravo. Você acaba de\n conquistar o seu espaço na internet."
 
 #: sneer/InstallationWizard.java/InstallationWizard.java:60
 msgid "Enjoy"
-msgstr "Aproveite!"
+msgstr "Aproveitar"
 
 msgid "Next >"
 msgstr "Próximo >"
@@ -74,25 +74,25 @@ msgid "Cancel"
 msgstr "Cancelar"
 
 msgid " This wizard will now exit with no changes to your system."
-msgstr " Este aplicativo será finalizado sem alterações no sistema."
+msgstr " Este aplicativo será finalizado sem alterações a seu sistema."
 
 msgid " This is an alpha-testing release for ADVANCED Java users.\n\n Please configure Sneer to run on your system startup and help keep the\n sovereign network up and alive, now in its early days:\n   Linux: Call \"java -jar Sneer.jar\" from a runlevel script.\n   Windows: Add a shortcut to Sneer.jar in \"Start > All Programs > Startup\"."
-msgstr " Este é um release alpha-testing para usuários java AVANÇADOS.\n\n Por favor configure o Sneer para rodar na inicialização do seu sistema e ajude a rede soberana a ficar online:\n    Linux: chame "java -jar Sneer.jar\" de um script runlevel.\n   Windows: Adficione um atalho para Sneer.jar em \"Iniciar > Programas > Startup\"."
+msgstr " Este é um release de alpha-teste para usuários Java AVANÇADOS.\n\n Por favor, configure o Sneer pra rodar na inicialização do seu sistema\n e ajude a rede soberana a ficar online:\n    Linux: chame "java -jar Sneer.jar\" de um runlevel script.\n    Windows: Adicione um atalho para Sneer.jar em \"Iniciar > Programas > Inicializar\"."
 
 msgid "Delete"
 msgstr "Remover"
 
 msgid "New contact's nickname"
-msgstr "Novo apelido para o contato"
+msgstr "Apelido do novo contato"
 
 msgid "Host Address for %1$s"
 msgstr "Endereço do host para %1$s"
 
 msgid "Port Number"
-msgstr "Número do Port"
+msgstr "Número da Porta"
 
 msgid "Sneer Port for %1$s"
-msgstr "Port Sneer para %1$s"
+msgstr "Porta Sneer para %1$s"
 
 msgid "Remote contact has same public key as another contact."
 msgstr "Contato remoto possui mesma chave pública que outro contato."

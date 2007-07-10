@@ -53,28 +53,7 @@ public class Gui {
 		_trayIcon.addAction(nameChangeAction());
 		_trayIcon.addAction(showContactsScreenAction());
 		_trayIcon.addAction(sneerPortChangeAction());
-		_trayIcon.addAction(new Action() { //Refactor: This action should be moved to a class and the trayicon refresh trigged by a callback  
-			public String caption() {
-				return translate("Language");
-			}
-
-			public void run() {
-
-				Object[] options = { "English", "Português" }; // Implement:detect available languages
-				try {
-					String choice = (String) _user.choose(translate("Available Languages:"),options);
-					if (choice.equals("Português")) {
-						Language.load("pt","BR");
-					} else {
-						Language.reset();
-					}
-					//Fix: trayicon refresh disabled
-					//bindActionsToTrayIcon(); 
-				} catch (CancelledByUser cbu) {
-
-				}
-			}
-		});
+		_trayIcon.addAction(languageChangeAction());
 		_trayIcon.addAction(exitAction());
 	}
 
@@ -101,6 +80,35 @@ public class Gui {
 				" (You can change it any time you like)");
 		
 		return new ValueChangePane(translate("Own Name"),prompt, _user, _businessSource.output().ownName(), _businessSource.ownNameSetter());
+	}
+	
+	private Action languageChangeAction() {
+		
+		return new Action() { //Refactor: This action should be moved to another class , like valuechangedpane
+			public String caption() {
+				return translate("Choose your Language");
+			}
+
+			public void run() {
+
+				Object[] options = { "English", "Português" }; // Implement:detect available languages
+				//Fix: Should disable current language button
+				try {
+					String choice = (String) _user.choose(translate("Available Languages:"),options);
+					if (_businessSource.output().language().currentValue().equals(choice)) return;
+					if (choice.equals("Português")) {
+						Language.load("pt_BR");
+						_businessSource.languageSetter().consume("pt_BR");
+					} else {
+						Language.reset();
+						_businessSource.languageSetter().consume("");
+					}
+
+				} catch (CancelledByUser cbu) {
+
+				}
+			}
+		};
 	}
 
 	private Action exitAction() {

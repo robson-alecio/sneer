@@ -35,6 +35,7 @@ import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
+import static wheel.i18n.Language.*;
 
 public class Communicator {
 
@@ -85,7 +86,7 @@ public class Communicator {
 			Contact existing = findContactGivenPublicKey(remotePK);
 			if (existing != null) {
 				handleDuplicatePK(nick, existing);
-				throw new IllegalParameter("Remote contact has same public key as another contact.");
+				throw new IllegalParameter(translate("Remote contact has same public key as another contact."));
 			}
 			
 			if (!contactsPK.isEmpty()) notifyUserOfPKMismatch(nick);
@@ -96,17 +97,17 @@ public class Communicator {
 	}
 
 	private void handleDuplicatePK(String nick, Contact existing) {
-		_user.acknowledgeNotification(nick + " has the same public key as " + existing.nick().currentValue() + ". You must delete one of them."); //Fix: Create an error state for the contact. 
+		_user.acknowledgeNotification(translate("%1$s has the same public key as %2$s. You must delete one of them.",nick,existing.nick().currentValue())); //Fix: update error state for the contact. 
 	}
 
 	private void notifyUserOfPKMismatch(String nick) {
 		 //Fix: Security implementation: Revert the status of the contact to "unconfirmed" or something of the sort, so that the user has to confirm the remote PK again.
-		String notification =
+		String notification = translate(
 			" SECURITY ALERT FOR CONTACT: " + nick + "\n\n" +
 			" Either this contact has changed its public key or\n" +
 			" someone else is trying to trick you and impersonate it.\n\n" +
 			" This contact's status will be changed to 'UNCONFIRMED',\n" +
-			" so that you can confirm its public key again.";
+			" so that you can confirm its public key again.");
 		_user.acknowledgeNotification(notification);
 	}
 
@@ -213,20 +214,21 @@ public class Communicator {
 
 
 	private Contact produceContactWithNewPublicKey(String name, String publicKey) throws CancelledByUser {
-		String prompt = " Someone claiming to be\n\n" + name + "\n\n is trying to connect to you. Do you want\n" +
-		" to accept the connection?";
+		String prompt = translate(
+				" Someone claiming to be\n\n%1$s\n\n is trying to connect to you. Do you want\n" +
+				" to accept the connection?",name);
 		if (!_user.confirm(prompt)) throw new CancelledByUser();
 
 		String nick;
 		Contact existing;
 		while (true) {
-			nick = _user.answer("Enter a nickname for your new contact:", name);
+			nick = _user.answer(translate("Enter a nickname for your new contact:"), name);
 			
 			existing = findContactGivenNick(nick);
 			if (existing == null) return createContact(publicKey, nick);
 			
 			if (existing.publicKey().currentValue().isEmpty()) break;
-			_user.acknowledgeNotification("There already is another contact with this nickname:\n\n" + nick, "Choose Another...");
+			_user.acknowledgeNotification(translate("There already is another contact with this nickname:\n\n%1$s",nick), translate("Choose Another..."));
 		}
 		
 		_businessSource.contactPublicKeyUpdater().consume(new ContactPublicKeyInfo(nick, publicKey)); //Refactor: Use contactId instead of nick;

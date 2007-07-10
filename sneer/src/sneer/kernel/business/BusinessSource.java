@@ -13,6 +13,7 @@ public interface BusinessSource {
 
 	Omnivore<String> ownNameSetter();
 	Omnivore<String> publicKeySetter();
+	Omnivore<String> languageSetter();
 	
 	Consumer<Integer> sneerPortSetter();
 	

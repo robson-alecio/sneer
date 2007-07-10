@@ -1,7 +1,8 @@
 package sneer.apps.conversations;
 
+import static wheel.i18n.Language.translate;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import sneer.apps.conversations.gui.ConversationFrame;
@@ -40,7 +41,7 @@ public class ConversationsApp {
 
 			@Override
 			public String caption() {
-				return "Start Conversation";
+				return translate("Start Conversation");
 			}
 			
 		};

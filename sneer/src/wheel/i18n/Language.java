@@ -3,7 +3,6 @@ package wheel.i18n;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -22,7 +21,6 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Locale;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
@@ -46,17 +44,26 @@ public class Language {
 	private static final Language instance = new Language();
 
 	public Hashtable<String, String> translationMap = new Hashtable<String, String>();
+	
+	private String _currentLanguage = "";
 
 	private Language() {
 			loadTranslationTemplate();
 	}
 
-	public static void load(String language, String country) {
+	public static void load(String language_country) {
+		if (language_country == null || language_country.isEmpty())
+			return;
 		try {
-			instance.loadTranslation(language,country);
+			instance.loadTranslation(language_country);
+			instance._currentLanguage = language_country;
 		} catch (Exception ioe) {
-			System.err.println("Could not find Translation file for " + language + "/" + country + " . Please generate it. Sneer still works normally without it.");
+			System.err.println("Could not find Translation file for " + language_country + " . Please generate it. Sneer still works normally without it.");
 		}
+	}
+	
+	public static String current(){
+		return instance._currentLanguage;
 	}
 
 	public static String translate(String key) { // important! change the MARK_START constant when the method is refatored.
@@ -72,6 +79,7 @@ public class Language {
 	
 	public static void reset(){
 		instance.loadTranslationTemplate();
+		instance._currentLanguage = "";
 	}
 
 	public void loadTranslationTemplate() {
@@ -91,13 +99,17 @@ public class Language {
 				String msgid = line.substring(MSGID.length(), line.length() - 1);
 				String nextLine = reader.readLine();
 				String msgstr = nextLine.substring(MSGSTR.length(), nextLine.length() - 1);
+				msgid = msgid.replaceAll("\\\\n", "\n"); //Fix: should check for other types of scape sequences
+				msgid = msgid.replaceAll("\\\\\\\"", "\\\"");
+				msgstr = msgstr.replaceAll("\\\\n", "\n");
+				msgstr = msgstr.replaceAll("\\\\\\\"", "\\\"");
 				translationMap.put(msgid, msgstr);
 			}
 		}
 	}
 
-	private void loadTranslation(String language, String country) throws IOException {
-		InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(TRANSLATION_FILENAME + "_" + language + "_" + country + ".po");
+	private void loadTranslation(String language_country) throws IOException {
+		InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(TRANSLATION_FILENAME + "_" + language_country + ".po");
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 		parseTranslation(reader);
 	}
@@ -132,7 +144,7 @@ public class Language {
 				createLanguageFile();
 			}
 		});
-		JButton button3 = new JButton(" Create Merged Language file (.po.merge)");
+		JButton button3 = new JButton(" Create Merged Language file (.po_merge)");
 		button3.setAlignmentX(Component.CENTER_ALIGNMENT);
 		button3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -156,13 +168,12 @@ public class Language {
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File dirFile = chooser.getSelectedFile();
-			String language = JOptionPane.showInputDialog("What language? (Example: pt )");
-			String country = JOptionPane.showInputDialog("What country? (Example: BR )");
+			String language_country = JOptionPane.showInputDialog("What language? (Examples: pt_BR, fr_FR )");
 			InputStream streamIn;
 			OutputStream streamOut;
 			try {
 				streamIn = new FileInputStream(dirFile.getAbsolutePath() + File.separator + TRANSLATION_FILENAME + ".pot");
-				streamOut = new FileOutputStream(dirFile.getAbsolutePath() + File.separator + TRANSLATION_FILENAME + "_" + language + "_" + country + ".po");
+				streamOut = new FileOutputStream(dirFile.getAbsolutePath() + File.separator + TRANSLATION_FILENAME + "_" + language_country + ".po");
 				BufferedReader reader = new BufferedReader(new InputStreamReader(streamIn));
 				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(streamOut));
 				String line = "";
@@ -261,14 +272,21 @@ public class Language {
 						if (source.substring(pointer).startsWith(MARK_END) && (!insideBlockString))
 							break;
 						char currentChar = source.charAt(pointer);
-						if (currentChar == '\"')
-							insideBlockString = !insideBlockString;
-						else if (insideBlockString)
+						if (currentChar == '\\'){
+							if ((pointer+1)<source.length()){
+								pointer++;
+								char specialChar = source.charAt(pointer);
+								extracted.append(currentChar);
+								extracted.append(specialChar);
+							}
+						}else if (currentChar == '\"'){
+							insideBlockString = !insideBlockString;	
+						}else if (insideBlockString)
 							extracted.append(currentChar);
 						pointer++;
 					}
 					String name = file.getPath().substring(rootDir.getAbsolutePath().length() + 1) + File.separator + file.getName();
-					ExtractedString extractedString = new ExtractedString(name, countLineBreaks(source,offset), extracted.toString()); //Implement: low priority. fill line number. 
+					ExtractedString extractedString = new ExtractedString(name, countLineBreaks(source,offset), extracted.toString()); 
 					extractedList.add(extractedString);
 				}
 				offset = source.indexOf(MARK_START, pointer);
@@ -343,13 +361,12 @@ public class Language {
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File dirFile = chooser.getSelectedFile();
-			String language = JOptionPane.showInputDialog("What language? (Example: pt )");
-			String country = JOptionPane.showInputDialog("What country? (Example: BR )");
+			String language_country = JOptionPane.showInputDialog("What language? (Examples: pt_BR, fr_FR )");
 
 			try {
 				InputStream templateStreamIn = new FileInputStream(dirFile.getAbsolutePath() + File.separator + TRANSLATION_FILENAME + ".pot");
-				InputStream languageStreamIn = new FileInputStream(dirFile.getAbsolutePath() + File.separator + TRANSLATION_FILENAME + "_" + language + "_" + country + ".po");
-				OutputStream streamOut = new FileOutputStream(dirFile.getAbsolutePath() + File.separator + TRANSLATION_FILENAME + "_" + language + "_" + country + ".po.merge");
+				InputStream languageStreamIn = new FileInputStream(dirFile.getAbsolutePath() + File.separator + TRANSLATION_FILENAME + "_" + language_country + ".po");
+				OutputStream streamOut = new FileOutputStream(dirFile.getAbsolutePath() + File.separator + TRANSLATION_FILENAME + "_" + language_country + ".po_merge");
 
 				List<String> msgids = new ArrayList<String>();
 				List<String> lines = new ArrayList<String>();

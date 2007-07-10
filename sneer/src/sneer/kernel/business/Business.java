@@ -8,6 +8,7 @@ public interface Business {
 
 	Signal<String> ownName();
 	Signal<String> publicKey();
+	Signal<String> language();
 	
 	Signal<Integer> sneerPort();
 

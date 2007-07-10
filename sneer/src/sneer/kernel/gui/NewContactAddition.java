@@ -1,6 +1,7 @@
 package sneer.kernel.gui;
 
 import java.util.Date;
+import static wheel.i18n.Language.*;
 
 import org.prevayler.Transaction;
 
@@ -21,8 +22,8 @@ public class NewContactAddition {
 
 	public NewContactAddition(User user, Consumer<ContactInfo> contactAdder) throws CancelledByUser {
 		while (true) {
-			String nick = user.answer("New contact's nickname");
-			String host = user.answer("Host Address for " + nick, nick + ".dyndns.org");
+			String nick = user.answer(translate("New contact's nickname"));
+			String host = user.answer(translate("Host Address for %1$s",nick), nick + ".dyndns.org");
 
 			int port = port(user, nick);
 			
@@ -38,7 +39,7 @@ public class NewContactAddition {
 	private int port(User user, String nick) throws CancelledByUser {
 
 		PortNumberSource result = new PortNumberSource(0);
-		new ValueChangePane("Port Number", "Sneer Port for "+nick, user, result.output(), new IntegerParser(result.setter())).tryToRun();
+		new ValueChangePane(translate("Port Number"), translate("Sneer Port for %1$s",nick), user, result.output(), new IntegerParser(result.setter())).tryToRun();
 		return result.output().currentValue();
 	}
 

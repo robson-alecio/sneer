@@ -3,6 +3,7 @@ package sneer.kernel.gui.contacts;
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.ContactId;
 import wheel.lang.Omnivore;
+import static wheel.i18n.Language.*;
 
 public class ContactRemovalAction implements ContactAction {
 
@@ -17,7 +18,7 @@ public class ContactRemovalAction implements ContactAction {
 	}
 
 	public String caption() {
-		return "Delete";
+		return translate("Delete");
 	}
 
 }

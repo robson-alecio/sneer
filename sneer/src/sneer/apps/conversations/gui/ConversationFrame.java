@@ -1,5 +1,7 @@
 package sneer.apps.conversations.gui;
 
+import static wheel.i18n.Language.translate;
+
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,7 +41,7 @@ public class ConversationFrame extends JFrame {
 			String nick = _otherGuysNick.currentValue();
 			
 			if (message._text.equals(TYPING)) { //Refactor :)
-				_statusLabel.setText(" " + nick + " is typing... :)");
+				_statusLabel.setText(translate(" %1$s is typing... :)",nick));
 				return;
 			}
 			_statusLabel.setText(" ");
@@ -99,7 +101,7 @@ public class ConversationFrame extends JFrame {
 				
 			Threads.startDaemon(new Runnable() { @Override public void run() {
 				_messageOutput.consume(message);
-				appendToChatText("Me", message);
+				appendToChatText(translate("Me"), message);
 				_isTyping = false;
 			}});
 		}};

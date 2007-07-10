@@ -1,41 +1,161 @@
-#: sneer\kernel\gui\contacts\ContactsScreen.java\ContactsScreen.java:0
-msgid "Contacts"
-msgstr ""
-
-#: sneer\kernel\gui\Gui.java\Gui.java:0
-msgid "Language"
-msgstr ""
-
-#: sneer\kernel\gui\Gui.java\Gui.java:0
-msgid "Available Languages:"
-msgstr ""
-
-#: sneer\kernel\gui\Gui.java\Gui.java:0
-msgid " Change this only if you know what you are doing.\n Sneer TCP port to listen:"
-msgstr ""
-
-#: sneer\kernel\gui\Gui.java\Gui.java:0
-msgid "Sneer Port Configuration"
-msgstr ""
-
-#: sneer\kernel\gui\Gui.java\Gui.java:0
-msgid " What is your name?\n (You can change it any time you like)"
-msgstr ""
-
-#: sneer\kernel\gui\Gui.java\Gui.java:0
-msgid "Own Name"
-msgstr ""
-
-#: sneer\kernel\gui\Gui.java\Gui.java:0
-msgid "Exit"
-msgstr ""
-
-#: wheel\io\ui\impl\TrayIconImpl.java\TrayIconImpl.java:0
+#: wheel/io/ui/impl/TrayIconImpl.java/TrayIconImpl.java:29
 msgid "Icon cannot be null"
 msgstr ""
 
-#: wheel\io\ui\impl\TrayIconImpl.java\TrayIconImpl.java:0
-#: wheel\io\ui\impl\TrayIconImpl.java\TrayIconImpl.java:0
+#: wheel/io/ui/impl/TrayIconImpl.java/TrayIconImpl.java:49
+#: wheel/io/ui/impl/TrayIconImpl.java/TrayIconImpl.java:90
 msgid "Sneer"
+msgstr ""
+
+#: sneer/kernel/gui/contacts/ContactsScreen.java/ContactsScreen.java:72
+msgid "Contacts"
+msgstr ""
+
+#: sneer/kernel/gui/contacts/ContactRemovalAction.java/ContactRemovalAction.java:21
+msgid "Delete"
+msgstr ""
+
+#: sneer/kernel/gui/NewContactAddition.java/NewContactAddition.java:25
+msgid "New contact's nickname"
+msgstr ""
+
+#: sneer/kernel/gui/NewContactAddition.java/NewContactAddition.java:26
+msgid "Host Address for %1$s"
+msgstr ""
+
+#: sneer/kernel/gui/NewContactAddition.java/NewContactAddition.java:42
+msgid "Port Number"
+msgstr ""
+
+#: sneer/kernel/gui/NewContactAddition.java/NewContactAddition.java:42
+msgid "Sneer Port for %1$s"
+msgstr ""
+
+#: sneer/kernel/gui/Gui.java/Gui.java:71
+msgid " Change this only if you know what you are doing.\n Sneer TCP port to listen:"
+msgstr ""
+
+#: sneer/kernel/gui/Gui.java/Gui.java:74
+msgid "Sneer Port Configuration"
+msgstr ""
+
+#: sneer/kernel/gui/Gui.java/Gui.java:78
+msgid " What is your name?\n (You can change it any time you like)"
+msgstr ""
+
+#: sneer/kernel/gui/Gui.java/Gui.java:82
+msgid "Own Name"
+msgstr ""
+
+#: sneer/kernel/gui/Gui.java/Gui.java:89
+msgid "Choose your Language"
+msgstr ""
+
+#: sneer/kernel/gui/Gui.java/Gui.java:97
+msgid "Available Languages:"
+msgstr ""
+
+#: sneer/kernel/gui/Gui.java/Gui.java:118
+msgid "Exit"
+msgstr ""
+
+#: sneer/kernel/communication/impl/Communicator.java/Communicator.java:89
+msgid "Remote contact has same public key as another contact."
+msgstr ""
+
+#: sneer/kernel/communication/impl/Communicator.java/Communicator.java:100
+msgid "%1$s has the same public key as %2$s. You must delete one of them."
+msgstr ""
+
+#: sneer/kernel/communication/impl/Communicator.java/Communicator.java:105
+msgid " SECURITY ALERT FOR CONTACT: \n\n Either this contact has changed its public key or\n someone else is trying to trick you and impersonate it.\n\n This contact's status will be changed to 'UNCONFIRMED',\n so that you can confirm its public key again."
+msgstr ""
+
+#: sneer/kernel/communication/impl/Communicator.java/Communicator.java:217
+msgid " Someone claiming to be\n\n%1$s\n\n is trying to connect to you. Do you want\n to accept the connection?"
+msgstr ""
+
+#: sneer/kernel/communication/impl/Communicator.java/Communicator.java:225
+msgid "Enter a nickname for your new contact:"
+msgstr ""
+
+#: sneer/kernel/communication/impl/Communicator.java/Communicator.java:231
+msgid "There already is another contact with this nickname:\n\n%1$s"
+msgstr ""
+
+#: sneer/kernel/communication/impl/Communicator.java/Communicator.java:231
+msgid "Choose Another..."
+msgstr ""
+
+#: sneer/kernel/communication/impl/SocketAccepter.java/SocketAccepter.java:49
+msgid " The port you chose (%1$s) might be blocked or in use by\n another application, including another Sneer instance.\n\n You can have two instances of Sneer running if you like,\n for two people, for example, but each one has to use a\n different port. If there is another application using\n that same port, you either have to close it, configure\n it to use a different port, or configure Sneer to use a\n different port."
+msgstr ""
+
+#: sneer/kernel/communication/impl/SocketAccepter.java/SocketAccepter.java:68
+msgid "Unable to listen on port %1$s."
+msgstr ""
+
+#: sneer/kernel/business/contacts/impl/ContactAdder.java/ContactAdder.java:46
+msgid "There already is a contact with this nickname: %1$s"
+msgstr ""
+
+#: sneer/kernel/business/contacts/impl/ContactPublicKeyUpdater.java/ContactPublicKeyUpdater.java:24
+msgid "Some contact already had that public key."
+msgstr ""
+
+#: sneer/apps/conversations/gui/ConversationFrame.java/ConversationFrame.java:44
+msgid " %1$s is typing... :)"
+msgstr ""
+
+#: sneer/apps/conversations/gui/ConversationFrame.java/ConversationFrame.java:104
+msgid "Me"
+msgstr ""
+
+#: sneer/apps/conversations/ConversationsApp.java/ConversationsApp.java:44
+msgid "Start Conversation"
+msgstr ""
+
+#: sneer/InstallationWizard.java/InstallationWizard.java:25
+msgid " Welcome to Sneer, the first sovereign computing peer.  :)\n\n This wizard will prepare Sneer to run for you."
+msgstr ""
+
+#: sneer/InstallationWizard.java/InstallationWizard.java:30
+msgid " Sneer is free software.\n\n It is licensed under the terms of the General Public License version 2\n as published by the Free Software Foundation:\n http://www.gnu.org/copyleft/gpl.html\n\n Do you accept these terms?"
+msgstr ""
+
+#: sneer/InstallationWizard.java/InstallationWizard.java:36
+msgid "I Accept >"
+msgstr ""
+
+#: sneer/InstallationWizard.java/InstallationWizard.java:37
+msgid "No"
+msgstr ""
+
+#: sneer/InstallationWizard.java/InstallationWizard.java:40
+msgid " Each user of this computer can have his own Sneer setup.\n\n To store your setup, the following folder will be created:\n %1$s"
+msgstr ""
+
+#: sneer/InstallationWizard.java/InstallationWizard.java:48
+msgid " This is an alpha-testing release for ADVANCED Java users.\n\n Please configure Sneer to run on your system startup and help keep the\n sovereign network up and alive, now in its early days:\n   Linux: Call \"java -jar Sneer.jar\" from a runlevel script.\n   Windows: Add a shortcut to Sneer.jar in \"Start > All Programs > Startup\"."
+msgstr ""
+
+#: sneer/InstallationWizard.java/InstallationWizard.java:56
+msgid " Congratulations!\n\n You are no longer a slave. You have just\n claimed your own share of the internet."
+msgstr ""
+
+#: sneer/InstallationWizard.java/InstallationWizard.java:60
+msgid "Enjoy"
+msgstr ""
+
+#: sneer/InstallationWizard.java/InstallationWizard.java:83
+msgid "Next >"
+msgstr ""
+
+#: sneer/InstallationWizard.java/InstallationWizard.java:83
+msgid "Cancel"
+msgstr ""
+
+#: sneer/InstallationWizard.java/InstallationWizard.java:97
+msgid " This wizard will now exit with no changes to your system."
 msgstr ""
 

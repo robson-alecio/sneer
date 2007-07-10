@@ -37,6 +37,11 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 		public Signal<String> ownName() {
 			return _ownName.output();
 		}
+		
+		@Override
+		public Signal<String> language() {
+			return _language.output();
+		}
 
 		@Override
 		public Signal<Integer> sneerPort() {
@@ -51,6 +56,7 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 	}
 
 	private Source<String> _ownName = new SourceImpl<String>("");
+	private Source<String> _language = new SourceImpl<String>("");
 	private final Source<String> _publicKey = new SourceImpl<String>("");
 
 	private final PortNumberSource _sneerPortNumber = new PortNumberSource(0);
@@ -66,6 +72,11 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 	@Override
 	public Omnivore<String> ownNameSetter() {
 		return  _ownName.setter();
+	}
+	
+	@Override
+	public Omnivore<String> languageSetter() {
+		return  _language.setter();
 	}
 	
 	@Override

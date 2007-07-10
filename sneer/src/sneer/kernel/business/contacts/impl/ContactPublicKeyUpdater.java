@@ -5,6 +5,7 @@ import sneer.kernel.business.contacts.ContactSource;
 import wheel.lang.Omnivore;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.lists.ListSource;
+import static wheel.i18n.Language.*;
 
 public class ContactPublicKeyUpdater implements Omnivore<ContactPublicKeyInfo> {
 
@@ -20,8 +21,7 @@ public class ContactPublicKeyUpdater implements Omnivore<ContactPublicKeyInfo> {
 		if (contact == null) throw new IllegalStateException();
 		
 		if (findContactByPublicKey(info._publicKey) != null)
-			throw new IllegalArgumentException("Some contact already had that public key.");
-		
+			throw new IllegalArgumentException(translate("Some contact already had that public key."));		
 		contact.publicKeySetter().consume(info._publicKey);
 	}
 

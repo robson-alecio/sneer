@@ -1,7 +1,7 @@
 package sneer;
 
 import static sneer.SneerDirectories.logDirectory;
-
+import static wheel.i18n.Language.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
-import org.prevayler.foundation.serialization.XStreamSerializer;
 
 import prevayler.bubble.Bubble;
 import sneer.apps.conversations.ConversationsApp;
@@ -19,6 +18,7 @@ import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.impl.Communicator;
 import sneer.kernel.gui.Gui;
 import sneer.kernel.gui.contacts.ContactAction;
+import wheel.i18n.Language;
 import wheel.io.Log;
 import wheel.io.network.OldNetworkImpl;
 import wheel.io.network.impl.XStreamNetwork;
@@ -52,10 +52,22 @@ public class Sneer {
 		Prevayler prevayler = prevaylerFor(new BusinessFactory().createBusinessSource());
 		_businessSource = Bubble.wrapStateMachine(prevayler);
 
+		initLanguage();
+		
 		_communicator = new Communicator(_user, new XStreamNetwork(new OldNetworkImpl()), _businessSource);
 		new Gui(_user, _businessSource, contactActions()); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
 		
 		while (true) Threads.sleepWithoutInterruptions(5000);
+	}
+
+	private void initLanguage() {
+		String language = _businessSource.output().language().currentValue();
+		if (language == null || language.isEmpty()){
+			_businessSource.languageSetter().consume(Language.current());
+		}else{
+			Language.load(language);
+		}
+		
 	}
 
 	private List<ContactAction> contactActions() {

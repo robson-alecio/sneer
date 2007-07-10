@@ -12,6 +12,7 @@ import wheel.lang.Counter;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListSource;
+import static wheel.i18n.Language.*;
 
 public class ContactAdder implements Consumer<ContactInfo> {
 
@@ -42,7 +43,7 @@ public class ContactAdder implements Consumer<ContactInfo> {
 		for (ContactSource contactSource : _contactSources.output()) { // Optimize
 			String existingNick = contactSource.output().nick().currentValue();
 			if (nick.equals(existingNick))
-				throw new IllegalParameter(String.format("There already is a contact with this nickname: %1$s", nick));
+				throw new IllegalParameter(translate("There already is a contact with this nickname: %1$s", nick));
 		}
 	}
 

@@ -33,7 +33,7 @@ import javax.swing.JOptionPane;
 //Refactor: Break this into several classes.
 public class Language {
 	
-	private static final String TRANSLATION_DIRECTORY = "/wheel/i18n/";
+	private static final String TRANSLATION_DIRECTORY = "translations";
 	
 	private static final String MSGSTR = "msgstr \"";
 
@@ -88,7 +88,7 @@ public class Language {
 
 	public void loadTranslationTemplate() {
 		try {
-			InputStream stream = this.getClass().getResourceAsStream(TRANSLATION_DIRECTORY + TRANSLATION_FILENAME + ".pot");
+			InputStream stream = this.getClass().getResourceAsStream("/" + TRANSLATION_DIRECTORY + "/" + TRANSLATION_FILENAME + ".pot");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 			parseTranslation(reader);
 		} catch (Exception anything) {
@@ -113,8 +113,7 @@ public class Language {
 	}
 
 	private void loadTranslation() throws IOException {
-		System.out.println(TRANSLATION_DIRECTORY + TRANSLATION_FILENAME + "_" + _currentLanguage + ".po");
-		InputStream stream = getClass().getClassLoader().getResourceAsStream( "wheel/i18n/" + TRANSLATION_FILENAME + "_" + _currentLanguage + ".po");
+		InputStream stream = getClass().getClassLoader().getResourceAsStream( TRANSLATION_DIRECTORY + "/" + TRANSLATION_FILENAME + "_" + _currentLanguage + ".po");
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stream,Charset.forName("UTF-8")));
 		parseTranslation(reader);
 	}
@@ -177,8 +176,8 @@ public class Language {
 			InputStream streamIn;
 			OutputStream streamOut;
 			try {
-				streamIn = new FileInputStream(dirFile.getAbsolutePath() + TRANSLATION_DIRECTORY + TRANSLATION_FILENAME + ".pot");
-				streamOut = new FileOutputStream(dirFile.getAbsolutePath() + TRANSLATION_DIRECTORY + TRANSLATION_FILENAME + "_" + language_country + ".po");
+				streamIn = new FileInputStream(dirFile.getAbsolutePath() + File.separator + TRANSLATION_DIRECTORY + File.separator + TRANSLATION_FILENAME + ".pot");
+				streamOut = new FileOutputStream(dirFile.getAbsolutePath() + File.separator + TRANSLATION_DIRECTORY + File.separator + TRANSLATION_FILENAME + "_" + language_country + ".po");
 				BufferedReader reader = new BufferedReader(new InputStreamReader(streamIn,Charset.forName("UTF-8")));
 				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(streamOut,"UTF-8"));
 				String line = "";
@@ -209,7 +208,7 @@ public class Language {
 	}
 
 	private static void extractFromDirectory(File dirFile) {
-		File targetFile = new File(dirFile.getPath() + TRANSLATION_DIRECTORY + "Translation.pot");
+		File targetFile = new File(dirFile.getPath() + File.separator + TRANSLATION_DIRECTORY + File.separator + "Translation.pot");
 		generateTranslation(dirFile, targetFile);
 	}
 
@@ -369,8 +368,8 @@ public class Language {
 			String language_country = JOptionPane.showInputDialog("What language? (Examples: pt_BR, fr_FR )");
 
 			try {
-				InputStream templateStreamIn = new FileInputStream(dirFile.getAbsolutePath() + TRANSLATION_DIRECTORY + TRANSLATION_FILENAME + ".pot");
-				InputStream languageStreamIn = new FileInputStream(dirFile.getAbsolutePath() + TRANSLATION_DIRECTORY + TRANSLATION_FILENAME + "_" + language_country + ".po");
+				InputStream templateStreamIn = new FileInputStream(dirFile.getAbsolutePath() + File.separator + TRANSLATION_DIRECTORY + File.separator + TRANSLATION_FILENAME + ".pot");
+				InputStream languageStreamIn = new FileInputStream(dirFile.getAbsolutePath() + File.separator + TRANSLATION_DIRECTORY + File.separator + TRANSLATION_FILENAME + "_" + language_country + ".po");
 				OutputStream streamOut = new FileOutputStream(dirFile.getAbsolutePath() + TRANSLATION_DIRECTORY + TRANSLATION_FILENAME + "_" + language_country + ".po_merge");
 
 				List<String> msgids = new ArrayList<String>();

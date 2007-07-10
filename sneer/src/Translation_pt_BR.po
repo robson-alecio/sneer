@@ -100,8 +100,8 @@ msgstr "Contato remoto possui mesma chave pública que outro contato."
 msgid "%1$s has the same public key as %2$s. You must delete one of them."
 msgstr "%1$s possui a mesma chave pública que %2$s. Você deve apagar um deles."
 
-msgid " SECURITY ALERT FOR CONTACT: \n\n Either this contact has changed its public key or\n someone else is trying to trick you and impersonate it.\n\n This contact's status will be changed to 'UNCONFIRMED',\n so that you can confirm its public key again."
-msgstr " ALERTA DE SEGURANÇA: \n\n Este contato mudou sua chave pública ou\n alguém está tentando enganar você e se passar por ele.\n\n Este contato será mudado para 'Não confirmado', para que você possa confirmar a chave pública novamente. "
+msgid " SECURITY ALERT FOR CONTACT: %1$s\n\n Either this contact has changed its public key or\n someone else is trying to trick you and impersonate it.\n\n This contact's status will be changed to 'UNCONFIRMED',\n so that you can confirm its public key again."
+msgstr " ALERTA DE SEGURANÇA: %1$s\n\n Este contato mudou sua chave pública ou\n alguém está tentando enganar você e passar-se por ele.\n\n O status deste contato será mudado para 'não confirmado',\n para que você possa confirmar a chave pública dele novamente. "
 
 msgid " Someone claiming to be\n\n%1$s\n\n is trying to connect to you. Do you want\n to accept the connection?"
 msgstr " Alguem dizendo ser \n\n%1$s\n\n está tentando se conectar com você. VocÊ deseja aceitar a conexão?"
@@ -134,5 +134,4 @@ msgid "Me"
 msgstr "Eu"
 
 msgid "Start Conversation"
-msgstr "Iniciar Conversação"
-
+msgstr "Iniciar Conversa"

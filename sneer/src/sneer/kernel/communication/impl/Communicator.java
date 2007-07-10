@@ -103,11 +103,11 @@ public class Communicator {
 	private void notifyUserOfPKMismatch(String nick) {
 		 //Fix: Security implementation: Revert the status of the contact to "unconfirmed" or something of the sort, so that the user has to confirm the remote PK again.
 		String notification = translate(
-			" SECURITY ALERT FOR CONTACT: " + nick + "\n\n" +
+			" SECURITY ALERT FOR CONTACT: %1$s\n\n" +
 			" Either this contact has changed its public key or\n" +
 			" someone else is trying to trick you and impersonate it.\n\n" +
 			" This contact's status will be changed to 'UNCONFIRMED',\n" +
-			" so that you can confirm its public key again.");
+			" so that you can confirm its public key again.", nick);
 		_user.acknowledgeNotification(notification);
 	}
 

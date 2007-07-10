@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,6 +18,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -176,7 +176,7 @@ public class Language {
 				streamIn = new FileInputStream(dirFile.getAbsolutePath() + File.separator + TRANSLATION_FILENAME + ".pot");
 				streamOut = new FileOutputStream(dirFile.getAbsolutePath() + File.separator + TRANSLATION_FILENAME + "_" + language_country + ".po");
 				BufferedReader reader = new BufferedReader(new InputStreamReader(streamIn,Charset.forName("UTF-8")));
-				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(streamOut,Charset.forName("UTF-8")));
+				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(streamOut,"UTF-8"));
 				String line = "";
 				while ((line = reader.readLine()) != null) {
 					writer.write(line + "\r\n");
@@ -380,8 +380,8 @@ public class Language {
 				}
 				languageReader.close();
 
-				BufferedReader templateReader = new BufferedReader(new InputStreamReader(templateStreamIn,Charset.forName("UTF-8")));
-				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(streamOut));
+				BufferedReader templateReader = new BufferedReader(new InputStreamReader(templateStreamIn, Charset.forName("UTF-8")));
+				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(streamOut, "UTF-8"));
 				for (String l : lines)
 					writer.write(l + "\r\n");
 				line = "";

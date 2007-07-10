@@ -13,13 +13,14 @@ import static wheel.lang.Casts.uncheckedGenericCast;
 
 public class Bubble implements InvocationHandler {
 
+	@SuppressWarnings("unchecked")
 	public static <STATE_MACHINE> STATE_MACHINE wrapStateMachine(Prevayler prevayler) {
 		Object stateMachine = prevayler.prevalentSystem();
 		Bubble handler = new Bubble(stateMachine, prevayler);
 		Object proxy = Proxy.newProxyInstance(stateMachine.getClass().getClassLoader(), stateMachine.getClass().getInterfaces(), handler);
-		return uncheckedGenericCast(proxy);
+		return (STATE_MACHINE)proxy;  //Refactor Remove this cast and use Casts.uncheckedCast() instead, when the Sun compiler can handle it (bug fixed in JDK7). Remove the @SuppressWarnings for this method.
 	}
-	
+
 	
 	private Bubble(Object stateMachine, Prevayler prevayler) {
 		_stateMachine = stateMachine;

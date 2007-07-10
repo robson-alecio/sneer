@@ -44,7 +44,7 @@ public class JOptionPaneUser implements User {
 	
 	@Override
 	public String answer(String prompt, String defaultAnswer) throws CancelledByUser {
-		String answer = showInputDialog(prompt, defaultAnswer);
+		String answer = showInputDialog(null, prompt, defaultAnswer);
 		if (answer == null) throw new CancelledByUser();
 		return answer;
 	}
@@ -112,28 +112,34 @@ public class JOptionPaneUser implements User {
 		
 	}
 	
-	private int showOptionDialog(Component parentComponent, Object message, String title, int optionType, int messageType, Icon icon, Object[] options, Object initialValue){
-		String proposition = correctSwingNewlineSpaceProblem((String)message);
+	private int showOptionDialog(Component parentComponent, String message, String title, int optionType, int messageType, Icon icon, Object[] options, Object initialValue){
+		String proposition = adaptPrompt(message);
 		return JOptionPane.showOptionDialog(parentComponent, proposition, title, optionType, messageType, icon, options, initialValue);
 	}
 	
-	private void showMessageDialog(Component parentComponent, Object message, String title, int messageType){
-		String proposition = correctSwingNewlineSpaceProblem((String)message);
+	private void showMessageDialog(Component parentComponent, String message, String title, int messageType){
+		String proposition = adaptPrompt(message);
 		JOptionPane.showMessageDialog(parentComponent, proposition, title, messageType);
 	}
 
-	private String showInputDialog(Object message, Object initialValue){
-		String proposition = correctSwingNewlineSpaceProblem((String)message);
-		return JOptionPane.showInputDialog(proposition, initialValue);
+	private String showInputDialog(Component parentComponent, String message, Object initialValue){
+		String proposition = adaptPrompt(message);
+		return JOptionPane.showInputDialog(parentComponent, proposition, initialValue);
 	}
 	
-	private int showConfirmDialog(Component parentComponent, Object message){
-		String proposition = correctSwingNewlineSpaceProblem((String)message);
+	private int showConfirmDialog(Component parentComponent, String message){
+		String proposition = adaptPrompt(message);
 		return JOptionPane.showConfirmDialog(parentComponent, proposition);
 	}
 
+	private String adaptPrompt(String proposition) {
+		String string = correctSwingNewlineSpaceProblem(proposition);
+		return string + "\n\n";
+	}
+
+
 	private String correctSwingNewlineSpaceProblem(String proposition) {
-		return " "+proposition.replaceAll("\\n", "\n ") + "\n\n";
+		return " " + proposition.replaceAll("\\n", "\n ");
 	}
 	
 

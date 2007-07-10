@@ -1,13 +1,13 @@
 //Implement Tests:
-//Entrando - PK Novo - Rejeitado (HD)
-//Entrando - PK Novo - Aceito - Nick Novo (HD)
-//Entrando - PK Novo - Aceito - Nick Existente - Sem PK (HD)
+//Entrando - PK Novo - Rejeitado
+//Entrando - PK Novo - Aceito - Nick Novo
+//Entrando - PK Novo - Aceito - Nick Existente - Sem PK
 //Entrando - PK Novo - Aceito - Nick Existente - Com PK: Repete ateh escolher nick novo ou nick sem PK.
-//Entrando - PK Existente (HD)
+//Entrando - PK Existente
 //Entrando - PK Igual a minha propria (localhost) - Rejeita conexao
-//Saindo - Sem PK - Veio Novo (HD)
-//Saindo - Sem PK - Veio De Outro Contato (HD): Deleta o contato que originou (está sem pk mesmo)
-//Saindo - Com PK - Bateu (HD)
+//Saindo - Sem PK - Veio Novo
+//Saindo - Sem PK - Veio De Outro Contato: Mensagem de erro p apagar um deles
+//Saindo - Com PK - Bateu
 //Saindo - Com PK - Nao Bateu - Veio Novo
 //Saindo - Com PK - Nao Bateu - Veio De Outro Contato
 

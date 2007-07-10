@@ -56,8 +56,6 @@ public class Language {
 	}
 
 	public static void load(String language_country) {
-		if (language_country == null || language_country.isEmpty())
-			return;
 		try {
 			instance._currentLanguage = language_country;
 			instance.loadTranslation();

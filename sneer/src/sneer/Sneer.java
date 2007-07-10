@@ -60,7 +60,7 @@ public class Sneer {
 		while (true) Threads.sleepWithoutInterruptions(5000);
 	}
 
-	private void initLanguage() {
+	private void initLanguage() { //Refactor This is confusing.
 		String language = _businessSource.output().language().currentValue();
 		if (language == null || language.isEmpty()){
 			if (!language.equals(Language.current()))

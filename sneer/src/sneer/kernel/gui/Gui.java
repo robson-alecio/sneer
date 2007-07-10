@@ -94,23 +94,17 @@ public class Gui {
 				Object[] options = { "English", "Português" }; // Implement:detect available languages
 				//Fix: Should disable current language button
 				try {
-					String choice = (String) _user.choose(translate("Available Languages:"),options);
+					String button = (String) _user.choose(translate("Available Languages:"),options);
 					
-					if (choice.equals("Português")) {
-						Language.load("pt_BR");
-						if (_businessSource.output().language().currentValue().equals("pt_BR"))
-							return;
-						_businessSource.languageSetter().consume("pt_BR");
-					} else {
-						Language.reset();
-						if (_businessSource.output().language().currentValue().equals(""))
-							return;
-						_businessSource.languageSetter().consume("");
-					}
+					String language = button.equals("Português")
+						? "pt_BR"
+						: "";
+					
+					String current = _businessSource.output().language().currentValue();
+					if (language.equals(current)) return;
+					_businessSource.languageSetter().consume(language);
 
-				} catch (CancelledByUser cbu) {
-
-				}
+				} catch (CancelledByUser cbu) { }
 			}
 		};
 	}

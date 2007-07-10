@@ -4,6 +4,8 @@ import static sneer.SneerDirectories.latestInstalledSneerJar;
 import static sneer.SneerDirectories.sneerDirectory;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import wheel.jars.Jars;
 
@@ -18,19 +20,23 @@ public class SneerJockey {
 	}
 
 	
-	private void play(File SneerJar) throws Exception {
+	private void play(URL SneerJar) throws Exception {
 		System.out.println(SneerJar);
 		Jars.runAllowingForClassGC(SneerJar, "sneer.Sneer");
 	}
 
-	private File latestSneerJar() {
+	private URL latestSneerJar() {
 		File installedJar = latestInstalledSneerJar();
-		if (installedJar != null) return installedJar;
-		
-		return currentJar();
+		if (installedJar == null) return currentJar();
+
+		try {
+			return new URL(installedJar.getPath());
+		} catch (MalformedURLException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
-	private File currentJar() {
+	private URL currentJar() {
 		return Jars.jarGiven(SneerJockey.class);
 	}
 

@@ -1,5 +1,8 @@
 package wheel.io.ui.impl;
 
+import java.awt.Component;
+
+import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -21,7 +24,7 @@ public class JOptionPaneUser implements User {
 	
 	@Override
 	public Object choose(String proposition, Object... options) throws CancelledByUser {
-		int chosen = JOptionPane.showOptionDialog(null, proposition + "\n\n", _title, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+		int chosen = showOptionDialog(null, proposition, _title, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 		if (chosen == -1) throw new CancelledByUser();
 		return options[chosen];
 	}
@@ -41,7 +44,7 @@ public class JOptionPaneUser implements User {
 	
 	@Override
 	public String answer(String prompt, String defaultAnswer) throws CancelledByUser {
-		String answer = JOptionPane.showInputDialog(prompt + "\n\n", defaultAnswer);
+		String answer = showInputDialog(prompt, defaultAnswer);
 		if (answer == null) throw new CancelledByUser();
 		return answer;
 	}
@@ -82,7 +85,7 @@ public class JOptionPaneUser implements User {
 
 	@Override
 	public boolean confirmOrCancel(String proposition) throws CancelledByUser {
-		int option = JOptionPane.showConfirmDialog(null, proposition);
+		int option = showConfirmDialog(null, proposition);
 		if (option == JOptionPane.CANCEL_OPTION) throw new CancelledByUser();
 		return option == JOptionPane.YES_OPTION;
 	}
@@ -90,7 +93,7 @@ public class JOptionPaneUser implements User {
 
 	@Override
 	public void acknowledgeUnexpectedProblem(String description, String help) {
-		JOptionPane.showMessageDialog(null, description + "\n\n", _title + " - Unexpected Problem", JOptionPane.ERROR_MESSAGE);
+		showMessageDialog(null, description, _title + " - Unexpected Problem", JOptionPane.ERROR_MESSAGE);
 		if (help == null) return;
 		acknowledgeNotification(help);
 		//Fix: Add a "Help" button to the dialog to show the help message.
@@ -108,6 +111,30 @@ public class JOptionPaneUser implements User {
 		acknowledgeUnexpectedProblem(e.getMessage(), e.getHelp());
 		
 	}
+	
+	private int showOptionDialog(Component parentComponent, Object message, String title, int optionType, int messageType, Icon icon, Object[] options, Object initialValue){
+		String proposition = correctSwingNewlineSpaceProblem((String)message);
+		return JOptionPane.showOptionDialog(parentComponent, proposition, title, optionType, messageType, icon, options, initialValue);
+	}
+	
+	private void showMessageDialog(Component parentComponent, Object message, String title, int messageType){
+		String proposition = correctSwingNewlineSpaceProblem((String)message);
+		JOptionPane.showMessageDialog(parentComponent, proposition, title, messageType);
+	}
 
+	private String showInputDialog(Object message, Object initialValue){
+		String proposition = correctSwingNewlineSpaceProblem((String)message);
+		return JOptionPane.showInputDialog(proposition, initialValue);
+	}
+	
+	private int showConfirmDialog(Component parentComponent, Object message){
+		String proposition = correctSwingNewlineSpaceProblem((String)message);
+		return JOptionPane.showConfirmDialog(parentComponent, proposition);
+	}
+
+	private String correctSwingNewlineSpaceProblem(String proposition) {
+		return " "+proposition.replaceAll("\\n", "\n ") + "\n\n";
+	}
+	
 
 }

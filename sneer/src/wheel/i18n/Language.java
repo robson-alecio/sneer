@@ -32,6 +32,9 @@ import javax.swing.JOptionPane;
 
 //Refactor: Break this into several classes.
 public class Language {
+	
+	private static final String TRANSLATION_DIRECTORY = "/wheel/i18n/";
+	
 	private static final String MSGSTR = "msgstr \"";
 
 	private static final String MSGID = "msgid \"";
@@ -56,8 +59,8 @@ public class Language {
 		if (language_country == null || language_country.isEmpty())
 			return;
 		try {
-			instance.loadTranslation(language_country);
 			instance._currentLanguage = language_country;
+			instance.loadTranslation();
 		} catch (Exception ioe) {
 			System.err.println("Could not find Translation file for " + language_country + " . Please generate it. Sneer still works normally without it.");
 		}
@@ -85,7 +88,7 @@ public class Language {
 
 	public void loadTranslationTemplate() {
 		try {
-			InputStream stream = this.getClass().getResourceAsStream("/" + TRANSLATION_FILENAME + ".pot");
+			InputStream stream = this.getClass().getResourceAsStream(TRANSLATION_DIRECTORY + TRANSLATION_FILENAME + ".pot");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 			parseTranslation(reader);
 		} catch (Exception anything) {
@@ -109,8 +112,9 @@ public class Language {
 		}
 	}
 
-	private void loadTranslation(String language_country) throws IOException {
-		InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(TRANSLATION_FILENAME + "_" + language_country + ".po");
+	private void loadTranslation() throws IOException {
+		System.out.println(TRANSLATION_DIRECTORY + TRANSLATION_FILENAME + "_" + _currentLanguage + ".po");
+		InputStream stream = getClass().getClassLoader().getResourceAsStream( "wheel/i18n/" + TRANSLATION_FILENAME + "_" + _currentLanguage + ".po");
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stream,Charset.forName("UTF-8")));
 		parseTranslation(reader);
 	}
@@ -173,8 +177,8 @@ public class Language {
 			InputStream streamIn;
 			OutputStream streamOut;
 			try {
-				streamIn = new FileInputStream(dirFile.getAbsolutePath() + File.separator + TRANSLATION_FILENAME + ".pot");
-				streamOut = new FileOutputStream(dirFile.getAbsolutePath() + File.separator + TRANSLATION_FILENAME + "_" + language_country + ".po");
+				streamIn = new FileInputStream(dirFile.getAbsolutePath() + TRANSLATION_DIRECTORY + TRANSLATION_FILENAME + ".pot");
+				streamOut = new FileOutputStream(dirFile.getAbsolutePath() + TRANSLATION_DIRECTORY + TRANSLATION_FILENAME + "_" + language_country + ".po");
 				BufferedReader reader = new BufferedReader(new InputStreamReader(streamIn,Charset.forName("UTF-8")));
 				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(streamOut,"UTF-8"));
 				String line = "";
@@ -205,7 +209,7 @@ public class Language {
 	}
 
 	private static void extractFromDirectory(File dirFile) {
-		File targetFile = new File(dirFile.getPath() + File.separator + "Translation.pot");
+		File targetFile = new File(dirFile.getPath() + TRANSLATION_DIRECTORY + "Translation.pot");
 		generateTranslation(dirFile, targetFile);
 	}
 
@@ -365,9 +369,9 @@ public class Language {
 			String language_country = JOptionPane.showInputDialog("What language? (Examples: pt_BR, fr_FR )");
 
 			try {
-				InputStream templateStreamIn = new FileInputStream(dirFile.getAbsolutePath() + File.separator + TRANSLATION_FILENAME + ".pot");
-				InputStream languageStreamIn = new FileInputStream(dirFile.getAbsolutePath() + File.separator + TRANSLATION_FILENAME + "_" + language_country + ".po");
-				OutputStream streamOut = new FileOutputStream(dirFile.getAbsolutePath() + File.separator + TRANSLATION_FILENAME + "_" + language_country + ".po_merge");
+				InputStream templateStreamIn = new FileInputStream(dirFile.getAbsolutePath() + TRANSLATION_DIRECTORY + TRANSLATION_FILENAME + ".pot");
+				InputStream languageStreamIn = new FileInputStream(dirFile.getAbsolutePath() + TRANSLATION_DIRECTORY + TRANSLATION_FILENAME + "_" + language_country + ".po");
+				OutputStream streamOut = new FileOutputStream(dirFile.getAbsolutePath() + TRANSLATION_DIRECTORY + TRANSLATION_FILENAME + "_" + language_country + ".po_merge");
 
 				List<String> msgids = new ArrayList<String>();
 				List<String> lines = new ArrayList<String>();

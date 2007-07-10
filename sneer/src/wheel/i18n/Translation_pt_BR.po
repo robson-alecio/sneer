@@ -1,0 +1,137 @@
+#: wheel/io/ui/impl/TrayIconImpl.java/TrayIconImpl.java:29
+msgid "Icon cannot be null"
+msgstr ""
+
+#: wheel/io/ui/impl/TrayIconImpl.java/TrayIconImpl.java:49
+#: wheel/io/ui/impl/TrayIconImpl.java/TrayIconImpl.java:90
+msgid "Sneer"
+msgstr ""
+
+#: sneer/kernel/gui/contacts/ContactsScreen.java/ContactsScreen.java:72
+msgid "Contacts"
+msgstr "Contatos"
+
+#: sneer/kernel/gui/Gui.java/Gui.java:71
+msgid "Change this only if you know what you are doing.\nSneer TCP port to listen:"
+msgstr "Mude isto somente se souber o que está fazendo.\nPorta TCP para escutar:"
+
+#: sneer/kernel/gui/Gui.java/Gui.java:74
+msgid "Sneer Port Configuration"
+msgstr "Configuração da Porta do Sneer"
+
+#: sneer/kernel/gui/Gui.java/Gui.java:78
+msgid "What is your name?\n(You can change it any time you like)"
+msgstr "Qual o seu nome?\n(Você pode alterá-lo quando quiser)"
+
+#: sneer/kernel/gui/Gui.java/Gui.java:82
+msgid "Own Name"
+msgstr "Nome Próprio"
+
+#: sneer/kernel/gui/Gui.java/Gui.java:89
+msgid "Choose your Language"
+msgstr "Escolha seu Idioma"
+
+#: sneer/kernel/gui/Gui.java/Gui.java:97
+msgid "Available Languages:"
+msgstr "Idiomas Disponiveis:"
+
+#: sneer/kernel/gui/Gui.java/Gui.java:118
+msgid "Exit"
+msgstr "Sair"
+
+#: sneer/InstallationWizard.java/InstallationWizard.java:25
+msgid "Welcome to Sneer, the first sovereign computing peer.  :)\n\nThis wizard will prepare Sneer to run for you."
+msgstr "Bem-vindo ao Sneer, o primeiro peer de computação soberana.  :)\n\nEste aplicativo irá preparar o Sneer pra rodar pra você."
+
+#: sneer/InstallationWizard.java/InstallationWizard.java:30
+msgid "Sneer is free software.\n\nIt is licensed under the terms of the General Public License version 2\nas published by the Free Software Foundation:\nhttp://www.gnu.org/copyleft/gpl.html\n\nDo you accept these terms?"
+msgstr "O Sneer é software livre.\n\nEle é licenciado nos termos da General Public License versão 2\ncomo publicado pela Free Software Foundation:\n http://www.gnu.org/copyleft/gpl.html\n\nVocê aceita estes termos?"
+
+#: sneer/InstallationWizard.java/InstallationWizard.java:36
+msgid "I Accept >"
+msgstr "Eu Aceito >"
+
+#: sneer/InstallationWizard.java/InstallationWizard.java:37
+msgid "No"
+msgstr "Não"
+
+#: sneer/InstallationWizard.java/InstallationWizard.java:40
+msgid "Each user of this computer can have his own Sneer setup.\n\nTo store your setup, the following folder will be created:\n%1$s"
+msgstr "Cada usuário deste computador pode ter sua própria configuração de Sneer.\n\nPara guardar a sua configuração, a seguinte pasta será criada:\n%1$s"
+
+#: sneer/InstallationWizard.java/InstallationWizard.java:56
+msgid "Congratulations!\n\nYou are no longer a slave. You have just\nclaimed your own share of the internet."
+msgstr "Parabéns!\n\n Você não é mais um escravo. Você acaba de\nconquistar o seu espaço na internet."
+
+#: sneer/InstallationWizard.java/InstallationWizard.java:60
+msgid "Enjoy"
+msgstr "Aproveitar"
+
+msgid "Next >"
+msgstr "Próximo >"
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgid "This wizard will now exit with no changes to your system."
+msgstr "Este aplicativo será finalizado sem alterações a seu sistema."
+
+msgid "This is an alpha-testing release for ADVANCED Java users.\n\nPlease configure Sneer to run on your system startup and help keep the\nsovereign network up and alive, now in its early days:\n   Linux: Call \"java -jar Sneer.jar\" from a runlevel script.\n   Windows: Add a shortcut to Sneer.jar in \"Start > All Programs > Startup\"."
+msgstr "Este é um release de alpha-teste para usuários Java AVANÇADOS.\n\nPor favor, configure o Sneer pra rodar na inicialização do seu sistema\ne ajude a rede soberana a ficar online:\n    Linux: chame "java -jar Sneer.jar\" de um runlevel script.\n    Windows: Adicione um atalho para Sneer.jar em \"Iniciar > Programas > Inicializar\"."
+
+msgid "Delete"
+msgstr "Remover"
+
+msgid "New contact's nickname"
+msgstr "Apelido do novo contato"
+
+msgid "Host Address for %1$s"
+msgstr "Endereço do host para %1$s"
+
+msgid "Port Number"
+msgstr "Número da Porta"
+
+msgid "Sneer Port for %1$s"
+msgstr "Porta Sneer para %1$s"
+
+msgid "Remote contact has same public key as another contact."
+msgstr "Contato remoto possui mesma chave pública que outro contato."
+
+msgid "%1$s has the same public key as %2$s. You must delete one of them."
+msgstr "%1$s possui a mesma chave pública que %2$s. Você deve apagar um deles."
+
+msgid "SECURITY ALERT FOR CONTACT: %1$s\n\nEither this contact has changed its public key or\nsomeone else is trying to trick you and impersonate it.\n\nThis contact's status will be changed to 'UNCONFIRMED',\nso that you can confirm its public key again."
+msgstr "ALERTA DE SEGURANÇA: %1$s\n\nEste contato mudou sua chave pública ou\nalguém está tentando enganar você e passar-se por ele.\n\nO status deste contato será mudado para 'não confirmado',\npara que você possa confirmar a chave pública dele novamente. "
+
+msgid "Someone claiming to be\n\n%1$s\n\n is trying to connect to you. Do you want\nto accept the connection?"
+msgstr "Alguem dizendo ser \n\n%1$s\n\nestá tentando se conectar com você.\nVocê deseja aceitar a conexão?"
+
+msgid "Enter a nickname for your new contact:"
+msgstr "Entre um apelido para o novo contato:"
+
+msgid "There already is another contact with this nickname:\n\n%1$s"
+msgstr "Já existe outro contato com esse nome:\n\n%1$s"
+
+msgid "Choose Another..."
+msgstr "Escolher outro..."
+
+msgid "The port you chose (%1$s) might be blocked or in use by\nanother application, including another Sneer instance.\n\nYou can have two instances of Sneer running if you like,\nfor two people, for example, but each one has to use a\ndifferent port. If there is another application using\nthat same port, you either have to close it, configure\nit to use a different port, or configure Sneer to use a\ndifferent port."
+msgstr "O port escolhido (%1$s) está bloqueado ou em uso por outro aplicativo, incluindo outra instância do sneer."
+
+msgid "Unable to listen on port %1$s."
+msgstr "Não é possivel escutar no port %1$s."
+
+msgid "There already is a contact with this nickname: %1$s"
+msgstr "Já existe um contato com este nome: %1$s"
+
+msgid "Some contact already had that public key."
+msgstr "Algum contato já possui esta chave pública."
+
+msgid " %1$s is typing... :)"
+msgstr " %1$s está teclando... :)"
+
+msgid "Me"
+msgstr "Eu"
+
+msgid "Start Conversation"
+msgstr "Iniciar Conversa"

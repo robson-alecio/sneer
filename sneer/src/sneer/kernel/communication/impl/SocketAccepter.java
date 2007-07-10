@@ -47,15 +47,15 @@ class SocketAccepter implements Omnivore<Integer> {
 	
 	private String help(int port) {
 		return translate(
-		" The port you chose (%1$s) might be blocked or in use by\n" +
-		" another application, including another Sneer instance.\n" +
+		"The port you chose (%1$s) might be blocked or in use by\n" +
+		"another application, including another Sneer instance.\n" +
 		"\n" +
-		" You can have two instances of Sneer running if you like,\n" +
-		" for two people, for example, but each one has to use a\n" +
-		" different port. If there is another application using\n" +
-		" that same port, you either have to close it, configure\n" +
-		" it to use a different port, or configure Sneer to use a\n" +
-		" different port.",port);
+		"You can have two instances of Sneer running if you like,\n" +
+		"for two people, for example, but each one has to use a\n" +
+		"different port. If there is another application using\n" +
+		"that same port, you either have to close it, configure\n" +
+		"it to use a different port, or configure Sneer to use a\n" +
+		"different port.",port);
 	}
 	
 	

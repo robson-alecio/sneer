@@ -23,40 +23,40 @@ public class InstallationWizard {
 		defineLanguage();
 		
 		approveConditionOtherwiseExit(translate(
-				" Welcome to Sneer, the first sovereign computing peer.  :)\n\n" +
-				" This wizard will prepare Sneer to run for you."
+				"Welcome to Sneer, the first sovereign computing peer.  :)\n\n" +
+				"This wizard will prepare Sneer to run for you."
 		));
 
 		approveConditionOtherwiseExit(translate(
-				" Sneer is free software.\n\n" +
-				" It is licensed under the terms of the General Public License version 2\n" +
-				" as published by the Free Software Foundation:\n" +
-				" http://www.gnu.org/copyleft/gpl.html\n\n" +
-				" Do you accept these terms?"),
+				"Sneer is free software.\n\n" +
+				"It is licensed under the terms of the General Public License version 2\n" +
+				"as published by the Free Software Foundation:\n" +
+				"http://www.gnu.org/copyleft/gpl.html\n\n" +
+				"Do you accept these terms?"),
 				translate("I Accept >"),
 				translate("No")
 		);
 
 		approveConditionOtherwiseExit(translate(
-				" Each user of this computer can have his own Sneer setup.\n\n" +
-				" To store your setup, the following folder will be created:\n" +
-				" %1$s",sneerDirectory)
+				"Each user of this computer can have his own Sneer setup.\n\n" +
+				"To store your setup, the following folder will be created:\n" +
+				"%1$s",sneerDirectory)
 		);
 
 		if (!sneerDirectory.mkdir()) throw new IOException("Unable to create folder " + sneerDirectory);
 		
 		_user.acknowledgeNotification(translate(
-				" This is an alpha-testing release for ADVANCED Java users.\n\n" +
-				" Please configure Sneer to run on your system startup and help keep the\n" +
-				" sovereign network up and alive, now in its early days:\n" +
+				"This is an alpha-testing release for ADVANCED Java users.\n\n" +
+				"Please configure Sneer to run on your system startup and help keep the\n" +
+				"sovereign network up and alive, now in its early days:\n" +
 				"   Linux: Call \"java -jar Sneer.jar\" from a runlevel script.\n" +
 				"   Windows: Add a shortcut to Sneer.jar in \"Start > All Programs > Startup\"."
 		));
 
 		_user.acknowledgeNotification(translate(
-				" Congratulations!\n\n" +
-				" You are no longer a slave. You have just\n" +
-				" claimed your own share of the internet."),
+				"Congratulations!\n\n" +
+				"You are no longer a slave. You have just\n" +
+				"claimed your own share of the internet."),
 				translate("Enjoy")
 		);
 	}
@@ -94,7 +94,7 @@ public class InstallationWizard {
 	}
 
 	private void exit() {
-		String message = translate(" This wizard will now exit with no changes to your system.");
+		String message = translate("This wizard will now exit with no changes to your system.");
 		try {
 			_user.choose(message, translate("Exit"));
 		} catch (CancelledByUser e) {}

@@ -69,17 +69,17 @@ public class Gui {
 
 	private ValueChangePane sneerPortChangeAction() {
 		String prompt=translate(
-				" Change this only if you know what you are doing.\n" +
-				" Sneer TCP port to listen:");
-		return new ValueChangePane(translate("Sneer Port Configuration"), prompt, _user, _businessSource.output().sneerPort(), new IntegerParser(_businessSource.sneerPortSetter()));
+				"Change this only if you know what you are doing.\n" +
+				"Sneer TCP port to listen:");
+		return new ValueChangePane(translate("Sneer Port Configuration"), correctSwingNewlineSpaceProblem(prompt), _user, _businessSource.output().sneerPort(), new IntegerParser(_businessSource.sneerPortSetter()));
 	}
 
 	private Action nameChangeAction() {
 		String prompt = translate(
-				" What is your name?\n" + 
-				" (You can change it any time you like)");
+				"What is your name?\n" + 
+				"(You can change it any time you like)");
 		
-		return new ValueChangePane(translate("Own Name"),prompt, _user, _businessSource.output().ownName(), _businessSource.ownNameSetter());
+		return new ValueChangePane(translate("Own Name"),correctSwingNewlineSpaceProblem(prompt), _user, _businessSource.output().ownName(), _businessSource.ownNameSetter());
 	}
 	
 	private Action languageChangeAction() {
@@ -95,12 +95,16 @@ public class Gui {
 				//Fix: Should disable current language button
 				try {
 					String choice = (String) _user.choose(translate("Available Languages:"),options);
-					if (_businessSource.output().language().currentValue().equals(choice)) return;
+					
 					if (choice.equals("Português")) {
 						Language.load("pt_BR");
+						if (_businessSource.output().language().currentValue().equals("pt_BR"))
+							return;
 						_businessSource.languageSetter().consume("pt_BR");
 					} else {
 						Language.reset();
+						if (_businessSource.output().language().currentValue().equals(""))
+							return;
 						_businessSource.languageSetter().consume("");
 					}
 
@@ -122,6 +126,10 @@ public class Gui {
 				System.exit(0);
 			}
 		};
+	}
+	
+	private String correctSwingNewlineSpaceProblem(String proposition) {
+		return " "+proposition.replaceAll("\\n", "\n ") ;
 	}
 
 }

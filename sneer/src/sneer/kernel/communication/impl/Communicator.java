@@ -1,15 +1,14 @@
 //Implement Tests:
 //Entrando - PK Novo - Rejeitado
-//Entrando - PK Novo - Aceito - Nick Novo
-//Entrando - PK Novo - Aceito - Nick Existente - Sem PK
+//Entrando - PK Novo - Aceito - Nick Novo (Happy Day)
+//Entrando - PK Novo - Aceito - Nick Existente - Sem PK (Happy Day)
 //Entrando - PK Novo - Aceito - Nick Existente - Com PK: Repete ateh escolher nick novo ou nick sem PK.
-//Entrando - PK Existente
+//Entrando - PK Existente (Happy Day)
 //Entrando - PK Igual a minha propria (localhost) - Rejeita conexao
-//Saindo - Sem PK - Veio Novo
-//Saindo - Sem PK - Veio De Outro Contato: Mensagem de erro p apagar um deles
-//Saindo - Com PK - Bateu
-//Saindo - Com PK - Nao Bateu - Veio Novo
-//Saindo - Com PK - Nao Bateu - Veio De Outro Contato
+//Saindo - Veio PK Igual de Outro Contato: Sinalizar com um status de erro no contato.
+//Saindo - Veio PK do Proprio Contato (Happy Day)
+//Saindo - Veio PK Nova - Contato N tinha PK: persiste PK (Happy Day)
+//Saindo - Veio PK Nova - Contato Já Tinha PK Diferente (Contato pode ter reinstalado o Sneer, por exemplo): Mostra warning e seta status do contato p unconfirmed.
 
 
 package sneer.kernel.communication.impl;
@@ -83,9 +82,9 @@ public class Communicator {
 
 			String nick = attempt._contact.nick().currentValue();
 			
-			Contact existing = findContactGivenPublicKey(remotePK);
-			if (existing != null) {
-				handleDuplicatePK(nick, existing);
+			Contact thirdParty = findContactGivenPublicKey(remotePK);
+			if (thirdParty != null) {
+				handleDuplicatePK(nick, thirdParty);
 				throw new IllegalParameter(translate("Remote contact has same public key as another contact."));
 			}
 			
@@ -96,8 +95,8 @@ public class Communicator {
 
 	}
 
-	private void handleDuplicatePK(String nick, Contact existing) {
-		_user.acknowledgeNotification(translate("%1$s has the same public key as %2$s. You must delete one of them.",nick,existing.nick().currentValue())); //Fix: update error state for the contact. 
+	private void handleDuplicatePK(String nick, Contact thirdParty) {
+		_user.acknowledgeNotification(translate("%1$s has the same public key as %2$s. You must delete one of them.",nick,thirdParty.nick().currentValue())); //Fix: update error state for the contact. 
 	}
 
 	private void notifyUserOfPKMismatch(String nick) {

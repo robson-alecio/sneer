@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -110,7 +111,7 @@ public class Language {
 
 	private void loadTranslation(String language_country) throws IOException {
 		InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(TRANSLATION_FILENAME + "_" + language_country + ".po");
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		BufferedReader reader = new BufferedReader(new InputStreamReader(stream,Charset.forName("UTF-8")));
 		parseTranslation(reader);
 	}
 
@@ -174,8 +175,8 @@ public class Language {
 			try {
 				streamIn = new FileInputStream(dirFile.getAbsolutePath() + File.separator + TRANSLATION_FILENAME + ".pot");
 				streamOut = new FileOutputStream(dirFile.getAbsolutePath() + File.separator + TRANSLATION_FILENAME + "_" + language_country + ".po");
-				BufferedReader reader = new BufferedReader(new InputStreamReader(streamIn));
-				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(streamOut));
+				BufferedReader reader = new BufferedReader(new InputStreamReader(streamIn,Charset.forName("UTF-8")));
+				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(streamOut,Charset.forName("UTF-8")));
 				String line = "";
 				while ((line = reader.readLine()) != null) {
 					writer.write(line + "\r\n");
@@ -259,7 +260,7 @@ public class Language {
 
 	private static void extractStringsFromFile(File rootDir, List<ExtractedString> extractedList, File file) {
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(file));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file),Charset.forName("UTF-8")));
 			String source = asString(reader);
 			int offset = source.indexOf(MARK_START);
 			while (offset > -1) {
@@ -370,7 +371,7 @@ public class Language {
 
 				List<String> msgids = new ArrayList<String>();
 				List<String> lines = new ArrayList<String>();
-				BufferedReader languageReader = new BufferedReader(new InputStreamReader(languageStreamIn));
+				BufferedReader languageReader = new BufferedReader(new InputStreamReader(languageStreamIn,Charset.forName("UTF-8")));
 				String line = "";
 				while ((line = languageReader.readLine()) != null) {
 					lines.add(line);
@@ -379,7 +380,7 @@ public class Language {
 				}
 				languageReader.close();
 
-				BufferedReader templateReader = new BufferedReader(new InputStreamReader(templateStreamIn));
+				BufferedReader templateReader = new BufferedReader(new InputStreamReader(templateStreamIn,Charset.forName("UTF-8")));
 				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(streamOut));
 				for (String l : lines)
 					writer.write(l + "\r\n");

@@ -63,7 +63,8 @@ public class Sneer {
 	private void initLanguage() {
 		String language = _businessSource.output().language().currentValue();
 		if (language == null || language.isEmpty()){
-			_businessSource.languageSetter().consume(Language.current());
+			if (!language.equals(Language.current()))
+				_businessSource.languageSetter().consume(Language.current());
 		}else{
 			Language.load(language);
 		}

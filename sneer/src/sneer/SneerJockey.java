@@ -21,7 +21,6 @@ public class SneerJockey {
 
 	
 	private void play(URL SneerJar) throws Exception {
-		System.out.println(SneerJar);
 		Jars.runAllowingForClassGC(SneerJar, "sneer.Sneer");
 	}
 

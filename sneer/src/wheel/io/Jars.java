@@ -22,7 +22,7 @@ public class Jars {
 	
 	
 	private static URLClassLoader createGarbageCollectableClassLoader(URL jar) throws Exception {
-		return new URLClassLoader(getClasspathWithLibs(jar), bootstrapClassLoader());
+		return new URLClassLoader(new URL[]{jar}, bootstrapClassLoader());
 	}
 	
 	
@@ -36,8 +36,6 @@ public class Jars {
 	public static URL jarGiven(Class<?> clazz) {
 		URL url = clazz.getResource(clazz.getSimpleName() + ".class");
 		String fullPath = url.getPath();
-		
-		System.out.println(fullPath);
 		String path = fullPath.substring(0, fullPath.indexOf("!"));
 		try {
 			return new URL(path);
@@ -46,25 +44,5 @@ public class Jars {
 		}
 	}
 	
-	private static URL[] getClasspathWithLibs(URL jar) throws IOException {
-		List<URL> result = new LinkedList<URL>();
-		result.add(jar);
-
-        // Get the jar file
-        JarURLConnection conn = (JarURLConnection)new URL("jar:" + jar + "!/").openConnection();
-        JarFile jarFile = conn.getJarFile();
-        
-		Enumeration<JarEntry> entries = jarFile.entries();
-		while (entries.hasMoreElements()) {
-			JarEntry entry = entries.nextElement();
-			if (entry.getName().endsWith(".jar")) {
-				String path = "file:" + jar.getPath() + "!/" + entry.getName();
-				System.out.println(path);
-				result.add(new URL((path)));
-			}
-		}
-		
-		return result.toArray(new URL[0]);
-	}
 
 }

@@ -11,6 +11,9 @@ jar -xf prevayler-2.3.jar
 jar -xf xstream-1.2.2.jar
 jar -xf xpp3_min-1.1.3.4.O.jar
 
+del *.* /Q
+rmdir META-INF /s /q
+
 javac -target 1.1 -source 1.2 -encoding UTF-8 -sourcepath ..\..\src -d .       ..\..\src\sneer\Boot.java
 javac -target 1.6 -source 1.6 -encoding UTF-8 -sourcepath ..\..\src -d .       ..\..\src\sneer\SneerJockey.java
 javac -target 1.6 -source 1.6 -encoding UTF-8 -sourcepath ..\..\src -d . -cp . ..\..\src\sneer\Sneer.java

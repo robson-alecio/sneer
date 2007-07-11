@@ -66,7 +66,7 @@ public class ConversationFrame extends JFrame {
 	
 	private void initComponents() {
 		setLayout(new BorderLayout());
-		
+		_chatText.setLineWrap(true);
 		add(new JScrollPane(_chatText), BorderLayout.CENTER);
 		add(createInputPanel(), BorderLayout.SOUTH);
 		

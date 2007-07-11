@@ -1,4 +1,4 @@
-<project name="MyProject" default="dist" basedir=".">
+<project name="Sneer" default="dist" basedir=".">
 	<description>
         Sneer build file
     </description>

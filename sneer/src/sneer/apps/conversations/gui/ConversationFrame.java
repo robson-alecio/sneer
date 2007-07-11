@@ -92,6 +92,8 @@ public class ConversationFrame extends JFrame {
 		add(new JScrollPane(_chatText), BorderLayout.CENTER);
 		add(createInputPanel(), BorderLayout.SOUTH);
 		
+		_statusLabel.setText(" ");
+		
 		setSize(300, 200);
 	}
 

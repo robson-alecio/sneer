@@ -29,6 +29,8 @@ Sourcepath: src; src_old; spikes
 Classpath: all jars inside the lib directory
 Main class: src/sneer.tests.MainSkippingBoot
 
+You can set the sneer.user_home_override system property to make Sneer run in a different directory, so you can have several different Sneer installations running at the same time.
+
 
 "WHAT CAN I DO TO HELP?"
 ============================

@@ -20,7 +20,7 @@ public class Threads {
 		try {
 			Thread.sleep(milliseconds);
 		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
+			throw new IllegalStateException(e);
 		}
 	}
 

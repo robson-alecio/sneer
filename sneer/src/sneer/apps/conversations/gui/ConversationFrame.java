@@ -54,11 +54,13 @@ public class ConversationFrame extends JFrame {
 			final String nick = _otherGuysNick.currentValue();
 			
 			if (message._text.equals(TYPING) && _statusLabel.equals(" ")){
+				System.out.println("1");
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
+						System.out.println("2");
 						_statusLabel.setText(translate(" %1$s is typing... :)",nick));
-						try{Thread.sleep(3000);}catch(InterruptedException e){}
+						Threads.sleepWithoutInterruptions(3000);
 						_statusLabel.setText(" ");
 					}
 				});
@@ -81,7 +83,7 @@ public class ConversationFrame extends JFrame {
 	
 	private void appendToChatText(String sender, Message message) {
 		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
-		appendToChatText("[" + formatter.format(new Date()) + "] <b>"+ sender + ":</b> " + message._text);
+		appendToChatText(formatter.format(new Date()) + " <b>"+ sender + ":</b> " + message._text);
 	}
 	
 	private void initComponents() {
@@ -161,8 +163,8 @@ public class ConversationFrame extends JFrame {
 		text = text.replaceAll("\\;\\)", "<img width=66 height=66 src = \"http://www.humorbabaca.com/emo/0076.gif\">"); // ;)
 		text = text.replaceAll("\\:\\-\\(", "<img width=61 height=50 src = \"http://www.humorbabaca.com/emo/0075.gif\">"); // :-(
 		text = text.replaceAll("\\:\\(", "<img width=61 height=50 src = \"http://www.humorbabaca.com/emo/0075.gif\">"); // :(
-		text = text.replaceAll("\\:\\-\\(", "<img width=50 height=50 src = \"http://www.humorbabaca.com/emo/0004.gif\">"); // :-P
-		text = text.replaceAll("\\:\\(", "<img width=50 height=50 src = \"http://www.humorbabaca.com/emo/0004.gif\">"); // :P
+		text = text.replaceAll("\\:\\-P", "<img width=50 height=50 src = \"http://www.humorbabaca.com/emo/0004.gif\">"); // :-P
+		text = text.replaceAll("\\:P", "<img width=50 height=50 src = \"http://www.humorbabaca.com/emo/0004.gif\">"); // :P
 		text = text.replaceAll("massa", "<img width=44 height=75 src = \"http://www.humorbabaca.com/emo/0130.gif\">"); // massa
 		return text;
 	}

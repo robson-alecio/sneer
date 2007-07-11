@@ -53,7 +53,7 @@ public class ConversationFrame extends JFrame {
 		messageInput.addReceiver(new Omnivore<Message>() { @Override public void consume(final Message message) {
 			final String nick = _otherGuysNick.currentValue();
 			
-			if (message._text.equals(TYPING) && _statusLabel.equals(" "))
+			if (message._text.equals(TYPING) && _statusLabel.equals(" ")){
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
@@ -61,8 +61,10 @@ public class ConversationFrame extends JFrame {
 						try{Thread.sleep(3000);}catch(InterruptedException e){}
 						_statusLabel.setText(" ");
 					}
-				});	
-
+				});
+			}
+			if (message._text.equals(TYPING))
+				return;
 			appendToChatText(nick, message);
 		}});
 		

@@ -107,7 +107,7 @@
 		           fork="true"
 		           failonerror="true"
 		           maxmemory="128m" >
-		         <arg value="-Dsneer.user_home_override=${tmp}"/>
+		         <jvmarg value="-Dsneer.user_home_override=${tmp}"/>
 		</java>
 
 	</target>

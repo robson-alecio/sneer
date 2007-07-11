@@ -12,7 +12,6 @@ import org.prevayler.PrevaylerFactory;
 
 import prevayler.bubble.Bubble;
 import sneer.apps.conversations.ConversationsApp;
-import sneer.apps.talk.TalkApp;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.impl.BusinessFactory;
 import sneer.kernel.communication.Channel;
@@ -61,23 +60,26 @@ public class Sneer {
 		while (true) Threads.sleepWithoutInterruptions(5000);
 	}
 
-	private void initLanguage() { //Refactor This is confusing.
-		String language = _businessSource.output().language().currentValue();
-		if (language == null || language.isEmpty()){
-			if (!language.equals(Language.current()))
-				_businessSource.languageSetter().consume(Language.current());
-		}else{
-			Language.load(language);
-		}
+	private void initLanguage() {
+		String current = System.getProperty("sneer.language");
+		if (current == null || current.isEmpty()) current = "en";
 		
+		String chosen = _businessSource.output().language().currentValue();
+		if (chosen == null || chosen.isEmpty()) {
+			_businessSource.languageSetter().consume(current);
+			chosen = current;
+		} 
+		
+		if (chosen.equals("en"))
+			Language.reset();
+		else
+			Language.load(chosen);
 	}
 
 	private List<ContactAction> contactActions() {
 		List<ContactAction> result = new ArrayList<ContactAction>();
 		Channel ConversationsChannel = _communicator.getChannel(ConversationsApp.class.getName());
 		result.add(new ConversationsApp(ConversationsChannel, _businessSource.output().contacts()).contactAction());
-		Channel talkChannel = _communicator.getChannel(TalkApp.class.getName());
-		result.add(new TalkApp(talkChannel, _businessSource.output().contacts()).contactAction());
 		return result;
 	}
 

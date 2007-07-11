@@ -63,16 +63,19 @@ public class InstallationWizard {
 
 
 	private void defineLanguage() {
+		String language = null;
 		try {
-			String language = (String)_user.choose("Choose a language:", "English", "Português");
-			if (language.equals("English")){
-				reset();
-			}else{
-				load("pt_BR");
-			}
+			language = (String)_user.choose("Choose a language:", "English", "Português");
 		} catch (CancelledByUser e) {
 			exit();
 		}
+
+		if (language.equals("English"))
+			Language.reset();
+		else
+			Language.load("pt_BR");
+
+		System.setProperty("sneer.language", Language.current());
 	}
 
 	

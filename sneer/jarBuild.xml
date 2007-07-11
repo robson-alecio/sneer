@@ -1,0 +1,115 @@
+<project name="MyProject" default="dist" basedir=".">
+	<description>
+        Sneer build file
+    </description>
+	
+	<!-- Directories configuration -->
+	
+	<property name="build" location=".\jarBuild"/>
+	<property name="bin" location=".\bin"/>
+	<property name="src" location=".\src"/>
+	<property name="tmp" location=".\jarTest"/>
+	
+	<target name="dist">
+		
+		<!-- Preparation -->
+		
+		<delete dir="${build}"/>
+		<mkdir dir="${build}"/>
+		
+		<!-- Unjar *all* libs into build directory. Avoid placing all libs directly in libs, only the needed-->
+
+		<unjar dest="${build}">
+		    <fileset dir=".\lib\">
+		        <include name="**\*.jar"/>
+		    </fileset>
+		</unjar>
+
+		<!-- Compile files -->
+		
+		<javac destdir="${build}"
+			classpath="${build}"
+		 	debug="on"
+			source="1.2"
+			target="1.1"
+			encoding="UTF-8" >
+			<src path="${src}"/>
+			<include name="sneer/Boot.java"/>
+		</javac>
+		
+		<javac destdir="${build}"
+			classpath="${build}"
+			debug="on"
+			source="1.6"
+			target="1.6" 
+			encoding="UTF-8" >
+			<src path="${src}"/>
+			<include name="sneer/SneerJockey.java"/>
+		</javac>
+		
+		<javac destdir="${build}"
+			classpath="${build}"
+			debug="on"
+			source="1.6"
+			target="1.6" 
+			encoding="UTF-8" >
+			<src path="${src}"/>
+			<include name="sneer/Sneer.java"/>
+		</javac>
+		
+		<!-- Copy translations -->
+		
+		<mkdir dir="${build}\translations"/>
+		<copy todir="${build}\translations" >
+			<fileset dir=".\src\translations" includes="**\*.*"/>
+		</copy>
+		
+		<!-- Copy traymenu icons -->
+		
+		<mkdir dir="${build}\sneer\kernel\gui\traymenu"/>
+		<copy todir="${build}\sneer\kernel\gui\traymenu">
+			<fileset dir="${src}\sneer\kernel\gui\traymenu" includes="**\*.png"/>
+		</copy>
+		
+		<!-- Copy contact images -->
+		
+		<mkdir dir="${build}\sneer\kernel\gui\contacts\images"/>
+		<copy todir="${build}\sneer\kernel\gui\contacts\images">
+			<fileset dir="${src}\sneer\kernel\gui\contacts\images" includes="**\*.gif"/>
+		</copy>
+		
+		<!-- Create manifest with entry point -->
+
+		<delete file="${build}\MANIFEST.MF"/>
+		<manifest file="${build}\MANIFEST.MF">
+			<attribute name="Main-Class" value="sneer.Boot"/>
+		</manifest>
+		
+		<!-- Create jar -->
+		
+		<jar destfile="${bin}\Sneer.jar" basedir="${build}" manifest="${build}\MANIFEST.MF">
+			<include name="**\*.class" />
+			<include name="translations\**\*.*" />
+			<include name="sneer\kernel\gui\traymenu\**\*.png" />
+			<include name="sneer\kernel\gui\contacts\images\**\*.gif" />
+		</jar>
+		
+		<!-- Cleanup -->
+		
+		<delete dir="${build}"/>
+		<delete dir="${tmp}"/>
+		<mkdir dir="${tmp}"/>
+			
+		<!-- Run -->
+		
+		<java dir="${tmp}"
+		           jar="${bin}\Sneer.jar"
+		           fork="true"
+		           failonerror="true"
+		           maxmemory="128m" >
+		         <arg value="-Dsneer.user_home_override=${tmp}"/>
+		</java>
+
+	</target>
+
+</project>

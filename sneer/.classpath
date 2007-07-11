@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="lib/xstream/xstream-1.2.2.jar"/>
 	<classpathentry kind="lib" path="lib/xstream/xpp3_min-1.1.3.4.O.jar"/>
 	<classpathentry kind="src" path="src_old"/>
+	<classpathentry kind="lib" path="lib/talk.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

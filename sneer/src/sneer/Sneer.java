@@ -12,6 +12,7 @@ import org.prevayler.PrevaylerFactory;
 
 import prevayler.bubble.Bubble;
 import sneer.apps.conversations.ConversationsApp;
+import sneer.apps.talk.TalkApp;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.impl.BusinessFactory;
 import sneer.kernel.communication.Channel;
@@ -73,8 +74,10 @@ public class Sneer {
 
 	private List<ContactAction> contactActions() {
 		List<ContactAction> result = new ArrayList<ContactAction>();
-		Channel channel = _communicator.getChannel(ConversationsApp.class.getName());
-		result.add(new ConversationsApp(channel, _businessSource.output().contacts()).contactAction());
+		Channel ConversationsChannel = _communicator.getChannel(ConversationsApp.class.getName());
+		result.add(new ConversationsApp(ConversationsChannel, _businessSource.output().contacts()).contactAction());
+		Channel talkChannel = _communicator.getChannel(TalkApp.class.getName());
+		result.add(new TalkApp(talkChannel, _businessSource.output().contacts()).contactAction());
 		return result;
 	}
 

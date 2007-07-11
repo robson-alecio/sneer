@@ -20,13 +20,9 @@ BUILDING SNEER
 
 JRE6 - Use the latest stable version of it. Before reporting bugs or problems, please make sure you are not using another JRE.
 
-makeSneerJar.bat will produce the Sneer.jar file. If you want to contribute an ANT file to produce EXACTLY the same jar file, so that it can run on Linux too, that would be great.
+makeSneerJar.bat - This will produce the runnable Sneer.jar file. If you want to contribute an ANT file to produce EXACTLY the same jar file, so that it can run on Linux too, that would be great.
 
-
-DEVELOPING SNEER
-====================
-
-Eclipse3.3 or a newer stable version - You can use other IDEs but it is strongly recommended that you use Eclipse because Sneer is a self-contained Eclipse project and will compile out of the box with zero errors and zero warnings.
+Eclipse 3.3 or newer - You can use other IDEs but it is strongly recommended that you use Eclipse because Sneer is a self-contained Eclipse project and will compile out of the box with zero errors and zero warnings.
 
 Anyway:
 Sourcepath: src; src_old; spikes
@@ -37,7 +33,7 @@ Main class: src/sneer.tests.MainSkippingBoot
 "WHAT CAN I DO TO HELP?"
 ============================
 
-Good question. That's the spirit.  :)
+That's the spirit.  :)
 
 1) Use Sneer.
 
@@ -51,7 +47,19 @@ Good question. That's the spirit.  :)
 
 6) Develop your own sovereign application to run on Sneer.
 
-7) Develop Sneer. 
+7) Code for Sneer.
+
+
+CODING FOR SNEER
+====================
+
+If you have done all the rest and are ready to code for Sneer, start by searching comments in the code with the words Fix, Refactor, Implement and Optimize (or simply open the Eclipse Tasks View). That, and only that, is how we track feature and issue tasks.
+
+Find the EASIEST, MOST TRIVIAL task to do and submit a patch.
+
+Repeat until you get the hang of it and we gain confidence in you to give you commiter rights.
+
+Writing JUnit tests to improve test coverage is also a very popular move.  
 
 
 GETTING IN TOUCH

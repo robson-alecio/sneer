@@ -77,11 +77,16 @@
 		<copy todir="${build}\sneer\kernel\gui\contacts\images">
 			<fileset dir="${src}\sneer\kernel\gui\contacts\images" includes="**\*.gif"/>
 		</copy>
+			
+		<!-- Copy splash file -->
+			
+		<copy file=".\splash.jpg" todir="${build}" />
 		
 		<!-- Create manifest with entry point -->
 
 		<delete file="${build}\MANIFEST.MF"/>
 		<manifest file="${build}\MANIFEST.MF">
+			<attribute name="SplashScreen-Image" value="splash.jpg"/>
 			<attribute name="Main-Class" value="sneer.Boot"/>
 		</manifest>
 		
@@ -92,6 +97,7 @@
 			<include name="translations\**\*.*" />
 			<include name="sneer\kernel\gui\traymenu\**\*.png" />
 			<include name="sneer\kernel\gui\contacts\images\**\*.gif" />
+			<include name="*.jpg" />
 		</jar>
 		
 		<!-- Cleanup -->

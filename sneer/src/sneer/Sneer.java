@@ -54,6 +54,9 @@ public class Sneer {
 
 		initLanguage();
 		
+		//Fix: small delay to show splash. in the future will be used to plugin/resource download
+		try{Thread.sleep(2000);}catch(InterruptedException ie){} 
+		
 		_communicator = new Communicator(_user, new XStreamNetwork(new OldNetworkImpl()), _businessSource);
 		new Gui(_user, _businessSource, contactActions()); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
 		

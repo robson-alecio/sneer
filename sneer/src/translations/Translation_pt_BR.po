@@ -77,7 +77,7 @@ msgid "This wizard will now exit with no changes to your system."
 msgstr "Este aplicativo será finalizado sem alterações a seu sistema."
 
 msgid "This is an alpha-testing release for ADVANCED Java users.\n\nPlease configure Sneer to run on your system startup and help keep the\nsovereign network up and alive, now in its early days:\n   Linux: Call \"java -jar Sneer.jar\" from a runlevel script.\n   Windows: Add a shortcut to Sneer.jar in \"Start > All Programs > Startup\"."
-msgstr "Este é um release de alpha-teste para usuários Java AVANÇADOS.\n\nPor favor, configure o Sneer pra rodar na inicialização do seu sistema\ne ajude a rede soberana a ficar online:\n    Linux: chame "java -jar Sneer.jar\" de um runlevel script.\n    Windows: Adicione um atalho para Sneer.jar em \"Iniciar > Programas > Inicializar\"."
+msgstr "Este é um release de alpha-teste para usuários Java AVANÇADOS.\n\nPor favor, configure o Sneer pra rodar na inicialização do seu sistema\ne ajude a rede soberana a ficar online, agora na infância:\n    Linux: chame "java -jar Sneer.jar\" de um runlevel script.\n    Windows: Adicione um atalho para Sneer.jar em \"Iniciar > Programas > Inicializar\"."
 
 msgid "Delete"
 msgstr "Remover"

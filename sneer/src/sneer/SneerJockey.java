@@ -7,7 +7,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import wheel.jars.Jars;
+import wheel.io.Jars;
 
 
 /** This guy "plays" (runs) the latest version of Sneer, one after the other. */

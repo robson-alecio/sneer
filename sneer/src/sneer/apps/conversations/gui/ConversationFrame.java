@@ -8,7 +8,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,6 +20,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.Element;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.View;
+import javax.swing.text.ViewFactory;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.ImageView;
 
 import sneer.apps.conversations.Message;
 import wheel.lang.Omnivore;
@@ -37,15 +50,19 @@ public class ConversationFrame extends JFrame {
 			setTitle(nick);
 		}});
 		
-		messageInput.addReceiver(new Omnivore<Message>() { @Override public void consume(Message message) {
-			String nick = _otherGuysNick.currentValue();
+		messageInput.addReceiver(new Omnivore<Message>() { @Override public void consume(final Message message) {
+			final String nick = _otherGuysNick.currentValue();
 			
-			if (message._text.equals(TYPING)) { //Refactor :)
-				_statusLabel.setText(translate(" %1$s is typing... :)",nick));
-				return;
-			}
-			_statusLabel.setText(" ");
-			
+			if (message._text.equals(TYPING) && _statusLabel.equals(" "))
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						_statusLabel.setText(translate(" %1$s is typing... :)",nick));
+						try{Thread.sleep(3000);}catch(InterruptedException e){}
+						_statusLabel.setText(" ");
+					}
+				});	
+
 			appendToChatText(nick, message);
 		}});
 		
@@ -55,18 +72,19 @@ public class ConversationFrame extends JFrame {
 	private final Signal<String> _otherGuysNick;
 	private final Omnivore<Message> _messageOutput;
 
-	private final JTextArea _chatText = createChatText();
+	private final JEditorPane _chatText = createChatText();
 	private final JLabel _statusLabel = new JLabel(" ");
 	private boolean _isTyping = false;
 
 	
 	private void appendToChatText(String sender, Message message) {
-		appendToChatText(sender + ": " + message._text);
+		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+		appendToChatText("[" + formatter.format(new Date()) + "] <b>"+ sender + ":</b> " + message._text);
 	}
 	
 	private void initComponents() {
 		setLayout(new BorderLayout());
-		_chatText.setLineWrap(true);
+
 		add(new JScrollPane(_chatText), BorderLayout.CENTER);
 		add(createInputPanel(), BorderLayout.SOUTH);
 		
@@ -107,10 +125,11 @@ public class ConversationFrame extends JFrame {
 		}};
 	}
 
-	private JTextArea createChatText() {
-		final JTextArea chatArea = new JTextArea();
+	private JEditorPane createChatText() {
+		final JEditorPane chatArea = new JEditorPane();
 		chatArea.setEditable(false);
-		
+		chatArea.setContentType("text/html");
+		chatArea.setText("<html><div align = \"left\" id=\"textInsideThisDiv\"></div></html>");
 		return chatArea;
 	}
 	
@@ -118,13 +137,33 @@ public class ConversationFrame extends JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				_chatText.append(entry + "\n");
-				_chatText.setCaretPosition(_chatText.getDocument().getLength());		
+				HTMLDocument document = (HTMLDocument)_chatText.getDocument();
+				Element ep = document.getElement("textInsideThisDiv");
+				try {
+					document.insertBeforeEnd(ep,  "<div><font face=\"Verdana\" size=\"3\">" + processEmoticons(entry) + "</font></div>");
+				}
+				catch (Exception ex) {
+				    ex.printStackTrace();
+				}
+				_chatText.setCaretPosition(document.getLength());
+				
 			}
 		
 		});		
 	}
 
+	private String processEmoticons(String text){ //Fix: free icons loaded from the internet... embed it... 
+		text = text.replaceAll("\\:\\-\\)", "<img width=50 height=45 src = \"http://www.humorbabaca.com/emo/0066.gif\">"); // :-)
+		text = text.replaceAll("\\:\\)", "<img width=50 height=45 src = \"http://www.humorbabaca.com/emo/0066.gif\">"); // :)
+		text = text.replaceAll("\\;\\-\\)", "<img width=66 height=66 width=25 height=20 src = \"http://www.humorbabaca.com/emo/0076.gif\">"); // ;-)
+		text = text.replaceAll("\\;\\)", "<img width=66 height=66 src = \"http://www.humorbabaca.com/emo/0076.gif\">"); // ;)
+		text = text.replaceAll("\\:\\-\\(", "<img width=61 height=50 src = \"http://www.humorbabaca.com/emo/0075.gif\">"); // :-(
+		text = text.replaceAll("\\:\\(", "<img width=61 height=50 src = \"http://www.humorbabaca.com/emo/0075.gif\">"); // :(
+		text = text.replaceAll("\\:\\-\\(", "<img width=50 height=50 src = \"http://www.humorbabaca.com/emo/0004.gif\">"); // :-P
+		text = text.replaceAll("\\:\\(", "<img width=50 height=50 src = \"http://www.humorbabaca.com/emo/0004.gif\">"); // :P
+		text = text.replaceAll("massa", "<img width=44 height=75 src = \"http://www.humorbabaca.com/emo/0130.gif\">"); // massa
+		return text;
+	}
 	
 	private static final long serialVersionUID = 1L;
 }

@@ -64,6 +64,13 @@
 			<fileset dir=".\src\translations" includes="**\*.*"/>
 		</copy>
 		
+		<!-- Copy splash screen -->
+		
+		<mkdir dir="${build}\sneer\kernel\gui\images"/>
+		<copy todir="${build}\sneer\kernel\gui\images">
+			<fileset dir="${src}\sneer\kernel\gui\images" includes="**\*.jpg"/>
+		</copy>
+
 		<!-- Copy traymenu icons -->
 		
 		<mkdir dir="${build}\sneer\kernel\gui\traymenu"/>
@@ -78,15 +85,11 @@
 			<fileset dir="${src}\sneer\kernel\gui\contacts\images" includes="**\*.gif"/>
 		</copy>
 			
-		<!-- Copy splash file -->
-			
-		<copy file=".\splash.jpg" todir="${build}" />
-		
 		<!-- Create manifest with entry point -->
 
 		<delete file="${build}\MANIFEST.MF"/>
 		<manifest file="${build}\MANIFEST.MF">
-			<attribute name="SplashScreen-Image" value="splash.jpg"/>
+			<attribute name="SplashScreen-Image" value="sneer/kernel/gui/images/splash.jpg"/>
 			<attribute name="Main-Class" value="sneer.Boot"/>
 		</manifest>
 		
@@ -95,18 +98,19 @@
 		<jar destfile="${bin}\Sneer.jar" basedir="${build}" manifest="${build}\MANIFEST.MF">
 			<include name="**\*.class" />
 			<include name="translations\**\*.*" />
+			<include name="sneer\kernel\gui\images\**\*.jpg" />
 			<include name="sneer\kernel\gui\traymenu\**\*.png" />
 			<include name="sneer\kernel\gui\contacts\images\**\*.gif" />
-			<include name="*.jpg" />
 		</jar>
 		
 		<!-- Cleanup -->
 		
 		<delete dir="${build}"/>
-		<delete dir="${tmp}"/>
-		<mkdir dir="${tmp}"/>
 			
 		<!-- Run -->
+
+		<delete dir="${tmp}"/>
+		<mkdir dir="${tmp}"/>
 		
 		<java dir="${tmp}"
 		           jar="${bin}\Sneer.jar"

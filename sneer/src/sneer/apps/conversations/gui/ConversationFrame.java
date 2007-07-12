@@ -112,10 +112,10 @@ public class ConversationFrame extends JFrame {
 	}
 
 	private KeyListener chatKeyListener() {
-		return new KeyAdapter() {	@Override	public void keyTyped(KeyEvent ignored) {
+		return new KeyAdapter() {	@Override	public void keyTyped(KeyEvent ignored) { Threads.startDaemon(new Runnable() { public void run() {
 			if (!_isTyping) _messageOutput.consume(new Message(TYPING));
 			_isTyping = true;
-		}};
+		}});}};
 	}
 
 	private ActionListener chatActionListener(final JTextField chatInput) {

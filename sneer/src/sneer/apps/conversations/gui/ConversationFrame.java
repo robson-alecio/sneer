@@ -3,6 +3,7 @@ package sneer.apps.conversations.gui;
 import static wheel.i18n.Language.translate;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -55,9 +56,10 @@ public class ConversationFrame extends JFrame {
 	private final Omnivore<Message> _messageOutput;
 
 	private final JEditorPane _chatText = createChatText();
+	private final JTextField _chatInput = createChatInput();
 	private final JLabel _statusLabel = new JLabel(" "); //Needs something to process preferred size and render correctly. :P
-	private boolean _isTyping = false;
 
+	private volatile Runnable _lastTypingHandler;
 	
 	private void appendToChatText(String sender, Message message) {
 		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
@@ -75,34 +77,56 @@ public class ConversationFrame extends JFrame {
 
 	private JPanel createInputPanel() {
 		JPanel result = new JPanel(new BorderLayout());
-		result.add(createChatInput(), BorderLayout.CENTER);
+		result.add(_chatInput, BorderLayout.CENTER);
 		result.add(_statusLabel, BorderLayout.SOUTH);
 		return result;
 	}
 
 	private JTextField createChatInput() {
-		final JTextField chatInput = new JTextField();
-		chatInput.addActionListener(chatActionListener(chatInput));
-		chatInput.addKeyListener(chatKeyListener());
-		return chatInput;
+		JTextField result = new JTextField();
+		result.addActionListener(chatActionListener());
+		result.addKeyListener(chatKeyListener());
+		return result;
 	}
 
-	private KeyListener chatKeyListener() {
-		return new KeyAdapter() {	@Override	public void keyTyped(KeyEvent ignored) { Threads.startDaemon(new Runnable() { public void run() {
-			if (!_isTyping) _messageOutput.consume(new Message(TYPING));
-			_isTyping = true;
-		}});}};
+	private KeyListener chatKeyListener() { //Fix: All this typing logic is not working 100%
+		return new KeyAdapter() {	@Override	public void keyTyped(KeyEvent ignored) {
+			
+			final Runnable previousTypingHandler = _lastTypingHandler;
+		
+			Threads.startDaemon(new Runnable() {
+				public void run() {
+					_lastTypingHandler = this;
+					if (previousTypingHandler == null) _messageOutput.consume(new Message(TYPING));
+		
+					Threads.sleepWithoutInterruptions(4000);
+		
+					if (_lastTypingHandler != this) return;
+					typingDone(false);
+				}
+			}
+		);}};
 	}
 
-	private ActionListener chatActionListener(final JTextField chatInput) {
+	private void typingDone(boolean messageSent) {
+		_lastTypingHandler = null;
+		if (messageSent) return;
+		
+		String text = _chatInput.getText().isEmpty()
+			? TYPING_ERASED
+			: TYPING_PAUSED;
+		_messageOutput.consume(new Message(text));
+	}
+	
+	private ActionListener chatActionListener() {
 		return new ActionListener() { @Override public void actionPerformed(ActionEvent ignored) {
-			final Message message = new Message(chatInput.getText());
-			chatInput.setText("");
+			final Message message = new Message(_chatInput.getText());
+			_chatInput.setText("");
 				
 			Threads.startDaemon(new Runnable() { @Override public void run() {
 				_messageOutput.consume(message);
 				appendToChatText(translate("Me"), message);
-				_isTyping = false;
+				typingDone(true);
 			}});
 		}};
 	}

@@ -29,6 +29,9 @@ public class ConnectionImpl {
 
 	private volatile boolean _isClosed = false;
 	private volatile long _lastActivityTime;
+	
+	private final Object _socketOpenMonitor = new Object();
+	private final Object _socketSetterMonitor = new Object();
 
 	public ConnectionImpl(Contact contact, OldNetwork network, Omnivore<OnlineEvent> onlineSetter, Consumer<OutgoingConnectionAttempt> connectionValidator, Omnivore<Object> objectReceiver) { //Refactor: move online notification to the objectReceiver instead of having separate onlineSetter.
 		_contact = contact;
@@ -58,8 +61,15 @@ public class ConnectionImpl {
 	}
 
 	private ObjectSocket produceSocket() throws IOException, InvalidConnectionAttempt {
-		if (_socket == null) setSocketIfNecessary(openSocket());
+		while (_socket == null) competeToOpenSocket();
 		return _socket;
+	}
+
+	private void competeToOpenSocket() throws IOException, InvalidConnectionAttempt {
+		synchronized (_socketOpenMonitor) {
+			if (_socket != null) return; 
+			setSocketIfNecessary(openSocket());
+		}
 	}
 
 	private ObjectSocket openSocket() throws IOException, InvalidConnectionAttempt {
@@ -80,9 +90,11 @@ public class ConnectionImpl {
 		setSocketIfNecessary(socket);
 	}
 
-	synchronized private void setSocketIfNecessary(ObjectSocket socket) {
-		if (_socket != null) return;
-		_socket = socket;
+	private void setSocketIfNecessary(ObjectSocket socket) {
+		synchronized (_socketSetterMonitor) {
+			if (_socket != null) return;
+			_socket = socket;
+		}
 		startReceiving();
 	}
 

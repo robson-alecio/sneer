@@ -10,7 +10,6 @@ import sneer.kernel.business.BusinessSource;
 import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.gui.contacts.ShowContactsScreenAction;
 import wheel.i18n.Language;
-import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.TrayIcon;
 import wheel.io.ui.User;
 import wheel.io.ui.TrayIcon.Action;
@@ -32,11 +31,11 @@ public class Gui {
 		tryToRun();
 	}
 
-	private final User _user;
+	final User _user;
 
 	private final TrayIcon _trayIcon;
 
-	private final BusinessSource _businessSource;
+	final BusinessSource _businessSource;
 
 	private final List<ContactAction> _contactActions;
 
@@ -55,6 +54,10 @@ public class Gui {
 		_trayIcon.addAction(sneerPortChangeAction());
 		_trayIcon.addAction(languageChangeAction());
 		_trayIcon.addAction(exitAction());
+	}
+
+	private LanguageChangeAction languageChangeAction() {
+		return new LanguageChangeAction(_user, _businessSource.output().language(), _businessSource.languageSetter());
 	}
 
 	private ShowContactsScreenAction showContactsScreenAction() {
@@ -82,33 +85,6 @@ public class Gui {
 		return new ValueChangePane(translate("Own Name"),correctSwingNewlineSpaceProblem(prompt), _user, _businessSource.output().ownName(), _businessSource.ownNameSetter());
 	}
 	
-	private Action languageChangeAction() {
-		
-		return new Action() { //Refactor: This action should be moved to another class , like valuechangedpane
-			public String caption() {
-				return translate("Choose your Language");
-			}
-
-			public void run() {
-
-				Object[] options = { "English", "Português" }; // Implement:detect available languages
-				//Fix: Should disable current language button
-				try {
-					String button = (String) _user.choose(translate("Available Languages:"),options);
-					
-					String language = button.equals("Português")
-						? "pt_BR"
-						: "";
-					
-					String current = _businessSource.output().language().currentValue();
-					if (language.equals(current)) return;
-					_businessSource.languageSetter().consume(language);
-
-				} catch (CancelledByUser cbu) { }
-			}
-		};
-	}
-
 	private Action exitAction() {
 		return new Action() {
 

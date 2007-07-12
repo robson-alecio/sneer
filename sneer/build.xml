@@ -2,7 +2,7 @@
 	<description>
         Sneer build file
     </description>
-	
+
 	<!-- Directories configuration -->
 	
 	<property name="build" location=".\jarBuild"/>
@@ -12,6 +12,11 @@
 	<property name="tmp" location=".\jarTest"/>
 	
 	<target name="dist">
+		<splash imageurl="http://www.freefever.com/animatedgifs/cartoons/animated/calvinandhobbes9.gif" showduration="0"/>
+			
+		<!-- Asks for version number -->
+		
+		<input message="What is the Sneer version? Example: 1.2-Beta" addproperty="version" />
 		
 		<!-- Preparation -->
 		
@@ -68,7 +73,7 @@
 		
 		<!-- Create jar -->
 		
-		<jar destfile="${bin}\Sneer.jar" basedir="${build}" manifest="${build}\MANIFEST.MF">
+		<jar destfile="${bin}\Sneer-${version}.jar" basedir="${build}" manifest="${build}\MANIFEST.MF">
 			<include name="**\*.class" />
 			<fileset dir="${resources}"/>
 		</jar>
@@ -83,11 +88,11 @@
 		<mkdir dir="${tmp}"/>
 		
 		<java dir="${tmp}"
-		           jar="${bin}\Sneer.jar"
-		           fork="true"
-		           failonerror="true"
-		           maxmemory="128m" >
-		         <jvmarg value="-Dsneer.user_home_override=${tmp}"/>
+			jar="${bin}\Sneer-${version}.jar"
+			fork="true"
+			maxmemory="128m" 
+			spawn="true" >
+			<jvmarg value="-Dsneer.user_home_override=${tmp}"/>
 		</java>
 
 	</target>

@@ -14,22 +14,18 @@ GETTING SNEER SOURCE CODE
 
 http://sovereigncomputing.net/svn/sneer/ - is the Subversion (SVN) repository root. https works too.
 
-
-BUILDING SNEER
-==================
-
 JRE6 - Use the latest stable version of it. Before reporting bugs or problems, please make sure you are not using another JRE.
-
-makeSneerJar.bat - This will produce the runnable Sneer.jar file. If you want to contribute an ANT file to produce EXACTLY the same jar file, so that it can run on Linux too, that would be great.
 
 Eclipse 3.3 or newer - You can use other IDEs but it is strongly recommended that you use Eclipse because Sneer is a self-contained Eclipse project and will compile out of the box with zero errors and zero warnings.
 
 Anyway:
 Sourcepath: src; src_old; spikes
-Classpath: all jars inside the lib directory
+Classpath: all jars inside the lib and lib_for_tests directory
 Main class: src/sneer.tests.MainSkippingBoot
 
-You can set the sneer.user_home_override system property to make Sneer run in a different directory, so you can have several different Sneer installations running at the same time.
+sneer.user_home_override - You can set this system property to make Sneer run in a different directory, so you can have several different Sneer installations running at the same time.
+
+build.xml - This ANT build will produce the runnable Sneer.jar file.
 
 
 "WHAT CAN I DO TO HELP?"

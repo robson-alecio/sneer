@@ -112,8 +112,9 @@ public class ContactsScreen extends JFrame {
 
 	private JPopupMenu getFriendPopUpMenu(final JList friendsList) {
 		final JPopupMenu result = new JPopupMenu();
-		addToContactMenu(result, new ContactRemovalAction(_contactRemover), friendsList);
+		addToContactMenu(result, new ContactNickChangeAction(), friendsList);
 		for (ContactAction action : _contactActions) addToContactMenu(result, action, friendsList);
+		addToContactMenu(result, new ContactRemovalAction(_contactRemover), friendsList);
 		return result;
 	}
 

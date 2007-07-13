@@ -153,19 +153,19 @@ public class ConversationFrame extends JFrame {
 	}
 
 	private String processEmoticons(String text){ //Fix: free icons loaded from the internet... embed it... 
-		text = text.replaceAll("\\:\\-\\)", "<img src = \"http://www.humorbabaca.com/emo/0072.gif\">"); // :-)
-		text = text.replaceAll("\\:\\)", "<img src = \"http://www.humorbabaca.com/emo/0072.gif\">"); // :)
-		text = text.replaceAll("\\:D", "<img src = \"http://www.humorbabaca.com/emo/0057.gif\">"); // :D
-		text = text.replaceAll("\\;\\-\\)", "<img src = \"http://www.humorbabaca.com/emo/0076.gif\">"); // ;-)
-		text = text.replaceAll("\\;\\)", "<img src = \"http://www.humorbabaca.com/emo/0076.gif\">"); // ;)
-		text = text.replaceAll("\\:\\-\\(", "<img src = \"http://www.humorbabaca.com/emo/0075.gif\">"); // :-(
-		text = text.replaceAll("\\:\\(", "<img src = \"http://www.humorbabaca.com/emo/0075.gif\">"); // :(
-		text = text.replaceAll("\\:\\-P", "<img src = \"http://www.humorbabaca.com/emo/0004.gif\">"); // :-P
-		text = text.replaceAll("\\:P", "<img src = \"http://www.humorbabaca.com/emo/0004.gif\">"); // :P
-		text = text.replaceAll("rara", "<img src = \"http://www.humorbabaca.com/emo/0037.gif\">"); // rara
-		text = text.replaceAll("ecati", "<img src = \"http://www.humorbabaca.com/emo/0006.gif\">"); // ecati
-		text = text.replaceAll("Peccin", "<img src = \"http://www.humorbabaca.com/emo/0075.gif\">"); // Peccin
-		text = text.replaceAll("peccin", "<img src = \"http://www.humorbabaca.com/emo/0075.gif\">"); // peccin
+		text = text.replaceAll("\\:\\-\\)", "<img width=50 height=50 src = \"http://www.humorbabaca.com/emo/0072.gif\">"); // :-)
+		text = text.replaceAll("\\:\\)", "<img width=50 height=50 src = \"http://www.humorbabaca.com/emo/0072.gif\">"); // :)
+		text = text.replaceAll("\\:D", "<img width=50 height=50 src = \"http://www.humorbabaca.com/emo/0057.gif\">"); // :D
+		text = text.replaceAll("\\;\\-\\)", "<img width=66 height=66 src = \"http://www.humorbabaca.com/emo/0076.gif\">"); // ;-)
+		text = text.replaceAll("\\;\\)", "<img width=66 height=66 src = \"http://www.humorbabaca.com/emo/0076.gif\">"); // ;)
+		text = text.replaceAll("\\:\\-\\(", "<img width=61 height=50 src = \"http://www.humorbabaca.com/emo/0075.gif\">"); // :-(
+		text = text.replaceAll("\\:\\(", "<img width=61 height=50 src = \"http://www.humorbabaca.com/emo/0075.gif\">"); // :(
+		text = text.replaceAll("\\:\\-P", "<img width=50 height=50 src = \"http://www.humorbabaca.com/emo/0004.gif\">"); // :-P
+		text = text.replaceAll("\\:P", "<img width=50 height=50 src = \"http://www.humorbabaca.com/emo/0004.gif\">"); // :P
+		text = text.replaceAll("rara", "<img width=60 height=44 src = \"http://www.humorbabaca.com/emo/0037.gif\">"); // rara
+		text = text.replaceAll("ecati", "<img width=50 height=48 src = \"http://www.humorbabaca.com/emo/0006.gif\">"); // ecati
+		text = text.replaceAll("Peccin", "<img width=61 height=50 src = \"http://www.humorbabaca.com/emo/0075.gif\">"); // Peccin
+		text = text.replaceAll("peccin", "<img width=61 height=50 src = \"http://www.humorbabaca.com/emo/0075.gif\">"); // peccin
 		return text;
 	}
 	

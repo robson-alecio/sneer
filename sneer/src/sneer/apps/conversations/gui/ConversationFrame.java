@@ -120,7 +120,7 @@ public class ConversationFrame extends JFrame {
 	
 	private ActionListener chatActionListener() {
 		return new ActionListener() { @Override public void actionPerformed(ActionEvent ignored) {
-			final Message message = new Message(_chatInput.getText());
+			final Message message = new Message(XMLUtils.escapeBodyValue(_chatInput.getText()));
 			_chatInput.setText("");
 				
 			Threads.startDaemon(new Runnable() { @Override public void run() {
@@ -144,7 +144,7 @@ public class ConversationFrame extends JFrame {
 			HTMLDocument document = (HTMLDocument)_chatText.getDocument();
 			Element ep = document.getElement("textInsideThisDiv");
 			try {
-				document.insertBeforeEnd(ep, "<div><font face=\"Verdana\" size=\"3\">" + processEmoticons(entry) + "</font></div>"); //Fix: Caracters like '<' must be escaped. They do not show up in the chat.
+				document.insertBeforeEnd(ep, "<div><font face=\"Verdana\" size=\"3\">" + processEmoticons(entry) + "</font></div>");
 			} catch (Exception ex) {
 				Log.log(ex);
 			}

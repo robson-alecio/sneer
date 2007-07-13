@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
+import wheel.io.ui.Util;
 import wheel.lang.exceptions.Catcher;
 import wheel.lang.exceptions.FriendlyException;
 
@@ -133,14 +134,9 @@ public class JOptionPaneUser implements User {
 	}
 
 	private String adaptPrompt(String proposition) {
-		String string = correctSwingNewlineSpaceProblem(proposition);
+		String string = Util.correctSwingNewlineSpaceProblem(proposition);
 		return string + "\n\n";
 	}
 
-
-	private String correctSwingNewlineSpaceProblem(String proposition) {
-		return " " + proposition.replaceAll("\\n", "\n ");
-	}
-	
 
 }

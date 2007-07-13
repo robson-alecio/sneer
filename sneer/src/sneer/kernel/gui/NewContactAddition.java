@@ -12,7 +12,7 @@ import sneer.kernel.business.contacts.ContactInfo;
 import wheel.io.network.PortNumberSource;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
-import wheel.io.ui.impl.ValueChangePane;
+import wheel.io.ui.ValueChangePane;
 import wheel.lang.Consumer;
 import wheel.lang.IntegerParser;
 import wheel.lang.exceptions.IllegalParameter;

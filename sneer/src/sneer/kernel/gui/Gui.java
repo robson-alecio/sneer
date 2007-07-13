@@ -1,22 +1,20 @@
 package sneer.kernel.gui;
 
+import static wheel.i18n.Language.translate;
+
 import java.net.URL;
 import java.util.List;
-import java.util.Locale;
-import java.util.Random;
 
-import static wheel.i18n.Language.*;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.gui.contacts.ShowContactsScreenAction;
-import wheel.i18n.Language;
 import wheel.io.ui.TrayIcon;
 import wheel.io.ui.User;
+import wheel.io.ui.Util;
+import wheel.io.ui.ValueChangePane;
 import wheel.io.ui.TrayIcon.Action;
 import wheel.io.ui.impl.TrayIconImpl;
-import wheel.io.ui.impl.ValueChangePane;
 import wheel.lang.IntegerParser;
-import wheel.lang.exceptions.IllegalParameter;
 
 public class Gui {
 
@@ -74,7 +72,7 @@ public class Gui {
 		String prompt=translate(
 				"Change this only if you know what you are doing.\n" +
 				"Sneer TCP port to listen:");
-		return new ValueChangePane(translate("Sneer Port Configuration"), correctSwingNewlineSpaceProblem(prompt), _user, _businessSource.output().sneerPort(), new IntegerParser(_businessSource.sneerPortSetter()));
+		return new ValueChangePane(translate("Sneer Port Configuration"), prompt, _user, _businessSource.output().sneerPort(), new IntegerParser(_businessSource.sneerPortSetter()));
 	}
 
 	private Action nameChangeAction() {
@@ -82,7 +80,7 @@ public class Gui {
 				"What is your name?\n" + 
 				"(You can change it any time you like)");
 		
-		return new ValueChangePane(translate("Own Name"),correctSwingNewlineSpaceProblem(prompt), _user, _businessSource.output().ownName(), _businessSource.ownNameSetter());
+		return new ValueChangePane(translate("Own Name"), prompt, _user, _businessSource.output().ownName(), _businessSource.ownNameSetter());
 	}
 	
 	private Action exitAction() {
@@ -98,8 +96,4 @@ public class Gui {
 		};
 	}
 	
-	private String correctSwingNewlineSpaceProblem(String proposition) {
-		return " "+proposition.replaceAll("\\n", "\n ") ;
-	}
-
 }

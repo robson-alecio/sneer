@@ -25,7 +25,7 @@ Main class: src/sneer.tests.MainSkippingBoot
 
 sneer.user_home_override - You can set this system property to make Sneer run in a different directory, so you can have several different Sneer installations running at the same time.
 
-build.xml - This ANT build will produce the runnable Sneer.jar file.
+build.xml - This ANT build file will produce the runnable Sneer.jar file.
 
 
 "WHAT CAN I DO TO HELP?"

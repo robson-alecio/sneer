@@ -163,7 +163,9 @@ public class ConversationFrame extends JFrame {
 		text = text.replaceAll("\\:\\-P", "<img src = \"http://www.humorbabaca.com/emo/0004.gif\">"); // :-P
 		text = text.replaceAll("\\:P", "<img src = \"http://www.humorbabaca.com/emo/0004.gif\">"); // :P
 		text = text.replaceAll("rara", "<img src = \"http://www.humorbabaca.com/emo/0037.gif\">"); // rara
-		text = text.replaceAll("eca", "<img src = \"http://www.humorbabaca.com/emo/0006.gif\">"); // eca
+		text = text.replaceAll("ecati", "<img src = \"http://www.humorbabaca.com/emo/0006.gif\">"); // ecati
+		text = text.replaceAll("Peccin", "<img src = \"http://www.humorbabaca.com/emo/0075.gif\">"); // Peccin
+		text = text.replaceAll("peccin", "<img src = \"http://www.humorbabaca.com/emo/0075.gif\">"); // peccin
 		return text;
 	}
 	

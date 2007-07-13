@@ -144,7 +144,7 @@ public class ConversationFrame extends JFrame {
 			HTMLDocument document = (HTMLDocument)_chatText.getDocument();
 			Element ep = document.getElement("textInsideThisDiv");
 			try {
-				document.insertBeforeEnd(ep, "<div><font face=\"Verdana\" size=\"3\">" + processEmoticons(entry) + "</font></div>");
+				document.insertBeforeEnd(ep, "<div><font face=\"Verdana\" size=\"3\">" + processEmoticons(entry) + "</font></div>"); //Fix: Caracters like '<' must be escaped. They do not show up in the chat.
 			} catch (Exception ex) {
 				Log.log(ex);
 			}

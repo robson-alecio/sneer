@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.List;
 
 import sneer.kernel.business.BusinessSource;
+import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.gui.contacts.ShowContactsScreenAction;
 import wheel.io.ui.TrayIcon;
@@ -14,7 +15,10 @@ import wheel.io.ui.Util;
 import wheel.io.ui.ValueChangePane;
 import wheel.io.ui.TrayIcon.Action;
 import wheel.io.ui.impl.TrayIconImpl;
+import wheel.lang.Consumer;
 import wheel.lang.IntegerParser;
+import wheel.lang.Pair;
+import wheel.lang.exceptions.IllegalParameter;
 
 public class Gui {
 
@@ -59,7 +63,7 @@ public class Gui {
 	}
 
 	private ShowContactsScreenAction showContactsScreenAction() {
-		return new ShowContactsScreenAction(_businessSource.output().contacts(), _businessSource.contactAdder(), _businessSource.contactRemover(), _user,_contactActions);
+		return new ShowContactsScreenAction(_user, _businessSource.output().contacts(), _contactActions, _businessSource.contactAdder(),_businessSource.contactRemover(), _businessSource.contactNickChanger());
 	}
 
 	private void filloutInitialValues() { // Refactor: remove this logic from the gui. Maybe move to Communicator;

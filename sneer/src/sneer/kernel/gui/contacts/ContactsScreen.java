@@ -30,25 +30,27 @@ import wheel.io.ui.User;
 import wheel.io.ui.impl.ListSignalModel;
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
+import wheel.lang.Pair;
+import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.lists.ListSignal;
 
 public class ContactsScreen extends JFrame {
 
-	private static final long serialVersionUID = 1L;
-	private final ListSignal<Contact> _contacts;
-	private final Consumer<ContactInfo> _contactAdder;
 	private final User _user;
+	private final ListSignal<Contact> _contacts;
 	private final List<ContactAction> _contactActions;
+	private final Consumer<ContactInfo> _contactAdder;
 	private final Omnivore<ContactId> _contactRemover;
+	private final Consumer<Pair<ContactId, String>> _nickChanger;
 
 
-	public ContactsScreen(User user, ListSignal<Contact> contacts, Consumer<ContactInfo> contactAdder, Omnivore<ContactId> contactRemover, List<ContactAction> contactActions) {
-
+	public ContactsScreen(User user, ListSignal<Contact> contacts, List<ContactAction> contactActions, Consumer<ContactInfo> contactAdder, Omnivore<ContactId> contactRemover, Consumer<Pair<ContactId, String>> nickChanger) {
 		_user = user;
 		_contacts = contacts;
+		_contactActions = contactActions;
 		_contactAdder = contactAdder;
 		_contactRemover = contactRemover;
-		_contactActions = contactActions;
+		_nickChanger = nickChanger;
 
 		initComponents();
 		setVisible(true);
@@ -112,10 +114,14 @@ public class ContactsScreen extends JFrame {
 
 	private JPopupMenu getFriendPopUpMenu(final JList friendsList) {
 		final JPopupMenu result = new JPopupMenu();
-		addToContactMenu(result, new ContactNickChangeAction(), friendsList);
+		addToContactMenu(result, nickChangeAction(), friendsList);
 		for (ContactAction action : _contactActions) addToContactMenu(result, action, friendsList);
 		addToContactMenu(result, new ContactRemovalAction(_contactRemover), friendsList);
 		return result;
+	}
+
+	private ContactNickChangeAction nickChangeAction() {
+		return new ContactNickChangeAction(_user, _nickChanger);
 	}
 
 	private void addToContactMenu(JPopupMenu menu, final ContactAction action, final JList friendsList) {
@@ -146,7 +152,6 @@ public class ContactsScreen extends JFrame {
 		return addButton;
 	}
 	
-
-	
+	private static final long serialVersionUID = 1L;
 	
 }

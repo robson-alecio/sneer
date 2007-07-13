@@ -37,7 +37,6 @@ public class NewContactAddition {
 	}
 
 	private int port(User user, String nick) throws CancelledByUser {
-
 		PortNumberSource result = new PortNumberSource(0);
 		new ValueChangePane(translate("Port Number"), translate("Sneer Port for %1$s",nick), user, result.output(), new IntegerParser(result.setter())).tryToRun();
 		return result.output().currentValue();

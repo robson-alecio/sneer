@@ -1,5 +1,6 @@
 package sneer.kernel.business.impl;
 
+import static wheel.i18n.Language.translate;
 import sneer.kernel.business.Business;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.contacts.Contact;
@@ -8,13 +9,14 @@ import sneer.kernel.business.contacts.ContactInfo;
 import sneer.kernel.business.contacts.ContactPublicKeyInfo;
 import sneer.kernel.business.contacts.ContactSource;
 import sneer.kernel.business.contacts.OnlineEvent;
-import sneer.kernel.business.contacts.impl.ContactAdder;
 import sneer.kernel.business.contacts.impl.ContactPublicKeyUpdater;
-import sneer.kernel.gui.contacts.ContactRemovalAction;
+import sneer.kernel.business.contacts.impl.ContactSourceImpl;
 import wheel.io.network.PortNumberSource;
 import wheel.lang.Consumer;
 import wheel.lang.Counter;
 import wheel.lang.Omnivore;
+import wheel.lang.Pair;
+import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
 import wheel.reactive.SourceImpl;
@@ -86,7 +88,13 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 
 	@Override
 	public Consumer<ContactInfo> contactAdder() {
-		return new ContactAdder(_contactSources, _contacts, _contactIdSource);
+		return new Consumer<ContactInfo>() { @Override public void consume(ContactInfo info) throws IllegalParameter {
+			checkDuplicateNick(info._nick);
+
+			ContactSource contact = new ContactSourceImpl(info._nick, info._host, info._port, info._publicKey, info._state, _contactIdSource.next());
+			_contactSources.add(contact);
+			_contacts.add(contact.output());
+		}};
 	}
 
 	@Override
@@ -130,7 +138,35 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 	}
 
 	public Omnivore<ContactId> contactRemover() {
-		return new ContactRemover(_contactSources, _contacts);
+		return new Omnivore<ContactId>() { @Override public void consume(ContactId contactId) {
+			ContactSource contactSource = findContactSource(contactId);
+			_contactSources.remove(contactSource);
+			_contacts.remove(contactSource.output());
+		}};
 	}
+
+	private ContactSource findContactSource(ContactId contactId) {
+		for (ContactSource candidate : _contactSources.output())
+			if (candidate.output().id().equals(contactId))
+				return candidate;
+		
+		throw new IllegalArgumentException("contactId not found");
+	}
+
+	@Override
+	public Consumer<Pair<ContactId, String>> contactNickChanger() {
+		return new Consumer<Pair<ContactId,String>>() { @Override public void consume(Pair<ContactId, String> nickChange) throws IllegalParameter {
+			ContactId contactId = nickChange._a;
+			String newNick = nickChange._b;
+			checkDuplicateNick(newNick);
+			findContactSource(contactId).nickSetter().consume(newNick);	
+		}};
+
+	}
+
+	private void checkDuplicateNick(String newNick) throws IllegalParameter {
+		if (findContactSource(newNick) != null)
+			throw new IllegalParameter(translate("There already is a contact with nickname: %1$s", newNick));
+	};
 
 }

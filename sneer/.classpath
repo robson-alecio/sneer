@@ -8,6 +8,7 @@
 	<classpathentry kind="lib" path="lib/xstream/xpp3_min-1.1.3.4.O.jar"/>
 	<classpathentry kind="lib" path="lib_for_tests/Filters.jar"/>
 	<classpathentry kind="lib" path="lib_for_tests/junit-3.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/talk.jar"/>
 	<classpathentry kind="src" path="src_old"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

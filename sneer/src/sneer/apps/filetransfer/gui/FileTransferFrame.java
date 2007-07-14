@@ -65,7 +65,7 @@ public class FileTransferFrame extends JFrame {
 		final JFileChooser fc = new JFileChooser();
 		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		int value = fc.showSaveDialog(null);
-		while (value != JFileChooser.APPROVE_OPTION) {}
+		while (value != JFileChooser.APPROVE_OPTION) {} //Fix: cancelling the dialog should cancel the transfer
 		return fc.getSelectedFile();
 	}
 	

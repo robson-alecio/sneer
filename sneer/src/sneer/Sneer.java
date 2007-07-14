@@ -12,6 +12,7 @@ import org.prevayler.PrevaylerFactory;
 
 import prevayler.bubble.Bubble;
 import sneer.apps.conversations.ConversationsApp;
+import sneer.apps.filetransfer.FileTransferApp;
 import sneer.apps.talk.TalkApp;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.impl.BusinessFactory;
@@ -86,6 +87,8 @@ public class Sneer {
 		result.add(new ConversationsApp(ConversationsChannel, _businessSource.output().contacts()).contactAction());
 		Channel TalkChannel = _communicator.getChannel(TalkApp.class.getName());
 		result.add(new TalkApp(TalkChannel, _businessSource.output().contacts()).contactAction());
+		Channel FileTransferChannel = _communicator.getChannel(FileTransferApp.class.getName());
+		result.add(new FileTransferApp(FileTransferChannel, _businessSource.output().contacts()).contactAction());
 		return result;
 	}
 

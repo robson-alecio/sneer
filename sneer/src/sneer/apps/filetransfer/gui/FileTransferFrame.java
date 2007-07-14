@@ -36,7 +36,7 @@ public class FileTransferFrame extends JFrame {
 			public void consume(FilePart filePart) {
 			
 			if (filePart._offset == 0 ) {//first filePart
-				_directoryMap.put(filePart._filename, chooseTargetDirectory());
+				_directoryMap.put(filePart._filename, chooseTargetDirectory("Saving "+filePart._filename));
 			}
 			
 			File directory = _directoryMap.get(filePart._filename);
@@ -61,9 +61,10 @@ public class FileTransferFrame extends JFrame {
 		setVisible(true);
 	}
 	
-	private File chooseTargetDirectory() {
+	private File chooseTargetDirectory(String dialogTitle) {
 		final JFileChooser fc = new JFileChooser();
 		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fc.setDialogTitle(dialogTitle);
 		int value = fc.showSaveDialog(null);
 		while (value != JFileChooser.APPROVE_OPTION) {} //Fix: cancelling the dialog should cancel the transfer
 		return fc.getSelectedFile();

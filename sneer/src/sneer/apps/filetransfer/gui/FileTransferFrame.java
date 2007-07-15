@@ -21,44 +21,41 @@ public class FileTransferFrame extends JFrame {
 
 	public FileTransferFrame(Signal<String> otherGuysNick, final Signal<FilePart> fileInput) {
 
-		//Fix: should ask if wants do download the file or not!!!!
+		//Fix: should ask if user wants do download the file
 
 		initComponents();
 		
 		_otherGuysNick = otherGuysNick;
-		_otherGuysNick.addReceiver(new Omnivore<String>() { @Override
-			public void consume(String nick) {
-				setTitle(nick);
-			}
-		});
+		_otherGuysNick.addReceiver(new Omnivore<String>() { @Override public void consume(String nick) {
+			setTitle(nick);
+		}});
 
-		fileInput.addReceiver(new Omnivore<FilePart>() { @Override
-			public void consume(FilePart filePart) {
-			
-			if (filePart._offset == 0 ) {//first filePart
+		fileInput.addReceiver(filePartReceiver());
+
+		setVisible(true);
+	}
+
+	private Omnivore<FilePart> filePartReceiver() {
+		return new Omnivore<FilePart>() { @Override public void consume(FilePart filePart) {
+			if (filePart._offset == 0) //first filePart
 				_directoryMap.put(filePart._filename, chooseTargetDirectory("Saving "+filePart._filename));
-			}
 			
 			File directory = _directoryMap.get(filePart._filename);
 			
 			System.out.println("Received filepart: "+filePart);
 			updateProgressBar(filePart._offset,filePart._filesize);
-				try {
-					String filename = directory.getPath() + File.separator + filePart._filename;
-					RandomAccessFile raf = new RandomAccessFile(filename,"rws");
-					raf.seek(filePart._offset);
-					raf.write(filePart._content,0,filePart._content.length);
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				updateProgressBar(filePart._offset+filePart._content.length,filePart._filesize);
+			try {
+				String filename = directory.getPath() + File.separator + filePart._filename;
+				RandomAccessFile raf = new RandomAccessFile(filename,"rws");
+				raf.seek(filePart._offset);
+				raf.write(filePart._content,0,filePart._content.length);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace(); //Fix: Treat properly
+			} catch (IOException e) {
+				e.printStackTrace(); //Fix: Treat properly
 			}
-
-		});
-
-		setVisible(true);
+			updateProgressBar(filePart._offset+filePart._content.length,filePart._filesize);
+		}};
 	}
 	
 	private File chooseTargetDirectory(String dialogTitle) {

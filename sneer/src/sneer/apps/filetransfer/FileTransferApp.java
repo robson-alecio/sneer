@@ -48,7 +48,7 @@ public class FileTransferApp {
 
 			@Override
 			public String caption() {
-				return "Transfer File";
+				return "Send File";
 			}
 			
 		};
@@ -62,33 +62,32 @@ public class FileTransferApp {
 	}
 	
 	private void actUponContact(final Contact contact) {
-		Threads.startDaemon(new Runnable() {
-			public void run() {
-				final JFileChooser fc = new JFileChooser();
-				int value = fc.showOpenDialog(null);
-				if (value == JFileChooser.APPROVE_OPTION) {
-					File file = fc.getSelectedFile();
-					sendFile(contact, file);
-				}
-			}
-		});
+		Threads.startDaemon(new Runnable() { public void run() {
+			final JFileChooser fc = new JFileChooser(); //Refactor: The app should not have GUI logic.
+			int value = fc.showOpenDialog(null);
+			fc.setApproveButtonText("Send");
+			if (value != JFileChooser.APPROVE_OPTION) return;
+
+			File file = fc.getSelectedFile();
+			sendFile(contact, file);
+		}});
 	}
 	
 	private void sendFile(final Contact contact, File file) {
 		try{
 			byte[] buffer = new byte[FILEPART_CHUNK_SIZE];
 			BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));
-			int readed = -1;
+			int read = -1;
 			long offset = 0;
-			while((readed = in.read(buffer))!=-1){
-				byte[] contents = new byte[readed];
-				System.arraycopy(buffer,0,contents,0,readed);
+			while((read = in.read(buffer))!=-1){
+				byte[] contents = new byte[read];
+				System.arraycopy(buffer,0,contents,0,read);
 				final FilePart filePart = new FilePart(file.getName(),file.length(),contents,offset);
 				outputTo(contact.id()).consume(filePart); //sending file...
-				offset+=readed;
+				offset+=read;
 			}
 		}catch(IOException ioe){
-			ioe.printStackTrace();
+			ioe.printStackTrace(); //Fix: Treat properly.
 		}
 	}
 
@@ -103,7 +102,7 @@ public class FileTransferApp {
 			frame = new FileTransferFrame(findContact(contactId).nick(), inputFrom(contactId));
 			_framesByContactId.put(contactId, frame);
 		}
-		return frame;
+		return frame; //Fix: What if this Frame has been closed?
 	}
 
 	private Contact findContact(ContactId id) {

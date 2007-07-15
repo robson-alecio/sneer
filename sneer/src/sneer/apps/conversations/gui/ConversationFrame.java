@@ -102,27 +102,25 @@ public class ConversationFrame extends JFrame {
 		Threads.startDaemon(new Runnable() { @Override public void run() {
 			String previousStatus = TYPING_ERASED;
 			while (true) {
+				Threads.sleepWithoutInterruptions(500);
+
 				if (_lastMessageSendingTime > _lastKeyPressedTime) {
 					previousStatus = TYPING_ERASED;
-					return;
+					continue;
 				}
 				
 				String text = _chatInput.getText();
 				
-				String status = TYPING_ERASED;
-				if (System.currentTimeMillis() - _lastKeyPressedTime > 4000) {
-					status = text.isEmpty()
-						? TYPING_ERASED
-						: TYPING_PAUSED;
-				} else {
-					if (!text.isEmpty()) status = TYPING;
-				}
+				String status = text.isEmpty()
+					? TYPING_ERASED
+					: System.currentTimeMillis() - _lastKeyPressedTime > 4000
+						? TYPING_PAUSED
+						: TYPING;
 
-				if (!previousStatus.equals(status))
-					_messageOutput.consume(new Message(status));
+				if (status == previousStatus) continue;
 				previousStatus = status;
-		
-				Threads.sleepWithoutInterruptions(500);
+				
+				_messageOutput.consume(new Message(status));
 			}
 		}});
 	}

@@ -3,7 +3,6 @@ package sneer.apps.filetransfer;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +15,7 @@ import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
+import static wheel.i18n.Language.*;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.reactive.Signal;
@@ -65,8 +65,9 @@ public class FileTransferApp {
 	private void actUponContact(final Contact contact) {
 		Threads.startDaemon(new Runnable() { public void run() {
 			final JFileChooser fc = new JFileChooser(); //Refactor: The app should not have GUI logic.
+			fc.setDialogTitle(translate("Choose File to Send to %1$s", contact.nick().currentValue()));
+			fc.setApproveButtonText(translate("Send"));
 			int value = fc.showOpenDialog(null);
-			fc.setApproveButtonText("Send");
 			if (value != JFileChooser.APPROVE_OPTION) return;
 
 			File file = fc.getSelectedFile();

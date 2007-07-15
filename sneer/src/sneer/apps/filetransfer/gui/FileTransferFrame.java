@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 
 import sneer.apps.filetransfer.FilePart;
+import static wheel.i18n.Language.*;
 import wheel.io.ui.CancelledByUser;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
@@ -21,9 +22,6 @@ public class FileTransferFrame extends JFrame {
 	private Hashtable<String,File> _directoryMap = new Hashtable<String,File>();
 
 	public FileTransferFrame(Signal<String> otherGuysNick, final Signal<FilePart> fileInput) {
-
-		//Fix: should ask if user wants do download the file
-
 		initComponents();
 		
 		_otherGuysNick = otherGuysNick;
@@ -61,28 +59,31 @@ public class FileTransferFrame extends JFrame {
 	}
 	
 	private File directoryFor(FilePart filePart) {
+		String fileName = filePart._filename;
+		
 		if (filePart._offset != 0) //Not the first one.
-			return _directoryMap.get(filePart._filename);
+			return _directoryMap.get(fileName);
 
 		File directory;
 		try {
-			directory = chooseTargetDirectory("Saving " + filePart._filename);
+			directory = chooseTargetDirectory(fileName);
 		} catch (CancelledByUser e) {
 			return null;
 		}
-		_directoryMap.put(filePart._filename, directory); //Fix What is two different contacts are sending files with the same name? use another key.
+		_directoryMap.put(fileName, directory); //Fix What is two different contacts are sending files with the same name? use another key.
 		return directory;
 	}
 	
-	private File chooseTargetDirectory(String dialogTitle) throws CancelledByUser {
+	private File chooseTargetDirectory(String fileName) throws CancelledByUser {
 		final JFileChooser fc = new JFileChooser();
 		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		fc.setDialogTitle(dialogTitle);
+		fc.setApproveButtonText(translate("Receive"));
+		fc.setDialogTitle(translate("Receiving %1$s - Choose Download Directory", fileName));
 		
-		while (fc.showSaveDialog(null) != JFileChooser.APPROVE_OPTION)
+		while (fc.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
 			throw new CancelledByUser();
 		
-		return fc.getSelectedFile();
+		return fc.getSelectedFile(); //Fix: What if the user manually types an invalid directory name in the field?
 	}
 	
 	public void updateProgressBar(long value, long total){

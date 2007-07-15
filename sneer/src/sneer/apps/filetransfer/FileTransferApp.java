@@ -3,6 +3,7 @@ package sneer.apps.filetransfer;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,21 +75,31 @@ public class FileTransferApp {
 	}
 	
 	private void sendFile(final Contact contact, File file) {
-		try{
-			byte[] buffer = new byte[FILEPART_CHUNK_SIZE];
-			BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));
-			int read = -1;
-			long offset = 0;
-			while((read = in.read(buffer))!=-1){
-				byte[] contents = new byte[read];
-				System.arraycopy(buffer,0,contents,0,read);
-				final FilePart filePart = new FilePart(file.getName(),file.length(),contents,offset);
-				outputTo(contact.id()).consume(filePart); //sending file...
-				offset+=read;
-			}
-		}catch(IOException ioe){
+		try {
+			tryToSendFile(contact, file);
+		} catch(IOException ioe) {
 			ioe.printStackTrace(); //Fix: Treat properly.
 		}
+	}
+
+	private void tryToSendFile(final Contact contact, File file) throws IOException {
+		String fileName = file.getName();
+		long fileLength = file.length();
+		byte[] buffer = new byte[FILEPART_CHUNK_SIZE];
+		BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));
+		int read;
+		long offset = 0;
+		while ((read = in.read(buffer)) != -1) {
+			byte[] contents = new byte[read];
+			System.arraycopy(buffer,0,contents,0,read);
+			final FilePart filePart = new FilePart(fileName, fileLength, contents, offset);
+			sendPart(contact, filePart);
+			offset += read;
+		}
+	}
+
+	private void sendPart(Contact contact, FilePart filePart) {
+		_channel.output().consume(new Packet(contact.id(), filePart));
 	}
 
 	private void openFrameFor(ContactId contactId) {
@@ -122,12 +133,6 @@ public class FileTransferApp {
 			_inputsByContactId.put(contactId, result);
 		}
 		return result;
-	}
-
-	private Omnivore<FilePart> outputTo(final ContactId contactId) {
-		return new Omnivore<FilePart>() { public void consume(FilePart filePart) {
-			_channel.output().consume(new Packet(contactId, filePart));
-		}};
 	}
 
 }

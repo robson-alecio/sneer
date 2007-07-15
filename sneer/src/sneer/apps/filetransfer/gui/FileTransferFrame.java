@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 
 import sneer.apps.filetransfer.FilePart;
+import wheel.io.ui.CancelledByUser;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 
@@ -37,12 +38,13 @@ public class FileTransferFrame extends JFrame {
 
 	private Omnivore<FilePart> filePartReceiver() {
 		return new Omnivore<FilePart>() { @Override public void consume(FilePart filePart) {
-			if (filePart._offset == 0) //first filePart
-				_directoryMap.put(filePart._filename, chooseTargetDirectory("Saving "+filePart._filename));
+			File directory = directoryFor(filePart); 
+			if (directory == null) {
+				System.out.println("Stop sending this file. I dont want it."); //Fix Stop sending.
+				return;
+			}
 			
-			File directory = _directoryMap.get(filePart._filename);
-			
-			System.out.println("Received filepart: "+filePart);
+			System.out.println("Received filepart: " + filePart);
 			updateProgressBar(filePart._offset,filePart._filesize);
 			try {
 				String filename = directory.getPath() + File.separator + filePart._filename;
@@ -58,12 +60,28 @@ public class FileTransferFrame extends JFrame {
 		}};
 	}
 	
-	private File chooseTargetDirectory(String dialogTitle) {
+	private File directoryFor(FilePart filePart) {
+		if (filePart._offset != 0) //Not the first one.
+			return _directoryMap.get(filePart._filename);
+
+		File directory;
+		try {
+			directory = chooseTargetDirectory("Saving " + filePart._filename);
+		} catch (CancelledByUser e) {
+			return null;
+		}
+		_directoryMap.put(filePart._filename, directory); //Fix What is two different contacts are sending files with the same name? use another key.
+		return directory;
+	}
+	
+	private File chooseTargetDirectory(String dialogTitle) throws CancelledByUser {
 		final JFileChooser fc = new JFileChooser();
 		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		fc.setDialogTitle(dialogTitle);
 		
-		while (fc.showSaveDialog(null) != JFileChooser.APPROVE_OPTION) {} //Fix: cancelling the dialog should cancel the transfer
+		while (fc.showSaveDialog(null) != JFileChooser.APPROVE_OPTION)
+			throw new CancelledByUser();
+		
 		return fc.getSelectedFile();
 	}
 	

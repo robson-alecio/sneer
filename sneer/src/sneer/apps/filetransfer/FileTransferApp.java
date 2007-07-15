@@ -16,6 +16,7 @@ import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
 import static wheel.i18n.Language.*;
+import wheel.io.ui.User;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.reactive.Signal;
@@ -27,13 +28,15 @@ public class FileTransferApp {
 
 	private static final int FILEPART_CHUNK_SIZE = 20000;
 
-	public FileTransferApp(Channel channel, ListSignal<Contact> contacts) {
+	public FileTransferApp(User user, Channel channel, ListSignal<Contact> contacts) {
+		_user = user;
 		_channel = channel;
 		_contacts = contacts;
 		
 		_channel.input().addReceiver(filePartReceiver());
 	}
 
+	private final User _user;
 	private final Channel _channel;
 	private final ListSignal<Contact> _contacts;
 	private final Map<ContactId, FileTransferFrame>_framesByContactId = new HashMap<ContactId, FileTransferFrame>();
@@ -111,7 +114,7 @@ public class FileTransferApp {
 	private FileTransferFrame produceFrameFor(ContactId contactId) {
 		FileTransferFrame frame = _framesByContactId.get(contactId);
 		if (frame == null) {
-			frame = new FileTransferFrame(findContact(contactId).nick(), inputFrom(contactId));
+			frame = new FileTransferFrame(_user, findContact(contactId).nick(), inputFrom(contactId));
 			_framesByContactId.put(contactId, frame);
 		}
 		return frame; //Fix: What if this Frame has been closed?

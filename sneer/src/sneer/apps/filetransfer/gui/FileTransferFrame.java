@@ -1,5 +1,7 @@
 package sneer.apps.filetransfer.gui;
 
+import static wheel.i18n.Language.translate;
+
 import java.awt.BorderLayout;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,8 +14,8 @@ import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 
 import sneer.apps.filetransfer.FilePart;
-import static wheel.i18n.Language.*;
 import wheel.io.ui.CancelledByUser;
+import wheel.io.ui.User;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 
@@ -21,10 +23,14 @@ public class FileTransferFrame extends JFrame {
 	
 	private Hashtable<String,File> _directoryMap = new Hashtable<String,File>();
 
-	public FileTransferFrame(Signal<String> otherGuysNick, final Signal<FilePart> fileInput) {
+	private final User _user;
+
+	public FileTransferFrame(User user, Signal<String> otherGuysNick, final Signal<FilePart> fileInput) {
+		_user = user;
+		_otherGuysNick = otherGuysNick;
+
 		initComponents();
 		
-		_otherGuysNick = otherGuysNick;
 		_otherGuysNick.addReceiver(new Omnivore<String>() { @Override public void consume(String nick) {
 			setTitle(nick);
 		}});
@@ -80,10 +86,17 @@ public class FileTransferFrame extends JFrame {
 		fc.setApproveButtonText(translate("Receive"));
 		fc.setDialogTitle(translate("Receiving %1$s - Choose Download Directory", fileName));
 		
-		while (fc.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
-			throw new CancelledByUser();
+		while (true) {
+			if (fc.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
+				throw new CancelledByUser();
 		
-		return fc.getSelectedFile(); //Fix: What if the user manually types an invalid directory name in the field?
+			File result = fc.getSelectedFile();
+			if (!result.isDirectory()) { // User might have entered manually.
+				_user.acknowledgeNotification(translate("This is not a valid folder:\n\n%1$s\n\nTry again.", result.getPath()));
+				continue;
+			}
+			return result;
+		}
 	}
 	
 	public void updateProgressBar(long value, long total){

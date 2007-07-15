@@ -25,12 +25,9 @@ public class TransparentBackground extends JComponent {
 
 	private static final long serialVersionUID = 1L;
 
-	private JFrame _frame;
-
 	private Image background;
 
-	public TransparentBackground(JFrame frame) {
-		_frame = frame;
+	public TransparentBackground() {
 		updateBackground();
 	}
 
@@ -54,7 +51,7 @@ public class TransparentBackground extends JComponent {
 	
 	public static void main(String[] args) {
 	    JFrame frame = new JFrame("Transparent Window");
-	    TransparentBackground bg = new TransparentBackground(frame);
+	    TransparentBackground bg = new TransparentBackground();
 	    bg.setLayout(new BorderLayout( ));
 	    JButton button = new JButton("This is a button");
 	    bg.add("North",button);

@@ -30,7 +30,7 @@ import wheel.reactive.Signal;
 
 public class ConversationFrame extends JFrame {
 	
-	private static final String TYPING = "TyPiNg :)";
+	private static final String TYPING = "TyPiNg :)"; //Refactor :)
 	private static final String TYPING_PAUSED = "TyPiNg PaUsEd :)";
 	private static final String TYPING_ERASED = "TyPiNg ErAsEd :)";
 
@@ -40,6 +40,7 @@ public class ConversationFrame extends JFrame {
 		_messageOutput = messageOutput;
 		
 		initComponents();
+		setVisible(true);
 		
 		_otherGuysNick.addReceiver(new Omnivore<String>() { @Override public void consume(String nick) {
 			setTitle(nick);
@@ -49,7 +50,7 @@ public class ConversationFrame extends JFrame {
 			receiveMessage(message);
 		}});
 		
-		setVisible(true);
+		startIsTypingNotifier();
 	}
 
 	private final Signal<String> _otherGuysNick;
@@ -59,8 +60,9 @@ public class ConversationFrame extends JFrame {
 	private final JTextField _chatInput = createChatInput();
 	private final JLabel _statusLabel = new JLabel(" "); //Needs something to process preferred size and render correctly. :P
 
-	private volatile Runnable _lastTypingHandler;
-	
+	private volatile long _lastMessageSendingTime;
+	private volatile long _lastKeyPressedTime;
+	 
 	private void appendToChatText(String sender, Message message) {
 		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
 		appendToChatText(formatter.format(new Date()) + " <b>"+ sender + ":</b> " + message._text);
@@ -85,48 +87,57 @@ public class ConversationFrame extends JFrame {
 	private JTextField createChatInput() {
 		JTextField result = new JTextField();
 		result.addActionListener(chatActionListener());
-		result.addKeyListener(chatKeyListener());
+		result.addKeyListener(keyTypedListener());
 		return result;
 	}
 
-	private KeyListener chatKeyListener() { //Fix: All this typing logic is not working 100%
-		return new KeyAdapter() {	@Override	public void keyTyped(KeyEvent ignored) {
-			
-			final Runnable previousTypingHandler = _lastTypingHandler;
-		
-			Threads.startDaemon(new Runnable() {
-				public void run() {
-					_lastTypingHandler = this;
-					if (previousTypingHandler == null) _messageOutput.consume(new Message(TYPING));
-		
-					Threads.sleepWithoutInterruptions(4000);
-		
-					if (_lastTypingHandler != this) return;
-					typingDone(false);
-				}
-			}
-		);}};
+
+	private KeyListener keyTypedListener() {
+		return new KeyAdapter() { @Override public void keyTyped(KeyEvent ignored) {
+			_lastKeyPressedTime = System.currentTimeMillis();
+		}};
 	}
 
-	private void typingDone(boolean messageSent) {
-		_lastTypingHandler = null;
-		if (messageSent) return;
+	private void startIsTypingNotifier() {
+		Threads.startDaemon(new Runnable() { @Override public void run() {
+			String previousStatus = TYPING_ERASED;
+			while (true) {
+				if (_lastMessageSendingTime > _lastKeyPressedTime) {
+					previousStatus = TYPING_ERASED;
+					return;
+				}
+				
+				String text = _chatInput.getText();
+				
+				String status = TYPING_ERASED;
+				if (System.currentTimeMillis() - _lastKeyPressedTime > 4000) {
+					status = text.isEmpty()
+						? TYPING_ERASED
+						: TYPING_PAUSED;
+				} else {
+					if (!text.isEmpty()) status = TYPING;
+				}
+
+				if (!previousStatus.equals(status))
+					_messageOutput.consume(new Message(status));
+				previousStatus = status;
 		
-		String text = _chatInput.getText().isEmpty()
-			? TYPING_ERASED
-			: TYPING_PAUSED;
-		_messageOutput.consume(new Message(text));
+				Threads.sleepWithoutInterruptions(500);
+			}
+		}});
 	}
-	
+
 	private ActionListener chatActionListener() {
 		return new ActionListener() { @Override public void actionPerformed(ActionEvent ignored) {
 			final Message message = new Message(XMLUtils.escapeBodyValue(_chatInput.getText()));
 			_chatInput.setText("");
-				
-			Threads.startDaemon(new Runnable() { @Override public void run() {
+			
+			Threads.startDaemon(new Runnable() {
+
+			@Override public void run() {
+				_lastMessageSendingTime = System.currentTimeMillis();
 				_messageOutput.consume(message);
 				appendToChatText(translate("Me"), message);
-				typingDone(true);
 			}});
 		}};
 	}

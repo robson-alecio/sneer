@@ -76,7 +76,7 @@ public class Gui {
 		String prompt=translate(
 				"Change this only if you know what you are doing.\n" +
 				"Sneer TCP port to listen:");
-		return new ValueChangePane(translate("Sneer Port Configuration"), prompt, _user, _businessSource.output().sneerPort(), new IntegerParser(_businessSource.sneerPortSetter()));
+		return new ValueChangePane(translate("Sneer Port"), prompt, _user, _businessSource.output().sneerPort(), new IntegerParser(_businessSource.sneerPortSetter()));
 	}
 
 	private Action nameChangeAction() {

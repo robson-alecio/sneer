@@ -20,7 +20,7 @@ class LanguageChangeAction implements Action {
 	private final Omnivore<String> _languageSetter;
 	
 	public String caption() {
-		return translate("Choose your Language");
+		return translate("Language");
 	}
 
 	public void run() {

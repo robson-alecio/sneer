@@ -26,7 +26,7 @@ import wheel.reactive.lists.ListSignal;
 
 public class FileTransferApp {
 
-	private static final int FILEPART_CHUNK_SIZE = 20000;
+	private static final int FILEPART_CHUNK_SIZE = 1000;
 
 	public FileTransferApp(User user, Channel channel, ListSignal<Contact> contacts) {
 		_user = user;
@@ -60,7 +60,7 @@ public class FileTransferApp {
 
 	private Omnivore<Packet> filePartReceiver() {
 		return new Omnivore<Packet>() { public void consume(Packet packet) {
-			openFrameFor(packet._contactId);
+			produceFrameFor(packet._contactId);
 			produceInputFor(packet._contactId).setter().consume((FilePart)packet._contents);
 		}};
 	}
@@ -104,11 +104,6 @@ public class FileTransferApp {
 
 	private void sendPart(Contact contact, FilePart filePart) {
 		_channel.output().consume(new Packet(contact.id(), filePart));
-	}
-
-	private void openFrameFor(ContactId contactId) {
-		FileTransferFrame frame = produceFrameFor(contactId);
-		frame.setVisible(true);
 	}
 
 	private FileTransferFrame produceFrameFor(ContactId contactId) {

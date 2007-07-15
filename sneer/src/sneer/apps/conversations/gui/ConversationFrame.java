@@ -176,6 +176,8 @@ public class ConversationFrame extends JFrame {
 		text = text.replaceAll("Peccin", "<img width=61 height=50 src = \"http://www.humorbabaca.com/emo/0075.gif\">"); // Peccin
 		text = text.replaceAll("peccin", "<img width=61 height=50 src = \"http://www.humorbabaca.com/emo/0075.gif\">"); // peccin
 		return text;
+		
+		//Fix: <) produces the same emoticon as ;)  . This should not happen.
 	}
 	
 	private void receiveMessage(Message message) {

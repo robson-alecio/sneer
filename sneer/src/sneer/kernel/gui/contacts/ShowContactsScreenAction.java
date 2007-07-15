@@ -37,7 +37,7 @@ public class ShowContactsScreenAction implements Action {
 	}
 
 	public void run() {
-		new ContactsScreen(_user, _contacts, _contactActions, _contactAdder, _contactRemover, _nickChanger); //Fix Use the existing one if there is one already.
+		new ContactsScreen(_user, _contacts, _contactActions, _contactAdder, _contactRemover, _nickChanger); //Fix Easy: Use the existing one if there is one already.
 	}
 
 }

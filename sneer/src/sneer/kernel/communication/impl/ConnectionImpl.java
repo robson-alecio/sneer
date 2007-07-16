@@ -35,9 +35,7 @@ public class ConnectionImpl {
 	private final Object _socketOpenMonitor = new Object();
 	private final Object _socketSetterMonitor = new Object();
 	
-	private final List<List<ChannelPacket>> _queuesByPriority = initQueues();
-	private long _packetsToSend = 0;
-	private final Object _packetsToSendMonitor = new Object();
+	private final PriorityQueue<ChannelPacket> _priorityQueue = new PriorityQueue<ChannelPacket>(10);
 	
 
 	public ConnectionImpl(Contact contact, OldNetwork network, Omnivore<OnlineEvent> onlineSetter, Consumer<OutgoingConnectionAttempt> connectionValidator, Omnivore<Object> objectReceiver) { //Refactor: move online notification to the objectReceiver instead of having separate onlineSetter.
@@ -54,32 +52,9 @@ public class ConnectionImpl {
 	private void startSender() {
 		Threads.startDaemon(new Runnable() { public void run() {
 			while (true) {
-				synchronized (_packetsToSendMonitor) {
-					if (_packetsToSend == 0)
-						Threads.waitWithoutInterruptions(_packetsToSendMonitor);
-					_packetsToSend--;
-				}
-				sendPacket();
+				send(_priorityQueue.waitForNext());
 			}
 		}});
-	}
-
-	private void sendPacket() {
-		for (List<ChannelPacket> queue : _queuesByPriority) {
-			if (queue.isEmpty()) continue;
-			send(queue.remove(0));
-			return;
-		}
-		throw new IllegalStateException("No packet to send was found.");
-	}
-
-	private List<List<ChannelPacket>> initQueues() {
-		List<List<ChannelPacket>> result = new LinkedList<List<ChannelPacket>>();
-		
-		while (result.size() < 10)
-			result.add(Collections.synchronizedList(new LinkedList<ChannelPacket>()));
-		
-		return result;
 	}
 
 	private void startIsOnlineWatchdog() {
@@ -198,11 +173,7 @@ public class ConnectionImpl {
 	}
 
 	void send(ChannelPacket channelPacket, int priority) {
-		_queuesByPriority.get(priority).add(channelPacket);
-		synchronized (_packetsToSendMonitor) {
-			_packetsToSend++;
-			_packetsToSendMonitor.notify();
-		}
+		_priorityQueue.add(channelPacket, priority);
 	}
 
 }

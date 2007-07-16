@@ -130,13 +130,9 @@ public class ConversationFrame extends JFrame {
 			final Message message = new Message(XMLUtils.escapeBodyValue(_chatInput.getText()));
 			_chatInput.setText("");
 			
-			Threads.startDaemon(new Runnable() {
-
-			@Override public void run() {
-				_lastMessageSendingTime = System.currentTimeMillis();
-				_messageOutput.consume(message);
-				appendToChatText(translate("Me"), message);
-			}});
+			_lastMessageSendingTime = System.currentTimeMillis();
+			_messageOutput.consume(message);
+			appendToChatText(translate("Me"), message);
 		}};
 	}
 
@@ -153,7 +149,7 @@ public class ConversationFrame extends JFrame {
 			HTMLDocument document = (HTMLDocument)_chatText.getDocument();
 			Element ep = document.getElement("textInsideThisDiv");
 			try {
-				document.insertBeforeEnd(ep, "<div><font face=\"Verdana\" size=\"3\">" + processEmoticons(entry) + "</font></div>");
+				document.insertBeforeEnd(ep, "<div><font face=\"Verdana\" size=\"3\">" + processEmoticons(entry) + "</font></div>"); //Fix: Sneer will hang if too many chat messages arrive at a time. Ex: contact holds down the enter key and send a stream of empty messages.
 			} catch (Exception ex) {
 				Log.log(ex);
 			}

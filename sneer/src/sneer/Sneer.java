@@ -84,13 +84,13 @@ public class Sneer {
 	private List<ContactAction> contactActions() {
 		List<ContactAction> result = new ArrayList<ContactAction>();
 		
-		Channel ConversationsChannel = _communicator.getChannel(ConversationsApp.class.getName());
+		Channel ConversationsChannel = _communicator.getChannel(ConversationsApp.class.getName(), 1);
 		result.add(new ConversationsApp(ConversationsChannel, _businessSource.output().contacts()).contactAction());
 		
 		//Channel TalkChannel = _communicator.getChannel(TalkApp.class.getName());
 		//result.add(new TalkApp(TalkChannel, _businessSource.output().contacts()).contactAction());
 		
-		Channel FileTransferChannel = _communicator.getChannel(FileTransferApp.class.getName());
+		Channel FileTransferChannel = _communicator.getChannel(FileTransferApp.class.getName(), 2);
 		result.add(new FileTransferApp(_user, FileTransferChannel, _businessSource.output().contacts()).contactAction());
 		
 		return result;

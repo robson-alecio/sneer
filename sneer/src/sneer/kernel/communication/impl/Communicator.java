@@ -133,19 +133,19 @@ public class Communicator {
 	}
 
 
-	public Channel getChannel(String channelId) {
+	public Channel getChannel(String channelId, int priority) {
 		ChannelImpl result = _channelsById.get(channelId);
 		if (result != null) return result;
 		
-		result = new ChannelImpl(outputFor(channelId));
+		result = new ChannelImpl(outputFor(channelId, priority));
 		_channelsById.put(channelId, result);
 		return result;
 	}
 
-	private Omnivore<Packet> outputFor(final String channelId) {
+	private Omnivore<Packet> outputFor(final String channelId, final int priority) {
 		return new Omnivore<Packet>() { public void consume(Packet packet) {
 			ConnectionImpl connection = _spider.connectionFor(packet._contactId);
-			connection.send(new ChannelPacket(channelId, packet));
+			connection.send(new ChannelPacket(channelId, packet), priority);
 		}};
 	}
 

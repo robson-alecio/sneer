@@ -26,7 +26,7 @@ import wheel.reactive.lists.ListSignal;
 
 public class FileTransferApp {
 
-	private static final int FILEPART_CHUNK_SIZE = 1000;
+	private static final int FILEPART_CHUNK_SIZE = 5000;
 
 	public FileTransferApp(User user, Channel channel, ListSignal<Contact> contacts) {
 		_user = user;

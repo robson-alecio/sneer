@@ -41,7 +41,7 @@ public class ConversationsApp {
 
 			@Override
 			public String caption() {
-				return translate("Messaging");
+				return translate("Messages");
 			}
 			
 		};

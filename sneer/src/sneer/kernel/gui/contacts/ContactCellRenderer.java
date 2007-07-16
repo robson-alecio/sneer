@@ -26,14 +26,9 @@ public class ContactCellRenderer extends DefaultListCellRenderer {
 
 	@Override
 	public Component getListCellRendererComponent(JList list, Object contactObject, int index, boolean isSelected, boolean hasFocus) {
-
 		Contact contact = (Contact) contactObject;
 
-		ImageIcon stateIcon = ERROR_ICON;
-		if (contact.state().currentValue().equals(Contact.UNCONFIRMED_STATE))
-			stateIcon = UNCONFIRMED_ICON;
-		if (contact.state().currentValue().equals(Contact.CONFIRMED_STATE))
-			stateIcon = CONFIRMED_ICON;
+		ImageIcon stateIcon = stateIconFor(contact);
 
 		ImageIcon onlineIcon = contact.isOnline().currentValue()
 			? ONLINE_ICON
@@ -41,16 +36,22 @@ public class ContactCellRenderer extends DefaultListCellRenderer {
 
 		FlowLayout layout = new FlowLayout();
 		JPanel panel = new JPanel(layout);
-		//if (isSelected) //uncomment this if selection is needed
-		//	panel.setBackground(selected);
-		//else
-			panel.setBackground(Color.white);
-		panel.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 		layout.setAlignment(FlowLayout.LEFT);
+		panel.setBackground(isSelected ? selected : Color.white);
+		panel.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+
 		panel.add(new JLabel(onlineIcon));
 		panel.add(new JLabel(stateIcon));
-		panel.add(new JLabel(contact.nick().currentValue() + " - " + contact.host().currentValue() + ":" + contact.port().currentValue())); //Fix: should use respective printer
+		panel.add(new JLabel(contact.nick().currentValue() + " - " + contact.host().currentValue() + ":" + contact.port().currentValue()));
+
 		return panel;
+	}
+
+	private ImageIcon stateIconFor(Contact contact) {
+		String state = contact.state().currentValue();
+		if (state.equals(Contact.UNCONFIRMED_STATE)) return UNCONFIRMED_ICON;
+		if (state.equals(Contact.CONFIRMED_STATE)) return CONFIRMED_ICON;
+		return ERROR_ICON;
 	}
 
 	private static final long serialVersionUID = 1L;

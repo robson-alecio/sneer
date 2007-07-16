@@ -42,7 +42,7 @@ public class TalkApp {
 
 			@Override
 			public String caption() {
-				return translate("Start Talk");
+				return translate("Voice");
 			}
 			
 		};
@@ -50,18 +50,13 @@ public class TalkApp {
 
 	private Omnivore<Packet> audioPacketReceiver() {
 		return new Omnivore<Packet>() { public void consume(Packet packet) {
-			openFrameFor(packet._contactId);
+			produceFrameFor(packet._contactId);
 			produceInputFor(packet._contactId).setter().consume((AudioPacket)packet._contents);
 		}};
 	}
 	
 	private void actUponContact(Contact contact) {
-		openFrameFor(contact.id());
-	}
-
-	private void openFrameFor(ContactId contactId) {
-		TalkFrame frame = produceFrameFor(contactId);
-		frame.setVisible(true);
+		produceFrameFor(contact.id());
 	}
 
 	private TalkFrame produceFrameFor(ContactId contactId) {

@@ -41,6 +41,8 @@ public class Gui {
 
 	private final List<ContactAction> _contactActions;
 
+	private ShowContactsScreenAction _showContactsScreenAction;
+
 	private void tryToRun() {
 		
 		filloutInitialValues();
@@ -50,9 +52,11 @@ public class Gui {
 	}
 
 	void bindActionsToTrayIcon() {
+		ShowContactsScreenAction showContactsScreenAction = showContactsScreenAction();
 		_trayIcon.clearActions();
+		_trayIcon.setDefaultAction(showContactsScreenAction);
 		_trayIcon.addAction(nameChangeAction());
-		_trayIcon.addAction(showContactsScreenAction());
+		_trayIcon.addAction(showContactsScreenAction);
 		_trayIcon.addAction(sneerPortChangeAction());
 		_trayIcon.addAction(languageChangeAction());
 		_trayIcon.addAction(exitAction());
@@ -62,8 +66,10 @@ public class Gui {
 		return new LanguageChangeAction(_user, _businessSource.output().language(), _businessSource.languageSetter());
 	}
 
-	private ShowContactsScreenAction showContactsScreenAction() {
-		return new ShowContactsScreenAction(_user, _businessSource.output().contacts(), _contactActions, _businessSource.contactAdder(),_businessSource.contactRemover(), _businessSource.contactNickChanger());
+	private synchronized ShowContactsScreenAction showContactsScreenAction() {
+		if (_showContactsScreenAction == null)
+			_showContactsScreenAction = new ShowContactsScreenAction(_user, _businessSource.output().contacts(), _contactActions, _businessSource.contactAdder(),_businessSource.contactRemover(), _businessSource.contactNickChanger());
+		return _showContactsScreenAction;
 	}
 
 	private void filloutInitialValues() { // Refactor: remove this logic from the gui. Maybe move to Communicator;

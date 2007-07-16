@@ -3,9 +3,16 @@ package wheel.io.ui.impl.tests;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
+import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.net.URL;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 
 import junit.framework.TestCase;
 import wheel.io.ui.TrayIcon.Action;
@@ -13,12 +20,25 @@ import wheel.io.ui.impl.TrayIconImpl;
 
 public class TrayIconImplTests extends TestCase {
 
-	public void test() throws Exception {
+	
+	private TrayIconImpl _subject;
+
+	@Override
+	protected void setUp() throws Exception {
 		URL userIcon = getClass().getResource("testIcon.png");
-		TrayIconImpl subject = new TrayIconImpl(userIcon);
+		_subject = new TrayIconImpl(userIcon);
+	}
+	
+	@Override
+	protected void tearDown() throws Exception {
+		_subject.dispose();
+	}
+	
+	public void testMenuItems() throws Exception {
+	
 
 		SayHelloAction sayHelloAction = new SayHelloAction();
-		subject.addAction(sayHelloAction);
+		_subject.addAction(sayHelloAction);
 		
 		final MenuItem sayHelloActionMenuItem = getSayHelloMenuItem();
 		assertEquals(SayHelloAction.CAPTION, sayHelloActionMenuItem.getLabel());
@@ -27,10 +47,29 @@ public class TrayIconImplTests extends TestCase {
 		assertEquals(SayHelloAction.HELLO_TEXT, sayHelloAction.getOutput());
 		
 	}
+	
+	public void testDefaultAction() throws Exception {
+		SayHelloAction sayHelloAction = new SayHelloAction();
+		_subject.setDefaultAction(sayHelloAction);
+		
+		clickTrayIcon();
+		assertEquals(SayHelloAction.HELLO_TEXT, sayHelloAction.getOutput());
+	}
+
+	private void clickTrayIcon() {
+		for (MouseListener listener : getTrayIcon().getMouseListeners()){
+			JButton aComponent = new JButton();
+			listener.mouseClicked(new MouseEvent(aComponent,0,0,0,0,0,0,0,1,false,MouseEvent.BUTTON1));
+		}
+	}
 
 	private MenuItem getSayHelloMenuItem() {
-		PopupMenu menu = SystemTray.getSystemTray().getTrayIcons()[0].getPopupMenu();
+		PopupMenu menu = getTrayIcon().getPopupMenu();
 		return menu.getItem(0);
+	}
+
+	private TrayIcon getTrayIcon() {
+		return SystemTray.getSystemTray().getTrayIcons()[0];
 	}
 
 	private void clickMenuItem(MenuItem menuItem) {

@@ -1,5 +1,7 @@
 package wheel.io.ui.impl;
 
+import static wheel.i18n.Language.translate;
+
 import java.awt.AWTException;
 import java.awt.Image;
 import java.awt.MenuItem;
@@ -9,14 +11,12 @@ import java.awt.Toolkit;
 import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.net.URL;
 import java.security.InvalidParameterException;
-import java.util.ResourceBundle;
 
-import static wheel.i18n.Language.*;
-
-import wheel.io.Log;
-import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.TrayIcon;
 import wheel.lang.exceptions.Catcher;
 import wheel.lang.exceptions.PrintStackTracer;
@@ -36,6 +36,8 @@ public class TrayIconImpl implements TrayIcon {
 
 	private final Catcher _catcher;
 
+	private Action _defaultAction;
+
 	public TrayIconImpl(URL icon, Catcher catcherForThrowsDuringActionExecution)
 			throws SystemTrayNotSupported {
 		if (icon == null)
@@ -46,9 +48,7 @@ public class TrayIconImpl implements TrayIcon {
 
 		SystemTray tray = SystemTray.getSystemTray();
 		Image image = Toolkit.getDefaultToolkit().getImage(icon);
-		java.awt.TrayIcon trayIcon = new java.awt.TrayIcon(image, translate("Sneer"),
-				new PopupMenu());
-		trayIcon.setImageAutoSize(false);
+		java.awt.TrayIcon trayIcon = createTrayIcon(image);
 		// trayIcon.addMouseListener(mouseListener);
 
 		try {
@@ -59,6 +59,22 @@ public class TrayIconImpl implements TrayIcon {
 
 		_trayIcon = trayIcon;
 		_catcher = catcherForThrowsDuringActionExecution;
+	}
+
+	private java.awt.TrayIcon createTrayIcon(Image image) {
+		java.awt.TrayIcon trayIcon = new java.awt.TrayIcon(image, translate("Sneer"),
+				new PopupMenu());
+		trayIcon.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getButton() == 1){
+					if (_defaultAction != null)
+						_defaultAction.run();
+				}
+			}
+		});
+		trayIcon.setImageAutoSize(false);
+		return trayIcon;
 	}
 
 	public TrayIconImpl(URL userIcon) throws SystemTrayNotSupported {
@@ -92,5 +108,13 @@ public class TrayIconImpl implements TrayIcon {
 	
 	public void clearActions(){
 		_trayIcon.getPopupMenu().removeAll();
+	}
+
+	public void setDefaultAction(Action defaultAction) {
+		_defaultAction = defaultAction;
+	}
+
+	public void dispose() {
+		SystemTray.getSystemTray().remove(_trayIcon);		
 	}
 }

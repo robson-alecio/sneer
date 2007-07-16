@@ -1,5 +1,7 @@
 package wheel.io.ui;
 
+import sneer.kernel.gui.contacts.ShowContactsScreenAction;
+
 
 public interface TrayIcon {
 
@@ -13,5 +15,7 @@ public interface TrayIcon {
 	void clearActions();
 
 	void seeReminder(String reminder);
+
+	void setDefaultAction(Action defaultAction);
 
 }

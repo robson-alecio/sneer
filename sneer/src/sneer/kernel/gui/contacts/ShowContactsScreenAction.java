@@ -1,5 +1,6 @@
 package sneer.kernel.gui.contacts;
 
+import java.awt.Frame;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -22,6 +23,7 @@ public class ShowContactsScreenAction implements Action {
 	private final User _user;
 	private final List<ContactAction> _contactActions;
 	private final Consumer<Pair<ContactId, String>> _nickChanger;
+	private ContactsScreen _contactsScreen;
 
 	public ShowContactsScreenAction(User user, ListSignal<Contact> contacts, List<ContactAction> contactActions, Consumer<ContactInfo> contactAdder, Omnivore<ContactId> contactRemover, Consumer<Pair<ContactId, String>> nickChanger){
 		_contacts = contacts;
@@ -36,8 +38,14 @@ public class ShowContactsScreenAction implements Action {
 		return translate("Contacts");
 	}
 
-	public void run() {
-		new ContactsScreen(_user, _contacts, _contactActions, _contactAdder, _contactRemover, _nickChanger); //Fix Easy: Use the existing one if there is one already.
+	public synchronized void run() {
+		if (_contactsScreen == null)
+			_contactsScreen = new ContactsScreen(_user, _contacts, _contactActions, _contactAdder, _contactRemover, _nickChanger); 
+		
+		_contactsScreen.setVisible(true);
+		int state = Frame.NORMAL;
+		_contactsScreen.setExtendedState(state);
+		_contactsScreen.toFront();
 	}
 
 }

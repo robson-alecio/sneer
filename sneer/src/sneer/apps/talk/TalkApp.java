@@ -1,5 +1,7 @@
 package sneer.apps.talk;
 
+import static wheel.i18n.Language.translate;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +42,7 @@ public class TalkApp {
 
 			@Override
 			public String caption() {
-				return "Start Talk";
+				return translate("Start Talk");
 			}
 			
 		};

@@ -4,21 +4,21 @@ import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.sound.sampled.LineUnavailableException;
 import javax.swing.JFrame;
 import javax.swing.JToggleButton;
 
-import org.quilombo.audio.MicrophoneSpeex;
-import org.quilombo.audio.SpeakerSpeex;
-import org.quilombo.audio.MicrophoneSpeex.MicrophoneCallback;
-
 import sneer.apps.talk.AudioPacket;
+import sneer.apps.talk.audio.SpeexMicrophone;
+import sneer.apps.talk.audio.SpeexSpeaker;
+import sneer.apps.talk.audio.SpeexMicrophone.AudioCallback;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 
 public class TalkFrame extends JFrame {
-	private MicrophoneSpeex _microphoneSpeex;
+	private SpeexMicrophone _microphone;
 
-	private SpeakerSpeex _speakerSpeex;
+	private SpeexSpeaker _speaker;
 
 	public TalkFrame(Signal<String> otherGuysNick, final Signal<AudioPacket> audioInput, Omnivore<AudioPacket> audioOutput) {
 		_otherGuysNick = otherGuysNick;
@@ -34,7 +34,7 @@ public class TalkFrame extends JFrame {
 
 		audioInput.addReceiver(new Omnivore<AudioPacket>() { @Override
 			public void consume(AudioPacket audioPacket) {
-				_speakerSpeex.sendAudio(audioPacket._content, audioPacket._content.length);
+				_speaker.sendAudio(audioPacket._content, audioPacket._content.length);
 			}
 		});
 
@@ -59,27 +59,30 @@ public class TalkFrame extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
-				_microphoneSpeex.close();
-				_speakerSpeex.close();
-				_microphoneSpeex = null;
-				_speakerSpeex = null;
+				_microphone.close();
+				_speaker.close();
+				_microphone = null;
+				_speaker = null;
 			}
 
 			@Override
 			public void windowOpened(WindowEvent e) {
-				_speakerSpeex = new SpeakerSpeex();
-				_microphoneSpeex = new MicrophoneSpeex(
-						new MicrophoneCallback() {
-							public void soundReceived(byte[] buffer, int processed) {
-								byte[] contents = new byte[processed];
-								System.arraycopy(buffer, 0, contents, 0, processed);
+				_speaker = new SpeexSpeaker();
+				_microphone = new SpeexMicrophone(
+						new AudioCallback() {
+							public void audio(byte[] buffer, int offset, int length) {
+								byte[] contents = new byte[length];
+								System.arraycopy(buffer, offset, contents, 0, length);
 								sendAudio(contents);
 							}
 						});
-				_microphoneSpeex.start();
-				_speakerSpeex.start();
-				_microphoneSpeex.waitWhileNotRunning();
-				_speakerSpeex.waitWhileNotRunning();
+				try {
+					_microphone.init();
+					_speaker.init();
+				} catch (LineUnavailableException e1) {
+					// Fix: Should handle any problem here... could not open audio device
+					e1.printStackTrace();
+				}
 			}
 		});
 

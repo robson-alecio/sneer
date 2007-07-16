@@ -45,8 +45,8 @@ public class Communicator {
 		
 		prepareBusiness();
 		
-		new SocketAccepter(user, network, business.sneerPort(), mySocketServer());
 		_spider = new Spider(network, business.contacts(), businessSource.contactOnlineSetter(), outgoingConnectionValidator(), myObjectReceiver());
+		new SocketAccepter(user, network, business.sneerPort(), mySocketServer());
 	}
 
 	private Omnivore<Object> myObjectReceiver() {

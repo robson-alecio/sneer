@@ -39,7 +39,9 @@ public class PriorityQueue<T> {
 			Threads.waitWithoutInterruptions(this);
 			result = next();
 		}
-		System.out.println("Buffer size: " + _totalElements--);
+		if (_totalElements > 1)
+			System.out.println("Buffer size: " + _totalElements);
+		_totalElements--;
 		return result;
 	}
 

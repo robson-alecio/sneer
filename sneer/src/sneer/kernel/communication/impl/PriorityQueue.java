@@ -10,6 +10,8 @@ public class PriorityQueue<T> {
 	private final PriorityQueue<T> _nextQueue;
 	private final List<T> _myElements = new LinkedList<T>();
 	private long _counter;
+	
+	private int _totalElements;
 
 	public PriorityQueue(int minimumPriority) {
 		_nextQueue = minimumPriority == 0
@@ -20,6 +22,7 @@ public class PriorityQueue<T> {
 	synchronized public void add(T element, int priority) {
 		privateAdd(element, priority);
 		this.notify();
+		_totalElements++;
 	}
 
 	private void privateAdd(T element, int priority) {
@@ -36,6 +39,7 @@ public class PriorityQueue<T> {
 			Threads.waitWithoutInterruptions(this);
 			result = next();
 		}
+		System.out.println("Buffer size: " + _totalElements--);
 		return result;
 	}
 

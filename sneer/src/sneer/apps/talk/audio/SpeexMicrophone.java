@@ -24,6 +24,8 @@ public class SpeexMicrophone extends Thread {
 
 	private SpeexEncoder _encoder = new SpeexEncoder();
 
+	private int _counter = 0;
+
 	public SpeexMicrophone(AudioCallback callback) {
 		setDaemon(true);
 		_callback = callback;
@@ -78,7 +80,7 @@ public class SpeexMicrophone extends Thread {
 				frameBufferIndex = 0;
 			}
 
-			if (frameIndex % 5 == 0)
+			if (_counter++ % 7 == 0)
 				_line.read(buffer, 0, buffer.length); //pcm data / 16 bits
 
 		}

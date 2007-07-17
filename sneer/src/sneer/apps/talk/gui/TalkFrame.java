@@ -60,11 +60,6 @@ public class TalkFrame extends JFrame {
 
 		addWindowListener(new WindowAdapter() {
 			@Override
-			public void windowClosing(WindowEvent e) {
-				closeAudio();
-			}
-
-			@Override
 			public void windowOpened(WindowEvent e) {
 				openAudio();
 			}

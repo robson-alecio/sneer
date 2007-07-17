@@ -58,13 +58,17 @@ public class TalkApp {
 		return new Omnivore<Packet>() { public void consume(Packet packet) {
 			if (OPEN.equals(packet._contents)) {
 				open(packet._contactId);
+				return;
 			}
 			
 			if (CLOSE.equals(packet._contents)) {
 				close(packet._contactId);
+				return;
 			}
 			
-			produceInputFor(packet._contactId).setter().consume((AudioPacket)packet._contents);
+			Source<AudioPacket> input = getInputFor(packet._contactId);
+			if (input == null) return;
+			input.setter().consume((AudioPacket)packet._contents);
 		}};
 	}
 	
@@ -108,12 +112,11 @@ public class TalkApp {
 	}
 
 	private Signal<AudioPacket> inputFrom(ContactId contactId) {
-		return produceInputFor(contactId).output();
+		return getInputFor(contactId).output();
 	}
 
-	private Source<AudioPacket> produceInputFor(ContactId contactId) {
-		SourceImpl<AudioPacket> result = _inputsByContactId.get(contactId);
-		return result;
+	private Source<AudioPacket> getInputFor(ContactId contactId) {
+		return _inputsByContactId.get(contactId);
 	}
 
 	private void createInputFor(ContactId contactId) {

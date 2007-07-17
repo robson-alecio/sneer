@@ -15,6 +15,7 @@ import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
+import wheel.io.ui.User;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
@@ -26,13 +27,15 @@ public class TalkApp {
 	private static final String OPEN = "Open";
 	private static final String CLOSE = "Close";
 
-	public TalkApp(Channel channel, ListSignal<Contact> contacts) {
+	public TalkApp(User user, Channel channel, ListSignal<Contact> contacts) {
+		_user = user;
 		_channel = channel;
 		_contacts = contacts;
 		
 		_channel.input().addReceiver(audioPacketReceiver());
 	}
 
+	private final User _user;
 	private final Channel _channel;
 	private final ListSignal<Contact> _contacts;
 	private final Map<ContactId, TalkFrame>_framesByContactId = new HashMap<ContactId, TalkFrame>();
@@ -57,6 +60,7 @@ public class TalkApp {
 	private Omnivore<Packet> audioPacketReceiver() {
 		return new Omnivore<Packet>() { public void consume(Packet packet) {
 			if (OPEN.equals(packet._contents)) {
+				if (!userWantsToOpen(packet._contactId)) return;
 				open(packet._contactId);
 				return;
 			}
@@ -72,6 +76,11 @@ public class TalkApp {
 		}};
 	}
 	
+	private boolean userWantsToOpen(ContactId contactId) {
+		String nick = findContact(contactId).nick().currentValue();
+		return _user.confirm(translate("%1$s is calling you.\n\nDo you want to accept this call?", nick));
+	}
+
 	private void close(ContactId contactId) {
 		_inputsByContactId.remove(contactId);
 

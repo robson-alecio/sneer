@@ -88,7 +88,7 @@ public class Sneer {
 		result.add(new ConversationsApp(ConversationsChannel, _businessSource.output().contacts()).contactAction());
 		
 		Channel TalkChannel = _communicator.getChannel(TalkApp.class.getName(), 1);
-		result.add(new TalkApp(TalkChannel, _businessSource.output().contacts()).contactAction());
+		result.add(new TalkApp(_user, TalkChannel, _businessSource.output().contacts()).contactAction());
 		
 		Channel FileTransferChannel = _communicator.getChannel(FileTransferApp.class.getName(), 2);
 		result.add(new FileTransferApp(_user, FileTransferChannel, _businessSource.output().contacts()).contactAction());

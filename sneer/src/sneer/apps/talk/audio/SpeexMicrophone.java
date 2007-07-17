@@ -6,6 +6,8 @@ import javax.sound.sampled.TargetDataLine;
 
 import org.xiph.speex.SpeexEncoder;
 
+import wheel.lang.Threads;
+
 // AUDIO FORMAT:
 // Sequence of a fixed number (AudioUtil.FRAMES) speex decoded frames,
 // each frame with the structure:
@@ -81,7 +83,9 @@ public class SpeexMicrophone extends Thread {
 			}
 
 			if (_counter++ % 10 == 0)
-				_line.read(buffer, 0, buffer.length); //pcm data / 16 bits
+				Threads.sleepWithoutInterruptions(10);
+			//	_line.read(buffer, 0, buffer.length); //pcm data / 16 bits
+			
 
 		}
 		_line.close();

@@ -85,6 +85,8 @@ public class TalkApp {
 	}
 
 	private void actUponContact(Contact contact) {
+		if (getInputFor(contact.id()) != null) return;
+		
 		open(contact.id());
 		_channel.output().consume(new Packet(contact.id(), OPEN));
 	}

@@ -76,10 +76,6 @@ public class SpeexMicrophone extends Thread {
 				average = 0;
 				frameBufferIndex = 0;
 				
-				try {
-					Thread.sleep(80); //give the cpu some time, the line is bufferized, so dont worry..
-				} catch (InterruptedException ie) {
-				}
 			}
 
 		}

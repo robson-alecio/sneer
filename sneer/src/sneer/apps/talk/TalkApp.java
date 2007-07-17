@@ -76,7 +76,7 @@ public class TalkApp {
 		_inputsByContactId.remove(contactId);
 
 		TalkFrame frame = _framesByContactId.remove(contactId);
-		if (frame != null) frame.dispose();
+		if (frame != null) frame.close();
 	}
 
 	private void open(ContactId contactId) {

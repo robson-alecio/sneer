@@ -97,7 +97,7 @@ public class TalkFrame extends JFrame {
 			e1.printStackTrace();
 		}
 	}
-
+	
 	synchronized private void closeAudio() {
 		System.out.print("closing...");
 		_microphone.close();
@@ -107,5 +107,10 @@ public class TalkFrame extends JFrame {
 		System.out.println("done");
 	}
 
+	public void close() {
+		closeAudio();
+		dispose();
+	}
+	
 	private static final long serialVersionUID = 1L;
 }

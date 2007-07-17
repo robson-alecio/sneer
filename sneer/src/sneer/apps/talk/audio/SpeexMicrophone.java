@@ -20,7 +20,7 @@ public class SpeexMicrophone extends Thread {
 
 	private TargetDataLine _line;
 
-	private boolean _running = true;
+	private volatile boolean _running = true;
 
 	private AudioCallback _callback;
 
@@ -58,7 +58,7 @@ public class SpeexMicrophone extends Thread {
 		int frameBufferIndex = 0;
 		int average = 0;
 
-		while (_running) {
+		while (true) {
 			
 			int read = _line.read(buffer, 0, buffer.length); //pcm data / 16 bits
 
@@ -76,6 +76,8 @@ public class SpeexMicrophone extends Thread {
 			if (frameIndex == AudioUtil.FRAMES) {
 				byte[] contents = new byte[frameBufferIndex];
 				System.arraycopy(frameBuffer, 0, contents, 0, frameBufferIndex);
+				
+				if (!_running) break;
 				_callback.audio(contents);
 
 				frameIndex = 0;

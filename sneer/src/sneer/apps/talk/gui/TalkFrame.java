@@ -36,7 +36,7 @@ public class TalkFrame extends JFrame {
 		audioInput.addReceiver(new Omnivore<AudioPacket>() { @Override
 			public void consume(AudioPacket audioPacket) {
 				if (_speaker == null) return;
-				_speaker.sendAudio(audioPacket._content, audioPacket._content.length);
+				_speaker.sendAudio(audioPacket._content);
 			}
 		});
 
@@ -85,9 +85,7 @@ public class TalkFrame extends JFrame {
 		_speaker = new SpeexSpeaker();
 		_microphone = new SpeexMicrophone(
 				new AudioCallback() {
-					public void audio(byte[] buffer, int offset, int length) {
-						byte[] contents = new byte[length];
-						System.arraycopy(buffer, offset, contents, 0, length);
+					public void audio(byte[] contents) {
 						sendAudio(contents);
 					}
 				});

@@ -48,7 +48,7 @@ public class SpeexSpeaker extends Thread {
 		_line.close();
 	}
 
-	public synchronized void sendAudio(byte[] buffer, int length) {
+	public synchronized void sendAudio(byte[] buffer) { //Fix: this should not block. implement producer/consumer buffer
 
 		int index = 0;
 		for (int t = 0; t < AudioUtil.FRAMES; t++) {

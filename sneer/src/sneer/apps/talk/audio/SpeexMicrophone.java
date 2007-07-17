@@ -40,7 +40,7 @@ public class SpeexMicrophone extends Thread {
 		_line.start();
 		_encoder.init(0, 8, (int) _format.getFrameRate(), _format.getChannels());
 		start();
-		while (!isAlive()) {
+		while (!isAlive()) { //Refactor: consider if this wait is necessary.
 			try {
 				sleep(200);
 			} catch (InterruptedException ie) {
@@ -74,8 +74,9 @@ public class SpeexMicrophone extends Thread {
 			}
 
 			if (frameIndex == AudioUtil.FRAMES) {
-
-				_callback.audio(frameBuffer, 0, frameBufferIndex);
+				byte[] contents = new byte[frameBufferIndex];
+				System.arraycopy(frameBuffer, 0, contents, 0, frameBufferIndex);
+				_callback.audio(contents);
 
 				frameIndex = 0;
 				average = 0;
@@ -98,7 +99,7 @@ public class SpeexMicrophone extends Thread {
 	}
 
 	public interface AudioCallback {
-		public void audio(byte[] buffer, int offset, int length);
+		public void audio(byte[] buffer);
 	}
 
 	public void close() {

@@ -5,8 +5,8 @@ public class LoopbackTest {
 	public LoopbackTest() {
 		final SpeexSpeaker speaker = new SpeexSpeaker();
 		SpeexMicrophone microphone = new SpeexMicrophone(new SpeexMicrophone.AudioCallback() {
-			public void audio(byte[] buffer, int offset, int length) {
-				speaker.sendAudio(buffer, length);
+			public void audio(byte[] contents) {
+				speaker.sendAudio(contents);
 			}
 		});
 		try {
@@ -27,6 +27,6 @@ public class LoopbackTest {
 	}
 
 	public static void main(String[] args) {
-		LoopbackTest test = new LoopbackTest();
+		new LoopbackTest();
 	}
 }

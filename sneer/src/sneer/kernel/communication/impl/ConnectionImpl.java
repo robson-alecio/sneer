@@ -125,7 +125,7 @@ public class ConnectionImpl {
 					setIsOnline(true);
 					
 					if (BARK.equals(received)) continue;
-					System.out.println("Received: " + received);
+					//System.out.println("Received: " + received);
 
 					ChannelPacket packet = (ChannelPacket)received;
 					packet._packet._contactId = _contact.id();

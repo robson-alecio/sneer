@@ -32,21 +32,28 @@ public class SpeexSpeaker extends Thread {
         while(_running){
             try{Thread.sleep(500);}catch(Exception e){}
         }
+        _line.close();
     }
     
     public synchronized void sendAudio(byte[] buffer, int length){
-        try{
-            _decoder.processData(buffer,0,length);
-            int processed = _decoder.getProcessedData(_decodeBuffer,0);
-            _line.write(_decodeBuffer,0,processed);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+    	
+    	int index = 0;
+    	for(int t=0;t<AudioUtil.FRAMES;t++){
+    		int size = AudioUtil.byteToShort(buffer, index);
+    		//System.out.println("decoding:"+size);
+    		index+=2;
+    		try{
+                _decoder.processData(buffer,index,size);
+                int processed = _decoder.getProcessedData(_decodeBuffer,0);
+                _line.write(_decodeBuffer,0,processed);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            index+=size;
+    	}
     }
     
     public void close(){
-        _line.drain();
-        _line.close();
         _running=false;
     }
     

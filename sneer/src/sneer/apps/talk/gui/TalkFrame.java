@@ -25,6 +25,7 @@ public class TalkFrame extends JFrame {
 		_audioOutput = audioOutput;
 
 		initComponents();
+		openAudio();
 
 		_otherGuysNick.addReceiver(new Omnivore<String>() { @Override
 			public void consume(String nick) {

@@ -51,11 +51,12 @@ public class SpeexMicrophone extends Thread {
 		byte[] frameBuffer = new byte[buffer.length * AudioUtil.FRAMES];
 		int frameIndex = 0;
 		int frameBufferIndex = 0;
+		int average = 0;
 		while (_running) {
 			int read = _line.read(buffer, 0, buffer.length); //pega audio pcm puro, 16 bits 2 bytes=onda
-			
-			System.out.println(AudioUtil.byteToShort(buffer, 20));
-					
+
+			average += calculateAverage16BitsPcm(buffer,read);
+
 			if (_encoder.processData(buffer, 0, read)) {
 				int processed = _encoder.getProcessedData(frameBuffer, frameBufferIndex + 2);
 				AudioUtil.shortToByte(frameBuffer, frameBufferIndex, processed);
@@ -64,13 +65,26 @@ public class SpeexMicrophone extends Thread {
 				//System.out.println("encoding "+frameIndex+" - "+processed);
 			}
 			if (frameIndex == AudioUtil.FRAMES) {
-				_callback.audio(frameBuffer, 0, frameBufferIndex);
+				System.out.println(average / AudioUtil.FRAMES);
+
+				if ((average/AudioUtil.FRAMES) > 30000)
+					_callback.audio(frameBuffer, 0, frameBufferIndex);
 				frameBufferIndex = 0;
 				frameIndex = 0;
+				average = 0;
 			}
+
 
 		}
 		_line.close();
+	}
+	
+	public int calculateAverage16BitsPcm(byte[] buffer,int length){
+		int total=0;
+		for(int t=0;t<(length/2);t++){
+			total+=AudioUtil.byteToShort(buffer, t*2);
+		}
+		return total/(length/2);
 	}
 
 	public interface AudioCallback {

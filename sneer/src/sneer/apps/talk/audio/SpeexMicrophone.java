@@ -48,74 +48,50 @@ public class SpeexMicrophone extends Thread {
 	@Override
 	public void run() {
 		byte[] buffer = new byte[2 * _encoder.getFrameSize() * _encoder.getChannels()];
-		byte[][] frameBuffer = new byte[3][buffer.length * AudioUtil.FRAMES];
+		byte[] frameBuffer = new byte[buffer.length * AudioUtil.FRAMES];
 
 		int frameIndex = 0;
-		int[] frameBufferIndex=new int[3];
-		int[] average = new int[3];
+		int frameBufferIndex = 0;
+		int average = 0;
 
-		int currentBufferIndex=0;
-
-		
 		while (_running) {
 			
-			int read = _line.read(buffer, 0, buffer.length); //pega audio pcm puro, 16 bits 2 bytes=onda
+			int read = _line.read(buffer, 0, buffer.length); //pcm data / 16 bits
 
-			average[currentBufferIndex] = average[currentBufferIndex] + calculateAverage16BitsPcm(buffer,read);
+			average = average + calculateAverage16BitsPcm(buffer, read);
 
 			if (_encoder.processData(buffer, 0, read)) {
-				int processed = _encoder.getProcessedData(frameBuffer[currentBufferIndex], frameBufferIndex[currentBufferIndex] + 2);
-				AudioUtil.shortToByte(frameBuffer[currentBufferIndex], frameBufferIndex[currentBufferIndex], processed);
-				frameBufferIndex[currentBufferIndex] = frameBufferIndex[currentBufferIndex] + processed + 2;
+				int processed = _encoder.getProcessedData(frameBuffer, frameBufferIndex + 2);
+				AudioUtil.shortToByte(frameBuffer, frameBufferIndex, processed);
+				frameBufferIndex = frameBufferIndex + processed + 2;
 				frameIndex++;
 				//System.out.println("encoding "+frameIndex+" - "+processed);
 			}
-			
-			if (frameIndex == AudioUtil.FRAMES) {
-				
-				int first=0,second=0,third=0;
-				if (currentBufferIndex == 0){
-					first=1;second=2;third=0;
-				}
-				if (currentBufferIndex == 1){
-					first=2;second=0;third=1;
-				}
-				if (currentBufferIndex == 2){
-					first=0;second=1;third=2;
-				}
-					
-				int cut = 20000;
-				System.out.println(""+average[first]+"/"+average[second]+"/"+average[third]);
-				if (((average[first]/AudioUtil.FRAMES) < cut)&&((average[second]/AudioUtil.FRAMES) > cut)&&((average[third]/AudioUtil.FRAMES) < cut)){ 
-					//dont send
-				}else{
-					System.out.println(average[second]);
-					if ((average[second]/AudioUtil.FRAMES) > cut)
-					_callback.audio(frameBuffer[second], 0, frameBufferIndex[second]);
-				}
 
-				
+			if (frameIndex == AudioUtil.FRAMES) {
+
+				_callback.audio(frameBuffer, 0, frameBufferIndex);
+
 				frameIndex = 0;
+				average = 0;
+				frameBufferIndex = 0;
 				
-				currentBufferIndex++; //change current buffer
-				if (currentBufferIndex==3)
-					currentBufferIndex = 0;
-				
-				average[currentBufferIndex] = 0;
-				frameBufferIndex[currentBufferIndex] = 0;
-				
+				try {
+					Thread.sleep(80); //give the cpu some time, the line is bufferized, so dont worry..
+				} catch (InterruptedException ie) {
+				}
 			}
 
 		}
 		_line.close();
 	}
-	
-	public int calculateAverage16BitsPcm(byte[] buffer,int length){
-		int total=0;
-		for(int t=0;t<(length/2);t++){
-			total+=AudioUtil.byteToShort(buffer, t*2);
+
+	public int calculateAverage16BitsPcm(byte[] buffer, int length) {
+		int total = 0;
+		for (int t = 0; t < (length / 2); t++) {
+			total += AudioUtil.byteToShort(buffer, t * 2);
 		}
-		return total/(length/2);
+		return total / (length / 2);
 	}
 
 	public interface AudioCallback {

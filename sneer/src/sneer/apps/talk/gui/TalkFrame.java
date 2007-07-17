@@ -35,6 +35,7 @@ public class TalkFrame extends JFrame {
 
 		audioInput.addReceiver(new Omnivore<AudioPacket>() { @Override
 			public void consume(AudioPacket audioPacket) {
+				if (_speaker == null) return;
 				_speaker.sendAudio(audioPacket._content, audioPacket._content.length);
 			}
 		});
@@ -59,7 +60,7 @@ public class TalkFrame extends JFrame {
 
 		addWindowListener(new WindowAdapter() {
 			@Override
-			public void windowClosed(WindowEvent e) {
+			public void windowClosing(WindowEvent e) {
 				closeAudio();
 			}
 
@@ -100,10 +101,12 @@ public class TalkFrame extends JFrame {
 	}
 
 	synchronized private void closeAudio() {
+		System.out.print("closing...");
 		_microphone.close();
 		_speaker.close();
 		_microphone = null;
 		_speaker = null;
+		System.out.println("done");
 	}
 
 	private static final long serialVersionUID = 1L;

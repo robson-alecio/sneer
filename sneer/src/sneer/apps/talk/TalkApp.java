@@ -2,6 +2,9 @@ package sneer.apps.talk;
 
 import static wheel.i18n.Language.translate;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +53,10 @@ public class TalkApp {
 
 	private Omnivore<Packet> audioPacketReceiver() {
 		return new Omnivore<Packet>() { public void consume(Packet packet) {
+			if ("Closed".equals(packet._contents)) {
+				produceFrameFor(packet._contactId).dispose();
+				return;
+			}
 			produceFrameFor(packet._contactId);
 			produceInputFor(packet._contactId).setter().consume((AudioPacket)packet._contents);
 		}};
@@ -58,14 +65,26 @@ public class TalkApp {
 	private void actUponContact(Contact contact) {
 		produceFrameFor(contact.id());
 	}
-
+	
 	private TalkFrame produceFrameFor(ContactId contactId) {
 		TalkFrame frame = _framesByContactId.get(contactId);
 		if (frame == null) {
 			frame = new TalkFrame(findContact(contactId).nick(), inputFrom(contactId), outputTo(contactId));
+			frame.addWindowListener(closingListener(contactId));
 			_framesByContactId.put(contactId, frame);
 		}
 		return frame;
+	}
+
+	private WindowListener closingListener(final ContactId contactId) {
+		return new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent ignored) {
+				TalkFrame frame = _framesByContactId.remove(contactId);
+				if (frame == null) return;
+				_channel.output().consume(new Packet(contactId, "Closed"));
+			}
+		};
 	}
 
 	private Contact findContact(ContactId id) {

@@ -80,7 +80,7 @@ public class SpeexMicrophone extends Thread {
 				frameBufferIndex = 0;
 			}
 
-			if (_counter++ % 7 == 0)
+			if (_counter++ % 10 == 0)
 				_line.read(buffer, 0, buffer.length); //pcm data / 16 bits
 
 		}

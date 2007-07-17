@@ -45,11 +45,11 @@ public class SpeexSpeaker extends Thread {
     		try{
                 _decoder.processData(buffer,index,size);
                 int processed = _decoder.getProcessedData(_decodeBuffer,0);
-                _line.write(_decodeBuffer,0,processed);
+                _line.write(_decodeBuffer,0,processed); //envia pcm puro pro speaker, tb 16 bits. pode usar audiotuil.shorttobyte que eu fiz para converter
             }catch(Exception e){
                 e.printStackTrace();
             }
-            index+=size;
+            index+=size; // os frames estao empacotados com o tamanho de cada pacote em dois bytes iniciais
     	}
     }
     

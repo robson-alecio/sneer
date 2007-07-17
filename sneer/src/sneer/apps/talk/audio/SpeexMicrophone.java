@@ -52,15 +52,18 @@ public class SpeexMicrophone extends Thread {
 		int frameIndex = 0;
 		int frameBufferIndex = 0;
 		while (_running) {
-			int readed = _line.read(buffer, 0, buffer.length);
-			if (_encoder.processData(buffer, 0, readed)) {
+			int read = _line.read(buffer, 0, buffer.length); //pega audio pcm puro, 16 bits 2 bytes=onda
+			
+			System.out.println(AudioUtil.byteToShort(buffer, 20));
+					
+			if (_encoder.processData(buffer, 0, read)) {
 				int processed = _encoder.getProcessedData(frameBuffer, frameBufferIndex + 2);
 				AudioUtil.shortToByte(frameBuffer, frameBufferIndex, processed);
 				frameBufferIndex += processed + 2;
 				frameIndex++;
 				//System.out.println("encoding "+frameIndex+" - "+processed);
 			}
-			if (frameIndex == 10) {
+			if (frameIndex == AudioUtil.FRAMES) {
 				_callback.audio(frameBuffer, 0, frameBufferIndex);
 				frameBufferIndex = 0;
 				frameIndex = 0;

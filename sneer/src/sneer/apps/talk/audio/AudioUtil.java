@@ -30,14 +30,14 @@ public class AudioUtil {
     }
     
 	public static void shortToByte(byte[] buffer, int offset, int value) {
-		buffer[offset] = (byte) (value & 0x00FF);
-		buffer[offset + 1] = (byte) ((value >> 8) & 0x000000FF);
+		buffer[offset+1] = (byte) (value & 0x00FF);
+		buffer[offset] = (byte) ((value >> 8) & 0x000000FF);
 	}
 
 	public static int byteToShort(byte[] buffer, int offset) {
 		int value = 0;
-		value+=buffer[offset];
-		value+=(buffer[offset+1]& 0x00FF) << 8;
+		value+=buffer[offset+1];
+		value+=(buffer[offset]& 0x00FF) << 8;
 		return value;
 	}
     

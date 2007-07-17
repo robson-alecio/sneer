@@ -51,38 +51,20 @@ public class TalkFrame extends JFrame {
 		setLayout(new BorderLayout());
 		add(mute, BorderLayout.CENTER);
 		setSize(100, 50);
-		initAudio();
+		addWindowListeners();
 	}
 
-	private void initAudio() {
+	private void addWindowListeners() {
 
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent e) {
-				_microphone.close();
-				_speaker.close();
-				_microphone = null;
-				_speaker = null;
+				closeAudio();
 			}
 
 			@Override
 			public void windowOpened(WindowEvent e) {
-				_speaker = new SpeexSpeaker();
-				_microphone = new SpeexMicrophone(
-						new AudioCallback() {
-							public void audio(byte[] buffer, int offset, int length) {
-								byte[] contents = new byte[length];
-								System.arraycopy(buffer, offset, contents, 0, length);
-								sendAudio(contents);
-							}
-						});
-				try {
-					_microphone.init();
-					_speaker.init();
-				} catch (LineUnavailableException e1) {
-					// Fix: Should handle any problem here... could not open audio device
-					e1.printStackTrace();
-				}
+				openAudio();
 			}
 		});
 
@@ -93,6 +75,34 @@ public class TalkFrame extends JFrame {
 			final AudioPacket audioPacket = new AudioPacket(contents);
 			_audioOutput.consume(audioPacket); // queue or thread needed?????
 		}
+	}
+
+	private synchronized void openAudio() {
+		if (_speaker != null) return;
+		
+		_speaker = new SpeexSpeaker();
+		_microphone = new SpeexMicrophone(
+				new AudioCallback() {
+					public void audio(byte[] buffer, int offset, int length) {
+						byte[] contents = new byte[length];
+						System.arraycopy(buffer, offset, contents, 0, length);
+						sendAudio(contents);
+					}
+				});
+		try {
+			_microphone.init();
+			_speaker.init();
+		} catch (LineUnavailableException e1) {
+			// Fix: Should handle any problem here... could not open audio device
+			e1.printStackTrace();
+		}
+	}
+
+	synchronized private void closeAudio() {
+		_microphone.close();
+		_speaker.close();
+		_microphone = null;
+		_speaker = null;
 	}
 
 	private static final long serialVersionUID = 1L;

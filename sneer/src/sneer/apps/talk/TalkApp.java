@@ -23,6 +23,9 @@ import wheel.reactive.lists.ListSignal;
 
 public class TalkApp {
 
+	private static final String OPEN = "Open";
+	private static final String CLOSE = "Close";
+
 	public TalkApp(Channel channel, ListSignal<Contact> contacts) {
 		_channel = channel;
 		_contacts = contacts;
@@ -53,36 +56,47 @@ public class TalkApp {
 
 	private Omnivore<Packet> audioPacketReceiver() {
 		return new Omnivore<Packet>() { public void consume(Packet packet) {
-			if ("Closed".equals(packet._contents)) {
-				produceFrameFor(packet._contactId).dispose();
-				return;
+			if (OPEN.equals(packet._contents)) {
+				open(packet._contactId);
 			}
-			produceFrameFor(packet._contactId);
+			
+			if (CLOSE.equals(packet._contents)) {
+				close(packet._contactId);
+			}
+			
 			produceInputFor(packet._contactId).setter().consume((AudioPacket)packet._contents);
 		}};
 	}
 	
-	private void actUponContact(Contact contact) {
-		produceFrameFor(contact.id());
+	private void close(ContactId contactId) {
+		_inputsByContactId.remove(contactId);
+
+		TalkFrame frame = _framesByContactId.remove(contactId);
+		if (frame != null) frame.dispose();
 	}
-	
-	private TalkFrame produceFrameFor(ContactId contactId) {
-		TalkFrame frame = _framesByContactId.get(contactId);
-		if (frame == null) {
-			frame = new TalkFrame(findContact(contactId).nick(), inputFrom(contactId), outputTo(contactId));
-			frame.addWindowListener(closingListener(contactId));
-			_framesByContactId.put(contactId, frame);
-		}
-		return frame;
+
+	private void open(ContactId contactId) {
+		createInputFor(contactId);
+		createFrameFor(contactId);
+	}
+
+	private void actUponContact(Contact contact) {
+		open(contact.id());
+		_channel.output().consume(new Packet(contact.id(), OPEN));
+	}
+
+	private void createFrameFor(ContactId contactId) {
+		TalkFrame frame = new TalkFrame(findContact(contactId).nick(), inputFrom(contactId), outputTo(contactId));
+		frame.addWindowListener(closingListener(contactId));
+		_framesByContactId.put(contactId, frame);
 	}
 
 	private WindowListener closingListener(final ContactId contactId) {
 		return new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent ignored) {
-				TalkFrame frame = _framesByContactId.remove(contactId);
-				if (frame == null) return;
-				_channel.output().consume(new Packet(contactId, "Closed"));
+				close(contactId);
+				_channel.output().consume(new Packet(contactId, CLOSE));
 			}
 		};
 	}
@@ -99,11 +113,12 @@ public class TalkApp {
 
 	private Source<AudioPacket> produceInputFor(ContactId contactId) {
 		SourceImpl<AudioPacket> result = _inputsByContactId.get(contactId);
-		if (result == null) {
-			result = new SourceImpl<AudioPacket>(null);
-			_inputsByContactId.put(contactId, result);
-		}
 		return result;
+	}
+
+	private void createInputFor(ContactId contactId) {
+		SourceImpl<AudioPacket> input = new SourceImpl<AudioPacket>(null);
+		_inputsByContactId.put(contactId, input);
 	}
 
 	private Omnivore<AudioPacket> outputTo(final ContactId contactId) {

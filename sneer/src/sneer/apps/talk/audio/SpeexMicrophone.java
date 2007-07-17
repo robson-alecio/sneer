@@ -61,6 +61,7 @@ public class SpeexMicrophone extends Thread {
 			average = average + calculateAverage16BitsPcm(buffer, read);
 
 			if (_encoder.processData(buffer, 0, read)) {
+				
 				int processed = _encoder.getProcessedData(frameBuffer, frameBufferIndex + 2);
 				AudioUtil.shortToByte(frameBuffer, frameBufferIndex, processed);
 				frameBufferIndex = frameBufferIndex + processed + 2;
@@ -75,8 +76,10 @@ public class SpeexMicrophone extends Thread {
 				frameIndex = 0;
 				average = 0;
 				frameBufferIndex = 0;
-				
 			}
+
+			if (frameIndex % 5 == 0)
+				_line.read(buffer, 0, buffer.length); //pcm data / 16 bits
 
 		}
 		_line.close();

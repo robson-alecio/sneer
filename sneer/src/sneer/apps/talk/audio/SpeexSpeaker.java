@@ -51,7 +51,6 @@ public class SpeexSpeaker extends Thread {
 	public synchronized void sendAudio(byte[] buffer, int length) {
 
 		int index = 0;
-		int packetCounter = 0;
 		for (int t = 0; t < AudioUtil.FRAMES; t++) {
 			int size = AudioUtil.byteToShort(buffer, index);
 			//System.out.println("decoding:"+size);
@@ -60,13 +59,7 @@ public class SpeexSpeaker extends Thread {
 			try {
 				_decoder.processData(buffer, index, size);
 				int processed = _decoder.getProcessedData(_decodeBuffer, 0);
-				packetCounter++;
-				if (packetCounter == 8){ //looses 1 packet every 8 packets, try to guarantee faster playback than capture
-					packetCounter = 0;
-				}else{
-					_line.write(_decodeBuffer, 0, processed);
-				}
-				packetCounter++;
+				_line.write(_decodeBuffer, 0, processed);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

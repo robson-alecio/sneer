@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JToggleButton;
 
 import sneer.apps.talk.AudioPacket;
+import sneer.apps.talk.audio.AudioUtil;
 import sneer.apps.talk.audio.SpeexMicrophone;
 import sneer.apps.talk.audio.SpeexSpeaker;
 import sneer.apps.talk.audio.SpeexMicrophone.AudioConsumer;
@@ -54,8 +55,9 @@ public class TalkFrame extends JFrame {
 
 	private final JToggleButton mute = new JToggleButton("mute");
 
+	private boolean _shouldTrimFrames = false;
 	private boolean _shouldDropFrames = false;
-
+	 
 	private void initComponents() {
 		setLayout(new BorderLayout());
 		add(mute, BorderLayout.CENTER);
@@ -64,9 +66,12 @@ public class TalkFrame extends JFrame {
 	}
 
 	private Omnivore<Integer> packetDropper() {
-		return new Omnivore<Integer>() { @Override public void consume(Integer bufferOccupation) {
-			_shouldDropFrames = bufferOccupation > 2;
-			System.out.println("============Dropping: " + _shouldDropFrames);
+		return new Omnivore<Integer>() {
+
+		@Override public void consume(Integer bufferOccupation) {
+			_shouldTrimFrames = bufferOccupation > 2;
+			_shouldDropFrames = bufferOccupation > AudioUtil.RECEIVING_PACKET_LAG_THRESHOLD;
+			System.out.println("============Dropping: " + _shouldTrimFrames);
 		}};
 	}
 
@@ -104,13 +109,15 @@ public class TalkFrame extends JFrame {
 	private AudioConsumer audioConsumer() {
 		return new AudioConsumer() {
 			public void audio(byte[][] contents) {
-				if (_shouldDropFrames) contents = dropAFrame(contents);
+				if (_shouldDropFrames) return;
+				if (_shouldTrimFrames) contents = trimOneFrame(contents);
+
 				sendAudio(contents);
 			}
 		};
 	}
 	
-	private byte[][] dropAFrame(byte[][] contents) {
+	private byte[][] trimOneFrame(byte[][] contents) {
 		return Arrays.copyOf(contents, contents.length - 1);
 	}
 

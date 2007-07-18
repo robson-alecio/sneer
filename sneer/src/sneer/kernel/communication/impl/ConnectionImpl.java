@@ -132,6 +132,7 @@ public class ConnectionImpl {
 					_objectReceiver.consume(packet);
 				} catch (IOException e) {
 					setIsOnline(false);
+					closeSocket();
 					break;
 				} catch (ClassNotFoundException e) {
 					Log.log(e);

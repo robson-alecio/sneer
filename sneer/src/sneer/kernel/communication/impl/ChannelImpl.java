@@ -5,6 +5,7 @@ import java.util.List;
 
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
+import wheel.io.Log;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.reactive.Signal;
@@ -24,13 +25,12 @@ class ChannelImpl implements Channel {
 	private void startConsumer() { 
 		Threads.startDaemon(new Runnable() { public void run() { 
 			while (true) {
-				Packet packet;
-				synchronized (_buffer) {
-					if (_buffer.isEmpty())
-						Threads.waitWithoutInterruptions(_buffer);
-					packet = _buffer.remove(0);
-				}
-				_input.setter().consume(packet); 
+				Packet packet = waitForNextFromBuffer();
+				try {
+					_input.setter().consume(packet);
+				} catch (RuntimeException e) {
+					Log.log(e);
+				} 
 			} 
 		}}); 
 	} 
@@ -47,6 +47,14 @@ class ChannelImpl implements Channel {
 		synchronized (_buffer) {
 			_buffer.add(packet);
 			_buffer.notify();
+		}
+	}
+
+	private Packet waitForNextFromBuffer() {
+		synchronized (_buffer) {
+			if (_buffer.isEmpty())
+				Threads.waitWithoutInterruptions(_buffer);
+			return _buffer.remove(0);
 		}
 	}
 

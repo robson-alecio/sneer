@@ -52,13 +52,14 @@ public class SpeexSpeaker extends Thread {
 
 	public synchronized void sendAudio(byte[][] frames) { //Fix: this should not block. implement producer/consumer buffer
 
-		for (int t = 0; t < AudioUtil.FRAMES; t++) {
+		for (int t = 0; t < frames.length; t++) {
 			byte[] frame = frames[t];
 			
 			try {
 				_decoder.processData(frame, 0, frame.length);
 				int processed = _decoder.getProcessedData(_decodeBuffer, 0);
-				_line.write(_decodeBuffer, 0, processed);
+				//if (t%5 ==0) continue;
+				_line.write(_decodeBuffer, 0, processed - 40); //-40 to recover from lag. make adaptive
 			} catch (Exception e) {
 				Log.log(e);
 				e.printStackTrace();

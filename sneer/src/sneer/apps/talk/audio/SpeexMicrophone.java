@@ -71,9 +71,7 @@ public class SpeexMicrophone extends Thread {
 				frameIndex = 0;
 			}
 
-			if (_counter++ % 10 == 0)
-				Threads.sleepWithoutInterruptions(10); //Implement: send a timestamped packet and get it back  to measure lag. Add more/longer delays between mic samples the lag increases.
-
+			
 		}
 		_line.close();
 	}

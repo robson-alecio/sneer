@@ -8,4 +8,6 @@ public interface Channel {
 	Omnivore<Packet> output();
 	Signal<Packet> input();
 	
+	Signal<Integer> elementsInInputBuffer();
+	
 }

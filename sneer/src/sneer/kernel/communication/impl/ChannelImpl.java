@@ -15,8 +15,11 @@ class ChannelImpl implements Channel {
 
 	private final SourceImpl<Packet> _input = new SourceImpl<Packet>(null);
 	private final Omnivore<Packet> _output;
+	
 	private final List<Packet> _buffer = new LinkedList<Packet>();
+	private final SourceImpl<Integer> _elementsInInputBuffer = new SourceImpl<Integer>(0);
 
+	
 	ChannelImpl(Omnivore<Packet> output) {
 		_output = output;
 		startConsumer();
@@ -46,8 +49,13 @@ class ChannelImpl implements Channel {
 	void receive(Packet packet) {
 		synchronized (_buffer) {
 			_buffer.add(packet);
+			inputBufferChanged();
 			_buffer.notify();
 		}
+	}
+
+	private void inputBufferChanged() {
+		_elementsInInputBuffer.setter().consume(_buffer.size());
 	}
 
 	private Packet waitForNextFromBuffer() {
@@ -55,8 +63,15 @@ class ChannelImpl implements Channel {
 			if (_buffer.isEmpty())
 				Threads.waitWithoutInterruptions(_buffer);
 			if (_buffer.size() > 1) System.out.println("Input buffer " + this + " size: " + _buffer.size());
-			return _buffer.remove(0);
+			Packet result = _buffer.remove(0);
+			inputBufferChanged();
+			return result;
 		}
+	}
+
+	@Override
+	public Signal<Integer> elementsInInputBuffer() {
+		return _elementsInInputBuffer.output();
 	}
 
 }

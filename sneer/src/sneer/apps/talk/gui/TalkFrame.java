@@ -3,6 +3,7 @@ package sneer.apps.talk.gui;
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Arrays;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.swing.JFrame;
@@ -21,7 +22,7 @@ public class TalkFrame extends JFrame {
 
 	private SpeexSpeaker _speaker;
 
-	public TalkFrame(Signal<String> otherGuysNick, final Signal<AudioPacket> audioInput, Omnivore<AudioPacket> audioOutput) {
+	public TalkFrame(Signal<String> otherGuysNick, final Signal<AudioPacket> audioInput, Omnivore<AudioPacket> audioOutput, Signal<Integer> inputBufferOccupation) {
 		_otherGuysNick = otherGuysNick;
 		_audioOutput = audioOutput;
 
@@ -42,6 +43,8 @@ public class TalkFrame extends JFrame {
 			}
 		});
 
+		inputBufferOccupation.addReceiver(packetDropper());
+
 		setVisible(true);
 	}
 
@@ -51,11 +54,20 @@ public class TalkFrame extends JFrame {
 
 	private final JToggleButton mute = new JToggleButton("mute");
 
+	private boolean _shouldDropFrames = false;
+
 	private void initComponents() {
 		setLayout(new BorderLayout());
 		add(mute, BorderLayout.CENTER);
 		setSize(100, 50);
 		addWindowListeners();
+	}
+
+	private Omnivore<Integer> packetDropper() {
+		return new Omnivore<Integer>() { @Override public void consume(Integer bufferOccupation) {
+			_shouldDropFrames = bufferOccupation > 2;
+			System.out.println("============Dropping: " + _shouldDropFrames);
+		}};
 	}
 
 	private void addWindowListeners() {
@@ -81,19 +93,27 @@ public class TalkFrame extends JFrame {
 		
 		try {
 			_speaker = new SpeexSpeaker();
-			_microphone = new SpeexMicrophone(
-				new AudioConsumer() {
-					public void audio(byte[][] contents) {
-						sendAudio(contents);
-					}
-				});
+			_microphone = new SpeexMicrophone(audioConsumer());
 		} catch (LineUnavailableException e1) {
 			// Fix: Should handle any problem here... could not open audio device
 			Log.log(e1);
 			e1.printStackTrace();
 		}
 	}
+
+	private AudioConsumer audioConsumer() {
+		return new AudioConsumer() {
+			public void audio(byte[][] contents) {
+				if (_shouldDropFrames) contents = dropAFrame(contents);
+				sendAudio(contents);
+			}
+		};
+	}
 	
+	private byte[][] dropAFrame(byte[][] contents) {
+		return Arrays.copyOf(contents, contents.length - 1);
+	}
+
 	synchronized private void closeAudio() {
 		System.out.print("closing...");
 		_microphone.close();

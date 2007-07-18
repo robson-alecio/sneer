@@ -35,6 +35,7 @@ public class TalkApp {
 		_channel.input().addReceiver(audioPacketReceiver());
 	}
 
+
 	private final User _user;
 	private final Channel _channel;
 	private final ListSignal<Contact> _contacts;
@@ -101,7 +102,7 @@ public class TalkApp {
 	}
 
 	private void createFrameFor(ContactId contactId) {
-		TalkFrame frame = new TalkFrame(findContact(contactId).nick(), inputFrom(contactId), outputTo(contactId));
+		TalkFrame frame = new TalkFrame(findContact(contactId).nick(), inputFrom(contactId), outputTo(contactId), _channel.elementsInInputBuffer());
 		frame.addWindowListener(closingListener(contactId));
 		_framesByContactId.put(contactId, frame);
 	}

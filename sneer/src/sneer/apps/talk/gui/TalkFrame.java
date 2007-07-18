@@ -12,6 +12,7 @@ import sneer.apps.talk.AudioPacket;
 import sneer.apps.talk.audio.SpeexMicrophone;
 import sneer.apps.talk.audio.SpeexSpeaker;
 import sneer.apps.talk.audio.SpeexMicrophone.AudioCallback;
+import wheel.io.Log;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 
@@ -67,7 +68,7 @@ public class TalkFrame extends JFrame {
 
 	}
 
-	private void sendAudio(byte[] contents) {
+	private void sendAudio(byte[][] contents) {
 		if (!mute.isSelected()) {
 			final AudioPacket audioPacket = new AudioPacket(contents);
 			_audioOutput.consume(audioPacket); // queue or thread needed?????
@@ -80,7 +81,7 @@ public class TalkFrame extends JFrame {
 		_speaker = new SpeexSpeaker();
 		_microphone = new SpeexMicrophone(
 				new AudioCallback() {
-					public void audio(byte[] contents) {
+					public void audio(byte[][] contents) {
 						sendAudio(contents);
 					}
 				});
@@ -89,6 +90,7 @@ public class TalkFrame extends JFrame {
 			_speaker.init();
 		} catch (LineUnavailableException e1) {
 			// Fix: Should handle any problem here... could not open audio device
+			Log.log(e1);
 			e1.printStackTrace();
 		}
 	}

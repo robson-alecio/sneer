@@ -1,5 +1,7 @@
 package sneer.apps.talk.audio;
 
+import java.util.Arrays;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
@@ -7,12 +9,6 @@ import javax.sound.sampled.TargetDataLine;
 import org.xiph.speex.SpeexEncoder;
 
 import wheel.lang.Threads;
-
-// AUDIO FORMAT:
-// Sequence of a fixed number (AudioUtil.FRAMES) speex decoded frames,
-// each frame with the structure:
-// - Header - short, 2 bytes
-// - Content - decoded frame
 
 public class SpeexMicrophone extends Thread {
 
@@ -52,37 +48,27 @@ public class SpeexMicrophone extends Thread {
 	@Override
 	public void run() {
 		byte[] buffer = new byte[2 * _encoder.getFrameSize() * _encoder.getChannels()];
-		byte[] frameBuffer = new byte[buffer.length * AudioUtil.FRAMES];
+		byte[][] frames = new byte[AudioUtil.FRAMES][];
 
 		int frameIndex = 0;
-		int frameBufferIndex = 0;
-		int average = 0;
 
 		while (true) {
 			
 			int read = _line.read(buffer, 0, buffer.length); //pcm data / 16 bits
 
-			average = average + calculateAverage16BitsPcm(buffer, read);
-
 			if (_encoder.processData(buffer, 0, read)) {
 				
-				int processed = _encoder.getProcessedData(frameBuffer, frameBufferIndex + 2);
-				AudioUtil.shortToByte(frameBuffer, frameBufferIndex, processed);
-				frameBufferIndex = frameBufferIndex + processed + 2;
-				frameIndex++;
-				//System.out.println("encoding "+frameIndex+" - "+processed);
+				int processed = _encoder.getProcessedData(buffer, 0);
+				frames[frameIndex++] = Arrays.copyOf(buffer, processed);
+
 			}
 
 			if (frameIndex == AudioUtil.FRAMES) {
-				byte[] contents = new byte[frameBufferIndex];
-				System.arraycopy(frameBuffer, 0, contents, 0, frameBufferIndex);
-				
+
 				if (!_running) break;
-				_callback.audio(contents);
+				_callback.audio(frames);
 
 				frameIndex = 0;
-				average = 0;
-				frameBufferIndex = 0;
 			}
 
 			if (_counter++ % 10 == 0)
@@ -92,16 +78,8 @@ public class SpeexMicrophone extends Thread {
 		_line.close();
 	}
 
-	public int calculateAverage16BitsPcm(byte[] buffer, int length) {
-		int total = 0;
-		for (int t = 0; t < (length / 2); t++) {
-			total += AudioUtil.byteToShort(buffer, t * 2);
-		}
-		return total / (length / 2);
-	}
-
 	public interface AudioCallback {
-		public void audio(byte[] buffer);
+		public void audio(byte[][] buffer);
 	}
 
 	public void close() {

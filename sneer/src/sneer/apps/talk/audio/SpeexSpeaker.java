@@ -6,6 +6,8 @@ import javax.sound.sampled.SourceDataLine;
 
 import org.xiph.speex.SpeexDecoder;
 
+import wheel.io.Log;
+
 public class SpeexSpeaker extends Thread {
 	private AudioFormat _format;
 
@@ -48,22 +50,19 @@ public class SpeexSpeaker extends Thread {
 		_line.close();
 	}
 
-	public synchronized void sendAudio(byte[] buffer) { //Fix: this should not block. implement producer/consumer buffer
+	public synchronized void sendAudio(byte[][] frames) { //Fix: this should not block. implement producer/consumer buffer
 
-		int index = 0;
 		for (int t = 0; t < AudioUtil.FRAMES; t++) {
-			int size = AudioUtil.byteToShort(buffer, index);
-			//System.out.println("decoding:"+size);
-			index += 2;
+			byte[] frame = frames[t];
 			
 			try {
-				_decoder.processData(buffer, index, size);
+				_decoder.processData(frame, 0, frame.length);
 				int processed = _decoder.getProcessedData(_decodeBuffer, 0);
 				_line.write(_decodeBuffer, 0, processed);
 			} catch (Exception e) {
+				Log.log(e);
 				e.printStackTrace();
 			}
-			index += size;
 		}
 	}
 

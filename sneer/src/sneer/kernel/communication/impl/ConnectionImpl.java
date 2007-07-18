@@ -63,15 +63,12 @@ public class ConnectionImpl {
 				if ((System.currentTimeMillis() - _lastActivityTime) > BARK_PERIOD_MILLIS)
 					send(BARK);
 				
-				if ((System.currentTimeMillis() - _lastActivityTime) > (BARK_PERIOD_MILLIS * 2))
-					setIsOnline(false);
-
-				if ((System.currentTimeMillis() - _lastActivityTime) > (BARK_PERIOD_MILLIS * 4))
+				if ((System.currentTimeMillis() - _lastActivityTime) > (BARK_PERIOD_MILLIS * 3))
 					closeSocket();
-				
-				Threads.sleepWithoutInterruptions(BARK_PERIOD_MILLIS);
+				else
+					Threads.sleepWithoutInterruptions(BARK_PERIOD_MILLIS);
 			}
-		} } );
+		}});
 	}
 
 	private ObjectSocket produceSocket() throws IOException, InvalidConnectionAttempt {
@@ -123,7 +120,6 @@ public class ConnectionImpl {
 					Object received = mySocket.readObject();
 					
 					_lastActivityTime = System.currentTimeMillis();
-					setIsOnline(true);
 					
 					if (BARK.equals(received)) continue;
 					//System.out.println("Received: " + received);
@@ -132,7 +128,6 @@ public class ConnectionImpl {
 					packet._packet._contactId = _contact.id();
 					_objectReceiver.consume(packet);
 				} catch (IOException e) {
-					setIsOnline(false);
 					closeSocket();
 					break;
 				} catch (ClassNotFoundException e) {
@@ -150,12 +145,10 @@ public class ConnectionImpl {
 
 	private void closeSocket() {
 		if (_socket == null) return;
-		try {
-			_socket.close();
-		} catch (IOException e) {
-		} finally {
-			_socket = null;
-		}
+		
+		setIsOnline(false);
+
+		try {_socket.close();} catch (IOException ignored) {} finally {_socket = null;}
 	}
 
 	private void setIsOnline(boolean isOnline) {

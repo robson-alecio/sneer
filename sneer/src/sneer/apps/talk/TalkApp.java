@@ -92,6 +92,13 @@ public class TalkApp {
 	private void open(ContactId contactId) {
 		createInputFor(contactId);
 		createFrameFor(contactId);
+		findContact(contactId).isOnline().addReceiver(offlineCloser(contactId));
+	}
+
+	private Omnivore<Boolean> offlineCloser(final ContactId contactId) {
+		return new Omnivore<Boolean>() { @Override public void consume(Boolean isOnline) {
+			if (!isOnline) close(contactId);
+		}};
 	}
 
 	private void actUponContact(Contact contact) {

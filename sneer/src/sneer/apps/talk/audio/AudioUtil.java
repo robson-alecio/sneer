@@ -10,7 +10,7 @@ public class AudioUtil {
     static final int CHANNELS = 2; //for linux/alsa compatibility, should not use mono
     static final boolean SIGNED = true;
     static final boolean BIG_ENDIAN = false;
-    static final int FRAMES=20;
+    static final int FRAMES=10;
     
     public static final int BUFFER_SIZE = SAMPLE_RATE*SAMPLE_SIZE_IN_BITS*CHANNELS/8;
     

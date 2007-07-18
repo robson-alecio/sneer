@@ -37,7 +37,7 @@ public class TalkFrame extends JFrame {
 		audioInput.addReceiver(new Omnivore<AudioPacket>() { @Override
 			public void consume(AudioPacket audioPacket) {
 				if (_speaker == null) return;
-				int lagDecay = 4;  //Implement: Drop multiples of 4 bytes to recover from eventual lag. 0 is perfect sound. Make adaptive
+				int lagDecay = 1;  //Implement: Drops samples to recover from eventual lag. 0 is perfect sound. Make adaptive
 				_speaker.sendAudio(audioPacket._content, lagDecay);
 			}
 		});

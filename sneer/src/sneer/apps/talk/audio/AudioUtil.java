@@ -17,7 +17,7 @@ public class AudioUtil {
     static final int PCM_BUFFER_SIZE = SAMPLE_RATE * SAMPLE_DURATION_MILLIS * CHANNELS * SAMPLE_SIZE_IN_BITS / 8 / 1000;
     
     private static final AudioFormat AUDIO_FORMAT = new AudioFormat(SAMPLE_RATE,SAMPLE_SIZE_IN_BITS,CHANNELS,SIGNED,BIG_ENDIAN);
-	static final int SOUND_QUALITY = 3; //From 0 (bad) to 10 (good);
+	static final int SOUND_QUALITY = 8; //From 0 (bad) to 10 (good);
 	static final int NARROWBAND_ENCODING = 0;
     
     static TargetDataLine getTargetDataLine() throws LineUnavailableException{

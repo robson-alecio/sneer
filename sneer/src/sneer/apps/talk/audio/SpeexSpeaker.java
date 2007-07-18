@@ -39,6 +39,7 @@ public class SpeexSpeaker {
 				throw new IllegalArgumentException(e);
 			}
 			int processed = _decoder.getProcessedData(_pcmBuffer, 0);
+			lagDecay = lagDecay * AudioUtil.SAMPLE_SIZE_IN_BITS / 8 * AudioUtil.CHANNELS;
 			_line.write(_pcmBuffer, 0, processed - lagDecay);
 		}
 	}

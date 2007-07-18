@@ -38,7 +38,7 @@ public class SpeexMicrophone extends Thread {
 	@Override
 	public void run() {
 		byte[][] frames = new byte[AudioUtil.FRAMES_PER_AUDIO_PACKET][];
-		byte[] pcmBuffer = new byte[2 * _encoder.getFrameSize() * _encoder.getChannels()];
+		byte[] pcmBuffer = new byte[AudioUtil.SAMPLE_SIZE_IN_BITS / 8 * _encoder.getFrameSize() * _encoder.getChannels()];
 		byte[] speexBuffer = new byte[pcmBuffer.length]; //Speex will always fit in the pcm space because it is compressed.
 
 		int frameIndex = 0;

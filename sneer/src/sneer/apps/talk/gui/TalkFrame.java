@@ -11,7 +11,7 @@ import javax.swing.JToggleButton;
 import sneer.apps.talk.AudioPacket;
 import sneer.apps.talk.audio.SpeexMicrophone;
 import sneer.apps.talk.audio.SpeexSpeaker;
-import sneer.apps.talk.audio.SpeexMicrophone.AudioCallback;
+import sneer.apps.talk.audio.SpeexMicrophone.AudioConsumer;
 import wheel.io.Log;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
@@ -37,7 +37,8 @@ public class TalkFrame extends JFrame {
 		audioInput.addReceiver(new Omnivore<AudioPacket>() { @Override
 			public void consume(AudioPacket audioPacket) {
 				if (_speaker == null) return;
-				_speaker.sendAudio(audioPacket._content);
+				int lagDecay = 4;  //Implement: Drop multiples of 4 bytes to recover from eventual lag. 0 is perfect sound. Make adaptive
+				_speaker.sendAudio(audioPacket._content, lagDecay);
 			}
 		});
 
@@ -78,16 +79,14 @@ public class TalkFrame extends JFrame {
 	private synchronized void openAudio() {
 		if (_speaker != null) return;
 		
-		_speaker = new SpeexSpeaker();
-		_microphone = new SpeexMicrophone(
-				new AudioCallback() {
+		try {
+			_speaker = new SpeexSpeaker();
+			_microphone = new SpeexMicrophone(
+				new AudioConsumer() {
 					public void audio(byte[][] contents) {
 						sendAudio(contents);
 					}
 				});
-		try {
-			_microphone.init();
-			_speaker.init();
 		} catch (LineUnavailableException e1) {
 			// Fix: Should handle any problem here... could not open audio device
 			Log.log(e1);

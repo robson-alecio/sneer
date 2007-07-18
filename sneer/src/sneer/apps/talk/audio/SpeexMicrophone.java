@@ -12,75 +12,57 @@ import wheel.lang.Threads;
 
 public class SpeexMicrophone extends Thread {
 
-	private AudioFormat _format;
+	private final AudioConsumer _consumer;
 
-	private TargetDataLine _line;
+	private final TargetDataLine _line;
+	private final AudioFormat _format;
+	private final SpeexEncoder _encoder = new SpeexEncoder();
 
 	private volatile boolean _running = true;
 
-	private AudioCallback _callback;
 
-	private SpeexEncoder _encoder = new SpeexEncoder();
-
-	private int _counter = 0;
-
-	public SpeexMicrophone(AudioCallback callback) {
-		setDaemon(true);
-		_callback = callback;
-	}
-
-	public void init() throws LineUnavailableException {
-		_format = AudioUtil.getFormat();
+	public SpeexMicrophone(AudioConsumer consumer) throws LineUnavailableException {
+		_consumer = consumer;
+		
 		_line = AudioUtil.getTargetDataLine();
-		_line.open(_format);
+		_line.open();
 		_line.start();
-		_encoder.init(0, 8, (int) _format.getFrameRate(), _format.getChannels());
+		
+		_format = _line.getFormat();
+		_encoder.init(AudioUtil.NARROWBAND_ENCODING, AudioUtil.SOUND_QUALITY, (int) _format.getFrameRate(), _format.getChannels());
+
+		setDaemon(true);
 		start();
-		while (!isAlive()) { //Refactor: consider if this wait is necessary.
-			try {
-				sleep(200);
-			} catch (InterruptedException ie) {
-			}
-		}
-		;
 	}
 
 	@Override
 	public void run() {
-		byte[] buffer = new byte[2 * _encoder.getFrameSize() * _encoder.getChannels()];
-		byte[][] frames = new byte[AudioUtil.FRAMES][];
+		byte[][] frames = new byte[AudioUtil.FRAMES_PER_AUDIO_PACKET][];
+		byte[] pcmBuffer = new byte[2 * _encoder.getFrameSize() * _encoder.getChannels()];
+		byte[] speexBuffer = new byte[pcmBuffer.length]; //Speex will always fit in the pcm space because it is compressed.
 
 		int frameIndex = 0;
+		while (_running) {
+			int read = _line.read(pcmBuffer, 0, pcmBuffer.length);
 
-		while (true) {
+			if (!_encoder.processData(pcmBuffer, 0, read)) continue;
 			
-			int read = _line.read(buffer, 0, buffer.length); //pcm data / 16 bits
-
-			if (_encoder.processData(buffer, 0, read)) {
-				
-				int processed = _encoder.getProcessedData(buffer, 0);
-				frames[frameIndex++] = Arrays.copyOf(buffer, processed);
-
-			}
-
-			if (frameIndex == AudioUtil.FRAMES) {
-
-				if (!_running) break;
-				_callback.audio(frames);
-
-				frameIndex = 0;
-			}
-
+			int processed = _encoder.getProcessedData(speexBuffer, 0);
+			frames[frameIndex++] = Arrays.copyOf(speexBuffer, processed);
 			
+			if (frameIndex < AudioUtil.FRAMES_PER_AUDIO_PACKET) continue;
+			
+			_consumer.audio(frames);
+			frameIndex = 0;
 		}
-		_line.close();
 	}
 
-	public interface AudioCallback {
+	public interface AudioConsumer {
 		public void audio(byte[][] buffer);
 	}
 
 	public void close() {
+		_line.close();
 		_running = false;
 	}
 

@@ -3,15 +3,17 @@ package sneer.apps.talk.audio;
 public class LoopbackTest {
 
 	public LoopbackTest() {
-		final SpeexSpeaker speaker = new SpeexSpeaker();
-		SpeexMicrophone microphone = new SpeexMicrophone(new SpeexMicrophone.AudioCallback() {
-			public void audio(byte[][] contents) {
-				speaker.sendAudio(contents);
-			}
-		});
+		SpeexSpeaker speaker = null;
+		SpeexMicrophone microphone = null;
 		try {
-			speaker.init();
-			microphone.init();
+			speaker = new SpeexSpeaker();
+			final SpeexSpeaker finalSpeaker = speaker;
+			microphone = new SpeexMicrophone(new SpeexMicrophone.AudioConsumer() {
+				public void audio(byte[][] contents) {
+					finalSpeaker.sendAudio(contents, 4);
+
+				}
+			});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -1,5 +1,7 @@
 package sneer.apps.talk.audio;
 
+import java.io.StreamCorruptedException;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
@@ -8,67 +10,41 @@ import org.xiph.speex.SpeexDecoder;
 
 import wheel.io.Log;
 
-public class SpeexSpeaker extends Thread {
+public class SpeexSpeaker {
+	
+	private SourceDataLine _line;
 	private AudioFormat _format;
 
-	private SourceDataLine _line;
-
-	private boolean _running = true;
-
 	private SpeexDecoder _decoder = new SpeexDecoder();
+	byte[] _pcmBuffer = new byte[2048]; //Big enough :P
 
-	byte[] _decodeBuffer = new byte[2048];
-
-	public SpeexSpeaker() {
-		setDaemon(true);
-	}
-
-	public void init() throws LineUnavailableException {
-		_format = AudioUtil.getFormat();
+	
+	public SpeexSpeaker() throws LineUnavailableException {
 		_line = AudioUtil.getSourceDataLine();
-		_line.open(_format);
+		_line.open();
 		_line.start();
-		_decoder.init(0, (int) _format.getFrameRate(), _format.getChannels(), false);
-		start();
-		while (!isAlive()) {
-			try {
-				sleep(200);
-			} catch (InterruptedException ie) {
-			}
-		}
-		;
+		
+		_format = _line.getFormat();
+		_decoder.init(AudioUtil.NARROWBAND_ENCODING, (int) _format.getFrameRate(), _format.getChannels(), false);
 	}
 
-	@Override
-	public void run() {
-		while (_running) {
-			try {
-				Thread.sleep(500);
-			} catch (Exception e) {
-			}
-		}
-		_line.close();
-	}
 
-	public synchronized void sendAudio(byte[][] frames) { //Fix: this should not block. implement producer/consumer buffer
-
+	public synchronized void sendAudio(byte[][] frames, int lagDecay) {
 		for (int t = 0; t < frames.length; t++) {
 			byte[] frame = frames[t];
 			
 			try {
 				_decoder.processData(frame, 0, frame.length);
-				int processed = _decoder.getProcessedData(_decodeBuffer, 0);
-				//if (t%5 ==0) continue;
-				_line.write(_decodeBuffer, 0, processed - 40); //-40 to recover from lag. make adaptive
-			} catch (Exception e) {
-				Log.log(e);
-				e.printStackTrace();
+			} catch (StreamCorruptedException e) {
+				throw new IllegalArgumentException(e);
 			}
+			int processed = _decoder.getProcessedData(_pcmBuffer, 0);
+			_line.write(_pcmBuffer, 0, processed - lagDecay);
 		}
 	}
 
 	public void close() {
-		_running = false;
+		_line.close();
 	}
 
 }

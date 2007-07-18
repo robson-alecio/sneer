@@ -109,6 +109,7 @@ public class ConnectionImpl {
 			if (_socket != null) return;
 			_socket = socket;
 		}
+		setIsOnline(true);
 		startReceiving();
 	}
 
@@ -122,7 +123,7 @@ public class ConnectionImpl {
 					Object received = mySocket.readObject();
 					
 					_lastActivityTime = System.currentTimeMillis();
-					setIsOnline(true); 
+					setIsOnline(true);
 					
 					if (BARK.equals(received)) continue;
 					//System.out.println("Received: " + received);

@@ -122,7 +122,7 @@ public class ConnectionImpl {
 					Object received = mySocket.readObject();
 					
 					_lastActivityTime = System.currentTimeMillis();
-					setIsOnline(true);
+					setIsOnline(true); 
 					
 					if (BARK.equals(received)) continue;
 					//System.out.println("Received: " + received);
@@ -131,8 +131,8 @@ public class ConnectionImpl {
 					packet._packet._contactId = _contact.id();
 					_objectReceiver.consume(packet);
 				} catch (IOException e) {
+					setIsOnline(false);
 					break;
-					// Implement This is the moment where a disconnection occurs. Inform the online watchdog to set the contact offline.
 				} catch (ClassNotFoundException e) {
 					Log.log(e);
 					break;

@@ -67,7 +67,6 @@ public class TalkFrame extends JFrame {
 		@Override public void consume(Integer bufferOccupation) {
 			_shouldTrimFrames = bufferOccupation > 2;
 			_shouldDropFrames = bufferOccupation > AudioUtil.RECEIVING_PACKET_LAG_THRESHOLD;
-			System.out.println("============Dropping: " + _shouldTrimFrames);
 		}};
 	}
 

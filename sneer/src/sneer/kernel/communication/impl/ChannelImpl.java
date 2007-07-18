@@ -62,9 +62,11 @@ class ChannelImpl implements Channel {
 		synchronized (_buffer) {
 			if (_buffer.isEmpty())
 				Threads.waitWithoutInterruptions(_buffer);
-			if (_buffer.size() > 1) System.out.println("Input buffer " + this + " size: " + _buffer.size());
+			
+			//if (_buffer.size() > 1) System.out.println("Input buffer " + this + " size: " + _buffer.size());
 			Packet result = _buffer.remove(0);
 			inputBufferChanged();
+			
 			return result;
 		}
 	}

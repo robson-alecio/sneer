@@ -36,13 +36,9 @@ public class TalkFrame extends JFrame {
 			}
 		});
 
-		audioInput.addReceiver(new Omnivore<AudioPacket>() { @Override
-			public void consume(AudioPacket audioPacket) {
-				if (_speaker == null) return;
-				int lagDecay = 0;  //Implement: Drops samples to recover from eventual lag. 0 is perfect sound. Make adaptive
-				_speaker.sendAudio(audioPacket._content, lagDecay);
-			}
-		});
+		audioInput.addReceiver(new Omnivore<AudioPacket>() { @Override public void consume(AudioPacket audioPacket) {
+			play(audioPacket);
+		}});
 
 		inputBufferOccupation.addReceiver(packetDropper());
 
@@ -109,9 +105,6 @@ public class TalkFrame extends JFrame {
 	private AudioConsumer audioConsumer() {
 		return new AudioConsumer() {
 			public void audio(byte[][] contents) {
-				if (_shouldDropFrames) return;
-				if (_shouldTrimFrames) contents = trimOneFrame(contents);
-
 				sendAudio(contents);
 			}
 		};
@@ -135,5 +128,16 @@ public class TalkFrame extends JFrame {
 		dispose();
 	}
 	
+	private void play(AudioPacket audioPacket) {
+		if (_speaker == null) return;
+
+		if (_shouldDropFrames) return;
+		byte[][] contents = _shouldTrimFrames
+			? trimOneFrame(audioPacket._content)
+			: audioPacket._content;
+
+		_speaker.sendAudio(contents);
+	}
+
 	private static final long serialVersionUID = 1L;
 }

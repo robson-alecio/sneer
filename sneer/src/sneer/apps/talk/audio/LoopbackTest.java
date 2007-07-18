@@ -10,7 +10,7 @@ public class LoopbackTest {
 			final SpeexSpeaker finalSpeaker = speaker;
 			microphone = new SpeexMicrophone(new SpeexMicrophone.AudioConsumer() {
 				public void audio(byte[][] contents) {
-					finalSpeaker.sendAudio(contents, 1);
+					finalSpeaker.sendAudio(contents);
 
 				}
 			});

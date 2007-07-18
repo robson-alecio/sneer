@@ -8,7 +8,7 @@ import javax.sound.sampled.TargetDataLine;
 
 import org.xiph.speex.SpeexEncoder;
 
-import wheel.lang.Threads;
+import wheel.io.Log;
 
 public class SpeexMicrophone extends Thread {
 
@@ -37,6 +37,15 @@ public class SpeexMicrophone extends Thread {
 
 	@Override
 	public void run() {
+		try {
+			tryToRun();
+		} catch (RuntimeException e) {
+			if (!_running) return;
+			Log.log(e);
+		}
+	}
+
+	private void tryToRun() {
 		byte[][] frames = new byte[AudioUtil.FRAMES_PER_AUDIO_PACKET][];
 		byte[] pcmBuffer = new byte[AudioUtil.SAMPLE_SIZE_IN_BITS / 8 * _encoder.getFrameSize() * _encoder.getChannels()];
 		byte[] speexBuffer = new byte[pcmBuffer.length]; //Speex will always fit in the pcm space because it is compressed.
@@ -62,8 +71,8 @@ public class SpeexMicrophone extends Thread {
 	}
 
 	public void close() {
-		_line.close();
 		_running = false;
+		_line.close();
 	}
 
 }

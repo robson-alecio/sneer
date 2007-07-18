@@ -41,6 +41,7 @@ public class SpeexSpeaker {
 				throw new IllegalArgumentException(e);
 			}
 			int processed = _decoder.getProcessedData(_pcmBuffer, 0);
+			if (t==0) continue; //É isso? 1 a cada 10? maisok explicito aqui
 			_line.write(_pcmBuffer, 0, processed - lagDecay);
 		}
 	}

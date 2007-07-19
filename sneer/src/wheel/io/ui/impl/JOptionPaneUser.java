@@ -1,14 +1,19 @@
 package wheel.io.ui.impl;
 
 import java.awt.Component;
+import java.awt.Dialog;
 
 import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.io.ui.Util;
+import wheel.lang.Threads;
 import wheel.lang.exceptions.Catcher;
 import wheel.lang.exceptions.FriendlyException;
 
@@ -83,6 +88,12 @@ public class JOptionPaneUser implements User {
 			return false;
 		}
 	}
+	
+	public void confirmWithTimeout(String proposition, int timeout, ConfirmCallback callback) {
+		String message = adaptPrompt(proposition);
+		JOptionPane pane = new JOptionPane(message,JOptionPane.QUESTION_MESSAGE,JOptionPane.YES_NO_OPTION);
+		showOptionPaneWithTimeout(null,pane,timeout,callback);
+	}
 
 	@Override
 	public boolean confirmOrCancel(String proposition) throws CancelledByUser {
@@ -137,6 +148,52 @@ public class JOptionPaneUser implements User {
 		String string = Util.correctSwingNewlineSpaceProblem(proposition);
 		return string + "\n\n";
 	}
-
-
+	
+	private void showOptionPaneWithTimeout(JComponent parentComponent, JOptionPane pane, int timeout, ConfirmCallback confirmCallback){
+		final JDialog dialog = pane.createDialog(parentComponent, _title);
+		dialog.setModal(false);
+		DialogTimeoutRunner timeoutRunner= new DialogTimeoutRunner(dialog, pane, timeout, confirmCallback);
+		timeoutRunner.start();
+	}
+	
+	public class DialogTimeoutRunner extends Thread{
+		private Dialog _dialog;
+		private JOptionPane _pane;
+		private ConfirmCallback _confirmCallback;
+		private int _timeout;
+		private String _originalTitle;
+		
+		public DialogTimeoutRunner(Dialog dialog, JOptionPane pane, int timeout, ConfirmCallback confirmCallback){
+			_dialog = dialog;
+			_pane = pane;
+			_confirmCallback= confirmCallback;
+			_timeout = timeout;
+			_originalTitle = dialog.getTitle();
+		}
+		
+		@Override
+		public void run(){
+			_dialog.setVisible(true);
+			long start = System.currentTimeMillis();
+			while(true){
+				Threads.sleepWithoutInterruptions(250); //give cpu a break
+				int elapsed = (int)(System.currentTimeMillis() - start ) / 1000;
+				if (elapsed>_timeout){
+					_confirmCallback.response(User.TIMEOUT_EXPIRED_RESPONSE);
+					break;
+				}	
+				_dialog.setTitle(_originalTitle + " (" + (_timeout - elapsed) +" seconds)");
+				_dialog.validate();
+				Object selectedValue = _pane.getValue();
+				if (selectedValue.equals(JOptionPane.UNINITIALIZED_VALUE))
+					continue;
+				_confirmCallback.response(selectedValue);
+				break;
+			}
+			_dialog.setVisible(false);
+			_dialog.dispose();
+		}
+		
+	}
+	
 }

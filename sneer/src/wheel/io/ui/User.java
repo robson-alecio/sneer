@@ -14,6 +14,7 @@ public interface User {
 
 	boolean confirm(String proposition);
 	boolean confirmOrCancel(String proposition) throws CancelledByUser;
+	void confirmWithTimeout(String proposition, int timeout, ConfirmCallback callback);
 
 	void acknowledgeNotification(String notification);
 	void acknowledgeNotification(String notification, String replacementForBoringOK);
@@ -23,5 +24,11 @@ public interface User {
 	void acknowledge(Throwable t);
 	void acknowledgeFriendlyException(FriendlyException e);
 	Catcher catcher();
+	
+	public interface ConfirmCallback {
+		public void response(Object response);
+	}
+	
+	public static final String TIMEOUT_EXPIRED_RESPONSE = "confirm dialog expired";
 
 }

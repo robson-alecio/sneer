@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.security.auth.callback.ConfirmationCallback;
+import javax.swing.JOptionPane;
+
 import sneer.apps.talk.gui.TalkFrame;
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.ContactId;
@@ -16,6 +19,7 @@ import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
 import wheel.io.ui.User;
+import wheel.io.ui.User.ConfirmCallback;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
@@ -61,8 +65,7 @@ public class TalkApp {
 	private Omnivore<Packet> audioPacketReceiver() {
 		return new Omnivore<Packet>() { public void consume(Packet packet) {
 			if (OPEN.equals(packet._contents)) {
-				if (!userWantsToOpen(packet._contactId)) return;
-				open(packet._contactId);
+				userWantsToOpen(packet._contactId);
 				return;
 			}
 			
@@ -77,9 +80,17 @@ public class TalkApp {
 		}};
 	}
 	
-	private boolean userWantsToOpen(ContactId contactId) {
+	private void userWantsToOpen(final ContactId contactId) {
 		String nick = findContact(contactId).nick().currentValue();
-		return _user.confirm(translate("%1$s is calling you.\n\nDo you want to accept this call?", nick));
+		_user.confirmWithTimeout(translate("%1$s is calling you.\n\nDo you want to accept this call?", nick)
+				, 15, new ConfirmCallback(){
+					public void response(Object response) {
+						if (response.equals(User.TIMEOUT_EXPIRED_RESPONSE))
+							return;
+						if (response.equals(JOptionPane.YES_OPTION))
+							open(contactId);
+					}
+		});
 	}
 
 	private void close(ContactId contactId) {

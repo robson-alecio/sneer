@@ -225,37 +225,43 @@ public class AudioCommon {
 		return _outputDevices;
 	}
 
-	public TargetDataLine bestAvailableTargetDataLine() throws LineUnavailableException {
-		Mixer mixer = AudioCommon.getInstance().bestAvailableMixerForOutput();
-		if (mixer == null)
-			throw new LineUnavailableException("No suitable mixer found");
-		return AudioSystem.getTargetDataLine(AudioUtil.AUDIO_FORMAT, mixer.getMixerInfo());
+	public TargetDataLine bestAvailableTargetDataLine(){
+		try {
+			Mixer mixer = AudioCommon.getInstance().bestAvailableMixerForOutput();
+			if (mixer == null)
+				return null;
+			return AudioSystem.getTargetDataLine(AudioUtil.AUDIO_FORMAT, mixer.getMixerInfo());
+		}catch(IllegalArgumentException iae){
+			//
+		} catch (LineUnavailableException e) {
+			//
+		}
+		return null;
 	}
 	
-	public SourceDataLine bestAvailableSourceDataLine() throws LineUnavailableException {
-		Mixer mixer = AudioCommon.getInstance().bestAvailableMixerForInput();
-		if (mixer == null)
-			throw new LineUnavailableException("No suitable mixer found");
-		return AudioSystem.getSourceDataLine(AudioUtil.AUDIO_FORMAT, mixer.getMixerInfo());
+	public SourceDataLine bestAvailableSourceDataLine(){
+		try {
+			Mixer mixer = AudioCommon.getInstance().bestAvailableMixerForInput();
+			if (mixer == null)
+				return null;
+			return AudioSystem.getSourceDataLine(AudioUtil.AUDIO_FORMAT, mixer.getMixerInfo());
+		}catch(IllegalArgumentException iae){
+			//
+		} catch (LineUnavailableException e) {
+			//
+		}
+		return null;
 	}
 	
 	public boolean isPossiblePlayback(){
-			try {
-				if (bestAvailableSourceDataLine()==null)
-					return false;
-			} catch (LineUnavailableException e) {
-				return false;
-			}
-			return true;
+		if (bestAvailableSourceDataLine()==null)
+			return false;
+		return true;
 	}
 	
 	public boolean isPossibleCapture(){
-		try {
-			if (bestAvailableTargetDataLine()==null)
-				return false;
-		} catch (LineUnavailableException e) {
+		if (bestAvailableTargetDataLine()==null)
 			return false;
-		}
 		return true;
 	}
 	
@@ -264,8 +270,13 @@ public class AudioCommon {
 	}
 	
 	public static void main(String[] args){
+		AudioCommon.getInstance();
+		System.out.println("-----------------------------");
+		System.out.println("Playback possible: "+AudioCommon.getInstance().isPossiblePlayback());
+		System.out.println("Capture possible: "+AudioCommon.getInstance().isPossibleCapture());
 		Mixer bestInput = AudioCommon.getInstance().bestAvailableMixerForInput();
 		Mixer bestOutput = AudioCommon.getInstance().bestAvailableMixerForOutput();
+		System.out.println("-----------------------------");
 		System.out.println("best input mixer: " + ((bestInput!=null)?bestInput.getMixerInfo().getName():"NOT AVAILABLE"));
 		System.out.println("best output mixer: " + ((bestOutput!=null)?bestOutput.getMixerInfo().getName():"NOT AVAILABLE"));
 	}

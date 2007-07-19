@@ -207,7 +207,7 @@ public class Communicator {
 			return false;
 		}
 		
-		_spider.connectionFor(contact.id()).serveIncomingSocket(socket);
+		_spider.connectionFor(contact.id()).serveAcceptedSocket(socket);
 		return true;
 	}
 

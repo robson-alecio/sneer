@@ -1,12 +1,10 @@
 package sneer.kernel.communication.impl;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 import sneer.kernel.business.contacts.Contact;
 import sneer.kernel.business.contacts.OnlineEvent;
+import static wheel.i18n.Language.translate;
 import wheel.io.Log;
 import wheel.io.network.ObjectSocket;
 import wheel.io.network.OldNetwork;
@@ -20,25 +18,25 @@ public class ConnectionImpl {
 	private static final int BARK_PERIOD_MILLIS = 5000;
 	private static final String BARK = "Bark";
 
-	private static class InvalidConnectionAttempt extends Exception { private static final long serialVersionUID = 1L; }
-
 	private final Contact _contact;
 	private final OldNetwork _network;
-	private volatile ObjectSocket _socket;
 	private final Omnivore<OnlineEvent> _onlineSetter;
 	private final Consumer<OutgoingConnectionAttempt> _connectionValidator;
 	private final Omnivore<Object> _objectReceiver;
 
-	private volatile boolean _isClosed = false;
-	private volatile long _lastActivityTime;
-	
 	private final Object _socketOpenMonitor = new Object();
-	private final Object _socketSetterMonitor = new Object();
+	private final SocketHolder _socketHolder = new SocketHolder(socketActivityReceiver());
+
+	private volatile boolean _isClosed = false;
+
+	private volatile long _lastActivityTime;
 	
 	private final PriorityQueue<ChannelPacket> _priorityQueue = new PriorityQueue<ChannelPacket>(10);
 	
+	private boolean _classNotFoundExceptionAlreadyLogged = false;
+	
 
-	public ConnectionImpl(Contact contact, OldNetwork network, Omnivore<OnlineEvent> onlineSetter, Consumer<OutgoingConnectionAttempt> connectionValidator, Omnivore<Object> objectReceiver) { //Refactor: move online notification to the objectReceiver instead of having separate onlineSetter.
+	ConnectionImpl(Contact contact, OldNetwork network, Omnivore<OnlineEvent> onlineSetter, Consumer<OutgoingConnectionAttempt> connectionValidator, Omnivore<Object> objectReceiver) {
 		_contact = contact;
 		_network = network;
 		_onlineSetter = onlineSetter;
@@ -47,6 +45,15 @@ public class ConnectionImpl {
 		
 		startIsOnlineWatchdog();
 		startSender();
+	}
+
+	private Omnivore<Boolean> socketActivityReceiver() {
+		return new Omnivore<Boolean>() { public void consume(Boolean socketActive) {
+			if (socketActive)
+				startReceiving(_socketHolder.socket());
+			
+			setIsOnline(socketActive);
+		}};
 	}
 
 	private void startSender() {
@@ -59,96 +66,104 @@ public class ConnectionImpl {
 
 	private void startIsOnlineWatchdog() {
 		Threads.startDaemon(new Runnable(){	@Override public void run() {
+			send(BARK);
+
 			while (!_isClosed) {
 				if ((System.currentTimeMillis() - _lastActivityTime) > BARK_PERIOD_MILLIS)
 					send(BARK);
 				
 				if ((System.currentTimeMillis() - _lastActivityTime) > (BARK_PERIOD_MILLIS * 3))
-					closeSocket();
-				else
-					Threads.sleepWithoutInterruptions(BARK_PERIOD_MILLIS);
+					_socketHolder.crashSocket();
+
+				Threads.sleepWithoutInterruptions(BARK_PERIOD_MILLIS);
 			}
 		}});
 	}
 
-	private ObjectSocket produceSocket() throws IOException, InvalidConnectionAttempt {
-		while (_socket == null) competeToOpenSocket();
-		return _socket;
+	private ObjectSocket tryToProduceSocket() {
+		if (_socketHolder.isEmpty()) competeToOpenSocket();
+		return _socketHolder.socket();
 	}
 
-	private void competeToOpenSocket() throws IOException, InvalidConnectionAttempt {
+
+	private void competeToOpenSocket() {
 		synchronized (_socketOpenMonitor) {
-			if (_socket != null) return; 
-			setSocketIfNecessary(openSocket());
+			if (!_socketHolder.isEmpty()) return; 
+			ObjectSocket newSocket = tryToOpenSocket();
+			if (newSocket == null) return;
+			_socketHolder.setSocketIfNecessary(newSocket);
 		}
 	}
 
-	private ObjectSocket openSocket() throws IOException, InvalidConnectionAttempt {
-		String host = _contact.host().currentValue();
-		int port = _contact.port().currentValue();
-
-		ObjectSocket result = _network.openSocket(host, port);
+	private ObjectSocket tryToOpenSocket() {
+		ObjectSocket result;
+		try {
+			result = _network.openSocket(host(), port());
+		} catch (IOException e) {
+			return null;
+		}
+		
 		try {
 			_connectionValidator.consume(new OutgoingConnectionAttempt(_contact, result));
 		} catch (IllegalParameter e) {
-			throw new InvalidConnectionAttempt();
+			return null;
 		}
 		
 		return result;
 	}
 
-	void serveIncomingSocket(ObjectSocket socket) {
-		setSocketIfNecessary(socket);
+	private Integer port() {
+		return _contact.port().currentValue();
 	}
 
-	private void setSocketIfNecessary(ObjectSocket socket) {
-		synchronized (_socketSetterMonitor) {
-			if (_socket != null) return;
-			_socket = socket;
-		}
-		setIsOnline(true);
-		startReceiving();
+	private String host() {
+		return _contact.host().currentValue();
 	}
 
-	void startReceiving() {
+	void serveAcceptedSocket(ObjectSocket incomingSocket) {
+		_socketHolder.setSocketIfNecessary(incomingSocket);
+	}
+
+	private void startReceiving(final ObjectSocket mySocket) {
 		Threads.startDaemon(new Runnable() { @Override public void run() {
-			ObjectSocket mySocket = _socket;
-			if (mySocket == null) return;
-
-			while (mySocket == _socket) {
+			while (true) {
 				try {
-					Object received = mySocket.readObject();
-					
-					_lastActivityTime = System.currentTimeMillis();
-					
-					if (BARK.equals(received)) continue;
-					//System.out.println("Received: " + received);
-
-					ChannelPacket packet = (ChannelPacket)received;
-					packet._packet._contactId = _contact.id();
-					_objectReceiver.consume(packet);
+					tryToReceiveFrom(mySocket);
 				} catch (IOException e) {
-					closeSocket();
+					_socketHolder.crash(mySocket);
 					break;
 				} catch (ClassNotFoundException e) {
-					Log.log(e);
+					logOnlyFirstClassNotFoundExceptionToAvoidLogOverflow(e);
 					break;
 				} 
 			}
 		}});
+
 	}
+
+	private void tryToReceiveFrom(ObjectSocket socket) throws IOException, ClassNotFoundException {
+		Object received = socket.readObject();
+
+		_lastActivityTime = System.currentTimeMillis();
+		if (BARK.equals(received)) return;
+		//System.out.println("Received: " + received);
+
+		ChannelPacket packet = (ChannelPacket)received;
+		packet._packet._contactId = _contact.id();
+		_objectReceiver.consume(packet);
+	}
+
+	private void logOnlyFirstClassNotFoundExceptionToAvoidLogOverflow(ClassNotFoundException e) {
+		if (_classNotFoundExceptionAlreadyLogged) return;
+		_classNotFoundExceptionAlreadyLogged = true;
+
+		String nick = _contact.nick().currentValue();
+		String message = translate("%1$s tried to send you objects of class you do not have installed. You might be running a different version of Sneer.", nick);
+		Log.log(message + "\n" + e.getMessage());
+	};
 
 	void close() {
 		_isClosed = true;
-		closeSocket();
-	}
-
-	private void closeSocket() {
-		if (_socket == null) return;
-		
-		setIsOnline(false);
-
-		try {_socket.close();} catch (IOException ignored) {} finally {_socket = null;}
 	}
 
 	private void setIsOnline(boolean isOnline) {
@@ -156,15 +171,18 @@ public class ConnectionImpl {
 		if (wasOnline != isOnline) 	_onlineSetter.consume(new OnlineEvent(_contact.nick().currentValue(), isOnline));
 	}
 
-	private void send(Object toSend) { // Fix: keep in a queue not to lose objects.
+	private void send(Object toSend) {  // Implement: Avoid losing important objects that could not be sent.
+		ObjectSocket socket = tryToProduceSocket();
+		if (socket == null) return;
+
 		try {
-			produceSocket().writeObject(toSend);
-			_lastActivityTime = System.currentTimeMillis();
+			socket.writeObject(toSend);
 		} catch (IOException e) {
-			_socket = null;
-		} catch (InvalidConnectionAttempt e) {
-			_socket = null;
+			_socketHolder.crash(socket);
+			return;
 		}
+		
+		_lastActivityTime = System.currentTimeMillis();
 	}
 
 	void send(ChannelPacket channelPacket, int priority) {

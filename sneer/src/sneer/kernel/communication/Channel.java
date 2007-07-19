@@ -8,6 +8,6 @@ public interface Channel {
 	Omnivore<Packet> output();
 	Signal<Packet> input();
 	
-	Signal<Integer> elementsInInputBuffer();
+	Signal<Integer> elementsInInputBuffer(); //Refactor: Remove this from the channel and create a general-purpose Buffer to be plugged onto any signal.
 	
 }

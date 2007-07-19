@@ -3,6 +3,7 @@ package sneer.apps.talk.audio;
 import java.util.Arrays;
 
 import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
@@ -24,7 +25,7 @@ public class SpeexMicrophone extends Thread {
 	public SpeexMicrophone(AudioConsumer consumer) throws LineUnavailableException {
 		_consumer = consumer;
 		
-		_line = AudioUtil.getTargetDataLine();
+		_line = AudioCommon.getInstance().bestAvailableTargetDataLine();
 		_line.open();
 		_line.start();
 		

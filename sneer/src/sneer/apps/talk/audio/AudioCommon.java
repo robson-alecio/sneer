@@ -253,27 +253,27 @@ public class AudioCommon {
 		return null;
 	}
 	
-	public boolean isPossiblePlayback(){
+	public boolean isPlaybackPossible(){
 		if (bestAvailableSourceDataLine()==null)
 			return false;
 		return true;
 	}
 	
-	public boolean isPossibleCapture(){
+	public boolean isCapturePossible(){
 		if (bestAvailableTargetDataLine()==null)
 			return false;
 		return true;
 	}
 	
-	public boolean isPossiblePlaybackAndCapture(){
-		return isPossiblePlayback()&&isPossibleCapture();
+	public boolean isPlaybackAndCapturePossible(){
+		return isPlaybackPossible()&&isCapturePossible();
 	}
 	
 	public static void main(String[] args){
 		AudioCommon.getInstance();
 		System.out.println("-----------------------------");
-		System.out.println("Playback possible: "+AudioCommon.getInstance().isPossiblePlayback());
-		System.out.println("Capture possible: "+AudioCommon.getInstance().isPossibleCapture());
+		System.out.println("Playback possible: "+AudioCommon.getInstance().isPlaybackPossible());
+		System.out.println("Capture possible: "+AudioCommon.getInstance().isCapturePossible());
 		Mixer bestInput = AudioCommon.getInstance().bestAvailableMixerForInput();
 		Mixer bestOutput = AudioCommon.getInstance().bestAvailableMixerForOutput();
 		System.out.println("-----------------------------");

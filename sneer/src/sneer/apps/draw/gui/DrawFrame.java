@@ -5,6 +5,8 @@ import static wheel.i18n.Language.translate;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -23,13 +25,17 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import sneer.apps.draw.DrawPacket;
-import sneer.apps.draw.gui.DrawUtil.ColoredObject;
 import sneer.apps.draw.packet.BrushPacket;
 import sneer.apps.draw.packet.ClearPacket;
 import sneer.apps.draw.packet.ColorPacket;
@@ -39,7 +45,7 @@ import wheel.reactive.Signal;
 
 public class DrawFrame extends JFrame {
 
-	private static final int IMAGE_HEIGHT = 350;
+	private static final int IMAGE_HEIGHT = 400;
 	private static final int IMAGE_WIDTH = 500;
 	private static final int BUTTON_WIDTH = 75;
 
@@ -96,7 +102,7 @@ public class DrawFrame extends JFrame {
 		setSize(IMAGE_WIDTH + BUTTON_WIDTH, IMAGE_HEIGHT);
 		
         JButton clearButton = new JButton("Clear");
-        DrawUtil.prepareComponent(clearButton);
+        prepareComponent(clearButton);
         clearButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				clearAndConsume();
@@ -104,7 +110,7 @@ public class DrawFrame extends JFrame {
         });
         
         JButton saveButton = new JButton("Save");
-        DrawUtil.prepareComponent(saveButton);
+        prepareComponent(saveButton);
         saveButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				final JFileChooser fc = new JFileChooser(); //Refactor: Move to User.
@@ -120,17 +126,25 @@ public class DrawFrame extends JFrame {
 			}
         });
         
-        JComboBox sizeBox = DrawUtil.sizeBox();
+        JComboBox sizeBox = sizeBox();
         sizeBox.addItemListener(new ItemListener(){
 			public void itemStateChanged(ItemEvent e) {
 				setStrokeSizeAndConsume(Integer.parseInt(e.getItem().toString()));
 			}
         });
         
-        JComboBox colorbox = DrawUtil.colorBox();
-        colorbox.addItemListener(new ItemListener(){
-			public void itemStateChanged(ItemEvent e) {
-				setColorAndConsume(((ColoredObject)e.getItem())._color);
+        final JButton colorButton = new JButton("Color");
+        colorButton.setBorder(new CompoundBorder(new EmptyBorder(2,2,2,2),new LineBorder(Color.white)));
+        prepareComponent(colorButton);
+        colorButton.setBackground(Color.black);
+        colorButton.setForeground(Color.white);
+        colorButton.addActionListener(new ActionListener(){
+        	public void actionPerformed(ActionEvent e) {
+        		 Color color= JColorChooser.showDialog(null,"Choose Color",_color);
+        		 if (color != null){
+        		        setColorAndConsume(color);
+        		        colorButton.setBackground(color);
+        		 }
 			}
         });
   
@@ -139,7 +153,7 @@ public class DrawFrame extends JFrame {
         topPanel.setLayout(new BoxLayout(topPanel,BoxLayout.Y_AXIS));
         topPanel.add(clearButton);
         topPanel.add(sizeBox);
-        topPanel.add(colorbox);
+        topPanel.add(colorButton);
         topPanel.add(saveButton);
         
         add(topPanel,BorderLayout.WEST);
@@ -232,6 +246,18 @@ public class DrawFrame extends JFrame {
     	_g2d.setColor(_color);
     	_g2d.drawLine(beginX,beginY,endX,endY);
     	area.repaint();
+	}
+	
+	public JComboBox sizeBox() {
+		Object[] sizes = new Object[] { "5", "10", "25", "50" };
+		JComboBox sizeBox = new JComboBox(sizes);
+		prepareComponent(sizeBox);
+		return sizeBox;
+	}
+
+	public void prepareComponent(JComponent component) {
+		component.setMaximumSize(new Dimension(BUTTON_WIDTH, 20));
+		component.setAlignmentX(Component.CENTER_ALIGNMENT);
 	}
 	
 	private static final long serialVersionUID = 1L;

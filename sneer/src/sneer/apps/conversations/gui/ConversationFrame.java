@@ -4,6 +4,7 @@ import static wheel.i18n.Language.translate;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -23,6 +24,7 @@ import javax.swing.text.Element;
 import javax.swing.text.html.HTMLDocument;
 
 import sneer.apps.conversations.Message;
+import sneer.kernel.gui.SimpleNotification;
 import wheel.io.Log;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
@@ -178,7 +180,16 @@ public class ConversationFrame extends JFrame {
 	
 	private void receiveMessage(Message message) {
 		if (typingMessageHandled(message)) return;
+		showSimpleNotification(message);
 		appendToChatText(nick(), message);
+	}
+
+	private void showSimpleNotification(Message message) {
+		if (message._text.length()>0)
+			if ((getExtendedState()&Frame.ICONIFIED)==1){
+				String text = "<font size = -1><b>"+_otherGuysNick.currentValue()+":</b><br>"+message._text+"</font>";
+				(new Thread(new SimpleNotification(text,2+(message._text.length()/15)))).start();
+			}
 	}
 
 	private String nick() {

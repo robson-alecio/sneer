@@ -34,6 +34,7 @@ import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileFilter;
 
 import sneer.apps.scribble.ScribblePacket;
 import sneer.apps.scribble.packet.BrushPacket;
@@ -87,6 +88,7 @@ public class ScribbleFrame extends JFrame {
 	private final Omnivore<ScribblePacket> _drawOutput;
 	
 	private final DrawingArea area = new DrawingArea();
+	final JButton colorButton = new JButton("Color");
 	
 	private BufferedImage _bufferedImage = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private Graphics2D _g2d;
@@ -116,9 +118,22 @@ public class ScribbleFrame extends JFrame {
 				final JFileChooser fc = new JFileChooser(); //Refactor: Move to User.
 				fc.setDialogTitle(translate("Saving file"));
 				fc.setApproveButtonText(translate("Save"));
+				fc.setFileFilter(new FileFilter(){ @Override
+					public boolean accept(File f) {
+						if ((f.isDirectory())||(f.getName().toLowerCase().endsWith(".jpg"))) 
+							return true;
+						return false;
+					}
+					@Override
+					public String getDescription() {
+						return "JPG images";
+					}
+				});
 				int value = fc.showSaveDialog(null);
 				if (value != JFileChooser.APPROVE_OPTION) return;
 				File file = fc.getSelectedFile();
+				if (!file.getName().toLowerCase().endsWith(".jpg"))
+					file = new File(file.getAbsolutePath() + ".jpg");
 				try {
 		            ImageIO.write(_bufferedImage, "jpg", file);
 		        } catch (IOException ex) {
@@ -133,7 +148,6 @@ public class ScribbleFrame extends JFrame {
 			}
         });
         
-        final JButton colorButton = new JButton("Color");
         colorButton.setBorder(new CompoundBorder(new EmptyBorder(2,2,2,2),new LineBorder(Color.white)));
         prepareComponent(colorButton);
         colorButton.setBackground(Color.black);
@@ -143,7 +157,6 @@ public class ScribbleFrame extends JFrame {
         		 Color color= JColorChooser.showDialog(null,"Choose Color",_color);
         		 if (color != null){
         		        setColorAndConsume(color);
-        		        colorButton.setBackground(color);
         		 }
 			}
         });
@@ -220,6 +233,8 @@ public class ScribbleFrame extends JFrame {
 	
 	private void setColor(Color color) {
 		_color = color;
+		colorButton.setBackground(color);
+		colorButton.revalidate();
 	}
 	
 	public void close() {

@@ -173,6 +173,7 @@ public class JOptionPaneUser implements User {
 		@Override
 		public void run(){
 			_dialog.setVisible(true);
+			_dialog.setTitle(_originalTitle + " (Timeout " + _timeout +" seconds)");
 			long start = System.currentTimeMillis();
 			while(true){
 				Threads.sleepWithoutInterruptions(250); //give cpu a break
@@ -181,8 +182,6 @@ public class JOptionPaneUser implements User {
 					_callback.consume(false);
 					break;
 				}	
-				_dialog.setTitle(_originalTitle + " (" + (_timeout - elapsed) +" seconds)");
-				_dialog.validate();
 				Object selectedValue = _pane.getValue();
 				if (selectedValue.equals(JOptionPane.UNINITIALIZED_VALUE))
 					continue;

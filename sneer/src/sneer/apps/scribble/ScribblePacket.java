@@ -1,6 +1,6 @@
-package sneer.apps.draw;
+package sneer.apps.scribble;
 
-public interface DrawPacket {
+public interface ScribblePacket {
 	
 	public static final int BRUSH = 0;
 	public static final int CLEAR = 1;

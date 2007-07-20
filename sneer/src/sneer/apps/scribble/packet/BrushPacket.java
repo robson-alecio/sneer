@@ -1,8 +1,8 @@
-package sneer.apps.draw.packet;
+package sneer.apps.scribble.packet;
 
-import sneer.apps.draw.DrawPacket;
+import sneer.apps.scribble.ScribblePacket;
 
-public class BrushPacket implements DrawPacket{
+public class BrushPacket implements ScribblePacket{
 	public final int _beginX;
 	public final int _beginY;
 	public final int _endX;

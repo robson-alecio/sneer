@@ -1,4 +1,4 @@
-package sneer.apps.draw.gui;
+package sneer.apps.scribble.gui;
 
 import static wheel.i18n.Language.translate;
 
@@ -35,23 +35,23 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import sneer.apps.draw.DrawPacket;
-import sneer.apps.draw.packet.BrushPacket;
-import sneer.apps.draw.packet.ClearPacket;
-import sneer.apps.draw.packet.ColorPacket;
-import sneer.apps.draw.packet.StrokePacket;
+import sneer.apps.scribble.ScribblePacket;
+import sneer.apps.scribble.packet.BrushPacket;
+import sneer.apps.scribble.packet.ClearPacket;
+import sneer.apps.scribble.packet.ColorPacket;
+import sneer.apps.scribble.packet.StrokePacket;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 
-public class DrawFrame extends JFrame {
+public class ScribbleFrame extends JFrame {
 
 	private static final int IMAGE_HEIGHT = 400;
 	private static final int IMAGE_WIDTH = 500;
 	private static final int BUTTON_WIDTH = 75;
 
-	public DrawFrame(Signal<String> otherGuysNick, final Signal<DrawPacket> drawInput, Omnivore<DrawPacket> drawOutput) {
+	public ScribbleFrame(Signal<String> otherGuysNick, final Signal<ScribblePacket> scribbleInput, Omnivore<ScribblePacket> scribbleOutput) {
 		_otherGuysNick = otherGuysNick;
-		_drawOutput = drawOutput;
+		_drawOutput = scribbleOutput;
 
 		initComponents();
 
@@ -61,20 +61,20 @@ public class DrawFrame extends JFrame {
 			}
 		});
 		
-		drawInput.addReceiver(new Omnivore<DrawPacket>() { @Override
-			public void consume(DrawPacket drawPacket) {
+		scribbleInput.addReceiver(new Omnivore<ScribblePacket>() { @Override
+			public void consume(ScribblePacket drawPacket) {
 				switch(drawPacket.type()){
-					case DrawPacket.BRUSH:
+					case ScribblePacket.BRUSH:
 						BrushPacket brushPacket = (BrushPacket)drawPacket;
 						drawLine(brushPacket._beginX,brushPacket._beginY,brushPacket._endX,brushPacket._endY);
 						break;
-					case DrawPacket.CLEAR:
+					case ScribblePacket.CLEAR:
 						clearDrawingArea();
 						break;
-					case DrawPacket.COLOR:
+					case ScribblePacket.COLOR:
 						setColor(((ColorPacket)drawPacket)._color);
 						break;
-					case DrawPacket.STROKE:
+					case ScribblePacket.STROKE:
 						setStrokeSize(((StrokePacket)drawPacket)._size);
 						break;
 				}
@@ -84,7 +84,7 @@ public class DrawFrame extends JFrame {
 	}
 
 	private final Signal<String> _otherGuysNick;
-	private final Omnivore<DrawPacket> _drawOutput;
+	private final Omnivore<ScribblePacket> _drawOutput;
 	
 	private final DrawingArea area = new DrawingArea();
 	

@@ -1,7 +1,11 @@
 package wheel.io.files.impl;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -14,6 +18,27 @@ import wheel.io.files.Directory;
 import wheel.io.files.impl.Closeable.Listener;
 
 public abstract class AbstractDirectory implements Directory {
+
+	public void createFile(String fileName, String contents) throws IOException {
+		OutputStream output = null;
+		try {
+			output = createFile(fileName);
+			new DataOutputStream(output).writeUTF(contents);
+		} finally {
+			if (output != null) output.close();
+		}
+		
+	}
+
+	public String contentsAsString(String fileName) throws IOException {
+		InputStream input = null;
+		try {
+			input = openFile(fileName);
+			return new DataInputStream(input).readUTF();
+		} finally {
+			if (input != null) input.close();
+		}
+	}
 
 	private final Map<String, Collection<Closeable>> _openStreamsByFilename = new HashMap<String, Collection<Closeable>>();
 	protected boolean _isClosed = false;

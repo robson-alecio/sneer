@@ -8,7 +8,10 @@ import java.io.OutputStream;
 public interface Directory {
 
 	OutputStream createFile(String fileName) throws IOException;
+	void createFile(String fileName, String contents) throws IOException;
+	
 	InputStream openFile(String fileName) throws IOException;
+	String contentsAsString(String fileName) throws IOException;
 
 	String[] fileNames();
 	

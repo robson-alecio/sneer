@@ -20,7 +20,7 @@ public class ListSignalModelTests extends TestCase implements ListSignal<String>
 	private List<String> _names = new ArrayList<String>();
 	
 	
-	//Fix: use a ListSource in this test
+	//Refactor: use a ListSource in this test
 	public void testAddition() {
 		ListSignalModel _subject =new ListSignalModel(this);
 		

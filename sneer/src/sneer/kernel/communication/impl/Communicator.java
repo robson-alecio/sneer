@@ -21,7 +21,7 @@ import java.util.Random;
 
 import sneer.kernel.business.Business;
 import sneer.kernel.business.BusinessSource;
-import sneer.kernel.business.contacts.Contact;
+import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactInfo;
 import sneer.kernel.business.contacts.ContactPublicKeyInfo;
 import sneer.kernel.communication.Channel;
@@ -45,7 +45,7 @@ public class Communicator {
 		
 		prepareBusiness();
 		
-		_spider = new Spider(network, business.contacts(), businessSource.contactOnlineSetter(), outgoingConnectionValidator(), myObjectReceiver());
+		_spider = new Spider(network, business.contactAttributes(), businessSource.contactOnlineSetter(), outgoingConnectionValidator(), myObjectReceiver());
 		new SocketAccepter(user, network, business.sneerPort(), mySocketServer());
 	}
 
@@ -82,7 +82,7 @@ public class Communicator {
 
 			String nick = attempt._contact.nick().currentValue();
 			
-			Contact thirdParty = findContactGivenPublicKey(remotePK);
+			ContactAttributes thirdParty = findContactGivenPublicKey(remotePK);
 			if (thirdParty != null) {
 				handleDuplicatePK(nick, thirdParty);
 				throw new IllegalParameter(translate("Remote contact has same public key as another contact."));
@@ -95,7 +95,7 @@ public class Communicator {
 
 	}
 
-	private void handleDuplicatePK(String nick, Contact thirdParty) {
+	private void handleDuplicatePK(String nick, ContactAttributes thirdParty) {
 		_user.acknowledgeNotification(translate("%1$s has the same public key as %2$s. You must delete one of them.",nick,thirdParty.nick().currentValue())); //Fix: update error state for the contact. 
 	}
 
@@ -193,7 +193,7 @@ public class Communicator {
 		
 		if (ownPublicKey().currentValue().equals(publicKey)) return false;
 		
-		Contact contact = findContactGivenPublicKey(publicKey);
+		ContactAttributes contact = findContactGivenPublicKey(publicKey);
 		
 		try {
 			if (contact == null) contact = produceContactWithNewPublicKey(name, publicKey);
@@ -212,14 +212,14 @@ public class Communicator {
 	}
 
 
-	private Contact produceContactWithNewPublicKey(String name, String publicKey) throws CancelledByUser {
+	private ContactAttributes produceContactWithNewPublicKey(String name, String publicKey) throws CancelledByUser {
 		String prompt = translate(
 				"Someone claiming to be\n\n%1$s\n\n is trying to connect to you. Do you want\n" +
 				"to accept the connection?",name);
 		if (!_user.confirm(prompt)) throw new CancelledByUser();
 
 		String nick;
-		Contact existing;
+		ContactAttributes existing;
 		while (true) {
 			nick = _user.answer(translate("Enter a nickname for your new contact:"), name);
 			
@@ -236,9 +236,9 @@ public class Communicator {
 	}
 
 
-	private Contact createContact(String publicKey, String nick) throws CancelledByUser {
+	private ContactAttributes createContact(String publicKey, String nick) throws CancelledByUser {
 		try {
-			_businessSource.contactAdder().consume(new ContactInfo(nick, "", 0, publicKey, Contact.CONFIRMED_STATE)); //Implement: get actual host addresses from contact.
+			_businessSource.contactAdder().consume(new ContactInfo(nick, "", 0, publicKey, ContactAttributes.CONFIRMED_STATE)); //Implement: get actual host addresses from contact.
 			return findContactGivenNick(nick);
 		} catch (IllegalParameter e) {
 			_user.acknowledge(e);
@@ -247,15 +247,15 @@ public class Communicator {
 	}
 
 
-	private Contact findContactGivenNick(String nick) {
-		for (Contact contact : _businessSource.output().contacts())
+	private ContactAttributes findContactGivenNick(String nick) {
+		for (ContactAttributes contact : _businessSource.output().contactAttributes())
 			if (nick.equals(contact.nick().currentValue())) return contact;
 		return null;
 	}
 
 
-	private Contact findContactGivenPublicKey(String publicKey) {
-		for (Contact contact : _businessSource.output().contacts())
+	private ContactAttributes findContactGivenPublicKey(String publicKey) {
+		for (ContactAttributes contact : _businessSource.output().contactAttributes())
 			if (publicKey.equals(contact.publicKey().currentValue())) return contact;
 		return null;
 	}

@@ -21,7 +21,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import sneer.kernel.business.contacts.Contact;
+import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.business.contacts.ContactInfo;
 import sneer.kernel.gui.NewContactAddition;
@@ -37,14 +37,14 @@ import wheel.reactive.lists.ListSignal;
 public class ContactsScreen extends JFrame {
 
 	private final User _user;
-	private final ListSignal<Contact> _contacts;
+	private final ListSignal<ContactAttributes> _contacts;
 	private final List<ContactAction> _contactActions;
 	private final Consumer<ContactInfo> _contactAdder;
 	private final Omnivore<ContactId> _contactRemover;
 	private final Consumer<Pair<ContactId, String>> _nickChanger;
 
 
-	public ContactsScreen(User user, ListSignal<Contact> contacts, List<ContactAction> contactActions, Consumer<ContactInfo> contactAdder, Omnivore<ContactId> contactRemover, Consumer<Pair<ContactId, String>> nickChanger) {
+	public ContactsScreen(User user, ListSignal<ContactAttributes> contacts, List<ContactAction> contactActions, Consumer<ContactInfo> contactAdder, Omnivore<ContactId> contactRemover, Consumer<Pair<ContactId, String>> nickChanger) {
 		_user = user;
 		_contacts = contacts;
 		_contactActions = contactActions;
@@ -128,7 +128,7 @@ public class ContactsScreen extends JFrame {
 		final JMenuItem item = new JMenuItem(action.caption());
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ignored) {
-				Contact contact = _contacts.currentGet(friendsList.getSelectedIndex());
+				ContactAttributes contact = _contacts.currentGet(friendsList.getSelectedIndex());
 				action.actUpon(contact);
 			}
 		});

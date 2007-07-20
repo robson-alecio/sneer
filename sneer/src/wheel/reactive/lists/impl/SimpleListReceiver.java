@@ -1,6 +1,6 @@
 package wheel.reactive.lists.impl;
 
-import sneer.kernel.business.contacts.Contact;
+import sneer.kernel.business.contacts.ContactAttributes;
 import wheel.reactive.lists.ListSignal;
 
 public abstract class SimpleListReceiver<T> extends VisitingListReceiver {

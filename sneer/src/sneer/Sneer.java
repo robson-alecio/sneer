@@ -86,16 +86,16 @@ public class Sneer {
 		List<ContactAction> result = new ArrayList<ContactAction>();
 		
 		Channel conversationsChannel = _communicator.getChannel(ConversationsApp.class.getName(), 0);
-		result.add(new ConversationsApp(conversationsChannel, _businessSource.output().contacts()).contactAction());
+		result.add(new ConversationsApp(conversationsChannel, _businessSource.output().contactAttributes()).contactAction());
 		
 		Channel talkChannel = _communicator.getChannel(TalkApp.class.getName(), 1);
-		result.add(new TalkApp(_user, talkChannel, _businessSource.output().contacts()).contactAction());
+		result.add(new TalkApp(_user, talkChannel, _businessSource.output().contactAttributes()).contactAction());
 		
 		Channel fileTransferChannel = _communicator.getChannel(FileTransferApp.class.getName(), 2);
-		result.add(new FileTransferApp(_user, fileTransferChannel, _businessSource.output().contacts()).contactAction());
+		result.add(new FileTransferApp(_user, fileTransferChannel, _businessSource.output().contactAttributes()).contactAction());
 		
 		Channel scribbleChannel = _communicator.getChannel(ScribbleApp.class.getName(), 2);
-		result.add(new ScribbleApp(_user, scribbleChannel, _businessSource.output().contacts()).contactAction());
+		result.add(new ScribbleApp(_user, scribbleChannel, _businessSource.output().contactAttributes()).contactAction());
 		
 		return result;
 	}

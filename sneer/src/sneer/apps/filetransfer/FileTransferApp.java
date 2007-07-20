@@ -10,7 +10,7 @@ import java.util.Map;
 import javax.swing.JFileChooser;
 
 import sneer.apps.filetransfer.gui.FileTransferFrame;
-import sneer.kernel.business.contacts.Contact;
+import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
@@ -28,7 +28,7 @@ public class FileTransferApp {
 
 	private static final int FILEPART_CHUNK_SIZE = 5000;
 
-	public FileTransferApp(User user, Channel channel, ListSignal<Contact> contacts) {
+	public FileTransferApp(User user, Channel channel, ListSignal<ContactAttributes> contacts) {
 		_user = user;
 		_channel = channel;
 		_contacts = contacts;
@@ -38,7 +38,7 @@ public class FileTransferApp {
 
 	private final User _user;
 	private final Channel _channel;
-	private final ListSignal<Contact> _contacts;
+	private final ListSignal<ContactAttributes> _contacts;
 	private final Map<ContactId, FileTransferFrame>_framesByContactId = new HashMap<ContactId, FileTransferFrame>();
 	private final Map<ContactId, SourceImpl<FilePart>>_inputsByContactId = new HashMap<ContactId, SourceImpl<FilePart>>();
 
@@ -46,7 +46,7 @@ public class FileTransferApp {
 		return new ContactAction(){
 
 			@Override
-			public void actUpon(Contact contact) {
+			public void actUpon(ContactAttributes contact) {
 				actUponContact(contact);
 			}
 
@@ -65,7 +65,7 @@ public class FileTransferApp {
 		}};
 	}
 	
-	private void actUponContact(final Contact contact) {
+	private void actUponContact(final ContactAttributes contact) {
 		Threads.startDaemon(new Runnable() { public void run() {
 			final JFileChooser fc = new JFileChooser(); //Refactor: The app should not have GUI logic.
 			fc.setDialogTitle(translate("Choose File to Send to %1$s", contact.nick().currentValue()));
@@ -78,7 +78,7 @@ public class FileTransferApp {
 		}});
 	}
 	
-	private void sendFile(final Contact contact, File file) {
+	private void sendFile(final ContactAttributes contact, File file) {
 		try {
 			tryToSendFile(contact, file);
 		} catch(IOException ioe) {
@@ -86,7 +86,7 @@ public class FileTransferApp {
 		}
 	}
 
-	private void tryToSendFile(final Contact contact, File file) throws IOException {
+	private void tryToSendFile(final ContactAttributes contact, File file) throws IOException {
 		String fileName = file.getName();
 		long fileLength = file.length();
 		byte[] buffer = new byte[FILEPART_CHUNK_SIZE];
@@ -102,7 +102,7 @@ public class FileTransferApp {
 		}
 	}
 
-	private void sendPart(Contact contact, FilePart filePart) {
+	private void sendPart(ContactAttributes contact, FilePart filePart) {
 		_channel.output().consume(new Packet(contact.id(), filePart));
 	}
 
@@ -115,8 +115,8 @@ public class FileTransferApp {
 		return frame; //Fix: What if this Frame has been closed?
 	}
 
-	private Contact findContact(ContactId id) {
-		for (Contact candidate : _contacts)
+	private ContactAttributes findContact(ContactId id) {
+		for (ContactAttributes candidate : _contacts)
 			if (candidate.id().equals(id)) return candidate;
 		return null;
 	}

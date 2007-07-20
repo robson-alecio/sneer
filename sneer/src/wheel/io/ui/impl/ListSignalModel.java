@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
-import sneer.kernel.business.contacts.Contact;
+import sneer.kernel.business.contacts.ContactAttributes;
 import wheel.lang.Casts;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
@@ -67,7 +67,7 @@ public class ListSignalModel extends AbstractListModel {
 	}
 
 	private void removeReceiverFromElement(int index) {
-		Contact contact = (Contact)getElementAt(index);
+		ContactAttributes contact = (ContactAttributes)getElementAt(index);
 		Omnivore<?> receiver = _elementReceivers.remove(index);
 
 		removeReceiverFromSignal(receiver, contact.isOnline());
@@ -78,7 +78,7 @@ public class ListSignalModel extends AbstractListModel {
 	}
 
 	private void addReceiverToElement(int index) {
-		Contact contact = (Contact)getElementAt(index); //Fix: Make generic, not only for Contact.
+		ContactAttributes contact = (ContactAttributes)getElementAt(index); //Fix: Make generic, not only for Contact.
 		Omnivore<?> receiver = createElementReceiver(index);
 		_elementReceivers.add(index, receiver);
 		

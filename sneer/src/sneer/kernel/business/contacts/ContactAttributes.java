@@ -2,7 +2,7 @@ package sneer.kernel.business.contacts;
 
 import wheel.reactive.Signal;
 
-public interface Contact {
+public interface ContactAttributes {
 	public static final String CONFIRMED_STATE = "confirmed"; //everything is ok
 	public static final String UNCONFIRMED_STATE = "unconfirmed"; //needs confirmation it is the right guy
 	public static final String LOCATION_ERROR_STATE = "location error"; //ip/dns does not exist

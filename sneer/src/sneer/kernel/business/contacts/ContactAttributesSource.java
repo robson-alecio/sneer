@@ -4,9 +4,9 @@ import sneer.kernel.business.contacts.impl.ContactPublicKeyUpdater;
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 
-public interface ContactSource {
+public interface ContactAttributesSource {
 
-	Contact output();
+	ContactAttributes output();
 
 	Omnivore<String> nickSetter();
 	Omnivore<String> hostSetter();

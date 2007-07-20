@@ -3,7 +3,7 @@ package sneer.kernel.gui.contacts;
 import javax.swing.*;
 import javax.swing.border.*;
 
-import sneer.kernel.business.contacts.Contact;
+import sneer.kernel.business.contacts.ContactAttributes;
 
 import java.awt.*;
 import java.util.*;
@@ -26,7 +26,7 @@ public class ContactCellRenderer extends DefaultListCellRenderer {
 
 	@Override
 	public Component getListCellRendererComponent(JList list, Object contactObject, int index, boolean isSelected, boolean hasFocus) {
-		Contact contact = (Contact) contactObject;
+		ContactAttributes contact = (ContactAttributes) contactObject;
 
 		ImageIcon stateIcon = stateIconFor(contact);
 
@@ -47,10 +47,10 @@ public class ContactCellRenderer extends DefaultListCellRenderer {
 		return panel;
 	}
 
-	private ImageIcon stateIconFor(Contact contact) {
+	private ImageIcon stateIconFor(ContactAttributes contact) {
 		String state = contact.state().currentValue();
-		if (state.equals(Contact.UNCONFIRMED_STATE)) return UNCONFIRMED_ICON;
-		if (state.equals(Contact.CONFIRMED_STATE)) return CONFIRMED_ICON;
+		if (state.equals(ContactAttributes.UNCONFIRMED_STATE)) return UNCONFIRMED_ICON;
+		if (state.equals(ContactAttributes.CONFIRMED_STATE)) return CONFIRMED_ICON;
 		return ERROR_ICON;
 	}
 

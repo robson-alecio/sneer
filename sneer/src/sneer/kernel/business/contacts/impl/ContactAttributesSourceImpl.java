@@ -1,8 +1,8 @@
 package sneer.kernel.business.contacts.impl;
 
-import sneer.kernel.business.contacts.Contact;
+import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactId;
-import sneer.kernel.business.contacts.ContactSource;
+import sneer.kernel.business.contacts.ContactAttributesSource;
 import wheel.io.network.PortNumberSource;
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
@@ -10,10 +10,10 @@ import wheel.reactive.Signal;
 import wheel.reactive.Source;
 import wheel.reactive.SourceImpl;
 
-public class ContactSourceImpl implements ContactSource {
+public class ContactAttributesSourceImpl implements ContactAttributesSource {
 
 
-	public class MyOutput implements Contact {
+	public class MyOutput implements ContactAttributes {
 
 		@Override
 		public Signal<String> host() {
@@ -50,7 +50,7 @@ public class ContactSourceImpl implements ContactSource {
 	}
 
 
-	public ContactSourceImpl(String nick, String host, int port, String publicKey, String state, long id) {
+	public ContactAttributesSourceImpl(String nick, String host, int port, String publicKey, String state, long id) {
 		_nick = new SourceImpl<String>(nick);
 		_host = new SourceImpl<String>(host);
 		_port = new PortNumberSource(port);
@@ -59,7 +59,7 @@ public class ContactSourceImpl implements ContactSource {
 		_id = id;
 	}
 
-	private final Contact _output = new MyOutput();
+	private final ContactAttributes _output = new MyOutput();
 	
 	private final Source<String> _nick;
 	private final Source<String> _host;
@@ -73,7 +73,7 @@ public class ContactSourceImpl implements ContactSource {
 	private final long _id;
 
 	@Override
-	public Contact output() {
+	public ContactAttributes output() {
 		return _output;
 	}
 

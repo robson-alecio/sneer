@@ -3,14 +3,14 @@ package sneer.kernel.business.impl;
 import static wheel.i18n.Language.translate;
 import sneer.kernel.business.Business;
 import sneer.kernel.business.BusinessSource;
-import sneer.kernel.business.contacts.Contact;
+import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.business.contacts.ContactInfo;
 import sneer.kernel.business.contacts.ContactPublicKeyInfo;
-import sneer.kernel.business.contacts.ContactSource;
+import sneer.kernel.business.contacts.ContactAttributesSource;
 import sneer.kernel.business.contacts.OnlineEvent;
 import sneer.kernel.business.contacts.impl.ContactPublicKeyUpdater;
-import sneer.kernel.business.contacts.impl.ContactSourceImpl;
+import sneer.kernel.business.contacts.impl.ContactAttributesSourceImpl;
 import wheel.io.network.PortNumberSource;
 import wheel.lang.Consumer;
 import wheel.lang.Counter;
@@ -31,7 +31,7 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 	private final class MyOutput implements Business {
 
 		@Override
-		public ListSignal<Contact> contacts() {
+		public ListSignal<ContactAttributes> contactAttributes() {
 			return _contacts.output();
 		}
 
@@ -63,8 +63,8 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 
 	private final PortNumberSource _sneerPortNumber = new PortNumberSource(0);
 
-	private final ListSource<ContactSource> _contactSources = new ListSourceImpl<ContactSource>();
-	private final ListSource<Contact> _contacts = new ListSourceImpl<Contact>(); 	//Refactor: use a reactive "ListCollector" instead of keeping this redundant list.
+	private final ListSource<ContactAttributesSource> _contactSources = new ListSourceImpl<ContactAttributesSource>();
+	private final ListSource<ContactAttributes> _contacts = new ListSourceImpl<ContactAttributes>(); 	//Refactor: use a reactive "ListCollector" instead of keeping this redundant list.
 	private final Counter _contactIdSource = new Counter();
 	
 	private final Business _output = new MyOutput();
@@ -91,7 +91,7 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 		return new Consumer<ContactInfo>() { @Override public void consume(ContactInfo info) throws IllegalParameter {
 			checkDuplicateNick(info._nick);
 
-			ContactSource contact = new ContactSourceImpl(info._nick, info._host, info._port, info._publicKey, info._state, _contactIdSource.next());
+			ContactAttributesSource contact = new ContactAttributesSourceImpl(info._nick, info._host, info._port, info._publicKey, info._state, _contactIdSource.next());
 			_contactSources.add(contact);
 			_contacts.add(contact.output());
 		}};
@@ -113,20 +113,20 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 		return new Omnivore<OnlineEvent>(){
 			@Override
 			public void consume(OnlineEvent onlineEvent) {
-				ContactSource contactSource = findContactSource(onlineEvent._nick);
+				ContactAttributesSource contactSource = findContactSource(onlineEvent._nick);
 				if (contactSource != null) setIsOnline(contactSource, onlineEvent._isOnline);
 			}
 		};
 	}
 	
-	private void setIsOnline(ContactSource contactSource, boolean isOnline) {
+	private void setIsOnline(ContactAttributesSource contactSource, boolean isOnline) {
 		Boolean wasOnline = contactSource.output().isOnline().currentValue();
 		if (isOnline == wasOnline) return;
 		contactSource.isOnlineSetter().consume(isOnline);
 	}
 
-	private ContactSource findContactSource(String nick) {
-		for (ContactSource candidate:_contactSources.output()) { // Optimize
+	private ContactAttributesSource findContactSource(String nick) {
+		for (ContactAttributesSource candidate:_contactSources.output()) { // Optimize
 			if (candidate.output().nick().currentValue().equals(nick))
 				return candidate;
 		}
@@ -139,14 +139,14 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 
 	public Omnivore<ContactId> contactRemover() {
 		return new Omnivore<ContactId>() { @Override public void consume(ContactId contactId) {
-			ContactSource contactSource = findContactSource(contactId);
+			ContactAttributesSource contactSource = findContactSource(contactId);
 			_contactSources.remove(contactSource);
 			_contacts.remove(contactSource.output());
 		}};
 	}
 
-	private ContactSource findContactSource(ContactId contactId) {
-		for (ContactSource candidate : _contactSources.output())
+	private ContactAttributesSource findContactSource(ContactId contactId) {
+		for (ContactAttributesSource candidate : _contactSources.output())
 			if (candidate.output().id().equals(contactId))
 				return candidate;
 		

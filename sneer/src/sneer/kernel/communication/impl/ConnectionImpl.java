@@ -2,7 +2,7 @@ package sneer.kernel.communication.impl;
 
 import java.io.IOException;
 
-import sneer.kernel.business.contacts.Contact;
+import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.OnlineEvent;
 import static wheel.i18n.Language.translate;
 import wheel.io.Log;
@@ -18,7 +18,7 @@ public class ConnectionImpl {
 	private static final int BARK_PERIOD_MILLIS = 5000;
 	private static final String BARK = "Bark";
 
-	private final Contact _contact;
+	private final ContactAttributes _contact;
 	private final OldNetwork _network;
 	private final Omnivore<OnlineEvent> _onlineSetter;
 	private final Consumer<OutgoingConnectionAttempt> _connectionValidator;
@@ -36,7 +36,7 @@ public class ConnectionImpl {
 	private boolean _classNotFoundExceptionAlreadyLogged = false;
 	
 
-	ConnectionImpl(Contact contact, OldNetwork network, Omnivore<OnlineEvent> onlineSetter, Consumer<OutgoingConnectionAttempt> connectionValidator, Omnivore<Object> objectReceiver) {
+	ConnectionImpl(ContactAttributes contact, OldNetwork network, Omnivore<OnlineEvent> onlineSetter, Consumer<OutgoingConnectionAttempt> connectionValidator, Omnivore<Object> objectReceiver) {
 		_contact = contact;
 		_network = network;
 		_onlineSetter = onlineSetter;

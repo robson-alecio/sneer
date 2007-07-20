@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import sneer.apps.conversations.gui.ConversationFrame;
-import sneer.kernel.business.contacts.Contact;
+import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
@@ -19,7 +19,7 @@ import wheel.reactive.lists.ListSignal;
 
 public class ConversationsApp {
 
-	public ConversationsApp(Channel channel, ListSignal<Contact> contacts) {
+	public ConversationsApp(Channel channel, ListSignal<ContactAttributes> contacts) {
 		_channel = channel;
 		_contacts = contacts;
 		
@@ -27,7 +27,7 @@ public class ConversationsApp {
 	}
 
 	private final Channel _channel;
-	private final ListSignal<Contact> _contacts;
+	private final ListSignal<ContactAttributes> _contacts;
 	private final Map<ContactId, ConversationFrame>_framesByContactId = new HashMap<ContactId, ConversationFrame>();
 	private final Map<ContactId, SourceImpl<Message>>_inputsByContactId = new HashMap<ContactId, SourceImpl<Message>>();
 
@@ -35,7 +35,7 @@ public class ConversationsApp {
 		return new ContactAction(){
 
 			@Override
-			public void actUpon(Contact contact) {
+			public void actUpon(ContactAttributes contact) {
 				actUponContact(contact);
 			}
 
@@ -54,7 +54,7 @@ public class ConversationsApp {
 		}};
 	}
 	
-	private void actUponContact(Contact contact) {
+	private void actUponContact(ContactAttributes contact) {
 		openFrameFor(contact.id());
 	}
 
@@ -72,8 +72,8 @@ public class ConversationsApp {
 		return frame;
 	}
 
-	private Contact findContact(ContactId id) {
-		for (Contact candidate : _contacts)
+	private ContactAttributes findContact(ContactId id) {
+		for (ContactAttributes candidate : _contacts)
 			if (candidate.id().equals(id)) return candidate;
 		return null;
 	}

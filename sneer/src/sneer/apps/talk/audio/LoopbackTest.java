@@ -17,9 +17,9 @@ public class LoopbackTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.print("waiting 60 seconds...");
+		System.out.print("waiting 15 seconds...");
 		try {
-			Thread.sleep(60000);
+			Thread.sleep(15000);
 		} catch (Exception e) {
 		}
 		System.out.print("closing...");

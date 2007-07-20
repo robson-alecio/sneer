@@ -19,7 +19,6 @@ import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
 import wheel.io.ui.User;
-import wheel.io.ui.User.ConfirmCallback;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
@@ -33,8 +32,6 @@ public class DrawApp {
 	private static final String OPEN_REQUEST_ACCEPTED = "Accepted";
 
 	private static final String OPEN_REQUEST_DENIED = "Denied";
-
-	private static final String OPEN_REQUEST_TIMEOUT = "Timeout";
 
 	private static final String CLOSE_REQUEST = "Close";
 
@@ -90,15 +87,10 @@ public class DrawApp {
 				}
 
 				if (OPEN_REQUEST_DENIED.equals(packet._contents)) {
-					modelessOptionPane("Information", "Draw request denied."); //Refactor: change messages
+					modelessOptionPane("Information", "You request to scribble was not accepted. :("); //Refactor: change messages
 					return;
 				}
 				
-				if (OPEN_REQUEST_TIMEOUT.equals(packet._contents)) {
-					modelessOptionPane("Information", "Draw request expired."); //Refactor: change messages
-					return;
-				}
-
 				Source<DrawPacket> input = getInputFor(packet._contactId);
 				if (input == null)
 					return;
@@ -117,20 +109,14 @@ public class DrawApp {
 
 	private void userWantsToOpen(final ContactId contactId) {
 		String nick = findContact(contactId).nick().currentValue();
-		_user.confirmWithTimeout(translate("%1$s wants to draw with you.\n\nDo you want to accept this call?", nick), 15, new ConfirmCallback() {
-							public void response(final Object response) {
-								if (response.equals(User.TIMEOUT_EXPIRED_RESPONSE)) {
-									sendTo(contactId, OPEN_REQUEST_TIMEOUT);
-									return;
-								}
-								if (response.equals(JOptionPane.YES_OPTION)) {
-									open(contactId);
-									sendTo(contactId, OPEN_REQUEST_ACCEPTED);
-									return;
-								}
-								sendTo(contactId, OPEN_REQUEST_DENIED);
-							}
-						});
+		String prompt = translate("%1$s is inviting you to scribble. :)\n\nWill you accept?", nick);
+		_user.confirmWithTimeout(prompt, 15, new Omnivore<Boolean>() { public void consume(Boolean accepted) {
+			if (accepted) {
+				open(contactId);
+				sendTo(contactId, OPEN_REQUEST_ACCEPTED);
+			} else
+				sendTo(contactId, OPEN_REQUEST_DENIED);
+		}});
 	}
 
 	private void close(ContactId contactId) {

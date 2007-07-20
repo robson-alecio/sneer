@@ -6,13 +6,12 @@ import java.awt.Dialog;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
 
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.io.ui.Util;
+import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.Catcher;
 import wheel.lang.exceptions.FriendlyException;
@@ -89,7 +88,7 @@ public class JOptionPaneUser implements User {
 		}
 	}
 	
-	public void confirmWithTimeout(String proposition, int timeout, ConfirmCallback callback) {
+	public void confirmWithTimeout(String proposition, int timeout, Omnivore<Boolean> callback) {
 		String message = adaptPrompt(proposition);
 		JOptionPane pane = new JOptionPane(message,JOptionPane.QUESTION_MESSAGE,JOptionPane.YES_NO_OPTION);
 		showOptionPaneWithTimeout(null,pane,timeout,callback);
@@ -149,24 +148,24 @@ public class JOptionPaneUser implements User {
 		return string + "\n\n";
 	}
 	
-	private void showOptionPaneWithTimeout(JComponent parentComponent, JOptionPane pane, int timeout, ConfirmCallback confirmCallback){
+	private void showOptionPaneWithTimeout(JComponent parentComponent, JOptionPane pane, int timeout, Omnivore<Boolean> callback){
 		final JDialog dialog = pane.createDialog(parentComponent, _title);
 		dialog.setModal(false);
-		DialogTimeoutRunner timeoutRunner= new DialogTimeoutRunner(dialog, pane, timeout, confirmCallback);
+		DialogTimeoutRunner timeoutRunner= new DialogTimeoutRunner(dialog, pane, timeout, callback);
 		timeoutRunner.start();
 	}
 	
 	public class DialogTimeoutRunner extends Thread{
 		private Dialog _dialog;
 		private JOptionPane _pane;
-		private ConfirmCallback _confirmCallback;
+		private Omnivore<Boolean> _callback;
 		private int _timeout;
 		private String _originalTitle;
 		
-		public DialogTimeoutRunner(Dialog dialog, JOptionPane pane, int timeout, ConfirmCallback confirmCallback){
+		public DialogTimeoutRunner(Dialog dialog, JOptionPane pane, int timeout, Omnivore<Boolean> callback){
 			_dialog = dialog;
 			_pane = pane;
-			_confirmCallback= confirmCallback;
+			_callback = callback;
 			_timeout = timeout;
 			_originalTitle = dialog.getTitle();
 		}
@@ -179,7 +178,7 @@ public class JOptionPaneUser implements User {
 				Threads.sleepWithoutInterruptions(250); //give cpu a break
 				int elapsed = (int)(System.currentTimeMillis() - start ) / 1000;
 				if (elapsed>_timeout){
-					_confirmCallback.response(User.TIMEOUT_EXPIRED_RESPONSE);
+					_callback.consume(false);
 					break;
 				}	
 				_dialog.setTitle(_originalTitle + " (" + (_timeout - elapsed) +" seconds)");
@@ -187,7 +186,7 @@ public class JOptionPaneUser implements User {
 				Object selectedValue = _pane.getValue();
 				if (selectedValue.equals(JOptionPane.UNINITIALIZED_VALUE))
 					continue;
-				_confirmCallback.response(selectedValue);
+				_callback.consume(selectedValue.equals(JOptionPane.YES_OPTION));
 				break;
 			}
 			_dialog.setVisible(false);

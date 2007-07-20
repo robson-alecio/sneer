@@ -6,10 +6,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import javax.security.auth.callback.ConfirmationCallback;
 import javax.swing.JOptionPane;
 
 import sneer.apps.talk.gui.TalkFrame;
@@ -19,7 +17,6 @@ import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
 import wheel.io.ui.User;
-import wheel.io.ui.User.ConfirmCallback;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
@@ -82,15 +79,10 @@ public class TalkApp {
 	
 	private void userWantsToOpen(final ContactId contactId) {
 		String nick = findContact(contactId).nick().currentValue();
-		_user.confirmWithTimeout(translate("%1$s is calling you.\n\nDo you want to accept this call?", nick)
-				, 15, new ConfirmCallback(){
-					public void response(Object response) {
-						if (response.equals(User.TIMEOUT_EXPIRED_RESPONSE))
-							return;
-						if (response.equals(JOptionPane.YES_OPTION))
-							open(contactId);
-					}
-		});
+		String prompt = translate("%1$s is calling you.\n\nDo you want to accept this call?", nick);
+		_user.confirmWithTimeout(prompt, 15, new Omnivore<Boolean>() { public void consume(Boolean accepted) {
+			if (accepted) open(contactId);
+		}});
 	}
 
 	private void close(ContactId contactId) {

@@ -229,7 +229,7 @@ public class AudioCommon {
 		try {
 			Mixer mixer = AudioCommon.getInstance().bestAvailableMixerForOutput();
 			if (mixer == null)
-				return null;
+				return AudioSystem.getTargetDataLine(AudioUtil.AUDIO_FORMAT);
 			return AudioSystem.getTargetDataLine(AudioUtil.AUDIO_FORMAT, mixer.getMixerInfo());
 		}catch(IllegalArgumentException iae){
 			//
@@ -243,7 +243,7 @@ public class AudioCommon {
 		try {
 			Mixer mixer = AudioCommon.getInstance().bestAvailableMixerForInput();
 			if (mixer == null)
-				return null;
+				return AudioSystem.getSourceDataLine(AudioUtil.AUDIO_FORMAT);
 			return AudioSystem.getSourceDataLine(AudioUtil.AUDIO_FORMAT, mixer.getMixerInfo());
 		}catch(IllegalArgumentException iae){
 			//

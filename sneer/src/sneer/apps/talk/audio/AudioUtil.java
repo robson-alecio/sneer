@@ -7,7 +7,7 @@ import javax.sound.sampled.*;
 public class AudioUtil {
 	static final private int FRAME_DURATION_MILLIS = 20;
 
-	static final int SAMPLE_RATE = 11025;
+	static final int SAMPLE_RATE = 8000;
 
 	static final int SAMPLE_SIZE_IN_BITS = 16;
 

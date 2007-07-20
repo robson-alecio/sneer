@@ -236,6 +236,11 @@ public class AudioCommon {
 		} catch (LineUnavailableException e) {
 			//
 		}
+		try{
+			return AudioSystem.getTargetDataLine(AudioUtil.AUDIO_FORMAT);
+		} catch (LineUnavailableException e) {
+			//
+		}
 		return null;
 	}
 	
@@ -247,6 +252,11 @@ public class AudioCommon {
 			return AudioSystem.getSourceDataLine(AudioUtil.AUDIO_FORMAT, mixer.getMixerInfo());
 		}catch(IllegalArgumentException iae){
 			//
+		} catch (LineUnavailableException e) {
+			//
+		}
+		try{
+			return AudioSystem.getSourceDataLine(AudioUtil.AUDIO_FORMAT);
 		} catch (LineUnavailableException e) {
 			//
 		}

@@ -76,7 +76,7 @@ public class ScribbleFrame extends JFrame {
 						setColor(((ColorPacket)drawPacket)._color);
 						break;
 					case ScribblePacket.STROKE:
-						setStrokeSize(((StrokePacket)drawPacket)._size);
+						setStrokeSize(((StrokePacket)drawPacket)._size);						
 						break;
 				}
 			}
@@ -87,8 +87,9 @@ public class ScribbleFrame extends JFrame {
 	private final Signal<String> _otherGuysNick;
 	private final Omnivore<ScribblePacket> _drawOutput;
 	
-	private final DrawingArea area = new DrawingArea();
-	final JButton colorButton = new JButton("Color");
+	private final DrawingArea _area = new DrawingArea();
+	private final JButton _colorButton = new JButton("Color");
+	private JComboBox _sizeBox;
 	
 	private BufferedImage _bufferedImage = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private Graphics2D _g2d;
@@ -141,18 +142,19 @@ public class ScribbleFrame extends JFrame {
 			}
         });
         
-        JComboBox sizeBox = sizeBox();
-        sizeBox.addItemListener(new ItemListener(){
+        _sizeBox = sizeBox();
+        _sizeBox.addItemListener(new ItemListener(){
 			public void itemStateChanged(ItemEvent e) {
-				setStrokeSizeAndConsume(Integer.parseInt(e.getItem().toString()));
+				if (_sizeBox.isEnabled()) // avoids recursion from setStroke()
+					setStrokeSizeAndConsume(Integer.parseInt(e.getItem().toString()));
 			}
         });
         
-        colorButton.setBorder(new CompoundBorder(new EmptyBorder(2,2,2,2),new LineBorder(Color.white)));
-        prepareComponent(colorButton);
-        colorButton.setBackground(Color.black);
-        colorButton.setForeground(Color.white);
-        colorButton.addActionListener(new ActionListener(){
+        _colorButton.setBorder(new CompoundBorder(new EmptyBorder(2,2,2,2),new LineBorder(Color.white)));
+        prepareComponent(_colorButton);
+        _colorButton.setBackground(Color.black);
+        _colorButton.setForeground(Color.white);
+        _colorButton.addActionListener(new ActionListener(){
         	public void actionPerformed(ActionEvent e) {
         		 Color color= JColorChooser.showDialog(null,"Choose Color",_color);
         		 if (color != null){
@@ -165,14 +167,14 @@ public class ScribbleFrame extends JFrame {
         topPanel.setBackground(Color.black);
         topPanel.setLayout(new BoxLayout(topPanel,BoxLayout.Y_AXIS));
         topPanel.add(clearButton);
-        topPanel.add(sizeBox);
-        topPanel.add(colorButton);
+        topPanel.add(_sizeBox);
+        topPanel.add(_colorButton);
         topPanel.add(saveButton);
         
         add(topPanel,BorderLayout.WEST);
-        add(area, BorderLayout.CENTER);
+        add(_area, BorderLayout.CENTER);
         
-        area.addMouseListener(new MouseAdapter() {
+        _area.addMouseListener(new MouseAdapter() {
             @Override
 			public void mousePressed(MouseEvent e) {
             	_lastX = e.getX();
@@ -181,7 +183,7 @@ public class ScribbleFrame extends JFrame {
             }
         });
         
-        area.addMouseMotionListener(new MouseMotionAdapter() {
+        _area.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
 			public void mouseDragged(MouseEvent e) {
             	int currentX = e.getX();
@@ -224,17 +226,20 @@ public class ScribbleFrame extends JFrame {
 		_g2d.setColor(Color.white);
 		_g2d.fillRect(0,0,IMAGE_WIDTH,IMAGE_HEIGHT);
 		_g2d.setColor(_color);
-		area.repaint();
+		_area.repaint();
 	}
 	
 	private void setStrokeSize(int size){
 		_stroke = new BasicStroke(size, BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND);
+		_sizeBox.setEnabled(false);
+		_sizeBox.setSelectedItem(Integer.toString(size));
+		_sizeBox.setEnabled(true);
 	}
 	
 	private void setColor(Color color) {
 		_color = color;
-		colorButton.setBackground(color);
-		colorButton.revalidate();
+		_colorButton.setBackground(color);
+		_colorButton.revalidate();
 	}
 	
 	public void close() {
@@ -260,7 +265,7 @@ public class ScribbleFrame extends JFrame {
     	_g2d.setStroke(_stroke);
     	_g2d.setColor(_color);
     	_g2d.drawLine(beginX,beginY,endX,endY);
-    	area.repaint();
+    	_area.repaint();
 	}
 	
 	public JComboBox sizeBox() {

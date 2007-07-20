@@ -172,8 +172,8 @@ public class JOptionPaneUser implements User {
 		
 		@Override
 		public void run(){
-			_dialog.setVisible(true);
 			_dialog.setTitle(_originalTitle + " (Timeout " + _timeout +" seconds)");
+			_dialog.setVisible(true);
 			long start = System.currentTimeMillis();
 			while(true){
 				Threads.sleepWithoutInterruptions(250); //give cpu a break

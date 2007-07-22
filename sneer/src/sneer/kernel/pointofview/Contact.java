@@ -6,5 +6,6 @@ public interface Contact {
 
 	Signal<String> nick();
 	Party party();
+	Signal<Float> trustworthiness(); //  ;)
 	
 }

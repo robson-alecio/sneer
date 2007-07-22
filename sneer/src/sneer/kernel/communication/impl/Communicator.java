@@ -70,10 +70,9 @@ public class Communicator {
 				socket.writeObject(ownName().currentValue());
 				remotePK = (String)socket.readObject();
 			} catch (IOException e) {
-				e.printStackTrace();
 				throw new IllegalParameter("");
 			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
+				//Implement: Log properly. See how ConnectionImpl handles ClassNotFoundExceptions.
 				throw new IllegalParameter("");
 			}
 

@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.io.ui.Util;
+import wheel.io.ui.User.Notification;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.Catcher;
@@ -18,13 +19,15 @@ import wheel.lang.exceptions.FriendlyException;
 
 public class JOptionPaneUser implements User {
 	
-	public JOptionPaneUser(String title) { 
+	public JOptionPaneUser(String title, Omnivore<Notification> briefNotifier) { 
 		//Fix: receive the parent component instead of passing null to the JOptionPane in order not to be application modal.
 		_title = title;
+		_briefNotifier = briefNotifier;
 	}
 
 	
 	private final String _title;
+	private final Omnivore<Notification> _briefNotifier;
 
 	
 	@Override
@@ -193,5 +196,11 @@ public class JOptionPaneUser implements User {
 		}
 		
 	}
+
+	@Override
+	public Omnivore<Notification> briefNotifier() {
+		return _briefNotifier;
+	}
+
 	
 }

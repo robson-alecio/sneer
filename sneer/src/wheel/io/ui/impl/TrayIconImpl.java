@@ -102,8 +102,8 @@ public class TrayIconImpl implements TrayIcon {
 		popup.add(menuItem);
 	}
 
-	public void seeReminder(String reminder) {
-		_trayIcon.displayMessage(translate("Sneer"), reminder, MessageType.NONE);
+	public void messageBaloon(String title, String message) {
+		_trayIcon.displayMessage(title, message, MessageType.NONE);
 	}
 	
 	public void clearActions(){

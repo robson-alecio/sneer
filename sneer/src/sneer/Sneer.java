@@ -26,7 +26,9 @@ import wheel.io.Log;
 import wheel.io.network.OldNetworkImpl;
 import wheel.io.network.impl.XStreamNetwork;
 import wheel.io.ui.User;
+import wheel.io.ui.User.Notification;
 import wheel.io.ui.impl.JOptionPaneUser;
+import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 
 public class Sneer {
@@ -44,9 +46,10 @@ public class Sneer {
 	}
 
 	
-	private User _user = new JOptionPaneUser("Sneer");
+	private User _user = new JOptionPaneUser("Sneer", briefNotifier());
 	private Communicator _communicator;
 	private BusinessSource _businessSource;
+	private Gui _gui;
 
 	
 	private void tryToRun() throws Exception {
@@ -61,9 +64,15 @@ public class Sneer {
 		try{Thread.sleep(2000);}catch(InterruptedException ie){} 
 		
 		_communicator = new Communicator(_user, new XStreamNetwork(new OldNetworkImpl()), _businessSource);
-		new Gui(_user, _businessSource, contactActions()); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
+		_gui = new Gui(_user, _businessSource, contactActions()); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
 		
 		while (true) Threads.sleepWithoutInterruptions(5000);
+	}
+
+	private Omnivore<Notification> briefNotifier() {
+		return new Omnivore<Notification>() { @Override public void consume(Notification notification) {
+			_gui.briefNotifier().consume(notification);
+		}};
 	}
 
 	private void initLanguage() {
@@ -86,7 +95,7 @@ public class Sneer {
 		List<ContactAction> result = new ArrayList<ContactAction>();
 		
 		Channel conversationsChannel = _communicator.getChannel(ConversationsApp.class.getName(), 0);
-		result.add(new ConversationsApp(conversationsChannel, _businessSource.output().contactAttributes()).contactAction());
+		result.add(new ConversationsApp(conversationsChannel, _businessSource.output().contactAttributes(), _user.briefNotifier()).contactAction());
 		
 		Channel talkChannel = _communicator.getChannel(TalkApp.class.getName(), 1);
 		result.add(new TalkApp(_user, talkChannel, _businessSource.output().contactAttributes()).contactAction());

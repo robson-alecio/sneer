@@ -79,7 +79,7 @@ public class InstallationWizard {
 	}
 
 	
-	private final User _user = new JOptionPaneUser("Sneer Intallation Wizard");
+	private final User _user = new JOptionPaneUser("Sneer Intallation Wizard", null);
 
 	
 	private void approveConditionOtherwiseExit(String condition) {

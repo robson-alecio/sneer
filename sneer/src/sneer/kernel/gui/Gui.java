@@ -6,19 +6,16 @@ import java.net.URL;
 import java.util.List;
 
 import sneer.kernel.business.BusinessSource;
-import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.gui.contacts.ShowContactsScreenAction;
 import wheel.io.ui.TrayIcon;
 import wheel.io.ui.User;
-import wheel.io.ui.Util;
 import wheel.io.ui.ValueChangePane;
 import wheel.io.ui.TrayIcon.Action;
+import wheel.io.ui.User.Notification;
 import wheel.io.ui.impl.TrayIconImpl;
-import wheel.lang.Consumer;
 import wheel.lang.IntegerParser;
-import wheel.lang.Pair;
-import wheel.lang.exceptions.IllegalParameter;
+import wheel.lang.Omnivore;
 
 public class Gui {
 
@@ -104,6 +101,12 @@ public class Gui {
 				System.exit(0);
 			}
 		};
+	}
+
+	public Omnivore<Notification> briefNotifier() {
+		return new Omnivore<Notification>() { @Override public void consume(Notification notification) {
+			_trayIcon.messageBaloon(notification._title, notification._notification);
+		}};
 	}
 	
 }

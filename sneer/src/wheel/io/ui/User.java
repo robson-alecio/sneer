@@ -15,6 +15,7 @@ public interface User {
 	boolean confirmOrCancel(String proposition) throws CancelledByUser;
 	void confirmWithTimeout(String proposition, int timeout, Omnivore<Boolean> callback);
 
+	Omnivore<Notification> briefNotifier();
 	void acknowledgeNotification(String notification);
 	void acknowledgeNotification(String notification, String replacementForBoringOK);
 	void acknowledgeUnexpectedProblem(String description);
@@ -23,5 +24,16 @@ public interface User {
 	void acknowledge(Throwable t);
 	void acknowledgeFriendlyException(FriendlyException e);
 	Catcher catcher();
+
+	public class Notification {
+		public final String _title;
+		public final String _notification;
+
+		public Notification(String title, String notification) {
+			_title = title;
+			_notification = notification;
+		}
+	}
+	
 
 }

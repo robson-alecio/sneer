@@ -3,7 +3,6 @@ package sneer.apps.conversations.gui;
 import static wheel.i18n.Language.translate;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,8 +23,8 @@ import javax.swing.text.Element;
 import javax.swing.text.html.HTMLDocument;
 
 import sneer.apps.conversations.Message;
-import sneer.kernel.gui.SimpleNotification;
 import wheel.io.Log;
+import wheel.io.ui.User.Notification;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.reactive.Signal;
@@ -35,11 +34,13 @@ public class ConversationFrame extends JFrame {
 	private static final String TYPING = "TyPiNg :)"; //Refactor :)
 	private static final String TYPING_PAUSED = "TyPiNg PaUsEd :)";
 	private static final String TYPING_ERASED = "TyPiNg ErAsEd :)";
+	private final Omnivore<Notification> _briefUserNotifier;
 
 
-	public ConversationFrame(Signal<String> otherGuysNick, final Signal<Message> messageInput, Omnivore<Message> messageOutput){
+	public ConversationFrame(Signal<String> otherGuysNick, final Signal<Message> messageInput, Omnivore<Message> messageOutput, Omnivore<Notification> briefUserNotifier){
 		_otherGuysNick = otherGuysNick;
 		_messageOutput = messageOutput;
+		_briefUserNotifier = briefUserNotifier;
 		
 		initComponents();
 		setVisible(true);
@@ -64,7 +65,7 @@ public class ConversationFrame extends JFrame {
 
 	private volatile long _lastMessageSendingTime;
 	private volatile long _lastKeyPressedTime;
-	 
+		 
 	private void appendToChatText(String sender, Message message) {
 		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
 		appendToChatText(formatter.format(new Date()) + " <b>"+ sender + ":</b> " + message._text);
@@ -180,16 +181,15 @@ public class ConversationFrame extends JFrame {
 	
 	private void receiveMessage(Message message) {
 		if (typingMessageHandled(message)) return;
-		showSimpleNotification(message);
+		showNotificationIfNecessary(message);
 		appendToChatText(nick(), message);
 	}
 
-	private void showSimpleNotification(Message message) {
-		if (message._text.length()>0)
-			if ((getExtendedState()&Frame.ICONIFIED)==1){
-				String text = "<font size = -1><b>"+_otherGuysNick.currentValue()+":</b><br>"+message._text+"</font>";
-				(new Thread(new SimpleNotification(text,2+(message._text.length()/15)))).start();
-			}
+	private void showNotificationIfNecessary(Message message) {
+		if (message._text.length() == 0) return;
+		if ((getExtendedState()&Frame.ICONIFIED) != 1) return;
+
+		_briefUserNotifier.consume(new Notification(_otherGuysNick.currentValue(), message._text));
 	}
 
 	private String nick() {

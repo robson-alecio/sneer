@@ -11,6 +11,7 @@ import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
+import wheel.io.ui.User.Notification;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
@@ -19,15 +20,18 @@ import wheel.reactive.lists.ListSignal;
 
 public class ConversationsApp {
 
-	public ConversationsApp(Channel channel, ListSignal<ContactAttributes> contacts) {
+	public ConversationsApp(Channel channel, ListSignal<ContactAttributes> contacts, Omnivore<Notification> briefUserNotifier) {
 		_channel = channel;
 		_contacts = contacts;
+		_briefUserNotifier = briefUserNotifier;
 		
 		_channel.input().addReceiver(messageReceiver());
 	}
 
 	private final Channel _channel;
 	private final ListSignal<ContactAttributes> _contacts;
+	private final Omnivore<Notification> _briefUserNotifier;
+
 	private final Map<ContactId, ConversationFrame>_framesByContactId = new HashMap<ContactId, ConversationFrame>();
 	private final Map<ContactId, SourceImpl<Message>>_inputsByContactId = new HashMap<ContactId, SourceImpl<Message>>();
 
@@ -66,7 +70,7 @@ public class ConversationsApp {
 	private ConversationFrame produceFrameFor(ContactId contactId) {
 		ConversationFrame frame = _framesByContactId.get(contactId);
 		if (frame == null) {
-			frame = new ConversationFrame(findContact(contactId).nick(), inputFrom(contactId), outputTo(contactId));
+			frame = new ConversationFrame(findContact(contactId).nick(), inputFrom(contactId), outputTo(contactId), _briefUserNotifier);
 			_framesByContactId.put(contactId, frame);
 		}
 		return frame;

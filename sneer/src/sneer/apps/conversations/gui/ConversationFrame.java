@@ -10,7 +10,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
@@ -147,17 +149,33 @@ public class ConversationFrame extends JFrame {
 		return chatArea;
 	}
 	
+	private long _lastTextUpdate = System.currentTimeMillis();
+	private List<String> textUpdateCache = new ArrayList<String>();
+	
 	private void appendToChatText(final String entry) {
-		SwingUtilities.invokeLater(new Runnable() { @Override public void run() {
-			HTMLDocument document = (HTMLDocument)_chatText.getDocument();
-			Element ep = document.getElement("textInsideThisDiv");
-			try {
-				document.insertBeforeEnd(ep, "<div><font face=\"Verdana\" size=\"3\">" + processEmoticons(entry) + "</font></div>"); //FixUrgent: Sneer will hang if too many chat messages arrive at a time. Ex: contact holds down the enter key and sends a stream of empty messages.
-			} catch (Exception ex) {
-				Log.log(ex);
-			}
-			_chatText.setCaretPosition(document.getLength());
-		}});		
+		long now = System.currentTimeMillis();
+		textUpdateCache.add(entry);
+		
+		if ((now-_lastTextUpdate)>300){ // avoids GUI hang by not executing too fast inserts.
+			
+			String textBlock="";
+			for(String text:textUpdateCache)
+				textBlock+="<div><font face=\"Verdana\" size=\"3\">" + processEmoticons(text) + "</font></div>";
+			final String block = textBlock;
+			SwingUtilities.invokeLater(new Runnable() { @Override public void run() {
+				HTMLDocument document = (HTMLDocument)_chatText.getDocument();
+				Element ep = document.getElement("textInsideThisDiv");
+				try {
+					document.insertBeforeEnd(ep, block);
+				} catch (Exception ex) {
+					Log.log(ex);
+				}
+				_chatText.setCaretPosition(document.getLength());
+			}});
+			
+			textUpdateCache.clear();
+			_lastTextUpdate = now;
+		}
 	}
 
 	private String processEmoticons(String text){ //Fix: free icons loaded from the internet... embed it... 

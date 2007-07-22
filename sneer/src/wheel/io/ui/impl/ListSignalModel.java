@@ -5,21 +5,25 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
-import sneer.kernel.business.contacts.ContactAttributes;
 import wheel.lang.Casts;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.VisitingListReceiver;
 
-public class ListSignalModel extends AbstractListModel {
+public class ListSignalModel<T> extends AbstractListModel {
 
-	private final ListSignal<?> _input;
+	public interface SignalChooser<E> {
+		Signal<?>[] signalsToReceiveFrom(E element);
+	}
+
+	private final ListSignal<T> _input;
 	private final List<Omnivore<?>> _elementReceivers = new LinkedList<Omnivore<?>>();
+	private final SignalChooser<T> _chooser;
 
-	@SuppressWarnings("unchecked")
-	public ListSignalModel(ListSignal<?> input){
+	public ListSignalModel(ListSignal<T> input, SignalChooser<T> chooser) {
 		_input = input;
+		_chooser = chooser;
 		
 		int size = _input.currentSize();
 		for (int i = 0; i < size; i++) addReceiverToElement(i);
@@ -62,47 +66,42 @@ public class ListSignalModel extends AbstractListModel {
 		return _input.currentSize();
 	}
 	
-	public Object getElementAt(int index) {
+	public T getElementAt(int index) {
 		return _input.currentGet(index);
 	}
 
 	private void removeReceiverFromElement(int index) {
-		ContactAttributes contact = (ContactAttributes)getElementAt(index);
+		T element = getElementAt(index);
 		Omnivore<?> receiver = _elementReceivers.remove(index);
 
-		removeReceiverFromSignal(receiver, contact.isOnline());
-		removeReceiverFromSignal(receiver, contact.state());
-		removeReceiverFromSignal(receiver, contact.nick());
-		removeReceiverFromSignal(receiver, contact.host());
-		removeReceiverFromSignal(receiver, contact.port());
+		for (Signal<?> signal : _chooser.signalsToReceiveFrom(element))
+			removeReceiverFromSignal(receiver, signal);
 	}
 
 	private void addReceiverToElement(int index) {
-		ContactAttributes contact = (ContactAttributes)getElementAt(index); //Fix: Make generic, not only for Contact.
+		T element = getElementAt(index);
+
 		Omnivore<?> receiver = createElementReceiver(index);
 		_elementReceivers.add(index, receiver);
 		
-		addReceiverToSignal(receiver, contact.isOnline());
-		addReceiverToSignal(receiver, contact.state());
-		addReceiverToSignal(receiver, contact.nick());
-		addReceiverToSignal(receiver, contact.host());
-		addReceiverToSignal(receiver, contact.port());
+		for (Signal<?> signal : _chooser.signalsToReceiveFrom(element))
+			addReceiverToSignal(receiver, signal);
 	}
 
-	private <T> void addReceiverToSignal(Omnivore<?> receiver, Signal<T> signal) {
-		Omnivore<T> castedReceiver = Casts.uncheckedGenericCast(receiver);
+	private <U> void addReceiverToSignal(Omnivore<?> receiver, Signal<U> signal) {
+		Omnivore<U> castedReceiver = Casts.uncheckedGenericCast(receiver);
 		signal.addReceiver(castedReceiver);
 	}
 	
-	private <T> void removeReceiverFromSignal(Omnivore<?> receiver, Signal<T> signal) {
-		Omnivore<T> casted = Casts.uncheckedGenericCast(receiver);
+	private <U> void removeReceiverFromSignal(Omnivore<?> receiver, Signal<U> signal) {
+		Omnivore<U> casted = Casts.uncheckedGenericCast(receiver);
 		signal.removeReceiver(casted);
 	}
 
-	private <T> Omnivore<T> createElementReceiver(final int index) {
-		return new Omnivore<T>() {
+	private <U> Omnivore<U> createElementReceiver(final int index) {
+		return new Omnivore<U>() {
 			int _index = index;
-			public void consume(T ignored) {
+			public void consume(U ignored) {
 				fireContentsChanged(this, _index, _index);
 			}
 		};

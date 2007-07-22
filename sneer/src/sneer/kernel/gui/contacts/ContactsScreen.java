@@ -28,10 +28,12 @@ import sneer.kernel.gui.NewContactAddition;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.io.ui.impl.ListSignalModel;
+import wheel.io.ui.impl.ListSignalModel.SignalChooser;
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.lang.Pair;
 import wheel.lang.exceptions.IllegalParameter;
+import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 
 public class ContactsScreen extends JFrame {
@@ -87,7 +89,7 @@ public class ContactsScreen extends JFrame {
 	}
 
 	private JList createFriendsList() {
-		final ListSignalModel friendsListModel = new ListSignalModel(_contacts);
+		final ListSignalModel<ContactAttributes> friendsListModel = new ListSignalModel<ContactAttributes>(_contacts, signalChooser());
 		final JList friendsList = new JList(friendsListModel);
 		friendsList.setBackground(java.awt.Color.black);
 		friendsList.setCellRenderer(new ContactCellRenderer());
@@ -110,6 +112,20 @@ public class ContactsScreen extends JFrame {
 		});
 		
 		return friendsList;
+	}
+
+	private SignalChooser<ContactAttributes> signalChooser() {
+		return new SignalChooser<ContactAttributes>(){
+			public Signal<?>[] signalsToReceiveFrom(ContactAttributes contact) {
+				return new Signal<?>[] {
+						contact.isOnline(),
+						contact.state(),
+						contact.nick(),
+						contact.host(),
+						contact.port()
+				};
+			}};
+
 	}
 
 	private JPopupMenu getFriendPopUpMenu(final JList friendsList) {

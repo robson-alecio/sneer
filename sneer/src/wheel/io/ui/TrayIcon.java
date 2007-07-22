@@ -14,7 +14,7 @@ public interface TrayIcon {
 	
 	void clearActions();
 
-	void messageBaloon(String title, String message);
+	void messageBalloon(String title, String message);
 
 	void setDefaultAction(Action defaultAction);
 

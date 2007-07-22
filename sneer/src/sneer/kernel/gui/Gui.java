@@ -105,7 +105,7 @@ public class Gui {
 
 	public Omnivore<Notification> briefNotifier() {
 		return new Omnivore<Notification>() { @Override public void consume(Notification notification) {
-			_trayIcon.messageBaloon(notification._title, notification._notification);
+			_trayIcon.messageBalloon(notification._title, notification._notification);
 		}};
 	}
 	

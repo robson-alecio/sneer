@@ -102,7 +102,7 @@ public class TrayIconImpl implements TrayIcon {
 		popup.add(menuItem);
 	}
 
-	public void messageBaloon(String title, String message) {
+	public void messageBalloon(String title, String message) {
 		_trayIcon.displayMessage(title, message, MessageType.NONE);
 	}
 	

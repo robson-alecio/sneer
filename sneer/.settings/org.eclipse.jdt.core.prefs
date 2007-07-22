@@ -1,4 +1,4 @@
-#Wed May 09 20:24:10 GMT-03:00 2007
+#Mon Jul 23 04:29:59 GMT-03:00 2007
 eclipse.preferences.version=1
 org.eclipse.jdt.core.codeComplete.argumentPrefixes=
 org.eclipse.jdt.core.codeComplete.argumentSuffixes=
@@ -64,5 +64,5 @@ org.eclipse.jdt.core.compiler.problem.unusedPrivateMember=warning
 org.eclipse.jdt.core.compiler.problem.varargsArgumentNeedCast=warning
 org.eclipse.jdt.core.compiler.source=1.6
 org.eclipse.jdt.core.compiler.taskCaseSensitive=enabled
-org.eclipse.jdt.core.compiler.taskPriorities=LOW,NORMAL,HIGH,LOW
-org.eclipse.jdt.core.compiler.taskTags=Implement,Refactor,Fix,Optimize
+org.eclipse.jdt.core.compiler.taskPriorities=LOW,NORMAL,NORMAL,LOW,HIGH
+org.eclipse.jdt.core.compiler.taskTags=Implement,Refactor,Fix,Optimize,FixUrgent

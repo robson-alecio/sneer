@@ -152,7 +152,7 @@ public class ConversationFrame extends JFrame {
 			HTMLDocument document = (HTMLDocument)_chatText.getDocument();
 			Element ep = document.getElement("textInsideThisDiv");
 			try {
-				document.insertBeforeEnd(ep, "<div><font face=\"Verdana\" size=\"3\">" + processEmoticons(entry) + "</font></div>"); //Fix: Sneer will hang if too many chat messages arrive at a time. Ex: contact holds down the enter key and send a stream of empty messages.
+				document.insertBeforeEnd(ep, "<div><font face=\"Verdana\" size=\"3\">" + processEmoticons(entry) + "</font></div>"); //FixUrgent: Sneer will hang if too many chat messages arrive at a time. Ex: contact holds down the enter key and sends a stream of empty messages.
 			} catch (Exception ex) {
 				Log.log(ex);
 			}

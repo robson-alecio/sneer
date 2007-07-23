@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,7 +38,7 @@ public class ConversationFrame extends JFrame {
 	private static final String TYPING_PAUSED = "TyPiNg PaUsEd :)";
 	private static final String TYPING_ERASED = "TyPiNg ErAsEd :)";
 	private final Omnivore<Notification> _briefUserNotifier;
-
+	private List<String> _textUpdateCache = new ArrayList<String>();
 
 	public ConversationFrame(Signal<String> otherGuysNick, final Signal<Message> messageInput, Omnivore<Message> messageOutput, Omnivore<Notification> briefUserNotifier){
 		_otherGuysNick = otherGuysNick;
@@ -56,6 +57,46 @@ public class ConversationFrame extends JFrame {
 		}});
 		
 		startIsTypingNotifier();
+		startChatUpdater();
+	}
+
+	private void startChatUpdater() {
+		Threads.startDaemon(new Runnable() { public void run() { 
+			while (true) {
+				String text = waitForNextFromTextUpdateCache();
+				try {
+					
+					final String block = "<div><font face=\"Verdana\" size=\"3\">" + processEmoticons(text) + "</font></div>";
+					SwingUtilities.invokeAndWait(new Runnable() { @Override public void run() {
+						HTMLDocument document = (HTMLDocument)_chatText.getDocument();
+						Element ep = document.getElement("textInsideThisDiv");
+						try {
+							document.insertBeforeEnd(ep, block);
+						} catch (Exception ex) {
+							Log.log(ex);
+						}
+						_chatText.setCaretPosition(document.getLength());
+					}});
+
+				} catch (RuntimeException e) {
+					Log.log(e);
+				} catch (InterruptedException e) {
+					Log.log(e);
+				} catch (InvocationTargetException e) {
+					Log.log(e);
+				} 
+			} 
+		}}); 
+		
+	}
+	
+	private String waitForNextFromTextUpdateCache() {
+		synchronized (_textUpdateCache) {
+			if (_textUpdateCache.isEmpty())
+				Threads.waitWithoutInterruptions(_textUpdateCache);
+			String result = _textUpdateCache.remove(0);
+			return result;
+		}
 	}
 
 	private final Signal<String> _otherGuysNick;
@@ -149,32 +190,10 @@ public class ConversationFrame extends JFrame {
 		return chatArea;
 	}
 	
-	private long _lastTextUpdate = System.currentTimeMillis();
-	private List<String> textUpdateCache = new ArrayList<String>();
-	
 	private void appendToChatText(final String entry) {
-		long now = System.currentTimeMillis();
-		textUpdateCache.add(entry);
-		
-		if ((now-_lastTextUpdate)>300){ // avoids GUI hang by not executing too fast inserts.
-			
-			String textBlock="";
-			for(String text:textUpdateCache)
-				textBlock+="<div><font face=\"Verdana\" size=\"3\">" + processEmoticons(text) + "</font></div>";
-			final String block = textBlock;
-			SwingUtilities.invokeLater(new Runnable() { @Override public void run() {
-				HTMLDocument document = (HTMLDocument)_chatText.getDocument();
-				Element ep = document.getElement("textInsideThisDiv");
-				try {
-					document.insertBeforeEnd(ep, block);
-				} catch (Exception ex) {
-					Log.log(ex);
-				}
-				_chatText.setCaretPosition(document.getLength());
-			}});
-			
-			textUpdateCache.clear();
-			_lastTextUpdate = now;
+		synchronized (_textUpdateCache) {
+			_textUpdateCache.add(entry);
+			_textUpdateCache.notify();
 		}
 	}
 

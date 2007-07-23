@@ -52,9 +52,10 @@ public class FileTransferFrame extends JFrame {
 			updateProgressBar(filePart._offset,filePart._filesize);
 			try {
 				String filename = directory.getPath() + File.separator + filePart._filename;
-				RandomAccessFile raf = new RandomAccessFile(filename,"rws");
+				RandomAccessFile raf = new RandomAccessFile(filename,"rws"); //Refactor Use a regular file, not RandomAccessFile. Use wheel.io.files.Directory.
 				raf.seek(filePart._offset);
 				raf.write(filePart._content,0,filePart._content.length);
+				raf.close();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace(); //Fix: Treat properly
 			} catch (IOException e) {

@@ -74,12 +74,16 @@ public class ConversationsApp {
 
 	private ConversationFrame produceFrameFor(ContactId contactId) {
 		ConversationFrame frame = _framesByContactId.get(contactId);
-		if (frame == null) {
-			frame = new ConversationFrame(findContact(contactId).nick(), inputFrom(contactId), outputTo(contactId), _briefUserNotifier);
-			_framesByContactId.put(contactId, frame);
-			_boundsKeeper.keepBoundsFor(frame, frame.getTitle());
-		}
-		return frame;
+		if (frame != null) return frame;
+		
+		return createFrame(contactId);
+	}
+
+	private ConversationFrame createFrame(ContactId contactId) {
+		ConversationFrame result = new ConversationFrame(findContact(contactId).nick(), inputFrom(contactId), outputTo(contactId), _briefUserNotifier);
+		_framesByContactId.put(contactId, result);
+		_boundsKeeper.keepBoundsFor(result, ConversationFrame.class.getName() + "/" + contactId);
+		return result;
 	}
 
 	private ContactAttributes findContact(ContactId id) {

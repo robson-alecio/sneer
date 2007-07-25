@@ -32,16 +32,12 @@ import wheel.lang.exceptions.NotImplementedYet;
 
 public class JFrameBoundsKeeperImpl implements JFrameBoundsKeeper {
 
-	
 	private final BoundsPersistence _persistence;
 	
-	public JFrameBoundsKeeperImpl(	final BoundsPersistence persistence) {
+	public JFrameBoundsKeeperImpl(BoundsPersistence persistence) {
 		_persistence = persistence;
 	}
 	
-	/* (non-Javadoc)
-	 * @see wheel.io.ui.impl.JFrameBoundsKeeper#keepBoundsFor(javax.swing.JFrame, java.lang.String)
-	 */
 	public void keepBoundsFor(final JFrame frame, final String id){
 		restorePreviousBounds(id, frame);
 		startKeepingBounds(id, frame);

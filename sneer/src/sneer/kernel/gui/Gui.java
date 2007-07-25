@@ -5,28 +5,37 @@ import static wheel.i18n.Language.translate;
 import java.net.URL;
 import java.util.List;
 
+import sneer.SneerDirectories;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.gui.contacts.ShowContactsScreenAction;
+import wheel.io.files.Directory;
+import wheel.io.files.impl.DurableDirectory;
+import wheel.io.ui.JFrameBoundsKeeper;
 import wheel.io.ui.TrayIcon;
 import wheel.io.ui.User;
 import wheel.io.ui.ValueChangePane;
 import wheel.io.ui.TrayIcon.Action;
 import wheel.io.ui.User.Notification;
+import wheel.io.ui.impl.BoundsPersistence;
+import wheel.io.ui.impl.DirectoryBoundsPersistence;
+import wheel.io.ui.impl.JFrameBoundsKeeperImpl;
 import wheel.io.ui.impl.TrayIconImpl;
 import wheel.lang.IntegerParser;
 import wheel.lang.Omnivore;
 
 public class Gui {
 
-	public Gui(User user, BusinessSource businessSource, List<ContactAction> contactActions) throws Exception {
+
+	public Gui(User user, BusinessSource businessSource, List<ContactAction> contactActions, JFrameBoundsKeeperImpl jframeboundsKeeper) throws Exception {
 		_user = user;
 		_businessSource = businessSource;
 		_contactActions = contactActions;
+		_jframeBoundsKeeper = jframeboundsKeeper;
 
 		URL icon = Gui.class.getResource("/sneer/kernel/gui/traymenu/yourIconGoesHere.png");
 		_trayIcon = new TrayIconImpl(icon, _user.catcher());
-
+		
 		tryToRun();
 	}
 
@@ -40,6 +49,8 @@ public class Gui {
 
 	private ShowContactsScreenAction _showContactsScreenAction;
 
+	private JFrameBoundsKeeper _jframeBoundsKeeper;
+	
 	private void tryToRun() {
 		
 		filloutInitialValues();
@@ -65,7 +76,7 @@ public class Gui {
 
 	private synchronized ShowContactsScreenAction showContactsScreenAction() {
 		if (_showContactsScreenAction == null)
-			_showContactsScreenAction = new ShowContactsScreenAction(_user, _businessSource.output().contactAttributes(), _contactActions, _businessSource.contactAdder(),_businessSource.contactRemover(), _businessSource.contactNickChanger());
+			_showContactsScreenAction = new ShowContactsScreenAction(_user, _businessSource.output().contactAttributes(), _contactActions, _businessSource.contactAdder(),_businessSource.contactRemover(), _businessSource.contactNickChanger(), _jframeBoundsKeeper);
 		return _showContactsScreenAction;
 	}
 

@@ -36,7 +36,7 @@ import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 
-public class ContactsScreen extends JFrame {
+class ContactsScreen extends JFrame {
 
 	private final User _user;
 	private final ListSignal<ContactAttributes> _contacts;
@@ -46,7 +46,7 @@ public class ContactsScreen extends JFrame {
 	private final Consumer<Pair<ContactId, String>> _nickChanger;
 
 
-	public ContactsScreen(User user, ListSignal<ContactAttributes> contacts, List<ContactAction> contactActions, Consumer<ContactInfo> contactAdder, Omnivore<ContactId> contactRemover, Consumer<Pair<ContactId, String>> nickChanger) {
+	ContactsScreen(User user, ListSignal<ContactAttributes> contacts, List<ContactAction> contactActions, Consumer<ContactInfo> contactAdder, Omnivore<ContactId> contactRemover, Consumer<Pair<ContactId, String>> nickChanger) {
 		_user = user;
 		_contacts = contacts;
 		_contactActions = contactActions;

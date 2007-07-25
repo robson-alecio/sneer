@@ -36,4 +36,13 @@ public class Threads {
 		_reactors.add(reactor);
 	}
 
+	public static void joinWithoutInterruptions(Thread thread) {
+		try {
+			thread.join();
+		} catch (InterruptedException e) {
+			throw new IllegalStateException(e);
+		}
+		
+	}
+
 }

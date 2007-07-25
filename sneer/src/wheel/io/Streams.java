@@ -3,6 +3,7 @@ package wheel.io;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
 public class Streams {
@@ -15,6 +16,15 @@ public class Streams {
 			output.write(buffer, 0, read);
 		
 		output.flush();
+	}
+
+	public static void closeQuietly(Closeable closeable) {
+		try {
+			closeable.close();
+		} catch (IOException e) {
+			Log.log(e);
+		}
+		
 	}
 
 }

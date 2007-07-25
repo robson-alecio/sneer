@@ -23,10 +23,15 @@ import sneer.kernel.gui.Gui;
 import sneer.kernel.gui.contacts.ContactAction;
 import wheel.i18n.Language;
 import wheel.io.Log;
+import wheel.io.files.Directory;
+import wheel.io.files.impl.DurableDirectory;
 import wheel.io.network.OldNetworkImpl;
 import wheel.io.network.impl.XStreamNetwork;
 import wheel.io.ui.User;
 import wheel.io.ui.User.Notification;
+import wheel.io.ui.impl.BoundsPersistence;
+import wheel.io.ui.impl.DirectoryBoundsPersistence;
+import wheel.io.ui.impl.JFrameBoundsKeeperImpl;
 import wheel.io.ui.impl.JOptionPaneUser;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
@@ -50,6 +55,7 @@ public class Sneer {
 	private Communicator _communicator;
 	private BusinessSource _businessSource;
 	private Gui _gui;
+	private JFrameBoundsKeeperImpl _jframeBoundsKeeper;
 
 	
 	private void tryToRun() throws Exception {
@@ -64,7 +70,12 @@ public class Sneer {
 		try{Thread.sleep(2000);}catch(InterruptedException ie){} 
 		
 		_communicator = new Communicator(_user, new XStreamNetwork(new OldNetworkImpl()), _businessSource);
-		_gui = new Gui(_user, _businessSource, contactActions()); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
+		
+		Directory directory = new DurableDirectory(SneerDirectories.sneerDirectory().getPath());
+		BoundsPersistence boundsPersistence = new DirectoryBoundsPersistence(directory);
+		_jframeBoundsKeeper = new JFrameBoundsKeeperImpl(boundsPersistence);
+
+		_gui = new Gui(_user, _businessSource, contactActions(), _jframeBoundsKeeper); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
 		
 		while (true) Threads.sleepWithoutInterruptions(5000);
 	}
@@ -95,7 +106,7 @@ public class Sneer {
 		List<ContactAction> result = new ArrayList<ContactAction>();
 		
 		Channel conversationsChannel = _communicator.getChannel(ConversationsApp.class.getName(), 0);
-		result.add(new ConversationsApp(conversationsChannel, _businessSource.output().contactAttributes(), _user.briefNotifier()).contactAction());
+		result.add(new ConversationsApp(conversationsChannel, _businessSource.output().contactAttributes(), _user.briefNotifier(), _jframeBoundsKeeper).contactAction());
 		
 		Channel talkChannel = _communicator.getChannel(TalkApp.class.getName(), 1);
 		result.add(new TalkApp(_user, talkChannel, _businessSource.output().contactAttributes()).contactAction());

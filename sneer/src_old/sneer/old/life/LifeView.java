@@ -6,6 +6,8 @@ package sneer.old.life;
 import java.util.Date;
 import java.util.Map;
 
+
+import wheel.graphics.JpgImage;
 import wheel.reactive.SetSignal;
 import wheel.reactive.Signal;
 

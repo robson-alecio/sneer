@@ -3,6 +3,8 @@
 
 package sneer.old.life;
 
+import wheel.graphics.JpgImage;
+
 
 public interface Life extends LifeView {
 

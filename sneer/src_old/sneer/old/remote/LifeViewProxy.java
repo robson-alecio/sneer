@@ -7,8 +7,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.old.life.JpgImage;
 import sneer.old.life.LifeView;
+import wheel.graphics.JpgImage;
 import wheel.lang.Threads;
 import wheel.reactive.SetSignal;
 import wheel.reactive.Signal;

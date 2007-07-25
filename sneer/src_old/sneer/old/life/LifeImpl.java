@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+
+import wheel.graphics.JpgImage;
 import wheel.reactive.SetSignal;
 import wheel.reactive.SetSource;
 import wheel.reactive.Signal;

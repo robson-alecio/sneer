@@ -1,4 +1,4 @@
-package sneer.old.life;
+package wheel.graphics;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

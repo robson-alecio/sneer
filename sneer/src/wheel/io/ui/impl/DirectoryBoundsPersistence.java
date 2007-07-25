@@ -91,21 +91,21 @@ public class DirectoryBoundsPersistence implements BoundsPersistence {
 
 		@Override
 		public void run() {
-			writeToDiskIfNotDirty();
+			waitDiskWriteThreshold();
+			writeBoundsToFile();
 		}
 
-		private void writeToDiskIfNotDirty() {
+		private void waitDiskWriteThreshold() {
 			Threads.sleepWithoutInterruptions(DISK_WRITE_THRESHOLD);
 			synchronized (_isDirty){
 				if (_isDirty){
 					_isDirty = false;
 				} else{
-					writeBoundsToFile();
 					return;
 				}
 			}
 			
-			writeToDiskIfNotDirty();
+			waitDiskWriteThreshold();
 		}
 		
 		protected void writeBoundsToFile() {

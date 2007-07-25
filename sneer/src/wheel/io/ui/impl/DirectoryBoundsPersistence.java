@@ -50,6 +50,7 @@ public class DirectoryBoundsPersistence implements BoundsPersistence {
 		
 		synchronized (_isDirty ){
 			_isDirty = true;
+			//Fix: may lose data, isAlive isn't a good mechanism to deal with concurrency 
 			if (!_boundsThread.isAlive()){
 				_boundsThread = new Thread(new StoreBounds());
 				_boundsThread.start();

@@ -13,7 +13,6 @@ import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
 import wheel.io.ui.JFrameBoundsKeeper;
 import wheel.io.ui.User.Notification;
-import wheel.io.ui.impl.BoundsPersistence;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;

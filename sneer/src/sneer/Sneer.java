@@ -1,9 +1,10 @@
 package sneer;
 
 import static sneer.SneerDirectories.logDirectory;
-import static wheel.i18n.Language.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,7 @@ import wheel.io.files.Directory;
 import wheel.io.files.impl.DurableDirectory;
 import wheel.io.network.OldNetworkImpl;
 import wheel.io.network.impl.XStreamNetwork;
+import wheel.io.ui.JFrameBoundsKeeper;
 import wheel.io.ui.User;
 import wheel.io.ui.User.Notification;
 import wheel.io.ui.impl.BoundsPersistence;
@@ -70,14 +72,17 @@ public class Sneer {
 		try{Thread.sleep(2000);}catch(InterruptedException ie){} 
 		
 		_communicator = new Communicator(_user, new XStreamNetwork(new OldNetworkImpl()), _businessSource);
+		_gui = new Gui(_user, _businessSource, contactActions(), jFrameBoundsKeeper()); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
+		
+		while (true) Threads.sleepWithoutInterruptions(5000);
+	}
+
+	private JFrameBoundsKeeper jFrameBoundsKeeper() throws IOException {
+		if (_jframeBoundsKeeper != null) return _jframeBoundsKeeper;
 		
 		Directory directory = new DurableDirectory(SneerDirectories.sneerDirectory().getPath());
 		BoundsPersistence boundsPersistence = new DirectoryBoundsPersistence(directory);
-		_jframeBoundsKeeper = new JFrameBoundsKeeperImpl(boundsPersistence);
-
-		_gui = new Gui(_user, _businessSource, contactActions(), _jframeBoundsKeeper); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
-		
-		while (true) Threads.sleepWithoutInterruptions(5000);
+		return _jframeBoundsKeeper = new JFrameBoundsKeeperImpl(boundsPersistence);
 	}
 
 	private Omnivore<Notification> briefNotifier() {

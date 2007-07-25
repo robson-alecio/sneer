@@ -5,21 +5,15 @@ import static wheel.i18n.Language.translate;
 import java.net.URL;
 import java.util.List;
 
-import sneer.SneerDirectories;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.gui.contacts.ShowContactsScreenAction;
-import wheel.io.files.Directory;
-import wheel.io.files.impl.DurableDirectory;
 import wheel.io.ui.JFrameBoundsKeeper;
 import wheel.io.ui.TrayIcon;
 import wheel.io.ui.User;
 import wheel.io.ui.ValueChangePane;
 import wheel.io.ui.TrayIcon.Action;
 import wheel.io.ui.User.Notification;
-import wheel.io.ui.impl.BoundsPersistence;
-import wheel.io.ui.impl.DirectoryBoundsPersistence;
-import wheel.io.ui.impl.JFrameBoundsKeeperImpl;
 import wheel.io.ui.impl.TrayIconImpl;
 import wheel.lang.IntegerParser;
 import wheel.lang.Omnivore;
@@ -27,7 +21,7 @@ import wheel.lang.Omnivore;
 public class Gui {
 
 
-	public Gui(User user, BusinessSource businessSource, List<ContactAction> contactActions, JFrameBoundsKeeperImpl jframeboundsKeeper) throws Exception {
+	public Gui(User user, BusinessSource businessSource, List<ContactAction> contactActions, JFrameBoundsKeeper jframeboundsKeeper) throws Exception {
 		_user = user;
 		_businessSource = businessSource;
 		_contactActions = contactActions;

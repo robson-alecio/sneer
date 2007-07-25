@@ -4,15 +4,14 @@
 
 package wheel.io.network;
 
+import java.io.Closeable;
 import java.io.IOException;
 
 
-public interface ObjectSocket {
+public interface ObjectSocket extends Closeable {
 
 	void writeObject(Object object) throws IOException;
 
 	Object readObject() throws IOException, ClassNotFoundException;
 
-	void close() throws IOException;
-	
 }

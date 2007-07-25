@@ -1,19 +1,16 @@
 package sneer.kernel.gui.contacts;
 
-import java.awt.Frame;
-import java.io.IOException;
-import java.util.List;
-import java.util.ResourceBundle;
+import static wheel.i18n.Language.translate;
 
-import static wheel.i18n.Language.*;
+import java.awt.Frame;
+import java.util.List;
+
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.business.contacts.ContactInfo;
-import wheel.io.files.impl.DurableDirectory;
 import wheel.io.ui.JFrameBoundsKeeper;
 import wheel.io.ui.User;
 import wheel.io.ui.TrayIcon.Action;
-import wheel.io.ui.impl.JFrameBoundsKeeperImpl;
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.lang.Pair;
@@ -46,9 +43,8 @@ public class ShowContactsScreenAction implements Action {
 
 	public synchronized void run() {
 		if (_contactsScreen == null) {
-			ContactsScreen contactsScreen = new ContactsScreen(_user, _contacts, _contactActions, _contactAdder, _contactRemover, _nickChanger);
-			_contactsScreen = contactsScreen;
-			_boundsKeeper.keepBoundsFor(contactsScreen, ContactsScreen.class.getName());
+			_contactsScreen = new ContactsScreen(_user, _contacts, _contactActions, _contactAdder, _contactRemover, _nickChanger);
+			_boundsKeeper.keepBoundsFor(_contactsScreen, ContactsScreen.class.getName());
 		} 
 		
 		_contactsScreen.setVisible(true);

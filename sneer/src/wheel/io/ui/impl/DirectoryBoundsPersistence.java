@@ -81,7 +81,7 @@ public class DirectoryBoundsPersistence implements BoundsPersistence {
 			Log.log(e);
 		} finally {
 			if (objectInputStream != null)
-				Streams.closeQuietly(objectInputStream);
+				Streams.crash(objectInputStream);
 		}
 		
 		return new HashMap<String, Rectangle>();
@@ -123,7 +123,7 @@ public class DirectoryBoundsPersistence implements BoundsPersistence {
 				Log.log(e);
 			} finally {
 				if (objectOutputStream != null)
-					Streams.closeQuietly(objectOutputStream);
+					Streams.crash(objectOutputStream);
 			}
 			
 		}

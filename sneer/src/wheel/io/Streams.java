@@ -18,7 +18,7 @@ public class Streams {
 		output.flush();
 	}
 
-	public static void closeQuietly(Closeable closeable) {
+	public static void crash(Closeable closeable) {
 		try {
 			closeable.close();
 		} catch (IOException e) {

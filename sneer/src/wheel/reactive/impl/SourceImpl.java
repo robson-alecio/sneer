@@ -1,4 +1,4 @@
-package wheel.reactive;
+package wheel.reactive.impl;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -6,7 +6,9 @@ import java.util.Set;
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.lang.exceptions.IllegalParameter;
-import wheel.reactive.SetSignal.SetValueChange;
+import wheel.reactive.Signal;
+import wheel.reactive.Source;
+import wheel.reactive.sets.SetSignal.SetValueChange;
 
 public class SourceImpl<VO> implements Source<VO> {
 

@@ -21,7 +21,7 @@ import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
-import wheel.reactive.SourceImpl;
+import wheel.reactive.impl.SourceImpl;
 import wheel.reactive.lists.ListSignal;
 
 public class FileTransferApp {

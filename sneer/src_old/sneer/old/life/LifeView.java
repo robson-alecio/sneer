@@ -8,8 +8,8 @@ import java.util.Map;
 
 
 import wheel.graphics.JpgImage;
-import wheel.reactive.SetSignal;
 import wheel.reactive.Signal;
+import wheel.reactive.sets.SetSignal;
 
 
 public interface LifeView {

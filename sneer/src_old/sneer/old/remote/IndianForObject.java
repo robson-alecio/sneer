@@ -7,7 +7,7 @@ import wheel.io.network.ObjectSocket;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
-import wheel.reactive.SourceImpl;
+import wheel.reactive.impl.SourceImpl;
 
 
 abstract class IndianForObject<T> extends AbstractIndian {

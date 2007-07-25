@@ -6,9 +6,9 @@ import java.util.Set;
 import sneer.old.life.LifeView;
 import wheel.io.network.ObjectSocket;
 import wheel.lang.Omnivore;
-import wheel.reactive.SetSignal;
-import wheel.reactive.SetSource;
-import wheel.reactive.SetSignal.SetValueChange;
+import wheel.reactive.sets.SetSignal;
+import wheel.reactive.sets.SetSource;
+import wheel.reactive.sets.SetSignal.SetValueChange;
 
 abstract class IndianForSet<T> extends AbstractIndian {
 

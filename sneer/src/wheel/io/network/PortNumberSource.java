@@ -4,7 +4,7 @@ import wheel.lang.Consumer;
 import wheel.lang.IntegerConsumerBoundaries;
 import wheel.lang.IntegerParser;
 import wheel.reactive.Signal;
-import wheel.reactive.SourceImpl;
+import wheel.reactive.impl.SourceImpl;
 
 public class PortNumberSource {
 

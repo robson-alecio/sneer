@@ -8,7 +8,7 @@ import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
-import wheel.reactive.SourceImpl;
+import wheel.reactive.impl.SourceImpl;
 
 public class ContactAttributesSourceImpl implements ContactAttributesSource {
 

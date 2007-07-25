@@ -9,7 +9,7 @@ import wheel.io.Log;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.reactive.Signal;
-import wheel.reactive.SourceImpl;
+import wheel.reactive.impl.SourceImpl;
 
 class ChannelImpl implements Channel {
 

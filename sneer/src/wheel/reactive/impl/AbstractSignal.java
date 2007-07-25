@@ -2,13 +2,17 @@
 //This is free software. It is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the license distributed along with this file for more details.
 //Contributions: Fabio Roger Manera.
 
-package wheel.reactive;
+package wheel.reactive.impl;
 
 
 import java.util.HashSet;
 import java.util.Set;
 
 import wheel.lang.Omnivore;
+import wheel.reactive.Signal;
+import wheel.reactive.sets.SetSignal;
+import wheel.reactive.sets.SetSignal.SetValueChange;
+import wheel.reactive.sets.impl.SetValueChangeImpl;
 
 public abstract class AbstractSignal<T> extends AbstractNotifier<T> implements Signal<T> {
 

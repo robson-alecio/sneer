@@ -22,7 +22,7 @@ import wheel.io.ui.User;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
-import wheel.reactive.SourceImpl;
+import wheel.reactive.impl.SourceImpl;
 import wheel.reactive.lists.ListSignal;
 
 public class ScribbleApp {

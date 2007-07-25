@@ -19,7 +19,7 @@ import wheel.lang.Pair;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
-import wheel.reactive.SourceImpl;
+import wheel.reactive.impl.SourceImpl;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListSource;
 import wheel.reactive.lists.impl.ListSourceImpl;

@@ -1,10 +1,11 @@
-package wheel.reactive;
+package wheel.reactive.sets.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import wheel.reactive.SetSignal.SetValueChange;
+import wheel.reactive.sets.SetSignal;
+import wheel.reactive.sets.SetSignal.SetValueChange;
 
 public class SetValueChangeImpl<T> implements SetValueChange<T> {
 

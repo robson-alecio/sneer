@@ -13,6 +13,8 @@ public interface Party {
 	
 	ListSignal<Contact> contacts();
 
+	Signal<Boolean> identityConfirmed();
+
 	Signal<Boolean> isOnline();
 
 }

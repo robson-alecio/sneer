@@ -2,13 +2,15 @@
 //This is free software. It is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the license distributed along with this file for more details.
 //Contributions: Kalecser Kurtz, Fabio Roger Manera.
 
-package wheel.reactive;
+package wheel.reactive.sets;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import wheel.lang.Omnivore;
-import wheel.reactive.SetSignal.SetValueChange;
+import wheel.reactive.impl.AbstractNotifier;
+import wheel.reactive.sets.SetSignal.SetValueChange;
+import wheel.reactive.sets.impl.SetValueChangeImpl;
 
 
 public class SetSource<T> extends AbstractNotifier<SetValueChange<T>>  implements SetSignal<T> {

@@ -1,6 +1,7 @@
 package wheel.reactive;
 
 import wheel.lang.Omnivore;
+import wheel.reactive.sets.SetSignal;
 
 
 /** @invariant this.toString().equals("" + this.currentValue()) */

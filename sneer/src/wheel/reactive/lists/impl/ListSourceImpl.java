@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import wheel.lang.Omnivore;
-import wheel.reactive.AbstractNotifier;
+import wheel.reactive.impl.AbstractNotifier;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListSource;
 import wheel.reactive.lists.ListValueChange;

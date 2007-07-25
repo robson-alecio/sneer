@@ -1,8 +1,8 @@
 package wheel.reactive.tests;
 
 import wheel.lang.Omnivore;
-import wheel.reactive.AbstractSignal;
 import wheel.reactive.Signal;
+import wheel.reactive.impl.AbstractSignal;
 
 public class NotificationTest extends ConnectionTest {
 

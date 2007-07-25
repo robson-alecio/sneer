@@ -10,8 +10,8 @@ import java.util.Map;
 import sneer.old.life.LifeView;
 import wheel.graphics.JpgImage;
 import wheel.lang.Threads;
-import wheel.reactive.SetSignal;
 import wheel.reactive.Signal;
+import wheel.reactive.sets.SetSignal;
 
 class LifeViewProxy implements LifeView, Serializable {
 

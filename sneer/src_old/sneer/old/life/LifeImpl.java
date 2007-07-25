@@ -11,11 +11,11 @@ import java.util.Map;
 
 
 import wheel.graphics.JpgImage;
-import wheel.reactive.SetSignal;
-import wheel.reactive.SetSource;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
-import wheel.reactive.SourceImpl;
+import wheel.reactive.impl.SourceImpl;
+import wheel.reactive.sets.SetSignal;
+import wheel.reactive.sets.SetSource;
 
 
 public class LifeImpl implements Life, Serializable {

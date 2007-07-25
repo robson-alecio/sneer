@@ -1,6 +1,6 @@
 package sneer.old.remote;
 
-import wheel.reactive.SetSignal.SetValueChange;
+import wheel.reactive.sets.SetSignal.SetValueChange;
 
 public class SetSmokeSignal extends AbstractSmokeSignal {
 

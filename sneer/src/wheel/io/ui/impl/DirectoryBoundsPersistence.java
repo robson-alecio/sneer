@@ -24,7 +24,7 @@ public class DirectoryBoundsPersistence implements BoundsPersistence {
 	private final Directory _directory;
 	private final Map<String, Rectangle> _storedBounds;
 	private Thread _boundsThread;
-	private boolean _synchonous;
+	private boolean _synchronous;
 
 
 	public DirectoryBoundsPersistence(Directory directory) {
@@ -35,7 +35,7 @@ public class DirectoryBoundsPersistence implements BoundsPersistence {
 	
 	public DirectoryBoundsPersistence(TransientDirectory directory, boolean asynchronous) {
 		this(directory);		
-		_synchonous = !asynchronous;
+		_synchronous = !asynchronous;
 		DISK_WRITE_THRESHOLD = 0;
 	}
 
@@ -48,7 +48,7 @@ public class DirectoryBoundsPersistence implements BoundsPersistence {
 	public synchronized void storeBounds(String id, Rectangle bounds) {
 		_storedBounds.put(id, bounds);
 		
-		synchronized (_isDirty ){
+		synchronized (_isDirty ){ //Fix Consider using monitor object or AtomicBoolean
 			_isDirty = true;
 			//Fix: may lose data, isAlive isn't a good mechanism to deal with concurrency 
 			if (!_boundsThread.isAlive()){
@@ -57,7 +57,7 @@ public class DirectoryBoundsPersistence implements BoundsPersistence {
 			}
 		}
 		
-		if (_synchonous)
+		if (_synchronous)
 			Threads.joinWithoutInterruptions(_boundsThread);
 		
 	}

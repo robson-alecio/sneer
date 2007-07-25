@@ -74,7 +74,7 @@ public class Sneer {
 		_communicator = new Communicator(_user, new XStreamNetwork(new OldNetworkImpl()), _businessSource);
 		_gui = new Gui(_user, _businessSource, contactActions(), jFrameBoundsKeeper()); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
 		
-		while (true) Threads.sleepWithoutInterruptions(5000);
+		while (true) Threads.sleepWithoutInterruptions(100000); // Refactor Consider joining the main gui thread.
 	}
 
 	private JFrameBoundsKeeper jFrameBoundsKeeper() throws IOException {

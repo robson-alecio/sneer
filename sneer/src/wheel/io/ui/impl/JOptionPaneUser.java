@@ -11,7 +11,6 @@ import javax.swing.JOptionPane;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.io.ui.Util;
-import wheel.io.ui.User.Notification;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.Catcher;

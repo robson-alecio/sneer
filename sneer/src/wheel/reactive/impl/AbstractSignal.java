@@ -10,8 +10,6 @@ import java.util.Set;
 
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
-import wheel.reactive.sets.SetSignal;
-import wheel.reactive.sets.SetSignal.SetValueChange;
 import wheel.reactive.sets.impl.SetValueChangeImpl;
 
 public abstract class AbstractSignal<T> extends AbstractNotifier<T> implements Signal<T> {

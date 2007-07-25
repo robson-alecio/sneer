@@ -9,7 +9,6 @@ import org.prevayler.Prevayler;
 
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
-import static wheel.lang.Casts.uncheckedGenericCast;
 
 public class Bubble implements InvocationHandler {
 

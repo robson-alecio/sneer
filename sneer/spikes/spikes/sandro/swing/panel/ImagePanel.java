@@ -11,8 +11,6 @@ import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.UnsupportedLookAndFeelException;
-
 import spikes.sandro.image.IconFactory;
 
 public class ImagePanel extends JLabel {

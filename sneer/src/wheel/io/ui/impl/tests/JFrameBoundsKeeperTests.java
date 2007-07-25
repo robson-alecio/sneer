@@ -5,12 +5,9 @@ import java.awt.Rectangle;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import wheel.io.files.impl.tranzient.TransientDirectory;
 import wheel.io.ui.JFrameBoundsKeeper;
-import wheel.io.ui.impl.BoundsPersistence;
 import wheel.io.ui.impl.JFrameBoundsKeeperImpl;
 
 import junit.framework.TestCase;

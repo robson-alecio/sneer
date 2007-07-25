@@ -11,9 +11,6 @@ import java.awt.event.MouseListener;
 import java.net.URL;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-
 import junit.framework.TestCase;
 import wheel.io.ui.TrayIcon.Action;
 import wheel.io.ui.impl.TrayIconImpl;

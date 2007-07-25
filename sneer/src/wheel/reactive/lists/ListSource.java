@@ -1,7 +1,5 @@
 package wheel.reactive.lists;
 
-import java.util.Iterator;
-
 import wheel.lang.Omnivore;
 
 public interface ListSource<VO> {

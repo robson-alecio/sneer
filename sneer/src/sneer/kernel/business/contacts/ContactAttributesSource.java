@@ -1,6 +1,5 @@
 package sneer.kernel.business.contacts;
 
-import sneer.kernel.business.contacts.impl.ContactPublicKeyUpdater;
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 

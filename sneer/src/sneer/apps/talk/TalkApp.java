@@ -8,8 +8,6 @@ import java.awt.event.WindowListener;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.JOptionPane;
-
 import sneer.apps.talk.gui.TalkFrame;
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactId;

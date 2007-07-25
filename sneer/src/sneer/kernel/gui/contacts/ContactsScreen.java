@@ -32,7 +32,6 @@ import wheel.io.ui.impl.ListSignalModel.SignalChooser;
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.lang.Pair;
-import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 

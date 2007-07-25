@@ -1,7 +1,5 @@
 package spikes.pyct;
 
-import java.io.IOException;
-
 import javax.swing.JFrame;
 
 

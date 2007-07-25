@@ -3,32 +3,9 @@ package wheel.io.ui.impl;
 import java.awt.Rectangle;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.awt.event.WindowStateListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantLock;
-
 import javax.swing.JFrame;
 
-import org.prevayler.foundation.Cool;
-
-import wheel.io.Log;
-import wheel.io.Streams;
-import wheel.io.files.Directory;
-import wheel.io.files.impl.tranzient.TransientDirectory;
 import wheel.io.ui.JFrameBoundsKeeper;
-import wheel.lang.Threads;
-import wheel.lang.exceptions.NotImplementedYet;
 
 public class JFrameBoundsKeeperImpl implements JFrameBoundsKeeper {
 

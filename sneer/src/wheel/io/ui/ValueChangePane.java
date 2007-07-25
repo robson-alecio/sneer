@@ -1,7 +1,5 @@
 package wheel.io.ui;
 
-import java.util.ResourceBundle;
-
 import sneer.kernel.gui.CancellableAction;
 import wheel.lang.Consumer;
 import wheel.lang.exceptions.IllegalParameter;

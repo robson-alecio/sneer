@@ -8,8 +8,6 @@ import javax.sound.sampled.SourceDataLine;
 
 import org.xiph.speex.SpeexDecoder;
 
-import wheel.io.Log;
-
 public class SpeexSpeaker {
 	
 	private SourceDataLine _line;

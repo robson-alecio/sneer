@@ -1,7 +1,6 @@
 package wheel.lang;
 
 import wheel.lang.exceptions.IllegalParameter;
-import wheel.reactive.impl.SourceImpl;
 
 public class StringConsumerNotNullNonBlank implements Consumer<String> {
 

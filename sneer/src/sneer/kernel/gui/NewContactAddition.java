@@ -1,11 +1,7 @@
 package sneer.kernel.gui;
 
-import java.util.Date;
 import static wheel.i18n.Language.*;
 
-import org.prevayler.Transaction;
-
-import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactInfo;
 
@@ -16,7 +12,6 @@ import wheel.io.ui.ValueChangePane;
 import wheel.lang.Consumer;
 import wheel.lang.IntegerParser;
 import wheel.lang.exceptions.IllegalParameter;
-import wheel.lang.exceptions.NotImplementedYet;
 
 public class NewContactAddition {
 

@@ -1,7 +1,6 @@
 package wheel.reactive.lists.impl;
 
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 

@@ -1,12 +1,9 @@
 package spikes.lucass.GameBase;
 
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.Vector;
-
 import spikes.lucass.GameBase.GameTypes.GameOptions;
 
 public class Game{		

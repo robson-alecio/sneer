@@ -1,8 +1,6 @@
 package spikes.lucass.GameBase;
 
 import java.awt.Graphics;
-import java.awt.Image;
-
 import spikes.lucass.GameBase.GameTypes.GameOptions;
 
 

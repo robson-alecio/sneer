@@ -1,7 +1,5 @@
 package sneer.apps.talk.audio;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.sound.sampled.*;
 
 public class AudioUtil {

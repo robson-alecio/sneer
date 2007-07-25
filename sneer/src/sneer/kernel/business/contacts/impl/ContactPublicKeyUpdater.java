@@ -3,7 +3,6 @@ package sneer.kernel.business.contacts.impl;
 import sneer.kernel.business.contacts.ContactPublicKeyInfo;
 import sneer.kernel.business.contacts.ContactAttributesSource;
 import wheel.lang.Omnivore;
-import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.lists.ListSource;
 import static wheel.i18n.Language.*;
 

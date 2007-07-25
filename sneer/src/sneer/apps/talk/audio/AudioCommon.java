@@ -12,9 +12,6 @@ import javax.sound.sampled.Mixer;
 import javax.sound.sampled.Port;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
-import javax.sound.sampled.AudioFormat.Encoding;
-
-import wheel.io.Log;
 
 // This class is a singleton.
 

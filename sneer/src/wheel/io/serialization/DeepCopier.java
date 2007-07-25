@@ -7,8 +7,6 @@ import java.io.InputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 
-import wheel.lang.Threads;
-
 public class DeepCopier {
 	
 	/**

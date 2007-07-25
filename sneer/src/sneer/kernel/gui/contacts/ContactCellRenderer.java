@@ -6,7 +6,6 @@ import javax.swing.border.*;
 import sneer.kernel.business.contacts.ContactAttributes;
 
 import java.awt.*;
-import java.util.*;
 
 public class ContactCellRenderer extends DefaultListCellRenderer {
 	

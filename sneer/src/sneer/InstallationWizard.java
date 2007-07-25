@@ -2,8 +2,6 @@ package sneer;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Locale;
-
 import static wheel.i18n.Language.*;
 import wheel.i18n.Language;
 import wheel.io.ui.CancelledByUser;

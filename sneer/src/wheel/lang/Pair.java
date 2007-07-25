@@ -2,8 +2,6 @@ package wheel.lang;
 
 import java.io.Serializable;
 
-import sneer.kernel.business.contacts.ContactId;
-
 public class Pair<A, B> implements Serializable {
 
 	public final A _a;

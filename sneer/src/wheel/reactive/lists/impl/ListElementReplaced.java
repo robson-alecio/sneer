@@ -1,7 +1,6 @@
 package wheel.reactive.lists.impl;
 
 import wheel.reactive.lists.ListValueChange;
-import wheel.reactive.lists.ListValueChange.Visitor;
 
 
 public final class ListElementReplaced implements ListValueChange {

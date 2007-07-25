@@ -1,7 +1,5 @@
 package wheel.io.ui;
 
-import sneer.kernel.gui.contacts.ShowContactsScreenAction;
-
 
 public interface TrayIcon {
 

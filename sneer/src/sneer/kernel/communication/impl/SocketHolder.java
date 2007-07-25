@@ -1,7 +1,5 @@
 package sneer.kernel.communication.impl;
 
-import java.io.IOException;
-
 import wheel.io.Streams;
 import wheel.io.network.ObjectSocket;
 import wheel.lang.Omnivore;

@@ -1,6 +1,5 @@
 package wheel.reactive;
 
-import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 
 public interface Source<T> {

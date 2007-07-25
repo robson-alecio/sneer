@@ -5,7 +5,6 @@ import java.awt.Rectangle;
 import wheel.io.files.impl.tranzient.TransientDirectory;
 import wheel.io.ui.impl.BoundsPersistence;
 import wheel.io.ui.impl.DirectoryBoundsPersistence;
-import wheel.lang.Threads;
 import junit.framework.TestCase;
 
 public class DiskBoundsPersistenceTests extends TestCase {

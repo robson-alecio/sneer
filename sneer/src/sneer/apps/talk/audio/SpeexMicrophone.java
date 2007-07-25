@@ -3,7 +3,6 @@ package sneer.apps.talk.audio;
 import java.util.Arrays;
 
 import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 

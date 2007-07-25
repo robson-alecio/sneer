@@ -4,7 +4,6 @@ import static wheel.i18n.Language.translate;
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactId;
 import wheel.io.ui.User;
-import wheel.io.ui.Util;
 import wheel.io.ui.ValueChangePane;
 import wheel.lang.Consumer;
 import wheel.lang.Pair;

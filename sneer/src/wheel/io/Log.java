@@ -7,10 +7,6 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Date;
 
-import javax.swing.JOptionPane;
-
-import wheel.lang.exceptions.Catcher;
-
 
 public class Log {
 

@@ -1,11 +1,17 @@
 package sneer.kernel.gui.contacts;
 
-import javax.swing.*;
-import javax.swing.border.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.FlowLayout;
 
-import sneer.kernel.business.contacts.ContactAttributes;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 
-import java.awt.*;
+import sneer.kernel.pointofview.Contact;
 
 public class ContactCellRenderer extends DefaultListCellRenderer {
 	
@@ -25,11 +31,11 @@ public class ContactCellRenderer extends DefaultListCellRenderer {
 
 	@Override
 	public Component getListCellRendererComponent(JList list, Object contactObject, int index, boolean isSelected, boolean hasFocus) {
-		ContactAttributes contact = (ContactAttributes) contactObject;
+		Contact contact = (Contact) contactObject;
 
 		ImageIcon stateIcon = stateIconFor(contact);
 
-		ImageIcon onlineIcon = contact.isOnline().currentValue()
+		ImageIcon onlineIcon = contact.party().isOnline().currentValue()
 			? ONLINE_ICON
 			: OFFLINE_ICON;
 
@@ -41,16 +47,15 @@ public class ContactCellRenderer extends DefaultListCellRenderer {
 
 		panel.add(new JLabel(onlineIcon));
 		panel.add(new JLabel(stateIcon));
-		panel.add(new JLabel(contact.nick().currentValue() + " - " + contact.host().currentValue() + ":" + contact.port().currentValue()));
+		panel.add(new JLabel(contact.nick().currentValue() + " - " + contact.party().host().currentValue() + ":" + contact.party().port().currentValue()));
 
 		return panel;
 	}
 
-	private ImageIcon stateIconFor(ContactAttributes contact) {
-		String state = contact.state().currentValue();
-		if (state.equals(ContactAttributes.UNCONFIRMED_STATE)) return UNCONFIRMED_ICON;
-		if (state.equals(ContactAttributes.CONFIRMED_STATE)) return CONFIRMED_ICON;
-		return ERROR_ICON;
+	private ImageIcon stateIconFor(Contact contact) {
+		return contact.party().publicKeyConfirmed().currentValue()
+			? CONFIRMED_ICON
+			: UNCONFIRMED_ICON;
 	}
 
 	private static final long serialVersionUID = 1L;

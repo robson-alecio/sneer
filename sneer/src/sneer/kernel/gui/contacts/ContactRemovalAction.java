@@ -1,9 +1,9 @@
 package sneer.kernel.gui.contacts;
 
-import sneer.kernel.business.contacts.ContactAttributes;
+import static wheel.i18n.Language.translate;
 import sneer.kernel.business.contacts.ContactId;
+import sneer.kernel.pointofview.Contact;
 import wheel.lang.Omnivore;
-import static wheel.i18n.Language.*;
 
 public class ContactRemovalAction implements ContactAction {
 
@@ -13,10 +13,12 @@ public class ContactRemovalAction implements ContactAction {
 		_contactRemover = contactRemover;
 	}
 
-	public void actUpon(ContactAttributes contact) {
+	@Override
+	public void actUpon(Contact contact) {
 		_contactRemover.consume(contact.id());
 	}
 
+	@Override
 	public String caption() {
 		return translate("Delete");
 	}

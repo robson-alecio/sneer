@@ -22,6 +22,8 @@ import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.impl.Communicator;
 import sneer.kernel.gui.Gui;
 import sneer.kernel.gui.contacts.ContactAction;
+import sneer.kernel.pointofview.Party;
+import sneer.kernel.pointofview.impl.I;
 import wheel.i18n.Language;
 import wheel.io.Log;
 import wheel.io.files.Directory;
@@ -35,6 +37,7 @@ import wheel.io.ui.impl.BoundsPersistence;
 import wheel.io.ui.impl.DirectoryBoundsPersistence;
 import wheel.io.ui.impl.JFrameBoundsKeeperImpl;
 import wheel.io.ui.impl.JOptionPaneUser;
+import wheel.io.ui.impl.tests.TransientBoundsPersistence;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 
@@ -54,9 +57,11 @@ public class Sneer {
 
 	
 	private User _user = new JOptionPaneUser("Sneer", briefNotifier());
-	private Communicator _communicator;
 	private BusinessSource _businessSource;
+	private Communicator _communicator;
+	private Party _I;
 	private Gui _gui;
+
 	private JFrameBoundsKeeperImpl _jframeBoundsKeeper;
 
 	
@@ -68,20 +73,27 @@ public class Sneer {
 
 		initLanguage();
 		
-		//Fix: small delay to show splash. in the future will be used to plugin/resource download
+		//Optimize: Separate thread to close splash screen.
 		try{Thread.sleep(2000);}catch(InterruptedException ie){} 
 		
 		_communicator = new Communicator(_user, new XStreamNetwork(new OldNetworkImpl()), _businessSource);
-		_gui = new Gui(_user, _businessSource, contactActions(), jFrameBoundsKeeper()); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
+		_I = new I(_businessSource.output(), _communicator.operator());
+		_gui = new Gui(_user, _I, _businessSource, contactActions(), jFrameBoundsKeeper()); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
 		
 		while (true) Threads.sleepWithoutInterruptions(100000); // Refactor Consider joining the main gui thread.
 	}
 
-	private JFrameBoundsKeeper jFrameBoundsKeeper() throws IOException {
+	private JFrameBoundsKeeper jFrameBoundsKeeper() {
 		if (_jframeBoundsKeeper != null) return _jframeBoundsKeeper;
 		
-		Directory directory = new DurableDirectory(SneerDirectories.sneerDirectory().getPath());
-		BoundsPersistence boundsPersistence = new DirectoryBoundsPersistence(directory);
+		BoundsPersistence boundsPersistence;
+		try {
+			Directory directory = new DurableDirectory(SneerDirectories.sneerDirectory().getPath());
+			boundsPersistence = new DirectoryBoundsPersistence(directory);
+		} catch (IOException e) {
+			Log.log(e);
+			boundsPersistence = new TransientBoundsPersistence();
+		}
 		return _jframeBoundsKeeper = new JFrameBoundsKeeperImpl(boundsPersistence);
 	}
 
@@ -111,16 +123,16 @@ public class Sneer {
 		List<ContactAction> result = new ArrayList<ContactAction>();
 		
 		Channel conversationsChannel = _communicator.getChannel(ConversationsApp.class.getName(), 0);
-		result.add(new ConversationsApp(conversationsChannel, _businessSource.output().contactAttributes(), _user.briefNotifier(), _jframeBoundsKeeper).contactAction());
+		result.add(new ConversationsApp(conversationsChannel, _businessSource.output().contactAttributes(), _user.briefNotifier(), jFrameBoundsKeeper()).contactAction());
 		
 		Channel talkChannel = _communicator.getChannel(TalkApp.class.getName(), 1);
-		result.add(new TalkApp(_user, talkChannel, _businessSource.output().contactAttributes()).contactAction());
+		result.add(new TalkApp(_user, talkChannel, _I.contacts()).contactAction());
 		
 		Channel fileTransferChannel = _communicator.getChannel(FileTransferApp.class.getName(), 2);
 		result.add(new FileTransferApp(_user, fileTransferChannel, _businessSource.output().contactAttributes()).contactAction());
 		
 		Channel scribbleChannel = _communicator.getChannel(ScribbleApp.class.getName(), 2);
-		result.add(new ScribbleApp(_user, scribbleChannel, _businessSource.output().contactAttributes()).contactAction());
+		result.add(new ScribbleApp(_user, scribbleChannel, _I.contacts()).contactAction());
 		
 		return result;
 	}

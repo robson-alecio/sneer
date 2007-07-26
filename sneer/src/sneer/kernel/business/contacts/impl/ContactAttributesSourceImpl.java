@@ -1,13 +1,14 @@
 package sneer.kernel.business.contacts.impl;
 
 import sneer.kernel.business.contacts.ContactAttributes;
-import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.business.contacts.ContactAttributesSource;
+import sneer.kernel.business.contacts.ContactId;
 import wheel.io.network.PortNumberSource;
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
+import wheel.reactive.impl.ConstantSignal;
 import wheel.reactive.impl.SourceImpl;
 
 public class ContactAttributesSourceImpl implements ContactAttributesSource {
@@ -30,11 +31,6 @@ public class ContactAttributesSourceImpl implements ContactAttributesSource {
 			return _port.output();
 		}
 
-		@Override
-		public Signal<Boolean> isOnline() {
-			return _isOnline.output();
-		}
-
 		public ContactId id() {
 			return new ContactIdImpl(_id);
 		}
@@ -43,19 +39,19 @@ public class ContactAttributesSourceImpl implements ContactAttributesSource {
 			return _publicKey.output();
 		}
 
-		public Signal<String> state() {
-			return _state.output();
+		@Override
+		public Signal<Boolean> publicKeyConfirmed() {
+			return new ConstantSignal<Boolean>(false); //Implement
 		}
 
 	}
 
 
-	public ContactAttributesSourceImpl(String nick, String host, int port, String publicKey, String state, long id) {
+	public ContactAttributesSourceImpl(String nick, String host, int port, String publicKey, long id) {
 		_nick = new SourceImpl<String>(nick);
 		_host = new SourceImpl<String>(host);
 		_port = new PortNumberSource(port);
 		_publicKey = new SourceImpl<String>(publicKey);
-		_state = new SourceImpl<String>(state);
 		_id = id;
 	}
 
@@ -64,11 +60,9 @@ public class ContactAttributesSourceImpl implements ContactAttributesSource {
 	private final Source<String> _nick;
 	private final Source<String> _host;
 	private final PortNumberSource _port;
-	private final Source<String> _state;
 
 	private final Source<String> _publicKey;
 	
-	private final Source<Boolean> _isOnline = new SourceImpl<Boolean>(false);  //Optimize: Do not store online events in the transaction log. Make this transient or remove it from the business logic.
 	
 	private final long _id;
 
@@ -97,18 +91,8 @@ public class ContactAttributesSourceImpl implements ContactAttributesSource {
 
 
 	@Override
-	public Omnivore<Boolean> isOnlineSetter() {
-		return _isOnline.setter();
-	}
-
-	@Override
 	public Omnivore<String> publicKeySetter() {
 		return _publicKey.setter();
-	}
-
-
-	public Omnivore<String> stateSetter() {
-		return _state.setter();
 	}
 
 }

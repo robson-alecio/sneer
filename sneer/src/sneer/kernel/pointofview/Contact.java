@@ -1,5 +1,6 @@
 package sneer.kernel.pointofview;
 
+import sneer.kernel.business.contacts.ContactId;
 import wheel.reactive.Signal;
 
 public interface Contact {
@@ -7,6 +8,6 @@ public interface Contact {
 	Signal<String> nick();
 	Party party();
 	
-	Signal<Float> trustworthiness(); //  ;)
+	ContactId id();
 	
 }

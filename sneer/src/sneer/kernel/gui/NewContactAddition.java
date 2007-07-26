@@ -1,10 +1,7 @@
 package sneer.kernel.gui;
 
-import static wheel.i18n.Language.*;
-
-import sneer.kernel.business.contacts.ContactAttributes;
-import sneer.kernel.business.contacts.ContactInfo;
-
+import static wheel.i18n.Language.translate;
+import sneer.kernel.business.contacts.ContactInfo2;
 import wheel.io.network.PortNumberSource;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
@@ -15,7 +12,7 @@ import wheel.lang.exceptions.IllegalParameter;
 
 public class NewContactAddition {
 
-	public NewContactAddition(User user, Consumer<ContactInfo> contactAdder) throws CancelledByUser {
+	public NewContactAddition(User user, Consumer<ContactInfo2> contactAdder) throws CancelledByUser {
 		while (true) {
 			String nick = user.answer(translate("New contact's nickname"));
 			String host = user.answer(translate("Host Address for %1$s",nick), nick + ".dyndns.org");
@@ -23,7 +20,7 @@ public class NewContactAddition {
 			int port = port(user, nick);
 			
 			try {
-				contactAdder.consume(new ContactInfo(nick, host, port, "", ContactAttributes.UNCONFIRMED_STATE));
+				contactAdder.consume(new ContactInfo2(nick, host, port, ""));
 				return;
 			} catch (IllegalParameter e) {
 				user.acknowledgeNotification(e.getMessage());

@@ -2,6 +2,7 @@ package sneer.kernel.business.contacts;
 
 import java.io.Serializable;
 
+@Deprecated
 public class OnlineEvent implements Serializable {
 
 	public final String _nick;

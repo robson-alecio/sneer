@@ -2,15 +2,15 @@ package wheel.reactive.impl;
 
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 import wheel.lang.Omnivore;
 
 public abstract class AbstractNotifier<VC> {
 
-	private final Set<Omnivore<VC>> _receivers = new HashSet<Omnivore<VC>>(); //Fix: Potential object leak. Receivers must be weak referenced. This is equivalent to the whiteboard pattern too, from a receiver referencing perspective. Conceptually, it is only the receiver that references the signal.  
-	private transient Set<Omnivore<VC>> _transientReceivers;
+	private final List<Omnivore<VC>> _receivers = new LinkedList<Omnivore<VC>>(); //Fix: Potential object leak. Receivers must be weak referenced. This is equivalent to the whiteboard pattern too, from a receiver referencing perspective. Conceptually, it is only the receiver that references the signal.
+	private transient List<Omnivore<VC>> _transientReceivers;
 	private final Object _monitor = new Object();
 
 	protected void notifyReceivers(VC valueChange) {
@@ -22,10 +22,10 @@ public abstract class AbstractNotifier<VC> {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void notify(Set<Omnivore<VC>> receivers, VC valueChange) {
+	private void notify(List<Omnivore<VC>> _receivers2, VC valueChange) {
 		Omnivore<VC>[] copy;
-		copy = new Omnivore[receivers.size()];
-		receivers.toArray(copy);
+		copy = new Omnivore[_receivers2.size()];
+		_receivers2.toArray(copy);
 	
 		for (Omnivore<VC> receiver : copy) receiver.consume(valueChange);
 	}
@@ -42,7 +42,7 @@ public abstract class AbstractNotifier<VC> {
 	
 	public void removeReceiver(Omnivore<VC> receiver) {
 		synchronized (_monitor) {
-			boolean wasThere = _receivers.remove(receiver);
+			boolean wasThere = _receivers.remove(receiver); //Optimize: List has linear lookup time. Cannot simply replace for a Set because receivers must be notified in the order the registered.
 			assert wasThere;
 		}
 	}
@@ -63,7 +63,7 @@ public abstract class AbstractNotifier<VC> {
 	}
 
 	private Collection<Omnivore<VC>> transientReceivers() {
-		if (_transientReceivers == null) _transientReceivers = new HashSet<Omnivore<VC>>();  
+		if (_transientReceivers == null) _transientReceivers = new LinkedList<Omnivore<VC>>();  
 		return _transientReceivers;
 	}
 

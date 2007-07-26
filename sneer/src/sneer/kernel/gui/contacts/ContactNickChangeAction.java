@@ -1,8 +1,8 @@
 package sneer.kernel.gui.contacts;
 
 import static wheel.i18n.Language.translate;
-import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactId;
+import sneer.kernel.pointofview.Contact;
 import wheel.io.ui.User;
 import wheel.io.ui.ValueChangePane;
 import wheel.lang.Consumer;
@@ -19,7 +19,8 @@ public class ContactNickChangeAction implements ContactAction {
 		_nickChanger = nickChanger;
 	}
 
-	public void actUpon(ContactAttributes contact) {
+	@Override
+	public void actUpon(Contact contact) {
 		String title = translate("Nickname Change");
 		String prompt = translate("Enter the new nickname for this contact:");
 		new ValueChangePane(title, prompt, _user, contact.nick(), nickChangerFor(contact.id())).run();

@@ -10,8 +10,6 @@ public interface ContactAttributesSource {
 	Omnivore<String> nickSetter();
 	Omnivore<String> hostSetter();
 	Consumer<Integer> portSetter();
-	Omnivore<String> stateSetter();
-	Omnivore<Boolean> isOnlineSetter();
 	Omnivore<String> publicKeySetter();
 
 }

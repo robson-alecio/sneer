@@ -1,10 +1,11 @@
 package sneer.kernel.communication.impl;
 
+import static wheel.i18n.Language.translate;
+
 import java.io.IOException;
 
 import sneer.kernel.business.contacts.ContactAttributes;
-import sneer.kernel.business.contacts.OnlineEvent;
-import static wheel.i18n.Language.translate;
+import sneer.kernel.communication.Connection;
 import wheel.io.Log;
 import wheel.io.network.ObjectSocket;
 import wheel.io.network.OldNetwork;
@@ -12,15 +13,17 @@ import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.IllegalParameter;
+import wheel.reactive.Signal;
+import wheel.reactive.Source;
+import wheel.reactive.impl.SourceImpl;
 
-public class ConnectionImpl {
+public class ConnectionImpl implements Connection {
 
 	private static final int BARK_PERIOD_MILLIS = 5000;
 	private static final String BARK = "Bark";
 
 	private final ContactAttributes _contact;
 	private final OldNetwork _network;
-	private final Omnivore<OnlineEvent> _onlineSetter;
 	private final Consumer<OutgoingConnectionAttempt> _connectionValidator;
 	private final Omnivore<Object> _objectReceiver;
 
@@ -34,12 +37,12 @@ public class ConnectionImpl {
 	private final PriorityQueue<ChannelPacket> _priorityQueue = new PriorityQueue<ChannelPacket>(10);
 	
 	private boolean _classNotFoundExceptionAlreadyLogged = false;
+	private final Source<Boolean> _isOnlineSource = new SourceImpl<Boolean>(false);
 	
 
-	ConnectionImpl(ContactAttributes contact, OldNetwork network, Omnivore<OnlineEvent> onlineSetter, Consumer<OutgoingConnectionAttempt> connectionValidator, Omnivore<Object> objectReceiver) {
+	ConnectionImpl(ContactAttributes contact, OldNetwork network, Consumer<OutgoingConnectionAttempt> connectionValidator, Omnivore<Object> objectReceiver) {
 		_contact = contact;
 		_network = network;
-		_onlineSetter = onlineSetter;
 		_connectionValidator = connectionValidator;
 		_objectReceiver = objectReceiver;
 		
@@ -52,7 +55,7 @@ public class ConnectionImpl {
 			if (socketActive)
 				startReceiving(_socketHolder.socket());
 			
-			setIsOnline(socketActive);
+			notifyIsOnline(socketActive);
 		}};
 	}
 
@@ -166,9 +169,8 @@ public class ConnectionImpl {
 		_isClosed = true;
 	}
 
-	private void setIsOnline(boolean isOnline) {
-		Boolean wasOnline = _contact.isOnline().currentValue();
-		if (wasOnline != isOnline) 	_onlineSetter.consume(new OnlineEvent(_contact.nick().currentValue(), isOnline));
+	private void notifyIsOnline(boolean isOnline) {
+		_isOnlineSource.setter().consume(isOnline);
 	}
 
 	private void send(Object toSend) {  // Implement: Avoid losing important objects that could not be sent.
@@ -187,6 +189,11 @@ public class ConnectionImpl {
 
 	void send(ChannelPacket channelPacket, int priority) {
 		_priorityQueue.add(channelPacket, priority);
+	}
+
+	@Override
+	public Signal<Boolean> isOnline() {
+		return _isOnlineSource.output();
 	}
 
 }

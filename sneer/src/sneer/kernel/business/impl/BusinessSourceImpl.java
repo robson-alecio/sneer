@@ -4,13 +4,12 @@ import static wheel.i18n.Language.translate;
 import sneer.kernel.business.Business;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.contacts.ContactAttributes;
-import sneer.kernel.business.contacts.ContactId;
-import sneer.kernel.business.contacts.ContactInfo;
-import sneer.kernel.business.contacts.ContactPublicKeyInfo;
 import sneer.kernel.business.contacts.ContactAttributesSource;
-import sneer.kernel.business.contacts.OnlineEvent;
-import sneer.kernel.business.contacts.impl.ContactPublicKeyUpdater;
+import sneer.kernel.business.contacts.ContactId;
+import sneer.kernel.business.contacts.ContactInfo2;
+import sneer.kernel.business.contacts.ContactPublicKeyInfo;
 import sneer.kernel.business.contacts.impl.ContactAttributesSourceImpl;
+import sneer.kernel.business.contacts.impl.ContactPublicKeyUpdater;
 import wheel.io.network.PortNumberSource;
 import wheel.lang.Consumer;
 import wheel.lang.Counter;
@@ -87,13 +86,21 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 	}
 
 	@Override
-	public Consumer<ContactInfo> contactAdder() {
-		return new Consumer<ContactInfo>() { @Override public void consume(ContactInfo info) throws IllegalParameter {
+	public Consumer<ContactInfo2> contactAdder2() {
+		return new Consumer<ContactInfo2>() { @Override public void consume(ContactInfo2 info) throws IllegalParameter {
 			checkDuplicateNick(info._nick);
 
-			ContactAttributesSource contact = new ContactAttributesSourceImpl(info._nick, info._host, info._port, info._publicKey, info._state, _contactIdSource.next());
+			ContactAttributesSource contact = new ContactAttributesSourceImpl(info._nick, info._host, info._port, info._publicKey, _contactIdSource.next());
 			_contactSources.add(contact);
 			_contacts.add(contact.output());
+		}};
+	}
+
+	@Override
+	@Deprecated
+	public Consumer<sneer.kernel.business.contacts.ContactInfo> contactAdder() {
+		return new Consumer<sneer.kernel.business.contacts.ContactInfo>() { @Override public void consume(sneer.kernel.business.contacts.ContactInfo info) throws IllegalParameter {
+			contactAdder2().consume(new ContactInfo2(info._nick, info._host, info._port, info._publicKey));
 		}};
 	}
 
@@ -109,22 +116,11 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 	}
 
 	@Override
-	public Omnivore<OnlineEvent> contactOnlineSetter() {
-		return new Omnivore<OnlineEvent>(){
-			@Override
-			public void consume(OnlineEvent onlineEvent) {
-				ContactAttributesSource contactSource = findContactSource(onlineEvent._nick);
-				if (contactSource != null) setIsOnline(contactSource, onlineEvent._isOnline);
-			}
-		};
+	@Deprecated
+	public Omnivore<sneer.kernel.business.contacts.OnlineEvent> contactOnlineSetter() {
+		return new Omnivore<sneer.kernel.business.contacts.OnlineEvent>() { @Override public void consume(sneer.kernel.business.contacts.OnlineEvent ignored) {}};
 	}
 	
-	private void setIsOnline(ContactAttributesSource contactSource, boolean isOnline) {
-		Boolean wasOnline = contactSource.output().isOnline().currentValue();
-		if (isOnline == wasOnline) return;
-		contactSource.isOnlineSetter().consume(isOnline);
-	}
-
 	private ContactAttributesSource findContactSource(String nick) {
 		for (ContactAttributesSource candidate:_contactSources.output()) { // Optimize
 			if (candidate.output().nick().currentValue().equals(nick))

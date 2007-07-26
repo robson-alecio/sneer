@@ -1,5 +1,7 @@
 package sneer.apps.filetransfer;
 
+import static wheel.i18n.Language.translate;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,7 +17,7 @@ import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
-import static wheel.i18n.Language.*;
+import sneer.kernel.pointofview.Contact;
 import wheel.io.ui.User;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
@@ -46,7 +48,7 @@ public class FileTransferApp {
 		return new ContactAction(){
 
 			@Override
-			public void actUpon(ContactAttributes contact) {
+			public void actUpon(Contact contact) {
 				actUponContact(contact);
 			}
 
@@ -65,7 +67,7 @@ public class FileTransferApp {
 		}};
 	}
 	
-	private void actUponContact(final ContactAttributes contact) {
+	private void actUponContact(final Contact contact) {
 		Threads.startDaemon(new Runnable() { public void run() {
 			final JFileChooser fc = new JFileChooser(); //Refactor: The app should not have GUI logic.
 			fc.setDialogTitle(translate("Choose File to Send to %1$s", contact.nick().currentValue()));
@@ -74,19 +76,19 @@ public class FileTransferApp {
 			if (value != JFileChooser.APPROVE_OPTION) return;
 
 			File file = fc.getSelectedFile();
-			sendFile(contact, file);
+			sendFile(contact.id(), file);
 		}});
 	}
 	
-	private void sendFile(final ContactAttributes contact, File file) {
+	private void sendFile(final ContactId contactId, File file) {
 		try {
-			tryToSendFile(contact, file);
+			tryToSendFile(contactId, file);
 		} catch(IOException ioe) {
 			ioe.printStackTrace(); //Fix: Treat properly.
 		}
 	}
 
-	private void tryToSendFile(final ContactAttributes contact, File file) throws IOException {
+	private void tryToSendFile(final ContactId contactId, File file) throws IOException {
 		String fileName = file.getName();
 		long fileLength = file.length();
 		byte[] buffer = new byte[FILEPART_CHUNK_SIZE];
@@ -97,13 +99,13 @@ public class FileTransferApp {
 			byte[] contents = new byte[read];
 			System.arraycopy(buffer,0,contents,0,read);
 			final FilePart filePart = new FilePart(fileName, fileLength, contents, offset);
-			sendPart(contact, filePart);
+			sendPart(contactId, filePart);
 			offset += read;
 		}
 	}
 
-	private void sendPart(ContactAttributes contact, FilePart filePart) {
-		_channel.output().consume(new Packet(contact.id(), filePart));
+	private void sendPart(ContactId contactId, FilePart filePart) {
+		_channel.output().consume(new Packet(contactId, filePart));
 	}
 
 	private FileTransferFrame produceFrameFor(ContactId contactId) {

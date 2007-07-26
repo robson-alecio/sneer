@@ -5,19 +5,18 @@ import java.util.Map;
 
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactId;
-import sneer.kernel.business.contacts.OnlineEvent;
+import sneer.kernel.communication.Operator;
 import wheel.io.network.OldNetwork;
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
-class Spider {
+class Spider implements Operator {
 
-	Spider(OldNetwork network, ListSignal<ContactAttributes> contacts, Omnivore<OnlineEvent> onlineSetter,  Consumer<OutgoingConnectionAttempt> outgoingConnectionValidator, Omnivore<Object> objectReceiver) {
+	Spider(OldNetwork network, ListSignal<ContactAttributes> contacts, Consumer<OutgoingConnectionAttempt> outgoingConnectionValidator, Omnivore<Object> objectReceiver) {
 		_network = network;
 		_contacts = contacts;
-		_onlineSetter = onlineSetter;
 		_outgoingConnectionValidator = outgoingConnectionValidator;
 		_objectReceiver = objectReceiver;
 		
@@ -26,7 +25,6 @@ class Spider {
 	
 	private final OldNetwork _network;
 	private final ListSignal<ContactAttributes> _contacts;
-	private final Omnivore<OnlineEvent> _onlineSetter;
 	private final Consumer<OutgoingConnectionAttempt> _outgoingConnectionValidator;
 	private final Omnivore<Object> _objectReceiver;
 
@@ -56,18 +54,19 @@ class Spider {
 	}
 
 	private void connectTo(ContactAttributes contact) {
-		ConnectionImpl newConnection = new ConnectionImpl(contact, _network, _onlineSetter, _outgoingConnectionValidator, _objectReceiver);
+		ConnectionImpl newConnection = new ConnectionImpl(contact, _network, _outgoingConnectionValidator, _objectReceiver);
 		_connectionsByContactId.put(contact.id(), newConnection);
+		System.out.println("connecting: " + contact.id());
 	}
 
 	
 	private void disconnect(ContactAttributes contact) {
-		connectionFor(contact.id()).close();
+		connectMeWith(contact.id()).close();
 		_connectionsByContactId.remove(contact.id());
 	}
 
-
-	ConnectionImpl connectionFor(ContactId contactId) {
+	@Override
+	public ConnectionImpl connectMeWith(ContactId contactId) {
 		return _connectionsByContactId.get(contactId);
 	}
 	

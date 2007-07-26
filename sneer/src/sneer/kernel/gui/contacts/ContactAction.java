@@ -1,10 +1,10 @@
 package sneer.kernel.gui.contacts;
 
-import sneer.kernel.business.contacts.ContactAttributes;
+import sneer.kernel.pointofview.Contact;
 
 public interface ContactAction {
 
 	String caption();
-	void actUpon(ContactAttributes contact);
+	void actUpon(Contact contact);
 
 }

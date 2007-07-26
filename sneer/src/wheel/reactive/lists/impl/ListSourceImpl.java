@@ -54,15 +54,22 @@ public class ListSourceImpl<VO> implements ListSource<VO> {
 	}
 	
 	public boolean remove(VO element) {
-		synchronized (_list){
+		synchronized (_list) {
 			int index = _list.indexOf(element);
 			if (index == -1) return false;
 			
+			remove(index);
+
+			return true;
+		}
+	}
+
+	@Override
+	public void remove(int index) {
+		synchronized (_list) {
 			_output.notifyReceivers(new ListElementToBeRemoved(index));
 			_list.remove(index);
 			_output.notifyReceivers(new ListElementRemoved(index));
-
-			return true;
 		}
 	}
 
@@ -72,12 +79,20 @@ public class ListSourceImpl<VO> implements ListSource<VO> {
 
 	@Override
 	public Omnivore<VO> adder() {
-		return new Omnivore<VO>(){
-			@Override
-			public void consume(VO valueObject) {
-				add(valueObject);
-			}
-		};
+		return new Omnivore<VO>() { @Override public void consume(VO valueObject) {
+			add(valueObject);
+		}};
 	}
+
+	@Override
+	public void replace(int index, VO newElement) {
+		synchronized (_list) {
+			_output.notifyReceivers(new ListElementToBeReplaced(index));
+			_list.remove(index);
+			_list.add(index, newElement);
+			_output.notifyReceivers(new ListElementReplaced(index));
+		}
+	}
+
 
 }

@@ -9,11 +9,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import sneer.apps.talk.gui.TalkFrame;
-import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
+import sneer.kernel.pointofview.Contact;
 import wheel.io.ui.User;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
@@ -26,7 +26,7 @@ public class TalkApp {
 	private static final String OPEN = "Open";
 	private static final String CLOSE = "Close";
 
-	public TalkApp(User user, Channel channel, ListSignal<ContactAttributes> contacts) {
+	public TalkApp(User user, Channel channel, ListSignal<Contact> contacts) {
 		_user = user;
 		_channel = channel;
 		_contacts = contacts;
@@ -37,7 +37,7 @@ public class TalkApp {
 
 	private final User _user;
 	private final Channel _channel;
-	private final ListSignal<ContactAttributes> _contacts;
+	private final ListSignal<Contact> _contacts;
 	private final Map<ContactId, TalkFrame>_framesByContactId = new HashMap<ContactId, TalkFrame>();
 	private final Map<ContactId, SourceImpl<AudioPacket>>_inputsByContactId = new HashMap<ContactId, SourceImpl<AudioPacket>>();
 
@@ -45,7 +45,7 @@ public class TalkApp {
 		return new ContactAction(){
 
 			@Override
-			public void actUpon(ContactAttributes contact) {
+			public void actUpon(Contact contact) {
 				actUponContact(contact);
 			}
 
@@ -93,7 +93,7 @@ public class TalkApp {
 	private void open(ContactId contactId) {
 		createInputFor(contactId);
 		createFrameFor(contactId);
-		findContact(contactId).isOnline().addReceiver(offlineCloser(contactId));
+		findContact(contactId).party().isOnline().addReceiver(offlineCloser(contactId));
 	}
 
 	private Omnivore<Boolean> offlineCloser(final ContactId contactId) {
@@ -102,11 +102,12 @@ public class TalkApp {
 		}};
 	}
 
-	private void actUponContact(ContactAttributes contact) {
-		if (getInputFor(contact.id()) != null) return;
+	private void actUponContact(Contact contact) {
+		ContactId id = contact.id();
+		if (getInputFor(id) != null) return;
 		
-		open(contact.id());
-		_channel.output().consume(new Packet(contact.id(), OPEN));
+		open(id);
+		_channel.output().consume(new Packet(id, OPEN));
 	}
 
 	private void createFrameFor(ContactId contactId) {
@@ -125,8 +126,8 @@ public class TalkApp {
 		};
 	}
 
-	private ContactAttributes findContact(ContactId id) {
-		for (ContactAttributes candidate : _contacts)
+	private Contact findContact(ContactId id) {
+		for (Contact candidate : _contacts)
 			if (candidate.id().equals(id)) return candidate;
 		return null;
 	}

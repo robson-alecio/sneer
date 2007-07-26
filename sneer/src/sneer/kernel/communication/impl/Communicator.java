@@ -14,6 +14,8 @@
 package sneer.kernel.communication.impl;
 
 
+import static wheel.i18n.Language.translate;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,9 +24,10 @@ import java.util.Random;
 import sneer.kernel.business.Business;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.contacts.ContactAttributes;
-import sneer.kernel.business.contacts.ContactInfo;
+import sneer.kernel.business.contacts.ContactInfo2;
 import sneer.kernel.business.contacts.ContactPublicKeyInfo;
 import sneer.kernel.communication.Channel;
+import sneer.kernel.communication.Operator;
 import sneer.kernel.communication.Packet;
 import wheel.io.network.ObjectSocket;
 import wheel.io.network.OldNetwork;
@@ -34,7 +37,6 @@ import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
-import static wheel.i18n.Language.*;
 
 public class Communicator {
 
@@ -45,7 +47,7 @@ public class Communicator {
 		
 		prepareBusiness();
 		
-		_spider = new Spider(network, business.contactAttributes(), businessSource.contactOnlineSetter(), outgoingConnectionValidator(), myObjectReceiver());
+		_spider = new Spider(network, business.contactAttributes(), outgoingConnectionValidator(), myObjectReceiver());
 		new SocketAccepter(user, network, business.sneerPort(), mySocketServer());
 	}
 
@@ -99,12 +101,12 @@ public class Communicator {
 	}
 
 	private void notifyUserOfPKMismatch(String nick) {
-		 //Fix: Security implementation: Revert the status of the contact to "unconfirmed" or something of the sort, so that the user has to confirm the remote PK again.
+		 //Fix: Security implementation: Revert the identity of the contact to unconfirmed, so that the user has to confirm the remote PK again.
 		String notification = translate(
 			"SECURITY ALERT FOR CONTACT: %1$s\n\n" +
 			"Either this contact has changed its public key or\n" +
 			"someone else is trying to trick you and impersonate it.\n\n" +
-			"This contact's status will be changed to 'UNCONFIRMED',\n" +
+			"This contact's identity will be changed to 'UNCONFIRMED',\n" +
 			"so that you can confirm its public key again.", nick);
 		_user.acknowledgeNotification(notification);
 	}
@@ -143,7 +145,7 @@ public class Communicator {
 
 	private Omnivore<Packet> outputFor(final String channelId, final int priority) {
 		return new Omnivore<Packet>() { public void consume(Packet packet) {
-			ConnectionImpl connection = _spider.connectionFor(packet._contactId);
+			ConnectionImpl connection = _spider.connectMeWith(packet._contactId);
 			connection.send(new ChannelPacket(channelId, packet), priority);
 		}};
 	}
@@ -206,7 +208,7 @@ public class Communicator {
 			return false;
 		}
 		
-		_spider.connectionFor(contact.id()).serveAcceptedSocket(socket);
+		_spider.connectMeWith(contact.id()).serveAcceptedSocket(socket);
 		return true;
 	}
 
@@ -237,7 +239,7 @@ public class Communicator {
 
 	private ContactAttributes createContact(String publicKey, String nick) throws CancelledByUser {
 		try {
-			_businessSource.contactAdder().consume(new ContactInfo(nick, "", 0, publicKey, ContactAttributes.CONFIRMED_STATE)); //Implement: get actual host addresses from contact.
+			_businessSource.contactAdder2().consume(new ContactInfo2(nick, "", 0, publicKey)); //Implement: get actual host addresses from contact.
 			return findContactGivenNick(nick);
 		} catch (IllegalParameter e) {
 			_user.acknowledge(e);
@@ -257,6 +259,10 @@ public class Communicator {
 		for (ContactAttributes contact : _businessSource.output().contactAttributes())
 			if (publicKey.equals(contact.publicKey().currentValue())) return contact;
 		return null;
+	}
+
+	public Operator operator() {
+		return _spider;
 	}
 
 }

@@ -8,6 +8,7 @@ import java.util.List;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.gui.contacts.ShowContactsScreenAction;
+import sneer.kernel.pointofview.Party;
 import wheel.io.ui.JFrameBoundsKeeper;
 import wheel.io.ui.TrayIcon;
 import wheel.io.ui.User;
@@ -21,8 +22,9 @@ import wheel.lang.Omnivore;
 public class Gui {
 
 
-	public Gui(User user, BusinessSource businessSource, List<ContactAction> contactActions, JFrameBoundsKeeper jframeboundsKeeper) throws Exception {
+	public Gui(User user, Party I, BusinessSource businessSource, List<ContactAction> contactActions, JFrameBoundsKeeper jframeboundsKeeper) throws Exception {
 		_user = user;
+		_I = I; 
 		_businessSource = businessSource;
 		_contactActions = contactActions;
 		_jframeBoundsKeeper = jframeboundsKeeper;
@@ -34,16 +36,15 @@ public class Gui {
 	}
 
 	final User _user;
+	private final Party _I;
+	private final BusinessSource _businessSource;
+	private final List<ContactAction> _contactActions;
+	private JFrameBoundsKeeper _jframeBoundsKeeper;
 
 	private final TrayIcon _trayIcon;
 
-	final BusinessSource _businessSource;
-
-	private final List<ContactAction> _contactActions;
-
 	private ShowContactsScreenAction _showContactsScreenAction;
 
-	private JFrameBoundsKeeper _jframeBoundsKeeper;
 	
 	private void tryToRun() {
 		
@@ -70,7 +71,7 @@ public class Gui {
 
 	private synchronized ShowContactsScreenAction showContactsScreenAction() {
 		if (_showContactsScreenAction == null)
-			_showContactsScreenAction = new ShowContactsScreenAction(_user, _businessSource.output().contactAttributes(), _contactActions, _businessSource.contactAdder(),_businessSource.contactRemover(), _businessSource.contactNickChanger(), _jframeBoundsKeeper);
+			_showContactsScreenAction = new ShowContactsScreenAction(_user, _I, _contactActions, _businessSource.contactAdder2(),_businessSource.contactRemover(), _businessSource.contactNickChanger(), _jframeBoundsKeeper);
 		return _showContactsScreenAction;
 	}
 

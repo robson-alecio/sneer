@@ -21,10 +21,11 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactId;
-import sneer.kernel.business.contacts.ContactInfo;
+import sneer.kernel.business.contacts.ContactInfo2;
 import sneer.kernel.gui.NewContactAddition;
+import sneer.kernel.pointofview.Contact;
+import sneer.kernel.pointofview.Party;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.io.ui.impl.ListSignalModel;
@@ -33,21 +34,20 @@ import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.lang.Pair;
 import wheel.reactive.Signal;
-import wheel.reactive.lists.ListSignal;
 
 class ContactsScreen extends JFrame {
 
 	private final User _user;
-	private final ListSignal<ContactAttributes> _contacts;
+	private final Party _I;
 	private final List<ContactAction> _contactActions;
-	private final Consumer<ContactInfo> _contactAdder;
+	private final Consumer<ContactInfo2> _contactAdder;
 	private final Omnivore<ContactId> _contactRemover;
 	private final Consumer<Pair<ContactId, String>> _nickChanger;
 
 
-	ContactsScreen(User user, ListSignal<ContactAttributes> contacts, List<ContactAction> contactActions, Consumer<ContactInfo> contactAdder, Omnivore<ContactId> contactRemover, Consumer<Pair<ContactId, String>> nickChanger) {
+	ContactsScreen(User user, Party I, List<ContactAction> contactActions, Consumer<ContactInfo2> contactAdder, Omnivore<ContactId> contactRemover, Consumer<Pair<ContactId, String>> nickChanger) {
 		_user = user;
-		_contacts = contacts;
+		_I = I;
 		_contactActions = contactActions;
 		_contactAdder = contactAdder;
 		_contactRemover = contactRemover;
@@ -88,7 +88,7 @@ class ContactsScreen extends JFrame {
 	}
 
 	private JList createFriendsList() {
-		final ListSignalModel<ContactAttributes> friendsListModel = new ListSignalModel<ContactAttributes>(_contacts, signalChooser());
+		final ListSignalModel<Contact> friendsListModel = new ListSignalModel<Contact>(_I.contacts(), signalChooser());
 		final JList friendsList = new JList(friendsListModel);
 		friendsList.setBackground(java.awt.Color.black);
 		friendsList.setCellRenderer(new ContactCellRenderer());
@@ -113,15 +113,15 @@ class ContactsScreen extends JFrame {
 		return friendsList;
 	}
 
-	private SignalChooser<ContactAttributes> signalChooser() {
-		return new SignalChooser<ContactAttributes>(){
-			public Signal<?>[] signalsToReceiveFrom(ContactAttributes contact) {
+	private SignalChooser<Contact> signalChooser() {
+		return new SignalChooser<Contact>(){
+			public Signal<?>[] signalsToReceiveFrom(Contact contact) {
 				return new Signal<?>[] {
-						contact.isOnline(),
-						contact.state(),
+						contact.party().isOnline(),
+						contact.party().publicKeyConfirmed(),
 						contact.nick(),
-						contact.host(),
-						contact.port()
+						contact.party().host(),
+						contact.party().port()
 				};
 			}};
 
@@ -143,7 +143,7 @@ class ContactsScreen extends JFrame {
 		final JMenuItem item = new JMenuItem(action.caption());
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ignored) {
-				ContactAttributes contact = _contacts.currentGet(friendsList.getSelectedIndex());
+				Contact contact = _I.contacts().currentGet(friendsList.getSelectedIndex());
 				action.actUpon(contact);
 			}
 		});

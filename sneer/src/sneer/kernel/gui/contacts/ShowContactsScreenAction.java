@@ -5,21 +5,20 @@ import static wheel.i18n.Language.translate;
 import java.awt.Frame;
 import java.util.List;
 
-import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactId;
-import sneer.kernel.business.contacts.ContactInfo;
+import sneer.kernel.business.contacts.ContactInfo2;
+import sneer.kernel.pointofview.Party;
 import wheel.io.ui.JFrameBoundsKeeper;
 import wheel.io.ui.User;
 import wheel.io.ui.TrayIcon.Action;
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.lang.Pair;
-import wheel.reactive.lists.ListSignal;
 
 public class ShowContactsScreenAction implements Action {
 
-	private final ListSignal<ContactAttributes> _contacts;
-	private final Consumer<ContactInfo> _contactAdder;
+	private final Party _I;
+	private final Consumer<ContactInfo2> _contactAdder;
 	private final Omnivore<ContactId> _contactRemover;
 	private final User _user;
 	private final List<ContactAction> _contactActions;
@@ -27,8 +26,8 @@ public class ShowContactsScreenAction implements Action {
 	private ContactsScreen _contactsScreen;
 	private final JFrameBoundsKeeper _boundsKeeper;
 
-	public ShowContactsScreenAction(User user, ListSignal<ContactAttributes> contacts, List<ContactAction> contactActions, Consumer<ContactInfo> contactAdder, Omnivore<ContactId> contactRemover, Consumer<Pair<ContactId, String>> nickChanger, JFrameBoundsKeeper boundsKeeper){
-		_contacts = contacts;
+	public ShowContactsScreenAction(User user, Party I, List<ContactAction> contactActions, Consumer<ContactInfo2> contactAdder, Omnivore<ContactId> contactRemover, Consumer<Pair<ContactId, String>> nickChanger, JFrameBoundsKeeper boundsKeeper){
+		_I = I;
 		_contactAdder = contactAdder;
 		_user = user;
 		_contactActions = contactActions;
@@ -43,7 +42,7 @@ public class ShowContactsScreenAction implements Action {
 
 	public synchronized void run() {
 		if (_contactsScreen == null) {
-			_contactsScreen = new ContactsScreen(_user, _contacts, _contactActions, _contactAdder, _contactRemover, _nickChanger);
+			_contactsScreen = new ContactsScreen(_user, _I, _contactActions, _contactAdder, _contactRemover, _nickChanger);
 			_boundsKeeper.keepBoundsFor(_contactsScreen, ContactsScreen.class.getName());
 		} 
 		

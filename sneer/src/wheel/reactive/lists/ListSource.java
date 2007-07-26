@@ -6,10 +6,12 @@ public interface ListSource<VO> {
 
 	ListSignal<VO> output();
 
-	//Fix: ListSource should use the omnivore instead of this
 	void add(VO element);
-	boolean remove(VO element);
-
 	Omnivore<VO> adder();
+
+	boolean remove(VO element);
+	void remove(int index);
+	
+	void replace(int index, VO newElement);
 	
 }

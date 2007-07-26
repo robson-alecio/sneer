@@ -6,7 +6,7 @@ import java.util.Map;
 
 import wheel.io.ui.impl.BoundsPersistence;
 
-class TransientBoundsPersistence implements BoundsPersistence {
+public class TransientBoundsPersistence implements BoundsPersistence {
 
 	private Map<String, Rectangle> _bounds = new HashMap<String, Rectangle>();
 

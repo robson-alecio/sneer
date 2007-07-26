@@ -11,6 +11,7 @@ import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
+import sneer.kernel.pointofview.Contact;
 import wheel.io.ui.JFrameBoundsKeeper;
 import wheel.io.ui.User.Notification;
 import wheel.lang.Omnivore;
@@ -44,7 +45,7 @@ public class ConversationsApp {
 		return new ContactAction(){
 
 			@Override
-			public void actUpon(ContactAttributes contact) {
+			public void actUpon(Contact contact) {
 				actUponContact(contact);
 			}
 
@@ -63,7 +64,7 @@ public class ConversationsApp {
 		}};
 	}
 	
-	private void actUponContact(ContactAttributes contact) {
+	private void actUponContact(Contact contact) {
 		openFrameFor(contact.id());
 	}
 

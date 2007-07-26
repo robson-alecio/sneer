@@ -1,4 +1,4 @@
-#Thu Jul 26 03:42:11 GMT-03:00 2007
+#Fri Jul 27 00:58:39 GMT-03:00 2007
 eclipse.preferences.version=1
 org.eclipse.jdt.core.codeComplete.argumentPrefixes=
 org.eclipse.jdt.core.codeComplete.argumentSuffixes=
@@ -49,7 +49,7 @@ org.eclipse.jdt.core.compiler.problem.syntheticAccessEmulation=ignore
 org.eclipse.jdt.core.compiler.problem.typeParameterHiding=error
 org.eclipse.jdt.core.compiler.problem.uncheckedTypeOperation=warning
 org.eclipse.jdt.core.compiler.problem.undocumentedEmptyBlock=ignore
-org.eclipse.jdt.core.compiler.problem.unhandledWarningToken=warning
+org.eclipse.jdt.core.compiler.problem.unhandledWarningToken=error
 org.eclipse.jdt.core.compiler.problem.unnecessaryElse=error
 org.eclipse.jdt.core.compiler.problem.unnecessaryTypeCheck=error
 org.eclipse.jdt.core.compiler.problem.unqualifiedFieldAccess=ignore

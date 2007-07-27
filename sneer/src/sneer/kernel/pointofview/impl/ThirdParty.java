@@ -5,6 +5,8 @@ import sneer.kernel.pointofview.Contact;
 import sneer.kernel.pointofview.Party;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
+import wheel.reactive.lists.ListSource;
+import wheel.reactive.lists.impl.ListSourceImpl;
 
 public class ThirdParty implements Party {
 
@@ -15,6 +17,7 @@ public class ThirdParty implements Party {
 
 	private final ContactAttributes _attributes;
 	private final Signal<Boolean> _isOnline;
+	private final ListSource<Contact> _fakeContacts = createFakeContacts();
 
 	@Override
 	public Signal<String> name() {
@@ -22,10 +25,21 @@ public class ThirdParty implements Party {
 		return null;
 	}
 	
+	private ListSource<Contact> createFakeContacts() {
+		ListSourceImpl<Contact> result = new ListSourceImpl<Contact>();
+		result.add(new FakeContact(nick() + " 1"));
+		result.add(new FakeContact(nick() + " 2"));
+		result.add(new FakeContact(nick() + " 3"));
+		return result;
+	}
+
+	private String nick() {
+		return _attributes.nick().currentValue();
+	}
+
 	@Override
 	public ListSignal<Contact> contacts() {
-		// Implement have a thread creating and deleting random contacts, at first, just to test the gui.
-		return null;
+		return _fakeContacts.output();
 	}
 
 

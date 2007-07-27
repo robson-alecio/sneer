@@ -1,20 +1,60 @@
 package sneer.kernel.pointofview.impl;
 
+import java.util.Date;
+import java.util.Random;
+
 import sneer.kernel.pointofview.Contact;
 import sneer.kernel.pointofview.Party;
+import wheel.lang.Threads;
 import wheel.reactive.Signal;
-import wheel.reactive.impl.ConstantSignal;
+import wheel.reactive.Source;
+import wheel.reactive.impl.SourceImpl;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListSource;
 import wheel.reactive.lists.impl.ListSourceImpl;
 
 public class FakeParty implements Party {
 
+	private static final Random RANDOM = new Random();
+	
 	private final String _namePrefix;
-	private final ListSource<Contact> _fakeContacts = createFakeContacts();
 
+	private final ListSource<Contact> _fakeContacts = new ListSourceImpl<Contact>();
+	private final Source<String> _host = new SourceImpl<String>("host");
+	private final Source<Integer> _port = new SourceImpl<Integer>(0);
+	private final Source<Boolean> _isOnline = new SourceImpl<Boolean>(false);
+	private final Source<Boolean> _publicKeyConfirmed = new SourceImpl<Boolean>(false);
+
+	
 	public FakeParty(String namePrefix) {
 		_namePrefix = namePrefix;
+		Threads.startDaemon(randomizer());
+	}
+
+	private Runnable randomizer() {
+		return new Runnable() { @Override public void run() {
+			while (true) {
+				Threads.waitWithoutInterruptions(2000 + RANDOM.nextInt(1000));
+				randomize();
+			}
+		}};
+	}
+	
+	private void randomize() {
+		randomizeContacts();
+		_host.setter().consume("host " + new Date());
+		_port.setter().consume(RANDOM.nextInt(100));
+		_isOnline.setter().consume(RANDOM.nextBoolean());
+		_publicKeyConfirmed.setter().consume(RANDOM.nextBoolean());
+	}
+
+	private void randomizeContacts() {
+		int index = RANDOM.nextInt(4);
+		
+		if (index < _fakeContacts.output().currentSize())
+			_fakeContacts.remove(index);
+		else
+			_fakeContacts.add(new FakeContact(_namePrefix));
 	}
 
 	@Override
@@ -24,12 +64,12 @@ public class FakeParty implements Party {
 
 	@Override
 	public Signal<String> host() {
-		return new ConstantSignal<String>(_namePrefix + " Name");
+		return _host.output();
 	}
 
 	@Override
 	public Signal<Boolean> isOnline() {
-		return new ConstantSignal<Boolean>(hashCode() % 2 == 0);
+		return _isOnline.output();
 	}
 
 	@Override
@@ -39,20 +79,12 @@ public class FakeParty implements Party {
 
 	@Override
 	public Signal<Integer> port() {
-		return new ConstantSignal<Integer>(hashCode() % 100);
+		return _port.output();
 	}
 
 	@Override
 	public Signal<Boolean> publicKeyConfirmed() {
-		return new ConstantSignal<Boolean>(hashCode() % 3 == 0);
-	}
-
-	private ListSource<Contact> createFakeContacts() {
-		ListSourceImpl<Contact> result = new ListSourceImpl<Contact>();
-		result.add(new FakeContact(_namePrefix + " 1"));
-		result.add(new FakeContact(_namePrefix + " 2"));
-		result.add(new FakeContact(_namePrefix + " 3"));
-		return result;
+		return _publicKeyConfirmed.output();
 	}
 
 }

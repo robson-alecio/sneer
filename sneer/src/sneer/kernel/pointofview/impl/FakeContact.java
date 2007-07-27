@@ -17,20 +17,21 @@ public class FakeContact implements Contact {
 	private static final Random RANDOM = new Random();
 	
 	private final String _nickPrefix;
-	private FakeParty _fakeParty;
 	private final Source<String> _nick;
+	private FakeParty _fakeParty;
 
 	
 	public FakeContact(String nickPrefix) {
 		_nickPrefix = nickPrefix;
 		_nick = new SourceImpl<String>(_nickPrefix);
+
 		Threads.startDaemon(randomizer());
 	}
 
 	private Runnable randomizer() {
 		return new Runnable() { @Override public void run() {
 			while (true) {
-				Threads.waitWithoutInterruptions(5000 + RANDOM.nextInt(3000));
+				Threads.waitWithoutInterruptions(2000 + RANDOM.nextInt(1000));
 				randomize();
 			}
 		}};

@@ -7,10 +7,9 @@ import java.lang.reflect.InvocationTargetException;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import junit.framework.TestCase;
 import wheel.io.ui.JFrameBoundsKeeper;
 import wheel.io.ui.impl.JFrameBoundsKeeperImpl;
-
-import junit.framework.TestCase;
 
 public class JFrameBoundsKeeperTests extends TestCase {
 	
@@ -54,6 +53,7 @@ public class JFrameBoundsKeeperTests extends TestCase {
 				public void run() {
 					testFrame.setBounds(bounds);				
 				}
+
 			});
 	}
 
@@ -61,6 +61,7 @@ public class JFrameBoundsKeeperTests extends TestCase {
 		
 		final JFrame testFrame = new JFrame();
 		
+		testFrame.setVisible(true);
 		String testFrameId = "testFrame";
 		_frameBoundsKeeper.keepBoundsFor(testFrame, testFrameId);
 		testFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

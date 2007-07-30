@@ -143,8 +143,14 @@ class ContactsScreen extends JFrame {
 		final JMenuItem item = new JMenuItem(action.caption());
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ignored) {
-				Contact contact = _I.contacts().currentGet(friendsList.getSelectedIndex());
-				action.actUpon(contact);
+				
+				new Thread(){
+					@Override
+					public void run() {
+						Contact contact = _I.contacts().currentGet(friendsList.getSelectedIndex());
+						action.actUpon(contact);
+					}
+				}.start();
 			}
 		});
 		

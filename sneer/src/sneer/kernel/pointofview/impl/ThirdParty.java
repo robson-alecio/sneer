@@ -11,13 +11,18 @@ import wheel.reactive.lists.impl.ListSourceImpl;
 public class ThirdParty implements Party {
 
 	public ThirdParty(ContactAttributes attributes, Signal<Boolean> isOnline) {
+		
+		if (attributes == null)
+			throw new IllegalArgumentException();
+			
 		_attributes = attributes;
 		_isOnline = isOnline;
+		_fakeContacts = createFakeContacts();
 	}
 
 	private final ContactAttributes _attributes;
 	private final Signal<Boolean> _isOnline;
-	private final ListSource<Contact> _fakeContacts = createFakeContacts();
+	private final ListSource<Contact> _fakeContacts;
 
 	@Override
 	public Signal<String> name() {

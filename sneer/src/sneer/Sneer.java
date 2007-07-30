@@ -30,10 +30,11 @@ import wheel.io.files.Directory;
 import wheel.io.files.impl.DurableDirectory;
 import wheel.io.network.OldNetworkImpl;
 import wheel.io.network.impl.XStreamNetwork;
+import wheel.io.ui.BoundsPersistence;
 import wheel.io.ui.JFrameBoundsKeeper;
 import wheel.io.ui.User;
 import wheel.io.ui.User.Notification;
-import wheel.io.ui.impl.BoundsPersistence;
+import wheel.io.ui.impl.DeferredBoundPersistence;
 import wheel.io.ui.impl.DirectoryBoundsPersistence;
 import wheel.io.ui.impl.JFrameBoundsKeeperImpl;
 import wheel.io.ui.impl.JOptionPaneUser;
@@ -89,7 +90,7 @@ public class Sneer {
 		BoundsPersistence boundsPersistence;
 		try {
 			Directory directory = new DurableDirectory(SneerDirectories.sneerDirectory().getPath());
-			boundsPersistence = new DirectoryBoundsPersistence(directory);
+			boundsPersistence = new DeferredBoundPersistence(new DirectoryBoundsPersistence(directory));
 		} catch (IOException e) {
 			Log.log(e);
 			boundsPersistence = new TransientBoundsPersistence();

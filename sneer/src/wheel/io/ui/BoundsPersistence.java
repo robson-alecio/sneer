@@ -1,10 +1,12 @@
-package wheel.io.ui.impl;
+package wheel.io.ui;
 
 import java.awt.Rectangle;
 
 public interface BoundsPersistence {
 
 	Rectangle getStoredBounds(String id);
-	void storeBounds(String id, Rectangle bounds);
-
+	void setBounds(String id, Rectangle bounds);
+	void store();
+	
+	
 }

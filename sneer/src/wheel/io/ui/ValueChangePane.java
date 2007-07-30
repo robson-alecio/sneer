@@ -1,6 +1,5 @@
 package wheel.io.ui;
 
-import sneer.kernel.gui.CancellableAction;
 import wheel.lang.Consumer;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;

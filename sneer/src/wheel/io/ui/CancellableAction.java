@@ -1,7 +1,7 @@
-package sneer.kernel.gui;
+package wheel.io.ui;
 
-import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.TrayIcon.Action;
+
 
 public abstract class CancellableAction implements Action {
 

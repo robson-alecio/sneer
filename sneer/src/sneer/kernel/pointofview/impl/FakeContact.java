@@ -31,7 +31,7 @@ public class FakeContact implements Contact {
 	private Runnable randomizer() {
 		return new Runnable() { @Override public void run() {
 			while (true) {
-				Threads.waitWithoutInterruptions(2000 + RANDOM.nextInt(1000));
+				Threads.sleepWithoutInterruptions(2000 + RANDOM.nextInt(1000));
 				randomize();
 			}
 		}};

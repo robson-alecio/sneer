@@ -8,6 +8,7 @@ import sneer.kernel.pointofview.Party;
 import wheel.lang.Threads;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
+import wheel.reactive.impl.ConstantSignal;
 import wheel.reactive.impl.SourceImpl;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListSource;
@@ -34,7 +35,7 @@ public class FakeParty implements Party {
 	private Runnable randomizer() {
 		return new Runnable() { @Override public void run() {
 			while (true) {
-				Threads.waitWithoutInterruptions(2000 + RANDOM.nextInt(1000));
+				Threads.sleepWithoutInterruptions(2000 + RANDOM.nextInt(1000));
 				randomize();
 			}
 		}};
@@ -43,9 +44,15 @@ public class FakeParty implements Party {
 	private void randomize() {
 		randomizeContacts();
 		_host.setter().consume("host " + new Date());
-		_port.setter().consume(RANDOM.nextInt(100));
-		_isOnline.setter().consume(RANDOM.nextBoolean());
-		_publicKeyConfirmed.setter().consume(RANDOM.nextBoolean());
+		int port = RANDOM.nextInt(100);
+		if (port !=_port.output().currentValue())
+			_port.setter().consume(port);
+		boolean isOnline = RANDOM.nextBoolean();
+		if (isOnline !=_isOnline.output().currentValue())
+			_isOnline.setter().consume(isOnline);
+		boolean publicKeyConfirmed = RANDOM.nextBoolean();
+		if (publicKeyConfirmed!=_publicKeyConfirmed.output().currentValue())
+			_publicKeyConfirmed.setter().consume(publicKeyConfirmed);
 	}
 
 	private void randomizeContacts() {
@@ -74,7 +81,7 @@ public class FakeParty implements Party {
 
 	@Override
 	public Signal<String> name() {
-		return null;
+		return new ConstantSignal<String>(_namePrefix); //Fix:have no idea if this is correct!
 	}
 
 	@Override
@@ -86,5 +93,10 @@ public class FakeParty implements Party {
 	public Signal<Boolean> publicKeyConfirmed() {
 		return _publicKeyConfirmed.output();
 	}
+	
+	@Override
+	public String toString(){
+    	return _namePrefix;//Fix:have no idea if this is correct!
+    }
 
 }

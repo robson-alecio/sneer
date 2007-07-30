@@ -4,6 +4,7 @@ import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.pointofview.Contact;
 import sneer.kernel.pointofview.Party;
 import wheel.reactive.Signal;
+import wheel.reactive.impl.ConstantSignal;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListSource;
 import wheel.reactive.lists.impl.ListSourceImpl;
@@ -26,8 +27,7 @@ public class ThirdParty implements Party {
 
 	@Override
 	public Signal<String> name() {
-		// Implement Auto-generated method stub
-		return null;
+		return new ConstantSignal<String>(nick()); //Fix: have no idea if this is correct!
 	}
 	
 	private ListSource<Contact> createFakeContacts() {
@@ -67,5 +67,10 @@ public class ThirdParty implements Party {
 	public Signal<Boolean> isOnline() {
 		return _isOnline;
 	}
+	
+	@Override
+	public String toString(){
+    	return _attributes.nick().currentValue();
+    }
 	
 }

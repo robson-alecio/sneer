@@ -32,5 +32,10 @@ public class ContactImpl implements Contact {
 	public Party party() {
 		return _party;
 	}
+	
+	@Override
+	public String toString(){
+		return _nick.currentValue();
+	}
 
 }

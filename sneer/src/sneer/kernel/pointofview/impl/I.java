@@ -6,7 +6,6 @@ import sneer.kernel.communication.Operator;
 import sneer.kernel.pointofview.Contact;
 import sneer.kernel.pointofview.Party;
 import wheel.lang.Functor;
-import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.ConstantSignal;
 import wheel.reactive.lists.Collector;
@@ -47,17 +46,17 @@ public class I implements Party {
 
 	@Override
 	public Signal<Boolean> publicKeyConfirmed() {
-		return new ConstantSignal<Boolean>(true);
+		return new ConstantSignal<Boolean>(true); //Fix: is this correct?
 	}
 
 	@Override
 	public Signal<Boolean> isOnline() {
-		throw new NotImplementedYet();
+		return new ConstantSignal<Boolean>(true); //Fix: is this correct?
 	}
 
 	@Override
 	public Signal<String> host() {
-		throw new NotImplementedYet(); //Implement Make this a list of possible host:port addresses.
+		return new ConstantSignal<String>("localhost"); //Implement Make this a list of possible host:port addresses.
 	}
 
 	@Override
@@ -65,5 +64,9 @@ public class I implements Party {
 		return _business.sneerPort();
 	}
 
+	@Override
+	public String toString(){
+    	return _business.ownName().currentValue();
+    }
 
 }

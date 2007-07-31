@@ -26,6 +26,8 @@ public class FakeParty implements Party {
 	private final Source<Boolean> _isOnline = new SourceImpl<Boolean>(false);
 	private final Source<Boolean> _publicKeyConfirmed = new SourceImpl<Boolean>(false);
 
+	private volatile boolean _isCrashed = false;
+
 	
 	public FakeParty(String namePrefix) {
 		_namePrefix = namePrefix;
@@ -34,7 +36,7 @@ public class FakeParty implements Party {
 
 	private Runnable randomizer() {
 		return new Runnable() { @Override public void run() {
-			while (true) {
+			while (!_isCrashed) {
 				Threads.sleepWithoutInterruptions(2000 + RANDOM.nextInt(1000));
 				randomize();
 			}
@@ -43,13 +45,17 @@ public class FakeParty implements Party {
 	
 	private void randomize() {
 		randomizeContacts();
+		
 		_host.setter().consume("host " + new Date());
+
 		int port = RANDOM.nextInt(100);
 		if (port !=_port.output().currentValue())
 			_port.setter().consume(port);
+
 		boolean isOnline = RANDOM.nextBoolean();
 		if (isOnline !=_isOnline.output().currentValue())
 			_isOnline.setter().consume(isOnline);
+	
 		boolean publicKeyConfirmed = RANDOM.nextBoolean();
 		if (publicKeyConfirmed!=_publicKeyConfirmed.output().currentValue())
 			_publicKeyConfirmed.setter().consume(publicKeyConfirmed);
@@ -59,9 +65,31 @@ public class FakeParty implements Party {
 		int index = RANDOM.nextInt(4);
 		
 		if (index < _fakeContacts.output().currentSize())
-			_fakeContacts.remove(index);
+			removeFake(index);
 		else
-			_fakeContacts.add(new FakeContact(_namePrefix));
+			_fakeContacts.add(new FakeContact(_namePrefix + " " + index));
+		
+		randomizeOneContact();
+	}
+
+	private void removeFake(int index) {
+		FakeContact fake = (FakeContact)_fakeContacts.output().currentGet(index);
+		((FakeParty)fake.party()).crash();
+		_fakeContacts.remove(index);
+	}
+
+	
+	private void crash() {
+		_isCrashed  = true;
+	}
+
+	private void randomizeOneContact() {
+		int size = _fakeContacts.output().currentSize();
+		if (size == 0) return;
+		
+		int index = RANDOM.nextInt(size);
+		FakeContact fakeContact = (FakeContact)_fakeContacts.output().currentGet(index);
+		fakeContact.randomize();
 	}
 
 	@Override

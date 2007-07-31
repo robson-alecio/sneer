@@ -6,13 +6,13 @@ import sneer.kernel.pointofview.Contact;
 import sneer.kernel.pointofview.Party;
 import wheel.reactive.Signal;
 
-public class ContactImpl implements Contact {
+public class ImmediateContact implements Contact {
 
 	private final ContactId _id;
 	private final Signal<String> _nick;
 	private final Party _party;
 
-	public ContactImpl(ContactAttributes attributes, Signal<Boolean> isOnline) {
+	public ImmediateContact(ContactAttributes attributes, Signal<Boolean> isOnline) {
 		_id = attributes.id();
 		_nick = attributes.nick();
 		_party = new ThirdParty(attributes, isOnline);

@@ -25,7 +25,7 @@ public class I implements Party {
 	
 	private Functor<ContactAttributes, Contact> contactCreator() {
 		return new Functor<ContactAttributes, Contact>() { @Override 	public Contact evaluate(ContactAttributes attributes) {
-			return new ContactImpl(attributes, _operator.connectMeWith(attributes.id()).isOnline());
+			return new ImmediateContact(attributes, _operator.connectMeWith(attributes.id()).isOnline());
 		}};
 	}
 

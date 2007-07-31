@@ -24,7 +24,6 @@ import javax.swing.JTree;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeWillExpandListener;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
@@ -130,14 +129,14 @@ class ContactsScreen extends JFrame {
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		tree.setShowsRootHandles(true);
 		tree.addTreeWillExpandListener(new TreeWillExpandListener(){
-			public void treeWillCollapse(TreeExpansionEvent event) throws ExpandVetoException {
+			public void treeWillCollapse(TreeExpansionEvent event) {
 				TreePath path = event.getPath();
 				PartyTreeNode partyNode = (PartyTreeNode)path.getLastPathComponent();
 				if (partyNode!=null){
 					partyNode.collapse();
 				}
 			}
-			public void treeWillExpand(TreeExpansionEvent event) throws ExpandVetoException {
+			public void treeWillExpand(TreeExpansionEvent event) {
 				TreePath path = event.getPath();
 				PartyTreeNode partyNode = (PartyTreeNode)path.getLastPathComponent();
 				if (partyNode!=null){
@@ -149,15 +148,14 @@ class ContactsScreen extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent mouseEvent) {
 				final boolean rightClick = mouseEvent.getButton() == MouseEvent.BUTTON3;
-				if (rightClick){
-					TreePath path = tree.getPathForLocation(mouseEvent.getX(),mouseEvent.getY());
+				if (!rightClick) return;
+
+				TreePath path = tree.getPathForLocation(mouseEvent.getX(),mouseEvent.getY());
 					
-					PartyTreeNode partyNode = (PartyTreeNode)path.getLastPathComponent();
-					if (partyNode==null)
-						return;
+				PartyTreeNode partyNode = (PartyTreeNode)path.getLastPathComponent();
+				if (partyNode==null) return;
 					
-					getFriendPopUpMenu(partyNode).show(tree, mouseEvent.getX(), mouseEvent.getY());
-				}
+				getFriendPopUpMenu(partyNode).show(tree, mouseEvent.getX(), mouseEvent.getY());
 			}
 		});
 		return tree;

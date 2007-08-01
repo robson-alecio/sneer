@@ -6,8 +6,16 @@ public abstract class SimpleListReceiver<T> extends VisitingListReceiver {
 	
 	public SimpleListReceiver(ListSignal<T> listSignal) {
 		_listSignal = listSignal;
+		registerListSignalToListItems();
+	}
+	private void registerListSignalToListItems() {
 		for (T element : _listSignal) elementPresent(element);
 		_listSignal.addListReceiver(this);
+	}
+	
+	public void unRegisterListSignalToListItems() {
+		for (T element : _listSignal) elementPresent(element);
+		_listSignal.removeListReceiver(this);
 	}
 
 	private final ListSignal<T> _listSignal;

@@ -13,6 +13,7 @@ import wheel.reactive.lists.impl.SimpleListReceiver;
 public class ContactTreeNode extends DefaultMutableTreeNode{
 	static final DefaultMutableTreeNode NO_CONTACTS = new DefaultMutableTreeNode("No contacts.");
 	private final DefaultTreeModel _model;
+	private SimpleListReceiver<Contact> _contactsListReceiver;
 	
     public ContactTreeNode(Contact contact, DefaultTreeModel model){
     	super(contact);
@@ -25,8 +26,8 @@ public class ContactTreeNode extends DefaultMutableTreeNode{
        	_model.reload(this);
     }
     
-    private void registerReceiver(ListSignal<Contact> contacts) {
-		new SimpleListReceiver<Contact>(contacts) {
+    private SimpleListReceiver<Contact> registerReceiver(ListSignal<Contact> contacts) {
+		return new SimpleListReceiver<Contact>(contacts) {
 
 			@Override
 			protected void elementAdded(Contact newContact) {
@@ -52,7 +53,7 @@ public class ContactTreeNode extends DefaultMutableTreeNode{
 
 						if (getChildCount() == 0)
 				        	add(NO_CONTACTS);
-
+						
 						_model.reload(ContactTreeNode.this);
 						return;
 					}
@@ -80,15 +81,26 @@ public class ContactTreeNode extends DefaultMutableTreeNode{
     }
     
     void prepareToExpand(){
-    	registerReceiver(contact().party().contacts());
-        if (getChildCount() == 0)
+    	if (_contactsListReceiver == null)
+    		_contactsListReceiver = registerReceiver(contact().party().contacts());
+        if (getChildCount() != 0)
         	add(NO_CONTACTS);
     }
     
     void prepareToCollapse(){
-    	removeAllChildren();
+    	removeRecursive();
     	add(NO_CONTACTS);
     	//Fix: implement weak references for receivers to avoid leak 
+    }
+    
+    private void removeRecursive(){
+    	_contactsListReceiver.unRegisterListSignalToListItems();
+    	_contactsListReceiver = null;
+    	for(Object node: children){
+    		if (node instanceof ContactTreeNode)
+    			((ContactTreeNode)node).removeRecursive();
+    	}
+    	removeAllChildren();
     }
     
     @Override

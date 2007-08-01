@@ -28,6 +28,11 @@ public class ListSourceImpl<VO> implements ListSource<VO> {
 		public void addListReceiver(Omnivore<ListValueChange> receiver) {
 			addReceiver(receiver);		
 		}
+		
+		@Override
+		public void removeListReceiver(Omnivore<ListValueChange> receiver) {
+			removeReceiver(receiver);		
+		}
 
 		@Override
 		protected void initReceiver(Omnivore<ListValueChange> receiver) {}

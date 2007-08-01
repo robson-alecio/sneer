@@ -22,7 +22,6 @@ import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeWillExpandListener;
-import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
@@ -126,19 +125,19 @@ class ContactsScreen extends JFrame {
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		tree.setShowsRootHandles(true);
 		tree.addTreeWillExpandListener(new TreeWillExpandListener(){
-			public void treeWillCollapse(TreeExpansionEvent event) throws ExpandVetoException {
+			public void treeWillCollapse(TreeExpansionEvent event) {
 				TreePath path = event.getPath();
-				if (path.getLastPathComponent() instanceof ContactRootNode)
-					throw new ExpandVetoException(event, "Root node collapse not allowed");
+				if ((path == null)||(path.getLastPathComponent() instanceof ContactRootNode))
+					return;
 				ContactTreeNode partyNode = (ContactTreeNode)path.getLastPathComponent();
 				if (partyNode!=null){
 					partyNode.prepareToCollapse();
 				}
 			}
-			public void treeWillExpand(TreeExpansionEvent event) throws ExpandVetoException {
+			public void treeWillExpand(TreeExpansionEvent event) {
 				TreePath path = event.getPath();
-				if (path.getLastPathComponent() instanceof ContactRootNode)
-					throw new ExpandVetoException(event, "Root node expansion not allowed");
+				if ((path == null)||(path.getLastPathComponent() instanceof ContactRootNode))
+					return;
 				ContactTreeNode partyNode = (ContactTreeNode)path.getLastPathComponent();
 				if (partyNode!=null){
 					partyNode.prepareToExpand();

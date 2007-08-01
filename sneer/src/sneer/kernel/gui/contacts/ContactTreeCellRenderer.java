@@ -11,6 +11,7 @@ import javax.swing.JTree;
 import javax.swing.border.LineBorder;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+import sneer.kernel.pointofview.Contact;
 import sneer.kernel.pointofview.Party;
 
 public class ContactTreeCellRenderer extends DefaultTreeCellRenderer{
@@ -30,8 +31,14 @@ public class ContactTreeCellRenderer extends DefaultTreeCellRenderer{
 	final static Color selected = new Color(230,240,255);
 
 	@Override
-	public Component getTreeCellRendererComponent(JTree tree, Object partyObject, boolean isSelected, boolean expanded, boolean leaf, int row, boolean focus) {
-		Party party = ((Party)((PartyTreeNode) partyObject).getUserObject());
+	public Component getTreeCellRendererComponent(JTree tree, Object treeNode, boolean isSelected, boolean expanded, boolean leaf, int row, boolean focus) {
+		
+		if (treeNode == ContactTreeNode.NO_CONTACTS)
+			return super.getTreeCellRendererComponent(tree,treeNode,isSelected, expanded, leaf, row, focus);
+			
+		Party party = treeNode instanceof ContactTreeNode 
+			? ((Contact)((ContactTreeNode) treeNode).getUserObject()).party()
+			: ((Party)((ContactRootNode) treeNode).getUserObject());
 
 		ImageIcon stateIcon = stateIconFor(party);
 

@@ -62,7 +62,7 @@ public class FakeParty implements Party {
 	}
 
 	private void randomizeContacts() {
-		int index = RANDOM.nextInt(4);
+		int index = RANDOM.nextInt(2);
 		
 		if (index < _fakeContacts.output().currentSize())
 			removeFake(index);

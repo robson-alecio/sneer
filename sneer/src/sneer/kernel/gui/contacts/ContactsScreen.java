@@ -23,7 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeWillExpandListener;
-import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
@@ -119,28 +119,32 @@ class ContactsScreen extends JFrame {
 		return friendsList;
 	}*/
 	
-	private JTree createFriendsTree(){
-		PartyTreeNode node = new PartyTreeNode(_I);
-		node.expand();
-		TreeModel treeModel = new DefaultTreeModel(node);
-		final JTree tree = new JTree(treeModel);
+	private JTree createFriendsTree() {
+		ContactRootNode root = new ContactRootNode(_I);
+		TreeModel model = root.model();
+		
+		final JTree tree = new JTree(model);
 		tree.setCellRenderer(new ContactTreeCellRenderer());
 		tree.setEditable(true);
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		tree.setShowsRootHandles(true);
 		tree.addTreeWillExpandListener(new TreeWillExpandListener(){
-			public void treeWillCollapse(TreeExpansionEvent event) {
+			public void treeWillCollapse(TreeExpansionEvent event) throws ExpandVetoException {
 				TreePath path = event.getPath();
-				PartyTreeNode partyNode = (PartyTreeNode)path.getLastPathComponent();
+				if (path.getLastPathComponent() instanceof ContactRootNode)
+					throw new ExpandVetoException(event, "Root node collapse not allowed");
+				ContactTreeNode partyNode = (ContactTreeNode)path.getLastPathComponent();
 				if (partyNode!=null){
-					partyNode.collapse();
+					partyNode.prepareToCollapse();
 				}
 			}
-			public void treeWillExpand(TreeExpansionEvent event) {
+			public void treeWillExpand(TreeExpansionEvent event) throws ExpandVetoException {
 				TreePath path = event.getPath();
-				PartyTreeNode partyNode = (PartyTreeNode)path.getLastPathComponent();
+				if (path.getLastPathComponent() instanceof ContactRootNode)
+					throw new ExpandVetoException(event, "Root node expansion not allowed");
+				ContactTreeNode partyNode = (ContactTreeNode)path.getLastPathComponent();
 				if (partyNode!=null){
-					partyNode.expand();
+					partyNode.prepareToExpand();
 				}
 			}
 		});
@@ -152,7 +156,7 @@ class ContactsScreen extends JFrame {
 
 				TreePath path = tree.getPathForLocation(mouseEvent.getX(),mouseEvent.getY());
 					
-				PartyTreeNode partyNode = (PartyTreeNode)path.getLastPathComponent();
+				ContactTreeNode partyNode = (ContactTreeNode)path.getLastPathComponent();
 				if (partyNode==null) return;
 					
 				getFriendPopUpMenu(partyNode).show(tree, mouseEvent.getX(), mouseEvent.getY());
@@ -175,7 +179,7 @@ class ContactsScreen extends JFrame {
 
 	}
 
-	private JPopupMenu getFriendPopUpMenu(final PartyTreeNode partyTreeNode) {
+	private JPopupMenu getFriendPopUpMenu(final ContactTreeNode partyTreeNode) {
 		final JPopupMenu result = new JPopupMenu();
 		addToContactMenu(result, nickChangeAction(), partyTreeNode);
 		for (ContactAction action : _contactActions) addToContactMenu(result, action, partyTreeNode);
@@ -187,7 +191,7 @@ class ContactsScreen extends JFrame {
 		return new ContactNickChangeAction(_user, _nickChanger);
 	}
 
-	private void addToContactMenu(JPopupMenu menu, final ContactAction action, final PartyTreeNode partyTreeNode) {
+	private void addToContactMenu(JPopupMenu menu, final ContactAction action, final ContactTreeNode partyTreeNode) {
 		final JMenuItem item = new JMenuItem(action.caption());
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ignored) {

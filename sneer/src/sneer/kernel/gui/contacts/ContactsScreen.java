@@ -31,15 +31,12 @@ import javax.swing.tree.TreeSelectionModel;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.business.contacts.ContactInfo2;
 import sneer.kernel.gui.NewContactAddition;
-import sneer.kernel.pointofview.Contact;
 import sneer.kernel.pointofview.Party;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
-import wheel.io.ui.impl.ListSignalModel.SignalChooser;
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.lang.Pair;
-import wheel.reactive.Signal;
 
 class ContactsScreen extends JFrame {
 
@@ -165,20 +162,6 @@ class ContactsScreen extends JFrame {
 		return tree;
 	}
 
-	private SignalChooser<Contact> signalChooser() {
-		return new SignalChooser<Contact>(){
-			public Signal<?>[] signalsToReceiveFrom(Contact contact) {
-				return new Signal<?>[] {
-						contact.party().isOnline(),
-						contact.party().publicKeyConfirmed(),
-						contact.nick(),
-						contact.party().host(),
-						contact.party().port()
-				};
-			}};
-
-	}
-
 	private JPopupMenu getFriendPopUpMenu(final ContactTreeNode partyTreeNode) {
 		final JPopupMenu result = new JPopupMenu();
 		addToContactMenu(result, nickChangeAction(), partyTreeNode);
@@ -199,7 +182,8 @@ class ContactsScreen extends JFrame {
 				new Thread(){
 					@Override
 					public void run() {
-						Party party = (Party)partyTreeNode.getUserObject();
+						partyTreeNode.toString(); //avoids unused warning
+						//Party party = (Party)partyTreeNode.getUserObject();
 						//Contact contact = party.; //Fix: how to get contact from party?
 						//action.actUpon(contact);
 						JOptionPane.showMessageDialog(null, "NOT IMPLEMENTED YET!!! How to get the contact that contains this party?");

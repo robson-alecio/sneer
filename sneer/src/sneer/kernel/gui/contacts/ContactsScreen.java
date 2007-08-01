@@ -15,7 +15,6 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -31,6 +30,7 @@ import javax.swing.tree.TreeSelectionModel;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.business.contacts.ContactInfo2;
 import sneer.kernel.gui.NewContactAddition;
+import sneer.kernel.pointofview.Contact;
 import sneer.kernel.pointofview.Party;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
@@ -182,11 +182,8 @@ class ContactsScreen extends JFrame {
 				new Thread(){
 					@Override
 					public void run() {
-						partyTreeNode.toString(); //avoids unused warning
-						//Party party = (Party)partyTreeNode.getUserObject();
-						//Contact contact = party.; //Fix: how to get contact from party?
-						//action.actUpon(contact);
-						JOptionPane.showMessageDialog(null, "NOT IMPLEMENTED YET!!! How to get the contact that contains this party?");
+						Contact contact = (Contact)partyTreeNode.getUserObject();
+						action.actUpon(contact);
 					}
 				}.start();
 			}

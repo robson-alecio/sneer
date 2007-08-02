@@ -20,10 +20,7 @@ public class Streams {
 	public static void crash(Closeable closeable) {
 		try {
 			closeable.close();
-		} catch (IOException e) {
-			Log.log(e);
-		}
-		
+		} catch (IOException ignored) {}
 	}
 
 }

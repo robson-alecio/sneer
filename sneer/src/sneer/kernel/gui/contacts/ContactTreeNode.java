@@ -83,18 +83,17 @@ public class ContactTreeNode extends DefaultMutableTreeNode{
     void prepareToExpand(){
     	if (_contactsListReceiver == null)
     		_contactsListReceiver = registerReceiver(contact().party().contacts());
-        if (getChildCount() != 0)
-        	add(NO_CONTACTS);
+    	
+        if (getChildCount() != 0) add(NO_CONTACTS);
     }
     
     void prepareToCollapse(){
     	removeRecursive();
     	add(NO_CONTACTS);
-    	//Fix: implement weak references for receivers to avoid leak 
     }
     
     private void removeRecursive(){
-    	_contactsListReceiver.unRegisterListSignalToListItems();
+    	_contactsListReceiver.stopReceiving();
     	_contactsListReceiver = null;
     	for(Object node: children){
     		if (node instanceof ContactTreeNode)

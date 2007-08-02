@@ -26,15 +26,17 @@ public class DeferredBoundPersistence implements BoundsPersistence {
 
 		@Override
 		public void run() {
-			if (_isDirty.getAndSet(false))
-				deferredWriteBoundsToDisk();
+			while(true){ 
+				
+				if (_isDirty.getAndSet(false))
+					deferredWriteBoundsToDisk();
+				
+				synchronized (_isDirty){
+					if (!_isDirty.get())
+						Threads.waitWithoutInterruptions(_isDirty);
+				}
 			
-			synchronized (_isDirty){
-				if (!_isDirty.get())
-					Threads.waitWithoutInterruptions(_isDirty);
 			}
-			
-			run();
 				
 		}
 

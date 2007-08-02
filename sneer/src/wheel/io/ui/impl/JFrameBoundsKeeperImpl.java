@@ -42,6 +42,7 @@ public class JFrameBoundsKeeperImpl implements JFrameBoundsKeeper {
 		Rectangle storedBounds = _persistence.getStoredBounds(id);
 		if (storedBounds != null){
 			frame.setBounds(storedBounds);
+			frame.setPreferredSize(frame.getSize());
 		}
 	}
 
@@ -55,6 +56,9 @@ public class JFrameBoundsKeeperImpl implements JFrameBoundsKeeper {
 			}
 
 			private void boundsChanged() {
+				
+				if (!frame.isVisible())
+					return;
 				
 				Rectangle bounds = frame.getBounds();
 				if (_persistence.getStoredBounds(id) == bounds)

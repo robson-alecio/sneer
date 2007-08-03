@@ -4,53 +4,65 @@ import java.io.IOException;
 import static sneer.tests.SneerTestDashboard.newTestsShouldRun;
 import junit.framework.TestCase;
 import wheel.io.files.Directory;
+import wheel.io.files.impl.tranzient.TransientDirectory;
 
 public abstract class FileSharingTests extends TestCase {
 
-	protected abstract Directory master();
-	protected abstract Directory slave();
-	protected abstract void replicate();
+	private Directory _master;
+	private Directory _slave;
+
+	@Override
+	protected void setUp() {
+		_master = new TransientDirectory();
+		_slave = new TransientDirectory();
+	}
 
 	public void testFileCreation() throws IOException {
 		if (!newTestsShouldRun()) return;
 		
-		master().createFile("file1.txt", "abc");
-		assertFalse(slave().fileExists("file1.txt"));
+		_master.createFile("file1.txt", "abc");
+		assertFalse(_slave.fileExists("file1.txt"));
 		replicate();
-		assertEquals("abc", slave().contentsAsString("file1.txt"));
+		assertEquals("abc", _slave.contentsAsString("file1.txt"));
 	}
 
 	public void testFileDeletion() throws IOException {
 		if (!newTestsShouldRun()) return;
 		
-		master().createFile("file1.txt", "ignored");
+		_master.createFile("file1.txt", "ignored");
 		replicate();
-		master().deleteFile("file1.txt");
+		_master.deleteFile("file1.txt");
 		replicate();
-		assertFalse(slave().fileExists("file1.txt"));
+		assertFalse(_slave.fileExists("file1.txt"));
 	}
 
 	public void testFileRename() throws IOException {
 		if (!newTestsShouldRun()) return;
 		
-		master().createFile("file1.txt", "abc");
+		_master.createFile("file1.txt", "abc");
 		replicate();
-		master().renameFile("file1.txt", "file2.txt");
+		_master.renameFile("file1.txt", "file2.txt");
 		replicate();
-		assertFalse(slave().fileExists("file1.txt"));
-		assertEquals("abc", slave().contentsAsString("file2.txt"));
+		assertFalse(_slave.fileExists("file1.txt"));
+		assertEquals("abc", _slave.contentsAsString("file2.txt"));
 	}
 
 	public void testFileChange() throws IOException {
 		if (!newTestsShouldRun()) return;
 		
-		master().createFile("file1.txt", "abc");
+		_master.createFile("file1.txt", "abc");
 		replicate();
-		replaceContents(master(), "file1.txt", "def");
-		assertEquals("abc", slave().contentsAsString("file1.txt"));
+		replaceContents(_master, "file1.txt", "def");
+		assertEquals("abc", _slave.contentsAsString("file1.txt"));
 		replicate();
-		assertEquals("def", slave().contentsAsString("file1.txt"));
+		assertEquals("def", _slave.contentsAsString("file1.txt"));
 	}
+
+	private void replicate() {
+		replicate(_master, _slave);		
+	}
+
+	protected abstract void replicate(Directory master, Directory slave);
 	
 	private void replaceContents(Directory directory, String fileName, String newContents) throws IOException {
 		directory.deleteFile(fileName);
@@ -58,3 +70,4 @@ public abstract class FileSharingTests extends TestCase {
 	}
 
 }
+

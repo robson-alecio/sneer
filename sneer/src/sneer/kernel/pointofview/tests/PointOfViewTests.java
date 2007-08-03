@@ -1,60 +1,33 @@
 package sneer.kernel.pointofview.tests;
 
-import java.io.IOException;
-import static sneer.tests.SneerTestDashboard.newTestsShouldRun;
 import junit.framework.TestCase;
-import wheel.io.files.Directory;
+import sneer.kernel.pointofview.Party;
 
 public abstract class PointOfViewTests extends TestCase {
 
-	protected abstract Directory master();
-	protected abstract Directory slave();
-	protected abstract void replicate();
+	protected interface Subject {
 
-	public void testFileCreation() throws IOException {
-		if (!newTestsShouldRun()) return;
-		
-		master().createFile("file1.txt", "abc");
-		assertFalse(slave().fileExists("file1.txt"));
-		replicate();
-		assertEquals("abc", slave().contentsAsString("file1.txt"));
+		void setName(String newName);
+		Party contactNamed(String name);
+
 	}
 
-	public void testFileDeletion() throws IOException {
-		if (!newTestsShouldRun()) return;
+	protected abstract Subject me();
+	protected abstract Subject other();
+
+	public void testRemoteNameChange() {
+		//if (!newTestsShouldRun()) return;
 		
-		master().createFile("file1.txt", "ignored");
-		replicate();
-		master().deleteFile("file1.txt");
-		replicate();
-		assertFalse(slave().fileExists("file1.txt"));
+		me().setName("Klaus Wuestefeld");
+		other().setName("Ricardo Andere de Mello");
+		
+		Party contact = me().contactNamed("Ricardo Andere de Mello");
+		assertNotNull(contact);
+		
+		other().setName("Ricardo Gandhi de Mello");
+		assertEquals("Ricardo Gandhi de Mello", contact.name().currentValue());
+		
 	}
 
-	public void testFileRename() throws IOException {
-		if (!newTestsShouldRun()) return;
-		
-		master().createFile("file1.txt", "abc");
-		replicate();
-		master().renameFile("file1.txt", "file2.txt");
-		replicate();
-		assertFalse(slave().fileExists("file1.txt"));
-		assertEquals("abc", slave().contentsAsString("file2.txt"));
-	}
-
-	public void testFileChange() throws IOException {
-		if (!newTestsShouldRun()) return;
-		
-		master().createFile("file1.txt", "abc");
-		replicate();
-		replaceContents(master(), "file1.txt", "def");
-		assertEquals("abc", slave().contentsAsString("file1.txt"));
-		replicate();
-		assertEquals("def", slave().contentsAsString("file1.txt"));
-	}
-	
-	private void replaceContents(Directory directory, String fileName, String newContents) throws IOException {
-		directory.deleteFile(fileName);
-		directory.createFile(fileName, newContents);
-	}
 
 }

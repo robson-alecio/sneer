@@ -11,9 +11,9 @@ import wheel.reactive.impl.ConstantSignal;
 import wheel.reactive.lists.Collector;
 import wheel.reactive.lists.ListSignal;
 
-public class I implements Party {
+public class Me implements Party {
 
-	public I(Business business, Operator operator) {
+	public Me(Business business, Operator operator) {
 		_business = business;
 		_operator = operator;
 		_contacts = createContactsListSignal();

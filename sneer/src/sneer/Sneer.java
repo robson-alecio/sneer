@@ -23,7 +23,7 @@ import sneer.kernel.communication.impl.Communicator;
 import sneer.kernel.gui.Gui;
 import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.pointofview.Party;
-import sneer.kernel.pointofview.impl.I;
+import sneer.kernel.pointofview.impl.Me;
 import wheel.i18n.Language;
 import wheel.io.Log;
 import wheel.io.files.Directory;
@@ -78,7 +78,7 @@ public class Sneer {
 		try{Thread.sleep(2000);}catch(InterruptedException ie){} 
 		
 		_communicator = new Communicator(_user, new XStreamNetwork(new OldNetworkImpl()), _businessSource);
-		_I = new I(_businessSource.output(), _communicator.operator());
+		_I = new Me(_businessSource.output(), _communicator.operator());
 		_gui = new Gui(_user, _I, _businessSource, contactActions(), jFrameBoundsKeeper()); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
 		
 		while (true) Threads.sleepWithoutInterruptions(100000); // Refactor Consider joining the main gui thread.

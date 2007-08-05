@@ -100,12 +100,13 @@ public class ContactTreeNode extends DefaultMutableTreeNode{
     }
     
     private void removeRecursive(){
-    	stopReceiving();
     	_contactsListReceiver.stopReceiving();
     	_contactsListReceiver = null;
     	for(Object node: children){
-    		if (node instanceof ContactTreeNode)
+    		if (node instanceof ContactTreeNode){
+    			((ContactTreeNode)node).stopReceiving();
     			((ContactTreeNode)node).removeRecursive();
+    		}
     	}
     	removeAllChildren();
     }

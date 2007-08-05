@@ -1,18 +1,23 @@
 package sneer.apps.filesharing.tests;
 
-import java.io.IOException;
 import static sneer.tests.SneerTestDashboard.newTestsShouldRun;
-import junit.framework.TestCase;
+
+import java.io.IOException;
+
+import sneer.apps.filesharing.FileReplicator;
+
 import wheel.io.files.Directory;
 import wheel.io.files.impl.tranzient.TransientDirectory;
+import wheel.testutil.TestOfInterface;
 
-public abstract class FileSharingTests extends TestCase {
+public abstract class FileReplicatorTests extends TestOfInterface<FileReplicator> {
 
 	private Directory _master;
 	private Directory _slave;
 
 	@Override
 	protected void setUp() {
+		super.setUp();
 		_master = new TransientDirectory();
 		_slave = new TransientDirectory();
 	}
@@ -59,11 +64,9 @@ public abstract class FileSharingTests extends TestCase {
 	}
 
 	private void replicate() {
-		replicate(_master, _slave);		
+		_subject.replicate(_master, _slave);		
 	}
 
-	protected abstract void replicate(Directory master, Directory slave);
-	
 	private void replaceContents(Directory directory, String fileName, String newContents) throws IOException {
 		directory.deleteFile(fileName);
 		directory.createFile(fileName, newContents);

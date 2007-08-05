@@ -17,13 +17,20 @@ public class ContactTreeNode extends DefaultMutableTreeNode{
 	
     public ContactTreeNode(Contact contact, DefaultTreeModel model){
     	super(contact);
-		_model = model;
-
-    	for (Signal<?> signal : signalsToReceiveFrom(contact))
-    		addReceiverToSignal(displayedSignalsReceiver(), signal);
-    	
+		_model = model;    	
+		startReceiving();
        	add(NO_CONTACTS);
        	_model.reload(this);
+    }
+    
+    private void startReceiving(){
+    	for (Signal<?> signal : signalsToReceiveFrom(contact()))
+    		addReceiverToSignal(displayedSignalsReceiver(), signal);
+    }
+    
+    private void stopReceiving(){
+    	for (Signal<?> signal : signalsToReceiveFrom(contact()))
+    		removeReceiverFromSignal(displayedSignalsReceiver(), signal);
     }
     
     private SimpleListReceiver<Contact> registerReceiver(ListSignal<Contact> contacts) {
@@ -93,6 +100,7 @@ public class ContactTreeNode extends DefaultMutableTreeNode{
     }
     
     private void removeRecursive(){
+    	stopReceiving();
     	_contactsListReceiver.stopReceiving();
     	_contactsListReceiver = null;
     	for(Object node: children){
@@ -120,6 +128,11 @@ public class ContactTreeNode extends DefaultMutableTreeNode{
 	private <U> void addReceiverToSignal(Omnivore<?> receiver, Signal<U> signal) {
 		Omnivore<U> castedReceiver = Casts.uncheckedGenericCast(receiver);
 		signal.addReceiver(castedReceiver);
+	}
+	
+	private <U> void removeReceiverFromSignal(Omnivore<?> receiver, Signal<U> signal) {
+		Omnivore<U> castedReceiver = Casts.uncheckedGenericCast(receiver);
+		signal.removeReceiver(castedReceiver);
 	}
 
 	private static final long serialVersionUID = 1L;

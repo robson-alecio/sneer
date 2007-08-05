@@ -1,33 +1,19 @@
 package sneer.kernel.pointofview.tests;
 
-import junit.framework.TestCase;
-import sneer.kernel.pointofview.Party;
+import wheel.reactive.tests.LoopbackTester;
+import wheel.testutil.TestOfInterface;
 
-public abstract class PointOfViewTests extends TestCase {
-
-	protected interface Subject {
-
-		void setName(String newName);
-		Party contactNamed(String name);
-
-	}
-
-	protected abstract Subject me();
-	protected abstract Subject other();
+public abstract class PointOfViewTests extends TestOfInterface<SovereignNetworkSimulator> {
 
 	public void testRemoteNameChange() {
 		//if (!newTestsShouldRun()) return;
-		
-		me().setName("Klaus Wuestefeld");
-		other().setName("Ricardo Andere de Mello");
-		
-		Party contact = me().contactNamed("Ricardo Andere de Mello");
-		assertNotNull(contact);
-		
-		other().setName("Ricardo Gandhi de Mello");
-		assertEquals("Ricardo Gandhi de Mello", contact.name().currentValue());
-		
-	}
 
+		PartySimulator a = _subject.createPartySimulator("A");
+		PartySimulator b = _subject.createPartySimulator("B");
+		_subject.connect(a, b);
+
+		LoopbackTester loopback = new LoopbackTester(a.contact("B").party().name(), b.nameSetter());
+		loopback.testWithString();
+	}
 
 }

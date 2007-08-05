@@ -17,8 +17,7 @@ public abstract class AbstractSignal<T> extends AbstractNotifier<T> implements S
 	@Override
 	public String toString() {
 		T currentValue = currentValue();
-		if (currentValue == null)
-			return "null"; // Oooo. Big discussion. What to return in case of null? Empty String? null? "null"? NullPointerException?
+		if (currentValue == null) return "null";
 		return currentValue.toString();
 	}
 

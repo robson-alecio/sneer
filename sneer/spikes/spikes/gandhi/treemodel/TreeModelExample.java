@@ -8,23 +8,26 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Date;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 public class TreeModelExample extends JFrame{
 
 
-	public TreeModelExample(){
+	public TreeModelExample() {
 		super(); 
-		final MyTreeModel model = new MyTreeModel();
+		final DefaultTreeModel model = new DefaultTreeModel(new DefaultMutableTreeNode("root"));
 		final JTree tree = new JTree(model);
+		
 		tree.setShowsRootHandles(true);
 		tree.addMouseListener(new MouseAdapter() {
 			@Override
@@ -32,16 +35,13 @@ public class TreeModelExample extends JFrame{
 				final boolean rightClick = mouseEvent.getButton() == MouseEvent.BUTTON3;
 				if (!rightClick) return;
 				TreePath path = tree.getPathForLocation(mouseEvent.getX(),mouseEvent.getY());
-				final MyTreeNode node = (MyTreeNode)path.getLastPathComponent();
-				if (node == null) return;
+				final DefaultMutableTreeNode node = (DefaultMutableTreeNode)path.getLastPathComponent();
 				
 				final JPopupMenu popupMenu = new JPopupMenu();
 				JMenuItem addItem = new JMenuItem("Add");
 				addItem.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent e) {
-						String name = JOptionPane.showInputDialog("nome");
-						if (name==null) return;
-						model.insertNodeInto(new MyTreeNode(name), node, 0);
+						model.insertNodeInto(new DefaultMutableTreeNode(new Date()), node, 0);
 					}	
 				});
 				JMenuItem removeItem = new JMenuItem("Remove");

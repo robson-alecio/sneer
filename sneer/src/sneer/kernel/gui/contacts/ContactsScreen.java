@@ -36,6 +36,7 @@ import wheel.io.ui.User;
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.lang.Pair;
+import wheel.lang.Threads;
 
 class ContactsScreen extends JFrame {
 
@@ -175,18 +176,12 @@ class ContactsScreen extends JFrame {
 
 	private void addToContactMenu(JPopupMenu menu, final ContactAction action, final ContactTreeNode partyTreeNode) {
 		final JMenuItem item = new JMenuItem(action.caption());
-		item.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ignored) {
-				
-				new Thread(){
-					@Override
-					public void run() {
-						Contact contact = (Contact)partyTreeNode.getUserObject();
-						action.actUpon(contact);
-					}
-				}.start();
-			}
-		});
+		item.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent ignored) {
+			Threads.startDaemon(new Runnable() { @Override public void run() {
+				Contact contact = (Contact)partyTreeNode.getUserObject();
+				action.actUpon(contact);
+			}});
+		}});
 		
 		menu.add(item);
 	}

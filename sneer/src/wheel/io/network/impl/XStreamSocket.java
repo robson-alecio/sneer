@@ -5,6 +5,8 @@ import java.io.IOException;
 import wheel.io.network.ObjectSocket;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.ConversionException;
+import com.thoughtworks.xstream.mapper.CannotResolveClassException;
 
 public class XStreamSocket implements ObjectSocket {
 	
@@ -25,8 +27,21 @@ public class XStreamSocket implements ObjectSocket {
 
 	public Object readObject() throws IOException, ClassNotFoundException {
 		synchronized (_readMonitor) {
-			String xml = (String)_delegate.readObject();
-			return _xStream.fromXML(xml);
+			String xml;
+			try {
+				xml = (String)_delegate.readObject();
+			} catch (ClassNotFoundException e) {
+				throw new IOException("XStream sockets should only carry Strings.");
+			} catch (ClassCastException e) {
+				throw new IOException("XStream sockets should only carry Strings.");
+			}
+			try {
+				return _xStream.fromXML(xml);
+			} catch (ConversionException e) {
+				if (e.getCause() instanceof CannotResolveClassException)
+					throw new ClassNotFoundException(e.getMessage());
+				throw e;
+			}
 		}
 	}
 

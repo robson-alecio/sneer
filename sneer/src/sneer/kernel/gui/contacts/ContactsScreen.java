@@ -20,16 +20,12 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTree;
-import javax.swing.event.TreeExpansionEvent;
-import javax.swing.event.TreeWillExpandListener;
-import javax.swing.tree.TreeModel;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
 
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.business.contacts.ContactInfo2;
 import sneer.kernel.gui.NewContactAddition;
-import sneer.kernel.pointofview.Contact;
 import sneer.kernel.pointofview.Party;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
@@ -117,6 +113,33 @@ class ContactsScreen extends JFrame {
 	}*/
 	
 	private JTree createFriendsTree() {
+		MeNode me = new MeNode(_I);
+		DefaultTreeModel model = new DefaultTreeModel(me);
+		final JTree tree = new JTree(model);
+		tree.setCellRenderer(new ContactTreeCellRenderer());
+		tree.setShowsRootHandles(true);
+		
+		new ContactTreeController(tree,model);
+		
+		tree.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent mouseEvent) {
+				final boolean rightClick = mouseEvent.getButton() == MouseEvent.BUTTON3;
+				if (!rightClick) return;
+
+				TreePath path = tree.getPathForLocation(mouseEvent.getX(),mouseEvent.getY());
+					
+				FriendNode node = (FriendNode)path.getLastPathComponent();
+				if (node==null) return;
+					
+				getFriendPopUpMenu(node).show(tree, mouseEvent.getX(), mouseEvent.getY());
+			}
+		});
+		
+		return tree;
+	}
+	
+	/*private JTree createFriendsTree() {
 		ContactRootNode root = new ContactRootNode(_I);
 		TreeModel model = root.model();
 		
@@ -160,13 +183,13 @@ class ContactsScreen extends JFrame {
 			}
 		});
 		return tree;
-	}
+	}*/
 
-	private JPopupMenu getFriendPopUpMenu(final ContactTreeNode partyTreeNode) {
+	private JPopupMenu getFriendPopUpMenu(final FriendNode node) {
 		final JPopupMenu result = new JPopupMenu();
-		addToContactMenu(result, nickChangeAction(), partyTreeNode);
-		for (ContactAction action : _contactActions) addToContactMenu(result, action, partyTreeNode);
-		addToContactMenu(result, new ContactRemovalAction(_contactRemover), partyTreeNode);
+		addToContactMenu(result, nickChangeAction(), node);
+		for (ContactAction action : _contactActions) addToContactMenu(result, action, node);
+		addToContactMenu(result, new ContactRemovalAction(_contactRemover), node);
 		return result;
 	}
 
@@ -174,12 +197,11 @@ class ContactsScreen extends JFrame {
 		return new ContactNickChangeAction(_user, _nickChanger);
 	}
 
-	private void addToContactMenu(JPopupMenu menu, final ContactAction action, final ContactTreeNode partyTreeNode) {
+	private void addToContactMenu(JPopupMenu menu, final ContactAction action, final FriendNode node) {
 		final JMenuItem item = new JMenuItem(action.caption());
 		item.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent ignored) {
 			Threads.startDaemon(new Runnable() { @Override public void run() {
-				Contact contact = (Contact)partyTreeNode.getUserObject();
-				action.actUpon(contact);
+				action.actUpon(node.contact());
 			}});
 		}});
 		

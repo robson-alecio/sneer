@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 
 import javax.swing.ImageIcon;
@@ -12,7 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
@@ -100,12 +98,10 @@ public class TreeModelExample extends JFrame {
 		return new Runnable() { @Override public void run() {
 			while (true) {
 				try {
-					SwingUtilities.invokeAndWait(new Runnable(){@Override public void run() {
+					//SwingUtilities.invokeAndWait(new Runnable(){@Override public void run() {
 						addNode();
-					}});
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
+					//}});
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
@@ -116,24 +112,22 @@ public class TreeModelExample extends JFrame {
 		return new Runnable() { @Override public void run() {
 			while (true) {
 				try {
-					SwingUtilities.invokeAndWait(new Runnable(){@Override public void run() {
+					//SwingUtilities.invokeAndWait(new Runnable(){@Override public void run() {
 						removeNode();
-					}});
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
+					//}});
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}	
 		}};
 	}
 
-	private void removeNode() {
+	synchronized private void removeNode() {
 		if (_model.getChildCount(_model.getRoot()) == 0) return;
 		_model.removeNodeFromParent((MutableTreeNode) _model.getChild(_model.getRoot(), 0));
 	}
 
-	private void addNode() {
+	synchronized private void addNode() {
 		if (_model.getChildCount(_model.getRoot()) == 5) return;
 		_model.insertNodeInto(new NonLeafNode(new Date()+" - "+gen()), (NonLeafNode) _model.getRoot(), 0);
 	}

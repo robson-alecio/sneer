@@ -3,6 +3,7 @@ package sneer.kernel.gui.contacts;
 import java.util.Hashtable;
 
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeWillExpandListener;
@@ -35,12 +36,16 @@ public class ContactTreeController {
 		}
 	}
 
-	private void createFriendNode(DefaultMutableTreeNode parent, Contact contact) {
-		synchronized(this){
+	private void createFriendNode(final DefaultMutableTreeNode parent, final Contact contact) {
+		runBlockThatChangesModel(new Runnable(){ public void run(){
+			unsynchronizedCreateFriendNode(parent,contact);
+		}});
+	}
+	
+	private void unsynchronizedCreateFriendNode(DefaultMutableTreeNode parent, Contact contact) {
 			FriendNode friend =  new FriendNode(contact);
 			_model.insertNodeInto(friend, parent, 0);
 			startReceiving(friend);
-		}
 	}
 
 	private void registerListeners() {
@@ -58,10 +63,12 @@ public class ContactTreeController {
 		}};
 	}
 
-	private void expandFriendNode(FriendNode friend) {
-		for(Contact contact:friend.contact().party().contacts()){
-			createFriendNode(friend,contact);
-		}
+	private void expandFriendNode(final FriendNode friend) {
+		runBlockThatChangesModel(new Runnable(){ public void run(){
+			for(Contact contact:friend.contact().party().contacts()){
+				unsynchronizedCreateFriendNode(friend,contact);
+			}
+		}});
 	}
 
 	private TreeExpansionListener expansionListener() { return new TreeExpansionListener(){
@@ -73,24 +80,24 @@ public class ContactTreeController {
 		}};
 	}
 	
-	private void collapseFriendNode(FriendNode friend) {
-		for(int t=_model.getChildCount(friend)-1;t>=0;t--){
-			FriendNode child = (FriendNode) _model.getChild(friend,t);
-			removeFriendNode(child);
-		}
+	private void collapseFriendNode(final FriendNode friend) {
+		runBlockThatChangesModel(new Runnable(){ public void run(){
+			for(int t=_model.getChildCount(friend)-1;t>=0;t--){
+				FriendNode child = (FriendNode) _model.getChild(friend,t);
+				unsynchronizedRemoveFriendNode(child);
+			}
+		}});
 	}
 
-	private void removeFriendNode(FriendNode child) {
-		synchronized(this){
-			unsynchronizedRemoveFriendNode(child);
-		}
-	}
+	//private void removeFriendNode(FriendNode child) {
+	//	synchronized(_synchronizeAnyModelAccess){
+	//		unsynchronizedRemoveFriendNode(child);
+	//	}
+	//}
 	
 	private void unsynchronizedRemoveFriendNode(FriendNode child) {
-		synchronized(this){
 			stopReceiversRecursively(child);
 			_model.removeNodeFromParent(child); //dont worry about subtree, it will be garbage collected
-		}
 	}
 	
 	private void stopReceiversRecursively(FriendNode friend){
@@ -121,15 +128,19 @@ public class ContactTreeController {
     private Omnivore<Object> displaySignalReceiver(final FriendNode friend) {
 		return new Omnivore<Object>(){
 			public void consume(Object ignored) {
-				_model.nodeChanged(friend);
+				runBlockThatChangesModel(new Runnable(){ public void run(){
+					_model.nodeChanged(friend);
+				}});
 			}
 		};
 	}
 
 	private void stopReceiving(FriendNode friend){
 		SimpleListReceiver<Contact> contactListReceiver = _contactListReceiversByFriend.remove(friend);
-    	contactListReceiver.stopReceiving();
+		if (contactListReceiver != null)
+			contactListReceiver.stopReceiving();
 		Omnivore<Object> receiver = _displayReceiversByFriend.remove(friend);
+		if (receiver == null) return;
     	for (Signal<?> signal : signalsToReceiveFrom(friend.contact()))
     		removeReceiverFromSignal(receiver, signal);
     }
@@ -172,8 +183,8 @@ public class ContactTreeController {
 			}
 
 			@Override
-			protected void elementToBeRemoved(Contact contactRemoved) {
-				synchronized(ContactTreeController.this){
+			protected void elementToBeRemoved(final Contact contactRemoved) {
+				runBlockThatChangesModel(new Runnable(){ public void run(){
 					int count = friend.getChildCount();
 					for (int i = 0; i < count; i++) {
 						FriendNode child = (FriendNode)friend.getChildAt(i);
@@ -182,12 +193,28 @@ public class ContactTreeController {
 							return;
 						}
 					}
-				}
+				}});
 			}
 
 		};
 	}
 	
+	private Object _syncObject = new Object();
+	
+	public synchronized void runBlockThatChangesModel(final Runnable runnable){
+		Thread thread = new Thread(new Runnable(){
+			public void run() {
+				SwingUtilities.invokeLater(new Runnable(){
+					public void run(){
+						synchronized(_syncObject){
+							runnable.run();
+						}
+					}
+				});
+			}
+		});
+		thread.start();
+	}
 	
 	
 }

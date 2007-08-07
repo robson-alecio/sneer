@@ -1,6 +1,8 @@
 package sneer.kernel.gui.contacts;
 
 import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
@@ -14,6 +16,7 @@ import javax.swing.tree.TreePath;
 import sneer.kernel.pointofview.Contact;
 import wheel.lang.Casts;
 import wheel.lang.Omnivore;
+import wheel.lang.Threads;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
@@ -201,20 +204,45 @@ public class ContactTreeController {
 	
 	private Object _syncObject = new Object();
 	
-	public synchronized void runBlockThatChangesModel(final Runnable runnable){
-		Thread thread = new Thread(new Runnable(){
-			public void run() {
-				SwingUtilities.invokeLater(new Runnable(){
-					public void run(){
-						synchronized(_syncObject){
-							runnable.run();
-						}
-					}
-				});
-			}
-		});
-		thread.start();
+	private MyConsumer _consumer = new MyConsumer();
+	
+	public void runBlockThatChangesModel(final Runnable runnable){
+		_consumer.add(runnable);
 	}
 	
+	private List<Runnable> _buffer = new LinkedList<Runnable>();
+	
+	public class MyConsumer extends Thread{
+		
+		public MyConsumer(){
+			setDaemon(true);
+			start();
+		}
+		
+		@Override
+		public void run(){
+			while(true){
+				synchronized(_buffer){
+					if (_buffer.isEmpty())
+						Threads.waitWithoutInterruptions(_buffer);
+					final Runnable runnable = _buffer.remove(0); //can't be inside invokelater (executed in eventqueue thread)
+					SwingUtilities.invokeLater(new Runnable(){
+						public void run(){
+							synchronized(_syncObject){
+								runnable.run();
+							}
+						}
+					});
+				}
+			}
+		}
+		
+		public void add(Runnable runnable){
+			synchronized (_buffer) {
+				_buffer.add(runnable);
+				_buffer.notify();
+			}
+		}
+	}
 	
 }

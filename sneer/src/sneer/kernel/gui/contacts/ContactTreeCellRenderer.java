@@ -54,9 +54,7 @@ public class ContactTreeCellRenderer extends DefaultTreeCellRenderer{
 		panel.add(new JLabel(onlineIcon));
 		panel.add(new JLabel(stateIcon));
 		String name = (party.name()==null)?"null":party.name().currentValue();
-		String host = (party.host()==null)?"null":party.host().currentValue();
-		int port = (party.port()==null)?0:party.port().currentValue();
-		panel.add(new JLabel( name + " - " + host + ":" + port));
+		panel.add(new JLabel( name ));
 
 		return panel;
 	}

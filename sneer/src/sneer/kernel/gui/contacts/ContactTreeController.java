@@ -1,5 +1,7 @@
 package sneer.kernel.gui.contacts;
 
+import java.util.Hashtable;
+
 import javax.swing.JTree;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
@@ -12,6 +14,7 @@ import sneer.kernel.pointofview.Contact;
 import wheel.lang.Casts;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
+import wheel.reactive.lists.impl.SimpleListReceiver;
 
 public class ContactTreeController {
 	
@@ -33,9 +36,13 @@ public class ContactTreeController {
 	}
 
 	private void createFriendNode(DefaultMutableTreeNode parent, Contact contact) {
-		FriendNode friend =  new FriendNode(contact);
-		_model.insertNodeInto(friend, parent, 0);
-		startReceiving(friend);
+		synchronized(this){
+			if ((parent.getChildCount() == 1)&&(parent.getChildAt(0) instanceof NoContactNode))
+				_model.removeNodeFromParent((FriendNode)parent.getChildAt(0));
+			FriendNode friend =  new FriendNode(contact);
+			_model.insertNodeInto(friend, parent, 0);
+			startReceiving(friend);
+		}
 	}
 
 	private void registerListeners() {
@@ -57,7 +64,6 @@ public class ContactTreeController {
 		for(Contact contact:friend.contact().party().contacts()){
 			createFriendNode(friend,contact);
 		}
-		_model.reload(friend);
 	}
 
 	private TreeExpansionListener expansionListener() { return new TreeExpansionListener(){
@@ -72,10 +78,15 @@ public class ContactTreeController {
 	private void collapseFriendNode(FriendNode friend) {
 		for(int t=_model.getChildCount(friend)-1;t>=0;t--){
 			FriendNode child = (FriendNode) _model.getChild(friend,t);
-			stopReceiversRecursively(child);
-			_model.removeNodeFromParent(child); //dont worry about subtree, it will be garbage collected  
+			removeFriendNode(child);
 		}
-		_model.reload(friend);
+	}
+
+	private void removeFriendNode(FriendNode child) {
+		synchronized(this){
+		stopReceiversRecursively(child);
+		_model.removeNodeFromParent(child); //dont worry about subtree, it will be garbage collected
+		}
 	}
 	
 	private void stopReceiversRecursively(FriendNode friend){
@@ -90,19 +101,36 @@ public class ContactTreeController {
 		return path.getLastPathComponent() instanceof MeNode;
 	}
 	
+	private Hashtable<FriendNode,Omnivore<Object>> _displayReceiversByFriend = new Hashtable<FriendNode,Omnivore<Object>>();
 
 	private void startReceiving(FriendNode friend){
+		Omnivore<Object> displayReceiver = displaySignalReceiver(friend);
     	for (Signal<?> signal : signalsToReceiveFrom(friend.contact())){
-    		addReceiverToSignal(new DisplaySignalReceiver(_model,friend), signal);
+    		addReceiverToSignal(displayReceiver, signal);
     	}
+    	_displayReceiversByFriend.put(friend, displayReceiver);
+    	SimpleListReceiver<Contact> contactListReceiver = registerContactListReceiver(friend);
+    	_contactListReceiversByFriend.put(friend, contactListReceiver);
     }
+	
     
-    private void stopReceiving(FriendNode friend){
+    private Omnivore<Object> displaySignalReceiver(final FriendNode friend) {
+		return new Omnivore<Object>(){
+			public void consume(Object ignored) {
+				_model.nodeChanged(friend);
+			}
+		};
+	}
+
+	private void stopReceiving(FriendNode friend){
+		SimpleListReceiver<Contact> contactListReceiver = _contactListReceiversByFriend.remove(friend);
+    	contactListReceiver.stopReceiving();
+		Omnivore<Object> receiver = _displayReceiversByFriend.remove(friend);
     	for (Signal<?> signal : signalsToReceiveFrom(friend.contact()))
-    		removeReceiverFromSignal(new DisplaySignalReceiver(_model,friend), signal);
+    		removeReceiverFromSignal(receiver, signal);
     }
     
-    private <U> void addReceiverToSignal(Omnivore<?> receiver, Signal<U> signal) {
+	private <U> void addReceiverToSignal(Omnivore<?> receiver, Signal<U> signal) {
 		Omnivore<U> castedReceiver = Casts.uncheckedGenericCast(receiver);
 		signal.addReceiver(castedReceiver);
 	}
@@ -121,4 +149,39 @@ public class ContactTreeController {
 			contact.party().port()
 		};
 	}
+	
+	private Hashtable<FriendNode,SimpleListReceiver<Contact>> _contactListReceiversByFriend = new Hashtable<FriendNode,SimpleListReceiver<Contact>>();
+
+ 
+	private SimpleListReceiver<Contact> registerContactListReceiver(final FriendNode friend) {
+		return new SimpleListReceiver<Contact>(friend.contact().party().contacts()) {
+
+			@Override
+			protected void elementAdded(Contact newContact) {
+				createFriendNode(friend, newContact);
+			}
+
+			@Override
+			protected void elementPresent(Contact contact) {
+				// not needed, when the tree is expanded, the current childs are added.
+				// it's receiver's responsability to continue updating it.
+			}
+
+			@Override
+			protected void elementToBeRemoved(Contact contactRemoved) {
+				int count = friend.getChildCount();
+				for (int i = 0; i < count; i++) {
+					FriendNode child = (FriendNode)friend.getChildAt(i);
+					if (child.contact() == contactRemoved) {
+						removeFriendNode(child);
+						return;
+					}
+				}
+			}
+
+		};
+	}
+	
+	
+	
 }

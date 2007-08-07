@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 
 import javax.swing.ImageIcon;
@@ -11,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
@@ -19,22 +21,23 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 
 import sneer.kernel.gui.contacts.ContactCellRenderer;
+import wheel.lang.Threads;
 
 public class TreeModelExample extends JFrame {
 
 	final static ImageIcon ICON = new ImageIcon(ContactCellRenderer.class.getResource("/spikes/gandhi/treemodel/icon.gif"));
 	
-	DefaultTreeModel model;
+	final DefaultTreeModel _model;
 	
 	public TreeModelExample() {
 		super();
-		model = new DefaultTreeModel(new NonLeafNode("root"));
+		_model = new DefaultTreeModel(new NonLeafNode("root"));
 
-		model.insertNodeInto(new NonLeafNode(new Date()+" - "+gen()), (NonLeafNode) model.getRoot(), 0); //init
-		model.insertNodeInto(new NonLeafNode(new Date()+" - "+gen()), (NonLeafNode) model.getRoot(), 0);
-		model.insertNodeInto(new NonLeafNode(new Date()+" - "+gen()), (NonLeafNode) model.getRoot(), 0);
+		_model.insertNodeInto(new NonLeafNode(new Date()+" - "+gen()), (NonLeafNode) _model.getRoot(), 0); //init
+		_model.insertNodeInto(new NonLeafNode(new Date()+" - "+gen()), (NonLeafNode) _model.getRoot(), 0);
+		_model.insertNodeInto(new NonLeafNode(new Date()+" - "+gen()), (NonLeafNode) _model.getRoot(), 0);
 
-		final JTree tree = new JTree(model);
+		final JTree tree = new JTree(_model);
 		
 		tree.setShowsRootHandles(true);
 		tree.addTreeExpansionListener(new TreeExpansionListener(){
@@ -64,9 +67,9 @@ public class TreeModelExample extends JFrame {
 				if (node == null) return;
 				if (node.getParent() == null) return; //ignore root
 
-				model.insertNodeInto(new NonLeafNode(new Date()+" - "+gen()), node, 0);
-				model.insertNodeInto(new NonLeafNode(new Date()+" - "+gen()), node, 0);
-				model.insertNodeInto(new NonLeafNode(new Date()+" - "+gen()), node, 0);
+				_model.insertNodeInto(new NonLeafNode(new Date()+" - "+gen()), node, 0);
+				_model.insertNodeInto(new NonLeafNode(new Date()+" - "+gen()), node, 0);
+				_model.insertNodeInto(new NonLeafNode(new Date()+" - "+gen()), node, 0);
 
 			}
 		});
@@ -84,14 +87,63 @@ public class TreeModelExample extends JFrame {
 			}
 		});
 		setVisible(true);
+		
+		startConcurrentModelModifiers();
 	}
 	
+	private void startConcurrentModelModifiers() {
+		Threads.startDaemon(nodeAdder());
+		Threads.startDaemon(nodeRemover());
+	}
+
+	private Runnable nodeAdder() {
+		return new Runnable() { @Override public void run() {
+			while (true) {
+				try {
+					SwingUtilities.invokeAndWait(new Runnable(){@Override public void run() {
+						addNode();
+					}});
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				}
+			}
+		}};
+	}
+
+	private Runnable nodeRemover() {
+		return new Runnable() { @Override public void run() {
+			while (true) {
+				try {
+					SwingUtilities.invokeAndWait(new Runnable(){@Override public void run() {
+						removeNode();
+					}});
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				}
+			}	
+		}};
+	}
+
+	private void removeNode() {
+		if (_model.getChildCount(_model.getRoot()) == 0) return;
+		_model.removeNodeFromParent((MutableTreeNode) _model.getChild(_model.getRoot(), 0));
+	}
+
+	private void addNode() {
+		if (_model.getChildCount(_model.getRoot()) == 5) return;
+		_model.insertNodeInto(new NonLeafNode(new Date()+" - "+gen()), (NonLeafNode) _model.getRoot(), 0);
+	}
+
 	private void removeChildrenRecursive(Object node) {
 		System.out.println("removing children ----");
-		while (model.getChildCount(node) != 0) {
-			Object child = model.getChild(node, 0);
+		while (_model.getChildCount(node) != 0) {
+			Object child = _model.getChild(node, 0);
 			removeChildrenRecursive(child);
-			model.removeNodeFromParent((MutableTreeNode)child);
+			_model.removeNodeFromParent((MutableTreeNode)child);
 		}
 		System.out.println("children removed  ----");
 	}

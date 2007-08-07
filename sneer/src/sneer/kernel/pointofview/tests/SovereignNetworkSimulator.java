@@ -1,7 +1,7 @@
 package sneer.kernel.pointofview.tests;
 
 
-interface SovereignNetworkSimulator {
+public interface SovereignNetworkSimulator {
 
 	PartySimulator createPartySimulator(String name);
 

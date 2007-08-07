@@ -27,11 +27,11 @@ public class JFrameBoundsKeeperTests extends TestCase {
 		JFrame testFrame3 = null;
 		
 		try {
-			final Rectangle bounds = new Rectangle(0,0,100,100);
+			final Rectangle bounds = new Rectangle(0,0,200,100);
 			testFrame = openTestFrame();
 			this.setBounds(testFrame, bounds);
-				
 			testFrame2 = openTestFrame();
+			
 			assertEquals(bounds, testFrame2.getBounds());
 			final Rectangle bounds2 = new Rectangle(0,0,200,100);
 			this.setBounds(testFrame2, bounds2);
@@ -60,7 +60,6 @@ public class JFrameBoundsKeeperTests extends TestCase {
 	private JFrame openTestFrame() {
 		
 		final JFrame testFrame = new JFrame();
-		
 		testFrame.setVisible(true);
 		String testFrameId = "testFrame";
 		_frameBoundsKeeper.keepBoundsFor(testFrame, testFrameId);

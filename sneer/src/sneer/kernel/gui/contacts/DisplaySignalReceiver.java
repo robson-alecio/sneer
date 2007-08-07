@@ -10,6 +10,7 @@ public class DisplaySignalReceiver<U> implements Omnivore<U>{
 	private final FriendNode _friend;
 
 	public DisplaySignalReceiver(DefaultTreeModel model, FriendNode friend){
+		//FixUrgent Esta classe some. Usar o mesmo receiver p todos signals. guardar num map: node -> receiver.
 		_model = model;
 		_friend = friend;
 	}

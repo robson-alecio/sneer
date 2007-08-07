@@ -44,9 +44,9 @@ public class ContactTreeController {
 	}
 
 	private TreeWillExpandListener willExpandListener() { return new TreeWillExpandListener(){
-		public void treeWillCollapse(TreeExpansionEvent event) { /*ignored*/ }
+		public void treeWillCollapse(TreeExpansionEvent ignored) { }
 		public void treeWillExpand(TreeExpansionEvent event) {
-			if (invalidExpansion(event.getPath())) return;
+			if (ignoredNode(event.getPath())) return;
 			
 			expandFriendNode((FriendNode)event.getPath().getLastPathComponent());
 			
@@ -61,9 +61,9 @@ public class ContactTreeController {
 	}
 
 	private TreeExpansionListener expansionListener() { return new TreeExpansionListener(){
-		public void treeExpanded(TreeExpansionEvent event)  {/*ignored*/ }
+		public void treeExpanded(TreeExpansionEvent ignored)  { }
 		public void treeCollapsed(TreeExpansionEvent event) {
-			if (invalidCollapse(event.getPath())) return;
+			if (ignoredNode(event.getPath())) return;
 			
 			collapseFriendNode((FriendNode)event.getPath().getLastPathComponent());
 		}};
@@ -86,14 +86,11 @@ public class ContactTreeController {
 		stopReceiving(friend);
 	}
 
-	private boolean invalidExpansion(TreePath path) {
-		return ((path == null)||(path.getLastPathComponent() instanceof MeNode));
+	private boolean ignoredNode(TreePath path) {
+		return path.getLastPathComponent() instanceof MeNode;
 	}
 	
-	private boolean invalidCollapse(TreePath path) {
-		return ((path == null)||(path.getLastPathComponent() instanceof MeNode));
-	}
-	
+
 	private void startReceiving(FriendNode friend){
     	for (Signal<?> signal : signalsToReceiveFrom(friend.contact())){
     		addReceiverToSignal(new DisplaySignalReceiver(_model,friend), signal);

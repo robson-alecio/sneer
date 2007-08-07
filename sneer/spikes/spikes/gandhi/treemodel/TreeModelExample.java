@@ -16,6 +16,7 @@ import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeWillExpandListener;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
 
 import sneer.kernel.gui.contacts.ContactCellRenderer;
 
@@ -27,11 +28,11 @@ public class TreeModelExample extends JFrame {
 	
 	public TreeModelExample() {
 		super();
-		model = new DefaultTreeModel(new MyTreeNode("root"));
+		model = new DefaultTreeModel(new NonLeafNode("root"));
 
-		model.insertNodeInto(new MyTreeNode(new Date()+" - "+gen()), (MyTreeNode) model.getRoot(), 0); //init
-		model.insertNodeInto(new MyTreeNode(new Date()+" - "+gen()), (MyTreeNode) model.getRoot(), 0);
-		model.insertNodeInto(new MyTreeNode(new Date()+" - "+gen()), (MyTreeNode) model.getRoot(), 0);
+		model.insertNodeInto(new NonLeafNode(new Date()+" - "+gen()), (NonLeafNode) model.getRoot(), 0); //init
+		model.insertNodeInto(new NonLeafNode(new Date()+" - "+gen()), (NonLeafNode) model.getRoot(), 0);
+		model.insertNodeInto(new NonLeafNode(new Date()+" - "+gen()), (NonLeafNode) model.getRoot(), 0);
 
 		final JTree tree = new JTree(model);
 		
@@ -39,7 +40,7 @@ public class TreeModelExample extends JFrame {
 		tree.addTreeExpansionListener(new TreeExpansionListener(){
 			
 			public void treeCollapsed(TreeExpansionEvent event) {
-				final MyTreeNode node = (MyTreeNode) event.getPath().getLastPathComponent();
+				final NonLeafNode node = (NonLeafNode) event.getPath().getLastPathComponent();
 				System.out.println("collapse " + node);
 				if (node == null) return;
 				if (node.getParent() == null) return; //ignore root
@@ -58,14 +59,14 @@ public class TreeModelExample extends JFrame {
 			}
 
 			public void treeWillExpand(TreeExpansionEvent event) {
-				final MyTreeNode node = (MyTreeNode) event.getPath().getLastPathComponent();
+				final NonLeafNode node = (NonLeafNode) event.getPath().getLastPathComponent();
 				System.out.println("expand " + node);
 				if (node == null) return;
 				if (node.getParent() == null) return; //ignore root
 
-				model.insertNodeInto(new MyTreeNode(new Date()+" - "+gen()), node, 0);
-				model.insertNodeInto(new MyTreeNode(new Date()+" - "+gen()), node, 0);
-				model.insertNodeInto(new MyTreeNode(new Date()+" - "+gen()), node, 0);
+				model.insertNodeInto(new NonLeafNode(new Date()+" - "+gen()), node, 0);
+				model.insertNodeInto(new NonLeafNode(new Date()+" - "+gen()), node, 0);
+				model.insertNodeInto(new NonLeafNode(new Date()+" - "+gen()), node, 0);
 
 			}
 		});
@@ -85,20 +86,12 @@ public class TreeModelExample extends JFrame {
 		setVisible(true);
 	}
 	
-	private void removeRecursive(MyTreeNode node) {
-		for(int t=model.getChildCount(node)-1;t>=0;t--){  // the nodes MUST be removed backwards, because its based on index position! argh..
-			MyTreeNode child = (MyTreeNode) model.getChild(node,t);
-			removeRecursive(child);
-		}
-		System.out.println("removing " + node);
-		model.removeNodeFromParent(node);
-	}
-
-	private void removeChildrenRecursive(MyTreeNode node) {
+	private void removeChildrenRecursive(Object node) {
 		System.out.println("removing children ----");
-		for(int t=model.getChildCount(node)-1;t>=0;t--){ // the nodes MUST be removed backwards, because its based on index position! argh...
-			MyTreeNode child = (MyTreeNode) model.getChild(node,t);
-			removeRecursive(child);
+		while (model.getChildCount(node) != 0) {
+			Object child = model.getChild(node, 0);
+			removeChildrenRecursive(child);
+			model.removeNodeFromParent((MutableTreeNode)child);
 		}
 		System.out.println("children removed  ----");
 	}

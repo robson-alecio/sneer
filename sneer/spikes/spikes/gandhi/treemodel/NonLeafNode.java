@@ -2,9 +2,9 @@ package spikes.gandhi.treemodel;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-public class MyTreeNode extends DefaultMutableTreeNode{
+public class NonLeafNode extends DefaultMutableTreeNode{
 
-	public MyTreeNode(Object object){
+	public NonLeafNode(Object object){
 		super(object);
 	}
 	

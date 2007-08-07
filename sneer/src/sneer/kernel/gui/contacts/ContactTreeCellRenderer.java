@@ -8,7 +8,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTree;
-import javax.swing.border.LineBorder;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import sneer.kernel.pointofview.Party;
@@ -49,7 +48,7 @@ public class ContactTreeCellRenderer extends DefaultTreeCellRenderer{
 		JPanel panel = new JPanel(layout);
 		layout.setAlignment(FlowLayout.LEFT);
 		panel.setBackground(isSelected ? selected : Color.white);
-		panel.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+		//panel.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
 
 		panel.add(new JLabel(onlineIcon));
 		panel.add(new JLabel(stateIcon));

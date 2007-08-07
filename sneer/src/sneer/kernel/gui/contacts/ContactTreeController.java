@@ -37,8 +37,6 @@ public class ContactTreeController {
 
 	private void createFriendNode(DefaultMutableTreeNode parent, Contact contact) {
 		synchronized(this){
-			if ((parent.getChildCount() == 1)&&(parent.getChildAt(0) instanceof NoContactNode))
-				_model.removeNodeFromParent((FriendNode)parent.getChildAt(0));
 			FriendNode friend =  new FriendNode(contact);
 			_model.insertNodeInto(friend, parent, 0);
 			startReceiving(friend);
@@ -84,8 +82,14 @@ public class ContactTreeController {
 
 	private void removeFriendNode(FriendNode child) {
 		synchronized(this){
-		stopReceiversRecursively(child);
-		_model.removeNodeFromParent(child); //dont worry about subtree, it will be garbage collected
+			unsynchronizedRemoveFriendNode(child);
+		}
+	}
+	
+	private void unsynchronizedRemoveFriendNode(FriendNode child) {
+		synchronized(this){
+			stopReceiversRecursively(child);
+			_model.removeNodeFromParent(child); //dont worry about subtree, it will be garbage collected
 		}
 	}
 	
@@ -169,12 +173,14 @@ public class ContactTreeController {
 
 			@Override
 			protected void elementToBeRemoved(Contact contactRemoved) {
-				int count = friend.getChildCount();
-				for (int i = 0; i < count; i++) {
-					FriendNode child = (FriendNode)friend.getChildAt(i);
-					if (child.contact() == contactRemoved) {
-						removeFriendNode(child);
-						return;
+				synchronized(ContactTreeController.this){
+					int count = friend.getChildCount();
+					for (int i = 0; i < count; i++) {
+						FriendNode child = (FriendNode)friend.getChildAt(i);
+						if (child.contact() == contactRemoved) {
+							unsynchronizedRemoveFriendNode(child);
+							return;
+						}
 					}
 				}
 			}

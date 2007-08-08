@@ -26,6 +26,7 @@ import javax.swing.tree.TreePath;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.business.contacts.ContactInfo2;
 import sneer.kernel.gui.NewContactAddition;
+import sneer.kernel.pointofview.Contact;
 import sneer.kernel.pointofview.Party;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
@@ -85,32 +86,6 @@ class ContactsScreen extends JFrame {
 		
 			private static final long serialVersionUID = 1L;});
 	}
-
-	/*private JList createFriendsList() {
-		final ListSignalModel<Contact> friendsListModel = new ListSignalModel<Contact>(_I.contacts(), signalChooser());
-		final JList friendsList = new JList(friendsListModel);
-		friendsList.setBackground(java.awt.Color.black);
-		friendsList.setCellRenderer(new ContactCellRenderer());
-		
-		friendsList.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent mouseEvent) {
-				final boolean rightClick = mouseEvent.getButton() == MouseEvent.BUTTON3;
-				if (rightClick){
-					int indexUnderMouse = friendsList.locationToIndex(mouseEvent.getPoint());
-					if (indexUnderMouse == -1)
-						return;
-					
-					friendsList.setSelectedIndex(indexUnderMouse);
-					
-					getFriendPopUpMenu(friendsList)
-						.show(friendsList, mouseEvent.getX(), mouseEvent.getY());
-				}
-			}
-		});
-		
-		return friendsList;
-	}*/
 	
 	private JTree createFriendsTree() {
 		MeNode me = new MeNode(_I);
@@ -138,63 +113,25 @@ class ContactsScreen extends JFrame {
 		
 		return tree;
 	}
-	
-	/*private JTree createFriendsTree() {
-		ContactRootNode root = new ContactRootNode(_I);
-		TreeModel model = root.model();
-		
-		final JTree tree = new JTree(model);
-		tree.setCellRenderer(new ContactTreeCellRenderer());
-		tree.setEditable(true);
-		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-		tree.setShowsRootHandles(true);
-		tree.addTreeWillExpandListener(new TreeWillExpandListener(){
-			public void treeWillCollapse(TreeExpansionEvent event) {
-				TreePath path = event.getPath();
-				if ((path == null)||(path.getLastPathComponent() instanceof ContactRootNode))
-					return;
-				ContactTreeNode partyNode = (ContactTreeNode)path.getLastPathComponent();
-				if (partyNode!=null){
-					partyNode.prepareToCollapse();
-				}
-			}
-			public void treeWillExpand(TreeExpansionEvent event) {
-				TreePath path = event.getPath();
-				if ((path == null)||(path.getLastPathComponent() instanceof ContactRootNode))
-					return;
-				ContactTreeNode partyNode = (ContactTreeNode)path.getLastPathComponent();
-				if (partyNode!=null){
-					partyNode.prepareToExpand();
-				}
-			}
-		});
-		tree.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent mouseEvent) {
-				final boolean rightClick = mouseEvent.getButton() == MouseEvent.BUTTON3;
-				if (!rightClick) return;
-
-				TreePath path = tree.getPathForLocation(mouseEvent.getX(),mouseEvent.getY());
-					
-				ContactTreeNode partyNode = (ContactTreeNode)path.getLastPathComponent();
-				if (partyNode==null) return;
-					
-				getFriendPopUpMenu(partyNode).show(tree, mouseEvent.getX(), mouseEvent.getY());
-			}
-		});
-		return tree;
-	}*/
 
 	private JPopupMenu getFriendPopUpMenu(final FriendNode node) {
 		final JPopupMenu result = new JPopupMenu();
-		addToContactMenu(result, nickChangeAction(), node);
+		addToContactMenu(result, infoAction(), node);
 		for (ContactAction action : _contactActions) addToContactMenu(result, action, node);
 		addToContactMenu(result, new ContactRemovalAction(_contactRemover), node);
 		return result;
 	}
 
-	private ContactNickChangeAction nickChangeAction() {
-		return new ContactNickChangeAction(_user, _nickChanger);
+	private ContactAction infoAction() {
+		return new ContactAction(){
+			public void actUpon(Contact contact) {
+				new InfoPanel(contact, _nickChanger);
+			}
+			public String caption() {
+				return translate("Info");
+			}
+			
+		};
 	}
 
 	private void addToContactMenu(JPopupMenu menu, final ContactAction action, final FriendNode node) {

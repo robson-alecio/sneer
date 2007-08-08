@@ -31,6 +31,7 @@ import sneer.kernel.communication.Operator;
 import sneer.kernel.communication.Packet;
 import wheel.io.network.ObjectSocket;
 import wheel.io.network.OldNetwork;
+import wheel.io.network.impl.XStreamNetwork;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.lang.Consumer;
@@ -47,8 +48,9 @@ public class Communicator {
 		
 		prepareBusiness();
 		
-		_spider = new Spider(network, business.contactAttributes(), outgoingConnectionValidator(), myObjectReceiver());
-		new SocketAccepter(user, network, business.sneerPort(), mySocketServer());
+		XStreamNetwork xNetwork = new XStreamNetwork(network);
+		_spider = new Spider(xNetwork, business.contactAttributes(), outgoingConnectionValidator(), myObjectReceiver());
+		new SocketAccepter(user, xNetwork, business.sneerPort(), mySocketServer());
 	}
 
 	private Omnivore<Object> myObjectReceiver() {

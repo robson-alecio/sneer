@@ -13,6 +13,8 @@ public class ContactInfo2 implements Serializable {
 		_nick = nick;
 		_host = host;
 		_port = port;
+
+		publicKey.toString();
 		_publicKey = publicKey;
 	}
 

@@ -8,7 +8,6 @@ import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
-import wheel.reactive.impl.ConstantSignal;
 import wheel.reactive.impl.SourceImpl;
 
 public class ContactAttributesSourceImpl implements ContactAttributesSource {
@@ -41,13 +40,14 @@ public class ContactAttributesSourceImpl implements ContactAttributesSource {
 
 		@Override
 		public Signal<Boolean> publicKeyConfirmed() {
-			return new ConstantSignal<Boolean>(false); //Implement
+			return new SourceImpl<Boolean>(false).output(); //Implement
 		}
 
 	}
 
 
 	public ContactAttributesSourceImpl(String nick, String host, int port, String publicKey, long id) {
+		nick.toString();
 		_nick = new SourceImpl<String>(nick);
 		_host = new SourceImpl<String>(host);
 		_port = new PortNumberSource(port);

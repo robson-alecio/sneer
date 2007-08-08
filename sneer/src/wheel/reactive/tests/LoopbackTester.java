@@ -3,6 +3,7 @@ package wheel.reactive.tests;
 import static junit.framework.Assert.assertEquals;
 import wheel.lang.Casts;
 import wheel.lang.Omnivore;
+import wheel.lang.Threads;
 import wheel.reactive.Signal;
 
 public class LoopbackTester {
@@ -29,22 +30,23 @@ public class LoopbackTester {
 	private Object _inputValue3;
 
 	public void test() {
-		testWithString();
-		testWithInteger();
+		testWithStrings();
+		testWithIntegers();
 	}
 	
-	public void testWithString() {
+	public void testWithStrings() {
 		testLoopbackWith("foo");
 		testLoopbackWith("bar");
 	}
 
-	public void testWithInteger() {
+	public void testWithIntegers() {
 		testLoopbackWith(42);
 		testLoopbackWith(17);
 	}
 	
 	private void testLoopbackWith(Object object) {
 		_output.consume(object);
+		Threads.sleepWithoutInterruptions(500); //FixUrgent Tests cannot wait!!! Detect signal change.
 		assertEquals(object, _inputValue1);
 		assertEquals(object, _inputValue2);
 		assertEquals(object, _inputValue3);

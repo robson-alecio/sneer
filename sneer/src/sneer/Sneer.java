@@ -29,7 +29,6 @@ import wheel.io.Log;
 import wheel.io.files.Directory;
 import wheel.io.files.impl.DurableDirectory;
 import wheel.io.network.OldNetworkImpl;
-import wheel.io.network.impl.XStreamNetwork;
 import wheel.io.ui.BoundsPersistence;
 import wheel.io.ui.JFrameBoundsKeeper;
 import wheel.io.ui.User;
@@ -60,7 +59,7 @@ public class Sneer {
 	private User _user = new JOptionPaneUser("Sneer", briefNotifier());
 	private BusinessSource _businessSource;
 	private Communicator _communicator;
-	private Party _I;
+	private Party _me;
 	private Gui _gui;
 
 	private JFrameBoundsKeeperImpl _jframeBoundsKeeper;
@@ -77,9 +76,10 @@ public class Sneer {
 		//Optimize: Separate thread to close splash screen.
 		try{Thread.sleep(2000);}catch(InterruptedException ie){} 
 		
-		_communicator = new Communicator(_user, new XStreamNetwork(new OldNetworkImpl()), _businessSource);
-		_I = new Me(_businessSource.output(), _communicator.operator());
-		_gui = new Gui(_user, _I, _businessSource, contactActions(), jFrameBoundsKeeper()); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
+		_communicator = new Communicator(_user, new OldNetworkImpl(), _businessSource);
+		Channel channel = _communicator.getChannel("Point of View", 1);
+		_me = new Me(_businessSource.output(), _communicator.operator(), channel);
+		_gui = new Gui(_user, _me, _businessSource, contactActions(), jFrameBoundsKeeper()); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
 		
 		while (true) Threads.sleepWithoutInterruptions(100000); // Refactor Consider joining the main gui thread.
 	}
@@ -127,13 +127,13 @@ public class Sneer {
 		result.add(new ConversationsApp(conversationsChannel, _businessSource.output().contactAttributes(), _user.briefNotifier(), jFrameBoundsKeeper()).contactAction());
 		
 		Channel talkChannel = _communicator.getChannel(TalkApp.class.getName(), 1);
-		result.add(new TalkApp(_user, talkChannel, _I.contacts()).contactAction());
+		result.add(new TalkApp(_user, talkChannel, _me.contacts()).contactAction());
 		
-		Channel fileTransferChannel = _communicator.getChannel(FileTransferApp.class.getName(), 2);
+		Channel fileTransferChannel = _communicator.getChannel(FileTransferApp.class.getName(), 3);
 		result.add(new FileTransferApp(_user, fileTransferChannel, _businessSource.output().contactAttributes()).contactAction());
 		
 		Channel scribbleChannel = _communicator.getChannel(ScribbleApp.class.getName(), 2);
-		result.add(new ScribbleApp(_user, scribbleChannel, _I.contacts()).contactAction());
+		result.add(new ScribbleApp(_user, scribbleChannel, _me.contacts()).contactAction());
 		
 		return result;
 	}

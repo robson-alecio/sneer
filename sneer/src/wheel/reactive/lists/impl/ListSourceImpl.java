@@ -43,7 +43,7 @@ public class ListSourceImpl<VO> implements ListSource<VO> {
 		}
 
 		public Iterator<VO> iterator() {
-			return _list.iterator();
+			return new ArrayList<VO>(_list).iterator(); //Optimize
 		}
 
 	}

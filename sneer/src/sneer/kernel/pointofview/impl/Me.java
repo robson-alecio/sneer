@@ -2,21 +2,41 @@ package sneer.kernel.pointofview.impl;
 
 import sneer.kernel.business.Business;
 import sneer.kernel.business.contacts.ContactAttributes;
+import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Operator;
+import sneer.kernel.communication.Packet;
 import sneer.kernel.pointofview.Contact;
 import sneer.kernel.pointofview.Party;
 import wheel.lang.Functor;
+import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
-import wheel.reactive.impl.ConstantSignal;
+import wheel.reactive.impl.SourceImpl;
 import wheel.reactive.lists.Collector;
 import wheel.reactive.lists.ListSignal;
 
 public class Me implements Party {
 
-	public Me(Business business, Operator operator) {
+	public Me(Business business, Operator operator, Channel channel) {
 		_business = business;
 		_operator = operator;
 		_contacts = createContactsListSignal();
+		_channel = channel;
+		
+		_business.ownName().addReceiver(nameBroadcaster());
+	}
+	
+
+	private final Business _business;
+	private final ListSignal<Contact> _contacts;
+	private final Operator _operator;
+	private final Channel _channel;
+
+	
+	private Omnivore<String> nameBroadcaster() {
+		return new Omnivore<String>() { @Override public void consume(String newName) {
+			for (Contact contact : _contacts)
+				_channel.output().consume(new Packet(contact.id(), newName));
+		}};
 	}
 
 	private ListSignal<Contact> createContactsListSignal() {
@@ -25,14 +45,10 @@ public class Me implements Party {
 	
 	private Functor<ContactAttributes, Contact> contactCreator() {
 		return new Functor<ContactAttributes, Contact>() { @Override 	public Contact evaluate(ContactAttributes attributes) {
-			return new ImmediateContact(attributes, _operator.connectMeWith(attributes.id()).isOnline());
+			return new ImmediateContact(attributes, _operator.connectMeWith(attributes.id()).isOnline(), _channel);
 		}};
 	}
 
-
-	private final Business _business;
-	private final ListSignal<Contact> _contacts;
-	private final Operator _operator;
 
 	@Override
 	public ListSignal<Contact> contacts() {
@@ -46,17 +62,17 @@ public class Me implements Party {
 
 	@Override
 	public Signal<Boolean> publicKeyConfirmed() {
-		return new ConstantSignal<Boolean>(true); //Fix: is this correct?
+		return new SourceImpl<Boolean>(true).output(); //Fix: is this correct?
 	}
 
 	@Override
 	public Signal<Boolean> isOnline() {
-		return new ConstantSignal<Boolean>(true); //Fix: is this correct?
+		return new SourceImpl<Boolean>(true).output(); //Fix: is this correct?
 	}
 
 	@Override
 	public Signal<String> host() {
-		return new ConstantSignal<String>("localhost"); //Implement Make this a list of possible host:port addresses.
+		return new SourceImpl<String>("localhost").output(); //Implement Make this a list of possible host:port addresses.
 	}
 
 	@Override
@@ -68,5 +84,13 @@ public class Me implements Party {
 	public String toString(){
     	return _business.ownName().currentValue();
     }
+
+	@Override
+	public Contact currentContact(String nick) {
+		for (Contact candidate : _contacts)
+			if (candidate.nick().currentValue().equals(nick)) return candidate;
+		
+		return null;
+	}
 
 }

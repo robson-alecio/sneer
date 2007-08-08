@@ -13,8 +13,8 @@ public class BaseNetworkMock {
     protected final Map<Integer, ObjectServerSocket> _serverSocketByPort = new HashMap<Integer, ObjectServerSocket>();
     protected Permit _permit = new Permit();
 
-    protected void crashIfNotLocal(String serverIpAddress) {
-        if (!serverIpAddress.equals("localhost")) throw new IllegalArgumentException("Only localhost connections are supported by the NetworkMock.");
+    protected void crashIfNotLocal(String serverIpAddress) throws IOException {
+        if (!serverIpAddress.equals("localhost")) throw new IOException("Only localhost connections are supported by the NetworkMock. Attempted: " + serverIpAddress);
     }
     public void crash() {
         _permit.expire();

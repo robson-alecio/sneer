@@ -1,17 +1,21 @@
 package sneer.kernel.pointofview.impl;
 
 import sneer.kernel.business.contacts.ContactAttributes;
+import sneer.kernel.communication.Channel;
+import sneer.kernel.communication.Packet;
 import sneer.kernel.pointofview.Contact;
 import sneer.kernel.pointofview.Party;
+import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
-import wheel.reactive.impl.ConstantSignal;
+import wheel.reactive.Source;
+import wheel.reactive.impl.SourceImpl;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListSource;
 import wheel.reactive.lists.impl.ListSourceImpl;
 
 public class ThirdParty implements Party {
 
-	public ThirdParty(ContactAttributes attributes, Signal<Boolean> isOnline) {
+	public ThirdParty(ContactAttributes attributes, Signal<Boolean> isOnline, Channel channel) {
 		
 		if (attributes == null)
 			throw new IllegalArgumentException();
@@ -19,15 +23,25 @@ public class ThirdParty implements Party {
 		_attributes = attributes;
 		_isOnline = isOnline;
 		_fakeContacts = createFakeContacts();
+		
+		channel.input().addReceiver(packetReceiver());
 	}
 
 	private final ContactAttributes _attributes;
 	private final Signal<Boolean> _isOnline;
 	private final ListSource<Contact> _fakeContacts;
+	private final Source<String> _name = new SourceImpl<String>(null);
 
+	private Omnivore<Packet> packetReceiver() {
+		return new Omnivore<Packet>() { @Override public void consume(Packet packet) {
+			if (!packet._contactId.equals(_attributes.id())) return;
+			_name.setter().consume((String)packet._contents);
+		}};
+	}
+	
 	@Override
 	public Signal<String> name() {
-		return new ConstantSignal<String>(nick()); //Fix: have no idea if this is correct!
+		return _name.output();
 	}
 	
 	private ListSource<Contact> createFakeContacts() {
@@ -72,5 +86,11 @@ public class ThirdParty implements Party {
 	public String toString(){
     	return _attributes.nick().currentValue();
     }
+
+	@Override
+	public Contact currentContact(String nick) {
+		// Implement Auto-generated method stub
+		throw new wheel.lang.exceptions.NotImplementedYet();
+	}
 	
 }

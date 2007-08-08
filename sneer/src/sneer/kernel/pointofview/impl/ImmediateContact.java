@@ -2,6 +2,7 @@ package sneer.kernel.pointofview.impl;
 
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactId;
+import sneer.kernel.communication.Channel;
 import sneer.kernel.pointofview.Contact;
 import sneer.kernel.pointofview.Party;
 import wheel.reactive.Signal;
@@ -12,10 +13,10 @@ public class ImmediateContact implements Contact {
 	private final Signal<String> _nick;
 	private final Party _party;
 
-	public ImmediateContact(ContactAttributes attributes, Signal<Boolean> isOnline) {
+	public ImmediateContact(ContactAttributes attributes, Signal<Boolean> isOnline, Channel channel) {
 		_id = attributes.id();
 		_nick = attributes.nick();
-		_party = new ThirdParty(attributes, isOnline);
+		_party = new ThirdParty(attributes, isOnline, channel);
 	}
 
 	@Override

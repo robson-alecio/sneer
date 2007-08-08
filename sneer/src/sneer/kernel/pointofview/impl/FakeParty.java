@@ -8,7 +8,6 @@ import sneer.kernel.pointofview.Party;
 import wheel.lang.Threads;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
-import wheel.reactive.impl.ConstantSignal;
 import wheel.reactive.impl.SourceImpl;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListSource;
@@ -109,7 +108,7 @@ public class FakeParty implements Party {
 
 	@Override
 	public Signal<String> name() {
-		return new ConstantSignal<String>(_namePrefix); //Fix:have no idea if this is correct!
+		return new SourceImpl<String>(_namePrefix).output(); //Fix:have no idea if this is correct!
 	}
 
 	@Override
@@ -126,5 +125,12 @@ public class FakeParty implements Party {
 	public String toString(){
     	return _namePrefix;//Fix:have no idea if this is correct!
     }
+
+	@Override
+	public Contact currentContact(String nick) {
+		// Implement Auto-generated method stub
+		throw new wheel.lang.exceptions.NotImplementedYet();
+	}
+
 
 }

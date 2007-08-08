@@ -11,6 +11,7 @@ public interface Party {
 //	Signal<String> profile();
 	
 	ListSignal<Contact> contacts();
+	Contact currentContact(String nick);
 
 	Signal<Boolean> publicKeyConfirmed();
 //	Signal<Float> trustworthiness(); //  ;)

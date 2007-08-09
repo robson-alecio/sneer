@@ -19,8 +19,9 @@ public class Me implements Party {
 	public Me(Business business, Operator operator, Channel channel) {
 		_business = business;
 		_operator = operator;
-		_contacts = createContactsListSignal();
 		_channel = channel;
+		
+		_contacts = createContactsListSignal();
 		
 		_business.ownName().addReceiver(nameBroadcaster());
 	}

@@ -16,15 +16,15 @@ public class ContactTreeCellRenderer extends DefaultTreeCellRenderer{
 
 	final static String IMAGE_PATH = "/sneer/kernel/gui/contacts/images/";
 
-	final static ImageIcon ONLINE_ICON = new ImageIcon(ContactCellRenderer.class.getResource(IMAGE_PATH + "operator.gif"));
+	final static ImageIcon ONLINE_ICON = new ImageIcon(ContactTreeCellRenderer.class.getResource(IMAGE_PATH + "operator.gif"));
 
-	final static ImageIcon OFFLINE_ICON = new ImageIcon(ContactCellRenderer.class.getResource(IMAGE_PATH + "operator_disabled.gif"));
+	final static ImageIcon OFFLINE_ICON = new ImageIcon(ContactTreeCellRenderer.class.getResource(IMAGE_PATH + "operator_disabled.gif"));
 
-	final static ImageIcon ERROR_ICON = new ImageIcon(ContactCellRenderer.class.getResource(IMAGE_PATH + "redled.gif"));
+	final static ImageIcon ERROR_ICON = new ImageIcon(ContactTreeCellRenderer.class.getResource(IMAGE_PATH + "redled.gif"));
 
-	final static ImageIcon UNCONFIRMED_ICON = new ImageIcon(ContactCellRenderer.class.getResource(IMAGE_PATH + "yellowled.gif"));
+	final static ImageIcon UNCONFIRMED_ICON = new ImageIcon(ContactTreeCellRenderer.class.getResource(IMAGE_PATH + "yellowled.gif"));
 
-	final static ImageIcon CONFIRMED_ICON = new ImageIcon(ContactCellRenderer.class.getResource(IMAGE_PATH + "greenled.gif"));
+	final static ImageIcon CONFIRMED_ICON = new ImageIcon(ContactTreeCellRenderer.class.getResource(IMAGE_PATH + "greenled.gif"));
 	
 	final static Color selected = new Color(230,240,255);
 
@@ -37,7 +37,11 @@ public class ContactTreeCellRenderer extends DefaultTreeCellRenderer{
 		Party party = treeNode instanceof FriendNode 
 			? ((FriendNode) treeNode).contact().party()
 			: ((MeNode) treeNode).party();
-
+		
+		String nick = treeNode instanceof FriendNode
+			? ((FriendNode) treeNode).contact().nick().currentValue() + " - "
+			: "";
+			
 		ImageIcon stateIcon = stateIconFor(party);
 
 		ImageIcon onlineIcon = party.isOnline().currentValue()
@@ -52,8 +56,8 @@ public class ContactTreeCellRenderer extends DefaultTreeCellRenderer{
 
 		panel.add(new JLabel(onlineIcon));
 		panel.add(new JLabel(stateIcon));
-		String name = (party.name()==null)?"null":party.name().currentValue();
-		panel.add(new JLabel( name ));
+		String name = party.name().currentValue();
+		panel.add(new JLabel(nick + name));
 
 		return panel;
 	}

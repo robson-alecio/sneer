@@ -30,7 +30,7 @@ public class ThirdParty implements Party {
 	private final ContactAttributes _attributes;
 	private final Signal<Boolean> _isOnline;
 	private final ListSource<Contact> _fakeContacts;
-	private final Source<String> _name = new SourceImpl<String>(null);
+	private final Source<String> _name = new SourceImpl<String>("[Implement Name Cache]"); //Implement
 
 	private Omnivore<Packet> packetReceiver() {
 		return new Omnivore<Packet>() { @Override public void consume(Packet packet) {

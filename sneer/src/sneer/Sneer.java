@@ -39,7 +39,6 @@ import wheel.io.ui.impl.JFrameBoundsKeeperImpl;
 import wheel.io.ui.impl.JOptionPaneUser;
 import wheel.io.ui.impl.tests.TransientBoundsPersistence;
 import wheel.lang.Omnivore;
-import wheel.lang.Threads;
 
 public class Sneer {
 
@@ -81,7 +80,7 @@ public class Sneer {
 		_me = new Me(_businessSource.output(), _communicator.operator(), channel);
 		_gui = new Gui(_user, _me, _businessSource, contactActions(), jFrameBoundsKeeper()); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
 		
-		while (true) Threads.sleepWithoutInterruptions(100000); // Refactor Consider joining the main gui thread.
+		//while (true) Threads.sleepWithoutInterruptions(100000); // Refactor Consider joining the main gui thread.
 	}
 
 	private JFrameBoundsKeeper jFrameBoundsKeeper() {

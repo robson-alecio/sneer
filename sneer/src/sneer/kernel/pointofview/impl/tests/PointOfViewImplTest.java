@@ -33,9 +33,11 @@ public class PointOfViewImplTest extends PointOfViewTest {
 				implA.connectTo("localhost", _portsByPartySimulator.get(b), implB.name());
 				
 				long t0 = System.currentTimeMillis();
-				while (implB.contact("A") == null)
+				while (implB.contact("A") == null) {
+					Thread.yield();
 					if (System.currentTimeMillis() - t0 > 1000)
 						throw new RuntimeException("Timeout");
+				}
 			}
 		};
 

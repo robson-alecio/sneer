@@ -19,9 +19,14 @@ public class SneerSecurityManager extends SecurityManager {
 	}
 	
 	public void checkSneerPermission() {
-		if (Thread.currentThread().getThreadGroup() == _pluginGroup) {
-	   		throw new SecurityException("BUM!");
-	   	}		
+		if (Thread.currentThread().getThreadGroup() != _pluginGroup) return;
+		
+   		try {
+			throw new SecurityException("BUM!");
+		} catch (SecurityException e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 	
 	@Override

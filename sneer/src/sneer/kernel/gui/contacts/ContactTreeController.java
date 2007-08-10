@@ -22,38 +22,29 @@ import wheel.reactive.lists.impl.SimpleListReceiver;
 
 public class ContactTreeController {
 	
-	private final JTree _tree;
 	private final DefaultTreeModel _model;
 
 	public ContactTreeController(JTree tree, DefaultTreeModel model){
-		_tree = tree;
 		_model = model;
 		buildFirstLevel();
-		registerListeners();
+		registerExpansionListeners(tree);
 	}
 
 	private void buildFirstLevel() {
 		MeNode me = (MeNode)_model.getRoot();
-		for(Contact contact:me.party().contacts()){
-			createFriendNode(me, contact);
-		}
+		for(Contact contact:me.party().contacts())
+			createContactNode(me, contact);
 	}
 
-	private void createFriendNode(final DefaultMutableTreeNode parent, final Contact contact) {
-		runBlockThatChangesModel(new Runnable(){ public void run(){
-			unsynchronizedCreateFriendNode(parent,contact);
-		}});
-	}
-	
-	private void unsynchronizedCreateFriendNode(DefaultMutableTreeNode parent, Contact contact) {
-			FriendNode friend =  new FriendNode(contact);
-			_model.insertNodeInto(friend, parent, 0);
-			startReceiving(friend);
+	private void createContactNode(DefaultMutableTreeNode parent, Contact contact) {
+		ContactNode node =  new ContactNode(contact);
+		_model.insertNodeInto(node, parent, 0);
+		startReceiving(node);
 	}
 
-	private void registerListeners() {
-		_tree.addTreeExpansionListener(expansionListener());
-		_tree.addTreeWillExpandListener(willExpandListener());
+	private void registerExpansionListeners(JTree tree) {
+		tree.addTreeExpansionListener(collapseListener());
+		tree.addTreeWillExpandListener(willExpandListener());
 	}
 
 	private TreeWillExpandListener willExpandListener() { return new TreeWillExpandListener(){
@@ -61,51 +52,40 @@ public class ContactTreeController {
 		public void treeWillExpand(TreeExpansionEvent event) {
 			if (ignoredNode(event.getPath())) return;
 			
-			expandFriendNode((FriendNode)event.getPath().getLastPathComponent());
+			expandFriendNode((ContactNode)event.getPath().getLastPathComponent());
 			
 		}};
 	}
 
-	private void expandFriendNode(final FriendNode friend) {
-		runBlockThatChangesModel(new Runnable(){ public void run(){
-			for(Contact contact:friend.contact().party().contacts()){
-				unsynchronizedCreateFriendNode(friend,contact);
-			}
-		}});
+	private void expandFriendNode(final ContactNode friend) {
+		for(Contact contact:friend.contact().party().contacts())
+			createContactNode(friend,contact);
 	}
 
-	private TreeExpansionListener expansionListener() { return new TreeExpansionListener(){
+	private TreeExpansionListener collapseListener() { return new TreeExpansionListener(){
 		public void treeExpanded(TreeExpansionEvent ignored)  { }
 		public void treeCollapsed(TreeExpansionEvent event) {
 			if (ignoredNode(event.getPath())) return;
 			
-			collapseFriendNode((FriendNode)event.getPath().getLastPathComponent());
+			collapseFriendNode((ContactNode)event.getPath().getLastPathComponent());
 		}};
 	}
 	
-	private void collapseFriendNode(final FriendNode friend) {
-		runBlockThatChangesModel(new Runnable(){ public void run(){
-			for(int t=_model.getChildCount(friend)-1;t>=0;t--){
-				FriendNode child = (FriendNode) _model.getChild(friend,t);
-				unsynchronizedRemoveFriendNode(child);
-			}
-		}});
+	private void collapseFriendNode(final ContactNode friend) {
+		while (_model.getChildCount(friend) != 0) {
+			ContactNode child = (ContactNode) _model.getChild(friend, 0);
+			removeFriendNode(child);
+		}
 	}
 
-	//private void removeFriendNode(FriendNode child) {
-	//	synchronized(_synchronizeAnyModelAccess){
-	//		unsynchronizedRemoveFriendNode(child);
-	//	}
-	//}
-	
-	private void unsynchronizedRemoveFriendNode(FriendNode child) {
-			stopReceiversRecursively(child);
-			_model.removeNodeFromParent(child); //dont worry about subtree, it will be garbage collected
+	private void removeFriendNode(ContactNode child) {
+		stopReceiversRecursively(child);
+		_model.removeNodeFromParent(child); //dont worry about subtree, it will be garbage collected
 	}
 	
-	private void stopReceiversRecursively(FriendNode friend){
+	private void stopReceiversRecursively(ContactNode friend){
 		for(int t=friend.getChildCount()-1;t>=0;t--){
-			FriendNode child = (FriendNode)friend.getChildAt(t);
+			ContactNode child = (ContactNode)friend.getChildAt(t);
 			stopReceiversRecursively(child);
 		}
 		stopReceiving(friend);
@@ -115,9 +95,9 @@ public class ContactTreeController {
 		return path.getLastPathComponent() instanceof MeNode;
 	}
 	
-	private Hashtable<FriendNode,Omnivore<Object>> _displayReceiversByFriend = new Hashtable<FriendNode,Omnivore<Object>>();
+	private Hashtable<ContactNode,Omnivore<Object>> _displayReceiversByFriend = new Hashtable<ContactNode,Omnivore<Object>>();
 
-	private void startReceiving(FriendNode friend){
+	private void startReceiving(ContactNode friend){
 		Omnivore<Object> displayReceiver = displaySignalReceiver(friend);
     	for (Signal<?> signal : signalsToReceiveFrom(friend.contact())){
     		addReceiverToSignal(displayReceiver, signal);
@@ -128,7 +108,7 @@ public class ContactTreeController {
     }
 	
     
-    private Omnivore<Object> displaySignalReceiver(final FriendNode friend) {
+    private Omnivore<Object> displaySignalReceiver(final ContactNode friend) {
 		return new Omnivore<Object>(){
 			public void consume(Object ignored) {
 				runBlockThatChangesModel(new Runnable(){ public void run(){
@@ -138,7 +118,7 @@ public class ContactTreeController {
 		};
 	}
 
-	private void stopReceiving(FriendNode friend){
+	private void stopReceiving(ContactNode friend){
 		SimpleListReceiver<Contact> contactListReceiver = _contactListReceiversByFriend.remove(friend);
 		if (contactListReceiver != null)
 			contactListReceiver.stopReceiving();
@@ -168,15 +148,17 @@ public class ContactTreeController {
 		};
 	}
 	
-	private Hashtable<FriendNode,SimpleListReceiver<Contact>> _contactListReceiversByFriend = new Hashtable<FriendNode,SimpleListReceiver<Contact>>();
+	private Hashtable<ContactNode,SimpleListReceiver<Contact>> _contactListReceiversByFriend = new Hashtable<ContactNode,SimpleListReceiver<Contact>>();
 
  
-	private SimpleListReceiver<Contact> registerContactListReceiver(final FriendNode friend) {
+	private SimpleListReceiver<Contact> registerContactListReceiver(final ContactNode friend) {
 		return new SimpleListReceiver<Contact>(friend.contact().party().contacts()) {
 
 			@Override
-			protected void elementAdded(Contact newContact) {
-				createFriendNode(friend, newContact);
+			protected void elementAdded(final Contact newContact) {
+				runBlockThatChangesModel(new Runnable(){ public void run(){
+					createContactNode(friend, newContact);
+				}});
 			}
 
 			@Override
@@ -190,9 +172,9 @@ public class ContactTreeController {
 				runBlockThatChangesModel(new Runnable(){ public void run(){
 					int count = friend.getChildCount();
 					for (int i = 0; i < count; i++) {
-						FriendNode child = (FriendNode)friend.getChildAt(i);
+						ContactNode child = (ContactNode)friend.getChildAt(i);
 						if (child.contact() == contactRemoved) {
-							unsynchronizedRemoveFriendNode(child);
+							removeFriendNode(child);
 							return;
 						}
 					}
@@ -201,8 +183,6 @@ public class ContactTreeController {
 
 		};
 	}
-	
-	private Object _syncObject = new Object();
 	
 	private MyConsumer _consumer = new MyConsumer();
 	
@@ -226,13 +206,7 @@ public class ContactTreeController {
 					if (_buffer.isEmpty())
 						Threads.waitWithoutInterruptions(_buffer);
 					final Runnable runnable = _buffer.remove(0); //can't be inside invokelater (executed in eventqueue thread)
-					SwingUtilities.invokeLater(new Runnable(){
-						public void run(){
-							synchronized(_syncObject){
-								runnable.run();
-							}
-						}
-					});
+					SwingUtilities.invokeLater(runnable);
 				}
 			}
 		}

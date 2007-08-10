@@ -34,12 +34,12 @@ public class ContactTreeCellRenderer extends DefaultTreeCellRenderer{
 		//if (treeNode == ContactTreeNode.NO_CONTACTS)
 			//return super.getTreeCellRendererComponent(tree,treeNode,isSelected, expanded, leaf, row, focus);
 			
-		Party party = treeNode instanceof FriendNode 
-			? ((FriendNode) treeNode).contact().party()
+		Party party = treeNode instanceof ContactNode 
+			? ((ContactNode) treeNode).contact().party()
 			: ((MeNode) treeNode).party();
 		
-		String nick = treeNode instanceof FriendNode
-			? ((FriendNode) treeNode).contact().nick().currentValue() + " - "
+		String nick = treeNode instanceof ContactNode
+			? ((ContactNode) treeNode).contact().nick().currentValue() + " - "
 			: "";
 			
 		ImageIcon stateIcon = stateIconFor(party);

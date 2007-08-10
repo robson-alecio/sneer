@@ -4,9 +4,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import sneer.kernel.pointofview.Contact;
 
-public class FriendNode extends DefaultMutableTreeNode{
+public class ContactNode extends DefaultMutableTreeNode{
 
-	public FriendNode(Contact contact){
+	public ContactNode(Contact contact){
 		super(contact);
 	}
 	

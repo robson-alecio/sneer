@@ -1,8 +1,6 @@
 package sneer.kernel.gui.contacts;
 
 import java.util.Hashtable;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
@@ -16,7 +14,6 @@ import javax.swing.tree.TreePath;
 import sneer.kernel.pointofview.Contact;
 import wheel.lang.Casts;
 import wheel.lang.Omnivore;
-import wheel.lang.Threads;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
@@ -24,7 +21,7 @@ public class ContactTreeController {
 	
 	private final DefaultTreeModel _model;
 
-	public ContactTreeController(JTree tree, DefaultTreeModel model){
+	public ContactTreeController(JTree tree, DefaultTreeModel model) {
 		_model = model;
 		buildFirstLevel();
 		registerExpansionListeners(tree);
@@ -111,6 +108,8 @@ public class ContactTreeController {
     private Omnivore<Object> displaySignalReceiver(final ContactNode friend) {
 		return new Omnivore<Object>(){
 			public void consume(Object ignored) {
+				if (SwingUtilities.isEventDispatchThread()) return; //FixUrgent Model does not have to be notified when the receiver is first added and the receiver is first added in the awt thread. VERY OBSCURE!
+				
 				runBlockThatChangesModel(new Runnable(){ public void run(){
 					_model.nodeChanged(friend);
 				}});
@@ -184,39 +183,8 @@ public class ContactTreeController {
 		};
 	}
 	
-	private MyConsumer _consumer = new MyConsumer();
-	
 	public void runBlockThatChangesModel(final Runnable runnable){
-		_consumer.add(runnable);
-	}
-	
-	private List<Runnable> _buffer = new LinkedList<Runnable>();
-	
-	public class MyConsumer extends Thread{
-		
-		public MyConsumer(){
-			setDaemon(true);
-			start();
-		}
-		
-		@Override
-		public void run(){
-			while(true){
-				synchronized(_buffer){
-					if (_buffer.isEmpty())
-						Threads.waitWithoutInterruptions(_buffer);
-					final Runnable runnable = _buffer.remove(0); //can't be inside invokelater (executed in eventqueue thread)
-					SwingUtilities.invokeLater(runnable);
-				}
-			}
-		}
-		
-		public void add(Runnable runnable){
-			synchronized (_buffer) {
-				_buffer.add(runnable);
-				_buffer.notify();
-			}
-		}
+		SwingUtilities.invokeLater(runnable);
 	}
 	
 }

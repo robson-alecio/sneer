@@ -32,11 +32,11 @@ public class Main {
 		
 		@Override
 		public void run(){
-			double x=0;
 			while(true){
 				//do some calculation
 				for(int t=0;t<10;t++){
-					x=Math.random();
+					double x=Math.random();
+					x=0+x; //avoid warning.
 				}
 				Thread.yield();
 			}
@@ -51,11 +51,11 @@ public class Main {
 		
 		@Override
 		public void run(){
-			double x=0;
 			while(true){
 				//do some calculation
 				for(int t=0;t<100;t++){
-					x=Math.random()*2000/312321321/Math.random();
+					double x=Math.random()*2000/312321321/Math.random();
+					x=0+x; //avoid warning.
 				}
 				Thread.yield();
 			}

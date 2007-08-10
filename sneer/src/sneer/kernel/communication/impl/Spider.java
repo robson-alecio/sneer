@@ -56,7 +56,6 @@ class Spider implements Operator {
 	private void connectTo(ContactAttributes contact) {
 		ConnectionImpl newConnection = new ConnectionImpl(contact, _network, _outgoingConnectionValidator, _objectReceiver);
 		_connectionsByContactId.put(contact.id(), newConnection);
-		System.out.println("connecting: " + contact.id());
 	}
 
 	

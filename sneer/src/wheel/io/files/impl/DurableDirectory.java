@@ -75,7 +75,7 @@ public class DurableDirectory extends AbstractDirectory {
 		assertNotClosed();
 
 		if (fileExists(name)) throwFileAlreadyExists(name);
-		DurableFileOutputStream result = new DurableFileOutputStream(file(name));
+		DurableFileOutputStream result = new DurableFileOutputStream(realFile(name));
 		mindOpenStream(result, name);
 		return result;
 	}
@@ -85,7 +85,7 @@ public class DurableDirectory extends AbstractDirectory {
 
 		CloseListenableFileInputStream result = null;
 		try {
-			result = new CloseListenableFileInputStream(file(name));
+			result = new CloseListenableFileInputStream(realFile(name));
 		} catch (FileNotFoundException e) {
 			throwFileNotFound(name);
 		}
@@ -96,19 +96,19 @@ public class DurableDirectory extends AbstractDirectory {
 
 	@Override
 	protected void physicalDelete(String name) throws IOException {
-		if (file(name).delete()) return;
+		if (realFile(name).delete()) return;
 		throwUnableToDelete(name);
 	}
 
 	public boolean fileExists(String fileName) {
 		assertNotClosed();
 
-		return file(fileName).exists();
+		return realFile(fileName).exists();
 	}
 
 	@Override
 	protected void physicalRenameFile(String oldName, String newName) throws IOException {
-		if (file(oldName).renameTo(file(newName))) return;
+		if (realFile(oldName).renameTo(realFile(newName))) return;
 		throwUnableToRename(oldName, newName);
 	}
 
@@ -132,13 +132,18 @@ public class DurableDirectory extends AbstractDirectory {
 
 
 
-	File file(String fileName) {
+	File realFile(String fileName) {
 		return new File(_delegate, fileName);
 	}
 
 	@Override
 	protected String getPath(String name) {
-		return file(name).getAbsolutePath();
+		return realFile(name).getAbsolutePath();
+	}
+
+	public wheel.io.files.File file(String fileName) {
+		// Implement Auto-generated method stub
+		throw new wheel.lang.exceptions.NotImplementedYet();
 	}
 
 }

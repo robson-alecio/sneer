@@ -5,9 +5,9 @@ import static sneer.tests.SneerTestDashboard.newTestsShouldRun;
 import java.io.IOException;
 
 import sneer.apps.filesharing.FileReplicator;
-
 import wheel.io.files.Directory;
 import wheel.io.files.impl.tranzient.TransientDirectory;
+import wheel.lang.exceptions.NotImplementedYet;
 import wheel.testutil.TestOfInterface;
 
 public abstract class FileReplicatorTests extends TestOfInterface<FileReplicator> {
@@ -23,8 +23,6 @@ public abstract class FileReplicatorTests extends TestOfInterface<FileReplicator
 	}
 
 	public void testFileCreation() throws IOException {
-		if (!newTestsShouldRun()) return;
-		
 		_master.createFile("file1.txt", "abc");
 		assertFalse(_slave.fileExists("file1.txt"));
 		replicate();
@@ -32,8 +30,6 @@ public abstract class FileReplicatorTests extends TestOfInterface<FileReplicator
 	}
 
 	public void testFileDeletion() throws IOException {
-		if (!newTestsShouldRun()) return;
-		
 		_master.createFile("file1.txt", "ignored");
 		replicate();
 		_master.deleteFile("file1.txt");
@@ -42,8 +38,6 @@ public abstract class FileReplicatorTests extends TestOfInterface<FileReplicator
 	}
 
 	public void testFileRename() throws IOException {
-		if (!newTestsShouldRun()) return;
-		
 		_master.createFile("file1.txt", "abc");
 		replicate();
 		_master.renameFile("file1.txt", "file2.txt");
@@ -53,8 +47,6 @@ public abstract class FileReplicatorTests extends TestOfInterface<FileReplicator
 	}
 
 	public void testFileChange() throws IOException {
-		if (!newTestsShouldRun()) return;
-		
 		_master.createFile("file1.txt", "abc");
 		replicate();
 		replaceContents(_master, "file1.txt", "def");
@@ -63,7 +55,19 @@ public abstract class FileReplicatorTests extends TestOfInterface<FileReplicator
 		assertEquals("def", _slave.contentsAsString("file1.txt"));
 	}
 
-	private void replicate() {
+	public void testEfficiency() throws IOException {
+		if (!newTestsShouldRun()) return;
+		
+		_master.createFile("file1.txt", "abc");
+		replicate();
+				
+		_master.createFile("file2.txt", "def");
+		replicate();
+		
+		throw new NotImplementedYet();  //Implement Create RemoteDirectory and measure efficiency of transmission on the socket.
+	}
+
+	private void replicate() throws IOException {
 		_subject.replicate(_master, _slave);		
 	}
 

@@ -4,9 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -14,17 +12,17 @@ import wheel.io.files.impl.AbstractDirectory;
 
 public class TransientDirectory extends AbstractDirectory {
 
-	private final Map<String, List<Byte>> _fileContentsByName = new HashMap<String, List<Byte>>();
+	private final Map<String, TransientFile> _filesByName = new HashMap<String, TransientFile>();
 
 	public synchronized OutputStream createFile(String name) throws IOException {
 		assertNotClosed();
 
 		if (fileExists(name)) throwFileAlreadyExists(name);
 
-		List<Byte> contents = new ArrayList<Byte>();
-		_fileContentsByName.put(name, contents);
+		TransientFile file = new TransientFile();
+		_filesByName.put(name, file);
 
-		return createOutputStream(name, contents);
+		return createOutputStream(name, file.contents());
 	}
 
 
@@ -40,7 +38,7 @@ public class TransientDirectory extends AbstractDirectory {
 
 		if (!fileExists(name)) throwFileNotFound(name);
 
-		List<Byte> contents = _fileContentsByName.get(name);
+		List<Byte> contents = file(name).contents();
 		ByteListInputStream result = new ByteListInputStream(contents);
 		mindOpenStream(result, name);
 		return result;
@@ -48,40 +46,37 @@ public class TransientDirectory extends AbstractDirectory {
 
 	@Override
 	protected void physicalDelete(String name) {
-		_fileContentsByName.remove(name);
+		_filesByName.remove(name);
 	}
 
 
 	public synchronized boolean fileExists(String fileName) {
 		assertNotClosed();
-		return _fileContentsByName.containsKey(fileName);
+		return _filesByName.containsKey(fileName);
 	}
 
 	@Override
 	protected void physicalRenameFile(String oldName, String newName) throws IOException {
-		List<Byte> contents = _fileContentsByName.get(oldName);
+		TransientFile file = file(oldName);
 		deleteFile(oldName);
-		_fileContentsByName.put(newName, contents);
+		_filesByName.put(newName, file);
 	}
 
 	public synchronized void deleteAllContents() throws IOException {
 		assertNotClosed();
 
-		Iterator<String> it = _fileContentsByName.keySet().iterator();
-		while (it.hasNext()) {
-			String filename = it.next();
+		for (String filename : _filesByName.keySet())
 			deleteFile(filename);
-		}
 	}
 
 	public synchronized String[] fileNames() {
 		assertNotClosed();
-		return _fileContentsByName.keySet().toArray(new String[0]);
+		return _filesByName.keySet().toArray(new String[0]);
 	}
 
 	@Override
 	public synchronized void close() {
-		_fileContentsByName.clear();
+		_filesByName.clear();
 		super.close();
 	}
 
@@ -92,5 +87,11 @@ public class TransientDirectory extends AbstractDirectory {
 		return filename;
 	}
 
+
+	public synchronized TransientFile file(String fileName) throws FileNotFoundException {
+		if (!fileExists(fileName)) throw new FileNotFoundException(fileName);
+		
+		return _filesByName.get(fileName);
+	}
 
 }

@@ -96,6 +96,10 @@ class ContactsScreen extends JFrame {
 			}
 		});
 		
+//		Threads.startDaemon(new Runnable(){});
+//		tree.expandRow(0);
+//		tree.collapseRow(0);
+		
 		return tree;
 	}
 

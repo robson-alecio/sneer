@@ -7,11 +7,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeWillExpandListener;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreePath;
+import javax.swing.tree.MutableTreeNode;
 
 import sneer.kernel.pointofview.Contact;
+import sneer.kernel.pointofview.Party;
 import wheel.lang.Casts;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
@@ -23,17 +23,15 @@ public class ContactTreeController {
 
 	public ContactTreeController(JTree tree, DefaultTreeModel model) {
 		_model = model;
-		buildFirstLevel();
+		prepareToExpandFirstLevel();
 		registerExpansionListeners(tree);
 	}
 
-	private void buildFirstLevel() {
-		MeNode me = (MeNode)_model.getRoot();
-		for(Contact contact:me.party().contacts())
-			createContactNode(me, contact);
+	private void prepareToExpandFirstLevel() {
+		expandFriendNode((MutableTreeNode)_model.getRoot());
 	}
-
-	private void createContactNode(DefaultMutableTreeNode parent, Contact contact) {
+	
+	private void createContactNode(MutableTreeNode parent, Contact contact) {
 		ContactNode node =  new ContactNode(contact);
 		_model.insertNodeInto(node, parent, 0);
 		startReceiving(node);
@@ -45,32 +43,33 @@ public class ContactTreeController {
 	}
 
 	private TreeWillExpandListener willExpandListener() { return new TreeWillExpandListener(){
-		public void treeWillCollapse(TreeExpansionEvent ignored) { }
+		public void treeWillCollapse(TreeExpansionEvent ignored) {}
+		
 		public void treeWillExpand(TreeExpansionEvent event) {
-			if (ignoredNode(event.getPath())) return;
-			
-			expandFriendNode((ContactNode)event.getPath().getLastPathComponent());
-			
+			expandFriendNode((MutableTreeNode)event.getPath().getLastPathComponent());
 		}};
 	}
 
-	private void expandFriendNode(final ContactNode friend) {
-		for(Contact contact:friend.contact().party().contacts())
-			createContactNode(friend,contact);
+	private void expandFriendNode(final MutableTreeNode node) {
+		Party party = node instanceof MeNode
+			? ((MeNode)node).party()
+			: ((ContactNode)node).contact().party();
+			
+		for(Contact contact : party.contacts())
+			createContactNode(node,contact);
 	}
 
 	private TreeExpansionListener collapseListener() { return new TreeExpansionListener(){
-		public void treeExpanded(TreeExpansionEvent ignored)  { }
+		public void treeExpanded(TreeExpansionEvent ignored)  {}
+		
 		public void treeCollapsed(TreeExpansionEvent event) {
-			if (ignoredNode(event.getPath())) return;
-			
-			collapseFriendNode((ContactNode)event.getPath().getLastPathComponent());
+			collapseFriendNode(event.getPath().getLastPathComponent());
 		}};
 	}
 	
-	private void collapseFriendNode(final ContactNode friend) {
-		while (_model.getChildCount(friend) != 0) {
-			ContactNode child = (ContactNode) _model.getChild(friend, 0);
+	private void collapseFriendNode(final Object node) {
+		while (_model.getChildCount(node) != 0) {
+			ContactNode child = (ContactNode) _model.getChild(node, 0);
 			removeFriendNode(child);
 		}
 	}
@@ -88,13 +87,10 @@ public class ContactTreeController {
 		stopReceiving(friend);
 	}
 
-	private boolean ignoredNode(TreePath path) {
-		return path.getLastPathComponent() instanceof MeNode;
-	}
-	
+
 	private Hashtable<ContactNode,Omnivore<Object>> _displayReceiversByFriend = new Hashtable<ContactNode,Omnivore<Object>>();
 
-	private void startReceiving(ContactNode friend){
+	private void startReceiving(ContactNode friend) {
 		Omnivore<Object> displayReceiver = displaySignalReceiver(friend);
     	for (Signal<?> signal : signalsToReceiveFrom(friend.contact())){
     		addReceiverToSignal(displayReceiver, signal);
@@ -106,21 +102,19 @@ public class ContactTreeController {
 	
     
     private Omnivore<Object> displaySignalReceiver(final ContactNode friend) {
-		return new Omnivore<Object>(){
-			public void consume(Object ignored) {
-				if (SwingUtilities.isEventDispatchThread()) return; //FixUrgent Model does not have to be notified when the receiver is first added and the receiver is first added in the awt thread. VERY OBSCURE!
+		return new Omnivore<Object>() { public void consume(Object ignored) {
+			if (SwingUtilities.isEventDispatchThread()) return; //FixUrgent Model does not have to be notified when the receiver is first added and the receiver is first added in the awt thread. VERY OBSCURE!
 				
-				runBlockThatChangesModel(new Runnable(){ public void run(){
-					_model.nodeChanged(friend);
-				}});
-			}
-		};
+			runBlockThatChangesModel(new Runnable(){ public void run(){
+				_model.nodeChanged(friend);
+			}});
+		}};
 	}
 
 	private void stopReceiving(ContactNode friend){
 		SimpleListReceiver<Contact> contactListReceiver = _contactListReceiversByFriend.remove(friend);
-		if (contactListReceiver != null)
-			contactListReceiver.stopReceiving();
+		if (contactListReceiver != null) contactListReceiver.stopReceiving();
+		
 		Omnivore<Object> receiver = _displayReceiversByFriend.remove(friend);
 		if (receiver == null) return;
     	for (Signal<?> signal : signalsToReceiveFrom(friend.contact()))

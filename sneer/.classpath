@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="lib_for_tests/junit-3.8.1.jar"/>
 	<classpathentry kind="lib" path="lib/talk.jar"/>
 	<classpathentry kind="src" path="src_old"/>
+	<classpathentry kind="lib" path="lib/compiler-7-ea-b17-02_aug_2007.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

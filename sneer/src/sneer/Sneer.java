@@ -12,6 +12,8 @@ import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
 
 import prevayler.bubble.Bubble;
+import sneer.apps.App;
+import sneer.apps.AppManager;
 import sneer.apps.conversations.ConversationsApp;
 import sneer.apps.filetransfer.FileTransferApp;
 import sneer.apps.scribble.ScribbleApp;
@@ -73,7 +75,12 @@ public class Sneer {
 		initLanguage();
 		
 		//Optimize: Separate thread to close splash screen.
-		try{Thread.sleep(2000);}catch(InterruptedException ie){} 
+		try{Thread.sleep(2000);}catch(InterruptedException ie){}
+		
+		System.out.println("Checking existing apps:");
+		//AppManager.rebuild();
+		for(App app:AppManager.installedApps().values())
+			System.out.println("App : "+app.name());
 		
 		_communicator = new Communicator(_user, new OldNetworkImpl(), _businessSource);
 		Channel channel = _communicator.getChannel("Point of View", 1);

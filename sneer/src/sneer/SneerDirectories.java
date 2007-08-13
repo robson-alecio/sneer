@@ -22,9 +22,24 @@ public class SneerDirectories {
 		return new File(sneerDirectory(), "prevalence");
 	}
 	
-	
 	public static File sneerDirectory() {
 		return new File(userHome(), ".sneer");
+	}
+	
+	public static File appsDirectory() {
+		return new File(sneerDirectory(), "apps");
+	}
+	
+	public static File cacheDirectory() {
+		return new File(sneerDirectory(), "cache");
+	}
+	
+	public static File compiledAppsDirectory() {
+		return new File(cacheDirectory(), "compiledApps");
+	}
+	
+	public static File appSourceCodesDirectory() {
+		return new File(cacheDirectory(), "appSourceCodes");
 	}
 
 

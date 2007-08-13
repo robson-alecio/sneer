@@ -36,6 +36,7 @@ public class AppManager {
 	public static void rebuild(){
 		removeRecursive(SneerDirectories.compiledAppsDirectory());
 		removeRecursive(SneerDirectories.appSourceCodesDirectory());
+		_installedApps.clear();
 	}
 	
 	

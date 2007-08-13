@@ -12,12 +12,12 @@ import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
 
 import prevayler.bubble.Bubble;
-import sneer.apps.App;
-import sneer.apps.AppManager;
 import sneer.apps.conversations.ConversationsApp;
 import sneer.apps.filetransfer.FileTransferApp;
 import sneer.apps.scribble.ScribbleApp;
 import sneer.apps.talk.TalkApp;
+import sneer.kernel.appmanager.App;
+import sneer.kernel.appmanager.AppManager;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.impl.BusinessFactory;
 import sneer.kernel.communication.Channel;

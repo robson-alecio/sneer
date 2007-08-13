@@ -1,4 +1,4 @@
-package sneer.apps;
+package sneer.kernel.appmanager;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -128,13 +128,17 @@ public class AppManager {
 		createDirectories();
 		unpackageApps();
 		compileApps();
+		loadApps();
+		return _installedApps;
+	}
+
+	private static void loadApps() {
 		File[] compiledAppDirectories = SneerDirectories.compiledAppsDirectory().listFiles();
 		for(File compiledAppDirectory:compiledAppDirectories){
 			if (isAppLoaded(compiledAppDirectory))
 				continue;
 			_installedApps.put(compiledAppDirectory.getName(),appLoad(compiledAppDirectory));
 		}
-		return _installedApps;
 	}
 
 	@SuppressWarnings("deprecation")

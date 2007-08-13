@@ -1,4 +1,4 @@
-package sneer.apps;
+package sneer.kernel.appmanager;
 
 import sneer.kernel.gui.contacts.ContactAction;
 

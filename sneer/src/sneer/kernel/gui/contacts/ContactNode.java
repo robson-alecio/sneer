@@ -1,23 +1,22 @@
 package sneer.kernel.gui.contacts;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import sneer.kernel.pointofview.Contact;
+import sneer.kernel.pointofview.Party;
 
-public class ContactNode extends DefaultMutableTreeNode{
+class ContactNode extends PartyNode {
 
-	public ContactNode(Contact contact){
+	ContactNode(Contact contact){
 		super(contact);
 	}
 	
-	public Contact contact() {
-		return (Contact)getUserObject();
+	Contact contact() {
+		return (Contact) getUserObject();
 	}
 	
 	@Override
-	public boolean isLeaf(){
-		return false;
+	Party party() {
+		return contact().party();
 	}
-	
+
 	private static final long serialVersionUID = 1L;
 }

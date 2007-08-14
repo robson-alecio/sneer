@@ -7,5 +7,7 @@ public interface App {
 	public String name();
 	
 	public ContactAction contactAction();
+	
+	public int priority();
 
 }

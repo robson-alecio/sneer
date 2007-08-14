@@ -6,17 +6,14 @@ import sneer.kernel.communication.impl.Communicator;
 public class AppChannelFactory {
 
 	private final Communicator _communicator;
-	private final int _priority;
 
 
-	public AppChannelFactory(Communicator communicator, int priority){
+	public AppChannelFactory(Communicator communicator){
 		_communicator = communicator;
-		_priority = priority;
-		
 	}
 	
-	public Channel channel(String channelName){
-		return _communicator.getChannel(channelName, _priority);
+	public Channel channel(App app){ //Implement: in the future the priority should be subordinated to some permission system
+		return _communicator.getChannel(app.getClass().getName(), app.priority());
 	}
 	
 }

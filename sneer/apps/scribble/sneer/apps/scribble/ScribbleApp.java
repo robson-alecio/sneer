@@ -39,7 +39,7 @@ public class ScribbleApp implements App{
 
 	public ScribbleApp(AppConfig appConfig) {
 		_user = appConfig._user;
-		_channel = appConfig._channelFactory.channel(ScribbleApp.class.getName());
+		_channel = appConfig._channelFactory.channel(this);
 		_contacts = appConfig._contacts;
 		_channel.input().addReceiver(drawPacketReceiver());
 	}
@@ -199,6 +199,10 @@ public class ScribbleApp implements App{
 
 	public String name() {
 		return "Scribble";
+	}
+
+	public int priority() {
+		return 2;
 	}
 
 }

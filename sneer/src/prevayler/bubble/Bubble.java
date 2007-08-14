@@ -10,17 +10,28 @@ import org.prevayler.Prevayler;
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 
-public class Bubble implements InvocationHandler {
+public class Bubble {
 
 	@SuppressWarnings("unchecked")
 	public static <STATE_MACHINE> STATE_MACHINE wrapStateMachine(Prevayler prevayler) {
 		Object stateMachine = prevayler.prevalentSystem();
-		Bubble handler = new Bubble(stateMachine, prevayler);
+		InvocationHandler handler = new Bubble(stateMachine, prevayler).handler();
 		Object proxy = Proxy.newProxyInstance(stateMachine.getClass().getClassLoader(), stateMachine.getClass().getInterfaces(), handler);
 		return (STATE_MACHINE)proxy;  //Refactor Remove this cast and use Casts.uncheckedCast() instead, when the Sun compiler can handle it (bug fixed in JDK7). Remove the @SuppressWarnings for this method.
 	}
 
 	
+	private InvocationHandler handler() {
+		return new InvocationHandler() {
+			@Override
+			public Object invoke(Object proxyImplied, Method method, Object[] args) throws InvocationTargetException {
+				Object result = handle(method, args);
+				return wrapIfNecessary(result, method);
+			}
+		};
+	}
+
+
 	private Bubble(Object stateMachine, Prevayler prevayler) {
 		_stateMachine = stateMachine;
 		_prevayler = prevayler;
@@ -31,13 +42,7 @@ public class Bubble implements InvocationHandler {
 	private final Prevayler _prevayler;
 
 	
-	public Object invoke(Object proxyImplied, Method method, Object[] args) throws InvocationTargetException {
-		Object result = invoke(method, args);
-		return wrapIfNecessary(result, method);
-	}
-
-	
-	private Object invoke(Method method, Object[] args) throws InvocationTargetException {
+	private Object handle(Method method, Object[] args) throws InvocationTargetException {
 		Object result;
 		try {
 			result = method.invoke(_stateMachine, args);

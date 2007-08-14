@@ -5,12 +5,20 @@ import wheel.testutil.TestOfInterface;
 
 public abstract class PointOfViewTest extends TestOfInterface<SovereignNetworkSimulator> {
 
-	public void testRemoteNameChange() {
-		PartySimulator a = _subject.createPartySimulator("A");
-		PartySimulator b = _subject.createPartySimulator("B");
-		_subject.connect(a, b);
+	private PartySimulator _a;
+	private PartySimulator _b;
 
-		LoopbackTester loopback = new LoopbackTester(a.contact("B").party().name(), b.nameSetter());
+	@Override
+	protected void setUp() {
+		super.setUp();
+		
+		_a = _subject.createPartySimulator("A");
+		_b = _subject.createPartySimulator("B");
+		_subject.connect(_a, _b);
+	}
+	
+	public void testRemoteNameChange() {
+		LoopbackTester loopback = new LoopbackTester(_a.contact("B").party().name(), _b.nameSetter());
 		loopback.testWithStrings();
 	}
 

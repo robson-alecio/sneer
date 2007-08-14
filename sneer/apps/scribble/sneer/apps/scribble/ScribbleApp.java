@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 
 import sneer.apps.scribble.gui.ScribbleFrame;
 import sneer.kernel.appmanager.App;
+import sneer.kernel.appmanager.AppConfig;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
@@ -36,10 +37,10 @@ public class ScribbleApp implements App{
 
 	private static final String CLOSE_REQUEST = "Close";
 
-	public ScribbleApp(User user, Channel channel, ListSignal<Contact> contacts) {
-		_user = user;
-		_channel = channel;
-		_contacts = contacts;
+	public ScribbleApp(AppConfig appConfig) {
+		_user = appConfig._user;
+		_channel = appConfig._channelFactory.channel(ScribbleApp.class.getName());
+		_contacts = appConfig._contacts;
 		_channel.input().addReceiver(drawPacketReceiver());
 	}
 
@@ -196,28 +197,8 @@ public class ScribbleApp implements App{
 		};
 	}
 
-	public void executionLoop() {
-		// Implement Auto-generated method stub
-		throw new wheel.lang.exceptions.NotImplementedYet();
-	}
-
 	public String name() {
 		return "Scribble";
-	}
-
-	public void onPause() {
-		// Implement Auto-generated method stub
-		throw new wheel.lang.exceptions.NotImplementedYet();
-	}
-
-	public void onStart() {
-		// Implement Auto-generated method stub
-		throw new wheel.lang.exceptions.NotImplementedYet();
-	}
-
-	public void onStop() {
-		// Implement Auto-generated method stub
-		throw new wheel.lang.exceptions.NotImplementedYet();
 	}
 
 }

@@ -14,7 +14,6 @@ import org.prevayler.PrevaylerFactory;
 import prevayler.bubble.Bubble;
 import sneer.apps.conversations.ConversationsApp;
 import sneer.apps.filetransfer.FileTransferApp;
-import sneer.apps.scribble.ScribbleApp;
 import sneer.apps.talk.TalkApp;
 import sneer.kernel.appmanager.App;
 import sneer.kernel.appmanager.AppManager;
@@ -78,7 +77,7 @@ public class Sneer {
 		try{Thread.sleep(2000);}catch(InterruptedException ie){}
 		
 		System.out.println("Checking existing apps:");
-		//AppManager.rebuild();
+		AppManager.rebuild(); //FixUrgent: this line will be used only dirng test phase!!!!
 		for(App app:AppManager.installedApps().values())
 			System.out.println("App : "+app.name());
 		
@@ -138,8 +137,9 @@ public class Sneer {
 		Channel fileTransferChannel = _communicator.getChannel(FileTransferApp.class.getName(), 3);
 		result.add(new FileTransferApp(_user, fileTransferChannel, _businessSource.output().contactAttributes()).contactAction());
 		
-		Channel scribbleChannel = _communicator.getChannel(ScribbleApp.class.getName(), 2);
-		result.add(new ScribbleApp(_user, scribbleChannel, _me.contacts()).contactAction());
+		//Fix: app change in progress
+		//Channel scribbleChannel = _communicator.getChannel(ScribbleApp.class.getName(), 2);
+		//result.add(new ScribbleApp(_user, scribbleChannel, _me.contacts()).contactAction());
 		
 		return result;
 	}

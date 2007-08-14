@@ -92,5 +92,10 @@ public class ThirdParty implements Party {
 		// Implement Auto-generated method stub
 		throw new wheel.lang.exceptions.NotImplementedYet();
 	}
+
+	@Override
+	public Signal<String> publicKey() {
+		return _attributes.publicKey();
+	}
 	
 }

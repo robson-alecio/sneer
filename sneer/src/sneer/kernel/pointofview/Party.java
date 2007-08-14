@@ -13,6 +13,7 @@ public interface Party {
 	ListSignal<Contact> contacts();
 	Contact currentContact(String nick);
 
+	Signal<String> publicKey();
 	Signal<Boolean> publicKeyConfirmed();
 //	Signal<Float> trustworthiness(); //  ;)
 

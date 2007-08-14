@@ -94,4 +94,9 @@ public class Me implements Party {
 		return null;
 	}
 
+	@Override
+	public Signal<String> publicKey() {
+		return _business.publicKey();
+	}
+
 }

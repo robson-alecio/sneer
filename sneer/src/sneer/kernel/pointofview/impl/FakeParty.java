@@ -132,5 +132,11 @@ public class FakeParty implements Party {
 		throw new wheel.lang.exceptions.NotImplementedYet();
 	}
 
+	@Override
+	public Signal<String> publicKey() {
+		// Implement Auto-generated method stub
+		throw new wheel.lang.exceptions.NotImplementedYet();
+	}
+
 
 }

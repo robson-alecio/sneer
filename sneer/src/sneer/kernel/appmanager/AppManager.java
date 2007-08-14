@@ -4,7 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.net.MalformedURLException;
+import java.lang.reflect.Constructor;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -18,29 +18,40 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import sneer.SneerDirectories;
+import sneer.kernel.communication.impl.Communicator;
+import sneer.kernel.pointofview.Contact;
 import wheel.io.Jars;
+import wheel.io.Log;
+import wheel.io.ui.User;
+import wheel.reactive.lists.ListSignal;
 
 public class AppManager {
 	
-	private static Map<String,App> _installedApps = new Hashtable<String,App>();
+	private Map<String,App> _installedApps = new Hashtable<String,App>();
+	private User _user;
+	private Communicator _communicator;
+	private ListSignal<Contact> _contacts;
 	
-	private AppManager(){
+	public AppManager(User user, Communicator communicator, ListSignal<Contact> contacts){
+		_user = user;
+		_communicator = communicator;
+		_contacts = contacts;
 	}
 	
-	private static void createDirectories(){ //should be moved to install???
+	private void createDirectories(){ //should be moved to install???
 		SneerDirectories.appsDirectory().mkdirs();
 		SneerDirectories.compiledAppsDirectory().mkdirs();
 		SneerDirectories.appSourceCodesDirectory().mkdirs();
 	}
 	
-	public static void rebuild(){
+	public void rebuild(){
 		removeRecursive(SneerDirectories.compiledAppsDirectory());
 		removeRecursive(SneerDirectories.appSourceCodesDirectory());
 		_installedApps.clear();
 	}
 	
 	
-	private static void unpackageApps(){
+	private void unpackageApps(){
 		for(File appDirectory:notUnpackagedApps()){
 			File jar = appDirectory.listFiles()[0]; //first file should be the jar
 			File target = new File(SneerDirectories.appSourceCodesDirectory(),appDirectory.getName());
@@ -55,7 +66,7 @@ public class AppManager {
 		}
 	}
 	
-	private static List<File> notUnpackagedApps(){ 
+	private List<File> notUnpackagedApps(){ 
 		List<File> notUnpackagedApps = new ArrayList<File>();
 		for(File appDirectory:SneerDirectories.appsDirectory().listFiles()){
 			if (alreadyUnpackaged(appDirectory))
@@ -65,14 +76,14 @@ public class AppManager {
 		return notUnpackagedApps;
 	}
 	
-	private static void compileApps(){
+	private void compileApps(){
 		for(File sourceDirectory:notCompiledApps()){
 
 			String targetDirectory=SneerDirectories.compiledAppsDirectory()+File.separator+sourceDirectory.getName();
 			String sourceApplication=sourceDirectory+File.separator+"sneer"+File.separator+"apps"+File.separator+sourceDirectory.getName()+File.separator+"Main.java";
 			(new File(targetDirectory)).mkdir();
 			System.out.println("Compiling "+sourceApplication);
-			System.out.println(tryToFindSneerLocation().getAbsolutePath());
+			System.out.println(tryToFindSneerLocation().getAbsolutePath()); //Attention... make sure you have an updated Sneer.jar by regenerating it using build.xml
 			try{
 				String[] parameters = {"-classpath",tryToFindSneerLocation().getAbsolutePath()+File.pathSeparator+sourceDirectory.getPath(),"-d",targetDirectory,sourceApplication};
 				com.sun.tools.javac.Main.compile(parameters);
@@ -84,14 +95,14 @@ public class AppManager {
 		}
 	}
 	
-	private static void removeRecursive(File file){
+	private void removeRecursive(File file){
 		if (file.isDirectory())
 			for(File children:file.listFiles())
 				removeRecursive(children);
 		file.delete();
 	}
 	
-	private static File tryToFindSneerLocation(){ //FixUrgent: this does not works correctly in eclipse, a temporary fix was made
+	private File tryToFindSneerLocation(){ //FixUrgent: this does not works correctly in eclipse, a temporary fix was made
 		try{
 			URL url = Jars.jarGiven(AppManager.class);
 			return urlToFile(url);
@@ -101,7 +112,7 @@ public class AppManager {
 		}
 	}
 
-	private static File firstJarInDirectory(File eclipseProjectBin) {
+	private File firstJarInDirectory(File eclipseProjectBin) {
 		for(File file:eclipseProjectBin.listFiles()){
 			if (file.getName().endsWith(".jar"))
 				return file;
@@ -124,7 +135,7 @@ public class AppManager {
         return new File(uri);
     }
 	
-	public static Map<String,App> installedApps(){
+	public Map<String,App> installedApps(){
 		createDirectories();
 		unpackageApps();
 		compileApps();
@@ -132,7 +143,7 @@ public class AppManager {
 		return _installedApps;
 	}
 
-	private static void loadApps() {
+	private void loadApps() {
 		File[] compiledAppDirectories = SneerDirectories.compiledAppsDirectory().listFiles();
 		for(File compiledAppDirectory:compiledAppDirectories){
 			if (isAppLoaded(compiledAppDirectory))
@@ -142,30 +153,28 @@ public class AppManager {
 	}
 
 	@SuppressWarnings("deprecation")
-	private static App appLoad(File compiledAppDirectory) {
-		try {
-			
-			URL[] urls = new URL[]{compiledAppDirectory.toURL()};  
-			URLClassLoader ucl = new URLClassLoader(urls, ClassLoader.getSystemClassLoader());  
-			Class<?> clazz = ucl.loadClass("sneer.apps."+compiledAppDirectory.getName()+".Main");  
-			return (App) clazz.newInstance();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
+	private App appLoad(File compiledAppDirectory) {
+			try {
+				URL[] urls = new URL[]{compiledAppDirectory.toURL()};
+				URLClassLoader ucl = new URLClassLoader(urls, ClassLoader.getSystemClassLoader());  
+				Class<?> clazz = ucl.loadClass("sneer.apps."+compiledAppDirectory.getName()+".Main"); 
+				AppConfig config = new AppConfig(_user,new AppChannelFactory(_communicator),_contacts);
+				Class<?>[] types = {AppConfig.class};
+				Object[] instances = {config};
+				Constructor<?> constructor = clazz.getConstructor(types);
+				return (App) constructor.newInstance(instances);
+			} catch (Exception e) {
+				Log.log(e);
+				e.printStackTrace();
+			}  
 		return null;
 	}
 	
-	private static boolean isAppLoaded(File compiledAppDirectory){
+	private boolean isAppLoaded(File compiledAppDirectory){
 		return (_installedApps.get(compiledAppDirectory.getName())!=null);
 	}
 	
-	private static List<File> notCompiledApps(){ 
+	private List<File> notCompiledApps(){ 
 		List<File> notCompiledApps = new ArrayList<File>();
 		for(File sourceDirectory:SneerDirectories.appSourceCodesDirectory().listFiles()){
 			if (alreadyCompiled(sourceDirectory))
@@ -175,7 +184,7 @@ public class AppManager {
 		return notCompiledApps;
 	}
 	
-	private static boolean alreadyUnpackaged(File appDirectory) {
+	private boolean alreadyUnpackaged(File appDirectory) {
 		for(File sourceCodeDirectory:SneerDirectories.appSourceCodesDirectory().listFiles()){
 			if (sourceCodeDirectory.getName().equals(appDirectory.getName()))
 				return true;
@@ -183,7 +192,7 @@ public class AppManager {
 		return false;
 	}
 
-	private static boolean alreadyCompiled(File sourceDirectory) {
+	private boolean alreadyCompiled(File sourceDirectory) {
 		for(File compiledDirectory:SneerDirectories.compiledAppsDirectory().listFiles()){
 			if (sourceDirectory.getName().equals(compiledDirectory.getName()))
 				return true;
@@ -193,7 +202,7 @@ public class AppManager {
 	
 	static final int _BUFFER = 2048;
 	
-	private static void unzip(File source, File target) throws Exception{
+	private void unzip(File source, File target) throws Exception{
 	         BufferedOutputStream dest = null;
 	         BufferedInputStream is = null;
 	         ZipEntry entry;

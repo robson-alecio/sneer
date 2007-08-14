@@ -27,7 +27,7 @@ import wheel.reactive.Source;
 import wheel.reactive.impl.SourceImpl;
 import wheel.reactive.lists.ListSignal;
 
-public class ScribbleApp implements App{
+public class Main implements App{
 
 	private static final String OPEN_REQUEST = "Request";
 
@@ -37,7 +37,7 @@ public class ScribbleApp implements App{
 
 	private static final String CLOSE_REQUEST = "Close";
 
-	public ScribbleApp(AppConfig appConfig) {
+	public Main(AppConfig appConfig) {
 		_user = appConfig._user;
 		_channel = appConfig._channelFactory.channel(this);
 		_contacts = appConfig._contacts;

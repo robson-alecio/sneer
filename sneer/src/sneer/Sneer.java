@@ -65,6 +65,7 @@ public class Sneer {
 	private Communicator _communicator;
 	private Party _me;
 	private Gui _gui;
+	private AppManager _appManager;
 
 	private JFrameBoundsKeeperImpl _jframeBoundsKeeper;
 
@@ -80,14 +81,16 @@ public class Sneer {
 		//Optimize: Separate thread to close splash screen.
 		try{Thread.sleep(2000);}catch(InterruptedException ie){}
 		
-		System.out.println("Checking existing apps:");
-		AppManager.rebuild(); //FixUrgent: this line will be used only dirng test phase!!!!
-		for(App app:AppManager.installedApps().values())
-			System.out.println("App : "+app.name());
-		
 		_communicator = new Communicator(_user, new OldNetworkImpl(), _businessSource);
 		Channel channel = _communicator.getChannel("Point of View", 1);
 		_me = new Me(_businessSource.output(), _communicator.operator(), channel);
+		
+		System.out.println("Checking existing apps:");
+		_appManager = new AppManager(_user,_communicator,_me.contacts());
+		_appManager.rebuild(); //Fix: This is being used here only during test phase, not needed in the future
+		for(App app:_appManager.installedApps().values())
+				System.out.println("App : "+app.name());
+		
 		_gui = new Gui(_user, _me, _businessSource, contactActions(), jFrameBoundsKeeper(), _communicator); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
 		
 		//while (true) Threads.sleepWithoutInterruptions(100000); // Refactor Consider joining the main gui thread.
@@ -141,10 +144,9 @@ public class Sneer {
 		Channel fileTransferChannel = _communicator.getChannel(FileTransferApp.class.getName(), 3);
 		result.add(new FileTransferApp(_user, fileTransferChannel, _businessSource.output().contactAttributes()).contactAction());
 		
-		//Fix: app change in progress
-		//Channel scribbleChannel = _communicator.getChannel(ScribbleApp.class.getName(), 2);
-		//result.add(new ScribbleApp(_user, scribbleChannel, _me.contacts()).contactAction());
-		
+		for(App app:_appManager.installedApps().values())
+			result.add(app.contactAction());
+
 		return result;
 	}
 

@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import sneer.kernel.business.contacts.ContactId;
@@ -70,13 +69,8 @@ class ContactsScreen extends JFrame {
 
 	
 	private JTree createFriendsTree() {
-		MeNode me = new MeNode(_me);
-		DefaultTreeModel model = new DefaultTreeModel(me);
-		final JTree tree = new JTree(model);
-		tree.setCellRenderer(new ContactTreeCellRenderer());
-		tree.setShowsRootHandles(true);
-		
-		new ContactTreeController(tree,model);
+		final JTree tree = new JTree();
+		new ContactTreeController(tree, new MeNode(_me));
 		
 		tree.addMouseListener(new MouseAdapter() {
 			@Override
@@ -95,10 +89,6 @@ class ContactsScreen extends JFrame {
 				getFriendPopUpMenu(node).show(tree, mouseEvent.getX(), mouseEvent.getY());
 			}
 		});
-		
-//		Threads.startDaemon(new Runnable(){});
-//		tree.expandRow(0);
-//		tree.collapseRow(0);
 		
 		return tree;
 	}

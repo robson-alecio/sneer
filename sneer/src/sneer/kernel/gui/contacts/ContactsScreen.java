@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -34,16 +33,16 @@ class ContactsScreen extends JFrame {
 
 	private final User _user;
 	private final Party _me;
-	private final List<ContactAction> _contactActions;
 	private final Consumer<ContactInfo2> _contactAdder;
 	private final Omnivore<ContactId> _contactRemover;
 	private final Consumer<Pair<ContactId, String>> _nickChanger;
+	private final ContactActionFactory _contactActionFactory;
 
 
-	ContactsScreen(User user, Party me, List<ContactAction> contactActions, Consumer<ContactInfo2> contactAdder, Omnivore<ContactId> contactRemover, Consumer<Pair<ContactId, String>> nickChanger) {
+	ContactsScreen(User user, Party me, ContactActionFactory contactActionFactory, Consumer<ContactInfo2> contactAdder, Omnivore<ContactId> contactRemover, Consumer<Pair<ContactId, String>> nickChanger) {
 		_user = user;
 		_me = me;
-		_contactActions = contactActions;
+		_contactActionFactory = contactActionFactory;
 		_contactAdder = contactAdder;
 		_contactRemover = contactRemover;
 		_nickChanger = nickChanger;
@@ -96,7 +95,7 @@ class ContactsScreen extends JFrame {
 	private JPopupMenu getFriendPopUpMenu(final ContactNode node) {
 		final JPopupMenu result = new JPopupMenu();
 		addToContactMenu(result, infoAction(), node);
-		for (ContactAction action : _contactActions) addToContactMenu(result, action, node);
+		for (ContactAction action : _contactActionFactory.contactActions()) addToContactMenu(result, action, node);
 		addToContactMenu(result, new ContactRemovalAction(_contactRemover), node);
 		return result;
 	}

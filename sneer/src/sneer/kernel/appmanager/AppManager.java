@@ -3,7 +3,11 @@ package sneer.kernel.appmanager;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -48,6 +52,31 @@ public class AppManager {
 		removeRecursive(SneerDirectories.compiledAppsDirectory());
 		removeRecursive(SneerDirectories.appSourceCodesDirectory());
 		_installedApps.clear();
+	}
+	
+	public void install(String appName, File jarFile) throws IOException{
+		File installDirectory = new File(SneerDirectories.appsDirectory(),appName);
+		installDirectory.mkdir();
+		copy(jarFile,new File(installDirectory,jarFile.getName()));
+		rebuild();
+	}
+	
+	private void copy(File src, File dst) throws IOException {
+        InputStream in = new FileInputStream(src);
+        OutputStream out = new FileOutputStream(dst);
+        byte[] buf = new byte[1024];
+        int len;
+        while ((len = in.read(buf)) > 0)
+            out.write(buf, 0, len);
+        in.close();
+        out.close();
+    }
+	
+	public void remove(String appName){
+		removeRecursive(new File(SneerDirectories.appsDirectory(),appName));
+		removeRecursive(new File(SneerDirectories.appSourceCodesDirectory(),appName));
+		removeRecursive(new File(SneerDirectories.compiledAppsDirectory(),appName));
+		rebuild();
 	}
 	
 	

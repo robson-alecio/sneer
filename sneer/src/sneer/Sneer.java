@@ -4,17 +4,11 @@ import static sneer.SneerDirectories.logDirectory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
 
 import prevayler.bubble.Bubble;
-import sneer.apps.conversations.ConversationsApp;
-import sneer.apps.filetransfer.FileTransferApp;
-import sneer.apps.talk.TalkApp;
 import sneer.kernel.appmanager.App;
 import sneer.kernel.appmanager.AppManager;
 import sneer.kernel.business.BusinessSource;
@@ -22,23 +16,14 @@ import sneer.kernel.business.impl.BusinessFactory;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.impl.Communicator;
 import sneer.kernel.gui.Gui;
-import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.pointofview.Party;
 import sneer.kernel.pointofview.impl.Me;
 import wheel.i18n.Language;
 import wheel.io.Log;
-import wheel.io.files.Directory;
-import wheel.io.files.impl.DurableDirectory;
 import wheel.io.network.OldNetworkImpl;
-import wheel.io.ui.BoundsPersistence;
-import wheel.io.ui.JFrameBoundsKeeper;
 import wheel.io.ui.User;
 import wheel.io.ui.User.Notification;
-import wheel.io.ui.impl.DeferredBoundPersistence;
-import wheel.io.ui.impl.DirectoryBoundsPersistence;
-import wheel.io.ui.impl.JFrameBoundsKeeperImpl;
 import wheel.io.ui.impl.JOptionPaneUser;
-import wheel.io.ui.impl.tests.TransientBoundsPersistence;
 import wheel.lang.Omnivore;
 
 public class Sneer {
@@ -66,9 +51,6 @@ public class Sneer {
 	private Party _me;
 	private Gui _gui;
 	private AppManager _appManager;
-
-	private JFrameBoundsKeeperImpl _jframeBoundsKeeper;
-
 	
 	private void tryToRun() throws Exception {
 		tryToRedirectLogToSneerLogFile();
@@ -87,27 +69,12 @@ public class Sneer {
 		
 		System.out.println("Checking existing apps:");
 		_appManager = new AppManager(_user,_communicator,_me.contacts());
-		_appManager.rebuild(); //Fix: This is being used here only during test phase, not needed in the future
 		for(App app:_appManager.installedApps().values())
 				System.out.println("App : "+app.name());
-		
-		_gui = new Gui(_user, _me, _businessSource, contactActions(), jFrameBoundsKeeper(), _communicator); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
+
+		_gui = new Gui(_user, _me, _businessSource,  _communicator, _appManager); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
 		
 		//while (true) Threads.sleepWithoutInterruptions(100000); // Refactor Consider joining the main gui thread.
-	}
-
-	private JFrameBoundsKeeper jFrameBoundsKeeper() {
-		if (_jframeBoundsKeeper != null) return _jframeBoundsKeeper;
-		
-		BoundsPersistence boundsPersistence;
-		try {
-			Directory directory = new DurableDirectory(SneerDirectories.sneerDirectory().getPath());
-			boundsPersistence = new DeferredBoundPersistence(new DirectoryBoundsPersistence(directory));
-		} catch (IOException e) {
-			Log.log(e);
-			boundsPersistence = new TransientBoundsPersistence();
-		}
-		return _jframeBoundsKeeper = new JFrameBoundsKeeperImpl(boundsPersistence);
 	}
 
 	private Omnivore<Notification> briefNotifier() {
@@ -130,24 +97,6 @@ public class Sneer {
 			Language.reset();
 		else
 			Language.load(chosen);
-	}
-
-	private List<ContactAction> contactActions() {
-		List<ContactAction> result = new ArrayList<ContactAction>();
-		
-		Channel conversationsChannel = _communicator.getChannel(ConversationsApp.class.getName(), 0);
-		result.add(new ConversationsApp(conversationsChannel, _businessSource.output().contactAttributes(), _user.briefNotifier(), jFrameBoundsKeeper()).contactAction());
-		
-		Channel talkChannel = _communicator.getChannel(TalkApp.class.getName(), 1);
-		result.add(new TalkApp(_user, talkChannel, _me.contacts()).contactAction());
-		
-		Channel fileTransferChannel = _communicator.getChannel(FileTransferApp.class.getName(), 3);
-		result.add(new FileTransferApp(_user, fileTransferChannel, _businessSource.output().contactAttributes()).contactAction());
-		
-		for(App app:_appManager.installedApps().values())
-			result.add(app.contactAction());
-
-		return result;
 	}
 
 	private void tryToRedirectLogToSneerLogFile() throws FileNotFoundException {

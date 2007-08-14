@@ -3,7 +3,6 @@ package sneer.kernel.gui.contacts;
 import static wheel.i18n.Language.translate;
 
 import java.awt.Frame;
-import java.util.List;
 
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.business.contacts.ContactInfo2;
@@ -21,16 +20,16 @@ public class ShowContactsScreenAction implements Action {
 	private final Consumer<ContactInfo2> _contactAdder;
 	private final Omnivore<ContactId> _contactRemover;
 	private final User _user;
-	private final List<ContactAction> _contactActions;
 	private final Consumer<Pair<ContactId, String>> _nickChanger;
 	private ContactsScreen _contactsScreen;
 	private final JFrameBoundsKeeper _boundsKeeper;
+	private final ContactActionFactory _contactActionFactory;
 
-	public ShowContactsScreenAction(User user, Party I, List<ContactAction> contactActions, Consumer<ContactInfo2> contactAdder, Omnivore<ContactId> contactRemover, Consumer<Pair<ContactId, String>> nickChanger, JFrameBoundsKeeper boundsKeeper){
+	public ShowContactsScreenAction(User user, Party I, ContactActionFactory contactActionFactory, Consumer<ContactInfo2> contactAdder, Omnivore<ContactId> contactRemover, Consumer<Pair<ContactId, String>> nickChanger, JFrameBoundsKeeper boundsKeeper){
 		_I = I;
+		_contactActionFactory = contactActionFactory;
 		_contactAdder = contactAdder;
 		_user = user;
-		_contactActions = contactActions;
 		_contactRemover = contactRemover;
 		_nickChanger = nickChanger;
 		_boundsKeeper = boundsKeeper;
@@ -42,7 +41,7 @@ public class ShowContactsScreenAction implements Action {
 
 	public synchronized void run() {
 		if (_contactsScreen == null) {
-			_contactsScreen = new ContactsScreen(_user, _I, _contactActions, _contactAdder, _contactRemover, _nickChanger);
+			_contactsScreen = new ContactsScreen(_user, _I, _contactActionFactory, _contactAdder, _contactRemover, _nickChanger);
 			_boundsKeeper.keepBoundsFor(_contactsScreen, ContactsScreen.class.getName());
 		} 
 		

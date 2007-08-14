@@ -14,7 +14,7 @@ public abstract class SimpleListReceiver<T> extends VisitingListReceiver {
 		_listSignal.addListReceiver(this);
 	}
 	
-	public void stopReceiving() {
+	public void crash() {
 		_listSignal.removeListReceiver(this);
 	}
 

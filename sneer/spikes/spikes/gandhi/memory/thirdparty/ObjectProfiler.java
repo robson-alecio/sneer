@@ -80,7 +80,7 @@ abstract class ObjectProfiler
     {
         if (obj == null) return 0;
         
-        final IdentityHashMap visited = new IdentityHashMap ();
+        final IdentityHashMap<Object, Object> visited = new IdentityHashMap<Object, Object> ();
 
         return computeSizeof (obj, visited, CLASS_METADATA_CACHE);
     }
@@ -100,7 +100,7 @@ abstract class ObjectProfiler
         if (obj == null) return 0;
         if (base == null) throw new IllegalArgumentException ("null input: base");
         
-        final IdentityHashMap visited = new IdentityHashMap ();
+        final IdentityHashMap<Object, Object> visited = new IdentityHashMap<Object, Object> ();
         
         computeSizeof (base, visited, CLASS_METADATA_CACHE);        
         return visited.containsKey (obj) ? 0 : computeSizeof (obj, visited, CLASS_METADATA_CACHE);
@@ -121,7 +121,7 @@ abstract class ObjectProfiler
     {
         if (obj == null) throw new IllegalArgumentException ("null input: obj");
         
-        final IdentityHashMap visited = new IdentityHashMap (); 
+        final IdentityHashMap<Object, ObjectProfileNode> visited = new IdentityHashMap<Object, ObjectProfileNode> (); 
         
         final ObjectProfileNode root = createProfileTree (obj, visited, CLASS_METADATA_CACHE);        
         finishProfileTree (root);
@@ -150,7 +150,7 @@ abstract class ObjectProfiler
         return typeName (field.getDeclaringClass (), shortClassNames).concat ("#").concat (field.getName ());
     }
     
-    public static String typeName (Class cls, final boolean shortClassNames)
+    public static String typeName (Class<?> cls, final boolean shortClassNames)
     {
         int dims = 0; 
         for ( ; cls.isArray (); ++ dims) cls = cls.getComponentType ();
@@ -207,26 +207,26 @@ abstract class ObjectProfiler
     
     
     private static final class ClassAccessPrivilegedAction
-                         implements PrivilegedExceptionAction
+                         implements PrivilegedExceptionAction<Object>
     {
         public Object run () throws Exception
         {
             return m_cls.getDeclaredFields ();
         }
         
-        void setContext (final Class cls)
+        void setContext (final Class<?> cls)
         {
             m_cls = cls;
         }
         
         
-        private Class m_cls;
+        private Class<?> m_cls;
         
     } // end of nested class
     
     
     private static final class FieldAccessPrivilegedAction
-                         implements PrivilegedExceptionAction
+                         implements PrivilegedExceptionAction<Object>
     {
         public Object run () throws Exception
         {
@@ -578,7 +578,7 @@ abstract class ObjectProfiler
     /*
      * Computes the "shallow" size of an array instance.
      */
-    private static int sizeofArrayShell (final int length, final Class componentType)
+    private static int sizeofArrayShell (final int length, final Class<?> componentType)
     {
         // this ignores memory alignment issues by design:
         
@@ -592,7 +592,7 @@ abstract class ObjectProfiler
     /*
      * Returns the JVM-specific size of a primitive type.
      */
-    private static int sizeofPrimitiveType (final Class type)
+    private static int sizeofPrimitiveType (final Class<?> type)
     {
         if (type == int.class)
             return INT_FIELD_SIZE;
@@ -616,7 +616,7 @@ abstract class ObjectProfiler
     
     
     // class metadata cache:
-    private static final Map CLASS_METADATA_CACHE = new WeakHashMap (101);
+    private static final Map<Class<?>, ClassMetadata> CLASS_METADATA_CACHE = new WeakHashMap<Class<?>, ClassMetadata> (101);
 
 } // end of class
 // ----------------------------------------------------------------------------

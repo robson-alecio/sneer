@@ -147,7 +147,7 @@ public class AppManager {
 			
 			URL[] urls = new URL[]{compiledAppDirectory.toURL()};  
 			URLClassLoader ucl = new URLClassLoader(urls, ClassLoader.getSystemClassLoader());  
-			Class clazz = ucl.loadClass("sneer.apps."+compiledAppDirectory.getName()+".Main");  
+			Class<?> clazz = ucl.loadClass("sneer.apps."+compiledAppDirectory.getName()+".Main");  
 			return (App) clazz.newInstance();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -198,7 +198,7 @@ public class AppManager {
 	         BufferedInputStream is = null;
 	         ZipEntry entry;
 	         ZipFile zipfile = new ZipFile(source);
-	         Enumeration e = zipfile.entries();
+	         Enumeration<?> e = zipfile.entries();
 	         while(e.hasMoreElements()) {
 	            entry = (ZipEntry) e.nextElement();
 	            System.out.println("Extracting: " +entry);

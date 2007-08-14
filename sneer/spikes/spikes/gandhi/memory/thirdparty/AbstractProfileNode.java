@@ -11,7 +11,7 @@ import java.util.LinkedList;
  * 
  * @author (C) <a href="http://www.javaworld.com/columns/jw-qna-index.shtml">Vlad Roubtsov</a>, 2003
  */
-abstract class AbstractProfileNode implements IObjectProfileNode, Comparable
+abstract class AbstractProfileNode implements IObjectProfileNode, Comparable<Object>
 {
     // public: ................................................................
     

@@ -12,5 +12,7 @@
 	<classpathentry kind="lib" path="lib/talk.jar"/>
 	<classpathentry kind="src" path="src_old"/>
 	<classpathentry kind="lib" path="lib/compiler-7-ea-b17-02_aug_2007.jar"/>
+	<classpathentry kind="lib" path="lib/jl1.0.jar" sourcepath="C:/workspace/JLayer1.0/src"/>
+	<classpathentry kind="lib" path="lib/jid3lib-0.5.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

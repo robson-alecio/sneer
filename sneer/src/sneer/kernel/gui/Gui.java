@@ -5,8 +5,11 @@ import static wheel.i18n.Language.translate;
 import java.net.URL;
 import java.util.List;
 
+import sneer.games.mediawars.mp3sushi.MP3SushiGameApp;
 import sneer.kernel.business.BusinessSource;
+import sneer.kernel.communication.impl.Communicator;
 import sneer.kernel.gui.contacts.ContactAction;
+import sneer.kernel.gui.contacts.PlayMp3SushiAction;
 import sneer.kernel.gui.contacts.ShowContactsScreenAction;
 import sneer.kernel.pointofview.Party;
 import wheel.io.ui.JFrameBoundsKeeper;
@@ -21,14 +24,14 @@ import wheel.lang.Omnivore;
 
 public class Gui {
 
-
-	public Gui(User user, Party I, BusinessSource businessSource, List<ContactAction> contactActions, JFrameBoundsKeeper jframeboundsKeeper) throws Exception {
+	public Gui(User user, Party I, BusinessSource businessSource, List<ContactAction> contactActions, JFrameBoundsKeeper jframeboundsKeeper, Communicator communicator) throws Exception {
 		_user = user;
 		_I = I; 
 		_businessSource = businessSource;
 		_contactActions = contactActions;
 		_jframeBoundsKeeper = jframeboundsKeeper;
-
+		_communicator = communicator;
+		
 		URL icon = Gui.class.getResource("/sneer/kernel/gui/traymenu/yourIconGoesHere.png");
 		_trayIcon = new TrayIconImpl(icon, _user.catcher());
 		
@@ -40,10 +43,14 @@ public class Gui {
 	private final BusinessSource _businessSource;
 	private final List<ContactAction> _contactActions;
 	private JFrameBoundsKeeper _jframeBoundsKeeper;
-
+	private Communicator _communicator;
+	
 	private final TrayIcon _trayIcon;
 
 	private ShowContactsScreenAction _showContactsScreenAction;
+	private PlayMp3SushiAction _playMp3SushiAction;
+	
+
 
 	
 	private void tryToRun() {
@@ -60,6 +67,7 @@ public class Gui {
 		_trayIcon.setDefaultAction(showContactsScreenAction);
 		_trayIcon.addAction(nameChangeAction());
 		_trayIcon.addAction(showContactsScreenAction);
+		_trayIcon.addAction(playMp3SushiAction());
 		_trayIcon.addAction(sneerPortChangeAction());
 		_trayIcon.addAction(languageChangeAction());
 		_trayIcon.addAction(exitAction());
@@ -73,6 +81,12 @@ public class Gui {
 		if (_showContactsScreenAction == null)
 			_showContactsScreenAction = new ShowContactsScreenAction(_user, _I, _contactActions, _businessSource.contactAdder2(),_businessSource.contactRemover(), _businessSource.contactNickChanger(), _jframeBoundsKeeper);
 		return _showContactsScreenAction;
+	}
+	
+	private PlayMp3SushiAction playMp3SushiAction() {
+		if (_playMp3SushiAction == null) 
+			_playMp3SushiAction = new PlayMp3SushiAction(_businessSource.output().ownName(), _user, _communicator.getChannel(MP3SushiGameApp.class.getName(), 0),_businessSource.output().contactAttributes());
+		return _playMp3SushiAction;
 	}
 
 	private void filloutInitialValues() { // Refactor: remove this logic from the gui. Maybe move to Communicator;

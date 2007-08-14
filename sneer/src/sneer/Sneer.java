@@ -43,6 +43,10 @@ import wheel.lang.Omnivore;
 
 public class Sneer {
 
+	public static void main(String args[]) {
+		new Sneer();
+	}
+	
 	public Sneer() {
 		try {
 			
@@ -84,7 +88,7 @@ public class Sneer {
 		_communicator = new Communicator(_user, new OldNetworkImpl(), _businessSource);
 		Channel channel = _communicator.getChannel("Point of View", 1);
 		_me = new Me(_businessSource.output(), _communicator.operator(), channel);
-		_gui = new Gui(_user, _me, _businessSource, contactActions(), jFrameBoundsKeeper()); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
+		_gui = new Gui(_user, _me, _businessSource, contactActions(), jFrameBoundsKeeper(), _communicator); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
 		
 		//while (true) Threads.sleepWithoutInterruptions(100000); // Refactor Consider joining the main gui thread.
 	}

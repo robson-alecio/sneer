@@ -25,7 +25,7 @@ public class Bubble {
 		return new InvocationHandler() {
 			@Override
 			public Object invoke(Object proxyImplied, Method method, Object[] args) throws InvocationTargetException {
-				Object result = handle(method, args);
+				Object result = invokeOnStateMachine(method, args);
 				return wrapIfNecessary(result, method);
 			}
 		};
@@ -42,7 +42,7 @@ public class Bubble {
 	private final Prevayler _prevayler;
 
 	
-	private Object handle(Method method, Object[] args) throws InvocationTargetException {
+	private Object invokeOnStateMachine(Method method, Object[] args) throws InvocationTargetException {
 		Object result;
 		try {
 			result = method.invoke(_stateMachine, args);

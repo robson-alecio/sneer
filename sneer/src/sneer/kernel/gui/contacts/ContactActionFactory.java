@@ -46,7 +46,9 @@ public class ContactActionFactory {
 		result.add(new FileTransferApp(_user, fileTransferChannel, _businessSource.output().contactAttributes()).contactAction());
 		
 		for(App app:_appManager.installedApps().values())
-			result.add(app.contactAction());
+			if (app.contactActions()!=null)
+				for(ContactAction contactAction:app.contactActions())
+					result.add(contactAction);
 		return result;
 	}
 }

@@ -7,7 +7,9 @@ import java.awt.Dialog.ModalityType;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JOptionPane;
@@ -15,6 +17,7 @@ import javax.swing.JOptionPane;
 import scribble.gui.ScribbleFrame;
 import sneer.kernel.appmanager.App;
 import sneer.kernel.appmanager.AppConfig;
+import sneer.kernel.appmanager.MainAction;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
@@ -54,8 +57,8 @@ public class Application implements App{
 
 	private final Map<ContactId, SourceImpl<ScribblePacket>> _inputsByContactId = new HashMap<ContactId, SourceImpl<ScribblePacket>>();
 
-	public ContactAction contactAction() {
-		return new ContactAction() {
+	public List<ContactAction> contactActions() {
+		return Collections.singletonList( (ContactAction)new ContactAction() {
 
 			@Override
 			public void actUpon(Contact contact) {
@@ -67,7 +70,7 @@ public class Application implements App{
 				return translate("Scribble");
 			}
 
-		};
+		});
 	}
 
 	private Omnivore<Packet> drawPacketReceiver() {
@@ -207,6 +210,10 @@ public class Application implements App{
 
 	public String channelName() {
 		return "scribble";
+	}
+
+	public List<MainAction> mainActions() {
+		return null; //no main actions
 	}
 
 }

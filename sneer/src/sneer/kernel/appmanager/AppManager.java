@@ -1,25 +1,16 @@
 package sneer.kernel.appmanager;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 import sneer.SneerDirectories;
 import sneer.kernel.communication.impl.Communicator;
@@ -57,20 +48,9 @@ public class AppManager {
 	public void install(String appName, File jarFile) throws IOException{
 		File installDirectory = new File(SneerDirectories.appsDirectory(),appName);
 		installDirectory.mkdir();
-		copy(jarFile,new File(installDirectory,jarFile.getName()));
+		AppTools.copy(jarFile,new File(installDirectory,jarFile.getName()));
 		rebuild();
 	}
-	
-	private void copy(File src, File dst) throws IOException {
-        InputStream in = new FileInputStream(src);
-        OutputStream out = new FileOutputStream(dst);
-        byte[] buf = new byte[1024];
-        int len;
-        while ((len = in.read(buf)) > 0)
-            out.write(buf, 0, len);
-        in.close();
-        out.close();
-    }
 	
 	public void remove(String appName){
 		removeRecursive(new File(SneerDirectories.appsDirectory(),appName));
@@ -79,6 +59,12 @@ public class AppManager {
 		rebuild();
 	}
 	
+	public void publish(File srcFolder, String appName) throws IOException{
+		File tempFile = File.createTempFile("appSneer", ".zip");
+		AppTools.zip(srcFolder, tempFile);
+		install(appName, tempFile);
+		tempFile.delete();
+	}
 	
 	private void unpackageApps(){
 		for(File appDirectory:notUnpackagedApps()){
@@ -87,10 +73,11 @@ public class AppManager {
 			target.mkdir();
 			System.out.println("Unpackaging "+jar.getName());
 			try{
-				unzip(jar,target);
+				AppTools.unzip(jar,target);
 			}catch(Exception e){
-				System.out.println("Could not Unpackage "+jar.getName()); //Fix: use log
 				target.delete();
+				Log.log(e);
+				e.printStackTrace();
 			}
 		}
 	}
@@ -109,7 +96,7 @@ public class AppManager {
 		for(File sourceDirectory:notCompiledApps()){
 
 			String targetDirectory=SneerDirectories.compiledAppsDirectory()+File.separator+sourceDirectory.getName();
-			String sourceApplication=sourceDirectory+File.separator+"sneer"+File.separator+"apps"+File.separator+sourceDirectory.getName()+File.separator+"Main.java";
+			String sourceApplication=sourceDirectory+File.separator+"sneer"+File.separator+"apps"+File.separator+sourceDirectory.getName()+File.separator+"Application.java";
 			(new File(targetDirectory)).mkdir();
 			System.out.println("Compiling "+sourceApplication);
 			System.out.println(tryToFindSneerLocation().getAbsolutePath()); //Attention... make sure you have an updated Sneer.jar by regenerating it using build.xml
@@ -229,38 +216,6 @@ public class AppManager {
 				return true;
 		}
 		return false;
-	}
-	
-	static final int _BUFFER = 2048;
-	
-	private void unzip(File source, File target) throws Exception{
-	         BufferedOutputStream dest = null;
-	         BufferedInputStream is = null;
-	         ZipEntry entry;
-	         ZipFile zipfile = new ZipFile(source);
-	         Enumeration<?> e = zipfile.entries();
-	         while(e.hasMoreElements()) {
-	            entry = (ZipEntry) e.nextElement();
-	            System.out.println("Extracting: " +entry);
-	            File targetFile = new File(target.getPath()+File.separator+entry.getName());
-	            if (entry.isDirectory()){
-	            	targetFile.mkdirs();
-	            	continue;
-	            }
-	            is = new BufferedInputStream(zipfile.getInputStream(entry));
-	            int count;
-	            byte data[] = new byte[_BUFFER];
-	            
-	            FileOutputStream fos = new FileOutputStream(targetFile);
-	            dest = new BufferedOutputStream(fos, _BUFFER);
-	            while ((count = is.read(data, 0, _BUFFER)) 
-	              != -1) {
-	               dest.write(data, 0, count);
-	            }
-	            dest.flush();
-	            dest.close();
-	            is.close();
-	         }
 	}
 	
 }

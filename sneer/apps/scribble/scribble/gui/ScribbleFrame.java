@@ -1,4 +1,4 @@
-package sneer.apps.scribble.gui;
+package scribble.gui;
 
 import static wheel.i18n.Language.translate;
 
@@ -36,11 +36,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 
-import sneer.apps.scribble.ScribblePacket;
-import sneer.apps.scribble.packet.BrushPacket;
-import sneer.apps.scribble.packet.ClearPacket;
-import sneer.apps.scribble.packet.ColorPacket;
-import sneer.apps.scribble.packet.StrokePacket;
+import scribble.ScribblePacket;
+import scribble.packet.BrushPacket;
+import scribble.packet.ClearPacket;
+import scribble.packet.ColorPacket;
+import scribble.packet.StrokePacket;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 

@@ -188,7 +188,7 @@ public class AppManager {
 			try {
 				URL[] urls = new URL[]{compiledAppDirectory.toURL()};
 				URLClassLoader ucl = new URLClassLoader(urls, ClassLoader.getSystemClassLoader());  
-				Class<?> clazz = ucl.loadClass("sneer.apps."+compiledAppDirectory.getName()+".Main"); 
+				Class<?> clazz = ucl.loadClass(compiledAppDirectory.getName()+".Application"); 
 				AppConfig config = new AppConfig(_user,new AppChannelFactory(_communicator),_contacts);
 				Class<?>[] types = {AppConfig.class};
 				Object[] instances = {config};

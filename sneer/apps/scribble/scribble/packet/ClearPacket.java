@@ -1,6 +1,6 @@
-package sneer.apps.scribble.packet;
+package scribble.packet;
 
-import sneer.apps.scribble.ScribblePacket;
+import scribble.ScribblePacket;
 
 public class ClearPacket implements ScribblePacket{
 	

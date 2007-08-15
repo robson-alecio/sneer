@@ -1,4 +1,4 @@
-package sneer.apps.scribble;
+package scribble;
 
 import static wheel.i18n.Language.translate;
 
@@ -12,7 +12,7 @@ import java.util.Map;
 
 import javax.swing.JOptionPane;
 
-import sneer.apps.scribble.gui.ScribbleFrame;
+import scribble.gui.ScribbleFrame;
 import sneer.kernel.appmanager.App;
 import sneer.kernel.appmanager.AppConfig;
 import sneer.kernel.business.contacts.ContactId;
@@ -27,7 +27,7 @@ import wheel.reactive.Source;
 import wheel.reactive.impl.SourceImpl;
 import wheel.reactive.lists.ListSignal;
 
-public class Main implements App{
+public class Application implements App{
 
 	private static final String OPEN_REQUEST = "Request";
 
@@ -37,7 +37,7 @@ public class Main implements App{
 
 	private static final String CLOSE_REQUEST = "Close";
 
-	public Main(AppConfig appConfig) {
+	public Application(AppConfig appConfig) {
 		_user = appConfig._user;
 		_channel = appConfig._channelFactory.channel(this);
 		_contacts = appConfig._contacts;

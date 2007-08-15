@@ -1,8 +1,10 @@
-package sneer.apps.scribble.packet;
+package scribble.packet;
+
 
 import java.awt.Color;
 
-import sneer.apps.scribble.ScribblePacket;
+import scribble.ScribblePacket;
+
 
 public class ColorPacket implements ScribblePacket{
 	public final Color _color;

@@ -1,4 +1,5 @@
-package sneer.apps.scribble;
+package scribble;
+
 
 public interface ScribblePacket {
 	

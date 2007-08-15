@@ -131,13 +131,15 @@ public class AppManager {
 		file.delete();
 	}
 	
-	private File tryToFindSneerLocation(){ //FixUrgent: this does not works correctly in eclipse, a temporary fix was made
+	private File tryToFindSneerLocation() {
 		try{
 			URL url = Jars.jarGiven(AppManager.class);
 			return urlToFile(url);
 		}catch(Exception e){
 			File eclipseProjectRoot = new File("."); //fallback. if it is not running inside jar, try to find jar from jarbuilder directory.
-			return firstJarInDirectory(new File(eclipseProjectRoot,"bin"));	
+			File result = firstJarInDirectory(new File(eclipseProjectRoot,"bin"));
+			if (result == null) _user.acknowledgeNotification("Sneer.jar not found. If you are not running from the jar (from eclipse for example) you need SneerXXXX.jar as the ONLY jar in the .bin directory.");
+			return result;
 		}
 	}
 

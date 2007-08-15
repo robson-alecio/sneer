@@ -9,5 +9,7 @@ public interface App {
 	public ContactAction contactAction();
 	
 	public int priority();
+	
+	public String channelName();
 
 }

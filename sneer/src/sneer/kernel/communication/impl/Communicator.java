@@ -29,6 +29,7 @@ import sneer.kernel.business.contacts.ContactPublicKeyInfo;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Operator;
 import sneer.kernel.communication.Packet;
+import wheel.io.Log;
 import wheel.io.network.ObjectSocket;
 import wheel.io.network.OldNetwork;
 import wheel.io.network.impl.XStreamNetwork;
@@ -62,6 +63,10 @@ public class Communicator {
 
 	private void receive(ChannelPacket receivedPacket) {
 		ChannelImpl channel = _channelsById.get(receivedPacket._channelId);
+		if (channel == null) {
+			Log.log(translate("Unknown channel being used by some contact: %1$s\nHe might have a different Sneer version or some Application you dont have.", receivedPacket._channelId));
+			return;
+		}
 		channel.receive(receivedPacket._packet);
 	}
 

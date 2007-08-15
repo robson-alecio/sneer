@@ -205,4 +205,8 @@ public class Main implements App{
 		return 2;
 	}
 
+	public String channelName() {
+		return "scribble";
+	}
+
 }

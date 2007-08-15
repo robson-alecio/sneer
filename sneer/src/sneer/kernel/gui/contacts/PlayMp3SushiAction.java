@@ -23,6 +23,7 @@ public class PlayMp3SushiAction implements Action {
 		_contactsAttributes = contactsAttributes;
 		_ownName = ownName;
 	}
+	
 	@Override
 	public String caption() {
 		// Implement Auto-generated method stub
@@ -34,7 +35,6 @@ public class PlayMp3SushiAction implements Action {
 		if (_mp3SushiGameApp == null)
 			_mp3SushiGameApp = new MP3SushiGameApp(_ownName, _user, _channel, _contactsAttributes);
 		_mp3SushiGameApp.start();
-
 	}
 
 }

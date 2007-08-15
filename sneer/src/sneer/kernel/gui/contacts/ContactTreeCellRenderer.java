@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTree;
+import javax.swing.border.LineBorder;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import sneer.kernel.pointofview.Contact;
@@ -26,13 +27,15 @@ public class ContactTreeCellRenderer extends DefaultTreeCellRenderer{
 	final static ImageIcon UNCONFIRMED_ICON = new ImageIcon(ContactTreeCellRenderer.class.getResource(IMAGE_PATH + "yellowled.gif"));
 	final static ImageIcon CONFIRMED_ICON = new ImageIcon(ContactTreeCellRenderer.class.getResource(IMAGE_PATH + "greenled.gif"));
 	
-	final static Color selected = new Color(230,240,255);
+	final static Color selectedColor = new Color(230,240,255);
 
 	@Override
 	public Component getTreeCellRendererComponent(JTree tree, Object treeNode, boolean isSelected, boolean expanded, boolean leaf, int row, boolean focus) {
 		JPanel result = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		result.setBackground(isSelected ? selected : Color.white);
-		//panel.setBorder(new LineBorder(Color.LIGHT_GRAY, 1));
+
+		result.setBackground(isSelected ? selectedColor : Color.white);
+		Color borderColor = isSelected ? Color.GRAY : Color.white;
+		result.setBorder(new LineBorder(borderColor, 1));
 
 		//if (treeNode == ContactTreeNode.NO_CONTACTS)
 		//return super.getTreeCellRendererComponent(tree,treeNode,isSelected, expanded, leaf, row, focus);

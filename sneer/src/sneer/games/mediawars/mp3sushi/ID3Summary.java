@@ -20,7 +20,7 @@ public class ID3Summary {
 	public static ID3Summary createFromFileName(String fileName) {
 		MP3File mp3file;
 		try {
-			mp3file = new MP3File(fileName);
+			mp3file = new MP3File(fileName); //Fix: Read-only files cause Exception to be thrown. Fix jid3lib or remove read-only flag while reading info and set it back later.  
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -30,7 +30,7 @@ public class ID3Summary {
 		AbstractID3v2 aid3V2 = mp3file.getID3v2Tag();
 		
 		if (aid3V2 != null) {
-			title = aid3V2.getSongTitle();
+			title = aid3V2.getSongTitle(); //Fix Try and recognize different charsets.
 			if (aid3V2 != null) {
 				if (title != null) title = title.trim();
 				singer = aid3V2.getLeadArtist();

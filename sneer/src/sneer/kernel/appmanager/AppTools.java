@@ -30,7 +30,7 @@ public class AppTools {
         while(e.hasMoreElements()) {
            entry = (ZipEntry) e.nextElement();
            System.out.println("Extracting: " +entry);
-           File targetFile = new File(target.getPath()+File.separator+entry.getName());
+           File targetFile = new File(target.getPath()+"/"+entry.getName());
            if (entry.isDirectory())
            	continue;
            is = new BufferedInputStream(zipfile.getInputStream(entry));

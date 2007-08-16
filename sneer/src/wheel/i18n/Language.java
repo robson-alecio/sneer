@@ -173,8 +173,8 @@ public class Language {
 			InputStream streamIn;
 			OutputStream streamOut;
 			try {
-				streamIn = new FileInputStream(dirFile.getAbsolutePath() + File.separator + TRANSLATION_DIRECTORY + File.separator + TRANSLATION_FILENAME + ".pot");
-				streamOut = new FileOutputStream(dirFile.getAbsolutePath() + File.separator + TRANSLATION_DIRECTORY + File.separator + TRANSLATION_FILENAME + "_" + language_country + ".po");
+				streamIn = new FileInputStream(dirFile.getAbsolutePath() + "/" + TRANSLATION_DIRECTORY + "/" + TRANSLATION_FILENAME + ".pot");
+				streamOut = new FileOutputStream(dirFile.getAbsolutePath() + "/" + TRANSLATION_DIRECTORY + "/" + TRANSLATION_FILENAME + "_" + language_country + ".po");
 				BufferedReader reader = new BufferedReader(new InputStreamReader(streamIn,Charset.forName("UTF-8")));
 				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(streamOut,"UTF-8"));
 				String line = "";
@@ -205,7 +205,7 @@ public class Language {
 	}
 
 	private static void extractFromDirectory(File dirFile) {
-		File targetFile = new File(dirFile.getPath() + File.separator + TRANSLATION_DIRECTORY + File.separator + "Translation.pot");
+		File targetFile = new File(dirFile.getPath() + "/" + TRANSLATION_DIRECTORY + "/" + "Translation.pot");
 		generateTranslation(dirFile, targetFile);
 	}
 
@@ -286,7 +286,7 @@ public class Language {
 							extracted.append(currentChar);
 						pointer++;
 					}
-					String name = file.getPath().substring(rootDir.getAbsolutePath().length() + 1) + File.separator + file.getName();
+					String name = file.getPath().substring(rootDir.getAbsolutePath().length() + 1) + "/" + file.getName();
 					ExtractedString extractedString = new ExtractedString(name, countLineBreaks(source,offset), extracted.toString()); 
 					extractedList.add(extractedString);
 				}
@@ -365,8 +365,8 @@ public class Language {
 			String language_country = JOptionPane.showInputDialog("What language? (Examples: pt_BR, fr_FR )");
 
 			try {
-				InputStream templateStreamIn = new FileInputStream(dirFile.getAbsolutePath() + File.separator + TRANSLATION_DIRECTORY + File.separator + TRANSLATION_FILENAME + ".pot");
-				InputStream languageStreamIn = new FileInputStream(dirFile.getAbsolutePath() + File.separator + TRANSLATION_DIRECTORY + File.separator + TRANSLATION_FILENAME + "_" + language_country + ".po");
+				InputStream templateStreamIn = new FileInputStream(dirFile.getAbsolutePath() + "/" + TRANSLATION_DIRECTORY + "/" + TRANSLATION_FILENAME + ".pot");
+				InputStream languageStreamIn = new FileInputStream(dirFile.getAbsolutePath() + "/" + TRANSLATION_DIRECTORY + "/" + TRANSLATION_FILENAME + "_" + language_country + ".po");
 				OutputStream streamOut = new FileOutputStream(dirFile.getAbsolutePath() + TRANSLATION_DIRECTORY + TRANSLATION_FILENAME + "_" + language_country + ".po_merge");
 
 				List<String> msgids = new ArrayList<String>();

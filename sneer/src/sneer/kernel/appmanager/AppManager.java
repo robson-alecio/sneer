@@ -103,7 +103,7 @@ public class AppManager {
 	private void compileApps(){
 		for(File sourceDirectory:notCompiledApps()){
 
-			String targetDirectory=SneerDirectories.compiledAppsDirectory()+File.separator+sourceDirectory.getName()+File.separator+"classes";
+			String targetDirectory=SneerDirectories.compiledAppsDirectory()+"/"+sourceDirectory.getName()+"/"+"classes";
 			String sourceApplication = AppTools.findFile(sourceDirectory, new FilenameFilter(){
 				public boolean accept(File dir, String name) {
 					return (name.equals("Application.java"));
@@ -114,7 +114,7 @@ public class AppManager {
 			System.out.println("Compiling "+sourceApplication);
 			System.out.println(tryToFindSneerLocation().getAbsolutePath());
 			try{
-				String[] parameters = {"-classpath",tryToFindSneerLocation().getAbsolutePath()+File.pathSeparator+targetDirectory,"-sourcepath",sourceDirectory.getAbsolutePath()+File.separator+"src","-d",targetDirectory,sourceApplication};
+				String[] parameters = {"-classpath",tryToFindSneerLocation().getAbsolutePath()+File.pathSeparator+targetDirectory,"-sourcepath",sourceDirectory.getAbsolutePath()+"/src","-d",targetDirectory,sourceApplication};
 				com.sun.tools.javac.Main.compile(parameters);
 			}catch(Exception e){
 				e.printStackTrace();

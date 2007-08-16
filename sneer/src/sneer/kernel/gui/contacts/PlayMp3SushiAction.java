@@ -4,8 +4,8 @@ import static wheel.i18n.Language.translate;
 import sneer.games.mediawars.mp3sushi.MP3SushiGameApp;
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.communication.Channel;
+import wheel.io.ui.Action;
 import wheel.io.ui.User;
-import wheel.io.ui.TrayIcon.Action;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 

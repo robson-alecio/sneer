@@ -1,6 +1,5 @@
 package wheel.io.ui;
 
-import wheel.io.ui.TrayIcon.Action;
 
 
 public abstract class CancellableAction implements Action {

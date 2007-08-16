@@ -9,7 +9,6 @@ import sneer.SneerDirectories;
 import sneer.games.mediawars.mp3sushi.MP3SushiGameApp;
 import sneer.kernel.appmanager.App;
 import sneer.kernel.appmanager.AppManager;
-import sneer.kernel.appmanager.MainAction;
 import sneer.kernel.appmanager.gui.AppManagerGui;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.communication.impl.Communicator;
@@ -20,12 +19,12 @@ import sneer.kernel.pointofview.Party;
 import wheel.io.Log;
 import wheel.io.files.Directory;
 import wheel.io.files.impl.DurableDirectory;
+import wheel.io.ui.Action;
 import wheel.io.ui.BoundsPersistence;
 import wheel.io.ui.JFrameBoundsKeeper;
 import wheel.io.ui.TrayIcon;
 import wheel.io.ui.User;
 import wheel.io.ui.ValueChangePane;
-import wheel.io.ui.TrayIcon.Action;
 import wheel.io.ui.User.Notification;
 import wheel.io.ui.impl.DeferredBoundPersistence;
 import wheel.io.ui.impl.DirectoryBoundsPersistence;
@@ -83,10 +82,10 @@ public class Gui {
 		_trayIcon.addAction(sneerPortChangeAction());
 		_trayIcon.addAction(languageChangeAction());
 		_trayIcon.addAction(appManagerAction());
-		for(App app:_appManager.installedApps().values())
-			if (app.mainActions()!=null)
-				for(MainAction mainAction:app.mainActions())
-					_trayIcon.addAction(appMainAction(mainAction));
+		for(App app : _appManager.installedApps().values())
+			if (app.mainActions() != null)
+				for(Action mainAction : app.mainActions())
+					_trayIcon.addAction(mainAction);
 		_trayIcon.addAction(exitAction());
 	}
 
@@ -103,19 +102,6 @@ public class Gui {
 		};
 	}
 	
-	private Action appMainAction(final MainAction mainAction) {
-		return new Action() {
-			
-			public String caption() {
-				return mainAction.caption();
-			}
-
-			public void run() {
-				mainAction.act();
-			}
-		};
-	}
-
 	private LanguageChangeAction languageChangeAction() {
 		return new LanguageChangeAction(_user, _businessSource.output().language(), _businessSource.languageSetter());
 	}

@@ -16,6 +16,7 @@ import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.security.InvalidParameterException;
 
+import wheel.io.ui.Action;
 import wheel.io.ui.TrayIcon;
 import wheel.lang.exceptions.Catcher;
 import wheel.lang.exceptions.PrintStackTracer;

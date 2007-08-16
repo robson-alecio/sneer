@@ -17,12 +17,12 @@ import javax.swing.JOptionPane;
 import scribble.gui.ScribbleFrame;
 import sneer.kernel.appmanager.App;
 import sneer.kernel.appmanager.AppConfig;
-import sneer.kernel.appmanager.MainAction;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.pointofview.Contact;
+import wheel.io.ui.Action;
 import wheel.io.ui.User;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
@@ -212,7 +212,7 @@ public class Application implements App{
 		return "scribble";
 	}
 
-	public List<MainAction> mainActions() {
+	public List<Action> mainActions() {
 		return null; //no main actions
 	}
 

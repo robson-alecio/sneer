@@ -1,9 +1,9 @@
 package sneer.kernel.gui;
 
 import static wheel.i18n.Language.translate;
+import wheel.io.ui.Action;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
-import wheel.io.ui.TrayIcon.Action;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 

@@ -96,10 +96,10 @@ public class AppManager {
 		for(File sourceDirectory:notCompiledApps()){
 
 			String targetDirectory=SneerDirectories.compiledAppsDirectory()+File.separator+sourceDirectory.getName();
-			String sourceApplication=sourceDirectory+File.separator+"sneer"+File.separator+"apps"+File.separator+sourceDirectory.getName()+File.separator+"Application.java";
-			(new File(targetDirectory)).mkdir();
+			String sourceApplication=sourceDirectory+File.separator+"sneer"+File.separator+"apps"+File.separator+sourceDirectory.getName()+File.separator+"Application.java"; //FixUrgent: Gandhi, try to use the Linux file separator ( / ). It works on windows too. 
+			new File(targetDirectory).mkdir();
 			System.out.println("Compiling "+sourceApplication);
-			System.out.println(tryToFindSneerLocation().getAbsolutePath()); //Attention... make sure you have an updated Sneer.jar by regenerating it using build.xml
+			System.out.println(tryToFindSneerLocation().getAbsolutePath());
 			try{
 				String[] parameters = {"-classpath",tryToFindSneerLocation().getAbsolutePath()+File.pathSeparator+sourceDirectory.getPath(),"-d",targetDirectory,sourceApplication};
 				com.sun.tools.javac.Main.compile(parameters);
@@ -170,22 +170,21 @@ public class AppManager {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	private SovereignApplication appLoad(File compiledAppDirectory) {
-			try {
-				URL[] urls = new URL[]{compiledAppDirectory.toURL()};
-				URLClassLoader ucl = new URLClassLoader(urls, ClassLoader.getSystemClassLoader());  
-				Class<?> clazz = ucl.loadClass(compiledAppDirectory.getName()+".Application"); 
-				AppConfig config = new AppConfig(_user,new AppChannelFactory(_communicator),_contacts);
-				Class<?>[] types = {AppConfig.class};
-				Object[] instances = {config};
-				Constructor<?> constructor = clazz.getConstructor(types);
-				return (SovereignApplication) constructor.newInstance(instances);
-			} catch (Exception e) {
-				Log.log(e);
-				e.printStackTrace();
-			}  
-		return null;
+		try {
+			URL[] urls = new URL[]{compiledAppDirectory.toURI().toURL()};
+			URLClassLoader ucl = new URLClassLoader(urls, ClassLoader.getSystemClassLoader());  
+			Class<?> clazz = ucl.loadClass(compiledAppDirectory.getName()+".Application"); 
+			AppConfig config = new AppConfig(_user,new AppChannelFactory(_communicator),_contacts);
+			Class<?>[] types = {AppConfig.class};
+			Object[] args = {config};
+			Constructor<?> constructor = clazz.getConstructor(types);
+			return (SovereignApplication) constructor.newInstance(args);
+		} catch (Exception e) {
+			Log.log(e);
+			e.printStackTrace();
+			return null;
+		}  
 	}
 	
 	private boolean isAppLoaded(File compiledAppDirectory){

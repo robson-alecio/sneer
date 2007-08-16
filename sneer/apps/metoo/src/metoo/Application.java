@@ -36,7 +36,7 @@ public class Application implements SovereignApplication{
 	}
 
 	public List<ContactAction> contactActions() {
-		Collections.singletonList(new ContactAction(){
+		return Collections.singletonList((ContactAction)new ContactAction(){
 			public void actUpon(Contact contact) {
 				openMeTooFrame(contact);
 			}
@@ -44,8 +44,6 @@ public class Application implements SovereignApplication{
 				return translate("Me Too");
 			}
 		});
-		
-		return null;
 	}
 	
 	private final Map<ContactId, MeTooFrame> _framesByContactId = new HashMap<ContactId, MeTooFrame>();

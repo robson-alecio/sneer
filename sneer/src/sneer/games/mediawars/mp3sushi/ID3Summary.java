@@ -30,7 +30,7 @@ public class ID3Summary {
 		AbstractID3v2 aid3V2 = mp3file.getID3v2Tag();
 		
 		if (aid3V2 != null) {
-			title = aid3V2.getSongTitle(); //Fix Try and recognize different charsets.
+			title = aid3V2.getSongTitle(); //Fix Try and recognize different charsets. Use strangeCharsetName.mp3 in the tests package.
 			if (aid3V2 != null) {
 				if (title != null) title = title.trim();
 				singer = aid3V2.getLeadArtist();

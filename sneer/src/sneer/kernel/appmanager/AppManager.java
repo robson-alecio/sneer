@@ -22,7 +22,7 @@ import wheel.reactive.lists.ListSignal;
 
 public class AppManager {
 	
-	private Map<String,App> _installedApps = new Hashtable<String,App>();
+	private Map<String,SovereignApplication> _installedApps = new Hashtable<String,SovereignApplication>();
 	private User _user;
 	private Communicator _communicator;
 	private ListSignal<Contact> _contacts;
@@ -153,7 +153,7 @@ public class AppManager {
         return new File(uri);
     }
 	
-	public Map<String,App> installedApps(){
+	public Map<String,SovereignApplication> installedApps(){
 		createDirectories();
 		unpackageApps();
 		compileApps();
@@ -171,7 +171,7 @@ public class AppManager {
 	}
 
 	@SuppressWarnings("deprecation")
-	private App appLoad(File compiledAppDirectory) {
+	private SovereignApplication appLoad(File compiledAppDirectory) {
 			try {
 				URL[] urls = new URL[]{compiledAppDirectory.toURL()};
 				URLClassLoader ucl = new URLClassLoader(urls, ClassLoader.getSystemClassLoader());  
@@ -180,7 +180,7 @@ public class AppManager {
 				Class<?>[] types = {AppConfig.class};
 				Object[] instances = {config};
 				Constructor<?> constructor = clazz.getConstructor(types);
-				return (App) constructor.newInstance(instances);
+				return (SovereignApplication) constructor.newInstance(instances);
 			} catch (Exception e) {
 				Log.log(e);
 				e.printStackTrace();

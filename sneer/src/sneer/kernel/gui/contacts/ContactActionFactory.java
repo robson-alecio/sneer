@@ -6,7 +6,7 @@ import java.util.List;
 import sneer.apps.conversations.ConversationsApp;
 import sneer.apps.filetransfer.FileTransferApp;
 import sneer.apps.talk.TalkApp;
-import sneer.kernel.appmanager.App;
+import sneer.kernel.appmanager.SovereignApplication;
 import sneer.kernel.appmanager.AppManager;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.communication.Channel;
@@ -45,7 +45,7 @@ public class ContactActionFactory {
 		Channel fileTransferChannel = _communicator.getChannel(FileTransferApp.class.getName(), 3);
 		result.add(new FileTransferApp(_user, fileTransferChannel, _businessSource.output().contactAttributes()).contactAction());
 		
-		for(App app:_appManager.installedApps().values())
+		for(SovereignApplication app:_appManager.installedApps().values())
 			if (app.contactActions()!=null)
 				for(ContactAction contactAction:app.contactActions())
 					result.add(contactAction);

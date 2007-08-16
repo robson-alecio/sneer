@@ -12,8 +12,8 @@ public class AppChannelFactory {
 		_communicator = communicator;
 	}
 	
-	public Channel channel(App app){ //Implement: in the future the priority should be subordinated to some permission system
-		return _communicator.getChannel(app.channelName(), app.priority());
+	public Channel channel(SovereignApplication app){ //Implement: in the future the priority should be subordinated to some permission system
+		return _communicator.getChannel(app.defaultName(), app.trafficPriority());
 	}
 	
 }

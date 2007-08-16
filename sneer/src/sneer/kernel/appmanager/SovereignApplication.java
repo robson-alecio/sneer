@@ -5,16 +5,13 @@ import java.util.List;
 import sneer.kernel.gui.contacts.ContactAction;
 import wheel.io.ui.Action;
 
-public interface App {
+public interface SovereignApplication {
 	
-	public String name();
-	
-	public List<ContactAction> contactActions();
+	public String defaultName();
 	
 	public List<Action> mainActions();
+	public List<ContactAction> contactActions();
 	
-	public int priority();
-	
-	public String channelName();
+	public int trafficPriority();
 
 }

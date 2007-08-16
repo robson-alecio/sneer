@@ -9,7 +9,7 @@ import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
 
 import prevayler.bubble.Bubble;
-import sneer.kernel.appmanager.App;
+import sneer.kernel.appmanager.SovereignApplication;
 import sneer.kernel.appmanager.AppManager;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.impl.BusinessFactory;
@@ -69,8 +69,8 @@ public class Sneer {
 		
 		System.out.println("Checking existing apps:");
 		_appManager = new AppManager(_user,_communicator,_me.contacts());
-		for(App app:_appManager.installedApps().values())
-				System.out.println("App : "+app.name());
+		for(SovereignApplication app:_appManager.installedApps().values())
+				System.out.println("App : "+app.defaultName());
 
 		_gui = new Gui(_user, _me, _businessSource,  _communicator, _appManager); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
 		

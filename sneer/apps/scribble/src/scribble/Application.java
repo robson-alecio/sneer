@@ -15,7 +15,7 @@ import java.util.Map;
 import javax.swing.JOptionPane;
 
 import scribble.gui.ScribbleFrame;
-import sneer.kernel.appmanager.App;
+import sneer.kernel.appmanager.SovereignApplication;
 import sneer.kernel.appmanager.AppConfig;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
@@ -30,7 +30,7 @@ import wheel.reactive.Source;
 import wheel.reactive.impl.SourceImpl;
 import wheel.reactive.lists.ListSignal;
 
-public class Application implements App{
+public class Application implements SovereignApplication{
 
 	private static final String OPEN_REQUEST = "Request";
 
@@ -200,11 +200,11 @@ public class Application implements App{
 		};
 	}
 
-	public String name() {
+	public String defaultName() {
 		return "Scribble";
 	}
 
-	public int priority() {
+	public int trafficPriority() {
 		return 2;
 	}
 

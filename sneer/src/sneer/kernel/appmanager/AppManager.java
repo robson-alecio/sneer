@@ -1,6 +1,7 @@
 package sneer.kernel.appmanager;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.URI;
@@ -59,11 +60,18 @@ public class AppManager {
 		rebuild();
 	}
 	
-	public void publish(File srcFolder, String appName) throws IOException{
+	public void publish(File srcFolder, String appUID) throws IOException{
 		File tempFile = File.createTempFile("appSneer", ".zip");
 		AppTools.zip(srcFolder, tempFile);
-		install(appName, tempFile);
+		install(appUID, tempFile);
 		tempFile.delete();
+	}
+	
+	public boolean isAppPublished(String appUID){
+		for(String tempAppUID:_installedApps.keySet())
+			if (tempAppUID.equals(appUID))
+				return true;
+		return false;
 	}
 	
 	private void unpackageApps(){
@@ -95,13 +103,18 @@ public class AppManager {
 	private void compileApps(){
 		for(File sourceDirectory:notCompiledApps()){
 
-			String targetDirectory=SneerDirectories.compiledAppsDirectory()+File.separator+sourceDirectory.getName();
-			String sourceApplication=sourceDirectory+File.separator+"sneer"+File.separator+"apps"+File.separator+sourceDirectory.getName()+File.separator+"Application.java"; //FixUrgent: Gandhi, try to use the Linux file separator ( / ). It works on windows too. 
-			new File(targetDirectory).mkdir();
+			String targetDirectory=SneerDirectories.compiledAppsDirectory()+File.separator+sourceDirectory.getName()+File.separator+"classes";
+			String sourceApplication = AppTools.findFile(sourceDirectory, new FilenameFilter(){
+				public boolean accept(File dir, String name) {
+					return (name.equals("Application.java"));
+				}
+			}).getAbsolutePath();
+			(new File(targetDirectory)).mkdirs();
+
 			System.out.println("Compiling "+sourceApplication);
 			System.out.println(tryToFindSneerLocation().getAbsolutePath());
 			try{
-				String[] parameters = {"-classpath",tryToFindSneerLocation().getAbsolutePath()+File.pathSeparator+sourceDirectory.getPath(),"-d",targetDirectory,sourceApplication};
+				String[] parameters = {"-classpath",tryToFindSneerLocation().getAbsolutePath()+File.pathSeparator+targetDirectory,"-sourcepath",sourceDirectory.getAbsolutePath()+File.separator+"src","-d",targetDirectory,sourceApplication};
 				com.sun.tools.javac.Main.compile(parameters);
 			}catch(Exception e){
 				e.printStackTrace();
@@ -123,7 +136,7 @@ public class AppManager {
 			URL url = Jars.jarGiven(AppManager.class);
 			return urlToFile(url);
 		}catch(Exception e){
-			File eclipseProjectRoot = new File("."); //fallback. if it is not running inside jar, try to find jar from jarbuilder directory.
+			File eclipseProjectRoot = new File("."); //fallback. if it is not running inside jar, try to find jar from bin directory.
 			File result = firstJarInDirectory(new File(eclipseProjectRoot,"bin"));
 			if (result == null) _user.acknowledgeNotification("Sneer.jar not found. If you are not running from the jar (from eclipse for example) you need SneerXXXX.jar as the ONLY jar in the .bin directory.");
 			return result;
@@ -170,21 +183,30 @@ public class AppManager {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	private SovereignApplication appLoad(File compiledAppDirectory) {
-		try {
-			URL[] urls = new URL[]{compiledAppDirectory.toURI().toURL()};
-			URLClassLoader ucl = new URLClassLoader(urls, ClassLoader.getSystemClassLoader());  
-			Class<?> clazz = ucl.loadClass(compiledAppDirectory.getName()+".Application"); 
-			AppConfig config = new AppConfig(_user,new AppChannelFactory(_communicator),_contacts);
-			Class<?>[] types = {AppConfig.class};
-			Object[] args = {config};
-			Constructor<?> constructor = clazz.getConstructor(types);
-			return (SovereignApplication) constructor.newInstance(args);
-		} catch (Exception e) {
-			Log.log(e);
-			e.printStackTrace();
-			return null;
-		}  
+			File classesDirectory = new File(compiledAppDirectory,"classes");
+			File applicationFile = AppTools.findFile(compiledAppDirectory, new FilenameFilter(){
+				public boolean accept(File dir, String name) {
+					return name.equals("Application.class");
+				}
+			});
+			String packageName = AppTools.pathToPackage(classesDirectory, applicationFile.getParentFile());
+			try {
+				URL[] urls = new URL[]{classesDirectory.toURL()}; //in the future libs directory will be added here
+				URLClassLoader ucl = new URLClassLoader(urls, ClassLoader.getSystemClassLoader());  
+				Class<?> clazz = ucl.loadClass(packageName+".Application"); 
+				AppConfig config = new AppConfig(_user,new AppChannelFactory(_communicator),_contacts);
+				Class<?>[] types = {AppConfig.class};
+				Object[] instances = {config};
+				Constructor<?> constructor = clazz.getConstructor(types);
+				return (SovereignApplication) constructor.newInstance(instances);
+			} catch (Exception e) {
+				Log.log(e);
+				e.printStackTrace();
+			}  
+		return null;
+
 	}
 	
 	private boolean isAppLoaded(File compiledAppDirectory){

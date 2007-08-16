@@ -7,8 +7,8 @@ import java.net.URL;
 
 import sneer.SneerDirectories;
 import sneer.games.mediawars.mp3sushi.MP3SushiGameApp;
-import sneer.kernel.appmanager.SovereignApplication;
 import sneer.kernel.appmanager.AppManager;
+import sneer.kernel.appmanager.SovereignApplicationUID;
 import sneer.kernel.appmanager.gui.AppManagerGui;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.communication.impl.Communicator;
@@ -82,9 +82,9 @@ public class Gui {
 		_trayIcon.addAction(sneerPortChangeAction());
 		_trayIcon.addAction(languageChangeAction());
 		_trayIcon.addAction(appManagerAction());
-		for(SovereignApplication app : _appManager.installedApps().values())
-			if (app.mainActions() != null)
-				for(Action mainAction : app.mainActions())
+		for(SovereignApplicationUID app : _appManager.publishedApps().output())
+			if (app._sovereignApplication.mainActions() != null)
+				for(Action mainAction : app._sovereignApplication.mainActions())
 					_trayIcon.addAction(mainAction);
 		_trayIcon.addAction(exitAction());
 	}

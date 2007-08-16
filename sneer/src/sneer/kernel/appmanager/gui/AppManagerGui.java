@@ -24,6 +24,7 @@ import javax.swing.event.ListSelectionListener;
 
 import sneer.kernel.appmanager.AppManager;
 import sneer.kernel.appmanager.AppTools;
+import sneer.kernel.appmanager.SovereignApplicationUID;
 import wheel.io.Log;
 
 public class AppManagerGui extends JFrame{
@@ -120,8 +121,8 @@ public class AppManagerGui extends JFrame{
 
 	private void updateList() { //Implement: this should be a reactive model
 		_listModel.clear(); 
-		for(String temp:_appManager.installedApps().keySet())
-			_listModel.add(0,temp);
+		for(SovereignApplicationUID temp:_appManager.publishedApps().output())
+			_listModel.add(0,temp._uid);
 	}
 	
 	private static final long serialVersionUID = 1L;

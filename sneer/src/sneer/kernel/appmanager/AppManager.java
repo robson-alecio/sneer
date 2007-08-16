@@ -9,9 +9,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 
 import sneer.SneerDirectories;
 import sneer.kernel.communication.impl.Communicator;
@@ -20,10 +18,12 @@ import wheel.io.Jars;
 import wheel.io.Log;
 import wheel.io.ui.User;
 import wheel.reactive.lists.ListSignal;
+import wheel.reactive.lists.ListSource;
+import wheel.reactive.lists.impl.ListSourceImpl;
 
 public class AppManager {
 	
-	private Map<String,SovereignApplication> _installedApps = new Hashtable<String,SovereignApplication>();
+	private ListSource<SovereignApplicationUID> _publishedApps = new ListSourceImpl<SovereignApplicationUID>();
 	private User _user;
 	private Communicator _communicator;
 	private ListSignal<Contact> _contacts;
@@ -33,7 +33,7 @@ public class AppManager {
 		_communicator = communicator;
 		_contacts = contacts;
 	}
-	
+
 	private void createDirectories(){ //should be moved to install???
 		SneerDirectories.appsDirectory().mkdirs();
 		SneerDirectories.compiledAppsDirectory().mkdirs();
@@ -43,10 +43,13 @@ public class AppManager {
 	public void rebuild(){
 		removeRecursive(SneerDirectories.compiledAppsDirectory());
 		removeRecursive(SneerDirectories.appSourceCodesDirectory());
-		_installedApps.clear();
+		//_installedApps.clear();
+		for(SovereignApplicationUID app:_publishedApps.output())
+			_publishedApps.remove(app);
+		
 	}
 	
-	public void install(String appName, File jarFile) throws IOException{
+	private void install(String appName, File jarFile) throws IOException{
 		File installDirectory = new File(SneerDirectories.appsDirectory(),appName);
 		installDirectory.mkdir();
 		AppTools.copy(jarFile,new File(installDirectory,jarFile.getName()));
@@ -67,11 +70,15 @@ public class AppManager {
 		tempFile.delete();
 	}
 	
+	public SovereignApplication appByUID(String appUID){
+		for(SovereignApplicationUID app:_publishedApps.output())
+			if (app._uid.equals(appUID))
+				return app._sovereignApplication;
+		return null;
+	}
+	
 	public boolean isAppPublished(String appUID){
-		for(String tempAppUID:_installedApps.keySet())
-			if (tempAppUID.equals(appUID))
-				return true;
-		return false;
+		return (appByUID(appUID)!=null);
 	}
 	
 	private void unpackageApps(){
@@ -166,20 +173,20 @@ public class AppManager {
         return new File(uri);
     }
 	
-	public Map<String,SovereignApplication> installedApps(){
+	public ListSource<SovereignApplicationUID> publishedApps(){
 		createDirectories();
 		unpackageApps();
 		compileApps();
 		loadApps();
-		return _installedApps;
+		return _publishedApps;
 	}
 
 	private void loadApps() {
 		File[] compiledAppDirectories = SneerDirectories.compiledAppsDirectory().listFiles();
 		for(File compiledAppDirectory:compiledAppDirectories){
-			if (isAppLoaded(compiledAppDirectory))
+			if (isAppPublished(compiledAppDirectory.getName()))
 				continue;
-			_installedApps.put(compiledAppDirectory.getName(),appLoad(compiledAppDirectory));
+			_publishedApps.add(new SovereignApplicationUID(appLoad(compiledAppDirectory),compiledAppDirectory.getName()));
 		}
 	}
 
@@ -207,10 +214,6 @@ public class AppManager {
 			}  
 		return null;
 
-	}
-	
-	private boolean isAppLoaded(File compiledAppDirectory){
-		return (_installedApps.get(compiledAppDirectory.getName())!=null);
 	}
 	
 	private List<File> notCompiledApps(){ 

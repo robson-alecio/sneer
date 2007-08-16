@@ -9,8 +9,8 @@ import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
 
 import prevayler.bubble.Bubble;
-import sneer.kernel.appmanager.SovereignApplication;
 import sneer.kernel.appmanager.AppManager;
+import sneer.kernel.appmanager.SovereignApplication;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.impl.BusinessFactory;
 import sneer.kernel.communication.Channel;
@@ -25,6 +25,7 @@ import wheel.io.ui.User;
 import wheel.io.ui.User.Notification;
 import wheel.io.ui.impl.JOptionPaneUser;
 import wheel.lang.Omnivore;
+import wheel.lang.Threads;
 
 public class Sneer {
 
@@ -74,7 +75,7 @@ public class Sneer {
 
 		_gui = new Gui(_user, _me, _businessSource,  _communicator, _appManager); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
 		
-		//while (true) Threads.sleepWithoutInterruptions(100000); // Refactor Consider joining the main gui thread.
+		while (true) Threads.sleepWithoutInterruptions(100000); // Refactor Consider joining the main gui thread.
 	}
 
 	private Omnivore<Notification> briefNotifier() {

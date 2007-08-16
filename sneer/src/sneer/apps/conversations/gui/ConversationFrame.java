@@ -206,7 +206,7 @@ public class ConversationFrame extends JFrame {
 		if (message._text.length() == 0) return;
 		if ((getExtendedState()&Frame.ICONIFIED) != 1) return;
 
-		_briefUserNotifier.consume(new Notification(_otherGuysNick.currentValue(), message._text));
+		_briefUserNotifier.consume(new Notification(_otherGuysNick.currentValue(), message._text)); //Fix: Seems not to be working.
 	}
 
 	private String nick() {

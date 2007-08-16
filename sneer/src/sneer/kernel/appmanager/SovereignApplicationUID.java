@@ -3,11 +3,11 @@ package sneer.kernel.appmanager;
 public class SovereignApplicationUID {
 	
 	public final SovereignApplication _sovereignApplication;
-	public final String _uid; //created on demand by Sneer application
+	public final String _appUID; //created on demand by Sneer application
 
-	public SovereignApplicationUID(SovereignApplication sovereignApplication, String UID){
+	public SovereignApplicationUID(SovereignApplication sovereignApplication, String appUID){
 		_sovereignApplication = sovereignApplication;
-		_uid = UID;
+		_appUID = appUID;
 	}
 
 }

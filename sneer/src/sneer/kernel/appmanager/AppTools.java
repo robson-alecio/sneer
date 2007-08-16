@@ -9,11 +9,16 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
+
+import wheel.io.Jars;
 
 public class AppTools {
 	
@@ -100,6 +105,57 @@ public class AppTools {
 		name = name.replaceAll("/","\\." );
 		name = name.replaceAll("\\\\","\\." );
 		return name;
+	}
+	
+	public static File findApplicationSource(File directory){
+		return AppTools.findFile(directory, new FilenameFilter(){
+			public boolean accept(File dir, String name) {
+				return name.equals("Application.java");
+			}
+		});
+	}
+	
+	public static File findApplicationClass(File directory){
+		return AppTools.findFile(directory, new FilenameFilter(){
+			public boolean accept(File dir, String name) {
+				return name.equals("Application.class");
+			}
+		});
+	}
+	
+	public static File urlToFile(URL url) {
+        URI uri;
+        try {
+            uri = url.toURI();
+        } catch (URISyntaxException e) {
+            try {
+                uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+            } catch (URISyntaxException e1) {
+                throw new IllegalArgumentException("broken URL: " + url);
+            }
+        }
+        return new File(uri);
+    }
+	
+	public static File tryToFindSneerLocation() throws IOException {
+		try{
+			URL url = Jars.jarGiven(AppManager.class);
+			return AppTools.urlToFile(url);
+		}catch(Exception e){
+			File eclipseProjectRoot = new File("."); //fallback. if it is not running inside jar, try to find jar from bin directory.
+			File result = firstJarInDirectory(new File(eclipseProjectRoot,"bin"));
+			if (result==null)
+				throw new IOException("Could not find SneerXXXX.jar in eclipse bin directory");
+			return result;
+		}
+	}
+
+	public static File firstJarInDirectory(File directory) {
+		for(File file:directory.listFiles()){
+			if (file.getName().endsWith(".jar"))
+				return file;
+		}
+		return null;
 	}
 	
 }

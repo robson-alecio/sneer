@@ -1,11 +1,8 @@
 package sneer.kernel.appmanager;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -14,7 +11,6 @@ import java.util.List;
 import sneer.SneerDirectories;
 import sneer.kernel.communication.impl.Communicator;
 import sneer.kernel.pointofview.Contact;
-import wheel.io.Jars;
 import wheel.io.Log;
 import wheel.io.ui.User;
 import wheel.reactive.lists.ListSignal;
@@ -43,7 +39,6 @@ public class AppManager {
 	public void rebuild(){
 		removeRecursive(SneerDirectories.compiledAppsDirectory());
 		removeRecursive(SneerDirectories.appSourceCodesDirectory());
-		//_installedApps.clear();
 		for(SovereignApplicationUID app:_publishedApps.output())
 			_publishedApps.remove(app);
 		
@@ -72,7 +67,7 @@ public class AppManager {
 	
 	public SovereignApplication appByUID(String appUID){
 		for(SovereignApplicationUID app:_publishedApps.output())
-			if (app._uid.equals(appUID))
+			if (app._appUID.equals(appUID))
 				return app._sovereignApplication;
 		return null;
 	}
@@ -111,17 +106,23 @@ public class AppManager {
 		for(File sourceDirectory:notCompiledApps()){
 
 			String targetDirectory=SneerDirectories.compiledAppsDirectory()+"/"+sourceDirectory.getName()+"/"+"classes";
-			String sourceApplication = AppTools.findFile(sourceDirectory, new FilenameFilter(){
-				public boolean accept(File dir, String name) {
-					return (name.equals("Application.java"));
-				}
-			}).getAbsolutePath();
+			String sourceApplication = AppTools.findApplicationSource(sourceDirectory).getAbsolutePath();
 			(new File(targetDirectory)).mkdirs();
 
 			System.out.println("Compiling "+sourceApplication);
-			System.out.println(tryToFindSneerLocation().getAbsolutePath());
+			String sneerJarLocation = null;
 			try{
-				String[] parameters = {"-classpath",tryToFindSneerLocation().getAbsolutePath()+File.pathSeparator+targetDirectory,"-sourcepath",sourceDirectory.getAbsolutePath()+"/src","-d",targetDirectory,sourceApplication};
+				sneerJarLocation = AppTools.tryToFindSneerLocation().getAbsolutePath();
+			}catch(Exception e){
+				Log.log(e);
+				e.printStackTrace();
+				_user.acknowledgeNotification("Sneer.jar not found. If you are not running from the jar (from eclipse for example) you need SneerXXXX.jar as the ONLY jar in the .bin directory.");
+				return;
+			}
+			
+			System.out.println(sneerJarLocation);
+			try{
+				String[] parameters = {"-classpath",sneerJarLocation+File.pathSeparator+targetDirectory,"-sourcepath",sourceDirectory.getAbsolutePath()+"/src","-d",targetDirectory,sourceApplication};
 				com.sun.tools.javac.Main.compile(parameters);
 			}catch(Exception e){
 				e.printStackTrace();
@@ -138,41 +139,6 @@ public class AppManager {
 		file.delete();
 	}
 	
-	private File tryToFindSneerLocation() {
-		try{
-			URL url = Jars.jarGiven(AppManager.class);
-			return urlToFile(url);
-		}catch(Exception e){
-			File eclipseProjectRoot = new File("."); //fallback. if it is not running inside jar, try to find jar from bin directory.
-			File result = firstJarInDirectory(new File(eclipseProjectRoot,"bin"));
-			if (result == null) _user.acknowledgeNotification("Sneer.jar not found. If you are not running from the jar (from eclipse for example) you need SneerXXXX.jar as the ONLY jar in the .bin directory.");
-			return result;
-		}
-	}
-
-	private File firstJarInDirectory(File eclipseProjectBin) {
-		for(File file:eclipseProjectBin.listFiles()){
-			if (file.getName().endsWith(".jar"))
-				return file;
-		}
-		return null;
-	}
-	
-	static File urlToFile(URL url) {
-        URI uri;
-        try {
-            uri = url.toURI();
-        } catch (URISyntaxException e) {
-            try {
-                uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
-            } catch (URISyntaxException e1) {
-                throw new IllegalArgumentException("broken URL: " + url);
-            }
-
-        }
-        return new File(uri);
-    }
-	
 	public ListSource<SovereignApplicationUID> publishedApps(){
 		createDirectories();
 		unpackageApps();
@@ -186,34 +152,28 @@ public class AppManager {
 		for(File compiledAppDirectory:compiledAppDirectories){
 			if (isAppPublished(compiledAppDirectory.getName()))
 				continue;
-			_publishedApps.add(new SovereignApplicationUID(appLoad(compiledAppDirectory),compiledAppDirectory.getName()));
+			try{
+				_publishedApps.add(new SovereignApplicationUID(appLoad(compiledAppDirectory),compiledAppDirectory.getName()));
+			}catch(Exception e){
+				Log.log(e);
+				e.printStackTrace();
+			}
 		}
 	}
 
 	@SuppressWarnings("deprecation")
-	private SovereignApplication appLoad(File compiledAppDirectory) {
-			File classesDirectory = new File(compiledAppDirectory,"classes");
-			File applicationFile = AppTools.findFile(compiledAppDirectory, new FilenameFilter(){
-				public boolean accept(File dir, String name) {
-					return name.equals("Application.class");
-				}
-			});
-			String packageName = AppTools.pathToPackage(classesDirectory, applicationFile.getParentFile());
-			try {
-				URL[] urls = new URL[]{classesDirectory.toURL()}; //in the future libs directory will be added here
-				URLClassLoader ucl = new URLClassLoader(urls, ClassLoader.getSystemClassLoader());  
-				Class<?> clazz = ucl.loadClass(packageName+".Application"); 
-				AppConfig config = new AppConfig(_user,new AppChannelFactory(_communicator),_contacts);
-				Class<?>[] types = {AppConfig.class};
-				Object[] instances = {config};
-				Constructor<?> constructor = clazz.getConstructor(types);
-				return (SovereignApplication) constructor.newInstance(instances);
-			} catch (Exception e) {
-				Log.log(e);
-				e.printStackTrace();
-			}  
-		return null;
-
+	private SovereignApplication appLoad(File compiledAppDirectory) throws Exception {
+		File classesDirectory = new File(compiledAppDirectory,"classes");
+		File applicationFile = AppTools.findApplicationClass(compiledAppDirectory);
+		String packageName = AppTools.pathToPackage(classesDirectory, applicationFile.getParentFile());
+		URL[] urls = new URL[]{classesDirectory.toURL()}; //in the future libs directory will be added here
+		URLClassLoader ucl = new URLClassLoader(urls, ClassLoader.getSystemClassLoader());  
+		Class<?> clazz = ucl.loadClass(packageName+".Application"); 
+		AppConfig config = new AppConfig(_user, new AppChannelFactory(_communicator), _contacts);
+		Class<?>[] types = {AppConfig.class};
+		Object[] instances = {config};
+		Constructor<?> constructor = clazz.getConstructor(types);
+		return (SovereignApplication) constructor.newInstance(instances);
 	}
 	
 	private List<File> notCompiledApps(){ 

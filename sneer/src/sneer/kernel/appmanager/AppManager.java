@@ -1,7 +1,6 @@
 package sneer.kernel.appmanager;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -44,13 +43,6 @@ public class AppManager {
 		
 	}
 	
-	private void install(String appName, File jarFile) throws IOException{
-		File installDirectory = new File(SneerDirectories.appsDirectory(),appName);
-		installDirectory.mkdir();
-		AppTools.copy(jarFile,new File(installDirectory,jarFile.getName()));
-		rebuild();
-	}
-	
 	public void remove(String appName){
 		removeRecursive(new File(SneerDirectories.appsDirectory(),appName));
 		removeRecursive(new File(SneerDirectories.appSourceCodesDirectory(),appName));
@@ -58,11 +50,21 @@ public class AppManager {
 		rebuild();
 	}
 	
-	public void publish(File srcFolder, String appUID) throws IOException{
-		File tempFile = File.createTempFile("appSneer", ".zip");
-		AppTools.zip(srcFolder, tempFile);
-		install(appUID, tempFile);
-		tempFile.delete();
+	public void publish(File srcFolder) { //Fix: what if the app is already installed? test appuid
+		try{
+			File targetDirectory = new File(SneerDirectories.appsDirectory(),appName(srcFolder));
+			targetDirectory.mkdirs();
+			File zipFile = new File(targetDirectory,"app.zip");
+			AppTools.zip(srcFolder, zipFile);
+			AppTools.generateAppUID(zipFile);
+		}catch(Exception e){
+			Log.log(e);
+			e.printStackTrace();
+		}
+	}
+
+	private String appName(File srcFolder) {
+		return AppTools.pathToPackage(new File(srcFolder,"src"), AppTools.findApplicationSource(srcFolder).getParentFile());
 	}
 	
 	public SovereignApplication appByUID(String appUID){
@@ -72,8 +74,8 @@ public class AppManager {
 		return null;
 	}
 	
-	public boolean isAppPublished(String appUID){
-		return (appByUID(appUID)!=null);
+	public boolean isAppPublished(String appName){
+		return (new File(SneerDirectories.appsDirectory(),appName)).exists();
 	}
 	
 	private void unpackageApps(){
@@ -150,15 +152,25 @@ public class AppManager {
 	private void loadApps() {
 		File[] compiledAppDirectories = SneerDirectories.compiledAppsDirectory().listFiles();
 		for(File compiledAppDirectory:compiledAppDirectories){
-			if (isAppPublished(compiledAppDirectory.getName()))
+			String appName = compiledAppDirectory.getName();
+			if (isAppLoaded(appName))
 				continue;
 			try{
-				_publishedApps.add(new SovereignApplicationUID(appLoad(compiledAppDirectory),compiledAppDirectory.getName()));
+				File appUIDFile = AppTools.findAppUID(new File(SneerDirectories.appsDirectory(),compiledAppDirectory.getName()));
+				String appUID = new String(AppTools.getBytesFromFile(appUIDFile));
+				_publishedApps.add(new SovereignApplicationUID(compiledAppDirectory.getName(),appUID,appLoad(compiledAppDirectory)));
 			}catch(Exception e){
 				Log.log(e);
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private boolean isAppLoaded(String appName) {
+		for(SovereignApplicationUID app:_publishedApps.output())
+			if (app._appName.equals(appName))
+				return true;
+		return false;
 	}
 
 	@SuppressWarnings("deprecation")

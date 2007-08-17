@@ -12,6 +12,7 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.MessageDigest;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
@@ -22,6 +23,7 @@ import wheel.io.Jars;
 
 public class AppTools {
 	
+	private static final String APP_UID_SUFFIX = ".appUID";
 	static final int _BUFFER = 2048;
 	
 	private AppTools(){}
@@ -123,6 +125,14 @@ public class AppTools {
 		});
 	}
 	
+	public static File findAppUID(File directory){
+		return AppTools.findFile(directory, new FilenameFilter(){
+			public boolean accept(File dir, String name) {
+				return name.endsWith(APP_UID_SUFFIX);
+			}
+		});
+	}
+	
 	public static File urlToFile(URL url) {
         URI uri;
         try {
@@ -157,5 +167,33 @@ public class AppTools {
 		}
 		return null;
 	}
+	
+	public static void generateAppUID(File jarFile) throws Exception{
+		byte[] bytes = getBytesFromFile(jarFile);
+		MessageDigest digester = MessageDigest.getInstance("SHA-512", "SUN");
+		FileOutputStream out = new FileOutputStream(new File(jarFile.getParentFile(),jarFile.getName()+APP_UID_SUFFIX));
+		out.write(digester.digest(bytes));
+		out.close();
+	}
+	
+	public static String readAppUID(File jarFile) throws Exception{
+		return new String(getBytesFromFile(new File(jarFile.getParentFile(),jarFile.getName()+APP_UID_SUFFIX)));
+	}
+	
+	public static byte[] getBytesFromFile(File file) throws IOException {
+        InputStream is = new FileInputStream(file);
+        long length = file.length();
+        byte[] bytes = new byte[(int)length];
+        int offset = 0;
+        int numRead = 0;
+        while (offset < bytes.length
+               && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
+            offset += numRead;
+        }
+        is.close();
+        return bytes;
+    }
+
+
 	
 }

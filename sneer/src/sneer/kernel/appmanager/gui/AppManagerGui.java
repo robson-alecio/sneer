@@ -8,8 +8,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -71,31 +69,20 @@ public class AppManagerGui extends JFrame{
 				
 				File srcFolder = new File(baseFolder,"src");
 				
-				File application = AppTools.findFile(srcFolder,new FilenameFilter(){
-					public boolean accept(File dir, String name) {
-						return (name.equals("Application.java"));
-					}	
-				});
+				File application = AppTools.findApplicationSource(srcFolder);
+
 				if (application==null)
 					throw new RuntimeException("CANT PUBLISH THIS! No Application.java!"); //FixUrgent: use proper message
-				String appUID = AppTools.pathToPackage(srcFolder, application.getParentFile())+"_"+UID();
-				System.out.println("App UID: "+appUID);
-				
-				if (_appManager.isAppPublished(appUID))
-					throw new RuntimeException("CANT PUBLISH THIS! Application already published!"); //FixUrgent: use proper message
-				
+
 				try{
-					_appManager.publish(baseFolder,appUID);
-				}catch(IOException ioe){
+					_appManager.publish(baseFolder);
+				}catch(Exception ioe){
 					Log.log(ioe);
 					ioe.printStackTrace();
 				}
 				updateList();
 			}
 
-			private String UID() {
-				return "UID_NOT_IMPLEMENTED_YET"; //Implement: this should create a unique id for the app based on hashcode
-			}
 		});
 		
 		_appList.getSelectionModel().addListSelectionListener(new ListSelectionListener(){

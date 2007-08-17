@@ -43,6 +43,7 @@ public class Application implements SovereignApplication{
 						break;
 					case MeTooPacket.APP_LIST_RESPONSE:
 						receiveAppListResponse(((AppListResponse)meTooPacket)._nameAndAppUID);
+						break;
 				}
 				
 				

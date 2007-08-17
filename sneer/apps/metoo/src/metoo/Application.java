@@ -19,6 +19,7 @@ import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.pointofview.Contact;
 import wheel.io.ui.Action;
 import wheel.lang.Omnivore;
+import wheel.reactive.impl.SourceImpl;
 import wheel.reactive.lists.ListSignal;
 
 
@@ -41,19 +42,14 @@ public class Application implements SovereignApplication{
 					case MeTooPacket.APP_LIST_REQUEST:
 						sendAppListResponse(packet._contactId);
 						break;
-					case MeTooPacket.APP_LIST_RESPONSE:
-						receiveAppListResponse(((AppListResponse)meTooPacket)._nameAndAppUID);
-						break;
 				}
+				SourceImpl<MeTooPacket> input = _inputsByContactId.get(packet._contactId);
+				if (input == null) return;
+				input.setter().consume(meTooPacket);
 			}
 		};
 	}
-
-	protected void receiveAppListResponse(Map<String, String> nameAndAppUID) {
-		for(String key:nameAndAppUID.keySet())
-			System.out.println(key+":"+nameAndAppUID.get(key));
-	}
-
+	
 	protected void sendAppListResponse(ContactId contactId) {
 		Map<String,String> nameAndAppUID = new Hashtable<String,String>();
 		for(SovereignApplicationUID app:_publishedApps)
@@ -73,12 +69,16 @@ public class Application implements SovereignApplication{
 	}
 	
 	private final Map<ContactId, MeTooFrame> _framesByContactId = new HashMap<ContactId, MeTooFrame>();
+	private final Map<ContactId, SourceImpl<MeTooPacket>> _inputsByContactId = new HashMap<ContactId, SourceImpl<MeTooPacket>>();
 
 	protected void openMeTooFrame(Contact contact) {
-		if (_framesByContactId.get(contact.id()) == null)
-			_framesByContactId.put(contact.id(), new MeTooFrame(_channel,contact));
-		else
+		if (_framesByContactId.get(contact.id()) == null){
+			SourceImpl<MeTooPacket> input = new SourceImpl<MeTooPacket>(null);
+			_inputsByContactId.put(contact.id(), input);
+			_framesByContactId.put(contact.id(), new MeTooFrame(_channel, contact, input.output()));
+		} else {
 			_framesByContactId.get(contact.id()).sendAppListRequest();
+		}
 		_framesByContactId.get(contact.id()).setVisible(true);
 	}
 

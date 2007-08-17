@@ -45,8 +45,6 @@ public class Application implements SovereignApplication{
 						receiveAppListResponse(((AppListResponse)meTooPacket)._nameAndAppUID);
 						break;
 				}
-				
-				
 			}
 		};
 	}

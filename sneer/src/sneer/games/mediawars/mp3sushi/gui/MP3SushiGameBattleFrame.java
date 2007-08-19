@@ -7,19 +7,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 
 import sneer.games.mediawars.mp3sushi.ID3Summary;
-import sneer.games.mediawars.mp3sushi.MP3SushiGameApp;
-import sneer.games.mediawars.mp3sushi.PlayerIdentification;
+import sneer.games.mediawars.mp3sushi.player.PlayerIdentification;
+import sneer.games.mediawars.mp3sushi.round.MP3SushiRound;
 import wheel.reactive.lists.ListSignal;
 
 
@@ -31,16 +33,28 @@ public class MP3SushiGameBattleFrame extends javax.swing.JFrame implements KeyLi
 	ArrayList<ID3Summary> _mp3sToGuess;
 	final JFrame _countDownFrame = new JFrame("COUNTDOWN");
 	final JLabel label = new JLabel();
-	boolean _countDownFinished = false;
-	Timer _countdownTimer;
-	private ListModelStringFilter<ID3Summary> _listModelStringFilter;
-	private MP3SushiGameApp _mp3SushiGameApp;
 	
-	public MP3SushiGameBattleFrame(ListSignal<PlayerIdentification> players, ArrayList<ID3Summary> mp3sToGuess, MP3SushiGameApp mp3SushiGameApp) {
+	volatile boolean _countDownFinished = false;
+	Timer _countdownTimer;
+	Object _countDownLock = new Object();
+	
+	volatile boolean _gameOver = false;
+	Object _gameOverLock = new Object();
+	
+	private ListModelStringFilter<ID3Summary> _listModelStringFilter;
+	private MP3SushiRound _mp3SushiRound;
+	
+	public MP3SushiGameBattleFrame(ListSignal<PlayerIdentification> players, ArrayList<ID3Summary> mp3sToGuess) {
 		_players = players;
 		_mp3sToGuess = mp3sToGuess;
-		_mp3SushiGameApp = mp3SushiGameApp;
 		initComponents();
+		this.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+			public void windowClosing(WindowEvent winEvt) {
+		    	_mp3SushiRound.quitGame();
+		    }
+		});
+
 	}
 
 	private void initComponents() {
@@ -88,13 +102,16 @@ public class MP3SushiGameBattleFrame extends javax.swing.JFrame implements KeyLi
 				label.setText("  "+count);
 				count--;
 				if (count == -1) {
-					_countdownTimer.stop();
-					_countDownFrame.setVisible(false);
-					_countDownFinished = true;
-					_guess.setEnabled(true);
-					_guess.setText("");
-					_guess.requestFocusInWindow();
-					_listModelStringFilter.refreshList();
+					synchronized (_countDownLock) {
+						_countdownTimer.stop();
+						_countDownFrame.setVisible(false);
+						_guess.setEnabled(true);
+						_guess.setText("");
+						_guess.requestFocusInWindow();
+						_listModelStringFilter.refreshList();
+						_countDownFinished = true;
+						_countDownLock.notify();
+					}
 				} 
 			}
 			
@@ -102,7 +119,7 @@ public class MP3SushiGameBattleFrame extends javax.swing.JFrame implements KeyLi
 		_countdownTimer.start();
 	}
 
-	public boolean isCountDownFinished() {
+	public Boolean isCountDownFinished() {
 		return _countDownFinished;
 	}
 	
@@ -117,7 +134,7 @@ public class MP3SushiGameBattleFrame extends javax.swing.JFrame implements KeyLi
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			if (_listModelStringFilter.getSize()==1) {
-				_mp3SushiGameApp.setAnswer(_listModelStringFilter.getElementAt(0));
+				_mp3SushiRound.setAnswer(_listModelStringFilter.getElementAt(0),System.nanoTime());
 				disableGuess();
 			}
 		}
@@ -130,6 +147,30 @@ public class MP3SushiGameBattleFrame extends javax.swing.JFrame implements KeyLi
 
 	@Override
 	public void keyTyped(KeyEvent e) {}
+
+	public Object getCountDownLock() {
+		return _countDownLock;
+	}
+
+	public void setMp3SushiRound(MP3SushiRound mp3SushiRound) {
+		_mp3SushiRound = mp3SushiRound;
+	}
+
+	public void showGameOver() {
+		JOptionPane.showMessageDialog(this,"GAME OVER", "Message", JOptionPane.PLAIN_MESSAGE);
+		synchronized (_gameOverLock) {
+			_gameOver = true;
+			_gameOverLock.notify();
+		}
+	}
+
+	public Object getGameOverLock() {
+		return _gameOverLock;
+	}
+
+	public boolean isGameOver() {
+		return _gameOver;
+	}
 	
 	
 }

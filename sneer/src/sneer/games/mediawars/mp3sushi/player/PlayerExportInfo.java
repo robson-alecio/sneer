@@ -1,4 +1,4 @@
-package sneer.games.mediawars.mp3sushi;
+package sneer.games.mediawars.mp3sushi.player;
 
 public class PlayerExportInfo {
 

@@ -2,6 +2,11 @@ package sneer.games.mediawars.mp3sushi;
 
 import java.util.HashMap;
 
+import sneer.games.mediawars.mp3sushi.player.PlayerContactIdentification;
+import sneer.games.mediawars.mp3sushi.player.PlayerExportInfo;
+import sneer.games.mediawars.mp3sushi.player.PlayerExternalIdentification;
+import sneer.games.mediawars.mp3sushi.player.PlayerHostIdentification;
+import sneer.games.mediawars.mp3sushi.player.PlayerIdentification;
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactId;
 import wheel.reactive.Signal;
@@ -50,6 +55,15 @@ public class MyGame extends Game {
 
 	public void setNotPlaying() {
 		_status.setter().consume(NOT_PLAYING);
+		for (int i = 0; i < _players.output().currentSize();) _players.remove(0);
+		_contactPlayer.clear() ;
+		_longIdPlayer.clear();
+		_hostPlayer = null;
+		_externalHostId = null;
+	}
+	
+	public void setPlaying() {
+		_status.setter().consume(PLAYING);
 	}
 	
 	public PlayerContactIdentification addPlayerFromContact(ContactAttributes contactAttributes) {
@@ -83,6 +97,19 @@ public class MyGame extends Game {
 
 	public HashMap<Long, PlayerIdentification> getLongIdPlayer() {
 		return _longIdPlayer;
+	}
+
+	public void quit() {
+		this.setNotPlaying();
+		_gameConfiguration.setter().consume(null);
+		
+	}
+
+	public void removePlayerFromContactId(ContactId contactiD) {
+		PlayerContactIdentification pi = _contactPlayer.get(contactiD);
+		_contactPlayer.remove(contactiD);
+		_longIdPlayer.remove(pi.getId());
+		_players.remove(pi);
 	}
 	
 }

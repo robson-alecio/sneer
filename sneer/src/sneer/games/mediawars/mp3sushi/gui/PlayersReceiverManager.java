@@ -1,6 +1,6 @@
 package sneer.games.mediawars.mp3sushi.gui;
 
-import sneer.games.mediawars.mp3sushi.PlayerIdentification;
+import sneer.games.mediawars.mp3sushi.player.PlayerIdentification;
 import wheel.lang.Casts;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;

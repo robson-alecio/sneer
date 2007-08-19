@@ -1,4 +1,4 @@
-package sneer.games.mediawars.mp3sushi;
+package sneer.games.mediawars.mp3sushi.round;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -8,32 +8,37 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import sneer.games.mediawars.mp3sushi.BufferedInputStreamTransparent;
+import sneer.games.mediawars.mp3sushi.ID3Summary;
+
 import javazoom.jl.decoder.Bitstream;
 import javazoom.jl.decoder.BitstreamException;
 import javazoom.jl.decoder.Header;
 
-public class Mp3SushiRoundProvider {
+public class Mp3PieceProvider {
+
+	public final static int BEGINING = 0;
+	public final static int ENDING = 1;
+	public final static int RANDOM = 2;
 
 	private ArrayList<ID3Summary> _id3Summaries;
-	private GameConfiguration _gameConfiguration;
 	private ArrayList<Integer> _id3sToPlay = new ArrayList<Integer>();
+	Integer _pieceType;
+	int _secondsOfMusic;
 	private ID3Summary _actualId3;
 	private Random _randomGenerator; 
-	private int _round = 0;
 	
-	public Mp3SushiRoundProvider(ArrayList<ID3Summary> id3Summaries,
-			GameConfiguration gameConfiguration) {
+	public Mp3PieceProvider(ArrayList<ID3Summary> id3Summaries, int pieceType, int secondsOfMusic) {
 		super();
 		_id3Summaries = id3Summaries;
-		_gameConfiguration = gameConfiguration;
 		_randomGenerator = new Random(System.nanoTime());
+		_pieceType = pieceType;
+		_secondsOfMusic = secondsOfMusic;
 		
 		for (int i = 0; i < _id3Summaries.size(); i++) _id3sToPlay.add(i);
 	}
 
 	public byte[] nextMP3Piece() {
-		_round ++;
-		if (_round > _gameConfiguration.getRounds()) return null;
 		while (!_id3sToPlay.isEmpty()) {
 			int ndxToPlay = _randomGenerator.nextInt(_id3sToPlay.size());
 			_actualId3 = _id3Summaries.get(_id3sToPlay.get(ndxToPlay)); 
@@ -53,16 +58,16 @@ public class Mp3SushiRoundProvider {
 		float ending = 0;
 		try {
 			totalMilisecondsFromMP3 = totalMilisecondsFromMP3(id3Summary.getFileName());
-			float piece = _gameConfiguration.getSecondsOfMusic() * 1000;
+			float piece = _secondsOfMusic * 1000;
 			if (totalMilisecondsFromMP3 < piece) {
 				start = 0;
 				ending = totalMilisecondsFromMP3;
 			} else 
-			if (_gameConfiguration.getType().equals(GameConfiguration.BEGINING)) {
+			if (_pieceType.equals(BEGINING)) {
 				start = 0;
 				ending = piece;
 			} else {
-				if (_gameConfiguration.getType().equals(GameConfiguration.ENDING)) {
+				if (_pieceType.equals(ENDING)) {
 					ending = totalMilisecondsFromMP3;
 					start = ending - piece;
 				} else {

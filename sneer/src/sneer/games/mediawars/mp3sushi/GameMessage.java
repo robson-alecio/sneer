@@ -16,6 +16,8 @@ public class GameMessage {
 	public static final String ANSWER = "Answer";
 	public static final String ANSWER_SCORE = "Answer Score";
 	public  static final String RECEIVE_MP3 = "Receive MP3";
+	public  static final String HOST_QUIT = "Host quit";
+	public  static final String PLAYER_QUIT = "Player quit";
 	
 	private String _type;
 	private Object _content;

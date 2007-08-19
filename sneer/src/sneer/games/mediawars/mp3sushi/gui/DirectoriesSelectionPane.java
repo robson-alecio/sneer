@@ -216,5 +216,9 @@ public class DirectoriesSelectionPane extends JPanel implements
 	public JButton getAddButton() {
 		return addButton;
 	}
+	
+	public void clearDirList() {
+		listModel.clear();
+	}
 
 }

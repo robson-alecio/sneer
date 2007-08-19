@@ -1,4 +1,4 @@
-package sneer.games.mediawars.mp3sushi;
+package sneer.games.mediawars.mp3sushi.player;
 
 import wheel.reactive.Signal;
 import wheel.reactive.impl.SourceImpl;

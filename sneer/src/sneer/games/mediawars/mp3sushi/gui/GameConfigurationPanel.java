@@ -13,6 +13,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import sneer.games.mediawars.mp3sushi.GameConfiguration;
+import sneer.games.mediawars.mp3sushi.round.Mp3PieceProvider;
 
 public class GameConfigurationPanel extends JPanel implements ActionListener {
 
@@ -28,7 +29,7 @@ public class GameConfigurationPanel extends JPanel implements ActionListener {
 	private JRadioButton _begining = new JRadioButton("Begining");
 	private JRadioButton _ending = new JRadioButton("Ending");
 	private JRadioButton _random = new JRadioButton("Random");
-	private int _intType = GameConfiguration.BEGINING;
+	private int _intType = Mp3PieceProvider.BEGINING;
 	
 	public GameConfigurationPanel() {
 		this.initializeItems();
@@ -109,9 +110,9 @@ public class GameConfigurationPanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("begining")) _intType = GameConfiguration.BEGINING;
-		if (e.getActionCommand().equals("ending")) _intType = GameConfiguration.ENDING;
-		if (e.getActionCommand().equals("random")) _intType = GameConfiguration.RANDOM;
+		if (e.getActionCommand().equals("begining")) _intType = Mp3PieceProvider.BEGINING;
+		if (e.getActionCommand().equals("ending")) _intType = Mp3PieceProvider.ENDING;
+		if (e.getActionCommand().equals("random")) _intType = Mp3PieceProvider.RANDOM;
 		
 	}
 	

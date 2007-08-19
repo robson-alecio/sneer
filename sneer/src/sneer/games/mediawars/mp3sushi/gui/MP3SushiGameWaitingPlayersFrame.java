@@ -5,6 +5,7 @@ import static wheel.i18n.Language.translate;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -17,7 +18,7 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
 import sneer.games.mediawars.mp3sushi.MP3SushiGameApp;
-import sneer.games.mediawars.mp3sushi.PlayerIdentification;
+import sneer.games.mediawars.mp3sushi.player.PlayerIdentification;
 import wheel.io.ui.User;
 import wheel.reactive.lists.ListSignal;
 
@@ -38,6 +39,13 @@ public class MP3SushiGameWaitingPlayersFrame extends javax.swing.JFrame {
 		_user = user;
 		_host = host;
 		initComponents();
+		this.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+			public void windowClosing(WindowEvent winEvt) {
+		    	closing();
+		    }
+		});
+
 	}
 
 	private void initComponents() {
@@ -94,11 +102,15 @@ public class MP3SushiGameWaitingPlayersFrame extends javax.swing.JFrame {
 		quitButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				_game.quitGame();
-			}	
+				closing();
+			}
 
 		});
 		return quitButton;
 	}
+	private void closing() {
+		_dirPanel.clearDirList();
+		_game.quitGame();
+	}	
 
 }

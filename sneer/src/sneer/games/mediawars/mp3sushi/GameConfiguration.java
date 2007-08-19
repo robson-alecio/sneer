@@ -1,15 +1,12 @@
 package sneer.games.mediawars.mp3sushi;
 
+import sneer.games.mediawars.mp3sushi.round.Mp3PieceProvider;
 import sneer.kernel.pointofview.Contact;
 
 public class GameConfiguration {
 
-	public final static int BEGINING = 0;
-	public final static int ENDING = 1;
-	public final static int RANDOM = 2;
-
 	private String _theme ="";
-	private Integer _type = BEGINING;
+	private Integer _type = Mp3PieceProvider.BEGINING;
 	private Integer _secondsOfMusic;
 	private Integer _secondsToGuess;
 	private Integer _rounds;
@@ -56,9 +53,9 @@ public class GameConfiguration {
 	}
 	
 	public String getStringType() {
-		if (_type == BEGINING) return "begining";
-		if (_type == ENDING) return "ending";
-		if (_type == RANDOM) return "random";
+		if (_type == Mp3PieceProvider.BEGINING) return "begining";
+		if (_type == Mp3PieceProvider.ENDING) return "ending";
+		if (_type == Mp3PieceProvider.RANDOM) return "random";
 		return "";
 	}
 	

@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 
-import sneer.games.mediawars.mp3sushi.PlayerIdentification;
+import sneer.games.mediawars.mp3sushi.player.PlayerIdentification;
 
 
 public class ScorePlayerCellRenderer extends javax.swing.DefaultListCellRenderer {

@@ -1,9 +1,9 @@
 /**
  * 
  */
-package sneer.games.mediawars.mp3sushi;
+package sneer.games.mediawars.mp3sushi.round;
 
-class AnswerScore {
+public class AnswerScore {
 	Long _id;
 	int _score;
 	

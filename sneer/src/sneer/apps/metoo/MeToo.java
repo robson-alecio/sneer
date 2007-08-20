@@ -31,7 +31,6 @@ public class MeToo implements SovereignApplication{
 		_channel = channel;
 		_publishedApps = publishedApps;
 		_channel.input().addReceiver(meTooPacketReceiver());
-		
 	}
 
 	private Omnivore<Packet> meTooPacketReceiver() {

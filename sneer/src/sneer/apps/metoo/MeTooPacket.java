@@ -9,5 +9,5 @@ public interface MeTooPacket {
 	public static final int APP_INSTALL_RESPONSE = 3;
 	
 	public int type();
-
+ 
 }

@@ -72,7 +72,7 @@ public class AppManagerGui extends JFrame{
 				File application = AppTools.findApplicationSource(srcFolder);
 
 				if (application==null)
-					throw new RuntimeException("CANT PUBLISH THIS! No Application.java!"); //FixUrgent: use proper message
+					throw new RuntimeException("Application.java not found in any package.");
 
 				try{
 					_appManager.publish(baseFolder);

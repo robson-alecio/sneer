@@ -51,7 +51,7 @@ public class AppManager {
 	
 	public SovereignApplicationUID findByName(String installName){
 		for(SovereignApplicationUID candidate:_publishedApps.output())
-			if (candidate._appName.equals(installName))
+			if (candidate._installName.equals(installName))
 				return candidate;
 		return null;
 	}
@@ -193,7 +193,7 @@ public class AppManager {
 
 	private boolean isAppLoaded(String installName) {
 		for (SovereignApplicationUID app : _publishedApps.output())
-			if (app._appName.equals(installName))
+			if (app._installName.equals(installName))
 				return true;
 		return false;
 	}

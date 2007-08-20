@@ -5,8 +5,10 @@ import java.util.List;
 
 import sneer.apps.conversations.ConversationsApp;
 import sneer.apps.filetransfer.FileTransferApp;
+import sneer.apps.metoo.MeToo;
 import sneer.apps.talk.TalkApp;
 import sneer.kernel.appmanager.AppManager;
+import sneer.kernel.appmanager.SovereignApplication;
 import sneer.kernel.appmanager.SovereignApplicationUID;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.communication.Channel;
@@ -35,6 +37,12 @@ public class ContactActionFactory {
 	
 	public List<ContactAction> contactActions(){
 		List<ContactAction> result = new ArrayList<ContactAction>();
+		
+		Channel metooChannel = _communicator.getChannel(MeToo.class.getName(), 0);
+		SovereignApplication metooApp = new MeToo(metooChannel,_appManager.publishedApps().output());
+		for(ContactAction contactAction:metooApp.contactActions())
+			result.add(contactAction);
+
 		Channel conversationsChannel = _communicator.getChannel(ConversationsApp.class.getName(), 0);
 		result.add(new ConversationsApp(conversationsChannel, _businessSource.output().contactAttributes(), _user.briefNotifier(), _jframeBoundsKeeper).contactAction());
 		

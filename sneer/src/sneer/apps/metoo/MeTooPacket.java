@@ -1,4 +1,4 @@
-package metoo;
+package sneer.apps.metoo;
 
 
 public interface MeTooPacket {

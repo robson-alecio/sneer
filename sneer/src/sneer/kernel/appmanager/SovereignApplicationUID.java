@@ -4,10 +4,10 @@ public class SovereignApplicationUID {
 	
 	public final SovereignApplication _sovereignApplication;
 	public final String _appUID; //created on demand by Sneer application
-	public final String _appName; //created during runtime. it must be a valid directory name
+	public final String _installName; 
 
-	public SovereignApplicationUID(String appName, String appUID, SovereignApplication sovereignApplication){
-		_appName = appName;
+	public SovereignApplicationUID(String installName, String appUID, SovereignApplication sovereignApplication){
+		_installName = installName;
 		_sovereignApplication = sovereignApplication;
 		_appUID = appUID;
 	}

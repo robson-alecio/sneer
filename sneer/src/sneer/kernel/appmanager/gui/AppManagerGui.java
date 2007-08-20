@@ -109,7 +109,7 @@ public class AppManagerGui extends JFrame{
 	private void updateList() { //Implement: this should be a reactive model
 		_listModel.clear(); 
 		for(SovereignApplicationUID temp:_appManager.publishedApps().output())
-			_listModel.add(0,temp._appName);
+			_listModel.add(0,temp._installName);
 	}
 	
 	private static final long serialVersionUID = 1L;

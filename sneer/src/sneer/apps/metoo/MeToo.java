@@ -1,4 +1,4 @@
-package metoo;
+package sneer.apps.metoo;
 import static wheel.i18n.Language.translate;
 
 import java.util.Collections;
@@ -7,9 +7,8 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-import metoo.gui.MeTooFrame;
-import metoo.packet.AppListResponse;
-import sneer.kernel.appmanager.AppConfig;
+import sneer.apps.metoo.gui.MeTooFrame;
+import sneer.apps.metoo.packet.AppListResponse;
 import sneer.kernel.appmanager.SovereignApplication;
 import sneer.kernel.appmanager.SovereignApplicationUID;
 import sneer.kernel.business.contacts.ContactId;
@@ -23,15 +22,16 @@ import wheel.reactive.impl.SourceImpl;
 import wheel.reactive.lists.ListSignal;
 
 
-public class Application implements SovereignApplication{
+public class MeToo implements SovereignApplication{
 	
 	private final Channel _channel;
 	private final ListSignal<SovereignApplicationUID> _publishedApps;
-	
-	public Application(AppConfig appConfig){
-		_channel = appConfig._channelFactory.channel(this);
+
+	public MeToo(Channel channel, ListSignal<SovereignApplicationUID> publishedApps){
+		_channel = channel;
+		_publishedApps = publishedApps;
 		_channel.input().addReceiver(meTooPacketReceiver());
-		_publishedApps = appConfig._publishedApps;
+		
 	}
 
 	private Omnivore<Packet> meTooPacketReceiver() {
@@ -58,7 +58,7 @@ public class Application implements SovereignApplication{
 	}
 
 	public List<ContactAction> contactActions() {
-		return Collections.singletonList((ContactAction)new ContactAction(){
+		return Collections.singletonList( (ContactAction)new ContactAction(){
 			public void actUpon(Contact contact) {
 				openMeTooFrame(contact);
 			}

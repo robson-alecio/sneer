@@ -23,13 +23,14 @@ public class PrevalentBubbleBlower {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private <STATE_MACHINE> STATE_MACHINE wrap(STATE_MACHINE stateMachine) throws IOException, ClassNotFoundException {
 		PrevaylerFactory prevaylerFactory = new PrevaylerFactory();
 		prevaylerFactory.configurePrevalenceDirectory(_directory);
 		prevaylerFactory.configurePrevalentSystem(stateMachine);
 		Prevayler prevayler = prevaylerFactory.create();
 		
-		return Bubble.wrapStateMachine(prevayler);
+		return (STATE_MACHINE)Bubble.wrapStateMachine(prevayler);
 	}
 	
 }

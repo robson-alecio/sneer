@@ -3,7 +3,7 @@ package sneer.kernel.appmanager;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.impl.Communicator;
 
-public class AppChannelFactory {
+public class AppChannelFactory { //Refactor Why does the app need a channel factory and not only a channel?
 
 	private final Communicator _communicator;
 

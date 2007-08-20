@@ -100,15 +100,14 @@ public class AppManager {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	private SovereignApplication loadApp(File compiledAppDirectory) throws Exception {
 		File classesDirectory = new File(compiledAppDirectory, "classes");
 		File applicationFile = AppTools.findApplicationClass(compiledAppDirectory);
 		String packageName = AppTools.pathToPackage(classesDirectory, applicationFile.getParentFile());
-		URL[] urls = new URL[] { classesDirectory.toURL() }; //in the future libs directory will be added here
+		URL[] urls = new URL[] { classesDirectory.toURI().toURL() }; //in the future libs directory will be added here
 		URLClassLoader ucl = new URLClassLoader(urls, ClassLoader.getSystemClassLoader());
 		Class<?> clazz = ucl.loadClass(packageName + ".Application");
-		AppConfig config = new AppConfig(_user, new AppChannelFactory(_communicator), _contacts, _publishedApps.output());
+		AppConfig config = new AppConfig(_user, new AppChannelFactory(_communicator), _contacts, _publishedApps.output(), null);  //FixUrgent Create the blower passing the [packagedDirectory]/prevalence directory.
 		Class<?>[] types = { AppConfig.class };
 		Object[] instances = { config };
 		Constructor<?> constructor = clazz.getConstructor(types);

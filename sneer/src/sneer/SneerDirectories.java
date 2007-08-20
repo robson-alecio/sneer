@@ -42,7 +42,10 @@ public class SneerDirectories {
 		return new File(cacheDirectory(), "appSourceCodes");
 	}
 
-
+	public static File temporaryDirectory() {
+		return new File(cacheDirectory(), "tmp");
+	}
+	
 	private static String userHome() {
 		String override = System.getProperty("sneer.user_home_override");
 		if (override != null) return override;

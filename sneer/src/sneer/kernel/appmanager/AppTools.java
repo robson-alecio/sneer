@@ -19,6 +19,8 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
+import sneer.SneerDirectories;
+
 import wheel.io.Jars;
 
 public class AppTools {
@@ -91,6 +93,12 @@ public class AppTools {
         in.close();
         out.close();
     }
+	
+	public static void copyRecursive(File sourceDir, File targetDir) throws IOException{ //Fix: Dont use zip/unzip to a simple recursive copy. ;-)
+		File tempzip = File.createTempFile("copy", ".zip");
+		zip(sourceDir,tempzip);
+		unzip(tempzip,targetDir);
+	}
 	
 	public static File findFile(File file, FilenameFilter filter){
 		if (file.isDirectory())
@@ -194,6 +202,21 @@ public class AppTools {
         return bytes;
     }
 
-
+	public synchronized static String uniqueName(String prefix){
+		return prefix + "-" + System.currentTimeMillis() + "-" + System.nanoTime();
+	}
+	
+	public static File createTempDirectory(String prefix){
+		File temp = new File(SneerDirectories.temporaryDirectory(), AppTools.uniqueName(prefix));
+		temp.mkdirs();
+		return temp;
+	}
+	
+	public static void removeRecursive(File file){
+		if (file.isDirectory())
+			for(File children:file.listFiles())
+				removeRecursive(children);
+		file.delete();
+	}
 	
 }

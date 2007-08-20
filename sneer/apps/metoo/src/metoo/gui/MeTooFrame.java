@@ -70,9 +70,8 @@ public class MeTooFrame extends JFrame{
 	protected void receiveAppListResponse(Map<String, String> nameAndAppUID) {
 		_nameAndAppUID = nameAndAppUID;
 		_listModel.clear();
-		for(String key:nameAndAppUID.keySet())
+		for(String key:_nameAndAppUID.keySet())
 			_listModel.add(0, key);
-		System.out.println(_nameAndAppUID.size()); //just to avoid warning.
 	}
 
 	public void sendAppListRequest(){

@@ -1,11 +1,10 @@
 package sneer.kernel.appmanager;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.List;
 
 import sneer.SneerDirectories;
 import sneer.kernel.communication.impl.Communicator;
@@ -18,6 +17,7 @@ import wheel.reactive.lists.impl.ListSourceImpl;
 
 public class AppManager {
 	
+	private static final String JAR_NAME = "app.zip";
 	private ListSource<SovereignApplicationUID> _publishedApps = new ListSourceImpl<SovereignApplicationUID>();
 	private User _user;
 	private Communicator _communicator;
@@ -36,35 +36,95 @@ public class AppManager {
 	}
 	
 	public void rebuild(){
-		removeRecursive(SneerDirectories.compiledAppsDirectory());
-		removeRecursive(SneerDirectories.appSourceCodesDirectory());
+		AppTools.removeRecursive(SneerDirectories.compiledAppsDirectory());
+		AppTools.removeRecursive(SneerDirectories.appSourceCodesDirectory());
 		for(SovereignApplicationUID app:_publishedApps.output())
 			_publishedApps.remove(app);
 		
 	}
 	
-	public void remove(String appName){
-		removeRecursive(new File(SneerDirectories.appsDirectory(),appName));
-		removeRecursive(new File(SneerDirectories.appSourceCodesDirectory(),appName));
-		removeRecursive(new File(SneerDirectories.compiledAppsDirectory(),appName));
+	public void removeAppDirectories(String installName){
+		AppTools.removeRecursive(new File(SneerDirectories.appsDirectory(),installName));
+		AppTools.removeRecursive(new File(SneerDirectories.appSourceCodesDirectory(),installName));
+		AppTools.removeRecursive(new File(SneerDirectories.compiledAppsDirectory(),installName));
 		rebuild();
 	}
 	
-	public void publish(File srcFolder) { //Fix: what if the app is already installed? test appuid
+	public void publish(File originalSourceDirectory) { //Fix: what if the app is already installed? test appuid
+	
+		File packagedTempDirectory = AppTools.createTempDirectory("packaged");
+		File sourceTempDirectory = AppTools.createTempDirectory("source");
+		File compiledTempDirectory = AppTools.createTempDirectory("compiled");
+		
 		try{
-			File targetDirectory = new File(SneerDirectories.appsDirectory(),appName(srcFolder));
-			targetDirectory.mkdirs();
-			File zipFile = new File(targetDirectory,"app.zip");
-			AppTools.zip(srcFolder, zipFile);
+			packageApp(originalSourceDirectory, packagedTempDirectory);
+		
+			processApp(packagedTempDirectory, sourceTempDirectory, compiledTempDirectory);
+			SovereignApplication app = loadApp(compiledTempDirectory);
+			
+			String installName = AppTools.uniqueName(app.defaultName());
+			
+			copyToFinalPlace(packagedTempDirectory, sourceTempDirectory, compiledTempDirectory, installName);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			Log.log(e);
+			AppTools.removeRecursive(packagedTempDirectory);
+			AppTools.removeRecursive(sourceTempDirectory);
+			AppTools.removeRecursive(compiledTempDirectory);
+		}
+		
+	}
+	
+	private void copyToFinalPlace(File packagedTempDirectory, File sourceTempDirectory, File compiledTempDirectory, String installName) throws IOException{
+		File packagedDirectory = new File(SneerDirectories.appsDirectory(),installName);
+		File sourceDirectory = new File(SneerDirectories.appSourceCodesDirectory(),installName);
+		File compiledDirectory = new File(SneerDirectories.compiledAppsDirectory(),installName);
+		try{
+			packagedDirectory.mkdirs();
+			sourceDirectory.mkdirs();
+			compiledDirectory.mkdirs();
+			AppTools.copyRecursive(packagedTempDirectory, packagedDirectory);
+			AppTools.copyRecursive(sourceTempDirectory, sourceDirectory);
+			AppTools.copyRecursive(compiledTempDirectory, compiledDirectory);
+		}catch(Exception e){
+			removeAppDirectories(installName);
+			throw new IOException("Could not copy to final directories");
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	private SovereignApplication loadApp(File compiledAppDirectory) throws Exception {
+		File classesDirectory = new File(compiledAppDirectory,"classes");
+		File applicationFile = AppTools.findApplicationClass(compiledAppDirectory);
+		String packageName = AppTools.pathToPackage(classesDirectory, applicationFile.getParentFile());
+		URL[] urls = new URL[]{classesDirectory.toURL()}; //in the future libs directory will be added here
+		URLClassLoader ucl = new URLClassLoader(urls, ClassLoader.getSystemClassLoader());  
+		Class<?> clazz = ucl.loadClass(packageName+".Application"); 
+		AppConfig config = new AppConfig(_user, new AppChannelFactory(_communicator), _contacts, _publishedApps.output());
+		Class<?>[] types = {AppConfig.class};
+		Object[] instances = {config};
+		Constructor<?> constructor = clazz.getConstructor(types);
+		return (SovereignApplication) constructor.newInstance(instances);
+	}
+	
+	private void packageApp(File sourceDirectory, File targetDirectory){
+		try{
+			File zipFile = new File(targetDirectory,JAR_NAME);
+			AppTools.zip(sourceDirectory, zipFile);
 			AppTools.generateAppUID(zipFile);
 		}catch(Exception e){
 			Log.log(e);
 			e.printStackTrace();
 		}
 	}
-
-	private String appName(File srcFolder) {
-		return AppTools.pathToPackage(new File(srcFolder,"src"), AppTools.findApplicationSource(srcFolder).getParentFile());
+	
+	private void processApp(File packagedDirectory, File sourceDirectory, File compiledDirectory) throws Exception{	
+			File zipFile = new File(packagedDirectory, JAR_NAME);
+			AppTools.unzip(zipFile, sourceDirectory);
+			File ApplicationSourceFile = AppTools.findApplicationSource(sourceDirectory);
+			File[] sources = new File[]{ApplicationSourceFile};
+			compile(sources, sourceDirectory, compiledDirectory);
 	}
 	
 	public SovereignApplication appByUID(String appUID){
@@ -74,91 +134,45 @@ public class AppManager {
 		return null;
 	}
 	
-	public boolean isAppPublished(String appName){
-		return (new File(SneerDirectories.appsDirectory(),appName)).exists();
-	}
-	
-	private void unpackageApps(){
-		for(File appDirectory:notUnpackagedApps()){
-			File jar = appDirectory.listFiles()[0]; //first file should be the jar
-			File target = new File(SneerDirectories.appSourceCodesDirectory(),appDirectory.getName());
-			target.mkdir();
-			System.out.println("Unpackaging "+jar.getName());
-			try{
-				AppTools.unzip(jar,target);
-			}catch(Exception e){
-				target.delete();
-				Log.log(e);
-				e.printStackTrace();
-			}
+	private void compile(File[] sources, File sourceDirectory, File targetDirectory) throws Exception{
+		File targetClassesDirectory = new File(targetDirectory,"classes");
+		targetClassesDirectory.mkdirs();
+		String sneerJarLocation = null;
+		try{
+			sneerJarLocation = AppTools.tryToFindSneerLocation().getAbsolutePath();
+		}catch(Exception e){
+			Log.log(e);
+			e.printStackTrace();
+			_user.acknowledgeNotification("Sneer.jar not found. If you are not running from the jar (from eclipse for example) you need SneerXXXX.jar as the ONLY jar in the .bin directory.");
+			throw new IOException("Could not find Sneer.jar!!!!");
 		}
-	}
-	
-	private List<File> notUnpackagedApps(){ 
-		List<File> notUnpackagedApps = new ArrayList<File>();
-		for(File appDirectory:SneerDirectories.appsDirectory().listFiles()){
-			if (alreadyUnpackaged(appDirectory))
-				continue;
-			notUnpackagedApps.add(appDirectory);	
+		
+		System.out.println(sneerJarLocation);
+		for(File source:sources){	
+			System.out.println("Compiling "+source.getName());
+			String[] parameters = {"-classpath",sneerJarLocation+File.pathSeparator+targetClassesDirectory.getAbsolutePath(),"-sourcepath",sourceDirectory.getAbsolutePath()+"/src","-d",targetClassesDirectory.getAbsolutePath(),source.getAbsolutePath()};
+			com.sun.tools.javac.Main.compile(parameters);
 		}
-		return notUnpackagedApps;
-	}
-	
-	private void compileApps(){ //FixUrgent... if the compilation fails, the directory MUST be cleaned
-		for(File sourceDirectory:notCompiledApps()){
-
-			String targetDirectory=SneerDirectories.compiledAppsDirectory()+"/"+sourceDirectory.getName()+"/"+"classes";
-			String sourceApplication = AppTools.findApplicationSource(sourceDirectory).getAbsolutePath();
-			(new File(targetDirectory)).mkdirs();
-
-			System.out.println("Compiling "+sourceApplication);
-			String sneerJarLocation = null;
-			try{
-				sneerJarLocation = AppTools.tryToFindSneerLocation().getAbsolutePath();
-			}catch(Exception e){
-				Log.log(e);
-				e.printStackTrace();
-				_user.acknowledgeNotification("Sneer.jar not found. If you are not running from the jar (from eclipse for example) you need SneerXXXX.jar as the ONLY jar in the .bin directory.");
-				return;
-			}
-			
-			System.out.println(sneerJarLocation);
-			try{
-				String[] parameters = {"-classpath",sneerJarLocation+File.pathSeparator+targetDirectory,"-sourcepath",sourceDirectory.getAbsolutePath()+"/src","-d",targetDirectory,sourceApplication};
-				com.sun.tools.javac.Main.compile(parameters);
-			}catch(Exception e){
-				e.printStackTrace();
-				System.out.println("Could not compile "+sourceApplication); //Fix: use log
-				removeRecursive(new File(targetDirectory));
-			}
-		}
-	}
-	
-	private void removeRecursive(File file){
-		if (file.isDirectory())
-			for(File children:file.listFiles())
-				removeRecursive(children);
-		file.delete();
 	}
 	
 	public ListSource<SovereignApplicationUID> publishedApps(){
 		createDirectories();
-		unpackageApps();
-		compileApps();
+
 		loadApps();
+		
 		return _publishedApps;
 	}
 
 	private void loadApps() {
 		File[] compiledAppDirectories = SneerDirectories.compiledAppsDirectory().listFiles();
 		for(File compiledAppDirectory:compiledAppDirectories){
-			String appName = compiledAppDirectory.getName();
-			if (isAppLoaded(appName))
+			String candidateApp = compiledAppDirectory.getName();
+			if (isAppLoaded(candidateApp))
 				continue;
 			try{
 				File appUIDFile = AppTools.findAppUID(new File(SneerDirectories.appsDirectory(),compiledAppDirectory.getName()));
 				String appUID = new String(AppTools.getBytesFromFile(appUIDFile));
-				_publishedApps.add(new SovereignApplicationUID(compiledAppDirectory.getName(),appUID,appLoad(compiledAppDirectory)));
+				_publishedApps.add(new SovereignApplicationUID(compiledAppDirectory.getName(),appUID,loadApp(compiledAppDirectory)));
 			}catch(Exception e){
 				Log.log(e);
 				e.printStackTrace();
@@ -173,45 +187,4 @@ public class AppManager {
 		return false;
 	}
 
-	@SuppressWarnings("deprecation")
-	private SovereignApplication appLoad(File compiledAppDirectory) throws Exception {
-		File classesDirectory = new File(compiledAppDirectory,"classes");
-		File applicationFile = AppTools.findApplicationClass(compiledAppDirectory);
-		String packageName = AppTools.pathToPackage(classesDirectory, applicationFile.getParentFile());
-		URL[] urls = new URL[]{classesDirectory.toURL()}; //in the future libs directory will be added here
-		URLClassLoader ucl = new URLClassLoader(urls, ClassLoader.getSystemClassLoader());  
-		Class<?> clazz = ucl.loadClass(packageName+".Application"); 
-		AppConfig config = new AppConfig(_user, new AppChannelFactory(_communicator), _contacts, _publishedApps.output());
-		Class<?>[] types = {AppConfig.class};
-		Object[] instances = {config};
-		Constructor<?> constructor = clazz.getConstructor(types);
-		return (SovereignApplication) constructor.newInstance(instances);
-	}
-	
-	private List<File> notCompiledApps(){ 
-		List<File> notCompiledApps = new ArrayList<File>();
-		for(File sourceDirectory:SneerDirectories.appSourceCodesDirectory().listFiles()){
-			if (alreadyCompiled(sourceDirectory))
-				continue;
-			notCompiledApps.add(sourceDirectory);	
-		}
-		return notCompiledApps;
-	}
-	
-	private boolean alreadyUnpackaged(File appDirectory) {
-		for(File sourceCodeDirectory:SneerDirectories.appSourceCodesDirectory().listFiles()){
-			if (sourceCodeDirectory.getName().equals(appDirectory.getName()))
-				return true;
-		}
-		return false;
-	}
-
-	private boolean alreadyCompiled(File sourceDirectory) {
-		for(File compiledDirectory:SneerDirectories.compiledAppsDirectory().listFiles()){
-			if (sourceDirectory.getName().equals(compiledDirectory.getName()))
-				return true;
-		}
-		return false;
-	}
-	
 }

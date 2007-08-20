@@ -46,7 +46,7 @@ public class AppManagerGui extends JFrame{
 				String appName=(String)_appList.getSelectedValue();
 				if (appName==null)
 					return;
-				_appManager.remove(appName);
+				_appManager.removeAppDirectories(appName);
 				updateList();
 			}
 		});

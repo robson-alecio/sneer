@@ -43,10 +43,10 @@ public class AppManagerGui extends JFrame{
 		removeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		removeButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				String appName=(String)_appList.getSelectedValue();
-				if (appName==null)
+				String installName=(String)_appList.getSelectedValue();
+				if (installName==null)
 					return;
-				_appManager.removeAppDirectories(appName);
+				_appManager.removeApp(installName);
 				updateList();
 			}
 		});

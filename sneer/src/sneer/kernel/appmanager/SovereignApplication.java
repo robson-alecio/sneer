@@ -14,4 +14,6 @@ public interface SovereignApplication {
 	
 	public int trafficPriority();
 
+	public void start(AppConfig config);
+
 }

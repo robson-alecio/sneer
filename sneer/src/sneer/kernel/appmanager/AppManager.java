@@ -2,7 +2,6 @@ package sneer.kernel.appmanager;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -66,7 +65,7 @@ public class AppManager {
 			packageApp(originalSourceDirectory, packagedTempDirectory);
 
 			processApp(packagedTempDirectory, sourceTempDirectory, compiledTempDirectory);
-			SovereignApplication app = loadApp(compiledTempDirectory);
+			SovereignApplication app = startApp(compiledTempDirectory);
 
 			String installName = AppTools.uniqueName(app.defaultName());
 
@@ -112,18 +111,20 @@ public class AppManager {
 		}
 	}
 
-	private SovereignApplication loadApp(File compiledAppDirectory) throws Exception {
+	private SovereignApplication startApp(File compiledAppDirectory) throws Exception {
 		File classesDirectory = new File(compiledAppDirectory, "classes");
 		File applicationFile = AppTools.findApplicationClass(compiledAppDirectory);
 		String packageName = AppTools.pathToPackage(classesDirectory, applicationFile.getParentFile());
 		URL[] urls = new URL[] { classesDirectory.toURI().toURL() }; //in the future libs directory will be added here
+
 		URLClassLoader ucl = new URLClassLoader(urls, ClassLoader.getSystemClassLoader());
 		Class<?> clazz = ucl.loadClass(packageName + ".Application");
-		AppConfig config = new AppConfig(_user, new AppChannelFactory(_communicator), _contacts, _publishedApps.output(), null);  //FixUrgent Create the blower passing the [packagedDirectory]/prevalence directory.
-		Class<?>[] types = { AppConfig.class };
-		Object[] instances = { config };
-		Constructor<?> constructor = clazz.getConstructor(types);
-		return (SovereignApplication) constructor.newInstance(instances);
+		SovereignApplication result = (SovereignApplication) clazz.newInstance();
+
+		AppConfig config = new AppConfig(_user, _communicator.getChannel(result.defaultName(), result.trafficPriority()), _contacts, null);  //FixUrgent Create the blower passing the [packagedDirectory]/prevalence directory.
+		result.start(config);
+		
+		return result;
 	}
 
 	private void packageApp(File sourceDirectory, File targetDirectory) {
@@ -190,7 +191,7 @@ public class AppManager {
 			String candidateApp = compiledAppDirectory.getName();
 			if (isAppLoaded(candidateApp))
 				continue;
-			SovereignApplication app = loadApp(compiledAppDirectory);
+			SovereignApplication app = startApp(compiledAppDirectory);
 			registerApp(compiledAppDirectory.getName(), app);
 		}
 	}

@@ -30,7 +30,7 @@ public class PrevalentBubbleBlower {
 		prevaylerFactory.configurePrevalentSystem(stateMachine);
 		Prevayler prevayler = prevaylerFactory.create();
 		
-		return (STATE_MACHINE)Bubble.wrapStateMachine(prevayler);
+		return (STATE_MACHINE)Bubble.wrapStateMachine(prevayler);  //Refactor Remove this cast when the Sun compiler can handle that (bug fixed in JDK7). Remove the @SuppressWarnings for this method.
 	}
 	
 }

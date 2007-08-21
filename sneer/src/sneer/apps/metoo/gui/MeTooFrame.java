@@ -43,7 +43,7 @@ public class MeTooFrame extends JFrame{
 
 	private JList _appList;
 	private DefaultListModel _listModel = new DefaultListModel();
-	private Map<String, String> _nameAndAppUID = new HashMap<String, String>();
+	private Map<String, String> _installNameAndAppUID = new HashMap<String, String>();
 	private final File _tempDirectory;
 	private final AppManager _appManager;
 
@@ -98,7 +98,7 @@ public class MeTooFrame extends JFrame{
 			public void consume(MeTooPacket meTooPacket) {
 				switch(meTooPacket.type()){
 				case MeTooPacket.APP_LIST_RESPONSE:
-					receiveAppListResponse(((AppListResponse)meTooPacket)._installNameAndAppUID);
+					updateAppList(((AppListResponse)meTooPacket)._installNameAndAppUID);
 					break;
 				case MeTooPacket.APP_FILE_PART:
 					receiveAppFile((AppFilePart)meTooPacket);
@@ -129,11 +129,11 @@ public class MeTooFrame extends JFrame{
 		}
 	}
 	
-	protected void receiveAppListResponse(Map<String, String> nameAndAppUID) {
-		_nameAndAppUID = nameAndAppUID;
+	protected void updateAppList(Map<String, String> installNameAndAppUID) {
+		_installNameAndAppUID = installNameAndAppUID;
 		_listModel.clear();
-		for(String key:_nameAndAppUID.keySet())
-			_listModel.add(0, key);
+		for(String installName:_installNameAndAppUID.keySet())
+			_listModel.add(0, installName);
 	}
 	
 	public void updateProgressBar(long value, long total){

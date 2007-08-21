@@ -63,7 +63,7 @@ public class MeTooFrame extends JFrame{
 	
 	private void initComponents() {
 		setLayout(new BorderLayout());
-		setTitle(translate("Disponible Applications"));
+		setTitle(translate("Available Applications"));
 		_appList = new JList(_listModel);
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BoxLayout(buttonPanel,BoxLayout.Y_AXIS));

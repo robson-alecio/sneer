@@ -16,7 +16,7 @@ import wheel.reactive.lists.impl.ListSourceImpl;
 
 public class AppManager {
 
-	private static final String JAR_NAME = "app.zip";
+	public static final String JAR_NAME = "app.zip";
 
 	private ListSource<SovereignApplicationUID> _publishedApps = new ListSourceImpl<SovereignApplicationUID>();
 

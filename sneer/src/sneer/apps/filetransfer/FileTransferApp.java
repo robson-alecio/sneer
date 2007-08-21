@@ -54,7 +54,7 @@ public class FileTransferApp {
 
 			@Override
 			public String caption() {
-				return "Send File";
+				return translate("Send File");
 			}
 			
 		};

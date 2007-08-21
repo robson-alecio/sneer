@@ -127,11 +127,116 @@ msgstr "Já existe um contato com este nome: %1$s"
 msgid "Some contact already had that public key."
 msgstr "Algum contato já possui esta chave pública."
 
-msgid " %1$s is typing... :)"
-msgstr " %1$s está teclando... :)"
-
 msgid "Me"
 msgstr "Eu"
 
 msgid "Start Conversation"
 msgstr "Iniciar Conversa"
+
+msgid "App Manager"
+msgstr ""
+
+msgid "Sneer Port"
+msgstr "Port do Sneer"
+
+msgid "Info"
+msgstr ""
+
+msgid "Nick"
+msgstr "Apelido"
+
+msgid "Host"
+msgstr ""
+
+msgid "Port"
+msgstr ""
+
+msgid "Update"
+msgstr "Atualizar"
+
+msgid "No contacts"
+msgstr "Sem contatos"
+
+msgid "MP3 Sushi"
+msgstr ""
+
+msgid "Language"
+msgstr "Língua"
+
+msgid "Unknown channel being used by some contact: %1$s\nHe might have a different Sneer version or some Application you dont have."
+msgstr ""
+
+msgid "SECURITY ALERT FOR CONTACT: %1$s\n\nEither this contact has changed its public key or\nsomeone else is trying to trick you and impersonate it.\n\nThis contact's identity will be changed to 'UNCONFIRMED',\nso that you can confirm its public key again."
+msgstr ""
+
+msgid "%1$s tried to send you objects of class you do not have installed. You might be running a different version of Sneer."
+msgstr "%1$s tentou enviar objetos de uma classe não instalada. Você deve estar rodando uma versão diferente do Sneer."
+
+msgid "There already is a contact with nickname: %1$s"
+msgstr "Já existe um contato com este nickname: %1$s"
+
+msgid "Remove"
+msgstr "Remover"
+
+msgid "Publish"
+msgstr "Publicar"
+
+msgid "Choose the App Sources folder"
+msgstr "Escolha a pasta com o código fonte do aplicativo"
+
+msgid " %1$s is typing..."
+msgstr " %1$s está teclando..."
+
+msgid " %1$s has entered text..."
+msgstr "%1$s digitou texto..."
+
+msgid "Messages"
+msgstr "Mensagens"
+
+msgid "Receive"
+msgstr "Receber"
+
+msgid "Receiving %1$s - Choose Download Directory"
+msgstr "Recebendo %1$s - Escolha diretório de download"
+
+msgid "This is not a valid folder:\n\n%1$s\n\nTry again."
+msgstr "Este diretório não é válido:\n\n%1$s\n\nTente novamente."
+
+msgid "Choose File to Send to %1$s"
+msgstr "Escolha arquivo para enviar para %1$s"
+
+msgid "Send"
+msgstr "Enviar"
+
+msgid "Voice"
+msgstr "Voz"
+
+msgid "%1$s is calling you.\n\nDo you want to accept this call?"
+msgstr "%1$s está te chamando.\n\nDeseja aceitar esta chamada?"
+
+msgid "Available Applications"
+msgstr "Applicativos Disponíveis"
+
+msgid "Me Too"
+msgstr "Eu Também"
+
+msgid "Applications"
+msgstr "Aplicativos"
+
+msgid "MP3 Sushi Table"
+msgstr "Tabela MP3 Sushi"
+
+msgid "MP3 Sushi Waiting Players"
+msgstr "MP3 Sushi Esperando Jogadores"
+
+msgid "Add"
+msgstr "Adicionar"
+
+msgid "Choose MP3 Directory"
+msgstr "Escolha o diretório de MP3"
+
+msgid "MP3 Sushi War Zone"
+msgstr "Área de guerra do MP3 Sushi"
+
+msgid "Send File"
+msgstr "Enviar Arquivo"

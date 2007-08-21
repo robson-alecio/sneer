@@ -367,7 +367,7 @@ public class Language {
 			try {
 				InputStream templateStreamIn = new FileInputStream(dirFile.getAbsolutePath() + "/" + TRANSLATION_DIRECTORY + "/" + TRANSLATION_FILENAME + ".pot");
 				InputStream languageStreamIn = new FileInputStream(dirFile.getAbsolutePath() + "/" + TRANSLATION_DIRECTORY + "/" + TRANSLATION_FILENAME + "_" + language_country + ".po");
-				OutputStream streamOut = new FileOutputStream(dirFile.getAbsolutePath() + TRANSLATION_DIRECTORY + TRANSLATION_FILENAME + "_" + language_country + ".po_merge");
+				OutputStream streamOut = new FileOutputStream(dirFile.getAbsolutePath() + "/" + TRANSLATION_DIRECTORY + "/" + TRANSLATION_FILENAME + "_" + language_country + ".po_merge");
 
 				List<String> msgids = new ArrayList<String>();
 				List<String> lines = new ArrayList<String>();
@@ -394,6 +394,7 @@ public class Language {
 					}
 				}
 				writer.close();
+				streamOut.close();
 				templateReader.close();
 				JOptionPane.showMessageDialog(null, "Done!");
 			} catch (FileNotFoundException e) {

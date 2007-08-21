@@ -37,19 +37,20 @@ import wheel.lang.Omnivore;
 public class Gui {
 
 	private final AppManager _appManager;
+	private final ContactActionFactory _contactActionFactory;
 
-	public Gui(User user, Party I, BusinessSource businessSource, Communicator communicator, AppManager appManager) throws Exception {
+	public Gui(User user, Party I, BusinessSource businessSource, Communicator communicator, AppManager appManager, ContactActionFactory contactActionFactory) throws Exception {
 		_user = user;
 		_I = I; 
 		_businessSource = businessSource;
 		_communicator = communicator;
 		_appManager = appManager;
+		_contactActionFactory = contactActionFactory;
 		
 		URL icon = Gui.class.getResource("/sneer/kernel/gui/traymenu/yourIconGoesHere.png");
 		_trayIcon = new TrayIconImpl(icon, _user.catcher());
 		
 		_jframeBoundsKeeper = jFrameBoundsKeeper(); 
-		
 		tryToRun();
 	}
 
@@ -108,8 +109,7 @@ public class Gui {
 
 	private synchronized ShowContactsScreenAction showContactsScreenAction() {
 		if (_showContactsScreenAction == null){
-			ContactActionFactory contactActionFactory = new ContactActionFactory(_user,_I,_communicator,_businessSource,_appManager,jFrameBoundsKeeper()); //Refactor The gui should not be responsible for creating the actions, just for showing them.
-			_showContactsScreenAction = new ShowContactsScreenAction(_user, _I, contactActionFactory, _businessSource.contactAdder2(),_businessSource.contactRemover(), _businessSource.contactNickChanger(), _jframeBoundsKeeper);
+			_showContactsScreenAction = new ShowContactsScreenAction(_user, _I, _contactActionFactory, _businessSource.contactAdder2(),_businessSource.contactRemover(), _businessSource.contactNickChanger(), _jframeBoundsKeeper);
 		}
 		return _showContactsScreenAction;
 	}

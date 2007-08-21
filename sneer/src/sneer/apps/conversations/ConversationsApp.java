@@ -12,7 +12,6 @@ import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.pointofview.Contact;
-import wheel.io.ui.JFrameBoundsKeeper;
 import wheel.io.ui.User.Notification;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
@@ -23,13 +22,10 @@ import wheel.reactive.lists.ListSignal;
 public class ConversationsApp {
 
 
-	private final JFrameBoundsKeeper _boundsKeeper;
-
-	public ConversationsApp(Channel channel, ListSignal<ContactAttributes> contacts, Omnivore<Notification> briefUserNotifier, JFrameBoundsKeeper boundsKeeper) {
+	public ConversationsApp(Channel channel, ListSignal<ContactAttributes> contacts, Omnivore<Notification> briefUserNotifier) {
 		_channel = channel;
 		_contacts = contacts;
 		_briefUserNotifier = briefUserNotifier;
-		_boundsKeeper = boundsKeeper;
 		
 		_channel.input().addReceiver(messageReceiver());
 	}
@@ -83,7 +79,7 @@ public class ConversationsApp {
 	private ConversationFrame createFrame(ContactId contactId) {
 		ConversationFrame result = new ConversationFrame(findContact(contactId).nick(), inputFrom(contactId), outputTo(contactId), _briefUserNotifier);
 		_framesByContactId.put(contactId, result);
-		_boundsKeeper.keepBoundsFor(result, ConversationFrame.class.getName() + "/" + contactId);
+		//_boundsKeeper.keepBoundsFor(result, ConversationFrame.class.getName() + "/" + contactId);
 		return result;
 	}
 

@@ -82,6 +82,18 @@ public class AppManager {
 		AppTools.removeRecursive(sourceTempDirectory);
 		AppTools.removeRecursive(compiledTempDirectory);
 	}
+	
+	public void publishFromZipFile(File zipFile){ //for metoo transfers
+		File tempDirectory = AppTools.createTempDirectory("packaged");
+		try {
+			AppTools.unzip(zipFile, tempDirectory);
+			publish(tempDirectory);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.log(e);
+		}
+		AppTools.removeRecursive(tempDirectory);
+	}
 
 	private void copyToFinalPlace(File packagedTempDirectory, File sourceTempDirectory, File compiledTempDirectory, String installName) throws IOException {
 		File packagedDirectory = new File(SneerDirectories.appsDirectory(), installName);

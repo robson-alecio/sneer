@@ -16,6 +16,7 @@ import sneer.kernel.business.impl.BusinessFactory;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.impl.Communicator;
 import sneer.kernel.gui.Gui;
+import sneer.kernel.gui.contacts.ContactActionFactory;
 import sneer.kernel.pointofview.Party;
 import sneer.kernel.pointofview.impl.Me;
 import wheel.i18n.Language;
@@ -52,6 +53,7 @@ public class Sneer {
 	private Party _me;
 	private Gui _gui;
 	private AppManager _appManager;
+	private ContactActionFactory _contactActionFactory;
 	
 	private void tryToRun() throws Exception {
 		tryToRedirectLogToSneerLogFile();
@@ -73,7 +75,9 @@ public class Sneer {
 		for(SovereignApplicationUID app:_appManager.publishedApps().output())
 			System.out.println("App : "+app._sovereignApplication.defaultName());
 
-		_gui = new Gui(_user, _me, _businessSource,  _communicator, _appManager); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
+		_contactActionFactory = new ContactActionFactory(_user,_me,_communicator,_businessSource,_appManager);
+		
+		_gui = new Gui(_user, _me, _businessSource,  _communicator, _appManager, _contactActionFactory); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
 		
 		while (true) Threads.sleepWithoutInterruptions(100000); // Refactor Consider joining the main gui thread.
 	}

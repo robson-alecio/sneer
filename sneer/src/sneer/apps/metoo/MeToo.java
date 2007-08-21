@@ -9,9 +9,6 @@ import java.util.Map;
 
 import sneer.apps.metoo.gui.MeTooFrame;
 import sneer.apps.metoo.packet.AppListResponse;
-import sneer.kernel.appmanager.AppManager;
-import sneer.kernel.appmanager.AppTools;
-import sneer.kernel.appmanager.SovereignApplication;
 import sneer.kernel.appmanager.SovereignApplicationUID;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;

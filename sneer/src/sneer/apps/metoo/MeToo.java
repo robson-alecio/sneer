@@ -123,7 +123,7 @@ public class MeToo {
 				openMeTooFrame(contact);
 			}
 			public String caption() {
-				return translate("Me Too");
+				return translate("Applications");
 			}
 		});
 	}

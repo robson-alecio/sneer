@@ -67,7 +67,7 @@ public class MeTooFrame extends JFrame{
 		_appList = new JList(_listModel);
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BoxLayout(buttonPanel,BoxLayout.Y_AXIS));
-		JButton installButton = new JButton("Install");
+		JButton installButton = new JButton(translate("Me Too"));
 		installButton.setMaximumSize(new Dimension(100, 30));
 		installButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		installButton.addActionListener(new ActionListener(){

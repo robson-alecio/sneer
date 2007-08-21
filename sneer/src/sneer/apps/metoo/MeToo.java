@@ -56,10 +56,10 @@ public class MeToo {
 	}
 	
 	protected void sendAppListResponse(ContactId contactId) {
-		Map<String,String> nameAndAppUID = new Hashtable<String,String>();
+		Map<String,String> installNameAndAppUID = new Hashtable<String,String>();
 		for(SovereignApplicationUID app:_publishedApps)
-			nameAndAppUID.put(app._sovereignApplication.defaultName(), app._appUID);
-		_channel.output().consume(new Packet(contactId,new AppListResponse(nameAndAppUID)));
+			installNameAndAppUID.put(app._installName, app._appUID);
+		_channel.output().consume(new Packet(contactId,new AppListResponse(installNameAndAppUID)));
 	}
 
 	public List<ContactAction> contactActions() {

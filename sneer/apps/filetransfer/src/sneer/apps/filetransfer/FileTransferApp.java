@@ -6,12 +6,15 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JFileChooser;
 
 import sneer.apps.filetransfer.gui.FileTransferFrame;
+import sneer.kernel.appmanager.AppConfig;
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
@@ -30,35 +33,18 @@ public class FileTransferApp {
 
 	private static final int FILEPART_CHUNK_SIZE = 5000;
 
-	public FileTransferApp(User user, Channel channel, ListSignal<ContactAttributes> contacts) {
-		_user = user;
-		_channel = channel;
-		_contacts = contacts;
-		
+	public FileTransferApp(AppConfig config) {
+		_user = config._user;
+		_channel = config._channel;
+		_contactAttributes = config._contactAttributes;
 		_channel.input().addReceiver(filePartReceiver());
 	}
 
 	private final User _user;
 	private final Channel _channel;
-	private final ListSignal<ContactAttributes> _contacts;
+	private final ListSignal<ContactAttributes> _contactAttributes;
 	private final Map<ContactId, FileTransferFrame>_framesByContactId = new HashMap<ContactId, FileTransferFrame>();
 	private final Map<ContactId, SourceImpl<FilePart>>_inputsByContactId = new HashMap<ContactId, SourceImpl<FilePart>>();
-
-	public ContactAction contactAction() {
-		return new ContactAction(){
-
-			@Override
-			public void actUpon(Contact contact) {
-				actUponContact(contact);
-			}
-
-			@Override
-			public String caption() {
-				return translate("Send File");
-			}
-			
-		};
-	}
 
 	private Omnivore<Packet> filePartReceiver() {
 		return new Omnivore<Packet>() { public void consume(Packet packet) {
@@ -118,7 +104,7 @@ public class FileTransferApp {
 	}
 
 	private ContactAttributes findContact(ContactId id) {
-		for (ContactAttributes candidate : _contacts)
+		for (ContactAttributes candidate : _contactAttributes)
 			if (candidate.id().equals(id)) return candidate;
 		return null;
 	}
@@ -134,6 +120,22 @@ public class FileTransferApp {
 			_inputsByContactId.put(contactId, result);
 		}
 		return result;
+	}
+	
+	public List<ContactAction> contactActions() {
+		return Collections.singletonList( (ContactAction)new ContactAction() {
+
+			@Override
+			public void actUpon(Contact contact) {
+				actUponContact(contact);
+			}
+
+			@Override
+			public String caption() {
+				return translate("Send File");
+			}
+
+		});
 	}
 
 }

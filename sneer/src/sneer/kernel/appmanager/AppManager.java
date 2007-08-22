@@ -6,10 +6,13 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 import sneer.SneerDirectories;
+import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.communication.impl.Communicator;
 import sneer.kernel.pointofview.Contact;
 import wheel.io.Log;
 import wheel.io.ui.User;
+import wheel.io.ui.User.Notification;
+import wheel.lang.Omnivore;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListSource;
 import wheel.reactive.lists.impl.ListSourceImpl;
@@ -21,15 +24,17 @@ public class AppManager {
 	private ListSource<SovereignApplicationUID> _publishedApps = new ListSourceImpl<SovereignApplicationUID>();
 
 	private User _user;
-
 	private Communicator _communicator;
-
 	private ListSignal<Contact> _contacts;
+	private ListSignal<ContactAttributes> _contactAttributes;
+	private final Omnivore<Notification> _briefUserNotifier;
 
-	public AppManager(User user, Communicator communicator, ListSignal<Contact> contacts) {
+	public AppManager(User user, Communicator communicator, ListSignal<Contact> contacts, ListSignal<ContactAttributes> contactAttributes, Omnivore<Notification> briefUserNotifier) {
 		_user = user;
 		_communicator = communicator;
 		_contacts = contacts;
+		_contactAttributes = contactAttributes;
+		_briefUserNotifier = briefUserNotifier;
 	}
 
 	private void createDirectories() { //should be moved to install???
@@ -121,7 +126,7 @@ public class AppManager {
 		Class<?> clazz = ucl.loadClass(packageName + ".Application");
 		SovereignApplication result = (SovereignApplication) clazz.newInstance();
 
-		AppConfig config = new AppConfig(_user, _communicator.getChannel(result.defaultName(), result.trafficPriority()), _contacts, null);  //FixUrgent Create the blower passing the [packagedDirectory]/prevalence directory.
+		AppConfig config = new AppConfig(_user, _communicator.getChannel(result.defaultName(), result.trafficPriority()), _contacts, _contactAttributes, _briefUserNotifier, null);  //FixUrgent Create the blower passing the [packagedDirectory]/prevalence directory.
 		result.start(config);
 		
 		return result;

@@ -2,10 +2,13 @@ package sneer.apps.conversations;
 
 import static wheel.i18n.Language.translate;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import sneer.apps.conversations.gui.ConversationFrame;
+import sneer.kernel.appmanager.AppConfig;
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
@@ -21,37 +24,19 @@ import wheel.reactive.lists.ListSignal;
 
 public class ConversationsApp {
 
-
-	public ConversationsApp(Channel channel, ListSignal<ContactAttributes> contacts, Omnivore<Notification> briefUserNotifier) {
-		_channel = channel;
-		_contacts = contacts;
-		_briefUserNotifier = briefUserNotifier;
-		
+	public ConversationsApp(AppConfig config) {
+		_channel = config._channel;
+		_contactAttributes = config._contactAttributes;
+		_briefUserNotifier = config._briefUserNotifier;
 		_channel.input().addReceiver(messageReceiver());
 	}
 
 	private final Channel _channel;
-	private final ListSignal<ContactAttributes> _contacts;
+	private final ListSignal<ContactAttributes> _contactAttributes;
 	private final Omnivore<Notification> _briefUserNotifier;
 
 	private final Map<ContactId, ConversationFrame>_framesByContactId = new HashMap<ContactId, ConversationFrame>();
 	private final Map<ContactId, SourceImpl<Message>>_inputsByContactId = new HashMap<ContactId, SourceImpl<Message>>();
-
-	public ContactAction contactAction() {
-		return new ContactAction(){
-
-			@Override
-			public void actUpon(Contact contact) {
-				actUponContact(contact);
-			}
-
-			@Override
-			public String caption() {
-				return translate("Messages");
-			}
-			
-		};
-	}
 
 	private Omnivore<Packet> messageReceiver() {
 		return new Omnivore<Packet>() { public void consume(Packet packet) {
@@ -84,7 +69,7 @@ public class ConversationsApp {
 	}
 
 	private ContactAttributes findContact(ContactId id) {
-		for (ContactAttributes candidate : _contacts)
+		for (ContactAttributes candidate : _contactAttributes)
 			if (candidate.id().equals(id)) return candidate;
 		return null;
 	}
@@ -106,6 +91,22 @@ public class ConversationsApp {
 		return new Omnivore<Message>() { public void consume(Message message) {
 			_channel.output().consume(new Packet(contactId, message));
 		}};
+	}
+	
+	public List<ContactAction> contactActions() {
+		return Collections.singletonList( (ContactAction)new ContactAction() {
+
+			@Override
+			public void actUpon(Contact contact) {
+				actUponContact(contact);
+			}
+
+			@Override
+			public String caption() {
+				return translate("Messages");
+			}
+
+		});
 	}
 
 }

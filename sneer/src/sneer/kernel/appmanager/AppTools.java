@@ -40,8 +40,11 @@ public class AppTools {
            entry = (ZipEntry) e.nextElement();
            System.out.println("Extracting: " +entry);
            File targetFile = new File(target.getPath()+"/"+entry.getName());
-           if (entry.isDirectory())
-           	continue;
+           if (entry.isDirectory()){
+        	   targetFile.mkdirs();
+        	   targetFile.setLastModified(entry.getTime());
+        	   continue;
+           }
            is = new BufferedInputStream(zipfile.getInputStream(entry));
            int count;
            byte data[] = new byte[_BUFFER];
@@ -53,6 +56,7 @@ public class AppTools {
            dest.flush();
            dest.close();
            is.close();
+           targetFile.setLastModified(entry.getTime());
         }
 	}
 

@@ -2,7 +2,9 @@ package sneer.games.mediawars.mp3sushi;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -22,13 +24,14 @@ import sneer.games.mediawars.mp3sushi.round.MP3SushiRound;
 import sneer.games.mediawars.mp3sushi.round.Mp3PieceProvider;
 import sneer.games.mediawars.mp3sushi.util.CaseGameMessage;
 import sneer.games.mediawars.mp3sushi.util.CaseGameMessageConsume;
+import sneer.kernel.appmanager.AppConfig;
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
+import wheel.io.ui.Action;
 import wheel.io.ui.User;
 import wheel.lang.Omnivore;
-import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListSource;
 import wheel.reactive.lists.impl.ListSourceImpl;
@@ -51,11 +54,12 @@ public class MP3SushiGameApp {
 	private MP3SushiRound _mp3SushiRound;
 	private CaseGameMessage _caseGameMessage = new CaseGameMessage();
 
-	public MP3SushiGameApp(Signal<String> ownName, User user, Channel channel, ListSignal<ContactAttributes> contactsAttributes) {
-		_myGame = new MyGame(ownName);
-		_user = user;
-		_channel = channel;
-		_contactsAttributes = contactsAttributes;
+	//public MP3SushiGameApp(Signal<String> ownName, User user, Channel channel, ListSignal<ContactAttributes> contactsAttributes) {
+	public MP3SushiGameApp(AppConfig config) {
+		_myGame = new MyGame(config._ownName);
+		_user = config._user;
+		_channel = config._channel;
+		_contactsAttributes = config._contactAttributes;
 		_channel.input().addReceiver(messageReceiver());
 		_myGame.getStatus().output().addTransientReceiver(statusBroadcaster());
 		_myGame.getGameConfiguration().output().addTransientReceiver(configurationBroadcaster());
@@ -359,6 +363,10 @@ public class MP3SushiGameApp {
 			}
 		});
 
+	}
+	
+	public List<Action> mainActions() {
+		return Collections.singletonList((Action)new MP3SushiMainAction(this));
 	}
 		
 }

@@ -6,14 +6,11 @@ import java.io.IOException;
 import java.net.URL;
 
 import sneer.SneerDirectories;
-import sneer.games.mediawars.mp3sushi.MP3SushiGameApp;
 import sneer.kernel.appmanager.AppManager;
 import sneer.kernel.appmanager.SovereignApplicationUID;
 import sneer.kernel.appmanager.gui.AppManagerGui;
 import sneer.kernel.business.BusinessSource;
-import sneer.kernel.communication.impl.Communicator;
 import sneer.kernel.gui.contacts.ContactActionFactory;
-import sneer.kernel.gui.contacts.PlayMp3SushiAction;
 import sneer.kernel.gui.contacts.ShowContactsScreenAction;
 import sneer.kernel.pointofview.Party;
 import wheel.io.Log;
@@ -39,11 +36,10 @@ public class Gui {
 	private final AppManager _appManager;
 	private final ContactActionFactory _contactActionFactory;
 
-	public Gui(User user, Party I, BusinessSource businessSource, Communicator communicator, AppManager appManager, ContactActionFactory contactActionFactory) throws Exception {
+	public Gui(User user, Party I, BusinessSource businessSource, AppManager appManager, ContactActionFactory contactActionFactory) throws Exception {
 		_user = user;
 		_I = I; 
 		_businessSource = businessSource;
-		_communicator = communicator;
 		_appManager = appManager;
 		_contactActionFactory = contactActionFactory;
 		
@@ -58,12 +54,10 @@ public class Gui {
 	private final Party _I;
 	private final BusinessSource _businessSource;
 	private JFrameBoundsKeeper _jframeBoundsKeeper;
-	private Communicator _communicator;
 	
 	private final TrayIcon _trayIcon;
 
 	private ShowContactsScreenAction _showContactsScreenAction;
-	private PlayMp3SushiAction _playMp3SushiAction;
 	
 	private void tryToRun() {
 		
@@ -79,7 +73,6 @@ public class Gui {
 		_trayIcon.setDefaultAction(showContactsScreenAction);
 		_trayIcon.addAction(nameChangeAction());
 		_trayIcon.addAction(showContactsScreenAction);
-		_trayIcon.addAction(playMp3SushiAction());
 		_trayIcon.addAction(sneerPortChangeAction());
 		_trayIcon.addAction(languageChangeAction());
 		_trayIcon.addAction(appManagerAction());
@@ -126,12 +119,6 @@ public class Gui {
 			boundsPersistence = new TransientBoundsPersistence();
 		}
 		return _jframeBoundsKeeper = new JFrameBoundsKeeperImpl(boundsPersistence);
-	}
-
-	private PlayMp3SushiAction playMp3SushiAction() {
-		if (_playMp3SushiAction == null) 
-			_playMp3SushiAction = new PlayMp3SushiAction(_businessSource.output().ownName(), _user, _communicator.getChannel(MP3SushiGameApp.class.getName(), 0),_businessSource.output().contactAttributes());
-		return _playMp3SushiAction;
 	}
 
 	private void filloutInitialValues() { // Refactor: remove this logic from the gui. Maybe move to Communicator;

@@ -8,7 +8,7 @@ import java.net.URLClassLoader;
 import sneer.SneerDirectories;
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.communication.impl.Communicator;
-import sneer.kernel.pointofview.Contact;
+import sneer.kernel.pointofview.Party;
 import wheel.io.Log;
 import wheel.io.ui.User;
 import wheel.io.ui.User.Notification;
@@ -25,14 +25,15 @@ public class AppManager {
 
 	private User _user;
 	private Communicator _communicator;
-	private ListSignal<Contact> _contacts;
 	private ListSignal<ContactAttributes> _contactAttributes;
 	private final Omnivore<Notification> _briefUserNotifier;
 
-	public AppManager(User user, Communicator communicator, ListSignal<Contact> contacts, ListSignal<ContactAttributes> contactAttributes, Omnivore<Notification> briefUserNotifier) {
+	private final Party _me;
+
+	public AppManager(User user, Communicator communicator, Party me, ListSignal<ContactAttributes> contactAttributes, Omnivore<Notification> briefUserNotifier) {
 		_user = user;
+		_me = me;
 		_communicator = communicator;
-		_contacts = contacts;
 		_contactAttributes = contactAttributes;
 		_briefUserNotifier = briefUserNotifier;
 	}
@@ -126,7 +127,7 @@ public class AppManager {
 		Class<?> clazz = ucl.loadClass(packageName + ".Application");
 		SovereignApplication result = (SovereignApplication) clazz.newInstance();
 
-		AppConfig config = new AppConfig(_user, _communicator.getChannel(result.defaultName(), result.trafficPriority()), _contacts, _contactAttributes, _briefUserNotifier, null);  //FixUrgent Create the blower passing the [packagedDirectory]/prevalence directory.
+		AppConfig config = new AppConfig(_user, _communicator.getChannel(result.defaultName(), result.trafficPriority()), _me.contacts(), _contactAttributes, _me.name(), _briefUserNotifier, null);  //FixUrgent Create the blower passing the [packagedDirectory]/prevalence directory.
 		result.start(config);
 		
 		return result;

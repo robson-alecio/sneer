@@ -71,13 +71,13 @@ public class Sneer {
 		_me = new Me(_businessSource.output(), _communicator.operator(), channel);
 		
 		System.out.println("Checking existing apps:");
-		_appManager = new AppManager(_user,_communicator,_me.contacts(), _businessSource.output().contactAttributes(), briefNotifier());
+		_appManager = new AppManager(_user,_communicator, _me, _businessSource.output().contactAttributes(), briefNotifier());
 		for(SovereignApplicationUID app:_appManager.publishedApps().output())
 			System.out.println("App : "+app._sovereignApplication.defaultName());
 
 		_contactActionFactory = new ContactActionFactory(_user,_me,_communicator,_appManager);
 		
-		_gui = new Gui(_user, _me, _businessSource,  _communicator, _appManager, _contactActionFactory); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
+		_gui = new Gui(_user, _me, _businessSource, _appManager, _contactActionFactory); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
 		
 		while (true) Threads.sleepWithoutInterruptions(100000); // Refactor Consider joining the main gui thread.
 	}

@@ -19,6 +19,7 @@ public class AppConfig {
 	public final PrevalentBubbleBlower _prevalentBubbleBlower;
 	public final ListSignal<ContactAttributes> _contactAttributes;
 	public final Signal<String> _ownName;
+	
 
 	public AppConfig(User user, Channel channel, ListSignal<Contact> contacts, ListSignal<ContactAttributes> contactAttributes, Signal<String> ownName, Omnivore<Notification> briefUserNotifier, PrevalentBubbleBlower prevalentBubbleBlower) {
 		_user = user;

@@ -125,12 +125,19 @@ public class AppManager {
 
 		URLClassLoader ucl = new URLClassLoader(urls, ClassLoader.getSystemClassLoader());
 		Class<?> clazz = ucl.loadClass(packageName + ".Application");
-		SovereignApplication result = (SovereignApplication) clazz.newInstance();
+		SovereignApplication app = (SovereignApplication) clazz.newInstance();
 
-		AppConfig config = new AppConfig(_user, _communicator.getChannel(result.defaultName(), result.trafficPriority()), _me.contacts(), _contactAttributes, _me.name(), _briefUserNotifier, null);  //FixUrgent Create the blower passing the [packagedDirectory]/prevalence directory.
-		result.start(config);
+		startApp(app);
 		
-		return result;
+		return app;
+	}
+	
+	public void startApp(SovereignApplication app){
+		app.start(currentAppConfig(app));
+	}
+
+	private AppConfig currentAppConfig(SovereignApplication app) {
+		return new AppConfig(_user, _communicator.getChannel(app.defaultName(), app.trafficPriority()), _me.contacts(), _contactAttributes, _me.name(), _briefUserNotifier, null);  //FixUrgent Create the blower passing the [packagedDirectory]/prevalence directory.
 	}
 
 	private void packageApp(File sourceDirectory, File targetDirectory) {
@@ -202,7 +209,7 @@ public class AppManager {
 		}
 	}
 
-	private void registerApp(String installName, SovereignApplication app) throws IOException{
+	public void registerApp(String installName, SovereignApplication app) throws IOException{
 		System.out.println("Registering new Application: " + installName);
 		File appUIDFile = AppTools.findAppUID(new File(SneerDirectories.appsDirectory(), installName));
 		String appUID = new String(AppTools.getBytesFromFile(appUIDFile));

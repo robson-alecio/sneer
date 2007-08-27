@@ -5,10 +5,13 @@ import static wheel.i18n.Language.translate;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import sneer.apps.talk.gui.TalkFrame;
+import sneer.kernel.appmanager.AppConfig;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
@@ -26,10 +29,10 @@ public class TalkApp {
 	private static final String OPEN = "Open";
 	private static final String CLOSE = "Close";
 
-	public TalkApp(User user, Channel channel, ListSignal<Contact> contacts) {
-		_user = user;
-		_channel = channel;
-		_contacts = contacts;
+	public TalkApp(AppConfig config) {
+		_user = config._user;
+		_channel = config._channel;
+		_contacts = config._contacts;
 		
 		_channel.input().addReceiver(audioPacketReceiver());
 	}
@@ -41,8 +44,8 @@ public class TalkApp {
 	private final Map<ContactId, TalkFrame>_framesByContactId = new HashMap<ContactId, TalkFrame>();
 	private final Map<ContactId, SourceImpl<AudioPacket>>_inputsByContactId = new HashMap<ContactId, SourceImpl<AudioPacket>>();
 
-	public ContactAction contactAction() {
-		return new ContactAction(){
+	public List<ContactAction> contactActions() {
+		return Collections.singletonList((ContactAction)new ContactAction(){
 
 			@Override
 			public void actUpon(Contact contact) {
@@ -54,7 +57,7 @@ public class TalkApp {
 				return translate("Voice");
 			}
 			
-		};
+		});
 	}
 
 	private Omnivore<Packet> audioPacketReceiver() {

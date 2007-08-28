@@ -1,3 +1,12 @@
+Gandhi
+  - Right click on the pic to change it.
+  - Remove the new profile JOptionPanes from the startup. Leave just the name JOptionPane.
+  - Remove Profile-related entries from the trayicon menu 
+  - Make the profile field a large multi-line "memo" X^D field with scrollbars.
+  - Move SneerPort down to the last position.
+  - remove the Update button from the profile screen. Make the fields auto-update when they lose focus or when the user presses enter.
+  - Make the border of the field red when the field is edited (needs to be saved).
+
 FileSharing
   - Hardcoded directory
   - Polling

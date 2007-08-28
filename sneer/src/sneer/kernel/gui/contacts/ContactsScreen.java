@@ -19,35 +19,26 @@ import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.TreePath;
 
-import sneer.kernel.business.contacts.ContactId;
-import sneer.kernel.business.contacts.ContactInfo;
+import sneer.kernel.business.BusinessSource;
 import sneer.kernel.gui.NewContactAddition;
 import sneer.kernel.pointofview.Contact;
 import sneer.kernel.pointofview.Party;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
-import wheel.lang.Consumer;
-import wheel.lang.Omnivore;
-import wheel.lang.Pair;
 import wheel.lang.Threads;
 
 class ContactsScreen extends JFrame {
 
 	private final User _user;
 	private final Party _me;
-	private final Consumer<ContactInfo> _contactAdder;
-	private final Omnivore<ContactId> _contactRemover;
-	private final Consumer<Pair<ContactId, String>> _nickChanger;
 	private final ContactActionFactory _contactActionFactory;
+	private final BusinessSource _businessSource;
 
-
-	ContactsScreen(User user, Party me, ContactActionFactory contactActionFactory, Consumer<ContactInfo> contactAdder, Omnivore<ContactId> contactRemover, Consumer<Pair<ContactId, String>> nickChanger) {
+	ContactsScreen(User user, Party me, ContactActionFactory contactActionFactory, BusinessSource businnessSource) {
 		_user = user;
 		_me = me;
 		_contactActionFactory = contactActionFactory;
-		_contactAdder = contactAdder;
-		_contactRemover = contactRemover;
-		_nickChanger = nickChanger;
+		_businessSource = businnessSource;;
 
 		initComponents();
 		setVisible(true);
@@ -86,21 +77,31 @@ class ContactsScreen extends JFrame {
 				TreePath path = tree.getPathForLocation(mouseEvent.getX(),mouseEvent.getY());
 				if (path==null) return;
 				Object uncasted = path.getLastPathComponent();
-				if (!(uncasted instanceof ContactNode)) return;
-				final ContactNode node = (ContactNode)uncasted;
-				if (node==null) return;
+				if (uncasted instanceof ContactNode) {
+					final ContactNode node = (ContactNode)uncasted;
+					if (node==null) return;
 				
-				SwingUtilities.invokeLater(new Runnable(){
-					public void run() {
-						_lateral.removeAll();
-						_lateral.add(new LateralInfo(node.contact(),_nickChanger));
-						_lateral.revalidate();
-					}
-				});
+					SwingUtilities.invokeLater(new Runnable(){
+						public void run() {
+							_lateral.removeAll();
+							_lateral.add(new LateralContactInfo(node.contact(),_businessSource.contactNickChanger()));
+							_lateral.revalidate();
+						}
+					});
+					
+					if (!rightClick) return;
+					
+					getFriendPopUpMenu(node).show(tree, mouseEvent.getX(), mouseEvent.getY());
+				}else{
+					SwingUtilities.invokeLater(new Runnable(){
+						public void run() {
+							_lateral.removeAll();
+							_lateral.add(new LateralRootInfo(_businessSource));
+							_lateral.revalidate();
+						}
+					});
+				}
 				
-				if (!rightClick) return;
-
-				getFriendPopUpMenu(node).show(tree, mouseEvent.getX(), mouseEvent.getY());
 			}
 		});
 		
@@ -111,7 +112,7 @@ class ContactsScreen extends JFrame {
 		final JPopupMenu result = new JPopupMenu();
 		addToContactMenu(result, infoAction(), node);
 		for (ContactAction action : _contactActionFactory.contactActions()) addToContactMenu(result, action, node);
-		addToContactMenu(result, new ContactRemovalAction(_contactRemover), node);
+		addToContactMenu(result, new ContactRemovalAction(_businessSource.contactRemover()), node);
 		return result;
 	}
 
@@ -144,7 +145,7 @@ class ContactsScreen extends JFrame {
 
 			public void actionPerformed(ActionEvent ignored) {
 				try {
-					new NewContactAddition(_user, _contactAdder);
+					new NewContactAddition(_user, _businessSource.contactAdder());
 				} catch (CancelledByUser cbu) {
 					//Fair enough.
 				}

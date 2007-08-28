@@ -111,7 +111,7 @@ public class Gui {
 
 	private synchronized ShowContactsScreenAction showContactsScreenAction() {
 		if (_showContactsScreenAction == null){
-			_showContactsScreenAction = new ShowContactsScreenAction(_user, _I, _contactActionFactory, _businessSource.contactAdder(),_businessSource.contactRemover(), _businessSource.contactNickChanger(), _jframeBoundsKeeper);
+			_showContactsScreenAction = new ShowContactsScreenAction(_user, _I, _contactActionFactory, _businessSource, _jframeBoundsKeeper);
 		}
 		return _showContactsScreenAction;
 	}

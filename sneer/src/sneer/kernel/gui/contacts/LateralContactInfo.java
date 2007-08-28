@@ -22,10 +22,10 @@ import wheel.lang.Consumer;
 import wheel.lang.Pair;
 import wheel.lang.exceptions.IllegalParameter;
 
-public class LateralInfo extends JPanel{
+public class LateralContactInfo extends JPanel{
 
 	final static String IMAGE_PATH = "/sneer/kernel/gui/contacts/images/";
-	final static ImageIcon NO_IMAGE = new ImageIcon(LateralInfo.class.getResource(IMAGE_PATH + "questionmark.jpg"));
+	final static ImageIcon NO_IMAGE = new ImageIcon(LateralContactInfo.class.getResource(IMAGE_PATH + "questionmark.jpg"));
 
 	
 	private JButton _updateButton;
@@ -33,7 +33,7 @@ public class LateralInfo extends JPanel{
 	private InfoTextField _nickField;
 	private final Contact _contact;
 
-	public LateralInfo( Contact contact, Consumer<Pair<ContactId, String>> nickChanger){
+	public LateralContactInfo( Contact contact, Consumer<Pair<ContactId, String>> nickChanger){
 		super();
 		_contact = contact;
 		_nickChanger = nickChanger;

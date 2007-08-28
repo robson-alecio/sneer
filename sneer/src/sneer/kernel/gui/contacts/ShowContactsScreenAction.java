@@ -4,34 +4,26 @@ import static wheel.i18n.Language.translate;
 
 import java.awt.Frame;
 
-import sneer.kernel.business.contacts.ContactId;
-import sneer.kernel.business.contacts.ContactInfo;
+import sneer.kernel.business.BusinessSource;
 import sneer.kernel.pointofview.Party;
 import wheel.io.ui.Action;
 import wheel.io.ui.JFrameBoundsKeeper;
 import wheel.io.ui.User;
-import wheel.lang.Consumer;
-import wheel.lang.Omnivore;
-import wheel.lang.Pair;
 
 public class ShowContactsScreenAction implements Action {
 
 	private final Party _I;
-	private final Consumer<ContactInfo> _contactAdder;
-	private final Omnivore<ContactId> _contactRemover;
 	private final User _user;
-	private final Consumer<Pair<ContactId, String>> _nickChanger;
 	private ContactsScreen _contactsScreen;
 	private final JFrameBoundsKeeper _boundsKeeper;
 	private final ContactActionFactory _contactActionFactory;
+	private final BusinessSource _businnessSource;
 
-	public ShowContactsScreenAction(User user, Party I, ContactActionFactory contactActionFactory, Consumer<ContactInfo> contactAdder, Omnivore<ContactId> contactRemover, Consumer<Pair<ContactId, String>> nickChanger, JFrameBoundsKeeper boundsKeeper){
+	public ShowContactsScreenAction(User user, Party I, ContactActionFactory contactActionFactory, BusinessSource businnessSource, JFrameBoundsKeeper boundsKeeper){
 		_I = I;
 		_contactActionFactory = contactActionFactory;
-		_contactAdder = contactAdder;
+		_businnessSource = businnessSource;
 		_user = user;
-		_contactRemover = contactRemover;
-		_nickChanger = nickChanger;
 		_boundsKeeper = boundsKeeper;
 	}
 
@@ -41,7 +33,7 @@ public class ShowContactsScreenAction implements Action {
 
 	public synchronized void run() {
 		if (_contactsScreen == null) {
-			_contactsScreen = new ContactsScreen(_user, _I, _contactActionFactory, _contactAdder, _contactRemover, _nickChanger);
+			_contactsScreen = new ContactsScreen(_user, _I, _contactActionFactory, _businnessSource);
 			_boundsKeeper.keepBoundsFor(_contactsScreen, ContactsScreen.class.getName());
 		} 
 		

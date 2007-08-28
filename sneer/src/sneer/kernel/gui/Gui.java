@@ -78,7 +78,9 @@ public class Gui {
 		_trayIcon.clearActions();
 		_trayIcon.setDefaultAction(showContactsScreenAction);
 		_trayIcon.addAction(nameChangeAction());
+		_trayIcon.addAction(thoughtOfTheDayChangeAction());
 		_trayIcon.addAction(pictureChangeAction());
+		_trayIcon.addAction(profileChangeAction());
 		_trayIcon.addAction(showContactsScreenAction);
 		_trayIcon.addAction(sneerPortChangeAction());
 		_trayIcon.addAction(languageChangeAction());
@@ -132,6 +134,12 @@ public class Gui {
 		String ownName = _businessSource.output().ownName().currentValue();
 		if (ownName == null || ownName.isEmpty())
 			nameChangeAction().run();
+		String thoughtOfTheDay = _businessSource.output().thoughtOfTheDay().currentValue();
+		if (thoughtOfTheDay == null || thoughtOfTheDay.isEmpty())
+			thoughtOfTheDayChangeAction().run();
+		String profile = _businessSource.output().profile().currentValue();
+		if (profile == null || profile.isEmpty())
+			profileChangeAction().run();
 		JpgImage picture = _businessSource.output().picture().currentValue();
 		if (picture == null){
 			setPicture(Gui.class.getResourceAsStream(IMAGE_PATH + "questionmark.jpg"));
@@ -154,6 +162,22 @@ public class Gui {
 				"(You can change it any time you like)");
 		
 		return new ValueChangePane(translate("Own Name"), prompt, _user, _businessSource.output().ownName(), _businessSource.ownNameSetter());
+	}
+	
+	private Action thoughtOfTheDayChangeAction() {
+		String prompt = translate(
+				"What is your Thought Of The Day?\n" + 
+				"(You can change it any time you like)");
+		
+		return new ValueChangePane(translate("Thought Of The Day"), prompt, _user, _businessSource.output().thoughtOfTheDay(), _businessSource.thoughtOfTheDaySetter());
+	}
+	
+	private Action profileChangeAction() {
+		String prompt = translate(
+				"What is your Profile?\n" + 
+				"(You can change it any time you like)");
+		
+		return new ValueChangePane(translate("Profile"), prompt, _user, _businessSource.output().profile(), _businessSource.profileSetter());
 	}
 	
 	private Action pictureChangeAction() {

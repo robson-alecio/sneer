@@ -1,4 +1,5 @@
 Gandhi
+  - Resize the pic to make it fit the space. Keep proportion.
   - Right click on the pic to change it.
   - Remove the new profile JOptionPanes from the startup. Leave just the name JOptionPane.
   - Remove Profile-related entries from the trayicon menu 

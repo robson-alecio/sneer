@@ -17,7 +17,6 @@ import javax.swing.border.LineBorder;
 
 import sneer.kernel.business.BusinessSource;
 import wheel.graphics.JpgImage;
-import wheel.lang.exceptions.IllegalParameter;
 
 public class LateralRootInfo extends JPanel{
 
@@ -72,15 +71,17 @@ public class LateralRootInfo extends JPanel{
 
 	private ActionListener ownNameChangeAction() {
 		return new ActionListener(){ public void actionPerformed(ActionEvent e) {
-				_businessSource.ownNameSetter().consume(_ownNameField.getText());
+				if (!_businessSource.output().ownName().currentValue().equals(_ownNameField.getText()))
+					_businessSource.ownNameSetter().consume(_ownNameField.getText());
 		}};
 	}
 	
 	private ActionListener sneerPortChangeAction() {
 		return new ActionListener(){ public void actionPerformed(ActionEvent e) {
 				try {
-					_businessSource.sneerPortSetter().consume(new Integer(_ownNameField.getText()));
-				} catch (IllegalParameter ignored) {
+					if (!_businessSource.output().sneerPort().currentValue().equals(new Integer(_sneerPortField.getText())))
+					_businessSource.sneerPortSetter().consume(new Integer(_sneerPortField.getText()));
+				} catch (Exception ignored) {
 					
 				}
 		}};
@@ -88,11 +89,13 @@ public class LateralRootInfo extends JPanel{
 	
 	private ActionListener thoughtOfTheDayChangeAction() {
 		return new ActionListener(){ public void actionPerformed(ActionEvent e) {
+			if (!_businessSource.output().thoughtOfTheDay().currentValue().equals(_thoughtOfTheDayField.getText()))
 				_businessSource.thoughtOfTheDaySetter().consume(_thoughtOfTheDayField.getText());
 		}};
 	}
 	private ActionListener profileChangeAction() {
 		return new ActionListener(){ public void actionPerformed(ActionEvent e) {
+			if (!_businessSource.output().profile().currentValue().equals(_profileField.getText()))
 				_businessSource.profileSetter().consume(_profileField.getText());
 
 		}};

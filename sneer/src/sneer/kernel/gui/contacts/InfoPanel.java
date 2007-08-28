@@ -28,7 +28,6 @@ public class InfoPanel{
 	private InfoTextField _nickField;
 
 	public InfoPanel(Contact contact, Consumer<Pair<ContactId, String>> nickChanger){
-		super();
 		_contact = contact;
 		_nickChanger = nickChanger;
 
@@ -38,7 +37,7 @@ public class InfoPanel{
 		frame.setVisible(true);
 	}
 	
-	public JPanel contentPanel(){
+	private JPanel contentPanel(){
 		JPanel content = new JPanel();
 		content.setLayout(new BoxLayout(content,BoxLayout.Y_AXIS));
 		_nickField = new InfoTextField(translate("Nick"),_contact.nick().currentValue(),true);

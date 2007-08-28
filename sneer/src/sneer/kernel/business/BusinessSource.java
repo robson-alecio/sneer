@@ -1,8 +1,9 @@
 package sneer.kernel.business;
 
 import sneer.kernel.business.contacts.ContactId;
-import sneer.kernel.business.contacts.ContactInfo2;
+import sneer.kernel.business.contacts.ContactInfo;
 import sneer.kernel.business.contacts.ContactPublicKeyInfo;
+import wheel.graphics.JpgImage;
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.lang.Pair;
@@ -15,15 +16,17 @@ public interface BusinessSource {
 	Omnivore<String> publicKeySetter();
 	Omnivore<String> languageSetter();
 	
+	Omnivore<String> thoughtOfTheDaySetter();
+	Omnivore<JpgImage> pictureSetter();
+	Omnivore<String> profileSetter();
+	
 	Consumer<Integer> sneerPortSetter();
 	
-	Consumer<ContactInfo2> contactAdder2();
+	Consumer<ContactInfo> contactAdder();
 	Omnivore<ContactId> contactRemover();
 	Consumer<Pair<ContactId, String>> contactNickChanger();
 	Omnivore<ContactPublicKeyInfo> contactPublicKeyUpdater();
 
-	@Deprecated
-	Consumer<sneer.kernel.business.contacts.ContactInfo> contactAdder();
 	@Deprecated
 	Omnivore<sneer.kernel.business.contacts.OnlineEvent> contactOnlineSetter();
 }

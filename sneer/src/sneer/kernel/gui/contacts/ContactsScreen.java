@@ -10,15 +10,17 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.tree.TreePath;
 
 import sneer.kernel.business.contacts.ContactId;
-import sneer.kernel.business.contacts.ContactInfo2;
+import sneer.kernel.business.contacts.ContactInfo;
 import sneer.kernel.gui.NewContactAddition;
 import sneer.kernel.pointofview.Contact;
 import sneer.kernel.pointofview.Party;
@@ -33,13 +35,13 @@ class ContactsScreen extends JFrame {
 
 	private final User _user;
 	private final Party _me;
-	private final Consumer<ContactInfo2> _contactAdder;
+	private final Consumer<ContactInfo> _contactAdder;
 	private final Omnivore<ContactId> _contactRemover;
 	private final Consumer<Pair<ContactId, String>> _nickChanger;
 	private final ContactActionFactory _contactActionFactory;
 
 
-	ContactsScreen(User user, Party me, ContactActionFactory contactActionFactory, Consumer<ContactInfo2> contactAdder, Omnivore<ContactId> contactRemover, Consumer<Pair<ContactId, String>> nickChanger) {
+	ContactsScreen(User user, Party me, ContactActionFactory contactActionFactory, Consumer<ContactInfo> contactAdder, Omnivore<ContactId> contactRemover, Consumer<Pair<ContactId, String>> nickChanger) {
 		_user = user;
 		_me = me;
 		_contactActionFactory = contactActionFactory;
@@ -50,18 +52,22 @@ class ContactsScreen extends JFrame {
 		initComponents();
 		setVisible(true);
 	}
+	
+	private JPanel _lateral;
 
 	private void initComponents() {
-		this.setLayout(new BorderLayout());
-
+		_lateral = new JPanel();
+		_lateral.add(new JLabel("Choose a Contact"));
+		
+		setLayout(new BorderLayout());
 		JPanel editPanel = new JPanel();
 		editPanel.setLayout(new BorderLayout());
 		editPanel.add(createAddButton(), BorderLayout.EAST);
 		JScrollPane scrollpane = new JScrollPane(createFriendsTree());
 		scrollpane.setBackground(java.awt.Color.black);
-		this.add(scrollpane, BorderLayout.CENTER);
-		this.add(editPanel, BorderLayout.SOUTH);
-
+		add(scrollpane, BorderLayout.CENTER);
+		add(editPanel, BorderLayout.SOUTH);
+		add(_lateral,BorderLayout.EAST);
 		setTitle(translate("Contacts"));
 		setSize(200, 400);
 	}
@@ -75,16 +81,25 @@ class ContactsScreen extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent mouseEvent) {
 				final boolean rightClick = mouseEvent.getButton() == MouseEvent.BUTTON3;
-				if (!rightClick) return;
-
+				//final boolean leftClick = mouseEvent.getButton() == MouseEvent.BUTTON1;
+				
 				TreePath path = tree.getPathForLocation(mouseEvent.getX(),mouseEvent.getY());
-					
+				if (path==null) return;
 				Object uncasted = path.getLastPathComponent();
 				if (!(uncasted instanceof ContactNode)) return;
-				
-				ContactNode node = (ContactNode)uncasted;
+				final ContactNode node = (ContactNode)uncasted;
 				if (node==null) return;
-					
+				
+				SwingUtilities.invokeLater(new Runnable(){
+					public void run() {
+						_lateral.removeAll();
+						_lateral.add(new LateralInfo(node.contact(),_nickChanger));
+						_lateral.revalidate();
+					}
+				});
+				
+				if (!rightClick) return;
+
 				getFriendPopUpMenu(node).show(tree, mouseEvent.getX(), mouseEvent.getY());
 			}
 		});
@@ -103,7 +118,7 @@ class ContactsScreen extends JFrame {
 	private ContactAction infoAction() {
 		return new ContactAction(){
 			public void actUpon(Contact contact) {
-				new InfoPanel(contact, _nickChanger);
+
 			}
 			public String caption() {
 				return translate("Info");

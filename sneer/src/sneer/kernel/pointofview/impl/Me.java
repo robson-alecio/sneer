@@ -7,6 +7,7 @@ import sneer.kernel.communication.Operator;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.pointofview.Contact;
 import sneer.kernel.pointofview.Party;
+import wheel.graphics.JpgImage;
 import wheel.lang.Functor;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
@@ -97,6 +98,18 @@ public class Me implements Party {
 	@Override
 	public Signal<String> publicKey() {
 		return _business.publicKey();
+	}
+
+	public Signal<JpgImage> picture() {
+		return _business.picture();
+	}
+
+	public Signal<String> profile() {
+		return _business.profile();
+	}
+
+	public Signal<String> thoughtOfTheDay() {
+		return _business.thoughtOfTheDay();
 	}
 
 }

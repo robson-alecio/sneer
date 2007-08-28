@@ -6,10 +6,11 @@ import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactAttributesSource;
 import sneer.kernel.business.contacts.ContactId;
-import sneer.kernel.business.contacts.ContactInfo2;
+import sneer.kernel.business.contacts.ContactInfo;
 import sneer.kernel.business.contacts.ContactPublicKeyInfo;
 import sneer.kernel.business.contacts.impl.ContactAttributesSourceImpl;
 import sneer.kernel.business.contacts.impl.ContactPublicKeyUpdater;
+import wheel.graphics.JpgImage;
 import wheel.io.network.PortNumberSource;
 import wheel.lang.Consumer;
 import wheel.lang.Counter;
@@ -53,12 +54,31 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 		public Signal<String> publicKey() {
 			return _publicKey.output();
 		}
+		
+		@Override
+		public Signal<String> thoughtOfTheDay() {
+			return _thoughtOfTheDay.output();
+		}
+		
+		@Override
+		public Signal<JpgImage> picture() {
+			return _picture.output();
+		}
+		
+		@Override
+		public Signal<String> profile() {
+			return _profile.output();
+		}
 
 	}
 
 	private Source<String> _ownName = new SourceImpl<String>("");
 	private Source<String> _language = new SourceImpl<String>("");
 	private final Source<String> _publicKey = new SourceImpl<String>("");
+	
+	private final Source<String> _thoughtOfTheDay = new SourceImpl<String>("");
+	private final Source<JpgImage> _picture = new SourceImpl<JpgImage>(null);
+	private final Source<String> _profile = new SourceImpl<String>("");
 
 	private final PortNumberSource _sneerPortNumber = new PortNumberSource(0);
 
@@ -84,23 +104,30 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 	public Consumer<Integer> sneerPortSetter() {
 		return _sneerPortNumber.setter();
 	}
-
+	
 	@Override
-	public Consumer<ContactInfo2> contactAdder2() {
-		return new Consumer<ContactInfo2>() { @Override public void consume(ContactInfo2 info) throws IllegalParameter {
-			checkDuplicateNick(info._nick);
-
-			ContactAttributesSource contact = new ContactAttributesSourceImpl(info._nick, info._host, info._port, info._publicKey, _contactIdSource.next());
-			_contactSources.add(contact);
-			_contacts.add(contact.output());
-		}};
+	public Omnivore<String> thoughtOfTheDaySetter() {
+		return  _thoughtOfTheDay.setter();
+	}
+	
+	@Override
+	public Omnivore<JpgImage> pictureSetter() {
+		return  _picture.setter();
+	}
+	
+	@Override
+	public Omnivore<String> profileSetter() {
+		return  _profile.setter();
 	}
 
 	@Override
-	@Deprecated
-	public Consumer<sneer.kernel.business.contacts.ContactInfo> contactAdder() {
-		return new Consumer<sneer.kernel.business.contacts.ContactInfo>() { @Override public void consume(sneer.kernel.business.contacts.ContactInfo info) throws IllegalParameter {
-			contactAdder2().consume(new ContactInfo2(info._nick, info._host, info._port, info._publicKey));
+	public Consumer<ContactInfo> contactAdder() {
+		return new Consumer<ContactInfo>() { @Override public void consume(ContactInfo info) throws IllegalParameter {
+			checkDuplicateNick(info._nick);
+
+			ContactAttributesSource contact = new ContactAttributesSourceImpl(info._nick, info._host, info._port, info._publicKey, _contactIdSource.next(),info._thoughtOfTheDay,info._picture,info._profile);
+			_contactSources.add(contact);
+			_contacts.add(contact.output());
 		}};
 	}
 

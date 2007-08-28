@@ -5,6 +5,7 @@ import java.util.Random;
 
 import sneer.kernel.pointofview.Contact;
 import sneer.kernel.pointofview.Party;
+import wheel.graphics.JpgImage;
 import wheel.lang.Threads;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
@@ -24,6 +25,10 @@ public class FakeParty implements Party {
 	private final Source<Integer> _port = new SourceImpl<Integer>(0);
 	private final Source<Boolean> _isOnline = new SourceImpl<Boolean>(false);
 	private final Source<Boolean> _publicKeyConfirmed = new SourceImpl<Boolean>(false);
+	
+	private final Source<String> _thoughtOfTheDay = new SourceImpl<String>("thoughtOfTheDay");
+	private final Source<JpgImage> _picture = new SourceImpl<JpgImage>(null);
+	private final Source<String> _profile = new SourceImpl<String>("profile");
 
 	private volatile boolean _isCrashed = false;
 
@@ -136,6 +141,18 @@ public class FakeParty implements Party {
 	public Signal<String> publicKey() {
 		// Implement Auto-generated method stub
 		throw new wheel.lang.exceptions.NotImplementedYet();
+	}
+
+	public Signal<JpgImage> picture() {
+		return _picture.output();
+	}
+
+	public Signal<String> profile() {
+		return _profile.output();
+	}
+
+	public Signal<String> thoughtOfTheDay() {
+		return _thoughtOfTheDay.output();
 	}
 
 

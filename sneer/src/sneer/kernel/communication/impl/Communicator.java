@@ -24,7 +24,7 @@ import java.util.Random;
 import sneer.kernel.business.Business;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.contacts.ContactAttributes;
-import sneer.kernel.business.contacts.ContactInfo2;
+import sneer.kernel.business.contacts.ContactInfo;
 import sneer.kernel.business.contacts.ContactPublicKeyInfo;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Operator;
@@ -246,7 +246,7 @@ public class Communicator {
 
 	private ContactAttributes createContact(String publicKey, String nick) throws CancelledByUser {
 		try {
-			_businessSource.contactAdder2().consume(new ContactInfo2(nick, "", 0, publicKey)); //Implement: get actual host addresses from contact.
+			_businessSource.contactAdder().consume(new ContactInfo(nick, "", 0, publicKey,null,null,null)); //Implement: get actual host addresses from contact.
 			return findContactGivenNick(nick);
 		} catch (IllegalParameter e) {
 			_user.acknowledge(e);

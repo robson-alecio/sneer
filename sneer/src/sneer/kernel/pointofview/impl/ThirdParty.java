@@ -5,6 +5,7 @@ import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.pointofview.Contact;
 import sneer.kernel.pointofview.Party;
+import wheel.graphics.JpgImage;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
@@ -97,5 +98,19 @@ public class ThirdParty implements Party {
 	public Signal<String> publicKey() {
 		return _attributes.publicKey();
 	}
+
+	public Signal<JpgImage> picture() {
+		return _attributes.picture();
+	}
+
+	public Signal<String> profile() {
+		return _attributes.profile();
+	}
+
+	public Signal<String> thoughtOfTheDay() {
+		return _attributes.thoughtOfTheDay();
+	}
+	
+	
 	
 }

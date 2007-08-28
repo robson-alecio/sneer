@@ -3,6 +3,7 @@ package sneer.kernel.business.contacts.impl;
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactAttributesSource;
 import sneer.kernel.business.contacts.ContactId;
+import wheel.graphics.JpgImage;
 import wheel.io.network.PortNumberSource;
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
@@ -42,16 +43,34 @@ public class ContactAttributesSourceImpl implements ContactAttributesSource {
 		public Signal<Boolean> publicKeyConfirmed() {
 			return new SourceImpl<Boolean>(false).output(); //Implement
 		}
+		
+		@Override
+		public Signal<String> thoughtOfTheDay() {
+			return _thoughtOfTheDay.output();
+		}
+		
+		@Override
+		public Signal<JpgImage> picture() {
+			return _picture.output();
+		}
+		
+		@Override
+		public Signal<String> profile() {
+			return _profile.output();
+		}
 
 	}
 
 
-	public ContactAttributesSourceImpl(String nick, String host, int port, String publicKey, long id) {
+	public ContactAttributesSourceImpl(String nick, String host, int port, String publicKey, long id, String thoughtOfTheDay, JpgImage picture, String profile) {
 		nick.toString();
 		_nick = new SourceImpl<String>(nick);
 		_host = new SourceImpl<String>(host);
 		_port = new PortNumberSource(port);
 		_publicKey = new SourceImpl<String>(publicKey);
+		_thoughtOfTheDay = new SourceImpl<String>(thoughtOfTheDay);
+		_picture = new SourceImpl<JpgImage>(picture);
+		_profile = new SourceImpl<String>(profile);
 		_id = id;
 	}
 
@@ -60,6 +79,10 @@ public class ContactAttributesSourceImpl implements ContactAttributesSource {
 	private final Source<String> _nick;
 	private final Source<String> _host;
 	private final PortNumberSource _port;
+	
+	private final Source<String> _thoughtOfTheDay;
+	private final Source<JpgImage> _picture;
+	private final Source<String> _profile;
 
 	private final Source<String> _publicKey;
 	
@@ -93,6 +116,21 @@ public class ContactAttributesSourceImpl implements ContactAttributesSource {
 	@Override
 	public Omnivore<String> publicKeySetter() {
 		return _publicKey.setter();
+	}
+	
+	@Override
+	public Omnivore<String> thoughtOfTheDaySetter() {
+		return  _thoughtOfTheDay.setter();
+	}
+	
+	@Override
+	public Omnivore<JpgImage> pictureSetter() {
+		return  _picture.setter();
+	}
+	
+	@Override
+	public Omnivore<String> profileSetter() {
+		return  _profile.setter();
 	}
 
 }

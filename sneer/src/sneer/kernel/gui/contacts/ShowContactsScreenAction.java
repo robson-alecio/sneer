@@ -5,7 +5,7 @@ import static wheel.i18n.Language.translate;
 import java.awt.Frame;
 
 import sneer.kernel.business.contacts.ContactId;
-import sneer.kernel.business.contacts.ContactInfo2;
+import sneer.kernel.business.contacts.ContactInfo;
 import sneer.kernel.pointofview.Party;
 import wheel.io.ui.Action;
 import wheel.io.ui.JFrameBoundsKeeper;
@@ -17,7 +17,7 @@ import wheel.lang.Pair;
 public class ShowContactsScreenAction implements Action {
 
 	private final Party _I;
-	private final Consumer<ContactInfo2> _contactAdder;
+	private final Consumer<ContactInfo> _contactAdder;
 	private final Omnivore<ContactId> _contactRemover;
 	private final User _user;
 	private final Consumer<Pair<ContactId, String>> _nickChanger;
@@ -25,7 +25,7 @@ public class ShowContactsScreenAction implements Action {
 	private final JFrameBoundsKeeper _boundsKeeper;
 	private final ContactActionFactory _contactActionFactory;
 
-	public ShowContactsScreenAction(User user, Party I, ContactActionFactory contactActionFactory, Consumer<ContactInfo2> contactAdder, Omnivore<ContactId> contactRemover, Consumer<Pair<ContactId, String>> nickChanger, JFrameBoundsKeeper boundsKeeper){
+	public ShowContactsScreenAction(User user, Party I, ContactActionFactory contactActionFactory, Consumer<ContactInfo> contactAdder, Omnivore<ContactId> contactRemover, Consumer<Pair<ContactId, String>> nickChanger, JFrameBoundsKeeper boundsKeeper){
 		_I = I;
 		_contactActionFactory = contactActionFactory;
 		_contactAdder = contactAdder;

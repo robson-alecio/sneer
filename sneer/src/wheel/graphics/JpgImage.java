@@ -29,6 +29,10 @@ public class JpgImage implements Serializable {
 	public InputStream jpegFileContents() {
 		return new ByteArrayInputStream(_jpegFileBytes);
 	}
+	
+	public byte[] contents(){
+		return _jpegFileBytes;
+	}
 
 	@Override
 	public boolean equals(Object other) {

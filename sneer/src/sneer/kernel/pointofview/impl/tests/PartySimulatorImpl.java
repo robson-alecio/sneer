@@ -1,7 +1,7 @@
 package sneer.kernel.pointofview.impl.tests;
 
 import sneer.kernel.business.BusinessSource;
-import sneer.kernel.business.contacts.ContactInfo2;
+import sneer.kernel.business.contacts.ContactInfo;
 import sneer.kernel.business.impl.BusinessFactory;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.impl.Communicator;
@@ -62,7 +62,7 @@ class PartySimulatorImpl implements PartySimulator {
 
 	void connectTo(String host, Integer port, String nick) {
 		try {
-			_businessSource.contactAdder2().consume(new ContactInfo2(nick, host, port, ""));
+			_businessSource.contactAdder().consume(new ContactInfo(nick, host, port, "",null,null,null));
 		} catch (IllegalParameter e) {
 			throw new IllegalArgumentException(e);
 		}

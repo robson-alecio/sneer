@@ -43,21 +43,6 @@ public class ContactAttributesSourceImpl implements ContactAttributesSource {
 		public Signal<Boolean> publicKeyConfirmed() {
 			return new SourceImpl<Boolean>(false).output(); //Implement
 		}
-		
-		@Override
-		public Signal<String> thoughtOfTheDay() {
-			return _thoughtOfTheDay.output();
-		}
-		
-		@Override
-		public Signal<JpgImage> picture() {
-			return _picture.output();
-		}
-		
-		@Override
-		public Signal<String> profile() {
-			return _profile.output();
-		}
 
 	}
 

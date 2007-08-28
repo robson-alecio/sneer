@@ -34,11 +34,11 @@ class ContactsScreen extends JFrame {
 	private final ContactActionFactory _contactActionFactory;
 	private final BusinessSource _businessSource;
 
-	ContactsScreen(User user, Party me, ContactActionFactory contactActionFactory, BusinessSource businnessSource) {
+	ContactsScreen(User user, Party me, ContactActionFactory contactActionFactory, BusinessSource businessSource) {
 		_user = user;
 		_me = me;
 		_contactActionFactory = contactActionFactory;
-		_businessSource = businnessSource;;
+		_businessSource = businessSource;
 
 		initComponents();
 		setVisible(true);

@@ -7,6 +7,7 @@ import sneer.kernel.communication.Operator;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.pointofview.Contact;
 import sneer.kernel.pointofview.Party;
+import sneer.kernel.pointofview.PointOfViewPacket;
 import wheel.graphics.JpgImage;
 import wheel.lang.Functor;
 import wheel.lang.Omnivore;
@@ -24,7 +25,10 @@ public class Me implements Party {
 		
 		_contacts = createContactsListSignal();
 		
-		_business.ownName().addReceiver(nameBroadcaster());
+		_business.ownName().addReceiver(stringChangedBroadcaster());
+		_business.thoughtOfTheDay().addReceiver(stringChangedBroadcaster());
+		_business.picture().addReceiver(pictureChangedBroadcaster());
+		_business.profile().addReceiver(stringChangedBroadcaster());
 	}
 	
 
@@ -34,12 +38,23 @@ public class Me implements Party {
 	private final Channel _channel;
 
 	
-	private Omnivore<String> nameBroadcaster() {
+	private Omnivore<String> stringChangedBroadcaster() { //this will change to individual changes in the future
 		return new Omnivore<String>() { @Override public void consume(String newName) {
 			for (Contact contact : _contacts)
-				_channel.output().consume(new Packet(contact.id(), newName));
+				sendChanges(contact);
 		}};
 	}
+	
+	private Omnivore<JpgImage> pictureChangedBroadcaster() {
+		return new Omnivore<JpgImage>() { @Override public void consume(JpgImage newPicture) {
+			for (Contact contact : _contacts)
+				sendChanges(contact);
+		}};
+	}
+		
+	private void sendChanges(Contact contact) {
+		_channel.output().consume(new Packet(contact.id(), new PointOfViewPacket(_business.ownName().currentValue(),_business.thoughtOfTheDay().currentValue(),_business.picture().currentValue(),_business.profile().currentValue())));
+	};
 
 	private ListSignal<Contact> createContactsListSignal() {
 		return new Collector<ContactAttributes, Contact>(_business.contactAttributes(), contactCreator()).output();

@@ -5,6 +5,7 @@ import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.pointofview.Contact;
 import sneer.kernel.pointofview.Party;
+import sneer.kernel.pointofview.PointOfViewPacket;
 import wheel.graphics.JpgImage;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
@@ -32,11 +33,22 @@ public class ThirdParty implements Party {
 	private final Signal<Boolean> _isOnline;
 	private final ListSource<Contact> _fakeContacts;
 	private final Source<String> _name = new SourceImpl<String>("[Implement Name Cache]"); //Implement
-
+	private final Source<String> _thoughtOfTheDay = new SourceImpl<String>("");
+	private final Source<JpgImage> _picture = new SourceImpl<JpgImage>(null);
+	private final Source<String> _profile = new SourceImpl<String>("");
+	
 	private Omnivore<Packet> packetReceiver() {
 		return new Omnivore<Packet>() { @Override public void consume(Packet packet) {
 			if (!packet._contactId.equals(_attributes.id())) return;
-			_name.setter().consume((String)packet._contents);
+			PointOfViewPacket pointOfViewPacket = (PointOfViewPacket)packet._contents;
+			if (!_name.output().currentValue().equals(pointOfViewPacket._name))
+				_name.setter().consume(pointOfViewPacket._name);
+			if (!_thoughtOfTheDay.output().currentValue().equals(pointOfViewPacket._thoughtOfTheDay))
+				_thoughtOfTheDay.setter().consume(pointOfViewPacket._thoughtOfTheDay);
+			if ((_picture.output().currentValue()==null)||(!_picture.output().currentValue().equals(pointOfViewPacket._picture)))
+				_picture.setter().consume(pointOfViewPacket._picture);
+			if (!_profile.output().currentValue().equals(pointOfViewPacket._profile))
+				_profile.setter().consume(pointOfViewPacket._profile);
 		}};
 	}
 	
@@ -100,17 +112,15 @@ public class ThirdParty implements Party {
 	}
 
 	public Signal<JpgImage> picture() {
-		return _attributes.picture();
+		return _picture.output();
 	}
 
 	public Signal<String> profile() {
-		return _attributes.profile();
+		return _profile.output();
 	}
 
 	public Signal<String> thoughtOfTheDay() {
-		return _attributes.thoughtOfTheDay();
+		return _thoughtOfTheDay.output();
 	}
-	
-	
 	
 }

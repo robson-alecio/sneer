@@ -29,8 +29,19 @@ public class Me implements Party {
 		_business.thoughtOfTheDay().addReceiver(stringChangedBroadcaster());
 		_business.picture().addReceiver(pictureChangedBroadcaster());
 		_business.profile().addReceiver(stringChangedBroadcaster());
+		
+		for (Contact contact : _contacts)
+			contact.party().isOnline().addReceiver(sendCurrentStatus(contact));
 	}
-	
+
+	private Omnivore<Boolean> sendCurrentStatus(final Contact contact) {
+		return new Omnivore<Boolean>(){
+			public void consume(Boolean value) {
+				if (value)
+					sendChanges(contact);
+			}
+		};
+	}
 
 	private final Business _business;
 	private final ListSignal<Contact> _contacts;

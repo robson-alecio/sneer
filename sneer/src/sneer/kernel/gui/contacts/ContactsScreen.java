@@ -86,6 +86,7 @@ class ContactsScreen extends JFrame {
 							_lateral.removeAll();
 							_lateral.add(new LateralContactInfo(node.contact(),_businessSource.contactNickChanger()));
 							_lateral.revalidate();
+							_lateral.repaint();
 						}
 					});
 					
@@ -98,6 +99,7 @@ class ContactsScreen extends JFrame {
 							_lateral.removeAll();
 							_lateral.add(new LateralRootInfo(_businessSource));
 							_lateral.revalidate();
+							_lateral.repaint();
 						}
 					});
 				}

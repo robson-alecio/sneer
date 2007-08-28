@@ -2,8 +2,13 @@ package sneer.kernel.gui;
 
 import static wheel.i18n.Language.translate;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+
+import javax.swing.JFileChooser;
 
 import sneer.SneerDirectories;
 import sneer.kernel.appmanager.AppManager;
@@ -13,6 +18,7 @@ import sneer.kernel.business.BusinessSource;
 import sneer.kernel.gui.contacts.ContactActionFactory;
 import sneer.kernel.gui.contacts.ShowContactsScreenAction;
 import sneer.kernel.pointofview.Party;
+import wheel.graphics.JpgImage;
 import wheel.io.Log;
 import wheel.io.files.Directory;
 import wheel.io.files.impl.DurableDirectory;
@@ -72,6 +78,7 @@ public class Gui {
 		_trayIcon.clearActions();
 		_trayIcon.setDefaultAction(showContactsScreenAction);
 		_trayIcon.addAction(nameChangeAction());
+		_trayIcon.addAction(pictureChangeAction());
 		_trayIcon.addAction(showContactsScreenAction);
 		_trayIcon.addAction(sneerPortChangeAction());
 		_trayIcon.addAction(languageChangeAction());
@@ -125,6 +132,13 @@ public class Gui {
 		String ownName = _businessSource.output().ownName().currentValue();
 		if (ownName == null || ownName.isEmpty())
 			nameChangeAction().run();
+		JpgImage picture = _businessSource.output().picture().currentValue();
+		if (picture == null){
+			setPicture(Gui.class.getResourceAsStream(IMAGE_PATH + "questionmark.jpg"));
+			boolean confirmed = _user.confirm(translate("Do you want to choose a picture now?"));
+			if (!confirmed) return;
+			pictureChangeAction().run();
+		}
 	}
 
 	private ValueChangePane sneerPortChangeAction() {
@@ -140,6 +154,39 @@ public class Gui {
 				"(You can change it any time you like)");
 		
 		return new ValueChangePane(translate("Own Name"), prompt, _user, _businessSource.output().ownName(), _businessSource.ownNameSetter());
+	}
+	
+	private Action pictureChangeAction() {
+		return new Action(){
+
+			public String caption() {
+				return translate("Picture");
+			}
+
+			public void run() {
+				try{
+					final JFileChooser fc = new JFileChooser(); //Refactor: this should be moved to _user and apps should use the same system to choose a file
+					fc.setDialogTitle(translate("Choose a Picture"));
+					fc.setApproveButtonText(translate("Use"));
+					int value = fc.showOpenDialog(null);
+					if (value != JFileChooser.APPROVE_OPTION) return;
+					File file = fc.getSelectedFile();
+					setPicture(new FileInputStream(file));
+				}catch(Exception ignored){
+					
+				}
+			}
+			
+		};
+	}
+	
+	final static String IMAGE_PATH = "/sneer/kernel/gui/contacts/images/";
+	
+	private void setPicture(InputStream input) {
+		try{
+			_businessSource.pictureSetter().consume(new JpgImage(input));
+		}catch(Exception ignored){
+		}
 	}
 	
 	private Action exitAction() {

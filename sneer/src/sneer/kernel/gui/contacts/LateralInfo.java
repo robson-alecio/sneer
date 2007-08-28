@@ -25,7 +25,6 @@ import wheel.lang.exceptions.IllegalParameter;
 public class LateralInfo extends JPanel{
 
 	final static String IMAGE_PATH = "/sneer/kernel/gui/contacts/images/";
-
 	final static ImageIcon NO_IMAGE = new ImageIcon(LateralInfo.class.getResource(IMAGE_PATH + "questionmark.jpg"));
 
 	

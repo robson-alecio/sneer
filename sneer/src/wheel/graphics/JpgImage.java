@@ -10,15 +10,22 @@ import java.util.Arrays;
 
 public class JpgImage implements Serializable {
 
-	private final byte[] _jpegFileBytes;
+	private byte[] _jpegFileBytes;
 
 	public JpgImage(String path) throws IOException {
 		InputStream file = new FileInputStream(path);
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		
+		read(file);
+	}
+	
+	public JpgImage(InputStream input) throws IOException {
+		read(input);
+	}
+	
+	private void read(InputStream input) throws IOException{
+		ByteArrayOutputStream bytes = new ByteArrayOutputStream();		
 		byte[] block = new byte[4096 * 10];
 		while (true) {
-			int bytesRead = file.read(block);
+			int bytesRead = input.read(block);
 			if (bytesRead == -1) break;
 			bytes.write(block, 0, bytesRead);
 		}

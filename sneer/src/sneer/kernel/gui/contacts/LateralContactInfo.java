@@ -29,13 +29,14 @@ public class LateralContactInfo extends JPanel{
 		JPanel content = new JPanel();
 		content.setLayout(new BoxLayout(content,BoxLayout.Y_AXIS));
 		
-		Dimension defaultFieldSize = new Dimension(150,40);
+		Dimension defaultFieldSize = new Dimension(150,45);
+		Dimension profileFieldSize = new Dimension(150,100);
 		
 		content.add(new ReactiveJpgImageField(translate("Picture"),_contact.party().picture(),null,new Dimension(100,100)));
 		content.add(new LabeledPanel(translate("Nick"), new ReactiveTextField(_contact.party().name(),null), defaultFieldSize)); //Fix: the user should be able to change the nick here!
-		content.add(new LabeledPanel(translate("Host"), new ReactiveTextField(_contact.party().host(),null), defaultFieldSize));
 		content.add(new LabeledPanel(translate("Thought Of The Day"), new ReactiveTextField(_contact.party().thoughtOfTheDay(),null), defaultFieldSize));
-		content.add(new LabeledPanel(translate("Profile"), new ReactiveTextField(_contact.party().profile(),null), defaultFieldSize));
+		content.add(new LabeledPanel(translate("Profile"), new ReactiveMemoField(_contact.party().profile(),null), profileFieldSize));
+		content.add(new LabeledPanel(translate("Host"), new ReactiveTextField(_contact.party().host(),null), defaultFieldSize));
 		content.add(new LabeledPanel(translate("Port"), new ReactiveIntegerField(_contact.party().port(),null), defaultFieldSize));
 		
 		return content;

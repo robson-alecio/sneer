@@ -1,8 +1,6 @@
 package sneer.kernel.gui.contacts;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
@@ -10,42 +8,45 @@ import java.awt.event.KeyListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
-import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 
-public class ReactiveIntegerField extends JPanel implements Omnivore<Integer>{
+public class ReactiveMemoField extends JPanel implements Omnivore<String>{
 	
-	private JTextField _area = new JTextField();
-	private final Signal<Integer> _source;
+	private JScrollPane _scroll =  new JScrollPane();
+	private JTextArea _area = new JTextArea();
+	private final Signal<String> _source;
 	private final boolean _editable;
-	private final Consumer<Integer> _setter;
+	private final Omnivore<String> _setter;
 
-	//Implement: unify ReactiveIntegerField and ReactiveTextField with a base abstract class
-	public ReactiveIntegerField(Signal<Integer> source, Consumer<Integer> setter) {
+	public ReactiveMemoField(Signal<String> source, Omnivore<String> setter) {
 		_source = source;
 		_setter = setter;
 		_editable = (setter != null); //if setter == null, different textfield behaviour
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-		_area.setText(Integer.toString(_source.currentValue()));
+		_area.setText(_source.currentValue());
+		_area.setLineWrap(true);
 		setAreaBorderColor(Color.black);
 		_area.selectAll();
 		_area.setEditable(_editable);
 		_area.setFont(FontUtil.getFont(12));
 		if (_editable) 
 			addChangeListeners();
-		add(_area);
+		_scroll.setViewportView(_area);
+		_scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		add(_scroll);
 		_source.addReceiver(this);
 		setBackgroundColor();
 	}
-	
+
 	private void setBackgroundColor() {
 		if (_editable)
 			_area.setBackground(Color.WHITE);
@@ -63,8 +64,8 @@ public class ReactiveIntegerField extends JPanel implements Omnivore<Integer>{
 		});
 		_area.addKeyListener(new KeyListener(){
 			public void keyPressed(KeyEvent e) {
-			     if (e.getKeyCode() == KeyEvent.VK_ENTER) 
-			    	 commitTextChange();
+			     //if (e.getKeyCode() == KeyEvent.VK_ENTER) 
+			    	 //commitTextChange();
 			}
 
 			public void keyReleased(KeyEvent e) {
@@ -75,24 +76,19 @@ public class ReactiveIntegerField extends JPanel implements Omnivore<Integer>{
 			}
 		});
 			
-		_area.addActionListener(new ActionListener(){ //ENTER KEY
+		/*_area.addActionListener(new ActionListener(){ //ENTER KEY
 			public void actionPerformed(ActionEvent e) {
 				commitTextChange();
 			}
 
-		});
+		});*/
 	}
 	
 	private void commitTextChange() {
 		SwingUtilities.invokeLater(new Runnable(){
 			public void run() {
-				Integer value = new Integer(_area.getText());
-				if (!_source.currentValue().equals(value)){
-					try {
-						_setter.consume(value);
-					} catch (IllegalParameter e) {
-					}
-				}
+				if (!_source.currentValue().equals(_area.getText()))
+					_setter.consume(_area.getText());
 				setAreaBorderColor(Color.black);
 				_area.revalidate();
 			}
@@ -100,13 +96,13 @@ public class ReactiveIntegerField extends JPanel implements Omnivore<Integer>{
 	}
 	
 	private void setAreaBorderColor(Color color){
-		_area.setBorder(new CompoundBorder(new LineBorder(color), new EmptyBorder(2,2,2,2)));
+		_scroll.setBorder(new CompoundBorder(new LineBorder(color), new EmptyBorder(2,2,2,2)));
 	}
 	
-	public void consume(final Integer text) {
+	public void consume(final String text) {
 		SwingUtilities.invokeLater(new Runnable(){
 			public void run() {
-				_area.setText(Integer.toString(text));
+				_area.setText(text);
 				_area.revalidate();
 			}
 		});

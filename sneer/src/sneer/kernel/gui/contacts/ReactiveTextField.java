@@ -40,6 +40,14 @@ public class ReactiveTextField extends JPanel implements Omnivore<String>{
 			addChangeListeners();
 		add(_area);
 		_source.addReceiver(this);
+		setBackgroundColor();
+	}
+	
+	private void setBackgroundColor() {
+		if (_editable)
+			_area.setBackground(Color.WHITE);
+		else
+			_area.setBackground(new Color(240,240,240));
 	}
 
 	private void addChangeListeners() {

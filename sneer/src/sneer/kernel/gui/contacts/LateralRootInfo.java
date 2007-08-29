@@ -25,8 +25,9 @@ public class LateralRootInfo extends JPanel{
 
 		Dimension defaultFieldSize = new Dimension(150,45);
 		Dimension profileFieldSize = new Dimension(150,100);
+		Dimension pictureFieldSize = new Dimension(150,150);
 		
-		content.add(new ReactiveJpgImageField(translate("Picture"), _businessSource.output().picture(), _businessSource.pictureSetter(), new Dimension(100,100)));
+		content.add(new ReactiveJpgImageField(translate("Picture"), _businessSource.output().picture(), _businessSource.pictureSetter(), pictureFieldSize));
 		content.add(new LabeledPanel(translate("Own Name"), new ReactiveTextField(_businessSource.output().ownName(), _businessSource.ownNameSetter()),defaultFieldSize));
 		content.add(new LabeledPanel(translate("Thought Of The Day"), new ReactiveTextField(_businessSource.output().thoughtOfTheDay(), _businessSource.thoughtOfTheDaySetter()),defaultFieldSize));
 		content.add(new LabeledPanel(translate("Profile"), new ReactiveMemoField(_businessSource.output().profile(), _businessSource.profileSetter()), profileFieldSize));

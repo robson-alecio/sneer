@@ -3,8 +3,6 @@ package sneer.kernel.gui.contacts;
 import java.awt.Color;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -62,26 +60,6 @@ public class ReactiveMemoField extends JPanel implements Omnivore<String>{
 				commitTextChange();
 			}
 		});
-		_area.addKeyListener(new KeyListener(){
-			public void keyPressed(KeyEvent e) {
-			     //if (e.getKeyCode() == KeyEvent.VK_ENTER) 
-			    	 //commitTextChange();
-			}
-
-			public void keyReleased(KeyEvent e) {
-			}
-
-			public void keyTyped(KeyEvent e) {
-				setAreaBorderColor(Color.red);
-			}
-		});
-			
-		/*_area.addActionListener(new ActionListener(){ //ENTER KEY
-			public void actionPerformed(ActionEvent e) {
-				commitTextChange();
-			}
-
-		});*/
 	}
 	
 	private void commitTextChange() {

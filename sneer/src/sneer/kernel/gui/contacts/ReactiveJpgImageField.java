@@ -4,10 +4,12 @@ import static wheel.i18n.Language.translate;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -37,24 +39,38 @@ public class ReactiveJpgImageField extends JPanel implements Omnivore<JpgImage>{
 	private final boolean _editable;
 	private final Omnivore<JpgImage> _setter;
 	private final String _description;
+	private final Dimension _dimension;
 
-	public ReactiveJpgImageField(String description, Signal<JpgImage> source, Omnivore<JpgImage> setter) {
+	public ReactiveJpgImageField(String description, Signal<JpgImage> source, Omnivore<JpgImage> setter, Dimension dimension) {
 		_description = description;
 		_source = source;
 		_setter = setter;
+		_dimension = dimension;
 		_editable = (setter != null); //if setter == null, different textfield behaviour
 		setLayout(new BorderLayout());
 		JpgImage picture = _source.currentValue();
 		ImageIcon pictureIcon = NO_IMAGE;
 		if (picture != null)
 			pictureIcon = new ImageIcon(picture.contents());
-		_label.setIcon(pictureIcon);
+		if (_dimension != null){
+			setSize(dimension);
+			setPreferredSize(dimension);
+			setMaximumSize(dimension);
+			_label.setPreferredSize(dimension);
+		}
+		setIcon(pictureIcon);
 		setBorder(new LineBorder(Color.black));
 		
 		if (_editable) 
 			addChangeListeners();
 		add(_label);
 		_source.addReceiver(this);
+	}
+
+	private void setIcon(ImageIcon pictureIcon) {
+		if (_dimension != null)
+			pictureIcon = resizeImageIcon(pictureIcon, _dimension);
+		_label.setIcon(pictureIcon);
 	}
 	
 	private void addChangeListeners() {
@@ -113,6 +129,12 @@ public class ReactiveJpgImageField extends JPanel implements Omnivore<JpgImage>{
 		});
 	}
 	
+	private ImageIcon resizeImageIcon(ImageIcon pictureIcon, Dimension dimension){
+		BufferedImage bi = new BufferedImage(dimension.width,dimension.height, BufferedImage.TYPE_INT_ARGB);
+		bi.getGraphics().drawImage(pictureIcon.getImage(), 0, 0, dimension.width, dimension.height, null);
+		return new ImageIcon(bi);
+	}
+	
 	private void setPicture(InputStream input) {
 		try{
 			_setter.consume(new JpgImage(input));
@@ -126,7 +148,7 @@ public class ReactiveJpgImageField extends JPanel implements Omnivore<JpgImage>{
 				ImageIcon pictureIcon = NO_IMAGE;
 				if (image != null)
 					pictureIcon = new ImageIcon(image.contents());
-				_label.setIcon(pictureIcon);
+				setIcon(pictureIcon);
 				_label.revalidate();
 			}
 		});

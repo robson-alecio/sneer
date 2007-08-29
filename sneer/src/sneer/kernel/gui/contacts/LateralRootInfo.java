@@ -24,11 +24,11 @@ public class LateralRootInfo extends JPanel{
 		JPanel content = new JPanel();
 		content.setLayout(new BoxLayout(content,BoxLayout.Y_AXIS));
 
-		content.add(new ReactiveJpgImageField("Picture",_businessSource.output().picture(),_businessSource.pictureSetter()));
-		content.add(new ReactiveTextField(translate("Own Name"),_businessSource.output().ownName(),_businessSource.thoughtOfTheDaySetter()));
-		content.add(new ReactiveIntegerField(translate("Sneer Port"),_businessSource.output().sneerPort(),_businessSource.sneerPortSetter()));
-		content.add(new ReactiveTextField(translate("Thought Of The Day"),_businessSource.output().thoughtOfTheDay(), _businessSource.thoughtOfTheDaySetter()));
-		content.add(new ReactiveTextField(translate("Profile"),_businessSource.output().profile(),_businessSource.profileSetter()));
+		content.add(new ReactiveJpgImageField("Picture", _businessSource.output().picture(), _businessSource.pictureSetter(), new Dimension(100,100)));
+		content.add(new ReactiveTextField(translate("Own Name"), _businessSource.output().ownName(), _businessSource.thoughtOfTheDaySetter()));
+		content.add(new ReactiveTextField(translate("Thought Of The Day"), _businessSource.output().thoughtOfTheDay(), _businessSource.thoughtOfTheDaySetter()));
+		content.add(new ReactiveTextField(translate("Profile"), _businessSource.output().profile(), _businessSource.profileSetter()));
+		content.add(new ReactiveIntegerField(translate("Sneer Port"), _businessSource.output().sneerPort(), _businessSource.sneerPortSetter()));
 
 		return content;
 	}

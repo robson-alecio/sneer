@@ -20,15 +20,16 @@ public class LateralRootInfo extends JPanel{
 	}
 	
 	private JPanel contentPanel(){
-		setSize(new Dimension(120,100));
 		JPanel content = new JPanel();
 		content.setLayout(new BoxLayout(content,BoxLayout.Y_AXIS));
 
-		content.add(new ReactiveJpgImageField("Picture", _businessSource.output().picture(), _businessSource.pictureSetter(), new Dimension(100,100)));
-		content.add(new ReactiveTextField(translate("Own Name"), _businessSource.output().ownName(), _businessSource.thoughtOfTheDaySetter()));
-		content.add(new ReactiveTextField(translate("Thought Of The Day"), _businessSource.output().thoughtOfTheDay(), _businessSource.thoughtOfTheDaySetter()));
-		content.add(new ReactiveTextField(translate("Profile"), _businessSource.output().profile(), _businessSource.profileSetter()));
-		content.add(new ReactiveIntegerField(translate("Sneer Port"), _businessSource.output().sneerPort(), _businessSource.sneerPortSetter()));
+		Dimension defaultFieldSize = new Dimension(150,40);
+		
+		content.add(new ReactiveJpgImageField(translate("Picture"), _businessSource.output().picture(), _businessSource.pictureSetter(), new Dimension(100,100)));
+		content.add(new LabeledPanel(translate("Own Name"), new ReactiveTextField(_businessSource.output().ownName(), _businessSource.thoughtOfTheDaySetter()),defaultFieldSize));
+		content.add(new LabeledPanel(translate("Thought Of The Day"), new ReactiveTextField(_businessSource.output().thoughtOfTheDay(), _businessSource.thoughtOfTheDaySetter()),defaultFieldSize));
+		content.add(new LabeledPanel(translate("Profile"), new ReactiveTextField(_businessSource.output().profile(), _businessSource.profileSetter()),defaultFieldSize));
+		content.add(new LabeledPanel(translate("Sneer Port"), new ReactiveIntegerField(_businessSource.output().sneerPort(), _businessSource.sneerPortSetter()),defaultFieldSize));
 
 		return content;
 	}

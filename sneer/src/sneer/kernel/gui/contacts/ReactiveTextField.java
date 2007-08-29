@@ -9,7 +9,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.BoxLayout;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -21,24 +20,21 @@ import wheel.reactive.Signal;
 public class ReactiveTextField extends JPanel implements Omnivore<String>{
 	
 	private JTextField _area = new JTextField();
-	private JLabel _label = new JLabel();
 	private final Signal<String> _source;
 	private final boolean _editable;
 	private final Omnivore<String> _setter;
 
-	public ReactiveTextField(String fieldName, Signal<String> source, Omnivore<String> setter) {
+	public ReactiveTextField(Signal<String> source, Omnivore<String> setter) {
 		_source = source;
 		_setter = setter;
 		_editable = (setter != null); //if setter == null, different textfield behaviour
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-		_label.setText(fieldName);
 		_area.setText(_source.currentValue());
 		setAreaBorderColor(Color.black);
 		_area.selectAll();
 		_area.setEditable(_editable);
 		if (_editable) 
 			addChangeListeners();
-		add(_label);
 		add(_area);
 		_source.addReceiver(this);
 	}

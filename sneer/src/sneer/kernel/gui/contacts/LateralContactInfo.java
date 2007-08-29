@@ -26,16 +26,17 @@ public class LateralContactInfo extends JPanel{
 	}
 	
 	private JPanel contentPanel(){
-		setSize(new Dimension(120,100));
 		JPanel content = new JPanel();
 		content.setLayout(new BoxLayout(content,BoxLayout.Y_AXIS));
 		
-		content.add(new ReactiveJpgImageField("Picture",_contact.party().picture(),null,new Dimension(100,100)));
-		content.add(new ReactiveTextField(translate("Nick"),_contact.party().name(),null)); //Fix: the user should be able to change the nick here!
-		content.add(new ReactiveTextField(translate("Host"),_contact.party().host(),null));
-		content.add(new ReactiveTextField(translate("Thought Of The Day"),_contact.party().thoughtOfTheDay(),null));
-		content.add(new ReactiveTextField(translate("Profile"),_contact.party().profile(),null));
-		content.add(new ReactiveIntegerField(translate("Port"),_contact.party().port(),null));
+		Dimension defaultFieldSize = new Dimension(150,40);
+		
+		content.add(new ReactiveJpgImageField(translate("Picture"),_contact.party().picture(),null,new Dimension(100,100)));
+		content.add(new LabeledPanel(translate("Nick"), new ReactiveTextField(_contact.party().name(),null), defaultFieldSize)); //Fix: the user should be able to change the nick here!
+		content.add(new LabeledPanel(translate("Host"), new ReactiveTextField(_contact.party().host(),null), defaultFieldSize));
+		content.add(new LabeledPanel(translate("Thought Of The Day"), new ReactiveTextField(_contact.party().thoughtOfTheDay(),null), defaultFieldSize));
+		content.add(new LabeledPanel(translate("Profile"), new ReactiveTextField(_contact.party().profile(),null), defaultFieldSize));
+		content.add(new LabeledPanel(translate("Port"), new ReactiveIntegerField(_contact.party().port(),null), defaultFieldSize));
 		
 		return content;
 	}

@@ -4,6 +4,7 @@ import static wheel.i18n.Language.translate;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -57,6 +58,7 @@ public class ReactiveJpgImageField extends JPanel implements Omnivore<JpgImage>{
 			setPreferredSize(dimension);
 			setMaximumSize(dimension);
 			_label.setPreferredSize(dimension);
+			setAlignmentX(Component.CENTER_ALIGNMENT);
 		}
 		setIcon(pictureIcon);
 		setBorder(new LineBorder(Color.black));

@@ -9,7 +9,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.BoxLayout;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -23,25 +22,22 @@ import wheel.reactive.Signal;
 public class ReactiveIntegerField extends JPanel implements Omnivore<Integer>{
 	
 	private JTextField _area = new JTextField();
-	private JLabel _label = new JLabel();
 	private final Signal<Integer> _source;
 	private final boolean _editable;
 	private final Consumer<Integer> _setter;
 
 	//Implement: unify ReactiveIntegerField and ReactiveTextField with a base abstract class
-	public ReactiveIntegerField(String fieldName, Signal<Integer> source, Consumer<Integer> setter) {
+	public ReactiveIntegerField(Signal<Integer> source, Consumer<Integer> setter) {
 		_source = source;
 		_setter = setter;
 		_editable = (setter != null); //if setter == null, different textfield behaviour
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-		_label.setText(fieldName);
 		_area.setText(Integer.toString(_source.currentValue()));
 		setAreaBorderColor(Color.black);
 		_area.selectAll();
 		_area.setEditable(_editable);
 		if (_editable) 
 			addChangeListeners();
-		add(_label);
 		add(_area);
 		_source.addReceiver(this);
 	}

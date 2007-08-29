@@ -3,6 +3,7 @@ package sneer.kernel.gui.contacts;
 import static wheel.i18n.Language.translate;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -48,7 +49,8 @@ class ContactsScreen extends JFrame {
 
 	private void initComponents() {
 		_lateral = new JPanel();
-		
+		_lateral.setLayout(new BorderLayout());
+		_lateral.setPreferredSize(new Dimension(160,100));
 		setLayout(new BorderLayout());
 		JPanel editPanel = new JPanel();
 		editPanel.setLayout(new BorderLayout());

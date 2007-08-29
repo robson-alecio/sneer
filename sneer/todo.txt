@@ -4,7 +4,7 @@ Gandhi
  done - Right click on the pic to change it.
  done - Remove the new profile JOptionPanes from the startup. Leave just the name JOptionPane.
  done - Remove Profile-related entries from the trayicon menu
-  - Use app uid hexa representation instead of millis-nanos
+ done - Use app uid hexa representation instead of millis-nanos (ok, but should test metoo generated appuid in different platforms, because of file listing)
  done - Remove the "Select a contact" message. Make "Me" the default selected party.
  done - Make the profile field a large multi-line "memo" X^D field with scrollbars.
  done - Move SneerPort down to the last position.

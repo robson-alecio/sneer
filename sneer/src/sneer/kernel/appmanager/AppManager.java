@@ -68,12 +68,12 @@ public class AppManager {
 		File compiledTempDirectory = AppTools.createTempDirectory("compiled");
 
 		try {
-			packageApp(originalSourceDirectory, packagedTempDirectory);
+			String appUID = packageApp(originalSourceDirectory, packagedTempDirectory);
 
 			processApp(packagedTempDirectory, sourceTempDirectory, compiledTempDirectory);
 			SovereignApplication app = startApp(compiledTempDirectory);
 
-			String installName = AppTools.uniqueName(app.defaultName());
+			String installName = app.defaultName()+"-"+appUID;
 
 			copyToFinalPlace(packagedTempDirectory, sourceTempDirectory, compiledTempDirectory, installName);
 
@@ -112,6 +112,8 @@ public class AppManager {
 			AppTools.copyRecursive(sourceTempDirectory, sourceDirectory);
 			AppTools.copyRecursive(compiledTempDirectory, compiledDirectory);
 		} catch (Exception e) {
+			e.printStackTrace();
+			Log.log(e);
 			removeApp(installName);
 			throw new IOException("Could not copy to final directories");
 		}
@@ -140,15 +142,16 @@ public class AppManager {
 		return new AppConfig(_user, _communicator.getChannel(app.defaultName(), app.trafficPriority()), _me.contacts(), _contactAttributes, _me.name(), _briefUserNotifier, null);  //FixUrgent Create the blower passing the [packagedDirectory]/prevalence directory.
 	}
 
-	private void packageApp(File sourceDirectory, File targetDirectory) {
+	private String packageApp(File sourceDirectory, File targetDirectory) {
 		try {
 			File zipFile = new File(targetDirectory, JAR_NAME);
 			AppTools.zip(sourceDirectory, zipFile);
-			AppTools.generateAppUID(zipFile);
+			return AppTools.generateAppUID(zipFile);
 		} catch (Exception e) {
 			Log.log(e);
 			e.printStackTrace();
 		}
+		return null;
 	}
 
 	private void processApp(File packagedDirectory, File sourceDirectory, File compiledDirectory) throws Exception {

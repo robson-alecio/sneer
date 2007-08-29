@@ -9,6 +9,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -180,12 +181,24 @@ public class AppTools {
 		return null;
 	}
 	
-	public static void generateAppUID(File jarFile) throws Exception{
-		byte[] bytes = getBytesFromFile(jarFile);
+	public static String generateAppUID(File jarFile) throws Exception{
 		MessageDigest digester = MessageDigest.getInstance("SHA-512", "SUN");
 		FileOutputStream out = new FileOutputStream(new File(jarFile.getParentFile(),jarFile.getName()+APP_UID_SUFFIX));
-		out.write(digester.digest(bytes));
+		recursiveDigest(jarFile,digester);
+		String appUID = toHexaString(digester.digest());
+		out.write(appUID.getBytes());
 		out.close();
+		return appUID;
+	}
+	
+	//attention... a different order of file list can change the result? platform dependant?
+	private static void recursiveDigest(File file, MessageDigest digester) throws Exception{
+		if (file.isDirectory())
+			for(File child:file.listFiles())
+				recursiveDigest(child, digester);
+		else
+			if (file.getName().endsWith(".java"))
+				digester.update(getBytesFromFile(file));
 	}
 	
 	public static String readAppUID(File jarFile) throws Exception{
@@ -221,6 +234,11 @@ public class AppTools {
 			for(File children:file.listFiles())
 				removeRecursive(children);
 		file.delete();
+	}
+
+	public static String toHexaString(byte[] appUID) {
+		BigInteger bi = new BigInteger(appUID);
+		return bi.toString(16);
 	}
 	
 }

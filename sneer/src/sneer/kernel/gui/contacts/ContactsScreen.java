@@ -10,7 +10,6 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -41,6 +40,7 @@ class ContactsScreen extends JFrame {
 		_businessSource = businessSource;
 
 		initComponents();
+		selectParty();
 		setVisible(true);
 	}
 	
@@ -48,7 +48,6 @@ class ContactsScreen extends JFrame {
 
 	private void initComponents() {
 		_lateral = new JPanel();
-		_lateral.add(new JLabel("Choose a Contact"));
 		
 		setLayout(new BorderLayout());
 		JPanel editPanel = new JPanel();
@@ -61,6 +60,7 @@ class ContactsScreen extends JFrame {
 		add(_lateral,BorderLayout.EAST);
 		setTitle(translate("Contacts"));
 		setSize(200, 400);
+		
 	}
 
 	
@@ -81,34 +81,43 @@ class ContactsScreen extends JFrame {
 					final ContactNode node = (ContactNode)uncasted;
 					if (node==null) return;
 				
-					SwingUtilities.invokeLater(new Runnable(){
-						public void run() {
-							_lateral.removeAll();
-							_lateral.add(new LateralContactInfo(node.contact(),_businessSource.contactNickChanger()));
-							_lateral.revalidate();
-							_lateral.repaint();
-						}
-					});
+					selectContact(node);
 					
 					if (!rightClick) return;
 					
 					getFriendPopUpMenu(node).show(tree, mouseEvent.getX(), mouseEvent.getY());
 				}else{
-					SwingUtilities.invokeLater(new Runnable(){
-						public void run() {
-							_lateral.removeAll();
-							_lateral.add(new LateralRootInfo(_businessSource));
-							_lateral.revalidate();
-							_lateral.repaint();
-						}
-					});
+					selectParty();
 				}
 				
 			}
 		});
-		
+
 		return tree;
 	}
+		
+	private void selectParty() {
+		SwingUtilities.invokeLater(new Runnable(){
+			public void run() {
+				_lateral.removeAll();
+				_lateral.add(new LateralRootInfo(_businessSource));
+				_lateral.revalidate();
+				_lateral.repaint();
+			}
+		});
+	}
+
+	private void selectContact(final ContactNode node) {
+		SwingUtilities.invokeLater(new Runnable(){
+			public void run() {
+				_lateral.removeAll();
+				_lateral.add(new LateralContactInfo(node.contact(),_businessSource.contactNickChanger()));
+				_lateral.revalidate();
+				_lateral.repaint();
+			}
+		});
+	}
+	
 
 	private JPopupMenu getFriendPopUpMenu(final ContactNode node) {
 		final JPopupMenu result = new JPopupMenu();

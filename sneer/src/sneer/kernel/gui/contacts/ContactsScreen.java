@@ -62,7 +62,6 @@ class ContactsScreen extends JFrame {
 		add(_lateral,BorderLayout.EAST);
 		setTitle(translate("Contacts"));
 		setSize(200, 400);
-		
 	}
 
 	

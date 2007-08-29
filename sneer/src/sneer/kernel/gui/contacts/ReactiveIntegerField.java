@@ -12,6 +12,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import wheel.lang.Consumer;
@@ -36,6 +38,7 @@ public class ReactiveIntegerField extends JPanel implements Omnivore<Integer>{
 		setAreaBorderColor(Color.black);
 		_area.selectAll();
 		_area.setEditable(_editable);
+		_area.setFont(FontUtil.getFont(12));
 		if (_editable) 
 			addChangeListeners();
 		add(_area);
@@ -89,7 +92,7 @@ public class ReactiveIntegerField extends JPanel implements Omnivore<Integer>{
 	}
 	
 	private void setAreaBorderColor(Color color){
-		_area.setBorder(new LineBorder(color));
+		_area.setBorder(new CompoundBorder(new LineBorder(color), new EmptyBorder(2,2,2,2)));
 	}
 	
 	public void consume(final Integer text) {

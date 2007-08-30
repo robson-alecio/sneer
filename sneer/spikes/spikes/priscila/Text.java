@@ -283,6 +283,6 @@ public class Text extends JApplet {
         f.add("Center", demo);
         f.pack();
         f.setSize(new Dimension(400,300));
-        f.show();
+        f.setVisible(true);
     }
 }

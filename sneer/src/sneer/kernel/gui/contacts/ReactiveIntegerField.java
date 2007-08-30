@@ -28,7 +28,7 @@ public class ReactiveIntegerField extends JPanel implements Omnivore<Integer>{
 	private final boolean _editable;
 	private final Consumer<Integer> _setter;
 
-	//Implement: unify ReactiveIntegerField and ReactiveTextField with a base abstract class
+	//Refactor: unify ReactiveIntegerField and ReactiveTextField with a base abstract class
 	public ReactiveIntegerField(Signal<Integer> source, Consumer<Integer> setter) {
 		_source = source;
 		_setter = setter;

@@ -1,16 +1,7 @@
 Gandhi
   - Fix MeToo to work from Sneer.jar
- done - Resize the pic to make it fit the space. Keep proportion.
- done - Right click on the pic to change it.
- done - Remove the new profile JOptionPanes from the startup. Leave just the name JOptionPane.
- done - Remove Profile-related entries from the trayicon menu
- done - Use app uid hexa representation instead of millis-nanos (ok, but should test metoo generated appuid in different platforms, because of file listing)
- done - Remove the "Select a contact" message. Make "Me" the default selected party.
- done - Make the profile field a large multi-line "memo" X^D field with scrollbars.
- done - Move SneerPort down to the last position.
- done - remove the Update button from the profile screen. Make the fields auto-update when they lose focus or when the user presses enter.
- done - Make the border of the field red when the field is edited (needs to be saved).
-
+  - Keep proportion of pic dimensions when it is resized.
+ 
 FileSharing
   - Hardcoded directory
   - Polling

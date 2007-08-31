@@ -9,7 +9,6 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -21,7 +20,6 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 import sneer.SneerDirectories;
-
 import wheel.io.Jars;
 
 public class AppTools {
@@ -185,13 +183,13 @@ public class AppTools {
 		MessageDigest digester = MessageDigest.getInstance("SHA-512", "SUN");
 		FileOutputStream out = new FileOutputStream(new File(jarFile.getParentFile(),jarFile.getName()+APP_UID_SUFFIX));
 		recursiveDigest(jarFile,digester);
-		String appUID = toHexaString(digester.digest());
+		String appUID = byteArrayToHexString(digester.digest());
 		out.write(appUID.getBytes());
 		out.close();
 		return appUID;
 	}
 	
-	//attention... a different order of file list can change the result? platform dependant?
+	//Fix: attention... a different order of file list can change the result? platform dependant?????
 	private static void recursiveDigest(File file, MessageDigest digester) throws Exception{
 		if (file.isDirectory())
 			for(File child:file.listFiles())
@@ -235,10 +233,26 @@ public class AppTools {
 				removeRecursive(children);
 		file.delete();
 	}
+	
+	private static final String hexDigits = "0123456789abcdef";
 
-	public static String toHexaString(byte[] appUID) {
-		BigInteger bi = new BigInteger(appUID);
-		return bi.toString(16);
+	public static String byteArrayToHexString(byte[] b) {
+		StringBuffer buf = new StringBuffer();
+			for (int i = 0; i < b.length; i++) {
+				int j = b[i] & 0xFF; 
+				buf.append(hexDigits.charAt(j / 16)); 
+				buf.append(hexDigits.charAt(j % 16)); 
+			}   
+		return buf.toString();
+	}
+
+	public static byte[] hexStringToByteArray(String hexa) throws IllegalArgumentException {
+    	if (hexa.length() % 2 != 0) throw new IllegalArgumentException("Invalid Hex String");  
+    		byte[] b = new byte[hexa.length() / 2];
+    			for (int i = 0; i < hexa.length(); i+=2) {
+    				b[i / 2] = (byte) ((hexDigits.indexOf(hexa.charAt(i)) << 4) | (hexDigits.indexOf(hexa.charAt(i + 1))));          
+        }
+		return b;
 	}
 	
 }

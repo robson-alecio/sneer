@@ -1,6 +1,7 @@
-package sneer.kernel.gui.contacts;
+package wheel.io.ui.widgets;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -16,34 +17,42 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
-import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 
-public class ReactiveIntegerField extends JPanel implements Omnivore<Integer>{
+public class ReactiveTextField extends JPanel{
 	
 	private JTextField _area = new JTextField();
-	private final Signal<Integer> _source;
+	private final Signal<String> _source;
 	private final boolean _editable;
-	private final Consumer<Integer> _setter;
+	private final Omnivore<String> _setter;
 
-	//Refactor: unify ReactiveIntegerField and ReactiveTextField with a base abstract class
-	public ReactiveIntegerField(Signal<Integer> source, Consumer<Integer> setter) {
+	public ReactiveTextField(Signal<String> source, Omnivore<String> setter, Font font) {
 		_source = source;
 		_setter = setter;
 		_editable = (setter != null); //if setter == null, different textfield behaviour
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-		_area.setText(Integer.toString(_source.currentValue()));
+		_area.setText(_source.currentValue());
 		setAreaBorderColor(Color.black);
 		_area.selectAll();
 		_area.setEditable(_editable);
-		_area.setFont(FontUtil.getFont(12));
+		_area.setFont(font);
 		if (_editable) 
 			addChangeListeners();
 		add(_area);
-		_source.addReceiver(this);
+		_source.addReceiver(fieldReceiver());
 		setBackgroundColor();
+	}
+	
+	private Omnivore<String> fieldReceiver() { return new Omnivore<String>(){
+		public void consume(final String text) {
+			SwingUtilities.invokeLater(new Runnable(){
+				public void run() {
+					_area.setText(text);
+					_area.revalidate();
+				}
+			});
+		}};
 	}
 	
 	private void setBackgroundColor() {
@@ -86,13 +95,8 @@ public class ReactiveIntegerField extends JPanel implements Omnivore<Integer>{
 	private void commitTextChange() {
 		SwingUtilities.invokeLater(new Runnable(){
 			public void run() {
-				Integer value = new Integer(_area.getText());
-				if (!_source.currentValue().equals(value)){
-					try {
-						_setter.consume(value);
-					} catch (IllegalParameter e) {
-					}
-				}
+				if (!_source.currentValue().equals(_area.getText()))
+					_setter.consume(_area.getText());
 				setAreaBorderColor(Color.black);
 				_area.revalidate();
 			}
@@ -103,10 +107,10 @@ public class ReactiveIntegerField extends JPanel implements Omnivore<Integer>{
 		_area.setBorder(new CompoundBorder(new LineBorder(color), new EmptyBorder(2,2,2,2)));
 	}
 	
-	public void consume(final Integer text) {
+	public void consume(final String text) {
 		SwingUtilities.invokeLater(new Runnable(){
 			public void run() {
-				_area.setText(Integer.toString(text));
+				_area.setText(text);
 				_area.revalidate();
 			}
 		});

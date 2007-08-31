@@ -2,8 +2,13 @@ package sneer.kernel.appmanager;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.List;
 
 import sneer.SneerDirectories;
 import sneer.kernel.business.contacts.ContactAttributes;
@@ -61,8 +66,9 @@ public class AppManager {
 		return null;
 	}
 
-	public void publish(File originalSourceDirectory) { //Fix: what if the app is already installed? test appuid
-
+	public String publish(File originalSourceDirectory) { //Fix: what if the app is already installed? test appuid
+		String installName = null;
+		
 		File packagedTempDirectory = AppTools.createTempDirectory("packaged");
 		File sourceTempDirectory = AppTools.createTempDirectory("source");
 		File compiledTempDirectory = AppTools.createTempDirectory("compiled");
@@ -73,7 +79,7 @@ public class AppManager {
 			processApp(packagedTempDirectory, sourceTempDirectory, compiledTempDirectory);
 			SovereignApplication app = startApp(compiledTempDirectory);
 
-			String installName = app.defaultName()+"-"+appUID;
+			installName = app.defaultName()+"-"+appUID;
 
 			copyToFinalPlace(packagedTempDirectory, sourceTempDirectory, compiledTempDirectory, installName);
 
@@ -86,18 +92,21 @@ public class AppManager {
 		AppTools.removeRecursive(packagedTempDirectory);
 		AppTools.removeRecursive(sourceTempDirectory);
 		AppTools.removeRecursive(compiledTempDirectory);
+		return installName;
 	}
 	
-	public void publishFromZipFile(File zipFile){ //for metoo transfers
+	public String publishFromZipFile(File zipFile){ //for metoo transfers
+		String installName = null;
 		File tempDirectory = AppTools.createTempDirectory("packaged");
 		try {
 			AppTools.unzip(zipFile, tempDirectory);
-			publish(tempDirectory);
+			installName = publish(tempDirectory);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Log.log(e);
 		}
 		AppTools.removeRecursive(tempDirectory);
+		return installName;
 	}
 
 	private void copyToFinalPlace(File packagedTempDirectory, File sourceTempDirectory, File compiledTempDirectory, String installName) throws IOException {
@@ -119,19 +128,76 @@ public class AppManager {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	private SovereignApplication startApp(File compiledAppDirectory) throws Exception {
 		File classesDirectory = new File(compiledAppDirectory, "classes");
 		File applicationFile = AppTools.findApplicationClass(compiledAppDirectory);
 		String packageName = AppTools.pathToPackage(classesDirectory, applicationFile.getParentFile());
-		URL[] urls = new URL[] { classesDirectory.toURI().toURL() }; //in the future libs directory will be added here
+		
+		List<URL> pathList = classpath(classesDirectory);
+		
+		URL[] urls =  pathList.toArray(new URL[0]); 
+		
+		//Uses a normal URLClassloader
+		SovereignApplication app = test1(packageName, urls);
 
-		URLClassLoader ucl = new URLClassLoader(urls, ClassLoader.getSystemClassLoader());
-		Class<?> clazz = ucl.loadClass(packageName + ".Application");
-		SovereignApplication app = (SovereignApplication) clazz.newInstance();
-
+		//Tries to add urls to systemclassloader
+		//SovereignApplication app = test2(packageName, urls);
+		
+		//mix both.
+		//SovereignApplication app = test3(packageName, urls);
+		
 		startApp(app);
 		
 		return app;
+	}
+
+	@SuppressWarnings("unused")
+	private SovereignApplication test1(String packageName, URL[] urls) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, InstantiationException {
+		URLClassLoader ucl = new URLClassLoader(urls, SovereignApplication.class.getClassLoader());
+		Class<?> clazz = ucl.loadClass(packageName + ".Application");
+		System.out.println("test 1 - loaded by: "+ clazz.getClassLoader().getClass().getName());
+		SovereignApplication app = (SovereignApplication) clazz.newInstance();
+		return app;
+	}
+	
+	@SuppressWarnings("unused")
+	private SovereignApplication test2(String packageName, URL[] urls) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, InstantiationException {
+		URLClassLoader systemClassLoader = (URLClassLoader)ClassLoader.getSystemClassLoader();
+		Class<?> sysLoaderClass = URLClassLoader.class;
+		Method method = sysLoaderClass.getDeclaredMethod("addURL", new Class[] {URL.class});
+		method.setAccessible(true);
+		for(URL url:urls)
+			method.invoke(systemClassLoader, new Object[] {url});
+		Class<?> clazz = systemClassLoader.loadClass(packageName + ".Application");
+		System.out.println("test 2 - loaded by: "+ clazz.getClassLoader().getClass().getName());
+		SovereignApplication app = (SovereignApplication) clazz.newInstance();
+		return app;
+	}
+	
+	@SuppressWarnings("unused")
+	private SovereignApplication test3(String packageName, URL[] urls) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, InstantiationException {
+		URLClassLoader ucl = new URLClassLoader(urls, SovereignApplication.class.getClassLoader());
+		URLClassLoader systemClassLoader = (URLClassLoader)ClassLoader.getSystemClassLoader();
+		Class<?> sysLoaderClass = URLClassLoader.class;
+		Method method = sysLoaderClass.getDeclaredMethod("addURL", new Class[] {URL.class});
+		method.setAccessible(true);
+		for(URL url:urls)
+			method.invoke(systemClassLoader, new Object[] {url});
+		Class<?> clazz = ucl.loadClass(packageName + ".Application");
+		System.out.println("test 3 - loaded by: "+ clazz.getClassLoader().getClass().getName());
+		SovereignApplication app = (SovereignApplication) clazz.newInstance();
+		return app;
+	}
+
+	private List<URL> classpath(File classesDirectory) throws MalformedURLException {
+		String classpath = System.getProperty("java.class.path");
+		String[] paths = classpath.split(File.pathSeparator);
+		List<URL> pathList = new ArrayList<URL>();
+		pathList.add(classesDirectory.toURI().toURL());
+		for(String temp:paths)
+			pathList.add((new File(temp)).toURI().toURL());
+		return pathList;
 	}
 	
 	public void startApp(SovereignApplication app){

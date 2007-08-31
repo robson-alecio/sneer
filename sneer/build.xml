@@ -75,6 +75,7 @@
 		
 		<jar destfile="${bin}\Sneer-${version}.jar" basedir="${build}" manifest="${build}\MANIFEST.MF">
 			<include name="**\*.class" />
+			<include name="**\*.properties" />
 			<fileset dir="${src}">
 				<exclude name = "**\*.java"/>
 			</fileset>

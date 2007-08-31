@@ -3,12 +3,18 @@ package sneer.kernel.gui.contacts;
 import static wheel.i18n.Language.translate;
 
 import java.awt.Dimension;
+import java.awt.Font;
+import java.io.InputStream;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.pointofview.Contact;
+import wheel.io.ui.widgets.ReactiveIntegerField;
+import wheel.io.ui.widgets.ReactiveJpgImageField;
+import wheel.io.ui.widgets.ReactiveMemoField;
+import wheel.io.ui.widgets.ReactiveTextField;
 import wheel.lang.Consumer;
 import wheel.lang.Pair;
 
@@ -33,14 +39,35 @@ public class LateralContactInfo extends JPanel{
 		Dimension profileFieldSize = new Dimension(150,100);
 		Dimension pictureFieldSize = new Dimension(150,150);
 		
-		content.add(new ReactiveJpgImageField(translate("Picture"), _contact.party().picture(), null, pictureFieldSize));
-		content.add(new LabeledPanel(translate("Nick"), new ReactiveTextField(_contact.party().name(), null), defaultFieldSize)); //Fix: the user should be able to change the nick here!
-		content.add(new LabeledPanel(translate("Thought Of The Day"), new ReactiveTextField(_contact.party().thoughtOfTheDay(), null), defaultFieldSize));
-		content.add(new LabeledPanel(translate("Profile"), new ReactiveMemoField(_contact.party().profile(), null), profileFieldSize));
-		content.add(new LabeledPanel(translate("Host"), new ReactiveTextField(_contact.party().host(), null), defaultFieldSize));
-		content.add(new LabeledPanel(translate("Port"), new ReactiveIntegerField(_contact.party().port(), null), defaultFieldSize));
+		Font fieldFont = sneerFont(12);
+		Font titleFont = sneerFont(14);
+		
+		content.add(new ReactiveJpgImageField(translate("Picture"), _contact.party().picture(), null, pictureFieldSize),titleFont);
+		content.add(new LabeledPanel(translate("Nick"), new ReactiveTextField(_contact.party().name(), null, fieldFont), defaultFieldSize,titleFont)); //Fix: the user should be able to change the nick here!
+		content.add(new LabeledPanel(translate("Thought Of The Day"), new ReactiveTextField(_contact.party().thoughtOfTheDay(), null, fieldFont), defaultFieldSize, titleFont));
+		content.add(new LabeledPanel(translate("Profile"), new ReactiveMemoField(_contact.party().profile(), null, fieldFont), profileFieldSize, titleFont));
+		content.add(new LabeledPanel(translate("Host"), new ReactiveTextField(_contact.party().host(), null, fieldFont), defaultFieldSize, titleFont));
+		content.add(new LabeledPanel(translate("Port"), new ReactiveIntegerField(_contact.party().port(), null, fieldFont), defaultFieldSize, titleFont));
 		
 		return content;
+	}
+
+	private Font _defaultFont;
+	
+	public Font sneerFont(){
+		if (_defaultFont == null){
+			InputStream fis = LateralContactInfo.class.getResourceAsStream("/sneer/kernel/gui/contacts/bip.ttf");
+			try{
+				_defaultFont =  Font.createFont(Font.TRUETYPE_FONT, fis);
+			}catch(Exception e){
+				_defaultFont = new Font("Arial",Font.PLAIN,14);
+			}
+		}
+		return _defaultFont;
+	}
+	
+	public Font sneerFont(float size){
+		return sneerFont().deriveFont(size);
 	}
 	
 	private static final long serialVersionUID = 1L;

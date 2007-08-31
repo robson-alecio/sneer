@@ -1,4 +1,4 @@
-package sneer.kernel.gui.contacts;
+package wheel.io.ui.widgets;
 
 import static wheel.i18n.Language.translate;
 
@@ -24,13 +24,15 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 
+import sneer.kernel.gui.contacts.LateralRootInfo;
+
 import wheel.graphics.JpgImage;
 import wheel.io.ui.Action;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.reactive.Signal;
 
-public class ReactiveJpgImageField extends JPanel implements Omnivore<JpgImage>{
+public class ReactiveJpgImageField extends JPanel{
 	
 	final static String IMAGE_PATH = "/sneer/kernel/gui/contacts/images/";
 	final static ImageIcon NO_IMAGE = new ImageIcon(LateralRootInfo.class.getResource(IMAGE_PATH + "questionmark.jpg"));
@@ -66,7 +68,21 @@ public class ReactiveJpgImageField extends JPanel implements Omnivore<JpgImage>{
 		if (_editable) 
 			addChangeListeners();
 		add(_label);
-		_source.addReceiver(this);
+		_source.addReceiver(fieldReceiver());
+	}
+	
+	private Omnivore<JpgImage> fieldReceiver() { return new Omnivore<JpgImage>(){
+		public void consume(final JpgImage image) {
+			SwingUtilities.invokeLater(new Runnable(){
+				public void run() {
+					ImageIcon pictureIcon = NO_IMAGE;
+					if (image != null)
+						pictureIcon = new ImageIcon(image.contents());
+					setIcon(pictureIcon);
+					_label.revalidate();
+				}
+			});
+		}};
 	}
 
 	private void setIcon(ImageIcon pictureIcon) {
@@ -144,17 +160,7 @@ public class ReactiveJpgImageField extends JPanel implements Omnivore<JpgImage>{
 		}
 	}
 	
-	public void consume(final JpgImage image) {
-		SwingUtilities.invokeLater(new Runnable(){
-			public void run() {
-				ImageIcon pictureIcon = NO_IMAGE;
-				if (image != null)
-					pictureIcon = new ImageIcon(image.contents());
-				setIcon(pictureIcon);
-				_label.revalidate();
-			}
-		});
-	}
+	
 	
 	private static final long serialVersionUID = 1L;
 

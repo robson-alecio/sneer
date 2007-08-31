@@ -26,6 +26,7 @@ import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.pointofview.Contact;
 import wheel.io.ui.Action;
+import wheel.io.ui.User;
 import wheel.lang.Omnivore;
 import wheel.reactive.impl.SourceImpl;
 import wheel.reactive.lists.ListSignal;
@@ -40,7 +41,10 @@ public class MeToo {
 	private final AppManager _appManager;
 	private final File _tempDirectory;
 
-	public MeToo(Channel channel, ListSignal<SovereignApplicationUID> publishedApps, AppManager appManager){
+	private final User _user;
+
+	public MeToo(User user, Channel channel, ListSignal<SovereignApplicationUID> publishedApps, AppManager appManager){
+		_user = user;
 		_channel = channel;
 		_publishedApps = publishedApps;
 		_appManager = appManager;
@@ -135,7 +139,7 @@ public class MeToo {
 		if (_framesByContactId.get(contact.id()) == null){
 			SourceImpl<MeTooPacket> input = new SourceImpl<MeTooPacket>(null);
 			_inputsByContactId.put(contact.id(), input);
-			_framesByContactId.put(contact.id(), new MeTooFrame(_channel, contact, input.output(), _tempDirectory, _appManager));
+			_framesByContactId.put(contact.id(), new MeTooFrame(_user, _channel, contact, input.output(), _tempDirectory, _appManager));
 		} else {
 			_framesByContactId.get(contact.id()).sendAppListRequest();
 		}

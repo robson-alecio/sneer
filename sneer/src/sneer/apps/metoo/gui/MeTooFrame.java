@@ -32,6 +32,7 @@ import sneer.kernel.appmanager.AppManager;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.pointofview.Contact;
+import wheel.io.ui.User;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 
@@ -46,8 +47,10 @@ public class MeTooFrame extends JFrame{
 	private Map<String, String> _installNameAndAppUID = new HashMap<String, String>();
 	private final File _tempDirectory;
 	private final AppManager _appManager;
+	private final User _user;
 
-	public MeTooFrame(Channel channel, Contact contact, Signal<MeTooPacket> input, File tempDirectory, AppManager appManager){
+	public MeTooFrame(User user, Channel channel, Contact contact, Signal<MeTooPacket> input, File tempDirectory, AppManager appManager){
+		_user = user;
 		_channel = channel;
 		_contact = contact;
 		_input = input;
@@ -123,9 +126,10 @@ public class MeTooFrame extends JFrame{
 		}
 		updateProgressBar(appFilePart._offset+appFilePart._content.length,appFilePart._filesize);
 		if ((appFilePart._offset+appFilePart._content.length)>=appFilePart._filesize){ //file ended
-			_appManager.publishFromZipFile(file);
+			String installName = _appManager.publishFromZipFile(file);
 			file.delete();
 			sendAppListRequest();
+			_user.acknowledgeNotification(translate("Application successfully installed: \n\n %1$s",installName.substring(0,installName.indexOf("-"))));
 		}
 	}
 	

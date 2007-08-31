@@ -9,13 +9,16 @@ import sneer.kernel.appmanager.SovereignApplication;
 import sneer.kernel.appmanager.SovereignApplicationUID;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.impl.Communicator;
+import wheel.io.ui.User;
 
 public class ContactActionFactory {
 
 	private final Communicator _communicator;
 	private final AppManager _appManager;
+	private final User _user;
 
-	public ContactActionFactory(Communicator communicator, AppManager appManager){
+	public ContactActionFactory(User user, Communicator communicator, AppManager appManager){
+		_user = user;
 		_communicator = communicator;
 		_appManager = appManager;
 		initApps();
@@ -38,7 +41,7 @@ public class ContactActionFactory {
 		
 		// _metoo cant be exposed yet as a normal app without exposing too much appconfig.
 		Channel metooChannel = _communicator.getChannel(MeToo.class.getName(), 3);
-		_meToo = new MeToo(metooChannel,_appManager.publishedApps().output(), _appManager);
+		_meToo = new MeToo(_user, metooChannel,_appManager.publishedApps().output(), _appManager);
 	}
 
 	public List<ContactAction> contactActions(){

@@ -1,6 +1,7 @@
-package sneer.kernel.gui.contacts;
+package wheel.io.ui.widgets;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
@@ -17,7 +18,7 @@ import javax.swing.border.LineBorder;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 
-public class ReactiveMemoField extends JPanel implements Omnivore<String>{
+public class ReactiveMemoField extends JPanel {
 	
 	private JScrollPane _scroll =  new JScrollPane();
 	private JTextArea _area = new JTextArea();
@@ -25,7 +26,7 @@ public class ReactiveMemoField extends JPanel implements Omnivore<String>{
 	private final boolean _editable;
 	private final Omnivore<String> _setter;
 
-	public ReactiveMemoField(Signal<String> source, Omnivore<String> setter) {
+	public ReactiveMemoField(Signal<String> source, Omnivore<String> setter, Font font) {
 		_source = source;
 		_setter = setter;
 		_editable = (setter != null); //if setter == null, different textfield behaviour
@@ -35,14 +36,25 @@ public class ReactiveMemoField extends JPanel implements Omnivore<String>{
 		setAreaBorderColor(Color.black);
 		_area.selectAll();
 		_area.setEditable(_editable);
-		_area.setFont(FontUtil.getFont(12));
+		_area.setFont(font);
 		if (_editable) 
 			addChangeListeners();
 		_scroll.setViewportView(_area);
 		_scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		add(_scroll);
-		_source.addReceiver(this);
+		_source.addReceiver(fieldReceiver());
 		setBackgroundColor();
+	}
+	
+	private Omnivore<String> fieldReceiver() { return new Omnivore<String>(){
+		public void consume(final String text) {
+			SwingUtilities.invokeLater(new Runnable(){
+				public void run() {
+					_area.setText(text);
+					_area.revalidate();
+				}
+			});
+		}};
 	}
 
 	private void setBackgroundColor() {
@@ -75,15 +87,6 @@ public class ReactiveMemoField extends JPanel implements Omnivore<String>{
 	
 	private void setAreaBorderColor(Color color){
 		_scroll.setBorder(new CompoundBorder(new LineBorder(color), new EmptyBorder(2,2,2,2)));
-	}
-	
-	public void consume(final String text) {
-		SwingUtilities.invokeLater(new Runnable(){
-			public void run() {
-				_area.setText(text);
-				_area.revalidate();
-			}
-		});
 	}
 
 	public String getText(){

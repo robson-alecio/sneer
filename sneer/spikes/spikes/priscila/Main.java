@@ -1,68 +1,70 @@
 package spikes.priscila;
 
 import java.awt.Color;
-import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.geom.Line2D;
-import java.awt.geom.Rectangle2D;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 
-public class Main extends JFrame {
 
-	/**
-	 * 
-	 */
+public class Main extends JFrame{
+	
+	private static final int _OFFSET = 60;
+	private static final int _STONE_DIAMETER = 26;
 	private static final long serialVersionUID = 1L;
-
-	@Override
-	public void paint(Graphics gr) {
-		Graphics2D gr2D = (Graphics2D) gr;
-
-		gr2D.setBackground(Color.white);
-		RenderingHints renderHints = new RenderingHints(
-				RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-		renderHints.put(RenderingHints.KEY_RENDERING,
-				RenderingHints.VALUE_RENDER_SPEED);
-		gr2D.setRenderingHints(renderHints);
-		gr2D.setColor(Color.PINK);
-		gr2D.fillRect(0, 0, 80, 80);
-
-		gr2D.setColor(Color.green);
-		gr2D.fillOval(0, 0, 70, 70);
-
-		gr2D.setColor(new Color(220,220,100));
-		gr2D.fillOval(0, 0, 60, 60);
-
-		Line2D line = new Line2D.Double(10, 10, 40, 40);
-		gr2D.setColor(Color.black);
-		gr2D.draw(line);
-		Rectangle2D rect = new Rectangle2D.Double(20, 20, 100, 100);
-		gr2D.draw(rect);
-		gr2D.setPaint(new GradientPaint(0, 0, new Color(220,220,100), 50, 25, Color.white,
-				true));
-		gr2D.fill(rect);
-
-	}
-
-	public Main() {
+    private int x,y=0;
+	public boolean _isBlacksTurn = true;
+    
+	public Main(){		
+		setTitle("Go");
+	    setSize(400,400);
+	    setResizable(false);
+	    setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		setBounds(0, 0, 200, 200);
-
-		// JPanel panel= new JPanel();
-
-		// setContentPane(panel);
-		setVisible(true);
-
+	    addMouseListener(new MouseListener());
 	}
-
-	public static void main(String[] args) {
-		new Main();
-
+	
+	@Override
+	public void paint(Graphics g){
+		g.setColor(new Color(228,205,152));
+		g.fillRect(0, 0, 400, 400);
+		g.setColor(Color.black);
+		for(int i=0; i< 270; i+=30){
+			g.drawLine(i+_OFFSET, 0+_OFFSET, i+_OFFSET, 240+_OFFSET);
+			g.drawLine(0+_OFFSET, i+_OFFSET, 240+_OFFSET, i+_OFFSET);
+		}		
 	}
+	
+	public static void main(String[] args){
+    	new Main();
+	}
+	
+	private class MouseListener extends MouseAdapter {
 
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			
+			x = ((e.getX()+15)/30)*30 - (_STONE_DIAMETER / 2);
+			y = ((e.getY()+15)/30)*30 - (_STONE_DIAMETER / 2);
+					
+			Graphics2D g= (Graphics2D)getGraphics();			
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+			        RenderingHints.VALUE_ANTIALIAS_ON);
+			g.setColor(color());
+			_isBlacksTurn = !_isBlacksTurn;
+			g.fillOval(x, y, _STONE_DIAMETER, _STONE_DIAMETER);
+			
+		}
+
+		private Color color() {
+			return _isBlacksTurn 
+				? Color.black
+				: Color.white;
+		}
+	}
 }
+
+

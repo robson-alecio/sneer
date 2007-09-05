@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 public class Main extends JFrame{
 	
 	private static final int _OFFSET = 60;
-	private static final int _STONE_DIAMETER = 26;
+	private static final int _STONE_DIAMETER = 28;
 	private static final long serialVersionUID = 1L;
     private int x,y=0;
 	public boolean _isBlacksTurn = true;

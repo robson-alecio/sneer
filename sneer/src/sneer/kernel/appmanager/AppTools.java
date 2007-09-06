@@ -13,7 +13,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.MessageDigest;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
@@ -97,11 +99,26 @@ public class AppTools {
         out.close();
     }
 	
-	public static void copyRecursive(File sourceDir, File targetDir) throws IOException{ //Fix: Dont use zip/unzip to a simple recursive copy. ;-)
-		File tempzip = File.createTempFile("copy", ".zip");
-		zip(sourceDir,tempzip);
-		unzip(tempzip,targetDir);
+	public static void copyRecursive(File sourceDir, File targetDir) throws IOException{
+		List<File> files = new ArrayList<File>();
+		listFiles(files,sourceDir);
+		
+		for(File file:files){
+			File targetDirectory = new File(targetDir,file.getParentFile().getAbsolutePath().substring(sourceDir.getAbsolutePath().length()));
+			targetDirectory.mkdirs();
+			copy(file,new File(targetDirectory,file.getName()));
+		}
 	}
+	
+	public static void listFiles(List<File> list, File file){
+		if (file.isDirectory()){
+			for(File child:file.listFiles())
+				listFiles(list, child);
+		}else{
+			list.add(file);
+		}
+	}
+	
 	
 	public static File findFile(File file, FilenameFilter filter){
 		if (file.isDirectory())

@@ -1,0 +1,59 @@
+<project name="Sneer" default="dist" basedir=".">
+	<description>
+        Spike test
+    </description>
+
+	<!-- Directories configuration -->
+	<property name="src" location="..\..\..\."/>
+	<property name="compiled" location="\tmp\classloadingspike\compiled"/>
+	<property name="jarDirectory" location="\tmp\classloadingspike\jardirectory"/>
+	
+	<target name="dist">
+
+		<!-- Preparation -->
+		
+		<delete dir="${compiled}"/>
+		<delete dir="${jarDirectory}"/>
+		<mkdir dir="${compiled}"/>
+		<mkdir dir="${jarDirectory}"/>
+
+		<!-- Compile files -->
+		
+		<javac destdir="${compiled}"
+			classpath="${compiled}"
+		 	debug="on"
+			source="1.6"
+			target="1.6" 
+			encoding="UTF-8" >
+			<src path="${src}"/>
+			<include name="spikes\gandhi\classloading\InnerClassInterface.java"/>
+			<include name="spikes\gandhi\classloading\Loader.java"/>
+			<include name="spikes\gandhi\classloading\ObjectImplementation.java"/>
+			<include name="spikes\gandhi\classloading\ObjectInterface.java"/>
+		</javac>
+			
+		<!-- Create manifest with entry point -->
+
+		<delete file="${compiled}\MANIFEST.MF"/>
+		<manifest file="${compiled}\MANIFEST.MF">
+			<attribute name="Main-Class" value="spikes.gandhi.classloading.Loader"/>
+		</manifest>
+		
+		<!-- Create jar -->
+		
+		<jar destfile="${jarDirectory}\classloadingspike.jar" basedir="${compiled}" manifest="${compiled}\MANIFEST.MF">
+			<include name="spikes\gandhi\classloading\InnerClassInterface.class"/>
+			<include name="spikes\gandhi\classloading\Loader.class"/>
+			<include name="spikes\gandhi\classloading\ObjectInterface.class"/>
+		</jar>
+		
+		<mkdir dir="${jarDirectory}\spikes\gandhi\classloading"/>
+		<copy file="${compiled}\spikes\gandhi\classloading\ObjectImplementation.class" todir="${jarDirectory}\spikes\gandhi\classloading"/>
+		
+		<!-- Cleanup -->
+		
+		<delete dir="${compiled}"/>
+			
+	</target>
+
+</project>

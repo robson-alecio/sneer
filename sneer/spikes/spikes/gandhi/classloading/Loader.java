@@ -22,15 +22,6 @@ public class Loader {
 	 * Use:
 	 * java -jar classloadingspike.jar /tmp/classloadingspike/jardirectory
 	 * 
-	 * Current output (inner class not being loaded):
-	 	path: /tmp/classloadingspike/jardirectory
-		LOADING **********************
-		test 1 - loaded by: java.net.URLClassLoader
-		EXECUTING **********************
-		toLowercase ok
-		Exception in thread "main" java.lang.NoClassDefFoundError: spikes/gandhi/classloading/ObjectImplementation$1
-	 * 
-	 * 
 	 * 
 	 */
 

@@ -14,16 +14,6 @@ public class Application implements SovereignApplication{
 	private MP3SushiGameApp _delegate;
 
 	@Override
-	public String defaultName() {
-		return "MP3 Sushi";
-	}
-
-	@Override
-	public int trafficPriority() {
-		return 2;
-	}
-
-	@Override
 	public void start(AppConfig config) {
 		_delegate = new MP3SushiGameApp(config);
 	}

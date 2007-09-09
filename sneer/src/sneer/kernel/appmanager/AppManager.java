@@ -77,13 +77,14 @@ public class AppManager {
 			String appUID = packageApp(originalSourceDirectory, packagedTempDirectory);
 
 			processApp(packagedTempDirectory, sourceTempDirectory, compiledTempDirectory);
-			SovereignApplication app = startApp(compiledTempDirectory);
-
-			installName = app.defaultName()+"-"+appUID;
+			SovereignApplicationInfo info = discoverApplicationInfo(compiledTempDirectory);
+			
+			installName = info.defaultName()+"-"+appUID;
 
 			copyToFinalPlace(packagedTempDirectory, sourceTempDirectory, compiledTempDirectory, installName);
 
-			registerApp(installName,app);
+			SovereignApplication app = startApp(new File(SneerDirectories.compiledAppsDirectory(), installName), info);
+			registerApp(installName,app,info);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -128,55 +129,54 @@ public class AppManager {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
-	private SovereignApplication startApp(File compiledAppDirectory) throws Exception {
+	private SovereignApplication startApp(File compiledAppDirectory, SovereignApplicationInfo info) throws Exception {
 		File classesDirectory = new File(compiledAppDirectory, "classes");
+		List<URL> pathList = classpath(classesDirectory);
+		URL[] urls =  pathList.toArray(new URL[0]); 
 		File applicationFile = AppTools.findApplicationClass(compiledAppDirectory);
 		String packageName = AppTools.pathToPackage(classesDirectory, applicationFile.getParentFile());
 		
-		List<URL> pathList = classpath(classesDirectory);
+		SovereignApplication app = (SovereignApplication)test1(packageName+ ".Application", urls).newInstance();
 		
+		startApp(app, info);
+		
+		return app;
+	}
+	
+	private SovereignApplicationInfo discoverApplicationInfo(File compiledAppDirectory) throws MalformedURLException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, ClassNotFoundException{
+		File classesDirectory = new File(compiledAppDirectory, "classes");
+		List<URL> pathList = classpath(classesDirectory);
 		URL[] urls =  pathList.toArray(new URL[0]); 
 		
-		//Uses a normal URLClassloader
-		SovereignApplication app = test1(packageName, urls);
-
-		//Tries to add urls to systemclassloader
-		//SovereignApplication app = test2(packageName, urls);
+		File applicationInfoFile = AppTools.findApplicationInfo(compiledAppDirectory);
+		String packageName = AppTools.pathToPackage(classesDirectory, applicationInfoFile.getParentFile());
 		
-		//mix both.
-		//SovereignApplication app = test3(packageName, urls);
-		
-		startApp(app);
-		
-		return app;
+		return (SovereignApplicationInfo)test1(packageName + ".ApplicationInfo",urls).newInstance();
 	}
 
 	@SuppressWarnings("unused")
-	private SovereignApplication test1(String packageName, URL[] urls) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, InstantiationException {
-		URLClassLoader ucl = new URLClassLoader(urls, SovereignApplication.class.getClassLoader());
-		Class<?> clazz = ucl.loadClass(packageName + ".Application");
+	private Class<?> test1(String completeName, URL[] urls) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, InstantiationException {
+		URLClassLoader ucl = new URLClassLoader(urls, this.getClass().getClassLoader());
+		Class<?> clazz = ucl.loadClass(completeName);
 		System.out.println("test 1 - loaded by: "+ clazz.getClassLoader().getClass().getName());
-		SovereignApplication app = (SovereignApplication) clazz.newInstance();
-		return app;
+		return clazz;
 	}
 	
 	@SuppressWarnings("unused")
-	private SovereignApplication test2(String packageName, URL[] urls) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, InstantiationException {
+	private Class<?> test2(String completeName, URL[] urls) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, InstantiationException {
 		URLClassLoader systemClassLoader = (URLClassLoader)ClassLoader.getSystemClassLoader();
 		Class<?> sysLoaderClass = URLClassLoader.class;
 		Method method = sysLoaderClass.getDeclaredMethod("addURL", new Class[] {URL.class});
 		method.setAccessible(true);
 		for(URL url:urls)
 			method.invoke(systemClassLoader, new Object[] {url});
-		Class<?> clazz = systemClassLoader.loadClass(packageName + ".Application");
+		Class<?> clazz = systemClassLoader.loadClass(completeName);
 		System.out.println("test 2 - loaded by: "+ clazz.getClassLoader().getClass().getName());
-		SovereignApplication app = (SovereignApplication) clazz.newInstance();
-		return app;
+		return clazz;
 	}
 	
 	@SuppressWarnings("unused")
-	private SovereignApplication test3(String packageName, URL[] urls) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, InstantiationException {
+	private Class<?> test3(String completeName, URL[] urls) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, InstantiationException {
 		URLClassLoader ucl = new URLClassLoader(urls, SovereignApplication.class.getClassLoader());
 		URLClassLoader systemClassLoader = (URLClassLoader)ClassLoader.getSystemClassLoader();
 		Class<?> sysLoaderClass = URLClassLoader.class;
@@ -184,10 +184,9 @@ public class AppManager {
 		method.setAccessible(true);
 		for(URL url:urls)
 			method.invoke(systemClassLoader, new Object[] {url});
-		Class<?> clazz = ucl.loadClass(packageName + ".Application");
+		Class<?> clazz = ucl.loadClass(completeName);
 		System.out.println("test 3 - loaded by: "+ clazz.getClassLoader().getClass().getName());
-		SovereignApplication app = (SovereignApplication) clazz.newInstance();
-		return app;
+		return clazz;
 	}
 
 	private List<URL> classpath(File classesDirectory) throws MalformedURLException {
@@ -200,12 +199,12 @@ public class AppManager {
 		return pathList;
 	}
 	
-	public void startApp(SovereignApplication app){
-		app.start(currentAppConfig(app));
+	public void startApp(SovereignApplication app, SovereignApplicationInfo info){
+		app.start(currentAppConfig(info));
 	}
 
-	private AppConfig currentAppConfig(SovereignApplication app) {
-		return new AppConfig(_user, _communicator.getChannel(app.defaultName(), app.trafficPriority()), _me.contacts(), _contactAttributes, _me.name(), _briefUserNotifier, null);  //FixUrgent Create the blower passing the [packagedDirectory]/prevalence directory.
+	private AppConfig currentAppConfig(SovereignApplicationInfo info) {
+		return new AppConfig(_user, _communicator.getChannel(info.defaultName(), info.trafficPriority()), _me.contacts(), _contactAttributes, _me.name(), _briefUserNotifier, null);  //FixUrgent Create the blower passing the [packagedDirectory]/prevalence directory.
 	}
 
 	private String packageApp(File sourceDirectory, File targetDirectory) {
@@ -224,7 +223,8 @@ public class AppManager {
 		File zipFile = new File(packagedDirectory, JAR_NAME);
 		AppTools.unzip(zipFile, sourceDirectory);
 		File ApplicationSourceFile = AppTools.findApplicationSource(sourceDirectory);
-		File[] sources = new File[] { ApplicationSourceFile };
+		File ApplicationInfoSourceFile = AppTools.findApplicationInfoSource(sourceDirectory);
+		File[] sources = new File[] { ApplicationSourceFile, ApplicationInfoSourceFile};
 		compile(sources, sourceDirectory, compiledDirectory);
 	}
 
@@ -273,16 +273,17 @@ public class AppManager {
 			String candidateApp = compiledAppDirectory.getName();
 			if (isAppLoaded(candidateApp))
 				continue;
-			SovereignApplication app = startApp(compiledAppDirectory);
-			registerApp(compiledAppDirectory.getName(), app);
+			SovereignApplicationInfo info = discoverApplicationInfo(compiledAppDirectory);
+			SovereignApplication app = startApp(compiledAppDirectory, info);
+			registerApp(compiledAppDirectory.getName(), app, info);
 		}
 	}
 
-	public void registerApp(String installName, SovereignApplication app) throws IOException{
+	public void registerApp(String installName, SovereignApplication app, SovereignApplicationInfo info) throws IOException{
 		System.out.println("Registering new Application: " + installName);
 		File appUIDFile = AppTools.findAppUID(new File(SneerDirectories.appsDirectory(), installName));
 		String appUID = new String(AppTools.getBytesFromFile(appUIDFile));
-		_publishedApps.add(new SovereignApplicationUID(installName, appUID, app));
+		_publishedApps.add(new SovereignApplicationUID(installName, appUID, app, info));
 	}
 
 	private boolean isAppLoaded(String installName) {

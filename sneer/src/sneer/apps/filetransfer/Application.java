@@ -15,16 +15,6 @@ public class Application implements SovereignApplication{
 	private FileTransferApp _delegate;
 
 	@Override
-	public String defaultName() {
-		return "FileTransfer";
-	}
-
-	@Override
-	public int trafficPriority() {
-		return 0;
-	}
-
-	@Override
 	public void start(AppConfig config) {
 		_delegate = new FileTransferApp(config);
 	}

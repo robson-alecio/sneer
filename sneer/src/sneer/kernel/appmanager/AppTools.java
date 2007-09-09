@@ -145,10 +145,26 @@ public class AppTools {
 		});
 	}
 	
+	public static File findApplicationInfoSource(File directory){
+		return AppTools.findFile(directory, new FilenameFilter(){
+			public boolean accept(File dir, String name) {
+				return name.equals("ApplicationInfo.java");
+			}
+		});
+	}
+	
 	public static File findApplicationClass(File directory){
 		return AppTools.findFile(directory, new FilenameFilter(){
 			public boolean accept(File dir, String name) {
 				return name.equals("Application.class");
+			}
+		});
+	}
+	
+	public static File findApplicationInfo(File directory){
+		return AppTools.findFile(directory, new FilenameFilter(){
+			public boolean accept(File dir, String name) {
+				return name.equals("ApplicationInfo.class");
 			}
 		});
 	}

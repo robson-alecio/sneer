@@ -35,9 +35,9 @@ public class ContactActionFactory {
 		_conversations = new sneer.apps.conversations.Application();
 		_fileTransfer = new sneer.apps.filetransfer.Application();
 		_talk = new sneer.apps.talk.Application();
-		_appManager.startApp(_conversations);
-		_appManager.startApp(_fileTransfer);
-		_appManager.startApp(_talk);
+		_appManager.startApp(_conversations, new sneer.apps.conversations.ApplicationInfo());
+		_appManager.startApp(_fileTransfer, new sneer.apps.filetransfer.ApplicationInfo());
+		_appManager.startApp(_talk, new sneer.apps.talk.ApplicationInfo());
 		
 		// _metoo cant be exposed yet as a normal app without exposing too much appconfig.
 		Channel metooChannel = _communicator.getChannel(MeToo.class.getName(), 3);

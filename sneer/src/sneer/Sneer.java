@@ -73,7 +73,7 @@ public class Sneer {
 		System.out.println("Checking existing apps:");
 		_appManager = new AppManager(_user,_communicator, _me, _businessSource.output().contactAttributes(), briefNotifier());
 		for(SovereignApplicationUID app:_appManager.publishedApps().output())
-			System.out.println("App : "+app._sovereignApplication.defaultName());
+			System.out.println("App : "+app._info.defaultName());
 
 		_contactActionFactory = new ContactActionFactory(_user, _communicator,_appManager);
 		

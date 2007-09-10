@@ -2,19 +2,13 @@ package sneer.kernel.appmanager;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.List;
 
 import sneer.SneerDirectories;
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.communication.impl.Communicator;
 import sneer.kernel.pointofview.Party;
 import wheel.io.Log;
+import wheel.io.ModifiedURLClassLoader;
 import wheel.io.ui.User;
 import wheel.io.ui.User.Notification;
 import wheel.lang.Omnivore;
@@ -35,12 +29,15 @@ public class AppManager {
 
 	private final Party _me;
 
-	public AppManager(User user, Communicator communicator, Party me, ListSignal<ContactAttributes> contactAttributes, Omnivore<Notification> briefUserNotifier) {
+	private final ModifiedURLClassLoader _classloader;
+
+	public AppManager(User user, Communicator communicator, Party me, ListSignal<ContactAttributes> contactAttributes, Omnivore<Notification> briefUserNotifier, ModifiedURLClassLoader classloader) {
 		_user = user;
 		_me = me;
 		_communicator = communicator;
 		_contactAttributes = contactAttributes;
 		_briefUserNotifier = briefUserNotifier;
+		_classloader = classloader;
 	}
 
 	private void createDirectories() { //should be moved to install???
@@ -131,74 +128,26 @@ public class AppManager {
 
 	private SovereignApplication startApp(File compiledAppDirectory, SovereignApplicationInfo info) throws Exception {
 		File classesDirectory = new File(compiledAppDirectory, "classes");
-		List<URL> pathList = classpath(classesDirectory);
-		URL[] urls =  pathList.toArray(new URL[0]); 
 		File applicationFile = AppTools.findApplicationClass(compiledAppDirectory);
 		String packageName = AppTools.pathToPackage(classesDirectory, applicationFile.getParentFile());
-		
-		SovereignApplication app = (SovereignApplication)test1(packageName+ ".Application", urls).newInstance();
-		
+		SovereignApplication app = (SovereignApplication)loadClass(packageName+ ".Application", classesDirectory.getAbsolutePath()).newInstance();
 		startApp(app, info);
-		
 		return app;
 	}
 	
-	private SovereignApplicationInfo discoverApplicationInfo(File compiledAppDirectory) throws MalformedURLException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, ClassNotFoundException{
+	private SovereignApplicationInfo discoverApplicationInfo(File compiledAppDirectory) throws InstantiationException, IllegalAccessException, ClassNotFoundException{
 		File classesDirectory = new File(compiledAppDirectory, "classes");
-		List<URL> pathList = classpath(classesDirectory);
-		URL[] urls =  pathList.toArray(new URL[0]); 
-		
 		File applicationInfoFile = AppTools.findApplicationInfo(compiledAppDirectory);
 		String packageName = AppTools.pathToPackage(classesDirectory, applicationInfoFile.getParentFile());
-		
-		return (SovereignApplicationInfo)test1(packageName + ".ApplicationInfo",urls).newInstance();
+		return (SovereignApplicationInfo)loadClass(packageName + ".ApplicationInfo",classesDirectory.getAbsolutePath()).newInstance();
 	}
 
-	@SuppressWarnings("unused")
-	private Class<?> test1(String completeName, URL[] urls) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, InstantiationException {
-		URLClassLoader ucl = new URLClassLoader(urls, this.getClass().getClassLoader());
-		Class<?> clazz = ucl.loadClass(completeName);
-		System.out.println("test 1 - loaded by: "+ clazz.getClassLoader().getClass().getName());
-		return clazz;
-	}
-	
-	@SuppressWarnings("unused")
-	private Class<?> test2(String completeName, URL[] urls) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, InstantiationException {
-		URLClassLoader systemClassLoader = (URLClassLoader)ClassLoader.getSystemClassLoader();
-		Class<?> sysLoaderClass = URLClassLoader.class;
-		Method method = sysLoaderClass.getDeclaredMethod("addURL", new Class[] {URL.class});
-		method.setAccessible(true);
-		for(URL url:urls)
-			method.invoke(systemClassLoader, new Object[] {url});
-		Class<?> clazz = systemClassLoader.loadClass(completeName);
-		System.out.println("test 2 - loaded by: "+ clazz.getClassLoader().getClass().getName());
-		return clazz;
-	}
-	
-	@SuppressWarnings("unused")
-	private Class<?> test3(String completeName, URL[] urls) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException, InstantiationException {
-		URLClassLoader ucl = new URLClassLoader(urls, SovereignApplication.class.getClassLoader());
-		URLClassLoader systemClassLoader = (URLClassLoader)ClassLoader.getSystemClassLoader();
-		Class<?> sysLoaderClass = URLClassLoader.class;
-		Method method = sysLoaderClass.getDeclaredMethod("addURL", new Class[] {URL.class});
-		method.setAccessible(true);
-		for(URL url:urls)
-			method.invoke(systemClassLoader, new Object[] {url});
-		Class<?> clazz = ucl.loadClass(completeName);
-		System.out.println("test 3 - loaded by: "+ clazz.getClassLoader().getClass().getName());
+	private Class<?> loadClass(String completeName, String path) throws ClassNotFoundException, IllegalArgumentException {
+		_classloader.addPath(path);
+		Class<?> clazz = _classloader.loadClass(completeName);
 		return clazz;
 	}
 
-	private List<URL> classpath(File classesDirectory) throws MalformedURLException {
-		String classpath = System.getProperty("java.class.path");
-		String[] paths = classpath.split(File.pathSeparator);
-		List<URL> pathList = new ArrayList<URL>();
-		pathList.add(classesDirectory.toURI().toURL());
-		for(String temp:paths)
-			pathList.add((new File(temp)).toURI().toURL());
-		return pathList;
-	}
-	
 	public void startApp(SovereignApplication app, SovereignApplicationInfo info){
 		app.start(currentAppConfig(info));
 	}

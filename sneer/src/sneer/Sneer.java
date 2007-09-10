@@ -4,6 +4,7 @@ import static sneer.SneerDirectories.logDirectory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URL;
 
 import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
@@ -21,6 +22,7 @@ import sneer.kernel.pointofview.Party;
 import sneer.kernel.pointofview.impl.Me;
 import wheel.i18n.Language;
 import wheel.io.Log;
+import wheel.io.ModifiedURLClassLoader;
 import wheel.io.network.OldNetworkImpl;
 import wheel.io.ui.User;
 import wheel.io.ui.User.Notification;
@@ -30,11 +32,23 @@ import wheel.lang.Threads;
 
 public class Sneer {
 
-	public static void main(String args[]) {
+	private final ModifiedURLClassLoader _classloader;
+
+	public static void main(String args[]) throws Exception {
 		new Sneer();
 	}
 	
-	public Sneer() {
+	public Sneer() throws Exception{
+		_classloader = new ModifiedURLClassLoader(new URL[]{},ClassLoader.getSystemClassLoader());
+		execute();
+	}
+	
+	public Sneer(ModifiedURLClassLoader classloader) {
+		_classloader = classloader;
+		execute();
+	}
+	
+	private void execute(){
 		try {
 			
 			tryToRun();
@@ -45,7 +59,6 @@ public class Sneer {
 			System.exit(-1);
 		}
 	}
-
 	
 	private User _user = new JOptionPaneUser("Sneer", briefNotifier());
 	private BusinessSource _businessSource;
@@ -71,7 +84,7 @@ public class Sneer {
 		_me = new Me(_businessSource.output(), _communicator.operator(), channel);
 		
 		System.out.println("Checking existing apps:");
-		_appManager = new AppManager(_user,_communicator, _me, _businessSource.output().contactAttributes(), briefNotifier());
+		_appManager = new AppManager(_user,_communicator, _me, _businessSource.output().contactAttributes(), briefNotifier(),_classloader);
 		for(SovereignApplicationUID app:_appManager.publishedApps().output())
 			System.out.println("App : "+app._info.defaultName());
 

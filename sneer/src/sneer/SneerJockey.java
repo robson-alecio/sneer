@@ -4,10 +4,12 @@ import static sneer.SneerDirectories.latestInstalledSneerJar;
 import static sneer.SneerDirectories.sneerDirectory;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import wheel.io.Jars;
+import wheel.io.ModifiedURLClassLoader;
 
 
 /** This guy "plays" (runs) the latest version of Sneer, one after the other. */
@@ -21,7 +23,12 @@ public class SneerJockey {
 
 	
 	private void play(URL SneerJar) throws Exception {
-		Jars.runAllowingForClassGC(SneerJar, "sneer.Sneer");
+		ModifiedURLClassLoader mainLoader = Jars.createGarbageCollectableClassLoader(SneerJar);
+		Class<?> sneerClass = mainLoader.loadClass("sneer.Sneer");
+		Class<?>[] parameters = {ModifiedURLClassLoader.class};
+		Constructor<?> constructor = sneerClass.getConstructor(parameters);
+		Object[] args = {mainLoader};
+		constructor.newInstance(args);
 	}
 
 	private URL latestSneerJar() {

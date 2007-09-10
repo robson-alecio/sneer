@@ -2,19 +2,19 @@ package wheel.io;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
+
 
 
 public class Jars {
 
 	public static void runAllowingForClassGC(URL jar, String classToInstantiate) throws Exception {
-		URLClassLoader loader = createGarbageCollectableClassLoader(jar);
+		ModifiedURLClassLoader loader = createGarbageCollectableClassLoader(jar);
 		loader.loadClass(classToInstantiate).newInstance();
 	}
 	
 	
-	private static URLClassLoader createGarbageCollectableClassLoader(URL jar) throws Exception {
-		return new URLClassLoader(new URL[]{jar}, bootstrapClassLoader());
+	public static ModifiedURLClassLoader createGarbageCollectableClassLoader(URL jar) throws Exception {
+		return new ModifiedURLClassLoader(new URL[]{jar}, bootstrapClassLoader());
 	}
 	
 	

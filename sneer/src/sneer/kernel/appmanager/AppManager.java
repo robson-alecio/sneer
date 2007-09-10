@@ -53,6 +53,7 @@ public class AppManager {
 		SovereignApplicationUID app = findByName(installName);
 		if (app==null)
 			return;
+		_communicator.removeChannel(app._info.defaultName());
 		_publishedApps.remove(app);
 	}
 	

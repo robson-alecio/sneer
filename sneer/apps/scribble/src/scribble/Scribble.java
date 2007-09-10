@@ -41,13 +41,14 @@ public class Scribble {
 	private final User _user;
 	private final ListSignal<Contact> _contacts;
 	private final Channel _channel;
-	
+	private Omnivore<Packet> _drawPacketReceiver;
 
 	public Scribble(AppConfig config) {
 		_user = config._user;
 		_channel = config._channel;
 		_contacts = config._contacts;
-		_channel.input().addReceiver(drawPacketReceiver());
+		_drawPacketReceiver = drawPacketReceiver();
+		_channel.input().addReceiver(_drawPacketReceiver);
 	}
 
 	public List<ContactAction> contactActions() {

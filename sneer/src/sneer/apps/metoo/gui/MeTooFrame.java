@@ -63,6 +63,7 @@ public class MeTooFrame extends JFrame{
 	}
 	
 	private JProgressBar _progress = new JProgressBar();
+	private JButton _installButton; 
 	
 	private void initComponents() {
 		setLayout(new BorderLayout());
@@ -70,18 +71,19 @@ public class MeTooFrame extends JFrame{
 		_appList = new JList(_listModel);
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BoxLayout(buttonPanel,BoxLayout.Y_AXIS));
-		JButton installButton = new JButton(translate("Me Too"));
-		installButton.setMaximumSize(new Dimension(100, 30));
-		installButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		installButton.addActionListener(new ActionListener(){
+		_installButton = new JButton(translate("Me Too"));
+		_installButton.setMaximumSize(new Dimension(100, 30));
+		_installButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		_installButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				String installName=(String)_appList.getSelectedValue();
 				if (installName==null)
 					return;
 				sendAppInstallRequest(installName);
+				_installButton.setEnabled(false);
 			}
 		});
-		buttonPanel.add(installButton);
+		buttonPanel.add(_installButton);
 		_progress.setStringPainted(true);
 		_progress.setValue(0);
 		add(new JScrollPane(_appList),BorderLayout.CENTER);
@@ -129,6 +131,7 @@ public class MeTooFrame extends JFrame{
 			String installName = _appManager.publishFromZipFile(file);
 			file.delete();
 			sendAppListRequest();
+			_installButton.setEnabled(true);
 			_user.acknowledgeNotification(translate("Application successfully installed: \n\n %1$s",installName.substring(0,installName.indexOf("-"))));
 		}
 	}

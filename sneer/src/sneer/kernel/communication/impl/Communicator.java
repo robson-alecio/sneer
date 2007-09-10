@@ -149,6 +149,12 @@ public class Communicator {
 		_channelsById.put(channelId, result);
 		return result;
 	}
+	
+	public void removeChannel(String channelId){
+		ChannelImpl result = _channelsById.get(channelId);
+		if (result == null) return ;
+		_channelsById.remove(channelId);
+	}
 
 	private Omnivore<Packet> outputFor(final String channelId, final int priority) {
 		return new Omnivore<Packet>() { public void consume(Packet packet) {

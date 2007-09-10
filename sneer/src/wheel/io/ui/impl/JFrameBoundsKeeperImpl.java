@@ -43,6 +43,7 @@ public class JFrameBoundsKeeperImpl implements JFrameBoundsKeeper {
 		if (storedBounds != null){
 			frame.setBounds(storedBounds);
 			frame.setPreferredSize(frame.getSize());
+			frame.setVisible(true);
 		}
 	}
 

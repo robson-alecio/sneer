@@ -42,7 +42,6 @@ class ContactsScreen extends JFrame {
 
 		initComponents();
 		selectParty();
-		setVisible(true);
 	}
 	
 	private JPanel _lateral;
@@ -61,7 +60,7 @@ class ContactsScreen extends JFrame {
 		add(editPanel, BorderLayout.SOUTH);
 		add(_lateral,BorderLayout.EAST);
 		setTitle(translate("Contacts"));
-		setSize(200, 400);
+		setSize(400, 400);
 	}
 
 	

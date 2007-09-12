@@ -4,7 +4,6 @@ import static sneer.SneerDirectories.latestInstalledSneerJar;
 import static sneer.SneerDirectories.sneerDirectory;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -21,14 +20,17 @@ public class SneerJockey {
 		while (true) play(latestSneerJar());
 	}
 
-	
+	@SuppressWarnings("unused")
 	private void play(URL SneerJar) throws Exception {
-		ModifiedURLClassLoader mainLoader = Jars.createGarbageCollectableClassLoader(SneerJar);
-		Class<?> sneerClass = mainLoader.loadClass("sneer.Sneer");
-		Class<?>[] parameters = {ModifiedURLClassLoader.class};
-		Constructor<?> constructor = sneerClass.getConstructor(parameters);
-		Object[] args = {mainLoader};
-		constructor.newInstance(args);
+		//FixUrgent: SneerJar variable is not being used inside classloader. If used,
+		// scribble app stops working because Brushpacket is not recognized. (class conflict)
+		// Everything works fine without it because when you execute the jar,
+		// its contents are automatically in the classpath, and when executed using eclipse,
+		// the code is in the classpath too.
+		// ModifiedURLClassLoader mainLoader = new ModifiedURLClassLoader(new URL[]{SneerJar},this.getClass().getClassLoader()); 
+		ModifiedURLClassLoader mainLoader = new ModifiedURLClassLoader(new URL[]{},this.getClass().getClassLoader()); 
+		Thread.currentThread().setContextClassLoader(mainLoader);
+		mainLoader.loadClass("sneer.Sneer").newInstance();
 	}
 
 	private URL latestSneerJar() {

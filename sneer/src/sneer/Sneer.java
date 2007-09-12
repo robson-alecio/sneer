@@ -4,7 +4,6 @@ import static sneer.SneerDirectories.logDirectory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.URL;
 
 import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
@@ -39,12 +38,11 @@ public class Sneer {
 	}
 	
 	public Sneer() throws Exception{
-		_classloader = new ModifiedURLClassLoader(new URL[]{},ClassLoader.getSystemClassLoader());
-		execute();
-	}
-	
-	public Sneer(ModifiedURLClassLoader classloader) {
-		_classloader = classloader;
+		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+		if (classloader instanceof ModifiedURLClassLoader)
+			_classloader = (ModifiedURLClassLoader)classloader; //running from JAR/Boot/SneerJockey
+		else
+			_classloader = new ModifiedURLClassLoader(classloader); //running from eclipse/mainskippingboot
 		execute();
 	}
 	

@@ -136,13 +136,22 @@ public class AppManager {
 		return app;
 	}
 	
-	private SovereignApplicationInfo discoverApplicationInfo(File compiledAppDirectory) throws InstantiationException, IllegalAccessException, ClassNotFoundException{
+	private SovereignApplicationInfo discoverApplicationInfo(File compiledAppDirectory) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IllegalArgumentException{
 		File classesDirectory = new File(compiledAppDirectory, "classes");
 		File applicationInfoFile = AppTools.findApplicationInfo(compiledAppDirectory);
 		String packageName = AppTools.pathToPackage(classesDirectory, applicationInfoFile.getParentFile());
 		return (SovereignApplicationInfo)loadClass(packageName + ".ApplicationInfo",classesDirectory.getAbsolutePath()).newInstance();
 	}
 
+	//individual classloaders
+	/*private Class<?> loadClass(String completeName, String path) throws ClassNotFoundException, IllegalArgumentException {
+		ModifiedURLClassLoader classloader = new ModifiedURLClassLoader(_classloader);
+		classloader.addPath(path);
+		Class<?> clazz = classloader.loadClass(completeName);
+		return clazz;
+	}*/
+	
+	//same classloader
 	private Class<?> loadClass(String completeName, String path) throws ClassNotFoundException, IllegalArgumentException {
 		_classloader.addPath(path);
 		Class<?> clazz = _classloader.loadClass(completeName);

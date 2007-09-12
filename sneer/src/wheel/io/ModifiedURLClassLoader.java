@@ -7,6 +7,10 @@ import java.net.URLClassLoader;
 
 public class ModifiedURLClassLoader extends URLClassLoader {
 
+	public ModifiedURLClassLoader(ClassLoader parent) {
+		super(new URL[]{}, parent);
+	}
+	
 	public ModifiedURLClassLoader(URL[] urls, ClassLoader parent) {
 		super(urls, parent);
 	}

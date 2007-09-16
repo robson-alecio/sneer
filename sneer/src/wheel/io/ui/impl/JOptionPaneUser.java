@@ -2,11 +2,15 @@ package wheel.io.ui.impl;
 
 import java.awt.Component;
 import java.awt.Dialog;
+import java.io.File;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileFilter;
 
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
@@ -199,6 +203,33 @@ public class JOptionPaneUser implements User {
 	@Override
 	public Omnivore<Notification> briefNotifier() {
 		return _briefNotifier;
+	}
+
+
+	public void saveas(final String title, final String buttonTitle, final String suffix, final String description, final Omnivore<File> callback) {
+		SwingUtilities.invokeLater(new Runnable(){
+			public void run(){
+				final JFileChooser fc = new JFileChooser(); 
+				fc.setDialogTitle(title);
+				fc.setApproveButtonText(buttonTitle);
+				fc.setFileFilter(new FileFilter(){ @Override
+					public boolean accept(File f) {
+					if ((f.isDirectory())||(f.getName().toLowerCase().endsWith(suffix))) 
+						return true;
+					return false;
+					}
+					@Override
+					public String getDescription() {
+						return description;
+					}
+				});
+				int value = fc.showSaveDialog(null);
+				if (value != JFileChooser.APPROVE_OPTION) return;
+				File file = fc.getSelectedFile();
+				callback.consume(file);
+			}
+		});
+		
 	}
 
 	

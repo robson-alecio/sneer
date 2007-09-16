@@ -1,5 +1,7 @@
 package wheel.io.ui;
 
+import java.io.File;
+
 import wheel.lang.Omnivore;
 import wheel.lang.exceptions.Catcher;
 import wheel.lang.exceptions.FriendlyException;
@@ -23,6 +25,9 @@ public interface User {
 
 	void acknowledge(Throwable t);
 	void acknowledgeFriendlyException(FriendlyException e);
+	
+	void saveas(String title, String buttonTitle, String suffix, String description, Omnivore<File> callback);
+	
 	Catcher catcher();
 
 	public class Notification {

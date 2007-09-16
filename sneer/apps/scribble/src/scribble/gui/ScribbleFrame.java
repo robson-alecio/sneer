@@ -28,19 +28,18 @@ import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.filechooser.FileFilter;
 
 import scribble.ScribblePacket;
 import scribble.packet.BrushPacket;
 import scribble.packet.ClearPacket;
 import scribble.packet.ColorPacket;
 import scribble.packet.StrokePacket;
+import wheel.io.ui.User;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 
@@ -49,8 +48,10 @@ public class ScribbleFrame extends JFrame {
 	private static final int IMAGE_HEIGHT = 400;
 	private static final int IMAGE_WIDTH = 500;
 	private static final int BUTTON_WIDTH = 75;
+	private final User _user;
 
-	public ScribbleFrame(Signal<String> otherGuysNick, final Signal<ScribblePacket> scribbleInput, Omnivore<ScribblePacket> scribbleOutput) {
+	public ScribbleFrame(User user, Signal<String> otherGuysNick, final Signal<ScribblePacket> scribbleInput, Omnivore<ScribblePacket> scribbleOutput) {
+		_user = user;
 		_otherGuysNick = otherGuysNick;
 		_drawOutput = scribbleOutput;
 
@@ -116,29 +117,7 @@ public class ScribbleFrame extends JFrame {
         prepareComponent(saveButton);
         saveButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				final JFileChooser fc = new JFileChooser(); //Refactor: Move to User.
-				fc.setDialogTitle(translate("Saving file"));
-				fc.setApproveButtonText(translate("Save"));
-				fc.setFileFilter(new FileFilter(){ @Override
-					public boolean accept(File f) {
-						if ((f.isDirectory())||(f.getName().toLowerCase().endsWith(".jpg"))) 
-							return true;
-						return false;
-					}
-					@Override
-					public String getDescription() {
-						return "JPG images";
-					}
-				});
-				int value = fc.showSaveDialog(null);
-				if (value != JFileChooser.APPROVE_OPTION) return;
-				File file = fc.getSelectedFile();
-				if (!file.getName().toLowerCase().endsWith(".jpg"))
-					file = new File(file.getAbsolutePath() + ".jpg");
-				try {
-		            ImageIO.write(_bufferedImage, "jpg", file);
-		        } catch (IOException ex) {
-		        }
+				_user.saveas(translate("Saving file"), translate("Save"), ".jpg", "JPG images", saveCallback());
 			}
         });
         
@@ -196,6 +175,17 @@ public class ScribbleFrame extends JFrame {
 		
 	}
 	
+	protected Omnivore<File> saveCallback() {
+		return new Omnivore<File>(){
+			public void consume(File file) {
+				try {
+		            ImageIO.write(_bufferedImage, "jpg", file);
+		        } catch (IOException ex) {
+		        }
+			}
+		};
+	}
+
 	private void drawAndConsume(int beginX, int beginY, int endX, int endY) {
 		drawLine(beginX,beginY,endX,endY);
 		BrushPacket brush = new BrushPacket(beginX,beginY,endX,endY);

@@ -152,7 +152,7 @@ public class Scribble {
 	}
 
 	private void createFrameFor(ContactId contactId) {
-		ScribbleFrame frame = new ScribbleFrame(findContact(contactId).nick(), inputFrom(contactId), outputTo(contactId));
+		ScribbleFrame frame = new ScribbleFrame(_user,findContact(contactId).nick(), inputFrom(contactId), outputTo(contactId));
 		frame.addWindowListener(closingListener(contactId));
 		_framesByContactId.put(contactId, frame);
 	}

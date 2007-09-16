@@ -1,5 +1,7 @@
 package wheel.io.ui.impl;
 
+import java.io.File;
+
 import wheel.io.ui.User;
 import wheel.lang.Omnivore;
 import wheel.lang.exceptions.Catcher;
@@ -7,7 +9,12 @@ import wheel.lang.exceptions.FriendlyException;
 
 public abstract class UserAdapter implements User {
 
-	@Override
+	public void saveas(String title, String buttonTitle, String suffix, String description, Omnivore<File> callback) {
+		// Implement Auto-generated method stub
+		throw new wheel.lang.exceptions.NotImplementedYet();
+	}
+
+	@Override 
 	public void acknowledge(Throwable t) {
 		// Implement Auto-generated method stub
 		throw new wheel.lang.exceptions.NotImplementedYet();

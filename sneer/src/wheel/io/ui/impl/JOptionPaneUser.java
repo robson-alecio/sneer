@@ -206,7 +206,7 @@ public class JOptionPaneUser implements User {
 	}
 
 
-	public void saveas(final String title, final String buttonTitle, final String suffix, final String description, final Omnivore<File> callback) {
+	public void saveas(final String title, final String buttonTitle, final String[] suffixes, final String description, final Omnivore<File> callback) {
 		SwingUtilities.invokeLater(new Runnable(){
 			public void run(){
 				final JFileChooser fc = new JFileChooser(); 
@@ -214,8 +214,9 @@ public class JOptionPaneUser implements User {
 				fc.setApproveButtonText(buttonTitle);
 				fc.setFileFilter(new FileFilter(){ @Override
 					public boolean accept(File f) {
-					if ((f.isDirectory())||(f.getName().toLowerCase().endsWith(suffix))) 
-						return true;
+					for(String suffix:suffixes)
+						if ((f.isDirectory())||(f.getName().toLowerCase().endsWith(suffix))) 
+							return true;
 					return false;
 					}
 					@Override

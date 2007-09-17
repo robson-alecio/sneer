@@ -9,7 +9,7 @@ import wheel.lang.exceptions.FriendlyException;
 
 public abstract class UserAdapter implements User {
 
-	public void saveas(String title, String buttonTitle, String suffix, String description, Omnivore<File> callback) {
+	public void saveas(String title, String buttonTitle, String[] suffixes, String description, Omnivore<File> callback) {
 		// Implement Auto-generated method stub
 		throw new wheel.lang.exceptions.NotImplementedYet();
 	}

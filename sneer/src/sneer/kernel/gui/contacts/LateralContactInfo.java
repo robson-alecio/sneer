@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.pointofview.Contact;
+import wheel.io.ui.User;
 import wheel.io.ui.widgets.ReactiveIntegerField;
 import wheel.io.ui.widgets.ReactiveJpgImageField;
 import wheel.io.ui.widgets.ReactiveMemoField;
@@ -24,9 +25,11 @@ public class LateralContactInfo extends JPanel{
 
 	private final Consumer<Pair<ContactId, String>> _nickChanger;
 	private final Contact _contact;
+	private final User _user;
 
-	public LateralContactInfo( Contact contact, Consumer<Pair<ContactId, String>> nickChanger){
+	public LateralContactInfo( User user, Contact contact, Consumer<Pair<ContactId, String>> nickChanger){
 		super();
+		_user = user;
 		_contact = contact;
 		_nickChanger = nickChanger;
 		add(contentPanel());
@@ -43,7 +46,7 @@ public class LateralContactInfo extends JPanel{
 		Font fieldFont = sneerFont(12);
 		Font titleFont = sneerFont(14);
 		
-		content.add(new ReactiveJpgImageField(translate("Picture"), _contact.party().picture(), null, pictureFieldSize),titleFont);
+		content.add(new ReactiveJpgImageField(_user, translate("Picture"), _contact.party().picture(), null, pictureFieldSize),titleFont);
 		content.add(new LabeledPanel(translate("Nick"), new ReactiveTextField(_contact.party().name(), nickChanger(), fieldFont), defaultFieldSize,titleFont));
 		content.add(new LabeledPanel(translate("Thought Of The Day"), new ReactiveTextField(_contact.party().thoughtOfTheDay(), null, fieldFont), defaultFieldSize, titleFont));
 		content.add(new LabeledPanel(translate("Profile"), new ReactiveMemoField(_contact.party().profile(), null, fieldFont), profileFieldSize, titleFont));

@@ -99,7 +99,7 @@ class ContactsScreen extends JFrame {
 		SwingUtilities.invokeLater(new Runnable(){
 			public void run() {
 				_lateral.removeAll();
-				_lateral.add(new LateralRootInfo(_businessSource));
+				_lateral.add(new LateralRootInfo(_user, _businessSource));
 				_lateral.revalidate();
 				_lateral.repaint();
 			}
@@ -110,7 +110,7 @@ class ContactsScreen extends JFrame {
 		SwingUtilities.invokeLater(new Runnable(){
 			public void run() {
 				_lateral.removeAll();
-				_lateral.add(new LateralContactInfo(node.contact(),_businessSource.contactNickChanger()));
+				_lateral.add(new LateralContactInfo(_user, node.contact(),_businessSource.contactNickChanger()));
 				_lateral.revalidate();
 				_lateral.repaint();
 			}

@@ -16,7 +16,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 
 import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -25,9 +24,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 
 import sneer.kernel.gui.contacts.LateralRootInfo;
-
 import wheel.graphics.JpgImage;
 import wheel.io.ui.Action;
+import wheel.io.ui.User;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.reactive.Signal;
@@ -43,8 +42,10 @@ public class ReactiveJpgImageField extends JPanel{
 	private final Omnivore<JpgImage> _setter;
 	private final String _description;
 	private final Dimension _dimension;
+	private final User _user;
 
-	public ReactiveJpgImageField(String description, Signal<JpgImage> source, Omnivore<JpgImage> setter, Dimension dimension) {
+	public ReactiveJpgImageField(User user, String description, Signal<JpgImage> source, Omnivore<JpgImage> setter, Dimension dimension) {
+		_user = user;
 		_description = description;
 		_source = source;
 		_setter = setter;
@@ -131,22 +132,22 @@ public class ReactiveJpgImageField extends JPanel{
 	private void commitChange() {
 		SwingUtilities.invokeLater(new Runnable(){
 			public void run() {
+				_user.saveas(translate("Choose a Picture"), translate("Use"), new String[]{".jpg"}, "JPG images", saveCallback());
+			}
+		});
+	}
+	
+	protected Omnivore<File> saveCallback() {
+		return new Omnivore<File>(){ public void consume(File file) {
 				try{
-					final JFileChooser fc = new JFileChooser(); //Refactor: this should be moved to _user and apps should use the same system to choose a file
-					fc.setDialogTitle(translate("Choose a Picture"));
-					fc.setApproveButtonText(translate("Use"));
-					int value = fc.showOpenDialog(null);
-					if (value != JFileChooser.APPROVE_OPTION) return;
-					File file = fc.getSelectedFile();
 					setPicture(new FileInputStream(file));
 				}catch(Exception ignored){
 					
 				}
 				_label.revalidate();
-			}
-		});
+			}};
 	}
-	
+
 	private ImageIcon resizeImageIcon(ImageIcon pictureIcon, Dimension dimension){
 		BufferedImage bi = new BufferedImage(dimension.width,dimension.height, BufferedImage.TYPE_INT_ARGB);
 		bi.getGraphics().drawImage(pictureIcon.getImage(), 0, 0, dimension.width, dimension.height, null);

@@ -26,7 +26,7 @@ public interface User {
 	void acknowledge(Throwable t);
 	void acknowledgeFriendlyException(FriendlyException e);
 	
-	void saveas(String title, String buttonTitle, String suffix, String description, Omnivore<File> callback);
+	void saveas(String title, String buttonTitle, String[] suffixes, String description, Omnivore<File> callback);
 	
 	Catcher catcher();
 

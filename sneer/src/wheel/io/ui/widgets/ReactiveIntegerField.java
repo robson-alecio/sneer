@@ -2,6 +2,7 @@ package wheel.io.ui.widgets;
 
 import java.awt.Font;
 
+import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.lang.Pair;
 import wheel.lang.exceptions.IllegalParameter;
@@ -9,7 +10,7 @@ import wheel.reactive.Signal;
 
 public class ReactiveIntegerField extends ReactiveField<Integer>{
 	
-	public ReactiveIntegerField(Signal<Integer> source, Omnivore<Integer> setter, Font font) {
+	public ReactiveIntegerField(Signal<Integer> source, Consumer<Integer> setter, Font font) {
 		super(source, setter, font);	
 	}
 	

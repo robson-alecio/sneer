@@ -25,12 +25,13 @@ public class ReactiveIntegerField extends ReactiveField<Integer>{
 	public Omnivore<Pair<Integer, String>> textChangedReceiver() {
 		return new Omnivore<Pair<Integer, String>>(){
 			public void consume(Pair<Integer, String> value) {
-				if (!value._a.equals(value._b))
-					try {
-						_setter.consume(new Integer(value._b));
-					} catch (IllegalParameter ignored) {
-					} catch (NumberFormatException ignored) {
-					}
+				try {
+					Integer number = new Integer(value._b);
+					if (!value._a.equals(number))
+						_setter.consume(number);
+				} catch (IllegalParameter ignored) {
+				} catch (NumberFormatException ignored) {
+				}
 			}
 		};
 	}

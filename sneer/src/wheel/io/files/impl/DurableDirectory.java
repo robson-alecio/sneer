@@ -142,7 +142,7 @@ public class DurableDirectory extends AbstractDirectory {
 	}
 
 	public wheel.io.files.File file(String fileName) throws FileNotFoundException {
-		return new DurableFile(new java.io.File(fileName));
+		return new DurableFile(realFile(fileName));
 	}
 
 }

@@ -21,7 +21,6 @@ import javax.swing.tree.TreePath;
 
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.gui.NewContactAddition;
-import sneer.kernel.pointofview.Contact;
 import sneer.kernel.pointofview.Party;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
@@ -121,22 +120,9 @@ class ContactsScreen extends JFrame {
 
 	private JPopupMenu getFriendPopUpMenu(final ContactNode node) {
 		final JPopupMenu result = new JPopupMenu();
-		addToContactMenu(result, infoAction(), node);
 		for (ContactAction action : _contactActionFactory.contactActions()) addToContactMenu(result, action, node);
 		addToContactMenu(result, new ContactRemovalAction(_businessSource.contactRemover()), node);
 		return result;
-	}
-
-	private ContactAction infoAction() {
-		return new ContactAction(){
-			public void actUpon(Contact contact) {
-
-			}
-			public String caption() {
-				return translate("Info");
-			}
-			
-		};
 	}
 
 	private void addToContactMenu(JPopupMenu menu, final ContactAction action, final ContactNode node) {

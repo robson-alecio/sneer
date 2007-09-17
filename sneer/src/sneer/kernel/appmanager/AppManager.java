@@ -94,6 +94,7 @@ public class AppManager {
 		return installName;
 	}
 	
+	//Refactor: in the future convert to wheel.io.File
 	public String publishFromZipFile(File zipFile){ //for metoo transfers
 		String installName = null;
 		File tempDirectory = AppTools.createTempDirectory("packaged");

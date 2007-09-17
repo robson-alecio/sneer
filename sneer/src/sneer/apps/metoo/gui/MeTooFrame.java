@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +32,9 @@ import sneer.kernel.appmanager.AppManager;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.pointofview.Contact;
+import wheel.io.Log;
+import wheel.io.files.impl.DurableDirectory;
+import wheel.io.files.impl.DurableFile;
 import wheel.io.ui.User;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
@@ -114,25 +117,36 @@ public class MeTooFrame extends JFrame{
 	}
 	
 	protected void receiveAppFile(AppFilePart appFilePart) {
-		File file = new File(_tempDirectory, appFilePart._filename);
-		updateProgressBar(appFilePart._offset,appFilePart._filesize);
 		try {
-			RandomAccessFile raf = new RandomAccessFile(file,"rws"); //Refactor Use a regular file, not RandomAccessFile. Use wheel.io.files.Directory.
-			raf.seek(appFilePart._offset);
-			raf.write(appFilePart._content,0,appFilePart._content.length);
-			raf.close();
+			DurableDirectory directory = new DurableDirectory(_tempDirectory.getAbsolutePath());
+			wheel.io.files.File file = directory.file(appFilePart._filename);
+			updateProgressBar(appFilePart._offset,appFilePart._filesize);
+			file.seek(appFilePart._offset);
+			OutputStream outputstream = file.outputstream();
+			outputstream.write(appFilePart._content,0,appFilePart._content.length);
+			outputstream.close();
+			updateProgressBar(appFilePart._offset+appFilePart._content.length,appFilePart._filesize);
+			if ((appFilePart._offset+appFilePart._content.length)>=appFilePart._filesize){ //file ended
+				String installName = _appManager.publishFromZipFile(((DurableFile)file).getFile());
+				tryToRemoveFile(appFilePart, directory);
+				sendAppListRequest();
+				_installButton.setEnabled(true);
+				_user.acknowledgeNotification(translate("Application successfully installed: \n\n %1$s",installName.substring(0,installName.indexOf("-"))));
+			}
 		} catch (FileNotFoundException e) {
-			e.printStackTrace(); //Fix: Treat properly
+			e.printStackTrace(); 
+			Log.log(e);
 		} catch (IOException e) {
-			e.printStackTrace(); //Fix: Treat properly
+			e.printStackTrace(); 
+			Log.log(e);
 		}
-		updateProgressBar(appFilePart._offset+appFilePart._content.length,appFilePart._filesize);
-		if ((appFilePart._offset+appFilePart._content.length)>=appFilePart._filesize){ //file ended
-			String installName = _appManager.publishFromZipFile(file);
-			file.delete();
-			sendAppListRequest();
-			_installButton.setEnabled(true);
-			_user.acknowledgeNotification(translate("Application successfully installed: \n\n %1$s",installName.substring(0,installName.indexOf("-"))));
+		
+	}
+
+	private void tryToRemoveFile(AppFilePart appFilePart, DurableDirectory directory) {
+		try {
+			directory.deleteFile(appFilePart._filename);
+		} catch (IOException ignored) {
 		}
 	}
 	

@@ -141,9 +141,8 @@ public class DurableDirectory extends AbstractDirectory {
 		return realFile(name).getAbsolutePath();
 	}
 
-	public wheel.io.files.File file(String fileName) {
-		// Implement Auto-generated method stub
-		throw new wheel.lang.exceptions.NotImplementedYet();
+	public wheel.io.files.File file(String fileName) throws FileNotFoundException {
+		return new DurableFile(new java.io.File(fileName));
 	}
 
 }

@@ -37,8 +37,6 @@ public class ConversationFrame extends JFrame {
 	private static final String TYPING = "TyPiNg :)"; //Refactor :)
 	private static final String TYPING_PAUSED = "TyPiNg PaUsEd :)";
 	private static final String TYPING_ERASED = "TyPiNg ErAsEd :)";
-	private final Omnivore<Notification> _briefUserNotifier;
-	private List<String> _chatDisplayQueue = new LinkedList<String>();
 
 	public ConversationFrame(Signal<String> otherGuysNick, final Signal<Message> messageInput, Omnivore<Message> messageOutput, Omnivore<Notification> briefUserNotifier){
 		_otherGuysNick = otherGuysNick;
@@ -60,6 +58,21 @@ public class ConversationFrame extends JFrame {
 		startChatDisplayer();
 	}
 
+	
+	private final Omnivore<Notification> _briefUserNotifier;
+	private final Signal<String> _otherGuysNick;
+	private final Omnivore<Message> _messageOutput;
+
+	private final JTextField _chatInput = createChatInput();
+	private final JEditorPane _chatText = createChatText();
+	private final List<String> _chatDisplayQueue = new LinkedList<String>();
+	
+	private final JLabel _statusLabel = new JLabel(" "); //Needs something to process preferred size and render correctly. :P
+	private volatile long _lastMessageSendingTime;
+	private volatile long _lastKeyPressedTime;
+	private String _lastMessageDay;
+	
+	
 	private void startChatDisplayer() {
 		Threads.startDaemon(new Runnable() { public void run() { 
 			while (true) {
@@ -78,22 +91,27 @@ public class ConversationFrame extends JFrame {
 		}
 	}
 
-	private final Signal<String> _otherGuysNick;
-	private final Omnivore<Message> _messageOutput;
-
-	private final JEditorPane _chatText = createChatText();
-	private final JTextField _chatInput = createChatInput();
-	private final JLabel _statusLabel = new JLabel(" "); //Needs something to process preferred size and render correctly. :P
-
-	private volatile long _lastMessageSendingTime;
-	private volatile long _lastKeyPressedTime;
-		 
 	private void queueChatForDisplay(String sender, Message message) {
+		queueDaySeparatorIfNecessary();
+		
 		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
-		String entry = formatter.format(new Date()) + " <b>"+ sender + ":</b> " + message._text;
+		String entry = formatter.format(new Date()) + " <b>"+ sender + ":</b> " + message._text;  //FixUrgent: Use frozenDate()
 		queueChatForDisplay(entry);
 	}
-	
+
+	private void queueDaySeparatorIfNecessary() {
+		String today = new SimpleDateFormat("dd-MMM-yyyy").format(new Date()); //FixUrgent: Use frozenDate()
+		
+		if (today.equals(_lastMessageDay)) return;
+
+		try {
+			if (_lastMessageDay == null) return;
+			queueChatForDisplay("<b>" + today + "  --------------------------------" + "</b>");
+		} finally {
+			_lastMessageDay = today;
+		}
+	}
+
 	private void initComponents() {
 		setLayout(new BorderLayout());
 
@@ -170,7 +188,7 @@ public class ConversationFrame extends JFrame {
 		return chatArea;
 	}
 	
-	private void queueChatForDisplay(final String entry) {
+	private void queueChatForDisplay(String entry) {
 		synchronized (_chatDisplayQueue) {
 			_chatDisplayQueue.add(entry);
 			_chatDisplayQueue.notify();

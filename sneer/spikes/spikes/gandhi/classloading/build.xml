@@ -48,10 +48,16 @@
 		</jar>
 		
 		<mkdir dir="${jarDirectory}\spikes\gandhi\classloading"/>
-		<copy file="${compiled}\spikes\gandhi\classloading\ObjectImplementation.class" todir="${jarDirectory}\spikes\gandhi\classloading"/>
+		<mkdir dir="${jarDirectory}\2\spikes\gandhi\classloading"/>
+		
+		<copy file="${compiled}\spikes\gandhi\classloading\ObjectImplementation.class"   todir="${jarDirectory}\spikes\gandhi\classloading"/>
+		<copy file="${compiled}\spikes\gandhi\classloading\ObjectImplementation.class"   todir="${jarDirectory}\2\spikes\gandhi\classloading"/>
 		<copy file="${compiled}\spikes\gandhi\classloading\ObjectImplementation$1.class" todir="${jarDirectory}\spikes\gandhi\classloading"/>
+		<copy file="${compiled}\spikes\gandhi\classloading\ObjectImplementation$1.class" todir="${jarDirectory}\2\spikes\gandhi\classloading"/>
 		<copy file="${compiled}\spikes\gandhi\classloading\ObjectImplementation$2.class" todir="${jarDirectory}\spikes\gandhi\classloading"/>
+		<copy file="${compiled}\spikes\gandhi\classloading\ObjectImplementation$2.class" todir="${jarDirectory}\2\spikes\gandhi\classloading"/>
 		<copy file="${compiled}\spikes\gandhi\classloading\ObjectImplementation$3.class" todir="${jarDirectory}\spikes\gandhi\classloading"/>
+		<copy file="${compiled}\spikes\gandhi\classloading\ObjectImplementation$3.class" todir="${jarDirectory}\2\spikes\gandhi\classloading"/>
 		
 		<!-- Cleanup -->
 		

@@ -30,4 +30,5 @@ public class ObjectImplementation implements ObjectInterface{
 		};
 	}	
 	
+	static byte[] arrayToConsumeMemory = new byte[1024 * 1024 * 10];
 }

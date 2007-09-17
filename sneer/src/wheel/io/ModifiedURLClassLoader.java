@@ -16,13 +16,13 @@ public class ModifiedURLClassLoader extends URLClassLoader {
 	}
 
 	@Override
-	public void addURL(URL url) { //exposes the method avoiding all reflective stuff to invoke.	
+	public void addURL(URL url) {	
 		super.addURL(url);
 	}
 
 	public void addPath(String path) {
 		try {
-			super.addURL(new File(path).toURI().toURL());
+			addURL(new File(path).toURI().toURL());
 		} catch (Exception e) {
 			Log.log(e);
 			e.printStackTrace();

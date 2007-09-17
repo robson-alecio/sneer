@@ -17,14 +17,6 @@ class ConsumerBubble implements Consumer {
 		_prevayler = prevayler;
 	}
 
-//	public Object invoke(Object proxyImplied, Method methodImplied, Object[] args)	throws Throwable {
-//		if(!methodImplied.getName().equals("consume")) throw new UnsupportedOperationException();
-//
-//		_prevayler.execute(new Consumption(_consumerGetterMethodName, args[0]));
-//		
-//		return null;
-//	}
-
 	public void consume(Object vo) throws IllegalParameter {
 		try {
 			_prevayler.execute(new Consumption(_consumerGetterMethodName, vo));

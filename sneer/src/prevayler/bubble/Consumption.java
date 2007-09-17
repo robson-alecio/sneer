@@ -6,6 +6,7 @@ import java.util.Date;
 import org.prevayler.TransactionWithQuery;
 
 import wheel.lang.Consumer;
+import wheel.lang.FrozenTime;
 import wheel.lang.exceptions.IllegalParameter;
 
 class Consumption implements TransactionWithQuery {
@@ -18,18 +19,18 @@ class Consumption implements TransactionWithQuery {
 		_valueObject = valueObject;
 	}
 
-
-	@SuppressWarnings("unchecked")
-	public Object executeAndQuery(Object stateMachine, Date ignored) throws IllegalParameter  {
-		Consumer consumer = (Consumer)getConsumer(stateMachine);
+	public Object executeAndQuery(Object stateMachine, Date date) throws IllegalParameter {
+		FrozenTime.freezeForCurrentThread(date.getTime());
+		Consumer<Object> consumer = getConsumer(stateMachine);
 		consumer.consume(_valueObject);
 		return null;
 	}
 
-	private Object getConsumer(Object stateMachine) {
+	@SuppressWarnings("unchecked")
+	private Consumer<Object> getConsumer(Object stateMachine) {
 		try {
 			Method consumerGetter = stateMachine.getClass().getMethod(_consumerGetter, new Class[0]);
-			return consumerGetter.invoke(stateMachine, new Object[0]);
+			return (Consumer<Object>)consumerGetter.invoke(stateMachine, new Object[0]);
 		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}

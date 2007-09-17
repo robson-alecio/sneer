@@ -16,11 +16,12 @@ import wheel.io.ui.widgets.ReactiveJpgImageField;
 import wheel.io.ui.widgets.ReactiveMemoField;
 import wheel.io.ui.widgets.ReactiveTextField;
 import wheel.lang.Consumer;
+import wheel.lang.Omnivore;
 import wheel.lang.Pair;
+import wheel.lang.exceptions.IllegalParameter;
 
 public class LateralContactInfo extends JPanel{
 
-	@SuppressWarnings("unused") //Should be used in nick changing...
 	private final Consumer<Pair<ContactId, String>> _nickChanger;
 	private final Contact _contact;
 
@@ -43,13 +44,24 @@ public class LateralContactInfo extends JPanel{
 		Font titleFont = sneerFont(14);
 		
 		content.add(new ReactiveJpgImageField(translate("Picture"), _contact.party().picture(), null, pictureFieldSize),titleFont);
-		content.add(new LabeledPanel(translate("Nick"), new ReactiveTextField(_contact.party().name(), null, fieldFont), defaultFieldSize,titleFont)); //Fix: the user should be able to change the nick here!
+		content.add(new LabeledPanel(translate("Nick"), new ReactiveTextField(_contact.party().name(), nickChanger(), fieldFont), defaultFieldSize,titleFont));
 		content.add(new LabeledPanel(translate("Thought Of The Day"), new ReactiveTextField(_contact.party().thoughtOfTheDay(), null, fieldFont), defaultFieldSize, titleFont));
 		content.add(new LabeledPanel(translate("Profile"), new ReactiveMemoField(_contact.party().profile(), null, fieldFont), profileFieldSize, titleFont));
 		content.add(new LabeledPanel(translate("Host"), new ReactiveTextField(_contact.party().host(), null, fieldFont), defaultFieldSize, titleFont));
 		content.add(new LabeledPanel(translate("Port"), new ReactiveIntegerField(_contact.party().port(), null, fieldFont), defaultFieldSize, titleFont));
 		
 		return content;
+	}
+
+	private Omnivore<String> nickChanger() {
+		return new Omnivore<String>(){
+			public void consume(String newNick) {
+				try {
+					_nickChanger.consume(new Pair<ContactId, String>(_contact.id(),newNick));
+				} catch (IllegalParameter ignored) {
+				}
+			}
+		};
 	}
 
 	private Font _defaultFont;

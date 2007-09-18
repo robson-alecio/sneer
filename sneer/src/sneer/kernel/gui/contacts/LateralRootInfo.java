@@ -32,12 +32,12 @@ public class LateralRootInfo extends JPanel{
 		JPanel content = new JPanel();
 		content.setLayout(new BoxLayout(content,BoxLayout.Y_AXIS));
 
-		Dimension defaultFieldSize = new Dimension(150,45);
-		Dimension profileFieldSize = new Dimension(150,100);
-		Dimension pictureFieldSize = new Dimension(150,150);
+		Dimension defaultFieldSize = new Dimension(150,40);
+		Dimension profileFieldSize = new Dimension(150,80);
+		Dimension pictureFieldSize = new Dimension(100,100);
 		
 		Font fieldFont = sneerFont(12);
-		Font titleFont = sneerFont(14);
+		Font titleFont = sneerFont(12);
 		
 		content.add(new ReactiveJpgImageField(_user, translate("Picture"), _businessSource.output().picture(), _businessSource.pictureSetter(), pictureFieldSize));
 		content.add(new LabeledPanel(translate("Own Name"), new ReactiveTextField(_businessSource.output().ownName(), _businessSource.ownNameSetter(), fieldFont), defaultFieldSize, titleFont));

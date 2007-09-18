@@ -39,15 +39,16 @@ public class LateralContactInfo extends JPanel{
 		JPanel content = new JPanel();
 		content.setLayout(new BoxLayout(content,BoxLayout.Y_AXIS));
 		
-		Dimension defaultFieldSize = new Dimension(150,45);
-		Dimension profileFieldSize = new Dimension(150,100);
-		Dimension pictureFieldSize = new Dimension(150,150);
+		Dimension defaultFieldSize = new Dimension(150,40);
+		Dimension profileFieldSize = new Dimension(150,80);
+		Dimension pictureFieldSize = new Dimension(100,100);
 		
 		Font fieldFont = sneerFont(12);
-		Font titleFont = sneerFont(14);
+		Font titleFont = sneerFont(12);
 		
 		content.add(new ReactiveJpgImageField(_user, translate("Picture"), _contact.party().picture(), null, pictureFieldSize),titleFont);
-		content.add(new LabeledPanel(translate("Nick"), new ReactiveTextField(_contact.party().name(), nickChanger(), fieldFont), defaultFieldSize,titleFont));
+		content.add(new LabeledPanel(translate("Nick"), new ReactiveTextField(_contact.nick(), nickChanger(), fieldFont), defaultFieldSize,titleFont));
+		content.add(new LabeledPanel(translate("Name"), new ReactiveTextField(_contact.party().name(), null, fieldFont), defaultFieldSize,titleFont));
 		content.add(new LabeledPanel(translate("Thought Of The Day"), new ReactiveTextField(_contact.party().thoughtOfTheDay(), null, fieldFont), defaultFieldSize, titleFont));
 		content.add(new LabeledPanel(translate("Profile"), new ReactiveMemoField(_contact.party().profile(), null, fieldFont), profileFieldSize, titleFont));
 		content.add(new LabeledPanel(translate("Host"), new ReactiveTextField(_contact.party().host(), null, fieldFont), defaultFieldSize, titleFont));

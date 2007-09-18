@@ -59,7 +59,7 @@ class ContactsScreen extends JFrame {
 		add(editPanel, BorderLayout.SOUTH);
 		add(_lateral,BorderLayout.EAST);
 		setTitle(translate("Contacts"));
-		setSize(400, 400);
+		setSize(400, 490);
 	}
 
 	

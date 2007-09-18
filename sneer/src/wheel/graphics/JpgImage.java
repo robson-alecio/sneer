@@ -43,6 +43,7 @@ public class JpgImage implements Serializable {
 
 	@Override
 	public boolean equals(Object other) {
+		if (other == null) return false;
 		if (!(other instanceof JpgImage)) return false;
 		return Arrays.equals(_jpegFileBytes, ((JpgImage)other)._jpegFileBytes);
 	}

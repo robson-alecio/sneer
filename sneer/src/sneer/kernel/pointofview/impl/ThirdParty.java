@@ -45,7 +45,7 @@ public class ThirdParty implements Party {
 				_name.setter().consume(pointOfViewPacket._name);
 			if (!_thoughtOfTheDay.output().currentValue().equals(pointOfViewPacket._thoughtOfTheDay))
 				_thoughtOfTheDay.setter().consume(pointOfViewPacket._thoughtOfTheDay);
-			if ((_picture.output().currentValue()==null)||(!_picture.output().currentValue().equals(pointOfViewPacket._picture)))
+			if ((_picture.output().currentValue()!=null)&&(!_picture.output().currentValue().equals(pointOfViewPacket._picture)))
 				_picture.setter().consume(pointOfViewPacket._picture);
 			if (!_profile.output().currentValue().equals(pointOfViewPacket._profile))
 				_profile.setter().consume(pointOfViewPacket._profile);

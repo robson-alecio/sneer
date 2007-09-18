@@ -22,6 +22,7 @@ public interface User {
 	void acknowledgeNotification(String notification, String replacementForBoringOK);
 	void acknowledgeUnexpectedProblem(String description);
 	void acknowledgeUnexpectedProblem(String description, String help);
+	void modelessAcknowledge(String title, String message);
 
 	void acknowledge(Throwable t);
 	void acknowledgeFriendlyException(FriendlyException e);

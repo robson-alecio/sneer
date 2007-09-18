@@ -47,7 +47,9 @@ class PartySimulatorImpl implements PartySimulator {
 			@Override
 			public boolean confirm(String proposition) {
 				return true;
-			}};
+			}
+		};
+
 	}
 
 	@Override

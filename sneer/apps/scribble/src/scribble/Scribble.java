@@ -2,8 +2,6 @@ package scribble;
 
 import static wheel.i18n.Language.translate;
 
-import java.awt.Dialog;
-import java.awt.Dialog.ModalityType;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -11,8 +9,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.swing.JOptionPane;
 
 import scribble.gui.ScribbleFrame;
 import sneer.kernel.appmanager.AppConfig;
@@ -86,7 +82,7 @@ public class Scribble {
 				}
 
 				if (OPEN_REQUEST_DENIED.equals(packet._contents)) {
-					modelessOptionPane("Information", "You request to scribble was not accepted. :("); //Refactor: change messages
+					_user.modelessAcknowledge(translate("Information"), translate("You request to %1$s was not accepted. :(","scribble"));
 					return;
 				}
 				
@@ -97,13 +93,6 @@ public class Scribble {
 			}
 		};
 
-	}
-
-	private void modelessOptionPane(String title, String message) { //Refactor: move this to User.
-		JOptionPane pane = new JOptionPane(message);
-		Dialog dialog = pane.createDialog(title);
-		dialog.setModalityType(ModalityType.MODELESS);
-		dialog.setVisible(true);
 	}
 
 	private void userWantsToOpen(final ContactId contactId) {

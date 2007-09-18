@@ -2,6 +2,7 @@ package wheel.io.ui.impl;
 
 import java.awt.Component;
 import java.awt.Dialog;
+import java.awt.Dialog.ModalityType;
 import java.io.File;
 
 import javax.swing.Icon;
@@ -107,7 +108,6 @@ public class JOptionPaneUser implements User {
 		return option == JOptionPane.YES_OPTION;
 	}
 
-
 	@Override
 	public void acknowledgeUnexpectedProblem(String description, String help) {
 		showMessageDialog(null, description, _title + " - Unexpected Problem", JOptionPane.ERROR_MESSAGE);
@@ -116,12 +116,10 @@ public class JOptionPaneUser implements User {
 		//Fix: Add a "Help" button to the dialog to show the help message.
 	}
 
-
 	@Override
 	public void acknowledge(Throwable t) {
 		acknowledgeUnexpectedProblem(t.getLocalizedMessage());
 	}
-
 
 	@Override
 	public void acknowledgeFriendlyException(FriendlyException e) {
@@ -152,6 +150,13 @@ public class JOptionPaneUser implements User {
 	private String adaptPrompt(String proposition) {
 		String string = Util.correctSwingNewlineSpaceProblem(proposition);
 		return string + "\n\n";
+	}
+	
+	private void showModelessOptionPane(String title, String message) {
+		JOptionPane pane = new JOptionPane(message);
+		Dialog dialog = pane.createDialog(title);
+		dialog.setModalityType(ModalityType.MODELESS);
+		dialog.setVisible(true);
 	}
 	
 	private void showOptionPaneWithTimeout(JComponent parentComponent, JOptionPane pane, int timeout, Omnivore<Boolean> callback){
@@ -231,6 +236,10 @@ public class JOptionPaneUser implements User {
 			}
 		});
 		
+	}
+
+	public void modelessAcknowledge(String title, String message) {
+		showModelessOptionPane(title, message);
 	}
 
 	

@@ -100,4 +100,9 @@ public abstract class UserAdapter implements User {
 		throw new wheel.lang.exceptions.NotImplementedYet();
 	}
 
+	@Override
+	public void modelessAcknowledge(String title, String message) {
+		// Implement Auto-generated method stub
+		throw new wheel.lang.exceptions.NotImplementedYet();
+	}
 }

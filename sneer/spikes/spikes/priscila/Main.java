@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,10 @@ public class Main extends JFrame{
 	private List<Pair<Integer,Integer>> _blackMoves= new ArrayList<Pair<Integer,Integer>>();
 	private List<Pair<Integer,Integer>> _whiteMoves= new ArrayList<Pair<Integer,Integer>>();
 	private int _scroll;
+    private boolean firstTime=true;
+    private BufferedImage bi;
     
+	
 	public Main(){		
 		setTitle("Go");
 	    setSize(400,400);
@@ -31,33 +35,55 @@ public class Main extends JFrame{
 	    setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    addMouseListener(new MouseListener());
-	    addMouseMotionListener(new MouseListener());
+	    //addMouseMotionListener(new MouseListener());
 	}
 	
 	@Override
 	public void paint(Graphics g1){
+		
+		
 		Graphics2D g= (Graphics2D)getGraphics();
 		
-		g.setColor(new Color(228,205,152));
-		g.fillRect(0, 0, 400, 400);
+	    if(firstTime) {
+	    	bi = (BufferedImage)createImage(400, 400);
+	    	g = bi.createGraphics();
+	        g.setColor(Color.white);
+			g.fillRect(0, 0, 400, 400);
+
+			g.setColor(new Color(228,205,152));
+			g.fillRect(0+ _OFFSET, 0+_OFFSET, 240, 240);
+		
+	        firstTime = false;
+	    }
+	    
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 		        RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setColor(Color.black);
 		for(int i=0; i< 270; i+=30){
 			g.drawLine(i+_OFFSET, 0+_OFFSET, i+_OFFSET, 240+_OFFSET);
 			g.drawLine(0+_OFFSET, i+_OFFSET, 240+_OFFSET, i+_OFFSET);
-		}		
-		paintMoves(g, _blackMoves);
+		}	
 		
+		paintMoves(g, _blackMoves);
 		g.setColor(Color.white);
+		
+		for(Pair<Integer, Integer> move :  _blackMoves) {
+			int x = move._a;
+			int y = move._b + ((_scroll * 30) % (9 * 30));
+			g.fillOval(x, y, _STONE_DIAMETER, _STONE_DIAMETER);	
+		}
 		paintMoves(g, _whiteMoves);
+			
+		g.drawImage(bi, 0, 0, this);
+
 	}
 
 	private void paintMoves(Graphics2D g, List<Pair<Integer, Integer>> moves) {
+		
 		for(Pair<Integer, Integer> move : moves) {
 			int x = move._a;
 			int y = move._b + ((_scroll * 30) % (9 * 30));
-			g.fillOval(x, y, _STONE_DIAMETER, _STONE_DIAMETER);
+			g.fillOval(x, y, _STONE_DIAMETER, _STONE_DIAMETER);	
 		}
 	}
 	

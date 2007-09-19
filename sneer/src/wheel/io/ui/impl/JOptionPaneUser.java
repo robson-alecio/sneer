@@ -1,5 +1,7 @@
 package wheel.io.ui.impl;
 
+import static wheel.i18n.Language.translate;
+
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Dialog.ModalityType;
@@ -210,32 +212,49 @@ public class JOptionPaneUser implements User {
 		return _briefNotifier;
 	}
 
-
+	@Override
 	public void saveas(final String title, final String buttonTitle, final String[] suffixes, final String description, final Omnivore<File> callback) {
-		SwingUtilities.invokeLater(new Runnable(){
-			public void run(){
-				final JFileChooser fc = new JFileChooser(); 
-				fc.setDialogTitle(title);
-				fc.setApproveButtonText(buttonTitle);
-				fc.setFileFilter(new FileFilter(){ @Override
-					public boolean accept(File f) {
-					for(String suffix:suffixes)
-						if ((f.isDirectory())||(f.getName().toLowerCase().endsWith(suffix))) 
-							return true;
-					return false;
-					}
-					@Override
-					public String getDescription() {
-						return description;
-					}
-				});
-				int value = fc.showSaveDialog(null);
-				if (value != JFileChooser.APPROVE_OPTION) return;
-				File file = fc.getSelectedFile();
-				callback.consume(file);
-			}
-		});
+		SwingUtilities.invokeLater(new Runnable(){ public void run(){
+			final JFileChooser fc = new JFileChooser(); 
+			fc.setDialogTitle(title);
+			fc.setApproveButtonText(buttonTitle);
+			fc.setFileFilter(new FileFilter(){ @Override
+				public boolean accept(File f) {
+				if (suffixes==null) return true;
+				for(String suffix:suffixes)
+					if ((f.isDirectory())||(f.getName().toLowerCase().endsWith(suffix))) 
+						return true;
+				return false;
+				}
+				@Override
+				public String getDescription() {
+					return description;
+				}});
+			int value = fc.showSaveDialog(null);
+			if (value != JFileChooser.APPROVE_OPTION) return;
+			File file = fc.getSelectedFile();
+			callback.consume(file);
+		}});
+	}
+	
+	@Override
+	public void chooseDirectory(final String title, final String buttonTitle, final Omnivore<File> callback) {
+		SwingUtilities.invokeLater(new Runnable(){ public void run(){
+			final JFileChooser fc = new JFileChooser();
+			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			fc.setApproveButtonText(buttonTitle);
+			fc.setDialogTitle(title);
 		
+			if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
+				File result = fc.getSelectedFile();
+				if (!result.isDirectory())  // User might have entered manually.
+					acknowledgeNotification(translate("This is not a valid folder:\n\n%1$s\n\nTry again.", result.getPath()));
+				else
+					callback.consume(result);
+			}else{
+				callback.consume(null); //callback must check for null and consider it as user cancelation
+			}
+		}});
 	}
 
 	public void modelessAcknowledge(String title, String message) {

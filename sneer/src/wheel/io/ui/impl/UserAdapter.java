@@ -105,4 +105,10 @@ public abstract class UserAdapter implements User {
 		// Implement Auto-generated method stub
 		throw new wheel.lang.exceptions.NotImplementedYet();
 	}
+	
+	@Override
+	public void chooseDirectory(String title, String buttonTitle, Omnivore<File> callback) {
+		// Implement Auto-generated method stub
+		throw new wheel.lang.exceptions.NotImplementedYet();
+	}
 }

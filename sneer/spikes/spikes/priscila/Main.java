@@ -38,7 +38,7 @@ public class Main extends JFrame{
 	private List<Pair<Integer,Integer>> _blackMoves= new ArrayList<Pair<Integer,Integer>>();
 	private List<Pair<Integer,Integer>> _whiteMoves= new ArrayList<Pair<Integer,Integer>>();
 	private int _scroll;
-    private BufferedImage bi;
+    private BufferedImage _bufferImage;
 	private volatile boolean _shouldScrollY;
     
 	
@@ -77,15 +77,15 @@ public class Main extends JFrame{
 		buffer.setColor(Color.white);
 		paintMoves(buffer, _whiteMoves);		
 
-		g1.drawImage(bi, 0, 0, this);
+		g1.drawImage(_bufferImage, 0, 0, this);
 	}
 
 	private Graphics2D getBuffer() {
-		if (bi == null) {
-	    	bi = (BufferedImage)createImage(400, 400);
-	    	return bi.createGraphics();
+		if (_bufferImage == null) {
+			_bufferImage = (BufferedImage)createImage(400, 400);
+	    	return _bufferImage.createGraphics();
 	    }
-		return (Graphics2D)bi.getGraphics();
+		return (Graphics2D)_bufferImage.getGraphics();
 	}
 
 	private void paintMoves(Graphics2D g, List<Pair<Integer, Integer>> moves) {

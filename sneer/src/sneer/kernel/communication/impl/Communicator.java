@@ -69,7 +69,9 @@ public class Communicator {
 			channel.receive(receivedPacket._packet);
 		} catch (ClassNotFoundException e) {
 			Log.log(translate("Unknown packet class being used by some contact: %1$s\nHe might have a different Sneer version or some Application you dont have.", e.getMessage()));
-			return;
+		} catch (Throwable t) {
+			Log.log("Channel throwed Throwable below. Channel: " + receivedPacket._channelId);
+			Log.log(t);
 		}
 	}
 

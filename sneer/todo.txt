@@ -1,5 +1,4 @@
 Gandhi
- >>>> online signal bug. illegalstate when reconnecting
  - Readable font for profile.
  - Fix security problems FileTransfer
  - app.metoo -> kernel.appmanager.metoo

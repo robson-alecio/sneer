@@ -1,6 +1,11 @@
 package sneer.apps.filetransfer;
 
-public class FilePart {
+import java.io.Serializable;
+
+public class FilePart implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	public String _filename;
 	public long _filesize; //only needed because the progressbar needs a reference
 	public byte[] _content;

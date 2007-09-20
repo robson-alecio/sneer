@@ -3,6 +3,7 @@ package sneer.kernel.communication.impl;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.LinkedList;
@@ -37,18 +38,26 @@ class ChannelImpl implements Channel {
 
 	private Omnivore<Packet> createOutputSerializer() {
 		return new Omnivore<Packet>() { public void consume(Packet packet) {
-			byte[] serializedContents = serialize(packet._contents);
+			byte[] serializedContents;
+			try {
+				serializedContents = serialize(packet._contents);
+			} catch (NotSerializableException e) {
+				Log.log(e);
+				return;
+			}
 			Packet classLoadable = new Packet(packet._contactId, serializedContents); 
 			_output.consume(classLoadable);
 		}}; 
 	}
 
-	private byte[] serialize(Object contents) {
+	private byte[] serialize(Object contents) throws NotSerializableException {
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 		try {
 			ObjectOutputStream output = new ObjectOutputStream(bytes);
 			output.writeObject(contents); //Optimize
 			output.close();
+		} catch (NotSerializableException nse) {
+			throw nse;
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}

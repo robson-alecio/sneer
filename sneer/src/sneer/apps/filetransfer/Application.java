@@ -21,7 +21,7 @@ public class Application implements SovereignApplication{
 
 	@Override
 	public int trafficPriority() {
-		return 0;
+		return 3;
 	}
 	
 	@Override

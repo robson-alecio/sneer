@@ -169,7 +169,7 @@ public class AppManager {
 		File zipFile = new File(packagedDirectory, JAR_NAME);
 		AppTools.unzip(zipFile, sourceDirectory);
 		File ApplicationSourceFile = AppTools.findApplicationSource(sourceDirectory);
-		File[] sources = new File[] { ApplicationSourceFile};
+		File[] sources = new File[] { ApplicationSourceFile };
 		compile(sources, sourceDirectory, compiledDirectory);
 	}
 
@@ -196,7 +196,7 @@ public class AppManager {
 		System.out.println(sneerJarLocation);
 		for (File source : sources) {
 			System.out.println("Compiling " + source.getName());
-			String[] parameters = { "-classpath", sneerJarLocation + File.pathSeparator + targetClassesDirectory.getAbsolutePath(), "-sourcepath", sourceDirectory.getAbsolutePath() + "/src", "-d", targetClassesDirectory.getAbsolutePath(), source.getAbsolutePath() };
+			String[] parameters = { "-classpath", sneerJarLocation + File.pathSeparator + targetClassesDirectory.getAbsolutePath(), "-sourcepath", sourceDirectory.getAbsolutePath() , "-d", targetClassesDirectory.getAbsolutePath(), source.getAbsolutePath() };
 			com.sun.tools.javac.Main.compile(parameters);
 		}
 	}

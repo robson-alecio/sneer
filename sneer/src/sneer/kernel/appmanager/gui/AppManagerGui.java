@@ -67,9 +67,7 @@ public class AppManagerGui extends JFrame{
 				if (baseFolder==null)
 					return;
 				
-				File srcFolder = new File(baseFolder,"src");
-				
-				File application = AppTools.findApplicationSource(srcFolder);
+				File application = AppTools.findApplicationSource(baseFolder);
 
 				if (application==null)
 					throw new RuntimeException("Application.java not found in any package.");

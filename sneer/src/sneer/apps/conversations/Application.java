@@ -15,6 +15,16 @@ public class Application implements SovereignApplication{
 	private ConversationsApp _delegate;
 
 	@Override
+	public String defaultName() {
+		return "Messages";
+	}
+
+	@Override
+	public int trafficPriority() {
+		return 0;
+	}
+	
+	@Override
 	public void start(AppConfig config) {
 		_delegate = new ConversationsApp(config);
 	}

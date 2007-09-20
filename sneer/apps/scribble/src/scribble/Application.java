@@ -14,6 +14,16 @@ public class Application implements SovereignApplication{
 	private Scribble _delegate;
 
 	@Override
+	public String defaultName() {
+		return "Scribble";
+	}
+
+	@Override
+	public int trafficPriority() {
+		return 2;
+	}
+
+	@Override
 	public void start(AppConfig config) {
 		_delegate = new Scribble(config);
 	}

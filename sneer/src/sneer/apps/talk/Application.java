@@ -15,6 +15,16 @@ public class Application implements SovereignApplication{
 	private TalkApp _delegate;
 
 	@Override
+	public String defaultName() {
+		return "Voice";
+	}
+
+	@Override
+	public int trafficPriority() {
+		return 0;
+	}
+
+	@Override
 	public void start(AppConfig config) {
 		_delegate = new TalkApp(config);
 	}

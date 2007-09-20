@@ -7,6 +7,10 @@ import wheel.io.ui.Action;
 
 public interface SovereignApplication {
 	
+	public String defaultName();
+	
+	public int trafficPriority();
+	
 	public List<Action> mainActions();
 	public List<ContactAction> contactActions();
 

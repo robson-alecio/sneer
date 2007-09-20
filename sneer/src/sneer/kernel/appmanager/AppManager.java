@@ -53,7 +53,7 @@ public class AppManager {
 		SovereignApplicationUID app = findByName(installName);
 		if (app==null)
 			return;
-		_communicator.crashChannel(app._info.defaultName());
+		_communicator.crashChannel(app._sovereignApplication.defaultName());
 		_publishedApps.remove(app);
 	}
 	
@@ -75,14 +75,15 @@ public class AppManager {
 			String appUID = packageApp(originalSourceDirectory, packagedTempDirectory);
 
 			processApp(packagedTempDirectory, sourceTempDirectory, compiledTempDirectory);
-			SovereignApplicationInfo info = discoverApplicationInfo(compiledTempDirectory);
+			SovereignApplication tempApp = loadApp(compiledTempDirectory);
 			
-			installName = info.defaultName()+"-"+appUID;
+			installName = tempApp.defaultName()+"-"+appUID;
 
 			copyToFinalPlace(packagedTempDirectory, sourceTempDirectory, compiledTempDirectory, installName);
 
-			SovereignApplication app = startApp(new File(SneerDirectories.compiledAppsDirectory(), installName), info);
-			registerApp(installName,app,info);
+			SovereignApplication app = loadApp(new File(SneerDirectories.compiledAppsDirectory(), installName));
+			startApp(app);
+			registerApp(installName,app);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -128,23 +129,14 @@ public class AppManager {
 		}
 	}
 
-	private SovereignApplication startApp(File compiledAppDirectory, SovereignApplicationInfo info) throws Exception {
+	private SovereignApplication loadApp(File compiledAppDirectory) throws Exception {
 		File classesDirectory = new File(compiledAppDirectory, "classes");
 		File applicationFile = AppTools.findApplicationClass(compiledAppDirectory);
 		String packageName = AppTools.pathToPackage(classesDirectory, applicationFile.getParentFile());
 		SovereignApplication app = (SovereignApplication)loadClass(packageName+ ".Application", classesDirectory.getAbsolutePath()).newInstance();
-		startApp(app, info);
 		return app;
 	}
-	
-	private SovereignApplicationInfo discoverApplicationInfo(File compiledAppDirectory) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IllegalArgumentException{
-		File classesDirectory = new File(compiledAppDirectory, "classes");
-		File applicationInfoFile = AppTools.findApplicationInfo(compiledAppDirectory);
-		String packageName = AppTools.pathToPackage(classesDirectory, applicationInfoFile.getParentFile());
-		return (SovereignApplicationInfo)loadClass(packageName + ".ApplicationInfo",classesDirectory.getAbsolutePath()).newInstance();
-	}
 
-	//individual classloaders
 	private Class<?> loadClass(String completeName, String path) throws ClassNotFoundException, IllegalArgumentException {
 		URL[] urls;
 		try {
@@ -155,20 +147,10 @@ public class AppManager {
 		URLClassLoader classloader = new URLClassLoader(urls, this.getClass().getClassLoader());
 		return classloader.loadClass(completeName);
 	}
-	
-	//same classloader
-	/*private Class<?> loadClass(String completeName, String path) throws ClassNotFoundException, IllegalArgumentException {
-		_classloader.addPath(path);
-		Class<?> clazz = _classloader.loadClass(completeName);
-		return clazz;
-	}*/
 
-	public void startApp(SovereignApplication app, SovereignApplicationInfo info){
-		app.start(createAppConfig(info, app.getClass().getClassLoader()));
-	}
-
-	private AppConfig createAppConfig(SovereignApplicationInfo info, ClassLoader classLoader) {
-		return new AppConfig(_user, _communicator.openChannel(info.defaultName(), info.trafficPriority(), classLoader), _me.contacts(), _contactAttributes, _me.name(), _briefUserNotifier, null);  //FixUrgent Create the blower passing the [packagedDirectory]/prevalence directory.
+	public void startApp(SovereignApplication app){
+		AppConfig config = new AppConfig(_user, _communicator.openChannel(app.defaultName(), app.trafficPriority(), app.getClass().getClassLoader()), _me.contacts(), _contactAttributes, _me.name(), _briefUserNotifier, null);  //FixUrgent Create the blower passing the [packagedDirectory]/prevalence directory.
+		app.start(config);
 	}
 
 	private String packageApp(File sourceDirectory, File targetDirectory) {
@@ -187,8 +169,7 @@ public class AppManager {
 		File zipFile = new File(packagedDirectory, JAR_NAME);
 		AppTools.unzip(zipFile, sourceDirectory);
 		File ApplicationSourceFile = AppTools.findApplicationSource(sourceDirectory);
-		File ApplicationInfoSourceFile = AppTools.findApplicationInfoSource(sourceDirectory);
-		File[] sources = new File[] { ApplicationSourceFile, ApplicationInfoSourceFile};
+		File[] sources = new File[] { ApplicationSourceFile};
 		compile(sources, sourceDirectory, compiledDirectory);
 	}
 
@@ -237,17 +218,18 @@ public class AppManager {
 			String candidateApp = compiledAppDirectory.getName();
 			if (isAppLoaded(candidateApp))
 				continue;
-			SovereignApplicationInfo info = discoverApplicationInfo(compiledAppDirectory);
-			SovereignApplication app = startApp(compiledAppDirectory, info);
-			registerApp(compiledAppDirectory.getName(), app, info);
+			
+			SovereignApplication app = loadApp(compiledAppDirectory);
+			startApp(app);
+			registerApp(compiledAppDirectory.getName(), app);
 		}
 	}
 
-	public void registerApp(String installName, SovereignApplication app, SovereignApplicationInfo info) throws IOException{
+	public void registerApp(String installName, SovereignApplication app) throws IOException{
 		System.out.println("Registering new Application: " + installName);
 		File appUIDFile = AppTools.findAppUID(new File(SneerDirectories.appsDirectory(), installName));
 		String appUID = new String(AppTools.getBytesFromFile(appUIDFile));
-		_publishedApps.add(new SovereignApplicationUID(installName, appUID, app, info));
+		_publishedApps.add(new SovereignApplicationUID(installName, appUID, app));
 	}
 
 	private boolean isAppLoaded(String installName) {

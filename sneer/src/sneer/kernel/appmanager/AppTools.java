@@ -39,8 +39,9 @@ public class AppTools {
         Enumeration<?> e = zipfile.entries();
         while(e.hasMoreElements()) {
            entry = (ZipEntry) e.nextElement();
-           System.out.println("Extracting: " +entry);
-           File targetFile = new File(target.getPath()+"/"+entry.getName());
+           
+           File targetFile = new File(target.getPath(),entry.getName().replaceAll("\\\\", "/"));
+           System.out.println("Extracting: " +targetFile.getAbsolutePath());
            if (entry.isDirectory()){
         	   targetFile.mkdirs();
         	   targetFile.setLastModified(entry.getTime());

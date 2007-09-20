@@ -39,7 +39,7 @@ public class Sneer {
 	
 	public Sneer() throws Exception{
 		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-		if (classloader instanceof ModifiedURLClassLoader)
+		if (classloader instanceof ModifiedURLClassLoader) 
 			_classloader = (ModifiedURLClassLoader)classloader; //running from JAR/Boot/SneerJockey
 		else
 			_classloader = new ModifiedURLClassLoader(classloader); //running from eclipse/mainskippingboot
@@ -78,7 +78,7 @@ public class Sneer {
 		try{Thread.sleep(2000);}catch(InterruptedException ie){}
 		
 		_communicator = new Communicator(_user, new OldNetworkImpl(), _businessSource);
-		Channel channel = _communicator.getChannel("Point of View", 1);
+		Channel channel = _communicator.openChannel("Point of View", 1);
 		_me = new Me(_businessSource.output(), _communicator.operator(), channel);
 		
 		System.out.println("Checking existing apps:");

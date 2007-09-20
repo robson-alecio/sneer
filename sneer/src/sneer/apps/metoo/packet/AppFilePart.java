@@ -2,7 +2,10 @@ package sneer.apps.metoo.packet;
 
 import sneer.apps.metoo.MeTooPacket;
 
-public class AppFilePart implements MeTooPacket{
+public class AppFilePart implements MeTooPacket {
+
+	private static final long serialVersionUID = 1L;
+
 	public String _filename;
 	public long _filesize; 
 	public byte[] _content;

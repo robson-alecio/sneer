@@ -1,7 +1,9 @@
 package scribble;
 
+import java.io.Serializable;
 
-public interface ScribblePacket {
+
+public interface ScribblePacket extends Serializable {
 	
 	public static final int BRUSH = 0;
 	public static final int CLEAR = 1;

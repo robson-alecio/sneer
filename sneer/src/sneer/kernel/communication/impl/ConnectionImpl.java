@@ -3,6 +3,7 @@ package sneer.kernel.communication.impl;
 import static wheel.i18n.Language.translate;
 
 import java.io.IOException;
+import java.io.NotSerializableException;
 
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.communication.Connection;
@@ -54,7 +55,7 @@ public class ConnectionImpl implements Connection {
 		return new Omnivore<Boolean>() { public void consume(Boolean socketActive) {
 			if (socketActive)
 				startReceiving(_socketHolder.socket());
-			
+
 			notifyIsOnline(socketActive);
 		}};
 	}
@@ -179,6 +180,8 @@ public class ConnectionImpl implements Connection {
 
 		try {
 			socket.writeObject(toSend);
+		} catch (NotSerializableException nse) {
+			Log.log(nse);
 		} catch (IOException e) {
 			_socketHolder.crash(socket);
 			return;

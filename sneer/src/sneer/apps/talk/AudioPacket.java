@@ -1,6 +1,10 @@
 package sneer.apps.talk;
 
-public class AudioPacket {
+import java.io.Serializable;
+
+public class AudioPacket implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	public AudioPacket(byte[][] content) {
 		_content = content;

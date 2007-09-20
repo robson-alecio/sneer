@@ -7,6 +7,8 @@ import scribble.ScribblePacket;
 
 
 public class ColorPacket implements ScribblePacket{
+
+	private static final long serialVersionUID = 1L;
 	public final Color _color;
 	
 	public ColorPacket(Color color){

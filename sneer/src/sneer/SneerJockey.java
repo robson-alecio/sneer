@@ -20,16 +20,15 @@ public class SneerJockey {
 		while (true) play(latestSneerJar());
 	}
 
-	@SuppressWarnings("unused")
-	private void play(URL SneerJar) throws Exception {
-		//FixUrgent: SneerJar variable is not being used inside classloader. If used,
+	private void play(URL sneerJar) throws Exception {
+		//FixUrgent: sneerJar variable is not being used inside classloader. If used,
 		// scribble app stops working because Brushpacket is not recognized. (class conflict)
 		// Everything works fine without it because when you execute the jar,
 		// its contents are automatically in the classpath, and when executed using eclipse,
 		// the code is in the classpath too.
-		// ModifiedURLClassLoader mainLoader = new ModifiedURLClassLoader(new URL[]{SneerJar},this.getClass().getClassLoader()); 
+		// ModifiedURLClassLoader mainLoader = new ModifiedURLClassLoader(new URL[]{sneerJar},this.getClass().getClassLoader()); 
 		ModifiedURLClassLoader mainLoader = new ModifiedURLClassLoader(new URL[]{},this.getClass().getClassLoader()); 
-		Thread.currentThread().setContextClassLoader(mainLoader);
+		Thread.currentThread().setContextClassLoader(mainLoader); //Might be used by RMI in the future. You never know.
 		mainLoader.loadClass("sneer.Sneer").newInstance();
 	}
 

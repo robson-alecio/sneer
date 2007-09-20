@@ -32,7 +32,6 @@ import sneer.kernel.communication.Packet;
 import wheel.io.Log;
 import wheel.io.network.ObjectSocket;
 import wheel.io.network.OldNetwork;
-import wheel.io.network.impl.XStreamNetwork;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.lang.Consumer;
@@ -49,9 +48,8 @@ public class Communicator {
 		
 		prepareBusiness();
 		
-		XStreamNetwork xNetwork = new XStreamNetwork(network);
-		_spider = new Spider(xNetwork, business.contactAttributes(), outgoingConnectionValidator(), myObjectReceiver());
-		new SocketAccepter(user, xNetwork, business.sneerPort(), mySocketServer());
+		_spider = new Spider(network, business.contactAttributes(), outgoingConnectionValidator(), myObjectReceiver());
+		new SocketAccepter(user, network, business.sneerPort(), mySocketServer());
 	}
 
 	private Omnivore<Object> myObjectReceiver() {
@@ -67,7 +65,12 @@ public class Communicator {
 			Log.log(translate("Unknown channel being used by some contact: %1$s\nHe might have a different Sneer version or some Application you dont have.", receivedPacket._channelId));
 			return;
 		}
-		channel.receive(receivedPacket._packet);
+		try {
+			channel.receive(receivedPacket._packet);
+		} catch (ClassNotFoundException e) {
+			Log.log(translate("Unknown packet class being used by some contact: %1$s\nHe might have a different Sneer version or some Application you dont have.", e.getMessage()));
+			return;
+		}
 	}
 
 	private Consumer<OutgoingConnectionAttempt> outgoingConnectionValidator() {
@@ -141,18 +144,17 @@ public class Communicator {
 	}
 
 
-	public Channel getChannel(String channelId, int priority) {
-		ChannelImpl result = _channelsById.get(channelId);
-		if (result != null) return result;
-		
-		result = new ChannelImpl(outputFor(channelId, priority));
+	public Channel openChannel(String channelId, int priority) {
+		return openChannel(channelId, priority, this.getClass().getClassLoader());
+	}
+
+	public Channel openChannel(String channelId, int priority, ClassLoader classLoader) {
+		ChannelImpl result = new ChannelImpl(outputFor(channelId, priority), classLoader);
 		_channelsById.put(channelId, result);
 		return result;
 	}
 	
-	public void removeChannel(String channelId){
-		ChannelImpl result = _channelsById.get(channelId);
-		if (result == null) return ;
+	public void crashChannel(String channelId){
 		_channelsById.remove(channelId);
 	}
 

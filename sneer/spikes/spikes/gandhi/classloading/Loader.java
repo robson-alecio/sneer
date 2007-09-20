@@ -22,7 +22,6 @@ public class Loader {
 
 	public Loader(String externalClasspath) throws Exception {
 		printMemoryUse();
-		printMemoryUse();
 
 		ObjectInterface app = loadApp(externalClasspath);
 		testBehavior(app);

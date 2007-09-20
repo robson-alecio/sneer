@@ -30,7 +30,7 @@ class PartySimulatorImpl implements PartySimulator {
 		}
 		
 		Communicator communicator = new Communicator(user(), network, _businessSource);
-		Channel channel = communicator.getChannel("Simulator Channel", 1);
+		Channel channel = communicator.openChannel("Simulator Channel", 1);
 		_pointOfView = new Me(_businessSource.output(), communicator.operator(), channel);
 
 		nameSetter().consume(name);

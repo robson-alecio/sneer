@@ -1,7 +1,9 @@
 package sneer.apps.metoo;
 
+import java.io.Serializable;
 
-public interface MeTooPacket {
+
+public interface MeTooPacket extends Serializable {
 	
 	public static final int APP_LIST_REQUEST = 0;
 	public static final int APP_LIST_RESPONSE = 1;

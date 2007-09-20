@@ -1,6 +1,11 @@
 Gandhi
+ - Jockey gc classloader 
+ - SovereignApplicationInfo -> SovereignApplication
+ - Remove "src" structure from apps. Use root for source code directly.
+ - Eliminate apptmp directory leak.
+ - optimize channelimpl objectStream use
+
  - Fix app unloading and channel unregister
- - Try to open contactscreen *directly* at the correct size and position
  done - Fix MeToo to work from Sneer.jar
   - Keep proportion of pic dimensions when it is resized.
  

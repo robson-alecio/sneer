@@ -1,11 +1,17 @@
 package sneer.kernel.communication.impl;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import wheel.io.Log;
+import wheel.io.serialization.ObjectInputStreamWithClassLoader;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.reactive.Signal;
@@ -15,14 +21,39 @@ class ChannelImpl implements Channel {
 
 	private final SourceImpl<Packet> _input = new SourceImpl<Packet>(null);
 	private final Omnivore<Packet> _output;
+	private final Omnivore<Packet> _outputSerializer;
 	
 	private final List<Packet> _buffer = new LinkedList<Packet>();
 	private final SourceImpl<Integer> _elementsInInputBuffer = new SourceImpl<Integer>(0);
+	private final ClassLoader _classLoader;
 
 	
-	ChannelImpl(Omnivore<Packet> output) {
+	ChannelImpl(Omnivore<Packet> output, ClassLoader classLoader) {
 		_output = output;
+		_outputSerializer = createOutputSerializer();
+		_classLoader = classLoader;
 		startConsumer();
+	}
+
+	private Omnivore<Packet> createOutputSerializer() {
+		return new Omnivore<Packet>() { public void consume(Packet packet) {
+			byte[] serializedContents = serialize(packet._contents);
+			Packet classLoadable = new Packet(packet._contactId, serializedContents); 
+			_output.consume(classLoadable);
+		}}; 
+	}
+
+	private byte[] serialize(Object contents) {
+		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		try {
+			ObjectOutputStream output = new ObjectOutputStream(bytes);
+			output.writeObject(contents); //Optimize
+			output.close();
+		} catch (IOException e) {
+			throw new IllegalStateException(e);
+		}
+		
+		return bytes.toByteArray();
 	}
 
 	private void startConsumer() { 
@@ -43,14 +74,28 @@ class ChannelImpl implements Channel {
 	}
 
 	public Omnivore<Packet> output() {
-		return _output;
+		return _outputSerializer;
 	}
 
-	void receive(Packet packet) {
+	void receive(Packet classLoadable) throws ClassNotFoundException {
+		Object contents = desserialize((byte[])classLoadable._contents);
+		Packet packet = new Packet(classLoadable._contactId, contents);
+		
 		synchronized (_buffer) {
 			_buffer.add(packet);
 			inputBufferChanged();
 			_buffer.notify();
+		}
+	}
+
+	private Object desserialize(byte[] contents) throws ClassNotFoundException {
+		ByteArrayInputStream stream = new ByteArrayInputStream(contents);
+		ObjectInputStream input;
+		try {
+			input = new ObjectInputStreamWithClassLoader(stream, _classLoader); //Optimize
+			return input.readObject();
+		} catch (IOException e) {
+			throw new IllegalStateException(e);
 		}
 	}
 

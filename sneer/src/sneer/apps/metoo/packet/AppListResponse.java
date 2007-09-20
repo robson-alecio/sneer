@@ -5,7 +5,9 @@ import java.util.Map;
 import sneer.apps.metoo.MeTooPacket;
 
 
-public class AppListResponse implements MeTooPacket{
+public class AppListResponse implements MeTooPacket {
+
+	private static final long serialVersionUID = 1L;
 
 	public final Map<String, String> _installNameAndAppUID;
 	

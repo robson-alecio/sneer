@@ -1,8 +1,10 @@
 package sneer.kernel.communication.impl;
 
+import java.io.Serializable;
+
 import sneer.kernel.communication.Packet;
 
-public class ChannelPacket {
+public class ChannelPacket implements Serializable {
 
 	public final String _channelId;
 	public final Packet _packet;
@@ -11,5 +13,7 @@ public class ChannelPacket {
 		_channelId = channelId;
 		_packet = packet;
 	}
+
+	private static final long serialVersionUID = 1L;
 
 }

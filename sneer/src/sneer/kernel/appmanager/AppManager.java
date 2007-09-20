@@ -2,6 +2,9 @@ package sneer.kernel.appmanager;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 import sneer.SneerDirectories;
 import sneer.kernel.business.contacts.ContactAttributes;
@@ -53,7 +56,7 @@ public class AppManager {
 		SovereignApplicationUID app = findByName(installName);
 		if (app==null)
 			return;
-		_communicator.removeChannel(app._info.defaultName());
+		_communicator.crashChannel(app._info.defaultName());
 		_publishedApps.remove(app);
 	}
 	
@@ -145,26 +148,30 @@ public class AppManager {
 	}
 
 	//individual classloaders
-	/*private Class<?> loadClass(String completeName, String path) throws ClassNotFoundException, IllegalArgumentException {
-		ModifiedURLClassLoader classloader = new ModifiedURLClassLoader(_classloader);
-		classloader.addPath(path);
-		Class<?> clazz = classloader.loadClass(completeName);
-		return clazz;
-	}*/
+	private Class<?> loadClass(String completeName, String path) throws ClassNotFoundException, IllegalArgumentException {
+		URL[] urls;
+		try {
+			urls = new URL[] {new File(path).toURI().toURL()};
+		} catch (MalformedURLException e) {
+			throw new IllegalArgumentException();
+		}
+		URLClassLoader classloader = new URLClassLoader(urls, _classloader);
+		return classloader.loadClass(completeName);
+	}
 	
 	//same classloader
-	private Class<?> loadClass(String completeName, String path) throws ClassNotFoundException, IllegalArgumentException {
+	/*private Class<?> loadClass(String completeName, String path) throws ClassNotFoundException, IllegalArgumentException {
 		_classloader.addPath(path);
 		Class<?> clazz = _classloader.loadClass(completeName);
 		return clazz;
-	}
+	}*/
 
 	public void startApp(SovereignApplication app, SovereignApplicationInfo info){
-		app.start(currentAppConfig(info));
+		app.start(createAppConfig(info, app.getClass().getClassLoader()));
 	}
 
-	private AppConfig currentAppConfig(SovereignApplicationInfo info) {
-		return new AppConfig(_user, _communicator.getChannel(info.defaultName(), info.trafficPriority()), _me.contacts(), _contactAttributes, _me.name(), _briefUserNotifier, null);  //FixUrgent Create the blower passing the [packagedDirectory]/prevalence directory.
+	private AppConfig createAppConfig(SovereignApplicationInfo info, ClassLoader classLoader) {
+		return new AppConfig(_user, _communicator.openChannel(info.defaultName(), info.trafficPriority(), classLoader), _me.contacts(), _contactAttributes, _me.name(), _briefUserNotifier, null);  //FixUrgent Create the blower passing the [packagedDirectory]/prevalence directory.
 	}
 
 	private String packageApp(File sourceDirectory, File targetDirectory) {

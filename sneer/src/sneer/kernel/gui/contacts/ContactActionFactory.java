@@ -40,7 +40,7 @@ public class ContactActionFactory {
 		_appManager.startApp(_talk, new sneer.apps.talk.ApplicationInfo());
 		
 		// _metoo cant be exposed yet as a normal app without exposing too much appconfig.
-		Channel metooChannel = _communicator.getChannel(MeToo.class.getName(), 3);
+		Channel metooChannel = _communicator.openChannel(MeToo.class.getName(), 3);
 		_meToo = new MeToo(_user, metooChannel,_appManager.publishedApps().output(), _appManager);
 	}
 

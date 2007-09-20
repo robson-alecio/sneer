@@ -2,7 +2,10 @@ package scribble.packet;
 
 import scribble.ScribblePacket;
 
-public class BrushPacket implements ScribblePacket{
+public class BrushPacket implements ScribblePacket {
+
+	private static final long serialVersionUID = 1L;
+
 	public final int _beginX;
 	public final int _beginY;
 	public final int _endX;

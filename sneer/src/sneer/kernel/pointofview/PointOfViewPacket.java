@@ -1,8 +1,10 @@
 package sneer.kernel.pointofview;
 
+import java.io.Serializable;
+
 import wheel.graphics.JpgImage;
 
-public class PointOfViewPacket {
+public class PointOfViewPacket implements Serializable {
 	public final String _name;
 	public final String _thoughtOfTheDay;
 	public final JpgImage _picture;
@@ -14,4 +16,6 @@ public class PointOfViewPacket {
 		_picture = picture;
 		_profile = profile;
 	}
+
+	private static final long serialVersionUID = 1L;
 }

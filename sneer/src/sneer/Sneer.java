@@ -21,7 +21,6 @@ import sneer.kernel.pointofview.Party;
 import sneer.kernel.pointofview.impl.Me;
 import wheel.i18n.Language;
 import wheel.io.Log;
-import wheel.io.ModifiedURLClassLoader;
 import wheel.io.network.OldNetworkImpl;
 import wheel.io.ui.User;
 import wheel.io.ui.User.Notification;
@@ -31,22 +30,11 @@ import wheel.lang.Threads;
 
 public class Sneer {
 
-	private final ModifiedURLClassLoader _classloader;
-
 	public static void main(String args[]) throws Exception {
 		new Sneer();
 	}
 	
 	public Sneer() throws Exception{
-		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-		if (classloader instanceof ModifiedURLClassLoader) 
-			_classloader = (ModifiedURLClassLoader)classloader; //running from JAR/Boot/SneerJockey
-		else
-			_classloader = new ModifiedURLClassLoader(classloader); //running from eclipse/mainskippingboot
-		execute();
-	}
-	
-	private void execute(){
 		try {
 			
 			tryToRun();
@@ -82,7 +70,7 @@ public class Sneer {
 		_me = new Me(_businessSource.output(), _communicator.operator(), channel);
 		
 		System.out.println("Checking existing apps:");
-		_appManager = new AppManager(_user,_communicator, _me, _businessSource.output().contactAttributes(), briefNotifier(),_classloader);
+		_appManager = new AppManager(_user,_communicator, _me, _businessSource.output().contactAttributes(), briefNotifier());
 		for(SovereignApplicationUID app:_appManager.publishedApps().output())
 			System.out.println("App : "+app._info.defaultName());
 

@@ -11,7 +11,6 @@ import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.communication.impl.Communicator;
 import sneer.kernel.pointofview.Party;
 import wheel.io.Log;
-import wheel.io.ModifiedURLClassLoader;
 import wheel.io.ui.User;
 import wheel.io.ui.User.Notification;
 import wheel.lang.Omnivore;
@@ -32,15 +31,13 @@ public class AppManager {
 
 	private final Party _me;
 
-	private final ModifiedURLClassLoader _classloader;
 
-	public AppManager(User user, Communicator communicator, Party me, ListSignal<ContactAttributes> contactAttributes, Omnivore<Notification> briefUserNotifier, ModifiedURLClassLoader classloader) {
+	public AppManager(User user, Communicator communicator, Party me, ListSignal<ContactAttributes> contactAttributes, Omnivore<Notification> briefUserNotifier) {
 		_user = user;
 		_me = me;
 		_communicator = communicator;
 		_contactAttributes = contactAttributes;
 		_briefUserNotifier = briefUserNotifier;
-		_classloader = classloader;
 	}
 
 	private void createDirectories() { //should be moved to install???
@@ -155,7 +152,7 @@ public class AppManager {
 		} catch (MalformedURLException e) {
 			throw new IllegalArgumentException();
 		}
-		URLClassLoader classloader = new URLClassLoader(urls, _classloader);
+		URLClassLoader classloader = new URLClassLoader(urls, this.getClass().getClassLoader());
 		return classloader.loadClass(completeName);
 	}
 	

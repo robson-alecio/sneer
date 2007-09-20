@@ -10,7 +10,10 @@ import java.util.Arrays;
 
 public class JpgImage implements Serializable {
 
-	private byte[] _jpegFileBytes;
+	private byte[] _jpegFileBytes = {};
+	
+	public JpgImage(){
+	}
 
 	public JpgImage(String path) throws IOException {
 		InputStream file = new FileInputStream(path);

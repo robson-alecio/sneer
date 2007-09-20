@@ -34,7 +34,7 @@ public class ThirdParty implements Party {
 	private final ListSource<Contact> _fakeContacts;
 	private final Source<String> _name = new SourceImpl<String>("[Implement Name Cache]"); //Implement
 	private final Source<String> _thoughtOfTheDay = new SourceImpl<String>("");
-	private final Source<JpgImage> _picture = new SourceImpl<JpgImage>(null);
+	private final Source<JpgImage> _picture = new SourceImpl<JpgImage>(new JpgImage());
 	private final Source<String> _profile = new SourceImpl<String>("");
 	
 	private Omnivore<Packet> packetReceiver() {

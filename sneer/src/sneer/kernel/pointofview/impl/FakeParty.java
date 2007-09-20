@@ -27,7 +27,7 @@ public class FakeParty implements Party {
 	private final Source<Boolean> _publicKeyConfirmed = new SourceImpl<Boolean>(false);
 	
 	private final Source<String> _thoughtOfTheDay = new SourceImpl<String>("thoughtOfTheDay");
-	private final Source<JpgImage> _picture = new SourceImpl<JpgImage>(null);
+	private final Source<JpgImage> _picture = new SourceImpl<JpgImage>(new JpgImage());
 	private final Source<String> _profile = new SourceImpl<String>("profile");
 
 	private volatile boolean _isCrashed = false;

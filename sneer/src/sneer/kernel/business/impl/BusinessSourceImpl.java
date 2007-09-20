@@ -77,7 +77,7 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 	private final Source<String> _publicKey = new SourceImpl<String>("");
 	
 	private final Source<String> _thoughtOfTheDay = new SourceImpl<String>("");
-	private final Source<JpgImage> _picture = new SourceImpl<JpgImage>(null);
+	private final Source<JpgImage> _picture = new SourceImpl<JpgImage>(new JpgImage());
 	private final Source<String> _profile = new SourceImpl<String>("");
 
 	private final PortNumberSource _sneerPortNumber = new PortNumberSource(0);

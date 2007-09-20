@@ -64,4 +64,13 @@ public class Log {
 		redirectTo(new FileOutputStream(file, true));
 	}
 
+
+	public static void logStackWithMessage(String message) {
+		try {
+			throw new Exception(message);
+		} catch (Exception e) {
+			log(e);
+		}
+	}
+
 }

@@ -171,6 +171,11 @@ public class ConnectionImpl implements Connection {
 	}
 
 	private void notifyIsOnline(boolean isOnline) {
+		if (_isOnlineSource.output().currentValue() == isOnline) {
+			Log.logStackWithMessage("isOnline state change redundant: " + isOnline);
+			return;
+		}
+		
 		_isOnlineSource.setter().consume(isOnline);
 	}
 
@@ -181,6 +186,7 @@ public class ConnectionImpl implements Connection {
 		try {
 			socket.writeObject(toSend);
 		} catch (NotSerializableException nse) {
+			_socketHolder.crash(socket);
 			Log.log(nse);
 		} catch (IOException e) {
 			_socketHolder.crash(socket);

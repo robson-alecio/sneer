@@ -10,21 +10,22 @@ import java.util.Arrays;
 
 public class JpgImage implements Serializable {
 
-	private byte[] _jpegFileBytes = {};
+	private final byte[] _jpegFileBytes;
 	
-	public JpgImage(){
+	public JpgImage() {
+		_jpegFileBytes = new byte[]{};
 	}
 
 	public JpgImage(String path) throws IOException {
 		InputStream file = new FileInputStream(path);
-		read(file);
+		_jpegFileBytes = readBytes(file);
 	}
 	
 	public JpgImage(InputStream input) throws IOException {
-		read(input);
+		_jpegFileBytes = readBytes(input);
 	}
 	
-	private void read(InputStream input) throws IOException{
+	private byte[] readBytes(InputStream input) throws IOException{
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();		
 		byte[] block = new byte[4096 * 10];
 		while (true) {
@@ -33,7 +34,7 @@ public class JpgImage implements Serializable {
 			bytes.write(block, 0, bytesRead);
 		}
 		
-		_jpegFileBytes = bytes.toByteArray();
+		return bytes.toByteArray();
 	}
 
 	public InputStream jpegFileContents() {

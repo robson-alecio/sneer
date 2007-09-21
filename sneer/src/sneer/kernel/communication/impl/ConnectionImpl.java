@@ -56,7 +56,7 @@ public class ConnectionImpl implements Connection {
 			if (socketActive)
 				startReceiving(_socketHolder.socket());
 
-			notifyIsOnline(socketActive);
+			notifyIsOnline(socketActive);  //FixUrgent receiving deamon might not have started.
 		}};
 	}
 

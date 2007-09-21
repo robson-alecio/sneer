@@ -13,11 +13,7 @@
 	
 	<target name="dist">
 		<splash imageurl="http://www.freefever.com/animatedgifs/cartoons/animated/calvinandhobbes9.gif" showduration="0"/>
-			
-		<!-- Asks for version number -->
-		
-		<input message="What is the Sneer version? Example: 1.2-Beta" addproperty="version" />
-		
+					
 		<!-- Preparation -->
 		
 		<delete dir="${build}"/>
@@ -73,7 +69,7 @@
 		
 		<!-- Create jar -->
 		
-		<jar destfile="${bin}\Sneer-${version}.jar" basedir="${build}" manifest="${build}\MANIFEST.MF">
+		<jar destfile="${bin}\Sneer-build-candidate.jar" basedir="${build}" manifest="${build}\MANIFEST.MF">
 			<include name="**\*.class" />
 			<include name="**\*.properties" />
 			<fileset dir="${src}">

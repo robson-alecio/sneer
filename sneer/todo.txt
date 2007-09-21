@@ -6,9 +6,13 @@ Gandhi
  - Create sneerapps project in svn. Move scribble and mp3sushi to there
  - optimize channelimpl objectStream use
  - Refactor Metoo to use FileTransfer
- - check if nullpointer in metoo freezes remote sneer
- 
- 
+
+
+Klaus
+ - Granular profile updating per signal
+ - Contact Navigation
+
+
 FileSharing
   - Hardcoded directory
   - Polling

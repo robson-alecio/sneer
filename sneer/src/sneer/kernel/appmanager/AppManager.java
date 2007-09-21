@@ -100,7 +100,6 @@ public class AppManager {
 		return installName;
 	}
 	
-	//Refactor: in the future convert to wheel.io.File
 	public String publishFromZipFile(File zipFile){ //for metoo transfers
 		String installName = null;
 		File tempDirectory = AppTools.createTempDirectory("packaged");
@@ -205,7 +204,7 @@ public class AppManager {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			if (com.sun.tools.javac.Main.compile(parameters, new PrintWriter(out))!=0){
 				Log.log(out.toString());
-				_user.acknowledgeNotification(translate("Compile Error. See the Sneer log file for details.")); //Refactor: make it a dialog with a textarea and scrollbars
+				_user.acknowledgeNotification(translate("Compile Error. See the Sneer log file for details."));
 				throw new CompilationFailure();
 			}
 		}

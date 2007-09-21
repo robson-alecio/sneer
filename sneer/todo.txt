@@ -1,7 +1,6 @@
 Gandhi
  - Conversar c o Humberto p ele fazer o MP3 Sushi funcionar
  - Readable font for profile.
- - Fazer um gandhi.selfip.net p vc ficar sempre reachable onde estiver. Avisar a galera na lista do sneercoders.
  - Fix security problems FileTransfer
  - app.metoo -> kernel.appmanager.metoo
  - Eliminate app/tmp directory leak
@@ -9,6 +8,7 @@ Gandhi
  - optimize channelimpl objectStream use
  - Refactor Metoo to use FileTransfer
  - Fazer MP3 Sushi funcionar se o Humberto n tiver feito
+ - Fazer um gandhi.selfip.net p vc ficar sempre reachable onde estiver. Avisar a galera na lista do sneercoders.
 
 
 Klaus

@@ -202,9 +202,9 @@ public class AppManager {
 			String[] parameters = { "-classpath", sneerJarLocation + File.pathSeparator + targetClassesDirectory.getAbsolutePath(), "-sourcepath", sourceDirectory.getAbsolutePath() , "-d", targetClassesDirectory.getAbsolutePath(), source.getAbsolutePath() };
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			if (com.sun.tools.javac.Main.compile(parameters, new PrintWriter(out))!=0){
-				Log.log("Error compiling " + source.getAbsolutePath());
-				_user.acknowledgeNotification(out.toString()); //Refactor: make it a dialog with a textarea and scrollbars
-				throw new IOException("compile error");
+				Log.log(out.toString());
+				_user.acknowledgeNotification(translate("Compile Error")); //Refactor: make it a dialog with a textarea and scrollbars
+				throw new IOException("Error compiling " + source.getAbsolutePath());
 			}
 		}
 	}

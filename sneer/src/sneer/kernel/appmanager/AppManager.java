@@ -1,5 +1,7 @@
 package sneer.kernel.appmanager;
 
+import static wheel.i18n.Language.translate;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +22,6 @@ import wheel.lang.Omnivore;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListSource;
 import wheel.reactive.lists.impl.ListSourceImpl;
-import static wheel.i18n.Language.*;
 
 public class AppManager {
 
@@ -89,6 +90,7 @@ public class AppManager {
 			startApp(app);
 			registerApp(installName,app);
 
+		} catch (DontLogThisException e) {
 		} catch (Exception e) {
 			Log.log(e);
 		}
@@ -168,7 +170,7 @@ public class AppManager {
 		return null;
 	}
 
-	private void processApp(File packagedDirectory, File sourceDirectory, File compiledDirectory) throws ZipException, IOException {
+	private void processApp(File packagedDirectory, File sourceDirectory, File compiledDirectory) throws ZipException, IOException, DontLogThisException {
 		File zipFile = new File(packagedDirectory, JAR_NAME);
 		AppTools.unzip(zipFile, sourceDirectory);
 		File ApplicationSourceFile = AppTools.findApplicationSource(sourceDirectory);
@@ -183,7 +185,7 @@ public class AppManager {
 		return null;
 	}
 
-	private void compile(File[] sources, File sourceDirectory, File targetDirectory) throws IOException {
+	private void compile(File[] sources, File sourceDirectory, File targetDirectory) throws IOException, DontLogThisException {
 		File targetClassesDirectory = new File(targetDirectory, "classes");
 		targetClassesDirectory.mkdirs();
 		String sneerJarLocation = null;
@@ -203,10 +205,16 @@ public class AppManager {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			if (com.sun.tools.javac.Main.compile(parameters, new PrintWriter(out))!=0){
 				Log.log(out.toString());
-				_user.acknowledgeNotification(translate("Compile Error")); //Refactor: make it a dialog with a textarea and scrollbars
-				throw new IOException("Error compiling " + source.getAbsolutePath());
+				_user.acknowledgeNotification(translate("Compile Error. See the Sneer log file for details.")); //Refactor: make it a dialog with a textarea and scrollbars
+				throw new DontLogThisException();
 			}
 		}
+	}
+	
+	public class DontLogThisException extends Exception{
+
+		private static final long serialVersionUID = 1L;
+		
 	}
 
 	public ListSource<SovereignApplicationUID> publishedApps() {

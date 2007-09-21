@@ -1,10 +1,13 @@
 package sneer.kernel.appmanager;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.zip.ZipException;
 
 import sneer.SneerDirectories;
 import sneer.kernel.business.contacts.ContactAttributes;
@@ -17,6 +20,7 @@ import wheel.lang.Omnivore;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListSource;
 import wheel.reactive.lists.impl.ListSourceImpl;
+import static wheel.i18n.Language.*;
 
 public class AppManager {
 
@@ -86,7 +90,6 @@ public class AppManager {
 			registerApp(installName,app);
 
 		} catch (Exception e) {
-			e.printStackTrace();
 			Log.log(e);
 		}
 		AppTools.removeRecursive(packagedTempDirectory);
@@ -165,7 +168,7 @@ public class AppManager {
 		return null;
 	}
 
-	private void processApp(File packagedDirectory, File sourceDirectory, File compiledDirectory) throws Exception {
+	private void processApp(File packagedDirectory, File sourceDirectory, File compiledDirectory) throws ZipException, IOException {
 		File zipFile = new File(packagedDirectory, JAR_NAME);
 		AppTools.unzip(zipFile, sourceDirectory);
 		File ApplicationSourceFile = AppTools.findApplicationSource(sourceDirectory);
@@ -180,7 +183,7 @@ public class AppManager {
 		return null;
 	}
 
-	private void compile(File[] sources, File sourceDirectory, File targetDirectory) throws Exception {
+	private void compile(File[] sources, File sourceDirectory, File targetDirectory) throws IOException {
 		File targetClassesDirectory = new File(targetDirectory, "classes");
 		targetClassesDirectory.mkdirs();
 		String sneerJarLocation = null;
@@ -197,7 +200,12 @@ public class AppManager {
 		for (File source : sources) {
 			System.out.println("Compiling " + source.getName());
 			String[] parameters = { "-classpath", sneerJarLocation + File.pathSeparator + targetClassesDirectory.getAbsolutePath(), "-sourcepath", sourceDirectory.getAbsolutePath() , "-d", targetClassesDirectory.getAbsolutePath(), source.getAbsolutePath() };
-			com.sun.tools.javac.Main.compile(parameters);
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			if (com.sun.tools.javac.Main.compile(parameters, new PrintWriter(out))!=0){
+				Log.log("Error compiling " + source.getAbsolutePath());
+				_user.acknowledgeNotification(out.toString()); //Refactor: make it a dialog with a textarea and scrollbars
+				throw new IOException("compile error");
+			}
 		}
 	}
 

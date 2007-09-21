@@ -90,7 +90,7 @@ public class AppManager {
 			startApp(app);
 			registerApp(installName,app);
 
-		} catch (DontLogThisException e) {
+		} catch (CompilationFailure e) {
 		} catch (Exception e) {
 			Log.log(e);
 		}
@@ -170,7 +170,7 @@ public class AppManager {
 		return null;
 	}
 
-	private void processApp(File packagedDirectory, File sourceDirectory, File compiledDirectory) throws ZipException, IOException, DontLogThisException {
+	private void processApp(File packagedDirectory, File sourceDirectory, File compiledDirectory) throws ZipException, IOException, CompilationFailure {
 		File zipFile = new File(packagedDirectory, JAR_NAME);
 		AppTools.unzip(zipFile, sourceDirectory);
 		File ApplicationSourceFile = AppTools.findApplicationSource(sourceDirectory);
@@ -185,7 +185,7 @@ public class AppManager {
 		return null;
 	}
 
-	private void compile(File[] sources, File sourceDirectory, File targetDirectory) throws IOException, DontLogThisException {
+	private void compile(File[] sources, File sourceDirectory, File targetDirectory) throws IOException, CompilationFailure {
 		File targetClassesDirectory = new File(targetDirectory, "classes");
 		targetClassesDirectory.mkdirs();
 		String sneerJarLocation = null;
@@ -206,12 +206,12 @@ public class AppManager {
 			if (com.sun.tools.javac.Main.compile(parameters, new PrintWriter(out))!=0){
 				Log.log(out.toString());
 				_user.acknowledgeNotification(translate("Compile Error. See the Sneer log file for details.")); //Refactor: make it a dialog with a textarea and scrollbars
-				throw new DontLogThisException();
+				throw new CompilationFailure();
 			}
 		}
 	}
 	
-	public class DontLogThisException extends Exception{
+	public class CompilationFailure extends Exception{
 
 		private static final long serialVersionUID = 1L;
 		

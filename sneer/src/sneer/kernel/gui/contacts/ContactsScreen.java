@@ -3,7 +3,7 @@ package sneer.kernel.gui.contacts;
 import static wheel.i18n.Language.translate;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -24,6 +24,7 @@ import sneer.kernel.gui.NewContactAddition;
 import sneer.kernel.pointofview.Party;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
+import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 
 class ContactsScreen extends JFrame {
@@ -48,7 +49,6 @@ class ContactsScreen extends JFrame {
 	private void initComponents() {
 		_lateral = new JPanel();
 		_lateral.setLayout(new BorderLayout());
-		_lateral.setPreferredSize(new Dimension(160,100));
 		setLayout(new BorderLayout());
 		JPanel editPanel = new JPanel();
 		editPanel.setLayout(new BorderLayout());
@@ -59,9 +59,17 @@ class ContactsScreen extends JFrame {
 		add(editPanel, BorderLayout.SOUTH);
 		add(_lateral,BorderLayout.EAST);
 		setTitle(translate("Contacts"));
-		setSize(400, 490);
+		_user.font().addReceiver(fontReceiver());
 	}
 
+	private Omnivore<Font> fontReceiver() {
+		return new Omnivore<Font>(){ public void consume(Font font) {
+				SwingUtilities.invokeLater(new Runnable(){ public void run() {
+					ContactsScreen.this.getRootPane().revalidate();
+					ContactsScreen.this.getRootPane().repaint();
+				}});
+		}};
+	}
 	
 	private JTree createFriendsTree() {
 		final JTree tree = new JTree();

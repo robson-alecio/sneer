@@ -1,13 +1,25 @@
 package wheel.io.ui.impl;
 
+import java.awt.Font;
 import java.io.File;
 
 import wheel.io.ui.User;
 import wheel.lang.Omnivore;
 import wheel.lang.exceptions.Catcher;
 import wheel.lang.exceptions.FriendlyException;
+import wheel.reactive.Signal;
 
 public abstract class UserAdapter implements User {
+
+	public Signal<Font> font() {
+		// Implement Auto-generated method stub
+		throw new wheel.lang.exceptions.NotImplementedYet();
+	}
+
+	public void fontChooser() {
+		// Implement Auto-generated method stub
+		throw new wheel.lang.exceptions.NotImplementedYet();
+	}
 
 	public void saveas(String title, String buttonTitle, String[] suffixes, String description, Omnivore<File> callback) {
 		// Implement Auto-generated method stub

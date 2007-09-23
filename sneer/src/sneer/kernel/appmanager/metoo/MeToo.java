@@ -39,7 +39,6 @@ public class MeToo {
 	private final Channel _channel;
 	private final ListSignal<SovereignApplicationUID> _publishedApps;
 	private final AppManager _appManager;
-	private final File _tempDirectory;
 
 	private final User _user;
 
@@ -48,7 +47,6 @@ public class MeToo {
 		_channel = channel;
 		_publishedApps = publishedApps;
 		_appManager = appManager;
-		_tempDirectory = AppTools.createTempDirectory("metoo");
 		_channel.input().addReceiver(meTooPacketReceiver());
 	}
 
@@ -139,7 +137,7 @@ public class MeToo {
 		if (_framesByContactId.get(contact.id()) == null){
 			SourceImpl<MeTooPacket> input = new SourceImpl<MeTooPacket>(null);
 			_inputsByContactId.put(contact.id(), input);
-			_framesByContactId.put(contact.id(), new MeTooFrame(_user, _channel, contact, input.output(), _tempDirectory, _appManager));
+			_framesByContactId.put(contact.id(), new MeTooFrame(_user, _channel, contact, input.output(), _appManager));
 		} else {
 			_framesByContactId.get(contact.id()).sendAppListRequest();
 		}

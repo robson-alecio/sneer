@@ -32,24 +32,39 @@ public abstract class ReactiveField<U> extends JPanel{
 	
 	protected Signal<U> _source;
 	protected Consumer<U> _setter;
-	protected final Font _font;
 	
-	public ReactiveField(Signal<U> source, Consumer<U> setter, Font font){
+	public ReactiveField(Signal<U> source, Consumer<U> setter, Signal<Font> font){
 		_source = source;
 		_setter = setter;
-		_font = font;
 		_state = (setter == null)?DISABLED_STATE:ENABLED_SAVED_STATE;
 		initComponents();
 		_source.addReceiver(fieldReceiver());
 		fieldReceiver().consume(_source.currentValue());
+		if (font!=null)
+			font.addReceiver(fontReceiver());
+		setCurrentFont(font.currentValue());
 	}
 	
+	private Omnivore<Font> fontReceiver() {
+		return new Omnivore<Font>(){ public void consume(final Font font) {
+			setCurrentFont(font);
+		}};
+	}
+	
+	public void setCurrentFont(final Font font) {
+		SwingUtilities.invokeLater(new Runnable(){
+			public void run() {
+				_area.setFont(font);
+				_area.revalidate();
+			}
+		});
+	}
+
 	public JTextField _area = new JTextField();
 	
 	public void initComponents(){
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 		_area.selectAll();
-		_area.setFont(_font);
 		add(_area);
 		if (_state==ENABLED_SAVED_STATE)
 			addChangeListeners();

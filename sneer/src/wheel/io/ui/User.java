@@ -1,10 +1,12 @@
 package wheel.io.ui;
 
+import java.awt.Font;
 import java.io.File;
 
 import wheel.lang.Omnivore;
 import wheel.lang.exceptions.Catcher;
 import wheel.lang.exceptions.FriendlyException;
+import wheel.reactive.Signal;
 
 public interface User {
 
@@ -29,6 +31,10 @@ public interface User {
 	
 	void saveas(String title, String buttonTitle, String[] suffixes, String description, Omnivore<File> callback);
 	void chooseDirectory(String title, String buttonTitle, Omnivore<File> callback) ;
+	
+	Signal<Font> font();
+
+	void fontChooser();
 	
 	Catcher catcher();
 

@@ -26,7 +26,7 @@ public class ReactiveMemoField extends JPanel {
 	private final boolean _editable;
 	private final Omnivore<String> _setter;
 
-	public ReactiveMemoField(Signal<String> source, Omnivore<String> setter, Font font) {
+	public ReactiveMemoField(Signal<String> source, Omnivore<String> setter, Signal<Font> font) {
 		_source = source;
 		_setter = setter;
 		_editable = (setter != null); //if setter == null, different textfield behaviour
@@ -36,7 +36,6 @@ public class ReactiveMemoField extends JPanel {
 		setAreaBorderColor(Color.black);
 		_area.selectAll();
 		_area.setEditable(_editable);
-		_area.setFont(font);
 		if (_editable) 
 			addChangeListeners();
 		_scroll.setViewportView(_area);
@@ -44,6 +43,24 @@ public class ReactiveMemoField extends JPanel {
 		add(_scroll);
 		_source.addReceiver(fieldReceiver());
 		setBackgroundColor();
+		if (font!=null)
+			font.addReceiver(fontReceiver());
+		setCurrentFont(font.currentValue());
+	}
+	
+	private Omnivore<Font> fontReceiver() {
+		return new Omnivore<Font>(){ public void consume(final Font font) {
+			setCurrentFont(font);
+		}};
+	}
+	
+	public void setCurrentFont(final Font font) {
+		SwingUtilities.invokeLater(new Runnable(){
+			public void run() {
+				_area.setFont(font);
+				_area.revalidate();
+			}
+		});
 	}
 	
 	private Omnivore<String> fieldReceiver() { return new Omnivore<String>(){

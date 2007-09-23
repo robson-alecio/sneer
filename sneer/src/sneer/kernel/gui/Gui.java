@@ -72,12 +72,24 @@ public class Gui {
 		_trayIcon.setDefaultAction(showContactsScreenAction);
 		_trayIcon.addAction(showContactsScreenAction);
 		_trayIcon.addAction(languageChangeAction());
+		_trayIcon.addAction(showFontScreenAction());
 		_trayIcon.addAction(appManagerAction());
 		for(SovereignApplicationUID app : _appManager.publishedApps().output())
 			if (app._sovereignApplication.mainActions() != null)
 				for(Action mainAction : app._sovereignApplication.mainActions())
 					_trayIcon.addAction(mainAction);
 		_trayIcon.addAction(exitAction());
+	}
+
+	private Action showFontScreenAction() {
+		return new Action(){
+			public String caption() {
+				return translate("Font");
+			}
+			public void run() {
+				_user.fontChooser();
+			}
+		};
 	}
 
 	private Action appManagerAction() {

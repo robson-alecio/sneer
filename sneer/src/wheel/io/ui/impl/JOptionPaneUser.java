@@ -4,6 +4,7 @@ import static wheel.i18n.Language.translate;
 
 import java.awt.Component;
 import java.awt.Dialog;
+import java.awt.Font;
 import java.awt.Dialog.ModalityType;
 import java.io.File;
 
@@ -11,6 +12,7 @@ import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
@@ -22,6 +24,9 @@ import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.Catcher;
 import wheel.lang.exceptions.FriendlyException;
+import wheel.reactive.Signal;
+import wheel.reactive.Source;
+import wheel.reactive.impl.SourceImpl;
 
 public class JOptionPaneUser implements User {
 	
@@ -259,6 +264,26 @@ public class JOptionPaneUser implements User {
 
 	public void modelessAcknowledge(String title, String message) {
 		showModelessOptionPane(title, message);
+	}
+
+	private final Source<Font> _font = new SourceImpl<Font>((new JLabel()).getFont()); //Refactor: is there a better way to get default font?
+
+	public Signal<Font> font() {
+		return _font.output();
+	}
+	
+
+	public void fontChooser() {
+		Threads.startDaemon(new Runnable(){
+			public void run() {
+				JFontChooser chooser = new JFontChooser();
+				int option = chooser.showDialog(null, translate("Choose Sneer Font"));
+				if (option == JFontChooser.OK_OPTION)
+					if (_font.output().currentValue()!=chooser.getFont())
+						_font.setter().consume(chooser.getFont());
+					
+			}
+		});
 	}
 
 	

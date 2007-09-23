@@ -245,11 +245,17 @@ public class AppTools {
 		return temp;
 	}
 	
+	public static void cleanupTempDirectory(){
+		removeRecursive(SneerDirectories.temporaryDirectory());
+		SneerDirectories.temporaryDirectory().mkdirs();
+	}
+	
 	public static void removeRecursive(File file){
-		if (file.isDirectory())
-			for(File children:file.listFiles())
-				removeRecursive(children);
-		file.delete();
+		if ((file!=null)&&(file.exists()))
+			if (file.isDirectory())
+				for(File children:file.listFiles())
+					removeRecursive(children);
+			file.delete();
 	}
 	
 	private static final String hexDigits = "0123456789abcdef";

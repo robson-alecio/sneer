@@ -3,8 +3,6 @@ package sneer.kernel.gui.contacts;
 import static wheel.i18n.Language.translate;
 
 import java.awt.Dimension;
-import java.awt.Font;
-import java.io.InputStream;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -39,20 +37,17 @@ public class LateralContactInfo extends JPanel{
 		JPanel content = new JPanel();
 		content.setLayout(new BoxLayout(content,BoxLayout.Y_AXIS));
 		
-		Dimension defaultFieldSize = new Dimension(150,40);
-		Dimension profileFieldSize = new Dimension(150,80);
+		//Refactor: think if picture should delegate to panel define its size.
 		Dimension pictureFieldSize = new Dimension(100,100);
 		
-		Font fieldFont = sneerFont(12);
-		Font titleFont = sneerFont(12);
-		
-		content.add(new ReactiveJpgImageField(_user, translate("Picture"), _contact.party().picture(), null, pictureFieldSize),titleFont);
-		content.add(new LabeledPanel(translate("Nick"), new ReactiveTextField(_contact.nick(), nickChanger(), fieldFont), defaultFieldSize,titleFont));
-		content.add(new LabeledPanel(translate("Name"), new ReactiveTextField(_contact.party().name(), null, fieldFont), defaultFieldSize,titleFont));
-		content.add(new LabeledPanel(translate("Thought Of The Day"), new ReactiveTextField(_contact.party().thoughtOfTheDay(), null, fieldFont), defaultFieldSize, titleFont));
-		content.add(new LabeledPanel(translate("Profile"), new ReactiveMemoField(_contact.party().profile(), null, fieldFont), profileFieldSize, titleFont));
-		content.add(new LabeledPanel(translate("Host"), new ReactiveTextField(_contact.party().host(), null, fieldFont), defaultFieldSize, titleFont));
-		content.add(new LabeledPanel(translate("Port"), new ReactiveIntegerField(_contact.party().port(), null, fieldFont), defaultFieldSize, titleFont));
+		//Refactor: choose reactivefield sizes and maintain font aspect ratio
+		content.add(new ReactiveJpgImageField(_user, translate("Picture"), _contact.party().picture(), null, pictureFieldSize));
+		content.add(new LabeledPanel(translate("Nick"), new ReactiveTextField(_contact.nick(), nickChanger(), _user.font()), _user.font()));
+		content.add(new LabeledPanel(translate("Name"), new ReactiveTextField(_contact.party().name(), null, _user.font()), _user.font()));
+		content.add(new LabeledPanel(translate("Thought Of The Day"), new ReactiveTextField(_contact.party().thoughtOfTheDay(), null, _user.font()), _user.font()));
+		content.add(new LabeledPanel(translate("Profile"), new ReactiveMemoField(_contact.party().profile(), null, _user.font()),  _user.font()));
+		content.add(new LabeledPanel(translate("Host"), new ReactiveTextField(_contact.party().host(), null, _user.font()),  _user.font()));
+		content.add(new LabeledPanel(translate("Port"), new ReactiveIntegerField(_contact.party().port(), null, _user.font()),  _user.font()));
 		
 		return content;
 	}
@@ -66,24 +61,6 @@ public class LateralContactInfo extends JPanel{
 				}
 			}
 		};
-	}
-
-	private Font _defaultFont;
-	
-	public Font sneerFont(){
-		if (_defaultFont == null){
-			InputStream fis = LateralContactInfo.class.getResourceAsStream("/sneer/kernel/gui/contacts/bip.ttf");
-			try{
-				_defaultFont =  Font.createFont(Font.TRUETYPE_FONT, fis);
-			}catch(Exception e){
-				_defaultFont = new Font("Arial",Font.PLAIN,14);
-			}
-		}
-		return _defaultFont;
-	}
-	
-	public Font sneerFont(float size){
-		return sneerFont().deriveFont(size);
 	}
 	
 	private static final long serialVersionUID = 1L;

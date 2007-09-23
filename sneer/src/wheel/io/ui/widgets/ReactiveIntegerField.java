@@ -10,7 +10,7 @@ import wheel.reactive.Signal;
 
 public class ReactiveIntegerField extends ReactiveField<Integer>{
 	
-	public ReactiveIntegerField(Signal<Integer> source, Consumer<Integer> setter, Font font) {
+	public ReactiveIntegerField(Signal<Integer> source, Consumer<Integer> setter, Signal<Font> font) {
 		super(source, setter, font);	
 	}
 	

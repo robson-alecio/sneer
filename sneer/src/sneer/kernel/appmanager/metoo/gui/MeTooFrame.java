@@ -24,6 +24,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 
 import sneer.kernel.appmanager.AppManager;
+import sneer.kernel.appmanager.AppTools;
 import sneer.kernel.appmanager.metoo.MeTooPacket;
 import sneer.kernel.appmanager.metoo.packet.AppFilePart;
 import sneer.kernel.appmanager.metoo.packet.AppInstallRequest;
@@ -48,16 +49,14 @@ public class MeTooFrame extends JFrame{
 	private JList _appList;
 	private DefaultListModel _listModel = new DefaultListModel();
 	private Map<String, String> _installNameAndAppUID = new HashMap<String, String>();
-	private final File _tempDirectory;
 	private final AppManager _appManager;
 	private final User _user;
 
-	public MeTooFrame(User user, Channel channel, Contact contact, Signal<MeTooPacket> input, File tempDirectory, AppManager appManager){
+	public MeTooFrame(User user, Channel channel, Contact contact, Signal<MeTooPacket> input, AppManager appManager){
 		_user = user;
 		_channel = channel;
 		_contact = contact;
 		_input = input;
-		_tempDirectory = tempDirectory;
 		_appManager = appManager;
 		_input.addReceiver(meTooPacketReceiver());
 		initComponents();
@@ -117,8 +116,9 @@ public class MeTooFrame extends JFrame{
 	}
 	
 	protected void receiveAppFile(AppFilePart appFilePart) {
+		File tempDirectory = AppTools.createTempDirectory("metoo");
 		try {
-			DurableDirectory directory = new DurableDirectory(_tempDirectory.getAbsolutePath());
+			DurableDirectory directory = new DurableDirectory(tempDirectory.getAbsolutePath());
 			wheel.io.files.File file = directory.file(appFilePart._filename);
 			updateProgressBar(appFilePart._offset,appFilePart._filesize);
 			file.seek(appFilePart._offset);
@@ -128,7 +128,6 @@ public class MeTooFrame extends JFrame{
 			updateProgressBar(appFilePart._offset+appFilePart._content.length,appFilePart._filesize);
 			if ((appFilePart._offset+appFilePart._content.length)>=appFilePart._filesize){ //file ended
 				String installName = _appManager.publishFromZipFile(((DurableFile)file).getFile());
-				tryToRemoveFile(appFilePart, directory);
 				sendAppListRequest();
 				_installButton.setEnabled(true);
 				_user.acknowledgeNotification(translate("Application successfully installed: \n\n %1$s",installName.substring(0,installName.indexOf("-"))));
@@ -139,15 +138,14 @@ public class MeTooFrame extends JFrame{
 		} catch (IOException e) {
 			e.printStackTrace(); 
 			Log.log(e);
+		}finally{
+			removeTemporaryDirectory(tempDirectory);
 		}
 		
 	}
 
-	private void tryToRemoveFile(AppFilePart appFilePart, DurableDirectory directory) {
-		try {
-			directory.deleteFile(appFilePart._filename);
-		} catch (IOException ignored) {
-		}
+	private void removeTemporaryDirectory(File directory){
+		AppTools.removeRecursive(directory);
 	}
 	
 	protected void updateAppList(Map<String, String> installNameAndAppUID) {

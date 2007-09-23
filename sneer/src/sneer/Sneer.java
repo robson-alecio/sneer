@@ -10,7 +10,6 @@ import org.prevayler.PrevaylerFactory;
 
 import prevayler.bubble.Bubble;
 import sneer.kernel.appmanager.AppManager;
-import sneer.kernel.appmanager.AppTools;
 import sneer.kernel.appmanager.SovereignApplicationUID;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.impl.BusinessFactory;
@@ -56,7 +55,7 @@ public class Sneer {
 	private ContactActionFactory _contactActionFactory;
 	
 	private void tryToRun() throws Exception {
-		cleanupTemporaryDirectory();
+
 		tryToRedirectLogToSneerLogFile();
 
 		Prevayler prevayler = prevaylerFor(new BusinessFactory().createBusinessSource());
@@ -81,11 +80,6 @@ public class Sneer {
 		_gui = new Gui(_user, _me, _businessSource, _appManager, _contactActionFactory); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
 		
 		while (true) Threads.sleepWithoutInterruptions(100000); // Refactor Consider joining the main gui thread.
-	}
-
-	private void cleanupTemporaryDirectory() {  //Refactor Move this to be together with where tmp directories are created.
-		AppTools.removeRecursive(SneerDirectories.temporaryDirectory());
-		SneerDirectories.temporaryDirectory().mkdirs();
 	}
 
 	private Omnivore<Notification> briefNotifier() {

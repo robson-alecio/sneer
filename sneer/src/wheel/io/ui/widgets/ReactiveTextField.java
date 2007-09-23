@@ -9,7 +9,7 @@ import wheel.reactive.Signal;
 
 public class ReactiveTextField extends ReactiveField<String>{
 	
-	public ReactiveTextField(Signal<String> source, Omnivore<String> setter, Font font) {
+	public ReactiveTextField(Signal<String> source, Omnivore<String> setter, Signal<Font> font) {
 		super(source, setter, font);	
 	}
 	

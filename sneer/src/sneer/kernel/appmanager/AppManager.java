@@ -43,12 +43,14 @@ public class AppManager {
 		_communicator = communicator;
 		_contactAttributes = contactAttributes;
 		_briefUserNotifier = briefUserNotifier;
+		createDirectories();
 	}
 
 	private void createDirectories() { //should be moved to install???
 		SneerDirectories.appsDirectory().mkdirs();
 		SneerDirectories.compiledAppsDirectory().mkdirs();
 		SneerDirectories.appSourceCodesDirectory().mkdirs();
+		AppTools.cleanupTempDirectory();
 	}
 
 	public void removeApp(String installName) {
@@ -217,7 +219,6 @@ public class AppManager {
 	}
 
 	public ListSource<SovereignApplicationUID> publishedApps() {
-		createDirectories();
 		try {
 			loadApps();
 		} catch (Exception e) {

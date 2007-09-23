@@ -1,15 +1,14 @@
 Gandhi
- - Conversar c o Humberto p ele fazer o MP3 Sushi funcionar
-???? - Readable font for profile. ( windows OS settings needed? )
+ - Talk to Humberto so he can make MP3 Sushi work again
+ - Make Sneer use Java's standard font again
  - Fix security problems FileTransfer
-done - app.metoo -> kernel.appmanager.metoo
 done - Eliminate app/tmp directory leak
- - Create sneerapps project in svn. Move scribble and mp3sushi to there
+ - Forget about this: Create sneerapps project in svn. Move scribble and mp3sushi to there [just delete this line]
 done - optimize channelimpl objectStream use (note: when channel crashes, it happens on both sides?)
  - Refactor Metoo to use FileTransfer
- - Fazer MP3 Sushi funcionar se o Humberto n tiver feito
-50% - Fazer um gandhi.selfip.net p vc ficar sempre reachable onde estiver. Avisar a galera na lista do sneercoders.
-
+50% - Set up a gandhi.selfip.net so you are always reachable wherever you are. Tell the people on the sneercoders list.
+ - Make MP3 Sushi work again if Humberto hasn't done so already
+ - Make a font configuration screen: "Choose your font" with tips on how to make them work on the different OSs.
 
 Klaus
  - Granular profile updating per signal

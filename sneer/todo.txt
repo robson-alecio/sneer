@@ -5,7 +5,7 @@ Gandhi
 done - app.metoo -> kernel.appmanager.metoo
 done - Eliminate app/tmp directory leak
  - Create sneerapps project in svn. Move scribble and mp3sushi to there
-???? - optimize channelimpl objectStream use (not really sure this can be done, if using a single input and output stream, how the sender will know an error ocurred and sync input and output stream creation?)
+done - optimize channelimpl objectStream use (note: when channel crashes, it happens on both sides?)
  - Refactor Metoo to use FileTransfer
  - Fazer MP3 Sushi funcionar se o Humberto n tiver feito
 50% - Fazer um gandhi.selfip.net p vc ficar sempre reachable onde estiver. Avisar a galera na lista do sneercoders.

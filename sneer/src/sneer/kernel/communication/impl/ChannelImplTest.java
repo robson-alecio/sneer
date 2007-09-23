@@ -7,20 +7,20 @@ import sneer.kernel.communication.Packet;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 
+//Refactor: test what happens when there is a crash, if both sides are aware of it. if not, think about a way to let both sides find out.
 public class ChannelImplTest {
-	Channel channel;
-	Channel channel2;
+	Channel _channel;
 	public ChannelImplTest(){
-		channel = new ChannelImpl(output1(),this.getClass().getClassLoader());
-		channel.input().addReceiver(receiver1());
+		_channel = new ChannelImpl(output1(),this.getClass().getClassLoader());
+		_channel.input().addReceiver(receiver1());
 		
 		ContactId contactId = new ContactIdImpl(123456);
 		
 		while(true){
-			channel.output().consume(new Packet(contactId,"It seems"));
-			channel.output().consume(new Packet(contactId,"to be"));
+			_channel.output().consume(new Packet(contactId,"It seems"));
+			_channel.output().consume(new Packet(contactId,"to be"));
 			Threads.sleepWithoutInterruptions(1000);
-			channel.output().consume(new Packet(contactId,"working"));
+			_channel.output().consume(new Packet(contactId,"working"));
 			Threads.sleepWithoutInterruptions(1000);
 		}
 
@@ -37,7 +37,7 @@ public class ChannelImplTest {
 		return new Omnivore<Packet>(){ @Override public void consume(Packet packet) {
 			System.out.println("output 1: "+packet._contents);
 			try{
-				((ChannelImpl)channel).receive(packet);
+				((ChannelImpl)_channel).receive(packet);
 			}catch(Exception e){
 				e.printStackTrace();
 			}

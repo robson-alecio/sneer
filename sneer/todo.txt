@@ -1,5 +1,7 @@
 Gandhi
  - Talk to Humberto so he can make MP3 Sushi work again
+ - Sneer.cleanupTemporaryDirectory()  //Refactor Move this to be together with where tmp directories are created.
+ - Delete tmp directories and files immediately after they are used. You cannot leave a leak to be cleared when Sneer is "restarted" because Sneer runs forever. You still need to clean up "old" tmp directories as crash-recovery, not regular operation.
  - Make Sneer use Java's standard font again
  - Fix security problems FileTransfer
 done - Eliminate app/tmp directory leak

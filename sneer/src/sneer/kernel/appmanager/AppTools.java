@@ -178,8 +178,8 @@ public class AppTools {
 	
 	public static File tryToFindSneerLocation() throws IOException {
 		try{
-			URL url = Jars.jarGiven(AppManager.class);
-			return AppTools.urlToFile(url);
+			URL url = Jars.jarGiven(AppTools.class);
+			return urlToFile(url);
 		}catch(Exception e){
 			File eclipseProjectRoot = new File("."); //fallback. if it is not running inside jar, try to find jar from bin directory.
 			File result = firstJarInDirectory(new File(eclipseProjectRoot,"bin"));
@@ -189,7 +189,7 @@ public class AppTools {
 		}
 	}
 
-	public static File firstJarInDirectory(File directory) {
+	private static File firstJarInDirectory(File directory) {
 		for(File file:directory.listFiles()){
 			if (file.getName().endsWith(".jar"))
 				return file;

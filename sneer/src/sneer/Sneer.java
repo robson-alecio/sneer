@@ -83,7 +83,7 @@ public class Sneer {
 		while (true) Threads.sleepWithoutInterruptions(100000); // Refactor Consider joining the main gui thread.
 	}
 
-	private void cleanupTemporaryDirectory() {
+	private void cleanupTemporaryDirectory() {  //Refactor Move this to be together with where tmp directories are created.
 		AppTools.removeRecursive(SneerDirectories.temporaryDirectory());
 		SneerDirectories.temporaryDirectory().mkdirs();
 	}

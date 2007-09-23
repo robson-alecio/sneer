@@ -1,4 +1,4 @@
-package sneer.apps.metoo;
+package sneer.kernel.appmanager.metoo;
 
 import java.io.Serializable;
 

@@ -3,10 +3,10 @@ package sneer.kernel.gui.contacts;
 import java.util.ArrayList;
 import java.util.List;
 
-import sneer.apps.metoo.MeToo;
 import sneer.kernel.appmanager.AppManager;
 import sneer.kernel.appmanager.SovereignApplication;
 import sneer.kernel.appmanager.SovereignApplicationUID;
+import sneer.kernel.appmanager.metoo.MeToo;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.impl.Communicator;
 import wheel.io.ui.User;

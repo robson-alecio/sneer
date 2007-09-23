@@ -1,8 +1,8 @@
-package sneer.apps.metoo.packet;
+package sneer.kernel.appmanager.metoo.packet;
 
 import java.util.Map;
 
-import sneer.apps.metoo.MeTooPacket;
+import sneer.kernel.appmanager.metoo.MeTooPacket;
 
 
 public class AppListResponse implements MeTooPacket {

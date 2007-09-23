@@ -1,6 +1,6 @@
-package sneer.apps.metoo.packet;
+package sneer.kernel.appmanager.metoo.packet;
 
-import sneer.apps.metoo.MeTooPacket;
+import sneer.kernel.appmanager.metoo.MeTooPacket;
 
 public class AppListRequest implements MeTooPacket{
 

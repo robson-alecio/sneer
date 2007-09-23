@@ -1,4 +1,4 @@
-package sneer.apps.metoo;
+package sneer.kernel.appmanager.metoo;
 import static wheel.i18n.Language.translate;
 
 import java.io.BufferedInputStream;
@@ -13,13 +13,13 @@ import java.util.List;
 import java.util.Map;
 
 import sneer.SneerDirectories;
-import sneer.apps.metoo.gui.MeTooFrame;
-import sneer.apps.metoo.packet.AppFilePart;
-import sneer.apps.metoo.packet.AppInstallRequest;
-import sneer.apps.metoo.packet.AppListResponse;
 import sneer.kernel.appmanager.AppManager;
 import sneer.kernel.appmanager.AppTools;
 import sneer.kernel.appmanager.SovereignApplicationUID;
+import sneer.kernel.appmanager.metoo.gui.MeTooFrame;
+import sneer.kernel.appmanager.metoo.packet.AppFilePart;
+import sneer.kernel.appmanager.metoo.packet.AppInstallRequest;
+import sneer.kernel.appmanager.metoo.packet.AppListResponse;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;

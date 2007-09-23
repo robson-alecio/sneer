@@ -1,14 +1,14 @@
 Gandhi
  - Conversar c o Humberto p ele fazer o MP3 Sushi funcionar
- - Readable font for profile.
+???? - Readable font for profile. ( windows OS settings needed? )
  - Fix security problems FileTransfer
- - app.metoo -> kernel.appmanager.metoo
- - Eliminate app/tmp directory leak
+done - app.metoo -> kernel.appmanager.metoo
+done - Eliminate app/tmp directory leak
  - Create sneerapps project in svn. Move scribble and mp3sushi to there
- - optimize channelimpl objectStream use
+???? - optimize channelimpl objectStream use (not really sure this can be done, if using a single input and output stream, how the sender will know an error ocurred and sync input and output stream creation?)
  - Refactor Metoo to use FileTransfer
  - Fazer MP3 Sushi funcionar se o Humberto n tiver feito
- - Fazer um gandhi.selfip.net p vc ficar sempre reachable onde estiver. Avisar a galera na lista do sneercoders.
+50% - Fazer um gandhi.selfip.net p vc ficar sempre reachable onde estiver. Avisar a galera na lista do sneercoders.
 
 
 Klaus

@@ -1,4 +1,4 @@
-package sneer.apps.metoo.gui;
+package sneer.kernel.appmanager.metoo.gui;
 
 import static wheel.i18n.Language.translate;
 
@@ -23,12 +23,12 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 
-import sneer.apps.metoo.MeTooPacket;
-import sneer.apps.metoo.packet.AppFilePart;
-import sneer.apps.metoo.packet.AppInstallRequest;
-import sneer.apps.metoo.packet.AppListRequest;
-import sneer.apps.metoo.packet.AppListResponse;
 import sneer.kernel.appmanager.AppManager;
+import sneer.kernel.appmanager.metoo.MeTooPacket;
+import sneer.kernel.appmanager.metoo.packet.AppFilePart;
+import sneer.kernel.appmanager.metoo.packet.AppInstallRequest;
+import sneer.kernel.appmanager.metoo.packet.AppListRequest;
+import sneer.kernel.appmanager.metoo.packet.AppListResponse;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.pointofview.Contact;

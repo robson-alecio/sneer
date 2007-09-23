@@ -1,4 +1,4 @@
-package sneer.kernel.communication.impl;
+package spikes.gandhi.channelimpl;
 
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.business.contacts.impl.ContactIdImpl;

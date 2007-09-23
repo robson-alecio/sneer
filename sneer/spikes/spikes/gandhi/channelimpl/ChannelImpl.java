@@ -1,8 +1,9 @@
-package sneer.kernel.communication.impl;
+package spikes.gandhi.channelimpl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -49,20 +50,61 @@ class ChannelImpl implements Channel {
 			_output.consume(classLoadable);
 		}}; 
 	}
+	
+	private ObjectOutputStream _outputStream;
+	private ObjectInputStream _inputStream;
+	private ByteArrayOutputStream _outputBytes;
+	private ReconstructableByteArrayInputStream _inputBytes;
+	
+	
+	private ObjectOutputStream produceOutputStream() throws IOException{
+		if (_outputStream==null){
+			_outputBytes = new ByteArrayOutputStream();
+			_outputStream = new ObjectOutputStream(_outputBytes);
+		}else{
+			_outputBytes.reset();
+		}
+		return _outputStream;
+	}
+	
+	private ObjectInputStream produceInputStream(byte[] contents) throws IOException{
+		if (_inputStream == null){
+			_inputBytes = new ReconstructableByteArrayInputStream(contents);
+			_inputStream = new ObjectInputStreamWithClassLoader(_inputBytes,_classLoader);
+		}else{
+			_inputBytes.fill(contents);
+		}
+		return _inputStream;
+	}
+	
+	private class ReconstructableByteArrayInputStream extends InputStream{
+		private ByteArrayInputStream _delegate;
+		
+		public ReconstructableByteArrayInputStream(byte[] contents){
+			fill(contents);
+		}
+		
+		public void fill(byte[] contents){
+			_delegate = new ByteArrayInputStream(contents);	
+		}
+		
+		@Override
+		public int read() {
+			return _delegate.read();
+		}
+	}
 
 	private byte[] serialize(Object contents) throws NotSerializableException {
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 		try {
-			ObjectOutputStream output = new ObjectOutputStream(bytes);
-			output.writeObject(contents); //Optimize
-			output.close();
+			ObjectOutputStream output = produceOutputStream();
+			output.writeObject(contents);
+			output.flush();
 		} catch (NotSerializableException nse) {
 			throw nse;
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
-		
-		return bytes.toByteArray();
+		return _outputBytes.toByteArray();
 	}
 
 	private void startConsumer() { 
@@ -98,10 +140,9 @@ class ChannelImpl implements Channel {
 	}
 
 	private Object desserialize(byte[] contents) throws ClassNotFoundException {
-		ByteArrayInputStream stream = new ByteArrayInputStream(contents);
 		ObjectInputStream input;
 		try {
-			input = new ObjectInputStreamWithClassLoader(stream, _classLoader); //Optimize
+			input = produceInputStream(contents); 
 			return input.readObject();
 		} catch (IOException e) {
 			throw new IllegalStateException(e);

@@ -1,6 +1,11 @@
 package sneer.kernel.business.impl;
 
 import static wheel.i18n.Language.translate;
+
+import java.awt.Font;
+
+import javax.swing.JLabel;
+
 import sneer.kernel.business.Business;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.contacts.ContactAttributes;
@@ -44,6 +49,11 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 		public Signal<String> language() {
 			return _language.output();
 		}
+		
+		@Override
+		public Signal<Font> font() {
+			return _font.output();
+		}
 
 		@Override
 		public Signal<Integer> sneerPort() {
@@ -74,6 +84,7 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 
 	private Source<String> _ownName = new SourceImpl<String>("");
 	private Source<String> _language = new SourceImpl<String>("");
+	private Source<Font> _font = new SourceImpl<Font>(new JLabel().getFont());
 	private final Source<String> _publicKey = new SourceImpl<String>("");
 	
 	private final Source<String> _thoughtOfTheDay = new SourceImpl<String>("");
@@ -98,6 +109,11 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 	@Override
 	public Omnivore<String> languageSetter() {
 		return  _language.setter();
+	}
+	
+	@Override
+	public Omnivore<Font> fontSetter() {
+		return  _font.setter();
 	}
 	
 	@Override

@@ -3,6 +3,7 @@ package sneer.kernel.gui.contacts;
 import static wheel.i18n.Language.translate;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,6 +43,7 @@ class ContactsScreen extends JFrame {
 
 		initComponents();
 		selectParty();
+		_user.font().addReceiver(fontReceiver());
 	}
 	
 	private JPanel _lateral;
@@ -50,30 +52,29 @@ class ContactsScreen extends JFrame {
 		_lateral = new JPanel();
 		_lateral.setLayout(new BorderLayout());
 		setLayout(new BorderLayout());
-		JPanel editPanel = new JPanel();
-		editPanel.setLayout(new BorderLayout());
-		editPanel.add(createAddButton(), BorderLayout.EAST);
-		JScrollPane scrollpane = new JScrollPane(createFriendsTree());
-		scrollpane.setBackground(java.awt.Color.black);
-		add(scrollpane, BorderLayout.CENTER);
-		add(editPanel, BorderLayout.SOUTH);
+		_editPanel = new JPanel();
+		_editPanel.setLayout(new BorderLayout());
+		_editPanel.add(createAddButton(), BorderLayout.EAST);
+		_scrollpane = new JScrollPane(createFriendsTree());
+		add(_scrollpane, BorderLayout.CENTER);
+		add(_editPanel, BorderLayout.SOUTH);
 		add(_lateral,BorderLayout.EAST);
 		setTitle(translate("Contacts"));
-		_user.font().addReceiver(fontReceiver());
+		setMinimumSize(new Dimension(400,420));
 	}
 
 	private Omnivore<Font> fontReceiver() {
 		return new Omnivore<Font>(){ public void consume(Font font) {
 				SwingUtilities.invokeLater(new Runnable(){ public void run() {
-					ContactsScreen.this.getRootPane().revalidate();
 					ContactsScreen.this.getRootPane().repaint();
+					ContactsScreen.this.getRootPane().revalidate();
 				}});
 		}};
 	}
 	
 	private JTree createFriendsTree() {
 		final JTree tree = new JTree();
-		new ContactTreeController(tree, new MeNode(_me));
+		new ContactTreeController(tree, new MeNode(_me),_user.font());
 		
 		tree.addMouseListener(new MouseAdapter() {
 			@Override
@@ -161,5 +162,7 @@ class ContactsScreen extends JFrame {
 	}
 	
 	private static final long serialVersionUID = 1L;
+	private JScrollPane _scrollpane;
+	private JPanel _editPanel;
 	
 }

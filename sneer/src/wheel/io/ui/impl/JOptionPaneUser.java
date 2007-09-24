@@ -12,7 +12,6 @@ import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
@@ -25,15 +24,18 @@ import wheel.lang.Threads;
 import wheel.lang.exceptions.Catcher;
 import wheel.lang.exceptions.FriendlyException;
 import wheel.reactive.Signal;
-import wheel.reactive.Source;
-import wheel.reactive.impl.SourceImpl;
 
 public class JOptionPaneUser implements User {
 	
-	public JOptionPaneUser(String title, Omnivore<Notification> briefNotifier) { 
+	private final Signal<Font> _font;
+	private final Omnivore<Font> _fontSetter;
+
+	public JOptionPaneUser(String title, Omnivore<Notification> briefNotifier, Signal<Font> font, Omnivore<Font> fontSetter) { 
 		//Fix: receive the parent component instead of passing null to the JOptionPane in order not to be application modal.
 		_title = title;
 		_briefNotifier = briefNotifier;
+		_font = font;
+		_fontSetter = fontSetter;
 	}
 
 	
@@ -265,11 +267,9 @@ public class JOptionPaneUser implements User {
 	public void modelessAcknowledge(String title, String message) {
 		showModelessOptionPane(title, message);
 	}
-
-	private final Source<Font> _font = new SourceImpl<Font>((new JLabel()).getFont()); //Refactor: is there a better way to get default font?
-
+	
 	public Signal<Font> font() {
-		return _font.output();
+		return _font;
 	}
 	
 
@@ -279,12 +279,15 @@ public class JOptionPaneUser implements User {
 				JFontChooser chooser = new JFontChooser();
 				int option = chooser.showDialog(null, translate("Choose Sneer Font"));
 				if (option == JFontChooser.OK_OPTION)
-					if (_font.output().currentValue()!=chooser.getFont())
-						_font.setter().consume(chooser.getFont());
+					if (!fontEquals(_font.currentValue(),chooser.getFont()))
+						_fontSetter.consume(chooser.getFont());
 					
 			}
 		});
 	}
 
+	public boolean fontEquals(Font font1, Font font2){
+		return (font1.getName().equals(font2.getName()))&&(font1.getSize()==font2.getSize())&&(font1.getStyle()==font2.getStyle());
+	}
 	
 }

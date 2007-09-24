@@ -46,7 +46,7 @@ public class Sneer {
 		}
 	}
 	
-	private User _user = new JOptionPaneUser("Sneer", briefNotifier());
+	private User _user;
 	private BusinessSource _businessSource;
 	private Communicator _communicator;
 	private Party _me;
@@ -55,12 +55,14 @@ public class Sneer {
 	private ContactActionFactory _contactActionFactory;
 	
 	private void tryToRun() throws Exception {
-
+		
 		tryToRedirectLogToSneerLogFile();
 
 		Prevayler prevayler = prevaylerFor(new BusinessFactory().createBusinessSource());
 		_businessSource = Bubble.wrapStateMachine(prevayler);
 
+		_user = new JOptionPaneUser("Sneer", briefNotifier(), _businessSource.output().font(),_businessSource.fontSetter());
+		
 		initLanguage();
 		
 		//Optimize: Separate thread to close splash screen.

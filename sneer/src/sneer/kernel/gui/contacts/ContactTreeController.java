@@ -1,5 +1,6 @@
 package sneer.kernel.gui.contacts;
 
+import java.awt.Font;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,11 +24,11 @@ public class ContactTreeController { //Refactor Extract a generic ReactiveTreeCo
 	private final Map<PartyNode, Omnivore<Object>> _renderReceiversByNode = new HashMap<PartyNode,Omnivore<Object>>();
 	private final Map<PartyNode, SimpleListReceiver<Contact>> _contactListReceiversByNode = new HashMap<PartyNode,SimpleListReceiver<Contact>>();
 
-	private final ContactTreeCellRenderer _renderer = new ContactTreeCellRenderer();
-	
+	private final ContactTreeCellRenderer _renderer;
 
-	public ContactTreeController(JTree tree, MeNode root) {
+	public ContactTreeController(JTree tree, MeNode root, Signal<Font> font) {
 		_model = new DefaultTreeModel(root);
+		_renderer = new ContactTreeCellRenderer(font);
 		tree.setModel(_model);
 		tree.setCellRenderer(_renderer);
 		tree.setShowsRootHandles(true);
@@ -36,6 +37,13 @@ public class ContactTreeController { //Refactor Extract a generic ReactiveTreeCo
 		registerExpansionListener(tree);
 		
 		startReceiving(root);
+		font.addReceiver(fontReceiver());
+	}
+
+	private Omnivore<Font> fontReceiver() {
+		return new Omnivore<Font>(){ public void consume(Font valueObject) {
+			_model.reload();
+		}};
 	}
 
 	private void createContactNode(MutableTreeNode parent, Contact contact) {

@@ -3,6 +3,7 @@ package sneer.kernel.gui.contacts;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.Font;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -13,7 +14,9 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 
 import sneer.kernel.pointofview.Contact;
 import sneer.kernel.pointofview.Party;
+import wheel.io.ui.widgets.ReactiveLabel;
 import wheel.reactive.Signal;
+import wheel.reactive.impl.SourceImpl;
 
 public class ContactTreeCellRenderer extends DefaultTreeCellRenderer{
 
@@ -29,6 +32,12 @@ public class ContactTreeCellRenderer extends DefaultTreeCellRenderer{
 	
 	final static Color selectedColor = new Color(230,240,255);
 
+	private final Signal<Font> _font;
+
+	public ContactTreeCellRenderer(Signal<Font> font){
+		_font = font;
+	}
+	
 	@Override
 	public Component getTreeCellRendererComponent(JTree tree, Object treeNode, boolean isSelected, boolean expanded, boolean leaf, int row, boolean focus) {
 		JPanel result = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -50,7 +59,7 @@ public class ContactTreeCellRenderer extends DefaultTreeCellRenderer{
 
 	private void renderMe(Party me, JPanel panel) {
 		panel.add(new JLabel(CROWN));
-		panel.add(new JLabel(me.name().currentValue()));
+		panel.add(new ReactiveLabel(signal(me.name().currentValue()),_font));
 	}
 
 	private void renderContact(Contact contact, JPanel panel) {
@@ -61,7 +70,11 @@ public class ContactTreeCellRenderer extends DefaultTreeCellRenderer{
 		
 		panel.add(new JLabel(onlineIconFor(party)));
 		panel.add(new JLabel(stateIconFor(party)));
-		panel.add(new JLabel(nick + " - " + name));
+		panel.add(new ReactiveLabel(signal(nick + " - " + name),_font));
+	}
+	
+	private Signal<String> signal(String text){
+		return new SourceImpl<String>(text).output();
 	}
 
 	Signal<?>[] signalsToReceiveFrom(PartyNode node) {

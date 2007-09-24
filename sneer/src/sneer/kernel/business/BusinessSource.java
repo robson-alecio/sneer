@@ -1,5 +1,7 @@
 package sneer.kernel.business;
 
+import java.awt.Font;
+
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.business.contacts.ContactInfo;
 import sneer.kernel.business.contacts.ContactPublicKeyInfo;
@@ -15,6 +17,7 @@ public interface BusinessSource {
 	Omnivore<String> ownNameSetter();
 	Omnivore<String> publicKeySetter();
 	Omnivore<String> languageSetter();
+	Omnivore<Font> fontSetter();
 	
 	Omnivore<String> thoughtOfTheDaySetter();
 	Omnivore<JpgImage> pictureSetter();

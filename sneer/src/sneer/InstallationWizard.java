@@ -1,12 +1,19 @@
 package sneer;
 
+import static wheel.i18n.Language.translate;
+
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
-import static wheel.i18n.Language.*;
+
+import javax.swing.JLabel;
+
 import wheel.i18n.Language;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.io.ui.impl.JOptionPaneUser;
+import wheel.reactive.Source;
+import wheel.reactive.impl.SourceImpl;
 
 public class InstallationWizard {
 
@@ -76,8 +83,8 @@ public class InstallationWizard {
 		System.setProperty("sneer.language", Language.current());
 	}
 
-	
-	private final User _user = new JOptionPaneUser("Sneer Intallation Wizard", null);
+	private Source<Font> _font = new SourceImpl<Font>(new JLabel().getFont());
+	private final User _user = new JOptionPaneUser("Sneer Intallation Wizard", null,_font.output(),_font.setter());
 
 	
 	private void approveConditionOtherwiseExit(String condition) {

@@ -39,9 +39,9 @@ public class OptimizedSerializer {
 	}
 
 	private void resetIfNecessary() throws IOException {
-		if (_resetBatchIndex++ < _resetBatchSize) return;
-
-		_resetBatchIndex = 0;
+//		if (++_resetBatchIndex < _resetBatchSize) return;
+//
+//		_resetBatchIndex = 0;
 		_outputStream.reset();
 	}
 

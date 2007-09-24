@@ -1,18 +1,14 @@
 package sneer.kernel.communication.impl;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.NotSerializableException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import wheel.io.Log;
-import wheel.io.serialization.ObjectInputStreamWithClassLoader;
+import wheel.io.serialization.OptimizedDeserializer;
+import wheel.io.serialization.OptimizedSerializer;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.reactive.Signal;
@@ -26,13 +22,14 @@ class ChannelImpl implements Channel {
 	
 	private final List<Packet> _buffer = new LinkedList<Packet>();
 	private final SourceImpl<Integer> _elementsInInputBuffer = new SourceImpl<Integer>(0);
-	private final ClassLoader _classLoader;
 
+	private final OptimizedSerializer _serializer = new OptimizedSerializer(100);
+	private final OptimizedDeserializer _deserializer;
 	
 	ChannelImpl(Omnivore<Packet> output, ClassLoader classLoader) {
+		_deserializer = new OptimizedDeserializer(classLoader);
 		_output = output;
 		_outputSerializer = createOutputSerializer();
-		_classLoader = classLoader;
 		startConsumer();
 	}
 
@@ -40,7 +37,7 @@ class ChannelImpl implements Channel {
 		return new Omnivore<Packet>() { public void consume(Packet packet) {
 			byte[] serializedContents;
 			try {
-				serializedContents = serialize(packet._contents);
+				serializedContents = _serializer.serialize(packet._contents);
 			} catch (NotSerializableException e) {
 				Log.log(e);
 				return;
@@ -48,21 +45,6 @@ class ChannelImpl implements Channel {
 			Packet classLoadable = new Packet(packet._contactId, serializedContents); 
 			_output.consume(classLoadable);
 		}}; 
-	}
-
-	private byte[] serialize(Object contents) throws NotSerializableException {
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		try {
-			ObjectOutputStream output = new ObjectOutputStream(bytes);
-			output.writeObject(contents); //Optimize
-			output.close();
-		} catch (NotSerializableException nse) {
-			throw nse;
-		} catch (IOException e) {
-			throw new IllegalStateException(e);
-		}
-		
-		return bytes.toByteArray();
 	}
 
 	private void startConsumer() { 
@@ -87,7 +69,7 @@ class ChannelImpl implements Channel {
 	}
 
 	void receive(Packet classLoadable) throws ClassNotFoundException {
-		Object contents = desserialize((byte[])classLoadable._contents);
+		Object contents = _deserializer.deserialize((byte[])classLoadable._contents);
 		Packet packet = new Packet(classLoadable._contactId, contents);
 		
 		synchronized (_buffer) {
@@ -97,16 +79,6 @@ class ChannelImpl implements Channel {
 		}
 	}
 
-	private Object desserialize(byte[] contents) throws ClassNotFoundException {
-		ByteArrayInputStream stream = new ByteArrayInputStream(contents);
-		ObjectInputStream input;
-		try {
-			input = new ObjectInputStreamWithClassLoader(stream, _classLoader); //Optimize
-			return input.readObject();
-		} catch (IOException e) {
-			throw new IllegalStateException(e);
-		}
-	}
 
 	private void inputBufferChanged() {
 		_elementsInInputBuffer.setter().consume(_buffer.size());

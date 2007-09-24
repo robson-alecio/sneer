@@ -1,8 +1,8 @@
 package wheel.io.serialization;
 
-import java.io.OutputStream;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * A strategy for writing objects to and reading objects from streams. Implementations <b>must</b> be safe for
@@ -26,6 +26,5 @@ public interface Serializer {
 	 * stream is already buffered, so additional buffering is not required for performance.
 	 */
 	public Object readObject(InputStream stream) throws IOException, ClassNotFoundException;
-
 
 }

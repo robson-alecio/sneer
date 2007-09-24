@@ -39,4 +39,5 @@ public class ImmediateContact implements Contact {
 		return _nick.currentValue();
 	}
 
+	private static final long serialVersionUID = 1L;
 }

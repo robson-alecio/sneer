@@ -1,12 +1,12 @@
 Gandhi
+ - Make contacts screen start with a good size
  - Talk to Humberto so he can make MP3 Sushi work again
-done - Sneer.cleanupTemporaryDirectory()  //Refactor Move this to be together with where tmp directories are created.
-done - Delete tmp directories and files immediately after they are used. You cannot leave a leak to be cleared when Sneer is "restarted" because Sneer runs forever. You still need to clean up "old" tmp directories as crash-recovery, not regular operation.
-done - Make Sneer use Java's standard font again
+ - Persist font
+ - Fix profile size
+ - Make tree use chosen font
  - Fix security problems FileTransfer
-done - Eliminate app/tmp directory leak
  - Forget about this: Create sneerapps project in svn. Move scribble and mp3sushi to there [just delete this line]
-done - optimize channelimpl objectStream use (note: when channel crashes, it happens on both sides?)
+ - optimize channelimpl objectStream use (note: when channel crashes, it happens on both sides?)
  - Refactor Metoo to use FileTransfer
 50% - Set up a gandhi.selfip.net so you are always reachable wherever you are. Tell the people on the sneercoders list.
  - Make MP3 Sushi work again if Humberto hasn't done so already

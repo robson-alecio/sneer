@@ -73,4 +73,5 @@ public class SetSource<T> extends AbstractNotifier<SetValueChange<T>>  implement
 		receiver.consume(new SetValueChangeImpl<T>(contentsCopy(), null));
 	}
 
+	private static final long serialVersionUID = 1L;
 }

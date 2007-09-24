@@ -44,4 +44,5 @@ public class FakeContact implements Contact {
 		return _fakeParty;
 	}
 
+	private static final long serialVersionUID = 1L;
 }

@@ -4,13 +4,14 @@
 
 package wheel.reactive.sets;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 
 import wheel.lang.Omnivore;
 
 
-public interface SetSignal<T>  {
+public interface SetSignal<T> extends Serializable {
 
 	void addSetReceiver(Omnivore<SetValueChange<T>> receiver);
 	void removeSetReceiver(Omnivore<SetValueChange<T>> receiver);

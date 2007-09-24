@@ -1,10 +1,14 @@
 package wheel.reactive.impl;
 
+import java.io.Serializable;
+
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
 
 public class SourceImpl<VO> implements Source<VO> {
+
+
 
 	class MyOutput extends AbstractSignal<VO> {
 
@@ -13,10 +17,11 @@ public class SourceImpl<VO> implements Source<VO> {
 			return _currentValue;
 		}
 
+		private static final long serialVersionUID = 1L;
 	}
 
 
-	class MySetter implements Omnivore<VO> {
+	class MySetter implements Omnivore<VO>, Serializable { private static final long serialVersionUID = 1L;
 
 		@Override
 		public void consume(VO newValue) {
@@ -55,4 +60,5 @@ public class SourceImpl<VO> implements Source<VO> {
 		return _setter;
 	}
 
+	private static final long serialVersionUID = 1L;
 }

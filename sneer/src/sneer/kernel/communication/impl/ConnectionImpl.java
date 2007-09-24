@@ -20,7 +20,7 @@ import wheel.reactive.impl.SourceImpl;
 
 public class ConnectionImpl implements Connection {
 
-	private static final int BARK_PERIOD_MILLIS = 5000;
+	private static final int BARK_PERIOD_MILLIS = 30000;
 	private static final String BARK = "Bark";
 
 	private final ContactAttributes _contact;

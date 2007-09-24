@@ -7,8 +7,8 @@ import java.util.List;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import wheel.io.Log;
-import wheel.io.serialization.OptimizedDeserializer;
-import wheel.io.serialization.OptimizedSerializer;
+import wheel.io.serialization.DefaultDeserializer;
+import wheel.io.serialization.DefaultSerializer;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.reactive.Signal;
@@ -23,11 +23,11 @@ class ChannelImpl implements Channel {
 	private final List<Packet> _buffer = new LinkedList<Packet>();
 	private final SourceImpl<Integer> _elementsInInputBuffer = new SourceImpl<Integer>(0);
 
-	private final OptimizedSerializer _serializer = new OptimizedSerializer(100);
-	private final OptimizedDeserializer _deserializer;
+	private final DefaultSerializer _serializer = new DefaultSerializer();
+	private final DefaultDeserializer _deserializer;
 	
 	ChannelImpl(Omnivore<Packet> output, ClassLoader classLoader) {
-		_deserializer = new OptimizedDeserializer(classLoader);
+		_deserializer = new DefaultDeserializer(classLoader);
 		_output = output;
 		_outputSerializer = createOutputSerializer();
 		startConsumer();

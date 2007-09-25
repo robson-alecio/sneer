@@ -61,7 +61,7 @@ public class Sneer {
 		Prevayler prevayler = prevaylerFor(new BusinessFactory().createBusinessSource());
 		_businessSource = Bubble.wrapStateMachine(prevayler);
 
-		_user = new JOptionPaneUser("Sneer", briefNotifier(), _businessSource.output().font(),_businessSource.fontSetter());
+		_user = new JOptionPaneUser("Sneer", briefNotifier());
 		
 		initLanguage();
 		

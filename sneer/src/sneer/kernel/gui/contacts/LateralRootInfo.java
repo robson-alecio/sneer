@@ -3,6 +3,7 @@ package sneer.kernel.gui.contacts;
 import static wheel.i18n.Language.translate;
 
 import java.awt.Dimension;
+import java.awt.Font;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -13,6 +14,7 @@ import wheel.io.ui.widgets.ReactiveIntegerField;
 import wheel.io.ui.widgets.ReactiveJpgImageField;
 import wheel.io.ui.widgets.ReactiveMemoField;
 import wheel.io.ui.widgets.ReactiveTextField;
+import wheel.reactive.Signal;
 
 public class LateralRootInfo extends JPanel{
 
@@ -31,12 +33,12 @@ public class LateralRootInfo extends JPanel{
 		content.setLayout(new BoxLayout(content,BoxLayout.Y_AXIS));
 
 		Dimension pictureFieldSize = new Dimension(100,100);
-		
+		Signal<Font> font = _businessSource.output().font();
 		content.add(new ReactiveJpgImageField(_user, translate("Picture"), _businessSource.output().picture(), _businessSource.pictureSetter(), pictureFieldSize));
-		content.add(new LabeledPanel(translate("Own Name"), new ReactiveTextField(_businessSource.output().ownName(), _businessSource.ownNameSetter(), _user.font()), _user.font()));
-		content.add(new LabeledPanel(translate("Thought Of The Day"), new ReactiveTextField(_businessSource.output().thoughtOfTheDay(), _businessSource.thoughtOfTheDaySetter(), _user.font()), _user.font()));
-		content.add(new LabeledPanel(translate("Profile"), new ReactiveMemoField(_businessSource.output().profile(), _businessSource.profileSetter(), _user.font()), _user.font()));
-		content.add(new LabeledPanel(translate("Sneer Port"), new ReactiveIntegerField(_businessSource.output().sneerPort(), _businessSource.sneerPortSetter(), _user.font()), _user.font()));
+		content.add(new LabeledPanel(translate("Own Name"), new ReactiveTextField(_businessSource.output().ownName(), _businessSource.ownNameSetter(), font), font));
+		content.add(new LabeledPanel(translate("Thought Of The Day"), new ReactiveTextField(_businessSource.output().thoughtOfTheDay(), _businessSource.thoughtOfTheDaySetter(), font), font));
+		content.add(new LabeledPanel(translate("Profile"), new ReactiveMemoField(_businessSource.output().profile(), _businessSource.profileSetter(), font), font));
+		content.add(new LabeledPanel(translate("Sneer Port"), new ReactiveIntegerField(_businessSource.output().sneerPort(), _businessSource.sneerPortSetter(), font), font));
 
 		return content;
 	}

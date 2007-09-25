@@ -43,7 +43,7 @@ class ContactsScreen extends JFrame {
 
 		initComponents();
 		selectParty();
-		_user.font().addReceiver(fontReceiver());
+		_businessSource.output().font().addReceiver(fontReceiver());
 	}
 	
 	private JPanel _lateral;
@@ -74,7 +74,7 @@ class ContactsScreen extends JFrame {
 	
 	private JTree createFriendsTree() {
 		final JTree tree = new JTree();
-		new ContactTreeController(tree, new MeNode(_me),_user.font());
+		new ContactTreeController(tree, new MeNode(_me),_businessSource.output().font());
 		
 		tree.addMouseListener(new MouseAdapter() {
 			@Override
@@ -119,7 +119,7 @@ class ContactsScreen extends JFrame {
 		SwingUtilities.invokeLater(new Runnable(){
 			public void run() {
 				_lateral.removeAll();
-				_lateral.add(new LateralContactInfo(_user, node.contact(),_businessSource.contactNickChanger()));
+				_lateral.add(new LateralContactInfo(_user, node.contact(),_businessSource.contactNickChanger(),_businessSource.output().font()));
 				_lateral.revalidate();
 				_lateral.repaint();
 			}

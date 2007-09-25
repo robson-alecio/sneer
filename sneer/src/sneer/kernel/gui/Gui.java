@@ -2,6 +2,7 @@ package sneer.kernel.gui;
 
 import static wheel.i18n.Language.translate;
 
+import java.awt.Font;
 import java.io.IOException;
 import java.net.URL;
 
@@ -25,10 +26,13 @@ import wheel.io.ui.ValueChangePane;
 import wheel.io.ui.User.Notification;
 import wheel.io.ui.impl.DeferredBoundPersistence;
 import wheel.io.ui.impl.DirectoryBoundsPersistence;
+import wheel.io.ui.impl.JFontChooser;
 import wheel.io.ui.impl.JFrameBoundsKeeperImpl;
 import wheel.io.ui.impl.TrayIconImpl;
 import wheel.io.ui.impl.tests.TransientBoundsPersistence;
 import wheel.lang.Omnivore;
+import wheel.lang.Threads;
+import wheel.reactive.Signal;
 
 public class Gui {
 
@@ -87,7 +91,7 @@ public class Gui {
 				return translate("Font");
 			}
 			public void run() {
-				_user.fontChooser();
+				fontChooser();
 			}
 		};
 	}
@@ -161,6 +165,28 @@ public class Gui {
 		return new Omnivore<Notification>() { @Override public void consume(Notification notification) {
 			_trayIcon.messageBalloon(notification._title, notification._notification);
 		}};
+	}
+	
+	public Signal<Font> font() {
+		return _businessSource.output().font();
+	}
+	
+
+	public void fontChooser() {
+		Threads.startDaemon(new Runnable(){
+			public void run() {
+				JFontChooser chooser = new JFontChooser();
+				int option = chooser.showDialog(null, translate("Choose Sneer Font"));
+				if (option == JFontChooser.OK_OPTION)
+					if (!fontEquals(_businessSource.output().font().currentValue(),chooser.getFont()))
+						_businessSource.fontSetter().consume(chooser.getFont());
+					
+			}
+		});
+	}
+
+	public boolean fontEquals(Font font1, Font font2){
+		return (font1.getName().equals(font2.getName()))&&(font1.getSize()==font2.getSize())&&(font1.getStyle()==font2.getStyle());
 	}
 	
 }

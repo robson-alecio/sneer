@@ -4,7 +4,6 @@ import static wheel.i18n.Language.translate;
 
 import java.awt.Component;
 import java.awt.Dialog;
-import java.awt.Font;
 import java.awt.Dialog.ModalityType;
 import java.io.File;
 
@@ -23,19 +22,13 @@ import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.Catcher;
 import wheel.lang.exceptions.FriendlyException;
-import wheel.reactive.Signal;
 
 public class JOptionPaneUser implements User {
-	
-	private final Signal<Font> _font;
-	private final Omnivore<Font> _fontSetter;
 
-	public JOptionPaneUser(String title, Omnivore<Notification> briefNotifier, Signal<Font> font, Omnivore<Font> fontSetter) { 
+	public JOptionPaneUser(String title, Omnivore<Notification> briefNotifier) { 
 		//Fix: receive the parent component instead of passing null to the JOptionPane in order not to be application modal.
 		_title = title;
 		_briefNotifier = briefNotifier;
-		_font = font;
-		_fontSetter = fontSetter;
 	}
 
 	
@@ -266,28 +259,6 @@ public class JOptionPaneUser implements User {
 
 	public void modelessAcknowledge(String title, String message) {
 		showModelessOptionPane(title, message);
-	}
-	
-	public Signal<Font> font() {
-		return _font;
-	}
-	
-
-	public void fontChooser() {
-		Threads.startDaemon(new Runnable(){
-			public void run() {
-				JFontChooser chooser = new JFontChooser();
-				int option = chooser.showDialog(null, translate("Choose Sneer Font"));
-				if (option == JFontChooser.OK_OPTION)
-					if (!fontEquals(_font.currentValue(),chooser.getFont()))
-						_fontSetter.consume(chooser.getFont());
-					
-			}
-		});
-	}
-
-	public boolean fontEquals(Font font1, Font font2){
-		return (font1.getName().equals(font2.getName()))&&(font1.getSize()==font2.getSize())&&(font1.getStyle()==font2.getStyle());
 	}
 	
 }

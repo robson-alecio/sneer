@@ -3,6 +3,7 @@ package sneer.kernel.gui.contacts;
 import static wheel.i18n.Language.translate;
 
 import java.awt.Dimension;
+import java.awt.Font;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -18,18 +19,21 @@ import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.lang.Pair;
 import wheel.lang.exceptions.IllegalParameter;
+import wheel.reactive.Signal;
 
 public class LateralContactInfo extends JPanel{
 
 	private final Consumer<Pair<ContactId, String>> _nickChanger;
 	private final Contact _contact;
 	private final User _user;
+	private final Signal<Font> _font;
 
-	public LateralContactInfo( User user, Contact contact, Consumer<Pair<ContactId, String>> nickChanger){
+	public LateralContactInfo( User user, Contact contact, Consumer<Pair<ContactId, String>> nickChanger, Signal<Font> font){
 		super();
 		_user = user;
 		_contact = contact;
 		_nickChanger = nickChanger;
+		_font = font;
 		add(contentPanel());
 	}
 	
@@ -42,12 +46,12 @@ public class LateralContactInfo extends JPanel{
 		
 		//Refactor: choose reactivefield sizes and maintain font aspect ratio
 		content.add(new ReactiveJpgImageField(_user, translate("Picture"), _contact.party().picture(), null, pictureFieldSize));
-		content.add(new LabeledPanel(translate("Nick"), new ReactiveTextField(_contact.nick(), nickChanger(), _user.font()), _user.font()));
-		content.add(new LabeledPanel(translate("Name"), new ReactiveTextField(_contact.party().name(), null, _user.font()), _user.font()));
-		content.add(new LabeledPanel(translate("Thought Of The Day"), new ReactiveTextField(_contact.party().thoughtOfTheDay(), null, _user.font()), _user.font()));
-		content.add(new LabeledPanel(translate("Profile"), new ReactiveMemoField(_contact.party().profile(), null, _user.font()),  _user.font()));
-		content.add(new LabeledPanel(translate("Host"), new ReactiveTextField(_contact.party().host(), null, _user.font()),  _user.font()));
-		content.add(new LabeledPanel(translate("Port"), new ReactiveIntegerField(_contact.party().port(), null, _user.font()),  _user.font()));
+		content.add(new LabeledPanel(translate("Nick"), new ReactiveTextField(_contact.nick(), nickChanger(), _font), _font));
+		content.add(new LabeledPanel(translate("Name"), new ReactiveTextField(_contact.party().name(), null, _font), _font));
+		content.add(new LabeledPanel(translate("Thought Of The Day"), new ReactiveTextField(_contact.party().thoughtOfTheDay(), null, _font), _font));
+		content.add(new LabeledPanel(translate("Profile"), new ReactiveMemoField(_contact.party().profile(), null, _font),  _font));
+		content.add(new LabeledPanel(translate("Host"), new ReactiveTextField(_contact.party().host(), null, _font),  _font));
+		content.add(new LabeledPanel(translate("Port"), new ReactiveIntegerField(_contact.party().port(), null, _font),  _font));
 		
 		return content;
 	}

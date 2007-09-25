@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectOutputStream;
 
-public class DefaultSerializer {
+public class DefaultSerializer { //Fix Delete this class and the deserializer class and use the optimized versions in this package, once Sneer is no longer dropping packets.
 
 	public DefaultSerializer() {
 

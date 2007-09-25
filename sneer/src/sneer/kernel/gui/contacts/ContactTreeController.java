@@ -42,7 +42,9 @@ public class ContactTreeController { //Refactor Extract a generic ReactiveTreeCo
 
 	private Omnivore<Font> fontReceiver() {
 		return new Omnivore<Font>(){ public void consume(Font valueObject) {
-			_model.reload();
+			runBlockThatChangesModel(new Runnable() { public void run(){
+				_model.reload();
+			}});
 		}};
 	}
 

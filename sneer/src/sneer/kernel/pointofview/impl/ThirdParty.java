@@ -18,10 +18,6 @@ import wheel.reactive.lists.impl.ListSourceImpl;
 public class ThirdParty implements Party {
 
 	public ThirdParty(ContactAttributes attributes, Signal<Boolean> isOnline, Channel channel) {
-		
-		if (attributes == null)
-			throw new IllegalArgumentException();
-			
 		_attributes = attributes;
 		_isOnline = isOnline;
 		_fakeContacts = createFakeContacts();

@@ -16,6 +16,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.TreePath;
@@ -46,6 +47,7 @@ class ContactsScreen extends JFrame {
 		_businessSource.output().font().addReceiver(fontReceiver());
 	}
 	
+	private JSplitPane _splitPanel;
 	private JPanel _lateral;
 
 	private void initComponents() {
@@ -56,9 +58,10 @@ class ContactsScreen extends JFrame {
 		_editPanel.setLayout(new BorderLayout());
 		_editPanel.add(createAddButton(), BorderLayout.EAST);
 		_scrollpane = new JScrollPane(createFriendsTree());
-		add(_scrollpane, BorderLayout.CENTER);
-		add(_editPanel, BorderLayout.SOUTH);
-		add(_lateral,BorderLayout.EAST);
+		_splitPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, _scrollpane, _lateral);
+		_splitPanel.setDividerLocation(300);
+		add(_splitPanel, BorderLayout.CENTER);
+		add(_editPanel, BorderLayout.SOUTH);;
 		setTitle(translate("Contacts"));
 		setMinimumSize(new Dimension(400,420));
 	}

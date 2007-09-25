@@ -1,11 +1,10 @@
 Gandhi
- - Remove all references to font from the User interface and implementing classes.  
- - make contacts screen a splitpane
+done - Remove all references to font from the User interface and implementing classes.  
+done - make contacts screen a splitpane
  - Talk to Humberto so he can make MP3 Sushi work again
  - Fix profile size
  - Set up a gandhi.selfip.net so you are always reachable wherever you are. Tell the people on the sneercoders list.
  - Fix security problems FileTransfer
- - Forget about this: Create sneerapps project in svn. Move scribble and mp3sushi to there [just delete this line]
  - optimize channelimpl objectStream use (note: when channel crashes, it happens on both sides?)
  - Refactor Metoo to use FileTransfer
  - Make MP3 Sushi work again if Humberto hasn't done so already

@@ -2,6 +2,7 @@ package sneer.kernel.gui.contacts;
 
 import static wheel.i18n.Language.translate;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 
@@ -29,12 +30,13 @@ public class LateralContactInfo extends JPanel{
 	private final Signal<Font> _font;
 
 	public LateralContactInfo( User user, Contact contact, Consumer<Pair<ContactId, String>> nickChanger, Signal<Font> font){
-		super();
+		setLayout(new BorderLayout());
 		_user = user;
 		_contact = contact;
 		_nickChanger = nickChanger;
 		_font = font;
-		add(contentPanel());
+		add(contentPanel(),BorderLayout.NORTH);
+		add(new JPanel(),BorderLayout.CENTER);
 	}
 	
 	private JPanel contentPanel(){

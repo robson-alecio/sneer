@@ -2,6 +2,7 @@ package sneer.kernel.gui.contacts;
 
 import static wheel.i18n.Language.translate;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 
@@ -22,10 +23,11 @@ public class LateralRootInfo extends JPanel{
 	private final User _user;
 
 	public LateralRootInfo( User user, BusinessSource businessSource){
-		super();
+		setLayout(new BorderLayout());
 		_user = user;
 		_businessSource = businessSource;
-		add(contentPanel());
+		add(contentPanel(),BorderLayout.NORTH);
+		add(new JPanel(),BorderLayout.CENTER);
 	}
 	
 	private JPanel contentPanel(){

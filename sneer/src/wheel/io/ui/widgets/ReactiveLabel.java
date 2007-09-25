@@ -1,7 +1,6 @@
 package wheel.io.ui.widgets;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.JLabel;
@@ -26,7 +25,7 @@ public class ReactiveLabel extends JPanel{
 
 	private void initComponents() {
 		setLayout(new BorderLayout());
-		setBackground(Color.white);
+		setOpaque(false);
 		_label.setText(_text.currentValue());
 		if (_font!=null)
 			_label.setFont(_font.currentValue());
@@ -43,8 +42,6 @@ public class ReactiveLabel extends JPanel{
 		return new Omnivore<Font>(){ public void consume(final Font font) {
 			SwingUtilities.invokeLater(new Runnable(){ public void run() {
 				_label.setFont(font);
-				ReactiveLabel.this.revalidate();
-				ReactiveLabel.this.repaint();
 			}});
 		}};
 	}
@@ -53,8 +50,6 @@ public class ReactiveLabel extends JPanel{
 		return new Omnivore<String>(){ public void consume(final String text) {
 			SwingUtilities.invokeLater(new Runnable(){ public void run() {
 				_label.setText(text);
-				ReactiveLabel.this.revalidate();
-				ReactiveLabel.this.repaint();
 			}});
 		}};
 	}

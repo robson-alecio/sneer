@@ -51,7 +51,7 @@ public class LateralContactInfo extends JPanel{
 		content.add(new LabeledPanel(translate("Nick"), new ReactiveTextField(_contact.nick(), nickChanger(), _font), _font));
 		content.add(new LabeledPanel(translate("Name"), new ReactiveTextField(_contact.party().name(), null, _font), _font));
 		content.add(new LabeledPanel(translate("Thought Of The Day"), new ReactiveTextField(_contact.party().thoughtOfTheDay(), null, _font), _font));
-		content.add(new LabeledPanel(translate("Profile"), new ReactiveMemoField(_contact.party().profile(), null, _font),  _font));
+		content.add(new LabeledPanel(translate("Profile"), new ReactiveMemoField(_contact.party().profile(), null, _font,4),  _font));
 		content.add(new LabeledPanel(translate("Host"), new ReactiveTextField(_contact.party().host(), null, _font),  _font));
 		content.add(new LabeledPanel(translate("Port"), new ReactiveIntegerField(_contact.party().port(), null, _font),  _font));
 		

@@ -1,4 +1,4 @@
-package sneer.apps.asker;
+package sneer.kernel.communication.impl;
 
 import java.util.ArrayList;
 import java.util.List;

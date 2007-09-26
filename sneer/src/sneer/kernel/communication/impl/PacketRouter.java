@@ -1,4 +1,4 @@
-package sneer.apps.asker;
+package sneer.kernel.communication.impl;
 
 import sneer.kernel.communication.Packet;
 import wheel.lang.Omnivore;

@@ -13,6 +13,8 @@ import sneer.apps.asker.packet.AskerRequestPayload;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
+import sneer.kernel.communication.impl.PacketRouter;
+import sneer.kernel.communication.impl.Router;
 import sneer.kernel.pointofview.Contact;
 import wheel.io.ui.User;
 import wheel.lang.Omnivore;

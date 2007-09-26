@@ -9,6 +9,7 @@ import sneer.apps.asker.packet.AskerAcceptResponse;
 import sneer.apps.asker.packet.AskerDenyResponse;
 import sneer.apps.asker.packet.AskerPacket;
 import sneer.apps.asker.packet.AskerRequestPacket;
+import sneer.apps.asker.packet.AskerRequestPayload;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
@@ -62,23 +63,31 @@ public class Asker {
 			AskerRequestPacket requestPacket = (AskerRequestPacket)packet._contents;
 			String nick = findContact(packet._contactId).nick().currentValue();
 			String prompt = translate("%1$s wants to ask you:\n\n %2$s", nick, requestPacket._message);
-			_user.confirmWithTimeout(prompt, 10, requestCallback(packet._contactId,requestPacket._id));
+			_user.confirmWithTimeout(prompt, 10, requestCallback(packet._contactId,requestPacket));
 		}};
 	}
+	
+	private Router<AskerRequestPayload> _payloadRouter = new Router<AskerRequestPayload>(null);
+	
+	public void registerAccepted(Class<?> clazz, Omnivore<AskerRequestPayload> callback){
+		_payloadRouter.register(clazz, callback);
+	}
 
-	private Omnivore<Boolean> requestCallback(final ContactId contactId, final long id) {
+	private Omnivore<Boolean> requestCallback(final ContactId contactId, final AskerRequestPacket requestPacket) {
 		return new Omnivore<Boolean>(){ public void consume(Boolean accepted) {
-			if (accepted)
-				_channel.output().consume(new Packet(contactId,new AskerAcceptResponse(id)));
-			else
-				_channel.output().consume(new Packet(contactId,new AskerDenyResponse(id)));	
+			if (accepted){
+				_channel.output().consume(new Packet(contactId,new AskerAcceptResponse(requestPacket._id)));
+				_payloadRouter.consume(requestPacket._payload);
+			}else{
+				_channel.output().consume(new Packet(contactId,new AskerDenyResponse(requestPacket._id)));
+			}
 		}};
 	}
 
-	public void ask(ContactId contactId, String message, Omnivore<Boolean> callback){
+	public void ask(ContactId contactId, String message, Omnivore<Boolean> callback, AskerRequestPayload payload){
 		long id = generateId();
 		_requestsById.put(id,new AskerRequest(message, callback));
-		_channel.output().consume(new Packet(contactId,new AskerRequestPacket(id,message)));
+		_channel.output().consume(new Packet(contactId,new AskerRequestPacket(id,message,payload)));
 	}
 
 	private synchronized Long generateId() {
@@ -90,5 +99,17 @@ public class Asker {
 			if (candidate.id().equals(id))
 				return candidate;
 		return null;
+	}
+	
+	public class AskerRequest {
+
+		public final String _message;
+		public final Omnivore<Boolean> _callback;
+
+		public AskerRequest(String message, Omnivore<Boolean> callback) {
+			_message = message;
+			_callback = callback;
+		}
+
 	}
 }

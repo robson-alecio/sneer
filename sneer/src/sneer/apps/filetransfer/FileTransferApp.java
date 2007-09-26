@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.swing.JFileChooser;
 
 import sneer.apps.asker.Asker;
+import sneer.apps.asker.packet.AskerRequestPayload;
 import sneer.apps.filetransfer.gui.FileTransferFrame;
 import sneer.kernel.appmanager.AppConfig;
 import sneer.kernel.business.contacts.ContactAttributes;
@@ -40,6 +41,14 @@ public class FileTransferApp {
 		_contactAttributes = config._contactAttributes;
 		_channel.input().addReceiver(filePartReceiver());
 		_asker = config._asker;
+		_asker.registerAccepted(FileRequest.class, acceptedCallback());
+	}
+
+	private Omnivore<AskerRequestPayload> acceptedCallback() {
+		return new Omnivore<AskerRequestPayload>(){ public void consume(AskerRequestPayload payload) {
+			//Fix: the file transfer must be started here!
+			System.out.println("Transfer Accepted!");
+		}};
 	}
 
 	private Asker _asker;
@@ -66,7 +75,7 @@ public class FileTransferApp {
 			if (value != JFileChooser.APPROVE_OPTION) return;
 
 			File file = fc.getSelectedFile();
-			_asker.ask(contact.id(),translate("Can I send you the file %1$s ?",file.getName()), callback(contact.id(),file));
+			_asker.ask(contact.id(),translate("Can I send you the file %1$s ?",file.getName()), callback(contact.id(),file), new FileRequest(file.getName(),file.length()));
 		}});
 	}
 	

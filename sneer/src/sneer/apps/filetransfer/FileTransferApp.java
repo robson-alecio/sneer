@@ -39,8 +39,8 @@ public class FileTransferApp {
 		_user = config._user;
 		_channel = config._channel;
 		_contactAttributes = config._contactAttributes;
-		_channel.input().addReceiver(filePartReceiver());
 		_asker = config._asker;
+		_channel.input().addReceiver(filePartReceiver());
 		_asker.registerAccepted(FileRequest.class, acceptedCallback());
 	}
 
@@ -75,7 +75,7 @@ public class FileTransferApp {
 			if (value != JFileChooser.APPROVE_OPTION) return;
 
 			File file = fc.getSelectedFile();
-			_asker.ask(contact.id(),translate("Can I send you the file %1$s ?",file.getName()), callback(contact.id(),file), new FileRequest(file.getName(),file.length()));
+			_asker.ask(contact.id(), callback(contact.id(),file), new FileRequest(file.getName(),file.length()));
 		}});
 	}
 	

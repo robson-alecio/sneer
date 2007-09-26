@@ -22,7 +22,7 @@ import wheel.reactive.lists.ListSignal;
 
 public class Asker {
 
-	private Map<Long,AskerRequest> _requestsById = new Hashtable<Long,AskerRequest>();
+	private Map<Long,Omnivore<Boolean>> _requestsById = new Hashtable<Long,Omnivore<Boolean>>();
 	private final User _user;
 	private final Channel _channel;
 	private final ListSignal<Contact> _contacts;
@@ -55,16 +55,16 @@ public class Asker {
 		
 	private void consumePacket(Packet packet, boolean state) {
 			AskerPacket askerPacket = (AskerPacket)packet._contents;
-			AskerRequest request = _requestsById.remove(askerPacket._id);
+			Omnivore<Boolean> request = _requestsById.remove(askerPacket._id);
 			if (request == null) return; //ignore invalid responses without previous requests
-			request._callback.consume(state);
+			request.consume(state);
 	};
 
 	private Omnivore<Packet> requestReceiver() {
 		return new Omnivore<Packet>(){ public void consume(Packet packet) {		
 			AskerRequestPacket requestPacket = (AskerRequestPacket)packet._contents;
 			String nick = findContact(packet._contactId).nick().currentValue();
-			String prompt = translate("%1$s wants to ask you:\n\n %2$s", nick, requestPacket._message);
+			String prompt = translate("%1$s wants to ask you:\n\n",nick) + requestPacket._payload.prompt();
 			_user.confirmWithTimeout(prompt, 10, requestCallback(packet._contactId,requestPacket));
 		}};
 	}
@@ -86,10 +86,10 @@ public class Asker {
 		}};
 	}
 
-	public void ask(ContactId contactId, String message, Omnivore<Boolean> callback, AskerRequestPayload payload){
+	public void ask(ContactId contactId, Omnivore<Boolean> callback, AskerRequestPayload payload){
 		long id = generateId();
-		_requestsById.put(id,new AskerRequest(message, callback));
-		_channel.output().consume(new Packet(contactId,new AskerRequestPacket(id,message,payload)));
+		_requestsById.put(id,callback);
+		_channel.output().consume(new Packet(contactId,new AskerRequestPacket(id,payload)));
 	}
 
 	private synchronized Long generateId() {
@@ -102,16 +102,5 @@ public class Asker {
 				return candidate;
 		return null;
 	}
-	
-	public class AskerRequest {
 
-		public final String _message;
-		public final Omnivore<Boolean> _callback;
-
-		public AskerRequest(String message, Omnivore<Boolean> callback) {
-			_message = message;
-			_callback = callback;
-		}
-
-	}
 }

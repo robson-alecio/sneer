@@ -2,12 +2,10 @@ package sneer.apps.asker.packet;
 
 public class AskerRequestPacket extends AskerPacket{
 
-	public final String _message;
 	public final AskerRequestPayload _payload;
 
-	public AskerRequestPacket(long id, String message, AskerRequestPayload payload){
+	public AskerRequestPacket(long id, AskerRequestPayload payload){
 		_id = id;
-		_message = message;
 		_payload = payload;
 	}
 	

@@ -1,5 +1,6 @@
 package sneer.apps.filetransfer;
 
+import static wheel.i18n.Language.translate;
 import sneer.apps.asker.packet.AskerRequestPayload;
 
 public class FileRequest implements AskerRequestPayload{
@@ -12,6 +13,9 @@ public class FileRequest implements AskerRequestPayload{
 		_size = size;
 	}
 	
-	private static final long serialVersionUID = 1L;
+	public String prompt() {
+		return translate("Do you accept the file\n\n%1$s",_filename);
+	}
 
+	private static final long serialVersionUID = 1L;
 }

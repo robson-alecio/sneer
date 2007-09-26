@@ -5,6 +5,10 @@ import static wheel.i18n.Language.translate;
 import java.util.Hashtable;
 import java.util.Map;
 
+import sneer.apps.asker.packet.AskerAcceptResponse;
+import sneer.apps.asker.packet.AskerDenyResponse;
+import sneer.apps.asker.packet.AskerPacket;
+import sneer.apps.asker.packet.AskerRequestPacket;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;

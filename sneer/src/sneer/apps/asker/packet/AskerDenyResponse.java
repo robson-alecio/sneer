@@ -1,4 +1,4 @@
-package sneer.apps.asker;
+package sneer.apps.asker.packet;
 
 public class AskerDenyResponse extends AskerPacket{
 

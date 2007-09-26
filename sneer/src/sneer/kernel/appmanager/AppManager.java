@@ -12,6 +12,7 @@ import java.net.URLClassLoader;
 import java.util.zip.ZipException;
 
 import sneer.SneerDirectories;
+import sneer.apps.asker.Asker;
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.communication.impl.Communicator;
 import sneer.kernel.pointofview.Party;
@@ -36,13 +37,15 @@ public class AppManager {
 
 	private final Party _me;
 
+	private final Asker _asker;
 
-	public AppManager(User user, Communicator communicator, Party me, ListSignal<ContactAttributes> contactAttributes, Omnivore<Notification> briefUserNotifier) {
+	public AppManager(User user, Communicator communicator, Party me, ListSignal<ContactAttributes> contactAttributes, Omnivore<Notification> briefUserNotifier, Asker asker) {
 		_user = user;
 		_me = me;
 		_communicator = communicator;
 		_contactAttributes = contactAttributes;
 		_briefUserNotifier = briefUserNotifier;
+		_asker = asker;
 		createDirectories();
 	}
 
@@ -155,7 +158,7 @@ public class AppManager {
 	}
 
 	public void startApp(SovereignApplication app){
-		AppConfig config = new AppConfig(_user, _communicator.openChannel(app.defaultName(), app.trafficPriority(), app.getClass().getClassLoader()), _me.contacts(), _contactAttributes, _me.name(), _briefUserNotifier, null);  //FixUrgent Create the blower passing the [packagedDirectory]/prevalence directory.
+		AppConfig config = new AppConfig(_user, _communicator.openChannel(app.defaultName(), app.trafficPriority(), app.getClass().getClassLoader()), _me.contacts(), _contactAttributes, _me.name(), _briefUserNotifier, null,_asker);  //FixUrgent Create the blower passing the [packagedDirectory]/prevalence directory.
 		app.start(config);
 	}
 

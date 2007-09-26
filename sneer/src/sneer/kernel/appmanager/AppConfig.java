@@ -1,6 +1,7 @@
 package sneer.kernel.appmanager;
 
 import prevayler.bubble.PrevalentBubbleBlower;
+import sneer.apps.asker.Asker;
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.pointofview.Contact;
@@ -19,9 +20,10 @@ public class AppConfig {
 	public final PrevalentBubbleBlower _prevalentBubbleBlower;
 	public final ListSignal<ContactAttributes> _contactAttributes;
 	public final Signal<String> _ownName;
+	public final Asker _asker;
 	
 
-	public AppConfig(User user, Channel channel, ListSignal<Contact> contacts, ListSignal<ContactAttributes> contactAttributes, Signal<String> ownName, Omnivore<Notification> briefUserNotifier, PrevalentBubbleBlower prevalentBubbleBlower) {
+	public AppConfig(User user, Channel channel, ListSignal<Contact> contacts, ListSignal<ContactAttributes> contactAttributes, Signal<String> ownName, Omnivore<Notification> briefUserNotifier, PrevalentBubbleBlower prevalentBubbleBlower, Asker asker) {
 		_user = user;
 		_channel = channel;
 		_contacts = contacts;
@@ -29,6 +31,7 @@ public class AppConfig {
 		_ownName = ownName;
 		_briefUserNotifier = briefUserNotifier;
 		_prevalentBubbleBlower = prevalentBubbleBlower;
+		_asker = asker;
 	}
 
 }

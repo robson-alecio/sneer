@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.swing.JFileChooser;
 
+import sneer.apps.asker.Asker;
 import sneer.apps.filetransfer.gui.FileTransferFrame;
 import sneer.kernel.appmanager.AppConfig;
 import sneer.kernel.business.contacts.ContactAttributes;
@@ -38,8 +39,10 @@ public class FileTransferApp {
 		_channel = config._channel;
 		_contactAttributes = config._contactAttributes;
 		_channel.input().addReceiver(filePartReceiver());
+		_asker = config._asker;
 	}
 
+	private Asker _asker;
 	private final User _user;
 	private final Channel _channel;
 	private final ListSignal<ContactAttributes> _contactAttributes;
@@ -54,6 +57,7 @@ public class FileTransferApp {
 	}
 	
 	private void actUponContact(final Contact contact) {
+		
 		Threads.startDaemon(new Runnable() { public void run() {
 			final JFileChooser fc = new JFileChooser(); //Refactor: The app should not have GUI logic.
 			fc.setDialogTitle(translate("Choose File to Send to %1$s", contact.nick().currentValue()));
@@ -62,10 +66,17 @@ public class FileTransferApp {
 			if (value != JFileChooser.APPROVE_OPTION) return;
 
 			File file = fc.getSelectedFile();
-			sendFile(contact.id(), file);
+			_asker.ask(contact.id(),translate("Can I send you the file %1$s ?",file.getName()), callback(contact.id(),file));
 		}});
 	}
 	
+	private Omnivore<Boolean> callback(final ContactId contactId, final File file) {
+		return new Omnivore<Boolean>(){ public void consume(Boolean accepted) {
+			if (accepted)
+				sendFile(contactId, file);
+		}};
+	}
+
 	private void sendFile(final ContactId contactId, File file) {
 		try {
 			tryToSendFile(contactId, file);

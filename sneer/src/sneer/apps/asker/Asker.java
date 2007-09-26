@@ -5,11 +5,9 @@ import static wheel.i18n.Language.translate;
 import java.util.Hashtable;
 import java.util.Map;
 
-import sneer.apps.asker.packet.AskerAcceptResponse;
-import sneer.apps.asker.packet.AskerDenyResponse;
-import sneer.apps.asker.packet.AskerPacket;
 import sneer.apps.asker.packet.AskerRequestPacket;
 import sneer.apps.asker.packet.AskerRequestPayload;
+import sneer.apps.asker.packet.AskerResponse;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
@@ -34,31 +32,23 @@ public class Asker {
 		_channel = channel;
 		_contacts = contacts;
 		_router.register(AskerRequestPacket.class, requestReceiver());
-		_router.register(AskerAcceptResponse.class, acceptReceiver());
-		_router.register(AskerDenyResponse.class, denyReceiver());
+		_router.register(AskerResponse.class, acceptReceiver());
 		_channel.input().addReceiver(_router);
-	}
-
-	private Omnivore<Packet> denyReceiver() {
-		return new Omnivore<Packet>(){ public void consume(Packet packet) {
-			String nick = findContact(packet._contactId).nick().currentValue();
-			_user.modelessAcknowledge(translate("Information"), translate("%1$s denied your request. :(", nick));
-			consumePacket(packet,false);
-		}};
 	}
 
 	private Omnivore<Packet> acceptReceiver() {
 		return new Omnivore<Packet>(){ public void consume(Packet packet) {
-			consumePacket(packet,true);
+			AskerResponse response = (AskerResponse)packet._contents;
+			if (!response._accepted){
+				String nick = findContact(packet._contactId).nick().currentValue();
+				_user.modelessAcknowledge(translate("Information"), translate("%1$s denied your request. :(", nick));
+			}
+			Omnivore<Boolean> request = _requestsById.remove(response._id);
+			if (request == null) return; //ignore invalid responses without previous requests
+			request.consume(response._accepted);
+			
 		}};
 	}
-		
-	private void consumePacket(Packet packet, boolean state) {
-			AskerPacket askerPacket = (AskerPacket)packet._contents;
-			Omnivore<Boolean> request = _requestsById.remove(askerPacket._id);
-			if (request == null) return; //ignore invalid responses without previous requests
-			request.consume(state);
-	};
 
 	private Omnivore<Packet> requestReceiver() {
 		return new Omnivore<Packet>(){ public void consume(Packet packet) {		
@@ -77,12 +67,9 @@ public class Asker {
 
 	private Omnivore<Boolean> requestCallback(final ContactId contactId, final AskerRequestPacket requestPacket) {
 		return new Omnivore<Boolean>(){ public void consume(Boolean accepted) {
-			if (accepted){
-				_channel.output().consume(new Packet(contactId,new AskerAcceptResponse(requestPacket._id)));
+			_channel.output().consume(new Packet(contactId,new AskerResponse(requestPacket._id,accepted)));
+			if (accepted)
 				_payloadRouter.consume(requestPacket._payload);
-			}else{
-				_channel.output().consume(new Packet(contactId,new AskerDenyResponse(requestPacket._id)));
-			}
 		}};
 	}
 

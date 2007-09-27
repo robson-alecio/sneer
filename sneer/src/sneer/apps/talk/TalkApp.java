@@ -35,7 +35,7 @@ public class TalkApp {
 		_contacts = config._contacts;
 		_asker = config._asker;
 		_channel.input().addReceiver(audioPacketReceiver());
-		_asker.registerAccepted(AudioPacket.class, acceptedCallback());
+		_asker.registerAccepted(AudioRequest.class, acceptedCallback());
 	}
 
 	private Omnivore<AskerRequestPayload> acceptedCallback() {

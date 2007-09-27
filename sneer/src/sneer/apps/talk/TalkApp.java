@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import sneer.apps.asker.Asker;
+import sneer.apps.asker.packet.AskerRequestPayload;
 import sneer.apps.talk.gui.TalkFrame;
 import sneer.kernel.appmanager.AppConfig;
 import sneer.kernel.business.contacts.ContactId;
@@ -17,7 +19,6 @@ import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.pointofview.Contact;
-import wheel.io.ui.User;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
@@ -26,19 +27,25 @@ import wheel.reactive.lists.ListSignal;
 
 public class TalkApp {
 
-	private static final String OPEN = "Open";
 	private static final String CLOSE = "Close";
+	private Asker _asker;
 
 	public TalkApp(AppConfig config) {
-		_user = config._user;
 		_channel = config._channel;
 		_contacts = config._contacts;
-		
+		_asker = config._asker;
 		_channel.input().addReceiver(audioPacketReceiver());
+		_asker.registerAccepted(AudioPacket.class, acceptedCallback());
 	}
 
+	private Omnivore<AskerRequestPayload> acceptedCallback() {
+		return new Omnivore<AskerRequestPayload>(){ public void consume(AskerRequestPayload payload) {
+			AudioRequest request = (AudioRequest)payload;
+			open(request._contactId);
+			System.out.println("Talk from "+findContact(request._contactId).nick()+" accepted.");
+		}};
+	}
 
-	private final User _user;
 	private final Channel _channel;
 	private final ListSignal<Contact> _contacts;
 	private final Map<ContactId, TalkFrame>_framesByContactId = new HashMap<ContactId, TalkFrame>();
@@ -49,7 +56,7 @@ public class TalkApp {
 
 			@Override
 			public void actUpon(Contact contact) {
-				actUponContact(contact);
+				_asker.ask(contact.id(), callback(contact.id()), new AudioRequest());
 			}
 
 			@Override
@@ -62,10 +69,6 @@ public class TalkApp {
 
 	private Omnivore<Packet> audioPacketReceiver() {
 		return new Omnivore<Packet>() { public void consume(Packet packet) {
-			if (OPEN.equals(packet._contents)) {
-				userWantsToOpen(packet._contactId);
-				return;
-			}
 			
 			if (CLOSE.equals(packet._contents)) {
 				close(packet._contactId);
@@ -76,14 +79,6 @@ public class TalkApp {
 			if (input == null) return;
 			input.setter().consume((AudioPacket)packet._contents);
 		}};
-	}
-	
-	private void userWantsToOpen(final ContactId contactId) {
-		String nick = findContact(contactId).nick().currentValue();
-		String prompt = translate("%1$s is calling you.\n\nDo you want to accept this call?", nick);
-		_user.confirmWithTimeout(prompt, 15, new Omnivore<Boolean>() { public void consume(Boolean accepted) {
-			if (accepted) open(contactId);
-		}});
 	}
 
 	private void close(ContactId contactId) {
@@ -105,12 +100,13 @@ public class TalkApp {
 		}};
 	}
 
-	private void actUponContact(Contact contact) {
-		ContactId id = contact.id();
-		if (getInputFor(id) != null) return;
-		
-		open(id);
-		_channel.output().consume(new Packet(id, OPEN));
+	private Omnivore<Boolean> callback(final ContactId contactId) {
+		return new Omnivore<Boolean>(){ public void consume(Boolean accepted) {
+			if (accepted){
+				if (getInputFor(contactId) != null) return;
+				open(contactId);
+			}	
+		}};
 	}
 
 	private void createFrameFor(ContactId contactId) {

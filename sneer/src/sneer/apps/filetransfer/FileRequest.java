@@ -15,7 +15,7 @@ public class FileRequest extends AskerRequestPayload{
 	
 	@Override
 	public String prompt() {
-		return translate("Do you accept the file\n\n%1$s",_filename);
+		return translate("Do you accept the file %1$s ?",_filename);
 	}
 
 	private static final long serialVersionUID = 1L;

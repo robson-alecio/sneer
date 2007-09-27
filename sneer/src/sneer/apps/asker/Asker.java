@@ -61,7 +61,7 @@ public class Asker {
 	
 	private Router<AskerRequestPayload> _payloadRouter = new Router<AskerRequestPayload>(null);
 	
-	public void registerAccepted(Class<?> clazz, Omnivore<AskerRequestPayload> callback){
+	public void registerAccepted(Class<? extends AskerRequestPayload> clazz, Omnivore<AskerRequestPayload> callback){
 		_payloadRouter.register(clazz, callback);
 	}
 

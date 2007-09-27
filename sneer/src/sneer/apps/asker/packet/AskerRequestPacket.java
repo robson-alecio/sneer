@@ -1,5 +1,6 @@
 package sneer.apps.asker.packet;
 
+
 public class AskerRequestPacket extends AskerPacket{
 
 	public final AskerRequestPayload _payload;

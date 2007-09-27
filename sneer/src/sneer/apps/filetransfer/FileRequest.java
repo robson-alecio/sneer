@@ -3,7 +3,7 @@ package sneer.apps.filetransfer;
 import static wheel.i18n.Language.translate;
 import sneer.apps.asker.packet.AskerRequestPayload;
 
-public class FileRequest implements AskerRequestPayload{
+public class FileRequest extends AskerRequestPayload{
 
 	public final String _filename;
 	public final long _size;
@@ -13,6 +13,7 @@ public class FileRequest implements AskerRequestPayload{
 		_size = size;
 	}
 	
+	@Override
 	public String prompt() {
 		return translate("Do you accept the file\n\n%1$s",_filename);
 	}

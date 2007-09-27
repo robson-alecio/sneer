@@ -68,8 +68,10 @@ public class Asker {
 	private Omnivore<Boolean> requestCallback(final ContactId contactId, final AskerRequestPacket requestPacket) {
 		return new Omnivore<Boolean>(){ public void consume(Boolean accepted) {
 			_channel.output().consume(new Packet(contactId,new AskerResponse(requestPacket._id,accepted)));
-			if (accepted)
+			if (accepted){
+				requestPacket._payload._contactId = contactId;
 				_payloadRouter.consume(requestPacket._payload);
+			}
 		}};
 	}
 

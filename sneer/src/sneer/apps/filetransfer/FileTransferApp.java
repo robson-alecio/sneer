@@ -46,8 +46,9 @@ public class FileTransferApp {
 
 	private Omnivore<AskerRequestPayload> acceptedCallback() {
 		return new Omnivore<AskerRequestPayload>(){ public void consume(AskerRequestPayload payload) {
+			FileRequest request = (FileRequest)payload;
 			//Fix: the file transfer must be started here!
-			System.out.println("Transfer Accepted!");
+			System.out.println("Transfer Accepted for file "+request._filename+" from "+findContact(request._contactId).nick());
 		}};
 	}
 

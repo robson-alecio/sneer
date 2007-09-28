@@ -43,7 +43,10 @@ public class TransferQueue {
 		return new Omnivore<Packet>(){ public void consume(Packet packet) {
 			TransferPacket transferPacket = (TransferPacket) packet._contents;
 			FileSchedule schedule = _receiverSchedule.get(new TransferKey(transferPacket._transferId, packet._contactId));
-			if (schedule == null) return; //someone sending a file I dont want to receive.
+			if (schedule == null) {
+				System.out.println("ignoring..."+transferPacket._transferId); 
+				return; //someone sending a file I dont want to receive. not logged since should fill the log with trash. 
+			}
 			writeFilePart(transferPacket, schedule);
 		}};
 	}
@@ -94,7 +97,12 @@ public class TransferQueue {
 			TransferKey temp = (TransferKey)obj;
 			return _transferId.equals(temp._transferId)&&_contactId.equals(temp._contactId);
 		}
-		
+
+		@Override
+		public int hashCode() {
+			return 0;
+		}
+
 	}
 
 	private void tryToSendFile(final ContactId contactId, File file, final String transferId, final Omnivore<Long> progressCallback) throws IOException {

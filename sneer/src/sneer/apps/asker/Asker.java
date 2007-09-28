@@ -12,7 +12,6 @@ import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.communication.impl.PacketRouter;
-import sneer.kernel.communication.impl.Router;
 import sneer.kernel.pointofview.Contact;
 import wheel.io.ui.User;
 import wheel.lang.Omnivore;
@@ -45,8 +44,7 @@ public class Asker {
 			}
 			Omnivore<Boolean> request = _requestsById.remove(response._id);
 			if (request == null) return; //ignore invalid responses without previous requests
-			request.consume(response._accepted);
-			
+			request.consume(response._accepted);	
 		}};
 	}
 
@@ -59,19 +57,17 @@ public class Asker {
 		}};
 	}
 	
-	private Router<AskerRequestPayload> _payloadRouter = new Router<AskerRequestPayload>(null);
+	private PacketRouter _payloadRouter = new PacketRouter(null);
 	
-	public void registerAccepted(Class<? extends AskerRequestPayload> clazz, Omnivore<AskerRequestPayload> callback){
+	public void registerAccepted(Class<?> clazz, Omnivore<Packet> callback){
 		_payloadRouter.register(clazz, callback);
 	}
 
 	private Omnivore<Boolean> requestCallback(final ContactId contactId, final AskerRequestPacket requestPacket) {
 		return new Omnivore<Boolean>(){ public void consume(Boolean accepted) {
+			if (accepted)
+				_payloadRouter.consume(new Packet(contactId,requestPacket._payload));
 			_channel.output().consume(new Packet(contactId,new AskerResponse(requestPacket._id,accepted)));
-			if (accepted){
-				requestPacket._payload._contactId = contactId;
-				_payloadRouter.consume(requestPacket._payload);
-			}
 		}};
 	}
 

@@ -10,6 +10,7 @@ import org.prevayler.PrevaylerFactory;
 
 import prevayler.bubble.Bubble;
 import sneer.apps.asker.Asker;
+import sneer.apps.transferqueue.TransferQueue;
 import sneer.kernel.appmanager.AppManager;
 import sneer.kernel.appmanager.SovereignApplicationUID;
 import sneer.kernel.business.BusinessSource;
@@ -53,6 +54,7 @@ public class Sneer {
 	private Party _me;
 	private Gui _gui;
 	private Asker _asker;
+	private TransferQueue _transfer;
 	private AppManager _appManager;
 	private ContactActionFactory _contactActionFactory;
 	
@@ -71,14 +73,18 @@ public class Sneer {
 		try{Thread.sleep(2000);}catch(InterruptedException ie){}
 		
 		_communicator = new Communicator(_user, new OldNetworkImpl(), _businessSource);
+		
 		Channel channel = _communicator.openChannel("Point of View", 1);
 		_me = new Me(_businessSource.output(), _communicator.operator(), channel);
 		
 		Channel askerChannel = _communicator.openChannel("Asker", 2);
 		_asker = new Asker(_user, askerChannel,_me.contacts());
 		
+		Channel transferChannel = _communicator.openChannel("Transfer", 2);
+		_transfer = new TransferQueue(transferChannel);
+		
 		System.out.println("Checking existing apps:");
-		_appManager = new AppManager(_user,_communicator, _me, _businessSource.output().contactAttributes(), briefNotifier(),_asker);
+		_appManager = new AppManager(_user,_communicator, _me, _businessSource.output().contactAttributes(), briefNotifier(),_asker,_transfer);
 		for(SovereignApplicationUID app:_appManager.publishedApps().output())
 			System.out.println("App : "+app._sovereignApplication.defaultName());
 

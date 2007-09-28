@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import sneer.apps.asker.Asker;
-import sneer.apps.asker.packet.AskerRequestPayload;
 import sneer.apps.talk.gui.TalkFrame;
 import sneer.kernel.appmanager.AppConfig;
 import sneer.kernel.business.contacts.ContactId;
@@ -38,11 +37,11 @@ public class TalkApp {
 		_asker.registerAccepted(AudioRequest.class, acceptedCallback());
 	}
 
-	private Omnivore<AskerRequestPayload> acceptedCallback() {
-		return new Omnivore<AskerRequestPayload>(){ public void consume(AskerRequestPayload payload) {
-			AudioRequest request = (AudioRequest)payload;
-			open(request._contactId);
-			System.out.println("Talk from "+findContact(request._contactId).nick()+" accepted.");
+	private Omnivore<Packet> acceptedCallback() {
+		return new Omnivore<Packet>(){ public void consume(Packet packet) {
+			//AudioRequest request = (AudioRequest)packet._contents;
+			open(packet._contactId);
+			System.out.println("Talk from "+findContact(packet._contactId).nick()+" accepted.");
 		}};
 	}
 

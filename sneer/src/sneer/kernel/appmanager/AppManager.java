@@ -13,6 +13,7 @@ import java.util.zip.ZipException;
 
 import sneer.SneerDirectories;
 import sneer.apps.asker.Asker;
+import sneer.apps.transferqueue.TransferQueue;
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.communication.impl.Communicator;
 import sneer.kernel.pointofview.Party;
@@ -39,13 +40,16 @@ public class AppManager {
 
 	private final Asker _asker;
 
-	public AppManager(User user, Communicator communicator, Party me, ListSignal<ContactAttributes> contactAttributes, Omnivore<Notification> briefUserNotifier, Asker asker) {
+	private final TransferQueue _transfer;
+
+	public AppManager(User user, Communicator communicator, Party me, ListSignal<ContactAttributes> contactAttributes, Omnivore<Notification> briefUserNotifier, Asker asker, TransferQueue transfer) {
 		_user = user;
 		_me = me;
 		_communicator = communicator;
 		_contactAttributes = contactAttributes;
 		_briefUserNotifier = briefUserNotifier;
 		_asker = asker;
+		_transfer = transfer;
 		createDirectories();
 	}
 
@@ -158,7 +162,7 @@ public class AppManager {
 	}
 
 	public void startApp(SovereignApplication app){
-		AppConfig config = new AppConfig(_user, _communicator.openChannel(app.defaultName(), app.trafficPriority(), app.getClass().getClassLoader()), _me.contacts(), _contactAttributes, _me.name(), _briefUserNotifier, null,_asker);  //FixUrgent Create the blower passing the [packagedDirectory]/prevalence directory.
+		AppConfig config = new AppConfig(_user, _communicator.openChannel(app.defaultName(), app.trafficPriority(), app.getClass().getClassLoader()), _me.contacts(), _contactAttributes, _me.name(), _briefUserNotifier, null,_asker, _transfer);  //FixUrgent Create the blower passing the [packagedDirectory]/prevalence directory.
 		app.start(config);
 	}
 

@@ -2,72 +2,85 @@ package sneer.apps.filetransfer;
 
 import static wheel.i18n.Language.translate;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.JFileChooser;
 
 import sneer.apps.asker.Asker;
-import sneer.apps.asker.packet.AskerRequestPayload;
-import sneer.apps.filetransfer.gui.FileTransferFrame;
+import sneer.apps.transferqueue.TransferQueue;
 import sneer.kernel.appmanager.AppConfig;
-import sneer.kernel.business.contacts.ContactAttributes;
+import sneer.kernel.appmanager.AppTools;
 import sneer.kernel.business.contacts.ContactId;
-import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.pointofview.Contact;
+import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
-import wheel.reactive.Signal;
-import wheel.reactive.Source;
-import wheel.reactive.impl.SourceImpl;
-import wheel.reactive.lists.ListSignal;
 
 public class FileTransferApp {
 
-	private static final int FILEPART_CHUNK_SIZE = 5000;
-
 	public FileTransferApp(AppConfig config) {
 		_user = config._user;
-		_channel = config._channel;
-		_contactAttributes = config._contactAttributes;
+		//_contactAttributes = config._contactAttributes;
 		_asker = config._asker;
-		_channel.input().addReceiver(filePartReceiver());
+		_transfer = config._transfer;
 		_asker.registerAccepted(FileRequest.class, acceptedCallback());
 	}
 
-	private Omnivore<AskerRequestPayload> acceptedCallback() {
-		return new Omnivore<AskerRequestPayload>(){ public void consume(AskerRequestPayload payload) {
-			FileRequest request = (FileRequest)payload;
-			//Fix: the file transfer must be started here!
-			System.out.println("Transfer Accepted for file "+request._filename+" from "+findContact(request._contactId).nick());
-		}};
-	}
-
 	private Asker _asker;
+	private TransferQueue _transfer;
 	private final User _user;
-	private final Channel _channel;
-	private final ListSignal<ContactAttributes> _contactAttributes;
-	private final Map<ContactId, FileTransferFrame>_framesByContactId = new HashMap<ContactId, FileTransferFrame>();
-	private final Map<ContactId, SourceImpl<FilePart>>_inputsByContactId = new HashMap<ContactId, SourceImpl<FilePart>>();
-
-	private Omnivore<Packet> filePartReceiver() {
-		return new Omnivore<Packet>() { public void consume(Packet packet) {
-			produceFrameFor(packet._contactId);
-			produceInputFor(packet._contactId).setter().consume((FilePart)packet._contents);
+	//private final ListSignal<ContactAttributes> _contactAttributes;
+	
+	private Omnivore<Packet> acceptedCallback() {
+		return new Omnivore<Packet>(){ public void consume(Packet packet) {
+			FileRequest request = (FileRequest)packet._contents;
+			//Fix: check filename to avoid special chars
+			try{
+				File directory = chooseTargetDirectory(request._filename);
+				if (directory!=null){
+					directory.mkdirs();
+					File file = new File(directory,request._filename);
+					_transfer.receiveFile(packet._contactId, file, request._size, request._transferId, receiverProgressCallback(file.getName()));
+				}
+			}catch(CancelledByUser cbu){
+				//Fix: maybe should notify other side (not obligatory now, works as is)
+			}
 		}};
 	}
 	
-	private void actUponContact(final Contact contact) {
+	protected Omnivore<Long> receiverProgressCallback(final String filename) {
+		return new Omnivore<Long>(){ public void consume(Long value) {
+			//Refactor: transform into a gui.
+			System.out.println("receiving "+filename+" - "+value);
+		}};
+	}
+
+	private File chooseTargetDirectory(String fileName) throws CancelledByUser {
+		final JFileChooser fc = new JFileChooser();
+		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fc.setApproveButtonText(translate("Receive"));
+		fc.setDialogTitle(translate("Receiving %1$s - Choose Download Directory", fileName));
 		
+		while (true) {
+			if (fc.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
+				throw new CancelledByUser();
+		
+			File result = fc.getSelectedFile();
+			if (!result.isDirectory()) { // User might have entered manually.
+				_user.acknowledgeNotification(translate("This is not a valid folder:\n\n%1$s\n\nTry again.", result.getPath()));
+				continue;
+			}
+			return result;
+		}
+	}
+
+
+	private void actUponContact(final Contact contact) {
 		Threads.startDaemon(new Runnable() { public void run() {
 			final JFileChooser fc = new JFileChooser(); //Refactor: The app should not have GUI logic.
 			fc.setDialogTitle(translate("Choose File to Send to %1$s", contact.nick().currentValue()));
@@ -76,73 +89,35 @@ public class FileTransferApp {
 			if (value != JFileChooser.APPROVE_OPTION) return;
 
 			File file = fc.getSelectedFile();
-			_asker.ask(contact.id(), callback(contact.id(),file), new FileRequest(file.getName(),file.length()));
+			String transferId = generateTransferId();
+			_asker.ask(contact.id(), callback(contact.id(),file, transferId), new FileRequest(file.getName(),file.length(),transferId));
 		}});
 	}
 	
-	private Omnivore<Boolean> callback(final ContactId contactId, final File file) {
+	private String generateTransferId() { 
+		return AppTools.uniqueName("transfer");
+	}
+
+	private Omnivore<Boolean> callback(final ContactId contactId, final File file, final String transferId) {
 		return new Omnivore<Boolean>(){ public void consume(Boolean accepted) {
 			if (accepted)
-				sendFile(contactId, file);
+				_transfer.sendFile(contactId, file, transferId, sendProgressCallback(file.getName()));
 		}};
 	}
 
-	private void sendFile(final ContactId contactId, File file) {
-		try {
-			tryToSendFile(contactId, file);
-		} catch(IOException ioe) {
-			ioe.printStackTrace(); //Fix: Treat properly.
-		}
+	private Omnivore<Long> sendProgressCallback(final String filename) {
+		return new Omnivore<Long>(){ public void consume(Long value) {
+			//Refactor: transform into a gui.
+			System.out.println("sending "+filename+" - "+value);
+		}};
 	}
 
-	private void tryToSendFile(final ContactId contactId, File file) throws IOException {
-		String fileName = file.getName();
-		long fileLength = file.length();
-		byte[] buffer = new byte[FILEPART_CHUNK_SIZE];
-		BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));
-		int read;
-		long offset = 0;
-		while ((read = in.read(buffer)) != -1) {
-			byte[] contents = new byte[read];
-			System.arraycopy(buffer,0,contents,0,read);
-			final FilePart filePart = new FilePart(fileName, fileLength, contents, offset);
-			sendPart(contactId, filePart);
-			offset += read;
-		}
-	}
-
-	private void sendPart(ContactId contactId, FilePart filePart) {
-		_channel.output().consume(new Packet(contactId, filePart));
-	}
-
-	private FileTransferFrame produceFrameFor(ContactId contactId) {
-		FileTransferFrame frame = _framesByContactId.get(contactId);
-		if (frame == null) {
-			frame = new FileTransferFrame(_user, findContact(contactId).nick(), inputFrom(contactId));
-			_framesByContactId.put(contactId, frame);
-		}
-		return frame; //Fix: What if this Frame has been closed?
-	}
-
-	private ContactAttributes findContact(ContactId id) {
+	/*private ContactAttributes findContact(ContactId id) {
 		for (ContactAttributes candidate : _contactAttributes)
 			if (candidate.id().equals(id)) return candidate;
 		return null;
-	}
+	}*/
 
-	private Signal<FilePart> inputFrom(ContactId contactId) {
-		return produceInputFor(contactId).output();
-	}
-
-	private Source<FilePart> produceInputFor(ContactId contactId) {
-		SourceImpl<FilePart> result = _inputsByContactId.get(contactId);
-		if (result == null) {
-			result = new SourceImpl<FilePart>(null);
-			_inputsByContactId.put(contactId, result);
-		}
-		return result;
-	}
-	
 	public List<ContactAction> contactActions() {
 		return Collections.singletonList( (ContactAction)new ContactAction() {
 

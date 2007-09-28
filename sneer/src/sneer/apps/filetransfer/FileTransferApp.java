@@ -4,14 +4,19 @@ import static wheel.i18n.Language.translate;
 
 import java.io.File;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JFileChooser;
 
 import sneer.apps.asker.Asker;
+import sneer.apps.filetransfer.gui.FileTransferFrame;
+import sneer.apps.transferqueue.TransferKey;
 import sneer.apps.transferqueue.TransferQueue;
 import sneer.kernel.appmanager.AppConfig;
 import sneer.kernel.appmanager.AppTools;
+import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
@@ -20,12 +25,13 @@ import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
+import wheel.reactive.lists.ListSignal;
 
 public class FileTransferApp {
 
 	public FileTransferApp(AppConfig config) {
 		_user = config._user;
-		//_contactAttributes = config._contactAttributes;
+		_contactAttributes = config._contactAttributes;
 		_asker = config._asker;
 		_transfer = config._transfer;
 		_asker.registerAccepted(FileRequest.class, acceptedCallback());
@@ -34,7 +40,7 @@ public class FileTransferApp {
 	private Asker _asker;
 	private TransferQueue _transfer;
 	private final User _user;
-	//private final ListSignal<ContactAttributes> _contactAttributes;
+	private final ListSignal<ContactAttributes> _contactAttributes;
 	
 	private Omnivore<Packet> acceptedCallback() {
 		return new Omnivore<Packet>(){ public void consume(Packet packet) {
@@ -45,7 +51,8 @@ public class FileTransferApp {
 				if (directory!=null){
 					directory.mkdirs();
 					File file = new File(directory,request._filename);
-					_transfer.receiveFile(packet._contactId, file, request._size, request._transferId, receiverProgressCallback(file.getName()));
+					TransferKey key = new TransferKey(request._transferId,packet._contactId);
+					_transfer.receiveFile(key, file, request._size, receiverProgressCallback(key, file.getName(), findContact(packet._contactId).nick().currentValue(), request._size));
 				}
 			}catch(CancelledByUser cbu){
 				//Fix: maybe should notify other side (not obligatory now, works as is)
@@ -53,11 +60,40 @@ public class FileTransferApp {
 		}};
 	}
 	
-	protected Omnivore<Long> receiverProgressCallback(final String filename) {
+	protected Omnivore<Long> receiverProgressCallback(final TransferKey key, final String filename, final String nick, final long size) {
 		return new Omnivore<Long>(){ public void consume(Long value) {
-			//Refactor: transform into a gui.
+			produceFrameFor(key, false, filename, nick).updateProgressBar(value, size);
 			System.out.println("receiving "+filename+" - "+value);
 		}};
+	}
+	
+	private Omnivore<Long> sendProgressCallback(final TransferKey key, final String filename, final String nick, final long size) {
+		return new Omnivore<Long>(){ public void consume(Long value) {
+			produceFrameFor(key, true, filename, nick).updateProgressBar(value, size);
+			System.out.println("sending "+filename+" - "+value);
+		}};
+	}
+	
+	private Map<TransferKey,FileTransferFrame> _framesByKey = new Hashtable<TransferKey,FileTransferFrame>();
+	
+	public FileTransferFrame produceFrameFor(TransferKey key, boolean send, String filename, String nick){
+		FileTransferFrame frame = _framesByKey.get(key);
+		if (frame == null){
+			if (send)
+				frame = createFrameToSend(filename, nick);
+			else
+				frame = createFrameToReceive(filename, nick);
+			_framesByKey.put(key, frame);
+		}
+		return frame;
+	}
+	
+	public FileTransferFrame createFrameToSend(String filename, String nick){
+		return new FileTransferFrame(translate("Sending file %1$s to %2$s", filename, nick));
+	}
+	
+	public FileTransferFrame createFrameToReceive(String filename, String nick){
+		return new FileTransferFrame(translate("Receiving file %1$s from %2$s", filename, nick));
 	}
 
 	private File chooseTargetDirectory(String fileName) throws CancelledByUser {
@@ -90,7 +126,8 @@ public class FileTransferApp {
 
 			File file = fc.getSelectedFile();
 			String transferId = generateTransferId();
-			_asker.ask(contact.id(), callback(contact.id(),file, transferId), new FileRequest(file.getName(),file.length(),transferId));
+			TransferKey key = new TransferKey(transferId, contact.id());
+			_asker.ask(contact.id(), callback(key,file, findContact(contact.id()).nick().currentValue()), new FileRequest(file.getName(),file.length(),transferId));
 		}});
 	}
 	
@@ -98,25 +135,19 @@ public class FileTransferApp {
 		return AppTools.uniqueName("transfer");
 	}
 
-	private Omnivore<Boolean> callback(final ContactId contactId, final File file, final String transferId) {
+	private Omnivore<Boolean> callback(final TransferKey key, final File file, final String nick) {
 		return new Omnivore<Boolean>(){ public void consume(Boolean accepted) {
 			if (accepted)
-				_transfer.sendFile(contactId, file, transferId, sendProgressCallback(file.getName()));
+				_transfer.sendFile(key, file, sendProgressCallback(key, file.getName(), nick, file.length()));
 		}};
 	}
 
-	private Omnivore<Long> sendProgressCallback(final String filename) {
-		return new Omnivore<Long>(){ public void consume(Long value) {
-			//Refactor: transform into a gui.
-			System.out.println("sending "+filename+" - "+value);
-		}};
-	}
 
-	/*private ContactAttributes findContact(ContactId id) {
+	private ContactAttributes findContact(ContactId id) {
 		for (ContactAttributes candidate : _contactAttributes)
 			if (candidate.id().equals(id)) return candidate;
 		return null;
-	}*/
+	}
 
 	public List<ContactAction> contactActions() {
 		return Collections.singletonList( (ContactAction)new ContactAction() {

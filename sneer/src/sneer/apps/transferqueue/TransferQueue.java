@@ -25,18 +25,18 @@ public class TransferQueue {
 		_channel.input().addReceiver(transferQueueReceiver());
 	}
 	
-	public void sendFile(final ContactId contactId, final File file, final String transferId, final Omnivore<Long> progressCallback){
+	public void sendFile(final TransferKey key, final File file, final Omnivore<Long> progressCallback){
 		Threads.startDaemon(new Runnable(){ public void run() {
 			try {
-				tryToSendFile(contactId, file, transferId, progressCallback);
+				tryToSendFile(key, file, progressCallback);
 			} catch(IOException ioe) {
 				ioe.printStackTrace(); //Fix: Treat properly.
 			}
 		}});
 	}
 	
-	public void receiveFile(ContactId contactId, File file, long size, String transferId, Omnivore<Long> progressCallback){
-		_receiverSchedule.put(new TransferKey(transferId, contactId), new FileSchedule(contactId, file, size, progressCallback));
+	public void receiveFile(TransferKey key, File file, long size, Omnivore<Long> progressCallback){
+		_receiverSchedule.put(key, new FileSchedule(key._contactId, file, size, progressCallback));
 	}
 	
 	private Omnivore<Packet> transferQueueReceiver() {
@@ -80,32 +80,8 @@ public class TransferQueue {
 			_progressCallback = progressCallback;
 		}
 	}
-	
-	public class TransferKey{
-		public final String _transferId;
-		public final ContactId _contactId;
 
-		public TransferKey(String transferId, ContactId contactId){
-			_transferId = transferId;
-			_contactId = contactId;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (obj==null) return false;
-			if (!(obj instanceof TransferKey)) return false;
-			TransferKey temp = (TransferKey)obj;
-			return _transferId.equals(temp._transferId)&&_contactId.equals(temp._contactId);
-		}
-
-		@Override
-		public int hashCode() {
-			return 0;
-		}
-
-	}
-
-	private void tryToSendFile(final ContactId contactId, File file, final String transferId, final Omnivore<Long> progressCallback) throws IOException {
+	private void tryToSendFile(final TransferKey key, File file, final Omnivore<Long> progressCallback) throws IOException {
 		byte[] buffer = new byte[FILEPART_CHUNK_SIZE];
 		BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));
 		int read;
@@ -113,8 +89,8 @@ public class TransferQueue {
 		while ((read = in.read(buffer)) != -1) {
 			byte[] contents = new byte[read];
 			System.arraycopy(buffer,0,contents,0,read);
-			final TransferPacket filePart = new TransferPacket(transferId, contents, offset);
-			sendPart(contactId, filePart);
+			final TransferPacket filePart = new TransferPacket(key._transferId, contents, offset);
+			sendPart(key._contactId, filePart);
 			offset += read;
 			if (progressCallback!=null)
 				progressCallback.consume(offset);

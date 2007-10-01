@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="apps/mp3sushi"/>
 	<classpathentry kind="src" path="apps/scribble"/>
@@ -14,6 +15,5 @@
 	<classpathentry kind="lib" path="lib/compiler-7-ea-b17-02_aug_2007.jar"/>
 	<classpathentry kind="lib" path="lib/jl1.0.jar" sourcepath="C:/workspace/JLayer1.0/src"/>
 	<classpathentry kind="lib" path="lib/jid3lib-0.5.4.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/j2sdk1.6-sun"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

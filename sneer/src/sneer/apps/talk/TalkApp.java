@@ -12,7 +12,7 @@ import java.util.Map;
 
 import sneer.apps.asker.Asker;
 import sneer.apps.talk.gui.TalkFrame;
-import sneer.kernel.appmanager.AppConfig;
+import sneer.kernel.api.SovereignApplicationNeeds;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
@@ -29,10 +29,10 @@ public class TalkApp {
 	private static final String CLOSE = "Close";
 	private Asker _asker;
 
-	public TalkApp(AppConfig config) {
-		_channel = config._channel;
-		_contacts = config._contacts;
-		_asker = config._asker;
+	public TalkApp(SovereignApplicationNeeds config) {
+		_channel = config.channel();
+		_contacts = config.contacts();
+		_asker = config.asker();
 		_channel.input().addReceiver(audioPacketReceiver());
 		_asker.registerAccepted(AudioRequest.class, acceptedCallback());
 	}

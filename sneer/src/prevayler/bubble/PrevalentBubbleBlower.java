@@ -14,7 +14,7 @@ public class PrevalentBubbleBlower {
 	private final String _directory;
 	private boolean _wasAlreadyUsed = false;
 
-	synchronized public <STATE_MACHINE> STATE_MACHINE blowBubble(STATE_MACHINE stateMachine) throws IOException, ClassNotFoundException {
+	synchronized public <SM> SM blowBubble(SM stateMachine) throws IOException, ClassNotFoundException {
 		if (_wasAlreadyUsed) throw new IllegalStateException();
 		try {
 			return wrap(stateMachine);

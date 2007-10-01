@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sneer.apps.transferqueue.TransferQueue;
+import sneer.kernel.api.SovereignApplication;
 import sneer.kernel.appmanager.AppManager;
-import sneer.kernel.appmanager.SovereignApplication;
 import sneer.kernel.appmanager.SovereignApplicationUID;
 import sneer.kernel.appmanager.metoo.MeToo;
 import sneer.kernel.communication.Channel;

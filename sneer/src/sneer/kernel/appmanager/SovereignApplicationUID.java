@@ -1,5 +1,7 @@
 package sneer.kernel.appmanager;
 
+import sneer.kernel.api.SovereignApplication;
+
 public class SovereignApplicationUID {
 	
 	public final SovereignApplication _sovereignApplication;

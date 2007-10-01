@@ -14,7 +14,7 @@ import sneer.apps.asker.Asker;
 import sneer.apps.filetransfer.gui.FileTransferFrame;
 import sneer.apps.transferqueue.TransferKey;
 import sneer.apps.transferqueue.TransferQueue;
-import sneer.kernel.appmanager.AppConfig;
+import sneer.kernel.api.SovereignApplicationNeeds;
 import sneer.kernel.appmanager.AppTools;
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactId;
@@ -29,11 +29,11 @@ import wheel.reactive.lists.ListSignal;
 
 public class FileTransferApp {
 
-	public FileTransferApp(AppConfig config) {
-		_user = config._user;
-		_contactAttributes = config._contactAttributes;
-		_asker = config._asker;
-		_transfer = config._transfer;
+	public FileTransferApp(SovereignApplicationNeeds config) {
+		_user = config.user();
+		_contactAttributes = config.contactAttributes();
+		_asker = config.asker();
+		_transfer = config.transfer();
 		_asker.registerAccepted(FileRequest.class, acceptedCallback());
 	}
 

@@ -1,4 +1,4 @@
-package sneer.kernel.appmanager;
+package sneer.kernel.api;
 
 import java.util.List;
 
@@ -14,6 +14,8 @@ public interface SovereignApplication {
 	public List<Action> mainActions();
 	public List<ContactAction> contactActions();
 
-	public void start(AppConfig config);
+	public Object initialState();
+	
+	public void start(SovereignApplicationNeeds config);
 
 }

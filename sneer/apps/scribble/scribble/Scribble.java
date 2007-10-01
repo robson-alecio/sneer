@@ -12,7 +12,7 @@ import java.util.Map;
 
 import scribble.gui.ScribbleFrame;
 import sneer.apps.asker.Asker;
-import sneer.kernel.appmanager.AppConfig;
+import sneer.kernel.api.SovereignApplicationNeeds;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
@@ -37,11 +37,11 @@ public class Scribble {
 	private final Channel _channel;
 	private Asker _asker;
 
-	public Scribble(AppConfig config) {
-		_user = config._user;
-		_channel = config._channel;
-		_contacts = config._contacts;
-		_asker = config._asker;
+	public Scribble(SovereignApplicationNeeds config) {
+		_user = config.user();
+		_channel = config.channel();
+		_contacts = config.contacts();
+		_asker = config.asker();
 		_asker.registerAccepted(ScribbleRequest.class, scribbleRequestAccepted());
 		_channel.input().addReceiver(drawPacketReceiver());
 	}

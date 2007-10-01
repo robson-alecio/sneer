@@ -60,6 +60,7 @@ public class Asker {
 	private PacketRouter _payloadRouter = new PacketRouter(null);
 	
 	public void registerAccepted(Class<?> clazz, Omnivore<Packet> callback){
+		System.out.println("registering request "+clazz.getName());
 		_payloadRouter.register(clazz, callback);
 	}
 

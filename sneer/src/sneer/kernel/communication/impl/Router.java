@@ -1,14 +1,14 @@
 package sneer.kernel.communication.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Hashtable;
+import java.util.Map;
 
 import wheel.lang.Omnivore;
 
+
 public class Router<U> implements Omnivore<U>{
 	
-	private List<Class<?>> _clazzes = new ArrayList<Class<?>>();
-	private List<Omnivore<U>> _callbacks = new ArrayList<Omnivore<U>>();
+	private Map<Class<?>, Omnivore<U>> _clazzToCallbacks = new Hashtable<Class<?>, Omnivore<U>>();
 	private Omnivore<U> _unrecognized;
 	
 	public Router(Omnivore<U> unrecognized){
@@ -16,16 +16,15 @@ public class Router<U> implements Omnivore<U>{
 	}
 	
 	public void register(Class<?> clazz, Omnivore<U> callback){
-		_clazzes.add(clazz);
-		_callbacks.add(callback);
+		_clazzToCallbacks.put(clazz, callback);
 	}
 	
 	public void consume(U object){
 		boolean unrecognized = true;
 		if (object != null)
-			for(int t=0;t<_clazzes.size();t++)
-				if (accept(_clazzes.get(t),object)){
-					_callbacks.get(t).consume(object);
+			for(Class<?> clazz:_clazzToCallbacks.keySet())
+				if (accept(clazz,object)){
+					_clazzToCallbacks.get(clazz).consume(object);
 					unrecognized = false;
 				}
 		if (unrecognized)

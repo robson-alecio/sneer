@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import scribble.gui.ScribbleFrame;
+import sneer.apps.asker.Asker;
 import sneer.kernel.appmanager.AppConfig;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
@@ -26,9 +27,6 @@ import wheel.reactive.lists.ListSignal;
 
 public class Scribble {
 
-	private static final String OPEN_REQUEST = "Request";
-	private static final String OPEN_REQUEST_ACCEPTED = "Accepted";
-	private static final String OPEN_REQUEST_DENIED = "Denied";
 	private static final String CLOSE_REQUEST = "Close";
 
 	private final Map<ContactId, ScribbleFrame> _framesByContactId = new HashMap<ContactId, ScribbleFrame>();
@@ -37,14 +35,21 @@ public class Scribble {
 	private final User _user;
 	private final ListSignal<Contact> _contacts;
 	private final Channel _channel;
-	private Omnivore<Packet> _drawPacketReceiver;
+	private Asker _asker;
 
 	public Scribble(AppConfig config) {
 		_user = config._user;
 		_channel = config._channel;
 		_contacts = config._contacts;
-		_drawPacketReceiver = drawPacketReceiver();
-		_channel.input().addReceiver(_drawPacketReceiver);
+		_asker = config._asker;
+		_asker.registerAccepted(ScribbleRequest.class, scribbleRequestAccepted());
+		_channel.input().addReceiver(drawPacketReceiver());
+	}
+
+	private Omnivore<Packet> scribbleRequestAccepted() {
+		return new Omnivore<Packet>(){ public void consume(Packet packet) {
+			open(packet._contactId);
+		}};
 	}
 
 	public List<ContactAction> contactActions() {
@@ -66,26 +71,12 @@ public class Scribble {
 	private Omnivore<Packet> drawPacketReceiver() {
 		return new Omnivore<Packet>() {
 			public void consume(Packet packet) {
-				if (OPEN_REQUEST.equals(packet._contents)) {
-					userWantsToOpen(packet._contactId);
-					return;
-				}
-
+				//Refactor: CLOSE should be incorporated to Asker, to allow other apps to use it. any side can close the app at any time. 
 				if (CLOSE_REQUEST.equals(packet._contents)) {
 					close(packet._contactId);
 					return;
 				}
 
-				if (OPEN_REQUEST_ACCEPTED.equals(packet._contents)) {
-					open(packet._contactId);
-					return;
-				}
-
-				if (OPEN_REQUEST_DENIED.equals(packet._contents)) {
-					_user.modelessAcknowledge(translate("Information"), translate("You request to %1$s was not accepted. :(","scribble"));
-					return;
-				}
-				
 				Source<ScribblePacket> input = getInputFor(packet._contactId);
 				if (input == null)
 					return;
@@ -93,18 +84,6 @@ public class Scribble {
 			}
 		};
 
-	}
-
-	private void userWantsToOpen(final ContactId contactId) {
-		String nick = findContact(contactId).nick().currentValue();
-		String prompt = translate("%1$s is inviting you to scribble. :)\n\nWill you accept?", nick);
-		_user.confirmWithTimeout(prompt, 15, new Omnivore<Boolean>() { public void consume(Boolean accepted) {
-			if (accepted) {
-				open(contactId);
-				sendTo(contactId, OPEN_REQUEST_ACCEPTED);
-			} else
-				sendTo(contactId, OPEN_REQUEST_DENIED);
-		}});
 	}
 
 	private void close(ContactId contactId) {
@@ -133,7 +112,14 @@ public class Scribble {
 	private void actUponContact(Contact contact) {
 		if (getInputFor(contact.id()) != null)
 			return;
-		sendTo(contact.id(), OPEN_REQUEST);
+		_asker.ask(contact.id(), callback(contact.id()), new ScribbleRequest());
+	}
+
+	private Omnivore<Boolean> callback(final ContactId contactId) {
+		return new Omnivore<Boolean>(){ public void consume(Boolean accepted) {
+			if (accepted)
+				open(contactId);
+		}};
 	}
 
 	private void sendTo(ContactId contactId, Object contents) {

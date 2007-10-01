@@ -87,7 +87,7 @@ public class Sneer {
 		_appManager = new AppManager(_user,_communicator, _me, _businessSource.output().contactAttributes(), briefNotifier(),_asker,_transfer);
 		for(SovereignApplicationUID app:_appManager.publishedApps().output())
 			System.out.println("App : "+app._sovereignApplication.defaultName());
-
+		
 		_contactActionFactory = new ContactActionFactory(_user, _communicator, _appManager, _transfer);
 		
 		_gui = new Gui(_user, _me, _businessSource, _appManager, _contactActionFactory); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.

@@ -1,9 +1,11 @@
 package sneer.games.mediawars.mp3sushi;
 
+import java.io.Serializable;
+
 import sneer.games.mediawars.mp3sushi.round.Mp3PieceProvider;
 import sneer.kernel.pointofview.Contact;
 
-public class GameConfiguration {
+public class GameConfiguration implements Serializable{
 
 	private String _theme ="";
 	private Integer _type = Mp3PieceProvider.BEGINING;
@@ -59,4 +61,5 @@ public class GameConfiguration {
 		return "";
 	}
 	
+	private static final long serialVersionUID = 1L;
 }

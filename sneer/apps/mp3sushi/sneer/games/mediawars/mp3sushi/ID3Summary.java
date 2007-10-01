@@ -1,11 +1,13 @@
 package sneer.games.mediawars.mp3sushi;
 
+import java.io.Serializable;
+
 import org.farng.mp3.MP3File;
 import org.farng.mp3.id3.AbstractID3v2;
 import org.farng.mp3.id3.ID3v1;
 import org.farng.mp3.lyrics3.AbstractLyrics3;
 
-public class ID3Summary {
+public class ID3Summary implements Serializable{
 
 	private String _fileName;
 	private String _singer;
@@ -83,4 +85,6 @@ public class ID3Summary {
 	public String getFileName() {
 		return _fileName;
 	}
+	
+	private static final long serialVersionUID = 1L;
 }

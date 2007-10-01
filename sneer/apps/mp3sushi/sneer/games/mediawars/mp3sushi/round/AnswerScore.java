@@ -3,7 +3,10 @@
  */
 package sneer.games.mediawars.mp3sushi.round;
 
-public class AnswerScore {
+import java.io.Serializable;
+
+public class AnswerScore implements Serializable{
+
 	Long _id;
 	int _score;
 	
@@ -19,4 +22,5 @@ public class AnswerScore {
 		return _score;
 	}
 	
+	private static final long serialVersionUID = 1L;
 }

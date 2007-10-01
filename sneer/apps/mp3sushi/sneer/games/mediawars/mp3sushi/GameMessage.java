@@ -1,6 +1,8 @@
 package sneer.games.mediawars.mp3sushi;
 
-public class GameMessage {
+import java.io.Serializable;
+
+public class GameMessage implements Serializable{
 
 	public static final String STATUS_REPORT = "Status_Report";
 	public static final String CONFIGURATION_REPORT = "Configuration_Report";	
@@ -36,4 +38,5 @@ public class GameMessage {
 		return _content;
 	} 
 	
+	private static final long serialVersionUID = 1L;
 }

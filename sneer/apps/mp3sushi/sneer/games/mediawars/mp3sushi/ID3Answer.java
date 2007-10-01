@@ -1,6 +1,8 @@
 package sneer.games.mediawars.mp3sushi;
 
-public class ID3Answer {
+import java.io.Serializable;
+
+public class ID3Answer implements Serializable{
 	
 	private ID3Summary _id3Summary;
 	private long _time;
@@ -20,4 +22,5 @@ public class ID3Answer {
 	}
 	
 
+	private static final long serialVersionUID = 1L;
 }

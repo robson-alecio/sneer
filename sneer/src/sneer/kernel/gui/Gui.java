@@ -33,6 +33,7 @@ import wheel.io.ui.impl.tests.TransientBoundsPersistence;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.reactive.Signal;
+import wheel.reactive.lists.ListValueChange;
 
 public class Gui {
 
@@ -51,6 +52,7 @@ public class Gui {
 		
 		_jframeBoundsKeeper = jFrameBoundsKeeper(); 
 		tryToRun();
+		_appManager.publishedApps().output().addListReceiver(appListChangedReceiver());
 	}
 
 	final User _user;
@@ -68,6 +70,12 @@ public class Gui {
 		bindActionsToTrayIcon();
 		
 		showContactsScreenAction().run();
+	}
+	
+	private Omnivore<ListValueChange> appListChangedReceiver() {
+		return new Omnivore<ListValueChange>(){ public void consume(ListValueChange value) {
+				bindActionsToTrayIcon();
+		}};
 	}
 
 	void bindActionsToTrayIcon() {

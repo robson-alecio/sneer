@@ -1,6 +1,8 @@
 package sneer.games.mediawars.mp3sushi.player;
 
-public class PlayerExportInfo {
+import java.io.Serializable;
+
+public class PlayerExportInfo implements Serializable{
 
 	private long _id;
 	private String _nick;
@@ -19,5 +21,6 @@ public class PlayerExportInfo {
 		_nick = nick;
 	}
 	
+	private static final long serialVersionUID = 1L;
 	
 }

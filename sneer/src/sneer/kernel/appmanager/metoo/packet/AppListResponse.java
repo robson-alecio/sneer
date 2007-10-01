@@ -9,10 +9,10 @@ public class AppListResponse implements MeTooPacket {
 
 	private static final long serialVersionUID = 1L;
 
-	public final Map<String, String> _installNameAndAppUID;
+	public final Map<String, Long> _installNameAndSize;
 	
-	public AppListResponse(Map<String,String> installNameAndAppUID){
-		_installNameAndAppUID = installNameAndAppUID;
+	public AppListResponse(Map<String,Long> installNameAndSize){
+		_installNameAndSize = installNameAndSize;
 	}
 	public int type() {
 		return APP_LIST_RESPONSE; 

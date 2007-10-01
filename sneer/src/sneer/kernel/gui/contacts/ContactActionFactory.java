@@ -3,6 +3,7 @@ package sneer.kernel.gui.contacts;
 import java.util.ArrayList;
 import java.util.List;
 
+import sneer.apps.transferqueue.TransferQueue;
 import sneer.kernel.appmanager.AppManager;
 import sneer.kernel.appmanager.SovereignApplication;
 import sneer.kernel.appmanager.SovereignApplicationUID;
@@ -16,11 +17,13 @@ public class ContactActionFactory {
 	private final Communicator _communicator;
 	private final AppManager _appManager;
 	private final User _user;
+	private final TransferQueue _transfer;
 
-	public ContactActionFactory(User user, Communicator communicator, AppManager appManager){
+	public ContactActionFactory(User user, Communicator communicator, AppManager appManager, TransferQueue transfer){
 		_user = user;
 		_communicator = communicator;
 		_appManager = appManager;
+		_transfer = transfer;
 		initApps();
 	}
 	
@@ -41,7 +44,7 @@ public class ContactActionFactory {
 		
 		// _metoo cant be exposed yet as a normal app without exposing too much appconfig.
 		Channel metooChannel = _communicator.openChannel(MeToo.class.getName(), 3);
-		_meToo = new MeToo(_user, metooChannel,_appManager.publishedApps().output(), _appManager);
+		_meToo = new MeToo(_user, metooChannel,_appManager.publishedApps().output(), _appManager, _transfer);
 	}
 
 	public List<ContactAction> contactActions(){

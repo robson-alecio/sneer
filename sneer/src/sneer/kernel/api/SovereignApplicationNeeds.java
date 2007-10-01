@@ -24,5 +24,7 @@ public interface SovereignApplicationNeeds {
 
 	Asker asker();
 	TransferQueue transfer();
+	
+	Object prevalentState();
 
 }

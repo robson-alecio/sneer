@@ -1,12 +1,12 @@
 Gandhi
-
- - Persist SplitPane position (maybe with bounds)
  - Talk to Humberto so he can make MP3 Sushi work again
+ - Persist SplitPane position (maybe with bounds)
  - Set up a gandhi.selfip.net so you are always reachable wherever you are. Tell the people on the sneercoders list.
  - optimize channelimpl objectStream use (note: when channel crashes, it happens on both sides?)
  - Make MP3 Sushi work again if Humberto hasn't done so already
 
 Klaus
+ - App persistence
  - Granular profile updating per signal
  - Contact Navigation
 

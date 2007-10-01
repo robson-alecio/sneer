@@ -80,4 +80,10 @@ public class NeedsImpl implements SovereignApplicationNeeds {
 		return _transfer;
 	}
 
+	@Override
+	public Object prevalentState() {
+		// Implement Auto-generated method stub
+		throw new wheel.lang.exceptions.NotImplementedYet();
+	}
+
 }

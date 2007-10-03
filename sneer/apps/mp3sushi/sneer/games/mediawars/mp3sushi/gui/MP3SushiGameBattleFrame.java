@@ -60,7 +60,7 @@ public class MP3SushiGameBattleFrame extends javax.swing.JFrame implements KeyLi
 	private void initComponents() {
 		this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 
-		this.add(Mp3SwingUtil.createLabelPlusField("Guess",_guess));
+		this.add(Mp3SwingUtil.createLabelPlusField("Guess - hit <Enter> when done",_guess));
 
 		_guess.addKeyListener(this);
 		disableGuess();

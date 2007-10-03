@@ -195,7 +195,7 @@ public class MP3SushiGameApp {
 	    File[] list = dir.listFiles();
 	    for(File f : list)
 	       if(f.isDirectory()) listOfFiles(fileNames, f);
-	      else if(fileNames.add(f.getAbsolutePath()));
+	      else fileNames.add(f.getAbsolutePath());
 	 }
 
 	public void joinGame(TheirsGame game) {

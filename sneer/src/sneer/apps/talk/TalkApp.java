@@ -18,6 +18,7 @@ import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.pointofview.Contact;
+import wheel.io.ui.User;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
@@ -27,12 +28,12 @@ import wheel.reactive.lists.ListSignal;
 public class TalkApp {
 
 	private static final String CLOSE = "Close";
-	private Asker _asker;
 
 	public TalkApp(SovereignApplicationNeeds config) {
+		_user = config.user();
 		_channel = config.channel();
 		_contacts = config.contacts();
-		_asker = config.asker();
+		_asker = new Asker(_user, _channel, _contacts);
 		_channel.input().addReceiver(audioPacketReceiver());
 		_asker.registerAccepted(AudioRequest.class, acceptedCallback());
 	}
@@ -45,6 +46,8 @@ public class TalkApp {
 		}};
 	}
 
+	private Asker _asker;
+	private User _user;
 	private final Channel _channel;
 	private final ListSignal<Contact> _contacts;
 	private final Map<ContactId, TalkFrame>_framesByContactId = new HashMap<ContactId, TalkFrame>();
@@ -73,6 +76,7 @@ public class TalkApp {
 				close(packet._contactId);
 				return;
 			}
+			if (!(packet._contents instanceof AudioPacket)) return;
 			
 			Source<AudioPacket> input = getInputFor(packet._contactId);
 			if (input == null) return;

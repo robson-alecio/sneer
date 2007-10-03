@@ -1,13 +1,15 @@
 Gandhi
+ - Fix "new user" PointOfView first update not happening
  - Talk to Humberto so he can make MP3 Sushi work again
+ - Make MP3 Sushi work again if Humberto hasn't done so already
  - Persist SplitPane position (maybe with bounds)
  - Set up a gandhi.selfip.net so you are always reachable wherever you are. Tell the people on the sneercoders list.
  - optimize channelimpl objectStream use (note: when channel crashes, it happens on both sides?)
- - Make MP3 Sushi work again if Humberto hasn't done so already
 
 Klaus
  - App persistence
  - Granular profile updating per signal
+ - Use TransferQueue for profile picture transfer
  - Contact Navigation
 
 

@@ -41,7 +41,7 @@ public class Scribble {
 		_user = config.user();
 		_channel = config.channel();
 		_contacts = config.contacts();
-		_asker = config.asker();
+		_asker = new Asker(_user, _channel, _contacts);
 		_asker.registerAccepted(ScribbleRequest.class, scribbleRequestAccepted());
 		_channel.input().addReceiver(drawPacketReceiver());
 	}
@@ -76,7 +76,8 @@ public class Scribble {
 					close(packet._contactId);
 					return;
 				}
-
+				if (!(packet._contents instanceof ScribblePacket)) return;
+				
 				Source<ScribblePacket> input = getInputFor(packet._contactId);
 				if (input == null)
 					return;

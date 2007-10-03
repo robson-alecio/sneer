@@ -18,6 +18,7 @@ import sneer.kernel.api.SovereignApplicationNeeds;
 import sneer.kernel.appmanager.AppTools;
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactId;
+import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.pointofview.Contact;
@@ -31,12 +32,16 @@ public class FileTransferApp {
 
 	public FileTransferApp(SovereignApplicationNeeds config) {
 		_user = config.user();
-		_contactAttributes = config.contactAttributes();
-		_asker = config.asker();
+		_channel = config.channel();
+		_contacts = config.contacts();
+		_asker = new Asker(_user, _channel, _contacts);
 		_transfer = config.transfer();
+		_contactAttributes = config.contactAttributes();
 		_asker.registerAccepted(FileRequest.class, acceptedCallback());
 	}
 
+	private Channel _channel;
+	private ListSignal<Contact> _contacts;
 	private Asker _asker;
 	private TransferQueue _transfer;
 	private final User _user;

@@ -1,6 +1,5 @@
 package sneer.kernel.api;
 
-import sneer.apps.asker.Asker;
 import sneer.apps.transferqueue.TransferQueue;
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.communication.Channel;
@@ -22,7 +21,6 @@ public interface SovereignApplicationNeeds {
 	ListSignal<Contact> contacts();
 	ListSignal<ContactAttributes> contactAttributes(); //Refactor: Apps dont need to know all this. They only need to know contact ids.
 
-	Asker asker();
 	TransferQueue transfer();
 	
 	Object prevalentState();

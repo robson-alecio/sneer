@@ -1,7 +1,11 @@
 package sneer.kernel.pointofview.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import sneer.kernel.business.Business;
 import sneer.kernel.business.contacts.ContactAttributes;
+import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Operator;
 import sneer.kernel.communication.Packet;
@@ -15,6 +19,7 @@ import wheel.reactive.Signal;
 import wheel.reactive.impl.SourceImpl;
 import wheel.reactive.lists.Collector;
 import wheel.reactive.lists.ListSignal;
+import wheel.reactive.lists.impl.VisitingListReceiver;
 
 public class Me implements Party {
 
@@ -30,17 +35,58 @@ public class Me implements Party {
 		_business.picture().addReceiver(pictureChangedBroadcaster());
 		_business.profile().addReceiver(stringChangedBroadcaster());
 		
-		for (Contact contact : _contacts)
-			contact.party().isOnline().addReceiver(sendCurrentStatus(contact));
+		for (Contact contact : _contacts) 
+			contact.party().isOnline().addReceiver(sendCurrentStatus(contact)); 
+		_contacts.addListReceiver(new ListChangeReceiver());
+	}
+	
+	private class ListChangeReceiver extends VisitingListReceiver {
+
+		@Override
+		public void elementAdded(int index) {
+			addReceiverToElement(index); 
+		}
+
+		@Override
+		public void elementToBeRemoved(int index) {
+			removeReceiverFromElement(index);
+		}
+
+		@Override
+		public void elementRemoved(int index) {
+		}
+
+		@Override
+		public void elementToBeReplaced(int index) {
+			removeReceiverFromElement(index);
+		}
+
+		@Override
+		public void elementReplaced(int index) {
+			addReceiverToElement(index); 
+		}
+
+	}
+	
+	private Map<ContactId, Omnivore<Boolean>> _statusReceiverByContactId = new HashMap<ContactId, Omnivore<Boolean>>();
+
+	private void addReceiverToElement(int index) {
+		Contact contact = _contacts.currentGet(index);
+		Omnivore<Boolean> statusReceiver = sendCurrentStatus(contact);
+		_statusReceiverByContactId.put(contact.id(), statusReceiver);
+		contact.party().isOnline().addReceiver(statusReceiver);
 	}
 
+	private void removeReceiverFromElement(int index) {
+		Contact contact = _contacts.currentGet(index);
+		contact.party().isOnline().removeReceiver(_statusReceiverByContactId.remove(contact.id()));
+	}
+	
 	private Omnivore<Boolean> sendCurrentStatus(final Contact contact) {
-		return new Omnivore<Boolean>(){
-			public void consume(Boolean value) {
+		return new Omnivore<Boolean>(){ public void consume(Boolean value) {
 				if (value)
 					sendChanges(contact);
-			}
-		};
+		}};
 	}
 
 	private final Business _business;
@@ -56,6 +102,7 @@ public class Me implements Party {
 		}};
 	}
 	
+	//Refactor: Use TransferQueue instead.... callback will update source.
 	private Omnivore<JpgImage> pictureChangedBroadcaster() {
 		return new Omnivore<JpgImage>() { @Override public void consume(JpgImage newPicture) {
 			for (Contact contact : _contacts)
@@ -137,5 +184,6 @@ public class Me implements Party {
 	public Signal<String> thoughtOfTheDay() {
 		return _business.thoughtOfTheDay();
 	}
+
 
 }

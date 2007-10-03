@@ -12,10 +12,9 @@ import java.net.URLClassLoader;
 import java.util.zip.ZipException;
 
 import sneer.SneerDirectories;
-import sneer.apps.asker.Asker;
 import sneer.apps.transferqueue.TransferQueue;
-import sneer.kernel.api.SovereignApplicationNeeds;
 import sneer.kernel.api.SovereignApplication;
+import sneer.kernel.api.SovereignApplicationNeeds;
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.communication.impl.Communicator;
 import sneer.kernel.pointofview.Party;
@@ -40,17 +39,14 @@ public class AppManager {
 
 	private final Party _me;
 
-	private final Asker _asker;
-
 	private final TransferQueue _transfer;
 
-	public AppManager(User user, Communicator communicator, Party me, ListSignal<ContactAttributes> contactAttributes, Omnivore<Notification> briefUserNotifier, Asker asker, TransferQueue transfer) {
+	public AppManager(User user, Communicator communicator, Party me, ListSignal<ContactAttributes> contactAttributes, Omnivore<Notification> briefUserNotifier, TransferQueue transfer) {
 		_user = user;
 		_me = me;
 		_communicator = communicator;
 		_contactAttributes = contactAttributes;
 		_briefUserNotifier = briefUserNotifier;
-		_asker = asker;
 		_transfer = transfer;
 		createDirectories();
 	}
@@ -164,7 +160,7 @@ public class AppManager {
 	}
 
 	public void startApp(SovereignApplication app){
-		SovereignApplicationNeeds needs = new NeedsImpl(_user, _communicator.openChannel(app.defaultName(), app.trafficPriority(), app.getClass().getClassLoader()), _me.contacts(), _contactAttributes, _me.name(), _briefUserNotifier, _asker, _transfer);
+		SovereignApplicationNeeds needs = new NeedsImpl(_user, _communicator.openChannel(app.defaultName(), app.trafficPriority(), app.getClass().getClassLoader()), _me.contacts(), _contactAttributes, _me.name(), _briefUserNotifier, _transfer);
 		app.start(needs);
 	}
 

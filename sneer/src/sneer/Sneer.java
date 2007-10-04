@@ -9,6 +9,7 @@ import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
 
 import prevayler.bubble.Bubble;
+import sneer.apps.sharedfolder.SharedFolder;
 import sneer.apps.transferqueue.TransferQueue;
 import sneer.kernel.appmanager.AppManager;
 import sneer.kernel.appmanager.SovereignApplicationUID;
@@ -55,6 +56,7 @@ public class Sneer {
 	private TransferQueue _transfer;
 	private AppManager _appManager;
 	private ContactActionFactory _contactActionFactory;
+	private SharedFolder _sharedFolder;
 	
 	private void tryToRun() throws Exception {
 		
@@ -78,12 +80,15 @@ public class Sneer {
 		Channel transferChannel = _communicator.openChannel("Transfer", 2);
 		_transfer = new TransferQueue(transferChannel);
 		
+		Channel sharedFolderChannel = _communicator.openChannel("Shared Folder", 2);
+		_sharedFolder = new SharedFolder(sharedFolderChannel, _me.contacts(), _transfer);
+		
 		System.out.println("Checking existing apps:");
 		_appManager = new AppManager(_user,_communicator, _me, _businessSource.output().contactAttributes(), briefNotifier(),_transfer);
 		for(SovereignApplicationUID app:_appManager.publishedApps().output())
 			System.out.println("App : "+app._sovereignApplication.defaultName());
 		
-		_contactActionFactory = new ContactActionFactory(_user, _communicator, _appManager, _transfer);
+		_contactActionFactory = new ContactActionFactory(_user, _communicator, _appManager, _transfer, _sharedFolder);
 		
 		_gui = new Gui(_user, _me, _businessSource, _appManager, _contactActionFactory); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
 		

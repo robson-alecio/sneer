@@ -3,6 +3,7 @@ package sneer.kernel.gui.contacts;
 import java.util.ArrayList;
 import java.util.List;
 
+import sneer.apps.sharedfolder.SharedFolder;
 import sneer.apps.transferqueue.TransferQueue;
 import sneer.kernel.api.SovereignApplication;
 import sneer.kernel.appmanager.AppManager;
@@ -19,11 +20,12 @@ public class ContactActionFactory {
 	private final User _user;
 	private final TransferQueue _transfer;
 
-	public ContactActionFactory(User user, Communicator communicator, AppManager appManager, TransferQueue transfer){
+	public ContactActionFactory(User user, Communicator communicator, AppManager appManager, TransferQueue transfer, SharedFolder sharedFolders){
 		_user = user;
 		_communicator = communicator;
 		_appManager = appManager;
 		_transfer = transfer;
+		_sharedFolders = sharedFolders;
 		initApps();
 	}
 	
@@ -32,6 +34,7 @@ public class ContactActionFactory {
 	private SovereignApplication _talk;
 	
 	private MeToo _meToo;
+	private SharedFolder _sharedFolders;
 	
 	private void initApps() {
 		
@@ -55,6 +58,8 @@ public class ContactActionFactory {
 		registerContactActions(result,_talk);
 		
 		for(ContactAction contactAction:_meToo.contactActions())
+			result.add(contactAction);
+		for(ContactAction contactAction:_sharedFolders.contactActions())
 			result.add(contactAction);
 		
 		for(SovereignApplicationUID app:_appManager.publishedApps().output())

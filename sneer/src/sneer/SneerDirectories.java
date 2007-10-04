@@ -46,6 +46,10 @@ public class SneerDirectories {
 		return new File(cacheDirectory(), "tmp");
 	}
 	
+	public static File sharedFolders() {
+		return new File(sneerDirectory(), "sharedFolders");
+	}
+	
 	private static String userHome() {
 		String override = System.getProperty("sneer.user_home_override");
 		if (override != null) return override;

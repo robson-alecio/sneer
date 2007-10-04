@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Id implements Serializable {
 
-	private final long _id;
+	public final long _id;
 
 	public Id(long id) {
 		_id = id;

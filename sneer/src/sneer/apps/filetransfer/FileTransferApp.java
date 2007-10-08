@@ -57,7 +57,7 @@ public class FileTransferApp {
 					directory.mkdirs();
 					File file = new File(directory,request._filename);
 					TransferKey key = new TransferKey(request._transferId,packet._contactId);
-					_transfer.receiveFile(key, file, request._size, receiverProgressCallback(key, file.getName(), findContact(packet._contactId).nick().currentValue(), request._size));
+					_transfer.receiveFile(key, file.getAbsolutePath(), request._size, receiverProgressCallback(key, file.getName(), findContact(packet._contactId).nick().currentValue(), request._size));
 				}
 			}catch(CancelledByUser cbu){
 				//Fix: maybe should notify other side (not obligatory now, works as is)
@@ -143,7 +143,7 @@ public class FileTransferApp {
 	private Omnivore<Boolean> callback(final TransferKey key, final File file, final String nick) {
 		return new Omnivore<Boolean>(){ public void consume(Boolean accepted) {
 			if (accepted)
-				_transfer.sendFile(key, file, sendProgressCallback(key, file.getName(), nick, file.length()));
+				_transfer.sendFile(key, file.getAbsolutePath(), sendProgressCallback(key, file.getName(), nick, file.length()));
 		}};
 	}
 

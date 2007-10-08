@@ -4,7 +4,6 @@ import static wheel.i18n.Language.translate;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import sneer.SneerDirectories;
-import sneer.apps.sharedfolder.packet.FileInfo;
 import sneer.apps.sharedfolder.packet.ListOfFilesPacket;
 import sneer.apps.sharedfolder.packet.PleaseSendFilePacket;
 import sneer.apps.sharedfolder.packet.SharedFolderPacket;
@@ -25,6 +23,8 @@ import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.pointofview.Contact;
+import wheel.io.files.impl.FileInfo;
+import wheel.io.files.impl.WindowsAndLinuxCompatibility;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.reactive.lists.ListSignal;
@@ -43,7 +43,7 @@ public class SharedFolder {
 	private final TransferQueue _transfer;
 	private ListSignal<Contact> _contacts;
 	
-	private Map<ContactId,List<File>> _listOfFilesByContactId = new HashMap<ContactId,List<File>>();
+	private Map<ContactId,List<FileInfo>> _listOfFilesByContactId = new HashMap<ContactId,List<FileInfo>>();
 	
 	private void startDirectoryChecker() {
 		Threads.startDaemon(new Runnable(){ public void run() {
@@ -53,7 +53,7 @@ public class SharedFolder {
 				synchronized(_sharedLock){
 					for(Contact contact:_contacts){
 						ContactId contactId = contact.id();
-						List<File> files = listAllFiles(contactId);
+						List<FileInfo> files = listAllFiles(contactId);
 					
 						if (listOfFilesChanged(contactId,files))
 							sendListOfFiles(contactId, files);
@@ -66,56 +66,37 @@ public class SharedFolder {
 	}
 	
 	private void updateListOfFiles(ContactId contactId){
-		List<File> files = listAllFiles(contactId);
+		List<FileInfo> files = listAllFiles(contactId);
 		_listOfFilesByContactId.put(contactId, files);
 	}
 	
-	protected boolean listOfFilesChanged(ContactId contactId, List<File> files) {
-		List<File> last = _listOfFilesByContactId.get(contactId);
+	protected boolean listOfFilesChanged(ContactId contactId, List<FileInfo> files) {
+		List<FileInfo> last = _listOfFilesByContactId.get(contactId);
 		if (last == null) return true;
-		for(File file:files){
+		for(FileInfo file:files){
 			if (!exists(file, last))
 				return true;
 		}
-		for(File file:last){
+		for(FileInfo file:last){
 			if (!exists(file, files))
 				return true;
 		}
 		return false;
 	}
 	
-	private boolean exists(File file, List<File> files){
-		for(File temp:files)
-			if (normalizePath(temp.getAbsolutePath()).equals(normalizePath(file.getAbsolutePath())))
+	private boolean exists(FileInfo file, List<FileInfo> files){
+		for(FileInfo temp:files)
+			if (temp.equals(file))
 				return true;
 		return false;
 	}
-	
-	private String normalizePath(String path){
-		return path.toLowerCase().replace('\\', '/');
-	}
 
-	private void sendListOfFiles(ContactId contactId, List<File> files) {
-		_channel.output().consume(new Packet(contactId,new ListOfFilesPacket(convertToFileInfos(contactId, files))));
-	}
-	
-	private FileInfo[] convertToFileInfos(ContactId contactId, List<File> files){
-		FileInfo[] infos = new FileInfo[files.size()];
-		for(int t=0;t<files.size();t++){
-			File file = files.get(t);
-			infos[t] = new FileInfo(relativeName(contactId, file), file.length());
-		}
-		return infos;
-	}
-
-	private String relativeName(ContactId contactId, File file) {
-		return normalizePath(file.getAbsolutePath().substring(directoryOf(contactId).getAbsolutePath().length()+1));
+	private void sendListOfFiles(ContactId contactId, List<FileInfo> files) {
+		_channel.output().consume(new Packet(contactId,new ListOfFilesPacket(files.toArray(new FileInfo[0]))));
 	}
 		
-	private List<File> listAllFiles(ContactId contactId){
-		List<File> list = new ArrayList<File>();
-		AppTools.listFiles(list, directoryOf(contactId));
-		return list;
+	private List<FileInfo> listAllFiles(ContactId contactId){
+		return WindowsAndLinuxCompatibility.listAll(directoryOf(contactId).getAbsolutePath(),false);
 	}
 	
 	private File directoryOf(ContactId contactId){
@@ -145,20 +126,13 @@ public class SharedFolder {
 		final File localFile = findFileByName(contactId,info._name);
 		Threads.startDaemon(new Runnable(){ public void run() {
 			checkIfNotGrowingAndWait(localFile);
-			_transfer.sendFile(key, localFile, sendingProgress(info._name));
+			_transfer.sendFile(key, localFile.getAbsolutePath(), sendingProgress(info._name));
 		}});
 	}
 
 	private File findFileByName(ContactId contactId, String name){
-		File targetFile = new File(directoryOf(contactId),normalizePath(name));
-		List<File> files = listAllFiles(contactId);
-		for(File file:files){
-			String path = normalizePath(file.getAbsolutePath());
-			String target = normalizePath(targetFile.getAbsolutePath());
-			if (path.equals(target))
-				return file;
-		}
-		return targetFile;
+		File targetFile = new File(directoryOf(contactId),name);
+		return WindowsAndLinuxCompatibility.normalizedFile(targetFile.getAbsolutePath());
 	}
 	
 	private void checkIfNotGrowingAndWait(File localFile) {
@@ -174,10 +148,9 @@ public class SharedFolder {
 
 	private synchronized void compareSharedFolders(ContactId contactId, FileInfo[] remoteInfos) {
 		synchronized(_sharedLock){
-			List<File> localFiles = listAllFiles(contactId);
-			FileInfo[] localInfos = convertToFileInfos(contactId, localFiles);
+			List<FileInfo> localInfos = listAllFiles(contactId);
 			for(FileInfo remoteInfo:remoteInfos){
-				if (!Arrays.asList(localInfos).contains(remoteInfo))
+				if (!localInfos.contains(remoteInfo))
 					requestFile(contactId, remoteInfo);
 			}
 			for(FileInfo localInfo:localInfos){
@@ -206,7 +179,7 @@ public class SharedFolder {
 	private void requestFile(ContactId contactId, FileInfo remoteInfo) {
 		File target = touchFile(contactId, remoteInfo);
 		String transferId = AppTools.uniqueName("transferId"); //Refactor: unify multi purpose random id generators and place in wheel.
-		_transfer.receiveFile(new TransferKey(transferId, contactId), target, remoteInfo._size, receivingProgress(remoteInfo._name));
+		_transfer.receiveFile(new TransferKey(transferId, contactId), target.getAbsolutePath(), remoteInfo._size, receivingProgress(remoteInfo._name));
 		_channel.output().consume(new Packet(contactId,new PleaseSendFilePacket(transferId,remoteInfo)));
 	}
 

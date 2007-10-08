@@ -88,7 +88,7 @@ public class MeToo {
 	}
 	
 	private void sendFile(TransferKey key, File file) {
-		_transfer.sendFile(key, file, sendProgressCallback(file.getName()));
+		_transfer.sendFile(key, file.getAbsolutePath(), sendProgressCallback(file.getName()));
 	}
 
 	private Omnivore<Long> sendProgressCallback(final String name) {

@@ -94,7 +94,7 @@ public class MeTooFrame extends JFrame{
 		File target = new File(_tempDirectory,installName);
 
 		long total = _installNameAndSize.get(installName);
-		_transfer.receiveFile(key, target, total, receiverProgressCallback(target, installName,total));
+		_transfer.receiveFile(key, target.getAbsolutePath(), total, receiverProgressCallback(target, installName,total));
 		_channel.output().consume(new Packet(_contact.id(),new AppInstallRequest(installName)));
 	}
 

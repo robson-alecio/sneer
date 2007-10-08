@@ -1,5 +1,7 @@
 package sneer.apps.sharedfolder.packet;
 
+import wheel.io.files.impl.FileInfo;
+
 public class PleaseSendFilePacket implements SharedFolderPacket{
 
 	public final FileInfo _info;

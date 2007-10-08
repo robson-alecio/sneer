@@ -12,6 +12,7 @@ import java.util.Map;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
+import wheel.io.files.impl.WindowsAndLinuxCompatibility;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 
@@ -25,11 +26,11 @@ public class TransferQueue {
 		_channel.input().addReceiver(transferQueueReceiver());
 	}
 	
-	public void sendFile(final TransferKey key, final File file, final Omnivore<Long> progressCallback){
+	public void sendFile(final TransferKey key, final String filename, final Omnivore<Long> progressCallback){
 		
 		Threads.startDaemon(new Runnable(){ public void run() {
 			try {
-				tryToSendFile(key, file, progressCallback);
+				tryToSendFile(key, filename, progressCallback);
 			} catch(IOException ioe) {
 				ioe.printStackTrace(); //Fix: Treat properly.
 			}
@@ -37,15 +38,9 @@ public class TransferQueue {
 	}
 	
 	//Attention... all received file names will have lowercase names. 
-	public void receiveFile(TransferKey key, File file, long size, Omnivore<Long> progressCallback){
-		File target = windowsLinuxFilenameCompatibility(file);
+	public void receiveFile(TransferKey key, String filename, long size, Omnivore<Long> progressCallback){
+		File target = WindowsAndLinuxCompatibility.normalizedFile(filename);
 		_receiverSchedule.put(key, new FileSchedule(key._contactId, target, size, progressCallback));
-	}
-
-	private File windowsLinuxFilenameCompatibility(File file) {
-		File parent = file.getParentFile();
-		File target = new File(parent,file.getName().toLowerCase());
-		return target;
 	}
 	
 	private Omnivore<Packet> transferQueueReceiver() {
@@ -90,7 +85,8 @@ public class TransferQueue {
 		}
 	}
 
-	private void tryToSendFile(final TransferKey key, File file, final Omnivore<Long> progressCallback) throws IOException {
+	private void tryToSendFile(final TransferKey key, String filename, final Omnivore<Long> progressCallback) throws IOException {
+		File file = WindowsAndLinuxCompatibility.normalizedFile(filename);
 		byte[] buffer = new byte[FILEPART_CHUNK_SIZE];
 		BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));
 		int read;

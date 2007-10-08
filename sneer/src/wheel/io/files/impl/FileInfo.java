@@ -1,4 +1,4 @@
-package sneer.apps.sharedfolder.packet;
+package wheel.io.files.impl;
 
 import java.io.Serializable;
 
@@ -8,7 +8,7 @@ public class FileInfo implements Serializable{
 	public final long _size;
 
 	public FileInfo(String name, long size){
-		_name = name.toLowerCase().replace('\\', '/');
+		_name = WindowsAndLinuxCompatibility.normalizePath(name);
 		_size = size;
 	}
 	

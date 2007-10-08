@@ -27,9 +27,6 @@ public class TransferQueue {
 	
 	public void sendFile(final TransferKey key, final File file, final Omnivore<Long> progressCallback){
 		
-	
-		
-		
 		Threads.startDaemon(new Runnable(){ public void run() {
 			try {
 				tryToSendFile(key, file, progressCallback);
@@ -39,8 +36,16 @@ public class TransferQueue {
 		}});
 	}
 	
+	//Attention... all received file names will have lowercase names. 
 	public void receiveFile(TransferKey key, File file, long size, Omnivore<Long> progressCallback){
-		_receiverSchedule.put(key, new FileSchedule(key._contactId, file, size, progressCallback));
+		File target = windowsLinuxFilenameCompatibility(file);
+		_receiverSchedule.put(key, new FileSchedule(key._contactId, target, size, progressCallback));
+	}
+
+	private File windowsLinuxFilenameCompatibility(File file) {
+		File parent = file.getParentFile();
+		File target = new File(parent,file.getName().toLowerCase());
+		return target;
 	}
 	
 	private Omnivore<Packet> transferQueueReceiver() {

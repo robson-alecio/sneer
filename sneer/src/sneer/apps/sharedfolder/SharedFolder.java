@@ -58,11 +58,16 @@ public class SharedFolder {
 						if (listOfFilesChanged(contactId,files))
 							sendListOfFiles(contactId, files);
 					
-						_listOfFilesByContactId.put(contactId, files);
+						updateListOfFiles(contactId);
 					}
 				}
 			}
 		}});
+	}
+	
+	private void updateListOfFiles(ContactId contactId){
+		List<File> files = listAllFiles(contactId);
+		_listOfFilesByContactId.put(contactId, files);
 	}
 	
 	protected boolean listOfFilesChanged(ContactId contactId, List<File> files) {
@@ -104,7 +109,7 @@ public class SharedFolder {
 	}
 
 	private String relativeName(ContactId contactId, File file) {
-		return normalizePath(file.getAbsolutePath().substring(directoryOf(contactId).getAbsolutePath().length()));
+		return normalizePath(file.getAbsolutePath().substring(directoryOf(contactId).getAbsolutePath().length()+1));
 	}
 		
 	private List<File> listAllFiles(ContactId contactId){
@@ -145,14 +150,15 @@ public class SharedFolder {
 	}
 
 	private File findFileByName(ContactId contactId, String name){
+		File targetFile = new File(directoryOf(contactId),normalizePath(name));
 		List<File> files = listAllFiles(contactId);
 		for(File file:files){
 			String path = normalizePath(file.getAbsolutePath());
-			String target = normalizePath((new File(directoryOf(contactId),name)).getAbsolutePath());
+			String target = normalizePath(targetFile.getAbsolutePath());
 			if (path.equals(target))
 				return file;
 		}
-		return null;
+		return targetFile;
 	}
 	
 	private void checkIfNotGrowingAndWait(File localFile) {
@@ -178,16 +184,17 @@ public class SharedFolder {
 				if (!Arrays.asList(remoteInfos).contains(localInfo))
 					removeFile(contactId, localInfo);
 			}
+			updateListOfFiles(contactId);
 		}
 	}
 
 	private void removeFile(ContactId contactId, FileInfo localInfo) {
-		File localFile = new File(directoryOf(contactId),localInfo._name);
+		File localFile = findFileByName(contactId,localInfo._name);
 		localFile.delete();
 	}
 
 	private File touchFile(ContactId contactId, FileInfo remoteInfo) {
-		File localFile = new File(directoryOf(contactId),remoteInfo._name);
+		File localFile = findFileByName(contactId,remoteInfo._name);
 		try{
 			localFile.createNewFile();
 		}catch(IOException ioe){

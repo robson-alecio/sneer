@@ -1,11 +1,11 @@
 Gandhi
-done - Fix "new user" PointOfView first update not happening
-done - Talk to Humberto so he can make MP3 Sushi work again
-done - Make MP3 Sushi work again if Humberto hasn't done so already
  - Check file transfer between LINUX and WINDOWS. (check if slash has some effect) (TransferQueue).
+ - My Public Files Folder - Any contact can do "Save As" on the other side.
+ - Public Files of Contact - Copy and Paste
+ - Public Files of Contact - Drag and Drop
  - Persist SplitPane position (maybe with bounds)
  - Set up a gandhi.selfip.net so you are always reachable wherever you are. Tell the people on the sneercoders list.
- - optimize channelimpl objectStream use (note: when channel crashes, it happens on both sides?)
+ - Dont do this without automated tests: optimize channelimpl objectStream use (note: when channel crashes, it happens on both sides?)
 
 Klaus
  - App persistence

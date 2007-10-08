@@ -30,6 +30,7 @@ import sneer.kernel.appmanager.metoo.packet.AppListRequest;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.pointofview.Contact;
+import wheel.io.files.impl.WindowsAndLinuxCompatibility;
 import wheel.io.ui.User;
 import wheel.lang.Omnivore;
 
@@ -92,7 +93,7 @@ public class MeTooFrame extends JFrame{
 		System.out.println("sending install request: "+ installName);
 		TransferKey key = new TransferKey(installName,_contact.id());
 		File target = new File(_tempDirectory,installName);
-
+		target = WindowsAndLinuxCompatibility.normalizedFile(target.getAbsolutePath());
 		long total = _installNameAndSize.get(installName);
 		_transfer.receiveFile(key, target.getAbsolutePath(), total, receiverProgressCallback(target, installName,total));
 		_channel.output().consume(new Packet(_contact.id(),new AppInstallRequest(installName)));

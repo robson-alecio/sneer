@@ -19,6 +19,7 @@ import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.communication.impl.Communicator;
 import sneer.kernel.pointofview.Party;
 import wheel.io.Log;
+import wheel.io.files.impl.WindowsAndLinuxCompatibility;
 import wheel.io.ui.User;
 import wheel.io.ui.User.Notification;
 import wheel.lang.Omnivore;
@@ -89,7 +90,7 @@ public class AppManager {
 			processApp(packagedTempDirectory, sourceTempDirectory, compiledTempDirectory);
 			SovereignApplication tempApp = loadApp(compiledTempDirectory);
 			
-			installName = tempApp.defaultName()+"-"+appUID;
+			installName = WindowsAndLinuxCompatibility.normalizePath(tempApp.defaultName()+"-"+appUID);
 
 			copyToFinalPlace(packagedTempDirectory, sourceTempDirectory, compiledTempDirectory, installName);
 

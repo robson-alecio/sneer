@@ -68,7 +68,7 @@ public class AppTools {
 		zos.close();
 	}
 
-	private static void zipDir(File rootDir, File dir2zip, ZipOutputStream zos) throws IOException { 
+	private static void zipDir(File rootDir, File dir2zip, ZipOutputStream zos) throws IOException {
        String[] dirList = dir2zip.list(); 
        byte[] readBuffer = new byte[2156]; 
        int bytesIn = 0; 

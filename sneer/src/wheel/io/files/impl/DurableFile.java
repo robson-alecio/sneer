@@ -56,9 +56,5 @@ public class DurableFile implements File{
 
 	}
 	
-	//FixUrgent: this method must not exist. It exists just for backward compatibility before refactoring
-	public java.io.File getFile(){
-		return _file;
-	}
 
 }

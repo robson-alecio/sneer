@@ -10,8 +10,8 @@ public class FrozenTime {
 		return new Date(FROZEN_MILLIS.get());
 	}
 	
-	public static Date frozenTimeMillis() {
-		return new Date(FROZEN_MILLIS.get());
+	public static long frozenTimeMillis() {
+		return FROZEN_MILLIS.get();
 	}
 
 	public static void freezeForCurrentThread(long millis) {

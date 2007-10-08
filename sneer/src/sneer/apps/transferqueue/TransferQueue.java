@@ -26,6 +26,10 @@ public class TransferQueue {
 	}
 	
 	public void sendFile(final TransferKey key, final File file, final Omnivore<Long> progressCallback){
+		
+	
+		
+		
 		Threads.startDaemon(new Runnable(){ public void run() {
 			try {
 				tryToSendFile(key, file, progressCallback);

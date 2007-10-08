@@ -15,13 +15,13 @@ import wheel.reactive.Signal;
 public class LabeledPanel extends JPanel{
 	private JLabel _label;
 	
-	public LabeledPanel(String title, JPanel panel, Signal<Font> font){
+	public LabeledPanel(String title, Component component, Signal<Font> font){
 		setBorder(new EmptyBorder(3,3,3,3));
 		setLayout(new BorderLayout());
 		_label = new JLabel(title);
 		setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(_label,BorderLayout.NORTH);
-		add(panel,BorderLayout.CENTER);
+		add(component,BorderLayout.CENTER);
 		if (font!=null)
 			font.addReceiver(fontReceiver());
 		setCurrentFont(font.currentValue());

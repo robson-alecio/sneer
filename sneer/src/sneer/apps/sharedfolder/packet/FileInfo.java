@@ -8,7 +8,7 @@ public class FileInfo implements Serializable{
 	public final long _size;
 
 	public FileInfo(String name, long size){
-		_name = name;
+		_name = name.toLowerCase().replace('\\', '/');
 		_size = size;
 	}
 	

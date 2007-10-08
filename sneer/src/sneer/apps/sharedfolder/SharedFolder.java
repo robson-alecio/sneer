@@ -81,9 +81,13 @@ public class SharedFolder {
 	
 	private boolean exists(File file, List<File> files){
 		for(File temp:files)
-			if (temp.getAbsolutePath().equals(file.getAbsolutePath()))
+			if (normalizePath(temp.getAbsolutePath()).equals(normalizePath(file.getAbsolutePath())))
 				return true;
 		return false;
+	}
+	
+	private String normalizePath(String path){
+		return path.toLowerCase().replace('\\', '/');
 	}
 
 	private void sendListOfFiles(ContactId contactId, List<File> files) {
@@ -100,7 +104,7 @@ public class SharedFolder {
 	}
 
 	private String relativeName(ContactId contactId, File file) {
-		return file.getAbsolutePath().substring(directoryOf(contactId).getAbsolutePath().length());
+		return normalizePath(file.getAbsolutePath().substring(directoryOf(contactId).getAbsolutePath().length()));
 	}
 		
 	private List<File> listAllFiles(ContactId contactId){
@@ -133,14 +137,24 @@ public class SharedFolder {
 
 	private void sendRequestedFile(ContactId contactId, String transferId, final FileInfo info) {
 		final TransferKey key = new TransferKey(transferId, contactId);
-		final File localFile = new File(directoryOf(contactId),info._name);
+		final File localFile = findFileByName(contactId,info._name);
 		Threads.startDaemon(new Runnable(){ public void run() {
 			checkIfNotGrowingAndWait(localFile);
 			_transfer.sendFile(key, localFile, sendingProgress(info._name));
 		}});
-		
 	}
 
+	private File findFileByName(ContactId contactId, String name){
+		List<File> files = listAllFiles(contactId);
+		for(File file:files){
+			String path = normalizePath(file.getAbsolutePath());
+			String target = normalizePath((new File(directoryOf(contactId),name)).getAbsolutePath());
+			if (path.equals(target))
+				return file;
+		}
+		return null;
+	}
+	
 	private void checkIfNotGrowingAndWait(File localFile) {
 		long firstSize = localFile.length();
 		Threads.sleepWithoutInterruptions(2000);

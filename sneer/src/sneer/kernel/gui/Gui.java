@@ -17,6 +17,7 @@ import sneer.kernel.pointofview.Party;
 import wheel.io.Log;
 import wheel.io.files.Directory;
 import wheel.io.files.impl.DurableDirectory;
+import wheel.io.files.impl.FileManagerAccess;
 import wheel.io.ui.Action;
 import wheel.io.ui.BoundsPersistence;
 import wheel.io.ui.JFrameBoundsKeeper;
@@ -86,6 +87,7 @@ public class Gui {
 		_trayIcon.addAction(languageChangeAction());
 		_trayIcon.addAction(showFontScreenAction());
 		_trayIcon.addAction(appManagerAction());
+		_trayIcon.addAction(publicFilesAction());
 		for(SovereignApplicationUID app : _appManager.publishedApps().output())
 			if (app._sovereignApplication.mainActions() != null)
 				for(Action mainAction : app._sovereignApplication.mainActions())
@@ -113,6 +115,20 @@ public class Gui {
 
 			public void run() {
 				new AppManagerGui(_appManager);
+			}
+		};
+	}
+	
+	private Action publicFilesAction() {
+		return new Action() {
+			
+			public String caption() {
+				return translate("Public Files");
+			}
+
+			public void run() {
+				SneerDirectories.publicFiles().mkdirs();
+				FileManagerAccess.openDirectory(SneerDirectories.publicFiles());
 			}
 		};
 	}

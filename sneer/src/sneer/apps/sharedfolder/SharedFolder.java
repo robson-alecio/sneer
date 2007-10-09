@@ -24,6 +24,7 @@ import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.pointofview.Contact;
 import wheel.io.files.impl.FileInfo;
+import wheel.io.files.impl.FileManagerAccess;
 import wheel.io.files.impl.WindowsAndLinuxCompatibility;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;

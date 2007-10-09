@@ -1,4 +1,6 @@
 Gandhi
+
+ - Make build class for Sneer
  - Check file transfer between LINUX and WINDOWS. (check if slash has some effect) (TransferQueue).
  - My Public Files Folder - Any contact can do "Save As" on the other side.
  - Public Files of Contact - Copy and Paste

@@ -2,7 +2,7 @@ package wheel.io.files.impl;
 
 import java.io.Serializable;
 
-public class FileInfo implements Serializable{
+public class FileInfo implements Serializable, Comparable<FileInfo>{
 
 	public final String _name;
 	public final long _size;
@@ -24,5 +24,14 @@ public class FileInfo implements Serializable{
 		return 0;
 	}
 
+	public int compareTo(FileInfo info) {
+		return _name.compareTo(info._name);
+	}
+	
+	@Override
+	public String toString(){
+		return _name + " - " + _size + "bytes";
+	}
+	
 	private static final long serialVersionUID = 1L;
 }

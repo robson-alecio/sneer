@@ -40,6 +40,7 @@ public class TransferQueue {
 	//Attention... all received file names will have lowercase names. 
 	public void receiveFile(TransferKey key, String filename, long size, Omnivore<Long> progressCallback){
 		File target = WindowsAndLinuxCompatibility.normalizedFile(filename);
+		target.getParentFile().mkdirs();
 		_receiverSchedule.put(key, new FileSchedule(key._contactId, target, size, progressCallback));
 	}
 	

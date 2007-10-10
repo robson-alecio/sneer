@@ -110,9 +110,10 @@ public class PublicFiles {
 		}};
 	}
 	
-	protected Omnivore<Long> progressCallback(final FileInfo info) {
+	protected Omnivore<Long> progressCallback(@SuppressWarnings("unused")
+	final FileInfo info) {
 		return new Omnivore<Long>(){public void consume(Long value) {
-			System.out.println("Sending public file "+info._name + " - " + value);
+			//System.out.println("Sending public file "+info._name + " - " + value);
 			//not really needed, maybe only for logging purposes.
 		}};
 	}

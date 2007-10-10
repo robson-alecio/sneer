@@ -7,9 +7,13 @@ import static java.awt.Color.WHITE;
 public class GoBoard {
 
 	static protected class Intersection {
+		@SuppressWarnings("unused") //avoid warnings on subversion... :)
 		private Intersection _left;
+		@SuppressWarnings("unused")
 		private Intersection _right;
+		@SuppressWarnings("unused")
 		private Intersection _up;
+		@SuppressWarnings("unused")
 		private Intersection _down;
 		
 		private Color _stone = null;

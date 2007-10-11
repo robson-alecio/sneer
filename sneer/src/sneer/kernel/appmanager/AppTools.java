@@ -64,20 +64,28 @@ public class AppTools {
 
 	public static void zip(File sourceDir, File targetFile) throws IOException {
 		ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(targetFile));
-		zipDir(sourceDir,sourceDir, zos);
+		zipDir(sourceDir,sourceDir, zos, new FilenameFilter(){ public boolean accept(File dir, String name) {
+			return name.startsWith("."); //ignore special directories like .svn
+		}});
+		zos.close();
+	}
+	
+	public static void zip(File sourceDir, File targetFile, FilenameFilter filter) throws IOException {
+		ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(targetFile));
+		zipDir(sourceDir,sourceDir, zos, filter);
 		zos.close();
 	}
 
-	private static void zipDir(File rootDir, File dir2zip, ZipOutputStream zos) throws IOException {
+	private static void zipDir(File rootDir, File dir2zip, ZipOutputStream zos, FilenameFilter filter) throws IOException {
        String[] dirList = dir2zip.list(); 
        byte[] readBuffer = new byte[2156]; 
        int bytesIn = 0; 
        for(int i=0; i<dirList.length; i++) { 
            File f = new File(dir2zip, dirList[i]); 
-           if (f.getName().startsWith(".")) //ignore special directories like .svn
+           if (!filter.accept(f.getParentFile(), f.getName()))
         	   continue;
            if (f.isDirectory()) { 
-           	zipDir(rootDir, f, zos); 
+           	zipDir(rootDir, f, zos, filter); 
            	continue; 
            } 
            FileInputStream fis = new FileInputStream(f); 
@@ -101,10 +109,14 @@ public class AppTools {
     }
 	
 	public static void copyRecursive(File sourceDir, File targetDir) throws IOException{
+		copyRecursive(sourceDir,targetDir,null);
+	}
+	
+	public static void copyRecursive(File sourceDir, File targetDir, FilenameFilter filter) throws IOException{
 		List<File> files = new ArrayList<File>();
 		listFiles(files,sourceDir);
-		
 		for(File file:files){
+			if ((filter!=null)&&(!filter.accept(file.getParentFile(),file.getName()))) continue;
 			File targetDirectory = new File(targetDir,file.getParentFile().getAbsolutePath().substring(sourceDir.getAbsolutePath().length()));
 			targetDirectory.mkdirs();
 			copy(file,new File(targetDirectory,file.getName()));

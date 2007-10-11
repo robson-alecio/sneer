@@ -45,10 +45,12 @@ public class Build {
 			compileFiles();
 			createManifestWithEntryPoint();
 			createJar(jarFile);
-			cleanup();
 		}catch(Exception e){
 			throw new BuildFailure(e);
+		}finally{
+			cleanup();
 		}
+		
 		return jarFile;
 	}
 	

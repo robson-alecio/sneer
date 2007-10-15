@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import sneer.SneerDirectories;
-import sneer.apps.transferqueue.TransferKey;
-import sneer.apps.transferqueue.TransferQueue;
 import sneer.kernel.appmanager.AppManager;
 import sneer.kernel.appmanager.AppTools;
 import sneer.kernel.appmanager.SovereignApplicationUID;
@@ -24,6 +22,8 @@ import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.gui.contacts.DropAction;
 import sneer.kernel.pointofview.Contact;
+import sneer.kernel.transferqueue.TransferKey;
+import sneer.kernel.transferqueue.TransferQueue;
 import wheel.io.ui.Action;
 import wheel.io.ui.User;
 import wheel.lang.Casts;

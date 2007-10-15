@@ -12,8 +12,6 @@ import javax.swing.JFileChooser;
 
 import sneer.apps.asker.Asker;
 import sneer.apps.filetransfer.gui.FileTransferFrame;
-import sneer.apps.transferqueue.TransferKey;
-import sneer.apps.transferqueue.TransferQueue;
 import sneer.kernel.api.SovereignApplicationNeeds;
 import sneer.kernel.appmanager.AppTools;
 import sneer.kernel.business.contacts.ContactAttributes;
@@ -23,6 +21,8 @@ import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.gui.contacts.DropAction;
 import sneer.kernel.pointofview.Contact;
+import sneer.kernel.transferqueue.TransferKey;
+import sneer.kernel.transferqueue.TransferQueue;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.lang.Omnivore;

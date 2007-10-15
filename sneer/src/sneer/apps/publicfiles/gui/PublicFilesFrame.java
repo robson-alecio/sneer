@@ -28,12 +28,12 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import sneer.apps.publicfiles.packet.PleaseSendFile;
-import sneer.apps.transferqueue.TransferKey;
-import sneer.apps.transferqueue.TransferQueue;
 import sneer.kernel.appmanager.AppTools;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
+import sneer.kernel.transferqueue.TransferKey;
+import sneer.kernel.transferqueue.TransferQueue;
 import wheel.io.files.impl.FileInfo;
 import wheel.io.ui.User;
 import wheel.lang.Omnivore;

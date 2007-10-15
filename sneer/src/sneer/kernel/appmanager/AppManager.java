@@ -12,12 +12,12 @@ import java.net.URLClassLoader;
 import java.util.zip.ZipException;
 
 import sneer.SneerDirectories;
-import sneer.apps.transferqueue.TransferQueue;
 import sneer.kernel.api.SovereignApplication;
 import sneer.kernel.api.SovereignApplicationNeeds;
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.communication.impl.Communicator;
 import sneer.kernel.pointofview.Party;
+import sneer.kernel.transferqueue.TransferQueue;
 import wheel.io.Log;
 import wheel.io.files.impl.WindowsAndLinuxCompatibility;
 import wheel.io.ui.User;

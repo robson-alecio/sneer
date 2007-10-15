@@ -1,4 +1,4 @@
-package sneer.apps.transferqueue;
+package sneer.kernel.transferqueue;
 
 import sneer.kernel.business.contacts.ContactId;
 

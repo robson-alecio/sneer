@@ -1,10 +1,10 @@
 package sneer.kernel.appmanager;
 
-import sneer.apps.transferqueue.TransferQueue;
 import sneer.kernel.api.SovereignApplicationNeeds;
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.pointofview.Contact;
+import sneer.kernel.transferqueue.TransferQueue;
 import wheel.io.ui.User;
 import wheel.io.ui.User.Notification;
 import wheel.lang.Omnivore;

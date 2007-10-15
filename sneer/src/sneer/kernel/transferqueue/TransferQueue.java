@@ -1,4 +1,4 @@
-package sneer.apps.transferqueue;
+package sneer.kernel.transferqueue;
 
 import java.io.BufferedInputStream;
 import java.io.File;

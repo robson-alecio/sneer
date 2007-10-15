@@ -1,6 +1,5 @@
 package sneer;
 
-import sneer.apps.transferqueue.TransferQueue;
 import sneer.kernel.api.SovereignApplication;
 import sneer.kernel.api.SovereignApplicationNeeds;
 import sneer.kernel.appmanager.AppManager;
@@ -9,6 +8,7 @@ import sneer.kernel.business.BusinessSource;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.impl.Communicator;
 import sneer.kernel.pointofview.impl.Me;
+import sneer.kernel.transferqueue.TransferQueue;
 import wheel.io.ui.User;
 import wheel.io.ui.User.Notification;
 import wheel.lang.Omnivore;

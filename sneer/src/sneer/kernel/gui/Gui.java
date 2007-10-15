@@ -7,13 +7,13 @@ import java.io.IOException;
 import java.net.URL;
 
 import sneer.SneerDirectories;
-import sneer.kernel.appmanager.AppManager;
+import sneer.SystemApplications;
 import sneer.kernel.appmanager.SovereignApplicationUID;
 import sneer.kernel.appmanager.gui.AppManagerGui;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.gui.contacts.ContactActionFactory;
+import sneer.kernel.gui.contacts.DropActionFactory;
 import sneer.kernel.gui.contacts.ShowContactsScreenAction;
-import sneer.kernel.pointofview.Party;
 import wheel.io.Log;
 import wheel.io.files.Directory;
 import wheel.io.files.impl.DurableDirectory;
@@ -38,26 +38,26 @@ import wheel.reactive.lists.ListValueChange;
 
 public class Gui {
 
-	private final AppManager _appManager;
 	private final ContactActionFactory _contactActionFactory;
+	private final SystemApplications _systemApplications;
+	private final DropActionFactory _dropActionFactory;
 
-	public Gui(User user, Party I, BusinessSource businessSource, AppManager appManager, ContactActionFactory contactActionFactory) throws Exception {
+	public Gui(User user, SystemApplications systemApplications, BusinessSource businessSource, ContactActionFactory contactActionFactory, DropActionFactory dropActionFactory) throws Exception {
 		_user = user;
-		_I = I; 
+		_systemApplications = systemApplications;
 		_businessSource = businessSource;
-		_appManager = appManager;
 		_contactActionFactory = contactActionFactory;
+		_dropActionFactory = dropActionFactory;
 		
 		URL icon = Gui.class.getResource("/sneer/kernel/gui/traymenu/yourIconGoesHere.png");
 		_trayIcon = new TrayIconImpl(icon, _user.catcher());
 		
 		_jframeBoundsKeeper = jFrameBoundsKeeper(); 
 		tryToRun();
-		_appManager.publishedApps().output().addListReceiver(appListChangedReceiver());
+		_systemApplications._appManager.publishedApps().output().addListReceiver(appListChangedReceiver());
 	}
 
 	final User _user;
-	private final Party _I;
 	private final BusinessSource _businessSource;
 	private JFrameBoundsKeeper _jframeBoundsKeeper;
 	
@@ -88,7 +88,7 @@ public class Gui {
 		_trayIcon.addAction(showFontScreenAction());
 		_trayIcon.addAction(appManagerAction());
 		_trayIcon.addAction(publicFilesAction());
-		for(SovereignApplicationUID app : _appManager.publishedApps().output())
+		for(SovereignApplicationUID app : _systemApplications._appManager.publishedApps().output())
 			if (app._sovereignApplication.mainActions() != null)
 				for(Action mainAction : app._sovereignApplication.mainActions())
 					_trayIcon.addAction(mainAction);
@@ -114,7 +114,7 @@ public class Gui {
 			}
 
 			public void run() {
-				new AppManagerGui(_appManager);
+				new AppManagerGui(_systemApplications._appManager);
 			}
 		};
 	}
@@ -139,7 +139,7 @@ public class Gui {
 
 	private synchronized ShowContactsScreenAction showContactsScreenAction() {
 		if (_showContactsScreenAction == null){
-			_showContactsScreenAction = new ShowContactsScreenAction(_user, _I, _contactActionFactory, _businessSource, _jframeBoundsKeeper);
+			_showContactsScreenAction = new ShowContactsScreenAction(_user, _systemApplications._me, _contactActionFactory, _dropActionFactory, _businessSource, _jframeBoundsKeeper);
 		}
 		return _showContactsScreenAction;
 	}

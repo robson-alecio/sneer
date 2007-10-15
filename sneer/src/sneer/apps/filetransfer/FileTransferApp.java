@@ -21,6 +21,7 @@ import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
+import sneer.kernel.gui.contacts.DropAction;
 import sneer.kernel.pointofview.Contact;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
@@ -130,9 +131,7 @@ public class FileTransferApp {
 			if (value != JFileChooser.APPROVE_OPTION) return;
 
 			File file = fc.getSelectedFile();
-			String transferId = generateTransferId();
-			TransferKey key = new TransferKey(transferId, contact.id());
-			_asker.ask(contact.id(), callback(key,file, findContact(contact.id()).nick().currentValue()), new FileRequest(file.getName(),file.length(),transferId));
+			pleaseAcceptThisFile(contact, file);
 		}});
 	}
 	
@@ -165,6 +164,34 @@ public class FileTransferApp {
 			@Override
 			public String caption() {
 				return translate("Send File");
+			}
+
+		});
+	}
+
+	private void pleaseAcceptThisFile(final Contact contact, File file) {
+		String transferId = generateTransferId();
+		TransferKey key = new TransferKey(transferId, contact.id());
+		_asker.ask(contact.id(), callback(key,file, findContact(contact.id()).nick().currentValue()), new FileRequest(file.getName(),file.length(),transferId));
+	}
+	
+	public List<DropAction> dropActions() {
+		return Collections.singletonList( (DropAction)new DropAction() {
+
+			@Override
+			public void actUpon(Contact contact,Object object) {
+				pleaseAcceptThisFile(contact, (File) object);
+			}
+
+			@Override
+			public String caption() {
+				return translate("Send File");
+			}
+
+			public boolean interested(Object object) {
+				if ((object==null)||(!(object instanceof File)))
+					return false;
+				return true;
 			}
 
 		});

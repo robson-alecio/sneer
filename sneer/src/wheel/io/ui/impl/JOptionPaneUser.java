@@ -196,6 +196,8 @@ public class JOptionPaneUser implements User {
 					break;
 				}	
 				Object selectedValue = _pane.getValue();
+				if (selectedValue==null)
+					break;
 				if (selectedValue.equals(JOptionPane.UNINITIALIZED_VALUE))
 					continue;
 				_callback.consume(selectedValue.equals(JOptionPane.YES_OPTION));

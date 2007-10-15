@@ -22,7 +22,9 @@ import sneer.kernel.business.contacts.impl.ContactIdImpl;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
+import sneer.kernel.gui.contacts.DropAction;
 import sneer.kernel.pointofview.Contact;
+import wheel.io.Log;
 import wheel.io.files.impl.FileInfo;
 import wheel.io.files.impl.FileManagerAccess;
 import wheel.io.files.impl.WindowsAndLinuxCompatibility;
@@ -214,6 +216,34 @@ public class SharedFolder {
 
 	private void actUponContact(Contact contact) {
 		FileManagerAccess.openDirectory(directoryOf(contact.id()));
+	}
+	
+	public List<DropAction> dropActions() {
+		return Collections.singletonList( (DropAction)new DropAction() {
+
+			@Override
+			public void actUpon(Contact contact,Object object) {
+				File file = (File) object;
+				try {
+					AppTools.copy((File) object, new File(directoryOf(contact.id()),file.getName()));
+				} catch (IOException e) {
+					Log.log(e);
+					e.printStackTrace();
+				}
+			}
+
+			@Override
+			public String caption() {
+				return translate("Shared Folder");
+			}
+
+			public boolean interested(Object object) {
+				if ((object==null)||(!(object instanceof File)))
+					return false;
+				return true;
+			}
+
+		});
 	}
 	
 }

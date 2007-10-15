@@ -9,19 +9,13 @@ import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
 
 import prevayler.bubble.Bubble;
-import sneer.apps.publicfiles.PublicFiles;
-import sneer.apps.sharedfolder.SharedFolder;
-import sneer.apps.transferqueue.TransferQueue;
-import sneer.kernel.appmanager.AppManager;
 import sneer.kernel.appmanager.SovereignApplicationUID;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.impl.BusinessFactory;
-import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.impl.Communicator;
 import sneer.kernel.gui.Gui;
 import sneer.kernel.gui.contacts.ContactActionFactory;
-import sneer.kernel.pointofview.Party;
-import sneer.kernel.pointofview.impl.Me;
+import sneer.kernel.gui.contacts.DropActionFactory;
 import wheel.i18n.Language;
 import wheel.io.Log;
 import wheel.io.network.OldNetworkImpl;
@@ -52,13 +46,10 @@ public class Sneer {
 	private User _user;
 	private BusinessSource _businessSource;
 	private Communicator _communicator;
-	private Party _me;
 	private Gui _gui;
-	private TransferQueue _transfer;
-	private AppManager _appManager;
 	private ContactActionFactory _contactActionFactory;
-	private SharedFolder _sharedFolder;
-	private PublicFiles _publicFiles;
+	private SystemApplications _systemApplications;
+	private DropActionFactory _dropActionFactory;
 	
 	private void tryToRun() throws Exception {
 		
@@ -76,26 +67,17 @@ public class Sneer {
 		
 		_communicator = new Communicator(_user, new OldNetworkImpl(), _businessSource);
 		
-		Channel channel = _communicator.openChannel("Point of View", 1);
-		_me = new Me(_businessSource.output(), _communicator.operator(), channel);
-		
-		Channel transferChannel = _communicator.openChannel("Transfer", 2);
-		_transfer = new TransferQueue(transferChannel);
-		
-		Channel sharedFolderChannel = _communicator.openChannel("Shared Folder", 2);
-		_sharedFolder = new SharedFolder(sharedFolderChannel, _me.contacts(), _transfer);
-		
-		Channel publicFilesChannel = _communicator.openChannel("Public Files", 2);
-		_publicFiles = new PublicFiles(_user, publicFilesChannel, _me.contacts(), _transfer, _businessSource.output().contactAttributes());
+		_systemApplications = new SystemApplications(_user, _communicator, _businessSource, briefNotifier());
 		
 		System.out.println("Checking existing apps:");
-		_appManager = new AppManager(_user,_communicator, _me, _businessSource.output().contactAttributes(), briefNotifier(),_transfer);
-		for(SovereignApplicationUID app:_appManager.publishedApps().output())
+		
+		for(SovereignApplicationUID app:_systemApplications._appManager.publishedApps().output())
 			System.out.println("App : "+app._sovereignApplication.defaultName());
 		
-		_contactActionFactory = new ContactActionFactory(_user, _communicator, _appManager, _transfer, _sharedFolder, _publicFiles);
+		_contactActionFactory = new ContactActionFactory(_systemApplications);
+		_dropActionFactory = new DropActionFactory(_systemApplications);
 		
-		_gui = new Gui(_user, _me, _businessSource, _appManager, _contactActionFactory); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
+		_gui = new Gui(_user, _systemApplications, _businessSource, _contactActionFactory,_dropActionFactory); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
 		
 		while (true) Threads.sleepWithoutInterruptions(100000); // Refactor Consider joining the main gui thread.
 	}

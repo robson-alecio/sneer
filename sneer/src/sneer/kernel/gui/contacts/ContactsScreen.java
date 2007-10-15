@@ -35,11 +35,13 @@ class ContactsScreen extends JFrame {
 	private final Party _me;
 	private final ContactActionFactory _contactActionFactory;
 	private final BusinessSource _businessSource;
+	private final DropActionFactory _dropActionFactory;
 
-	ContactsScreen(User user, Party me, ContactActionFactory contactActionFactory, BusinessSource businessSource) {
+	ContactsScreen(User user, Party me, ContactActionFactory contactActionFactory, DropActionFactory dropActionFactory, BusinessSource businessSource) {
 		_user = user;
 		_me = me;
 		_contactActionFactory = contactActionFactory;
+		_dropActionFactory = dropActionFactory;
 		_businessSource = businessSource;
 
 		initComponents();
@@ -78,7 +80,7 @@ class ContactsScreen extends JFrame {
 	private JTree createFriendsTree() {
 		final JTree tree = new JTree();
 		new ContactTreeController(tree, new MeNode(_me),_businessSource.output().font());
-		
+		tree.setTransferHandler(new ContactTreeTransferHandler(_dropActionFactory));
 		tree.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent mouseEvent) {

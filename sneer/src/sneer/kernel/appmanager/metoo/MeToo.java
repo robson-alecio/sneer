@@ -22,9 +22,11 @@ import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Packet;
 import sneer.kernel.gui.contacts.ContactAction;
+import sneer.kernel.gui.contacts.DropAction;
 import sneer.kernel.pointofview.Contact;
 import wheel.io.ui.Action;
 import wheel.io.ui.User;
+import wheel.lang.Casts;
 import wheel.lang.Omnivore;
 import wheel.reactive.lists.ListSignal;
 
@@ -139,6 +141,10 @@ public class MeToo {
 
 	public int trafficPriority() {
 		return 1;
+	}
+	
+	public List<DropAction> dropActions() {
+		return Casts.uncheckedGenericCast(Collections.EMPTY_LIST);
 	}
 
 }

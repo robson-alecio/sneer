@@ -6,6 +6,7 @@ import java.util.List;
 import sneer.kernel.api.SovereignApplicationNeeds;
 import sneer.kernel.api.SovereignApplication;
 import sneer.kernel.gui.contacts.ContactAction;
+import sneer.kernel.gui.contacts.DropAction;
 import wheel.io.ui.Action;
 import wheel.lang.Casts;
 
@@ -30,6 +31,11 @@ public class Application implements SovereignApplication{
 
 	@Override
 	public List<ContactAction> contactActions() {
+		return Casts.uncheckedGenericCast(Collections.EMPTY_LIST);
+	}
+	
+	@Override
+	public List<DropAction> dropActions() {
 		return Casts.uncheckedGenericCast(Collections.EMPTY_LIST);
 	}
 

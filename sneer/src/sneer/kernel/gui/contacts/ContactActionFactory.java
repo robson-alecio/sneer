@@ -15,20 +15,15 @@ public class ContactActionFactory {
 		_systemApplications = systemApplications;
 	}
 	
-	
 	public List<ContactAction> contactActions(){
 		List<ContactAction> result = new ArrayList<ContactAction>();
 		
 		registerContactActions(result,_systemApplications._conversations);
 		registerContactActions(result,_systemApplications._fileTransfer);
 		registerContactActions(result,_systemApplications._talk);
-		
-		for(ContactAction contactAction:_systemApplications._meToo.contactActions())
-			result.add(contactAction);
-		for(ContactAction contactAction:_systemApplications._sharedFolder.contactActions())
-			result.add(contactAction);
-		for(ContactAction contactAction:_systemApplications._publicFiles.contactActions())
-			result.add(contactAction);
+		registerContactActions(result,_systemApplications._meToo);
+		registerContactActions(result,_systemApplications._sharedFolder);
+		registerContactActions(result,_systemApplications._publicFiles);
 		
 		for(SovereignApplicationUID app:_systemApplications._appManager.publishedApps().output())
 			if (app._sovereignApplication.contactActions()!=null)

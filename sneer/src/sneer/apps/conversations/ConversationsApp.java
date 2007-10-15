@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import sneer.apps.conversations.gui.ConversationFrame;
-import sneer.kernel.api.SovereignApplicationNeeds;
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
@@ -24,10 +23,10 @@ import wheel.reactive.lists.ListSignal;
 
 public class ConversationsApp {
 
-	public ConversationsApp(SovereignApplicationNeeds config) {
-		_channel = config.channel();
-		_contactAttributes = config.contactAttributes();
-		_briefUserNotifier = config.briefUserNotifier();
+	public ConversationsApp(Channel channel, ListSignal<ContactAttributes> contactAttributes, Omnivore<Notification> briefUserNotifier) {
+		_channel = channel;
+		_contactAttributes = contactAttributes;
+		_briefUserNotifier = briefUserNotifier;
 		_channel.input().addReceiver(messageReceiver());
 	}
 

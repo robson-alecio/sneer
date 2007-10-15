@@ -6,7 +6,6 @@ import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.gui.contacts.DropAction;
 import wheel.io.ui.Action;
 
-//Refactor: create a similar class for system apps. to avoid current system apps API mess.
 public interface SovereignApplication {
 	
 	public String defaultName();
@@ -19,6 +18,8 @@ public interface SovereignApplication {
 
 	public Object initialState();
 	
-	public void start(SovereignApplicationNeeds config);
+	public void init(SovereignApplicationNeeds config);
+	
+	public void start();
 
 }

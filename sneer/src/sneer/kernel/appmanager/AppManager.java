@@ -162,7 +162,8 @@ public class AppManager {
 
 	public void startApp(SovereignApplication app){
 		SovereignApplicationNeeds needs = new NeedsImpl(_user, _communicator.openChannel(app.defaultName(), app.trafficPriority(), app.getClass().getClassLoader()), _me.contacts(), _contactAttributes, _me.name(), _briefUserNotifier, _transfer);
-		app.start(needs);
+		app.init(needs);
+		app.start();
 	}
 
 	private String packageApp(File sourceDirectory, File targetDirectory) {

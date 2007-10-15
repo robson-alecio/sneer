@@ -1,17 +1,13 @@
 package sneer.apps.filetransfer;
 
 
-import java.util.Collections;
 import java.util.List;
 
-import sneer.kernel.api.SovereignApplicationNeeds;
-import sneer.kernel.api.SovereignApplication;
+import sneer.kernel.api.SovereignApplicationAbstractImpl;
 import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.gui.contacts.DropAction;
-import wheel.io.ui.Action;
-import wheel.lang.Casts;
 
-public class Application implements SovereignApplication{
+public class Application extends SovereignApplicationAbstractImpl{
 
 	private FileTransferApp _delegate;
 	
@@ -26,8 +22,8 @@ public class Application implements SovereignApplication{
 	}
 	
 	@Override
-	public void start(SovereignApplicationNeeds config) {
-		_delegate = new FileTransferApp(config);
+	public void start() {
+		_delegate = new FileTransferApp(_config);
 	}
 
 	@Override
@@ -39,16 +35,5 @@ public class Application implements SovereignApplication{
 	public List<DropAction> dropActions() {
 		return _delegate.dropActions();
 	}
-
-	@Override
-	public List<Action> mainActions() {
-		return Casts.uncheckedGenericCast(Collections.EMPTY_LIST);
-	}
-	
-	@Override
-	public Object initialState() {
-		return null;
-	}
-	
 
 }

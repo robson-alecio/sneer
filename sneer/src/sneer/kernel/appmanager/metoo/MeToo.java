@@ -28,20 +28,17 @@ import wheel.io.ui.Action;
 import wheel.io.ui.User;
 import wheel.lang.Casts;
 import wheel.lang.Omnivore;
-import wheel.reactive.lists.ListSignal;
 
 public class MeToo {
 	
 	private final Channel _channel;
-	private final ListSignal<SovereignApplicationUID> _publishedApps;
 	private final AppManager _appManager;
 	private final TransferQueue _transfer;
 	private final User _user;
 
-	public MeToo(User user, Channel channel, ListSignal<SovereignApplicationUID> publishedApps, AppManager appManager, TransferQueue transfer){
+	public MeToo(User user, Channel channel, AppManager appManager, TransferQueue transfer){
 		_user = user;
 		_channel = channel;
-		_publishedApps = publishedApps;
 		_appManager = appManager;
 		_transfer = transfer;
 		_channel.input().addReceiver(meTooPacketReceiver());
@@ -102,7 +99,7 @@ public class MeToo {
 
 	protected void sendAppListResponse(ContactId contactId) {
 		Map<String,Long> installNameAndSize = new Hashtable<String,Long>();
-		for(SovereignApplicationUID app:_publishedApps){
+		for(SovereignApplicationUID app:_appManager.publishedApps().output()){
 			File file = findFile(app._installName);
 			installNameAndSize.put(app._installName, file.length());
 		}

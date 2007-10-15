@@ -1,17 +1,12 @@
 package sneer.apps.talk;
 
 
-import java.util.Collections;
 import java.util.List;
 
-import sneer.kernel.api.SovereignApplicationNeeds;
-import sneer.kernel.api.SovereignApplication;
+import sneer.kernel.api.SovereignApplicationAbstractImpl;
 import sneer.kernel.gui.contacts.ContactAction;
-import sneer.kernel.gui.contacts.DropAction;
-import wheel.io.ui.Action;
-import wheel.lang.Casts;
 
-public class Application implements SovereignApplication{
+public class Application extends SovereignApplicationAbstractImpl{
 
 	private TalkApp _delegate;
 
@@ -26,29 +21,13 @@ public class Application implements SovereignApplication{
 	}
 
 	@Override
-	public void start(SovereignApplicationNeeds config) {
-		_delegate = new TalkApp(config);
+	public void start() {
+		_delegate = new TalkApp(_config);
 	}
 
 	@Override
 	public List<ContactAction> contactActions() {
 		return _delegate.contactActions();
 	}
-	
-	@Override
-	public List<DropAction> dropActions() {
-		return Casts.uncheckedGenericCast(Collections.EMPTY_LIST);
-	}
-
-	@Override
-	public List<Action> mainActions() {
-		return Casts.uncheckedGenericCast(Collections.EMPTY_LIST);
-	}
-	
-	@Override
-	public Object initialState() {
-		return null;
-	}
-	
 
 }

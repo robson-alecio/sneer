@@ -1,11 +1,10 @@
 package sneer;
 
-import sneer.apps.conversations.Application;
-import sneer.apps.publicfiles.PublicFiles;
-import sneer.apps.sharedfolder.SharedFolder;
 import sneer.apps.transferqueue.TransferQueue;
+import sneer.kernel.api.SovereignApplication;
+import sneer.kernel.api.SovereignApplicationNeeds;
 import sneer.kernel.appmanager.AppManager;
-import sneer.kernel.appmanager.metoo.MeToo;
+import sneer.kernel.appmanager.NeedsImpl;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.impl.Communicator;
@@ -19,19 +18,19 @@ public class SystemApplications {
 	private final User _user;
 	private final Communicator _communicator;
 	private final BusinessSource _businessSource;
+	private final Omnivore<Notification> _briefNotifier;
+	
 	public final Me _me;
 	public final TransferQueue _transfer;
-	public final SharedFolder _sharedFolder;
-	public final PublicFiles _publicFiles;
 	public final AppManager _appManager;
-	private final Omnivore<Notification> _briefNotifier;
-	public final Application _conversations;
+
+	public final sneer.apps.sharedfolder.Application _sharedFolder;
+	public final sneer.apps.publicfiles.Application _publicFiles;
+	public final sneer.apps.conversations.Application _conversations;
 	public final sneer.apps.filetransfer.Application _fileTransfer;
 	public final sneer.apps.talk.Application _talk;
-	public final MeToo _meToo;
+	public final sneer.kernel.appmanager.metoo.Application _meToo;
 
-	//Refactor: make system apps creation more compatible/uniform.
-	
 	public SystemApplications(User user, Communicator communicator, BusinessSource businessSource, Omnivore<Notification> briefNotifier){
 		_user = user;
 		_communicator = communicator;
@@ -40,32 +39,35 @@ public class SystemApplications {
 		
 		Channel channel = _communicator.openChannel("Point of View", 1);
 		_me = new Me(_businessSource.output(), _communicator.operator(), channel);
-		
-		Channel transferChannel = _communicator.openChannel("Transfer", 2);
+		Channel transferChannel = _communicator.openChannel("TransferQueue", 2);
 		_transfer = new TransferQueue(transferChannel);
-		
-		Channel sharedFolderChannel = _communicator.openChannel("Shared Folder", 2);
-		_sharedFolder = new SharedFolder(sharedFolderChannel, _me.contacts(), _transfer);
-		
-		Channel publicFilesChannel = _communicator.openChannel("Public Files", 2);
-		_publicFiles = new PublicFiles(_user, publicFilesChannel, _me.contacts(), _transfer, _businessSource.output().contactAttributes());
-		
 		_appManager = new AppManager(_user,_communicator, _me, _businessSource.output().contactAttributes(), _briefNotifier, _transfer);
 		
-		_conversations = new sneer.apps.conversations.Application();
-		_fileTransfer = new sneer.apps.filetransfer.Application();
-		_talk = new sneer.apps.talk.Application();
-		_appManager.startApp(_conversations);
-		_appManager.startApp(_fileTransfer);
-		_appManager.startApp(_talk);
+		_sharedFolder = new sneer.apps.sharedfolder.Application();
+		startApp(_sharedFolder);
 		
-		// _metoo cant be exposed yet as a normal app without exposing too much appconfig.
-		Channel metooChannel = _communicator.openChannel(MeToo.class.getName(), 3);
-		_meToo = new MeToo(_user, metooChannel,_appManager.publishedApps().output(), _appManager, _transfer);
+		_publicFiles = new sneer.apps.publicfiles.Application();
+		startApp(_publicFiles);
+
+		_conversations = new sneer.apps.conversations.Application();
+		startApp(_conversations);
+		
+		_fileTransfer = new sneer.apps.filetransfer.Application();
+		startApp(_fileTransfer);
+		
+		_talk = new sneer.apps.talk.Application();
+		startApp(_talk);
+		
+		_meToo = new sneer.kernel.appmanager.metoo.Application(_appManager);
+		startApp(_meToo);
 		
 	}
 	
-
+	public void startApp(SovereignApplication app){
+		SovereignApplicationNeeds needs = new NeedsImpl(_user, _communicator.openChannel(app.defaultName(), app.trafficPriority(), app.getClass().getClassLoader()), _me.contacts(), _businessSource.output().contactAttributes(), _me.name(), _briefNotifier, _transfer);
+		app.init(needs);
+		app.start();
+	}
 	
 	
 }

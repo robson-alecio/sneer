@@ -22,14 +22,10 @@ public class DropActionFactory {
 		registerDropActions(result,_systemApplications._conversations);
 		registerDropActions(result,_systemApplications._fileTransfer);
 		registerDropActions(result,_systemApplications._talk);
-		
-		for(DropAction dropAction:_systemApplications._meToo.dropActions())
-			result.add(dropAction);
-		for(DropAction dropAction:_systemApplications._sharedFolder.dropActions())
-			result.add(dropAction);
-		for(DropAction dropAction:_systemApplications._publicFiles.dropActions())
-			result.add(dropAction);
-		
+		registerDropActions(result,_systemApplications._meToo);
+		registerDropActions(result,_systemApplications._sharedFolder);
+		registerDropActions(result,_systemApplications._publicFiles);
+
 		for(SovereignApplicationUID app:_systemApplications._appManager.publishedApps().output())
 			if (app._sovereignApplication.contactActions()!=null)
 				for(DropAction dropAction:app._sovereignApplication.dropActions())

@@ -1,16 +1,11 @@
 package sneer.games.mediawars.mp3sushi;
 
-import java.util.Collections;
 import java.util.List;
 
-import sneer.kernel.api.SovereignApplicationNeeds;
-import sneer.kernel.api.SovereignApplication;
-import sneer.kernel.gui.contacts.ContactAction;
-import sneer.kernel.gui.contacts.DropAction;
+import sneer.kernel.api.SovereignApplicationAbstractImpl;
 import wheel.io.ui.Action;
-import wheel.lang.Casts;
 
-public class Application implements SovereignApplication{
+public class Application extends SovereignApplicationAbstractImpl{
 
 	private MP3SushiGameApp _delegate;
 
@@ -25,29 +20,13 @@ public class Application implements SovereignApplication{
 	}
 
 	@Override
-	public void start(SovereignApplicationNeeds config) {
-		_delegate = new MP3SushiGameApp(config);
-	}
-
-	@Override
-	public List<ContactAction> contactActions() {
-		return Casts.uncheckedGenericCast(Collections.EMPTY_LIST);
-	}
-	
-	@Override
-	public List<DropAction> dropActions() {
-		return Casts.uncheckedGenericCast(Collections.EMPTY_LIST);
+	public void start() {
+		_delegate = new MP3SushiGameApp(_config);
 	}
 
 	@Override
 	public List<Action> mainActions() {
 		return _delegate.mainActions();
 	}
-
-	@Override
-	public Object initialState() {
-		return null;
-	}
 	
-
 }

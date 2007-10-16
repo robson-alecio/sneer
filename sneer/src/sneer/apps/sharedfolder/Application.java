@@ -16,7 +16,7 @@ public class Application extends SovereignApplicationAbstractImpl{
 
 	@Override
 	public String defaultName() {
-		return "TransferQueue";
+		return "SharedFolder";
 	}
 
 	@Override

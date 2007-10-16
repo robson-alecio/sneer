@@ -33,15 +33,13 @@ class ContactsScreen extends JFrame {
 
 	private final User _user;
 	private final Party _me;
-	private final ContactActionFactory _contactActionFactory;
+	private final ActionFactory _actionFactory;
 	private final BusinessSource _businessSource;
-	private final DropActionFactory _dropActionFactory;
 
-	ContactsScreen(User user, Party me, ContactActionFactory contactActionFactory, DropActionFactory dropActionFactory, BusinessSource businessSource) {
+	ContactsScreen(User user, Party me, ActionFactory actionFactory, BusinessSource businessSource) {
 		_user = user;
 		_me = me;
-		_contactActionFactory = contactActionFactory;
-		_dropActionFactory = dropActionFactory;
+		_actionFactory = actionFactory;
 		_businessSource = businessSource;
 
 		initComponents();
@@ -80,7 +78,7 @@ class ContactsScreen extends JFrame {
 	private JTree createFriendsTree() {
 		final JTree tree = new JTree();
 		new ContactTreeController(tree, new MeNode(_me),_businessSource.output().font());
-		tree.setTransferHandler(new ContactTreeTransferHandler(_dropActionFactory));
+		tree.setTransferHandler(new ContactTreeTransferHandler(_actionFactory));
 		tree.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent mouseEvent) {
@@ -134,7 +132,7 @@ class ContactsScreen extends JFrame {
 
 	private JPopupMenu getFriendPopUpMenu(final ContactNode node) {
 		final JPopupMenu result = new JPopupMenu();
-		for (ContactAction action : _contactActionFactory.contactActions()) addToContactMenu(result, action, node);
+		for (ContactAction action : _actionFactory.contactActions()) addToContactMenu(result, action, node);
 		addToContactMenu(result, new ContactRemovalAction(_businessSource.contactRemover()), node);
 		return result;
 	}

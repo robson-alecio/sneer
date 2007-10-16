@@ -65,7 +65,7 @@ public class AppTools {
 	public static void zip(File sourceDir, File targetFile) throws IOException {
 		ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(targetFile));
 		zipDir(sourceDir,sourceDir, zos, new FilenameFilter(){ public boolean accept(File dir, String name) {
-			return name.startsWith("."); //ignore special directories like .svn
+			return !name.startsWith("."); //ignore special directories like .svn
 		}});
 		zos.close();
 	}

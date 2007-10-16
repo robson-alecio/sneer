@@ -5,6 +5,7 @@ import java.util.List;
 
 import sneer.kernel.api.SovereignApplicationAbstractImpl;
 import sneer.kernel.gui.contacts.ContactAction;
+import wheel.io.ui.Action;
 
 public class Application extends SovereignApplicationAbstractImpl{
 
@@ -33,6 +34,9 @@ public class Application extends SovereignApplicationAbstractImpl{
 		return _delegate.contactActions();
 	}
 	
-	//FixUrgent: place mainActions here, not inside Gui.java!
+	@Override
+	public List<Action> mainActions() {
+		return _delegate.mainActions();
+	}
 
 }

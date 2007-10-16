@@ -25,10 +25,10 @@ import wheel.lang.Threads;
 
 public class ContactTreeTransferHandler extends TransferHandler {
 
-	private final DropActionFactory _dropActionFactory;
+	private final ActionFactory _actionFactory;
 
-	public ContactTreeTransferHandler(DropActionFactory dropActionFactory){
-		_dropActionFactory = dropActionFactory;
+	public ContactTreeTransferHandler(ActionFactory actionFactory){
+		_actionFactory = actionFactory;
 	}
 	
 	@Override
@@ -80,7 +80,7 @@ public class ContactTreeTransferHandler extends TransferHandler {
 		}catch(IOException ignored){
 		}
 		for(Object object:objects){
-			for(DropAction dropAction:_dropActionFactory.dropActions())
+			for(DropAction dropAction:_actionFactory.dropActions())
 				if (dropAction.interested(object))				
 					produceDropActionList(dropActionsInterestedInObject, object).add(dropAction);
 		}

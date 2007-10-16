@@ -8,16 +8,13 @@ import java.net.URL;
 
 import sneer.SneerDirectories;
 import sneer.SystemApplications;
-import sneer.kernel.appmanager.SovereignApplicationUID;
 import sneer.kernel.appmanager.gui.AppManagerGui;
 import sneer.kernel.business.BusinessSource;
-import sneer.kernel.gui.contacts.ContactActionFactory;
-import sneer.kernel.gui.contacts.DropActionFactory;
+import sneer.kernel.gui.contacts.ActionFactory;
 import sneer.kernel.gui.contacts.ShowContactsScreenAction;
 import wheel.io.Log;
 import wheel.io.files.Directory;
 import wheel.io.files.impl.DurableDirectory;
-import wheel.io.files.impl.FileManagerAccess;
 import wheel.io.ui.Action;
 import wheel.io.ui.BoundsPersistence;
 import wheel.io.ui.JFrameBoundsKeeper;
@@ -38,16 +35,14 @@ import wheel.reactive.lists.ListValueChange;
 
 public class Gui {
 
-	private final ContactActionFactory _contactActionFactory;
+	private final ActionFactory _actionFactory;
 	private final SystemApplications _systemApplications;
-	private final DropActionFactory _dropActionFactory;
 
-	public Gui(User user, SystemApplications systemApplications, BusinessSource businessSource, ContactActionFactory contactActionFactory, DropActionFactory dropActionFactory) throws Exception {
+	public Gui(User user, SystemApplications systemApplications, BusinessSource businessSource, ActionFactory actionFactory) throws Exception {
 		_user = user;
 		_systemApplications = systemApplications;
 		_businessSource = businessSource;
-		_contactActionFactory = contactActionFactory;
-		_dropActionFactory = dropActionFactory;
+		_actionFactory = actionFactory;;
 		
 		URL icon = Gui.class.getResource("/sneer/kernel/gui/traymenu/yourIconGoesHere.png");
 		_trayIcon = new TrayIconImpl(icon, _user.catcher());
@@ -87,11 +82,8 @@ public class Gui {
 		_trayIcon.addAction(languageChangeAction());
 		_trayIcon.addAction(showFontScreenAction());
 		_trayIcon.addAction(appManagerAction());
-		_trayIcon.addAction(publicFilesAction());
-		for(SovereignApplicationUID app : _systemApplications._appManager.publishedApps().output())
-			if (app._sovereignApplication.mainActions() != null)
-				for(Action mainAction : app._sovereignApplication.mainActions())
-					_trayIcon.addAction(mainAction);
+		for(Action action:_actionFactory.mainActions())
+			_trayIcon.addAction(action);
 		_trayIcon.addAction(exitAction());
 	}
 
@@ -118,28 +110,14 @@ public class Gui {
 			}
 		};
 	}
-	
-	private Action publicFilesAction() {
-		return new Action() {
-			
-			public String caption() {
-				return translate("Public Files");
-			}
 
-			public void run() {
-				SneerDirectories.publicFiles().mkdirs();
-				FileManagerAccess.openDirectory(SneerDirectories.publicFiles());
-			}
-		};
-	}
-	
 	private LanguageChangeAction languageChangeAction() {
 		return new LanguageChangeAction(_user, _businessSource.output().language(), _businessSource.languageSetter());
 	}
 
 	private synchronized ShowContactsScreenAction showContactsScreenAction() {
 		if (_showContactsScreenAction == null){
-			_showContactsScreenAction = new ShowContactsScreenAction(_user, _systemApplications._me, _contactActionFactory, _dropActionFactory, _businessSource, _jframeBoundsKeeper);
+			_showContactsScreenAction = new ShowContactsScreenAction(_user, _systemApplications._me, _actionFactory, _businessSource, _jframeBoundsKeeper);
 		}
 		return _showContactsScreenAction;
 	}

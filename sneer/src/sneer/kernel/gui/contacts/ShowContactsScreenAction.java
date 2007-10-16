@@ -16,14 +16,12 @@ public class ShowContactsScreenAction implements Action {
 	private final User _user;
 	private ContactsScreen _contactsScreen;
 	private final JFrameBoundsKeeper _boundsKeeper;
-	private final ContactActionFactory _contactActionFactory;
+	private final ActionFactory _actionFactory;
 	private final BusinessSource _businnessSource;
-	private final DropActionFactory _dropActionFactory;
 
-	public ShowContactsScreenAction(User user, Party I, ContactActionFactory contactActionFactory, DropActionFactory dropActionFactory, BusinessSource businnessSource, JFrameBoundsKeeper boundsKeeper){
+	public ShowContactsScreenAction(User user, Party I, ActionFactory actionFactory, BusinessSource businnessSource, JFrameBoundsKeeper boundsKeeper){
 		_I = I;
-		_contactActionFactory = contactActionFactory;
-		_dropActionFactory = dropActionFactory;
+		_actionFactory = actionFactory;
 		_businnessSource = businnessSource;
 		_user = user;
 		_boundsKeeper = boundsKeeper;
@@ -35,7 +33,7 @@ public class ShowContactsScreenAction implements Action {
 
 	public synchronized void run() {
 		if (_contactsScreen == null) {
-			_contactsScreen = new ContactsScreen(_user, _I, _contactActionFactory, _dropActionFactory, _businnessSource);
+			_contactsScreen = new ContactsScreen(_user, _I, _actionFactory, _businnessSource);
 			_boundsKeeper.keepBoundsFor(_contactsScreen, ContactsScreen.class.getName());
 		} 
 		

@@ -22,7 +22,9 @@ import sneer.kernel.pointofview.Contact;
 import sneer.kernel.transferqueue.TransferKey;
 import sneer.kernel.transferqueue.TransferQueue;
 import wheel.io.files.impl.FileInfo;
+import wheel.io.files.impl.FileManagerAccess;
 import wheel.io.files.impl.WindowsAndLinuxCompatibility;
+import wheel.io.ui.Action;
 import wheel.io.ui.User;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
@@ -162,6 +164,20 @@ public class PublicFiles {
 		for (ContactAttributes candidate : _contactAttributes)
 			if (candidate.id().equals(id)) return candidate;
 		return null;
+	}
+	
+	public List<Action> mainActions() {
+		return Collections.singletonList( (Action) new Action() {
+			
+			public String caption() {
+				return translate("Public Files");
+			}
+
+			public void run() {
+				SneerDirectories.publicFiles().mkdirs();
+				FileManagerAccess.openDirectory(SneerDirectories.publicFiles());
+			}
+		});
 	}
 	
 }

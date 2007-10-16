@@ -14,8 +14,7 @@ import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.impl.BusinessFactory;
 import sneer.kernel.communication.impl.Communicator;
 import sneer.kernel.gui.Gui;
-import sneer.kernel.gui.contacts.ContactActionFactory;
-import sneer.kernel.gui.contacts.DropActionFactory;
+import sneer.kernel.gui.contacts.ActionFactory;
 import wheel.i18n.Language;
 import wheel.io.Log;
 import wheel.io.network.OldNetworkImpl;
@@ -47,9 +46,8 @@ public class Sneer {
 	private BusinessSource _businessSource;
 	private Communicator _communicator;
 	private Gui _gui;
-	private ContactActionFactory _contactActionFactory;
+	private ActionFactory _actionFactory;
 	private SystemApplications _systemApplications;
-	private DropActionFactory _dropActionFactory;
 	
 	private void tryToRun() throws Exception {
 		
@@ -74,10 +72,9 @@ public class Sneer {
 		for(SovereignApplicationUID app:_systemApplications._appManager.publishedApps().output())
 			System.out.println("App : "+app._sovereignApplication.defaultName());
 		
-		_contactActionFactory = new ContactActionFactory(_systemApplications);
-		_dropActionFactory = new DropActionFactory(_systemApplications);
+		_actionFactory = new ActionFactory(_systemApplications);
 		
-		_gui = new Gui(_user, _systemApplications, _businessSource, _contactActionFactory,_dropActionFactory); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
+		_gui = new Gui(_user, _systemApplications, _businessSource, _actionFactory); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
 		
 		while (true) Threads.sleepWithoutInterruptions(100000); // Refactor Consider joining the main gui thread.
 	}

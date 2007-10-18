@@ -146,7 +146,7 @@ public class PublicFiles {
 	}
 
 	private void actUponContact(Contact contact) {
-		produceFrame(contact.id());
+		produceFrame(contact.id()).setVisible(true);
 	}
 	
 	private Map<ContactId, PublicFilesFrame> _framesByContactId = new Hashtable<ContactId,PublicFilesFrame>();

@@ -21,21 +21,32 @@ public class JFrameBoundsKeeperImpl implements JFrameBoundsKeeper {
 	}
 	
 	public void keepBoundsFor(final JFrame frame, final String id){
+		Runnable keepBoundsRunnable = keepBoundsRunnable(frame, id);
+		
+		if (SwingUtilities.isEventDispatchThread()){
+			keepBoundsRunnable.run();
+			return;
+		}
+		
 		try {
-			SwingUtilities.invokeAndWait(new Runnable() {
-			
-				@Override
-				public void run() {
-					restorePreviousBounds(id, frame);
-					startKeepingBounds(id, frame);		
-				}
-			
-			});
+			SwingUtilities.invokeAndWait(keepBoundsRunnable);
 		} catch (InterruptedException e) {
 			Log.log(e);
 		} catch (InvocationTargetException e) {
 			Log.log(e);
 		}
+	}
+
+	private Runnable keepBoundsRunnable(final JFrame frame, final String id) {
+		return new Runnable() {
+		
+			@Override
+			public void run() {
+				restorePreviousBounds(id, frame);
+				startKeepingBounds(id, frame);		
+			}
+		
+		};
 	}
 
 	private void restorePreviousBounds(String id, JFrame frame) {

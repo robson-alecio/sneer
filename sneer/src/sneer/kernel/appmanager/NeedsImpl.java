@@ -20,9 +20,10 @@ public class NeedsImpl implements SovereignApplicationNeeds {
 	private final ListSignal<ContactAttributes> _contactAttributes;
 	private final Signal<String> _ownName;
 	private final TransferQueue _transfer;
+	private final Object _initialState;
 	
 
-	public NeedsImpl(User user, Channel channel, ListSignal<Contact> contacts, ListSignal<ContactAttributes> contactAttributes, Signal<String> ownName, Omnivore<Notification> briefUserNotifier, TransferQueue transfer) {
+	public NeedsImpl(User user, Channel channel, ListSignal<Contact> contacts, ListSignal<ContactAttributes> contactAttributes, Signal<String> ownName, Omnivore<Notification> briefUserNotifier, TransferQueue transfer, Object initialState) {
 		_user = user;
 		_channel = channel;
 		_contacts = contacts;
@@ -30,6 +31,7 @@ public class NeedsImpl implements SovereignApplicationNeeds {
 		_ownName = ownName;
 		_briefUserNotifier = briefUserNotifier;
 		_transfer = transfer;
+		_initialState = initialState;
 	}
 
 	@Override
@@ -72,8 +74,7 @@ public class NeedsImpl implements SovereignApplicationNeeds {
 
 	@Override
 	public Object prevalentState() {
-		// Implement Auto-generated method stub
-		throw new wheel.lang.exceptions.NotImplementedYet();
+		return _initialState;
 	}
 
 }

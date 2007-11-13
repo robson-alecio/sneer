@@ -11,6 +11,11 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.zip.ZipException;
 
+import org.prevayler.Prevayler;
+import org.prevayler.PrevaylerFactory;
+
+import prevayler.bubble.Bubble;
+
 import sneer.SneerDirectories;
 import sneer.kernel.api.SovereignApplication;
 import sneer.kernel.api.SovereignApplicationNeeds;
@@ -160,10 +165,29 @@ public class AppManager {
 		return classloader.loadClass(completeName);
 	}
 
-	public void startApp(SovereignApplication app){
-		SovereignApplicationNeeds needs = new NeedsImpl(_user, _communicator.openChannel(app.defaultName(), app.trafficPriority(), app.getClass().getClassLoader()), _me.contacts(), _contactAttributes, _me.name(), _briefUserNotifier, _transfer);
+	public void startApp(SovereignApplication app) {
+		Object state1 = app.initialState();
+		Object state2 = null;
+		try{
+			if (state1!=null){
+				Prevayler prevayler = prevaylerFor(app.defaultName(),state1);
+				state2 = Bubble.wrapStateMachine(prevayler);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			Log.log(e);
+		}
+		SovereignApplicationNeeds needs = new NeedsImpl(_user, _communicator.openChannel(app.defaultName(), app.trafficPriority(), app.getClass().getClassLoader()), _me.contacts(), _contactAttributes, _me.name(), _briefUserNotifier, _transfer, state2);
 		app.init(needs);
 		app.start();
+	}
+	
+	private Prevayler prevaylerFor(String appName, Object rootObject) throws Exception {
+		PrevaylerFactory factory = new PrevaylerFactory();
+		factory.configureTransactionFiltering(false);
+		factory.configurePrevalentSystem(rootObject);
+		factory.configurePrevalenceDirectory(new File(SneerDirectories.appPrevalenceDirectory(),appName).getAbsolutePath());
+		return factory.create();
 	}
 
 	private String packageApp(File sourceDirectory, File targetDirectory) {

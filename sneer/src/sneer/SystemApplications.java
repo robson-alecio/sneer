@@ -1,5 +1,11 @@
 package sneer;
 
+import java.io.File;
+
+import org.prevayler.Prevayler;
+import org.prevayler.PrevaylerFactory;
+
+import prevayler.bubble.Bubble;
 import sneer.kernel.api.SovereignApplication;
 import sneer.kernel.api.SovereignApplicationNeeds;
 import sneer.kernel.appmanager.AppManager;
@@ -9,6 +15,7 @@ import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.impl.Communicator;
 import sneer.kernel.pointofview.impl.Me;
 import sneer.kernel.transferqueue.TransferQueue;
+import wheel.io.Log;
 import wheel.io.ui.User;
 import wheel.io.ui.User.Notification;
 import wheel.lang.Omnivore;
@@ -64,10 +71,29 @@ public class SystemApplications {
 	}
 	
 	public void startApp(SovereignApplication app){
-		SovereignApplicationNeeds needs = new NeedsImpl(_user, _communicator.openChannel(app.defaultName(), app.trafficPriority(), app.getClass().getClassLoader()), _me.contacts(), _businessSource.output().contactAttributes(), _me.name(), _briefNotifier, _transfer);
-		app.init(needs);
-		app.start();
+		try{
+			Object state1 = app.initialState();
+			Object state2 = null;
+			if (app.initialState()!=null){
+				Prevayler prevayler = prevaylerFor(app.defaultName(),state1);
+				state2 = Bubble.wrapStateMachine(prevayler);
+			}
+			SovereignApplicationNeeds needs = new NeedsImpl(_user, _communicator.openChannel(app.defaultName(), app.trafficPriority(), app.getClass().getClassLoader()), _me.contacts(), _businessSource.output().contactAttributes(), _me.name(), _briefNotifier, _transfer,state2);
+			app.init(needs);
+			app.start();
+		}catch(Exception e){
+			e.printStackTrace();
+			Log.log(e);
+		}
 	}
 	
+	//Refactor: same code in AppManager
+	private Prevayler prevaylerFor(String appName, Object rootObject) throws Exception {
+		PrevaylerFactory factory = new PrevaylerFactory();
+		factory.configureTransactionFiltering(false);
+		factory.configurePrevalentSystem(rootObject);
+		factory.configurePrevalenceDirectory(new File(SneerDirectories.appPrevalenceDirectory(),appName).getAbsolutePath());
+		return factory.create();
+	}
 	
 }

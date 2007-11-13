@@ -22,6 +22,10 @@ public class SneerDirectories {
 		return new File(sneerDirectory(), "prevalence");
 	}
 	
+	public static File appPrevalenceDirectory() {
+		return new File(sneerDirectory(), "appPrevalence");
+	}
+	
 	public static File sneerDirectory() {
 		return new File(userHome(), ".sneer");
 	}

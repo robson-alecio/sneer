@@ -6,7 +6,7 @@
 	<classpathentry kind="src" path="apps/scribble"/>
 	<classpathentry kind="src" path="spikes"/>
 	<classpathentry kind="src" path="apps/addressbook"/>
-	<classpathentry kind="src" path="apps/frozen"/>
+	<classpathentry kind="src" path="apps/frozenbubble"/>
 	<classpathentry kind="lib" path="lib/prevayler-2.3.jar"/>
 	<classpathentry kind="lib" path="lib/xstream/xstream-1.2.2.jar"/>
 	<classpathentry kind="lib" path="lib/xstream/xpp3_min-1.1.3.4.O.jar"/>

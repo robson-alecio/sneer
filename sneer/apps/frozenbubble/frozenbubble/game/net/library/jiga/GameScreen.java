@@ -55,7 +55,8 @@ public abstract class GameScreen {
     @SuppressWarnings("unchecked")
 	private Vector removedSprites;
 
-    private GameScreen() {
+    @SuppressWarnings("unused")
+	private GameScreen() {
     }
 
     @SuppressWarnings("unchecked")

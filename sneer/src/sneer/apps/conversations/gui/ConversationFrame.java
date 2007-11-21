@@ -4,8 +4,11 @@ import static wheel.i18n.Language.translate;
 
 import java.awt.BorderLayout;
 import java.awt.Frame;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -26,9 +29,14 @@ import javax.swing.text.Element;
 import javax.swing.text.html.HTMLDocument;
 
 import sneer.apps.conversations.Message;
+import sneer.apps.conversations.business.AppPersistenceSource;
+import sneer.apps.conversations.business.ConversationsPersistenceSource;
+import sneer.apps.conversations.business.MessageInfo;
+import sneer.kernel.business.contacts.ContactId;
 import wheel.io.Log;
 import wheel.io.ui.User.Notification;
 import wheel.lang.Omnivore;
+import wheel.lang.Pair;
 import wheel.lang.Threads;
 import wheel.reactive.Signal;
 
@@ -37,13 +45,18 @@ public class ConversationFrame extends JFrame {
 	private static final String TYPING = "TyPiNg :)"; //Refactor :)
 	private static final String TYPING_PAUSED = "TyPiNg PaUsEd :)";
 	private static final String TYPING_ERASED = "TyPiNg ErAsEd :)";
+	private final AppPersistenceSource _persistence;
+	private final ContactId _contactId;
 
-	public ConversationFrame(Signal<String> otherGuysNick, final Signal<Message> messageInput, Omnivore<Message> messageOutput, Omnivore<Notification> briefUserNotifier){
+	public ConversationFrame(ContactId contactId, AppPersistenceSource persistence, Signal<String> otherGuysNick, final Signal<Message> messageInput, Omnivore<Message> messageOutput, Omnivore<Notification> briefUserNotifier){
+		_contactId = contactId;
+		_persistence = persistence;
 		_otherGuysNick = otherGuysNick;
 		_messageOutput = messageOutput;
 		_briefUserNotifier = briefUserNotifier;
 		
 		initComponents();
+		initBoundsKeeper();
 		setVisible(true);
 		
 		_otherGuysNick.addReceiver(new Omnivore<String>() { @Override public void consume(String nick) {
@@ -54,11 +67,48 @@ public class ConversationFrame extends JFrame {
 			receiveMessage(message);
 		}});
 		
+		recoverMessagesFromHistory();
+		
 		startIsTypingNotifier();
 		startChatDisplayer();
 	}
-
 	
+	public void initBoundsKeeper() {
+		Rectangle bounds = appPersistence().output().bounds().currentValue();
+		setLocation(bounds.x, bounds.y);
+		setSize(bounds.width,bounds.height);
+		addComponentListener(new ComponentAdapter() {
+			
+			@Override
+			public void componentResized(ComponentEvent e) {
+				boundsChanged();
+			}
+
+			private void boundsChanged() {
+				if (!ConversationFrame.this.isVisible())
+					return;
+				Rectangle frameBounds = ConversationFrame.this.getBounds();
+				if (appPersistence().output().bounds().currentValue().equals(frameBounds)) return;
+				_persistence.boundsSetter().consume(new Pair<ContactId, Rectangle>(_contactId, frameBounds));
+			}
+		
+			@Override
+			public void componentMoved(ComponentEvent e) {
+				boundsChanged();
+			}
+		
+		});
+	}
+
+	private ConversationsPersistenceSource appPersistence() {
+		return _persistence.output().persistenceFor(_contactId);
+	}
+
+	private void recoverMessagesFromHistory() {
+		for(sneer.apps.conversations.business.Message message:appPersistence().output().messages())
+			directDisplay(message.author().currentValue(), message.message().currentValue(), new Date(message.timestamp().currentValue()));
+	}
+
 	private final Omnivore<Notification> _briefUserNotifier;
 	private final Signal<String> _otherGuysNick;
 	private final Omnivore<Message> _messageOutput;
@@ -77,7 +127,7 @@ public class ConversationFrame extends JFrame {
 		Threads.startDaemon(new Runnable() { public void run() { 
 			while (true) {
 				String text = waitForNextChatToDisplay();
-				displayChat(text); 
+				displayChat(text,true); 
 			} 
 		}}); 
 		
@@ -91,12 +141,20 @@ public class ConversationFrame extends JFrame {
 		}
 	}
 
-	private void queueChatForDisplay(String sender, Message message) {
-		queueDaySeparatorIfNecessary();
-		
-		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
-		String entry = formatter.format(new Date()) + " <b>"+ sender + ":</b> " + message._text;  //FixUrgent: Use frozenDate()
+	private void queueChatForDisplay(String sender, String text, Date date) {
+		String entry = messageDisplay(sender, text, date);
 		queueChatForDisplay(entry);
+	}
+	
+	private void directDisplay(String sender, String text, Date date) {
+		displayChat(messageDisplay(sender, text, date),false); 
+	}
+
+	private String messageDisplay(String sender, String text, Date date) {
+		queueDaySeparatorIfNecessary();
+		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+		String entry = formatter.format(date) + " <b>"+ sender + ":</b> " + text;  //FixUrgent: Use frozenDate()
+		return entry;
 	}
 
 	private void queueDaySeparatorIfNecessary() {
@@ -176,7 +234,8 @@ public class ConversationFrame extends JFrame {
 			
 			_lastMessageSendingTime = System.currentTimeMillis();
 			_messageOutput.consume(message);
-			queueChatForDisplay(translate("Me"), message);
+			queueChatForDisplay(translate("Me"), message._text, new Date());
+			_persistence.archive().consume(new Pair<ContactId, MessageInfo>(_contactId, new MessageInfo(translate("Me"),message._text,new Long(new Date().getTime()))));
 		}};
 	}
 
@@ -217,7 +276,8 @@ public class ConversationFrame extends JFrame {
 	private void receiveMessage(Message message) {
 		if (typingMessageHandled(message)) return;
 		showNotificationIfNecessary(message);
-		queueChatForDisplay(nick(), message);
+		queueChatForDisplay(nick(), message._text, new Date());
+		_persistence.archive().consume(new Pair<ContactId, MessageInfo>(_contactId, new MessageInfo(nick(),message._text,new Long(new Date().getTime()))));
 	}
 
 	private void showNotificationIfNecessary(Message message) {
@@ -252,11 +312,12 @@ public class ConversationFrame extends JFrame {
 		}});
 	}
 
-	private void displayChatHtml(String chatHtml) {
+	private void displayChatHtml(String chatHtml, boolean delay) {
 		HTMLDocument document = (HTMLDocument)_chatText.getDocument();
 		Element ep = document.getElement("textInsideThisDiv");
 		try {
-			Threads.sleepWithoutInterruptions(300); //Refactor: Remove this line in the future and send a stream of messages to see if Swing still hangs (Klaus. July 2007 (jre1.6.0_01))
+			if (delay)
+				Threads.sleepWithoutInterruptions(300); //Refactor: Remove this line in the future and send a stream of messages to see if Swing still hangs (Klaus. July 2007 (jre1.6.0_01))
 			document.insertBeforeEnd(ep, chatHtml);
 		} catch (Exception ex) {
 			Log.log(ex);
@@ -264,11 +325,11 @@ public class ConversationFrame extends JFrame {
 		_chatText.setCaretPosition(document.getLength());
 	}
 
-	private void displayChat(String text) {
-		final String html = "<div><font face=\"Verdana\" size=\"3\">" + processEmoticons(text) + "</font></div>";
+	private void displayChat(String text, final boolean delay) {
+		final String html = buildHtmlLine(text);
 		try {
 			SwingUtilities.invokeAndWait(new Runnable() { @Override public void run() {
-				displayChatHtml(html);
+				displayChatHtml(html,delay);
 			}});
 		} catch (RuntimeException e) {
 			Log.log(e);
@@ -277,6 +338,10 @@ public class ConversationFrame extends JFrame {
 		} catch (InvocationTargetException e) {
 			Log.log(e);
 		}
+	}
+
+	private String buildHtmlLine(String text) {
+		return "<div><font face=\"Verdana\" size=\"3\">" + processEmoticons(text) + "</font></div>";
 	}
 
 	private static final long serialVersionUID = 1L;

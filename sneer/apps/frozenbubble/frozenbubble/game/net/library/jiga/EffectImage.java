@@ -46,7 +46,8 @@ public class EffectImage {
     int[] imageData;
     int imgWidth, imgHeight;
     
-    private EffectImage() {}
+    @SuppressWarnings("unused")
+	private EffectImage() {}
     
     /**
      * Defines an Image with no Alpha

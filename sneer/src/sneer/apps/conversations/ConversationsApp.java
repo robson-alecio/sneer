@@ -2,12 +2,15 @@ package sneer.apps.conversations;
 
 import static wheel.i18n.Language.translate;
 
+import java.awt.Rectangle;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import sneer.apps.conversations.business.AppPersistenceSource;
 import sneer.apps.conversations.gui.ConversationFrame;
+import sneer.kernel.api.SovereignApplicationNeeds;
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
@@ -16,6 +19,7 @@ import sneer.kernel.gui.contacts.ContactAction;
 import sneer.kernel.pointofview.Contact;
 import wheel.io.ui.User.Notification;
 import wheel.lang.Omnivore;
+import wheel.lang.Pair;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
 import wheel.reactive.impl.SourceImpl;
@@ -23,13 +27,15 @@ import wheel.reactive.lists.ListSignal;
 
 public class ConversationsApp {
 
-	public ConversationsApp(Channel channel, ListSignal<ContactAttributes> contactAttributes, Omnivore<Notification> briefUserNotifier) {
-		_channel = channel;
-		_contactAttributes = contactAttributes;
-		_briefUserNotifier = briefUserNotifier;
+	public ConversationsApp(SovereignApplicationNeeds config) {
+		_channel = config.channel();
+		_contactAttributes = config.contactAttributes();
+		_briefUserNotifier = config.briefUserNotifier();
 		_channel.input().addReceiver(messageReceiver());
+		_persistence = (AppPersistenceSource)config.prevalentState();
 	}
 
+	private AppPersistenceSource _persistence;
 	private final Channel _channel;
 	private final ListSignal<ContactAttributes> _contactAttributes;
 	private final Omnivore<Notification> _briefUserNotifier;
@@ -61,10 +67,16 @@ public class ConversationsApp {
 	}
 
 	private ConversationFrame createFrame(ContactId contactId) {
-		ConversationFrame result = new ConversationFrame(findContact(contactId).nick(), inputFrom(contactId), outputTo(contactId), _briefUserNotifier);
+		ConversationFrame result = new ConversationFrame(contactId, _persistence,findContact(contactId).nick(), inputFrom(contactId), outputTo(contactId), _briefUserNotifier);
 		_framesByContactId.put(contactId, result);
-		//_boundsKeeper.keepBoundsFor(result, ConversationFrame.class.getName() + "/" + contactId);
+		keepBounds(contactId, result);
 		return result;
+	}
+
+	private void keepBounds(ContactId contactId, ConversationFrame result) {
+		Rectangle bounds = _persistence.output().persistenceFor(contactId).output().bounds().currentValue();
+		if (!bounds.equals(result.getBounds()))
+			_persistence.boundsSetter().consume(new Pair<ContactId, Rectangle>(contactId,result.getBounds()));
 	}
 
 	private ContactAttributes findContact(ContactId id) {

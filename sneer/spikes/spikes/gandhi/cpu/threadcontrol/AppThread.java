@@ -36,22 +36,22 @@ public abstract class AppThread extends Thread {
 		long cpuTime = System.nanoTime();
 		long elapsedCpuTime = cpuTime - _lastCpuTime;
 
-		if (elapsedCpuTime > INTERVAL) { 
+		if (elapsedCpuTime > INTERVAL) { //check percent usage loop
 			long userTime = userTime();
 			long elapsedUserTime = (userTime - _lastUserTime);
 			_cpuUsagePercent = ((elapsedUserTime * 100.0) / elapsedCpuTime);
 			
 			updateAverageCounter();
 			
-			double cpuDiff = _cpuUsagePercentLimit - _cpuUsagePercent;
-			_throttleRate+=cpuDiff*SUB_INTERVAL;
+			double cpuDiff = _cpuUsagePercentLimit - _cpuUsagePercent; //uses positive and negative values
+			_throttleRate+=cpuDiff*SUB_INTERVAL; //rate equalizer response is proportional to difference, faster response for big diffs
 
-			_lastCpuTime = System.nanoTime();
+			_lastCpuTime = System.nanoTime(); 
 			_lastUserTime = userTime();
 
 		}
 		long elapsedThrottleInterval = cpuTime - _startThrottleInterval;
-		if (elapsedThrottleInterval > _throttleRate) {
+		if (elapsedThrottleInterval > _throttleRate) { //throttle loop
 			try {
 				Thread.sleep(THROTTLE_DELAY_IN_MILLIS);
 			} catch (InterruptedException e) {
@@ -61,7 +61,7 @@ public abstract class AppThread extends Thread {
 
 	}
 
-	private void updateAverageCounter() {
+	private void updateAverageCounter() { //tries to keep an average at every 5-10 samples
 		_cpuUsagePercentAverage+=_cpuUsagePercent;
 		_averageCounter++;
 		if (_averageCounter==10){
@@ -73,7 +73,7 @@ public abstract class AppThread extends Thread {
 	private double _cpuUsagePercentAverage;
 	private int _averageCounter;
 
-	public double cpuUsagePercentAverage() {
+	public double cpuUsagePercentAverage() { //cpuPercent is too unstable, getting an average makes it more usable for outside classes
 		if (_averageCounter==0) return 0;
 		return _cpuUsagePercentAverage/_averageCounter;
 	}

@@ -32,6 +32,9 @@ public class CpuTest {
 		public void run() {
 			while(true){
 				//do anything
+				@SuppressWarnings("unused")
+				double x=Math.random()*Math.random()/Math.random();
+				//do anything
 				throttle();
 			}
 		}

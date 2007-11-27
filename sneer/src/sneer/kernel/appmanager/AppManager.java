@@ -233,7 +233,12 @@ public class AppManager {
 		System.out.println(sneerJarLocation);
 		for (File source : sources) {
 			System.out.println("Compiling " + source.getName());
-			String[] parameters = { "-classpath", sneerJarLocation + File.pathSeparator + targetClassesDirectory.getAbsolutePath(), "-sourcepath", sourceDirectory.getAbsolutePath() , "-d", targetClassesDirectory.getAbsolutePath(), source.getAbsolutePath() };
+			String[] parameters = {
+					"-classpath", sneerJarLocation + File.pathSeparator + targetClassesDirectory.getAbsolutePath(),
+					"-sourcepath", sourceDirectory.getAbsolutePath(),
+					"-d", targetClassesDirectory.getAbsolutePath(),
+					"-encoding", "UTF-8",
+					source.getAbsolutePath() };
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			if (com.sun.tools.javac.Main.compile(parameters, new PrintWriter(out))!=0){
 				Log.log(out.toString());

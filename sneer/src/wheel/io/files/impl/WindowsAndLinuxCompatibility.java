@@ -15,6 +15,11 @@ public class WindowsAndLinuxCompatibility {
 		String makeSure = normalizePath(normalizedPath);
 		String[] paths = makeSure.split("/");
 		File parent = null;
+		
+		//XXX[sandro]: fix for windows
+		if(paths[0].endsWith(":"))
+			return new File(normalizedPath);
+		
 		for(String item:paths){
 			parent = normalizedFileInDirectory(parent, item);
 		}

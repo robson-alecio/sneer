@@ -1,6 +1,7 @@
 package sneer.kernel.business;
 
 import java.awt.Font;
+import java.io.Serializable;
 
 import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.business.contacts.ContactInfo;
@@ -10,7 +11,7 @@ import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.lang.Pair;
 
-public interface BusinessSource {
+public interface BusinessSource extends Serializable{
 
 	Business output();
 

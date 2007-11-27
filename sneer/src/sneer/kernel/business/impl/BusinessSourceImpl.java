@@ -35,6 +35,8 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 
 	private final class MyOutput implements Business {
 
+		private static final long serialVersionUID = 1L;
+
 		@Override
 		public ListSignal<ContactAttributes> contactAttributes() {
 			return _contacts.output();
@@ -208,4 +210,5 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 			throw new IllegalParameter(translate("There already is a contact with nickname: %1$s", newNick));
 	};
 
+	private static final long serialVersionUID = 1L;
 }

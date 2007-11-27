@@ -1,11 +1,13 @@
 package wheel.io.network;
 
+import java.io.Serializable;
+
 import wheel.lang.Consumer;
 import wheel.lang.IntegerConsumerBoundaries;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.SourceImpl;
 
-public class PortNumberSource {
+public class PortNumberSource implements Serializable{
 
 	public PortNumberSource(Integer initialValue) {
 		_delegate = new SourceImpl<Integer>(initialValue);

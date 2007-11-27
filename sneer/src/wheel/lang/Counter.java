@@ -1,6 +1,8 @@
 package wheel.lang;
 
-public class Counter {
+import java.io.Serializable;
+
+public class Counter implements Serializable{
 
 	private int _next = 0;
 
@@ -8,4 +10,5 @@ public class Counter {
 		return _next++;
 	};
 
+	private static final long serialVersionUID = 1L;
 }

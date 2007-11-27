@@ -2,6 +2,7 @@ package wheel.reactive.maps.impl;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import wheel.lang.Omnivore;
 import wheel.lang.Pair;
@@ -71,6 +72,18 @@ public class MapSourceImpl<K,V> implements MapSource<K,V> {
 			return true;
 		}
 	}
+	
+	public V get(K key) {
+		synchronized (_map) {
+			return _map.get(key);
+		}
+	}
+	
+	public Set<K> keys(){
+		synchronized (_map) {
+			return _map.keySet();
+		}
+	}
 
 	public MapSignal<K,V> output() {
 		return _output;
@@ -83,4 +96,5 @@ public class MapSourceImpl<K,V> implements MapSource<K,V> {
 		}};
 	}
 
+	private static final long serialVersionUID = 1L;
 }

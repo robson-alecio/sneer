@@ -12,7 +12,10 @@ import wheel.reactive.lists.ListValueChange;
 
 public class ListSourceImpl<VO> implements ListSource<VO> {
 	
+
 	private class MyOutput extends AbstractNotifier<ListValueChange> implements ListSignal<VO> {
+
+		private static final long serialVersionUID = 1L;
 
 		@Override
 		public VO currentGet(int index) {
@@ -58,6 +61,12 @@ public class ListSourceImpl<VO> implements ListSource<VO> {
 		}
 	}
 	
+	public VO get(int index){
+		synchronized (_list){
+			return _list.get(index);
+		}
+	}
+	
 	public boolean remove(VO element) {
 		synchronized (_list) {
 			int index = _list.indexOf(element);
@@ -100,4 +109,5 @@ public class ListSourceImpl<VO> implements ListSource<VO> {
 	}
 
 
+	private static final long serialVersionUID = 1L;
 }

@@ -26,7 +26,9 @@ public class WindowsAndLinuxCompatibility {
 		if (parent == null)
 			parent = new File("/");
 		File[] files = parent.listFiles();
-		for(File file:files){
+		if (files == null) files = new File[0];
+		
+		for (File file : files) {
 			if (normalizePath(file.getName()).equals(makeSure))
 				return file;
 		}

@@ -210,12 +210,15 @@ public class AppTools {
 	}
 	
 	public static String generateAppUID(File jarFile) throws Exception{
+		File tempDirectory = createTempDirectory("appuid");
 		MessageDigest digester = MessageDigest.getInstance("SHA-512", "SUN");
 		FileOutputStream out = new FileOutputStream(new File(jarFile.getParentFile(),jarFile.getName()+APP_UID_SUFFIX));
-		recursiveDigest(jarFile,digester);
+		unzip(jarFile, tempDirectory);
+		recursiveDigest(tempDirectory,digester);
 		String appUID = byteArrayToHexString(digester.digest());
 		out.write(appUID.getBytes());
 		out.close();
+		tempDirectory.delete();
 		return appUID;
 	}
 	
@@ -225,8 +228,10 @@ public class AppTools {
 			for(File child:file.listFiles())
 				recursiveDigest(child, digester);
 		else
-			if (file.getName().endsWith(".java"))
+			if (file.getName().endsWith(".java")){
 				digester.update(getBytesFromFile(file));
+				System.out.println("digesting: "+ file.getName());
+			}
 	}
 	
 	public static String readAppUID(File jarFile) throws Exception{

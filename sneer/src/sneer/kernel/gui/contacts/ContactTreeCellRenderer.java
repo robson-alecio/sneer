@@ -59,7 +59,8 @@ public class ContactTreeCellRenderer extends DefaultTreeCellRenderer{
 
 	private void renderMe(Party me, JPanel panel) {
 		panel.add(new JLabel(CROWN));
-		panel.add(new ReactiveLabel(signal(me.name().currentValue()),_font));
+		panel.add(new ReactiveLabel(me.name(),_font));
+		panel.add(new ReactiveLabel(signal(me.isOnlineOnMsn().currentValue() ? " MSN On!!!" : " MSN Off"),_font));
 	}
 
 	private void renderContact(Contact contact, JPanel panel) {
@@ -85,14 +86,15 @@ public class ContactTreeCellRenderer extends DefaultTreeCellRenderer{
 
 	private Signal<?>[] signalsToReceiveFromMe(Party me) {
 		return new Signal<?>[] {
-			me.name()
+			me.name(),
+			me.isOnlineOnMsn()
 		};
 	}
 
 	private Signal<?>[] signalsToReceiveFromContact(Contact contact) {
 		return new Signal<?>[] {
 			contact.party().isOnline(),
-			contact.party().publicKeyConfirmed(),
+			contact.party().isOnlineOnMsn(),
 			contact.nick(),
 			contact.party().name(),
 		};
@@ -105,7 +107,7 @@ public class ContactTreeCellRenderer extends DefaultTreeCellRenderer{
 	}
 
 	private ImageIcon stateIconFor(Party party) {
-		return party.publicKeyConfirmed().currentValue()
+		return party.isOnlineOnMsn().currentValue()
 			? CONFIRMED_ICON
 			: UNCONFIRMED_ICON;
 	}

@@ -25,12 +25,17 @@ public interface BusinessSource extends Serializable{
 	Omnivore<String> profileSetter();
 	
 	Consumer<Integer> sneerPortSetter();
+
+	Omnivore<String> msnAddressSetter();
 	
 	Consumer<ContactInfo> contactAdder();
 	Omnivore<ContactId> contactRemover();
 	Consumer<Pair<ContactId, String>> contactNickChanger();
+	Omnivore<Pair<ContactId, String>> contactMsnAddressChanger();
 	Omnivore<ContactPublicKeyInfo> contactPublicKeyUpdater();
 
 	@Deprecated
 	Omnivore<sneer.kernel.business.contacts.OnlineEvent> contactOnlineSetter();
+
+
 }

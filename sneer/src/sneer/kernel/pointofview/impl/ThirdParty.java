@@ -8,6 +8,7 @@ import sneer.kernel.pointofview.Party;
 import sneer.kernel.pointofview.PointOfViewPacket;
 import wheel.graphics.JpgImage;
 import wheel.lang.Omnivore;
+import wheel.lang.Pair;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
 import wheel.reactive.impl.SourceImpl;
@@ -17,16 +18,27 @@ import wheel.reactive.lists.impl.ListSourceImpl;
 
 public class ThirdParty implements Party {
 
-	public ThirdParty(ContactAttributes attributes, Signal<Boolean> isOnline, Channel channel) {
+	public ThirdParty(ContactAttributes attributes, Signal<Boolean> isOnline, Channel channel, Signal<Pair<String, Boolean>>isOnlineOnMsnEvents) {
 		_attributes = attributes;
 		_isOnline = isOnline;
 		_fakeContacts = createFakeContacts();
 		
 		channel.input().addReceiver(packetReceiver());
+		
+		isOnlineOnMsnEvents.addReceiver(isOnlineOnMsnEventReceiver());
+	}
+
+	private Omnivore<Pair<String, Boolean>> isOnlineOnMsnEventReceiver() {
+		return new Omnivore<Pair<String,Boolean>>(){ @Override public void consume(Pair<String, Boolean> event) {
+			if (event._a.equals(_attributes.msnAddress().currentValue())) //Optimize Receive only my own boolean signal. 
+				if (!_isOnlineOnMsn.isSameValue(event._b))
+					_isOnlineOnMsn.setter().consume(event._b);
+		}};
 	}
 
 	private final ContactAttributes _attributes;
 	private final Signal<Boolean> _isOnline;
+	private final SourceImpl<Boolean> _isOnlineOnMsn = new SourceImpl<Boolean>(false);
 	private final ListSource<Contact> _fakeContacts;
 	private final Source<String> _name = new SourceImpl<String>("[Implement Name Cache]"); //Implement
 	private final Source<String> _thoughtOfTheDay = new SourceImpl<String>("");
@@ -118,5 +130,17 @@ public class ThirdParty implements Party {
 	public Signal<String> thoughtOfTheDay() {
 		return _thoughtOfTheDay.output();
 	}
-	
+
+	@Override
+	public Signal<String> msnAddress() {
+		return _attributes.msnAddress();
+	}
+
+	@Override
+	public Signal<Boolean> isOnlineOnMsn() {
+		return _isOnlineOnMsn.output();
+	}
+
+
+
 }

@@ -13,7 +13,9 @@ import wheel.io.network.OldNetwork;
 import wheel.io.ui.User;
 import wheel.io.ui.impl.UserAdapter;
 import wheel.lang.Omnivore;
+import wheel.lang.Pair;
 import wheel.lang.exceptions.IllegalParameter;
+import wheel.reactive.impl.SourceImpl;
 
 class PartySimulatorImpl implements PartySimulator {
 
@@ -31,7 +33,7 @@ class PartySimulatorImpl implements PartySimulator {
 		
 		Communicator communicator = new Communicator(user(), network, _businessSource);
 		Channel channel = communicator.openChannel("Simulator Channel", 1);
-		_pointOfView = new Me(_businessSource.output(), communicator.operator(), channel);
+		_pointOfView = new Me(_businessSource.output(), communicator.operator(), channel, new SourceImpl<Boolean>(false).output(), new SourceImpl<Pair<String, Boolean>>(null).output());
 
 		nameSetter().consume(name);
 	}
@@ -64,7 +66,7 @@ class PartySimulatorImpl implements PartySimulator {
 
 	void connectTo(String host, Integer port, String nick) {
 		try {
-			_businessSource.contactAdder().consume(new ContactInfo(nick, host, port, "",null,null,null));
+			_businessSource.contactAdder().consume(new ContactInfo(nick, host, port, ""));
 		} catch (IllegalParameter e) {
 			throw new IllegalArgumentException(e);
 		}

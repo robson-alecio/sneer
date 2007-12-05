@@ -12,15 +12,15 @@ import wheel.io.ui.User;
 
 public class ShowContactsScreenAction implements Action {
 
-	private final Party _I;
+	private final Party _me;
 	private final User _user;
 	private ContactsScreen _contactsScreen;
 	private final JFrameBoundsKeeper _boundsKeeper;
 	private final ActionFactory _actionFactory;
 	private final BusinessSource _businnessSource;
 
-	public ShowContactsScreenAction(User user, Party I, ActionFactory actionFactory, BusinessSource businnessSource, JFrameBoundsKeeper boundsKeeper){
-		_I = I;
+	public ShowContactsScreenAction(User user, Party me, ActionFactory actionFactory, BusinessSource businnessSource, JFrameBoundsKeeper boundsKeeper){
+		_me = me;
 		_actionFactory = actionFactory;
 		_businnessSource = businnessSource;
 		_user = user;
@@ -33,7 +33,7 @@ public class ShowContactsScreenAction implements Action {
 
 	public synchronized void run() {
 		if (_contactsScreen == null) {
-			_contactsScreen = new ContactsScreen(_user, _I, _actionFactory, _businnessSource);
+			_contactsScreen = new ContactsScreen(_user, _me, _actionFactory, _businnessSource);
 			_boundsKeeper.keepBoundsFor(_contactsScreen, ContactsScreen.class.getName());
 		} 
 		

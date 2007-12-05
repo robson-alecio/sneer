@@ -20,6 +20,8 @@ public interface Business extends Serializable{
 	Signal<String> profile();
 	
 	Signal<Integer> sneerPort();
+	
+	Signal<String> msnAddress();
 
 	ListSignal<ContactAttributes> contactAttributes();
 

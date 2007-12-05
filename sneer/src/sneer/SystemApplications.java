@@ -19,6 +19,8 @@ import wheel.io.Log;
 import wheel.io.ui.User;
 import wheel.io.ui.User.Notification;
 import wheel.lang.Omnivore;
+import wheel.lang.Pair;
+import wheel.reactive.Signal;
 
 public class SystemApplications {
 
@@ -37,15 +39,15 @@ public class SystemApplications {
 	public final sneer.apps.filetransfer.Application _fileTransfer;
 	public final sneer.apps.talk.Application _talk;
 	public final sneer.kernel.appmanager.metoo.Application _meToo;
-
-	public SystemApplications(User user, Communicator communicator, BusinessSource businessSource, Omnivore<Notification> briefNotifier){
+	
+	public SystemApplications(User user, Communicator communicator, BusinessSource businessSource, Omnivore<Notification> briefNotifier, Signal<Boolean> isOnlineOnMsn, Signal<Pair<String, Boolean>> contactOnlineOnMsnEvents){
 		_user = user;
 		_communicator = communicator;
 		_businessSource = businessSource;
 		_briefNotifier = briefNotifier;
 		
 		Channel channel = _communicator.openChannel("Point of View", 1);
-		_me = new Me(_businessSource.output(), _communicator.operator(), channel);
+		_me = new Me(_businessSource.output(), _communicator.operator(), channel, isOnlineOnMsn, contactOnlineOnMsnEvents);
 		Channel transferChannel = _communicator.openChannel("TransferQueue", 2);
 		_transfer = new TransferQueue(transferChannel);
 		_appManager = new AppManager(_user,_communicator, _me, _businessSource.output().contactAttributes(), _briefNotifier, _transfer);

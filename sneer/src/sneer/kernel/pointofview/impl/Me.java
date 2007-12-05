@@ -15,6 +15,7 @@ import sneer.kernel.pointofview.PointOfViewPacket;
 import wheel.graphics.JpgImage;
 import wheel.lang.Functor;
 import wheel.lang.Omnivore;
+import wheel.lang.Pair;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.SourceImpl;
 import wheel.reactive.lists.Collector;
@@ -23,17 +24,20 @@ import wheel.reactive.lists.impl.VisitingListReceiver;
 
 public class Me implements Party {
 
-	public Me(Business business, Operator operator, Channel channel) {
+	public Me(Business business, Operator operator, Channel channel, Signal<Boolean> isOnlineOnMsn, Signal<Pair<String, Boolean>> isContactOnlineOnMsnEvents) {
 		_business = business;
 		_operator = operator;
 		_channel = channel;
-		
+		_isOnlineOnMsn = isOnlineOnMsn;
+		_isContactOnlineOnMsnEvents = isContactOnlineOnMsnEvents;
+
 		_contacts = createContactsListSignal();
 		
 		_business.ownName().addReceiver(stringChangedBroadcaster());
 		_business.thoughtOfTheDay().addReceiver(stringChangedBroadcaster());
 		_business.picture().addReceiver(pictureChangedBroadcaster());
 		_business.profile().addReceiver(stringChangedBroadcaster());
+		
 		
 		for (Contact contact : _contacts) 
 			contact.party().isOnline().addReceiver(sendCurrentStatus(contact)); 
@@ -93,6 +97,8 @@ public class Me implements Party {
 	private final ListSignal<Contact> _contacts;
 	private final Operator _operator;
 	private final Channel _channel;
+	private final Signal<Boolean> _isOnlineOnMsn;
+	private final Signal<Pair<String, Boolean>> _isContactOnlineOnMsnEvents;
 
 	
 	private Omnivore<String> stringChangedBroadcaster() { //this will change to individual changes in the future
@@ -120,7 +126,7 @@ public class Me implements Party {
 	
 	private Functor<ContactAttributes, Contact> contactCreator() {
 		return new Functor<ContactAttributes, Contact>() { @Override 	public Contact evaluate(ContactAttributes attributes) {
-			return new ImmediateContact(attributes, _operator.connectMeWith(attributes.id()).isOnline(), _channel);
+			return new ImmediateContact(attributes, _operator.connectMeWith(attributes.id()).isOnline(), _channel, _isContactOnlineOnMsnEvents);
 		}};
 	}
 
@@ -185,5 +191,14 @@ public class Me implements Party {
 		return _business.thoughtOfTheDay();
 	}
 
+	@Override
+	public Signal<String> msnAddress() {
+		return _business.msnAddress();
+	}
+
+	@Override
+	public Signal<Boolean> isOnlineOnMsn() {
+		return _isOnlineOnMsn;
+	}
 
 }

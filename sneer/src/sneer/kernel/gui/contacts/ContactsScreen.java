@@ -41,7 +41,7 @@ class ContactsScreen extends JFrame {
 		_me = me;
 		_actionFactory = actionFactory;
 		_businessSource = businessSource;
-
+		
 		initComponents();
 		selectParty();
 		_businessSource.output().font().addReceiver(fontReceiver());
@@ -111,7 +111,7 @@ class ContactsScreen extends JFrame {
 		SwingUtilities.invokeLater(new Runnable(){
 			public void run() {
 				_lateral.removeAll();
-				_lateral.add(new LateralRootInfo(_user, _businessSource));
+				_lateral.add(new MePanel(_user, _businessSource));
 				_lateral.revalidate();
 				_lateral.repaint();
 			}
@@ -122,7 +122,7 @@ class ContactsScreen extends JFrame {
 		SwingUtilities.invokeLater(new Runnable(){
 			public void run() {
 				_lateral.removeAll();
-				_lateral.add(new LateralContactInfo(_user, node.contact(),_businessSource.contactNickChanger(),_businessSource.output().font()));
+				_lateral.add(new ContactPanel(_user, node.contact(),_businessSource.contactNickChanger(),_businessSource.contactMsnAddressChanger(),_businessSource.output().font()));
 				_lateral.revalidate();
 				_lateral.repaint();
 			}

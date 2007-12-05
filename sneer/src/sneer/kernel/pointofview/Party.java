@@ -22,4 +22,7 @@ public interface Party {
 	Signal<Integer> port();
 	Signal<Boolean> isOnline();
 
+	Signal<String> msnAddress();
+	Signal<Boolean> isOnlineOnMsn();
+
 }

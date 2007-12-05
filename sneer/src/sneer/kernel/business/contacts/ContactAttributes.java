@@ -10,6 +10,8 @@ public interface ContactAttributes {
 	
 	Signal<String> publicKey();
 	Signal<Boolean> publicKeyConfirmed();
+	
+	Signal<String> msnAddress();
 
 	ContactId id();
 }

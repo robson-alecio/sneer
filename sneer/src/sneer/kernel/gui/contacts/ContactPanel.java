@@ -22,18 +22,20 @@ import wheel.lang.Pair;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 
-public class LateralContactInfo extends JPanel{
+public class ContactPanel extends JPanel{
 
 	private final Consumer<Pair<ContactId, String>> _nickChanger;
+	private final Omnivore<Pair<ContactId, String>> _msnAddressChanger;
 	private final Contact _contact;
 	private final User _user;
 	private final Signal<Font> _font;
 
-	public LateralContactInfo( User user, Contact contact, Consumer<Pair<ContactId, String>> nickChanger, Signal<Font> font){
+	public ContactPanel( User user, Contact contact, Consumer<Pair<ContactId, String>> nickChanger, Omnivore<Pair<ContactId, String>> msnAddressChanger, Signal<Font> font){
 		setLayout(new BorderLayout());
 		_user = user;
 		_contact = contact;
 		_nickChanger = nickChanger;
+		_msnAddressChanger = msnAddressChanger;
 		_font = font;
 		add(contentPanel(),BorderLayout.NORTH);
 		add(new JPanel(),BorderLayout.CENTER);
@@ -54,6 +56,8 @@ public class LateralContactInfo extends JPanel{
 		content.add(new LabeledPanel(translate("Profile"), new ReactiveMemoField(_contact.party().profile(), null, _font,4),  _font));
 		content.add(new LabeledPanel(translate("Host"), new ReactiveTextField(_contact.party().host(), null, _font),  _font));
 		content.add(new LabeledPanel(translate("Port"), new ReactiveIntegerField(_contact.party().port(), null, _font),  _font));
+		content.add(new LabeledPanel(translate("MSN Address"), new ReactiveTextField(_contact.party().msnAddress(), msnAddressChanger(), _font), _font));
+
 		
 		return content;
 	}
@@ -67,6 +71,12 @@ public class LateralContactInfo extends JPanel{
 				}
 			}
 		};
+	}
+
+	private Omnivore<String> msnAddressChanger() {
+		return new Omnivore<String>(){ public void consume(String newMsnAddress) {
+			_msnAddressChanger.consume(new Pair<ContactId, String>(_contact.id(), newMsnAddress));
+		}};
 	}
 	
 	private static final long serialVersionUID = 1L;

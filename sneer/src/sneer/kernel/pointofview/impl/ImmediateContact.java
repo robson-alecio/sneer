@@ -5,6 +5,7 @@ import sneer.kernel.business.contacts.ContactId;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.pointofview.Contact;
 import sneer.kernel.pointofview.Party;
+import wheel.lang.Pair;
 import wheel.reactive.Signal;
 
 public class ImmediateContact implements Contact {
@@ -13,10 +14,10 @@ public class ImmediateContact implements Contact {
 	private final Signal<String> _nick;
 	private final Party _party;
 
-	public ImmediateContact(ContactAttributes attributes, Signal<Boolean> isOnline, Channel channel) {
+	public ImmediateContact(ContactAttributes attributes, Signal<Boolean> isOnline, Channel channel, Signal<Pair<String, Boolean>> isOnlineOnMsnEvents) {
 		_id = attributes.id();
 		_nick = attributes.nick();
-		_party = new ThirdParty(attributes, isOnline, channel);
+		_party = new ThirdParty(attributes, isOnline, channel, isOnlineOnMsnEvents);
 	}
 
 	@Override

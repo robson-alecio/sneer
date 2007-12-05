@@ -82,6 +82,11 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 			return _profile.output();
 		}
 
+		@Override
+		public Signal<String> msnAddress() {
+			return _msnAddress.output();
+		}
+
 	}
 
 	private Source<String> _ownName = new SourceImpl<String>("");
@@ -95,6 +100,8 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 
 	private final PortNumberSource _sneerPortNumber = new PortNumberSource(0);
 
+	private final Source<String> _msnAddress = new SourceImpl<String>("");
+	
 	private final ListSource<ContactAttributesSource> _contactSources = new ListSourceImpl<ContactAttributesSource>();
 	private final ListSource<ContactAttributes> _contacts = new ListSourceImpl<ContactAttributes>(); 	//Refactor: use a reactive "ListCollector" instead of keeping this redundant list.
 	private final Counter _contactIdSource = new Counter();
@@ -143,7 +150,7 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 		return new Consumer<ContactInfo>() { @Override public void consume(ContactInfo info) throws IllegalParameter {
 			checkDuplicateNick(info._nick);
 
-			ContactAttributesSource contact = new ContactAttributesSourceImpl(info._nick, info._host, info._port, info._publicKey, _contactIdSource.next(),info._thoughtOfTheDay,info._picture,info._profile);
+			ContactAttributesSource contact = new ContactAttributesSourceImpl(info._nick, info._host, info._port, info._publicKey, _contactIdSource.next());
 			_contactSources.add(contact);
 			_contacts.add(contact.output());
 		}};
@@ -158,6 +165,11 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 	@Override
 	public Business output() {
 		return _output;
+	}
+
+	@Override
+	public Omnivore<String> msnAddressSetter() {
+		return _msnAddress.setter();
 	}
 
 	@Override
@@ -205,10 +217,25 @@ public class BusinessSourceImpl implements BusinessSource  { //Refactor: Create 
 
 	}
 
+	@Override
+	public Omnivore<Pair<ContactId, String>> contactMsnAddressChanger() {
+		return new Omnivore<Pair<ContactId,String>>() { @Override public void consume(Pair<ContactId, String> addressChange) {
+			ContactId contactId = addressChange._a;
+			String newMsnAddress = addressChange._b;
+			findContactSource(contactId).msnAddressSetter().consume(newMsnAddress);	
+		}};
+
+	}
+
 	private void checkDuplicateNick(String newNick) throws IllegalParameter {
 		if (findContactSource(newNick) != null)
 			throw new IllegalParameter(translate("There already is a contact with nickname: %1$s", newNick));
 	};
 
 	private static final long serialVersionUID = 1L;
+
+
+
+
+
 }

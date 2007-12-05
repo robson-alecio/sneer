@@ -42,7 +42,7 @@ public class Gui {
 		_user = user;
 		_systemApplications = systemApplications;
 		_businessSource = businessSource;
-		_actionFactory = actionFactory;;
+		_actionFactory = actionFactory;
 		
 		URL icon = Gui.class.getResource("/sneer/kernel/gui/traymenu/yourIconGoesHere.png");
 		_trayIcon = new TrayIconImpl(icon, _user.catcher());
@@ -50,6 +50,7 @@ public class Gui {
 		_jframeBoundsKeeper = jFrameBoundsKeeper(); 
 		tryToRun();
 		_systemApplications._appManager.publishedApps().output().addListReceiver(appListChangedReceiver());
+		
 	}
 
 	final User _user;

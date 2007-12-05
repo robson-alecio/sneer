@@ -17,6 +17,9 @@
 	<classpathentry kind="lib" path="lib_for_tests/Filters.jar"/>
 	<classpathentry kind="lib" path="lib_for_tests/junit-3.8.1.jar"/>
 	<classpathentry kind="lib" path="lib/talk.jar"/>
+	<classpathentry kind="lib" path="lib/cindy.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/jml-1.0b2.jar" sourcepath="/jml"/>
 	<classpathentry kind="src" path="src_old"/>
 	<classpathentry kind="lib" path="lib/compiler-7-ea-b17-02_aug_2007.jar"/>
 	<classpathentry kind="lib" path="lib/jl1.0.jar" sourcepath="C:/workspace/JLayer1.0/src"/>

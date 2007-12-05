@@ -13,6 +13,7 @@ import sneer.kernel.appmanager.SovereignApplicationUID;
 import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.impl.BusinessFactory;
 import sneer.kernel.communication.impl.Communicator;
+import sneer.kernel.communication.msn.impl.MsnCommunicator;
 import sneer.kernel.gui.Gui;
 import sneer.kernel.gui.contacts.ActionFactory;
 import wheel.i18n.Language;
@@ -22,7 +23,9 @@ import wheel.io.ui.User;
 import wheel.io.ui.User.Notification;
 import wheel.io.ui.impl.JOptionPaneUser;
 import wheel.lang.Omnivore;
+import wheel.lang.Pair;
 import wheel.lang.Threads;
+import wheel.reactive.impl.SourceImpl;
 
 public class Sneer {
 
@@ -45,6 +48,7 @@ public class Sneer {
 	private User _user;
 	private BusinessSource _businessSource;
 	private Communicator _communicator;
+	private MsnCommunicator _msnCommunicator;
 	private Gui _gui;
 	private ActionFactory _actionFactory;
 	private SystemApplications _systemApplications;
@@ -64,8 +68,10 @@ public class Sneer {
 		try{Thread.sleep(2000);}catch(InterruptedException ie){}
 		
 		_communicator = new Communicator(_user, new OldNetworkImpl(), _businessSource);
+		SourceImpl<Pair<String, Boolean>> contactOnlineOnMsnEvents = new SourceImpl<Pair<String, Boolean>>(null);
+		_msnCommunicator = new MsnCommunicator(_user, _businessSource.output().msnAddress(), contactOnlineOnMsnEvents.setter());
 		
-		_systemApplications = new SystemApplications(_user, _communicator, _businessSource, briefNotifier());
+		_systemApplications = new SystemApplications(_user, _communicator, _businessSource, briefNotifier(), _msnCommunicator.isOnline(), contactOnlineOnMsnEvents.output());
 		
 		System.out.println("Checking existing apps:");
 		

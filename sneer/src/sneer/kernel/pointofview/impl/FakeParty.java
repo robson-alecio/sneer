@@ -155,5 +155,14 @@ public class FakeParty implements Party {
 		return _thoughtOfTheDay.output();
 	}
 
+	@Override
+	public Signal<String> msnAddress() {
+		return new SourceImpl<String>("example@hotmail.com").output();
+	}
+
+	@Override
+	public Signal<Boolean> isOnlineOnMsn() {
+		return new SourceImpl<Boolean>(false).output();
+	}
 
 }

@@ -84,6 +84,8 @@ public class MsnCommunicator {
 	}
 
 	private void connectTo(String newAddress) {
+		if (newAddress == null || newAddress.isEmpty()) return;
+			
 		String password = null;
 		try {
 			password = _user.answer("Password for MSN address " + newAddress);

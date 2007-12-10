@@ -3,13 +3,10 @@ package sneer.kernel.business;
 import java.awt.Font;
 import java.io.Serializable;
 
-import sneer.kernel.business.contacts.ContactId;
-import sneer.kernel.business.contacts.ContactInfo;
-import sneer.kernel.business.contacts.ContactPublicKeyInfo;
+import sneer.kernel.business.contacts.ContactManager;
 import wheel.graphics.JpgImage;
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
-import wheel.lang.Pair;
 
 public interface BusinessSource extends Serializable{
 
@@ -27,12 +24,8 @@ public interface BusinessSource extends Serializable{
 	Consumer<Integer> sneerPortSetter();
 
 	Omnivore<String> msnAddressSetter();
-	
-	Consumer<ContactInfo> contactAdder();
-	Omnivore<ContactId> contactRemover();
-	Consumer<Pair<ContactId, String>> contactNickChanger();
-	Omnivore<Pair<ContactId, String>> contactMsnAddressChanger();
-	Omnivore<ContactPublicKeyInfo> contactPublicKeyUpdater();
+
+	ContactManager contactManager();
 
 	@Deprecated
 	Omnivore<sneer.kernel.business.contacts.OnlineEvent> contactOnlineSetter();

@@ -103,7 +103,7 @@ public class Communicator {
 			
 			if (!contactsPK.isEmpty()) notifyUserOfPKMismatch(nick);
 			
-			_businessSource.contactPublicKeyUpdater().consume(new ContactPublicKeyInfo(nick, remotePK));
+			_businessSource.contactManager().contactPublicKeyUpdater().consume(new ContactPublicKeyInfo(nick, remotePK));
 		} };
 
 	}
@@ -248,7 +248,7 @@ public class Communicator {
 			_user.acknowledgeNotification(translate("There already is another contact with this nickname:\n\n%1$s",nick), translate("Choose Another..."));
 		}
 		
-		_businessSource.contactPublicKeyUpdater().consume(new ContactPublicKeyInfo(nick, publicKey)); //Refactor: Use contactId instead of nick;
+		_businessSource.contactManager().contactPublicKeyUpdater().consume(new ContactPublicKeyInfo(nick, publicKey)); //Refactor: Use contactId instead of nick;
 		
 		return existing;
 	}
@@ -256,7 +256,7 @@ public class Communicator {
 
 	private ContactAttributes createContact(String publicKey, String nick) throws CancelledByUser {
 		try {
-			_businessSource.contactAdder().consume(new ContactInfo(nick, "", 0, publicKey)); //Implement: get actual host addresses from contact.
+			_businessSource.contactManager().contactAdder().consume(new ContactInfo(nick, "", 0, publicKey)); //Implement: get actual host addresses from contact.
 			return findContactGivenNick(nick);
 		} catch (IllegalParameter e) {
 			_user.acknowledge(e);

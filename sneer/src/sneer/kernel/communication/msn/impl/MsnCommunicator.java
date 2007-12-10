@@ -5,7 +5,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import junit.framework.Test;
-import net.sf.jml.Email;
 import net.sf.jml.MsnContact;
 import net.sf.jml.MsnMessenger;
 import net.sf.jml.MsnSwitchboard;
@@ -38,11 +37,8 @@ public class MsnCommunicator {
 			Pair<String, Boolean> change = new Pair<String, Boolean>(contact.getEmail().getEmailAddress(), online);
 			_contactStatusSetter.consume(change);
 			
-			
-			
-			if (online)
-				ignored.sendText(Email.parseStr(contact.getEmail().getEmailAddress()), "Ôp");
-//			ignored.sendText(new Email(contact.getEmail().getEmailAddress()), "Ôp");
+//			if (online)
+//				ignored.sendText(Email.parseStr(contact.getEmail().getEmailAddress()), "Ôp");
 	}
 
 	}
@@ -120,8 +116,8 @@ public class MsnCommunicator {
 					return;
 				}
 				
-				arg0.sendText(reply);
-				
+				//arg0.sendText(reply);
+				reply.isEmpty(); //Just to eliminate unused warning.
 			}
 		});
 

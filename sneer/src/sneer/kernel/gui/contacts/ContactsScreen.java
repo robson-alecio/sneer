@@ -40,7 +40,7 @@ class ContactsScreen extends JFrame {
 		_user = user;
 		_me = me;
 		_actionFactory = actionFactory;
-		_businessSource = businessSource;
+		_businessSource = businessSource; //Refactor Receive ContactManager and font instead of BusinessSource.
 		
 		initComponents();
 		selectParty();
@@ -122,7 +122,7 @@ class ContactsScreen extends JFrame {
 		SwingUtilities.invokeLater(new Runnable(){
 			public void run() {
 				_lateral.removeAll();
-				_lateral.add(new ContactPanel(_user, node.contact(),_businessSource.contactNickChanger(),_businessSource.contactMsnAddressChanger(),_businessSource.output().font()));
+				_lateral.add(new ContactPanel(_user, node.contact(),_businessSource.contactManager().contactNickChanger(),_businessSource.contactManager().contactMsnAddressChanger(),_businessSource.output().font()));
 				_lateral.revalidate();
 				_lateral.repaint();
 			}
@@ -133,7 +133,7 @@ class ContactsScreen extends JFrame {
 	private JPopupMenu getFriendPopUpMenu(final ContactNode node) {
 		final JPopupMenu result = new JPopupMenu();
 		for (ContactAction action : _actionFactory.contactActions()) addToContactMenu(result, action, node);
-		addToContactMenu(result, new ContactRemovalAction(_businessSource.contactRemover()), node);
+		addToContactMenu(result, new ContactRemovalAction(_businessSource.contactManager().contactRemover()), node);
 		return result;
 	}
 
@@ -154,7 +154,7 @@ class ContactsScreen extends JFrame {
 
 			public void actionPerformed(ActionEvent ignored) {
 				try {
-					new NewContactAddition(_user, _businessSource.contactAdder());
+					new NewContactAddition(_user, _businessSource.contactManager().contactAdder());
 				} catch (CancelledByUser cbu) {
 					//Fair enough.
 				}

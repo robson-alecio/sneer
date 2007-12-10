@@ -66,7 +66,7 @@ class PartySimulatorImpl implements PartySimulator {
 
 	void connectTo(String host, Integer port, String nick) {
 		try {
-			_businessSource.contactAdder().consume(new ContactInfo(nick, host, port, ""));
+			_businessSource.contactManager().contactAdder().consume(new ContactInfo(nick, host, port, ""));
 		} catch (IllegalParameter e) {
 			throw new IllegalArgumentException(e);
 		}

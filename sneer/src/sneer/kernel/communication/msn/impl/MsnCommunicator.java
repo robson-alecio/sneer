@@ -4,7 +4,6 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import junit.framework.Test;
 import net.sf.jml.MsnContact;
 import net.sf.jml.MsnMessenger;
 import net.sf.jml.MsnSwitchboard;
@@ -93,8 +92,8 @@ public class MsnCommunicator {
 		MsnMessenger messenger = MsnMessengerFactory.createMsnMessenger(newAddress, password);
 
 		messenger.addContactListListener(new MyContactListListener());
-		messenger.addMessageListener((MsnMessageListener) Proxy.newProxyInstance(Test.class.getClassLoader(), new Class[]{MsnMessageListener.class}, new MyHandler("---------message")));
-		messenger.addSwitchboardListener((MsnSwitchboardListener) Proxy.newProxyInstance(Test.class.getClassLoader(), new Class[]{MsnSwitchboardListener.class}, new MyHandler("---------switchboard")));
+		messenger.addMessageListener((MsnMessageListener) Proxy.newProxyInstance(MsnCommunicator.class.getClassLoader(), new Class[]{MsnMessageListener.class}, new MyHandler("---------message")));
+		messenger.addSwitchboardListener((MsnSwitchboardListener) Proxy.newProxyInstance(MsnCommunicator.class.getClassLoader(), new Class[]{MsnSwitchboardListener.class}, new MyHandler("---------switchboard")));
 		messenger.addMessengerListener(new MyMessengerListener());
 		
 		messenger.addMessageListener(new MsnMessageAdapter() {

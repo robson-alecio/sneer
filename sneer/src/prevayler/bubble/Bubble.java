@@ -14,9 +14,10 @@ import wheel.lang.Omnivore;
 
 public class Bubble {
 
+	@SuppressWarnings("unchecked")
 	public static <STATE_MACHINE> STATE_MACHINE wrapStateMachine(Prevayler prevayler) {
 		Object stateMachine = prevayler.prevalentSystem();
-		return wrap(stateMachine, prevayler, new ArrayList<String>());
+		return (STATE_MACHINE)wrap(stateMachine, prevayler, new ArrayList<String>());  //Refactor Remove this cast and use Casts.uncheckedCast() instead, when the Sun compiler can handle it (bug fixed in JDK7). Remove the @SuppressWarnings for this method.
 	}
 
 	@SuppressWarnings("unchecked")

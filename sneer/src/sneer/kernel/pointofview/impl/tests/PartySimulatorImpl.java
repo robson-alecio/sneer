@@ -31,7 +31,7 @@ class PartySimulatorImpl implements PartySimulator {
 			throw new IllegalArgumentException(e);
 		}
 		
-		Communicator communicator = new Communicator(user(), network, _businessSource);
+		Communicator communicator = new Communicator(user(), network, _businessSource.output(), _businessSource.contactManager());
 		Channel channel = communicator.openChannel("Simulator Channel", 1);
 		_pointOfView = new Me(_businessSource.output(), communicator.operator(), channel, new SourceImpl<Boolean>(false).output(), new SourceImpl<Pair<String, Boolean>>(null).output());
 

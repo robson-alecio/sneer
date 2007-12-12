@@ -19,12 +19,11 @@ import static wheel.i18n.Language.translate;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import sneer.kernel.business.Business;
-import sneer.kernel.business.BusinessSource;
 import sneer.kernel.business.contacts.ContactAttributes;
 import sneer.kernel.business.contacts.ContactInfo;
+import sneer.kernel.business.contacts.ContactManager;
 import sneer.kernel.business.contacts.ContactPublicKeyInfo;
 import sneer.kernel.communication.Channel;
 import sneer.kernel.communication.Operator;
@@ -41,17 +40,20 @@ import wheel.reactive.Signal;
 
 public class Communicator {
 
-	public Communicator(User user, OldNetwork network, BusinessSource businessSource) {
+	public Communicator(User user, OldNetwork network, Business business, ContactManager contactManager) {
 		_user = user;
-		_businessSource = businessSource;
-		Business business = businessSource.output();
-		
-		prepareBusiness();
-		
-		_spider = new Spider(network, business.contactAttributes(), outgoingConnectionValidator(), myObjectReceiver());
-		new SocketAccepter(user, network, business.sneerPort(), mySocketServer());
+		_business = business;
+		_contactManager = contactManager;
+		_spider = new Spider(network, _business.contactAttributes(), outgoingConnectionValidator(), myObjectReceiver());
+		new SocketAccepter(user, network, _business.sneerPort(), mySocketServer());
 	}
 
+	private final ContactManager _contactManager;
+	private final Business _business;
+	private final User _user;
+	private Spider _spider;
+	private Map<String, ChannelImpl> _channelsById = new HashMap<String, ChannelImpl>();
+	
 	private Omnivore<Object> myObjectReceiver() {
 		return new Omnivore<Object>() { public void consume(Object received) {
 			if (!(received instanceof ChannelPacket)) return;
@@ -103,7 +105,7 @@ public class Communicator {
 			
 			if (!contactsPK.isEmpty()) notifyUserOfPKMismatch(nick);
 			
-			_businessSource.contactManager().contactPublicKeyUpdater().consume(new ContactPublicKeyInfo(nick, remotePK));
+			_contactManager.contactPublicKeyUpdater().consume(new ContactPublicKeyInfo(nick, remotePK));
 		} };
 
 	}
@@ -124,27 +126,12 @@ public class Communicator {
 	}
 
 	private Signal<String> ownPublicKey() {
-		return _businessSource.output().publicKey();
+		return _business.publicKey();
 	}
 
 	private Signal<String> ownName() {
-		return _businessSource.output().ownName();
+		return _business.ownName();
 	}
-
-	private final BusinessSource _businessSource;
-	private final User _user;
-	private Spider _spider;
-	private Map<String, ChannelImpl> _channelsById = new HashMap<String, ChannelImpl>();
-
-	
-	private void prepareBusiness() {
-		int sneerPort = _businessSource.output().sneerPort().currentValue();
-		if (sneerPort == 0) initSneerPort(_businessSource);
-
-		String ownPublicKey = _businessSource.output().publicKey().currentValue();
-		if (ownPublicKey.isEmpty()) initPublicKey(_businessSource);
-	}
-
 
 	public Channel openChannel(String channelId, int priority) {
 		return openChannel(channelId, priority, this.getClass().getClassLoader());
@@ -167,19 +154,6 @@ public class Communicator {
 		}};
 	}
 
-	private void initPublicKey(BusinessSource businessSource) {
-		String ownPK = "" + System.currentTimeMillis() + "/" + System.nanoTime();
-		businessSource.publicKeySetter().consume(ownPK);
-	}
-
-	private void initSneerPort(BusinessSource businessSource) {
-		int randomPort = 10000 + new Random().nextInt(50000);
-		try {
-			businessSource.sneerPortSetter().consume(randomPort);
-		} catch (IllegalParameter e) {
-			throw new IllegalStateException();
-		}
-	}
 
 	private Omnivore<ObjectSocket> mySocketServer() {
 		return new Omnivore<ObjectSocket>() { public void consume(ObjectSocket socket) {
@@ -248,7 +222,7 @@ public class Communicator {
 			_user.acknowledgeNotification(translate("There already is another contact with this nickname:\n\n%1$s",nick), translate("Choose Another..."));
 		}
 		
-		_businessSource.contactManager().contactPublicKeyUpdater().consume(new ContactPublicKeyInfo(nick, publicKey)); //Refactor: Use contactId instead of nick;
+		_contactManager.contactPublicKeyUpdater().consume(new ContactPublicKeyInfo(nick, publicKey)); //Refactor: Use contactId instead of nick;
 		
 		return existing;
 	}
@@ -256,7 +230,7 @@ public class Communicator {
 
 	private ContactAttributes createContact(String publicKey, String nick) throws CancelledByUser {
 		try {
-			_businessSource.contactManager().contactAdder().consume(new ContactInfo(nick, "", 0, publicKey)); //Implement: get actual host addresses from contact.
+			_contactManager.contactAdder().consume(new ContactInfo(nick, "", 0, publicKey)); //Implement: get actual host addresses from contact.
 			return findContactGivenNick(nick);
 		} catch (IllegalParameter e) {
 			_user.acknowledge(e);
@@ -266,14 +240,14 @@ public class Communicator {
 
 
 	private ContactAttributes findContactGivenNick(String nick) {
-		for (ContactAttributes contact : _businessSource.output().contactAttributes())
+		for (ContactAttributes contact : _business.contactAttributes())
 			if (nick.equals(contact.nick().currentValue())) return contact;
 		return null;
 	}
 
 
 	private ContactAttributes findContactGivenPublicKey(String publicKey) {
-		for (ContactAttributes contact : _businessSource.output().contactAttributes())
+		for (ContactAttributes contact : _business.contactAttributes())
 			if (publicKey.equals(contact.publicKey().currentValue())) return contact;
 		return null;
 	}

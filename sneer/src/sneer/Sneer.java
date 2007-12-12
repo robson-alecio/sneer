@@ -4,6 +4,7 @@ import static sneer.SneerDirectories.logDirectory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Random;
 
 import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
@@ -25,6 +26,7 @@ import wheel.io.ui.impl.JOptionPaneUser;
 import wheel.lang.Omnivore;
 import wheel.lang.Pair;
 import wheel.lang.Threads;
+import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.impl.SourceImpl;
 
 public class Sneer {
@@ -67,7 +69,9 @@ public class Sneer {
 		//Optimize: Separate thread to close splash screen.
 		try{Thread.sleep(2000);}catch(InterruptedException ie){}
 		
-		_communicator = new Communicator(_user, new OldNetworkImpl(), _businessSource);
+		prepareBusinessForCommunication();
+		
+		_communicator = new Communicator(_user, new OldNetworkImpl(), _businessSource.output(), _businessSource.contactManager());
 		SourceImpl<Pair<String, Boolean>> contactOnlineOnMsnEvents = new SourceImpl<Pair<String, Boolean>>(null);
 		_msnCommunicator = new MsnCommunicator(_user, _businessSource.output().msnAddress(), contactOnlineOnMsnEvents.setter());
 		
@@ -83,6 +87,28 @@ public class Sneer {
 		_gui = new Gui(_user, _systemApplications, _businessSource, _actionFactory); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
 		
 		while (true) Threads.sleepWithoutInterruptions(100000); // Refactor Consider joining the main gui thread.
+	}
+
+	private void prepareBusinessForCommunication() {
+		int sneerPort = _businessSource.output().sneerPort().currentValue();
+		if (sneerPort == 0) initSneerPort();
+
+		String ownPublicKey = _businessSource.output().publicKey().currentValue();
+		if (ownPublicKey.isEmpty()) initPublicKey();
+	}
+
+	private void initPublicKey() {
+		String ownPK = "" + System.currentTimeMillis() + "/" + System.nanoTime();
+		_businessSource.publicKeySetter().consume(ownPK);
+	}
+
+	private void initSneerPort() {
+		int randomPort = 10000 + new Random().nextInt(50000);
+		try {
+			_businessSource.sneerPortSetter().consume(randomPort);
+		} catch (IllegalParameter e) {
+			throw new IllegalStateException();
+		}
 	}
 
 	private Omnivore<Notification> briefNotifier() {

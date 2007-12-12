@@ -132,7 +132,7 @@ public class ReactiveJpgImageField extends JPanel{
 	private void commitChange() {
 		SwingUtilities.invokeLater(new Runnable(){
 			public void run() {
-				_user.saveas(translate("Choose a Picture"), translate("Use"), new String[]{".jpg"}, "JPG images", saveCallback());
+				_user.saveAs(translate("Choose a Picture"), translate("Use"), new String[]{".jpg"}, "JPG images", saveCallback());
 			}
 		});
 	}

@@ -21,7 +21,7 @@ public abstract class UserAdapter implements User {
 		throw new wheel.lang.exceptions.NotImplementedYet();
 	}
 
-	public void saveas(String title, String buttonTitle, String[] suffixes, String description, Omnivore<File> callback) {
+	public void saveAs(String title, String buttonTitle, String[] suffixes, String description, Omnivore<File> callback) {
 		// Implement Auto-generated method stub
 		throw new wheel.lang.exceptions.NotImplementedYet();
 	}

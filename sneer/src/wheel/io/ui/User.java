@@ -27,7 +27,7 @@ public interface User {
 	void acknowledge(Throwable t);
 	void acknowledgeFriendlyException(FriendlyException e);
 	
-	void saveas(String title, String buttonTitle, String[] suffixes, String description, Omnivore<File> callback);
+	void saveAs(String title, String buttonTitle, String[] suffixes, String description, Omnivore<File> callback);
 	void chooseDirectory(String title, String buttonTitle, Omnivore<File> callback) ;
 	
 	Catcher catcher();

@@ -42,7 +42,7 @@ public class BaseNetworkMock {
 
     protected ObjectServerSocket startServer(int serverPort) throws IOException {
         ObjectServerSocketMock old = findServer(serverPort);
-        if (old != null) throw new IOException("Port already in use.");
+        if (old != null) throw new IOException("Port "+serverPort+" already in use.");
 
         ObjectServerSocketMock result = new ObjectServerSocketMock(_permit);
         _serverSocketByPort.put(serverPort, result);

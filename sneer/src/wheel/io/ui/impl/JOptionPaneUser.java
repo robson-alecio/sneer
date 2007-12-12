@@ -215,7 +215,7 @@ public class JOptionPaneUser implements User {
 	}
 
 	@Override
-	public void saveas(final String title, final String buttonTitle, final String[] suffixes, final String description, final Omnivore<File> callback) {
+	public void saveAs(final String title, final String buttonTitle, final String[] suffixes, final String description, final Omnivore<File> callback) {
 		SwingUtilities.invokeLater(new Runnable(){ public void run(){
 			final JFileChooser fc = new JFileChooser(); 
 			fc.setDialogTitle(title);

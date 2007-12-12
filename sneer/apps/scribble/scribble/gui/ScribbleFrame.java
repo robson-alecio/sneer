@@ -117,7 +117,7 @@ public class ScribbleFrame extends JFrame {
         prepareComponent(saveButton);
         saveButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				_user.saveas(translate("Saving file"), translate("Save"), new String[]{".jpg"}, "JPG images", saveCallback());
+				_user.saveAs(translate("Saving file"), translate("Save"), new String[]{".jpg"}, "JPG images", saveCallback());
 			}
         });
         

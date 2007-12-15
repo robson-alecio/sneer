@@ -7,6 +7,7 @@
 	
 	<property name="build" location=".\jarBuild"/>
 	<property name="bin" location=".\bin"/>
+	<property name="installerResources" location=".\installer\sneer\resources"/>
 	<property name="src" location=".\src"/>
 	<property name="resources" location=".\resources"/>
 	<property name="tmp" location=".\jarTest"/>
@@ -81,13 +82,17 @@
 		
 		<delete dir="${build}"/>
 			
+		<!-- Copy to candidate to installer directory -->
+		
+		<copy file="${bin}\Sneer-build-candidate.jar" tofile="${installerResources}\Sneer-build-candidate.jar"/>
+		
 		<!-- Run -->
 
 		<delete dir="${tmp}"/>
 		<mkdir dir="${tmp}"/>
 		
 		<java dir="${tmp}"
-			jar="${bin}\Sneer-${version}.jar"
+			jar="${bin}\Sneer-build-candidate.jar"
 			fork="true"
 			maxmemory="128m" 
 			spawn="true" >

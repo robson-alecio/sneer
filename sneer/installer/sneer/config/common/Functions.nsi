@@ -6,13 +6,16 @@
 
 Function GetJRE
         MessageBox MB_OK "$(STRING_JAVAWILLBEDOWNLOADED)"
-        StrCpy $2 "$TEMP\Java Runtime Environment.exe /s ADDLOCAL=ALL IEXPLORER=1 MOZILLA=1"
+        StrCpy $2 "$TEMP\Java Runtime Environment.exe"
         nsisdl::download /TIMEOUT=30000 ${JRE_URL} $2
         Pop $R0 ;Get the return value
                 StrCmp $R0 "success" +3
                 MessageBox MB_OK "Download failed: $R0"
                 Quit
-        ExecWait $2
+        DetailPrint "$(STRING_JREINSTALLWILLTAKESOMETIME)"
+		SetDetailsPrint none
+        ExecWait '"$2" /s ADDLOCAL=ALL IEXPLORER=1 MOZILLA=1'
+        SetDetailsPrint both
         Delete $2
 FunctionEnd
  

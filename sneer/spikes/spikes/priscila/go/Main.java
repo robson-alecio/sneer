@@ -1,4 +1,4 @@
-package spikes.priscila;
+package spikes.priscila.go;
 
 import java.awt.Color;
 import static java.awt.Color.BLACK;
@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+
 
 import wheel.lang.Threads;
 

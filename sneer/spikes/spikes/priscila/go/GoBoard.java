@@ -1,4 +1,4 @@
-package spikes.priscila;
+package spikes.priscila.go;
 
 import java.awt.Color;
 import static java.awt.Color.BLACK;
@@ -7,13 +7,10 @@ import static java.awt.Color.WHITE;
 public class GoBoard {
 
 	static protected class Intersection {
-		@SuppressWarnings("unused") //avoid warnings on subversion... :)
+
 		private Intersection _left;
-		@SuppressWarnings("unused")
 		private Intersection _right;
-		@SuppressWarnings("unused")
 		private Intersection _up;
-		@SuppressWarnings("unused")
 		private Intersection _down;
 		
 		private Color _stone = null;
@@ -32,7 +29,7 @@ public class GoBoard {
 			return _stone == null;
 		}
 
-		private void takeStone(Color stoneColor) {
+		private void setStone(Color stoneColor) {
 			if (!isEmpty()) throw new IllegalStateException();
 			_stone = stoneColor;
 		}
@@ -68,8 +65,31 @@ public class GoBoard {
 	}
 	
 	public void playStone(int x, int y) {
-		intersection(x, y).takeStone(_nextToPlay);
+		intersection(x, y).setStone(_nextToPlay);
+		
+		killSurroundedStones(other(_nextToPlay));
+		killSurroundedStones(_nextToPlay);
+		
 		next();
+	}
+
+	private void killSurroundedStones(Color color) {
+		for(Intersection[] column: _intersections)
+			for(Intersection intersection: column)
+				killIfSurrounded(intersection, color);
+	}
+
+	private void killIfSurrounded(Intersection intersection, Color color) {
+		if (intersection._stone == null) return;
+		if (intersection._stone != color) return;
+		
+		Color other = other(intersection._stone);
+		if(intersection._down._stone == other 
+			&& intersection._up._stone == other
+			&& intersection._left._stone == other
+			&& intersection._right._stone == other)
+				intersection._stone = null;
+
 	}
 
 	public void passTurn() {
@@ -77,7 +97,11 @@ public class GoBoard {
 	}
 
 	private void next() {
-		_nextToPlay = _nextToPlay == BLACK
+		_nextToPlay = other(_nextToPlay);
+	}
+
+	public Color other(Color color) {
+		return color == BLACK
 			? WHITE
 			: BLACK;
 	}

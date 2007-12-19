@@ -31,6 +31,7 @@ Section Install
 	Call CreateStartMenuShortcut
 	Call CreateDesktopShortcut
 	Call InstallInAddRemovePrograms
+	Call MakeRunOnWindowsStart
 	Call LaunchLink
 	
 SectionEnd
@@ -43,6 +44,7 @@ Section Uninstall
 	Call un.RemoveDesktopShortcut
 	Call un.RemoveInstallDir
 	Call un.RemoveFromAddRemovePrograms
+	Call un.RemoveRunOnWindowsStart
 SectionEnd
 
 

@@ -85,7 +85,6 @@ Function un.RemoveInstallDir
 FunctionEnd
 
 Function LaunchLink
-	MessageBox MB_OK "$(STRING_SNEERCONFIGURATION)"
 	ExecShell "" "$SMPROGRAMS\${ShortcutFolder}\${ShortcutFile}"
 FunctionEnd
 
@@ -94,4 +93,12 @@ Function LaunchJREInstaller
 	SetDetailsPrint none
 	ExecWait '"$INSTDIR\${JREFileName}" /s ADDLOCAL=ALL IEXPLORER=1 MOZILLA=1'
 	SetDetailsPrint both
+FunctionEnd
+
+Function MakeRunOnWindowsStart
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "${InstallName}" "$SMPROGRAMS\${ShortcutFolder}\${ShortcutFile}"
+FunctionEnd
+
+Function un.RemoveRunOnWindowsStart
+	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Run\${InstallName}"
 FunctionEnd

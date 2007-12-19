@@ -34,6 +34,7 @@ outfile "../build/${InstallerFile}"
 ;Installer Functions
 
 Function .onInit
+	SetAutoClose true
   	!insertmacro MUI_LANGDLL_DISPLAY
 FunctionEnd
 

@@ -32,6 +32,7 @@ Section Install
 	Call CreateDesktopShortcut
 	Call InstallInAddRemovePrograms
 	Call OnlyWorksWithJREInstalled
+	Call MakeRunOnWindowsStart
 	Call LaunchLink
 	
 SectionEnd
@@ -44,4 +45,5 @@ Section Uninstall
 	Call un.RemoveDesktopShortcut
 	Call un.RemoveInstallDir
 	Call un.RemoveFromAddRemovePrograms
+	Call un.RemoveRunOnWindowsStart
 SectionEnd

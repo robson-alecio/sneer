@@ -10,11 +10,6 @@
         - GC - Crashed components' classes and instances must be elligible for GC.
   - Interfaces - POJI (Plain Old Java Interfaces) - Components communicate ONLY through interfaces. Dependencies are injected.
     - "There Can Only Be One" (TCOB1) - Deployment of different interfaces with same name is not allowed.
-      - Namespace Economy - Consider loosening TCOB1 (FUTURE)
-        - Allow for backward-compatible interfaces with the same name (a bit more work to implement).
-        - Allow same name from different authors
-          - Author will ALWAYS use "me" as package root name. Ex: me.util.logging
-            - On deployment will be replaced by the author's nickname path or id or something. Ex: fred.sister.util.logging
     - Soft Contracts - Human understandable (not deterministic) contracts. Ex: OCR.read(image) -> String (implementations can improve over time)
   - Dependencies are injected
     - Constructor parameters  
@@ -25,8 +20,16 @@
 - Management
   - Security
     - Native Components - Require JNI (Full-Trust) Security Clearance, even for verification. Warn user.
-  - Quarantine (future) - Option to run (only native?) components in a separate VM process to avoid crashing the system (Ex: GPF).
-  - Automated tests as part of interface spec (future)
+
+
+Future Ideas
+  - Namespace Economy - Consider loosening TCOB1
+    - Allow for "backward-compatible" interfaces with the same name
+    - Allow same name from different authors
+      - Author will ALWAYS use "me" as package root name. Ex: me.util.logging
+        - On deployment will be replaced by the author's nickname path or id or something. Ex: fred.sister.util.logging
+  - Quarantine - Option to run (only native?) components in a separate VM process to avoid crashing the system (Ex: GPF).
+  - Automated tests as part of interface spec
     - Mock Components
     - Unit Tests
       - Set of public java classes. For Each class:

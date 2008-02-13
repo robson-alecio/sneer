@@ -1,0 +1,38 @@
+﻿Lego Component Model for Sneer - Brainstorming
+
+- Runtime
+  - Hot Deploy/Undeploy
+  - Runnable Components   
+    - Simple Life Cycle
+      - Start - Constructor call 
+      - Crash Only - Componentes are preemply crashed without warning. See: http://www.usenix.org/events/hotos03/tech/full_papers/candea/candea_html/index.html
+        - Exception: Native components are notified via crash() method, for releasing system resources (Ex: file handles) in the fastest possible way (Ex: temp files are not deleted, just closed). Same behaviour as process death.
+        - GC - Crashed components' classes and instances must be elligible for GC.
+  - Interfaces - POJI (Plain Old Java Interfaces) - Components communicate ONLY through interfaces. Dependencies are injected.
+    - "There Can Only Be One" (TCOB1) - Deployment of different interfaces with same name is not allowed.
+      - Namespace Economy - Consider loosening TCOB1 (FUTURE)
+        - Allow for backward-compatible interfaces with the same name (a bit more work to implement).
+        - Allow same name from different authors
+          - Author will ALWAYS use "me" as package root name. Ex: me.util.logging
+            - On deployment will be replaced by the author's nickname path or id or something. Ex: fred.sister.util.logging
+    - Soft Contracts - Human understandable (not deterministic) contracts. Ex: OCR.read(image) -> String (implementations can improve over time)
+  - Dependencies are injected
+    - Constructor parameters  
+  - Exceptions
+    - RuntimeExceptions - should be thrown only if caller violates preconditions (Ex: IllegalParameter). All other Exceptions should be checked (Ex: IO Error, Resource not found, etc). 
+  - State Prevalence?
+
+- Management
+  - Security
+    - Native Components - Require JNI (Full-Trust) Security Clearance, even for verification. Warn user.
+  - Quarantine (future) - Option to run (only native?) components in a separate VM process to avoid crashing the system (Ex: GPF).
+  - Automated tests as part of interface spec (future)
+    - Mock Components
+    - Unit Tests
+      - Set of public java classes. For Each class:
+        - Package name is the subject interface package appended with ".tests". Ex: me.util.logging.tests
+        - Class name is the subject interface name appended with "Test". Ex: LogTest
+        - Single public constructor
+          - First parameter is the instance to be tested (implements subject interface).
+          - Subsequent parameters are dependencies to be injected.
+        - Can be used to test ALL implementations of the subject interface.

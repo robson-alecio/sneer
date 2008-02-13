@@ -1,51 +1,129 @@
 package spikes.priscila.go.tests;
 
-import java.awt.Color;
-
-import spikes.priscila.go.ToroidalGoBoard;
 import junit.framework.TestCase;
+import spikes.priscila.go.GoBoard;
+import spikes.priscila.go.ToroidalGoBoard;
 
 public class GoTest extends TestCase {
 
-	private ToroidalGoBoard _board;
-
-	public void testWhiteCapture() {
-		playToCapture(Color.white);
-	}
-
-	public void testBlackCapture() {
-		_board.playStone(0,0);
-		playToCapture(Color.black);
-	}
-
-	public void playToCapture(Color color) {
-		_board.playStone(3,3);
-		_board.playStone(3,4);
-		_board.playStone(4,2);
-		_board.playStone(4,3);
-		_board.playStone(5,3);
-		_board.playStone(5,4);
-
-		assertTrue(_board.stoneAt(4, 3) == color);
-		_board.playStone(4,4);
-		assertTrue(_board.stoneAt(4, 3) == null);
+	public void testSingleStoneCaptureNew() {
+		String[] setup = new String[]{
+			    "+ + + + + + + + +",
+				"+ + + + + + + + +",
+				"+ + + + x + + + +",
+				"+ + + x o x + + +",
+				"+ + + o + o + + +",
+				"+ + + + + + + + +",
+				"+ + + + + + + + +",
+				"+ + + + + + + + +",
+				"+ + + + + + + + +"};
+		GoBoard board = new ToroidalGoBoard(setup);
 		
-		_board.playStone(4,5);
-		_board.playStone(0,1);
+		assertTrue(board.stoneAt(4, 3) != null);
+		board.playStone(4,4);
+		assertTrue(board.stoneAt(4, 3) == null);
+		
+		board.playStone(4,5);
+		board.playStone(0,1);
+		
+		assertTrue(board.stoneAt(4, 4) != null);
+		board.playStone(4,3);
+		assertTrue(board.stoneAt(4, 4) == null);
+	}
 
-		assertTrue(_board.stoneAt(4, 4) == _board.other(color));
-		_board.playStone(4,3);
-		assertTrue(_board.stoneAt(4, 4) == null);
+	public void testSingleStoneCapture() {
+		GoBoard board = new ToroidalGoBoard(9);
+		
+		board.playStone(4, 2);
+		board.playStone(4, 3);
+		board.playStone(3, 3);
+		board.playStone(3, 4);
+		board.playStone(5, 3);
+		board.playStone(5, 4);
 
+		assertTrue(board.stoneAt(4, 3) != null);
+		board.playStone(4,4);
+		assertTrue(board.stoneAt(4, 3) == null);
+	}
 
+	public void testBigGroupCapture() {
+		String[] setup = new String[]{
+			    "+ + + + + + + + +",
+				"+ + + + + + + + +",
+				"+ + + + x x + + +",
+				"+ + + x o o x + +",
+				"+ + + + x o x + +",
+				"+ + + + + + + + +",
+				"+ + + + + + + + +",
+				"+ + + + + + + + +",
+				"+ + + + + + + + +"};
+		GoBoard board = new ToroidalGoBoard(setup);
+		
+		board.playStone(5, 5);
+		
+		assertEquals(board.printOut(),
+		    " + + + + + + + + +\n" +
+			" + + + + + + + + +\n" +
+			" + + + + x x + + +\n" +
+			" + + + x + + x + +\n" +
+			" + + + + x + x + +\n" +
+			" + + + + + x + + +\n" +
+			" + + + + + + + + +\n" +
+			" + + + + + + + + +\n" +
+			" + + + + + + + + +\n"
+		);
 	}
 	
-
-	@Override
-	protected void setUp() throws Exception {
-		_board = new ToroidalGoBoard(9);
+	public void testSuicide() {
+		String[] setup = new String[] {
+			    "+ + + + + + + + +",
+				"+ + + + + + + + +",
+				"+ + + + o o + + +",
+				"+ + + o x x o + +",
+				"+ + + + o + o + +",
+				"+ + + + + o + + +",
+				"+ + + + + + + + +",
+				"+ + + + + + + + +",
+				"+ + + + + + + + +"};
+		GoBoard board = new ToroidalGoBoard(setup);
+		assertFalse(board.canPlayStone(5, 4));
+		assertTrue(board.stoneAt(5, 4) == null);
+	}
+	
+	public void testKillOtherFirst() {
+		String[] setup = new String[]{
+			    "+ + + + + + + + +",
+				"+ + + + x + + + +",
+				"+ + + x o x + + +",
+				"+ + + o + o + + +",
+				"+ + + + o + + + +",
+				"+ + + + + + + + +",
+				"+ + + + + + + + +",
+				"+ + + + + + + + +",
+				"+ + + + + + + + +"};
+		GoBoard board = new ToroidalGoBoard(setup);
+		assertTrue(board.canPlayStone(4, 3));
+	}
+	
+	public void testKo() {
+		String[] setup = new String[]{
+			    "+ + + + + + + + +",
+				"+ + + + x + + + +",
+				"+ + + x o x + + +",
+				"+ + + o + o + + +",
+				"+ + + + o + + + +",
+				"+ + + + + + + + +",
+				"+ + + + + + + + +",
+				"+ + + + + + + + +",
+				"+ + + + + + + + +"};
+		GoBoard board = new ToroidalGoBoard(setup);
+		assertTrue(board.canPlayStone(4, 3));
+		board.playStone(4, 3);
+		assertFalse(board.canPlayStone(4, 2));
 	}
 
-
+	public void testKoWithPass() {
+		//fail();
+	}
 
 }

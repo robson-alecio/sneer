@@ -1,4 +1,4 @@
-Gandhi
+﻿Gandhi
 
 done - Make build class for Sneer
 done - My Public Files Folder - Any contact can do "Save As" on the other side.
@@ -7,10 +7,48 @@ partially done (windows&konqueror not nautilus) - Public Files of Contact - Copy
  - Public Files of Contact - Drag and Drop
  - Persist SplitPane position (maybe with bounds)
  - Set up a gandhi.selfip.net so you are always reachable wherever you are. Tell the people on the sneercoders list.
- - Dont do this without automated tests: optimize channelimpl objectStream use (note: when channel crashes, it happens on both sides?)
 
 Klaus
  - App persistence
+
+ - Component Model
+
+   - Runtime
+     - Hot Deploy/Undeploy
+     - Interfaces - POJI (Plain Old Java Interfaces).
+       - package root name is "me". Ex: me.util.logging
+         - On deployment will be replaced by the author's nickname path. Ex: fred.sister.util.logging
+           - "There Can Only Be One" (TCOB1) - Deployment of interfaces with same name coming from same author is not allowed.
+             - Namespace Economy - Consider loosening TCOB1 in the future to allow for backward-compatible interfaces with the same name.
+       - Soft Contracts - Human understandable (not deterministic) contracts. Ex: OCR.read(image) -> String (implementations can improve over time)
+     - Runnable Components   
+       - Life Cycle
+         - Start - Constructor call 
+         - Crash Only - Componentes are preemply crashed without warning.
+           - Exception: Native components are notified via crash() method, for releasing system resources (Ex: file handles) in the fastest possible way (Ex: temp files are not deleted, just closed). Same behaviour as process death.
+           - GC - Crashed components' classes and instances must be elligible from GC.
+     - Exceptions
+       - RuntimeExceptions - should be thrown only if caller violates preconditions (Ex: IllegalParameter). All other Exceptions should be checked (Ex: IO Error, Resource not found, etc). 
+     
+   - Management
+     - Security
+       - Native Components - Require JNI (Full-Trust) Security Clearance, even for verification. Warn user.
+     - Quarantine - Option to run components in a separate VM process to avoid crashing the system (Ex: GPF).
+     - Testing
+       - Mock Components
+       - Unit Tests
+         - Set of public java classes. For Each class:
+           - Package name is the subject interface package appended with ".tests". Ex: me.util.logging.tests
+           - Class name is the subject interface name appended with "Test". Ex: LogTest
+           - Single public constructor
+             - First parameter is the instance to be tested (implements subject interface).
+             - Subsequent parameters are dependencies to be injected.
+           - Can be used to test ALL implementations of the subject interface.
+         
+   - Implementation
+     - State Prevalence?
+   
+   
  - Granular profile updating per signal
  - Use TransferQueue for profile picture transfer
  - Contact Navigation

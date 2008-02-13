@@ -11,5 +11,5 @@ public interface ObjectServerSocket {
 
 	ObjectSocket accept() throws IOException;
 	
-	void close() throws IOException;
+	void close();
 }

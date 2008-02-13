@@ -21,7 +21,7 @@ public class XStreamServerSocket implements ObjectServerSocket {
 		return new XStreamSocket(_xStream, _delegate.accept());
 	}
 
-	public void close() throws IOException {
+	public void close() {
 		_delegate.close();
 	}
 

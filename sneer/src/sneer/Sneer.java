@@ -31,10 +31,6 @@ import wheel.reactive.impl.SourceImpl;
 
 public class Sneer {
 
-	public static void main(String args[]) throws Exception {
-		new Sneer();
-	}
-	
 	public Sneer() throws Exception{
 		try {
 			
@@ -86,7 +82,7 @@ public class Sneer {
 		
 		_gui = new Gui(_user, _systemApplications, _businessSource, _actionFactory); //Implement:  start the gui before having the BusinessSource ready. Use a callback to get the BusinessSource.
 		
-		while (true) Threads.sleepWithoutInterruptions(100000); // Refactor Consider joining the main gui thread.
+		while (true) Threads.sleepWithoutInterruptions(100000); // Optimize Consider joining the main gui thread.
 	}
 
 	private void prepareBusinessForCommunication() {

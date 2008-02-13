@@ -47,13 +47,10 @@ public class RemoteSignallingFacade {
 		try {
 			signal = Casts.uncheckedGenericCast(method.invoke(object, new Object[]{}));
 		} catch (IllegalArgumentException e) {
-			// Implement Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			// Implement Auto-generated catch block
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
-			// Implement Auto-generated catch block
 			e.printStackTrace();
 		}
 		

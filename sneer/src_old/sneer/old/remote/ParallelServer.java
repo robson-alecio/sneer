@@ -125,7 +125,7 @@ public class ParallelServer implements Runnable {
 		}
 	}
 
-	public void close() throws IOException {
+	public void close() {
 		_serverSocket.close();
 	}
 

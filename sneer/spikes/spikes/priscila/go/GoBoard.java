@@ -1,41 +1,15 @@
 package spikes.priscila.go;
 
-import java.awt.Color;
-import static java.awt.Color.BLACK;
-import static java.awt.Color.WHITE;
+import static spikes.priscila.go.GoBoard.StoneColor.BLACK;
+import static spikes.priscila.go.GoBoard.StoneColor.WHITE;
+
+import java.util.Arrays;
+
+import wheel.io.serialization.DeepCopier;
 
 public class GoBoard {
 
-	static protected class Intersection {
-
-		private Intersection _left;
-		private Intersection _right;
-		private Intersection _up;
-		private Intersection _down;
-		
-		private Color _stone = null;
-
-		protected void connectToYourLeft(Intersection other) {
-			_left = other;
-			other._right = this;
-		}
-
-		protected void connectUp(Intersection other) {
-			_up = other;
-			other._down = this;
-		}
-
-		private boolean isEmpty() {
-			return _stone == null;
-		}
-
-		private void setStone(Color stoneColor) {
-			if (!isEmpty()) throw new IllegalStateException();
-			_stone = stoneColor;
-		}
-
-
-	}
+	public static enum StoneColor { BLACK,	WHITE; }
 
 	public GoBoard(int size) {
 		_intersections = new Intersection[size][size];
@@ -49,9 +23,15 @@ public class GoBoard {
 		}
 	}
 	
-	private final Intersection[][] _intersections;
-	private Color _nextToPlay = BLACK;
+	public GoBoard(String[] setup) {
+		this(setup.length);
+		setup(setup);
+	}
 
+	private Intersection[][] _intersections;
+	private StoneColor _nextToPlay = BLACK;
+	private Intersection[][] _previousSituation;
+	
 	protected Intersection intersection(int x, int y) {
 		return _intersections[x][y];
 	}
@@ -61,36 +41,63 @@ public class GoBoard {
 	}
 	
 	public boolean canPlayStone(int x, int y) {
-		return intersection(x, y).isEmpty();
+		Intersection[][] situation = copySituation();
+		try {
+			tryToPlayStone(x, y);
+		} catch (IllegalMove im) {
+			return false;
+		} finally {
+			restoreSituation(situation);
+		}
+		
+		return true;
 	}
+
 	
+	private void restoreSituation(Intersection[][] situation) {
+		_intersections = situation;
+	}
+
+	private Intersection[][] copySituation() {
+		return (Intersection[][])DeepCopier.deepCopy(_intersections);
+	}
+
 	public void playStone(int x, int y) {
-		intersection(x, y).setStone(_nextToPlay);
+		Intersection[][] situationFound = copySituation();
+
+		try {
+			tryToPlayStone(x, y);
+		} catch (IllegalMove e) {
+			throw new IllegalArgumentException(e);
+		}
 		
-		killSurroundedStones(other(_nextToPlay));
-		killSurroundedStones(_nextToPlay);
-		
+		_previousSituation = situationFound;
 		next();
 	}
 
-	private void killSurroundedStones(Color color) {
+	private void tryToPlayStone(int x, int y) throws IllegalMove{
+		intersection(x, y).setStone(_nextToPlay);
+		
+		killSurroundedStones(other(_nextToPlay));
+		if (killSurroundedStones(_nextToPlay))
+			throw new IllegalMove();
+		
+		if(sameSituationAs(_previousSituation))
+			throw new IllegalMove();
+	}
+	
+	private boolean sameSituationAs(Intersection[][] situation) {
+		return Arrays.deepEquals(situation, _intersections);
+	}
+
+	private boolean killSurroundedStones(StoneColor color) {
 		for(Intersection[] column: _intersections)
 			for(Intersection intersection: column)
-				killIfSurrounded(intersection, color);
+				if (intersection.killGroupIfSurrounded(color))
+					return true;
+		return false;
 	}
 
-	private void killIfSurrounded(Intersection intersection, Color color) {
-		if (intersection._stone == null) return;
-		if (intersection._stone != color) return;
-		
-		Color other = other(intersection._stone);
-		if(intersection._down._stone == other 
-			&& intersection._up._stone == other
-			&& intersection._left._stone == other
-			&& intersection._right._stone == other)
-				intersection._stone = null;
-
-	}
 
 	public void passTurn() {
 		next();
@@ -100,17 +107,52 @@ public class GoBoard {
 		_nextToPlay = other(_nextToPlay);
 	}
 
-	public Color other(Color color) {
+	public StoneColor other(StoneColor color) {
 		return color == BLACK
 			? WHITE
 			: BLACK;
 	}
 
-	public Color stoneAt(int x, int y) {
+	public StoneColor stoneAt(int x, int y) {
 		return intersection(x, y)._stone;
 	}
 
-	public Color nextToPlay() {
+	public StoneColor nextToPlay() {
 		return _nextToPlay;
+	}
+	
+	private void setup(String[] setup){
+		int y =0;
+		for(String line: setup){
+			int x=0;
+			for(char position:line.toCharArray()){
+				if(position == 'x'){
+					intersection(x++, y)._stone = BLACK;
+				} else if(position == 'o'){
+					intersection(x++, y)._stone = WHITE;
+				}else if(position == '+'){ 
+					x++;
+				}
+			}
+			y++;
+		}
+	}
+	
+	public String printOut(){
+		StringBuffer result= new StringBuffer();
+		
+		for (int y = 0; y < size(); y++) {
+			for (int x = 0; x < size(); x++) {
+				StoneColor stone = stoneAt(x, y);
+				if(stone == WHITE)
+					result.append(" o");
+				else if(stone == BLACK)
+					result.append(" x");
+				else
+					result.append(" +");
+			}
+			result.append("\n");
+		}
+		return result.toString();
 	}
 }

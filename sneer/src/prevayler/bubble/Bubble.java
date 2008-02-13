@@ -77,6 +77,8 @@ public class Bubble {
 		if (Consumer.class.isAssignableFrom(type))
 			return new ConsumerBubble(_prevayler, pathToObject);
 		
+		if (type == Void.class) throw new UnsupportedOperationException("Void methods such as " + method + " are not supported.");
+		
 		return wrap(object, _prevayler, pathToObject);
 	}
 

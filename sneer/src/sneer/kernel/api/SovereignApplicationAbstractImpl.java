@@ -28,7 +28,7 @@ public abstract class SovereignApplicationAbstractImpl implements SovereignAppli
 		_config = config;
 	}
 
-	public Object initialState() {
+	public Object initialState() { //Refactor: Delete this.
 		return null;
 	}
 

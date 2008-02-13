@@ -19,9 +19,9 @@ public interface SovereignApplicationNeeds {
 
 	Signal<String> ownName();
 	ListSignal<Contact> contacts();
-	ListSignal<ContactAttributes> contactAttributes(); //Refactor: Apps dont need to know all this. They only need to know contact ids.
+	ListSignal<ContactAttributes> contactAttributes(); //Refactor: Remove this method. It is apparently redundant with contacts().
 
-	TransferQueue transfer();
+	TransferQueue transfer(); //Refactor: This will be a service provided by another app, when we have a service framework defined.
 	
 	Object prevalentState();
 

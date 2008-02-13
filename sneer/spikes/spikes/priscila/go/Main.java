@@ -1,8 +1,6 @@
 package spikes.priscila.go;
 
 import java.awt.Color;
-import static java.awt.Color.BLACK;
-
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -13,7 +11,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-
+import spikes.priscila.go.GoBoard.StoneColor;
 import wheel.lang.Threads;
 
 
@@ -21,15 +19,18 @@ public class Main extends JFrame{
 	
 	private static final int _SCREEN_SIZE = 500;
 	private static final int _CELL_SIZE = 30;
-
+	volatile boolean thread;
+	
 	public class Scroller implements Runnable {
 
 		public void run() {
 			while (true) {
-				scrollX();
-				scrollY();
-				if (_scrollXDelta != 0 || _scrollYDelta != 0) repaint();
-				Threads.sleepWithoutInterruptions(150);
+				if(thread == true){
+					scrollX();
+					scrollY();
+					if (_scrollXDelta != 0 || _scrollYDelta != 0) repaint();
+					Threads.sleepWithoutInterruptions(150);
+				}
 			}
 		}
 
@@ -89,9 +90,10 @@ public class Main extends JFrame{
 		buffer.setColor(Color.black);
 	
 		for(int i = 0; i < 270; i += _CELL_SIZE){
+			buffer.setColor(Color.black);
 			buffer.drawLine(i+_MARGIN, 0+_MARGIN, i+_MARGIN, 240+_MARGIN);
 			buffer.drawLine(0+_MARGIN, i+_MARGIN, 240+_MARGIN, i+_MARGIN);
-		}	
+		}		
 		
 		paintStones(buffer);
 
@@ -107,13 +109,17 @@ public class Main extends JFrame{
 	}
 
 	private void paintStoneOnPosition(Graphics2D graphics, int x, int y) {
-		Color color = _board.stoneAt(x, y);
+		StoneColor color = _board.stoneAt(x, y);
 		if (color == null) return;
 		
 		int cx = toCoordinate(scrollX(x));		
 		int cy = toCoordinate(scrollY(y));		
-		graphics.setColor(color);
+		graphics.setColor(toAwtColor(color));
 		paintStoneOnCoordinates(graphics, cx, cy);
+	}
+
+	private Color toAwtColor(StoneColor color) {
+		return color == StoneColor.BLACK? Color.black: Color.white;
 	}
 
 	private int scrollX(int x) { return (x + _scrollX) % 9; }
@@ -132,7 +138,7 @@ public class Main extends JFrame{
 		return position * _CELL_SIZE + _MARGIN;
 	}
 	
-	private int toPosition(int coordinate) {
+	private int toScreenPosition(int coordinate) {
 		int result = (coordinate - _MARGIN + (_CELL_SIZE / 2)) / _CELL_SIZE;
 		if (result < 0) return 0;
 		if (result > 8) return 8;
@@ -147,12 +153,16 @@ public class Main extends JFrame{
 		
 		@Override
 		public void mouseMoved(final MouseEvent e) {
+		
 			_scrollXDelta = scrollDeltaFor(e.getX());
 			_scrollYDelta = scrollDeltaFor(e.getY());
-
+			
 			repaint();
 			SwingUtilities.invokeLater(new Runnable() { @Override public void run() {
-				drawTransparentStone(toPosition(e.getX()), toPosition(e.getY()));
+				int x = toScreenPosition(e.getX());
+				int y = toScreenPosition(e.getY());
+				if(_board.canPlayStone(unscrollX(x), unscrollY(y)))
+					drawTransparentStone(x, y);
 			}});
 		}
 
@@ -164,22 +174,31 @@ public class Main extends JFrame{
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			int x = unscrollX(toPosition(e.getX()));
-			int y = unscrollY(toPosition(e.getY()));
+			int x = unscrollX(toScreenPosition(e.getX()));
+			int y = unscrollY(toScreenPosition(e.getY()));
 			if (!_board.canPlayStone(x, y)) return;
 
 			_board.playStone(x, y);
 			repaint();		
 		}
 
+		@Override
+		public void mouseExited(MouseEvent e) {
+			thread =false;
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			thread= true;
+		}
 	}
 
 	private void drawTransparentStone(int x, int y) {
 		Graphics2D graphics = (Graphics2D) getGraphics();
 		
-		if(_board.nextToPlay() == BLACK)
+		if(_board.nextToPlay() == StoneColor.BLACK)
 			graphics.setColor(new Color(0, 0, 0, 50));
-		else
+		else	
 			graphics.setColor(new Color(255, 255, 255, 90));
 		
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

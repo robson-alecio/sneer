@@ -89,10 +89,8 @@ class SocketAccepter implements Omnivore<Integer> {
 		
 
 		void stop() {
-			try {
-				_isStopped = true;
-				_serverSocket.close();
-			} catch (IOException ignored) {}
+			_isStopped = true;
+			_serverSocket.close();
 		}
 
 	}

@@ -5,9 +5,17 @@ public class ToroidalGoBoard extends GoBoard {
 
 	public ToroidalGoBoard(int size) {
 		super(size);
+		makeToroidal();
+	}
 
+	private void makeToroidal() {
 		connectTopToBottom();
 		connectLeftToRight();
+	}
+
+	public ToroidalGoBoard(String[] setup) {
+		super(setup);
+		makeToroidal();
 	}
 
 	private void connectTopToBottom() {

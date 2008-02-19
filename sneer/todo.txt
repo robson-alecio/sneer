@@ -9,6 +9,7 @@ partially done (windows&konqueror not nautilus) - Public Files of Contact - Copy
  - Set up a gandhi.selfip.net so you are always reachable wherever you are. Tell the people on the sneercoders list.
 
 Klaus
+ - Code formatting template
  - App persistence
  - Component Model (see todoLego.txt)
  - Granular profile updating per signal

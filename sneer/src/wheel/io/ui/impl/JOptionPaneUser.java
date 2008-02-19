@@ -150,7 +150,7 @@ public class JOptionPaneUser implements User {
 	}
 
 	private String adaptPrompt(String proposition) {
-		String string = Util.correctSwingNewlineSpaceProblem(proposition);
+		String string = Util.workAroundSwingNewlineSpaceProblem(proposition);
 		return string + "\n\n";
 	}
 	

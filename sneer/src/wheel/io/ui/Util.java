@@ -2,8 +2,8 @@ package wheel.io.ui;
 
 public class Util {
 	
-	public static String correctSwingNewlineSpaceProblem(String proposition) {
-		return " " + proposition.replaceAll("\\n", "\n ");
+	public static String workAroundSwingNewlineSpaceProblem(String message) {
+		return " " + message.replaceAll("\\n", "\n ");
 	}
 	
 }

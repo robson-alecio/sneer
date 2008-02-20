@@ -14,11 +14,11 @@ public class SneerSecurityManager extends SecurityManager {
 		defaultManager = manager;
 	}	
 
-	public boolean hasDefaultSM() {
+	private boolean hasDefaultSM() {
 		return defaultManager != null;
 	}
 	
-	public void checkSneerPermission() {
+	private void checkSneerPermission() {
 		if (Thread.currentThread().getThreadGroup() != _pluginGroup) return;
 		
    		try {

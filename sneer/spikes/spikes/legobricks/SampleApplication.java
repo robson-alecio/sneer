@@ -1,19 +1,14 @@
 package spikes.legobricks;
 
-import javax.swing.JOptionPane;
-
+import spikes.lego.Container;
+import spikes.lego.ContainerUtils;
 import spikes.lego.Toy;
-import spikes.lego.Brick;
-import spikes.legobricks.name.NameKeeper;
 
-public class SampleApplication implements Toy {
+public class SampleApplication  {
 
-	@Brick
-	private NameKeeper keeper;
-	
-	@Override
-	public void run() {
-		String sampleName = JOptionPane.showInputDialog(null, "Whats your name?", "no name"); 
-		keeper.setName(sampleName);
+	public static void main(String[] args) throws Exception {
+		Container container = ContainerUtils.getContainer();
+		Toy toy = container.create(NameGui.class);
+		toy.run();
 	}
 }

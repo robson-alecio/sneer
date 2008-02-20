@@ -1,6 +1,6 @@
 package spikes.lego.app;
 
-public interface Application {
+public interface Toy {
 
 	void run();
 }

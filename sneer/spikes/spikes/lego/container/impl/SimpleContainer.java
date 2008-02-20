@@ -3,11 +3,13 @@ package spikes.lego.container.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import spikes.lego.app.sample.NameKeeper;
-import spikes.lego.app.sample.impl.NameKeeperImpl;
 import spikes.lego.container.Container;
-import spikes.lego.store.ObjectStore;
-import spikes.lego.store.impl.ObjectStoreImpl;
+import spikes.lego.container.Injector;
+import spikes.legobricks.name.NameKeeper;
+import spikes.legobricks.name.impl.NameKeeperImpl;
+import spikes.legobricks.store.ObjectStore;
+import spikes.legobricks.store.impl.ObjectStoreImpl;
+import wheel.lang.Casts;
 
 public class SimpleContainer implements Container {
 
@@ -33,9 +35,9 @@ public class SimpleContainer implements Container {
 
 	private <T> T lookup(Class<T> clazz, T component) {
 		if(ObjectStore.class.equals(clazz)) {
-			component = (T) new ObjectStoreImpl();
+			component = Casts.uncheckedGenericCast(new ObjectStoreImpl());
 		} else if(NameKeeper.class.equals(clazz)) {
-			component = (T) new NameKeeperImpl();
+			component = Casts.uncheckedGenericCast(new NameKeeperImpl());
 		}
 		return component;
 	}

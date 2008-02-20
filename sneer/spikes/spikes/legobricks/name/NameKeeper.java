@@ -1,4 +1,4 @@
-package spikes.lego.app.sample;
+package spikes.legobricks.name;
 
 public interface NameKeeper {
 

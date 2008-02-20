@@ -1,4 +1,4 @@
-package spikes.lego.container.impl;
+package spikes.lego.container;
 
 public interface Injector
 {

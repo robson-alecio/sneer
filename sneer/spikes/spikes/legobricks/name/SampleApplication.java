@@ -1,11 +1,11 @@
-package spikes.lego.app.sample;
+package spikes.legobricks.name;
 
 import javax.swing.JOptionPane;
 
 import spikes.lego.Brick;
-import spikes.lego.app.Application;
+import spikes.lego.app.Toy;
 
-public class SampleApplication implements Application {
+public class SampleApplication implements Toy {
 
 	@Brick
 	private NameKeeper keeper;

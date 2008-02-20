@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import spikes.lego.Brick;
 import spikes.lego.container.Container;
+import spikes.lego.container.Injector;
 import spikes.lego.utils.FieldUtils;
 
 public class FieldInjector 

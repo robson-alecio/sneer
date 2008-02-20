@@ -6,7 +6,7 @@ import java.util.List;
 
 public class FieldUtils
 {
-	public static List<Field> getAllFields(Class beanClass)
+	public static List<Field> getAllFields(Class<?> beanClass)
 	{
 		List<Field> result = new ArrayList<Field>();
 		do
@@ -19,7 +19,7 @@ public class FieldUtils
 		return result;
 	}
 
-	private static void collect(Class beanClass, List<Field> result)
+	private static void collect(Class<?> beanClass, List<Field> result)
     {
 		Field[] declared = beanClass.getDeclaredFields();
 		for (Field field : declared)
@@ -28,7 +28,7 @@ public class FieldUtils
         }
     }
 	
-	public static Field getField(Class beanClass,String name)
+	public static Field getField(Class<?> beanClass,String name)
 	{
 		List<Field> allFields = getAllFields(beanClass);
 		for (Field field : allFields)

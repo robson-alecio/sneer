@@ -31,7 +31,7 @@ public class Main {
 		//PluginLoader loader = new PluginLoader("spikes.vitor.security.BadImportPlugin");
 		//PluginRunner runner = new PluginRunner(plugins, loader.getPlugin());		
 		
-		//runner.start();
+		//runner.start(); //
 		
 		Thread runner = new Thread(plugins, "Swing plugin") {
 			@Override

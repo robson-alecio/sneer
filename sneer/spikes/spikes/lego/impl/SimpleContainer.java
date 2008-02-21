@@ -4,14 +4,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 import spikes.lego.Container;
+import spikes.lego.LegoException;
 import spikes.lego.Startable;
+import spikes.lego.utils.ObjectUtils;
 import spikes.legobricks.NameGui;
 import spikes.legobricks.name.NameKeeper;
 import spikes.legobricks.name.impl.NameKeeperImpl;
+import spikes.legobricks.security.Sentinel;
+import spikes.legobricks.security.impl.SentinelImpl;
 import spikes.legobricks.store.ObjectStore;
 import spikes.legobricks.store.impl.ObjectStoreImpl;
 import spikes.legobricks.threadpool.ThreadPool;
 import spikes.legobricks.threadpool.impl.ThreadPoolImpl;
+import wheel.io.ui.User;
+import wheel.io.ui.impl.JOptionPaneUser;
 
 public class SimpleContainer implements Container {
 
@@ -22,6 +28,13 @@ public class SimpleContainer implements Container {
 	public SimpleContainer() {
 		_injector = new FieldInjector(this);
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T produce(String className) {
+		return (T) produce(ObjectUtils.loadClass(className));
+	}
+
 	
 	@Override
 	@SuppressWarnings("unchecked")
@@ -44,6 +57,10 @@ public class SimpleContainer implements Container {
 
 	@SuppressWarnings("unchecked") //Refactor Try to use Casts.unchecked..()
 	private <T> T lookup(Class<T> clazz) {
+		
+		if(Container.class.equals(clazz))
+			return (T) this;
+
 		if(ObjectStore.class.equals(clazz))
 			return (T) new ObjectStoreImpl();
 		
@@ -55,8 +72,14 @@ public class SimpleContainer implements Container {
 
 		if(ThreadPool.class.equals(clazz))
 			return (T) new ThreadPoolImpl();
-			
-		throw new IllegalStateException("Could not find " + clazz);
+
+		if(Sentinel.class.equals(clazz))
+			return (T) new SentinelImpl();
+
+		if(User.class.equals(clazz))
+			return (T) new JOptionPaneUser("Sneer",null);
+
+		throw new LegoException("Could not find " + clazz);
 	}
 
 
@@ -64,9 +87,7 @@ public class SimpleContainer implements Container {
 		try {
 			_injector.inject(component);
 		} catch (Throwable t) {
-			//Fix: rethrow this exception
-			throw new RuntimeException("Error injecting dependencies on: "+component, t);
+			throw new LegoException("Error injecting dependencies on: "+component, t);
 		}
 	}
-	
 }

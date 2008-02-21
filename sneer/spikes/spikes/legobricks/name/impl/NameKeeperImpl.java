@@ -19,7 +19,7 @@ public class NameKeeperImpl implements NameKeeper {
 
 	@Override
 	public void setName(String name) {
-		_name = name;
 		_store.store(_name);
+		_name = name;
 	}
 }

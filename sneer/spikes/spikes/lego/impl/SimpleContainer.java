@@ -19,6 +19,9 @@ import spikes.legobricks.threadpool.impl.ThreadPoolImpl;
 import wheel.io.ui.User;
 import wheel.io.ui.impl.JOptionPaneUser;
 
+/**
+ * This is a dam simple container which will be replaced soon!
+ */
 public class SimpleContainer implements Container {
 
 	private Map<Class<?>, Object> registry = new HashMap<Class<?>, Object>();
@@ -57,6 +60,10 @@ public class SimpleContainer implements Container {
 
 	@SuppressWarnings("unchecked") //Refactor Try to use Casts.unchecked..()
 	private <T> T lookup(Class<T> clazz) {
+
+		/*
+		 * I feel dirty. But we will replace this class soon.
+		 */
 		
 		if(Container.class.equals(clazz))
 			return (T) this;

@@ -1,15 +1,14 @@
 package spikes.klaus.classloading;
 
 import java.io.RandomAccessFile;
+import java.security.Policy;
+
+import spikes.vitor.security.PolicySpike;
+import spikes.vitor.security.SpikeProtectionDomain;
 
 public class Main extends ClassLoader {
 
 	public static void main(String[] args) throws Exception {
-//		Class<?> clazz = new URLClassLoader(new URL[] { jar.toURI().toURL() }).loadClass(className);
-//		clazz.getMethod("main", new Class[] { String[].class }).invoke(null, new Object[] { args });
-
-//		ClassLoader loader = loader();
-//		loader.loadClass("spikes.klaus.classloading.Main");
 
 		new Main().run();
 
@@ -19,8 +18,11 @@ public class Main extends ClassLoader {
 		RandomAccessFile file = new RandomAccessFile("bin/spikes/klaus/classloading/HelloWorld.class", "r");
 		byte[] bytecode = new byte[(int)file.length()];
 		file.readFully(bytecode);
-        Class<?> clazz = defineClass("spikes.klaus.classloading.HelloWorld", bytecode, 0, bytecode.length);
-		clazz.getMethod("run", new Class[] {}).invoke(null, new Object[] {});
+        Class<?> clazz = defineClass("spikes.klaus.classloading.HelloWorld", bytecode, 0, bytecode.length, new SpikeProtectionDomain());
+        
+        Policy.setPolicy(new PolicySpike());
+        System.setSecurityManager(new SecurityManager());
+		clazz.newInstance();
 	}
 
 //	private static ClassLoader loader() {

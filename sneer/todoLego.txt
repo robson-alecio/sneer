@@ -1,6 +1,6 @@
 ﻿Lego Component Model for Sneer - Brainstorming
 
-- Runtime
+- MINIMAL Runtime
   - Hot Deploy/Undeploy
   - Runnable Components   
     - Simple Life Cycle
@@ -15,12 +15,16 @@
     - Constructor parameters  
   - Exceptions
     - RuntimeExceptions - should be thrown only if caller violates preconditions (Ex: IllegalParameter). All other Exceptions should be checked (Ex: IO Error, Resource not found, etc). 
-  - State Prevalence?
+
+- State Prevalence?
 
 - Management
   - Security
     - Native Components - Require JNI (Full-Trust) Security Clearance, even for verification. Warn user.
-
+  - Download from Peer - Bring dependencies too.
+  - Ease of Coding - Allow bricks in other languages
+    - Conversion to Java on the fly.
+    - Interpreters. 
 
 Future Ideas
   - Namespace Economy - Consider loosening TCOB1

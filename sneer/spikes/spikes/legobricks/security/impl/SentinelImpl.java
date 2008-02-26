@@ -4,9 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import spikes.lego.Brick;
-import spikes.lego.Container;
-import spikes.lego.LegoException;
-import spikes.lego.Toy;
 import spikes.legobricks.security.Sentinel;
 import spikes.legobricks.security.Sorry;
 import wheel.io.ui.CancelledByUser;
@@ -16,58 +13,43 @@ public class SentinelImpl implements Sentinel {
 
 	@Brick
 	private User user;
-	
-	@Brick
-	private Container container;
-	
-	private Map<String, Boolean> cache = new HashMap<String, Boolean>();
+		
+	private Map<String, Boolean> preAuthorizations = new HashMap<String, Boolean>();
 
 	
 	
 	@Override
 	public void check(String resourceName) {
-
-		Toy toy = findToy();
-		System.out.println(toy);
-		
+	
 		//check cache
-		Boolean b = cache.get(resourceName);
-		if(b != null && b) return;
+		Boolean preAuthorized = preAuthorizations.get(resourceName);
+		if (preAuthorized != null) {
+			if (preAuthorized) return;
+			throw createException(resourceName);
+		}
 		
 		Object response = null;
 		try {
 			response = user.choose("Allow access to "+resourceName+"?", "Always", "Yes", "No", "Never");
 		} catch (CancelledByUser e) {
 			response = "No";
-		} 
-		
-		if("No".equals(response) || "Never".equals(response)) {
-			if("Never".equals(response)) 
-				cache.put(resourceName, Boolean.FALSE);
-			
-			throw new Sorry("Access not allowed to "+resourceName);
 		}
-		if("Always".equals(response))
-			cache.put(resourceName, Boolean.TRUE);
-		
+
+		if("Yes".equals(response)) return;
+
+		if("Always".equals(response)) {
+			preAuthorizations.put(resourceName, Boolean.TRUE);
+			return;
+		}
+
+		if("Never".equals(response)) 
+			preAuthorizations.put(resourceName, Boolean.FALSE);
+			
+		throw createException(resourceName);
 	}
 
-	/*
-	 * Fix: this is broken. el.getClassnName() returns the implementation, of course, not the interface 
-	 * that is useful for toy finding.
-	 */
-	private Toy findToy() {
-		Toy result = null;
-		StackTraceElement[] elements = Thread.currentThread().getStackTrace();
-		for (StackTraceElement el : elements) {
-			try {
-				Object brick = container.produce(el.getClassName());
-				if(brick instanceof Toy)
-					result = (Toy) brick;
-			} catch (LegoException lex) {
-				//not a brick
-			}
-		}
-		return result;
+	private Sorry createException(String resourceName) {
+		return new Sorry("Access not allowed to "+resourceName);
 	}
+
 }

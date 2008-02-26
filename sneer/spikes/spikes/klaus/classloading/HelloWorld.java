@@ -3,6 +3,8 @@ package spikes.klaus.classloading;
 import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 import javax.swing.JFrame;
 
@@ -10,7 +12,18 @@ import wheel.lang.Threads;
 
 public class HelloWorld implements Runnable {
 
-	public HelloWorld() throws IOException {
+	public HelloWorld() throws Exception {
+		AccessController.doPrivileged(new PrivilegedAction<Object>() { @Override public Object run() {
+			try {
+				accessSecureResources();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+			return null;
+		}});
+	}
+
+	private void accessSecureResources() throws IOException {
 		//System.out.println("HelloWorld");
 		System.err.println("HelloWorld");
 		Thread.currentThread().setPriority(Thread.MIN_PRIORITY);

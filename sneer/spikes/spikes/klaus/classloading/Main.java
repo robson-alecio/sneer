@@ -25,18 +25,5 @@ public class Main extends ClassLoader {
 		clazz.newInstance();
 	}
 
-//	private static ClassLoader loader() {
-//		return new ClassLoader() {
-//			
-//			@Override
-//	        public Class<?> findClass(String name) {
-////	            byte[] b = loadClassData(name);
-////	            return defineClass(name, b, 0, b.length);
-//	        	
-//	        	System.out.println(name);
-//	        	return null;
-//	        }
-//		};
-//	}
 
 }

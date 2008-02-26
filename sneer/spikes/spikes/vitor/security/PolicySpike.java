@@ -52,6 +52,7 @@ public class PolicySpike extends Policy {
 //			System.out.println("ALL PERMISSIONS");
 //			return false;
 //		}
+		System.err.println("  Domain: " + domain.getClass());
 		return true;
 	}
 }

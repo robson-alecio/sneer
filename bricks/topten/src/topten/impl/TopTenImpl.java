@@ -2,8 +2,8 @@ package topten.impl;
 
 import java.util.List;
 
-import spikes.lego.Brick;
-import spikes.lego.Startable;
+import sneer.lego.Brick;
+import sneer.lego.Startable;
 import topten.TopTen;
 import console.Console;
 

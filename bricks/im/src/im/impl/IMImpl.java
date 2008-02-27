@@ -1,7 +1,7 @@
 package im.impl;
 
 import im.IM;
-import spikes.lego.Brick;
+import sneer.lego.Brick;
 import console.Console;
 
 public class IMImpl implements IM {

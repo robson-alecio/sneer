@@ -19,5 +19,6 @@ public class Main {
 		IM im = container.produce(IM.class);
 		im.sendMessage("leandro", "Eu te amo. PS: Klaus");
 		TopTen topTen = container.produce(TopTen.class);
+		topTen.toString();
 	}
 }

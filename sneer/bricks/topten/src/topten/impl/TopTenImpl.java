@@ -13,7 +13,7 @@ public class TopTenImpl implements TopTen, Startable {
 	private Console console;
 	
 	@Override
-	public List topTen() {
+	public List<?> topTen() {
 		throw new wheel.lang.exceptions.NotImplementedYet();
 	}
 

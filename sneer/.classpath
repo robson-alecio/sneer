@@ -12,11 +12,9 @@
 	<classpathentry kind="src" path="apps/addressbook"/>
 	<classpathentry kind="src" path="apps/frozenbubble"/>
 	<classpathentry kind="src" path="test"/>
-	<classpathentry kind="src" path="bricks/namekeeper/src"/>
 	<classpathentry kind="src" output="bricks/topten/bin" path="bricks/topten/src"/>
 	<classpathentry kind="src" output="bricks/console/bin" path="bricks/console/src"/>
 	<classpathentry kind="src" output="bricks/im/bin" path="bricks/im/src"/>
-	<classpathentry kind="src" path="bricks/p2p/src"/>
 	<classpathentry kind="lib" path="lib/prevayler-2.3.jar"/>
 	<classpathentry kind="lib" path="lib/xstream/xstream-1.2.2.jar"/>
 	<classpathentry kind="lib" path="lib/xstream/xpp3_min-1.1.3.4.O.jar"/>

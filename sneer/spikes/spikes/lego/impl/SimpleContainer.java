@@ -1,21 +1,17 @@
 package spikes.lego.impl;
 
+import java.io.File;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.io.FilenameUtils;
+
+import spikes.lego.BrickClassLoader;
 import spikes.lego.Container;
 import spikes.lego.LegoException;
 import spikes.lego.Startable;
 import spikes.lego.utils.ObjectUtils;
-import spikes.legobricks.NameGui;
-import spikes.legobricks.name.NameKeeper;
-import spikes.legobricks.name.impl.NameKeeperImpl;
-import spikes.legobricks.security.Sentinel;
-import spikes.legobricks.security.impl.SentinelImpl;
-import spikes.legobricks.store.ObjectStore;
-import spikes.legobricks.store.impl.ObjectStoreImpl;
-import spikes.legobricks.threadpool.ThreadPool;
-import spikes.legobricks.threadpool.impl.ThreadPoolImpl;
 import wheel.io.ui.User;
 import wheel.io.ui.impl.JOptionPaneUser;
 
@@ -27,10 +23,11 @@ public class SimpleContainer implements Container {
 	private Map<Class<?>, Object> registry = new HashMap<Class<?>, Object>();
 	
 	private Injector _injector;
-	
+
 	public SimpleContainer() {
 		_injector = new FieldInjector(this);
 	}
+
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -45,12 +42,17 @@ public class SimpleContainer implements Container {
 		T component = (T) registry.get(clazz);
 		if(component != null) return component;
 		
-		component = instantiate(clazz);
+		try {
+			component = instantiate(clazz);
+		} catch (Exception e) {
+			throw new LegoException("Error producing: "+clazz.getName(), e);
+		}
+		
 		registry.put(clazz, component);
 		return component;
 	}
 
-	private <T> T instantiate(Class<T> clazz) {
+	private <T> T instantiate(Class<T> clazz) throws Exception {
 		T component = lookup(clazz);
 		inject(component);
 		if (component instanceof Startable)
@@ -59,36 +61,36 @@ public class SimpleContainer implements Container {
 	}
 
 	@SuppressWarnings("unchecked") //Refactor Try to use Casts.unchecked..()
-	private <T> T lookup(Class<T> clazz) {
+	private <T> T lookup(Class<T> clazz) throws Exception {
 
-		/*
-		 * I feel dirty. But we will replace this class soon.
-		 */
+		//FixUrgent: hack!
+		if(User.class.equals(clazz)) {
+			return (T) new JOptionPaneUser("Sneer", null);
+		}
 		
-		if(Container.class.equals(clazz))
-			return (T) this;
-
-		if(ObjectStore.class.equals(clazz))
-			return (T) new ObjectStoreImpl();
+		String appRoot = getAppRoot();
+		String dirName = FilenameUtils.concat(appRoot, clazz.getName()); 
+		URL url = new URL("file://"+dirName+"/");
 		
-		if(NameKeeper.class.equals(clazz))
-			return (T) new NameKeeperImpl();
-
-		if(NameGui.class.equals(clazz))
-			return (T) new NameGui();
-
-		if(ThreadPool.class.equals(clazz))
-			return (T) new ThreadPoolImpl();
-
-		if(Sentinel.class.equals(clazz))
-			return (T) new SentinelImpl();
-
-		if(User.class.equals(clazz))
-			return (T) new JOptionPaneUser("Sneer",null);
-
-		throw new LegoException("Could not find " + clazz);
+		String implementation = getImplementation(clazz); 
+		BrickClassLoader cl = new BrickClassLoader(implementation, url);
+		System.out.println("loading "+implementation+" from "+url);
+		Class impl = cl.loadClass(implementation);
+		
+		return (T) impl.newInstance();
 	}
 
+	private String getImplementation(Class<?> clazz) {
+		String name = clazz.getName();
+		int index = name.lastIndexOf(".");
+		return name.substring(0, index) + ".impl" + name.substring(index) + "Impl";
+	}
+
+	private String getAppRoot() {
+		//Fix: replace by a Brick
+		String appRoot = System.getProperty("user.home") + File.separator + ".sneer" + File.separator + "apps";
+		return appRoot;
+	}
 
 	private void inject(Object component) {
 		try {

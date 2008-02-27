@@ -1,8 +1,10 @@
 package spikes.klaus.classloading;
 
 import java.io.RandomAccessFile;
+import java.net.URL;
 import java.security.Policy;
 
+import spikes.lego.BrickClassLoader;
 import spikes.vitor.security.PolicySpike;
 import spikes.vitor.security.SpikeProtectionDomain;
 
@@ -10,7 +12,14 @@ public class Main extends ClassLoader {
 
 	public static void main(String[] args) throws Exception {
 
-		new Main().run();
+		Policy.setPolicy(new PolicySpike());
+		System.setSecurityManager(new SecurityManager());
+
+		Object h1 = newHello("file:///home/leandro/.sneer/apps/hello1/");
+		System.out.println(h1.getClass().getClassLoader());
+		
+		Object h2 = newHello("file:///home/leandro/.sneer/apps/hello2/");
+		System.out.println(h2.getClass().getClassLoader());
 
 	}
 
@@ -25,5 +34,16 @@ public class Main extends ClassLoader {
 		clazz.newInstance();
 	}
 
+	
+	
+	private static Object newHello(String url) throws Exception {
+		System.out.println(url);
+		ClassLoader cl = new BrickClassLoader(new URL[]{new URL(url)});
+		Class clazz = cl.loadClass("spikes.klaus.classloading.HelloWorld");
+		return clazz.newInstance();
+	}
+
+	
+	
 
 }

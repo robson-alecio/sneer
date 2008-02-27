@@ -7,7 +7,10 @@ import java.security.Policy;
 import java.security.ProtectionDomain;
 import java.security.Provider;
 
+import spikes.lego.BrickClassLoader;
+
 public class PolicySpike extends Policy {
+
 	@Override
 	public Parameters getParameters() {
 		// Implement Auto-generated method stub
@@ -45,14 +48,19 @@ public class PolicySpike extends Policy {
 	}
 
 	@Override
-	public boolean implies(ProtectionDomain domain,
-			Permission permission) {
+	public boolean implies(ProtectionDomain domain, Permission permission) {
 		//System.out.println(">>>>>>>> Domain: " + domain.getClass() +	"  Permission: " + permission);
 //		if (permission instanceof AllPermission) {
 //			System.out.println("ALL PERMISSIONS");
 //			return false;
 //		}
-		System.err.println("  Domain: " + domain.getClass());
+		//if(permission instanceof SocketPermission) return false;
+		ClassLoader cl = domain.getClassLoader();
+		if(cl instanceof BrickClassLoader) {
+			BrickClassLoader bcl = (BrickClassLoader) cl;
+			System.out.println("Checking "+permission+" access for: "+bcl.getMainClass());
+		}
 		return true;
 	}
+
 }

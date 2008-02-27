@@ -40,6 +40,10 @@ public class SimpleContainer implements Container {
 		T component = (T) registry.get(clazz);
 		if(component != null) return component;
 		
+		if(clazz.isAssignableFrom(Container.class)) {
+			return (T) this;
+		}
+		
 		try {
 			component = instantiate(clazz);
 		} catch (Exception e) {

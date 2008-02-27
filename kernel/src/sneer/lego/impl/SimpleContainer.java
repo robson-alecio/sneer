@@ -1,4 +1,4 @@
-package spikes.lego.impl;
+package sneer.lego.impl;
 
 import java.io.File;
 import java.net.URL;
@@ -7,13 +7,11 @@ import java.util.Map;
 
 import org.apache.commons.io.FilenameUtils;
 
-import spikes.lego.BrickClassLoader;
-import spikes.lego.Container;
-import spikes.lego.LegoException;
-import spikes.lego.Startable;
-import spikes.lego.utils.ObjectUtils;
-import wheel.io.ui.User;
-import wheel.io.ui.impl.JOptionPaneUser;
+import sneer.lego.BrickClassLoader;
+import sneer.lego.Container;
+import sneer.lego.LegoException;
+import sneer.lego.Startable;
+import sneer.lego.utils.ObjectUtils;
 
 /**
  * This is a dam simple container which will be replaced soon!
@@ -63,11 +61,6 @@ public class SimpleContainer implements Container {
 	@SuppressWarnings("unchecked") //Refactor Try to use Casts.unchecked..()
 	private <T> T lookup(Class<T> clazz) throws Exception {
 
-		//FixUrgent: hack!
-		if(User.class.equals(clazz)) {
-			return (T) new JOptionPaneUser("Sneer", null);
-		}
-		
 		String appRoot = getAppRoot();
 		String dirName = FilenameUtils.concat(appRoot, clazz.getName()); 
 		URL url = new URL("file://"+dirName+"/");

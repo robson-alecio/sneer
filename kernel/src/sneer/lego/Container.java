@@ -1,4 +1,4 @@
-package spikes.lego;
+package sneer.lego;
 
 public interface Container {
 

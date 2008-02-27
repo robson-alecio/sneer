@@ -1,4 +1,4 @@
-package spikes.lego;
+package sneer.lego;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

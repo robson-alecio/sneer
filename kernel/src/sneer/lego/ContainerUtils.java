@@ -1,6 +1,6 @@
-package spikes.lego;
+package sneer.lego;
 
-import spikes.lego.impl.SimpleContainer;
+import sneer.lego.impl.SimpleContainer;
 
 public class ContainerUtils {
 	

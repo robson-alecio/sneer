@@ -1,4 +1,4 @@
-package spikes.lego.impl;
+package sneer.lego.impl;
 
 public interface Injector
 {

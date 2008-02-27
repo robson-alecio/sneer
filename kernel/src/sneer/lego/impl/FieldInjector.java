@@ -1,10 +1,11 @@
-package spikes.lego.impl;
+package sneer.lego.impl;
 
 import java.lang.reflect.Field;
 import java.util.List;
-import spikes.lego.Brick;
-import spikes.lego.Container;
-import spikes.lego.utils.FieldUtils;
+
+import sneer.lego.Brick;
+import sneer.lego.Container;
+import sneer.lego.utils.FieldUtils;
 
 public class FieldInjector 
     implements Injector

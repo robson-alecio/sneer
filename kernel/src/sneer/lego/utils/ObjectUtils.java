@@ -1,4 +1,4 @@
-package spikes.lego.utils;
+package sneer.lego.utils;
 
 public class ObjectUtils
 {

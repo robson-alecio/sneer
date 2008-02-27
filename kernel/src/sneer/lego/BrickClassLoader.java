@@ -1,4 +1,4 @@
-package spikes.lego;
+package sneer.lego;
 
 import java.net.URL;
 import java.net.URLClassLoader;

@@ -3,7 +3,7 @@ package spikes.legobricks.security.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import spikes.lego.Brick;
+import sneer.lego.Brick;
 import spikes.legobricks.security.Sentinel;
 import spikes.legobricks.security.Sorry;
 import wheel.io.ui.CancelledByUser;

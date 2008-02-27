@@ -1,6 +1,6 @@
 package spikes.legobricks.name.impl;
 
-import spikes.lego.Brick;
+import sneer.lego.Brick;
 import spikes.legobricks.name.NameKeeper;
 import spikes.legobricks.store.ObjectStore;
 

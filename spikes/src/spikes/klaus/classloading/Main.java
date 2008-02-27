@@ -3,7 +3,7 @@ package spikes.klaus.classloading;
 import java.net.URL;
 import java.security.Policy;
 
-import spikes.lego.BrickClassLoader;
+import sneer.lego.BrickClassLoader;
 import spikes.vitor.security.PolicySpike;
 
 public class Main extends ClassLoader {

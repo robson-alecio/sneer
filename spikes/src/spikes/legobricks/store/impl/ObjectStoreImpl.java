@@ -1,6 +1,6 @@
 package spikes.legobricks.store.impl;
 
-import spikes.lego.Brick;
+import sneer.lego.Brick;
 import spikes.legobricks.security.Sentinel;
 import spikes.legobricks.store.ObjectStore;
 

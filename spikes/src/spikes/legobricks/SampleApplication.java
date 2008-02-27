@@ -1,7 +1,7 @@
 package spikes.legobricks;
 
-import spikes.lego.Container;
-import spikes.lego.ContainerUtils;
+import sneer.lego.Container;
+import sneer.lego.ContainerUtils;
 import wheel.lang.Threads;
 
 public class SampleApplication  {

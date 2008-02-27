@@ -19,12 +19,11 @@ import javax.swing.event.TreeWillExpandListener;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 
-import sneer.kernel.gui.contacts.ContactTreeCellRenderer;
 import wheel.lang.Threads;
 
 public class TreeModelExample extends JFrame {
 
-	final static ImageIcon ICON = new ImageIcon(ContactTreeCellRenderer.class.getResource("/spikes/gandhi/treemodel/icon.gif"));
+	final static ImageIcon ICON = new ImageIcon(TreeModelExample.class.getResource("/spikes/gandhi/treemodel/icon.gif"));
 	
 	final DefaultTreeModel _model;
 	

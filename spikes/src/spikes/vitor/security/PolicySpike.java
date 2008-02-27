@@ -7,7 +7,7 @@ import java.security.Policy;
 import java.security.ProtectionDomain;
 import java.security.Provider;
 
-import spikes.lego.BrickClassLoader;
+import sneer.lego.BrickClassLoader;
 
 public class PolicySpike extends Policy {
 

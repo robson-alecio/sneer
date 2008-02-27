@@ -23,7 +23,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 
-import sneer.kernel.gui.contacts.MePanel;
 import wheel.graphics.JpgImage;
 import wheel.io.ui.Action;
 import wheel.io.ui.User;
@@ -34,7 +33,7 @@ import wheel.reactive.Signal;
 public class ReactiveJpgImageField extends JPanel{
 	
 	final static String IMAGE_PATH = "/sneer/kernel/gui/contacts/images/";
-	final static ImageIcon NO_IMAGE = new ImageIcon(MePanel.class.getResource(IMAGE_PATH + "questionmark.jpg"));
+	final static ImageIcon NO_IMAGE = new ImageIcon(ReactiveJpgImageField.class.getResource(IMAGE_PATH + "questionmark.jpg"));
 	
 	private JLabel _label = new JLabel();
 	private final Signal<JpgImage> _source;

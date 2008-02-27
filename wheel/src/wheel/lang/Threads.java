@@ -44,5 +44,8 @@ public class Threads {
 		}
 		
 	}
-
+	
+	public static ClassLoader contextClassLoader() {
+		return Thread.currentThread().getContextClassLoader();
+	}
 }

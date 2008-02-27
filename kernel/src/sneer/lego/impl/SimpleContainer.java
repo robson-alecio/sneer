@@ -6,17 +6,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import sneer.compiler.impl.JCICompiler;
 import sneer.lego.BrickClassLoader;
 import sneer.lego.Container;
 import sneer.lego.LegoException;
 import sneer.lego.Startable;
 import sneer.lego.utils.ObjectUtils;
+import wheel.lang.Threads;
 
 /**
  * This is a dam simple container which will be replaced soon!
  */
 public class SimpleContainer implements Container {
+	
+	private static final Logger log = LoggerFactory.getLogger(SimpleContainer.class);
 
 	private Map<Class<?>, Object> registry = new HashMap<Class<?>, Object>();
 	
@@ -70,14 +76,29 @@ public class SimpleContainer implements Container {
 		URL url = new URL("file://"+dirName+"/");
 		
 		String implementation = getImplementation(clazz); 
-		BrickClassLoader cl = new BrickClassLoader(implementation, url);
-		System.out.println("loading "+implementation+" from "+url);
+		ClassLoader cl = getClassLoader(implementation, url);
 		Class impl = cl.loadClass(implementation);
 		
 		return (T) impl.newInstance();
 	}
 
+	//FixUrgent: hack to allow using bricks that are not deployed, but present in your classpath. 
+	private ClassLoader getClassLoader(String impl, URL url) {
+		File file = new File(url.getFile());
+		if(!file.exists()) {
+			log.info("loading: {} from the System classpath", impl);
+			return Threads.contextClassLoader();
+		}
+		
+		log.info("loading: {} from: {}", impl, url);
+		return new BrickClassLoader(impl, url);
+	}
+
+
 	private String getImplementation(Class<?> clazz) {
+		if(clazz.equals(sneer.compiler.Compiler.class)) {
+			return JCICompiler.class.getName();
+		}
 		String name = clazz.getName();
 		int index = name.lastIndexOf(".");
 		return name.substring(0, index) + ".impl" + name.substring(index) + "Impl";
@@ -85,7 +106,7 @@ public class SimpleContainer implements Container {
 
 	private String getAppRoot() {
 		//Fix: replace by a Brick
-		String appRoot = System.getProperty("user.home") + File.separator + ".sneer" + File.separator + "apps";
+		String appRoot = System.getProperty("user.home") + File.separator + ".sneer" + File.separator + "bricks";
 		return appRoot;
 	}
 

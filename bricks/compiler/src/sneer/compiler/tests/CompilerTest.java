@@ -21,7 +21,7 @@ public class CompilerTest extends BrickTestSupport {
 
 		String fileName= FilenameUtils.concat(System.getProperty("user.dir"), "bricks/compiler/src/sneer/compiler/tests/sample");
 		File src = new File(fileName);
-		assertTrue("Can't find diretctoy "+fileName, src.exists());
+		assertTrue("Can't find directory "+fileName, src.exists());
 		File dst = getWorkDirectory();
 		Result result = compiler.compile(src, dst);
 		assertTrue(result.success());

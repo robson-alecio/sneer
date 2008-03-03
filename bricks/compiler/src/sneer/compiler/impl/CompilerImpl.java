@@ -27,7 +27,7 @@ public class CompilerImpl implements Compiler {
 		
 		List<File> files = buildSourceList(source);
 		File tmpFile = createArgsFileForJavac(files);
-		log.info("Compiling {} files", files.size());
+		log.info("Compiling {} files to {}", files.size(), destination);
 
 		String[] parameters = {
 				"-classpath", buildClassPath(),

@@ -9,7 +9,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sneer.compiler.impl.JCICompiler;
 import sneer.lego.BrickClassLoader;
 import sneer.lego.Container;
 import sneer.lego.LegoException;
@@ -96,9 +95,6 @@ public class SimpleContainer implements Container {
 
 
 	private String getImplementation(Class<?> clazz) {
-		if(clazz.equals(sneer.compiler.Compiler.class)) {
-			return JCICompiler.class.getName();
-		}
 		String name = clazz.getName();
 		int index = name.lastIndexOf(".");
 		return name.substring(0, index) + ".impl" + name.substring(index) + "Impl";

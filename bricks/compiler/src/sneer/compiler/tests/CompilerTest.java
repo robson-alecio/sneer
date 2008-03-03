@@ -19,7 +19,7 @@ public class CompilerTest extends BrickTestSupport {
 	@Test
 	public void testCompile() throws Exception {
 
-		String fileName= FilenameUtils.concat(System.getProperty("user.dir"), "bricks/compiler/src/sneer/compiler/tests/sample");
+		String fileName = FilenameUtils.concat(System.getProperty("user.dir"), "bricks/compiler/src/sneer/compiler/tests/sample");
 		File src = new File(fileName);
 		assertTrue("Can't find directory "+fileName, src.exists());
 		File dst = getWorkDirectory();

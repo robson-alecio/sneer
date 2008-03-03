@@ -5,10 +5,11 @@ import java.io.File;
 import org.apache.commons.jci.compilers.CompilationResult;
 import org.apache.commons.jci.compilers.JavaCompiler;
 import org.apache.commons.jci.compilers.JavaCompilerFactory;
+import org.apache.commons.jci.problems.CompilationProblem;
 import org.apache.commons.jci.readers.FileResourceReader;
 import org.apache.commons.jci.stores.FileResourceStore;
 
-import sneer.compiler.CompilationException;
+import sneer.compiler.CompilerException;
 import sneer.compiler.Compiler;
 import sneer.compiler.Result;
 import sneer.lego.Brick;
@@ -31,18 +32,25 @@ public class JCICompiler implements Compiler, Startable {
 	}
 
 	@Override
-	public Result compile(File source, File destination) throws CompilationException {
+	public Result compile(File source, File destination) throws CompilerException {
 		log.info("Compiling source folder {} to {}", source, destination);
 		String ROOT = "/home/leandro/dev/projects/sneer-TRUNK/bricks/compiler";
 		String[] files = new String[]{
-				ROOT+"./src/sneer/compiler/tests/sample/SampleBrick.java",
-				ROOT+"./src/sneer/compiler/tests/sample/impl/SampleBrickImpl.java",
+				ROOT+"/src/sneer/compiler/tests/sample/SampleBrick.java",
+				ROOT+"/src/sneer/compiler/tests/sample/impl/SampleBrickImpl.java",
 				};
 		CompilationResult result = compiler.compile(files, new FileResourceReader(source), new FileResourceStore(destination));
 
-		System.out.println( result.getErrors().length + " errors");
-		System.out.println( result.getWarnings().length + " warnings");
+		logErrorsAndWarnings(result);
 		return null;
+	}
+
+	private void logErrorsAndWarnings(CompilationResult result) {
+		CompilationProblem[] errors = result.getErrors();
+		log.error("Found"+errors.length + " errors");
+		for (CompilationProblem error : errors) {
+			log.error("  "+error.getFileName() +" : "+error.getMessage()+"\n");
+		}
 	}
 
 

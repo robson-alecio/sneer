@@ -1,5 +1,6 @@
 package sneer.compiler.tests;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -9,6 +10,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 
 import sneer.compiler.Result;
+import sneer.compiler.impl.CompilationError;
 import sneer.lego.Brick;
 import sneer.lego.tests.BrickTestSupport;
 
@@ -27,6 +29,10 @@ public class CompilerTest extends BrickTestSupport {
 	public void testBadCode() throws Exception {
 		Result result = compile("bricks/compiler/test-resources/badSample");
 		assertFalse(result.success());
+		CompilationError error = result.getErrors().get(0);
+		assertEquals(3, error.getLineNumber());
+		assertEquals("<identifier> expected", error.getMessage());
+		assertEquals("BadSample.java", FilenameUtils.getName(error.getFileName()));
 	}
 
 	@Test

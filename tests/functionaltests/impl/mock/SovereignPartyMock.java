@@ -8,6 +8,7 @@ public class SovereignPartyMock implements SovereignParty {
 	
 	public SovereignPartyMock(String name) {
 		_name = name;
+		_name.toString();
 	}
 
 	@Override

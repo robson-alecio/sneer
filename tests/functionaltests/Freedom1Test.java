@@ -5,22 +5,26 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import sneer.lego.Brick;
+import sneer.lego.tests.BrickTestSupport;
 
-public class Freedom1Test {
+public class Freedom1Test extends BrickTestSupport {
 
+	
 	@Brick
-	private SovereignParty _subject;
+	private SovereignCommunity community; 
 	
 	@Test
 	public void testOwnName() {
-		changeNameTo("Klaus W");
-		changeNameTo("Wuestefeld, Klaus");
-		changeNameTo("Klaus Wuestefeld");
+		
+		SovereignParty subject = community.createParty("Klaus");
+		changeNameTo(subject, "Klaus W");
+		changeNameTo(subject, "Wuestefeld, Klaus");
+		changeNameTo(subject, "Klaus Wuestefeld");
 	}
 
-	private void changeNameTo(String newName) {
-		_subject.setOwnName(newName);
-		assertEquals(newName, _subject.ownName());
+	private void changeNameTo(SovereignParty subject, String newName) {
+		subject.setOwnName(newName);
+		assertEquals(newName, subject.ownName());
 	}
 
 }

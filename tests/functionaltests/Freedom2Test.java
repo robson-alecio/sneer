@@ -5,8 +5,9 @@ import static org.junit.Assert.assertSame;
 import org.junit.Test;
 
 import sneer.lego.Brick;
+import sneer.lego.tests.BrickTestSupport;
 
-public class Freedom2Test {
+public class Freedom2Test extends BrickTestSupport {
 
 	@Brick
 	private SovereignCommunity _subject;

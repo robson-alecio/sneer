@@ -7,7 +7,11 @@ public class ContainerUtils {
 	private static Container container; 
 	
 	public static Container getContainer() {
-		if(container == null) container = new SimpleContainer();
+		return getContainer(null);
+	}
+
+	public static Container getContainer(Binder binder) {
+		if(container == null) container = new SimpleContainer(binder);
 		return container;
 	}
 

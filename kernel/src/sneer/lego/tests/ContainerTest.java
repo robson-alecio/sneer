@@ -8,9 +8,12 @@ import java.security.Policy;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import sneer.lego.Binder;
 import sneer.lego.Brick;
 import sneer.lego.Container;
+import sneer.lego.impl.SimpleBinder;
 import sneer.lego.impl.SimpleContainer;
+import sneer.lego.tests.impl.MySample;
 import spikes.vitor.security.PolicySpike;
 import topten.TopTen;
 
@@ -25,6 +28,15 @@ public class ContainerTest extends BrickTestSupport {
 		assertTrue(Object.class.isAssignableFrom(Integer.class));
 		assertTrue(Number.class.isAssignableFrom(Integer.class));
 		assertTrue(Container.class.isAssignableFrom(SimpleContainer.class));
+	}
+	
+	@Test
+	public void testBinder() throws Exception {
+		Binder binder = new SimpleBinder();
+		binder.bind(Sample.class).to(MySample.class);
+		Container c = new SimpleContainer(binder);
+		Sample sample = c.produce(Sample.class);
+		assertTrue(sample instanceof MySample);
 	}
 	
 	@Ignore

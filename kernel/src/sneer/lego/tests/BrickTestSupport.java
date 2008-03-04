@@ -6,6 +6,7 @@ import java.net.URL;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.Before;
 
+import sneer.lego.Binder;
 import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
 import sneer.lego.impl.FieldInjector;
@@ -21,11 +22,16 @@ public class BrickTestSupport {
     {
     	if(container == null)
     	{
-    		container = ContainerUtils.getContainer();
+    		Binder binder = getBinder();
+    		container = ContainerUtils.getContainer(binder);
     	}
     	return container;
     }
 
+    protected Binder getBinder() {
+    	return null;
+    }
+    
 	@Before
 	public void injectDependencies()
 	    throws Exception

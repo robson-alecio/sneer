@@ -9,6 +9,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import sneer.lego.Binder;
 import sneer.lego.BrickClassLoader;
 import sneer.lego.Container;
 import sneer.lego.LegoException;
@@ -26,8 +27,11 @@ public class SimpleContainer implements Container {
 	private Map<Class<?>, Object> registry = new HashMap<Class<?>, Object>();
 	
 	private Injector _injector;
+	
+	private Binder _binder;
 
-	public SimpleContainer() {
+	public SimpleContainer(Binder binder) {
+		_binder = binder;
 		_injector = new FieldInjector(this);
 	}
 
@@ -77,8 +81,8 @@ public class SimpleContainer implements Container {
 		String implementation = getImplementation(clazz); 
 		ClassLoader cl = getClassLoader(implementation, url);
 		Class impl = cl.loadClass(implementation);
-		
-		return (T) impl.newInstance();
+		Object result = impl.newInstance(); 
+		return (T) result;
 	}
 
 	//FixUrgent: hack to allow using bricks that are not deployed, but present in your classpath. 
@@ -95,6 +99,11 @@ public class SimpleContainer implements Container {
 
 
 	private String getImplementation(Class<?> clazz) {
+		if(_binder != null) {
+			String result = _binder.lookup(clazz);
+			if(result != null) 
+				return result;
+		}
 		String name = clazz.getName();
 		int index = name.lastIndexOf(".");
 		return name.substring(0, index) + ".impl" + name.substring(index) + "Impl";

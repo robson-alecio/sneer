@@ -21,6 +21,6 @@ public class ObjectInputStreamWithClassLoader extends ObjectInputStream {
 
     @Override
 	protected Class<?> resolveClass(ObjectStreamClass objectStreamClass) throws ClassNotFoundException {
-    	return Class.forName(objectStreamClass.getName(), false, _loader); //Fix: Fix Prevayler version to be like this one.
+    	return Class.forName(objectStreamClass.getName(), false, _loader); //Fix: Prevayler version should be like this one.
     }
 }

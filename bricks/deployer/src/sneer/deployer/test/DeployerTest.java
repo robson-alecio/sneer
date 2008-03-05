@@ -41,6 +41,16 @@ public class DeployerTest extends BrickTestSupport {
 		deployer.deploy(brick);
 		//TODO: compare files, test compilation, etc
 	}
+	
+	@Test
+	public void testDependency() throws Exception {
+		String brickName = "notAlone";
+		String version = "1.0";
+		File root = getRoot("notAlone");
+		BrickFile brick = deployer.pack(root, brickName, version);
+		deployer.deploy(brick);
+		
+	}
 
 	private File getRoot(String name) {
 		String dir = System.getProperty("user.dir") + File.separator 

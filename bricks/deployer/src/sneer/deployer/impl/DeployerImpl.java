@@ -43,7 +43,7 @@ public class DeployerImpl implements Deployer {
 		JarFile file;
 		try {
 			file = runJarTool(brickName, version, path);
-			log.info("brick file {} created", file);
+			log.info("brick file {} created", file.getName());
 			return new BrickFile(file);
 		} catch (Exception e) {
 			throw new DeployerException("Error packing brick "+brickName+" ("+version+") from: "+path,e);

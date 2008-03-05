@@ -21,13 +21,13 @@ public class CompilerTest extends BrickTestSupport {
 	
 	@Test
 	public void testCompile() throws Exception {
-		Result result = compile("bricks/compiler/test-resources/sample");
+		Result result = compile("bricks/compiler/test-resources/sample", null);
 		assertTrue(result.success());
 	}
 	
 	@Test
 	public void testBadCode() throws Exception {
-		Result result = compile("bricks/compiler/test-resources/badSample");
+		Result result = compile("bricks/compiler/test-resources/badSample", null);
 		assertFalse(result.success());
 		CompilationError error = result.getErrors().get(0);
 		assertEquals(3, error.getLineNumber());
@@ -37,16 +37,23 @@ public class CompilerTest extends BrickTestSupport {
 
 	@Test
 	public void testEmptyDir() throws Exception {
-		Result result = compile("bricks/compiler/test-resources/empty");
+		Result result = compile("bricks/compiler/test-resources/empty", null);
 		assertFalse(result.success());
 	}
+
+	@Test
+	public void testWithExternalDependencies() throws Exception {
+		Result result = compile("bricks/compiler/test-resources/externalDependencies/src", "bricks/compiler/test-resources/externalDependencies/lib");
+		assertTrue(result.success());
+	}
 	
-	private Result compile(String sources) {
-		String fileName = FilenameUtils.concat(System.getProperty("user.dir"), sources);
-		File src = new File(fileName);
-		assertTrue("Can't find directory "+fileName, src.exists());
-		File dst = getWorkDirectory();
-		Result result = compiler.compile(src, dst);
+	private Result compile(String sources, String libs) {
+		String src = FilenameUtils.concat(System.getProperty("user.dir"), sources);
+		File libDir = null; 
+		if(libs != null) {
+			libDir = new File(FilenameUtils.concat(System.getProperty("user.dir"), libs));
+		}
+		Result result = compiler.compile(new File(src), getWorkDirectory(), libDir);
 		return result;
 	}
 }

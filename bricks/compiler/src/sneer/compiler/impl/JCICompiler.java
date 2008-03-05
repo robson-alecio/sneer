@@ -53,5 +53,12 @@ public class JCICompiler implements Compiler, Startable {
 		}
 	}
 
+	@Override
+	public Result compile(File source, File destination, File libDir)
+			throws CompilerException {
+		// Implement Auto-generated method stub
+		throw new wheel.lang.exceptions.NotImplementedYet();
+	}
+
 
 }

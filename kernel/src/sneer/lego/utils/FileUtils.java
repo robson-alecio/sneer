@@ -6,9 +6,15 @@ import org.apache.commons.io.FilenameUtils;
 
 public class FileUtils {
 
-	public static boolean isEmpty(File binDir) {
-		String[] children = binDir.list();
-		return children == null || children.length == 0;
+	public static boolean isEmpty(File file) {
+		if(file == null || !file.exists()) 
+			return true;
+		
+		if(file.isDirectory()) {
+			String[] children = file.list();
+			return children == null || children.length == 0;
+		}
+		return true;
 	}
 	
 	public static File concat(File basePath, String path) {

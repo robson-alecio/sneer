@@ -1,12 +1,14 @@
 package sneer.compiler.impl;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.lang.StringUtils;
 
 import sneer.compiler.Compiler;
@@ -24,13 +26,18 @@ public class CompilerImpl implements Compiler {
 
 	@Override
 	public Result compile(File source, File destination) throws CompilerException {
+		return compile(source, destination, null);
+	}
+	
+	@Override
+	public Result compile(File source, File destination, File libDir) throws CompilerException {
 		
 		List<File> files = buildSourceList(source);
 		File tmpFile = createArgsFileForJavac(files);
 		log.info("Compiling {} files to {}", files.size(), destination);
 
 		String[] parameters = {
-				"-classpath", buildClassPath(),
+				"-classpath", buildClassPath(libDir),
 				"-d", destination.getAbsolutePath(),
 				"-encoding","UTF-8",
 				"@"+tmpFile.getAbsolutePath()
@@ -69,8 +76,18 @@ public class CompilerImpl implements Compiler {
 		return files;
 	}
 
-	private String buildClassPath() {
-		String javaHome = System.getProperty("java.home");
-		return javaHome + File.separator + "lib" + File.separator + "rt.jar";	
+	private String buildClassPath(File libDir) {
+		StringBuffer sb = new StringBuffer();
+		sb.append(System.getProperty("java.home")).append(File.separator).append("lib").append(File.separator).append("rt.jar");
+		if(!sneer.lego.utils.FileUtils.isEmpty(libDir)) {
+			sb.append(File.pathSeparatorChar);
+			File[] libs = libDir.listFiles((FilenameFilter) new SuffixFileFilter(".jar"));
+			for (File lib : libs) {
+				sb.append(lib.getAbsolutePath());
+				sb.append(File.pathSeparatorChar);
+			}
+		}
+		String classPath = sb.toString(); 
+		return classPath;
 	}
 }

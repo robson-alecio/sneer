@@ -11,4 +11,6 @@ public interface Result {
 	void setError(String errorString);
 
 	List<CompilationError> getErrors();
+
+	String getErrorString();
 }

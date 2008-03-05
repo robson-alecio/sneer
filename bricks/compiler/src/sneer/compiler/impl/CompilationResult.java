@@ -63,4 +63,9 @@ public class CompilationResult implements Result {
 		}
 		return result;
 	}
+
+	@Override
+	public String getErrorString() {
+		return _errorString;
+	}
 }

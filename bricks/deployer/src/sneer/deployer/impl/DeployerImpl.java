@@ -108,15 +108,15 @@ public class DeployerImpl implements Deployer {
 		//TODO: find toy and call some initialization method on it
 	}
 
-	private boolean compile(File root) {
+	private void compile(File root) {
 		File binDir = FileUtils.concat(root, "bin");
-		if(FileUtils.isEmpty(binDir)) {
+		if(FileUtils.isEmpty(binDir) || true) {
 			File src = FileUtils.concat(root, "src");
 			Result compilationResult = compiler.compile(src, binDir);
 			if(!compilationResult.success()) {
-				return false;
+				log.warn("Error compiling.\n"+compilationResult.getErrorString());
+				throw new DeployerException("Error compiling brick on "+root+". See log for details");
 			}
 		}
-		return false;
 	}
 }

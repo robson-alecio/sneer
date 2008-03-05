@@ -8,5 +8,9 @@ public class DeployerException extends RuntimeException {
 		super(message, t);
 	}
 
+	public DeployerException(String message) {
+		super(message);
+	}
+
 
 }

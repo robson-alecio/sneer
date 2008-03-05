@@ -109,14 +109,13 @@ public class DeployerImpl implements Deployer {
 	}
 
 	private void compile(File root) {
-		File binDir = FileUtils.concat(root, "bin");
-		if(FileUtils.isEmpty(binDir) || true) {
-			File src = FileUtils.concat(root, "src");
-			Result compilationResult = compiler.compile(src, binDir);
-			if(!compilationResult.success()) {
-				log.warn("Error compiling.\n"+compilationResult.getErrorString());
-				throw new DeployerException("Error compiling brick on "+root+". See log for details");
-			}
+		File bin = FileUtils.concat(root, "bin");
+		File src = FileUtils.concat(root, "src");
+		File lib = FileUtils.concat(root, "lib");
+		Result compilationResult = compiler.compile(src, bin, lib);
+		if(!compilationResult.success()) {
+			log.warn("Error compiling.\n"+compilationResult.getErrorString());
+			throw new DeployerException("Error compiling brick on "+root+". See log for details");
 		}
 	}
 }

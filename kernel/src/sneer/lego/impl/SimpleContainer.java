@@ -63,8 +63,8 @@ public class SimpleContainer implements Container {
 		return component;
 	}
 
-	private <T> T instantiate(Class<T> clazz) throws Exception {
-		T component = lookup(clazz);
+	private <T> T instantiate(Class<T> intrface) throws Exception {
+		T component = lookup(intrface);
 		inject(component);
 		if (component instanceof Startable)
 			((Startable)component).start();
@@ -72,13 +72,13 @@ public class SimpleContainer implements Container {
 	}
 
 	@SuppressWarnings("unchecked") //Refactor Try to use Casts.unchecked..()
-	private <T> T lookup(Class<T> clazz) throws Exception {
+	private <T> T lookup(Class<T> intrface) throws Exception {
 
 		String appRoot = getAppRoot();
-		String dirName = FilenameUtils.concat(appRoot, clazz.getName()); 
+		String dirName = FilenameUtils.concat(appRoot, intrface.getName()); 
 		URL url = new URL("file://"+dirName+"/");
 		
-		String implementation = getImplementation(clazz); 
+		String implementation = implementationFor(intrface); 
 		ClassLoader cl = getClassLoader(implementation, url);
 		Class impl = cl.loadClass(implementation);
 		Object result = impl.newInstance(); 
@@ -98,13 +98,13 @@ public class SimpleContainer implements Container {
 	}
 
 
-	private String getImplementation(Class<?> clazz) {
+	private String implementationFor(Class<?> intrface) {
 		if(_binder != null) {
-			String result = _binder.lookup(clazz);
+			String result = _binder.implementationFor(intrface);
 			if(result != null) 
 				return result;
 		}
-		String name = clazz.getName();
+		String name = intrface.getName();
 		int index = name.lastIndexOf(".");
 		return name.substring(0, index) + ".impl" + name.substring(index) + "Impl";
 	}

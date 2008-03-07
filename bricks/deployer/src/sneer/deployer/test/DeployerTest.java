@@ -1,6 +1,7 @@
 package sneer.deployer.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 
@@ -27,6 +28,8 @@ public class DeployerTest extends BrickTestSupport {
 	@Test
 	public void testDeploy() throws Exception {
 		
+		fail("This test is freezing on windows");
+		
 		//create jar file
 		String brickName = "myBrick";
 		String version = "1.0";
@@ -44,6 +47,9 @@ public class DeployerTest extends BrickTestSupport {
 	
 	@Test
 	public void testDependency() throws Exception {
+
+		fail("This test is freezing on windows");
+		
 		String brickName = "notAlone";
 		String version = "1.0";
 		File root = getRoot("notAlone");

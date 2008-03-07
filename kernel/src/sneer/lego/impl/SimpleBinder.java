@@ -2,33 +2,34 @@ package sneer.lego.impl;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import sneer.lego.Binder;
 
 public class SimpleBinder implements Binder {
 
-	private Map<Class<?>, Class<?>> map = new HashMap<Class<?>, Class<?>>();
+	private final Map<Class<?>, Class<?>> _map = new HashMap<Class<?>, Class<?>>();
+	
+	private Class<?> _pendingInterface;
 	
 	@Override
-	public Binder bind(Class<?> clazz) {
-		map.put(clazz, Object.class);
+	public Binder bind(Class<?> intrface) {
+		_pendingInterface = intrface;
 		return this;
 	}
 
 	@Override
-	public Binder to(Class<?> clazz) {
-		Set<Class<?>> keys = map.keySet();
-		for (Class<?> key : keys) {
-			if(key.isAssignableFrom(clazz))
-				map.put(key, clazz);
-		}
+	public Binder to(Class<?> implementation) {
+		if (!_pendingInterface.isAssignableFrom(implementation))
+			throw new IllegalArgumentException();
+
+		_map.put(_pendingInterface, implementation);
+		_pendingInterface = null;
 		return this;
 	}
 
 	@Override
-	public String lookup(Class<?> clazz) {
-		Class<?> impl = map.get(clazz);
+	public String implementationFor(Class<?> clazz) {
+		Class<?> impl = _map.get(clazz);
 		return impl != null ? impl.getName() : null;
 	}
 

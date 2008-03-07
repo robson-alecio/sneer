@@ -14,6 +14,9 @@ public class Freedom2Test extends BrickTestSupport {
 	
 	@Test
 	public void testNicknames() {
+		
+		if (!TestDashboard.newTestsShouldRun()) return;
+		
 		SovereignParty a = _subject.createParty("Ana Almeida");
 		SovereignParty b = _subject.createParty("Bruno Barros");
 		SovereignParty c = _subject.createParty("Carla Costa");

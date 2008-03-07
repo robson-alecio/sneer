@@ -16,6 +16,8 @@ public class Freedom1Test extends BrickTestSupport {
 	@Test
 	public void testOwnName() {
 		
+		if (!TestDashboard.newTestsShouldRun()) return;
+		
 		SovereignParty subject = community.createParty("Klaus");
 		changeNameTo(subject, "Klaus W");
 		changeNameTo(subject, "Wuestefeld, Klaus");

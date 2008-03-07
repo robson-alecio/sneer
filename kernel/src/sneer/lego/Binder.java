@@ -2,9 +2,9 @@ package sneer.lego;
 
 public interface Binder {
 	
-	Binder bind(Class<?> clazz);
+	Binder bind(Class<?> intrface);
 	
-	Binder to(Class<?> clazz);
+	Binder to(Class<?> implementation);
 
-	String lookup(Class<?> clazz);
+	String implementationFor(Class<?> intrface);
 }

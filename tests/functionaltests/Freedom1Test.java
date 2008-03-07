@@ -13,12 +13,9 @@ import sneer.lego.impl.SimpleBinder;
 import sneer.lego.tests.BrickTestSupport;
 
 public class Freedom1Test extends BrickTestSupport {
-
 	
 	@Brick
 	private SovereignCommunity community; 
-	
-	
 	
 	@Override
 	protected Binder getBinder() {
@@ -43,5 +40,4 @@ public class Freedom1Test extends BrickTestSupport {
 		subject.setOwnName(newName);
 		assertEquals(newName, subject.ownName());
 	}
-
 }

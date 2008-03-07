@@ -48,7 +48,7 @@ public class CompilerImpl implements Compiler {
 		int code = Main.compile(parameters, new PrintWriter(writer));
 		tmpFile.delete();
 		
-		Result result = new CompilationResult(files, code);
+		Result result = new CompilationResult(code);
 		if (code != 0) {
 			result.setError(writer.getBuffer().toString());
 		}

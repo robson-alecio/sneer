@@ -1,6 +1,5 @@
 package sneer.compiler.impl;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ public class CompilationResult implements Result {
 	private List<CompilationError> _errors;
 	
 	
-	public CompilationResult(List<File> files, int compilerCode) {
+	public CompilationResult(int compilerCode) {
 		_compilerCode = compilerCode;
 	}
 

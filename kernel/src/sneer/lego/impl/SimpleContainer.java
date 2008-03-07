@@ -48,23 +48,24 @@ public class SimpleContainer implements Container {
 	public <T> T produce(Class<T> clazz) {
 		T component = (T) registry.get(clazz);
 		if(component != null) return component;
-		
+
 		if(clazz.isAssignableFrom(Container.class)) {
 			return (T) this;
 		}
 		
-		try {
-			component = instantiate(clazz);
-		} catch (Exception e) {
-			throw new LegoException("Error producing: "+clazz.getName(), e);
-		}
-		
+		component = instantiate(clazz);
 		registry.put(clazz, component);
 		return component;
 	}
 
-	private <T> T instantiate(Class<T> intrface) throws Exception {
-		T component = lookup(intrface);
+	private <T> T instantiate(Class<T> intrface) throws LegoException {
+		T component;
+		try {
+			component = lookup(intrface);
+		} catch (Exception e) {
+			throw new LegoException("Error creating: "+intrface.getName(), e);
+		}
+
 		inject(component);
 		if (component instanceof Startable)
 			((Startable)component).start();
@@ -121,5 +122,11 @@ public class SimpleContainer implements Container {
 		} catch (Throwable t) {
 			throw new LegoException("Error injecting dependencies on: "+component, t);
 		}
+	}
+
+
+	@Override
+	public <T> T create(Class<T> clazz) throws LegoException {
+		return instantiate(clazz);
 	}
 }

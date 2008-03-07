@@ -12,8 +12,7 @@ public class NameKeeperImpl implements NameKeeper {
 	private String _name;
 	
 	@Override
-	public String sayMyNameBeach() {
-		System.out.println(_name);
+	public String getName() {
 		return _name;
 	}
 

@@ -2,7 +2,7 @@ package spikes.legobricks.name;
 
 public interface NameKeeper {
 
-	String sayMyNameBeach(); /* I don't want to be rude */
+	String getName();
 
 	void setName(String name);
 }

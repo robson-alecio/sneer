@@ -1,14 +1,20 @@
 package functionaltests.adapters;
 
+import sneer.lego.Brick;
+import sneer.lego.Container;
 import functionaltests.SovereignCommunity;
 import functionaltests.SovereignParty;
 
 public class SneerSovereignCommunity implements SovereignCommunity {
 
+	@Brick
+	private Container container;
+	
 	@Override
 	public SovereignParty createParty(String name) {
-		// Implement Auto-generated method stub
-		throw new wheel.lang.exceptions.NotImplementedYet();
+		SovereignParty party = container.create(SovereignParty.class);
+		party.setOwnName(name);
+		return party;
 	}
 
 

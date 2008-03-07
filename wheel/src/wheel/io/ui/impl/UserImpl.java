@@ -23,17 +23,23 @@ import wheel.lang.Threads;
 import wheel.lang.exceptions.Catcher;
 import wheel.lang.exceptions.FriendlyException;
 
-public class JOptionPaneUser implements User {
+public class UserImpl implements User {
 
-	public JOptionPaneUser(String title, Omnivore<Notification> briefNotifier) { 
+
+	private String _title;
+	private Omnivore<Notification> _briefNotifier;
+
+	public UserImpl() {
+		//used by SimpleContainer
+	} 
+
+	public UserImpl(String title, Omnivore<Notification> briefNotifier) { 
 		//Fix: receive the parent component instead of passing null to the JOptionPane in order not to be application modal.
 		_title = title;
 		_briefNotifier = briefNotifier;
 	}
 
 	
-	private final String _title;
-	private final Omnivore<Notification> _briefNotifier;
 
 	
 	@Override

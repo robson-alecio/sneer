@@ -1,9 +1,14 @@
 package functionaltests.adapters;
 
+import sneer.lego.Brick;
+import spikes.legobricks.name.NameKeeper;
 import functionaltests.SovereignParty;
 
 public class SneerSovereignParty implements SovereignParty {
 
+	@Brick
+	private NameKeeper _keeper;
+	
 	@Override
 	public void connectTo(SovereignParty peer) {
 		// Implement Auto-generated method stub
@@ -24,14 +29,12 @@ public class SneerSovereignParty implements SovereignParty {
 
 	@Override
 	public String ownName() {
-		// Implement Auto-generated method stub
-		throw new wheel.lang.exceptions.NotImplementedYet();
+		return _keeper.getName();
 	}
 
 	@Override
 	public void setOwnName(String newName) {
-		// Implement Auto-generated method stub
-		throw new wheel.lang.exceptions.NotImplementedYet();
+		_keeper.setName(newName);
 	}
 
 }

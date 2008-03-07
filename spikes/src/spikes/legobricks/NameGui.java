@@ -29,7 +29,7 @@ public class NameGui implements Startable {
 
 	private void keepAskingForName() {
 		while (true) {
-			String sampleName = JOptionPane.showInputDialog(null, "Whats your name?", _keeper.sayMyNameBeach());
+			String sampleName = JOptionPane.showInputDialog(null, "Whats your name?", _keeper.getName());
 			if (sampleName == null) break;
 			try {
 				_keeper.setName(sampleName);

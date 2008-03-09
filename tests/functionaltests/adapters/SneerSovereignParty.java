@@ -1,6 +1,7 @@
 package functionaltests.adapters;
 
 import sneer.lego.Brick;
+import sneer.lego.ContainerUtils;
 import spikes.legobricks.name.NameKeeper;
 import functionaltests.SovereignParty;
 
@@ -9,6 +10,11 @@ public class SneerSovereignParty implements SovereignParty {
 	@Brick
 	private NameKeeper _keeper;
 	
+	public SneerSovereignParty(String name) {
+		ContainerUtils.getContainer().inject(this);
+		setOwnName(name);
+	}
+
 	@Override
 	public void connectTo(SovereignParty peer) {
 		// Implement Auto-generated method stub

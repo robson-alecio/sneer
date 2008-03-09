@@ -10,4 +10,6 @@ public interface Container {
 	<T> T produce(String className) throws LegoException;
 
 	<T> T create(Class<T> clazz) throws LegoException;
+
+	void inject(Object component);
 }

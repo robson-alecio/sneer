@@ -4,27 +4,22 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import sneer.lego.Brick;
-import sneer.lego.tests.BrickTestSupport;
 
-public abstract class Freedom1Test extends BrickTestSupport {
+public abstract class Freedom1Test extends SovereignFunctionalTest {
 	
-	@Brick
-	private SovereignCommunity community; 
-
 	@Test
 	public void testOwnName() {
 		
 		//if (!TestDashboard.newTestsShouldRun()) return;
 		
-		SovereignParty subject = community.createParty("Klaus");
-		changeNameTo(subject, "Klaus W");
-		changeNameTo(subject, "Wuestefeld, Klaus");
-		changeNameTo(subject, "Klaus Wuestefeld");
+		SovereignParty me = _community.createParty("Klaus");
+		changeNameTo(me, "Klaus W");
+		changeNameTo(me, "Wuestefeld, Klaus");
+		changeNameTo(me, "Klaus Wuestefeld");
 	}
 
-	private void changeNameTo(SovereignParty subject, String newName) {
-		subject.setOwnName(newName);
-		assertEquals(newName, subject.ownName());
+	private void changeNameTo(SovereignParty party, String newName) {
+		party.setOwnName(newName);
+		assertEquals(newName, party.ownName());
 	}
 }

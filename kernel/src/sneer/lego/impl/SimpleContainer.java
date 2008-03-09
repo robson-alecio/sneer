@@ -116,7 +116,8 @@ public class SimpleContainer implements Container {
 		return appRoot;
 	}
 
-	private void inject(Object component) {
+	@Override
+	public void inject(Object component) {
 		try {
 			_injector.inject(component);
 		} catch (Throwable t) {

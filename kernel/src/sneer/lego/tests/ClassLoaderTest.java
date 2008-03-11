@@ -32,36 +32,32 @@ public class ClassLoaderTest {
 		assertSame(parent, cl2.getParent());
 		
 		// test brick ONE
-		Class<?> brickOne = cl1.loadClass("org.sneer.lego.tests.brickOne.impl.BrickOneImpl");
-		Object b1 = brickOne.newInstance();
-		assertSame("BrickOne implementation should be loaded from cl1",cl1, brickOne.getClassLoader());
-		assertSame("BrickOne instances should be loaded from cl1",cl1, b1.getClass().getClassLoader());
-		assertSame("BrickOne interface should be loaded from parent", parent, brickOne.getInterfaces()[0].getClassLoader());
+		Class<?> brickOneImpl = cl1.loadClass("org.sneer.lego.tests.brickOne.impl.BrickOneImpl");
+		Object brickOne = brickOneImpl.newInstance();
+		assertSame("BrickOneImpl should be loaded from it's own classloader",cl1, brickOneImpl.getClassLoader());
+		assertSame("BrickOne should be loaded from the api classloader", parent, brickOneImpl.getInterfaces()[0].getClassLoader());
 
-		Method m1 = brickOne.getMethod("doAnything", (Class<?>[]) null);
+		Method m1 = brickOneImpl.getMethod("doAnything", (Class<?>[]) null);
 		Class<?> returnType = m1.getReturnType();
-		assertSame("SomeValue should be loaded from parent", parent, returnType.getClassLoader());
+		assertSame("SomeValue should be loaded from the api classloader", parent, returnType.getClassLoader());
 
-		Object result1 = m1.invoke(b1, (Object[])null);
-		assertSame("SomeValueImpl should be loaded from cl1",cl1, result1.getClass().getClassLoader());
+		Object result1 = m1.invoke(brickOne, (Object[])null);
+		assertSame("SomeValueImpl should be loaded from it's own classloader",cl1, result1.getClass().getClassLoader());
 		
 		// test brick TWO
-		Class<?> brickTwo = cl2.loadClass("org.sneer.lego.tests.brickTwo.impl.BrickTwoImpl");
-		Object b2 = brickTwo.newInstance();
-		assertSame("BrickTwo implementation should be loaded from cl2",cl2, brickTwo.getClassLoader());
-		assertSame("BrickTwo instances should be loaded from cl2",cl2, b2.getClass().getClassLoader());
-		assertSame("BrickTwo interface should be loaded from parent", parent, brickTwo.getInterfaces()[0].getClassLoader());
+		Class<?> brickTwoImpl = cl2.loadClass("org.sneer.lego.tests.brickTwo.impl.BrickTwoImpl");
+		assertSame("BrickTwoImpl should be loaded from it's own classloader",cl2, brickTwoImpl.getClassLoader());
+		assertSame("BrickTwo should be loaded from the api classloader", parent, brickTwoImpl.getInterfaces()[0].getClassLoader());
 		
 		
 		//this should be done by our container
-		Field field = b2.getClass().getDeclaredField("_one");
+		Object brickTwo = brickTwoImpl.newInstance();
+		Field field = brickTwo.getClass().getDeclaredField("_one");
 		field.setAccessible(true);
-		field.set(b2, b1);
-
+		field.set(brickTwo, brickOne);
 		
-		Method m2 = brickTwo.getMethod("doSomething", (Class<?>[]) null);
-		Object result2 = m2.invoke(b2, (Object[])null);
+		Method m2 = brickTwoImpl.getMethod("doSomething", (Class<?>[]) null);
+		Object result2 = m2.invoke(brickTwo, (Object[])null);
 		assertEquals("b1 brick2", result2);
 	}	
-	
 }

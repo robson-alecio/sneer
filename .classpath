@@ -11,6 +11,10 @@
 	<classpathentry kind="src" path="tests"/>
 	<classpathentry kind="src" path="bricks/deployer/src"/>
 	<classpathentry kind="src" path="bricks/config/src"/>
+	<!--
+	<classpathentry kind="src" output="kernel/test-resources/classloader/brickTwo/bin" path="kernel/test-resources/classloader/brickTwo/src"/>
+	<classpathentry kind="src" output="kernel/test-resources/classloader/brickOne/bin" path="kernel/test-resources/classloader/brickOne/src"/>
+	-->
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="lib" path="kernel/lib/commons-io-1.4.jar"/>
 	<classpathentry kind="lib" path="kernel/lib/junit-4.4.jar"/>

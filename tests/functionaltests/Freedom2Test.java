@@ -4,23 +4,18 @@ import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
-import sneer.lego.Brick;
-import sneer.lego.tests.BrickTestSupport;
+public abstract class Freedom2Test extends SovereignFunctionalTest {
 
-public class Freedom2Test extends BrickTestSupport {
-
-	@Brick
-	private SovereignCommunity _subject;
 	
 	@Test
 	public void testNicknames() {
 		
-		if (!TestDashboard.newTestsShouldRun()) return;
+		//if (!TestDashboard.newTestsShouldRun()) return;
 		
-		SovereignParty a = _subject.createParty("Ana Almeida");
-		SovereignParty b = _subject.createParty("Bruno Barros");
-		SovereignParty c = _subject.createParty("Carla Costa");
-		SovereignParty d = _subject.createParty("Denis Dalton");
+		SovereignParty a = _community.createParty("Ana Almeida");
+		SovereignParty b = _community.createParty("Bruno Barros");
+		SovereignParty c = _community.createParty("Carla Costa");
+		SovereignParty d = _community.createParty("Denis Dalton");
 		
 		a.connectTo(b);
 		a.connectTo(c);

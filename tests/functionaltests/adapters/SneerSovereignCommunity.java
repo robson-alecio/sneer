@@ -9,6 +9,4 @@ public class SneerSovereignCommunity implements SovereignCommunity {
 	public SovereignParty createParty(String name) {
 		return new SneerSovereignParty(name);
 	}
-
-
 }

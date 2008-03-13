@@ -1,4 +1,4 @@
-package sneer.lego.tests;
+package spikes.leandro;
 
 import static org.junit.Assert.*;
 
@@ -13,7 +13,7 @@ public class ClassLoaderTest {
 
 	@Test
 	public void testBrickLoadingInSeparateClassloaders() throws Exception {
-		String root = "file://"+System.getProperty("user.dir") + "/kernel/test-resources/classloader/";
+		String root = "file://"+System.getProperty("user.dir") + "/spikes/test-resources/classloader/";
 		URL api1 = new URL(root + "brickOne/brickOne-api-1.0.jar");
 		URL api2 = new URL(root + "brickTwo/brickTwo-api-1.0.jar");
 

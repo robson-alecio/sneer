@@ -75,14 +75,18 @@ public class SimpleContainer implements Container {
 	@SuppressWarnings("unchecked") //Refactor Try to use Casts.unchecked..()
 	private <T> T lookup(Class<T> intrface) throws Exception {
 
-		String appRoot = getAppRoot();
+	    Object result = instanceFor(intrface);
+	    if(result != null) return (T) result;
+
+	    String appRoot = getAppRoot();
 		String dirName = FilenameUtils.concat(appRoot, intrface.getName()); 
 		URL url = new URL("file://"+dirName+"/");
 		
 		String implementation = implementationFor(intrface); 
 		ClassLoader cl = getClassLoader(implementation, url);
 		Class impl = cl.loadClass(implementation);
-		Object result = impl.newInstance(); 
+		result = impl.newInstance();
+		log.info("brick {} created", result);
 		return (T) result;
 	}
 
@@ -98,6 +102,12 @@ public class SimpleContainer implements Container {
 		return new BrickClassLoader(impl, url);
 	}
 
+    private Object instanceFor(Class<?> intrface) {
+        if(_binder == null) 
+            return null;
+        
+        return _binder.instanceFor(intrface);
+    }
 
 	private String implementationFor(Class<?> intrface) {
 		if(_binder != null) {
@@ -124,7 +134,6 @@ public class SimpleContainer implements Container {
 			throw new LegoException("Error injecting dependencies on: "+component, t);
 		}
 	}
-
 
 	@Override
 	public <T> T create(Class<T> clazz) throws LegoException {

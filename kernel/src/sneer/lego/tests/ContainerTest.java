@@ -1,5 +1,6 @@
 package sneer.lego.tests;
 
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import im.IM;
 
@@ -37,6 +38,16 @@ public class ContainerTest extends BrickTestSupport {
 		Container c = new SimpleContainer(binder);
 		Sample sample = c.produce(Sample.class);
 		assertTrue(sample instanceof MySample);
+	}
+	
+	public void testBindToInstance() throws Exception {
+        Binder binder = new SimpleBinder();
+        Sample sample = new Sample() {};
+
+        binder.bind(Sample.class).toInstance(sample);
+        Container c = new SimpleContainer(binder);
+        Sample subject = c.produce(Sample.class);
+        assertSame(sample, subject);
 	}
 	
 	@Ignore

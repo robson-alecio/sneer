@@ -15,4 +15,8 @@ public class ContainerUtils {
 		return container;
 	}
 
+    public static Container newContainer(Binder binder) {
+        return new SimpleContainer(binder);
+    }
+	
 }

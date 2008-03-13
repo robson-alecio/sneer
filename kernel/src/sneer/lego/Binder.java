@@ -6,5 +6,9 @@ public interface Binder {
 	
 	Binder to(Class<?> implementation);
 
+	Binder toInstance(Object instance);
+
 	String implementationFor(Class<?> intrface);
+
+	Object instanceFor(Class<?> intrface);
 }

@@ -12,10 +12,10 @@ public abstract class Freedom2Test extends SovereignFunctionalTest {
 		
 		//if (!TestDashboard.newTestsShouldRun()) return;
 		
-		SovereignParty a = _community.createParty("Ana Almeida");
-		SovereignParty b = _community.createParty("Bruno Barros");
-		SovereignParty c = _community.createParty("Carla Costa");
-		SovereignParty d = _community.createParty("Denis Dalton");
+		SovereignParty a = _community.createParty("127.0.0.1", 9090, "Ana Almeida");
+		SovereignParty b = _community.createParty("127.0.0.1", 9091, "Bruno Barros");
+		SovereignParty c = _community.createParty("127.0.0.1", 9092, "Carla Costa");
+		SovereignParty d = _community.createParty("127.0.0.1", 9093, "Denis Dalton");
 		
 		a.connectTo(b);
 		a.connectTo(c);

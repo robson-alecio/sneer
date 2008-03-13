@@ -12,7 +12,7 @@ public abstract class Freedom1Test extends SovereignFunctionalTest {
 		
 		//if (!TestDashboard.newTestsShouldRun()) return;
 		
-		SovereignParty me = _community.createParty("Klaus");
+		SovereignParty me = _community.createParty("127.0.0.1", 9090, "Klaus");
 		changeNameTo(me, "Klaus W");
 		changeNameTo(me, "Wuestefeld, Klaus");
 		changeNameTo(me, "Klaus Wuestefeld");

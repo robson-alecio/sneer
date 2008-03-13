@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.lang.ArrayUtils;
 
+import sneer.contacts.ContactManager;
 import sneer.lego.Brick;
 import sneer.lego.ContainerUtils;
 import spikes.legobricks.name.NameKeeper;
@@ -14,6 +15,9 @@ public class SneerSovereignParty implements SovereignParty {
 
 	@Brick
 	private NameKeeper _keeper; //TODO: replance _name by _keeper to test persistence
+	
+	@Brick
+	private ContactManager _contactManager;
 	
 	private List<Connection> _connections;
 	
@@ -28,6 +32,12 @@ public class SneerSovereignParty implements SovereignParty {
 
 	@Override
 	public void connectTo(SovereignParty peer) {
+	    if(_contactManager.add(peer)) {
+	        System.out.println("peer "+peer.ownName()+" added");
+	    }
+	}
+
+    public void _connectTo_OLD_(SovereignParty peer) {
 	    Connection conn = getConnection(peer);
 	    if(conn != null) return;
 	    conn = new Connection(peer);
@@ -36,6 +46,7 @@ public class SneerSovereignParty implements SovereignParty {
 	    peer.connectTo(this);
 	}
 
+	
 	@Override
 	public void giveNicknameTo(SovereignParty peer, String nickname) {
 	    Connection conn = getConnection(peer);
@@ -112,6 +123,19 @@ public class SneerSovereignParty implements SovereignParty {
 	        return "connection to peer: "+peer.ownName()+"["+nickName+"]";
 	    }
 	}
+
+
+    @Override
+    public String address()
+    {
+        return "127.0.0.1";
+    }
+
+    @Override
+    public int port()
+    {
+        return 9090;
+    }
 
 }
 

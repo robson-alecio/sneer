@@ -50,4 +50,8 @@ class Contact {
         alias = party.ownName();
     }
 
+    @Override
+    public String toString() {
+        return alias+"("+party.address()+":"+party.port()+")";
+    }
 }

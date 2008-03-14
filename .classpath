@@ -24,6 +24,9 @@
 	<classpathentry kind="lib" path="bricks/compiler/lib/commons-jci-javac-1.1-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="bricks/compiler/lib/commons-jci-core-1.1-SNAPSHOT.jar" sourcepath="/commons-jci-core/src/main/java"/>
 	<classpathentry kind="lib" path="kernel/lib/commons-lang-2.3.jar"/>
+	<classpathentry kind="lib" path="kernel/lib/commons-configuration-1.5.jar"/>
+	<classpathentry kind="lib" path="kernel/lib/commons-collections-3.2.jar"/>
+	<classpathentry kind="lib" path="kernel/lib/commons-logging-api-1.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

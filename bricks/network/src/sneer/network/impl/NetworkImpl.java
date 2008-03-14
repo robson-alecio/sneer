@@ -2,24 +2,44 @@ package sneer.network.impl;
 
 import java.io.IOException;
 
+import org.apache.commons.configuration.Configuration;
+
+import sneer.lego.Brick;
+import sneer.lego.Configurable;
 import sneer.lego.Startable;
+import sneer.log.Logger;
 import sneer.network.Network;
 import sneer.network.NetworkException;
 import sneer.network.Packet;
 import sneer.network.SovereignPeer;
+import wheel.io.network.ObjectServerSocket;
 import wheel.io.network.ObjectSocket;
 import wheel.io.network.OldNetwork;
 import wheel.io.network.OldNetworkImpl;
 
-public class NetworkImpl implements Network, Startable {
+public class NetworkImpl implements Network, Configurable, Startable {
 
+    @Brick
+    private Logger _log;
+    
     private OldNetwork _oldNetwork;
     
+    private ObjectServerSocket _serverSocket;
+
+    private int _serverPort;
+    
     @Override
-    public void start()
+    public void configure(Configuration config)
+    {
+        _serverPort = config.getInt("network.server.port", 9090);
+    }
+    
+    @Override
+    public void start() throws Exception
     {
         _oldNetwork = new OldNetworkImpl();
-        //TODO: start listening on a local port so we can talk to the world
+        _log.info("starting server socket {}", _serverPort);
+        _serverSocket = _oldNetwork.openObjectServerSocket(_serverPort);
     }
     
     @Override
@@ -41,6 +61,7 @@ public class NetworkImpl implements Network, Startable {
     {
         try
         {
+            _log.info("Opening socket to {}:{}",peer.address(), peer.port());
             return _oldNetwork.openSocket(peer.address(), peer.port());
         }
         catch (IOException e)

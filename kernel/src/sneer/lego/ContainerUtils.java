@@ -7,16 +7,16 @@ public class ContainerUtils {
 	private static Container container; 
 	
 	public static Container getContainer() {
-		return getContainer(null);
+		return getContainer(null, null);
 	}
 
-	public static Container getContainer(Binder binder) {
-		if(container == null) container = new SimpleContainer(binder);
+	public static Container getContainer(Binder binder, ConfigurationFactory configurationFactory) {
+		if(container == null) container = new SimpleContainer(binder, configurationFactory);
 		return container;
 	}
 
-    public static Container newContainer(Binder binder) {
-        return new SimpleContainer(binder);
+    public static Container newContainer(Binder binder, ConfigurationFactory configurationFactory) {
+        return new SimpleContainer(binder, configurationFactory);
     }
 	
 }

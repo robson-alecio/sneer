@@ -40,6 +40,7 @@ public class ContainerTest extends BrickTestSupport {
 		assertTrue(sample instanceof MySample);
 	}
 	
+	@Test
 	public void testBindToInstance() throws Exception {
         Binder binder = new SimpleBinder();
         Sample sample = new Sample() {};
@@ -48,6 +49,15 @@ public class ContainerTest extends BrickTestSupport {
         Container c = new SimpleContainer(binder);
         Sample subject = c.produce(Sample.class);
         assertSame(sample, subject);
+	}
+	
+	@Test
+	public void testLifecycle() throws Exception {
+        Container c = new SimpleContainer(null);
+        Lifecycle lifecycle = c.produce(Lifecycle.class);
+        assertTrue(lifecycle.configureCalled());
+        assertTrue(lifecycle.startCalled());
+
 	}
 	
 	@Ignore

@@ -23,7 +23,7 @@ public class BrickTestSupport {
     	if(container == null)
     	{
     		Binder binder = getBinder();
-    		container = ContainerUtils.getContainer(binder);
+    		container = ContainerUtils.getContainer(binder, null);
     	}
     	return container;
     }

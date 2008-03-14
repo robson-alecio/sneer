@@ -5,12 +5,15 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.configuration.Configuration;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sneer.lego.Binder;
 import sneer.lego.BrickClassLoader;
+import sneer.lego.Configurable;
+import sneer.lego.ConfigurationFactory;
 import sneer.lego.Container;
 import sneer.lego.LegoException;
 import sneer.lego.Startable;
@@ -29,14 +32,41 @@ public class SimpleContainer implements Container {
 	private Injector _injector;
 	
 	private Binder _binder;
+	
+	private ConfigurationFactory _configurationFactory;
 
-	public SimpleContainer(Binder binder) {
+    public SimpleContainer(Binder binder) {
+        this(binder, null);
+    }
+
+	public SimpleContainer(Binder binder, ConfigurationFactory configurationFactory) {
 		_binder = binder;
 		_injector = new FieldInjector(this);
+		if(configurationFactory != null) {
+		    _configurationFactory = configurationFactory;
+		} else {
+		    _configurationFactory = findConfigurationFactory();
+		}
+		log.info("*** SimpleContainer created ***");
 	}
 
 
-	@SuppressWarnings("unchecked")
+	private ConfigurationFactory findConfigurationFactory()
+    {
+	    try
+        {
+            ConfigurationFactory factory = lookup(ConfigurationFactory.class);
+            if(factory != null) return factory;
+        }
+        catch (Exception ignored)
+        {
+            log.info("Can't find ConfigurationFactory. Error message is: {}", ignored.getMessage(), ignored);
+        }
+        return NullConfigurationFactory.instance();
+    }
+
+
+    @SuppressWarnings("unchecked")
 	@Override
 	public <T> T produce(String className) {
 		return (T) produce(ObjectUtils.loadClass(className));
@@ -67,11 +97,23 @@ public class SimpleContainer implements Container {
 		}
 
 		inject(component);
-		if (component instanceof Startable)
-			((Startable)component).start();
+		if(component instanceof Configurable) {
+		    Configuration config = _configurationFactory.getConfiguration(component.getClass());
+		    ((Configurable) component).configure(config);
+		}
+		if (component instanceof Startable) {
+		    try
+		    {
+		        ((Startable)component).start();
+		    }
+		    catch (Exception e)
+		    {
+		        throw new LegoException("Error starting brick: "+intrface.getName(), e);
+		    }
+		}
 		return component;
 	}
-
+	
 	@SuppressWarnings("unchecked") //Refactor Try to use Casts.unchecked..()
 	private <T> T lookup(Class<T> intrface) throws Exception {
 

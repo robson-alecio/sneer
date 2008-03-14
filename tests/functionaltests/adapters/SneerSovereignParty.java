@@ -24,7 +24,7 @@ public class SneerSovereignParty implements SovereignParty {
 	@Override
 	public void connectTo(SovereignParty peer) {
 	    if(_contactManager.add(peer)) {
-	        System.out.println(_name+" <-> "+peer.ownName() +" "+_contactManager);
+	        //System.out.println(_name+" <-> "+peer.ownName() +" "+_contactManager);
 	    }
 	}
 

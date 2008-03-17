@@ -7,7 +7,6 @@ import sneer.lego.ConfigurationFactory;
 import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
 import sneer.lego.impl.SimpleBinder;
-import sneer.lego.impl.SimpleContainer;
 import sneer.lego.tests.MockConfigurationFactory;
 import sneer.network.Network;
 import sneer.network.impl.tests.MockNetwork;

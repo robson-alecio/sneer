@@ -24,7 +24,7 @@ public class ContainerTest extends BrickTestSupport {
 	private Container container;
 	
 	@Test
-	public void testAssingable() {
+	public void testAssignable() {
 		assertTrue(Object.class.isAssignableFrom(String.class));
 		assertTrue(Object.class.isAssignableFrom(Integer.class));
 		assertTrue(Number.class.isAssignableFrom(Integer.class));

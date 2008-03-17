@@ -28,14 +28,14 @@ public abstract class Freedom2Test extends SovereignFunctionalTest {
 		c.giveNicknameTo(a, "Miguxa");
 		c.giveNicknameTo(d, "Dedé");
 		
-		assertSame(b, a.navigateTo("Bruno"));
-		assertSame(a, b.navigateTo("Carla Costa", "Miguxa"));
-		assertSame(a, a.navigateTo("Bruno", "Aninha"));
-		assertSame(b, a.navigateTo("Bruno", "Aninha", "Bruno"));
-		assertSame(d, a.navigateTo("Bruno", "Carla Costa", "Dedé"));
+		assertSame("Bruno Barros", a.navigateAndGetName("Bruno"));
+		assertSame("Ana Almeida", b.navigateAndGetName("Carla Costa/Miguxa"));
+		assertSame("Ana Almeida", a.navigateAndGetName("Bruno/Aninha"));
+		assertSame("Bruno Barros", a.navigateAndGetName("Bruno/Aninha/Bruno"));
+		assertSame("Denis Dalton", a.navigateAndGetName("Bruno/Carla Costa/Dedé"));
 		
 		a.giveNicknameTo(b, "Bruninho");
-		assertSame(b, a.navigateTo("Bruninho"));
+		assertSame("Bruno Barros", a.navigateAndGetName("Bruninho"));
 	}
 
 }

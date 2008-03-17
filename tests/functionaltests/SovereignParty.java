@@ -9,6 +9,6 @@ public interface SovereignParty {
 	void bidirectionalConnectTo(SovereignParty peer);
 	
 	void giveNicknameTo(SovereignParty peer, String nickname);
-	SovereignParty navigateTo(String... nicknamePath);
+	String navigateAndGetName(String nicknamePath);
 
 }

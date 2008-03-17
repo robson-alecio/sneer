@@ -17,10 +17,10 @@ public abstract class Freedom2Test extends SovereignFunctionalTest {
 		SovereignParty c = _community.createParty("127.0.0.1", 9092, "Carla Costa");
 		SovereignParty d = _community.createParty("127.0.0.1", 9093, "Denis Dalton");
 		
-		a.connectTo(b);
-		a.connectTo(c);
-		b.connectTo(c);
-		c.connectTo(d);
+		a.bidirectionalConnectTo(b);
+		a.bidirectionalConnectTo(c);
+		b.bidirectionalConnectTo(c);
+		c.bidirectionalConnectTo(d);
 		
 		a.giveNicknameTo(b, "Bruno");
 		b.giveNicknameTo(a, "Aninha");

@@ -22,7 +22,7 @@ public class SneerSovereignParty implements SovereignParty {
 	}
 
 	@Override
-	public void connectTo(SovereignParty peer) {
+	public void bidirectionalConnectTo(SovereignParty peer) {
 	    if(_contactManager.add(peer)) {
 	        //System.out.println(_name+" <-> "+peer.ownName() +" "+_contactManager);
 	    }

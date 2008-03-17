@@ -3,12 +3,11 @@ package sneer.contacts.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import functionaltests.SovereignParty;
 import sneer.contacts.ContactManager;
 import sneer.lego.Brick;
 import sneer.network.Network;
-import sneer.network.Packet;
-import sneer.network.impl.packets.ConnectTo;
+import sneer.network.SovereignPeer;
+import wheel.lang.exceptions.NotImplementedYet;
 
 public class ContactManagerImpl implements ContactManager {
 
@@ -18,34 +17,22 @@ public class ContactManagerImpl implements ContactManager {
     private List<Contact> _contacts = new ArrayList<Contact>();
     
     @Override
-    public boolean add(SovereignParty party) {
-        Packet connectTo = new ConnectTo(party); //FixUrgent: create packet factory to hide packets implementation 
-        Packet reply = _network.send(connectTo);
-        boolean result = reply.success();
-        if(result) _contacts.add(new Contact(party));
-        return result;
+    public boolean add(String nickame, String hostAddress, int sneerPort) {
+//        if(result) _contacts.add(new Contact(party));
+//        return result;
+    	throw new NotImplementedYet();
     }
 
-    @Override
-    public void alias(SovereignParty party, String nickname) {
-        for (Contact contact : _contacts) {
-            if(contact.party == party) {
-                contact.alias = nickname;
-                return;
-            }
-        }
-        throw new IllegalArgumentException("Can't find contact "+party.ownName());
-    }
     
 }
 
 class Contact {
     
-    SovereignParty party;
+    SovereignPeer party;
     
     String alias;
 
-    public Contact(SovereignParty p) {
+    public Contact(SovereignPeer p) {
         party = p;
         alias = party.ownName();
     }

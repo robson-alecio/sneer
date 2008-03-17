@@ -4,7 +4,7 @@ import javax.swing.JOptionPane;
 
 import sneer.lego.Brick;
 import sneer.lego.Startable;
-import spikes.legobricks.name.NameKeeper;
+import spikes.legobricks.name.OwnNameKeeper;
 import spikes.legobricks.security.Sorry;
 import spikes.legobricks.threadpool.ThreadPool;
 import wheel.io.ui.User;
@@ -12,7 +12,7 @@ import wheel.io.ui.User;
 public class NameGui implements Startable {
 
 	@Brick
-	private NameKeeper _keeper;
+	private OwnNameKeeper _keeper;
 	
 	@Brick
 	private ThreadPool _pool;

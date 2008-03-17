@@ -1,47 +1,67 @@
 package functionaltests.adapters;
 
-import sneer.contacts.ContactManager;
+import java.util.HashMap;
+import java.util.Map;
+
 import sneer.lego.Brick;
+import sneer.lego.ConfigurationFactory;
+import sneer.lego.Container;
+import sneer.lego.ContainerUtils;
+import sneer.lego.impl.SimpleBinder;
+import sneer.lego.tests.MockConfigurationFactory;
+import spikes.legobricks.name.OwnNameKeeper;
 import functionaltests.SovereignParty;
 
 public class SneerSovereignParty implements SovereignParty {
 	
+	private static final String MOCK_ADDRESS = "localhost";
+
+//	@Brick
+//	private Network _network;
+//
+//	@Brick
+//	private ContactManager _contactManager;
+	
 	@Brick
-	private ContactManager _contactManager;
-	
-	private String _name;
-	
-	private String _address;
+	private OwnNameKeeper _ownNameKeeper;
 	
 	private int _port;
 	
-	public SneerSovereignParty(String address, int port, String name) {
-		_address = address;
+	public SneerSovereignParty(String name, int port) {
 		_port = port;
+		
+		//Container c = ContainerUtils.newContainer(new SimpleBinder().bind(Network.class).toInstance(singleNetwork())); 
+		Map<String, Object> values = new HashMap<String, Object>();
+		values.put("network.server.port", port);
+		ConfigurationFactory configurationFactory = new MockConfigurationFactory(values);
+		Container c = ContainerUtils.newContainer(new SimpleBinder(), configurationFactory);
+		c.inject(this);
+
 		setOwnName(name);
 	}
 
 	@Override
 	public void bidirectionalConnectTo(SovereignParty peer) {
-	    if(_contactManager.add(peer)) {
-	        //System.out.println(_name+" <-> "+peer.ownName() +" "+_contactManager);
-	    }
+		int port = ((SneerSovereignParty)peer).port();
+//	    if(_contactManager.add(peer.ownName(), MOCK_ADDRESS, port)) {
+//	        //System.out.println(_name+" <-> "+peer.ownName() +" "+_contactManager);
+//	    }
 	}
 
 	@Override
 	public String ownName() {
-		return _name;
+		return _ownNameKeeper.getName();
 	}
 
 	@Override
 	public void setOwnName(String newName) {
-		_name = newName;
+		_ownNameKeeper.setName(newName);
 	}
 
     @Override
     public void giveNicknameTo(SovereignParty peer, String nickname)
     {
-        _contactManager.alias(peer, nickname);
+//        _contactManager.alias(peer, nickname);
     }
 
     @Override
@@ -50,13 +70,11 @@ public class SneerSovereignParty implements SovereignParty {
         throw new wheel.lang.exceptions.NotImplementedYet();
     }
 
-    @Override
     public String address()
     {
-        return _address;
+        return MOCK_ADDRESS;
     }
 
-    @Override
     public int port()
     {
         return _port;
@@ -64,7 +82,7 @@ public class SneerSovereignParty implements SovereignParty {
 
     @Override
     public String toString() {
-        return "peer: "+_name;
+        return "SneerSovereignParty:" + ownName();
     }
 
 }

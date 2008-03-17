@@ -1,9 +1,7 @@
 package functionaltests;
 
-import sneer.network.SovereignPeer;
 
-
-public interface SovereignParty extends SovereignPeer {
+public interface SovereignParty {
 
 	String ownName();
 	void setOwnName(String newName);

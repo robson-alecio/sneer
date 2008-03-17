@@ -1,6 +1,6 @@
 package spikes.legobricks.name;
 
-public interface NameKeeper {
+public interface OwnNameKeeper {
 
 	String getName();
 

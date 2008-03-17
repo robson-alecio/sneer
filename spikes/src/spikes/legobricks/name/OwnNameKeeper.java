@@ -1,8 +1,12 @@
 package spikes.legobricks.name;
 
+import wheel.lang.Omnivore;
+import wheel.reactive.Signal;
+
 public interface OwnNameKeeper {
 
-	String getName();
+	Signal<String> name();
 
-	void setName(String name);
+	Omnivore<String> nameSetter();
+
 }

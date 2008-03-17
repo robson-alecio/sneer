@@ -1,7 +1,10 @@
 package sneer.contacts;
 
-public interface ContactManager {
+
+public interface ConnectionManager {
     
 	boolean add(String nickame, String hostAddress, int sneerPort);
+	
+	ContactId currentContact(String nick);
 
 }

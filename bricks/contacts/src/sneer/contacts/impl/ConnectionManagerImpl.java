@@ -3,13 +3,14 @@ package sneer.contacts.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import sneer.contacts.ContactManager;
+import sneer.contacts.ConnectionManager;
+import sneer.contacts.ContactId;
 import sneer.lego.Brick;
 import sneer.network.Network;
 import sneer.network.SovereignPeer;
 import wheel.lang.exceptions.NotImplementedYet;
 
-public class ContactManagerImpl implements ContactManager {
+public class ConnectionManagerImpl implements ConnectionManager {
 
     @Brick
     private Network _network;
@@ -22,6 +23,12 @@ public class ContactManagerImpl implements ContactManager {
 //        return result;
     	throw new NotImplementedYet();
     }
+
+	@Override
+	public ContactId currentContact(String nick) {
+		// Implement Auto-generated method stub
+		throw new wheel.lang.exceptions.NotImplementedYet();
+	}
 
     
 }

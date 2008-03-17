@@ -29,10 +29,10 @@ public class NameGui implements Startable {
 
 	private void keepAskingForName() {
 		while (true) {
-			String sampleName = JOptionPane.showInputDialog(null, "Whats your name?", _keeper.getName());
+			String sampleName = JOptionPane.showInputDialog(null, "Whats your name?", _keeper.name().currentValue());
 			if (sampleName == null) break;
 			try {
-				_keeper.setName(sampleName);
+				_keeper.nameSetter().consume(sampleName);
 			} catch(Sorry sorry) {
 				user.acknowledgeNotification("Can not set name: "+sampleName);
 			}

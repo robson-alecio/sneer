@@ -12,7 +12,6 @@ import sneer.lego.ContainerUtils;
 import sneer.lego.impl.SimpleBinder;
 import sneer.lego.tests.MockConfigurationFactory;
 import spikes.legobricks.name.OwnNameKeeper;
-import wheel.lang.exceptions.NotImplementedYet;
 import functionaltests.SovereignParty;
 
 public class SneerSovereignParty implements SovereignParty {
@@ -72,7 +71,7 @@ public class SneerSovereignParty implements SovereignParty {
 
     @Override
     public String navigateAndGetName(String nicknamePath) {
-    	return _mesh.findSignal(nicknamePath, "Own Name").currentValue();
+    	return _mesh.findSignal(nicknamePath, "Name").currentValue();
     }
 
 

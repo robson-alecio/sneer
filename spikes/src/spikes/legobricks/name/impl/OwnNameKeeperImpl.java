@@ -1,6 +1,5 @@
 package spikes.legobricks.name.impl;
 
-import sneer.contacts.ContactId;
 import spikes.legobricks.name.OwnNameKeeper;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;

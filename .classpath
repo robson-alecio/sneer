@@ -9,7 +9,6 @@
 	<classpathentry kind="src" path="bricks/deployer/src"/>
 	<classpathentry kind="src" path="bricks/config/src"/>
 	<classpathentry kind="src" path="bricks/contacts/src"/>
-	<classpathentry kind="src" path="bricks/network/src"/>
 	<classpathentry kind="src" path="bricks/mesh/src"/>
 	<classpathentry kind="src" path="bricks/connection/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>

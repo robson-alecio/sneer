@@ -2,10 +2,7 @@ package sneer.network.impl;
 
 import java.io.IOException;
 
-import org.apache.commons.configuration.Configuration;
-
 import sneer.lego.Brick;
-import sneer.lego.Configurable;
 import sneer.lego.Startable;
 import sneer.log.Logger;
 import sneer.network.Network;
@@ -17,7 +14,7 @@ import wheel.io.network.ObjectSocket;
 import wheel.io.network.OldNetwork;
 import wheel.io.network.OldNetworkImpl;
 
-public class NetworkImpl implements Network, Configurable, Startable {
+public class NetworkImpl implements Network, Startable {
 
     @Brick
     private Logger _log;
@@ -27,12 +24,6 @@ public class NetworkImpl implements Network, Configurable, Startable {
     private ObjectServerSocket _serverSocket;
 
     private int _serverPort;
-    
-    @Override
-    public void configure(Configuration config)
-    {
-        _serverPort = config.getInt("network.server.port", 9090);
-    }
     
     @Override
     public void start() throws Exception

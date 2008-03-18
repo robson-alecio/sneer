@@ -3,9 +3,9 @@
 	<classpathentry excluding="java/" kind="src" path="kernel/src"/>
 	<classpathentry kind="src" path="spikes/src"/>
 	<classpathentry kind="src" path="wheel/src"/>
+	<classpathentry kind="src" path="tests"/>
 	<classpathentry kind="src" path="bricks/log/src"/>
 	<classpathentry kind="src" path="bricks/compiler/src"/>
-	<classpathentry kind="src" path="tests"/>
 	<classpathentry kind="src" path="bricks/deployer/src"/>
 	<classpathentry kind="src" path="bricks/config/src"/>
 	<classpathentry kind="src" path="bricks/contacts/src"/>

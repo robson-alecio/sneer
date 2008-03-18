@@ -1,16 +1,12 @@
 package functionaltests.adapters;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.mesh.Mesh;
-import sneer.contacts.ConnectionManager;
+import sneer.contacts.Contact;
+import sneer.contacts.ContactManager;
 import sneer.lego.Brick;
-import sneer.lego.ConfigurationFactory;
 import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
-import sneer.lego.impl.SimpleBinder;
-import sneer.lego.tests.MockConfigurationFactory;
 import spikes.legobricks.name.OwnNameKeeper;
 import functionaltests.SovereignParty;
 
@@ -18,39 +14,34 @@ public class SneerSovereignParty implements SovereignParty {
 	
 	private static final String MOCK_ADDRESS = "localhost";
 
-//	@Brick
-//	private Network _network;
-
 	@Brick
-	private ConnectionManager _signalManager;
+	private ContactManager _contactManager;
+	
+	@Brick
+	private ConnectionManager _connectionManager;
 	
 	@Brick
 	private OwnNameKeeper _ownNameKeeper;
 	
-	private int _port;
-
 	@Brick
 	private Mesh _mesh;
 	
 	public SneerSovereignParty(String name, int port) {
-		_port = port;
 		
 		//Container c = ContainerUtils.newContainer(new SimpleBinder().bind(Network.class).toInstance(singleNetwork())); 
-		Map<String, Object> values = new HashMap<String, Object>();
-		values.put("network.server.port", port);
-		ConfigurationFactory configurationFactory = new MockConfigurationFactory(values);
-		Container c = ContainerUtils.newContainer(new SimpleBinder(), configurationFactory);
+
+		Container c = ContainerUtils.newContainer(null, null);
 		c.inject(this);
 
 		setOwnName(name);
+		_connectionManager.sneerPort(port);
 	}
 
 	@Override
-	public void bidirectionalConnectTo(SovereignParty peer) {
-		int port = ((SneerSovereignParty)peer).port();
-//	    if(_contactManager.add(peer.ownName(), MOCK_ADDRESS, port)) {
-//	        //System.out.println(_name+" <-> "+peer.ownName() +" "+_contactManager);
-//	    }
+	public void bidirectionalConnectTo(SovereignParty party) {
+		int port = ((SneerSovereignParty) party).port();
+		Contact contact = _contactManager.addContact(party.ownName(), MOCK_ADDRESS, port);
+		System.out.println("Contact "+contact.host() + ":" + contact.port()+" added");
 	}
 
 	@Override
@@ -82,7 +73,7 @@ public class SneerSovereignParty implements SovereignParty {
 
     public int port()
     {
-        return _port;
+        return _connectionManager.sneerPort();
     }
 
 }

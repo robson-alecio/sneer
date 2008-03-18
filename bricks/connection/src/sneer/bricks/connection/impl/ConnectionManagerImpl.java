@@ -14,6 +14,7 @@ import sneer.lego.Brick;
 import sneer.lego.Startable;
 import sneer.log.Logger;
 import wheel.io.network.ObjectServerSocket;
+import wheel.io.network.ObjectSocket;
 import wheel.io.network.OldNetwork;
 import wheel.io.network.OldNetworkImpl;
 import wheel.reactive.lists.impl.SimpleListReceiver;
@@ -85,7 +86,13 @@ public class ConnectionManagerImpl implements ConnectionManager, Startable {
 		Connection conn = _map.get(connectionId);
 		if(conn != null) return conn;
 		_log.info("Opening connection to {}:{}",host, port);
-		conn = new ConnectionImpl();
+		ObjectSocket socket = null;
+		try {
+			socket = _network.openSocket(host, port);
+		} catch (IOException e) {
+			e.printStackTrace(); //FixUrgent: handle exception
+		}
+		conn = new ConnectionImpl(socket);
 		_map.put(connectionId, conn);
 		return conn;
 	}

@@ -1,6 +1,7 @@
 package sneer.bricks.connection.impl;
 
 import sneer.bricks.connection.Connection;
+import wheel.io.network.ObjectSocket;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
 import wheel.reactive.impl.SourceImpl;
@@ -9,7 +10,10 @@ public class ConnectionImpl implements Connection {
 
 	private Source<Boolean> source;
 	
-	public ConnectionImpl() {
+	private ObjectSocket _socket;
+	
+	public ConnectionImpl(ObjectSocket socket) {
+		_socket = socket;
 		source = new SourceImpl<Boolean>(true);
 	}
 	

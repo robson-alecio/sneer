@@ -19,4 +19,7 @@ public class ContainerUtils {
         return new SimpleContainer(binder, configurationFactory);
     }
 	
+    public static void stopContainer() {
+    	container = null;
+    }
 }

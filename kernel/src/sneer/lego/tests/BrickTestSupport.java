@@ -48,4 +48,8 @@ public class BrickTestSupport {
 			file.mkdirs();
 		return file;
 	}
+
+	protected void stopContainer() {
+		container = null;
+	}
 }

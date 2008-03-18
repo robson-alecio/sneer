@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import sneer.lego.Binder;
-import sneer.lego.Brick;
 import sneer.lego.Container;
 import sneer.lego.impl.SimpleBinder;
 import sneer.lego.impl.SimpleContainer;
@@ -14,9 +13,6 @@ import sneer.lego.tests.impl.MySample;
 
 public class ContainerTest extends BrickTestSupport {
 
-	@Brick
-	private Container container;
-	
 	@Test
 	public void testAssignable() {
 		assertTrue(Object.class.isAssignableFrom(String.class));

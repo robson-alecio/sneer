@@ -18,6 +18,7 @@ public class LifecycleImpl implements Lifecycle, Configurable, Startable {
     public void configure(Configuration config) {
         _configureCalled = true;
         _configuration = config;
+        _configuration.toString();
     }
 
     @Override

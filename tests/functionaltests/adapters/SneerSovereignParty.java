@@ -8,11 +8,15 @@ import sneer.lego.Brick;
 import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
 import spikes.legobricks.name.OwnNameKeeper;
+import wheel.io.network.OldNetwork;
+import wheel.io.network.mocks.OldNetworkMock;
 import functionaltests.SovereignParty;
 
 public class SneerSovereignParty implements SovereignParty {
 	
 	private static final String MOCK_ADDRESS = "localhost";
+
+	private static OldNetwork _network;
 
 	@Brick
 	private ContactManager _contactManager;
@@ -25,6 +29,15 @@ public class SneerSovereignParty implements SovereignParty {
 	
 	@Brick
 	private Mesh _mesh;
+	
+	public static OldNetwork network() {
+		//FixUrgent Remove this method and inject the same instance of OldNetworkMock for all containers.
+		
+		if (_network == null) _network = new OldNetworkMock();
+		return _network;
+	}
+
+
 	
 	public SneerSovereignParty(String name, int port) {
 		

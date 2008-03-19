@@ -16,8 +16,8 @@ import sneer.log.Logger;
 import wheel.io.network.ObjectServerSocket;
 import wheel.io.network.ObjectSocket;
 import wheel.io.network.OldNetwork;
-import wheel.io.network.OldNetworkImpl;
 import wheel.reactive.lists.impl.SimpleListReceiver;
+import functionaltests.adapters.SneerSovereignParty;
 
 public class ConnectionManagerImpl implements ConnectionManager, Startable {
 
@@ -39,8 +39,10 @@ public class ConnectionManagerImpl implements ConnectionManager, Startable {
 	
 	@Override
 	public void start() throws Exception {
-		_network = new OldNetworkImpl();
+		_network = SneerSovereignParty.network();
 		receiver = new SimpleListReceiver<Contact>(_contactManager.contacts()){
+			
+			//FixUrgent All events have to be processed asynchronously.
 			
 			@Override
 			protected void elementAdded(Contact contact) {
@@ -98,7 +100,7 @@ public class ConnectionManagerImpl implements ConnectionManager, Startable {
 	}
 
 	@Override
-	public void sneerPort(int port) {
+	synchronized public void sneerPort(int port) {
 		if(_serverSocket != null) {
 			_log.info("closing server socket at {}", _sneerPort);
 			_serverSocket.close();

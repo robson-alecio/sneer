@@ -16,8 +16,13 @@ import sneer.log.Logger;
 import wheel.io.network.ObjectServerSocket;
 import wheel.io.network.ObjectSocket;
 import wheel.io.network.OldNetwork;
+import wheel.lang.Consumer;
+import wheel.lang.IntegerConsumerBoundaries;
+import wheel.reactive.Signal;
+import wheel.reactive.Source;
+import wheel.reactive.impl.SourceImpl;
 import wheel.reactive.lists.impl.SimpleListReceiver;
-import functionaltests.adapters.SneerSovereignParty;
+import functionaltests.adapters.SneerParty;
 
 public class ConnectionManagerImpl implements ConnectionManager, Startable {
 
@@ -25,7 +30,7 @@ public class ConnectionManagerImpl implements ConnectionManager, Startable {
 
 	private Object receiver;
 	
-	private int _sneerPort;
+	private Source<Integer> _sneerPort = new SourceImpl<Integer>(0);
 	
 	private OldNetwork _network;
 	
@@ -39,7 +44,7 @@ public class ConnectionManagerImpl implements ConnectionManager, Startable {
 	
 	@Override
 	public void start() throws Exception {
-		_network = SneerSovereignParty.network();
+		_network = SneerParty.network();
 		receiver = new SimpleListReceiver<Contact>(_contactManager.contacts()){
 			
 			//FixUrgent All events have to be processed asynchronously.
@@ -100,22 +105,28 @@ public class ConnectionManagerImpl implements ConnectionManager, Startable {
 	}
 
 	@Override
-	synchronized public void sneerPort(int port) {
-		if(_serverSocket != null) {
-			_log.info("closing server socket at {}", _sneerPort);
-			_serverSocket.close();
-		}
-		_sneerPort = port;
-		try {
-			_log.info("starting server socket at {}", _sneerPort);
-			_serverSocket = _network.openObjectServerSocket(port);
-		} catch (IOException e) {
-			e.printStackTrace(); //FixUrgent: handle exception
-		}
+	synchronized public Consumer<Integer> sneerPortSetter() {
+		return new IntegerConsumerBoundaries("Sneer Port", _sneerPort.setter(), 0, 65535);
+	}
+
+	private void setPort() {
+//		if(_serverSocket != null) {
+//			_log.info("closing server socket at {}", _sneerPort);
+//			_serverSocket.close();
+//		}
+//		_sneerPort = port;
+//		try {
+//			_log.info("starting server socket at {}", _sneerPort);
+//			_serverSocket = _network.openObjectServerSocket(port);
+//		} catch (IOException e) {
+//			e.printStackTrace(); //FixUrgent: handle exception
+//		}
 	}
 
 	@Override
-	public int sneerPort() {
-		return _sneerPort;
+	public Signal<Integer> sneerPort() {
+		return _sneerPort.output();
 	}
+	
+	
 }

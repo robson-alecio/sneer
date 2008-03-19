@@ -12,7 +12,7 @@ import wheel.io.network.OldNetwork;
 import wheel.io.network.mocks.OldNetworkMock;
 import functionaltests.SovereignParty;
 
-public class SneerSovereignParty implements SovereignParty {
+public class SneerParty implements SovereignParty {
 	
 	private static final String MOCK_ADDRESS = "localhost";
 
@@ -39,7 +39,7 @@ public class SneerSovereignParty implements SovereignParty {
 
 
 	
-	public SneerSovereignParty(String name, int port) {
+	public SneerParty(String name, int port) {
 		
 		//Container c = ContainerUtils.newContainer(new SimpleBinder().bind(Network.class).toInstance(singleNetwork())); 
 
@@ -47,12 +47,12 @@ public class SneerSovereignParty implements SovereignParty {
 		c.inject(this);
 
 		setOwnName(name);
-		_connectionManager.sneerPort(port);
+		_connectionManager.sneerPortSetter();
 	}
 
 	@Override
 	public void bidirectionalConnectTo(SovereignParty party) {
-		int port = ((SneerSovereignParty) party).port();
+		int port = ((SneerParty) party).port();
 		Contact contact = _contactManager.addContact(party.ownName(), MOCK_ADDRESS, port);
 		System.out.println("Contact "+contact.host() + ":" + contact.port()+" added");
 	}
@@ -86,7 +86,7 @@ public class SneerSovereignParty implements SovereignParty {
 
     public int port()
     {
-        return _connectionManager.sneerPort();
+        return _connectionManager.sneerPort().currentValue();
     }
 
 }

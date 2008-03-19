@@ -7,7 +7,7 @@ public class SneerFreedom1Test extends Freedom1Test {
 
 	@Override
 	protected SovereignCommunity createNewCommunity() {
-		return new SneerSovereignCommunity();
+		return new SneerCommunity();
 	}
 
 }

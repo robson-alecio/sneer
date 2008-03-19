@@ -1,6 +1,8 @@
 package wheel.reactive.impl;
 
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,8 +11,8 @@ import wheel.lang.Omnivore;
 
 public abstract class AbstractNotifier<VC> {
 
-	private final List<Omnivore<VC>> _receivers = new LinkedList<Omnivore<VC>>(); //Fix: Potential object leak. Receivers must be weak referenced. This is equivalent to the whiteboard pattern too, from a receiver referencing perspective. Conceptually, it is only the receiver that references the signal.
-	private transient List<Omnivore<VC>> _transientReceivers;
+	private final List<WeakReference<Omnivore<VC>>> _receivers = new ArrayList<WeakReference<Omnivore<VC>>>(); //Fix: Potential object leak. Receivers must be weak referenced. This is equivalent to the whiteboard pattern too, from a receiver referencing perspective. Conceptually, it is only the receiver that references the signal.
+	private transient List<WeakReference<Omnivore<VC>>> _transientReceivers;
 	private final Object _monitor = new Object();
 
 	protected void notifyReceivers(VC valueChange) {
@@ -21,19 +23,32 @@ public abstract class AbstractNotifier<VC> {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	private void notify(List<Omnivore<VC>> _receivers2, VC valueChange) {
-		Omnivore<VC>[] copy;
-		copy = new Omnivore[_receivers2.size()];
-		_receivers2.toArray(copy);
+	private void notify(List<WeakReference<Omnivore<VC>>> receivers, VC valueChange) {
+		WeakReference<Omnivore<VC>>[] copy = createArray(receivers.size());
+		receivers.toArray(copy);
 	
-		for (Omnivore<VC> receiver : copy) receiver.consume(valueChange);
+		for (WeakReference<Omnivore<VC>> reference : copy)
+			notify(reference, valueChange);
+	}
+
+	private void notify(WeakReference<Omnivore<VC>> reference, VC valueChange) {
+		Omnivore<VC> receiver = reference.get();
+		if (receiver == null) {
+			//Fix: Remove this empty WeakReference form the listeners or transientListeners list.
+			return;
+		}
+
+		receiver.consume(valueChange);
+	}
+
+	@SuppressWarnings("unchecked")
+	private WeakReference<Omnivore<VC>>[] createArray(int size) {
+		return new WeakReference[size];
 	}
 
 	public void addReceiver(Omnivore<VC> receiver) {
 		synchronized (_monitor) {
-			boolean isNew = _receivers.add(receiver);
-			assert isNew;
+			_receivers.add(new WeakReference<Omnivore<VC>>(receiver));
 			initReceiver(receiver);
 		}
 	}
@@ -49,8 +64,7 @@ public abstract class AbstractNotifier<VC> {
 
 	public void addTransientReceiver(Omnivore<VC> receiver) {
 		synchronized (_monitor) {
-			boolean isNew = transientReceivers().add(receiver);
-			assert isNew;
+			transientReceivers().add(new WeakReference<Omnivore<VC>>(receiver));
 			initReceiver(receiver);
 		}
 	}
@@ -62,8 +76,9 @@ public abstract class AbstractNotifier<VC> {
 		}
 	}
 
-	private Collection<Omnivore<VC>> transientReceivers() {
-		if (_transientReceivers == null) _transientReceivers = new LinkedList<Omnivore<VC>>();  
+	private Collection<WeakReference<Omnivore<VC>>> transientReceivers() {
+		if (_transientReceivers == null)
+			_transientReceivers = new LinkedList<WeakReference<Omnivore<VC>>>();  
 		return _transientReceivers;
 	}
 

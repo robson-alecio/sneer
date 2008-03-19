@@ -8,6 +8,10 @@ import wheel.reactive.impl.SourceImpl;
 
 public class LoopbackTester {
 
+	private Source<Object> _inputValue1 = new SourceImpl<Object>(null);
+	private Source<Object> _inputValue2 = new SourceImpl<Object>(null);
+	private Source<Object> _inputValue3 = new SourceImpl<Object>(null);
+
 	public LoopbackTester(Signal<?> input, Omnivore<?> output) {
 		_output = Casts.uncheckedGenericCast(output);
 				
@@ -19,9 +23,6 @@ public class LoopbackTester {
 	
 	private final Omnivore<Object> _output;
 
-	private Source<Object> _inputValue1 = new SourceImpl<Object>(null);
-	private Source<Object> _inputValue2 = new SourceImpl<Object>(null);
-	private Source<Object> _inputValue3 = new SourceImpl<Object>(null);
 
 	public void test() {
 		testWithStrings();

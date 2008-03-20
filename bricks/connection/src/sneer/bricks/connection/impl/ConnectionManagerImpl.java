@@ -124,7 +124,6 @@ public class ConnectionManagerImpl implements ConnectionManager, Startable {
 					Threads.waitWithoutInterruptions(_portToListenMonitor);
 			}
 		}
-		
 	}
 
 	private void openServerSocket(int port) {

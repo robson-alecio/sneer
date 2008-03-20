@@ -1,11 +1,19 @@
 package sneer.bricks.connection.tests;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import org.junit.After;
 import org.junit.Test;
@@ -27,45 +35,41 @@ public class ConnectionManagerTest extends BrickTestSupport {
 	}
 	
 	@Test
-	public void testIsOnline() throws Exception {
-		Connection conn = _connectionManager.openConnection("localhost", 9090);
-		assertTrue(conn.isOnline().currentValue());
+	public void testConnect() throws Exception {
+		EchoServer server = new EchoServer();
+		server.start(9090);
+		Connection conn = _connectionManager.newConnection();
+		assertFalse(conn.isConnected().currentValue());
+		conn.connect("localhost", 9090);
+		conn.waitUntilConnected();
+		assertTrue(conn.isConnected().currentValue());
 	}
+}
 
-	@Test
-	public void testConnectTwice() throws Exception {
-		Connection conn1 = _connectionManager.openConnection("localhost", 9090);
-		Connection conn2 = _connectionManager.openConnection("localhost", 9090);
-		assertSame(conn1, conn2);
-	}
-
-	@Test
-	public void testCloseConnection() throws Exception {
-		Connection conn = _connectionManager.openConnection("localhost", 9091);
-		assertTrue(conn.isOnline().currentValue());
-		conn.close();
-		assertFalse(conn.isOnline().currentValue());
+class EchoServer {
+	ServerSocket _serverSocket;
+	void start(int port) throws Exception {
+		_serverSocket = new ServerSocket(port);
+		System.out.println("Server started: "+port);
+		Executor executor = Executors.newSingleThreadExecutor();
+		executor.execute(new Runnable(){ @Override public void run() {
+			try {
+				Socket clientSocket = _serverSocket.accept();
+				handleClient(clientSocket);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}});
 	}
 	
-	@Test
-	public void testListConnections() throws Exception {
-		List<Connection> connections = _connectionManager.listConnections();
-		assertEquals(0, connections.size());
-		
-		Connection conn = _connectionManager.openConnection("localhost", 9090);
-		connections = _connectionManager.listConnections();
-		assertEquals(1, connections.size());
-		assertSame(conn, connections.get(0));
-
-		//same connection
-		conn = _connectionManager.openConnection("localhost", 9090);
-		connections = _connectionManager.listConnections();
-		assertEquals(1, connections.size());
-		assertSame(conn, connections.get(0));
-
-		//other
-		conn = _connectionManager.openConnection("localhost", 9091);
-		connections = _connectionManager.listConnections();
-		assertEquals(2, connections.size());
+	private void handleClient(Socket clientSocket) throws Exception {
+		PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+		InputStream is = clientSocket.getInputStream();
+		BufferedReader in = new BufferedReader(new InputStreamReader(is));
+		String line = null;
+		while ((line = in.readLine()) != null) {
+			System.out.println("Server: "+line);
+			out.print(line);
+		}
 	}
 }

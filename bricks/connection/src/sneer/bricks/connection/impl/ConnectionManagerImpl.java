@@ -1,23 +1,23 @@
 package sneer.bricks.connection.impl;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import sneer.bricks.connection.Connection;
 import sneer.bricks.connection.ConnectionManager;
+import sneer.bricks.exceptionhandler.ExceptionHandler;
 import sneer.contacts.Contact;
 import sneer.contacts.ContactManager;
 import sneer.lego.Brick;
+import sneer.lego.Container;
 import sneer.lego.Startable;
 import sneer.log.Logger;
 import wheel.io.network.ObjectServerSocket;
-import wheel.io.network.ObjectSocket;
 import wheel.io.network.OldNetwork;
 import wheel.lang.Consumer;
 import wheel.lang.IntegerConsumerBoundaries;
+import wheel.lang.Omnivore;
+import wheel.lang.Threads;
+import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Signal;
 import wheel.reactive.Source;
 import wheel.reactive.impl.SourceImpl;
@@ -25,8 +25,6 @@ import wheel.reactive.lists.impl.SimpleListReceiver;
 import functionaltests.adapters.SneerParty;
 
 public class ConnectionManagerImpl implements ConnectionManager, Startable {
-
-	private Map<String, Connection> _map = new HashMap<String, Connection>();
 
 	private Object receiver;
 	
@@ -42,66 +40,56 @@ public class ConnectionManagerImpl implements ConnectionManager, Startable {
 	@Brick
 	private ContactManager _contactManager;
 	
+	@Brick
+	private Container _container;
+	
+	@Brick
+	private ExceptionHandler _exceptionHandler;
+
+	private final transient Object _portToListenMonitor = new Object();
+	private int _portToListen = 0;
+	
 	@Override
 	public void start() throws Exception {
 		_network = SneerParty.network();
+		
+		//handle sneer port changes
+		Threads.startDaemon(new Runnable(){ @Override public void run() {
+			listenToSneerPort();
+		}});
+		_sneerPort.output().addReceiver(new Omnivore<Integer>() { @Override public void consume(Integer port) {
+			setPort(port);
+		}});
+		
+		//handle contact changes
 		receiver = new SimpleListReceiver<Contact>(_contactManager.contacts()){
-			
-			//FixUrgent All events have to be processed asynchronously.
-			
+
 			@Override
 			protected void elementAdded(Contact contact) {
-				openConnection(contact.host(), contact.port());
+				connect(contact.host(), contact.port());
 			}
-			
+
 			@Override
 			protected void elementPresent(Contact contact) {
-				openConnection(contact.host(), contact.port());
+				connect(contact.host(), contact.port());
 			}
 			
 			@Override
 			protected void elementToBeRemoved(Contact contact) {
-				Connection conn = getConnection(connectionId(contact.host(), contact.port()));
-				conn.close();
+				throw new NotImplementedYet();
 			}};
 			
 			receiver.toString();
 	}
 
-	private String connectionId(String host, int port) {
-		return host+":"+port;
-	}
-	
-	protected Connection getConnection(String connectionId) {
-		for(String key : _map.keySet()) {
-			if(key.equals(connectionId)) {
-				return _map.get(key);
-			}
-		}
-		throw new IllegalArgumentException("Can't find connection: "+connectionId);
+	private void connect(String host, int port) {
+		Connection conn = newConnection();
+		conn.connect(host, port);
 	}
 
 	@Override
-	public List<Connection> listConnections() {
-		List<Connection> result = new ArrayList<Connection>(_map.values());
-		return result;
-	}
-
-	@Override
-	public Connection openConnection(String host, int port) {
-		String connectionId = connectionId(host, port);
-		Connection conn = _map.get(connectionId);
-		if(conn != null) return conn;
-		_log.info("Opening connection to {}:{}",host, port);
-		ObjectSocket socket = null;
-		try {
-			socket = _network.openSocket(host, port);
-		} catch (IOException e) {
-			e.printStackTrace(); //FixUrgent: handle exception
-		}
-		conn = new ConnectionImpl(socket);
-		_map.put(connectionId, conn);
-		return conn;
+	public Connection newConnection() {
+		return _container.create(Connection.class);
 	}
 
 	@Override
@@ -109,24 +97,51 @@ public class ConnectionManagerImpl implements ConnectionManager, Startable {
 		return new IntegerConsumerBoundaries("Sneer Port", _sneerPort.setter(), 0, 65535);
 	}
 
-	private void setPort() {
-//		if(_serverSocket != null) {
-//			_log.info("closing server socket at {}", _sneerPort);
-//			_serverSocket.close();
-//		}
-//		_sneerPort = port;
-//		try {
-//			_log.info("starting server socket at {}", _sneerPort);
-//			_serverSocket = _network.openObjectServerSocket(port);
-//		} catch (IOException e) {
-//			e.printStackTrace(); //FixUrgent: handle exception
-//		}
-	}
-
 	@Override
 	public Signal<Integer> sneerPort() {
 		return _sneerPort.output();
 	}
-	
-	
+
+	private void setPort(int port) {
+		synchronized (_portToListenMonitor) {
+			_portToListen = port;
+			_portToListenMonitor.notify();
+		}
+	}
+
+	private void listenToSneerPort() {
+		while (true) {
+			int myPortToListen;
+			synchronized (_portToListenMonitor) {
+				myPortToListen = _portToListen;
+			}
+			
+			closeServerSocketIfNecessary();
+			openServerSocket(myPortToListen);	
+			
+			synchronized (_portToListenMonitor) {
+				if (myPortToListen == _portToListen)
+					Threads.waitWithoutInterruptions(_portToListenMonitor);
+			}
+		}
+		
+	}
+
+	private void openServerSocket(int port) {
+		if (port == 0) return;
+		
+		try {
+			_log.info("starting server socket at {}", port);
+			_serverSocket = _network.openObjectServerSocket(port);
+		} catch (IOException e) {
+			_exceptionHandler.handle("Error trying to open socket at "+port, e);
+		}
+	}
+
+	private void closeServerSocketIfNecessary() {
+		if(_serverSocket == null) return;
+
+		_log.info("closing server socket");
+		_serverSocket.close();
+	}
 }

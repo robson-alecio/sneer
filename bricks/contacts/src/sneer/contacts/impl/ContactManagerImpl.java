@@ -48,4 +48,10 @@ class ContactImpl implements Contact {
 	public int port() {
 		return _port;
 	}
+
+
+	@Override
+	public String publicKey() {
+		return "some public key";
+	}
 }

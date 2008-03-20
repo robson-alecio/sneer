@@ -5,5 +5,7 @@ public interface Contact {
 	String host();
 
 	int port();
+	
+	String publicKey();
 
 }

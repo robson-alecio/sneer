@@ -14,11 +14,11 @@ import wheel.reactive.lists.impl.SimpleListReceiver;
 
 class Spider implements Operator {
 
-	Spider(OldNetwork network, ListSignal<ContactAttributes> contacts, Consumer<OutgoingConnectionAttempt> outgoingConnectionValidator, Omnivore<Object> objectReceiver) {
+	Spider(OldNetwork network, ListSignal<ContactAttributes> contacts, Consumer<OutgoingConnectionAttempt> outgoingConnectionValidator, Omnivore<ChannelPacket> packetReceiver) {
 		_network = network;
 		_contacts = contacts;
 		_outgoingConnectionValidator = outgoingConnectionValidator;
-		_objectReceiver = objectReceiver;
+		_packetReceiver = packetReceiver;
 		
 		new MyContactReceiver(_contacts);
 	}
@@ -26,7 +26,7 @@ class Spider implements Operator {
 	private final OldNetwork _network;
 	private final ListSignal<ContactAttributes> _contacts;
 	private final Consumer<OutgoingConnectionAttempt> _outgoingConnectionValidator;
-	private final Omnivore<Object> _objectReceiver;
+	private final Omnivore<ChannelPacket> _packetReceiver;
 
 	private final Map<ContactId, ConnectionImpl> _connectionsByContactId = new HashMap<ContactId, ConnectionImpl>();
 
@@ -54,7 +54,7 @@ class Spider implements Operator {
 	}
 
 	private void connectTo(ContactAttributes contact) {
-		ConnectionImpl newConnection = new ConnectionImpl(contact, _network, _outgoingConnectionValidator, _objectReceiver);
+		ConnectionImpl newConnection = new ConnectionImpl(contact, _network, _outgoingConnectionValidator, _packetReceiver);
 		_connectionsByContactId.put(contact.id(), newConnection);
 	}
 

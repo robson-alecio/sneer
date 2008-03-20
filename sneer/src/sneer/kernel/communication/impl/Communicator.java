@@ -44,7 +44,7 @@ public class Communicator {
 		_user = user;
 		_business = business;
 		_contactManager = contactManager;
-		_spider = new Spider(network, _business.contactAttributes(), outgoingConnectionValidator(), myObjectReceiver());
+		_spider = new Spider(network, _business.contactAttributes(), outgoingConnectionValidator(), myPacketReceiver());
 		new SocketAccepter(user, network, _business.sneerPort(), mySocketServer());
 	}
 
@@ -54,10 +54,9 @@ public class Communicator {
 	private Spider _spider;
 	private Map<String, ChannelImpl> _channelsById = new HashMap<String, ChannelImpl>();
 	
-	private Omnivore<Object> myObjectReceiver() {
-		return new Omnivore<Object>() { public void consume(Object received) {
-			if (!(received instanceof ChannelPacket)) return;
-			receive((ChannelPacket)received);
+	private Omnivore<ChannelPacket> myPacketReceiver() {
+		return new Omnivore<ChannelPacket>() { public void consume(ChannelPacket received) {
+			receive(received);
 		}};
 	}
 

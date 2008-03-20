@@ -10,6 +10,7 @@ public interface Source<T> extends Serializable{
 	
 	Omnivore<T> setter();
 	
+	@Deprecated
 	boolean isSameValue(T value);
 
 }

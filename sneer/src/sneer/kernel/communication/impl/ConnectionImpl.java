@@ -26,7 +26,7 @@ public class ConnectionImpl implements Connection {
 	private final ContactAttributes _contact;
 	private final OldNetwork _network;
 	private final Consumer<OutgoingConnectionAttempt> _connectionValidator;
-	private final Omnivore<Object> _objectReceiver;
+	private final Omnivore<ChannelPacket> _packetReceiver;
 
 	private final Object _socketOpenMonitor = new Object();
 	private final SocketHolder _socketHolder = new SocketHolder(socketActivityReceiver());
@@ -41,11 +41,11 @@ public class ConnectionImpl implements Connection {
 	private final Source<Boolean> _isOnlineSource = new SourceImpl<Boolean>(false);
 	
 
-	ConnectionImpl(ContactAttributes contact, OldNetwork network, Consumer<OutgoingConnectionAttempt> connectionValidator, Omnivore<Object> objectReceiver) {
+	ConnectionImpl(ContactAttributes contact, OldNetwork network, Consumer<OutgoingConnectionAttempt> connectionValidator, Omnivore<ChannelPacket> packetReceiver) {
 		_contact = contact;
 		_network = network;
 		_connectionValidator = connectionValidator;
-		_objectReceiver = objectReceiver;
+		_packetReceiver = packetReceiver;
 		
 		startIsOnlineWatchdog();
 		startSender();
@@ -154,7 +154,7 @@ public class ConnectionImpl implements Connection {
 
 		ChannelPacket packet = (ChannelPacket)received;
 		packet._packet._contactId = _contact.id();
-		_objectReceiver.consume(packet);
+		_packetReceiver.consume(packet);
 	}
 
 	private void logOnlyFirstClassNotFoundExceptionToAvoidLogOverflow(ClassNotFoundException e) {

@@ -1,10 +1,10 @@
 package sneer.bricks.connection.impl;
 
-import java.io.IOException;
-
 import sneer.bricks.connection.Connection;
 import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.exceptionhandler.ExceptionHandler;
+import sneer.bricks.network.Network;
+import sneer.bricks.network.NetworkException;
 import sneer.contacts.Contact;
 import sneer.contacts.ContactManager;
 import sneer.lego.Brick;
@@ -12,7 +12,6 @@ import sneer.lego.Container;
 import sneer.lego.Startable;
 import sneer.log.Logger;
 import wheel.io.network.ObjectServerSocket;
-import wheel.io.network.OldNetwork;
 import wheel.lang.Consumer;
 import wheel.lang.IntegerConsumerBoundaries;
 import wheel.lang.Omnivore;
@@ -22,7 +21,6 @@ import wheel.reactive.Signal;
 import wheel.reactive.Source;
 import wheel.reactive.impl.SourceImpl;
 import wheel.reactive.lists.impl.SimpleListReceiver;
-import functionaltests.adapters.SneerParty;
 
 public class ConnectionManagerImpl implements ConnectionManager, Startable {
 
@@ -30,7 +28,7 @@ public class ConnectionManagerImpl implements ConnectionManager, Startable {
 	
 	private Source<Integer> _sneerPort = new SourceImpl<Integer>(0);
 	
-	private OldNetwork _network;
+	private Network _network;
 	
 	private ObjectServerSocket _serverSocket;
 	
@@ -51,8 +49,6 @@ public class ConnectionManagerImpl implements ConnectionManager, Startable {
 	
 	@Override
 	public void start() throws Exception {
-		_network = SneerParty.network();
-		
 		//handle sneer port changes
 		Threads.startDaemon(new Runnable(){ @Override public void run() {
 			listenToSneerPort();
@@ -132,7 +128,7 @@ public class ConnectionManagerImpl implements ConnectionManager, Startable {
 		try {
 			_log.info("starting server socket at {}", port);
 			_serverSocket = _network.openObjectServerSocket(port);
-		} catch (IOException e) {
+		} catch (NetworkException e) {
 			_exceptionHandler.handle("Error trying to open socket at "+port, e);
 		}
 	}

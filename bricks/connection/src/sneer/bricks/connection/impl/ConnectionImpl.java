@@ -8,11 +8,10 @@ import java.util.concurrent.FutureTask;
 
 import sneer.bricks.connection.Connection;
 import sneer.bricks.exceptionhandler.ExceptionHandler;
+import sneer.bricks.network.Network;
 import sneer.lego.Brick;
 import sneer.log.Logger;
 import wheel.io.network.ObjectSocket;
-import wheel.io.network.OldNetwork;
-import wheel.io.network.OldNetworkImpl;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Signal;
@@ -23,7 +22,7 @@ public class ConnectionImpl implements Connection {
 
 	private Source<Boolean> _status = new SourceImpl<Boolean>(false);
 
-	private OldNetwork _network = new OldNetworkImpl(); //TODO: inject
+	private Network _network;
 
 	private String _host;
 	

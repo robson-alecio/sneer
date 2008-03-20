@@ -1,7 +1,7 @@
-package functionaltests.adapters;
+package functional.adapters;
 
-import functionaltests.Freedom1Test;
-import functionaltests.SovereignCommunity;
+import functional.Freedom1Test;
+import functional.SovereignCommunity;
 
 public class SneerFreedom1Test extends Freedom1Test {
 

@@ -1,4 +1,4 @@
-package functionaltests;
+package functional;
 
 
 public class TestDashboard {

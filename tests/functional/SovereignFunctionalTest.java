@@ -1,4 +1,4 @@
-package functionaltests;
+package functional;
 
 import org.junit.Before;
 

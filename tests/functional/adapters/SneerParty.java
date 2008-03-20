@@ -1,4 +1,4 @@
-package functionaltests.adapters;
+package functional.adapters;
 
 import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.mesh.Mesh;
@@ -10,7 +10,7 @@ import sneer.lego.ContainerUtils;
 import spikes.legobricks.name.OwnNameKeeper;
 import wheel.io.network.OldNetwork;
 import wheel.io.network.mocks.OldNetworkMock;
-import functionaltests.SovereignParty;
+import functional.SovereignParty;
 
 public class SneerParty implements SovereignParty {
 	

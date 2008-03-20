@@ -1,7 +1,7 @@
-package functionaltests.adapters;
+package functional.adapters;
 
-import functionaltests.SovereignCommunity;
-import functionaltests.SovereignParty;
+import functional.SovereignCommunity;
+import functional.SovereignParty;
 
 public class SneerCommunity implements SovereignCommunity {
 

@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
-import wheel.reactive.Source;
+import wheel.reactive.Register;
 
-public class SourceImpl<VO> implements Source<VO> {
+public class SourceImpl<VO> implements Register<VO> {
 
 
 

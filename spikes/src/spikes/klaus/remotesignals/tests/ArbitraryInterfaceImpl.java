@@ -1,12 +1,12 @@
 package spikes.klaus.remotesignals.tests;
 
 import wheel.reactive.Signal;
-import wheel.reactive.Source;
+import wheel.reactive.Register;
 import wheel.reactive.impl.SourceImpl;
 
 public class ArbitraryInterfaceImpl implements ArbitraryInterface {
 
-	final Source<String> _firstSource = new SourceImpl<String>(null);
+	final Register<String> _firstSource = new SourceImpl<String>(null);
 
 	public Signal<String> signal1() {
 		return _firstSource.output();

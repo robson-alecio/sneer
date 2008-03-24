@@ -18,7 +18,7 @@ import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Signal;
-import wheel.reactive.Source;
+import wheel.reactive.Register;
 import wheel.reactive.impl.SourceImpl;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
@@ -26,7 +26,7 @@ public class ConnectionManagerImpl implements ConnectionManager, Startable {
 
 	private Object receiver;
 	
-	private Source<Integer> _sneerPort = new SourceImpl<Integer>(0);
+	private Register<Integer> _sneerPort = new SourceImpl<Integer>(0);
 	
 	private Network _network;
 	

@@ -1,8 +1,8 @@
 package sneer.bricks.network;
 
 import wheel.io.network.ObjectSocket;
-import wheel.reactive.Signal;
+import wheel.reactive.EventSource;
 
 public interface SocketAccepter {
-    Signal<ObjectSocket> lastAcceptedSocket();
+    EventSource<ObjectSocket> lastAcceptedSocket();
 }

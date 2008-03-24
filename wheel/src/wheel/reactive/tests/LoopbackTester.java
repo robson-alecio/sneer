@@ -3,14 +3,14 @@ package wheel.reactive.tests;
 import wheel.lang.Casts;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
-import wheel.reactive.Source;
+import wheel.reactive.Register;
 import wheel.reactive.impl.SourceImpl;
 
 public class LoopbackTester {
 
-	private Source<Object> _inputValue1 = new SourceImpl<Object>(null);
-	private Source<Object> _inputValue2 = new SourceImpl<Object>(null);
-	private Source<Object> _inputValue3 = new SourceImpl<Object>(null);
+	private Register<Object> _inputValue1 = new SourceImpl<Object>(null);
+	private Register<Object> _inputValue2 = new SourceImpl<Object>(null);
+	private Register<Object> _inputValue3 = new SourceImpl<Object>(null);
 
 	public LoopbackTester(Signal<?> input, Omnivore<?> output) {
 		_output = Casts.uncheckedGenericCast(output);

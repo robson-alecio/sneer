@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import wheel.lang.Omnivore;
 
-public interface Source<T> extends Serializable{
+public interface Register<T> extends Serializable{
 
 	Signal<T> output();
 	

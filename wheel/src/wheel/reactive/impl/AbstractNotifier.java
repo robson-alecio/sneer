@@ -8,8 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import wheel.lang.Omnivore;
+import wheel.reactive.EventSource;
 
-public abstract class AbstractNotifier<VC> {
+public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 
 	private final List<WeakReference<Omnivore<VC>>> _receivers = new ArrayList<WeakReference<Omnivore<VC>>>(); //Fix: Potential object leak. Receivers must be weak referenced. This is equivalent to the whiteboard pattern too, from a receiver referencing perspective. Conceptually, it is only the receiver that references the signal.
 	private transient List<WeakReference<Omnivore<VC>>> _transientReceivers;
@@ -46,6 +47,7 @@ public abstract class AbstractNotifier<VC> {
 		return new WeakReference[size];
 	}
 
+	@Override
 	public void addReceiver(Omnivore<VC> receiver) {
 		synchronized (_monitor) {
 			_receivers.add(new WeakReference<Omnivore<VC>>(receiver));
@@ -55,6 +57,7 @@ public abstract class AbstractNotifier<VC> {
 
 	protected abstract void initReceiver(Omnivore<VC> receiver);
 	
+	@Override
 	public void removeReceiver(Omnivore<VC> receiver) {
 		synchronized (_monitor) {
 			boolean wasThere = _receivers.remove(receiver); //Optimize: List has linear lookup time. Cannot simply replace for a Set because receivers must be notified in the order the registered.
@@ -62,6 +65,7 @@ public abstract class AbstractNotifier<VC> {
 		}
 	}
 
+	@Override
 	public void addTransientReceiver(Omnivore<VC> receiver) {
 		synchronized (_monitor) {
 			transientReceivers().add(new WeakReference<Omnivore<VC>>(receiver));
@@ -69,6 +73,7 @@ public abstract class AbstractNotifier<VC> {
 		}
 	}
 
+	@Override
 	public void removeTransientReceiver(Omnivore<VC> receiver) {
 		synchronized (_monitor) {
 			boolean wasThere = transientReceivers().remove(receiver);

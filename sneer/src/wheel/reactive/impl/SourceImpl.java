@@ -44,6 +44,7 @@ public class SourceImpl<VO> implements Source<VO> {
 	}
 
 
+	@SuppressWarnings("deprecation")
 	public boolean isSameValue(VO value) {
 		if (value == _currentValue) return true; 
 		if (value != null && value.equals(_currentValue)) return true;

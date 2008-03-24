@@ -37,12 +37,10 @@ public class LifeImpl implements Life, Serializable {
 	}
 	
 	public void name(String newName) {
-		if (_name.isSameValue(newName)) return;
 		_name.setter().consume(newName);
 	}
 
 	public void thoughtOfTheDay(String thought) {
-		if (_thoughtOfTheDay.isSameValue(thought)) return;
 		_thoughtOfTheDay.setter().consume(thought);
 	}
 	
@@ -107,7 +105,6 @@ public class LifeImpl implements Life, Serializable {
 	}
 
 	public void picture(JpgImage picture) {
-		if (_picture.isSameValue(picture)) return;
 		_picture.setter().consume(picture);
 	}
 

@@ -10,6 +10,7 @@ import sneer.lego.ContainerUtils;
 import spikes.legobricks.name.OwnNameKeeper;
 import wheel.io.network.OldNetwork;
 import wheel.io.network.mocks.OldNetworkMock;
+import wheel.lang.exceptions.IllegalParameter;
 import functional.SovereignParty;
 
 public class SneerParty implements SovereignParty {
@@ -47,7 +48,11 @@ public class SneerParty implements SovereignParty {
 		c.inject(this);
 
 		setOwnName(name);
-		_connectionManager.sneerPortSetter();
+		try {
+			_connectionManager.sneerPortSetter().consume(port);
+		} catch (IllegalParameter e) {
+			throw new IllegalArgumentException();
+		}
 	}
 
 	@Override

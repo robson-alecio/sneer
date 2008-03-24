@@ -3,12 +3,12 @@ package wheel.io.serialization;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Register;
-import wheel.reactive.impl.SourceImpl;
+import wheel.reactive.impl.RegisterImpl;
 
 public class DeepCopyingPipe {
 
 	private final Omnivore<Object> _input = createInput();
-	private final Register<Object> _output = new SourceImpl<Object>(null);
+	private final Register<Object> _output = new RegisterImpl<Object>(null);
 	 
 	public Omnivore<Object> input() {
 		return _input;

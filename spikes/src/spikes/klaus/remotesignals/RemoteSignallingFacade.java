@@ -9,7 +9,7 @@ import wheel.lang.Casts;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Register;
-import wheel.reactive.impl.SourceImpl;
+import wheel.reactive.impl.RegisterImpl;
 
 
 public class RemoteSignallingFacade {
@@ -75,7 +75,7 @@ public class RemoteSignallingFacade {
 
 	private InvocationHandler createHandler(final Signal<Object> lastReceivedValue) {
 		return new InvocationHandler() {
-			Register<Object> _source = new SourceImpl<Object>(null);
+			Register<Object> _source = new RegisterImpl<Object>(null);
 			
 			{
 				lastReceivedValue.addReceiver(receiver());

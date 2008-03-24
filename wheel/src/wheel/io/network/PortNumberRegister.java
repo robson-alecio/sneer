@@ -5,15 +5,15 @@ import java.io.Serializable;
 import wheel.lang.Consumer;
 import wheel.lang.IntegerConsumerBoundaries;
 import wheel.reactive.Signal;
-import wheel.reactive.impl.SourceImpl;
+import wheel.reactive.impl.RegisterImpl;
 
-public class PortNumberSource implements Serializable{
+public class PortNumberRegister implements Serializable{
 
-	public PortNumberSource(Integer initialValue) {
-		_delegate = new SourceImpl<Integer>(initialValue);
+	public PortNumberRegister(Integer initialValue) {
+		_delegate = new RegisterImpl<Integer>(initialValue);
 	}
 
-	private SourceImpl<Integer> _delegate;
+	private RegisterImpl<Integer> _delegate;
 
 	public Consumer<Integer> setter() {
 		return new IntegerConsumerBoundaries("Sneer Port", _delegate.setter(), 0, 65535);

@@ -16,11 +16,11 @@ import wheel.lang.Threads;
 import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Signal;
 import wheel.reactive.Register;
-import wheel.reactive.impl.SourceImpl;
+import wheel.reactive.impl.RegisterImpl;
 
 public class ConnectionImpl implements Connection {
 
-	private Register<Boolean> _status = new SourceImpl<Boolean>(false);
+	private Register<Boolean> _status = new RegisterImpl<Boolean>(false);
 
 	private Network _network;
 

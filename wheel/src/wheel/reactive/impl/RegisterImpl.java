@@ -6,7 +6,7 @@ import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Register;
 
-public class SourceImpl<VO> implements Register<VO> {
+public class RegisterImpl<VO> implements Register<VO> {
 
 
 
@@ -38,7 +38,7 @@ public class SourceImpl<VO> implements Register<VO> {
 	private final AbstractSignal<VO> _output = new MyOutput();
 	
 	
-	public SourceImpl(VO initialValue) {
+	public RegisterImpl(VO initialValue) {
 		if (initialValue == null) return;
 		setter().consume(initialValue);
 	}

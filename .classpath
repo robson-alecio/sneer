@@ -28,6 +28,7 @@
 	<classpathentry kind="lib" path="kernel/lib/commons-configuration-1.5.jar"/>
 	<classpathentry kind="lib" path="kernel/lib/commons-collections-3.2.jar"/>
 	<classpathentry kind="lib" path="kernel/lib/commons-logging-api-1.1.jar"/>
+	<classpathentry kind="lib" path="spikes/lib/mina-core-2.0.0-M1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

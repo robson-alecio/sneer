@@ -52,6 +52,6 @@ class ContactImpl implements Contact {
 
 	@Override
 	public String publicKey() {
-		return "some public key";
+		return "some public key: "+_nickname;
 	}
 }

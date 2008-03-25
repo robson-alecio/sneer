@@ -1,12 +1,12 @@
-package sneer.bricks.network.impl;
+package sneer.bricks.connection.impl;
 
 import java.io.IOException;
 
+import sneer.bricks.connection.SocketAccepter;
 import sneer.bricks.exceptionhandler.ExceptionHandler;
 import sneer.bricks.network.ByteArrayServerSocket;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.bricks.network.Network;
-import sneer.bricks.network.SocketAccepter;
 import sneer.lego.Brick;
 import sneer.lego.Startable;
 import sneer.log.Logger;

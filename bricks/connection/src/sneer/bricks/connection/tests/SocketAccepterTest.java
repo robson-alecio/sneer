@@ -1,4 +1,4 @@
-package sneer.bricks.network.tests;
+package sneer.bricks.connection.tests;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,8 +7,8 @@ import java.net.Socket;
 
 import org.junit.Test;
 
+import sneer.bricks.connection.SocketAccepter;
 import sneer.bricks.network.ByteArraySocket;
-import sneer.bricks.network.SocketAccepter;
 import sneer.bricks.network.impl.ByteArraySocketImpl;
 import sneer.lego.Brick;
 import sneer.lego.tests.BrickTestSupport;

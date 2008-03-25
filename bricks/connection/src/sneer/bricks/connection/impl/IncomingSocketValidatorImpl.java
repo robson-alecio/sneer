@@ -6,8 +6,8 @@ import java.util.Arrays;
 
 import sneer.bricks.connection.IncomingSocketValidator;
 import sneer.bricks.connection.KeyManager;
+import sneer.bricks.connection.SocketAccepter;
 import sneer.bricks.network.ByteArraySocket;
-import sneer.bricks.network.SocketAccepter;
 import sneer.lego.Brick;
 import sneer.lego.Startable;
 

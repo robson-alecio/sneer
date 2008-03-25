@@ -14,6 +14,8 @@ import wheel.reactive.sets.impl.SetValueChangeImpl;
 
 public abstract class AbstractSignal<T> extends AbstractNotifier<T> implements Signal<T> {
 
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	public String toString() {
 		T currentValue = currentValue();

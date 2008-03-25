@@ -6,4 +6,5 @@ import wheel.reactive.EventSource;
 public interface SocketAccepter {
 	
     EventSource<ObjectSocket> lastAcceptedSocket();
+    
 }

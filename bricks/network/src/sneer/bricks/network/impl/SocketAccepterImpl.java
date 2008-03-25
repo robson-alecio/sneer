@@ -83,6 +83,7 @@ public class SocketAccepterImpl implements SocketAccepter, Startable {
 		Threads.startDaemon(new Runnable() { @Override public void run() {
 			while (!_isStopped) {
 				try {
+					_log.info("waiting for server socket");
 					ObjectSocket clientSocket = _serverSocket.accept();
 					_notifier.notifyReceivers(clientSocket);
 				} catch (IOException e) {

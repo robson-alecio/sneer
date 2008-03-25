@@ -1,5 +1,20 @@
-﻿Update sourcepath, classpath, main class and build.xml references in README.txt.
-Make build.xml run again. 
+﻿Leandro
+ - Exception Handler - Rename to "Monitor". API must be something like turnOn(warning), turnOff(warning). Not just like a "logger" API.  
+ - Brick Directory Structure - Simplify. Discuss with Klaus. Move each brick to its own structure.
+
+
+Klaus
+skipped - Code formatting template
+ - Freedom2Test - Make it pass with new bricks.
+ - Public Keys
+ - Brick persistence
+ - Component Model (see todoLego.txt)
+ - Granular profile updating per signal
+ - Use TransferQueue for profile picture transfer
+ - Contact Navigation
+ - Update sourcepath, classpath, main class and build.xml references in README.txt.
+ - Make build.xml run again. 
+
 
 Gandhi
 done - Make build class for Sneer
@@ -9,14 +24,6 @@ partially done (windows&konqueror not nautilus) - Public Files of Contact - Copy
  - Public Files of Contact - Drag and Drop
  - Persist SplitPane position (maybe with bounds)
  - Set up a gandhi.selfip.net so you are always reachable wherever you are. Tell the people on the sneercoders list.
-
-Klaus
- - Code formatting template
- - App persistence
- - Component Model (see todoLego.txt)
- - Granular profile updating per signal
- - Use TransferQueue for profile picture transfer
- - Contact Navigation
 
 
 FileSharing

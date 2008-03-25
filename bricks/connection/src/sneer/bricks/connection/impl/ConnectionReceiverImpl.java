@@ -4,14 +4,15 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
-import sneer.bricks.connection.IncomingSocketValidator;
+import sneer.bricks.connection.ConnectionReceiver;
 import sneer.bricks.connection.KeyManager;
 import sneer.bricks.connection.SocketAccepter;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.lego.Brick;
 import sneer.lego.Startable;
+import wheel.lang.Omnivore;
 
-public class IncomingSocketValidatorImpl implements IncomingSocketValidator, Startable {
+public class ConnectionReceiverImpl implements ConnectionReceiver, Startable {
 
 	private static final byte[] SNEER_WIRE_PROTOCOL_1 = toByteArray("Sneer Wire Protocol 1");
 	private static final byte[] FALLBACK = toByteArray("Fallback");
@@ -25,9 +26,9 @@ public class IncomingSocketValidatorImpl implements IncomingSocketValidator, Sta
 	
 	@Override
 	public void start() throws Exception {
-//		_socketAccepter.lastAcceptedSocket().addReceiver(new Omnivore<ByteArraySocket>() { @Override public void consume(ObjectSocket socket) {
-//			validate(socket);
-//		}});
+		_socketAccepter.lastAcceptedSocket().addReceiver(new Omnivore<ByteArraySocket>() { @Override public void consume(ByteArraySocket socket) {
+			validate(socket);
+		}});
 	}
 
 

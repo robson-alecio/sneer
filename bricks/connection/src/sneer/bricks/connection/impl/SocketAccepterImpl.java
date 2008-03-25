@@ -85,7 +85,8 @@ public class SocketAccepterImpl implements SocketAccepter, Startable {
 					ByteArraySocket clientSocket = _serverSocket.accept();
 					_notifier.notifyReceivers(clientSocket);
 				} catch (IOException e) {
-					_exceptionHandler.handle("Error accepting client connection", e);
+					if (!_isStopped)
+						_exceptionHandler.handle("Error accepting client connection", e);
 				} 
 			}
 		}});
@@ -98,7 +99,7 @@ public class SocketAccepterImpl implements SocketAccepter, Startable {
 			_log.info("starting server socket at {}", port);
 			_serverSocket = _network.openServerSocket(port);
 		} catch (IOException e) {
-			_exceptionHandler.handle("Error trying to open socket at "+port, e);
+			_exceptionHandler.handle("Error trying to open socket at " + port, e);
 		}
 	}
 

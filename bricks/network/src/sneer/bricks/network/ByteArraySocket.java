@@ -1,9 +1,10 @@
-package wheel.io.network;
+package sneer.bricks.network;
 
-import java.io.Closeable;
 import java.io.IOException;
 
-public interface ByteArraySocket extends Closeable {
+import sneer.lego.Crashable;
+
+public interface ByteArraySocket extends Crashable {
 
 	byte[] read() throws IOException;
 

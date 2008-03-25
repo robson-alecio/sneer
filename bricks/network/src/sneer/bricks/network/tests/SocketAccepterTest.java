@@ -7,11 +7,11 @@ import java.net.Socket;
 
 import org.junit.Test;
 
+import sneer.bricks.network.ByteArraySocket;
 import sneer.bricks.network.SocketAccepter;
 import sneer.lego.Brick;
 import sneer.lego.tests.BrickTestSupport;
 import spikes.legobricks.name.PortKeeper;
-import wheel.io.network.ObjectSocket;
 import wheel.lang.Omnivore;
 
 public class SocketAccepterTest extends BrickTestSupport {
@@ -25,7 +25,7 @@ public class SocketAccepterTest extends BrickTestSupport {
 	@Test(timeout=3000)
 	public void testAccept() throws Exception {
 		_portKeeper.portSetter().consume(9090);
-		_accepter.lastAcceptedSocket().addReceiver(new Omnivore<ObjectSocket>() { @Override public void consume(ObjectSocket valueObject) {
+		_accepter.lastAcceptedSocket().addReceiver(new Omnivore<ByteArraySocket>() { @Override public void consume(ByteArraySocket valueObject) {
 			System.out.println("Socket Accepted");
 		}});
 		

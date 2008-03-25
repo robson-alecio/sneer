@@ -1,24 +1,25 @@
 package sneer.bricks.connection.impl;
 
+import java.io.IOException;
+
 import sneer.bricks.connection.Connection;
 import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.exceptionhandler.ExceptionHandler;
+import sneer.bricks.network.ByteArrayServerSocket;
 import sneer.bricks.network.Network;
-import sneer.bricks.network.NetworkException;
 import sneer.contacts.Contact;
 import sneer.contacts.ContactManager;
 import sneer.lego.Brick;
 import sneer.lego.Container;
 import sneer.lego.Startable;
 import sneer.log.Logger;
-import wheel.io.network.ObjectServerSocket;
 import wheel.lang.Consumer;
 import wheel.lang.IntegerConsumerBoundaries;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.NotImplementedYet;
-import wheel.reactive.Signal;
 import wheel.reactive.Register;
+import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
@@ -30,7 +31,7 @@ public class ConnectionManagerImpl implements ConnectionManager, Startable {
 	
 	private Network _network;
 	
-	private ObjectServerSocket _serverSocket;
+	private ByteArrayServerSocket _serverSocket;
 	
     @Brick
     private Logger _log;
@@ -112,7 +113,7 @@ public class ConnectionManagerImpl implements ConnectionManager, Startable {
 				myPortToListen = _portToListen;
 			}
 			
-			closeServerSocketIfNecessary();
+			crashServerSocketIfNecessary();
 			openServerSocket(myPortToListen);	
 			
 			synchronized (_portToListenMonitor) {
@@ -127,16 +128,16 @@ public class ConnectionManagerImpl implements ConnectionManager, Startable {
 		
 		try {
 			_log.info("starting server socket at {}", port);
-			_serverSocket = _network.openObjectServerSocket(port);
-		} catch (NetworkException e) {
+			_serverSocket = _network.openServerSocket(port);
+		} catch (IOException e) {
 			_exceptionHandler.handle("Error trying to open socket at "+port, e);
 		}
 	}
 
-	private void closeServerSocketIfNecessary() {
+	private void crashServerSocketIfNecessary() {
 		if(_serverSocket == null) return;
 
-		_log.info("closing server socket");
-		_serverSocket.close();
+		_log.info("crashing server socket");
+		_serverSocket.crash();
 	}
 }

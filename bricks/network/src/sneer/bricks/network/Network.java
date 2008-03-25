@@ -1,12 +1,12 @@
 package sneer.bricks.network;
 
-import wheel.io.network.ObjectServerSocket;
-import wheel.io.network.ObjectSocket;
+import java.io.IOException;
+
 
 public interface Network {
 
-	ObjectSocket openSocket(String serverIpAddress, int serverPort) throws NetworkException;
+	ByteArraySocket openSocket(String hostAddress, int port) throws IOException;
 
-	ObjectServerSocket openObjectServerSocket(int port) throws NetworkException;
+	ByteArrayServerSocket openServerSocket(int port) throws IOException;
 
 }

@@ -6,11 +6,10 @@ import java.util.Arrays;
 
 import sneer.bricks.connection.IncomingSocketValidator;
 import sneer.bricks.connection.KeyManager;
+import sneer.bricks.network.ByteArraySocket;
 import sneer.bricks.network.SocketAccepter;
 import sneer.lego.Brick;
 import sneer.lego.Startable;
-import wheel.io.Streams;
-import wheel.io.network.ByteArraySocket;
 
 public class IncomingSocketValidatorImpl implements IncomingSocketValidator, Startable {
 
@@ -26,7 +25,7 @@ public class IncomingSocketValidatorImpl implements IncomingSocketValidator, Sta
 	
 	@Override
 	public void start() throws Exception {
-//		_socketAccepter.lastAcceptedSocket().addReceiver(new Omnivore<ObjectSocket>() { @Override public void consume(ObjectSocket socket) {
+//		_socketAccepter.lastAcceptedSocket().addReceiver(new Omnivore<ByteArraySocket>() { @Override public void consume(ObjectSocket socket) {
 //			validate(socket);
 //		}});
 	}
@@ -44,7 +43,7 @@ public class IncomingSocketValidatorImpl implements IncomingSocketValidator, Sta
 		try {
 			tryToValidate(socket);
 		} catch (IOException e) {
-			reject(socket);
+			socket.crash();
 		}
 	}
 
@@ -72,10 +71,6 @@ public class IncomingSocketValidatorImpl implements IncomingSocketValidator, Sta
 		
 	private void discardFirstDataPacket(ByteArraySocket socket) throws IOException {
 		socket.read();
-	}
-
-	private void reject(ByteArraySocket socket) {
-		Streams.crash(socket);
 	}
 
 }

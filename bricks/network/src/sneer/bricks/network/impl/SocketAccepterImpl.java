@@ -3,15 +3,14 @@ package sneer.bricks.network.impl;
 import java.io.IOException;
 
 import sneer.bricks.exceptionhandler.ExceptionHandler;
+import sneer.bricks.network.ByteArrayServerSocket;
+import sneer.bricks.network.ByteArraySocket;
 import sneer.bricks.network.Network;
-import sneer.bricks.network.NetworkException;
 import sneer.bricks.network.SocketAccepter;
 import sneer.lego.Brick;
 import sneer.lego.Startable;
 import sneer.log.Logger;
 import spikes.legobricks.name.PortKeeper;
-import wheel.io.network.ObjectServerSocket;
-import wheel.io.network.ObjectSocket;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.reactive.EventNotifier;
@@ -20,9 +19,9 @@ import wheel.reactive.impl.EventNotifierImpl;
 
 public class SocketAccepterImpl implements SocketAccepter, Startable {
 	
-	private EventNotifier<ObjectSocket> _notifier = new EventNotifierImpl<ObjectSocket>();
+	private EventNotifier<ByteArraySocket> _notifier = new EventNotifierImpl<ByteArraySocket>();
 
-	private ObjectServerSocket _serverSocket;
+	private ByteArrayServerSocket _serverSocket;
 	
 	private volatile boolean _isStopped;
 
@@ -53,7 +52,7 @@ public class SocketAccepterImpl implements SocketAccepter, Startable {
 	}
 
 	@Override
-    public EventSource<ObjectSocket> lastAcceptedSocket() {
+    public EventSource<ByteArraySocket> lastAcceptedSocket() {
     	return _notifier.output();
     }
 
@@ -67,7 +66,7 @@ public class SocketAccepterImpl implements SocketAccepter, Startable {
     private void listenToSneerPort() {
     	while (true) {
     		int myPortToListen = _portToListen;
-    		closeServerSocketIfNecessary();
+    		crashServerSocketIfNecessary();
     		openServerSocket(myPortToListen);	
     		if(_serverSocket != null) startAccepting();
     		
@@ -84,7 +83,7 @@ public class SocketAccepterImpl implements SocketAccepter, Startable {
 			while (!_isStopped) {
 				try {
 					_log.info("waiting for server socket");
-					ObjectSocket clientSocket = _serverSocket.accept();
+					ByteArraySocket clientSocket = _serverSocket.accept();
 					_notifier.notifyReceivers(clientSocket);
 				} catch (IOException e) {
 					_exceptionHandler.handle("Error accepting client connection", e);
@@ -98,17 +97,17 @@ public class SocketAccepterImpl implements SocketAccepter, Startable {
 		
 		try {
 			_log.info("starting server socket at {}", port);
-			_serverSocket = _network.openObjectServerSocket(port);
-		} catch (NetworkException e) {
+			_serverSocket = _network.openServerSocket(port);
+		} catch (IOException e) {
 			_exceptionHandler.handle("Error trying to open socket at "+port, e);
 		}
 	}
 
-	private void closeServerSocketIfNecessary() {
+	private void crashServerSocketIfNecessary() {
 		if(_serverSocket == null) return;
 
-		_log.info("closing server socket");
+		_log.info("crashing server socket");
 		_isStopped = true;
-		_serverSocket.close();
+		_serverSocket.crash();
 	}
 }

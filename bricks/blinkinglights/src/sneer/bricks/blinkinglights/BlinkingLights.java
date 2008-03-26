@@ -1,6 +1,6 @@
 package sneer.bricks.blinkinglights;
 
-public interface Monitor {
+public interface BlinkingLights {
 
 	void handle(String message, Throwable t);
 	

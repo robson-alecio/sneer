@@ -1,8 +1,8 @@
 package sneer.bricks.blinkinglights.impl;
 
-import sneer.bricks.blinkinglights.Monitor;
+import sneer.bricks.blinkinglights.BlinkingLights;
 
-public class MonitorImpl implements Monitor {
+public class BlinkingLightsImpl implements BlinkingLights {
 
 	@Override
 	public void handle(String message, Throwable t) {

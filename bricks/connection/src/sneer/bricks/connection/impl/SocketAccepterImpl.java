@@ -2,7 +2,7 @@ package sneer.bricks.connection.impl;
 
 import java.io.IOException;
 
-import sneer.bricks.blinkinglights.Monitor;
+import sneer.bricks.blinkinglights.BlinkingLights;
 import sneer.bricks.connection.SocketAccepter;
 import sneer.bricks.network.ByteArrayServerSocket;
 import sneer.bricks.network.ByteArraySocket;
@@ -36,7 +36,7 @@ public class SocketAccepterImpl implements SocketAccepter, Startable {
 	private Network _network;
 
 	@Brick
-	private Monitor _exceptionHandler;
+	private BlinkingLights _exceptionHandler;
 	
     @Brick
     private Logger _log;

@@ -2,7 +2,7 @@ package sneer.bricks.connection.impl;
 
 import java.io.IOException;
 
-import sneer.bricks.blinkinglights.Monitor;
+import sneer.bricks.blinkinglights.BlinkingLights;
 import sneer.bricks.connection.Connection;
 import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.network.ByteArrayServerSocket;
@@ -44,7 +44,7 @@ public class ConnectionManagerImpl implements ConnectionManager, Startable {
 	private Container _container;
 	
 	@Brick
-	private Monitor _exceptionHandler;
+	private BlinkingLights _exceptionHandler;
 
 	private final transient Object _portToListenMonitor = new Object();
 	private int _portToListen = 0;

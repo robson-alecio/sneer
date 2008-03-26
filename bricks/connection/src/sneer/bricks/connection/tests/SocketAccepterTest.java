@@ -8,13 +8,9 @@ import java.net.Socket;
 import org.junit.Test;
 
 import sneer.bricks.connection.SocketAccepter;
-import sneer.bricks.connection.impl.mock.InMemoryNetwork;
 import sneer.bricks.network.ByteArraySocket;
-import sneer.bricks.network.Network;
 import sneer.bricks.network.impl.ByteArraySocketImpl;
-import sneer.lego.Binder;
 import sneer.lego.Brick;
-import sneer.lego.impl.SimpleBinder;
 import sneer.lego.tests.BrickTestSupport;
 import spikes.legobricks.name.PortKeeper;
 import wheel.lang.Omnivore;
@@ -27,15 +23,7 @@ public class SocketAccepterTest extends BrickTestSupport {
 	@Brick
 	private SocketAccepter _accepter;
 	
-	
-	
-	@Override
-	protected Binder getBinder() {
-		return new SimpleBinder().bind(Network.class).toInstance(new InMemoryNetwork());
-	}
-
-	//@Test(timeout=3000)
-	@Test
+	@Test(timeout=3000)
 	public void testSocketAccept() throws Exception {
 		_portKeeper.portSetter().consume(9090);
 		Omnivore<ByteArraySocket> omnivore = new Omnivore<ByteArraySocket>() { @Override public void consume(ByteArraySocket socket) {
@@ -48,7 +36,7 @@ public class SocketAccepterTest extends BrickTestSupport {
 			}
 		}};
 		_accepter.lastAcceptedSocket().addReceiver(omnivore);
-		
+
 		SneerClient client = new SneerClient();
 		while(!client.connected(9090));
 		String reply = client.talk("hello");
@@ -66,6 +54,7 @@ class SneerClient {
 			_socket = new ByteArraySocketImpl(new Socket("127.0.0.1", port));
 			return true;
 		} catch (Exception ignored) {
+			//ignored.printStackTrace(System.err);
 			return false;
 		}
 	}

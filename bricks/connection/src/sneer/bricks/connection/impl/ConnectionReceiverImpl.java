@@ -11,6 +11,7 @@ import sneer.bricks.network.ByteArraySocket;
 import sneer.lego.Brick;
 import sneer.lego.Startable;
 import wheel.lang.Omnivore;
+import wheel.lang.Threads;
 
 public class ConnectionReceiverImpl implements ConnectionReceiver, Startable {
 
@@ -26,8 +27,10 @@ public class ConnectionReceiverImpl implements ConnectionReceiver, Startable {
 	
 	@Override
 	public void start() throws Exception {
-		_socketAccepter.lastAcceptedSocket().addReceiver(new Omnivore<ByteArraySocket>() { @Override public void consume(ByteArraySocket socket) {
-			validate(socket);
+		_socketAccepter.lastAcceptedSocket().addReceiver(new Omnivore<ByteArraySocket>() { @Override public void consume(final ByteArraySocket socket) {
+			Threads.startDaemon(new Runnable(){@Override public void run() {
+				serve(socket);
+			}});
 		}});
 	}
 
@@ -40,7 +43,7 @@ public class ConnectionReceiverImpl implements ConnectionReceiver, Startable {
 		}
 	}
 
-	private void validate(ByteArraySocket socket) {
+	private void serve(ByteArraySocket socket) {
 		try {
 			tryToValidate(socket);
 		} catch (IOException e) {

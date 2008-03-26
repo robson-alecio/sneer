@@ -1,19 +1,21 @@
 ﻿Leandro
  - Exception Handler - Rename to "Monitor". API must be something like turnOn(warning), turnOff(warning). Not just like a "logger" API.  
  - Brick Directory Structure - Simplify. Discuss with Klaus. Move each brick to its own structure.
-
+ - Proactive - Pick something from Klaus's todo list.
 
 Klaus
-skipped - Code formatting template
+ongoing - Component Model (see todoLego.txt)
  - Freedom2Test - Make it pass with new bricks.
+ - SocketAccepter.lastAcceptedSocket() - Refactor to void acceptedSocketServer(Omnivore<ByteArraySocket>). There will only be one instead of many receivers. Simplifies the impl of SocketAccepter. 
  - Public Keys
  - Brick persistence
- - Component Model (see todoLego.txt)
- - Granular profile updating per signal
- - Use TransferQueue for profile picture transfer
- - Contact Navigation
- - Update sourcepath, classpath, main class and build.xml references in README.txt.
+ - Auto-update of Kernel from Peers
+ - Publish, Download, Auto-Update of Bricks from Peers
+ - GUI - Spartan interface for what we have so far. http://c2.com/cgi/wiki?SpartanUserInterface 
  - Make build.xml run again. 
+ - Update sourcepath, classpath, main class and build.xml references in README.txt.
+RELEASE===================================================
+ - Contact Navigation
 
 
 Gandhi

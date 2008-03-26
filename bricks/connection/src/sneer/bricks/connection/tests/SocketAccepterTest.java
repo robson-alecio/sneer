@@ -8,9 +8,13 @@ import java.net.Socket;
 import org.junit.Test;
 
 import sneer.bricks.connection.SocketAccepter;
+import sneer.bricks.connection.impl.mock.InMemoryNetwork;
 import sneer.bricks.network.ByteArraySocket;
+import sneer.bricks.network.Network;
 import sneer.bricks.network.impl.ByteArraySocketImpl;
+import sneer.lego.Binder;
 import sneer.lego.Brick;
+import sneer.lego.impl.SimpleBinder;
 import sneer.lego.tests.BrickTestSupport;
 import spikes.legobricks.name.PortKeeper;
 import wheel.lang.Omnivore;
@@ -21,9 +25,17 @@ public class SocketAccepterTest extends BrickTestSupport {
 	private PortKeeper _portKeeper;
 	
 	@Brick
-	private SocketAccepter _accepter; 
+	private SocketAccepter _accepter;
 	
-	@Test(timeout=3000)
+	
+	
+	@Override
+	protected Binder getBinder() {
+		return new SimpleBinder().bind(Network.class).toInstance(new InMemoryNetwork());
+	}
+
+	//@Test(timeout=3000)
+	@Test
 	public void testSocketAccept() throws Exception {
 		_portKeeper.portSetter().consume(9090);
 		Omnivore<ByteArraySocket> omnivore = new Omnivore<ByteArraySocket>() { @Override public void consume(ByteArraySocket socket) {

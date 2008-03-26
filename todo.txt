@@ -1,7 +1,8 @@
 ﻿Leandro
+ - In-process network implementation
  - Exception Handler - Rename to "Monitor". API must be something like turnOn(warning), turnOff(warning). Not just like a "logger" API.  
  - Brick Directory Structure - Simplify. Discuss with Klaus. Move each brick to its own structure.
- - Proactive - Pick something from Klaus's todo list.
+ - Proactivity - Pick something from Klaus's todo list.
 
 Klaus
 ongoing - Component Model (see todoLego.txt)

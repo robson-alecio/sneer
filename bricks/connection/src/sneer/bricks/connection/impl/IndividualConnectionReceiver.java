@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import sneer.bricks.connection.KeyManager;
 import sneer.bricks.network.ByteArraySocket;
+import sneer.contacts.ContactId;
 import sneer.lego.Brick;
 import sneer.log.Logger;
 
@@ -23,6 +24,7 @@ class IndividualConnectionReceiver {
 	private	Logger _logger;
 	
 	private final ByteArraySocket _socket;
+	private byte[] _peersPublicKey;
 
 	
 	IndividualConnectionReceiver(ByteArraySocket socket) {
@@ -30,9 +32,8 @@ class IndividualConnectionReceiver {
 
 		try {
 			tryToServe();
-		} catch (IOException e) {
-			_logger.info("IOException thrown by incoming socket.", e);
-		} finally {
+		} catch (Exception e) {
+			_logger.info("Exception thrown by incoming socket.", e);
 			_socket.crash();
 		}
 	}
@@ -40,11 +41,16 @@ class IndividualConnectionReceiver {
 	private void tryToServe() throws IOException {
 		shakeHands();
 
-		byte[] peersPublicKey = _socket.read();
-		if (!tryToAuthenticate(peersPublicKey)) return;
+		_peersPublicKey = _socket.read();
+		if (!tryToAuthenticate()) return;
 		
-		//ContactId id = _keyManager.getContact(peersPublicKey);
+		ContactId contactId = _keyManager.contactIdGiven(_peersPublicKey);
+//		if (contactId == null)
+//			contactId = createUnconfirmedContact();
+		
+//		_connectionManager.manage(_socket, contactId);
 	}
+
 
 	private static byte[] toByteArray(String string) {
 		try {
@@ -55,9 +61,9 @@ class IndividualConnectionReceiver {
 	}
 
 
-	private boolean tryToAuthenticate(byte[] peersPublicKey) {
+	private boolean tryToAuthenticate() {
 		byte[] ownPublicKey = _keyManager.ownPublicKey();
-		if (Arrays.equals(peersPublicKey, ownPublicKey))
+		if (Arrays.equals(_peersPublicKey, ownPublicKey))
 			return false;
 		
 		//Implement: Challenge! :)

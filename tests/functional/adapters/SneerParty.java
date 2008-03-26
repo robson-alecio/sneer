@@ -1,6 +1,5 @@
 package functional.adapters;
 
-import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.mesh.Mesh;
 import sneer.bricks.network.Network;
 import sneer.contacts.Contact;
@@ -10,6 +9,7 @@ import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
 import sneer.lego.impl.SimpleBinder;
 import spikes.legobricks.name.OwnNameKeeper;
+import spikes.legobricks.name.PortKeeper;
 import wheel.lang.exceptions.IllegalParameter;
 import functional.SovereignParty;
 
@@ -21,7 +21,7 @@ public class SneerParty implements SovereignParty {
 	private ContactManager _contactManager;
 	
 	@Brick
-	private ConnectionManager _connectionManager;
+	private PortKeeper _sneerPortKeeper;
 	
 	@Brick
 	private OwnNameKeeper _ownNameKeeper;
@@ -36,9 +36,9 @@ public class SneerParty implements SovereignParty {
 
 		setOwnName(name);
 		try {
-			_connectionManager.sneerPortSetter().consume(port);
+			_sneerPortKeeper.portSetter().consume(port);
 		} catch (IllegalParameter e) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException(e);
 		}
 	}
 
@@ -78,7 +78,7 @@ public class SneerParty implements SovereignParty {
 
     public int port()
     {
-        return _connectionManager.sneerPort().currentValue();
+        return _sneerPortKeeper.port().currentValue();
     }
 
 }

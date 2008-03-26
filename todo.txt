@@ -1,6 +1,6 @@
 ﻿Leandro
  - In-process network implementation
- - Exception Handler - Rename to "BlinkingLights". API must be something like turnOn("Message") returns Light, Light.turnOff(). Not just like a "logger" API.  
+ - Exception Handler - Rename to "BlinkingLights". API must be something like turnOn("Message") returns Light, Light.turnOff(). Not just like a "logger" API.
  - Brick Directory Structure - Simplify. Discuss with Klaus. Move each brick to its own structure.
  - Proactivity - Pick something from Klaus's todo list.
 

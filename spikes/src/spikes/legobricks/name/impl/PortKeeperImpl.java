@@ -1,23 +1,22 @@
 package spikes.legobricks.name.impl;
 
 import spikes.legobricks.name.PortKeeper;
-import wheel.lang.Omnivore;
-import wheel.reactive.Register;
+import wheel.io.network.PortNumberRegister;
+import wheel.lang.Consumer;
 import wheel.reactive.Signal;
-import wheel.reactive.impl.RegisterImpl;
 
 public class PortKeeperImpl implements PortKeeper {
 
-	private Register<Integer> _source = new RegisterImpl<Integer>(0);
+	private PortNumberRegister _register = new PortNumberRegister(0);
 	
 	@Override
 	public Signal<Integer> port() {
-		return _source.output();
+		return _register.output();
 	}
 
 	@Override
-	public Omnivore<Integer> portSetter() {
-		return _source.setter();
+	public Consumer<Integer> portSetter() {
+		return _register.setter();
 	}
 
 }

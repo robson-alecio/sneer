@@ -1,8 +1,8 @@
 package sneer.bricks.monitor.impl;
 
-import sneer.bricks.monitor.ExceptionHandler;
+import sneer.bricks.monitor.Monitor;
 
-public class ExceptionHandlerImpl implements ExceptionHandler {
+public class MonitorImpl implements Monitor {
 
 	@Override
 	public void handle(String message, Throwable t) {

@@ -1,6 +1,6 @@
 package sneer.bricks.monitor;
 
-public interface ExceptionHandler {
+public interface Monitor {
 
 	void handle(String message, Throwable t);
 	

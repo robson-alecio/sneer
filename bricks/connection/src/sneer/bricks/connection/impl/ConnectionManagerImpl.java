@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import sneer.bricks.connection.Connection;
 import sneer.bricks.connection.ConnectionManager;
-import sneer.bricks.monitor.ExceptionHandler;
+import sneer.bricks.monitor.Monitor;
 import sneer.bricks.network.ByteArrayServerSocket;
 import sneer.bricks.network.Network;
 import sneer.contacts.Contact;
@@ -44,7 +44,7 @@ public class ConnectionManagerImpl implements ConnectionManager, Startable {
 	private Container _container;
 	
 	@Brick
-	private ExceptionHandler _exceptionHandler;
+	private Monitor _exceptionHandler;
 
 	private final transient Object _portToListenMonitor = new Object();
 	private int _portToListen = 0;

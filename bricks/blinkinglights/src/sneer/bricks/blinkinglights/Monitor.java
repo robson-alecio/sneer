@@ -1,4 +1,4 @@
-package sneer.bricks.monitor;
+package sneer.bricks.blinkinglights;
 
 public interface Monitor {
 

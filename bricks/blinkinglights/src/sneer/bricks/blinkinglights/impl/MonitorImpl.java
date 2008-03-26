@@ -1,6 +1,6 @@
-package sneer.bricks.monitor.impl;
+package sneer.bricks.blinkinglights.impl;
 
-import sneer.bricks.monitor.Monitor;
+import sneer.bricks.blinkinglights.Monitor;
 
 public class MonitorImpl implements Monitor {
 

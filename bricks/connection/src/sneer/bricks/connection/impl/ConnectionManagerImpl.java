@@ -2,9 +2,9 @@ package sneer.bricks.connection.impl;
 
 import java.io.IOException;
 
+import sneer.bricks.blinkinglights.Monitor;
 import sneer.bricks.connection.Connection;
 import sneer.bricks.connection.ConnectionManager;
-import sneer.bricks.monitor.Monitor;
 import sneer.bricks.network.ByteArrayServerSocket;
 import sneer.bricks.network.Network;
 import sneer.contacts.Contact;

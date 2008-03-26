@@ -1,14 +1,11 @@
 //Implement Tests:
-//Entrando - PK Novo - Rejeitado
-//Entrando - PK Novo - Aceito - Nick Novo (Happy Day)
-//Entrando - PK Novo - Aceito - Nick Existente - Sem PK (Happy Day)
-//Entrando - PK Novo - Aceito - Nick Existente - Com PK: Repete ateh escolher nick novo ou nick sem PK.
-//Entrando - PK Existente (Happy Day)
-//Entrando - PK Igual a minha propria (localhost) - Rejeita conexao
-//Saindo - Veio PK Igual de Outro Contato: Sinalizar com um status de erro no contato.
-//Saindo - Veio PK do Proprio Contato (Happy Day)
-//Saindo - Veio PK Nova - Contato N tinha PK: persiste PK (Happy Day)
-//Saindo - Veio PK Nova - Contato Já Tinha PK Diferente (Contato pode ter reinstalado o Sneer, por exemplo): Mostra warning e seta status do contato p unconfirmed.
+//Incoming - PK same as mine - Reject connection
+//Incoming - PK Known (Happy Day)
+//Incoming - PK Unknown - Create new GUEST connection.
+//Outgoing - Veio PK do Proprio Contato (Happy Day)
+//Outgoing - Veio PK Igual de Outro Contato: Sinalizar com um status de erro no contato.
+//Outgoing - Veio PK Nova - Contato N tinha PK: persiste PK (Happy Day)
+//Outgoing - Veio PK Nova - Contato Já Tinha PK Diferente (Contato pode ter reinstalado o Sneer, por exemplo): Mostra warning e seta status do contato p unconfirmed.
 
 
 package sneer.kernel.communication.impl;

@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import sneer.bricks.connection.Connection;
 import sneer.bricks.connection.ConnectionManager;
-import sneer.bricks.exceptionhandler.ExceptionHandler;
+import sneer.bricks.monitor.ExceptionHandler;
 import sneer.bricks.network.ByteArrayServerSocket;
 import sneer.bricks.network.Network;
 import sneer.contacts.Contact;

@@ -3,7 +3,7 @@ package sneer.bricks.connection.impl;
 import java.io.IOException;
 
 import sneer.bricks.connection.SocketAccepter;
-import sneer.bricks.exceptionhandler.ExceptionHandler;
+import sneer.bricks.monitor.ExceptionHandler;
 import sneer.bricks.network.ByteArrayServerSocket;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.bricks.network.Network;

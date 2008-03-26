@@ -1,4 +1,4 @@
-package sneer.bricks.exceptionhandler;
+package sneer.bricks.monitor;
 
 public interface ExceptionHandler {
 

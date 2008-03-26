@@ -1,6 +1,6 @@
-package sneer.bricks.exceptionhandler.impl;
+package sneer.bricks.monitor.impl;
 
-import sneer.bricks.exceptionhandler.ExceptionHandler;
+import sneer.bricks.monitor.ExceptionHandler;
 
 public class ExceptionHandlerImpl implements ExceptionHandler {
 

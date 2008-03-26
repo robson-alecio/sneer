@@ -2,22 +2,20 @@ package functional.adapters;
 
 import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.mesh.Mesh;
+import sneer.bricks.network.Network;
 import sneer.contacts.Contact;
 import sneer.contacts.ContactManager;
 import sneer.lego.Brick;
 import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
+import sneer.lego.impl.SimpleBinder;
 import spikes.legobricks.name.OwnNameKeeper;
-import wheel.io.network.OldNetwork;
-import wheel.io.network.mocks.OldNetworkMock;
 import wheel.lang.exceptions.IllegalParameter;
 import functional.SovereignParty;
 
 public class SneerParty implements SovereignParty {
 	
 	private static final String MOCK_ADDRESS = "localhost";
-
-	private static OldNetwork _network;
 
 	@Brick
 	private ContactManager _contactManager;
@@ -31,20 +29,9 @@ public class SneerParty implements SovereignParty {
 	@Brick
 	private Mesh _mesh;
 	
-	public static OldNetwork network() {
-		//FixUrgent Remove this method and inject the same instance of OldNetworkMock for all containers.
+	public SneerParty(String name, int port, Network network) {
 		
-		if (_network == null) _network = new OldNetworkMock();
-		return _network;
-	}
-
-
-	
-	public SneerParty(String name, int port) {
-		
-		//Container c = ContainerUtils.newContainer(new SimpleBinder().bind(Network.class).toInstance(singleNetwork())); 
-
-		Container c = ContainerUtils.newContainer(null, null);
+		Container c = ContainerUtils.newContainer(new SimpleBinder().bind(Network.class).toInstance(network), null); 
 		c.inject(this);
 
 		setOwnName(name);

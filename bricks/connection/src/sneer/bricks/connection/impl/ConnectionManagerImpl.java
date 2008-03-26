@@ -29,6 +29,7 @@ public class ConnectionManagerImpl implements ConnectionManager, Startable {
 	
 	private Register<Integer> _sneerPort = new RegisterImpl<Integer>(0);
 	
+	@Brick
 	private Network _network;
 	
 	private ByteArrayServerSocket _serverSocket;

@@ -1,5 +1,5 @@
 package sneer.bricks.connection;
 
-public interface ConnectionReceiver {
+public interface SocketOriginator {
 
 }

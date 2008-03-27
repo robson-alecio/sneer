@@ -13,7 +13,7 @@ import sneer.lego.Brick;
 import sneer.log.Logger;
 import wheel.lang.exceptions.IllegalParameter;
 
-class IndividualConnectionReceiver {
+class IndividualSocketReceiver {
 
 	private static final byte[] SNEER_WIRE_PROTOCOL_1 = toByteArray("Sneer Wire Protocol 1");
 	private static final byte[] FALLBACK = toByteArray("Fallback");
@@ -33,7 +33,7 @@ class IndividualConnectionReceiver {
 	private byte[] _peersPublicKey;
 
 	
-	IndividualConnectionReceiver(ByteArraySocket socket) {
+	IndividualSocketReceiver(ByteArraySocket socket) {
 		_socket = socket;
 
 		try {
@@ -48,13 +48,18 @@ class IndividualConnectionReceiver {
 		shakeHands();
 
 		_peersPublicKey = _socket.read();
-		if (!tryToAuthenticate()) return;
+		if (!tryToAuthenticate()) {
+			_socket.crash();
+			return;
+		}
 		
 		Contact contact = _keyManager.contactGiven(_peersPublicKey);
-		if (contact == null)
+		if (contact == null) {
 			contact = createUnconfirmedContact();
+			_keyManager.addKey(contact, _peersPublicKey);
+		}
 		
-		_connectionManager.manageIncomingConnection(contact, _socket);
+		_connectionManager.manageIncomingSocket(contact, _socket);
 	}
 
 

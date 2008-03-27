@@ -5,6 +5,6 @@ import sneer.contacts.Contact;
 
 public interface ConnectionManager {
 
-	void manageIncomingConnection(Contact contact, ByteArraySocket socket);
+	void manageIncomingSocket(Contact contact, ByteArraySocket socket);
 
 }

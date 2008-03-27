@@ -1,11 +1,11 @@
 package sneer.bricks.connection;
 
-import sneer.contacts.ContactId;
+import sneer.contacts.Contact;
 
 public interface KeyManager {
 
 	byte[] ownPublicKey();
 
-	ContactId contactIdGiven(byte[] peersPublicKey);
+	Contact contactGiven(byte[] peersPublicKey);
 
 }

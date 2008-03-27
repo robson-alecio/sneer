@@ -2,6 +2,10 @@ package sneer.contacts.impl;
 
 import sneer.contacts.Contact;
 import sneer.contacts.ContactManager;
+import wheel.lang.exceptions.IllegalParameter;
+import wheel.reactive.Register;
+import wheel.reactive.Signal;
+import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListSource;
 import wheel.reactive.lists.impl.ListSourceImpl;
@@ -11,8 +15,13 @@ public class ContactManagerImpl implements ContactManager {
     private ListSource<Contact> _contacts = new ListSourceImpl<Contact>();
 
 	@Override
-	public Contact addContact(String nickame, String host, int port) {
-		Contact result = new ContactImpl(nickame, host, port); 
+	public Contact addContact(String nickname) throws IllegalParameter {
+		nickname.toString();
+		
+		if (isNicknameAlreadyUsed(nickname))
+			throw new IllegalParameter("Nickname " + nickname + " is already being used.");
+		
+		Contact result = new ContactImpl(nickname); 
 		_contacts.add(result);
 		return result;
 	}
@@ -21,37 +30,29 @@ public class ContactManagerImpl implements ContactManager {
 	public ListSignal<Contact> contacts() {
 		return _contacts.output();
 	}
+
+	@Override
+	public boolean isNicknameAlreadyUsed(String nickname) {
+		for (Contact contact : _contacts.output())
+			if (contact.nickname().equals(nickname)) return true;
+		
+		return false;
+	}
 }
 
 class ContactImpl implements Contact {
 
-	private String _nickname;
-	
-	private String _host;
-	
-	private int _port;
+	private final Register<String> _nickname;
 	
 	
-	public ContactImpl(String nickame, String host, int port) {
-		_nickname = nickame;
-		_host = host;
-		_port = port;
+	public ContactImpl(String nickname) {
+		_nickname = new RegisterImpl<String>(nickname);
 	}
 
 
 	@Override
-	public String host() {
-		return _host;
+	public Signal<String> nickname() {
+		return _nickname.output();
 	}
 
-	@Override
-	public int port() {
-		return _port;
-	}
-
-
-	@Override
-	public String publicKey() {
-		return "some public key: "+_nickname;
-	}
 }

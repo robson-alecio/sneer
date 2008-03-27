@@ -7,7 +7,6 @@ import java.util.Map;
 import sneer.bricks.network.ByteArrayServerSocket;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.bricks.network.Network;
-import wheel.lang.Threads;
 
 
 public abstract class NetworkMockSupport implements Network {
@@ -25,12 +24,8 @@ public abstract class NetworkMockSupport implements Network {
     protected ByteArraySocket startClient(int serverPort) throws IOException {
         InMemoryByteArrayServerSocket server = findServer(serverPort); 
         if (server == null) throw new IOException("No server is listening on this port.");
-        try {
-            return server.openClientSocket();
-        } catch (IOException e) {
-            Threads.sleepWithoutInterruptions(5);
-            return server.openClientSocket(); //TODO Eliminate this retry because client must try and reconnect anyway.
-        }
+
+        return server.openClientSocket();
     }
 
     protected ByteArrayServerSocket startServer(int serverPort) throws IOException {

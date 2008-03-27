@@ -1,11 +1,9 @@
 package sneer.contacts;
 
+import wheel.reactive.Signal;
+
 public interface Contact {
-
-	String host();
-
-	int port();
 	
-	String publicKey();
-
+	Signal<String> nickname();
+	
 }

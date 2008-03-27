@@ -4,6 +4,7 @@ import sneer.bricks.mesh.Mesh;
 import sneer.bricks.network.Network;
 import sneer.contacts.Contact;
 import sneer.contacts.ContactManager;
+import sneer.internetaddresskeeper.InternetAddressKeeper;
 import sneer.lego.Brick;
 import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
@@ -28,6 +29,8 @@ public class SneerParty implements SovereignParty {
 	
 	@Brick
 	private Mesh _mesh;
+
+	private InternetAddressKeeper _internetAddressKeeper;
 	
 	public SneerParty(String name, int port, Network network) {
 		
@@ -44,9 +47,14 @@ public class SneerParty implements SovereignParty {
 
 	@Override
 	public void bidirectionalConnectTo(SovereignParty party) {
+		Contact contact;
+		try {
+			contact = _contactManager.addContact(party.ownName());
+		} catch (IllegalParameter e) {
+			throw new IllegalStateException(e);
+		}
 		int port = ((SneerParty) party).port();
-		Contact contact = _contactManager.addContact(party.ownName(), MOCK_ADDRESS, port);
-		System.out.println("Contact "+contact.host() + ":" + contact.port()+" added");
+		_internetAddressKeeper.add(contact, MOCK_ADDRESS, port);
 	}
 
 	@Override

@@ -4,11 +4,14 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
+import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.connection.KeyManager;
 import sneer.bricks.network.ByteArraySocket;
-import sneer.contacts.ContactId;
+import sneer.contacts.Contact;
+import sneer.contacts.ContactManager;
 import sneer.lego.Brick;
 import sneer.log.Logger;
+import wheel.lang.exceptions.IllegalParameter;
 
 class IndividualConnectionReceiver {
 
@@ -19,7 +22,10 @@ class IndividualConnectionReceiver {
 	
 	@Brick
 	private KeyManager _keyManager;
-	
+	@Brick
+	private ContactManager _contactManager;
+	@Brick
+	private ConnectionManager _connectionManager;
 	@Brick
 	private	Logger _logger;
 	
@@ -44,13 +50,37 @@ class IndividualConnectionReceiver {
 		_peersPublicKey = _socket.read();
 		if (!tryToAuthenticate()) return;
 		
-		ContactId contactId = _keyManager.contactIdGiven(_peersPublicKey);
-//		if (contactId == null)
-//			contactId = createUnconfirmedContact();
+		Contact contact = _keyManager.contactGiven(_peersPublicKey);
+		if (contact == null)
+			contact = createUnconfirmedContact();
 		
-//		_connectionManager.manage(_socket, contactId);
+		_connectionManager.manageIncomingConnection(contact, _socket);
 	}
 
+
+	private Contact createUnconfirmedContact() {
+		String baseNick = "Unconfirmed";   //"Unconfirmed (2)", "Unconfirmed (3)", etc.
+		
+		Contact result = tryToCreate(baseNick);
+		if (result != null) return result;
+		
+		int i = 2;
+		while (tryToCreate(baseNick + " (" + i + ")") == null)
+			i++;
+		
+		return result;
+	}
+
+	private Contact tryToCreate(String nickname) {
+		if (_contactManager.isNicknameAlreadyUsed(nickname))
+			return null;
+		
+		try {
+			return _contactManager.addContact(nickname);
+		} catch (IllegalParameter e) {
+			return null;
+		}
+	}
 
 	private static byte[] toByteArray(String string) {
 		try {

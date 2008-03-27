@@ -23,7 +23,7 @@ public class InMemoryByteArrayServerSocket implements ByteArrayServerSocket {
 		return result;
 	}
 
-	synchronized ByteArraySocket openClientSocket() throws IOException {
+	synchronized ByteArraySocket openClientSocket() {
 		while (_clientSide == null) Threads.waitWithoutInterruptions(this);
 
 		ByteArraySocket result = _clientSide;

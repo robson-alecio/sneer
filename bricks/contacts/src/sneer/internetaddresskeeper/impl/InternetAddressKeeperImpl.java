@@ -7,6 +7,7 @@ import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListSource;
 import wheel.reactive.lists.impl.ListSourceImpl;
 
+//Fix: make persistent
 public class InternetAddressKeeperImpl implements InternetAddressKeeper {
 
 	private ListSource<InternetAddress> _addresses = new ListSourceImpl<InternetAddress>();

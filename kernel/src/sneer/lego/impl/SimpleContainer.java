@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.io.FilenameUtils;
@@ -15,6 +16,7 @@ import sneer.lego.BrickClassLoader;
 import sneer.lego.Configurable;
 import sneer.lego.ConfigurationFactory;
 import sneer.lego.Container;
+import sneer.lego.Crashable;
 import sneer.lego.LegoException;
 import sneer.lego.Startable;
 import sneer.lego.utils.ObjectUtils;
@@ -27,7 +29,7 @@ public class SimpleContainer implements Container {
 	
 	private static final Logger log = LoggerFactory.getLogger(SimpleContainer.class);
 
-	private Map<Class<?>, Object> registry = new HashMap<Class<?>, Object>();
+	private Map<Class<?>, Object> _registry = new HashMap<Class<?>, Object>();
 	
 	private Injector _injector;
 	
@@ -76,7 +78,7 @@ public class SimpleContainer implements Container {
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T produce(Class<T> clazz) {
-		T component = (T) registry.get(clazz);
+		T component = (T) _registry.get(clazz);
 		if(component != null) return component;
 
 		if(clazz.isAssignableFrom(Container.class)) {
@@ -84,7 +86,7 @@ public class SimpleContainer implements Container {
 		}
 		
 		component = instantiate(clazz);
-		registry.put(clazz, component);
+		_registry.put(clazz, component);
 		return component;
 	}
 
@@ -180,5 +182,15 @@ public class SimpleContainer implements Container {
 	@Override
 	public <T> T create(Class<T> clazz) throws LegoException {
 		return instantiate(clazz);
+	}
+
+	@Override
+	public void crash() {
+		Set<Class<?>> keys = _registry.keySet();
+		for (Class<?> key : keys) {
+			Object component = _registry.get(key);
+			if(component instanceof Crashable)
+				((Crashable) component).crash();
+		}
 	}
 }

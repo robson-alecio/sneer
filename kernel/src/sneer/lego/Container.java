@@ -1,6 +1,6 @@
 package sneer.lego;
 
-public interface Container {
+public interface Container extends Crashable {
 
     /**
      * Creates a new instance of clazz after checking the cache 

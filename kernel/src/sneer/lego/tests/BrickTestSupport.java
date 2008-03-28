@@ -15,19 +15,6 @@ import wheel.lang.Threads;
 
 public class BrickTestSupport {
 	
-	private static Container container;
-
-    protected Container getContainer()
-    	throws Exception
-    {
-    	if(container == null)
-    	{
-    		Binder binder = getBinder();
-    		container = ContainerUtils.getContainer(binder, null);
-    	}
-    	return container;
-    }
-
     protected Binder getBinder() {
     	return null;
     }
@@ -36,7 +23,9 @@ public class BrickTestSupport {
 	public void injectDependencies()
 	    throws Exception
 	{
-	    Injector injector = new FieldInjector(getContainer());
+		Binder binder = getBinder();
+		Container container = ContainerUtils.newContainer(binder, null);
+	    Injector injector = new FieldInjector(container);
 	    injector.inject(this);
 	}
 
@@ -47,9 +36,5 @@ public class BrickTestSupport {
 		if(!file.exists()) 
 			file.mkdirs();
 		return file;
-	}
-
-	protected void stopContainer() {
-		container = null;
 	}
 }

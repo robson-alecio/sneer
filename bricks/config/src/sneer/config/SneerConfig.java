@@ -4,6 +4,8 @@ import java.io.File;
 
 public interface SneerConfig {
 	
-	File getSneerDirectory();
+	File sneerDirectory();
+	
+	File brickRootDirectory();
 	
 }

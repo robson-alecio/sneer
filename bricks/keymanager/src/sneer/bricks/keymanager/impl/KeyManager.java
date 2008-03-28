@@ -1,4 +1,4 @@
-package sneer.bricks.connection;
+package sneer.bricks.keymanager.impl;
 
 import sneer.contacts.Contact;
 

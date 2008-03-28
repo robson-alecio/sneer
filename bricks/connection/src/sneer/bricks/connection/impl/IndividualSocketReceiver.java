@@ -5,7 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
 import sneer.bricks.connection.ConnectionManager;
-import sneer.bricks.keymanager.impl.KeyManager;
+import sneer.bricks.keymanager.KeyManager;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.contacts.Contact;
 import sneer.contacts.ContactManager;

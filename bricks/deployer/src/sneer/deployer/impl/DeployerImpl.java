@@ -84,7 +84,7 @@ public class DeployerImpl implements Deployer {
 	}
 
 	private File brickRootDirectory() {
-		File home = config.getSneerDirectory();
+		File home = config.sneerDirectory();
 		File result = FileUtils.concat(home.getAbsolutePath(), "bricks");
 		return result;
 	}

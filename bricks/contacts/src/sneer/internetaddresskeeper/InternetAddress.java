@@ -7,6 +7,6 @@ public interface InternetAddress {
 	Contact contact();
 	
 	String host();
-	int port();
 	
+	int port();
 }

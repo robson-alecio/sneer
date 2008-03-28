@@ -30,6 +30,7 @@ public class SneerParty implements SovereignParty {
 	@Brick
 	private Mesh _mesh;
 
+	@Brick
 	private InternetAddressKeeper _internetAddressKeeper;
 	
 	public SneerParty(String name, int port, Network network) {

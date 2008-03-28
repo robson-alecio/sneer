@@ -1,4 +1,4 @@
-package sneer.bricks.connection.tests;
+package sneer.bricks.network.tests;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,10 +6,10 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import sneer.bricks.connection.impl.mock.InMemoryNetwork;
 import sneer.bricks.network.ByteArrayServerSocket;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.bricks.network.Network;
+import sneer.bricks.network.impl.inmemory.InMemoryNetwork;
 import sneer.lego.Binder;
 import sneer.lego.Brick;
 import sneer.lego.impl.SimpleBinder;

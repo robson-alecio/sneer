@@ -1,7 +1,7 @@
 package functional.adapters;
 
-import sneer.bricks.connection.impl.mock.InMemoryNetwork;
 import sneer.bricks.network.Network;
+import sneer.bricks.network.impl.inmemory.InMemoryNetwork;
 import functional.SovereignCommunity;
 import functional.SovereignParty;
 

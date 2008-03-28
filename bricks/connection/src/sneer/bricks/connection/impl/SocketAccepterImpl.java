@@ -3,6 +3,7 @@ package sneer.bricks.connection.impl;
 import java.io.IOException;
 
 import sneer.bricks.blinkinglights.BlinkingLights;
+import sneer.bricks.blinkinglights.Light;
 import sneer.bricks.connection.SocketAccepter;
 import sneer.bricks.network.ByteArrayServerSocket;
 import sneer.bricks.network.ByteArraySocket;
@@ -28,6 +29,8 @@ public class SocketAccepterImpl implements SocketAccepter, Startable {
 	private final transient Object _portToListenMonitor = new Object();
 
 	private int _portToListen;
+	
+	private Light _cantOpenServerSocket;
 
 	@Brick
 	private PortKeeper _portKeeper;
@@ -36,7 +39,7 @@ public class SocketAccepterImpl implements SocketAccepter, Startable {
 	private Network _network;
 
 	@Brick
-	private BlinkingLights _exceptionHandler;
+	private BlinkingLights _lights;
 	
     @Brick
     private Logger _log;
@@ -85,8 +88,7 @@ public class SocketAccepterImpl implements SocketAccepter, Startable {
 					ByteArraySocket clientSocket = _serverSocket.accept();
 					_notifier.notifyReceivers(clientSocket);
 				} catch (IOException e) {
-					if (!_isStopped)
-						_exceptionHandler.handle("Error accepting client connection", e);
+					if (!_isStopped) _lights.turnOn("Error accepting client connection", e);
 				} 
 			}
 		}});
@@ -98,8 +100,11 @@ public class SocketAccepterImpl implements SocketAccepter, Startable {
 		try {
 			_log.info("starting server socket at {}", port);
 			_serverSocket = _network.openServerSocket(port);
+			_lights.turnOff(_cantOpenServerSocket);
 		} catch (IOException e) {
-			_exceptionHandler.handle("Error trying to open socket at " + port, e);
+			if(_cantOpenServerSocket == null) _cantOpenServerSocket = _lights.turnOn("Error trying to open socket at "+port, e);
+			else
+				_cantOpenServerSocket.renew();
 		}
 	}
 

@@ -1,4 +1,4 @@
-package sneer.bricks.connection.impl.mock;
+package sneer.bricks.network.impl.inmemory;
 
 import java.io.IOException;
 

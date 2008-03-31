@@ -2,6 +2,8 @@ package sneer.lego.tests;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
@@ -43,10 +45,30 @@ public class ContainerTest extends BrickTestSupport {
 	
 	@Test
 	public void testLifecycle() throws Exception {
-        Container c = new SimpleContainer(null);
+		Container c = new SimpleContainer(null);
         Lifecycle lifecycle = c.produce(Lifecycle.class);
         assertTrue(lifecycle.configureCalled());
         assertTrue(lifecycle.startCalled());
+	}
+	
+	@Test
+	public void testCreateWithArgs() throws Exception {
+		Container c = new SimpleContainer(null);
+		ConcreteWithParameters concrete = c.create(ConcreteWithParameters.class, "some string");
+		assertEquals("some string", concrete.getS());
+		assertEquals(0, concrete.getI());
 
+		
+		concrete = c.create(ConcreteWithParameters.class, new SomeInterfaceImpl(77));
+		assertEquals(77, concrete.getInterface().getValue());
+
+		concrete = c.create(ConcreteWithParameters.class, "x", 99);
+		assertEquals("x", concrete.getS());
+		assertEquals(99, concrete.getI());
+		
+		try {
+			concrete = c.create(ConcreteWithParameters.class, c);
+			fail("should have thrown exception");
+		} catch(Exception ignored) {}
 	}
 }

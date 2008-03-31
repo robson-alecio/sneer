@@ -1,5 +1,6 @@
 package sneer.lego;
 
+
 public interface Container extends Crashable {
 
     /**
@@ -10,6 +11,8 @@ public interface Container extends Crashable {
 	<T> T produce(String className) throws LegoException;
 
 	<T> T create(Class<T> clazz) throws LegoException;
+	
+	<T> T create(Class<T> clazz, Object... args) throws LegoException;
 
 	void inject(Object component);
 }

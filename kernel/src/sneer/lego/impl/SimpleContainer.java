@@ -1,6 +1,7 @@
 package sneer.lego.impl;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,6 +9,8 @@ import java.util.Set;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -90,10 +93,10 @@ public class SimpleContainer implements Container {
 		return component;
 	}
 
-	private <T> T instantiate(Class<T> intrface) throws LegoException {
+	private <T> T instantiate(Class<T> intrface, Object... args) throws LegoException {
 		T component;
 		try {
-			component = lookup(intrface);
+			component = lookup(intrface, args);
 		} catch (Exception e) {
 			throw new LegoException("Error creating: "+intrface.getName(), e);
 		}
@@ -117,7 +120,7 @@ public class SimpleContainer implements Container {
 	}
 	
 	@SuppressWarnings("unchecked") //Refactor Try to use Casts.unchecked..()
-	private <T> T lookup(Class<T> intrface) throws Exception {
+	private <T> T lookup(Class<T> intrface, Object... args) throws Exception {
 
 	    Object result = instanceFor(intrface);
 	    if(result != null) return (T) result;
@@ -129,9 +132,35 @@ public class SimpleContainer implements Container {
 		String implementation = implementationFor(intrface); 
 		ClassLoader cl = getClassLoader(implementation, url);
 		Class impl = cl.loadClass(implementation);
-		result = impl.newInstance();
+		if(!intrface.isInterface() && args != null && args.length > 0) {
+			Constructor c = findConstructor(impl, args);
+			result = c.newInstance(args);
+		} else {
+			result = impl.newInstance();
+		}
+
 		log.info("brick {} created", result);
-		return (T) result;
+		return (T) result;		
+
+	}
+
+	private Constructor<?> findConstructor(Class<?> clazz, Object... args) throws Exception {
+		
+		Class<?>[] argTypes = new Class<?>[args.length];
+		for(int i=0 ; i<args.length ; i++) {
+			argTypes[i] = args[i].getClass();
+		}
+		
+		Constructor<?>[] constructors = clazz.getDeclaredConstructors();
+		for (Constructor<?> constructor : constructors) {
+			Class<?>[] parameterTypes = constructor.getParameterTypes();
+			if(parameterTypes.length == args.length) {
+				parameterTypes = ClassUtils.primitivesToWrappers(parameterTypes);
+				if(ClassUtils.isAssignable(argTypes, parameterTypes))
+					return constructor;
+			}
+		}
+		throw new Exception("Can't find construtor on "+clazz.getName()+" that matches "+ArrayUtils.toString(argTypes));
 	}
 
 	//FixUrgent: hack to allow using bricks that are not deployed, but present in your classpath. 
@@ -159,6 +188,11 @@ public class SimpleContainer implements Container {
 			if(result != null) 
 				return result;
 		}
+		
+		if(!intrface.isInterface()) {
+			return intrface.getName();
+		}
+		
 		String name = intrface.getName();
 		int index = name.lastIndexOf(".");
 		return name.substring(0, index) + ".impl" + name.substring(index) + "Impl";
@@ -181,7 +215,12 @@ public class SimpleContainer implements Container {
 
 	@Override
 	public <T> T create(Class<T> clazz) throws LegoException {
-		return instantiate(clazz);
+		return create(clazz, (Object[]) null);
+	}
+
+	@Override
+	public <T> T create(Class<T> clazz, Object... args) throws LegoException {
+		return instantiate(clazz, args);
 	}
 
 	@Override

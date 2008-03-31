@@ -55,4 +55,10 @@ class ContactImpl implements Contact {
 		return _nickname.output();
 	}
 
+
+	@Override
+	public String toString() {
+		return _nickname.output().currentValue();
+	}
+
 }

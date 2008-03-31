@@ -32,6 +32,8 @@ public class SocketAccepterImpl implements SocketAccepter, Startable {
 	
 	private Light _cantOpenServerSocket;
 
+	private Light _cantAcceptSocket;
+
 	@Brick
 	private PortKeeper _portKeeper;
 	
@@ -87,9 +89,10 @@ public class SocketAccepterImpl implements SocketAccepter, Startable {
 				try {
 					ByteArraySocket clientSocket = _serverSocket.accept();
 					_notifier.notifyReceivers(clientSocket);
+					_lights.turnOff(_cantAcceptSocket);
 				} catch (IOException e) {
 					if (!_isStopped) 
-						_lights.turnOn("Error accepting client connection", e);
+						_cantAcceptSocket = _lights.turnOn("Error accepting client connection", e);
 				} 
 			}
 		}});
@@ -99,11 +102,13 @@ public class SocketAccepterImpl implements SocketAccepter, Startable {
 		if (port == 0) return;
 		
 		try {
+			
 			_log.info("starting server socket at {}", port);
 			_serverSocket = _network.openServerSocket(port);
 			_lights.turnOff(_cantOpenServerSocket);
 		} catch (IOException e) {
-			if(_cantOpenServerSocket == null) _cantOpenServerSocket = _lights.turnOn("Error trying to open socket at "+port, e);
+			if (!_isStopped)
+				_cantOpenServerSocket = _lights.turnOn("Error trying to open socket at "+port, e);
 		}
 	}
 

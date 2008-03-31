@@ -34,7 +34,6 @@ public class SneerParty implements SovereignParty {
 	@Brick
 	private InternetAddressKeeper _internetAddressKeeper;
 	
-	@SuppressWarnings("unused")
 	@Brick
 	private SocketOriginator _originator; //need to start this component so that is registers itself on InternetAddressKeeper.addresses
 	

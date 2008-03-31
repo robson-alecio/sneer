@@ -13,6 +13,4 @@ public interface BlinkingLights {
 	void turnOff(Light light);
 
 	List<Light> listLights();
-
-	
 }

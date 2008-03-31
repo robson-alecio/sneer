@@ -9,8 +9,4 @@ public interface Light {
 	String message();
 	
 	Throwable error();
-	
-	long timeout();
-	
-	void renew();
 }

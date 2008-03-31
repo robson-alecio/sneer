@@ -55,8 +55,6 @@ class LightImpl implements Light {
 
 	private Throwable _error;
 
-	private long _timeout = -1;
-	
 	public LightImpl(String message, Throwable error) {
 		_message = message;
 		_error = error;
@@ -82,16 +80,4 @@ class LightImpl implements Light {
 	public void turnOff() {
 		_status = false;
 	}
-
-	@Override
-	public long timeout() {
-		return _timeout;
-	}
-
-	@Override
-	public void renew() {
-		//TODO: update timeout
-		throw new wheel.lang.exceptions.NotImplementedYet();
-	}
-	
 }

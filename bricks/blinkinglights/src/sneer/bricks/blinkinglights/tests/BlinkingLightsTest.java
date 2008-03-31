@@ -30,7 +30,6 @@ public class BlinkingLightsTest extends BrickTestSupport {
 		assertTrue(light.isOn());
 		assertEquals("some error", light.message());
 		assertNotNull(light.error());
-		assertEquals(-1, light.timeout());
 		lights = _lights.listLights();
 		assertEquals(1, lights.size());
 		

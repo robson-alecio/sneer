@@ -37,7 +37,7 @@ public class OutgoingAttempt implements Crashable {
 
 	OutgoingAttempt(InternetAddress address) {
 		_address = address;
-		_isSocketNeeded = null;////////////////////////////////////////////
+		_isSocketNeeded = _connectionManager.isSocketNeededFor(_address.contact());
 		_isSocketNeeded.addReceiver(_isSocketNeededReceiver);
 	}
 

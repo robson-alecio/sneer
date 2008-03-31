@@ -9,4 +9,10 @@ public class ClockImpl implements Clock {
 		return System.currentTimeMillis();
 	}
 
+	@Override
+	public void sleep(int millis) {
+		// Implement Auto-generated method stub
+		throw new wheel.lang.exceptions.NotImplementedYet();
+	}
+
 }

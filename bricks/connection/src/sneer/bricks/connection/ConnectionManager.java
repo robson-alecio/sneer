@@ -7,4 +7,6 @@ public interface ConnectionManager {
 
 	void manageIncomingSocket(Contact contact, ByteArraySocket socket);
 
+	void manageOutgoingSocket(Contact contact, ByteArraySocket socket);
+
 }

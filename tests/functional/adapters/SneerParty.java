@@ -1,5 +1,6 @@
 package functional.adapters;
 
+import sneer.bricks.connection.SocketOriginator;
 import sneer.bricks.mesh.Mesh;
 import sneer.bricks.network.Network;
 import sneer.contacts.Contact;
@@ -32,6 +33,11 @@ public class SneerParty implements SovereignParty {
 
 	@Brick
 	private InternetAddressKeeper _internetAddressKeeper;
+	
+	@SuppressWarnings("unused")
+	@Brick
+	private SocketOriginator _originator; //need to start this component so that is registers itself on InternetAddressKeeper.addresses
+	
 	
 	public SneerParty(String name, int port, Network network) {
 		

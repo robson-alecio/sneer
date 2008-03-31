@@ -12,7 +12,7 @@ public class SocketReceiverImpl implements SocketReceiver, Startable {
 
 	@Brick
 	private SocketAccepter _socketAccepter;
-
+	
 	@Override
 	public void start() throws Exception {
 		_socketAccepter.lastAcceptedSocket().addReceiver(new Omnivore<ByteArraySocket>() { @Override public void consume(final ByteArraySocket socket) {

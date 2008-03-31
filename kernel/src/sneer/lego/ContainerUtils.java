@@ -4,15 +4,15 @@ import sneer.lego.impl.SimpleContainer;
 
 public class ContainerUtils {
 	
-	private static Container container; 
+	private static Container _container; 
 	
 	public static Container getContainer() {
 		return getContainer(null, null);
 	}
 
 	public static Container getContainer(Binder binder, ConfigurationFactory configurationFactory) {
-		if(container == null) container = new SimpleContainer(binder, configurationFactory);
-		return container;
+		if(_container == null) _container = new SimpleContainer(binder, configurationFactory);
+		return _container;
 	}
 
     public static Container newContainer(Binder binder, ConfigurationFactory configurationFactory) {
@@ -20,6 +20,10 @@ public class ContainerUtils {
     }
 	
     public static void stopContainer() {
-    	container = null;
+    	_container = null;
+    }
+    
+    public static void inject(Object component) {
+    	getContainer().inject(component);
     }
 }

@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import sneer.bricks.keymanager.DuplicateKeyForContact;
+import sneer.bricks.keymanager.KeyBelongsToOtherContact;
 import sneer.bricks.keymanager.KeyManager;
 import sneer.contacts.Contact;
 
@@ -15,19 +17,24 @@ public class KeyManagerImpl implements KeyManager {
 	private Map<Contact,Key> _keyByContact = new HashMap<Contact, Key>(); 
 	
 	@Override
-	public void addKey(Contact contact, byte[] peersPublicKey) {
+	public synchronized void addKey(Contact contact, byte[] peersPublicKey) 
+		throws DuplicateKeyForContact, KeyBelongsToOtherContact {
+		
 		Key key = _keyByContact.get(contact);
-		if(key == null) {
-			//Fix: store key file
-			_keyByContact.put(contact, new Key(peersPublicKey));
-		} else {
-			//Fix: use a better exception
-			throw new IllegalStateException("duplicate key for "+contact.nickname());
-		}
+		
+		if(key != null)
+			throw new DuplicateKeyForContact("the contact "+contact.nickname()+" has a key already");
+			
+		Contact other = contactGiven(peersPublicKey);
+		if(other != null)
+			throw new KeyBelongsToOtherContact("the key [TODO: the key] belongs to another contact");
+
+		//Fix: store key file
+		_keyByContact.put(contact, new Key(peersPublicKey));
 	}
 
 	@Override
-	public Contact contactGiven(byte[] peersPublicKey) {
+	public synchronized Contact contactGiven(byte[] peersPublicKey) {
 		Key wanted = new Key(peersPublicKey);
 		for (Contact contact : _keyByContact.keySet()) {
 			Key key = _keyByContact.get(contact);
@@ -59,6 +66,11 @@ class Key {
 		return _data;
 	}
 	
+	@Override
+	public int hashCode() {
+		throw new UnsupportedOperationException();
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null) return false;

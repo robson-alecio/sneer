@@ -5,11 +5,14 @@ import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
 import sneer.bricks.connection.ConnectionManager;
+import sneer.bricks.keymanager.DuplicateKeyForContact;
+import sneer.bricks.keymanager.KeyBelongsToOtherContact;
 import sneer.bricks.keymanager.KeyManager;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.contacts.Contact;
 import sneer.contacts.ContactManager;
 import sneer.lego.Brick;
+import sneer.lego.ContainerUtils;
 import sneer.log.Logger;
 import wheel.lang.exceptions.IllegalParameter;
 
@@ -19,13 +22,15 @@ class IndividualSocketReceiver {
 	private static final byte[] FALLBACK = toByteArray("Fallback");
 	private static final byte[] OK = toByteArray("OK");
 	
-	
 	@Brick
 	private KeyManager _keyManager;
+	
 	@Brick
 	private ContactManager _contactManager;
+	
 	@Brick
 	private ConnectionManager _connectionManager;
+	
 	@Brick
 	private	Logger _logger;
 	
@@ -34,6 +39,7 @@ class IndividualSocketReceiver {
 
 	
 	IndividualSocketReceiver(ByteArraySocket socket) {
+		ContainerUtils.inject(this);
 		_socket = socket;
 
 		try {
@@ -47,21 +53,40 @@ class IndividualSocketReceiver {
 	private void tryToServe() throws IOException {
 		shakeHands();
 
-		_peersPublicKey = _socket.read();
+		_peersPublicKey = _socket.read();	
+
 		if (!tryToAuthenticate()) {
 			_socket.crash();
 			return;
 		}
 		
-		Contact contact = _keyManager.contactGiven(_peersPublicKey);
-		if (contact == null) {
-			contact = createUnconfirmedContact();
-			_keyManager.addKey(contact, _peersPublicKey);
-		}
-		
-		_connectionManager.manageIncomingSocket(contact, _socket);
+		Contact contact = produceContact();
+		if(contact != null)
+			_connectionManager.manageIncomingSocket(contact, _socket);
+		else
+			_socket.crash();
 	}
 
+	private Contact produceContact() {
+		while(true) {
+			Contact contact = _keyManager.contactGiven(_peersPublicKey);
+			if (contact == null) {
+				contact = createUnconfirmedContact();
+				try {
+					_keyManager.addKey(contact, _peersPublicKey);
+					return contact;
+				} catch (DuplicateKeyForContact e) {
+					//how did this happen?
+					_logger.error("Error producing contact",e);
+					return null;
+				} catch (KeyBelongsToOtherContact e) {
+					//Other thread assigned this pk to other contact. Try again
+					_logger.info("Key belongs to other contact. Trying again...",e);
+					continue;
+				}
+			}
+		}
+	}
 
 	private Contact createUnconfirmedContact() {
 		String baseNick = "Unconfirmed";   //"Unconfirmed (2)", "Unconfirmed (3)", etc.

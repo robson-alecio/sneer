@@ -6,21 +6,16 @@ import java.util.Map;
 import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.contacts.Contact;
-import wheel.reactive.Signal;
 
 public class ConnectionManagerImpl implements ConnectionManager {
 
-	private final Map<Contact, Connection> _connectionsByContact = new HashMap<Contact, Connection>();
+	private final Map<Contact, ConnectionImpl> _connectionsByContact = new HashMap<Contact, ConnectionImpl>();
 
 	@Override
-	public Signal<Boolean> isOnline(Contact contact) {
-		return connectionFor(contact).isOnline();
-	}
-
-	private synchronized Connection connectionFor(Contact contact) {
-		Connection result = _connectionsByContact.get(contact);
+	public synchronized ConnectionImpl connectionFor(Contact contact) {
+		ConnectionImpl result = _connectionsByContact.get(contact);
 		if (result == null) {
-			result = new Connection();
+			result = new ConnectionImpl();
 			_connectionsByContact.put(contact, result);
 		}
 		return result;
@@ -28,18 +23,14 @@ public class ConnectionManagerImpl implements ConnectionManager {
 
 	@Override
 	public void manageIncomingSocket(Contact contact, ByteArraySocket socket) {
-		Connection connection = connectionFor(contact);
+		ConnectionImpl connection = connectionFor(contact);
 		connection.manageIncomingSocket(socket);
 		
 	}
 
 	@Override
 	public void manageOutgoingSocket(Contact contact, ByteArraySocket socket) {
-		Connection connection = connectionFor(contact);
+		ConnectionImpl connection = connectionFor(contact);
 		connection.manageOutgoingSocket(socket);
 	}
-
-	
-
-
 }

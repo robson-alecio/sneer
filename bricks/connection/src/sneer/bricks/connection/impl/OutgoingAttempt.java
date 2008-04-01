@@ -92,9 +92,7 @@ public class OutgoingAttempt implements Crashable, Startable {
 
 	@Override
 	public void start() throws Exception {
-		_isOnline = _connectionManager.isOnline(_address.contact());
+		_isOnline = _connectionManager.connectionFor(_address.contact()).isOnline();
 		_isOnline.addReceiver(_isOnlineReceiver);
-
 	}
-
 }

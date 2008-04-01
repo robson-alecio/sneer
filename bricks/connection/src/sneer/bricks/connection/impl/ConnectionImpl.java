@@ -3,6 +3,7 @@ package sneer.bricks.connection.impl;
 import java.io.IOException;
 import java.util.Arrays;
 
+import sneer.bricks.connection.Connection;
 import sneer.bricks.keymanager.KeyManager;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.lego.Brick;
@@ -10,7 +11,7 @@ import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 
-class Connection {
+class ConnectionImpl implements Connection {
 
 	@Brick
 	private KeyManager _keyManager;
@@ -19,7 +20,8 @@ class Connection {
 
 	private ByteArraySocket _socket;
 	
-	Signal<Boolean> isOnline() {
+	@Override
+	public Signal<Boolean> isOnline() {
 		return _isOnline.output();
 	}
 	
@@ -76,7 +78,4 @@ class Connection {
 		
 		_isOnline.setter().consume(false);
 	}
-	
-	
-
 }

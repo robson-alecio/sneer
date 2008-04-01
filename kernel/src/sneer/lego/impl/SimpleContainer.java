@@ -134,8 +134,10 @@ public class SimpleContainer implements Container {
 		Class impl = cl.loadClass(implementation);
 		if(!intrface.isInterface() && args != null && args.length > 0) {
 			Constructor c = findConstructor(impl, args);
-			c.setAccessible(true);
+			boolean accessible = c.isAccessible();
+			if(!accessible) c.setAccessible(true);
 			result = c.newInstance(args);
+			if(!accessible) c.setAccessible(false);
 		} else {
 			result = impl.newInstance();
 		}

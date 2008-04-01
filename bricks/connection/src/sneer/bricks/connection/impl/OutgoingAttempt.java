@@ -10,12 +10,11 @@ import sneer.internetaddresskeeper.InternetAddress;
 import sneer.lego.Brick;
 import sneer.lego.Crashable;
 import sneer.lego.Injector;
-import sneer.lego.Startable;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.reactive.Signal;
 
-public class OutgoingAttempt implements Crashable, Startable {
+public class OutgoingAttempt implements Crashable {
 
 	@Brick
 	private Network _network;
@@ -40,6 +39,8 @@ public class OutgoingAttempt implements Crashable, Startable {
 	OutgoingAttempt(Injector _injector, InternetAddress address) {
 		_address = address;
 		_injector.inject(this);
+		_isOnline = _connectionManager.connectionFor(_address.contact()).isOnline();
+		_isOnline.addReceiver(_isOnlineReceiver);
 	}
 
 	
@@ -87,12 +88,5 @@ public class OutgoingAttempt implements Crashable, Startable {
 	@Override
 	public void crash() {
 		_isOnline.removeReceiver(_isOnlineReceiver);
-	}
-
-
-	@Override
-	public void start() throws Exception {
-		_isOnline = _connectionManager.connectionFor(_address.contact()).isOnline();
-		_isOnline.addReceiver(_isOnlineReceiver);
 	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import sneer.lego.Brick;
 import sneer.lego.Container;
+import sneer.lego.LegoException;
 import sneer.lego.utils.FieldUtils;
 
 public class FieldInjector 
@@ -16,7 +17,7 @@ public class FieldInjector
     	_container = container;
     }
 
-    public void inject(Object obj) throws Exception {
+    public void inject(Object obj) throws LegoException {
         List<Field> fields = FieldUtils.getAllFields(obj.getClass());
         for (Field field : fields) {
             Brick inject = field.getAnnotation(Brick.class);
@@ -24,8 +25,13 @@ public class FieldInjector
                 Object component = _container.produce(field.getType());
                 boolean before = field.isAccessible();
                 field.setAccessible(true);
-                field.set(obj, component);
-                field.setAccessible(before);
+                try {
+					field.set(obj, component);
+				} catch (Exception e) {
+					throw new LegoException("error injection component into field: "+field.getName(),e);
+				} finally {
+					field.setAccessible(before);
+				}
             }
         }
     }

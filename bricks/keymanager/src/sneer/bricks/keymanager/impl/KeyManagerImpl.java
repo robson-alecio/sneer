@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.bricks.keymanager.DuplicateKeyForContact;
+import sneer.bricks.keymanager.ContactAlreadyHadAKey;
 import sneer.bricks.keymanager.KeyBelongsToOtherContact;
 import sneer.bricks.keymanager.KeyManager;
 import sneer.contacts.Contact;
@@ -18,12 +18,12 @@ public class KeyManagerImpl implements KeyManager {
 	
 	@Override
 	public synchronized void addKey(Contact contact, byte[] peersPublicKey) 
-		throws DuplicateKeyForContact, KeyBelongsToOtherContact {
+		throws ContactAlreadyHadAKey, KeyBelongsToOtherContact {
 		
 		Key key = _keyByContact.get(contact);
 		
 		if(key != null)
-			throw new DuplicateKeyForContact("the contact "+contact.nickname()+" has a key already");
+			throw new ContactAlreadyHadAKey("the contact "+contact.nickname()+" has a key already");
 			
 		Contact other = contactGiven(peersPublicKey);
 		if(other != null)

@@ -1,10 +1,10 @@
 package sneer.bricks.keymanager;
 
-public class DuplicateKeyForContact extends Exception {
+public class ContactAlreadyHadAKey extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
-	public DuplicateKeyForContact(String message) {
+	public ContactAlreadyHadAKey(String message) {
 		super(message);
 	}
 }

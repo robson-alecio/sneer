@@ -9,11 +9,12 @@ import sneer.bricks.network.Network;
 import sneer.internetaddresskeeper.InternetAddress;
 import sneer.lego.Brick;
 import sneer.lego.Crashable;
+import sneer.lego.Startable;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.reactive.Signal;
 
-public class OutgoingAttempt implements Crashable {
+public class OutgoingAttempt implements Crashable, Startable {
 
 	@Brick
 	private Network _network;
@@ -29,21 +30,19 @@ public class OutgoingAttempt implements Crashable {
 	private boolean _isTryingToOpen = false;
 	private final Object _isTryingToOpenMonitor = new Object();
 	
-	private final Signal<Boolean> _isSocketNeeded;
-	private final Omnivore<Boolean> _isSocketNeededReceiver = new Omnivore<Boolean>() {	@Override public void consume(Boolean isNeeded) {
-		handleSocketNeed(isNeeded);
+	private Signal<Boolean> _isOnline;
+	private final Omnivore<Boolean> _isOnlineReceiver = new Omnivore<Boolean>() {	@Override public void consume(Boolean isOnline) {
+		handleIsOnline(isOnline);
 	}};
 
 
 	OutgoingAttempt(InternetAddress address) {
 		_address = address;
-		_isSocketNeeded = _connectionManager.isSocketNeededFor(_address.contact());
-		_isSocketNeeded.addReceiver(_isSocketNeededReceiver);
 	}
 
 	
-	private void handleSocketNeed(Boolean isNeeded) {
-		if (!isNeeded) return;
+	private void handleIsOnline(Boolean isOnline) {
+		if (isOnline) return;
 		
 		synchronized (_isTryingToOpenMonitor) {
 			if (_isTryingToOpen) return;
@@ -61,7 +60,7 @@ public class OutgoingAttempt implements Crashable {
 			tryToOpen();
 			
 			synchronized (_isTryingToOpenMonitor) {
-				if (!_isSocketNeeded.currentValue()) {
+				if (_isOnline.currentValue()) {
 					_isTryingToOpen = false;
 					return;
 				}
@@ -85,7 +84,15 @@ public class OutgoingAttempt implements Crashable {
 
 	@Override
 	public void crash() {
-		_isSocketNeeded.removeReceiver(_isSocketNeededReceiver);
+		_isOnline.removeReceiver(_isOnlineReceiver);
+	}
+
+
+	@Override
+	public void start() throws Exception {
+		_isOnline = _connectionManager.isOnline(_address.contact());
+		_isOnline.addReceiver(_isOnlineReceiver);
+
 	}
 
 }

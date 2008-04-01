@@ -10,6 +10,6 @@ public interface ConnectionManager {
 
 	void manageOutgoingSocket(Contact contact, ByteArraySocket socket);
 
-	Signal<Boolean> isSocketNeededFor(Contact contact);
+	Signal<Boolean> isOnline(Contact contact);
 
 }

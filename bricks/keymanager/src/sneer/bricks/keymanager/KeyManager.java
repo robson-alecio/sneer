@@ -9,6 +9,6 @@ public interface KeyManager {
 	Contact contactGiven(byte[] peersPublicKey);
 
 	void addKey(Contact contact, byte[] peersPublicKey)
-		throws DuplicateKeyForContact, KeyBelongsToOtherContact;
+		throws ContactAlreadyHadAKey, KeyBelongsToOtherContact;
 
 }

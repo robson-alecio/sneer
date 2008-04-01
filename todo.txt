@@ -1,17 +1,15 @@
 ﻿Leandro
- [DONE] - In-process network - implement
- [DONE/in memory]- InternetAddressKeeper - implement
- [DONE/in memory] - KeyManager - implement
  [DONE/revise in the future] - Exception Handler - Rename to "BlinkingLights". API must be something like turnOn("Message") returns Light, Light.turnOff(). Not just like a "logger" API.
  - Brick Directory Structure - Simplify. Discuss with Klaus. Move each brick to its own structure.
- - Proactivity - Pick something from KTlaus's todo list.
+ - Proactivity - Pick something from Klaus's todo list.
 
 Klaus
 ongoing - Component Model (see todoLego.txt)
  - Freedom2Test - Make it pass with new bricks.
  - SocketAccepter.lastAcceptedSocket() - Refactor to void acceptedSocketServer(Omnivore<ByteArraySocket>). There will only be one instead of many receivers. Simplifies the impl of SocketAccepter. 
- - Public Keys
  - Brick persistence
+ - Public Keys
+ - Connection Encryption
  - Auto-update of Kernel from Peers
  - Publish, Download, Auto-Update of Bricks from Peers
  - GUI - Spartan interface for what we have so far. http://c2.com/cgi/wiki?SpartanUserInterface 
@@ -20,7 +18,6 @@ ongoing - Component Model (see todoLego.txt)
  - README.txt - Update sourcepath, classpath, main class and build.xml references
 RELEASE BETA===================================================
  - Contact Navigation
- - Connection Encryption
  - UDP instead of TCP
 
 Gandhi

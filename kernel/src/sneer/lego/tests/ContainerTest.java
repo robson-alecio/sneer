@@ -10,8 +10,8 @@ import org.junit.Test;
 
 import sneer.lego.Binder;
 import sneer.lego.Container;
+import sneer.lego.Injector;
 import sneer.lego.impl.FieldInjector;
-import sneer.lego.impl.Injector;
 import sneer.lego.impl.SimpleBinder;
 import sneer.lego.impl.SimpleContainer;
 import sneer.lego.tests.impl.MySample;

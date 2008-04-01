@@ -9,8 +9,8 @@ import org.junit.Before;
 import sneer.lego.Binder;
 import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
+import sneer.lego.Injector;
 import sneer.lego.impl.FieldInjector;
-import sneer.lego.impl.Injector;
 import wheel.lang.Threads;
 
 public class BrickTestSupport {

@@ -5,6 +5,7 @@ import java.util.List;
 
 import sneer.lego.Brick;
 import sneer.lego.Container;
+import sneer.lego.Injector;
 import sneer.lego.LegoException;
 import sneer.lego.utils.FieldUtils;
 

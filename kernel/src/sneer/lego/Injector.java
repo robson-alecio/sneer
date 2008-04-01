@@ -1,6 +1,5 @@
-package sneer.lego.impl;
+package sneer.lego;
 
-import sneer.lego.LegoException;
 
 public interface Injector
 {

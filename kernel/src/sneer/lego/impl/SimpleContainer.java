@@ -20,6 +20,7 @@ import sneer.lego.Configurable;
 import sneer.lego.ConfigurationFactory;
 import sneer.lego.Container;
 import sneer.lego.Crashable;
+import sneer.lego.Injector;
 import sneer.lego.LegoException;
 import sneer.lego.Startable;
 import sneer.lego.utils.ObjectUtils;

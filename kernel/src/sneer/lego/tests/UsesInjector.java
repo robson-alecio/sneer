@@ -1,6 +1,6 @@
 package sneer.lego.tests;
 
-import sneer.lego.impl.Injector;
+import sneer.lego.Injector;
 
 public interface UsesInjector {
 	

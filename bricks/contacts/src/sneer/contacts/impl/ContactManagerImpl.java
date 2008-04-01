@@ -38,6 +38,14 @@ public class ContactManagerImpl implements ContactManager {
 		
 		return false;
 	}
+
+	@Override
+	public Contact contactGiven(String nickname) {
+		for (Contact candidate : contacts())
+			if (candidate.nickname().equals(nickname))
+				return candidate;
+		return null;
+	}
 }
 
 class ContactImpl implements Contact {

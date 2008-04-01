@@ -4,6 +4,6 @@ import wheel.reactive.Signal;
 
 public interface Mesh {
 
-	Signal<String> findSignal(String nicknamePath, String string);
+	<T> Signal<T> findSignal(String nicknamePath, String signalPath);
 
 }

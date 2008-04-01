@@ -18,6 +18,7 @@ ongoing - Component Model (see todoLego.txt)
  - README.txt - Update sourcepath, classpath, main class and build.xml references
 RELEASE BETA===================================================
  - Contact Navigation
+ - Traffic Prioritization - Among signals and among contacts.
  - UDP instead of TCP
 
 Gandhi

@@ -13,6 +13,7 @@ import sneer.lego.impl.SimpleBinder;
 import spikes.legobricks.name.OwnNameKeeper;
 import spikes.legobricks.name.PortKeeper;
 import wheel.lang.exceptions.IllegalParameter;
+import wheel.reactive.Signal;
 import functional.SovereignParty;
 
 public class SneerParty implements SovereignParty {
@@ -81,7 +82,8 @@ public class SneerParty implements SovereignParty {
 
     @Override
     public String navigateAndGetName(String nicknamePath) {
-    	return _mesh.findSignal(nicknamePath, "Name").currentValue();
+    	Signal<String> signal = _mesh.findSignal(nicknamePath, "Name");
+    	return signal.currentValue();
     }
 
 

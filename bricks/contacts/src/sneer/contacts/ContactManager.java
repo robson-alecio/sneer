@@ -12,4 +12,6 @@ public interface ContactManager {
 	boolean isNicknameAlreadyUsed(String nickname);
 	
 	ListSignal<Contact> contacts();
+	
+	Contact contactGiven(String nickname);
 }

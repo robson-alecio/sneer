@@ -5,5 +5,7 @@ import wheel.reactive.Signal;
 public interface Connection {
 
 	Signal<Boolean> isOnline();
+
+	void send(byte[] array);
 	
 }

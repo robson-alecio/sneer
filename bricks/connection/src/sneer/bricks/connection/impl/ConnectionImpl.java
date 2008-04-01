@@ -5,8 +5,10 @@ import java.util.Arrays;
 
 import sneer.bricks.connection.Connection;
 import sneer.bricks.keymanager.KeyManager;
+import sneer.bricks.mesh.impl.Packet;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.lego.Brick;
+import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
@@ -16,7 +18,7 @@ class ConnectionImpl implements Connection {
 	@Brick
 	private KeyManager _keyManager;
 	
-	private Register<Boolean> _isOnline = new RegisterImpl<Boolean>(true);
+	private Register<Boolean> _isOnline = new RegisterImpl<Boolean>(false);
 
 	private ByteArraySocket _socket;
 	
@@ -77,5 +79,10 @@ class ConnectionImpl implements Connection {
 		_socket = null;
 		
 		_isOnline.setter().consume(false);
+	}
+
+	@Override
+	public void send(byte[] array) {
+		throw new NotImplementedYet();
 	}
 }

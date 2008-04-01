@@ -11,7 +11,7 @@ import sneer.bricks.network.ByteArraySocket;
 import sneer.contacts.Contact;
 import sneer.contacts.ContactManager;
 import sneer.lego.Brick;
-import sneer.lego.ContainerUtils;
+import sneer.lego.Injector;
 import sneer.log.Logger;
 import wheel.lang.exceptions.IllegalParameter;
 
@@ -32,8 +32,8 @@ class IndividualSocketReceiver {
 	private final ByteArraySocket _socket;
 
 	
-	IndividualSocketReceiver(ByteArraySocket socket) {
-		ContainerUtils.inject(this);
+	IndividualSocketReceiver(Injector _injector, ByteArraySocket socket) {
+		_injector.inject(this);
 		_socket = socket;
 
 		try {

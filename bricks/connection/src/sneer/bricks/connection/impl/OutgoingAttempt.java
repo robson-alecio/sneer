@@ -9,6 +9,7 @@ import sneer.bricks.network.Network;
 import sneer.internetaddresskeeper.InternetAddress;
 import sneer.lego.Brick;
 import sneer.lego.Crashable;
+import sneer.lego.Injector;
 import sneer.lego.Startable;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
@@ -36,8 +37,9 @@ public class OutgoingAttempt implements Crashable, Startable {
 	}};
 
 
-	OutgoingAttempt(InternetAddress address) {
+	OutgoingAttempt(Injector _injector, InternetAddress address) {
 		_address = address;
+		_injector.inject(this);
 	}
 
 	

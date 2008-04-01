@@ -40,7 +40,11 @@ public class SimpleContainer implements Container {
 	
 	private ConfigurationFactory _configurationFactory;
 
-    public SimpleContainer(Binder binder) {
+    public SimpleContainer() {
+        this(null);
+    }
+
+	public SimpleContainer(Binder binder) {
         this(binder, null);
     }
 
@@ -86,6 +90,10 @@ public class SimpleContainer implements Container {
 
 		if(clazz.isAssignableFrom(Container.class)) {
 			return (T) this;
+		}
+		
+		if(clazz.isAssignableFrom(Injector.class)) {
+			return (T) _injector;
 		}
 		
 		component = instantiate(clazz);

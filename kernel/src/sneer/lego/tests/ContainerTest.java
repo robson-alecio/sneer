@@ -4,11 +4,14 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
 import sneer.lego.Binder;
 import sneer.lego.Container;
+import sneer.lego.impl.FieldInjector;
+import sneer.lego.impl.Injector;
 import sneer.lego.impl.SimpleBinder;
 import sneer.lego.impl.SimpleContainer;
 import sneer.lego.tests.impl.MySample;
@@ -45,7 +48,7 @@ public class ContainerTest extends BrickTestSupport {
 	
 	@Test
 	public void testLifecycle() throws Exception {
-		Container c = new SimpleContainer(null);
+		Container c = new SimpleContainer();
         Lifecycle lifecycle = c.produce(Lifecycle.class);
         assertTrue(lifecycle.configureCalled());
         assertTrue(lifecycle.startCalled());
@@ -53,7 +56,7 @@ public class ContainerTest extends BrickTestSupport {
 	
 	@Test
 	public void testCreateWithArgs() throws Exception {
-		Container c = new SimpleContainer(null);
+		Container c = new SimpleContainer();
 		ConcreteWithParameters concrete = c.create(ConcreteWithParameters.class, "some string");
 		assertEquals("some string", concrete.getS());
 		assertEquals(0, concrete.getI());
@@ -70,5 +73,14 @@ public class ContainerTest extends BrickTestSupport {
 			concrete = c.create(ConcreteWithParameters.class, c);
 			fail("should have thrown exception");
 		} catch(Exception ignored) {}
+	}
+	
+	@Test
+	public void testInjectInjector() throws Exception {
+		Container c = new SimpleContainer();
+		UsesInjector component = c.produce(UsesInjector.class);
+		Injector injector = component.injector();
+		assertNotNull(injector);
+		assertTrue(injector instanceof FieldInjector);
 	}
 }

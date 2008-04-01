@@ -1,19 +1,25 @@
 package sneer.bricks.connection.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import sneer.bricks.connection.Connection;
 import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.contacts.Contact;
+import wheel.reactive.maps.MapSignal;
+import wheel.reactive.maps.MapSource;
+import wheel.reactive.maps.impl.MapSourceImpl;
 
 public class ConnectionManagerImpl implements ConnectionManager {
 
-	private final Map<Contact, ConnectionImpl> _connectionsByContact = new HashMap<Contact, ConnectionImpl>();
+	private final MapSource<Contact, Connection> _connectionsByContact = new MapSourceImpl<Contact, Connection>();
+
+	@Override
+	public MapSignal<Contact, Connection> connections() {
+		return _connectionsByContact.output();
+	}
 
 	@Override
 	public synchronized ConnectionImpl connectionFor(Contact contact) {
-		ConnectionImpl result = _connectionsByContact.get(contact);
+		ConnectionImpl result = (ConnectionImpl) _connectionsByContact.get(contact);
 		if (result == null) {
 			result = new ConnectionImpl();
 			_connectionsByContact.put(contact, result);

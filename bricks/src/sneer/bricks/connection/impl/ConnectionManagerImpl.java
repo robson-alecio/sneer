@@ -2,8 +2,8 @@ package sneer.bricks.connection.impl;
 
 import sneer.bricks.connection.Connection;
 import sneer.bricks.connection.ConnectionManager;
+import sneer.bricks.contacts.Contact;
 import sneer.bricks.network.ByteArraySocket;
-import sneer.contacts.Contact;
 import wheel.reactive.maps.MapSignal;
 import wheel.reactive.maps.MapSource;
 import wheel.reactive.maps.impl.MapSourceImpl;

@@ -4,10 +4,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import sneer.bricks.contacts.Contact;
 import sneer.bricks.keymanager.ContactAlreadyHadAKey;
 import sneer.bricks.keymanager.KeyBelongsToOtherContact;
 import sneer.bricks.keymanager.KeyManager;
-import sneer.contacts.Contact;
 
 public class KeyManagerImpl implements KeyManager {
 

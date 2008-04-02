@@ -1,6 +1,6 @@
 package sneer.bricks.keymanager;
 
-import sneer.contacts.Contact;
+import sneer.bricks.contacts.Contact;
 
 public interface KeyManager {
 

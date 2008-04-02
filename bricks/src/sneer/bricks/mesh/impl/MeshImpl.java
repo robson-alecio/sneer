@@ -5,9 +5,9 @@ import java.util.Map;
 
 import sneer.bricks.connection.Connection;
 import sneer.bricks.connection.ConnectionManager;
+import sneer.bricks.contacts.Contact;
+import sneer.bricks.contacts.ContactManager;
 import sneer.bricks.mesh.Mesh;
-import sneer.contacts.Contact;
-import sneer.contacts.ContactManager;
 import sneer.lego.Brick;
 import sneer.lego.Injector;
 import sneer.lego.Startable;

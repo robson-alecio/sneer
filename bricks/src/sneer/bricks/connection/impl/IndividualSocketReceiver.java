@@ -4,15 +4,15 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import sneer.bricks.connection.ConnectionManager;
+import sneer.bricks.contacts.Contact;
+import sneer.bricks.contacts.ContactManager;
 import sneer.bricks.keymanager.ContactAlreadyHadAKey;
 import sneer.bricks.keymanager.KeyBelongsToOtherContact;
 import sneer.bricks.keymanager.KeyManager;
+import sneer.bricks.log.Logger;
 import sneer.bricks.network.ByteArraySocket;
-import sneer.contacts.Contact;
-import sneer.contacts.ContactManager;
 import sneer.lego.Brick;
 import sneer.lego.Injector;
-import sneer.log.Logger;
 import wheel.lang.exceptions.IllegalParameter;
 
 class IndividualSocketReceiver {

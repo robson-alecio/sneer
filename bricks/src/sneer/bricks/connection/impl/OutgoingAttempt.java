@@ -4,9 +4,9 @@ import java.io.IOException;
 
 import sneer.bricks.clock.Clock;
 import sneer.bricks.connection.ConnectionManager;
+import sneer.bricks.internetaddresskeeper.InternetAddress;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.bricks.network.Network;
-import sneer.internetaddresskeeper.InternetAddress;
 import sneer.lego.Brick;
 import sneer.lego.Crashable;
 import sneer.lego.Injector;

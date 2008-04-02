@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import sneer.bricks.connection.SocketOriginator;
-import sneer.internetaddresskeeper.InternetAddress;
-import sneer.internetaddresskeeper.InternetAddressKeeper;
+import sneer.bricks.internetaddresskeeper.InternetAddress;
+import sneer.bricks.internetaddresskeeper.InternetAddressKeeper;
 import sneer.lego.Brick;
 import sneer.lego.Injector;
 import sneer.lego.Startable;

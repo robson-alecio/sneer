@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import sneer.bricks.contacts.Contact;
 import sneer.bricks.keymanager.KeyManager;
-import sneer.contacts.Contact;
 import sneer.lego.Brick;
 import sneer.lego.tests.BrickTestSupport;
 import wheel.reactive.Register;

@@ -1,7 +1,7 @@
 package sneer.bricks.connection;
 
+import sneer.bricks.contacts.Contact;
 import sneer.bricks.network.ByteArraySocket;
-import sneer.contacts.Contact;
 import wheel.reactive.maps.MapSignal;
 
 public interface ConnectionManager {

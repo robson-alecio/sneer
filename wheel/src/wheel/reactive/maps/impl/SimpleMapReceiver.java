@@ -8,13 +8,28 @@ public abstract class SimpleMapReceiver<K, V> extends VisitingMapReceiver<K, V> 
 	
 	public SimpleMapReceiver(MapSignal<K, V> mapSignal) {
 		_mapSignal = mapSignal;
+		for (K key : _mapSignal.currentKeys()) entryPresent(key, _mapSignal.currentGet(key));
+		_mapSignal.addMapReceiver(this);
+	}
+
+	public void crash() {
+		_mapSignal.removeMapReceiver(this);
+	}
+
+	protected abstract void entryPresent(K key, V currentGet);
+
+
+	@Override
+	public void entryToBeReplaced(K key, V value) {
+		entryToBeRemoved(key, value);
 	}
 
 	@Override
-	public void elementToBeRemoved(K key, V value) {
+	public void entryReplaced(K key, V value) {
+		entryAdded(key, value);
 	}
 
 	@Override
-	public void elementToBeReplaced(K key, V value) {
-	}
+	public void entryRemoved(K key, V value) {}
+	
 }

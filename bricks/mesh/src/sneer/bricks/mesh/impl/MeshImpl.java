@@ -35,23 +35,21 @@ public class MeshImpl implements Mesh, Startable {
 		_connectionReceiverToAvoidGC = new SimpleMapReceiver<Contact, Connection>(_connectionManager.connections()){
 
 			@Override
-			public void elementAdded(Contact contact, Connection connection) {
-				System.out.println("New connection with: "+contact.nickname());
-				//TODO: start new Thread to read bytes from connection
+			protected void entryPresent(Contact key, Connection currentGet) {
 				throw new wheel.lang.exceptions.NotImplementedYet();
 			}
 
 			@Override
-			public void elementRemoved(Contact contact, Connection connection) {
-				System.out.println("removed connection with: "+contact.nickname());
+			public void entryAdded(Contact key, Connection value) {
 				throw new wheel.lang.exceptions.NotImplementedYet();
 			}
 
 			@Override
-			public void elementReplaced(Contact contact, Connection connection) {
-				System.out.println("replaced connection with: "+contact.nickname());
+			public void entryToBeRemoved(Contact key, Connection value) {
 				throw new wheel.lang.exceptions.NotImplementedYet();
-			}};
+			}
+
+		};
 	}
 
 	@Override

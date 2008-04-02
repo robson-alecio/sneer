@@ -14,7 +14,7 @@ public class MapElementRemoved<K,V> implements MapValueChange<K,V> {
 
 	@Override
 	public void accept(Visitor<K,V> visitor) {
-		visitor.elementRemoved(_key,_value);
+		visitor.entryRemoved(_key,_value);
 	}
 	
 	@Override

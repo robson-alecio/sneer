@@ -14,7 +14,7 @@ public class MapElementToBeReplaced<K,V> implements MapValueChange<K,V> {
 
 	@Override
 	public void accept(Visitor<K,V> visitor) {
-		visitor.elementToBeReplaced(_key,_value);
+		visitor.entryToBeReplaced(_key,_value);
 	}
 	
 	@Override

@@ -43,6 +43,11 @@ public class MapSourceImpl<K,V> implements MapSource<K,V> {
 			super.notifyReceivers(valueChange);
 		}
 
+		@Override
+		public Set<K> currentKeys() {
+			return _map.keySet();
+		}
+
 	}
 
 	private final Map<K,V> _map = new HashMap<K,V>();

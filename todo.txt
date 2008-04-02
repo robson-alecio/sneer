@@ -1,6 +1,6 @@
 ﻿Leandro
  [DONE/revise in the future] - Exception Handler - Rename to "BlinkingLights". API must be something like turnOn("Message") returns Light, Light.turnOff(). Not just like a "logger" API.
- - Brick Directory Structure - Simplify. Discuss with Klaus. Move each brick to its own structure.
+ [DONE] - Brick Directory Structure - Simplify. Discuss with Klaus. Move each brick to its own structure.
  - Brick Publish:
 	1) gui asks for brick interface
 	2) search brick implementation (public impl inside impl/)

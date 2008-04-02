@@ -23,6 +23,7 @@ ongoing - Component Model (see todoLego.txt)
  - Publish, Download, Auto-Update of Bricks from Peers
  - GUI - Spartan interface for what we have so far. http://c2.com/cgi/wiki?SpartanUserInterface 
  - Logging - revise how logging is done by all bricks
+ - Package namespace - revise sneer.lego? sneer.kernel? sneer.bricks?
  - Make build.xml run again. 
  - README.txt - Update sourcepath, classpath, main class and build.xml references
 RELEASE BETA===================================================

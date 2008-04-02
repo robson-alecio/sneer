@@ -6,17 +6,17 @@
 	<classpathentry kind="src" path="bricks/src"/>
 	<classpathentry kind="src" path="tests"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="kernel/lib/commons-io-1.4.jar"/>
 	<classpathentry kind="lib" path="kernel/lib/junit-4.4.jar"/>
-	<classpathentry kind="lib" path="kernel/lib/slf4j-api-1.5.0.jar"/>
-	<classpathentry kind="lib" path="kernel/lib/slf4j-simple-1.5.0.jar"/>
-	<classpathentry kind="lib" path="kernel/lib/commons-lang-2.3.jar"/>
-	<classpathentry kind="lib" path="kernel/lib/commons-configuration-1.5.jar"/>
-	<classpathentry kind="lib" path="kernel/lib/commons-collections-3.2.jar"/>
-	<classpathentry kind="lib" path="kernel/lib/commons-logging-api-1.1.jar"/>
 	<classpathentry kind="lib" path="wheel/lib/xstream-1.2.2.jar"/>
 	<classpathentry kind="lib" path="spikes/lib/Filters.jar"/>
 	<classpathentry kind="lib" path="spikes/lib/mina-core-2.0.0-M1.jar"/>
+	<classpathentry kind="lib" path="bricks/lib/commons-io-1.4.jar"/>
+	<classpathentry kind="lib" path="bricks/lib/commons-lang-2.3.jar"/>
+	<classpathentry kind="lib" path="bricks/lib/commons-configuration-1.5.jar"/>
+	<classpathentry kind="lib" path="bricks/lib/commons-collections-3.2.jar"/>
+	<classpathentry kind="lib" path="bricks/lib/commons-logging-api-1.1.jar"/>
 	<classpathentry kind="lib" path="bricks/lib/compiler-7-ea-b17-02_aug_2007.jar"/>
+	<classpathentry kind="lib" path="bricks/lib/slf4j-api-1.5.0.jar"/>
+	<classpathentry kind="lib" path="bricks/lib/slf4j-simple-1.5.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

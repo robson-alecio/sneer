@@ -1,7 +1,16 @@
 ﻿Leandro
  [DONE/revise in the future] - Exception Handler - Rename to "BlinkingLights". API must be something like turnOn("Message") returns Light, Light.turnOff(). Not just like a "logger" API.
  - Brick Directory Structure - Simplify. Discuss with Klaus. Move each brick to its own structure.
+ - Brick Publish:
+	1) gui asks for brick interface
+	2) search brick implementation (public impl inside impl/)
+	3) compiles the brick using the metadafile (describes classpath, libs, etc)
+	4) checks brick API using code analysis on compiled code. Exemple: can't export classes from libs or other bricks
+	5) deploy brick to sneer home ($USER_HOME/.sneer/)
+	6) run code analysis on compiled code and compiled referenced bricks.Repeat process for each brick
+
  - Proactivity - Pick something from Klaus's todo list.
+ 
 
 Klaus
 ongoing - Component Model (see todoLego.txt)

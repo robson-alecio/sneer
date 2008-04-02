@@ -1,11 +1,11 @@
 package functional.adapters;
 
 import sneer.bricks.connection.SocketOriginator;
+import sneer.bricks.contacts.Contact;
+import sneer.bricks.contacts.ContactManager;
+import sneer.bricks.internetaddresskeeper.InternetAddressKeeper;
 import sneer.bricks.mesh.Mesh;
 import sneer.bricks.network.Network;
-import sneer.contacts.Contact;
-import sneer.contacts.ContactManager;
-import sneer.internetaddresskeeper.InternetAddressKeeper;
 import sneer.lego.Brick;
 import sneer.lego.Container;
 import sneer.lego.ContainerUtils;

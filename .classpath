@@ -3,33 +3,20 @@
 	<classpathentry excluding="java/" kind="src" path="kernel/src"/>
 	<classpathentry kind="src" path="spikes/src"/>
 	<classpathentry kind="src" path="wheel/src"/>
+	<classpathentry kind="src" path="bricks/src"/>
 	<classpathentry kind="src" path="tests"/>
-	<classpathentry kind="src" path="bricks/log/src"/>
-	<classpathentry kind="src" path="bricks/compiler/src"/>
-	<classpathentry kind="src" path="bricks/deployer/src"/>
-	<classpathentry kind="src" path="bricks/config/src"/>
-	<classpathentry kind="src" path="bricks/contacts/src"/>
-	<classpathentry kind="src" path="bricks/mesh/src"/>
-	<classpathentry kind="src" path="bricks/connection/src"/>
-	<classpathentry kind="src" path="bricks/clock/src"/>
-	<classpathentry kind="src" path="bricks/network/src"/>
-	<classpathentry kind="src" path="bricks/blinkinglights/src"/>
-	<classpathentry kind="src" path="bricks/keymanager/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="lib" path="kernel/lib/commons-io-1.4.jar"/>
 	<classpathentry kind="lib" path="kernel/lib/junit-4.4.jar"/>
-	<classpathentry kind="lib" path="wheel/lib/xstream-1.2.2.jar"/>
-	<classpathentry kind="lib" path="spikes/lib/Filters.jar"/>
 	<classpathentry kind="lib" path="kernel/lib/slf4j-api-1.5.0.jar"/>
 	<classpathentry kind="lib" path="kernel/lib/slf4j-simple-1.5.0.jar"/>
-	<classpathentry kind="lib" path="bricks/compiler/lib/compiler-7-ea-b17-02_aug_2007.jar"/>
-	<classpathentry kind="lib" path="bricks/compiler/lib/commons-jci-javac-1.1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="bricks/compiler/lib/commons-jci-core-1.1-SNAPSHOT.jar" sourcepath="/commons-jci-core/src/main/java"/>
 	<classpathentry kind="lib" path="kernel/lib/commons-lang-2.3.jar"/>
 	<classpathentry kind="lib" path="kernel/lib/commons-configuration-1.5.jar"/>
 	<classpathentry kind="lib" path="kernel/lib/commons-collections-3.2.jar"/>
 	<classpathentry kind="lib" path="kernel/lib/commons-logging-api-1.1.jar"/>
+	<classpathentry kind="lib" path="wheel/lib/xstream-1.2.2.jar"/>
+	<classpathentry kind="lib" path="spikes/lib/Filters.jar"/>
 	<classpathentry kind="lib" path="spikes/lib/mina-core-2.0.0-M1.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="bricks/lib/compiler-7-ea-b17-02_aug_2007.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

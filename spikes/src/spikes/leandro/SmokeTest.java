@@ -3,8 +3,8 @@ package spikes.leandro;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import sneer.compiler.tests.CompilerTest;
-import sneer.deployer.test.DeployerTest;
+import sneer.bricks.compiler.tests.CompilerTest;
+import sneer.bricks.deployer.test.DeployerTest;
 import sneer.lego.tests.ContainerTest;
  
 @RunWith(Suite.class)

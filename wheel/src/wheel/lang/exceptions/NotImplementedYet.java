@@ -6,5 +6,9 @@ public class NotImplementedYet extends RuntimeException {
 	public NotImplementedYet() {
 		super("Not implemented yet :)");
 	}
+
+	public NotImplementedYet(Throwable unhandledThrowable) {
+		super("Exception not handled yet.", unhandledThrowable);
+	}
 	
 }

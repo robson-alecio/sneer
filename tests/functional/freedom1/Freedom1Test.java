@@ -1,8 +1,11 @@
-package functional;
+package functional.freedom1;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
+import functional.SovereignFunctionalTest;
+import functional.SovereignParty;
 
 
 public abstract class Freedom1Test extends SovereignFunctionalTest {

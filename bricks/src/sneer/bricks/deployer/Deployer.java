@@ -8,12 +8,12 @@ public interface Deployer {
 	List<String> list();
 	
 	/**
-	 * packages a local version of a brick suitable suitable for another peer to import/deploy 
+	 * packages a local version of a brick suitable for another party to import/deploy 
 	 */
 	BrickFile pack(File path, String brickName, String version) throws DeployerException;
 
 	/**
-	 * deploys a brick packaged by export(); 
+	 * deploys locally a brick packaged by pack(); 
 	 */
 	void deploy(BrickFile file) throws DeployerException;
 	

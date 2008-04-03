@@ -18,7 +18,7 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 		BrickPublisher publisher = wrapParty(_a);
 		BrickPublisher receiver = wrapParty(_b);
 
-		File brickFile = null;
+		File brickFile = askBrickFile();
 		BrickPublished brick = publisher.publishBrick(brickFile);
 		//estimular signal tree local
 		
@@ -26,6 +26,8 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 		receiver.meToo(INTERFACE);
 		//estimular signal tree local
 	}
+
+	protected abstract  File askBrickFile();
 
 	protected abstract BrickPublisher wrapParty(SovereignParty party);
 }

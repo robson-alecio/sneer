@@ -7,16 +7,13 @@ import sneer.bricks.internetaddresskeeper.InternetAddressKeeper;
 import sneer.bricks.mesh.Mesh;
 import sneer.bricks.network.Network;
 import sneer.lego.Brick;
-import sneer.lego.Container;
-import sneer.lego.ContainerUtils;
-import sneer.lego.impl.SimpleBinder;
 import spikes.legobricks.name.OwnNameKeeper;
 import spikes.legobricks.name.PortKeeper;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 import functional.SovereignParty;
 
-public class SneerParty implements SovereignParty {
+public class SneerParty extends SelfInject implements SovereignParty {
 	
 	private static final String MOCK_ADDRESS = "localhost";
 
@@ -38,12 +35,8 @@ public class SneerParty implements SovereignParty {
 	@Brick
 	private SocketOriginator _originator; //need to start this component so that is registers itself on InternetAddressKeeper.addresses
 	
-	
 	public SneerParty(String name, int port, Network network) {
-		
-		Container c = ContainerUtils.newContainer(new SimpleBinder().bind(Network.class).toInstance(network), null); 
-		c.inject(this);
-
+		super(network);
 		setOwnName(name);
 		try {
 			_sneerPortKeeper.portSetter().consume(port);

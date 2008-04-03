@@ -10,7 +10,7 @@ import functional.SovereignParty;
 public abstract class Freedom7Test extends SovereignFunctionalTest {
 
 	private static final String INTERFACE = "sneer.bricks.sample.Sample";
-	private static final String IMPL = "sneer.bricks.sample.impl.SampleImpl";
+	//private static final String IMPL = "sneer.bricks.sample.impl.SampleImpl";
 	
 	@Test
 	public void testPublish() {
@@ -20,6 +20,7 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 
 		File brickFile = askBrickFile();
 		BrickPublished brick = publisher.publishBrick(brickFile);
+		brick.toString();
 		//estimular signal tree local
 		
 		receiver.bidirectionalConnectTo(publisher);

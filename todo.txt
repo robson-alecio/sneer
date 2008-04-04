@@ -1,19 +1,26 @@
 ﻿Leandro
- [DONE/revise in the future] - Exception Handler - Rename to "BlinkingLights". API must be something like turnOn("Message") returns Light, Light.turnOff(). Not just like a "logger" API.
- [DONE] - Brick Directory Structure - Simplify. Discuss with Klaus. Move each brick to its own structure.
+ - Crypto: SNEER1024 = SHA512 concat Whirlpool512.
  - Brick Publish:
-	1) gui asks for brick interface
-	2) search brick implementation (public impl inside impl/)
-	3) compiles the brick using the metadafile (describes classpath, libs, etc)
-	4) checks brick API using code analysis on compiled code. Exemple: can't export classes from libs or other bricks
-	5) deploy brick to sneer home ($USER_HOME/.sneer/)
-	6) run code analysis on compiled code and compiled referenced bricks.Repeat process for each brick
-
+	1) Inform source folder (src).
+	2) Inform library folder (lib).
+	3) Find all interfaces that extend Brick inside src.
+	4) compile the bricks using the metadatafile (describes only RELATIVE paths to libs inside lib folder) and all jars inside all subfolders of the bricks' local lib folder.
+	5) Run SNEER1024 hash on interface .class files (or jar).
+	6) Run SNEER1024 hash on impl .class files (or jar) together with libs (produce a single impl hash for it all).
+	7) Inform status:
+		- New brick.
+		- Unchanged brick.
+		- Impl changed (impl hash of brick changed)
+		- Evolved brick (main interface extends main interface of old brick)
+		- Invalid brick (Interface hash of brick changed)
+			Deploy is not allowed in this case.
+	8) deploy brick to sneer home ($USER_HOME/.sneer/)
  - Proactivity - Pick something from Klaus's todo list.
  
 
 Klaus
 ongoing - Component Model (see todoLego.txt)
+ [DONE/revise in the future] - Exception Handler - Rename to "BlinkingLights". API must be something like turnOn("Message") returns Light, Light.turnOff(). Not just like a "logger" API.
  - Freedom2Test - Make it pass with new bricks.
  - SocketAccepter.lastAcceptedSocket() - Refactor to void acceptedSocketServer(Omnivore<ByteArraySocket>). There will only be one instead of many receivers. Simplifies the impl of SocketAccepter. 
  - Brick persistence

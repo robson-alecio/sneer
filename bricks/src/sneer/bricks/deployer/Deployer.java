@@ -10,7 +10,7 @@ public interface Deployer {
 	/**
 	 * packages a local version of a brick suitable for another party to import/deploy 
 	 */
-	BrickFile pack(File path, String brickName, String version) throws DeployerException;
+	BrickFile pack(File path) throws DeployerException;
 
 	/**
 	 * deploys locally a brick packaged by pack(); 

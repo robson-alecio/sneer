@@ -38,7 +38,9 @@ public class DeployerImpl implements Deployer {
 	}
 
 	@Override
-	public BrickFile pack(File path, String brickName, String version) {
+	public BrickFile pack(File path) {
+		String brickName = null;
+		String version = null;
 		log.info("exporting brick {} from: {}", brickName, path);
 		JarFile file;
 		try {

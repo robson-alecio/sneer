@@ -3,8 +3,9 @@ package functional.freedom7.adapter;
 import java.io.File;
 
 import sneer.bricks.deployer.Deployer;
+import sneer.bricks.inspector.BrickInfo;
+import sneer.bricks.inspector.BrickInspector;
 import sneer.lego.Brick;
-
 import functional.SovereignParty;
 import functional.adapters.SelfInject;
 import functional.freedom7.BrickPublished;
@@ -14,6 +15,8 @@ public class SimpleBrickPublisher implements BrickPublisher {
 	
 	@Brick
 	private Deployer _deployer;
+	
+	private BrickInspector _inspector;
 	
 	private SovereignParty _party;
 	
@@ -31,6 +34,10 @@ public class SimpleBrickPublisher implements BrickPublisher {
 	@Override
 	public BrickPublished publishBrick(File brickDirectory) {
 		_deployer.toString();
+		BrickInfo brickInfo = _inspector.loadBrickInfo(brickDirectory);
+		String brickName = brickInfo.interfaceName();
+		String impl = brickInfo.impl();
+		
 		System.out.println(brickDirectory);
 		throw new wheel.lang.exceptions.NotImplementedYet();
 	}

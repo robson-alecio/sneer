@@ -34,7 +34,7 @@ public class DeployerTest extends BrickTestSupport {
 		String brickName = "myBrick";
 		String version = "1.0";
 		File root = getRoot("dev");
-		BrickFile brick = deployer.pack(root, brickName, version);
+		BrickFile brick = deployer.pack(root);
 		
 		//test sneer meta
 		assertEquals(brickName, brick.getBrickName());
@@ -50,10 +50,8 @@ public class DeployerTest extends BrickTestSupport {
 
 		fail("This test is freezing on windows");
 		
-		String brickName = "notAlone";
-		String version = "1.0";
 		File root = getRoot("notAlone");
-		BrickFile brick = deployer.pack(root, brickName, version);
+		BrickFile brick = deployer.pack(root);
 		deployer.deploy(brick);
 		
 	}

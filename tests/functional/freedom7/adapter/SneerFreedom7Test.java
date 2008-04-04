@@ -57,4 +57,10 @@ public class SneerFreedom7Test extends Freedom7Test {
 	protected SovereignCommunity createNewCommunity() {
 		return new SneerCommunity();
 	}
+
+	@Override
+	protected File askBrickFile() {
+		// Implement Auto-generated method stub
+		throw new wheel.lang.exceptions.NotImplementedYet();
+	}
 }

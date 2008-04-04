@@ -10,11 +10,11 @@ public interface Deployer {
 	/**
 	 * packages a local version of a brick suitable for another party to import/deploy 
 	 */
-	BrickFile pack(File path) throws DeployerException;
+	BrickBundle pack(File path) throws DeployerException;
 
 	/**
 	 * deploys locally a brick packaged by pack(); 
 	 */
-	void deploy(BrickFile file) throws DeployerException;
+	void deploy(BrickBundle file) throws DeployerException;
 	
 }

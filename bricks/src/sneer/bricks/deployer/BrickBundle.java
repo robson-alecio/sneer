@@ -10,13 +10,13 @@ import java.util.jar.JarFile;
 
 import org.apache.commons.io.IOUtils;
 
-public class BrickFile {
+public class BrickBundle {
 	
 	private JarFile _jarFile;
 	
 	private Properties _props;
 	
-	public BrickFile(JarFile file) {
+	public BrickBundle(JarFile file) {
 		_jarFile = file;
 	}
 

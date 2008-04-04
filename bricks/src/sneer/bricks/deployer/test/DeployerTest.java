@@ -8,7 +8,7 @@ import java.io.File;
 import org.junit.Test;
 
 import sneer.bricks.config.SneerConfig;
-import sneer.bricks.deployer.BrickFile;
+import sneer.bricks.deployer.BrickBundle;
 import sneer.bricks.deployer.Deployer;
 import sneer.lego.Binder;
 import sneer.lego.Inject;
@@ -34,7 +34,7 @@ public class DeployerTest extends BrickTestSupport {
 		String brickName = "myBrick";
 		String version = "1.0";
 		File root = getRoot("dev");
-		BrickFile brick = deployer.pack(root);
+		BrickBundle brick = deployer.pack(root);
 		
 		//test sneer meta
 		assertEquals(brickName, brick.getBrickName());
@@ -51,7 +51,7 @@ public class DeployerTest extends BrickTestSupport {
 		fail("This test is freezing on windows");
 		
 		File root = getRoot("notAlone");
-		BrickFile brick = deployer.pack(root);
+		BrickBundle brick = deployer.pack(root);
 		deployer.deploy(brick);
 		
 	}

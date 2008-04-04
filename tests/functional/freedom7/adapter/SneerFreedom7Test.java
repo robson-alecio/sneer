@@ -22,7 +22,7 @@ public class SneerFreedom7Test extends Freedom7Test {
 	}
 
 	@Override
-	protected File askBrickFile() {
+	protected File askSourceFolder() {
 		String filename = System.getProperty("user.dir") + "/tests/functional/freedom7/test-resources/bricks/sample"; //sneer/bricks/sample/Sample.java
 		File result = new File(filename);
 		return result;

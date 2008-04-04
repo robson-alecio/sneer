@@ -11,22 +11,22 @@ import sneer.bricks.keymanager.KeyBelongsToOtherContact;
 import sneer.bricks.keymanager.KeyManager;
 import sneer.bricks.log.Logger;
 import sneer.bricks.network.ByteArraySocket;
-import sneer.lego.Brick;
+import sneer.lego.Inject;
 import sneer.lego.Injector;
 import wheel.lang.exceptions.IllegalParameter;
 
 class IndividualSocketReceiver {
 
-	@Brick
+	@Inject
 	private KeyManager _keyManager;
 	
-	@Brick
+	@Inject
 	private ContactManager _contactManager;
 	
-	@Brick
+	@Inject
 	private ConnectionManager _connectionManager;
 	
-	@Brick
+	@Inject
 	private	Logger _logger;
 	
 	private final ByteArraySocket _socket;

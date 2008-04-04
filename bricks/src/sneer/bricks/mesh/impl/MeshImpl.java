@@ -8,7 +8,7 @@ import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.contacts.ContactManager;
 import sneer.bricks.mesh.Mesh;
-import sneer.lego.Brick;
+import sneer.lego.Inject;
 import sneer.lego.Injector;
 import sneer.lego.Startable;
 import wheel.reactive.Signal;
@@ -21,13 +21,13 @@ public class MeshImpl implements Mesh, Startable {
 	@SuppressWarnings("unused")
 	private SimpleMapReceiver<Contact, Connection> _connectionReceiverToAvoidGC;
 
-	@Brick
+	@Inject
 	private ConnectionManager _connectionManager;
 
-	@Brick
+	@Inject
 	private ContactManager _contactManager;
 
-	@Brick
+	@Inject
 	private Injector _injector;
 
 	@Override

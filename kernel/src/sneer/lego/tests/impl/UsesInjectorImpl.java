@@ -1,12 +1,12 @@
 package sneer.lego.tests.impl;
 
-import sneer.lego.Brick;
+import sneer.lego.Inject;
 import sneer.lego.Injector;
 import sneer.lego.tests.UsesInjector;
 
 public class UsesInjectorImpl implements UsesInjector {
 
-	@Brick
+	@Inject
 	private Injector _injector;
 	
 	@Override

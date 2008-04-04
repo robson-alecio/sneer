@@ -11,13 +11,13 @@ import sneer.bricks.config.SneerConfig;
 import sneer.bricks.deployer.BrickFile;
 import sneer.bricks.deployer.Deployer;
 import sneer.lego.Binder;
-import sneer.lego.Brick;
+import sneer.lego.Inject;
 import sneer.lego.impl.SimpleBinder;
 import sneer.lego.tests.BrickTestSupport;
 
 public class DeployerTest extends BrickTestSupport {
 
-	@Brick
+	@Inject
 	private Deployer deployer;
 	
 	@Override

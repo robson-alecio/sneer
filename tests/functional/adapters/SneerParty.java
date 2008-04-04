@@ -6,7 +6,7 @@ import sneer.bricks.contacts.ContactManager;
 import sneer.bricks.internetaddresskeeper.InternetAddressKeeper;
 import sneer.bricks.mesh.Mesh;
 import sneer.bricks.network.Network;
-import sneer.lego.Brick;
+import sneer.lego.Inject;
 import spikes.legobricks.name.OwnNameKeeper;
 import spikes.legobricks.name.PortKeeper;
 import wheel.lang.exceptions.IllegalParameter;
@@ -17,22 +17,22 @@ public class SneerParty extends SelfInject implements SovereignParty {
 	
 	private static final String MOCK_ADDRESS = "localhost";
 
-	@Brick
+	@Inject
 	private ContactManager _contactManager;
 	
-	@Brick
+	@Inject
 	private PortKeeper _sneerPortKeeper;
 	
-	@Brick
+	@Inject
 	private OwnNameKeeper _ownNameKeeper;
 	
-	@Brick
+	@Inject
 	private Mesh _mesh;
 
-	@Brick
+	@Inject
 	private InternetAddressKeeper _internetAddressKeeper;
 	
-	@Brick
+	@Inject
 	private SocketOriginator _originator; //need to start this component so that is registers itself on InternetAddressKeeper.addresses
 	
 	public SneerParty(String name, int port, Network network) {

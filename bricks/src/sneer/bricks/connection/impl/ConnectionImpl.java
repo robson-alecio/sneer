@@ -6,7 +6,7 @@ import java.util.Arrays;
 import sneer.bricks.connection.Connection;
 import sneer.bricks.keymanager.KeyManager;
 import sneer.bricks.network.ByteArraySocket;
-import sneer.lego.Brick;
+import sneer.lego.Inject;
 import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
@@ -14,7 +14,7 @@ import wheel.reactive.impl.RegisterImpl;
 
 class ConnectionImpl implements Connection {
 
-	@Brick
+	@Inject
 	private KeyManager _keyManager;
 	
 	private Register<Boolean> _isOnline = new RegisterImpl<Boolean>(false);

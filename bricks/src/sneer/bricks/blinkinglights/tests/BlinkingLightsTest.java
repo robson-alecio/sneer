@@ -12,13 +12,13 @@ import org.junit.Test;
 
 import sneer.bricks.blinkinglights.BlinkingLights;
 import sneer.bricks.blinkinglights.Light;
-import sneer.lego.Brick;
+import sneer.lego.Inject;
 import sneer.lego.tests.BrickTestSupport;
 import wheel.lang.Threads;
 
 public class BlinkingLightsTest extends BrickTestSupport {
 
-	@Brick
+	@Inject
 	private BlinkingLights _lights;
 	
 	@Test

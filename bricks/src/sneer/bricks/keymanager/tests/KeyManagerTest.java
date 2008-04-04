@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.keymanager.KeyManager;
-import sneer.lego.Brick;
+import sneer.lego.Inject;
 import sneer.lego.tests.BrickTestSupport;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
@@ -14,7 +14,7 @@ import wheel.reactive.impl.RegisterImpl;
 
 public class KeyManagerTest extends BrickTestSupport {
 
-	@Brick
+	@Inject
 	private KeyManager _keyManager;
 	
 	@Test

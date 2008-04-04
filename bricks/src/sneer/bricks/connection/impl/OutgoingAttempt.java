@@ -7,7 +7,7 @@ import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.internetaddresskeeper.InternetAddress;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.bricks.network.Network;
-import sneer.lego.Brick;
+import sneer.lego.Inject;
 import sneer.lego.Crashable;
 import sneer.lego.Injector;
 import wheel.lang.Omnivore;
@@ -16,13 +16,13 @@ import wheel.reactive.Signal;
 
 public class OutgoingAttempt implements Crashable {
 
-	@Brick
+	@Inject
 	private Network _network;
 
-	@Brick
+	@Inject
 	private ConnectionManager _connectionManager;
 
-	@Brick
+	@Inject
 	Clock _clock;
 
 	private final InternetAddress _address;

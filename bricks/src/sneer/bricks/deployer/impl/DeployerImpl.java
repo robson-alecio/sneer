@@ -17,17 +17,17 @@ import sneer.bricks.deployer.BrickFile;
 import sneer.bricks.deployer.Deployer;
 import sneer.bricks.deployer.DeployerException;
 import sneer.bricks.log.Logger;
-import sneer.lego.Brick;
+import sneer.lego.Inject;
 
 public class DeployerImpl implements Deployer {
 
-	@Brick
+	@Inject
 	private SneerConfig config;
 	
-	@Brick
+	@Inject
 	private Compiler compiler;
 	
-	@Brick
+	@Inject
 	private Logger log;
 	
 	@Override

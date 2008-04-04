@@ -3,7 +3,7 @@ package spikes.legobricks.security.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.lego.Brick;
+import sneer.lego.Inject;
 import spikes.legobricks.security.Sentinel;
 import spikes.legobricks.security.Sorry;
 import wheel.io.ui.CancelledByUser;
@@ -11,7 +11,7 @@ import wheel.io.ui.User;
 
 public class SentinelImpl implements Sentinel {
 
-	@Brick
+	@Inject
 	private User user;
 		
 	private Map<String, Boolean> preAuthorizations = new HashMap<String, Boolean>();

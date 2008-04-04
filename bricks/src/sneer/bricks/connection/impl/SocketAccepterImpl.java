@@ -9,7 +9,7 @@ import sneer.bricks.log.Logger;
 import sneer.bricks.network.ByteArrayServerSocket;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.bricks.network.Network;
-import sneer.lego.Brick;
+import sneer.lego.Inject;
 import sneer.lego.Startable;
 import spikes.legobricks.name.PortKeeper;
 import wheel.lang.Omnivore;
@@ -34,16 +34,16 @@ public class SocketAccepterImpl implements SocketAccepter, Startable {
 
 	private Light _cantAcceptSocket;
 
-	@Brick
+	@Inject
 	private PortKeeper _portKeeper;
 	
-	@Brick
+	@Inject
 	private Network _network;
 
-	@Brick
+	@Inject
 	private BlinkingLights _lights;
 	
-    @Brick
+    @Inject
     private Logger _log;
 
 	@Override

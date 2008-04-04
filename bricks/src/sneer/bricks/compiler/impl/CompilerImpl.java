@@ -15,13 +15,13 @@ import sneer.bricks.compiler.Compiler;
 import sneer.bricks.compiler.CompilerException;
 import sneer.bricks.compiler.Result;
 import sneer.bricks.log.Logger;
-import sneer.lego.Brick;
+import sneer.lego.Inject;
 
 import com.sun.tools.javac.Main;
 
 public class CompilerImpl implements Compiler {
 
-	@Brick
+	@Inject
 	private Logger log;
 
 	@Override

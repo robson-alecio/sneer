@@ -11,12 +11,12 @@ import org.junit.Test;
 
 import sneer.bricks.compiler.Result;
 import sneer.bricks.compiler.impl.CompilationError;
-import sneer.lego.Brick;
+import sneer.lego.Inject;
 import sneer.lego.tests.BrickTestSupport;
 
 public class CompilerTest extends BrickTestSupport {
 
-	@Brick
+	@Inject
 	private sneer.bricks.compiler.Compiler compiler;
 	
 	@Test

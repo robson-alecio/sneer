@@ -3,7 +3,7 @@ package sneer.lego.impl;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import sneer.lego.Brick;
+import sneer.lego.Inject;
 import sneer.lego.Container;
 import sneer.lego.Injector;
 import sneer.lego.LegoException;
@@ -21,7 +21,7 @@ public class FieldInjector
     public void inject(Object obj) throws LegoException {
         List<Field> fields = FieldUtils.getAllFields(obj.getClass());
         for (Field field : fields) {
-            Brick inject = field.getAnnotation(Brick.class);
+            Inject inject = field.getAnnotation(Inject.class);
             if(inject != null) {
                 Object component = _container.produce(field.getType());
                 boolean before = field.isAccessible();

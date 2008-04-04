@@ -2,7 +2,7 @@ package spikes.legobricks;
 
 import javax.swing.JOptionPane;
 
-import sneer.lego.Brick;
+import sneer.lego.Inject;
 import sneer.lego.Startable;
 import spikes.legobricks.name.OwnNameKeeper;
 import spikes.legobricks.security.Sorry;
@@ -11,13 +11,13 @@ import wheel.io.ui.User;
 
 public class NameGui implements Startable {
 
-	@Brick
+	@Inject
 	private OwnNameKeeper _keeper;
 	
-	@Brick
+	@Inject
 	private ThreadPool _pool;
 	
-	@Brick
+	@Inject
 	private User user;
 	
 	@Override

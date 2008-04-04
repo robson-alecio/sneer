@@ -11,7 +11,7 @@ import sneer.bricks.network.ByteArraySocket;
 import sneer.bricks.network.Network;
 import sneer.bricks.network.impl.inmemory.InMemoryNetwork;
 import sneer.lego.Binder;
-import sneer.lego.Brick;
+import sneer.lego.Inject;
 import sneer.lego.impl.SimpleBinder;
 import sneer.lego.tests.BrickTestSupport;
 import wheel.lang.Threads;
@@ -19,7 +19,7 @@ import wheel.lang.Threads;
 
 public class InMemoryNetworkTest extends BrickTestSupport {
 
-	@Brick
+	@Inject
 	private Network _network;
 	
 	@Override

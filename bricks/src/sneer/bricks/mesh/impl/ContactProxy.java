@@ -6,7 +6,7 @@ import java.util.Map;
 import sneer.bricks.connection.Connection;
 import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.contacts.Contact;
-import sneer.lego.Brick;
+import sneer.lego.Inject;
 import sneer.lego.Injector;
 import wheel.lang.Pair;
 import wheel.reactive.Register;
@@ -15,7 +15,7 @@ import wheel.reactive.impl.RegisterImpl;
 
 public class ContactProxy {
 
-	@Brick
+	@Inject
 	private ConnectionManager _connectionManager;
 	
 	private final Map<Pair<String, String>, Register<?>> _registersByPath = new HashMap<Pair<String, String>, Register<?>>();

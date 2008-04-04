@@ -6,17 +6,17 @@ import java.util.Map;
 import sneer.bricks.connection.SocketOriginator;
 import sneer.bricks.internetaddresskeeper.InternetAddress;
 import sneer.bricks.internetaddresskeeper.InternetAddressKeeper;
-import sneer.lego.Brick;
+import sneer.lego.Inject;
 import sneer.lego.Injector;
 import sneer.lego.Startable;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
 public class SocketOriginatorImpl implements SocketOriginator, Startable {
 
-	@Brick
+	@Inject
 	private Injector _injector;
 	
-	@Brick
+	@Inject
 	private InternetAddressKeeper _internetAddressKeeper;
 	
 	@SuppressWarnings("unused")

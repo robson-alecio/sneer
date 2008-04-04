@@ -10,17 +10,17 @@ import org.junit.Test;
 import sneer.bricks.connection.SocketAccepter;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.bricks.network.impl.ByteArraySocketImpl;
-import sneer.lego.Brick;
+import sneer.lego.Inject;
 import sneer.lego.tests.BrickTestSupport;
 import spikes.legobricks.name.PortKeeper;
 import wheel.lang.Omnivore;
 
 public class SocketAccepterTest extends BrickTestSupport {
 
-	@Brick
+	@Inject
 	private PortKeeper _portKeeper;
 	
-	@Brick
+	@Inject
 	private SocketAccepter _accepter;
 	
 	@Test(timeout=3000)

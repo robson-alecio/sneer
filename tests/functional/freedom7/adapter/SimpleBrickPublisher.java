@@ -5,7 +5,7 @@ import java.io.File;
 import sneer.bricks.deployer.Deployer;
 import sneer.bricks.inspector.BrickInfo;
 import sneer.bricks.inspector.BrickInspector;
-import sneer.lego.Brick;
+import sneer.lego.Inject;
 import functional.SovereignParty;
 import functional.adapters.SelfInject;
 import functional.freedom7.BrickPublished;
@@ -13,7 +13,7 @@ import functional.freedom7.BrickPublisher;
 
 public class SimpleBrickPublisher implements BrickPublisher {
 	
-	@Brick
+	@Inject
 	private Deployer _deployer;
 	
 	private BrickInspector _inspector;

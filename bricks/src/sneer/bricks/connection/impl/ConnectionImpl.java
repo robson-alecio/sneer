@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 import sneer.bricks.connection.Connection;
 import sneer.bricks.keymanager.KeyManager;
-import sneer.bricks.mesh.impl.Packet;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.lego.Brick;
 import wheel.lang.exceptions.NotImplementedYet;

@@ -9,6 +9,7 @@ import java.io.File;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 
+import sneer.bricks.compiler.Classpath;
 import sneer.bricks.compiler.Result;
 import sneer.bricks.compiler.impl.CompilationError;
 import sneer.lego.Inject;
@@ -53,7 +54,8 @@ public class CompilerTest extends BrickTestSupport {
 		if(libs != null) {
 			libDir = new File(FilenameUtils.concat(System.getProperty("user.dir"), libs));
 		}
-		Result result = compiler.compile(new File(src), getWorkDirectory(), libDir);
+		Classpath classpath = new LibdirClasspath(libDir);
+		Result result = compiler.compile(new File(src), getWorkDirectory(), classpath);
 		return result;
 	}
 }

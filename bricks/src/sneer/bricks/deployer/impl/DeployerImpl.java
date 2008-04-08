@@ -4,12 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.jar.JarFile;
 
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.lang.StringUtils;
 
 import sneer.lego.utils.FileUtils;
+import sneer.bricks.compiler.Classpath;
 import sneer.bricks.compiler.Compiler;
 import sneer.bricks.compiler.Result;
 import sneer.bricks.config.SneerConfig;
@@ -25,7 +27,7 @@ public class DeployerImpl implements Deployer {
 	private SneerConfig config;
 	
 	@Inject
-	private Compiler compiler;
+	private Compiler _compiler;
 	
 	@Inject
 	private Logger log;
@@ -52,8 +54,44 @@ public class DeployerImpl implements Deployer {
 		 * 5. generate brick-api.jar and brick-impl.jar
 		 * 
 		 */
-		Classpath classpath = buildClassPath(path);
+		File workDirectory = createWorkDirectory();
+		SourceMeta meta = loadSourceMetaFromFile(path);
 		
+		/*
+		 * compile interfaces first. Forces clean separation
+		 */
+		List<File> interfaces = meta.interfaces();
+		Result compilationResult = _compiler.compile(interfaces, workDirectory);
+		if(!compilationResult.success()) {
+			throw new DeployerException("Error compiling interfaces");
+		}
+
+		/*
+		 * generate api jars.
+		 */
+		Map<File,List<File>> interfacesByBrick = meta.interfacesByBrick();
+		for (File file : interfacesByBrick.keySet()) {
+			try {
+				JarFile brickApi = runJarTool("brick-api", "0.1-dev", file);
+			} catch (Exception e) {
+				throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			}
+		}
+		
+		//compile implementations
+		Classpath api = null;
+		Map<File,List<File>> brickFilesByDirectory = meta.implByBrick(); 
+		for (File brickImplDir : brickFilesByDirectory.keySet()) {
+			List<File> filesInBrick = brickFilesByDirectory.get(brickImplDir);
+			Classpath libs;
+			Classpath classpath = null; //TODO: compose api + this brick libs
+			compilationResult = _compiler.compile(filesInBrick, workDirectory);
+			if(!compilationResult.success()) {
+				System.out.println(compilationResult.getErrorString());
+				throw new DeployerException("Error compiling brick implementation from: "+brickImplDir);
+			}
+		}
+
 		String brickName = null;
 		String version = null;
 		log.info("exporting brick {} from: {}", brickName, path);
@@ -66,11 +104,21 @@ public class DeployerImpl implements Deployer {
 			throw new DeployerException("Error packing brick "+brickName+" ("+version+") from: "+path,e);
 		}
 	}
+
+	private File createWorkDirectory() {
+		File workDirectory = new File("/tmp/sneer/bricks/compiler/work");
+		if(!workDirectory.exists()) workDirectory.mkdirs();
+		try {
+			org.apache.commons.io.FileUtils.cleanDirectory(workDirectory);
+		} catch (IOException e) {
+			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+		}
+		return workDirectory;
+	}
 	
 
-	private Classpath buildClassPath(File path) {
-		System.out.println(path);
-		throw new wheel.lang.exceptions.NotImplementedYet();
+	private SourceMeta loadSourceMetaFromFile(File path) {
+		return new SimpleSourceMeta(path);
 	}
 
 	private JarFile runJarTool(String brickName, String version, File path) throws Exception {
@@ -134,7 +182,7 @@ public class DeployerImpl implements Deployer {
 		File bin = FileUtils.concat(root, "bin");
 		File src = FileUtils.concat(root, "src");
 		File lib = FileUtils.concat(root, "lib");
-		Result compilationResult = compiler.compile(src, bin, lib);
+		Result compilationResult = _compiler.compile(src, bin);
 		if(!compilationResult.success()) {
 			log.warn("Error compiling.\n"+compilationResult.getErrorString());
 			throw new DeployerException("Error compiling brick on "+root+". See log for details");

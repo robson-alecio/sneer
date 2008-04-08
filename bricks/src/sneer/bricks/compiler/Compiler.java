@@ -1,11 +1,14 @@
 package sneer.bricks.compiler;
 
 import java.io.File;
+import java.util.List;
 
 public interface Compiler {
 	
-	Result compile(File source, File destination) throws CompilerException;
+	Result compile(List<File> sourceFiles, File destination) throws CompilerException;
+	
+	Result compile(File sourceRoot, File destination) throws CompilerException;
 
-	Result compile(File source, File destination, File libDir) throws CompilerException;
+	Result compile(File sourceRoot, File destination, Classpath classpath) throws CompilerException;
 
 }

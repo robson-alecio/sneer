@@ -5,12 +5,14 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.lang.StringUtils;
 
+import sneer.bricks.compiler.Classpath;
 import sneer.bricks.compiler.Compiler;
 import sneer.bricks.compiler.CompilerException;
 import sneer.bricks.compiler.Result;
@@ -25,19 +27,29 @@ public class CompilerImpl implements Compiler {
 	private Logger log;
 
 	@Override
-	public Result compile(File source, File destination) throws CompilerException {
-		return compile(source, destination, null);
+	public Result compile(File sourceRoot, File destination) throws CompilerException {
+		return compile(sourceRoot, destination, null);
 	}
 	
 	@Override
-	public Result compile(File source, File destination, File libDir) throws CompilerException {
+	public Result compile(File sourceRoot, File destination, Classpath classpath) throws CompilerException {
+		List<File> sourceRoots = new ArrayList<File>();
+		sourceRoots.add(sourceRoot);
+		return compile(sourceRoots, destination, classpath);
+	}
+
+	@Override
+	public Result compile(List<File> sourceFiles, File destination) throws CompilerException {
+		return compile(sourceFiles, destination, null);
+	}
+
+	private Result compile(List<File> sourceFiles, File destination, Classpath classpath) throws CompilerException {
 		
-		List<File> files = buildSourceList(source);
-		File tmpFile = createArgsFileForJavac(files);
-		log.info("Compiling {} files to {}", files.size(), destination);
+		File tmpFile = createArgsFileForJavac(sourceFiles);
+		log.info("Compiling {} files to {}", sourceFiles.size(), destination);
 
 		String[] parameters = {
-				"-classpath", buildClassPath(libDir),
+				"-classpath", buildClassPath(null),
 				"-d", destination.getAbsolutePath(),
 				"-encoding","UTF-8",
 				"@"+tmpFile.getAbsolutePath()
@@ -65,16 +77,16 @@ public class CompilerImpl implements Compiler {
 		}
 	}
 
-	private List<File> buildSourceList(File source) {
-		JavaDirectoryWalker walker = new JavaDirectoryWalker(source);
-		List<File> files;
-		try {
-			files = walker.list();
-		} catch (IOException e) {
-			throw new CompilerException("Error building source list", e);
-		}
-		return files;
-	}
+//	private List<File> buildSourceList(File source) {
+//		JavaDirectoryWalker walker = new JavaDirectoryWalker(source);
+//		List<File> files;
+//		try {
+//			files = walker.list();
+//		} catch (IOException e) {
+//			throw new CompilerException("Error building source list", e);
+//		}
+//		return files;
+//	}
 
 	private String buildClassPath(File libDir) {
 		StringBuffer sb = new StringBuffer();

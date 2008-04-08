@@ -4,8 +4,8 @@
 	<classpathentry kind="src" path="spikes/src"/>
 	<classpathentry kind="src" path="wheel/src"/>
 	<classpathentry kind="src" path="bricks/src"/>
-	<classpathentry excluding="functional/freedom7/test-resources/bricks/sneer/bricks/sample/|functional/freedom7/test-resources/bricks/sneer/bricks/source/|functional/freedom7/test-resources/bricks/source/|functional/freedom7/test-resources/bricks/sample/|functional/freedom7/test-resources/bricks/source/sneer/|functional/freedom7/test-resources/bricks/sample/sneer/|functional/freedom7/test-resources/bricks/sample/" kind="src" path="tests"/>
-	<classpathentry kind="src" path="tests/functional/freedom7/test-resources/bricks/sample"/>
+	<classpathentry excluding="functional/freedom7/test-resources/bricks/sneer/bricks/sample/|functional/freedom7/test-resources/bricks/sneer/bricks/source/|functional/freedom7/test-resources/bricks/source/|functional/freedom7/test-resources/bricks/sample/|functional/freedom7/test-resources/bricks/source/sneer/|functional/freedom7/test-resources/bricks/sample/sneer/|functional/freedom7/test-resources/bricks/sample/|functional/freedom7/test-resources/|functional/freedom7/test-resources/|functional/freedom7/test-resources/bricks/source/" kind="src" path="tests"/>
+	<classpathentry kind="src" path="tests/functional/freedom7/test-resources/bricks/source"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="lib" path="kernel/lib/junit-4.4.jar"/>
 	<classpathentry kind="lib" path="wheel/lib/xstream-1.2.2.jar"/>

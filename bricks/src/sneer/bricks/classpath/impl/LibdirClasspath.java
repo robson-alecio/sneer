@@ -1,11 +1,11 @@
-package sneer.bricks.compiler.tests;
+package sneer.bricks.classpath.impl;
 
 import java.io.File;
 import java.io.FilenameFilter;
 
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 
-import sneer.bricks.compiler.Classpath;
+import sneer.bricks.classpath.Classpath;
 
 public class LibdirClasspath implements Classpath {
 

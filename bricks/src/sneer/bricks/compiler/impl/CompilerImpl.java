@@ -12,7 +12,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.lang.StringUtils;
 
-import sneer.bricks.compiler.Classpath;
+import sneer.bricks.classpath.Classpath;
 import sneer.bricks.compiler.Compiler;
 import sneer.bricks.compiler.CompilerException;
 import sneer.bricks.compiler.Result;

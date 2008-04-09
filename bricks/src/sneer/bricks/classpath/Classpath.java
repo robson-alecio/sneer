@@ -1,4 +1,4 @@
-package sneer.bricks.compiler;
+package sneer.bricks.classpath;
 
 public interface Classpath {
 

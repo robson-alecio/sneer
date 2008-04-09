@@ -11,7 +11,7 @@ import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.lang.StringUtils;
 
 import sneer.lego.utils.FileUtils;
-import sneer.bricks.compiler.Classpath;
+import sneer.bricks.classpath.Classpath;
 import sneer.bricks.compiler.Compiler;
 import sneer.bricks.compiler.Result;
 import sneer.bricks.config.SneerConfig;

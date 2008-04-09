@@ -9,7 +9,8 @@ import java.io.File;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 
-import sneer.bricks.compiler.Classpath;
+import sneer.bricks.classpath.Classpath;
+import sneer.bricks.classpath.impl.LibdirClasspath;
 import sneer.bricks.compiler.Result;
 import sneer.bricks.compiler.impl.CompilationError;
 import sneer.lego.Inject;

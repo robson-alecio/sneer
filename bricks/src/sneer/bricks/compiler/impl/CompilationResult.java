@@ -1,5 +1,6 @@
 package sneer.bricks.compiler.impl;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -10,6 +11,8 @@ import org.apache.commons.lang.StringUtils;
 
 import sneer.bricks.compiler.CompilerException;
 import sneer.bricks.compiler.Result;
+import sneer.lego.utils.io.FilteringDirectoryWalker;
+import sneer.lego.utils.io.JavaClassDirectoryWalker;
 
 public class CompilationResult implements Result {
 
@@ -19,9 +22,12 @@ public class CompilationResult implements Result {
 	
 	private List<CompilationError> _errors;
 	
+	private File _targetFolder;
 	
-	public CompilationResult(int compilerCode) {
+	
+	public CompilationResult(int compilerCode, File targetFolder) {
 		_compilerCode = compilerCode;
+		_targetFolder = targetFolder;
 	}
 
 	@Override
@@ -66,5 +72,11 @@ public class CompilationResult implements Result {
 	@Override
 	public String getErrorString() {
 		return _errorString;
+	}
+
+	@Override
+	public List<File> compiledClasses() {
+		FilteringDirectoryWalker walker = new JavaClassDirectoryWalker(_targetFolder);
+		return walker.list();
 	}
 }

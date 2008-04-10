@@ -1,5 +1,6 @@
 package sneer.bricks.compiler;
 
+import java.io.File;
 import java.util.List;
 
 import sneer.bricks.compiler.impl.CompilationError;
@@ -13,4 +14,6 @@ public interface Result {
 	List<CompilationError> getErrors();
 
 	String getErrorString();
+
+	List<File> compiledClasses();
 }

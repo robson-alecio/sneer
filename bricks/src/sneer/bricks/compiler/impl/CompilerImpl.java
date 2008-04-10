@@ -1,7 +1,6 @@
 package sneer.bricks.compiler.impl;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -9,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.lang.StringUtils;
 
 import sneer.bricks.classpath.Classpath;
@@ -43,13 +41,14 @@ public class CompilerImpl implements Compiler {
 		return compile(sourceFiles, destination, null);
 	}
 
-	private Result compile(List<File> sourceFiles, File destination, Classpath classpath) throws CompilerException {
+	@Override
+	public Result compile(List<File> sourceFiles, File destination, Classpath classpath) throws CompilerException {
 		
 		File tmpFile = createArgsFileForJavac(sourceFiles);
 		log.info("Compiling {} files to {}", sourceFiles.size(), destination);
 
 		String[] parameters = {
-				"-classpath", buildClassPath(null),
+				"-classpath", classpath.asJavacArgument(),
 				"-d", destination.getAbsolutePath(),
 				"-encoding","UTF-8",
 				"@"+tmpFile.getAbsolutePath()
@@ -60,7 +59,7 @@ public class CompilerImpl implements Compiler {
 		int code = Main.compile(parameters, new PrintWriter(writer));
 		tmpFile.delete();
 		
-		Result result = new CompilationResult(code);
+		Result result = new CompilationResult(code, destination);
 		if (code != 0) {
 			result.setError(writer.getBuffer().toString());
 		}
@@ -88,18 +87,18 @@ public class CompilerImpl implements Compiler {
 //		return files;
 //	}
 
-	private String buildClassPath(File libDir) {
-		StringBuffer sb = new StringBuffer();
-		sb.append(System.getProperty("java.home")).append(File.separator).append("lib").append(File.separator).append("rt.jar");
-		if(!sneer.lego.utils.FileUtils.isEmpty(libDir)) {
-			sb.append(File.pathSeparatorChar);
-			File[] libs = libDir.listFiles((FilenameFilter) new SuffixFileFilter(".jar"));
-			for (File lib : libs) {
-				sb.append(lib.getAbsolutePath());
-				sb.append(File.pathSeparatorChar);
-			}
-		}
-		String classPath = sb.toString(); 
-		return classPath;
-	}
+//	private String buildClassPath(File libDir) {
+//		StringBuffer sb = new StringBuffer();
+//		sb.append(System.getProperty("java.home")).append(File.separator).append("lib").append(File.separator).append("rt.jar");
+//		if(!sneer.lego.utils.FileUtils.isEmpty(libDir)) {
+//			sb.append(File.pathSeparatorChar);
+//			File[] libs = libDir.listFiles((FilenameFilter) new SuffixFileFilter(".jar"));
+//			for (File lib : libs) {
+//				sb.append(lib.getAbsolutePath());
+//				sb.append(File.pathSeparatorChar);
+//			}
+//		}
+//		String classPath = sb.toString(); 
+//		return classPath;
+//	}
 }

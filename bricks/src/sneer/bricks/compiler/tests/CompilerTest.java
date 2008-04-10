@@ -10,7 +10,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 
 import sneer.bricks.classpath.Classpath;
-import sneer.bricks.classpath.impl.LibdirClasspath;
+import sneer.bricks.classpath.ClasspathFactory;
 import sneer.bricks.compiler.Result;
 import sneer.bricks.compiler.impl.CompilationError;
 import sneer.lego.Inject;
@@ -19,7 +19,10 @@ import sneer.lego.tests.BrickTestSupport;
 public class CompilerTest extends BrickTestSupport {
 
 	@Inject
-	private sneer.bricks.compiler.Compiler compiler;
+	private sneer.bricks.compiler.Compiler _compiler;
+	
+	@Inject
+	private ClasspathFactory _factory;
 	
 	@Test
 	public void testCompile() throws Exception {
@@ -55,8 +58,8 @@ public class CompilerTest extends BrickTestSupport {
 		if(libs != null) {
 			libDir = new File(FilenameUtils.concat(System.getProperty("user.dir"), libs));
 		}
-		Classpath classpath = new LibdirClasspath(libDir);
-		Result result = compiler.compile(new File(src), getWorkDirectory(), classpath);
+		Classpath classpath = _factory.fromLibDir(libDir);
+		Result result = _compiler.compile(new File(src), getWorkDirectory(), classpath);
 		return result;
 	}
 }

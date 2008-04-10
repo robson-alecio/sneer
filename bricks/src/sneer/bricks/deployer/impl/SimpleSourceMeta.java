@@ -30,8 +30,8 @@ public class SimpleSourceMeta implements SourceMeta {
 		return _root;
 	}
 
-	@Override
-	public Map<File, List<File>> interfacesByBrick() {
+	
+	private Map<File, List<File>> interfacesByBrick() {
 		List<File> interfaces = interfaces();
 		Map<File, List<File>> result = new HashMap<File, List<File>>();
 		for (File file : interfaces) {
@@ -49,22 +49,14 @@ public class SimpleSourceMeta implements SourceMeta {
 	@Override
 	public List<File> interfaces() {
 		FilteringDirectoryWalker walker = new MyInterfaceWalker(_root);
-		try {
-			return walker.list();
-		} catch (IOException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
-		}
+		return walker.list();
 	}
 
 	@Override
 	public Map<File, List<File>> implByBrick() {
 		FilteringDirectoryWalker walker = new MyImplWalker(_root);
 		List<File> files;
-		try {
-			files = walker.list();
-		} catch (IOException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
-		}
+		files = walker.list();
 		Map<File,List<File>> result = sortInDirectories(files);
 		return result;
 	}
@@ -113,8 +105,8 @@ class MyInterfaceWalker extends FilteringDirectoryWalker {
 		JavaSource source = new JavaSourceParser(file).parse();
 		if(source.isInterface() /* && source.isAssignableTo(Brick.class) */)
 			results.add(file);
-		else
-			System.out.println("Ignoring Interface: "+source);
+//		else
+//			System.out.println("Ignoring Interface: "+source);
 	}
 
 	@SuppressWarnings({ "unchecked", "unused" })
@@ -139,8 +131,8 @@ class MyImplWalker extends FilteringDirectoryWalker {
 		JavaSource source = new JavaSourceParser(file).parse();
 		if(!source.isInterface() && !source.isAccessPublic())
 			results.add(file);
-		else
-			System.out.println("Ignoring Impl: "+source);
+//		else
+//			System.out.println("Ignoring Impl: "+source);
 	}
 	
 	@SuppressWarnings({ "unchecked", "unused" })

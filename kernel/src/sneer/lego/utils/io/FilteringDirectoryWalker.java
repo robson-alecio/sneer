@@ -18,9 +18,14 @@ public class FilteringDirectoryWalker extends DirectoryWalker {
 		_root = root;
 	}
 	
-	public List<File> list() throws IOException {
+	public List<File> list() {
 		List<File> result = new ArrayList<File>();
-		walk(_root, result);
+		try {
+			walk(_root, result);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 		return result;
 	}
 	

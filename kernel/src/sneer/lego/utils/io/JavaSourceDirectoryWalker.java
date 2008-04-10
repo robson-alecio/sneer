@@ -1,4 +1,4 @@
-package sneer.bricks.compiler.impl;
+package sneer.lego.utils.io;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -7,13 +7,12 @@ import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.OrFileFilter;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 
-import sneer.lego.utils.io.FilteringDirectoryWalker;
 
-class JavaDirectoryWalker extends FilteringDirectoryWalker {
+public class JavaSourceDirectoryWalker extends FilteringDirectoryWalker {
 	
 	private static final FileFilter FILTER = new OrFileFilter(new SuffixFileFilter(".java"), DirectoryFileFilter.INSTANCE); 
 	
-	public JavaDirectoryWalker(File root) {
+	public JavaSourceDirectoryWalker(File root) {
 		super(root, FILTER);
 	}
 }

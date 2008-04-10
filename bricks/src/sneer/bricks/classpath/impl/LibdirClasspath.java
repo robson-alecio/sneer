@@ -2,12 +2,13 @@ package sneer.bricks.classpath.impl;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.List;
 
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 
-import sneer.bricks.classpath.Classpath;
+import sneer.lego.utils.FileUtils;
 
-public class LibdirClasspath implements Classpath {
+class LibdirClasspath extends ClasspathSupport {
 
 	private File _libdir;
 	
@@ -15,9 +16,10 @@ public class LibdirClasspath implements Classpath {
 		_libdir = folder;
 	}
 
-	public void x() {
+	@Override
+	public String asJavacArgument() {
 		StringBuffer sb = new StringBuffer();
-		if(!sneer.lego.utils.FileUtils.isEmpty(_libdir)) {
+		if(!FileUtils.isEmpty(_libdir)) {
 			sb.append(File.pathSeparatorChar);
 			File[] libs = _libdir.listFiles((FilenameFilter) new SuffixFileFilter(".jar"));
 			for (File lib : libs) {
@@ -25,7 +27,13 @@ public class LibdirClasspath implements Classpath {
 				sb.append(File.pathSeparatorChar);
 			}
 		}
-		String classPath = sb.toString(); 
-		System.out.println(classPath);
+		String result = sb.toString();
+		return result;
+	}
+
+	@Override
+	public <T> List<Class<T>> findAssignableTo(Class<T> clazz) {
+		// Implement Auto-generated method stub
+		throw new wheel.lang.exceptions.NotImplementedYet();
 	}
 }

@@ -8,4 +8,10 @@ public interface SneerConfig {
 	
 	File brickRootDirectory();
 	
+	/* 
+	 * used for development. Error prone !! 
+	 */
+	File eclipseDirectory();
+
+	File tmpDirectory(); 
 }

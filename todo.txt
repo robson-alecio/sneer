@@ -1,4 +1,5 @@
 ﻿Leandro
+ - Refactor: Unpollute functional.freedom* packages: move all adapter stuff to the functional.adapter package or subpackages. 
  - Crypto: SNEER1024 = SHA512 concat Whirlpool512.
  - Brick Publish:
 	1) Inform source folder (src).

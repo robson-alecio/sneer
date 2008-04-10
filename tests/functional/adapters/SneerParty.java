@@ -74,9 +74,8 @@ public class SneerParty extends SelfInject implements SovereignParty {
     }
 
     @Override
-    public String navigateAndGetName(String nicknamePath) {
-    	Signal<String> signal = _mesh.findSignal(nicknamePath, "Name");
-    	return signal.currentValue();
+    public Signal<String> navigateAndGetName(String nicknamePath) {
+    	return _mesh.findSignal(nicknamePath, "Name");
     }
 
 

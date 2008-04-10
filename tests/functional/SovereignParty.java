@@ -1,5 +1,7 @@
 package functional;
 
+import wheel.reactive.Signal;
+
 
 public interface SovereignParty {
 
@@ -9,6 +11,6 @@ public interface SovereignParty {
 	void bidirectionalConnectTo(SovereignParty peer);
 	
 	void giveNicknameTo(SovereignParty peer, String nickname);
-	String navigateAndGetName(String nicknamePath);
+	Signal<String> navigateAndGetName(String nicknamePath);
 
 }

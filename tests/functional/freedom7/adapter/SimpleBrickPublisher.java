@@ -5,6 +5,7 @@ import java.io.File;
 import sneer.bricks.deployer.BrickBundle;
 import sneer.bricks.deployer.Deployer;
 import sneer.lego.Inject;
+import wheel.reactive.Signal;
 import functional.SovereignParty;
 import functional.adapters.SelfInject;
 import functional.freedom7.BrickPublished;
@@ -46,7 +47,7 @@ public class SimpleBrickPublisher implements BrickPublisher {
 	}
 
 	@Override
-	public String navigateAndGetName(String nicknamePath) {
+	public Signal<String> navigateAndGetName(String nicknamePath) {
 		return _party.navigateAndGetName(nicknamePath);
 	}
 

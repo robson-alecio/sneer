@@ -11,6 +11,7 @@ import sneer.bricks.mesh.Mesh;
 import sneer.lego.Inject;
 import sneer.lego.Injector;
 import sneer.lego.Startable;
+import wheel.lang.Threads;
 import wheel.reactive.Signal;
 import wheel.reactive.maps.impl.SimpleMapReceiver;
 
@@ -36,23 +37,31 @@ public class MeshImpl implements Mesh, Startable {
 
 			@Override
 			protected void entryPresent(Contact contact, Connection connection) {
-				throw new wheel.lang.exceptions.NotImplementedYet();
+				startServing(connection);
 			}
 
 			@Override
 			public void entryAdded(Contact contact, Connection connection) {
-				System.out.println("new connection: "+contact.nickname());
-				throw new wheel.lang.exceptions.NotImplementedYet();
+				startServing(connection);
 			}
 
 			@Override
 			public void entryToBeRemoved(Contact contact, Connection connection) {
-				throw new wheel.lang.exceptions.NotImplementedYet();
+				stopServing(connection);
 			}
 
 		};
 	}
 
+	private void startServing(Connection connection) {
+		Threads.startDaemon(new IndividualConnectionHandler(connection));
+	}
+
+	private void stopServing(Connection connection) {
+		// Implement Auto-generated method stub
+		throw new wheel.lang.exceptions.NotImplementedYet();
+	}
+	
 	@Override
 	public <T> Signal<T> findSignal(String nicknamePath, String signalPath) {
 		String[] path = nicknamePath.split("/", 1);

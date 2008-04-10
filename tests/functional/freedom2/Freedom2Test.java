@@ -4,12 +4,14 @@ import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
+import wheel.reactive.Signal;
+
 import functional.SovereignFunctionalTest;
 
 public abstract class Freedom2Test extends SovereignFunctionalTest {
 
 	
-	@Test
+	@Test(timeout = 3000)
 	public void testNicknames() {
 		
 		_a.giveNicknameTo(_b, "Bruno");
@@ -18,14 +20,22 @@ public abstract class Freedom2Test extends SovereignFunctionalTest {
 		_c.giveNicknameTo(_a, "Miguxa");
 		_c.giveNicknameTo(_d, "Dedé");
 		
-		assertSame("Bruno Barros", _a.navigateAndGetName("Bruno"));
-		assertSame("Ana Almeida", _b.navigateAndGetName("Carla Costa/Miguxa"));
-		assertSame("Ana Almeida", _a.navigateAndGetName("Bruno/Aninha"));
-		assertSame("Bruno Barros", _a.navigateAndGetName("Bruno/Aninha/Bruno"));
-		assertSame("Denis Dalton", _a.navigateAndGetName("Bruno/Carla Costa/Dedé"));
+		waitForValue("Bruno Barros", _a.navigateAndGetName("Bruno"));
+		waitForValue("Ana Almeida", _b.navigateAndGetName("Carla Costa/Miguxa"));
+		waitForValue("Ana Almeida", _a.navigateAndGetName("Bruno/Aninha"));
+		waitForValue("Bruno Barros", _a.navigateAndGetName("Bruno/Aninha/Bruno"));
+		waitForValue("Denis Dalton", _a.navigateAndGetName("Bruno/Carla Costa/Dedé"));
 		
 		_a.giveNicknameTo(_b, "Bruninho");
-		assertSame("Bruno Barros", _a.navigateAndGetName("Bruninho"));
+		waitForValue("Bruno Barros", _a.navigateAndGetName("Bruninho"));
+	}
+
+	private void waitForValue(Object expectedValue, Signal<? extends Object> signal) {
+		while (true) {
+			if (expectedValue == null && signal.currentValue() == null) return;
+			if (expectedValue != null && expectedValue.equals(signal.currentValue())) return;
+			Thread.yield();
+		}
 	}
 
 }

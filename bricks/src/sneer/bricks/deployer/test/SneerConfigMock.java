@@ -21,4 +21,14 @@ public class SneerConfigMock implements SneerConfig {
 		throw new wheel.lang.exceptions.NotImplementedYet();
 	}
 
+	@Override
+	public File eclipseDirectory() {
+		throw new wheel.lang.exceptions.NotImplementedYet();
+	}
+
+	@Override
+	public File tmpDirectory() {
+		throw new wheel.lang.exceptions.NotImplementedYet();
+	}
+
 }

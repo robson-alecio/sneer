@@ -1,7 +1,8 @@
 ﻿Leandro
  - Refactor: Unpollute functional.freedom* packages: move all adapter stuff to the functional.adapter package or subpackages.
  - Refactor: Move all tests that are in the form: bricks.xyz.tests.* and that depend on the implementation, to bricks.xyz.impl.tests.*. Nothing inside the brick api package or subpackages can depend on the implementation. Make interface tests abstract using the techniques you have already seen in this project. :)
- - Output to Console during Test Execution - Leave off by default. Tests should run clean. Turn on when needed only.
+ - Cleanup: Output to Console during Test Execution - Leave off by default. Tests should run clean. Turn on when needed only.
+ - Serializable Instrumentation: Remove "implements Serializable" from SignalSubscription and run Freedom2Test. Make container use Bamboo's classloader contrib to fix NotSerializableException being thrown.
  - Brick Publish:
 	1) Inform source folder (src).
 	2) Inform library folder (lib).
@@ -17,7 +18,7 @@
 		- Invalid brick (Interface hash of brick changed)
 			Deploy is not allowed in this case.
 	8) deploy brick to sneer home ($USER_HOME/.sneer/)
- - Proactivity - Pick something from Klaus's todo list.
+ - Proactivity: Pick something from Klaus's todo list.
  
 
 Klaus

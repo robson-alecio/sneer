@@ -5,9 +5,9 @@ import java.util.Arrays;
 
 import sneer.bricks.connection.Connection;
 import sneer.bricks.keymanager.KeyManager;
+import sneer.bricks.log.Logger;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.lego.Inject;
-import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
@@ -19,36 +19,40 @@ class ConnectionImpl implements Connection {
 	
 	private Register<Boolean> _isOnline = new RegisterImpl<Boolean>(false);
 
-	private ByteArraySocket _socket;
+	private final SocketHolder _socketHolder = new SocketHolder(_isOnline.setter());
+
+	@Inject
+	private Logger _logger;
 	
 	@Override
 	public Signal<Boolean> isOnline() {
 		return _isOnline.output();
 	}
 	
+
 	void manageOutgoingSocket(ByteArraySocket newSocket) {
-		synchronized (this){
-			if (_socket != null){
-				newSocket.crash();
-				return;
-			}
-		}
-		
-		try {
-			if (!shakeHands(newSocket)) {
-				newSocket.crash();
-				return;
-			}
-		} catch (IOException e) {
+		if (!tryToManageOutgoingSocket(newSocket))
 			newSocket.crash();
-			return;
-		}
-		
-		setSocket(newSocket);
-		
 	}
 
-	private boolean shakeHands(ByteArraySocket socket) throws IOException {
+	private boolean tryToManageOutgoingSocket(ByteArraySocket newSocket) {
+		if (!_socketHolder.isEmpty()) return false;
+		if (!shakeHands(newSocket)) return false;
+		
+		_socketHolder.setSocketIfNecessary(newSocket);
+		return true;
+	}
+
+	private boolean shakeHands(ByteArraySocket socket) {
+		try {
+			return tryToShakeHands(socket);
+		} catch (IOException e) {
+			_logger.info(e.getMessage());
+			return false;
+		}
+	}
+
+	private boolean tryToShakeHands(ByteArraySocket socket) throws IOException {
 		socket.write(ProtocolTokens.SNEER_WIRE_PROTOCOL_1);
 		socket.write(_keyManager.ownPublicKey());
 		byte[] response = socket.read();
@@ -59,29 +63,20 @@ class ConnectionImpl implements Connection {
 		//Implement: Reject if my own pk.
 		//Challenge pk.
 		
-		setSocket(socket);
+		_socketHolder.setSocketIfNecessary(socket);
 		
 	}
 	
-	private synchronized void setSocket(ByteArraySocket newSocket) {
-		if (_socket != null){
-			newSocket.crash();
-			return;
-		}
-		
-		_socket = newSocket;
-		_isOnline.setter().consume(true);
-	}
-
-	private synchronized void crashSocket() {
-		_socket.crash();
-		_socket = null;
-		
-		_isOnline.setter().consume(false);
-	}
-
 	@Override
-	public void send(byte[] array) {
-		throw new NotImplementedYet();
+	public void send(byte[] array) throws IOException {
+		ByteArraySocket mySocket = _socketHolder.socket();
+		if (mySocket == null) throw new IOException("No socket found for connection.");
+		
+		try {
+			mySocket.write(array);
+		} catch (IOException iox) {
+			_socketHolder.crash(mySocket);
+			throw iox;
+		}
 	}
 }

@@ -1,5 +1,6 @@
 package sneer.bricks.mesh.impl;
 
+import java.io.IOException;
 import java.io.NotSerializableException;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +12,6 @@ import sneer.bricks.mesh.Peer;
 import sneer.bricks.serialization.Serializer;
 import sneer.lego.Inject;
 import sneer.lego.Injector;
-import wheel.lang.Pair;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
@@ -49,13 +49,21 @@ class PeerImpl implements Peer {
 	}
 
 	private void send(Object object) {
-		byte[] serialized;
+		byte[] serialized = serialize(object);
+
 		try {
-			serialized = _serializer.serialize(object);
+			_connection.send(serialized);
+		} catch (IOException e) {
+			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+		}
+	}
+
+	private byte[] serialize(Object object) {
+		try {
+			return _serializer.serialize(object);
 		} catch (NotSerializableException e) {
 			throw new RuntimeException(e);
 		}
-		_connection.send(serialized);
 	}
 
 	public Signal<?> signal(String signalPath) {

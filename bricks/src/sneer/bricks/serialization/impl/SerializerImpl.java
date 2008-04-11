@@ -11,8 +11,6 @@ import wheel.io.Streams;
 public class SerializerImpl implements Serializer {
 
 	public byte[] serialize(Object object) throws NotSerializableException {
-		//Optimize Consider using the OptimizedSerializer once Sneer is no longer dropping packets.
-
 		ByteArrayOutputStream outputBytes = new ByteArrayOutputStream();
 		ObjectOutputStream outputStream = null;
 		try {

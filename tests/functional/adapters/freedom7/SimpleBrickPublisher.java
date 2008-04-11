@@ -32,7 +32,10 @@ public class SimpleBrickPublisher implements BrickPublisher {
 	@Override
 	public BrickPublished publishBrick(File sourceDirectory) {
 		BrickBundle brickFile = _deployer.pack(sourceDirectory);
-		System.out.println(brickFile);
+		
+		if(brickFile != null)
+			brickFile.toString();
+			
 		throw new wheel.lang.exceptions.NotImplementedYet();
 	}
 

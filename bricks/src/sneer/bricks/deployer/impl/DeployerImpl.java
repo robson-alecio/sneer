@@ -27,6 +27,8 @@ import wheel.lang.exceptions.NotImplementedYet;
 
 public class DeployerImpl implements Deployer {
 
+	private boolean SYSOUT = false;
+	
 	@Inject
 	private SneerConfig _config;
 	
@@ -83,8 +85,10 @@ public class DeployerImpl implements Deployer {
 		List<Class<Brick>> brickInterfaces = findBrickInterfaces(api);
 		List<JarFile> jarFiles = generateApiJars(brickInterfaces, workDirectory, api);
 		//Fix: deploy jar files
-		for (JarFile jarFile : jarFiles) {
-			System.out.println("TODO: deploy "+jarFile.getName());
+		if(SYSOUT) {
+			for (JarFile jarFile : jarFiles) {
+				System.out.println("TODO: deploy "+jarFile.getName());
+			}
 		}
 		
 		/*
@@ -92,8 +96,10 @@ public class DeployerImpl implements Deployer {
 		 */
 		jarFiles = compileBricksAndGenerateJars(brickInterfaces, meta, api);
 		//Fix: deploy jar files
-		for (JarFile jarFile : jarFiles) {
-			System.out.println("TODO: deploy "+jarFile.getName());
+		if(SYSOUT) {
+			for (JarFile jarFile : jarFiles) {
+				System.out.println("TODO: deploy "+jarFile.getName());
+			}
 		}
 		
 		return null;

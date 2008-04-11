@@ -34,8 +34,8 @@ public class ConcurrencyTest {
 			while (it.hasNext()) {
 				Future<String> future = it.next();
 				if(future.isDone()) {
-					if(!future.isCancelled()) System.out.println(future.get());
-					else System.out.println("NA");
+					//if(!future.isCancelled()) System.out.println(future.get());
+					//else System.out.println("NA");
 					
 					it.remove();
 				} else {
@@ -46,7 +46,7 @@ public class ConcurrencyTest {
 			//Threads.sleepWithoutInterruptions(50);
 		}
 
-		System.out.println("All Done: "+(System.currentTimeMillis() - start));
+		//System.out.println("All Done: "+(System.currentTimeMillis() - start));
 	}
 }
 
@@ -59,7 +59,7 @@ class Task implements Callable<String> {
 	public Task(String id) {
 		_period = RandomUtils.nextInt(20000);
 		_id = id;
-		System.out.println(_id +":"+_period);
+		//System.out.println(_id +":"+_period);
 		
 	}
 	

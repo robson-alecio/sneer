@@ -21,7 +21,7 @@ public class ExecutorTest {
 	private Runnable newTask(final String tag) {
 		Runnable result = new Runnable() { @Override public void run() {
 			for(int i = 0; i < 10 ; i++) {
-				System.out.println(Thread.currentThread().getName() + " " + tag +" " + i);
+				//System.out.println(Thread.currentThread().getName() + " " + tag +" " + i);
 				Threads.sleepWithoutInterruptions(100);
 			}
 		}};

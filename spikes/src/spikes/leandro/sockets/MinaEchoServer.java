@@ -25,7 +25,7 @@ public class MinaEchoServer {
         acceptor.setHandler(new Handler());
         acceptor.bind(new InetSocketAddress(PORT));
 
-        System.out.println("Listening on port " + PORT);
+        //System.out.println("Listening on port " + PORT);
     }
 
 }
@@ -35,12 +35,12 @@ class Handler implements IoHandler {
 	@Override
 	public void exceptionCaught(IoSession session, Throwable error) throws Exception {
 		error.printStackTrace();
-		System.out.println("exceptionCaught");
+		//System.out.println("exceptionCaught");
 	}
 
 	@Override
 	public void messageReceived(IoSession session, Object msg) throws Exception {
-		System.out.println("messageReceived");
+		//System.out.println("messageReceived");
 		String str = msg.toString();
 		if( str.trim().equalsIgnoreCase("quit") ) {
 			session.close();
@@ -51,23 +51,23 @@ class Handler implements IoHandler {
 
 	@Override
 	public void messageSent(IoSession session, Object msg) throws Exception {
-		System.out.println("messageSent");
+		//System.out.println("messageSent");
 	}
 
 	@Override
 	public void sessionClosed(IoSession session) throws Exception {
-		System.out.println("sessionClosed");
+		//System.out.println("sessionClosed");
 	}
 
 	@Override
 	public void sessionCreated(IoSession session) throws Exception {
-		System.out.println("sessionCreated");
+		//System.out.println("sessionCreated");
 		session.getConfig().setIdleTime(IdleStatus.READER_IDLE, 10);
 	}
 
 	@Override
 	public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
-		System.out.println("sessionIdle: "+status);
+		//System.out.println("sessionIdle: "+status);
         if (status == IdleStatus.READER_IDLE) {
         	//session.close();
         }
@@ -75,7 +75,7 @@ class Handler implements IoHandler {
 
 	@Override
 	public void sessionOpened(IoSession session) throws Exception {
-		System.out.println("sessionOpened");
+		//System.out.println("sessionOpened");
 	}
 	
 }

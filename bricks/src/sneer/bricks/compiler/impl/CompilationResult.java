@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
+import sneer.bricks.compiler.CompilationError;
 import sneer.bricks.compiler.CompilerException;
 import sneer.bricks.compiler.Result;
 import sneer.lego.utils.io.FilteringDirectoryWalker;
@@ -63,7 +64,7 @@ public class CompilationResult implements Result {
 				String fileName = parts[0];
 				int lineNumber = Integer.parseInt(parts[1]);
 				String message = parts[2];
-				result.add(new CompilationError(fileName, lineNumber, message));
+				result.add(new CompilationErrorImpl(fileName, lineNumber, message));
 			}
 		}
 		return result;

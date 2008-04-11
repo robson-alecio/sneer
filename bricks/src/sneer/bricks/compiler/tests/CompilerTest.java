@@ -11,8 +11,8 @@ import org.junit.Test;
 
 import sneer.bricks.classpath.Classpath;
 import sneer.bricks.classpath.ClasspathFactory;
+import sneer.bricks.compiler.CompilationError;
 import sneer.bricks.compiler.Result;
-import sneer.bricks.compiler.impl.CompilationError;
 import sneer.lego.Inject;
 import sneer.lego.tests.BrickTestSupport;
 

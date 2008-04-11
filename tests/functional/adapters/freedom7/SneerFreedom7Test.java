@@ -1,4 +1,4 @@
-package functional.freedom7.adapter;
+package functional.adapters.freedom7;
 
 import java.io.File;
 

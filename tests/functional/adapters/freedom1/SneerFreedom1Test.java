@@ -1,4 +1,4 @@
-package functional.freedom1.adapter;
+package functional.adapters.freedom1;
 
 import functional.SovereignCommunity;
 import functional.adapters.SneerCommunity;

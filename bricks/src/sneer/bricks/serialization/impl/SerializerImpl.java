@@ -6,6 +6,7 @@ import java.io.NotSerializableException;
 import java.io.ObjectOutputStream;
 
 import sneer.bricks.serialization.Serializer;
+import wheel.io.Streams;
 
 public class SerializerImpl implements Serializer {
 
@@ -13,17 +14,20 @@ public class SerializerImpl implements Serializer {
 		//Optimize Consider using the OptimizedSerializer once Sneer is no longer dropping packets.
 
 		ByteArrayOutputStream outputBytes = new ByteArrayOutputStream();
+		ObjectOutputStream outputStream = null;
 		try {
-			ObjectOutputStream outputStream = new ObjectOutputStream(outputBytes);
+
+			outputStream = new ObjectOutputStream(outputBytes);
 			outputStream.writeObject(object);
-			outputStream.close();
-			
 			return outputBytes.toByteArray();
 			
 		} catch (NotSerializableException nse) {
 			throw nse;
 		} catch (IOException e) {
-			throw new IllegalStateException(e);
+			throw new RuntimeException(e);
+		} finally {
+			if (outputStream != null)
+				Streams.crash(outputStream);
 		}
 	}
 

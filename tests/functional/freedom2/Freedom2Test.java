@@ -1,11 +1,8 @@
 package functional.freedom2;
 
-import static org.junit.Assert.assertSame;
-
 import org.junit.Test;
 
 import wheel.reactive.Signal;
-
 import functional.SovereignFunctionalTest;
 
 public abstract class Freedom2Test extends SovereignFunctionalTest {

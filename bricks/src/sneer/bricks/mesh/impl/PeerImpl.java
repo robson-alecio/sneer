@@ -66,8 +66,8 @@ class PeerImpl implements Peer {
 		}
 	}
 
-	public Signal<?> signal(String signalPath) {
-		Register<?> register = produceRegisterFor(signalPath);
+	public <S> Signal<S> signal(String signalPath) {
+		Register<S> register = produceRegisterFor(signalPath);
 		return register.output();   //Fix: Signal type mismatch between peers is possible. 
 	}
 

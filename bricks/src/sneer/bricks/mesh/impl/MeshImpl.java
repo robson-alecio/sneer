@@ -8,16 +8,16 @@ import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.contacts.ContactManager;
 import sneer.bricks.mesh.Mesh;
+import sneer.bricks.mesh.Peer;
 import sneer.lego.Inject;
 import sneer.lego.Injector;
 import sneer.lego.Startable;
 import wheel.lang.Threads;
-import wheel.reactive.Signal;
 import wheel.reactive.maps.impl.SimpleMapReceiver;
 
 public class MeshImpl implements Mesh, Startable {
 
-	private final Map<Contact, ContactProxy> _proxiesByContact = new HashMap<Contact, ContactProxy>();
+	private final Map<Contact, PeerImpl> _proxiesByContact = new HashMap<Contact, PeerImpl>();
 	
 	@SuppressWarnings("unused")
 	private SimpleMapReceiver<Contact, Connection> _connectionReceiverToAvoidGC;
@@ -63,7 +63,7 @@ public class MeshImpl implements Mesh, Startable {
 	}
 	
 	@Override
-	public <T> Signal<T> findSignal(String nicknamePath, String signalPath) {
+	public <T> Peer navigateTo(String nicknamePath) {
 		String[] path = nicknamePath.split("/", 1);
 		String head = path[0];
 		String tail = path.length > 1
@@ -71,16 +71,14 @@ public class MeshImpl implements Mesh, Startable {
 			: "";
 			
 		Contact immediateContact = _contactManager.contactGiven(head);
-		ContactProxy proxy = produceProxyFor(immediateContact);
-		
-		return proxy.findSignal(tail, signalPath);
+		return produceProxyFor(immediateContact);
 	}
 
-	private ContactProxy produceProxyFor(Contact contact) {
+	private Peer produceProxyFor(Contact contact) {
 		synchronized (_proxiesByContact) {
-			ContactProxy proxy = _proxiesByContact.get(contact);
+			PeerImpl proxy = _proxiesByContact.get(contact);
 			if (proxy == null) {
-				proxy = new ContactProxy(_injector, contact);
+				proxy = new PeerImpl(_injector, contact);
 				_proxiesByContact.put(contact, proxy);
 			}
 			return proxy;

@@ -1,12 +1,13 @@
 ﻿Leandro
- - Refactor: Unpollute functional.freedom* packages: move all adapter stuff to the functional.adapter package or subpackages. 
- - Crypto: SNEER1024 = SHA512 concat Whirlpool512.
+ - Refactor: Unpollute functional.freedom* packages: move all adapter stuff to the functional.adapter package or subpackages.
+ - Refactor: Move all tests that are in the form: bricks.xyz.tests.* and that depend on the implementation, to bricks.xyz.impl.tests.*. Nothing inside the brick api package or subpackages can depend on the implementation. Make interface tests abstract using the techniques you have already seen in this project. :)
+ - Output to Console during Test Execution - Leave off by default. Tests should run clean. Turn on when needed only.
  - Brick Publish:
 	1) Inform source folder (src).
 	2) Inform library folder (lib).
 	3) Find all interfaces that extend Brick inside src.
 	4) compile the bricks using the metadatafile (describes only RELATIVE paths to libs inside lib folder) and all jars inside all subfolders of the bricks' local lib folder.
-	5) Run SNEER1024 hash on interface .class files (or jar).
+	5) Run SNEER1024 hash (SHA-512 concat Whirlpool-512) on interface .class files (or jar).
 	6) Run SNEER1024 hash on impl .class files (or jar) together with libs (produce a single impl hash for it all).
 	7) Inform status:
 		- New brick.

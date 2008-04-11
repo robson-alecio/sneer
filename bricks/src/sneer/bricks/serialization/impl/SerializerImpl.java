@@ -1,17 +1,17 @@
-package wheel.io.serialization;
+package sneer.bricks.serialization.impl;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectOutputStream;
 
-public class DefaultSerializer { //Fix Delete this class and the deserializer class and use the optimized versions in this package, once Sneer is no longer dropping packets.
+import sneer.bricks.serialization.Serializer;
 
-	public DefaultSerializer() {
+public class SerializerImpl implements Serializer {
 
-	}
-	
 	public byte[] serialize(Object object) throws NotSerializableException {
+		//Optimize Consider using the OptimizedSerializer once Sneer is no longer dropping packets.
+
 		ByteArrayOutputStream outputBytes = new ByteArrayOutputStream();
 		try {
 			ObjectOutputStream outputStream = new ObjectOutputStream(outputBytes);
@@ -26,6 +26,5 @@ public class DefaultSerializer { //Fix Delete this class and the deserializer cl
 			throw new IllegalStateException(e);
 		}
 	}
-
 
 }

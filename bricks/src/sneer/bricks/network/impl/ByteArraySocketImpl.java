@@ -21,7 +21,7 @@ public class ByteArraySocketImpl implements ByteArraySocket {
 
 	
 	public ByteArraySocketImpl(String serverIpAddress, int serverPort) throws IOException {
-		this(new Socket(serverIpAddress, serverPort));
+		this(new Socket(serverIpAddress, serverPort)); //Fix: Ask Matias about TCP socket parameters to make the socket low-latency instead of high-throughput.
 	}
 
 	public ByteArraySocketImpl(Socket socket) throws IOException {

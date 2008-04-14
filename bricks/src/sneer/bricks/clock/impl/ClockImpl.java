@@ -1,6 +1,7 @@
 package sneer.bricks.clock.impl;
 
 import sneer.bricks.clock.Clock;
+import wheel.lang.Threads;
 
 public class ClockImpl implements Clock {
 
@@ -11,8 +12,7 @@ public class ClockImpl implements Clock {
 
 	@Override
 	public void sleep(int millis) {
-		// Implement Auto-generated method stub
-		throw new wheel.lang.exceptions.NotImplementedYet();
+		Threads.sleepWithoutInterruptions(millis);
 	}
 
 }

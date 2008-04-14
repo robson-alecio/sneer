@@ -18,6 +18,7 @@
 	<classpathentry kind="lib" path="bricks/lib/commons-logging-api-1.1.jar"/>
 	<classpathentry kind="lib" path="bricks/lib/compiler-7-ea-b17-02_aug_2007.jar"/>
 	<classpathentry kind="lib" path="bricks/lib/slf4j-api-1.5.0.jar"/>
-	<classpathentry kind="lib" path="bricks/lib/slf4j-simple-1.5.0.jar"/>
+	<classpathentry kind="lib" path="bricks/lib/slf4j-log4j12-1.5.0.jar"/>
+	<classpathentry kind="lib" path="bricks/lib/log4j-1.2.15.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

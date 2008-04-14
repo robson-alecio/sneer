@@ -1,4 +1,4 @@
-package sneer.lego;
+package sneer.lego.impl.classloader;
 
 import java.net.URL;
 import java.net.URLClassLoader;

@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sneer.lego.Binder;
-import sneer.lego.BrickClassLoader;
 import sneer.lego.Configurable;
 import sneer.lego.ConfigurationFactory;
 import sneer.lego.Container;
@@ -23,6 +22,7 @@ import sneer.lego.Crashable;
 import sneer.lego.Injector;
 import sneer.lego.LegoException;
 import sneer.lego.Startable;
+import sneer.lego.impl.classloader.BrickClassLoader;
 import sneer.lego.utils.ObjectUtils;
 import wheel.lang.Threads;
 

@@ -3,8 +3,6 @@ package sneer.bricks.mesh.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.bricks.connection.Connection;
-import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.contacts.ContactManager;
 import sneer.bricks.mesh.Mesh;
@@ -12,18 +10,14 @@ import sneer.bricks.mesh.Peer;
 import sneer.lego.Inject;
 import sneer.lego.Injector;
 import sneer.lego.Startable;
-import wheel.lang.Threads;
-import wheel.reactive.maps.impl.SimpleMapReceiver;
+import wheel.reactive.lists.impl.SimpleListReceiver;
 
 public class MeshImpl implements Mesh, Startable {
 
 	private final Map<Contact, PeerImpl> _proxiesByContact = new HashMap<Contact, PeerImpl>();
 	
 	@SuppressWarnings("unused")
-	private SimpleMapReceiver<Contact, Connection> _connectionReceiverToAvoidGC;
-
-	@Inject
-	private ConnectionManager _connectionManager;
+	private SimpleListReceiver<Contact> _contactListReceiverToAvoidGC;
 
 	@Inject
 	private ContactManager _contactManager;
@@ -33,35 +27,31 @@ public class MeshImpl implements Mesh, Startable {
 
 	@Override
 	public void start() throws Exception {
-		_connectionReceiverToAvoidGC = new SimpleMapReceiver<Contact, Connection>(_connectionManager.connections()){
+		_contactListReceiverToAvoidGC = new SimpleListReceiver<Contact>(_contactManager.contacts()){
 
 			@Override
-			protected void entryPresent(Contact contact, Connection connection) {
-				startServing(connection);
+			protected void elementPresent(Contact contact) {
+				producePeerFor(contact);
 			}
 
 			@Override
-			public void entryAdded(Contact contact, Connection connection) {
-				startServing(connection);
+			protected void elementAdded(Contact newContact) {
+				producePeerFor(newContact);
 			}
 
 			@Override
-			public void entryToBeRemoved(Contact contact, Connection connection) {
-				stopServing(connection);
+			protected void elementToBeRemoved(Contact contactRemoved) {
+				crashPeerFor(contactRemoved);
 			}
-
+			
 		};
 	}
 
-	private void startServing(Connection connection) {
-		Threads.startDaemon(new IndividualConnectionHandler(connection));
+	private void crashPeerFor(Contact contactRemoved) {
+		PeerImpl peer = _proxiesByContact.remove(contactRemoved);
+		peer.crash();
 	}
 
-	private void stopServing(Connection connection) {
-		// Implement Auto-generated method stub
-		throw new wheel.lang.exceptions.NotImplementedYet();
-	}
-	
 	@Override
 	public <T> Peer navigateTo(String nicknamePath) {
 		String[] path = nicknamePath.split("/", 1);
@@ -70,11 +60,11 @@ public class MeshImpl implements Mesh, Startable {
 			? path[1]
 			: "";
 			
-		Contact immediateContact = _contactManager.contactGiven(head);
-		return produceProxyFor(immediateContact);
+		Contact contact = _contactManager.contactGiven(head);
+		return producePeerFor(contact);
 	}
 
-	private Peer produceProxyFor(Contact contact) {
+	private Peer producePeerFor(Contact contact) {
 		synchronized (_proxiesByContact) {
 			PeerImpl proxy = _proxiesByContact.get(contact);
 			if (proxy == null) {

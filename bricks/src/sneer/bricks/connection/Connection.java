@@ -1,13 +1,13 @@
 package sneer.bricks.connection;
 
-import java.io.IOException;
-
+import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 
 public interface Connection {
 
 	Signal<Boolean> isOnline();
 
-	void send(byte[] array) throws IOException;
+	boolean tryToSend(byte[] array);
+	void setReceiver(Omnivore<byte[]> receiver);
 	
 }

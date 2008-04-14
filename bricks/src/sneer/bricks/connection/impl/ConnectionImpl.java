@@ -8,6 +8,7 @@ import sneer.bricks.keymanager.KeyManager;
 import sneer.bricks.log.Logger;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.lego.Inject;
+import wheel.lang.Omnivore;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
@@ -23,6 +24,8 @@ class ConnectionImpl implements Connection {
 
 	@Inject
 	private Logger _logger;
+
+	private Omnivore<byte[]> _receiver;
 	
 	@Override
 	public Signal<Boolean> isOnline() {
@@ -68,15 +71,22 @@ class ConnectionImpl implements Connection {
 	}
 	
 	@Override
-	public void send(byte[] array) throws IOException {
+	public boolean tryToSend(byte[] array) {
 		ByteArraySocket mySocket = _socketHolder.socket();
-		if (mySocket == null) throw new IOException("No socket found for connection.");
+		if (mySocket == null) return false;
 		
 		try {
 			mySocket.write(array);
+			return true;
 		} catch (IOException iox) {
+			_logger.info(iox.getMessage(), iox);
 			_socketHolder.crash(mySocket);
-			throw iox;
+			return false;
 		}
+	}
+
+
+	public void setReceiver(Omnivore<byte[]> receiver) {
+		_receiver = receiver;
 	}
 }

@@ -8,7 +8,9 @@ import sneer.bricks.keymanager.KeyManager;
 import sneer.bricks.log.Logger;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.lego.Inject;
+import sneer.lego.Injector;
 import wheel.lang.Omnivore;
+import wheel.lang.Threads;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
@@ -26,6 +28,11 @@ class ConnectionImpl implements Connection {
 	private Logger _logger;
 
 	private Omnivore<byte[]> _receiver;
+	
+	ConnectionImpl(Injector injector) {
+		injector.inject(this);
+		startReceiving();
+	}
 	
 	@Override
 	public Signal<Boolean> isOnline() {
@@ -71,7 +78,14 @@ class ConnectionImpl implements Connection {
 	}
 	
 	@Override
-	public boolean tryToSend(byte[] array) {
+	public void send(byte[] array) {
+		while (!tryToSend(array))
+			Threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify.
+	}
+
+
+	private boolean tryToSend(byte[] array) {
+
 		ByteArraySocket mySocket = _socketHolder.socket();
 		if (mySocket == null) return false;
 		
@@ -89,4 +103,33 @@ class ConnectionImpl implements Connection {
 	public void setReceiver(Omnivore<byte[]> receiver) {
 		_receiver = receiver;
 	}
+	
+	private void startReceiving() {
+		Threads.startDaemon(new Runnable() { @Override public void run() {
+			while (true) {
+				byte[] packet = tryToReceive();
+				if (packet == null)
+					Threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify
+				else
+					_receiver.consume(packet);
+			}
+		}});
+	}
+
+
+	private byte[] tryToReceive() {
+		ByteArraySocket mySocket = _socketHolder.socket();
+		if (mySocket ==  null) return null;
+		
+		try {
+			return mySocket.read();
+		} catch (IOException e) {
+			_logger.info(e.getMessage(), e);
+			_socketHolder.crash(mySocket);
+			throw new RuntimeException(e);
+			//return null;
+		} 
+
+	}
+
 }

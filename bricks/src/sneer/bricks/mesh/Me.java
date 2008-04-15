@@ -1,7 +1,7 @@
 package sneer.bricks.mesh;
 
 
-public interface Mesh {
+public interface Me {
 
 	<T> Peer navigateTo(String nicknamePath);
 

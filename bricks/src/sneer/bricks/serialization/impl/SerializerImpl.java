@@ -1,5 +1,6 @@
 package sneer.bricks.serialization.impl;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -7,6 +8,7 @@ import java.io.ObjectOutputStream;
 
 import sneer.bricks.serialization.Serializer;
 import wheel.io.Streams;
+import wheel.io.serialization.ObjectInputStreamWithClassLoader;
 
 public class SerializerImpl implements Serializer {
 
@@ -28,5 +30,17 @@ public class SerializerImpl implements Serializer {
 				Streams.crash(outputStream);
 		}
 	}
+
+	@Override
+	public Object deserialize(byte[] bytes, ClassLoader classloader) throws ClassNotFoundException {
+		try {
+			ByteArrayInputStream inputBytes = new ByteArrayInputStream(bytes);
+			ObjectInputStreamWithClassLoader inputStream = new ObjectInputStreamWithClassLoader(inputBytes, classloader);
+			return inputStream.readObject();
+		} catch (IOException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
 
 }

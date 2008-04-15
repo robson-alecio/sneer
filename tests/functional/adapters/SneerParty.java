@@ -1,15 +1,17 @@
 package functional.adapters;
 
 import sneer.bricks.connection.SocketOriginator;
+import sneer.bricks.connection.SocketReceiver;
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.contacts.ContactManager;
 import sneer.bricks.internetaddresskeeper.InternetAddressKeeper;
-import sneer.bricks.mesh.Mesh;
+import sneer.bricks.mesh.Me;
 import sneer.bricks.network.Network;
 import sneer.lego.Inject;
 import spikes.legobricks.name.OwnNameKeeper;
 import spikes.legobricks.name.PortKeeper;
 import wheel.lang.exceptions.IllegalParameter;
+import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Signal;
 import functional.SovereignParty;
 
@@ -27,13 +29,15 @@ public class SneerParty extends SelfInject implements SovereignParty {
 	private OwnNameKeeper _ownNameKeeper;
 	
 	@Inject
-	private Mesh _mesh;
+	private Me _me;
 
 	@Inject
 	private InternetAddressKeeper _internetAddressKeeper;
 	
 	@Inject
 	private SocketOriginator _originator; //need to start this component so that is registers itself on InternetAddressKeeper.addresses
+	@Inject
+	private SocketReceiver _receiver; //need to start this component so that is registers itself on InternetAddressKeeper.addresses
 	
 	public SneerParty(String name, int port, Network network) {
 		super(network);
@@ -68,14 +72,14 @@ public class SneerParty extends SelfInject implements SovereignParty {
 	}
 
     @Override
-    public void giveNicknameTo(SovereignParty peer, String nickname)
-    {
-//        _contactManager.alias(peer, nickname);
+    public void giveNicknameTo(SovereignParty peer, String nickname) {
+    	//_contactManager.changeNickname(...);
+    	throw new NotImplementedYet();
     }
 
     @Override
     public Signal<String> navigateAndGetName(String nicknamePath) {
-		return _mesh.navigateTo(nicknamePath).signal("Name");
+		return _me.navigateTo(nicknamePath).signal("Name");
     }
 
 

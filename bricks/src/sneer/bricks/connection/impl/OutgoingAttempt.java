@@ -8,13 +8,12 @@ import sneer.bricks.internetaddresskeeper.InternetAddress;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.bricks.network.Network;
 import sneer.lego.Inject;
-import sneer.lego.Crashable;
 import sneer.lego.Injector;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.reactive.Signal;
 
-public class OutgoingAttempt implements Crashable {
+public class OutgoingAttempt {
 
 	@Inject
 	private Network _network;
@@ -85,8 +84,7 @@ public class OutgoingAttempt implements Crashable {
 		_connectionManager.manageOutgoingSocket(_address.contact(), socket);
 	}
 
-	@Override
-	public void crash() {
+	void crash() {
 		_isOnline.removeReceiver(_isOnlineReceiver);
 	}
 }

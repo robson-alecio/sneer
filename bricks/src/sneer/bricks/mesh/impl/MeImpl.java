@@ -5,14 +5,14 @@ import java.util.Map;
 
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.contacts.ContactManager;
-import sneer.bricks.mesh.Mesh;
+import sneer.bricks.mesh.Me;
 import sneer.bricks.mesh.Peer;
 import sneer.lego.Inject;
 import sneer.lego.Injector;
 import sneer.lego.Startable;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
-public class MeshImpl implements Mesh, Startable {
+public class MeImpl implements Me, Startable {
 
 	private final Map<Contact, PeerImpl> _proxiesByContact = new HashMap<Contact, PeerImpl>();
 	
@@ -61,6 +61,8 @@ public class MeshImpl implements Mesh, Startable {
 			: "";
 			
 		Contact contact = _contactManager.contactGiven(head);
+		if (contact == null) return null;
+		
 		return producePeerFor(contact);
 	}
 

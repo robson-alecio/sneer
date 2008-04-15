@@ -14,6 +14,7 @@ import sneer.lego.Inject;
 import sneer.lego.Injector;
 import wheel.lang.Casts;
 import wheel.lang.Omnivore;
+import wheel.lang.Threads;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
@@ -23,20 +24,46 @@ class PeerImpl implements Peer, Crashable {
 	@Inject
 	private ConnectionManager _connectionManager;
 	
-	private final Map<String, Register<?>> _registersByPath = new HashMap<String, Register<?>>();
+	@Inject
+	private Serializer _serializer;
 
 	private final Connection _connection;
 
-	@Inject
-	private Serializer _serializer;
+	private final Map<String, Register<?>> _registersByPath = new HashMap<String, Register<?>>();
+
+	private final PriorityQueue<byte[]> _priorityQueue = new PriorityQueue<byte[]>(10);
+
+	private volatile boolean _isCrashed = false;
 
 
 	PeerImpl(Injector injector, Contact contact) {
 		injector.inject(this);
 		_connection = _connectionManager.connectionFor(contact);
 		_connection.setReceiver(new Omnivore<byte[]>(){public void consume(byte[] packetReceived) {
-			// Implement Auto-generated method stub
-			throw new wheel.lang.exceptions.NotImplementedYet();
+			receive(packetReceived);
+		}});
+		startSender();
+	}
+	
+	private void receive(byte[] packetReceived) {
+		Object ambassador;
+		try {
+			ambassador = _serializer.deserialize(packetReceived, PeerImpl.class.getClassLoader());
+		} catch (ClassNotFoundException e) {
+			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+		}
+
+		try {
+			((Ambassador)ambassador).visit(this);
+		} catch (ClassCastException e) {
+			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+		}
+	}
+
+	private void startSender() {
+		Threads.startDaemon(new Runnable() { public void run() {
+			while (!_isCrashed)
+				_connection.send(_priorityQueue.waitForNext());
 		}});
 	}
 
@@ -55,11 +82,11 @@ class PeerImpl implements Peer, Crashable {
 	}
 
 	private void send(Object object) {
-		byte[] serialized = serialize(object);
+		byte[] packet = serialize(object);
 
-		if (!_connection.tryToSend(serialized));
-			throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+		_priorityQueue.add(packet, 2);
 	}
+
 
 	private byte[] serialize(Object object) {
 		try {
@@ -75,8 +102,7 @@ class PeerImpl implements Peer, Crashable {
 	}
 
 	public void crash() {
-		// Implement Auto-generated method stub
-		throw new wheel.lang.exceptions.NotImplementedYet();
+		_isCrashed = true;
 	}
 
 

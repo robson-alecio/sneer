@@ -6,4 +6,6 @@ public interface Serializer {
 
 	byte[] serialize(Object object) throws NotSerializableException;
 
+	Object deserialize(byte[] packetReceived, ClassLoader classloader) throws ClassNotFoundException;
+
 }

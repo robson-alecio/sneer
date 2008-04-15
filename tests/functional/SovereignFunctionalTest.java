@@ -24,13 +24,13 @@ public abstract class SovereignFunctionalTest {
 		
 		_a = _community.createParty("Ana Almeida");
 		_b = _community.createParty("Bruno Barros");
-		_c = _community.createParty("Carla Costa");
-		_d = _community.createParty("Denis Dalton");
+//		_c = _community.createParty("Carla Costa");
+//		_d = _community.createParty("Denis Dalton");
 		
 		_a.bidirectionalConnectTo(_b);
-		_a.bidirectionalConnectTo(_c);
-		_b.bidirectionalConnectTo(_c);
-		_c.bidirectionalConnectTo(_d);
+//		_a.bidirectionalConnectTo(_c);
+//		_b.bidirectionalConnectTo(_c);
+//		_c.bidirectionalConnectTo(_d);
 	
 	}
 

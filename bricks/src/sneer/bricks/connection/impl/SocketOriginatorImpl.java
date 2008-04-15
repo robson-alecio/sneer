@@ -46,8 +46,8 @@ public class SocketOriginatorImpl implements SocketOriginator, Startable {
 	}
 
 	private void startAddressing(InternetAddress address) {
-		OutgoingAttempt attemp = new OutgoingAttempt(_injector, address);
-		_attemptsByAddress.put(address, attemp);
+		OutgoingAttempt attempt = new OutgoingAttempt(_injector, address);
+		_attemptsByAddress.put(address, attempt);
 	}
 
 	private void stopAddressing(InternetAddress address) {

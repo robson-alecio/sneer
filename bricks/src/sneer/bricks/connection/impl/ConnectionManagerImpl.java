@@ -7,8 +7,13 @@ import sneer.bricks.connection.Connection;
 import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.network.ByteArraySocket;
+import sneer.lego.Inject;
+import sneer.lego.Injector;
 
 public class ConnectionManagerImpl implements ConnectionManager {
+
+	@Inject
+	private Injector _injector;
 
 	private final Map<Contact, Connection> _connectionsByContact = new HashMap<Contact, Connection>();
 
@@ -16,7 +21,7 @@ public class ConnectionManagerImpl implements ConnectionManager {
 	public synchronized ConnectionImpl connectionFor(Contact contact) {
 		ConnectionImpl result = (ConnectionImpl) _connectionsByContact.get(contact);
 		if (result == null) {
-			result = new ConnectionImpl();
+			result = new ConnectionImpl(_injector);
 			_connectionsByContact.put(contact, result);
 		}
 		return result;
@@ -26,7 +31,6 @@ public class ConnectionManagerImpl implements ConnectionManager {
 	public void manageIncomingSocket(Contact contact, ByteArraySocket socket) {
 		ConnectionImpl connection = connectionFor(contact);
 		connection.manageIncomingSocket(socket);
-		
 	}
 
 	@Override

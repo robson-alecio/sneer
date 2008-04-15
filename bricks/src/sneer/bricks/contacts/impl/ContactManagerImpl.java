@@ -15,7 +15,7 @@ public class ContactManagerImpl implements ContactManager {
     private ListSource<Contact> _contacts = new ListSourceImpl<Contact>();
 
 	@Override
-	public Contact addContact(String nickname) throws IllegalParameter {
+	synchronized public Contact addContact(String nickname) throws IllegalParameter {
 		nickname.toString();
 		
 		if (isNicknameAlreadyUsed(nickname))
@@ -32,18 +32,16 @@ public class ContactManagerImpl implements ContactManager {
 	}
 
 	@Override
-	public boolean isNicknameAlreadyUsed(String nickname) {
-		for (Contact contact : _contacts.output())
-			if (contact.nickname().equals(nickname)) return true;
-		
-		return false;
+	synchronized public boolean isNicknameAlreadyUsed(String nickname) {
+		return contactGiven(nickname) != null;
 	}
 
 	@Override
-	public Contact contactGiven(String nickname) {
+	synchronized public Contact contactGiven(String nickname) {
 		for (Contact candidate : contacts())
-			if (candidate.nickname().equals(nickname))
+			if (candidate.nickname().currentValue().equals(nickname))
 				return candidate;
+
 		return null;
 	}
 }

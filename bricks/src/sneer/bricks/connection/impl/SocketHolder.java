@@ -12,7 +12,7 @@ class SocketHolder {
 		_activityReceiver = activityReceiver;
 	}
 
-	boolean isEmpty() {
+	synchronized boolean isEmpty() {
 		return _socket == null;
 	}
 

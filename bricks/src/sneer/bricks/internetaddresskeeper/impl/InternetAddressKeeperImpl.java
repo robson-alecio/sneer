@@ -7,7 +7,6 @@ import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListSource;
 import wheel.reactive.lists.impl.ListSourceImpl;
 
-//Fix: make persistent
 public class InternetAddressKeeperImpl implements InternetAddressKeeper {
 
 	private ListSource<InternetAddress> _addresses = new ListSourceImpl<InternetAddress>();
@@ -18,16 +17,20 @@ public class InternetAddressKeeperImpl implements InternetAddressKeeper {
 	}
 
 	@Override
-	public void add(Contact contact, String host, int port) {
-		for (InternetAddress addr : _addresses.output()) {
-			if(addr.contact().equals(contact) 
-					&& addr.host().equals(host)
-					&& addr.port() == port) {
-				//same address?
-				return;
-			}
-		}
+	public void add(Contact contact, String host, int port) { //Implement Handle contact removal.
+		if (!isNewAddress(contact, host, port)) return;
+		
 		InternetAddress addr = new InternetAddressImpl(contact, host, port);
 		_addresses.add(addr);
+	}
+
+	private boolean isNewAddress(Contact contact, String host, int port) {
+		for (InternetAddress addr : _addresses.output())
+			if(addr.contact().equals(contact) 
+					&& addr.host().equals(host)
+					&& addr.port() == port)
+				return false;
+		
+		return true;
 	}
 }

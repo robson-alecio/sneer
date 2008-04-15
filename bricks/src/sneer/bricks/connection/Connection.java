@@ -7,7 +7,7 @@ public interface Connection {
 
 	Signal<Boolean> isOnline();
 
-	boolean tryToSend(byte[] array);
+	void send(byte[] array);
 	void setReceiver(Omnivore<byte[]> receiver);
 	
 }

@@ -25,7 +25,7 @@ public class FileClassLoader extends SecureClassLoader {
 			try {
 				//System.out.println(("  "+metaClass.getName()));
 				if(metaClass.getName().equals(name)) {
-					System.out.println(_name + " loading class: "+name);
+					//System.out.println(_name + " loading class: "+name);
 					return defineClass(name, metaClass.bytes());
 				}
 			} catch (IOException ignored) {

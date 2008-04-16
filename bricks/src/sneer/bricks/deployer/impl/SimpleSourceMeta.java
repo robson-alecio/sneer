@@ -8,14 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.filefilter.DirectoryFileFilter;
-import org.apache.commons.io.filefilter.OrFileFilter;
-import org.apache.commons.io.filefilter.SuffixFileFilter;
-
 import sneer.bricks.deployer.impl.parser.JavaSource;
 import sneer.bricks.deployer.impl.parser.JavaSourceParser;
-import sneer.lego.utils.FileUtils;
-import sneer.lego.utils.io.FilteringDirectoryWalker;
+import sneer.lego.utils.io.SimpleFilter;
 
 public class SimpleSourceMeta implements SourceMeta {
 
@@ -48,13 +43,13 @@ public class SimpleSourceMeta implements SourceMeta {
 
 	@Override
 	public List<File> interfaces() {
-		FilteringDirectoryWalker walker = new MyInterfaceWalker(_root);
+		SimpleFilter walker = new MyInterfaceWalker(_root);
 		return walker.list();
 	}
 
 	@Override
 	public Map<File, List<File>> implByBrick() {
-		FilteringDirectoryWalker walker = new MyImplWalker(_root);
+		SimpleFilter walker = new MyImplWalker(_root);
 		List<File> files;
 		files = walker.list();
 		Map<File,List<File>> result = sortInDirectories(files);
@@ -93,10 +88,10 @@ public class SimpleSourceMeta implements SourceMeta {
 }
 
 
-class MyInterfaceWalker extends FilteringDirectoryWalker {
+class MyInterfaceWalker extends SimpleFilter {
 
 	public MyInterfaceWalker(File root) {
-		super(root, new OrFileFilter(new SuffixFileFilter(".java"), DirectoryFileFilter.INSTANCE));
+		super(root, JAVA_SOURCE_FILE_FILTER);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -105,24 +100,18 @@ class MyInterfaceWalker extends FilteringDirectoryWalker {
 		JavaSource source = new JavaSourceParser(file).parse();
 		if(source.isInterface() /* && source.isAssignableTo(Brick.class) */)
 			results.add(file);
-//		else
-//			System.out.println("Ignoring Interface: "+source);
 	}
-
-	@SuppressWarnings({ "unchecked", "unused" })
+	
 	@Override
-	protected boolean handleDirectory(File directory, int depth, Collection results) throws IOException {
-		String name = directory.getName();
-		boolean skip = name.startsWith(".") || "impl".equals(name) || FileUtils.isEmpty(directory);
-		if(skip) return false;
-		return true;
+	protected String[] ignoreDirectoryNames() {
+		return new String[]{".", "impl"};
 	}
 }
 
-class MyImplWalker extends FilteringDirectoryWalker {
+class MyImplWalker extends SimpleFilter {
 
 	public MyImplWalker(File root) {
-		super(root, new OrFileFilter(new SuffixFileFilter(".java"), DirectoryFileFilter.INSTANCE));
+		super(root, JAVA_SOURCE_FILE_FILTER);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -131,16 +120,5 @@ class MyImplWalker extends FilteringDirectoryWalker {
 		JavaSource source = new JavaSourceParser(file).parse();
 		if(!source.isInterface() && !source.isAccessPublic())
 			results.add(file);
-//		else
-//			System.out.println("Ignoring Impl: "+source);
-	}
-	
-	@SuppressWarnings({ "unchecked", "unused" })
-	@Override
-	protected boolean handleDirectory(File directory, int depth, Collection results) throws IOException {
-		String name = directory.getName();
-		boolean skip = name.startsWith(".") || FileUtils.isEmpty(directory);
-		if(skip) return false;
-		return true;
 	}
 }

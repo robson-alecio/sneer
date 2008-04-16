@@ -1,16 +1,15 @@
 package sneer.lego.impl.classloader;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.commons.lang.SystemUtils;
 
 import sneer.lego.ClassLoaderFactory;
 import sneer.lego.utils.classloader.FileClassLoader;
-import sneer.lego.utils.io.ClassInspectorDirectoryWalker;
-import sneer.lego.utils.io.JavaImplDirectoryWalker;
-import sneer.lego.utils.io.JavaInterfaceDirectoryWalker;
+import sneer.lego.utils.io.BrickImplFilter;
+import sneer.lego.utils.io.BrickInterfaceFilter;
+import sneer.lego.utils.io.JavaFilter;
 import wheel.io.Jars;
 
 public class EclipseClassLoaderFactory implements ClassLoaderFactory {
@@ -29,7 +28,7 @@ public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 	public ClassLoader brickClassLoader(String impl, URL ignored) {
 		ClassLoader parent = sneerApi();
 		File targetDirectory = eclipseTargetDirectory();
-		ClassInspectorDirectoryWalker walker = new JavaImplDirectoryWalker(targetDirectory);
+		JavaFilter walker = new BrickImplFilter(targetDirectory);
 		return createFileClassLoader("brick class loader: "+impl, walker, parent);
 	}
 
@@ -45,11 +44,11 @@ public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 	private ClassLoader buildSneerApiForTargetDirectory() {
 		ClassLoader parent = Jars.bootstrapClassLoader();
 		File targetDirectory = eclipseTargetDirectory();
-		ClassInspectorDirectoryWalker walker = new JavaInterfaceDirectoryWalker(targetDirectory);
+		JavaFilter walker = new BrickInterfaceFilter(targetDirectory);
 		return createFileClassLoader("api class loader", walker, /* this.getClass().getClassLoader() */ parent);
 	}
 
-	private ClassLoader createFileClassLoader(String name, ClassInspectorDirectoryWalker walker, ClassLoader parent) {
+	private ClassLoader createFileClassLoader(String name, JavaFilter walker, ClassLoader parent) {
 		FileClassLoader result = new FileClassLoader(name, walker.listMetaClasses(), parent);
 		//result.debug();
 		return result;
@@ -72,11 +71,11 @@ public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 //	}
 	
 	
-	private URL url(File file) {
-		try {
-			return new URL("file://"+file.getPath()+"/");
-		} catch (MalformedURLException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
-		}
-	}
+//	private URL url(File file) {
+//		try {
+//			return new URL("file://"+file.getPath()+"/");
+//		} catch (MalformedURLException e) {
+//			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+//		}
+//	}
 }

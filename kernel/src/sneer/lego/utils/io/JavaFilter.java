@@ -1,25 +1,21 @@
 package sneer.lego.utils.io;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.io.filefilter.DirectoryFileFilter;
-import org.apache.commons.io.filefilter.OrFileFilter;
-import org.apache.commons.io.filefilter.SuffixFileFilter;
-
 import sneer.lego.utils.asm.ClassUtils;
 import sneer.lego.utils.asm.MetaClass;
 
-public abstract class ClassInspectorDirectoryWalker extends FilteringDirectoryWalker {
+/**
+ * Includes all class files outside hidden directories
+ */
+public class JavaFilter extends SimpleFilter {
 
-	private static final FileFilter FILTER = new OrFileFilter(new SuffixFileFilter(".class"), DirectoryFileFilter.INSTANCE);
-	
-	public ClassInspectorDirectoryWalker(File root) {
-		super(root, FILTER);
+	public JavaFilter(File root) {
+		super(root, JAVA_CLASS_FILE_FILTER);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -29,8 +25,10 @@ public abstract class ClassInspectorDirectoryWalker extends FilteringDirectoryWa
 		handleClass(metaClass, depth, results);
 	}
 	
-	protected abstract void handleClass(MetaClass metaClass, int depth, Collection<MetaClass> results) 
-		throws IOException;
+	@SuppressWarnings("unused")
+	protected void handleClass(MetaClass metaClass, int depth, Collection<MetaClass> results) throws IOException {
+		results.add(metaClass);
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<MetaClass> listMetaClasses() {

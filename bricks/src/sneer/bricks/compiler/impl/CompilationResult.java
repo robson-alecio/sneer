@@ -12,8 +12,8 @@ import org.apache.commons.lang.StringUtils;
 import sneer.bricks.compiler.CompilationError;
 import sneer.bricks.compiler.CompilerException;
 import sneer.bricks.compiler.Result;
-import sneer.lego.utils.io.FilteringDirectoryWalker;
-import sneer.lego.utils.io.JavaClassFileDirectoryWalker;
+import sneer.lego.utils.io.JavaFilter;
+import sneer.lego.utils.io.SimpleFilter;
 
 public class CompilationResult implements Result {
 
@@ -77,7 +77,7 @@ public class CompilationResult implements Result {
 
 	@Override
 	public List<File> compiledClasses() {
-		FilteringDirectoryWalker walker = new JavaClassFileDirectoryWalker(_targetFolder);
+		SimpleFilter walker = new JavaFilter(_targetFolder);
 		return walker.list();
 	}
 }

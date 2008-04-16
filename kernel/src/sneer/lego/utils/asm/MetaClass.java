@@ -24,6 +24,10 @@ public class MetaClass extends EmptyVisitor {
 		return _className;
 	}
 
+	public File classFile() {
+		return _classFile;
+	}
+
 	public byte[] bytes() throws IOException {
 		return FileUtils.readFileToByteArray(_classFile);
 	}
@@ -37,5 +41,4 @@ public class MetaClass extends EmptyVisitor {
 		_isInterface = (access & Opcodes.ACC_INTERFACE) != 0;
 		_className = name.replaceAll("/", ".");
 	}
-
 }

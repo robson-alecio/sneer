@@ -1,34 +1,24 @@
 package sneer.lego.utils.io;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.util.Collection;
 
-import org.apache.commons.io.filefilter.DirectoryFileFilter;
-import org.apache.commons.io.filefilter.OrFileFilter;
-import org.apache.commons.io.filefilter.SuffixFileFilter;
-
 import sneer.lego.utils.FileUtils;
-import sneer.lego.utils.asm.ClassUtils;
 import sneer.lego.utils.asm.MetaClass;
 
 
-public class JavaImplDirectoryWalker extends FilteringDirectoryWalker {
-	
-	private static final FileFilter FILTER = new OrFileFilter(new SuffixFileFilter(".class"), DirectoryFileFilter.INSTANCE); 
+public class JavaImplDirectoryWalker extends ClassInspectorDirectoryWalker {
 	
 	public JavaImplDirectoryWalker(File root) {
-		super(root, FILTER);
+		super(root);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	protected void handleFile(File file, int depth, Collection results) throws IOException {
-		File parentFile = file.getParentFile();
-		MetaClass metaClass = ClassUtils.metaClass(file);
+	protected void handleClass(MetaClass metaClass, int depth, Collection<MetaClass> results) throws IOException {
+		File parentFile = metaClass.classFile().getParentFile();
 		if(parentFile.getName().equals("impl") && !metaClass.isInterface())
-			results.add(file);
+			results.add(metaClass);
 	}
 
 	@SuppressWarnings({ "unchecked", "unused" })
@@ -39,4 +29,5 @@ public class JavaImplDirectoryWalker extends FilteringDirectoryWalker {
 		if(skip) return false;
 		return true;
 	}
+
 }

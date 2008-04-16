@@ -3,11 +3,16 @@ package sneer.lego.impl.classloader;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import org.apache.commons.lang.SystemUtils;
 
 import sneer.lego.ClassLoaderFactory;
+import sneer.lego.Inject;
+import sneer.lego.Injector;
+import sneer.lego.utils.asm.MetaClass;
 import sneer.lego.utils.classloader.FileClassLoader;
+import sneer.lego.utils.io.ClassInspectorDirectoryWalker;
 import sneer.lego.utils.io.FilteringDirectoryWalker;
 import sneer.lego.utils.io.JavaImplDirectoryWalker;
 import sneer.lego.utils.io.JavaInterfaceDirectoryWalker;
@@ -15,14 +20,17 @@ import wheel.io.Jars;
 
 public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 
-	ClassLoader _sneerApi;
+	private ClassLoader _sneerApi;
+	
+	@Inject
+	private Injector _injector;
 	
 	@Override
 	public ClassLoader brickClassLoader(String impl, URL ignored) {
 		ClassLoader parent = sneerApi();
 		File targetDirectory = eclipseTargetDirectory();
-		FilteringDirectoryWalker walker = new JavaImplDirectoryWalker(targetDirectory);
-		return new FileClassLoader("brick class loader", walker.list(), parent);
+		ClassInspectorDirectoryWalker walker = new JavaImplDirectoryWalker(targetDirectory);
+		return createFileClassLoader("brick class loader: "+impl, walker, parent);
 	}
 
 	@Override
@@ -37,10 +45,17 @@ public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 	private ClassLoader buildSneerApiForTargetDirectory() {
 		ClassLoader parent = Jars.bootstrapClassLoader();
 		File targetDirectory = eclipseTargetDirectory();
-		FilteringDirectoryWalker walker = new JavaInterfaceDirectoryWalker(targetDirectory);
-		return new FileClassLoader("api class loader", walker.list(), parent);
+		ClassInspectorDirectoryWalker walker = new JavaInterfaceDirectoryWalker(targetDirectory);
+		return createFileClassLoader("api class loader", walker, /* this.getClass().getClassLoader() */ parent);
 	}
 
+	private ClassLoader createFileClassLoader(String name, ClassInspectorDirectoryWalker walker, ClassLoader parent) {
+		FileClassLoader result = new FileClassLoader(name, walker.listMetaClasses(), parent);
+		_injector.inject(result);
+		//result.debug();
+		return result;
+	}
+	
 	private File eclipseTargetDirectory() {
 		File userDir = SystemUtils.getUserDir();
 		File targetDirectory = new File(userDir, "bin");

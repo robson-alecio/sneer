@@ -35,7 +35,7 @@ public class SimpleContainer implements Container {
 
 	private Map<Class<?>, Object> _registry = new HashMap<Class<?>, Object>();
 	
-	private ClassLoaderFactory _classloaderFactory = new EclipseClassLoaderFactory();
+	private ClassLoaderFactory _classloaderFactory;
 	
 	private Injector _injector;
 	
@@ -101,9 +101,21 @@ public class SimpleContainer implements Container {
 		
 		component = instantiate(clazz);
 		_registry.put(clazz, component);
+		//checkClassLoaders(clazz, component);
 		return component;
 	}
-
+	
+	@SuppressWarnings("unused")
+	private void checkClassLoaders(Class<?> clazz, Object component) {
+		Class<?>[] interfaces = component.getClass().getInterfaces();
+		ClassLoader parent = clazz.getClassLoader();
+		System.out.println(clazz.getName() + " : "+parent);
+		for (Class<?> intrface : interfaces) {
+			ClassLoader cl = intrface.getClassLoader();
+			System.out.println(intrface.getName() + " : " + intrface.getClassLoader() + (parent == cl ? "*" : ""));
+		}
+	}
+	
 	private <T> T instantiate(Class<T> intrface, Object... args) throws LegoException {
 		T component;
 		try {
@@ -131,19 +143,19 @@ public class SimpleContainer implements Container {
 	}
 	
 	@SuppressWarnings("unchecked") //Refactor Try to use Casts.unchecked..()
-	private <T> T lookup(Class<T> intrface, Object... args) throws Exception {
+	private <T> T lookup(Class<T> clazz, Object... args) throws Exception {
 
-	    Object result = instanceFor(intrface);
+	    Object result = instanceFor(clazz);
 	    if(result != null) return (T) result;
 
 	    String appRoot = getAppRoot();
-		String dirName = FilenameUtils.concat(appRoot, intrface.getName()); 
+		String dirName = FilenameUtils.concat(appRoot, clazz.getName()); 
 		URL url = new URL("file://"+dirName+"/");
 		
-		String implementation = implementationFor(intrface); 
+		String implementation = implementationFor(clazz); 
 		ClassLoader cl = getClassLoader(implementation, url);
 		Class impl = cl.loadClass(implementation);
-		if(!intrface.isInterface() && args != null && args.length > 0) {
+		if(!clazz.isInterface() && args != null && args.length > 0) {
 			Constructor c = findConstructor(impl, args);
 			boolean before = c.isAccessible();
 			c.setAccessible(true);
@@ -183,7 +195,15 @@ public class SimpleContainer implements Container {
 		if(!file.exists()) {
 			log.info("loading: {} from the System classpath", impl);
 		}
-		return _classloaderFactory.brickClassLoader(impl, url);
+		return factory().brickClassLoader(impl, url);
+	}
+
+	private ClassLoaderFactory factory() {
+		if(_classloaderFactory == null) {
+			_classloaderFactory = new EclipseClassLoaderFactory();
+			_injector.inject(_classloaderFactory);
+		}
+		return _classloaderFactory;
 	}
 
     private Object instanceFor(Class<?> intrface) {

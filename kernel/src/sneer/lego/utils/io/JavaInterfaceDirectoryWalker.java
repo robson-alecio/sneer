@@ -1,33 +1,24 @@
 package sneer.lego.utils.io;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.util.Collection;
 
-import org.apache.commons.io.filefilter.DirectoryFileFilter;
-import org.apache.commons.io.filefilter.OrFileFilter;
-import org.apache.commons.io.filefilter.SuffixFileFilter;
-
 import sneer.lego.utils.FileUtils;
-import sneer.lego.utils.asm.ClassUtils;
 import sneer.lego.utils.asm.MetaClass;
 
 
-public class JavaInterfaceDirectoryWalker extends FilteringDirectoryWalker {
-	
-	private static final FileFilter FILTER = new OrFileFilter(new SuffixFileFilter(".class"), DirectoryFileFilter.INSTANCE); 
+public class JavaInterfaceDirectoryWalker extends ClassInspectorDirectoryWalker {
 	
 	public JavaInterfaceDirectoryWalker(File root) {
-		super(root, FILTER);
+		super(root);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unused")
 	@Override
-	protected void handleFile(File file, int depth, Collection results) throws IOException {
-		MetaClass metaClass = ClassUtils.metaClass(file);
+	protected void handleClass(MetaClass metaClass, int depth, Collection<MetaClass> results) throws IOException {
 		if(metaClass.isInterface())
-			results.add(file);
+			results.add(metaClass);
 	}
 
 	@SuppressWarnings({ "unchecked", "unused" })
@@ -38,4 +29,5 @@ public class JavaInterfaceDirectoryWalker extends FilteringDirectoryWalker {
 		if(skip) return false;
 		return true;
 	}
+
 }

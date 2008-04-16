@@ -1,10 +1,10 @@
 package sneer.lego.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static org.junit.Assert.assertNotNull;
 
 import java.io.Serializable;
 
@@ -16,10 +16,9 @@ import sneer.lego.Injector;
 import sneer.lego.impl.FieldInjector;
 import sneer.lego.impl.SimpleBinder;
 import sneer.lego.impl.SimpleContainer;
-import sneer.lego.tests.impl.MakeMeSerializableImpl;
 import sneer.lego.tests.impl.MySample;
 
-public class ContainerTest extends BrickTestSupport {
+public class ContainerTest {
 
 	@Test
 	public void testAssignable() {

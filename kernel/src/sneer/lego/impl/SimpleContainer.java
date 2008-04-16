@@ -200,7 +200,7 @@ public class SimpleContainer implements Container {
 
 	private ClassLoaderFactory factory() {
 		if(_classloaderFactory == null) {
-			_classloaderFactory = new EclipseClassLoaderFactory();
+			_classloaderFactory = EclipseClassLoaderFactory.instance();
 			_injector.inject(_classloaderFactory);
 		}
 		return _classloaderFactory;

@@ -19,7 +19,7 @@ public class Jars {
 	}
 	
 	
-	private static ClassLoader bootstrapClassLoader() {
+	public static ClassLoader bootstrapClassLoader() {
 		ClassLoader candidate = ClassLoader.getSystemClassLoader();
 		while (candidate.getParent() != null) candidate = candidate.getParent();
 		return candidate;

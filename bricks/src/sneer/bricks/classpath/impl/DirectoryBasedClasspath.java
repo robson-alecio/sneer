@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sneer.lego.utils.io.FilteringDirectoryWalker;
-import sneer.lego.utils.io.JavaClassDirectoryWalker;
+import sneer.lego.utils.io.JavaClassFileDirectoryWalker;
 
 
 /**
@@ -79,7 +79,7 @@ class DirectoryBasedClasspath extends ClasspathSupport {
 	}
 
 	private List<File> classFiles() {
-		FilteringDirectoryWalker walker = new JavaClassDirectoryWalker(_rootFolder);
+		FilteringDirectoryWalker walker = new JavaClassFileDirectoryWalker(_rootFolder);
 		List<File> classFiles = walker.list();
 		return classFiles;
 	}

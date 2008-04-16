@@ -1,9 +1,12 @@
 package sneer.lego.impl.classloader;
 
-import java.io.*;
-import java.security.*;
+import java.io.IOException;
+import java.security.SecureClassLoader;
 
-import org.objectweb.asm.*;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
+
+import sneer.lego.impl.classloader.enhancer.Enhancer;
 
 public class EnhancingClassLoader extends SecureClassLoader {
 

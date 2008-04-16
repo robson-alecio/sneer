@@ -1,4 +1,6 @@
-package sneer.lego.impl.classloader;
+package sneer.lego.impl.classloader.enhancer;
+
+import java.io.Serializable;
 
 import org.objectweb.asm.ClassAdapter;
 import org.objectweb.asm.ClassVisitor;
@@ -11,6 +13,8 @@ public class MakeSerializable implements Enhancer {
 	static class MakeSerializableVisitor extends ClassAdapter {
 
 		private boolean _containsSerialVersionUID;
+		
+		private boolean _isInterface;
 
 		public MakeSerializableVisitor(ClassVisitor classVisitor) {
 			super(classVisitor);
@@ -18,7 +22,8 @@ public class MakeSerializable implements Enhancer {
 		
 		@Override
 		public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-			super.visit(version, access, name, signature, superName, addToArray(interfaces, "java/io/Serializable"));
+			_isInterface = (access & Opcodes.ACC_INTERFACE) != 0;
+			super.visit(version, access, name, signature, superName, addToArray(interfaces, Type.getType(Serializable.class).getInternalName()));
 		}
 		
 		@Override
@@ -31,7 +36,7 @@ public class MakeSerializable implements Enhancer {
 		
 		@Override
 		public void visitEnd() {
-			if (!_containsSerialVersionUID) {
+			if (!_isInterface && !_containsSerialVersionUID) {
 				super.visitField(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC, "serialVersionUID", Type.LONG_TYPE.getDescriptor(), null, new Long(1L));
 			}
 			super.visitEnd();

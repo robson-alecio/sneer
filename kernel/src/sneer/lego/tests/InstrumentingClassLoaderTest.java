@@ -6,9 +6,9 @@ import java.io.Serializable;
 
 import org.junit.Test;
 
-import sneer.lego.impl.classloader.Enhancer;
 import sneer.lego.impl.classloader.EnhancingClassLoader;
-import sneer.lego.impl.classloader.MakeSerializable;
+import sneer.lego.impl.classloader.enhancer.Enhancer;
+import sneer.lego.impl.classloader.enhancer.MakeSerializable;
 
 public class InstrumentingClassLoaderTest {
 

@@ -8,11 +8,11 @@ import org.apache.commons.io.filefilter.OrFileFilter;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 
 
-public class JavaClassDirectoryWalker extends FilteringDirectoryWalker {
+public class JavaSourceFileDirectoryWalker extends FilteringDirectoryWalker {
 	
-	private static final FileFilter FILTER = new OrFileFilter(new SuffixFileFilter(".class"), DirectoryFileFilter.INSTANCE); 
+	private static final FileFilter FILTER = new OrFileFilter(new SuffixFileFilter(".java"), DirectoryFileFilter.INSTANCE); 
 	
-	public JavaClassDirectoryWalker(File root) {
+	public JavaSourceFileDirectoryWalker(File root) {
 		super(root, FILTER);
 	}
 }

@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sneer.lego.Binder;
+import sneer.lego.ClassLoaderFactory;
 import sneer.lego.Configurable;
 import sneer.lego.ConfigurationFactory;
 import sneer.lego.Container;
@@ -22,9 +23,8 @@ import sneer.lego.Crashable;
 import sneer.lego.Injector;
 import sneer.lego.LegoException;
 import sneer.lego.Startable;
-import sneer.lego.impl.classloader.BrickClassLoader;
+import sneer.lego.impl.classloader.EclipseClassLoaderFactory;
 import sneer.lego.utils.ObjectUtils;
-import wheel.lang.Threads;
 
 /**
  * This is a dam simple container which will be replaced soon!
@@ -34,6 +34,8 @@ public class SimpleContainer implements Container {
 	private static final Logger log = LoggerFactory.getLogger(SimpleContainer.class);
 
 	private Map<Class<?>, Object> _registry = new HashMap<Class<?>, Object>();
+	
+	private ClassLoaderFactory _classloaderFactory = new EclipseClassLoaderFactory();
 	
 	private Injector _injector;
 	
@@ -180,11 +182,8 @@ public class SimpleContainer implements Container {
 		File file = new File(url.getFile());
 		if(!file.exists()) {
 			log.info("loading: {} from the System classpath", impl);
-			return Threads.contextClassLoader();
 		}
-		
-		log.info("loading: {} from: {}", impl, url);
-		return new BrickClassLoader(impl, url);
+		return _classloaderFactory.brickClassLoader(impl, url);
 	}
 
     private Object instanceFor(Class<?> intrface) {

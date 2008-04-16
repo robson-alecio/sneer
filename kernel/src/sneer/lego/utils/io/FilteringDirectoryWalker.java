@@ -5,7 +5,9 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.io.DirectoryWalker;
 
@@ -37,5 +39,14 @@ public class FilteringDirectoryWalker extends DirectoryWalker {
 	@Override
 	protected void handleFile(File file, int depth, Collection results) throws IOException {
 		results.add(file);
+	}
+
+	public Set<File> parentDirectories() {
+		List<File> files = list();
+		Set<File> result = new HashSet<File>();
+		for (File file : files) {
+			result.add(file.getParentFile());
+		}
+		return result;
 	}
 }

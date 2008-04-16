@@ -1,4 +1,4 @@
-package sneer.lego.impl.classloader;
+package sneer.lego.impl.classloader.enhancer;
 
 import org.objectweb.asm.*;
 

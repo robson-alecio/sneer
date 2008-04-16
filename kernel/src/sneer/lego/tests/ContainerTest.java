@@ -6,6 +6,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.Serializable;
+
 import org.junit.Test;
 
 import sneer.lego.Binder;
@@ -14,6 +16,7 @@ import sneer.lego.Injector;
 import sneer.lego.impl.FieldInjector;
 import sneer.lego.impl.SimpleBinder;
 import sneer.lego.impl.SimpleContainer;
+import sneer.lego.tests.impl.MakeMeSerializableImpl;
 import sneer.lego.tests.impl.MySample;
 
 public class ContainerTest extends BrickTestSupport {
@@ -82,5 +85,14 @@ public class ContainerTest extends BrickTestSupport {
 		Injector injector = component.injector();
 		assertNotNull(injector);
 		assertTrue(injector instanceof FieldInjector);
+	}
+
+	@Test
+	public void testMakeSerializable()  throws Exception {
+
+		Container c = new SimpleContainer();
+		Object component = c.produce("sneer.lego.tests.MakeMeSerializable");
+		assertTrue(component instanceof Serializable);
+
 	}
 }

@@ -33,8 +33,8 @@ public class ContainerTest {
 		Binder binder = new SimpleBinder();
 		binder.bind(Sample.class).to(MySample.class);
 		Container c = new SimpleContainer(binder);
-		Sample sample = c.produce(Sample.class);
-		assertTrue(sample instanceof MySample);
+		Object sample = c.produce(Sample.class);
+		assertTrue(sample.getClass().getName().equals(MySample.class.getName())); //Different classloaders
 	}
 	
 	@Test

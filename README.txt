@@ -19,9 +19,9 @@ JRE6 - Use the latest stable version of it. Before reporting bugs or problems, p
 Eclipse 3.3 or newer - You can use other IDEs but it is strongly recommended that you use Eclipse because Sneer is a self-contained Eclipse project and will compile out of the box with zero errors and zero warnings.
 
 Anyway:
-Sourcepath: src; src_old; spikes //THIS IS OLD AND MUST BE FIXED
-Classpath: all jars inside the lib and lib_for_tests directory //THIS IS OLD AND MUST BE FIXED
-Main class: src/sneer.tests.MainSkippingBoot //THIS IS OLD AND MUST BE FIXED
+Sourcepath: [changing too often still]
+Classpath: [changing too often still]
+Main class: [not yet moved to new structure]
 
 sneer.user_home_override - You can set this system property to make Sneer run in a different directory, so you can have several different Sneer installations running at the same time.
 
@@ -67,6 +67,7 @@ Writing JUnit tests to improve test coverage is also a very popular move.
 GETTING IN TOUCH
 ====================
 
-sneercoders@googlegroups.com
+http://groups.google.com/group/sneercoders
+
 
 See you there, Klaus.  :)

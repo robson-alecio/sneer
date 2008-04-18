@@ -55,13 +55,13 @@ That's the spirit.  :)
 CODING FOR SNEER
 ====================
 
-If you have done all the rest and are ready to code for Sneer, start by searching comments in the code with the words Fix, Refactor, Implement or Optimize (or simply open the Eclipse Tasks View). That, and only that, is how we track feature and issue tasks.
+If you have done all the above and are ready to code for Sneer, start by searching comments in the code with the words Fix, Refactor, Implement or Optimize (or simply open the Eclipse Tasks View). That is how we track feature and issue tasks.
 
-Find the EASIEST, MOST TRIVIAL task to do and submit a patch. You will be evaluated less on the cleverness and sofistication of your solution and more on your ability to spot EASY and TRIVIAL steps to take. 
+Find the EASIEST, MOST TRIVIAL task to do and submit a patch. You will be evaluated less on the cleverness and sofistication of your solution and more on your ability to spot EASY and TRIVIAL steps to take. :) 
 
 Repeat until you get the hang of it and we gain confidence in you to give you committer rights.
 
-Writing JUnit tests to improve test coverage is also a very popular move.  
+Writing JUnit tests to improve test coverage is also a very popular move. ;)
 
 
 GETTING IN TOUCH

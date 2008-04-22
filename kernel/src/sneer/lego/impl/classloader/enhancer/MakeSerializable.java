@@ -46,7 +46,7 @@ public class MakeSerializable implements Enhancer {
 		@Override
 		public void visitEnd() {
 			if (!_isInterface && !_containsSerialVersionUID) {
-				System.out.println(_className + " enhanced");
+				//System.out.println(_className + " enhanced");
 				super.visitField(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC, "serialVersionUID", Type.LONG_TYPE.getDescriptor(), null, new Long(1L));
 			}
 			super.visitEnd();

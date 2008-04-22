@@ -6,7 +6,6 @@ import java.net.URL;
 import org.apache.commons.lang.SystemUtils;
 
 import sneer.lego.ClassLoaderFactory;
-import sneer.lego.utils.classloader.FileClassLoader;
 import sneer.lego.utils.io.BrickImplFilter;
 import sneer.lego.utils.io.BrickInterfaceFilter;
 import sneer.lego.utils.io.JavaFilter;

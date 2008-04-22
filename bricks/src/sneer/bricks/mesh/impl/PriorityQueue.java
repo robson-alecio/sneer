@@ -24,7 +24,7 @@ public class PriorityQueue<T> {
 
 		_totalElements++;
 		if (_totalElements > 1)
-			System.out.println("Buffer size: " + _totalElements);
+			System.out.println("Buffer size: " + _totalElements); //Fix Use blinking lights or something instead of out.
 
 		this.notify();
 	}

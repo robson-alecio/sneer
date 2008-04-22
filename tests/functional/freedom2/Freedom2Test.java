@@ -4,12 +4,27 @@ import org.junit.Test;
 
 import wheel.reactive.Signal;
 import functional.SovereignFunctionalTest;
+import functional.TestDashboard;
 
 public abstract class Freedom2Test extends SovereignFunctionalTest {
 
-	
+
 	@Test (timeout = 3000)
+	public void testRemoteNameChange() {
+		waitForValue("Bruno Barros", _a.navigateAndGetName("Bruno Barros"));
+
+		_b.setOwnName("B. Barros");
+		waitForValue("B. Barros", _a.navigateAndGetName("Bruno Barros"));
+
+		_b.setOwnName("Dr Barros");
+		waitForValue("Dr Barros", _a.navigateAndGetName("Bruno Barros"));
+	}
+
+	
+	@Test //(timeout = 3000)
 	public void testNicknames() {
+		
+		if (!TestDashboard.newTestsShouldRun()) return;
 		
 		waitForValue("Bruno Barros", _a.navigateAndGetName("Bruno Barros"));
 		waitForValue("Ana Almeida", _b.navigateAndGetName("Ana Almeida"));

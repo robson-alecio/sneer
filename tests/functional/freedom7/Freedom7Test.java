@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import functional.SovereignFunctionalTest;
 import functional.SovereignParty;
+import functional.TestDashboard;
 
 public abstract class Freedom7Test extends SovereignFunctionalTest {
 
@@ -14,6 +15,8 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 	
 	@Test
 	public void testPublish() {
+		
+		if (!TestDashboard.newTestsShouldRun()) return;
 		
 		BrickPublisher publisher = wrapParty(_a);
 		BrickPublisher receiver = wrapParty(_b);

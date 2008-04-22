@@ -16,14 +16,17 @@ public class SocketReceiverImpl implements SocketReceiver, Startable {
 	
 	@Inject
 	private Injector _injector;
+
+	private final Omnivore<ByteArraySocket> _receiverThatCannotBeGCd = new Omnivore<ByteArraySocket>() { @Override public void consume(final ByteArraySocket socket) {
+		Threads.startDaemon(new Runnable(){@Override public void run() {
+			new IndividualSocketReceiver(_injector, socket);
+		}});
+	}};
+
 	
 	@Override
 	public void start() throws Exception {
-		_socketAccepter.lastAcceptedSocket().addReceiver(new Omnivore<ByteArraySocket>() { @Override public void consume(final ByteArraySocket socket) {
-			Threads.startDaemon(new Runnable(){@Override public void run() {
-				new IndividualSocketReceiver(_injector, socket);
-			}});
-		}});
+		_socketAccepter.lastAcceptedSocket().addReceiver(_receiverThatCannotBeGCd);
 	}
 
 }

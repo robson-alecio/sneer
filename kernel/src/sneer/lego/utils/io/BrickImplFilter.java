@@ -17,7 +17,7 @@ public class BrickImplFilter extends JavaFilter {
 	@Override
 	protected void handleClass(MetaClass metaClass, int depth, Collection<MetaClass> results) throws IOException {
 		File parentFile = metaClass.classFile().getParentFile();
-		if(parentFile.getName().equals("impl") && !metaClass.isInterface())
+		if(parentFile.getName().equals("impl") /* && !metaClass.isInterface() */)
 			results.add(metaClass);
 	}
 }

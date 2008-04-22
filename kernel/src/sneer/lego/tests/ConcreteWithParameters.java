@@ -1,5 +1,7 @@
 package sneer.lego.tests;
 
+import sneer.lego.tests.SomeInterface;
+
 public class ConcreteWithParameters {
 
 	private String _s;

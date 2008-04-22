@@ -1,9 +1,14 @@
-package sneer.lego.utils.classloader;
+package sneer.lego.impl.classloader;
 
 import java.io.IOException;
 import java.security.SecureClassLoader;
 import java.util.List;
 
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
+
+import sneer.lego.impl.classloader.enhancer.Enhancer;
+import sneer.lego.impl.classloader.enhancer.MakeSerializable;
 import sneer.lego.utils.asm.MetaClass;
 
 public class FileClassLoader extends SecureClassLoader {
@@ -11,11 +16,14 @@ public class FileClassLoader extends SecureClassLoader {
 	private List<MetaClass> _metaClasses;
 	
 	private String _name;
+	
+	private Enhancer _enhancer;
 
 	public FileClassLoader(String name, List<MetaClass> files, ClassLoader parent) {
 		super(parent);
 		_name = name;
 		_metaClasses = files;
+		_enhancer = new MakeSerializable();
 	}
 	
 	@Override
@@ -44,12 +52,9 @@ public class FileClassLoader extends SecureClassLoader {
 
 	@Override
 	protected Class<?> findClass(String name) throws ClassNotFoundException {
-		//System.out.println("[ECLIPSE:"+_name+"] finding class: "+name);
 		for(MetaClass metaClass : _metaClasses) {
 			try {
-				//System.out.println(("  "+metaClass.getName()));
 				if(metaClass.getName().equals(name)) {
-					//System.out.println(_name + " loading class: "+name);
 					return defineClass(name, metaClass.bytes());
 				}
 			} catch (IOException ignored) {
@@ -66,7 +71,11 @@ public class FileClassLoader extends SecureClassLoader {
 	}
 
 	private byte[] enhance(byte[] byteArray) {
-		return byteArray;
+		final ClassReader reader = new ClassReader(byteArray);
+		final ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
+		reader.accept(_enhancer.enhance(writer), 0);
+
+		return writer.toByteArray();
 	}
 
 	@Override

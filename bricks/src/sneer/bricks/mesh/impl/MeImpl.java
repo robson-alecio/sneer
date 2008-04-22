@@ -56,9 +56,9 @@ public class MeImpl implements Me, Startable {
 	public <T> Peer navigateTo(String nicknamePath) {
 		String[] path = nicknamePath.split("/", 1);
 		String head = path[0];
-		String tail = path.length > 1
-			? path[1]
-			: "";
+//		String tail = path.length > 1
+//			? path[1]
+//			: "";
 			
 		Contact contact = _contactManager.contactGiven(head);
 		if (contact == null) return null;

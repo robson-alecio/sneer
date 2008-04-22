@@ -45,32 +45,16 @@ class PeerImpl implements Peer, Crashable {
 
 
 
-	PeerImpl(Injector injector, final Contact contact) {
+	PeerImpl(Injector injector, Contact contact) {
 		injector.inject(this);
 		_connection = _connectionManager.connectionFor(contact);
 		_connection.setReceiver(new Omnivore<byte[]>(){public void consume(byte[] packetReceived) {
 			receive(packetReceived);
 		}});
-		startSender(contact);
-		
-// Just for debbuging:
-//		Threads.startDaemon(new Runnable(){
-//
-//			public void run() {
-//				byte i = 0;
-//				while (true) {
-//					byte[] packet = new byte[]{i++};
-//					System.out.println("Sending: " + packet[0] + " - " + contact.nickname());
-//					_priorityQueue.add(packet, 2);
-//					Threads.sleepWithoutInterruptions(2000);
-//				}
-//			}});
+		startSender();
 	}
 	
 	private void receive(byte[] packetReceived) {
-//		System.out.println("Received: " + packetReceived[0] + " - " + hashCode());
-//		if (1==1) return;
-		
 		Object ambassador;
 		try {
 			ambassador = _serializer.deserialize(packetReceived, PeerImpl.class.getClassLoader());
@@ -85,7 +69,7 @@ class PeerImpl implements Peer, Crashable {
 		}
 	}
 
-	private void startSender(final Contact contact) {
+	private void startSender() {
 		Threads.startDaemon(new Runnable() { public void run() {
 			while (!_isCrashed) {
 				byte[] toSend = _priorityQueue.waitForNext();

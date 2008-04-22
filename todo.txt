@@ -1,5 +1,4 @@
 ﻿Leandro
- [DONE] - Serializable Instrumentation: Remove "implements Serializable" from SignalSubscription and run Freedom2Test. Make container use Bamboo's classloader contrib to fix NotSerializableException being thrown.
  - Brick Publish:
 	1) Inform source folder (src).
 	2) Inform library folder (lib).
@@ -21,7 +20,7 @@
 
 Klaus
 ongoing - Component Model (see todoLego.txt)
- [DONE/revise in the future] - Exception Handler - Rename to "BlinkingLights". API must be something like turnOn("Message") returns Light, Light.turnOff(). Not just like a "logger" API.
+ - Warnings - clean them all.
  - Freedom2Test - Make it pass with new bricks.
  - SocketAccepter.lastAcceptedSocket() - Refactor to void acceptedSocketServer(Omnivore<ByteArraySocket>). There will only be one instead of many receivers. Simplifies the impl of SocketAccepter. 
  - Brick persistence
@@ -30,7 +29,7 @@ ongoing - Component Model (see todoLego.txt)
  - Auto-update of Kernel from Peers
  - Publish, Download, Auto-Update of Bricks from Peers
  - GUI - Spartan interface for what we have so far. http://c2.com/cgi/wiki?SpartanUserInterface 
- - Logging - revise how logging is done by all bricks
+ - Logging - revise how logging is done by all bricks. Revise blinking lights API.
  - Package namespace - revise sneer.lego? sneer.kernel? sneer.bricks?
  - Make build.xml run again. 
  - README.txt - Update sourcepath, classpath, main class and build.xml references

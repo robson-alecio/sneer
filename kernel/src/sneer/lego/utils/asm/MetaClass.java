@@ -41,4 +41,11 @@ public class MetaClass extends EmptyVisitor {
 		_isInterface = (access & Opcodes.ACC_INTERFACE) != 0;
 		_className = name.replaceAll("/", ".");
 	}
+
+	@Override
+	public String toString() {
+		return _className +" @" + _classFile;
+	}
+	
+	
 }

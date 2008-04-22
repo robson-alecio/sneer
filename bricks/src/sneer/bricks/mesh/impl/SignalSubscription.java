@@ -1,9 +1,7 @@
 package sneer.bricks.mesh.impl;
 
-public class SignalSubscription implements Ambassador, java.io.Serializable {
+public class SignalSubscription implements Ambassador {
 
-	private static final long serialVersionUID = 1L;
-	
 	private final String _signalPath;
 	
 	public SignalSubscription(String signalPath) {

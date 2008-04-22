@@ -1,5 +1,5 @@
 ﻿Leandro
- - Serializable Instrumentation: Remove "implements Serializable" from SignalSubscription and run Freedom2Test. Make container use Bamboo's classloader contrib to fix NotSerializableException being thrown.
+ [DONE] - Serializable Instrumentation: Remove "implements Serializable" from SignalSubscription and run Freedom2Test. Make container use Bamboo's classloader contrib to fix NotSerializableException being thrown.
  - Brick Publish:
 	1) Inform source folder (src).
 	2) Inform library folder (lib).

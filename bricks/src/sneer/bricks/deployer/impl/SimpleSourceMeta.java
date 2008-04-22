@@ -25,7 +25,7 @@ public class SimpleSourceMeta implements SourceMeta {
 		return _root;
 	}
 
-	
+	/*
 	private Map<File, List<File>> interfacesByBrick() {
 		List<File> interfaces = interfaces();
 		Map<File, List<File>> result = new HashMap<File, List<File>>();
@@ -40,6 +40,7 @@ public class SimpleSourceMeta implements SourceMeta {
 		}
 		return result;
 	}
+	*/
 
 	@Override
 	public List<File> interfaces() {

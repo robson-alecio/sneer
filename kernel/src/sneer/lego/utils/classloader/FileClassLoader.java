@@ -19,6 +19,30 @@ public class FileClassLoader extends SecureClassLoader {
 	}
 	
 	@Override
+	protected synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+		// First, check if the class has already been loaded
+		ClassLoader parent = getParent();
+		Class<?> c = findLoadedClass(name);
+		if (c == null) {
+		    try {
+		    	c = findClass(name);
+		    } catch (ClassNotFoundException e) {
+		    	if (parent != null) {
+		    		c = parent.loadClass(name);
+		    	} else {
+		    		//c = findBootstrapClass0(name);
+		    	}
+		    }
+		}
+		if (resolve) {
+		    resolveClass(c);
+		}
+		return c;
+	}
+
+
+
+	@Override
 	protected Class<?> findClass(String name) throws ClassNotFoundException {
 		//System.out.println("[ECLIPSE:"+_name+"] finding class: "+name);
 		for(MetaClass metaClass : _metaClasses) {
@@ -37,7 +61,12 @@ public class FileClassLoader extends SecureClassLoader {
 	}
 
 	private Class<?> defineClass(String name, byte[] byteArray) {
+		byteArray = enhance(byteArray);
 		return defineClass(name, byteArray, 0, byteArray.length);
+	}
+
+	private byte[] enhance(byte[] byteArray) {
+		return byteArray;
 	}
 
 	@Override

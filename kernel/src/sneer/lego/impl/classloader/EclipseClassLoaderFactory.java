@@ -37,10 +37,15 @@ public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 		if(_sneerApi != null)
 			return _sneerApi;
 		
-		_sneerApi = buildSneerApiForTargetDirectory();
+		_sneerApi = eclipseClassLoader();
+		//_sneerApi = buildSneerApiForTargetDirectory();
 		return _sneerApi;
 	}
 
+	private ClassLoader eclipseClassLoader() {
+		return this.getClass().getClassLoader();
+	}
+	
 	private ClassLoader buildSneerApiForTargetDirectory() {
 		ClassLoader parent = Jars.bootstrapClassLoader();
 		File targetDirectory = eclipseTargetDirectory();

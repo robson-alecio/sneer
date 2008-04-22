@@ -15,6 +15,8 @@ public class MakeSerializable implements Enhancer {
 		private boolean _containsSerialVersionUID;
 		
 		private boolean _isInterface;
+		
+		private String _className;
 
 		public MakeSerializableVisitor(ClassVisitor classVisitor) {
 			super(classVisitor);
@@ -22,8 +24,15 @@ public class MakeSerializable implements Enhancer {
 		
 		@Override
 		public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
+
 			_isInterface = (access & Opcodes.ACC_INTERFACE) != 0;
-			super.visit(version, access, name, signature, superName, addToArray(interfaces, Type.getType(Serializable.class).getInternalName()));
+			_className = name.replaceAll("/", ".");
+			
+			String typeName = Type.getType(Serializable.class).getInternalName();
+			if(!isSerializable(interfaces, typeName))
+				interfaces = addToArray(interfaces, typeName);
+			
+			super.visit(version, access, name, signature, superName, interfaces);
 		}
 		
 		@Override
@@ -37,6 +46,7 @@ public class MakeSerializable implements Enhancer {
 		@Override
 		public void visitEnd() {
 			if (!_isInterface && !_containsSerialVersionUID) {
+				System.out.println(_className + " enhanced");
 				super.visitField(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC, "serialVersionUID", Type.LONG_TYPE.getDescriptor(), null, new Long(1L));
 			}
 			super.visitEnd();
@@ -48,6 +58,15 @@ public class MakeSerializable implements Enhancer {
 			System.arraycopy(array, 0, result, 0, length);
 			result[length] = value;
 			return result;
+		}
+
+		private boolean isSerializable(String[] interfaces, String serializableType) {
+			for(String intrface : interfaces) {
+				if(intrface.equals(serializableType)) {
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 

@@ -90,7 +90,7 @@ public class ContainerTest {
 	public void testMakeSerializable()  throws Exception {
 
 		Container c = new SimpleContainer();
-		Object component = c.produce("sneer.lego.tests.MakeMeSerializable");
+		MakeMeSerializable component = c.produce(MakeMeSerializable.class);
 		assertTrue(component instanceof Serializable);
 
 	}

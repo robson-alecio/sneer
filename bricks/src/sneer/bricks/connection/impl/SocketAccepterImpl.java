@@ -20,6 +20,18 @@ import wheel.reactive.impl.EventNotifierImpl;
 
 public class SocketAccepterImpl implements SocketAccepter, Startable {
 	
+	@Inject
+	private PortKeeper _portKeeper;
+	
+	@Inject
+	private Network _network;
+	
+	@Inject
+	private BlinkingLights _lights;
+	
+	@Inject
+	private Logger _log;
+
 	private EventNotifier<ByteArraySocket> _notifier = new EventNotifierImpl<ByteArraySocket>();
 
 	private ByteArrayServerSocket _serverSocket;
@@ -34,26 +46,16 @@ public class SocketAccepterImpl implements SocketAccepter, Startable {
 
 	private Light _cantAcceptSocket;
 
-	@Inject
-	private PortKeeper _portKeeper;
-	
-	@Inject
-	private Network _network;
-
-	@Inject
-	private BlinkingLights _lights;
-	
-    @Inject
-    private Logger _log;
+	private final Omnivore<Integer> _portReceiverToAvoidGC = new Omnivore<Integer>() { @Override public void consume(Integer port) {
+		setPort(port);
+	}};
 
 	@Override
 	public void start() throws Exception {
 		Threads.startDaemon(new Runnable(){ @Override public void run() {
 			listenToSneerPort();
 		}});
-		_portKeeper.port().addReceiver(new Omnivore<Integer>() { @Override public void consume(Integer port) {
-			setPort(port);
-		}});
+		_portKeeper.port().addReceiver(_portReceiverToAvoidGC);
 	}
 
 	@Override

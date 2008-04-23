@@ -18,12 +18,16 @@ public class ContactManagerImpl implements ContactManager {
 	synchronized public Contact addContact(String nickname) throws IllegalParameter {
 		nickname.toString();
 		
-		if (isNicknameAlreadyUsed(nickname))
-			throw new IllegalParameter("Nickname " + nickname + " is already being used.");
+		checkAvailability(nickname);
 		
 		Contact result = new ContactImpl(nickname); 
 		_contacts.add(result);
 		return result;
+	}
+
+	private void checkAvailability(String nickname) throws IllegalParameter {
+		if (isNicknameAlreadyUsed(nickname))
+			throw new IllegalParameter("Nickname " + nickname + " is already being used.");
 	}
 
 	@Override
@@ -43,6 +47,11 @@ public class ContactManagerImpl implements ContactManager {
 				return candidate;
 
 		return null;
+	}
+
+	synchronized public void changeNickname(Contact contact, String newNickname) throws IllegalParameter {
+		checkAvailability(newNickname);
+		((ContactImpl)contact).nickname(newNickname);
 	}
 }
 
@@ -65,6 +74,10 @@ class ContactImpl implements Contact {
 	@Override
 	public String toString() {
 		return _nickname.output().currentValue();
+	}
+
+	void nickname(String newNickname) {
+		_nickname.setter().consume(newNickname);
 	}
 
 }

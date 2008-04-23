@@ -6,12 +6,17 @@ import wheel.reactive.lists.ListSignal;
 
 public interface ContactManager {
     
+	ListSignal<Contact> contacts();
+
+	boolean isNicknameAlreadyUsed(String nickname);
+	Contact contactGiven(String nickname);
+
 	/** @throws IllegalParameter if there already is a Contact with that nickname.*/
 	Contact addContact(String nickname) throws IllegalParameter;
+
+	/** @throws IllegalParameter if there already is a Contact with newNickname.*/
+	void changeNickname(Contact contact, String newNickname) throws IllegalParameter;
 	
-	boolean isNicknameAlreadyUsed(String nickname);
 	
-	ListSignal<Contact> contacts();
-	
-	Contact contactGiven(String nickname);
+
 }

@@ -50,28 +50,24 @@ class IndividualSocketReceiver {
 		byte[] peersPublicKey = _socket.read();	
 
 		Contact contact = produceContact(peersPublicKey);
-		if(contact != null)
-			_connectionManager.manageIncomingSocket(contact, _socket);
-		else
-			_socket.crash();
+		_connectionManager.manageIncomingSocket(contact, _socket);
 	}
 
 	private Contact produceContact(byte[] peersPublicKey) {
 		while(true) {
 			Contact contact = _keyManager.contactGiven(peersPublicKey);
-			if (contact == null) {
-				contact = createUnconfirmedContact();
-				try {
-					_keyManager.addKey(contact, peersPublicKey);
-					return contact;
-				} catch (ContactAlreadyHadAKey e) {
-					//how did this happen?
-					_logger.error("Error producing contact",e);
-					return null;
-				} catch (KeyBelongsToOtherContact e) {
-					//Other thread assigned this pk to other contact. Try again
-					_logger.info("Key belongs to other contact. Trying again...",e);
-				}
+			if (contact != null) return contact;
+
+			contact = createUnconfirmedContact();
+			try {
+				_keyManager.addKey(contact, peersPublicKey);
+				return contact;
+			} catch (ContactAlreadyHadAKey e) {
+				//This should never happen, since we are creating the contact.
+				throw new IllegalStateException(e);
+			} catch (KeyBelongsToOtherContact e) {
+				//Other thread assigned this pk to other contact. Try again
+				_logger.info("Key belongs to other contact. Trying again...",e);
 			}
 		}
 	}

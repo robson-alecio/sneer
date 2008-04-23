@@ -20,9 +20,10 @@
 
 Klaus
 ongoing - Component Model (see todoLego.txt)
- - Warnings - clean them all.
  - Freedom2Test - Make it pass with new bricks.
+ - Warnings - clean them all.
  - SocketAccepter.lastAcceptedSocket() - Refactor to void acceptedSocketServer(Omnivore<ByteArraySocket>). There will only be one instead of many receivers. Simplifies the impl of SocketAccepter. 
+ - Signal type-safety - Not string-based.
  - Brick persistence
  - Public Keys
  - Connection Encryption

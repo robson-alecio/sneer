@@ -5,7 +5,11 @@ import sneer.bricks.connection.SocketReceiver;
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.contacts.ContactManager;
 import sneer.bricks.internetaddresskeeper.InternetAddressKeeper;
+import sneer.bricks.keymanager.ContactAlreadyHadAKey;
+import sneer.bricks.keymanager.KeyBelongsToOtherContact;
+import sneer.bricks.keymanager.KeyManager;
 import sneer.bricks.mesh.Me;
+import sneer.bricks.mesh.Peer;
 import sneer.bricks.network.Network;
 import sneer.lego.Inject;
 import spikes.legobricks.name.OwnNameKeeper;
@@ -38,8 +42,12 @@ public class SneerParty extends SelfInject implements SovereignParty {
 	private SocketOriginator _originator; //need to start this component so that is registers itself on InternetAddressKeeper.addresses
 	@Inject
 	private SocketReceiver _receiver; //need to start this component so that is registers itself on InternetAddressKeeper.addresses
+
+	@Inject
+	private KeyManager _keyManager;
 	
-	public SneerParty(String name, int port, Network network) {
+	
+	SneerParty(String name, int port, Network network) {
 		super(network);
 		setOwnName(name);
 		try {
@@ -51,14 +59,31 @@ public class SneerParty extends SelfInject implements SovereignParty {
 
 	@Override
 	public void bidirectionalConnectTo(SovereignParty party) {
-		Contact contact;
+		Contact contact = addContact(party.ownName());
+
+		SneerParty sneerParty = (SneerParty)party;
+		storePublicKey(contact, sneerParty.publicKey());
+		_internetAddressKeeper.add(contact, MOCK_ADDRESS, sneerParty.port());
+		
+		sneerParty.giveNicknameTo(this, this.ownName());
+	}
+
+	private void storePublicKey(Contact contact, byte[] publicKey) {
 		try {
-			contact = _contactManager.addContact(party.ownName());
+			_keyManager.addKey(contact, publicKey);
+		} catch (ContactAlreadyHadAKey e) {
+			throw new IllegalStateException(e);
+		} catch (KeyBelongsToOtherContact e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
+	private Contact addContact(String nickname) {
+		try {
+			return _contactManager.addContact(nickname);
 		} catch (IllegalParameter e) {
 			throw new IllegalStateException(e);
 		}
-		int port = ((SneerParty) party).port();
-		_internetAddressKeeper.add(contact, MOCK_ADDRESS, port);
 	}
 
 	@Override
@@ -72,24 +97,42 @@ public class SneerParty extends SelfInject implements SovereignParty {
 	}
 
     @Override
-    public void giveNicknameTo(SovereignParty peer, String nickname) {
-    	//_contactManager.changeNickname(...);
-    	throw new NotImplementedYet();
+    public void giveNicknameTo(SovereignParty peer, String newNickname) {
+    	byte[] publicKey = ((SneerParty)peer).publicKey();
+		Contact contact = waitForContactGiven(publicKey);
+
+		try {
+			_contactManager.changeNickname(contact, newNickname);
+		} catch (IllegalParameter e) {
+			throw new IllegalStateException(e);
+		}
     }
 
-    @Override
+	private Contact waitForContactGiven(byte[] publicKey) {
+		while (true) {
+			Contact contact = _keyManager.contactGiven(publicKey);
+			if (contact != null) return contact;
+			Thread.yield();
+		}
+	}
+
+    private byte[] publicKey() {
+		return _keyManager.ownPublicKey();
+	}
+
+	@Override
     public Signal<String> navigateAndGetName(String nicknamePath) {
-		return _me.navigateTo(nicknamePath).signal("Name");
+		String[] path = nicknamePath.split("/");
+		
+		if (path.length > 1)
+			throw new NotImplementedYet();
+		
+		Peer peer = _me.navigateTo(path[0]);
+		return peer.signal("Name");
     }
 
 
-	public String address()
-    {
-        return MOCK_ADDRESS;
-    }
-
-    public int port()
-    {
+    private int port() {
         return _sneerPortKeeper.port().currentValue();
     }
 

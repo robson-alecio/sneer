@@ -11,8 +11,7 @@ import sneer.bricks.keymanager.KeyManager;
 
 public class KeyManagerImpl implements KeyManager {
 
-	//Fix: read read from local file
-	private Key _ownKey = new Key("1234");
+	private Key _ownKey = createMickeyMouseKey();
 	
 	private Map<Contact,Key> _keyByContact = new HashMap<Contact, Key>(); 
 	
@@ -29,18 +28,21 @@ public class KeyManagerImpl implements KeyManager {
 		if(other != null)
 			throw new KeyBelongsToOtherContact("the key [TODO: the key] belongs to another contact");
 
-		//Fix: store key file
 		_keyByContact.put(contact, new Key(peersPublicKey));
 	}
 
+	private Key createMickeyMouseKey() {
+		String string = "" + System.currentTimeMillis() + System.nanoTime() + hashCode();
+		return new Key(string.getBytes());
+	}
+
 	@Override
-	public synchronized Contact contactGiven(byte[] peersPublicKey) {
-		Key wanted = new Key(peersPublicKey);
-		for (Contact contact : _keyByContact.keySet()) {
-			Key key = _keyByContact.get(contact);
-			if(key.equals(wanted))
-				return contact;
-		}
+	public synchronized Contact contactGiven(byte[] peersPKBytes) {
+		Key peersPK = new Key(peersPKBytes);
+		for (Contact candidate : _keyByContact.keySet())
+			if(_keyByContact.get(candidate).equals(peersPK))
+				return candidate;
+
 		return null;
 	}
 
@@ -54,15 +56,11 @@ class Key {
 
 	private byte[] _data;
 	
-	public Key(String s) {
-		_data = s.getBytes();
-	}
-
-	public Key(byte[] bytes) {
+	Key(byte[] bytes) {
 		_data = bytes;
 	}
 
-	public byte[] data() {
+	byte[] data() {
 		return _data;
 	}
 	

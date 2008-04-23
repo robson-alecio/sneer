@@ -23,7 +23,6 @@ public abstract class Freedom2Test extends SovereignFunctionalTest {
 	
 	@Test //(timeout = 3000)
 	public void testNicknames() {
-		
 		if (!TestDashboard.newTestsShouldRun()) return;
 		
 		waitForValue("Bruno Barros", _a.navigateAndGetName("Bruno Barros"));
@@ -31,12 +30,12 @@ public abstract class Freedom2Test extends SovereignFunctionalTest {
 
 		_a.giveNicknameTo(_b, "Bruno");
 		_b.giveNicknameTo(_a, "Aninha");
-//		_a.giveNicknameTo(_c, "Carla");
-//		_c.giveNicknameTo(_a, "Miguxa");
-//		_c.giveNicknameTo(_d, "Dedé");
+		_a.giveNicknameTo(_c, "Carla");
+		_c.giveNicknameTo(_a, "Ana");
+		_c.giveNicknameTo(_d, "Dedé");
 		
 		waitForValue("Bruno Barros", _a.navigateAndGetName("Bruno"));
-		waitForValue("Ana Almeida", _b.navigateAndGetName("Carla Costa/Miguxa"));
+		waitForValue("Ana Almeida", _b.navigateAndGetName("Carla Costa/Ana"));
 		waitForValue("Ana Almeida", _a.navigateAndGetName("Bruno/Aninha"));
 		waitForValue("Bruno Barros", _a.navigateAndGetName("Bruno/Aninha/Bruno"));
 		waitForValue("Denis Dalton", _a.navigateAndGetName("Bruno/Carla Costa/Dedé"));
@@ -48,9 +47,18 @@ public abstract class Freedom2Test extends SovereignFunctionalTest {
 	}
 
 	private void waitForValue(Object expectedValue, Signal<? extends Object> signal) {
+		String previousMessage = null;
+
 		while (true) {
 			if (expectedValue == null && signal.currentValue() == null) return;
 			if (expectedValue != null && expectedValue.equals(signal.currentValue())) return;
+
+			String message = "Expected: " + expectedValue + " Found: " + signal.currentValue();
+			if (!message.equals(previousMessage)) {
+				previousMessage = message;
+				//System.out.println(message);
+			}
+			
 			Thread.yield();
 		}
 	}

@@ -61,8 +61,8 @@ public class DeployerImpl implements Deployer {
 			BrickFile brick = brickBundle.brick(brickName);
 			try {
 				deploy(brick);
-			} catch (IOException e) {
-				throw new DeployerException("Error deploying brick: "+brickName, e);
+			} catch (Throwable t) {
+				throw new DeployerException("Error deploying brick: "+brickName, t);
 			}
 		}
 	}
@@ -75,7 +75,7 @@ public class DeployerImpl implements Deployer {
 		File root = brickRootDirectory();
 		File brickDirectory = new File(root, brickName);
 		if(brickDirectory.exists()) {
-			//FixUrgent: as permission to overwrite?
+			//FixUrgent: ask permission to overwrite?
 			org.apache.commons.io.FileUtils.cleanDirectory(brickDirectory);
 		} else {
 			brickDirectory.mkdir();

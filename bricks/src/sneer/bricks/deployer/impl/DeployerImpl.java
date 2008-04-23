@@ -59,13 +59,38 @@ public class DeployerImpl implements Deployer {
 		List<String> brickNames = brickBundle.brickNames();
 		for (String brickName : brickNames) {
 			BrickFile brick = brickBundle.brick(brickName);
-			deploy(brick);
+			try {
+				deploy(brick);
+			} catch (IOException e) {
+				throw new DeployerException("Error deploying brick: "+brickName, e);
+			}
 		}
 	}
 
-	private void deploy(BrickFile brick) {
-		log.debug("Deploying brick: "+brick.getName());
-		throw new NotImplementedYet();
+	private void deploy(BrickFile brick) throws IOException {
+		String brickName = brick.name();
+		log.debug("Deploying brick: "+brickName);
+		System.out.println("Deploying brick: "+brick);
+		
+		//1. create brick directory under sneer home
+		File root = brickRootDirectory();
+		File brickDirectory = new File(root, brickName);
+		if(brickDirectory.exists()) {
+			//FixUrgent: as permission to overwrite?
+			org.apache.commons.io.FileUtils.cleanDirectory(brickDirectory);
+		} else {
+			brickDirectory.mkdir();
+		}
+		
+		//2. copy received files
+		File orig = new File(brickDirectory, "orig");
+		brick.copyTo(orig);
+		
+		//3. explode brick
+		brick.explode(brickDirectory);
+		
+		//4. resolve brick dependencies
+		//throw new NotImplementedYet();
 	}
 
 	@Override
@@ -84,7 +109,7 @@ public class DeployerImpl implements Deployer {
 		 * 
 		 */
 
-		SetBrickBundle result = new SetBrickBundle();
+		BrickBundle result = new BrickBundleImpl();
 		File workDirectory = createWorkDirectory();
 		SourceMeta meta = loadSourceMetaFromFile(path);
 		//Classpath bootstrap = _cpFactory.newClasspath();
@@ -95,17 +120,24 @@ public class DeployerImpl implements Deployer {
 		Classpath api = compileInterfaces(workDirectory, meta);
 		List<Class<Brick>> brickInterfaces = findBrickInterfaces(api);
 		List<JarFile> jarFiles = generateApiJars(brickInterfaces, workDirectory, api);
-		for (JarFile jarFile : jarFiles) 
-			result.add(jarFile);
+		addToResult(result, jarFiles);
 		
 		/*
 		 * IMPL
 		 */
 		jarFiles = compileBricksAndGenerateJars(brickInterfaces, meta, api);
-		for (JarFile jarFile : jarFiles) 
-			result.add(jarFile);
+		addToResult(result, jarFiles);
 		
 		return result;
+	}
+
+	private void addToResult(BrickBundle result, List<JarFile> jarFiles) {
+		try {
+			for (JarFile jarFile : jarFiles)
+				result.add(jarFile);
+		} catch (IOException e) {
+			throw new DeployerException("Error adding jar entry to brick bundle",e);
+		}
 	}
 
 	private List<JarFile> compileBricksAndGenerateJars(List<Class<Brick>> brickInterfaces, SourceMeta meta, Classpath api) {
@@ -133,7 +165,7 @@ public class DeployerImpl implements Deployer {
 			String brickName = brickNameFromImpl(brickClass, brickInterfaces);
 			File path = impl.relativeFile(brickClass);
 			try {
-				JarFile jarFile = runJarTool(brickName+"-IMPL", workDirectory, path.getParentFile());
+				JarFile jarFile = runJarTool(brickName,"IMPL", workDirectory, path.getParentFile());
 				result.add(jarFile);
 			} catch (Exception e) {
 				throw new DeployerException("Can't package brick impl "+brickName);
@@ -188,7 +220,7 @@ public class DeployerImpl implements Deployer {
 			File path = classpath.relativeFile(brickClass);
 			log.info("exporting brick api {} from: {}", brickName, origin.getParentFile());
 			try {
-				JarFile jarFile = runJarTool(brickName+"-API", workDirectory, path.getParentFile());
+				JarFile jarFile = runJarTool(brickName,"API", workDirectory, path.getParentFile());
 				result.add(jarFile);
 			} catch (Exception e) {
 				throw new DeployerException("Can't package brick api "+brickName);
@@ -231,19 +263,23 @@ public class DeployerImpl implements Deployer {
 		return new SimpleSourceMeta(path);
 	}
 
-	private JarFile runJarTool(String jarName, File baseDirectory, File path) throws Exception {
+	//FixUrgent: remove dependency from jdk by not calling the jar tool
+	private JarFile runJarTool(String brickName, String descriptor, File baseDirectory, File path) throws Exception {
 
-		//FixUrgent: remove dependency from jdk by not calling the jar tool
-		
+		String jarName = brickName + "-" + descriptor;
 		if(false) {
 			System.out.println("Running jar tool");
 			System.out.println("\tjarName: "+jarName);
 			System.out.println("\tbaseDirectory: "+baseDirectory);
 			System.out.println("\tpath: "+path);
 		}
+		
+		File tmp = createMetaFile(brickName, descriptor);
+		File meta = new File(baseDirectory,"sneer.meta");
+		tmp.renameTo(meta);
 
 		File jar = File.createTempFile(jarName+"-", ".jar");
-		ProcessBuilder builder = new ProcessBuilder("jar", "cfv", jar.getAbsolutePath(), path.getPath());
+		ProcessBuilder builder = new ProcessBuilder("jar", "cf", jar.getAbsolutePath(), "sneer.meta", path.getPath());
 		builder.directory(baseDirectory);
 
 		if(log.isDebugEnabled()) {
@@ -253,18 +289,21 @@ public class DeployerImpl implements Deployer {
 
 		Process p = builder.start();
 		p.waitFor();
+		meta.delete();
 		return new JarFile(jar);
 	}
 
-//	private File createMetaFile(String brickName, String version) throws IOException {
-//		String jarName = brickName + "-" + version;
-//		StringBuilder builder = new StringBuilder();
-//		builder.append("brick-name: ").append(brickName).append("\n");
-//		builder.append("brick-version: ").append(version).append("\n");
-//		File manifest = File.createTempFile(jarName+"-", ".meta");
-//		org.apache.commons.io.FileUtils.writeStringToFile(manifest, builder.toString());
-//		return manifest;
-//	}
+	private File createMetaFile(String brickName, String descriptor) throws IOException {
+		String version = "0.1-SNAPSHOT";
+		String jarName = brickName + "-" + version;
+		StringBuilder builder = new StringBuilder();
+		builder.append("brick-name: ").append(brickName).append("\n");
+		builder.append("brick-version: ").append(version).append("\n");
+		builder.append("role: ").append(descriptor).append("\n");
+		File manifest = File.createTempFile(jarName+"-", ".meta");
+		org.apache.commons.io.FileUtils.writeStringToFile(manifest, builder.toString());
+		return manifest;
+	}
 
 
 }

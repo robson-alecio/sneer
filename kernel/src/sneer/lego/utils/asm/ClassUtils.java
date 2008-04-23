@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.objectweb.asm.ClassReader;
 
@@ -15,7 +16,7 @@ public class ClassUtils {
 		ClassReader reader = new ClassReader(is);
 		MetaClass visitor = new MetaClass(classFile);
 		reader.accept(visitor, 0);
-		is.close();
+		IOUtils.closeQuietly(is);
 		return visitor;
 	}
 

@@ -70,7 +70,6 @@ public class DeployerImpl implements Deployer {
 	private void deploy(BrickFile brick) throws IOException {
 		String brickName = brick.name();
 		log.debug("Deploying brick: "+brickName);
-		System.out.println("Deploying brick: "+brick);
 		
 		//1. create brick directory under sneer home
 		File root = brickRootDirectory();
@@ -90,7 +89,12 @@ public class DeployerImpl implements Deployer {
 		brick.explode(brickDirectory);
 		
 		//4. resolve brick dependencies
-		//throw new NotImplementedYet();
+		resolveBrickDependencies(brick);
+	}
+
+	private void resolveBrickDependencies(BrickFile brick) {
+		brick.toString();
+		throw new NotImplementedYet();
 	}
 
 	@Override

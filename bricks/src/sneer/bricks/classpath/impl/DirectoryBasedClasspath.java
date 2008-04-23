@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sneer.lego.utils.io.JavaFilter;
-import sneer.lego.utils.io.SimpleFilter;
 
 
 /**

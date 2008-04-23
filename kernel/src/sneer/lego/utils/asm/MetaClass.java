@@ -18,8 +18,6 @@ public class MetaClass extends EmptyVisitor {
 	
 	private File _classFile;
 	
-	private String[] _interfaces;
-	
 	public MetaClass(File classFile) {
 		_classFile = classFile;
 	}
@@ -49,11 +47,6 @@ public class MetaClass extends EmptyVisitor {
 		_isInterface = (access & Opcodes.ACC_INTERFACE) != 0;
 		_className = name.replaceAll("/", ".");
 		_packageName = _className.substring(0, _className.lastIndexOf("."));
-		_interfaces = interfaces;
-	}
-
-	public boolean isAssignanbleTo(Class<?> clazz) {
-		throw new wheel.lang.exceptions.NotImplementedYet();
 	}
 
 	@Override

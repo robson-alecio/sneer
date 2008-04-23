@@ -27,6 +27,7 @@ public class MakeSerializable implements Enhancer {
 
 			_isInterface = (access & Opcodes.ACC_INTERFACE) != 0;
 			_className = name.replaceAll("/", ".");
+			_className.toString();
 			
 			String typeName = Type.getType(Serializable.class).getInternalName();
 			if(!isSerializable(interfaces, typeName))

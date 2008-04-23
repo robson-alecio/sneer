@@ -225,6 +225,13 @@ public class DeployerImpl implements Deployer {
 
 		//FixUrgent: remove dependency from jdk by not calling the jar tool
 		
+		if(SYSOUT) {
+			System.out.println("Running jar tool");
+			System.out.println("\tjarName: "+jarName);
+			System.out.println("\tbaseDirectory: "+baseDirectory);
+			System.out.println("\tpath: "+path);
+		}
+
 		File jar = File.createTempFile(jarName+"-", ".jar");
 		ProcessBuilder builder = new ProcessBuilder("jar", "cfv", jar.getAbsolutePath(), path.getPath());
 		builder.directory(baseDirectory);

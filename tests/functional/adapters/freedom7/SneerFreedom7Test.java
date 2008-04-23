@@ -2,6 +2,8 @@ package functional.adapters.freedom7;
 
 import java.io.File;
 
+import org.apache.commons.lang.SystemUtils;
+
 import functional.SovereignCommunity;
 import functional.SovereignParty;
 import functional.adapters.SneerCommunity;
@@ -23,8 +25,6 @@ public class SneerFreedom7Test extends Freedom7Test {
 
 	@Override
 	protected File askSourceFolder() {
-		String filename = System.getProperty("user.dir") + "/tests/functional/freedom7/test-resources/bricks/source"; //sneer/bricks/sample/Sample.java
-		File result = new File(filename);
-		return result;
+		return new File(SystemUtils.getUserDir(), "/tests/functional/freedom7/test-resources/bricks/source");
 	}
 }

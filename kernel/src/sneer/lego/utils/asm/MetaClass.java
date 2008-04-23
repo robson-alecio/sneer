@@ -14,14 +14,22 @@ public class MetaClass extends EmptyVisitor {
 	
 	private String _className;
 	
+	private String _packageName;
+	
 	private File _classFile;
-
+	
+	private String[] _interfaces;
+	
 	public MetaClass(File classFile) {
 		_classFile = classFile;
 	}
 
 	public String getName() {
 		return _className;
+	}
+
+	public String getPackageName() {
+		return _packageName;
 	}
 
 	public File classFile() {
@@ -40,12 +48,16 @@ public class MetaClass extends EmptyVisitor {
 	public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
 		_isInterface = (access & Opcodes.ACC_INTERFACE) != 0;
 		_className = name.replaceAll("/", ".");
+		_packageName = _className.substring(0, _className.lastIndexOf("."));
+		_interfaces = interfaces;
+	}
+
+	public boolean isAssignanbleTo(Class<?> clazz) {
+		throw new wheel.lang.exceptions.NotImplementedYet();
 	}
 
 	@Override
 	public String toString() {
 		return _className +" @" + _classFile;
 	}
-	
-	
 }

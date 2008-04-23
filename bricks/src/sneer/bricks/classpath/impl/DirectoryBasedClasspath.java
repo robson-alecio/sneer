@@ -79,8 +79,8 @@ class DirectoryBasedClasspath extends ClasspathSupport {
 	}
 
 	private List<File> classFiles() {
-		SimpleFilter walker = new JavaFilter(_rootFolder);
-		List<File> classFiles = walker.list();
+		JavaFilter walker = new JavaFilter(_rootFolder);
+		List<File> classFiles = walker.listFiles();
 		return classFiles;
 	}
 

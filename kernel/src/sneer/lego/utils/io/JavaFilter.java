@@ -14,6 +14,8 @@ import sneer.lego.utils.asm.MetaClass;
  */
 public class JavaFilter extends SimpleFilter {
 
+	private List<MetaClass> _cache;
+	
 	public JavaFilter(File root) {
 		super(root, JAVA_CLASS_FILE_FILTER);
 	}
@@ -32,7 +34,20 @@ public class JavaFilter extends SimpleFilter {
 
 	@SuppressWarnings("unchecked")
 	public List<MetaClass> listMetaClasses() {
-		List<MetaClass> result = new ArrayList<MetaClass>();
-		return (List<MetaClass>) walkAndCollect(result);
+		if(_cache != null) {
+			return _cache;
+		}
+		_cache = (List<MetaClass>) walkAndCollect(new ArrayList<MetaClass>());
+		return _cache; 
 	}
+
+	public List<File> listFiles() {
+		List<File> result = new ArrayList<File>();
+		List<MetaClass> metaClasses = listMetaClasses();
+		for (MetaClass metaClass : metaClasses) {
+			result.add(metaClass.classFile());
+		}
+		return result;
+	}
+
 }

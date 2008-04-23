@@ -30,9 +30,9 @@ public abstract class Freedom2Test extends SovereignFunctionalTest {
 
 		_a.giveNicknameTo(_b, "Bruno");
 		_b.giveNicknameTo(_a, "Aninha");
-		_a.giveNicknameTo(_c, "Carla");
-		_c.giveNicknameTo(_a, "Ana");
-		_c.giveNicknameTo(_d, "Dedé");
+//		_a.giveNicknameTo(_c, "Carla");
+//		_c.giveNicknameTo(_a, "Ana");
+//		_c.giveNicknameTo(_d, "Dedé");
 		
 		waitForValue("Bruno Barros", _a.navigateAndGetName("Bruno"));
 		waitForValue("Ana Almeida", _b.navigateAndGetName("Carla Costa/Ana"));

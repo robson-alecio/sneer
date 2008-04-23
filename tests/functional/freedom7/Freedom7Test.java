@@ -22,8 +22,7 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 		BrickPublisher receiver = wrapParty(_b);
 
 		File sourceFolder = askSourceFolder();
-		BrickPublished brick = publisher.publishBrick(sourceFolder);
-		brick.toString();
+		publisher.publishBrick(sourceFolder);
 		//estimular signal tree local
 		
 		receiver.bidirectionalConnectTo(publisher);

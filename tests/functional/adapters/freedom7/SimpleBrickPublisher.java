@@ -8,7 +8,6 @@ import sneer.lego.Inject;
 import wheel.reactive.Signal;
 import functional.SovereignParty;
 import functional.adapters.SelfInject;
-import functional.freedom7.BrickPublished;
 import functional.freedom7.BrickPublisher;
 
 public class SimpleBrickPublisher implements BrickPublisher {
@@ -30,13 +29,9 @@ public class SimpleBrickPublisher implements BrickPublisher {
 	}
 
 	@Override
-	public BrickPublished publishBrick(File sourceDirectory) {
-		BrickBundle brickFile = _deployer.pack(sourceDirectory);
-		
-		if(brickFile != null)
-			brickFile.toString();
-			
-		throw new wheel.lang.exceptions.NotImplementedYet();
+	public void publishBrick(File sourceDirectory) {
+		BrickBundle brickBundle = _deployer.pack(sourceDirectory);
+		_deployer.deploy(brickBundle);
 	}
 
 		@Override

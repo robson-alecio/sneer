@@ -6,7 +6,7 @@ import functional.SovereignParty;
 
 public interface BrickPublisher extends SovereignParty {
 	
-	BrickPublished publishBrick(File sourceDirectory);
+	void publishBrick(File sourceDirectory);
 
 	void meToo(String interface1);
 

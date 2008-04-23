@@ -16,9 +16,10 @@ import sneer.bricks.classpath.ClasspathFactory;
 import sneer.bricks.compiler.Compiler;
 import sneer.bricks.compiler.Result;
 import sneer.bricks.config.SneerConfig;
-import sneer.bricks.deployer.BrickBundle;
+import sneer.bricks.deployer.BrickFile;
 import sneer.bricks.deployer.Deployer;
 import sneer.bricks.deployer.DeployerException;
+import sneer.bricks.deployer.BrickBundle;
 import sneer.bricks.log.Logger;
 import sneer.lego.Brick;
 import sneer.lego.Inject;
@@ -27,8 +28,6 @@ import wheel.lang.exceptions.NotImplementedYet;
 
 public class DeployerImpl implements Deployer {
 
-	private boolean SYSOUT = false;
-	
 	@Inject
 	private SneerConfig _config;
 	
@@ -55,7 +54,17 @@ public class DeployerImpl implements Deployer {
 	}
 
 	@Override
-	public void deploy(BrickBundle brick) {
+	public void deploy(BrickBundle brickBundle) {
+		log.info("Deploying BrickBundle");
+		List<String> brickNames = brickBundle.brickNames();
+		for (String brickName : brickNames) {
+			BrickFile brick = brickBundle.brick(brickName);
+			deploy(brick);
+		}
+	}
+
+	private void deploy(BrickFile brick) {
+		log.debug("Deploying brick: "+brick.getName());
 		throw new NotImplementedYet();
 	}
 
@@ -74,6 +83,8 @@ public class DeployerImpl implements Deployer {
 		 * 5. generate brick-api.jar and brick-impl.jar
 		 * 
 		 */
+
+		SetBrickBundle result = new SetBrickBundle();
 		File workDirectory = createWorkDirectory();
 		SourceMeta meta = loadSourceMetaFromFile(path);
 		//Classpath bootstrap = _cpFactory.newClasspath();
@@ -84,35 +95,26 @@ public class DeployerImpl implements Deployer {
 		Classpath api = compileInterfaces(workDirectory, meta);
 		List<Class<Brick>> brickInterfaces = findBrickInterfaces(api);
 		List<JarFile> jarFiles = generateApiJars(brickInterfaces, workDirectory, api);
-		//Fix: deploy jar files
-		if(SYSOUT) {
-			for (JarFile jarFile : jarFiles) {
-				System.out.println("TODO: deploy "+jarFile.getName());
-			}
-		}
+		for (JarFile jarFile : jarFiles) 
+			result.add(jarFile);
 		
 		/*
 		 * IMPL
 		 */
 		jarFiles = compileBricksAndGenerateJars(brickInterfaces, meta, api);
-		//Fix: deploy jar files
-		if(SYSOUT) {
-			for (JarFile jarFile : jarFiles) {
-				System.out.println("TODO: deploy "+jarFile.getName());
-			}
-		}
+		for (JarFile jarFile : jarFiles) 
+			result.add(jarFile);
 		
-		return null;
-
+		return result;
 	}
 
 	private List<JarFile> compileBricksAndGenerateJars(List<Class<Brick>> brickInterfaces, SourceMeta meta, Classpath api) {
 		List<JarFile> result = new ArrayList<JarFile>();
 		
 		Map<File,List<File>> brickFilesByDirectory = meta.implByBrick();
-		int i = 0;
 		Classpath sneerApi = _cpFactory.sneerApi();
 		Classpath cp = sneerApi.compose(api);
+		int i = 0;
 		for (File brickImplDir : brickFilesByDirectory.keySet()) {
 			File workDirectory = createWorkDirectory("impl-"+(i++));
 			List<File> sourceFilesInBrick = brickFilesByDirectory.get(brickImplDir);
@@ -128,7 +130,7 @@ public class DeployerImpl implements Deployer {
 			Classpath impl = _cpFactory.fromDirectory(workDirectory);
 			log.info("Searching single brick inside {}",workDirectory);
 			Class<Brick> brickClass = findSingleBrickImpl(impl);
-			String brickName = null;
+			String brickName = brickNameFromImpl(brickClass, brickInterfaces);
 			File path = impl.relativeFile(brickClass);
 			try {
 				JarFile jarFile = runJarTool(brickName+"-IMPL", workDirectory, path.getParentFile());
@@ -138,6 +140,14 @@ public class DeployerImpl implements Deployer {
 			}
 		}
 		return result;
+	}
+
+	private String brickNameFromImpl(Class<Brick> brickClass, List<Class<Brick>> brickInterfaces) {
+		for(Class<Brick> brickInterface : brickInterfaces) {
+			if(brickInterface.isAssignableFrom(brickClass))
+				return brickInterface.getName();
+		}
+		throw new DeployerException("Can't find suitable brick name for: "+ brickClass.getName());
 	}
 
 	private Class<Brick> findSingleBrickImpl(Classpath classpath) {
@@ -225,7 +235,7 @@ public class DeployerImpl implements Deployer {
 
 		//FixUrgent: remove dependency from jdk by not calling the jar tool
 		
-		if(SYSOUT) {
+		if(false) {
 			System.out.println("Running jar tool");
 			System.out.println("\tjarName: "+jarName);
 			System.out.println("\tbaseDirectory: "+baseDirectory);

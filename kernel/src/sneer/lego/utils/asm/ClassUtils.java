@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.lang.SystemUtils;
 import org.objectweb.asm.ClassReader;
 
 public class ClassUtils {
@@ -17,4 +18,17 @@ public class ClassUtils {
 		is.close();
 		return visitor;
 	}
+
+	public static MetaClass metaClass(Class<?> clazz) throws IOException {
+		return ClassUtils.metaClass(toFile(clazz));
+	}
+	
+	/**
+	 * Used for testing only
+	 */
+	public static File toFile(Class<?> clazz) {
+		File classFile = new File(SystemUtils.getUserDir(), "bin/"+clazz.getName().replaceAll("\\.", "/") + ".class");
+		return classFile;
+	}
+
 }

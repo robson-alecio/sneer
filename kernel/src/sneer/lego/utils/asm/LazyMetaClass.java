@@ -13,7 +13,7 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.commons.EmptyVisitor;
 
-class LazyMetaClass extends EmptyVisitor implements IMetaClass {
+class LazyMetaClass extends EmptyVisitor implements MetaClass {
 
 	private boolean _isInterface;
 	

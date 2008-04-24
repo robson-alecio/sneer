@@ -11,19 +11,19 @@ import org.objectweb.asm.ClassWriter;
 
 import sneer.lego.impl.classloader.enhancer.Enhancer;
 import sneer.lego.impl.classloader.enhancer.MakeSerializable;
-import sneer.lego.utils.asm.IMetaClass;
+import sneer.lego.utils.asm.MetaClass;
 
 public class FileClassLoader extends SecureClassLoader {
 
-	private List<IMetaClass> _metaClasses;
+	private List<MetaClass> _metaClasses;
 	
 	private String _name;
 	
 	private Enhancer _enhancer;
 	
-	private Map<String, IMetaClass> _hash;
+	private Map<String, MetaClass> _hash;
 
-	public FileClassLoader(String name, List<IMetaClass> files, ClassLoader parent) {
+	public FileClassLoader(String name, List<MetaClass> files, ClassLoader parent) {
 		super(parent);
 		_name = name;
 		_metaClasses = files;
@@ -31,10 +31,10 @@ public class FileClassLoader extends SecureClassLoader {
 		_enhancer = new MakeSerializable();
 	}
 	
-	private Map<String, IMetaClass> computeHash(List<IMetaClass> metaClasses)
+	private Map<String, MetaClass> computeHash(List<MetaClass> metaClasses)
     {
-	    Map<String, IMetaClass> result = new HashMap<String, IMetaClass>();
-	    for(IMetaClass meta : metaClasses) {
+	    Map<String, MetaClass> result = new HashMap<String, MetaClass>();
+	    for(MetaClass meta : metaClasses) {
 	        String futureName = meta.futureClassName();
 	        result.put(futureName, meta);
 	    }
@@ -65,7 +65,7 @@ public class FileClassLoader extends SecureClassLoader {
 
 	@Override
 	protected Class<?> findClass(String name) throws ClassNotFoundException {
-	    IMetaClass meta = _hash.get(name);
+	    MetaClass meta = _hash.get(name);
 	    if(meta == null)
 	        throw new ClassNotFoundException("Class not found "+name);
 	    
@@ -95,7 +95,7 @@ public class FileClassLoader extends SecureClassLoader {
 
 	public void debug() {
 		System.out.println(" ** "+_name+" ** ");
-		for(IMetaClass metaClass : _metaClasses) {
+		for(MetaClass metaClass : _metaClasses) {
 			System.out.println(" "+metaClass.getName());
 		}
 	}

@@ -3,7 +3,7 @@ package sneer.lego.utils.asm;
 import java.io.File;
 import java.io.IOException;
 
-public interface IMetaClass {
+public interface MetaClass {
 
     String getName();
 

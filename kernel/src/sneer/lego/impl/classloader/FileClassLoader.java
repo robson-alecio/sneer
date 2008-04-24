@@ -70,10 +70,10 @@ public class FileClassLoader extends SecureClassLoader {
 	        throw new ClassNotFoundException("Class not found "+name);
 	    
 	    try {
-            return defineClass(name, meta.bytes());
-        } catch (IOException e) {
-            throw new ClassNotFoundException("Error reading bytes from "+meta.classFile().getName());
-        }
+		return defineClass(name, meta.bytes());
+	    } catch (IOException e) {
+		throw new ClassNotFoundException("Error reading bytes from "+meta.classFile().getName());
+	    }
 	}
 
 	private Class<?> defineClass(String name, byte[] byteArray) {

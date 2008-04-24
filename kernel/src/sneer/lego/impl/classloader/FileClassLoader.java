@@ -2,31 +2,46 @@ package sneer.lego.impl.classloader;
 
 import java.io.IOException;
 import java.security.SecureClassLoader;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
 import sneer.lego.impl.classloader.enhancer.Enhancer;
 import sneer.lego.impl.classloader.enhancer.MakeSerializable;
-import sneer.lego.utils.asm.MetaClass;
+import sneer.lego.utils.asm.IMetaClass;
 
 public class FileClassLoader extends SecureClassLoader {
 
-	private List<MetaClass> _metaClasses;
+	private List<IMetaClass> _metaClasses;
 	
 	private String _name;
 	
 	private Enhancer _enhancer;
+	
+	private Map<String, IMetaClass> _hash;
 
-	public FileClassLoader(String name, List<MetaClass> files, ClassLoader parent) {
+	public FileClassLoader(String name, List<IMetaClass> files, ClassLoader parent) {
 		super(parent);
 		_name = name;
 		_metaClasses = files;
+		_hash = computeHash(_metaClasses);
 		_enhancer = new MakeSerializable();
 	}
 	
-	@Override
+	private Map<String, IMetaClass> computeHash(List<IMetaClass> metaClasses)
+    {
+	    Map<String, IMetaClass> result = new HashMap<String, IMetaClass>();
+	    for(IMetaClass meta : metaClasses) {
+	        String futureName = meta.futureClassName();
+	        result.put(futureName, meta);
+	    }
+	    return result;
+    }
+
+    @Override
 	protected synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
 		// First, check if the class has already been loaded
 		ClassLoader parent = getParent();
@@ -48,21 +63,17 @@ public class FileClassLoader extends SecureClassLoader {
 		return c;
 	}
 
-
-
 	@Override
 	protected Class<?> findClass(String name) throws ClassNotFoundException {
-		for(MetaClass metaClass : _metaClasses) {
-			try {
-				if(metaClass.getName().equals(name)) {
-					return defineClass(name, metaClass.bytes());
-				}
-			} catch (IOException ignored) {
-				//not what we want
-				ignored.printStackTrace();
-			}
-		}
-		throw new ClassNotFoundException("Class not found "+name);
+	    IMetaClass meta = _hash.get(name);
+	    if(meta == null)
+	        throw new ClassNotFoundException("Class not found "+name);
+	    
+	    try {
+            return defineClass(name, meta.bytes());
+        } catch (IOException e) {
+            throw new ClassNotFoundException("Error reading bytes from "+meta.classFile().getName());
+        }
 	}
 
 	private Class<?> defineClass(String name, byte[] byteArray) {
@@ -71,10 +82,9 @@ public class FileClassLoader extends SecureClassLoader {
 	}
 
 	private byte[] enhance(byte[] byteArray) {
-		final ClassReader reader = new ClassReader(byteArray);
-		final ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
+	    ClassReader reader = new ClassReader(byteArray);
+		ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
 		reader.accept(_enhancer.enhance(writer), 0);
-
 		return writer.toByteArray();
 	}
 
@@ -85,7 +95,7 @@ public class FileClassLoader extends SecureClassLoader {
 
 	public void debug() {
 		System.out.println(" ** "+_name+" ** ");
-		for(MetaClass metaClass : _metaClasses) {
+		for(IMetaClass metaClass : _metaClasses) {
 			System.out.println(" "+metaClass.getName());
 		}
 	}

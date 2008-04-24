@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
-import sneer.lego.utils.asm.MetaClass;
+import sneer.lego.utils.asm.IMetaClass;
 
 
 public class BrickImplFilter extends JavaFilter {
@@ -15,7 +15,7 @@ public class BrickImplFilter extends JavaFilter {
 
 	@SuppressWarnings("unused")
 	@Override
-	protected void handleClass(MetaClass metaClass, int depth, Collection<MetaClass> results) throws IOException {
+	protected void handleClass(IMetaClass metaClass, int depth, Collection<IMetaClass> results) throws IOException {
 		File parentFile = metaClass.classFile().getParentFile();
 		if(parentFile.getName().equals("impl") /* && !metaClass.isInterface() */)
 			results.add(metaClass);

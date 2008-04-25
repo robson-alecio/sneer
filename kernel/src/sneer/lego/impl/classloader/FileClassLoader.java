@@ -11,7 +11,7 @@ import org.objectweb.asm.ClassWriter;
 
 import sneer.lego.impl.classloader.enhancer.Enhancer;
 import sneer.lego.impl.classloader.enhancer.MakeSerializable;
-import sneer.lego.utils.asm.MetaClass;
+import sneer.lego.utils.metaclass.MetaClass;
 
 public class FileClassLoader extends SecureClassLoader {
 

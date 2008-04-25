@@ -1,4 +1,4 @@
-package sneer.lego.utils.asm;
+package sneer.lego.utils.metaclass;
 
 
 public class MetaClassException

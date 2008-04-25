@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import sneer.lego.utils.asm.ClassUtils;
-import sneer.lego.utils.asm.MetaClass;
+import sneer.lego.utils.metaclass.ClassUtils;
+import sneer.lego.utils.metaclass.MetaClass;
 
 /**
  * Includes all class files outside hidden directories

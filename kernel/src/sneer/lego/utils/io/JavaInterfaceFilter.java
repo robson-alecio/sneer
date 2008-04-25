@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
-import sneer.lego.utils.asm.MetaClass;
+import sneer.lego.utils.metaclass.MetaClass;
 
 
 public class JavaInterfaceFilter extends JavaFilter {

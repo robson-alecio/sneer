@@ -1,13 +1,13 @@
-package sneer.lego.utils.asm.tests;
+package sneer.lego.utils.metaclass.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import sneer.lego.utils.asm.ClassUtils;
-import sneer.lego.utils.asm.MetaClass;
-import sneer.lego.utils.asm.tests.bean.Bean;
+import sneer.lego.utils.metaclass.ClassUtils;
+import sneer.lego.utils.metaclass.MetaClass;
+import sneer.lego.utils.metaclass.tests.bean.Bean;
 
 public class MetaClassTest {
 

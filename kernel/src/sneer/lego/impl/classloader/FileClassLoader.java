@@ -6,11 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassWriter;
-
-import sneer.lego.impl.classloader.enhancer.Enhancer;
-import sneer.lego.impl.classloader.enhancer.MakeSerializable;
+import sneer.lego.impl.classloader.enhancer.ByteCodeGuardian;
+import sneer.lego.impl.classloader.enhancer.EnhancingByteCodeGuardian;
 import sneer.lego.utils.metaclass.MetaClass;
 
 public class FileClassLoader extends SecureClassLoader {
@@ -19,16 +16,15 @@ public class FileClassLoader extends SecureClassLoader {
 
 	private String _name;
 
-	private Enhancer _enhancer;
-
 	private Map<String, MetaClass> _hash;
+	
+	private ByteCodeGuardian _guardian = EnhancingByteCodeGuardian.instance();
 
 	public FileClassLoader(String name, List<MetaClass> files, ClassLoader parent) {
 		super(parent);
 		_name = name;
 		_metaClasses = files;
 		_hash = computeHash(_metaClasses);
-		_enhancer = new MakeSerializable();
 	}
 
 	private Map<String, MetaClass> computeHash(List<MetaClass> metaClasses) {
@@ -76,16 +72,10 @@ public class FileClassLoader extends SecureClassLoader {
 	}
 
 	private Class<?> defineClass(String name, byte[] byteArray) {
-		byteArray = enhance(byteArray);
+		byteArray = _guardian.enhance(name, byteArray);
 		return defineClass(name, byteArray, 0, byteArray.length);
 	}
 
-	private byte[] enhance(byte[] byteArray) {
-		ClassReader reader = new ClassReader(byteArray);
-		ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
-		reader.accept(_enhancer.enhance(writer), 0);
-		return writer.toByteArray();
-	}
 
 	@Override
 	public String toString() {

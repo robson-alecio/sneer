@@ -15,6 +15,8 @@ public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 
 	private ClassLoader _sneerApi;
 	
+	private JavaFilter _filter;
+	
 	private static final ClassLoaderFactory INSTANCE = new EclipseClassLoaderFactory();
 	
 	private EclipseClassLoaderFactory() {};
@@ -26,9 +28,11 @@ public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 	@Override
 	public ClassLoader brickClassLoader(String impl, URL ignored) {
 		ClassLoader parent = sneerApi();
-		File targetDirectory = eclipseTargetDirectory();
-		JavaFilter walker = new BrickImplFilter(targetDirectory);
-		return createFileClassLoader("brick class loader: "+impl, walker, parent);
+		if(_filter == null) {
+			File targetDirectory = eclipseTargetDirectory();
+			_filter = new BrickImplFilter(targetDirectory);
+		}
+		return createFileClassLoader("brick class loader: "+impl, _filter, parent);
 	}
 
 	@Override

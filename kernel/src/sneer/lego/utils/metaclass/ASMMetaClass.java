@@ -11,9 +11,6 @@ import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.commons.EmptyVisitor;
 
-/**
- * @deprecated really slow
- */
 class ASMMetaClass extends MetaClassSupport {
 
 	private boolean _loaded = false;

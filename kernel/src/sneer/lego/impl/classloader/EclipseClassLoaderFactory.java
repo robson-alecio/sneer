@@ -7,9 +7,7 @@ import org.apache.commons.lang.SystemUtils;
 
 import sneer.lego.ClassLoaderFactory;
 import sneer.lego.utils.io.BrickImplFilter;
-import sneer.lego.utils.io.BrickInterfaceFilter;
 import sneer.lego.utils.io.JavaFilter;
-import wheel.io.Jars;
 
 public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 
@@ -49,12 +47,12 @@ public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 		return this.getClass().getClassLoader();
 	}
 	
-	private ClassLoader buildSneerApiForTargetDirectory() {
-		ClassLoader parent = Jars.bootstrapClassLoader();
-		File targetDirectory = eclipseTargetDirectory();
-		JavaFilter walker = new BrickInterfaceFilter(targetDirectory);
-		return createFileClassLoader("api class loader", walker, /* this.getClass().getClassLoader() */ parent);
-	}
+//	private ClassLoader buildSneerApiForTargetDirectory() {
+//		ClassLoader parent = Jars.bootstrapClassLoader();
+//		File targetDirectory = eclipseTargetDirectory();
+//		JavaFilter walker = new BrickInterfaceFilter(targetDirectory);
+//		return createFileClassLoader("api class loader", walker, /* this.getClass().getClassLoader() */ parent);
+//	}
 
 	private ClassLoader createFileClassLoader(String name, JavaFilter walker, ClassLoader parent) {
 		FileClassLoader result = new FileClassLoader(name, walker.listMetaClasses(), parent);

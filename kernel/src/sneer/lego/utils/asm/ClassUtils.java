@@ -9,7 +9,8 @@ public class ClassUtils {
     private static final File _defaultRootDirectoryUnderEclipse = new File(SystemUtils.getUserDir(), "bin");
     
 	public static MetaClass metaClass(File rootDirectory, File classFile) {
-	    return new LazyMetaClass(rootDirectory, classFile);
+	    return new SimpleMetaClass(rootDirectory, classFile);
+		//return new LazyMetaClass(rootDirectory, classFile);
 	}
 
 	public static MetaClass metaClass(Class<?> clazz) {

@@ -34,8 +34,8 @@ public class FileClassLoader extends SecureClassLoader {
 	private Map<String, MetaClass> computeHash(List<MetaClass> metaClasses) {
 		Map<String, MetaClass> result = new HashMap<String, MetaClass>();
 		for (MetaClass meta : metaClasses) {
-			String futureName = meta.futureClassName();
-			result.put(futureName, meta);
+			String className = meta.getName();
+			result.put(className, meta);
 		}
 		return result;
 	}

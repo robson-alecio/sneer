@@ -6,9 +6,6 @@ import java.io.IOException;
 public interface MetaClass {
 
     String getName();
-
-    /* class name derived from classFile and root directory, not from bytecodes */
-    String futureClassName();
     
     String getPackageName();
 

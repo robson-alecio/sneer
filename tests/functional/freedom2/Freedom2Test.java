@@ -4,13 +4,17 @@ import org.junit.Test;
 
 import wheel.reactive.Signal;
 import functional.SovereignFunctionalTest;
+import functional.SovereignParty;
 import functional.TestDashboard;
 
 public abstract class Freedom2Test extends SovereignFunctionalTest {
 
-
-	@Test (timeout = 3000)
+	
+	@Test (timeout = 1000)
 	public void testRemoteNameChange() {
+
+		waitForValue("Ana Almeida", _b.navigateAndGetName("Ana Almeida"));
+
 		waitForValue("Bruno Barros", _a.navigateAndGetName("Bruno Barros"));
 
 		_b.setOwnName("B. Barros");
@@ -18,6 +22,7 @@ public abstract class Freedom2Test extends SovereignFunctionalTest {
 
 		_b.setOwnName("Dr Barros");
 		waitForValue("Dr Barros", _a.navigateAndGetName("Bruno Barros"));
+
 	}
 
 	
@@ -26,13 +31,19 @@ public abstract class Freedom2Test extends SovereignFunctionalTest {
 		if (!TestDashboard.newTestsShouldRun()) return;
 		
 		waitForValue("Bruno Barros", _a.navigateAndGetName("Bruno Barros"));
-		waitForValue("Ana Almeida", _b.navigateAndGetName("Ana Almeida"));
+
+		SovereignParty c = _community.createParty("Carla Costa");
+		SovereignParty d = _community.createParty("Denis Dalton");
+		
+		_a.bidirectionalConnectTo(c);
+		_b.bidirectionalConnectTo(c);
+		c.bidirectionalConnectTo(d);
 
 		_a.giveNicknameTo(_b, "Bruno");
 		_b.giveNicknameTo(_a, "Aninha");
-//		_a.giveNicknameTo(_c, "Carla");
-//		_c.giveNicknameTo(_a, "Ana");
-//		_c.giveNicknameTo(_d, "Dedé");
+		_a.giveNicknameTo(c, "Carla");
+		c.giveNicknameTo(_a, "Ana");
+		c.giveNicknameTo(d, "Dedé");
 		
 		waitForValue("Bruno Barros", _a.navigateAndGetName("Bruno"));
 		waitForValue("Ana Almeida", _b.navigateAndGetName("Carla Costa/Ana"));

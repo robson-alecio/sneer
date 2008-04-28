@@ -81,9 +81,9 @@ class PeerImpl implements Peer, Crashable {
 	private <T> Register<T> produceRegisterFor(String remoteSignalPath) {
 		Register<Object> register = _registersByRemotePath.get(remoteSignalPath);
 		if (register == null) {
-			subscribeTo(remoteSignalPath); 
 			register = new RegisterImpl<Object>(null);
 			_registersByRemotePath.put(remoteSignalPath, register);
+			subscribeTo(remoteSignalPath); 
 		}
 		return Casts.uncheckedGenericCast(register);
 	}
@@ -125,6 +125,11 @@ class PeerImpl implements Peer, Crashable {
 
 	void handleNotification(String signalPath, Object newValue) {
 		_registersByRemotePath.get(signalPath).setter().consume(newValue);
+	}
+
+	@Override
+	public <T> Peer navigateTo(String nickname) {
+		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
 

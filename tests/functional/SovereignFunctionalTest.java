@@ -10,8 +10,6 @@ public abstract class SovereignFunctionalTest {
 	
 	protected SovereignParty _a;
 	protected SovereignParty _b;
-	protected SovereignParty _c;
-	protected SovereignParty _d;
 	
 	@Before
 	public void initNewCommunity() {
@@ -24,13 +22,8 @@ public abstract class SovereignFunctionalTest {
 		
 		_a = _community.createParty("Ana Almeida");
 		_b = _community.createParty("Bruno Barros");
-//		_c = _community.createParty("Carla Costa");
-//		_d = _community.createParty("Denis Dalton");
 		
 		_a.bidirectionalConnectTo(_b);
-//		_a.bidirectionalConnectTo(_c);
-//		_b.bidirectionalConnectTo(_c);
-//		_c.bidirectionalConnectTo(_d);
 	
 	}
 

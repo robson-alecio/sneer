@@ -124,12 +124,20 @@ public class SneerParty extends SelfInject implements SovereignParty {
     public Signal<String> navigateAndGetName(String nicknamePath) {
 		String[] path = nicknamePath.split("/");
 		
-		if (path.length > 1)
-			throw new NotImplementedYet();
+		Peer peer = _me;
+		for (String nickname : path)
+			peer = navigate(peer, nickname);
 		
-		Peer peer = _me.navigateTo(path[0]);
 		return peer.signal("Name");
     }
+
+	private Peer navigate(Peer peer, String nickname) {
+		try {
+			return peer.navigateTo(nickname);
+		} catch (IllegalParameter e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 
     private int port() {

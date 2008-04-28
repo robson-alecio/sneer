@@ -10,6 +10,8 @@ import sneer.bricks.mesh.Peer;
 import sneer.lego.Inject;
 import sneer.lego.Injector;
 import sneer.lego.Startable;
+import wheel.lang.exceptions.IllegalParameter;
+import wheel.reactive.Signal;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
 public class MeImpl implements Me, Startable {
@@ -53,15 +55,9 @@ public class MeImpl implements Me, Startable {
 	}
 
 	@Override
-	public <T> Peer navigateTo(String nicknamePath) {
-		String[] path = nicknamePath.split("/", 1);
-		String head = path[0];
-//		String tail = path.length > 1
-//			? path[1]
-//			: "";
-			
-		Contact contact = _contactManager.contactGiven(head);
-		if (contact == null) return null;
+	public <T> Peer navigateTo(String nickname) throws IllegalParameter {
+		Contact contact = _contactManager.contactGiven(nickname);
+		if (contact == null) throw new IllegalParameter("Nickname not found: " + nickname);
 		
 		return producePeerFor(contact);
 	}
@@ -75,5 +71,10 @@ public class MeImpl implements Me, Startable {
 			}
 			return proxy;
 		}
+	}
+
+	@Override
+	public <S> Signal<S> signal(String signalPath) {
+		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	}
 }

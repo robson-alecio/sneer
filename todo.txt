@@ -1,5 +1,5 @@
 ﻿Leandro
- - Test Performance - Study what the hell is going on :)
+ [DONE] - Test Performance - Study what the hell is going on :)
  - Brick Publish:
 	1) Inform source folder (src).
 	2) Inform library folder (lib).

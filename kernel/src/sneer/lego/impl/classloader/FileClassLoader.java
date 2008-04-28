@@ -65,17 +65,16 @@ public class FileClassLoader extends SecureClassLoader {
 			throw new ClassNotFoundException("Class not found " + name);
 
 		try {
-			return defineClass(name, meta.bytes());
+			return defineClass(meta);
 		} catch (IOException e) {
 			throw new ClassNotFoundException("Error reading bytes from " + meta.classFile().getName());
 		}
 	}
 
-	private Class<?> defineClass(String name, byte[] byteArray) {
-		byteArray = _guardian.enhance(name, byteArray);
-		return defineClass(name, byteArray, 0, byteArray.length);
+	private Class<?> defineClass(MetaClass meta) throws IOException {
+		byte[] byteArray = _guardian.enhance(meta);
+		return defineClass(meta.getName(), byteArray, 0, byteArray.length);
 	}
-
 
 	@Override
 	public String toString() {

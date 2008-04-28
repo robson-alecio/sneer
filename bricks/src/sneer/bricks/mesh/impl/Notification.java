@@ -10,7 +10,7 @@ class Notification implements Ambassador {
 		_newValue = newValue;
 	}
 
-	public void visit(PeerImpl peer) {
+	public void visit(DirectProxy peer) {
 		peer.handleNotification(_signalPath, _newValue);
 	}
 

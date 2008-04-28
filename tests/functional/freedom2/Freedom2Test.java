@@ -26,7 +26,7 @@ public abstract class Freedom2Test extends SovereignFunctionalTest {
 	}
 
 	
-	@Test //(timeout = 3000)
+	@Test //(timeout = 1000)
 	public void testNicknames() {
 		if (!TestDashboard.newTestsShouldRun()) return;
 		

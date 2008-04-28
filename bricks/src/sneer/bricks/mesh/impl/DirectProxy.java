@@ -1,15 +1,14 @@
 package sneer.bricks.mesh.impl;
 
 import java.io.NotSerializableException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import sneer.bricks.connection.Connection;
 import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.contacts.Contact;
-import sneer.bricks.mesh.Peer;
 import sneer.bricks.serialization.Serializer;
-import sneer.lego.Crashable;
 import sneer.lego.Inject;
 import sneer.lego.Injector;
 import spikes.legobricks.name.OwnNameKeeper;
@@ -20,7 +19,7 @@ import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 
-class PeerImpl implements Peer, Crashable {
+class DirectProxy extends AbstractParty {
 
 	@Inject
 	private ConnectionManager _connectionManager;
@@ -45,7 +44,7 @@ class PeerImpl implements Peer, Crashable {
 
 
 
-	PeerImpl(Injector injector, Contact contact) {
+	DirectProxy(Injector injector, Contact contact) {
 		injector.inject(this);
 		_connection = _connectionManager.connectionFor(contact);
 		_connection.setReceiver(new Omnivore<byte[]>(){public void consume(byte[] packetReceived) {
@@ -57,7 +56,7 @@ class PeerImpl implements Peer, Crashable {
 	private void receive(byte[] packetReceived) {
 		Object ambassador;
 		try {
-			ambassador = _serializer.deserialize(packetReceived, PeerImpl.class.getClassLoader());
+			ambassador = _serializer.deserialize(packetReceived, DirectProxy.class.getClassLoader());
 		} catch (ClassNotFoundException e) {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
@@ -112,7 +111,8 @@ class PeerImpl implements Peer, Crashable {
 		return register.output();   //Fix: Signal type mismatch between peers is possible. 
 	}
 
-	public void crash() {
+	@Override
+	void crash() {
 		_isCrashed = true;
 	}
 
@@ -128,7 +128,12 @@ class PeerImpl implements Peer, Crashable {
 	}
 
 	@Override
-	public <T> Peer navigateTo(String nickname) {
+	AbstractParty produceProxyFor(String nickname) {
+		return new RemoteProxy(this, nickname);
+	}
+
+	@Override
+	<S> Signal<S> signal(String signalPath, ArrayList<String> nicknamePath) {
 		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	}
 

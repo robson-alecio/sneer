@@ -9,13 +9,12 @@ import sneer.bricks.keymanager.ContactAlreadyHadAKey;
 import sneer.bricks.keymanager.KeyBelongsToOtherContact;
 import sneer.bricks.keymanager.KeyManager;
 import sneer.bricks.mesh.Me;
-import sneer.bricks.mesh.Peer;
+import sneer.bricks.mesh.Party;
 import sneer.bricks.network.Network;
 import sneer.lego.Inject;
 import spikes.legobricks.name.OwnNameKeeper;
 import spikes.legobricks.name.PortKeeper;
 import wheel.lang.exceptions.IllegalParameter;
-import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Signal;
 import functional.SovereignParty;
 
@@ -124,14 +123,14 @@ public class SneerParty extends SelfInject implements SovereignParty {
     public Signal<String> navigateAndGetName(String nicknamePath) {
 		String[] path = nicknamePath.split("/");
 		
-		Peer peer = _me;
+		Party peer = _me;
 		for (String nickname : path)
 			peer = navigate(peer, nickname);
 		
 		return peer.signal("Name");
     }
 
-	private Peer navigate(Peer peer, String nickname) {
+	private Party navigate(Party peer, String nickname) {
 		try {
 			return peer.navigateTo(nickname);
 		} catch (IllegalParameter e) {

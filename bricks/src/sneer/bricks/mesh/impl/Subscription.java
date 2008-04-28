@@ -8,7 +8,7 @@ public class Subscription implements Ambassador {
 		_signalPath = signalPath;
 	}
 
-	public void visit(PeerImpl peer) {
+	public void visit(DirectProxy peer) {
 		peer.serveSubscriptionTo(_signalPath);
 	}
 

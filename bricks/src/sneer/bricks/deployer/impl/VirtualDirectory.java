@@ -137,6 +137,7 @@ public class VirtualDirectory {
 		}
 	}
 
+	//FixUrgent: fix entry name for classes in subdirectories
  	private JarFile jar(List<File> files, String role) {
 		String brickName = brickName();
 		String jarName = brickName + "-" + role;

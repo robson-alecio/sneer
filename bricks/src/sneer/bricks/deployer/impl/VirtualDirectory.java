@@ -149,7 +149,11 @@ public class VirtualDirectory {
 			builder.add("sneer.meta", meta);
 
 			for(File file : files) {
-				String entryName = _path + File.separator + file.getName();
+				String middle = File.separator;
+				if(role.startsWith("impl")) {
+					middle = File.separator + "impl" + File.separator;
+				}
+				String entryName = _path + middle + file.getName();
 				builder.add(entryName, file);
 			}
 			return new JarFile(builder.close());

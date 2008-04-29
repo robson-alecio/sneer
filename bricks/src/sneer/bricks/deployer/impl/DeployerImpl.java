@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.JarFile;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.lang.StringUtils;
 
@@ -114,16 +115,27 @@ public class DeployerImpl implements Deployer {
 		 */
 
 		BrickBundle result = new BrickBundleImpl();
-		File workDirectory = createWorkDirectory();
-		SourceMeta meta = loadSourceMetaFromFile(path);
-		//Classpath bootstrap = _cpFactory.newClasspath();
+		SourceMeta meta = new SimpleSourceMeta(path);
 		
+		//move each brick to it's own work directory
+		List<BrickDirectory> brickFolders = meta.brickDirectories();
+		copyBrickSourcesToWorkDirectory(brickFolders);
+
 		/*
 		 * API 
 		 */
-		Classpath api = compileInterfaces(workDirectory, meta);
+		File apiDirectory = createWorkDirectory("api");
+		List<File> interfaceFiles = meta.interfaces();
+		Classpath api = compileInterfaces(apiDirectory, interfaceFiles);
+		grabCompiledClasses(brickFolders, apiDirectory);
 		List<Class<Brick>> brickInterfaces = findBrickInterfaces(api);
-		List<JarFile> jarFiles = generateApiJars(brickInterfaces, workDirectory, api);
+		List<JarFile> jarFiles = generateApiJars(brickFolders);
+		addToResult(result, jarFiles);
+		
+		if(true) throw new NotImplementedYet();
+
+		
+		jarFiles = generateApiJars(brickInterfaces, apiDirectory, api, interfaceFiles);
 		addToResult(result, jarFiles);
 		
 		/*
@@ -133,6 +145,41 @@ public class DeployerImpl implements Deployer {
 		addToResult(result, jarFiles);
 		
 		return result;
+	}
+
+	private List<JarFile> generateApiJars(List<BrickDirectory> brickFolders) {
+		List<JarFile> result = new ArrayList<JarFile>();
+		for (BrickDirectory brickFolder : brickFolders) {
+			try {
+				result.add(brickFolder.jarSrcApi());
+				result.add(brickFolder.jarBinaryApi());
+			} catch (IOException e) {
+				throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			}
+		}
+		return result;
+	}
+
+	private void grabCompiledClasses(List<BrickDirectory> brickFolders, File apiDirectory) {
+		for (BrickDirectory brickFolder : brickFolders) {
+			try {
+				brickFolder.grabCompiledClasses(apiDirectory);
+			} catch (IOException e) {
+				throw new DeployerException("Error grabing compiled classes from: "+apiDirectory,e);
+			}
+		}
+	}
+
+	private void copyBrickSourcesToWorkDirectory(List<BrickDirectory> brickFolders) {
+		int i = 0;
+		for (BrickDirectory brickFolder : brickFolders) {
+			File workDirectory = createWorkDirectory("brick-"+(i++));
+			try {
+				brickFolder.copyTo(workDirectory);
+			} catch (IOException e) {
+				throw new DeployerException("Error copying brick sources from: "+brickFolder.rootDirectory()+" to: "+workDirectory,e);
+			}
+		}
 	}
 
 	private void addToResult(BrickBundle result, List<JarFile> jarFiles) {
@@ -216,16 +263,17 @@ public class DeployerImpl implements Deployer {
 	/*
 	 * generate api jars.
 	 */
-	private List<JarFile> generateApiJars(List<Class<Brick>> brickInterfaces, File workDirectory, Classpath classpath) {
+	private List<JarFile> generateApiJars(List<Class<Brick>> brickInterfaces, File workDirectory, Classpath classpath, List<File> interfaceFiles) {
 		List<JarFile> result = new ArrayList<JarFile>(); 
 		for (Class<Brick> brickClass : brickInterfaces) {
 			String brickName = brickClass.getName();
 			File origin = classpath.absoluteFile(brickClass);
-			File path = classpath.relativeFile(brickClass);
+			File path = classpath.relativeFile(brickClass).getParentFile();
 			log.info("exporting brick api {} from: {}", brickName, origin.getParentFile());
+			//File sourceDirectory = findSource(brickName, interfaceFiles);
 			try {
-				JarFile jarFile = runJarTool(brickName,"API", workDirectory, path.getParentFile());
-				result.add(jarFile);
+				result.add(runJarTool(brickName,"API", workDirectory, path));
+				//result.add(runJarTool(brickName,"API-SRC", sourceDirectory, path));
 			} catch (Exception e) {
 				throw new DeployerException("Can't package brick api "+brickName);
 			}
@@ -233,11 +281,22 @@ public class DeployerImpl implements Deployer {
 		return result;
 	}
 
+//	private File findSource(String brickName, List<File> interfaceFiles) {
+//		String brickNameAsPath = brickName.replaceAll("\\.", "/");
+//		for (File file : interfaceFiles) {
+//			String name = FilenameUtils.separatorsToUnix(file.getAbsolutePath());
+//			int index = name.indexOf(brickNameAsPath); 
+//			if(index > 0) {
+//				return new File(FilenameUtils.separatorsToSystem(name.substring(0, index)));
+//			}
+//		}
+//		throw new DeployerException("Can't find souce directory for brick api: "+brickName);
+//	}
+
 	/*
 	 * compile interfaces first. Forces clean separation
 	 */
-	private Classpath compileInterfaces(File workDirectory, SourceMeta meta) {
-		List<File> interfaces = meta.interfaces();
+	private Classpath compileInterfaces(File workDirectory, List<File> interfaces) {
 		Classpath sneerApi = _cpFactory.sneerApi();
 		Result compilationResult = _compiler.compile(interfaces, workDirectory, sneerApi);
 		if(!compilationResult.success()) {
@@ -247,13 +306,9 @@ public class DeployerImpl implements Deployer {
 		return result;
 	}
 
-	private File createWorkDirectory() {
-		return createWorkDirectory("api");
-	}
-
 	private File createWorkDirectory(String name) {
 		String fullname = _config.tmpDirectory() + "/sneer/bricks/compiler/work/" + name;
-		File workDirectory = new File(fullname);
+		File workDirectory = new File(FilenameUtils.separatorsToSystem(fullname));
 		if(!workDirectory.exists()) workDirectory.mkdirs();
 		try {
 			org.apache.commons.io.FileUtils.cleanDirectory(workDirectory);
@@ -261,10 +316,6 @@ public class DeployerImpl implements Deployer {
 			throw new DeployerException("Can't create work directory: "+name);
 		}
 		return workDirectory;
-	}
-
-	private SourceMeta loadSourceMetaFromFile(File path) {
-		return new SimpleSourceMeta(path);
 	}
 
 	//FixUrgent: remove dependency from jdk by not calling the jar tool

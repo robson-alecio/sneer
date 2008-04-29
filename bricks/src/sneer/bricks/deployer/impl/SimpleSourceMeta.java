@@ -1,12 +1,15 @@
 package sneer.bricks.deployer.impl;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
 
 import sneer.bricks.deployer.impl.parser.JavaSource;
 import sneer.bricks.deployer.impl.parser.JavaSourceParser;
@@ -16,8 +19,21 @@ public class SimpleSourceMeta implements SourceMeta {
 
 	private File _root;
 
+	private List<BrickDirectory> _brickDirectories = new ArrayList<BrickDirectory>();
+	
 	public SimpleSourceMeta(File root) {
 		_root = root;
+		prepare();
+	}
+
+	private void prepare() {
+		SimpleFilter filter = new ImplDirectoryFinder(_root, DirectoryFileFilter.INSTANCE);
+		List<File> implFolders = filter.list();
+		for (File folder : implFolders) {
+			File parent = folder.getParentFile();
+			String path = parent.getAbsolutePath().substring(_root.getAbsolutePath().length() + 1);
+			_brickDirectories.add(new BrickDirectory(parent, path));
+		}
 	}
 
 	@Override
@@ -25,8 +41,9 @@ public class SimpleSourceMeta implements SourceMeta {
 		return _root;
 	}
 
-	/*
-	private Map<File, List<File>> interfacesByBrick() {
+	
+	@Override
+	public Map<File, List<File>> interfacesByBrick() {
 		List<File> interfaces = interfaces();
 		Map<File, List<File>> result = new HashMap<File, List<File>>();
 		for (File file : interfaces) {
@@ -40,12 +57,15 @@ public class SimpleSourceMeta implements SourceMeta {
 		}
 		return result;
 	}
-	*/
+	
 
 	@Override
 	public List<File> interfaces() {
-		SimpleFilter walker = new MyInterfaceWalker(_root);
-		return walker.list();
+		List<File> result = new ArrayList<File>();
+		for (BrickDirectory brickFolder : _brickDirectories) {
+			result.addAll(brickFolder.api());
+		}
+		return result;
 	}
 
 	@Override
@@ -86,26 +106,33 @@ public class SimpleSourceMeta implements SourceMeta {
 		}
 		return findSuitableParent(parent);
 	}
+
+	@Override
+	public List<BrickDirectory> brickDirectories() {
+		return _brickDirectories;
+	}
 }
 
+class ImplDirectoryFinder extends SimpleFilter {
 
-class MyInterfaceWalker extends SimpleFilter {
-
-	public MyInterfaceWalker(File root) {
-		super(root, JAVA_SOURCE_FILE_FILTER);
+	public ImplDirectoryFinder(File root, FileFilter filter) {
+		super(root, filter);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
+	@Override
+	protected boolean handleDirectory(File directory, int depth, Collection results) throws IOException {
+		if("impl".equals(directory.getName())) {
+			results.add(directory);
+			return false;
+		}
+		return true;
+	}
+
+	@SuppressWarnings({ "unchecked", "unused" })
 	@Override
 	protected void handleFile(File file, int depth, Collection results) throws IOException {
-		JavaSource source = new JavaSourceParser(file).parse();
-		if(source.isInterface() /* && source.isAssignableTo(Brick.class) */)
-			results.add(file);
-	}
-	
-	@Override
-	protected String[] ignoreDirectoryNames() {
-		return new String[]{".", "impl"};
+		//ignore files
 	}
 }
 

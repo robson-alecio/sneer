@@ -10,8 +10,9 @@ public interface SourceMeta {
 
 	List<File> interfaces();
 
-	//Map<File,List<File>> interfacesByBrick();
+	Map<File,List<File>> interfacesByBrick();
 	
 	Map<File,List<File>> implByBrick();
 
+	List<BrickDirectory> brickDirectories();
 }

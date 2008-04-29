@@ -1,7 +1,8 @@
 package sneer.bricks.compiler;
 
-import java.io.File;
 import java.util.List;
+
+import sneer.lego.utils.metaclass.MetaClass;
 
 public interface Result {
 
@@ -13,5 +14,5 @@ public interface Result {
 
 	String getErrorString();
 
-	List<File> compiledClasses();
+	List<MetaClass> compiledClasses();
 }

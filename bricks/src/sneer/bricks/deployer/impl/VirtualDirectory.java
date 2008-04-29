@@ -9,32 +9,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.JarFile;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
+import sneer.bricks.deployer.impl.filters.ImplFinder;
 import sneer.bricks.deployer.impl.filters.InterfaceFinder;
 import sneer.lego.Brick;
 import sneer.lego.utils.JarBuilder;
 import sneer.lego.utils.io.SimpleFilter;
+import sneer.lego.utils.metaclass.MetaClass;
 
-public class BrickDirectory {
+public class VirtualDirectory {
 
-	
 	private String _brickName;
 	
 	private File _root;
-	
-	private File _srcFolder;
-
-	private File _binFolder;
 
 	private String _path;
 	
 	private List<File> _apiClassFiles = new ArrayList<File>();
 	
 	private List<File> _apiSourceFiles = new ArrayList<File>();
+	
+	private List<File> _implSourceFiles = new ArrayList<File>();
 
-	public BrickDirectory(File root, String path) {
+	public VirtualDirectory(File root, String path) {
 		_path = path;
 		_root = root;
 	}
@@ -47,57 +45,62 @@ public class BrickDirectory {
 		return _brickName;
 	}
 
-	public void copyTo(File target) throws IOException {
-		//System.out.println("Copying brick directory from: "+_root+" to: "+target);
-		_srcFolder = new File(target, "src"+File.separator+_path);
-		FileUtils.copyDirectory(_root, _srcFolder);
-		_root = target;
-	}
-
 	public List<File> api() {
 		if(_apiSourceFiles.size() > 0)
 			return _apiSourceFiles;
 		
-		SimpleFilter walker = new InterfaceFinder(_srcFolder);
+		SimpleFilter walker = new InterfaceFinder(_root);
 		_apiSourceFiles = walker.list(); 
 		return _apiSourceFiles;
 	}
 
-	public void grabCompiledClasses(File apiDirectory) throws IOException {
-		_binFolder = new File(_root, "bin");
-		File target = new File(_binFolder,_path);
+	public List<File> impl() {
+		if(_implSourceFiles.size() > 0)
+			return _implSourceFiles;
+		
+		SimpleFilter walker = new ImplFinder(_root);
+		_implSourceFiles = walker.list(); 
+		return _implSourceFiles;
+	}
+
+	public void grabCompiledClasses(List<MetaClass> classFiles) {
 		ClassLoader cl = classLoaderFromRootFolder();
 		List<File> sourceFiles = api();
 		for (File sourceFile : sourceFiles) {
-			String fileName = sourceFile.getName().replace(".java", ".class");
-			String className = _path + File.separator + fileName;
-			File classFile = new File(apiDirectory, className);
-			if(classFile.exists()) {
-				FileUtils.copyFileToDirectory(classFile, target);
-				_apiClassFiles.add(new File(target, fileName));
-				className = className.substring(0, className.indexOf(".class"));
-				
+			String className = toClassName(sourceFile);
+			File classFile = findClassFile(classFiles, className);
+			if(classFile != null) {
+				_apiClassFiles.add(classFile);
+
 				if(_brickName == null) 
 					tryBrickName(cl, className);
-				
-			} else {
-				FileUtils.deleteQuietly(sourceFile);
 			}
 		}
-		
+	}
+
+	private String toClassName(File sourceFile) {
+		String className = _path + File.separator + sourceFile.getName();
+		className = FilenameUtils.separatorsToUnix(className);
+		className = className.replaceAll("/", ".");
+		return className.substring(0, className.indexOf(".java"));
+	}
+
+	private File findClassFile(List<MetaClass> classFiles, String className) {
+		for(MetaClass metaClass : classFiles) {
+			if(className.equals(metaClass.getName()))
+				return metaClass.classFile();
+		}
+		return null;
 	}
 
 	private void tryBrickName(ClassLoader cl, String className) {
-		Class<?> c;
-		className = FilenameUtils.separatorsToUnix(className);
-		className = className.replaceAll("/", ".");
 		try {
-			c = cl.loadClass(className);
+			Class<?> c = cl.loadClass(className);
+			if(Brick.class.isAssignableFrom(c))
+				_brickName = className;
 		} catch (ClassNotFoundException e) {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		}
-		if(Brick.class.isAssignableFrom(c))
-			_brickName = className;
 	}
 
 	private ClassLoader classLoaderFromRootFolder() {
@@ -109,21 +112,36 @@ public class BrickDirectory {
 	}
 
 	public JarFile jarSrcApi() throws IOException {
-		
-		return jar(_apiSourceFiles, brickName()+"-src");
+		return jar(_apiSourceFiles, "api-src");
 	}
 
 	public JarFile jarBinaryApi() throws IOException {
-		return jar(_apiClassFiles, brickName());
+		return jar(_apiClassFiles, "api");
 	}
 	
-	private JarFile jar(List<File> files, String jarName) throws IOException {
+	private JarFile jar(List<File> files, String role) throws IOException {
+		String brickName = brickName();
+		String jarName = brickName + "-" + role;
 		File tmp = File.createTempFile(jarName+"-", ".jar");
 		JarBuilder builder = JarBuilder.builder(tmp.getAbsolutePath());
+
+		//sneer meta
+		String meta = sneerMeta(brickName, "1.0-SNAPSHOT", role);
+		builder.add("sneer.meta", meta);
+
 		for(File file : files) {
 			String entryName = _path + File.separator + file.getName();
 			builder.add(entryName, file);
 		}
 		return new JarFile(builder.close());
 	}
+
+	private String sneerMeta(String brickName, String version, String role) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("brick-name: ").append(brickName).append("\n");
+		builder.append("brick-version: ").append(version).append("\n");
+		builder.append("role: ").append(role).append("\n");
+		return builder.toString();
+	}
+
 }

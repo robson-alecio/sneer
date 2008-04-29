@@ -38,7 +38,7 @@ public class VirtualDirectoryFactoryImpl implements VirtualDirectoryFactory {
 	}
 
 	@Override
-	public List<VirtualDirectory> brickDirectories() {
+	public List<VirtualDirectory> virtualDirectories() {
 		return _brickDirectories;
 	}
 }

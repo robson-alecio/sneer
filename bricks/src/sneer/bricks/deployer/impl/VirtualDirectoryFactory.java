@@ -7,5 +7,5 @@ public interface VirtualDirectoryFactory {
 
 	File rootDirectory();
 
-	List<VirtualDirectory> brickDirectories();
+	List<VirtualDirectory> virtualDirectories();
 }

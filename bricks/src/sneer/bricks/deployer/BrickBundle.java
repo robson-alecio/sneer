@@ -1,6 +1,5 @@
 package sneer.bricks.deployer;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.jar.JarFile;
 
@@ -12,5 +11,5 @@ public interface BrickBundle {
 
 	BrickFile brick(String brickName);
 
-	void add(JarFile jarFile) throws IOException;
+	void add(JarFile jarFile) throws DeployerException;
 }

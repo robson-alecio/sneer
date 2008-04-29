@@ -11,6 +11,7 @@ import java.util.jar.JarFile;
 
 import org.apache.commons.io.FilenameUtils;
 
+import sneer.bricks.deployer.DeployerException;
 import sneer.bricks.deployer.impl.filters.ImplFinder;
 import sneer.bricks.deployer.impl.filters.InterfaceFinder;
 import sneer.lego.Brick;
@@ -31,6 +32,8 @@ public class VirtualDirectory {
 	private List<File> _apiSourceFiles = new ArrayList<File>();
 	
 	private List<File> _implSourceFiles = new ArrayList<File>();
+	
+	private List<File> _implClassFiles;
 
 	public VirtualDirectory(File root, String path) {
 		_path = path;
@@ -111,29 +114,49 @@ public class VirtualDirectory {
 		}
 	}
 
-	public JarFile jarSrcApi() throws IOException {
+	public JarFile jarSrcApi() {
 		return jar(_apiSourceFiles, "api-src");
 	}
 
-	public JarFile jarBinaryApi() throws IOException {
+	public JarFile jarSrcImpl() {
+		return jar(_implSourceFiles, "impl-src");
+	}
+
+	public JarFile jarBinaryApi() {
 		return jar(_apiClassFiles, "api");
 	}
-	
-	private JarFile jar(List<File> files, String role) throws IOException {
+
+	public JarFile jarBinaryImpl() {
+		return jar(_implClassFiles, "impl");
+	}
+
+	public void setImplClasses(List<MetaClass> classFiles) {
+		_implClassFiles = new ArrayList<File>();
+		for (MetaClass metaClass : classFiles) {
+			_implClassFiles.add(metaClass.classFile());
+		}
+	}
+
+ 	private JarFile jar(List<File> files, String role) {
 		String brickName = brickName();
 		String jarName = brickName + "-" + role;
-		File tmp = File.createTempFile(jarName+"-", ".jar");
-		JarBuilder builder = JarBuilder.builder(tmp.getAbsolutePath());
+		try {
+			File tmp = File.createTempFile(jarName+"-", ".jar");
+			JarBuilder builder = JarBuilder.builder(tmp.getAbsolutePath());
 
-		//sneer meta
-		String meta = sneerMeta(brickName, "1.0-SNAPSHOT", role);
-		builder.add("sneer.meta", meta);
+			//sneer meta
+			String meta = sneerMeta(brickName, "1.0-SNAPSHOT", role);
+			builder.add("sneer.meta", meta);
 
-		for(File file : files) {
-			String entryName = _path + File.separator + file.getName();
-			builder.add(entryName, file);
+			for(File file : files) {
+				String entryName = _path + File.separator + file.getName();
+				builder.add(entryName, file);
+			}
+			return new JarFile(builder.close());
+			
+		} catch (IOException e) {
+			throw new DeployerException("Error", e);
 		}
-		return new JarFile(builder.close());
 	}
 
 	private String sneerMeta(String brickName, String version, String role) {
@@ -143,5 +166,4 @@ public class VirtualDirectory {
 		builder.append("role: ").append(role).append("\n");
 		return builder.toString();
 	}
-
 }

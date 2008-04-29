@@ -5,12 +5,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.jar.JarFile;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
-import org.apache.commons.lang.StringUtils;
 
 import sneer.bricks.classpath.Classpath;
 import sneer.bricks.classpath.ClasspathFactory;
@@ -22,7 +19,6 @@ import sneer.bricks.deployer.BrickFile;
 import sneer.bricks.deployer.Deployer;
 import sneer.bricks.deployer.DeployerException;
 import sneer.bricks.log.Logger;
-import sneer.lego.Brick;
 import sneer.lego.Inject;
 import sneer.lego.utils.FileUtils;
 import sneer.lego.utils.metaclass.MetaClass;
@@ -117,158 +113,60 @@ public class DeployerImpl implements Deployer {
 
 		BrickBundle result = new BrickBundleImpl();
 		VirtualDirectoryFactory factory = new VirtualDirectoryFactoryImpl(path);
-		List<VirtualDirectory> brickFolders = factory.brickDirectories();
+		List<VirtualDirectory> virtualDirectories = factory.virtualDirectories();
 
 		/*
 		 * API 
 		 */
 		File apiDirectory = createWorkDirectory("api");
-		List<File> interfaceFiles = new ArrayList<File>();
-		for (VirtualDirectory brickFolder : brickFolders) {
-			interfaceFiles.addAll(brickFolder.api());
-		}
+		List<File> interfaceFiles = mergeInterfaceFiles(virtualDirectories);
 		List<MetaClass> classFiles = compileApi(apiDirectory, interfaceFiles);
-		grabCompiledClasses(brickFolders, classFiles);
-		List<JarFile> jarFiles = generateApiJars(brickFolders);
-		addToResult(result, jarFiles);
-		
+		for (VirtualDirectory virtual : virtualDirectories) {
+			virtual.grabCompiledClasses(classFiles);
+			result.add(virtual.jarSrcApi());
+			result.add(virtual.jarBinaryApi());
+		}
 		
 		/*
 		 * IMPL
 		 */
 		Classpath api = _cpFactory.fromDirectory(apiDirectory);
-		for (VirtualDirectory brickFolder : brickFolders) {
-			File implDirectory = createWorkDirectory(brickFolder.brickName());
-			classFiles = compileImpl(implDirectory, brickFolder, api);
+		for (VirtualDirectory virtual : virtualDirectories) {
+			File implDirectory = createWorkDirectory(virtual.brickName());
+			classFiles = compileImpl(implDirectory, virtual, api);
+			virtual.setImplClasses(classFiles);
+			result.add(virtual.jarSrcImpl());
+			result.add(virtual.jarBinaryImpl());
 		}
-		
-		if(true) throw new NotImplementedYet();
-		List<Class<Brick>> brickInterfaces = null; //findBrickInterfaces(api);
-		
-		jarFiles = compileBricksAndGenerateJars(brickInterfaces, factory, api);
-		addToResult(result, jarFiles);
 		
 		return result;
 	}
 
-	private List<MetaClass> compileImpl(File workDirectory, VirtualDirectory brickFolder, Classpath api) {
-		System.out.println("Compiling brick impl: "+brickFolder.brickName());
+	private List<File> mergeInterfaceFiles( List<VirtualDirectory> virtualDirectories) {
+		List<File> interfaceFiles = new ArrayList<File>();
+		for (VirtualDirectory virtual : virtualDirectories) {
+			interfaceFiles.addAll(virtual.api());
+		}
+		return interfaceFiles;
+	}
+
+	private List<MetaClass> compileImpl(File workDirectory, VirtualDirectory virtual, Classpath api) {
 		Classpath sneerApi = _cpFactory.sneerApi();
 		Classpath cp = sneerApi.compose(api);
 		Classpath libs = _cpFactory.newClasspath(); //Fix: search for brick libs
-		List<File> sourceFilesInBrick = brickFolder.impl();
+		List<File> sourceFilesInBrick = virtual.impl();
 		Result compilationResult = _compiler.compile(sourceFilesInBrick, workDirectory, cp.compose(libs));
 		if(!compilationResult.success()) {
-			throw new DeployerException("Error compiling brick implementation: "+brickFolder.brickName());
+			throw new DeployerException("Error compiling brick implementation: "+virtual.brickName());
 		}
 		return compilationResult.compiledClasses();
 	}
 
-	private List<JarFile> generateApiJars(List<VirtualDirectory> brickFolders) {
-		List<JarFile> result = new ArrayList<JarFile>();
-		for (VirtualDirectory brickFolder : brickFolders) {
-			try {
-				result.add(brickFolder.jarSrcApi());
-				result.add(brickFolder.jarBinaryApi());
-			} catch (IOException e) {
-				throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
-			}
-		}
-		return result;
-	}
-
-	private void grabCompiledClasses(List<VirtualDirectory> brickFolders, List<MetaClass> classFiles) {
-		for (VirtualDirectory brickFolder : brickFolders) 
-			brickFolder.grabCompiledClasses(classFiles);
-	}
-
-	private void addToResult(BrickBundle result, List<JarFile> jarFiles) {
-		try {
-			for (JarFile jarFile : jarFiles)
-				result.add(jarFile);
-		} catch (IOException e) {
-			throw new DeployerException("Error adding jar entry to brick bundle",e);
-		}
-	}
-
-	private List<JarFile> compileBricksAndGenerateJars(List<Class<Brick>> brickInterfaces, VirtualDirectoryFactory meta, Classpath api) {
-		List<JarFile> result = new ArrayList<JarFile>();
-		
-		Map<File,List<File>> brickFilesByDirectory = null; //meta.implByBrick();
-		Classpath sneerApi = _cpFactory.sneerApi();
-		Classpath cp = sneerApi.compose(api);
-		int i = 0;
-		for (File brickImplDir : brickFilesByDirectory.keySet()) {
-			File workDirectory = createWorkDirectory("impl-"+(i++));
-			List<File> sourceFilesInBrick = brickFilesByDirectory.get(brickImplDir);
-			Classpath libs = _cpFactory.newClasspath(); //Fix: search for brick libs
-			Result compilationResult = _compiler.compile(sourceFilesInBrick, workDirectory, cp.compose(libs));
-			if(!compilationResult.success()) {
-				throw new DeployerException("Error compiling brick implementation from: "+brickImplDir);
-			}
-			
-			/*
-			 * generate impl jar
-			 */
-			Classpath impl = _cpFactory.fromDirectory(workDirectory);
-			log.info("Searching single brick inside {}",workDirectory);
-			Class<Brick> brickClass = findSingleBrickImpl(impl);
-			String brickName = brickNameFromImpl(brickClass, brickInterfaces);
-			File path = impl.relativeFile(brickClass);
-			try {
-				JarFile jarFile = null; //runJarTool(brickName,"IMPL", workDirectory, path.getParentFile());
-				result.add(jarFile);
-			} catch (Exception e) {
-				throw new DeployerException("Can't package brick impl "+brickName);
-			}
-		}
-		return result;
-	}
-
-	private String brickNameFromImpl(Class<Brick> brickClass, List<Class<Brick>> brickInterfaces) {
-		for(Class<Brick> brickInterface : brickInterfaces) {
-			if(brickInterface.isAssignableFrom(brickClass))
-				return brickInterface.getName();
-		}
-		throw new DeployerException("Can't find suitable brick name for: "+ brickClass.getName());
-	}
-
-	private Class<Brick> findSingleBrickImpl(Classpath classpath) {
-		Class<Brick> result = null;
-		try {
-			List<Class<Brick>> list = classpath.findAssignableTo(Brick.class);
-			if(list.size() == 1) {
-				result = list.get(0);
-				return result;
-			}
-		} catch (ClassNotFoundException e1) {
-			throw new DeployerException("Can't find brick implementation on "+classpath);
-		}
-		throw new DeployerException("Can't find brick implementation on "+classpath);
-	}
-
-	/*
-	 * search for all interfaces that extend Brick 
-	 */
-//	private List<Class<Brick>> findBrickInterfaces(Classpath classpath) {
-//		List<Class<Brick>> result;
-//		try {
-//			 result = classpath.findAssignableTo(Brick.class);
-//		} catch (ClassNotFoundException e) {
-//			throw new DeployerException("Can't find any bricks on compiled interfaces", e);
-//		}
-//		return result; 
-//	}
-	
-
-	/*
-	 * compile interfaces first. Forces clean separation
-	 */
 	private List<MetaClass> compileApi(File workDirectory, List<File> interfaces) {
 		Classpath sneerApi = _cpFactory.sneerApi();
 		Result result = _compiler.compile(interfaces, workDirectory, sneerApi);
 		if(!result.success()) {
-			throw new DeployerException("Error compiling interfaces");
+			throw new DeployerException("Error compiling brick interfaces");
 		}
 		return result.compiledClasses();
 	}

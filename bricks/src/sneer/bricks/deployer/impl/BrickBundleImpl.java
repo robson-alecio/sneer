@@ -7,19 +7,24 @@ import java.util.jar.JarFile;
 
 import sneer.bricks.deployer.BrickBundle;
 import sneer.bricks.deployer.BrickFile;
+import sneer.bricks.deployer.DeployerException;
 
 public class BrickBundleImpl implements BrickBundle {
 	
 	private List<BrickFile> _bricks = new ArrayList<BrickFile>();
 
-	public void add(JarFile jarFile) throws IOException {
-		BrickMeta meta = new BrickMeta(jarFile);
-		BrickFile brick = brick(meta.brickName());
-		if(brick == null) {
-			brick = new BrickFileImpl(meta);
-			_bricks.add(brick);
+	public void add(JarFile jarFile) throws DeployerException {
+		try {
+			BrickMeta meta = new BrickMeta(jarFile);
+			BrickFile brick = brick(meta.brickName());
+			if(brick == null) {
+				brick = new BrickFileImpl(meta);
+				_bricks.add(brick);
+			}
+			brick.add(jarFile);
+		} catch (IOException e) {
+			throw new DeployerException("Error extrating meta information from jar file", e);
 		}
-		brick.add(jarFile);
 	}
 
 	@Override

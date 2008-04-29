@@ -19,8 +19,9 @@ public class BrickFileImpl implements BrickFile {
 	private BrickMeta _meta;
 	
 	private JarFile _api;
-	
+	private JarFile _apiSrc;
 	private JarFile _impl;
+	private JarFile _implSrc;
 
 	public BrickFileImpl(BrickMeta meta) {
 		_meta = meta;
@@ -38,10 +39,17 @@ public class BrickFileImpl implements BrickFile {
 			throw new DeployerException("Can't add jar file from another brick to: "+name());
 		
 		String role = meta.role();
+
 		if("api".equals(role)) {
 			_api = jarFile;
-		} else {
+		} else if("api-src".equals(role)){
+			_apiSrc = jarFile;
+		} else if("impl".equals(role)){
 			_impl = jarFile;
+		} else if("impl-src".equals(role)){
+			_implSrc = jarFile;
+		} else {
+			throw new DeployerException("Unknown role: "+role);
 		}
 	}
 
@@ -51,21 +59,34 @@ public class BrickFileImpl implements BrickFile {
 	}
 
 	@Override
+	public JarFile apiSrc() {
+		return _apiSrc;
+	}
+
+	@Override
 	public JarFile impl() {
 		return _impl;
 	}
 
+	@Override
+	public JarFile implSrc() {
+		return _implSrc;
+	}
 
 	@Override
 	public void copyTo(File target) throws IOException {
-		FileUtils.copyFile(new File(api().getName()), new File(target,name()+"-API.jar"));
-		FileUtils.copyFile(new File(impl().getName()), new File(target,name()+"-IMPL.jar"));
+		FileUtils.copyFile(new File(api().getName()), new File(target,name()+"-api.jar"));
+		FileUtils.copyFile(new File(apiSrc().getName()), new File(target,name()+"-api-src.jar"));
+		FileUtils.copyFile(new File(impl().getName()), new File(target,name()+"-impl.jar"));
+		FileUtils.copyFile(new File(implSrc().getName()), new File(target,name()+"-impl-src.jar"));
 	}
 
 	@Override
 	public void explode(File target) throws IOException {
-		explode(api(), new File(target,"api"));
-		explode(impl(), new File(target,"impl"));
+		//explode(api(), new File(target,"api"));
+		explode(apiSrc(), new File(target,"api-src"));
+		//explode(impl(), new File(target,"impl"));
+		explode(implSrc(), new File(target,"impl-src"));
 	}
 	
 	private void explode(JarFile jarFile, File target) throws IOException {

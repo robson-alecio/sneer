@@ -11,8 +11,10 @@ public interface BrickFile {
 	void add(JarFile jarFile) throws IOException;
 
 	JarFile api();
+	JarFile apiSrc();
 
 	JarFile impl();
+	JarFile implSrc();
 
 	void explode(File target) throws IOException;
 

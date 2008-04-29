@@ -13,7 +13,7 @@ import sneer.bricks.compiler.CompilationError;
 import sneer.bricks.compiler.CompilerException;
 import sneer.bricks.compiler.Result;
 import sneer.lego.utils.io.JavaFilter;
-import sneer.lego.utils.io.SimpleFilter;
+import sneer.lego.utils.metaclass.MetaClass;
 
 public class CompilationResult implements Result {
 
@@ -76,8 +76,8 @@ public class CompilationResult implements Result {
 	}
 
 	@Override
-	public List<File> compiledClasses() {
-		SimpleFilter walker = new JavaFilter(_targetFolder);
-		return walker.list();
+	public List<MetaClass> compiledClasses() {
+		JavaFilter filter = new JavaFilter(_targetFolder);
+		return filter.listMetaClasses();
 	}
 }

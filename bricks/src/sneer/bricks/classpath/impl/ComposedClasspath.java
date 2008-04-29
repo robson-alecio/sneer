@@ -55,4 +55,10 @@ class ComposedClasspath implements Classpath {
 		throw new wheel.lang.exceptions.NotImplementedYet();
 	}
 
+	@Override
+	public List<File> classFiles() {
+		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+	}
+
+
 }

@@ -46,4 +46,16 @@ abstract public class ClasspathSupport implements Classpath {
 	public Classpath compose(Classpath other) {
 		return new ComposedClasspath(this, other);
 	}
+	
+
+	@Override
+	public List<File> classFiles() {
+		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+	}
+
+	@SuppressWarnings("unused")
+	@Override
+	public <T> List<Class<T>> findAssignableTo(Class<T> clazz) throws ClassNotFoundException {
+		throw new wheel.lang.exceptions.NotImplementedYet();
+	}
 }

@@ -21,4 +21,6 @@ public interface Classpath {
 	File relativeFile(Class<?> clazz);
 
 	Classpath compose(Classpath other);
+	
+	List<File> classFiles();
 }

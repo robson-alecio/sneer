@@ -47,7 +47,6 @@ class DirectoryBasedClasspath extends ClasspathSupport {
 		return file;
 	}
 
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<Class<T>> findAssignableTo(Class<T> clazz) throws ClassNotFoundException {
@@ -77,7 +76,8 @@ class DirectoryBasedClasspath extends ClasspathSupport {
 		}
 	}
 
-	private List<File> classFiles() {
+	@Override
+	public List<File> classFiles() {
 		JavaFilter walker = new JavaFilter(_rootFolder);
 		List<File> classFiles = walker.listFiles();
 		return classFiles;
@@ -94,4 +94,5 @@ class DirectoryBasedClasspath extends ClasspathSupport {
 		result = result.substring(0,result.lastIndexOf("."));
 		return result;
 	}
+
 }

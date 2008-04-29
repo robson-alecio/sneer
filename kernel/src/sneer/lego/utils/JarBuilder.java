@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 
@@ -34,6 +36,15 @@ public class JarBuilder {
 		InputStream is = new FileInputStream(file.getAbsolutePath());
 		IOUtils.copy(is, _out); //This method buffers the input internally, so there is no need to use a BufferedInputStream.
 		is.close();
+	}
+
+	public void add(String entryName, String contents) throws IOException {
+		JarEntry je = new JarEntry(entryName);
+		_out.putNextEntry(je);	
+		
+		Reader reader = new StringReader(contents);
+		IOUtils.copy(reader, _out); //This method buffers the input internally, so there is no need to use a BufferedInputStream.
+		reader.close();
 	}
 
 	public File close() {

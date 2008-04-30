@@ -2,24 +2,21 @@ package sneer.bricks.mesh.impl;
 
 import java.io.NotSerializableException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import sneer.bricks.connection.Connection;
 import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.contacts.Contact;
+import sneer.bricks.mesh.Me;
+import sneer.bricks.mesh.Party;
 import sneer.bricks.serialization.Serializer;
 import sneer.lego.Inject;
 import sneer.lego.Injector;
-import spikes.legobricks.name.OwnNameKeeper;
-import wheel.lang.Casts;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
-import wheel.reactive.Register;
+import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
-import wheel.reactive.impl.RegisterImpl;
 
-class DirectProxy extends AbstractParty {
+class DirectProxy extends Proxy {
 
 	@Inject
 	private ConnectionManager _connectionManager;
@@ -28,17 +25,16 @@ class DirectProxy extends AbstractParty {
 	private Serializer _serializer;
 
 	@Inject
-	private OwnNameKeeper _ownNameKeeper;
+	private Me _me;
+	
 
 	private final Connection _connection;
-
-	private final Map<String, Register<Object>> _registersByRemotePath = new HashMap<String, Register<Object>>();
 
 	private final PriorityQueue<byte[]> _priorityQueue = new PriorityQueue<byte[]>(10);
 
 	private volatile boolean _isCrashed = false;
 
-	private final Omnivore<String> _nameReceiverToAvoidGC = new Omnivore<String>(){public void consume(String newName) {
+	private final Omnivore<Object> _nameReceiverToAvoidGC = new Omnivore<Object>(){public void consume(Object newName) {
 		send(new Notification("Name", newName));
 	}};
 
@@ -77,20 +73,6 @@ class DirectProxy extends AbstractParty {
 		}});
 	}
 
-	private <T> Register<T> produceRegisterFor(String remoteSignalPath) {
-		Register<Object> register = _registersByRemotePath.get(remoteSignalPath);
-		if (register == null) {
-			register = new RegisterImpl<Object>(null);
-			_registersByRemotePath.put(remoteSignalPath, register);
-			subscribeTo(remoteSignalPath); 
-		}
-		return Casts.uncheckedGenericCast(register);
-	}
-
-	private void subscribeTo(String signalPath) {
-		send(new Subscription(signalPath));
-	}
-
 	private void send(Object object) {
 		byte[] packet = serialize(object);
 
@@ -106,21 +88,29 @@ class DirectProxy extends AbstractParty {
 		}
 	}
 
-	public <S> Signal<S> signal(String remoteSignalPath) {
-		Register<S> register = produceRegisterFor(remoteSignalPath);
-		return register.output();   //Fix: Signal type mismatch between peers is possible. 
-	}
-
 	@Override
 	void crash() {
 		_isCrashed = true;
 	}
 
-	void serveSubscriptionTo(String signalPath) {
-		if (!signalPath.equals("Name"))
-			throw new wheel.lang.exceptions.NotImplementedYet(); // Implement Auto-generated method stub
+	void serveSubscriptionTo(ArrayList<String> nicknamePath, String signalPath) {
+		Signal<Object> signal = findParty(nicknamePath).signal(signalPath);
+		signal.addReceiver(_nameReceiverToAvoidGC);
+	}
 
-		_ownNameKeeper.name().addReceiver(_nameReceiverToAvoidGC);
+	private Party findParty(ArrayList<String> nicknamePath) {
+		Party result = _me;
+		for (String nickname : nicknamePath)
+			result = navigate(result, nickname);
+		return result;
+	}
+
+	private Party navigate(Party result, String nickname) {
+		try {
+			return result.navigateTo(nickname);
+		} catch (IllegalParameter e) {
+			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+		}
 	}
 
 	void handleNotification(String signalPath, Object newValue) {
@@ -133,9 +123,8 @@ class DirectProxy extends AbstractParty {
 	}
 
 	@Override
-	<S> Signal<S> signal(String signalPath, ArrayList<String> nicknamePath) {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+	void subscribeTo(ArrayList<String> nicknamePath, String remoteSignalPath) {
+		send(new Subscription(nicknamePath, remoteSignalPath));
 	}
-
 
 }

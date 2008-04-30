@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import sneer.bricks.connection.Connection;
+import sneer.bricks.contacts.Contact;
 import sneer.bricks.keymanager.KeyManager;
 import sneer.bricks.log.Logger;
 import sneer.bricks.network.ByteArraySocket;
@@ -27,12 +28,24 @@ class ConnectionImpl implements Connection {
 	@Inject
 	private Logger _logger;
 
-	private Omnivore<byte[]> _receiver;
+	private volatile Omnivore<byte[]> _receiver;
+
+	private final String _label;
+
+	private final Contact _contact;
 	
-	ConnectionImpl(Injector injector) {
+	ConnectionImpl(Injector injector, String label, Contact contact) {
+		_label = label;
+		_contact = contact;
 		injector.inject(this);
 		startReceiving();
 	}
+
+	@Override
+	public String toString() {
+		return _label + " - " + _contact.nickname();
+	}
+
 	
 	@Override
 	public Signal<Boolean> isOnline() {
@@ -111,8 +124,13 @@ class ConnectionImpl implements Connection {
 				if (packet == null)
 					Threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify
 				else
-					_receiver.consume(packet);
+					receive(packet);
 			}
+		}
+
+		private void receive(byte[] packet) {
+			//while (_receiver == null) Thread.yield();
+			_receiver.consume(packet);
 		}});
 	}
 

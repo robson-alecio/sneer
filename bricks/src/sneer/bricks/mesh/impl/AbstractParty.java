@@ -1,6 +1,5 @@
 package sneer.bricks.mesh.impl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,8 +25,6 @@ abstract class AbstractParty implements Party {
 	}
 	
 	abstract AbstractParty produceProxyFor(String nickname);
-
-	abstract <S> Signal<S> signal(String signalPath, ArrayList<String> nicknamePath);
 
 	abstract void crash();
 

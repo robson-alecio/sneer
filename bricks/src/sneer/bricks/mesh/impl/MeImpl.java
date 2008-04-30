@@ -1,6 +1,5 @@
 package sneer.bricks.mesh.impl;
 
-import java.util.ArrayList;
 
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.contacts.ContactManager;
@@ -50,14 +49,6 @@ public class MeImpl extends AbstractParty implements Me, Startable {
 	}
 
 
-//	@Override
-//	public <T> Peer navigateTo(String nickname) throws IllegalParameter {
-//		Contact contact = _contactManager.contactGiven(nickname);
-//		if (contact == null) throw new IllegalParameter("Nickname not found: " + nickname);
-//		
-//		return producePeerFor(contact);
-//	}
-
 	@Override
 	public <S> Signal<S> signal(String signalPath) {
 		if (!signalPath.equals("Name"))
@@ -66,10 +57,6 @@ public class MeImpl extends AbstractParty implements Me, Startable {
 		return Casts.uncheckedGenericCast(_ownNameKeeper.name());
 	}
 
-	@Override
-	<S> Signal<S> signal(String signalPath, ArrayList<String> nicknamePath) {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
-	}
 
 	@Override
 	AbstractParty produceProxyFor(String nickname) {

@@ -14,9 +14,6 @@ public class RemoteProxy extends Proxy {
 
 
 	@Override
-	void crash() {}
-
-	@Override
 	AbstractParty produceProxyFor(String nickname) {
 		return new RemoteProxy(this, nickname);
 	}

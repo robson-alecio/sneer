@@ -5,7 +5,6 @@ import org.junit.Test;
 import wheel.reactive.Signal;
 import functional.SovereignFunctionalTest;
 import functional.SovereignParty;
-import functional.TestDashboard;
 
 public abstract class Freedom2Test extends SovereignFunctionalTest {
 
@@ -26,38 +25,32 @@ public abstract class Freedom2Test extends SovereignFunctionalTest {
 	}
 
 	
-	@Test //(timeout = 1000)
+	@Test (timeout = 1000)
 	public void testNicknames() {
-		if (!TestDashboard.newTestsShouldRun()) return;
-		
 		waitForValue("Bruno Barros", _a.navigateAndGetName("Bruno Barros"));
 
 		SovereignParty c = _community.createParty("Carla Costa");
-		//SovereignParty d = _community.createParty("Denis Dalton");
+		SovereignParty d = _community.createParty("Denis Dalton");
 		
 		_a.bidirectionalConnectTo(c);
 		_b.bidirectionalConnectTo(c);
-		//c.bidirectionalConnectTo(d);
+		c.bidirectionalConnectTo(d);
 
 		waitForValue("Carla Costa", _b.navigateAndGetName("Carla Costa"));
 
-//		_a.giveNicknameTo(_b, "Bruno");
-//		_b.giveNicknameTo(_a, "Aninha");
-//		_a.giveNicknameTo(c, "Carla");
-		//c.giveNicknameTo(d, "Dedé");
+		_a.giveNicknameTo(_b, "Bruno");
+		_b.giveNicknameTo(_a, "Aninha");
+		_a.giveNicknameTo(c, "Carla");
+		c.giveNicknameTo(d, "Dedé");
 		
-
-//		waitForValue("Bruno Barros", _a.navigateAndGetName("Bruno"));
-//		waitForValue("Ana Almeida", _b.navigateAndGetName("Carla Costa/Ana Almeida"));
-//		waitForValue("Ana Almeida", _a.navigateAndGetName("Bruno/Aninha"));
-//		waitForValue("Bruno Barros", _a.navigateAndGetName("Bruno/Aninha/Bruno"));
-//		waitForValue("Denis Dalton", _a.navigateAndGetName("Bruno/Carla Costa/Dedé"));
+		waitForValue("Bruno Barros", _a.navigateAndGetName("Bruno"));
+		waitForValue("Ana Almeida", _b.navigateAndGetName("Carla Costa/Ana Almeida"));
+		waitForValue("Ana Almeida", _a.navigateAndGetName("Bruno/Aninha"));
+		waitForValue("Bruno Barros", _a.navigateAndGetName("Bruno/Aninha/Bruno"));
+		waitForValue("Denis Dalton", _a.navigateAndGetName("Bruno/Carla Costa/Dedé"));
 		
-//		_a.giveNicknameTo(_b, "Bruninho");
-//		waitForValue("Bruno Barros", _a.navigateAndGetName("Bruninho"));
-//		
-//		Assert.fail("Uncomment the timeout at the top of this test and the lines above.");
-//		Assert.fail("test with different signals, not only name");
+		_a.giveNicknameTo(_b, "Bruninho");
+		waitForValue("Bruno Barros", _a.navigateAndGetName("Bruninho"));
 	}
 
 	private void waitForValue(Object expectedValue, Signal<? extends Object> signal) {

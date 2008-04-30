@@ -21,7 +21,8 @@
 
 Klaus
 ongoing - Component Model (see todoLego.txt)
- - Freedom2Test - Make it pass with new bricks.
+ [DONE] - Freedom2Test - Make it pass with new bricks.
+ - RemoteSignals - Test with different signals, not only name.
  - Warnings - clean them all.
  - SocketAccepter.lastAcceptedSocket() - Refactor to void acceptedSocketServer(Omnivore<ByteArraySocket>). There will only be one instead of many receivers. Simplifies the impl of SocketAccepter. 
  - Signal type-safety - Not string-based.

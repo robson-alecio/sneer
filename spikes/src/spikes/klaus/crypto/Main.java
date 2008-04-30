@@ -23,7 +23,9 @@ public class Main {
 		
 		printProvidersAndServices();
 		
+		long t0 = System.nanoTime();
 		byte[] bytecodeDummy = new SecureRandom().generateSeed(10000000);
+		System.out.println((System.nanoTime() - t0) * 1e-9);
 		
 		testSHA512(bytecodeDummy);
 		testRSA(bytecodeDummy);

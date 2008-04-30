@@ -31,4 +31,8 @@ abstract class Proxy extends AbstractParty {
 
 	abstract void subscribeTo(ArrayList<String> nicknamePath, String remoteSignalPath);
 
+	void handleNotification(String signalPath, Object newValue) {
+		_registersByRemotePath.get(signalPath).setter().consume(newValue);
+	}
+
 }

@@ -2,6 +2,7 @@ package sneer.bricks.mesh.impl;
 
 import java.io.NotSerializableException;
 import java.util.ArrayList;
+import java.util.List;
 
 import sneer.bricks.connection.Connection;
 import sneer.bricks.connection.ConnectionManager;
@@ -13,7 +14,6 @@ import sneer.lego.Inject;
 import sneer.lego.Injector;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
-import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 
 class DirectProxy extends Proxy {
@@ -34,9 +34,7 @@ class DirectProxy extends Proxy {
 
 	private volatile boolean _isCrashed = false;
 
-	private final Omnivore<Object> _nameReceiverToAvoidGC = new Omnivore<Object>(){public void consume(Object newName) {
-		send(new Notification("Name", newName));
-	}};
+	private List<Object> _scoutsToAvoidGC = new ArrayList<Object>();
 
 
 
@@ -88,33 +86,35 @@ class DirectProxy extends Proxy {
 		}
 	}
 
-	@Override
 	void crash() {
 		_isCrashed = true;
 	}
 
 	void serveSubscriptionTo(ArrayList<String> nicknamePath, String signalPath) {
 		Signal<Object> signal = findParty(nicknamePath).signal(signalPath);
-		signal.addReceiver(_nameReceiverToAvoidGC);
+		signal.addReceiver(createScoutFor(nicknamePath, signalPath));
+	}
+
+	private Omnivore<Object> createScoutFor(final ArrayList<String> nicknamePath, final String signalPath) {
+		Omnivore<Object> result = new Omnivore<Object>() {@Override public void consume(Object newValue) {
+			send(new Notification(nicknamePath, signalPath, newValue));
+		}};
+		_scoutsToAvoidGC.add(result); //Fix: Avoid leak.
+		return result;
 	}
 
 	private Party findParty(ArrayList<String> nicknamePath) {
 		Party result = _me;
 		for (String nickname : nicknamePath)
-			result = navigate(result, nickname);
+			result = result.navigateTo(nickname);
 		return result;
 	}
 
-	private Party navigate(Party result, String nickname) {
-		try {
-			return result.navigateTo(nickname);
-		} catch (IllegalParameter e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
-		}
-	}
-
-	void handleNotification(String signalPath, Object newValue) {
-		_registersByRemotePath.get(signalPath).setter().consume(newValue);
+	void handleNotification(ArrayList<String> nicknamePath, String signalPath, Object newValue) {
+		Party candidate = this;
+		for (String nickname : nicknamePath)
+			candidate = candidate.navigateTo(nickname);
+		((Proxy)candidate).handleNotification(signalPath, newValue);
 	}
 
 	@Override

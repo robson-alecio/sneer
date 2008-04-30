@@ -93,7 +93,7 @@ class ConnectionImpl implements Connection {
 	@Override
 	public void send(byte[] array) {
 		while (!tryToSend(array))
-			Threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify.
+			Threads.sleepWithoutInterruptions(10); //Optimize Use wait/notify.
 	}
 
 
@@ -122,15 +122,10 @@ class ConnectionImpl implements Connection {
 			while (true) {
 				byte[] packet = tryToReceive();
 				if (packet == null)
-					Threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify
+					Threads.sleepWithoutInterruptions(10); //Optimize Use wait/notify
 				else
-					receive(packet);
+					_receiver.consume(packet);
 			}
-		}
-
-		private void receive(byte[] packet) {
-			//while (_receiver == null) Thread.yield();
-			_receiver.consume(packet);
 		}});
 	}
 

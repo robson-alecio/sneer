@@ -1,11 +1,10 @@
 package sneer.bricks.mesh;
 
-import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 
 public interface Party {
 
-	<T> Party navigateTo(String nickname) throws IllegalParameter;
+	Party navigateTo(String nickname);
 
 	<S> Signal<S> signal(String signalPath);
 

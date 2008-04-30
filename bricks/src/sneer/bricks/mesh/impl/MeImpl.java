@@ -1,5 +1,7 @@
 package sneer.bricks.mesh.impl;
 
+import java.util.HashMap;
+import java.util.Map;
 
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.contacts.ContactManager;
@@ -12,10 +14,8 @@ import wheel.lang.Casts;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
-public class MeImpl extends AbstractParty implements Me, Startable {
 
-	@SuppressWarnings("unused")
-	private SimpleListReceiver<Contact> _contactListReceiverToAvoidGC;
+public class MeImpl extends AbstractParty implements Me, Startable {
 
 	@Inject
 	private ContactManager _contactManager;
@@ -26,26 +26,36 @@ public class MeImpl extends AbstractParty implements Me, Startable {
 	@Inject
 	private OwnNameKeeper _ownNameKeeper;
 
+	@SuppressWarnings("unused")
+	private SimpleListReceiver<Contact> _contactListReceiverToAvoidGC;
+
+	private final Map<Contact, DirectProxy> _directProxiesByContact = new HashMap<Contact, DirectProxy>();
+	
 	@Override
 	public void start() throws Exception {
 		_contactListReceiverToAvoidGC = new SimpleListReceiver<Contact>(_contactManager.contacts()){
 
 			@Override
 			protected void elementPresent(Contact contact) {
-				navigateTo(contact.nickname().currentValue());
+				createDirectProxyFor(contact);
 			}
 
 			@Override
-			protected void elementAdded(Contact newContact) {
-				navigateTo(newContact.nickname().currentValue());
+			protected void elementAdded(Contact contact) {
+				createDirectProxyFor(contact);
 			}
 
 			@Override
-			protected void elementToBeRemoved(Contact contactRemoved) {
-				crashProxy(contactRemoved.nickname());
+			protected void elementToBeRemoved(Contact contact) {
+				_directProxiesByContact.remove(contact).crash();
 			}
 			
 		};
+	}
+
+	private void createDirectProxyFor(Contact contact) {
+		DirectProxy proxy = new DirectProxy(_injector, contact);
+		_directProxiesByContact.put(contact, proxy);
 	}
 
 
@@ -61,13 +71,8 @@ public class MeImpl extends AbstractParty implements Me, Startable {
 	@Override
 	AbstractParty produceProxyFor(String nickname) {
 		Contact contact = _contactManager.contactGiven(nickname);
-		return new DirectProxy(_injector, contact);
+		return _directProxiesByContact.get(contact);
 	}
 
-
-	@Override
-	void crash() {
-		throw new IllegalStateException();
-	}
 
 }

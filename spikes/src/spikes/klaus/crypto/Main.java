@@ -13,19 +13,19 @@ import java.security.Provider.Service;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
 public class Main {
 
 	public static void main(String[] args) throws Exception {
 		System.out.println(System.getProperty("java.runtime.name"));
 		System.out.println(System.getProperty("java.runtime.version"));
 		
-		System.err.println("Security.addProvider(new BouncyCastleProvider())");
+		Security.addProvider(new BouncyCastleProvider());
 		
 		printProvidersAndServices();
 		
-		long t0 = System.nanoTime();
-		byte[] bytecodeDummy = new SecureRandom().generateSeed(10000000);
-		System.out.println((System.nanoTime() - t0) * 1e-9);
+		byte[] bytecodeDummy = new SecureRandom().generateSeed(10);
 		
 		testSHA512(bytecodeDummy);
 		testRSA(bytecodeDummy);
@@ -37,18 +37,18 @@ public class Main {
 		Provider[] provs = Security.getProviders();
 		for (Provider prov : provs) {
 			System.out.println();
-			System.out.println("===========" + prov);
+			System.out.println("Provider: " + prov);
 			Set<Service> services = prov.getServices();
 			for (Service service : services) {
 				String type = service.getType();
 				serviceTypes.add(type);
-				System.out.println("\n Type: " + type);
-				System.out.println(" Algo: " + service.getAlgorithm());
+				System.out.println("\n\tType: " + type);
+				System.out.println("\tAlgo: " + service.getAlgorithm());
 			}
 		}
 
 		for (String type : serviceTypes) {
-			System.out.println("\n=====Type: " + type);
+			System.out.println("\nService Type: " + type);
 			for (String alg : Security.getAlgorithms(type)) {
 				System.out.println(alg);
 			}
@@ -56,8 +56,9 @@ public class Main {
 		}
 
 	private static void testSHA512(byte[] bytecodeDummy) throws Exception {
-		MessageDigest digester = MessageDigest.getInstance("SHA-512", "SUN");
-//		MessageDigest digester = MessageDigest.getInstance("SHA-512", "BC");
+		//MessageDigest digester = MessageDigest.getInstance("SHA-512", "SUN");
+		//MessageDigest digester = MessageDigest.getInstance("WHIRLPOOL", "BC");
+		MessageDigest digester = MessageDigest.getInstance("SHA-512", "BC");
 		byte[] digest = digester.digest(bytecodeDummy);
 		System.out.println("Digest length: " + digest.length * 8 + " bits");
 	}

@@ -21,5 +21,6 @@
 	<classpathentry kind="lib" path="bricks/lib/slf4j-log4j12-1.5.0.jar"/>
 	<classpathentry kind="lib" path="bricks/lib/log4j-1.2.15.jar"/>
 	<classpathentry kind="lib" path="kernel/lib/asm-all-3.1.jar"/>
+	<classpathentry kind="lib" path="bricks/lib/bcprov-jdk16-139.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

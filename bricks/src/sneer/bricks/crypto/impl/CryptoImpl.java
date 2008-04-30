@@ -22,7 +22,7 @@ public class CryptoImpl implements Crypto {
 
 		byte[] result = new byte[sha512.length + whirlPool.length];
 		System.arraycopy(sha512, 0, result, 0, sha512.length);
-		System.arraycopy(whirlPool, 0, result, sha512.length - 1, whirlPool.length);
+		System.arraycopy(whirlPool, 0, result, sha512.length, whirlPool.length);
 
 		return result;
 	}

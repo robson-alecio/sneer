@@ -16,7 +16,7 @@ public interface BrickFile {
 	JarFile impl();
 	JarFile implSrc();
 
-	void explode(File target) throws IOException;
+	void explodeSources(File target) throws IOException;
 
 	void copyTo(File target) throws IOException;
 }

@@ -52,11 +52,21 @@ public class DeployerImpl implements Deployer {
 	}
 
 	@Override
-	public void deploy(BrickBundle brickBundle) {
+	public void deploy(BrickBundle bundle) {
 		log.info("Deploying BrickBundle");
-		List<String> brickNames = brickBundle.brickNames();
+		File workDirectory = createWorkDirectory("received");
+		
+		recreateOriginalDirectoryStructureWhenPublished(bundle, workDirectory);
+		BrickBundle repacked = pack(workDirectory);
+		
+		deployRepacked(repacked);
+		throw new NotImplementedYet();
+	}
+
+	private void deployRepacked(BrickBundle bundle) {
+		List<String> brickNames = bundle.brickNames();
 		for (String brickName : brickNames) {
-			BrickFile brick = brickBundle.brick(brickName);
+			BrickFile brick = bundle.brick(brickName);
 			try {
 				deploy(brick);
 			} catch (Throwable t) {
@@ -65,6 +75,18 @@ public class DeployerImpl implements Deployer {
 		}
 	}
 
+	private void recreateOriginalDirectoryStructureWhenPublished(BrickBundle brickBundle, File workDirectory) {
+		List<String> brickNames = brickBundle.brickNames();
+		for (String brickName : brickNames) {
+			BrickFile brick = brickBundle.brick(brickName);
+			try {
+				brick.explodeSources(workDirectory);
+			} catch (Throwable t) {
+				throw new DeployerException("Error exploding brick sources: "+brickName, t);
+			}
+		}
+	}
+	
 	private void deploy(BrickFile brick) throws IOException {
 		String brickName = brick.name();
 		log.debug("Deploying brick: "+brickName);
@@ -80,19 +102,7 @@ public class DeployerImpl implements Deployer {
 		}
 		
 		//2. copy received files
-		File orig = new File(brickDirectory, "orig");
-		brick.copyTo(orig);
-		
-		//3. explode brick
-		brick.explode(brickDirectory);
-		
-		//4. resolve brick dependencies
-		resolveBrickDependencies(brick);
-	}
-
-	private void resolveBrickDependencies(BrickFile brick) {
-		brick.toString();
-		throw new NotImplementedYet();
+		brick.copyTo(brickDirectory);
 	}
 
 	@Override

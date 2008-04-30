@@ -82,11 +82,9 @@ public class BrickFileImpl implements BrickFile {
 	}
 
 	@Override
-	public void explode(File target) throws IOException {
-		//explode(api(), new File(target,"api"));
-		explode(apiSrc(), new File(target,"api-src"));
-		//explode(impl(), new File(target,"impl"));
-		explode(implSrc(), new File(target,"impl-src"));
+	public void explodeSources(File target) throws IOException {
+		explode(apiSrc(), target);
+		explode(implSrc(), target);
 	}
 	
 	private void explode(JarFile jarFile, File target) throws IOException {
@@ -108,7 +106,7 @@ public class BrickFileImpl implements BrickFile {
 	}
 
 	private boolean skipFile(String name) {
-		return name.endsWith("MANIFEST.MF");
+		return name.endsWith("MANIFEST.MF") || name.endsWith("sneer.meta");
 	}
 
 	private boolean skipDirectory(String name) {

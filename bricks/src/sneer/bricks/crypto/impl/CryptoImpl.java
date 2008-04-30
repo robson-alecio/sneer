@@ -10,6 +10,7 @@ import sneer.bricks.crypto.Crypto;
 public class CryptoImpl implements Crypto {
 
 	static {
+		//Optimize: remove this static dependency. Use Bouncycastle classes directly
 		Security.addProvider(new BouncyCastleProvider());
 	}
 	
@@ -20,15 +21,9 @@ public class CryptoImpl implements Crypto {
 		byte[] whirlPool = whirlPool().digest(input);
 
 		byte[] result = new byte[sha512.length + whirlPool.length];
+		System.arraycopy(sha512, 0, result, 0, sha512.length);
+		System.arraycopy(whirlPool, 0, result, sha512.length - 1, whirlPool.length);
 
-		for (int i = 0; i < sha512.length; i++) {
-			result[i] = sha512[i];
-		}
-		int offset = sha512.length - 1; 
-		for (int i = 0; i < whirlPool.length; i++) {
-			result[ offset+ i] = whirlPool[i];
-		}
-		
 		return result;
 	}
 

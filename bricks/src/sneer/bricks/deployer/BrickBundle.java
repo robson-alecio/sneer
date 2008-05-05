@@ -11,4 +11,6 @@ public interface BrickBundle {
 	BrickFile brick(String brickName);
 
 	void add(SneerJar jar) throws DeployerException;
+
+	void prettyPrint();
 }

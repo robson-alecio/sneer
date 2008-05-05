@@ -8,6 +8,7 @@ import sneer.bricks.deployer.BrickBundle;
 import sneer.bricks.deployer.BrickFile;
 import sneer.bricks.deployer.DeployerException;
 import sneer.lego.utils.SneerJar;
+import wheel.lang.StringUtils;
 
 public class BrickBundleImpl implements BrickBundle {
 	
@@ -45,5 +46,23 @@ public class BrickBundleImpl implements BrickBundle {
 			result.add(brick.name());
 		}
 		return result;
+	}
+
+	@Override
+	public void prettyPrint() {
+		List<String> brickNames = brickNames();
+		for (String brickName : brickNames) {
+			BrickFile brick = brick(brickName);
+			printJarInfo(brick.api());
+			printJarInfo(brick.apiSrc());
+			printJarInfo(brick.impl());
+			printJarInfo(brick.implSrc());
+		}
+		System.out.println("--");
+	}
+
+	private void printJarInfo(SneerJar jar) {
+		System.out.println(jar.role().toUpperCase() + " [" + jar.brickName() + "] file: " + jar.file());
+		System.out.println("sneer1024: " + StringUtils.toHexa(jar.sneer1024()) + "\n");
 	}
 }

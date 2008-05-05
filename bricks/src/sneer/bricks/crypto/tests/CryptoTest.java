@@ -53,6 +53,12 @@ public class CryptoTest extends BrickTestSupport {
 		byte[] hash = _crypto.sneer1024(INPUT.getBytes());
 		assertEquals(1024, hash.length * 8);
 		assertHexa(SHA512 + WHIRLPOOL, hash);
+		
+//		hash = _crypto.sneer1024("input".getBytes());
+//		assertEquals(1024, hash.length * 8);
+//		assertNotEquals("","");
+//		assertHexa(SHA512 + WHIRLPOOL, hash);
+		
 	}
 
 	private void assertHexa(String expected, byte[] hash) {

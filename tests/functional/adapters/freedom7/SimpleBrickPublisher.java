@@ -31,10 +31,11 @@ public class SimpleBrickPublisher implements BrickPublisher {
 	@Override
 	public void publishBrick(File sourceDirectory) {
 		BrickBundle brickBundle = _deployer.pack(sourceDirectory);
+		//brickBundle.prettyPrint();
 		_deployer.deploy(brickBundle);
 	}
 
-		@Override
+	@Override
 	public void bidirectionalConnectTo(SovereignParty peer) {
 		_party.bidirectionalConnectTo(peer);
 	}

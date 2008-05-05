@@ -4,12 +4,12 @@ import static org.junit.Assert.assertEquals;
 
 import java.security.MessageDigest;
 
-import org.bouncycastle.util.encoders.Hex;
 import org.junit.Test;
 
 import sneer.bricks.crypto.Crypto;
 import sneer.lego.Inject;
 import sneer.lego.tests.BrickTestSupport;
+import wheel.lang.StringUtils;
 
 public class CryptoTest extends BrickTestSupport {
 
@@ -56,8 +56,6 @@ public class CryptoTest extends BrickTestSupport {
 	}
 
 	private void assertHexa(String expected, byte[] hash) {
-		String asHexa = new String(Hex.encode(hash));
-		assertEquals(expected, asHexa);
+		assertEquals(expected, StringUtils.toHexa(hash));
 	}
-
 }

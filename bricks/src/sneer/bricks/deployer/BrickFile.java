@@ -2,19 +2,20 @@ package sneer.bricks.deployer;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.jar.JarFile;
+
+import sneer.lego.utils.SneerJar;
 
 public interface BrickFile {
 
 	String name();
 
-	void add(JarFile jarFile) throws IOException;
+	void add(SneerJar jarFile) throws IOException;
 
-	JarFile api();
-	JarFile apiSrc();
+	SneerJar api();
+	SneerJar apiSrc();
 
-	JarFile impl();
-	JarFile implSrc();
+	SneerJar impl();
+	SneerJar implSrc();
 
 	void explodeSources(File target) throws IOException;
 

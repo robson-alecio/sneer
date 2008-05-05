@@ -1,7 +1,8 @@
 package sneer.bricks.deployer;
 
 import java.util.List;
-import java.util.jar.JarFile;
+
+import sneer.lego.utils.SneerJar;
 
 public interface BrickBundle {
 
@@ -9,5 +10,5 @@ public interface BrickBundle {
 
 	BrickFile brick(String brickName);
 
-	void add(JarFile jarFile) throws DeployerException;
+	void add(SneerJar jar) throws DeployerException;
 }

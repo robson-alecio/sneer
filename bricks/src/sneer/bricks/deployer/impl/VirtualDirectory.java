@@ -7,7 +7,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.JarFile;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -15,7 +14,8 @@ import sneer.bricks.deployer.DeployerException;
 import sneer.bricks.deployer.impl.filters.ImplFinder;
 import sneer.bricks.deployer.impl.filters.InterfaceFinder;
 import sneer.lego.Brick;
-import sneer.lego.utils.JarBuilder;
+import sneer.lego.utils.SneerJar;
+import sneer.lego.utils.SneerJarImpl;
 import sneer.lego.utils.io.SimpleFilter;
 import sneer.lego.utils.metaclass.MetaClass;
 
@@ -114,19 +114,19 @@ public class VirtualDirectory {
 		}
 	}
 
-	public JarFile jarSrcApi() {
+	public SneerJar jarSrcApi() {
 		return jar(_apiSourceFiles, "api-src");
 	}
 
-	public JarFile jarSrcImpl() {
+	public SneerJar jarSrcImpl() {
 		return jar(_implSourceFiles, "impl-src");
 	}
 
-	public JarFile jarBinaryApi() {
+	public SneerJar jarBinaryApi() {
 		return jar(_apiClassFiles, "api");
 	}
 
-	public JarFile jarBinaryImpl() {
+	public SneerJar jarBinaryImpl() {
 		return jar(_implClassFiles, "impl");
 	}
 
@@ -138,16 +138,16 @@ public class VirtualDirectory {
 	}
 
 	//FixUrgent: fix entry name for classes in subdirectories
- 	private JarFile jar(List<File> files, String role) {
+ 	private SneerJar jar(List<File> files, String role) {
 		String brickName = brickName();
 		String jarName = brickName + "-" + role;
 		try {
 			File tmp = File.createTempFile(jarName+"-", ".jar");
-			JarBuilder builder = JarBuilder.builder(tmp.getAbsolutePath());
+			SneerJar result = new SneerJarImpl(tmp);
 
 			//sneer meta
 			String meta = sneerMeta(brickName, "1.0-SNAPSHOT", role);
-			builder.add("sneer.meta", meta);
+			result.add("sneer.meta", meta);
 
 			for(File file : files) {
 				String middle = File.separator;
@@ -155,9 +155,10 @@ public class VirtualDirectory {
 					middle = File.separator + "impl" + File.separator;
 				}
 				String entryName = _path + middle + file.getName();
-				builder.add(entryName, file);
+				result.add(entryName, file);
 			}
-			return new JarFile(builder.close());
+			result.close();
+			return result;
 			
 		} catch (IOException e) {
 			throw new DeployerException("Error", e);

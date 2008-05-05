@@ -3,6 +3,7 @@ package sneer.lego.tests;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.jar.JarFile;
@@ -11,9 +12,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
-import sneer.lego.utils.JarBuilder;
+import sneer.lego.utils.SneerJar;
+import sneer.lego.utils.SneerJarImpl;
 
-public class JarBuilderTest {
+public class SneerJarTest {
 
 	@Test
 	public void testBuildJarFile() throws Exception {
@@ -24,15 +26,24 @@ public class JarBuilderTest {
 		FileUtils.writeStringToFile(data, content);
 		
 		//create jar file
-		JarBuilder builder = JarBuilder.builder("/tmp/myJar.jar");
-		builder.add("entry.txt", data);
-		File result = builder.close();
+		File file = File.createTempFile("myJar-", ".jar");
+		SneerJar jar = new SneerJarImpl(file);
+		jar.add("entry.txt", data);
+		jar.close();
 		
 		//test
-		JarFile jarFile = new JarFile(result);
-		InputStream is = jarFile.getInputStream(jarFile.getEntry("entry.txt"));
+		InputStream is = jar.getInputStream("entry.txt");
+		assertEquals(content, read(is));
+
+		//test
+		JarFile jarFile = new JarFile(jar.file());
+		is = jarFile.getInputStream(jarFile.getEntry("entry.txt"));
+		assertEquals(content, read(is));
+	}
+
+	private String read(InputStream is) throws IOException {
 		StringWriter writer = new StringWriter();
 		IOUtils.copy(is, writer);
-		assertEquals(content, writer.getBuffer().toString());
+		return writer.getBuffer().toString();
 	}
 }

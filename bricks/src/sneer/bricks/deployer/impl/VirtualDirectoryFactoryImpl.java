@@ -9,27 +9,34 @@ import java.util.List;
 
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 
+import sneer.lego.Injector;
 import sneer.lego.utils.io.SimpleFilter;
 
 public class VirtualDirectoryFactoryImpl implements VirtualDirectoryFactory {
 
 	private File _root;
 
-	private List<VirtualDirectory> _brickDirectories = new ArrayList<VirtualDirectory>();
-	
-	public VirtualDirectoryFactoryImpl(File root) {
+	private List<VirtualDirectory> _brickDirectories;
+
+	private Injector _injector;
+
+	public VirtualDirectoryFactoryImpl(File root, Injector injector) {
 		_root = root;
-		prepare();
+		_injector = injector;
 	}
 
-	private void prepare() {
+	private List<VirtualDirectory> createVirtualDirectories() {
+		List<VirtualDirectory> result = new ArrayList<VirtualDirectory>();
 		SimpleFilter filter = new ImplDirectoryFinder(_root, DirectoryFileFilter.INSTANCE);
 		List<File> implFolders = filter.list();
 		for (File folder : implFolders) {
 			File parent = folder.getParentFile();
 			String path = parent.getAbsolutePath().substring(_root.getAbsolutePath().length() + 1);
-			_brickDirectories.add(new VirtualDirectory(parent, path));
+			VirtualDirectory vd = new VirtualDirectory(parent, path);
+			_injector.inject(vd);
+			result.add(vd);
 		}
+		return result;
 	}
 
 	@Override
@@ -39,6 +46,10 @@ public class VirtualDirectoryFactoryImpl implements VirtualDirectoryFactory {
 
 	@Override
 	public List<VirtualDirectory> virtualDirectories() {
+		if(_brickDirectories != null) {
+			return _brickDirectories;
+		}
+		_brickDirectories = createVirtualDirectories();
 		return _brickDirectories;
 	}
 }

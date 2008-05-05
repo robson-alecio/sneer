@@ -20,6 +20,7 @@ import sneer.bricks.deployer.Deployer;
 import sneer.bricks.deployer.DeployerException;
 import sneer.bricks.log.Logger;
 import sneer.lego.Inject;
+import sneer.lego.Injector;
 import sneer.lego.utils.FileUtils;
 import sneer.lego.utils.metaclass.MetaClass;
 import wheel.lang.exceptions.NotImplementedYet;
@@ -37,6 +38,9 @@ public class DeployerImpl implements Deployer {
 	
 	@Inject
 	private Logger log;
+	
+	@Inject
+	private Injector _injector;
 	
 	@Override
 	public List<String> list() {
@@ -122,7 +126,7 @@ public class DeployerImpl implements Deployer {
 		 */
 
 		BrickBundle result = new BrickBundleImpl();
-		VirtualDirectoryFactory factory = new VirtualDirectoryFactoryImpl(path);
+		VirtualDirectoryFactory factory = new VirtualDirectoryFactoryImpl(path, _injector);
 		List<VirtualDirectory> virtualDirectories = factory.virtualDirectories();
 
 		/*

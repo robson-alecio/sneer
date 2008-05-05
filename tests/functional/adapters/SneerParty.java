@@ -37,10 +37,13 @@ public class SneerParty extends SelfInject implements SovereignParty {
 	@Inject
 	private InternetAddressKeeper _internetAddressKeeper;
 	
+	@SuppressWarnings("unused") //We need to start this brick so that it listens to others and does its thing.
 	@Inject
-	private SocketOriginator _originator; //need to start this component so that is registers itself on InternetAddressKeeper.addresses
+	private SocketOriginator _originator;
+
+	@SuppressWarnings("unused") //We need to start this brick so that it listens to others and does its thing.
 	@Inject
-	private SocketReceiver _receiver; //need to start this component so that is registers itself on InternetAddressKeeper.addresses
+	private SocketReceiver _receiver;
 
 	@Inject
 	private KeyManager _keyManager;

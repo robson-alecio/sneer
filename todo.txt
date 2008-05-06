@@ -17,6 +17,12 @@
  - Logging - Find a way that the Looger brick can configured via API without having to use the log4j properties file. 
  - Proactivity: Pick something from Klaus's todo list.
  
+Leandro Reminder 
+ - compilar com libs
+ - incluir apis no classpath dos bricks instalados anteriormente
+ - hash com libs
+ - brick registry (guarda hash e os jars)
+ - analizar dependencias injetadas 
 
 Klaus
 ongoing - Component Model (see todoLego.txt)

@@ -10,7 +10,6 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import sneer.bricks.crypto.Crypto;
 import sneer.bricks.crypto.Digester;
-import wheel.lang.StringUtils;
 
 public class CryptoImpl implements Crypto {
 
@@ -65,7 +64,7 @@ class DigesterImpl implements Digester {
 		byte[] bytes = read(is);
 		_sha512.update(bytes);
 		_whirlPool.update(bytes);
-		System.out.println(" " + StringUtils.toHexa(bytes));
+		//System.out.println(" " + StringUtils.toHexa(bytes));
 	}
 
 	MessageDigest whirlPool() {

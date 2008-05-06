@@ -17,9 +17,9 @@ public class ImplFinder extends SimpleFilter {
 	@SuppressWarnings({ "unchecked", "unused" })
 	@Override
 	protected void handleFile(File file, int depth, Collection results) throws IOException {
-		File implDir = findImplDir(file);
-		if(implDir == null)
-			return;
+//		File implDir = findImplDir(file);
+//		if(implDir == null)
+//			return;
 
 		JavaSource source = new JavaSourceParser(file).parse();
 		if(/* !source.isInterface() && */ !source.isAccessPublic())
@@ -27,22 +27,16 @@ public class ImplFinder extends SimpleFilter {
 
 	}
 	
-	private File findImplDir(File file) {
-		File parent = file.getParentFile();
-		
-		if(parent == null) 
-			return null;
-		
-		if("impl".equals(parent.getName())) {
-			return parent;
-		}
-		return findImplDir(parent);
-		
-	}
-
-	@Override
-	protected String[] ignoreDirectoryNames() {
-		return new String[]{"."};
-	}
-
+//	private File findImplDir(File file) {
+//		File parent = file.getParentFile();
+//		
+//		if(parent == null) 
+//			return null;
+//		
+//		if("impl".equals(parent.getName())) {
+//			return parent;
+//		}
+//		return findImplDir(parent);
+//		
+//	}
 }

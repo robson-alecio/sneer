@@ -13,6 +13,7 @@ import org.apache.commons.io.FilenameUtils;
 import sneer.bricks.deployer.DeployerException;
 import sneer.bricks.deployer.impl.filters.ImplFinder;
 import sneer.bricks.deployer.impl.filters.InterfaceFinder;
+import sneer.bricks.deployer.impl.filters.LibFinder;
 import sneer.lego.Brick;
 import sneer.lego.Container;
 import sneer.lego.Inject;
@@ -40,6 +41,8 @@ public class VirtualDirectory {
 	
 	private List<File> _implClassFiles;
 
+	private List<File> _jarFiles;
+
 	public VirtualDirectory(File root, String path) {
 		_path = path;
 		_root = root;
@@ -66,9 +69,18 @@ public class VirtualDirectory {
 		if(_implSourceFiles.size() > 0)
 			return _implSourceFiles;
 		
-		SimpleFilter walker = new ImplFinder(_root);
+		SimpleFilter walker = new ImplFinder(new File(_root,"impl"));
 		_implSourceFiles = walker.list(); 
 		return _implSourceFiles;
+	}
+
+	public List<File> libs() {
+		if(_jarFiles != null && _jarFiles.size() > 0)
+			return _jarFiles;
+		
+		SimpleFilter walker = new LibFinder(new File(_root, "impl/libs"));
+		_jarFiles = walker.list(); 
+		return _jarFiles;
 	}
 
 	public void grabCompiledClasses(List<MetaClass> classFiles) {
@@ -176,5 +188,10 @@ public class VirtualDirectory {
 		builder.append("brick-version: ").append(version).append("\n");
 		builder.append("role: ").append(role).append("\n");
 		return builder.toString();
+	}
+
+	@Override
+	public String toString() {
+		return "VirtualDirectory for " + _brickName;
 	}
 }

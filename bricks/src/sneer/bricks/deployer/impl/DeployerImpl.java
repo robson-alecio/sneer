@@ -56,11 +56,11 @@ public class DeployerImpl implements Deployer {
 	}
 
 	@Override
-	public void deploy(BrickBundle bundle) {
+	public void deploy(BrickBundle received) {
 		log.info("Deploying BrickBundle");
 		File workDirectory = createWorkDirectory("received");
 		
-		recreateOriginalDirectoryStructureWhenPublished(bundle, workDirectory);
+		recreateOriginalDirectoryStructureWhenPublished(received, workDirectory);
 		BrickBundle repacked = pack(workDirectory);
 		
 		deployRepacked(repacked);

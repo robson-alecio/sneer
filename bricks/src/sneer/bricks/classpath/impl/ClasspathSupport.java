@@ -33,16 +33,6 @@ abstract public class ClasspathSupport implements Classpath {
 	}
 
 	@Override
-	public File absoluteFile(Class<?> clazz) {
-		throw new wheel.lang.exceptions.NotImplementedYet();
-	}
-
-	@Override
-	public File relativeFile(Class<?> clazz) {
-		throw new wheel.lang.exceptions.NotImplementedYet();
-	}
-
-	@Override
 	public Classpath compose(Classpath other) {
 		return new ComposedClasspath(this, other);
 	}

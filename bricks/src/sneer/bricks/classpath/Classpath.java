@@ -12,9 +12,5 @@ public interface Classpath {
 	 */
 	void add(File element);
 
-	File absoluteFile(Class<?> clazz);
-
-	File relativeFile(Class<?> clazz);
-
 	Classpath compose(Classpath other);
 }

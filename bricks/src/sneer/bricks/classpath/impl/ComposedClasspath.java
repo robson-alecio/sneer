@@ -31,16 +31,6 @@ class ComposedClasspath implements Classpath {
 	}
 
 	@Override
-	public File relativeFile(Class<?> clazz) {
-		throw new wheel.lang.exceptions.NotImplementedYet();
-	}
-
-	@Override
-	public File absoluteFile(Class<?> clazz) {
-		throw new wheel.lang.exceptions.NotImplementedYet();
-	}
-
-	@Override
 	public void add(File element) {
 		throw new wheel.lang.exceptions.NotImplementedYet();
 	}

@@ -2,6 +2,7 @@ package functional.adapters.freedom7;
 
 import java.io.File;
 
+import sneer.bricks.brickmanager.BrickManager;
 import sneer.bricks.deployer.BrickBundle;
 import sneer.bricks.deployer.Deployer;
 import sneer.lego.Inject;
@@ -14,6 +15,9 @@ public class SimpleBrickPublisher implements BrickPublisher {
 	
 	@Inject
 	private Deployer _deployer;
+	
+	@Inject
+	private BrickManager _registry;
 	
 	private SovereignParty _party;
 	
@@ -32,7 +36,7 @@ public class SimpleBrickPublisher implements BrickPublisher {
 	public void publishBrick(File sourceDirectory) {
 		BrickBundle brickBundle = _deployer.pack(sourceDirectory);
 		//brickBundle.prettyPrint();
-		_deployer.deploy(brickBundle);
+		_registry.install(brickBundle);
 	}
 
 	@Override

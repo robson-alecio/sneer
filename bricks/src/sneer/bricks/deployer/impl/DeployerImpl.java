@@ -3,11 +3,9 @@ package sneer.bricks.deployer.impl;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.filefilter.DirectoryFileFilter;
 
 import sneer.bricks.classpath.Classpath;
 import sneer.bricks.classpath.ClasspathFactory;
@@ -15,15 +13,11 @@ import sneer.bricks.compiler.Compiler;
 import sneer.bricks.compiler.Result;
 import sneer.bricks.config.SneerConfig;
 import sneer.bricks.deployer.BrickBundle;
-import sneer.bricks.deployer.BrickFile;
 import sneer.bricks.deployer.Deployer;
 import sneer.bricks.deployer.DeployerException;
-import sneer.bricks.log.Logger;
 import sneer.lego.Inject;
 import sneer.lego.Injector;
-import sneer.lego.utils.FileUtils;
 import sneer.lego.utils.metaclass.MetaClass;
-import wheel.lang.exceptions.NotImplementedYet;
 
 public class DeployerImpl implements Deployer {
 
@@ -37,77 +31,31 @@ public class DeployerImpl implements Deployer {
 	private ClasspathFactory _cpFactory;
 	
 	@Inject
-	private Logger log;
-	
-	@Inject
 	private Injector _injector;
 	
-	@Override
-	public List<String> list() {
-		File root = brickRootDirectory();
-		String[] result = root.list(DirectoryFileFilter.INSTANCE);
-		return Arrays.asList(result);
-	}
 
-	private File brickRootDirectory() {
-		File home = _config.sneerDirectory();
-		File result = FileUtils.concat(home.getAbsolutePath(), "bricks");
-		return result;
-	}
-
-	@Override
-	public void deploy(BrickBundle received) {
-		log.info("Deploying BrickBundle");
-		File workDirectory = createWorkDirectory("received");
-		
-		recreateOriginalDirectoryStructureWhenPublished(received, workDirectory);
-		BrickBundle repacked = pack(workDirectory);
-		
-		deployRepacked(repacked);
-		throw new NotImplementedYet();
-	}
-
-	private void deployRepacked(BrickBundle bundle) {
-		List<String> brickNames = bundle.brickNames();
-		for (String brickName : brickNames) {
-			BrickFile brick = bundle.brick(brickName);
-			try {
-				deploy(brick);
-			} catch (Throwable t) {
-				throw new DeployerException("Error deploying brick: "+brickName, t);
-			}
-		}
-	}
-
-	private void recreateOriginalDirectoryStructureWhenPublished(BrickBundle brickBundle, File workDirectory) {
-		List<String> brickNames = brickBundle.brickNames();
-		for (String brickName : brickNames) {
-			BrickFile brick = brickBundle.brick(brickName);
-			try {
-				brick.explodeSources(workDirectory);
-			} catch (Throwable t) {
-				throw new DeployerException("Error exploding brick sources: "+brickName, t);
-			}
-		}
-	}
 	
-	private void deploy(BrickFile brick) throws IOException {
-		String brickName = brick.name();
-		log.debug("Deploying brick: "+brickName);
-		
-		//1. create brick directory under sneer home
-		File root = brickRootDirectory();
-		File brickDirectory = new File(root, brickName);
-		if(brickDirectory.exists()) {
-			//FixUrgent: ask permission to overwrite?
-			org.apache.commons.io.FileUtils.cleanDirectory(brickDirectory);
-		} else {
-			brickDirectory.mkdir();
-		}
-		
-		//2. copy received files
-		brick.copyTo(brickDirectory);
-	}
+//	public void deploy(BrickBundle received) {
+//		log.info("Deploying BrickBundle");
+//		File workDirectory = createWorkDirectory("received");
+//		
+//		recreateOriginalDirectoryStructureWhenPublished(received, workDirectory);
+//		BrickBundle repacked = pack(workDirectory);
+//		
+//		deployRepacked(repacked);
+//	}
+
+//	private void recreateOriginalDirectoryStructureWhenPublished(BrickBundle brickBundle, File workDirectory) {
+//		List<String> brickNames = brickBundle.brickNames();
+//		for (String brickName : brickNames) {
+//			BrickFile brick = brickBundle.brick(brickName);
+//			try {
+//				brick.explodeSources(workDirectory);
+//			} catch (Throwable t) {
+//				throw new DeployerException("Error exploding brick sources: "+brickName, t);
+//			}
+//		}
+//	}
 
 	@Override
 	public BrickBundle pack(File path) {
@@ -164,12 +112,18 @@ public class DeployerImpl implements Deployer {
 		return interfaceFiles;
 	}
 
-	private List<MetaClass> compileImpl(File workDirectory, VirtualDirectory virtual, Classpath api) {
+	private Classpath classpath(VirtualDirectory virtual, Classpath api) {
 		Classpath sneerApi = _cpFactory.sneerApi();
 		Classpath cp = sneerApi.compose(api);
-		Classpath libs = _cpFactory.newClasspath(); //Fix: search for brick libs
+		List<File> jarFiles = virtual.libs();
+		Classpath libs = _cpFactory.fromJarFiles(jarFiles);
+		return cp.compose(libs);
+	}
+	
+	private List<MetaClass> compileImpl(File workDirectory, VirtualDirectory virtual, Classpath api) {
 		List<File> sourceFilesInBrick = virtual.impl();
-		Result compilationResult = _compiler.compile(sourceFilesInBrick, workDirectory, cp.compose(libs));
+		Classpath cp = classpath(virtual, api);
+		Result compilationResult = _compiler.compile(sourceFilesInBrick, workDirectory, cp);
 		if(!compilationResult.success()) {
 			throw new DeployerException("Error compiling brick implementation: "+virtual.brickName());
 		}

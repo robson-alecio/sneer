@@ -22,12 +22,15 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 		BrickPublisher receiver = wrapParty(_b);
 
 		File sourceFolder = askSourceFolder();
+		/*
+		 * compiles all bricks found under _sourceFolder_ and installs them locally
+		 */
 		publisher.publishBrick(sourceFolder);
-		//estimular signal tree local
+		//TODO: estimular signal tree local
 		
 		receiver.bidirectionalConnectTo(publisher);
 		receiver.meToo(INTERFACE);
-		//estimular signal tree local
+		//TODO: estimular signal tree local
 	}
 
 	protected abstract  File askSourceFolder();

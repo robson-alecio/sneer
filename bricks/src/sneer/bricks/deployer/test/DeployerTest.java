@@ -30,29 +30,17 @@ public class DeployerTest extends BrickTestSupport {
 		fail("This test is freezing on windows");
 		
 		//create jar file
-//		String brickName = "myBrick";
-//		String version = "1.0";
 		File root = getRoot("dev");
-		BrickBundle brick = deployer.pack(root);
-		
-		//test sneer meta
-//		assertEquals(brickName, brick.getBrickName());
-//		assertEquals(version, brick.getBrickVersion());
-		
-		//deploy jar file
-		deployer.deploy(brick);
-		//TODO: compare files, test compilation, etc
+		BrickBundle bundle = deployer.pack(root);
+		fail("test bundle: "+bundle);
 	}
 	
 	@Test
 	public void testDependency() throws Exception {
-
 		fail("This test is freezing on windows");
-		
 		File root = getRoot("notAlone");
-		BrickBundle brick = deployer.pack(root);
-		deployer.deploy(brick);
-		
+		BrickBundle bundle = deployer.pack(root);
+		fail("test bundle: "+bundle);
 	}
 
 	private File getRoot(String name) {

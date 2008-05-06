@@ -1,7 +1,6 @@
 package sneer.bricks.classpath;
 
 import java.io.File;
-import java.util.List;
 
 
 public interface Classpath {
@@ -11,16 +10,11 @@ public interface Classpath {
 	/**
 	 * @param element is a single directory with .class files or jar file
 	 */
-	void addElement(File element);
-
-	<T> List<Class<T>> findAssignableTo(Class<T> clazz) 
-		throws ClassNotFoundException;
+	void add(File element);
 
 	File absoluteFile(Class<?> clazz);
 
 	File relativeFile(Class<?> clazz);
 
 	Classpath compose(Classpath other);
-	
-	List<File> classFiles();
 }

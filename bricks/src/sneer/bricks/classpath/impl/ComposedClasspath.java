@@ -1,8 +1,6 @@
 package sneer.bricks.classpath.impl;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import sneer.bricks.classpath.Classpath;
 
@@ -33,14 +31,6 @@ class ComposedClasspath implements Classpath {
 	}
 
 	@Override
-	public <T> List<Class<T>> findAssignableTo(Class<T> clazz) throws ClassNotFoundException {
-		List<Class<T>> result = new ArrayList<Class<T>>();
-		result.addAll(_cp1.findAssignableTo(clazz));
-		result.addAll(_cp2.findAssignableTo(clazz));
-		return result;
-	}
-
-	@Override
 	public File relativeFile(Class<?> clazz) {
 		throw new wheel.lang.exceptions.NotImplementedYet();
 	}
@@ -51,14 +41,7 @@ class ComposedClasspath implements Classpath {
 	}
 
 	@Override
-	public void addElement(File element) {
+	public void add(File element) {
 		throw new wheel.lang.exceptions.NotImplementedYet();
 	}
-
-	@Override
-	public List<File> classFiles() {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
-	}
-
-
 }

@@ -1,6 +1,7 @@
 package sneer.bricks.classpath.impl;
 
 import java.io.File;
+import java.util.List;
 
 import sneer.bricks.classpath.Classpath;
 import sneer.bricks.classpath.ClasspathFactory;
@@ -50,10 +51,15 @@ public class ClasspathFactoryImpl implements ClasspathFactory {
 		}
 	}
 
+	@Override
+	public Classpath fromJarFiles(List<File> jarFiles) {
+		return new JarBasedClasspath(jarFiles);
+	}
+
 }
 
 class SimpleClasspath extends JarBasedClasspath {
 	SimpleClasspath() {
-		_elements.add(RT_JAR);
+		super(RT_JAR);
 	}
 }

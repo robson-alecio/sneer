@@ -2,7 +2,6 @@ package sneer.bricks.classpath.impl;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.List;
 
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 
@@ -29,11 +28,5 @@ class LibdirClasspath extends ClasspathSupport {
 		}
 		String result = sb.toString();
 		return result;
-	}
-
-	@Override
-	public <T> List<Class<T>> findAssignableTo(Class<T> clazz) {
-		// Implement Auto-generated method stub
-		throw new wheel.lang.exceptions.NotImplementedYet();
 	}
 }

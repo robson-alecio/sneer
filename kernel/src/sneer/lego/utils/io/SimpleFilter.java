@@ -21,6 +21,7 @@ public class SimpleFilter extends DirectoryWalker {
 	
 	protected static final FileFilter JAVA_SOURCE_FILE_FILTER = new OrFileFilter(new SuffixFileFilter(".java"),  DirectoryFileFilter.INSTANCE);
 	protected static final FileFilter JAVA_CLASS_FILE_FILTER  = new OrFileFilter(new SuffixFileFilter(".class"), DirectoryFileFilter.INSTANCE);
+	protected static final FileFilter JAR_FILE_FILTER  = new SuffixFileFilter(".jar");
 	
 	protected File _root;
 	

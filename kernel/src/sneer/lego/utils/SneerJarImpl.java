@@ -42,6 +42,11 @@ public class SneerJarImpl implements SneerJar {
 		_file = file;
 	}
 
+	public SneerJarImpl(File file, JarFile jarFile) {
+		_jarFile = jarFile;
+		_file = file;
+	}
+
 	public void add(String entryName, File file) throws IOException {
 		add(entryName, new FileInputStream(file.getAbsolutePath()));
 	}

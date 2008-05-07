@@ -2,18 +2,18 @@ package sneer.lego.impl;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.configuration.Configuration;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import sneer.bricks.config.SneerConfig;
+import sneer.bricks.config.impl.SneerConfigImpl;
 import sneer.lego.Binder;
 import sneer.lego.ClassLoaderFactory;
 import sneer.lego.Configurable;
@@ -42,6 +42,9 @@ public class SimpleContainer implements Container {
 	private Binder _binder;
 	
 	private ConfigurationFactory _configurationFactory;
+
+	private SneerConfig _sneerConfig;
+	
 
     public SimpleContainer() {
         this(null);
@@ -105,16 +108,16 @@ public class SimpleContainer implements Container {
 		return component;
 	}
 	
-	@SuppressWarnings("unused")
-	private void checkClassLoaders(Class<?> clazz, Object component) {
-		Class<?>[] interfaces = component.getClass().getInterfaces();
-		ClassLoader parent = clazz.getClassLoader();
-		System.out.println(clazz.getName() + " : "+parent);
-		for (Class<?> intrface : interfaces) {
-			ClassLoader cl = intrface.getClassLoader();
-			System.out.println(intrface.getName() + " : " + intrface.getClassLoader() + (parent == cl ? "*" : ""));
-		}
-	}
+//	@SuppressWarnings("unused")
+//	private void checkClassLoaders(Class<?> clazz, Object component) {
+//		Class<?>[] interfaces = component.getClass().getInterfaces();
+//		ClassLoader parent = clazz.getClassLoader();
+//		System.out.println(clazz.getName() + " : "+parent);
+//		for (Class<?> intrface : interfaces) {
+//			ClassLoader cl = intrface.getClassLoader();
+//			System.out.println(intrface.getName() + " : " + intrface.getClassLoader() + (parent == cl ? "*" : ""));
+//		}
+//	}
 	
 	private <T> T instantiate(Class<T> intrface, Object... args) throws LegoException {
 		T component;
@@ -145,32 +148,38 @@ public class SimpleContainer implements Container {
 	@SuppressWarnings("unchecked") //Refactor Try to use Casts.unchecked..()
 	private <T> T lookup(Class<T> clazz, Object... args) throws Exception {
 
-	    Object result = instanceFor(clazz);
+		Object result = instanceFor(clazz);
 	    if(result != null) return (T) result;
 
-	    String appRoot = getAppRoot();
-		String dirName = FilenameUtils.concat(appRoot, clazz.getName()); 
-		URL url = new URL("file://"+dirName+"/");
-		
 		String implementation = implementationFor(clazz); 
-		ClassLoader cl = getClassLoader(implementation, url);
+		File brickDirectory = sneerConfig().brickDirectory(clazz);
+		ClassLoader cl = getClassLoader(clazz, brickDirectory);
 		Class impl = cl.loadClass(implementation);
-		if(!clazz.isInterface() && args != null && args.length > 0) {
-			Constructor c = findConstructor(impl, args);
-			boolean before = c.isAccessible();
-			c.setAccessible(true);
-			result = c.newInstance(args);
-			c.setAccessible(before);
-		} else {
-			result = impl.newInstance();
-		}
-
+		result = construct(impl, args);
 		log.info("brick {} created", result);
 		return (T) result;		
 
 	}
 
+	private <T> Object construct(Class<?> impl, Object... args) throws Exception {
+		Object result;
+		Constructor<?> c = findConstructor(impl, args);
+		boolean before = c.isAccessible();
+		c.setAccessible(true);
+		if(args != null && args.length > 0)
+			result = c.newInstance(args);
+		else
+			result = c.newInstance();
+		
+		c.setAccessible(before);
+		
+		return result;
+	}
+
 	private Constructor<?> findConstructor(Class<?> clazz, Object... args) throws Exception {
+		
+		if(args == null || args.length == 0)
+			return clazz.getDeclaredConstructor();
 		
 		Class<?>[] argTypes = new Class<?>[args.length];
 		for(int i=0 ; i<args.length ; i++) {
@@ -189,13 +198,9 @@ public class SimpleContainer implements Container {
 		throw new Exception("Can't find construtor on "+clazz.getName()+" that matches "+ArrayUtils.toString(argTypes));
 	}
 
-	//FixUrgent: hack to allow using bricks that are not deployed, but present in your classpath. 
-	private ClassLoader getClassLoader(String impl, URL url) {
-		File file = new File(url.getFile());
-		if(!file.exists()) {
-			log.info("loading: {} from the System classpath", impl);
-		}
-		return factory().brickClassLoader(impl, url);
+	private ClassLoader getClassLoader(Class<?> clazz, File brickDirectory) {
+		return factory().brickClassLoader(clazz, brickDirectory);
+		
 	}
 
 	private ClassLoaderFactory factory() {
@@ -229,10 +234,19 @@ public class SimpleContainer implements Container {
 		return name.substring(0, index) + ".impl" + name.substring(index) + "Impl";
 	}
 
-	private String getAppRoot() {
-		//Fix: replace by a Brick
-		String appRoot = System.getProperty("user.home") + File.separator + ".sneer" + File.separator + "bricks";
-		return appRoot;
+	//Fix: check if this code will work on production
+	//Hack
+	private SneerConfig sneerConfig() {
+		if(_sneerConfig != null) 
+			return _sneerConfig;
+		
+		Object result = instanceFor(SneerConfig.class);
+		if(result != null) {
+			_sneerConfig = (SneerConfig) result;
+			return _sneerConfig;
+		}
+		_sneerConfig = new SneerConfigImpl();
+		return _sneerConfig;
 	}
 
 	@Override

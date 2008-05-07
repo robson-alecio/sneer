@@ -7,11 +7,11 @@ import java.util.Map;
 
 import sneer.lego.utils.metaclass.MetaClass;
 
-public class FileClassLoader extends EnhancingClassLoader {
+public class MetaClassClassLoader extends EnhancingClassLoader {
 
 	private Map<String, MetaClass> _hash;
 
-	public FileClassLoader(List<MetaClass> files, ClassLoader parent) {
+	public MetaClassClassLoader(List<MetaClass> files, ClassLoader parent) {
 		super(parent);
 		_hash = computeHash(files);
 	}

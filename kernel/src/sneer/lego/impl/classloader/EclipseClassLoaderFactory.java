@@ -51,7 +51,7 @@ public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 			File targetDirectory = eclipseTargetDirectory();
 			_filter = new BrickImplFilter(targetDirectory);
 		}
-		return new FileClassLoader(_filter.listMetaClasses(), parent);
+		return new MetaClassClassLoader(_filter.listMetaClasses(), parent);
 	}
 
 	@Override

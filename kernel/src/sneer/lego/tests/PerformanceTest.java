@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import sneer.lego.Container;
 import sneer.lego.impl.SimpleContainer;
-import sneer.lego.impl.classloader.FileClassLoader;
+import sneer.lego.impl.classloader.MetaClassClassLoader;
 import sneer.lego.utils.metaclass.ClassUtils;
 import sneer.lego.utils.metaclass.MetaClass;
 
@@ -36,7 +36,7 @@ public class PerformanceTest {
 		MetaClass meta = ClassUtils.metaClass(className);
 		List<MetaClass> files = new ArrayList<MetaClass>();
 		files.add(meta);
-		ClassLoader cl = new FileClassLoader(files, this.getClass().getClassLoader());
+		ClassLoader cl = new MetaClassClassLoader(files, this.getClass().getClassLoader());
 		Class<?> clazz = cl.loadClass(className);
 		assertSame(cl, clazz.getClassLoader());
 		Class<?> clazz2 = cl.loadClass(className);

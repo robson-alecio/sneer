@@ -89,7 +89,15 @@ public class BrickClassLoader extends EnhancingClassLoader {
 		}
 	}
 
-	public String getMainClass() {
+	public String mainClass() {
 		return _mainClass.getName();
 	}
+
+	@Override
+	public String toString() {
+		return "BrickClassLoader ["+mainClass()+"] "+_brickDirectory;
+		
+	}
+	
+	
 }

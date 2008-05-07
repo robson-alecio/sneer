@@ -3,6 +3,7 @@ package functional.freedom7;
 import java.io.File;
 
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 import functional.SovereignFunctionalTest;
 import functional.SovereignParty;
@@ -25,15 +26,18 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 		 * compiles all bricks found under _sourceFolder_ and installs them locally
 		 */
 		publisher.publishBrick(sourceFolder);
-		//TODO: estimular signal tree local
+		Object orig = publisher.produce(BRICK_NAME);
+		print("sneer+AnaAlmeida",orig);
 		
-		//already connected: receiver.bidirectionalConnectTo(publisher);
 		receiver.meToo(publisher, BRICK_NAME);
-		Object sample = receiver.produce(BRICK_NAME);
-		System.out.println(sample);
-		System.out.println(sample.getClass());
-		System.out.println(sample.getClass().getClassLoader());
-		//TODO: estimular signal tree local
+		Object copied = receiver.produce(BRICK_NAME);
+		print("sneer+BrunoBarros",copied);
+	}
+
+	private void print(String expected, Object obj) {
+		String toString = obj.getClass().getClassLoader().toString();
+		//System.out.println(toString);
+		assertTrue("wrong directory for brick class loader: "+toString,toString.indexOf(expected) > 0);
 	}
 
 	protected abstract  File askSourceFolder();

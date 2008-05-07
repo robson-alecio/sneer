@@ -58,7 +58,7 @@ public class PolicySpike extends Policy {
 		ClassLoader cl = domain.getClassLoader();
 		if(cl instanceof BrickClassLoader) {
 			BrickClassLoader bcl = (BrickClassLoader) cl;
-			System.out.println("Checking "+permission+" access for: "+bcl.getMainClass());
+			System.out.println("Checking "+permission+" access for: "+bcl.mainClass());
 		}
 		return true;
 	}

@@ -1,38 +1,42 @@
 package sneer.lego.impl.classloader;
 
-import java.io.IOException;
 import java.security.SecureClassLoader;
 
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassWriter;
+import sneer.lego.impl.classloader.enhancer.ByteCodeGuardian;
+import sneer.lego.impl.classloader.enhancer.EnhancingByteCodeGuardian;
 
-import sneer.lego.impl.classloader.enhancer.Enhancer;
+public abstract class EnhancingClassLoader extends SecureClassLoader {
 
-public class EnhancingClassLoader extends SecureClassLoader {
+	private ByteCodeGuardian _guardian = EnhancingByteCodeGuardian.instance();
 
-	private final Enhancer _enhancer;
-
-	public EnhancingClassLoader(Enhancer enhancer) {
-		super(null);
-		_enhancer = enhancer;
-	}	
+	public EnhancingClassLoader(ClassLoader parent) {
+		super(parent);
+	}
 	
 	@Override
-	protected Class<?> findClass(String name) throws ClassNotFoundException {
-		
-		try {
-			final ClassReader reader = new ClassReader(name);
-			final ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
-			reader.accept(_enhancer.enhance(writer), 0);
-			return defineClass(name, writer.toByteArray());
-		} catch (IOException e) {
-			throw new ClassNotFoundException(name, e);
+	protected synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+		// First, check if the class has already been loaded
+		ClassLoader parent = getParent();
+		Class<?> c = findLoadedClass(name);
+		if (c == null) {
+			try {
+				c = findClass(name);
+			} catch (ClassNotFoundException e) {
+				if (parent != null) {
+					c = parent.loadClass(name);
+				} else {
+					//c = findBootstrapClass0(name);
+				}
+			}
 		}
-	}
-
-	private Class<?> defineClass(String name, byte[] byteArray) {
-		return defineClass(name, byteArray, 0, byteArray.length);
+		if (resolve) {
+			resolveClass(c);
+		}
+		return c;
 	}
 	
-
+	protected Class<?> defineClass(String name, byte[] bytes) {
+		byte[] byteArray = _guardian.enhance(name, bytes);
+		return defineClass(name, byteArray, 0, byteArray.length);
+	}
 }

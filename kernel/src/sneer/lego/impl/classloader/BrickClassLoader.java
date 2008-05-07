@@ -1,68 +1,95 @@
 package sneer.lego.impl.classloader;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.net.URLClassLoader;
+import java.io.InputStream;
+import java.util.Enumeration;
+import java.util.Map;
+import java.util.WeakHashMap;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassWriter;
+import org.apache.commons.io.IOUtils;
 
-import sneer.lego.impl.classloader.enhancer.Enhancer;
-import wheel.io.Jars;
+public class BrickClassLoader extends EnhancingClassLoader {
 
-public class BrickClassLoader extends URLClassLoader {
-
-	private String _mainClass;
-
-	private Enhancer _enhancer;
-
-	public BrickClassLoader(Enhancer enhancer) {	
-		super(new URL[]{}, Jars.bootstrapClassLoader());
-		_enhancer = enhancer;
-	}	
-
-	public BrickClassLoader(URL[] urls) {
-		super(urls, Jars.bootstrapClassLoader());
-	}
-
-	public BrickClassLoader(String mainClass, URL url) {
-		this(new URL[]{url});
+	private File _brickDirectory;
+	
+	private Class<?> _mainClass;
+	
+	private File _implJarFile;
+	
+	private Map<String, byte[]> _cache; 
+	
+	public BrickClassLoader(ClassLoader parent, Class<?> mainClass, File brickDirectory) {
+		super(parent);
+		_brickDirectory = brickDirectory;
 		_mainClass = mainClass;
-	}
-
-	public String getMainClass() {
-		return _mainClass;
+		_implJarFile = new File(_brickDirectory, _mainClass.getName()+"-impl.jar");
 	}
 	
-
-//	@Override
-//	public Class<?> loadClass(String name) throws ClassNotFoundException {
-//		if(name.startsWith("sneer.lego")) {
-//			return findClass(name); //hack for eclipse development
-//		} 
-//		return super.loadClass(name);
-//	}
-
 	@Override
 	protected Class<?> findClass(String name) throws ClassNotFoundException {
+		byte[] bytes;
 		try {
-			ClassReader reader = new ClassReader(name);
-			ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
-			reader.accept(_enhancer.enhance(writer), 0);
-			Class<?> result = defineClass(name, writer.toByteArray()); 
-			if(!result.isInterface()) {
-				System.out.println(name + " enhanced");
-				return result;
-			}
-			System.out.println(name + " not found");
-			return null; //super.loadClass(name); //hack for eclipse development
+			bytes = openJar(name);
 		} catch (IOException e) {
-			throw new ClassNotFoundException(name, e);
+			throw new ClassNotFoundException("Error loading bytes from "+_implJarFile);
+		}
+		
+		//delegate to parent class loader
+		if(bytes == null) 
+			throw new ClassNotFoundException();
+		
+		return defineClass(name, bytes);
+	}
+
+	private byte[] openJar(String name) throws IOException {
+		
+		if(_cache != null) return _cache.get(name);
+		
+		_cache = new WeakHashMap<String, byte[]>();
+		byte[] result = null;
+
+		JarFile jar = new JarFile(_implJarFile);
+		Enumeration<JarEntry> e = jar.entries();
+		while (e.hasMoreElements()) {
+			JarEntry entry = e.nextElement();
+			byte[] byteArray = readEntry(jar, entry);
+			String entryName = entry.getName();
+			String key = cache(entryName, byteArray);
+			if(key.equals(name)) 
+				result = byteArray;
+		}
+		return result;
+	}
+
+
+	private String cache(String entryName, byte[] byteArray) {
+		String key = entryName.replaceAll("/", ".");
+		int index = key.indexOf(".class");
+		if(index > 0) {
+			key = key.substring(0, index);
+		}
+		_cache.put(key, byteArray);
+		return key;
+	}
+
+	private byte[] readEntry(JarFile jar, JarEntry entry) throws IOException {
+		InputStream is = null;
+		try {
+			is = jar.getInputStream(entry);
+			ByteArrayOutputStream os = new ByteArrayOutputStream();
+			IOUtils.copy(is, os);
+			return os.toByteArray();
+		} finally {
+			if(is != null)
+				IOUtils.closeQuietly(is);
 		}
 	}
 
-	private Class<?> defineClass(String name, byte[] byteArray) {
-		return defineClass(name, byteArray, 0, byteArray.length);
+	public String getMainClass() {
+		return _mainClass.getName();
 	}
-
 }

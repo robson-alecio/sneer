@@ -36,7 +36,7 @@ public class PerformanceTest {
 		MetaClass meta = ClassUtils.metaClass(className);
 		List<MetaClass> files = new ArrayList<MetaClass>();
 		files.add(meta);
-		ClassLoader cl = new FileClassLoader("test", files, this.getClass().getClassLoader());
+		ClassLoader cl = new FileClassLoader(files, this.getClass().getClassLoader());
 		Class<?> clazz = cl.loadClass(className);
 		assertSame(cl, clazz.getClassLoader());
 		Class<?> clazz2 = cl.loadClass(className);

@@ -1,10 +1,10 @@
 package sneer.lego;
 
-import java.net.URL;
+import java.io.File;
 
 public interface ClassLoaderFactory {
 
 	ClassLoader sneerApi();
 
-	ClassLoader brickClassLoader(String impl, URL url);
+	ClassLoader brickClassLoader(Class<?> clazz, File brickDirectory);
 }

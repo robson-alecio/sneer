@@ -1,19 +1,21 @@
 package sneer.lego.impl.classloader;
 
 import java.io.File;
-import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang.SystemUtils;
 
 import sneer.lego.ClassLoaderFactory;
+import sneer.lego.utils.FileUtils;
 import sneer.lego.utils.io.BrickImplFilter;
 import sneer.lego.utils.io.JavaFilter;
 
 public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 
-	private ClassLoader _sneerApi;
-	
 	private JavaFilter _filter;
+	
+	private Map<Class<?>, ClassLoader> _classLoaderByBrick = new HashMap<Class<?>, ClassLoader>();
 	
 	private static final ClassLoaderFactory INSTANCE = new EclipseClassLoaderFactory();
 	
@@ -24,40 +26,37 @@ public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 	}
 	
 	@Override
-	public ClassLoader brickClassLoader(String impl, URL ignored) {
+	public ClassLoader brickClassLoader(Class<?> clazz, File brickDirectory) {
+		ClassLoader result = _classLoaderByBrick.get(clazz);
+		if(result != null)
+			return result;
+		
 		ClassLoader parent = sneerApi();
+
+		if(FileUtils.isEmpty(brickDirectory)) {
+			//useful for eclipse development
+			result = fileClassLoader(parent);
+			_classLoaderByBrick.put(clazz, result);
+			return result; 
+		}
+		
+		result = new BrickClassLoader(parent, clazz, brickDirectory);
+		_classLoaderByBrick.put(clazz, result);
+		return result;
+	}
+
+	//FixUrgent: hack to allow using bricks that are not deployed, but present in your classpath.
+	private ClassLoader fileClassLoader(ClassLoader parent) {
 		if(_filter == null) {
 			File targetDirectory = eclipseTargetDirectory();
 			_filter = new BrickImplFilter(targetDirectory);
 		}
-		return createFileClassLoader("brick class loader: "+impl, _filter, parent);
+		return new FileClassLoader(_filter.listMetaClasses(), parent);
 	}
 
 	@Override
 	public ClassLoader sneerApi() {
-		if(_sneerApi != null)
-			return _sneerApi;
-		
-		_sneerApi = eclipseClassLoader();
-		//_sneerApi = buildSneerApiForTargetDirectory();
-		return _sneerApi;
-	}
-
-	private ClassLoader eclipseClassLoader() {
 		return this.getClass().getClassLoader();
-	}
-	
-//	private ClassLoader buildSneerApiForTargetDirectory() {
-//		ClassLoader parent = Jars.bootstrapClassLoader();
-//		File targetDirectory = eclipseTargetDirectory();
-//		JavaFilter walker = new BrickInterfaceFilter(targetDirectory);
-//		return createFileClassLoader("api class loader", walker, /* this.getClass().getClassLoader() */ parent);
-//	}
-
-	private ClassLoader createFileClassLoader(String name, JavaFilter walker, ClassLoader parent) {
-		FileClassLoader result = new FileClassLoader(name, walker.listMetaClasses(), parent);
-		//result.debug();
-		return result;
 	}
 	
 	private File eclipseTargetDirectory() {
@@ -65,23 +64,4 @@ public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 		File targetDirectory = new File(userDir, "bin");
 		return targetDirectory;
 	}
-
-//	private URL[] toURLs(Set<File> directories) {
-//		URL[] urls = new URL[directories.size()];
-//		int i=0;
-//		for (File dir : directories) {
-//			//System.out.println(dir);
-//			urls[i++] = url(dir);
-//		}
-//		return urls;
-//	}
-	
-	
-//	private URL url(File file) {
-//		try {
-//			return new URL("file://"+file.getPath()+"/");
-//		} catch (MalformedURLException e) {
-//			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
-//		}
-//	}
 }

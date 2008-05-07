@@ -1,30 +1,19 @@
 package sneer.lego.impl.classloader;
 
 import java.io.IOException;
-import java.security.SecureClassLoader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import sneer.lego.impl.classloader.enhancer.ByteCodeGuardian;
-import sneer.lego.impl.classloader.enhancer.EnhancingByteCodeGuardian;
 import sneer.lego.utils.metaclass.MetaClass;
 
-public class FileClassLoader extends SecureClassLoader {
-
-	private List<MetaClass> _metaClasses;
-
-	private String _name;
+public class FileClassLoader extends EnhancingClassLoader {
 
 	private Map<String, MetaClass> _hash;
-	
-	private ByteCodeGuardian _guardian = EnhancingByteCodeGuardian.instance();
 
-	public FileClassLoader(String name, List<MetaClass> files, ClassLoader parent) {
+	public FileClassLoader(List<MetaClass> files, ClassLoader parent) {
 		super(parent);
-		_name = name;
-		_metaClasses = files;
-		_hash = computeHash(_metaClasses);
+		_hash = computeHash(files);
 	}
 
 	private Map<String, MetaClass> computeHash(List<MetaClass> metaClasses) {
@@ -37,52 +26,13 @@ public class FileClassLoader extends SecureClassLoader {
 	}
 
 	@Override
-	protected synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
-		// First, check if the class has already been loaded
-		ClassLoader parent = getParent();
-		Class<?> c = findLoadedClass(name);
-		if (c == null) {
-			try {
-				c = findClass(name);
-			} catch (ClassNotFoundException e) {
-				if (parent != null) {
-					c = parent.loadClass(name);
-				} else {
-					//c = findBootstrapClass0(name);
-				}
-			}
-		}
-		if (resolve) {
-			resolveClass(c);
-		}
-		return c;
-	}
-
-	@Override
 	protected Class<?> findClass(String name) throws ClassNotFoundException {
 		MetaClass meta = _hash.get(name);
 		if (meta == null) throw new ClassNotFoundException("Class not found " + name);
-		return defineClass(meta);
-	}
-
-	private Class<?> defineClass(MetaClass meta) throws ClassNotFoundException {
 		try {
-			byte[] byteArray = _guardian.enhance(meta);
-			return defineClass(meta.getName(), byteArray, 0, byteArray.length);
+			return defineClass(meta.getName(), meta.bytes());
 		} catch (IOException e) {
 			throw new ClassNotFoundException("Error reading bytes from " + meta.classFile().getName());
-		}
-	}
-
-	@Override
-	public String toString() {
-		return _name + " (" + this.getClass().getName() + ")";
-	}
-
-	public void debug() {
-		System.out.println(" ** " + _name + " ** ");
-		for (MetaClass metaClass : _metaClasses) {
-			System.out.println(" " + metaClass.getName());
 		}
 	}
 }

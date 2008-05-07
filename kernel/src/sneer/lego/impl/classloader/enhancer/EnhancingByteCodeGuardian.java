@@ -1,13 +1,10 @@
 package sneer.lego.impl.classloader.enhancer;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
-
-import sneer.lego.utils.metaclass.MetaClass;
 
 
 public class EnhancingByteCodeGuardian implements ByteCodeGuardian {
@@ -24,12 +21,9 @@ public class EnhancingByteCodeGuardian implements ByteCodeGuardian {
 	}
 	
 	public static final ByteCodeGuardian instance() {
-//		System.out.println(INSTANCE);
-//		System.out.println(INSTANCE.getClass().getClassLoader());
 		return INSTANCE;
 	}
 	
-	@Deprecated
 	@Override
 	public byte[] enhance(String name, byte[] byteArray) {
 		byte[] result = _cache.get(name);
@@ -41,18 +35,4 @@ public class EnhancingByteCodeGuardian implements ByteCodeGuardian {
 		_cache.put(name, result);
 		return result;
 	}
-
-	@Override
-	public byte[] enhance(MetaClass meta) throws IOException {
-		String name = meta.getName();
-		byte[] result = _cache.get(name);
-		if(result != null) return result;
-		ClassReader reader = new ClassReader(meta.bytes());
-		ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
-		reader.accept(_enhancer.enhance(writer), 0);
-		result = writer.toByteArray(); 
-		_cache.put(name, result);
-		return result;
-	}
-
 }

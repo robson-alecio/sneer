@@ -1,5 +1,6 @@
 package functional.adapters;
 
+import sneer.bricks.config.SneerConfig;
 import sneer.bricks.connection.SocketOriginator;
 import sneer.bricks.connection.SocketReceiver;
 import sneer.bricks.contacts.Contact;
@@ -49,8 +50,8 @@ public class SneerParty extends SelfInject implements SovereignParty {
 	private KeyManager _keyManager;
 	
 	
-	SneerParty(String name, int port, Network network) {
-		super(network);
+	SneerParty(String name, int port, Network network, SneerConfig config) {
+		super(network, config);
 		setOwnName(name);
 		try {
 			_sneerPortKeeper.portSetter().consume(port);

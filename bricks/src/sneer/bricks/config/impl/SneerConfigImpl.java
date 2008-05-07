@@ -5,22 +5,40 @@ import java.io.File;
 import org.apache.commons.lang.SystemUtils;
 
 import sneer.bricks.config.SneerConfig;
-import sneer.lego.utils.FileUtils;
+import sneer.lego.Startable;
 
-public class SneerConfigImpl implements SneerConfig {
+public class SneerConfigImpl implements SneerConfig, Startable {
 
+	private File _sneerDirectory;
+	
+	private File _brickDirectory;
+
+	private File _tmpDirectory;
+	
+	@Override
+	public void start() throws Exception {
+		
+		File userHome = SystemUtils.getUserHome();
+		
+		_sneerDirectory = new File(userHome, ".sneer");
+		checkFile(_sneerDirectory);
+
+		_tmpDirectory = new File(_sneerDirectory, "tmp");
+		checkFile(_tmpDirectory);
+		
+		_brickDirectory = new File(_sneerDirectory, "bricks");
+		checkFile(_brickDirectory);
+	}
+	
+	
 	@Override
 	public File sneerDirectory() {
-		File userHome = SystemUtils.getUserHome();
-		File home = FileUtils.concat(userHome, ".sneer");
-		return home;
+		return _sneerDirectory;
 	}
 
 	@Override
 	public File brickRootDirectory() {
-		File sneerDir = sneerDirectory();
-		File brickDir = FileUtils.concat(sneerDir, "bricks");
-		return brickDir;
+		return _brickDirectory;
 	}
 
 	@Override
@@ -30,7 +48,10 @@ public class SneerConfigImpl implements SneerConfig {
 
 	@Override
 	public File tmpDirectory() {
-		return SystemUtils.getJavaIoTmpDir();
+		return _tmpDirectory;
 	}
 
+	private void checkFile(File file) {
+		if(!file.exists()) file.mkdirs();
+	}
 }

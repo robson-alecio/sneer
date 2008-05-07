@@ -14,7 +14,9 @@ public class FileUtils {
 			String[] children = file.list();
 			return children == null || children.length == 0;
 		}
-		return true;
+		
+		//TODO: check file contents
+		return false;
 	}
 	
 	public static File concat(File basePath, String path) {

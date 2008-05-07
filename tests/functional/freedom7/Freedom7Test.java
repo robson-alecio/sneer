@@ -10,8 +10,7 @@ import functional.TestDashboard;
 
 public abstract class Freedom7Test extends SovereignFunctionalTest {
 
-	private static final String INTERFACE = "sneer.bricks.sample.Sample";
-	//private static final String IMPL = "sneer.bricks.sample.impl.SampleImpl";
+	private static final String BRICK_NAME = "sneer.bricks.sample.Sample";
 	
 	@Test
 	public void testPublish() {
@@ -29,7 +28,11 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 		//TODO: estimular signal tree local
 		
 		//already connected: receiver.bidirectionalConnectTo(publisher);
-		receiver.meToo(INTERFACE);
+		receiver.meToo(publisher, BRICK_NAME);
+		Object sample = receiver.produce(BRICK_NAME);
+		System.out.println(sample);
+		System.out.println(sample.getClass());
+		System.out.println(sample.getClass().getClassLoader());
 		//TODO: estimular signal tree local
 	}
 

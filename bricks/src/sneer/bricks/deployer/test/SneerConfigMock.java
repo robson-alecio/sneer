@@ -39,4 +39,13 @@ public class SneerConfigMock implements SneerConfig {
 	public File tmpDirectory() {
 		return _tmpDirectory;
 	}
+	
+	@Override
+	public File brickDirectory(Class<?> brickClass) {
+		String name = brickClass.getName();
+		File result = new File(_brickDirectory, name);
+		//if(!result.exists()) result.mkdirs();
+		return result;
+	}
+
 }

@@ -33,16 +33,17 @@ public class BrickManagerImpl implements BrickManager {
 		for (String brickName : brickNames) {
 			BrickFile brick = bundle.brick(brickName);
 			if(okToIntall(brick)) {
-				try {
-					install(brick);
-				} catch (Throwable t) {
-					throw new BrickManagerException("Error installing brick: "+brickName, t);
-				}
+				install(brick);
 			} else {
 				//what should we do?
 				throw new BrickManagerException("brick: "+brickName+" could not be installed");
 			}
 		}
+	}
+
+	@Override
+	public BrickFile brick(String brickName) {
+		return _bricksByName.get(brickName);
 	}
 
 	private boolean okToIntall(BrickFile brick) {
@@ -56,35 +57,42 @@ public class BrickManagerImpl implements BrickManager {
 		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
-	private void install(BrickFile brick) throws IOException {
+	@Override
+	public void install(BrickFile brick) throws BrickManagerException {
 		String brickName = brick.name();
 		_log.debug("Installing brick: "+brickName);
 		
 		//1. create brick directory under sneer home
 		File brickDirectory = brickDirectory(brickName);
-		if(brickDirectory.exists()) {
-			//FixUrgent: ask permission to overwrite?
-			FileUtils.cleanDirectory(brickDirectory);
-		} else {
+		if(brickDirectory.exists()) 
+			cleanDirectory(brickDirectory); //FixUrgent: ask permission to overwrite?
+		else 
 			brickDirectory.mkdir();
-		}
 		
 		//2. copy received files
-		brick.copyTo(brickDirectory);
+		BrickFile installed;
+		try {
+			installed = brick.copyTo(brickDirectory);
+		} catch (IOException e) {
+			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+		}
 	
 		//3. resolve dependencies
+		
+		_bricksByName.put(brickName, installed);
+	}
+
+	private void cleanDirectory(File brickDirectory) throws BrickManagerException {
+		try {
+			FileUtils.cleanDirectory(brickDirectory);
+		} catch (IOException e) {
+			throw new BrickManagerException("",e);
+		}
 	}
 	
 	private File brickDirectory(String brickName) {
-		File root = brickRootDirectory();
+		File root = _config.brickRootDirectory();
 		File brickDirectory = new File(root, brickName);
 		return brickDirectory;
 	}
-	
-	private File brickRootDirectory() {
-		File home = _config.sneerDirectory();
-		return new File(home, "bricks");
-	}
-
-
 }

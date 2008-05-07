@@ -28,7 +28,7 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 		publisher.publishBrick(sourceFolder);
 		//TODO: estimular signal tree local
 		
-		receiver.bidirectionalConnectTo(publisher);
+		//already connected: receiver.bidirectionalConnectTo(publisher);
 		receiver.meToo(INTERFACE);
 		//TODO: estimular signal tree local
 	}

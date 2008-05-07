@@ -2,12 +2,14 @@ package sneer.bricks.deployer.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.jar.JarFile;
 
 import org.apache.commons.io.FileUtils;
 
 import sneer.bricks.deployer.BrickFile;
 import sneer.bricks.deployer.DeployerException;
 import sneer.lego.utils.SneerJar;
+import sneer.lego.utils.SneerJarImpl;
 
 public class BrickFileImpl implements BrickFile {
 
@@ -20,6 +22,24 @@ public class BrickFileImpl implements BrickFile {
 
 	public BrickFileImpl(String brickName) {
 		_brickName = brickName;
+	}
+
+	public BrickFileImpl(File target) {
+		this(target.getName());
+		add(new File(target,name()+"-api.jar"));
+		add(new File(target,name()+"-api-src.jar"));
+		add(new File(target,name()+"-impl.jar"));
+		add(new File(target,name()+"-impl-src.jar"));
+	}
+
+	private void add(File file) {
+		JarFile jarFile;
+		try {
+			jarFile = new JarFile(file);
+		} catch (IOException e) {
+			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+		}
+		add(new SneerJarImpl(file, jarFile));
 	}
 
 	@Override
@@ -68,11 +88,12 @@ public class BrickFileImpl implements BrickFile {
 	}
 
 	@Override
-	public void copyTo(File target) throws IOException {
+	public BrickFile copyTo(File target) throws IOException {
 		FileUtils.copyFile(api().file(), new File(target,name()+"-api.jar"));
 		FileUtils.copyFile(apiSrc().file(), new File(target,name()+"-api-src.jar"));
 		FileUtils.copyFile(impl().file(), new File(target,name()+"-impl.jar"));
 		FileUtils.copyFile(implSrc().file(), new File(target,name()+"-impl-src.jar"));
+		return new BrickFileImpl(target);
 	}
 
 	@Override

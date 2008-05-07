@@ -19,5 +19,5 @@ public interface BrickFile {
 
 	void explodeSources(File target) throws IOException;
 
-	void copyTo(File target) throws IOException;
+	BrickFile copyTo(File target) throws IOException;
 }

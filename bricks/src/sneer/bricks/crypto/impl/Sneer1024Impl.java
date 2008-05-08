@@ -21,4 +21,9 @@ public class Sneer1024Impl implements Sneer1024 {
 	public String toHexa() {
 		return StringUtils.toHexa(_bytes);
 	}
+
+	@Override
+	public String toString() {
+		return toHexa().substring(0, 10) + ".."; 
+	}
 }

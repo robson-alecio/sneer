@@ -50,7 +50,7 @@ public class CryptoTest extends BrickTestSupport {
 	
 	@Test
 	public void testSneer1024() throws Exception {
-		byte[] hash = _crypto.sneer1024(INPUT.getBytes());
+		byte[] hash = _crypto.sneer1024(INPUT.getBytes()).bytes();
 		assertEquals(1024, hash.length * 8);
 		assertHexa(SHA512 + WHIRLPOOL, hash);
 		

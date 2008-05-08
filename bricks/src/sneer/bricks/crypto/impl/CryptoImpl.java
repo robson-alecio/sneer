@@ -1,5 +1,7 @@
 package sneer.bricks.crypto.impl;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
@@ -10,6 +12,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import sneer.bricks.crypto.Crypto;
 import sneer.bricks.crypto.Digester;
+import sneer.bricks.crypto.Sneer1024;
 
 public class CryptoImpl implements Crypto {
 
@@ -20,10 +23,11 @@ public class CryptoImpl implements Crypto {
 	private final DigesterImpl _digester = new DigesterImpl(messageDigest("SHA-512", "SUN"), messageDigest("WHIRLPOOL", "BC"));
 	
 	@Override
-	public synchronized byte[] sneer1024(byte[] input) {
+	public synchronized Sneer1024 sneer1024(byte[] input) {
 		byte[] sha512 = _digester.sha512().digest(input);
 		byte[] whirlPool = _digester.whirlPool().digest(input);
-		return _digester.merge(sha512, whirlPool);
+		byte[] result = _digester.merge(sha512, whirlPool); 
+		return new Sneer1024Impl(result);
 	}
 
 	@Override
@@ -37,6 +41,12 @@ public class CryptoImpl implements Crypto {
 		} catch (Exception e) {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		}
+	}
+
+	@Override
+	public Sneer1024 sneer1024(File file) throws IOException {
+		byte[] bytes = IOUtils.toByteArray(new FileInputStream(file));
+		return sneer1024(bytes);
 	}
 
 }

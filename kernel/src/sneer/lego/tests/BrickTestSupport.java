@@ -24,7 +24,7 @@ public class BrickTestSupport {
 	    throws Exception
 	{
 		Binder binder = getBinder();
-		Container container = ContainerUtils.newContainer(binder, null);
+		Container container = ContainerUtils.newContainer(binder);
 	    Injector injector = new FieldInjector(container);
 	    injector.inject(this);
 	}

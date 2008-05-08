@@ -24,7 +24,7 @@ public class SelfInject {
 		if(config != null) 
 			binder.bind(SneerConfig.class).toInstance(config);
 	
-		_container = ContainerUtils.newContainer(binder, null);
+		_container = ContainerUtils.newContainer(binder);
 		_container.inject(this);
 	}
 	

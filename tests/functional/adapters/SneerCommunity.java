@@ -1,7 +1,9 @@
 package functional.adapters;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.SystemUtils;
 
@@ -27,7 +29,13 @@ public class SneerCommunity implements SovereignCommunity {
 	private SneerConfig sneerConfigForParty(String name) {
 		File userHome = SystemUtils.getUserHome();
 		String fileName = ".sneer+"+StringUtils.deleteWhitespace(name);
-		SneerConfig config = new SneerConfigMock(new File(userHome, fileName));
+		File root = new File(userHome, fileName);
+		try {
+			FileUtils.cleanDirectory(root);
+		} catch (IOException e) {
+			throw new wheel.lang.exceptions.NotImplementedYet(e);
+		}
+		SneerConfig config = new SneerConfigMock(root);
 		return config;
 	}
 

@@ -15,7 +15,9 @@ import functional.TestDashboard;
 
 public abstract class Freedom7Test extends SovereignFunctionalTest {
 
-	private static final String BRICK_NAME = "sneer.bricks.sample.Sample";
+	private static final String SAMPLE = "sneer.bricks.sample.Sample";
+	
+	private static final String OTHER = "sneer.bricks.other.Other";
 	
 	@Test
 	public void testPublish() throws Exception {
@@ -31,21 +33,27 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 		 */
 		publisher.publishBrick(sourceFolder);
 
-		Object brick1 = publisher.produce(BRICK_NAME);
-		ClassLoader cl1 = brick1.getClass().getClassLoader();
-		String logFactory1 = callLogFactory(brick1);
+		//test SAMPLE
+		Object s1 = publisher.produce(SAMPLE);
+		ClassLoader cl1 = s1.getClass().getClassLoader();
+		String logFactory1 = callLogFactory(s1);
 		assertTrue("wrong directory for brick class loader: "+cl1.toString(),cl1.toString().indexOf("sneer+AnaAlmeida") > 0);
 		
 		
-		receiver.meToo(publisher, BRICK_NAME);
-		Object brick2 = receiver.produce(BRICK_NAME);
-		ClassLoader cl2 = brick2.getClass().getClassLoader();
-		String logFactory2 = callLogFactory(brick2);
+		receiver.meToo(publisher, SAMPLE);
+		Object s2 = receiver.produce(SAMPLE);
+		ClassLoader cl2 = s2.getClass().getClassLoader();
+		String logFactory2 = callLogFactory(s2);
 		assertTrue("wrong directory for brick class loader: "+cl2.toString(),cl2.toString().indexOf("sneer+BrunoBarros") > 0);
 		
 		assertFalse("LogFactory should have been loaded on a different class loader", logFactory1.equals(logFactory2));
-		assertNotSame(brick1, brick2);
+		assertNotSame(s1, s2);
 		assertNotSame(cl1, cl2);
+		
+		//test OTHER
+		receiver.meToo(publisher, OTHER);
+		Object o2 = receiver.produce(OTHER);
+		System.out.println(o2);
 	}
 
 	

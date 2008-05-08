@@ -21,6 +21,7 @@ import sneer.bricks.deployer.DeployerException;
 import sneer.lego.Inject;
 import sneer.lego.Injector;
 import sneer.lego.utils.metaclass.MetaClass;
+import wheel.lang.exceptions.NotImplementedYet;
 
 public class DeployerImpl implements Deployer {
 
@@ -79,6 +80,10 @@ public class DeployerImpl implements Deployer {
 		 * 
 		 */
 
+		if(true) {
+			throw new NotImplementedYet(); //handle bricks that don't extend Brick
+		}
+		
 		BrickBundle result = new BrickBundleImpl();
 		VirtualDirectoryFactory factory = new VirtualDirectoryFactoryImpl(path, _injector);
 		List<VirtualDirectory> virtualDirectories = factory.virtualDirectories();

@@ -1,25 +1,13 @@
 package sneer.lego.tests.impl;
 
-import org.apache.commons.configuration.Configuration;
-
-import sneer.lego.Configurable;
 import sneer.lego.Startable;
 import sneer.lego.tests.Lifecycle;
 
-public class LifecycleImpl implements Lifecycle, Configurable, Startable {
-    
-    private Configuration _configuration;
+public class LifecycleImpl implements Lifecycle, Startable {
     
     private boolean _configureCalled;
     
     private boolean _startCalled;
-    
-    @Override
-    public void configure(Configuration config) {
-        _configureCalled = true;
-        _configuration = config;
-        _configuration.toString();
-    }
 
     @Override
     public void start() throws Exception {

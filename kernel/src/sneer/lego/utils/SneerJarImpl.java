@@ -7,7 +7,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.jar.JarEntry;
@@ -20,7 +19,6 @@ import org.apache.commons.io.IOUtils;
 import sneer.bricks.crypto.Crypto;
 import sneer.bricks.crypto.Digester;
 import sneer.lego.Inject;
-import wheel.lang.StringUtils;
 import wheel.lang.exceptions.NotImplementedYet;
 
 public class SneerJarImpl implements SneerJar {
@@ -204,16 +202,6 @@ public class SneerJarImpl implements SneerJar {
 	public String toString() {
 		return _file.toString();
 	}
-
-	public boolean matches(SneerJar other) {
-		boolean result = Arrays.equals(sneer1024(), other.sneer1024());
-		if(!result) 
-			System.out.println("MISMATCH "+_file + ":" + StringUtils.toHexa(sneer1024()) + " " +other.file() + ":" + StringUtils.toHexa(other.sneer1024()));
-		else
-			System.out.println("MATCH "+_file + " AND " +other.file() + " HASH " + StringUtils.toHexa(other.sneer1024()));
-		return result; 
-	}
-	
 	
 	
 //    public void copy(InputStream input, OutputStream output) throws IOException {

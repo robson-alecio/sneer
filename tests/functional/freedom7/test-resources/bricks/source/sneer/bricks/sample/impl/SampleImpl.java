@@ -15,6 +15,10 @@ class SampleImpl implements Sample {
 		_log.trace("doSomething() called"); 
 		return "SampleImpl";
 	}
+	
+	public String logFactory() {
+		return LogFactory.getFactory().toString();
+	}
 
 	@Override
 	public Helper helper() {

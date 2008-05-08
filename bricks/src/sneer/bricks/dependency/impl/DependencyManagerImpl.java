@@ -33,6 +33,8 @@ public class DependencyManagerImpl implements DependencyManager, Startable {
 	
 	private Map<String, List<Dependency>> _dependenciesByBrick = new HashMap<String, List<Dependency>>();
 
+	private Map<Sneer1024, Dependency> _dependenciesBySneer1024Hash = new HashMap<Sneer1024, Dependency>();
+
 	
 	@Override
 	public void start() throws Exception {
@@ -60,14 +62,28 @@ public class DependencyManagerImpl implements DependencyManager, Startable {
 
 	private Dependency install(Dependency dependency) throws IOException {
 		_log.info("Installing dependency: "+dependency.file() + "["+dependency.sneer1024().toHexa()+"]");
+
+		//1. check registry first
 		File file = dependency.file();
+		Sneer1024 hash = _crypto.sneer1024(file);
+		Dependency installed = _dependenciesBySneer1024Hash.get(hash);
+		if(installed != null) {
+			//we already hold this jar. No need to reinstall it
+			return installed;
+		}
+		
+		//2. check same file name, but hash mismatch 
 		String fileName = file.getName();
 		File newFile = new File(_root, fileName);
 		if(newFile.exists()) {
-			//FixUrgent: ask user if we should overwrite
+			throw new IOException("There is another dependency with the same file name ("+fileName+"), but not the same sneer1024 hash");
 		}
+		
+		//install new dependency
 		FileUtils.copyFile(file, newFile);
 		Dependency result = newDependency(newFile);
+		_dependenciesBySneer1024Hash.put(result.sneer1024(), dependency);
+		
 		return result; 
 	}
 

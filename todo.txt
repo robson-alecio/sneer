@@ -1,4 +1,5 @@
 ﻿Leandro
+ - rename methods on Crypto to digest() and digester()
  - Brick Publish:
 	1) Inform source folder (src).
 	2) Inform library folder (lib).

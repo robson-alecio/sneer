@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 import org.junit.Test;
 
-import sneer.lego.impl.classloader.InstrumentingClassLoader;
 import sneer.lego.impl.classloader.enhancer.Enhancer;
 import sneer.lego.impl.classloader.enhancer.MakeSerializable;
 
@@ -17,7 +16,7 @@ public class InstrumentingClassLoaderTest {
 	public void testVisitClass() throws Exception {
 		Enhancer enhancer = new MakeSerializable();
 		//Enhancer enhancer = new NoEnhancement();
-		ClassLoader cl = new InstrumentingClassLoader(enhancer);
+		ClassLoader cl = new sneer.lego.impl.classloader.InstrumentingClassLoader(enhancer);
 		Class<?> subject = cl.loadClass("sneer.lego.tests.SimpleClass");
 		Object instance = subject.newInstance();
 		assertTrue(instance instanceof Serializable);

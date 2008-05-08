@@ -17,14 +17,6 @@ public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 	
 	private Map<Class<?>, ClassLoader> _classLoaderByBrick = new HashMap<Class<?>, ClassLoader>();
 	
-	private static final ClassLoaderFactory INSTANCE = new EclipseClassLoaderFactory();
-	
-	private EclipseClassLoaderFactory() {};
-	
-	public static final ClassLoaderFactory instance() {
-		return INSTANCE;
-	}
-	
 	@Override
 	public ClassLoader brickClassLoader(Class<?> clazz, File brickDirectory) {
 		ClassLoader result = _classLoaderByBrick.get(clazz);

@@ -23,7 +23,7 @@ public class TestRunner {
 	}
 
 	private static Class<?> loadTestClass() throws ClassNotFoundException {
-		ClassLoader sneerApi = EclipseClassLoaderFactory.instance().sneerApi();
+		ClassLoader sneerApi = new EclipseClassLoaderFactory().sneerApi();
 		return sneerApi.loadClass(ContainerTest.class.getName());
 	}
 

@@ -27,7 +27,11 @@ public class CryptoImpl implements Crypto {
 		byte[] sha512 = _digester.sha512().digest(input);
 		byte[] whirlPool = _digester.whirlPool().digest(input);
 		byte[] result = _digester.merge(sha512, whirlPool); 
-		return new Sneer1024Impl(result);
+		return wrap(result);
+	}
+
+	public Sneer1024 wrap(byte[] sneer1024Bytes) {
+		return new Sneer1024Impl(sneer1024Bytes);
 	}
 
 	@Override

@@ -12,7 +12,10 @@ import sneer.bricks.classpath.ClasspathFactory;
 import sneer.bricks.compiler.Compiler;
 import sneer.bricks.compiler.Result;
 import sneer.bricks.config.SneerConfig;
+import sneer.bricks.dependency.Dependency;
+import sneer.bricks.dependency.DependencyManager;
 import sneer.bricks.deployer.BrickBundle;
+import sneer.bricks.deployer.BrickFile;
 import sneer.bricks.deployer.Deployer;
 import sneer.bricks.deployer.DeployerException;
 import sneer.lego.Inject;
@@ -32,6 +35,9 @@ public class DeployerImpl implements Deployer {
 	
 	@Inject
 	private Injector _injector;
+	
+	@Inject
+	private DependencyManager _dependencies;
 	
 
 	
@@ -101,7 +107,23 @@ public class DeployerImpl implements Deployer {
 			result.add(virtual.jarBinaryImpl());
 		}
 		
+		/*
+		 * LIBS 
+		 */
+		for (VirtualDirectory virtual : virtualDirectories) {
+			String brickName = virtual.brickName();
+			List<File> dependencies = virtual.libs();
+			addDepedencies(result.brick(brickName), dependencies);
+		}
+		
 		return result;
+	}
+
+	private void addDepedencies(BrickFile brick, List<File> dependencies) {
+		for (File file : dependencies) {
+			Dependency dependency = _dependencies.newDependency(file);
+			brick.dependencies().add(dependency);
+		}
 	}
 
 	private List<File> mergeInterfaceFiles( List<VirtualDirectory> virtualDirectories) {

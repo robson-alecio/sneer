@@ -2,7 +2,9 @@ package sneer.bricks.deployer;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
+import sneer.bricks.dependency.Dependency;
 import sneer.lego.utils.SneerJar;
 
 public interface BrickFile {
@@ -20,4 +22,6 @@ public interface BrickFile {
 	void explodeSources(File target) throws IOException;
 
 	BrickFile copyTo(File target) throws IOException;
+	
+	List<Dependency> dependencies();
 }

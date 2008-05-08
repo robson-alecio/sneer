@@ -11,6 +11,8 @@ import org.apache.commons.io.FileUtils;
 import sneer.bricks.brickmanager.BrickManager;
 import sneer.bricks.brickmanager.BrickManagerException;
 import sneer.bricks.config.SneerConfig;
+import sneer.bricks.dependency.Dependency;
+import sneer.bricks.dependency.DependencyManager;
 import sneer.bricks.deployer.BrickBundle;
 import sneer.bricks.deployer.BrickFile;
 import sneer.bricks.log.Logger;
@@ -24,6 +26,9 @@ public class BrickManagerImpl implements BrickManager {
 
 	@Inject
 	private Logger _log;
+	
+	@Inject
+	private DependencyManager _dependencyManager;
 	
 	private Map<String, BrickFile> _bricksByName = new HashMap<String, BrickFile>();
 
@@ -70,16 +75,37 @@ public class BrickManagerImpl implements BrickManager {
 			brickDirectory.mkdir();
 		
 		//2. copy received files
+		BrickFile installed = copyBrickFiles(brick, brickDirectory);
+	
+		//3. resolve dependencies
+		
+		//4. install dependencies
+		copyDependencies(brick, installed);
+		
+		_bricksByName.put(brickName, installed);
+	}
+
+	private void copyDependencies(BrickFile brick, BrickFile installed) {
+		String brickName = brick.name();
+		List<Dependency> brickDependencies = brick.dependencies();
+		for (Dependency dependency : brickDependencies) {
+			try {
+				dependency = _dependencyManager.add(brickName, dependency);
+				installed.dependencies().add(dependency);
+			} catch (IOException e) {
+				throw new BrickManagerException("Error installing dependecy: "+dependency, e);
+			}
+		}
+	}
+
+	private BrickFile copyBrickFiles(BrickFile brick, File brickDirectory) {
 		BrickFile installed;
 		try {
 			installed = brick.copyTo(brickDirectory);
 		} catch (IOException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			throw new BrickManagerException("Error copying brick files to: "+brickDirectory);
 		}
-	
-		//3. resolve dependencies
-		
-		_bricksByName.put(brickName, installed);
+		return installed;
 	}
 
 	private void cleanDirectory(File brickDirectory) throws BrickManagerException {

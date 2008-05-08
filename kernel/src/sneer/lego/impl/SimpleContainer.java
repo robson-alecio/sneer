@@ -165,8 +165,8 @@ public class SimpleContainer implements Container {
 		throw new Exception("Can't find construtor on "+clazz.getName()+" that matches "+ArrayUtils.toString(argTypes));
 	}
 
-	private ClassLoader getClassLoader(Class<?> clazz, File brickDirectory) {
-		return factory().brickClassLoader(clazz, brickDirectory);
+	private ClassLoader getClassLoader(Class<?> brickClass, File brickDirectory) {
+		return factory().brickClassLoader(brickClass, brickDirectory);
 		
 	}
 

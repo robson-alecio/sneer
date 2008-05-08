@@ -2,11 +2,15 @@ package sneer.lego.impl.classloader;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.SystemUtils;
 
+import sneer.bricks.dependency.Dependency;
+import sneer.bricks.dependency.DependencyManager;
 import sneer.lego.ClassLoaderFactory;
+import sneer.lego.Inject;
 import sneer.lego.utils.FileUtils;
 import sneer.lego.utils.io.BrickImplFilter;
 import sneer.lego.utils.io.JavaFilter;
@@ -17,9 +21,12 @@ public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 	
 	private Map<Class<?>, ClassLoader> _classLoaderByBrick = new HashMap<Class<?>, ClassLoader>();
 	
+	@Inject
+	private DependencyManager _dependencies;
+	
 	@Override
-	public ClassLoader brickClassLoader(Class<?> clazz, File brickDirectory) {
-		ClassLoader result = _classLoaderByBrick.get(clazz);
+	public ClassLoader brickClassLoader(Class<?> brickClass, File brickDirectory) {
+		ClassLoader result = _classLoaderByBrick.get(brickClass);
 		if(result != null)
 			return result;
 		
@@ -28,12 +35,13 @@ public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 		if(FileUtils.isEmpty(brickDirectory)) {
 			//useful for eclipse development
 			result = fileClassLoader(parent);
-			_classLoaderByBrick.put(clazz, result);
+			_classLoaderByBrick.put(brickClass, result);
 			return result; 
 		}
 		
-		result = new BrickClassLoader(parent, clazz, brickDirectory);
-		_classLoaderByBrick.put(clazz, result);
+		List<Dependency> dependencies = _dependencies.dependenciesFor(brickClass.getName());
+		result = new BrickClassLoader(parent, brickClass, brickDirectory, dependencies);
+		_classLoaderByBrick.put(brickClass, result);
 		return result;
 	}
 

@@ -2,10 +2,13 @@ package sneer.bricks.deployer.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.jar.JarFile;
 
 import org.apache.commons.io.FileUtils;
 
+import sneer.bricks.dependency.Dependency;
 import sneer.bricks.deployer.BrickFile;
 import sneer.bricks.deployer.DeployerException;
 import sneer.lego.utils.SneerJar;
@@ -19,6 +22,8 @@ public class BrickFileImpl implements BrickFile {
 	private SneerJar _apiSrc;
 	private SneerJar _impl;
 	private SneerJar _implSrc;
+	
+	private List<Dependency> _dependencies = new ArrayList<Dependency>();
 
 	public BrickFileImpl(String brickName) {
 		_brickName = brickName;
@@ -105,5 +110,10 @@ public class BrickFileImpl implements BrickFile {
 	@Override
 	public String toString() {
 		return name() + "\n\tapi("+_api.file()+")\n\timpl("+_impl.file()+")";
+	}
+
+	@Override
+	public List<Dependency> dependencies() {
+		return _dependencies;
 	}
 }

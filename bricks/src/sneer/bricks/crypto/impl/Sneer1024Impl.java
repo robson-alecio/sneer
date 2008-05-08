@@ -8,6 +8,7 @@ public class Sneer1024Impl implements Sneer1024 {
 	private byte[] _bytes;
 	
 	public Sneer1024Impl(byte[] bytes) {
+		if (bytes.length != 128) throw new IllegalArgumentException();		
 		_bytes = bytes;
 	}
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="java/" kind="src" path="kernel/src"/>
+	<classpathentry excluding="java/" kind="src" output="sneerAPI-bin" path="kernel/src"/>
 	<classpathentry kind="src" path="spikes/src"/>
-	<classpathentry kind="src" path="wheel/src"/>
+	<classpathentry kind="src" output="sneerAPI-bin" path="wheel/src"/>
 	<classpathentry kind="src" path="bricks/src"/>
 	<classpathentry excluding="functional/freedom7/test-resources/bricks/sneer/bricks/sample/|functional/freedom7/test-resources/bricks/sneer/bricks/source/|functional/freedom7/test-resources/bricks/source/|functional/freedom7/test-resources/bricks/sample/|functional/freedom7/test-resources/bricks/source/sneer/|functional/freedom7/test-resources/bricks/sample/sneer/|functional/freedom7/test-resources/bricks/sample/|functional/freedom7/test-resources/|functional/freedom7/test-resources/|functional/freedom7/test-resources/bricks/source/" kind="src" path="tests"/>
 	<classpathentry kind="src" path="tests/functional/freedom7/test-resources/bricks/source"/>

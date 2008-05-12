@@ -46,7 +46,10 @@ public class ClasspathFactoryImpl implements ClasspathFactory {
 			/*  
 			 * running from eclipse ?
 			 */
-			_sneerApi = new DirectoryBasedClasspath(_config.eclipseDirectory()); 
+
+			Classpath cp = newClasspath();
+			Classpath kernel_plus_wheel = new DirectoryBasedClasspath(_config.eclipseDirectory());
+			_sneerApi = cp.compose(kernel_plus_wheel);
 			return _sneerApi;
 		}
 	}

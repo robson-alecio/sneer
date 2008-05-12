@@ -43,7 +43,7 @@ public class SneerConfigImpl implements SneerConfig, Startable {
 
 	@Override
 	public File eclipseDirectory() {
-		return new File(SystemUtils.getUserDir(), "bin");
+		return new File(SystemUtils.getUserDir(), "sneerAPI-bin");
 	}
 
 	@Override

@@ -96,6 +96,8 @@ public class VirtualDirectory {
 					tryBrickName(cl, className);
 			}
 		}
+		if(_brickName == null)
+			throw new DeployerException("Can't find main brick interface in "+_path);
 	}
 
 	private String toClassName(File sourceFile) {

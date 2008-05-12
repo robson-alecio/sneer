@@ -39,6 +39,9 @@ public class BrickClassLoader extends EnhancingClassLoader {
 	}
 
 	private ClassLoader delegate(List<Dependency> dependencies) {
+		if(dependencies == null)
+			return null;
+		
 		URL[] urls = new URL[dependencies.size()];
 		int i = 0;
 		for (Dependency dependency : dependencies) {
@@ -64,9 +67,11 @@ public class BrickClassLoader extends EnhancingClassLoader {
 			return defineClass(name, bytes);
 			
 		//is it a brick dependency?
-		Class<?> result = _delegate.loadClass(name);
-		if(result != null)
-			return result;
+		if(_delegate != null) {
+			Class<?> result = _delegate.loadClass(name);
+			if(result != null)
+				return result;
+		}
 
 		//delegate to parent class loader
 		throw new ClassNotFoundException();

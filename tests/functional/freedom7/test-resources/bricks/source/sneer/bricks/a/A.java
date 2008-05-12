@@ -1,5 +1,7 @@
 package sneer.bricks.a;
 
-public interface A {
+import sneer.lego.Brick;
+
+public interface A extends Brick {
 	void nothing();
 }

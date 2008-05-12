@@ -30,10 +30,12 @@ public class SneerCommunity implements SovereignCommunity {
 		File userHome = SystemUtils.getUserHome();
 		String fileName = ".sneer+"+StringUtils.deleteWhitespace(name);
 		File root = new File(userHome, fileName);
-		try {
-			FileUtils.cleanDirectory(root);
-		} catch (IOException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e);
+		if(root.exists()) {
+			try {
+				FileUtils.cleanDirectory(root);
+			} catch (IOException e) {
+				throw new wheel.lang.exceptions.NotImplementedYet(e);
+			}
 		}
 		SneerConfig config = new SneerConfigMock(root);
 		return config;

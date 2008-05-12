@@ -149,6 +149,10 @@ public class DeployerImpl implements Deployer {
 	
 	private List<MetaClass> compileImpl(File workDirectory, VirtualDirectory virtual, Classpath api) {
 		List<File> sourceFilesInBrick = virtual.impl();
+		
+		if(sourceFilesInBrick == null || sourceFilesInBrick.isEmpty())
+			throw new DeployerException("Can't find source files in "+virtual.rootDirectory()+". Check if your class files are public (they shouldn't be)");
+
 		Classpath cp = classpath(virtual, api);
 		Result compilationResult = _compiler.compile(sourceFilesInBrick, workDirectory, cp);
 		if(!compilationResult.success()) {

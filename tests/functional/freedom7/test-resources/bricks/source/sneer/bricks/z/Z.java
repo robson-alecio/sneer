@@ -1,8 +1,8 @@
-package sneer.bricks.sample;
+package sneer.bricks.z;
 
 import sneer.lego.Brick;
 
-public interface Sample extends Brick {
+public interface Z extends Brick {
 	
 	Helper helper();
 	

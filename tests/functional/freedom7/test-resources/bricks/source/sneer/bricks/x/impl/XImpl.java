@@ -1,19 +1,19 @@
-package sneer.bricks.other.impl;
+package sneer.bricks.x.impl;
 
-import sneer.bricks.a.A;
-import sneer.bricks.other.Other;
-import sneer.bricks.sample.Sample;
+import sneer.bricks.x.X;
+import sneer.bricks.y.Y;
+import sneer.bricks.z.Z;
 import sneer.lego.Inject;
 
-class OtherImpl implements Other<String> {
+class XImpl implements X<String> {
 
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	private Sample _sample;
+	private Z _sample;
 	
 	@Inject
-	private A _a;
+	private Y _y;
 	
 	@Override
 	public void method(String arg) throws Exception {
@@ -31,7 +31,7 @@ class OtherImpl implements Other<String> {
 	}
 
 	@Override
-	public void callA() {
-		_a.nothing();
+	public void callY() {
+		_y.nothing();
 	}
 }

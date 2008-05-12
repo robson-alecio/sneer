@@ -1,4 +1,4 @@
-package sneer.bricks.sample;
+package sneer.bricks.z;
 
 public interface Helper {
 	

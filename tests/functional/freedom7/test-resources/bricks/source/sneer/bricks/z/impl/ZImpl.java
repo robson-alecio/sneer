@@ -1,12 +1,12 @@
-package sneer.bricks.sample.impl;
+package sneer.bricks.z.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import sneer.bricks.sample.Helper;
-import sneer.bricks.sample.Sample;
+import sneer.bricks.z.Helper;
+import sneer.bricks.z.Z;
 
-class SampleImpl implements Sample {
+class ZImpl implements Z {
 
 	private Log _log = LogFactory.getLog("category");
 	

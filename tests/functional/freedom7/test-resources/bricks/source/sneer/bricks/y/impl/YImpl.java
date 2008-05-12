@@ -1,8 +1,8 @@
-package sneer.bricks.a.impl;
+package sneer.bricks.y.impl;
 
-import sneer.bricks.a.A;
+import sneer.bricks.y.Y;
 
-class AImpl implements A {
+class YImpl implements Y {
 
 	@Override
 	public void nothing() {

@@ -1,4 +1,4 @@
-﻿Leandro
+﻿﻿Leandro
  - rename methods on Crypto to digest() and digester()
  - Brick Publish:
 	1) Inform source folder (src).
@@ -27,6 +27,7 @@ Leandro Reminder
 
 Klaus
 ongoing - Component Model (see todoLego.txt)
+ - ListSource and Impl - Rename to ListRegister.
  - RemoteSignals - Test with different signals, not only name.
  - Signal type-safety - Not string-based.
  - Brick persistence

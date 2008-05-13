@@ -31,6 +31,10 @@ public class ListSignalModel<T> extends AbstractListModel {
 		_input.addListReceiver(new ListChangeReceiver());
 	}
 
+	public ListSignalModel(ListSignal<T> input) {
+		this(input, null);
+	}
+
 	private class ListChangeReceiver extends VisitingListReceiver {
 
 		@Override
@@ -74,6 +78,7 @@ public class ListSignalModel<T> extends AbstractListModel {
 		T element = getElementAt(index);
 		Omnivore<?> receiver = _elementReceivers.remove(index);
 
+		if (_chooser == null) return;
 		for (Signal<?> signal : _chooser.signalsToReceiveFrom(element))
 			removeReceiverFromSignal(receiver, signal);
 	}
@@ -84,6 +89,7 @@ public class ListSignalModel<T> extends AbstractListModel {
 		Omnivore<?> receiver = createElementReceiver(index);
 		_elementReceivers.add(index, receiver);
 		
+		if (_chooser == null) return;
 		for (Signal<?> signal : _chooser.signalsToReceiveFrom(element))
 			addReceiverToSignal(receiver, signal);
 	}

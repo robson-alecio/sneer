@@ -77,7 +77,7 @@ class ConnectionImpl implements Connection {
 
 	private boolean tryToShakeHands(ByteArraySocket socket) throws IOException {
 		socket.write(ProtocolTokens.SNEER_WIRE_PROTOCOL_1);
-		socket.write(_keyManager.ownPublicKey());
+		socket.write(_keyManager.ownPublicKey().bytes());
 		byte[] response = socket.read();
 		return Arrays.equals(ProtocolTokens.OK, response);
 	}
@@ -114,6 +114,7 @@ class ConnectionImpl implements Connection {
 
 
 	public void setReceiver(Omnivore<byte[]> receiver) {
+		if (_receiver != null) throw new IllegalStateException();
 		_receiver = receiver;
 	}
 	

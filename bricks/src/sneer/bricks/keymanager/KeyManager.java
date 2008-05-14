@@ -1,14 +1,18 @@
 package sneer.bricks.keymanager;
 
 import sneer.bricks.contacts.Contact;
+import sneer.bricks.crypto.Sneer1024;
+import sneer.bricks.mesh.Party;
+import wheel.lang.Functor;
 
 public interface KeyManager {
 
-	byte[] ownPublicKey();
+	Sneer1024 ownPublicKey();
 
-	Contact contactGiven(byte[] peersPublicKey);
+	void addKey(Contact contact, Sneer1024 peersPublicKey) throws ContactAlreadyHadAKey, KeyBelongsToOtherContact;
+	Contact contactGiven(Sneer1024 publicKey);
+	Sneer1024 keyGiven(Contact contact);
 
-	void addKey(Contact contact, byte[] peersPublicKey)
-		throws ContactAlreadyHadAKey, KeyBelongsToOtherContact;
+	Party partyGiven(Sneer1024 pk, Functor<Sneer1024, Party> factoryToUseIfAbsent);
 
 }

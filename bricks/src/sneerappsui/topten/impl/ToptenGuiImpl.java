@@ -10,7 +10,6 @@ import sneer.lego.Inject;
 import sneer.lego.Startable;
 import sneer.skin.viewmanager.View;
 import sneer.skin.viewmanager.ViewManager;
-import sneerapps.topten.Topten;
 import sneerappsui.topten.ToptenGui;
 import wheel.io.ui.impl.ComboBoxSignalModel;
 import wheel.lang.Omnivore;

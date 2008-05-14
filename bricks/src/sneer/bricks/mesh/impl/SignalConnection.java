@@ -7,6 +7,9 @@ import java.util.List;
 import sneer.bricks.connection.Connection;
 import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.contacts.Contact;
+import sneer.bricks.crypto.Sneer1024;
+import sneer.bricks.keymanager.KeyManager;
+import sneer.bricks.log.Logger;
 import sneer.bricks.mesh.Me;
 import sneer.bricks.mesh.Party;
 import sneer.bricks.serialization.Serializer;
@@ -16,7 +19,7 @@ import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.reactive.Signal;
 
-class DirectProxy extends Proxy {
+class SignalConnection {
 
 	@Inject
 	private ConnectionManager _connectionManager;
@@ -24,9 +27,6 @@ class DirectProxy extends Proxy {
 	@Inject
 	private Serializer _serializer;
 
-	@Inject
-	private Me _me;
-	
 
 	private final Connection _connection;
 
@@ -36,9 +36,14 @@ class DirectProxy extends Proxy {
 
 	private List<Object> _scoutsToAvoidGC = new ArrayList<Object>();
 
+	@Inject
+	private KeyManager _keyManager;
+
+	@Inject
+	private Logger _logger;
 
 
-	DirectProxy(Injector injector, Contact contact) {
+	SignalConnection(Injector injector, Contact contact) {
 		injector.inject(this);
 		_connection = _connectionManager.connectionFor(contact);
 		_connection.setReceiver(new Omnivore<byte[]>(){public void consume(byte[] packetReceived) {
@@ -50,7 +55,7 @@ class DirectProxy extends Proxy {
 	private void receive(byte[] packetReceived) {
 		Object ambassador;
 		try {
-			ambassador = _serializer.deserialize(packetReceived, DirectProxy.class.getClassLoader());
+			ambassador = _serializer.deserialize(packetReceived, SignalConnection.class.getClassLoader());
 		} catch (ClassNotFoundException e) {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
@@ -90,41 +95,41 @@ class DirectProxy extends Proxy {
 		_isCrashed = true;
 	}
 
-	void serveSubscriptionTo(ArrayList<String> nicknamePath, String signalPath) {
-		Signal<Object> signal = findParty(nicknamePath).signal(signalPath);
-		signal.addReceiver(createScoutFor(nicknamePath, signalPath));
-	}
 
-	private Omnivore<Object> createScoutFor(final ArrayList<String> nicknamePath, final String signalPath) {
+	private Omnivore<Object> createScoutFor(final Sneer1024 publicKey, final String signalPath) {
 		Omnivore<Object> result = new Omnivore<Object>() {@Override public void consume(Object newValue) {
-			send(new Notification(nicknamePath, signalPath, newValue));
+			send(new Notification(publicKey, signalPath, newValue));
 		}};
-		_scoutsToAvoidGC.add(result); //Fix: Avoid leak.
+		_scoutsToAvoidGC.add(result); //Fix: This is a Leak.
 		return result;
 	}
 
-	private Party findParty(ArrayList<String> nicknamePath) {
-		Party result = _me;
-		for (String nickname : nicknamePath)
-			result = result.navigateTo(nickname);
-		return result;
+	void serveSubscriptionTo(Sneer1024 publicKey, String signalPath) {
+		Party target = produceParty(publicKey);
+		Signal<Object> signal = target.signal(signalPath);
+
+		signal.addReceiver(createScoutFor(publicKey, signalPath));
 	}
 
-	void handleNotification(ArrayList<String> nicknamePath, String signalPath, Object newValue) {
-		Party candidate = this;
-		for (String nickname : nicknamePath)
-			candidate = candidate.navigateTo(nickname);
-		((Proxy)candidate).handleNotification(signalPath, newValue);
+
+	private AbstractParty produceParty(Sneer1024 pk) {
+		return (AbstractParty)_keyManager.partyGiven(pk, ProxyFactory.INSTANCE);
 	}
 
-	@Override
-	AbstractParty produceProxyFor(String nickname) {
-		return new RemoteProxy(this, nickname);
+
+	void handleNotification(Sneer1024 publicKey, String signalPath, Object newValue) {
+		AbstractParty target = produceParty(publicKey);
+		if (target instanceof Me) {
+			_logger.info("Illegal notification.");
+			return;
+		}
+		((Proxy)target).handleNotification(signalPath, newValue);
 	}
 
-	@Override
-	void subscribeTo(ArrayList<String> nicknamePath, String remoteSignalPath) {
-		send(new Subscription(nicknamePath, remoteSignalPath));
+
+	void subscribeTo(Sneer1024 publicKey, String remoteSignalPath) {
+		send(new Subscription(publicKey, remoteSignalPath));
 	}
 
+	
 }

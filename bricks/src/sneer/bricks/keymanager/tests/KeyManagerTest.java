@@ -1,10 +1,14 @@
 package sneer.bricks.keymanager.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
 import sneer.bricks.contacts.Contact;
+import sneer.bricks.crypto.Crypto;
+import sneer.bricks.crypto.Sneer1024;
 import sneer.bricks.keymanager.KeyManager;
 import sneer.lego.Inject;
 import sneer.lego.tests.BrickTestSupport;
@@ -17,16 +21,13 @@ public class KeyManagerTest extends BrickTestSupport {
 	@Inject
 	private KeyManager _keyManager;
 	
-	@Test
-	public void testOwnKey() throws Exception {
-		byte[] pk = _keyManager.ownPublicKey();
-		assertEquals("1234", new String(pk));
-	}
-
+	@Inject
+	private Crypto _crypto;
+	
 	@Test
 	public void testAddKey() throws Exception {
 		Contact contact = newContact();
-		byte[] key = "some key".getBytes();
+		Sneer1024 key = _crypto.sneer1024("random string".getBytes());
 		
 		assertNull(_keyManager.contactGiven(key));
 		
@@ -37,7 +38,7 @@ public class KeyManagerTest extends BrickTestSupport {
 	@Test(expected = IllegalStateException.class)
 	public void testAddKeyTwiceForSameContact() throws Exception {
 		Contact contact = newContact();
-		byte[] key = "some key".getBytes();
+		Sneer1024 key = _crypto.sneer1024("random string".getBytes());
 		
 		assertNull(_keyManager.contactGiven(key));
 

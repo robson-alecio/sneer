@@ -6,6 +6,8 @@ import java.util.Arrays;
 import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.contacts.ContactManager;
+import sneer.bricks.crypto.Crypto;
+import sneer.bricks.crypto.Sneer1024;
 import sneer.bricks.keymanager.ContactAlreadyHadAKey;
 import sneer.bricks.keymanager.KeyBelongsToOtherContact;
 import sneer.bricks.keymanager.KeyManager;
@@ -27,9 +29,13 @@ class IndividualSocketReceiver {
 	private ConnectionManager _connectionManager;
 	
 	@Inject
+	private Crypto _crypto;
+
+	@Inject
 	private	Logger _logger;
 	
 	private final ByteArraySocket _socket;
+
 
 	
 	IndividualSocketReceiver(Injector _injector, ByteArraySocket socket) {
@@ -47,13 +53,14 @@ class IndividualSocketReceiver {
 	private void tryToServe() throws IOException {
 		shakeHands();
 
-		byte[] peersPublicKey = _socket.read();	
+		byte[] publicKeyBytes = _socket.read();
+		Sneer1024 peersPublicKey = _crypto.wrap(publicKeyBytes);	
 
 		Contact contact = produceContact(peersPublicKey);
 		_connectionManager.manageIncomingSocket(contact, _socket);
 	}
 
-	private Contact produceContact(byte[] peersPublicKey) {
+	private Contact produceContact(Sneer1024 peersPublicKey) {
 		while(true) {
 			Contact contact = _keyManager.contactGiven(peersPublicKey);
 			if (contact != null) return contact;

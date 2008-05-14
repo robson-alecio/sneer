@@ -12,6 +12,7 @@ public class ToptenGuiMain {
 		new ToptenGuiMain();
 	}
 	
+	@SuppressWarnings("unused")
 	@Inject
 	private ToptenGui _topten;
 

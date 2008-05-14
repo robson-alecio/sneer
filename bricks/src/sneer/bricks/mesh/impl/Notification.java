@@ -1,21 +1,21 @@
 package sneer.bricks.mesh.impl;
 
-import java.util.ArrayList;
+import sneer.bricks.crypto.Sneer1024;
 
 class Notification implements Ambassador {
 
-	private final ArrayList<String> _nicknamePath;
+	private final Sneer1024 _publicKey;
 	private final String _signalPath;
 	private final Object _newValue;
 
-	public Notification(ArrayList<String> nicknamePath, String signalPath, Object newValue) {
-		_nicknamePath = nicknamePath;
+	public Notification(Sneer1024 publicKey, String signalPath, Object newValue) {
+		_publicKey = publicKey;
 		_signalPath = signalPath;
 		_newValue = newValue;
 	}
 
-	public void visit(DirectProxy peer) {
-		peer.handleNotification(_nicknamePath, _signalPath, _newValue);
+	public void visit(SignalConnection connectionToPeer) {
+		connectionToPeer.handleNotification(_publicKey, _signalPath, _newValue);
 	}
 
 }

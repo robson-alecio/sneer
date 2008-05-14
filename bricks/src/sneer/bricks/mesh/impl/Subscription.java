@@ -1,19 +1,19 @@
 package sneer.bricks.mesh.impl;
 
-import java.util.ArrayList;
+import sneer.bricks.crypto.Sneer1024;
 
 public class Subscription implements Ambassador {
 
-	private final ArrayList<String> _nicknamePath;
+	private final Sneer1024 _publicKey;
 	private final String _signalPath;
 	
-	public Subscription(ArrayList<String> nicknamePath, String signalPath) {
-		_nicknamePath = nicknamePath;
+	public Subscription(Sneer1024 publicKey, String signalPath) {
+		_publicKey = publicKey;
 		_signalPath = signalPath;
 	}
 
-	public void visit(DirectProxy peer) {
-		peer.serveSubscriptionTo(_nicknamePath, _signalPath);
+	public void visit(SignalConnection connectionToPeer) {
+		connectionToPeer.serveSubscriptionTo(_publicKey, _signalPath);
 	}
 
 

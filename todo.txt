@@ -27,6 +27,8 @@ Leandro Reminder
 
 Klaus
 ongoing - Component Model (see todoLego.txt)
+ - KeyManager.addKey() - Refactor to use same idiom as partyGiven() with factory.
+ - KeyManager <-> Mesh dependency cycle - Eliminate.
  - ListSource and Impl - Rename to ListRegister.
  - RemoteSignals - Test with different signals, not only name.
  - Signal type-safety - Not string-based.

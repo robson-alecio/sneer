@@ -1,44 +1,56 @@
 package sneer.bricks.keymanager.impl;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import sneer.bricks.contacts.Contact;
+import sneer.bricks.crypto.Crypto;
+import sneer.bricks.crypto.Sneer1024;
 import sneer.bricks.keymanager.ContactAlreadyHadAKey;
 import sneer.bricks.keymanager.KeyBelongsToOtherContact;
 import sneer.bricks.keymanager.KeyManager;
+import sneer.bricks.mesh.Me;
+import sneer.bricks.mesh.Party;
+import sneer.lego.Inject;
+import sneer.lego.Startable;
+import wheel.lang.Functor;
 
-public class KeyManagerImpl implements KeyManager {
+public class KeyManagerImpl implements KeyManager, Startable {
 
-	private Key _ownKey = createMickeyMouseKey();
+	@Inject
+	private Crypto _crypto; 
 	
-	private Map<Contact,Key> _keyByContact = new HashMap<Contact, Key>(); 
+	private Sneer1024 _ownKey;
 	
+	private final Map<Contact, Sneer1024> _keyByContact = new HashMap<Contact, Sneer1024>();
+
+	private final Map<Sneer1024, Party> _partiesByPublicKey = new HashMap<Sneer1024, Party>();
+
 	@Override
-	public synchronized void addKey(Contact contact, byte[] peersPublicKey) 
+	public void start() throws Exception {
+		_ownKey = createMickeyMouseKey();
+	}
+
+	@Override
+	public synchronized void addKey(Contact contact, Sneer1024 peersPublicKey) 
 		throws ContactAlreadyHadAKey, KeyBelongsToOtherContact {
 		
-		Key key = _keyByContact.get(contact);
-		
-		if(key != null)
+		if(_keyByContact.get(contact) != null)
 			throw new ContactAlreadyHadAKey("the contact "+contact.nickname()+" has a key already");
 			
-		Contact other = contactGiven(peersPublicKey);
-		if(other != null)
-			throw new KeyBelongsToOtherContact("the key [TODO: the key] belongs to another contact");
+		if(contactGiven(peersPublicKey) != null)
+			throw new KeyBelongsToOtherContact("the key belongs to another contact");
 
-		_keyByContact.put(contact, new Key(peersPublicKey));
+		_keyByContact.put(contact, peersPublicKey);
 	}
 
-	private Key createMickeyMouseKey() {
+	private Sneer1024 createMickeyMouseKey() {
 		String string = "" + System.currentTimeMillis() + System.nanoTime() + hashCode();
-		return new Key(string.getBytes());
+		return _crypto.sneer1024(string.getBytes());
 	}
 
 	@Override
-	public synchronized Contact contactGiven(byte[] peersPKBytes) {
-		Key peersPK = new Key(peersPKBytes);
+	public synchronized Contact contactGiven(Sneer1024 peersPK) {
 		for (Contact candidate : _keyByContact.keySet())
 			if(_keyByContact.get(candidate).equals(peersPK))
 				return candidate;
@@ -47,34 +59,23 @@ public class KeyManagerImpl implements KeyManager {
 	}
 
 	@Override
-	public byte[] ownPublicKey() {
-		return _ownKey.data();
-	}
-}
-
-class Key {
-
-	private byte[] _data;
-	
-	Key(byte[] bytes) {
-		_data = bytes;
-	}
-
-	byte[] data() {
-		return _data;
-	}
-	
-	@Override
-	public int hashCode() {
-		throw new UnsupportedOperationException();
+	public Sneer1024 ownPublicKey() {
+		return _ownKey;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if(obj == null) return false;
-		if(!(obj instanceof Key)) return false;
-		
-		Key other = (Key) obj;
-		return Arrays.equals(_data, other.data());
+	public Sneer1024 keyGiven(Contact contact) {
+		return _keyByContact.get(contact);
 	}
+
+	@Override
+	public synchronized Party partyGiven(Sneer1024 pk, Functor<Sneer1024, Party> factoryToUseIfAbsent) {
+		Party result = _partiesByPublicKey.get(pk);
+		if (result == null) {
+			result = factoryToUseIfAbsent.evaluate(pk);
+			_partiesByPublicKey.put(pk, result);
+		}
+		return result;
+	}
+
 }

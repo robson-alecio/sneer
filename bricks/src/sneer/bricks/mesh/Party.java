@@ -1,11 +1,14 @@
 package sneer.bricks.mesh;
 
+import sneer.bricks.contacts.Contact;
 import wheel.reactive.Signal;
+import wheel.reactive.lists.ListSignal;
 
 public interface Party {
 
-	Party navigateTo(String nickname);
-
+	ListSignal<Contact> contacts();
+	Party navigateTo(Contact contact);
+	
 	<S> Signal<S> signal(String signalPath);
 
 }

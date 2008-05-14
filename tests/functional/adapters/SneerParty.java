@@ -5,6 +5,7 @@ import sneer.bricks.connection.SocketOriginator;
 import sneer.bricks.connection.SocketReceiver;
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.contacts.ContactManager;
+import sneer.bricks.crypto.Sneer1024;
 import sneer.bricks.internetaddresskeeper.InternetAddressKeeper;
 import sneer.bricks.keymanager.ContactAlreadyHadAKey;
 import sneer.bricks.keymanager.KeyBelongsToOtherContact;
@@ -71,7 +72,7 @@ public class SneerParty extends SelfInject implements SovereignParty {
 		sneerParty.giveNicknameTo(this, this.ownName());
 	}
 
-	private void storePublicKey(Contact contact, byte[] publicKey) {
+	private void storePublicKey(Contact contact, Sneer1024 publicKey) {
 		try {
 			_keyManager.addKey(contact, publicKey);
 		} catch (ContactAlreadyHadAKey e) {
@@ -101,7 +102,7 @@ public class SneerParty extends SelfInject implements SovereignParty {
 
     @Override
     public void giveNicknameTo(SovereignParty peer, String newNickname) {
-    	byte[] publicKey = ((SneerParty)peer).publicKey();
+    	Sneer1024 publicKey = ((SneerParty)peer).publicKey();
 		Contact contact = waitForContactGiven(publicKey);
 
 		try {
@@ -111,7 +112,7 @@ public class SneerParty extends SelfInject implements SovereignParty {
 		}
     }
 
-	private Contact waitForContactGiven(byte[] publicKey) {
+	private Contact waitForContactGiven(Sneer1024 publicKey) {
 		while (true) {
 			Contact contact = _keyManager.contactGiven(publicKey);
 			if (contact != null) return contact;
@@ -119,7 +120,7 @@ public class SneerParty extends SelfInject implements SovereignParty {
 		}
 	}
 
-    private byte[] publicKey() {
+    private Sneer1024 publicKey() {
 		return _keyManager.ownPublicKey();
 	}
 
@@ -129,10 +130,18 @@ public class SneerParty extends SelfInject implements SovereignParty {
 		
 		Party peer = _me;
 		for (String nickname : path)
-			peer = peer.navigateTo(nickname);
+			peer = navigateTo(peer, nickname);
 		
 		return peer.signal("Name");
     }
+
+	private Party navigateTo(Party peer, String nickname) {
+		for (Contact contact : peer.contacts())
+			if (contact.nickname().currentValue().equals(nickname))
+				return peer.navigateTo(contact);
+		
+		return null;
+	}
 
 	private int port() {
         return _sneerPortKeeper.port().currentValue();

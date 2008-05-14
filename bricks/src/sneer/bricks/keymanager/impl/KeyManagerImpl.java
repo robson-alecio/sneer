@@ -9,7 +9,6 @@ import sneer.bricks.crypto.Sneer1024;
 import sneer.bricks.keymanager.ContactAlreadyHadAKey;
 import sneer.bricks.keymanager.KeyBelongsToOtherContact;
 import sneer.bricks.keymanager.KeyManager;
-import sneer.bricks.mesh.Me;
 import sneer.bricks.mesh.Party;
 import sneer.lego.Inject;
 import sneer.lego.Startable;

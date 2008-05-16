@@ -2,6 +2,7 @@ package sneer.lego.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -52,7 +53,6 @@ public class ContainerTest {
 	public void testLifecycle() throws Exception {
 		Container c = new SimpleContainer();
         Lifecycle lifecycle = c.produce(Lifecycle.class);
-        assertTrue(lifecycle.configureCalled());
         assertTrue(lifecycle.startCalled());
 	}
 	
@@ -88,10 +88,17 @@ public class ContainerTest {
 
 	@Test
 	public void testMakeSerializable()  throws Exception {
-
 		Container c = new SimpleContainer();
 		MakeMeSerializable component = c.produce(MakeMeSerializable.class);
 		assertTrue(component instanceof Serializable);
+	}
 
+	@Test
+	public void testInjectStaticField() throws Exception {
+		Container c = new SimpleContainer();
+		assertNull(Static.sample);
+		Static ignored = c.produce(Static.class);
+		ignored.toString();
+		assertNotNull(Static.sample);
 	}
 }

@@ -22,7 +22,6 @@ class Proxy extends AbstractParty {
 		_publicKey = publicKey;
 	}
 
-	
 	private final Sneer1024 _publicKey;
 	private final Set<AbstractParty> _intermediaries = new HashSet<AbstractParty>();
 
@@ -67,7 +66,14 @@ class Proxy extends AbstractParty {
 	}
 
 	void handleNotification(String signalPath, Object notification) {
-		_registersBySignalPath.get(signalPath).setter().consume(notification);
+		Register<Object> register = _registersBySignalPath.get(signalPath);
+		
+		if (register == null) {
+			System.out.println("Register is null: " + signalPath + " - Ignoring new value notification: " + notification); //Implement: Use logger instead.
+			return;
+		}
+		
+		register.setter().consume(notification);
 	}
 
 	

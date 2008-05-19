@@ -116,18 +116,26 @@ class SignalConnection {
 			
 			@Override
 			protected void elementAdded(Contact newContact) {
+				maintainChainOfIntermediaries(publicKey, newContact);
+				
 				send(new NotificationOfContactAdded(publicKey, toRemoteContact(newContact)));
 			}
 
 			@Override
 			protected void elementToBeRemoved(Contact contact) {
-				send(new NotificationOfContactAdded(publicKey, toRemoteContact(contact)));
+				send(new NotificationOfContactRemoved(publicKey, toRemoteContact(contact)));
 			}
 		};
 
 		_scoutsToAvoidGC.add(scout); //Fix: This is a Leak.
 	}
 
+	private void maintainChainOfIntermediaries(final Sneer1024 publicKey, Contact contact) {
+		AbstractParty intermediary = produceParty(publicKey);
+		Sneer1024 contactPK = intermediary.producePublicKeyFor(contact);
+		AbstractParty contactProxy = (AbstractParty) _keyManager.partyGiven(contactPK, ProxyFactory.INSTANCE);
+		contactProxy.addIntermediaryIfNecessary(intermediary);
+	}
 
 	private RemoteContact toRemoteContact(Contact contact) {
 		Sneer1024 pk = _keyManager.keyGiven(contact);

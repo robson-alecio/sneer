@@ -4,12 +4,12 @@ import java.io.Serializable;
 
 import wheel.lang.Omnivore;
 
-public interface ListSignal<VO> extends Iterable<VO>,Serializable{
+public interface ListSignal<VO> extends Iterable<VO>, Serializable {
 	
 	public void addListReceiver(Omnivore<ListValueChange> receiver);
 	public void removeListReceiver(Omnivore<ListValueChange> receiver);
 
-	public VO currentGet(int index);
 	public int currentSize();
+	public VO currentGet(int index);
 
 }

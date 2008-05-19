@@ -130,17 +130,18 @@ public class SneerParty extends SelfInject implements SovereignParty {
 		
 		Party peer = _me;
 		for (String nickname : path)
-			peer = navigateTo(peer, nickname);
+			peer = waitForContact(peer, nickname);
 		
 		return peer.signal("Name");
     }
 
-	private Party navigateTo(Party peer, String nickname) {
-		for (Contact contact : peer.contacts())
-			if (contact.nickname().currentValue().equals(nickname))
-				return peer.navigateTo(contact);
-		
-		return null;
+	private Party waitForContact(Party peer, String nickname) {
+		while (true) {
+			for (Contact contact : peer.contacts())
+				if (contact.nickname().currentValue().equals(nickname))
+					return peer.navigateTo(contact);
+			Thread.yield();
+		}
 	}
 
 	private int port() {

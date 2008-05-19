@@ -81,10 +81,14 @@ class MeImpl extends AbstractParty implements Me, Startable {
 
 	@Override
 	public <S> Signal<S> signal(String signalPath) {
-		if (!signalPath.equals("Name"))
+		if (signalPath.equals("Name"))
+			return Casts.uncheckedGenericCast(_ownNameKeeper.name());
+
+		if (signalPath.equals("Contacts"))
+			return Casts.uncheckedGenericCast(_contactManager.contacts());
+			
 		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	
-		return Casts.uncheckedGenericCast(_ownNameKeeper.name());
 	}
 
 	@Override
@@ -113,6 +117,19 @@ class MeImpl extends AbstractParty implements Me, Startable {
 		
 		SignalConnection signalConnection = _signalConnectionsByContact.get(directContact);
 		signalConnection.subscribeTo(targetPK, signalPath);
+	}
+
+	@Override
+	void subscribeToContacts(Sneer1024 targetPK, Sneer1024 intermediaryPK) {
+		Contact directContact = _keyManager.contactGiven(intermediaryPK);
+
+		SignalConnection signalConnection = _signalConnectionsByContact.get(directContact);
+		signalConnection.subscribeToContacts(targetPK);
+	}
+
+	@Override
+	void injectIfNecessary() {
+		//Not necessary. The container injects me.
 	}
 
 

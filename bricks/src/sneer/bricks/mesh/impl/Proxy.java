@@ -7,8 +7,8 @@ import java.util.Set;
 
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.crypto.Sneer1024;
+import sneer.lego.ContainerUtils;
 import wheel.lang.Casts;
-import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
@@ -27,7 +27,7 @@ class Proxy extends AbstractParty {
 	private final Set<AbstractParty> _intermediaries = new HashSet<AbstractParty>();
 
 	protected final Map<String, Register<Object>> _registersBySignalPath = new HashMap<String, Register<Object>>();
-	private ListSource<Contact> _contactsCache;
+	private ListSource<RemoteContact> _contactsCache;
 
 	
 	@Override
@@ -67,23 +67,30 @@ class Proxy extends AbstractParty {
 	}
 
 	void handleNotification(String signalPath, Object notification) {
-		if ("Contacts".equals(signalPath))
-			throw new NotImplementedYet();
-		
 		_registersBySignalPath.get(signalPath).setter().consume(notification);
 	}
 
 	
+	void handleNotificationOfContactAdded(RemoteContact newContact) {
+		_contactsCache.add(newContact);
+	}
+	
+	void handleNotificationOfContactRemoved(RemoteContact contact) {
+		_contactsCache.remove(contact);
+	}
+	
+	
 	@Override
 	public ListSignal<Contact> contacts() {
 		if (_contactsCache == null) initContactsCache();
-		return _contactsCache.output();
+		return Casts.uncheckedGenericCast(_contactsCache.output());
 	}
 
 	private void initContactsCache() {
-		_contactsCache = new ListSourceImpl<Contact>();
-		subscribeTo("Contacts");
+		_contactsCache = new ListSourceImpl<RemoteContact>();
+		subscribeToContacts(_publicKey, null);
 	}
+
 
 	@Override
 	void addIntermediaryIfNecessary(AbstractParty intermediary) {
@@ -92,7 +99,7 @@ class Proxy extends AbstractParty {
 
 	@Override
 	Sneer1024 producePublicKeyFor(Contact contact) {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+		return ((RemoteContact)contact).publicKey();
 	}
 
 	@Override
@@ -103,6 +110,16 @@ class Proxy extends AbstractParty {
 	@Override
 	void subscribeTo(Sneer1024 targetPK, String signalPath, Sneer1024 intermediaryPKIgnored) {
 		closestIntermediary().subscribeTo(targetPK , signalPath, _publicKey);
+	}
+
+	@Override
+	void subscribeToContacts(Sneer1024 targetPK, Sneer1024 intermediaryPKIgnored) {
+		closestIntermediary().subscribeToContacts(targetPK, _publicKey);
+	}
+
+	@Override
+	void injectIfNecessary() {
+		ContainerUtils.inject(this);
 	}
 
 

@@ -26,7 +26,7 @@ public abstract class Freedom2Test extends SovereignFunctionalTest {
 	}
 
 	
-	@Test (timeout = 1000)
+	@Test //(timeout = 1000)
 	public void testNicknames() {
 		if (!TestDashboard.newTestsShouldRun()) return;
 		
@@ -61,6 +61,7 @@ public abstract class Freedom2Test extends SovereignFunctionalTest {
 		_a.setOwnName("Dr Ana");
 		waitForValue("Dr Ana", anasName);
 
+		Assert.fail("Uncomment timeout above");
 	}
 
 

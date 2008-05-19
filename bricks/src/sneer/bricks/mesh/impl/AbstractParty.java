@@ -8,6 +8,10 @@ import sneer.lego.Inject;
 
 abstract class AbstractParty implements Party {
 
+	AbstractParty() {
+		injectIfNecessary();
+	}
+
 	@Inject
 	protected KeyManager _keyManager;
 
@@ -25,5 +29,7 @@ abstract class AbstractParty implements Party {
 	abstract int distanceInHops();
 
 	abstract void subscribeTo(Sneer1024 targetPK, String signalPath, Sneer1024 intermediaryPK);
+	abstract void subscribeToContacts(Sneer1024 targetPK, Sneer1024 intermediaryPK);
 
+	abstract void injectIfNecessary();
 }

@@ -17,6 +17,9 @@ import java.util.jar.JarFile;
 import org.apache.commons.io.IOUtils;
 
 import sneer.bricks.dependency.Dependency;
+import sneer.bricks.dependency.DependencyManager;
+import sneer.lego.Container;
+import sneer.lego.Inject;
 import wheel.lang.Threads;
 
 public class BrickClassLoader extends EnhancingClassLoader {
@@ -31,33 +34,22 @@ public class BrickClassLoader extends EnhancingClassLoader {
 	
 	private ClassLoader _delegate;
 	
+	@Inject
+	private Container _container;
+	
+	//lazy load
+	private DependencyManager _dependencyManager;
+	
 	public BrickClassLoader() {
 		//used for testing
-		this(Threads.contextClassLoader(), Object.class, null, null);
+		this(Threads.contextClassLoader(), Object.class, null);
 	}
 	
-	public BrickClassLoader(ClassLoader parent, Class<?> mainClass, File brickDirectory, List<Dependency> dependencies) {
+	public BrickClassLoader(ClassLoader parent, Class<?> mainClass, File brickDirectory) {
 		super(parent);
 		_brickDirectory = brickDirectory;
 		_mainClass = mainClass;
 		_implJarFile = new File(_brickDirectory, _mainClass.getName()+"-impl.jar");
-		_delegate = delegate(dependencies);
-	}
-
-	private ClassLoader delegate(List<Dependency> dependencies) {
-		if(dependencies == null)
-			return null;
-		
-		URL[] urls = new URL[dependencies.size()];
-		int i = 0;
-		for (Dependency dependency : dependencies) {
-			try {
-				urls[i++] = new URL("file://"+dependency.file().getAbsolutePath());
-			} catch (MalformedURLException e) {
-				throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
-			}
-		}
-		return new URLClassLoader(urls, null);
 	}
 
 	@Override
@@ -73,14 +65,40 @@ public class BrickClassLoader extends EnhancingClassLoader {
 			return defineClass(name, bytes);
 			
 		//is it a brick dependency?
-		if(_delegate != null) {
-			Class<?> result = _delegate.loadClass(name);
-			if(result != null)
-				return result;
-		}
-
+		Class<?> result = delegate().loadClass(name);
+		if(result != null)
+			return result;
+		
 		//delegate to parent class loader
 		throw new ClassNotFoundException();
+	}
+
+	private ClassLoader delegate() {
+		if(_delegate != null) 
+			return _delegate;
+
+		List<Dependency> dependencies = dependencyManager().dependenciesFor(_mainClass.getName());
+		URL[] urls = new URL[dependencies.size()];
+		int i = 0;
+		for (Dependency dependency : dependencies) {
+			try {
+				urls[i++] = new URL("file://"+dependency.file().getAbsolutePath());
+			} catch (MalformedURLException e) {
+				throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			}
+		}
+		_delegate = new URLClassLoader(urls, null);
+		return _delegate;
+	}
+
+	private DependencyManager dependencyManager() {
+
+		//lazy load
+		if(_dependencyManager != null)
+			return _dependencyManager;
+		
+		_dependencyManager = _container.produce(DependencyManager.class);
+		return _dependencyManager;
 	}
 
 	private byte[] findClassInJar(String name) throws IOException {

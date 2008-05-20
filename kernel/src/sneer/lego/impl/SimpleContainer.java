@@ -167,13 +167,11 @@ public class SimpleContainer implements Container {
 
 	private ClassLoader getClassLoader(Class<?> brickClass, File brickDirectory) {
 		return factory().brickClassLoader(brickClass, brickDirectory);
-		
 	}
 
 	private ClassLoaderFactory factory() {
 		if(_classloaderFactory == null) {
 			_classloaderFactory = new EclipseClassLoaderFactory();
-			_injector.inject(_classloaderFactory);
 		}
 		return _classloaderFactory;
 	}

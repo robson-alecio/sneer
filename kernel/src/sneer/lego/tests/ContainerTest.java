@@ -105,7 +105,7 @@ public class ContainerTest {
 	}
 	
 	@Test
-	public void testLoadClass() throws Exception {
+	public void testInjectOnClass() throws Exception {
 		
 		ClassLoader cl = new BrickClassLoader();
 		Container c = new SimpleContainer();

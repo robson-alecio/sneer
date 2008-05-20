@@ -1,6 +1,7 @@
 package sneer.lego.impl;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.List;
 
 import sneer.lego.Inject;
@@ -32,7 +33,8 @@ public class FieldInjector
 		    boolean before = field.isAccessible();
 		    field.setAccessible(true);
 		    try {
-				field.set(obj, component);
+		    	Object value = field.get(obj);
+		    	if(value == null) field.set(obj, component);
 			} catch (Exception e) {
 				throw new LegoException("error injection component into field: "+field.getName(),e);
 			} finally {
@@ -40,14 +42,13 @@ public class FieldInjector
 			}
 		}
 	}
-    
-    
 
 	@Override
 	public void inject(Class<?> clazz) throws LegoException {
 		Field[] fields = clazz.getDeclaredFields();
 		for (Field field : fields) {
-			injectOnField(null, field);
+			if(Modifier.isStatic(field.getModifiers()))
+				injectOnField(null, field);
 		}
 	}
 }

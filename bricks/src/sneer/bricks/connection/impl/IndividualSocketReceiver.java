@@ -8,13 +8,12 @@ import sneer.bricks.contacts.Contact;
 import sneer.bricks.contacts.ContactManager;
 import sneer.bricks.crypto.Crypto;
 import sneer.bricks.crypto.Sneer1024;
-import sneer.bricks.keymanager.ContactAlreadyHadAKey;
-import sneer.bricks.keymanager.KeyBelongsToOtherContact;
 import sneer.bricks.keymanager.KeyManager;
 import sneer.bricks.log.Logger;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.lego.Inject;
 import sneer.lego.Injector;
+import wheel.lang.Functor;
 import wheel.lang.exceptions.IllegalParameter;
 
 class IndividualSocketReceiver {
@@ -61,22 +60,9 @@ class IndividualSocketReceiver {
 	}
 
 	private Contact produceContact(Sneer1024 peersPublicKey) {
-		while(true) {
-			Contact contact = _keyManager.contactGiven(peersPublicKey);
-			if (contact != null) return contact;
-
-			contact = createUnconfirmedContact();
-			try {
-				_keyManager.addKey(contact, peersPublicKey);
-				return contact;
-			} catch (ContactAlreadyHadAKey e) {
-				//This should never happen, since we are creating the contact.
-				throw new IllegalStateException(e);
-			} catch (KeyBelongsToOtherContact e) {
-				//Other thread assigned this pk to other contact. Try again
-				_logger.info("Key belongs to other contact. Trying again...",e);
-			}
-		}
+		return _keyManager.contactGiven(peersPublicKey, new Functor<Sneer1024, Contact>(){@Override public Contact evaluate(Sneer1024 value) {
+			return createUnconfirmedContact();
+		}});
 	}
 
 	private Contact createUnconfirmedContact() {

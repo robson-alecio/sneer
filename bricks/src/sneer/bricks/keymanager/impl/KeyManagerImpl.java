@@ -6,8 +6,6 @@ import java.util.Map;
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.crypto.Crypto;
 import sneer.bricks.crypto.Sneer1024;
-import sneer.bricks.keymanager.ContactAlreadyHadAKey;
-import sneer.bricks.keymanager.KeyBelongsToOtherContact;
 import sneer.bricks.keymanager.KeyManager;
 import sneer.bricks.mesh.Party;
 import sneer.lego.Inject;
@@ -30,31 +28,10 @@ public class KeyManagerImpl implements KeyManager, Startable {
 		_ownKey = createMickeyMouseKey();
 	}
 
-	@Override
-	public synchronized void addKey(Contact contact, Sneer1024 peersPublicKey) 
-		throws ContactAlreadyHadAKey, KeyBelongsToOtherContact {
-		
-		if(_keyByContact.get(contact) != null)
-			throw new ContactAlreadyHadAKey("the contact "+contact.nickname()+" has a key already");
-			
-		if(contactGiven(peersPublicKey) != null)
-			throw new KeyBelongsToOtherContact("the key belongs to another contact");
-
-		_keyByContact.put(contact, peersPublicKey);
-	}
 
 	private Sneer1024 createMickeyMouseKey() {
 		String string = "" + System.currentTimeMillis() + System.nanoTime() + hashCode();
 		return _crypto.sneer1024(string.getBytes());
-	}
-
-	@Override
-	public synchronized Contact contactGiven(Sneer1024 peersPK) {
-		for (Contact candidate : _keyByContact.keySet())
-			if(_keyByContact.get(candidate).equals(peersPK))
-				return candidate;
-
-		return null;
 	}
 
 	@Override
@@ -75,6 +52,33 @@ public class KeyManagerImpl implements KeyManager, Startable {
 			_partiesByPublicKey.put(pk, result);
 		}
 		return result;
+	}
+
+	@Override
+	public synchronized Contact contactGiven(Sneer1024 peersPublicKey, Functor<Sneer1024, Contact> factoryToUseIfAbsent) {
+		Contact result = contactGiven(peersPublicKey);
+		if (result != null) return result;
+		
+		result = factoryToUseIfAbsent.evaluate(peersPublicKey);
+		addKey(result, peersPublicKey);
+		return result;
+	}
+
+
+	@Override
+	public synchronized void addKey(Contact contact, Sneer1024 publicKey) {
+		if(keyGiven(contact) != null) throw new IllegalArgumentException("There already was a public key registered for contact: " + contact.nickname().currentValue());
+		_keyByContact.put(contact, publicKey);
+	}
+
+
+	@Override
+	public synchronized Contact contactGiven(Sneer1024 peersPublicKey) {
+		for (Contact candidate : _keyByContact.keySet())
+			if(_keyByContact.get(candidate).equals(peersPublicKey))
+				return candidate;
+		
+		return null;
 	}
 
 }

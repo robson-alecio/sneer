@@ -7,8 +7,6 @@ import sneer.bricks.contacts.Contact;
 import sneer.bricks.contacts.ContactManager;
 import sneer.bricks.crypto.Sneer1024;
 import sneer.bricks.internetaddresskeeper.InternetAddressKeeper;
-import sneer.bricks.keymanager.ContactAlreadyHadAKey;
-import sneer.bricks.keymanager.KeyBelongsToOtherContact;
 import sneer.bricks.keymanager.KeyManager;
 import sneer.bricks.mesh.Me;
 import sneer.bricks.mesh.Party;
@@ -73,13 +71,7 @@ public class SneerParty extends SelfInject implements SovereignParty {
 	}
 
 	private void storePublicKey(Contact contact, Sneer1024 publicKey) {
-		try {
-			_keyManager.addKey(contact, publicKey);
-		} catch (ContactAlreadyHadAKey e) {
-			throw new IllegalStateException(e);
-		} catch (KeyBelongsToOtherContact e) {
-			throw new IllegalStateException(e);
-		}
+		_keyManager.addKey(contact, publicKey);
 	}
 
 	private Contact addContact(String nickname) {

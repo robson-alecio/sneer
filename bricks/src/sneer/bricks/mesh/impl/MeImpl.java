@@ -127,11 +127,5 @@ class MeImpl extends AbstractParty implements Me, Startable {
 		signalConnection.subscribeToContacts(targetPK);
 	}
 
-	@Override
-	void injectIfNecessary() {
-		//Not necessary. The container injects me.
-	}
-
-
 
 }

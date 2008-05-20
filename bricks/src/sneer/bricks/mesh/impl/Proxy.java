@@ -7,7 +7,6 @@ import java.util.Set;
 
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.crypto.Sneer1024;
-import sneer.lego.ContainerUtils;
 import wheel.lang.Casts;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
@@ -122,11 +121,5 @@ class Proxy extends AbstractParty {
 	void subscribeToContacts(Sneer1024 targetPK, Sneer1024 intermediaryPKIgnored) {
 		closestIntermediary().subscribeToContacts(targetPK, _publicKey);
 	}
-
-	@Override
-	void injectIfNecessary() {
-		ContainerUtils.inject(this);
-	}
-
 
 }

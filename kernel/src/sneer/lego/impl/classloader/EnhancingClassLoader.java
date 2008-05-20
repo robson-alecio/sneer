@@ -2,10 +2,15 @@ package sneer.lego.impl.classloader;
 
 import java.security.SecureClassLoader;
 
+import sneer.lego.Inject;
+import sneer.lego.Injector;
 import sneer.lego.impl.classloader.enhancer.ByteCodeGuardian;
 import sneer.lego.impl.classloader.enhancer.EnhancingByteCodeGuardian;
 
 public abstract class EnhancingClassLoader extends SecureClassLoader {
+
+	@Inject
+	protected Injector _injector;
 
 	private ByteCodeGuardian _guardian = EnhancingByteCodeGuardian.instance();
 
@@ -32,9 +37,13 @@ public abstract class EnhancingClassLoader extends SecureClassLoader {
 		if (resolve) {
 			resolveClass(c);
 		}
+		
+		if(!c.isInterface() && _injector != null /* don't remove this check. BrickClassLoaders may be created without an Injector */)
+			_injector.inject(c);
+		
 		return c;
 	}
-	
+
 	protected Class<?> defineClass(String name, byte[] bytes) {
 		byte[] byteArray = _guardian.enhance(name, bytes);
 		return defineClass(name, byteArray, 0, byteArray.length);

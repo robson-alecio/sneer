@@ -17,6 +17,7 @@ import java.util.jar.JarFile;
 import org.apache.commons.io.IOUtils;
 
 import sneer.bricks.dependency.Dependency;
+import wheel.lang.Threads;
 
 public class BrickClassLoader extends EnhancingClassLoader {
 
@@ -29,6 +30,11 @@ public class BrickClassLoader extends EnhancingClassLoader {
 	private Map<String, byte[]> _cache; 
 	
 	private ClassLoader _delegate;
+	
+	public BrickClassLoader() {
+		//used for testing
+		this(Threads.contextClassLoader(), Object.class, null, null);
+	}
 	
 	public BrickClassLoader(ClassLoader parent, Class<?> mainClass, File brickDirectory, List<Dependency> dependencies) {
 		super(parent);

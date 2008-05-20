@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 
 import org.junit.Test;
 
@@ -17,6 +18,7 @@ import sneer.lego.Injector;
 import sneer.lego.impl.FieldInjector;
 import sneer.lego.impl.SimpleBinder;
 import sneer.lego.impl.SimpleContainer;
+import sneer.lego.impl.classloader.BrickClassLoader;
 import sneer.lego.tests.impl.MySample;
 
 public class ContainerTest {
@@ -100,5 +102,18 @@ public class ContainerTest {
 		Static ignored = c.produce(Static.class);
 		ignored.toString();
 		assertNotNull(Static.sample);
+	}
+	
+	@Test
+	public void testLoadClass() throws Exception {
+		
+		ClassLoader cl = new BrickClassLoader();
+		Container c = new SimpleContainer();
+		c.inject(cl);
+		
+		Class<?> clazz = cl.loadClass("sneer.lego.tests.Static");
+		Field field = clazz.getField("sample");
+		Object sample = field.get(null);
+		assertNotNull(sample);
 	}
 }

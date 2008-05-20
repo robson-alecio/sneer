@@ -21,19 +21,33 @@ public class FieldInjector
     public void inject(Object obj) throws LegoException {
         List<Field> fields = FieldUtils.getAllFields(obj.getClass());
         for (Field field : fields) {
-            Inject inject = field.getAnnotation(Inject.class);
-            if(inject != null) {
-                Object component = _container.produce(field.getType());
-                boolean before = field.isAccessible();
-                field.setAccessible(true);
-                try {
-					field.set(obj, component);
-				} catch (Exception e) {
-					throw new LegoException("error injection component into field: "+field.getName(),e);
-				} finally {
-					field.setAccessible(before);
-				}
-            }
+            injectOnField(obj, field);
         }
     }
+
+	private void injectOnField(Object obj, Field field) {
+		Inject inject = field.getAnnotation(Inject.class);
+		if(inject != null) {
+		    Object component = _container.produce(field.getType());
+		    boolean before = field.isAccessible();
+		    field.setAccessible(true);
+		    try {
+				field.set(obj, component);
+			} catch (Exception e) {
+				throw new LegoException("error injection component into field: "+field.getName(),e);
+			} finally {
+				field.setAccessible(before);
+			}
+		}
+	}
+    
+    
+
+	@Override
+	public void inject(Class<?> clazz) throws LegoException {
+		Field[] fields = clazz.getDeclaredFields();
+		for (Field field : fields) {
+			injectOnField(null, field);
+		}
+	}
 }

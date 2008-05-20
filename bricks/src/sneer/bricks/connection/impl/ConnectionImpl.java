@@ -8,6 +8,7 @@ import sneer.bricks.contacts.Contact;
 import sneer.bricks.keymanager.KeyManager;
 import sneer.bricks.log.Logger;
 import sneer.bricks.network.ByteArraySocket;
+import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Inject;
 import sneer.lego.Injector;
 import wheel.lang.Omnivore;
@@ -21,12 +22,15 @@ class ConnectionImpl implements Connection {
 	@Inject
 	private KeyManager _keyManager;
 	
+	@Inject
+	private Logger _logger;
+
+	@Inject
+	private ThreadPool _threadPool;
+	
 	private Register<Boolean> _isOnline = new RegisterImpl<Boolean>(false);
 
 	private final SocketHolder _socketHolder = new SocketHolder(_isOnline.setter());
-
-	@Inject
-	private Logger _logger;
 
 	private volatile Omnivore<byte[]> _receiver;
 
@@ -119,7 +123,7 @@ class ConnectionImpl implements Connection {
 	}
 	
 	private void startReceiving() {
-		Threads.startDaemon(new Runnable() { @Override public void run() {
+		_threadPool.runDaemon(new Runnable() { @Override public void run() {
 			while (true) {
 				byte[] packet = tryToReceive();
 				if (packet == null)

@@ -36,7 +36,7 @@ public class FieldInjector
 		    	Object value = field.get(obj);
 		    	if(value == null) field.set(obj, component);
 			} catch (Exception e) {
-				throw new LegoException("error injection component into field: "+field.getName(),e);
+				throw new LegoException("error injecting component into field: "+field.getName(),e);
 			} finally {
 				field.setAccessible(before);
 			}

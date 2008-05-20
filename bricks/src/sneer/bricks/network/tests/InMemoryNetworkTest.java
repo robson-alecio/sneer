@@ -10,17 +10,21 @@ import sneer.bricks.network.ByteArrayServerSocket;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.bricks.network.Network;
 import sneer.bricks.network.impl.inmemory.InMemoryNetwork;
+import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Binder;
 import sneer.lego.Inject;
 import sneer.lego.impl.SimpleBinder;
 import sneer.lego.tests.BrickTestSupport;
-import wheel.lang.Threads;
 
 
 public class InMemoryNetworkTest extends BrickTestSupport {
 
 	@Inject
 	private Network _network;
+	
+	@Inject
+	private ThreadPool _threadPool;
+
 	
 	@Override
 	protected Binder getBinder() {
@@ -30,7 +34,7 @@ public class InMemoryNetworkTest extends BrickTestSupport {
 	@Test
 	public void testNetworkMessages() throws Exception {
 		final ByteArrayServerSocket server = _network.openServerSocket(9090);
-		Threads.startDaemon(new Runnable(){ @Override public void run() {
+		_threadPool.runDaemon(new Runnable(){ @Override public void run() {
 			try {
 				ByteArraySocket request = server.accept();
 				request.write(new String(request.read()).toUpperCase().getBytes());

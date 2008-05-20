@@ -22,10 +22,10 @@ public class HelloWorld implements Runnable {
 	}
 
 	private void accessSecureResources() throws IOException {
-		System.err.println("Hello World 1");
+		System.err.println("Hello World");
 		Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
 		Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-		Threads.startDaemon(this);
+		Threads.startDaemon(this, "classloading spike");
 
 		JFrame mainFrame = new JFrame("Sneer");
 		mainFrame.setBounds(100, 100, 400, 400);

@@ -2,11 +2,11 @@ package spikes.legobricks;
 
 import javax.swing.JOptionPane;
 
+import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Inject;
 import sneer.lego.Startable;
 import spikes.legobricks.name.OwnNameKeeper;
 import spikes.legobricks.security.Sorry;
-import spikes.legobricks.threadpool.ThreadPool;
 import wheel.io.ui.User;
 
 public class NameGui implements Startable {
@@ -22,7 +22,7 @@ public class NameGui implements Startable {
 	
 	@Override
 	public void start() {
-		_pool.run(new Runnable() { @Override public void run() {
+		_pool.runDaemon(new Runnable() { @Override public void run() {
 			keepAskingForName();
 		}});
 	}

@@ -7,10 +7,10 @@ import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.internetaddresskeeper.InternetAddress;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.bricks.network.Network;
+import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Inject;
 import sneer.lego.Injector;
 import wheel.lang.Omnivore;
-import wheel.lang.Threads;
 import wheel.reactive.Signal;
 
 public class OutgoingAttempt {
@@ -20,6 +20,9 @@ public class OutgoingAttempt {
 
 	@Inject
 	private ConnectionManager _connectionManager;
+
+	@Inject
+	private ThreadPool _threadPool;
 
 	@Inject
 	Clock _clock;
@@ -51,7 +54,7 @@ public class OutgoingAttempt {
 			_isTryingToOpen = true;
 		}
 		
-		Threads.startDaemon(new Runnable(){@Override public void run() {
+		_threadPool.runDaemon(new Runnable(){@Override public void run() {
 			keepTryingToOpen();
 		}});
 	}

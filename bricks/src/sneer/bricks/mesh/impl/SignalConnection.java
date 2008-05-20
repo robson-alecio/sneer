@@ -13,10 +13,10 @@ import sneer.bricks.log.Logger;
 import sneer.bricks.mesh.Me;
 import sneer.bricks.mesh.Party;
 import sneer.bricks.serialization.Serializer;
+import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Inject;
 import sneer.lego.Injector;
 import wheel.lang.Omnivore;
-import wheel.lang.Threads;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.SimpleListReceiver;
@@ -28,6 +28,9 @@ class SignalConnection {
 	
 	@Inject
 	private Serializer _serializer;
+
+	@Inject
+	private ThreadPool _threadPool;
 
 
 	private final Connection _connection;
@@ -70,7 +73,7 @@ class SignalConnection {
 	}
 
 	private void startSender() {
-		Threads.startDaemon(new Runnable() { public void run() {
+		_threadPool.runDaemon(new Runnable() { public void run() {
 			while (!_isCrashed) {
 				byte[] toSend = _priorityQueue.waitForNext();
 				_connection.send(toSend);

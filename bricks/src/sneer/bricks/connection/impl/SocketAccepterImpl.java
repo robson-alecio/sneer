@@ -9,6 +9,7 @@ import sneer.bricks.log.Logger;
 import sneer.bricks.network.ByteArrayServerSocket;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.bricks.network.Network;
+import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Inject;
 import sneer.lego.Startable;
 import spikes.legobricks.name.PortKeeper;
@@ -28,7 +29,10 @@ public class SocketAccepterImpl implements SocketAccepter, Startable {
 	
 	@Inject
 	private BlinkingLights _lights;
-	
+
+	@Inject
+	private ThreadPool _threadPool;
+
 	@Inject
 	private Logger _log;
 
@@ -52,7 +56,7 @@ public class SocketAccepterImpl implements SocketAccepter, Startable {
 
 	@Override
 	public void start() throws Exception {
-		Threads.startDaemon(new Runnable(){ @Override public void run() {
+		_threadPool.runDaemon(new Runnable(){ @Override public void run() {
 			listenToSneerPort();
 		}});
 		_portKeeper.port().addReceiver(_portReceiverToAvoidGC);
@@ -86,7 +90,7 @@ public class SocketAccepterImpl implements SocketAccepter, Startable {
 	
 	private void startAccepting() {
 		_isStopped = false;
-		Threads.startDaemon(new Runnable() { @Override public void run() {
+		_threadPool.runDaemon(new Runnable() { @Override public void run() {
 			while (!_isStopped) {
 				try {
 					ByteArraySocket clientSocket = _serverSocket.accept();

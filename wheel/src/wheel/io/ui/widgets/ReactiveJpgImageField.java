@@ -109,7 +109,7 @@ public class ReactiveJpgImageField extends JPanel{
 		item.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent ignored) {
 			Threads.startDaemon(new Runnable() { @Override public void run() {
 				action.run();
-			}});
+			}}, "ReactiveJpgImageField");
 		}});
 		menu.add(item);
 	}

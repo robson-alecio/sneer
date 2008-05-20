@@ -1,5 +1,6 @@
 package spikes.vitor.security;
 
+import java.awt.AWTPermission;
 import java.security.CodeSource;
 import java.security.Permission;
 import java.security.PermissionCollection;
@@ -49,12 +50,13 @@ public class PolicySpike extends Policy {
 
 	@Override
 	public boolean implies(ProtectionDomain domain, Permission permission) {
-		//System.out.println(">>>>>>>> Domain: " + domain.getClass() +	"  Permission: " + permission);
+		System.out.println(">>>>>>>> Domain: " + domain.getClass() +	"  Permission: " + permission);
 //		if (permission instanceof AllPermission) {
 //			System.out.println("ALL PERMISSIONS");
 //			return false;
 //		}
-		//if(permission instanceof SocketPermission) return false;
+		if(permission instanceof AWTPermission) return false;
+		
 		ClassLoader cl = domain.getClassLoader();
 		if(cl instanceof BrickClassLoader) {
 			BrickClassLoader bcl = (BrickClassLoader) cl;

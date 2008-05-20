@@ -67,7 +67,7 @@ public class Main extends JFrame{
 		
 	    addMouseListener();
 	    
-	    Threads.startDaemon(new Scroller());
+	    Threads.startDaemon(new Scroller(), "Go Board Scroller");
 	}
 
 	private void addMouseListener() {

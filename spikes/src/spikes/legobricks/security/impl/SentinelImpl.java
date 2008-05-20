@@ -12,9 +12,9 @@ import wheel.io.ui.User;
 public class SentinelImpl implements Sentinel {
 
 	@Inject
-	private User user;
+	private User _user;
 		
-	private Map<String, Boolean> preAuthorizations = new HashMap<String, Boolean>();
+	private Map<String, Boolean> _preAuthorizations = new HashMap<String, Boolean>();
 
 	
 	
@@ -22,7 +22,7 @@ public class SentinelImpl implements Sentinel {
 	public void check(String resourceName) {
 	
 		//check cache
-		Boolean preAuthorized = preAuthorizations.get(resourceName);
+		Boolean preAuthorized = _preAuthorizations.get(resourceName);
 		if (preAuthorized != null) {
 			if (preAuthorized) return;
 			throw createException(resourceName);
@@ -30,7 +30,7 @@ public class SentinelImpl implements Sentinel {
 		
 		Object response = null;
 		try {
-			response = user.choose("Allow access to "+resourceName+"?", "Always", "Yes", "No", "Never");
+			response = _user.choose("Allow access to "+resourceName+"?", "Always", "Yes", "No", "Never");
 		} catch (CancelledByUser e) {
 			response = "No";
 		}
@@ -38,12 +38,12 @@ public class SentinelImpl implements Sentinel {
 		if("Yes".equals(response)) return;
 
 		if("Always".equals(response)) {
-			preAuthorizations.put(resourceName, Boolean.TRUE);
+			_preAuthorizations.put(resourceName, Boolean.TRUE);
 			return;
 		}
 
 		if("Never".equals(response)) 
-			preAuthorizations.put(resourceName, Boolean.FALSE);
+			_preAuthorizations.put(resourceName, Boolean.FALSE);
 			
 		throw createException(resourceName);
 	}

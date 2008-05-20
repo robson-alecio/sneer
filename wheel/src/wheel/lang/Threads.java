@@ -24,13 +24,6 @@ public class Threads {
 		}
 	}
 
-
-    public static void startDaemon(Runnable runnable) {
-        Thread daemon = new Thread(runnable);
-        daemon.setDaemon(true);
-        daemon.start();
-    }
-
 	/** @param reactor An object that listens to others (is weak referenced by them), such as a Signal Receiver, and has to react. It does not need a actual thread of its own but it cannot be garbage collected.*/
     public static void preventFromBeingGarbageCollected(Object reactor) {
 		_reactors.add(reactor);
@@ -47,5 +40,11 @@ public class Threads {
 	
 	public static ClassLoader contextClassLoader() {
 		return Thread.currentThread().getContextClassLoader();
+	}
+
+	public static void startDaemon(Runnable runnable, String threadName) {
+        Thread daemon = new Thread(runnable, threadName);
+        daemon.setDaemon(true);
+        daemon.start();
 	}
 }

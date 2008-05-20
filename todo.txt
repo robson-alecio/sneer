@@ -1,4 +1,5 @@
 ﻿﻿Leandro
+ - Fix or delete each broken Junit test in project.
  - rename methods on Crypto to digest() and digester()
  - Brick Publish:
 	1) Inform source folder (src).

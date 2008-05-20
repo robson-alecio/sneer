@@ -1,12 +1,10 @@
 package functional.freedom2;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import wheel.reactive.Signal;
 import functional.SovereignFunctionalTest;
 import functional.SovereignParty;
-import functional.TestDashboard;
 
 public abstract class Freedom2Test extends SovereignFunctionalTest {
 
@@ -26,10 +24,8 @@ public abstract class Freedom2Test extends SovereignFunctionalTest {
 	}
 
 	
-	@Test //(timeout = 1000)
+	@Test (timeout = 2000)
 	public void testNicknames() {
-		if (!TestDashboard.newTestsShouldRun()) return;
-		
 		SovereignParty c = _community.createParty("Carla Costa");
 		SovereignParty d = _community.createParty("Denis Dalton");
 		
@@ -55,13 +51,8 @@ public abstract class Freedom2Test extends SovereignFunctionalTest {
 		c.giveNicknameTo(_a, "Aninha");
 		waitForValue("Ana Almeida", _b.navigateAndGetName("Carlinha/Aninha"));
 		
-		waitForValue("Ana Almeida", _b.navigateAndGetName("Carla Costa/Ana Almeida"));
-		Assert.fail("The above should fail");
-		
 		_a.setOwnName("Dr Ana");
 		waitForValue("Dr Ana", anasName);
-
-		Assert.fail("Uncomment timeout above");
 	}
 
 

@@ -2,6 +2,7 @@ package sneer.bricks.mesh.impl;
 
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.crypto.Sneer1024;
+import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 
@@ -10,17 +11,17 @@ public class RemoteContact implements Contact {
 
 	RemoteContact(Sneer1024 publicKey, String nickname) {
 		_publicKey = publicKey;
-		_nickname = nickname;
+		_nickname = new RegisterImpl<String>(nickname);
 	}
 	
 	
 	private final Sneer1024 _publicKey;
-	private final String _nickname;
+	private final RegisterImpl<String> _nickname;
 
 	
 	@Override
 	public Signal<String> nickname() {
-		return new RegisterImpl<String>(_nickname).output();
+		return _nickname.output();
 	}
 
 	Sneer1024 publicKey() {
@@ -44,6 +45,10 @@ public class RemoteContact implements Contact {
 		} else if (!_publicKey.equals(other._publicKey))
 			return false;
 		return true;
+	}
+
+	Omnivore<String> nicknameSetter() {
+		return _nickname.setter();
 	}
 
 }

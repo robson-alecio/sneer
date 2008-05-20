@@ -137,9 +137,11 @@ public class SneerParty extends SelfInject implements SovereignParty {
 
 	private Party waitForContact(Party peer, String nickname) {
 		while (true) {
-			for (Contact contact : peer.contacts())
-				if (contact.nickname().currentValue().equals(nickname))
-					return peer.navigateTo(contact);
+			for (Contact candidate : peer.contacts()) {
+				String candidateNick = candidate.nickname().currentValue();
+				if (candidateNick.equals(nickname))
+					return peer.navigateTo(candidate);
+			}
 			Thread.yield();
 		}
 	}

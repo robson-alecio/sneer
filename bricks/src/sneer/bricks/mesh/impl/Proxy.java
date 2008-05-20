@@ -18,6 +18,7 @@ import wheel.reactive.lists.impl.ListSourceImpl;
 class Proxy extends AbstractParty {
 
 	Proxy(Sneer1024 publicKey) {
+		if (publicKey == null) throw new IllegalArgumentException("Public key cannot be null.");
 		_publicKey = publicKey;
 	}
 
@@ -76,8 +77,14 @@ class Proxy extends AbstractParty {
 	}
 
 	
-	void handleNotificationOfContactAdded(RemoteContact newContact) {
-		_contactsCache.add(newContact);
+	void handleNotificationOfContact(RemoteContact contact) {
+		for (RemoteContact candidate : _contactsCache.output())
+			if (candidate.equals(contact)) {
+				candidate.nicknameSetter().consume(contact.nickname().currentValue());
+				return;
+			}
+			
+		_contactsCache.add(contact);
 	}
 	
 	void handleNotificationOfContactRemoved(RemoteContact contact) {

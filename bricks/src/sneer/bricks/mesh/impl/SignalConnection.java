@@ -118,10 +118,9 @@ class SignalConnection {
 			}
 			
 			@Override
-			protected void elementAdded(Contact newContact) {
-				maintainChainOfIntermediaries(publicKey, newContact);
-				
-				send(new NotificationOfContactAdded(publicKey, toRemoteContact(newContact)));
+			protected void elementAdded(Contact contact) {
+				maintainChainOfIntermediaries(publicKey, contact);
+				addNicknameScout(publicKey, contact);
 			}
 
 			@Override
@@ -133,6 +132,14 @@ class SignalConnection {
 		_scoutsToAvoidGC.add(scout); //Fix: This is a Leak.
 	}
 
+	private void addNicknameScout(final Sneer1024 publicKey, final Contact contact) {
+		Omnivore<String> scout = new Omnivore<String>(){@Override public void consume(String nickname) {
+			send(new NotificationOfContact(publicKey, toRemoteContact(contact)));
+		}};
+		contact.nickname().addReceiver(scout);
+		_scoutsToAvoidGC.add(scout);
+	}
+
 	private void maintainChainOfIntermediaries(final Sneer1024 publicKey, Contact contact) {
 		AbstractParty intermediary = produceParty(publicKey);
 		Sneer1024 contactPK = intermediary.producePublicKeyFor(contact);
@@ -141,6 +148,8 @@ class SignalConnection {
 	}
 
 	private RemoteContact toRemoteContact(Contact contact) {
+		if (contact instanceof RemoteContact) return (RemoteContact)contact;
+		
 		Sneer1024 pk = _keyManager.keyGiven(contact);
 		return new RemoteContact(pk, contact.nickname().currentValue());
 	}
@@ -161,7 +170,7 @@ class SignalConnection {
 		Proxy target = produceProxy(publicKey);
 		if (target == null) return;
 		
-		target.handleNotificationOfContactAdded(newContact);
+		target.handleNotificationOfContact(newContact);
 	}
 	
 	void handleNotificationOfContactRemoved(Sneer1024 publicKey,	RemoteContact contact) {

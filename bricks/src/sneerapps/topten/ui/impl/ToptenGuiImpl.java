@@ -1,4 +1,4 @@
-package sneerappsui.topten.impl;
+package sneerapps.topten.ui.impl;
 
 import java.awt.Container;
 import java.awt.FlowLayout;
@@ -10,7 +10,7 @@ import sneer.lego.Inject;
 import sneer.lego.Startable;
 import sneer.skin.viewmanager.View;
 import sneer.skin.viewmanager.ViewManager;
-import sneerappsui.topten.ToptenGui;
+import sneerapps.topten.ui.ToptenGui;
 import wheel.io.ui.impl.ComboBoxSignalModel;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;

@@ -1,4 +1,4 @@
-package sneerappsui.topten;
+package sneerapps.topten.ui;
 
 
 public interface ToptenGui {

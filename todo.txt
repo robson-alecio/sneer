@@ -28,34 +28,29 @@ Leandro Reminder
 
 Klaus
 ongoing - Component Model (see todoLego.txt)
- - KeyManager.addKey() - Refactor to use same idiom as partyGiven() with factory.
  - KeyManager <-> Mesh dependency cycle - Eliminate.
  - ListSource and Impl - Rename to ListRegister.
+ - GUI - Spartan interface for what we have so far. http://c2.com/cgi/wiki?SpartanUserInterface 
  - RemoteSignals - Test with different signals, not only name.
  - Signal type-safety - Not string-based.
  - Brick persistence
  - Public Keys
  - Connection Encryption
  - Auto-update of Kernel from Peers
- - Publish, Download, Auto-Update of Bricks from Peers
- - GUI - Spartan interface for what we have so far. http://c2.com/cgi/wiki?SpartanUserInterface 
+ - Auto-Update of Bricks from Peers
  - Logging - revise how logging is done by all bricks. Revise blinking lights API.
- - Package namespace - revise sneer.lego? sneer.kernel? sneer.bricks?
+ - Package namespace - revise sneer.lego? sneer.kernel? sneer.bricks? - Consider using kernel, pulp and skin.
  - Make build.xml run again. 
  - README.txt - Update sourcepath, classpath, main class and build.xml references
 RELEASE BETA===================================================
- - Contact Navigation
  - Traffic Prioritization - Among signals and among contacts.
  - UDP instead of TCP
 
 Gandhi
-done - Make build class for Sneer
-done - My Public Files Folder - Any contact can do "Save As" on the other side.
 partially done (windows&konqueror not nautilus) - Public Files of Contact - Copy and Paste
  - Check file transfer between LINUX and WINDOWS. (Using Metoo, shared folders, public files).
  - Public Files of Contact - Drag and Drop
  - Persist SplitPane position (maybe with bounds)
- - Set up a gandhi.selfip.net so you are always reachable wherever you are. Tell the people on the sneercoders list.
 
 
 FileSharing

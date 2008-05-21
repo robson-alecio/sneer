@@ -79,10 +79,6 @@ public class DeployerImpl implements Deployer {
 		 * 5. generate brick-api.jar and brick-impl.jar
 		 * 
 		 */
-
-		if(true) {
-			throw new NotImplementedYet(); //handle bricks that don't extend Brick
-		}
 		
 		BrickBundle result = new BrickBundleImpl();
 		VirtualDirectoryFactory factory = new VirtualDirectoryFactoryImpl(path, _injector);

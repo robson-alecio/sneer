@@ -99,17 +99,18 @@ public class SimpleContainer implements Container {
 		}
 
 		inject(component);
-		if (component instanceof Startable) {
-		    try
-		    {
-		        ((Startable)component).start();
-		    }
-		    catch (Exception e)
-		    {
-		        throw new LegoException("Error starting brick: "+intrface.getName(), e);
-		    }
-		}
+		handleLifecycle(intrface, component);
 		return component;
+	}
+
+	private <T> void handleLifecycle(Class<T> clazz, T component) {
+		if (component instanceof Startable) {
+			try {
+				((Startable)component).start();
+			} catch (Exception e) {
+				throw new LegoException("Error starting brick: "+clazz.getName(), e);
+			}
+		}
 	}
 	
 	@SuppressWarnings("unchecked") //Refactor Try to use Casts.unchecked..()
@@ -166,7 +167,9 @@ public class SimpleContainer implements Container {
 	}
 
 	private ClassLoader getClassLoader(Class<?> brickClass, File brickDirectory) {
-		return factory().brickClassLoader(brickClass, brickDirectory);
+		ClassLoader cl = factory().brickClassLoader(brickClass, brickDirectory);
+		_injector.inject(cl);
+		return cl;
 	}
 
 	private ClassLoaderFactory factory() {
@@ -211,6 +214,7 @@ public class SimpleContainer implements Container {
 			return _sneerConfig;
 		}
 		_sneerConfig = new SneerConfigImpl();
+		handleLifecycle(SneerConfig.class, _sneerConfig);
 		return _sneerConfig;
 	}
 

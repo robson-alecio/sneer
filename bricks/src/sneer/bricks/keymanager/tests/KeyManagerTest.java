@@ -35,7 +35,7 @@ public class KeyManagerTest extends BrickTestSupport {
 		assertSame(contact, _keyManager.contactGiven(key));
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testAddKeyTwiceForSameContact() throws Exception {
 		Contact contact = newContact();
 		Sneer1024 key = _crypto.sneer1024("random string".getBytes());

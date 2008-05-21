@@ -47,20 +47,22 @@ public class LocationGuiImpl implements Startable {
 	private JLabel _mapHolder = new JLabel();
 	private JTextField _address = new JTextField();
 	private int _width=500;
-	private int _height=500;
-	private int _mapWidth=_width-10;
-	private int _mapHeight=_height-20;
+	private int _height=550;
+	private int _mapWidth=490;
+	private int _mapHeight=500;
 	
 
 	private void openGUI() {
 		String title = "Location";
 		final JFrame frame = new JFrame(title);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		JPanel content = new JPanel(new BorderLayout());
 		String address=_keeper.location().currentValue();
-		if (address != null){
-			_address.setText(address);
-			updateAddress(address);
-		}
+		if (address == null) address = "R Juquiá 114, São Paulo";
+		_address.setText(address);
+		updateAddress(address);
+
 		_address.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

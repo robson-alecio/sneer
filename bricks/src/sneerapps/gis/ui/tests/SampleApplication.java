@@ -10,6 +10,6 @@ public class SampleApplication  {
 	public static void main(String[] args) throws Exception {
 		Container container = ContainerUtils.getContainer();
 		container.produce(LocationGui.class);
-		Threads.sleepWithoutInterruptions(5000);
+		Threads.sleepWithoutInterruptions(10000);
 	}
 }

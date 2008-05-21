@@ -17,6 +17,8 @@ import sneer.bricks.deployer.BrickBundle;
 import sneer.bricks.deployer.BrickFile;
 import sneer.bricks.log.Logger;
 import sneer.lego.Inject;
+import sneer.lego.utils.InjectedBrick;
+import sneer.lego.utils.SneerJar;
 
 
 public class BrickManagerImpl implements BrickManager {
@@ -78,11 +80,25 @@ public class BrickManagerImpl implements BrickManager {
 		BrickFile installed = copyBrickFiles(brick, brickDirectory);
 	
 		//3. resolve dependencies
+		callResolverBrickToTransferPendingFiles(installed);
 		
 		//4. install dependencies
 		copyDependencies(brick, installed);
 		
 		_bricksByName.put(brickName, installed);
+	}
+
+	private void callResolverBrickToTransferPendingFiles(BrickFile brick) {
+		SneerJar impl = brick.impl();
+		List<InjectedBrick> injectedBricks;
+		try {
+			injectedBricks = impl.injectedBricks();
+		} catch (IOException e) {
+			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+		}
+		for (InjectedBrick injected : injectedBricks) {
+			System.out.println("TODO: " + brick.name() + " injects " + injected.brickName());
+		}
 	}
 
 	private void copyDependencies(BrickFile brick, BrickFile installed) {

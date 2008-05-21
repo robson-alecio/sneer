@@ -3,12 +3,15 @@ package sneer.lego.utils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 public interface SneerJar {
 
 	File file();
 
 	String brickName();
+
+	List<InjectedBrick> injectedBricks() throws IOException;
 
 	String role();
 
@@ -23,5 +26,6 @@ public interface SneerJar {
 	InputStream getInputStream(String entryName) throws IOException;
 	
 	void explode(File target) throws IOException;
+
 
 }

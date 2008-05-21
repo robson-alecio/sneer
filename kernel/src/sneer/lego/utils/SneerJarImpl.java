@@ -7,7 +7,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Properties;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -15,6 +17,11 @@ import java.util.jar.JarOutputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.FieldVisitor;
+import org.objectweb.asm.Type;
+import org.objectweb.asm.commons.EmptyVisitor;
 
 import sneer.bricks.crypto.Crypto;
 import sneer.bricks.crypto.Digester;
@@ -181,6 +188,37 @@ public class SneerJarImpl implements SneerJar {
 	}
 
 	@Override
+	public List<InjectedBrick> injectedBricks() throws IOException {
+		List<InjectedBrick> result = new ArrayList<InjectedBrick>();
+		Enumeration<JarEntry> e = _jarFile.entries();
+		while (e.hasMoreElements()) {
+			JarEntry entry = e.nextElement();
+			String name = entry.getName();
+			if (!entry.isDirectory() && name.endsWith(".class")) {
+				InputStream is = getInputStream(name);
+				List<InjectedBrick> injected = findInjectedBricksOnClass(is);
+				if(injected.size() > 0)
+					result.addAll(injected);
+			}
+		}
+		return result;
+	}	
+	
+//	private String toEntryName(String brickName) {
+//		int index = brickName.lastIndexOf(".");
+//		brickName = brickName.substring(0, index + 1) + "impl" + brickName.substring(index) + "Impl"; 
+//		return brickName.replaceAll("\\.", "/") + ".class";
+//	}
+
+	private List<InjectedBrick> findInjectedBricksOnClass(InputStream is) throws IOException {
+		ClassReader classReader = new ClassReader(is);
+		DependencyExtractor extractor = new DependencyExtractor();
+		classReader.accept(extractor, 0);
+		return extractor.injectedBricks();
+		
+	}
+
+	@Override
 	public String brickName() {
 		return property("brick-name");
 	}
@@ -202,8 +240,7 @@ public class SneerJarImpl implements SneerJar {
 	public String toString() {
 		return _file.toString();
 	}
-	
-	
+
 //    public void copy(InputStream input, OutputStream output) throws IOException {
 //    	byte[] bytes = new byte[BUFFER_SIZE];
 //    	int n = 0;
@@ -212,4 +249,41 @@ public class SneerJarImpl implements SneerJar {
 //    		_buffer.put(bytes);
 //    	}
 //    }
+}
+
+class DependencyExtractor extends EmptyVisitor {
+
+	private String _currentField;
+	
+	List<InjectedBrick> _injectedBricks = new ArrayList<InjectedBrick>();
+	
+	/*
+	@Override
+	public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
+		super.visit(version, access, name, signature, superName, interfaces);
+		System.out.println("Class: "+name);
+	}
+	*/
+
+	@Override
+	public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
+		if(_currentField != null 
+				&& Inject.class.getName().equals(Type.getType(desc).getClassName())) {
+			String className = Type.getType(_currentField).getClassName();
+			InjectedBrick dep = new InjectedBrick(className);
+			_currentField = null;
+			_injectedBricks.add(dep);
+		}
+		return super.visitAnnotation(desc, visible);
+	}
+
+	@Override
+	public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
+		_currentField = desc;
+		return super.visitField(access, name, desc, signature, value);
+	}
+	
+	public List<InjectedBrick> injectedBricks() {
+		return _injectedBricks;
+	}
 }

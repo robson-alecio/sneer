@@ -24,8 +24,6 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 	@Test
 	public void testPublish() throws Exception {
 		
-		if (!TestDashboard.newTestsShouldRun()) return;
-		
 		BrickPublisher publisher = wrapParty(_a);
 		BrickPublisher receiver = wrapParty(_b);
 

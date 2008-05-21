@@ -18,7 +18,7 @@ import sneer.bricks.deployer.BrickFile;
 import sneer.bricks.log.Logger;
 import sneer.lego.Inject;
 import sneer.lego.utils.InjectedBrick;
-import sneer.lego.utils.SneerJar;
+import wheel.lang.exceptions.NotImplementedYet;
 
 
 public class BrickManagerImpl implements BrickManager {
@@ -40,10 +40,28 @@ public class BrickManagerImpl implements BrickManager {
 		for (String brickName : brickNames) {
 			BrickFile brick = bundle.brick(brickName);
 			if(okToIntall(brick)) {
+				resolve(bundle, brick);
 				install(brick);
 			} else {
 				//what should we do?
 				throw new BrickManagerException("brick: "+brickName+" could not be installed");
+			}
+		}
+	}
+
+	private void resolve(BrickBundle bundle, BrickFile brick) {
+		List<InjectedBrick> injectedBricks;
+		try {
+			injectedBricks = brick.injectedBricks();
+		} catch (IOException e) {
+			throw new BrickManagerException("Error searching for injected bricks on "+brick.name(), e);
+		}
+		for (InjectedBrick injected : injectedBricks) {
+			BrickFile inBundle = bundle.brick(injected.brickName()); 
+			if(inBundle == null) {
+				System.out.println("TODO: " + brick.name() + " injects " + injected.brickName());
+				//Todo: Ask for brick via network
+				throw new NotImplementedYet();
 			}
 		}
 	}
@@ -60,7 +78,6 @@ public class BrickManagerImpl implements BrickManager {
 			return true;
 		
 		//compare hashes
-
 		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
@@ -78,27 +95,11 @@ public class BrickManagerImpl implements BrickManager {
 		
 		//2. copy received files
 		BrickFile installed = copyBrickFiles(brick, brickDirectory);
-	
-		//3. resolve dependencies
-		callResolverBrickToTransferPendingFiles(installed);
 		
-		//4. install dependencies
+		//3. install dependencies
 		copyDependencies(brick, installed);
 		
 		_bricksByName.put(brickName, installed);
-	}
-
-	private void callResolverBrickToTransferPendingFiles(BrickFile brick) {
-		SneerJar impl = brick.impl();
-		List<InjectedBrick> injectedBricks;
-		try {
-			injectedBricks = impl.injectedBricks();
-		} catch (IOException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
-		}
-		for (InjectedBrick injected : injectedBricks) {
-			System.out.println("TODO: " + brick.name() + " injects " + injected.brickName());
-		}
 	}
 
 	private void copyDependencies(BrickFile brick, BrickFile installed) {

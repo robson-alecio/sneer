@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 import sneer.bricks.dependency.Dependency;
+import sneer.lego.utils.InjectedBrick;
 import sneer.lego.utils.SneerJar;
 
 public interface BrickFile {
@@ -24,4 +25,6 @@ public interface BrickFile {
 	BrickFile copyTo(File target) throws IOException;
 	
 	List<Dependency> dependencies();
+
+	List<InjectedBrick> injectedBricks() throws IOException;
 }

@@ -11,6 +11,7 @@ import org.apache.commons.io.FileUtils;
 import sneer.bricks.dependency.Dependency;
 import sneer.bricks.deployer.BrickFile;
 import sneer.bricks.deployer.DeployerException;
+import sneer.lego.utils.InjectedBrick;
 import sneer.lego.utils.SneerJar;
 import sneer.lego.utils.SneerJarImpl;
 
@@ -115,5 +116,10 @@ public class BrickFileImpl implements BrickFile {
 	@Override
 	public List<Dependency> dependencies() {
 		return _dependencies;
+	}
+
+	@Override
+	public List<InjectedBrick> injectedBricks() throws IOException {
+		return impl().injectedBricks();
 	}
 }

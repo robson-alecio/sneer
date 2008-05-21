@@ -78,6 +78,12 @@ public class BrickClassLoader extends EnhancingClassLoader {
 			return _delegate;
 
 		List<Dependency> dependencies = dependencyManager().dependenciesFor(_mainClass.getName());
+		
+		if(dependencies == null) {
+			_delegate = EmptyClassLoader.instance(); 
+			return _delegate; 
+		}
+		
 		URL[] urls = new URL[dependencies.size()];
 		int i = 0;
 		for (Dependency dependency : dependencies) {

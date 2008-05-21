@@ -21,7 +21,6 @@ import sneer.bricks.deployer.DeployerException;
 import sneer.lego.Inject;
 import sneer.lego.Injector;
 import sneer.lego.utils.metaclass.MetaClass;
-import wheel.lang.exceptions.NotImplementedYet;
 
 public class DeployerImpl implements Deployer {
 
@@ -150,6 +149,7 @@ public class DeployerImpl implements Deployer {
 			throw new DeployerException("Can't find source files in "+virtual.rootDirectory()+". Check if your class files are public (they shouldn't be)");
 
 		Classpath cp = classpath(virtual, api);
+		//System.out.println("Compiling "+virtual.brickName());
 		Result compilationResult = _compiler.compile(sourceFilesInBrick, workDirectory, cp);
 		if(!compilationResult.success()) {
 			throw new DeployerException("Error compiling brick implementation: "+virtual.brickName());

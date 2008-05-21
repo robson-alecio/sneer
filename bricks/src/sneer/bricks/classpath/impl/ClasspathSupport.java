@@ -17,7 +17,8 @@ abstract public class ClasspathSupport implements Classpath {
 	@Override
 	public String asJavacArgument() {
 		StringBuffer sb = new StringBuffer();
-		for (File entry : _elements) {
+		List<File> elements = elements();
+		for (File entry : elements) {
 			sb.append(entry.getAbsolutePath());
 			if(entry.isDirectory()) sb.append('/');
 			sb.append(File.pathSeparatorChar);
@@ -25,6 +26,10 @@ abstract public class ClasspathSupport implements Classpath {
 		String result = sb.toString();
 		result = StringUtils.chomp(result, File.pathSeparatorChar+"");
 		return result;
+	}
+
+	protected List<File> elements() {
+		return _elements;
 	}
 
 	@Override

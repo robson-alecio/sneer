@@ -8,6 +8,7 @@ import sneer.bricks.classpath.ClasspathFactory;
 import sneer.bricks.config.SneerConfig;
 import sneer.lego.Brick;
 import sneer.lego.Inject;
+import sneer.lego.utils.io.BrickApiFilter;
 import wheel.io.Jars;
 
 public class ClasspathFactoryImpl implements ClasspathFactory {
@@ -16,11 +17,6 @@ public class ClasspathFactoryImpl implements ClasspathFactory {
 	private SneerConfig _config;
 	
 	private Classpath _sneerApi;
-	
-	@Override
-	public Classpath fromLibDir(File folder) {
-		return new LibdirClasspath(folder);
-	}
 
 	@Override
 	public Classpath newClasspath() {
@@ -48,8 +44,9 @@ public class ClasspathFactoryImpl implements ClasspathFactory {
 			 */
 
 			Classpath cp = newClasspath();
-			Classpath kernel_plus_wheel = new DirectoryBasedClasspath(_config.eclipseDirectory());
-			_sneerApi = cp.compose(kernel_plus_wheel);
+			Classpath kernelPlusWheel = new DirectoryBasedClasspath(_config.eclipseDirectory());
+			Classpath allBrickApis = new FilteredClasspath(new BrickApiFilter(_config.brickRootDirectory()));
+			_sneerApi = cp.compose(kernelPlusWheel.compose(allBrickApis));
 			return _sneerApi;
 		}
 	}
@@ -57,6 +54,11 @@ public class ClasspathFactoryImpl implements ClasspathFactory {
 	@Override
 	public Classpath fromJarFiles(List<File> jarFiles) {
 		return new JarBasedClasspath(jarFiles);
+	}
+
+	@Override
+	public Classpath fromLibDir(File folder) {
+		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
 }

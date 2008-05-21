@@ -2,6 +2,7 @@ package functional.freedom7;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
@@ -12,7 +13,6 @@ import org.junit.Test;
 
 import functional.SovereignFunctionalTest;
 import functional.SovereignParty;
-import functional.TestDashboard;
 
 public abstract class Freedom7Test extends SovereignFunctionalTest {
 
@@ -28,10 +28,12 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 		BrickPublisher receiver = wrapParty(_b);
 
 		File sourceFolder = askSourceFolder();
-		/*
-		 * compiles all bricks found under _sourceFolder_ and installs them locally
-		 */
-		publisher.publishBrick(sourceFolder);
+		
+		publisher.publishBrick(new File(sourceFolder,"source2")); //deploy Y first
+		Object y1 = publisher.produce(Y);
+		assertNotNull(y1);
+		
+		publisher.publishBrick(new File(sourceFolder,"source")); //deploy X and Z
 
 		//test Z
 		Object z1 = publisher.produce(Z);
@@ -55,7 +57,6 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 		Object x2 = receiver.produce(X);
 		assertNotSame(x1, x2);
 		
-		Object y1 = publisher.produce(Y);
 		Object y2 = receiver.produce(Y);
 		assertNotSame(y1, y2);
 		

@@ -57,13 +57,19 @@ public class BrickManagerImpl implements BrickManager {
 			throw new BrickManagerException("Error searching for injected bricks on "+brick.name(), e);
 		}
 		for (InjectedBrick injected : injectedBricks) {
-			BrickFile inBundle = bundle.brick(injected.brickName()); 
-			if(inBundle == null) {
-				System.out.println("TODO: " + brick.name() + " injects " + injected.brickName());
-				//Todo: Ask for brick via network
-				throw new NotImplementedYet();
+			String wanted = injected.brickName();
+			BrickFile inBundle = bundle == null ? null : bundle.brick(wanted); 
+			if(inBundle == null) { 
+				//not inBudle, try local registry
+				inBundle = _bricksByName.get(wanted);
+				if(inBundle == null) {
+					//not found. must ask other peer via network
+					System.out.println("TODO: retrieve " + wanted +" which is injected by "+ brick.name());
+					throw new NotImplementedYet();
+				}
 			}
 		}
+		brick.resolved(true);
 	}
 
 	@Override
@@ -86,8 +92,14 @@ public class BrickManagerImpl implements BrickManager {
 		String brickName = brick.name();
 		_log.debug("Installing brick: "+brickName);
 		
+		//0. resolve injected Bricks
+		if(!brick.resolved())
+			resolve(null, brick);
+
 		//1. create brick directory under sneer home
 		File brickDirectory = brickDirectory(brickName);
+		//System.out.println("installing "+brickName+" on "+brickDirectory);
+		
 		if(brickDirectory.exists()) 
 			cleanDirectory(brickDirectory); //FixUrgent: ask permission to overwrite?
 		else 

@@ -27,4 +27,8 @@ public interface BrickFile {
 	List<Dependency> dependencies();
 
 	List<InjectedBrick> injectedBricks() throws IOException;
+
+	void resolved(boolean resolved);
+
+	boolean resolved();
 }

@@ -19,12 +19,15 @@ public class BrickFileImpl implements BrickFile {
 
 	private String _brickName;
 
+	private boolean _resolved;
+
 	private SneerJar _api;
 	private SneerJar _apiSrc;
 	private SneerJar _impl;
 	private SneerJar _implSrc;
 	
 	private List<Dependency> _dependencies = new ArrayList<Dependency>();
+
 
 	public BrickFileImpl(String brickName) {
 		_brickName = brickName;
@@ -121,5 +124,15 @@ public class BrickFileImpl implements BrickFile {
 	@Override
 	public List<InjectedBrick> injectedBricks() throws IOException {
 		return impl().injectedBricks();
+	}
+
+	@Override
+	public void resolved(boolean resolved) {
+		_resolved = resolved;
+	}
+
+	@Override
+	public boolean resolved() {
+		return _resolved;
 	}
 }

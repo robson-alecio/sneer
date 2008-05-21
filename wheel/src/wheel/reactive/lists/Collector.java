@@ -1,7 +1,7 @@
 package wheel.reactive.lists;
 
 import wheel.lang.Functor;
-import wheel.reactive.lists.impl.ListSourceImpl;
+import wheel.reactive.lists.impl.ListRegisterImpl;
 import wheel.reactive.lists.impl.VisitingListReceiver;
 
 public class Collector<IN, OUT> {
@@ -37,7 +37,7 @@ public class Collector<IN, OUT> {
 	}
 
 	private final ListSignal<IN> _input;
-	private final ListSource<OUT> _output = new ListSourceImpl<OUT>();
+	private final ListRegister<OUT> _output = new ListRegisterImpl<OUT>();
 	private final Functor<IN, OUT> _functor;
 
 	public Collector(ListSignal<IN> input, Functor<IN, OUT> functor) {

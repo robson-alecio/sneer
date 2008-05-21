@@ -7,10 +7,10 @@ import java.util.List;
 import wheel.lang.Omnivore;
 import wheel.reactive.impl.AbstractNotifier;
 import wheel.reactive.lists.ListSignal;
-import wheel.reactive.lists.ListSource;
+import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListValueChange;
 
-public class ListSourceImpl<VO> implements ListSource<VO> {
+public class ListRegisterImpl<VO> implements ListRegister<VO> {
 	
 
 	private class MyOutput extends AbstractNotifier<ListValueChange> implements ListSignal<VO> {

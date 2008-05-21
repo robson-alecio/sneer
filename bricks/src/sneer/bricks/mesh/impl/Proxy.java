@@ -12,8 +12,8 @@ import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.lists.ListSignal;
-import wheel.reactive.lists.ListSource;
-import wheel.reactive.lists.impl.ListSourceImpl;
+import wheel.reactive.lists.ListRegister;
+import wheel.reactive.lists.impl.ListRegisterImpl;
 
 class Proxy extends AbstractParty {
 
@@ -26,7 +26,7 @@ class Proxy extends AbstractParty {
 	private final Set<AbstractParty> _intermediaries = new HashSet<AbstractParty>();
 
 	protected final Map<String, Register<Object>> _registersBySignalPath = new HashMap<String, Register<Object>>();
-	private ListSource<RemoteContact> _contactsCache;
+	private ListRegister<RemoteContact> _contactsCache;
 
 	
 	@Override
@@ -99,7 +99,7 @@ class Proxy extends AbstractParty {
 	}
 
 	private void initContactsCache() {
-		_contactsCache = new ListSourceImpl<RemoteContact>();
+		_contactsCache = new ListRegisterImpl<RemoteContact>();
 		subscribeToContacts(_publicKey, null);
 	}
 

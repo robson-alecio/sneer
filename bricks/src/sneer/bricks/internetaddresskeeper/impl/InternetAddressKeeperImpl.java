@@ -4,12 +4,12 @@ import sneer.bricks.contacts.Contact;
 import sneer.bricks.internetaddresskeeper.InternetAddress;
 import sneer.bricks.internetaddresskeeper.InternetAddressKeeper;
 import wheel.reactive.lists.ListSignal;
-import wheel.reactive.lists.ListSource;
-import wheel.reactive.lists.impl.ListSourceImpl;
+import wheel.reactive.lists.ListRegister;
+import wheel.reactive.lists.impl.ListRegisterImpl;
 
 public class InternetAddressKeeperImpl implements InternetAddressKeeper {
 
-	private ListSource<InternetAddress> _addresses = new ListSourceImpl<InternetAddress>();
+	private ListRegister<InternetAddress> _addresses = new ListRegisterImpl<InternetAddress>();
 	
 	@Override
 	public ListSignal<InternetAddress> addresses() {

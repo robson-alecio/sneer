@@ -14,7 +14,7 @@ import sneerapps.topten.ui.ToptenGui;
 import wheel.io.ui.impl.ComboBoxSignalModel;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
-import wheel.reactive.lists.impl.ListSourceImpl;
+import wheel.reactive.lists.impl.ListRegisterImpl;
 
 class ToptenGuiImpl implements ToptenGui, Startable {
 
@@ -35,7 +35,7 @@ class ToptenGuiImpl implements ToptenGui, Startable {
 				JComboBox categories = new JComboBox();
 				container.add(categories);
 				
-				final ListSourceImpl<String> categoriesSource = new ListSourceImpl<String>();
+				final ListRegisterImpl<String> categoriesSource = new ListRegisterImpl<String>();
 				final ComboBoxSignalModel<String> categoriesModel = new ComboBoxSignalModel<String>(categoriesSource.output());
 				categories.setModel(categoriesModel);
 				

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import wheel.lang.Omnivore;
 
-public interface ListSource<VO> extends Serializable{
+public interface ListRegister<VO> extends Serializable{
 
 	ListSignal<VO> output();
 

@@ -7,12 +7,12 @@ import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.lists.ListSignal;
-import wheel.reactive.lists.ListSource;
-import wheel.reactive.lists.impl.ListSourceImpl;
+import wheel.reactive.lists.ListRegister;
+import wheel.reactive.lists.impl.ListRegisterImpl;
 
 public class ContactManagerImpl implements ContactManager {
     
-    private ListSource<Contact> _contacts = new ListSourceImpl<Contact>();
+    private ListRegister<Contact> _contacts = new ListRegisterImpl<Contact>();
 
 	@Override
 	synchronized public Contact addContact(String nickname) throws IllegalParameter {

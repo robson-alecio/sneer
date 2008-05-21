@@ -28,8 +28,6 @@ Leandro Reminder
 
 Klaus
 ongoing - Component Model (see todoLego.txt)
- - KeyManager <-> Mesh dependency cycle - Eliminate.
- - ListSource and Impl - Rename to ListRegister.
  - GUI - Spartan interface for what we have so far. http://c2.com/cgi/wiki?SpartanUserInterface 
  - RemoteSignals - Test with different signals, not only name.
  - Signal type-safety - Not string-based.
@@ -44,6 +42,7 @@ ongoing - Component Model (see todoLego.txt)
  - README.txt - Update sourcepath, classpath, main class and build.xml references
 RELEASE BETA===================================================
  - Traffic Prioritization - Among signals and among contacts.
+ - KeyManager <-> Mesh dependency cycle - Eliminate.
  - UDP instead of TCP
 
 Gandhi

@@ -31,7 +31,7 @@ class XImpl implements X<String> {
 	}
 
 	@Override
-	public void callY() {
-		_y.nothing();
+	public String callY() {
+		return _y.nothing();
 	}
 }

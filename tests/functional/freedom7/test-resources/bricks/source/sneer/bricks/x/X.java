@@ -11,5 +11,5 @@ public interface X<T> extends Comparable<String>, Serializable, Brick {
 	
 	String callZ();
 	
-	void callY();
+	String callY();
 }

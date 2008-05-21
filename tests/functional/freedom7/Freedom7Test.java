@@ -36,14 +36,14 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 		//test Z
 		Object s1 = publisher.produce(Z);
 		ClassLoader cl1 = s1.getClass().getClassLoader();
-		String logFactory1 = callLogFactory(s1);
+		String logFactory1 = callMethod(s1, "logFactory").toString();
 		assertTrue("wrong directory for brick class loader: "+cl1.toString(),cl1.toString().indexOf("sneer+AnaAlmeida") > 0);
 		
 		
 		receiver.meToo(publisher, Z);
 		Object s2 = receiver.produce(Z);
 		ClassLoader cl2 = s2.getClass().getClassLoader();
-		String logFactory2 = callLogFactory(s2);
+		String logFactory2 = callMethod(s2, "logFactory").toString();
 		assertTrue("wrong directory for brick class loader: "+cl2.toString(),cl2.toString().indexOf("sneer+BrunoBarros") > 0);
 		
 		assertFalse("LogFactory should have been loaded on a different class loader", logFactory1.equals(logFactory2));
@@ -53,14 +53,20 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 		//test X, depends on Y and Z
 		receiver.meToo(publisher, X);
 		Object o2 = receiver.produce(X);
+
+		Object result = callMethod(o2, "callY");
+		System.out.println(result);
+	
+		result = callMethod(o2, "callZ");
+		System.out.println(result);
 	}
 
-	
-	private String callLogFactory(Object obj) throws Exception {
-		Method m = obj.getClass().getMethod("logFactory", (Class<?>[]) null);
+
+	private Object callMethod(Object target, String methodName) throws Exception {
+		Method m = target.getClass().getMethod(methodName, (Class<?>[]) null);
 		m.setAccessible(true);
-		Object result = m.invoke(obj, (Object[]) null);
-		return result.toString();
+		Object result = m.invoke(target, (Object[]) null);
+		return result;
 	}
 
 	protected abstract  File askSourceFolder();

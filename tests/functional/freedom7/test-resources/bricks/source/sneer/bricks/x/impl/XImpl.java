@@ -10,7 +10,7 @@ class XImpl implements X<String> {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	private Z _sample;
+	private Z _z;
 	
 	@Inject
 	private Y _y;
@@ -26,8 +26,8 @@ class XImpl implements X<String> {
 	}
 
 	@Override
-	public String callSample() {
-		return _sample.doSomething();
+	public String callZ() {
+		return _z.doSomething();
 	}
 
 	@Override

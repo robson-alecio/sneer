@@ -15,7 +15,6 @@ import sneer.bricks.mesh.Party;
 import sneer.bricks.serialization.Serializer;
 import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Inject;
-import sneer.lego.Injector;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
@@ -24,14 +23,19 @@ import wheel.reactive.lists.impl.SimpleListReceiver;
 class SignalConnection {
 
 	@Inject
-	private ConnectionManager _connectionManager;
+	static private ConnectionManager _connectionManager;
 	
 	@Inject
-	private Serializer _serializer;
+	static private Serializer _serializer;
 
 	@Inject
-	private ThreadPool _threadPool;
+	static private ThreadPool _threadPool;
 
+	@Inject
+	static private KeyManager _keyManager;
+	
+	@Inject
+	static private Logger _logger;
 
 	private final Connection _connection;
 
@@ -41,15 +45,9 @@ class SignalConnection {
 
 	private List<Object> _scoutsToAvoidGC = new ArrayList<Object>();
 
-	@Inject
-	private KeyManager _keyManager;
-
-	@Inject
-	private Logger _logger;
 
 
-	SignalConnection(Injector injector, Contact contact) {
-		injector.inject(this);
+	SignalConnection(Contact contact) {
 		_connection = _connectionManager.connectionFor(contact);
 		_connection.setReceiver(new Omnivore<byte[]>(){public void consume(byte[] packetReceived) {
 			receive(packetReceived);

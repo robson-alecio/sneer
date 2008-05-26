@@ -25,9 +25,6 @@ class MeImpl extends AbstractParty implements Me, Startable {
 	private ContactManager _contactManager;
 
 	@Inject
-	private Injector _injector;
-
-	@Inject
 	private OwnNameKeeper _ownNameKeeper;
 
 	@SuppressWarnings("unused")
@@ -74,7 +71,7 @@ class MeImpl extends AbstractParty implements Me, Startable {
 	}
 
 	private void createDirectProxyFor(Contact contact) {
-		SignalConnection proxy = new SignalConnection(_injector, contact);
+		SignalConnection proxy = new SignalConnection(contact);
 		_signalConnectionsByContact.put(contact, proxy);
 	}
 

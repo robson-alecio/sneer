@@ -9,23 +9,22 @@ import sneer.bricks.network.ByteArraySocket;
 import sneer.bricks.network.Network;
 import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Inject;
-import sneer.lego.Injector;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 
 public class OutgoingAttempt {
 
 	@Inject
-	private Network _network;
+	static private Network _network;
 
 	@Inject
-	private ConnectionManager _connectionManager;
+	static private ConnectionManager _connectionManager;
 
 	@Inject
-	private ThreadPool _threadPool;
+	static private ThreadPool _threadPool;
 
 	@Inject
-	Clock _clock;
+	static Clock _clock;
 
 	private final InternetAddress _address;
 
@@ -38,9 +37,8 @@ public class OutgoingAttempt {
 	}};
 
 
-	OutgoingAttempt(Injector _injector, InternetAddress address) {
+	OutgoingAttempt(InternetAddress address) {
 		_address = address;
-		_injector.inject(this);
 		_isOnline = _connectionManager.connectionFor(_address.contact()).isOnline();
 		_isOnline.addReceiver(_isOnlineReceiver);
 	}

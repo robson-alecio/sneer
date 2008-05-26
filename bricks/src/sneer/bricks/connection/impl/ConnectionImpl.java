@@ -10,7 +10,6 @@ import sneer.bricks.log.Logger;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Inject;
-import sneer.lego.Injector;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.reactive.Register;
@@ -20,13 +19,13 @@ import wheel.reactive.impl.RegisterImpl;
 class ConnectionImpl implements Connection {
 
 	@Inject
-	private KeyManager _keyManager;
+	static private KeyManager _keyManager;
 	
 	@Inject
-	private Logger _logger;
+	static private Logger _logger;
 
 	@Inject
-	private ThreadPool _threadPool;
+	static private ThreadPool _threadPool;
 	
 	private Register<Boolean> _isOnline = new RegisterImpl<Boolean>(false);
 
@@ -38,10 +37,9 @@ class ConnectionImpl implements Connection {
 
 	private final Contact _contact;
 	
-	ConnectionImpl(Injector injector, String label, Contact contact) {
+	ConnectionImpl(String label, Contact contact) {
 		_label = label;
 		_contact = contact;
-		injector.inject(this);
 		startReceiving();
 	}
 

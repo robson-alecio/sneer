@@ -9,12 +9,8 @@ import sneer.bricks.contacts.Contact;
 import sneer.bricks.mesh.Me;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.lego.Inject;
-import sneer.lego.Injector;
 
 public class ConnectionManagerImpl implements ConnectionManager {
-
-	@Inject
-	private Injector _injector;
 
 	@Inject
 	private Me _me;
@@ -26,7 +22,7 @@ public class ConnectionManagerImpl implements ConnectionManager {
 	public synchronized ConnectionImpl connectionFor(Contact contact) {
 		ConnectionImpl result = (ConnectionImpl) _connectionsByContact.get(contact);
 		if (result == null) {
-			result = new ConnectionImpl(_injector, "" + _me.signal("Name"), contact);
+			result = new ConnectionImpl("" + _me.signal("Name"), contact);
 			_connectionsByContact.put(contact, result);
 		}
 		return result;

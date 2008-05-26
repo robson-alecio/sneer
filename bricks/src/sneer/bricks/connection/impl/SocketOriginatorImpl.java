@@ -7,15 +7,11 @@ import sneer.bricks.connection.SocketOriginator;
 import sneer.bricks.internetaddresskeeper.InternetAddress;
 import sneer.bricks.internetaddresskeeper.InternetAddressKeeper;
 import sneer.lego.Inject;
-import sneer.lego.Injector;
 import sneer.lego.Startable;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
 public class SocketOriginatorImpl implements SocketOriginator, Startable {
 
-	@Inject
-	private Injector _injector;
-	
 	@Inject
 	private InternetAddressKeeper _internetAddressKeeper;
 	
@@ -46,7 +42,7 @@ public class SocketOriginatorImpl implements SocketOriginator, Startable {
 	}
 
 	private void startAddressing(InternetAddress address) {
-		OutgoingAttempt attempt = new OutgoingAttempt(_injector, address);
+		OutgoingAttempt attempt = new OutgoingAttempt(address);
 		_attemptsByAddress.put(address, attempt);
 	}
 

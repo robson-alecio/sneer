@@ -9,24 +9,19 @@ import sneer.bricks.crypto.Sneer1024;
 import sneer.bricks.keymanager.KeyManager;
 import sneer.bricks.mesh.Party;
 import sneer.lego.Inject;
-import sneer.lego.Startable;
 import wheel.lang.Functor;
 
-public class KeyManagerImpl implements KeyManager, Startable {
+public class KeyManagerImpl implements KeyManager {
 
 	@Inject
-	private Crypto _crypto; 
+	static private Crypto _crypto; 
 	
-	private Sneer1024 _ownKey;
+	private final Sneer1024 _ownKey = createMickeyMouseKey();
 	
 	private final Map<Contact, Sneer1024> _keyByContact = new HashMap<Contact, Sneer1024>();
 
 	private final Map<Sneer1024, Party> _partiesByPublicKey = new HashMap<Sneer1024, Party>();
 
-	@Override
-	public void start() throws Exception {
-		_ownKey = createMickeyMouseKey();
-	}
 
 
 	private Sneer1024 createMickeyMouseKey() {

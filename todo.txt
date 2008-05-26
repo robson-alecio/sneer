@@ -40,9 +40,10 @@ ongoing - Component Model (see todoLego.txt)
  - Package namespace - revise sneer.lego? sneer.kernel? sneer.bricks? - Consider using kernel, pulp and skin.
  - Make build.xml run again. 
  - README.txt - Update sourcepath, classpath, main class and build.xml references
-RELEASE BETA===================================================
+RELEASE ===================================================
  - Traffic Prioritization - Among signals and among contacts.
  - KeyManager <-> Mesh dependency cycle - Eliminate.
+ - "Interface.allImplementors()" - Simplify use by injecting a SetSignal with all Bricks that implement a non-brick interface defined by another brick.  
  - UDP instead of TCP
 
 Gandhi

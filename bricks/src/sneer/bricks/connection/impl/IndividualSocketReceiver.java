@@ -12,33 +12,30 @@ import sneer.bricks.keymanager.KeyManager;
 import sneer.bricks.log.Logger;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.lego.Inject;
-import sneer.lego.Injector;
 import wheel.lang.Functor;
 import wheel.lang.exceptions.IllegalParameter;
 
 class IndividualSocketReceiver {
 
 	@Inject
-	private KeyManager _keyManager;
+	static private KeyManager _keyManager;
 	
 	@Inject
-	private ContactManager _contactManager;
+	static private ContactManager _contactManager;
 	
 	@Inject
-	private ConnectionManager _connectionManager;
+	static private ConnectionManager _connectionManager;
 	
 	@Inject
-	private Crypto _crypto;
+	static private Crypto _crypto;
 
 	@Inject
-	private	Logger _logger;
+	static private Logger _logger;
+	
 	
 	private final ByteArraySocket _socket;
-
-
 	
-	IndividualSocketReceiver(Injector _injector, ByteArraySocket socket) {
-		_injector.inject(this);
+	IndividualSocketReceiver(ByteArraySocket socket) {
 		_socket = socket;
 
 		try {

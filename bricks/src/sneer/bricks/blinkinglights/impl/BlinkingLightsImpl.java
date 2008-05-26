@@ -13,7 +13,7 @@ public class BlinkingLightsImpl implements BlinkingLights, Startable {
 	
 	@Override
 	public void start() throws Exception {
-		//TODO: create worked thread and remove old lights
+		//Implement: create worker thread and remove old lights
 	}
 
 	@Override

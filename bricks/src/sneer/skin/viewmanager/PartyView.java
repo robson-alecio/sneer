@@ -5,7 +5,7 @@ import java.awt.Container;
 import sneer.bricks.mesh.Party;
 import wheel.reactive.Signal;
 
-public interface View {
+public interface PartyView {
 
 	void init(Container container, Signal<Party> activeParty);
 

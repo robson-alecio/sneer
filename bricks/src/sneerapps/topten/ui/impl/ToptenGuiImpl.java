@@ -8,7 +8,7 @@ import javax.swing.JComboBox;
 import sneer.bricks.mesh.Party;
 import sneer.lego.Inject;
 import sneer.lego.Startable;
-import sneer.skin.viewmanager.View;
+import sneer.skin.viewmanager.PartyView;
 import sneer.skin.viewmanager.ViewManager;
 import sneerapps.topten.ui.ToptenGui;
 import wheel.io.ui.impl.ComboBoxSignalModel;
@@ -26,7 +26,7 @@ class ToptenGuiImpl implements ToptenGui, Startable {
 	
 	@Override
 	public void start() throws Exception {
-		_appMenu.register(new View(){
+		_appMenu.register(new PartyView(){
 
 			@Override
 			public void init(final Container container, Signal<Party> activeParty) {

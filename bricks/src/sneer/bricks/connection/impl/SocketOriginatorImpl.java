@@ -7,39 +7,37 @@ import sneer.bricks.connection.SocketOriginator;
 import sneer.bricks.internetaddresskeeper.InternetAddress;
 import sneer.bricks.internetaddresskeeper.InternetAddressKeeper;
 import sneer.lego.Inject;
-import sneer.lego.Startable;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
-public class SocketOriginatorImpl implements SocketOriginator, Startable {
+public class SocketOriginatorImpl implements SocketOriginator {
 
 	@Inject
-	private InternetAddressKeeper _internetAddressKeeper;
+	static private InternetAddressKeeper _internetAddressKeeper;
 	
 	@SuppressWarnings("unused")
 	private SimpleListReceiver<InternetAddress> _addressReceiverToAvoidGC;
 
 	private final Map<InternetAddress, OutgoingAttempt> _attemptsByAddress = new HashMap<InternetAddress, OutgoingAttempt>();
 	
-	@Override
-	public void start() throws Exception {
+	SocketOriginatorImpl() {
 		_addressReceiverToAvoidGC = new SimpleListReceiver<InternetAddress>(_internetAddressKeeper.addresses()) {
-
+			
 			@Override
 			protected void elementAdded(InternetAddress address) {
 				startAddressing(address);
 			}
-
+			
 			@Override
 			protected void elementPresent(InternetAddress address) {
 				startAddressing(address);
 			}
-
+			
 			@Override
 			protected void elementToBeRemoved(InternetAddress address) {
 				stopAddressing(address);
 			}};
-		
 	}
+	
 
 	private void startAddressing(InternetAddress address) {
 		OutgoingAttempt attempt = new OutgoingAttempt(address);

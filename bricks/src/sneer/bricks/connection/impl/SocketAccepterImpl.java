@@ -11,7 +11,6 @@ import sneer.bricks.network.ByteArraySocket;
 import sneer.bricks.network.Network;
 import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Inject;
-import sneer.lego.Startable;
 import spikes.legobricks.name.PortKeeper;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
@@ -19,22 +18,22 @@ import wheel.reactive.EventNotifier;
 import wheel.reactive.EventSource;
 import wheel.reactive.impl.EventNotifierImpl;
 
-public class SocketAccepterImpl implements SocketAccepter, Startable {
+public class SocketAccepterImpl implements SocketAccepter {
 	
 	@Inject
-	private PortKeeper _portKeeper;
+	static private PortKeeper _portKeeper;
 	
 	@Inject
-	private Network _network;
+	static private Network _network;
 	
 	@Inject
-	private BlinkingLights _lights;
+	static private BlinkingLights _lights;
 
 	@Inject
-	private ThreadPool _threadPool;
+	static private ThreadPool _threadPool;
 
 	@Inject
-	private Logger _log;
+	static private Logger _log;
 
 	private EventNotifier<ByteArraySocket> _notifier = new EventNotifierImpl<ByteArraySocket>();
 
@@ -54,8 +53,7 @@ public class SocketAccepterImpl implements SocketAccepter, Startable {
 		setPort(port);
 	}};
 
-	@Override
-	public void start() throws Exception {
+	SocketAccepterImpl() {
 		_threadPool.runDaemon(new Runnable(){ @Override public void run() {
 			listenToSneerPort();
 		}});

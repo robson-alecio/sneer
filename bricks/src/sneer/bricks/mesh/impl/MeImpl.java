@@ -9,7 +9,6 @@ import sneer.bricks.crypto.Sneer1024;
 import sneer.bricks.mesh.Me;
 import sneer.bricks.mesh.Party;
 import sneer.lego.Inject;
-import sneer.lego.Injector;
 import sneer.lego.Startable;
 import spikes.legobricks.name.OwnNameKeeper;
 import wheel.lang.Casts;

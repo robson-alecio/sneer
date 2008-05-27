@@ -33,6 +33,9 @@ public class FileUtils {
 	}
 	
 	public static void cleanDirectory(File directory) {
+		if(!directory.exists())
+			return;
+		
 		try {
 			org.apache.commons.io.FileUtils.cleanDirectory(directory);
 		} catch (IOException e) {

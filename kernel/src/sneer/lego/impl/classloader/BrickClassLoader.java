@@ -18,6 +18,7 @@ import org.apache.commons.io.IOUtils;
 
 import sneer.bricks.dependency.Dependency;
 import sneer.bricks.dependency.DependencyManager;
+import sneer.bricks.log.Logger;
 import sneer.lego.Container;
 import sneer.lego.Inject;
 import wheel.lang.Threads;
@@ -36,6 +37,9 @@ public class BrickClassLoader extends EnhancingClassLoader {
 	
 	@Inject
 	private Container _container;
+
+	@Inject
+	private Logger _log;
 	
 	//lazy load
 	private DependencyManager _dependencyManager;
@@ -61,13 +65,18 @@ public class BrickClassLoader extends EnhancingClassLoader {
 			throw new ClassNotFoundException("Error loading bytes from "+_implJarFile);
 		}
 		
-		if(bytes != null)
-			return defineClass(name, bytes);
+		if(bytes != null) {
+			Class<?> result  = defineClass(name, bytes);
+			if(_log.isDebugEnabled()) _log.debug("Class {} loaded by {}",name, toString());
+			return result;
+		}
 			
 		//is it a brick dependency?
 		Class<?> result = delegate().loadClass(name);
-		if(result != null)
+		if(result != null) {
+			if(_log.isDebugEnabled()) _log.debug("Class {} loaded by _delegate_ ",name, toString());			
 			return result;
+		}
 		
 		//delegate to parent class loader
 		throw new ClassNotFoundException();

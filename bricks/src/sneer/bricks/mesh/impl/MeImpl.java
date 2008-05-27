@@ -13,9 +13,11 @@ import sneer.lego.Startable;
 import spikes.legobricks.name.OwnNameKeeper;
 import wheel.lang.Casts;
 import wheel.lang.Functor;
+import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.SimpleListReceiver;
+import wheel.reactive.maps.MapSignal;
 
 
 class MeImpl extends AbstractParty implements Me, Startable {
@@ -74,17 +76,17 @@ class MeImpl extends AbstractParty implements Me, Startable {
 		_signalConnectionsByContact.put(contact, proxy);
 	}
 
+	@Override
+	public <K,V> MapSignal<K,V> mapSignal(String signalPath) {
+		throw new NotImplementedYet();
+	}
 
 	@Override
 	public <S> Signal<S> signal(String signalPath) {
 		if (signalPath.equals("Name"))
 			return Casts.uncheckedGenericCast(_ownNameKeeper.name());
-
-		if (signalPath.equals("Contacts"))
-			return Casts.uncheckedGenericCast(_contactManager.contacts());
 			
 		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
-	
 	}
 
 	@Override

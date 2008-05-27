@@ -8,12 +8,14 @@ import java.util.Set;
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.crypto.Sneer1024;
 import wheel.lang.Casts;
+import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.impl.ListRegisterImpl;
+import wheel.reactive.maps.MapSignal;
 
 class Proxy extends AbstractParty {
 
@@ -28,7 +30,11 @@ class Proxy extends AbstractParty {
 	protected final Map<String, Register<Object>> _registersBySignalPath = new HashMap<String, Register<Object>>();
 	private ListRegister<RemoteContact> _contactsCache;
 
-	
+	@Override
+	public <K,V> MapSignal<K,V> mapSignal(String signalPath) {
+		throw new NotImplementedYet();
+	}
+
 	@Override
 	public <S> Signal<S> signal(String signalPath) {
 		Register<S> register = produceRegisterFor(signalPath);

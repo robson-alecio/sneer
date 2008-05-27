@@ -11,5 +11,10 @@ public class InjectedBrick {
 	public String brickName() {
 		return _brickName;
 	}
+	
+	@Override
+	public String toString() {
+		return "@Inject : " + _brickName;
+	}
 
 }

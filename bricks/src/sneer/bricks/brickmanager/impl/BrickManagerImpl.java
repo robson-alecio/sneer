@@ -125,6 +125,11 @@ public class BrickManagerImpl implements BrickManager {
 		
 		//3. install dependencies
 		copyDependencies(brick, installed);
+
+		//4. update origin. When origin is null we are installing the brick locally, not using meToo
+		PublicKey origin = brick.origin();
+		origin = origin != null ? origin : _keyManager.ownPublicKey(); 
+		installed.origin(origin);
 		
 		_bricksByName.put(brickName, installed);
 	}

@@ -11,6 +11,8 @@ import java.lang.reflect.Method;
 
 import org.junit.Test;
 
+import wheel.lang.exceptions.NotImplementedYet;
+
 import functional.SovereignFunctionalTest;
 import functional.SovereignParty;
 
@@ -26,6 +28,8 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 		
 		BrickPublisher publisher = wrapParty(_a);
 		BrickPublisher receiver = wrapParty(_b);
+		
+		if(true) throw new NotImplementedYet(); //navigate from receiver to publisher
 
 		File sourceFolder = askSourceFolder();
 		

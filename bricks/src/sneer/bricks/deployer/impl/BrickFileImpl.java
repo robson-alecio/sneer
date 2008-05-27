@@ -27,6 +27,8 @@ public class BrickFileImpl implements BrickFile {
 	private SneerJar _impl;
 	private SneerJar _implSrc;
 	
+	private PublicKey _origin;
+	
 	private List<Dependency> _dependencies = new ArrayList<Dependency>();
 
 
@@ -134,12 +136,16 @@ public class BrickFileImpl implements BrickFile {
 
 	@Override
 	public PublicKey origin() {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+		return _origin;
+	}
+
+	@Override
+	public void origin(PublicKey pk) {
+		_origin = pk;
 	}
 
 	@Override
 	public String toString() {
 		return name() + "\n\tapi("+_api.file()+")\n\timpl("+_impl.file()+")";
 	}
-
 }

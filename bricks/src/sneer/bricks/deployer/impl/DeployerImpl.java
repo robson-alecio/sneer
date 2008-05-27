@@ -39,7 +39,6 @@ public class DeployerImpl implements Deployer {
 	@Inject
 	private DependencyManager _dependencies;
 	
-
 	
 //	public void deploy(BrickBundle received) {
 //		log.info("Deploying BrickBundle");

@@ -1,12 +1,12 @@
 package sneer.bricks.mesh.impl;
 
-import sneer.bricks.crypto.Sneer1024;
+import sneer.bricks.keymanager.PublicKey;
 
 public class SubscriptionToContacts implements Ambassador {
 
-	private final Sneer1024 _publicKey;
+	private final PublicKey _publicKey;
 	
-	public SubscriptionToContacts(Sneer1024 publicKey) {
+	public SubscriptionToContacts(PublicKey publicKey) {
 		_publicKey = publicKey;
 	}
 

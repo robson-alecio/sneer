@@ -30,7 +30,7 @@ public class CryptoImpl implements Crypto {
 		return wrap(result);
 	}
 
-	public Sneer1024 wrap(byte[] sneer1024Bytes) {
+	private Sneer1024 wrap(byte[] sneer1024Bytes) {
 		return new Sneer1024Impl(sneer1024Bytes);
 	}
 

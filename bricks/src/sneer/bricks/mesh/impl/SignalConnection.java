@@ -7,8 +7,8 @@ import java.util.List;
 import sneer.bricks.connection.Connection;
 import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.contacts.Contact;
-import sneer.bricks.crypto.Sneer1024;
 import sneer.bricks.keymanager.KeyManager;
+import sneer.bricks.keymanager.PublicKey;
 import sneer.bricks.log.Logger;
 import sneer.bricks.mesh.Me;
 import sneer.bricks.mesh.Party;
@@ -99,7 +99,7 @@ class SignalConnection {
 	}
 
 
-	private Omnivore<Object> createScoutFor(final Sneer1024 publicKey, final String signalPath) {
+	private Omnivore<Object> createScoutFor(final PublicKey publicKey, final String signalPath) {
 		Omnivore<Object> result = new Omnivore<Object>() {@Override public void consume(Object newValue) {
 			send(new Notification(publicKey, signalPath, newValue));
 		}};
@@ -107,7 +107,7 @@ class SignalConnection {
 		return result;
 	}
 
-	private void createScoutForContacts(final Sneer1024 publicKey, ListSignal<Contact> contacts) {
+	private void createScoutForContacts(final PublicKey publicKey, ListSignal<Contact> contacts) {
 		SimpleListReceiver<Contact> scout = new SimpleListReceiver<Contact>(contacts) {
 
 			@Override
@@ -130,7 +130,7 @@ class SignalConnection {
 		_scoutsToAvoidGC.add(scout); //Fix: This is a Leak.
 	}
 
-	private void addNicknameScout(final Sneer1024 publicKey, final Contact contact) {
+	private void addNicknameScout(final PublicKey publicKey, final Contact contact) {
 		Omnivore<String> scout = new Omnivore<String>(){@Override public void consume(String nickname) {
 			send(new NotificationOfContact(publicKey, toRemoteContact(contact)));
 		}};
@@ -138,9 +138,9 @@ class SignalConnection {
 		_scoutsToAvoidGC.add(scout);
 	}
 
-	private void maintainChainOfIntermediaries(final Sneer1024 publicKey, Contact contact) {
+	private void maintainChainOfIntermediaries(final PublicKey publicKey, Contact contact) {
 		AbstractParty intermediary = produceParty(publicKey);
-		Sneer1024 contactPK = intermediary.producePublicKeyFor(contact);
+		PublicKey contactPK = intermediary.producePublicKeyFor(contact);
 		AbstractParty contactProxy = (AbstractParty) _keyManager.partyGiven(contactPK, ProxyFactory.INSTANCE);
 		contactProxy.addIntermediaryIfNecessary(intermediary);
 	}
@@ -148,30 +148,30 @@ class SignalConnection {
 	private RemoteContact toRemoteContact(Contact contact) {
 		if (contact instanceof RemoteContact) return (RemoteContact)contact;
 		
-		Sneer1024 pk = _keyManager.keyGiven(contact);
+		PublicKey pk = _keyManager.keyGiven(contact);
 		return new RemoteContact(pk, contact.nickname().currentValue());
 	}
 
-	private AbstractParty produceParty(Sneer1024 pk) {
+	private AbstractParty produceParty(PublicKey pk) {
 		return (AbstractParty)_keyManager.partyGiven(pk, ProxyFactory.INSTANCE);
 	}
 
 
-	void handleNotification(Sneer1024 publicKey, String signalPath, Object newValue) {
+	void handleNotification(PublicKey publicKey, String signalPath, Object newValue) {
 		Proxy target = produceProxy(publicKey);
 		if (target == null) return;
 		
 		target.handleNotification(signalPath, newValue);
 	}
 
-	void handleNotificationOfContactAdded(Sneer1024 publicKey, RemoteContact newContact) {
+	void handleNotificationOfContactAdded(PublicKey publicKey, RemoteContact newContact) {
 		Proxy target = produceProxy(publicKey);
 		if (target == null) return;
 		
 		target.handleNotificationOfContact(newContact);
 	}
 	
-	void handleNotificationOfContactRemoved(Sneer1024 publicKey,	RemoteContact contact) {
+	void handleNotificationOfContactRemoved(PublicKey publicKey,	RemoteContact contact) {
 		Proxy target = produceProxy(publicKey);
 		if (target == null) return;
 		
@@ -179,7 +179,7 @@ class SignalConnection {
 	}
 	
 
-	private Proxy produceProxy(Sneer1024 publicKey) {
+	private Proxy produceProxy(PublicKey publicKey) {
 		AbstractParty target = produceParty(publicKey);
 		if (target instanceof Me) {
 			_logger.info("Illegal notification.");
@@ -189,22 +189,22 @@ class SignalConnection {
 	}
 	
 
-	void subscribeTo(Sneer1024 publicKey, String remoteSignalPath) {
+	void subscribeTo(PublicKey publicKey, String remoteSignalPath) {
 		send(new Subscription(publicKey, remoteSignalPath));
 	}
 
-	void subscribeToContacts(Sneer1024 targetPK) {
+	void subscribeToContacts(PublicKey targetPK) {
 		send(new SubscriptionToContacts(targetPK));
 	}
 
-	void serveSubscriptionTo(Sneer1024 publicKey, String signalPath) {
+	void serveSubscriptionTo(PublicKey publicKey, String signalPath) {
 		Party target = produceParty(publicKey);
 		Signal<Object> signal = target.signal(signalPath);
 		
 		signal.addReceiver(createScoutFor(publicKey, signalPath));
 	}
 	
-	public void serveSubscriptionToContacts(Sneer1024 publicKey) {
+	public void serveSubscriptionToContacts(PublicKey publicKey) {
 		Party target = produceParty(publicKey);
 		ListSignal<Contact> contacts = target.contacts();
 

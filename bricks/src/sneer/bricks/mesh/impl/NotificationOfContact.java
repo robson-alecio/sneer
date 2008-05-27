@@ -1,13 +1,13 @@
 package sneer.bricks.mesh.impl;
 
-import sneer.bricks.crypto.Sneer1024;
+import sneer.bricks.keymanager.PublicKey;
 
 class NotificationOfContact implements Ambassador {
 
-	private final Sneer1024 _publicKey;
+	private final PublicKey _publicKey;
 	private final RemoteContact _newContact;
 
-	public NotificationOfContact(Sneer1024 publicKey, RemoteContact newContact) {
+	public NotificationOfContact(PublicKey publicKey, RemoteContact newContact) {
 		_publicKey = publicKey;
 		_newContact = newContact;
 	}

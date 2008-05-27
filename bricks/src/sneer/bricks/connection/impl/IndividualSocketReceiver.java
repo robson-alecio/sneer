@@ -6,9 +6,8 @@ import java.util.Arrays;
 import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.contacts.ContactManager;
-import sneer.bricks.crypto.Crypto;
-import sneer.bricks.crypto.Sneer1024;
 import sneer.bricks.keymanager.KeyManager;
+import sneer.bricks.keymanager.PublicKey;
 import sneer.bricks.log.Logger;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.lego.Inject;
@@ -25,9 +24,6 @@ class IndividualSocketReceiver {
 	
 	@Inject
 	static private ConnectionManager _connectionManager;
-	
-	@Inject
-	static private Crypto _crypto;
 
 	@Inject
 	static private Logger _logger;
@@ -50,14 +46,14 @@ class IndividualSocketReceiver {
 		shakeHands();
 
 		byte[] publicKeyBytes = _socket.read();
-		Sneer1024 peersPublicKey = _crypto.wrap(publicKeyBytes);	
+		PublicKey peersPublicKey = _keyManager.unmarshall(publicKeyBytes);	
 
 		Contact contact = produceContact(peersPublicKey);
 		_connectionManager.manageIncomingSocket(contact, _socket);
 	}
 
-	private Contact produceContact(Sneer1024 peersPublicKey) {
-		return _keyManager.contactGiven(peersPublicKey, new Functor<Sneer1024, Contact>(){@Override public Contact evaluate(Sneer1024 value) {
+	private Contact produceContact(PublicKey peersPublicKey) {
+		return _keyManager.contactGiven(peersPublicKey, new Functor<PublicKey, Contact>(){@Override public Contact evaluate(PublicKey value) {
 			return createUnconfirmedContact();
 		}});
 	}

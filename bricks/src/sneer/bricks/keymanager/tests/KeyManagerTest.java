@@ -7,9 +7,8 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 
 import sneer.bricks.contacts.Contact;
-import sneer.bricks.crypto.Crypto;
-import sneer.bricks.crypto.Sneer1024;
 import sneer.bricks.keymanager.KeyManager;
+import sneer.bricks.keymanager.PublicKey;
 import sneer.lego.Inject;
 import sneer.lego.tests.BrickTestSupport;
 import wheel.reactive.Register;
@@ -21,13 +20,10 @@ public class KeyManagerTest extends BrickTestSupport {
 	@Inject
 	private KeyManager _keyManager;
 	
-	@Inject
-	private Crypto _crypto;
-	
 	@Test
 	public void testAddKey() throws Exception {
 		Contact contact = newContact();
-		Sneer1024 key = _crypto.sneer1024("random string".getBytes());
+		PublicKey key = _keyManager.unmarshall("random string".getBytes());
 		
 		assertNull(_keyManager.contactGiven(key));
 		
@@ -38,7 +34,7 @@ public class KeyManagerTest extends BrickTestSupport {
 	@Test(expected = IllegalArgumentException.class)
 	public void testAddKeyTwiceForSameContact() throws Exception {
 		Contact contact = newContact();
-		Sneer1024 key = _crypto.sneer1024("random string".getBytes());
+		PublicKey key = _keyManager.unmarshall("random string".getBytes());
 		
 		assertNull(_keyManager.contactGiven(key));
 

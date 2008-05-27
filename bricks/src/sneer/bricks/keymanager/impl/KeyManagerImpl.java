@@ -4,48 +4,43 @@ import java.util.HashMap;
 import java.util.Map;
 
 import sneer.bricks.contacts.Contact;
-import sneer.bricks.crypto.Crypto;
-import sneer.bricks.crypto.Sneer1024;
 import sneer.bricks.keymanager.KeyManager;
+import sneer.bricks.keymanager.PublicKey;
 import sneer.bricks.mesh.Party;
-import sneer.lego.Inject;
 import wheel.lang.Functor;
 
 public class KeyManagerImpl implements KeyManager {
 
-	@Inject
-	static private Crypto _crypto; 
+	private final PublicKey _ownKey = createMickeyMouseKey();
 	
-	private final Sneer1024 _ownKey = createMickeyMouseKey();
-	
-	private final Map<Contact, Sneer1024> _keyByContact = new HashMap<Contact, Sneer1024>();
+	private final Map<Contact, PublicKey> _keyByContact = new HashMap<Contact, PublicKey>();
 
-	private final Map<Sneer1024, Party> _partiesByPublicKey = new HashMap<Sneer1024, Party>();
+	private final Map<PublicKey, Party> _partiesByPublicKey = new HashMap<PublicKey, Party>();
 
 
 
-	private Sneer1024 createMickeyMouseKey() {
+	private PublicKey createMickeyMouseKey() {
 		String string = "" + System.currentTimeMillis() + System.nanoTime() + hashCode();
-		return _crypto.sneer1024(string.getBytes());
+		return unmarshall(string.getBytes());
 	}
 
 	@Override
-	public Sneer1024 ownPublicKey() {
+	public PublicKey ownPublicKey() {
 		return _ownKey;
 	}
 
 	@Override
-	public Sneer1024 keyGiven(Contact contact) {
+	public PublicKey keyGiven(Contact contact) {
 		return _keyByContact.get(contact);
 	}
 
 	@Override
-	public Party partyGiven(Sneer1024 pk) {
+	public Party partyGiven(PublicKey pk) {
 		return partyGiven(pk, null);
 	}
 
 	@Override
-	public synchronized Party partyGiven(Sneer1024 pk, Functor<Sneer1024, Party> factoryToUseIfAbsent) {
+	public synchronized Party partyGiven(PublicKey pk, Functor<PublicKey, Party> factoryToUseIfAbsent) {
 		Party result = _partiesByPublicKey.get(pk);
 		if (result == null && factoryToUseIfAbsent != null) {
 			result = factoryToUseIfAbsent.evaluate(pk);
@@ -55,7 +50,7 @@ public class KeyManagerImpl implements KeyManager {
 	}
 
 	@Override
-	public synchronized Contact contactGiven(Sneer1024 peersPublicKey, Functor<Sneer1024, Contact> factoryToUseIfAbsent) {
+	public synchronized Contact contactGiven(PublicKey peersPublicKey, Functor<PublicKey, Contact> factoryToUseIfAbsent) {
 		Contact result = contactGiven(peersPublicKey);
 		if (result != null) return result;
 		
@@ -66,19 +61,24 @@ public class KeyManagerImpl implements KeyManager {
 
 
 	@Override
-	public synchronized void addKey(Contact contact, Sneer1024 publicKey) {
+	public synchronized void addKey(Contact contact, PublicKey publicKey) {
 		if(keyGiven(contact) != null) throw new IllegalArgumentException("There already was a public key registered for contact: " + contact.nickname().currentValue());
 		_keyByContact.put(contact, publicKey);
 	}
 
 
 	@Override
-	public synchronized Contact contactGiven(Sneer1024 peersPublicKey) {
+	public synchronized Contact contactGiven(PublicKey peersPublicKey) {
 		for (Contact candidate : _keyByContact.keySet())
 			if(_keyByContact.get(candidate).equals(peersPublicKey))
 				return candidate;
 		
 		return null;
+	}
+
+	@Override
+	public PublicKey unmarshall(byte[] publicKeyBytes) {
+		return new PublicKeyImpl(publicKeyBytes);
 	}
 
 

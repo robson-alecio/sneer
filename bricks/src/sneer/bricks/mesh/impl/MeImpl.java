@@ -5,7 +5,7 @@ import java.util.Map;
 
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.contacts.ContactManager;
-import sneer.bricks.crypto.Sneer1024;
+import sneer.bricks.keymanager.PublicKey;
 import sneer.bricks.mesh.Me;
 import sneer.bricks.mesh.Party;
 import sneer.lego.Inject;
@@ -41,10 +41,10 @@ class MeImpl extends AbstractParty implements Me, Startable {
 	}
 
 	private void registerWithKeyManager() {
-		Sneer1024 ownPK = _keyManager.ownPublicKey();
-		_keyManager.partyGiven(ownPK, new Functor<Sneer1024, Party>() {
+		PublicKey ownPK = _keyManager.ownPublicKey();
+		_keyManager.partyGiven(ownPK, new Functor<PublicKey, Party>() {
 			@Override
-			public Party evaluate(Sneer1024 pk) {
+			public Party evaluate(PublicKey pk) {
 				return MeImpl.this;
 			}
 		});
@@ -100,7 +100,7 @@ class MeImpl extends AbstractParty implements Me, Startable {
 	}
 
 	@Override
-	Sneer1024 producePublicKeyFor(Contact contact) {
+	PublicKey producePublicKeyFor(Contact contact) {
 		return _keyManager.keyGiven(contact);
 	}
 
@@ -110,7 +110,7 @@ class MeImpl extends AbstractParty implements Me, Startable {
 	}
 
 	@Override
-	void subscribeTo(Sneer1024 targetPK, String signalPath, Sneer1024 intermediaryPK) {
+	void subscribeTo(PublicKey targetPK, String signalPath, PublicKey intermediaryPK) {
 		Contact directContact = _keyManager.contactGiven(intermediaryPK);
 		
 		SignalConnection signalConnection = _signalConnectionsByContact.get(directContact);
@@ -118,7 +118,7 @@ class MeImpl extends AbstractParty implements Me, Startable {
 	}
 
 	@Override
-	void subscribeToContacts(Sneer1024 targetPK, Sneer1024 intermediaryPK) {
+	void subscribeToContacts(PublicKey targetPK, PublicKey intermediaryPK) {
 		Contact directContact = _keyManager.contactGiven(intermediaryPK);
 
 		SignalConnection signalConnection = _signalConnectionsByContact.get(directContact);

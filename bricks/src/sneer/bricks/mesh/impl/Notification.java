@@ -1,14 +1,14 @@
 package sneer.bricks.mesh.impl;
 
-import sneer.bricks.crypto.Sneer1024;
+import sneer.bricks.keymanager.PublicKey;
 
 class Notification implements Ambassador {
 
-	private final Sneer1024 _publicKey;
+	private final PublicKey _publicKey;
 	private final String _signalPath;
 	private final Object _newValue;
 
-	public Notification(Sneer1024 publicKey, String signalPath, Object newValue) {
+	public Notification(PublicKey publicKey, String signalPath, Object newValue) {
 		_publicKey = publicKey;
 		_signalPath = signalPath;
 		_newValue = newValue;

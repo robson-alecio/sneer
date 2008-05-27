@@ -5,9 +5,9 @@ import sneer.bricks.connection.SocketOriginator;
 import sneer.bricks.connection.SocketReceiver;
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.contacts.ContactManager;
-import sneer.bricks.crypto.Sneer1024;
 import sneer.bricks.internetaddresskeeper.InternetAddressKeeper;
 import sneer.bricks.keymanager.KeyManager;
+import sneer.bricks.keymanager.PublicKey;
 import sneer.bricks.mesh.Me;
 import sneer.bricks.mesh.Party;
 import sneer.bricks.network.Network;
@@ -70,7 +70,7 @@ public class SneerParty extends SelfInject implements SovereignParty {
 		sneerParty.giveNicknameTo(this, this.ownName());
 	}
 
-	private void storePublicKey(Contact contact, Sneer1024 publicKey) {
+	private void storePublicKey(Contact contact, PublicKey publicKey) {
 		_keyManager.addKey(contact, publicKey);
 	}
 
@@ -94,7 +94,7 @@ public class SneerParty extends SelfInject implements SovereignParty {
 
     @Override
     public void giveNicknameTo(SovereignParty peer, String newNickname) {
-    	Sneer1024 publicKey = ((SneerParty)peer).publicKey();
+    	PublicKey publicKey = ((SneerParty)peer).publicKey();
 		Contact contact = waitForContactGiven(publicKey);
 
 		try {
@@ -104,7 +104,7 @@ public class SneerParty extends SelfInject implements SovereignParty {
 		}
     }
 
-	private Contact waitForContactGiven(Sneer1024 publicKey) {
+	private Contact waitForContactGiven(PublicKey publicKey) {
 		while (true) {
 			Contact contact = _keyManager.contactGiven(publicKey);
 			if (contact != null) return contact;
@@ -112,7 +112,7 @@ public class SneerParty extends SelfInject implements SovereignParty {
 		}
 	}
 
-    private Sneer1024 publicKey() {
+    private PublicKey publicKey() {
 		return _keyManager.ownPublicKey();
 	}
 

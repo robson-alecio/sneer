@@ -11,12 +11,12 @@ import org.apache.commons.io.FileUtils;
 import sneer.bricks.brickmanager.BrickManager;
 import sneer.bricks.brickmanager.BrickManagerException;
 import sneer.bricks.config.SneerConfig;
-import sneer.bricks.crypto.Sneer1024;
 import sneer.bricks.dependency.Dependency;
 import sneer.bricks.dependency.DependencyManager;
 import sneer.bricks.deployer.BrickBundle;
 import sneer.bricks.deployer.BrickFile;
 import sneer.bricks.keymanager.KeyManager;
+import sneer.bricks.keymanager.PublicKey;
 import sneer.bricks.log.Logger;
 import sneer.bricks.mesh.Party;
 import sneer.lego.Inject;
@@ -82,7 +82,7 @@ public class BrickManagerImpl implements BrickManager {
 		brick.resolved(true);
 	}
 
-	private BrickFile retrieveRemoveBrick(Sneer1024 origin, String brickName) {
+	private BrickFile retrieveRemoveBrick(PublicKey origin, String brickName) {
 		System.out.println("TODO: retrieve:" + brickName +" from: "+ origin);
 		Party party = _keyManager.partyGiven(origin);
 		MapSignal<String, BrickFile> remoteBricks = party.mapSignal("bricks");

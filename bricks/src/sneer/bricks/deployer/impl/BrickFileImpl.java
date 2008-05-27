@@ -8,10 +8,10 @@ import java.util.jar.JarFile;
 
 import org.apache.commons.io.FileUtils;
 
-import sneer.bricks.crypto.Sneer1024;
 import sneer.bricks.dependency.Dependency;
 import sneer.bricks.deployer.BrickFile;
 import sneer.bricks.deployer.DeployerException;
+import sneer.bricks.keymanager.PublicKey;
 import sneer.lego.utils.InjectedBrick;
 import sneer.lego.utils.SneerJar;
 import sneer.lego.utils.SneerJarImpl;
@@ -133,7 +133,7 @@ public class BrickFileImpl implements BrickFile {
 	}
 
 	@Override
-	public Sneer1024 origin() {
+	public PublicKey origin() {
 		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	}
 

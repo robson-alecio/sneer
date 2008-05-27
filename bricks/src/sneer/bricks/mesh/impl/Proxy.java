@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import sneer.bricks.contacts.Contact;
-import sneer.bricks.crypto.Sneer1024;
+import sneer.bricks.keymanager.PublicKey;
 import wheel.lang.Casts;
 import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Register;
@@ -19,12 +19,12 @@ import wheel.reactive.maps.MapSignal;
 
 class Proxy extends AbstractParty {
 
-	Proxy(Sneer1024 publicKey) {
+	Proxy(PublicKey publicKey) {
 		if (publicKey == null) throw new IllegalArgumentException("Public key cannot be null.");
 		_publicKey = publicKey;
 	}
 
-	private final Sneer1024 _publicKey;
+	private final PublicKey _publicKey;
 	private final Set<AbstractParty> _intermediaries = new HashSet<AbstractParty>();
 
 	protected final Map<String, Register<Object>> _registersBySignalPath = new HashMap<String, Register<Object>>();
@@ -116,7 +116,7 @@ class Proxy extends AbstractParty {
 	}
 
 	@Override
-	Sneer1024 producePublicKeyFor(Contact contact) {
+	PublicKey producePublicKeyFor(Contact contact) {
 		return ((RemoteContact)contact).publicKey();
 	}
 
@@ -126,12 +126,12 @@ class Proxy extends AbstractParty {
 	}
 
 	@Override
-	void subscribeTo(Sneer1024 targetPK, String signalPath, Sneer1024 intermediaryPKIgnored) {
+	void subscribeTo(PublicKey targetPK, String signalPath, PublicKey intermediaryPKIgnored) {
 		closestIntermediary().subscribeTo(targetPK , signalPath, _publicKey);
 	}
 
 	@Override
-	void subscribeToContacts(Sneer1024 targetPK, Sneer1024 intermediaryPKIgnored) {
+	void subscribeToContacts(PublicKey targetPK, PublicKey intermediaryPKIgnored) {
 		closestIntermediary().subscribeToContacts(targetPK, _publicKey);
 	}
 

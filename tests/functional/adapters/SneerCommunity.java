@@ -27,18 +27,32 @@ public class SneerCommunity implements SovereignCommunity {
 	}
 
 	private SneerConfig sneerConfigForParty(String name) {
-		File userHome = SystemUtils.getUserHome();
-		String fileName = ".sneer+"+StringUtils.deleteWhitespace(name);
-		File root = new File(userHome, fileName);
-		if(root.exists()) {
-			try {
-				FileUtils.cleanDirectory(root);
-			} catch (IOException e) {
-				throw new wheel.lang.exceptions.NotImplementedYet(e);
-			}
-		}
+		File root = rootDirectory(name);
+		clearDirectory(root);
 		SneerConfig config = new SneerConfigMock(root);
 		return config;
 	}
 
+	private File rootDirectory(String name) {
+		File userHome = SystemUtils.getUserHome();
+		String fileName = ".sneer+"+StringUtils.deleteWhitespace(name);
+		File root = new File(userHome, fileName);
+		return root;
+	}
+
+	@Override
+	public void clearResources(String name) {
+		File root = rootDirectory(name);
+		clearDirectory(root);
+	}
+
+	private void clearDirectory(File directory) {
+		if(directory.exists()) {
+			try {
+				FileUtils.cleanDirectory(directory);
+			} catch (IOException e) {
+				throw new wheel.lang.exceptions.NotImplementedYet(e);
+			}
+		}
+	}
 }

@@ -1,5 +1,6 @@
 package functional;
 
+import org.junit.After;
 import org.junit.Before;
 
 public abstract class SovereignFunctionalTest {
@@ -17,6 +18,11 @@ public abstract class SovereignFunctionalTest {
 		createAndConnectParties();
 	}
 	
+	@After
+	public void tearDown() {
+		_community.clearResources("Ana Almeida");
+		_community.clearResources("Bruno Barros");
+	}
 
 	private void createAndConnectParties() {
 		

@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
-
 import sneer.bricks.brickmanager.BrickManager;
 import sneer.bricks.brickmanager.BrickManagerException;
 import sneer.bricks.config.SneerConfig;
@@ -45,7 +43,7 @@ public class BrickManagerImpl implements BrickManager {
 		List<String> brickNames = bundle.brickNames();
 		for (String brickName : brickNames) {
 			BrickFile brick = bundle.brick(brickName);
-			if(okToIntall(brick)) {
+			if(okToInstall(brick)) {
 				resolve(bundle, brick);
 				install(brick);
 			} else {
@@ -83,7 +81,6 @@ public class BrickManagerImpl implements BrickManager {
 	}
 
 	private BrickFile retrieveRemoveBrick(PublicKey origin, String brickName) {
-		System.out.println("TODO: retrieve:" + brickName +" from: "+ origin);
 		Party party = _keyManager.partyGiven(origin);
 		MapSignal<String, BrickFile> remoteBricks = party.mapSignal("bricks");
 		BrickFile remoteBrick = remoteBricks.currentGet(brickName);
@@ -95,7 +92,7 @@ public class BrickManagerImpl implements BrickManager {
 		return _bricksByName.get(brickName);
 	}
 
-	private boolean okToIntall(BrickFile brick) {
+	private boolean okToInstall(BrickFile brick) {
 		String brickName = brick.name();
 		BrickFile installed = _bricksByName.get(brickName);
 		if(installed == null)
@@ -119,7 +116,7 @@ public class BrickManagerImpl implements BrickManager {
 		//System.out.println("installing "+brickName+" on "+brickDirectory);
 		
 		if(brickDirectory.exists()) 
-			cleanDirectory(brickDirectory); //FixUrgent: ask permission to overwrite?
+			sneer.lego.utils.FileUtils.cleanDirectory(brickDirectory); //FixUrgent: ask permission to overwrite?
 		else 
 			brickDirectory.mkdir();
 		
@@ -153,14 +150,6 @@ public class BrickManagerImpl implements BrickManager {
 			throw new BrickManagerException("Error copying brick files to: "+brickDirectory);
 		}
 		return installed;
-	}
-
-	private void cleanDirectory(File brickDirectory) throws BrickManagerException {
-		try {
-			FileUtils.cleanDirectory(brickDirectory);
-		} catch (IOException e) {
-			throw new BrickManagerException("",e);
-		}
 	}
 	
 	private File brickDirectory(String brickName) {

@@ -28,7 +28,7 @@ public class SneerCommunity implements SovereignCommunity {
 
 	private SneerConfig sneerConfigForParty(String name) {
 		File root = rootDirectory(name);
-		clearDirectory(root);
+		sneer.lego.utils.FileUtils.cleanDirectory(root);
 		SneerConfig config = new SneerConfigMock(root);
 		return config;
 	}
@@ -43,16 +43,6 @@ public class SneerCommunity implements SovereignCommunity {
 	@Override
 	public void clearResources(String name) {
 		File root = rootDirectory(name);
-		clearDirectory(root);
-	}
-
-	private void clearDirectory(File directory) {
-		if(directory.exists()) {
-			try {
-				FileUtils.cleanDirectory(directory);
-			} catch (IOException e) {
-				throw new wheel.lang.exceptions.NotImplementedYet(e);
-			}
-		}
+		sneer.lego.utils.FileUtils.cleanDirectory(root);
 	}
 }

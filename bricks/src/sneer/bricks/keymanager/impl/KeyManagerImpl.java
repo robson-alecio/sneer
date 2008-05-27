@@ -21,7 +21,7 @@ public class KeyManagerImpl implements KeyManager {
 	private final Map<PublicKey, Party> _partiesByPublicKey = new HashMap<PublicKey, Party>();
 
 	@Inject
-	private Crypto _crypto;
+	private static Crypto _crypto;
 
 	private PublicKey createMickeyMouseKey() {
 		String string = "" + System.currentTimeMillis() + System.nanoTime() + hashCode();

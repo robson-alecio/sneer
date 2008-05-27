@@ -53,6 +53,11 @@ public class CryptoImpl implements Crypto {
 		return sneer1024(bytes);
 	}
 
+	@Override
+	public Sneer1024 unmarshallSneer1024(byte[] bytes) {
+		return new Sneer1024Impl(bytes);
+	}
+
 }
 
 class DigesterImpl implements Digester {

@@ -8,14 +8,15 @@ import java.util.Set;
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.keymanager.PublicKey;
 import wheel.lang.Casts;
-import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
-import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListRegister;
+import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
+import wheel.reactive.maps.MapRegister;
 import wheel.reactive.maps.MapSignal;
+import wheel.reactive.maps.impl.MapRegisterImpl;
 
 class Proxy extends AbstractParty {
 
@@ -28,11 +29,13 @@ class Proxy extends AbstractParty {
 	private final Set<AbstractParty> _intermediaries = new HashSet<AbstractParty>();
 
 	protected final Map<String, Register<Object>> _registersBySignalPath = new HashMap<String, Register<Object>>();
+	protected final Map<String, MapRegister<Object,Object>> _mapRegistersBySignalPath = new HashMap<String, MapRegister<Object,Object>>();
 	private ListRegister<RemoteContact> _contactsCache;
 
 	@Override
 	public <K,V> MapSignal<K,V> mapSignal(String signalPath) {
-		throw new NotImplementedYet();
+		MapRegister<K, V> register = produceMapRegisterFor(signalPath);
+		return register.output();   //Fix: Signal type mismatch between peers is possible.
 	}
 
 	@Override
@@ -46,6 +49,16 @@ class Proxy extends AbstractParty {
 		if (register == null) {
 			register = new RegisterImpl<Object>(null);
 			_registersBySignalPath.put(signalPath, register);
+			subscribeTo(signalPath);
+		}
+		return Casts.uncheckedGenericCast(register);
+	}
+
+	private <K, V> MapRegister<K, V> produceMapRegisterFor(String signalPath) {
+		MapRegister<Object, Object> register = _mapRegistersBySignalPath.get(signalPath);
+		if (register == null) {
+			register = new MapRegisterImpl<Object,Object>();
+			_mapRegistersBySignalPath.put(signalPath, register);
 			subscribeTo(signalPath);
 		}
 		return Casts.uncheckedGenericCast(register);

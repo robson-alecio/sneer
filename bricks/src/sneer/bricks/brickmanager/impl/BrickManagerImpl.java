@@ -157,4 +157,9 @@ public class BrickManagerImpl implements BrickManager {
 		File brickDirectory = new File(root, brickName);
 		return brickDirectory;
 	}
+
+	@Override
+	public MapSignal<String, BrickFile> bricks() {
+		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+	}
 }

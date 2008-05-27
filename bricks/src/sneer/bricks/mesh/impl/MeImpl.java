@@ -3,6 +3,7 @@ package sneer.bricks.mesh.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import sneer.bricks.brickmanager.BrickManager;
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.contacts.ContactManager;
 import sneer.bricks.keymanager.PublicKey;
@@ -13,7 +14,6 @@ import sneer.lego.Startable;
 import spikes.legobricks.name.OwnNameKeeper;
 import wheel.lang.Casts;
 import wheel.lang.Functor;
-import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.SimpleListReceiver;
@@ -23,15 +23,19 @@ import wheel.reactive.maps.MapSignal;
 class MeImpl extends AbstractParty implements Me, Startable {
 
 	@Inject
-	private ContactManager _contactManager;
+	static private ContactManager _contactManager;
 
 	@Inject
-	private OwnNameKeeper _ownNameKeeper;
+	static private OwnNameKeeper _ownNameKeeper;
+
+	@Inject
+	static private BrickManager _brickManager;
 
 	@SuppressWarnings("unused")
 	private SimpleListReceiver<Contact> _contactListReceiverToAvoidGC;
 
 	private final Map<Contact, SignalConnection> _signalConnectionsByContact = new HashMap<Contact, SignalConnection>();
+
 
 	
 	@Override
@@ -78,7 +82,10 @@ class MeImpl extends AbstractParty implements Me, Startable {
 
 	@Override
 	public <K,V> MapSignal<K,V> mapSignal(String signalPath) {
-		throw new NotImplementedYet();
+		if (signalPath.equals("Bricks"))
+			return Casts.uncheckedGenericCast(_brickManager.bricks());
+
+		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
 	@Override

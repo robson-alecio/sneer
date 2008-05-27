@@ -8,10 +8,10 @@ import wheel.lang.Omnivore;
 import wheel.lang.Pair;
 import wheel.reactive.impl.AbstractNotifier;
 import wheel.reactive.maps.MapSignal;
-import wheel.reactive.maps.MapSource;
+import wheel.reactive.maps.MapRegister;
 import wheel.reactive.maps.MapValueChange;
 
-public class MapSourceImpl<K,V> implements MapSource<K,V> {
+public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 	
 	private class MyOutput extends AbstractNotifier<MapValueChange<K,V>> implements MapSignal<K,V> {
 

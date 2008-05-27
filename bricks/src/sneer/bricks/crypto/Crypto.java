@@ -14,4 +14,6 @@ public interface Crypto {
 	Sneer1024 sneer1024(File file) throws IOException;	
 
 	Digester sneer1024();
+
+	Sneer1024 unmarshallSneer1024(byte[] bytes);
 }

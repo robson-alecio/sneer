@@ -2,36 +2,35 @@ package sneer.bricks.keymanager.impl;
 
 import java.util.Arrays;
 
+import sneer.bricks.crypto.Sneer1024;
 import sneer.bricks.keymanager.PublicKey;
-import wheel.lang.StringUtils;
 
 class PublicKeyImpl implements PublicKey {
 
-	private byte[] _bytes;
+	private Sneer1024 _sneer1024;
 	
-	public PublicKeyImpl(byte[] bytes) {
-		if (bytes.length != 128) throw new IllegalArgumentException();		
-		_bytes = bytes;
+	public PublicKeyImpl(Sneer1024 sneer1024) {
+		_sneer1024 = sneer1024;
 	}
 
 	@Override
 	public byte[] bytes() {
-		return _bytes;
+		return _sneer1024.bytes();
 	}
 
 	@Override
 	public String toHexa() {
-		return StringUtils.toHexa(_bytes);
+		return _sneer1024.toHexa();
 	}
 
 	@Override
 	public String toString() {
-		return toHexa().substring(0, 10) + ".."; 
+		return _sneer1024.toString(); 
 	}
 
 	@Override
 	public int hashCode() {
-		return Arrays.hashCode(_bytes);
+		return Arrays.hashCode(bytes());
 	}
 
 	@Override
@@ -39,7 +38,6 @@ class PublicKeyImpl implements PublicKey {
 		if (this == other) return true;
 		if (other == null) return false;
 		if (!(other instanceof PublicKey)) return false;
-		return Arrays.equals(_bytes, ((PublicKey)other).bytes());
+		return Arrays.equals(bytes(), ((PublicKey)other).bytes());
 	}
-
 }

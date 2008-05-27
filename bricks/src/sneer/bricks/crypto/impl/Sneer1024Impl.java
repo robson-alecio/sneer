@@ -41,6 +41,4 @@ class Sneer1024Impl implements Sneer1024 {
 		if (!(other instanceof Sneer1024)) return false;
 		return Arrays.equals(_bytes, ((Sneer1024)other).bytes());
 	}
-
-
 }

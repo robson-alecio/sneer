@@ -4,9 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import sneer.bricks.contacts.Contact;
+import sneer.bricks.crypto.Crypto;
+import sneer.bricks.crypto.Sneer1024;
 import sneer.bricks.keymanager.KeyManager;
 import sneer.bricks.keymanager.PublicKey;
 import sneer.bricks.mesh.Party;
+import sneer.lego.Inject;
 import wheel.lang.Functor;
 
 public class KeyManagerImpl implements KeyManager {
@@ -17,7 +20,8 @@ public class KeyManagerImpl implements KeyManager {
 
 	private final Map<PublicKey, Party> _partiesByPublicKey = new HashMap<PublicKey, Party>();
 
-
+	@Inject
+	private Crypto _crypto;
 
 	private PublicKey createMickeyMouseKey() {
 		String string = "" + System.currentTimeMillis() + System.nanoTime() + hashCode();
@@ -77,9 +81,8 @@ public class KeyManagerImpl implements KeyManager {
 	}
 
 	@Override
-	public PublicKey unmarshall(byte[] publicKeyBytes) {
-		return new PublicKeyImpl(publicKeyBytes);
+	public PublicKey unmarshall(byte[] bytes) {
+		Sneer1024 sneer1024 = _crypto.sneer1024(bytes);
+		return new PublicKeyImpl(sneer1024);
 	}
-
-
 }

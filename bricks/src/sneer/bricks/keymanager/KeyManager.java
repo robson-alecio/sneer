@@ -15,8 +15,5 @@ public interface KeyManager {
 	Contact contactGiven(Sneer1024 publicKey, Functor<Sneer1024, Contact> factoryToUseIfAbsent);
 
 	Party partyGiven(Sneer1024 pk, Functor<Sneer1024, Party> factoryToUseIfAbsent);
-
-
-
-
+	Party partyGiven(Sneer1024 pk);
 }

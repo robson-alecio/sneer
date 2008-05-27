@@ -40,9 +40,14 @@ public class KeyManagerImpl implements KeyManager {
 	}
 
 	@Override
+	public Party partyGiven(Sneer1024 pk) {
+		return partyGiven(pk, null);
+	}
+
+	@Override
 	public synchronized Party partyGiven(Sneer1024 pk, Functor<Sneer1024, Party> factoryToUseIfAbsent) {
 		Party result = _partiesByPublicKey.get(pk);
-		if (result == null) {
+		if (result == null && factoryToUseIfAbsent != null) {
 			result = factoryToUseIfAbsent.evaluate(pk);
 			_partiesByPublicKey.put(pk, result);
 		}
@@ -75,5 +80,6 @@ public class KeyManagerImpl implements KeyManager {
 		
 		return null;
 	}
+
 
 }

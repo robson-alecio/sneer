@@ -8,6 +8,7 @@ import java.util.jar.JarFile;
 
 import org.apache.commons.io.FileUtils;
 
+import sneer.bricks.crypto.Sneer1024;
 import sneer.bricks.dependency.Dependency;
 import sneer.bricks.deployer.BrickFile;
 import sneer.bricks.deployer.DeployerException;
@@ -112,11 +113,6 @@ public class BrickFileImpl implements BrickFile {
 	}
 
 	@Override
-	public String toString() {
-		return name() + "\n\tapi("+_api.file()+")\n\timpl("+_impl.file()+")";
-	}
-
-	@Override
 	public List<Dependency> dependencies() {
 		return _dependencies;
 	}
@@ -135,4 +131,15 @@ public class BrickFileImpl implements BrickFile {
 	public boolean resolved() {
 		return _resolved;
 	}
+
+	@Override
+	public Sneer1024 origin() {
+		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+	}
+
+	@Override
+	public String toString() {
+		return name() + "\n\tapi("+_api.file()+")\n\timpl("+_impl.file()+")";
+	}
+
 }

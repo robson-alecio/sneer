@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import sneer.bricks.crypto.Sneer1024;
 import sneer.bricks.dependency.Dependency;
 import sneer.lego.utils.InjectedBrick;
 import sneer.lego.utils.SneerJar;
@@ -31,4 +32,6 @@ public interface BrickFile {
 	void resolved(boolean resolved);
 
 	boolean resolved();
+
+	Sneer1024 origin();
 }

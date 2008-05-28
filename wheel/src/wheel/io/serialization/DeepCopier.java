@@ -15,7 +15,7 @@ public class DeepCopier {
 	 * @throws IOException
 	 * 
 	 */
-	public static Object deepCopy(Object original) {
+	public static <T> T deepCopy(T original) {
 	    return deepCopy(original, new JavaSerializer());
 	}
 
@@ -23,12 +23,13 @@ public class DeepCopier {
 	 * Produce a deep copy of the given object. Serializes the entire object to a byte array in memory. Recommended for
 	 * relatively small objects, such as individual transactions.
 	 */
-	public static Object deepCopy(Object original, Serializer serializer) {
+	@SuppressWarnings("unchecked")
+	public static <T> T deepCopy(T original, Serializer serializer) {
 		try {
 		    ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
             serializer.writeObject(byteOut, original);
             ByteArrayInputStream byteIn = new ByteArrayInputStream(byteOut.toByteArray());
-            return serializer.readObject(byteIn);
+            return (T) serializer.readObject(byteIn);
         } catch (Exception shouldNeverHappen) {
 			throw new RuntimeException(shouldNeverHappen);
         }

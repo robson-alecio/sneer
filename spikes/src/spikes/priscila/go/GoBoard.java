@@ -59,7 +59,7 @@ public class GoBoard {
 	}
 
 	private Intersection[][] copySituation() {
-		return (Intersection[][])DeepCopier.deepCopy(_intersections);
+		return DeepCopier.deepCopy(_intersections);
 	}
 
 	public void playStone(int x, int y) {

@@ -126,7 +126,7 @@ public class SneerJarImpl implements SneerJar {
 	}
 
 	private byte[] makeHash() {
-		Digester digester = _crypto.sneer1024();
+		Digester digester = _crypto.digester();
 		Enumeration<JarEntry> e = jarFile().entries();
 		while (e.hasMoreElements()) {
 			JarEntry entry = e.nextElement();

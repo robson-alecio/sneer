@@ -23,7 +23,7 @@ public class CryptoImpl implements Crypto {
 	private final DigesterImpl _digester = new DigesterImpl(messageDigest("SHA-512", "SUN"), messageDigest("WHIRLPOOL", "BC"));
 	
 	@Override
-	public synchronized Sneer1024 sneer1024(byte[] input) {
+	public synchronized Sneer1024 digest(byte[] input) {
 		byte[] sha512 = _digester.sha512().digest(input);
 		byte[] whirlPool = _digester.whirlPool().digest(input);
 		byte[] result = _digester.merge(sha512, whirlPool); 
@@ -35,7 +35,7 @@ public class CryptoImpl implements Crypto {
 	}
 
 	@Override
-	public Digester sneer1024() {
+	public Digester digester() {
 		return new DigesterImpl(messageDigest("SHA-512", "SUN"), messageDigest("WHIRLPOOL", "BC"));
 	}
 
@@ -48,9 +48,9 @@ public class CryptoImpl implements Crypto {
 	}
 
 	@Override
-	public Sneer1024 sneer1024(File file) throws IOException {
+	public Sneer1024 digest(File file) throws IOException {
 		byte[] bytes = IOUtils.toByteArray(new FileInputStream(file));
-		return sneer1024(bytes);
+		return digest(bytes);
 	}
 
 	@Override

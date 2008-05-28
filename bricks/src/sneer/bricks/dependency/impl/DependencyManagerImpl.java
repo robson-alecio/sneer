@@ -65,7 +65,7 @@ public class DependencyManagerImpl implements DependencyManager, Startable {
 
 		//1. check registry first
 		File file = dependency.file();
-		Sneer1024 hash = _crypto.sneer1024(file);
+		Sneer1024 hash = _crypto.digest(file);
 		Dependency installed = _dependenciesBySneer1024Hash.get(hash);
 		if(installed != null) {
 			//we already hold this jar. No need to reinstall it
@@ -90,7 +90,7 @@ public class DependencyManagerImpl implements DependencyManager, Startable {
 	@Override
 	public Dependency newDependency(File file) {
 		try {
-			Sneer1024 sneer1024 = _crypto.sneer1024(file);
+			Sneer1024 sneer1024 = _crypto.digest(file);
 			return new DependencyImpl(file, sneer1024);
 		} catch (IOException e) {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement

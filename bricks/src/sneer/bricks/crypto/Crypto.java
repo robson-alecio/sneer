@@ -9,11 +9,11 @@ public interface Crypto {
 	/**
 	 * SHA512 + Whirpool512 
 	 */
-	Sneer1024 sneer1024(byte[] input);
+	Sneer1024 digest(byte[] input);
 
-	Sneer1024 sneer1024(File file) throws IOException;	
+	Sneer1024 digest(File file) throws IOException;	
 
-	Digester sneer1024();
+	Digester digester();
 
 	Sneer1024 unmarshallSneer1024(byte[] bytes);
 }

@@ -25,7 +25,7 @@ public class KeyManagerImpl implements KeyManager {
 
 	private PublicKey createMickeyMouseKey() {
 		String string = "" + System.currentTimeMillis() + System.nanoTime() + hashCode();
-		Sneer1024 sneer1024 = _crypto.sneer1024(string.getBytes());
+		Sneer1024 sneer1024 = _crypto.digest(string.getBytes());
 		return new PublicKeyImpl(sneer1024);
 	}
 

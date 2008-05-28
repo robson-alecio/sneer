@@ -4,6 +4,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 
 import sneer.bricks.contacts.Contact;
@@ -23,8 +25,10 @@ public class KeyManagerTest extends BrickTestSupport {
 	@Test
 	public void testAddKey() throws Exception {
 		Contact contact = newContact();
-		PublicKey key = _keyManager.unmarshall("random string".getBytes());
-		
+
+		byte[] keyBytes = new byte[128];
+		Arrays.fill(keyBytes, (byte) 1);
+		PublicKey key = _keyManager.unmarshall(keyBytes);
 		assertNull(_keyManager.contactGiven(key));
 		
 		_keyManager.addKey(contact, key);

@@ -11,8 +11,7 @@ import java.lang.reflect.Method;
 
 import org.junit.Test;
 
-import wheel.lang.exceptions.NotImplementedYet;
-
+import functional.SignalUtils;
 import functional.SovereignFunctionalTest;
 import functional.SovereignParty;
 
@@ -29,8 +28,13 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 		BrickPublisher publisher = wrapParty(_a);
 		BrickPublisher receiver = wrapParty(_b);
 		
-		if(true) throw new NotImplementedYet(); //navigate from receiver to publisher
-
+		System.out.println("Ana Almeida "  + _a.ownPublicKey());
+		System.out.println("Bruno Barros " + _b.ownPublicKey());
+		
+		//if(true) throw new NotImplementedYet(); //navigate from receiver to publisher
+		SignalUtils.waitForValue("Bruno Barros", _a.navigateAndGetName("Bruno Barros"));
+		SignalUtils.waitForValue("Ana Almeida", _b.navigateAndGetName("Ana Almeida"));
+		
 		File sourceFolder = askSourceFolder();
 		
 		publisher.publishBrick(new File(sourceFolder,"source2")); //deploy Y first

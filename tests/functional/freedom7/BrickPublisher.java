@@ -10,7 +10,7 @@ public interface BrickPublisher extends SovereignParty {
 	
 	BrickBundle publishBrick(File sourceDirectory);
 
-	void meToo(BrickPublisher party, String brickName);
+	void meToo(BrickPublisher party, String brickName) throws Exception;
 
 	BrickFile brick(String brickName);
 

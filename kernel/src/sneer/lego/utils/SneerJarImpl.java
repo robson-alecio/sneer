@@ -30,18 +30,22 @@ import wheel.lang.exceptions.NotImplementedYet;
 
 public class SneerJarImpl implements SneerJar {
 
+	private static final long serialVersionUID = 1L;
+
 	private JarOutputStream _out;
 
 	private File _file;
 	
-	private JarFile _jarFile;
-
 	private Properties _properties;
 
 	private byte[] _sneer1024;
+
+	private byte[] _contents;
+	
+	transient private JarFile _jarFile;
 	
 	@Inject
-	private Crypto _crypto;
+	transient private Crypto _crypto;
 
 	public SneerJarImpl(File file) {
 		_file = file;
@@ -50,6 +54,23 @@ public class SneerJarImpl implements SneerJar {
 	public SneerJarImpl(File file, JarFile jarFile) {
 		_jarFile = jarFile;
 		_file = file;
+	}
+
+	private JarFile jarFile() {
+		if(_jarFile != null)
+			return _jarFile;
+
+		try {
+			String fileName = brickName() + "-" + role() + "-";
+			File tmp = File.createTempFile(fileName, ".jar");
+			IOUtils.write(_contents, new FileOutputStream(tmp));
+			_contents = null;
+			_file = tmp;
+			_jarFile = new JarFile(_file);
+		} catch(IOException e) {
+			throw new NotImplementedYet(e);
+		}
+		return _jarFile;
 	}
 
 	public void add(String entryName, File file) throws IOException {
@@ -83,11 +104,11 @@ public class SneerJarImpl implements SneerJar {
 
 	@Override
 	public InputStream getInputStream(String entryName) throws IOException {
-		return _jarFile.getInputStream(_jarFile.getEntry(entryName));
+		return jarFile().getInputStream(jarFile().getEntry(entryName));
 	}
 
 	public Enumeration<JarEntry> entries() {
-		return _jarFile.entries();
+		return jarFile().entries();
 	}
 
 	@Override
@@ -106,7 +127,7 @@ public class SneerJarImpl implements SneerJar {
 
 	private byte[] makeHash() {
 		Digester digester = _crypto.sneer1024();
-		Enumeration<JarEntry> e = _jarFile.entries();
+		Enumeration<JarEntry> e = jarFile().entries();
 		while (e.hasMoreElements()) {
 			JarEntry entry = e.nextElement();
 			String name = entry.getName();
@@ -149,7 +170,7 @@ public class SneerJarImpl implements SneerJar {
 
 	@Override
 	public void explode(File target) throws IOException {
-		Enumeration<JarEntry> e = _jarFile.entries();
+		Enumeration<JarEntry> e = jarFile().entries();
 		while (e.hasMoreElements()) {
 			JarEntry entry = e.nextElement();
 			String name = entry.getName();
@@ -190,7 +211,7 @@ public class SneerJarImpl implements SneerJar {
 	@Override
 	public List<InjectedBrick> injectedBricks() throws IOException {
 		List<InjectedBrick> result = new ArrayList<InjectedBrick>();
-		Enumeration<JarEntry> e = _jarFile.entries();
+		Enumeration<JarEntry> e = jarFile().entries();
 		while (e.hasMoreElements()) {
 			JarEntry entry = e.nextElement();
 			String name = entry.getName();
@@ -239,6 +260,16 @@ public class SneerJarImpl implements SneerJar {
 	@Override
 	public String toString() {
 		return _file.toString();
+	}
+
+	@Override
+	public void afterSerialize() {
+		_contents = null;
+	}
+
+	@Override
+	public void beforeSerialize() throws IOException {
+		_contents = IOUtils.toByteArray(new FileInputStream(_file));
 	}
 
 //    public void copy(InputStream input, OutputStream output) throws IOException {

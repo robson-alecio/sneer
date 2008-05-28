@@ -9,6 +9,8 @@ import sneer.bricks.deployer.Deployer;
 import sneer.bricks.keymanager.PublicKey;
 import sneer.lego.Container;
 import sneer.lego.Inject;
+import sneer.lego.utils.io.NetworkFriendly;
+import wheel.io.serialization.DeepCopier;
 import wheel.reactive.Signal;
 import functional.SovereignParty;
 import functional.adapters.SelfInject;
@@ -34,9 +36,16 @@ public class SimpleBrickPublisher implements BrickPublisher {
 	}
 	
 	@Override
-	public void meToo(BrickPublisher party, String brickName) {
+	public void meToo(BrickPublisher party, String brickName) throws Exception {
 		BrickFile brick = party.brick(brickName);
-		_registry.install(brick);
+
+		//prepare to send objet via network
+		((NetworkFriendly) brick).beforeSerialize();
+		BrickFile copy = DeepCopier.deepCopy(brick);
+		((NetworkFriendly) brick).afterSerialize();
+		
+		//TODO: send copy via network
+		_registry.install(copy);
 	}
 
 	@Override

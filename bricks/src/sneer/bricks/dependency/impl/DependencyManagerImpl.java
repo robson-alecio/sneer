@@ -101,6 +101,8 @@ public class DependencyManagerImpl implements DependencyManager, Startable {
 
 class DependencyImpl implements Dependency {
 
+	private static final long serialVersionUID = 1L;
+
 	private File _file;
 	
 	private Sneer1024 _sneer1024;

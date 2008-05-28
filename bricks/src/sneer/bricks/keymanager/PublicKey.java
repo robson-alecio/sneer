@@ -1,6 +1,8 @@
 package sneer.bricks.keymanager;
 
-public interface PublicKey {
+import java.io.Serializable;
+
+public interface PublicKey extends Serializable {
 
 	byte[] bytes();
 	

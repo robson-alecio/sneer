@@ -3,9 +3,12 @@ package sneer.lego.utils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.List;
 
-public interface SneerJar {
+import sneer.lego.utils.io.NetworkFriendly;
+
+public interface SneerJar extends Serializable, NetworkFriendly {
 
 	File file();
 

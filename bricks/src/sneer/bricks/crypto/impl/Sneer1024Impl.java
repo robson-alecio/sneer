@@ -7,6 +7,8 @@ import wheel.lang.StringUtils;
 
 class Sneer1024Impl implements Sneer1024 {
 
+	private static final long serialVersionUID = 1L;
+
 	private byte[] _bytes;
 	
 	public Sneer1024Impl(byte[] bytes) {

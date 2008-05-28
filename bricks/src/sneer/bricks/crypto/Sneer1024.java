@@ -1,6 +1,8 @@
 package sneer.bricks.crypto;
 
-public interface Sneer1024 {
+import java.io.Serializable;
+
+public interface Sneer1024 extends Serializable {
 
 	byte[] bytes();
 	

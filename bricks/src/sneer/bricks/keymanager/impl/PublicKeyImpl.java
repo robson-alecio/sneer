@@ -7,6 +7,8 @@ import sneer.bricks.keymanager.PublicKey;
 
 class PublicKeyImpl implements PublicKey {
 
+	private static final long serialVersionUID = 1L;
+
 	private Sneer1024 _sneer1024;
 	
 	public PublicKeyImpl(Sneer1024 sneer1024) {

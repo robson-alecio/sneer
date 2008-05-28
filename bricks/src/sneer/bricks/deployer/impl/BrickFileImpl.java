@@ -15,8 +15,11 @@ import sneer.bricks.keymanager.PublicKey;
 import sneer.lego.utils.InjectedBrick;
 import sneer.lego.utils.SneerJar;
 import sneer.lego.utils.SneerJarImpl;
+import sneer.lego.utils.io.NetworkFriendly;
 
-public class BrickFileImpl implements BrickFile {
+public class BrickFileImpl implements BrickFile, NetworkFriendly {
+
+	private static final long serialVersionUID = 1L;
 
 	private String _brickName;
 
@@ -30,7 +33,6 @@ public class BrickFileImpl implements BrickFile {
 	private PublicKey _origin;
 	
 	private List<Dependency> _dependencies = new ArrayList<Dependency>();
-
 
 	public BrickFileImpl(String brickName) {
 		_brickName = brickName;
@@ -147,5 +149,21 @@ public class BrickFileImpl implements BrickFile {
 	@Override
 	public String toString() {
 		return name() + "\n\tapi("+_api.file()+")\n\timpl("+_impl.file()+")";
+	}
+
+	@Override
+	public void beforeSerialize() throws IOException {
+		api().beforeSerialize();
+		apiSrc().beforeSerialize();
+		impl().beforeSerialize();
+		implSrc().beforeSerialize();
+	}
+
+	@Override
+	public void afterSerialize() throws IOException {
+		api().afterSerialize();
+		apiSrc().afterSerialize();
+		impl().afterSerialize();
+		implSrc().afterSerialize();
 	}
 }

@@ -2,6 +2,7 @@ package sneer.bricks.deployer;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
 import sneer.bricks.dependency.Dependency;
@@ -9,7 +10,7 @@ import sneer.bricks.keymanager.PublicKey;
 import sneer.lego.utils.InjectedBrick;
 import sneer.lego.utils.SneerJar;
 
-public interface BrickFile {
+public interface BrickFile extends Serializable {
 
 	String name();
 

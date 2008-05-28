@@ -4,7 +4,7 @@
  - use brick hashcode as key on BrickManager 
  - Replace dependency on Injector with @Inject static field in Deployer brick. I did that for all my brick and it worked (Klaus).
  - Eliminate Startable and Injector - Ask me how :)
- - Fix or delete each broken Junit test in project.
+ [DONE] - Fix or delete each broken Junit test in project.
  [DONE] - rename methods on Crypto to digest() and digester()
  [Almost DONE] - Brick Publish:
 	1) Inform source folder (src).

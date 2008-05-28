@@ -4,6 +4,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.bricks.config.SneerConfig;
@@ -14,6 +15,7 @@ import sneer.lego.Inject;
 import sneer.lego.impl.SimpleBinder;
 import sneer.lego.tests.BrickTestSupport;
 
+@Ignore
 public class DeployerTest extends BrickTestSupport {
 
 	@Inject

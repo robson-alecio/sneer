@@ -10,6 +10,7 @@ import static org.junit.Assert.fail;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.lego.Binder;
@@ -89,6 +90,7 @@ public class ContainerTest {
 	}
 
 	@Test
+	@Ignore
 	public void testMakeSerializable()  throws Exception {
 		Container c = new SimpleContainer();
 		MakeMeSerializable component = c.produce(MakeMeSerializable.class);

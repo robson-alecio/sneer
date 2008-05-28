@@ -6,6 +6,7 @@ import sneer.bricks.brickmanager.BrickManager;
 import sneer.bricks.deployer.BrickBundle;
 import sneer.bricks.deployer.BrickFile;
 import sneer.bricks.deployer.Deployer;
+import sneer.bricks.keymanager.PublicKey;
 import sneer.lego.Container;
 import sneer.lego.Inject;
 import wheel.reactive.Signal;
@@ -84,5 +85,10 @@ public class SimpleBrickPublisher implements BrickPublisher {
 	@Override
 	public Object produce(String brickName) {
 		return _container.produce(brickName);
+	}
+
+	@Override
+	public PublicKey ownPublicKey() {
+		return _party.ownPublicKey();
 	}
 }

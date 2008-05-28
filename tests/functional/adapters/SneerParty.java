@@ -142,5 +142,10 @@ public class SneerParty extends SelfInject implements SovereignParty {
         return _sneerPortKeeper.port().currentValue();
     }
 
+	@Override
+	public PublicKey ownPublicKey() {
+		return _keyManager.ownPublicKey();
+	}
+
 }
 

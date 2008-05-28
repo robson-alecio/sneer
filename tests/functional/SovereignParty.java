@@ -1,5 +1,6 @@
 package functional;
 
+import sneer.bricks.keymanager.PublicKey;
 import wheel.reactive.Signal;
 
 
@@ -12,5 +13,7 @@ public interface SovereignParty {
 	
 	void giveNicknameTo(SovereignParty peer, String nickname);
 	Signal<String> navigateAndGetName(String nicknamePath);
+	
+	PublicKey ownPublicKey();
 
 }

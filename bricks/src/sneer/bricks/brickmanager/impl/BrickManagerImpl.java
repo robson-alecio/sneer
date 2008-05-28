@@ -2,9 +2,7 @@ package sneer.bricks.brickmanager.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import sneer.bricks.brickmanager.BrickManager;
 import sneer.bricks.brickmanager.BrickManagerException;
@@ -19,7 +17,9 @@ import sneer.bricks.log.Logger;
 import sneer.bricks.mesh.Party;
 import sneer.lego.Inject;
 import sneer.lego.utils.InjectedBrick;
+import wheel.reactive.maps.MapRegister;
 import wheel.reactive.maps.MapSignal;
+import wheel.reactive.maps.impl.MapRegisterImpl;
 
 
 public class BrickManagerImpl implements BrickManager {
@@ -36,7 +36,7 @@ public class BrickManagerImpl implements BrickManager {
 	@Inject
 	private KeyManager _keyManager;
 	
-	private Map<String, BrickFile> _bricksByName = new HashMap<String, BrickFile>();
+	private MapRegister<String, BrickFile> _bricksByName = new MapRegisterImpl<String, BrickFile>();
 
 	@Override
 	public void install(BrickBundle bundle) {
@@ -165,6 +165,6 @@ public class BrickManagerImpl implements BrickManager {
 
 	@Override
 	public MapSignal<String, BrickFile> bricks() {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+		return _bricksByName.output();
 	}
 }

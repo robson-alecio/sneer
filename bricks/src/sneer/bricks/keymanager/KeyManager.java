@@ -2,9 +2,10 @@ package sneer.bricks.keymanager;
 
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.mesh.Party;
+import sneer.lego.Brick;
 import wheel.lang.Functor;
 
-public interface KeyManager {
+public interface KeyManager extends Brick {
 
 	PublicKey ownPublicKey();
 

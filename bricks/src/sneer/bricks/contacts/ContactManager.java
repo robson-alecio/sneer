@@ -1,10 +1,11 @@
 package sneer.bricks.contacts;
 
+import sneer.lego.Brick;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.lists.ListSignal;
 
 
-public interface ContactManager {
+public interface ContactManager extends Brick {
     
 	ListSignal<Contact> contacts();
 

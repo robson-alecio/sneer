@@ -3,8 +3,10 @@ package sneer.bricks.crypto;
 import java.io.File;
 import java.io.IOException;
 
+import sneer.lego.Brick;
 
-public interface Crypto {
+
+public interface Crypto extends Brick {
 
 	/**
 	 * SHA512 + Whirpool512 

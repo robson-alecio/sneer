@@ -204,7 +204,7 @@ class SignalConnection {
 		signal.addReceiver(createScoutFor(publicKey, signalPath));
 	}
 	
-	public void serveSubscriptionToContacts(PublicKey publicKey) {
+	void serveSubscriptionToContacts(PublicKey publicKey) {
 		Party target = produceParty(publicKey);
 		ListSignal<Contact> contacts = target.contacts();
 

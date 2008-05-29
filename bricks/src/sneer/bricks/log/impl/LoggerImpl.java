@@ -4,17 +4,11 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 
 import sneer.bricks.log.Logger;
-import sneer.lego.Startable;
 
-public class LoggerImpl implements Logger, Startable {
+public class LoggerImpl implements Logger {
 
-	private org.slf4j.Logger logger;
+	private org.slf4j.Logger logger = LoggerFactory.getLogger("sneer");
 	
-	@Override
-	public void start() {
-		logger = LoggerFactory.getLogger("sneer");
-	}
-
 	public void debug(String arg0, Object arg1, Object arg2) {
 		logger.debug(arg0, arg1, arg2);
 	}

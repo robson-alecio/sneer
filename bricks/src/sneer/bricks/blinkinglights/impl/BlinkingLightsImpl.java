@@ -5,16 +5,10 @@ import java.util.List;
 
 import sneer.bricks.blinkinglights.BlinkingLights;
 import sneer.bricks.blinkinglights.Light;
-import sneer.lego.Startable;
 
-public class BlinkingLightsImpl implements BlinkingLights, Startable {
+public class BlinkingLightsImpl implements BlinkingLights {
 
 	private List<Light> _lights = new ArrayList<Light>();
-	
-	@Override
-	public void start() throws Exception {
-		//Implement: create worker thread and remove old lights
-	}
 
 	@Override
 	public void turnOff(Light light) {

@@ -23,17 +23,21 @@ public class TrayIconImplTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		URL userIcon = getClass().getResource("testIcon.png");
-		_subject = new TrayIconImpl(userIcon);
+		if(SystemTray.isSupported())
+			_subject = new TrayIconImpl(userIcon);
 	}
-	
+
 	@Override
 	protected void tearDown() throws Exception {
-		_subject.dispose();
+		if(SystemTray.isSupported())
+			_subject.dispose();
 	}
 	
 	public void testMenuItems() throws Exception {
 	
-
+		if(!SystemTray.isSupported())
+			return;
+		
 		SayHelloAction sayHelloAction = new SayHelloAction();
 		_subject.addAction(sayHelloAction);
 		
@@ -46,6 +50,9 @@ public class TrayIconImplTests extends TestCase {
 	}
 	
 	public void testDefaultAction() throws Exception {
+		if(!SystemTray.isSupported())
+			return;
+
 		SayHelloAction sayHelloAction = new SayHelloAction();
 		_subject.setDefaultAction(sayHelloAction);
 		

@@ -1,11 +1,12 @@
 ﻿﻿Leandro
- - create new test runner that uses our own classloader so we can replace the AnnotatedFieldInjector by the StaticFieldInjector
  - check file locks on windows (FileUtils.cleanDirectory() "unable to delete file")
+ - create new test runner that uses our own classloader so we can replace the AnnotatedFieldInjector by the StaticFieldInjector
+ - replace AnnotatedFieldInjector with StaticFieldInjector which will enable the following 
+ 	- replace dependency on Injector with @Inject static field in Deployer brick. I did that for all my brick and it worked (Klaus).
+ 	- eliminate Startable and Injector - Ask me how :)
  [DONE] - rename Sneer1024 to PublicKey and move it to KeyManagerBrick
  - include author's pk into brick hashcode
  - use brick hashcode as key on BrickManager 
- - Replace dependency on Injector with @Inject static field in Deployer brick. I did that for all my brick and it worked (Klaus).
- - Eliminate Startable and Injector - Ask me how :)
  [DONE] - Fix or delete each broken Junit test in project.
  [DONE] - rename methods on Crypto to digest() and digester()
  [Almost DONE] - Brick Publish:

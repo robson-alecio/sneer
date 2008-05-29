@@ -1,7 +1,7 @@
 package sneer.lego;
 
 
-public interface Injector
+public interface Injector extends Brick
 {
     void inject(Object obj) 
         throws LegoException;

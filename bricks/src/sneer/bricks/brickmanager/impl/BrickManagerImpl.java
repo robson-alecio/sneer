@@ -45,6 +45,14 @@ public class BrickManagerImpl implements BrickManager {
 
 	@Override
 	public void install(BrickBundle bundle) {
+		
+		/*
+		 * Must install brick on the right order, otherwise the runOnceOnInstall 
+		 * will fail because the brick dependencies will not be found on the filesystem.
+		 * sorting will fail if dependency cycles are found
+		 */
+		bundle.sort(); 
+		
 		List<String> brickNames = bundle.brickNames();
 		for (String brickName : brickNames) {
 			BrickFile brick = bundle.brick(brickName);
@@ -91,7 +99,7 @@ public class BrickManagerImpl implements BrickManager {
 		BrickFile remoteBrick = remoteBricks.currentGet(brickName);
 		
 		if(remoteBrick == null)
-			throw new NotImplementedYet();
+			throw new NotImplementedYet("Remote brick not found on remote signal");
 		
 		return remoteBrick;
 	}
@@ -148,6 +156,7 @@ public class BrickManagerImpl implements BrickManager {
 
 	private void runOnceOnInstall(BrickFile installed) {
 		String brickName = installed.name();
+		//System.out.println("RunOnce: "+brickName);
 		_container.produce(brickName);
 	}
 

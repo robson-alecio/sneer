@@ -13,4 +13,6 @@ public interface BrickBundle {
 	void add(SneerJar jar) throws DeployerException;
 
 	void prettyPrint();
+
+	void sort();
 }

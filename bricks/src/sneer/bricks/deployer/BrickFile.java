@@ -10,7 +10,7 @@ import sneer.bricks.keymanager.PublicKey;
 import sneer.lego.utils.InjectedBrick;
 import sneer.lego.utils.SneerJar;
 
-public interface BrickFile extends Serializable {
+public interface BrickFile extends Serializable, Comparable<BrickFile> {
 
 	String name();
 

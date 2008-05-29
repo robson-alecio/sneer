@@ -2,6 +2,7 @@ package sneer.bricks.deployer.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import sneer.bricks.deployer.BrickBundle;
@@ -64,5 +65,10 @@ public class BrickBundleImpl implements BrickBundle {
 	private void printJarInfo(SneerJar jar) {
 		System.out.println(jar.role().toUpperCase() + " [" + jar.brickName() + "] file: " + jar.file());
 		System.out.println("sneer1024: " + StringUtils.toHexa(jar.sneer1024()) + "\n");
+	}
+
+	@Override
+	public void sort() {
+		Collections.sort(_bricks);
 	}
 }

@@ -16,6 +16,7 @@ import sneer.lego.utils.InjectedBrick;
 import sneer.lego.utils.SneerJar;
 import sneer.lego.utils.SneerJarImpl;
 import sneer.lego.utils.io.NetworkFriendly;
+import wheel.lang.exceptions.NotImplementedYet;
 
 public class BrickFileImpl implements BrickFile, NetworkFriendly {
 
@@ -165,5 +166,49 @@ public class BrickFileImpl implements BrickFile, NetworkFriendly {
 		apiSrc().afterSerialize();
 		impl().afterSerialize();
 		implSrc().afterSerialize();
+	}
+
+	@Override
+	public int compareTo(BrickFile other) {
+		List<InjectedBrick> bricks;
+		List<InjectedBrick> otherBricks;
+
+		try {
+			bricks = impl().injectedBricks();
+			otherBricks = other.impl().injectedBricks();
+		} catch (IOException e) {
+			throw new NotImplementedYet("Can't calculate dependency graph",e);
+		}
+		
+		if(bricks.isEmpty())
+			return -1; //this brick doesn't inject other bricks. Go first
+
+		if(otherBricks.isEmpty())
+			return 1; //the other brick doesn't inject other bricks. Let him go first
+		
+		boolean thisInjectOther = false;
+		for(InjectedBrick injected : bricks)
+			if(injected.brickName().equals(other.name())) {
+				thisInjectOther = true; 
+				break;
+			}
+
+		boolean otherInjectThis = false;
+		for(InjectedBrick injected : otherBricks)
+			if(injected.brickName().equals(_brickName)) {
+				otherInjectThis = true;
+				break;
+			}
+		
+		if(thisInjectOther && otherInjectThis)
+			throw new NotImplementedYet("Dependency cycle detected: "+_brickName+" <-> "+other.name());
+		
+		if(thisInjectOther)
+			return 1;
+		
+		if(otherInjectThis)
+			return -1;
+		
+		return 0;
 	}
 }

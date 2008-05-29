@@ -1,9 +1,7 @@
 ﻿﻿Leandro
  - check file locks on windows (FileUtils.cleanDirectory() "unable to delete file")
  - create new test runner that uses our own classloader so we can replace the AnnotatedFieldInjector by the StaticFieldInjector
- - replace AnnotatedFieldInjector with StaticFieldInjector which will enable the following 
- 	- replace dependency on Injector with @Inject static field in Deployer brick. I did that for all my brick and it worked (Klaus).
- 	- eliminate Startable and Injector - Ask me how :)
+ - replace AnnotatedFieldInjector with StaticFieldInjector which will enable removing the use of @Inject and Startable 
  [DONE] - rename Sneer1024 to PublicKey and move it to KeyManagerBrick
  - include author's pk into brick hashcode
  - use brick hashcode as key on BrickManager 

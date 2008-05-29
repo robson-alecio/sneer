@@ -46,7 +46,7 @@ public class SimpleContainer implements Container {
 
 	public SimpleContainer(Binder binder) {
 		_binder = binder;
-		_injector = new FieldInjector(this);
+		_injector = new AnnotatedFieldInjector(this);
 		log.info("*** SimpleContainer created ***");
 	}
 

@@ -1,5 +1,7 @@
 package sneer.lego.tests;
 
-public interface Sample {
+import sneer.lego.Brick;
+
+public interface Sample extends Brick {
 
 }

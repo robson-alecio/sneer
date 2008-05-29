@@ -10,7 +10,7 @@ import sneer.lego.Binder;
 import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
 import sneer.lego.Injector;
-import sneer.lego.impl.FieldInjector;
+import sneer.lego.impl.AnnotatedFieldInjector;
 import wheel.lang.Threads;
 
 public class BrickTestSupport {
@@ -25,7 +25,7 @@ public class BrickTestSupport {
 	{
 		Binder binder = getBinder();
 		Container container = ContainerUtils.newContainer(binder);
-	    Injector injector = new FieldInjector(container);
+	    Injector injector = new AnnotatedFieldInjector(container);
 	    injector.inject(this);
 	}
 

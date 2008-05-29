@@ -16,9 +16,10 @@ import org.junit.Test;
 import sneer.lego.Binder;
 import sneer.lego.Container;
 import sneer.lego.Injector;
-import sneer.lego.impl.FieldInjector;
+import sneer.lego.impl.AnnotatedFieldInjector;
 import sneer.lego.impl.SimpleBinder;
 import sneer.lego.impl.SimpleContainer;
+import sneer.lego.impl.StaticFieldInjector;
 import sneer.lego.impl.classloader.BrickClassLoader;
 import sneer.lego.tests.impl.MySample;
 
@@ -86,7 +87,7 @@ public class ContainerTest {
 		UsesInjector component = c.produce(UsesInjector.class);
 		Injector injector = component.injector();
 		assertNotNull(injector);
-		assertTrue(injector instanceof FieldInjector);
+		assertTrue(injector instanceof AnnotatedFieldInjector || injector instanceof StaticFieldInjector);
 	}
 
 	@Test

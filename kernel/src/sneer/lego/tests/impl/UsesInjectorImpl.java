@@ -7,7 +7,7 @@ import sneer.lego.tests.UsesInjector;
 public class UsesInjectorImpl implements UsesInjector {
 
 	@Inject
-	private Injector _injector;
+	private static Injector _injector;
 	
 	@Override
 	public Injector injector() {

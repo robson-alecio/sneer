@@ -1,4 +1,6 @@
 ﻿﻿Leandro
+ - create new test runner that uses our own classloader so we can replace the AnnotatedFieldInjector by the StaticFieldInjector
+ - check file locks on windows (FileUtils.cleanDirectory() "unable to delete file")
  [DONE] - rename Sneer1024 to PublicKey and move it to KeyManagerBrick
  - include author's pk into brick hashcode
  - use brick hashcode as key on BrickManager 

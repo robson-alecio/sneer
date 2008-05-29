@@ -15,6 +15,7 @@ import sneer.bricks.keymanager.KeyManager;
 import sneer.bricks.keymanager.PublicKey;
 import sneer.bricks.log.Logger;
 import sneer.bricks.mesh.Party;
+import sneer.lego.Container;
 import sneer.lego.Inject;
 import sneer.lego.utils.InjectedBrick;
 import wheel.lang.exceptions.NotImplementedYet;
@@ -36,6 +37,9 @@ public class BrickManagerImpl implements BrickManager {
 	
 	@Inject
 	private KeyManager _keyManager;
+	
+	@Inject
+	private Container _container;
 	
 	private MapRegister<String, BrickFile> _bricksByName = new MapRegisterImpl<String, BrickFile>();
 
@@ -135,8 +139,16 @@ public class BrickManagerImpl implements BrickManager {
 		PublicKey origin = brick.origin();
 		origin = origin != null ? origin : _keyManager.ownPublicKey(); 
 		installed.origin(origin);
+
+		//5. give the brick a chance to initialize itself (register menus, etc)
+		runOnceOnInstall(installed);
 		
 		_bricksByName.put(brickName, installed);
+	}
+
+	private void runOnceOnInstall(BrickFile installed) {
+		String brickName = installed.name();
+		_container.produce(brickName);
 	}
 
 	private void copyDependencies(BrickFile brick, BrickFile installed) {

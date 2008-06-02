@@ -5,10 +5,16 @@ import sneer.skin.viewmanager.ViewManager;
 
 class ViewManagerImpl implements ViewManager {
 
+	private PartyView _onlyOnePartyViewForNow;
+
 	@Override
 	public void register(PartyView view) {
-//		Signal<Party> partySignal = new RegisterImpl<Party>(_me).output();
-//		view.init(container, partySignal);
+		_onlyOnePartyViewForNow = view;
+	}
+
+	@Override
+	public PartyView getOnlyOnePartyViewForNow() {
+		return _onlyOnePartyViewForNow;
 	}
 
 }

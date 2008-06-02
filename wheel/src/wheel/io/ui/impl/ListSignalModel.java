@@ -105,12 +105,9 @@ public class ListSignalModel<T> extends AbstractListModel {
 	}
 
 	private <U> Omnivore<U> createElementReceiver(final int index) {
-		return new Omnivore<U>() {
-			int _index = index;
-			public void consume(U ignored) {
-				fireContentsChanged(this, _index, _index);
-			}
-		};
+		return new Omnivore<U>() { public void consume(U ignored) {
+			fireContentsChanged(this, index, index);
+		}};
 	}
 
 	private static final long serialVersionUID = 1L;

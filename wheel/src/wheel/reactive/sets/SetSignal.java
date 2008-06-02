@@ -16,9 +16,6 @@ public interface SetSignal<T> extends Serializable {
 	void addSetReceiver(Omnivore<SetValueChange<T>> receiver);
 	void removeSetReceiver(Omnivore<SetValueChange<T>> receiver);
 
-	void addTransientSetReceiver(Omnivore<SetValueChange<T>> receiver);
-	void removeTransientSetReceiver(Omnivore<SetValueChange<T>> receiver);
-
 	public interface SetValueChange<E> {
 		Collection<E> elementsAdded();
 		Collection<E> elementsRemoved();

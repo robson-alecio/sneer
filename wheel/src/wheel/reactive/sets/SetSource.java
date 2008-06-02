@@ -25,13 +25,6 @@ public class SetSource<T> extends AbstractNotifier<SetValueChange<T>>  implement
 		removeReceiver(receiver);
 	}
 	
-	public void addTransientSetReceiver(Omnivore<SetValueChange<T>> receiver) {
-		addTransientReceiver(receiver);
-	}
-
-	public void removeTransientSetReceiver(Omnivore<SetValueChange<T>> receiver) {
-		removeTransientReceiver(receiver);
-	}
 
 	public Set<T> currentElements() {
 		synchronized (_contents) {

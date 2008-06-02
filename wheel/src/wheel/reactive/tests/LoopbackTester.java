@@ -18,7 +18,7 @@ public class LoopbackTester {
 		Signal<Object> castedInput = Casts.uncheckedGenericCast(input);
 		castedInput.addReceiver(_inputValue1.setter());
 		castedInput.addReceiver(_inputValue2.setter());
-		castedInput.addTransientReceiver(_inputValue3.setter());
+		castedInput.addReceiver(_inputValue3.setter());
 	}
 	
 	private final Omnivore<Object> _output;

@@ -19,14 +19,14 @@ import wheel.reactive.lists.impl.ListRegisterImpl;
 class ToptenGuiImpl implements ToptenGui, Startable {
 
 	@Inject
-	private ViewManager _appMenu;
+	private ViewManager _viewManager;
 
 //	@Inject
 //	private Topten _topten;
 	
 	@Override
 	public void start() throws Exception {
-		_appMenu.register(new PartyView(){
+		_viewManager.register(new PartyView(){
 
 			@Override
 			public void init(final Container container, Signal<Party> activeParty) {

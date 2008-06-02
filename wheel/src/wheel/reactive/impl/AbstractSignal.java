@@ -31,14 +31,6 @@ public abstract class AbstractSignal<T> extends AbstractNotifier<T> implements S
 		removeReceiver(new SetReceiverAdapter<T>(receiver));
 	}
 
-	public void addTransientSetReceiver(Omnivore<SetValueChange<T>> receiver) {
-		addTransientReceiver(new SetReceiverAdapter<T>(receiver));
-	}
-
-	public void removeTransientSetReceiver(Omnivore<SetValueChange<T>> receiver) {
-		removeTransientReceiver(new SetReceiverAdapter<T>(receiver));
-	}
-	
 	@Override
 	protected void initReceiver(Omnivore<T> receiver) {
 		T currentValue = currentValue();

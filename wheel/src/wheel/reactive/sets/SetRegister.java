@@ -13,7 +13,7 @@ import wheel.reactive.sets.SetSignal.SetValueChange;
 import wheel.reactive.sets.impl.SetValueChangeImpl;
 
 
-public class SetSource<T> extends AbstractNotifier<SetValueChange<T>>  implements SetSignal<T> {
+public class SetRegister<T> extends AbstractNotifier<SetValueChange<T>>  implements SetSignal<T> {
 
 	private Set<T> _contents = new HashSet<T>();
 

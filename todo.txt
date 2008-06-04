@@ -1,7 +1,7 @@
 ﻿﻿Leandro
- - Load wheel in a base classloader that also adds "implements Serializable" to classes.
  - check file locks on windows (FileUtils.cleanDirectory() "unable to delete file")
  - create new test runner that uses our own classloader so we can replace the AnnotatedFieldInjector by the StaticFieldInjector
+   - Load wheel in a base classloader that also adds "implements Serializable" to classes.
  - replace AnnotatedFieldInjector with StaticFieldInjector which will enable removing the use of @Inject and Startable 
  - include author's pk into brick hashcode
  - use brick hashcode as key on BrickManager 
@@ -70,3 +70,56 @@ FileSharing
   - access control
   - File hashes to detect changes and renames
   - diff
+  
+ 
+TopTen
+
+
+GiveNTake
+  - "Things"
+    - Publisher/Announcer/Author - The sovereign party responsible for this thing.
+    - Name - For listing. Considered part of the description when searching, maybe with a higher weighting.
+    - Description - Free text.
+      - Location? Street Addresses? GPS Coordinates?
+      - Attributes? Price, Weight, etc?
+    - Photos? Other Media?
+    - Comments by others?
+
+  - Examples
+    - Apartment
+      - Name: "Av João Gualberto 1673 sala 41" or "Apartamento Juvevê 2 Quartos"
+      - Description: "Apartamento Sala Comercial em Bom estado. Bom para consultorio. Face sul. Sito a Av João Gualberto 1673 sala 41. R$42700,00 a vista. Aceita troca por carro de menor valor."
+      
+      - Name: "Apartamento Residencial - Bacacheri"
+      - Description: "Valor: R$ 194.500,00 Area: 163,00m², mobilado, ocupado, com playground, BELÍSSIMO APTO CONTENDO 3 QUARTOS SENDO 1 SUITE COM ARMÁRIOS E PISO EM MADEIRA, AMPLA SALA EM (L) TAMBEM COM PISO EM MADEIRA, SANCAS DE GESSO, PINTURA TEXTURIZADA, QUARTOS DE SOLTEIRO COM ARMÁRIOS,ESQUADRIS DE ALUMINIO, COZINHA COM ARMÁRIOS E AQUECIMENTO Á GÁS, PREDIO COM 02 SALÕES DE FESTAS, 02 CHURRASQUEIRAS COLETIVAS, SALÃO DE JOGOS E SALA DE GINASTICA, ARQUITETURA MODERNA E PASTILHADA. PRÓXIMO AO WALL MART DO CABRAL, BANCOS ESCOLAS FARMÁCIAS E COMERCIO EM GERAL. ESTUDO PROPOSTA COM IMÓVEL DE MAIOR VALOR EM CONDOMINIO FECHADO. CONFIRA E FAÇA SUA PROPOSTA"
+  
+      - Name: "Apartamento Residencial - Barreirinha"
+      - Description: "Valor: R$ 66.000,00 Area: 50,00m² Apartamento no Cond. Sta. Efigênia II, 3º andar, 02 quartos, sala, cozinha, área serviço e bwc, piso taco, próximo ao Terminal Barreirinha, com ônibus, escola, Posto de Saúde. Rua Professor Guilherme Butler"
+
+      - Name: "Casa Residencial - Atuba"
+      - Description: "Valor: R$ 130.000,00 Area: 120,00m² Casa com 3 quartos sala cozinha banheiro com piso em parquet, janelas de ferro com grade toda murada e com grade na frente, quintal com deposito em alvenaria, cozinha com armarios."
+      
+    - Search:
+      API for agent with predicate to decide?
+      
+      (Apartamento | Apto | Ap) => Apartamento
+      (Casa | Sobrado) => Casa
+      (Barreirinha | Ahu | Juveve | AltoDaGloria) -> Bairros Legais
+      (Apartamento | Casa), Bairros Legais, -Comercial, Churrasqueira -> Imoveis Legais
+      
+      Imoveis Legais, Price < 100000
+      Imoveis Legais, 100000 <= Price < 200000
+      Imoveis Legais, 200000 <= Price < 300000
+      
+      - Ignored (em, bom, para, m², com)
+      
+      - shown tags
+        - 4x Valor
+        - 3x Cozinha
+        - 3x área
+        - 3x Residencial
+        - 3x quartos
+        - 3x Valor R$
+        - 2x 3 quartos
+        - 2x comercial
+        - 2x churrasqueira

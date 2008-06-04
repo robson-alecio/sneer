@@ -1,17 +1,12 @@
 package wheel.reactive.maps;
 
-import java.util.Set;
+import wheel.lang.Pair;
+import wheel.reactive.sets.SetSignal;
 
-import wheel.lang.Omnivore;
-
-public interface MapSignal<K,V> {
+public interface MapSignal<K,V> extends SetSignal<Pair<K, V>> {
 	
-	void addMapReceiver(Omnivore<MapValueChange<K,V>> receiver);
-	void removeMapReceiver(Omnivore<MapValueChange<K,V>> receiver);
-
+	SetSignal<K> keys();
 	
-	Set<K> currentKeys();
 	V currentGet(K key);
-	int currentSize();
 
 }

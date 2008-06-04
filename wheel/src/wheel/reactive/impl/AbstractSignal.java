@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import wheel.lang.Omnivore;
+import wheel.lang.Wrapper;
 import wheel.reactive.Signal;
 import wheel.reactive.sets.impl.SetValueChangeImpl;
 
@@ -23,12 +24,14 @@ public abstract class AbstractSignal<T> extends AbstractNotifier<T> implements S
 		return currentValue.toString();
 	}
 
+	@Override
 	public void addSetReceiver(Omnivore<SetValueChange<T>> receiver) {
 		addReceiver(new SetReceiverAdapter<T>(receiver));
 	}
 
-	public void removeSetReceiver(Omnivore<SetValueChange<T>> receiver) {
-		removeReceiver(new SetReceiverAdapter<T>(receiver));
+	@Override
+	public void removeSetReceiver(Object receiver) {
+		removeReceiver(receiver);
 	}
 
 	@Override
@@ -38,34 +41,24 @@ public abstract class AbstractSignal<T> extends AbstractNotifier<T> implements S
 		receiver.consume(currentValue);
 	}
 	
+	@Override
 	public Set<T> currentElements() {
 		HashSet<T> result = new HashSet<T>(1);
 		result.add(currentValue());
 		return result;
 	}
 
-	static private class SetReceiverAdapter<AT> implements Omnivore<AT> {
+	static private class SetReceiverAdapter<AT> extends Wrapper<Omnivore<SetValueChange<AT>>> implements Omnivore<AT> {
 		
-		private final Omnivore<SetValueChange<AT>> _delegate;
 		private AT _oldValue;
 		
 		public SetReceiverAdapter(Omnivore<SetValueChange<AT>> receiver) {
-			_delegate = receiver;
+			super(receiver);
 		}
 		
 		public void consume(AT newValue) {
 			_delegate.consume(new SetValueChangeImpl<AT>(newValue, _oldValue));
 			_oldValue = newValue;
-		}
-
-		@Override
-		public boolean equals(Object other) {
-			return _delegate.equals(other);
-		}
-
-		@Override
-		public int hashCode() {
-			return _delegate.hashCode();
 		}
 		
 	}

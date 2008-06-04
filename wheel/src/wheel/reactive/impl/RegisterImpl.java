@@ -1,10 +1,14 @@
 package wheel.reactive.impl;
 
 import java.io.Serializable;
+import java.util.Iterator;
+
+import org.apache.commons.collections.iterators.EmptyIterator;
+import org.apache.commons.collections.iterators.SingletonIterator;
 
 import wheel.lang.Omnivore;
-import wheel.reactive.Signal;
 import wheel.reactive.Register;
+import wheel.reactive.Signal;
 
 public class RegisterImpl<VO> implements Register<VO> {
 
@@ -18,6 +22,20 @@ public class RegisterImpl<VO> implements Register<VO> {
 		}
 
 		private static final long serialVersionUID = 1L;
+
+		@Override
+		public int currentSize() {
+			return _currentValue == null
+				? 0
+				: 1;
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public Iterator<VO> iterator() {
+			if (_currentValue == null) return EmptyIterator.INSTANCE;
+			return new SingletonIterator(_currentValue);
+		}
 	}
 
 

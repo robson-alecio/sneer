@@ -82,7 +82,7 @@ public class BrickManagerImpl implements BrickManager {
 			BrickFile inBundle = bundle == null ? null : bundle.brick(wanted); 
 			if(inBundle == null) { 
 				//not inBudle, try local registry
-				inBundle = _bricksByName.get(wanted);
+				inBundle = brick(wanted);
 				if(inBundle == null) {
 					//not found. must ask other peer via network
 					BrickFile justGotten = retrieveRemoveBrick(brick.origin(), injected.brickName());
@@ -106,12 +106,12 @@ public class BrickManagerImpl implements BrickManager {
 
 	@Override
 	public BrickFile brick(String brickName) {
-		return _bricksByName.get(brickName);
+		return _bricksByName.output().currentGet(brickName);
 	}
 
 	private boolean okToInstall(BrickFile brick) {
 		String brickName = brick.name();
-		BrickFile installed = _bricksByName.get(brickName);
+		BrickFile installed = brick(brickName);
 		if(installed == null)
 			return true;
 		

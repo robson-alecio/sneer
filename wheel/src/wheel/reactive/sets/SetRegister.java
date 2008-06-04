@@ -5,6 +5,7 @@
 package wheel.reactive.sets;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import wheel.lang.Omnivore;
@@ -13,27 +14,59 @@ import wheel.reactive.sets.SetSignal.SetValueChange;
 import wheel.reactive.sets.impl.SetValueChangeImpl;
 
 
-public class SetRegister<T> extends AbstractNotifier<SetValueChange<T>>  implements SetSignal<T> {
+public class SetRegister<T> {
 
-	private Set<T> _contents = new HashSet<T>();
+	private class MyOutput extends AbstractNotifier<SetValueChange<T>> implements SetSignal<T> {
 
-	public void addSetReceiver(Omnivore<SetValueChange<T>> receiver) {
-		addReceiver(receiver);
-	}
-
-	public void removeSetReceiver(Omnivore<SetValueChange<T>> receiver) {
-		removeReceiver(receiver);
-	}
-	
-
-	public Set<T> currentElements() {
-		synchronized (_contents) {
-			return contentsCopy();
+		@Override
+		public void addSetReceiver(Omnivore<SetValueChange<T>> receiver) {
+			addReceiver(receiver);
 		}
+
+		@Override
+		public void removeSetReceiver(Object receiver) {
+			removeReceiver(receiver);
+		}
+
+		@Override
+		public Set<T> currentElements() {
+			synchronized (_contents) {
+				return contentsCopy();
+			}
+		}
+
+		@Override
+		public int currentSize() {
+			return _contents.size();
+		}
+
+		@Override
+		public Iterator<T> iterator() {
+			return _contents.iterator();
+		}
+
+		@Override
+		protected void initReceiver(Omnivore<SetValueChange<T>> receiver) {
+			receiver.consume(new SetValueChangeImpl<T>(contentsCopy(), null));
+		}
+
+		@Override
+		protected void notifyReceivers(SetValueChange<T> valueChange) {
+			super.notifyReceivers(valueChange);
+		}
+
+		private Set<T> contentsCopy() {
+			return new HashSet<T>(_contents);
+		}
+		
 	}
 
-	private Set<T> contentsCopy() {
-		return new HashSet<T>(_contents);
+	private final Set<T> _contents = new HashSet<T>();
+	private final MyOutput _output = new MyOutput();
+
+	
+	public SetSignal<T> output() {
+		return _output;
 	}
 
 	public void add(T elementAdded) {
@@ -50,7 +83,7 @@ public class SetRegister<T> extends AbstractNotifier<SetValueChange<T>>  impleme
 			assertValidChange(change);
 			_contents.addAll(change.elementsAdded());
 			_contents.removeAll(change.elementsRemoved());
-			notifyReceivers(change);
+			_output.notifyReceivers(change);
 		}
 	}
 
@@ -61,10 +94,4 @@ public class SetRegister<T> extends AbstractNotifier<SetValueChange<T>>  impleme
 			throw new IllegalArgumentException("SetSource did not contain all elements being removed.");
 	}
 
-	@Override
-	protected void initReceiver(Omnivore<SetValueChange<T>> receiver) {
-		receiver.consume(new SetValueChangeImpl<T>(contentsCopy(), null));
-	}
-
-	private static final long serialVersionUID = 1L;
 }

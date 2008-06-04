@@ -52,7 +52,7 @@ public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 	protected abstract void initReceiver(Omnivore<VC> receiver);
 	
 	@Override
-	public void removeReceiver(Omnivore<VC> receiver) {
+	public void removeReceiver(Object receiver) {
 		synchronized (_receivers) {
 			boolean wasThere = _receivers.remove(receiver); //Optimize consider a Set for when there is a great number of receivers.
 			assert wasThere;

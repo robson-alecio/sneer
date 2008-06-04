@@ -4,23 +4,22 @@
 
 package wheel.reactive.sets;
 
-import java.io.Serializable;
 import java.util.Collection;
-import java.util.Set;
 
 import wheel.lang.Omnivore;
+import wheel.reactive.CollectionSignal;
 
 
-public interface SetSignal<T> extends Serializable {
+public interface SetSignal<T> extends CollectionSignal<T> {
 
 	void addSetReceiver(Omnivore<SetValueChange<T>> receiver);
-	void removeSetReceiver(Omnivore<SetValueChange<T>> receiver);
+	void removeSetReceiver(Object receiver);
 
 	public interface SetValueChange<E> {
 		Collection<E> elementsAdded();
 		Collection<E> elementsRemoved();
 	}
 
-	Set<T> currentElements();
+	Collection<T> currentElements();
 	
 }

@@ -1,15 +1,13 @@
 package wheel.reactive.lists;
 
-import java.io.Serializable;
-
 import wheel.lang.Omnivore;
+import wheel.reactive.CollectionSignal;
 
-public interface ListSignal<VO> extends Iterable<VO>, Serializable {
+public interface ListSignal<T> extends CollectionSignal<T> {
 	
 	public void addListReceiver(Omnivore<ListValueChange> receiver);
 	public void removeListReceiver(Omnivore<ListValueChange> receiver);
 
-	public int currentSize();
-	public VO currentGet(int index);
+	public T currentGet(int index);
 
 }

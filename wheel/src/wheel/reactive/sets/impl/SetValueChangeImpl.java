@@ -12,7 +12,7 @@ public class SetValueChangeImpl<T> implements SetValueChange<T> {
 	private final Collection<T> _elementsRemoved;
 
 	public SetValueChangeImpl(T elementAdded, T elementRemoved) {
-		this(wrap(elementAdded), wrap(elementRemoved));
+		this(wrap(elementAdded), wrap(elementRemoved)); //Optimize
 	}
 
 	public SetValueChangeImpl(Collection<T> added, Collection<T> removed) {

@@ -7,8 +7,10 @@ import org.apache.commons.collections.iterators.EmptyIterator;
 import org.apache.commons.collections.iterators.SingletonIterator;
 
 import wheel.lang.Omnivore;
+import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
+import wheel.reactive.lists.ListValueChange;
 
 public class RegisterImpl<VO> implements Register<VO> {
 
@@ -24,9 +26,7 @@ public class RegisterImpl<VO> implements Register<VO> {
 
 		@Override
 		public int currentSize() {
-			return _currentValue == null
-				? 0
-				: 1;
+			return _currentValue == null ? 0 : 1;
 		}
 
 		@SuppressWarnings("unchecked")
@@ -35,6 +35,25 @@ public class RegisterImpl<VO> implements Register<VO> {
 			if (_currentValue == null) return EmptyIterator.INSTANCE;
 			return new SingletonIterator(_currentValue);
 		}
+
+		@Override
+		public void addListReceiver(Omnivore<ListValueChange> receiver) {
+			throw new NotImplementedYet(); //Implement
+		}
+
+		@Override
+		public void removeListReceiver(Object receiver) {
+			removeReceiver(receiver);
+		}
+
+		@Override
+		public VO currentGet(int index) {
+			if (index > 1) throw new IndexOutOfBoundsException();
+			if (_currentValue == null) throw new IndexOutOfBoundsException();
+			
+			return _currentValue;
+		}
+
 	}
 
 

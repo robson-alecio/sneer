@@ -33,7 +33,7 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 		}
 		
 		@Override
-		public void removeListReceiver(Omnivore<ListValueChange> receiver) {
+		public void removeListReceiver(Object receiver) {
 			removeReceiver(receiver);		
 		}
 

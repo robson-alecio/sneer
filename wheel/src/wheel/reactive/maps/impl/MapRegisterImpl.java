@@ -4,21 +4,50 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import wheel.lang.Omnivore;
-import wheel.lang.Pair;
-import wheel.lang.Wrapper;
+import wheel.reactive.impl.AbstractNotifier;
 import wheel.reactive.maps.MapRegister;
 import wheel.reactive.maps.MapSignal;
 import wheel.reactive.sets.SetRegister;
 import wheel.reactive.sets.SetSignal;
 import wheel.reactive.sets.SetSignal.SetValueChange;
+import wheel.reactive.sets.impl.SetRegisterImpl;
 import wheel.reactive.sets.impl.SetValueChangeImpl;
 
 public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 	
-	private class MyOutput implements MapSignal<K,V> {
+	static class MyEntry<K,V> implements Entry<K, V> {
+
+		private final K _key;
+		private final V _value;
+
+		private MyEntry(K key, V value) {
+			_key = key;
+			_value = value;
+		}
+
+		@Override
+		public K getKey() {
+			return _key;
+		}
+
+		@Override
+		public V getValue() {
+			return _value;
+		}
+
+		@Override
+		public V setValue(V value) {
+			throw new UnsupportedOperationException();
+		}
+
+	}
+
+
+	private class MyOutput extends AbstractNotifier<SetValueChange<Map.Entry<K,V>>> implements MapSignal<K,V> {
 
 		@Override
 		public V currentGet(K key) {
@@ -31,23 +60,23 @@ public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 		}
 
 		@Override
-		public void addSetReceiver(Omnivore<SetValueChange<Pair<K,V>>> receiver) {
-			_keys.output().addSetReceiver(new MapReceiverAdapter(receiver));		
+		public void addSetReceiver(Omnivore<SetValueChange<Map.Entry<K,V>>> receiver) {
+			addReceiver(receiver);		
 		}
 		
 		@Override
 		public void removeSetReceiver(Object receiver) {
-			_keys.output().removeSetReceiver(receiver);		
+			removeReceiver(receiver);		
 		}
 
 
 		@Override
-		public Collection<Pair<K, V>> currentElements() {
-			return convertToMapEntries(keys().currentElements());
+		public Collection<Map.Entry<K, V>> currentElements() {
+			return new ArrayList<Map.Entry<K, V>>(_map.entrySet());
 		}
 
 		@Override
-		public Iterator<Pair<K, V>> iterator() {
+		public Iterator<Map.Entry<K, V>> iterator() {
 			return currentElements().iterator();
 		}
 
@@ -56,11 +85,25 @@ public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 			return _keys.output();
 		}
 
+		@Override
+		protected void initReceiver(Omnivore<SetValueChange<Map.Entry<K, V>>> receiver) {
+			receiver.consume(asChange(currentElements()));
+		}
+
+		private SetValueChange<Entry<K, V>> asChange(Collection<Entry<K, V>> entries) {
+			return new SetValueChangeImpl<Entry<K, V>>(entries, null);
+		}
+
+		@Override
+		protected void notifyReceivers(SetValueChange<Entry<K, V>> change) {
+			super.notifyReceivers(change);
+		}
+
 
 	}
 
 	private final Map<K,V> _map = new ConcurrentHashMap<K,V>();
-	private final SetRegister<K> _keys = new SetRegister<K>(); //Optimize This is redundant with the keys in the map.
+	private final SetRegister<K> _keys = new SetRegisterImpl<K>(); //Optimize This is redundant with the keys in the map.
 	
 	private MyOutput _output = new MyOutput();
 
@@ -70,46 +113,30 @@ public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 		return _output;
 	}
 	
-	public void put(K key, V value) {
-		V old = _map.get(key);
-		if (old != null) remove(key);
-		System.err.println("This sould happen in a single notification..."); //Fix
+	@Override
+	synchronized public void put(K key, V value) {
+		boolean isNewKey = !_map.containsKey(key);
+		if (isNewKey) _keys.add(key);
 		
-		_map.put(key, value);
-		_keys.add(key);
+		V oldValue = _map.put(key, value);
+
+		Entry<K, V> added = new MyEntry<K,V>(key, value);
+		Entry<K, V> removed = isNewKey
+			? null
+			: new MyEntry<K,V>(key, oldValue);
+		
+		SetValueChange<Entry<K, V>> change = new SetValueChangeImpl<Entry<K,V>>(added, removed);
+		_output.notifyReceivers(change);
 	}
-	
+
+
 	@Override
 	public void remove(K key) {
-		_map.remove(key);
+		V oldValue = _map.remove(key);
 		_keys.remove(key);
-	}
-
-	private Collection<Pair<K, V>> convertToMapEntries(Collection<K> keys) {
-		Collection<Pair<K,V>> result = new ArrayList<Pair<K,V>>(keys.size());
-		for(K key : keys)
-			result.add(new Pair<K,V>(key, _map.get(key)));
-		return result;
-	}
-	
-	
-	private class MapReceiverAdapter extends Wrapper<Omnivore<SetValueChange<Pair<K,V>>>> implements Omnivore<SetValueChange<K>> {
 		
-		private MapReceiverAdapter(Omnivore<SetValueChange<Pair<K, V>>> receiver) {
-			super(receiver);
-		}
-		
-		@Override
-		public void consume(SetValueChange<K> change) {
-			Collection<K> keysAdded = change.elementsAdded();
-			Collection<K> keysRemoved = change.elementsRemoved();
-
-			Collection<Pair<K, V>> added = convertToMapEntries(keysAdded);
-			Collection<Pair<K, V>> removed = convertToMapEntries(keysRemoved);
-				
-			_delegate.consume(new SetValueChangeImpl<Pair<K,V>>(added, removed));
-		}
-
+		Entry<K, V> removed = new MyEntry<K,V>(key, oldValue);
+		_output.notifyReceivers(new SetValueChangeImpl<Entry<K,V>>(null, removed));
 	}
 
 }

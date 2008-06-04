@@ -13,8 +13,7 @@ import wheel.reactive.Signal;
 public class RegisterImpl<VO> implements Register<VO> {
 
 
-
-	class MyOutput extends AbstractSignal<VO> {
+	class MyOutput extends AbstractSignal<VO> implements java.io.Serializable {
 
 		@Override
 		public VO currentValue() {
@@ -45,6 +44,7 @@ public class RegisterImpl<VO> implements Register<VO> {
 		public void consume(VO newValue) {
 			if (isSameValue(newValue)) throw new IllegalArgumentException("New value must be different.");
 			_currentValue = newValue;
+			
 			_output.notifyReceivers(newValue);
 		}
 		

@@ -9,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.lang.reflect.Method;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import functional.SignalUtils;
@@ -24,6 +25,8 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 	
 	@Test
 	public void testPublish() throws Exception {
+		
+		Assert.fail("Breaking other tests");
 		
 		BrickPublisher publisher = wrapParty(_a);
 		BrickPublisher receiver = wrapParty(_b);

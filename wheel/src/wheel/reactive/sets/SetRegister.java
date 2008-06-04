@@ -4,94 +4,16 @@
 
 package wheel.reactive.sets;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
-import wheel.lang.Omnivore;
-import wheel.reactive.impl.AbstractNotifier;
 import wheel.reactive.sets.SetSignal.SetValueChange;
-import wheel.reactive.sets.impl.SetValueChangeImpl;
 
 
-public class SetRegister<T> {
+public interface SetRegister<T> {
 
-	private class MyOutput extends AbstractNotifier<SetValueChange<T>> implements SetSignal<T> {
+	SetSignal<T> output();
 
-		@Override
-		public void addSetReceiver(Omnivore<SetValueChange<T>> receiver) {
-			addReceiver(receiver);
-		}
+	void add(T elementAdded);
+	void remove(T elementRemoved);
 
-		@Override
-		public void removeSetReceiver(Object receiver) {
-			removeReceiver(receiver);
-		}
-
-		@Override
-		public Set<T> currentElements() {
-			synchronized (_contents) {
-				return contentsCopy();
-			}
-		}
-
-		@Override
-		public int currentSize() {
-			return _contents.size();
-		}
-
-		@Override
-		public Iterator<T> iterator() {
-			return _contents.iterator();
-		}
-
-		@Override
-		protected void initReceiver(Omnivore<SetValueChange<T>> receiver) {
-			receiver.consume(new SetValueChangeImpl<T>(contentsCopy(), null));
-		}
-
-		@Override
-		protected void notifyReceivers(SetValueChange<T> valueChange) {
-			super.notifyReceivers(valueChange);
-		}
-
-		private Set<T> contentsCopy() {
-			return new HashSet<T>(_contents);
-		}
-		
-	}
-
-	private final Set<T> _contents = new HashSet<T>();
-	private final MyOutput _output = new MyOutput();
-
-	
-	public SetSignal<T> output() {
-		return _output;
-	}
-
-	public void add(T elementAdded) {
-		change(new SetValueChangeImpl<T>(elementAdded, null));
-	}
-
-	public void remove(T elementRemoved) {
-		change(new SetValueChangeImpl<T>(null, elementRemoved));
-	}
-
-	
-	public void change(SetValueChange<T> change) {
-		synchronized (_contents) {
-			assertValidChange(change);
-			_contents.addAll(change.elementsAdded());
-			_contents.removeAll(change.elementsRemoved());
-			_output.notifyReceivers(change);
-		}
-	}
-
-	private void assertValidChange(SetValueChange<T> change) {
-		if (change.elementsAdded().removeAll(_contents))
-			throw new IllegalArgumentException("SetSource already contained at least one element being added.");
-		if (!_contents.containsAll(change.elementsRemoved()))
-			throw new IllegalArgumentException("SetSource did not contain all elements being removed.");
-	}
+	void change(SetValueChange<T> change);
 
 }

@@ -1,9 +1,10 @@
 package wheel.reactive.maps;
 
-import wheel.lang.Pair;
+import java.util.Map;
+
 import wheel.reactive.sets.SetSignal;
 
-public interface MapSignal<K,V> extends SetSignal<Pair<K, V>> {
+public interface MapSignal<K,V> extends SetSignal<Map.Entry<K, V>> {
 	
 	SetSignal<K> keys();
 	

@@ -1,4 +1,5 @@
 ﻿﻿Leandro
+ - Load wheel in a base classloader that also adds "implements Serializable" to classes.
  - check file locks on windows (FileUtils.cleanDirectory() "unable to delete file")
  - create new test runner that uses our own classloader so we can replace the AnnotatedFieldInjector by the StaticFieldInjector
  - replace AnnotatedFieldInjector with StaticFieldInjector which will enable removing the use of @Inject and Startable 

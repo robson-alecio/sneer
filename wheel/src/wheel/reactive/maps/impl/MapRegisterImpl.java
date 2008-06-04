@@ -60,7 +60,7 @@ public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 	}
 
 	private final Map<K,V> _map = new ConcurrentHashMap<K,V>();
-	private final SetRegister<K> _keys = new SetRegister<K>();
+	private final SetRegister<K> _keys = new SetRegister<K>(); //Optimize This is redundant with the keys in the map.
 	
 	private MyOutput _output = new MyOutput();
 

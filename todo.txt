@@ -3,11 +3,8 @@
  - check file locks on windows (FileUtils.cleanDirectory() "unable to delete file")
  - create new test runner that uses our own classloader so we can replace the AnnotatedFieldInjector by the StaticFieldInjector
  - replace AnnotatedFieldInjector with StaticFieldInjector which will enable removing the use of @Inject and Startable 
- [DONE] - rename Sneer1024 to PublicKey and move it to KeyManagerBrick
  - include author's pk into brick hashcode
  - use brick hashcode as key on BrickManager 
- [DONE] - Fix or delete each broken Junit test in project.
- [DONE] - rename methods on Crypto to digest() and digester()
  [Almost DONE] - Brick Publish:
 	1) Inform source folder (src).
 	2) Inform library folder (lib).
@@ -26,11 +23,8 @@
  - Logging - Find a way that the Looger brick can configured via API without having to use the log4j properties file. 
  
 Leandro Reminder 
- [DONE] - compilar com libs
- [DONE] - incluir apis no classpath dos bricks instalados anteriormente
  - hash com libs
  - brick registry (guarda hash e os jars)
- [DONE] - analizar dependencias injetadas 
 
 Klaus
 ongoing - Component Model (see todoLego.txt)

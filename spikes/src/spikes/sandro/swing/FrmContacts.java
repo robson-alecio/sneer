@@ -6,8 +6,6 @@
 
 package spikes.sandro.swing;
 
-import java.awt.Font;
-
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -45,10 +43,10 @@ public class FrmContacts extends javax.swing.JFrame {
         pnlPhoto = new javax.swing.JPanel();
         slider = new javax.swing.JSlider();
         lbUserName = new javax.swing.JLabel();
-        lbQotd = new javax.swing.JLabel();
-        btn1 = new javax.swing.JButton();
-        btn2 = new javax.swing.JButton();
-        btn3 = new javax.swing.JButton();
+        lbUserName1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -73,31 +71,31 @@ public class FrmContacts extends javax.swing.JFrame {
 
         slider.setName("slider"); // NOI18N
 
-        lbUserName.setFont(lbUserName.getFont().deriveFont(16).deriveFont(Font.BOLD));
-        lbUserName.setText("Sandro Bihaiko");
+        lbUserName.setFont(new java.awt.Font("Tahoma", 1, 12));
+        lbUserName.setText("Sandro Bihaiko - On-Line");
         lbUserName.setName("lbUserName"); // NOI18N
 
-//        lbQotd.setFont(new java.awt.Font("Tahoma", 0, 10));
-//        lbQotd.setName("lbUserName1"); // NOI18N
-        lbQotd.setText("Minha Frase do Dia");
+        lbUserName1.setFont(new java.awt.Font("Tahoma", 0, 10));
+        lbUserName1.setText("Minha Frase do Dia");
+        lbUserName1.setName("lbUserName1"); // NOI18N
 
-        btn1.setText("B1");
-        btn1.setFocusable(false);
-        btn1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btn1.setName("jButton1"); // NOI18N
-        btn1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton1.setText("B1");
+        jButton1.setFocusable(false);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton1.setName("jButton1"); // NOI18N
+        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
-        btn2.setText("B2");
-        btn2.setFocusable(false);
-        btn2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btn2.setName("jButton2"); // NOI18N
-        btn2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton2.setText("B2");
+        jButton2.setFocusable(false);
+        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton2.setName("jButton2"); // NOI18N
+        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
-        btn3.setText("B3");
-        btn3.setFocusable(false);
-        btn3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btn3.setName("jButton3"); // NOI18N
-        btn3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton3.setText("B3");
+        jButton3.setFocusable(false);
+        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton3.setName("jButton3"); // NOI18N
+        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -106,7 +104,7 @@ public class FrmContacts extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(scroll, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
+                    .addComponent(scroll, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(slider, javax.swing.GroupLayout.Alignment.LEADING, 0, 0, Short.MAX_VALUE)
@@ -114,13 +112,13 @@ public class FrmContacts extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btn1)
+                                .addComponent(jButton1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btn2)
+                                .addComponent(jButton2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btn3))
-                            .addComponent(lbQotd, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
-                            .addComponent(lbUserName, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE))))
+                                .addComponent(jButton3))
+                            .addComponent(lbUserName1, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+                            .addComponent(lbUserName, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -132,16 +130,16 @@ public class FrmContacts extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lbUserName)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lbQotd)
+                        .addComponent(lbUserName1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btn2)
-                            .addComponent(btn3)
-                            .addComponent(btn1))))
+                            .addComponent(jButton2)
+                            .addComponent(jButton3)
+                            .addComponent(jButton1))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(slider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(8, 8, 8)
-                .addComponent(scroll, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
+                .addComponent(scroll, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -160,11 +158,11 @@ public class FrmContacts extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn1;
-    private javax.swing.JButton btn2;
-    private javax.swing.JButton btn3;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel lbUserName;
-    private javax.swing.JLabel lbQotd;
+    private javax.swing.JLabel lbUserName1;
     private javax.swing.JPanel pnlPhoto;
     private javax.swing.JScrollPane scroll;
     private javax.swing.JSlider slider;

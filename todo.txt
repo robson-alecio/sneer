@@ -27,6 +27,7 @@ Leandro Reminder
  - brick registry (guarda hash e os jars)
 
 Klaus
+contacts() - change from ListSignal to SetSignal.
 ongoing - Component Model (see todoLego.txt)
  - GUI - Spartan interface for what we have so far. http://c2.com/cgi/wiki?SpartanUserInterface 
  - RemoteSignals - Test with different signals, not only name.
@@ -80,8 +81,8 @@ GiveNTake
     - Publisher/Announcer/Author - The sovereign party responsible for this thing.
     - Name - For listing. Considered part of the description when searching, maybe with a higher weighting.
     - Description - Free text.
-      - Location? Street Addresses? GPS Coordinates?
-      - Attributes? Price, Weight, etc?
+    - Attributes? Price, Weight, etc?
+    - Location? Street Addresses? GPS Coordinates?
     - Photos? Other Media?
     - Comments by others?
 

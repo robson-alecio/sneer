@@ -26,7 +26,7 @@ public class TrayIconImpl implements TrayIcon {
 	public static class SystemTrayNotSupported extends Exception {
 
 		public SystemTrayNotSupported() {
-			super(translate("Icon cannot be null"));
+			super(translate("System Tray Icon not supported. Might be running under a fancy Linux window manager."));
 		}
 
 		private static final long serialVersionUID = 1L;

@@ -82,7 +82,7 @@ GiveNTake
     - Name - For listing. Considered part of the description when searching, maybe with a higher weighting.
     - Description - Free text.
     - Attributes? Price, Weight, etc?
-    - Location? Street Addresses? GPS Coordinates?
+      - Location? Street Addresses? GPS Coordinates?
     - Photos? Other Media?
     - Comments by others?
 

@@ -26,7 +26,7 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 	@Test
 	public void testPublish() throws Exception {
 		
-		Assert.fail("Breaking other tests");
+		Assert.fail("If this test runs, other tests break.");
 		
 		BrickPublisher publisher = wrapParty(_a);
 		BrickPublisher receiver = wrapParty(_b);

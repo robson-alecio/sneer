@@ -1,5 +1,8 @@
 package sneer.bricks.threadpool.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Inject;
 import spikes.legobricks.name.OwnNameKeeper;
@@ -7,7 +10,10 @@ import spikes.legobricks.name.OwnNameKeeper;
 public class ThreadPoolImpl implements ThreadPool {
 
 	@Inject
-	private OwnNameKeeper _ownNameKeeper;
+	static private OwnNameKeeper _ownNameKeeper;
+	
+	private final List<Runnable> _actors = new ArrayList<Runnable>();
+	
 	
 	@Override
 	public void runDaemon(Runnable runnable) {
@@ -27,6 +33,12 @@ public class ThreadPoolImpl implements ThreadPool {
 
 	private String toSimpleClassName(String className) {
 		return className.substring(className.lastIndexOf(".") + 1);
+	}
+
+	@Override
+	public synchronized void registerActor(Runnable actor) {
+		_actors.add(actor);
+		runDaemon(actor);
 	}
 
 }

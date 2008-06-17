@@ -13,6 +13,9 @@ import net.sourceforge.napkinlaf.NapkinLookAndFeel;
 import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Inject;
 import sneer.skin.mainframe.MainFrame;
+import wheel.io.ui.impl.TrayIconImpl;
+import wheel.io.ui.impl.TrayIconImpl.SystemTrayNotSupported;
+import wheel.io.ui.Action;
 
 public class MainFrameImpl implements MainFrame, Runnable {
 	
@@ -37,15 +40,61 @@ public class MainFrameImpl implements MainFrame, Runnable {
 		} catch (UnsupportedLookAndFeelException e) {
 			throw new wheel.lang.exceptions.NotImplementedYet(e);
 		}
-
-		window.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				bounds = window.getBounds();
-			}
-		});
+		try {
+			TrayIconImpl tray = new TrayIconImpl(MainFrameImpl.class.getResource("sneer.png"));
+			addActionOpenWindow(tray);
+			addActionBuy(tray);
+			
+			window.addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosing(WindowEvent e) {
+					bounds = window.getBounds();
+				}
+			});
+			
+		} catch (SystemTrayNotSupported e1) {
+			window.addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosing(WindowEvent e) {
+					//TODO: fix window close event for system tray not supported
+					bounds = window.getBounds();
+					WindowEvent we = new WindowEvent(e.getWindow(),WindowEvent.WINDOW_ICONIFIED);
+					window.setVisible(true);
+					window.dispatchEvent(we);
+				}
+			});			
+		}
 		resize();
-		window.setVisible(true);	
+	}
+
+	private void addActionOpenWindow(TrayIconImpl tray) {
+		//Set Visible
+		Action cmdOpenWindow = new Action(){
+			@Override
+			public String caption() {
+				return "Open!";
+			}
+			@Override
+			public void run() {
+				window.setVisible(true);	
+			}
+		};
+		tray.setDefaultAction(cmdOpenWindow);
+	}
+
+	private void addActionBuy(TrayIconImpl tray) {
+		//Set Visible
+		Action cmd = new Action(){
+			@Override
+			public String caption() {
+				return "Bye!";
+			}
+			@Override
+			public void run() {
+				System.exit(0);
+			}
+		};
+		tray.addAction(cmd);
 	}
 
 	private void resize() {

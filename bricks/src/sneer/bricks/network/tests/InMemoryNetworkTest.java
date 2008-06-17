@@ -34,7 +34,7 @@ public class InMemoryNetworkTest extends BrickTestSupport {
 	@Test
 	public void testNetworkMessages() throws Exception {
 		final ByteArrayServerSocket server = _network.openServerSocket(9090);
-		_threadPool.runDaemon(new Runnable(){ @Override public void run() {
+		_threadPool.registerActor(new Runnable(){ @Override public void run() {
 			try {
 				ByteArraySocket request = server.accept();
 				request.write(new String(request.read()).toUpperCase().getBytes());

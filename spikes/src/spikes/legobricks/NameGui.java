@@ -22,7 +22,7 @@ public class NameGui implements Startable {
 	
 	@Override
 	public void start() {
-		_pool.runDaemon(new Runnable() { @Override public void run() {
+		_pool.registerActor(new Runnable() { @Override public void run() {
 			keepAskingForName();
 		}});
 	}

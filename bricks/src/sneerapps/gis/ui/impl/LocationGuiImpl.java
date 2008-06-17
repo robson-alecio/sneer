@@ -36,7 +36,7 @@ public class LocationGuiImpl implements Startable {
 
 	@Override
 	public void start() throws Exception {
-		_pool.runDaemon(new Runnable() {
+		_pool.registerActor(new Runnable() {
 			@Override
 			public void run() {
 				openGUI();

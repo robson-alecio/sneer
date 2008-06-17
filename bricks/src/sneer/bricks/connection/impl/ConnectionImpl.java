@@ -121,7 +121,7 @@ class ConnectionImpl implements Connection {
 	}
 	
 	private void startReceiving() {
-		_threadPool.runDaemon(new Runnable() { @Override public void run() {
+		_threadPool.registerActor(new Runnable() { @Override public void run() {
 			while (true) {
 				byte[] packet = tryToReceive();
 				if (packet == null)

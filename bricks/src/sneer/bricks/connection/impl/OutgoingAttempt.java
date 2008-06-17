@@ -52,7 +52,7 @@ public class OutgoingAttempt {
 			_isTryingToOpen = true;
 		}
 		
-		_threadPool.runDaemon(new Runnable(){@Override public void run() {
+		_threadPool.registerActor(new Runnable(){@Override public void run() {
 			keepTryingToOpen();
 		}});
 	}

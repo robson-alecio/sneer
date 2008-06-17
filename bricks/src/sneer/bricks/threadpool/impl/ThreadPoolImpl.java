@@ -16,8 +16,10 @@ public class ThreadPoolImpl implements ThreadPool {
 	
 	
 	@Override
-	public void runDaemon(Runnable runnable) {
-		Thread daemon = new Thread(runnable, inferThreadName());
+	public void registerActor(Runnable actor) {
+		_actors.add(actor);
+
+		Thread daemon = new Thread(actor, inferThreadName());
         daemon.setDaemon(true);
         daemon.start();
 	}
@@ -35,10 +37,5 @@ public class ThreadPoolImpl implements ThreadPool {
 		return className.substring(className.lastIndexOf(".") + 1);
 	}
 
-	@Override
-	public synchronized void registerActor(Runnable actor) {
-		_actors.add(actor);
-		runDaemon(actor);
-	}
 
 }

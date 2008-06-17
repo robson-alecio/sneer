@@ -71,7 +71,7 @@ class SignalConnection {
 	}
 
 	private void startSender() {
-		_threadPool.runDaemon(new Runnable() { public void run() {
+		_threadPool.registerActor(new Runnable() { public void run() {
 			while (!_isCrashed) {
 				byte[] toSend = _priorityQueue.waitForNext();
 				_connection.send(toSend);

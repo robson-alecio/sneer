@@ -17,7 +17,7 @@ public class SocketReceiverImpl implements SocketReceiver {
 
 	
 	private final Omnivore<ByteArraySocket> _receiverThatCannotBeGCd = new Omnivore<ByteArraySocket>() { @Override public void consume(final ByteArraySocket socket) {
-		_threadPool.runDaemon(new Runnable(){@Override public void run() {
+		_threadPool.registerActor(new Runnable(){@Override public void run() {
 			new IndividualSocketReceiver(socket);
 		}});
 	}};

@@ -54,7 +54,7 @@ public class SocketAccepterImpl implements SocketAccepter {
 	}};
 
 	SocketAccepterImpl() {
-		_threadPool.runDaemon(new Runnable(){ @Override public void run() {
+		_threadPool.registerActor(new Runnable(){ @Override public void run() {
 			listenToSneerPort();
 		}});
 		_portKeeper.port().addReceiver(_portReceiverToAvoidGC);
@@ -88,7 +88,7 @@ public class SocketAccepterImpl implements SocketAccepter {
 	
 	private void startAccepting() {
 		_isStopped = false;
-		_threadPool.runDaemon(new Runnable() { @Override public void run() {
+		_threadPool.registerActor(new Runnable() { @Override public void run() {
 			while (!_isStopped) {
 				try {
 					ByteArraySocket clientSocket = _serverSocket.accept();

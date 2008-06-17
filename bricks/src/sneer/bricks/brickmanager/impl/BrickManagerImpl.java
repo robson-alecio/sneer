@@ -85,7 +85,7 @@ public class BrickManagerImpl implements BrickManager {
 				inBundle = brick(wanted);
 				if(inBundle == null) {
 					//not found. must ask other peer via network
-					BrickFile justGotten = retrieveRemoveBrick(brick.origin(), injected.brickName());
+					BrickFile justGotten = retrieveRemoteBrick(brick.origin(), injected.brickName());
 					install(justGotten);
 				}
 			}
@@ -93,7 +93,7 @@ public class BrickManagerImpl implements BrickManager {
 		brick.resolved(true);
 	}
 
-	private BrickFile retrieveRemoveBrick(PublicKey origin, String brickName) {
+	private BrickFile retrieveRemoteBrick(PublicKey origin, String brickName) {
 		Party party = _keyManager.partyGiven(origin);
 		MapSignal<String, BrickFile> remoteBricks = party.mapSignal("bricks");
 		BrickFile remoteBrick = remoteBricks.currentGet(brickName);

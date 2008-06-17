@@ -18,7 +18,6 @@ import sneer.skin.mainframe.MainFrame;
 import wheel.io.ui.Action;
 import wheel.io.ui.impl.TrayIconImpl;
 import wheel.io.ui.impl.TrayIconImpl.SystemTrayNotSupported;
-import wheel.reactive.sets.SetSignal;
 
 public class MainFrameImpl implements MainFrame, Runnable {
 	

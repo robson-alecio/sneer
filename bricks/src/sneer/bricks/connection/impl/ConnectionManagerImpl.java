@@ -6,14 +6,14 @@ import java.util.Map;
 import sneer.bricks.connection.Connection;
 import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.contacts.Contact;
-import sneer.bricks.mesh.Me;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.lego.Inject;
+import spikes.legobricks.name.OwnNameKeeper;
 
 public class ConnectionManagerImpl implements ConnectionManager {
 
 	@Inject
-	private Me _me;
+	private OwnNameKeeper _nameKeeper;
 
 	private final Map<Contact, Connection> _connectionsByContact = new HashMap<Contact, Connection>();
 
@@ -22,7 +22,7 @@ public class ConnectionManagerImpl implements ConnectionManager {
 	public synchronized ConnectionImpl connectionFor(Contact contact) {
 		ConnectionImpl result = (ConnectionImpl) _connectionsByContact.get(contact);
 		if (result == null) {
-			result = new ConnectionImpl("" + _me.signal("Name"), contact);
+			result = new ConnectionImpl("" + _nameKeeper.name(), contact);
 			_connectionsByContact.put(contact, result);
 		}
 		return result;

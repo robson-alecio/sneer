@@ -1,6 +1,7 @@
 package sneer.skin.mainframe.impl;
 
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Rectangle;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -8,14 +9,16 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.WindowConstants;
 
 import net.sourceforge.napkinlaf.NapkinLookAndFeel;
 import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Inject;
 import sneer.skin.mainframe.MainFrame;
+import wheel.io.ui.Action;
 import wheel.io.ui.impl.TrayIconImpl;
 import wheel.io.ui.impl.TrayIconImpl.SystemTrayNotSupported;
-import wheel.io.ui.Action;
+import wheel.reactive.sets.SetSignal;
 
 public class MainFrameImpl implements MainFrame, Runnable {
 	
@@ -40,49 +43,60 @@ public class MainFrameImpl implements MainFrame, Runnable {
 		} catch (UnsupportedLookAndFeelException e) {
 			throw new wheel.lang.exceptions.NotImplementedYet(e);
 		}
-		try {
-			TrayIconImpl tray = new TrayIconImpl(MainFrameImpl.class.getResource("sneer.png"));
-			addActionOpenWindow(tray);
-			addActionBuy(tray);
-			
-			window.addWindowListener(new WindowAdapter() {
-				@Override
-				public void windowClosing(WindowEvent e) {
-					bounds = window.getBounds();
-				}
-			});
-			
-		} catch (SystemTrayNotSupported e1) {
-			window.addWindowListener(new WindowAdapter() {
-				@Override
-				public void windowClosing(WindowEvent e) {
-					//TODO: fix window close event for system tray not supported
-					bounds = window.getBounds();
-					WindowEvent we = new WindowEvent(e.getWindow(),WindowEvent.WINDOW_ICONIFIED);
-					window.setVisible(true);
-					window.dispatchEvent(we);
-				}
-			});			
-		}
+		
 		resize();
+
+		TrayIconImpl tray = null;
+		try {
+			tray = new TrayIconImpl(MainFrameImpl.class.getResource("sneer.png"));
+		} catch (SystemTrayNotSupported e1) {
+			setWindowCloseToMinimize();
+			return;
+		}
+		
+		addActionOpenWindow(tray);
+		addActionBye(tray);
+		persistWindowsProperties();
+	}
+
+	private void persistWindowsProperties() {
+		window.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				bounds = window.getBounds();
+			}
+		});
+	}
+
+	private void setWindowCloseToMinimize() {
+		window.setDefaultCloseOperation ( WindowConstants.DO_NOTHING_ON_CLOSE );
+		window.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				bounds = window.getBounds();
+				window.setState(Frame.ICONIFIED);
+			}
+		});
 	}
 
 	private void addActionOpenWindow(TrayIconImpl tray) {
 		//Set Visible
-		Action cmdOpenWindow = new Action(){
+		Action cmd = new Action(){
 			@Override
 			public String caption() {
 				return "Open!";
 			}
 			@Override
 			public void run() {
-				window.setVisible(true);	
+				window.setVisible(true);
+				window.setState(Frame.NORMAL);
 			}
 		};
-		tray.setDefaultAction(cmdOpenWindow);
+		tray.setDefaultAction(cmd);
+		tray.addAction(cmd);
 	}
 
-	private void addActionBuy(TrayIconImpl tray) {
+	private void addActionBye(TrayIconImpl tray) {
 		//Set Visible
 		Action cmd = new Action(){
 			@Override

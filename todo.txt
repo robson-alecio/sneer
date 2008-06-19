@@ -1,5 +1,5 @@
 ﻿Sandro
- - TrayIcon - Forget about processing the image to add shadow, transparency etc. Use sneer16x16.png directly without transparency. The idea in a near future is the user can choose what icon he wants. Then we can have otions for him: with transparency, crown in black, crown in white, etc. He can even draw his own. 
+ - TrayIcon - Forget about processing the image to add shadow, transparency etc. Use sneer16x16.png directly without transparency. The idea in a near future is the user can choose what icon he wants: crown in black with transparency, crown in white with transparency, etc. He can even draw his own. 
  - Dashboard - Rename MainFrame to Dashboard. Try to do a resizeable JWindow, instead of switching JFrame <-> JWindow. Dont spend too much time on this. Let me know how it goes.
  - GUI Development in General
 

@@ -64,8 +64,8 @@ public class MainFrameImpl implements MainFrame, Runnable {
 		}
 		
 		addOpenWindowAction(tray);
-		addLockUnlockAction(tray);
-		addByeAction(tray);
+//		addLockUnlockAction(tray);
+		addExitAction(tray);
 	}
 
 	private void initWindows() {
@@ -151,29 +151,29 @@ public class MainFrameImpl implements MainFrame, Runnable {
 		isLocked = false;
 	}
 	
-	private void addLockUnlockAction(TrayIconImpl tray) {
-		Action cmd = new Action(){
-			@Override
-			public String caption() {
-				return (window==jframe)?"Lock!":"Unlock!";
-			}
-			@Override
-			public void run() {
-				if(window==jframe){
-					changeJFrameToJWindow();
-				}else{
-					changeJWindowToJFrame();
-				}
-			}
-		};
-		tray.addAction(cmd);
-	}
+//	private void addLockUnlockAction(TrayIconImpl tray) {
+//		Action cmd = new Action(){
+//			@Override
+//			public String caption() {
+//				return (window==jframe)?"Lock!":"Unlock!";
+//			}
+//			@Override
+//			public void run() {
+//				if(window==jframe){
+//					changeJFrameToJWindow();
+//				}else{
+//					changeJWindowToJFrame();
+//				}
+//			}
+//		};
+//		tray.addAction(cmd);
+//	}
 	
 	private void addOpenWindowAction(TrayIconImpl tray) {
 		Action cmd = new Action(){
 			@Override
 			public String caption() {
-				return "Show!";
+				return "Open!";
 			}
 			@Override
 			public void run() {
@@ -188,11 +188,11 @@ public class MainFrameImpl implements MainFrame, Runnable {
 		tray.addAction(cmd);
 	}
 
-	private void addByeAction(TrayIconImpl tray) {
+	private void addExitAction(TrayIconImpl tray) {
 		Action cmd = new Action(){
 			@Override
 			public String caption() {
-				return "Bye!";
+				return "Exit...";
 			}
 			@Override
 			public void run() {

@@ -1,6 +1,5 @@
 package sneer.skin.mainframe.impl;
 
-import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -11,11 +10,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenuBar;
 import javax.swing.JWindow;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -64,7 +60,7 @@ public class MainFrameImpl implements MainFrame, Runnable {
 
 		TrayIconImpl tray = null;
 		try {
-			tray = new TrayIconImpl(MainFrameImpl.class.getResource("sneer16x16.png"));
+			tray = new TrayIconImpl(MainFrameImpl.class.getResource("logo16x16.png"));
 		} catch (SystemTrayNotSupported e1) {
 			changeWindowCloseEventToMinimizeEvent();
 			return;

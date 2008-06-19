@@ -86,13 +86,14 @@ public class TrayIconImpl implements TrayIcon {
 		if (popup.getItemCount() > 0)
 			popup.addSeparator();
 
-		MenuItem menuItem = new MenuItem(action.caption());
-
+		final MenuItem menuItem = new MenuItem(action.caption());
+		
 		menuItem.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent ignored) {
 				try {
 					action.run();
+					menuItem.setLabel(action.caption());
 				} catch (Throwable t) {
 					_catcher.catchThis(t);
 				}

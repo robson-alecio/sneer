@@ -1,4 +1,8 @@
-﻿﻿Leandro
+﻿Sandro
+ - TrayIcon - Forget about processing the image to add shadow, transparency etc. Use sneer16x16.png directly without transparency. The idea in a near future is the user can choose what icon he wants. Then we can have otions for him: with transparency, crown in black, crown in white, etc. He can even draw his own. 
+ - Dashboard - Rename MainFrame to Dashboard. Try to do a resizeable JWindow, instead of switching JFrame <-> JWindow. Dont spend too much time on this. Let me know how it goes. 
+
+﻿Leandro
  - check file locks on windows (FileUtils.cleanDirectory() "unable to delete file")
  - create new test runner that uses our own classloader so we can replace the AnnotatedFieldInjector by the StaticFieldInjector
    - Load wheel in a base classloader that also adds "implements Serializable" to classes.
@@ -25,6 +29,7 @@
 Leandro Reminder 
  - hash com libs
  - brick registry (guarda hash e os jars)
+
 
 Klaus
 contacts() - change from ListSignal to SetSignal.

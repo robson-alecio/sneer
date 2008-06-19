@@ -1,4 +1,4 @@
-package sneer.skin.mainframe.impl;
+package sneer.skin.dashboard.impl;
 
 import java.awt.Component;
 import java.awt.Graphics2D;

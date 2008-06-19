@@ -1,7 +1,10 @@
 ﻿Sandro
- - TrayIcon - Forget about processing the image to add shadow, transparency etc. Use sneer16x16.png directly without transparency. The idea in a near future is the user can choose what icon he wants: crown in black with transparency, crown in white with transparency, etc. He can even draw his own. 
- - Dashboard - Rename MainFrame to Dashboard. Try to do a resizeable JWindow, instead of switching JFrame <-> JWindow. Dont spend too much time on this. Let me know how it goes.
+ - [DONE] TrayIcon - Forget about processing the image to add shadow, transparency etc. Use sneer16x16.png directly without transparency. The idea in a near future is the user can choose what icon he wants: crown in black with transparency, crown in white with transparency, etc. He can even draw his own. 
+ - [DONE] Dashboard - Rename MainFrame to Dashboard.
  - GUI Development in General
+ 	1) Internal Window Actions (expand brick, brick menu and remove brick, like google desktop).
+ 	2) Layout Support for Internal Windows (Size, Resize and Position).
+ - Resizeable JWindow, instead of switching JFrame <-> JWindow.
 
 ﻿Leandro
  - check file locks on windows (FileUtils.cleanDirectory() "unable to delete file")

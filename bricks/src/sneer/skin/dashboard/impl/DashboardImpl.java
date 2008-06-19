@@ -1,4 +1,4 @@
-package sneer.skin.mainframe.impl;
+package sneer.skin.dashboard.impl;
 
 import java.awt.Container;
 import java.awt.Dimension;
@@ -21,12 +21,12 @@ import javax.swing.WindowConstants;
 import net.sourceforge.napkinlaf.NapkinLookAndFeel;
 import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Inject;
-import sneer.skin.mainframe.MainFrame;
+import sneer.skin.dashboard.Dashboard;
 import wheel.io.ui.Action;
 import wheel.io.ui.impl.TrayIconImpl;
 import wheel.io.ui.impl.TrayIconImpl.SystemTrayNotSupported;
 
-public class MainFrameImpl implements MainFrame, Runnable {
+public class DashboardImpl implements Dashboard, Runnable {
 	
 	private static transient final int _WIDTH = 250;
 	private static transient final int _HOFFSET = 30;
@@ -43,7 +43,7 @@ public class MainFrameImpl implements MainFrame, Runnable {
 	private transient JWindow jwindow;
 	
 
-	public MainFrameImpl() {
+	public DashboardImpl() {
 		threadPool.registerActor(this);
 		isLocked = false;
 	}
@@ -60,7 +60,7 @@ public class MainFrameImpl implements MainFrame, Runnable {
 
 		TrayIconImpl tray = null;
 		try {
-			tray = new TrayIconImpl(MainFrameImpl.class.getResource("logo16x16.png"));
+			tray = new TrayIconImpl(DashboardImpl.class.getResource("logo16x16.png"));
 		} catch (SystemTrayNotSupported e1) {
 			changeWindowCloseEventToMinimizeEvent();
 			return;

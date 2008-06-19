@@ -3,7 +3,7 @@ package sneerapps.topten.ui.impl.tests;
 import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
 import sneer.lego.Inject;
-import sneer.skin.mainframe.MainFrame;
+import sneer.skin.dashboard.Dashboard;
 import sneerapps.topten.ui.ToptenGui;
 import spikes.legobricks.name.OwnNameKeeper;
 
@@ -19,7 +19,7 @@ public class ToptenGuiMain {
 
 	@SuppressWarnings("unused")
 	@Inject
-	private MainFrame _mainFrame;
+	private Dashboard _dashboard;
 	
 
 	@Inject

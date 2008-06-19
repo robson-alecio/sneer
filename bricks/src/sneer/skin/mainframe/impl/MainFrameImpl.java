@@ -124,6 +124,7 @@ public class MainFrameImpl implements MainFrame, Runnable {
 	}
 	
 	private void changeJFrameToJWindow() {
+		bounds = jframe.getBounds();
 		jframe.setVisible(false);
 		Container tmp = jframe.getContentPane();
 		tmp.getParent().remove(tmp);
@@ -137,6 +138,7 @@ public class MainFrameImpl implements MainFrame, Runnable {
 	}
 	
 	private void changeJWindowToJFrame() {
+		bounds = jwindow.getBounds();
 		jwindow.setVisible(false);
 		Container tmp = jwindow.getContentPane();
 		tmp.getParent().remove(tmp);

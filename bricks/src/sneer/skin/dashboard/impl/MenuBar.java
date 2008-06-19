@@ -1,16 +1,16 @@
 package sneer.skin.dashboard.impl;
 
 import javax.swing.JComponent;
-import javax.swing.JToolBar;
+import javax.swing.JMenuBar;
 
 public class MenuBar extends AbstractSwingMenu {
 
 	private static final long serialVersionUID = 1L;
-	protected JToolBar bar = new JToolBar();
+	protected JMenuBar bar = new JMenuBar();
 
 	@Override
 	public void addSeparator() {
-		bar.addSeparator();
+		//ignore
 	}
 
 	@Override

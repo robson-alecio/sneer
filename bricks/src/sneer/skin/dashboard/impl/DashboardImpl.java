@@ -12,7 +12,6 @@ import java.awt.event.WindowStateListener;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
 import javax.swing.UIManager;
@@ -70,7 +69,7 @@ public class DashboardImpl implements Dashboard, Runnable {
 		}
 		
 		addOpenWindowAction(tray);
-//		addLockUnlockAction(tray);
+		addLockUnlockAction();
 		addExitAction(tray);
 	}
 
@@ -169,23 +168,23 @@ public class DashboardImpl implements Dashboard, Runnable {
 		isLocked = false;
 	}
 	
-//	private void addLockUnlockAction(TrayIconImpl tray) {
-//		Action cmd = new Action(){
-//			@Override
-//			public String caption() {
-//				return (window==jframe)?"Lock!":"Unlock!";
-//			}
-//			@Override
-//			public void run() {
-//				if(window==jframe){
-//					changeJFrameToJWindow();
-//				}else{
-//					changeJWindowToJFrame();
-//				}
-//			}
-//		};
-//		tray.addAction(cmd);
-//	}
+	private void addLockUnlockAction() {
+		Action cmd = new Action(){
+			@Override
+			public String caption() {
+				return (window==jframe)?"Lock!":"Unlock!";
+			}
+			@Override
+			public void run() {
+				if(window==jframe){
+					changeJFrameToJWindow();
+				}else{
+					changeJWindowToJFrame();
+				}
+			}
+		};
+		sneermenu.addAction(cmd);
+	}
 	
 	private void addOpenWindowAction(TrayIconImpl tray) {
 		Action cmd = new Action(){
@@ -219,6 +218,7 @@ public class DashboardImpl implements Dashboard, Runnable {
 			}
 		};
 		tray.addAction(cmd);
+		sneermenu.addSeparator();
 		sneermenu.addAction(cmd);
 	}
 

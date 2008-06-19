@@ -10,6 +10,6 @@ public class MainFrameDemo  {
 	public static void main(String[] args) throws Exception {
 		Container container = ContainerUtils.getContainer();
 		container.produce(MainFrame.class);
-		Threads.sleepWithoutInterruptions(10000);
+		Threads.sleepWithoutInterruptions(30000);
 	}
 }

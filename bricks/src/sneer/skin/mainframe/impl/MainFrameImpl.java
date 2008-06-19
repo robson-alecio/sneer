@@ -1,12 +1,16 @@
 package sneer.skin.mainframe.impl;
 
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Rectangle;
+import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
 
 import javax.swing.JFrame;
+import javax.swing.JWindow;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
@@ -29,57 +33,141 @@ public class MainFrameImpl implements MainFrame, Runnable {
 	
 	private Dimension screenSize;
 	private Rectangle bounds;
+	private boolean isLocked;
 	
-	private transient JFrame window = new JFrame();
+	private transient Window window;
+	private transient JFrame jframe;
+	private transient JWindow jwindow;
+	
 
 	public MainFrameImpl() {
 		threadPool.registerActor(this);
+		isLocked = false;
 	}
 
-	private void initWindow() {
+	private void initialize() {
 		try {
 			UIManager.setLookAndFeel(new NapkinLookAndFeel());
 		} catch (UnsupportedLookAndFeelException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e);
+			//ignore: using default L&F
 		}
 		
-		resize();
+		initWindows();	
+		resizeWindow();
 
 		TrayIconImpl tray = null;
 		try {
 			tray = new TrayIconImpl(MainFrameImpl.class.getResource("sneer.png"));
 		} catch (SystemTrayNotSupported e1) {
-			setWindowCloseToMinimize();
+			changeWindowCloseEventToMinimizeEvent();
 			return;
 		}
 		
-		addActionOpenWindow(tray);
-		addActionBye(tray);
-		persistWindowsProperties();
+		addOpenWindowAction(tray);
+		addLockUnlockAction(tray);
+		addByeAction(tray);
 	}
 
+	private void initWindows() {
+		jframe = new JFrame();
+		jwindow = new JWindow();
+		
+		if(isLocked){
+			window = jwindow;
+		}else{
+			window = jframe;
+		}
+		changeWindowMaximizeEvent();
+	}
+	
+	private void resizeWindow() {
+		Dimension newSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+		if(screenSize==null || !screenSize.equals(newSize)){
+			screenSize  = newSize;
+			bounds = new Rectangle((int) screenSize.getWidth() - _WIDTH, 0, _WIDTH,	
+								   (int) screenSize.getHeight() - _HOFFSET);
+		}
+		window.setBounds(bounds);
+	}
+	
 	private void persistWindowsProperties() {
 		window.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				bounds = window.getBounds();
+				isLocked = (window instanceof JWindow);
 			}
 		});
 	}
 
-	private void setWindowCloseToMinimize() {
-		window.setDefaultCloseOperation ( WindowConstants.DO_NOTHING_ON_CLOSE );
-		window.addWindowListener(new WindowAdapter() {
+	private void changeWindowCloseEventToMinimizeEvent() {
+		jframe.setDefaultCloseOperation ( WindowConstants.DO_NOTHING_ON_CLOSE );
+		jframe.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				bounds = window.getBounds();
-				window.setState(Frame.ICONIFIED);
+				jframe.setState(Frame.ICONIFIED);
 			}
 		});
 	}
 
-	private void addActionOpenWindow(TrayIconImpl tray) {
-		//Set Visible
+	private void changeWindowMaximizeEvent() {
+		jframe.addWindowStateListener(new WindowStateListener(){
+			@Override
+			public void windowStateChanged(WindowEvent e) {
+				if(e.getNewState()==Frame.MAXIMIZED_BOTH){
+					jframe.setState(e.getOldState());
+					changeJFrameToJWindow();
+				}
+			}
+		});
+	}
+	
+	private void changeJFrameToJWindow() {
+		jframe.setVisible(false);
+		Container tmp = jframe.getContentPane();
+		tmp.getParent().remove(tmp);
+		jframe.dispose();
+		jframe = new JFrame();
+		jwindow.setContentPane(tmp);
+		jwindow.setBounds(bounds);
+		jwindow.setVisible(true);
+		window = jwindow;
+		isLocked = true;
+	}
+	
+	private void changeJWindowToJFrame() {
+		jwindow.setVisible(false);
+		Container tmp = jwindow.getContentPane();
+		tmp.getParent().remove(tmp);
+		jwindow.dispose();
+		jwindow = new JWindow();
+		jframe.setContentPane(tmp);
+		jframe.setBounds(bounds);
+		jframe.setVisible(true);
+		window = jframe;
+		isLocked = false;
+	}
+	
+	private void addLockUnlockAction(TrayIconImpl tray) {
+		Action cmd = new Action(){
+			@Override
+			public String caption() {
+				return (window==jframe)?"Lock":"Unlock";
+			}
+			@Override
+			public void run() {
+				if(window==jframe){
+					changeJFrameToJWindow();
+				}else{
+					changeJWindowToJFrame();
+				}
+			}
+		};
+		tray.addAction(cmd);
+	}
+	
+	private void addOpenWindowAction(TrayIconImpl tray) {
 		Action cmd = new Action(){
 			@Override
 			public String caption() {
@@ -88,15 +176,17 @@ public class MainFrameImpl implements MainFrame, Runnable {
 			@Override
 			public void run() {
 				window.setVisible(true);
-				window.setState(Frame.NORMAL);
+				if(window==jframe){
+					jframe.setState(Frame.NORMAL);
+				}
+				window.requestFocus();
 			}
 		};
 		tray.setDefaultAction(cmd);
 		tray.addAction(cmd);
 	}
 
-	private void addActionBye(TrayIconImpl tray) {
-		//Set Visible
+	private void addByeAction(TrayIconImpl tray) {
 		Action cmd = new Action(){
 			@Override
 			public String caption() {
@@ -104,25 +194,15 @@ public class MainFrameImpl implements MainFrame, Runnable {
 			}
 			@Override
 			public void run() {
+				persistWindowsProperties();
 				System.exit(0);
 			}
 		};
 		tray.addAction(cmd);
 	}
 
-	private void resize() {
-		Dimension newSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-		if(screenSize==null || !screenSize.equals(newSize)){
-			//set a new size
-			screenSize  = newSize;
-			bounds = new Rectangle((int) screenSize.getWidth() - _WIDTH, 0, _WIDTH,	
-								   (int) screenSize.getHeight() - _HOFFSET);
-		}
-		window.setBounds(bounds);
-	}
-
 	@Override
 	public void run() {
-		initWindow();
+		initialize();
 	}
 }

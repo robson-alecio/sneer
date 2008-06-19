@@ -82,7 +82,7 @@ public class MainFrameImpl implements MainFrame, Runnable {
 	
 	private void resizeWindow() {
 		Dimension newSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-		if(screenSize==null || !screenSize.equals(newSize)){
+		if(bounds==null || screenSize==null || !screenSize.equals(newSize)){
 			screenSize  = newSize;
 			bounds = new Rectangle((int) screenSize.getWidth() - _WIDTH, 0, _WIDTH,	
 								   (int) screenSize.getHeight() - _HOFFSET);

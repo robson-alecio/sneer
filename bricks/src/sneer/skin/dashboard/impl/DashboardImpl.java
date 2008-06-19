@@ -1,8 +1,8 @@
 package sneer.skin.dashboard.impl;
 
+import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Rectangle;
 import java.awt.Window;
@@ -12,8 +12,9 @@ import java.awt.event.WindowStateListener;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JPanel;
 import javax.swing.JWindow;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
@@ -41,6 +42,8 @@ public class DashboardImpl implements Dashboard, Runnable {
 	private transient Window window;
 	private transient JFrame jframe;
 	private transient JWindow jwindow;
+	private transient MenuBar menubar;
+	private transient Menu sneermenu;
 	
 
 	public DashboardImpl() {
@@ -81,10 +84,16 @@ public class DashboardImpl implements Dashboard, Runnable {
 			window = jframe;
 		}
 		
-		Container pane = jframe.getContentPane();
-		pane.setLayout(new FlowLayout());
-		pane.add(new JLabel("Sneer!", IconFactory.getIcon("sneer16x16.png"), SwingConstants.LEFT));
+		JPanel pane = (JPanel) jframe.getContentPane();
+		pane.setLayout(new BorderLayout());
 		
+		menubar = new MenuBar(); 
+		menubar.getSwingWidget().add(new JLabel(IconFactory.getIcon("sneer16x16.png")));
+		
+		sneermenu = new MenuGroup("Sneer!");
+		menubar.addGroup(sneermenu);
+		
+		pane.add(menubar.getSwingWidget(), BorderLayout.NORTH );
 		
 		changeWindowMaximizeEvent();
 	}
@@ -210,6 +219,7 @@ public class DashboardImpl implements Dashboard, Runnable {
 			}
 		};
 		tray.addAction(cmd);
+		sneermenu.addAction(cmd);
 	}
 
 	@Override

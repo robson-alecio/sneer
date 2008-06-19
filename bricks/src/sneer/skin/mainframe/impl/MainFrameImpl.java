@@ -155,7 +155,7 @@ public class MainFrameImpl implements MainFrame, Runnable {
 		Action cmd = new Action(){
 			@Override
 			public String caption() {
-				return (window==jframe)?"Lock":"Unlock";
+				return (window==jframe)?"Lock!":"Unlock!";
 			}
 			@Override
 			public void run() {
@@ -173,7 +173,7 @@ public class MainFrameImpl implements MainFrame, Runnable {
 		Action cmd = new Action(){
 			@Override
 			public String caption() {
-				return "Open!";
+				return "Show!";
 			}
 			@Override
 			public void run() {

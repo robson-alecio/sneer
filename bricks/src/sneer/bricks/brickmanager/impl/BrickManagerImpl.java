@@ -18,7 +18,6 @@ import sneer.bricks.mesh.Party;
 import sneer.lego.Container;
 import sneer.lego.Inject;
 import sneer.lego.utils.InjectedBrick;
-import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.maps.MapRegister;
 import wheel.reactive.maps.MapSignal;
 import wheel.reactive.maps.impl.MapRegisterImpl;
@@ -95,11 +94,7 @@ public class BrickManagerImpl implements BrickManager {
 
 	private BrickFile retrieveRemoteBrick(PublicKey origin, String brickName) {
 		Party party = _keyManager.partyGiven(origin);
-		MapSignal<String, BrickFile> remoteBricks = party.mapSignal("bricks");
-		BrickFile remoteBrick = remoteBricks.currentGet(brickName);
-		
-		if(remoteBrick == null)
-			throw new NotImplementedYet("Remote brick not found on remote signal");
+		BrickFile remoteBrick = party.brickProxyFor(BrickManager.class).brick(brickName);
 		
 		return remoteBrick;
 	}

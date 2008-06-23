@@ -5,6 +5,7 @@
  	1) Dashboard Menu
  	2) Internal Window Actions (expand brick, brick menu and remove brick, like google desktop).
  	3) Layout Support for Internal Windows (Size, Resize and Position).
+ - Refactoring wheel.io.ui.Action to support Signals
  - Resizeable JWindow, instead of switching JFrame <-> JWindow.
 
 ﻿Leandro

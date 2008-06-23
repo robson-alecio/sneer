@@ -1,12 +1,15 @@
-package sneer.skin.dashboard.impl;
+package sneer.skin.menu.impl;
 
 import javax.swing.JComponent;
 import javax.swing.JMenuBar;
+
 
 public class MenuBar extends AbstractSwingMenu {
 
 	private static final long serialVersionUID = 1L;
 	protected JMenuBar bar = new JMenuBar();
+
+	MenuBar() {}
 
 	@Override
 	public void addSeparator() {
@@ -14,7 +17,7 @@ public class MenuBar extends AbstractSwingMenu {
 	}
 
 	@Override
-	protected JComponent getSwingWidget() {
+	public JComponent getWidget() {
 		return bar;
 	}
 }

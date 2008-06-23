@@ -10,6 +10,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,6 +23,10 @@ import net.sourceforge.napkinlaf.NapkinLookAndFeel;
 import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Inject;
 import sneer.skin.dashboard.Dashboard;
+import sneer.skin.image.DefaultIcons;
+import sneer.skin.image.ImageFactory;
+import sneer.skin.menu.Menu;
+import sneer.skin.menu.MenuFactory;
 import wheel.io.ui.Action;
 import wheel.io.ui.impl.TrayIconImpl;
 import wheel.io.ui.impl.TrayIconImpl.SystemTrayNotSupported;
@@ -34,6 +39,12 @@ public class DashboardImpl implements Dashboard, Runnable {
 	@Inject
 	static private ThreadPool threadPool;
 	
+	@Inject
+	static private MenuFactory<JComponent> menuFactory;
+	
+	@Inject
+	static private ImageFactory imageFactory;
+	
 	private Dimension screenSize;
 	private Rectangle bounds;
 	private boolean isLocked;
@@ -41,8 +52,8 @@ public class DashboardImpl implements Dashboard, Runnable {
 	private transient Window window;
 	private transient JFrame jframe;
 	private transient JWindow jwindow;
-	private transient MenuBar menubar;
-	private transient Menu sneermenu;
+	private transient Menu<JComponent> menubar;
+	private transient Menu<JComponent> sneermenu;
 	
 
 	public DashboardImpl() {
@@ -62,7 +73,7 @@ public class DashboardImpl implements Dashboard, Runnable {
 
 		TrayIconImpl tray = null;
 		try {
-			tray = new TrayIconImpl(DashboardImpl.class.getResource("logo16x16.png"));
+			tray = new TrayIconImpl(imageFactory.getImageUrl(DefaultIcons.logo16x16));
 		} catch (SystemTrayNotSupported e1) {
 			changeWindowCloseEventToMinimizeEvent();
 			return;
@@ -86,13 +97,13 @@ public class DashboardImpl implements Dashboard, Runnable {
 		JPanel pane = (JPanel) jframe.getContentPane();
 		pane.setLayout(new BorderLayout());
 		
-		menubar = new MenuBar(); 
-		menubar.getSwingWidget().add(new JLabel(IconFactory.getIcon("sneer16x16.png")));
+		menubar = menuFactory.createMenuBar();
+		menubar.getWidget().add(new JLabel(imageFactory.getIcon(DefaultIcons.logoTray)));
 		
-		sneermenu = new MenuGroup("Sneer!");
+		sneermenu = menuFactory.createMenuGroup("Menu");
 		menubar.addGroup(sneermenu);
 		
-		pane.add(menubar.getSwingWidget(), BorderLayout.NORTH );
+		pane.add(menubar.getWidget(), BorderLayout.NORTH );
 		
 		changeWindowMaximizeEvent();
 	}

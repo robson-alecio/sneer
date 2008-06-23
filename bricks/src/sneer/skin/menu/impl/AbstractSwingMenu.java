@@ -1,4 +1,4 @@
-package sneer.skin.dashboard.impl;
+package sneer.skin.menu.impl;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,11 +6,12 @@ import java.awt.event.ActionListener;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 
+import sneer.skin.menu.Menu;
+
+
 import wheel.io.ui.Action;
 
-public abstract class AbstractSwingMenu implements Menu{
-
-	protected abstract JComponent getSwingWidget();
+public abstract class AbstractSwingMenu implements Menu<JComponent>{
 	
 	@Override
 	public void addAction(final Action action) {
@@ -24,16 +25,16 @@ public abstract class AbstractSwingMenu implements Menu{
 			}
 		});
 
-		getSwingWidget().add(menuItem);	
+		getWidget().add(menuItem);	
 	}
 
 	@Override
-	public void addGroup(Menu group) {
-		getSwingWidget().add(((AbstractSwingMenu)group).getSwingWidget());
+	public void addGroup(Menu<JComponent> group) {
+		getWidget().add(group.getWidget());
 	}
 
 	@Override
 	public void clearAll() {
-		getSwingWidget().removeAll();
+		getWidget().removeAll();
 	}
 }

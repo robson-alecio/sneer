@@ -1,14 +1,15 @@
-package sneer.skin.dashboard.impl;
+package sneer.skin.menu.impl;
 
 import javax.swing.JComponent;
 import javax.swing.JMenu;
+
 
 public class MenuGroup extends AbstractSwingMenu {
 
 	private static final long serialVersionUID = 1L;
 	protected JMenu menu = new JMenu();
 	
-	public MenuGroup(String text) {
+	MenuGroup(String text) {
 		menu.setText(text);
 	}
 
@@ -18,7 +19,7 @@ public class MenuGroup extends AbstractSwingMenu {
 	}
 
 	@Override
-	protected JComponent getSwingWidget() {
+	public JComponent getWidget() {
 		return menu;
 	}
 }

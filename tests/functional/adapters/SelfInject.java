@@ -9,20 +9,12 @@ import sneer.lego.impl.SimpleBinder;
 
 public class SelfInject {
 	
-	protected Container _container;
-	
-	public SelfInject() {
-		this(null, null);
-	}
+	private final Container _container;
 	
 	public SelfInject(Network network, SneerConfig config) {
 		Binder binder = new SimpleBinder();
-		
-		if(network != null) 
-			binder.bind(Network.class).toInstance(network);
-
-		if(config != null) 
-			binder.bind(SneerConfig.class).toInstance(config);
+		binder.bind(Network.class).toInstance(network);
+		binder.bind(SneerConfig.class).toInstance(config);
 	
 		_container = ContainerUtils.newContainer(binder);
 		_container.inject(this);

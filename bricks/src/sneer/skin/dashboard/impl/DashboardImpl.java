@@ -8,7 +8,6 @@ import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowStateListener;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -105,7 +104,6 @@ public class DashboardImpl implements Dashboard, Runnable {
 		
 		pane.add(menubar.getWidget(), BorderLayout.NORTH );
 		
-		changeWindowMaximizeEvent();
 	}
 	
 	private void resizeWindow() {
@@ -135,18 +133,6 @@ public class DashboardImpl implements Dashboard, Runnable {
 			public void windowClosing(WindowEvent e) {
 				bounds = window.getBounds();
 				jframe.setState(Frame.ICONIFIED);
-			}
-		});
-	}
-
-	private void changeWindowMaximizeEvent() {
-		jframe.addWindowStateListener(new WindowStateListener(){
-			@Override
-			public void windowStateChanged(WindowEvent e) {
-				if(e.getNewState()==Frame.MAXIMIZED_BOTH){
-					jframe.setState(e.getOldState());
-					changeJFrameToJWindow();
-				}
 			}
 		});
 	}

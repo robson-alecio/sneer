@@ -24,5 +24,7 @@
 	<classpathentry kind="lib" path="kernel/lib/asm-all-3.1.jar"/>
 	<classpathentry kind="lib" path="bricks/lib/bcprov-jdk16-139.jar"/>
 	<classpathentry kind="lib" path="spikes/lib/napkinlaf.jar"/>
+	<classpathentry kind="lib" path="bricks/src/sneer/bricks/lucene/lib/lucene-core-2.3.2.jar"/>
+	<classpathentry kind="lib" path="spikes/lib/lucene-demos-2.3.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

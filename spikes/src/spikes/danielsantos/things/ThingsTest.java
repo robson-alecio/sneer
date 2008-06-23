@@ -1,13 +1,12 @@
 package spikes.danielsantos.things;
 
 import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.junit.Test;
-
-import functional.TestDashboard;
 
 public class ThingsTest {
 
@@ -15,24 +14,24 @@ public class ThingsTest {
 
 	@Test
 	public void test() {
-		if (!TestDashboard.newTestsShouldRun()) return;
+		//if (!TestDashboard.newTestsShouldRun()) return;
 		createApartmentAds();
 		searchApartmentAds();
 	}
 
 	private void searchApartmentAds() {
 		find("Apartamento", 3);
-		find("Apartamento mobiliado", 1);
+		find("+Apartamento +mobiliado", 1);
 
 		
 		//Sala consultorio \"3 quartos\"
 	}
 
-	private void find(String tags, int thingsFound) {
+	private void find(String tags, int thingsToFind) {
 		Finder finder = new Finder();
 		Collection<Thing> found = finder.find(_apAds, tags);
 		
-		assertTrue(found.size() == thingsFound);
+		assertSame(thingsToFind, found.size());
 	}
 
 	private void createApartmentAds() {
@@ -40,7 +39,7 @@ public class ThingsTest {
 		String description;
 
 		name = "Apartamento Juvevê 2 Quartos";
-		description = "Apartamento Sala Comercial em Bom estado. Bom para consultorio. Face sul. Sito a Av João Gualberto 1673 sala 41. R$42700,00 a vista. Aceita troca por carro de menor valor.";
+		description = "apartamento Sala Comercial em Bom estado. Bom para consultorio. Face sul. Sito a Av João Gualberto 1673 sala 41. R$42700,00 a vista. Aceita troca por carro de menor valor.";
 		_apAds.add(new Thing(name, description));
 		
 		name = "Apartamento Residencial - Bacacheri";
@@ -48,7 +47,7 @@ public class ThingsTest {
 		_apAds.add(new Thing(name, description));
 
 		name = "Apartamento Residencial - Barreirinha";
-		description = "Valor: R$ 66.000,00 Area: 50,00m² Apartamento no Cond. Sta. Efigênia II, 3º andar, 02 quartos, sala, cozinha, área serviço e bwc, piso taco, próximo ao Terminal Barreirinha, com ônibus, escola, Posto de Saúde. Rua Professor Guilherme Butler";
+		description = "Valor: R$ 66.000,00 Area: 50,00m² apartamento no Cond. Sta. Efigênia II, 3º andar, 02 quartos, sala, cozinha, área serviço e bwc, piso taco, próximo ao Terminal Barreirinha, com ônibus, escola, Posto de Saúde. Rua Professor Guilherme Butler";
 		_apAds.add(new Thing(name, description));
 		
 		name = "Casa Residencial - Atuba";

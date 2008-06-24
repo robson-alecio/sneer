@@ -11,18 +11,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JWindow;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
-
-import net.sourceforge.napkinlaf.NapkinLookAndFeel;
 
 import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.JXTaskPaneContainer;
@@ -34,8 +29,9 @@ import sneer.lego.Inject;
 import sneer.skin.dashboard.Dashboard;
 import sneer.skin.image.DefaultIcons;
 import sneer.skin.image.ImageFactory;
-import sneer.skin.menu.Menu;
-import sneer.skin.menu.MenuFactory;
+import sneer.skin.laf.metal.MetalLafSupport;
+import sneer.skin.laf.napkin.NapkinLafSupport;
+import sneer.skin.mainMenu.MainMenu;
 import wheel.io.ui.Action;
 import wheel.io.ui.impl.TrayIconImpl;
 import wheel.io.ui.impl.TrayIconImpl.SystemTrayNotSupported;
@@ -49,10 +45,16 @@ public class DashboardImpl implements Dashboard, Runnable {
 	static private ThreadPool threadPool;
 	
 	@Inject
-	static private MenuFactory<JComponent> menuFactory;
+	static private ImageFactory imageFactory;
 	
 	@Inject
-	static private ImageFactory imageFactory;
+	static private MainMenu mainMenu;
+	
+	@Inject
+	static private NapkinLafSupport napkin;
+	
+	@Inject
+	static private MetalLafSupport metal;
 	
 	private Dimension screenSize;
 	private Rectangle bounds;
@@ -61,24 +63,17 @@ public class DashboardImpl implements Dashboard, Runnable {
 	private transient Window window;
 	private transient JFrame jframe;
 	private transient JWindow jwindow;
-	private transient Menu<JComponent> menubar;
-	private transient Menu<JComponent> sneermenu;
 	
-
 	public DashboardImpl() {
 		threadPool.registerActor(this);
 		isLocked = false;
 	}
 
 	private void initialize() {
-		try {
-			UIManager.setLookAndFeel(new NapkinLookAndFeel());
-		} catch (UnsupportedLookAndFeelException e) {
-			//ignore: using default L&F
-		}
 		
 		initWindows();	
 		resizeWindow();
+		initLafs();
 
 		TrayIconImpl tray = null;
 		try {
@@ -91,6 +86,16 @@ public class DashboardImpl implements Dashboard, Runnable {
 		addOpenWindowAction(tray);
 		addLockUnlockAction();
 		addExitAction(tray);
+	}
+
+	public void refreshLaf() {
+		SwingUtilities.updateComponentTreeUI(window);
+	}
+
+	private void initLafs() {
+		napkin.initialize(mainMenu.getLookAndFeelMenu(), this);
+		metal.initialize(mainMenu.getLookAndFeelMenu(), this);
+		napkin.run();
 	}
 
 	private void initWindows() {
@@ -106,7 +111,8 @@ public class DashboardImpl implements Dashboard, Runnable {
 		JPanel pane = (JPanel) jframe.getContentPane();
 		pane.setLayout(new BorderLayout());
 		
-		createSneerMenu(pane);
+		pane.add(mainMenu.getWidget(), BorderLayout.NORTH);
+
 		createDemoTaskPane(pane);
 	}
 
@@ -155,16 +161,6 @@ public class DashboardImpl implements Dashboard, Runnable {
         public void actionPerformed(ActionEvent actionEvent) {}
     }
     
-	private void createSneerMenu(JPanel pane) {
-		menubar = menuFactory.createMenuBar();
-		menubar.getWidget().add(new JLabel(imageFactory.getIcon(DefaultIcons.logoTray)));
-		
-		sneermenu = menuFactory.createMenuGroup("Menu");
-		menubar.addGroup(sneermenu);
-		
-		pane.add(menubar.getWidget(), BorderLayout.NORTH);
-	}
-	
 	private void resizeWindow() {
 		Dimension newSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 		if(bounds==null || screenSize==null || !screenSize.equals(newSize)){
@@ -239,7 +235,8 @@ public class DashboardImpl implements Dashboard, Runnable {
 				}
 			}
 		};
-		sneermenu.addAction(cmd);
+		
+		mainMenu.getSneerMenu().addAction(cmd);
 	}
 	
 	private void addOpenWindowAction(TrayIconImpl tray) {
@@ -274,8 +271,8 @@ public class DashboardImpl implements Dashboard, Runnable {
 			}
 		};
 		tray.addAction(cmd);
-		sneermenu.addSeparator();
-		sneermenu.addAction(cmd);
+		mainMenu.getSneerMenu().addSeparator();
+		mainMenu.getSneerMenu().addAction(cmd);
 	}
 
 	@Override

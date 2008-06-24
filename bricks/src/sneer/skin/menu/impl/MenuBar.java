@@ -9,7 +9,7 @@ public class MenuBar extends AbstractSwingMenu {
 	private static final long serialVersionUID = 1L;
 	protected JMenuBar bar = new JMenuBar();
 
-	MenuBar() {}
+	protected MenuBar() {}
 
 	@Override
 	public void addSeparator() {

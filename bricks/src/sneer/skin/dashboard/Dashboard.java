@@ -1,5 +1,7 @@
 package sneer.skin.dashboard;
 
-public interface Dashboard {
+import sneer.skin.laf.LafContainer;
 
+public interface Dashboard extends LafContainer{
+	
 }

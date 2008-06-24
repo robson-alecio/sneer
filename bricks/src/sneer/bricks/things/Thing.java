@@ -1,4 +1,4 @@
-package spikes.danielsantos.things;
+package sneer.bricks.things;
 
 public class Thing {
 

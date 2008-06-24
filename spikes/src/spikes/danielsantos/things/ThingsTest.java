@@ -1,12 +1,14 @@
 package spikes.danielsantos.things;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertSame;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.junit.Test;
+
+import sneer.bricks.things.Thing;
 
 public class ThingsTest {
 

@@ -29,8 +29,6 @@ import sneer.lego.Inject;
 import sneer.skin.dashboard.Dashboard;
 import sneer.skin.image.DefaultIcons;
 import sneer.skin.image.ImageFactory;
-import sneer.skin.laf.metal.MetalLafSupport;
-import sneer.skin.laf.napkin.NapkinLafSupport;
 import sneer.skin.mainMenu.MainMenu;
 import wheel.io.ui.Action;
 import wheel.io.ui.impl.TrayIconImpl;
@@ -50,12 +48,6 @@ public class DashboardImpl implements Dashboard, Runnable {
 	@Inject
 	static private MainMenu mainMenu;
 	
-	@Inject
-	static private NapkinLafSupport napkin;
-	
-	@Inject
-	static private MetalLafSupport metal;
-	
 	private Dimension screenSize;
 	private Rectangle bounds;
 	private boolean isLocked;
@@ -73,7 +65,6 @@ public class DashboardImpl implements Dashboard, Runnable {
 		
 		initWindows();	
 		resizeWindow();
-		initLafs();
 
 		TrayIconImpl tray = null;
 		try {
@@ -90,12 +81,6 @@ public class DashboardImpl implements Dashboard, Runnable {
 
 	public void refreshLaf() {
 		SwingUtilities.updateComponentTreeUI(window);
-	}
-
-	private void initLafs() {
-		napkin.initialize(mainMenu.getLookAndFeelMenu(), this);
-		metal.initialize(mainMenu.getLookAndFeelMenu(), this);
-		napkin.run();
 	}
 
 	private void initWindows() {

@@ -3,7 +3,6 @@ package sneer.skin.mainMenu.impl;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Inject;
 import sneer.skin.image.DefaultIcons;
 import sneer.skin.image.ImageFactory;
@@ -12,7 +11,7 @@ import sneer.skin.menu.Menu;
 import sneer.skin.menu.MenuFactory;
 import sneer.skin.menu.impl.MenuBar;
 
-public class MainMenuImpl extends MenuBar implements Runnable, MainMenu{
+public class MainMenuImpl extends MenuBar implements MainMenu{
 
 	private static final long serialVersionUID = 1L;
 
@@ -22,15 +21,8 @@ public class MainMenuImpl extends MenuBar implements Runnable, MainMenu{
 	@Inject
 	static private ImageFactory imageFactory;
 	
-	@Inject
-	static private ThreadPool threadPool;
-	
-	private transient Menu<JComponent> sneerMenu;
-	private transient Menu<JComponent> lookAndFeelMenu;
-
-	protected MainMenuImpl() {
-		threadPool.registerActor(this);
-	}
+	private static transient Menu<JComponent> sneerMenu;
+	private static transient Menu<JComponent> lookAndFeelMenu;
 	
 	public void initialize() {
 		getWidget().add(new JLabel(imageFactory.getIcon(DefaultIcons.logoTray)));
@@ -43,15 +35,14 @@ public class MainMenuImpl extends MenuBar implements Runnable, MainMenu{
 	}
 
 	public Menu<JComponent> getSneerMenu() {
+		if(sneerMenu==null)
+			initialize();
 		return sneerMenu;
 	}
 	
 	public Menu<JComponent> getLookAndFeelMenu() {
+		if(lookAndFeelMenu==null)
+			initialize();
 		return lookAndFeelMenu;
-	}
-
-	@Override
-	public void run() {
-		initialize();
 	}
 }

@@ -90,9 +90,6 @@ public class ImageFactoryImpl implements ImageFactory {
         return pg.getColorModel();
     }
  
-    /* (non-Javadoc)
-	 * @see sneer.skin.image.impl.ImageFactoryImpl#createBufferedImage(java.awt.Image)
-	 */
     public BufferedImage createBufferedImage(Image image) throws InterruptedException, IllegalArgumentException {
         loadImage(image);
         int w = image.getWidth(null);
@@ -108,18 +105,12 @@ public class ImageFactoryImpl implements ImageFactory {
         return bi;
     }
 
-    /* (non-Javadoc)
-	 * @see sneer.skin.image.impl.ImageFactoryImpl#getDefaultConfiguration()
-	 */
     public GraphicsConfiguration getDefaultConfiguration() {
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice gd = ge.getDefaultScreenDevice();
         return gd.getDefaultConfiguration();
     }
      
-    /* (non-Javadoc)
-	 * @see sneer.skin.image.impl.ImageFactoryImpl#toCompatibleImage(java.awt.image.BufferedImage, java.awt.GraphicsConfiguration)
-	 */
     public BufferedImage toCompatibleImage(BufferedImage image, GraphicsConfiguration gc) {
         if (gc == null)
             gc = getDefaultConfiguration();
@@ -147,16 +138,10 @@ public class ImageFactoryImpl implements ImageFactory {
         return target;
     }
      
-    /* (non-Javadoc)
-	 * @see sneer.skin.image.impl.ImageFactoryImpl#getScaledInstance(java.awt.image.BufferedImage, int, int)
-	 */
     public BufferedImage getScaledInstance(BufferedImage image, int width, int height) {
     	return getScaledInstance(image, width, height, null);
     }
     
-    /* (non-Javadoc)
-	 * @see sneer.skin.image.impl.ImageFactoryImpl#getScaledInstance(java.awt.image.BufferedImage, int, int, java.awt.GraphicsConfiguration)
-	 */
     public BufferedImage getScaledInstance(BufferedImage image, int width, int height, GraphicsConfiguration gc) {
         if (gc == null)
             gc = getDefaultConfiguration();

@@ -1,35 +1,30 @@
 package sneer.skin.laf.napkin.impl;
 
-import javax.swing.JComponent;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
 import net.sourceforge.napkinlaf.NapkinLookAndFeel;
-import sneer.skin.laf.LafContainer;
+import sneer.lego.Inject;
+import sneer.skin.dashboard.Dashboard;
+import sneer.skin.laf.LafAction;
 import sneer.skin.laf.napkin.NapkinLafSupport;
-import sneer.skin.menu.Menu;
+import sneer.skin.mainMenu.MainMenu;
 
-public class NapkinLafSupportImpl implements NapkinLafSupport {
 
-	private LafContainer rootContainer;
+public class NapkinLafSupportImpl implements NapkinLafSupport{
 
-	public void initialize(Menu<JComponent> lafMenu, LafContainer root) {
-		this.rootContainer = root;
-		lafMenu.addAction(this);
+	@Inject
+	private static MainMenu mainMenu;
+	
+	@Inject
+	private static Dashboard dashboard;
+	
+	private LafAction action;
+	
+	public NapkinLafSupportImpl(){
+		action = new LafAction(new NapkinLookAndFeel(), 
+						  		   mainMenu.getLookAndFeelMenu(), 
+						  		   dashboard);
 	}
 
-	@Override
-	public String caption() {
-		return "Naplin";
-	}
-
-	@Override
-	public void run() {
-		try {
-			UIManager.setLookAndFeel(new NapkinLookAndFeel());
-			rootContainer.refreshLaf();
-		} catch (UnsupportedLookAndFeelException e) {
-			// ignore: using default L&F
-		}
+	public LafAction getAction() {
+		return action;
 	}
 }

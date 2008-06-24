@@ -1,35 +1,32 @@
 package sneer.skin.laf.metal.impl;
 
-import javax.swing.JComponent;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import sneer.skin.laf.LafContainer;
+import sneer.lego.Inject;
+import sneer.skin.dashboard.Dashboard;
+import sneer.skin.laf.LafAction;
 import sneer.skin.laf.metal.MetalLafSupport;
-import sneer.skin.menu.Menu;
+import sneer.skin.mainMenu.MainMenu;
 
 public class MetalLafSupportImpl implements MetalLafSupport {
 
-	private LafContainer rootContainer;
-
-	public void initialize(Menu<JComponent> lafMenu, LafContainer root) {
-		this.rootContainer = root;
-		lafMenu.addAction(this);
+	@Inject
+	private static MainMenu mainMenu;
+	
+	@Inject
+	private static Dashboard dashboard;
+	
+	private LafAction action;
+	
+	public MetalLafSupportImpl(){
+		action = new LafAction(new MetalLookAndFeel(), 
+						  		   mainMenu.getLookAndFeelMenu(), 
+						  		   dashboard);
 	}
 
-	@Override
-	public String caption() {
-		return "Metal";
+	public LafAction getAction() {
+		return action;
 	}
 
-	@Override
-	public void run() {
-		try {
-			UIManager.setLookAndFeel(new MetalLookAndFeel());
-			rootContainer.refreshLaf();
-		} catch (UnsupportedLookAndFeelException e) {
-			// ignore: using default L&F
-		}
-	}
+	
 }

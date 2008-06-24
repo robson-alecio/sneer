@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import sneer.bricks.things.Thing;
+import sneer.bricks.things.impl.Thing;
 
 public class ThingsTest {
 

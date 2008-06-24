@@ -20,7 +20,7 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Searcher;
 import org.apache.lucene.store.LockObtainFailedException;
 
-import sneer.bricks.things.Thing;
+import sneer.bricks.things.impl.Thing;
 
 public class Finder {
 

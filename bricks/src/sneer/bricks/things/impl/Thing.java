@@ -1,4 +1,4 @@
-package sneer.bricks.things;
+package sneer.bricks.things.impl;
 
 public class Thing {
 

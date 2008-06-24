@@ -17,7 +17,7 @@ import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 
-public class InMemoryExample
+public class LuceneInMemoryExample
 {
 
   public static void main(String[] args)

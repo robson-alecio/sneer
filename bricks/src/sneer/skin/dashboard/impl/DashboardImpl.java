@@ -4,8 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Window;
+import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -13,12 +15,20 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JWindow;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
 import net.sourceforge.napkinlaf.NapkinLookAndFeel;
+
+import org.jdesktop.swingx.JXTaskPane;
+import org.jdesktop.swingx.JXTaskPaneContainer;
+import org.jdesktop.swingx.action.AbstractActionExt;
+import org.jdesktop.swingx.painter.Painter;
+
 import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Inject;
 import sneer.skin.dashboard.Dashboard;
@@ -96,14 +106,63 @@ public class DashboardImpl implements Dashboard, Runnable {
 		JPanel pane = (JPanel) jframe.getContentPane();
 		pane.setLayout(new BorderLayout());
 		
+		createSneerMenu(pane);
+		createDemoTaskPane(pane);
+	}
+
+	@SuppressWarnings("unchecked")
+	private void createDemoTaskPane(JPanel pane) {
+        JXTaskPaneContainer container = new JXTaskPaneContainer();
+        container.setBackgroundPainter(new Painter(){
+			@Override
+			public void paint(Graphics2D g, Object object, int width, int height) {
+				//ignore
+			}}
+        );
+        container.setOpaque(false);
+        container.setBorder(null);
+        container.setAlpha(0.9f);
+        
+        JXTaskPane taskPane = new JXTaskPane();
+        taskPane.setTitle("TODO Tasks");
+        taskPane.add(new TODOAction("Prepare slides for JavaPolis"));
+        taskPane.add(new TODOAction("Buy Christmas presents"));
+        taskPane.add(new TODOAction("Meet with Brian about SwingLabs"));
+        container.add(taskPane);
+        
+        taskPane = new JXTaskPane();
+        taskPane.setTitle("Key Dates");
+        taskPane.add(new TODOAction("December 25"));
+        taskPane.add(new TODOAction("January 1"));
+        taskPane.add(new TODOAction("Febuary 14"));
+        taskPane.add(new TODOAction("March 26"));
+        container.add(taskPane);
+        
+        taskPane = new JXTaskPane();
+        taskPane.setTitle("Notes");
+        JTextArea textArea = new JTextArea(15, 20);
+		taskPane.add(new JScrollPane(textArea));
+        container.add(taskPane);
+        
+        pane.add(new JScrollPane(container));
+    }
+	
+    private static final class TODOAction extends AbstractActionExt {
+		private static final long serialVersionUID = 1L;
+		public TODOAction(String name) {
+            setName(name);
+        }
+        public void actionPerformed(ActionEvent actionEvent) {}
+    }
+    
+	private void createSneerMenu(JPanel pane) {
 		menubar = menuFactory.createMenuBar();
 		menubar.getWidget().add(new JLabel(imageFactory.getIcon(DefaultIcons.logoTray)));
 		
 		sneermenu = menuFactory.createMenuGroup("Menu");
 		menubar.addGroup(sneermenu);
 		
-		pane.add(menubar.getWidget(), BorderLayout.NORTH );
-		
+		pane.add(menubar.getWidget(), BorderLayout.NORTH);
 	}
 	
 	private void resizeWindow() {

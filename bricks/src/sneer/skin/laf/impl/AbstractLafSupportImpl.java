@@ -16,6 +16,16 @@ public class AbstractLafSupportImpl {
 	
 	protected LafAction action;
 
+	public AbstractLafSupportImpl(String name) {
+		try {
+			LookAndFeel laf;
+			laf = (LookAndFeel) Class.forName(name).newInstance();
+			action = new LafAction(laf, mainMenu.getLookAndFeelMenu(), dashboard);
+		} catch (Exception e) {
+			//do not add a action
+		}
+	}
+	
 	public AbstractLafSupportImpl(LookAndFeel laf) {
 		action = new LafAction(laf, mainMenu.getLookAndFeelMenu(), dashboard);
 	}

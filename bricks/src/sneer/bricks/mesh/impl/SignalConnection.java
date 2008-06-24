@@ -20,7 +20,7 @@ import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
-class SignalConnection {
+class SignalConnection implements Visitable {
 
 	@Inject
 	static private ConnectionManager _connectionManager;
@@ -157,21 +157,24 @@ class SignalConnection {
 	}
 
 
-	void handleNotification(PublicKey publicKey, String signalPath, Object newValue) {
+	@Override
+	public void handleNotification(PublicKey publicKey, String signalPath, Object newValue) {
 		Proxy target = produceProxy(publicKey);
 		if (target == null) return;
 		
 		target.handleNotification(signalPath, newValue);
 	}
 
-	void handleNotificationOfContactAdded(PublicKey publicKey, RemoteContact newContact) {
+	@Override
+	public void handleNotificationOfContactAdded(PublicKey publicKey, RemoteContact newContact) {
 		Proxy target = produceProxy(publicKey);
 		if (target == null) return;
 		
 		target.handleNotificationOfContact(newContact);
 	}
 	
-	void handleNotificationOfContactRemoved(PublicKey publicKey,	RemoteContact contact) {
+	@Override
+	public void handleNotificationOfContactRemoved(PublicKey publicKey,	RemoteContact contact) {
 		Proxy target = produceProxy(publicKey);
 		if (target == null) return;
 		
@@ -197,14 +200,16 @@ class SignalConnection {
 		send(new SubscriptionToContacts(targetPK));
 	}
 
-	void serveSubscriptionTo(PublicKey publicKey, String signalPath) {
+	@Override
+	public void serveSubscriptionTo(PublicKey publicKey, String signalPath) {
 		Party target = produceParty(publicKey);
 		Signal<Object> signal = target.signal(signalPath);
 		
 		signal.addReceiver(createScoutFor(publicKey, signalPath));
 	}
 	
-	void serveSubscriptionToContacts(PublicKey publicKey) {
+	@Override
+	public void serveSubscriptionToContacts(PublicKey publicKey) {
 		Party target = produceParty(publicKey);
 		ListSignal<Contact> contacts = target.contacts();
 

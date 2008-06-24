@@ -14,8 +14,8 @@ class Notification implements Ambassador {
 		_newValue = newValue;
 	}
 
-	public void visit(SignalConnection connectionToPeer) {
-		connectionToPeer.handleNotification(_publicKey, _signalPath, _newValue);
+	public void visit(Visitable visitable) {
+		visitable.handleNotification(_publicKey, _signalPath, _newValue);
 	}
 
 }

@@ -12,8 +12,8 @@ public class Subscription implements Ambassador {
 		_signalPath = signalPath;
 	}
 
-	public void visit(SignalConnection connectionToPeer) {
-		connectionToPeer.serveSubscriptionTo(_publicKey, _signalPath);
+	public void visit(Visitable visitable) {
+		visitable.serveSubscriptionTo(_publicKey, _signalPath);
 	}
 
 

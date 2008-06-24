@@ -12,8 +12,8 @@ class NotificationOfContact implements Ambassador {
 		_newContact = newContact;
 	}
 
-	public void visit(SignalConnection connectionToPeer) {
-		connectionToPeer.handleNotificationOfContactAdded(_publicKey, _newContact);
+	public void visit(Visitable visitable) {
+		visitable.handleNotificationOfContactAdded(_publicKey, _newContact);
 	}
 
 }

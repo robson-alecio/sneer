@@ -12,8 +12,8 @@ class NotificationOfContactRemoved implements Ambassador {
 		_contact = contact;
 	}
 
-	public void visit(SignalConnection connectionToPeer) {
-		connectionToPeer.handleNotificationOfContactRemoved(_publicKey, _contact);
+	public void visit(Visitable visitable) {
+		visitable.handleNotificationOfContactRemoved(_publicKey, _contact);
 	}
 
 }

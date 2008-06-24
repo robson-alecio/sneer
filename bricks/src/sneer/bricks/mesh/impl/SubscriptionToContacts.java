@@ -10,8 +10,8 @@ public class SubscriptionToContacts implements Ambassador {
 		_publicKey = publicKey;
 	}
 
-	public void visit(SignalConnection connectionToPeer) {
-		connectionToPeer.serveSubscriptionToContacts(_publicKey);
+	public void visit(Visitable visitable) {
+		visitable.serveSubscriptionToContacts(_publicKey);
 	}
 
 

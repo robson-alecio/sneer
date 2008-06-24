@@ -27,7 +27,7 @@ public class Finder {
 	private static final String INDEX_DIRECTORY = "tmp";
 	private IndexWriter _index;
 
-	public Collection<Thing> find(Collection<Thing> things, String tags) {
+	public Collection<ThingImpl> find(Collection<ThingImpl> things, String tags) {
 		try {
 			return tryToFind(things, tags);
 		} catch (Exception e) {
@@ -38,12 +38,12 @@ public class Finder {
 		}
 	}
 
-	private Collection<Thing> tryToFind(Collection<Thing> things, String tags)
+	private Collection<ThingImpl> tryToFind(Collection<ThingImpl> things, String tags)
 			throws CorruptIndexException, LockObtainFailedException,
 			IOException, ParseException {
 		createNewIndex();
 
-		for (Thing thing : things)
+		for (ThingImpl thing : things)
 			addToIndex(thing);
 		_index.optimize();
 		_index.close();
@@ -52,7 +52,7 @@ public class Finder {
 		return findInIndex(tags);
 	}
 
-	private Collection<Thing> findInIndex(String tags)
+	private Collection<ThingImpl> findInIndex(String tags)
 			throws CorruptIndexException, IOException, ParseException {
 		IndexReader reader = IndexReader.open(INDEX_DIRECTORY);
 
@@ -65,13 +65,13 @@ public class Finder {
 
 		Hits hits = searcher.search(query);
 
-		Collection<Thing> result = new ArrayList<Thing>(hits.length());
+		Collection<ThingImpl> result = new ArrayList<ThingImpl>(hits.length());
 		for (int i = 0; i < hits.length(); i++) {
 			Document doc = hits.doc(i);
 			String name = doc.getFields(TEXT_FIELD)[0].stringValue();
 			String description = doc.getFields(TEXT_FIELD)[1].stringValue();
 
-			Thing foundThing = new Thing(name, description);
+			ThingImpl foundThing = new ThingImpl(name, description);
 			result.add(foundThing);
 		}
 
@@ -79,7 +79,7 @@ public class Finder {
 
 	}
 
-	private void addToIndex(Thing thing) throws CorruptIndexException,
+	private void addToIndex(ThingImpl thing) throws CorruptIndexException,
 			IOException {
 		Document doc = new Document();
 		doc.add(toField(thing.name()));

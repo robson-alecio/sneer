@@ -1,11 +1,13 @@
 package sneer.bricks.things.impl;
 
-public class Thing {
+import sneer.bricks.things.Thing;
+
+public class ThingImpl implements Thing {
 
 	private final String _name;
 	private final String _description;
 
-	public Thing(String name, String description) {
+	public ThingImpl(String name, String description) {
 		_name = name;
 		_description = description;
 	}

@@ -22,7 +22,7 @@ import org.apache.lucene.store.LockObtainFailedException;
 
 public class Finder {
 
-	private static final String TEXT_FIELD = "desc";
+	private static final String TEXT_FIELD = "text";
 	private static final String INDEX_DIRECTORY = "tmp";
 	private IndexWriter _index;
 
@@ -61,10 +61,8 @@ public class Finder {
 		QueryParser parser = new QueryParser(TEXT_FIELD, analyzer);
 
 		Query query = parser.parse(tags);
-		System.out.println("Searching for: " + query.toString());
 
 		Hits hits = searcher.search(query);
-		System.out.println("Found: " + hits.length());
 
 		Collection<Thing> result = new ArrayList<Thing>(hits.length());
 		for (int i = 0; i < hits.length(); i++) {
@@ -86,8 +84,6 @@ public class Finder {
 		doc.add(toField(thing.name()));
 		doc.add(toField(thing.description()));
 
-		System.out.println("Adding :" + thing.description());
-		
 		_index.addDocument(doc);
 	}
 

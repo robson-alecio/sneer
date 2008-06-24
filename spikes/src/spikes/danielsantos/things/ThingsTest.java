@@ -22,9 +22,15 @@ public class ThingsTest {
 	private void searchApartmentAds() {
 		find("Apartamento", 3);
 		find("+Apartamento +mobiliado", 1);
+		
+		find("Sala consultorio +3 +quartos", 3);
+		find("Sala consultorio +\"3 quartos\" ", 2);
+		find("\"Sala banheiro janelas\" ", 0);
+
+		find("+Juvevê", 1);
+		find("+Juveve", 0);
 
 		
-		//Sala consultorio \"3 quartos\"
 	}
 
 	private void find(String tags, int thingsToFind) {

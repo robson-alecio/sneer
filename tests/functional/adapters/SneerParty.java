@@ -124,6 +124,7 @@ public class SneerParty extends SelfInject implements SovereignParty {
 		for (String nickname : path)
 			peer = waitForContact(peer, nickname);
 		
+//		return peer.brickProxyFor(OwnNameKeeper.class).name();
 		return peer.signal("Name");
     }
 

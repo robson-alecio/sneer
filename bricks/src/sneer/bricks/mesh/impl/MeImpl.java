@@ -3,12 +3,13 @@ package sneer.bricks.mesh.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.bricks.brickmanager.BrickManager;
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.contacts.ContactManager;
 import sneer.bricks.keymanager.PublicKey;
 import sneer.bricks.mesh.Me;
 import sneer.bricks.mesh.Party;
+import sneer.lego.Brick;
+import sneer.lego.Container;
 import sneer.lego.Inject;
 import sneer.lego.Startable;
 import spikes.legobricks.name.OwnNameKeeper;
@@ -17,7 +18,6 @@ import wheel.lang.Functor;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.SimpleListReceiver;
-import wheel.reactive.maps.MapSignal;
 
 
 class MeImpl extends AbstractParty implements Me, Startable {
@@ -26,10 +26,7 @@ class MeImpl extends AbstractParty implements Me, Startable {
 	static private ContactManager _contactManager;
 
 	@Inject
-	static private OwnNameKeeper _ownNameKeeper;
-
-	@Inject
-	static private BrickManager _brickManager;
+	static private Container _container;
 
 	@SuppressWarnings("unused")
 	private SimpleListReceiver<Contact> _contactListReceiverToAvoidGC;
@@ -81,17 +78,9 @@ class MeImpl extends AbstractParty implements Me, Startable {
 	}
 
 	@Override
-	public <K,V> MapSignal<K,V> mapSignal(String signalPath) {
-		if (signalPath.equals("Bricks"))
-			return Casts.uncheckedGenericCast(_brickManager.bricks());
-
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
-	}
-
-	@Override
 	public <S> Signal<S> signal(String signalPath) {
 		if (signalPath.equals("Name"))
-			return Casts.uncheckedGenericCast(_ownNameKeeper.name());
+			return Casts.uncheckedGenericCast(brickProxyFor(OwnNameKeeper.class).name());
 			
 		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	}
@@ -130,6 +119,16 @@ class MeImpl extends AbstractParty implements Me, Startable {
 
 		SignalConnection signalConnection = _signalConnectionsByContact.get(directContact);
 		signalConnection.subscribeToContacts(targetPK);
+	}
+
+	@Override
+	public <B extends Brick> B brickProxyFor(Class<B> brickInterface) {
+		return _container.produce(brickInterface);
+	}
+
+	@Override
+	Object invoke(PublicKey targetPK, BrickInvocation invocation, PublicKey intermediaryPK) {
+		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
 

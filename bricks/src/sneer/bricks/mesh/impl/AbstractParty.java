@@ -27,4 +27,6 @@ abstract class AbstractParty implements Party {
 	abstract void subscribeTo(PublicKey targetPK, String signalPath, PublicKey intermediaryPK);
 	abstract void subscribeToContacts(PublicKey targetPK, PublicKey intermediaryPK);
 
+	abstract Object invoke(PublicKey targetPK, BrickInvocation invocation, PublicKey intermediaryPK);
+
 }

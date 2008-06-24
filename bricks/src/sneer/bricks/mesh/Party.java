@@ -1,9 +1,9 @@
 package sneer.bricks.mesh;
 
 import sneer.bricks.contacts.Contact;
+import sneer.lego.Brick;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
-import wheel.reactive.maps.MapSignal;
 
 public interface Party {
 
@@ -11,6 +11,7 @@ public interface Party {
 	Party navigateTo(Contact contact);
 	
 	<S> Signal<S> signal(String signalPath);
-	<K,V> MapSignal<K, V> mapSignal(String signalPath);
+
+	<B extends Brick> B brickProxyFor(Class<B> brickInterface); 
 
 }

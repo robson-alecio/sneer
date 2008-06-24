@@ -2,31 +2,12 @@ package sneer.skin.laf.metal.impl;
 
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import sneer.lego.Inject;
-import sneer.skin.dashboard.Dashboard;
-import sneer.skin.laf.LafAction;
+import sneer.skin.laf.impl.AbstractLafSupportImpl;
 import sneer.skin.laf.metal.MetalLafSupport;
-import sneer.skin.mainMenu.MainMenu;
 
-public class MetalLafSupportImpl implements MetalLafSupport {
+public class MetalLafSupportImpl extends AbstractLafSupportImpl implements MetalLafSupport {
 
-	@Inject
-	private static MainMenu mainMenu;
-	
-	@Inject
-	private static Dashboard dashboard;
-	
-	private LafAction action;
-	
 	public MetalLafSupportImpl(){
-		action = new LafAction(new MetalLookAndFeel(), 
-						  		   mainMenu.getLookAndFeelMenu(), 
-						  		   dashboard);
+		super(new MetalLookAndFeel());
 	}
-
-	public LafAction getAction() {
-		return action;
-	}
-
-	
 }

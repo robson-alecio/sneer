@@ -18,16 +18,23 @@ import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Searcher;
+import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.LockObtainFailedException;
+import org.apache.lucene.store.RAMDirectory;
+
+import sneer.bricks.things.Thing;
 
 
 public class Finder {
 
 	private static final String TEXT_FIELD = "text";
-	private static final String INDEX_DIRECTORY = "tmp";
+
+	//private static final String INDEX_DIRECTORY_NAME = "tmpDirectory";
+	private Directory _directory = new RAMDirectory();
+	
 	private IndexWriter _index;
 
-	public Collection<ThingImpl> find(Collection<ThingImpl> things, String tags) {
+	public Collection<Thing> find(Collection<Thing> things, String tags) {
 		try {
 			return tryToFind(things, tags);
 		} catch (Exception e) {
@@ -38,12 +45,12 @@ public class Finder {
 		}
 	}
 
-	private Collection<ThingImpl> tryToFind(Collection<ThingImpl> things, String tags)
+	private Collection<Thing> tryToFind(Collection<Thing> things, String tags)
 			throws CorruptIndexException, LockObtainFailedException,
 			IOException, ParseException {
 		createNewIndex();
 
-		for (ThingImpl thing : things)
+		for (Thing thing : things)
 			addToIndex(thing);
 		_index.optimize();
 		_index.close();
@@ -52,9 +59,10 @@ public class Finder {
 		return findInIndex(tags);
 	}
 
-	private Collection<ThingImpl> findInIndex(String tags)
+	private Collection<Thing> findInIndex(String tags)
 			throws CorruptIndexException, IOException, ParseException {
-		IndexReader reader = IndexReader.open(INDEX_DIRECTORY);
+		//IndexReader reader = IndexReader.open(INDEX_DIRECTORY_NAME);
+		IndexReader reader = IndexReader.open(_directory);
 
 		Searcher searcher = new IndexSearcher(reader);
 		Analyzer analyzer = new StandardAnalyzer();
@@ -65,7 +73,7 @@ public class Finder {
 
 		Hits hits = searcher.search(query);
 
-		Collection<ThingImpl> result = new ArrayList<ThingImpl>(hits.length());
+		Collection<Thing> result = new ArrayList<Thing>(hits.length());
 		for (int i = 0; i < hits.length(); i++) {
 			Document doc = hits.doc(i);
 			String name = doc.getFields(TEXT_FIELD)[0].stringValue();
@@ -79,7 +87,7 @@ public class Finder {
 
 	}
 
-	private void addToIndex(ThingImpl thing) throws CorruptIndexException,
+	private void addToIndex(Thing thing) throws CorruptIndexException,
 			IOException {
 		Document doc = new Document();
 		doc.add(toField(thing.name()));
@@ -94,7 +102,8 @@ public class Finder {
 
 	private void createNewIndex() throws CorruptIndexException,
 			LockObtainFailedException, IOException {
-		_index = new IndexWriter(INDEX_DIRECTORY, new StandardAnalyzer(), true);
+		//_index = new IndexWriter(INDEX_DIRECTORY_NAME, new StandardAnalyzer(), true);
+		_index = new IndexWriter(_directory, new StandardAnalyzer(), true);
 	}
 
 }

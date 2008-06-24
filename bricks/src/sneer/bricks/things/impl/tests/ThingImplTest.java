@@ -4,7 +4,7 @@ import sneer.bricks.things.ThingHome;
 import sneer.bricks.things.impl.ThingHomeImpl;
 import sneer.bricks.things.tests.ThingsTest;
 
-public class ThingHomeTest extends ThingsTest {
+public class ThingImplTest extends ThingsTest {
 
 	@Override
 	protected ThingHome prepareSubject() {

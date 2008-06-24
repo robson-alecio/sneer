@@ -10,7 +10,6 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.index.CorruptIndexException;
-import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
@@ -29,7 +28,6 @@ public class Finder {
 
 	private static final String TEXT_FIELD = "text";
 
-	//private static final String INDEX_DIRECTORY_NAME = "tmpDirectory";
 	private Directory _directory = new RAMDirectory();
 	
 	private IndexWriter _index;
@@ -45,26 +43,22 @@ public class Finder {
 		}
 	}
 
-	private Collection<Thing> tryToFind(Collection<Thing> things, String tags)
-			throws CorruptIndexException, LockObtainFailedException,
-			IOException, ParseException {
+	private Collection<Thing> tryToFind(Collection<Thing> things, String tags) throws CorruptIndexException, LockObtainFailedException, IOException, ParseException {
 		createNewIndex();
 
 		for (Thing thing : things)
 			addToIndex(thing);
+		
 		_index.optimize();
 		_index.close();
-
 
 		return findInIndex(tags);
 	}
 
 	private Collection<Thing> findInIndex(String tags)
 			throws CorruptIndexException, IOException, ParseException {
-		//IndexReader reader = IndexReader.open(INDEX_DIRECTORY_NAME);
-		IndexReader reader = IndexReader.open(_directory);
-
-		Searcher searcher = new IndexSearcher(reader);
+		
+		Searcher searcher = new IndexSearcher(_directory);
 		Analyzer analyzer = new StandardAnalyzer();
 
 		QueryParser parser = new QueryParser(TEXT_FIELD, analyzer);
@@ -102,7 +96,6 @@ public class Finder {
 
 	private void createNewIndex() throws CorruptIndexException,
 			LockObtainFailedException, IOException {
-		//_index = new IndexWriter(INDEX_DIRECTORY_NAME, new StandardAnalyzer(), true);
 		_index = new IndexWriter(_directory, new StandardAnalyzer(), true);
 	}
 

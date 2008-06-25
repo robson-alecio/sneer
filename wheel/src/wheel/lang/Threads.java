@@ -42,7 +42,7 @@ public class Threads {
 		return Thread.currentThread().getContextClassLoader();
 	}
 
-	public static void startDaemon(Runnable runnable, String threadName) {
+	public static void startDaemon(String threadName, Runnable runnable) {
         Thread daemon = new Thread(runnable, threadName);
         daemon.setDaemon(true);
         daemon.start();

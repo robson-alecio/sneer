@@ -107,9 +107,9 @@ public class ReactiveJpgImageField extends JPanel{
 	private void addToContactMenu(JPopupMenu menu, final Action action) {
 		final JMenuItem item = new JMenuItem(action.caption());
 		item.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent ignored) {
-			Threads.startDaemon(new Runnable() { @Override public void run() {
+			Threads.startDaemon("ReactiveJpgImageField", new Runnable() { @Override public void run() {
 				action.run();
-			}}, "ReactiveJpgImageField");
+			}});
 		}});
 		menu.add(item);
 	}

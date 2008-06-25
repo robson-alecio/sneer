@@ -90,8 +90,8 @@ public class TreeModelExample extends JFrame {
 	}
 	
 	private void startConcurrentModelModifiers() {
-		Threads.startDaemon(nodeAdder(), "Tree Model Node Adder");
-		Threads.startDaemon(nodeRemover(), "Tree Model Node Remover");
+		Threads.startDaemon("Tree Model Node Adder", nodeAdder());
+		Threads.startDaemon("Tree Model Node Remover", nodeRemover());
 	}
 
 	private Runnable nodeAdder() {

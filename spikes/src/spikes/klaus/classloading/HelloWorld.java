@@ -25,7 +25,7 @@ public class HelloWorld implements Runnable {
 		System.err.println("Hello World");
 		Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
 		Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-		Threads.startDaemon(this, "classloading spike");
+		Threads.startDaemon("classloading spike", this);
 
 		JFrame mainFrame = new JFrame("Sneer");
 		mainFrame.setBounds(100, 100, 400, 400);

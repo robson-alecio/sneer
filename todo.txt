@@ -1,6 +1,6 @@
 ﻿Sandro
  - Refactoring wheel.io.ui.Action to support Signals
- - bricks/lib - Eliminate this directory. Ask me how.
+ - bricks/lib - Eliminate this directory. Each brick must have its own .../lib directory.
  - GUI Development in General
  	- Internal Window Actions (expand brick, brick menu and remove brick, like google desktop).
  	- Layout Support for Internal Windows (Size, Resize and Position).

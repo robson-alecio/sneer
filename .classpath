@@ -27,5 +27,6 @@
 	<classpathentry kind="lib" path="spikes/lib/lucene-demos-2.3.2.jar"/>
 	<classpathentry kind="lib" path="bricks/lib/swingx-0.9.3.jar" sourcepath="/swingx"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/skin/laf/napkin/lib/napkinlaf.jar"/>
+	<classpathentry kind="lib" path="bricks/src/sneer/skin/sustance/lib/substance.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

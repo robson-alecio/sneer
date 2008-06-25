@@ -1,18 +1,28 @@
 package sneer.skin.laf.impl;
 
+import java.util.List;
+
+import javax.swing.JComponent;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import org.jvnet.substance.SubstanceLookAndFeel;
+
 import sneer.lego.Inject;
 import sneer.skin.dashboard.Dashboard;
 import sneer.skin.mainMenu.MainMenu;
+import sneer.skin.menu.Menu;
+import sneer.skin.menu.MenuFactory;
 import wheel.io.ui.Action;
 
 public class AbstractLafSupportImpl {
 
 	@Inject
 	protected static MainMenu mainMenu;
+	
+	@Inject
+	protected static MenuFactory<JComponent> menuFactory;
 	
 	@Inject
 	protected static Dashboard dashboard;
@@ -31,8 +41,20 @@ public class AbstractLafSupportImpl {
 	public AbstractLafSupportImpl(final LookAndFeel laf) {
 		initAction(laf);
 	}
+	
+	public AbstractLafSupportImpl(final List<SubstanceLookAndFeel> laf, String group) {
+		Menu<JComponent> menu = menuFactory.createMenuGroup(group);
+		mainMenu.getLookAndFeelMenu().addGroup(menu);
+		for (LookAndFeel lookAndFeel : laf) {
+			initAction(lookAndFeel, menu);
+		}
+	}
 
 	private void initAction(final LookAndFeel laf) {
+		initAction(laf,mainMenu.getLookAndFeelMenu());
+	}	
+
+	private void initAction(final LookAndFeel laf, Menu<JComponent> menu) {
 		action = new Action(){
 			@Override
 			public String caption() {
@@ -49,7 +71,7 @@ public class AbstractLafSupportImpl {
 				}
 			}
 		};
-		mainMenu.getLookAndFeelMenu().addAction(action);
+		menu.addAction(action);
 	}
 
 	public Action getAction() {

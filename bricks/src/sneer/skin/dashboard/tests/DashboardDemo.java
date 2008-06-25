@@ -7,6 +7,7 @@ import sneer.skin.laf.metal.MetalLafSupport;
 import sneer.skin.laf.motif.MotifLafSupport;
 import sneer.skin.laf.napkin.NapkinLafSupport;
 import sneer.skin.laf.so.SOLafSupport;
+import sneer.skin.sustance.SustanceLafSupport;
 import wheel.lang.Threads;
 
 public class DashboardDemo  {
@@ -18,6 +19,7 @@ public class DashboardDemo  {
 		container.produce(SOLafSupport.class);
 		container.produce(MetalLafSupport.class);
 		container.produce(MotifLafSupport.class);
+		container.produce(SustanceLafSupport.class);
 		container.produce(NapkinLafSupport.class).getAction().run();
 		
 		Threads.sleepWithoutInterruptions(30000);

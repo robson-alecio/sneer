@@ -1,12 +1,10 @@
 ﻿Sandro
- - [DONE] TrayIcon - Forget about processing the image to add shadow, transparency etc. Use sneer16x16.png directly without transparency. The idea in a near future is the user can choose what icon he wants: crown in black with transparency, crown in white with transparency, etc. He can even draw his own. 
- - [DONE] Dashboard - Rename MainFrame to Dashboard.
- - GUI Development in General
- 	1) Dashboard Menu [DONE]
- 	2) Internal Window Actions (expand brick, brick menu and remove brick, like google desktop).
- 	3) Layout Support for Internal Windows (Size, Resize and Position).
- 	4) Add Tab/Window Support
  - Refactoring wheel.io.ui.Action to support Signals
+ - bricks/lib - Eliminate this directory. Ask me how.
+ - GUI Development in General
+ 	- Internal Window Actions (expand brick, brick menu and remove brick, like google desktop).
+ 	- Layout Support for Internal Windows (Size, Resize and Position).
+ 	- Add Tab/Window Support
  - Resizeable JWindow, instead of switching JFrame <-> JWindow.
 
 ﻿Leandro

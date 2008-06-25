@@ -10,15 +10,13 @@ import sneer.bricks.keymanager.PublicKey;
 import sneer.lego.Brick;
 import wheel.lang.Casts;
 import wheel.reactive.Register;
-import wheel.reactive.Signal;
-import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 
-class Proxy extends AbstractParty implements BrickInvocator {
+class PeerProxy extends AbstractParty implements SignalPublisher {
 
-	Proxy(PublicKey publicKey) {
+	PeerProxy(PublicKey publicKey) {
 		if (publicKey == null) throw new IllegalArgumentException("Public key cannot be null.");
 		_publicKey = publicKey;
 	}
@@ -30,26 +28,6 @@ class Proxy extends AbstractParty implements BrickInvocator {
 
 	protected final Map<String, Register<Object>> _registersBySignalPath = new HashMap<String, Register<Object>>();
 	private ListRegister<RemoteContact> _contactsCache;
-
-	@Override
-	public <S> Signal<S> signal(String signalPath) {
-		Register<S> register = produceRegisterFor(signalPath);
-		return register.output();   //Fix: Signal type mismatch between peers is possible. 
-	}
-
-	private <T> Register<T> produceRegisterFor(String signalPath) {
-		Register<Object> register = _registersBySignalPath.get(signalPath);
-		if (register == null) {
-			register = new RegisterImpl<Object>(null);
-			_registersBySignalPath.put(signalPath, register);
-			subscribeTo(signalPath);
-		}
-		return Casts.uncheckedGenericCast(register);
-	}
-
-	private void subscribeTo(String signalPath) {
-		subscribeTo(_publicKey, signalPath, null);
-	}
 
 	private AbstractParty closestIntermediary() { //Optimize
 		int closestDistance = Integer.MAX_VALUE;
@@ -67,11 +45,17 @@ class Proxy extends AbstractParty implements BrickInvocator {
 		return result;
 	}
 
-	void handleNotification(String signalPath, Object notification) {
-		Register<Object> register = _registersBySignalPath.get(signalPath);
+	void handleNotification(Class<? extends Brick> brickInterface, String signalName, Object notification) {
+		if (brickInterface != null) {
+			Brick brick = brickProxyFor(brickInterface);
+			BrickProxy.handleNotification(brick, signalName, notification);
+			return;
+		}
+		
+		Register<Object> register = _registersBySignalPath.get(signalName);
 		
 		if (register == null) {
-			System.out.println("Register is null: " + signalPath + " - Ignoring new value notification: " + notification); //Implement: Use logger instead.
+			System.out.println("Register is null: " + signalName + " - Ignoring new value notification: " + notification); //Implement: Use logger instead.
 			return;
 		}
 		
@@ -144,13 +128,13 @@ class Proxy extends AbstractParty implements BrickInvocator {
 	}
 
 	@Override
-	public Object invoke(BrickInvocation invocation) {
-		return closestIntermediary().invoke(_publicKey, invocation, null);
+	public void subscribeTo(Class<? extends Brick> brickInterface, String signalName) {
+		subscribeTo(_publicKey, brickInterface, signalName, null);
 	}
 
 	@Override
-	Object invoke(PublicKey targetPK, BrickInvocation invocation, PublicKey intermediaryPKIgnored) {
-		return closestIntermediary().invoke(targetPK, invocation, _publicKey);
+	void subscribeTo(PublicKey targetPK, Class<? extends Brick> brickInterface, String signalName, PublicKey intermediaryPKIgnored) {
+		closestIntermediary().subscribeTo(targetPK , brickInterface, signalName, _publicKey);
 	}
 
 

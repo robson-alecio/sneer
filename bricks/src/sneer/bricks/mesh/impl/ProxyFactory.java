@@ -10,7 +10,7 @@ public class ProxyFactory implements Functor<PublicKey, Party> {
 
 	@Override
 	public Party evaluate(PublicKey pk) {
-		return new Proxy(pk);
+		return new PeerProxy(pk);
 	}
 
 

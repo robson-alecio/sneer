@@ -1,6 +1,8 @@
 package sneer.bricks.mesh.impl;
 
 import java.io.NotSerializableException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +16,9 @@ import sneer.bricks.mesh.Me;
 import sneer.bricks.mesh.Party;
 import sneer.bricks.serialization.Serializer;
 import sneer.bricks.threadpool.ThreadPool;
+import sneer.lego.Brick;
 import sneer.lego.Inject;
+import wheel.lang.Casts;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
@@ -56,18 +60,21 @@ class SignalConnection implements Visitable {
 	}
 	
 	private void receive(byte[] packetReceived) {
-		Object ambassador;
+		Object candidate;
 		try {
-			ambassador = _serializer.deserialize(packetReceived, SignalConnection.class.getClassLoader());
+			candidate = _serializer.deserialize(packetReceived, SignalConnection.class.getClassLoader());
 		} catch (ClassNotFoundException e) {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
 
+		Ambassador ambassador;
 		try {
-			((Ambassador)ambassador).visit(this);
+			ambassador = (Ambassador)candidate;
 		} catch (ClassCastException e) {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
+
+		ambassador.visit(this);
 	}
 
 	private void startSender() {
@@ -99,9 +106,9 @@ class SignalConnection implements Visitable {
 	}
 
 
-	private Omnivore<Object> createScoutFor(final PublicKey publicKey, final String signalPath) {
+	private Omnivore<Object> createScoutFor(final PublicKey publicKey, final Class<? extends Brick> brickInterface, final String signalPath) {
 		Omnivore<Object> result = new Omnivore<Object>() {@Override public void consume(Object newValue) {
-			send(new Notification(publicKey, signalPath, newValue));
+			send(new Notification(publicKey, brickInterface, signalPath, newValue));
 		}};
 		_scoutsToAvoidGC.add(result); //Fix: This is a Leak.
 		return result;
@@ -158,16 +165,16 @@ class SignalConnection implements Visitable {
 
 
 	@Override
-	public void handleNotification(PublicKey publicKey, String signalPath, Object newValue) {
-		Proxy target = produceProxy(publicKey);
+	public void handleNotification(PublicKey publicKey, Class<? extends Brick> brickInterface, String signalPath, Object newValue) {
+		PeerProxy target = produceProxy(publicKey);
 		if (target == null) return;
 		
-		target.handleNotification(signalPath, newValue);
+		target.handleNotification(brickInterface, signalPath, newValue);
 	}
 
 	@Override
 	public void handleNotificationOfContactAdded(PublicKey publicKey, RemoteContact newContact) {
-		Proxy target = produceProxy(publicKey);
+		PeerProxy target = produceProxy(publicKey);
 		if (target == null) return;
 		
 		target.handleNotificationOfContact(newContact);
@@ -175,25 +182,25 @@ class SignalConnection implements Visitable {
 	
 	@Override
 	public void handleNotificationOfContactRemoved(PublicKey publicKey,	RemoteContact contact) {
-		Proxy target = produceProxy(publicKey);
+		PeerProxy target = produceProxy(publicKey);
 		if (target == null) return;
 		
 		target.handleNotificationOfContactRemoved(contact);
 	}
 	
 
-	private Proxy produceProxy(PublicKey publicKey) {
+	private PeerProxy produceProxy(PublicKey publicKey) {
 		AbstractParty target = produceParty(publicKey);
 		if (target instanceof Me) {
 			_logger.info("Illegal notification.");
 			return null;
 		}
-		return (Proxy)target;
+		return (PeerProxy)target;
 	}
 	
 
-	void subscribeTo(PublicKey publicKey, String remoteSignalPath) {
-		send(new Subscription(publicKey, remoteSignalPath));
+	void subscribeTo(PublicKey targetPK, String remoteSignalPath) {
+		send(new Subscription(targetPK, null, remoteSignalPath));
 	}
 
 	void subscribeToContacts(PublicKey targetPK) {
@@ -201,19 +208,40 @@ class SignalConnection implements Visitable {
 	}
 
 	@Override
-	public void serveSubscriptionTo(PublicKey publicKey, String signalPath) {
+	public void serveSubscriptionTo(PublicKey publicKey, Class<? extends Brick> brickInterface, String signalName) {
 		Party target = produceParty(publicKey);
-		Signal<Object> signal = target.signal(signalPath);
 		
-		signal.addReceiver(createScoutFor(publicKey, signalPath));
+		Signal<Object> signal;
+		Brick brick = target.brickProxyFor(brickInterface);
+		signal = invokeSignal(brick, brickInterface, signalName);
+				
+		signal.addReceiver(createScoutFor(publicKey, brickInterface, signalName));
 	}
 	
+	private Signal<Object> invokeSignal(Brick brick, Class<? extends Brick> correspondingBrickInterface, String signalName) {
+		try {
+			return tryToInvokeSignal(brick, correspondingBrickInterface, signalName);
+		} catch (Exception e) {
+			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+		}
+	}
+
+	private Signal<Object> tryToInvokeSignal(Brick brick, Class<? extends Brick> correspondingBrickInterface, String signalName) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		Method method = correspondingBrickInterface.getMethod(signalName, (Class<?>[])null);
+		return Casts.uncheckedGenericCast(
+			method.invoke(brick, (Object[])null));
+	}
+
 	@Override
 	public void serveSubscriptionToContacts(PublicKey publicKey) {
 		Party target = produceParty(publicKey);
 		ListSignal<Contact> contacts = target.contacts();
 
 		createScoutForContacts(publicKey, contacts);
+	}
+
+	public void subscribeTo(PublicKey targetPK, Class<? extends Brick> brickInterface, String signalName) {
+		send(new Subscription(targetPK, brickInterface, signalName));
 	}
 
 	

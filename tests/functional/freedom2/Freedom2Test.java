@@ -57,5 +57,4 @@ public abstract class Freedom2Test extends SovereignFunctionalTest {
 	}
 
 
-
 }

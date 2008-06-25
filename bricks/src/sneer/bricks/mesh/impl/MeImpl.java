@@ -12,10 +12,7 @@ import sneer.lego.Brick;
 import sneer.lego.Container;
 import sneer.lego.Inject;
 import sneer.lego.Startable;
-import spikes.legobricks.name.OwnNameKeeper;
-import wheel.lang.Casts;
 import wheel.lang.Functor;
-import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
@@ -78,14 +75,6 @@ class MeImpl extends AbstractParty implements Me, Startable {
 	}
 
 	@Override
-	public <S> Signal<S> signal(String signalPath) {
-		if (signalPath.equals("Name"))
-			return Casts.uncheckedGenericCast(brickProxyFor(OwnNameKeeper.class).name());
-			
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
-	}
-
-	@Override
 	public ListSignal<Contact> contacts() {
 		return _contactManager.contacts();
 	}
@@ -127,8 +116,11 @@ class MeImpl extends AbstractParty implements Me, Startable {
 	}
 
 	@Override
-	Object invoke(PublicKey targetPK, BrickInvocation invocation, PublicKey intermediaryPK) {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+	void subscribeTo(PublicKey targetPK, Class<? extends Brick> brickInterface, String signalName, PublicKey intermediaryPK) {
+		Contact directContact = _keyManager.contactGiven(intermediaryPK);
+		
+		SignalConnection signalConnection = _signalConnectionsByContact.get(directContact);
+		signalConnection.subscribeTo(targetPK, brickInterface, signalName);
 	}
 
 

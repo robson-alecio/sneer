@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import sneer.bricks.things.Thing;
 import sneer.bricks.things.ThingHome;
+import wheel.lang.Threads;
 import wheel.testutil.TestOfInterface;
 
 
@@ -18,6 +19,18 @@ public abstract class ThingsTest extends TestOfInterface<ThingHome> {
 		createApartmentAds();
 		searchApartmentAds();
 	}
+	
+//	@Test
+//	public void testConcurrency(){
+//		startAddingThread();
+//		startAddingThread();
+//		startFindingThread();
+//		startFindingThread();
+//	}
+//
+//	private void startAddingThread() {
+//		Threads.startDaemon(runnable, threadName);
+//	}
 
 	private void searchApartmentAds() {
 		find("Apartamento", 3);

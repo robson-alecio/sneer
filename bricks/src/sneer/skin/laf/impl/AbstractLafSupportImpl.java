@@ -58,22 +58,35 @@ public class AbstractLafSupportImpl {
 		action = new Action(){
 			@Override
 			public String caption() {
-				return laf.getName();
+				return getActionCaption(laf);
 			}
 
 			@Override
 			public void run() {
-				try {
-					UIManager.setLookAndFeel(laf);
-					dashboard.refreshLaf();
-				} catch (UnsupportedLookAndFeelException e) {
-					// ignore: same L&F
-				}
+				runAction(laf);
 			}
 		};
-		menu.addAction(action);
+		addActionInMenu(menu);
 	}
 
+	//Action Methods
+	protected void addActionInMenu(Menu<JComponent> menu) {
+		menu.addAction(action);
+	}
+	
+	protected String getActionCaption(final LookAndFeel laf) {
+		return laf.getName();
+	}
+
+	protected void runAction(final LookAndFeel laf) {
+		try {
+			UIManager.setLookAndFeel(laf);
+			dashboard.refreshLaf();
+		} catch (UnsupportedLookAndFeelException e) {
+			// ignore: same L&F
+		}
+	}
+	
 	public Action getAction() {
 		return action;
 	}

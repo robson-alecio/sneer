@@ -9,7 +9,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.lang.reflect.Method;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import functional.SignalUtils;
@@ -26,10 +25,10 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 	@Test
 	public void testPublish() throws Exception {
 		
-		Assert.fail("If this test runs, other tests break.");
+		//Assert.fail("If this test runs, other tests break.");
 		
-		BrickPublisher publisher = wrapParty(_a);
-		BrickPublisher receiver = wrapParty(_b);
+		SovereignParty publisher = _a;
+		SovereignParty receiver = _b;
 		
 		System.out.println("Ana Almeida "  + _a.ownPublicKey());
 		System.out.println("Bruno Barros " + _b.ownPublicKey());
@@ -85,5 +84,4 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 
 	protected abstract  File askSourceFolder();
 
-	protected abstract BrickPublisher wrapParty(SovereignParty party);
 }

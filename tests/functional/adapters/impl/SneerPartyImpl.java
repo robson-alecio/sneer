@@ -1,27 +1,40 @@
 package functional.adapters.impl;
 
+import java.io.File;
+
+import sneer.bricks.brickmanager.BrickManager;
 import sneer.bricks.config.SneerConfig;
 import sneer.bricks.connection.SocketOriginator;
 import sneer.bricks.connection.SocketReceiver;
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.contacts.ContactManager;
+import sneer.bricks.deployer.BrickBundle;
+import sneer.bricks.deployer.BrickFile;
+import sneer.bricks.deployer.Deployer;
 import sneer.bricks.internetaddresskeeper.InternetAddressKeeper;
 import sneer.bricks.keymanager.KeyManager;
 import sneer.bricks.keymanager.PublicKey;
 import sneer.bricks.mesh.Me;
 import sneer.bricks.mesh.Party;
 import sneer.bricks.network.Network;
+import sneer.lego.Binder;
+import sneer.lego.Container;
+import sneer.lego.ContainerUtils;
 import sneer.lego.Inject;
+import sneer.lego.impl.SimpleBinder;
+import sneer.lego.utils.io.NetworkFriendly;
 import spikes.legobricks.name.OwnNameKeeper;
 import spikes.legobricks.name.PortKeeper;
+import wheel.io.serialization.DeepCopier;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 import functional.SovereignParty;
-import functional.adapters.SelfInject;
 import functional.adapters.SneerParty;
 
-public class SneerPartyImpl extends SelfInject implements SneerParty {
+public class SneerPartyImpl implements SneerParty {
 	
+	private Container _container;
+
 	private static final String MOCK_ADDRESS = "localhost";
 
 	@Inject
@@ -50,9 +63,20 @@ public class SneerPartyImpl extends SelfInject implements SneerParty {
 	@Inject
 	private KeyManager _keyManager;
 	
+	@Inject
+	private Deployer _deployer;
+	
+	@Inject
+	private BrickManager _registry;
+
 	
 	public SneerPartyImpl(String name, int port, Network network, SneerConfig config) {
-		super(network, config);
+		Binder binder = new SimpleBinder();
+		binder.bind(Network.class).toInstance(network);
+		binder.bind(SneerConfig.class).toInstance(config);
+	
+		_container = ContainerUtils.newContainer(binder);
+		_container.inject(this);
 
 		setOwnName(name);
 		try {
@@ -152,5 +176,38 @@ public class SneerPartyImpl extends SelfInject implements SneerParty {
 		return _keyManager.ownPublicKey();
 	}
 
+
+	@Override
+	public void meToo(SovereignParty party, String brickName) throws Exception {
+		BrickFile brick = party.brick(brickName);
+
+		//prepare to send objet via network
+		((NetworkFriendly) brick).beforeSerialize();
+		BrickFile copy = DeepCopier.deepCopy(brick);
+		((NetworkFriendly) brick).afterSerialize();
+		
+		//TODO: send copy via network
+		_registry.install(copy);
+	}
+
+	@Override
+	public BrickFile brick(String brickName) {
+		return _registry.brick(brickName);
+	}
+
+	@Override
+	public BrickBundle publishBrick(File sourceDirectory) {
+		BrickBundle brickBundle = _deployer.pack(sourceDirectory);
+		//brickBundle.prettyPrint();
+		_registry.install(brickBundle);
+		return brickBundle;
+	}
+
+	@Override
+	public Object produce(String brickName) {
+		return _container.produce(brickName);
+	}
+
+	
 }
 

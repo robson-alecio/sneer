@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+
 import sneer.bricks.brickmanager.BrickManager;
 import sneer.bricks.brickmanager.BrickManagerException;
 import sneer.bricks.config.SneerConfig;
@@ -127,7 +129,7 @@ public class BrickManagerImpl implements BrickManager {
 		//System.out.println("installing "+brickName+" on "+brickDirectory);
 		
 		if(brickDirectory.exists()) 
-			sneer.lego.utils.FileUtils.cleanDirectory(brickDirectory); //FixUrgent: ask permission to overwrite?
+			tryToCleanDirectory(brickDirectory); //FixUrgent: ask permission to overwrite?
 		else 
 			brickDirectory.mkdir();
 		
@@ -146,6 +148,14 @@ public class BrickManagerImpl implements BrickManager {
 		runOnceOnInstall(installed);
 		
 		_bricksByName.put(brickName, installed);
+	}
+
+	private void tryToCleanDirectory(File brickDirectory) {
+		try {
+			FileUtils.cleanDirectory(brickDirectory);
+		} catch (IOException e) {
+			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+		}
 	}
 
 	private void runOnceOnInstall(BrickFile installed) {

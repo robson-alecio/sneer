@@ -1,11 +1,8 @@
 package sneer.lego.utils;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.apache.commons.io.FilenameUtils;
-
-import wheel.lang.exceptions.NotImplementedYet;
 
 public class FileUtils {
 
@@ -32,14 +29,4 @@ public class FileUtils {
 		return file;
 	}
 	
-	public static void cleanDirectory(File directory) {
-		if(!directory.exists())
-			return;
-		
-		try {
-			org.apache.commons.io.FileUtils.cleanDirectory(directory);
-		} catch (IOException e) {
-			throw new NotImplementedYet(e);
-		}
-	}
 }

@@ -1,7 +1,9 @@
 package functional.adapters;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 
 import sneer.bricks.config.SneerConfig;
@@ -14,9 +16,10 @@ import functional.adapters.impl.SneerPartyImpl;
 
 public class SneerCommunity implements SovereignCommunity {
 
+	private final Network _network = new InMemoryNetwork();
 	private int _nextPort = 10000;
 
-	private final Network _network = new InMemoryNetwork();
+	private final File _tmpDirectory = prepareTmpDirectory();
 	
 	@Override
 	public SovereignParty createParty(String name) {
@@ -24,19 +27,34 @@ public class SneerCommunity implements SovereignCommunity {
 		return new SneerPartyImpl(name, _nextPort++, _network, config);
 	}
 
+	private File prepareTmpDirectory() {
+		File tmp = new File("tmp");
+		if (tmp.exists())
+			tryToClean(tmp);
+		else
+			tmp.mkdir();
+		
+		String exclusiveDirectoryName = "test_run_" + System.nanoTime();
+		return new File(tmp, exclusiveDirectoryName);
+	}
+
+	private void tryToClean(File tmp) {
+		try {
+			FileUtils.cleanDirectory(tmp);
+		} catch (IOException e) {
+			System.out.println("Some previous test might be forgetting to close files. " + e.getMessage());
+		}
+	}
+
 	private SneerConfig sneerConfigForParty(String name) {
 		File root = rootDirectory(name);
-		sneer.lego.utils.FileUtils.cleanDirectory(root);
 		SneerConfig config = new SneerConfigMock(root);
 		return config;
 	}
 
 	private File rootDirectory(String name) {
-		File tmp = new File("tmp");
-		if (!tmp.exists()) tmp.mkdir();
-
 		String fileName = ".sneer-"+StringUtils.deleteWhitespace(name);
-		return new File(tmp, fileName);
+		return new File(_tmpDirectory, fileName);
 		
 	}
 

@@ -8,7 +8,7 @@ public class TestDashboard {
 	}
 
 	public static boolean loadTestsShouldRun() {
-		boolean result = true;
+		boolean result = false;
 		if (result) displayLoadTestMessage();
 		return result;
 	}

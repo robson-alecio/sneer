@@ -1,140 +1,139 @@
 ﻿Sandro
 
- - Fix - Menu stops working after dashboard is locked on win XP.
- - Fix - Single click on tray icon must call EXACTLY the same code as TrayIconMenu > Open. Currently, clicking on the TrayIcon is not bringing the dashboard to the foreground when locked.
- - Fix - The animated collapse is still slow. Let me show you what I mean.
- - Fix - Use a font without serif such as arial in the text field.
+	- Fix - Menu stops working after dashboard is locked on win XP.
+	- Fix - Single click on tray icon must call EXACTLY the same code as TrayIconMenu > Open. Currently, clicking on the TrayIcon is not bringing the dashboard to the foreground when locked.
+	- Fix - The animated collapse is still slow. Let me show you what I mean.
+	- Fix - Use a font without serif such as arial in the text field.
 
- - [Napkin "bugs"] (need change de napkin laf to fix this)
-   - Fix - Increase snapp collapse icon ">>" contrast. I cannot see it properly. (i will fix the JXTaskPaneUI)
+	- [Napkin "bugs"] (need change de napkin laf to fix this)
+   		- Fix - Increase snapp collapse icon ">>" contrast. I cannot see it properly. (i will fix the JXTaskPaneUI)
  
- - Tray Icon - Ask Petra for a 16x16 icon to put there. Black on white. No transparency.
- - Refactoring wheel.io.ui.Action to support Signals
- - GUI Development in General
- 	- Internal Window Actions (expand brick, brick menu and remove brick, like google desktop).
- 	- Layout Support for Internal Windows (Size, Resize and Position).
- 	- Add Tab/Window Support
- - Resizeable JWindow, instead of switching JFrame <-> JWindow.
+	- Tray Icon - Ask Petra for a 16x16 icon to put there. Black on white. No transparency.
+	- Refactoring wheel.io.ui.Action to support Signals
+	- Internal Window Actions (expand brick, brick menu and remove brick, like google desktop).
+	- Layout Support for Internal Windows (Size, Resize and Position).
+	- Resizeable JWindow, instead of switching JFrame <-> JWindow.
+	=================================================== RELEASE
+	- Add Tab/Window Support
+
 
 ﻿Leandro
- - check file locks on windows (FileUtils.cleanDirectory() "unable to delete file")
- - create new test runner that uses our own classloader so we can replace the AnnotatedFieldInjector by the StaticFieldInjector
-   - Load wheel in a base classloader that also adds "implements Serializable" to classes.
- - replace AnnotatedFieldInjector with StaticFieldInjector which will enable removing the use of @Inject and Startable 
- - include author's pk into brick hashcode
- - use brick hashcode as key on BrickManager 
- [Almost DONE] - Brick Publish:
-	1) Inform source folder (src).
-	2) Inform library folder (lib).
-	3) Find all interfaces that extend Brick inside src.
-	4) compile the bricks using the metadatafile (describes only RELATIVE paths to libs inside lib folder) and all jars inside all subfolders of the bricks' local lib folder.
-	5) Run SNEER1024 hash (SHA-512 concat Whirlpool-512) on interface .class files (or jar).
-	6) Run SNEER1024 hash on impl .class files (or jar) together with libs (produce a single impl hash for it all).
-	7) Inform status:
-		- New brick.
-		- Unchanged brick.
-		- Impl changed (impl hash of brick changed)
-		- Evolved brick (main interface extends main interface of old brick)
-		- Invalid brick (Interface hash of brick changed)
-			Deploy is not allowed in this case.
-	8) deploy brick to sneer home ($USER_HOME/.sneer/)
- - Logging - Find a way that the Looger brick can configured via API without having to use the log4j properties file. 
- 
-Leandro Reminder 
- - hash com libs
- - brick registry (guarda hash e os jars)
-
+	- check file locks on windows (FileUtils.cleanDirectory() "unable to delete file")
+	- create new test runner that uses our own classloader so we can replace the AnnotatedFieldInjector by the StaticFieldInjector
+		- Load wheel in a base classloader that also adds "implements Serializable" to classes.
+	- replace AnnotatedFieldInjector with StaticFieldInjector which will enable removing the use of @Inject and Startable 
+	- include author's pk into brick hashcode
+	- use brick hashcode as key on BrickManager 
+		- hash com libs
+	[Almost DONE] - Brick Publish:
+		1) Inform source folder (src).
+		2) Inform library folder (lib).
+		3) Find all interfaces that extend Brick inside src.
+		4) compile the bricks using the metadatafile (describes only RELATIVE paths to libs inside lib folder) and all jars inside all subfolders of the bricks' local lib folder.
+		5) Run SNEER1024 hash (SHA-512 concat Whirlpool-512) on interface .class files (or jar).
+		6) Run SNEER1024 hash on impl .class files (or jar) together with libs (produce a single impl hash for it all).
+		7) Inform status:
+			- New brick.
+			- Unchanged brick.
+			- Impl changed (impl hash of brick changed)
+			- Evolved brick (main interface extends main interface of old brick)
+			- Invalid brick (Interface hash of brick changed)
+				Deploy is not allowed in this case.
+		8) deploy brick to sneer home ($USER_HOME/.sneer/)
+	- Logging - Find a way that the Looger brick can configured via API without having to use the log4j properties file. 
+	=================================================== RELEASE
+	
 
 Klaus
-contacts() - change from ListSignal to SetSignal.
-ongoing - Component Model (see todoLego.txt)
- - GUI - Spartan interface for what we have so far. http://c2.com/cgi/wiki?SpartanUserInterface 
- - RemoteSignals - Test with different signals, not only name.
- - Signal type-safety - Not string-based.
- - Brick persistence
- - Public Keys
- - Connection Encryption
- - Auto-update of Kernel from Peers
- - Auto-Update of Bricks from Peers
- - Logging - revise how logging is done by all bricks. Revise blinking lights API.
- - Package namespace - revise sneer.lego? sneer.kernel? sneer.bricks? - Consider using kernel, pulp and skin.
- - Make build.xml run again. 
- - README.txt - Update sourcepath, classpath, main class and build.xml references
-RELEASE ===================================================
- - Traffic Prioritization - Among signals and among contacts.
- - KeyManager <-> Mesh dependency cycle - Eliminate.
- - "Interface.allImplementors()" - Simplify use by injecting a SetSignal with all Bricks that implement a non-brick interface defined by another brick.  
- - UDP instead of TCP
+	contacts() - change from ListSignal to SetSignal.
+	ongoing - Component Model (see todoLego.txt)
+	- GUI - Spartan interface for what we have so far. http://c2.com/cgi/wiki?SpartanUserInterface 
+	- RemoteSignals - Test with different signals, not only name.
+	- Signal type-safety - Not string-based.
+	- Brick persistence
+	- Public Keys
+	- Connection Encryption
+	- Auto-update of Kernel from Peers
+	- Auto-Update of Bricks from Peers
+	- Logging - revise how logging is done by all bricks. Revise blinking lights API.
+	- Package namespace - revise sneer.lego? sneer.kernel? sneer.bricks? - Consider using kernel, pulp and skin.
+	- Make build.xml run again. 
+	- README.txt - Update sourcepath, classpath, main class and build.xml references
+	=================================================== RELEASE
+	- Traffic Prioritization - Among signals and among contacts.
+	- KeyManager <-> Mesh dependency cycle - Eliminate.
+	- "Interface.allImplementors()" - Simplify use by injecting a SetSignal with all Bricks that implement a non-brick interface defined by another brick.  
+	- UDP instead of TCP
 
 Gandhi
-partially done (windows&konqueror not nautilus) - Public Files of Contact - Copy and Paste
- - Check file transfer between LINUX and WINDOWS. (Using Metoo, shared folders, public files).
- - Public Files of Contact - Drag and Drop
- - Persist SplitPane position (maybe with bounds)
+	partially done (windows&konqueror not nautilus) - Public Files of Contact - Copy and Paste
+	- Check file transfer between LINUX and WINDOWS. (Using Metoo, shared folders, public files).
+	- Public Files of Contact - Drag and Drop
+	- Persist SplitPane position (maybe with bounds)
 
 
 FileSharing
-  - Hardcoded directory
-  - Polling
-  - New file
-  - Set same modified date
-  - Atomic transfers always (file rename)
-  - Chunked transfers.
-  - File deletion detected (recover from remote)
-  - Changed file (based on date)
-  - File deletion requested by user (delete on both sides)
-  - subdirectories
-  - Limitação de uso de banda hardcoded
-  - Smaller files first
-  - Conflict detection
-  - access control
-  - File hashes to detect changes and renames
-  - diff
+	- Hardcoded directory
+	- Polling
+	- New file
+	- Set same modified date
+	- Atomic transfers always (file rename)
+	- Chunked transfers.
+	- File deletion detected (recover from remote)
+	- Changed file (based on date)
+	- File deletion requested by user (delete on both sides)
+	- subdirectories
+	- Limitação de uso de banda hardcoded
+	- Smaller files first
+	- Conflict detection
+	- access control
+	- File hashes to detect changes and renames
+	- diff
   
  
 TopTen
 
 
 GiveNTake
-  - "Things"
-    - Publisher/Announcer/Author - The sovereign party responsible for this thing.
-    - Name - For listing. Considered part of the description when searching, maybe with a higher weighting.
-    - Description - Free text.
-    - Attributes? Price, Weight, etc?
-      - Location? Street Addresses? GPS Coordinates?
-    - Photos? Other Media?
-    - Comments by others?
+	- "Things"
+		- Publisher/Announcer/Author - The sovereign party responsible for this thing.
+		- Name - For listing. Considered part of the description when searching, maybe with a higher weighting.
+		- Description - Free text.
+		- Attributes? Price, Weight, etc?
+			- Location? Street Addresses? GPS Coordinates?
+		- Photos? Other Media?
+		- Comments by others?
 
-  - Examples
-    - Apartment
-      - Name: "Av João Gualberto 1673 sala 41" or "Apartamento Juvevê 2 Quartos"
-      - Description: "Apartamento Sala Comercial em Bom estado. Bom para consultorio. Face sul. Sito a Av João Gualberto 1673 sala 41. R$42700,00 a vista. Aceita troca por carro de menor valor."
-      
-      - Name: "Apartamento Residencial - Bacacheri"
-      - Description: "Valor: R$ 194.500,00 Area: 163,00m², mobilado, ocupado, com playground, BELÍSSIMO APTO CONTENDO 3 QUARTOS SENDO 1 SUITE COM ARMÁRIOS E PISO EM MADEIRA, AMPLA SALA EM (L) TAMBEM COM PISO EM MADEIRA, SANCAS DE GESSO, PINTURA TEXTURIZADA, QUARTOS DE SOLTEIRO COM ARMÁRIOS,ESQUADRIS DE ALUMINIO, COZINHA COM ARMÁRIOS E AQUECIMENTO Á GÁS, PREDIO COM 02 SALÕES DE FESTAS, 02 CHURRASQUEIRAS COLETIVAS, SALÃO DE JOGOS E SALA DE GINASTICA, ARQUITETURA MODERNA E PASTILHADA. PRÓXIMO AO WALL MART DO CABRAL, BANCOS ESCOLAS FARMÁCIAS E COMERCIO EM GERAL. ESTUDO PROPOSTA COM IMÓVEL DE MAIOR VALOR EM CONDOMINIO FECHADO. CONFIRA E FAÇA SUA PROPOSTA"
+	- Examples
+	- Apartment
+		- Name: "Av João Gualberto 1673 sala 41" or "Apartamento Juvevê 2 Quartos"
+		- Description: "Apartamento Sala Comercial em Bom estado. Bom para consultorio. Face sul. Sito a Av João Gualberto 1673 sala 41. R$42700,00 a vista. Aceita troca por carro de menor valor."
+
+		- Name: "Apartamento Residencial - Bacacheri"
+		- Description: "Valor: R$ 194.500,00 Area: 163,00m², mobilado, ocupado, com playground, BELÍSSIMO APTO CONTENDO 3 QUARTOS SENDO 1 SUITE COM ARMÁRIOS E PISO EM MADEIRA, AMPLA SALA EM (L) TAMBEM COM PISO EM MADEIRA, SANCAS DE GESSO, PINTURA TEXTURIZADA, QUARTOS DE SOLTEIRO COM ARMÁRIOS,ESQUADRIS DE ALUMINIO, COZINHA COM ARMÁRIOS E AQUECIMENTO Á GÁS, PREDIO COM 02 SALÕES DE FESTAS, 02 CHURRASQUEIRAS COLETIVAS, SALÃO DE JOGOS E SALA DE GINASTICA, ARQUITETURA MODERNA E PASTILHADA. PRÓXIMO AO WALL MART DO CABRAL, BANCOS ESCOLAS FARMÁCIAS E COMERCIO EM GERAL. ESTUDO PROPOSTA COM IMÓVEL DE MAIOR VALOR EM CONDOMINIO FECHADO. CONFIRA E FAÇA SUA PROPOSTA"
   
-      - Name: "Apartamento Residencial - Barreirinha"
-      - Description: "Valor: R$ 66.000,00 Area: 50,00m² Apartamento no Cond. Sta. Efigênia II, 3º andar, 02 quartos, sala, cozinha, área serviço e bwc, piso taco, próximo ao Terminal Barreirinha, com ônibus, escola, Posto de Saúde. Rua Professor Guilherme Butler"
+		- Name: "Apartamento Residencial - Barreirinha"
+		- Description: "Valor: R$ 66.000,00 Area: 50,00m² Apartamento no Cond. Sta. Efigênia II, 3º andar, 02 quartos, sala, cozinha, área serviço e bwc, piso taco, próximo ao Terminal Barreirinha, com ônibus, escola, Posto de Saúde. Rua Professor Guilherme Butler"
 
-      - Name: "Casa Residencial - Atuba"
-      - Description: "Valor: R$ 130.000,00 Area: 120,00m² Casa com 3 quartos sala cozinha banheiro com piso em parquet, janelas de ferro com grade toda murada e com grade na frente, quintal com deposito em alvenaria, cozinha com armarios."
+		- Name: "Casa Residencial - Atuba"
+		- Description: "Valor: R$ 130.000,00 Area: 120,00m² Casa com 3 quartos sala cozinha banheiro com piso em parquet, janelas de ferro com grade toda murada e com grade na frente, quintal com deposito em alvenaria, cozinha com armarios."
       
-    - Search:
-      API for agent with predicate to decide?
+	- Search:
+		API for agent with predicate to decide?
+
+		(Apartamento | Apto | Ap) => Apartamento
+		(Casa | Sobrado) => Casa
+		(Barreirinha | Ahu | Juveve | AltoDaGloria) -> Bairros Legais
+		(Apartamento | Casa), Bairros Legais, -Comercial, Churrasqueira -> Imoveis Legais
       
-      (Apartamento | Apto | Ap) => Apartamento
-      (Casa | Sobrado) => Casa
-      (Barreirinha | Ahu | Juveve | AltoDaGloria) -> Bairros Legais
-      (Apartamento | Casa), Bairros Legais, -Comercial, Churrasqueira -> Imoveis Legais
+		Imoveis Legais, Price < 100000
+		Imoveis Legais, 100000 <= Price < 200000
+		Imoveis Legais, 200000 <= Price < 300000
       
-      Imoveis Legais, Price < 100000
-      Imoveis Legais, 100000 <= Price < 200000
-      Imoveis Legais, 200000 <= Price < 300000
+		- Ignored (em, bom, para, m², com)
       
-      - Ignored (em, bom, para, m², com)
-      
-      - shown tags
-        - 4x Valor
+	- shown tags
+		- 4x Valor
         - 3x Cozinha
         - 3x área
         - 3x Residencial

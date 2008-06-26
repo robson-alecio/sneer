@@ -198,7 +198,7 @@ public class DashboardImpl implements Dashboard, Runnable {
 		Action cmd = new Action(){
 			@Override
 			public String caption() {
-				return (window==jframe)?"Lock!":"Unlock!";
+				return (window==jframe)?"Lock":"Unlock";
 			}
 			@Override
 			public void run() {
@@ -217,7 +217,7 @@ public class DashboardImpl implements Dashboard, Runnable {
 		Action cmd = new Action(){
 			@Override
 			public String caption() {
-				return "Open!";
+				return "Open";
 			}
 			@Override
 			public void run() {
@@ -236,7 +236,7 @@ public class DashboardImpl implements Dashboard, Runnable {
 		Action cmd = new Action(){
 			@Override
 			public String caption() {
-				return "Exit...";
+				return "Exit";
 			}
 			@Override
 			public void run() {

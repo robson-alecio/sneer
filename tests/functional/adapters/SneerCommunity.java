@@ -10,6 +10,7 @@ import sneer.bricks.network.Network;
 import sneer.bricks.network.impl.inmemory.InMemoryNetwork;
 import functional.SovereignCommunity;
 import functional.SovereignParty;
+import functional.adapters.impl.SneerParty;
 
 public class SneerCommunity implements SovereignCommunity {
 

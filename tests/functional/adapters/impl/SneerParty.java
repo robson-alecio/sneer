@@ -1,4 +1,4 @@
-package functional.adapters;
+package functional.adapters.impl;
 
 import sneer.bricks.config.SneerConfig;
 import sneer.bricks.connection.SocketOriginator;
@@ -17,10 +17,9 @@ import spikes.legobricks.name.PortKeeper;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 import functional.SovereignParty;
+import functional.adapters.SelfInject;
 
 public class SneerParty extends SelfInject implements SovereignParty {
-	
-	{System.out.println(getClass().getClassLoader());}
 	
 	private static final String MOCK_ADDRESS = "localhost";
 
@@ -51,10 +50,8 @@ public class SneerParty extends SelfInject implements SovereignParty {
 	private KeyManager _keyManager;
 	
 	
-	SneerParty(String name, int port, Network network, SneerConfig config) {
+	public SneerParty(String name, int port, Network network, SneerConfig config) {
 		super(network, config);
-		System.out.println(OwnNameKeeper.class.getClassLoader());
-		System.out.println(_ownNameKeeper.getClass().getClassLoader());
 
 		setOwnName(name);
 		try {

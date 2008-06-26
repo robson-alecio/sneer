@@ -2,35 +2,82 @@ package sneer.bricks.things.tests;
 
 import java.util.Collection;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import sneer.bricks.things.Thing;
 import sneer.bricks.things.ThingHome;
 import wheel.lang.Threads;
 import wheel.testutil.TestOfInterface;
+import functional.TestDashboard;
 
 
 public abstract class ThingsTest extends TestOfInterface<ThingHome> {
 
-	
-	@Test
-	public void test() {
-		//if (!TestDashboard.newTestsShouldRun()) return;
+	private static final int _THINGS_TO_ADD = 50;
+	private static final String _LARGE_TEXT = generateLargeText();
+	private volatile boolean _isConcurrencyTestDone = false;
+	 
+	@Test (timeout = 1000)
+	public void testAddAndFind() {
 		createApartmentAds();
 		searchApartmentAds();
 	}
 	
-//	@Test
-//	public void testConcurrency(){
-//		startAddingThread();
-//		startAddingThread();
-//		startFindingThread();
-//		startFindingThread();
-//	}
-//
-//	private void startAddingThread() {
-//		Threads.startDaemon(runnable, threadName);
-//	}
+	@Test (timeout = 100000)
+	public void testConcurrency(){
+		if (!TestDashboard.loadTestsShouldRun()) return;
+		
+		startAddingThread();
+		startAddingThread();
+		startAddingThread();
+		startAddingThread();
+		startAddingThread();
+		startFindingThread(5);
+		startFindingThread(5);
+		startFindingThread(5);
+		startFindingThread(5);
+		startFindingThread(5);
+		
+		while (!_isConcurrencyTestDone)
+			Threads.sleepWithoutInterruptions(10);
+
+		System.out.println();
+
+	}
+
+	private void startAddingThread() {
+		Threads.startDaemon("Thing Adder", new Runnable() { @Override public void run() {
+			int i = 0;
+			while (i <= _THINGS_TO_ADD) {
+				_subject.create("thing" + i, "description thing" + i + " " + _LARGE_TEXT);
+				i++;
+				if (i % 5 == 0) {
+					System.out.print(".");
+					Threads.sleepWithoutInterruptions(50);
+				}
+			}
+		}});
+	}
+
+	private void startFindingThread(final int thingsToFind) {
+		Threads.startDaemon("Thing Finder", new Runnable() {
+
+		@Override public void run() {
+			int i = 0;
+			while (i < _THINGS_TO_ADD) {
+				Collection<Thing> found = _subject.find("thing"+i);
+				
+				Assert.assertTrue(found.size() <= thingsToFind);
+				
+				if (found.size() == thingsToFind) {
+					i++;
+				} else
+					Threads.sleepWithoutInterruptions(10);
+			}
+			_isConcurrencyTestDone = true;
+		}});
+	}
 
 	private void searchApartmentAds() {
 		find("Apartamento", 3);
@@ -49,7 +96,7 @@ public abstract class ThingsTest extends TestOfInterface<ThingHome> {
 	private void find(String tags, int thingsToFind) {
 		Collection<Thing> found = _subject.find(tags);
 		
-		assertSame(thingsToFind, found.size());
+		Assert.assertSame(thingsToFind, found.size());
 	}
 
 	private void createApartmentAds() {
@@ -73,4 +120,12 @@ public abstract class ThingsTest extends TestOfInterface<ThingHome> {
 		_subject.create(name, description);
 	}
 
+	private static String generateLargeText() {
+		StringBuilder result = new StringBuilder();
+		for (int i = 0; i < 1000; i++)
+			result.append("word" + i + " ");
+		return result.toString();
+	}
+
+	
 }

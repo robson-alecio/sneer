@@ -28,7 +28,6 @@ public class ThingHomeImpl implements ThingHome {
 	private static final String TEXT_FIELD = "text";
 	private final Directory _directory = new RAMDirectory();
 	private final Analyzer _analyzer = new StandardAnalyzer();
-	private final QueryParser _parser = new QueryParser(TEXT_FIELD, _analyzer); 
 	
 	public ThingHomeImpl(){
 		try {
@@ -45,7 +44,9 @@ public class ThingHomeImpl implements ThingHome {
 	}
 	
 	private Collection<Thing> tryToFind(String tags) throws CorruptIndexException, LockObtainFailedException, IOException, ParseException {		
-		Query query = _parser.parse(tags);
+		Query query = new QueryParser(TEXT_FIELD, _analyzer)
+			.parse(tags);
+		
 		IndexSearcher searcher = new IndexSearcher(_directory);
 		Hits hits = searcher.search(query);
 		
@@ -74,25 +75,34 @@ public class ThingHomeImpl implements ThingHome {
 		}
 	}
 
-	private void tryToAddToIndex(Thing thing) throws CorruptIndexException,
-			LockObtainFailedException, IOException {
-		IndexWriter index = openIndex(false);
-
+	private void tryToAddToIndex(Thing thing) throws CorruptIndexException, LockObtainFailedException, IOException {
 		Document doc = new Document();
 		doc.add(toField(thing.name()));
 		doc.add(toField(thing.description()));
 
-		index.addDocument(doc);
-		
-		index.optimize();
-		index.close();
+		IndexWriter index = openIndex(false);
+		try {
+			index.addDocument(doc);
+			index.optimize();
+		} finally {
+			index.close();
+		}
 	}
 
 	private Field toField(String string) {
 		return new Field(TEXT_FIELD, string, Store.YES, Field.Index.TOKENIZED);
 	}
 
-	private IndexWriter openIndex(boolean createNew) throws CorruptIndexException, LockObtainFailedException, IOException {
+	private IndexWriter openIndex(boolean createNew) throws CorruptIndexException, IOException {
+		while (true) 
+			try {
+				return tryToOpenIndex(createNew);
+			} catch (LockObtainFailedException e) {
+				//Simply try again;
+			}
+	}
+
+	private IndexWriter tryToOpenIndex(boolean createNew) throws CorruptIndexException, LockObtainFailedException, IOException {
 		return new IndexWriter(_directory, new StandardAnalyzer(), createNew);
 	}
 

@@ -1,13 +1,13 @@
 package wheel.testutil;
 
-import junit.framework.TestCase;
+import org.junit.Before;
 
-public abstract class TestOfInterface<SUBJECT> extends TestCase {
+public abstract class TestOfInterface<SUBJECT> {
 
 	protected SUBJECT _subject;
 
-	@Override
-	protected void setUp() {
+	@Before
+	public void initSubject() {
 		_subject = prepareSubject();
 	}
 

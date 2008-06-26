@@ -2,8 +2,8 @@ package sneer.skin.viewmanager;
 
 public interface ViewManager {
 
-	void register(PartyView app);
+	void register(Snapp app);
 
-	PartyView getOnlyOnePartyViewForNow();
+	Snapp getOnlyOneSnappForNow();
 	
 }

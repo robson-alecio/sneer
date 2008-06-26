@@ -1,19 +1,19 @@
 package sneer.skin.viewmanager.impl;
 
-import sneer.skin.viewmanager.PartyView;
+import sneer.skin.viewmanager.Snapp;
 import sneer.skin.viewmanager.ViewManager;
 
 class ViewManagerImpl implements ViewManager {
 
-	private PartyView _onlyOnePartyViewForNow;
+	private Snapp _onlyOnePartyViewForNow;
 
 	@Override
-	public void register(PartyView view) {
+	public void register(Snapp view) {
 		_onlyOnePartyViewForNow = view;
 	}
 
 	@Override
-	public PartyView getOnlyOnePartyViewForNow() {
+	public Snapp getOnlyOneSnappForNow() {
 		return _onlyOnePartyViewForNow;
 	}
 

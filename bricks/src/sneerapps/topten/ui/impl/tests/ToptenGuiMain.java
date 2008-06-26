@@ -1,37 +1,39 @@
 package sneerapps.topten.ui.impl.tests;
 
+import javax.swing.JFrame;
+
 import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
 import sneer.lego.Inject;
-import sneer.skin.dashboard.Dashboard;
+import sneer.skin.viewmanager.Snapp;
+import sneer.skin.viewmanager.ViewManager;
 import sneerapps.topten.ui.ToptenGui;
-import spikes.legobricks.name.OwnNameKeeper;
 
 public class ToptenGuiMain {
 
 	public static void main(String[] args) {
 		new ToptenGuiMain();
 	}
+
+	@Inject
+	private ViewManager _viewManager;
 	
 	@SuppressWarnings("unused")
 	@Inject
 	private ToptenGui _topten;
 
-	@SuppressWarnings("unused")
-	@Inject
-	private Dashboard _dashboard;
-	
-
-	@Inject
-	private OwnNameKeeper _nameKeeper;
-	
 	private ToptenGuiMain() {
 		Container container = ContainerUtils.getContainer();
 		container.inject(this);
 
-		_nameKeeper.nameSetter().consume("1 Kalecser");
-		_nameKeeper.nameSetter().consume("2 Kalecser Kurtz");
-		_nameKeeper.nameSetter().consume("3 Kalecser Kurtz Kobain");
+		JFrame frame = new JFrame();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		Snapp topTen = _viewManager.getOnlyOneSnappForNow();
+		topTen.init(frame);
+		
+		frame.pack();
+		frame.setVisible(true);
 	}
 
 	

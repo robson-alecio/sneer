@@ -5,9 +5,8 @@ import java.util.Collection;
 import org.junit.Assert;
 import org.junit.Test;
 
-import functional.TestDashboard;
-
 import sneer.bricks.things.Thing;
+import testdashboard.TestDashboard;
 
 public class GiveNTakeTest {
 

@@ -7,9 +7,9 @@ import org.junit.Test;
 
 import sneer.bricks.things.Thing;
 import sneer.bricks.things.ThingHome;
+import testdashboard.TestDashboard;
 import wheel.lang.Threads;
 import wheel.testutil.TestOfInterface;
-import functional.TestDashboard;
 
 
 public abstract class ThingsTest extends TestOfInterface<ThingHome> {

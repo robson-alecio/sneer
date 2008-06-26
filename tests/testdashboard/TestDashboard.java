@@ -1,6 +1,4 @@
-package functional;
-
-
+package testdashboard;
 public class TestDashboard {
 
 	public static boolean newTestsShouldRun() {

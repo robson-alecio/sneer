@@ -1,6 +1,6 @@
 ﻿Sandro
- - Fix - Menu stops working after dashboard is locked.
- - Fix - Make snapp windows collapse and expand faster. I am yawning =)
+ - [unable to reproduce] Fix - Menu stops working after dashboard is locked.
+ - [DONE] Fix - Make snapp windows collapse and expand faster. I am yawning =)
  - Fix - Increase snapp collapse icon ">>" contrast. I cannot see it properly.
  - Fix - Single click on tray icon must call EXACTLY the same code as TrayIconMenu > Open. Currently, clicking on the TrayIcon is not bringing the dashboard to the foreground when locked.
  - Fix - Stop using exclamation marks (!) in the menus (Open!, Lock!)

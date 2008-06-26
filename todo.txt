@@ -1,13 +1,17 @@
 ﻿Sandro
- - [unable to reproduce] Fix - Menu stops working after dashboard is locked.
- - [DONE] Fix - Make snapp windows collapse and expand faster. I am yawning =)
- - Fix - Increase snapp collapse icon ">>" contrast. I cannot see it properly.
+
+[UNABLE TO REPRODUCE] (tested in windows vista. i will test in another machine.)
+ - Fix - Menu stops working after dashboard is locked.
  - Fix - Single click on tray icon must call EXACTLY the same code as TrayIconMenu > Open. Currently, clicking on the TrayIcon is not bringing the dashboard to the foreground when locked.
+ 	
+ - [DONE] Fix - Make snapp windows collapse and expand faster. I am yawning =)
  - [DONE] Fix - Stop using exclamation marks (!) in the menus (Open!, Lock!)
  - [DONE] Fix - Rename menu label "Exit..." to "Exit"
+ - [DONE] bricks/lib - Eliminate this directory. Each brick must have its own .../lib directory.
+
+ - Fix - Increase snapp collapse icon ">>" contrast. I cannot see it properly.
  - Fix - Font used in the "Notes" text field sucks.
-  - Refactoring wheel.io.ui.Action to support Signals
- - bricks/lib - Eliminate this directory. Each brick must have its own .../lib directory.
+ - Refactoring wheel.io.ui.Action to support Signals
  - GUI Development in General
  	- Internal Window Actions (expand brick, brick menu and remove brick, like google desktop).
  	- Layout Support for Internal Windows (Size, Resize and Position).

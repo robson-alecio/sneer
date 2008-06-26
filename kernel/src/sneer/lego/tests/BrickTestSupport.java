@@ -11,12 +11,13 @@ import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
 import sneer.lego.Injector;
 import sneer.lego.impl.AnnotatedFieldInjector;
+import sneer.lego.impl.SimpleBinder;
 import wheel.lang.Threads;
 
 public class BrickTestSupport {
 	
     protected Binder getBinder() {
-    	return null;
+    	return new SimpleBinder();
     }
     
 	@Before

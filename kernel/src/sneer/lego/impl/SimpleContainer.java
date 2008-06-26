@@ -41,10 +41,11 @@ public class SimpleContainer implements Container {
 	private SneerConfig _sneerConfig;
 
     public SimpleContainer() {
-        this(null);
+        this(new SimpleBinder());
     }
 
 	public SimpleContainer(Binder binder) {
+		if (binder == null) throw new IllegalArgumentException("Binder cannot be null");
 		_binder = binder;
 		_injector = new AnnotatedFieldInjector(this);
 		log.info("*** SimpleContainer created ***");
@@ -180,18 +181,13 @@ public class SimpleContainer implements Container {
 	}
 
     private Object instanceFor(Class<?> intrface) {
-        if(_binder == null) 
-            return null;
-        
         return _binder.instanceFor(intrface);
     }
 
 	private String implementationFor(Class<?> intrface) {
-		if(_binder != null) {
-			String result = _binder.implementationFor(intrface);
-			if(result != null) 
-				return result;
-		}
+		String result = _binder.implementationFor(intrface);
+		if(result != null) 
+			return result;
 		
 		if(!intrface.isInterface()) {
 			return intrface.getName();

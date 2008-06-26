@@ -89,7 +89,7 @@ public class Language {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 			parseTranslation(reader);
 		} catch (Exception anything) {
-			System.err.println("Could not find Translation file. Please generate it. Sneer still works normally without it.");
+			//Implement
 		}
 	}
 

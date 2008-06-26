@@ -18,8 +18,9 @@ import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 import functional.SovereignParty;
 import functional.adapters.SelfInject;
+import functional.adapters.SneerParty;
 
-public class SneerParty extends SelfInject implements SovereignParty {
+public class SneerPartyImpl extends SelfInject implements SneerParty {
 	
 	private static final String MOCK_ADDRESS = "localhost";
 
@@ -50,7 +51,7 @@ public class SneerParty extends SelfInject implements SovereignParty {
 	private KeyManager _keyManager;
 	
 	
-	public SneerParty(String name, int port, Network network, SneerConfig config) {
+	public SneerPartyImpl(String name, int port, Network network, SneerConfig config) {
 		super(network, config);
 
 		setOwnName(name);
@@ -96,7 +97,7 @@ public class SneerParty extends SelfInject implements SovereignParty {
 
     @Override
     public void giveNicknameTo(SovereignParty peer, String newNickname) {
-    	PublicKey publicKey = ((SneerParty)peer).publicKey();
+    	PublicKey publicKey = ((SneerPartyImpl)peer).publicKey();
 		Contact contact = waitForContactGiven(publicKey);
 
 		try {
@@ -114,7 +115,8 @@ public class SneerParty extends SelfInject implements SovereignParty {
 		}
 	}
 
-    private PublicKey publicKey() {
+	@Override
+    public PublicKey publicKey() {
 		return _keyManager.ownPublicKey();
 	}
 
@@ -140,7 +142,8 @@ public class SneerParty extends SelfInject implements SovereignParty {
 		}
 	}
 
-	private int port() {
+	@Override
+	public int port() {
         return _sneerPortKeeper.port().currentValue();
     }
 

@@ -10,7 +10,7 @@ import sneer.bricks.network.Network;
 import sneer.bricks.network.impl.inmemory.InMemoryNetwork;
 import functional.SovereignCommunity;
 import functional.SovereignParty;
-import functional.adapters.impl.SneerParty;
+import functional.adapters.impl.SneerPartyImpl;
 
 public class SneerCommunity implements SovereignCommunity {
 
@@ -21,7 +21,7 @@ public class SneerCommunity implements SovereignCommunity {
 	@Override
 	public SovereignParty createParty(String name) {
 		SneerConfig config = sneerConfigForParty(name);
-		return new SneerParty(name, _nextPort++, _network, config);
+		return new SneerPartyImpl(name, _nextPort++, _network, config);
 	}
 
 	private SneerConfig sneerConfigForParty(String name) {

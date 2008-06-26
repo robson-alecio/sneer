@@ -20,6 +20,8 @@ import functional.SovereignParty;
 
 public class SneerParty extends SelfInject implements SovereignParty {
 	
+	{System.out.println(getClass().getClassLoader());}
+	
 	private static final String MOCK_ADDRESS = "localhost";
 
 	@Inject
@@ -51,6 +53,9 @@ public class SneerParty extends SelfInject implements SovereignParty {
 	
 	SneerParty(String name, int port, Network network, SneerConfig config) {
 		super(network, config);
+		System.out.println(OwnNameKeeper.class.getClassLoader());
+		System.out.println(_ownNameKeeper.getClass().getClassLoader());
+
 		setOwnName(name);
 		try {
 			_sneerPortKeeper.portSetter().consume(port);

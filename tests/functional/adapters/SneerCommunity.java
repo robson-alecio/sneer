@@ -3,7 +3,6 @@ package functional.adapters;
 import java.io.File;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.SystemUtils;
 
 import sneer.bricks.config.SneerConfig;
 import sneer.bricks.deployer.test.SneerConfigMock;
@@ -32,15 +31,12 @@ public class SneerCommunity implements SovereignCommunity {
 	}
 
 	private File rootDirectory(String name) {
-		File userHome = SystemUtils.getUserHome();
-		String fileName = ".sneer+"+StringUtils.deleteWhitespace(name);
-		File root = new File(userHome, fileName);
-		return root;
+		File tmp = new File("tmp");
+		if (!tmp.exists()) tmp.mkdir();
+
+		String fileName = ".sneer-"+StringUtils.deleteWhitespace(name);
+		return new File(tmp, fileName);
+		
 	}
 
-	@Override
-	public void clearResources(String name) {
-		File root = rootDirectory(name);
-		sneer.lego.utils.FileUtils.cleanDirectory(root);
-	}
 }

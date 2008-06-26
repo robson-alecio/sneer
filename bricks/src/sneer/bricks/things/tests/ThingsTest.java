@@ -66,7 +66,7 @@ public abstract class ThingsTest extends TestOfInterface<ThingHome> {
 		@Override public void run() {
 			int i = 0;
 			while (i < _THINGS_TO_ADD) {
-				Collection<Thing> found = _subject.find("thing"+i);
+				Collection<Thing> found = _subject.search("thing"+i);
 				
 				Assert.assertTrue(found.size() <= thingsToFind);
 				
@@ -94,7 +94,7 @@ public abstract class ThingsTest extends TestOfInterface<ThingHome> {
 	}
 
 	private void find(String tags, int thingsToFind) {
-		Collection<Thing> found = _subject.find(tags);
+		Collection<Thing> found = _subject.search(tags);
 		
 		Assert.assertSame(thingsToFind, found.size());
 	}

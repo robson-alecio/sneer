@@ -43,7 +43,7 @@ public class ThingHomeImpl implements ThingHome {
 		
 	}
 	
-	private Collection<Thing> tryToFind(String tags) throws CorruptIndexException, LockObtainFailedException, IOException, ParseException {		
+	private Collection<Thing> tryToSearch(String tags) throws CorruptIndexException, LockObtainFailedException, IOException, ParseException {		
 		Query query = new QueryParser(TEXT_FIELD, _analyzer)
 			.parse(tags);
 		
@@ -107,9 +107,9 @@ public class ThingHomeImpl implements ThingHome {
 	}
 
 	@Override
-	public Collection<Thing> find(String tags) {
+	public Collection<Thing> search(String tags) {
 		try {
-			return tryToFind(tags);
+			return tryToSearch(tags);
 		} catch (CorruptIndexException e) {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		} catch (LockObtainFailedException e) {

@@ -1,5 +1,4 @@
 ﻿Sandro
-
 	- Fix - Menu stops working after dashboard is locked on win XP.
 	- Fix - Single click on tray icon must call EXACTLY the same code as TrayIconMenu > Open. Currently, clicking on the TrayIcon is not bringing the dashboard to the foreground when locked.
 	- Fix - The animated collapse is still slow. Let me show you what I mean.
@@ -12,8 +11,8 @@
 	- Refactoring wheel.io.ui.Action to support Signals
 	- Internal Window Actions (expand brick, brick menu and remove brick, like google desktop).
 	- Layout Support for Internal Windows (Size, Resize and Position).
-	- Resizeable JWindow, instead of switching JFrame <-> JWindow.
 	=================================================== RELEASE
+	- Resizeable JWindow, instead of switching JFrame <-> JWindow.
 	- Add Tab/Window Support
 
 

@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -20,9 +19,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import org.jdesktop.swingx.JXTaskPane;
-import org.jdesktop.swingx.JXTaskPaneContainer;
 import org.jdesktop.swingx.action.AbstractActionExt;
-import org.jdesktop.swingx.painter.Painter;
 
 import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Inject;
@@ -30,6 +27,7 @@ import sneer.skin.dashboard.Dashboard;
 import sneer.skin.image.DefaultIcons;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.mainMenu.MainMenu;
+import sneer.skin.taskpane.TaskPaneFactory;
 import wheel.io.ui.Action;
 import wheel.io.ui.impl.TrayIconImpl;
 import wheel.io.ui.impl.TrayIconImpl.SystemTrayNotSupported;
@@ -44,6 +42,9 @@ public class DashboardImpl implements Dashboard, Runnable {
 	
 	@Inject
 	static private ImageFactory imageFactory;
+	
+	@Inject
+	static private TaskPaneFactory<JXTaskPane> tpFactory;
 	
 	@Inject
 	static private MainMenu mainMenu;
@@ -103,42 +104,30 @@ public class DashboardImpl implements Dashboard, Runnable {
 
 	@SuppressWarnings("unchecked")
 	private void createDemoTaskPane(JPanel pane) {
-        JXTaskPaneContainer container = new JXTaskPaneContainer();
-        container.setBackgroundPainter(new Painter(){
-			@Override
-			public void paint(Graphics2D g, Object object, int width, int height) {
-				//ignore
-			}}
-        );
-        container.setOpaque(false);
-        container.setBorder(null);
-        container.setAlpha(0.9f);
+        Container container = tpFactory.createContainer();
         
-        JXTaskPane taskPane = new JXTaskPane();
-        taskPane.setTitle("TODO Tasks");
+        JXTaskPane taskPane = tpFactory.createTaskPane("NO ANIMATION", false);
         taskPane.add(new TODOAction("Prepare slides for JavaPolis"));
         taskPane.add(new TODOAction("Buy Christmas presents"));
         taskPane.add(new TODOAction("Meet with Brian about SwingLabs"));
         container.add(taskPane);
         
-        taskPane = new JXTaskPane();
-        taskPane.setTitle("Key Dates");
+        taskPane = tpFactory.createTaskPane("Animated", true);
         taskPane.add(new TODOAction("December 25"));
         taskPane.add(new TODOAction("January 1"));
         taskPane.add(new TODOAction("Febuary 14"));
         taskPane.add(new TODOAction("March 26"));
         container.add(taskPane);
         
-        taskPane = new JXTaskPane();
-        taskPane.setTitle("Notes");
+        taskPane = tpFactory.createTaskPane("Notes");
         JTextArea textArea = new JTextArea(15, 20);
 		taskPane.add(new JScrollPane(textArea));
         container.add(taskPane);
         
         pane.add(new JScrollPane(container));
     }
-	
-    private static final class TODOAction extends AbstractActionExt {
+
+	private static final class TODOAction extends AbstractActionExt {
 		private static final long serialVersionUID = 1L;
 		public TODOAction(String name) {
             setName(name);

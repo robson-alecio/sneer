@@ -29,7 +29,7 @@ public class NapkinLafSupportImpl extends AbstractLafSupportImpl implements Napk
 	@SuppressWarnings("unchecked")
 	private void changeLookAndFeel(LookAndFeel laf) {
 		//change fonts
-		FontUIResource font = new  FontUIResource(new Font("Monospaced", Font.PLAIN,13));
+		FontUIResource font = new  FontUIResource(new Font("Arial", Font.PLAIN,13));
 		laf.getDefaults().put("TextArea.font", font);
 		laf.getDefaults().put("TextField.font", font);
 		laf.getDefaults().put("TaskPane.borderColor", Color.LIGHT_GRAY);

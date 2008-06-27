@@ -25,16 +25,20 @@ public class SneerCommunity implements SovereignCommunity {
 	
 	@Override
 	public SovereignParty createParty(String name) {
-		Binder binder = new SimpleBinder();
-		binder.bind(Network.class).toInstance(_network);
-		binder.bind(SneerConfig.class).toInstance(sneerConfigForParty(name));
-	
-		SneerParty result = ContainerUtils.newContainer(binder).produce(SneerParty.class);
+		SneerParty result = produceSneerParty(name);
 		
 		result.setOwnName(name);
 		result.setSneerPort(_nextPort++);
 		
 		return result;
+	}
+
+	private SneerParty produceSneerParty(String name) {
+		Binder binder = new SimpleBinder();
+		binder.bind(Network.class).toInstance(_network);
+		binder.bind(SneerConfig.class).toInstance(sneerConfigForParty(name));
+	
+		return ContainerUtils.newContainer(binder).produce(SneerParty.class);
 	}
 
 	private File prepareTmpDirectory() {

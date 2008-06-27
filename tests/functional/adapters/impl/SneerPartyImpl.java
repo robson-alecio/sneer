@@ -63,7 +63,7 @@ public class SneerPartyImpl implements SneerParty {
 	static private Deployer _deployer;
 	
 	@Inject
-	static private BrickManager _registry;
+	static private BrickManager _brickManager;
 
 
 	@Override
@@ -176,19 +176,19 @@ public class SneerPartyImpl implements SneerParty {
 		((NetworkFriendly) brick).afterSerialize();
 		
 		//TODO: send copy via network
-		_registry.install(copy);
+		_brickManager.install(copy);
 	}
 
 	@Override
 	public BrickFile brick(String brickName) {
-		return _registry.brick(brickName);
+		return _brickManager.brick(brickName);
 	}
 
 	@Override
 	public BrickBundle publishBrick(File sourceDirectory) {
 		BrickBundle brickBundle = _deployer.pack(sourceDirectory);
 		//brickBundle.prettyPrint();
-		_registry.install(brickBundle);
+		_brickManager.install(brickBundle);
 		return brickBundle;
 	}
 

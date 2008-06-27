@@ -73,7 +73,6 @@ public class ImageFactoryImpl implements ImageFactory {
 		return map.get(id);
 	}
 
-	@SuppressWarnings("serial")
 	private void loadImage(Image image) throws InterruptedException, IllegalArgumentException {
         Component dummy = new Component(){ private static final long serialVersionUID = 1L; };
         MediaTracker tracker = new MediaTracker(dummy);

@@ -61,7 +61,6 @@ public class DirectorySync {
             receiverFinished=true;
         }
         
-        @SuppressWarnings("unchecked")
         private void readFileInfos( ObjectInputStream inObj) throws IOException, ClassNotFoundException {
             int size=inObj.readInt();
             for(int t=0;t<size;t++){
@@ -74,7 +73,6 @@ public class DirectorySync {
             }
         }
         
-        @SuppressWarnings("unchecked")
         private void materializeFileParts( ObjectInputStream inObj) throws IOException, ClassNotFoundException {
             long count=inObj.readLong();
             for(long y=0;y<count;y++){
@@ -114,7 +112,6 @@ public class DirectorySync {
             senderFinished=true;
         }
         
-        @SuppressWarnings("unchecked")
         private void writeFileInfos(ObjectOutputStream outObj) throws IOException{
             outObj.writeInt(diff.size());
             outObj.flush();
@@ -124,7 +121,6 @@ public class DirectorySync {
             }
         }
         
-        @SuppressWarnings("unchecked")
         private void writeFileParts(FileInfo item, ObjectOutputStream outObj) throws IOException{
         	
             FilePartIterator iterator=new FilePartIterator(item,localPath+item.getPath());

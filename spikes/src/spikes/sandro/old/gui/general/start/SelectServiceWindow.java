@@ -23,7 +23,6 @@ public class SelectServiceWindow extends JWindow {
 	JPanel body = new JPanel();
 	TransparentPanel composit;
 	
-	@SuppressWarnings("unchecked")
 	public SelectServiceWindow() {
 		composit = new TransparentPanel();
 //		composit.setBlur(3);

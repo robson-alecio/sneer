@@ -70,7 +70,6 @@ public abstract class IconFactory {
 		return map.get(id);
 	}
 
-	@SuppressWarnings("serial")
 	private static void loadImage(Image image) throws InterruptedException, IllegalArgumentException {
         Component dummy = new Component(){ private static final long serialVersionUID = 1L; };
         MediaTracker tracker = new MediaTracker(dummy);

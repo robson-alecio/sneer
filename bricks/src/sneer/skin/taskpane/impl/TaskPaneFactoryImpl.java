@@ -9,7 +9,6 @@ import sneer.skin.taskpane.TaskPaneFactory;
 
 public class TaskPaneFactoryImpl implements TaskPaneFactory<JXTaskPane> {
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Container createContainer() {
 		JXTaskPaneContainer container = new JXTaskPaneContainer();

@@ -14,7 +14,7 @@ public class ImplFinder extends SimpleFilter {
 		super(root, JAVA_SOURCE_FILE_FILTER);
 	}
 
-	@SuppressWarnings({ "unchecked", "unused" })
+	@SuppressWarnings({ "unchecked" })
 	@Override
 	protected void handleFile(File file, int depth, Collection results) throws IOException {
 //		File implDir = findImplDir(file);

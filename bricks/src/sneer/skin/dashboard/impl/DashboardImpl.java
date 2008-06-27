@@ -103,7 +103,6 @@ public class DashboardImpl implements Dashboard, Runnable {
 		createDemoTaskPane(contentPanel);
 	}
 
-	@SuppressWarnings("unchecked")
 	private void createDemoTaskPane(JPanel pane) {
         Container container = tpFactory.createContainer();
         

@@ -35,7 +35,6 @@ public class TwoColmunsPanel extends JPanel {
 		initialize();
 	}
 	
-	@SuppressWarnings("serial")
 	private void initialize() {
 		this.setLayout(new StackLayout());
 

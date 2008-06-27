@@ -28,42 +28,42 @@ import functional.adapters.SneerParty;
 
 public class SneerPartyImpl implements SneerParty {
 	
-	@Inject
-	private Container _container;
-
-	private static final String MOCK_ADDRESS = "localhost";
+	static private final String MOCK_ADDRESS = "localhost";
 
 	@Inject
-	private ContactManager _contactManager;
-	
-	@Inject
-	private PortKeeper _sneerPortKeeper;
-	
-	@Inject
-	private OwnNameKeeper _ownNameKeeper;
-	
-	@Inject
-	private Me _me;
+	static private Container _container;
 
 	@Inject
-	private InternetAddressKeeper _internetAddressKeeper;
+	static private ContactManager _contactManager;
+	
+	@Inject
+	static private PortKeeper _sneerPortKeeper;
+	
+	@Inject
+	static private OwnNameKeeper _ownNameKeeper;
+	
+	@Inject
+	static private Me _me;
+
+	@Inject
+	static private InternetAddressKeeper _internetAddressKeeper;
 	
 	@SuppressWarnings("unused") //We need to start this brick so that it listens to others and does its thing.
 	@Inject
-	private SocketOriginator _originator;
+	static private SocketOriginator _originator;
 
 	@SuppressWarnings("unused") //We need to start this brick so that it listens to others and does its thing.
 	@Inject
-	private SocketReceiver _receiver;
+	static private SocketReceiver _receiver;
 
 	@Inject
-	private KeyManager _keyManager;
+	static private KeyManager _keyManager;
 	
 	@Inject
-	private Deployer _deployer;
+	static private Deployer _deployer;
 	
 	@Inject
-	private BrickManager _registry;
+	static private BrickManager _registry;
 
 
 	@Override
@@ -110,7 +110,7 @@ public class SneerPartyImpl implements SneerParty {
 
     @Override
     public void giveNicknameTo(SovereignParty peer, String newNickname) {
-    	PublicKey publicKey = ((SneerPartyImpl)peer).publicKey();
+    	PublicKey publicKey = ((SneerParty)peer).publicKey();
 		Contact contact = waitForContactGiven(publicKey);
 
 		try {

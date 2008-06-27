@@ -15,7 +15,6 @@ import sneer.lego.ContainerUtils;
 import sneer.lego.impl.SimpleBinder;
 import functional.SovereignCommunity;
 import functional.SovereignParty;
-import functional.adapters.impl.SneerPartyImpl;
 
 public class SneerCommunity implements SovereignCommunity {
 
@@ -26,13 +25,11 @@ public class SneerCommunity implements SovereignCommunity {
 	
 	@Override
 	public SovereignParty createParty(String name) {
-		SneerPartyImpl result = new SneerPartyImpl();
-
 		Binder binder = new SimpleBinder();
 		binder.bind(Network.class).toInstance(_network);
 		binder.bind(SneerConfig.class).toInstance(sneerConfigForParty(name));
 	
-		ContainerUtils.newContainer(binder).inject(result);
+		SneerParty result = ContainerUtils.newContainer(binder).produce(SneerParty.class);
 		
 		result.setOwnName(name);
 		result.setSneerPort(_nextPort++);

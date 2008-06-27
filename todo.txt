@@ -1,10 +1,12 @@
 ﻿Sandro
 	- Fix - Menu stops working after dashboard is locked on win XP.
 	- Fix - Single click on tray icon must call EXACTLY the same code as TrayIconMenu > Open. Currently, clicking on the TrayIcon is not bringing the dashboard to the foreground when locked.
+	  (I'm using the same action, is the same action instance. The bug can be a focus problem, when we click in Tray the focus don't change. I'm looking for a fix.)	
+	
 	- Fix - The animated collapse is still slow. Let me show you what I mean.
 	- [DONE] Fix - Use a font without serif such as arial in the text field.
 
-	- [Napkin "bugs"] (need change de napkin laf to fix this)
+	- [Napkin "bugs"] (need change the napkin laf to fix this)
    		- Fix - Increase snapp collapse icon ">>" contrast. I cannot see it properly. (i will fix the JXTaskPaneUI)
  
 	- Tray Icon - Ask Petra for a 16x16 icon to put there. Black on white. No transparency.

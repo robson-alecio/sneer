@@ -7,8 +7,6 @@ import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import org.jvnet.substance.SubstanceLookAndFeel;
-
 import sneer.lego.Inject;
 import sneer.skin.dashboard.Dashboard;
 import sneer.skin.mainMenu.MainMenu;
@@ -42,7 +40,7 @@ public class AbstractLafSupportImpl {
 		initAction(laf);
 	}
 	
-	public AbstractLafSupportImpl(final List<SubstanceLookAndFeel> laf, String group) {
+	public AbstractLafSupportImpl(final List<LookAndFeel> laf, String group) {
 		Menu<JComponent> menu = menuFactory.createMenuGroup(group);
 		mainMenu.getLookAndFeelMenu().addGroup(menu);
 		for (LookAndFeel lookAndFeel : laf) {
@@ -80,6 +78,7 @@ public class AbstractLafSupportImpl {
 
 	protected void runAction(final LookAndFeel laf) {
 		try {
+//			System.out.println(laf.getDefaults().get("TextArea.font"));
 			UIManager.setLookAndFeel(laf);
 			dashboard.refreshLaf();
 		} catch (UnsupportedLookAndFeelException e) {

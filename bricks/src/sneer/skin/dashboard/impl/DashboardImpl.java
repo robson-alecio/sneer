@@ -56,6 +56,7 @@ public class DashboardImpl implements Dashboard, Runnable {
 	private transient Window window;
 	private transient JFrame jframe;
 	private transient JWindow jwindow;
+	private transient JPanel contentPanel;
 	
 	public DashboardImpl() {
 		threadPool.registerActor(this);
@@ -87,19 +88,19 @@ public class DashboardImpl implements Dashboard, Runnable {
 	private void initWindows() {
 		jframe = new JFrame();
 		jwindow = new JWindow();
+		contentPanel = new JPanel();
 		
 		if(isLocked){
 			window = jwindow;
+			contentPanel = new JPanel();
 		}else{
 			window = jframe;
+			contentPanel = (JPanel) jframe.getContentPane();
 		}
 		
-		JPanel pane = (JPanel) jframe.getContentPane();
-		pane.setLayout(new BorderLayout());
-		
-		pane.add(mainMenu.getWidget(), BorderLayout.NORTH);
-
-		createDemoTaskPane(pane);
+		contentPanel.setLayout(new BorderLayout());
+		contentPanel.add(mainMenu.getWidget(), BorderLayout.NORTH);
+		createDemoTaskPane(contentPanel);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -169,11 +170,11 @@ public class DashboardImpl implements Dashboard, Runnable {
 	private void changeJFrameToJWindow() {
 		bounds = jframe.getBounds();
 		jframe.setVisible(false);
-		Container tmp = jframe.getContentPane();
-		tmp.getParent().remove(tmp);
+		jframe.setContentPane(new JPanel());
+		
 		jframe.dispose();
 		jframe = new JFrame();
-		jwindow.setContentPane(tmp);
+		jwindow.setContentPane(contentPanel);
 		jwindow.setBounds(bounds);
 		jwindow.setVisible(true);
 		window = jwindow;
@@ -183,11 +184,11 @@ public class DashboardImpl implements Dashboard, Runnable {
 	private void changeJWindowToJFrame() {
 		bounds = jwindow.getBounds();
 		jwindow.setVisible(false);
-		Container tmp = jwindow.getContentPane();
-		tmp.getParent().remove(tmp);
+		jwindow.setContentPane(new JPanel());
+		
 		jwindow.dispose();
 		jwindow = new JWindow();
-		jframe.setContentPane(tmp);
+		jframe.setContentPane(contentPanel);
 		jframe.setBounds(bounds);
 		jframe.setVisible(true);
 		window = jframe;

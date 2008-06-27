@@ -3,6 +3,8 @@ package sneer.skin.sustance.impl;
 import java.util.Collection;
 import java.util.List;
 
+import javax.swing.LookAndFeel;
+
 import org.apache.commons.collections.list.TreeList;
 import org.jvnet.substance.SubstanceLookAndFeel;
 import org.jvnet.substance.skin.SkinInfo;
@@ -17,9 +19,9 @@ public class SustanceLafSupportImpl extends AbstractLafSupportImpl implements Su
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected static List<SubstanceLookAndFeel> getLaFs(){
+	protected static List<LookAndFeel> getLaFs(){
 		Collection<SkinInfo> skinsInfo = SubstanceLookAndFeel.getAllSkins().values();
-		List<SubstanceLookAndFeel> lafs = new TreeList();
+		List<LookAndFeel> lafs = new TreeList();
 		for (SkinInfo skinInfo : skinsInfo) {
 			try {
 				lafs.add((SubstanceLookAndFeel) Class.forName(findLafName(skinInfo)).newInstance());

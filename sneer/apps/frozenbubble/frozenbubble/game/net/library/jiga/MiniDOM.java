@@ -305,7 +305,6 @@ public class MiniDOM {
      * 
      * @return A list representing all keys
      */
-    @SuppressWarnings("unchecked")
 	public String[] getAllAttributes() {
         if (attributes == null) {
             return new String[0];

@@ -43,7 +43,9 @@ import java.awt.event.KeyListener;
  */
 public abstract class GameApplet extends Applet implements Runnable, KeyListener, MouseListener, MouseMotionListener {
 
-    /** The time-step of the applet. By default, this value is set to 25 ms (= 40 frames per second) */
+    private static final long serialVersionUID = 1L;
+
+	/** The time-step of the applet. By default, this value is set to 25 ms (= 40 frames per second) */
     protected static long REFRESH_RATE_MILLIS = 25;
 
     private Graphics gBack;

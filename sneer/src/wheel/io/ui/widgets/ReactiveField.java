@@ -24,6 +24,8 @@ import wheel.reactive.Signal;
 
 public abstract class ReactiveField<U> extends JPanel{
 	
+	private static final long serialVersionUID = 1L;
+	
 	public static final int ENABLED_SAVED_STATE = 0;
 	public static final int ENABLED_UNSAVED_STATE = 1;
 	public static final int DISABLED_STATE = 2;

@@ -121,7 +121,7 @@ public class FrozenGame extends GameScreen
 	boolean frozenify;
 	int frozenifyX, frozenifyY;
 	
-	@SuppressWarnings({ "unchecked", "unchecked" })
+	@SuppressWarnings("unchecked")
 	public FrozenGame(GameApplet gameApplet)
 	{
 		super(gameApplet);

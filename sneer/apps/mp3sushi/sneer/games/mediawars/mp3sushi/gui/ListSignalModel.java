@@ -15,7 +15,6 @@ public class ListSignalModel<T> extends AbstractListModel {
 	private final List<Omnivore<T>> _elementReceivers = new LinkedList<Omnivore<T>>();
 	private ReceiverManager<T> _receiverManager;
 
-	@SuppressWarnings("unchecked")
 	public ListSignalModel(ListSignal<T> input, ReceiverManager<T> receiverManager){
 		_receiverManager = receiverManager;
 		_input = input;

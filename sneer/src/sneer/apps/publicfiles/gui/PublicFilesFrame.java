@@ -226,7 +226,6 @@ public class PublicFilesFrame extends JFrame{
             return _flavors;
         }
     
-        @SuppressWarnings("deprecation")
 		public boolean isDataFlavorSupported(DataFlavor flavor) {
         	System.out.println("detect Flavor: "+ flavor.getHumanPresentableName());
 
@@ -272,6 +271,5 @@ public class PublicFilesFrame extends JFrame{
 	         e.printStackTrace();
 	     }
 	}
-	@SuppressWarnings("deprecation")
 	private static DataFlavor[] _flavors = new DataFlavor[]{DataFlavor.javaFileListFlavor,_uriListFlavor};
 }

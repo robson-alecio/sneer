@@ -124,7 +124,7 @@ public class EffectImage {
      * @param rendering The rendering method to use
      * @return an <code>Image</code> of the rotation
      */
-    public Image getRotate(double theta, double x, double y, @SuppressWarnings("unused")
+    public Image getRotate(double theta, double x, double y,
 	int rendering) {
         /* 
         if (rendering == EffectImage.RENDERING_SMOOTH) {

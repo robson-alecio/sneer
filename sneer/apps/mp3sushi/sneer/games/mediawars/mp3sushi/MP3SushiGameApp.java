@@ -98,7 +98,7 @@ public class MP3SushiGameApp {
 	}
 
 	private Omnivore<Packet> messageReceiver() {
-		return new Omnivore<Packet>() { @SuppressWarnings("unchecked")
+		return new Omnivore<Packet>() {
 			public void consume(Packet packet) {
 				_caseGameMessage.switchCasePacket(packet);
 			}

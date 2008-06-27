@@ -3,7 +3,6 @@ package functional.adapters.impl;
 import java.io.File;
 
 import sneer.bricks.brickmanager.BrickManager;
-import sneer.bricks.config.SneerConfig;
 import sneer.bricks.connection.SocketOriginator;
 import sneer.bricks.connection.SocketReceiver;
 import sneer.bricks.contacts.Contact;
@@ -16,12 +15,8 @@ import sneer.bricks.keymanager.KeyManager;
 import sneer.bricks.keymanager.PublicKey;
 import sneer.bricks.mesh.Me;
 import sneer.bricks.mesh.Party;
-import sneer.bricks.network.Network;
-import sneer.lego.Binder;
 import sneer.lego.Container;
-import sneer.lego.ContainerUtils;
 import sneer.lego.Inject;
-import sneer.lego.impl.SimpleBinder;
 import sneer.lego.utils.io.NetworkFriendly;
 import spikes.legobricks.name.OwnNameKeeper;
 import spikes.legobricks.name.PortKeeper;
@@ -33,6 +28,7 @@ import functional.adapters.SneerParty;
 
 public class SneerPartyImpl implements SneerParty {
 	
+	@Inject
 	private Container _container;
 
 	private static final String MOCK_ADDRESS = "localhost";
@@ -69,16 +65,9 @@ public class SneerPartyImpl implements SneerParty {
 	@Inject
 	private BrickManager _registry;
 
-	
-	public SneerPartyImpl(String name, int port, Network network, SneerConfig config) {
-		Binder binder = new SimpleBinder();
-		binder.bind(Network.class).toInstance(network);
-		binder.bind(SneerConfig.class).toInstance(config);
-	
-		_container = ContainerUtils.newContainer(binder);
-		_container.inject(this);
 
-		setOwnName(name);
+	@Override
+	public void setSneerPort(int port) {
 		try {
 			_sneerPortKeeper.portSetter().consume(port);
 		} catch (IllegalParameter e) {
@@ -92,7 +81,7 @@ public class SneerPartyImpl implements SneerParty {
 
 		SneerParty sneerParty = (SneerParty)party;
 		storePublicKey(contact, sneerParty.publicKey());
-		_internetAddressKeeper.add(contact, MOCK_ADDRESS, sneerParty.port());
+		_internetAddressKeeper.add(contact, MOCK_ADDRESS, sneerParty.sneerPort());
 		
 		sneerParty.giveNicknameTo(this, this.ownName());
 	}
@@ -167,7 +156,7 @@ public class SneerPartyImpl implements SneerParty {
 	}
 
 	@Override
-	public int port() {
+	public int sneerPort() {
         return _sneerPortKeeper.port().currentValue();
     }
 

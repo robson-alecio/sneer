@@ -6,6 +6,8 @@ import functional.SovereignParty;
 public interface SneerParty extends SovereignParty {
 
 	PublicKey publicKey();
-	int port();
+
+	void setSneerPort(int port);
+	int sneerPort();
 
 }

@@ -10,6 +10,9 @@ import sneer.bricks.config.SneerConfig;
 import sneer.bricks.deployer.test.SneerConfigMock;
 import sneer.bricks.network.Network;
 import sneer.bricks.network.impl.inmemory.InMemoryNetwork;
+import sneer.lego.Binder;
+import sneer.lego.ContainerUtils;
+import sneer.lego.impl.SimpleBinder;
 import functional.SovereignCommunity;
 import functional.SovereignParty;
 import functional.adapters.impl.SneerPartyImpl;
@@ -23,8 +26,18 @@ public class SneerCommunity implements SovereignCommunity {
 	
 	@Override
 	public SovereignParty createParty(String name) {
-		SneerConfig config = sneerConfigForParty(name);
-		return new SneerPartyImpl(name, _nextPort++, _network, config);
+		SneerPartyImpl result = new SneerPartyImpl();
+
+		Binder binder = new SimpleBinder();
+		binder.bind(Network.class).toInstance(_network);
+		binder.bind(SneerConfig.class).toInstance(sneerConfigForParty(name));
+	
+		ContainerUtils.newContainer(binder).inject(result);
+		
+		result.setOwnName(name);
+		result.setSneerPort(_nextPort++);
+		
+		return result;
 	}
 
 	private File prepareTmpDirectory() {

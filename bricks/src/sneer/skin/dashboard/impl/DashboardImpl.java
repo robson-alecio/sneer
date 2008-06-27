@@ -172,8 +172,6 @@ public class DashboardImpl implements Dashboard, Runnable {
 		jframe.setVisible(false);
 		jframe.setContentPane(new JPanel());
 		
-		jframe.dispose();
-		jframe = new JFrame();
 		jwindow.setContentPane(contentPanel);
 		jwindow.setBounds(bounds);
 		jwindow.setVisible(true);
@@ -186,8 +184,6 @@ public class DashboardImpl implements Dashboard, Runnable {
 		jwindow.setVisible(false);
 		jwindow.setContentPane(new JPanel());
 		
-		jwindow.dispose();
-		jwindow = new JWindow();
 		jframe.setContentPane(contentPanel);
 		jframe.setBounds(bounds);
 		jframe.setVisible(true);
@@ -222,11 +218,11 @@ public class DashboardImpl implements Dashboard, Runnable {
 			}
 			@Override
 			public void run() {
-				window.setVisible(true);
 				if(window==jframe){
 					jframe.setState(Frame.NORMAL);
 				}
-				window.requestFocus();
+				window.setVisible(true);
+				window.requestFocusInWindow();
 			}
 		};
 		tray.setDefaultAction(cmd);

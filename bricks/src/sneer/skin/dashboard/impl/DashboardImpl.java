@@ -1,12 +1,11 @@
 package sneer.skin.dashboard.impl;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Rectangle;
 import java.awt.Window;
-import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -18,16 +17,12 @@ import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import org.jdesktop.swingx.JXTaskPane;
-import org.jdesktop.swingx.action.AbstractActionExt;
-
 import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Inject;
 import sneer.skin.dashboard.Dashboard;
 import sneer.skin.image.DefaultIcons;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.mainMenu.MainMenu;
-import sneer.skin.taskpane.TaskPaneFactory;
 import wheel.io.ui.Action;
 import wheel.io.ui.impl.TrayIconImpl;
 import wheel.io.ui.impl.TrayIconImpl.SystemTrayNotSupported;
@@ -42,9 +37,6 @@ public class DashboardImpl implements Dashboard, Runnable {
 	
 	@Inject
 	static private ImageFactory imageFactory;
-	
-	@Inject
-	static private TaskPaneFactory<JXTaskPane> tpFactory;
 	
 	@Inject
 	static private MainMenu mainMenu;
@@ -92,7 +84,7 @@ public class DashboardImpl implements Dashboard, Runnable {
 		
 		if(isLocked){
 			window = jwindow;
-			contentPanel = new JPanel();
+			contentPanel = (JPanel) jwindow.getContentPane();
 		}else{
 			window = jframe;
 			contentPanel = (JPanel) jframe.getContentPane();
@@ -100,40 +92,39 @@ public class DashboardImpl implements Dashboard, Runnable {
 		
 		contentPanel.setLayout(new BorderLayout());
 		contentPanel.add(mainMenu.getWidget(), BorderLayout.NORTH);
-		createDemoTaskPane(contentPanel);
+		createDemoTaskPane();
 	}
 
-	private void createDemoTaskPane(JPanel pane) {
-        Container container = tpFactory.createContainer();
+	private void createDemoTaskPane() {
+		JPanel desktop = new JPanel();
+		desktop.setLayout(new FlowLayout());
         
-        JXTaskPane taskPane = tpFactory.createTaskPane("NO ANIMATION", false);
-        taskPane.add(new TODOAction("Prepare slides for JavaPolis"));
-        taskPane.add(new TODOAction("Buy Christmas presents"));
-        taskPane.add(new TODOAction("Meet with Brian about SwingLabs"));
-        container.add(taskPane);
+		SneerInternalFrame taskPane;
         
-        taskPane = tpFactory.createTaskPane("Animated", true);
-        taskPane.add(new TODOAction("December 25"));
-        taskPane.add(new TODOAction("January 1"));
-        taskPane.add(new TODOAction("Febuary 14"));
-        taskPane.add(new TODOAction("March 26"));
-        container.add(taskPane);
+//        taskPane = tpFactory.createTaskPane("Teste1");
+        taskPane = new SneerInternalFrame("Teste1",true,false,true,true);
+        desktop.add(taskPane);
         
-        taskPane = tpFactory.createTaskPane("Notes");
+        taskPane = new SneerInternalFrame("Teste2",true,false,true,true);
+//        taskPane = new JInternalFrame("Teste2",true,false,true,true);
+        desktop.add(taskPane);
+        
+        taskPane = new SneerInternalFrame("Teste3",true,false,true,true);
+//        taskPane = new JInternalFrame("Teste3",true,false,true,true);
         JTextArea textArea = new JTextArea(15, 20);
 		taskPane.add(new JScrollPane(textArea));
-        container.add(taskPane);
+        desktop.add(taskPane);
         
-        pane.add(new JScrollPane(container));
+        contentPanel.add(desktop, BorderLayout.CENTER);
     }
-
-	private static final class TODOAction extends AbstractActionExt {
-		private static final long serialVersionUID = 1L;
-		public TODOAction(String name) {
-            setName(name);
-        }
-        public void actionPerformed(ActionEvent actionEvent) {}
-    }
+//
+//	private static final class TODOAction extends AbstractActionExt {
+//		private static final long serialVersionUID = 1L;
+//		public TODOAction(String name) {
+//            setName(name);
+//        }
+//        public void actionPerformed(ActionEvent actionEvent) {}
+//    }
     
 	private void resizeWindow() {
 		Dimension newSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();

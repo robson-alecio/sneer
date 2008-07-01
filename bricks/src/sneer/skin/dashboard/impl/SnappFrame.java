@@ -12,12 +12,12 @@ import javax.swing.JInternalFrame;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
-public class SneerInternalFrame extends JInternalFrame {
+public class SnappFrame extends JInternalFrame {
 
 	private static final long serialVersionUID = 1L;
 	private static byte[] prototypeBorder;
 
-	public SneerInternalFrame(String _title) {
+	public SnappFrame(String _title) {
 		super(_title, true, false, true, true);
 		setVisible(true);
 	}

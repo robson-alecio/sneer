@@ -102,16 +102,16 @@ public class DashboardImpl implements Dashboard, Runnable {
 		JPanel desktop = new JPanel();
 		desktop.setLayout(new FlowLayout());
         
-		SneerInternalFrame taskPane;
+		SnappFrame taskPane;
         
-        taskPane = new SneerInternalFrame("Teste1");
+        taskPane = new SnappFrame("Teste1");
         desktop.add(taskPane);
         
-        taskPane = new SneerInternalFrame("Teste2");
+        taskPane = new SnappFrame("Teste2");
         desktop.add(taskPane);
         
         
-        taskPane = new SneerInternalFrame("Teste3");
+        taskPane = new SnappFrame("Teste3");
         JTextArea textArea = new JTextArea(15, 20);
 		taskPane.add(new JScrollPane(textArea));
         desktop.add(taskPane);
@@ -197,14 +197,14 @@ public class DashboardImpl implements Dashboard, Runnable {
 		Action cmd = new Action(){
 			@Override
 			public String caption() {
-				return "Change Snaap Border";
+				return "Change Snapp Border";
 			}
 			@Override
 			public void run() {
-				if(SneerInternalFrame.hasDefaultWindowBorder()){
-					SneerInternalFrame.setDefaultWindowBorder(null);
+				if(SnappFrame.hasDefaultWindowBorder()){
+					SnappFrame.setDefaultWindowBorder(null);
 				}else{
-					SneerInternalFrame.setDefaultWindowBorder(
+					SnappFrame.setDefaultWindowBorder(
 						new LineBorder(Color.WHITE,2,true));
 				}
 				refreshLaf();

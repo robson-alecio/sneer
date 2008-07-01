@@ -43,7 +43,6 @@ public class NapkinLafSupportImpl implements NapkinLafSupport{
 		register.registerLookAndFeel(action);
 	}
 
-	@SuppressWarnings("unchecked")
 	private void changeLookAndFeel(LookAndFeel laf) {
 		UIDefaults defaults = laf.getDefaults();
 		FontUIResource font = new  FontUIResource(new Font("Arial", Font.PLAIN,13));

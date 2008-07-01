@@ -1,4 +1,4 @@
-package sneer.skin.sustance.impl;
+package sneer.skin.laf.sustance.impl;
 
 import java.util.Collection;
 import java.util.List;
@@ -12,8 +12,8 @@ import org.jvnet.substance.skin.SkinInfo;
 
 import sneer.lego.Inject;
 import sneer.skin.laf.LafManager;
-import sneer.skin.sustance.SustanceLafSupport;
-import wheel.io.ui.Action;
+import sneer.skin.laf.sustance.SustanceLafSupport;
+import wheel.io.ui.action.Action;
 
 public class SustanceLafSupportImpl implements SustanceLafSupport{
 

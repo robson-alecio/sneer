@@ -1,6 +1,6 @@
 package sneer.skin.laf;
 
-import wheel.io.ui.Action;
+import wheel.io.ui.action.Action;
 
 public interface LafSupport{
 

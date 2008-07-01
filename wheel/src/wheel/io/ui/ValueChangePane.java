@@ -1,5 +1,6 @@
 package wheel.io.ui;
 
+import wheel.io.ui.action.CancellableAction;
 import wheel.lang.Consumer;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
@@ -7,6 +8,7 @@ import wheel.reactive.Signal;
 public class ValueChangePane extends CancellableAction {
 
 	public ValueChangePane(String caption, String prompt, User user, Signal<?> signal, Consumer<String> setter) {
+		
 		_caption = caption;
 		_prompt = prompt;
 		_user = user;
@@ -40,7 +42,5 @@ public class ValueChangePane extends CancellableAction {
 				current = newValue;
 			}
 		}
-
 	}
-
 }

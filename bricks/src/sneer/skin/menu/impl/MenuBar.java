@@ -3,7 +3,6 @@ package sneer.skin.menu.impl;
 import javax.swing.JComponent;
 import javax.swing.JMenuBar;
 
-
 public class MenuBar extends AbstractSwingMenu {
 
 	private static final long serialVersionUID = 1L;

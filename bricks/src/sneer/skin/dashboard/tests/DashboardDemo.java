@@ -8,7 +8,7 @@ import sneer.skin.laf.metal.MetalLafSupport;
 import sneer.skin.laf.motif.MotifLafSupport;
 import sneer.skin.laf.napkin.NapkinLafSupport;
 import sneer.skin.laf.so.SOLafSupport;
-import sneer.skin.sustance.SustanceLafSupport;
+import sneer.skin.laf.sustance.SustanceLafSupport;
 import wheel.lang.Threads;
 
 public class DashboardDemo  {

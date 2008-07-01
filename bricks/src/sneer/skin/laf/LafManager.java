@@ -5,7 +5,7 @@ import java.util.Map;
 
 import javax.swing.LookAndFeel;
 
-import wheel.io.ui.Action;
+import wheel.io.ui.action.Action;
 
 public interface LafManager {
 

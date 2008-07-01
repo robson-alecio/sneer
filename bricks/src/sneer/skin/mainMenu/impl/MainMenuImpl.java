@@ -22,6 +22,7 @@ public class MainMenuImpl extends MenuBar implements MainMenu{
 	static private ImageFactory imageFactory;
 	
 	private static transient Menu<JComponent> sneerMenu;
+	private static transient Menu<JComponent> windowMenu;
 	private static transient Menu<JComponent> lookAndFeelMenu;
 	private static transient Menu<JComponent> preferencesMenu;
 	
@@ -31,11 +32,14 @@ public class MainMenuImpl extends MenuBar implements MainMenu{
 		sneerMenu = menuFactory.createMenuGroup("Menu");
 		addGroup(sneerMenu);
 		
+		windowMenu = menuFactory.createMenuGroup("Window");
+		addGroup(windowMenu);
+		
 		lookAndFeelMenu = menuFactory.createMenuGroup("Look&Feel");
-		addGroup(lookAndFeelMenu);
+		windowMenu.addGroup(lookAndFeelMenu);
 		
 		preferencesMenu = menuFactory.createMenuGroup("Preferences");
-		addGroup(preferencesMenu);
+		windowMenu.addGroup(preferencesMenu);
 	}
 
 	public Menu<JComponent> getSneerMenu() {

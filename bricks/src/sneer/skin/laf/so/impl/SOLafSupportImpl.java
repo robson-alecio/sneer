@@ -5,7 +5,7 @@ import javax.swing.UIManager;
 import sneer.lego.Inject;
 import sneer.skin.laf.LafManager;
 import sneer.skin.laf.so.SOLafSupport;
-import wheel.io.ui.Action;
+import wheel.io.ui.action.Action;
 
 public class SOLafSupportImpl implements SOLafSupport {
 

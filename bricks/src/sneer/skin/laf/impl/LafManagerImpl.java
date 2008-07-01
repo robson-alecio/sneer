@@ -17,7 +17,7 @@ import sneer.skin.laf.LafSupport;
 import sneer.skin.mainMenu.MainMenu;
 import sneer.skin.menu.Menu;
 import sneer.skin.menu.MenuFactory;
-import wheel.io.ui.Action;
+import wheel.io.ui.action.Action;
 
 public class LafManagerImpl implements LafManager{
 

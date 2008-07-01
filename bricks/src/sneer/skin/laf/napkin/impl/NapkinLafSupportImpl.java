@@ -12,7 +12,7 @@ import net.sourceforge.napkinlaf.NapkinLookAndFeel;
 import sneer.lego.Inject;
 import sneer.skin.laf.LafManager;
 import sneer.skin.laf.napkin.NapkinLafSupport;
-import wheel.io.ui.Action;
+import wheel.io.ui.action.Action;
 
 public class NapkinLafSupportImpl implements NapkinLafSupport{
 	@Inject

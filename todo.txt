@@ -1,17 +1,23 @@
 ﻿Sandro
-	- Create a first functional Snapp.		
-	- Internal Window Actions (expand brick, brick menu and remove brick, like google desktop).		
+	- [DONE] Refactoring wheel.io.ui.Action to support Signals
+	- Create a first functional Snapp.
+		- SnappPreview
+			- Menu
+				- Change size
+				- open window
+				- uninstall
+				- About
+				- Others (Snapp specific)
+			- Sizes:
+				- Single Line - Signal<String> title(). Future: space available for graphics.
+				- MultiLine - Signal<int> preferredHeight() Component component(). Future: forced size by user.
+				- Future: Iconified - space available for graphics
+		- SnappWindow
 	- Tray Icon - Ask Petra for a 16x16 icon to put there. Black on white. No transparency.
-	- Refactoring wheel.io.ui.Action to support Signals
 	- JScrollPane for Snapps.
 	- Layout Support for Internal Windows (Size, Resize and Position).
 	- Implement animated collapse (JInternalFrame).
 
-	- [DONE] - Increase snapp collapse icon ">>" contrast. I cannot see it properly.
-	- [DONE] Fix - Use a font without serif such as arial in the text field.
-	- [DONE] Fix - Menu stops working after dashboard is locked on win XP.
-	- [DONE] Fix - Single click on tray icon must call EXACTLY the same code as TrayIconMenu > Open. Currently, clicking on the TrayIcon is not bringing the dashboard to the foreground when locked.
-	
 	=================================================== RELEASE
 	- Resizeable JWindow, instead of switching JFrame <-> JWindow.
 	- Add Tab/Window Support

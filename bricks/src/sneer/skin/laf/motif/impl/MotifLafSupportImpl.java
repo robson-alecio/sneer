@@ -3,7 +3,7 @@ package sneer.skin.laf.motif.impl;
 import sneer.lego.Inject;
 import sneer.skin.laf.LafManager;
 import sneer.skin.laf.motif.MotifLafSupport;
-import wheel.io.ui.Action;
+import wheel.io.ui.action.Action;
 
 public class MotifLafSupportImpl implements MotifLafSupport {
 

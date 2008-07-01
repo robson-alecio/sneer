@@ -24,8 +24,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 
 import wheel.graphics.JpgImage;
-import wheel.io.ui.Action;
 import wheel.io.ui.User;
+import wheel.io.ui.action.Action;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.reactive.Signal;
@@ -116,7 +116,7 @@ public class ReactiveJpgImageField extends JPanel{
 
 	private Action changePictureAction() {
 		return new Action(){
-
+			
 			public String caption() {
 				return translate("Change %1$s",_description);
 			}

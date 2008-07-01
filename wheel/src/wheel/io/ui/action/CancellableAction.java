@@ -1,6 +1,6 @@
-package wheel.io.ui;
+package wheel.io.ui.action;
 
-
+import wheel.io.ui.CancelledByUser;
 
 public abstract class CancellableAction implements Action {
 
@@ -14,5 +14,4 @@ public abstract class CancellableAction implements Action {
 	}
 
 	protected abstract void tryToRun() throws CancelledByUser;
-
 }

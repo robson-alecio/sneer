@@ -11,8 +11,9 @@ import java.awt.event.MouseListener;
 import java.net.URL;
 
 import javax.swing.JButton;
+
 import junit.framework.TestCase;
-import wheel.io.ui.Action;
+import wheel.io.ui.action.Action;
 import wheel.io.ui.impl.TrayIconImpl;
 
 public class TrayIconImplTests extends TestCase {

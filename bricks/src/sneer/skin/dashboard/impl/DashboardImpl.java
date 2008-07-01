@@ -25,7 +25,8 @@ import sneer.skin.dashboard.Dashboard;
 import sneer.skin.image.DefaultIcons;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.mainMenu.MainMenu;
-import wheel.io.ui.Action;
+import wheel.io.ui.action.Action;
+import wheel.io.ui.action.SelectableAction;
 import wheel.io.ui.impl.TrayIconImpl;
 import wheel.io.ui.impl.TrayIconImpl.SystemTrayNotSupported;
 
@@ -175,10 +176,10 @@ public class DashboardImpl implements Dashboard, Runnable {
 	}
 	
 	private void addLockUnlockAction() {
-		Action cmd = new Action(){
+		SelectableAction cmd = new SelectableAction(){
 			@Override
 			public String caption() {
-				return (window==jframe)?"Lock":"Unlock";
+				return "Lock";
 			}
 			@Override
 			public void run() {
@@ -188,16 +189,21 @@ public class DashboardImpl implements Dashboard, Runnable {
 					changeJWindowToJFrame();
 				}
 			}
+			@Override
+			public boolean isSelected() {
+				return window==jwindow;
+			}
 		};
 		
 		mainMenu.getSneerMenu().addAction(cmd);
 	}	
 	
 	private void addBorderTypeAction() {
-		Action cmd = new Action(){
+		SelectableAction cmd = new SelectableAction(){
+			boolean deafaulBorder = true;
 			@Override
 			public String caption() {
-				return "Change Snapp Border";
+				return "Default Snapp Border";
 			}
 			@Override
 			public void run() {
@@ -208,6 +214,11 @@ public class DashboardImpl implements Dashboard, Runnable {
 						new LineBorder(Color.WHITE,2,true));
 				}
 				refreshLaf();
+				deafaulBorder=!deafaulBorder;
+			}
+			@Override
+			public boolean isSelected() {
+				return deafaulBorder;
 			}
 		};
 		

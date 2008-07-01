@@ -9,10 +9,14 @@ import java.net.URLClassLoader;
 
 import org.junit.Test;
 
+import testdashboard.TestDashboard;
+
 public class ClassLoaderTest {
 
 	@Test
 	public void testBrickLoadingInSeparateClassloaders() throws Exception {
+		if (!TestDashboard.newTestsShouldRun()) return;
+
 		String root = "file://"+System.getProperty("user.dir") + "/spikes/test-resources/classloader/";
 		URL api1 = new URL(root + "brickOne/brickOne-api-1.0.jar");
 		URL api2 = new URL(root + "brickTwo/brickTwo-api-1.0.jar");

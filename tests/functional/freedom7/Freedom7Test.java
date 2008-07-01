@@ -11,6 +11,8 @@ import java.lang.reflect.Method;
 
 import org.junit.Test;
 
+import testdashboard.TestDashboard;
+
 import functional.SignalUtils;
 import functional.SovereignFunctionalTest;
 import functional.SovereignParty;
@@ -25,7 +27,7 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 	@Test
 	public void testPublish() throws Exception {
 		
-		//Assert.fail("If this test runs, other tests break.");
+		if (!TestDashboard.newTestsShouldRun()) return;
 		
 		SovereignParty publisher = _a;
 		SovereignParty receiver = _b;

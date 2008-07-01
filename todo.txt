@@ -1,5 +1,5 @@
 ﻿Sandro
-	- [DONE] Refactoring wheel.io.ui.Action to support Signals
+	- SelectableAction.isSelected() - change to Signal<Boolean> 
 	- Create a first functional Snapp.
 		- SnappPreview
 			- Menu

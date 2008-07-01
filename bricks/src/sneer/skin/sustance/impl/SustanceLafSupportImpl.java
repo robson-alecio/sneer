@@ -2,6 +2,7 @@ package sneer.skin.sustance.impl;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.LookAndFeel;
 
@@ -9,13 +10,22 @@ import org.apache.commons.collections.list.TreeList;
 import org.jvnet.substance.SubstanceLookAndFeel;
 import org.jvnet.substance.skin.SkinInfo;
 
-import sneer.skin.laf.impl.AbstractLafSupportImpl;
+import sneer.lego.Inject;
+import sneer.skin.laf.LafManager;
 import sneer.skin.sustance.SustanceLafSupport;
+import wheel.io.ui.Action;
 
-public class SustanceLafSupportImpl extends AbstractLafSupportImpl implements SustanceLafSupport{
+public class SustanceLafSupportImpl implements SustanceLafSupport{
+
+	@Inject
+	static private LafManager register;
+	
+	private Map<LookAndFeel, Action> map;
+	private Action lastUsedAction;
 
 	public SustanceLafSupportImpl(){
-		super(getLaFs(), "Sustance");
+		map = register.registry(getLaFs(), "Sustance", this);
+		lastUsedAction = map.values().iterator().next();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -40,6 +50,15 @@ public class SustanceLafSupportImpl extends AbstractLafSupportImpl implements Su
 		String lafName = "Substance" + skinName + "LookAndFeel";
 		name=name.replaceAll(skinName, lafName);
 		return name;
-		
+	}
+
+	@Override
+	public Action getAction() {
+		return map.get(lastUsedAction);
+	}
+	
+	@Override
+	public void setLastUsedAction(Action last) {
+		lastUsedAction = last;
 	}
 }

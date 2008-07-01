@@ -1,11 +1,27 @@
 package sneer.skin.laf.motif.impl;
 
-import sneer.skin.laf.impl.AbstractLafSupportImpl;
-import sneer.skin.laf.so.SOLafSupport;
+import sneer.lego.Inject;
+import sneer.skin.laf.LafManager;
+import sneer.skin.laf.motif.MotifLafSupport;
+import wheel.io.ui.Action;
 
-public class MotifLafSupportImpl extends AbstractLafSupportImpl implements SOLafSupport {
+public class MotifLafSupportImpl implements MotifLafSupport {
+
+	@Inject
+	static private LafManager lafManager;
+	
+	private Action action;
 
 	public MotifLafSupportImpl(){
-		super("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+		action = lafManager.registerLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+	}
+
+	public Action getAction() {
+		return action;
+	}
+
+	@Override
+	public void setLastUsedAction(Action last) {
+		//ignore
 	}
 }

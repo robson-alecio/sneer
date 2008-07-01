@@ -3,6 +3,7 @@ package sneer.skin.dashboard.tests;
 import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
 import sneer.skin.dashboard.Dashboard;
+import sneer.skin.laf.LafManager;
 import sneer.skin.laf.metal.MetalLafSupport;
 import sneer.skin.laf.motif.MotifLafSupport;
 import sneer.skin.laf.napkin.NapkinLafSupport;
@@ -20,7 +21,11 @@ public class DashboardDemo  {
 		container.produce(MetalLafSupport.class);
 		container.produce(MotifLafSupport.class);
 		container.produce(SustanceLafSupport.class);
-		container.produce(NapkinLafSupport.class).getAction().run();
+		
+		NapkinLafSupport tmp = container.produce(NapkinLafSupport.class);
+		
+		LafManager reg = container.produce(LafManager.class);
+		reg.setActiveLafSupport(tmp);
 		
 		Threads.sleepWithoutInterruptions(30000);
 	}

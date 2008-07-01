@@ -1,6 +1,7 @@
 package sneer.skin.dashboard.impl;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
@@ -16,6 +17,7 @@ import javax.swing.JTextArea;
 import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
+import javax.swing.border.LineBorder;
 
 import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Inject;
@@ -71,6 +73,7 @@ public class DashboardImpl implements Dashboard, Runnable {
 		addOpenWindowAction(tray);
 		addLockUnlockAction();
 		addExitAction(tray);
+		addBorderTypeAction();
 	}
 
 	public void refreshLaf() {
@@ -101,31 +104,21 @@ public class DashboardImpl implements Dashboard, Runnable {
         
 		SneerInternalFrame taskPane;
         
-//        taskPane = tpFactory.createTaskPane("Teste1");
-        taskPane = new SneerInternalFrame("Teste1",true,false,true,true);
+        taskPane = new SneerInternalFrame("Teste1");
         desktop.add(taskPane);
         
-        taskPane = new SneerInternalFrame("Teste2",true,false,true,true);
-//        taskPane = new JInternalFrame("Teste2",true,false,true,true);
+        taskPane = new SneerInternalFrame("Teste2");
         desktop.add(taskPane);
         
-        taskPane = new SneerInternalFrame("Teste3",true,false,true,true);
-//        taskPane = new JInternalFrame("Teste3",true,false,true,true);
+        
+        taskPane = new SneerInternalFrame("Teste3");
         JTextArea textArea = new JTextArea(15, 20);
 		taskPane.add(new JScrollPane(textArea));
         desktop.add(taskPane);
         
         contentPanel.add(desktop, BorderLayout.CENTER);
     }
-//
-//	private static final class TODOAction extends AbstractActionExt {
-//		private static final long serialVersionUID = 1L;
-//		public TODOAction(String name) {
-//            setName(name);
-//        }
-//        public void actionPerformed(ActionEvent actionEvent) {}
-//    }
-    
+	
 	private void resizeWindow() {
 		Dimension newSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 		if(bounds==null || screenSize==null || !screenSize.equals(newSize)){
@@ -198,6 +191,27 @@ public class DashboardImpl implements Dashboard, Runnable {
 		};
 		
 		mainMenu.getSneerMenu().addAction(cmd);
+	}	
+	
+	private void addBorderTypeAction() {
+		Action cmd = new Action(){
+			@Override
+			public String caption() {
+				return "Change Snaap Border";
+			}
+			@Override
+			public void run() {
+				if(SneerInternalFrame.hasDefaultWindowBorder()){
+					SneerInternalFrame.setDefaultWindowBorder(null);
+				}else{
+					SneerInternalFrame.setDefaultWindowBorder(
+						new LineBorder(Color.WHITE,2,true));
+				}
+				refreshLaf();
+			}
+		};
+		
+		mainMenu.getPreferencesMenu().addAction(cmd);
 	}
 	
 	private void addOpenWindowAction(TrayIconImpl tray) {
@@ -208,11 +222,16 @@ public class DashboardImpl implements Dashboard, Runnable {
 			}
 			@Override
 			public void run() {
-				if(window==jframe){
-					jframe.setState(Frame.NORMAL);
-				}
-				window.setVisible(true);
-				window.requestFocusInWindow();
+				SwingUtilities.invokeLater(
+					new Runnable(){
+						public void run() {
+							if(window==jframe){
+								jframe.setState(Frame.NORMAL);
+							}
+							window.setVisible(true);
+							window.requestFocusInWindow();						}
+					}
+				);
 			}
 		};
 		tray.setDefaultAction(cmd);

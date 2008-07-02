@@ -8,11 +8,11 @@ import java.net.Socket;
 import org.junit.Test;
 
 import sneer.bricks.connection.SocketAccepter;
+import sneer.bricks.name.PortKeeper;
 import sneer.bricks.network.ByteArraySocket;
 import sneer.bricks.network.impl.ByteArraySocketImpl;
 import sneer.lego.Inject;
 import sneer.lego.tests.BrickTestSupport;
-import spikes.legobricks.name.PortKeeper;
 import wheel.lang.Omnivore;
 
 public class SocketAccepterTest extends BrickTestSupport {

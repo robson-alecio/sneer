@@ -1,4 +1,4 @@
-package spikes.legobricks.name;
+package sneer.bricks.name;
 
 import sneer.lego.Brick;
 import wheel.lang.Consumer;

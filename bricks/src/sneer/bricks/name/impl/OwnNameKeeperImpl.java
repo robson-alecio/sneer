@@ -1,6 +1,6 @@
-package spikes.legobricks.name.impl;
+package sneer.bricks.name.impl;
 
-import spikes.legobricks.name.OwnNameKeeper;
+import sneer.bricks.name.OwnNameKeeper;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Register;

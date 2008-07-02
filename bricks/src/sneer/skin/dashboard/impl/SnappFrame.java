@@ -17,6 +17,10 @@ public class SnappFrame extends JInternalFrame {
 	private static final long serialVersionUID = 1L;
 	private static byte[] prototypeBorder;
 
+	public SnappFrame() {
+		this("");
+	}
+
 	public SnappFrame(String _title) {
 		super(_title, true, false, true, true);
 		setVisible(true);

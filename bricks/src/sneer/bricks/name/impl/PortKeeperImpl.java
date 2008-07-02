@@ -1,6 +1,6 @@
-package spikes.legobricks.name.impl;
+package sneer.bricks.name.impl;
 
-import spikes.legobricks.name.PortKeeper;
+import sneer.bricks.name.PortKeeper;
 import wheel.io.network.PortNumberRegister;
 import wheel.lang.Consumer;
 import wheel.reactive.Signal;

@@ -2,6 +2,7 @@ package sneer.skin.dashboard.impl;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
@@ -25,6 +26,7 @@ import sneer.skin.dashboard.Dashboard;
 import sneer.skin.image.DefaultIcons;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.mainMenu.MainMenu;
+import sneer.skin.viewmanager.Snapp;
 import wheel.io.ui.action.Action;
 import wheel.io.ui.action.SelectableAction;
 import wheel.io.ui.impl.TrayIconImpl;
@@ -43,7 +45,7 @@ public class DashboardImpl implements Dashboard, Runnable {
 	
 	@Inject
 	static private MainMenu mainMenu;
-	
+		
 	private Dimension screenSize;
 	private Rectangle bounds;
 	private boolean isLocked;
@@ -51,6 +53,7 @@ public class DashboardImpl implements Dashboard, Runnable {
 	private transient Window window;
 	private transient JFrame jframe;
 	private transient JWindow jwindow;
+	private transient JPanel rootPanel;
 	private transient JPanel contentPanel;
 	
 	public DashboardImpl() {
@@ -84,41 +87,45 @@ public class DashboardImpl implements Dashboard, Runnable {
 	private void initWindows() {
 		jframe = new JFrame();
 		jwindow = new JWindow();
-		contentPanel = new JPanel();
+		rootPanel = new JPanel();
 		
 		if(isLocked){
 			window = jwindow;
-			contentPanel = (JPanel) jwindow.getContentPane();
+			rootPanel = (JPanel) jwindow.getContentPane();
 		}else{
 			window = jframe;
-			contentPanel = (JPanel) jframe.getContentPane();
+			rootPanel = (JPanel) jframe.getContentPane();
 		}
 		
-		contentPanel.setLayout(new BorderLayout());
-		contentPanel.add(mainMenu.getWidget(), BorderLayout.NORTH);
+		rootPanel.setLayout(new BorderLayout());
+		rootPanel.add(mainMenu.getWidget(), BorderLayout.NORTH);
+		contentPanel = new JPanel();
+		rootPanel.add(contentPanel, BorderLayout.CENTER);
+		contentPanel.setLayout(new FlowLayout());
 		createDemoTaskPane();
 	}
-
+	
 	private void createDemoTaskPane() {
-		JPanel desktop = new JPanel();
-		desktop.setLayout(new FlowLayout());
+		SnappFrame frame;
+        frame = new SnappFrame("Teste1");
+        contentPanel.add(frame);
         
-		SnappFrame taskPane;
+        frame = new SnappFrame("Teste2");
+        contentPanel.add(frame);
         
-        taskPane = new SnappFrame("Teste1");
-        desktop.add(taskPane);
-        
-        taskPane = new SnappFrame("Teste2");
-        desktop.add(taskPane);
-        
-        
-        taskPane = new SnappFrame("Teste3");
+        frame = new SnappFrame("Teste3");
         JTextArea textArea = new JTextArea(15, 20);
-		taskPane.add(new JScrollPane(textArea));
-        desktop.add(taskPane);
-        
-        contentPanel.add(desktop, BorderLayout.CENTER);
+		frame.add(new JScrollPane(textArea));
+		contentPanel.add(frame);
     }
+	
+	@Override
+	public SnappFrame installSnapp(Snapp snapp) {
+		SnappFrame sf = new SnappFrame();
+		contentPanel.add(sf);
+        snapp.init(sf.getContentPane());
+        return sf;
+	}
 	
 	private void resizeWindow() {
 		Dimension newSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -156,7 +163,7 @@ public class DashboardImpl implements Dashboard, Runnable {
 		jframe.setVisible(false);
 		jframe.setContentPane(new JPanel());
 		
-		jwindow.setContentPane(contentPanel);
+		jwindow.setContentPane(rootPanel);
 		jwindow.setBounds(bounds);
 		jwindow.setVisible(true);
 		window = jwindow;
@@ -168,7 +175,7 @@ public class DashboardImpl implements Dashboard, Runnable {
 		jwindow.setVisible(false);
 		jwindow.setContentPane(new JPanel());
 		
-		jframe.setContentPane(contentPanel);
+		jframe.setContentPane(rootPanel);
 		jframe.setBounds(bounds);
 		jframe.setVisible(true);
 		window = jframe;
@@ -269,5 +276,15 @@ public class DashboardImpl implements Dashboard, Runnable {
 	@Override
 	public void run() {
 		initialize();
+	}
+	
+	@Override
+	public Container getContentPanel() {
+		return contentPanel;
+	}
+	
+	@Override
+	public Container getRootPanel() {
+		return rootPanel;
 	}
 }

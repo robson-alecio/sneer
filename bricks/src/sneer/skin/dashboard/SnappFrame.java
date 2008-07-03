@@ -1,4 +1,4 @@
-package sneer.skin.dashboard.impl;
+package sneer.skin.dashboard;
 
 import java.awt.Color;
 import java.awt.Dimension;

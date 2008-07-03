@@ -37,6 +37,11 @@ class ToptenGuiImpl implements ToptenGui, Startable {
 				categories.setModel(categoriesModel);
 				
 			}
+
+			@Override
+			public String getName() {
+				return "Topten";
+			}
 			
 		});
 	}

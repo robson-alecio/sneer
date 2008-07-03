@@ -2,7 +2,6 @@ package sneer.skin.dashboard;
 
 import java.awt.Container;
 
-import sneer.skin.dashboard.impl.SnappFrame;
 import sneer.skin.laf.LafContainer;
 import sneer.skin.viewmanager.Snapp;
 

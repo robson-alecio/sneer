@@ -39,4 +39,9 @@ public class OwnerSnappImpl implements OwnerSnapp {
 	public OwnNameKeeper getOwnNameKeeper() {
 		return ownNameKeeper;
 	}
+
+	@Override
+	public String getName() {
+		return "Owner";
+	}
 }

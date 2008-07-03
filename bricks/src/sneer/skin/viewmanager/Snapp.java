@@ -6,4 +6,6 @@ public interface Snapp {
 
 	void init(Container container);
 
+	String getName();
+
 }

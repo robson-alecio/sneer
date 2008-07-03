@@ -39,10 +39,10 @@ public class OwnerSnappDemo  {
 		RFactory rfactory = container.produce(RFactory.class);
 		JFrame frm = new JFrame();
 		frm.getContentPane().add(
-				rfactory.newTextField(
-						ownNameKeeper.name(), 
-						ownNameKeeper.nameSetter()
-				).getContainer()
+			rfactory.newTextField(
+					ownNameKeeper.name(), 
+					ownNameKeeper.nameSetter()
+			).getContainer()
 		);
 		frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frm.setBounds(10, 10, 200, 200);

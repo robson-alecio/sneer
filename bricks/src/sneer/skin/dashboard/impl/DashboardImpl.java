@@ -13,8 +13,6 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
@@ -23,6 +21,7 @@ import javax.swing.border.LineBorder;
 import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Inject;
 import sneer.skin.dashboard.Dashboard;
+import sneer.skin.dashboard.SnappFrame;
 import sneer.skin.image.DefaultIcons;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.mainMenu.MainMenu;
@@ -102,26 +101,11 @@ public class DashboardImpl implements Dashboard, Runnable {
 		contentPanel = new JPanel();
 		rootPanel.add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new FlowLayout());
-		createDemoTaskPane();
 	}
-	
-	private void createDemoTaskPane() {
-		SnappFrame frame;
-        frame = new SnappFrame("Teste1");
-        contentPanel.add(frame);
-        
-        frame = new SnappFrame("Teste2");
-        contentPanel.add(frame);
-        
-        frame = new SnappFrame("Teste3");
-        JTextArea textArea = new JTextArea(15, 20);
-		frame.add(new JScrollPane(textArea));
-		contentPanel.add(frame);
-    }
 	
 	@Override
 	public SnappFrame installSnapp(Snapp snapp) {
-		SnappFrame sf = new SnappFrame();
+		SnappFrame sf = new SnappFrame(snapp.getName());
 		contentPanel.add(sf);
         snapp.init(sf.getContentPane());
         return sf;

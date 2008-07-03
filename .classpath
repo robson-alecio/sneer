@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry excluding="java/" kind="src" output="sneerAPI-bin" path="kernel/src"/>
+	<classpathentry kind="src" path="snapps/src"/>
 	<classpathentry kind="src" path="spikes/src"/>
 	<classpathentry kind="src" output="sneerAPI-bin" path="wheel/src"/>
 	<classpathentry kind="src" path="bricks/src"/>

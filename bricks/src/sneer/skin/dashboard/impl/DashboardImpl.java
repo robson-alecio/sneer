@@ -104,10 +104,17 @@ public class DashboardImpl implements Dashboard, Runnable {
 	}
 	
 	@Override
-	public SnappFrame installSnapp(Snapp snapp) {
-		SnappFrame sf = new SnappFrame(snapp.getName());
-		contentPanel.add(sf);
-        snapp.init(sf.getContentPane());
+	public SnappFrame installSnapp(final Snapp snapp) {
+		final SnappFrameImpl sf = new SnappFrameImpl(snapp.getName());
+		SwingUtilities.invokeLater(
+			new Runnable(){
+				@Override
+				public void run() {
+					contentPanel.add(sf);
+					snapp.init(sf.getContentPane());
+				}
+			}
+		);
         return sf;
 	}
 	
@@ -198,10 +205,10 @@ public class DashboardImpl implements Dashboard, Runnable {
 			}
 			@Override
 			public void run() {
-				if(SnappFrame.hasDefaultWindowBorder()){
-					SnappFrame.setDefaultWindowBorder(null);
+				if(SnappFrameImpl.hasDefaultWindowBorder()){
+					SnappFrameImpl.setDefaultWindowBorder(null);
 				}else{
-					SnappFrame.setDefaultWindowBorder(
+					SnappFrameImpl.setDefaultWindowBorder(
 						new LineBorder(Color.WHITE,2,true));
 				}
 				refreshLaf();

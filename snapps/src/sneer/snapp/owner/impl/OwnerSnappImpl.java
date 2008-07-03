@@ -31,6 +31,11 @@ public class OwnerSnappImpl implements OwnerSnapp {
 	}
 
 	@Override
+	public String getName() {
+		return "Owner";
+	}
+
+	@Override
 	public TextWidget getEditableLabel() {
 		return editableLabel;
 	}
@@ -38,10 +43,5 @@ public class OwnerSnappImpl implements OwnerSnapp {
 	@Override
 	public OwnNameKeeper getOwnNameKeeper() {
 		return ownNameKeeper;
-	}
-
-	@Override
-	public String getName() {
-		return "Owner";
 	}
 }

@@ -31,7 +31,10 @@ public class OwnerSnappDemo  {
 
 	private static void createTestFrame(Container container, OwnerSnapp ownerSnapp) {
 		OwnNameKeeper ownNameKeeper = ownerSnapp.getOwnNameKeeper();
-		ownNameKeeper.setName("Sandro");
+        System.out.println(System.identityHashCode(ownNameKeeper.name()));
+        System.out.println(ownNameKeeper.nameSetter());
+
+        ownNameKeeper.setName("Sandro Bihaiko");
 		
 		RFactory rfactory = container.produce(RFactory.class);
 		JFrame frm = new JFrame();
@@ -41,6 +44,7 @@ public class OwnerSnappDemo  {
 						ownNameKeeper.nameSetter()
 				).getContainer()
 		);
+		frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frm.setBounds(10, 10, 200, 200);
 		frm.setVisible(true);
 

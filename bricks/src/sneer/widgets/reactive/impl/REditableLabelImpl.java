@@ -34,21 +34,34 @@ public class REditableLabelImpl extends JPanel implements TextWidget{
 		addEditLabelListener();		
 		addCommitChangesListener();
 	}
+	
+	private void commitChanges() {
+		SwingUtilities.invokeLater(
+			new Runnable(){
+				@Override
+				public void run() {
+					text.setVisible(false);
+					label.setVisible(true);
+				}
+			}
+		);
+	}
 
 	private void addCommitChangesListener() {
 		text.getMainWidget().addActionListener(
 			new ActionListener(){
 				public void actionPerformed(ActionEvent e) {
-					SwingUtilities.invokeLater(
-						new Runnable(){
-							@Override
-							public void run() {
-								text.setVisible(false);
-								label.setVisible(true);
-							}
-						}
-					);
+					commitChanges();
 				}
+			}
+		);
+		
+		text.getMainWidget().addFocusListener(
+			new FocusAdapter(){
+				@Override
+				public void focusLost(FocusEvent e) {
+					commitChanges();
+				};
 			}
 		);
 	}
@@ -64,16 +77,6 @@ public class REditableLabelImpl extends JPanel implements TextWidget{
 					text.getMainWidget().requestFocus();
 					text.getMainWidget().selectAll();
 				}
-			}
-		);
-		
-		text.getMainWidget().addFocusListener(
-			new FocusAdapter(){
-				@Override
-				public void focusLost(FocusEvent e) {
-					text.setVisible(false);
-					label.setVisible(true);
-				};
 			}
 		);
 	}

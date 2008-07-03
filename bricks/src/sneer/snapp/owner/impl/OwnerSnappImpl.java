@@ -26,6 +26,7 @@ public class OwnerSnappImpl implements OwnerSnapp {
         editableLabel = rfactory.newEditableLabel(
 	        	ownNameKeeper.name(), 
 				ownNameKeeper.nameSetter());
+
         container.add(editableLabel.getContainer());
 	}
 

@@ -21,11 +21,13 @@ public class OwnNameKeeperDemo {
 		OwnNameKeeper ownNameKeeper = container.produce(OwnNameKeeper.class);
 		ownNameKeeper.setName("Sandro Luiz Bihaiko");
 		
-		TextWidget newTextField = rfactory.newTextField(ownNameKeeper.name(), ownNameKeeper.nameSetter());
+		TextWidget newTextField;
 		
+		newTextField = rfactory.newTextField(ownNameKeeper.name(), ownNameKeeper.nameSetter());
 		createTestFrame(newTextField).setBounds(10, 10, 300, 100);
-		createTestFrame(rfactory.newEditableLabel(ownNameKeeper.name(), ownNameKeeper.nameSetter())).setBounds(10, 120, 300, 100);
-		createTestFrame(rfactory.newLabel(ownNameKeeper.name())).setBounds(10, 240, 300, 100);
+
+		newTextField = rfactory.newEditableLabel(ownNameKeeper.name(), ownNameKeeper.nameSetter());
+		createTestFrame(newTextField).setBounds(10, 150, 300, 100);
 	}
 
 	private static JFrame createTestFrame(final TextWidget textWidget) {

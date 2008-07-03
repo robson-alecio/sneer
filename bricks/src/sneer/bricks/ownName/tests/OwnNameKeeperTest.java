@@ -17,7 +17,7 @@ import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 
-public class OwnNameTest extends BrickTestSupport {
+public class OwnNameKeeperTest extends BrickTestSupport {
 
 	@Inject
 	private KeyManager _keyManager;

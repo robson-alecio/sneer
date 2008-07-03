@@ -21,12 +21,17 @@ public class ReativeWidgetsDemo {
 		RFactory rfactory = container.produce(RFactory.class);
 		Register<String> register = new RegisterImpl<String>("Jose das Coves");
 				
-		TextWidget newTextField = rfactory.newTextField(register.output(), register.setter());
+		TextWidget newTextField;
 		
+		newTextField = rfactory.newTextField(register.output(), register.setter());
 		createTestFrame(newTextField).setBounds(10, 10, 300, 100);
-		createTestFrame(rfactory.newEditableLabel(register.output(), register.setter())).setBounds(10, 120, 300, 100);
-		createTestFrame(rfactory.newLabel(register.output())).setBounds(10, 240, 300, 100);
-		
+
+		newTextField = rfactory.newEditableLabel(register.output(), register.setter());
+		createTestFrame(newTextField).setBounds(10, 120, 300, 100);
+
+		newTextField = rfactory.newLabel(register.output());
+		createTestFrame(newTextField).setBounds(10, 240, 300, 100);
+
 		register.output().addReceiver(
 			new Omnivore<String>(){
 				@Override

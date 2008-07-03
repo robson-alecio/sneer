@@ -44,13 +44,14 @@ public class ReativeWidgetsDemo {
 
 	private static JFrame createTestFrame(final TextWidget textWidget) {
 		final JFrame frm = new JFrame(textWidget.getClass().getSimpleName());
+		frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frm.getContentPane().setLayout(new FlowLayout());
+		frm.getContentPane().add(textWidget.getContainer());
+
 		SwingUtilities.invokeLater(
 			new Runnable(){
 				@Override
 				public void run() {
-					frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					frm.getContentPane().setLayout(new FlowLayout());
-					frm.getContentPane().add(textWidget.getContainer());
 					frm.setVisible(true);
 				}
 			}

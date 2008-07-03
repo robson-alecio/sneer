@@ -1,5 +1,6 @@
 package sneer.snapp.owner.tests;
 
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import sneer.bricks.ownName.OwnNameKeeper;
@@ -11,26 +12,52 @@ import sneer.skin.laf.napkin.NapkinLafSupport;
 import sneer.skin.viewmanager.Snapp;
 import sneer.widgets.reactive.RFactory;
 import wheel.lang.Omnivore;
-import wheel.reactive.Register;
 import wheel.reactive.Signal;
-import wheel.reactive.impl.RegisterImpl;
 
 public class OwnerSnappDemo  {
+	
+	static int y = 10;
 
 	public static void main(String[] args) throws Exception {
 
 		Container container = ContainerUtils.getContainer();
 		initLafs(container);
 
-//		OwnNameKeeper ownNameKeeper = container.produce(OwnNameKeeper.class);
-//		ownNameKeeper.setName("Sandro Bihaiko");
-		
-		Register<String> register = new RegisterImpl<String>("Jose das Coves");
-
+		OwnNameKeeper ownNameKeeper = container.produce(OwnNameKeeper.class);
+		ownNameKeeper.setName("Sandro Bihaiko");
 		RFactory rfactory = container.produce(RFactory.class);
+		
+		ownNameKeeper.name().addReceiver(new Omnivore<String>(){
+			@Override
+			public void consume(String valueObject) {
+				System.out.println(valueObject);
+			}});
+		
+		newJFrame(rfactory, ownNameKeeper);
+		newJFrame(rfactory, ownNameKeeper);
+		
+		newSnaap(rfactory, container, ownNameKeeper);
+		newSnaap(rfactory, container, ownNameKeeper);
+	}
+
+	private static void newJFrame(RFactory _rfactory, OwnNameKeeper ownNameKeeper) {
+		java.awt.Container label = _rfactory.newEditableLabel(ownNameKeeper.name(), ownNameKeeper.nameSetter()).getContainer();
+		final JFrame frm = new JFrame();
+		frm.getContentPane().add(label);
+		frm.setBounds(10, y, 200, 100);
+		y = y+110;
+		frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		SwingUtilities.invokeLater(new Runnable(){
+			@Override
+			public void run() {
+				frm.setVisible(true);
+			}});
+	}
+
+	private static void newSnaap(RFactory rfactory, Container container, OwnNameKeeper ownNameKeeper) {
 		Dashboard dashboard = container.produce(Dashboard.class);
-		dashboard.installSnapp(new SnappTest(rfactory, register.output(), register.setter() ));
-		dashboard.installSnapp(new SnappTest(rfactory, register.output(), register.setter() ));
+		dashboard.installSnapp(new SnappTest(rfactory, ownNameKeeper.name(), ownNameKeeper.nameSetter()));
 	}
 	
 	private static void initLafs(final Container container) {

@@ -10,6 +10,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import javax.swing.JInternalFrame;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
@@ -26,6 +27,7 @@ public class SnappFrameImpl extends JInternalFrame implements SnappFrame {
 
 	public SnappFrameImpl(String _title) {
 		super(_title, true, false, true, true);
+		this.getContentPane().setVisible(false);
 		setVisible(true);
 	}
 
@@ -121,5 +123,22 @@ public class SnappFrameImpl extends JInternalFrame implements SnappFrame {
 	@Override
 	public Container getContainer() {
 		return this;
+	}
+	
+	@Override
+	public void setVisible(final boolean visible) {
+		SwingUtilities.invokeLater(
+			new Runnable(){
+				@Override
+				public void run() {
+					getContentPane().setVisible(visible);
+					setVisibleFromSuper(visible);
+				}
+			}
+		);
+	}
+	
+	private void setVisibleFromSuper(boolean visible) {
+		super.setVisible(visible);
 	}
 }

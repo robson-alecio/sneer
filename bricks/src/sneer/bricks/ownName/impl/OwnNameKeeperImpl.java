@@ -1,6 +1,6 @@
-package sneer.bricks.name.impl;
+package sneer.bricks.ownName.impl;
 
-import sneer.bricks.name.OwnNameKeeper;
+import sneer.bricks.ownName.OwnNameKeeper;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Register;
@@ -20,4 +20,13 @@ public class OwnNameKeeperImpl implements OwnNameKeeper {
 		return _name.setter();
 	}
 
+	@Override
+	public void setName(String name) {
+		nameSetter().consume(name);
+	}
+
+	@Override
+	public String getName() {
+		return name().currentValue();
+	}
 }

@@ -1,4 +1,4 @@
-package sneer.bricks.name;
+package sneer.bricks.ownName;
 
 import sneer.lego.Brick;
 import wheel.lang.Omnivore;
@@ -10,4 +10,7 @@ public interface OwnNameKeeper extends Brick {
 
 	Omnivore<String> nameSetter();
 
+	void setName(String name);
+
+	String getName();
 }

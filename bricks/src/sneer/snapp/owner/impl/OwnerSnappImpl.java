@@ -3,7 +3,7 @@ package sneer.snapp.owner.impl;
 import java.awt.Container;
 import java.awt.FlowLayout;
 
-import sneer.bricks.name.OwnNameKeeper;
+import sneer.bricks.ownName.OwnNameKeeper;
 import sneer.lego.Inject;
 import sneer.snapp.owner.OwnerSnapp;
 import sneer.widgets.reactive.RFactory;

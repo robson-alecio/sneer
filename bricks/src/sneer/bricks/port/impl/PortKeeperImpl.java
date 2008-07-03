@@ -1,6 +1,6 @@
-package sneer.bricks.name.impl;
+package sneer.bricks.port.impl;
 
-import sneer.bricks.name.PortKeeper;
+import sneer.bricks.port.PortKeeper;
 import wheel.io.network.PortNumberRegister;
 import wheel.lang.Consumer;
 import wheel.reactive.Signal;

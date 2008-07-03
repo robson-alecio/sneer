@@ -6,8 +6,8 @@ import java.util.Map;
 import sneer.bricks.connection.Connection;
 import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.contacts.Contact;
-import sneer.bricks.name.OwnNameKeeper;
 import sneer.bricks.network.ByteArraySocket;
+import sneer.bricks.ownName.OwnNameKeeper;
 import sneer.lego.Inject;
 
 public class ConnectionManagerImpl implements ConnectionManager {

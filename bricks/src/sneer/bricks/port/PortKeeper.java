@@ -1,4 +1,4 @@
-package sneer.bricks.name;
+package sneer.bricks.port;
 
 import sneer.lego.Brick;
 import wheel.lang.Consumer;

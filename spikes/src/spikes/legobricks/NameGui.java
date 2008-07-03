@@ -2,7 +2,7 @@ package spikes.legobricks;
 
 import javax.swing.JOptionPane;
 
-import sneer.bricks.name.OwnNameKeeper;
+import sneer.bricks.ownName.OwnNameKeeper;
 import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Inject;
 import sneer.lego.Startable;

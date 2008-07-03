@@ -1,24 +1,25 @@
 package sneer.snapp.owner.tests;
 
 import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
-import sneer.bricks.name.OwnNameKeeper;
+import net.sourceforge.napkinlaf.NapkinLookAndFeel;
+import sneer.bricks.ownName.OwnNameKeeper;
 import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
 import sneer.skin.dashboard.Dashboard;
-import sneer.skin.laf.LafManager;
-import sneer.skin.laf.napkin.NapkinLafSupport;
-import sneer.skin.laf.so.SOLafSupport;
 import sneer.snapp.owner.OwnerSnapp;
 import sneer.widgets.reactive.RFactory;
 
 public class OwnerSnappDemo  {
 
 	public static void main(String[] args) throws Exception {
+		initLafs();
+
 		Container container = ContainerUtils.getContainer();
 		OwnerSnapp ownerSnapp = container.produce(OwnerSnapp.class);
 		
-		initLafs(container);
 		installSnapp(container, ownerSnapp);
 		createTestFrame(container, ownerSnapp);
 	}
@@ -30,6 +31,8 @@ public class OwnerSnappDemo  {
 
 	private static void createTestFrame(Container container, OwnerSnapp ownerSnapp) {
 		OwnNameKeeper ownNameKeeper = ownerSnapp.getOwnNameKeeper();
+		ownNameKeeper.setName("Sandro");
+		
 		RFactory rfactory = container.produce(RFactory.class);
 		JFrame frm = new JFrame();
 		frm.getContentPane().add(
@@ -40,13 +43,15 @@ public class OwnerSnappDemo  {
 		);
 		frm.setBounds(10, 10, 200, 200);
 		frm.setVisible(true);
-//		ownerSnapp.getEditableLable().setT
+
 	}
 	
-	private static void initLafs(Container container) {
-		container.produce(SOLafSupport.class);
-		NapkinLafSupport tmp = container.produce(NapkinLafSupport.class);
-		LafManager reg = container.produce(LafManager.class);
-		reg.setActiveLafSupport(tmp);
+	private static void initLafs() {
+		NapkinLookAndFeel laf = new NapkinLookAndFeel();
+		try {
+			UIManager.setLookAndFeel(laf);
+		} catch (UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
 	}
 }

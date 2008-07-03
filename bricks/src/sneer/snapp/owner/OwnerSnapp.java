@@ -1,6 +1,6 @@
 package sneer.snapp.owner;
 
-import sneer.bricks.name.OwnNameKeeper;
+import sneer.bricks.ownName.OwnNameKeeper;
 import sneer.skin.viewmanager.Snapp;
 import sneer.widgets.reactive.TextWidget;
 

@@ -3,7 +3,7 @@ package sneer.bricks.threadpool.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import sneer.bricks.name.OwnNameKeeper;
+import sneer.bricks.ownName.OwnNameKeeper;
 import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Inject;
 

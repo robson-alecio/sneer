@@ -9,7 +9,7 @@ import wheel.reactive.Signal;
 
 public class RTextFieldImpl extends RAbstractField<String, JTextField> {
 
-	public RTextFieldImpl(Signal<String> source, Omnivore<String> setter) {
+	RTextFieldImpl(Signal<String> source, Omnivore<String> setter) {
 		super(source, setter);
 	}
 

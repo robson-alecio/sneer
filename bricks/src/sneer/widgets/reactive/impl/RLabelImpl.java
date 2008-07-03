@@ -16,7 +16,7 @@ public class RLabelImpl extends JPanel implements TextWidget{
 	private final Signal<String> _text;
 	private static final long serialVersionUID = 1L;
 	
-	public RLabelImpl(Signal<String> text){
+	RLabelImpl(Signal<String> text){
 		_text = text;
 		initComponents();
 		addReceivers();

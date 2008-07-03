@@ -38,7 +38,7 @@ public abstract class RAbstractField<U, WIDGET> extends JPanel implements TextWi
 	public abstract Omnivore<Pair<U, String>> textChangedReceiver();
 	public abstract Omnivore<U> fieldReceiver();
 
-	public RAbstractField(Signal<U> source, Consumer<U> setter) {
+	RAbstractField(Signal<U> source, Consumer<U> setter) {
 		_source = source;
 		_setter = setter;
 		_state = (setter == null) ? DISABLED_STATE : ENABLED_SAVED_STATE;

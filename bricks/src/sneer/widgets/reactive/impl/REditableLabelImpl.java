@@ -22,7 +22,7 @@ public class REditableLabelImpl extends JPanel implements TextWidget{
 	protected RLabelImpl label;
 	protected RTextFieldImpl text;
 	
-	public REditableLabelImpl(Signal<String> source, Omnivore<String> setter) {
+	REditableLabelImpl(Signal<String> source, Omnivore<String> setter) {
 		text = new RTextFieldImpl(source, setter);
 		label = new RLabelImpl(source);
 

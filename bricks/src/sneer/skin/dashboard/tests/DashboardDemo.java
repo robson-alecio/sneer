@@ -26,19 +26,18 @@ public class DashboardDemo  {
 	public static void main(String[] args) throws Exception {
 		sneer.lego.Container container = ContainerUtils.getContainer();
 
-		Dashboard dashboard = container.produce(Dashboard.class);
-		installSampleSnapps(dashboard);
-		
+		NapkinLafSupport tmp = container.produce(NapkinLafSupport.class);
+		LafManager reg = container.produce(LafManager.class);
+		reg.setActiveLafSupport(tmp);
+
 		container.produce(SOLafSupport.class);
 		container.produce(MetalLafSupport.class);
 		container.produce(MotifLafSupport.class);
 		container.produce(SustanceLafSupport.class);
-		
-		NapkinLafSupport tmp = container.produce(NapkinLafSupport.class);
-		
-		LafManager reg = container.produce(LafManager.class);
-		reg.setActiveLafSupport(tmp);
-		
+
+		Dashboard dashboard = container.produce(Dashboard.class);
+		installSampleSnapps(dashboard);
+
 		Threads.sleepWithoutInterruptions(30000);
 	}
 	

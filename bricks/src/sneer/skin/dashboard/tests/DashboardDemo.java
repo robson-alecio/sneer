@@ -27,7 +27,7 @@ public class DashboardDemo  {
 		sneer.lego.Container container = ContainerUtils.getContainer();
 
 		Dashboard dashboard = container.produce(Dashboard.class);
-		createDemoTaskPane(dashboard);
+		installSampleSnapps(dashboard);
 		
 		container.produce(SOLafSupport.class);
 		container.produce(MetalLafSupport.class);
@@ -42,7 +42,7 @@ public class DashboardDemo  {
 		Threads.sleepWithoutInterruptions(30000);
 	}
 	
-	private static void createDemoTaskPane(Dashboard dashboard) {
+	private static void installSampleSnapps(Dashboard dashboard) {
 		dashboard.installSnapp(new Snapp1());
 		dashboard.installSnapp(new Snapp2());
 		dashboard.installSnapp(new Snapp3());

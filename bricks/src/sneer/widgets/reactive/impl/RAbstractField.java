@@ -138,7 +138,7 @@ public abstract class RAbstractField<U, WIDGET> extends JPanel implements TextWi
 	}
 	
 	@Override
-	public JTextField getWidget() {
+	public JTextField getMainWidget() {
 		return _area;
 	}
 	

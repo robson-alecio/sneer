@@ -23,7 +23,9 @@ public class ReativeWidgetsDemo {
 		RFactory rfactory = container.produce(RFactory.class);
 		Register<String> register = new RegisterImpl<String>("Jose das Coves");
 				
-		createTestFrame(rfactory.newTextField(register.output(), register.setter())).setBounds(10, 10, 300, 100);
+		TextWidget newTextField = rfactory.newTextField(register.output(), register.setter());
+		
+		createTestFrame(newTextField).setBounds(10, 10, 300, 100);
 		createTestFrame(rfactory.newEditableLabel(register.output(), register.setter())).setBounds(10, 120, 300, 100);
 		createTestFrame(rfactory.newLabel(register.output())).setBounds(10, 240, 300, 100);
 		

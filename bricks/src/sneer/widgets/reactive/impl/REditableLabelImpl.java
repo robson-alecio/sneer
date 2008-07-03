@@ -3,6 +3,8 @@ package sneer.widgets.reactive.impl;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -11,7 +13,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import sneer.widgets.reactive.TextWidget;
-
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 
@@ -30,19 +31,12 @@ public class REditableLabelImpl extends JPanel implements TextWidget{
 		add(text);
 		text.setVisible(false);
 		
-		label.addMouseListener(
-			new MouseAdapter(){
-				@Override
-				public void mouseReleased(MouseEvent event) {
-					text.setVisible(true);
-					text.getWidget().selectAll();
-					label.setVisible(false);
-					text.getWidget().requestFocus();
-				}
-			}
-		);		
-		
-		text.getWidget().addActionListener(
+		addEditLabelListener();		
+		addCommitChangesListener();
+	}
+
+	private void addCommitChangesListener() {
+		text.getMainWidget().addActionListener(
 			new ActionListener(){
 				public void actionPerformed(ActionEvent e) {
 					SwingUtilities.invokeLater(
@@ -55,6 +49,31 @@ public class REditableLabelImpl extends JPanel implements TextWidget{
 						}
 					);
 				}
+			}
+		);
+	}
+
+	private void addEditLabelListener() {
+		label.addMouseListener(
+			new MouseAdapter(){
+				@Override
+				public void mouseReleased(MouseEvent event) {
+					text.getMainWidget().setText(label.getMainWidget().getText());
+					text.setVisible(true);
+					label.setVisible(false);
+					text.getMainWidget().requestFocus();
+					text.getMainWidget().selectAll();
+				}
+			}
+		);
+		
+		text.getMainWidget().addFocusListener(
+			new FocusAdapter(){
+				@Override
+				public void focusLost(FocusEvent e) {
+					text.setVisible(false);
+					label.setVisible(true);
+				};
 			}
 		);
 	}
@@ -80,8 +99,8 @@ public class REditableLabelImpl extends JPanel implements TextWidget{
 	}
 	
 	@Override
-	public JTextField getWidget() {
-		return text.getWidget();
+	public JTextField getMainWidget() {
+		return text.getMainWidget();
 	}
 
 	@Override

@@ -10,7 +10,7 @@ public interface TextWidget {
 	
 	void setText(String text);
 	
-	JComponent getWidget();
+	JComponent getMainWidget();
 
 	Container getContainer();
 

@@ -47,7 +47,7 @@ public class RLabelImpl extends JPanel implements TextWidget{
 	}
 
 	@Override
-	public JLabel getWidget() {
+	public JLabel getMainWidget() {
 		return _label;
 	}
 

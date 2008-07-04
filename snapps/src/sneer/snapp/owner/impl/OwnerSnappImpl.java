@@ -19,7 +19,6 @@ public class OwnerSnappImpl implements OwnerSnapp {
 
 	private TextWidget editableLabel;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void init(Container container) {	
         container.setLayout(new FlowLayout());

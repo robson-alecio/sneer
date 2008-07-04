@@ -8,6 +8,7 @@ import sneer.lego.Binder;
 import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
 import sneer.lego.impl.SimpleBinder;
+import testdashboard.TestDashboard;
 import wheel.reactive.sets.SetSignal;
 import functional.SignalUtils;
 
@@ -15,7 +16,7 @@ public class GiveNTakeTest {
 
 	@Test (timeout = 2000)
 	public void testSimpleDeal() {
-		//if (!TestDashboard.newTestsShouldRun()) return;
+		if (!TestDashboard.newTestsShouldRun()) return;
 		
 		Binder binder = new SimpleBinder();
 		binder.bind(Me.class).to(MeMock.class);

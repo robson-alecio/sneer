@@ -8,7 +8,11 @@ import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
 import sneer.skin.dashboard.Dashboard;
 import sneer.skin.laf.LafManager;
+import sneer.skin.laf.metal.MetalLafSupport;
+import sneer.skin.laf.motif.MotifLafSupport;
 import sneer.skin.laf.napkin.NapkinLafSupport;
+import sneer.skin.laf.so.SOLafSupport;
+import sneer.skin.laf.sustance.SustanceLafSupport;
 import sneer.skin.viewmanager.Snapp;
 import sneer.snapp.owner.OwnerSnapp;
 import sneer.widgets.reactive.RFactory;
@@ -52,6 +56,11 @@ public class OwnerSnappDemo  {
 	}
 
 	private static void initLafs(final Container container) {
+		container.produce(SOLafSupport.class);
+		container.produce(MetalLafSupport.class);
+		container.produce(MotifLafSupport.class);
+		container.produce(SustanceLafSupport.class);
+		
 		try {
 			SwingUtilities.invokeAndWait(
 				new Runnable(){

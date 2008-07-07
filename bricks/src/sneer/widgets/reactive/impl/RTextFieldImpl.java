@@ -1,5 +1,6 @@
 package sneer.widgets.reactive.impl;
 
+import javax.swing.JComponent;
 import javax.swing.JTextField;
 
 import wheel.lang.Omnivore;
@@ -33,6 +34,11 @@ public class RTextFieldImpl extends RAbstractField<String, JTextField> {
 					}
 			}
 		};
+	}
+	
+	@Override
+	public JComponent[] getWidgets() {
+		return new JComponent[]{_area};
 	}
 
 	private static final long serialVersionUID = 1L;

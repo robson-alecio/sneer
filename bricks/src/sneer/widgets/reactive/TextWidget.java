@@ -11,6 +11,8 @@ public interface TextWidget {
 	void setText(String text);
 	
 	JComponent getMainWidget();
+	
+	JComponent[] getWidgets();
 
 	Container getContainer();
 

@@ -4,6 +4,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -14,7 +15,7 @@ import wheel.reactive.Signal;
 
 public class RLabelImpl extends JPanel implements TextWidget{
 
-	private JLabel _label = new JLabel();
+	protected JLabel _label = new JLabel();
 	private final Signal<String> _text;
 	private Omnivore<String> listener;
 	private static final long serialVersionUID = 1L;
@@ -74,4 +75,10 @@ public class RLabelImpl extends JPanel implements TextWidget{
 	public JPanel getContainer() {
 		return this;
 	}
+	
+	@Override
+	public JComponent[] getWidgets() {
+		return new JComponent[]{_label};
+	}
+
 }

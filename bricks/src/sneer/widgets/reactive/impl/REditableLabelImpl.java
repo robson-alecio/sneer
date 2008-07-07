@@ -10,6 +10,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -117,5 +118,10 @@ public class REditableLabelImpl extends JPanel implements TextWidget{
 	@Override
 	public JPanel getContainer() {
 		return this;
+	}
+
+	@Override
+	public JComponent[] getWidgets() {
+		return new JComponent[]{text._area , label._label};
 	}
 }

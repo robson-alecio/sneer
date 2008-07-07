@@ -1,6 +1,5 @@
 package sneer.snapp.owner.tests;
 
-import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import sneer.bricks.ownName.OwnNameKeeper;
@@ -38,30 +37,13 @@ public class OwnerSnappDemo  {
 		
 		ownNameKeeper.name().addReceiver(log);
 		
-		newJFrame(rfactory, ownNameKeeper);
-		
-		newSnaap(rfactory, container, ownNameKeeper);
-		newSnaap(rfactory, container, ownNameKeeper);
+		newSnaap(rfactory, container, ownNameKeeper, false);
+		newSnaap(rfactory, container, ownNameKeeper, true);
 	}
 
-	private static void newJFrame(RFactory _rfactory, OwnNameKeeper ownNameKeeper) {
-		java.awt.Container label = _rfactory.newEditableLabel(ownNameKeeper.name(), ownNameKeeper.nameSetter()).getContainer();
-		final JFrame frm = new JFrame();
-		frm.getContentPane().add(label);
-		frm.setBounds(10, y, 200, 100);
-		y = y+110;
-		frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		SwingUtilities.invokeLater(new Runnable(){
-			@Override
-			public void run() {
-				frm.setVisible(true);
-			}});
-	}
-
-	private static void newSnaap(RFactory rfactory, Container container, OwnNameKeeper ownNameKeeper) {
+	private static void newSnaap(RFactory rfactory, Container container, OwnNameKeeper ownNameKeeper, boolean notifyEveryChange) {
 		Dashboard dashboard = container.produce(Dashboard.class);
-		dashboard.installSnapp(new SnappTest(rfactory, ownNameKeeper.name(), ownNameKeeper.nameSetter()));
+		dashboard.installSnapp(new SnappTest(rfactory, ownNameKeeper.name(), ownNameKeeper.nameSetter(), notifyEveryChange));
 	}
 	
 	private static void initLafs(final Container container) {
@@ -87,22 +69,19 @@ class SnappTest implements Snapp{
 	private final RFactory _rfactory;
 	private final Signal<String> _output;
 	private final Omnivore<String> _setter;
+	private final boolean _notifyEveryChange;
 	
-	public SnappTest(RFactory rfactory, OwnNameKeeper ownNameKeeper){
-		this(rfactory, ownNameKeeper.name(), ownNameKeeper.nameSetter());
-	}
-	
-	public SnappTest(RFactory rfactory, Signal<String> output,
-			Omnivore<String> setter) {
+	public SnappTest(RFactory rfactory, Signal<String> output,	Omnivore<String> setter, boolean notifyEveryChange) {
 				_rfactory = rfactory;
 				_output = output;
 				_setter = setter;
+				_notifyEveryChange = notifyEveryChange;
 	}
 
 	@Override
 	public void init(java.awt.Container container) {
 		container.add(
-			_rfactory.newEditableLabel(_output, _setter).getContainer()
+			_rfactory.newEditableLabel(_output, _setter, _notifyEveryChange).getContainer()
 		);
 	}
 	@Override

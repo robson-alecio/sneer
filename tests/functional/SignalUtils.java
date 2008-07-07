@@ -16,7 +16,7 @@ public class SignalUtils {
 				previousMessage = message;
 				//System.out.println(message);
 			}
-			Thread.yield();
+			Thread.yield(); //Optimize
 		}
 	}
 }

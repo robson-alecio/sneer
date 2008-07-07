@@ -1,6 +1,6 @@
 package sneerapps.giventake.tests.impl;
 
-import sneer.bricks.mesh.Party;
+import sneer.bricks.mesh.Me;
 import sneer.bricks.things.Thing;
 import sneer.bricks.things.ThingHome;
 import sneer.lego.Inject;
@@ -16,26 +16,25 @@ class GiveNTakeUserImpl implements GiveNTakeUser {
 	@Inject
 	static private ThingHome _thingHome;
 	@Inject
-	static private MeMock _me;
+	static private Me _me;
 	
 	public void advertise(String title, String description) {
 		_gnt.advertise(_thingHome.create(title, description));
 	}
 
 	public SetSignal<Thing> search(String tags) {
-		Party onlyPeer = _me.navigateTo(_me.contacts().currentGet(1));
-		GiveNTake gntPeer = onlyPeer.brickProxyFor(GiveNTake.class);
-		return gntPeer.search(tags);
+		return _gnt.search(tags);
 	}
 
 	@Override
 	public void connectTo(GiveNTakeUser peer) {
-		_me.connectTo(peer.yourMe());
+		peer.addCounterpart(_gnt);
 	}
 
 	@Override
-	public MeMock yourMe() {
-		return _me;
+	public void addCounterpart(GiveNTake gnt) {
+		((MeMock)_me).addCounterpart(gnt);
 	}
+
 
 }

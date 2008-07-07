@@ -1,6 +1,7 @@
 package sneerapps.giventake.tests;
 
 import sneer.bricks.things.Thing;
+import sneerapps.giventake.GiveNTake;
 import wheel.reactive.sets.SetSignal;
 
 public interface GiveNTakeUser {
@@ -11,6 +12,6 @@ public interface GiveNTakeUser {
 
 	void connectTo(GiveNTakeUser peer);
 
-	MeMock yourMe();
+	void addCounterpart(GiveNTake _gnt);
 
 }

@@ -54,6 +54,11 @@ public class RegisterImpl<VO> implements Register<VO> {
 			return _currentValue;
 		}
 
+		@Override
+		public Signal<Integer> size() {
+			throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+		}
+
 	}
 
 
@@ -61,7 +66,7 @@ public class RegisterImpl<VO> implements Register<VO> {
 
 		@Override
 		public void consume(VO newValue) {
-			if (isSameValue(newValue)) throw new IllegalArgumentException("New value must be different.");
+			if (isSameValue(newValue)) return;
 			_currentValue = newValue;
 			
 			_output.notifyReceivers(newValue);

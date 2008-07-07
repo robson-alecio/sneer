@@ -7,6 +7,7 @@ import org.apache.commons.collections.iterators.SingletonIterator;
 
 import wheel.lang.Omnivore;
 import wheel.lang.exceptions.NotImplementedYet;
+import wheel.reactive.Signal;
 import wheel.reactive.lists.ListValueChange;
 
 public class Constant<TYPE> extends AbstractSignal<TYPE> {
@@ -50,5 +51,10 @@ public class Constant<TYPE> extends AbstractSignal<TYPE> {
 	@Override
 	public void addListReceiver(Omnivore<ListValueChange> receiver) {
 		throw new NotImplementedYet(); //Implement
+	}
+
+	@Override
+	public Signal<Integer> size() {
+		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	}
 }

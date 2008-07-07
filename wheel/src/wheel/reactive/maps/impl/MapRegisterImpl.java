@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import wheel.lang.Omnivore;
+import wheel.reactive.Signal;
 import wheel.reactive.impl.AbstractNotifier;
 import wheel.reactive.maps.MapRegister;
 import wheel.reactive.maps.MapSignal;
@@ -97,6 +98,11 @@ public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 		@Override
 		protected void notifyReceivers(SetValueChange<Entry<K, V>> change) {
 			super.notifyReceivers(change);
+		}
+
+		@Override
+		public Signal<Integer> size() {
+			throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 		}
 
 

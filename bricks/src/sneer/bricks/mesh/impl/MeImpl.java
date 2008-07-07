@@ -1,5 +1,6 @@
 package sneer.bricks.mesh.impl;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -121,6 +122,12 @@ class MeImpl extends AbstractParty implements Me, Startable {
 		
 		SignalConnection signalConnection = _signalConnectionsByContact.get(directContact);
 		signalConnection.subscribeTo(targetPK, brickInterface, signalName);
+	}
+
+	@Override
+	public <B extends Brick> Collection<B> allImmediateContactBrickCounterparts(
+			Class<B> class1) {
+		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
 

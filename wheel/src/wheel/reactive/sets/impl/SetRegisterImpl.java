@@ -9,13 +9,17 @@ import java.util.Iterator;
 import java.util.Set;
 
 import wheel.lang.Omnivore;
+import wheel.reactive.Register;
+import wheel.reactive.Signal;
 import wheel.reactive.impl.AbstractNotifier;
+import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.sets.SetRegister;
 import wheel.reactive.sets.SetSignal;
 import wheel.reactive.sets.SetSignal.SetValueChange;
 
 
 public class SetRegisterImpl<T> implements SetRegister<T> {
+
 
 	private class MyOutput extends AbstractNotifier<SetValueChange<T>> implements SetSignal<T> {
 
@@ -38,7 +42,7 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 
 		@Override
 		public int currentSize() {
-			return _contents.size();
+			return size().currentValue();
 		}
 
 		@Override
@@ -59,10 +63,17 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 		private Set<T> contentsCopy() {
 			return new HashSet<T>(_contents);
 		}
+
+		@Override
+		public Signal<Integer> size() {
+			return _size.output();
+		}
 		
 	}
 
 	private final Set<T> _contents = new HashSet<T>();
+	private final Register<Integer> _size = new RegisterImpl<Integer>(0);
+
 	private final MyOutput _output = new MyOutput();
 
 	
@@ -85,7 +96,15 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 			_contents.addAll(change.elementsAdded());
 			_contents.removeAll(change.elementsRemoved());
 			_output.notifyReceivers(change);
+			
+			updateSize();
 		}
+	}
+
+	private void updateSize() {
+		Integer size = _contents.size();
+		if (size != _size.output().currentValue())
+			_size.setter().consume(size);
 	}
 
 	private void assertValidChange(SetValueChange<T> change) {

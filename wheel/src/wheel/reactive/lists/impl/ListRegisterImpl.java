@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import wheel.lang.Omnivore;
+import wheel.reactive.Signal;
 import wheel.reactive.impl.AbstractNotifier;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListRegister;
@@ -47,6 +48,11 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 
 		public Iterator<VO> iterator() {
 			return new ArrayList<VO>(_list).iterator(); //Optimize
+		}
+
+		@Override
+		public Signal<Integer> size() {
+			throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 		}
 
 	}

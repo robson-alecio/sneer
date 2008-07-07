@@ -1,14 +1,20 @@
 package sneerapps.giventake.tests;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.mesh.Me;
 import sneer.bricks.mesh.Party;
 import sneer.lego.Brick;
-import wheel.lang.exceptions.NotImplementedYet;
+import sneerapps.giventake.GiveNTake;
+import wheel.lang.Casts;
 import wheel.reactive.lists.ListSignal;
 
 public class MeMock implements Me {
-	
+	{System.out.println("mais um");}
+	private Collection<GiveNTake> _counterparts = new HashSet<GiveNTake>();
+
 	@Override
 	public <B extends Brick> B brickProxyFor(Class<B> brickInterface) {
 		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
@@ -24,10 +30,13 @@ public class MeMock implements Me {
 		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
-	public void connectTo(MeMock meMock) {
-		meMock.toString();
-		//Nao consegui criar um ListSource - Kalecser
-		throw new NotImplementedYet();
+	public void addCounterpart(GiveNTake counterpart) {
+		_counterparts.add(counterpart);
+	}
+
+	@Override
+	public <B extends Brick> Collection<B> allImmediateContactBrickCounterparts(Class<B> class1) {
+		return Casts.uncheckedGenericCast(_counterparts);
 	}
 
 }

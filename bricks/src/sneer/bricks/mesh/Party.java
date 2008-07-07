@@ -10,5 +10,4 @@ public interface Party {
 	Party navigateTo(Contact contact);
 	
 	<B extends Brick> B brickProxyFor(Class<B> brickInterface); 
-
 }

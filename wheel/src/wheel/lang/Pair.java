@@ -13,4 +13,9 @@ public class Pair<A, B> implements Serializable {
 	}
 
 	private static final long serialVersionUID = 1L;
+	
+	@Override
+	public String toString() {
+		return "Pair[" + _a + ", " + _b + "]";
+	}
 }

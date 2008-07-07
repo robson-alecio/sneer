@@ -1,6 +1,9 @@
 package sneer.widgets.reactive.impl;
 
 import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -8,7 +11,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -59,9 +61,14 @@ public abstract class RAbstractField<U, WIDGET> extends JPanel implements TextWi
 	}
 
 	public void initComponents() {
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.setLayout(new GridBagLayout());
+		GridBagConstraints c;
+		c = new GridBagConstraints(0,0,1,1,1.0,1.0,
+					GridBagConstraints.EAST, 
+					GridBagConstraints.BOTH,
+					new Insets(0,0,0,0),0,0);
 		_area.selectAll();
-		add(_area);
+		add(_area, c);
 		updateView();
 		firstUpdate();
 	}

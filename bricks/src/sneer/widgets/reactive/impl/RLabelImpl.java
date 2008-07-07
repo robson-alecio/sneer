@@ -1,6 +1,8 @@
 package sneer.widgets.reactive.impl;
 
-import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,10 +26,15 @@ public class RLabelImpl extends JPanel implements TextWidget{
 	}
 
 	private void initComponents() {
-		setLayout(new BorderLayout());
+		this.setLayout(new GridBagLayout());
+		GridBagConstraints c;
+		c = new GridBagConstraints(0,0,1,1,1.0,1.0,
+					GridBagConstraints.EAST, 
+					GridBagConstraints.BOTH,
+					new Insets(0,0,0,0),0,0);
 		setOpaque(false);
 		_label.setText(_text.currentValue());
-		add(_label);
+		add(_label, c);
 	}
 
 	private void addReceivers() {

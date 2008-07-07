@@ -1,6 +1,8 @@
 package sneer.widgets.reactive.impl;
 
-import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -26,9 +28,15 @@ public class REditableLabelImpl extends JPanel implements TextWidget{
 		text = new RTextFieldImpl(source, setter, notifyEveryChange);
 		label = new RLabelImpl(source);
 
-		this.setLayout(new FlowLayout());
-		add(label);
-		add(text);
+		this.setLayout(new GridBagLayout());
+		GridBagConstraints c;
+		c = new GridBagConstraints(0,0,1,1,1.0,1.0,
+					GridBagConstraints.EAST, 
+					GridBagConstraints.BOTH,
+					new Insets(0,0,0,0),0,0);
+		
+		add(label, c);
+		add(text, c);
 		text.setVisible(false);
 		
 		addEditLabelListener();		

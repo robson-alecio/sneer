@@ -9,7 +9,12 @@ public class RFactoryImpl implements RFactory {
 
 	@Override
 	public TextWidget newEditableLabel(Signal<String> source, Omnivore<String> setter) {
-		return new REditableLabelImpl(source, setter);
+		return new REditableLabelImpl(source, setter, false);
+	}
+
+	@Override
+	public TextWidget newEditableLabel(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange) {
+		return new REditableLabelImpl(source, setter, notifyEveryChange);
 	}
 
 	@Override
@@ -19,7 +24,12 @@ public class RFactoryImpl implements RFactory {
 
 	@Override
 	public TextWidget newTextField(Signal<String> source, Omnivore<String> setter) {
-		return new RTextFieldImpl(source, setter);
+		return new RTextFieldImpl(source, setter, false);
+	}
+
+	@Override
+	public TextWidget newTextField(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange) {
+		return new RTextFieldImpl(source, setter, notifyEveryChange);
 	}
 
 }

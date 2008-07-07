@@ -4,13 +4,12 @@ import javax.swing.JTextField;
 
 import wheel.lang.Omnivore;
 import wheel.lang.Pair;
-import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 
 public class RTextFieldImpl extends RAbstractField<String, JTextField> {
 
-	RTextFieldImpl(Signal<String> source, Omnivore<String> setter) {
-		super(source, setter);
+	RTextFieldImpl(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange) {
+		super(source, setter, notifyEveryChange);
 	}
 
 	@Override
@@ -29,7 +28,8 @@ public class RTextFieldImpl extends RAbstractField<String, JTextField> {
 				if (!value._a.equals(value._b))
 					try {
 						_setter.consume(value._b);
-					} catch (IllegalParameter ignored) {
+					} catch (Throwable ignored) {
+						ignored.printStackTrace();
 					}
 			}
 		};

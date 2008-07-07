@@ -22,8 +22,8 @@ public class REditableLabelImpl extends JPanel implements TextWidget{
 	protected RLabelImpl label;
 	protected RTextFieldImpl text;
 	
-	REditableLabelImpl(Signal<String> source, Omnivore<String> setter) {
-		text = new RTextFieldImpl(source, setter);
+	REditableLabelImpl(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange) {
+		text = new RTextFieldImpl(source, setter, notifyEveryChange);
 		label = new RLabelImpl(source);
 
 		this.setLayout(new FlowLayout());
@@ -34,7 +34,7 @@ public class REditableLabelImpl extends JPanel implements TextWidget{
 		addEditLabelListener();		
 		addCommitChangesListener();
 	}
-	
+
 	private void commitChanges() {
 		SwingUtilities.invokeLater(
 			new Runnable(){

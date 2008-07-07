@@ -17,6 +17,15 @@ import wheel.reactive.Signal;
 public class OwnerSnappDemo  {
 	
 	static int y = 10;
+	private static Omnivore<String> log;
+	static{
+		log = new Omnivore<String>(){
+			@Override
+			public void consume(String valueObject) {
+				System.out.println(valueObject);
+			}
+		};
+	}
 
 	public static void main(String[] args) throws Exception {
 
@@ -27,13 +36,8 @@ public class OwnerSnappDemo  {
 		ownNameKeeper.setName("Sandro Bihaiko");
 		RFactory rfactory = container.produce(RFactory.class);
 		
-		ownNameKeeper.name().addReceiver(new Omnivore<String>(){
-			@Override
-			public void consume(String valueObject) {
-				System.out.println(valueObject);
-			}});
+		ownNameKeeper.name().addReceiver(log);
 		
-		newJFrame(rfactory, ownNameKeeper);
 		newJFrame(rfactory, ownNameKeeper);
 		
 		newSnaap(rfactory, container, ownNameKeeper);

@@ -12,8 +12,9 @@ import wheel.reactive.Signal;
 
 public class RLabelImpl extends JPanel implements TextWidget{
 
-	JLabel _label = new JLabel();
+	private JLabel _label = new JLabel();
 	private final Signal<String> _text;
+	private Omnivore<String> listener;
 	private static final long serialVersionUID = 1L;
 	
 	RLabelImpl(Signal<String> text){
@@ -34,11 +35,17 @@ public class RLabelImpl extends JPanel implements TextWidget{
 	}
 
 	private Omnivore<String> textReceiver() {
-		return new Omnivore<String>(){ public void consume(final String text) {
-			SwingUtilities.invokeLater(new Runnable(){ public void run() {
-				_label.setText(text);
-			}});
-		}};
+		if(listener==null)
+			listener = new Omnivore<String>() {
+				public void consume(final String text) {
+					SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
+							_label.setText(text);
+						}
+					});
+				}
+			};
+		return listener;
 	}
 
 	@Override

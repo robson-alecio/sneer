@@ -17,7 +17,7 @@ public class GiveNTakeTest {
 	public void testSimpleDeal() {
 		
 		SimpleBinder binder = new SimpleBinder();
-		binder.bind(Me.class).to(MeMock.class);
+		binder.bind(Me.class).toInstance(new MeMock());
 		Container containerA = ContainerUtils.newContainer(binder);
 		Container containerB = ContainerUtils.newContainer(binder);
 

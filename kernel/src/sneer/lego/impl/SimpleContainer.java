@@ -172,13 +172,8 @@ public class SimpleContainer implements Container {
     }
 
 	private String implementationFor(Class<?> type) {
-		String result = _binder.implementationFor(type);
-		if(result != null) 
-			return result;
-		
-		if(!type.isInterface()) {
+		if(!type.isInterface())
 			return type.getName();
-		}
 		
 		String name = type.getName();
 		int index = name.lastIndexOf(".");

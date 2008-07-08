@@ -35,7 +35,7 @@ public class ContainerTest {
 	@Test
 	public void testBinder() throws Exception {
 		SimpleBinder binder = new SimpleBinder();
-		binder.bind(Sample.class).to(MySample.class);
+		binder.bind(Sample.class).toInstance(new MySample());
 		Container c = new SimpleContainer(binder);
 		Object sample = c.produce(Sample.class);
 		assertTrue(sample.getClass().getName().equals(MySample.class.getName())); //Different classloaders

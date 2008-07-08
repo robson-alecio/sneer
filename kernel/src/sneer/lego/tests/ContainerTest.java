@@ -35,7 +35,7 @@ public class ContainerTest {
 	@Test
 	public void testBinder() throws Exception {
 		SimpleBinder binder = new SimpleBinder();
-		binder.bind(Sample.class).toImplementation(new MySample());
+		binder.bind(new MySample());
 		Container c = new SimpleContainer(binder);
 		Object sample = c.produce(Sample.class);
 		assertTrue(sample.getClass().getName().equals(MySample.class.getName())); //Different classloaders
@@ -46,7 +46,7 @@ public class ContainerTest {
         SimpleBinder binder = new SimpleBinder();
         Sample sample = new Sample() {};
 
-        binder.bind(Sample.class).toImplementation(sample);
+        binder.bind(sample);
         Container c = new SimpleContainer(binder);
         Sample subject = c.produce(Sample.class);
         assertSame(sample, subject);

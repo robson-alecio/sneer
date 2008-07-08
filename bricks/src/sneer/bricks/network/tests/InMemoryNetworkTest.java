@@ -28,7 +28,7 @@ public class InMemoryNetworkTest extends BrickTestSupport {
 	
 	@Override
 	protected Binder getBinder() {
-		return new SimpleBinder().bind(Network.class).toImplementation(new InMemoryNetwork());
+		return new SimpleBinder().bind(new InMemoryNetwork());
 	}
 
 	@Test

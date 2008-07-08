@@ -9,7 +9,7 @@ public class SimpleBinder implements Binder {
 
 	private final List<Object> _implementations = new ArrayList<Object>();
 	
-	public Binder toImplementation(Object implementation) {
+	public Binder bind(Object implementation) {
 		_implementations.add(implementation);
 		return this;
 	}
@@ -35,8 +35,4 @@ public class SimpleBinder implements Binder {
 		return type.isAssignableFrom(candidate.getClass());
 	}
 
-	public SimpleBinder bind(Class<?> ignored) {
-		return this;
-	}
-	
 }

@@ -3,7 +3,6 @@ package sneerapps.giventake.tests;
 import org.junit.Assert;
 import org.junit.Test;
 
-import sneer.bricks.mesh.Me;
 import sneer.bricks.things.Thing;
 import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
@@ -17,7 +16,7 @@ public class GiveNTakeTest {
 	public void testSimpleDeal() {
 		
 		SimpleBinder binder = new SimpleBinder();
-		binder.bind(Me.class).toImplementation(new MeMock());
+		binder.bind(new MeMock());
 		Container containerA = ContainerUtils.newContainer(binder);
 		Container containerB = ContainerUtils.newContainer(binder);
 

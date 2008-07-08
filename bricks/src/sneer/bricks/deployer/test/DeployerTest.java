@@ -6,7 +6,6 @@ import java.io.File;
 
 import org.junit.Test;
 
-import sneer.bricks.config.SneerConfig;
 import sneer.bricks.deployer.BrickBundle;
 import sneer.bricks.deployer.Deployer;
 import sneer.lego.Binder;
@@ -22,7 +21,7 @@ public class DeployerTest extends BrickTestSupport {
 	
 	@Override
 	protected Binder getBinder() {
-		return new SimpleBinder().bind(SneerConfig.class).toImplementation(new SneerConfigMock(null));
+		return new SimpleBinder().bind(new SneerConfigMock(null));
 	}
 
 	@Test

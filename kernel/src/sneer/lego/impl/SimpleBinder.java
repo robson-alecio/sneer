@@ -1,36 +1,42 @@
 package sneer.lego.impl;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import sneer.lego.Binder;
 
 public class SimpleBinder implements Binder {
 
-	private final Map<Class<?>, Object> _instances = new HashMap<Class<?>, Object>();
+	private final List<Object> _implementations = new ArrayList<Object>();
 	
-	private Class<?> _pendingType;
-	
-	@Override
-	public Object instanceFor(Class<?> type) {
-		return _instances.get(type);
-	}
-	
-	public SimpleBinder bind(Class<?> type) {
-		_pendingType = type;
+	public Binder toImplementation(Object implementation) {
+		_implementations.add(implementation);
 		return this;
 	}
 	
-	private void checkHierarchy(Class<?> implementation) {
-	    if (!_pendingType.isAssignableFrom(implementation))
-	        throw new IllegalArgumentException();
+	@Override
+	public Object instanceFor(Class<?> type) {
+		Object result = null;
+		for (Object candidate : _implementations) {
+			if (!instanceOf(candidate, type)) continue;
+			
+			if (result != null) throwClash(type, result, candidate);
+			result = candidate;
+		}
+		
+		return result;
+	}
+	
+	private void throwClash(Class<?> type, Object imp1, Object imp2) {
+		throw new IllegalStateException("Binding clash for type " + type + ". It is implemented by " + imp1 + " and " + imp2);
 	}
 
-    public Binder toInstance(Object instance) {
-        checkHierarchy(instance.getClass());
-        _instances.put(_pendingType, instance);
-        _pendingType = null;
-        return this;
-    }
+	private boolean instanceOf(Object candidate, Class<?> type) {
+		return type.isAssignableFrom(candidate.getClass());
+	}
 
+	public SimpleBinder bind(Class<?> ignored) {
+		return this;
+	}
+	
 }

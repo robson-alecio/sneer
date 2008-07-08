@@ -22,7 +22,7 @@ public class DeployerTest extends BrickTestSupport {
 	
 	@Override
 	protected Binder getBinder() {
-		return new SimpleBinder().bind(SneerConfig.class).toInstance(new SneerConfigMock(null));
+		return new SimpleBinder().bind(SneerConfig.class).toImplementation(new SneerConfigMock(null));
 	}
 
 	@Test

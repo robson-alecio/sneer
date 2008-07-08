@@ -34,8 +34,8 @@ public class SneerCommunity implements SovereignCommunity {
 
 	private SneerParty produceSneerParty(String name) {
 		SimpleBinder binder = new SimpleBinder();
-		binder.bind(Network.class).toInstance(_network);
-		binder.bind(SneerConfig.class).toInstance(sneerConfigForParty(name));
+		binder.bind(Network.class).toImplementation(_network);
+		binder.bind(SneerConfig.class).toImplementation(sneerConfigForParty(name));
 	
 		return ContainerUtils.newContainer(binder).produce(SneerParty.class);
 	}

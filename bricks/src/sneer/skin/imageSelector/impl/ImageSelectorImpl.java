@@ -11,7 +11,45 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-public class ImagePreviewAccessory extends JLabel implements PropertyChangeListener {
+import sneer.lego.Inject;
+import sneer.skin.image.ImageFactory;
+import sneer.skin.imageSelector.ImageSelector;
+
+public class ImageSelectorImpl implements ImageSelector {
+	
+	@Inject
+	private static ImageFactory imageFactory;
+	
+	@Override
+	public ImageIcon getImageIcon(){
+		File file = selectFile();
+		if(file!=null && file.exists()){
+			showImage(file);
+		}
+		
+		return null; //TODO: fix to a better return
+	}
+	
+	private File selectFile() {
+		JFileChooser fileChooser = new JFileChooser(".");
+		ImagePreviewAccessory accessory = new ImagePreviewAccessory(fileChooser);
+		fileChooser.setAccessory(accessory);
+		fileChooser.addPropertyChangeListener(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY, accessory);
+		
+		int status = fileChooser.showOpenDialog(null);
+		if (status == JFileChooser.APPROVE_OPTION) {
+			return fileChooser.getSelectedFile();
+		}
+		return null;
+	}
+
+	private void showImage(File file) {
+		ImageDialog dlg = new ImageDialog(file, imageFactory);
+		dlg.setVisible(true);
+	}
+}
+
+class ImagePreviewAccessory extends JLabel implements PropertyChangeListener {
 	private static final long serialVersionUID = 1L;
 	private static final int PREFERRED_WIDTH = 170;
 	private static final int PREFERRED_HEIGHT = 200;

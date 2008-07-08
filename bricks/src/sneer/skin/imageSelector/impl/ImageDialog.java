@@ -10,42 +10,58 @@ import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
+
+import sneer.skin.image.ImageFactory;
 
 public class ImageDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
+	
+	private ImageFactory _imageFactory;
 
-	Dimension desktopSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-	int PREFERRED_HEIGHT = (int) (desktopSize.height*0.8);
-	int PREFERRED_WIDTH = (int) (desktopSize.width*0.8);
-	JLabel image = new JLabel();
-
+	private JLabel _image = new JLabel();
 	private File _file;
 
-	public ImageDialog(File file) {
+	public ImageDialog(File file, ImageFactory imageFactory) {
+		_imageFactory = imageFactory;
+		Dimension desktopSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+		int preferredHeight = (int) (desktopSize.height*0.8);
+		int preferredWidth = (int) (desktopSize.width*0.8);
 		_file = file;
 		setModal(true);
-		setBounds((desktopSize.width-PREFERRED_WIDTH)/2,
-				(desktopSize.height-PREFERRED_HEIGHT)/2,
-				PREFERRED_WIDTH,PREFERRED_HEIGHT);
+		setBounds((desktopSize.width-preferredWidth)/2,
+				(desktopSize.height-preferredHeight)/2,
+				preferredWidth,preferredHeight);
 		
-		ImageIcon icon = getIcon(_file, PREFERRED_HEIGHT, PREFERRED_WIDTH);		
-		image.setIcon(icon);
+		ImageIcon icon = getIcon(_file, preferredHeight, preferredWidth);		
+		_image.setIcon(icon);
 		getContentPane().setLayout(new BorderLayout());
-		getContentPane().add(image);
+		getContentPane().add(_image);
 		setSize(new Dimension(icon.getIconWidth(),icon.getIconHeight()));
 
-		Toolkit.getDefaultToolkit().setDynamicLayout(true);
+		addSizeListener();
+		setVisible(true);
+	}
 
+	private void addSizeListener() {
+		Toolkit.getDefaultToolkit().setDynamicLayout(true);
 		getContentPane().addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
-				image.setIcon(getIcon(_file, getHeight(), getWidth()));
+				_image.setVisible(false);
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						_image.setIcon(getIcon(_file, getHeight(), getWidth()));
+						_image.setVisible(true);
+					}
+				});
 			}
 		});
 	}
 	
 	private ImageIcon getIcon(final File file, int height, int width) {
-		ImageIcon icon = new ImageIcon(file.getPath());
+		ImageIcon icon = _imageFactory.getIcon(file, false);
 		if (icon.getIconWidth() > width) {
 			icon = new ImageIcon(
 				icon.getImage().getScaledInstance(

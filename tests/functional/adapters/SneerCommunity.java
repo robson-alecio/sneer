@@ -10,7 +10,6 @@ import sneer.bricks.config.SneerConfig;
 import sneer.bricks.deployer.test.SneerConfigMock;
 import sneer.bricks.network.Network;
 import sneer.bricks.network.impl.inmemory.InMemoryNetwork;
-import sneer.lego.Binder;
 import sneer.lego.ContainerUtils;
 import sneer.lego.impl.SimpleBinder;
 import functional.SovereignCommunity;
@@ -34,7 +33,7 @@ public class SneerCommunity implements SovereignCommunity {
 	}
 
 	private SneerParty produceSneerParty(String name) {
-		Binder binder = new SimpleBinder();
+		SimpleBinder binder = new SimpleBinder();
 		binder.bind(Network.class).toInstance(_network);
 		binder.bind(SneerConfig.class).toInstance(sneerConfigForParty(name));
 	

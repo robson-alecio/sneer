@@ -13,8 +13,8 @@ public class SimpleBinder implements Binder {
 	
 	private Class<?> _pendingInterface;
 	
-	@Override
-	public Binder bind(Class<?> intrface) {
+//	@Override
+	public SimpleBinder bind(Class<?> intrface) {
 		_pendingInterface = intrface;
 		return this;
 	}
@@ -24,7 +24,7 @@ public class SimpleBinder implements Binder {
 	        throw new IllegalArgumentException();
 	}
 
-	@Override
+//	@Override
 	public Binder to(Class<?> implementation) {
 	    checkHierarchy(implementation);
 		_implementations.put(_pendingInterface, implementation);
@@ -32,7 +32,7 @@ public class SimpleBinder implements Binder {
 		return this;
 	}
 
-    @Override
+//    @Override
     public Binder toInstance(Object instance) {
         checkHierarchy(instance.getClass());
         _instances.put(_pendingInterface, instance);

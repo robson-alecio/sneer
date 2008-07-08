@@ -13,7 +13,6 @@ import java.lang.reflect.Field;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import sneer.lego.Binder;
 import sneer.lego.Container;
 import sneer.lego.Injector;
 import sneer.lego.impl.AnnotatedFieldInjector;
@@ -35,7 +34,7 @@ public class ContainerTest {
 	
 	@Test
 	public void testBinder() throws Exception {
-		Binder binder = new SimpleBinder();
+		SimpleBinder binder = new SimpleBinder();
 		binder.bind(Sample.class).to(MySample.class);
 		Container c = new SimpleContainer(binder);
 		Object sample = c.produce(Sample.class);
@@ -44,7 +43,7 @@ public class ContainerTest {
 	
 	@Test
 	public void testBindToInstance() throws Exception {
-        Binder binder = new SimpleBinder();
+        SimpleBinder binder = new SimpleBinder();
         Sample sample = new Sample() {};
 
         binder.bind(Sample.class).toInstance(sample);

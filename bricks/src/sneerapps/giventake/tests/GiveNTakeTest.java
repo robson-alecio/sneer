@@ -5,20 +5,18 @@ import org.junit.Test;
 
 import sneer.bricks.mesh.Me;
 import sneer.bricks.things.Thing;
-import sneer.lego.Binder;
 import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
 import sneer.lego.impl.SimpleBinder;
-import testdashboard.TestDashboard;
 import wheel.reactive.sets.SetSignal;
 import functional.SignalUtils;
 
 public class GiveNTakeTest {
 
-	@Test (timeout = 2500)
+	@Test (timeout = 3000)
 	public void testSimpleDeal() {
 		
-		Binder binder = new SimpleBinder();
+		SimpleBinder binder = new SimpleBinder();
 		binder.bind(Me.class).to(MeMock.class);
 		Container containerA = ContainerUtils.newContainer(binder);
 		Container containerB = ContainerUtils.newContainer(binder);
@@ -36,7 +34,6 @@ public class GiveNTakeTest {
 		found = _bob.search("apartment \"são paulo\"");
 		SignalUtils.waitForValue(1, found.size());
 
-		if (!TestDashboard.newTestsShouldRun()) return;
 		Assert.fail("Declare GiveNTakeUserImpl._me as MeMock and fix container. It is creating a new MeMock instead os injecting the one it already has.");
 	}
 	

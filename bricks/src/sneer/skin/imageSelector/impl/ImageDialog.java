@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 import sneer.skin.image.ImageFactory;
 
@@ -20,14 +21,18 @@ public class ImageDialog extends JDialog {
 	private ImageFactory _imageFactory;
 
 	private JLabel _image = new JLabel();
+	private AvatarPreview _avatarPreview;
 	private File _file;
 
 	public ImageDialog(File file, ImageFactory imageFactory) {
+		_avatarPreview = new AvatarPreview(this);
 		_imageFactory = imageFactory;
+		_file = file;
+		
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		Dimension desktopSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 		int preferredHeight = (int) (desktopSize.height*0.8);
 		int preferredWidth = (int) (desktopSize.width*0.8);
-		_file = file;
 		setModal(true);
 		setBounds((desktopSize.width-preferredWidth)/2,
 				(desktopSize.height-preferredHeight)/2,
@@ -38,9 +43,16 @@ public class ImageDialog extends JDialog {
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(_image);
 		setSize(new Dimension(icon.getIconWidth(),icon.getIconHeight()));
-
 		addSizeListener();
-		setVisible(true);
+		
+		SwingUtilities.invokeLater(
+			new Runnable() {
+				@Override
+				public void run() {
+					setVisible(true);
+				}
+			}
+		);		
 	}
 
 	private void addSizeListener() {
@@ -49,13 +61,25 @@ public class ImageDialog extends JDialog {
 			@Override
 			public void componentResized(ComponentEvent e) {
 				_image.setVisible(false);
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						_image.setIcon(getIcon(_file, getHeight(), getWidth()));
-						_image.setVisible(true);
+				SwingUtilities.invokeLater(
+					new Runnable() {
+						@Override
+						public void run() {
+							_image.setIcon(getIcon(_file, getHeight(), getWidth()));
+							_image.setVisible(true);
+							_avatarPreview.resizeAvatarPreview();
+							_avatarPreview.setVisible(true);
+						}
 					}
-				});
+				);
+			}
+			
+		});
+		
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentMoved(ComponentEvent e) {
+				_avatarPreview.resizeAvatarPreview();
 			}
 		});
 	}

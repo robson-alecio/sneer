@@ -33,7 +33,7 @@ public class ImageDialog extends JDialog {
 		Dimension desktopSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 		int preferredHeight = (int) (desktopSize.height*0.8);
 		int preferredWidth = (int) (desktopSize.width*0.8);
-		setModal(true);
+//		setModal(true);
 		setBounds((desktopSize.width-preferredWidth)/2,
 				(desktopSize.height-preferredHeight)/2,
 				preferredWidth,preferredHeight);

@@ -1,7 +1,7 @@
 package sneer.skin.imageSelector.impl;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 
-public class AvatarPreview extends JFrame {
+public class AvatarPreview extends JDialog {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -15,6 +15,6 @@ public class AvatarPreview extends JFrame {
 	void resizeAvatarPreview() {
 		int x = 10 + _imageDialog.getLocation().x + _imageDialog.getWidth();
 		int y = _imageDialog.getBounds().y;
-		setBounds(x,y, 150,150);
+		setBounds(x,y, 150,_imageDialog.getHeight());
 	}
 }

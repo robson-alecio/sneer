@@ -6,26 +6,21 @@ import java.net.URL;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.Before;
 
-import sneer.lego.Binder;
 import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
 import sneer.lego.Injector;
 import sneer.lego.impl.AnnotatedFieldInjector;
-import sneer.lego.impl.SimpleBinder;
 import wheel.lang.Threads;
 
 public class BrickTestSupport {
 	
-    protected Binder getBinder() {
-    	return new SimpleBinder();
+    protected Object[] getBindings() {
+    	return new Object[]{};
     }
     
 	@Before
-	public void injectDependencies()
-	    throws Exception
-	{
-		Binder binder = getBinder();
-		Container container = ContainerUtils.newContainer(binder);
+	public void injectDependencies()throws Exception {
+		Container container = ContainerUtils.newContainer(getBindings());
 	    Injector injector = new AnnotatedFieldInjector(container);
 	    injector.inject(this);
 	}

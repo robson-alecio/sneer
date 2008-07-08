@@ -1,10 +1,6 @@
 package testdashboard;
 public class TestDashboard {
 
-	public static boolean newTestsShouldRun() {
-		return false;
-	}
-
 	public static boolean loadTestsShouldRun() {
 		boolean result = false;
 		if (result) displayLoadTestMessage();

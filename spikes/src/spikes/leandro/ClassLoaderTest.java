@@ -1,22 +1,21 @@
 package spikes.leandro;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+import org.junit.Ignore;
 import org.junit.Test;
-
-import testdashboard.TestDashboard;
 
 public class ClassLoaderTest {
 
+	@Ignore
 	@Test
 	public void testBrickLoadingInSeparateClassloaders() throws Exception {
-		if (!TestDashboard.newTestsShouldRun()) return;
-
 		String root = "file://"+System.getProperty("user.dir") + "/spikes/test-resources/classloader/";
 		URL api1 = new URL(root + "brickOne/brickOne-api-1.0.jar");
 		URL api2 = new URL(root + "brickTwo/brickTwo-api-1.0.jar");

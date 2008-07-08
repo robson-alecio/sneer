@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import sneer.lego.Brick;
-import wheel.lang.Casts;
+import wheel.lang.Types;
 import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
@@ -17,7 +17,7 @@ import wheel.reactive.impl.RegisterImpl;
 class BrickProxy implements InvocationHandler {
 
 	static <B extends Brick> B createFor(Class<B> brickInterface, SignalPublisher intermediary) {
-		return Casts.uncheckedGenericCast(
+		return Types.uncheckedGenericCast(
 			Proxy.newProxyInstance(
 				BrickProxy.class.getClassLoader(),
 				new Class<?>[]{ brickInterface },
@@ -64,7 +64,7 @@ class BrickProxy implements InvocationHandler {
 			_registersBySignalName.put(signalName, register);
 			subscribeTo(signalName);
 		}
-		return Casts.uncheckedGenericCast(register);
+		return Types.uncheckedGenericCast(register);
 	}
 
 	private void subscribeTo(String signalName) {

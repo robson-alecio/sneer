@@ -1,18 +1,12 @@
 package sneer.lego;
 
 
-public interface Container extends Crashable {
+public interface Container {
 
-    /**
-     * Creates a new instance of clazz after checking the cache 
-     */
-	<T> T produce(Class<T> clazz) throws LegoException;
+	<T> T produce(Class<T> type) throws LegoException;
+	<T> T produce(String typeName) throws LegoException;
 
-	<T> T produce(String className) throws LegoException;
+	<T> T create(Class<T> type) throws LegoException;
+	<T> T create(Class<T> type, Object... args) throws LegoException;
 
-	<T> T create(Class<T> clazz) throws LegoException;
-	
-	<T> T create(Class<T> clazz, Object... args) throws LegoException;
-
-	void inject(Object component);
 }

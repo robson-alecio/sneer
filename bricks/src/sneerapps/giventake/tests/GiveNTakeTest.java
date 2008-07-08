@@ -1,12 +1,10 @@
 package sneerapps.giventake.tests;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import sneer.bricks.things.Thing;
 import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
-import sneer.lego.impl.SimpleBinder;
 import wheel.reactive.sets.SetSignal;
 import functional.SignalUtils;
 
@@ -15,10 +13,9 @@ public class GiveNTakeTest {
 	@Test (timeout = 3000)
 	public void testSimpleDeal() {
 		
-		SimpleBinder binder = new SimpleBinder();
-		binder.bind(new MeMock());
-		Container containerA = ContainerUtils.newContainer(binder);
-		Container containerB = ContainerUtils.newContainer(binder);
+		MeMock mock = new MeMock();
+		Container containerA = ContainerUtils.newContainer(mock);
+		Container containerB = ContainerUtils.newContainer(mock);
 
 		GiveNTakeUser _ana = containerA.produce(GiveNTakeUser.class);
 		GiveNTakeUser _bob = containerB.produce(GiveNTakeUser.class);
@@ -32,8 +29,6 @@ public class GiveNTakeTest {
 		_ana.advertise("Lovely 3 room Apartment Pinheiros", "Lovely apartment in Pinheiros disctrict, São Paulo. 3 rooms. Kitchen. 150m2");
 		found = _bob.search("apartment \"são paulo\"");
 		SignalUtils.waitForValue(1, found.size());
-
-		Assert.fail("Declare GiveNTakeUserImpl._me as MeMock and fix container. It is creating a new MeMock instead os injecting the one it already has.");
 	}
 	
 }

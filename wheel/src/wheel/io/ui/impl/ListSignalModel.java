@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
-import wheel.lang.Casts;
+import wheel.lang.Types;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
@@ -95,12 +95,12 @@ public class ListSignalModel<T> extends AbstractListModel {
 	}
 
 	private <U> void addReceiverToSignal(Omnivore<?> receiver, Signal<U> signal) {
-		Omnivore<U> castedReceiver = Casts.uncheckedGenericCast(receiver);
+		Omnivore<U> castedReceiver = Types.uncheckedGenericCast(receiver);
 		signal.addReceiver(castedReceiver);
 	}
 	
 	private <U> void removeReceiverFromSignal(Omnivore<?> receiver, Signal<U> signal) {
-		Omnivore<U> casted = Casts.uncheckedGenericCast(receiver);
+		Omnivore<U> casted = Types.uncheckedGenericCast(receiver);
 		signal.removeReceiver(casted);
 	}
 

@@ -8,7 +8,7 @@ import java.util.Set;
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.keymanager.PublicKey;
 import sneer.lego.Brick;
-import wheel.lang.Casts;
+import wheel.lang.Types;
 import wheel.reactive.Register;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
@@ -81,7 +81,7 @@ class PeerProxy extends AbstractParty implements SignalPublisher {
 	@Override
 	public ListSignal<Contact> contacts() {
 		if (_contactsCache == null) initContactsCache();
-		return Casts.uncheckedGenericCast(_contactsCache.output());
+		return Types.uncheckedGenericCast(_contactsCache.output());
 	}
 
 	private void initContactsCache() {
@@ -124,7 +124,7 @@ class PeerProxy extends AbstractParty implements SignalPublisher {
 			_brickProxiesByInterface.put(brickInterface, result);
 		}
 		
-		return Casts.uncheckedGenericCast(result);
+		return Types.uncheckedGenericCast(result);
 	}
 
 	@Override

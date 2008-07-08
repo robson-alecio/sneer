@@ -8,7 +8,7 @@ import sneer.bricks.mesh.Me;
 import sneer.bricks.mesh.Party;
 import sneer.lego.Brick;
 import sneerapps.giventake.GiveNTake;
-import wheel.lang.Casts;
+import wheel.lang.Types;
 import wheel.reactive.lists.ListSignal;
 
 public class MeMock implements Me {
@@ -35,7 +35,7 @@ public class MeMock implements Me {
 
 	@Override
 	public <B extends Brick> Collection<B> allImmediateContactBrickCounterparts(Class<B> class1) {
-		return Casts.uncheckedGenericCast(_counterparts);
+		return Types.uncheckedGenericCast(_counterparts);
 	}
 
 }

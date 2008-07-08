@@ -11,8 +11,8 @@ public class ContainerUtils {
 		return _container;
 	}
 
-    public static Container newContainer(Binder binder) {
-        return new SimpleContainer(binder);
+    public static Container newContainer(Object... implementationBindings) {
+        return new SimpleContainer(implementationBindings);
     }
 
     public static Container newContainer() {
@@ -23,7 +23,4 @@ public class ContainerUtils {
     	_container = null;
     }
     
-    public static void inject(Object component) {
-    	getContainer().inject(component);
-    }
 }

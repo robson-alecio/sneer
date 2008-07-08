@@ -9,9 +9,8 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.lang.reflect.Method;
 
+import org.junit.Ignore;
 import org.junit.Test;
-
-import testdashboard.TestDashboard;
 
 import functional.SignalUtils;
 import functional.SovereignFunctionalTest;
@@ -23,11 +22,9 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 	private static final String Y = "sneer.bricks.y.Y";
 	private static final String Z = "sneer.bricks.z.Z";
 	
-	
+	@Ignore
 	@Test
 	public void testPublish() throws Exception {
-		
-		if (!TestDashboard.newTestsShouldRun()) return;
 		
 		SovereignParty publisher = _a;
 		SovereignParty receiver = _b;

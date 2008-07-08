@@ -5,7 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import wheel.lang.Casts;
+import wheel.lang.Types;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Register;
@@ -45,7 +45,7 @@ public class RemoteSignallingFacade {
 		Method method = clazz.getMethods()[0];
 		Signal<Object> signal = null;
 		try {
-			signal = Casts.uncheckedGenericCast(method.invoke(object, new Object[]{}));
+			signal = Types.uncheckedGenericCast(method.invoke(object, new Object[]{}));
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {

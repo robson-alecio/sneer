@@ -21,6 +21,7 @@ import sneer.lego.Container;
 import sneer.lego.Inject;
 import sneer.lego.utils.io.NetworkFriendly;
 import wheel.io.serialization.DeepCopier;
+import wheel.lang.Threads;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 import functional.SovereignParty;
@@ -124,7 +125,7 @@ public class SneerPartyImpl implements SneerParty {
 		while (true) {
 			Contact contact = _keyManager.contactGiven(publicKey);
 			if (contact != null) return contact;
-			Thread.yield();
+			Threads.sleepWithoutInterruptions(1);
 		}
 	}
 

@@ -4,30 +4,27 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.bricks.deployer.BrickBundle;
 import sneer.bricks.deployer.Deployer;
-import sneer.lego.Binder;
 import sneer.lego.Inject;
-import sneer.lego.impl.SimpleBinder;
 import sneer.lego.tests.BrickTestSupport;
-import testdashboard.TestDashboard;
 
+@Ignore
 public class DeployerTest extends BrickTestSupport {
 
 	@Inject
 	private Deployer deployer;
 	
 	@Override
-	protected Binder getBinder() {
-		return new SimpleBinder().bind(new SneerConfigMock(null));
+	protected Object[] getBindings() {
+		return new Object[]{new SneerConfigMock(null)};
 	}
 
 	@Test
 	public void testDeploy() throws Exception {
-		if (!TestDashboard.newTestsShouldRun()) return;
-
 		fail("This test is freezing on windows");
 		
 		//create jar file
@@ -38,8 +35,6 @@ public class DeployerTest extends BrickTestSupport {
 	
 	@Test
 	public void testDependency() throws Exception {
-		if (!TestDashboard.newTestsShouldRun()) return;
-
 		fail("This test is freezing on windows");
 		
 		File root = getRoot("notAlone");

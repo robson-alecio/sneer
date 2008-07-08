@@ -3,6 +3,8 @@ package sneer.bricks.classpath.impl;
 import java.io.File;
 import java.util.List;
 
+import org.junit.Ignore;
+
 import sneer.bricks.classpath.Classpath;
 import sneer.bricks.classpath.ClasspathFactory;
 import sneer.bricks.config.SneerConfig;
@@ -11,6 +13,7 @@ import sneer.lego.Inject;
 import sneer.lego.utils.io.BrickApiFilter;
 import wheel.io.Jars;
 
+@Ignore
 public class ClasspathFactoryImpl implements ClasspathFactory {
 
 	@Inject

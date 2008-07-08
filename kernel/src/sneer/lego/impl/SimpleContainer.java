@@ -2,9 +2,6 @@ package sneer.lego.impl;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.ClassUtils;
@@ -13,41 +10,32 @@ import org.slf4j.LoggerFactory;
 
 import sneer.bricks.config.SneerConfig;
 import sneer.bricks.config.impl.SneerConfigImpl;
-import sneer.lego.Binder;
 import sneer.lego.ClassLoaderFactory;
 import sneer.lego.Container;
-import sneer.lego.Crashable;
 import sneer.lego.Injector;
 import sneer.lego.LegoException;
 import sneer.lego.Startable;
 import sneer.lego.impl.classloader.EclipseClassLoaderFactory;
 import sneer.lego.utils.ObjectUtils;
 
-/**
- * This is a dam simple container which will be replaced soon!
- */
 public class SimpleContainer implements Container {
 	
 	private static final Logger log = LoggerFactory.getLogger(SimpleContainer.class);
 
-	private Map<Class<?>, Object> _registry = new HashMap<Class<?>, Object>();
-	
 	private ClassLoaderFactory _classloaderFactory;
 	
-	private Injector _injector;
+	private final Injector _injector = new AnnotatedFieldInjector(this);
 	
-	private Binder _binder;
+	private final SimpleBinder _binder = new SimpleBinder();
 	
 	private SneerConfig _sneerConfig;
 
-    public SimpleContainer() {
-        this(new SimpleBinder());
-    }
-
-	public SimpleContainer(Binder binder) {
-		if (binder == null) throw new IllegalArgumentException("Binder cannot be null");
-		_binder = binder;
-		_injector = new AnnotatedFieldInjector(this);
+	public SimpleContainer(Object... bindings) {
+		for (Object implementation : bindings)
+			_binder.bind(implementation);
+		
+		_binder.bind(this);
+		_binder.bind(_injector);
 	}
 
 
@@ -61,21 +49,13 @@ public class SimpleContainer implements Container {
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> T produce(Class<T> clazz) {
-		T component = (T) _registry.get(clazz);
-		if(component != null) return component;
-
-		if(clazz.isAssignableFrom(Container.class)) {
-			return (T) this;
+	public <T> T produce(Class<T> type) {
+		T result = (T) _binder.implementationFor(type);
+		if (result == null) {
+			result = instantiate(type);
+			_binder.bind(result);
 		}
-		
-		if(clazz.isAssignableFrom(Injector.class)) {
-			return (T) _injector;
-		}
-		
-		component = instantiate(clazz);
-		_registry.put(clazz, component);
-		return component;
+		return result;
 	}
 	
 	private <T> T instantiate(Class<T> intrface, Object... args) throws LegoException {
@@ -168,7 +148,7 @@ public class SimpleContainer implements Container {
 	}
 
     private Object bindingFor(Class<?> type) {
-        return _binder.instanceFor(type);
+        return _binder.implementationFor(type);
     }
 
 	private String implementationFor(Class<?> type) {
@@ -196,8 +176,7 @@ public class SimpleContainer implements Container {
 		return _sneerConfig;
 	}
 
-	@Override
-	public void inject(Object component) {
+	private void inject(Object component) {
 		try {
 			_injector.inject(component);
 		} catch (Throwable t) {
@@ -215,13 +194,4 @@ public class SimpleContainer implements Container {
 		return instantiate(clazz, args);
 	}
 
-	@Override
-	public void crash() {
-		Set<Class<?>> keys = _registry.keySet();
-		for (Class<?> key : keys) {
-			Object component = _registry.get(key);
-			if(component instanceof Crashable)
-				((Crashable) component).crash();
-		}
-	}
 }

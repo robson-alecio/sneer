@@ -8,7 +8,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -16,10 +15,8 @@ import org.junit.Test;
 import sneer.lego.Container;
 import sneer.lego.Injector;
 import sneer.lego.impl.AnnotatedFieldInjector;
-import sneer.lego.impl.SimpleBinder;
 import sneer.lego.impl.SimpleContainer;
 import sneer.lego.impl.StaticFieldInjector;
-import sneer.lego.impl.classloader.BrickClassLoader;
 import sneer.lego.tests.impl.MySample;
 
 public class ContainerTest {
@@ -33,21 +30,9 @@ public class ContainerTest {
 	}
 	
 	@Test
-	public void testBinder() throws Exception {
-		SimpleBinder binder = new SimpleBinder();
-		binder.bind(new MySample());
-		Container c = new SimpleContainer(binder);
-		Object sample = c.produce(Sample.class);
-		assertTrue(sample.getClass().getName().equals(MySample.class.getName())); //Different classloaders
-	}
-	
-	@Test
-	public void testBindToInstance() throws Exception {
-        SimpleBinder binder = new SimpleBinder();
-        Sample sample = new Sample() {};
-
-        binder.bind(sample);
-        Container c = new SimpleContainer(binder);
+	public void testImplementationBinding() throws Exception {
+        Sample sample = new MySample();
+        Container c = new SimpleContainer(sample);
         Sample subject = c.produce(Sample.class);
         assertSame(sample, subject);
 	}
@@ -106,16 +91,4 @@ public class ContainerTest {
 		assertNotNull(Static.sample);
 	}
 	
-	@Test
-	public void testInjectOnClass() throws Exception {
-		
-		ClassLoader cl = new BrickClassLoader();
-		Container c = new SimpleContainer();
-		c.inject(cl);
-		
-		Class<?> clazz = cl.loadClass("sneer.lego.tests.Static");
-		Field field = clazz.getField("sample");
-		Object sample = field.get(null);
-		assertNotNull(sample);
-	}
 }

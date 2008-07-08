@@ -18,7 +18,7 @@ import sneer.bricks.serialization.Serializer;
 import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Brick;
 import sneer.lego.Inject;
-import wheel.lang.Casts;
+import wheel.lang.Types;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
@@ -228,7 +228,7 @@ class SignalConnection implements Visitable {
 
 	private Signal<Object> tryToInvokeSignal(Brick brick, Class<? extends Brick> correspondingBrickInterface, String signalName) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		Method method = correspondingBrickInterface.getMethod(signalName, (Class<?>[])null);
-		return Casts.uncheckedGenericCast(
+		return Types.uncheckedGenericCast(
 			method.invoke(brick, (Object[])null));
 	}
 

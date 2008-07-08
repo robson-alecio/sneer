@@ -10,11 +10,8 @@ import functional.SovereignParty;
 
 public abstract class Freedom1Test extends SovereignFunctionalTest {
 	
-	@Test
+	@Test (timeout = 1000)
 	public void testOwnName() {
-		
-		//if (!TestDashboard.newTestsShouldRun()) return;
-		
 		SovereignParty me = _community.createParty("Klaus");
 		changeNameTo(me, "Klaus W");
 		changeNameTo(me, "Wuestefeld, Klaus");

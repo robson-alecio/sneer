@@ -1,6 +1,6 @@
 package wheel.reactive.tests;
 
-import wheel.lang.Casts;
+import wheel.lang.Types;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Register;
@@ -13,9 +13,9 @@ public class LoopbackTester {
 	private Register<Object> _inputValue3 = new RegisterImpl<Object>(null);
 
 	public LoopbackTester(Signal<?> input, Omnivore<?> output) {
-		_output = Casts.uncheckedGenericCast(output);
+		_output = Types.uncheckedGenericCast(output);
 				
-		Signal<Object> castedInput = Casts.uncheckedGenericCast(input);
+		Signal<Object> castedInput = Types.uncheckedGenericCast(input);
 		castedInput.addReceiver(_inputValue1.setter());
 		castedInput.addReceiver(_inputValue2.setter());
 		castedInput.addReceiver(_inputValue3.setter());

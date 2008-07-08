@@ -1,6 +1,5 @@
 package sneerapps.giventake.tests.impl;
 
-import sneer.bricks.mesh.Me;
 import sneer.bricks.things.Thing;
 import sneer.bricks.things.ThingHome;
 import sneer.lego.Inject;
@@ -16,7 +15,7 @@ class GiveNTakeUserImpl implements GiveNTakeUser {
 	@Inject
 	static private ThingHome _thingHome;
 	@Inject
-	static private Me _me;
+	static private MeMock _me;
 	
 	public void advertise(String title, String description) {
 		_gnt.advertise(_thingHome.create(title, description));
@@ -39,7 +38,7 @@ class GiveNTakeUserImpl implements GiveNTakeUser {
 
 	@Override
 	public void addCounterpart(GiveNTake gnt) {
-		((MeMock)_me).addCounterpart(gnt);
+		_me.addCounterpart(gnt);
 	}
 
 

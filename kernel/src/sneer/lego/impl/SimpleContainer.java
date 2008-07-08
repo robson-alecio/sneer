@@ -48,7 +48,6 @@ public class SimpleContainer implements Container {
 		if (binder == null) throw new IllegalArgumentException("Binder cannot be null");
 		_binder = binder;
 		_injector = new AnnotatedFieldInjector(this);
-		log.info("*** SimpleContainer created ***");
 	}
 
 
@@ -76,20 +75,8 @@ public class SimpleContainer implements Container {
 		
 		component = instantiate(clazz);
 		_registry.put(clazz, component);
-		//checkClassLoaders(clazz, component);
 		return component;
 	}
-	
-//	@SuppressWarnings("unused")
-//	private void checkClassLoaders(Class<?> clazz, Object component) {
-//		Class<?>[] interfaces = component.getClass().getInterfaces();
-//		ClassLoader parent = clazz.getClassLoader();
-//		System.out.println(clazz.getName() + " : "+parent);
-//		for (Class<?> intrface : interfaces) {
-//			ClassLoader cl = intrface.getClassLoader();
-//			System.out.println(intrface.getName() + " : " + intrface.getClassLoader() + (parent == cl ? "*" : ""));
-//		}
-//	}
 	
 	private <T> T instantiate(Class<T> intrface, Object... args) throws LegoException {
 		T component;
@@ -117,7 +104,7 @@ public class SimpleContainer implements Container {
 	@SuppressWarnings("unchecked") //Refactor Try to use Casts.unchecked..()
 	private <T> T lookup(Class<T> clazz, Object... args) throws Exception {
 
-		Object result = instanceFor(clazz);
+		Object result = bindingFor(clazz);
 	    if(result != null) return (T) result;
 
 		String implementation = implementationFor(clazz); 
@@ -180,20 +167,20 @@ public class SimpleContainer implements Container {
 		return _classloaderFactory;
 	}
 
-    private Object instanceFor(Class<?> intrface) {
-        return _binder.instanceFor(intrface);
+    private Object bindingFor(Class<?> type) {
+        return _binder.instanceFor(type);
     }
 
-	private String implementationFor(Class<?> intrface) {
-		String result = _binder.implementationFor(intrface);
+	private String implementationFor(Class<?> type) {
+		String result = _binder.implementationFor(type);
 		if(result != null) 
 			return result;
 		
-		if(!intrface.isInterface()) {
-			return intrface.getName();
+		if(!type.isInterface()) {
+			return type.getName();
 		}
 		
-		String name = intrface.getName();
+		String name = type.getName();
 		int index = name.lastIndexOf(".");
 		return name.substring(0, index) + ".impl" + name.substring(index) + "Impl";
 	}
@@ -204,7 +191,7 @@ public class SimpleContainer implements Container {
 		if(_sneerConfig != null) 
 			return _sneerConfig;
 		
-		Object result = instanceFor(SneerConfig.class);
+		Object result = bindingFor(SneerConfig.class);
 		if(result != null) {
 			_sneerConfig = (SneerConfig) result;
 			return _sneerConfig;

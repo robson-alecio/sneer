@@ -23,6 +23,7 @@
 	- Add Tab/Window Support
 
 ﻿Leandro
+	- Eliminate create(...) methods from Container.
 	- check file locks on windows (FileUtils.cleanDirectory() "unable to delete file")
 	- create new test runner that uses our own classloader so we can replace the AnnotatedFieldInjector by the StaticFieldInjector
 		- Load wheel in a base classloader that also adds "implements Serializable" to classes.

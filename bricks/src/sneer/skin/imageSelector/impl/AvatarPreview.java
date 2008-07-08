@@ -1,4 +1,5 @@
 package sneer.skin.imageSelector.impl;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.BoxLayout;
@@ -8,8 +9,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class AvatarPreview extends JDialog {
 	
@@ -17,6 +21,13 @@ public class AvatarPreview extends JDialog {
 	
 	private final ImageDialog _imageDialog;
 	
+	JSlider top = new JSlider();
+	JSlider botton = new JSlider();
+	JSlider left = new JSlider();
+	JSlider right = new JSlider();
+	
+	JCheckBox cropCheck = new JCheckBox("Crop Image");
+
 	AvatarPreview(ImageDialog imageDialog){
 		_imageDialog = imageDialog;
 		resizeAvatarPreview();
@@ -32,7 +43,30 @@ public class AvatarPreview extends JDialog {
 					panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
 					scroll.getViewport().add(panel);
 					
-					panel.add(new JCheckBox("Crop Image"));
+					panel.add(cropCheck);
+					cropCheck.getModel().addChangeListener(
+						new ChangeListener(){
+							@Override
+							public void stateChanged(ChangeEvent change) {
+								top.setEnabled(cropCheck.isSelected());
+								botton.setEnabled(cropCheck.isSelected());
+								left.setEnabled(cropCheck.isSelected());
+								right.setEnabled(cropCheck.isSelected());
+							}
+						}
+					);
+					
+					
+					initField(top);//, "Top Margin");
+					initField(botton);//, "Botton Margin");
+					initField(left);//, "Left Margin");
+					initField(right);//, "Right Margin");
+					
+					panel.add(top, BorderLayout.NORTH);
+					panel.add(botton, BorderLayout.SOUTH);
+					panel.add(left, BorderLayout.EAST);
+					panel.add(right, BorderLayout.WEST);
+					
 					panel.add(new JSeparator());
 					
 					addSizeCheck(panel, 24);
@@ -40,6 +74,14 @@ public class AvatarPreview extends JDialog {
 					addSizeCheck(panel, 48);
 					addSizeCheck(panel, 64);
 					addSizeCheck(panel, 128);
+				}
+
+				private void initField(JSlider slider) {
+//					slider.setBorder(new TitledBorder(title));
+					slider.setEnabled(false);
+					slider.setMaximum(10000);
+					slider.setMinimum(0);
+					slider.setValue(1000);
 				}
 
 				private void addSizeCheck(JPanel panel, int size) {

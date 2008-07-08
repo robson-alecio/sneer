@@ -14,4 +14,6 @@ public interface GiveNTakeUser {
 
 	void addCounterpart(GiveNTake _gnt);
 
+	void registerGNTMock(GiveNTakeUser giveNTakeUser);
+
 }

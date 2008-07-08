@@ -23,11 +23,17 @@ class GiveNTakeUserImpl implements GiveNTakeUser {
 	}
 
 	public SetSignal<Thing> search(String tags) {
-		return _gnt.search(tags);
+		return _gnt.firstLevelRemoteSearch(tags);
 	}
 
 	@Override
 	public void connectTo(GiveNTakeUser peer) {
+		registerGNTMock(peer);
+		peer.registerGNTMock(this);
+	}
+
+	@Override
+	public void registerGNTMock(GiveNTakeUser peer) {
 		peer.addCounterpart(_gnt);
 	}
 

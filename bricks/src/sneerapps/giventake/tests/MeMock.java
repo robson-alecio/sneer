@@ -12,7 +12,6 @@ import wheel.lang.Casts;
 import wheel.reactive.lists.ListSignal;
 
 public class MeMock implements Me {
-	{System.out.println("mais um");}
 	private Collection<GiveNTake> _counterparts = new HashSet<GiveNTake>();
 
 	@Override

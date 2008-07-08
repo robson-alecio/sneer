@@ -1,10 +1,10 @@
 package sneer.bricks.things;
 
-import java.util.Collection;
+import wheel.reactive.sets.SetSignal;
 
 public interface ThingHome {
 
 	Thing create(String name, String description);
-	Collection<Thing> search(String tags);
+	SetSignal<Thing> search(String tags);
 
 }

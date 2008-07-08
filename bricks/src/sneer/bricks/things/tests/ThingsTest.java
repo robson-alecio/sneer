@@ -1,7 +1,5 @@
 package sneer.bricks.things.tests;
 
-import java.util.Collection;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -9,6 +7,7 @@ import sneer.bricks.things.Thing;
 import sneer.bricks.things.ThingHome;
 import testdashboard.TestDashboard;
 import wheel.lang.Threads;
+import wheel.reactive.sets.SetSignal;
 import wheel.testutil.TestOfInterface;
 
 
@@ -24,7 +23,7 @@ public abstract class ThingsTest extends TestOfInterface<ThingHome> {
 		searchApartmentAds();
 	}
 	
-	@Test (timeout = 100000)
+	@Test (timeout = 120000)
 	public void testConcurrency(){
 		if (!TestDashboard.loadTestsShouldRun()) return;
 		
@@ -66,11 +65,12 @@ public abstract class ThingsTest extends TestOfInterface<ThingHome> {
 		@Override public void run() {
 			int i = 0;
 			while (i < _THINGS_TO_ADD) {
-				Collection<Thing> found = _subject.search("thing"+i);
+				SetSignal<Thing> found = _subject.search("thing"+i);
 				
-				Assert.assertTrue(found.size() <= thingsToFind);
+				int count = found.size().currentValue();
+				Assert.assertTrue(count <= thingsToFind);
 				
-				if (found.size() == thingsToFind) {
+				if (count == thingsToFind) {
 					i++;
 				} else
 					Threads.sleepWithoutInterruptions(10);
@@ -94,9 +94,9 @@ public abstract class ThingsTest extends TestOfInterface<ThingHome> {
 	}
 
 	private void find(String tags, int thingsToFind) {
-		Collection<Thing> found = _subject.search(tags);
+		SetSignal<Thing> found = _subject.search(tags);
 		
-		Assert.assertSame(thingsToFind, found.size());
+		Assert.assertSame(thingsToFind, found.size().currentValue());
 	}
 
 	private void createApartmentAds() {

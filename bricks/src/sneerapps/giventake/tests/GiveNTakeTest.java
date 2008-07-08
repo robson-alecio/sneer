@@ -15,7 +15,7 @@ import functional.SignalUtils;
 
 public class GiveNTakeTest {
 
-	@Test (timeout = 5000)
+	@Test (timeout = 2500)
 	public void testSimpleDeal() {
 		
 		Binder binder = new SimpleBinder();

@@ -29,7 +29,7 @@ class GiveNTakeImpl implements GiveNTake {
 
 		Collection<GiveNTake> peers = _me.allImmediateContactBrickCounterparts(GiveNTake.class);
 		for (GiveNTake peer : peers) {
-			Collection<Thing> found = peer.localSearch(tags);
+			SetSignal<Thing> found = peer.localSearch(tags);
 			for (Thing thing : found)
 				result.add(thing);
 		}
@@ -37,7 +37,7 @@ class GiveNTakeImpl implements GiveNTake {
 	}
 
 	@Override
-	public Collection<Thing> localSearch(String tags) {
+	public SetSignal<Thing> localSearch(String tags) {
 		return _thingHome.search(tags);
 	}
 

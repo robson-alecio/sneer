@@ -1,8 +1,6 @@
 package sneer.bricks.things.impl;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -22,6 +20,9 @@ import org.apache.lucene.store.RAMDirectory;
 
 import sneer.bricks.things.Thing;
 import sneer.bricks.things.ThingHome;
+import wheel.reactive.sets.SetRegister;
+import wheel.reactive.sets.SetSignal;
+import wheel.reactive.sets.impl.SetRegisterImpl;
 
 public class ThingHomeImpl implements ThingHome {
 
@@ -43,14 +44,14 @@ public class ThingHomeImpl implements ThingHome {
 		
 	}
 	
-	private Collection<Thing> tryToSearch(String tags) throws CorruptIndexException, LockObtainFailedException, IOException, ParseException {		
+	private SetSignal<Thing> tryToSearch(String tags) throws CorruptIndexException, LockObtainFailedException, IOException, ParseException {		
 		Query query = new QueryParser(TEXT_FIELD, _analyzer)
 			.parse(tags);
 		
 		IndexSearcher searcher = new IndexSearcher(_directory);
 		Hits hits = searcher.search(query);
 		
-		Collection<Thing> result = new ArrayList<Thing>(hits.length());
+		SetRegister<Thing> result = new SetRegisterImpl<Thing>();
 		for (int i = 0; i < hits.length(); i++) {
 			Document doc = hits.doc(i);
 			String name = doc.getFields(TEXT_FIELD)[0].stringValue();
@@ -60,7 +61,7 @@ public class ThingHomeImpl implements ThingHome {
 			result.add(foundThing);
 		}
 		
-		return result;
+		return result.output();
 	}
 
 	private void addToIndex(Thing thing)  {
@@ -107,7 +108,7 @@ public class ThingHomeImpl implements ThingHome {
 	}
 
 	@Override
-	public Collection<Thing> search(String tags) {
+	public SetSignal<Thing> search(String tags) {
 		try {
 			return tryToSearch(tags);
 		} catch (CorruptIndexException e) {

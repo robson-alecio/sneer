@@ -25,25 +25,34 @@ import javax.swing.border.BevelBorder;
 public class Keyhole extends JComponent {
     private static final long serialVersionUID = 1L;
     private JLayeredPane _layeredPane;
-    private BufferedImage buffer;
-
-    public Keyhole(JLayeredPane layeredPane) {
+    private BufferedImage _buffer;
+	private AvatarPreview _avatarPreview;
+	
+    public Keyhole(JLayeredPane layeredPane, AvatarPreview avatarPreview) {
     	_layeredPane = layeredPane;
+		_avatarPreview = avatarPreview;
     	setBorder(new BevelBorder(BevelBorder.LOWERED));
     	setPreferredSize(new Dimension(128,128));
         addMouseListeners(layeredPane);
         addBufferListener();
     }   
     
+    @Override
+    public void setPreferredSize(Dimension preferredSize) {
+    	super.setPreferredSize(preferredSize);
+    	_avatarPreview.area.setValue((int) preferredSize.getHeight());
+    	
+    }
+    
 	private void addBufferListener() {
 		addComponentListener(new ComponentAdapter() {
             @Override
 			public void componentHidden(ComponentEvent componentEvent) {
-            	buffer = null;
+            	_buffer = null;
             }
             @Override
 			public void componentResized(ComponentEvent componentEvent) {
-            	buffer = null;
+            	_buffer = null;
             }
         });
 	}
@@ -85,13 +94,13 @@ public class Keyhole extends JComponent {
 	
 	@Override
     protected void paintComponent(Graphics g) {
-        if (buffer == null) {
-            buffer = createBuffer();
+        if (_buffer == null) {
+            _buffer = createBuffer();
         }
         
-        Graphics2D g2 = buffer.createGraphics();
+        Graphics2D g2 = _buffer.createGraphics();
         g2.setComposite(AlphaComposite.Clear);
-        g2.fillRect(0, 0, buffer.getWidth(), buffer.getHeight());
+        g2.fillRect(0, 0, _buffer.getWidth(), _buffer.getHeight());
         g2.setComposite(AlphaComposite.Src);
 
         Point location = getLocation();

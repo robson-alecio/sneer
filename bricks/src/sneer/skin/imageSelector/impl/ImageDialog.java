@@ -12,6 +12,8 @@ import javax.swing.JDialog;
 import javax.swing.JLayeredPane;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import sneer.skin.image.ImageFactory;
 
@@ -45,7 +47,6 @@ public class ImageDialog extends JDialog {
 				public void run() {
 					_picture.setLocation(0, 0);
 					setVisible(true);
-					System.out.println(_picture.getBounds());
 				}
 			}
 		);		
@@ -72,7 +73,24 @@ public class ImageDialog extends JDialog {
 		_picture.setIcon(icon);
 		_layeredPane.setLayout(new FlowLayout());    
         _layeredPane.add(_picture, JLayeredPane.DEFAULT_LAYER);
-        Keyhole keyhole = new Keyhole(_layeredPane);
+        final Keyhole keyhole = new Keyhole(_layeredPane, _avatarPreview);
+        
+        _avatarPreview.area.getModel().addChangeListener(new ChangeListener(){
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				SwingUtilities.invokeLater(
+					new Runnable() {
+						@Override
+						public void run() {
+							int value = _avatarPreview.area.getValue();
+							keyhole.setPreferredSize(new Dimension(value,value));
+							keyhole.getParent().validate();
+						}
+					}
+				);	
+			}}
+		);
+        
     	_layeredPane.add(keyhole, JLayeredPane.POPUP_LAYER);
     	
     	//resize window

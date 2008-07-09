@@ -1,6 +1,22 @@
 ﻿Sandro
-	- SelectableAction.isSelected() - change to Signal<Boolean> 
 	- Create a first functional Snapp.
+		- [Done] OwnerName
+		- [Done] OwnerTagline
+		- OwnerAvatar
+			- Image Selection GUI
+				- [Done] File Chooser
+					- [Done] Image Preview
+					- [Future] Thumbnails
+				- [Done] Auto-Resize ImageViewer
+				- [Done] Tool Box Window (follow me window)
+				- Select Image Area
+					- Change Area Size
+						- [Done] Mouse Scroll
+						- Tool Box Slider
+					- Generate Preview (24, 32, 48, 64, 128)
+			- Snapp Integration 
+				- Call Image Selection GUI
+				- View Full Picture
 		- SnappPreview
 			- Menu
 				- Change size
@@ -13,6 +29,7 @@
 				- MultiLine - Signal<int> preferredHeight() Component component(). Future: forced size by user.
 				- Future: Iconified - space available for graphics
 		- SnappWindow
+	- SelectableAction.isSelected() - change to Signal<Boolean> 
 	- Tray Icon - Ask Petra for a 16x16 icon to put there. Black on white. No transparency.
 	- JScrollPane for Snapps.
 	- Layout Support for Internal Windows (Size, Resize and Position).

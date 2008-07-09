@@ -1,17 +1,9 @@
 ﻿Sandro
 	- Create a first functional Snapp.
-		- [Done] OwnerName
-		- [Done] OwnerTagline
 		- OwnerAvatar
 			- Image Selection GUI
-				- [Done] File Chooser
-					- [Done] Image Preview
-					- [Future] Thumbnails
-				- [Done] Auto-Resize ImageViewer
-				- [Done] Tool Box Window (follow me window)
-				- Select Image Area
+				- Keyhole
 					- Change Area Size
-						- [Done] Mouse Scroll
 						- Tool Box Slider
 					- Generate Preview (24, 32, 48, 64, 128)
 			- Snapp Integration 
@@ -37,6 +29,7 @@
 
 	=================================================== RELEASE
 	- Resizeable JWindow, instead of switching JFrame <-> JWindow.
+	- Pic thumbnails in File chooser
 	- Add Tab/Window Support
 
 ﻿Leandro

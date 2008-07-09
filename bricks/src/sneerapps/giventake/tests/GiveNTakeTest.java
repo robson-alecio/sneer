@@ -1,5 +1,7 @@
 package sneerapps.giventake.tests;
 
+import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.bricks.things.Thing;
@@ -10,6 +12,7 @@ import functional.SignalUtils;
 
 public class GiveNTakeTest {
 
+	@Ignore() //Klaus
 	@Test (timeout = 3000)
 	public void testSimpleDeal() {
 		
@@ -29,6 +32,8 @@ public class GiveNTakeTest {
 		_ana.advertise("Lovely 3 room Apartment Pinheiros", "Lovely apartment in Pinheiros disctrict, São Paulo. 3 rooms. Kitchen. 150m2");
 		found = _bob.search("apartment \"são paulo\"");
 		SignalUtils.waitForValue(1, found.size());
+		
+		Assert.fail("Refactor BrickProxy into kernel.remoting");
 	}
 	
 }

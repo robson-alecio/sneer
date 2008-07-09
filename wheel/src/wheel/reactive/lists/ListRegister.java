@@ -1,10 +1,9 @@
 package wheel.reactive.lists;
 
-import java.io.Serializable;
-
 import wheel.lang.Omnivore;
+import wheel.reactive.RegisterBase;
 
-public interface ListRegister<VO> extends Serializable{
+public interface ListRegister<VO> extends RegisterBase {
 
 	ListSignal<VO> output();
 

@@ -5,7 +5,7 @@ import sneer.lego.Brick;
 
 interface Visitable {
 
-	void handleNotification(PublicKey publicKey, Class<? extends Brick> brickInterface, String signalName, Object newValue);
+	void handleNotification(PublicKey publicKey, Class<? extends Brick> brickInterface, String signalPath, Object notification);
 
 	void handleNotificationOfContactAdded(PublicKey publicKey,	RemoteContact newContact);
 
@@ -14,5 +14,6 @@ interface Visitable {
 	void serveSubscriptionTo(PublicKey publicKey, Class<? extends Brick> brickInterface, String signalName);
 
 	void serveSubscriptionToContacts(PublicKey publicKey);
+
 
 }

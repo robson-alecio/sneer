@@ -1,5 +1,7 @@
 package sneer.bricks.mesh.impl;
 
+import static wheel.lang.Types.uncheckedGenericCast;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -7,17 +9,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 import sneer.lego.Brick;
-import wheel.lang.Types;
 import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Register;
+import wheel.reactive.RegisterBase;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
+import wheel.reactive.lists.ListSignal;
+import wheel.reactive.lists.ListValueChange;
+import wheel.reactive.lists.impl.ListRegisterImpl;
+import wheel.reactive.sets.SetRegister;
+import wheel.reactive.sets.SetSignal;
+import wheel.reactive.sets.SetSignal.SetValueChange;
+import wheel.reactive.sets.impl.SetRegisterImpl;
 
 
-class BrickProxy implements InvocationHandler {
+public class BrickProxy implements InvocationHandler {
 
-	static <B extends Brick> B createFor(Class<B> brickInterface, SignalPublisher intermediary) {
-		return Types.uncheckedGenericCast(
+	static public <B extends Brick> B createFor(Class<B> brickInterface, SignalPublisher intermediary) {
+		return uncheckedGenericCast(
 			Proxy.newProxyInstance(
 				BrickProxy.class.getClassLoader(),
 				new Class<?>[]{ brickInterface },
@@ -35,7 +44,7 @@ class BrickProxy implements InvocationHandler {
 		_publisher = publisher;
 	}
 
-	private final Map<String, Register<Object>> _registersBySignalName = new HashMap<String, Register<Object>>();
+	private final Map<String, RegisterBase> _registersBySignalName = new HashMap<String, RegisterBase>();
 
 	private final Class<? extends Brick> _brickInterface;
 	private final SignalPublisher _publisher;
@@ -43,28 +52,41 @@ class BrickProxy implements InvocationHandler {
 
 	@Override
 	public Object invoke(Object impliedProxy, Method method, Object[] args)	throws Throwable {
+		if (method.getDeclaringClass() == Object.class)
+			return method.invoke(this, args);
+		
 		if (args != null) throw new NotImplementedYet();
-		
-		Class<?> returnType = method.getReturnType();
-		
-		if (!Signal.class.isAssignableFrom(returnType)) throw new NotImplementedYet();
 
-		return signal(method.getName());
+		Class<?> signalType = method.getReturnType();
+		return signal(method.getName(), signalType);
 	}
 
-	private <S> Signal<S> signal(String signalName) {
-		Register<S> register = produceRegisterFor(signalName);
+	private Object signal(String signalName, Class<?> type) {
+		RegisterBase register = produceRegisterFor(signalName, type);
 		return register.output();   //Fix: Signal type mismatch between peers is possible. 
 	}
 
-	private <T> Register<T> produceRegisterFor(String signalName) {
-		Register<Object> register = _registersBySignalName.get(signalName);
+	private RegisterBase produceRegisterFor(String signalName, Class<?> type) {
+		RegisterBase register = _registersBySignalName.get(signalName);
 		if (register == null) {
-			register = new RegisterImpl<Object>(null);
+			register = createRegisterFor(type);
 			_registersBySignalName.put(signalName, register);
 			subscribeTo(signalName);
 		}
-		return Types.uncheckedGenericCast(register);
+		return uncheckedGenericCast(register);
+	}
+
+	
+	
+	private RegisterBase createRegisterFor(Class<?> type) {
+		if (Signal.class.isAssignableFrom(type))
+			return new RegisterImpl<Object>(null);
+		if (ListSignal.class.isAssignableFrom(type))
+			return new ListRegisterImpl<Object>();
+		if (SetSignal.class.isAssignableFrom(type))
+			return new SetRegisterImpl<Object>();
+		
+		throw new UnsupportedOperationException();
 	}
 
 	private void subscribeTo(String signalName) {
@@ -72,7 +94,31 @@ class BrickProxy implements InvocationHandler {
 	}
 
 	void handleNotification(String signalName, Object notification) {
-		produceRegisterFor(signalName).setter().consume(notification);
+		RegisterBase register = _registersBySignalName.get(signalName);
+		if (register == null) return;
+		
+		if (handleListNotification(register, notification)) return;
+		if (handleSetNotification(register, notification)) return;
+		
+		Register<Object> casted = uncheckedGenericCast(register);
+		casted.setter().consume(notification);			
+	}
+
+	private boolean handleListNotification(RegisterBase register, Object notification) {
+		if (!(notification instanceof ListValueChange)) return false;
+		
+		register.toString();
+		throw new UnsupportedOperationException(); //Implement see handleSetNotification()
+	}
+
+	private boolean handleSetNotification(RegisterBase register, Object notification) {
+		if (!(notification instanceof SetValueChange)) return false;
+		
+		SetRegister<Object> castedRegister = uncheckedGenericCast(register);
+		SetValueChange<Object> castedNotification = uncheckedGenericCast(notification);
+
+		castedRegister.change(castedNotification);
+		return true;
 	}
 
 

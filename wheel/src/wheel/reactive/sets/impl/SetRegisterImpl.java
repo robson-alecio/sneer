@@ -21,6 +21,8 @@ import wheel.reactive.sets.SetSignal.SetValueChange;
 public class SetRegisterImpl<T> implements SetRegister<T> {
 
 
+	private static final long serialVersionUID = 1L;
+
 	private class MyOutput extends AbstractNotifier<SetValueChange<T>> implements SetSignal<T> {
 
 		@Override
@@ -89,7 +91,7 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 		change(new SetValueChangeImpl<T>(null, elementRemoved));
 	}
 
-	
+	@Override
 	public void change(SetValueChange<T> change) {
 		synchronized (_contents) {
 			assertValidChange(change);

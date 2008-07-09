@@ -3,7 +3,7 @@ package sneer.bricks.mesh.impl;
 import sneer.lego.Brick;
 
 
-interface SignalPublisher {
+public interface SignalPublisher {
 
 	void subscribeTo(Class<? extends Brick> brickInterface, String signalName);
 	

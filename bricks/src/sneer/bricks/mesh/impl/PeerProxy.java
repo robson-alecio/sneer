@@ -62,7 +62,7 @@ class PeerProxy extends AbstractParty implements SignalPublisher {
 		register.setter().consume(notification);
 	}
 
-	
+
 	void handleNotificationOfContact(RemoteContact contact) {
 		for (RemoteContact candidate : _contactsCache.output())
 			if (candidate.equals(contact)) {

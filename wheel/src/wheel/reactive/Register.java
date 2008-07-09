@@ -1,10 +1,8 @@
 package wheel.reactive;
 
-import java.io.Serializable;
-
 import wheel.lang.Omnivore;
 
-public interface Register<T> extends Serializable{
+public interface Register<T> extends RegisterBase {
 
 	Signal<T> output();
 	

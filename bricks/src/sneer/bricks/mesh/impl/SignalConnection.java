@@ -18,8 +18,8 @@ import sneer.bricks.serialization.Serializer;
 import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Brick;
 import sneer.lego.Inject;
-import wheel.lang.Types;
 import wheel.lang.Omnivore;
+import wheel.lang.Types;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.SimpleListReceiver;
@@ -107,8 +107,8 @@ class SignalConnection implements Visitable {
 
 
 	private Omnivore<Object> createScoutFor(final PublicKey publicKey, final Class<? extends Brick> brickInterface, final String signalPath) {
-		Omnivore<Object> result = new Omnivore<Object>() {@Override public void consume(Object newValue) {
-			send(new Notification(publicKey, brickInterface, signalPath, newValue));
+		Omnivore<Object> result = new Omnivore<Object>() {@Override public void consume(Object notification) {
+			send(new Notification(publicKey, brickInterface, signalPath, notification));
 		}};
 		_scoutsToAvoidGC.add(result); //Fix: This is a Leak.
 		return result;

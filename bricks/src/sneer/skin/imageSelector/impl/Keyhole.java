@@ -73,8 +73,8 @@ public class Keyhole extends JComponent {
 				public void mouseWheelMoved(MouseWheelEvent e) {
 					int notches = e.getWheelRotation()*5;
 					int size = getPreferredSize().width - notches;
-					if(size<10)
-						size=10;
+					if(size<24)
+						size=24;
 					
 					setPreferredSize(new Dimension(size,size));
 					getParent().validate();

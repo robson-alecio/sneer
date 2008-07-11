@@ -56,7 +56,7 @@ public class ImageDialog extends JDialog {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		Dimension desktopSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 		_preferredHeight = (int) (desktopSize.height*0.8);
-		_preferredWidth = (int) (desktopSize.width*0.8);
+		_preferredWidth = (int) ((desktopSize.width-AvatarPreview._WIDTH)*0.95);
 
 		setBounds((desktopSize.width-_preferredWidth)/2,
 				(desktopSize.height-_preferredHeight)/2,

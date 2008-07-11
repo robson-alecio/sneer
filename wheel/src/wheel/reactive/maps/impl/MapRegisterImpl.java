@@ -88,6 +88,7 @@ public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 
 		@Override
 		protected void initReceiver(Omnivore<SetValueChange<Map.Entry<K, V>>> receiver) {
+			if (_map.isEmpty()) return;
 			receiver.consume(asChange(currentElements()));
 		}
 
@@ -121,6 +122,7 @@ public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 	
 	@Override
 	synchronized public void put(K key, V value) {
+		System.err.println("Fix MapRegisterImpl: it is notifying keys listeners before adding element to map");
 		boolean isNewKey = !_map.containsKey(key);
 		if (isNewKey) _keys.add(key);
 		

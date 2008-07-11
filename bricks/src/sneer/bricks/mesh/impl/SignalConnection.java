@@ -228,7 +228,7 @@ class SignalConnection implements Visitable {
 
 	private Signal<Object> tryToInvokeSignal(Brick brick, Class<? extends Brick> correspondingBrickInterface, String signalName) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		Method method = correspondingBrickInterface.getMethod(signalName, (Class<?>[])null);
-		return Types.uncheckedGenericCast(
+		return Types.cast(
 			method.invoke(brick, (Object[])null));
 	}
 

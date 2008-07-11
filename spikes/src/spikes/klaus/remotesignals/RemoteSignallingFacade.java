@@ -45,7 +45,7 @@ public class RemoteSignallingFacade {
 		Method method = clazz.getMethods()[0];
 		Signal<Object> signal = null;
 		try {
-			signal = Types.uncheckedGenericCast(method.invoke(object, new Object[]{}));
+			signal = Types.cast(method.invoke(object, new Object[]{}));
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {

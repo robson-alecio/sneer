@@ -22,7 +22,7 @@ class GiveNTakeUserImpl implements GiveNTakeUser {
 	}
 
 	public SetSignal<Thing> search(String tags) {
-		return _gnt.firstLevelRemoteSearch(tags);
+		return _gnt.search(tags);
 	}
 
 	@Override

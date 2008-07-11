@@ -12,13 +12,12 @@ import functional.SignalUtils;
 
 public class GiveNTakeTest {
 
-	@Ignore() //Klaus
-	@Test (timeout = 3000)
+	@Ignore //Klaus
+	@Test //(timeout = 3000)
 	public void testSimpleDeal() {
 		
-		MeMock mock = new MeMock();
-		Container containerA = ContainerUtils.newContainer(mock);
-		Container containerB = ContainerUtils.newContainer(mock);
+		Container containerA = ContainerUtils.newContainer(new MeMock());
+		Container containerB = ContainerUtils.newContainer(new MeMock());
 
 		GiveNTakeUser _ana = containerA.produce(GiveNTakeUser.class);
 		GiveNTakeUser _bob = containerB.produce(GiveNTakeUser.class);
@@ -33,6 +32,7 @@ public class GiveNTakeTest {
 		found = _bob.search("apartment \"são paulo\"");
 		SignalUtils.waitForValue(1, found.size());
 		
+		Assert.fail("Put a timeout for this test");
 		Assert.fail("Refactor BrickProxy into kernel.remoting");
 	}
 	

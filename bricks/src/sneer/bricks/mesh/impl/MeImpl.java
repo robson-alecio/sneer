@@ -1,6 +1,5 @@
 package sneer.bricks.mesh.impl;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +15,7 @@ import sneer.lego.Startable;
 import wheel.lang.Functor;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.SimpleListReceiver;
+import wheel.reactive.sets.SetSignal;
 
 
 class MeImpl extends AbstractParty implements Me, Startable {
@@ -125,7 +125,7 @@ class MeImpl extends AbstractParty implements Me, Startable {
 	}
 
 	@Override
-	public <B extends Brick> Collection<B> allImmediateContactBrickCounterparts(
+	public <B extends Brick> SetSignal<B> allImmediateContactBrickCounterparts(
 			Class<B> class1) {
 		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	}

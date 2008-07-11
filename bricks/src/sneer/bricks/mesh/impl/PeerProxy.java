@@ -81,7 +81,7 @@ class PeerProxy extends AbstractParty implements SignalPublisher {
 	@Override
 	public ListSignal<Contact> contacts() {
 		if (_contactsCache == null) initContactsCache();
-		return Types.uncheckedGenericCast(_contactsCache.output());
+		return Types.cast(_contactsCache.output());
 	}
 
 	private void initContactsCache() {
@@ -124,7 +124,7 @@ class PeerProxy extends AbstractParty implements SignalPublisher {
 			_brickProxiesByInterface.put(brickInterface, result);
 		}
 		
-		return Types.uncheckedGenericCast(result);
+		return Types.cast(result);
 	}
 
 	@Override

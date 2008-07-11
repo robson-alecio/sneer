@@ -3,7 +3,7 @@ package wheel.lang;
 public class Types {
 
 	@SuppressWarnings("unchecked")
-	public static <T> T uncheckedGenericCast(Object object) {
+	public static <T> T cast(Object object) {
 		return (T)object;
 	}
 

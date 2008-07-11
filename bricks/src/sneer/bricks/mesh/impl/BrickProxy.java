@@ -1,6 +1,6 @@
 package sneer.bricks.mesh.impl;
 
-import static wheel.lang.Types.uncheckedGenericCast;
+import static wheel.lang.Types.cast;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -26,7 +26,7 @@ import wheel.reactive.sets.impl.SetRegisterImpl;
 public class BrickProxy implements InvocationHandler {
 
 	static public <B extends Brick> B createFor(Class<B> brickInterface, SignalPublisher intermediary) {
-		return uncheckedGenericCast(
+		return cast(
 			Proxy.newProxyInstance(
 				BrickProxy.class.getClassLoader(),
 				new Class<?>[]{ brickInterface },
@@ -73,7 +73,7 @@ public class BrickProxy implements InvocationHandler {
 			_registersBySignalName.put(signalName, register);
 			subscribeTo(signalName);
 		}
-		return uncheckedGenericCast(register);
+		return cast(register);
 	}
 
 	
@@ -100,7 +100,7 @@ public class BrickProxy implements InvocationHandler {
 		if (handleListNotification(register, notification)) return;
 		if (handleSetNotification(register, notification)) return;
 		
-		Register<Object> casted = uncheckedGenericCast(register);
+		Register<Object> casted = cast(register);
 		casted.setter().consume(notification);			
 	}
 
@@ -114,8 +114,8 @@ public class BrickProxy implements InvocationHandler {
 	private boolean handleSetNotification(RegisterBase register, Object notification) {
 		if (!(notification instanceof SetValueChange)) return false;
 		
-		SetRegister<Object> castedRegister = uncheckedGenericCast(register);
-		SetValueChange<Object> castedNotification = uncheckedGenericCast(notification);
+		SetRegister<Object> castedRegister = cast(register);
+		SetValueChange<Object> castedNotification = cast(notification);
 
 		castedRegister.change(castedNotification);
 		return true;

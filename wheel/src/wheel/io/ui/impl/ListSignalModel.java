@@ -95,12 +95,12 @@ public class ListSignalModel<T> extends AbstractListModel {
 	}
 
 	private <U> void addReceiverToSignal(Omnivore<?> receiver, Signal<U> signal) {
-		Omnivore<U> castedReceiver = Types.uncheckedGenericCast(receiver);
+		Omnivore<U> castedReceiver = Types.cast(receiver);
 		signal.addReceiver(castedReceiver);
 	}
 	
 	private <U> void removeReceiverFromSignal(Omnivore<?> receiver, Signal<U> signal) {
-		Omnivore<U> casted = Types.uncheckedGenericCast(receiver);
+		Omnivore<U> casted = Types.cast(receiver);
 		signal.removeReceiver(casted);
 	}
 

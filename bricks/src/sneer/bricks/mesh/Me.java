@@ -1,12 +1,11 @@
 package sneer.bricks.mesh;
 
-import java.util.Collection;
-
 import sneer.lego.Brick;
+import wheel.reactive.sets.SetSignal;
 
 
 public interface Me extends Party {
 
-	<B extends Brick> Collection<B> allImmediateContactBrickCounterparts(Class<B> brickType); //Refactor make SetSignal
+	<B extends Brick> SetSignal<B> allImmediateContactBrickCounterparts(Class<B> brickType); //Refactor make SetSignal
 
 }

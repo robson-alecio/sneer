@@ -84,7 +84,9 @@ public class ImageDialog extends JDialog {
 						public void run() {
 							int value = _avatarPreview.area.getValue();
 							keyhole.setPreferredSize(new Dimension(value,value));
+							keyhole.invalidate();
 							keyhole.getParent().validate();
+							keyhole.repaint();
 						}
 					}
 				);	

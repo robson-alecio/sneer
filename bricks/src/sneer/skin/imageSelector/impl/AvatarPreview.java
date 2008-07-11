@@ -1,5 +1,6 @@
 package sneer.skin.imageSelector.impl;
 
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -7,17 +8,21 @@ import java.awt.event.MouseWheelListener;
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSlider;
-import javax.swing.border.BevelBorder;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class AvatarPreview extends JDialog {
+
+	public static final int _WIDTH = 180;
 
 	private static final long serialVersionUID = 1L;
 
@@ -35,28 +40,51 @@ public class AvatarPreview extends JDialog {
 		_imageDialog = imageDialog;
 		resizeAvatarPreview();
 
-		JPanel panel = initPanelArea();
+		JPanel panel = initPrincipalPanel();
+		JInternalFrame iwin;
+		
+		iwin = initInternalFrame(panel,"Picture");
+		iwin.add(cropCheck);
+		
+		initSlider(left, iwin.getContentPane());
+		initSlider(right, iwin.getContentPane());
+		initSlider(botton, iwin.getContentPane());
+		initSlider(top, iwin.getContentPane());
+		
+		right.setInverted(true);
+		botton.setInverted(true);		
+		iwin = initInternalFrame(panel,"Keyhole Size");
+		initAreaSlider(iwin.getContentPane());
 
-		panel.add(cropCheck);
+		iwin = initInternalFrame(panel,"Keyhole Preview");
+
+		addSizeCheck(iwin.getContentPane(), 24);
+		addSizeCheck(iwin.getContentPane(), 32);
+		addSizeCheck(iwin.getContentPane(), 48);
+		addSizeCheck(iwin.getContentPane(), 64);
+		addSizeCheck(iwin.getContentPane(), 128);
+
 		addCropListener();
-
-		initSlider(top, panel);// , "Top Margin");
-		initSlider(botton, panel);// , "Botton Margin");
-		initSlider(left, panel);// , "Left Margin");
-		initSlider(right, panel);// , "Right Margin");
-
-		panel.add(new JSeparator());
-		initAreaSlider(panel);
-
-		addSizeCheck(panel, 24);
-		addSizeCheck(panel, 32);
-		addSizeCheck(panel, 48);
-		addSizeCheck(panel, 64);
-		addSizeCheck(panel, 128);
 	}
 
-	private JPanel initPanelArea() {
+	private JInternalFrame initInternalFrame(JPanel panel, String title) {
+		final JInternalFrame iwin = new JInternalFrame(title);
+		panel.add(iwin);
+		iwin.getContentPane().setLayout(new BoxLayout(iwin.getContentPane(), BoxLayout.PAGE_AXIS));
+		SwingUtilities.invokeLater(
+				new Runnable() {
+					@Override
+					public void run() {
+						iwin.setVisible(true);
+					}
+				}
+		);	
+		return iwin;
+	}
+
+	private JPanel initPrincipalPanel() {
 		JScrollPane scroll = new JScrollPane();
+		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		getContentPane().add(scroll);
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -64,23 +92,27 @@ public class AvatarPreview extends JDialog {
 		return panel;
 	}
 
-	private void initAreaSlider(JPanel panel) {
-		addSliderMouseWheelListener(area);
-		area.setMaximumSize(new Dimension(200, 10));
+	private void initAreaSlider(Container container) {
+		initSlider(area, container);
 		area.setMaximum(500);
-		area.setBorder(new TitledBorder("Picker Area"));
-		panel.add(area);
+		area.setMinimum(24);
+//		area.setMajorTickSpacing(area.getMaximum()/5);
+//		area.setMinorTickSpacing(area.getMaximum()/10);
+		area.setEnabled(true);
 	}
 
-	private void initSlider(final JSlider slider, JPanel panel) {
-		// slider.setBorder(new TitledBorder(title));
-		panel.add(slider);
+	private void initSlider(final JSlider slider, Container container) {
+	    container.add(slider);
 		slider.setMaximumSize(new Dimension(200, 100));
 		addSliderMouseWheelListener(slider);
 		slider.setEnabled(false);
 		slider.setMaximum(10000);
 		slider.setMinimum(0);
 		slider.setValue(1000);
+//		slider.setPaintTicks(true);
+//		slider.setPaintLabels(false);
+//		slider.setMajorTickSpacing(slider.getMaximum()/5);
+//		slider.setMinorTickSpacing(slider.getMaximum()/10);
 	}
 
 	private void addCropListener() {
@@ -109,17 +141,17 @@ public class AvatarPreview extends JDialog {
 		});
 	}
 
-	private void addSizeCheck(JPanel panel, int size) {
-		panel.add(new JSeparator());
-		panel.add(new JCheckBox(size + "x" + size));
+	private void addSizeCheck(Container container, int size) {
+		container.add(new JSeparator());
+		container.add(new JCheckBox(size + "x" + size));
 		MyLabel button = new MyLabel(size);
-		panel.add(button);
+		container.add(button);
 	}
 
 	void resizeAvatarPreview() {
 		int x = 10 + _imageDialog.getLocation().x + _imageDialog.getWidth();
 		int y = _imageDialog.getBounds().y;
-		setBounds(x, y, 180, _imageDialog.getHeight());
+		setBounds(x, y, _WIDTH, _imageDialog.getHeight());
 	}
 }
 
@@ -130,7 +162,7 @@ class MyLabel extends JLabel {
 
 	MyLabel(int size){
 		_size = new Dimension(size,size);
-		setBorder(new BevelBorder(BevelBorder.LOWERED));
+		setBorder(new TitledBorder(""));
 	}
 	
 	@Override

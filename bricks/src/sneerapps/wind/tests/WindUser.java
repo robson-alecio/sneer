@@ -2,6 +2,7 @@ package sneerapps.wind.tests;
 
 import sneer.bricks.keymanager.PublicKey;
 import sneerapps.wind.Environment;
+import sneerapps.wind.Shout;
 import wheel.reactive.sets.SetSignal;
 
 
@@ -12,7 +13,7 @@ public interface WindUser {
 	PublicKey publicKey();
 
 	void shout(String string);
-	SetSignal<String> shoutsHeard();
+	SetSignal<Shout> shoutsHeard();
 
 
 }

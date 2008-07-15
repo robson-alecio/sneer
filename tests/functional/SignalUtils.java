@@ -1,6 +1,7 @@
 package functional;
 
 import wheel.reactive.Signal;
+import wheel.reactive.sets.SetSignal;
 
 public class SignalUtils {
 
@@ -18,5 +19,14 @@ public class SignalUtils {
 			}
 			Thread.yield(); //Optimize
 		}
+	}
+
+	public static <T> void waitForElement(T expected, SetSignal<T> setSignal) {
+
+		while (true) {
+			if (setSignal.currentElements().contains(expected)) return;
+			Thread.yield(); //Optimize
+		}
+		
 	}
 }

@@ -6,6 +6,6 @@ public interface Wind {
 
 	void shout(String phrase);
 
-	SetSignal<String> shoutsHeard();
+	SetSignal<Shout> shoutsHeard();
 
 }

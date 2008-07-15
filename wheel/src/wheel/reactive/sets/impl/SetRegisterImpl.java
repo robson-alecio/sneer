@@ -95,7 +95,10 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 	@Override
 	public void change(SetValueChange<T> change) {
 		synchronized (_contents) {
-			assertValidChange(change);
+			preserveDeltas(change);
+			if (change.elementsAdded().isEmpty() && change.elementsRemoved().isEmpty())
+				return;
+			
 			_contents.addAll(change.elementsAdded());
 			_contents.removeAll(change.elementsRemoved());
 			_output.notifyReceivers(change);
@@ -110,11 +113,9 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 			_size.setter().consume(size);
 	}
 
-	private void assertValidChange(SetValueChange<T> change) {
-		if (change.elementsAdded().removeAll(_contents))
-			throw new IllegalArgumentException("SetSource already contained at least one element being added.");
-		if (!_contents.containsAll(change.elementsRemoved()))
-			throw new IllegalArgumentException("SetSource did not contain all elements being removed.");
+	private void preserveDeltas(SetValueChange<T> change) {
+		change.elementsAdded().removeAll(_contents);
+		change.elementsRemoved().retainAll(_contents);
 	}
 
 }

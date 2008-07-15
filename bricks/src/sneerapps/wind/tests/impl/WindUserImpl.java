@@ -5,11 +5,13 @@ import java.util.Set;
 
 import sneer.bricks.keymanager.KeyManager;
 import sneer.bricks.keymanager.PublicKey;
+import sneer.bricks.serialization.mocks.XStreamBinarySerializer;
 import sneer.lego.Inject;
 import sneerapps.wind.Environment;
 import sneerapps.wind.Shout;
 import sneerapps.wind.Wind;
 import sneerapps.wind.tests.WindUser;
+import wheel.io.serialization.DeepCopier;
 import wheel.lang.Omnivore;
 import wheel.reactive.sets.SetSignal;
 import wheel.reactive.sets.SetSignal.SetValueChange;
@@ -30,22 +32,16 @@ public class WindUserImpl implements WindUser {
 
 	@Override
 	public void connectTo(WindUser peer) {
-		connect(_environment, peer.environment(), peer.publicKey());
-		connect(peer.environment(), _environment, publicKey());
+		connect(_environment, peer.environment());
+		connect(peer.environment(), _environment);
 	}
 
-	private void connect(Environment env1, final Environment env2, final PublicKey pk2) {
+	private void connect(Environment env1, final Environment env2) {
 		Omnivore<SetValueChange<Shout>> receiver = new Omnivore<SetValueChange<Shout>>(){
 			
 			@Override public void consume(SetValueChange<Shout> tupleChange) {
-				for (Shout shout : tupleChange.elementsAdded()) {
-					System.out.println("-------------------");
-					System.out.println("shout " + shout._publisher);
-					System.out.println("to " + pk2);
-					if (shout._publisher.equals(pk2)) return;
-					System.out.println("copied");
-					env2.publish(shout);
-				}
+				for (Shout shout : tupleChange.elementsAdded())
+					env2.publish(DeepCopier.deepCopy(shout, new XStreamBinarySerializer()));
 			}
 		};
 		
@@ -59,7 +55,7 @@ public class WindUserImpl implements WindUser {
 	}
 
 	@Override
-	public SetSignal<String> shoutsHeard() {
+	public SetSignal<Shout> shoutsHeard() {
 		return _wind.shoutsHeard();
 	}
 

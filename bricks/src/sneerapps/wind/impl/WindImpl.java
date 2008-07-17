@@ -39,7 +39,7 @@ class WindImpl implements Wind, Omnivore<Shout> {
 	}
 
 	@Override
-	public Omnivore<Float> hearShoutsWithAffinityGreaterThan() {
+	public Omnivore<Float> minAffinityForHearingShouts() {
 		return _minAffinity.setter();
 	}
 

@@ -22,8 +22,10 @@ public class EnvironmentMock implements Environment {
 			_tupleType = tupleType;
 			_minAffinity = minAffinity;
 
+			if (1 == 2) {
 			_tupleType.toString();
 			_minAffinity.toString();
+			}
 
 		}
 

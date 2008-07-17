@@ -10,6 +10,7 @@ import sneerapps.wind.Shout;
 import sneerapps.wind.Wind;
 import sneerapps.wind.tests.WindUser;
 import wheel.lang.Threads;
+import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.sets.SetSignal;
 
 public class WindUserImpl implements WindUser {
@@ -53,12 +54,12 @@ public class WindUserImpl implements WindUser {
 
 	@Override
 	public void affinityFor(WindUser peer, float percentage) {
-		_wind.hearShoutsWithAffinityGreaterThan().consume(percentage);
+		//throw new NotImplementedYet();
 	}
 
 	@Override
 	public void hearShoutsWithAffinityGreaterThan(float percentage) {
-		_wind.hearShoutsWithAffinityGreaterThan();
+		_wind.minAffinityForHearingShouts().consume(percentage);
 	}
 
 	@Override

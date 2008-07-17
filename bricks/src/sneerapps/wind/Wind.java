@@ -7,7 +7,7 @@ public interface Wind {
 
 	void shout(String phrase);
 
-	Omnivore<Float> hearShoutsWithAffinityGreaterThan();
+	Omnivore<Float> minAffinityForHearingShouts();
 	SetSignal<Shout> shoutsHeard();
 
 }

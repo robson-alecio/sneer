@@ -1,20 +1,16 @@
 package sneerapps.wind.tests.impl;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import sneer.bricks.keymanager.KeyManager;
 import sneer.bricks.keymanager.PublicKey;
-import sneer.bricks.serialization.mocks.XStreamBinarySerializer;
 import sneer.lego.Inject;
 import sneerapps.wind.Environment;
+import sneerapps.wind.Probe;
+import sneerapps.wind.ProbeFactory;
 import sneerapps.wind.Shout;
 import sneerapps.wind.Wind;
 import sneerapps.wind.tests.WindUser;
-import wheel.io.serialization.DeepCopier;
-import wheel.lang.Omnivore;
+import wheel.lang.Threads;
 import wheel.reactive.sets.SetSignal;
-import wheel.reactive.sets.SetSignal.SetValueChange;
 
 public class WindUserImpl implements WindUser {
 
@@ -26,28 +22,19 @@ public class WindUserImpl implements WindUser {
 
 	@Inject
 	static private KeyManager _keyManager;
+
+	@Inject
+	static private ProbeFactory _probeFactory;
 	
-	private final Set<Object> _referenceKeeper = new HashSet<Object>();
-
-
 	@Override
 	public void connectTo(WindUser peer) {
-		connect(_environment, peer.environment());
-		connect(peer.environment(), _environment);
+		Probe myProbe = produceProbeFor(peer);
+		Probe hisProbe = peer.produceProbeFor(this);
+		
+		receiveProbe(hisProbe);
+		peer.receiveProbe(myProbe);
 	}
 
-	private void connect(Environment env1, final Environment env2) {
-		Omnivore<SetValueChange<Shout>> receiver = new Omnivore<SetValueChange<Shout>>(){
-			
-			@Override public void consume(SetValueChange<Shout> tupleChange) {
-				for (Shout shout : tupleChange.elementsAdded())
-					env2.publish(DeepCopier.deepCopy(shout, new XStreamBinarySerializer()));
-			}
-		};
-		
-		env1.subscribe(Shout.class).addSetReceiver(receiver);
-		_referenceKeeper.add(receiver);
-	}
 
 	@Override
 	public void shout(String phrase) {
@@ -60,13 +47,29 @@ public class WindUserImpl implements WindUser {
 	}
 
 	@Override
-	public Environment environment() {
-		return _environment;
+	public PublicKey publicKey() {
+		return _keyManager.ownPublicKey();
 	}
 
 	@Override
-	public PublicKey publicKey() {
-		return _keyManager.ownPublicKey();
+	public void affinityFor(WindUser peer, float percentage) {
+		_wind.hearShoutsWithAffinityGreaterThan().consume(percentage);
+	}
+
+	@Override
+	public void hearShoutsWithAffinityGreaterThan(float percentage) {
+		_wind.hearShoutsWithAffinityGreaterThan();
+	}
+
+	@Override
+	public Probe produceProbeFor(WindUser peer) {
+		return _probeFactory.produceProbeFor(peer.publicKey());
+	}
+
+	@Override
+	public void receiveProbe(Probe probe) {
+		Threads.preventFromBeingGarbageCollected(probe); //Fix This is a leak.
+		probe.startProbing(_environment);
 	}
 
 }

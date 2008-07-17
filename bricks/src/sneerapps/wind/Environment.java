@@ -1,11 +1,12 @@
 package sneerapps.wind;
 
-import wheel.reactive.sets.SetSignal;
+import wheel.lang.Omnivore;
+import wheel.reactive.Signal;
 
 public interface Environment {
 
 	void publish(Object tuple);
 
-	<T> SetSignal<T> subscribe(Class<T> tupleType);
+	<T> void addSubscriber(Omnivore<T> subscriber, Class<T> tupleType, Signal<Float> minAffinity);
 
 }

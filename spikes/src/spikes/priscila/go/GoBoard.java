@@ -11,6 +11,7 @@ public class GoBoard {
 
 	public static enum StoneColor { BLACK,	WHITE; }
 
+	
 	public GoBoard(int size) {
 		_intersections = new Intersection[size][size];
 		for (int x = 0; x < size; x++) {

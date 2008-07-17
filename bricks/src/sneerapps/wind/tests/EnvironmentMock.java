@@ -21,6 +21,10 @@ public class EnvironmentMock implements Environment {
 			_subscriber = subscriber;
 			_tupleType = tupleType;
 			_minAffinity = minAffinity;
+
+			_tupleType.toString();
+			_minAffinity.toString();
+
 		}
 
 		void filterAndNotify(Object tuple) {
@@ -39,8 +43,10 @@ public class EnvironmentMock implements Environment {
 			subscription.filterAndNotify(tuple);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> void addSubscriber(Omnivore<T> subscriber, Class<T> tupleType,	Signal<Float> minAffinity) {
+		System.err.println("EnvMock - Remove this cast warning");
 		_subscriptions.add(new Subscription((Omnivore<Object>)subscriber, tupleType, minAffinity));
 	}
 

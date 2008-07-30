@@ -15,13 +15,14 @@ public class SignalUtils {
 			String message = "Expected: " + expectedValue + " Found: " + signal.currentValue();
 			if (!message.equals(previousMessage)) {
 				previousMessage = message;
-				//System.out.println(message);
+				System.out.println(message);
 			}
 			Thread.yield(); //Optimize
 		}
 	}
 
 	public static <T> void waitForElement(T expected, SetSignal<T> setSignal) {
+		System.out.println("Expected: " + expected);
 
 		while (true) {
 			if (setSignal.currentElements().contains(expected)) return;

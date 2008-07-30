@@ -9,5 +9,5 @@ public interface ConnectionManager {
 
 	void manageOutgoingSocket(Contact contact, ByteArraySocket socket);
 
-	Connection connectionFor(Contact contact);
+	ByteConnection connectionFor(Contact contact);
 }

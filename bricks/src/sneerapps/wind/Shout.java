@@ -2,23 +2,22 @@ package sneerapps.wind;
 
 import sneer.bricks.keymanager.PublicKey;
 
-public class Shout {
+public class Shout extends Tuple {
 
-	public final String _phrase;
-	public final PublicKey _publisher;
+	public final String phrase;
 
-	public Shout(String phrase, PublicKey publisher) {
-		_phrase = phrase;
-		_publisher = publisher;
+	public Shout(String pPhrase, PublicKey pPublisher) {
+		super(pPublisher);
+		phrase = pPhrase;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((_phrase == null) ? 0 : _phrase.hashCode());
+		result = prime * result + ((phrase == null) ? 0 : phrase.hashCode());
 		result = prime * result
-				+ ((_publisher == null) ? 0 : _publisher.hashCode());
+				+ ((publisher == null) ? 0 : publisher.hashCode());
 		return result;
 	}
 
@@ -31,18 +30,22 @@ public class Shout {
 		if (getClass() != obj.getClass())
 			return false;
 		Shout other = (Shout) obj;
-		if (_phrase == null) {
-			if (other._phrase != null)
+		if (phrase == null) {
+			if (other.phrase != null)
 				return false;
-		} else if (!_phrase.equals(other._phrase))
+		} else if (!phrase.equals(other.phrase))
 			return false;
-		if (_publisher == null) {
-			if (other._publisher != null)
+		if (publisher == null) {
+			if (other.publisher != null)
 				return false;
-		} else if (!_publisher.equals(other._publisher))
+		} else if (!publisher.equals(other.publisher))
 			return false;
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return phrase;
+	}
 
 }

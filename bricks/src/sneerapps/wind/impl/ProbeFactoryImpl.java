@@ -1,29 +1,36 @@
 package sneerapps.wind.impl;
 
 import sneer.bricks.keymanager.PublicKey;
-import sneer.bricks.serialization.mocks.XStreamBinarySerializer;
 import sneer.lego.Inject;
-import sneerapps.wind.Environment;
+import sneerapps.wind.ConnectionSide;
+import sneerapps.wind.TupleSpace;
 import sneerapps.wind.Probe;
 import sneerapps.wind.ProbeFactory;
-import wheel.io.serialization.DeepCopier;
+import sneerapps.wind.Tuple;
 import wheel.lang.Omnivore;
+import wheel.lang.Threads;
 
-public class ProbeFactoryImpl implements ProbeFactory, Omnivore<Object> {
+public class ProbeFactoryImpl implements ProbeFactory {
 
-	private static final XStreamBinarySerializer SERIALIZER = new XStreamBinarySerializer();
+	private class TupleReceiver implements Omnivore<Object> { @Override public void consume(Object tuple) {
+		_environment.publish((Tuple)tuple);
+	}}
 	
 	@Inject
-	static private Environment _environment;
+	static private TupleSpace _environment;
+
 
 	@Override
-	public Probe produceProbeFor(PublicKey peerPK) {
-		return new ProbeImpl(this);
+	public Probe createProbeFor(PublicKey peerPK, ConnectionSide mySide) {
+		mySide.registerReceiver(createReceiver());
+		return new ProbeImpl();
 	}
 
-	@Override
-	public void consume(Object tuple) {
-		_environment.publish(DeepCopier.deepCopy(tuple, SERIALIZER));
+
+	private TupleReceiver createReceiver() {
+		TupleReceiver receiver = new TupleReceiver();
+		Threads.preventFromBeingGarbageCollected(receiver); //Fix this is a leak;
+		return receiver;
 	}
 
 }

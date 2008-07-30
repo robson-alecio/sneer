@@ -3,7 +3,7 @@ package sneer.bricks.connection;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 
-public interface Connection {
+public interface ByteConnection {
 
 	Signal<Boolean> isOnline();
 

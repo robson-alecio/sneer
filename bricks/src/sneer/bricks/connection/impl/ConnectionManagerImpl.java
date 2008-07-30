@@ -3,7 +3,7 @@ package sneer.bricks.connection.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.bricks.connection.Connection;
+import sneer.bricks.connection.ByteConnection;
 import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.network.ByteArraySocket;
@@ -15,7 +15,7 @@ public class ConnectionManagerImpl implements ConnectionManager {
 	@Inject
 	private OwnNameKeeper _nameKeeper;
 
-	private final Map<Contact, Connection> _connectionsByContact = new HashMap<Contact, Connection>();
+	private final Map<Contact, ByteConnection> _connectionsByContact = new HashMap<Contact, ByteConnection>();
 
 
 	@Override

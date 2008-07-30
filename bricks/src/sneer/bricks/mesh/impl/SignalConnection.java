@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import sneer.bricks.connection.Connection;
+import sneer.bricks.connection.ByteConnection;
 import sneer.bricks.connection.ConnectionManager;
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.keymanager.KeyManager;
@@ -41,7 +41,7 @@ class SignalConnection implements Visitable {
 	@Inject
 	static private Logger _logger;
 
-	private final Connection _connection;
+	private final ByteConnection _connection;
 
 	private final PriorityQueue<byte[]> _priorityQueue = new PriorityQueue<byte[]>(10);
 

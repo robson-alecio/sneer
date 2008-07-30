@@ -3,7 +3,7 @@ package sneer.bricks.connection.impl;
 import java.io.IOException;
 import java.util.Arrays;
 
-import sneer.bricks.connection.Connection;
+import sneer.bricks.connection.ByteConnection;
 import sneer.bricks.contacts.Contact;
 import sneer.bricks.keymanager.KeyManager;
 import sneer.bricks.log.Logger;
@@ -16,7 +16,7 @@ import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 
-class ConnectionImpl implements Connection {
+class ConnectionImpl implements ByteConnection {
 
 	@Inject
 	static private KeyManager _keyManager;

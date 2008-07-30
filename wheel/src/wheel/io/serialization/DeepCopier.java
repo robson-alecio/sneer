@@ -7,7 +7,12 @@ import java.io.InputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 
+import sneer.bricks.serialization.mocks.XStreamBinarySerializer;
+
 public class DeepCopier {
+	
+	private static final XStreamBinarySerializer XSTREAM_SERIALIZER = new XStreamBinarySerializer();
+
 	
 	/**
 	 * Same as deepCopy(original, new JavaSerializer()).
@@ -16,7 +21,7 @@ public class DeepCopier {
 	 * 
 	 */
 	public static <T> T deepCopy(T original) {
-	    return deepCopy(original, new JavaSerializer());
+	    return deepCopy(original, XSTREAM_SERIALIZER);
 	}
 
 	/**

@@ -1,9 +1,10 @@
 package sneerapps.wind;
 
 import sneer.bricks.keymanager.PublicKey;
+import sneerapps.wind.ConnectionSide;
 
 public interface ProbeFactory {
 
-	Probe produceProbeFor(PublicKey peerPK);
+	Probe createProbeFor(PublicKey peerPK, ConnectionSide mySide);
 
 }

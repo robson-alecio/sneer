@@ -2,7 +2,7 @@ package sneerapps.wind.impl;
 
 import sneer.bricks.keymanager.KeyManager;
 import sneer.lego.Inject;
-import sneerapps.wind.Environment;
+import sneerapps.wind.TupleSpace;
 import sneerapps.wind.Shout;
 import sneerapps.wind.Wind;
 import wheel.lang.Omnivore;
@@ -15,7 +15,7 @@ import wheel.reactive.sets.impl.SetRegisterImpl;
 class WindImpl implements Wind, Omnivore<Shout> {
 
 	@Inject
-	static private Environment _environment;
+	static private TupleSpace _environment;
 	
 	@Inject
 	static private KeyManager _keyManager;
@@ -25,7 +25,7 @@ class WindImpl implements Wind, Omnivore<Shout> {
 	private SetRegister<Shout> _shoutsHeard = new SetRegisterImpl<Shout>();
 
 	{
-		_environment.addSubscriber(this, Shout.class, _minAffinity.output());
+		_environment.addSubscription(this, Shout.class, _minAffinity.output());
 	}
 
 	@Override
@@ -46,6 +46,7 @@ class WindImpl implements Wind, Omnivore<Shout> {
 	@Override
 	public void consume(Shout shout) {
 		_shoutsHeard.add(shout);
+		System.out.println("Shout heard: " + shout);
 	}
 
 

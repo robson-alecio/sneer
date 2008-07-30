@@ -3,14 +3,19 @@ package sneerapps.wind.tests.impl;
 import sneer.bricks.keymanager.KeyManager;
 import sneer.bricks.keymanager.PublicKey;
 import sneer.lego.Inject;
-import sneerapps.wind.Environment;
+import sneerapps.wind.AffinityManager;
+import sneerapps.wind.ConnectionSide;
+import sneerapps.wind.TupleSpace;
 import sneerapps.wind.Probe;
 import sneerapps.wind.ProbeFactory;
 import sneerapps.wind.Shout;
 import sneerapps.wind.Wind;
+import sneerapps.wind.tests.DeepCopyingConnection;
 import sneerapps.wind.tests.WindUser;
+import wheel.io.serialization.DeepCopier;
 import wheel.lang.Threads;
-import wheel.lang.exceptions.NotImplementedYet;
+import wheel.reactive.Signal;
+import wheel.reactive.impl.Adder;
 import wheel.reactive.sets.SetSignal;
 
 public class WindUserImpl implements WindUser {
@@ -19,21 +24,35 @@ public class WindUserImpl implements WindUser {
 	static private Wind _wind;
 	
 	@Inject
-	static private Environment _environment;
+	static private TupleSpace _environment;
 
 	@Inject
 	static private KeyManager _keyManager;
 
 	@Inject
+	static private AffinityManager _affinityManager;
+
+	@Inject
 	static private ProbeFactory _probeFactory;
 	
 	@Override
-	public void connectTo(WindUser peer) {
-		Probe myProbe = produceProbeFor(peer);
-		Probe hisProbe = peer.produceProbeFor(this);
+	public Signal<Integer> connectAndCountTrafficTo(WindUser peer) {
+		Signal<Integer> counter1 = unidirectionalConnect(this, peer);
+		Signal<Integer> counter2 = unidirectionalConnect(peer, this);
+		return new Adder(counter1, counter2).output();
+	}
+
+
+	private Signal<Integer> unidirectionalConnect(WindUser a, WindUser b) {
+		DeepCopyingConnection connection = new DeepCopyingConnection();
 		
-		receiveProbe(hisProbe);
-		peer.receiveProbe(myProbe);
+		Probe probe = a.createProbeFor(b, connection.sideA());
+		Probe copy = DeepCopier.deepCopy(probe);
+		b.receiveProbe(copy, connection.sideB());
+
+		a.setAffinityFor(b, 10f);
+		
+		return connection.trafficCounter();
 	}
 
 
@@ -53,8 +72,8 @@ public class WindUserImpl implements WindUser {
 	}
 
 	@Override
-	public void affinityFor(WindUser peer, float percentage) {
-		//throw new NotImplementedYet();
+	public void setAffinityFor(WindUser peer, float percentage) {
+		_affinityManager.setAffinityFor(peer.publicKey(), percentage);
 	}
 
 	@Override
@@ -63,14 +82,19 @@ public class WindUserImpl implements WindUser {
 	}
 
 	@Override
-	public Probe produceProbeFor(WindUser peer) {
-		return _probeFactory.produceProbeFor(peer.publicKey());
+	public Probe createProbeFor(WindUser peer, ConnectionSide localSide) {
+		return _probeFactory.createProbeFor(peer.publicKey(), localSide);
 	}
 
 	@Override
-	public void receiveProbe(Probe probe) {
+	public void receiveProbe(Probe probe, ConnectionSide localSide) {
 		Threads.preventFromBeingGarbageCollected(probe); //Fix This is a leak.
-		probe.startProbing(_environment);
+		probe.startProbing(_environment, localSide);
+	}
+
+	@Override
+	public float affinityFor(WindUser peer) {
+		return _affinityManager.affinityFor(peer.publicKey());
 	}
 
 }

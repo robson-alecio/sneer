@@ -101,8 +101,11 @@ public class Keyhole extends JComponent {
 				y0 = bounds.y;
 			}
 			
-			int x1 = x0+getWidth();
-			int y1 = y0+getHeight();
+			int x1 = _mouseLocation.x-_layeredPaneLocation.x;
+			int y1 = _mouseLocation.y-_layeredPaneLocation.y;
+			bounds.setSize(bounds.width+bounds.x, bounds.height+bounds.y);
+			bounds.setLocation(0,0);
+			
 			if(!bounds.contains(new Point(x1, bounds.y))){
 				x0 = bounds.x+bounds.width-getWidth();
 			}
@@ -114,7 +117,6 @@ public class Keyhole extends JComponent {
 		//verify window bounds
 		if(x0<0)x0=0;
 		if(y0<0)y0=0;
-		
 		super.setLocation(x0, y0);
 	};
 	

@@ -59,7 +59,9 @@ public class Keyhole extends JComponent {
 
 	private BufferedImage getHoleSorceImage() {
 		Point holeLocation = getLocationOnScreen();
-		BufferedImage buffer = robot.createScreenCapture(new Rectangle(holeLocation.x,holeLocation.y,getWidth(), getHeight()));
+		BufferedImage buffer = robot.createScreenCapture(
+			new Rectangle(holeLocation.x+2, holeLocation.y+2,
+						  getWidth()-4, getHeight()-4));
 		return buffer;
 	}
 

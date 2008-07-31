@@ -47,7 +47,6 @@ public class TransparentPanel extends JPanel implements ComponentListener,
 			robot = new Robot();
 		} catch (AWTException e) {
 			e.printStackTrace();
-			return;
 		}
 
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -72,10 +71,9 @@ public class TransparentPanel extends JPanel implements ComponentListener,
 		}
 	}
 
-
-
 	public void updateBackground() {
 		screenImg = robot.createScreenCapture(screenRect);
+		
 	}
 
 	protected void refresh() {

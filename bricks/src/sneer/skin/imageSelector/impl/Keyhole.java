@@ -1,133 +1,117 @@
 package sneer.skin.imageSelector.impl;
-import java.awt.AlphaComposite;
-import java.awt.Component;
-import java.awt.Container;
+import java.awt.AWTException;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.Point;
-import java.awt.Transparency;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLayeredPane;
 import javax.swing.border.BevelBorder;
 
+import sneer.skin.image.ImageFactory;
+
 public class Keyhole extends JComponent {
     private static final long serialVersionUID = 1L;
-    private JLayeredPane _layeredPane;
-    private BufferedImage _buffer;
 	private AvatarPreview _avatarPreview;
+	private Point _mouseLocation;
+	private Point _layeredPaneLocation;
+	private Robot robot;
+	private final ImageFactory _imageFactory;
 	
-    public Keyhole(JLayeredPane layeredPane, AvatarPreview avatarPreview) {
-    	_layeredPane = layeredPane;
+    public Keyhole(JLayeredPane layeredPane, AvatarPreview avatarPreview, ImageFactory imageFactory) {
 		_avatarPreview = avatarPreview;
+		_imageFactory = imageFactory;
     	setBorder(new BevelBorder(BevelBorder.LOWERED));
     	setPreferredSize(new Dimension(128,128));
         addMouseListeners(layeredPane);
-        addBufferListener();
+		try {
+			robot = new Robot();
+		} catch (AWTException e) {
+			e.printStackTrace();
+		}
     }   
-    
-    @Override
+
+	@Override
     public void setPreferredSize(Dimension preferredSize) {
     	super.setPreferredSize(preferredSize);
-    	_avatarPreview.area.setValue((int) preferredSize.getHeight());
+    	_avatarPreview._area.setValue((int) preferredSize.getHeight());
     	
     }
-    
-	private void addBufferListener() {
-		addComponentListener(new ComponentAdapter() {
-            @Override
-			public void componentHidden(ComponentEvent componentEvent) {
-            	_buffer = null;
-            }
-            @Override
-			public void componentResized(ComponentEvent componentEvent) {
-            	_buffer = null;
-            }
-        });
+
+	private void captureAvatar() {
+		BufferedImage buffer = getHoleSorceImage();
+		List<MyLabel> avatars = _avatarPreview._avatarList;
+		for (MyLabel avatar : avatars) {
+			ImageIcon icon = new ImageIcon(
+				_imageFactory.getScaledInstance(buffer, (int)avatar._size.getWidth(), (int)avatar._size.getHeight()));
+			avatar.setIcon(icon);
+		}
 	}
 
-	private void addMouseListeners(JLayeredPane layeredPane) {
-		layeredPane.addMouseMotionListener(new MouseMotionAdapter() {
-            @Override
-			public void mouseMoved(MouseEvent e) {
-                Point location = e.getPoint();
-                location.translate(-getWidth() / 2, -getHeight() / 2);
-                setTrueLocation(location);
-            }
-        });
+	private BufferedImage getHoleSorceImage() {
+		Point holeLocation = getLocationOnScreen();
+		BufferedImage buffer = robot.createScreenCapture(new Rectangle(holeLocation.x,holeLocation.y,getWidth(), getHeight()));
+		return buffer;
+	}
+
+	private void addMouseListeners(final JLayeredPane layeredPane) {
+		MouseAdapter clickListener = new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				captureAvatar();
+			}
+		};
+		addMouseListener(clickListener);
+		layeredPane.addMouseListener(clickListener);
 		
+		MouseMotionAdapter mouseMotionListener = new MouseMotionAdapter() {
+		    @Override
+			public void mouseMoved(MouseEvent e) {
+		       _mouseLocation = e.getLocationOnScreen();
+		       _layeredPaneLocation = layeredPane.getLocationOnScreen();
+		       setTrueLocation();
+		    }
+		};
+		
+		layeredPane.addMouseMotionListener(mouseMotionListener);		
+		addMouseMotionListener(mouseMotionListener);		
+				
 		layeredPane.addMouseWheelListener(
 			new MouseWheelListener(){
 				@Override
 				public void mouseWheelMoved(MouseWheelEvent e) {
-					int notches = e.getWheelRotation()*5;
+					int notches = e.getWheelRotation() * 5;
 					int size = getPreferredSize().width - notches;
-					if(size<24)
-						size=24;
+					if (size < 24)
+						size = 24;
 					
-					setPreferredSize(new Dimension(size,size));
+					setPreferredSize(new Dimension(size, size));
+					setTrueLocation();
 					getParent().validate();
 				}
 			}
 		);
 	}
 	
-	private void setTrueLocation(Point location) {
-		super.setLocation(location.x, location.y);
+	private void setTrueLocation() {
+		int ix = _mouseLocation.x-_layeredPaneLocation.x-getWidth();
+		int iy = _mouseLocation.y-_layeredPaneLocation.y-getHeight();
+		if(ix<0)ix=0;
+		if(iy<0)iy=0;
+		super.setLocation(ix, iy);
 	};
 	
 	@Override
 	public void setLocation(int x, int y) {
 		//ignore
 	};
-	
-	@Override
-    protected void paintComponent(Graphics g) {
-        if (_buffer == null) {
-            _buffer = createBuffer();
-        }
-        
-        Graphics2D g2 = _buffer.createGraphics();
-        g2.setComposite(AlphaComposite.Clear);
-        g2.fillRect(0, 0, _buffer.getWidth(), _buffer.getHeight());
-        g2.setComposite(AlphaComposite.Src);
-
-        Point location = getLocation();
-        location.translate(getWidth() / 2, getHeight() / 2);
-        
-        int myLayer = JLayeredPane.getLayer(this);
-        for (int i = myLayer - 1; i >= 2; i -= 2) {
-            Component[] components = _layeredPane.getComponentsInLayer(i);
-            for (Component c : components) {
-                if (c.getBounds().contains(location)) {
-                    g2.translate(c.getX(), c.getY());
-                    c.paint(g2);
-                    g2.translate(-c.getX(), -c.getY());
-                }
-            }
-        }
-        
-        g2.dispose();  
-    }
-    
-    private BufferedImage createBuffer() {
-        GraphicsEnvironment local = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice device = local.getDefaultScreenDevice();
-        GraphicsConfiguration config = device.getDefaultConfiguration();
-        
-        Container parent = getParent();
-        return config.createCompatibleImage(parent.getWidth(), parent.getHeight(),
-                Transparency.TRANSLUCENT);
-    }
 }

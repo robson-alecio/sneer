@@ -73,16 +73,16 @@ public class ImageDialog extends JDialog {
 		_picture.setIcon(icon);
 		_layeredPane.setLayout(new FlowLayout());    
         _layeredPane.add(_picture, JLayeredPane.DEFAULT_LAYER);
-        final Keyhole keyhole = new Keyhole(_layeredPane, _avatarPreview);
+        final Keyhole keyhole = new Keyhole(_layeredPane, _avatarPreview, _imageFactory);
         
-        _avatarPreview.area.getModel().addChangeListener(new ChangeListener(){
+        _avatarPreview._area.getModel().addChangeListener(new ChangeListener(){
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				SwingUtilities.invokeLater(
 					new Runnable() {
 						@Override
 						public void run() {
-							int value = _avatarPreview.area.getValue();
+							int value = _avatarPreview._area.getValue();
 							keyhole.setPreferredSize(new Dimension(value,value));
 							keyhole.invalidate();
 							keyhole.getParent().validate();

@@ -58,23 +58,23 @@ class Picture extends JLabel{
 		    }
 
 			private double getRight() {
-				return getDoubleValue(_avatarPreview.right.getValue());
+				return getDoubleValue(_avatarPreview._right.getValue());
 			}
 
 			private double getLeft() {
-				return getDoubleValue(_avatarPreview.left.getValue());
+				return getDoubleValue(_avatarPreview._left.getValue());
 			}
 
 			private double getBotton() {
-				return getDoubleValue(_avatarPreview.botton.getValue());
+				return getDoubleValue(_avatarPreview._botton.getValue());
 			}
 
 			private double getTop() {
-				return getDoubleValue(_avatarPreview.top.getValue());
+				return getDoubleValue(_avatarPreview._top.getValue());
 			}
 			
 			private double getDoubleValue(double value) {
-				if(_avatarPreview.cropCheck.isSelected())
+				if(_avatarPreview._cropCheck.isSelected())
 					return (value/10000);
 				return 0;
 			}
@@ -89,10 +89,10 @@ class Picture extends JLabel{
 				repaint();
 			}
 		};
-		_avatarPreview.top.getModel().addChangeListener(changeListener);
-		_avatarPreview.botton.getModel().addChangeListener(changeListener);
-		_avatarPreview.left.getModel().addChangeListener(changeListener);
-		_avatarPreview.right.getModel().addChangeListener(changeListener);
-		_avatarPreview.cropCheck.getModel().addChangeListener(changeListener);
+		_avatarPreview._top.getModel().addChangeListener(changeListener);
+		_avatarPreview._botton.getModel().addChangeListener(changeListener);
+		_avatarPreview._left.getModel().addChangeListener(changeListener);
+		_avatarPreview._right.getModel().addChangeListener(changeListener);
+		_avatarPreview._cropCheck.getModel().addChangeListener(changeListener);
 	}
 }

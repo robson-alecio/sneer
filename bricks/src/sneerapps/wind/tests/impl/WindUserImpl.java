@@ -77,6 +77,11 @@ public class WindUserImpl implements WindUser {
 	}
 
 	@Override
+	public float affinityFor(WindUser peer) {
+		return _affinityManager.affinityFor(peer.publicKey());
+	}
+	
+	@Override
 	public void hearShoutsWithAffinityGreaterThan(float percentage) {
 		_wind.minAffinityForHearingShouts().consume(percentage);
 	}
@@ -90,11 +95,6 @@ public class WindUserImpl implements WindUser {
 	public void receiveProbe(Probe probe, ConnectionSide localSide) {
 		Threads.preventFromBeingGarbageCollected(probe); //Fix This is a leak.
 		probe.startProbing(_environment, localSide);
-	}
-
-	@Override
-	public float affinityFor(WindUser peer) {
-		return _affinityManager.affinityFor(peer.publicKey());
 	}
 
 }

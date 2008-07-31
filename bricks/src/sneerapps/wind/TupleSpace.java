@@ -9,4 +9,6 @@ public interface TupleSpace {
 
 	<T extends Tuple> void addSubscription(Omnivore<T> subscriber, Class<T> tupleType, Signal<Float> minAffinity);
 
+	<T extends Tuple> Iterable<T> tuples(Class<T> tupleType);
+
 }

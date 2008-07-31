@@ -34,7 +34,6 @@ public class WindTest {
 		cid.setAffinityFor(bob, 70);
 		
 		assertFloat(90f, ana.affinityFor(bob));
-		assertFloat(90f, ana.affinityFor(bob));
 		assertFloat(30f, bob.affinityFor(ana));
 		assertFloat(10f, bob.affinityFor(cid));
 		assertFloat(70f, cid.affinityFor(bob));

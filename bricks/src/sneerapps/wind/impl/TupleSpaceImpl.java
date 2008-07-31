@@ -1,17 +1,19 @@
 package sneerapps.wind.impl;
 
+import static wheel.lang.Types.cast;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import sneer.lego.Inject;
 import sneerapps.wind.AffinityManager;
-import sneerapps.wind.TupleSpace;
 import sneerapps.wind.Tuple;
+import sneerapps.wind.TupleSpace;
 import wheel.lang.Omnivore;
 import wheel.lang.Types;
-import static wheel.lang.Types.cast;
 import wheel.reactive.Signal;
 
 public class TupleSpaceImpl implements TupleSpace {
@@ -48,7 +50,7 @@ public class TupleSpaceImpl implements TupleSpace {
 
 	}
 
-	private final Set<Object> _tuples = new HashSet<Object>();
+	private final Set<Tuple> _tuples = new HashSet<Tuple>();
 	private final List<Subscription> _subscriptions = new ArrayList<Subscription>();
 
 	@Override
@@ -63,6 +65,20 @@ public class TupleSpaceImpl implements TupleSpace {
 	@Override
 	public <T extends Tuple> void addSubscription(Omnivore<T> subscriber,	Class<T> tupleType, Signal<Float> minAffinity) {
 		_subscriptions.add(new Subscription(subscriber, tupleType, minAffinity));
+	}
+
+
+	@Override
+	public <T extends Tuple> Iterable<T> tuples(Class<T> tupleType) {
+		Collection<T> result = new ArrayList<T>();
+		
+		for (Tuple candidate : _tuples)
+			if (Types.instanceOf(candidate, tupleType)) {
+				T casted = cast(candidate);
+				result.add(casted);
+			}
+		
+		return result;
 	}
 
 

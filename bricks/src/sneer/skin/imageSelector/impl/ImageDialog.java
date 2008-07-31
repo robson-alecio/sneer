@@ -30,6 +30,8 @@ public class ImageDialog extends JDialog {
 	private int _preferredHeight;
 	private int _preferredWidth;
 
+	Keyhole _keyhole;
+
     public ImageDialog(File file, ImageFactory imageFactory) {
     	_file = file;
     	_imageFactory = imageFactory;
@@ -73,7 +75,7 @@ public class ImageDialog extends JDialog {
 		_picture.setIcon(icon);
 		_layeredPane.setLayout(new FlowLayout());    
         _layeredPane.add(_picture, JLayeredPane.DEFAULT_LAYER);
-        final Keyhole keyhole = new Keyhole(_layeredPane, _avatarPreview, _imageFactory);
+        _keyhole = new Keyhole(_layeredPane, _avatarPreview, _imageFactory);
         
         _avatarPreview._area.getModel().addChangeListener(new ChangeListener(){
 			@Override
@@ -83,17 +85,17 @@ public class ImageDialog extends JDialog {
 						@Override
 						public void run() {
 							int value = _avatarPreview._area.getValue();
-							keyhole.setPreferredSize(new Dimension(value,value));
-							keyhole.invalidate();
-							keyhole.getParent().validate();
-							keyhole.repaint();
+							_keyhole.setPreferredSize(new Dimension(value,value));
+							_keyhole.invalidate();
+							_keyhole.getParent().validate();
+							_keyhole.repaint();
 						}
 					}
 				);	
 			}}
 		);
         
-    	_layeredPane.add(keyhole, JLayeredPane.POPUP_LAYER);
+    	_layeredPane.add(_keyhole, JLayeredPane.POPUP_LAYER);
     	
     	//resize window
 		setSize(new Dimension(icon.getIconWidth(),icon.getIconHeight()));

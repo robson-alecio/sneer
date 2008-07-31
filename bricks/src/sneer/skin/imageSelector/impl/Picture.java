@@ -45,39 +45,18 @@ class Picture extends JLabel{
 			public void paint(Graphics g, JComponent c) {
 				old.paint(g, c);
 		        g.setColor(new Color(50, 50, 50, 150));
-		        
-		        int top2 = (int) (c.getHeight()*getTop());
-		        int botton2 = (int) (c.getHeight()*(1-getBotton()));
+		        		        
+		        int top = _avatarPreview.getTopCropLocation();
+		        int botton = _avatarPreview.getBottonCropLocation();
+		        int left = _avatarPreview.getLeftCropLocation();
+		        int right = _avatarPreview.getRightCropLocation();
 
-		        g.fillRect(0, 0, c.getWidth(), top2);
-				g.fillRect(0, botton2, c.getWidth(), c.getHeight());
-				
-		        g.fillRect(0, top2, (int) (c.getWidth()*getLeft()), botton2-top2);
-				g.fillRect((int) (c.getWidth()*(1-getRight())), top2, c.getWidth(), botton2-top2);
+		        g.fillRect(0, 0, c.getWidth(), top);
+				g.fillRect(0, botton, c.getWidth(), c.getHeight());
+				g.fillRect(0, top, left, botton-top);
+				g.fillRect(right, top, c.getWidth(), botton-top);
 		        
 		    }
-
-			private double getRight() {
-				return getDoubleValue(_avatarPreview._right.getValue());
-			}
-
-			private double getLeft() {
-				return getDoubleValue(_avatarPreview._left.getValue());
-			}
-
-			private double getBotton() {
-				return getDoubleValue(_avatarPreview._botton.getValue());
-			}
-
-			private double getTop() {
-				return getDoubleValue(_avatarPreview._top.getValue());
-			}
-			
-			private double getDoubleValue(double value) {
-				if(_avatarPreview._cropCheck.isSelected())
-					return (value/10000);
-				return 0;
-			}
 		};
 		super.setUI(wrapper);
 	}

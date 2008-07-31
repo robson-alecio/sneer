@@ -121,6 +121,7 @@ public class AvatarPreview extends JDialog {
 				_botton.setEnabled(_cropCheck.isSelected());
 				_left.setEnabled(_cropCheck.isSelected());
 				_right.setEnabled(_cropCheck.isSelected());
+				_imageDialog._keyhole.setTrueLocation();
 			}
 		});
 	}
@@ -150,6 +151,28 @@ public class AvatarPreview extends JDialog {
 		int x = 10 + _imageDialog.getLocation().x + _imageDialog.getWidth();
 		int y = _imageDialog.getBounds().y;
 		setBounds(x, y, _WIDTH, _imageDialog.getHeight());
+	}
+	
+	public int getRightCropLocation() {
+		return (int)(_imageDialog.getWidth()*(1-getDoubleValue(_right.getValue())));
+	}
+
+	public int getLeftCropLocation() {
+		return (int)(_imageDialog.getWidth()*getDoubleValue(_left.getValue()));
+	}
+
+	public int getBottonCropLocation() {
+		return (int)(_imageDialog.getHeight()*(1-getDoubleValue(_botton.getValue())));
+	}
+
+	public int getTopCropLocation() {
+		return (int)(_imageDialog.getHeight()*getDoubleValue(_top.getValue()));
+	}
+	
+	private double getDoubleValue(double value) {
+		if(_cropCheck.isSelected())
+			return (value/10000);
+		return 0;
 	}
 }
 

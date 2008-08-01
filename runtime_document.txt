@@ -1,0 +1,72 @@
+Installation
+==============
+
+For All Environments (Linux, Mac, Windows, etc)
+	- User installs JRE6 if not installed already
+	- User runs Sneer.jar directly.
+
+Alternative For Windows
+	- User runs sneer-install.exe
+		- JRE6 is detected and installed if not present
+		- Sneer.jar is installed
+		- Shortcuts to Sneer.jar are created
+		- Sneer.jar is run 
+
+
+Execution of Sneer.jar
+========================
+
+The manifest file points to Boot.class as the main class
+
+The Boot class is run. It is compiled for Java1 so it can run on any version of Java since Java1.
+	- The version of Java is detected.
+		- If it is not Java6, an error message box is displayed and the system is exited.
+	- The KernelJockey class is run.
+
+The KernelJockey class runs in a loop. Its only purpose is to run new versions of the Sneer kernel without the user having to restart the VM. Most changes to Sneer, though, are to bricks and do not affect the kernel. They do not require this complete restart of the kernel.  
+	- The latest "version jar" (find a better name) is detected (in what directory?).
+		- If the directory does not exist or if there are no versions, Sneer.jar itself is considered the latest version.
+	- Kernel.class in the latest "version jar" is run in a separate, class-garbage-collectable classloader.
+	- When the thread returns, the KernelJockey loops back to the start, so if a new "version jar" was downloaded by an auto-update feature, for example, it will now be run 
+		(what if other threads are still running? can we even detect that?)
+		- The classloader from the previous Sneer run is de-referenced so that all its classes and instances are GCd.
+
+
+Execution of the Kernel
+=========================
+
+Apache Commons and Wheel are included in the jar, so all other code, including the kernel, sneer bricks and community bricks, can use it.
+	- (Is Apache Commons safe? Check for calls to doPriviledged() )
+
+Kernel.class runs
+	- The lego container is started.
+	- Bricks are loaded from persistence (Prevayler?)
+	- The ThreadPool brick is given the breath of life (it is called in a thread). All other active bricks get the breath of life from the thread pool.
+
+Publishing a set of bricks
+	- ...
+	- The constructor for the brick is called
+	- ...
+
+"Me Too" - Downloading a set of bricks from a peer
+	- ...  
+	- The constructor for the brick is called
+	- ...
+
+Kernel auto-update
+	- The new "version jar" is downloaded
+	- Its signature is compared to the public-key of the Sneer project.
+	- The user is prompted
+	- At the user's command the Kernel simply stops running all threads and returns
+
+
+Normal Termination
+====================
+
+The Main Menu brick (?) calls System.exit() whenever the user feels like it. All Sneer components are crash-only.
+
+
+Abnormal Termination
+======================
+
+	- (Exceptions? Errors? How to deal with them?)

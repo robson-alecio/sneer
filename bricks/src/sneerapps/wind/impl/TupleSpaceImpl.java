@@ -8,11 +8,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import sneer.bricks.keymanager.PublicKey;
 import sneer.lego.Inject;
 import sneerapps.wind.AffinityManager;
 import sneerapps.wind.Tuple;
 import sneerapps.wind.TupleSpace;
 import wheel.lang.Omnivore;
+import wheel.lang.Predicate;
 import wheel.lang.Types;
 import wheel.reactive.Signal;
 
@@ -77,6 +79,23 @@ public class TupleSpaceImpl implements TupleSpace {
 				T casted = cast(candidate);
 				result.add(casted);
 			}
+		
+		return result;
+	}
+
+
+	@Override
+	public <T extends Tuple> T mostRecentTuple(Class<T> tupleType, PublicKey publisher, Predicate<T> filter) {
+		T result = null;
+		long mostRecentTime = 0;
+		for (T candidate : tuples(tupleType)) {
+			if (!candidate.publisher.equals(publisher)) continue;
+			if (candidate.publicationTime <= mostRecentTime) continue;
+			if (!filter.evaluate(candidate)) continue;
+			
+			mostRecentTime = candidate.publicationTime;
+			result = candidate;
+		}
 		
 		return result;
 	}

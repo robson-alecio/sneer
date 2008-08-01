@@ -5,6 +5,7 @@ import sneer.lego.Inject;
 import sneerapps.wind.TupleSpace;
 import sneerapps.wind.Shout;
 import sneerapps.wind.Wind;
+import wheel.lang.FrozenTime;
 import wheel.lang.Omnivore;
 import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;
@@ -30,7 +31,7 @@ class WindImpl implements Wind, Omnivore<Shout> {
 
 	@Override
 	public void shout(String phrase) {
-		_environment.publish(new Shout(phrase, _keyManager.ownPublicKey()));
+		_environment.publish(new Shout(_keyManager.ownPublicKey(), FrozenTime.frozenTimeMillis(), phrase));
 	}
 
 	@Override

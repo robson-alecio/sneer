@@ -23,7 +23,9 @@ The Boot class is run. It is compiled for Java1 so it can run on any version of 
 		- If it is not Java6, an error message box is displayed and the system is exited.
 	- The KernelJockey class is run.
 
-The KernelJockey class runs in a loop. Its only purpose is to run new versions of the Sneer kernel without the user having to restart the VM. Most changes to Sneer, though, are to bricks and do not affect the kernel. They do not require this complete restart of the kernel.  
+The KernelJockey class runs the InstallationWizard
+
+The KernelJockey runs the latest version of the sneer kernel in a loop. The only purpose of this is to run new versions of the Sneer kernel without the user having to restart the VM. Most changes to Sneer, though, are to bricks and do not affect the kernel. They do not require this complete restart of the kernel.  
 	- The latest "version jar" (find a better name) is detected (in what directory?).
 		- If the directory does not exist or if there are no versions, Sneer.jar itself is considered the latest version.
 	- Kernel.class in the latest "version jar" is run in a separate, class-garbage-collectable classloader.

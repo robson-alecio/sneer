@@ -6,8 +6,8 @@ public class Shout extends Tuple {
 
 	public final String phrase;
 
-	public Shout(String pPhrase, PublicKey pPublisher) {
-		super(pPublisher);
+	public Shout(PublicKey pPublisher, long pPublicationTime, String pPhrase) {
+		super(pPublisher, pPublicationTime);
 		phrase = pPhrase;
 	}
 

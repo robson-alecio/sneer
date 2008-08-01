@@ -8,8 +8,8 @@ public class Affinity extends Tuple {
 	public final float percentage;
 	public final PublicKey peer;
 
-	Affinity(PublicKey pPublisher, PublicKey pPeer, float pPercentage) {
-		super(pPublisher);
+	Affinity(PublicKey pPublisher, long pPublicationTime, PublicKey pPeer, float pPercentage) {
+		super(pPublisher, pPublicationTime);
 		percentage = pPercentage;
 		peer = pPeer;
 	}

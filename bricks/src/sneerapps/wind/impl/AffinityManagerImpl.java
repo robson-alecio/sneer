@@ -5,7 +5,8 @@ import sneer.bricks.keymanager.PublicKey;
 import sneer.lego.Inject;
 import sneerapps.wind.AffinityManager;
 import sneerapps.wind.TupleSpace;
-import wheel.lang.exceptions.NotImplementedYet;
+import wheel.lang.FrozenTime;
+import wheel.lang.Predicate;
 
 public class AffinityManagerImpl implements AffinityManager {
 
@@ -21,18 +22,17 @@ public class AffinityManagerImpl implements AffinityManager {
 	
 	@Override
 	public void setAffinityFor(PublicKey peerPK, float percentage) {
-		_space.publish(new Affinity(_keyManager.ownPublicKey(), peerPK, percentage));
+		_space.publish(new Affinity(_keyManager.ownPublicKey(), FrozenTime.frozenTimeMillis(), peerPK, percentage));
 	}
 
 	@Override
-	public Float affinityFor(PublicKey peer) {
-		throw new NotImplementedYet("Use the newest Affinity, not the first found");
-		
-//		for (Affinity affinity : _space.tuples(Affinity.class))
-//			if (affinity.peer.equals(peer))
-//				return affinity.percentage;
-//		
-//		return 0f;
+	public Float affinityFor(final PublicKey peer) {
+		Predicate<Affinity> predicate = new Predicate<Affinity>() { @Override public boolean evaluate(Affinity affinity) {
+			return affinity.peer == peer;
+		}};
+			
+		Affinity affinity = _space.mostRecentTuple(Affinity.class, _keyManager.ownPublicKey(), predicate);
+		return affinity.percentage;
 	}
 
 }

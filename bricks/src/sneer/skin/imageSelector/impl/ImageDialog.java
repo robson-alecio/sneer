@@ -18,21 +18,20 @@ import javax.swing.event.ChangeListener;
 import sneer.skin.image.ImageFactory;
 
 public class ImageDialog extends JDialog {
+	
 	private static final long serialVersionUID = 1L;
 	
-	private ImageFactory _imageFactory;
+	AvatarPreview _avatarPreview;
+	Keyhole _keyhole;
 
 	private File _file;
 	private Picture _picture;
-	private AvatarPreview _avatarPreview;
-	private JLayeredPane _layeredPane;
-
 	private int _preferredHeight;
 	private int _preferredWidth;
+	private JLayeredPane _layeredPane;
+	private ImageFactory _imageFactory;
 
-	Keyhole _keyhole;
-
-    public ImageDialog(File file, ImageFactory imageFactory) {
+    ImageDialog(File file, ImageFactory imageFactory) {
     	_file = file;
     	_imageFactory = imageFactory;
 		_avatarPreview = new AvatarPreview(this);
@@ -147,5 +146,4 @@ public class ImageDialog extends JDialog {
 		}
 		return icon;
 	}
-	
 }

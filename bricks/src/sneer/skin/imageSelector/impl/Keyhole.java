@@ -30,7 +30,7 @@ public class Keyhole extends JComponent {
 	private Point _layeredPaneLocation;
 	private Robot robot;
 	
-    public Keyhole(JLayeredPane layeredPane, AvatarPreview avatarPreview, ImageFactory imageFactory) {
+    Keyhole(JLayeredPane layeredPane, AvatarPreview avatarPreview, ImageFactory imageFactory) {
 		_layeredPane = layeredPane;
 		_avatarPreview = avatarPreview;
 		_imageFactory = imageFactory;
@@ -61,8 +61,8 @@ public class Keyhole extends JComponent {
 
 	private void captureAvatar() {
 		BufferedImage buffer = getHoleSorceImage();
-		List<MyLabel> avatars = _avatarPreview._avatarList;
-		for (MyLabel avatar : avatars) {
+		List<AvatarIcon> avatars = _avatarPreview._avatarList;
+		for (AvatarIcon avatar : avatars) {
 			ImageIcon icon = new ImageIcon(
 				_imageFactory.getScaledInstance(buffer, (int)avatar._size.getWidth(), (int)avatar._size.getHeight()));
 			avatar.setIcon(icon);
@@ -78,14 +78,26 @@ public class Keyhole extends JComponent {
 	private void onMouseWheel(MouseWheelEvent e) {
 		int notches = e.getWheelRotation() * 5;
 		int size = getPreferredSize().width - notches;
+		tryChangeArea(size);
+	}
+
+	int tryChangeArea(int size) {
 		if (size < 24)
 			size = 24;
+		
+		Rectangle bounds = getCropWindowBounds();
+		if(bounds.width<size){
+			size = bounds.width;
+		} 
+		if(bounds.height<size){
+			size = bounds.height;
+		} 
 		
 		setPreferredSize(new Dimension(size, size));
 		setTrueLocation();
 		getParent().validate();
+		return size;
 	}	
-	
 	
 	void setTrueLocation() {
 		int x0 = _mouseLocation.x-_layeredPaneLocation.x-getWidth();
@@ -125,7 +137,7 @@ public class Keyhole extends JComponent {
 		//ignore
 	};
 	
-	public Rectangle getCropWindowBounds(){
+	Rectangle getCropWindowBounds(){
 		Rectangle bounds = _layeredPane.getBounds();
 		if(!_avatarPreview._cropCheck.isSelected())
 			return bounds;
@@ -183,5 +195,14 @@ public class Keyhole extends JComponent {
 				onMouseWheel(e);
 			}
 		});
+	}
+
+	void setTrueLocation(int x, int y) {
+		if(_avatarPreview._cropCheck.isSelected()){
+			Rectangle bounds = getCropWindowBounds();
+			x = bounds.x + x;
+			y = bounds.y + y;
+		}
+		super.setLocation(x, y);
 	}
 }

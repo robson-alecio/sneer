@@ -1,35 +1,39 @@
 package sneer.skin.imageSelector.impl;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
-import javax.swing.Icon;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JSlider;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.border.TitledBorder;
+import javax.swing.Icon;
+import javax.swing.JLabel;
 
 public class AvatarPreview extends JDialog {
 
 	public static final int _WIDTH = 180;
-
 	private static final long serialVersionUID = 1L;
+	private int _counter = 0;
 
-	private final ImageDialog _imageDialog;
+	final ImageDialog _imageDialog;
 
 	JSlider _top = new JSlider();
 	JSlider _botton = new JSlider();
@@ -38,7 +42,7 @@ public class AvatarPreview extends JDialog {
 	JSlider _area = new JSlider();
 
 	JCheckBox _cropCheck = new JCheckBox("Crop Image");
-	List<MyLabel> _avatarList = new ArrayList<MyLabel>();
+	List<AvatarIcon> _avatarList = new ArrayList<AvatarIcon>();
 
 	AvatarPreview(ImageDialog imageDialog) {
 		_imageDialog = imageDialog;
@@ -48,7 +52,7 @@ public class AvatarPreview extends JDialog {
 		JInternalFrame iwin;
 		
 		iwin = initInternalFrame(panel,"Picture");
-		iwin.add(_cropCheck);
+		addGridItem(iwin.getContentPane(),_cropCheck);
 		
 		initSlider(_left, iwin.getContentPane());
 		initSlider(_right, iwin.getContentPane());
@@ -57,24 +61,50 @@ public class AvatarPreview extends JDialog {
 		
 		_right.setInverted(true);
 		_botton.setInverted(true);		
-		iwin = initInternalFrame(panel,"Keyhole Size");
-		initAreaSlider(iwin.getContentPane());
 
-		iwin = initInternalFrame(panel,"Keyhole Preview");
+		iwin = initInternalFrame(panel,"Keyhole");
 
-		addSizeCheck(iwin.getContentPane(), 24);
-		addSizeCheck(iwin.getContentPane(), 32);
-		addSizeCheck(iwin.getContentPane(), 48);
-		addSizeCheck(iwin.getContentPane(), 64);
-		addSizeCheck(iwin.getContentPane(), 128);
+		addAvatarIcon(iwin.getContentPane(), 32);
+		addAvatarIcon(iwin.getContentPane(), 48);
+		addAvatarIcon(iwin.getContentPane(), 64);
+		addAvatarIcon(iwin.getContentPane(), 128);
+		initKeyholeSizeSlider(iwin.getContentPane());
 
 		addCropListener();
 	}
 
+	void resizeAvatarPreview() {
+		int x = 10 + _imageDialog.getLocation().x + _imageDialog.getWidth();
+		int y = _imageDialog.getBounds().y;
+		setBounds(x, y, _WIDTH, _imageDialog.getHeight());
+	}
+	
+	int getRightCropLocation() {
+		return (int)(_imageDialog.getWidth()*(1-getDoubleValue(_right.getValue())));
+	}
+
+	int getLeftCropLocation() {
+		return (int)(_imageDialog.getWidth()*getDoubleValue(_left.getValue()));
+	}
+
+	int getBottonCropLocation() {
+		return (int)(_imageDialog.getHeight()*(1-getDoubleValue(_botton.getValue())));
+	}
+
+	int getTopCropLocation() {
+		return (int)(_imageDialog.getHeight()*getDoubleValue(_top.getValue()));
+	}	
+	
+	private double getDoubleValue(double value) {
+		if(_cropCheck.isSelected())
+			return (value/10000);
+		return 0;
+	}	
 	private JInternalFrame initInternalFrame(JPanel panel, String title) {
+		_counter = 0;
 		final JInternalFrame iwin = new JInternalFrame(title);
 		panel.add(iwin);
-		iwin.getContentPane().setLayout(new BoxLayout(iwin.getContentPane(), BoxLayout.Y_AXIS));
+		iwin.getContentPane().setLayout(new GridBagLayout());
 		SwingUtilities.invokeLater(
 				new Runnable() {
 					@Override
@@ -96,16 +126,31 @@ public class AvatarPreview extends JDialog {
 		return panel;
 	}
 
-	private void initAreaSlider(Container container) {
+	private void initKeyholeSizeSlider(Container container) {
 		initSlider(_area, container);
 		_area.setMaximum(500);
 		_area.setMinimum(24);
 		_area.setEnabled(true);
+		_area.addMouseListener(
+			new MouseAdapter(){
+				@Override
+				public void mouseEntered(MouseEvent arg0) {
+					_imageDialog._keyhole.setTrueLocation(10,10);
+					_imageDialog._keyhole.setVisible(true);
+				}
+				@Override
+				public void mouseExited(MouseEvent arg0) {
+					_imageDialog._keyhole.setVisible(false);
+				}
+			}
+		);
+		_area.setToolTipText("Tip: You can use mouse wheel to set the keyhole size.");
 	}
 
-	private void initSlider(final JSlider slider, Container container) {
-	    container.add(slider);
-		slider.setMaximumSize(new Dimension(200, 100));
+	private void initSlider(JSlider slider, Container container) {
+		addGridItem(container, slider);
+		slider.setSize(new Dimension(128, 20));
+		slider.setPreferredSize(new Dimension(128, 20));
 		addSliderMouseWheelListener(slider);
 		slider.setEnabled(false);
 		slider.setMaximum(10000);
@@ -130,86 +175,64 @@ public class AvatarPreview extends JDialog {
 		slider.addMouseWheelListener(new MouseWheelListener() {
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
-				int notches = e.getWheelRotation() * 5;
+				int notches = e.getWheelRotation() * 10;
 				int value = slider.getValue() - notches;
 				if (value < 0)
 					value = 0;
 				slider.setValue(value);
-				System.out.println(value);
 			}
 		});
 	}
 
-	private void addSizeCheck(Container container, int size) {
-		container.add(new JSeparator());
-		MyLabel label = new MyLabel(size);
-		container.add(label);
+	private void addAvatarIcon(Container container, int size) {
+		AvatarIcon label = new AvatarIcon(size);
 		_avatarList.add(label);
-	}
-
-	void resizeAvatarPreview() {
-		int x = 10 + _imageDialog.getLocation().x + _imageDialog.getWidth();
-		int y = _imageDialog.getBounds().y;
-		setBounds(x, y, _WIDTH, _imageDialog.getHeight());
+		addGridItem(container, label);
 	}
 	
-	public int getRightCropLocation() {
-		return (int)(_imageDialog.getWidth()*(1-getDoubleValue(_right.getValue())));
-	}
+	private void addGridItem(Container container, Component componet) {
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridy = _counter;
+		c.anchor = GridBagConstraints.NORTHWEST;
+		_counter++;
+		container.add(componet,c);
+	}	
 
-	public int getLeftCropLocation() {
-		return (int)(_imageDialog.getWidth()*getDoubleValue(_left.getValue()));
-	}
-
-	public int getBottonCropLocation() {
-		return (int)(_imageDialog.getHeight()*(1-getDoubleValue(_botton.getValue())));
-	}
-
-	public int getTopCropLocation() {
-		return (int)(_imageDialog.getHeight()*getDoubleValue(_top.getValue()));
-	}
-	
-	private double getDoubleValue(double value) {
-		if(_cropCheck.isSelected())
-			return (value/10000);
-		return 0;
-	}
 }
 
-class MyLabel extends JLabel {
-
+class AvatarIcon extends JLabel {
 	private static final long serialVersionUID = 1L;
 	Dimension _size;
 	boolean useSize = true;
 
-	MyLabel(int size){
-		_size = new Dimension(size,size);
+	AvatarIcon(int size) {
+		_size = new Dimension(size, size);
 		setBorder(new TitledBorder(""));
 	}
-	
+
 	@Override
 	public void setIcon(Icon icon) {
 		super.setIcon(icon);
 		useSize = false;
 	}
-	
+
 	@Override
 	public Dimension getPreferredSize() {
-		if(useSize)
+		if (useSize)
 			return _size;
 		return super.getPreferredSize();
 	}
 
 	@Override
 	public Dimension getMaximumSize() {
-		if(useSize)
+		if (useSize)
 			return _size;
 		return super.getMaximumSize();
 	}
 
 	@Override
 	public Dimension getMinimumSize() {
-		if(useSize)
+		if (useSize)
 			return _size;
 		return super.getMinimumSize();
 	}

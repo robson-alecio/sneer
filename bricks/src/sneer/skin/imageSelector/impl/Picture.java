@@ -15,7 +15,7 @@ class Picture extends JLabel{
 	private static final long serialVersionUID = 1L;
 	private final AvatarPreview _avatarPreview;
 	
-	public Picture(AvatarPreview avatarPreview) {
+	Picture(AvatarPreview avatarPreview) {
 		_avatarPreview = avatarPreview;
 		addModelChangeListeners();
 	}

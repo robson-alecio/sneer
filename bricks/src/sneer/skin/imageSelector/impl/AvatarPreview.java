@@ -13,30 +13,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.border.TitledBorder;
-import javax.swing.Icon;
-import javax.swing.JLabel;
 
 public class AvatarPreview extends JDialog {
 
 	public static final int _WIDTH = 180;
 	private static final long serialVersionUID = 1L;
-	private int _counter = 0;
+	private int _lineCounter = 0;
+	private int _colCounter = 0;
 
 	final ImageDialog _imageDialog;
 
-	JSlider _top = new JSlider();
-	JSlider _botton = new JSlider();
+	JSlider _top = new JSlider(SwingConstants.VERTICAL);
+	JSlider _botton = new JSlider(SwingConstants.VERTICAL);
 	JSlider _left = new JSlider();
 	JSlider _right = new JSlider();
 	JSlider _area = new JSlider();
@@ -52,15 +54,15 @@ public class AvatarPreview extends JDialog {
 		JInternalFrame iwin;
 		
 		iwin = initInternalFrame(panel,"Picture");
-		addGridItem(iwin.getContentPane(),_cropCheck);
+		addGridItemFullLine(iwin.getContentPane(),_cropCheck);
 		
-		initSlider(_left, iwin.getContentPane());
-		initSlider(_right, iwin.getContentPane());
-		initSlider(_botton, iwin.getContentPane());
-		initSlider(_top, iwin.getContentPane());
+		initSlider(_top, iwin.getContentPane(),true);
+		initSlider(_botton, iwin.getContentPane(),true);
+		initSlider(_left, iwin.getContentPane(),false);
+		initSlider(_right, iwin.getContentPane(),false);
 		
 		_right.setInverted(true);
-		_botton.setInverted(true);		
+		_top.setInverted(true);		
 
 		iwin = initInternalFrame(panel,"Keyhole");
 
@@ -101,7 +103,8 @@ public class AvatarPreview extends JDialog {
 		return 0;
 	}	
 	private JInternalFrame initInternalFrame(JPanel panel, String title) {
-		_counter = 0;
+		_lineCounter = 0;
+		_colCounter = 0;
 		final JInternalFrame iwin = new JInternalFrame(title);
 		panel.add(iwin);
 		iwin.getContentPane().setLayout(new GridBagLayout());
@@ -127,7 +130,7 @@ public class AvatarPreview extends JDialog {
 	}
 
 	private void initKeyholeSizeSlider(Container container) {
-		initSlider(_area, container);
+		initSlider(_area, container, false);
 		_area.setMaximum(500);
 		_area.setMinimum(24);
 		_area.setEnabled(true);
@@ -147,10 +150,16 @@ public class AvatarPreview extends JDialog {
 		_area.setToolTipText("Tip: You can use mouse wheel to set the keyhole size.");
 	}
 
-	private void initSlider(JSlider slider, Container container) {
-		addGridItem(container, slider);
-		slider.setSize(new Dimension(128, 20));
-		slider.setPreferredSize(new Dimension(128, 20));
+	private void initSlider(JSlider slider, Container container, boolean isVertical) {
+		addGridItem(container, slider, isVertical);
+		if(isVertical){
+			slider.setPreferredSize(new Dimension(15, 60));
+			slider.setSize(new Dimension(15, 60));
+		}else{
+			slider.setPreferredSize(new Dimension(100, 15));
+			slider.setSize(new Dimension(100, 15));
+		}
+		
 		addSliderMouseWheelListener(slider);
 		slider.setEnabled(false);
 		slider.setMaximum(10000);
@@ -190,13 +199,37 @@ public class AvatarPreview extends JDialog {
 		addGridItem(container, label);
 	}
 	
-	private void addGridItem(Container container, Component componet) {
-		GridBagConstraints c = new GridBagConstraints();
-		c.gridy = _counter;
-		c.anchor = GridBagConstraints.NORTHWEST;
-		_counter++;
+	private void addGridItemFullLine(Container container, Component componet) {
+		GridBagConstraints c = getGridContraints(false);
+		c.gridwidth = 20;
 		container.add(componet,c);
 	}	
+	
+	private void addGridItem(Container container, Component componet) {
+		GridBagConstraints c = getGridContraints(false);
+		container.add(componet,c);
+	}	
+	
+	private void addGridItem(Container container, Component componet, boolean isVertical) {
+		GridBagConstraints c = getGridContraints(isVertical);
+		container.add(componet,c);
+	}
+
+	private GridBagConstraints getGridContraints(boolean isVertical) {
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = _colCounter;
+		c.anchor = GridBagConstraints.NORTHWEST;
+		if(isVertical){
+			c.gridheight = 10;
+			c.weightx=0.0;
+			_colCounter++;
+		}else{
+			c.weightx=1.0;
+			c.gridy = _lineCounter;
+			_lineCounter++;
+		}
+		return c;
+	}
 
 }
 

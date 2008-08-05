@@ -22,14 +22,6 @@ import sneer.lego.tests.impl.MySample;
 public class ContainerTest {
 
 	@Test
-	public void testAssignable() {
-		assertTrue(Object.class.isAssignableFrom(String.class));
-		assertTrue(Object.class.isAssignableFrom(Integer.class));
-		assertTrue(Number.class.isAssignableFrom(Integer.class));
-		assertTrue(Container.class.isAssignableFrom(SimpleContainer.class));
-	}
-	
-	@Test
 	public void testImplementationBinding() throws Exception {
         Sample sample = new MySample();
         Container c = new SimpleContainer(sample);

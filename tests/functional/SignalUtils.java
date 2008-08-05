@@ -15,7 +15,7 @@ public class SignalUtils {
 			String message = "Expected: " + expectedValue + " Found: " + signal.currentValue();
 			if (!message.equals(previousMessage)) {
 				previousMessage = message;
-				System.out.println(message);
+				//System.out.println(message);
 			}
 			Thread.yield(); //Optimize
 		}

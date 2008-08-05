@@ -34,7 +34,8 @@
 
 ﻿Leandro
 	- Eliminate create(...) methods from Container.
-	- check file locks on windows (FileUtils.cleanDirectory() "unable to delete file")
+	- Run all tests and see which ones are ignored. Remove @Ignore from them and make them run. 
+	- check file locks on windows (FileUtils.cleanDirectory() "unable to delete file"). This is caused by a test that currently not run (has the @Ignore annotation).
 	- create new test runner that uses our own classloader so we can replace the AnnotatedFieldInjector by the StaticFieldInjector
 		- Load wheel in a base classloader that also adds "implements Serializable" to classes.
 	- replace AnnotatedFieldInjector with StaticFieldInjector which will enable removing the use of @Inject and Startable 

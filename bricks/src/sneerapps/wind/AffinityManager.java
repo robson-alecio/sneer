@@ -6,6 +6,6 @@ public interface AffinityManager {
 
 	void setAffinityFor(PublicKey peer, float percentage);
 
-	Float affinityFor(PublicKey peer);
+	float affinityFor(PublicKey peer);
 
 }

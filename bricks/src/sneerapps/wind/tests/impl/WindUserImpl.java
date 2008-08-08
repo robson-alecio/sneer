@@ -39,6 +39,10 @@ public class WindUserImpl implements WindUser {
 	public Signal<Integer> connectAndCountTrafficTo(WindUser peer) {
 		Signal<Integer> counter1 = unidirectionalConnect(this, peer);
 		Signal<Integer> counter2 = unidirectionalConnect(peer, this);
+		
+		this.setAffinityFor(peer, 10f);
+		peer.setAffinityFor(this, 10f);
+
 		return new Adder(counter1, counter2).output();
 	}
 
@@ -49,8 +53,6 @@ public class WindUserImpl implements WindUser {
 		Probe probe = a.createProbeFor(b, connection.sideA());
 		Probe copy = DeepCopier.deepCopy(probe);
 		b.receiveProbe(copy, connection.sideB());
-
-		a.setAffinityFor(b, 10f);
 		
 		return connection.trafficCounter();
 	}

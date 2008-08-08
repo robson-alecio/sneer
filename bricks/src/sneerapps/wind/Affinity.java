@@ -1,14 +1,18 @@
-package sneerapps.wind.impl;
+package sneerapps.wind;
 
 import sneer.bricks.keymanager.PublicKey;
-import sneerapps.wind.Tuple;
 
 public class Affinity extends Tuple {
+
+	@Override
+	public String toString() {
+		return publisher.toString() + " " + percentage + " " + peer;
+	}
 
 	public final float percentage;
 	public final PublicKey peer;
 
-	Affinity(PublicKey pPublisher, long pPublicationTime, PublicKey pPeer, float pPercentage) {
+	public Affinity(PublicKey pPublisher, long pPublicationTime, PublicKey pPeer, float pPercentage) {
 		super(pPublisher, pPublicationTime);
 		percentage = pPercentage;
 		peer = pPeer;
@@ -31,8 +35,10 @@ public class Affinity extends Tuple {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (getClass() != obj.getClass()) {
+			System.out.println(getClass() + " " + obj.getClass());
 			return false;
+		}
 		Affinity other = (Affinity) obj;
 		if (peer == null) {
 			if (other.peer != null)

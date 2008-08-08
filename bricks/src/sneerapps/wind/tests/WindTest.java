@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import sneer.lego.ContainerUtils;
 import wheel.lang.Collections;
+import wheel.lang.FrozenTime;
 import wheel.reactive.Signal;
 import wheel.reactive.sets.SetSignal;
 
@@ -20,6 +21,8 @@ public class WindTest {
 	@Ignore
 	@Test //(timeout = 4000)
 	public void testAffinity() {
+		FrozenTime.freezeForCurrentThread(1);
+
 		WindUser ana = createUser();
 		WindUser bob = createUser();
 		WindUser cid = createUser();
@@ -27,6 +30,8 @@ public class WindTest {
 		Signal<Integer> abTraffic = ana.connectAndCountTrafficTo(bob);
 		Signal<Integer> bcTraffic = bob.connectAndCountTrafficTo(cid);
 
+		FrozenTime.freezeForCurrentThread(2);
+		
 		ana.setAffinityFor(bob, 90);
 		bob.setAffinityFor(ana, 30);
 
@@ -41,8 +46,8 @@ public class WindTest {
 		assertFloat( 9f, ana.affinityFor(cid));
 		assertFloat(21f, cid.affinityFor(ana));
 	
-		assertSame(-1, abTraffic.currentValue());
-		assertSame(-1, bcTraffic.currentValue());
+		assertSame(8, abTraffic.currentValue());
+		assertSame(8, bcTraffic.currentValue());
 		
 		Assert.fail("Add timeout to this test.");
 	}

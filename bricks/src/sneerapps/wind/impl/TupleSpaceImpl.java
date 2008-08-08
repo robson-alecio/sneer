@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import sneer.bricks.keymanager.KeyManager;
 import sneer.bricks.keymanager.PublicKey;
 import sneer.lego.Inject;
 import sneerapps.wind.AffinityManager;
@@ -24,9 +23,6 @@ import wheel.lang.Types;
 import wheel.reactive.Signal;
 
 public class TupleSpaceImpl implements TupleSpace {
-
-	@Inject
-	static private KeyManager _keyManager;
 
 	static class Subscription {
 
@@ -68,7 +64,6 @@ public class TupleSpaceImpl implements TupleSpace {
 		if (tuple == null) throw new IllegalArgumentException();
 		
 		if (!_tuples.add(tuple)) return;
-		System.out.println(tuple + " at " + _keyManager.ownPublicKey() );
 		for (Subscription subscription : _subscriptions)
 			subscription.filterAndNotify(tuple);
 	}

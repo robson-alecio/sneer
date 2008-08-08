@@ -23,9 +23,9 @@ public class WindTest {
 	public void testAffinity() {
 		FrozenTime.freezeForCurrentThread(1);
 
-		WindUser ana = createUser();
-		WindUser bob = createUser();
-		WindUser cid = createUser();
+		WindUser ana = createUser("Ana");
+		WindUser bob = createUser("Bob");
+		WindUser cid = createUser("Cid");
 		
 		Signal<Integer> abTraffic = ana.connectAndCountTrafficTo(bob);
 		Signal<Integer> bcTraffic = bob.connectAndCountTrafficTo(cid);
@@ -46,8 +46,8 @@ public class WindTest {
 		assertFloat( 9f, ana.affinityFor(cid));
 		assertFloat(21f, cid.affinityFor(ana));
 	
-		assertSame(8, abTraffic.currentValue());
-		assertSame(8, bcTraffic.currentValue());
+		assertSame(-1, abTraffic.currentValue()); //Implement with correct value
+		assertSame(-1, bcTraffic.currentValue()); //Implement with correct value
 		
 		Assert.fail("Add timeout to this test.");
 	}
@@ -55,10 +55,10 @@ public class WindTest {
 	@Ignore
 	@Test //(timeout = 4000)
 	public void testShouting() {
-		WindUser ana = createUser();
-		WindUser bob = createUser();
-		WindUser cid = createUser();
-		WindUser dan = createUser();
+		WindUser ana = createUser("Ana");
+		WindUser bob = createUser("Bob");
+		WindUser cid = createUser("Cid");
+		WindUser dan = createUser("Dan");
 		
 		Signal<Integer> abTraffic = ana.connectAndCountTrafficTo(bob);
 		Signal<Integer> bcTraffic = bob.connectAndCountTrafficTo(cid);
@@ -111,9 +111,11 @@ public class WindTest {
 
 
 
-	private WindUser createUser() {
-		return ContainerUtils.newContainer()
+	private WindUser createUser(String name) {
+		WindUser result = ContainerUtils.newContainer()
 			.produce(WindUser.class);
+		result.name(name);
+		return result;
 	}
 	
 }

@@ -9,6 +9,11 @@ import wheel.reactive.sets.SetSignal;
 
 
 public interface WindUser {
+	
+	/////////////////////////////////////Used by the test:
+	
+	void name(String newName);
+	
 	Signal<Integer> connectAndCountTrafficTo(WindUser peer);
 	void setAffinityFor(WindUser peer, float percentage);
 	float affinityFor(WindUser peer);
@@ -20,6 +25,7 @@ public interface WindUser {
 	
 	/////////////////////////////////////Used only by the test implementation:
 	
+	String name();
 	PublicKey publicKey();
 	Probe createProbeFor(WindUser peer, ConnectionSide localSide);
 	void receiveProbe(Probe probe, ConnectionSide localSide);

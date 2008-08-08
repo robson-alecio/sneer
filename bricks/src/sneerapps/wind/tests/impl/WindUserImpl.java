@@ -34,6 +34,8 @@ public class WindUserImpl implements WindUser {
 
 	@Inject
 	static private ProbeFactory _probeFactory;
+
+	private String _name;
 	
 	@Override
 	public Signal<Integer> connectAndCountTrafficTo(WindUser peer) {
@@ -48,7 +50,7 @@ public class WindUserImpl implements WindUser {
 
 
 	private Signal<Integer> unidirectionalConnect(WindUser a, WindUser b) {
-		DeepCopyingConnection connection = new DeepCopyingConnection();
+		DeepCopyingConnection connection = new DeepCopyingConnection(a.name(), b.name());
 		
 		Probe probe = a.createProbeFor(b, connection.sideA());
 		Probe copy = DeepCopier.deepCopy(probe);
@@ -97,6 +99,16 @@ public class WindUserImpl implements WindUser {
 	public void receiveProbe(Probe probe, ConnectionSide localSide) {
 		Threads.preventFromBeingGarbageCollected(probe); //Fix This is a leak.
 		probe.startProbing(_environment, localSide);
+	}
+
+
+	@Override
+	public String name() {
+		return _name;
+	}
+	@Override
+	public void name(String newName) {
+		_name = newName;
 	}
 
 }

@@ -17,7 +17,7 @@ import sneer.bricks.compiler.Result;
 import sneer.lego.Inject;
 import sneer.lego.tests.BrickTestSupport;
 
-//@Ignore
+@Ignore
 public class CompilerTest extends BrickTestSupport {
 
 	@Inject

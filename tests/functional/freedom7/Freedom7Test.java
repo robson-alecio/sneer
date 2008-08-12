@@ -8,6 +8,7 @@ import java.io.File;
 import java.lang.reflect.Method;
 
 import org.apache.commons.lang.StringUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.bricks.deployer.BrickBundle;
@@ -53,6 +54,7 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 		assertNotSame(classLoaderFor(z1), classLoaderFor(z2));
 	}
 	
+	@Ignore
 	@Test
 	public void testMeTooBrickWithDependencies() throws Exception {
 		

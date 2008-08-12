@@ -32,7 +32,9 @@
 	- Pic thumbnails in File chooser
 	- Add Tab/Window Support
 
-﻿Leandro
+Container
+	- FileTransfer
+	- FileTransfer based Deployer
 	- Eliminate create(...) methods from Container.
 	- Run all tests and see which ones are ignored. Remove @Ignore from them and make them run. 
 	- check file locks on windows (FileUtils.cleanDirectory() "unable to delete file"). This is caused by a test that currently not run (has the @Ignore annotation).

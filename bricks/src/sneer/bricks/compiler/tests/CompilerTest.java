@@ -17,7 +17,7 @@ import sneer.bricks.compiler.Result;
 import sneer.lego.Inject;
 import sneer.lego.tests.BrickTestSupport;
 
-@Ignore
+//@Ignore
 public class CompilerTest extends BrickTestSupport {
 
 	@Inject
@@ -61,7 +61,6 @@ public class CompilerTest extends BrickTestSupport {
 			libDir = new File(FilenameUtils.concat(System.getProperty("user.dir"), libs));
 		}
 		Classpath classpath = _factory.fromLibDir(libDir);
-		Result result = _compiler.compile(new File(src), getWorkDirectory(), classpath);
-		return result;
+		return _compiler.compile(new File(src), getWorkDirectory(), classpath);
 	}
 }

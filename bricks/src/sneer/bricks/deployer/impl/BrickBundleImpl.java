@@ -8,7 +8,7 @@ import java.util.List;
 import sneer.bricks.deployer.BrickBundle;
 import sneer.bricks.deployer.BrickFile;
 import sneer.bricks.deployer.DeployerException;
-import sneer.lego.utils.SneerJar;
+import sneer.lego.jar.SneerJar;
 import wheel.lang.StringUtils;
 
 public class BrickBundleImpl implements BrickBundle {

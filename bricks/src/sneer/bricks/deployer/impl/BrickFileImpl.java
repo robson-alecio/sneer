@@ -12,9 +12,9 @@ import sneer.bricks.dependency.Dependency;
 import sneer.bricks.deployer.BrickFile;
 import sneer.bricks.deployer.DeployerException;
 import sneer.bricks.keymanager.PublicKey;
+import sneer.lego.jar.SneerJar;
+import sneer.lego.jar.impl.SneerJarImpl;
 import sneer.lego.utils.InjectedBrick;
-import sneer.lego.utils.SneerJar;
-import sneer.lego.utils.SneerJarImpl;
 import sneer.lego.utils.io.NetworkFriendly;
 import wheel.lang.exceptions.NotImplementedYet;
 

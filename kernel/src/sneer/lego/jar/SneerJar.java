@@ -1,4 +1,4 @@
-package sneer.lego.utils;
+package sneer.lego.jar;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.List;
 
+import sneer.lego.utils.InjectedBrick;
 import sneer.lego.utils.io.NetworkFriendly;
 
 public interface SneerJar extends Serializable, NetworkFriendly {

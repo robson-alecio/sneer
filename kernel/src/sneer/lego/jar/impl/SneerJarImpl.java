@@ -1,7 +1,5 @@
-package sneer.lego.utils;
+package sneer.lego.jar.impl;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -13,7 +11,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.jar.JarOutputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -26,13 +23,16 @@ import org.objectweb.asm.commons.EmptyVisitor;
 import sneer.bricks.crypto.Crypto;
 import sneer.bricks.crypto.Digester;
 import sneer.lego.Inject;
+import sneer.lego.jar.SneerJar;
+import sneer.lego.utils.InjectedBrick;
+import wheel.io.JarBuilder;
 import wheel.lang.exceptions.NotImplementedYet;
 
 public class SneerJarImpl implements SneerJar {
 
 	private static final long serialVersionUID = 1L;
 
-	private JarOutputStream _out;
+	private JarBuilder _jarBuilder;
 
 	private File _file;
 	
@@ -45,7 +45,7 @@ public class SneerJarImpl implements SneerJar {
 	transient private JarFile _jarFile;
 	
 	@Inject
-	transient private Crypto _crypto;
+	static private Crypto _crypto;
 
 	public SneerJarImpl(File file) {
 		_file = file;
@@ -74,32 +74,32 @@ public class SneerJarImpl implements SneerJar {
 	}
 
 	public void add(String entryName, File file) throws IOException {
-		add(entryName, new FileInputStream(file.getAbsolutePath()));
+		builder().add(entryName, file);
 	}
 
 	public void add(String entryName, String contents) throws IOException {
-		add(entryName, new ByteArrayInputStream(contents.getBytes()));
-	}
-	
-	public void add(String entryName, InputStream is) throws IOException {
-		JarEntry je = new JarEntry(entryName);
-		outputStream().putNextEntry(je);
-		IOUtils.copy(is, _out); //This method buffers the input internally, so there is no need to use a BufferedInputStream.
-		is.close();
+		builder().add(entryName, contents);
 	}
 
-	private JarOutputStream outputStream() throws IOException {
-		if(_out != null)
-			return _out;
+	private JarBuilder builder() throws IOException {
+		if(_jarBuilder != null)
+			return _jarBuilder;
 		
-		_out = new JarOutputStream(new BufferedOutputStream(new FileOutputStream(_file)));
-		return _out;
+		_jarBuilder = new JarBuilder(_file);
+		return _jarBuilder;
 	}
 
 	@Override
 	public void close() throws IOException {
-		IOUtils.closeQuietly(outputStream());
+		closeJarBuilder();
 		_jarFile = new JarFile(_file);
+	}
+
+	private void closeJarBuilder() {
+		if (_jarBuilder != null) {
+			_jarBuilder.close();
+			_jarBuilder = null;
+		}
 	}
 
 	@Override

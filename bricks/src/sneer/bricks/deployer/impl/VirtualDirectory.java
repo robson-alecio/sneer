@@ -15,17 +15,16 @@ import sneer.bricks.deployer.impl.filters.ImplFinder;
 import sneer.bricks.deployer.impl.filters.InterfaceFinder;
 import sneer.bricks.deployer.impl.filters.LibFinder;
 import sneer.lego.Brick;
-import sneer.lego.Container;
 import sneer.lego.Inject;
-import sneer.lego.utils.SneerJar;
-import sneer.lego.utils.SneerJarImpl;
+import sneer.lego.jar.SneerJar;
+import sneer.lego.jar.SneerJarFactory;
 import sneer.lego.utils.io.SimpleFilter;
 import sneer.lego.utils.metaclass.MetaClass;
 
 public class VirtualDirectory {
 
 	@Inject
-	private Container _container;
+	private SneerJarFactory _sneerJarFactory;
 	
 	private String _brickName;
 	
@@ -161,8 +160,8 @@ public class VirtualDirectory {
 		String brickName = brickName();
 		String jarName = brickName + "-" + role;
 		try {
-			File tmp = File.createTempFile(jarName+"-", ".jar");
-			SneerJar result = _container.create(SneerJarImpl.class, tmp);
+			File tmpJarFile = File.createTempFile(jarName+"-", ".jar");
+			SneerJar result = _sneerJarFactory.create(tmpJarFile);
 
 			//sneer meta
 			String meta = sneerMeta(brickName, "1.0-SNAPSHOT", role);

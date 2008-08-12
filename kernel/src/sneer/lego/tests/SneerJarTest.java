@@ -12,8 +12,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
-import sneer.lego.utils.SneerJar;
-import sneer.lego.utils.SneerJarImpl;
+import sneer.lego.jar.SneerJar;
+import sneer.lego.jar.impl.SneerJarImpl;
 
 public class SneerJarTest {
 

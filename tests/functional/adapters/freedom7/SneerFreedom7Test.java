@@ -17,7 +17,7 @@ public class SneerFreedom7Test extends Freedom7Test {
 	}
 
 	@Override
-	protected File askSourceFolder() {
+	protected File sourceFolder() {
 		return new File(SystemUtils.getUserDir(), "/tests/functional/freedom7/test-resources/bricks");
 	}
 }

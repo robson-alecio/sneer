@@ -2,17 +2,17 @@ package functional.freedom7;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.lang.reflect.Method;
 
-import org.junit.Ignore;
+import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
-import functional.SignalUtils;
+import sneer.bricks.deployer.BrickBundle;
+import sneer.bricks.z.Z;
 import functional.SovereignFunctionalTest;
 import functional.SovereignParty;
 
@@ -22,55 +22,84 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 	private static final String Y = "sneer.bricks.y.Y";
 	private static final String Z = "sneer.bricks.z.Z";
 	
-	@Ignore
+	
 	@Test
-	public void testPublish() throws Exception {
-		
-		SovereignParty publisher = _a;
-		SovereignParty receiver = _b;
-		
-		System.out.println("Ana Almeida "  + _a.ownPublicKey());
-		System.out.println("Bruno Barros " + _b.ownPublicKey());
-		
-		//if(true) throw new NotImplementedYet(); //navigate from receiver to publisher
-		SignalUtils.waitForValue("Bruno Barros", _a.navigateAndGetName("Bruno Barros"));
-		SignalUtils.waitForValue("Ana Almeida", _b.navigateAndGetName("Ana Almeida"));
-		
-		File sourceFolder = askSourceFolder();
-		
-		publisher.publishBrick(new File(sourceFolder,"source2")); //deploy Y first
-		Object y1 = publisher.produce(Y);
-		assertNotNull(y1);
-		
-		publisher.publishBrick(new File(sourceFolder,"source")); //deploy X and Z
+	public void testPublishSingleBrick() throws Exception {		
+		publishY();
+		assertBrickInstallation(Y, publisher());
+	}
 
-		//test Z
-		Object z1 = publisher.produce(Z);
-		ClassLoader cl1 = z1.getClass().getClassLoader();
-		String logFactory1 = callMethod(z1, "logFactory").toString();
-		assertTrue("wrong directory for brick class loader: "+cl1.toString(),cl1.toString().indexOf("sneer+AnaAlmeida") > 0);
+	@Test
+	public void testPublishBrickWithDependencies() throws Exception {
+		publishY();
+		publishXandZ();
+		assertBrickInstallation(Z, publisher());
+	}
 		
-		receiver.meToo(publisher, Z);
-		Object z2 = receiver.produce(Z);
-		ClassLoader cl2 = z2.getClass().getClassLoader();
-		String logFactory2 = callMethod(z2, "logFactory").toString();
-		assertTrue("wrong directory for brick class loader: "+cl2.toString(),cl2.toString().indexOf("sneer+BrunoBarros") > 0);
+	@Test
+	public void testMeTooSingleBrick() throws Exception {
+		publishY();
+		publishXandZ();
+		receiver().meToo(publisher(), Z);
+		assertBrickInstallation(Z, receiver());
+	
+		Z z1 = (Z) publisher().produce(Z);
+		ClassLoader libClassLoader1 = z1.libClassLoader();
+	
+		Z z2 = (Z) receiver().produce(Z);
+		ClassLoader libClassLoader2 = z2.libClassLoader();
 		
-		assertFalse("LogFactory should have been loaded on a different class loader", logFactory1.equals(logFactory2));
+		assertNotSame("LogFactory should have been loaded on a different class loader", libClassLoader1, libClassLoader2);
 		assertNotSame(z1, z2);
-		assertNotSame(cl1, cl2);
+		assertNotSame(classLoaderFor(z1), classLoaderFor(z2));
+	}
+	
+	@Test
+	public void testMeTooBrickWithDependencies() throws Exception {
+		
+		publishY();
+		publishXandZ();
 		
 		//test X, depends on Y and Z
-		receiver.meToo(publisher, X);
-		Object x1 = publisher.produce(X);
-		Object x2 = receiver.produce(X);
+		receiver().meToo(publisher(), X);
+		Object x1 = publisher().produce(X);
+		Object x2 = receiver().produce(X);
 		assertNotSame(x1, x2);
 		
-		Object y2 = receiver.produce(Y);
+		Object y1 = publisher().produce(Y);
+		Object y2 = receiver().produce(Y);
 		assertNotSame(y1, y2);
 		
 		Object result = callMethod(x2, "callY");
 		assertEquals(y2.toString(), result);
+	}
+
+	private ClassLoader classLoaderFor(Object z2) {
+		return z2.getClass().getClassLoader();
+	}
+
+	private void assertBrickInstallation(String brickName, SovereignParty party) {
+		Object brick = party.produce(brickName);
+		ClassLoader cl = brick.getClass().getClassLoader();
+		String expectedDirectory = "sneer-" + StringUtils.deleteWhitespace(party.ownName());
+		assertTrue("wrong directory for brick class loader: "+cl.toString(),cl.toString().indexOf(expectedDirectory) > 0);
+	}
+
+	private void publishY() {
+		publisher().publishBrick(new File(sourceFolder(),"source2")); //deploy Y first
+	}
+
+	private BrickBundle publishXandZ() {
+		return publisher().publishBrick(new File(sourceFolder(),"source"));
+	}
+
+	private SovereignParty receiver() {
+		return _b;
+	}
+
+
+	private SovereignParty publisher() {
+		return _a;
 	}
 
 
@@ -81,6 +110,6 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 		return result;
 	}
 
-	protected abstract  File askSourceFolder();
+	protected abstract  File sourceFolder();
 
 }

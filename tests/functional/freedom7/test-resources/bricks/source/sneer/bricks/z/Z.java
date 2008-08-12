@@ -8,4 +8,6 @@ public interface Z extends Brick {
 	
 	String doSomething();
 	
+	ClassLoader libClassLoader();
+	
 }

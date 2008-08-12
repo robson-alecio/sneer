@@ -16,8 +16,8 @@ class ZImpl implements Z {
 		return "SampleImpl";
 	}
 	
-	public String logFactory() {
-		return LogFactory.getFactory().toString();
+	public ClassLoader libClassLoader() {
+		return LogFactory.class.getClassLoader();
 	}
 
 	@Override

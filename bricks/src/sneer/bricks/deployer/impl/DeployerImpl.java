@@ -160,7 +160,7 @@ public class DeployerImpl implements Deployer {
 		Classpath sneerApi = _cpFactory.sneerApi();
 		Result result = _compiler.compile(interfaces, workDirectory, sneerApi);
 		if(!result.success()) {
-			throw new DeployerException("Error compiling brick interfaces");
+			throw new DeployerException("Error compiling brick interfaces: " + result.getErrorString());
 		}
 		return result.compiledClasses();
 	}

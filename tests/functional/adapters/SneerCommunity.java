@@ -7,7 +7,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 
 import sneer.bricks.config.SneerConfig;
-import sneer.bricks.deployer.test.SneerConfigMock;
 import sneer.bricks.network.Network;
 import sneer.bricks.network.impl.inmemory.InMemoryNetwork;
 import sneer.lego.ContainerUtils;

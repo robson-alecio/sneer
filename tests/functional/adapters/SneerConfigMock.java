@@ -1,4 +1,4 @@
-package sneer.bricks.deployer.test;
+package functional.adapters;
 
 import java.io.File;
 

@@ -3,8 +3,6 @@ package sneer.lego.impl;
 import java.io.File;
 import java.lang.reflect.Constructor;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,10 +56,10 @@ public class SimpleContainer implements Container {
 		return result;
 	}
 	
-	private <T> T instantiate(Class<T> intrface, Object... args) throws LegoException {
+	private <T> T instantiate(Class<T> intrface) throws LegoException {
 		T component;
 		try {
-			component = lookup(intrface, args);
+			component = lookup(intrface);
 		} catch (Exception e) {
 			throw new LegoException("Error creating: "+intrface.getName(), e);
 		}
@@ -82,7 +80,7 @@ public class SimpleContainer implements Container {
 	}
 	
 	@SuppressWarnings("unchecked") //Refactor Try to use Casts.unchecked..()
-	private <T> T lookup(Class<T> clazz, Object... args) throws Exception {
+	private <T> T lookup(Class<T> clazz) throws Exception {
 
 		Object result = bindingFor(clazz);
 	    if(result != null) return (T) result;
@@ -91,47 +89,21 @@ public class SimpleContainer implements Container {
 		File brickDirectory = sneerConfig().brickDirectory(clazz);
 		ClassLoader cl = getClassLoader(clazz, brickDirectory);
 		Class impl = cl.loadClass(implementation);
-		result = construct(impl, args);
+		result = construct(impl);
 		log.info("brick {} created", result);
 		return (T) result;		
 
 	}
 
-	private <T> Object construct(Class<?> impl, Object... args) throws Exception {
-		Object result;
-		Constructor<?> c = findConstructor(impl, args);
+	private <T> Object construct(Class<?> impl) throws Exception {
+		Constructor<?> c = impl.getDeclaredConstructor();
 		boolean before = c.isAccessible();
 		c.setAccessible(true);
-		if(args != null && args.length > 0)
-			result = c.newInstance(args);
-		else
-			result = c.newInstance();
-		
-		c.setAccessible(before);
-		
-		return result;
-	}
-
-	private Constructor<?> findConstructor(Class<?> clazz, Object... args) throws Exception {
-		
-		if(args == null || args.length == 0)
-			return clazz.getDeclaredConstructor();
-		
-		Class<?>[] argTypes = new Class<?>[args.length];
-		for(int i=0 ; i<args.length ; i++) {
-			argTypes[i] = args[i].getClass();
+		try {
+			return c.newInstance();
+		} finally {
+			c.setAccessible(before);
 		}
-		
-		Constructor<?>[] constructors = clazz.getDeclaredConstructors();
-		for (Constructor<?> constructor : constructors) {
-			Class<?>[] parameterTypes = constructor.getParameterTypes();
-			if(parameterTypes.length == args.length) {
-				parameterTypes = ClassUtils.primitivesToWrappers(parameterTypes);
-				if(ClassUtils.isAssignable(argTypes, parameterTypes))
-					return constructor;
-			}
-		}
-		throw new Exception("Can't find construtor on "+clazz.getName()+" that matches "+ArrayUtils.toString(argTypes));
 	}
 
 	private ClassLoader getClassLoader(Class<?> brickClass, File brickDirectory) {
@@ -184,14 +156,5 @@ public class SimpleContainer implements Container {
 		}
 	}
 
-	@Override
-	public <T> T create(Class<T> clazz) throws LegoException {
-		return create(clazz, (Object[]) null);
-	}
-
-	@Override
-	public <T> T create(Class<T> clazz, Object... args) throws LegoException {
-		return instantiate(clazz, args);
-	}
 
 }

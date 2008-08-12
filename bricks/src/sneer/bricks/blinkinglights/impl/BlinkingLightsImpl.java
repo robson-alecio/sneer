@@ -3,8 +3,12 @@ package sneer.bricks.blinkinglights.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
+
 import sneer.bricks.blinkinglights.BlinkingLights;
 import sneer.bricks.blinkinglights.Light;
+import wheel.lang.FrozenTime;
 
 public class BlinkingLightsImpl implements BlinkingLights {
 
@@ -20,14 +24,14 @@ public class BlinkingLightsImpl implements BlinkingLights {
 
 	@Override
 	public Light turnOn(String message, Throwable t, long timeout) {
-		Light result = new LightImpl(message, t); 
+		Light result = new LightImpl(message, t, timeout); 
 		_lights.add(result);
 		return result;
 	}
 
 	@Override
 	public Light turnOn(String message, Throwable t) {
-		return turnOn(message, t, -1);
+		return turnOn(message, t, LightImpl.NEVER);
 	}
 
 	@Override
@@ -37,22 +41,37 @@ public class BlinkingLightsImpl implements BlinkingLights {
 
 	@Override
 	public List<Light> listLights() {
-		return _lights; //TODO: return safe copy
+		prune();
+		return new ArrayList<Light>(_lights);
+	}
+
+	private void prune() {
+		CollectionUtils.filter(_lights, new Predicate() {
+			@Override
+			public boolean evaluate(Object candidate) {
+				return ((Light)candidate).isOn();
+			}
+		});
 	}
 }
 
 class LightImpl implements Light {
+	static final int NEVER = -1;
 
 	private String _message;
 
-	private boolean _status;
+	private boolean _isOn = true;
 
 	private Throwable _error;
 
-	public LightImpl(String message, Throwable error) {
+	private final long _expirationTime;
+
+	public LightImpl(String message, Throwable error, long timeout) {
 		_message = message;
 		_error = error;
-		_status = true;
+		_expirationTime = timeout == NEVER
+			? NEVER
+			: FrozenTime.frozenTimeMillis() + timeout;
 	}
 
 	@Override
@@ -62,7 +81,17 @@ class LightImpl implements Light {
 
 	@Override
 	public boolean isOn() {
-		return _status;
+		checkTimeout();
+		return _isOn;
+	}
+
+	private void checkTimeout() {
+		if (!_isOn) return;
+		if (_expirationTime == NEVER) return;
+		
+		
+		if (FrozenTime.frozenTimeMillis() >= _expirationTime)
+			_isOn = false;
 	}
 
 	@Override
@@ -72,6 +101,6 @@ class LightImpl implements Light {
 
 	@Override
 	public void turnOff() {
-		_status = false;
+		_isOn = false;
 	}
 }

@@ -1,15 +1,12 @@
 package sneer.lego.tests;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.Serializable;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.lego.Container;
@@ -36,26 +33,6 @@ public class ContainerTest {
         assertTrue(lifecycle.startCalled());
 	}
 	
-	@Test
-	public void testCreateWithArgs() throws Exception {
-		Container c = new SimpleContainer();
-		ConcreteWithParameters concrete = c.create(ConcreteWithParameters.class, "some string");
-		assertEquals("some string", concrete.getS());
-		assertEquals(0, concrete.getI());
-
-		
-		concrete = c.create(ConcreteWithParameters.class, new SomeInterfaceImpl(77));
-		assertEquals(77, concrete.getInterface().getValue());
-
-		concrete = c.create(ConcreteWithParameters.class, "x", 99);
-		assertEquals("x", concrete.getS());
-		assertEquals(99, concrete.getI());
-		
-		try {
-			concrete = c.create(ConcreteWithParameters.class, c);
-			fail("should have thrown exception");
-		} catch(Exception ignored) {}
-	}
 	
 	@Test
 	public void testInjectInjector() throws Exception {
@@ -67,10 +44,10 @@ public class ContainerTest {
 	}
 
 	@Test
-	@Ignore
 	public void testMakeSerializable()  throws Exception {
 		Container c = new SimpleContainer();
 		MakeMeSerializable component = c.produce(MakeMeSerializable.class);
+		assertNotNull(component);
 		assertTrue(component instanceof Serializable);
 	}
 

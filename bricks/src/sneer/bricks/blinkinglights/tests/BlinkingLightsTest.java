@@ -5,16 +5,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.List;
-
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.bricks.blinkinglights.BlinkingLights;
 import sneer.bricks.blinkinglights.Light;
 import sneer.lego.Inject;
 import sneer.lego.tests.BrickTestSupport;
-import wheel.lang.Threads;
+import wheel.lang.FrozenTime;
 
 public class BlinkingLightsTest extends BrickTestSupport {
 
@@ -23,32 +20,39 @@ public class BlinkingLightsTest extends BrickTestSupport {
 	
 	@Test
 	public void testLights() throws Exception {
-		List<Light> lights = _lights.listLights();
-		assertEquals(0, lights.size());
+		assertLightCount(0);
 		
 		Light light = _lights.turnOn("some error", new NullPointerException());
 		assertTrue(light.isOn());
 		assertEquals("some error", light.message());
 		assertNotNull(light.error());
-		lights = _lights.listLights();
-		assertEquals(1, lights.size());
+		assertLightCount(1);
 		
 		_lights.turnOff(light);
 		assertFalse(light.isOn());
-		lights = _lights.listLights();
-		assertEquals(0, lights.size());
+		assertLightCount(0);
 	}
 
 	@Test
-	@Ignore
 	public void testTimeout() throws Exception {
-		List<Light> lights = _lights.listLights();
-		assertEquals(0, lights.size());
+		assertLightCount(0);
 		
+		FrozenTime.freezeForCurrentThread(1);
 		Light light = _lights.turnOn("some error", new NullPointerException(), 1000);
 		assertTrue(light.isOn());
-		Threads.sleepWithoutInterruptions(1001);
+		
+		FrozenTime.freezeForCurrentThread(1000);
+		assertTrue(light.isOn());
+		assertLightCount(1);
+
+		FrozenTime.freezeForCurrentThread(1001);
 		assertFalse(light.isOn());
+		assertLightCount(0);
+
+	}
+
+	private void assertLightCount(int count) {
+		assertEquals(count, _lights.listLights().size());
 	}
 
 }

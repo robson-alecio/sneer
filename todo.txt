@@ -35,7 +35,7 @@
 Container
 	- FileTransfer
 	- FileTransfer based Deployer
-	- Eliminate create(...) methods from Container.
+	[done] - Eliminate create(...) methods from Container.
 	- Run all tests and see which ones are ignored. Remove @Ignore from them and make them run. 
 	- check file locks on windows (FileUtils.cleanDirectory() "unable to delete file"). This is caused by a test that currently not run (has the @Ignore annotation).
 	- create new test runner that uses our own classloader so we can replace the AnnotatedFieldInjector by the StaticFieldInjector

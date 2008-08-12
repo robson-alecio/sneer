@@ -98,11 +98,9 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 		return _b;
 	}
 
-
 	private SovereignParty publisher() {
 		return _a;
 	}
-
 
 	private Object callMethod(Object target, String methodName) throws Exception {
 		Method m = target.getClass().getMethod(methodName, (Class<?>[]) null);
@@ -111,6 +109,5 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 		return result;
 	}
 
-	protected abstract  File sourceFolder();
-
+	protected abstract File sourceFolder();
 }

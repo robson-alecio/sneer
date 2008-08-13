@@ -3,8 +3,10 @@ package sneer.skin.imageSelector.impl;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -15,6 +17,7 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -27,6 +30,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 public class AvatarPreview extends JDialog {
 
@@ -105,7 +109,7 @@ public class AvatarPreview extends JDialog {
 	private JInternalFrame initInternalFrame(JPanel panel, String title) {
 		_lineCounter = 0;
 		_colCounter = 0;
-		final JInternalFrame iwin = new JInternalFrame(title);
+		final JInternalFrame iwin = new MyInternalFrame(title);
 		panel.add(iwin);
 		iwin.getContentPane().setLayout(new GridBagLayout());
 		SwingUtilities.invokeLater(
@@ -138,20 +142,27 @@ public class AvatarPreview extends JDialog {
 			new MouseAdapter(){
 				@Override
 				public void mouseEntered(MouseEvent arg0) {
-					_imageDialog._keyhole.setTrueLocation(10,10);
+					limitKeyholeInsideCropWindow();
+					_imageDialog._keyhole.setTrueLocation(0,0);
 					_imageDialog._keyhole.setVisible(true);
 				}
 				@Override
 				public void mouseExited(MouseEvent arg0) {
 					_imageDialog._keyhole.setVisible(false);
 				}
+				@Override
+				public void mouseReleased(MouseEvent arg0) {
+					limitKeyholeInsideCropWindow();
+				}
 			}
 		);
+
 		_area.setToolTipText("Tip: You can use mouse wheel to set the keyhole size.");
 	}
 
-	private void initSlider(JSlider slider, Container container, boolean isVertical) {
+	private void initSlider(final JSlider slider, Container container, boolean isVertical) {
 		addGridItem(container, slider, isVertical);
+		slider.setAutoscrolls(true);
 		if(isVertical){
 			slider.setPreferredSize(new Dimension(15, 60));
 			slider.setSize(new Dimension(15, 60));
@@ -160,6 +171,12 @@ public class AvatarPreview extends JDialog {
 			slider.setSize(new Dimension(100, 15));
 		}
 		
+		slider.getModel().addChangeListener(new ChangeListener(){
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				limitKeyholeInsideCropWindow();
+			}
+		});
 		addSliderMouseWheelListener(slider);
 		slider.setEnabled(false);
 		slider.setMaximum(10000);
@@ -189,10 +206,32 @@ public class AvatarPreview extends JDialog {
 				if (value < 0)
 					value = 0;
 				slider.setValue(value);
+				limitKeyholeInsideCropWindow();
 			}
 		});
 	}
+		
+	private void limitKeyholeInsideCropWindow() {
+		try {
+			Keyhole keyhole = _imageDialog._keyhole;
+			Rectangle bounds = keyhole.getCropWindowBounds();
+			
+			double widht = bounds.getSize().getWidth();
+			if (widht - keyhole.getWidth() < 0) {
+				keyhole.setSize(new Dimension((int) widht, (int) widht));
+				_area.setValue((int) widht);
+			}
 
+			double height = bounds.getSize().getHeight();
+			if (height - keyhole.getHeight() < 0) {
+				keyhole.setSize(new Dimension((int) height, (int) height));
+				_area.setValue((int) height);
+			}
+		} catch (RuntimeException e) {
+			//ignore
+		}
+	}
+	
 	private void addAvatarIcon(Container container, int size) {
 		AvatarIcon label = new AvatarIcon(size);
 		_avatarList.add(label);
@@ -269,4 +308,48 @@ class AvatarIcon extends JLabel {
 			return _size;
 		return super.getMinimumSize();
 	}
+}
+
+class MyInternalFrame extends JInternalFrame{
+
+	private static final long serialVersionUID = 1L;
+
+	public MyInternalFrame(String t){
+		super(t);
+	}
+	
+	@Override
+	public void updateUI() {
+		if (ui instanceof BasicInternalFrameUI &&
+		  !(ui instanceof MyInternalFrameUI)) {
+			ui = new MyInternalFrameUI(this, (BasicInternalFrameUI) ui);
+		}
+		super.updateUI();
+	}
+};
+
+class MyInternalFrameUI extends BasicInternalFrameUI{
+	
+	BasicInternalFrameUI _adapter;
+
+	public MyInternalFrameUI(JInternalFrame iframe, BasicInternalFrameUI ui) {
+		super(iframe);
+		System.out.println(_adapter.getNorthPane()); 
+		_adapter = ui;
+	}
+
+    @Override
+    public void installUI(JComponent c) {
+    	_adapter.installUI(c);
+    }
+
+    @Override
+    public void uninstallUI(JComponent c) {
+    	_adapter.uninstallUI(c);
+    }
+
+    @Override
+    public void update(Graphics g, JComponent c) {
+    	_adapter.update(g, c);
+    }
 }

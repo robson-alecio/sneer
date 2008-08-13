@@ -1,6 +1,9 @@
 package sneer.skin.dashboard.tests;
 
 import java.awt.Container;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
@@ -9,9 +12,11 @@ import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 
 import sneer.lego.ContainerUtils;
 import sneer.skin.dashboard.Dashboard;
+import sneer.skin.dashboard.SnappFrame;
 import sneer.skin.laf.LafManager;
 import sneer.skin.laf.metal.MetalLafSupport;
 import sneer.skin.laf.motif.MotifLafSupport;
@@ -42,10 +47,12 @@ public class DashboardDemo  {
 	}
 	
 	private static void installSampleSnapps(Dashboard dashboard) {
+		
 		dashboard.installSnapp(new Snapp1());
 		dashboard.installSnapp(new Snapp2());
 		dashboard.installSnapp(new Snapp3());
     }
+	
 }
 
 class Snapp1 implements Snapp{
@@ -65,6 +72,8 @@ class Snapp1 implements Snapp{
 		
 		container.add(combo);
 		container.add(list);
+		
+		
 	}
 	@Override
 	public String getName() {
@@ -92,7 +101,8 @@ class Snapp2 implements Snapp{
 class Snapp3 implements Snapp{
 	@Override
 	public void init(Container container) {
-        JTextArea textArea = new JTextArea(15, 20);
+		container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
+		JTextArea textArea = new JTextArea(15, 20);
         container.add(new JScrollPane(textArea));
 	}
 	@Override

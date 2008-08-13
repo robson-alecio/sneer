@@ -2,12 +2,17 @@ package sneer.skin.dashboard.impl;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
+import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.Window;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -16,7 +21,6 @@ import javax.swing.JPanel;
 import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
-import javax.swing.border.LineBorder;
 
 import sneer.bricks.threadpool.ThreadPool;
 import sneer.lego.Inject;
@@ -76,7 +80,6 @@ public class DashboardImpl implements Dashboard, Runnable {
 		addOpenWindowAction(tray);
 		addLockUnlockAction();
 		addExitAction(tray);
-		addBorderTypeAction();
 	}
 
 	public void refreshLaf() {
@@ -98,20 +101,47 @@ public class DashboardImpl implements Dashboard, Runnable {
 		
 		rootPanel.setLayout(new BorderLayout());
 		rootPanel.add(mainMenu.getWidget(), BorderLayout.NORTH);
-		contentPanel = new JPanel();
+		contentPanel = new ContentPane();
 		rootPanel.add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new FlowLayout());
 	}
 	
 	@Override
 	public SnappFrame installSnapp(final Snapp snapp) {
-		final SnappFrameImpl sf = new SnappFrameImpl(snapp.getName());
+		final SnappFrameImpl sf = new SnappFrameImpl();
 		SwingUtilities.invokeLater(
 			new Runnable(){
 				@Override
 				public void run() {
 					contentPanel.add(sf);
-					snapp.init(sf.getContentPane());
+					snapp.init(sf);
+					
+					MouseListener listener = new MouseAdapter() {
+
+						
+						@Override
+						public void mouseEntered(MouseEvent e) {
+							Component src = (Component) e.getSource();
+							while(!(src instanceof SnappFrame)) {
+								src = src.getParent();
+								if(src==null)
+									return;
+							}
+
+							SnappFrame snappFrame = (SnappFrame) src;
+							final Container snappFrameContainer = snappFrame.getContainer();
+							final Container parent = snappFrameContainer.getParent();
+
+							parent.remove(snappFrameContainer);
+							parent.add(snappFrameContainer);
+							parent.validate();
+							System.out.println(e);
+							
+						}
+						
+					};
+					
+					sf.addMouseListener(listener);
 				}
 			}
 		);
@@ -196,33 +226,6 @@ public class DashboardImpl implements Dashboard, Runnable {
 		mainMenu.getSneerMenu().addAction(cmd);
 	}	
 	
-	private void addBorderTypeAction() {
-		SelectableAction cmd = new SelectableAction(){
-			boolean deafaulBorder = true;
-			@Override
-			public String caption() {
-				return "Default Snapp Border";
-			}
-			@Override
-			public void run() {
-				if(SnappFrameImpl.hasDefaultWindowBorder()){
-					SnappFrameImpl.setDefaultWindowBorder(null);
-				}else{
-					SnappFrameImpl.setDefaultWindowBorder(
-						new LineBorder(Color.WHITE,2,true));
-				}
-				refreshLaf();
-				deafaulBorder=!deafaulBorder;
-			}
-			@Override
-			public boolean isSelected() {
-				return deafaulBorder;
-			}
-		};
-		
-		mainMenu.getPreferencesMenu().addAction(cmd);
-	}
-	
 	private void addOpenWindowAction(TrayIconImpl tray) {
 		Action cmd = new Action(){
 			@Override
@@ -277,5 +280,37 @@ public class DashboardImpl implements Dashboard, Runnable {
 	@Override
 	public Container getRootPanel() {
 		return rootPanel;
+	}
+	
+	
+	@Override
+	public void moveSnapp(int index, SnappFrame frame) {
+		contentPanel.remove(frame.getContainer());
+		contentPanel.add(frame.getContainer(), index);
+	}
+
+	@Override
+	public void moveSnappDown(SnappFrame frame) {
+		contentPanel.remove(frame.getContainer());
+		contentPanel.add(frame.getContainer(), 0);
+	}
+
+	@Override
+	public void moveSnappUp(SnappFrame frame) {
+		contentPanel.remove(frame.getContainer());
+		contentPanel.add(frame.getContainer());
+	}	
+}
+
+class ContentPane extends JPanel{
+	private static final long serialVersionUID = 1L;
+
+	@Override
+	public void paintComponent(Graphics g) {
+		//TODO: add a gradient user configuration
+		super.paintComponent(g);
+		g.setColor(new Color(0, 0, 0, 50));
+		g.fillRect(0, 0, this.getWidth(), this.getHeight());
+	
 	}
 }

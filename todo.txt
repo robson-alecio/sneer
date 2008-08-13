@@ -161,3 +161,66 @@ GiveNTake
         - 2x 3 quartos
         - 2x comercial
         - 2x churrasqueira
+        
+**************************************************************
+  PLANEJAMENTO PARA O SNEER
+
+11/08/08 - Klaus, Sandro e Bambu
+
+
+LE
+
+   Funcional:
+    - Chat/Histórico
+      - Chat Grupo
+    - Wind/Histórico
+    - Voz
+    - Contatos
+
+   Infra:
+    - Bricks/Install - Publish, MeToo
+    - Autenticação/Hask - PK
+    - Blinking lights
+    - Logging
+    - (?) Persistência transparente
+
+
+1.0
+
+   Funcional:
+    - Annotations/Comments/Tags
+    - TopTen/Sinônimos
+    - Foto
+    - Transferência de arquivos
+    - Compartilhamento de arquivos
+    - (?) Profile/Cidade, Aniversário, etc
+    - Afinidade
+    - MSN
+
+   Infra:
+    - Installer.EXE
+    - Segurança
+      - Sandboxing
+    - *(?) Compartilhamento de CPU
+    - Priorização de tráfego
+    - Atualização Kernel
+    - Atualização Bricks
+    - Uninstall
+
+
+After
+
+   Funcional:
+    - Give n Take
+    - Midia Player
+      - MP3
+      - Vídeo
+    - Thumbnails/Chooser
+    - *Anonimizing
+
+   Infra:
+    - Secure Channel-Crypto
+    - *Anonimizing
+    - *(?) Compartilhamento de CPU
+    - Persistence-Crypto
+    - JNI

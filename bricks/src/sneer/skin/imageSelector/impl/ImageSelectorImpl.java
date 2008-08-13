@@ -14,21 +14,13 @@ import javax.swing.SwingConstants;
 import sneer.lego.Inject;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.imageSelector.ImageSelector;
+import wheel.lang.Omnivore;
 
 public class ImageSelectorImpl implements ImageSelector {
 	
 	@Inject
 	private static ImageFactory imageFactory;
 	
-	@Override
-	public ImageIcon getImageIcon(){
-		File file = selectFile();
-		if(file!=null && file.exists()){
-			showImage(file);
-		}
-		
-		return null; //TODO: fix to a better return
-	}
 	
 	private File selectFile() {
 		JFileChooser fileChooser = new JFileChooser(".");
@@ -43,9 +35,18 @@ public class ImageSelectorImpl implements ImageSelector {
 		return null;
 	}
 
-	private void showImage(File file) {
-		ImageDialog dlg = new ImageDialog(file, imageFactory);
+	private void showImage(File file, Omnivore<Image> imageSetter) {
+		ImageDialog dlg = new ImageDialog(file, imageFactory, imageSetter);
 		dlg.setVisible(true);
+	}
+
+	@Override
+	public void open(Omnivore<Image> imageSetter) {
+		File file = selectFile();
+		if (file==null) return;
+		if (!file.exists()) return;
+		
+		showImage(file, imageSetter);
 	}
 }
 

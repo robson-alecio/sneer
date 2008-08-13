@@ -11,16 +11,6 @@ public class OwnTaglineKeeperImpl implements OwnTaglineKeeper {
 	private Register<String> _tagline = new RegisterImpl<String>(null);
 
 	@Override
-	public String getTagline() {
-		return _tagline.output().currentValue();
-	}
-
-	@Override
-	public void setTagline(String name) {
-		_tagline.setter().consume(name);
-	}
-
-	@Override
 	public Signal<String> tagline() {
 		return _tagline.output();
 	}

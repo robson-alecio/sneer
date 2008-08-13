@@ -1,5 +1,8 @@
 package sneer.widgets.reactive.impl;
 
+import java.awt.Image;
+
+import sneer.widgets.reactive.ImageWidget;
 import sneer.widgets.reactive.RFactory;
 import sneer.widgets.reactive.TextWidget;
 import wheel.lang.Omnivore;
@@ -30,6 +33,11 @@ public class RFactoryImpl implements RFactory {
 	@Override
 	public TextWidget newTextField(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange) {
 		return new RTextFieldImpl(source, setter, notifyEveryChange);
+	}
+
+	@Override
+	public ImageWidget newImage(Signal<Image> source) {
+		return new RImageImpl(source);
 	}
 
 }

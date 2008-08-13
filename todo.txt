@@ -178,6 +178,7 @@ LE
     - Contatos
 
    Infra:
+    - pascal case nos packages
     - Bricks/Install - Publish, MeToo
     - Autenticação/Hask - PK
     - Blinking lights
@@ -190,7 +191,7 @@ LE
    Funcional:
     - Annotations/Comments/Tags
     - TopTen/Sinônimos
-    - Foto
+    - Foto - crop, keyhole
     - Transferência de arquivos
     - Compartilhamento de arquivos
     - (?) Profile/Cidade, Aniversário, etc
@@ -198,6 +199,7 @@ LE
     - MSN
 
    Infra:
+    - drag n drop da ordem dos snapps no dashboard
     - Installer.EXE
     - Segurança
       - Sandboxing

@@ -43,7 +43,7 @@ public class OwnTaglineKeeperDemo extends BrickTestSupport {
 		Container container = ContainerUtils.getContainer();
 		demo._rfactory = container.produce(RFactory.class);	
 		demo._ownTaglineKeeper = container.produce(OwnTaglineKeeper.class);
-		demo._ownTaglineKeeper.setTagline("O novo parágrafo começa depois do ponto final.");
+		demo._ownTaglineKeeper.taglineSetter().consume("O novo parágrafo começa depois do ponto final.");
 		return demo;
 	}
 

@@ -25,10 +25,8 @@ public interface ImageFactory extends DefaultIcons{
 
 	BufferedImage copy(BufferedImage source, BufferedImage target);
 
-	BufferedImage getScaledInstance(BufferedImage image, double scale);
-
-	BufferedImage getScaledInstance(BufferedImage image, int width, int height);
-
-	BufferedImage getScaledInstance(BufferedImage image, int width, int height, GraphicsConfiguration gc);
+	BufferedImage getScaledInstance(Image image, double scale);
+	BufferedImage getScaledInstance(Image image, int width, int height);
+	BufferedImage getScaledInstance(Image image, int width, int height, GraphicsConfiguration gc);
 
 }

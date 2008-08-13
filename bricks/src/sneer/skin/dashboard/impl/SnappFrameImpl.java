@@ -6,9 +6,6 @@ import java.awt.Rectangle;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
 
 import sneer.skin.dashboard.SnappFrame;
 

@@ -10,30 +10,24 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
-import java.util.List;
 
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLayeredPane;
 import javax.swing.border.BevelBorder;
-
-import sneer.skin.image.ImageFactory;
 
 public class Keyhole extends JComponent {
     private static final long serialVersionUID = 1L;
 	
     private final AvatarPreview _avatarPreview;
-	private final ImageFactory _imageFactory;
 	private final JLayeredPane _layeredPane;
 
 	private Point _mouseLocation;
 	private Point _layeredPaneLocation;
 	private Robot robot;
 	
-    Keyhole(JLayeredPane layeredPane, AvatarPreview avatarPreview, ImageFactory imageFactory) {
+    Keyhole(JLayeredPane layeredPane, AvatarPreview avatarPreview) {
 		_layeredPane = layeredPane;
 		_avatarPreview = avatarPreview;
-		_imageFactory = imageFactory;
     	setBorder(new BevelBorder(BevelBorder.LOWERED));
     	setPreferredSize(new Dimension(128,128));
         addMouseListeners(layeredPane);
@@ -61,14 +55,9 @@ public class Keyhole extends JComponent {
 
 	private void captureAvatar() {
 		BufferedImage buffer = getHoleSorceImage();
-		List<AvatarIcon> avatars = _avatarPreview._avatarList;
-		for (AvatarIcon avatar : avatars) {
-			ImageIcon icon = new ImageIcon(
-				_imageFactory.getScaledInstance(buffer, (int)avatar._size.getWidth(), (int)avatar._size.getHeight()));
-			avatar.setIcon(icon);
-		}
+		_avatarPreview.setAvatar(buffer);
 	}
-	
+
 	private void onMouseMove(MouseEvent e) {
 		_mouseLocation = e.getLocationOnScreen();
 		_layeredPaneLocation = _layeredPane.getLocationOnScreen();

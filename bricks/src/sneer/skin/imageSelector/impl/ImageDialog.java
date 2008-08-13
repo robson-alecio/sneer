@@ -16,6 +16,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import sneer.skin.image.ImageFactory;
+import wheel.lang.Omnivore;
 
 public class ImageDialog extends JDialog {
 	
@@ -31,10 +32,11 @@ public class ImageDialog extends JDialog {
 	private JLayeredPane _layeredPane;
 	private ImageFactory _imageFactory;
 
-    ImageDialog(File file, ImageFactory imageFactory) {
+
+    ImageDialog(File file, ImageFactory imageFactory, Omnivore<Image> imageSetter) {
     	_file = file;
     	_imageFactory = imageFactory;
-		_avatarPreview = new AvatarPreview(this);
+		_avatarPreview = new AvatarPreview(this, imageFactory, imageSetter);
 		_picture = new Picture(_avatarPreview);
 		
 		initWindow();
@@ -74,7 +76,7 @@ public class ImageDialog extends JDialog {
 		_picture.setIcon(icon);
 		_layeredPane.setLayout(new FlowLayout());    
         _layeredPane.add(_picture, JLayeredPane.DEFAULT_LAYER);
-        _keyhole = new Keyhole(_layeredPane, _avatarPreview, _imageFactory);
+        _keyhole = new Keyhole(_layeredPane, _avatarPreview);
         
         _avatarPreview._area.getModel().addChangeListener(new ChangeListener(){
 			@Override

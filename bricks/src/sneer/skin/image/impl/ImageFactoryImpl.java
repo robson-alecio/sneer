@@ -77,8 +77,19 @@ public class ImageFactoryImpl implements ImageFactory {
 	}
  
     @Override
-    public BufferedImage createBufferedImage(Image image) throws InterruptedException, IllegalArgumentException {
-        loadImage(image);
+    public BufferedImage createBufferedImage(Image image) throws IllegalArgumentException {
+    	if (image instanceof BufferedImage)
+			return (BufferedImage)image;
+    	
+        try {
+			return tryToCreateBufferedImage(image);
+		} catch (InterruptedException e) {
+			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+		}
+    }
+
+	private BufferedImage tryToCreateBufferedImage(Image image)	throws InterruptedException {
+		loadImage(image);
         int w = image.getWidth(null);
         int h = image.getHeight(null);
         ColorModel cm = getColorModel(image);
@@ -90,7 +101,7 @@ public class ImageFactoryImpl implements ImageFactory {
         g.drawImage(image, 0, 0, null);
         g.dispose();
         return bi;
-    }
+	}
 
     @Override
     public GraphicsConfiguration getDefaultConfiguration() {
@@ -126,21 +137,25 @@ public class ImageFactoryImpl implements ImageFactory {
     }
      
     @Override
-    public BufferedImage getScaledInstance(BufferedImage image, int width, int height) {
-    	return getScaledInstance(image, width, height, null);
+    public BufferedImage getScaledInstance(Image image, int width, int height) {
+    	BufferedImage converted = createBufferedImage(image);
+    	return getScaledInstance(converted, width, height, null);
     }
     
     @Override
-    public BufferedImage getScaledInstance(BufferedImage image, double scale) {
-    	return getScaledInstance(image, (int)(image.getWidth()*scale), (int)(image.getHeight()*scale));
+    public BufferedImage getScaledInstance(Image image, double scale) {
+    	BufferedImage converted = createBufferedImage(image);
+    	return getScaledInstance(converted, (int)(converted.getWidth()*scale), (int)(converted.getHeight()*scale));
     }
     
     @Override
-    public BufferedImage getScaledInstance(BufferedImage image, int width, int height, GraphicsConfiguration gc) {
-        if (gc == null)
+    public BufferedImage getScaledInstance(Image image, int width, int height, GraphicsConfiguration gc) {
+      	BufferedImage converted = createBufferedImage(image);
+      	
+      	if (gc == null)
             gc = getDefaultConfiguration();
-        int transparency = image.getColorModel().getTransparency();
-        return copy(image, gc.createCompatibleImage(width, height, transparency));
+        int transparency = converted.getColorModel().getTransparency();
+        return copy(converted, gc.createCompatibleImage(width, height, transparency));
     }
 
     @Override

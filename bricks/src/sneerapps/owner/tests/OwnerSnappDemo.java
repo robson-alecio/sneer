@@ -41,7 +41,7 @@ public class OwnerSnappDemo  {
 		ownNameKeeper.setName("Sandro Bihaiko");
 		
 		OwnTaglineKeeper ownTaglineKeeper = container.produce(OwnTaglineKeeper.class);
-		ownTaglineKeeper.setTagline("Minha frase do dia!!");
+		ownTaglineKeeper.taglineSetter().consume("Minha frase do dia!!");
 		
 		RFactory rfactory = container.produce(RFactory.class);
 		ownNameKeeper.name().addReceiver(log);

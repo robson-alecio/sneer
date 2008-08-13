@@ -6,16 +6,19 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -31,6 +34,9 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+
+import sneer.skin.image.ImageFactory;
+import wheel.lang.Omnivore;
 
 public class AvatarPreview extends JDialog {
 
@@ -49,9 +55,13 @@ public class AvatarPreview extends JDialog {
 
 	JCheckBox _cropCheck = new JCheckBox("Crop Image");
 	List<AvatarIcon> _avatarList = new ArrayList<AvatarIcon>();
+	private final ImageFactory _imageFactory;
+	private final Omnivore<Image> _imageSetter;
 
-	AvatarPreview(ImageDialog imageDialog) {
+	AvatarPreview(ImageDialog imageDialog, ImageFactory imageFactory, Omnivore<Image> imageSetter) {
 		_imageDialog = imageDialog;
+		_imageFactory = imageFactory;
+		_imageSetter = imageSetter;
 		resizeAvatarPreview();
 
 		JPanel panel = initPrincipalPanel();
@@ -268,6 +278,16 @@ public class AvatarPreview extends JDialog {
 			_lineCounter++;
 		}
 		return c;
+	}
+
+	void setAvatar(BufferedImage buffer) {
+		List<AvatarIcon> avatars = _avatarList;
+		for (AvatarIcon avatar : avatars) {
+			ImageIcon icon = new ImageIcon(
+				_imageFactory.getScaledInstance(buffer, (int)avatar._size.getWidth(), (int)avatar._size.getHeight()));
+			avatar.setIcon(icon);
+		}
+		_imageSetter.consume(buffer);
 	}
 
 }

@@ -1,9 +1,6 @@
 package sneer.skin.dashboard.tests;
 
 import java.awt.Container;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
@@ -12,11 +9,9 @@ import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
 
 import sneer.lego.ContainerUtils;
 import sneer.skin.dashboard.Dashboard;
-import sneer.skin.dashboard.SnappFrame;
 import sneer.skin.laf.LafManager;
 import sneer.skin.laf.metal.MetalLafSupport;
 import sneer.skin.laf.motif.MotifLafSupport;

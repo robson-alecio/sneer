@@ -1,11 +1,12 @@
 package sneer.skin.imageSelector;
 
-import javax.swing.ImageIcon;
+import java.awt.Image;
+
+import wheel.lang.Omnivore;
 
 
 public interface ImageSelector {
 
-	ImageIcon getImageIcon();
-
+	void open(Omnivore<Image> avatarSetter);
 
 }

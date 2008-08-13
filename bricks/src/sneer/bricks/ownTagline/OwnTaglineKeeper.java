@@ -10,7 +10,4 @@ public interface OwnTaglineKeeper extends Brick {
 
 	Omnivore<String> taglineSetter();
 
-	void setTagline(String name);
-
-	String getTagline();
 }

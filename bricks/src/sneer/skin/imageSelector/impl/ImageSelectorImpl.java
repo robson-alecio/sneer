@@ -20,6 +20,7 @@ public class ImageSelectorImpl implements ImageSelector {
 	
 	@Inject
 	private static ImageFactory imageFactory;
+	private static ImageDialog dlg;
 	
 	
 	private File selectFile() {
@@ -36,7 +37,7 @@ public class ImageSelectorImpl implements ImageSelector {
 	}
 
 	private void showImage(File file, Omnivore<Image> imageSetter) {
-		ImageDialog dlg = new ImageDialog(file, imageFactory, imageSetter);
+		dlg = new ImageDialog(file, imageFactory, imageSetter);
 		dlg.setVisible(true);
 	}
 
@@ -45,6 +46,12 @@ public class ImageSelectorImpl implements ImageSelector {
 		File file = selectFile();
 		if (file==null) return;
 		if (!file.exists()) return;
+		
+		if(dlg!=null){
+			dlg.setVisible(false);
+			dlg._avatarPreview.setVisible(false);
+			dlg.dispose();
+		}
 		
 		showImage(file, imageSetter);
 	}

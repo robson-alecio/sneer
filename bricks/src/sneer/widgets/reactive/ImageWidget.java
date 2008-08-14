@@ -3,7 +3,7 @@ package sneer.widgets.reactive;
 import java.awt.Component;
 import java.awt.Image;
 
-import javax.swing.JButton;
+import javax.swing.JComponent;
 
 public interface ImageWidget {
 
@@ -11,6 +11,6 @@ public interface ImageWidget {
 
 	Component getComponent();
 	
-	JButton getMainWidget();
+	JComponent getMainWidget();
 	
 }

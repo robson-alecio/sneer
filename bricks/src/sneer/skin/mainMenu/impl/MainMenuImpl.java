@@ -25,8 +25,10 @@ public class MainMenuImpl extends MenuBar implements MainMenu{
 	private static transient Menu<JComponent> windowMenu;
 	private static transient Menu<JComponent> lookAndFeelMenu;
 	private static transient Menu<JComponent> preferencesMenu;
+	private static boolean initializaded = false;
 	
 	public void initialize() {
+		initializaded = true;
 		getWidget().add(new JLabel(imageFactory.getIcon(DefaultIcons.logoTray)));
 		
 		sneerMenu = menuFactory.createMenuGroup("Menu");
@@ -43,8 +45,19 @@ public class MainMenuImpl extends MenuBar implements MainMenu{
 	}
 
 	public Menu<JComponent> getSneerMenu() {
-		if(sneerMenu==null)
-			initialize();
+		synchronized (this) {
+			if(!initializaded){
+				initialize();
+			}else{
+				try {
+					Thread.sleep(10);
+					if(sneerMenu==null)
+						return getSneerMenu();
+				} catch (InterruptedException e) {
+					//ignore
+				}
+			}
+		}
 		return sneerMenu;
 	}
 	

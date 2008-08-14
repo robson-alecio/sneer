@@ -174,11 +174,11 @@ public class AvatarPreview extends JDialog {
 		addGridItem(container, slider, isVertical);
 		slider.setAutoscrolls(true);
 		if(isVertical){
-			slider.setPreferredSize(new Dimension(15, 60));
-			slider.setSize(new Dimension(15, 60));
+			slider.setPreferredSize(new Dimension(20, 60));
+			slider.setSize(new Dimension(20, 60));
 		}else{
-			slider.setPreferredSize(new Dimension(100, 15));
-			slider.setSize(new Dimension(100, 15));
+			slider.setPreferredSize(new Dimension(100, 20));
+			slider.setSize(new Dimension(100, 20));
 		}
 		
 		slider.getModel().addChangeListener(new ChangeListener(){

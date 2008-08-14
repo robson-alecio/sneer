@@ -9,8 +9,6 @@ import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.Window;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -113,7 +111,6 @@ public class DashboardImpl implements Dashboard, Runnable {
 				public void run() {
 					contentPanel.add(sf);
 					snapp.init(sf);
-					sf.addMouseListener(new SnappMouseListener());
 				}
 			}
 		);
@@ -272,38 +269,6 @@ public class DashboardImpl implements Dashboard, Runnable {
 		contentPanel.remove(frame.getContainer());
 		contentPanel.add(frame.getContainer());
 	}	
-}
-
-class SnappMouseListener extends MouseAdapter{
-
-	@Override
-	public void mouseDragged(MouseEvent e) {
-//		e.
-	
-	}
-	
-	
-//	@Override
-//	public void mouseEntered(MouseEvent e) {
-//		Component src = (Component) e.getSource();
-//		while(!(src instanceof SnappFrame)) {
-//			src = src.getParent();
-//			if(src==null)
-//				return;
-//		}
-//
-//		SnappFrame snappFrame = (SnappFrame) src;
-//		final Container snappFrameContainer = snappFrame.getContainer();
-//		final Container parent = snappFrameContainer.getParent();
-//
-//		parent.remove(snappFrameContainer);
-//		parent.add(snappFrameContainer);
-//		parent.validate();
-//		System.out.println(e);
-//		
-//	}
-	
-
 }
 
 class ContentPane extends JPanel{

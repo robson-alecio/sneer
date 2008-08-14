@@ -5,6 +5,8 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 
 import javax.swing.ImageIcon;
@@ -43,6 +45,7 @@ public class ImageDialog extends JDialog {
 		initLayers();
 		addImageInLayer();
 		addSizeListener();
+		addCloseListener();
 		
 		SwingUtilities.invokeLater(
 			new Runnable() {
@@ -53,6 +56,21 @@ public class ImageDialog extends JDialog {
 				}
 			}
 		);		
+	}
+
+	private void addCloseListener() {
+		WindowAdapter listener = new WindowAdapter(){
+			@Override
+			public void windowClosing(WindowEvent e) {
+				_avatarPreview.setVisible(false);
+				_avatarPreview.dispose();
+				setVisible(false);
+				dispose();
+			}
+		};
+		
+		this.addWindowListener(listener);
+		_avatarPreview.addWindowListener(listener);
 	}
 
 	private void initWindow() {
@@ -132,7 +150,7 @@ public class ImageDialog extends JDialog {
 	}
 	
 	private ImageIcon getIcon(final File file, int height, int width) {
-		ImageIcon icon = _imageFactory.getIcon(file, false);
+		ImageIcon icon = _imageFactory.getIcon(file);
 		if (icon.getIconWidth() > width) {
 			icon = new ImageIcon(
 				icon.getImage().getScaledInstance(

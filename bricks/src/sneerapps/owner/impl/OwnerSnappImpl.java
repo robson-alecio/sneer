@@ -4,8 +4,8 @@ import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JSeparator;
 
@@ -44,10 +44,11 @@ public class OwnerSnappImpl implements OwnerSnapp {
 		
 		GridBagConstraints c;
 		
-		c = getConstraints(0, 10,10,0,10);
+		c = getConstraints(0, 5,10,0,10);
 		editableLabel = rfactory.newEditableLabel(
 	        	_ownNameKeeper.name(), 
 				_ownNameKeeper.nameSetter());
+		c.anchor = GridBagConstraints.SOUTHEAST;
 		
         container.add(editableLabel.getContainer(), c);
  
@@ -55,25 +56,42 @@ public class OwnerSnappImpl implements OwnerSnapp {
         JSeparator separator = new JSeparator();
 		container.add(separator, c);
         
-		c = getConstraints(2, 0,10,10,10);
+		c = getConstraints(2, 0,10,5,10);
         editableLabel = rfactory.newEditableLabel(
         		_ownTaglineKeeper.tagline(), 
         		_ownTaglineKeeper.taglineSetter());
+		c.anchor = GridBagConstraints.NORTHEAST;
+
         container.add(editableLabel.getContainer(), c);
+        
         
 		c = new GridBagConstraints(1,0, 1,3,0.0,0.0,
 				GridBagConstraints.EAST, 
 				GridBagConstraints.BOTH,
 				new Insets(5,0,5,5),0,0);
 		
-		ImageWidget avatar = rfactory.newImage(_ownAvatarKeeper.avatar(32));
+		ImageWidget avatar = rfactory.newImage(_ownAvatarKeeper.avatar(48));
 		container.add(avatar.getComponent(), c);
-		
-		avatar.getMainWidget().addActionListener(new ActionListener(){
+		addMouseLitener(avatar);
+	}
+
+	private void addMouseLitener(ImageWidget avatar) {
+		avatar.getMainWidget().addMouseListener(new MouseAdapter(){
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void mouseReleased(MouseEvent e) {
 				_imageSelector.open(_ownAvatarKeeper.avatarSetter());
-			}});
+			}
+		
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				//change mouse pointer
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				//change mouse pointer
+			}
+		});
 	}
 
 	private GridBagConstraints getConstraints(int y, int top, int left, int botton, int right) {

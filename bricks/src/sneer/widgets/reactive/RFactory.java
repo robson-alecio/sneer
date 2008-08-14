@@ -7,9 +7,9 @@ import wheel.reactive.Signal;
 
 public interface RFactory {
 
-	TextWidget newLabel(Signal<String> source);
-	
 	ImageWidget newImage(Signal<Image> source);
+	
+	TextWidget newLabel(Signal<String> source);
 	
 	TextWidget newEditableLabel(Signal<String> source, Omnivore<String> setter);
 	TextWidget newEditableLabel(Signal<String> source, Omnivore<String> setter,	boolean notifyEveryChange);

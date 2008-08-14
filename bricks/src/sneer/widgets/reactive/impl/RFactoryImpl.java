@@ -2,6 +2,8 @@ package sneer.widgets.reactive.impl;
 
 import java.awt.Image;
 
+import sneer.lego.Inject;
+import sneer.skin.image.ImageFactory;
 import sneer.widgets.reactive.ImageWidget;
 import sneer.widgets.reactive.RFactory;
 import sneer.widgets.reactive.TextWidget;
@@ -9,6 +11,9 @@ import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 
 public class RFactoryImpl implements RFactory {
+	
+	@Inject
+	private static ImageFactory imageFactory;
 
 	@Override
 	public TextWidget newEditableLabel(Signal<String> source, Omnivore<String> setter) {
@@ -37,7 +42,7 @@ public class RFactoryImpl implements RFactory {
 
 	@Override
 	public ImageWidget newImage(Signal<Image> source) {
-		return new RImageImpl(source);
+		return new RImageImpl(source, imageFactory);
 	}
 
 }

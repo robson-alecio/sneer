@@ -14,8 +14,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.PixelGrabber;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -24,8 +22,6 @@ import javax.swing.ImageIcon;
 
 import sneer.skin.image.ImageFactory;
 
-import com.jhlabs.image.ShadowFilter;
-
 public class ImageFactoryImpl implements ImageFactory {
 	
 	protected HashMap<String,ImageIcon> map = new HashMap<String,ImageIcon>();
@@ -33,18 +29,13 @@ public class ImageFactoryImpl implements ImageFactory {
 	
     @Override
 	public ImageIcon getIcon(String relativeImagePath){
-		return getIcon(ImageFactoryImpl.class, relativeImagePath, false);
+		return getIcon(ImageFactoryImpl.class, relativeImagePath);
 	}
-
-    @Override
-	public ImageIcon getIcon(String relativeImagePath, boolean hasShadow){
-		return getIcon(ImageFactoryImpl.class, relativeImagePath, hasShadow);
-	}	
 	
     @Override
-	public ImageIcon getIcon(File file, boolean hasShadow){
+	public ImageIcon getIcon(File file){
 		try {
-			return getIcon(file.toURI().toURL(), hasShadow);
+			return getIcon(file.toURI().toURL());
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -52,24 +43,17 @@ public class ImageFactoryImpl implements ImageFactory {
     }
     
     @Override
-    public ImageIcon getIcon(Class<?> anchor, String relativeImagePath, boolean hasShadow){
-    	return getIcon(anchor.getResource(relativeImagePath), hasShadow);
+    public ImageIcon getIcon(Class<?> anchor, String relativeImagePath){
+    	return getIcon(anchor.getResource(relativeImagePath));
     }
 
-	public ImageIcon getIcon(URL url, boolean hasShadow){
-		String id = new StringBuffer().append(hasShadow).append("|").append(url.getPath()).toString(); 
+	public ImageIcon getIcon(URL url){
+		String id = new StringBuffer().append("|").append(url.getPath()).toString(); 
 		if(map.containsKey(id)){
 			return map.get(id);
 		}
 		Image img = Toolkit.getDefaultToolkit().getImage(url);
-		
-		InputStream in;
-		try {
-			in = url.openStream();
-		} catch (IOException e) {
-			return new ImageIcon(img);
-		}
-		ImageIcon icon = createImageIcon(hasShadow, img, in);
+		ImageIcon icon = new ImageIcon(img);
 			
 		map.put(id, icon);
 		mapBytes.put(icon, img);
@@ -178,28 +162,4 @@ public class ImageFactoryImpl implements ImageFactory {
             throw new IllegalArgumentException();
         return pg.getColorModel();
     }
-
-	private ImageIcon createImageIcon(boolean hasShadow, Image img, InputStream in) {
-		BufferedImage buf;
-		ImageIcon icon;
-		try{
-			buf = createBufferedImage(img);
-			if(hasShadow){
-				ShadowFilter f = new ShadowFilter();
-				f.setOpacity(.7f);
-				buf = f.filter(buf, null);
-			}
-			
-			icon = new ImageIcon(buf);
-		} catch (Exception e) {
-			icon = new ImageIcon(img);
-		}finally{
-			try {
-				in.close();
-			} catch (IOException e) {
-				//ignore
-			}
-		}
-		return icon;
-	}
 }

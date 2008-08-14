@@ -1,17 +1,88 @@
-﻿Sandro
-	- Create a first functional Snapp.
-		- OwnerAvatar
-			- Image Selection GUI
-				- Keyhole
-					- Change Area Size
-						- Tool Box Slider
-					- Generate Preview (24, 32, 48, 64, 128)
-			- Snapp Integration 
-				- Call Image Selection GUI
-				- View Full Picture
+﻿END-USER FEATURES
+
+	- Contacts
+		- Online indicator
+	================================= FIRST DOGFOOD RELEASE
+	- Wind
+	- Voice Calls
+	- Screen Viewing a la VNC
+    - File Transfer
+    - MSN Client
+    	- Contact Unification
+	- Messaging - Grand unification of instant messages and email
+		- Instant Messaging
+		- Offline Messaging (equivalent to "email")
+		- Group Messages
+		- History
+	- Wind History
+    - File Sharing
+    	- Public Files
+    	- Restricted by Group? Affinity?
+	================================= LAST DOGFOOD RELEASE
+	- MeToo
+	- Affinity
+	- TopTen
+	- Annotations/Comments/Tags
+	- Synonyms
+	- Avatars
+		- Choose Image
+		- Define Keyhole
+		- Contacts' Avatars
+			- View Keyholes in Contact List
+			- View Full Avatar 
+    - Profile - City, Birthday, etc (?)
+	================================= 1.0 RELEASE
+	- Own Photo - Crop
+    - Thumbnails in Pic Chooser
+    - GiveNTake
+    - Midia Player for TopTen
+      - MP3
+      - Vídeo
+	================================= DISTANT FUTURE
+    - Anonimizing
+
+
+
+PLATFORM FEATURES
+	- Package names in LOWER CASE - rename pascal case packages to lower case. (Ask Klaus why)
+	- Ignored Tests - Run all tests and see which ones are ignored. Remove @Ignore from them and make them run.
+		- On Linux
+		- On Windows
+	- Replace the AnnotatedFieldInjector by the StaticFieldInjector - Need to create our own TestRunner?
+		- Load wheel in a base classloader that also adds "implements Serializable" to classes.
+	- Brick Publish
+	================================= FIRST DOGFOOD RELEASE
+	- Blinking lights
+	- Logging
+	- Transparent Persistence
+	- Traffic Prioritization by tuple type
+	- Brick
+		- Uninstall
+		- Update
+	- Kernel Update
+		- Auto Update
+	================================= LAST DOGFOOD RELEASE
+	- Authentication (PK)
+	- Segurança
+		- Sandboxing
+	- Dashboard
+		- Drag n Drop for reordering Snapps
+	- Installer.EXE for Windows
+	================================= 1.0 RELEASE
+	- OMetaBoo support
+	- Auto Update for Bricks
+	- Secure Channel-Crypto
+	- Persistence-Crypto
+	- CPU Sharing
+	- Native Bricks (JNI)
+	================================= DISTANT FUTURE
+	- ?
+
+
+
 		- SnappPreview
+			- Change size
 			- Menu
-				- Change size
 				- open window
 				- uninstall
 				- About
@@ -19,27 +90,17 @@
 			- Sizes:
 				- Single Line - Signal<String> title(). Future: space available for graphics.
 				- MultiLine - Signal<int> preferredHeight() Component component(). Future: forced size by user.
-				- Future: Iconified - space available for graphics
+				- Iconified - space available for graphics
 		- SnappWindow
 	- SelectableAction.isSelected() - change to Signal<Boolean> 
 	- Tray Icon - Ask Petra for a 16x16 icon to put there. Black on white. No transparency.
-	- JScrollPane for Snapps.
-	- Layout Support for Internal Windows (Size, Resize and Position).
-	- Implement animated collapse (JInternalFrame).
+	- Animated collapse for SnappPreviews
 
 	=================================================== RELEASE
 	- Resizeable JWindow, instead of switching JFrame <-> JWindow.
-	- Pic thumbnails in File chooser
 	- Add Tab/Window Support
 
 Container
-	- FileTransfer
-	- FileTransfer based Deployer
-	[done] - Eliminate create(...) methods from Container.
-	- Run all tests and see which ones are ignored. Remove @Ignore from them and make them run. 
-	- check file locks on windows (FileUtils.cleanDirectory() "unable to delete file"). This is caused by a test that currently not run (has the @Ignore annotation).
-	- create new test runner that uses our own classloader so we can replace the AnnotatedFieldInjector by the StaticFieldInjector
-		- Load wheel in a base classloader that also adds "implements Serializable" to classes.
 	- replace AnnotatedFieldInjector with StaticFieldInjector which will enable removing the use of @Inject and Startable 
 	- include author's pk into brick hashcode
 	- use brick hashcode as key on BrickManager 
@@ -65,21 +126,10 @@ Container
 
 Klaus
 	contacts() - change from ListSignal to SetSignal.
-	ongoing - Component Model (see todoLego.txt)
-	- GUI - Spartan interface for what we have so far. http://c2.com/cgi/wiki?SpartanUserInterface 
-	- RemoteSignals - Test with different signals, not only name.
-	- Signal type-safety - Not string-based.
-	- Brick persistence
-	- Public Keys
-	- Connection Encryption
-	- Auto-update of Kernel from Peers
-	- Auto-Update of Bricks from Peers
-	- Logging - revise how logging is done by all bricks. Revise blinking lights API.
 	- Package namespace - revise sneer.lego? sneer.kernel? sneer.bricks? - Consider using kernel, pulp and skin.
 	- Make build.xml run again. 
 	- README.txt - Update sourcepath, classpath, main class and build.xml references
 	=================================================== RELEASE
-	- Traffic Prioritization - Among signals and among contacts.
 	- KeyManager <-> Mesh dependency cycle - Eliminate.
 	- "Interface.allImplementors()" - Simplify use by injecting a SetSignal with all Bricks that implement a non-brick interface defined by another brick.  
 	- UDP instead of TCP
@@ -161,68 +211,5 @@ GiveNTake
         - 2x 3 quartos
         - 2x comercial
         - 2x churrasqueira
-        
-**************************************************************
-  PLANEJAMENTO PARA O SNEER
-
-11/08/08 - Klaus, Sandro e Bambu
 
 
-LE
-
-   Funcional:
-    - Chat/Histórico
-      - Chat Grupo
-    - Wind/Histórico
-    - Voz
-    - Contatos
-
-   Infra:
-    - pascal case nos packages
-    - Bricks/Install - Publish, MeToo
-    - Autenticação/Hask - PK
-    - Blinking lights
-    - Logging
-    - (?) Persistência transparente
-
-
-1.0
-
-   Funcional:
-    - Annotations/Comments/Tags
-    - TopTen/Sinônimos
-    - Foto - crop, keyhole
-    - Transferência de arquivos
-    - Compartilhamento de arquivos
-    - (?) Profile/Cidade, Aniversário, etc
-    - Afinidade
-    - MSN
-
-   Infra:
-    - drag n drop da ordem dos snapps no dashboard
-    - Installer.EXE
-    - Segurança
-      - Sandboxing
-    - *(?) Compartilhamento de CPU
-    - Priorização de tráfego
-    - Atualização Kernel
-    - Atualização Bricks
-    - Uninstall
-
-
-After
-
-   Funcional:
-    - Give n Take
-    - Midia Player
-      - MP3
-      - Vídeo
-    - Thumbnails/Chooser
-    - *Anonimizing
-
-   Infra:
-    - Secure Channel-Crypto
-    - *Anonimizing
-    - *(?) Compartilhamento de CPU
-    - Persistence-Crypto
-    - JNI

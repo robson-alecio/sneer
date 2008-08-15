@@ -48,13 +48,8 @@ public class InstantMessagingFrame extends JFrame {
 		initComponents();
 		setVisible(true);
 		
-		_otherGuysNick.addReceiver(new Omnivore<String>() { @Override public void consume(String nick) {
-			setTitle(nick);
-		}});
-		
-		messageInput.addReceiver(new Omnivore<String>() { @Override public void consume(final String message) {
-			receiveMessage(message);
-		}});
+		_otherGuysNick.addReceiver(_nickReceiver);
+		messageInput.addReceiver(_messageReceiver);
 		
 		startIsTypingNotifier();
 		startChatDisplayer();
@@ -62,6 +57,8 @@ public class InstantMessagingFrame extends JFrame {
 
 	private final Omnivore<Notification> _briefUserNotifier;
 	private final Signal<String> _otherGuysNick;
+	private final Omnivore<String> _nickReceiver = createNickReceiver();
+	private final Omnivore<String> _messageReceiver = createMessageReceiver();
 	private final Omnivore<String> _messageOutput;
 
 	private final JTextField _chatInput = createChatInput();
@@ -291,5 +288,18 @@ public class InstantMessagingFrame extends JFrame {
 		return "<div><font face=\"Verdana\" size=\"3\">" + processEmoticons(text) + "</font></div>";
 	}
 
+	private Omnivore<String> createMessageReceiver() {
+		return new Omnivore<String>() { @Override public void consume(final String message) {
+			receiveMessage(message);
+		}};
+	}
+
+	private Omnivore<String> createNickReceiver() {
+		return new Omnivore<String>() { @Override public void consume(String nick) {
+			setTitle(nick + " - Instant Messaging");
+		}};
+	}
+
 	private static final long serialVersionUID = 1L;
+
 }

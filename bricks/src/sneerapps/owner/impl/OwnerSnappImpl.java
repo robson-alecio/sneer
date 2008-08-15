@@ -1,6 +1,7 @@
 package sneerapps.owner.impl;
 
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -38,8 +39,11 @@ public class OwnerSnappImpl implements OwnerSnapp {
 
 	private TextWidget editableLabel;
 
+	private Container _container;
+
 	@Override
 	public void init(Container container) {	
+		_container = container;
 		container.setLayout(new GridBagLayout());
 		
 		GridBagConstraints c;
@@ -84,12 +88,14 @@ public class OwnerSnappImpl implements OwnerSnapp {
 		
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				//change mouse pointer
+				Cursor cursor = new Cursor(Cursor.HAND_CURSOR);
+				_container.setCursor(cursor);
 			}
 			
 			@Override
 			public void mouseExited(MouseEvent e) {
-				//change mouse pointer
+				Cursor cursor = new Cursor(Cursor.DEFAULT_CURSOR);
+				_container.setCursor(cursor);
 			}
 		});
 	}

@@ -1,7 +1,13 @@
 ﻿END-USER FEATURES ==========================
 
-	- Own Name
-	- Contacts - (Nicknames and host addresses hardcoded)
+	- [done] Own Name, Tagline
+	- Clean Dashboard Window
+		- Crown icon instead of java icon
+		- Title bar: Sneer
+		- Menu becomes only: Menu > Exit
+	- Own Pic - Remove AvatarPreviewFrame. Leave keyhole logic.
+	- Contact List - (Host addresses hardcoded)
+		- Name
 		- Online indicator
 	---------------------------------- FIRST DOGFOOD RELEASE
 	- Wind
@@ -20,6 +26,8 @@
     	- Public Files
     	- Restricted by Group? Affinity?
 	---------------------------------- LAST DOGFOOD RELEASE
+	- Contact CRUD
+		- Nicknames
 	- MeToo
 	- Affinity
 	- Public Forums
@@ -28,14 +36,15 @@
 	- Synonyms
 	- Issue Tracking
 	- Avatars
+		- Show in Contact List
+		- Show in chat frame
 		- Choose Image
 		- Define Keyhole
 		- Contacts' Avatars
 			- View Keyholes in Contact List
 			- View Full Avatar 
     - Profile - City, Birthday, etc (?)
-	---------------------------------- 1.0 DEVELOPERS' RELEASE
-	- Own Photo - Crop
+	---------------------------------- DEVELOPERS' RELEASE (1.0)
     - Thumbnails in Pic Chooser
     - GiveNTake
     - Midia
@@ -44,6 +53,9 @@
     	- Vídeo Player
 		- Voice/Video Recording
 		- Cam
+	---------------------------------- MAJOR PUBLIC RELEASE (2.0)
+	- Own Photo - Crop
+
 	---------------------------------- BRAINSTORMING FOR THE FUTURE
     - Anonimizing
     - Brick Development Tools

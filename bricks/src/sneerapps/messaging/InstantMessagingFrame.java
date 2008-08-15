@@ -29,17 +29,18 @@ import org.apache.commons.lang.StringEscapeUtils;
 
 import wheel.io.Log;
 import wheel.io.ui.User.Notification;
+import wheel.lang.FrozenTime;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.reactive.Signal;
 
-public class ConversationFrame extends JFrame {
+public class InstantMessagingFrame extends JFrame {
 	
 	private static final String TYPING = "TyPiNg :)"; //Refactor :)
 	private static final String TYPING_PAUSED = "TyPiNg PaUsEd :)";
 	private static final String TYPING_ERASED = "TyPiNg ErAsEd :)";
 
-	public ConversationFrame(Signal<String> otherGuysNick, final Signal<String> messageInput, Omnivore<String> messageOutput, Omnivore<Notification> briefUserNotifier){
+	public InstantMessagingFrame(Signal<String> otherGuysNick, final Signal<String> messageInput, Omnivore<String> messageOutput, Omnivore<Notification> briefUserNotifier){
 		_otherGuysNick = otherGuysNick;
 		_messageOutput = messageOutput;
 		_briefUserNotifier = briefUserNotifier;
@@ -105,7 +106,7 @@ public class ConversationFrame extends JFrame {
 	}
 
 	private void queueDaySeparatorIfNecessary() {
-		String today = new SimpleDateFormat("dd-MMM-yyyy").format(new Date()); //FixUrgent: Use frozenDate()
+		String today = new SimpleDateFormat("dd-MMM-yyyy").format(FrozenTime.frozenDate()); //FixUrgent: Use frozenDate()
 		
 		if (today.equals(_lastMessageDay)) return;
 
@@ -181,7 +182,7 @@ public class ConversationFrame extends JFrame {
 			
 			_lastMessageSendingTime = System.currentTimeMillis();
 			_messageOutput.consume(message);
-			queueChatForDisplay(translate("Me"), message, new Date());
+			queueChatForDisplay(translate("Me"), message, FrozenTime.frozenDate());
 		}};
 	}
 

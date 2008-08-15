@@ -1,11 +1,12 @@
-﻿END-USER FEATURES
+﻿END-USER FEATURES ==========================
 
-	- Contacts
+	- Own Name
+	- Contacts - (Nicknames and host addresses hardcoded)
 		- Online indicator
-	================================= FIRST DOGFOOD RELEASE
+	---------------------------------- FIRST DOGFOOD RELEASE
 	- Wind
 	- Voice Calls
-	- Screen Viewing a la VNC
+	- Screen Viewing à la VNC
     - File Transfer
     - MSN Client
     	- Contact Unification
@@ -18,12 +19,14 @@
     - File Sharing
     	- Public Files
     	- Restricted by Group? Affinity?
-	================================= LAST DOGFOOD RELEASE
+	---------------------------------- LAST DOGFOOD RELEASE
 	- MeToo
 	- Affinity
+	- Public Forums
 	- TopTen
 	- Annotations/Comments/Tags
 	- Synonyms
+	- Issue Tracking
 	- Avatars
 		- Choose Image
 		- Define Keyhole
@@ -31,27 +34,40 @@
 			- View Keyholes in Contact List
 			- View Full Avatar 
     - Profile - City, Birthday, etc (?)
-	================================= 1.0 RELEASE
+	---------------------------------- 1.0 DEVELOPERS' RELEASE
 	- Own Photo - Crop
     - Thumbnails in Pic Chooser
     - GiveNTake
-    - Midia Player for TopTen
-      - MP3
-      - Vídeo
-	================================= DISTANT FUTURE
+    - Midia
+    	- TopTen Integration
+    	- MP3 Player
+    	- Vídeo Player
+		- Voice/Video Recording
+		- Cam
+	---------------------------------- BRAINSTORMING FOR THE FUTURE
     - Anonimizing
+    - Brick Development Tools
+    	- Code Repository Integration
+    	- Continuous Build
+    		- Unit Test Execution
+    			- Bug Tracking Integration
+    		- Dependency resolution
+    	- Peer Grid (CPU Sharing)
+    	- Eclipse Integration
 
 
 
-PLATFORM FEATURES
+PLATFORM FEATURES ==========================
+
+	- Fix tests that fail on Windows.
 	- Package names in LOWER CASE - rename pascal case packages to lower case. (Ask Klaus why)
-	- Ignored Tests - Run all tests and see which ones are ignored. Remove @Ignore from them and make them run.
-		- On Linux
-		- On Windows
+	- Ignored Tests - Run all tests and see which ones are ignored. Remove @Ignore from them and make them run. (Except WindTest because Klaus is working on it)
+		- Run on Linux
+		- Run on Windows
 	- Replace the AnnotatedFieldInjector by the StaticFieldInjector - Need to create our own TestRunner?
 		- Load wheel in a base classloader that also adds "implements Serializable" to classes.
 	- Brick Publish
-	================================= FIRST DOGFOOD RELEASE
+	---------------------------------- FIRST DOGFOOD RELEASE
 	- Blinking lights
 	- Logging
 	- Transparent Persistence
@@ -61,21 +77,23 @@ PLATFORM FEATURES
 		- Update
 	- Kernel Update
 		- Auto Update
-	================================= LAST DOGFOOD RELEASE
+	---------------------------------- LAST DOGFOOD RELEASE
 	- Authentication (PK)
 	- Segurança
 		- Sandboxing
 	- Dashboard
 		- Drag n Drop for reordering Snapps
 	- Installer.EXE for Windows
-	================================= 1.0 RELEASE
+    - Multiple Look-N-Feel
+    	- Napkin
+	---------------------------------- 1.0 RELEASE
 	- OMetaBoo support
 	- Auto Update for Bricks
 	- Secure Channel-Crypto
 	- Persistence-Crypto
 	- CPU Sharing
 	- Native Bricks (JNI)
-	================================= DISTANT FUTURE
+	---------------------------------- FUTURE
 	- ?
 
 

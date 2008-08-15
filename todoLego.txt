@@ -1,12 +1,12 @@
 ﻿Lego Component Model for Sneer - Brainstorming
 
 - MINIMAL Runtime
-  - Hot Deploy/Undeploy
-  - Runnable Components   
+  - Runnable Components
+     
     - Simple Life Cycle
-      - Installable - Call install() method or something at deploy.
+      - Installation - Constructor called at installation only.
       - Activation - Constructor call, when needed by other brick. 
-      - Crash Only - Componentes are preemply crashed without warning. See: http://www.usenix.org/events/hotos03/tech/full_papers/candea/candea_html/index.html
+      - Crash Only - Componentes are preemptively crashed without warning. See: http://www.usenix.org/events/hotos03/tech/full_papers/candea/candea_html/index.html
         - Exception: Native components are notified via crash() method, for releasing system resources (Ex: file handles) in the fastest possible way (Ex: temp files are not deleted, just closed). Same behaviour as process death.
         - GC - Crashed components' classes and instances must be elligible for GC.
   - Interfaces - POJI (Plain Old Java Interfaces) - Components communicate ONLY through interfaces. Dependencies are injected.
@@ -22,10 +22,6 @@
 - Management
   - Security
     - Native Components - Require JNI (Full-Trust) Security Clearance, even for verification. Warn user.
-  - Download from Peer - Bring dependencies too.
-  - Ease of Coding - Allow bricks in other languages
-    - Conversion to Java on the fly.
-    - Interpreters. 
 
 Future Ideas
   - Namespace Economy - Consider loosening TCOB1

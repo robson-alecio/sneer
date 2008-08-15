@@ -3,7 +3,7 @@
 	- Fix keyhole bug.
 	- Contact List - (Host addresses hardcoded for Sandro, Bamboo and Klaus)
 		- Name
-		- Online indicator
+		- Online indicator icon
 	---------------------------------- FIRST DOGFOOD RELEASE
 	- Wind
 	- Voice Calls
@@ -38,29 +38,30 @@
 		- Contacts' Avatars
 			- View Keyholes in Contact List
 			- View Full Avatar 
-    - Profile - City, Birthday, etc (?)
+	- Profile - City, Birthday, etc (?)
 	---------------------------------- DEVELOPERS' RELEASE (1.0)
-    - Thumbnails in Pic Chooser
-    - GiveNTake
-    - Midia
-    	- TopTen Integration
-    	- MP3 Player
-    	- Vídeo Player
+	- Thumbnails in Pic Chooser
+	- GiveNTake
+	- Media
+		- TopTen Integration
+		- MP3 Player
+		- Vídeo Player
 		- Voice/Video Recording
 		- Cam
+	- Multiple Look-N-Feel
+		- Napkin Default Look-N-Feel
 	---------------------------------- MAJOR PUBLIC RELEASE (2.0)
 	- Own Photo - Crop
-
 	---------------------------------- BRAINSTORMING FOR THE FUTURE
-    - Anonimizing
-    - Brick Development Tools
-    	- Code Repository Integration
-    	- Continuous Build
-    		- Unit Test Execution
-    			- Bug Tracking Integration
-    		- Dependency resolution
-    	- Peer Grid (CPU Sharing)
-    	- Eclipse Integration
+	- Anonimizing
+	- Brick Development Tools
+		- Code Repository Integration
+		- Continuous Build
+			- Unit Test Execution
+				- Bug Tracking Integration
+			- Dependency resolution
+		- Peer Grid (CPU Sharing)
+		- Eclipse Integration
 
 
 
@@ -91,15 +92,14 @@ PLATFORM FEATURES ==========================
 	- Dashboard
 		- Drag n Drop for reordering Snapps
 	- Installer.EXE for Windows
-    - Multiple Look-N-Feel
-    	- Napkin
-	---------------------------------- 1.0 RELEASE
+	---------------------------------- DEVELOPERS' RELEASE (1.0)
 	- OMetaBoo support
 	- Auto Update for Bricks
 	- Secure Channel-Crypto
 	- Persistence-Crypto
 	- CPU Sharing
 	- Native Bricks (JNI)
+	---------------------------------- MAJOR PUBLIC RELEASE (2.0)
 	---------------------------------- FUTURE
 	- ?
 

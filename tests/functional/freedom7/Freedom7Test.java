@@ -1,13 +1,12 @@
 package functional.freedom7;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.lang.reflect.Method;
 
-import org.apache.commons.lang.StringUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -80,10 +79,7 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 	}
 
 	private void assertBrickInstallation(String brickName, SovereignParty party) {
-		Object brick = party.produce(brickName);
-		ClassLoader cl = brick.getClass().getClassLoader();
-		String expectedDirectory = "sneer-" + StringUtils.deleteWhitespace(party.ownName());
-		assertTrue("wrong directory for brick class loader: "+cl.toString(),cl.toString().indexOf(expectedDirectory) > 0);
+		assertNotNull(party.produce(brickName));
 	}
 
 	private void publishY() {

@@ -1,11 +1,12 @@
 ﻿END-USER FEATURES ==========================
 
+	- Fix keyhole bug.
 	- [done] Own Name, Tagline
-	- Clean Dashboard Window
-		- Crown icon instead of java icon
-		- Title bar: Sneer
-		- Menu becomes only: Menu > Exit
-	- Own Pic - Remove AvatarPreviewFrame. Leave keyhole logic.
+	- [done] Clean Dashboard Window
+		- [done] Crown icon instead of java icon
+		- [done] Title bar: Sneer
+		- [done] Menu becomes only: Menu > Exit
+	- [done] Own Pic - Remove AvatarPreviewFrame. Leave keyhole logic.
 	- Contact List - (Host addresses hardcoded for Sandro, Bamboo and Klaus)
 		- Name
 		- Online indicator

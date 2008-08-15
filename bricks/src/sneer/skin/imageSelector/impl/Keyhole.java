@@ -1,6 +1,7 @@
 package sneer.skin.imageSelector.impl;
 import java.awt.AWTException;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Robot;
@@ -15,19 +16,22 @@ import javax.swing.JComponent;
 import javax.swing.JLayeredPane;
 import javax.swing.border.BevelBorder;
 
+import wheel.lang.Omnivore;
+
 public class Keyhole extends JComponent {
     private static final long serialVersionUID = 1L;
 	
-    private final AvatarPreview _avatarPreview;
 	private final JLayeredPane _layeredPane;
 
 	private Point _mouseLocation;
 	private Point _layeredPaneLocation;
 	private Robot robot;
+
+	private final Omnivore<Image> _imageSetter;
 	
-    Keyhole(JLayeredPane layeredPane, AvatarPreview avatarPreview) {
+    Keyhole(JLayeredPane layeredPane, Omnivore<Image> imageSetter) {
 		_layeredPane = layeredPane;
-		_avatarPreview = avatarPreview;
+		_imageSetter = imageSetter;
     	setBorder(new BevelBorder(BevelBorder.LOWERED));
     	setPreferredSize(new Dimension(128,128));
         addMouseListeners(layeredPane);
@@ -37,26 +41,6 @@ public class Keyhole extends JComponent {
 			e.printStackTrace();
 		}
     }   
-
-	@Override
-    public void setPreferredSize(Dimension preferredSize) {
-    	super.setPreferredSize(preferredSize);
-    	_avatarPreview._area.setValue((int) preferredSize.getHeight());
-    	
-    }
-	
-	private BufferedImage getHoleSorceImage() {
-		Point holeLocation = getLocationOnScreen();
-		BufferedImage buffer = robot.createScreenCapture(
-				new Rectangle(holeLocation.x+2, holeLocation.y+2,
-						getWidth()-4, getHeight()-4));
-		return buffer;
-	}
-
-	private void captureAvatar() {
-		BufferedImage buffer = getHoleSorceImage();
-		_avatarPreview.setAvatar(buffer);
-	}
 
 	private void onMouseMove(MouseEvent e) {
 		_mouseLocation = e.getLocationOnScreen();
@@ -74,14 +58,6 @@ public class Keyhole extends JComponent {
 		if (size < 24)
 			size = 24;
 		
-		Rectangle bounds = getCropWindowBounds();
-		if(bounds.width<size){
-			size = bounds.width;
-		} 
-		if(bounds.height<size){
-			size = bounds.height;
-		} 
-		
 		setPreferredSize(new Dimension(size, size));
 		setTrueLocation();
 		getParent().validate();
@@ -91,29 +67,6 @@ public class Keyhole extends JComponent {
 	void setTrueLocation() {
 		int x0 = _mouseLocation.x-_layeredPaneLocation.x-getWidth();
 		int y0 = _mouseLocation.y-_layeredPaneLocation.y-getHeight();
-		
-		//verify crop window
-		if(_avatarPreview._cropCheck.isSelected()){
-			Rectangle bounds = getCropWindowBounds();
-			if(!bounds.contains(new Point(x0, bounds.y))){
-				x0 = bounds.x;
-			}
-			if(!bounds.contains(new Point(bounds.x, y0))){
-				y0 = bounds.y;
-			}
-			
-			int x1 = _mouseLocation.x-_layeredPaneLocation.x;
-			int y1 = _mouseLocation.y-_layeredPaneLocation.y;
-			bounds.setSize(bounds.width+bounds.x, bounds.height+bounds.y);
-			bounds.setLocation(0,0);
-			
-			if(!bounds.contains(new Point(x1, bounds.y))){
-				x0 = bounds.x+bounds.width-getWidth();
-			}
-			if(!bounds.contains(new Point(bounds.x, y1))){
-				y0 = bounds.y+bounds.height-getHeight();
-			}			
-		}
 		
 		//verify window bounds
 		if(x0<0)x0=0;
@@ -126,19 +79,17 @@ public class Keyhole extends JComponent {
 		//ignore
 	};
 	
-	Rectangle getCropWindowBounds(){
-		Rectangle bounds = _layeredPane.getBounds();
-		if(!_avatarPreview._cropCheck.isSelected())
-			return bounds;
-		
-		int left = _avatarPreview.getLeftCropLocation();
-		int top = _avatarPreview.getTopCropLocation();
-		int right = _avatarPreview.getRightCropLocation();
-		int botton = _avatarPreview.getBottonCropLocation();
-		
-		bounds.setBounds(left, top, right-left, botton-top);
-		return bounds;
-		
+	private BufferedImage getHoleSorceImage() {
+		Point holeLocation = getLocationOnScreen();
+		BufferedImage buffer = robot.createScreenCapture(
+				new Rectangle(holeLocation.x+2, holeLocation.y+2,
+						getWidth()-4, getHeight()-4));
+		return buffer;
+	}
+
+	private void captureAvatar() {
+		BufferedImage buffer = getHoleSorceImage();
+		_imageSetter.consume(buffer);
 	}
 	
 	private void addMouseListeners(final JLayeredPane layeredPane) {
@@ -187,11 +138,6 @@ public class Keyhole extends JComponent {
 	}
 
 	void setTrueLocation(int x, int y) {
-		if(_avatarPreview._cropCheck.isSelected()){
-			Rectangle bounds = getCropWindowBounds();
-			x = bounds.x + x;
-			y = bounds.y + y;
-		}
 		super.setLocation(x, y);
 	}
 }

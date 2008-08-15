@@ -7,7 +7,6 @@ import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
-import java.awt.Toolkit;
 import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +15,7 @@ import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.security.InvalidParameterException;
 
+import wheel.graphics.Images;
 import wheel.io.ui.TrayIcon;
 import wheel.io.ui.action.Action;
 import wheel.io.ui.action.ActionUtility;
@@ -49,7 +49,7 @@ public class TrayIconImpl implements TrayIcon {
 			throw new SystemTrayNotSupported();
 
 		SystemTray tray = SystemTray.getSystemTray();
-		Image image = Toolkit.getDefaultToolkit().getImage(icon);
+		Image image = Images.getImage(icon);
 		java.awt.TrayIcon trayIcon = createTrayIcon(image);
 		// trayIcon.addMouseListener(mouseListener);
 

@@ -1,18 +1,10 @@
 package sneerapps.owner.tests;
 
-import javax.swing.SwingUtilities;
-
 import sneer.bricks.ownName.OwnNameKeeper;
 import sneer.bricks.ownTagline.OwnTaglineKeeper;
 import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
 import sneer.skin.dashboard.Dashboard;
-import sneer.skin.laf.LafManager;
-import sneer.skin.laf.metal.MetalLafSupport;
-import sneer.skin.laf.motif.MotifLafSupport;
-import sneer.skin.laf.napkin.NapkinLafSupport;
-import sneer.skin.laf.so.SOLafSupport;
-import sneer.skin.laf.sustance.SustanceLafSupport;
 import sneer.skin.viewmanager.Snapp;
 import sneer.widgets.reactive.RFactory;
 import sneerapps.owner.OwnerSnapp;
@@ -35,7 +27,6 @@ public class OwnerSnappDemo  {
 	public static void main(String[] args) throws Exception {
 
 		Container container = ContainerUtils.getContainer();
-		initLafs(container);
 
 		OwnNameKeeper ownNameKeeper = container.produce(OwnNameKeeper.class);
 		ownNameKeeper.setName("Sandro Bihaiko");
@@ -53,28 +44,6 @@ public class OwnerSnappDemo  {
 		dashboard.installSnapp(new SnappTest(rfactory, ownNameKeeper.name(), ownNameKeeper.nameSetter()));
 		dashboard.installSnapp(new SnappTest(rfactory, ownTaglineKeeper.tagline(), ownTaglineKeeper.taglineSetter()));
 		
-	}
-
-	private static void initLafs(final Container container) {
-		container.produce(SOLafSupport.class);
-		container.produce(MetalLafSupport.class);
-		container.produce(MotifLafSupport.class);
-		container.produce(SustanceLafSupport.class);
-		
-		try {
-			SwingUtilities.invokeAndWait(
-				new Runnable(){
-					@Override
-					public void run() {
-						NapkinLafSupport tmp = container.produce(NapkinLafSupport.class);
-						LafManager reg = container.produce(LafManager.class);
-						reg.setActiveLafSupport(tmp);
-					}
-				}
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 }
 

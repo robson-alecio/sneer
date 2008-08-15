@@ -49,7 +49,6 @@ public class ImageSelectorImpl implements ImageSelector {
 		
 		if(dlg!=null){
 			dlg.setVisible(false);
-			dlg._avatarPreview.setVisible(false);
 			dlg.dispose();
 		}
 		

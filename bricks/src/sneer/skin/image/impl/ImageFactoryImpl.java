@@ -8,7 +8,6 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.RenderingHints;
-import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -21,6 +20,7 @@ import java.util.HashMap;
 import javax.swing.ImageIcon;
 
 import sneer.skin.image.ImageFactory;
+import wheel.graphics.Images;
 
 public class ImageFactoryImpl implements ImageFactory {
 	
@@ -52,7 +52,7 @@ public class ImageFactoryImpl implements ImageFactory {
 		if(map.containsKey(id)){
 			return map.get(id);
 		}
-		Image img = Toolkit.getDefaultToolkit().getImage(url);
+		Image img = Images.getImage(url);
 		ImageIcon icon = new ImageIcon(img);
 			
 		map.put(id, icon);

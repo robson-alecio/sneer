@@ -8,13 +8,12 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.URL;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
@@ -26,8 +25,8 @@ import sneer.skin.image.DefaultIcons;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.mainMenu.MainMenu;
 import sneer.skin.viewmanager.Snapp;
+import wheel.graphics.Images;
 import wheel.io.ui.action.Action;
-import wheel.io.ui.action.SelectableAction;
 import wheel.io.ui.impl.TrayIconImpl;
 import wheel.io.ui.impl.TrayIconImpl.SystemTrayNotSupported;
 
@@ -47,17 +46,13 @@ public class DashboardImpl implements Dashboard, Runnable {
 		
 	private Dimension screenSize;
 	private Rectangle bounds;
-	private boolean isLocked;
 	
-	private transient Window window;
 	private transient JFrame jframe;
-	private transient JWindow jwindow;
 	private transient JPanel rootPanel;
 	private transient JPanel contentPanel;
 	
 	public DashboardImpl() {
 		threadPool.registerActor(this);
-		isLocked = false;
 	}
 
 	private void initialize() {
@@ -67,33 +62,28 @@ public class DashboardImpl implements Dashboard, Runnable {
 
 		TrayIconImpl tray = null;
 		try {
-			tray = new TrayIconImpl(imageFactory.getImageUrl(DefaultIcons.logo16x16));
+			tray = new TrayIconImpl(logoIconURL());
 		} catch (SystemTrayNotSupported e1) {
 			changeWindowCloseEventToMinimizeEvent();
 			return;
 		}
 		
 		addOpenWindowAction(tray);
-		addLockUnlockAction();
 		addExitAction(tray);
 	}
 
-	public void refreshLaf() {
-		SwingUtilities.updateComponentTreeUI(window);
+	private URL logoIconURL() {
+		return imageFactory.getImageUrl(DefaultIcons.logo16x16);
 	}
 
 	private void initWindows() {
 		jframe = new JFrame();
-		jwindow = new JWindow();
+		jframe.setIconImage(Images.getImage(logoIconURL()));
+		jframe.setTitle("Sneer");
+		
 		rootPanel = new JPanel();
 		
-		if(isLocked){
-			window = jwindow;
-			rootPanel = (JPanel) jwindow.getContentPane();
-		}else{
-			window = jframe;
-			rootPanel = (JPanel) jframe.getContentPane();
-		}
+		rootPanel = (JPanel) jframe.getContentPane();
 		
 		rootPanel.setLayout(new BorderLayout());
 		rootPanel.add(mainMenu.getWidget(), BorderLayout.NORTH);
@@ -101,7 +91,7 @@ public class DashboardImpl implements Dashboard, Runnable {
 		rootPanel.add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new FlowLayout());
 	}
-	
+
 	@Override
 	public SnappFrame installSnapp(final Snapp snapp) {
 		final SnappFrameImpl sf = new SnappFrameImpl();
@@ -124,15 +114,14 @@ public class DashboardImpl implements Dashboard, Runnable {
 			bounds = new Rectangle((int) screenSize.getWidth() - _WIDTH, 0, _WIDTH,	
 								   (int) screenSize.getHeight() - _HOFFSET);
 		}
-		window.setBounds(bounds);
+		jframe.setBounds(bounds);
 	}
 	
 	private void persistWindowsProperties() {
-		window.addWindowListener(new WindowAdapter() {
+		jframe.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				bounds = window.getBounds();
-				isLocked = (window instanceof JWindow);
+				bounds = jframe.getBounds();
 			}
 		});
 	}
@@ -142,58 +131,11 @@ public class DashboardImpl implements Dashboard, Runnable {
 		jframe.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				bounds = window.getBounds();
+				bounds = jframe.getBounds();
 				jframe.setState(Frame.ICONIFIED);
 			}
 		});
 	}
-	
-	private void changeJFrameToJWindow() {
-		bounds = jframe.getBounds();
-		jframe.setVisible(false);
-		jframe.setContentPane(new JPanel());
-		
-		jwindow.setContentPane(rootPanel);
-		jwindow.setBounds(bounds);
-		jwindow.setVisible(true);
-		window = jwindow;
-		isLocked = true;
-	}
-	
-	private void changeJWindowToJFrame() {
-		bounds = jwindow.getBounds();
-		jwindow.setVisible(false);
-		jwindow.setContentPane(new JPanel());
-		
-		jframe.setContentPane(rootPanel);
-		jframe.setBounds(bounds);
-		jframe.setVisible(true);
-		window = jframe;
-		isLocked = false;
-	}
-	
-	private void addLockUnlockAction() {
-		SelectableAction cmd = new SelectableAction(){
-			@Override
-			public String caption() {
-				return "Lock";
-			}
-			@Override
-			public void run() {
-				if(window==jframe){
-					changeJFrameToJWindow();
-				}else{
-					changeJWindowToJFrame();
-				}
-			}
-			@Override
-			public boolean isSelected() {
-				return window==jwindow;
-			}
-		};
-		
-		mainMenu.getSneerMenu().addAction(cmd);
-	}	
 	
 	private void addOpenWindowAction(TrayIconImpl tray) {
 		Action cmd = new Action(){
@@ -206,11 +148,9 @@ public class DashboardImpl implements Dashboard, Runnable {
 				SwingUtilities.invokeLater(
 					new Runnable(){
 						public void run() {
-							if(window==jframe){
-								jframe.setState(Frame.NORMAL);
-							}
-							window.setVisible(true);
-							window.requestFocusInWindow();						}
+							jframe.setState(Frame.NORMAL);
+							jframe.setVisible(true);
+							jframe.requestFocusInWindow();						}
 					}
 				);
 			}

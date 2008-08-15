@@ -2,10 +2,9 @@ package sneer.skin.dashboard;
 
 import java.awt.Container;
 
-import sneer.skin.laf.LafContainer;
 import sneer.skin.viewmanager.Snapp;
 
-public interface Dashboard extends LafContainer{
+public interface Dashboard{
 
 	Container getRootPanel();
 	Container getContentPanel();

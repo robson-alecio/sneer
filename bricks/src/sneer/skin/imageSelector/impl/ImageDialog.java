@@ -14,8 +14,6 @@ import javax.swing.JDialog;
 import javax.swing.JLayeredPane;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import sneer.skin.image.ImageFactory;
 import wheel.lang.Omnivore;
@@ -24,7 +22,6 @@ public class ImageDialog extends JDialog {
 	
 	private static final long serialVersionUID = 1L;
 	
-	AvatarPreview _avatarPreview;
 	Keyhole _keyhole;
 
 	private File _file;
@@ -34,12 +31,14 @@ public class ImageDialog extends JDialog {
 	private JLayeredPane _layeredPane;
 	private ImageFactory _imageFactory;
 
+	private final Omnivore<Image> _imageSetter;
+
 
     ImageDialog(File file, ImageFactory imageFactory, Omnivore<Image> imageSetter) {
     	_file = file;
     	_imageFactory = imageFactory;
-		_avatarPreview = new AvatarPreview(this, imageFactory, imageSetter);
-		_picture = new Picture(_avatarPreview);
+		_imageSetter = imageSetter;
+		_picture = new Picture();
 		
 		initWindow();
 		initLayers();
@@ -62,22 +61,19 @@ public class ImageDialog extends JDialog {
 		WindowAdapter listener = new WindowAdapter(){
 			@Override
 			public void windowClosing(WindowEvent e) {
-				_avatarPreview.setVisible(false);
-				_avatarPreview.dispose();
 				setVisible(false);
 				dispose();
 			}
 		};
 		
 		this.addWindowListener(listener);
-		_avatarPreview.addWindowListener(listener);
 	}
 
 	private void initWindow() {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		Dimension desktopSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 		_preferredHeight = (int) (desktopSize.height*0.8);
-		_preferredWidth = (int) ((desktopSize.width-AvatarPreview._WIDTH)*0.95);
+		_preferredWidth = (int) (desktopSize.width*0.8);
 
 		setBounds((desktopSize.width-_preferredWidth)/2,
 				(desktopSize.height-_preferredHeight)/2,
@@ -94,26 +90,8 @@ public class ImageDialog extends JDialog {
 		_picture.setIcon(icon);
 		_layeredPane.setLayout(new FlowLayout());    
         _layeredPane.add(_picture, JLayeredPane.DEFAULT_LAYER);
-        _keyhole = new Keyhole(_layeredPane, _avatarPreview);
-        
-        _avatarPreview._area.getModel().addChangeListener(new ChangeListener(){
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				SwingUtilities.invokeLater(
-					new Runnable() {
-						@Override
-						public void run() {
-							int value = _avatarPreview._area.getValue();
-							_keyhole.setPreferredSize(new Dimension(value,value));
-							_keyhole.invalidate();
-							_keyhole.getParent().validate();
-							_keyhole.repaint();
-						}
-					}
-				);	
-			}}
-		);
-        
+        _keyhole = new Keyhole(_layeredPane, _imageSetter);
+                
     	_layeredPane.add(_keyhole, JLayeredPane.POPUP_LAYER);
     	
     	//resize window
@@ -127,25 +105,16 @@ public class ImageDialog extends JDialog {
 			public void componentResized(ComponentEvent e) {
 				_picture.setVisible(false);
 				_picture.setIcon(getIcon(_file, getHeight(), getWidth()));
-				_avatarPreview.resizeAvatarPreview();
 				SwingUtilities.invokeLater(
 					new Runnable() {
 						@Override
 						public void run() {
 							_picture.setVisible(true);
-							_avatarPreview.setVisible(true);
 						}
 					}
 				);
 			}
 			
-		});
-		
-		addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentMoved(ComponentEvent e) {
-				_avatarPreview.resizeAvatarPreview();
-			}
 		});
 	}
 	

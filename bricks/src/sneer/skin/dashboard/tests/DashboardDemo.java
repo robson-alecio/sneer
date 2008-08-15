@@ -12,12 +12,6 @@ import javax.swing.JTextArea;
 
 import sneer.lego.ContainerUtils;
 import sneer.skin.dashboard.Dashboard;
-import sneer.skin.laf.LafManager;
-import sneer.skin.laf.metal.MetalLafSupport;
-import sneer.skin.laf.motif.MotifLafSupport;
-import sneer.skin.laf.napkin.NapkinLafSupport;
-import sneer.skin.laf.so.SOLafSupport;
-import sneer.skin.laf.sustance.SustanceLafSupport;
 import sneer.skin.viewmanager.Snapp;
 import wheel.lang.Threads;
 
@@ -25,15 +19,6 @@ public class DashboardDemo  {
 
 	public static void main(String[] args) throws Exception {
 		sneer.lego.Container container = ContainerUtils.getContainer();
-
-		NapkinLafSupport tmp = container.produce(NapkinLafSupport.class);
-		LafManager reg = container.produce(LafManager.class);
-		reg.setActiveLafSupport(tmp);
-
-		container.produce(SOLafSupport.class);
-		container.produce(MetalLafSupport.class);
-		container.produce(MotifLafSupport.class);
-		container.produce(SustanceLafSupport.class);
 
 		Dashboard dashboard = container.produce(Dashboard.class);
 		installSampleSnapps(dashboard);

@@ -8,10 +8,6 @@ public interface MainMenu {
 
 	Menu<JComponent> getSneerMenu();
 
-	Menu<JComponent> getLookAndFeelMenu();
-	
-	Menu<JComponent> getPreferencesMenu();
-
 	JComponent getWidget();
 
 }

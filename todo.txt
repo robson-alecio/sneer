@@ -6,7 +6,7 @@
 		- Title bar: Sneer
 		- Menu becomes only: Menu > Exit
 	- Own Pic - Remove AvatarPreviewFrame. Leave keyhole logic.
-	- Contact List - (Host addresses hardcoded)
+	- Contact List - (Host addresses hardcoded for Sandro, Bamboo and Klaus)
 		- Name
 		- Online indicator
 	---------------------------------- FIRST DOGFOOD RELEASE

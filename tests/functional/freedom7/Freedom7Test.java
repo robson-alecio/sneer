@@ -1,13 +1,10 @@
 package functional.freedom7;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 
 import java.io.File;
-import java.lang.reflect.Method;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.bricks.z.Z;
@@ -17,7 +14,6 @@ import functional.SovereignParty;
 
 public abstract class Freedom7Test extends SovereignFunctionalTest {
 
-	private static final String X = "sneer.bricks.x.X";
 	private static final String Y = "sneer.bricks.y.Y";
 	private static final String Z = "sneer.bricks.z.Z";
 	
@@ -53,26 +49,6 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 		assertNotSame(classLoaderFor(z1), classLoaderFor(z2));
 	}
 	
-	@Ignore
-	@Test
-	public void testMeTooBrickWithDependencies() throws Exception {
-		
-		publishY();
-		publishXandZ();
-		
-		//test X, depends on Y and Z
-		receiver().meToo(publisher(), X);
-		Object x1 = publisher().produce(X);
-		Object x2 = receiver().produce(X);
-		assertNotSame(x1, x2);
-		
-		Object y1 = publisher().produce(Y);
-		Object y2 = receiver().produce(Y);
-		assertNotSame(y1, y2);
-		
-		Object result = callMethod(x2, "callY");
-		assertEquals(y2.toString(), result);
-	}
 
 	private ClassLoader classLoaderFor(Object z2) {
 		return z2.getClass().getClassLoader();
@@ -98,12 +74,6 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 		return _a;
 	}
 
-	private Object callMethod(Object target, String methodName) throws Exception {
-		Method m = target.getClass().getMethod(methodName, (Class<?>[]) null);
-		m.setAccessible(true);
-		Object result = m.invoke(target, (Object[]) null);
-		return result;
-	}
 
 	protected abstract File sourceFolder();
 }

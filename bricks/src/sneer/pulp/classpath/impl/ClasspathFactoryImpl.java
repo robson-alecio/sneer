@@ -58,6 +58,9 @@ public class ClasspathFactoryImpl implements ClasspathFactory {
 
 	@Override
 	public Classpath fromLibDir(File folder) {
+		if (folder == null)
+			throw new IllegalArgumentException();
+		
 		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	}
 

@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -23,18 +22,6 @@ public class CompilerImpl implements Compiler {
 
 	@Inject
 	private Logger log;
-
-	@Override
-	public Result compile(File sourceRoot, File destination) throws CompilerException {
-		return compile(sourceRoot, destination, null);
-	}
-	
-	@Override
-	public Result compile(File sourceRoot, File destination, Classpath classpath) throws CompilerException {
-		List<File> sourceRoots = new ArrayList<File>();
-		sourceRoots.add(sourceRoot);
-		return compile(sourceRoots, destination, classpath);
-	}
 
 	@Override
 	public Result compile(List<File> sourceFiles, File destination) throws CompilerException {

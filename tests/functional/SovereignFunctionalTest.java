@@ -2,7 +2,9 @@ package functional;
 
 import org.junit.Before;
 
-public abstract class SovereignFunctionalTest {
+import wheel.testutil.TmpDirectoryTest;
+
+public abstract class SovereignFunctionalTest extends TmpDirectoryTest {
 
 	protected abstract SovereignCommunity createNewCommunity();
 

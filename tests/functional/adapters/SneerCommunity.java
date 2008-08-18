@@ -63,8 +63,12 @@ public class SneerCommunity implements SovereignCommunity {
 
 	private File rootDirectory(String name) {
 		String fileName = ".sneer-"+StringUtils.deleteWhitespace(name);
-		return new File(_tmpDirectory, fileName);
+		return new File(tmpDirectory(), fileName);
 		
+	}
+
+	protected File tmpDirectory() {
+		return _tmpDirectory;
 	}
 
 }

@@ -12,12 +12,10 @@ import wheel.io.ui.action.Action;
 import wheel.io.ui.action.ReactiveAction;
 import wheel.io.ui.action.SelectableAction;
 import wheel.io.ui.widgets.ReactiveMenuItem;
-import wheel.reactive.Signal;
 
 public abstract class AbstractSwingMenu implements Menu<JComponent>{
 	
 	@Override
-	@SuppressWarnings("unchecked")
 	public void addAction(final Action action) {
 		
 		JMenuItem menuItem;
@@ -41,7 +39,7 @@ public abstract class AbstractSwingMenu implements Menu<JComponent>{
 			
 		}else{
 			if (action instanceof ReactiveAction) {
-				menuItem = new ReactiveMenuItem((Signal<String>) action);
+				menuItem = new ReactiveMenuItem(((ReactiveAction)action).signalCaption());
 			}else{
 				menuItem = new JMenuItem(action.caption());
 			}

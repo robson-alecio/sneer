@@ -1,12 +1,12 @@
-package sneer.widgets.reactive.impl;
+package sneer.skin.widgets.reactive.impl;
 
 import java.awt.Image;
 
 import sneer.lego.Inject;
 import sneer.skin.image.ImageFactory;
-import sneer.widgets.reactive.ImageWidget;
-import sneer.widgets.reactive.RFactory;
-import sneer.widgets.reactive.TextWidget;
+import sneer.skin.widgets.reactive.ImageWidget;
+import sneer.skin.widgets.reactive.RFactory;
+import sneer.skin.widgets.reactive.TextWidget;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 

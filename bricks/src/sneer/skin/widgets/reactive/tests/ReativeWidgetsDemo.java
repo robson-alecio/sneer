@@ -1,4 +1,4 @@
-package sneer.widgets.reactive.tests;
+package sneer.skin.widgets.reactive.tests;
 
 import java.awt.FlowLayout;
 
@@ -7,8 +7,8 @@ import javax.swing.SwingUtilities;
 
 import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
-import sneer.widgets.reactive.RFactory;
-import sneer.widgets.reactive.TextWidget;
+import sneer.skin.widgets.reactive.RFactory;
+import sneer.skin.widgets.reactive.TextWidget;
 import wheel.lang.Omnivore;
 import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;

@@ -6,7 +6,7 @@ import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
 import sneer.skin.dashboard.Dashboard;
 import sneer.skin.viewmanager.Snapp;
-import sneer.widgets.reactive.RFactory;
+import sneer.skin.widgets.reactive.RFactory;
 import sneerapps.owner.OwnerSnapp;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;

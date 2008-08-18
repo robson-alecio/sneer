@@ -10,8 +10,8 @@ import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
 import sneer.lego.Inject;
 import sneer.lego.tests.BrickTestSupport;
-import sneer.widgets.reactive.RFactory;
-import sneer.widgets.reactive.TextWidget;
+import sneer.skin.widgets.reactive.RFactory;
+import sneer.skin.widgets.reactive.TextWidget;
 import wheel.lang.Omnivore;
 
 public class OwnNameKeeperDemo extends BrickTestSupport {

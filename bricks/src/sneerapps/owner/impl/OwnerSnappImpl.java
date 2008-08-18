@@ -15,9 +15,9 @@ import sneer.bricks.ownName.OwnNameKeeper;
 import sneer.bricks.ownTagline.OwnTaglineKeeper;
 import sneer.lego.Inject;
 import sneer.skin.imageSelector.ImageSelector;
-import sneer.widgets.reactive.ImageWidget;
-import sneer.widgets.reactive.RFactory;
-import sneer.widgets.reactive.TextWidget;
+import sneer.skin.widgets.reactive.ImageWidget;
+import sneer.skin.widgets.reactive.RFactory;
+import sneer.skin.widgets.reactive.TextWidget;
 import sneerapps.owner.OwnerSnapp;
 
 public class OwnerSnappImpl implements OwnerSnapp {

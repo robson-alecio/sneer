@@ -1,4 +1,4 @@
-package sneer.widgets.reactive.impl;
+package sneer.skin.widgets.reactive.impl;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import sneer.widgets.reactive.TextWidget;
+import sneer.skin.widgets.reactive.TextWidget;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 

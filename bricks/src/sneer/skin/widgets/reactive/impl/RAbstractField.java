@@ -1,4 +1,4 @@
-package sneer.widgets.reactive.impl;
+package sneer.skin.widgets.reactive.impl;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -20,7 +20,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import sneer.widgets.reactive.TextWidget;
+import sneer.skin.widgets.reactive.TextWidget;
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.lang.Pair;

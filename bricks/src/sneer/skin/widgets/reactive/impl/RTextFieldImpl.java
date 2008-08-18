@@ -1,4 +1,4 @@
-package sneer.widgets.reactive.impl;
+package sneer.skin.widgets.reactive.impl;
 
 import javax.swing.JComponent;
 import javax.swing.JTextField;

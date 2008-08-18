@@ -1,4 +1,4 @@
-package sneer.widgets.reactive;
+package sneer.skin.widgets.reactive;
 
 import java.awt.Component;
 import java.awt.Image;

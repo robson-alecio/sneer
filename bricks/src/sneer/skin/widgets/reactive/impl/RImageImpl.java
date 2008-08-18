@@ -1,4 +1,4 @@
-package sneer.widgets.reactive.impl;
+package sneer.skin.widgets.reactive.impl;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import sneer.skin.image.ImageFactory;
-import sneer.widgets.reactive.ImageWidget;
+import sneer.skin.widgets.reactive.ImageWidget;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 

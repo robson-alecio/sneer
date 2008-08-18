@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import sneer.bricks.keymanager.PublicKey;
 import sneer.lego.Inject;
+import sneer.pulp.keymanager.PublicKey;
 import sneerapps.wind.AffinityManager;
 import sneerapps.wind.Tuple;
 import sneerapps.wind.TupleSpace;

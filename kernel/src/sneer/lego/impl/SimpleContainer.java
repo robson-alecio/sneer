@@ -6,15 +6,15 @@ import java.lang.reflect.Constructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sneer.bricks.config.SneerConfig;
-import sneer.bricks.config.impl.SneerConfigImpl;
 import sneer.lego.ClassLoaderFactory;
 import sneer.lego.Container;
 import sneer.lego.Injector;
 import sneer.lego.LegoException;
 import sneer.lego.Startable;
 import sneer.lego.impl.classloader.EclipseClassLoaderFactory;
-import sneer.lego.utils.ObjectUtils;
+import sneer.pulp.config.SneerConfig;
+import sneer.pulp.config.impl.SneerConfigImpl;
+import static wheel.lang.Types.cast;
 
 public class SimpleContainer implements Container {
 	
@@ -37,18 +37,9 @@ public class SimpleContainer implements Container {
 	}
 
 
-
-    @SuppressWarnings("unchecked")
 	@Override
-	public <T> T produce(String className) {
-		return (T) produce(ObjectUtils.loadClass(className));
-	}
-
-	
-	@Override
-	@SuppressWarnings("unchecked")
 	public <T> T produce(Class<T> type) {
-		T result = (T) _binder.implementationFor(type);
+		T result = cast(_binder.implementationFor(type));
 		if (result == null) {
 			result = instantiate(type);
 			_binder.bind(result);
@@ -79,19 +70,18 @@ public class SimpleContainer implements Container {
 		}
 	}
 	
-	@SuppressWarnings("unchecked") //Refactor Try to use Casts.unchecked..()
 	private <T> T lookup(Class<T> clazz) throws Exception {
 
 		Object result = bindingFor(clazz);
-	    if(result != null) return (T) result;
+	    if(result != null) return cast(result);
 
 		String implementation = implementationFor(clazz); 
 		File brickDirectory = sneerConfig().brickDirectory(clazz);
 		ClassLoader cl = getClassLoader(clazz, brickDirectory);
-		Class impl = cl.loadClass(implementation);
+		Class<?> impl = cl.loadClass(implementation);
 		result = construct(impl);
 		log.info("brick {} created", result);
-		return (T) result;		
+		return cast(result);		
 
 	}
 

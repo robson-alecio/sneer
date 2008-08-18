@@ -6,10 +6,10 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 
-import sneer.bricks.config.SneerConfig;
-import sneer.bricks.network.Network;
-import sneer.bricks.network.impl.inmemory.InMemoryNetwork;
 import sneer.lego.ContainerUtils;
+import sneer.pulp.config.SneerConfig;
+import sneer.pulp.network.Network;
+import sneer.pulp.network.impl.inmemory.InMemoryNetwork;
 import functional.SovereignCommunity;
 import functional.SovereignParty;
 

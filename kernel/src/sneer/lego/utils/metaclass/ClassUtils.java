@@ -17,10 +17,6 @@ public class ClassUtils {
 	    return ClassUtils.metaClass(_defaultRootDirectoryUnderEclipse, toFile(clazz));
 	}
 
-	public static MetaClass metaClass(String clazz) {
-	    return ClassUtils.metaClass(_defaultRootDirectoryUnderEclipse, toFile(clazz));
-	}
-
 	/**
 	 * Used for testing only
 	 */
@@ -28,10 +24,7 @@ public class ClassUtils {
 		return toFile(clazz.getName());
 	}
 
-	/**
-	 * Used for testing only
-	 */
-	public static File toFile(String clazz) {
+	private static File toFile(String clazz) {
 		File classFile = new File(_defaultRootDirectoryUnderEclipse, clazz.replaceAll("\\.", "/") + ".class");
 		return classFile;
 	}

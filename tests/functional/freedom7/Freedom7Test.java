@@ -10,8 +10,8 @@ import java.lang.reflect.Method;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import sneer.bricks.deployer.BrickBundle;
 import sneer.bricks.z.Z;
+import sneer.pulp.deployer.BrickBundle;
 import functional.SovereignFunctionalTest;
 import functional.SovereignParty;
 

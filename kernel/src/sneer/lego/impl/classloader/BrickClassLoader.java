@@ -16,11 +16,11 @@ import java.util.jar.JarFile;
 
 import org.apache.commons.io.IOUtils;
 
-import sneer.bricks.dependency.Dependency;
-import sneer.bricks.dependency.DependencyManager;
-import sneer.bricks.log.Logger;
 import sneer.lego.Container;
 import sneer.lego.Inject;
+import sneer.pulp.dependency.Dependency;
+import sneer.pulp.dependency.DependencyManager;
+import sneer.pulp.log.Logger;
 import wheel.lang.Threads;
 
 public class BrickClassLoader extends EnhancingClassLoader {

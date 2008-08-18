@@ -1,9 +1,9 @@
 package sneerapps.owner.tests;
 
-import sneer.bricks.ownName.OwnNameKeeper;
-import sneer.bricks.ownTagline.OwnTaglineKeeper;
 import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
+import sneer.pulp.ownName.OwnNameKeeper;
+import sneer.pulp.ownTagline.OwnTaglineKeeper;
 import sneer.skin.dashboard.Dashboard;
 import sneer.skin.viewmanager.Snapp;
 import sneer.skin.widgets.reactive.RFactory;

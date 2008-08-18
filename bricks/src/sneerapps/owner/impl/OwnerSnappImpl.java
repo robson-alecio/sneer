@@ -10,10 +10,10 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JSeparator;
 
-import sneer.bricks.ownAvatar.OwnAvatarKeeper;
-import sneer.bricks.ownName.OwnNameKeeper;
-import sneer.bricks.ownTagline.OwnTaglineKeeper;
 import sneer.lego.Inject;
+import sneer.pulp.ownAvatar.OwnAvatarKeeper;
+import sneer.pulp.ownName.OwnNameKeeper;
+import sneer.pulp.ownTagline.OwnTaglineKeeper;
 import sneer.skin.imageSelector.ImageSelector;
 import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.RFactory;

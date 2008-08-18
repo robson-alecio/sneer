@@ -1,7 +1,7 @@
 package sneerapps.wind.impl;
 
-import sneer.bricks.keymanager.PublicKey;
 import sneer.lego.Inject;
+import sneer.pulp.keymanager.PublicKey;
 import sneerapps.wind.ConnectionSide;
 import sneerapps.wind.TupleSpace;
 import sneerapps.wind.Probe;

@@ -1,0 +1,25 @@
+package sneer.pulp.things.impl;
+
+import sneer.pulp.things.Thing;
+
+public class ThingImpl implements Thing {
+
+	private final String _name;
+	private final String _description;
+
+	public ThingImpl(String name, String description) {
+		_name = name;
+		_description = description;
+	}
+
+	public String name() {
+		return _name;
+	}
+
+	public String description() {
+		return _description;
+	}
+
+	
+	
+}

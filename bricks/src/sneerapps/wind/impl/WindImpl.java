@@ -1,7 +1,7 @@
 package sneerapps.wind.impl;
 
-import sneer.bricks.keymanager.KeyManager;
 import sneer.lego.Inject;
+import sneer.pulp.keymanager.KeyManager;
 import sneerapps.wind.TupleSpace;
 import sneerapps.wind.Shout;
 import sneerapps.wind.Wind;

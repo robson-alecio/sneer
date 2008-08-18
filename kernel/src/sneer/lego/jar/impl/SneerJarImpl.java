@@ -20,11 +20,11 @@ import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.EmptyVisitor;
 
-import sneer.bricks.crypto.Crypto;
-import sneer.bricks.crypto.Digester;
 import sneer.lego.Inject;
 import sneer.lego.jar.SneerJar;
 import sneer.lego.utils.InjectedBrick;
+import sneer.pulp.crypto.Crypto;
+import sneer.pulp.crypto.Digester;
 import wheel.io.JarBuilder;
 import wheel.lang.exceptions.NotImplementedYet;
 

@@ -1,8 +1,8 @@
 package sneerapps.wind.tests.impl;
 
-import sneer.bricks.keymanager.KeyManager;
-import sneer.bricks.keymanager.PublicKey;
 import sneer.lego.Inject;
+import sneer.pulp.keymanager.KeyManager;
+import sneer.pulp.keymanager.PublicKey;
 import sneerapps.wind.AffinityManager;
 import sneerapps.wind.ConnectionSide;
 import sneerapps.wind.TupleSpace;

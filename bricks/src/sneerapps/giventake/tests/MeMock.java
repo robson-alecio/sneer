@@ -1,12 +1,12 @@
 package sneerapps.giventake.tests;
 
 import static wheel.lang.Types.cast;
-import sneer.bricks.contacts.Contact;
-import sneer.bricks.mesh.Me;
-import sneer.bricks.mesh.Party;
-import sneer.bricks.mesh.impl.BrickProxy;
-import sneer.bricks.mesh.impl.SignalPublisher;
 import sneer.lego.Brick;
+import sneer.pulp.contacts.Contact;
+import sneer.pulp.mesh.Me;
+import sneer.pulp.mesh.Party;
+import sneer.pulp.mesh.impl.BrickProxy;
+import sneer.pulp.mesh.impl.SignalPublisher;
 import sneerapps.giventake.GiveNTake;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.sets.SetRegister;

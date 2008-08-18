@@ -1,6 +1,6 @@
 package sneerapps.giventake.tests;
 
-import sneer.bricks.things.Thing;
+import sneer.pulp.things.Thing;
 import sneerapps.giventake.GiveNTake;
 import wheel.reactive.sets.SetSignal;
 

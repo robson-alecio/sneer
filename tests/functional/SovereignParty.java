@@ -2,9 +2,9 @@ package functional;
 
 import java.io.File;
 
-import sneer.bricks.deployer.BrickBundle;
-import sneer.bricks.deployer.BrickFile;
-import sneer.bricks.keymanager.PublicKey;
+import sneer.pulp.deployer.BrickBundle;
+import sneer.pulp.deployer.BrickFile;
+import sneer.pulp.keymanager.PublicKey;
 import wheel.reactive.Signal;
 
 

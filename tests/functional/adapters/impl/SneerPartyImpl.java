@@ -2,24 +2,24 @@ package functional.adapters.impl;
 
 import java.io.File;
 
-import sneer.bricks.brickmanager.BrickManager;
-import sneer.bricks.connection.SocketOriginator;
-import sneer.bricks.connection.SocketReceiver;
-import sneer.bricks.contacts.Contact;
-import sneer.bricks.contacts.ContactManager;
-import sneer.bricks.deployer.BrickBundle;
-import sneer.bricks.deployer.BrickFile;
-import sneer.bricks.deployer.Deployer;
-import sneer.bricks.internetaddresskeeper.InternetAddressKeeper;
-import sneer.bricks.keymanager.KeyManager;
-import sneer.bricks.keymanager.PublicKey;
-import sneer.bricks.mesh.Me;
-import sneer.bricks.mesh.Party;
-import sneer.bricks.ownName.OwnNameKeeper;
-import sneer.bricks.port.PortKeeper;
 import sneer.lego.Container;
 import sneer.lego.Inject;
 import sneer.lego.utils.io.NetworkFriendly;
+import sneer.pulp.brickmanager.BrickManager;
+import sneer.pulp.connection.SocketOriginator;
+import sneer.pulp.connection.SocketReceiver;
+import sneer.pulp.contacts.Contact;
+import sneer.pulp.contacts.ContactManager;
+import sneer.pulp.deployer.BrickBundle;
+import sneer.pulp.deployer.BrickFile;
+import sneer.pulp.deployer.Deployer;
+import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
+import sneer.pulp.keymanager.KeyManager;
+import sneer.pulp.keymanager.PublicKey;
+import sneer.pulp.mesh.Me;
+import sneer.pulp.mesh.Party;
+import sneer.pulp.ownName.OwnNameKeeper;
+import sneer.pulp.port.PortKeeper;
 import wheel.io.serialization.DeepCopier;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.IllegalParameter;
@@ -195,7 +195,13 @@ public class SneerPartyImpl implements SneerParty {
 
 	@Override
 	public Object produce(String brickName) {
-		return _container.produce(brickName);
+		Class<?> clazz;
+		try {
+			clazz = Class.forName(brickName);
+		} catch (ClassNotFoundException e) {
+			throw new IllegalArgumentException(e.getMessage());
+		}
+		return _container.produce(clazz);
 	}
 
 	

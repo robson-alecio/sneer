@@ -1,6 +1,6 @@
 package sneerapps.wind;
 
-import sneer.bricks.keymanager.PublicKey;
+import sneer.pulp.keymanager.PublicKey;
 
 public class Affinity extends Tuple {
 

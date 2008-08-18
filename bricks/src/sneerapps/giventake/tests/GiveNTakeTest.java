@@ -4,9 +4,9 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import sneer.bricks.things.Thing;
 import sneer.lego.Container;
 import sneer.lego.ContainerUtils;
+import sneer.pulp.things.Thing;
 import wheel.reactive.sets.SetSignal;
 import functional.SignalUtils;
 

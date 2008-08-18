@@ -1,6 +1,6 @@
 package sneerapps.wind;
 
-import sneer.bricks.keymanager.PublicKey;
+import sneer.pulp.keymanager.PublicKey;
 import sneerapps.wind.ConnectionSide;
 
 public interface ProbeFactory {

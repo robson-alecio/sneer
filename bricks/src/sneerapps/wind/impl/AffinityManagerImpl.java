@@ -8,9 +8,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import sneer.bricks.keymanager.KeyManager;
-import sneer.bricks.keymanager.PublicKey;
 import sneer.lego.Inject;
+import sneer.pulp.keymanager.KeyManager;
+import sneer.pulp.keymanager.PublicKey;
 import sneerapps.wind.Affinity;
 import sneerapps.wind.AffinityManager;
 import sneerapps.wind.TupleSpace;

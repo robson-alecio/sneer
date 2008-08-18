@@ -1,7 +1,7 @@
 package sneerapps.giventake;
 
-import sneer.bricks.things.Thing;
 import sneer.lego.Brick;
+import sneer.pulp.things.Thing;
 import wheel.reactive.maps.MapSignal;
 import wheel.reactive.sets.SetSignal;
 

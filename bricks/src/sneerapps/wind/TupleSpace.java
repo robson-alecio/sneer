@@ -1,6 +1,6 @@
 package sneerapps.wind;
 
-import sneer.bricks.keymanager.PublicKey;
+import sneer.pulp.keymanager.PublicKey;
 import wheel.lang.Functor;
 import wheel.lang.Omnivore;
 import wheel.lang.Predicate;

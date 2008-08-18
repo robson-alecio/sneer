@@ -4,7 +4,7 @@ import java.io.File;
 
 import org.apache.commons.lang.SystemUtils;
 
-import sneer.bricks.config.SneerConfig;
+import sneer.pulp.config.SneerConfig;
 
 public class SneerConfigMock implements SneerConfig {
 

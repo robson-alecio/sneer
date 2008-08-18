@@ -1,6 +1,6 @@
 package sneerapps.wind.tests;
 
-import sneer.bricks.keymanager.PublicKey;
+import sneer.pulp.keymanager.PublicKey;
 import sneerapps.wind.ConnectionSide;
 import sneerapps.wind.Probe;
 import sneerapps.wind.Shout;

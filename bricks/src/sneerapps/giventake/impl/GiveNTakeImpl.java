@@ -2,10 +2,10 @@ package sneerapps.giventake.impl;
 
 import java.util.Map.Entry;
 
-import sneer.bricks.mesh.Me;
-import sneer.bricks.things.Thing;
-import sneer.bricks.things.ThingHome;
 import sneer.lego.Inject;
+import sneer.pulp.mesh.Me;
+import sneer.pulp.things.Thing;
+import sneer.pulp.things.ThingHome;
 import sneerapps.giventake.GiveNTake;
 import wheel.lang.Omnivore;
 import wheel.lang.exceptions.NotImplementedYet;

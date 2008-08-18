@@ -3,7 +3,7 @@ package sneer.lego.utils;
 public class ObjectUtils
 {
 	
-	public static ClassLoader currentClassLoader() {
+	private static ClassLoader currentClassLoader() {
 		return Thread.currentThread().getContextClassLoader();
 	}
 	
@@ -12,13 +12,11 @@ public class ObjectUtils
 	}
 	
 	public static Class<?> loadClass(String className, ClassLoader cl) {
-		Class<?> clazz;
-        try {
-	        clazz = cl.loadClass(className);
-	        return clazz;
-        } catch (ClassNotFoundException e) {
-        	throw new RuntimeException("Error loading class ["+className+"]",e);
-        }
+		try {
+			return cl.loadClass(className);
+		} catch (ClassNotFoundException e) {
+			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+		}
 	}
 	
     public static Object getInstance(String className) {

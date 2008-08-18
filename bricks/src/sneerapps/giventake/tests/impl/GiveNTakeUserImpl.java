@@ -1,8 +1,8 @@
 package sneerapps.giventake.tests.impl;
 
-import sneer.bricks.things.Thing;
-import sneer.bricks.things.ThingHome;
 import sneer.lego.Inject;
+import sneer.pulp.things.Thing;
+import sneer.pulp.things.ThingHome;
 import sneerapps.giventake.GiveNTake;
 import sneerapps.giventake.tests.GiveNTakeUser;
 import sneerapps.giventake.tests.MeMock;

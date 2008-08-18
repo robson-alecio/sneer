@@ -13,6 +13,7 @@ import sneer.lego.impl.SimpleContainer;
 import sneer.lego.impl.classloader.MetaClassClassLoader;
 import sneer.lego.utils.metaclass.ClassUtils;
 import sneer.lego.utils.metaclass.MetaClass;
+import sneer.pulp.deployer.Deployer;
 
 public class PerformanceTest {
 
@@ -20,8 +21,8 @@ public class PerformanceTest {
 	public void testClassLoading() throws Exception {
 		Container c1 = new SimpleContainer();
 		Container c2 = new SimpleContainer();
-		Object o1 = c1.produce("sneer.bricks.deployer.Deployer");
-		Object o2 = c2.produce("sneer.bricks.deployer.Deployer");
+		Object o1 = c1.produce(Deployer.class);
+		Object o2 = c2.produce(Deployer.class);
 		ClassLoader cl1 = o1.getClass().getClassLoader();
 		ClassLoader cl2 = o2.getClass().getClassLoader();
 		assertNotSame(cl1, cl2);
@@ -32,14 +33,13 @@ public class PerformanceTest {
 
 	@Test
 	public void testClassLoaderCache() throws Exception {
-		String className = "sneer.bricks.deployer.Deployer";
-		MetaClass meta = ClassUtils.metaClass(className);
+		MetaClass meta = ClassUtils.metaClass(Deployer.class);
 		List<MetaClass> files = new ArrayList<MetaClass>();
 		files.add(meta);
 		ClassLoader cl = new MetaClassClassLoader(files, this.getClass().getClassLoader());
-		Class<?> clazz = cl.loadClass(className);
+		Class<?> clazz = cl.loadClass(Deployer.class.getName());
 		assertSame(cl, clazz.getClassLoader());
-		Class<?> clazz2 = cl.loadClass(className);
+		Class<?> clazz2 = cl.loadClass(Deployer.class.getName());
 		assertSame(clazz, clazz2);
 	}
 

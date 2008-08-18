@@ -88,6 +88,7 @@ public class Keyhole extends JComponent {
 	}
 
 	private void captureAvatar() {
+		setVisible(true);
 		BufferedImage buffer = getHoleSorceImage();
 		_imageSetter.consume(buffer);
 	}
@@ -103,20 +104,20 @@ public class Keyhole extends JComponent {
 		addMouseListener(clickListener);
 		layeredPane.addMouseListener(clickListener);
 		
-		//show and hide keyhole
-		layeredPane.addMouseListener(
-			new MouseAdapter(){
-				@Override
-				public void mouseEntered(MouseEvent arg0) {
-					setVisible(true);
-				}
-	
-				@Override
-				public void mouseExited(MouseEvent arg0) {
-					setVisible(false);
-				}
-			}
-		);
+//		//show and hide keyhole
+//		layeredPane.addMouseListener(
+//			new MouseAdapter(){
+//				@Override
+//				public void mouseEntered(MouseEvent arg0) {
+//					setVisible(true);
+//				}
+//	
+//				@Override
+//				public void mouseExited(MouseEvent arg0) {
+//					setVisible(false);
+//				}
+//			}
+//		);
 
 		//mouse move listener
 		MouseMotionAdapter mouseMotionListener = new MouseMotionAdapter() {

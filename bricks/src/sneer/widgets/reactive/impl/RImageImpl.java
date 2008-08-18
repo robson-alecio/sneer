@@ -23,10 +23,17 @@ public class RImageImpl extends JPanel implements ImageWidget{
 	private Omnivore<Image> _listener;
 	private static final long serialVersionUID = 1L;
 	private final ImageFactory _imageFactory;
+	private Dimension _dimension;
 	
 	RImageImpl(Signal<Image> image, ImageFactory imageFactory){
 		_image = image;
 		_imageFactory = imageFactory;
+		_lastImage = _image.currentValue();
+		if(_lastImage==null){
+			_dimension = new Dimension(48, 48);
+		}else{
+			_dimension = new Dimension(_lastImage.getWidth(null), _lastImage.getHeight(null));			
+		}
 		addReceivers();
 	}
 
@@ -56,12 +63,9 @@ public class RImageImpl extends JPanel implements ImageWidget{
 
 	@Override
 	public Dimension getMaximumSize() {
-		Dimension size;
-		if(_lastImage==null)
-			size = new Dimension(32, 32);
-		else
-			size = new Dimension(_lastImage.getWidth(null), _lastImage.getHeight(null));
-		return size;
+		if(_lastImage!=null)
+			_dimension = new Dimension(_lastImage.getWidth(null), _lastImage.getHeight(null));
+		return _dimension;
 	}
 	
 	@Override

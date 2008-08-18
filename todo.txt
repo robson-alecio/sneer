@@ -1,14 +1,31 @@
-﻿END-USER FEATURES ==========================
+﻿MAIN ROADMAP
+===================
 
-	- Fix keyhole bug.
-	- Contact List - (Host addresses hardcoded for Sandro, Bamboo and Klaus)
+	- [done] Fix keyhole bug.
+	- Fix tests that fail on Windows.
+	- Ignored Tests - Run all tests and see which ones are ignored. Remove @Ignore from them and make them run. (Except WindTest because we are still working on it)
+		- Run on Linux
+		- Run on Windows
+	- Brick Publish
+	- Contact List - (Host addresses for Sandro, Bamboo and Klaus are HARDCODED)
 		- Name
 		- Online indicator icon
 	---------------------------------- FIRST DOGFOOD RELEASE
+	- Package names in LOWER CASE - rename pascal case packages to lower case. (Ask Klaus why)
+	- Replace the AnnotatedFieldInjector by the StaticFieldInjector - Need to create our own TestRunner?
+		- Load wheel in a base classloader that also adds "implements Serializable" to classes.
+	- Refactor AbstractSwingMenu.addAction and the SelectableAction hierarchy. Too many casts. 
+	- Tray Icon - Ask Petra for a 16x16 icon to put there. Black on white. No transparency.
+	- Transparent Persistence
+	- Blinking lights
+		- API
+		- Snapp
 	- Wind
-	- Voice Calls
-	- Screen Viewing à la VNC
+	- Voice Calls - Already done in old sneermonolith project
+	- Logging API
+	- Screen Viewing à la VNC - There is a free vnc client implementation in Java. If there is no free server implementation in java, just send the entire screen over using gzip compression for now.
     - File Transfer
+	- Traffic Prioritization by tuple type
     - MSN Client
     	- Contact Unification
 	- Messaging - Grand unification of instant messages and email
@@ -20,11 +37,21 @@
     - File Sharing
     	- Public Files
     	- Restricted by Group? Affinity?
-	---------------------------------- LAST DOGFOOD RELEASE
+	- Brick
+		- Uninstall
+		- Update
+	- Kernel Update
+		- Auto Update
 	- Contact CRUD
 		- Nicknames
 	- MeToo
+	- Security
+		- Sandboxing
+	- Responsive threading model for snapps. Snapps can NEVER block the Swing gui thread. Maybe have one event dispatch thread per Snapp. Snapps still have to comply with invokeLater/invokeAndWait to modify gui from other threads or live with the consequences. Test to see if they can ruin/interfere with the entire Sneer gui even having acess to their own components. 
 	- Affinity
+	- Authentication (PK)
+	- Revise project structure - sourcefolders, package names, build.xml, etc
+	---------------------------------- DEVELOPER COMMUNITY BETA RELEASE
 	- Public Forums
 	- TopTen
 	- Annotations/Comments/Tags
@@ -39,16 +66,25 @@
 			- View Keyholes in Contact List
 			- View Full Avatar 
 	- Profile - City, Birthday, etc (?)
-	---------------------------------- DEVELOPERS' RELEASE (1.0)
+	- Dashboard
+		- Drag n Drop for reordering Snapps
+	- Installer.EXE for Windows
+	---------------------------------- PUBLIC RELEASE (1.0)
+	- OMetaBoo support
+	- Auto Update for Bricks
 	- Thumbnails in Pic Chooser
 	- GiveNTake
 	- Media
-		- TopTen Integration
 		- MP3 Player
 		- Vídeo Player
+		- TopTen Integration
 		- Voice/Video Recording
 		- Cam
-	- Multiple Look-N-Feel
+	- Secure Channel-Crypto
+	- Persistence-Crypto
+	- CPU Sharing
+	- Native Bricks (JNI)
+	- Multiple Look-N-Feels
 		- Napkin Default Look-N-Feel
 	---------------------------------- MAJOR PUBLIC RELEASE (2.0)
 	- Own Photo - Crop
@@ -65,43 +101,7 @@
 
 
 
-PLATFORM FEATURES ==========================
 
-	- Fix tests that fail on Windows.
-	- Package names in LOWER CASE - rename pascal case packages to lower case. (Ask Klaus why)
-	- Ignored Tests - Run all tests and see which ones are ignored. Remove @Ignore from them and make them run. (Except WindTest because Klaus is working on it)
-		- Run on Linux
-		- Run on Windows
-	- Replace the AnnotatedFieldInjector by the StaticFieldInjector - Need to create our own TestRunner?
-		- Load wheel in a base classloader that also adds "implements Serializable" to classes.
-	- Brick Publish
-	---------------------------------- FIRST DOGFOOD RELEASE
-	- Blinking lights
-	- Logging
-	- Transparent Persistence
-	- Traffic Prioritization by tuple type
-	- Brick
-		- Uninstall
-		- Update
-	- Kernel Update
-		- Auto Update
-	---------------------------------- LAST DOGFOOD RELEASE
-	- Authentication (PK)
-	- Segurança
-		- Sandboxing
-	- Dashboard
-		- Drag n Drop for reordering Snapps
-	- Installer.EXE for Windows
-	---------------------------------- DEVELOPERS' RELEASE (1.0)
-	- OMetaBoo support
-	- Auto Update for Bricks
-	- Secure Channel-Crypto
-	- Persistence-Crypto
-	- CPU Sharing
-	- Native Bricks (JNI)
-	---------------------------------- MAJOR PUBLIC RELEASE (2.0)
-	---------------------------------- FUTURE
-	- ?
 
 
 
@@ -117,8 +117,6 @@ PLATFORM FEATURES ==========================
 				- MultiLine - Signal<int> preferredHeight() Component component(). Future: forced size by user.
 				- Iconified - space available for graphics
 		- SnappWindow
-	- SelectableAction.isSelected() - change to Signal<Boolean> 
-	- Tray Icon - Ask Petra for a 16x16 icon to put there. Black on white. No transparency.
 	- Animated collapse for SnappPreviews
 
 	=================================================== RELEASE

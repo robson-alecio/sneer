@@ -4,13 +4,12 @@ import sneer.pulp.keymanager.PublicKey;
 import wheel.lang.Functor;
 import wheel.lang.Omnivore;
 import wheel.lang.Predicate;
-import wheel.reactive.Signal;
 
 public interface TupleSpace {
 
 	void publish(Tuple tuple);
 
-	<T extends Tuple> void addSubscription(Omnivore<T> subscriber, Class<T> tupleType, Signal<Float> minAffinity);
+	<T extends Tuple> void addSubscription(Omnivore<T> subscriber, Class<T> tupleType);
 
 	<T extends Tuple> Iterable<T> tuples(Class<T> tupleType);
 

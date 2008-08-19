@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotSame;
 
 import java.io.File;
 
+import org.apache.commons.lang.SystemUtils;
 import org.junit.Test;
 
 import sneer.bricks.z.Z;
@@ -75,5 +76,8 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 	}
 
 
-	protected abstract File sourceFolder();
+	private File sourceFolder() {
+		return new File(SystemUtils.getUserDir(), "/tests/functional/freedom7/test-resources/bricks");
+	}
+
 }

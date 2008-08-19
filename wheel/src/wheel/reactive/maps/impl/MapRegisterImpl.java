@@ -122,11 +122,10 @@ public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 	
 	@Override
 	synchronized public void put(K key, V value) {
-		System.err.println("Fix MapRegisterImpl: it is notifying keys listeners before adding element to map");
 		boolean isNewKey = !_map.containsKey(key);
-		if (isNewKey) _keys.add(key);
 		
 		V oldValue = _map.put(key, value);
+		if (isNewKey) _keys.add(key);
 
 		Entry<K, V> added = new MyEntry<K,V>(key, value);
 		Entry<K, V> removed = isNewKey

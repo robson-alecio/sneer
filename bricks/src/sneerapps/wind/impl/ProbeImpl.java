@@ -1,13 +1,11 @@
 package sneerapps.wind.impl;
 
+import static wheel.lang.Types.cast;
 import sneerapps.wind.ConnectionSide;
-import sneerapps.wind.TupleSpace;
 import sneerapps.wind.Probe;
 import sneerapps.wind.Tuple;
+import sneerapps.wind.TupleSpace;
 import wheel.lang.Omnivore;
-import static wheel.lang.Types.cast;
-import wheel.reactive.Register;
-import wheel.reactive.impl.RegisterImpl;
 
 public class ProbeImpl implements Probe {
 
@@ -15,12 +13,11 @@ public class ProbeImpl implements Probe {
 
 		@Override
 		public void consume(Object instruction) {
-			_minAffinity.setter().consume((Float)instruction);
+			//Implement
 		}
 
 	}
 
-	private final Register<Float> _minAffinity = new RegisterImpl<Float>(0f);
 	private final InstructionsReceiver _instructionsReceiver = new InstructionsReceiver();
 	private boolean _isStarted = false;
 
@@ -32,7 +29,7 @@ public class ProbeImpl implements Probe {
 		Omnivore<Tuple> sender = cast(connectionBackHome.sender());
 
 		connectionBackHome.registerReceiver(_instructionsReceiver);
-		foreignEnvironment.addSubscription(sender, Tuple.class, _minAffinity.output());
+		foreignEnvironment.addSubscription(sender, Tuple.class);
 	}
 
 	

@@ -3,12 +3,11 @@ package sneerapps.wind.tests.impl;
 import sneer.lego.Inject;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
-import sneerapps.wind.AffinityManager;
 import sneerapps.wind.ConnectionSide;
-import sneerapps.wind.TupleSpace;
 import sneerapps.wind.Probe;
 import sneerapps.wind.ProbeFactory;
 import sneerapps.wind.Shout;
+import sneerapps.wind.TupleSpace;
 import sneerapps.wind.Wind;
 import sneerapps.wind.tests.DeepCopyingConnection;
 import sneerapps.wind.tests.WindUser;
@@ -30,9 +29,6 @@ public class WindUserImpl implements WindUser {
 	static private KeyManager _keyManager;
 
 	@Inject
-	static private AffinityManager _affinityManager;
-
-	@Inject
 	static private ProbeFactory _probeFactory;
 
 	private String _name;
@@ -42,9 +38,6 @@ public class WindUserImpl implements WindUser {
 		Signal<Integer> counter1 = unidirectionalConnect(this, peer);
 		Signal<Integer> counter2 = unidirectionalConnect(peer, this);
 		
-		this.setAffinityFor(peer, 10f);
-		peer.setAffinityFor(this, 10f);
-
 		return new Adder(counter1, counter2).output();
 	}
 
@@ -73,21 +66,6 @@ public class WindUserImpl implements WindUser {
 	@Override
 	public PublicKey publicKey() {
 		return _keyManager.ownPublicKey();
-	}
-
-	@Override
-	public void setAffinityFor(WindUser peer, float percentage) {
-		_affinityManager.setAffinityFor(peer.publicKey(), percentage);
-	}
-
-	@Override
-	public float affinityFor(WindUser peer) {
-		return _affinityManager.affinityFor(peer.publicKey());
-	}
-	
-	@Override
-	public void hearShoutsWithAffinityGreaterThan(float percentage) {
-		_wind.minAffinityForHearingShouts().consume(percentage);
 	}
 
 	@Override

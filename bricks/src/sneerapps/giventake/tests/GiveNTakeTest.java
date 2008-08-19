@@ -1,7 +1,5 @@
 package sneerapps.giventake.tests;
 
-import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.lego.Container;
@@ -12,8 +10,7 @@ import functional.SignalUtils;
 
 public class GiveNTakeTest {
 
-	@Ignore //Klaus
-	@Test //(timeout = 3000)
+	@Test (timeout = 3000)
 	public void testSimpleDeal() {
 		
 		Container containerA = ContainerUtils.newContainer(new MeMock());
@@ -31,9 +28,6 @@ public class GiveNTakeTest {
 		_ana.advertise("Lovely 3 room Apartment Pinheiros", "Lovely apartment in Pinheiros disctrict, São Paulo. 3 rooms. Kitchen. 150m2");
 		found = _bob.search("apartment \"são paulo\"");
 		SignalUtils.waitForValue(1, found.size());
-		
-		Assert.fail("Put a timeout for this test");
-		Assert.fail("Refactor BrickProxy into kernel.remoting");
 	}
 	
 }

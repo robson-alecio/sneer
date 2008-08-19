@@ -15,11 +15,8 @@ public interface WindUser {
 	void name(String newName);
 	
 	Signal<Integer> connectAndCountTrafficTo(WindUser peer);
-	void setAffinityFor(WindUser peer, float percentage);
-	float affinityFor(WindUser peer);
 
 	void shout(String string);
-	void hearShoutsWithAffinityGreaterThan(float percentage);
 	SetSignal<Shout> shoutsHeard();
 
 	

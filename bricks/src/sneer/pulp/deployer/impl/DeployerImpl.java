@@ -148,12 +148,10 @@ public class DeployerImpl implements Deployer {
 			throw new DeployerException("Can't find source files in "+virtual.rootDirectory()+". Check if your class files are public (they shouldn't be)");
 
 		Classpath cp = classpath(virtual, api);
-		//System.out.println("Compiling "+virtual.brickName());
-		Result compilationResult = _compiler.compile(sourceFilesInBrick, workDirectory, cp);
-		if(!compilationResult.success()) {
-			throw new DeployerException("Error compiling brick implementation: "+virtual.brickName());
-		}
-		return compilationResult.compiledClasses();
+		Result result = _compiler.compile(sourceFilesInBrick, workDirectory, cp);
+		if(!result.success())
+			throw new DeployerException("Error compiling brick implementation: " + virtual.brickName() + "\n" + result.getErrorString());
+		return result.compiledClasses();
 	}
 
 	private List<MetaClass> compileApi(File workDirectory, List<File> interfaces) {

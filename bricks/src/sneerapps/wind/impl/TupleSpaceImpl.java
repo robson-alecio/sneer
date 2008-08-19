@@ -10,9 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import sneer.lego.Inject;
 import sneer.pulp.keymanager.PublicKey;
-import sneerapps.wind.AffinityManager;
 import sneerapps.wind.Tuple;
 import sneerapps.wind.TupleSpace;
 import wheel.lang.Functor;
@@ -20,39 +18,26 @@ import wheel.lang.Nulls;
 import wheel.lang.Omnivore;
 import wheel.lang.Predicate;
 import wheel.lang.Types;
-import wheel.reactive.Signal;
 
 public class TupleSpaceImpl implements TupleSpace {
 
 	static class Subscription {
 
-		@Inject
-		static private AffinityManager _affinityManager;
-	
 		private final Omnivore<Tuple> _subscriber;
 		private final Class<? extends Tuple> _tupleType;
-		private final Signal<Float> _minAffinity;
 
-		<T extends Tuple> Subscription(Omnivore<T> subscriber, Class<T> tupleType, Signal<Float> minAffinity) {
+		<T extends Tuple> Subscription(Omnivore<T> subscriber, Class<T> tupleType) {
 			_subscriber = cast(subscriber);
 			_tupleType = tupleType;
-			_minAffinity = minAffinity;
 		}
 
 		void filterAndNotify(Tuple tuple) {
 			if (!Types.instanceOf(tuple, _tupleType))
 				return;
-
-			if (!checkAffinity(tuple))
-				return;
 			
 			_subscriber.consume(tuple);
 		}
 
-		private boolean checkAffinity(Tuple candidate) {
-			Float candidateAffinity = _affinityManager.affinityFor(candidate.publisher);
-			return candidateAffinity >= _minAffinity.currentValue();
-		}
 
 	}
 
@@ -69,8 +54,8 @@ public class TupleSpaceImpl implements TupleSpace {
 	}
 
 	@Override
-	public <T extends Tuple> void addSubscription(Omnivore<T> subscriber,	Class<T> tupleType, Signal<Float> minAffinity) {
-		_subscriptions.add(new Subscription(subscriber, tupleType, minAffinity));
+	public <T extends Tuple> void addSubscription(Omnivore<T> subscriber,	Class<T> tupleType) {
+		_subscriptions.add(new Subscription(subscriber, tupleType));
 	}
 
 

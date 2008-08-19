@@ -2,13 +2,11 @@ package sneerapps.wind.impl;
 
 import sneer.lego.Inject;
 import sneer.pulp.keymanager.KeyManager;
-import sneerapps.wind.TupleSpace;
 import sneerapps.wind.Shout;
+import sneerapps.wind.TupleSpace;
 import sneerapps.wind.Wind;
 import wheel.lang.FrozenTime;
 import wheel.lang.Omnivore;
-import wheel.reactive.Register;
-import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.sets.SetRegister;
 import wheel.reactive.sets.SetSignal;
 import wheel.reactive.sets.impl.SetRegisterImpl;
@@ -21,12 +19,10 @@ class WindImpl implements Wind, Omnivore<Shout> {
 	@Inject
 	static private KeyManager _keyManager;
 
-	private Register<Float> _minAffinity = new RegisterImpl<Float>(0f);
-
 	private SetRegister<Shout> _shoutsHeard = new SetRegisterImpl<Shout>();
 
 	{
-		_environment.addSubscription(this, Shout.class, _minAffinity.output());
+		_environment.addSubscription(this, Shout.class);
 	}
 
 	@Override
@@ -37,11 +33,6 @@ class WindImpl implements Wind, Omnivore<Shout> {
 	@Override
 	public SetSignal<Shout> shoutsHeard() {
 		return 	_shoutsHeard.output();
-	}
-
-	@Override
-	public Omnivore<Float> minAffinityForHearingShouts() {
-		return _minAffinity.setter();
 	}
 
 	@Override

@@ -51,7 +51,7 @@ class GiveNTakeImpl implements GiveNTake, Omnivore<SetValueChange<String>> {
 			Entry<String, SetSignal<Thing>> newResult = newResults.elementsAdded().iterator().next();
 			String tags = newResult.getKey();
 			
-			System.out.println("Search results received for tags: " + tags + " " + this);
+			//System.out.println("Search results received for tags: " + tags + " " + this);
 			SetRegister<Thing> resultsSoFar = _resultSetByActiveSearch.output().currentGet(tags);
 			for (Thing thing : newResult.getValue())
 				resultsSoFar.add(thing); //Fix Deal with duplicates.
@@ -64,7 +64,7 @@ class GiveNTakeImpl implements GiveNTake, Omnivore<SetValueChange<String>> {
 			if (	changeInPeers.elementsRemoved().size() != 0) throw new NotImplementedYet();
 			
 			GiveNTake newPeer = changeInPeers.elementsAdded().iterator().next();
-			System.out.println("New peer detected");
+			//System.out.println("New peer detected");
 			newPeer.activeSearches().addSetReceiver(GiveNTakeImpl.this);
 			newPeer.localResults().addSetReceiver(_myRemoteResultsReceiver);
 		}};
@@ -75,7 +75,7 @@ class GiveNTakeImpl implements GiveNTake, Omnivore<SetValueChange<String>> {
 		SetRegister<Thing> resultsSoFar = new SetRegisterImpl<Thing>();
 		_resultSetByActiveSearch.put(tags, resultsSoFar); //Fix: handle duplicates
 
-		System.out.println("Search results wanted for tags: " + tags + " " + this);
+		//System.out.println("Search results wanted for tags: " + tags + " " + this);
 
 		return resultsSoFar.output();
 	}
@@ -96,8 +96,6 @@ class GiveNTakeImpl implements GiveNTake, Omnivore<SetValueChange<String>> {
 		if (	changeInSearches.elementsRemoved().size() != 0) throw new NotImplementedYet();
 
 		String tags = changeInSearches.elementsAdded().iterator().next();
-		
-		System.out.println("someone searched for " + tags);
 		
 		_localResults.put(tags, _thingHome.search(tags)); //Fix Handle duplicates.
 	}

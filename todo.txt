@@ -1,11 +1,10 @@
 ﻿MAIN ROADMAP
 ===================
 
-	- [done] Fix keyhole bug.
-	- Fix tests that fail on Windows.
-	- Ignored Tests - Run all tests and see which ones are ignored. Remove @Ignore from them and make them run. (Except WindTest because we are still working on it)
-		- Run on Linux
-		- Run on Windows
+	- Fix SneerFreedom7Test
+	- Revise entire project structure
+		- Move or delete stuff we have not yet covered in the roadmap
+			- Example: Delete GiveNTake
 	- Brick Publish
 	- Contact List - (Host addresses for Sandro, Bamboo and Klaus are HARDCODED)
 		- Name

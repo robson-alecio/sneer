@@ -7,9 +7,7 @@ public interface ClasspathFactory {
 
 	Classpath newClasspath();
 
-	Classpath fromLibDir(File folder);
-
-	Classpath fromDirectory(File folder);
+	Classpath fromClassDir(File folder);
 
 	Classpath sneerApi();
 

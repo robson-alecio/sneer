@@ -5,12 +5,14 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.junit.Assert;
 import org.junit.Test;
 
 import sneer.lego.Inject;
@@ -19,9 +21,11 @@ import sneer.pulp.classpath.Classpath;
 import sneer.pulp.classpath.ClasspathFactory;
 import sneer.pulp.compiler.CompilationError;
 import sneer.pulp.compiler.Result;
-import wheel.lang.exceptions.NotImplementedYet;
+import wheel.io.Jars;
 
 public class CompilerTest extends BrickTestSupport {
+
+	private static final String TEST_FILE_PREFIX = "sneer-test-";
 
 	@Inject
 	private sneer.pulp.compiler.Compiler _compiler;
@@ -32,18 +36,17 @@ public class CompilerTest extends BrickTestSupport {
 	@Test
 	public void testCompile() throws Exception {
 		Result result = compile("class Foo {}", null);
-		assertTrue(result.getErrorString(), result.success());
-		Assert.fail("Refactor tmp directory creation");
+		assertSuccess(result);
 	}
-	
+
 	@Test
 	public void testBadCode() throws Exception {
-		Result result = compile("bricks/compiler/test-resources/badSample", null);
+		Result result = compile("\nclass \n { public void foo() {} }", null);
 		assertFalse(result.success());
 		CompilationError error = result.getErrors().get(0);
-		assertEquals(3, error.getLineNumber());
+		assertEquals(2, error.getLineNumber());
 		assertEquals("<identifier> expected", error.getMessage());
-		assertEquals("BadSample.java", FilenameUtils.getName(error.getFileName()));
+		assertTrue(FilenameUtils.getName(error.getFileName()).startsWith(TEST_FILE_PREFIX));
 	}
 
 	@Test
@@ -54,35 +57,64 @@ public class CompilerTest extends BrickTestSupport {
 
 	@Test
 	public void testWithExternalDependencies() throws Exception {
-		Result result = compile("bricks/compiler/test-resources/externalDependencies/src", "bricks/compiler/test-resources/externalDependencies/lib");
-		assertTrue(result.success());
+		final File libFolder = createLibFolder();
+		try {
+			Jars.createJar(new File(libFolder, "lib.jar"), TestLib.class);
+			Result result = compile("class Foo extends sneer.pulp.compiler.tests.TestLib {}", libFolder);
+			assertSuccess(result);
+		} finally {
+			FileUtils.deleteDirectory(libFolder);
+		}
+	}
+		
+	private void assertSuccess(Result result) {
+		assertTrue(result.getErrorString(), result.success());
 	}
 	
-	private Result compile(String code, String libs) {
-		String srcDir = FilenameUtils.concat("tmp", "compiler-test");
-		File java = writeSourceFile(srcDir, code);
-		Classpath classpath = classPathForLibs(libs);
+	private File createLibFolder() throws IOException {
+		final File dir = new File(tmpDirectory(), "lib");
+		dir.mkdirs();
+		return dir;
+	}
+
+	private File tmpDirectory() throws IOException {
+		return createTempFile().getParentFile();
+	}
+
+	private Result compile(String code, File libDir) {
+		File java = writeSourceFile(code);
+		Classpath classpath = classPathForLibs(libDir);
 		return _compiler.compile(Collections.singletonList(java), getWorkDirectory(), classpath);
 	}
 
-	private File writeSourceFile(String srcDir, String code) {
-		File java = new File(srcDir, "Source.java"); 
+	private File writeSourceFile(String code) {
 		try {
+			File java = createTempFile(); 
 			FileUtils.writeStringToFile(java, code);
+			return java;
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
-		return java;
+		
 	}
 
-	private Classpath classPathForLibs(String libs) {
-		if (libs == null)
+	private File createTempFile() throws IOException {
+		return File.createTempFile(TEST_FILE_PREFIX, ".java");
+	}
+
+	private Classpath classPathForLibs(File libDir) {
+		if (libDir == null)
 			return _factory.newClasspath();
 		
-		throw new NotImplementedYet();
-//		File libDir = null;
-//		libDir = new File(FilenameUtils.concat(System.getProperty("user.dir"), libs));
-//		Classpath classpath = _factory.fromLibDir(libDir);
-//		return classpath;
+		return _factory.fromJarFiles(listJarFiles(libDir));
+	}
+
+	private List<File> listJarFiles(File libDir) {
+		return Arrays.asList(libDir.listFiles(new FilenameFilter() {
+			@Override
+			public boolean accept(File dir, String name) {
+				return name.endsWith(".jar");
+			}
+		}));
 	}
 }

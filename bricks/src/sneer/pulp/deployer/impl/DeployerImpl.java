@@ -97,7 +97,7 @@ public class DeployerImpl implements Deployer {
 		/*
 		 * IMPL
 		 */
-		Classpath api = _cpFactory.fromDirectory(apiDirectory);
+		Classpath api = _cpFactory.fromClassDir(apiDirectory);
 		for (VirtualDirectory virtual : virtualDirectories) {
 			File implDirectory = createWorkDirectory(virtual.brickName());
 			classFiles = compileImpl(implDirectory, virtual, api);

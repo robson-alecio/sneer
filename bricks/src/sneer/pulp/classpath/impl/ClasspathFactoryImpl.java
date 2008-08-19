@@ -24,7 +24,7 @@ public class ClasspathFactoryImpl implements ClasspathFactory {
 	}
 
 	@Override
-	public Classpath fromDirectory(File rootFolder) {
+	public Classpath fromClassDir(File rootFolder) {
 		return new DirectoryBasedClasspath(rootFolder);
 	}
 
@@ -55,15 +55,6 @@ public class ClasspathFactoryImpl implements ClasspathFactory {
 	public Classpath fromJarFiles(List<File> jarFiles) {
 		return new JarBasedClasspath(jarFiles);
 	}
-
-	@Override
-	public Classpath fromLibDir(File folder) {
-		if (folder == null)
-			throw new IllegalArgumentException();
-		
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
-	}
-
 }
 
 class SimpleClasspath extends JarBasedClasspath {

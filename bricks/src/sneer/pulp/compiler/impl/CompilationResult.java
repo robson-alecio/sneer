@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 
 import sneer.lego.utils.io.JavaFilter;
 import sneer.lego.utils.metaclass.MetaClass;
 import sneer.pulp.compiler.CompilationError;
 import sneer.pulp.compiler.CompilerException;
 import sneer.pulp.compiler.Result;
+import wheel.lang.StringUtils;
 
 public class CompilationResult implements Result {
 
@@ -24,7 +24,6 @@ public class CompilationResult implements Result {
 	private List<CompilationError> _errors;
 	
 	private File _targetFolder;
-	
 	
 	public CompilationResult(int compilerCode, File targetFolder) {
 		_compilerCode = compilerCode;
@@ -60,10 +59,10 @@ public class CompilationResult implements Result {
 		List<String> lines = IOUtils.readLines(new StringReader(string));
 		for (String line : lines) {
 			if(line.indexOf(".java") > 0) {
-				String[] parts = StringUtils.split(line, ":");
-				String fileName = parts[0];
-				int lineNumber = Integer.parseInt(parts[1]);
-				String message = parts[2];
+				final String[] parts = StringUtils.splitRight(line, ':', 3);
+				final String fileName = parts[0];
+				final int lineNumber = Integer.parseInt(parts[1]);
+				final String message = parts[2];
 				result.add(new CompilationErrorImpl(fileName, lineNumber, message));
 			}
 		}

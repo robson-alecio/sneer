@@ -15,6 +15,7 @@ public abstract class SovereignFunctionalTest extends TmpDirectoryTest {
 	
 	@Before
 	public void initNewCommunity() {
+		System.gc();
 		_community = createNewCommunity();
 		createAndConnectParties();
 	}

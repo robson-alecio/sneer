@@ -1,6 +1,5 @@
 ﻿MAIN ROADMAP
 ===================
-	- svnnotify
 	- Fix SneerFreedom7Test
 	- commons-logging - Delete ALL occurences in the new Sneer project.
 		- remove dependencies from test resources :P

@@ -1,4 +1,4 @@
-package testdashboard;
+package wheel.testutil;
 public class TestDashboard {
 
 	public static boolean loadTestsShouldRun() {

@@ -4,6 +4,9 @@
 	- Fix SneerFreedom7Test
 	- commons-logging - Delete ALL occurences in the new Sneer project.
 		- remove dependencies from test resources :P
+	- ASM - Move asm*.jar to a brick lib
+		- Remove kernel dependency. Make it pluggable in the kernel.
+	- XStream - Revise its need and presence in wheel.
 	- Revise entire project structure
 		
 		- Sneer

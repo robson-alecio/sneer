@@ -4,6 +4,9 @@
 	- Fix SneerFreedom7Test
 	- commons-logging - Delete ALL occurences in the new Sneer project.
 		- remove dependencies from test resources :P
+	- sneer.lego - rename to sneer.kernel.container
+	- Output folders - Why do wheel and the kernel have to go to a different output folder (API-bin) than the default (bin)?
+		- Consider using "brick-bin" for bricks and bin for all the rest because bricks are "more different" by nature. 
 	- ASM - Move asm*.jar to a brick lib
 		- Remove kernel dependency. Make it pluggable in the kernel.
 	- XStream - Revise its need and presence in wheel.
@@ -27,6 +30,8 @@
 		- Load wheel in a base classloader that also adds "implements Serializable" to classes.
 	- Refactor AbstractSwingMenu.addAction and the SelectableAction hierarchy. Too many casts. 
 	- Tray Icon - Ask Petra for a 16x16 icon to put there. Black on white. No transparency.
+	- Revise SneerFreedom*Test classes. All are the same
+	- Revise task comments in the code: Fix Urgent, Fix, Implement, Refactor.
 	- Brick Publish
 	- Contact List - (Host addresses for Sneer developers are HARDCODED)
 		- Name

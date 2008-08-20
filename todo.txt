@@ -4,7 +4,6 @@
 	- Fix SneerFreedom7Test
 	- commons-logging - Delete ALL occurences in the new Sneer project.
 		- remove dependencies from test resources :P
-		
 	- Revise entire project structure
 		
 		- Sneer
@@ -19,16 +18,17 @@
 		
 		- Move or delete stuff we have not yet covered in the roadmap
 			- [done] Example: Delete GiveNTake
-	- Brick Publish
-	- Contact List - (Host addresses for Sandro, Bamboo and Klaus are HARDCODED)
-		- Name
-		- Online indicator icon
-	---------------------------------- FIRST DOGFOOD RELEASE
+	- Remove log4j warnings on System.err
 	- Package names in LOWER CASE - rename pascal case packages to lower case. (Ask Klaus why)
 	- Replace the AnnotatedFieldInjector by the StaticFieldInjector - Need to create our own TestRunner?
 		- Load wheel in a base classloader that also adds "implements Serializable" to classes.
 	- Refactor AbstractSwingMenu.addAction and the SelectableAction hierarchy. Too many casts. 
 	- Tray Icon - Ask Petra for a 16x16 icon to put there. Black on white. No transparency.
+	- Brick Publish
+	- Contact List - (Host addresses for Sneer developers are HARDCODED)
+		- Name
+		- Online indicator icon
+	---------------------------------- FIRST DOGFOOD RELEASE
 	- Transparent Persistence
 	- Blinking lights
 		- API
@@ -49,7 +49,6 @@
 	- Wind History
     - File Sharing
     	- Public Files
-    	- Restricted by Group? Affinity?
 	- Brick
 		- Uninstall
 		- Update
@@ -62,14 +61,15 @@
 		- Sandboxing
 	- Responsive threading model for snapps. Snapps can NEVER block the Swing gui thread. Maybe have one event dispatch thread per Snapp. Snapps still have to comply with invokeLater/invokeAndWait to modify gui from other threads or live with the consequences. Test to see if they can ruin/interfere with the entire Sneer gui even having acess to their own components. 
 	- Affinity
+		- Access control to all other snapps by affinity.
 	- Authentication (PK)
+	- Issue Tracking
 	- Revise project structure - sourcefolders, package names, build.xml, etc
 	---------------------------------- DEVELOPER COMMUNITY BETA RELEASE
 	- Public Forums
 	- TopTen
 	- Annotations/Comments/Tags
 	- Synonyms
-	- Issue Tracking
 	- Avatars
 		- Show in Contact List
 		- Show in chat frame
@@ -95,12 +95,12 @@
 		- Cam
 	- Secure Channel-Crypto
 	- Persistence-Crypto
-	- CPU Sharing
-	- Native Bricks (JNI)
-		    - Require JNI (Full-Trust) Security Clearance, even for verification. Warn user.
+	- Simple CPU Sharing
 	- Multiple Look-N-Feels
 		- Napkin Default Look-N-Feel
 	---------------------------------- MAJOR PUBLIC RELEASE (2.0)
+	- Native Bricks (JNI)
+		    - Require JNI (Full-Trust) Security Clearance, even for verification. Warn user.
 	- Own Photo - Crop
 	---------------------------------- BRAINSTORMING FOR THE FUTURE
 	- Anonimizing

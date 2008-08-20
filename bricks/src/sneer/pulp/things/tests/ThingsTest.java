@@ -5,9 +5,9 @@ import org.junit.Test;
 
 import sneer.pulp.things.Thing;
 import sneer.pulp.things.ThingHome;
-import testdashboard.TestDashboard;
 import wheel.lang.Threads;
 import wheel.reactive.sets.SetSignal;
+import wheel.testutil.TestDashboard;
 import wheel.testutil.TestOfInterface;
 
 

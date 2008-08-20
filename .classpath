@@ -19,11 +19,11 @@
 	<classpathentry kind="lib" path="bricks/src/sneer/pulp/log/lib/slf4j-log4j12-1.5.0.jar"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/pulp/compiler/lib/compiler-7-ea-b17-02_aug_2007.jar"/>
 	<classpathentry kind="lib" path="kernel/lib/asm-all-3.1.jar"/>
-	<classpathentry kind="lib" path="bricks/lib/bcprov-jdk16-139.jar"/>
+	<classpathentry kind="lib" path="bricks/src/sneer/pulp/crypto/lib/bcprov-jdk16-139.jar"/>
 	<classpathentry kind="lib" path="spikes/lib/Filters.jar"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/skin/laf/napkin/lib/napkinlaf.jar"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/skin/laf/sustance/lib/substance.jar"/>
-	<classpathentry kind="lib" path="kernel/lib/junit-4.4.jar"/>
+	<classpathentry kind="lib" path="wheel/lib/junit-4.4.jar"/>
 	<classpathentry kind="lib" path="spikes/lib/lucene-demos-2.3.2.jar"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/pulp/lucene/lib/lucene-core-2.3.2.jar"/>
 	<classpathentry kind="output" path="bin"/>

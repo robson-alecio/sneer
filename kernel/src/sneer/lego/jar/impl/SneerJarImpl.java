@@ -92,6 +92,9 @@ public class SneerJarImpl implements SneerJar {
 	@Override
 	public void close() throws IOException {
 		closeJarBuilder();
+		if(_jarFile!=null)
+			_jarFile.close();
+		
 		_jarFile = new JarFile(_file);
 	}
 

@@ -121,22 +121,26 @@ public class BrickClassLoader extends EnhancingClassLoader {
 		if(_cache != null) return _cache.get(name);
 		
 		_cache = new WeakHashMap<String, byte[]>();
-		byte[] result = null;
 
-		JarFile jar = new JarFile(_implJarFile);
-		Enumeration<JarEntry> e = jar.entries();
-		while (e.hasMoreElements()) {
-			JarEntry entry = e.nextElement();
-			byte[] byteArray = readEntry(jar, entry);
-			String entryName = entry.getName();
-			String key = cache(entryName, byteArray);
-			if(key.equals(name)) 
-				result = byteArray;
-		}
-		return result;
+		JarFile jar = null;
+		try {
+			name = name.replace('.', '\\');
+			jar = new JarFile(_implJarFile);
+			Enumeration<JarEntry> e = jar.entries();
+			while (e.hasMoreElements()) {
+				JarEntry entry = e.nextElement();
+				byte[] byteArray = readEntry(jar, entry);
+				String entryName = entry.getName();
+				String key = cache(entryName, byteArray);
+				if(key.equals(name)) 
+					return byteArray;
+			}
+			return null;
+		} finally { 
+			if(jar!=null) jar.close();
+		} 
 	}
-
-
+			
 	private String cache(String entryName, byte[] byteArray) {
 		String key = entryName.replaceAll("/", ".");
 		int index = key.indexOf(".class");

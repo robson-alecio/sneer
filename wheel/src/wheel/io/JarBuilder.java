@@ -2,6 +2,7 @@ package wheel.io;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -12,7 +13,7 @@ import java.util.jar.JarOutputStream;
 
 import org.apache.commons.io.IOUtils;
 
-public class JarBuilder {
+public class JarBuilder implements Closeable{
 
 	private final JarOutputStream _out;
 	

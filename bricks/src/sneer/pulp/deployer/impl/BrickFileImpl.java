@@ -48,13 +48,19 @@ public class BrickFileImpl implements BrickFile, NetworkFriendly {
 	}
 
 	private void add(File file) {
-		JarFile jarFile;
+		JarFile jarFile = null;
 		try {
 			jarFile = new JarFile(file);
+			add(new SneerJarImpl(file, jarFile));
 		} catch (IOException e) {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+		}finally{
+			try {
+				if(jarFile != null)	jarFile.close();
+			} catch (IOException e) {
+				throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			}
 		}
-		add(new SneerJarImpl(file, jarFile));
 	}
 
 	@Override

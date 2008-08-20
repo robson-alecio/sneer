@@ -83,6 +83,7 @@
 	- Persistence-Crypto
 	- CPU Sharing
 	- Native Bricks (JNI)
+		    - Require JNI (Full-Trust) Security Clearance, even for verification. Warn user.
 	- Multiple Look-N-Feels
 		- Napkin Default Look-N-Feel
 	---------------------------------- MAJOR PUBLIC RELEASE (2.0)
@@ -97,6 +98,21 @@
 			- Dependency resolution
 		- Peer Grid (CPU Sharing)
 		- Eclipse Integration
+		  - Namespace Economy - Consider loosening TCOB1
+	- Allow for "backward-compatible" interfaces with the same name
+	- Allow same name from different authors
+		- Author will ALWAYS use "me" as package root name. Ex: me.util.logging
+			- On deployment will be replaced by the author's nickname path or id or something. Ex: fred.sister.util.logging
+	- Quarantine - Option to run (only native?) components in a separate VM process to avoid crashing the system (Ex: GPF).
+ 	- Automated tests as part of interface spec
+		- Mock Components
+		- Unit Tests
+			- Set of public java classes. For Each class:
+				- Package name is the subject interface package appended with ".tests". Ex: me.util.logging.tests
+				- Class name is the subject interface name appended with "Test". Ex: LogTest
+				- Single public constructor
+					- Single parameter: the instance to be tested (implements subject interface).
+				- Can be used to test ALL implementations of the subject interface.
 
 
 [END OF OFFICIAL TODO LIST]

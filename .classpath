@@ -10,14 +10,14 @@
 	<classpathentry kind="src" path="kernel/classloadingtests"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="lib" path="wheel/lib/xstream-1.2.2.jar"/>
-	<classpathentry kind="lib" path="bricks/lib/commons-lang-2.3.jar"/>
-	<classpathentry kind="lib" path="bricks/lib/commons-collections-3.2.jar"/>
-	<classpathentry kind="lib" path="bricks/lib/commons-io-1.4.jar"/>
+	<classpathentry kind="lib" path="wheel/lib/commons-lang-2.3.jar"/>
+	<classpathentry kind="lib" path="wheel/lib/commons-collections-3.2.jar"/>
+	<classpathentry kind="lib" path="wheel/lib/commons-io-1.4.jar"/>
 	<classpathentry kind="lib" path="bricks/lib/commons-logging-api-1.1.jar"/>
-	<classpathentry kind="lib" path="bricks/lib/log4j-1.2.15.jar"/>
-	<classpathentry kind="lib" path="bricks/lib/slf4j-api-1.5.0.jar"/>
-	<classpathentry kind="lib" path="bricks/lib/slf4j-log4j12-1.5.0.jar"/>
-	<classpathentry kind="lib" path="bricks/lib/compiler-7-ea-b17-02_aug_2007.jar"/>
+	<classpathentry kind="lib" path="bricks/src/sneer/pulp/log/lib/log4j-1.2.15.jar"/>
+	<classpathentry kind="lib" path="bricks/src/sneer/pulp/log/lib/slf4j-api-1.5.0.jar"/>
+	<classpathentry kind="lib" path="bricks/src/sneer/pulp/log/lib/slf4j-log4j12-1.5.0.jar"/>
+	<classpathentry kind="lib" path="bricks/src/sneer/pulp/compiler/lib/compiler-7-ea-b17-02_aug_2007.jar"/>
 	<classpathentry kind="lib" path="kernel/lib/asm-all-3.1.jar"/>
 	<classpathentry kind="lib" path="bricks/lib/bcprov-jdk16-139.jar"/>
 	<classpathentry kind="lib" path="spikes/lib/Filters.jar"/>

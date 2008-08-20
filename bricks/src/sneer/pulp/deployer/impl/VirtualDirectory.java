@@ -159,9 +159,10 @@ public class VirtualDirectory {
  	private SneerJar jar(List<File> files, String role) {
 		String brickName = brickName();
 		String jarName = brickName + "-" + role;
+		SneerJar result = null;
 		try {
 			File tmpJarFile = File.createTempFile(jarName+"-", ".jar");
-			SneerJar result = _sneerJarFactory.create(tmpJarFile);
+			result = _sneerJarFactory.create(tmpJarFile);
 
 			//sneer meta
 			String meta = sneerMeta(brickName, "1.0-SNAPSHOT", role);
@@ -175,12 +176,17 @@ public class VirtualDirectory {
 				String entryName = _path + middle + file.getName();
 				result.add(entryName, file);
 			}
-			result.close();
-			return result;
-			
 		} catch (IOException e) {
 			throw new DeployerException("Error", e);
+		} finally{
+			if(result!=null)
+				try {
+					result.close();
+				} catch (IOException e) {
+					throw new DeployerException("Error", e);
+				}
 		}
+		return result;
 	}
 
 	private String sneerMeta(String brickName, String version, String role) {

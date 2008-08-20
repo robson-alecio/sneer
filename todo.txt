@@ -2,9 +2,23 @@
 ===================
 
 	- Fix SneerFreedom7Test
+	- commons-logging - Delete ALL occurences in the new Sneer project.
+		- remove dependencies from test resources :P
+		
 	- Revise entire project structure
+		
+		- Sneer
+			- Installer
+			- Wheel (+ Commons)
+			- Boot (+ KernelJockey)
+			- Kernel
+			- Pulp (Bricks)
+			- Skin (Bricks)
+		- Snapps (Bricks)
+			- ...
+		
 		- Move or delete stuff we have not yet covered in the roadmap
-			- Example: Delete GiveNTake
+			- [done] Example: Delete GiveNTake
 	- Brick Publish
 	- Contact List - (Host addresses for Sandro, Bamboo and Klaus are HARDCODED)
 		- Name

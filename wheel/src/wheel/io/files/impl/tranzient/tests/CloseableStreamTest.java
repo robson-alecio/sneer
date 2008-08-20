@@ -2,25 +2,25 @@ package wheel.io.files.impl.tranzient.tests;
 
 import java.io.IOException;
 
-import wheel.io.files.impl.Closeable;
-import wheel.io.files.impl.Closeable.Listener;
+import wheel.io.files.impl.CloseableWithListener;
+import wheel.io.files.impl.CloseableWithListener.Listener;
 import junit.framework.TestCase;
 
 public abstract class CloseableStreamTest extends TestCase {
 
-	private Closeable _subject;
-	private Closeable _lastClosedStream;
+	private CloseableWithListener _subject;
+	private CloseableWithListener _lastClosedStream;
 
 	@Override
 	protected void setUp() throws Exception {
 		_subject = createSubject();
 	}
 
-	protected abstract Closeable createSubject();
+	protected abstract CloseableWithListener createSubject();
 
 	public void testClose() throws IOException {
 		_subject.notifyOnClose(new Listener(){
-			public void streamClosed(Closeable stream) {
+			public void streamClosed(CloseableWithListener stream) {
 				_lastClosedStream = stream;
 			}
 		});

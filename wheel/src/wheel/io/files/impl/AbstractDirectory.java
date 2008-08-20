@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import wheel.io.files.Directory;
-import wheel.io.files.impl.Closeable.Listener;
+import wheel.io.files.impl.CloseableWithListener.Listener;
 
 public abstract class AbstractDirectory implements Directory {
 
@@ -40,7 +40,7 @@ public abstract class AbstractDirectory implements Directory {
 		}
 	}
 
-	private final Map<String, Collection<Closeable>> _openStreamsByFilename = new HashMap<String, Collection<Closeable>>();
+	private final Map<String, Collection<CloseableWithListener>> _openStreamsByFilename = new HashMap<String, Collection<CloseableWithListener>>();
 	protected boolean _isClosed = false;
 	protected abstract String getPath(String filename);
 
@@ -66,9 +66,9 @@ public abstract class AbstractDirectory implements Directory {
 
 
 
-	protected synchronized void mindOpenStream(Closeable stream, final String filename) {
+	protected synchronized void mindOpenStream(CloseableWithListener stream, final String filename) {
 		stream.notifyOnClose(new Listener() {
-				public void streamClosed(Closeable closedStream) {
+				public void streamClosed(CloseableWithListener closedStream) {
 					forgetStream(closedStream, filename);
 				}
 		});
@@ -82,8 +82,8 @@ public abstract class AbstractDirectory implements Directory {
 		_isClosed = true;
 	}
 
-	private ArrayList<Closeable> allOpenStreams() {
-		ArrayList<Closeable> result = new ArrayList<Closeable>();
+	private ArrayList<CloseableWithListener> allOpenStreams() {
+		ArrayList<CloseableWithListener> result = new ArrayList<CloseableWithListener>();
 
 		for (String filename : _openStreamsByFilename.keySet())
 			result.addAll(openStreamsFor(filename));
@@ -91,10 +91,10 @@ public abstract class AbstractDirectory implements Directory {
 		return result;
 	}
 
-	private Collection<Closeable> openStreamsFor(String filename) {
-		Collection<Closeable> result = _openStreamsByFilename.get(filename);
+	private Collection<CloseableWithListener> openStreamsFor(String filename) {
+		Collection<CloseableWithListener> result = _openStreamsByFilename.get(filename);
 		if (result == null) {
-			result = new HashSet<Closeable>();
+			result = new HashSet<CloseableWithListener>();
 			_openStreamsByFilename.put(filename, result);
 		}
 		return result;
@@ -106,8 +106,8 @@ public abstract class AbstractDirectory implements Directory {
 		if (openStreams.isEmpty()) _openStreamsByFilename.remove(filename);
 	}
 
-	private void closeStreams(List<Closeable> streams) {
-		Iterator<Closeable> it = streams.iterator();
+	private void closeStreams(List<CloseableWithListener> streams) {
+		Iterator<CloseableWithListener> it = streams.iterator();
 		while (it.hasNext()) {
 			try {
 				it.next().close();

@@ -3,7 +3,7 @@ package wheel.io.files.impl.tranzient.tests;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-import wheel.io.files.impl.Closeable;
+import wheel.io.files.impl.CloseableWithListener;
 import wheel.io.files.impl.tranzient.ByteListOutputStream;
 
 public class ByteListOutputStreamTests extends CloseableStreamTest {
@@ -19,7 +19,7 @@ public class ByteListOutputStreamTests extends CloseableStreamTest {
 	}
 
 	@Override
-	protected Closeable createSubject() {
+	protected CloseableWithListener createSubject() {
 		return new ByteListOutputStream(new ArrayList<Byte>());
 	}
 

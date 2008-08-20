@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import wheel.io.files.impl.Closeable;
+import wheel.io.files.impl.CloseableWithListener;
 
-public class ByteListInputStream extends InputStream implements Closeable {
+public class ByteListInputStream extends InputStream implements CloseableWithListener {
 
 	private final List<Byte> _contents;
 	private int _position = 0;

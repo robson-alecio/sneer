@@ -2,13 +2,13 @@ package wheel.io.files.impl;
 
 import java.io.IOException;
 
-public interface Closeable {
+public interface CloseableWithListener {
 	
 	void close() throws IOException;
 
 	void notifyOnClose(Listener listener);
 	public interface Listener {
-		void streamClosed(Closeable stream);
+		void streamClosed(CloseableWithListener stream);
 	}
 	
 }

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import wheel.io.files.impl.Closeable;
+import wheel.io.files.impl.CloseableWithListener;
 import wheel.io.files.impl.tranzient.ByteListInputStream;
 
 public class ByteListInputStreamTests  extends CloseableStreamTest  {
@@ -31,7 +31,7 @@ public class ByteListInputStreamTests  extends CloseableStreamTest  {
 	}
 
 	@Override
-	protected Closeable createSubject() {
+	protected CloseableWithListener createSubject() {
 		return new ByteListInputStream(new ArrayList<Byte>());
 	}
 }

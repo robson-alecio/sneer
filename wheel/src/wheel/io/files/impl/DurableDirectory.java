@@ -11,7 +11,7 @@ import java.io.OutputStream;
 
 public class DurableDirectory extends AbstractDirectory {
 
-	static private class DurableFileOutputStream extends FileOutputStream implements Closeable {
+	static private class DurableFileOutputStream extends FileOutputStream implements CloseableWithListener {
 
 		private Listener _closeListener;
 
@@ -41,7 +41,7 @@ public class DurableDirectory extends AbstractDirectory {
 
 	}
 
-	static private class CloseListenableFileInputStream extends FileInputStream implements Closeable {
+	static private class CloseListenableFileInputStream extends FileInputStream implements CloseableWithListener {
 
 		private Listener _closeListener;
 

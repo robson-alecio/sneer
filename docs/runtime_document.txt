@@ -2,7 +2,7 @@ Installation
 ==============
 
 For All Environments (Linux, Mac, Windows, etc)
-	- User installs JRE6 if not installed already
+	- User installs the Java Runtime Environment 6 (JRE6) if not installed already.
 	- User runs Sneer.jar directly.
 
 Alternative For Windows
@@ -25,7 +25,7 @@ The Boot class is run. It is compiled for Java1 so it can run on any version of 
 
 The KernelJockey class runs the InstallationWizard
 
-The KernelJockey runs the latest version of the sneer kernel in a loop. The only purpose of this is to run new versions of the Sneer kernel without the user having to restart the VM. Most changes to Sneer, though, are to bricks and do not affect the kernel. They do not require this complete restart of the kernel.  
+The KernelJockey runs the latest version of the sneer kernel in a loop. The only purpose of this is to run newer versions of the Sneer kernel (update or auto-update) without the user having to restart the VM. Most changes to Sneer, though, are to bricks and do not affect the kernel. They do not require this complete restart of the kernel.  
 	- The latest "version jar" (find a better name) is detected (in what directory?).
 		- If the directory does not exist or if there are no versions, Sneer.jar itself is considered the latest version.
 	- Kernel.class in the latest "version jar" is run in a separate, class-garbage-collectable classloader.
@@ -46,9 +46,22 @@ Kernel.class runs
 	- The ThreadPool brick is given the breath of life (it is called in a thread). All other active bricks get the breath of life from the thread pool.
 
 Publishing a set of bricks
-	- ...
-	- The constructor for the brick is called
-	- ...
+	- Runnable Components
+		- Simple Life Cycle
+			- Installation - Constructor called only at time of installation (Publishing or MeToo), not on every subsequent activation.
+      		- Persistence and Activation - Transparent (via serialization) without calling the constructor.
+      			- Stateless bricks might be different. To be considered. 
+			- Crash Only - Componentes are preemptively crashed without warning. See: http://www.usenix.org/events/hotos03/tech/full_papers/candea/candea_html/index.html
+				- Exception: Native components are notified via crash() method, for releasing system resources (Ex: file handles) in the fastest possible way (Ex: temp files are not deleted, just closed). Same behaviour as process death.
+				- GC - Crashed components' classes and instances must be elligible for GC.
+	- Interfaces - POJI (Plain Old Java Interfaces) - Components communicate ONLY through interfaces.
+		- "There Can Only Be One" (TCOB1) - Deployment of different interfaces with same name is not allowed.
+		- Soft Contracts - Human understandable (not deterministic) contracts. Ex: OCR.read(image) -> String (implementations can improve over time)
+	- Dependencies are injected
+		- private static fields typed with brick interfaces are injected by the container as the class is loaded - this is   
+	- Exceptions
+		- RuntimeExceptions - should be thrown only if caller violates preconditions (Ex: IllegalParameter). All other Exceptions should be checked (Ex: IO Error, Resource not found, etc). 
+
 
 "Me Too" - Downloading a set of bricks from a peer
 	- ...  

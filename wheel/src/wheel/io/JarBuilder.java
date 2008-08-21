@@ -30,7 +30,7 @@ public class JarBuilder implements Closeable{
 	}
 	
 	private void add(String entryName, InputStream is) throws IOException {
-		JarEntry je = new JarEntry(entryName);
+		JarEntry je = new JarEntry(entryName.replace('\\', '/'));
 		_out.putNextEntry(je);
 		IOUtils.copy(is, _out); //This method buffers the input internally, so there is no need to use a BufferedInputStream.
 		is.close();

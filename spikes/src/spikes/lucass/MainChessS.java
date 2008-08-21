@@ -7,8 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import spikes.lucass.GameBase.GameTypes.ChessOptions;
-import spikes.lucass.GameBase.GameTypes.GoOptions;
+
+import spikes.lucass.game.type.ChessOptions;
+import spikes.lucass.game.type.GoOptions;
 
 
 public class MainChessS{

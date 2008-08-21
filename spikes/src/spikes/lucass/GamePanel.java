@@ -13,8 +13,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
-import spikes.lucass.GameBase.Game;
-import spikes.lucass.GameBase.GameTypes.GameOptions;
+import spikes.lucass.game.base.Game;
+import spikes.lucass.game.type.GameOptions;
 
 public class GamePanel extends JPanel implements Runnable{
 	

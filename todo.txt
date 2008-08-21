@@ -1,15 +1,39 @@
 ﻿MAIN ROADMAP
 ===================
+
 	- [Kalecser] Continuous Integration with Clover test coverage
+		- Low maintenance build: Interpret the .classpath file and compile the build exactly as Eclipse would.
+		- Cyclic dependency detection: Compile one sourcefolder at a time, from the last in the .classpath list (most basic (wheel)) to the first in the list (most high-level (spikes)), without the other uncompiled sourcefolders in the path.
 	- [Bamboo] configure svn diff max-length for messages sent to the sneercommits group
 	- [Sandro+Bamboo] Fix SneerFreedom7Test
-	- ASM - Move asm*.jar to a brick lib
-		- Remove kernel dependency. Make it pluggable in the kernel.
+	- Rename SneerJar to DeploymentJar because "Sneer jar" is the jar that users download from our site and run, not the jar that is sent by MeToo.
+		- Rename respective Factory, Impl, tests and variables that reference them too.
+	- Package names in LOWER CASE - rename pascal case packages to lower case. (Ask Klaus why)
+	- Delete all empty folders
+	- MakeSerializable bytecode enhancer - Move to spikes. We are already using XStream's binary serializer anyway.
+		- Simplify the container because of the removal of the Enhancer.
+	---- INITIAL CLEANUP DONE
+
+	- Tray Icon and Dashboard Titlebar Icon - Ask Petra for a 16x16 icon to put there. Black on white? with transparency and anti-aliasing inside but not on the transparency border.
+	- Brick Publish (Supposedly already working)
+	- Contact List - (Host addresses for Sneer developers are HARDCODED)
+		- Name
+		- Online indicator icon
+	---- Anelise can start testing for real. All bugs she finds get fixed immediately. Improvement suggestions are added to this todo list.
+	
+	- DynDNS Client ;)	
+	- Wind - We drop Skype for chat.
+	---------------------------------- FIRST DOGFOOD RELEASE
+
+	- Replace the AnnotatedFieldInjector by the StaticFieldInjector - Need to create our own TestRunner?
+	- Simplest Possible Kernel - What is it? Just injection?
+		- ASM - Move asm*.jar to a brick lib
+			- Remove kernel dependency. Make it pluggable in the kernel.
 	- Output folders - Why do wheel and the kernel have to go to a different output folder (API-bin) than the default (bin)?
 		- Consider using "brick-bin" for bricks and bin for all the rest because bricks something different by nature. 
-	- XStream - Revise its need and presence in wheel.
+		- Move or delete stuff we have not yet covered in the roadmap
+			- [done] Example: Delete GiveNTake
 	- Revise entire project structure
-		
 		- Sneer
 			- Installer
 			- Wheel (+ Commons)
@@ -19,29 +43,18 @@
 			- Skin (Bricks)
 		- Snapps (Bricks)
 			- ...
-		
-		- Move or delete stuff we have not yet covered in the roadmap
-			- [done] Example: Delete GiveNTake
-		- Delete all empty folders
-	- Package names in LOWER CASE - rename pascal case packages to lower case. (Ask Klaus why)
-	- Replace the AnnotatedFieldInjector by the StaticFieldInjector - Need to create our own TestRunner?
-		- Load wheel in a base classloader that also adds "implements Serializable" to classes.
 	- Refactor AbstractSwingMenu.addAction and the SelectableAction hierarchy. Too many casts. 
-	- Tray Icon - Ask Petra for a 16x16 icon to put there. Black on white. No transparency.
-	- Revise SneerFreedom*Test classes. All are the same
-	- Revise task comments in the code: Fix Urgent, Fix, Implement, Refactor.
-	- Brick Publish
-	- Contact List - (Host addresses for Sneer developers are HARDCODED)
-		- Name
-		- Online indicator icon
-	---------------------------------- FIRST DOGFOOD RELEASE
-	- Logging API
+	- Revise SneerFreedom*Test classes. They are all the same
+	- Logging - Revise all uses of logging, out and err.
+	- Exception Handling - Revise and correct
+	- Fix and remove all task comments in the code except for Optimize (Fix Urgent, Fix, Refactor and Implement).
+	---------------------------------- "NO BROKEN WINDOWS" status achieved. From now on code is ALWAYS kept 99.999% clean. 
+	
 	- Blinking lights
 		- API
-		- Snapp
+		- GUI
 	- Transparent Persistence
-	- Wind
-	- Voice Calls - Already done in old sneermonolith project
+	- Voice Calls - Already done in the old sneermonolith project
 	- Screen Viewing à la VNC - There is a free vnc client implementation in Java. If there is no free server implementation in java, just send the entire screen over using gzip compression for now.
     - File Transfer
 	- Traffic Prioritization by tuple type
@@ -60,6 +73,7 @@
 		- Update
 	- Kernel Update
 		- Auto Update
+		- KernelJockey - Cannot run new version if threads are still left over from previous run.
 	- Contact CRUD
 		- Nicknames
 	- MeToo
@@ -72,6 +86,7 @@
 	- Issue Tracking
 	- Revise project structure - sourcefolders, package names, build.xml, etc
 	---------------------------------- DEVELOPER COMMUNITY BETA RELEASE
+	
 	- Public Forums
 	- TopTen
 	- Annotations/Comments/Tags
@@ -89,6 +104,7 @@
 		- Drag n Drop for reordering Snapps
 	- Installer.EXE for Windows
 	---------------------------------- PUBLIC RELEASE (1.0)
+
 	- OMetaBoo support
 	- Auto Update for Bricks
 	- Thumbnails in Pic Chooser
@@ -105,10 +121,14 @@
 	- Multiple Look-N-Feels
 		- Napkin Default Look-N-Feel
 	---------------------------------- MAJOR PUBLIC RELEASE (2.0)
+	
+	- Drop XStream? - Consider using asm to inject "implements Serializable" in all bricks instead of using xstream
+		- Measure Performance gain, if any
 	- Native Bricks (JNI)
 		    - Require JNI (Full-Trust) Security Clearance, even for verification. Warn user.
 	- Own Photo - Crop
-	---------------------------------- BRAINSTORMING FOR THE FUTURE
+	---------------------------------- NEAR FUTURE - Everything below here is brainstorming for a more distant future
+	
 	- Anonimizing
 	- Brick Development Tools
 		- Code Repository Integration

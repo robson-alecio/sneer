@@ -22,8 +22,6 @@ public class SignalUtils {
 	}
 
 	public static <T> void waitForElement(T expected, SetSignal<T> setSignal) {
-		System.out.println("Expected: " + expected);
-
 		while (true) {
 			if (setSignal.currentElements().contains(expected)) return;
 			Thread.yield(); //Optimize

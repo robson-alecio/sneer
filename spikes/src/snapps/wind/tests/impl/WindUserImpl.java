@@ -43,7 +43,7 @@ public class WindUserImpl implements WindUser {
 
 
 	private Signal<Integer> unidirectionalConnect(WindUser a, WindUser b) {
-		DeepCopyingConnection connection = new DeepCopyingConnection(a.name(), b.name());
+		DeepCopyingConnection connection = new DeepCopyingConnection();
 		
 		Probe probe = a.createProbeFor(b, connection.sideA());
 		Probe copy = DeepCopier.deepCopy(probe);

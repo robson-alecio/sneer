@@ -30,7 +30,7 @@ public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 		Omnivore<VC> receiver = reference.get();
 		if (receiver == null) {
 			//Fix: Remove this empty WeakReference from the listeners list.
-			System.out.println("Receiver has been garbage collected");
+			System.err.println("Receiver has been garbage collected");
 			return;
 		}
 

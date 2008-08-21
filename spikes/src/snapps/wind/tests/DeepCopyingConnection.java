@@ -14,11 +14,6 @@ public class DeepCopyingConnection implements Connection {
 
 		private Omnivore<Object> _receiver;
 		private Side _otherSide;
-		private final String _debugLabel;
-
-		public Side(String debugLabel) {
-			_debugLabel = debugLabel;
-		}
 
 		@Override
 		public void registerReceiver(Omnivore<Object> receiver) {
@@ -32,15 +27,10 @@ public class DeepCopyingConnection implements Connection {
 
 		@Override
 		public void consume(Object objectToSend) {
-			debug(objectToSend);
 			_trafficCounter.setter().consume(_trafficCounter.output().currentValue() + 1);
 			
 			Object copy = DeepCopier.deepCopy(objectToSend);
 			_otherSide._receiver.consume(copy);
-		}
-
-		private void debug(Object objectToSend) {
-			System.out.println(_debugLabel + " -> " + _otherSide._debugLabel + " obj:" + objectToSend);
 		}
 
 	}
@@ -52,12 +42,8 @@ public class DeepCopyingConnection implements Connection {
 
 	
 	public DeepCopyingConnection() {
-		this("A", "B");
-	}
-	
-	public DeepCopyingConnection(String debugLabelForSideA, String debugLabelForSideB) {
-		_sideA = new Side(debugLabelForSideA);
-		_sideB = new Side(debugLabelForSideB);
+		_sideA = new Side();
+		_sideB = new Side();
 		
 		_sideA._otherSide = _sideB;
 		_sideB._otherSide = _sideA;

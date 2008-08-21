@@ -14,15 +14,6 @@ import wheel.reactive.Signal;
 public class OwnerSnappDemo  {
 	
 	static int y = 10;
-	private static Omnivore<String> log;
-	static{
-		log = new Omnivore<String>(){
-			@Override
-			public void consume(String valueObject) {
-				System.out.println(valueObject);
-			}
-		};
-	}
 
 	public static void main(String[] args) throws Exception {
 
@@ -35,7 +26,6 @@ public class OwnerSnappDemo  {
 		ownTaglineKeeper.taglineSetter().consume("Minha frase do dia!!");
 		
 		RFactory rfactory = container.produce(RFactory.class);
-		ownNameKeeper.name().addReceiver(log);
 		
 		Dashboard dashboard = container.produce(Dashboard.class);
 		OwnerSnapp snapp = container.produce(OwnerSnapp.class);

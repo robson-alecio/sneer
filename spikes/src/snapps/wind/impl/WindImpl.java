@@ -38,7 +38,6 @@ class WindImpl implements Wind, Omnivore<Shout> {
 	@Override
 	public void consume(Shout shout) {
 		_shoutsHeard.add(shout);
-		System.out.println("Shout heard: " + shout);
 	}
 
 

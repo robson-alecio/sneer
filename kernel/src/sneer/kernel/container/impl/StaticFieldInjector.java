@@ -16,15 +16,9 @@ public class StaticFieldInjector extends FieldInjector	 {
 	protected void injectOnField(Object obj, Field field) {
 		Class<?> type = field.getType();
 		
-		if(!Modifier.isStatic(field.getModifiers())
-				|| !type.isInterface()
-				|| !Brick.class.isAssignableFrom(type)) {
-			System.out.println("Field "+field.getName()+" not injected." 
-					+ " static? " + Modifier.isStatic(field.getModifiers()) 
-					+ ", interface? " + type.isInterface()
-					+ ", brick? " + Brick.class.isAssignableFrom(type));
-			return;
-		}
+		if (!Modifier.isStatic(field.getModifiers())) return;
+		if (!type.isInterface()) return;
+		if (!Brick.class.isAssignableFrom(type)) return;
 		
 		Object component = _container.produce(type);
 		setValueOnField(obj, field, component);

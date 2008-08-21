@@ -3,11 +3,8 @@
 	- [Kalecser] Continuous Integration with Clover test coverage
 	- [Bamboo] configure svn diff max-length
 	- [Sandro] Fix SneerFreedom7Test
-	- commons-logging - Delete ALL occurences in the new Sneer project.
-		- remove dependencies from test resources :P
-	- [DONE] sneer.lego - rename to sneer.kernel.container
 	- Output folders - Why do wheel and the kernel have to go to a different output folder (API-bin) than the default (bin)?
-		- Consider using "brick-bin" for bricks and bin for all the rest because bricks are "more different" by nature. 
+		- Consider using "brick-bin" for bricks and bin for all the rest because bricks something different by nature. 
 	- ASM - Move asm*.jar to a brick lib
 		- Remove kernel dependency. Make it pluggable in the kernel.
 	- XStream - Revise its need and presence in wheel.
@@ -25,6 +22,7 @@
 		
 		- Move or delete stuff we have not yet covered in the roadmap
 			- [done] Example: Delete GiveNTake
+		- Delete all empty folders
 	- Remove log4j warnings on System.err
 	- Package names in LOWER CASE - rename pascal case packages to lower case. (Ask Klaus why)
 	- Replace the AnnotatedFieldInjector by the StaticFieldInjector - Need to create our own TestRunner?
@@ -38,13 +36,13 @@
 		- Name
 		- Online indicator icon
 	---------------------------------- FIRST DOGFOOD RELEASE
-	- Transparent Persistence
+	- Logging API
 	- Blinking lights
 		- API
 		- Snapp
+	- Transparent Persistence
 	- Wind
 	- Voice Calls - Already done in old sneermonolith project
-	- Logging API
 	- Screen Viewing à la VNC - There is a free vnc client implementation in Java. If there is no free server implementation in java, just send the entire screen over using gzip compression for now.
     - File Transfer
 	- Traffic Prioritization by tuple type

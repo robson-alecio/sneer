@@ -55,7 +55,7 @@ public class SneerCommunity implements SovereignCommunity {
 			try {
 				FileUtils.cleanDirectory(tmp);
 			} catch (IOException e2) {
-				System.out.println("Some previous test might be forgetting to close files. " + e2.getMessage());
+				System.err.println("Some previous test might be forgetting to close files. " + e2.getMessage());
 			}		
 		}
 	}

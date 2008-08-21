@@ -1,4 +1,4 @@
-package sneer.pulp.ownTagline;
+package sneer.pulp.own_Tagline;
 
 import sneer.kernel.container.Brick;
 import wheel.lang.Omnivore;

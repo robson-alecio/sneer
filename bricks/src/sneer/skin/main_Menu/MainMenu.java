@@ -1,4 +1,4 @@
-package sneer.skin.mainMenu;
+package sneer.skin.main_Menu;
 
 import javax.swing.JComponent;
 

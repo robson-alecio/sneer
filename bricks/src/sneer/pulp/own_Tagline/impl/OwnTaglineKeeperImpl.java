@@ -1,6 +1,6 @@
-package sneer.pulp.ownTagline.impl;
+package sneer.pulp.own_Tagline.impl;
 
-import sneer.pulp.ownTagline.OwnTaglineKeeper;
+import sneer.pulp.own_Tagline.OwnTaglineKeeper;
 import wheel.lang.Omnivore;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;

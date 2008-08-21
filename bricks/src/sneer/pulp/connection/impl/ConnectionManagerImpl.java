@@ -8,7 +8,7 @@ import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.network.ByteArraySocket;
-import sneer.pulp.ownName.OwnNameKeeper;
+import sneer.pulp.own_Name.OwnNameKeeper;
 
 public class ConnectionManagerImpl implements ConnectionManager {
 

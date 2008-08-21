@@ -1,4 +1,4 @@
-package sneer.pulp.ownAvatar;
+package sneer.pulp.own_Avatar;
 
 import java.awt.Image;
 

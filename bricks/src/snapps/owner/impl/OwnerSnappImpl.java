@@ -12,10 +12,10 @@ import javax.swing.JSeparator;
 
 import snapps.owner.OwnerSnapp;
 import sneer.kernel.container.Inject;
-import sneer.pulp.ownAvatar.OwnAvatarKeeper;
-import sneer.pulp.ownName.OwnNameKeeper;
-import sneer.pulp.ownTagline.OwnTaglineKeeper;
-import sneer.skin.imageSelector.ImageSelector;
+import sneer.pulp.own_Avatar.OwnAvatarKeeper;
+import sneer.pulp.own_Name.OwnNameKeeper;
+import sneer.pulp.own_Tagline.OwnTaglineKeeper;
+import sneer.skin.image_Selector.ImageSelector;
 import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.RFactory;
 import sneer.skin.widgets.reactive.TextWidget;

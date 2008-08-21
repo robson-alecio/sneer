@@ -1,9 +1,9 @@
-package sneer.skin.imageSelector.tests;
+package sneer.skin.image_Selector.tests;
 
 import java.awt.Image;
 
 import sneer.kernel.container.ContainerUtils;
-import sneer.skin.imageSelector.ImageSelector;
+import sneer.skin.image_Selector.ImageSelector;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 

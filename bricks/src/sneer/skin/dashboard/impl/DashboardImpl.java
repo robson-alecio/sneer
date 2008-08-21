@@ -23,7 +23,7 @@ import sneer.skin.dashboard.Dashboard;
 import sneer.skin.dashboard.SnappFrame;
 import sneer.skin.image.DefaultIcons;
 import sneer.skin.image.ImageFactory;
-import sneer.skin.mainMenu.MainMenu;
+import sneer.skin.main_Menu.MainMenu;
 import sneer.skin.viewmanager.Snapp;
 import wheel.graphics.Images;
 import wheel.io.ui.action.Action;

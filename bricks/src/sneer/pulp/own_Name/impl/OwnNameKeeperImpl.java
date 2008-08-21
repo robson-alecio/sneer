@@ -1,6 +1,6 @@
-package sneer.pulp.ownName.impl;
+package sneer.pulp.own_Name.impl;
 
-import sneer.pulp.ownName.OwnNameKeeper;
+import sneer.pulp.own_Name.OwnNameKeeper;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Register;

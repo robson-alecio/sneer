@@ -1,4 +1,4 @@
-package sneer.skin.imageSelector.impl;
+package sneer.skin.image_Selector.impl;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;

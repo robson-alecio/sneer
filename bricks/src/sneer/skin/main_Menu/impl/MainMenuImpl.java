@@ -1,9 +1,9 @@
-package sneer.skin.mainMenu.impl;
+package sneer.skin.main_Menu.impl;
 
 import javax.swing.JComponent;
 
 import sneer.kernel.container.Inject;
-import sneer.skin.mainMenu.MainMenu;
+import sneer.skin.main_Menu.MainMenu;
 import sneer.skin.menu.Menu;
 import sneer.skin.menu.MenuFactory;
 import sneer.skin.menu.impl.MenuBar;

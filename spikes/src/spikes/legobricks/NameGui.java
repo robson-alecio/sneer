@@ -4,7 +4,7 @@ import javax.swing.JOptionPane;
 
 import sneer.kernel.container.Inject;
 import sneer.kernel.container.Startable;
-import sneer.pulp.ownName.OwnNameKeeper;
+import sneer.pulp.own_Name.OwnNameKeeper;
 import sneer.pulp.threadpool.ThreadPool;
 import spikes.legobricks.security.Sorry;
 import wheel.io.ui.User;

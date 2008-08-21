@@ -1,4 +1,4 @@
-package sneer.pulp.ownName;
+package sneer.pulp.own_Name;
 
 import sneer.kernel.container.Brick;
 import wheel.lang.Omnivore;

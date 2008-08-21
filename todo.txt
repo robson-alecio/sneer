@@ -1,10 +1,10 @@
 ﻿MAIN ROADMAP
 ===================
 	- [Bamboo] configure svn diff max-length
-	- Fix SneerFreedom7Test
+	- [Sandro] Fix SneerFreedom7Test
 	- commons-logging - Delete ALL occurences in the new Sneer project.
 		- remove dependencies from test resources :P
-	- sneer.lego - rename to sneer.kernel.container
+	- [DONE] sneer.lego - rename to sneer.kernel.container
 	- Output folders - Why do wheel and the kernel have to go to a different output folder (API-bin) than the default (bin)?
 		- Consider using "brick-bin" for bricks and bin for all the rest because bricks are "more different" by nature. 
 	- ASM - Move asm*.jar to a brick lib

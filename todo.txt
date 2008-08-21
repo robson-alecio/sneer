@@ -5,7 +5,7 @@
 		- Low maintenance build: Interpret the .classpath file and compile the build exactly as Eclipse would.
 		- Cyclic dependency detection: Compile one sourcefolder at a time, from the last in the .classpath list (most basic (wheel)) to the first in the list (most high-level (spikes)), without the other uncompiled sourcefolders in the path.
 	- [Bamboo] configure svn diff max-length for messages sent to the sneercommits group
-	- [Sandro+Bamboo] Fix SneerFreedom7Test
+	- Fix SneerFreedom7Test
 	- Rename SneerJar to DeploymentJar because "Sneer jar" is the jar that users download from our site and run, not the jar that is sent by MeToo.
 		- Rename respective Factory, Impl, tests and variables that reference them too.
 	- Package names in LOWER CASE - rename pascal case packages to lower case. (Ask Klaus why)
@@ -22,8 +22,8 @@
 	---- Anelise can start testing for real. All bugs she finds get fixed immediately. Improvement suggestions are added to this todo list.
 	
 	- DynDNS Client ;)	
-	- Wind - We drop Skype for chat.
-	---------------------------------- FIRST DOGFOOD RELEASE
+	- Wind
+	---------------------------------- FIRST DOGFOOD RELEASE - We drop Skype chat
 
 	- Replace the AnnotatedFieldInjector by the StaticFieldInjector - Need to create our own TestRunner?
 	- Simplest Possible Kernel - What is it? Just injection?

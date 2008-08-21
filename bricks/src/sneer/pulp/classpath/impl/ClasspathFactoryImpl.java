@@ -3,9 +3,9 @@ package sneer.pulp.classpath.impl;
 import java.io.File;
 import java.util.List;
 
-import sneer.lego.Brick;
-import sneer.lego.Inject;
-import sneer.lego.utils.io.BrickApiFilter;
+import sneer.kernel.container.Brick;
+import sneer.kernel.container.Inject;
+import sneer.kernel.container.utils.io.BrickApiFilter;
 import sneer.pulp.classpath.Classpath;
 import sneer.pulp.classpath.ClasspathFactory;
 import sneer.pulp.config.SneerConfig;

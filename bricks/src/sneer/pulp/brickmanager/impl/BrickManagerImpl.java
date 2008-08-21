@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
-import sneer.lego.Container;
-import sneer.lego.Inject;
-import sneer.lego.utils.InjectedBrick;
+import sneer.kernel.container.Container;
+import sneer.kernel.container.Inject;
+import sneer.kernel.container.utils.InjectedBrick;
 import sneer.pulp.brickmanager.BrickManager;
 import sneer.pulp.brickmanager.BrickManagerException;
 import sneer.pulp.config.SneerConfig;
@@ -27,7 +27,7 @@ import wheel.reactive.maps.impl.MapRegisterImpl;
 
 public class BrickManagerImpl implements BrickManager {
 
-	@Inject
+	@sneer.kernel.container.Inject
 	private SneerConfig _config;
 
 	@Inject

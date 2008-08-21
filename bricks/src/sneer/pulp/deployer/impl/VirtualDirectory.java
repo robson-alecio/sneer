@@ -10,12 +10,12 @@ import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 
-import sneer.lego.Brick;
-import sneer.lego.Inject;
-import sneer.lego.jar.SneerJar;
-import sneer.lego.jar.SneerJarFactory;
-import sneer.lego.utils.io.SimpleFilter;
-import sneer.lego.utils.metaclass.MetaClass;
+import sneer.kernel.container.Brick;
+import sneer.kernel.container.Inject;
+import sneer.kernel.container.jar.SneerJar;
+import sneer.kernel.container.jar.SneerJarFactory;
+import sneer.kernel.container.utils.io.SimpleFilter;
+import sneer.kernel.container.utils.metaclass.MetaClass;
 import sneer.pulp.deployer.DeployerException;
 import sneer.pulp.deployer.impl.filters.ImplFinder;
 import sneer.pulp.deployer.impl.filters.InterfaceFinder;

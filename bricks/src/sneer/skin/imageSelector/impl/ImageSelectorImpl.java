@@ -11,7 +11,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import sneer.lego.Inject;
+import sneer.kernel.container.Inject;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.imageSelector.ImageSelector;
 import wheel.lang.Omnivore;

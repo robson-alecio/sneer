@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
-import sneer.lego.jar.SneerJar;
-import sneer.lego.utils.InjectedBrick;
+import sneer.kernel.container.jar.SneerJar;
+import sneer.kernel.container.utils.InjectedBrick;
 import sneer.pulp.dependency.Dependency;
 import sneer.pulp.keymanager.PublicKey;
 

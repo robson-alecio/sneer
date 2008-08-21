@@ -2,7 +2,7 @@ package sneer.pulp.connection.impl;
 
 import java.io.IOException;
 
-import sneer.lego.Inject;
+import sneer.kernel.container.Inject;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.internetaddresskeeper.InternetAddress;

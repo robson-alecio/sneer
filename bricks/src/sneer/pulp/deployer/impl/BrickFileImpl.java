@@ -8,10 +8,10 @@ import java.util.jar.JarFile;
 
 import org.apache.commons.io.FileUtils;
 
-import sneer.lego.jar.SneerJar;
-import sneer.lego.jar.impl.SneerJarImpl;
-import sneer.lego.utils.InjectedBrick;
-import sneer.lego.utils.io.NetworkFriendly;
+import sneer.kernel.container.jar.SneerJar;
+import sneer.kernel.container.jar.impl.SneerJarImpl;
+import sneer.kernel.container.utils.InjectedBrick;
+import sneer.kernel.container.utils.io.NetworkFriendly;
 import sneer.pulp.dependency.Dependency;
 import sneer.pulp.deployer.BrickFile;
 import sneer.pulp.deployer.DeployerException;

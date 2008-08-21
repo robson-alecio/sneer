@@ -10,7 +10,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import sneer.lego.ContainerUtils;
+import sneer.kernel.container.ContainerUtils;
 import sneer.skin.dashboard.Dashboard;
 import sneer.skin.viewmanager.Snapp;
 import wheel.lang.Threads;
@@ -18,7 +18,7 @@ import wheel.lang.Threads;
 public class DashboardDemo  {
 
 	public static void main(String[] args) throws Exception {
-		sneer.lego.Container container = ContainerUtils.getContainer();
+		sneer.kernel.container.Container container = ContainerUtils.getContainer();
 
 		Dashboard dashboard = container.produce(Dashboard.class);
 		installSampleSnapps(dashboard);

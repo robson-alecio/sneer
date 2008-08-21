@@ -3,7 +3,7 @@ package sneer.pulp.connection.impl;
 import java.io.IOException;
 import java.util.Arrays;
 
-import sneer.lego.Inject;
+import sneer.kernel.container.Inject;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;

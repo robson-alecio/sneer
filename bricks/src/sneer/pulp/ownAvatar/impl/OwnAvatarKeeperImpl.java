@@ -2,7 +2,7 @@ package sneer.pulp.ownAvatar.impl;
 
 import java.awt.Image;
 
-import sneer.lego.Inject;
+import sneer.kernel.container.Inject;
 import sneer.pulp.ownAvatar.OwnAvatarKeeper;
 import sneer.skin.image.ImageFactory;
 import wheel.lang.Functor;

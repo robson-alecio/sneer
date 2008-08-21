@@ -8,7 +8,7 @@ import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.lego.Brick;
+import sneer.kernel.container.Brick;
 import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Register;
 import wheel.reactive.RegisterBase;

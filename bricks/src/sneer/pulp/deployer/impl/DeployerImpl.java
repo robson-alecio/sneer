@@ -7,9 +7,9 @@ import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 
-import sneer.lego.Inject;
-import sneer.lego.Injector;
-import sneer.lego.utils.metaclass.MetaClass;
+import sneer.kernel.container.Inject;
+import sneer.kernel.container.Injector;
+import sneer.kernel.container.utils.metaclass.MetaClass;
 import sneer.pulp.classpath.Classpath;
 import sneer.pulp.classpath.ClasspathFactory;
 import sneer.pulp.compiler.Compiler;

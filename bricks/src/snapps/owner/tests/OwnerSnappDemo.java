@@ -1,8 +1,8 @@
 package snapps.owner.tests;
 
 import snapps.owner.OwnerSnapp;
-import sneer.lego.Container;
-import sneer.lego.ContainerUtils;
+import sneer.kernel.container.Container;
+import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.ownName.OwnNameKeeper;
 import sneer.pulp.ownTagline.OwnTaglineKeeper;
 import sneer.skin.dashboard.Dashboard;

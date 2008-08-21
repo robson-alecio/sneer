@@ -1,6 +1,6 @@
 package sneer.pulp.mesh.impl;
 
-import sneer.lego.Brick;
+import sneer.kernel.container.Brick;
 import sneer.pulp.keymanager.PublicKey;
 
 public class Subscription implements Ambassador {

@@ -9,7 +9,7 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 
-import sneer.lego.Inject;
+import sneer.kernel.container.Inject;
 import sneer.pulp.classpath.Classpath;
 import sneer.pulp.compiler.Compiler;
 import sneer.pulp.compiler.CompilerException;

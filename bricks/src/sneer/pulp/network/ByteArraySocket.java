@@ -2,7 +2,7 @@ package sneer.pulp.network;
 
 import java.io.IOException;
 
-import sneer.lego.Crashable;
+import sneer.kernel.container.Crashable;
 
 public interface ByteArraySocket extends Crashable {
 

@@ -8,8 +8,8 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 
-import sneer.lego.utils.io.JavaFilter;
-import sneer.lego.utils.metaclass.MetaClass;
+import sneer.kernel.container.utils.io.JavaFilter;
+import sneer.kernel.container.utils.metaclass.MetaClass;
 import sneer.pulp.compiler.CompilationError;
 import sneer.pulp.compiler.CompilerException;
 import sneer.pulp.compiler.Result;

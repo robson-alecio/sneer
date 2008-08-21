@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import sneer.lego.Brick;
+import sneer.kernel.container.Brick;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.keymanager.PublicKey;
 import wheel.lang.Types;

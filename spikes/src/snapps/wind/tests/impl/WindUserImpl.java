@@ -8,7 +8,7 @@ import snapps.wind.TupleSpace;
 import snapps.wind.Wind;
 import snapps.wind.tests.DeepCopyingConnection;
 import snapps.wind.tests.WindUser;
-import sneer.lego.Inject;
+import sneer.kernel.container.Inject;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
 import wheel.io.serialization.DeepCopier;

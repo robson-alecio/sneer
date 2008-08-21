@@ -4,7 +4,7 @@ import java.io.File;
 
 import org.apache.commons.lang.SystemUtils;
 
-import sneer.lego.Startable;
+import sneer.kernel.container.Startable;
 import sneer.pulp.config.SneerConfig;
 
 public class SneerConfigImpl implements SneerConfig, Startable {

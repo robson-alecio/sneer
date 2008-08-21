@@ -2,8 +2,8 @@ package spikes.legobricks;
 
 import javax.swing.JOptionPane;
 
-import sneer.lego.Inject;
-import sneer.lego.Startable;
+import sneer.kernel.container.Inject;
+import sneer.kernel.container.Startable;
 import sneer.pulp.ownName.OwnNameKeeper;
 import sneer.pulp.threadpool.ThreadPool;
 import spikes.legobricks.security.Sorry;

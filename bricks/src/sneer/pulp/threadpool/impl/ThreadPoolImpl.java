@@ -3,7 +3,7 @@ package sneer.pulp.threadpool.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import sneer.lego.Inject;
+import sneer.kernel.container.Inject;
 import sneer.pulp.ownName.OwnNameKeeper;
 import sneer.pulp.threadpool.ThreadPool;
 

@@ -1,6 +1,6 @@
 package sneer.bricks.z;
 
-import sneer.lego.Brick;
+import sneer.kernel.container.Brick;
 
 public interface Z extends Brick {
 	

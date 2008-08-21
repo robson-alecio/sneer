@@ -1,7 +1,7 @@
 package sneer.pulp.mesh.impl;
 
-import sneer.lego.Brick;
-import sneer.lego.Inject;
+import sneer.kernel.container.Brick;
+import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;

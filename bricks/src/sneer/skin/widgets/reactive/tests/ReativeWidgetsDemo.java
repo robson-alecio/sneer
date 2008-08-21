@@ -5,8 +5,8 @@ import java.awt.FlowLayout;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import sneer.lego.Container;
-import sneer.lego.ContainerUtils;
+import sneer.kernel.container.Container;
+import sneer.kernel.container.ContainerUtils;
 import sneer.skin.widgets.reactive.RFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.lang.Omnivore;

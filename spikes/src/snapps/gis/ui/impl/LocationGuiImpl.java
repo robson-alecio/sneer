@@ -22,8 +22,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import snapps.location.LocationKeeper;
-import sneer.lego.Inject;
-import sneer.lego.Startable;
+import sneer.kernel.container.Inject;
+import sneer.kernel.container.Startable;
 import sneer.pulp.threadpool.ThreadPool;
 
 public class LocationGuiImpl implements Startable {

@@ -1,6 +1,6 @@
 package sneer.pulp.keymanager;
 
-import sneer.lego.Brick;
+import sneer.kernel.container.Brick;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.mesh.Party;
 import wheel.lang.Functor;

@@ -1,6 +1,6 @@
 package sneer.bricks.y;
 
-import sneer.lego.Brick;
+import sneer.kernel.container.Brick;
 
 public interface Y extends Brick {
 	String nothing();

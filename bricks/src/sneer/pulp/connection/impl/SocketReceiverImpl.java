@@ -1,6 +1,6 @@
 package sneer.pulp.connection.impl;
 
-import sneer.lego.Inject;
+import sneer.kernel.container.Inject;
 import sneer.pulp.connection.SocketAccepter;
 import sneer.pulp.connection.SocketReceiver;
 import sneer.pulp.network.ByteArraySocket;

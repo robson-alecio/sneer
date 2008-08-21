@@ -2,7 +2,7 @@ package sneer.pulp.connection.impl;
 
 import java.io.IOException;
 
-import sneer.lego.Inject;
+import sneer.kernel.container.Inject;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.connection.SocketAccepter;

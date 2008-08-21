@@ -1,6 +1,6 @@
 package sneer.pulp.port;
 
-import sneer.lego.Brick;
+import sneer.kernel.container.Brick;
 import wheel.lang.Consumer;
 import wheel.reactive.Signal;
 

@@ -2,7 +2,7 @@ package sneer.pulp.compiler;
 
 import java.util.List;
 
-import sneer.lego.utils.metaclass.MetaClass;
+import sneer.kernel.container.utils.metaclass.MetaClass;
 
 public interface Result {
 

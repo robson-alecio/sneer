@@ -1,6 +1,6 @@
 package sneer.pulp.ownName;
 
-import sneer.lego.Brick;
+import sneer.kernel.container.Brick;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 

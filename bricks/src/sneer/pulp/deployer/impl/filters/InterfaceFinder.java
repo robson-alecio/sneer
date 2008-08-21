@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
-import sneer.lego.utils.io.SimpleFilter;
+import sneer.kernel.container.utils.io.SimpleFilter;
 import sneer.pulp.deployer.impl.parser.JavaSource;
 import sneer.pulp.deployer.impl.parser.JavaSourceParser;
 

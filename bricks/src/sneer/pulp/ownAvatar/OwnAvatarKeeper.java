@@ -2,7 +2,7 @@ package sneer.pulp.ownAvatar;
 
 import java.awt.Image;
 
-import sneer.lego.Brick;
+import sneer.kernel.container.Brick;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 

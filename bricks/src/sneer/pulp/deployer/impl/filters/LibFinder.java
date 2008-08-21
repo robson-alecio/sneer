@@ -2,7 +2,7 @@ package sneer.pulp.deployer.impl.filters;
 
 import java.io.File;
 
-import sneer.lego.utils.io.SimpleFilter;
+import sneer.kernel.container.utils.io.SimpleFilter;
 
 public class LibFinder extends SimpleFilter {
 

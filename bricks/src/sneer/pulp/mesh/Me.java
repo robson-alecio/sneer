@@ -1,6 +1,6 @@
 package sneer.pulp.mesh;
 
-import sneer.lego.Brick;
+import sneer.kernel.container.Brick;
 import wheel.reactive.sets.SetSignal;
 
 

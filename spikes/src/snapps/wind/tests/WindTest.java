@@ -4,7 +4,7 @@ import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
-import sneer.lego.ContainerUtils;
+import sneer.kernel.container.ContainerUtils;
 import wheel.lang.FrozenTime;
 import wheel.reactive.Signal;
 

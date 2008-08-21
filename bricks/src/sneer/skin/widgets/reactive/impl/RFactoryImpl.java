@@ -2,7 +2,7 @@ package sneer.skin.widgets.reactive.impl;
 
 import java.awt.Image;
 
-import sneer.lego.Inject;
+import sneer.kernel.container.Inject;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.RFactory;

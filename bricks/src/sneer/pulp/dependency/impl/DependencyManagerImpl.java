@@ -9,8 +9,8 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 
-import sneer.lego.Inject;
-import sneer.lego.Startable;
+import sneer.kernel.container.Inject;
+import sneer.kernel.container.Startable;
 import sneer.pulp.config.SneerConfig;
 import sneer.pulp.crypto.Crypto;
 import sneer.pulp.crypto.Sneer1024;

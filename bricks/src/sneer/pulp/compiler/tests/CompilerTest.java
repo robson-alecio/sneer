@@ -15,8 +15,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 
-import sneer.lego.Inject;
-import sneer.lego.tests.BrickTestSupport;
+import sneer.kernel.container.Inject;
+import sneer.kernel.container.tests.BrickTestSupport;
 import sneer.pulp.classpath.Classpath;
 import sneer.pulp.classpath.ClasspathFactory;
 import sneer.pulp.compiler.CompilationError;

@@ -4,8 +4,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import sneer.lego.Inject;
-import sneer.lego.tests.BrickTestSupport;
+import sneer.kernel.container.Inject;
+import sneer.kernel.container.tests.BrickTestSupport;
 import sneer.pulp.ownName.OwnNameKeeper;
 
 public class KeyManagerTest extends BrickTestSupport {

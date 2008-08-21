@@ -1,6 +1,6 @@
 package sneer.pulp.mesh.impl;
 
-import sneer.lego.Brick;
+import sneer.kernel.container.Brick;
 
 
 public interface SignalPublisher {

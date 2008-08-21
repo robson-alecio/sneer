@@ -3,7 +3,7 @@ package sneer.bricks.x.impl;
 import sneer.bricks.x.X;
 import sneer.bricks.y.Y;
 import sneer.bricks.z.Z;
-import sneer.lego.Inject;
+import sneer.kernel.container.Inject;
 
 class XImpl implements X<String> {
 

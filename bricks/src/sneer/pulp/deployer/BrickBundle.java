@@ -2,7 +2,7 @@ package sneer.pulp.deployer;
 
 import java.util.List;
 
-import sneer.lego.jar.SneerJar;
+import sneer.kernel.container.jar.SneerJar;
 
 public interface BrickBundle {
 

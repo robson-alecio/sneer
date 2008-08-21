@@ -2,7 +2,7 @@ package sneer.pulp.network;
 
 import java.io.IOException;
 
-import sneer.lego.Brick;
+import sneer.kernel.container.Brick;
 
 
 public interface Network extends Brick {

@@ -5,7 +5,7 @@ import snapps.wind.Probe;
 import snapps.wind.ProbeFactory;
 import snapps.wind.Tuple;
 import snapps.wind.TupleSpace;
-import sneer.lego.Inject;
+import sneer.kernel.container.Inject;
 import sneer.pulp.keymanager.PublicKey;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;

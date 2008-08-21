@@ -2,7 +2,7 @@ package sneer.skin.mainMenu.impl;
 
 import javax.swing.JComponent;
 
-import sneer.lego.Inject;
+import sneer.kernel.container.Inject;
 import sneer.skin.mainMenu.MainMenu;
 import sneer.skin.menu.Menu;
 import sneer.skin.menu.MenuFactory;

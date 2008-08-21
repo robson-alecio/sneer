@@ -3,7 +3,7 @@ package sneer.pulp.keymanager.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.lego.Inject;
+import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.crypto.Crypto;
 import sneer.pulp.crypto.Sneer1024;

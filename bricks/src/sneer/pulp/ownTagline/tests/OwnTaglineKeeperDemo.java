@@ -5,10 +5,10 @@ import java.awt.FlowLayout;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import sneer.lego.Container;
-import sneer.lego.ContainerUtils;
-import sneer.lego.Inject;
-import sneer.lego.tests.BrickTestSupport;
+import sneer.kernel.container.Container;
+import sneer.kernel.container.ContainerUtils;
+import sneer.kernel.container.Inject;
+import sneer.kernel.container.tests.BrickTestSupport;
 import sneer.pulp.ownTagline.OwnTaglineKeeper;
 import sneer.skin.widgets.reactive.RFactory;
 import sneer.skin.widgets.reactive.TextWidget;

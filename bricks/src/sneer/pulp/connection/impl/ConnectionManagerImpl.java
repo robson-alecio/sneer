@@ -3,7 +3,7 @@ package sneer.pulp.connection.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.lego.Inject;
+import sneer.kernel.container.Inject;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;

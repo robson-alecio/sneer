@@ -2,9 +2,9 @@ package functional.adapters.impl;
 
 import java.io.File;
 
-import sneer.lego.Container;
-import sneer.lego.Inject;
-import sneer.lego.utils.io.NetworkFriendly;
+import sneer.kernel.container.Container;
+import sneer.kernel.container.Inject;
+import sneer.kernel.container.utils.io.NetworkFriendly;
 import sneer.pulp.brickmanager.BrickManager;
 import sneer.pulp.connection.SocketOriginator;
 import sneer.pulp.connection.SocketReceiver;

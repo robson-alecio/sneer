@@ -3,7 +3,7 @@ package sneer.pulp.classpath.impl;
 import java.io.File;
 import java.util.List;
 
-import sneer.lego.utils.io.SimpleFilter;
+import sneer.kernel.container.utils.io.SimpleFilter;
 
 class FilteredClasspath extends ClasspathSupport {
 

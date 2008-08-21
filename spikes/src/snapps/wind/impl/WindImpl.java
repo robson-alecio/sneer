@@ -3,7 +3,7 @@ package snapps.wind.impl;
 import snapps.wind.Shout;
 import snapps.wind.TupleSpace;
 import snapps.wind.Wind;
-import sneer.lego.Inject;
+import sneer.kernel.container.Inject;
 import sneer.pulp.keymanager.KeyManager;
 import wheel.lang.FrozenTime;
 import wheel.lang.Omnivore;

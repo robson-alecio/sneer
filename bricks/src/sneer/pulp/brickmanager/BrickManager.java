@@ -1,6 +1,6 @@
 package sneer.pulp.brickmanager;
 
-import sneer.lego.Brick;
+import sneer.kernel.container.Brick;
 import sneer.pulp.deployer.BrickBundle;
 import sneer.pulp.deployer.BrickFile;
 import wheel.reactive.maps.MapSignal;

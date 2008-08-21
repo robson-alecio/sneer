@@ -3,7 +3,7 @@ package sneer.pulp.connection.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.lego.Inject;
+import sneer.kernel.container.Inject;
 import sneer.pulp.connection.SocketOriginator;
 import sneer.pulp.internetaddresskeeper.InternetAddress;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;

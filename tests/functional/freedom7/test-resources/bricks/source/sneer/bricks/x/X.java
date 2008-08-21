@@ -2,7 +2,7 @@ package sneer.bricks.x;
 
 import java.io.Serializable;
 
-import sneer.lego.Brick;
+import sneer.kernel.container.Brick;
 
 //sample comment
 public interface X<T> extends Comparable<String>, Serializable, Brick {

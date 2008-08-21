@@ -3,10 +3,10 @@ package sneer.pulp.mesh.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.lego.Brick;
-import sneer.lego.Container;
-import sneer.lego.Inject;
-import sneer.lego.Startable;
+import sneer.kernel.container.Brick;
+import sneer.kernel.container.Container;
+import sneer.kernel.container.Inject;
+import sneer.kernel.container.Startable;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.keymanager.PublicKey;

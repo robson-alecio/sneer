@@ -9,8 +9,8 @@ import java.util.List;
 
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 
-import sneer.lego.Injector;
-import sneer.lego.utils.io.SimpleFilter;
+import sneer.kernel.container.Injector;
+import sneer.kernel.container.utils.io.SimpleFilter;
 
 public class VirtualDirectoryFactoryImpl implements VirtualDirectoryFactory {
 

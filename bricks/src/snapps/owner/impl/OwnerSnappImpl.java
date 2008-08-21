@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JSeparator;
 
 import snapps.owner.OwnerSnapp;
-import sneer.lego.Inject;
+import sneer.kernel.container.Inject;
 import sneer.pulp.ownAvatar.OwnAvatarKeeper;
 import sneer.pulp.ownName.OwnNameKeeper;
 import sneer.pulp.ownTagline.OwnTaglineKeeper;
@@ -22,19 +22,19 @@ import sneer.skin.widgets.reactive.TextWidget;
 
 public class OwnerSnappImpl implements OwnerSnapp {
 
-	@Inject
+	@sneer.kernel.container.Inject
 	static private OwnNameKeeper _ownNameKeeper;
 
-	@Inject
+	@sneer.kernel.container.Inject
 	static private OwnTaglineKeeper _ownTaglineKeeper;
 
-	@Inject
+	@sneer.kernel.container.Inject
 	static private OwnAvatarKeeper _ownAvatarKeeper;
 
 	@Inject
 	static private ImageSelector _imageSelector;
 
-	@Inject
+	@sneer.kernel.container.Inject
 	static private RFactory rfactory;
 
 	private TextWidget editableLabel;

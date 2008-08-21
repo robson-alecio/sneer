@@ -26,6 +26,7 @@ import sneer.lego.utils.InjectedBrick;
 import sneer.pulp.crypto.Crypto;
 import sneer.pulp.crypto.Digester;
 import wheel.io.JarBuilder;
+import wheel.io.Streams;
 import wheel.lang.exceptions.NotImplementedYet;
 
 public class SneerJarImpl implements SneerJar {
@@ -99,10 +100,8 @@ public class SneerJarImpl implements SneerJar {
 	}
 
 	private void closeJarBuilder() {
-		if (_jarBuilder != null) {
-			_jarBuilder.close();
-			_jarBuilder = null;
-		}
+		Streams.crash(_jarBuilder);
+		_jarBuilder = null;
 	}
 
 	@Override

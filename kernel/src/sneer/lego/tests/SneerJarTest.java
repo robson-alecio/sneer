@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import sneer.lego.jar.SneerJar;
 import sneer.lego.jar.impl.SneerJarImpl;
+import wheel.io.Streams;
 
 public class SneerJarTest {
 
@@ -29,7 +30,7 @@ public class SneerJarTest {
 		File file = File.createTempFile("myJar-", ".jar");
 		SneerJar jar = new SneerJarImpl(file);
 		jar.add("entry.txt", data);
-		jar.close();
+		Streams.crash(jar);
 		
 		//test
 		InputStream is = jar.getInputStream("entry.txt");

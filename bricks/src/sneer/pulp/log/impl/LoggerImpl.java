@@ -7,149 +7,153 @@ import sneer.pulp.log.Logger;
 
 public class LoggerImpl implements Logger {
 
-	private org.slf4j.Logger logger = LoggerFactory.getLogger("sneer");
+	{
+		org.apache.log4j.BasicConfigurator.configure();
+	}
+	
+	private org.slf4j.Logger _logger = LoggerFactory.getLogger("sneer");
 	
 	public void debug(String arg0, Object arg1, Object arg2) {
-		logger.debug(arg0, arg1, arg2);
+		//Implement: _logger.debug(arg0, arg1, arg2);
 	}
 
 	public void debug(String arg0, Object arg1) {
-		logger.debug(arg0, arg1);
+		//Implement: _logger.debug(arg0, arg1);
 	}
 
 	public void debug(String arg0, Object[] arg1) {
-		logger.debug(arg0, arg1);
+		//Implement: _logger.debug(arg0, arg1);
 	}
 
 	public void debug(String arg0, Throwable arg1) {
-		logger.debug(arg0, arg1);
+		//Implement: _logger.debug(arg0, arg1);
 	}
 
 	public void debug(String arg0) {
-		logger.debug(arg0);
+		//Implement: _logger.debug(arg0);
 	}
 
 	public void error(String arg0, Object arg1, Object arg2) {
-		logger.error(arg0, arg1, arg2);
+		_logger.error(arg0, arg1, arg2);
 	}
 
 	public void error(String arg0, Object arg1) {
-		logger.error(arg0, arg1);
+		_logger.error(arg0, arg1);
 	}
 
 	public void error(String arg0, Object[] arg1) {
-		logger.error(arg0, arg1);
+		_logger.error(arg0, arg1);
 	}
 
 	public void error(String arg0, Throwable arg1) {
-		logger.error(arg0, arg1);
+		_logger.error(arg0, arg1);
 	}
 
 	public void error(String arg0) {
-		logger.error(arg0);
+		_logger.error(arg0);
 	}
 
 	public String getName() {
-		return logger.getName();
+		return _logger.getName();
 	}
 
 	public void info(String arg0, Object arg1, Object arg2) {
-		logger.info(arg0, arg1, arg2);
+		//Implement: _logger.info(arg0, arg1, arg2);
 	}
 
 	public void info(String arg0, Object arg1) {
-		logger.info(arg0, arg1);
+		//Implement: _logger.info(arg0, arg1);
 	}
 
 	public void info(String arg0, Object[] arg1) {
-		logger.info(arg0, arg1);
+		//Implement: _logger.info(arg0, arg1);
 	}
 
 	public void info(String arg0, Throwable arg1) {
-		logger.info(arg0, arg1);
+		//Implement: _logger.info(arg0, arg1);
 	}
 
 	public void info(String arg0) {
-		logger.info(arg0);
+		//Implement: _logger.info(arg0);
 	}
 
 	public boolean isDebugEnabled() {
-		return logger.isDebugEnabled();
+		return _logger.isDebugEnabled();
 	}
 
 	public boolean isDebugEnabled(Marker arg0) {
-		return logger.isDebugEnabled(arg0);
+		return _logger.isDebugEnabled(arg0);
 	}
 
 	public boolean isErrorEnabled() {
-		return logger.isErrorEnabled();
+		return _logger.isErrorEnabled();
 	}
 
 	public boolean isErrorEnabled(Marker arg0) {
-		return logger.isErrorEnabled(arg0);
+		return _logger.isErrorEnabled(arg0);
 	}
 
 	public boolean isInfoEnabled() {
-		return logger.isInfoEnabled();
+		return _logger.isInfoEnabled();
 	}
 
 	public boolean isInfoEnabled(Marker arg0) {
-		return logger.isInfoEnabled(arg0);
+		return _logger.isInfoEnabled(arg0);
 	}
 
 	public boolean isTraceEnabled() {
-		return logger.isTraceEnabled();
+		return _logger.isTraceEnabled();
 	}
 
 	public boolean isTraceEnabled(Marker arg0) {
-		return logger.isTraceEnabled(arg0);
+		return _logger.isTraceEnabled(arg0);
 	}
 
 	public boolean isWarnEnabled() {
-		return logger.isWarnEnabled();
+		return _logger.isWarnEnabled();
 	}
 
 	public boolean isWarnEnabled(Marker arg0) {
-		return logger.isWarnEnabled(arg0);
+		return _logger.isWarnEnabled(arg0);
 	}
 
 	public void trace(String arg0, Object arg1, Object arg2) {
-		logger.trace(arg0, arg1, arg2);
+		//Implement: _logger.trace(arg0, arg1, arg2);
 	}
 
 	public void trace(String arg0, Object arg1) {
-		logger.trace(arg0, arg1);
+		//Implement: _logger.trace(arg0, arg1);
 	}
 
 	public void trace(String arg0, Object[] arg1) {
-		logger.trace(arg0, arg1);
+		//Implement: _logger.trace(arg0, arg1);
 	}
 
 	public void trace(String arg0, Throwable arg1) {
-		logger.trace(arg0, arg1);
+		//Implement: _logger.trace(arg0, arg1);
 	}
 
 	public void trace(String arg0) {
-		logger.trace(arg0);
+		//Implement: _logger.trace(arg0);
 	}
 
 	public void warn(String arg0, Object arg1, Object arg2) {
-		logger.warn(arg0, arg1, arg2);
+		_logger.warn(arg0, arg1, arg2);
 	}
 
 	public void warn(String arg0, Object arg1) {
-		logger.warn(arg0, arg1);
+		_logger.warn(arg0, arg1);
 	}
 
 	public void warn(String arg0, Object[] arg1) {
-		logger.warn(arg0, arg1);
+		_logger.warn(arg0, arg1);
 	}
 
 	public void warn(String arg0, Throwable arg1) {
-		logger.warn(arg0, arg1);
+		_logger.warn(arg0, arg1);
 	}
 
 	public void warn(String arg0) {
-		logger.warn(arg0);
+		_logger.warn(arg0);
 	}
 }

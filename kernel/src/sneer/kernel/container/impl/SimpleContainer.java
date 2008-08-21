@@ -1,10 +1,9 @@
 package sneer.kernel.container.impl;
 
+import static wheel.lang.Types.cast;
+
 import java.io.File;
 import java.lang.reflect.Constructor;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import sneer.kernel.container.ClassLoaderFactory;
 import sneer.kernel.container.Container;
@@ -14,12 +13,9 @@ import sneer.kernel.container.Startable;
 import sneer.kernel.container.impl.classloader.EclipseClassLoaderFactory;
 import sneer.pulp.config.SneerConfig;
 import sneer.pulp.config.impl.SneerConfigImpl;
-import static wheel.lang.Types.cast;
 
 public class SimpleContainer implements Container {
 	
-	private static final Logger log = LoggerFactory.getLogger(SimpleContainer.class);
-
 	private ClassLoaderFactory _classloaderFactory;
 	
 	private final Injector _injector = new AnnotatedFieldInjector(this);
@@ -80,7 +76,6 @@ public class SimpleContainer implements Container {
 		ClassLoader cl = getClassLoader(clazz, brickDirectory);
 		Class<?> impl = cl.loadClass(implementation);
 		result = construct(impl);
-		log.info("brick {} created", result);
 		return cast(result);		
 
 	}

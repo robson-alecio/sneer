@@ -1,12 +1,12 @@
 ﻿MAIN ROADMAP
 ===================
 	- [Kalecser] Continuous Integration with Clover test coverage
-	- [Bamboo] configure svn diff max-length
-	- [Sandro] Fix SneerFreedom7Test
-	- Output folders - Why do wheel and the kernel have to go to a different output folder (API-bin) than the default (bin)?
-		- Consider using "brick-bin" for bricks and bin for all the rest because bricks something different by nature. 
+	- [Bamboo] configure svn diff max-length for messages sent to the sneercommits group
+	- [Sandro+Bamboo] Fix SneerFreedom7Test
 	- ASM - Move asm*.jar to a brick lib
 		- Remove kernel dependency. Make it pluggable in the kernel.
+	- Output folders - Why do wheel and the kernel have to go to a different output folder (API-bin) than the default (bin)?
+		- Consider using "brick-bin" for bricks and bin for all the rest because bricks something different by nature. 
 	- XStream - Revise its need and presence in wheel.
 	- Revise entire project structure
 		
@@ -23,7 +23,6 @@
 		- Move or delete stuff we have not yet covered in the roadmap
 			- [done] Example: Delete GiveNTake
 		- Delete all empty folders
-	- Remove log4j warnings on System.err
 	- Package names in LOWER CASE - rename pascal case packages to lower case. (Ask Klaus why)
 	- Replace the AnnotatedFieldInjector by the StaticFieldInjector - Need to create our own TestRunner?
 		- Load wheel in a base classloader that also adds "implements Serializable" to classes.

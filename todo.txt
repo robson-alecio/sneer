@@ -1,5 +1,6 @@
 ﻿MAIN ROADMAP
 ===================
+	- [Kalecser] Continuous Integration with Clover test coverage
 	- [Bamboo] configure svn diff max-length
 	- [Sandro] Fix SneerFreedom7Test
 	- commons-logging - Delete ALL occurences in the new Sneer project.

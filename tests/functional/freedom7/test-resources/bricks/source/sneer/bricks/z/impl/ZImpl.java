@@ -1,14 +1,14 @@
 package sneer.bricks.z.impl;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import org.apache.log4j.Logger;
 
 import sneer.bricks.z.Helper;
 import sneer.bricks.z.Z;
 
 class ZImpl implements Z {
 
-	private Log _log = LogFactory.getLog("category");
+	private Logger _log = Logger.getLogger("category");
 	
 	@Override
 	public String doSomething() {
@@ -17,7 +17,7 @@ class ZImpl implements Z {
 	}
 	
 	public ClassLoader libClassLoader() {
-		return LogFactory.class.getClassLoader();
+		return Logger.class.getClassLoader();
 	}
 
 	@Override

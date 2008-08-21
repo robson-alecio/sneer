@@ -15,7 +15,7 @@
 	---- INITIAL CLEANUP DONE
 
 	- Tray Icon and Dashboard Titlebar Icon - Ask Petra for a 16x16 icon to put there. Black on white? with transparency and anti-aliasing inside but not on the transparency border.
-	- Brick Publish (Supposedly already working)
+	- Brick Publish (Supposedly working already)
 	- Contact List - (Host addresses for Sneer developers are HARDCODED)
 		- Name
 		- Online indicator icon

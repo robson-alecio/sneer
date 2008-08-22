@@ -6,8 +6,6 @@
 		- Cyclic dependency detection: Compile one sourcefolder at a time, from the last in the .classpath list (most basic (wheel)) to the first in the list (most high-level (spikes)), without the other uncompiled sourcefolders in the path.
 	- [Bamboo] configure svn diff max-length for messages sent to the sneercommits group
 	- Fix SneerFreedom7Test
-	- Rename SneerJar to DeploymentJar because "Sneer jar" is the jar that users download from our site and run, not the jar that is sent by MeToo.
-		- Rename respective Factory, Impl, tests and variables that reference them too.
 	- MakeSerializable bytecode enhancer - Move to spikes. We are already using XStream's binary serializer anyway.
 		- Simplify the container because of the removal of the Enhancer.
 	---- INITIAL CLEANUP DONE

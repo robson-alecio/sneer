@@ -8,7 +8,6 @@
 	- Fix SneerFreedom7Test
 	- Rename SneerJar to DeploymentJar because "Sneer jar" is the jar that users download from our site and run, not the jar that is sent by MeToo.
 		- Rename respective Factory, Impl, tests and variables that reference them too.
-	- Package names in LOWER CASE - rename pascal case packages to lower case. (Ask Klaus why)
 	- MakeSerializable bytecode enhancer - Move to spikes. We are already using XStream's binary serializer anyway.
 		- Simplify the container because of the removal of the Enhancer.
 	---- INITIAL CLEANUP DONE

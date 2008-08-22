@@ -11,7 +11,6 @@ import org.junit.Test;
 import sneer.kernel.container.Brick;
 import sneer.kernel.container.Inject;
 import sneer.pulp.tmpDirectory.TmpDirectory;
-import bricks.y.Y;
 import bricks.z.Z;
 import functional.SovereignFunctionalTest;
 import functional.SovereignParty;

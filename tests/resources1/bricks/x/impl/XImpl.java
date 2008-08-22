@@ -1,4 +1,4 @@
-package sneer.bricks.x.impl;
+package bricks.x.impl;
 
 import sneer.bricks.x.X;
 import sneer.bricks.y.Y;

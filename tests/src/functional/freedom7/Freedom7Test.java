@@ -9,15 +9,13 @@ import org.apache.commons.lang.SystemUtils;
 import org.junit.Test;
 
 import bricks.z.Z;
-
-import sneer.pulp.deployer.BrickBundle;
 import functional.SovereignFunctionalTest;
 import functional.SovereignParty;
 
 public abstract class Freedom7Test extends SovereignFunctionalTest {
 
-	private static final String Y = "sneer.bricks.y.Y";
-	private static final String Z = "sneer.bricks.z.Z";
+	private static final String Y = "bricks.y.Y";
+	private static final String Z = "bricks.z.Z";
 	
 	
 	@Test
@@ -61,11 +59,11 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 	}
 
 	private void publishY() {
-		publisher().publishBrick(new File(sourceFolder(),"resources2"));
+		publisher().publishBricks(sourceFolder("resources2"));
 	}
 
-	private BrickBundle publishXandZ() {
-		return publisher().publishBrick(new File(sourceFolder(),"resources1"));
+	private void publishXandZ() {
+		publisher().publishBricks(sourceFolder("resources1"));
 	}
 
 	private SovereignParty receiver() {
@@ -77,8 +75,8 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 	}
 
 
-	private File sourceFolder() {
-		return new File(SystemUtils.getUserDir(), "/tests");
+	private File sourceFolder(String sourceFolder) {
+		return new File(SystemUtils.getUserDir(), "/tests/"+sourceFolder);
 	}
 
 }

@@ -22,7 +22,7 @@ public interface SovereignParty {
 	Signal<String> navigateAndGetName(String nicknamePath);
 	
 
-	BrickBundle publishBrick(File sourceDirectory);
+	BrickBundle publishBricks(File sourceDirectory);
 	void meToo(SovereignParty party, String brickName) throws Exception;
 	BrickFile brick(String brickName);
 	Object produce(String brickName);

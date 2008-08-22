@@ -186,7 +186,7 @@ public class SneerPartyImpl implements SneerParty {
 	}
 
 	@Override
-	public BrickBundle publishBrick(File sourceDirectory) {
+	public BrickBundle publishBricks(File sourceDirectory) {
 		BrickBundle brickBundle = _deployer.pack(sourceDirectory);
 		//brickBundle.prettyPrint();
 		_brickManager.install(brickBundle);

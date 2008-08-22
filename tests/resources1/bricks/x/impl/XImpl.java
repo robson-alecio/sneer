@@ -1,6 +1,6 @@
 package bricks.x.impl;
 
-import sneer.bricks.x.X;
+import bricks.x.X;
 import sneer.bricks.y.Y;
 import sneer.bricks.z.Z;
 import sneer.kernel.container.Inject;

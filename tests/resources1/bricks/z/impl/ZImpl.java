@@ -1,4 +1,4 @@
-package sneer.bricks.z.impl;
+package bricks.z.impl;
 
 
 import org.apache.log4j.Logger;

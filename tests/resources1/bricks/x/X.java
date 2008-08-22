@@ -1,4 +1,4 @@
-package sneer.bricks.x;
+package bricks.x;
 
 import java.io.Serializable;
 

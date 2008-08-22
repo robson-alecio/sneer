@@ -1,4 +1,4 @@
-package sneer.bricks.x;
+package bricks.z.impl;
 
 public class ShouldBeIgnored {
 

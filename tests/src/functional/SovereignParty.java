@@ -2,6 +2,7 @@ package functional;
 
 import java.io.File;
 
+import sneer.kernel.container.Brick;
 import sneer.pulp.deployer.BrickBundle;
 import sneer.pulp.deployer.BrickFile;
 import sneer.pulp.keymanager.PublicKey;
@@ -25,6 +26,6 @@ public interface SovereignParty {
 	BrickBundle publishBricks(File sourceDirectory);
 	void meToo(SovereignParty party, String brickName) throws Exception;
 	BrickFile brick(String brickName);
-	Object produce(String brickName);
+	Brick produce(Class<? extends Brick> brick);
 
 }

@@ -2,6 +2,7 @@ package functional.adapters.impl;
 
 import java.io.File;
 
+import sneer.kernel.container.Brick;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Inject;
 import sneer.kernel.container.utils.io.NetworkFriendly;
@@ -22,6 +23,7 @@ import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.port.PortKeeper;
 import wheel.io.serialization.DeepCopier;
 import wheel.lang.Threads;
+import wheel.lang.Types;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 import functional.SovereignParty;
@@ -194,14 +196,8 @@ public class SneerPartyImpl implements SneerParty {
 	}
 
 	@Override
-	public Object produce(String brickName) {
-		Class<?> clazz;
-		try {
-			clazz = Class.forName(brickName);
-		} catch (ClassNotFoundException e) {
-			throw new IllegalArgumentException(e.getMessage());
-		}
-		return _container.produce(clazz);
+	public Brick produce(Class<? extends Brick> brick) {
+		return Types.cast(_container.produce(brick));
 	}
 
 	

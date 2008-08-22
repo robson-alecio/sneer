@@ -7,8 +7,7 @@
 	- [Bamboo] configure svn diff max-length for messages sent to the sneercommits group
 	- Fix SneerFreedom7Test
 		- Replace \tests\resources1\bricks\z\impl\libs\log4j-1.2.15.jar with a jar created by us and add it to the project classpath.
-	- MakeSerializable bytecode enhancer - Move to spikes. We are already using XStream's binary serializer anyway.
-		- Simplify the container because of the removal of the Enhancer.
+	- Simplify the container because of the removal of the Enhancer (MakeSerializable is a Spike now).
 	---- INITIAL CLEANUP DONE
 
 	- Tray Icon and Dashboard Titlebar Icon - Ask Petra for a 16x16 icon to put there. Black on white? with transparency and anti-aliasing inside but not on the transparency border.

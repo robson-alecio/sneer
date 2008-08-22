@@ -173,7 +173,7 @@ public class SneerPartyImpl implements SneerParty {
 	public void meToo(SovereignParty party, String brickName) throws Exception {
 		BrickFile brick = party.brick(brickName);
 
-		//prepare to send objet via network
+		//prepare to send object via network
 		((NetworkFriendly) brick).beforeSerialize();
 		BrickFile copy = DeepCopier.deepCopy(brick);
 		((NetworkFriendly) brick).afterSerialize();

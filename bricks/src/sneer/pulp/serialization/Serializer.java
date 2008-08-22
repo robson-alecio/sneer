@@ -1,11 +1,10 @@
 package sneer.pulp.serialization;
 
-import java.io.NotSerializableException;
 
 public interface Serializer {
 
-	byte[] serialize(Object object) throws NotSerializableException;
+	byte[] serialize(Object object);
 
-	Object deserialize(byte[] packetReceived, ClassLoader classloader) throws ClassNotFoundException;
+	Object deserialize(byte[] packetReceived, ClassLoader classloader);
 
 }

@@ -27,7 +27,7 @@ public class XStreamBinarySerializer implements Serializer {
         }
     };
 
-    private XStream getXStream() {
+    protected XStream getXStream() {
         return _xstreams.get();
     }
 
@@ -35,7 +35,6 @@ public class XStreamBinarySerializer implements Serializer {
     public void writeObject(OutputStream stream, Object object) {
     	BinaryStreamWriter writer = new BinaryStreamWriter(stream);
     	getXStream().marshal(object, writer);
-        
         writer.flush();
     }
 

@@ -16,7 +16,7 @@ public class EnhancingByteCodeGuardian implements ByteCodeGuardian {
 	private static final ByteCodeGuardian INSTANCE = new EnhancingByteCodeGuardian();
 	
 	private EnhancingByteCodeGuardian() {
-		_enhancer = new MakeSerializable();
+		_enhancer = new NoEnhancement();
 		_cache = new HashMap<String, byte[]>();
 	}
 	

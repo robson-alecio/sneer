@@ -1,6 +1,5 @@
 package sneer.pulp.mesh.impl;
 
-import java.io.NotSerializableException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -61,11 +60,7 @@ class SignalConnection implements Visitable {
 	
 	private void receive(byte[] packetReceived) {
 		Object candidate;
-		try {
-			candidate = _serializer.deserialize(packetReceived, SignalConnection.class.getClassLoader());
-		} catch (ClassNotFoundException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
-		}
+		candidate = _serializer.deserialize(packetReceived, SignalConnection.class.getClassLoader());
 
 		Ambassador ambassador;
 		try {
@@ -92,13 +87,8 @@ class SignalConnection implements Visitable {
 		_priorityQueue.add(packet, 2);
 	}
 
-
 	private byte[] serialize(Object object) {
-		try {
-			return _serializer.serialize(object);
-		} catch (NotSerializableException e) {
-			throw new RuntimeException(e);
-		}
+		return _serializer.serialize(object);
 	}
 
 	void crash() {

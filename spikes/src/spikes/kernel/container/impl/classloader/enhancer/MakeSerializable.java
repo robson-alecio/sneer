@@ -1,4 +1,4 @@
-package sneer.kernel.container.impl.classloader.enhancer;
+package spikes.kernel.container.impl.classloader.enhancer;
 
 import java.io.Serializable;
 
@@ -7,6 +7,8 @@ import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
+
+import sneer.kernel.container.impl.classloader.enhancer.Enhancer;
 
 public class MakeSerializable implements Enhancer {
 	

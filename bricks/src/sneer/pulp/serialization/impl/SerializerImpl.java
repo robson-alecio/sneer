@@ -2,44 +2,23 @@ package sneer.pulp.serialization.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.NotSerializableException;
-import java.io.ObjectOutputStream;
 
 import sneer.pulp.serialization.Serializer;
-import wheel.io.Streams;
-import wheel.io.serialization.ObjectInputStreamWithClassLoader;
+import sneer.pulp.serialization.mocks.XStreamBinarySerializer;
 
-public class SerializerImpl implements Serializer {
+public class SerializerImpl extends XStreamBinarySerializer implements Serializer {
 
-	public byte[] serialize(Object object) throws NotSerializableException {
+	public byte[] serialize(Object object){
 		ByteArrayOutputStream outputBytes = new ByteArrayOutputStream();
-		ObjectOutputStream outputStream = null;
-		try {
-
-			outputStream = new ObjectOutputStream(outputBytes);
-			outputStream.writeObject(object);
-			return outputBytes.toByteArray();
-			
-		} catch (NotSerializableException nse) {
-			throw nse;
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		} finally {
-			if (outputStream != null)
-				Streams.crash(outputStream);
-		}
+		writeObject(outputBytes, object);
+		return outputBytes.toByteArray(); 
 	}
 
 	@Override
-	public Object deserialize(byte[] bytes, ClassLoader classloader) throws ClassNotFoundException {
-		try {
-			ByteArrayInputStream inputBytes = new ByteArrayInputStream(bytes);
-			ObjectInputStreamWithClassLoader inputStream = new ObjectInputStreamWithClassLoader(inputBytes, classloader);
-			return inputStream.readObject();
-		} catch (IOException e) {
-			throw new IllegalStateException(e);
-		}
+	public Object deserialize(byte[] bytes, ClassLoader classloader){
+		getXStream().setClassLoader(classloader);
+		ByteArrayInputStream inputBytes = new ByteArrayInputStream(bytes);
+		return readObject(inputBytes);
 	}
 
 }

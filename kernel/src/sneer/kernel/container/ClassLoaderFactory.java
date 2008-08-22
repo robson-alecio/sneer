@@ -6,5 +6,7 @@ public interface ClassLoaderFactory {
 
 	ClassLoader sneerApi();
 
-	ClassLoader brickClassLoader(Class<?> brickClass, File brickDirectory);
+//	ApiClassLoader apiClassLoader();
+	 
+	ClassLoader produceBrickClassLoader(Class<?> brickClass, File brickDirectory);
 }

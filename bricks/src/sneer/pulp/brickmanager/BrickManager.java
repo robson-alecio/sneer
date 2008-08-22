@@ -8,6 +8,7 @@ import wheel.reactive.maps.MapSignal;
 public interface BrickManager extends Brick {
 
 	BrickFile brick(String brickName);
+	
 	MapSignal<String, BrickFile> bricks();
 
 	void install(BrickFile brick) throws BrickManagerException;

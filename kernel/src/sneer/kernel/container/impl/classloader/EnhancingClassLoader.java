@@ -34,6 +34,10 @@ public abstract class EnhancingClassLoader extends SecureClassLoader {
 				}
 			}
 		}
+		if (c == null) {
+			throw new ClassNotFoundException(name);
+		}
+		
 		if (resolve) {
 			resolveClass(c);
 		}

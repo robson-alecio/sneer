@@ -2,9 +2,6 @@ package sneer.pulp.deployer.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +9,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import sneer.kernel.container.Brick;
 import sneer.kernel.container.Inject;
+import sneer.kernel.container.impl.classloader.MetaClassClassLoader;
 import sneer.kernel.container.jar.DeploymentJar;
 import sneer.kernel.container.jar.DeploymentJarFactory;
 import sneer.kernel.container.utils.io.SimpleFilter;
@@ -20,6 +18,8 @@ import sneer.pulp.deployer.DeployerException;
 import sneer.pulp.deployer.impl.filters.ImplFinder;
 import sneer.pulp.deployer.impl.filters.InterfaceFinder;
 import sneer.pulp.deployer.impl.filters.LibFinder;
+import wheel.lang.Collections;
+import wheel.lang.Functor;
 
 public class VirtualDirectory {
 
@@ -30,9 +30,9 @@ public class VirtualDirectory {
 	
 	private File _root;
 
-	private String _path;
+	private File _path;
 	
-	private List<File> _apiClassFiles = new ArrayList<File>();
+	private List<MetaClass> _apiClassFiles = new ArrayList<MetaClass>();
 	
 	private List<File> _apiSourceFiles = new ArrayList<File>();
 	
@@ -42,9 +42,9 @@ public class VirtualDirectory {
 
 	private List<File> _jarFiles;
 
-	public VirtualDirectory(File root, String path) {
-		_path = path;
+	public VirtualDirectory(File root, File path) {
 		_root = root;
+		_path = path;
 	}
 
 	public File rootDirectory() {
@@ -68,7 +68,7 @@ public class VirtualDirectory {
 		if(_implSourceFiles.size() > 0)
 			return _implSourceFiles;
 		
-		SimpleFilter walker = new ImplFinder(new File(_root,"impl"));
+		SimpleFilter walker = new ImplFinder(_path);
 		_implSourceFiles = walker.list(); 
 		return _implSourceFiles;
 	}
@@ -77,75 +77,121 @@ public class VirtualDirectory {
 		if(_jarFiles != null && _jarFiles.size() > 0)
 			return _jarFiles;
 		
-		SimpleFilter walker = new LibFinder(new File(_root, "impl/libs"));
+		SimpleFilter walker = new LibFinder(new File(_path, "libs"));
 		_jarFiles = walker.list(); 
 		return _jarFiles;
 	}
 
 	public void grabCompiledClasses(List<MetaClass> classFiles) {
-		ClassLoader cl = classLoaderFromRootFolder();
-		List<File> sourceFiles = api();
-		for (File sourceFile : sourceFiles) {
-			String className = toClassName(sourceFile);
-			File classFile = findClassFile(classFiles, className);
-			if(classFile != null) {
-				_apiClassFiles.add(classFile);
+		ClassLoader cl = classLoaderFor(classFiles);
+		for (File apiFile : api()) {
+			String className = toClassName(apiFile);
+			MetaClass classFile = findMetaClass(classFiles, className);
+			
+			_apiClassFiles.add(classFile);
 
-				if(_brickName == null) 
-					tryBrickName(cl, className);
-			}
+			if (!isBrick(cl, className)) continue;
+			
+			if(_brickName != null)
+				throw new DeployerException(
+						"There can only be one! "
+						+ "Two brick interfaces were found in "
+						+ _root + ": "
+						+ _brickName + ", " + className);
+			
+			_brickName = className;
+					
 		}
 		if(_brickName == null)
 			throw new DeployerException("Can't find main brick interface in "+_path);
 	}
 
+	private ClassLoader classLoaderFor(List<MetaClass> classFiles) {
+		return new MetaClassClassLoader(classFiles, getClass().getClassLoader());
+	}
+
 	private String toClassName(File sourceFile) {
-		String className = _path + File.separator + sourceFile.getName();
+		String className = relativePath(sourceFile) + File.separator + sourceFile.getName();
 		className = FilenameUtils.separatorsToUnix(className);
 		className = className.replaceAll("/", ".");
 		return className.substring(0, className.indexOf(".java"));
 	}
 
-	private File findClassFile(List<MetaClass> classFiles, String className) {
+	private String relativePath(File sourceFile) {
+		assert sourceFile.getAbsolutePath().startsWith(_root.getAbsolutePath());
+		return sourceFile.getAbsolutePath().substring(_root.getAbsolutePath().length() + 1);
+	}
+
+	private MetaClass findMetaClass(List<MetaClass> classFiles, String className) {
 		for(MetaClass metaClass : classFiles) {
 			if(className.equals(metaClass.getName()))
-				return metaClass.classFile();
+				return metaClass;
 		}
 		return null;
 	}
 
-	private void tryBrickName(ClassLoader cl, String className) {
+	private boolean isBrick(ClassLoader cl, String className) {
 		try {
 			Class<?> c = cl.loadClass(className);
-			if(Brick.class.isAssignableFrom(c))
-				_brickName = className;
+			return Brick.class.isAssignableFrom(c);
 		} catch (ClassNotFoundException e) {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		}
 	}
 
-	private ClassLoader classLoaderFromRootFolder() {
-		try {
-			return  new URLClassLoader(new URL[]{new URL("file://"+_root.getAbsolutePath()+"/")});
-		} catch (MalformedURLException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e);
-		}
-	}
-
 	public DeploymentJar jarSrcApi() {
-		return jar(_apiSourceFiles, "api-src");
+		return jarFromFiles(_apiSourceFiles, "api-src");
 	}
 
 	public DeploymentJar jarSrcImpl() {
-		return jar(_implSourceFiles, "impl-src");
+		return jarFromFiles(_implSourceFiles, "impl-src");
 	}
 
 	public DeploymentJar jarBinaryApi() {
-		return jar(_apiClassFiles, "api");
+		return jar(Collections.map(_apiClassFiles, new Functor<MetaClass, JarEntrySpec>() {
+
+			@Override
+			public JarEntrySpec evaluate(final MetaClass value) {
+				return new JarEntrySpec() {
+					@Override
+					public File file() {
+						return value.classFile();
+					}
+				
+					@Override
+					public String entryName() {
+						return value.getName().replace('.', '/') + ".class";
+					}
+				};
+			}
+		}),
+		"api");
 	}
 
 	public DeploymentJar jarBinaryImpl() {
-		return jar(_implClassFiles, "impl");
+		return jarFromFiles(_implClassFiles, "impl");
+	}
+
+	private DeploymentJar jarFromFiles(List<File> files, String role) {
+		return jar(Collections.map(files, new Functor<File, JarEntrySpec>() {
+		
+			@Override
+			public JarEntrySpec evaluate(final File value) {
+				return new JarEntrySpec() {
+				
+					@Override
+					public File file() {
+						return value;
+					}
+				
+					@Override
+					public String entryName() {
+						return relativePath(value); 
+					}
+				};
+			}
+		
+		}), role);
 	}
 
 	public void setImplClasses(List<MetaClass> classFiles) {
@@ -154,9 +200,16 @@ public class VirtualDirectory {
 			_implClassFiles.add(metaClass.classFile());
 		}
 	}
+	
+	interface JarEntrySpec {
 
-	//FixUrgent: fix entry name for classes in subdirectories
- 	private DeploymentJar jar(List<File> files, String role) {
+		String entryName();
+
+		File file();
+		
+	}
+
+ 	private DeploymentJar jar(Iterable<JarEntrySpec> files, String role) {
 		String brickName = brickName();
 		String jarName = brickName + "-" + role;
 		DeploymentJar result = null;
@@ -168,13 +221,8 @@ public class VirtualDirectory {
 			String meta = sneerMeta(brickName, "1.0-SNAPSHOT", role);
 			result.add("sneer.meta", meta);
 
-			for(File file : files) {
-				String middle = File.separator;
-				if(role.startsWith("impl")) {
-					middle = File.separator + "impl" + File.separator;
-				}
-				String entryName = _path + middle + file.getName();
-				result.add(entryName, file);
+			for(JarEntrySpec file : files) {
+				result.add(file.entryName(), file.file());
 			}
 		} catch (IOException e) {
 			throw new DeployerException("Error", e);

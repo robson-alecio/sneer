@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
+import sneer.kernel.container.Brick;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Inject;
 import sneer.kernel.container.utils.InjectedBrick;
@@ -159,14 +160,19 @@ public class BrickManagerImpl implements BrickManager {
 	}
 
 	private void runOnceOnInstall(BrickFile installed) {
-		//System.out.println("RunOnce: "+brickName);
-		Class<?> clazz;
-		try {
-			clazz = Class.forName(installed.name());
-		} catch (ClassNotFoundException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
-		}
+//		//System.out.println("RunOnce: "+brickName);
+//		Class<?> clazz;
+//		try {
+//			clazz = Class.forName(installed.name());
+//		} catch (ClassNotFoundException e) {
+//			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+//		}
+		Class<? extends Brick> clazz = resolveApi(installed.name());
 		_container.produce(clazz);
+	}
+
+	private Class<? extends Brick> resolveApi(String brickName) {
+		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
 	private void copyDependencies(BrickFile brick, BrickFile installed) {

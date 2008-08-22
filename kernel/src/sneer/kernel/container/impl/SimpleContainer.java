@@ -92,7 +92,7 @@ public class SimpleContainer implements Container {
 	}
 
 	private ClassLoader getClassLoader(Class<?> brickClass, File brickDirectory) {
-		ClassLoader cl = factory().brickClassLoader(brickClass, brickDirectory);
+		ClassLoader cl = factory().produceBrickClassLoader(brickClass, brickDirectory);
 		_injector.inject(cl);
 		return cl;
 	}
@@ -112,9 +112,12 @@ public class SimpleContainer implements Container {
 		if(!type.isInterface())
 			return type.getName();
 		
-		String name = type.getName();
-		int index = name.lastIndexOf(".");
-		return name.substring(0, index) + ".impl" + name.substring(index) + "Impl";
+		return implementationFor(type.getName());
+	}
+
+	private String implementationFor(String brickInterface) {
+		int index = brickInterface.lastIndexOf(".");
+		return brickInterface.substring(0, index) + ".impl" + brickInterface.substring(index) + "Impl";
 	}
 
 	//Fix: check if this code will work on production

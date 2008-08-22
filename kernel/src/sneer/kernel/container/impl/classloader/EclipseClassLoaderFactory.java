@@ -18,7 +18,7 @@ public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 	private Map<Class<?>, ClassLoader> _classLoaderByBrick = new HashMap<Class<?>, ClassLoader>();
 	
 	@Override
-	public ClassLoader brickClassLoader(Class<?> brickClass, File brickDirectory) {
+	public ClassLoader produceBrickClassLoader(Class<?> brickClass, File brickDirectory) {
 		ClassLoader result = _classLoaderByBrick.get(brickClass);
 		if(result != null)
 			return result;

@@ -30,9 +30,7 @@ public class VirtualDirectoryFactoryImpl implements VirtualDirectoryFactory {
 		SimpleFilter filter = new ImplDirectoryFinder(_root, DirectoryFileFilter.INSTANCE);
 		List<File> implFolders = filter.list();
 		for (File folder : implFolders) {
-			File parent = folder.getParentFile();
-			String path = parent.getAbsolutePath().substring(_root.getAbsolutePath().length() + 1);
-			VirtualDirectory vd = new VirtualDirectory(parent, path);
+			VirtualDirectory vd = new VirtualDirectory(_root, folder);
 			_injector.inject(vd);
 			result.add(vd);
 		}

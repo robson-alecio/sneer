@@ -2,9 +2,9 @@ package functional;
 
 import org.junit.Before;
 
-import wheel.testutil.TmpDirectoryTest;
+import sneer.kernel.container.tests.BrickTestSupport;
 
-public abstract class SovereignFunctionalTest extends TmpDirectoryTest {
+public abstract class SovereignFunctionalTest extends BrickTestSupport {
 
 	protected abstract SovereignCommunity createNewCommunity();
 

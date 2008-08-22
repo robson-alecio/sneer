@@ -11,7 +11,7 @@ public class Collections {
 		public int compare(Object o1, Object o2) {
 			return String.CASE_INSENSITIVE_ORDER.compare(o1.toString(), o2.toString());
 		}
-	};
+	};	
 
 	public static <T> List<T> sortByToString(Iterable<T> iterable) {
 		ArrayList<T> result = new ArrayList<T>();
@@ -20,6 +20,14 @@ public class Collections {
 		
 		java.util.Collections.sort(result, TO_STRING_COMPARATOR);
 		
+		return result;
+	}
+
+	public static <A, B> Iterable<B> map(Iterable<A> source, Functor<A, B> functor) {
+		ArrayList<B> result = new ArrayList<B>();
+		for (A a : source) {
+			result.add(functor.evaluate(a));
+		}
 		return result;
 	}
 

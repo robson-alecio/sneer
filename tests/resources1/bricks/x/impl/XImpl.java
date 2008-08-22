@@ -1,8 +1,8 @@
 package bricks.x.impl;
 
 import bricks.x.X;
-import sneer.bricks.y.Y;
-import sneer.bricks.z.Z;
+import bricks.y.Y;
+import bricks.z.Z;
 import sneer.kernel.container.Inject;
 
 class XImpl implements X<String> {

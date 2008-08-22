@@ -1,4 +1,4 @@
-package sneer.bricks.z;
+package bricks.z;
 
 import sneer.kernel.container.Brick;
 

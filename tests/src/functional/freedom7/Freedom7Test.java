@@ -8,7 +8,8 @@ import java.io.File;
 import org.apache.commons.lang.SystemUtils;
 import org.junit.Test;
 
-import sneer.bricks.z.Z;
+import bricks.z.Z;
+
 import sneer.pulp.deployer.BrickBundle;
 import functional.SovereignFunctionalTest;
 import functional.SovereignParty;

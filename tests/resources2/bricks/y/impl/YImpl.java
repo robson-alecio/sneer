@@ -1,6 +1,6 @@
 package bricks.y.impl;
 
-import sneer.bricks.y.Y;
+import bricks.y.Y;
 
 class YImpl implements Y {
 

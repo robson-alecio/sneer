@@ -1,9 +1,9 @@
-package sneer.pulp.own_Avatar.impl;
+package sneer.pulp.own.avatar.impl;
 
 import java.awt.Image;
 
 import sneer.kernel.container.Inject;
-import sneer.pulp.own_Avatar.OwnAvatarKeeper;
+import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.skin.image.ImageFactory;
 import wheel.lang.Functor;
 import wheel.lang.Omnivore;

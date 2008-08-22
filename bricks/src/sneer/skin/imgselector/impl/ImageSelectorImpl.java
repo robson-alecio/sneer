@@ -1,4 +1,4 @@
-package sneer.skin.image_Selector.impl;
+package sneer.skin.imgselector.impl;
 
 import java.awt.Dimension;
 import java.awt.Image;
@@ -13,7 +13,7 @@ import javax.swing.SwingConstants;
 
 import sneer.kernel.container.Inject;
 import sneer.skin.image.ImageFactory;
-import sneer.skin.image_Selector.ImageSelector;
+import sneer.skin.imgselector.ImageSelector;
 import wheel.lang.Omnivore;
 
 public class ImageSelectorImpl implements ImageSelector {

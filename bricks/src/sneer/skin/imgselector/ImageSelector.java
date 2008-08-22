@@ -1,4 +1,4 @@
-package sneer.skin.image_Selector;
+package sneer.skin.imgselector;
 
 import java.awt.Image;
 

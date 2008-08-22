@@ -1,4 +1,4 @@
-package sneer.pulp.own_Name.tests;
+package sneer.pulp.own.name.tests;
 
 import java.awt.FlowLayout;
 
@@ -9,7 +9,7 @@ import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.Inject;
 import sneer.kernel.container.tests.BrickTestSupport;
-import sneer.pulp.own_Name.OwnNameKeeper;
+import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.skin.widgets.reactive.RFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.lang.Omnivore;

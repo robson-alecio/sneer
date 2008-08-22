@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sneer.kernel.container.Inject;
-import sneer.pulp.own_Name.OwnNameKeeper;
+import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.threadpool.ThreadPool;
 
 public class ThreadPoolImpl implements ThreadPool {

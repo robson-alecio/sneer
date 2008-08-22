@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import sneer.kernel.container.Inject;
 import sneer.kernel.container.tests.BrickTestSupport;
-import sneer.pulp.own_Name.OwnNameKeeper;
+import sneer.pulp.own.name.OwnNameKeeper;
 
 public class KeyManagerTest extends BrickTestSupport {
 

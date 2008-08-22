@@ -18,7 +18,7 @@ import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.mesh.Me;
 import sneer.pulp.mesh.Party;
-import sneer.pulp.own_Name.OwnNameKeeper;
+import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.port.PortKeeper;
 import wheel.io.serialization.DeepCopier;
 import wheel.lang.Threads;

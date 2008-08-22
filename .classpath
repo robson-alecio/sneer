@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="spikes/src"/>
-	<classpathentry excluding="functional/freedom7/test-resources/bricks/sneer/bricks/sample/|functional/freedom7/test-resources/bricks/sneer/bricks/source/|functional/freedom7/test-resources/bricks/source/|functional/freedom7/test-resources/bricks/sample/|functional/freedom7/test-resources/bricks/source/sneer/|functional/freedom7/test-resources/bricks/sample/sneer/|functional/freedom7/test-resources/bricks/sample/|functional/freedom7/test-resources/|functional/freedom7/test-resources/|functional/freedom7/test-resources/bricks/source/|functional/freedom7/test-resources/bricks/source2/|functional/freedom7/test-resources/bricks/source2/" kind="src" path="tests"/>
-	<classpathentry kind="src" path="tests/functional/freedom7/test-resources/bricks/source"/>
-	<classpathentry kind="src" path="tests/functional/freedom7/test-resources/bricks/source2"/>
-	<classpathentry kind="src" path="bricks/src"/>
-	<classpathentry excluding="java/" kind="src" output="sneerAPI-bin" path="kernel/src"/>
-	<classpathentry kind="src" path="kernel/classloadingtests"/>
-	<classpathentry kind="src" output="sneerAPI-bin" path="wheel/src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="wheel/lib/xstream-1.2.2.jar"/>
-	<classpathentry kind="lib" path="wheel/lib/commons-lang-2.3.jar"/>
-	<classpathentry kind="lib" path="wheel/lib/commons-collections-3.2.jar"/>
-	<classpathentry kind="lib" path="wheel/lib/commons-io-1.4.jar"/>
-	<classpathentry kind="lib" path="bricks/src/sneer/pulp/compiler/lib/compiler-7-ea-b17-02_aug_2007.jar"/>
-	<classpathentry kind="lib" path="kernel/lib/asm-all-3.1.jar"/>
-	<classpathentry kind="lib" path="bricks/src/sneer/pulp/crypto/lib/bcprov-jdk16-139.jar"/>
+	<classpathentry kind="src" path="tests/src"/>
+	<classpathentry kind="src" path="tests/resources1"/>
+	<classpathentry kind="src" path="tests/resources2"/>
 	<classpathentry kind="lib" path="spikes/lib/Filters.jar"/>
-	<classpathentry kind="lib" path="wheel/lib/junit-4.4.jar"/>
 	<classpathentry kind="lib" path="spikes/lib/lucene-demos-2.3.2.jar"/>
-	<classpathentry kind="lib" path="bricks/src/sneer/pulp/lucene/lib/lucene-core-2.3.2.jar"/>
+	<classpathentry kind="src" path="bricks/src"/>
+	<classpathentry kind="lib" path="bricks/src/sneer/pulp/compiler/lib/compiler-7-ea-b17-02_aug_2007.jar"/>
+	<classpathentry kind="lib" path="bricks/src/sneer/pulp/crypto/lib/bcprov-jdk16-139.jar"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/pulp/log/lib/log4j-1.2.15.jar"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/pulp/log/lib/slf4j-api-1.5.0.jar"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/pulp/log/lib/slf4j-log4j12-1.5.0.jar"/>
+	<classpathentry kind="lib" path="bricks/src/sneer/pulp/lucene/lib/lucene-core-2.3.2.jar"/>
+	<classpathentry kind="src" output="sneerAPI-bin" path="kernel/src"/>
+	<classpathentry kind="lib" path="kernel/lib/asm-all-3.1.jar"/>
+	<classpathentry kind="src" path="kernel/classloadingtests"/>
+	<classpathentry kind="src" output="sneerAPI-bin" path="wheel/src"/>
+	<classpathentry kind="lib" path="wheel/lib/commons-collections-3.2.jar"/>
+	<classpathentry kind="lib" path="wheel/lib/commons-lang-2.3.jar"/>
+	<classpathentry kind="lib" path="wheel/lib/commons-io-1.4.jar"/>
+	<classpathentry kind="lib" path="wheel/lib/junit-4.4.jar"/>
+	<classpathentry kind="lib" path="wheel/lib/xstream-1.2.2.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

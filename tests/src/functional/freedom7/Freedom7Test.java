@@ -60,11 +60,11 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 	}
 
 	private void publishY() {
-		publisher().publishBrick(new File(sourceFolder(),"source2")); //deploy Y first
+		publisher().publishBrick(new File(sourceFolder(),"resources2"));
 	}
 
 	private BrickBundle publishXandZ() {
-		return publisher().publishBrick(new File(sourceFolder(),"source"));
+		return publisher().publishBrick(new File(sourceFolder(),"resources1"));
 	}
 
 	private SovereignParty receiver() {
@@ -77,7 +77,7 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 
 
 	private File sourceFolder() {
-		return new File(SystemUtils.getUserDir(), "/tests/functional/freedom7/test-resources/bricks");
+		return new File(SystemUtils.getUserDir(), "/tests");
 	}
 
 }

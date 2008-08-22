@@ -8,8 +8,8 @@ import java.util.jar.JarFile;
 
 import org.apache.commons.io.FileUtils;
 
-import sneer.kernel.container.jar.SneerJar;
-import sneer.kernel.container.jar.impl.SneerJarImpl;
+import sneer.kernel.container.jar.DeploymentJar;
+import sneer.kernel.container.jar.impl.DeploymentJarImpl;
 import sneer.kernel.container.utils.InjectedBrick;
 import sneer.kernel.container.utils.io.NetworkFriendly;
 import sneer.pulp.dependency.Dependency;
@@ -26,10 +26,10 @@ public class BrickFileImpl implements BrickFile, NetworkFriendly {
 
 	private boolean _resolved;
 
-	private SneerJar _api;
-	private SneerJar _apiSrc;
-	private SneerJar _impl;
-	private SneerJar _implSrc;
+	private DeploymentJar _api;
+	private DeploymentJar _apiSrc;
+	private DeploymentJar _impl;
+	private DeploymentJar _implSrc;
 	
 	private PublicKey _origin;
 	
@@ -51,7 +51,7 @@ public class BrickFileImpl implements BrickFile, NetworkFriendly {
 		JarFile jarFile = null;
 		try {
 			jarFile = new JarFile(file);
-			add(new SneerJarImpl(file, jarFile));
+			add(new DeploymentJarImpl(file, jarFile));
 		} catch (IOException e) {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		}finally{
@@ -69,7 +69,7 @@ public class BrickFileImpl implements BrickFile, NetworkFriendly {
 	}
 
 	@Override
-	public void add(SneerJar jarFile) {
+	public void add(DeploymentJar jarFile) {
 		if(!jarFile.brickName().equals(name()))
 			throw new DeployerException("Can't add jar file from another brick to: "+name());
 		
@@ -89,22 +89,22 @@ public class BrickFileImpl implements BrickFile, NetworkFriendly {
 	}
 
 	@Override
-	public SneerJar api() {
+	public DeploymentJar api() {
 		return _api;
 	}
 
 	@Override
-	public SneerJar apiSrc() {
+	public DeploymentJar apiSrc() {
 		return _apiSrc;
 	}
 
 	@Override
-	public SneerJar impl() {
+	public DeploymentJar impl() {
 		return _impl;
 	}
 
 	@Override
-	public SneerJar implSrc() {
+	public DeploymentJar implSrc() {
 		return _implSrc;
 	}
 

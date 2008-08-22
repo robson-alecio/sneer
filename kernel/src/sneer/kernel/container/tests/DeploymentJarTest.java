@@ -12,11 +12,11 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
-import sneer.kernel.container.jar.SneerJar;
-import sneer.kernel.container.jar.impl.SneerJarImpl;
+import sneer.kernel.container.jar.DeploymentJar;
+import sneer.kernel.container.jar.impl.DeploymentJarImpl;
 import wheel.io.Streams;
 
-public class SneerJarTest {
+public class DeploymentJarTest {
 
 	@Test
 	public void testBuildJarFile() throws Exception {
@@ -28,7 +28,7 @@ public class SneerJarTest {
 		
 		//create jar file
 		File file = File.createTempFile("myJar-", ".jar");
-		SneerJar jar = new SneerJarImpl(file);
+		DeploymentJar jar = new DeploymentJarImpl(file);
 		jar.add("entry.txt", data);
 		Streams.crash(jar);
 		

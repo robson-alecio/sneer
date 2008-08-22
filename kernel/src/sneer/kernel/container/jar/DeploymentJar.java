@@ -10,7 +10,7 @@ import java.util.List;
 import sneer.kernel.container.utils.InjectedBrick;
 import sneer.kernel.container.utils.io.NetworkFriendly;
 
-public interface SneerJar extends Serializable, NetworkFriendly, Closeable {
+public interface DeploymentJar extends Serializable, NetworkFriendly, Closeable {
 
 	File file();
 
@@ -31,6 +31,4 @@ public interface SneerJar extends Serializable, NetworkFriendly, Closeable {
 	InputStream getInputStream(String entryName) throws IOException;
 	
 	void explode(File target) throws IOException;
-
-
 }

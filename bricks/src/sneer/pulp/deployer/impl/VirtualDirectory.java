@@ -12,8 +12,8 @@ import org.apache.commons.io.FilenameUtils;
 
 import sneer.kernel.container.Brick;
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.jar.SneerJar;
-import sneer.kernel.container.jar.SneerJarFactory;
+import sneer.kernel.container.jar.DeploymentJar;
+import sneer.kernel.container.jar.DeploymentJarFactory;
 import sneer.kernel.container.utils.io.SimpleFilter;
 import sneer.kernel.container.utils.metaclass.MetaClass;
 import sneer.pulp.deployer.DeployerException;
@@ -24,7 +24,7 @@ import sneer.pulp.deployer.impl.filters.LibFinder;
 public class VirtualDirectory {
 
 	@Inject
-	private SneerJarFactory _sneerJarFactory;
+	private DeploymentJarFactory _sneerDeploymentFactory;
 	
 	private String _brickName;
 	
@@ -132,19 +132,19 @@ public class VirtualDirectory {
 		}
 	}
 
-	public SneerJar jarSrcApi() {
+	public DeploymentJar jarSrcApi() {
 		return jar(_apiSourceFiles, "api-src");
 	}
 
-	public SneerJar jarSrcImpl() {
+	public DeploymentJar jarSrcImpl() {
 		return jar(_implSourceFiles, "impl-src");
 	}
 
-	public SneerJar jarBinaryApi() {
+	public DeploymentJar jarBinaryApi() {
 		return jar(_apiClassFiles, "api");
 	}
 
-	public SneerJar jarBinaryImpl() {
+	public DeploymentJar jarBinaryImpl() {
 		return jar(_implClassFiles, "impl");
 	}
 
@@ -156,13 +156,13 @@ public class VirtualDirectory {
 	}
 
 	//FixUrgent: fix entry name for classes in subdirectories
- 	private SneerJar jar(List<File> files, String role) {
+ 	private DeploymentJar jar(List<File> files, String role) {
 		String brickName = brickName();
 		String jarName = brickName + "-" + role;
-		SneerJar result = null;
+		DeploymentJar result = null;
 		try {
 			File tmpJarFile = File.createTempFile(jarName+"-", ".jar");
-			result = _sneerJarFactory.create(tmpJarFile);
+			result = _sneerDeploymentFactory.create(tmpJarFile);
 
 			//sneer meta
 			String meta = sneerMeta(brickName, "1.0-SNAPSHOT", role);

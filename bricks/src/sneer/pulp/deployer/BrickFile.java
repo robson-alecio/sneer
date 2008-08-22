@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
-import sneer.kernel.container.jar.SneerJar;
+import sneer.kernel.container.jar.DeploymentJar;
 import sneer.kernel.container.utils.InjectedBrick;
 import sneer.pulp.dependency.Dependency;
 import sneer.pulp.keymanager.PublicKey;
@@ -14,13 +14,13 @@ public interface BrickFile extends Serializable, Comparable<BrickFile> {
 
 	String name();
 
-	void add(SneerJar jarFile) throws IOException;
+	void add(DeploymentJar jarFile) throws IOException;
 
-	SneerJar api();
-	SneerJar apiSrc();
+	DeploymentJar api();
+	DeploymentJar apiSrc();
 
-	SneerJar impl();
-	SneerJar implSrc();
+	DeploymentJar impl();
+	DeploymentJar implSrc();
 
 	void explodeSources(File target) throws IOException;
 

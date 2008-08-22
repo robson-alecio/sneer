@@ -220,9 +220,9 @@ public class AppManager {
 	private void compile(File[] sources, File sourceDirectory, File targetDirectory) throws IOException, CompilationFailure {
 		File targetClassesDirectory = new File(targetDirectory, "classes");
 		targetClassesDirectory.mkdirs();
-		String sneerJarLocation = null;
+		String jarLocation = null;
 		try {
-			sneerJarLocation = AppTools.tryToFindSneerLocation().getAbsolutePath();
+			jarLocation = AppTools.tryToFindSneerLocation().getAbsolutePath();
 		} catch (Exception e) {
 			Log.log(e);
 			e.printStackTrace();
@@ -230,11 +230,10 @@ public class AppManager {
 			throw new IOException("Could not find Sneer.jar!!!!");
 		}
 
-		System.out.println(sneerJarLocation);
 		for (File source : sources) {
 			System.out.println("Compiling " + source.getName());
 			String[] parameters = {
-					"-classpath", sneerJarLocation + File.pathSeparator + targetClassesDirectory.getAbsolutePath(),
+					"-classpath", jarLocation + File.pathSeparator + targetClassesDirectory.getAbsolutePath(),
 					"-sourcepath", sourceDirectory.getAbsolutePath(),
 					"-d", targetClassesDirectory.getAbsolutePath(),
 					"-encoding", "UTF-8",

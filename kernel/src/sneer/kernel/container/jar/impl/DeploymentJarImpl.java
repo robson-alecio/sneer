@@ -21,15 +21,14 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.EmptyVisitor;
 
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.jar.SneerJar;
+import sneer.kernel.container.jar.DeploymentJar;
 import sneer.kernel.container.utils.InjectedBrick;
 import sneer.pulp.crypto.Crypto;
 import sneer.pulp.crypto.Digester;
 import wheel.io.JarBuilder;
 import wheel.io.Streams;
 import wheel.lang.exceptions.NotImplementedYet;
-
-public class SneerJarImpl implements SneerJar {
+public class DeploymentJarImpl implements DeploymentJar {
 
 	private static final long serialVersionUID = 1L;
 
@@ -48,11 +47,11 @@ public class SneerJarImpl implements SneerJar {
 	@Inject
 	static private Crypto _crypto;
 
-	public SneerJarImpl(File file) {
+	public DeploymentJarImpl(File file) {
 		_file = file;
 	}
 
-	public SneerJarImpl(File file, JarFile jarFile) {
+	public DeploymentJarImpl(File file, JarFile jarFile) {
 		_jarFile = jarFile;
 		_file = file;
 	}

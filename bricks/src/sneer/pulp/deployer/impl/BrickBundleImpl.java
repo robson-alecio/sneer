@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import sneer.kernel.container.jar.SneerJar;
+import sneer.kernel.container.jar.DeploymentJar;
 import sneer.pulp.deployer.BrickBundle;
 import sneer.pulp.deployer.BrickFile;
 import sneer.pulp.deployer.DeployerException;
@@ -15,7 +15,7 @@ public class BrickBundleImpl implements BrickBundle {
 	
 	private List<BrickFile> _bricks = new ArrayList<BrickFile>();
 
-	public void add(SneerJar jar) throws DeployerException {
+	public void add(DeploymentJar jar) throws DeployerException {
 		
 		String brickName = jar.brickName();
 		try {
@@ -62,7 +62,7 @@ public class BrickBundleImpl implements BrickBundle {
 		System.out.println("--");
 	}
 
-	private void printJarInfo(SneerJar jar) {
+	private void printJarInfo(DeploymentJar jar) {
 		System.out.println(jar.role().toUpperCase() + " [" + jar.brickName() + "] file: " + jar.file());
 		System.out.println("sneer1024: " + StringUtils.toHexa(jar.sneer1024()) + "\n");
 	}

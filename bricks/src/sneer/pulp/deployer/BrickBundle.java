@@ -2,7 +2,7 @@ package sneer.pulp.deployer;
 
 import java.util.List;
 
-import sneer.kernel.container.jar.SneerJar;
+import sneer.kernel.container.jar.DeploymentJar;
 
 public interface BrickBundle {
 
@@ -10,7 +10,7 @@ public interface BrickBundle {
 
 	BrickFile brick(String brickName);
 
-	void add(SneerJar jar) throws DeployerException;
+	void add(DeploymentJar jar) throws DeployerException;
 
 	void prettyPrint();
 

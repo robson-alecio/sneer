@@ -21,20 +21,26 @@ public class ReactiveListDemo {
 		Container container = ContainerUtils.getContainer();
 
 		RFactory rfactory = container.produce(RFactory.class);
-		final Register<String[]> register = new RegisterImpl<String[]>(new String[]{"Klaus", "Sandro","Bamboo", "Nell"});
+		Register<String[]> register = new RegisterImpl<String[]>(new String[]{"Klaus", "Sandro","Bamboo", "Nell"});
 		
-		newFrame(register, rfactory, 0);
-		newFrame(register, rfactory, 200);
+		createJFrame(register, rfactory, 0);
+		createJFrame(register, rfactory, 200);
 	}
 
-	private static void newFrame(final Register<String[]> register, RFactory rfactory, int width) {
+	private static void createJFrame(Register<String[]> register, RFactory rfactory, int width) {
 		JFrame f = new JFrame("Smooth List Drop");
-		ListWidget<String> listw = cast(rfactory.newList(register.output(), register.setter()));
-		final JList list = (JList) listw.getMainWidget(); 
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.getContentPane().add(new JScrollPane(list));
+		
+		addReactiveListWidget(register, rfactory, f);
+		
 		f.pack();
 		f.setLocation(new Point(width,10));
 		f.setVisible(true);
+	}
+
+	private static void addReactiveListWidget(final Register<String[]> register, RFactory rfactory, JFrame f) {
+		ListWidget<String> listw = cast(rfactory.newList(register.output(), register.setter()));
+		final JList list = (JList) listw.getMainWidget(); 
+		f.getContentPane().add(new JScrollPane(list));
 	}
 }

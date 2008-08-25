@@ -20,8 +20,7 @@ public class ApiClassLoader extends URLClassLoader {
 	protected Class<?> findClass(String name) throws ClassNotFoundException {
 		File brickDirectory = new File(_config.brickRootDirectory(), name);
 		if (!brickDirectory.exists())
-//			throw new ClassNotFoundException(name);
-			return null;
+			throw new ClassNotFoundException(name);
 		
 		try {
 			addURL(new File(brickDirectory, name + "-api.jar").toURI().toURL());

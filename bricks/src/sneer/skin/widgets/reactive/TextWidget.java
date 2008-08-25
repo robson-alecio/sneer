@@ -7,13 +7,10 @@ import javax.swing.JComponent;
 public interface TextWidget {
 
 	String getText();
-	
+
 	void setText(String text);
 	
 	JComponent getMainWidget();
-	
 	JComponent[] getWidgets();
-
 	Container getContainer();
-
 }

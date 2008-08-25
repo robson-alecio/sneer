@@ -2,6 +2,7 @@ package sneer.skin.widgets.reactive;
 
 import java.awt.Image;
 
+import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 
@@ -16,5 +17,7 @@ public interface RFactory {
 	
 	TextWidget newTextField(Signal<String> source, Omnivore<String> setter);
 	TextWidget newTextField(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange);
+	
+	ListWidget<? extends Object[]> newList(Signal<? extends Object[]> source, Consumer<? extends Object[]> setter);
 
 }

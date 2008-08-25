@@ -10,7 +10,5 @@ public interface ImageWidget {
 	Image getImage();
 
 	Component getComponent();
-	
 	JComponent getMainWidget();
-	
 }

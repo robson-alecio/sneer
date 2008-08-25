@@ -5,10 +5,13 @@ import java.awt.Image;
 import sneer.kernel.container.Inject;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.widgets.reactive.ImageWidget;
+import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.RFactory;
 import sneer.skin.widgets.reactive.TextWidget;
+import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
+import static wheel.lang.Types.cast;
 
 public class RFactoryImpl implements RFactory {
 	
@@ -45,4 +48,9 @@ public class RFactoryImpl implements RFactory {
 		return new RImageImpl(source, imageFactory);
 	}
 
+	@Override
+	@SuppressWarnings("unchecked")
+	public ListWidget<? extends Object[]> newList(Signal<? extends Object[]> source, Consumer<? extends Object[]> setter) {
+		return cast(new RListImpl(source, setter));
+	}
 }

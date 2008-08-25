@@ -13,7 +13,7 @@ import wheel.lang.Omnivore;
 import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;
 
-public class ReativeWidgetsDemo {
+public class ReactiveWidgetsDemo {
 
 	public static void main(String[] args) throws Exception {
 		Container container = ContainerUtils.getContainer();

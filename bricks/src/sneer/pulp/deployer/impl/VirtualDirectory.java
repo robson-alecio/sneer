@@ -38,9 +38,9 @@ public class VirtualDirectory {
 	
 	private List<File> _implSourceFiles = new ArrayList<File>();
 	
-	private List<File> _implClassFiles;
-
 	private List<File> _jarFiles;
+
+	private ImplClasses _implClasses;
 
 	public VirtualDirectory(File root, File path) {
 		_root = root;
@@ -118,8 +118,13 @@ public class VirtualDirectory {
 	}
 
 	private String relativePath(File sourceFile) {
-		assert sourceFile.getAbsolutePath().startsWith(_root.getAbsolutePath());
-		return sourceFile.getAbsolutePath().substring(_root.getAbsolutePath().length() + 1);
+		return relativePath(_root, sourceFile);
+	}
+
+	private String relativePath(File base, File file) {
+		if (!file.getAbsolutePath().startsWith(base.getAbsolutePath()))
+			throw new IllegalArgumentException("'" + file + "' must be rooted at '" + base + "'.");
+		return file.getAbsolutePath().substring(base.getAbsolutePath().length() + 1);
 	}
 
 	private MetaClass findMetaClass(List<MetaClass> classFiles, String className) {
@@ -169,16 +174,25 @@ public class VirtualDirectory {
 	}
 
 	public DeploymentJar jarBinaryImpl() {
-		return jarFromFiles(_implClassFiles, "impl");
+		return jar(Collections.map(_implClasses._files, new Functor<File, JarEntrySpec>() { @Override public JarEntrySpec evaluate(final File value) {
+					return new JarEntrySpec() {
+						@Override
+						public File file() {
+							return value;
+						}
+					
+						@Override
+						public String entryName() {
+							return relativePath(_implClasses._baseDirectory, value);
+						}
+					};	
+				}}),
+				"impl");
 	}
 
-	private DeploymentJar jarFromFiles(List<File> files, String role) {
-		return jar(Collections.map(files, new Functor<File, JarEntrySpec>() {
-		
-			@Override
-			public JarEntrySpec evaluate(final File value) {
+	private DeploymentJar jarFromFiles(Iterable<File> files, String role) {
+		return jar(Collections.map(files, new Functor<File, JarEntrySpec>() { @Override public JarEntrySpec evaluate(final File value) {
 				return new JarEntrySpec() {
-				
 					@Override
 					public File file() {
 						return value;
@@ -186,19 +200,28 @@ public class VirtualDirectory {
 				
 					@Override
 					public String entryName() {
-						return relativePath(value); 
+						return relativePath(value);
 					}
 				};
-			}
+			}}), role);
+	}
+	
+	static class ImplClasses {
+		public final File _baseDirectory;
+		public final List<File> _files;
 		
-		}), role);
+		public ImplClasses(File baseDirectory, List<File> files) {
+			_baseDirectory = baseDirectory;
+			_files = files;
+		}
 	}
 
-	public void setImplClasses(List<MetaClass> classFiles) {
-		_implClassFiles = new ArrayList<File>();
+	public void setImplClasses(File baseDirectory, List<MetaClass> classFiles) {
+		List<File> implClassFiles = new ArrayList<File>();
 		for (MetaClass metaClass : classFiles) {
-			_implClassFiles.add(metaClass.classFile());
+			implClassFiles.add(metaClass.classFile());
 		}
+		_implClasses = new ImplClasses(baseDirectory, implClassFiles);
 	}
 	
 	interface JarEntrySpec {

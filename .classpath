@@ -2,8 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="spikes/src"/>
 	<classpathentry kind="src" path="tests/src"/>
-	<classpathentry kind="src" path="tests/resources1"/>
-	<classpathentry kind="src" path="tests/resources2"/>
 	<classpathentry kind="lib" path="spikes/lib/Filters.jar"/>
 	<classpathentry kind="lib" path="spikes/lib/lucene-demos-2.3.2.jar"/>
 	<classpathentry kind="src" path="bricks/src"/>

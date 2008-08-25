@@ -10,20 +10,27 @@ import sneer.kernel.container.ClassLoaderFactory;
 import sneer.kernel.container.utils.FileUtils;
 import sneer.kernel.container.utils.io.BrickImplFilter;
 import sneer.kernel.container.utils.io.JavaFilter;
+import sneer.pulp.config.SneerConfig;
 
 public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 
 	private JavaFilter _filter;
 	
-	private Map<Class<?>, ClassLoader> _classLoaderByBrick = new HashMap<Class<?>, ClassLoader>();
+	private final Map<Class<?>, ClassLoader> _classLoaderByBrick = new HashMap<Class<?>, ClassLoader>();
+
+	private final SneerConfig _config;
 	
+	public EclipseClassLoaderFactory(SneerConfig config) {
+		_config = config;
+	}
+
 	@Override
 	public ClassLoader produceBrickClassLoader(Class<?> brickClass, File brickDirectory) {
 		ClassLoader result = _classLoaderByBrick.get(brickClass);
 		if(result != null)
 			return result;
 		
-		ClassLoader parent = sneerApi();
+		final ClassLoader parent = brickClass.getClassLoader();
 
 		if(FileUtils.isEmpty(brickDirectory)) {
 			//useful for eclipse development
@@ -55,5 +62,10 @@ public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 		File userDir = SystemUtils.getUserDir();
 		File targetDirectory = new File(userDir, "bin");
 		return targetDirectory;
+	}
+
+	@Override
+	public ClassLoader newApiClassLoader() {
+		return new ApiClassLoader(_config, sneerApi());
 	}
 }

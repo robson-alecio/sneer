@@ -122,10 +122,8 @@ public class BrickClassLoader extends EnhancingClassLoader {
 		
 		_cache = new WeakHashMap<String, byte[]>();
 
-		JarFile jar = null;
+		JarFile jar = new JarFile(_implJarFile);
 		try {
-			name = name.replace('.', '\\');
-			jar = new JarFile(_implJarFile);
 			Enumeration<JarEntry> e = jar.entries();
 			while (e.hasMoreElements()) {
 				JarEntry entry = e.nextElement();
@@ -137,17 +135,22 @@ public class BrickClassLoader extends EnhancingClassLoader {
 			}
 			return null;
 		} finally { 
-			if(jar!=null) jar.close();
+			jar.close();
 		} 
 	}
 			
 	private String cache(String entryName, byte[] byteArray) {
+		final String key = classNameGiven(entryName);
+		_cache.put(key, byteArray);
+		return key;
+	}
+
+	private String classNameGiven(String entryName) {
 		String key = entryName.replaceAll("/", ".");
 		int index = key.indexOf(".class");
 		if(index > 0) {
 			key = key.substring(0, index);
 		}
-		_cache.put(key, byteArray);
 		return key;
 	}
 

@@ -5,6 +5,7 @@ import static wheel.lang.Types.cast;
 import java.io.File;
 import java.lang.reflect.Constructor;
 
+import sneer.kernel.container.Brick;
 import sneer.kernel.container.ClassLoaderFactory;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Injector;
@@ -13,6 +14,7 @@ import sneer.kernel.container.Startable;
 import sneer.kernel.container.impl.classloader.EclipseClassLoaderFactory;
 import sneer.pulp.config.SneerConfig;
 import sneer.pulp.config.impl.SneerConfigImpl;
+import wheel.lang.Types;
 
 public class SimpleContainer implements Container {
 	
@@ -24,6 +26,8 @@ public class SimpleContainer implements Container {
 	
 	private SneerConfig _sneerConfig;
 
+	private ClassLoader _apiClassLoader;
+
 	public SimpleContainer(Object... bindings) {
 		for (Object implementation : bindings)
 			_binder.bind(implementation);
@@ -32,6 +36,13 @@ public class SimpleContainer implements Container {
 		_binder.bind(_injector);
 	}
 
+	@Override
+	public Class<? extends Brick> resolve(String brickName) throws ClassNotFoundException {
+		if (null == _apiClassLoader) {
+			_apiClassLoader = factory().newApiClassLoader();
+		}
+		return Types.cast(_apiClassLoader.loadClass(brickName));
+	}
 
 	@Override
 	public <T> T produce(Class<T> type) {
@@ -99,7 +110,7 @@ public class SimpleContainer implements Container {
 
 	private ClassLoaderFactory factory() {
 		if(_classloaderFactory == null) {
-			_classloaderFactory = new EclipseClassLoaderFactory();
+			_classloaderFactory = new EclipseClassLoaderFactory(sneerConfig());
 		}
 		return _classloaderFactory;
 	}
@@ -143,6 +154,4 @@ public class SimpleContainer implements Container {
 			throw new LegoException("Error injecting dependencies on: "+component, t);
 		}
 	}
-
-
 }

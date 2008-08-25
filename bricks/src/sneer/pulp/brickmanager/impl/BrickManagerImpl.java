@@ -126,13 +126,7 @@ public class BrickManagerImpl implements BrickManager {
 			resolve(brick);
 
 		//1. create brick directory under sneer home
-		File brickDirectory = brickDirectory(brickName);
-		//System.out.println("installing "+brickName+" on "+brickDirectory);
-		
-		if(brickDirectory.exists()) 
-			tryToCleanDirectory(brickDirectory); //FixUrgent: ask permission to overwrite?
-		else 
-			brickDirectory.mkdir();
+		File brickDirectory = setUpBrickDirectory(brickName);
 		
 		//2. copy received files
 		BrickFile installed = copyBrickFiles(brick, brickDirectory);
@@ -144,11 +138,22 @@ public class BrickManagerImpl implements BrickManager {
 		PublicKey origin = brick.origin();
 		origin = origin != null ? origin : _keyManager.ownPublicKey(); 
 		installed.origin(origin);
-
+		
 		//5. give the brick a chance to initialize itself (register menus, etc)
 		runOnceOnInstall(installed);
 		
 		_bricksByName.put(brickName, installed);
+	}
+	
+	private File setUpBrickDirectory(String brickName) {
+		File brickDirectory = brickDirectory(brickName);
+		//System.out.println("installing "+brickName+" on "+brickDirectory);
+		
+		if(brickDirectory.exists()) 
+			tryToCleanDirectory(brickDirectory); //FixUrgent: ask permission to overwrite?
+		else 
+			brickDirectory.mkdir();
+		return brickDirectory;
 	}
 
 	private void tryToCleanDirectory(File brickDirectory) {
@@ -160,19 +165,16 @@ public class BrickManagerImpl implements BrickManager {
 	}
 
 	private void runOnceOnInstall(BrickFile installed) {
-//		//System.out.println("RunOnce: "+brickName);
-//		Class<?> clazz;
-//		try {
-//			clazz = Class.forName(installed.name());
-//		} catch (ClassNotFoundException e) {
-//			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
-//		}
-		Class<? extends Brick> clazz = resolveApi(installed.name());
+		Class<? extends Brick> clazz = resolveBrickInterface(installed);
 		_container.produce(clazz);
 	}
 
-	private Class<? extends Brick> resolveApi(String brickName) {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+	private Class<? extends Brick> resolveBrickInterface(BrickFile installed) {
+		try {
+			return _container.resolve(installed.name());
+		} catch (ClassNotFoundException e) {
+			throw new BrickManagerException(e.getMessage(), e);
+		}
 	}
 
 	private void copyDependencies(BrickFile brick, BrickFile installed) {

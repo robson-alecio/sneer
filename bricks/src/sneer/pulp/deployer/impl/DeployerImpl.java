@@ -101,7 +101,7 @@ public class DeployerImpl implements Deployer {
 		for (VirtualDirectory virtual : virtualDirectories) {
 			File implDirectory = createWorkDirectory(virtual.brickName());
 			classFiles = compileImpl(implDirectory, virtual, api);
-			virtual.setImplClasses(classFiles);
+			virtual.setImplClasses(implDirectory, classFiles);
 			result.add(virtual.jarSrcImpl());
 			result.add(virtual.jarBinaryImpl());
 		}

@@ -20,9 +20,11 @@ import sneer.skin.widgets.reactive.ListModelSetter;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.RFactory;
 import sneer.skin.widgets.reactive.TextWidget;
+import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.Signals;
 import wheel.reactive.lists.ListSignal;
+import wheel.reactive.lists.ListValueChange;
 
 public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 	
@@ -84,13 +86,12 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 	}
 
 	private void addReceiverListener() {
-		//Implement this support
-//		_source.addListReceiver(new Omnivore<ListValueChange>(){
-//			@Override
-//			public void consume(ListValueChange valueObject) {
-//				revalidate();
-//				repaint();
-//		}});
+		_source.addListReceiver(new Omnivore<ListValueChange>(){
+			@Override
+			public void consume(ListValueChange valueObject) {
+				revalidate();
+				repaint();
+		}});
 	}
 	
 	private void initModel() {

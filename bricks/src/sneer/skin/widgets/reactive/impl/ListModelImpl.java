@@ -27,7 +27,6 @@ public class ListModelImpl implements ListModel{
 		_setter = setter;
 	}
 
-	@SuppressWarnings("unchecked")
 	private List<Object> getSourceAsImmutableList() {
 		return cast(Arrays.asList(_source.currentValue()));
 	}

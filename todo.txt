@@ -1,6 +1,7 @@
 ﻿MAIN ROADMAP
 ===================
 
+	- DragNDrop - Delete DnD support from contact list. We wont be using it for at least 2 months. Please talk to me before implementing a feature that is not on the todo list.
 	- [Kalecser] Continuous Integration with Clover test coverage
 		- Low maintenance build: Interpret the .classpath file and compile the build exactly as Eclipse would.
 		- Cyclic dependency detection: Compile one sourcefolder at a time, from the last in the .classpath list (most basic (wheel)) to the first in the list (most high-level (spikes)), without the other uncompiled sourcefolders in the path.

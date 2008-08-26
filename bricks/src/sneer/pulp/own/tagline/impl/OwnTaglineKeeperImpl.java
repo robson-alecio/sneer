@@ -8,7 +8,7 @@ import wheel.reactive.impl.RegisterImpl;
 
 public class OwnTaglineKeeperImpl implements OwnTaglineKeeper {
 
-	private Register<String> _tagline = new RegisterImpl<String>(null);
+	private Register<String> _tagline = new RegisterImpl<String>("[My Tagline]");
 
 	@Override
 	public Signal<String> tagline() {

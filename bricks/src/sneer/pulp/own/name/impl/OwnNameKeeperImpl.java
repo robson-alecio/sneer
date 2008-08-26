@@ -8,7 +8,7 @@ import wheel.reactive.impl.RegisterImpl;
 
 public class OwnNameKeeperImpl implements OwnNameKeeper {
 
-	private Register<String> _name = new RegisterImpl<String>(null);
+	private Register<String> _name = new RegisterImpl<String>("[My Full Name]");
 	
 	@Override
 	public Signal<String> name() {

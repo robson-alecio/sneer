@@ -24,11 +24,13 @@ import sneer.skin.dashboard.SnappFrame;
 import sneer.skin.image.DefaultIcons;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.main_Menu.MainMenu;
+import sneer.skin.snappmanager.SnappManager;
 import sneer.skin.viewmanager.Snapp;
 import wheel.graphics.Images;
 import wheel.io.ui.action.Action;
 import wheel.io.ui.impl.TrayIconImpl;
 import wheel.io.ui.impl.TrayIconImpl.SystemTrayNotSupported;
+import wheel.reactive.lists.impl.SimpleListReceiver;
 
 public class DashboardImpl implements Dashboard, Runnable {
 	
@@ -44,12 +46,18 @@ public class DashboardImpl implements Dashboard, Runnable {
 	@Inject
 	static private MainMenu mainMenu;
 		
+	@Inject
+	static private SnappManager _snappManager;
+		
 	private Dimension screenSize;
 	private Rectangle bounds;
 	
 	private transient JFrame jframe;
 	private transient JPanel rootPanel;
 	private transient JPanel contentPanel;
+	
+	@SuppressWarnings("unused")
+	private SimpleListReceiver<Snapp> _snappsReceiver;
 	
 	public DashboardImpl() {
 		threadPool.registerActor(this);
@@ -70,6 +78,27 @@ public class DashboardImpl implements Dashboard, Runnable {
 		
 		addOpenWindowAction(tray);
 		addExitAction(tray);
+		
+		addSnappManagerReceiver();
+	}
+
+	private void addSnappManagerReceiver() {
+		_snappsReceiver = new SimpleListReceiver<Snapp>(_snappManager.installedSnapps()){
+
+			@Override
+			protected void elementAdded(Snapp newElement) {
+				installSnapp(newElement);
+			}
+
+			@Override
+			protected void elementPresent(Snapp element) {
+				installSnapp(element);
+			}
+
+			@Override
+			protected void elementToBeRemoved(Snapp element) {
+				throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+			}};
 	}
 
 	private URL logoIconURL() {
@@ -92,8 +121,7 @@ public class DashboardImpl implements Dashboard, Runnable {
 		contentPanel.setLayout(new FlowLayout());
 	}
 
-	@Override
-	public SnappFrame installSnapp(final Snapp snapp) {
+	private SnappFrame installSnapp(final Snapp snapp) {
 		final SnappFrameImpl sf = new SnappFrameImpl();
 		SwingUtilities.invokeLater(
 			new Runnable(){

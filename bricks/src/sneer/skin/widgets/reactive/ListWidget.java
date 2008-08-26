@@ -22,6 +22,5 @@ public interface ListWidget<ELEMENT> {
 	
 	Component getComponent();
 	JComponent getMainWidget();
-
-
+	
 }

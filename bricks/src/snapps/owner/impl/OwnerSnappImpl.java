@@ -16,31 +16,39 @@ import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.own.tagline.OwnTaglineKeeper;
 import sneer.skin.imgselector.ImageSelector;
+import sneer.skin.snappmanager.SnappManager;
 import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.RFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 
 public class OwnerSnappImpl implements OwnerSnapp {
 
-	@sneer.kernel.container.Inject
+	@Inject
 	static private OwnNameKeeper _ownNameKeeper;
 
-	@sneer.kernel.container.Inject
+	@Inject
 	static private OwnTaglineKeeper _ownTaglineKeeper;
 
-	@sneer.kernel.container.Inject
+	@Inject
 	static private OwnAvatarKeeper _ownAvatarKeeper;
+
+	@Inject
+	static private SnappManager _snappManager;
 
 	@Inject
 	static private ImageSelector _imageSelector;
 
-	@sneer.kernel.container.Inject
+	@Inject
 	static private RFactory rfactory;
 
 	private TextWidget editableLabel;
 
 	private Container _container;
 
+	public OwnerSnappImpl(){
+		_snappManager.registerSnapp(this);
+	}
+	
 	@Override
 	public void init(Container container) {	
 		_container = container;

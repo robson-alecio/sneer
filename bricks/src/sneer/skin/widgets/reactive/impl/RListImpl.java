@@ -25,8 +25,18 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 		_setter = setter;
 
 		initModel();
-		addDnDListeners();		
-		
+		addDnDListeners();	
+		addReceiverListener();
+	}
+
+	private void addReceiverListener() {
+		//Implement:  addListReceiver(new Omnivore<ListValueChange>() 
+//		_source.addListReceiver(new Omnivore<ListValueChange>(){
+//			@Override
+//			public void consume(ListValueChange valueObject) {
+//				revalidate();
+//				repaint();
+//		}});
 	}
 
 	private void addDnDListeners() {

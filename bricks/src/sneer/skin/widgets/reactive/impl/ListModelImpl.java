@@ -4,10 +4,10 @@ import static wheel.lang.Types.cast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
@@ -20,7 +20,7 @@ public class ListModelImpl implements ListModel{
 
 	private final Signal<Object[]> _source;
 	private final Consumer<Object[]> _setter;
-	private final Set<ListDataListener> _dataListeners = new TreeSet<ListDataListener>();
+	private final Set<ListDataListener> _dataListeners = new HashSet<ListDataListener>();
 
 	public ListModelImpl(Signal<Object[]> source, Consumer<Object[]> setter) {
 		_source = source;
@@ -41,28 +41,35 @@ public class ListModelImpl implements ListModel{
 	@Override
 	public void addElement(Object element) {
 		synchronized (_source) {
+			int index = 0;
 			List<Object> lst = new ArrayList<Object>(Arrays.asList(_source.currentValue()));
 			lst.add(element);
+			index = lst.indexOf(element);
 			_setter.consume(lst.toArray());
+			informChange(this, ListDataEvent.INTERVAL_ADDED, index, this.getSize());
 		}
 	}
 
 	@Override
 	public void removeElement(Object element) {
+		int index = 0;
 		synchronized (_source) {
 			List<Object> lst = new ArrayList<Object>(Arrays.asList(_source.currentValue()));
+			index = lst.indexOf(element);
 			lst.remove(element);
 			_setter.consume(lst.toArray());
 		}
+		informChange(this, ListDataEvent.INTERVAL_REMOVED, index, this.getSize());
 	}
 
 	@Override
-	public void removeElementAt(int fromIndex) {
+	public void removeElementAt(int index) {
 		synchronized (_source) {
 			List<Object> lst = new ArrayList<Object>(Arrays.asList(_source.currentValue()));
-			lst.remove(fromIndex);
+			lst.remove(index);
 			_setter.consume(lst.toArray());
 		}
+		informChange(this, ListDataEvent.INTERVAL_REMOVED, index, this.getSize());
 	}
 	
 	@Override
@@ -80,6 +87,7 @@ public class ListModelImpl implements ListModel{
 			retorno[index] = element;
 			_setter.consume(retorno);
 		}
+		informChange(this, ListDataEvent.INTERVAL_ADDED, index, this.getSize());
 	}
 	
 	@Override

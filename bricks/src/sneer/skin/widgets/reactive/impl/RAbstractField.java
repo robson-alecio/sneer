@@ -191,7 +191,7 @@ public abstract class RAbstractField<U, WIDGET> extends JPanel implements TextWi
 	}
 	
 	@Override
-	public JPanel getContainer() {
+	public JPanel getComponent() {
 		return this;
 	}	
 }

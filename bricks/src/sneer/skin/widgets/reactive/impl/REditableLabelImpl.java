@@ -116,7 +116,7 @@ public class REditableLabelImpl extends JPanel implements TextWidget{
 	}
 
 	@Override
-	public JPanel getContainer() {
+	public JPanel getComponent() {
 		return this;
 	}
 

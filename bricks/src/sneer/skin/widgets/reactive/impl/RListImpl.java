@@ -2,14 +2,26 @@ package sneer.skin.widgets.reactive.impl;
 
 import static wheel.lang.Types.cast;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Image;
 import java.util.Enumeration;
 
 import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.ListCellRenderer;
 
+import sneer.kernel.container.Container;
+import sneer.kernel.container.ContainerUtils;
+import sneer.skin.widgets.reactive.ImageWidget;
+import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListModel;
 import sneer.skin.widgets.reactive.ListModelSetter;
 import sneer.skin.widgets.reactive.ListWidget;
+import sneer.skin.widgets.reactive.RFactory;
+import sneer.skin.widgets.reactive.TextWidget;
+import wheel.reactive.Signal;
+import wheel.reactive.Signals;
 import wheel.reactive.lists.ListSignal;
 
 public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
@@ -20,12 +32,55 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 
 	private final ListModelSetter<ELEMENT> _setter;
 	
+	private LabelProvider _labelProvider = new LabelProvider() {
+		
+		@Override
+		public Signal<String> labelFor(Object element) {
+			return Signals.constant(element.toString());
+		}
+		
+		@Override
+		public Signal<Image> imageFor(Object element) {
+			return Signals.constant(null);
+		}
+	};
+	
 	RListImpl(ListSignal<ELEMENT> source, ListModelSetter<ELEMENT> setter) {
 		_source = source;
 		_setter = setter;
 
 		initModel();
 		addReceiverListener();
+		initCellRenderer();
+		
+	}
+
+	private void initCellRenderer() {
+
+		ListCellRenderer cellRenderer = new ListCellRenderer(){
+
+			@Override
+			public Component getListCellRendererComponent(JList lst, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+				Container container = ContainerUtils.getContainer();
+				RFactory rfactory = container.produce(RFactory.class);
+
+				JPanel panel = new JPanel();
+				panel.setLayout(new BorderLayout(5,5));
+				
+				Signal<String> slabel = _labelProvider.labelFor(value);
+				Signal<Image> sicon = _labelProvider.imageFor(value);
+				
+				TextWidget label = rfactory.newLabel(slabel);
+				ImageWidget image = rfactory.newImage(sicon);
+				
+				panel.add(image.getComponent(), BorderLayout.WEST);
+				panel.add(label.getComponent(), BorderLayout.CENTER);
+				panel.setOpaque(false);
+				
+				return panel;
+			}
+		};
+		setCellRenderer(cellRenderer);
 	}
 
 	private void addReceiverListener() {

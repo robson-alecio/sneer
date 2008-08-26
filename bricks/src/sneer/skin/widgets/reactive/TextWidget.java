@@ -12,5 +12,5 @@ public interface TextWidget {
 	
 	JComponent getMainWidget();
 	JComponent[] getWidgets();
-	Container getContainer();
+	Container getComponent();
 }

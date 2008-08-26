@@ -52,7 +52,7 @@ class SnappTest implements Snapp{
 	@Override
 	public void init(java.awt.Container container) {
 		container.add(
-			_rfactory.newEditableLabel(_output, _setter, true).getContainer()
+			_rfactory.newEditableLabel(_output, _setter, true).getComponent()
 		);
 	}
 	@Override

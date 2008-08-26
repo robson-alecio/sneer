@@ -71,7 +71,7 @@ public class OwnNameKeeperDemo extends BrickTestSupport {
 		JFrame frm = new JFrame(textWidget.getClass().getSimpleName());
 		frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frm.getContentPane().setLayout(new FlowLayout());
-		frm.getContentPane().add(textWidget.getContainer());
+		frm.getContentPane().add(textWidget.getComponent());
 		return frm;
 	}
 }

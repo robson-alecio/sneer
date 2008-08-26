@@ -1,9 +1,7 @@
 package sneer.skin.widgets.reactive.impl;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import javax.swing.event.ListDataEvent;
@@ -11,6 +9,7 @@ import javax.swing.event.ListDataListener;
 
 import sneer.skin.widgets.reactive.ListModel;
 import sneer.skin.widgets.reactive.ListModelSetter;
+import wheel.lang.Collections;
 import wheel.reactive.lists.ListSignal;
 
 public class ListModelImpl<ELEMENT> implements ListModel<ELEMENT>{
@@ -25,34 +24,24 @@ public class ListModelImpl<ELEMENT> implements ListModel<ELEMENT>{
 		_setter = setter;
 	}
 
-	private List<ELEMENT> getSourceAsImmutableList() {
-		List<ELEMENT> lst = new ArrayList<ELEMENT>();
-		Iterator<ELEMENT> iterator = _source.iterator();
-		while (iterator.hasNext()) {
-			ELEMENT object = iterator.next();
-			lst.add(object);
-		}
-		return lst;
-	}
-
 	@Override
 	public Iterator<ELEMENT> elements() {
-		return getSourceAsImmutableList().iterator();
+		return Collections.toList(_source).iterator();
 	}
 
 	@Override
 	public int indexOf(ELEMENT element) {
-		return getSourceAsImmutableList().indexOf(element);
+		return Collections.toList(_source).indexOf(element);
 	}
 
 	@Override
 	public ELEMENT getElementAt(int index) {
-		return getSourceAsImmutableList().get(index);
+		return Collections.toList(_source).get(index);
 	}
 
 	@Override
 	public int getSize() {
-		return getSourceAsImmutableList().size();
+		return Collections.toList(_source).size();
 	}	
 	
 	@Override

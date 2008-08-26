@@ -54,7 +54,7 @@ public class OwnerSnappImpl implements OwnerSnapp {
 				_ownNameKeeper.nameSetter());
 		c.anchor = GridBagConstraints.SOUTHEAST;
 		
-        container.add(editableLabel.getContainer(), c);
+        container.add(editableLabel.getComponent(), c);
  
 		c = getConstraints(1, 0,10,0,0);
         JSeparator separator = new JSeparator();
@@ -66,7 +66,7 @@ public class OwnerSnappImpl implements OwnerSnapp {
         		_ownTaglineKeeper.taglineSetter());
 		c.anchor = GridBagConstraints.NORTHEAST;
 
-        container.add(editableLabel.getContainer(), c);
+        container.add(editableLabel.getComponent(), c);
         
         
 		c = new GridBagConstraints(1,0, 1,3,0.0,0.0,

@@ -18,7 +18,6 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 
 	protected Signal<Object[]> _source;
 	protected Consumer<Object[]> _setter;
-
 	
 	RListImpl(Signal<Object[]> source, Consumer<Object[]> setter) {
 		_source = source;

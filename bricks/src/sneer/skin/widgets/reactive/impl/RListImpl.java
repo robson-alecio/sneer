@@ -8,28 +8,28 @@ import java.util.Enumeration;
 import javax.swing.JList;
 
 import sneer.skin.widgets.reactive.ListModel;
+import sneer.skin.widgets.reactive.ListModelSetter;
 import sneer.skin.widgets.reactive.ListWidget;
-import wheel.lang.Consumer;
-import wheel.reactive.Signal;
+import wheel.reactive.lists.ListSignal;
 
 public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 	
 	private static final long serialVersionUID = 1L;
 
-	protected Signal<Object[]> _source;
-	protected Consumer<Object[]> _setter;
+	protected ListSignal<ELEMENT> _source;
+
+	private final ListModelSetter<ELEMENT> _setter;
 	
-	RListImpl(Signal<Object[]> source, Consumer<Object[]> setter) {
+	RListImpl(ListSignal<ELEMENT> source, ListModelSetter<ELEMENT> setter) {
 		_source = source;
 		_setter = setter;
 
 		initModel();
-//		addDnDListeners();	
 		addReceiverListener();
 	}
 
 	private void addReceiverListener() {
-		//Implement:  addListReceiver(new Omnivore<ListValueChange>() 
+		//Implement this support
 //		_source.addListReceiver(new Omnivore<ListValueChange>(){
 //			@Override
 //			public void consume(ListValueChange valueObject) {
@@ -39,18 +39,49 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 	}
 	
 	private void initModel() {
-		setModel(new ListModelImpl(_source, _setter));
+		setModel(new ListModelImpl<ELEMENT>(_source, _setter));
 	}
 
 	//Facade to Model
-	@Override public void addElement(ELEMENT element) { ((ListModel)cast(getModel())).addElement(element);}
-	@Override public Enumeration<ELEMENT> elements() { return cast(((ListModel)cast(getModel())).elements());}
-	@Override public ELEMENT getElementAt(int index) { return cast(getModel().getElementAt(index));}
-	@Override public int indexOf(ELEMENT element) { return ((ListModel)cast(getModel())).indexOf(element); }
-	@Override public void insertElementAt(ELEMENT element, int index) {((ListModel)cast(getModel())).addElementAt(element, index);}
-	@Override public void removeElement(ELEMENT element) {((ListModel)cast(getModel())).addElement(element);}
-	@Override public void removeElementAt(int index) {((ListModel)cast(getModel())).getElementAt(index);}
-	@Override public int listSize(){return this.getModel().getSize();}
+	@Override
+	public void addElement(ELEMENT element) {
+		ListModel<ELEMENT> model = cast(getModel());
+		model.addElement(element);
+	}
+	@Override
+	public Enumeration<ELEMENT> elements() {
+		ListModel<ELEMENT> model = cast(getModel());
+		return cast(model.elements());
+	}
+	@Override
+	public ELEMENT get(int index) {
+		return cast(getModel().getElementAt(index));
+	}
+	@Override
+	public int indexOf(ELEMENT element) {
+		ListModel<ELEMENT> model = cast(getModel());
+		return model.indexOf(element);
+	}
+	@Override
+	public void addElementAt(ELEMENT element, int index) {
+		ListModel<ELEMENT> model = cast(getModel());
+		model.addElementAt(element, index);
+	}
+	@Override
+	public void removeElement(ELEMENT element) {
+		ListModel<ELEMENT> model = cast(getModel());
+		model.removeElement(element);
+	}
+	@Override
+	public void removeElementAt(int index) {
+		ListModel<ELEMENT> model = cast(getModel());
+		model.removeElementAt(index);
+	}
+
+	@Override
+	public int listSize() {
+		return this.getModel().getSize();
+	}
 	
 	@Override
 	public JList getMainWidget() {

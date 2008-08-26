@@ -10,6 +10,7 @@ public interface ContactManager extends Brick {
 	ListSignal<Contact> contacts();
 
 	boolean isNicknameAlreadyUsed(String nickname);
+	
 	Contact contactGiven(String nickname);
 
 	/** @throws IllegalParameter if there already is a Contact with that nickname.*/
@@ -18,6 +19,8 @@ public interface ContactManager extends Brick {
 	/** @throws IllegalParameter if there already is a Contact with newNickname.*/
 	void changeNickname(Contact contact, String newNickname) throws IllegalParameter;
 	
+	/** @throws IllegalParameter if nickname not used.*/
+	void removeContact(String nickname) throws IllegalParameter;
 	
 
 }

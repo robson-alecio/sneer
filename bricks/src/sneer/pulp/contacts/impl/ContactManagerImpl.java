@@ -1,5 +1,7 @@
 package sneer.pulp.contacts.impl;
 
+import java.util.Iterator;
+
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import wheel.lang.exceptions.IllegalParameter;
@@ -52,6 +54,20 @@ public class ContactManagerImpl implements ContactManager {
 	synchronized public void changeNickname(Contact contact, String newNickname) throws IllegalParameter {
 		checkAvailability(newNickname);
 		((ContactImpl)contact).nickname(newNickname);
+	}
+
+	@Override
+	public void removeContact(String nickname) throws IllegalParameter {
+		Iterator<Contact> iterator = _contacts.output().iterator();
+		while (iterator.hasNext()) {
+			Contact contact = iterator.next();
+			if(contact.nickname().currentValue().equals(nickname)){
+				_contacts.remove(contact);
+				return;
+			}
+		}
+		
+		throw new IllegalParameter("Nickname " + nickname + " is not used.");
 	}
 }
 

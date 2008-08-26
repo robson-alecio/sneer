@@ -1,9 +1,6 @@
 package sneer.skin.widgets.reactive.impl;
 
-import static wheel.lang.Types.cast;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -13,80 +10,71 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import sneer.skin.widgets.reactive.ListModel;
-import wheel.lang.Consumer;
-import wheel.reactive.Signal;
+import sneer.skin.widgets.reactive.ListModelSetter;
+import wheel.reactive.lists.ListSignal;
 
-public class ListModelImpl implements ListModel{
+public class ListModelImpl<ELEMENT> implements ListModel<ELEMENT>{
 
-	private final Signal<Object[]> _source;
-	private final Consumer<Object[]> _setter;
+	private final ListSignal<ELEMENT> _source;
+	private final ListModelSetter<ELEMENT> _setter;
+	
 	private final Set<ListDataListener> _dataListeners = new HashSet<ListDataListener>();
 
-	public ListModelImpl(Signal<Object[]> source, Consumer<Object[]> setter) {
+	public ListModelImpl(ListSignal<ELEMENT> source, ListModelSetter<ELEMENT> setter) {
 		_source = source;
 		_setter = setter;
 	}
 
-	private List<Object> getSourceAsImmutableList() {
-		return cast(Arrays.asList(_source.currentValue()));
+	private List<ELEMENT> getSourceAsImmutableList() {
+		List<ELEMENT> lst = new ArrayList<ELEMENT>();
+		Iterator<ELEMENT> iterator = _source.iterator();
+		while (iterator.hasNext()) {
+			ELEMENT object = iterator.next();
+			lst.add(object);
+		}
+		return lst;
 	}
 
-	@Override public Iterator<Object> elements() { return getSourceAsImmutableList().iterator();}
-	@Override public int indexOf(Object element) { return getSourceAsImmutableList().indexOf(element);}
-	@Override public Object getElementAt(int index) {return getSourceAsImmutableList().get(index);}
-	@Override public int getSize() {return getSourceAsImmutableList().size();}	
+	@Override
+	public Iterator<ELEMENT> elements() {
+		return getSourceAsImmutableList().iterator();
+	}
 
+	@Override
+	public int indexOf(ELEMENT element) {
+		return getSourceAsImmutableList().indexOf(element);
+	}
+
+	@Override
+	public ELEMENT getElementAt(int index) {
+		return getSourceAsImmutableList().get(index);
+	}
+
+	@Override
+	public int getSize() {
+		return getSourceAsImmutableList().size();
+	}	
 	
 	@Override
-	public void addElement(Object element) {
-		synchronized (_source) {
-			int index = 0;
-			List<Object> lst = new ArrayList<Object>(Arrays.asList(_source.currentValue()));
-			lst.add(element);
-			index = lst.indexOf(element);
-			_setter.consume(lst.toArray());
-			informChange(this, ListDataEvent.INTERVAL_ADDED, index, this.getSize());
-		}
+	public void addElement(ELEMENT element) {
+		_setter.addElement(element);
+		informChange(this, ListDataEvent.INTERVAL_ADDED, 0, this.getSize()); //Fix the range indexes
+	}
+	@Override
+	public void addElementAt(ELEMENT element, int index) {
+		_setter.addElementAt(element,index);
+		informChange(this, ListDataEvent.INTERVAL_ADDED, index, index); //Fix the range indexes
 	}
 
 	@Override
-	public void removeElement(Object element) {
-		int index = 0;
-		synchronized (_source) {
-			List<Object> lst = new ArrayList<Object>(Arrays.asList(_source.currentValue()));
-			index = lst.indexOf(element);
-			lst.remove(element);
-			_setter.consume(lst.toArray());
-		}
-		informChange(this, ListDataEvent.INTERVAL_REMOVED, index, this.getSize());
+	public void removeElement(ELEMENT element) {
+		_setter.addElement(element);
+		informChange(this, ListDataEvent.INTERVAL_REMOVED, 0, this.getSize()); //Fix the range indexes
 	}
-
 	@Override
 	public void removeElementAt(int index) {
-		synchronized (_source) {
-			List<Object> lst = new ArrayList<Object>(Arrays.asList(_source.currentValue()));
-			lst.remove(index);
-			_setter.consume(lst.toArray());
-		}
-		informChange(this, ListDataEvent.INTERVAL_REMOVED, index, this.getSize());
-	}
-	
-	@Override
-	public void addElementAt(Object element, int index) {
-		synchronized (_source) {
-			Object[] values = _source.currentValue();
-			Object[] retorno = new Object[values.length+1];
-			for (int i = 0; i < values.length; i++) {
-				if(i<index){
-					retorno[i]=values[i];
-					continue;
-				}
-				retorno[i+1]=values[i];
-			}
-			retorno[index] = element;
-			_setter.consume(retorno);
-		}
-		informChange(this, ListDataEvent.INTERVAL_ADDED, index, this.getSize());
+		_setter.removeElementAt(index);
+		informChange(this, ListDataEvent.INTERVAL_REMOVED, index, index);
 	}
 	
 	@Override

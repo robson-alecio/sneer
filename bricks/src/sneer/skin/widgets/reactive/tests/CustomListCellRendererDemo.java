@@ -16,11 +16,12 @@ import javax.swing.ListCellRenderer;
 
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
+import sneer.skin.widgets.reactive.ListModelSetter;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.RFactory;
 import wheel.graphics.Images;
-import wheel.reactive.Register;
-import wheel.reactive.impl.RegisterImpl;
+import wheel.reactive.lists.ListRegister;
+import wheel.reactive.lists.impl.ListRegisterImpl;
 
 public class CustomListCellRendererDemo {
 
@@ -32,12 +33,15 @@ public class CustomListCellRendererDemo {
 		Container container = ContainerUtils.getContainer();
 
 		RFactory rfactory = container.produce(RFactory.class);
-		Register<String[]> register = new RegisterImpl<String[]>(new String[]{ONLINE, OFFLINE, AWAY});
+		ListRegister<String> register = new ListRegisterImpl<String>();
+		register.add(ONLINE);
+		register.add(OFFLINE);
+		register.add(AWAY);
 		
 		createJFrame(register, rfactory, 0);
 	}
 
-	private static void createJFrame(Register<String[]> register, RFactory rfactory, int width) {
+	private static void createJFrame(ListRegister<String> register, RFactory rfactory, int width) {
 		JFrame f = new JFrame("Smooth List Drop");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -48,12 +52,24 @@ public class CustomListCellRendererDemo {
 		f.setVisible(true);
 	}
 
-	private static void addReactiveListWidget(final Register<String[]> register, RFactory rfactory, JFrame f) {
-		ListWidget<String> listw = cast(rfactory.newList(register.output(), register.setter()));
+	private static void addReactiveListWidget(final ListRegister<String> register, RFactory rfactory, JFrame f) {
+		
+		ListModelSetter<String> lms = createNoActionSetter();
+		ListWidget<String> listw = cast(rfactory.newList(register.output(), lms));
 		final JList list = (JList) listw.getMainWidget(); 
 		f.getContentPane().add(new JScrollPane(list));
 		
 		customizeRenderer(list);
+	}
+
+	private static ListModelSetter<String> createNoActionSetter() {
+		ListModelSetter<String> lms = new ListModelSetter<String>() {
+			@Override public void addElement(String element) {throw new wheel.lang.exceptions.NotImplementedYet(); }
+			@Override public void addElementAt(String element, int index) {throw new wheel.lang.exceptions.NotImplementedYet();}
+			@Override public void removeElement(String element) {throw new wheel.lang.exceptions.NotImplementedYet();}
+			@Override public void removeElementAt(int index) {throw new wheel.lang.exceptions.NotImplementedYet();}
+		};
+		return lms;
 	}
 
 	private static void customizeRenderer(JList list) {
@@ -69,11 +85,11 @@ public class CustomListCellRendererDemo {
 
 				String name = "sample.png";
 				
-				if(CustomListCellRendererDemo.OFFLINE.equalsIgnoreCase((String) value)){
+				if(CustomListCellRendererDemo.OFFLINE.equalsIgnoreCase(value.toString())){
 					name = "sampleOff.png";
 				}
 				
-				if(CustomListCellRendererDemo.AWAY.equalsIgnoreCase((String) value)){
+				if(CustomListCellRendererDemo.AWAY.equalsIgnoreCase(value.toString())){
 					renderer.setEnabled(false);
 				}
 				

@@ -2,6 +2,7 @@ package wheel.lang;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 public class Collections {
@@ -29,6 +30,16 @@ public class Collections {
 			result.add(functor.evaluate(a));
 		}
 		return result;
+	}
+
+	public static <E> List<E> toList(Iterable<E> iterable) {
+		List<E> lst = new ArrayList<E>();
+		Iterator<E> iterator = iterable.iterator();
+		while (iterator.hasNext()) {
+			E object = iterator.next();
+			lst.add(object);
+		}
+		return lst;
 	}
 
 }

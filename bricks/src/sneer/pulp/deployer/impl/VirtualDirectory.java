@@ -59,7 +59,7 @@ public class VirtualDirectory {
 		if(_apiSourceFiles.size() > 0)
 			return _apiSourceFiles;
 		
-		SimpleFilter walker = new InterfaceFinder(_root);
+		SimpleFilter walker = new InterfaceFinder(_path.getParentFile());
 		_apiSourceFiles = walker.list(); 
 		return _apiSourceFiles;
 	}

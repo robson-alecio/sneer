@@ -32,7 +32,6 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 		assertEquals("true", System.getProperty("freedom7.y.Y.installed"));
 	}
 	
-	@Ignore
 	@Test
 	public void testPublishTwoBricks() throws Exception {
 		System.clearProperty("freedom7.y.Y.installed");

@@ -15,16 +15,21 @@ import java.io.OutputStream;
  */
 public interface Serializer {
 
+	Object deserialize(byte[] bytes, ClassLoader classloader) throws ClassNotFoundException, IOException;
+	byte[] serialize(Object object);
+
+
 	/**
 	 * Writes an object to a stream. An implementation can expect that the
 	 * stream is already buffered, so additional buffering is not required for performance.
 	 */
-	public void writeObject(OutputStream stream, Object object) throws IOException;
+	public void serialize(OutputStream stream, Object object) throws IOException;
 
 	/**
 	 * Reads an object from a stream. An implementation can expect that the
 	 * stream is already buffered, so additional buffering is not required for performance.
 	 */
-	public Object readObject(InputStream stream) throws IOException, ClassNotFoundException;
+	Object deserialize(InputStream stream, ClassLoader classloader) throws IOException, ClassNotFoundException;
+
 
 }

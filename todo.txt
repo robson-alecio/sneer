@@ -4,9 +4,10 @@
 	- [Kalecser] Continuous Integration with Clover test coverage
 		- Low maintenance build: Interpret the .classpath file and compile the build exactly as Eclipse would.
 		- Cyclic dependency detection: Compile one sourcefolder at a time, from the last in the .classpath list (most basic (wheel)) to the first in the list (most high-level (spikes)), without the other uncompiled sourcefolders in the path.
-	- [Bamboo] configure svn diff max-length for messages sent to the sneercommits group
 	- Fix SneerFreedom7Test
-		- Replace \tests\resources1\bricks\z\impl\libs\log4j-1.2.15.jar with a jar created by us and add it to the project classpath.
+		- Un-Ignore tests that are being ignored
+		- Test with lib.
+		- Use "lib" as the lib directory name instead of "libs".
 	- Simplify the container because of the removal of the Enhancer (MakeSerializable is a Spike now).
 	---- INITIAL CLEANUP DONE
 

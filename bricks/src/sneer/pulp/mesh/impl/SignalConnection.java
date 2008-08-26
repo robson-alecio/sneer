@@ -1,5 +1,6 @@
 package sneer.pulp.mesh.impl;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -15,8 +16,9 @@ import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.log.Logger;
 import sneer.pulp.mesh.Me;
 import sneer.pulp.mesh.Party;
-import sneer.pulp.serialization.Serializer;
 import sneer.pulp.threadpool.ThreadPool;
+import wheel.io.serialization.Serializer;
+import wheel.io.serialization.impl.XStreamBinarySerializer;
 import wheel.lang.Omnivore;
 import wheel.lang.Types;
 import wheel.reactive.Signal;
@@ -28,9 +30,6 @@ class SignalConnection implements Visitable {
 	@Inject
 	static private ConnectionManager _connectionManager;
 	
-	@Inject
-	static private Serializer _serializer;
-
 	@Inject
 	static private ThreadPool _threadPool;
 
@@ -48,6 +47,8 @@ class SignalConnection implements Visitable {
 
 	private List<Object> _scoutsToAvoidGC = new ArrayList<Object>();
 
+	private Serializer _serializer = new XStreamBinarySerializer();
+
 
 
 	SignalConnection(Contact contact) {
@@ -60,7 +61,13 @@ class SignalConnection implements Visitable {
 	
 	private void receive(byte[] packetReceived) {
 		Object candidate;
-		candidate = _serializer.deserialize(packetReceived, SignalConnection.class.getClassLoader());
+		try {
+			candidate = _serializer.deserialize(packetReceived, SignalConnection.class.getClassLoader());
+		} catch (ClassNotFoundException cnf) {
+			throw new wheel.lang.exceptions.NotImplementedYet(cnf); // Fix Handle this exception.
+		} catch (IOException iox) {
+			throw new wheel.lang.exceptions.NotImplementedYet(iox); // Fix Handle this exception.
+		}
 
 		Ambassador ambassador;
 		try {

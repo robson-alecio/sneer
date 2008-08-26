@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 
-import sneer.pulp.serialization.mocks.XStreamBinarySerializer;
+import wheel.io.serialization.impl.XStreamBinarySerializer;
 
 public class DeepCopier {
 	
@@ -32,9 +32,9 @@ public class DeepCopier {
 	public static <T> T deepCopy(T original, Serializer serializer) {
 		try {
 		    ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-            serializer.writeObject(byteOut, original);
+            serializer.serialize(byteOut, original);
             ByteArrayInputStream byteIn = new ByteArrayInputStream(byteOut.toByteArray());
-            return (T) serializer.readObject(byteIn);
+            return (T) serializer.deserialize(byteIn, original.getClass().getClassLoader());
         } catch (Exception shouldNeverHappen) {
 			throw new RuntimeException(shouldNeverHappen);
         }
@@ -59,11 +59,11 @@ public class DeepCopier {
 		PipedOutputStream outputStream = new PipedOutputStream();
 		PipedInputStream inputStream = new PipedInputStream(outputStream);
 
-		Consumer consumer = new Consumer(inputStream, serializer);
+		Consumer consumer = new Consumer(inputStream, serializer, original.getClass().getClassLoader());
 		consumer.start();
 
 		try {
-			serializer.writeObject(outputStream, original);
+			serializer.serialize(outputStream, original);
 		} finally {
 			outputStream.close();
 		}
@@ -76,21 +76,23 @@ public class DeepCopier {
 
 		private final InputStream _inputStream;
 		private final Serializer _serializer;
+		private final ClassLoader _classLoader;
 
 		private Object _result;
 		
 		private RuntimeException _unexpectedException;
 
 		
-		public Consumer(InputStream inputStream, Serializer serializer) {
+		public Consumer(InputStream inputStream, Serializer serializer, ClassLoader classLoader) {
 			_inputStream = inputStream;
 			_serializer = serializer;
+			_classLoader = classLoader;
 		}
 
 		@Override
 		public void run() {
 			try {
-				_result = _serializer.readObject(_inputStream);
+				_result = _serializer.deserialize(_inputStream, _classLoader);
 			} catch (Throwable t) {
 				_unexpectedException = new RuntimeException(t);
 			}

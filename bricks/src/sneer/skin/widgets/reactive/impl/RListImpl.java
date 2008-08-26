@@ -24,7 +24,7 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 		_setter = setter;
 
 		initModel();
-		addDnDListeners();	
+//		addDnDListeners();	
 		addReceiverListener();
 	}
 
@@ -36,24 +36,6 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 //				revalidate();
 //				repaint();
 //		}});
-	}
-
-	private void addDnDListeners() {
-		ListAnimatorDecorator smoother = new ListAnimatorDecorator(this) {
-			@Override
-			protected void move(int fromIndex, int toIndex) {
-				ListModel model = (ListModel) getModel();
-				Object tmp = model.getElementAt(fromIndex);
-				model.removeElementAt(fromIndex);
-				model.addElementAt(tmp, toIndex);
-				revalidate();
-				repaint();
-			}
-		};
-		
-		ListAnimatorMouseListener listener = new ListAnimatorMouseListener(smoother);
-		addMouseListener(listener);
-		addMouseMotionListener(listener);
 	}
 	
 	private void initModel() {

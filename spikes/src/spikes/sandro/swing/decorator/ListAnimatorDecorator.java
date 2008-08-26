@@ -1,4 +1,4 @@
-package sneer.skin.widgets.reactive.impl;
+package spikes.sandro.swing.decorator;
 
 import java.awt.AlphaComposite;
 import java.awt.Component;

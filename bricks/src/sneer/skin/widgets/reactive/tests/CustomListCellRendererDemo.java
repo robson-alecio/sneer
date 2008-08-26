@@ -24,11 +24,15 @@ import wheel.reactive.impl.RegisterImpl;
 
 public class CustomListCellRendererDemo {
 
+	final static String ONLINE = "Sandro";
+	final static String OFFLINE = "Bamboo";
+	final static String AWAY = "Klaus";
+
 	public static void main(String[] args) throws Exception {
 		Container container = ContainerUtils.getContainer();
 
 		RFactory rfactory = container.produce(RFactory.class);
-		Register<String[]> register = new RegisterImpl<String[]>(new String[]{"Klaus", "Sandro","Bamboo", "Nell"});
+		Register<String[]> register = new RegisterImpl<String[]>(new String[]{ONLINE, OFFLINE, AWAY});
 		
 		createJFrame(register, rfactory, 0);
 	}
@@ -58,11 +62,22 @@ public class CustomListCellRendererDemo {
 			
 			ListCellRenderer defaultRenderer = new DefaultListCellRenderer();
 			
+			
 			@Override
-			public Component getListCellRendererComponent(JList lst,Object value, int index, boolean isSelected,boolean cellHasFocus) {
+			public Component getListCellRendererComponent(JList lst, Object value, int index, boolean isSelected,boolean cellHasFocus) {
 				JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(lst, value, index,isSelected, cellHasFocus);
 
-				Image img = Images.getImage(CustomListCellRendererDemo.class.getResource("sample.png"));
+				String name = "sample.png";
+				
+				if(CustomListCellRendererDemo.OFFLINE.equalsIgnoreCase((String) value)){
+					name = "sampleOff.png";
+				}
+				
+				if(CustomListCellRendererDemo.AWAY.equalsIgnoreCase((String) value)){
+					renderer.setEnabled(false);
+				}
+				
+				Image img = Images.getImage(CustomListCellRendererDemo.class.getResource(name));
 				ImageIcon icon = new ImageIcon(img);
 				renderer.setIcon(icon);
 

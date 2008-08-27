@@ -1,43 +1,75 @@
 package sneer.skin.widgets.reactive.impl;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
+import sneer.skin.widgets.reactive.TextWidget;
 import wheel.lang.Omnivore;
-import wheel.lang.Pair;
 import wheel.reactive.Signal;
 
-public class RLabelImpl extends RAbstractField<JLabel> {
+public class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 
-	RLabelImpl(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange) {
-		super(new JLabel(), source, setter, notifyEveryChange);
+	protected JLabel _textComponent = new JLabel();
+	private Signal<String> _source;
+	private Omnivore<String> _setter = null;
+	private Omnivore<String> listener;
+	private static final long serialVersionUID = 1L;
+	
+	RLabelImpl(Signal<String> text){
+		_source = text;
+		initComponents();
+		addReceivers();
 	}
 
-	RLabelImpl(Signal<String> source) {
-		super(new JLabel(), source);
+	RLabelImpl(Signal<String> source, Omnivore<String> setter) {
+		this(source);
+		_setter = setter;
+	}
+
+	private void initComponents() {
+		this.setLayout(new GridBagLayout());
+		GridBagConstraints c;
+		c = new GridBagConstraints(0,0,1,1,1.0,1.0,
+					GridBagConstraints.EAST, 
+					GridBagConstraints.BOTH,
+					new Insets(0,0,0,0),0,0);
+		setOpaque(false);
+		_textComponent.setText(_source.currentValue());
+		add(_textComponent, c);
+	}
+
+	private void addReceivers() {
+		_source.addReceiver(textReceiver());
+	}
+
+	private Omnivore<String> textReceiver() {
+		if(listener==null)
+			listener = new Omnivore<String>() {
+				public void consume(final String text) {
+					SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
+							_textComponent.setText(text);
+						}
+					});
+				}
+			};
+		return listener;
 	}
 
 	@Override
-	public Omnivore<String> fieldReceiver() {
-		return new Omnivore<String>() {
-			public void consume(final String text) {
-				setText(text);
-			}
-		};
+	public JLabel getMainWidget() {
+		return _textComponent;
 	}
 
 	@Override
-	public Omnivore<Pair<String, String>> textChangedReceiver() {
-		return new Omnivore<Pair<String, String>>() {
-			public void consume(Pair<String, String> value) {
-				if (!value._a.equals(value._b))
-					try {
-						_setter.consume(value._b);
-					} catch (Throwable ignored) {
-						ignored.printStackTrace();
-					}
-			}
-		};
+	public JPanel getComponent() {
+		return this;
 	}
 	
 	@Override
@@ -45,5 +77,17 @@ public class RLabelImpl extends RAbstractField<JLabel> {
 		return new JComponent[]{_textComponent};
 	}
 
-	private static final long serialVersionUID = 1L;
+	@Override
+	public Signal<String> output() {
+		return _source;
+	}
+
+	@Override
+	public Omnivore<String> setter() {
+		if(_setter==null)
+			throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+		
+		return _setter;
+	}
+
 }

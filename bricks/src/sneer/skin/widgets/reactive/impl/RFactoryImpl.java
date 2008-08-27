@@ -38,12 +38,7 @@ public class RFactoryImpl implements RFactory {
 
 	@Override
 	public TextWidget<JLabel> newLabel(Signal<String> source, Omnivore<String> setter) {
-		return new RLabelImpl(source, setter, false);
-	}
-
-	@Override
-	public TextWidget<JLabel> newLabel(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange) {
-		return new RLabelImpl(source, setter, notifyEveryChange);
+		return new RLabelImpl(source, setter);
 	}
 
 	@Override

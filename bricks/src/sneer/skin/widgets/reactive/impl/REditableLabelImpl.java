@@ -32,7 +32,7 @@ public class REditableLabelImpl extends JPanel implements TextWidget<JTextField>
 		_source = source;
 		_setter = setter;
 		text = new RTextFieldImpl(source, setter, notifyEveryChange);
-		label = new RLabelImpl(source, setter, notifyEveryChange);
+		label = new RLabelImpl(source, setter);
 
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c;

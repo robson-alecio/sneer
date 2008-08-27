@@ -57,6 +57,7 @@ public abstract class RAbstractField<WIDGET extends JComponent> extends JPanel i
 			addChangeListeners(notifyEveryChange);
 		
 		_defaultBorder = textComponent.getBorder();
+		setOpaque(false);
 	}
 
 	RAbstractField(WIDGET textComponent, Signal<String> source) {

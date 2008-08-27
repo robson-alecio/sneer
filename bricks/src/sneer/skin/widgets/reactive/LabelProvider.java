@@ -4,10 +4,10 @@ import java.awt.Image;
 
 import wheel.reactive.Signal;
 
-public interface LabelProvider {
+public interface LabelProvider<ELEMENT> {
 
-	Signal<String> labelFor(Object element);
+	Signal<String> labelFor(ELEMENT element);
 
-	Signal<Image> imageFor(Object element);
+	Signal<Image> imageFor(ELEMENT element);
 
 }

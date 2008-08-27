@@ -1,4 +1,4 @@
-package sneer.pulp.tmp_directory;
+package sneer.pulp.tmpdirectory;
 
 import java.io.File;
 import java.io.IOException;

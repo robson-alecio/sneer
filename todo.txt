@@ -1,19 +1,20 @@
 ﻿MAIN ROADMAP
 ===================
 
-	- DragNDrop - Delete DnD support from contact list. We wont be using it for at least 2 months. Please talk to me before implementing a feature that is not on the todo list.
+	- outs - Make all tests run without any System.outs.
+	- Fix SneerFreedom7Test
+		- Test with a lib.
+		- Use "lib" as the lib directory name instead of "libs".
+	- Output folders - All src folders are now being compiled to "sneerAPI-bin" and all tests are passing. Make all source folders compile to the default folder (bin) and fix the tests.
+	---- INITIAL CLEANUP DONE
+
 	- [Kalecser] Continuous Integration with Clover test coverage
 		- Low maintenance build: Interpret the .classpath file and compile the build exactly as Eclipse would.
 		- Cyclic dependency detection: Compile one sourcefolder at a time, from the last in the .classpath list (most basic (wheel)) to the first in the list (most high-level (spikes)), without the other uncompiled sourcefolders in the path.
-	- Fix SneerFreedom7Test
-		- Un-Ignore tests that are being ignored
-		- Test with lib.
-		- Use "lib" as the lib directory name instead of "libs".
-	- Simplify the container because of the removal of the Enhancer (MakeSerializable is a Spike now).
-	---- INITIAL CLEANUP DONE
 
 	- Tray Icon and Dashboard Titlebar Icon - Ask Petra for a 16x16 icon to put there. Black on white? with transparency and anti-aliasing inside but not on the transparency border.
 	- Brick Publish (Supposedly working already)
+		- MainDemo - Publish all necessary bricks instead of just producing them.
 	- Contact List - (Host addresses for Sneer developers are HARDCODED)
 		- Name
 		- Online indicator icon
@@ -25,12 +26,11 @@
 
 	- Replace the AnnotatedFieldInjector by the StaticFieldInjector - Need to create our own TestRunner?
 	- Simplest Possible Kernel - What is it? Just injection?
+		- Simplify the container because of the removal of the Enhancer (MakeSerializable is a Spike now).
 		- ASM - Move asm*.jar to a brick lib
 			- Remove kernel dependency. Make it pluggable in the kernel.
-	- Output folders - Why do wheel and the kernel have to go to a different output folder (API-bin) than the default (bin)?
-		- Consider using "brick-bin" for bricks and bin for all the rest because bricks something different by nature. 
-		- Move or delete stuff we have not yet covered in the roadmap
-			- [done] Example: Delete GiveNTake
+	- Move or delete stuff we have not yet covered in the roadmap
+		- [done] Example: Delete GiveNTake
 	- Revise entire project structure
 		- Sneer
 			- Installer
@@ -56,8 +56,8 @@
 	- Screen Viewing à la VNC - There is a free vnc client implementation in Java. If there is no free server implementation in java, just send the entire screen over using gzip compression for now.
     - File Transfer
 	- Traffic Prioritization by tuple type
-    - MSN Client
-    	- Contact Unification
+	- MSN Client
+		- Contact Unification
 	- Messaging - Grand unification of instant messages and email
 		- Instant Messaging
 		- Offline Messaging (equivalent to "email")

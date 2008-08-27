@@ -5,9 +5,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import java.io.Serializable;
-
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.kernel.container.Container;
@@ -43,25 +40,6 @@ public class ContainerTest {
 		assertNotNull(injector);
 		assertTrue(injector instanceof AnnotatedFieldInjector || injector instanceof StaticFieldInjector);
 	}
-	
-	@Test
-	@Ignore
-	public void testMakeSerializable()  throws Exception {
-		assertTrue(instantiateBrick() instanceof Serializable);
-	}
-
-	@Test
-	public void testIsNotSerializable()  throws Exception {
-		assertTrue( !(instantiateBrick() instanceof Serializable) );
-	}
-
-	private MakeMeSerializable instantiateBrick() {
-		Container c = new SimpleContainer();
-		MakeMeSerializable component = c.produce(MakeMeSerializable.class);
-		assertNotNull(component);
-		return component;
-	}
-
 	
 	@Test
 	public void testInjectStaticField() throws Exception {

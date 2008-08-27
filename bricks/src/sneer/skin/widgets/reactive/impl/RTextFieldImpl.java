@@ -7,10 +7,10 @@ import wheel.lang.Omnivore;
 import wheel.lang.Pair;
 import wheel.reactive.Signal;
 
-public class RTextFieldImpl extends RAbstractField<String, JTextField> {
+public class RTextFieldImpl extends RAbstractField<JTextField> {
 
 	RTextFieldImpl(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange) {
-		super(source, setter, notifyEveryChange);
+		super(new JTextField(), source, setter, notifyEveryChange);
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class RTextFieldImpl extends RAbstractField<String, JTextField> {
 	
 	@Override
 	public JComponent[] getWidgets() {
-		return new JComponent[]{_area};
+		return new JComponent[]{_textComponent};
 	}
 
 	private static final long serialVersionUID = 1L;

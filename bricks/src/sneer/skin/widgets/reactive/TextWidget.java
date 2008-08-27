@@ -4,13 +4,15 @@ import java.awt.Container;
 
 import javax.swing.JComponent;
 
-public interface TextWidget {
+import wheel.lang.Omnivore;
+import wheel.reactive.Signal;
 
-	String getText();
+public interface TextWidget<WIDGET extends JComponent> {
 
-	void setText(String text);
-	
-	JComponent getMainWidget();
+	Signal<String> output();
+	Omnivore<String> setter();	
+
+	WIDGET getMainWidget();
 	JComponent[] getWidgets();
 	Container getComponent();
 }

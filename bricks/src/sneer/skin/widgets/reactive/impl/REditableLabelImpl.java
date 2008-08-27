@@ -11,23 +11,28 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 
-public class REditableLabelImpl extends JPanel implements TextWidget{
+public class REditableLabelImpl extends JPanel implements TextWidget<JLabel>{
 
 	private static final long serialVersionUID = 1L;
 	protected RLabelImpl label;
 	protected RTextFieldImpl text;
 	
+	private final Signal<String> _source;
+	private final Omnivore<String> _setter;
+	
 	REditableLabelImpl(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange) {
+		_source = source;
+		_setter = setter;
 		text = new RTextFieldImpl(source, setter, notifyEveryChange);
-		label = new RLabelImpl(source);
+		label = new RLabelImpl(source, setter, notifyEveryChange);
 
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c;
@@ -89,39 +94,29 @@ public class REditableLabelImpl extends JPanel implements TextWidget{
 			}
 		);
 	}
-
-	@Override
-	public String getText() {
-		return text.getText();
-	}
 	
 	@Override
-	public void setText(final String _text) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					text.setText(_text);
-					text.revalidate();
-				} catch (Exception e) {
-					e.printStackTrace();
-					//ignore
-				}
-			}
-		});
-	}
-	
-	@Override
-	public JTextField getMainWidget() {
-		return text.getMainWidget();
+	public JLabel getMainWidget() {
+		return label.getMainWidget();
 	}
 
 	@Override
 	public JPanel getComponent() {
 		return this;
 	}
-
+	
 	@Override
 	public JComponent[] getWidgets() {
-		return new JComponent[]{text._area , label._label};
+		return new JComponent[]{text._textComponent , label._textComponent};
+	}
+
+	@Override
+	public Signal<String> output(){
+		return _source;
+	}
+	
+	@Override
+	public Omnivore<String> setter(){
+		return _setter;
 	}
 }

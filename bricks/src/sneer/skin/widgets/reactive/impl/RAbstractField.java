@@ -4,29 +4,27 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.JTextComponent;
 
 import sneer.skin.widgets.reactive.TextWidget;
-import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.lang.Pair;
 import wheel.reactive.Signal;
 
-public abstract class RAbstractField<U, WIDGET> extends JPanel implements TextWidget {
+public abstract class RAbstractField<WIDGET extends JComponent> extends JPanel implements TextWidget<WIDGET> {
 	private static final long serialVersionUID = 1L;
 
 	public static final int ENABLED_SAVED_STATE = 0;
@@ -35,19 +33,20 @@ public abstract class RAbstractField<U, WIDGET> extends JPanel implements TextWi
 
 	public int _state = ENABLED_SAVED_STATE;
 
-	protected Signal<U> _source;
-	protected Consumer<U> _setter;
-	public JTextField _area = new JTextField();
+	protected Signal<String> _source;
+	protected Omnivore<String> _setter;
+	public WIDGET _textComponent;
 	
-	protected Omnivore<U> _fieldReciver;
-	protected Omnivore<Pair<U, String>> _textChangedReceiver;
+	protected Omnivore<String> _fieldReciver;
+	protected Omnivore<Pair<String, String>> _textChangedReceiver;
 	
-	public abstract Omnivore<U> fieldReceiver();
-	public abstract Omnivore<Pair<U, String>> textChangedReceiver();
+	public abstract Omnivore<String> fieldReceiver();
+	public abstract Omnivore<Pair<String, String>> textChangedReceiver();
 	
-	RAbstractField(Signal<U> source, Consumer<U> setter, boolean notifyEveryChange) {
+	RAbstractField(WIDGET textComponent, Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange) {
 		_source = source;
 		_setter = setter;
+		_textComponent = textComponent;
 		_state = (setter == null) ? DISABLED_STATE : ENABLED_SAVED_STATE;
 		initComponents();
 		addReceivers();
@@ -55,6 +54,10 @@ public abstract class RAbstractField<U, WIDGET> extends JPanel implements TextWi
 			addChangeListeners(notifyEveryChange);
 	}
 
+	RAbstractField(WIDGET textComponent, Signal<String> source) {
+		this(textComponent, source, null, false);
+	}
+	
 	private void addReceivers() {
 		_fieldReciver=fieldReceiver();
 		_source.addReceiver(_fieldReciver);
@@ -67,8 +70,11 @@ public abstract class RAbstractField<U, WIDGET> extends JPanel implements TextWi
 					GridBagConstraints.EAST, 
 					GridBagConstraints.BOTH,
 					new Insets(0,0,0,0),0,0);
-		_area.selectAll();
-		add(_area, c);
+		if (_textComponent instanceof JTextComponent) {
+			JTextComponent txt = (JTextComponent) _textComponent;
+			txt.selectAll();
+		}
+		add(_textComponent, c);
 		updateView();
 		firstUpdate();
 	}
@@ -80,22 +86,28 @@ public abstract class RAbstractField<U, WIDGET> extends JPanel implements TextWi
 	public void updateView() {
 		switch (_state) {
 		case ENABLED_SAVED_STATE:
-			_area.setEditable(true);
-			_area.setBorder(new CompoundBorder(new LineBorder(Color.black),
+			if (_textComponent instanceof JTextComponent) {
+				JTextComponent txt = (JTextComponent) _textComponent;
+				txt.setEditable(true);
+			}
+			_textComponent.setBorder(new CompoundBorder(new LineBorder(Color.black),
 					new EmptyBorder(2, 2, 2, 2)));
 			break;
 		case DISABLED_STATE:
-			_area.setEditable(false);
+			if (_textComponent instanceof JTextComponent) {
+				JTextComponent txt = (JTextComponent) _textComponent;
+				txt.setEditable(false);
+			}
 			break;
 		case ENABLED_UNSAVED_STATE:
-			_area.setBorder(new CompoundBorder(new LineBorder(Color.red),
+			_textComponent.setBorder(new CompoundBorder(new LineBorder(Color.red),
 					new EmptyBorder(2, 2, 2, 2)));
 			break;
 		}
 	}
 
 	public void addChangeListeners(boolean notifyEveryChange) {
-		_area.addKeyListener(new KeyAdapter() {
+		_textComponent.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				_state = ENABLED_UNSAVED_STATE;
@@ -111,56 +123,58 @@ public abstract class RAbstractField<U, WIDGET> extends JPanel implements TextWi
 		notifyActionPerformed();
 	}
 	private void notifyEveryChange() {
-		_area.getDocument().addDocumentListener(
-			new DocumentListener(){
-
-				@Override
-				public void changedUpdate(DocumentEvent e) {
-					commitTextChanges();
-				}
-
-				@Override
-				public void insertUpdate(DocumentEvent e) {
-					commitTextChanges();
-				}
-
-				@Override
-				public void removeUpdate(DocumentEvent e) {
-					commitTextChanges();
-				}
-			}
-		);
+		if (_textComponent instanceof JTextComponent) {
+			JTextComponent txt = (JTextComponent) _textComponent;
+			txt.getDocument().addDocumentListener(
+					new DocumentListener(){
+						
+						@Override
+						public void changedUpdate(DocumentEvent e) {
+							commitTextChanges();
+						}
+						
+						@Override
+						public void insertUpdate(DocumentEvent e) {
+							commitTextChanges();
+						}
+						
+						@Override
+						public void removeUpdate(DocumentEvent e) {
+							commitTextChanges();
+						}
+					}
+			);
+		}
 	}
 	
 	private void notifyActionPerformed() {
-		_area.addFocusListener(new FocusAdapter() {
+		_textComponent.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
 				commitTextChanges();
 			}
 		});
-		_area.addKeyListener(new KeyAdapter() {
+		_textComponent.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 					commitTextChanges();
 			}
 		});
-
-		_area.addActionListener(new ActionListener(){ //ENTER KEY
-			public void actionPerformed(ActionEvent e) {
-				commitTextChanges();
-			}
-		});
+//		_area.addActionListener(new ActionListener(){ //ENTER KEY
+//			public void actionPerformed(ActionEvent e) {
+//				commitTextChanges();
+//			}
+//		});
 	}
 
 	public void commitTextChanges() {
 		_textChangedReceiver = textChangedReceiver();
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				Pair<U, String> pair = new Pair<U, String>(_source.currentValue(), getText());
+				Pair<String, String> pair = new Pair<String, String>(_source.currentValue(), getText());
 				_textChangedReceiver.consume(pair);
-				_area.revalidate();
+				_textComponent.revalidate();
 				_state = ENABLED_SAVED_STATE;
 				updateView();
 			}
@@ -168,30 +182,43 @@ public abstract class RAbstractField<U, WIDGET> extends JPanel implements TextWi
 	}
 
 	public String getText() {
-		return _area.getText();
+		try {
+			_textComponent.getClass().getMethod("getText", new Class[0]).invoke(_textComponent, new Object[0]);
+		} catch (Exception e) {
+			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement
+		}
+		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	}
 	
 	public void setText(final String text) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					_area.setText(text);
-					_area.revalidate();
+					_textComponent.getClass().getMethod("setText", new Class[]{String.class}).invoke(_textComponent, new Object[]{text});
 				} catch (Exception e) {
-					e.printStackTrace();
-					//ignore
+					throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement
 				}
 			}
 		});
 	}
 	
 	@Override
-	public JTextField getMainWidget() {
-		return _area;
+	public WIDGET getMainWidget() {
+		return _textComponent;
 	}
 	
 	@Override
 	public JPanel getComponent() {
 		return this;
+	}	
+
+	@Override
+	public Signal<String> output(){
+		return _source;
+	}
+	
+	@Override
+	public Omnivore<String> setter(){
+		return _setter;
 	}	
 }

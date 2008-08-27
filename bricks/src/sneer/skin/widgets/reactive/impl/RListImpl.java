@@ -7,6 +7,7 @@ import java.awt.Component;
 import java.awt.Image;
 import java.util.Enumeration;
 
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
@@ -72,7 +73,7 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 				Signal<String> slabel = _labelProvider.labelFor(value);
 				Signal<Image> sicon = _labelProvider.imageFor(value);
 				
-				TextWidget label = rfactory.newLabel(slabel);
+				TextWidget<JLabel> label = rfactory.newLabel(slabel);
 				ImageWidget image = rfactory.newImage(sicon);
 				
 				panel.add(image.getComponent(), BorderLayout.WEST);

@@ -21,7 +21,7 @@ public class ReactiveWidgetsDemo {
 		RFactory rfactory = container.produce(RFactory.class);
 		Register<String> register = new RegisterImpl<String>("Jose das Coves");
 				
-		TextWidget newTextField;
+		TextWidget<?> newTextField;
 		
 		newTextField = rfactory.newTextField(register.output(), register.setter());
 		createTestFrame(newTextField).setBounds(10, 10, 300, 100);
@@ -42,7 +42,7 @@ public class ReactiveWidgetsDemo {
 		);
 	}
 
-	private static JFrame createTestFrame(final TextWidget textWidget) {
+	private static JFrame createTestFrame(final TextWidget<?> textWidget) {
 		final JFrame frm = new JFrame(textWidget.getClass().getSimpleName());
 		frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frm.getContentPane().setLayout(new FlowLayout());

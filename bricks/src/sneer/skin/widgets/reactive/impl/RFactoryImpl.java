@@ -2,6 +2,9 @@ package sneer.skin.widgets.reactive.impl;
 
 import java.awt.Image;
 
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
 import sneer.kernel.container.Inject;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.widgets.reactive.ImageWidget;
@@ -19,27 +22,37 @@ public class RFactoryImpl implements RFactory {
 	private static ImageFactory imageFactory;
 
 	@Override
-	public TextWidget newEditableLabel(Signal<String> source, Omnivore<String> setter) {
+	public TextWidget<JLabel> newEditableLabel(Signal<String> source, Omnivore<String> setter) {
 		return new REditableLabelImpl(source, setter, false);
 	}
 
 	@Override
-	public TextWidget newEditableLabel(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange) {
+	public TextWidget<JLabel> newEditableLabel(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange) {
 		return new REditableLabelImpl(source, setter, notifyEveryChange);
 	}
 
 	@Override
-	public TextWidget newLabel(Signal<String> source) {
+	public TextWidget<JLabel> newLabel(Signal<String> source) {
 		return new RLabelImpl(source);
 	}
 
 	@Override
-	public TextWidget newTextField(Signal<String> source, Omnivore<String> setter) {
+	public TextWidget<JLabel> newLabel(Signal<String> source, Omnivore<String> setter) {
+		return new RLabelImpl(source, setter, false);
+	}
+
+	@Override
+	public TextWidget<JLabel> newLabel(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange) {
+		return new RLabelImpl(source, setter, notifyEveryChange);
+	}
+
+	@Override
+	public TextWidget<JTextField> newTextField(Signal<String> source, Omnivore<String> setter) {
 		return new RTextFieldImpl(source, setter, false);
 	}
 
 	@Override
-	public TextWidget newTextField(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange) {
+	public TextWidget<JTextField> newTextField(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange) {
 		return new RTextFieldImpl(source, setter, notifyEveryChange);
 	}
 

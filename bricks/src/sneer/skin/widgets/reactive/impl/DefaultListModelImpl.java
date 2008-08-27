@@ -8,61 +8,67 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import sneer.skin.widgets.reactive.ListModel;
-import sneer.skin.widgets.reactive.ListModelSetter;
 import wheel.lang.Collections;
-import wheel.reactive.lists.ListSignal;
+import wheel.reactive.lists.ListRegister;
 
-public class ListModelImpl<ELEMENT> implements ListModel<ELEMENT>{
+public class DefaultListModelImpl<ELEMENT> implements ListModel<ELEMENT>{
 
-	private final ListSignal<ELEMENT> _source;
-	private final ListModelSetter<ELEMENT> _setter;
 	
 	private final Set<ListDataListener> _dataListeners = new HashSet<ListDataListener>();
+	private final ListRegister<ELEMENT> _register;
 
-	public ListModelImpl(ListSignal<ELEMENT> source, ListModelSetter<ELEMENT> setter) {
-		_source = source;
-		_setter = setter;
+	DefaultListModelImpl(ListRegister<ELEMENT> register) {
+		_register = register;
 	}
 
 	@Override
 	public Iterator<ELEMENT> elements() {
-		return Collections.toList(_source).iterator();
+		return _register.output().iterator();
 	}
 
 	@Override
 	public int indexOf(ELEMENT element) {
-		return Collections.toList(_source).indexOf(element);
+		Iterator<ELEMENT> iterator = elements();
+		for (int i = 0; iterator.hasNext(); i++) {
+			if(element==iterator.next()) return i;
+		}
+		throw new IllegalArgumentException("Element not Found! " + element);
 	}
 
 	@Override
 	public ELEMENT getElementAt(int index) {
-		return Collections.toList(_source).get(index);
+		Iterator<ELEMENT> iterator = elements();
+		for (int i = 0; iterator.hasNext(); i++) {
+			ELEMENT tmp = iterator.next();
+			if(i==index) return tmp;
+		}
+		throw new ArrayIndexOutOfBoundsException(index);
 	}
 
 	@Override
 	public int getSize() {
-		return Collections.toList(_source).size();
+		return Collections.toList(_register.output()).size(); //Optimize
 	}	
 	
 	@Override
 	public void addElement(ELEMENT element) {
-		_setter.addElement(element);
+		_register.add(element);
 		informChange(this, ListDataEvent.INTERVAL_ADDED, 0, this.getSize()); //Fix the range indexes
 	}
 	@Override
 	public void addElementAt(ELEMENT element, int index) {
-		_setter.addElementAt(element,index);
+		_register.add(element); //Implement registe.addAt
 		informChange(this, ListDataEvent.INTERVAL_ADDED, index, index); //Fix the range indexes
 	}
 
 	@Override
 	public void removeElement(ELEMENT element) {
-		_setter.addElement(element);
+		_register.remove(element);
 		informChange(this, ListDataEvent.INTERVAL_REMOVED, 0, this.getSize()); //Fix the range indexes
 	}
 	@Override
 	public void removeElementAt(int index) {
-		_setter.removeElementAt(index);
+		_register.remove(index);
 		informChange(this, ListDataEvent.INTERVAL_REMOVED, index, index);
 	}
 	

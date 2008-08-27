@@ -2,6 +2,7 @@ package sneer.pulp.contacts;
 
 import sneer.kernel.container.Brick;
 import wheel.lang.exceptions.IllegalParameter;
+import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
 
 
@@ -21,6 +22,8 @@ public interface ContactManager extends Brick {
 	
 	/** @throws IllegalParameter if nickname not used.*/
 	void removeContact(String nickname) throws IllegalParameter;
+
+	ListRegister<Contact> getContacts();
 	
 
 }

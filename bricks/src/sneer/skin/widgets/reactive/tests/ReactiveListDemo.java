@@ -10,7 +10,6 @@ import javax.swing.JScrollPane;
 
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
-import sneer.skin.widgets.reactive.ListModelSetter;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.RFactory;
 import wheel.reactive.lists.ListRegister;
@@ -44,18 +43,8 @@ public class ReactiveListDemo {
 	}
 
 	private static void addReactiveListWidget(final ListRegister<String> register, RFactory rfactory, JFrame f) {
-		ListWidget<String> listw = cast(rfactory.newList(register.output(), createNoActionSetter()));
+		ListWidget<String> listw = cast(rfactory.newList(register));
 		final JList list = (JList) listw.getMainWidget(); 
 		f.getContentPane().add(new JScrollPane(list));
-	}
-	
-	private static ListModelSetter<String> createNoActionSetter() {
-		ListModelSetter<String> lms = new ListModelSetter<String>() {
-			@Override public void addElement(String element) {throw new wheel.lang.exceptions.NotImplementedYet(); }
-			@Override public void addElementAt(String element, int index) {throw new wheel.lang.exceptions.NotImplementedYet();}
-			@Override public void removeElement(String element) {throw new wheel.lang.exceptions.NotImplementedYet();}
-			@Override public void removeElementAt(int index) {throw new wheel.lang.exceptions.NotImplementedYet();}
-		};
-		return lms;
 	}
 }

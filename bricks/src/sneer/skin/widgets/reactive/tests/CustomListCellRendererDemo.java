@@ -16,7 +16,6 @@ import javax.swing.ListCellRenderer;
 
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
-import sneer.skin.widgets.reactive.ListModelSetter;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.RFactory;
 import wheel.graphics.Images;
@@ -54,22 +53,10 @@ public class CustomListCellRendererDemo {
 
 	private static void addReactiveListWidget(final ListRegister<String> register, RFactory rfactory, JFrame f) {
 		
-		ListModelSetter<String> lms = createNoActionSetter();
-		ListWidget<String> listw = cast(rfactory.newList(register.output(), lms));
+		ListWidget<String> listw = cast(rfactory.newList(register));
 		final JList list = (JList) listw.getMainWidget(); 
 		f.getContentPane().add(new JScrollPane(list));
-		
 		customizeRenderer(list);
-	}
-
-	private static ListModelSetter<String> createNoActionSetter() {
-		ListModelSetter<String> lms = new ListModelSetter<String>() {
-			@Override public void addElement(String element) {throw new wheel.lang.exceptions.NotImplementedYet(); }
-			@Override public void addElementAt(String element, int index) {throw new wheel.lang.exceptions.NotImplementedYet();}
-			@Override public void removeElement(String element) {throw new wheel.lang.exceptions.NotImplementedYet();}
-			@Override public void removeElementAt(int index) {throw new wheel.lang.exceptions.NotImplementedYet();}
-		};
-		return lms;
 	}
 
 	private static void customizeRenderer(JList list) {

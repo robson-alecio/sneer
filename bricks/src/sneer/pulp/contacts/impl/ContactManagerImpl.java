@@ -69,6 +69,11 @@ public class ContactManagerImpl implements ContactManager {
 		
 		throw new IllegalParameter("Nickname " + nickname + " is not used.");
 	}
+
+	@Override
+	public ListRegister<Contact> getContacts() {
+		return _contacts;
+	}
 }
 
 class ContactImpl implements Contact {

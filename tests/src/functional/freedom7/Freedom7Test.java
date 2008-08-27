@@ -11,7 +11,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
-import sneer.pulp.tmpDirectory.TmpDirectory;
+import sneer.pulp.tmp_directory.TmpDirectory;
 import functional.SovereignFunctionalTest;
 import functional.SovereignParty;
 

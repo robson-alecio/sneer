@@ -1,9 +1,9 @@
-package sneer.pulp.tmpDirectory.impl;
+package sneer.pulp.tmp_directory.impl;
 
 import java.io.File;
 import java.io.IOException;
 
-import sneer.pulp.tmpDirectory.TmpDirectory;
+import sneer.pulp.tmp_directory.TmpDirectory;
 
 public class TmpDirectoryImpl implements TmpDirectory {
 

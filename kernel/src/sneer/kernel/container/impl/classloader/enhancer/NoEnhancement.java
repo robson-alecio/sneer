@@ -7,9 +7,9 @@ import org.objectweb.asm.MethodVisitor;
 
 public class NoEnhancement implements Enhancer {
 	
-	static class FooVisitor extends ClassAdapter {
+	static class TracingVisitor extends ClassAdapter {
 
-		public FooVisitor(ClassVisitor classVisitor) {
+		public TracingVisitor(ClassVisitor classVisitor) {
 			super(classVisitor);
 		}
 		
@@ -39,7 +39,8 @@ public class NoEnhancement implements Enhancer {
 
 	@Override
 	public ClassVisitor enhance(ClassVisitor visitor) {
-		return new FooVisitor(visitor);
+		return visitor;
+//		return new FooVisitor(visitor);
 	}
 
 }

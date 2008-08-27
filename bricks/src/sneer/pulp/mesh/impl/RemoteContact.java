@@ -51,8 +51,4 @@ public class RemoteContact implements Contact {
 		return _nickname.setter();
 	}
 
-	@Override
-	public Signal<Boolean> isOnline() {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
-	}
 }

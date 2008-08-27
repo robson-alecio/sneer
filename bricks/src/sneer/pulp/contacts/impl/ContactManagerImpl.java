@@ -96,9 +96,4 @@ class ContactImpl implements Contact {
 		_nickname.setter().consume(newNickname);
 	}
 
-	@Override
-	public Signal<Boolean> isOnline() {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
-	}
-
 }

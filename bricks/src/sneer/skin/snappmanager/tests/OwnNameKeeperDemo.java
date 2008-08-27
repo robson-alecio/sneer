@@ -3,6 +3,8 @@ package sneer.skin.snappmanager.tests;
 import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import sneer.kernel.container.Container;
@@ -47,10 +49,10 @@ public class OwnNameKeeperDemo extends BrickTestSupport {
 
 	private static void createWidgets(OwnNameKeeperDemo demo) {
 		
-		TextWidget newTextField1 = demo.rfactory.newTextField(demo.ownNameKeeper.name(), demo.ownNameKeeper.nameSetter());
+		TextWidget<JTextField> newTextField1 = demo.rfactory.newTextField(demo.ownNameKeeper.name(), demo.ownNameKeeper.nameSetter());
 		final JFrame frm1 =createTestFrame(newTextField1);
 		
-		TextWidget newTextField2 = demo.rfactory.newEditableLabel(demo.ownNameKeeper.name(), demo.ownNameKeeper.nameSetter());
+		TextWidget<JLabel> newTextField2 = demo.rfactory.newEditableLabel(demo.ownNameKeeper.name(), demo.ownNameKeeper.nameSetter());
 		final JFrame frm2 =createTestFrame(newTextField2);
 		
 		frm1.setBounds(10, 10, 300, 100);
@@ -67,7 +69,7 @@ public class OwnNameKeeperDemo extends BrickTestSupport {
 		);
 	}
 
-	private static JFrame createTestFrame(final TextWidget textWidget) {
+	private static JFrame createTestFrame(final TextWidget<?> textWidget) {
 		JFrame frm = new JFrame(textWidget.getClass().getSimpleName());
 		frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frm.getContentPane().setLayout(new FlowLayout());

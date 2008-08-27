@@ -21,7 +21,7 @@ public class XStreamBinarySerializer implements Serializer {
 		try {
 			serialize(result, object);
 		} catch (IOException e) {
-			throw new IllegalStateException();
+			throw new IllegalStateException(e);
 		}
 		return result.toByteArray(); 
 	}

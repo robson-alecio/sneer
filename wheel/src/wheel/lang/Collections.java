@@ -26,20 +26,18 @@ public class Collections {
 
 	public static <A, B> Iterable<B> map(Iterable<A> source, Functor<A, B> functor) {
 		ArrayList<B> result = new ArrayList<B>();
-		for (A a : source) {
+		for (A a : source)
 			result.add(functor.evaluate(a));
-		}
 		return result;
 	}
 
 	public static <E> List<E> toList(Iterable<E> iterable) {
-		List<E> lst = new ArrayList<E>();
+		List<E> result = new ArrayList<E>();
 		Iterator<E> iterator = iterable.iterator();
-		while (iterator.hasNext()) {
-			E object = iterator.next();
-			lst.add(object);
-		}
-		return lst;
+		while (iterator.hasNext())
+			result.add(iterator.next());
+		
+		return result;
 	}
 
 }

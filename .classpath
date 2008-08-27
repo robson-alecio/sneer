@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" output="sneerAPI-bin" path="spikes/src"/>
-	<classpathentry kind="src" output="sneerAPI-bin" path="tests/src"/>
-	<classpathentry kind="src" output="sneerAPI-bin" path="bricks/src"/>
+	<classpathentry kind="src" path="spikes/src"/>
+	<classpathentry kind="src" path="tests/src"/>
+	<classpathentry kind="src" path="bricks/src"/>
 	<classpathentry kind="src" output="sneerAPI-bin" path="kernel/src"/>
 	<classpathentry kind="src" output="sneerAPI-bin" path="wheel/src"/>
 	<classpathentry kind="lib" path="spikes/lib/Filters.jar"/>

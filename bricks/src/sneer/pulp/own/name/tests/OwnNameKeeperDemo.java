@@ -3,7 +3,6 @@ package sneer.pulp.own.name.tests;
 import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
@@ -52,7 +51,7 @@ public class OwnNameKeeperDemo extends BrickTestSupport {
 		TextWidget<JTextField> newTextField1 = demo.rfactory.newTextField(demo.ownNameKeeper.name(), demo.ownNameKeeper.nameSetter());
 		final JFrame frm1 =createTestFrame(newTextField1);
 		
-		TextWidget<JLabel> newTextField2 = demo.rfactory.newEditableLabel(demo.ownNameKeeper.name(), demo.ownNameKeeper.nameSetter());
+		TextWidget<JTextField> newTextField2 = demo.rfactory.newEditableLabel(demo.ownNameKeeper.name(), demo.ownNameKeeper.nameSetter());
 		final JFrame frm2 =createTestFrame(newTextField2);
 		
 		frm1.setBounds(10, 10, 300, 100);

@@ -17,8 +17,8 @@ public interface RFactory {
 	TextWidget<JLabel> newLabel(Signal<String> source, Omnivore<String> setter);
 	TextWidget<JLabel> newLabel(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange);
 	
-	TextWidget<JLabel> newEditableLabel(Signal<String> source, Omnivore<String> setter);
-	TextWidget<JLabel> newEditableLabel(Signal<String> source, Omnivore<String> setter,	boolean notifyEveryChange);
+	TextWidget<JTextField> newEditableLabel(Signal<String> source, Omnivore<String> setter);
+	TextWidget<JTextField> newEditableLabel(Signal<String> source, Omnivore<String> setter,	boolean notifyEveryChange);
 	
 	TextWidget<JTextField> newTextField(Signal<String> source, Omnivore<String> setter);
 	TextWidget<JTextField> newTextField(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange);

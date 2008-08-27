@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -39,6 +40,8 @@ public abstract class RAbstractField<WIDGET extends JComponent> extends JPanel i
 	
 	protected Omnivore<String> _fieldReciver;
 	protected Omnivore<Pair<String, String>> _textChangedReceiver;
+
+	private Border _defaultBorder;
 	
 	public abstract Omnivore<String> fieldReceiver();
 	public abstract Omnivore<Pair<String, String>> textChangedReceiver();
@@ -52,6 +55,8 @@ public abstract class RAbstractField<WIDGET extends JComponent> extends JPanel i
 		addReceivers();
 		if (_state == ENABLED_SAVED_STATE)
 			addChangeListeners(notifyEveryChange);
+		
+		_defaultBorder = textComponent.getBorder();
 	}
 
 	RAbstractField(WIDGET textComponent, Signal<String> source) {
@@ -90,14 +95,14 @@ public abstract class RAbstractField<WIDGET extends JComponent> extends JPanel i
 				JTextComponent txt = (JTextComponent) _textComponent;
 				txt.setEditable(true);
 			}
-			_textComponent.setBorder(new CompoundBorder(new LineBorder(Color.black),
-					new EmptyBorder(2, 2, 2, 2)));
+			_textComponent.setBorder(_defaultBorder);
 			break;
 		case DISABLED_STATE:
 			if (_textComponent instanceof JTextComponent) {
 				JTextComponent txt = (JTextComponent) _textComponent;
 				txt.setEditable(false);
 			}
+			_textComponent.setBorder(_defaultBorder);
 			break;
 		case ENABLED_UNSAVED_STATE:
 			_textComponent.setBorder(new CompoundBorder(new LineBorder(Color.red),
@@ -183,11 +188,10 @@ public abstract class RAbstractField<WIDGET extends JComponent> extends JPanel i
 
 	public String getText() {
 		try {
-			_textComponent.getClass().getMethod("getText", new Class[0]).invoke(_textComponent, new Object[0]);
+			return (String) _textComponent.getClass().getMethod("getText", new Class[0]).invoke(_textComponent, new Object[0]);
 		} catch (Exception e) {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement
 		}
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	}
 	
 	public void setText(final String text) {

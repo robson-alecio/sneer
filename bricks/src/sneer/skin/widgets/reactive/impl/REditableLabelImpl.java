@@ -11,15 +11,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 
-public class REditableLabelImpl extends JPanel implements TextWidget<JLabel>{
+public class REditableLabelImpl extends JPanel implements TextWidget<JTextField>{
 
 	private static final long serialVersionUID = 1L;
 	protected RLabelImpl label;
@@ -96,8 +96,8 @@ public class REditableLabelImpl extends JPanel implements TextWidget<JLabel>{
 	}
 	
 	@Override
-	public JLabel getMainWidget() {
-		return label.getMainWidget();
+	public JTextField getMainWidget() {
+		return text.getMainWidget();
 	}
 
 	@Override

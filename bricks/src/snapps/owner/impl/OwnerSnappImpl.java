@@ -8,8 +8,8 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JLabel;
 import javax.swing.JSeparator;
+import javax.swing.JTextField;
 
 import snapps.owner.OwnerSnapp;
 import sneer.kernel.container.Inject;
@@ -42,7 +42,7 @@ public class OwnerSnappImpl implements OwnerSnapp {
 	@Inject
 	static private RFactory rfactory;
 
-	private TextWidget<JLabel> editableLabel;
+	private TextWidget<JTextField> editableLabel;
 
 	private Container _container;
 

@@ -22,12 +22,12 @@ public class RFactoryImpl implements RFactory {
 	private static ImageFactory imageFactory;
 
 	@Override
-	public TextWidget<JLabel> newEditableLabel(Signal<String> source, Omnivore<String> setter) {
+	public TextWidget<JTextField> newEditableLabel(Signal<String> source, Omnivore<String> setter) {
 		return new REditableLabelImpl(source, setter, false);
 	}
 
 	@Override
-	public TextWidget<JLabel> newEditableLabel(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange) {
+	public TextWidget<JTextField> newEditableLabel(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange) {
 		return new REditableLabelImpl(source, setter, notifyEveryChange);
 	}
 

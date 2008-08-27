@@ -3,7 +3,6 @@ package sneer.pulp.own.tagline.tests;
 import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
@@ -54,7 +53,7 @@ public class OwnTaglineKeeperDemo extends BrickTestSupport {
 		TextWidget<JTextField> newTextField1 = demo._rfactory.newTextField(demo._ownTaglineKeeper.tagline(), demo._ownTaglineKeeper.taglineSetter());
 		final JFrame frm1 =createTestFrame(newTextField1);
 		
-		TextWidget<JLabel> newTextField2 = demo._rfactory.newEditableLabel(demo._ownTaglineKeeper.tagline(), demo._ownTaglineKeeper.taglineSetter());
+		TextWidget<JTextField> newTextField2 = demo._rfactory.newEditableLabel(demo._ownTaglineKeeper.tagline(), demo._ownTaglineKeeper.taglineSetter());
 		final JFrame frm2 =createTestFrame(newTextField2);
 		
 		frm1.setBounds(10, 10, 300, 100);

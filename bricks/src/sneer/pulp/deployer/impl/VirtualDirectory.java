@@ -18,6 +18,7 @@ import sneer.pulp.deployer.DeployerException;
 import sneer.pulp.deployer.impl.filters.ImplFinder;
 import sneer.pulp.deployer.impl.filters.InterfaceFinder;
 import sneer.pulp.deployer.impl.filters.LibFinder;
+import wheel.io.JarBuilder;
 import wheel.lang.Collections;
 import wheel.lang.Functor;
 
@@ -233,31 +234,32 @@ public class VirtualDirectory {
 	}
 
  	private DeploymentJar jar(Iterable<JarEntrySpec> files, String role) {
-		String brickName = brickName();
-		String jarName = brickName + "-" + role;
-		DeploymentJar result = null;
 		try {
-			File tmpJarFile = File.createTempFile(jarName+"-", ".jar");
-			result = _sneerDeploymentFactory.create(tmpJarFile);
-
-			//sneer meta
-			String meta = sneerMeta(brickName, "1.0-SNAPSHOT", role);
-			result.add("sneer.meta", meta);
-
-			for(JarEntrySpec file : files) {
-				result.add(file.entryName(), file.file());
-			}
+			File tmpJarFile = createTempJar(role, files);
+			return _sneerDeploymentFactory.create(tmpJarFile);
 		} catch (IOException e) {
 			throw new DeployerException("Error", e);
-		} finally{
-			if(result!=null)
-				try {
-					result.close();
-				} catch (IOException e) {
-					throw new DeployerException("Error", e);
-				}
+		} 
+	}
+
+	private File createTempJar(String role, Iterable<JarEntrySpec> files)
+			throws IOException {
+		final String brickName = brickName();
+		final String jarName = brickName + "-" + role;
+		final File tmpJarFile = File.createTempFile(jarName+"-", ".jar");
+		final JarBuilder builder = new JarBuilder(tmpJarFile);
+		try {
+			//sneer meta
+			String meta = sneerMeta(brickName, "1.0-SNAPSHOT", role);
+			builder.add("sneer.meta", meta);
+
+			for(JarEntrySpec file : files) {
+				builder.add(file.entryName(), file.file());
+			}
+		} finally {
+			builder.close();
 		}
-		return result;
+		return tmpJarFile;
 	}
 
 	private String sneerMeta(String brickName, String version, String role) {

@@ -21,10 +21,6 @@ public interface DeploymentJar extends Serializable, NetworkFriendly, Closeable 
 	String role();
 
 	byte[] sneer1024();
-	
-	void add(String entryName, File file) throws IOException;
-
-	void add(String entryName, String contents) throws IOException;
 
 	void close() throws IOException;
 

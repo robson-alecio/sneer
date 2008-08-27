@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.JarFile;
 
 import org.apache.commons.io.FileUtils;
 
@@ -48,19 +47,7 @@ public class BrickFileImpl implements BrickFile, NetworkFriendly {
 	}
 
 	private void add(File file) {
-		JarFile jarFile = null;
-		try {
-			jarFile = new JarFile(file);
-			add(new DeploymentJarImpl(file, jarFile));
-		} catch (IOException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
-		}finally{
-			try {
-				if(jarFile != null)	jarFile.close();
-			} catch (IOException e) {
-				throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
-			}
-		}
+		add(new DeploymentJarImpl(file));
 	}
 
 	@Override

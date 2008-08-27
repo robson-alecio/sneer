@@ -122,7 +122,7 @@ public class BrickClassLoader extends EnhancingClassLoader {
 		
 		_cache = new WeakHashMap<String, byte[]>();
 
-		JarFile jar = new JarFile(_implJarFile);
+		final JarFile jar = new JarFile(_implJarFile);
 		try {
 			Enumeration<JarEntry> e = jar.entries();
 			while (e.hasMoreElements()) {
@@ -155,15 +155,13 @@ public class BrickClassLoader extends EnhancingClassLoader {
 	}
 
 	private byte[] readEntry(JarFile jar, JarEntry entry) throws IOException {
-		InputStream is = null;
+		final InputStream is = jar.getInputStream(entry);
 		try {
-			is = jar.getInputStream(entry);
-			ByteArrayOutputStream os = new ByteArrayOutputStream();
+			final ByteArrayOutputStream os = new ByteArrayOutputStream();
 			IOUtils.copy(is, os);
 			return os.toByteArray();
 		} finally {
-			if(is != null)
-				IOUtils.closeQuietly(is);
+			IOUtils.closeQuietly(is);
 		}
 	}
 

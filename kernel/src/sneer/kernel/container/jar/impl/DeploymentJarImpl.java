@@ -25,16 +25,13 @@ import sneer.kernel.container.jar.DeploymentJar;
 import sneer.kernel.container.utils.InjectedBrick;
 import sneer.pulp.crypto.Crypto;
 import sneer.pulp.crypto.Digester;
-import wheel.io.JarBuilder;
-import wheel.io.Streams;
 import wheel.lang.exceptions.NotImplementedYet;
+
 public class DeploymentJarImpl implements DeploymentJar {
 
 	private static final long serialVersionUID = 1L;
 
-	private JarBuilder _jarBuilder;
-
-	private File _file;
+	private final File _file;
 	
 	private Properties _properties;
 
@@ -51,21 +48,11 @@ public class DeploymentJarImpl implements DeploymentJar {
 		_file = file;
 	}
 
-	public DeploymentJarImpl(File file, JarFile jarFile) {
-		_jarFile = jarFile;
-		_file = file;
-	}
-
 	private JarFile jarFile() {
 		if(_jarFile != null)
 			return _jarFile;
 
 		try {
-			String fileName = brickName() + "-" + role() + "-";
-			File tmp = File.createTempFile(fileName, ".jar");
-			IOUtils.write(_contents, new FileOutputStream(tmp));
-			_contents = null;
-			_file = tmp;
 			_jarFile = new JarFile(_file);
 		} catch(IOException e) {
 			throw new NotImplementedYet(e);
@@ -73,34 +60,13 @@ public class DeploymentJarImpl implements DeploymentJar {
 		return _jarFile;
 	}
 
-	public void add(String entryName, File file) throws IOException {
-		builder().add(entryName, file);
-	}
-
-	public void add(String entryName, String contents) throws IOException {
-		builder().add(entryName, contents);
-	}
-
-	private JarBuilder builder() throws IOException {
-		if(_jarBuilder != null)
-			return _jarBuilder;
-		
-		_jarBuilder = new JarBuilder(_file);
-		return _jarBuilder;
-	}
 
 	@Override
 	public void close() throws IOException {
-		closeJarBuilder();
-		if(_jarFile!=null)
+		if (null != _jarFile) {
 			_jarFile.close();
-		
-		_jarFile = new JarFile(_file);
-	}
-
-	private void closeJarBuilder() {
-		Streams.crash(_jarBuilder);
-		_jarBuilder = null;
+			_jarFile = null;
+		}
 	}
 
 	@Override
@@ -272,15 +238,6 @@ public class DeploymentJarImpl implements DeploymentJar {
 	public void beforeSerialize() throws IOException {
 		_contents = IOUtils.toByteArray(new FileInputStream(_file));
 	}
-
-//    public void copy(InputStream input, OutputStream output) throws IOException {
-//    	byte[] bytes = new byte[BUFFER_SIZE];
-//    	int n = 0;
-//    	while (-1 != (n = input.read(bytes))) {
-//    		output.write(bytes, 0, n);
-//    		_buffer.put(bytes);
-//    	}
-//    }
 }
 
 class DependencyExtractor extends EmptyVisitor {

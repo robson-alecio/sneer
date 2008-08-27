@@ -16,7 +16,7 @@ public class KeyManagerTest extends BrickTestSupport {
 	@Test
 	public void testAddKey() throws Exception {
 		String name = ownNameKeeper.getName();
-		Assert.assertEquals(null, name);
+		Assert.assertNotNull(name);
 		name = "";
 		int i = 0;
 		

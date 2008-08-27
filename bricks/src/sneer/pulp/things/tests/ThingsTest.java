@@ -17,7 +17,7 @@ public abstract class ThingsTest extends TestOfInterface<ThingHome> {
 	private static final String _LARGE_TEXT = generateLargeText();
 	private volatile boolean _isConcurrencyTestDone = false;
 	 
-	@Test (timeout = 1000)
+	@Test (timeout = 2000)
 	public void testAddAndFind() {
 		createApartmentAds();
 		searchApartmentAds();

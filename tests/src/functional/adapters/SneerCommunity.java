@@ -48,15 +48,16 @@ public class SneerCommunity implements SovereignCommunity {
 	}
 
 	private void tryToClean(File tmp) {
-		try {
-			FileUtils.cleanDirectory(tmp);
-		} catch (IOException e1) {
-			System.gc();
+		long t0 = System.currentTimeMillis();
+		while (true) {
 			try {
 				FileUtils.cleanDirectory(tmp);
-			} catch (IOException e2) {
-				System.err.println("Some previous test might be forgetting to close files. " + e2.getMessage());
-			}		
+				return;
+			} catch (IOException e) {
+				if (System.currentTimeMillis() - t0 > 3000)
+					throw new IllegalStateException("Some previous test might be forgetting to close files. " + e.getMessage());
+				System.gc();
+			}
 		}
 	}
 

@@ -2,7 +2,6 @@ package sneer.kernel.container.jar.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -11,8 +10,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassReader;
@@ -25,6 +24,8 @@ import sneer.kernel.container.jar.DeploymentJar;
 import sneer.kernel.container.utils.InjectedBrick;
 import sneer.pulp.crypto.Crypto;
 import sneer.pulp.crypto.Digester;
+import wheel.io.JarExploder;
+import wheel.lang.Predicate;
 import wheel.lang.exceptions.NotImplementedYet;
 
 public class DeploymentJarImpl implements DeploymentJar {
@@ -48,15 +49,12 @@ public class DeploymentJarImpl implements DeploymentJar {
 		_file = file;
 	}
 
-	private JarFile jarFile() {
+	private JarFile jarFile() throws IOException {
 		if(_jarFile != null)
 			return _jarFile;
 
-		try {
-			_jarFile = new JarFile(_file);
-		} catch(IOException e) {
-			throw new NotImplementedYet(e);
-		}
+		_jarFile = new JarFile(_file);
+		
 		return _jarFile;
 	}
 
@@ -69,13 +67,12 @@ public class DeploymentJarImpl implements DeploymentJar {
 		}
 	}
 
-	@Override
-	public InputStream getInputStream(String entryName) throws IOException {
-		return jarFile().getInputStream(jarFile().getEntry(entryName));
+	private InputStream inputStreamFor(String entryName) throws IOException {
+		return inputStreamFor(jarFile().getEntry(entryName));
 	}
 
-	public Enumeration<JarEntry> entries() {
-		return jarFile().entries();
+	private InputStream inputStreamFor(final ZipEntry entry) throws IOException {
+		return jarFile().getInputStream(entry);
 	}
 
 	@Override
@@ -85,34 +82,40 @@ public class DeploymentJarImpl implements DeploymentJar {
 		
 		String role = role();
 		if("api".equals(role) || "impl".equals(role)) {
-			_sneer1024 = makeHash();
+			try {
+				_sneer1024 = makeHash();
+			} catch (IOException e) {
+				throw new IllegalStateException(e);
+			}
 		} else {
 			_sneer1024 = "NO DONUT FOR YOU".getBytes();
 		}
 		return _sneer1024;
 	}
 
-	private byte[] makeHash() {
+	private byte[] makeHash() throws IOException {
 		Digester digester = _crypto.digester();
 		Enumeration<JarEntry> e = jarFile().entries();
 		while (e.hasMoreElements()) {
-			JarEntry entry = e.nextElement();
-			String name = entry.getName();
-			if (!entry.isDirectory() && includeInHash(name)) {
-				InputStream is = null;
-				try {
-					is = getInputStream(name);
-					//System.out.print("  " + name);
-					digester.update(is);
-				} catch (IOException ioe) {
-					throw new wheel.lang.exceptions.NotImplementedYet(ioe); // Implement Handle this exception.
-				} finally {
-					if(is != null)
-						IOUtils.closeQuietly(is);
-				}
-			}
+			final JarEntry entry = e.nextElement();
+			if (entry.isDirectory())
+				continue;
+			final String name = entry.getName();
+			if (!includeInHash(name))
+				continue;
+			updateHash(digester, entry);
 		}
 		return digester.digest();
+	}
+
+	private void updateHash(Digester digester, final JarEntry entry)
+			throws IOException {
+		InputStream is = inputStreamFor(entry);
+		try {
+			digester.update(is);
+		} finally {
+			IOUtils.closeQuietly(is);
+		}
 	}
 
 	private boolean includeInHash(String name) {
@@ -137,21 +140,13 @@ public class DeploymentJarImpl implements DeploymentJar {
 
 	@Override
 	public void explode(File target) throws IOException {
-		Enumeration<JarEntry> e = jarFile().entries();
-		while (e.hasMoreElements()) {
-			JarEntry entry = e.nextElement();
-			String name = entry.getName();
-			if(entry.isDirectory() && !skipDirectory(name)) {
-				File dir = new File(target, name);
-				dir.mkdirs();
-			} else if (!entry.isDirectory() && !skipFile(name)) {
-				File file = new File(target, name);
-				FileUtils.touch(file);
-				InputStream is = getInputStream(name);
-				IOUtils.copy(is, new FileOutputStream(file));
-				IOUtils.closeQuietly(is);
+		new JarExploder(jarFile(), target, new Predicate<JarEntry>() {
+			public boolean evaluate(JarEntry entry) {
+				if (entry.isDirectory())
+					return skipDirectory(entry.getName());
+				return skipFile(entry.getName());
 			}
-		}
+		}).explode();
 	}
 	
 	private boolean skipFile(String name) {
@@ -163,33 +158,47 @@ public class DeploymentJarImpl implements DeploymentJar {
 	}
 	
 	private Properties properties() throws IOException {
-		
 		if(_properties != null)
 			return _properties;
 		
-		Properties result = new Properties();
-		InputStream is = getInputStream("sneer.meta"); 
-		result.load(is);
-		IOUtils.closeQuietly(is);
-		_properties = result;
+		_properties = loadProperties();
+		return _properties;
+	}
+
+	private Properties loadProperties() throws IOException {
+		final Properties result = new Properties();
+		final InputStream is = inputStreamFor("sneer.meta"); 
+		try {
+			result.load(is);
+		} finally {
+			IOUtils.closeQuietly(is);
+		}
 		return result;
 	}
 
 	@Override
 	public List<InjectedBrick> injectedBricks() throws IOException {
-		List<InjectedBrick> result = new ArrayList<InjectedBrick>();
-		Enumeration<JarEntry> e = jarFile().entries();
+		final List<InjectedBrick> result = new ArrayList<InjectedBrick>();
+		final Enumeration<JarEntry> e = jarFile().entries();
 		while (e.hasMoreElements()) {
-			JarEntry entry = e.nextElement();
-			String name = entry.getName();
-			if (!entry.isDirectory() && name.endsWith(".class")) {
-				InputStream is = getInputStream(name);
-				List<InjectedBrick> injected = findInjectedBricksOnClass(is);
-				if(injected.size() > 0)
-					result.addAll(injected);
-			}
+			final JarEntry entry = e.nextElement();
+			if (entry.isDirectory())
+				continue;
+			final String name = entry.getName();
+			if (name.endsWith(".class"))
+				result.addAll(injectedBricksFor(entry));
 		}
 		return result;
+	}
+
+	private List<InjectedBrick> injectedBricksFor(JarEntry classEntry)
+			throws IOException {
+		final InputStream is = inputStreamFor(classEntry);
+		try {
+			return findInjectedBricksOnClass(is);
+		} finally {
+			IOUtils.closeQuietly(is);
+		}
 	}	
 	
 //	private String toEntryName(String brickName) {
@@ -203,7 +212,6 @@ public class DeploymentJarImpl implements DeploymentJar {
 		DependencyExtractor extractor = new DependencyExtractor();
 		classReader.accept(extractor, 0);
 		return extractor.injectedBricks();
-		
 	}
 
 	@Override

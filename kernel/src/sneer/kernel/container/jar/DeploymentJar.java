@@ -3,7 +3,6 @@ package sneer.kernel.container.jar;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.List;
 
@@ -21,10 +20,6 @@ public interface DeploymentJar extends Serializable, NetworkFriendly, Closeable 
 	String role();
 
 	byte[] sneer1024();
-
-	void close() throws IOException;
-
-	InputStream getInputStream(String entryName) throws IOException;
 	
 	void explode(File target) throws IOException;
 }

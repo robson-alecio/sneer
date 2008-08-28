@@ -1,6 +1,5 @@
 package functional;
 
-import org.junit.After;
 import org.junit.Before;
 
 import sneer.kernel.container.ContainerUtils;
@@ -21,7 +20,6 @@ public abstract class SovereignFunctionalTest extends BrickTestSupport {
 		createAndConnectParties();
 	}
 	
-	@After
 	public void releaseCommunity() {
 		_community = null;
 		_a = null;

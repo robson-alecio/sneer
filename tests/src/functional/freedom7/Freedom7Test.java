@@ -11,6 +11,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
+import sneer.kernel.container.impl.classloader.ApiClassLoader;
 import sneer.pulp.tmpdirectory.TmpDirectory;
 import functional.SovereignFunctionalTest;
 import functional.SovereignParty;
@@ -22,6 +23,8 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 	
 	@After
 	public void cleanUpDirectories() throws IOException {
+		releaseCommunity();
+		ApiClassLoader.checkAllInstancesAreFreed();
 		FileUtils.deleteDirectory(rootFolder());
 	}
 

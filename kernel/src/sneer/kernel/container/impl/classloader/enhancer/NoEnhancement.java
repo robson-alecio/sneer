@@ -40,7 +40,7 @@ public class NoEnhancement implements Enhancer {
 	@Override
 	public ClassVisitor enhance(ClassVisitor visitor) {
 		return visitor;
-//		return new FooVisitor(visitor);
+//		return new TracingVisitor(visitor);
 	}
 
 }

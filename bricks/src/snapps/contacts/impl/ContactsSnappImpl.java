@@ -15,10 +15,15 @@ import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.RFactory;
 import wheel.graphics.Images;
+import wheel.lang.Functor;
 import wheel.reactive.Signal;
-import wheel.reactive.impl.Constant;
+import wheel.reactive.impl.Adapter;
+import wheel.reactive.impl.mocks.RandomBoolean;
 
 public class ContactsSnappImpl implements ContactsSnapp {
+
+	private static final Image ONLINE = getImage("online.png");
+	private static final Image OFFLINE = getImage("offline.png");
 
 	@Inject
 	static private ContactManager _contacts;
@@ -26,11 +31,11 @@ public class ContactsSnappImpl implements ContactsSnapp {
 	@Inject
 	static private RFactory _rfactory;
 
-	
-	private ListWidget<Contact> _contactList;
-	
-	private Container _container;
+//	@Inject
+//	static private ConnectionManager _connectionManager;
 
+	private ListWidget<Contact> _contactList;
+	private Container _container;
 
 	@Inject
 	static private SnappManager _snapps;
@@ -38,32 +43,42 @@ public class ContactsSnappImpl implements ContactsSnapp {
 	public ContactsSnappImpl(){
 		_snapps.registerSnapp(this);
 	} 
+
+	private static Image getImage(String fileName) {
+		return Images.getImage(ContactsSnappImpl.class.getResource(fileName));
+	}
 	
 	@Override
 	public void init(Container container) {	
-		_contactList = _rfactory.newList(_contacts.getContacts());
+		_contactList = _rfactory.newList(_contacts.getContacts().output(),
+				new LabelProvider<Contact>() {
+
+					@Override
+					public Signal<Image> imageFor(Contact contact) {
+						
+//						Signal<Boolean> isOnline = _connectionManager.connectionFor(contact).isOnline();
+						
+						Signal<Boolean> isOnline = new RandomBoolean().output();
+						Functor<Boolean, Image> functor = new Functor<Boolean, Image>(){
+							@Override
+							public Image evaluate(Boolean value) {
+								return value?ONLINE:OFFLINE;
+							}};
+						
+						Adapter<Boolean, Image> imgSource = new Adapter<Boolean, Image>(isOnline, functor);
+						return imgSource.output();	
+					}
+
+					@Override
+					public Signal<String> labelFor(Contact contact) {
+						return contact.nickname();
+					}
+				});
 		_container = container;
 		_container.setLayout(new BorderLayout());
 		_container.add(_contactList.getComponent(), BorderLayout.CENTER);
 		
 		_contactList.getComponent().setBorder(new TitledBorder("My Contacts"));
-		_contactList.setLabelProvider(new LabelProvider<Contact>(){
-
-			Constant<Image> _image = new Constant<Image>(getImage());
-			
-			private Image getImage() {
-				return Images.getImage(ContactsSnappImpl.class.getResource("online.png"));
-			}
-
-			@Override
-			public Signal<Image> imageFor(Contact contact) {
-				return _image;
-			}
-
-			@Override
-			public Signal<String> labelFor(Contact contact) {
-				return contact.nickname();
-			}});
 	}
 
 	@Override

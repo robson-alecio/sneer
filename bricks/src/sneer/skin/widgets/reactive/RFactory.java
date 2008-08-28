@@ -7,7 +7,7 @@ import javax.swing.JTextField;
 
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
-import wheel.reactive.lists.ListRegister;
+import wheel.reactive.lists.ListSignal;
 
 public interface RFactory {
 
@@ -23,6 +23,6 @@ public interface RFactory {
 	TextWidget<JTextField> newTextField(Signal<String> source, Omnivore<String> setter);
 	TextWidget<JTextField> newTextField(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange);
 	
-	<LW extends ListWidget<?>> LW newList(ListRegister<?> register);
+	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> _labelProvider);
 
 }

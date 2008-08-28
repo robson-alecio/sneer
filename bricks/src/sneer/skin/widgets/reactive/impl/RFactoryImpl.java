@@ -8,12 +8,13 @@ import javax.swing.JTextField;
 import sneer.kernel.container.Inject;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.widgets.reactive.ImageWidget;
+import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.RFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
-import wheel.reactive.lists.ListRegister;
+import wheel.reactive.lists.ListSignal;
 
 public class RFactoryImpl implements RFactory {
 	
@@ -61,8 +62,7 @@ public class RFactoryImpl implements RFactory {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public <LW extends ListWidget<?>> LW newList(ListRegister<?> register) {
-		return (LW) new RListImpl(register);
+	public <T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> provider) {
+		return new RListImpl<T>(source, provider);
 	}
 }

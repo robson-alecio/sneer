@@ -19,22 +19,23 @@ import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.RFactory;
 import sneer.skin.widgets.reactive.TextWidget;
+import wheel.io.ui.impl.ListSignalModel;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
-import wheel.reactive.Signals;
-import wheel.reactive.lists.ListRegister;
+import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListValueChange;
 
 public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 	
 	private static final long serialVersionUID = 1L;
 
-	private LabelProvider<ELEMENT> _labelProvider = new DefaultLabelProvider<ELEMENT>();
+	private LabelProvider<ELEMENT> _labelProvider;
 
-	private final ListRegister<ELEMENT> _register;
+	private final ListSignal<ELEMENT> _source;
 	
-	RListImpl(ListRegister<ELEMENT> register) {
-		_register = register;
+	RListImpl(ListSignal<ELEMENT> source, LabelProvider<ELEMENT> labelProvider) {
+		_source = source;
+		_labelProvider = labelProvider;
 		initModel();
 		addReceiverListener();
 		
@@ -71,7 +72,7 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 	}
 
 	private void addReceiverListener() {
-		_register.output().addListReceiver(new Omnivore<ListValueChange>(){
+		_source.addListReceiver(new Omnivore<ListValueChange>(){
 			@Override
 			public void consume(ListValueChange valueObject) {
 				revalidate();
@@ -80,7 +81,13 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 	}
 	
 	private void initModel() {
-		setModel(new DefaultListModelImpl<ELEMENT>(_register));
+		
+		setModel(new ListSignalModel<ELEMENT>(_source, new ListSignalModel.SignalChooser<ELEMENT>(){
+			@Override
+			public Signal<?>[] signalsToReceiveFrom(ELEMENT element) {
+				return new Signal<?>[]{_labelProvider.imageFor(element), 
+									   _labelProvider.labelFor(element)};
+			}}));
 	}
 
 	@Override
@@ -94,26 +101,12 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 	}
 
 	@Override
-	public ListRegister<ELEMENT> register() {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
-	}
-
-	@Override
 	public void setLabelProvider(LabelProvider<ELEMENT> labelProvider) {
 		_labelProvider = labelProvider;
 	}
-}
-
-class DefaultLabelProvider<ELEMENT> implements LabelProvider<ELEMENT> {
 
 	@Override
-	public Signal<String> labelFor(ELEMENT element) {
-		return Signals.constant(element.toString());
+	public ListSignal<ELEMENT> output() {
+		return _source;
 	}
-	
-	@Override
-	public Signal<Image> imageFor(ELEMENT element) {
-		return Signals.constant(null);
-	}
-
 }

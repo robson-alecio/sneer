@@ -26,8 +26,9 @@ public class ApiClassLoader extends URLClassLoader {
 
 	static public void checkAllInstancesAreFreed() {
 		System.gc();
-		for (Reference<ApiClassLoader> ref : _instances)
-			if (ref.get() != null) {
+		for (Reference<ApiClassLoader> ref : _instances) {
+			final ApiClassLoader classLoader = ref.get();
+			if (classLoader != null) {
 				try {
 					throw new IllegalStateException("Somebody is still holding references to an ApiClassloader");
 				} catch (IllegalStateException e) {
@@ -35,6 +36,7 @@ public class ApiClassLoader extends URLClassLoader {
 					throw e;
 				}
 			}
+		}
 	}
 	
 	@Override

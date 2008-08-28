@@ -25,11 +25,11 @@ import wheel.lang.Threads;
 
 public class BrickClassLoader extends EnhancingClassLoader {
 
-	private File _brickDirectory;
+	private final File _brickDirectory;
 	
-	private Class<?> _mainClass;
+	private final Class<?> _mainClass;
 	
-	private File _implJarFile;
+	private final File _implJarFile;
 	
 	private Map<String, byte[]> _cache; 
 	
@@ -93,6 +93,11 @@ public class BrickClassLoader extends EnhancingClassLoader {
 			return _delegate; 
 		}
 		
+		_delegate = new URLClassLoader(urlsForDependencies(dependencies), null);
+		return _delegate;
+	}
+
+	private URL[] urlsForDependencies(List<Dependency> dependencies) {
 		URL[] urls = new URL[dependencies.size()];
 		int i = 0;
 		for (Dependency dependency : dependencies) {
@@ -102,8 +107,7 @@ public class BrickClassLoader extends EnhancingClassLoader {
 				throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 			}
 		}
-		_delegate = new URLClassLoader(urls, null);
-		return _delegate;
+		return urls;
 	}
 
 	private DependencyManager dependencyManager() {

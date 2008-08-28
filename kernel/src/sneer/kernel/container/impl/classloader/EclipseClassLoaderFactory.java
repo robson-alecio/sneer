@@ -1,8 +1,10 @@
 package sneer.kernel.container.impl.classloader;
 
 import java.io.File;
-import java.util.HashMap;
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.apache.commons.lang.SystemUtils;
 
@@ -16,7 +18,7 @@ public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 
 	private JavaFilter _filter;
 	
-	private final Map<Class<?>, ClassLoader> _classLoaderByBrick = new HashMap<Class<?>, ClassLoader>();
+	private final Map<Class<?>, Reference<ClassLoader>> _classLoaderByBrick = new WeakHashMap<Class<?>, Reference<ClassLoader>>();
 
 	private final SneerConfig _config;
 	
@@ -26,22 +28,26 @@ public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 
 	@Override
 	public ClassLoader produceBrickClassLoader(Class<?> brickClass, File brickDirectory) {
-		ClassLoader result = _classLoaderByBrick.get(brickClass);
-		if(result != null)
-			return result;
+		final Reference<ClassLoader> cachedRef = _classLoaderByBrick.get(brickClass);
+		if(cachedRef != null) {
+			final ClassLoader cached = cachedRef.get();
+			if (cached != null)
+				return cached;
+		}
 		
+		final ClassLoader cl = newBrickClassLoader(brickClass, brickDirectory);
+		_classLoaderByBrick.put(brickClass, new WeakReference<ClassLoader>(cl));
+		return cl;
+	}
+
+	private ClassLoader newBrickClassLoader(Class<?> brickClass, File brickDirectory) {
 		final ClassLoader parent = brickClass.getClassLoader();
 
 		if(FileUtils.isEmpty(brickDirectory)) {
 			//useful for eclipse development
-			result = fileClassLoader(parent);
-			_classLoaderByBrick.put(brickClass, result);
-			return result; 
+			return fileClassLoader(parent);
 		}
-		
-		result = new BrickClassLoader(parent, brickClass, brickDirectory);
-		_classLoaderByBrick.put(brickClass, result);
-		return result;
+		return new BrickClassLoader(parent, brickClass, brickDirectory);
 	}
 
 	//FixUrgent: hack to allow using bricks that are not deployed, but present in your classpath.

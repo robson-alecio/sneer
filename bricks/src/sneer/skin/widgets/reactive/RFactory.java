@@ -12,6 +12,7 @@ import wheel.reactive.lists.ListRegister;
 public interface RFactory {
 
 	ImageWidget newImage(Signal<Image> source);
+	ImageWidget newImage(Signal<Image> source, Omnivore<Image> setter);
 	
 	TextWidget<JLabel> newLabel(Signal<String> source);
 	TextWidget<JLabel> newLabel(Signal<String> source, Omnivore<String> setter);
@@ -23,4 +24,5 @@ public interface RFactory {
 	TextWidget<JTextField> newTextField(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange);
 	
 	<LW extends ListWidget<?>> LW newList(ListRegister<?> register);
+
 }

@@ -51,8 +51,13 @@ public class RFactoryImpl implements RFactory {
 	}
 
 	@Override
+	public ImageWidget newImage(Signal<Image> source,Omnivore<Image> setter) {
+		return new RImageImpl(imageFactory, source, setter);
+	}
+
+	@Override
 	public ImageWidget newImage(Signal<Image> source) {
-		return new RImageImpl(source, imageFactory);
+		return new RImageImpl(imageFactory, source);
 	}
 
 	@Override

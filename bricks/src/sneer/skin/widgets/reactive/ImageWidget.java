@@ -5,9 +5,13 @@ import java.awt.Image;
 
 import javax.swing.JComponent;
 
+import wheel.lang.Omnivore;
+import wheel.reactive.Signal;
+
 public interface ImageWidget {
 
-	Image getImage();
+	Signal<Image> output();
+	Omnivore<Image> setter();	
 
 	Component getComponent();
 	JComponent getMainWidget();

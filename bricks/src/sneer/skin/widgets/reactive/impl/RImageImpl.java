@@ -18,17 +18,20 @@ import wheel.reactive.Signal;
 
 public class RImageImpl extends JPanel implements ImageWidget{
 
-	private final Signal<Image> _image;
+	private Signal<Image> _source;
 	private Image _lastImage;
 	private Omnivore<Image> _listener;
 	private static final long serialVersionUID = 1L;
-	private final ImageFactory _imageFactory;
+	private ImageFactory _imageFactory;
 	private Dimension _dimension;
+	private Omnivore<Image> _setter;
 	
-	RImageImpl(Signal<Image> image, ImageFactory imageFactory){
-		_image = image;
+	RImageImpl(ImageFactory imageFactory, Signal<Image> source, Omnivore<Image> setter){
+		_source = source;
 		_imageFactory = imageFactory;
-		_lastImage = _image.currentValue();
+		_setter = setter;
+		
+		_lastImage = _source.currentValue();
 		if(_lastImage==null){
 			_dimension = new Dimension(48, 48);
 		}else{
@@ -37,8 +40,12 @@ public class RImageImpl extends JPanel implements ImageWidget{
 		addReceivers();
 	}
 
+	RImageImpl(ImageFactory imageFactory, Signal<Image> source) {
+		this(imageFactory, source, null);
+	}
+
 	private void addReceivers() {
-		_image.addReceiver(imageReceiver());
+		_source.addReceiver(imageReceiver());
 	}
 
 	private Omnivore<Image> imageReceiver() {
@@ -77,11 +84,6 @@ public class RImageImpl extends JPanel implements ImageWidget{
 	public Dimension getMinimumSize() {
 		return getMaximumSize();
 	}
-	
-	@Override
-	public Image getImage() {
-		return _image.currentValue();
-	}
 
 	@Override
 	public Component getComponent() {
@@ -106,5 +108,16 @@ public class RImageImpl extends JPanel implements ImageWidget{
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                             RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2.drawImage(_lastImage, 0, 0, newW, newH, null);
+	}
+
+	@Override
+	public Signal<Image> output() {
+		return _source;
+	}
+
+	@Override
+	public Omnivore<Image> setter() {
+		if(_setter!=null) return _setter;
+		throw new RuntimeException("The widget is readonly.");
 	}
 }

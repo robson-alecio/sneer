@@ -28,7 +28,7 @@ import wheel.reactive.maps.impl.MapRegisterImpl;
 
 public class BrickManagerImpl implements BrickManager {
 
-	@sneer.kernel.container.Inject
+	@Inject
 	private SneerConfig _config;
 
 	@Inject

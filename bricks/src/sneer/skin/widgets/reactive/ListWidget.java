@@ -9,8 +9,10 @@ import wheel.reactive.lists.ListRegister;
 public interface ListWidget<ELEMENT> {
 
 	ListRegister<ELEMENT> register();
+	void setLabelProvider(LabelProvider<ELEMENT> labelProvider);
 
 	Component getComponent();
 	JComponent getMainWidget();
+
 	
 }

@@ -36,7 +36,37 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 		_register = register;
 		initModel();
 		addReceiverListener();
-		setCellRenderer(new DefaultListCellRenderer<ELEMENT>(_labelProvider));
+		
+		
+		class DefaultListCellRenderer implements ListCellRenderer{
+			
+			@Override
+			public Component getListCellRendererComponent(JList lst, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+				Container container = ContainerUtils.getContainer();
+				RFactory rfactory = container.produce(RFactory.class);
+
+				JPanel panel = new JPanel();
+				panel.setOpaque(false);
+				panel.setLayout(new BorderLayout(5,5));
+				
+				Signal<String> slabel = _labelProvider.labelFor(getElement(value));
+				Signal<Image> sicon = _labelProvider.imageFor(getElement(value));
+				
+				TextWidget<JLabel> label = rfactory.newLabel(slabel);
+				panel.add(label.getComponent(), BorderLayout.CENTER);
+
+				ImageWidget image = rfactory.newImage(sicon);
+				panel.add(image.getComponent(), BorderLayout.WEST);
+				panel.setOpaque(false);
+				
+				return panel;
+			}
+
+			private ELEMENT getElement(Object value) {
+				return cast(value);
+			}	
+		}
+		setCellRenderer(new DefaultListCellRenderer());
 	}
 
 	private void addReceiverListener() {
@@ -66,6 +96,11 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 	public ListRegister<ELEMENT> register() {
 		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	}
+
+	@Override
+	public void setLabelProvider(LabelProvider<ELEMENT> labelProvider) {
+		_labelProvider = labelProvider;
+	}
 }
 
 class DefaultLabelProvider<ELEMENT> implements LabelProvider<ELEMENT> {
@@ -80,38 +115,4 @@ class DefaultLabelProvider<ELEMENT> implements LabelProvider<ELEMENT> {
 		return Signals.constant(null);
 	}
 
-}
-
-class DefaultListCellRenderer<ELEMENT> implements ListCellRenderer{
-	
-	private final LabelProvider<ELEMENT> _labelProvider;
-
-	public DefaultListCellRenderer(LabelProvider<ELEMENT> labelProvider) {
-		_labelProvider = labelProvider;
-	}
-
-	@Override
-	public Component getListCellRendererComponent(JList lst, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-		Container container = ContainerUtils.getContainer();
-		RFactory rfactory = container.produce(RFactory.class);
-
-		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout(5,5));
-		
-		Signal<String> slabel = _labelProvider.labelFor(getElement(value));
-		Signal<Image> sicon = _labelProvider.imageFor(getElement(value));
-		
-		TextWidget<JLabel> label = rfactory.newLabel(slabel);
-		panel.add(label.getComponent(), BorderLayout.CENTER);
-
-		ImageWidget image = rfactory.newImage(sicon);
-		panel.add(image.getComponent(), BorderLayout.WEST);
-		panel.setOpaque(false);
-		
-		return panel;
-	}
-
-	private ELEMENT getElement(Object value) {
-		return cast(value);
-	}	
 }

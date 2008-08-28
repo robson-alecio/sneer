@@ -27,6 +27,7 @@ public class RImageImpl extends JPanel implements ImageWidget{
 	private Omnivore<Image> _setter;
 	
 	RImageImpl(ImageFactory imageFactory, Signal<Image> source, Omnivore<Image> setter){
+		setOpaque(false);
 		_source = source;
 		_imageFactory = imageFactory;
 		_setter = setter;

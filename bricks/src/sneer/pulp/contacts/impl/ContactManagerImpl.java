@@ -79,10 +79,12 @@ public class ContactManagerImpl implements ContactManager {
 class ContactImpl implements Contact {
 
 	private final Register<String> _nickname;
+	private final Register<Boolean> _isOnliRegister;
 	
 	
 	public ContactImpl(String nickname) {
 		_nickname = new RegisterImpl<String>(nickname);
+		_isOnliRegister = new RegisterImpl<Boolean>(false);
 	}
 
 
@@ -94,11 +96,18 @@ class ContactImpl implements Contact {
 
 	@Override
 	public String toString() {
-		return _nickname.output().currentValue();
+		return _nickname.output().currentValue() 
+			+ ((isOnline().currentValue())?" (Online)":" (Offline)");
 	}
 
 	void nickname(String newNickname) {
 		_nickname.setter().consume(newNickname);
+	}
+
+
+	@Override
+	public Signal<Boolean> isOnline() {
+		return _isOnliRegister.output();
 	}
 
 }

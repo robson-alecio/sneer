@@ -50,10 +50,4 @@ public class RemoteContact implements Contact {
 	Omnivore<String> nicknameSetter() {
 		return _nickname.setter();
 	}
-
-	@Override
-	public Signal<Boolean> isOnline() {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
-	}
-
 }

@@ -6,6 +6,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Image;
 
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -88,7 +89,7 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 	}
 	
 	@Override
-	public Component getComponent(){
+	public JComponent getComponent(){
 		return this;
 	}
 

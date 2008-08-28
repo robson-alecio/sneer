@@ -213,7 +213,7 @@ public abstract class RAbstractField<WIDGET extends JComponent> extends JPanel i
 	}
 	
 	@Override
-	public JPanel getComponent() {
+	public JComponent getComponent() {
 		return this;
 	}	
 

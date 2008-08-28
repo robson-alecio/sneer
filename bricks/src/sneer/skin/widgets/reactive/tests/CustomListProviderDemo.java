@@ -46,7 +46,7 @@ public class CustomListProviderDemo {
 
 	private static void addReactiveListWidget(final ListRegister<String> register, RFactory rfactory, JFrame f) {
 		ListWidget<String> listw = cast(rfactory.newList(register));
-		final JList list = (JList) listw.getMainWidget(); 
+		final JList list = listw.getMainWidget(); 
 		f.getContentPane().add(new JScrollPane(list));
 	}
 }

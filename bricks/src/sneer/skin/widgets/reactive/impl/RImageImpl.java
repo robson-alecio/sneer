@@ -1,6 +1,5 @@
 package sneer.skin.widgets.reactive.impl;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -87,12 +86,12 @@ public class RImageImpl extends JPanel implements ImageWidget{
 	}
 
 	@Override
-	public Component getComponent() {
+	public JComponent getComponent() {
 		return this;
 	}
 
 	@Override
-	public JComponent getMainWidget() {
+	public JPanel getMainWidget() {
 		return this;
 	}
 	

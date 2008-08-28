@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Image;
 
+import javax.swing.border.TitledBorder;
+
 import snapps.contacts.ContactsSnapp;
 import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
@@ -44,6 +46,7 @@ public class ContactsSnappImpl implements ContactsSnapp {
 		_container.setLayout(new BorderLayout());
 		_container.add(_contactList.getComponent(), BorderLayout.CENTER);
 		
+		_contactList.getComponent().setBorder(new TitledBorder("My Contacts"));
 		_contactList.setLabelProvider(new LabelProvider<Contact>(){
 
 			Constant<Image> _image = new Constant<Image>(getImage());

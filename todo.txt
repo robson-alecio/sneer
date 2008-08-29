@@ -2,14 +2,11 @@
 ===================
 
 	- [Sandro] ContactManager.getContacts - Delete this method. It should never have been exposed.
-	- [Sandro] @Override SnappFrameImpl.getContainer causes a compile error in OpenJdk6 because getContainer is implemented in Component as packagelocal. :) 
-	- Fix SneerFreedom7Test
-		- Test with a lib.
+	- [Sandro] @Override SnappFrameImpl.getContainer causes a compile error in OpenJdk6 because getContainer is implemented in Component as packagelocal. :)
+	- Dashboard - Make it open by default when Sneer is run.
+	- Contacts List - Leave the "My Contacts" label. Remove the ugly border. :)
+	- SneerFreedom7Test - Test brick publishing with a lib.
 	---- INITIAL CLEANUP DONE
-
-	- [Kalecser] Continuous Integration with Clover test coverage
-		- Low maintenance build: Interpret the .classpath file and compile the build exactly as Eclipse would.
-		- Cyclic dependency detection: Compile one sourcefolder at a time, from the last in the .classpath list (most basic (wheel)) to the first in the list (most high-level (spikes)), without the other uncompiled sourcefolders in the path.
 
 	- Tray Icon and Dashboard Titlebar Icon - Ask Petra for a 16x16 icon to put there. Black on white? with transparency and anti-aliasing inside but not on the transparency border.
 	- Brick Publish (Supposedly working already)
@@ -17,12 +14,20 @@
 	- Contact List - (Host addresses for Sneer developers are HARDCODED)
 		- Name
 		- Online indicator icon
-	---- Anelise can start testing for real. All bugs she finds get fixed immediately. Improvement suggestions are added to this todo list.
+	---------------------------------- FIRST DOGFOOD RELEASE - Anelise can start testing for real. All bugs she finds get fixed immediately. Improvement suggestions are added to this todo list.
+
+	- [Kalecser] Continuous Integration with Clover test coverage
+		- Low maintenance build: Interpret the .classpath file and compile the build exactly as Eclipse would.
+		- Cyclic dependency detection: Compile one sourcefolder at a time, from the last in the .classpath list (most basic (wheel)) to the first in the list (most high-level (spikes)), without the other uncompiled sourcefolders in the path.
+	
+	- Wind
+	---- WE DROP SKYPE CHAT :)
 	
 	- DynDNS Client ;)	
-	- Wind
-	---------------------------------- FIRST DOGFOOD RELEASE - We drop Skype chat
-	- ContainerUtils.getContainer() - Drop
+	- Voice Calls - Migrate from the old sneermonolith project
+	---- WE DROP SKYPE :)
+	
+	- ContainerUtils.getContainer() - Drop. Fix all uses.
 	- Output folders - Make all source folders compile to the default folder (bin) and fix the tests. Is this possible?
 	- Replace the AnnotatedFieldInjector by the StaticFieldInjector - Need to create our own TestRunner?
 	- Simplest Possible Kernel - What is it? Just injection?
@@ -52,8 +57,9 @@
 		- API
 		- GUI
 	- Transparent Persistence
-	- Voice Calls - Already done in the old sneermonolith project
 	- Screen Viewing à la VNC - There is a free vnc client implementation in Java. If there is no free server implementation in java, just send the entire screen over using gzip compression for now.
+	---- WE DROP VNC
+	
     - File Transfer
 	- Traffic Prioritization by tuple type
 	- MSN Client

@@ -4,7 +4,6 @@
 	- outs - Make all tests run without any System.outs.
 	- Fix SneerFreedom7Test
 		- Test with a lib.
-		- Use "lib" as the lib directory name instead of "libs".
 	- Output folders - All src folders are now being compiled to "sneerAPI-bin" and all tests are passing. Make all source folders compile to the default folder (bin) and fix the tests.
 	---- INITIAL CLEANUP DONE
 

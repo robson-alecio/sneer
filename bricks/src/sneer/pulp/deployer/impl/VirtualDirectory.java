@@ -78,7 +78,7 @@ public class VirtualDirectory {
 		if(_jarFiles != null && _jarFiles.size() > 0)
 			return _jarFiles;
 		
-		SimpleFilter walker = new LibFinder(new File(_path, "libs"));
+		SimpleFilter walker = new LibFinder(new File(_path, "lib"));
 		_jarFiles = walker.list(); 
 		return _jarFiles;
 	}

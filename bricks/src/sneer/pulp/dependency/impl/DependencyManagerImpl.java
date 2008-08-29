@@ -38,7 +38,7 @@ public class DependencyManagerImpl implements DependencyManager, Startable {
 	
 	@Override
 	public void start() throws Exception {
-		_root = new File(_config.brickRootDirectory(), "libs");
+		_root = new File(_config.brickRootDirectory(), "lib");
 		if(!_root.exists())
 			_root.mkdirs();
 	}

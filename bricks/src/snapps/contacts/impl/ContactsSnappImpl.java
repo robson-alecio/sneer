@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Image;
 
+import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
 import snapps.contacts.ContactsSnapp;
@@ -35,7 +36,6 @@ public class ContactsSnappImpl implements ContactsSnapp {
 //	static private ConnectionManager _connectionManager;
 
 	private ListWidget<Contact> _contactList;
-	private Container _container;
 
 	@Inject
 	static private SnappManager _snapps;
@@ -74,11 +74,13 @@ public class ContactsSnappImpl implements ContactsSnapp {
 						return contact.nickname();
 					}
 				});
-		_container = container;
-		_container.setLayout(new BorderLayout());
-		_container.add(_contactList.getComponent(), BorderLayout.CENTER);
 		
-		_contactList.getComponent().setBorder(new TitledBorder("My Contacts"));
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+		container.setLayout(new BorderLayout());
+		panel.add(_contactList.getComponent(), BorderLayout.CENTER);
+		container.add(panel, BorderLayout.CENTER);
+		panel.setBorder(new TitledBorder("My Contacts"));
 	}
 
 	@Override

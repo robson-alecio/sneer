@@ -22,26 +22,12 @@ public class BrickTestSupport {
     
 	@Before
 	public void injectDependencies()throws Exception {
-		System.out.println("Before pai");
-
 		Container container = ContainerUtils.newContainer(getBindings());
 	    Injector injector = new AnnotatedFieldInjector(container);
 
 	    injector.inject(this);
-	    
-		ApiClassLoader.checkAllInstancesAreFreed();
-
-		new ApiClassLoader(null, getClass().getClassLoader());
-		ApiClassLoader.checkAllInstancesAreFreed();
-
 	}
 
-	@After
-	public void after() {
-		System.out.println("After pai");
-	}
-
-	
 	
 	public static File getWorkDirectory() {
 		URL url = Threads.contextClassLoader().getResource(".");

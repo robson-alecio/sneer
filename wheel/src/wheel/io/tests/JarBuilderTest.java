@@ -14,18 +14,19 @@ import org.junit.Test;
 
 import wheel.io.JarBuilder;
 import wheel.io.Streams;
+import wheel.testutil.TestThatUsesFiles;
 
-public class JarBuilderTest {
+public class JarBuilderTest extends TestThatUsesFiles {
 
 	@Test
 	public void testSimpleJar() throws Exception {
 		// test data
 		String content = "sample content\nnew line";
-		File data = File.createTempFile("entry-", ".txt");
+		File data = File.createTempFile("entry-", ".txt", tmpDirectory());
 		FileUtils.writeStringToFile(data, content);
 		
 		//create jar file
-		File file = File.createTempFile("myJar-", ".jar");
+		File file = File.createTempFile("myJar-", ".jar", tmpDirectory());
 		JarBuilder jar = new JarBuilder(file);
 		try {
 			jar.add("entry.txt", data);

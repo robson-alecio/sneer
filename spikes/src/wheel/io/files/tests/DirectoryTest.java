@@ -1,26 +1,35 @@
 package wheel.io.files.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
-import junit.framework.TestCase;
-import wheel.io.files.Directory;
+import org.junit.Before;
+import org.junit.Test;
 
-public abstract class DirectoryTest extends TestCase {
+import wheel.io.files.Directory;
+import wheel.testutil.TestThatUsesFiles;
+
+public abstract class DirectoryTest extends TestThatUsesFiles {
 	
 	protected Directory _subject;
 	
 	protected abstract Directory subject() throws IOException;
 	protected abstract String absoluteFileName(String name);
 
-	@Override
-	protected void setUp() throws IOException {
+	@Before
+	public void setUp() throws IOException {
 		_subject = subject();
 	}
 
+	@Test
 	public void testFileCreationAndDeletion() throws IOException{
 		assertFalse(_subject.fileExists("test"));
 		try {
@@ -56,6 +65,7 @@ public abstract class DirectoryTest extends TestCase {
 		assertTrue(e.getMessage().indexOf(part) != -1);
 	}
 
+	@Test
 	public void testDeleteWithOpenStreams() throws IOException {
 		OutputStream out = _subject.createFile("log");
 		try {
@@ -72,7 +82,7 @@ public abstract class DirectoryTest extends TestCase {
 		in.close();
 	}
 
-	
+	@Test
 	public void testReadWrite() throws IOException, ClassNotFoundException {
 
 		String data = "this is test data";
@@ -94,6 +104,7 @@ public abstract class DirectoryTest extends TestCase {
 		objIn.close();
 	}
 
+	@Test
 	public void testRename() throws IOException {
 		_subject.createFile("log").close();
 		_subject.renameFile("log", "log2");
@@ -106,6 +117,7 @@ public abstract class DirectoryTest extends TestCase {
 		} catch (IOException expected) {}
 	}
 
+	@Test
 	public void testRenameWithOpenStreams() throws IOException{
 		
 		OutputStream out = _subject.createFile("log");

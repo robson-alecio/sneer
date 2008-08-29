@@ -71,20 +71,16 @@ public class CompilerTest extends BrickTestSupport {
 		assertTrue(result.getErrorString(), result.success());
 	}
 	
-	private File createLibFolder() throws IOException {
+	private File createLibFolder() {
 		final File dir = new File(tmpDirectory(), "lib");
 		dir.mkdirs();
 		return dir;
 	}
 
-	private File tmpDirectory() throws IOException {
-		return createTempFile().getParentFile();
-	}
-
 	private Result compile(String code, File libDir) {
 		File java = writeSourceFile(code);
 		Classpath classpath = classPathForLibs(libDir);
-		return _compiler.compile(Collections.singletonList(java), getWorkDirectory(), classpath);
+		return _compiler.compile(Collections.singletonList(java), tmpDirectory(), classpath);
 	}
 
 	private File writeSourceFile(String code) {
@@ -99,7 +95,7 @@ public class CompilerTest extends BrickTestSupport {
 	}
 
 	private File createTempFile() throws IOException {
-		return File.createTempFile(TEST_FILE_PREFIX, ".java");
+		return File.createTempFile(TEST_FILE_PREFIX, ".java", tmpDirectory());
 	}
 
 	private Classpath classPathForLibs(File libDir) {

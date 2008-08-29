@@ -1,14 +1,9 @@
 package functional;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 
 import sneer.kernel.container.ContainerUtils;
-import sneer.kernel.container.impl.classloader.ApiClassLoader;
 import sneer.kernel.container.tests.BrickTestSupport;
 
 public abstract class SovereignFunctionalTest extends BrickTestSupport {
@@ -20,7 +15,6 @@ public abstract class SovereignFunctionalTest extends BrickTestSupport {
 	protected SovereignParty _a;
 	protected SovereignParty _b;
 	
-	
 	@Before
 	public void initNewCommunity() {
 		_community = createNewCommunity();
@@ -28,15 +22,12 @@ public abstract class SovereignFunctionalTest extends BrickTestSupport {
 	}
 	
 	@After
-	public void cleanUpDirectories() throws IOException {
+	public void cleanUpDirectories() {
 		releaseCommunity();
-		ApiClassLoader.checkAllInstancesAreFreed();
-		FileUtils.deleteDirectory(rootFolder());
+		//ApiClassLoader.checkAllInstancesAreFreed();
+		//FileUtils.deleteDirectory(rootFolder());
 	}
 
-	protected File rootFolder() throws IOException {
-		return new File(File.createTempFile("delete-me", null).getParentFile(), getClass().getName());
-	}
 
 	private void releaseCommunity() {
 		_community = null;

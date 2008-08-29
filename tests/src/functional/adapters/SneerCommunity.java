@@ -1,9 +1,7 @@
 package functional.adapters;
 
 import java.io.File;
-import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 
 import sneer.kernel.container.ContainerUtils;
@@ -18,7 +16,12 @@ public class SneerCommunity implements SovereignCommunity {
 	private final Network _network = new InMemoryNetwork();
 	private int _nextPort = 10000;
 
-	private final File _tmpDirectory = prepareTmpDirectory();
+	private final File _tmpDirectory;
+	
+	public SneerCommunity(File tmpDirectory) {
+		_tmpDirectory = tmpDirectory;
+	}
+	
 	
 	@Override
 	public SovereignParty createParty(String name) {
@@ -36,31 +39,6 @@ public class SneerCommunity implements SovereignCommunity {
 		return ContainerUtils.newContainer(bindings).produce(SneerParty.class);
 	}
 
-	private File prepareTmpDirectory() {
-		File tmp = new File("tmp");
-		if (tmp.exists())
-			tryToClean(tmp);
-		else
-			tmp.mkdir();
-		
-		String exclusiveDirectoryName = "test_run_" + System.nanoTime();
-		return new File(tmp, exclusiveDirectoryName);
-	}
-
-	private void tryToClean(File tmp) {
-		long t0 = System.currentTimeMillis();
-		while (true) {
-			try {
-				FileUtils.cleanDirectory(tmp);
-				return;
-			} catch (IOException e) {
-				if (System.currentTimeMillis() - t0 > 3000)
-					throw new IllegalStateException("Some previous test might be forgetting to close files. " + e.getMessage());
-				System.gc();
-			}
-		}
-	}
-
 	private SneerConfig sneerConfigForParty(String name) {
 		File root = rootDirectory(name);
 		SneerConfig config = new SneerConfigMock(root);
@@ -69,12 +47,8 @@ public class SneerCommunity implements SovereignCommunity {
 
 	private File rootDirectory(String name) {
 		String fileName = ".sneer-"+StringUtils.deleteWhitespace(name);
-		return new File(tmpDirectory(), fileName);
+		return new File(_tmpDirectory, fileName);
 		
-	}
-
-	protected File tmpDirectory() {
-		return _tmpDirectory;
 	}
 
 }

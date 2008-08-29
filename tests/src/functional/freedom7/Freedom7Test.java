@@ -119,8 +119,8 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 		return _a;
 	}
 	
-	private File sourceFolder(String sourceFolder) throws IOException {
-		return new File(rootFolder(), sourceFolder);
+	private File sourceFolder(String sourceFolder) {
+		return new File(tmpDirectory(), sourceFolder);
 	}
 
 }

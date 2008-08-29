@@ -2,6 +2,7 @@
 ===================
 
 	- [Sandro] ContactManager.getContacts - Delete this method. It should never have been exposed.
+	- [Sandro] @Override SnappFrameImpl.getContainer causes a compile error in OpenJdk6 because getContainer is implemented in Component as packagelocal. :) 
 	- Fix SneerFreedom7Test
 		- Test with a lib.
 	- Output folders - All src folders are now being compiled to "sneerAPI-bin" and all tests are passing. Make all source folders compile to the default folder (bin) and fix the tests.

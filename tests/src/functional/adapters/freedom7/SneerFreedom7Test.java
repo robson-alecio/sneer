@@ -9,7 +9,7 @@ public class SneerFreedom7Test extends Freedom7Test {
 
 	@Override
 	protected SovereignCommunity createNewCommunity() {
-		return new SneerCommunity();
+		return new SneerCommunity(tmpDirectory());
 	}
 
 }

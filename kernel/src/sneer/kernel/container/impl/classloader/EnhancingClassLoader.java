@@ -24,15 +24,10 @@ public abstract class EnhancingClassLoader extends SecureClassLoader {
 		ClassLoader parent = getParent();
 		Class<?> c = findLoadedClass(name);
 		if (c == null) {
-			try {
-				c = findClass(name);
-			} catch (ClassNotFoundException e) {
-				if (parent != null) {
+			c = findClass2(name);
+			if (c == null)
+				if (parent != null)
 					c = parent.loadClass(name);
-				} else {
-					//c = findBootstrapClass0(name);
-				}
-			}
 		}
 		if (c == null) {
 			throw new ClassNotFoundException(name);
@@ -48,8 +43,19 @@ public abstract class EnhancingClassLoader extends SecureClassLoader {
 		return c;
 	}
 
+	protected abstract Class<?> findClass2(String name);
+
 	protected Class<?> defineClass(String name, byte[] bytes) {
 		byte[] byteArray = _guardian.enhance(name, bytes);
 		return defineClass(name, byteArray, 0, byteArray.length);
+	}
+
+	@Override
+	protected Class<?> findClass(String name) throws ClassNotFoundException {
+		System.err.println("Passing here");
+		Class<?> result = findClass2(name);
+		if (result == null)
+			 throw new ClassNotFoundException(name);
+		return result;
 	}
 }

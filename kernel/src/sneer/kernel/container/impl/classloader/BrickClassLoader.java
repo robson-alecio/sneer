@@ -57,12 +57,12 @@ public class BrickClassLoader extends EnhancingClassLoader {
 	}
 
 	@Override
-	protected Class<?> findClass(String name) throws ClassNotFoundException {
+	protected Class<?> findClass2(String name) {
 		byte[] bytes;
 		try {
 			bytes = findClassInJar(name);
 		} catch (IOException e) {
-			throw new ClassNotFoundException("Error loading bytes from "+_implJarFile);
+			throw new IllegalStateException("Error loading bytes from "+_implJarFile);
 		}
 		
 		if(bytes != null) {
@@ -72,14 +72,20 @@ public class BrickClassLoader extends EnhancingClassLoader {
 		}
 			
 		//is it a brick dependency?
-		Class<?> result = delegate().loadClass(name);
+		Class<?> result;
+		try {
+			result = delegate().loadClass(name);
+		} catch (ClassNotFoundException e) {
+			return null;
+		}
+		
 		if(result != null) {
 			if(_log.isDebugEnabled()) _log.debug("Class {} loaded by _delegate_ ",name, toString());			
 			return result;
 		}
 		
 		//delegate to parent class loader
-		throw new ClassNotFoundException();
+		return null;
 	}
 
 	private ClassLoader delegate() {

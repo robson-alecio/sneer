@@ -26,13 +26,13 @@ public class MetaClassClassLoader extends EnhancingClassLoader {
 	}
 
 	@Override
-	protected Class<?> findClass(String name) throws ClassNotFoundException {
+	protected Class<?> findClass2(String name) {
 		MetaClass meta = _hash.get(name);
-		if (meta == null) throw new ClassNotFoundException("Class not found " + name);
+		if (meta == null) return null;
 		try {
 			return defineClass(meta.getName(), meta.bytes());
 		} catch (IOException e) {
-			throw new ClassNotFoundException("Error reading bytes from " + meta.classFile().getName());
+			throw new IllegalStateException("Error reading bytes from " + meta.classFile().getName());
 		}
 	}
 }

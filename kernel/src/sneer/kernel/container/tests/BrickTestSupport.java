@@ -4,14 +4,12 @@ import java.io.File;
 import java.net.URL;
 
 import org.apache.commons.io.FilenameUtils;
-import org.junit.After;
 import org.junit.Before;
 
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.Injector;
 import sneer.kernel.container.impl.AnnotatedFieldInjector;
-import sneer.kernel.container.impl.classloader.ApiClassLoader;
 import wheel.lang.Threads;
 
 public class BrickTestSupport {

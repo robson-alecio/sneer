@@ -1,7 +1,5 @@
 package main;
 
-import java.lang.reflect.InvocationTargetException;
-
 import javax.swing.SwingUtilities;
 
 import snapps.contacts.ContactsSnapp;
@@ -10,7 +8,6 @@ import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.contacts.ContactManager;
 import sneer.skin.dashboard.Dashboard;
-import wheel.lang.Threads;
 
 public class MainDemo {
 

@@ -5,29 +5,14 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
-import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import sneer.kernel.container.Inject;
-import sneer.kernel.container.impl.classloader.ApiClassLoader;
-import sneer.pulp.tmpdirectory.TmpDirectory;
 import functional.SovereignFunctionalTest;
 import functional.SovereignParty;
 
 public abstract class Freedom7Test extends SovereignFunctionalTest {
 	
-	@Inject
-	private TmpDirectory _tmpDirectory;
-	
-	@After
-	public void cleanUpDirectories() throws IOException {
-		releaseCommunity();
-		ApiClassLoader.checkAllInstancesAreFreed();
-		FileUtils.deleteDirectory(rootFolder());
-	}
-
 	@Test
 	public void testPublishSingleBrick() throws Exception {
 		System.clearProperty("freedom7.y.Y.installed");
@@ -136,10 +121,6 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 	
 	private File sourceFolder(String sourceFolder) throws IOException {
 		return new File(rootFolder(), sourceFolder);
-	}
-
-	private File rootFolder() throws IOException {
-		return _tmpDirectory.createTempDirectory("freedom7");
 	}
 
 }

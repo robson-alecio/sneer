@@ -27,13 +27,20 @@ public class JarBuilderTest {
 		//create jar file
 		File file = File.createTempFile("myJar-", ".jar");
 		JarBuilder jar = new JarBuilder(file);
-		jar.add("entry.txt", data);
-		Streams.crash(jar);
+		try {
+			jar.add("entry.txt", data);
+		} finally {
+			Streams.crash(jar);
+		}
 		
 		//test
 		JarFile jarFile = new JarFile(file);
-		InputStream is = jarFile.getInputStream(jarFile.getEntry("entry.txt"));
-		assertEquals(content, read(is));
+		try {
+			InputStream is = jarFile.getInputStream(jarFile.getEntry("entry.txt"));
+			assertEquals(content, read(is));
+		} finally {
+			jarFile.close();
+		}
 	}
 
 	private String read(InputStream is) throws IOException {

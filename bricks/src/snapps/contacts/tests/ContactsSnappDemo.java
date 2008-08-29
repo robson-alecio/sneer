@@ -33,7 +33,7 @@ public class ContactsSnappDemo  {
 
 		ContactManager manager = container.produce(ContactManager.class);
 		
-
+ 
 		manager.addContact("Sandro");
 		manager.addContact("Klaus");
 		manager.addContact("Bamboo");

@@ -5,12 +5,17 @@ import static wheel.lang.Types.cast;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Image;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
@@ -33,44 +38,81 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 
 	private final ListSignal<ELEMENT> _source;
 	
+	private static final Border noFocusBorder = new EmptyBorder(1, 1, 1, 1);
+    private static final Border SAFE_NO_FOCUS_BORDER = new EmptyBorder(1, 1, 1, 1);
+    
 	RListImpl(ListSignal<ELEMENT> source, LabelProvider<ELEMENT> labelProvider) {
 		_source = source;
 		_labelProvider = labelProvider;
 		initModel();
 		addReceiverListener();
 		
-		
 		class DefaultListCellRenderer implements ListCellRenderer{
+		    
+			Map<Object, JPanel> cacheLines = new HashMap<Object, JPanel>(); //Optimize cleanup for giant lists
+			
+			private Border getNoFocusBorder() {
+				if (System.getSecurityManager() != null) {
+					return SAFE_NO_FOCUS_BORDER;
+				}
+				return noFocusBorder;
+			}
 			
 			@Override
 			public Component getListCellRendererComponent(JList lst, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-				Container container = ContainerUtils.getContainer();
-				RFactory rfactory = container.produce(RFactory.class);
+				
+				JPanel panel;
+				if (cacheLines.containsKey(value)) {
+					panel = cacheLines.get(value);
+				} else {
+					Container container = ContainerUtils.getContainer();
+					RFactory rfactory = container.produce(RFactory.class);
 
-				JPanel panel = new JPanel();
-				panel.setOpaque(false);
-				panel.setLayout(new BorderLayout(5,5));
-				
-				Signal<String> slabel = _labelProvider.labelFor(getElement(value));
-				Signal<Image> sicon = _labelProvider.imageFor(getElement(value));
-				
-				TextWidget<JLabel> label = rfactory.newLabel(slabel);
-				panel.add(label.getComponent(), BorderLayout.CENTER);
+					panel = new JPanel();
+					panel.setOpaque(false);
+					panel.setLayout(new BorderLayout(5, 5));
 
-				ImageWidget image = rfactory.newImage(sicon);
-				panel.add(image.getComponent(), BorderLayout.WEST);
-				panel.setOpaque(false);
+					Signal<String> slabel = _labelProvider
+							.labelFor(getElement(value));
+					Signal<Image> sicon = _labelProvider
+							.imageFor(getElement(value));
+
+					TextWidget<JLabel> label = rfactory.newLabel(slabel);
+					panel.add(label.getComponent(), BorderLayout.CENTER);
+
+					ImageWidget image = rfactory.newImage(sicon);
+					panel.add(image.getComponent(), BorderLayout.WEST);
+					panel.setOpaque(false);
+
+					cacheLines.put(value, panel);
+				}
 				
+		        Border border = null;
+		        if (cellHasFocus) {
+		            if (isSelected) {
+		                border = UIManager.getBorder("List.focusSelectedCellHighlightBorder");
+		            }
+		            if (border == null) {
+		                border = UIManager.getBorder("List.focusCellHighlightBorder");
+		            }
+		        } else {
+		            border = getNoFocusBorder();
+		        }
+		        panel.setBorder(border);
 				return panel;
 			}
+			
 
+		    
 			private ELEMENT getElement(Object value) {
 				return cast(value);
 			}	
 		}
 		setCellRenderer(new DefaultListCellRenderer());
-	}
 
+	}
+	
+    
 	private void addReceiverListener() {
 		_source.addListReceiver(new Omnivore<ListValueChange>(){
 			@Override

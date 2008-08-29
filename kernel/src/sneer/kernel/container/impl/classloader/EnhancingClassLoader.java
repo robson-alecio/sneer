@@ -52,7 +52,7 @@ public abstract class EnhancingClassLoader extends SecureClassLoader {
 
 	@Override
 	protected Class<?> findClass(String name) throws ClassNotFoundException {
-		System.err.println("Passing here");
+		System.err.println("This code is not dead.");
 		Class<?> result = findClass2(name);
 		if (result == null)
 			 throw new ClassNotFoundException(name);

@@ -5,7 +5,6 @@ import java.io.File;
 import sneer.kernel.container.Brick;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.utils.io.NetworkFriendly;
 import sneer.pulp.brickmanager.BrickManager;
 import sneer.pulp.connection.SocketOriginator;
 import sneer.pulp.connection.SocketReceiver;
@@ -21,7 +20,6 @@ import sneer.pulp.mesh.Me;
 import sneer.pulp.mesh.Party;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.port.PortKeeper;
-import wheel.io.serialization.DeepCopier;
 import wheel.lang.Threads;
 import wheel.lang.Types;
 import wheel.lang.exceptions.IllegalParameter;
@@ -172,14 +170,8 @@ public class SneerPartyImpl implements SneerParty {
 	@Override
 	public void meToo(SovereignParty party, String brickName) throws Exception {
 		BrickFile brick = party.brick(brickName);
-
-		//prepare to send object via network
-		((NetworkFriendly) brick).beforeSerialize();
-		BrickFile copy = DeepCopier.deepCopy(brick);
-		((NetworkFriendly) brick).afterSerialize();
-		
 		//TODO: send copy via network
-		_brickManager.install(copy);
+		_brickManager.install(brick);
 	}
 
 	@Override

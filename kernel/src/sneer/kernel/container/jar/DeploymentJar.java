@@ -7,9 +7,8 @@ import java.io.Serializable;
 import java.util.List;
 
 import sneer.kernel.container.utils.InjectedBrick;
-import sneer.kernel.container.utils.io.NetworkFriendly;
 
-public interface DeploymentJar extends Serializable, NetworkFriendly, Closeable {
+public interface DeploymentJar extends Serializable, Closeable {
 
 	File file();
 

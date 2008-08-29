@@ -1,7 +1,6 @@
 package sneer.kernel.container.jar.impl;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -38,8 +37,6 @@ public class DeploymentJarImpl implements DeploymentJar {
 
 	private byte[] _sneer1024;
 
-	private byte[] _contents;
-	
 	transient private JarFile _jarFile;
 	
 	@Inject
@@ -235,16 +232,6 @@ public class DeploymentJarImpl implements DeploymentJar {
 	@Override
 	public String toString() {
 		return _file.toString();
-	}
-
-	@Override
-	public void afterSerialize() {
-		_contents = null;
-	}
-
-	@Override
-	public void beforeSerialize() throws IOException {
-		_contents = IOUtils.toByteArray(new FileInputStream(_file));
 	}
 }
 

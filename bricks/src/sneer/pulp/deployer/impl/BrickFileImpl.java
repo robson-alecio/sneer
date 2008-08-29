@@ -10,14 +10,13 @@ import org.apache.commons.io.FileUtils;
 import sneer.kernel.container.jar.DeploymentJar;
 import sneer.kernel.container.jar.impl.DeploymentJarImpl;
 import sneer.kernel.container.utils.InjectedBrick;
-import sneer.kernel.container.utils.io.NetworkFriendly;
 import sneer.pulp.dependency.Dependency;
 import sneer.pulp.deployer.BrickFile;
 import sneer.pulp.deployer.DeployerException;
 import sneer.pulp.keymanager.PublicKey;
 import wheel.lang.exceptions.NotImplementedYet;
 
-public class BrickFileImpl implements BrickFile, NetworkFriendly {
+public class BrickFileImpl implements BrickFile {
 
 	private static final long serialVersionUID = 1L;
 
@@ -143,22 +142,6 @@ public class BrickFileImpl implements BrickFile, NetworkFriendly {
 	@Override
 	public String toString() {
 		return name() + "\n\tapi("+_api.file()+")\n\timpl("+_impl.file()+")";
-	}
-
-	@Override
-	public void beforeSerialize() throws IOException {
-		api().beforeSerialize();
-		apiSrc().beforeSerialize();
-		impl().beforeSerialize();
-		implSrc().beforeSerialize();
-	}
-
-	@Override
-	public void afterSerialize() throws IOException {
-		api().afterSerialize();
-		apiSrc().afterSerialize();
-		impl().afterSerialize();
-		implSrc().afterSerialize();
 	}
 
 	@Override

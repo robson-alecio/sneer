@@ -16,7 +16,6 @@ import java.util.jar.JarFile;
 
 import org.apache.commons.io.IOUtils;
 
-import sneer.kernel.container.Container;
 import sneer.kernel.container.Inject;
 import sneer.pulp.dependency.Dependency;
 import sneer.pulp.dependency.DependencyManager;
@@ -36,12 +35,9 @@ public class BrickClassLoader extends EnhancingClassLoader {
 	private ClassLoader _delegate;
 	
 	@Inject
-	private Container _container;
-
-	@Inject
 	private Logger _log;
 	
-	//lazy load
+	@Inject
 	private DependencyManager _dependencyManager;
 	
 	public BrickClassLoader() {
@@ -92,7 +88,7 @@ public class BrickClassLoader extends EnhancingClassLoader {
 		if(_delegate != null) 
 			return _delegate;
 
-		List<Dependency> dependencies = dependencyManager().dependenciesFor(_mainClass.getName());
+		List<Dependency> dependencies = _dependencyManager.dependenciesFor(_mainClass.getName());
 		
 		if(dependencies == null) {
 			_delegate = EmptyClassLoader.instance(); 
@@ -114,16 +110,6 @@ public class BrickClassLoader extends EnhancingClassLoader {
 			}
 		}
 		return urls;
-	}
-
-	private DependencyManager dependencyManager() {
-
-		//lazy load
-		if(_dependencyManager != null)
-			return _dependencyManager;
-		
-		_dependencyManager = _container.produce(DependencyManager.class);
-		return _dependencyManager;
 	}
 
 	private byte[] findClassInJar(String name) throws IOException {

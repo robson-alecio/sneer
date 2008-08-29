@@ -10,7 +10,6 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.Startable;
 import sneer.pulp.config.SneerConfig;
 import sneer.pulp.crypto.Crypto;
 import sneer.pulp.crypto.Sneer1024;
@@ -18,16 +17,16 @@ import sneer.pulp.dependency.Dependency;
 import sneer.pulp.dependency.DependencyManager;
 import sneer.pulp.log.Logger;
 
-public class DependencyManagerImpl implements DependencyManager, Startable {
+public class DependencyManagerImpl implements DependencyManager {
 
 	@Inject
-	private Crypto _crypto;
+	private static Crypto _crypto;
 	
 	@Inject
-	private SneerConfig _config;
+	private static SneerConfig _config;
 	
 	@Inject
-	private Logger _log;
+	private static Logger _log;
 
 	private File _root;
 	
@@ -36,8 +35,7 @@ public class DependencyManagerImpl implements DependencyManager, Startable {
 	private Map<Sneer1024, Dependency> _dependenciesBySneer1024Hash = new HashMap<Sneer1024, Dependency>();
 
 	
-	@Override
-	public void start() throws Exception {
+	public DependencyManagerImpl() {
 		_root = new File(_config.brickRootDirectory(), "lib");
 		if(!_root.exists())
 			_root.mkdirs();

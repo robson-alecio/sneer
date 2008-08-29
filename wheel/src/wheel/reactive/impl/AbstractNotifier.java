@@ -27,7 +27,6 @@ public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 	private void notify(ReceiverHolder<Omnivore<VC>> reference, VC valueChange) {
 		Omnivore<VC> receiver = reference.get();
 		if (receiver == null) {
-			//Fix: Remove this empty WeakReference from the listeners list.
 			System.err.println("Receiver has been garbage collected. (" + reference._alias + ")");
 			_receivers.remove(reference);
 			return;
@@ -74,8 +73,8 @@ class ReceiverHolder<T> extends java.lang.ref.WeakReference<T>{
 		_alias = alias;
 	}
 	
-	static String getAlias(Object receiver) {
-		return receiver.getClass().getName() + "@" + System.currentTimeMillis();
+	static String getAlias(Object object) {
+		return "" + object.getClass() + "@" + System.identityHashCode(object);
 	}
 
 }

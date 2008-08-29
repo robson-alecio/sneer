@@ -61,7 +61,7 @@ public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 
 	@Override
 	public ClassLoader sneerApi() {
-		return this.getClass().getClassLoader();
+		return getClass().getClassLoader();
 	}
 	
 	private File eclipseTargetDirectory() {

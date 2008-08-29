@@ -28,5 +28,6 @@ public class Loader {
 		 cl = null;
 		 System.gc();
 		 FileUtils.deleteDirectory(destFile.getParentFile());
+		 System.out.println("OK");
 	}
 }

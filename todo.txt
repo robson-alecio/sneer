@@ -1,6 +1,7 @@
 ﻿MAIN ROADMAP
 ===================
 
+	- [Sandro] ContactManager.getContacts - Delete this method. It should never have been exposed.
 	- Fix SneerFreedom7Test
 		- Test with a lib.
 	- Output folders - All src folders are now being compiled to "sneerAPI-bin" and all tests are passing. Make all source folders compile to the default folder (bin) and fix the tests.

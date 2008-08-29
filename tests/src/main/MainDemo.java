@@ -1,5 +1,9 @@
 package main;
 
+import java.lang.reflect.InvocationTargetException;
+
+import javax.swing.SwingUtilities;
+
 import snapps.contacts.ContactsSnapp;
 import snapps.owner.OwnerSnapp;
 import sneer.kernel.container.Container;
@@ -28,6 +32,10 @@ public class MainDemo {
 		
 		container.produce(Dashboard.class);
 		
-		Threads.sleepWithoutInterruptions(20000);
+		waitUntilTheGuiThreadStarts();
+	}
+
+	private static void waitUntilTheGuiThreadStarts()	throws Exception {
+		SwingUtilities.invokeAndWait(new Runnable(){@Override public void run() {}});
 	}
 }

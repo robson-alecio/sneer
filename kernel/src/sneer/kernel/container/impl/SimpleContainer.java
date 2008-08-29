@@ -103,9 +103,9 @@ public class SimpleContainer implements Container {
 	}
 
 	private ClassLoader getClassLoader(Class<?> brickClass, File brickDirectory) {
-		ClassLoader cl = factory().produceBrickClassLoader(brickClass, brickDirectory);
-		_injector.inject(cl);
-		return cl;
+		ClassLoader result = factory().produceBrickClassLoader(brickClass, brickDirectory);
+		inject(result);
+		return result;
 	}
 
 	private ClassLoaderFactory factory() {

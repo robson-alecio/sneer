@@ -15,7 +15,7 @@ public class MainDemo {
 
 	public static void main(String[] args) throws Exception {
 
-		Container container = ContainerUtils.getContainer();
+		Container container = ContainerUtils.newContainer();
 
 		container.produce(OwnerSnapp.class);
 

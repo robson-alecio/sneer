@@ -6,6 +6,7 @@ import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.contacts.ContactManager;
 import sneer.skin.dashboard.Dashboard;
+import wheel.lang.Threads;
 
 public class MainDemo {
 
@@ -26,5 +27,7 @@ public class MainDemo {
 		container.produce(ContactsSnapp.class);
 		
 		container.produce(Dashboard.class);
+		
+		Threads.sleepWithoutInterruptions(20000);
 	}
 }

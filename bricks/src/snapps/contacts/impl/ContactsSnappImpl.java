@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Image;
 
-import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import snapps.contacts.ContactsSnapp;
@@ -75,12 +75,9 @@ public class ContactsSnappImpl implements ContactsSnapp {
 					}
 				});
 		
-		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout());
 		container.setLayout(new BorderLayout());
-		panel.add(_contactList.getComponent(), BorderLayout.CENTER);
-		container.add(panel, BorderLayout.CENTER);
-		panel.setBorder(new TitledBorder("My Contacts"));
+		container.add(_contactList.getComponent(), BorderLayout.CENTER);
+		_contactList.getComponent().setBorder(new TitledBorder(new EmptyBorder(5,5,5,5), "My Contacts"));
 	}
 
 	@Override

@@ -8,10 +8,15 @@ import java.io.IOException;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import sneer.kernel.container.Inject;
+import sneer.pulp.compiler.JavaCompiler;
 import functional.SovereignFunctionalTest;
 import functional.SovereignParty;
 
 public abstract class Freedom7Test extends SovereignFunctionalTest {
+	
+	@Inject
+	private JavaCompiler _compiler;
 	
 	@Test
 	public void testPublishSingleBrick() throws Exception {
@@ -35,6 +40,13 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 		publisher().publishBricks(generateY());
 		publisher().publishBricks(generateZ());
 		assertEquals("true", System.getProperty("freedom7.z.Z.installed"));
+	}
+	
+	@Test
+	public void testPublishBrickWithLib() throws Exception {
+		System.clearProperty("freedom7.lib.Lib.executed");
+		publisher().publishBricks(generateX());
+		assertEquals("true", System.getProperty("freedom7.lib.Lib.executed"));
 	}
 		
 	@Ignore
@@ -64,6 +76,35 @@ public abstract class Freedom7Test extends SovereignFunctionalTest {
 //		return z2.getClass().getClassLoader();
 //	}
 	
+	private File generateX() throws IOException {
+		generateLib(sourceFolder("x/freedom7/x/impl/lib/lib.jar"));
+		
+		final File src = sourceFolder("x");
+		final SourceFileWriter writer = new SourceFileWriter(src);
+		writer.write("freedom7.x.X",
+				"public interface X extends sneer.kernel.container.Brick {" +
+				"}");
+		writer.write("freedom7.x.impl.XImpl",
+				"class XImpl implements freedom7.x.X {\n" +
+					"public XImpl() {\n" +
+						"freedom7.lib.Lib.execute();\n" +
+					"}" +
+				"}");	
+		return src;
+	}
+
+	private void generateLib(final File libJar) throws IOException {
+		final File lib = sourceFolder("lib");
+		new SourceFileWriter(lib).write("freedom7.lib.Lib",
+			"public class Lib {" +
+				"public static void execute() {" +
+					"System.setProperty(\"freedom7.lib.Lib.executed\", \"true\");" +
+				"}" +
+			"}");
+		
+		new LibBuilder(_compiler, lib, sourceFolder("bin")).build(libJar);
+	}
+
 	private File generateYandZ() throws IOException {
 		final File src = sourceFolder("src-yz");
 		final SourceFileWriter writer = new SourceFileWriter(src);

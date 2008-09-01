@@ -11,13 +11,13 @@ public class EmptyClassLoader extends ClassLoader {
 	}
 	
 	@Override
-	public Class<?> loadClass(String className) throws ClassNotFoundException {
-		throw new ClassNotFoundException();
+	public Class<?> loadClass(String className) {
+		return null;
 	}
 
 	@Override
-	protected Class<?> findClass(String name) throws ClassNotFoundException {
-		throw new ClassNotFoundException();
+	protected Class<?> findClass(String name) {
+		return null;
 	}
 	
 }

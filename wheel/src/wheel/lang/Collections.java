@@ -32,11 +32,13 @@ public class Collections {
 	}
 
 	public static <E> List<E> toList(Iterable<E> iterable) {
-		List<E> result = new ArrayList<E>();
-		Iterator<E> iterator = iterable.iterator();
+		return toList(iterable.iterator());
+	}
+
+	public static <E> List<E> toList(Iterator<E> iterator) {
+		final List<E> result = new ArrayList<E>();
 		while (iterator.hasNext())
 			result.add(iterator.next());
-		
 		return result;
 	}
 

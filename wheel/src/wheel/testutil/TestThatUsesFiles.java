@@ -38,7 +38,7 @@ public class TestThatUsesFiles {
 				FileUtils.deleteDirectory(tmp);
 				return;
 			} catch (IOException e) {
-				if (System.currentTimeMillis() - t0 > 3000) {
+				if (System.currentTimeMillis() - t0 > 1000) {
 					System.err.println("Test left files open: " + e.getMessage());
 					return;
 				}
@@ -46,6 +46,4 @@ public class TestThatUsesFiles {
 			}
 		}
 	}
-
-
 }

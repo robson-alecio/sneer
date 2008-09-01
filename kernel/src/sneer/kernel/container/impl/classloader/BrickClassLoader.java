@@ -1,6 +1,5 @@
 package sneer.kernel.container.impl.classloader;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -68,19 +67,14 @@ public class BrickClassLoader extends EnhancingClassLoader {
 		}
 			
 		//is it a brick dependency?
-		Class<?> result;
 		try {
-			result = delegate().loadClass(name);
+			Class<?> result = delegate().loadClass(name);
+			if(result != null) {
+				if(_log.isDebugEnabled()) _log.debug("Class {} loaded by _delegate_ ",name, toString());			
+				return result;
+			}
 		} catch (ClassNotFoundException e) {
-			return null;
 		}
-		
-		if(result != null) {
-			if(_log.isDebugEnabled()) _log.debug("Class {} loaded by _delegate_ ",name, toString());			
-			return result;
-		}
-		
-		//delegate to parent class loader
 		return null;
 	}
 
@@ -95,7 +89,7 @@ public class BrickClassLoader extends EnhancingClassLoader {
 			return _delegate; 
 		}
 		
-		_delegate = new URLClassLoader(urlsForDependencies(dependencies), null);
+		_delegate = new URLClassLoader(urlsForDependencies(dependencies), getParent());
 		return _delegate;
 	}
 
@@ -104,7 +98,7 @@ public class BrickClassLoader extends EnhancingClassLoader {
 		int i = 0;
 		for (Dependency dependency : dependencies) {
 			try {
-				urls[i++] = new URL("file://"+dependency.file().getAbsolutePath());
+				urls[i++] = dependency.file().toURI().toURL();
 			} catch (MalformedURLException e) {
 				throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 			}
@@ -153,9 +147,7 @@ public class BrickClassLoader extends EnhancingClassLoader {
 	private byte[] readEntry(JarFile jar, JarEntry entry) throws IOException {
 		final InputStream is = jar.getInputStream(entry);
 		try {
-			final ByteArrayOutputStream os = new ByteArrayOutputStream();
-			IOUtils.copy(is, os);
-			return os.toByteArray();
+			return IOUtils.toByteArray(is);
 		} finally {
 			IOUtils.closeQuietly(is);
 		}

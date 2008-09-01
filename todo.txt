@@ -2,14 +2,14 @@
 ===================
 
 	- Hold element receivers from gc in ListSignalModel
-	---- INITIAL CLEANUP DONE
 
-	- Brick Publish (Supposedly working already)
-		- MainDemo - Publish all necessary bricks instead of just producing them.
 	- Contact List - (Host addresses for Sneer developers are HARDCODED)
 		- Name
 		- Online indicator icon
 	---------------------------------- FIRST DOGFOOD RELEASE - Anelise can start testing for real. All bugs she finds get fixed immediately. Improvement suggestions are added to this todo list.
+
+	- Brick Publish (Supposedly working already)
+		- MainDemo - Publish all necessary bricks instead of just producing them.
 
 	- [Petra] Tray and Dashboard Titlebar Icon
 

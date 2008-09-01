@@ -11,28 +11,32 @@ import org.apache.commons.lang.StringUtils;
 
 import sneer.kernel.container.Inject;
 import sneer.pulp.classpath.Classpath;
-import sneer.pulp.compiler.Compiler;
+import sneer.pulp.classpath.ClasspathFactory;
 import sneer.pulp.compiler.CompilerException;
+import sneer.pulp.compiler.JavaCompiler;
 import sneer.pulp.compiler.Result;
 import sneer.pulp.log.Logger;
 
 import com.sun.tools.javac.Main;
 
-public class CompilerImpl implements Compiler {
+public class JavaCompilerImpl implements JavaCompiler {
 
 	@Inject
-	private Logger log;
+	private Logger _log;
+	
+	@Inject
+	private ClasspathFactory _classpathFactory;
 
 	@Override
 	public Result compile(List<File> sourceFiles, File destination) throws CompilerException {
-		return compile(sourceFiles, destination, null);
+		return compile(sourceFiles, destination, _classpathFactory.newClasspath());
 	}
 
 	@Override
 	public Result compile(List<File> sourceFiles, File destination, Classpath classpath) throws CompilerException {
 		
 		File tmpFile = createArgsFileForJavac(sourceFiles);
-		log.info("Compiling {} files to {}", sourceFiles.size(), destination);
+		_log.info("Compiling {} files to {}", sourceFiles.size(), destination);
 
 		String[] parameters = {
 				"-classpath", classpath.asJavacArgument(),
@@ -40,7 +44,7 @@ public class CompilerImpl implements Compiler {
 				"-encoding","UTF-8",
 				"@"+tmpFile.getAbsolutePath()
 		};
-		log.debug("compiler cli: {}",StringUtils.join(parameters, " "));
+		_log.debug("compiler cli: {}",StringUtils.join(parameters, " "));
 
 		StringWriter writer = new StringWriter();
 		int code = Main.compile(parameters, new PrintWriter(writer));

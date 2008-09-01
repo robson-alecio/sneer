@@ -124,7 +124,4 @@ class DependencyImpl implements Dependency {
 	public String toString() {
 		return _sneer1024.toString() + " " + _file;
 	}
-	
-	
-	
 }

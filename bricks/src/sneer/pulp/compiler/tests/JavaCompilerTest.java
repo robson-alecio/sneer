@@ -23,12 +23,12 @@ import sneer.pulp.compiler.CompilationError;
 import sneer.pulp.compiler.Result;
 import wheel.io.Jars;
 
-public class CompilerTest extends BrickTestSupport {
+public class JavaCompilerTest extends BrickTestSupport {
 
 	private static final String TEST_FILE_PREFIX = "sneer-test-";
 
 	@Inject
-	private sneer.pulp.compiler.Compiler _compiler;
+	private sneer.pulp.compiler.JavaCompiler _compiler;
 	
 	@Inject
 	private ClasspathFactory _factory;

@@ -12,7 +12,7 @@ import sneer.kernel.container.Injector;
 import sneer.kernel.container.utils.metaclass.MetaClass;
 import sneer.pulp.classpath.Classpath;
 import sneer.pulp.classpath.ClasspathFactory;
-import sneer.pulp.compiler.Compiler;
+import sneer.pulp.compiler.JavaCompiler;
 import sneer.pulp.compiler.Result;
 import sneer.pulp.config.SneerConfig;
 import sneer.pulp.dependency.Dependency;
@@ -28,7 +28,7 @@ public class DeployerImpl implements Deployer {
 	private SneerConfig _config;
 	
 	@Inject
-	private Compiler _compiler;
+	private JavaCompiler _compiler;
 	
 	@Inject
 	private ClasspathFactory _cpFactory;

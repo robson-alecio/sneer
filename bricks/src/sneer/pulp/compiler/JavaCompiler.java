@@ -5,7 +5,7 @@ import java.util.List;
 
 import sneer.pulp.classpath.Classpath;
 
-public interface Compiler {
+public interface JavaCompiler {
 	
 	Result compile(List<File> sourceFiles, File destination) throws CompilerException;
 	

@@ -1,7 +1,7 @@
 ﻿MAIN ROADMAP
 ===================
 
-	- Dashboard - Make it open by default when Sneer is run.
+	- Hold element receivers from gc in ListSignalModel
 	---- INITIAL CLEANUP DONE
 
 	- Brick Publish (Supposedly working already)

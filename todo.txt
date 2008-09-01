@@ -2,7 +2,6 @@
 ===================
 
 	- [Sandro] ContactManager.getContacts - Delete this method. It should never have been exposed.
-	- [Sandro] @Override SnappFrameImpl.getContainer causes a compile error in OpenJdk6 because getContainer is implemented in Component as packagelocal. :)
 	- Dashboard - Make it open by default when Sneer is run.
 	- Contacts List - Leave the "My Contacts" label. Remove the ugly border. :)
 	- SneerFreedom7Test - Test brick publishing with a lib.

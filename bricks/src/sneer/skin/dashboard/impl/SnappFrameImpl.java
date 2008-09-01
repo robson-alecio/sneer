@@ -53,7 +53,7 @@ public class SnappFrameImpl extends JPanel implements SnappFrame {
 	}
 	
 	@Override
-	public Container getContainer() {
+	public Container getContent() {
 		return this;
 	}
 	

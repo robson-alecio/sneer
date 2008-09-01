@@ -4,6 +4,6 @@ import java.awt.Container;
 
 public interface SnappFrame {
 
-	Container getContainer();
+	Container getContent();
 
 }

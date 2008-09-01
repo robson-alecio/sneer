@@ -222,20 +222,20 @@ public class DashboardImpl implements Dashboard, Runnable {
 	
 	@Override
 	public void moveSnapp(int index, SnappFrame frame) {
-		contentPanel.remove(frame.getContainer());
-		contentPanel.add(frame.getContainer(), index);
+		contentPanel.remove(frame.getContent());
+		contentPanel.add(frame.getContent(), index);
 	}
 
 	@Override
 	public void moveSnappDown(SnappFrame frame) {
-		contentPanel.remove(frame.getContainer());
-		contentPanel.add(frame.getContainer(), 0);
+		contentPanel.remove(frame.getContent());
+		contentPanel.add(frame.getContent(), 0);
 	}
 
 	@Override
 	public void moveSnappUp(SnappFrame frame) {
-		contentPanel.remove(frame.getContainer());
-		contentPanel.add(frame.getContainer());
+		contentPanel.remove(frame.getContent());
+		contentPanel.add(frame.getContent());
 	}	
 }
 

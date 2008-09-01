@@ -4,12 +4,13 @@ import java.util.Iterator;
 
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
+import wheel.lang.Consumer;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
-import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListRegister;
+import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 
 public class ContactManagerImpl implements ContactManager {
@@ -51,7 +52,7 @@ public class ContactManagerImpl implements ContactManager {
 		return null;
 	}
 
-	synchronized public void changeNickname(Contact contact, String newNickname) throws IllegalParameter {
+	synchronized private void changeNickname(Contact contact, String newNickname) throws IllegalParameter {
 		checkAvailability(newNickname);
 		((ContactImpl)contact).nickname(newNickname);
 	}
@@ -71,8 +72,10 @@ public class ContactManagerImpl implements ContactManager {
 	}
 
 	@Override
-	public ListRegister<Contact> getContacts() {
-		return _contacts;
+	public Consumer<String> nicknameSetterFor(final Contact contact) {
+		return new Consumer<String>(){ @Override public void consume(String newNickname) {
+			changeNickname(contact, newNickname);
+		}};
 	}
 }
 

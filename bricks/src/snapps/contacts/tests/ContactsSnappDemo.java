@@ -14,9 +14,6 @@ import sneer.skin.dashboard.Dashboard;
 import sneer.skin.snappmanager.SnappManager;
 import sneer.skin.viewmanager.Snapp;
 import sneer.skin.widgets.reactive.RFactory;
-import wheel.reactive.Register;
-import wheel.reactive.Signal;
-import wheel.reactive.impl.RegisterImpl;
 
 public class ContactsSnappDemo  {
 	
@@ -37,45 +34,32 @@ public class ContactsSnappDemo  {
 		manager.addContact("Sandro");
 		manager.addContact("Klaus");
 		manager.addContact("Bamboo");
-		manager.addContact("Nell");
+		Contact contact = manager.addContact("Nell");
 		
-		ContactTest test = new ContactTest();
-		manager.getContacts().add(test);
-
 		SnappManager snapps = container.produce(SnappManager.class);
-		new NicknameTest(rfactory, snapps, test);
-		
-		
+		new NicknameTest(rfactory, snapps, contact, manager);
 	}
-}
-class ContactTest implements Contact{
-	
-	Register<String> nickname = new RegisterImpl<String>("Teste!");
-
-	@Override
-	public Signal<String> nickname() {
-		return nickname.output();
-	}
-
 }
 
 class NicknameTest implements Snapp{
 
 	private final RFactory _rfactory;
 	private final SnappManager _snapps;
-	private final ContactTest _test;
+	private final Contact _test;
+	private final ContactManager _manager;
 
-	public NicknameTest(RFactory rfactory, SnappManager snapps, ContactTest test) {
+	public NicknameTest(RFactory rfactory, SnappManager snapps, Contact test, ContactManager manager) {
 		_rfactory = rfactory;
 		_snapps = snapps;
 		_test = test;
+		_manager = manager;
 		_snapps.registerSnapp(this);
 	}
 
 	@Override
 	public void init(java.awt.Container container) {
 		container.setLayout(new BorderLayout());
-		JComponent field = _rfactory.newEditableLabel(_test.nickname(), _test.nickname.setter(), true).getComponent();
+		JComponent field = _rfactory.newEditableLabel(_test.nickname(),_manager.nicknameSetterFor(_test)).getComponent();
 		container.add(field);
 		field.setBorder(new TitledBorder("Change Nickname Here:"));
 	}

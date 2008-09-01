@@ -5,6 +5,7 @@ import java.awt.Image;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
@@ -17,8 +18,8 @@ public interface RFactory {
 	TextWidget<JLabel> newLabel(Signal<String> source);
 	TextWidget<JLabel> newLabel(Signal<String> source, Omnivore<String> setter);
 	
-	TextWidget<JTextField> newEditableLabel(Signal<String> source, Omnivore<String> setter);
-	TextWidget<JTextField> newEditableLabel(Signal<String> source, Omnivore<String> setter,	boolean notifyEveryChange);
+	TextWidget<JTextField> newEditableLabel(Signal<String> source, Consumer<String> setter);
+	TextWidget<JTextField> newEditableLabel(Signal<String> source, Consumer<String> setter,	boolean notifyEveryChange);
 	
 	TextWidget<JTextField> newTextField(Signal<String> source, Omnivore<String> setter);
 	TextWidget<JTextField> newTextField(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange);

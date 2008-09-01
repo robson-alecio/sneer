@@ -16,7 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import sneer.skin.widgets.reactive.TextWidget;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.Signal;
 
 public class REditableLabelImpl extends JPanel implements TextWidget<JTextField>{
@@ -26,12 +26,12 @@ public class REditableLabelImpl extends JPanel implements TextWidget<JTextField>
 	protected RTextFieldImpl text;
 	
 	private final Signal<String> _source;
-	private final Omnivore<String> _setter;
+	private final Consumer<String> _setter;
 	
-	REditableLabelImpl(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange) {
+	REditableLabelImpl(Signal<String> source, Consumer<String> setter, boolean notifyOnlyWhenDoneEditing) {
 		_source = source;
 		_setter = setter;
-		text = new RTextFieldImpl(source, setter, notifyEveryChange);
+		text = new RTextFieldImpl(source, setter, notifyOnlyWhenDoneEditing);
 		label = new RLabelImpl(source, setter);
 
 		this.setLayout(new GridBagLayout());
@@ -116,7 +116,7 @@ public class REditableLabelImpl extends JPanel implements TextWidget<JTextField>
 	}
 	
 	@Override
-	public Omnivore<String> setter(){
+	public Consumer<String> setter(){
 		return _setter;
 	}
 }

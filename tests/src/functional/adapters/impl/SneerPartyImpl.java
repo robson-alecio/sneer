@@ -108,14 +108,14 @@ public class SneerPartyImpl implements SneerParty {
 	public void setOwnName(String newName) {
 		_ownNameKeeper.nameSetter().consume(newName);
 	}
-
+	
     @Override
     public void giveNicknameTo(SovereignParty peer, String newNickname) {
     	PublicKey publicKey = ((SneerParty)peer).publicKey();
 		Contact contact = waitForContactGiven(publicKey);
 
 		try {
-			_contactManager.changeNickname(contact, newNickname);
+			_contactManager.nicknameSetterFor(contact).consume(newNickname);
 		} catch (IllegalParameter e) {
 			throw new IllegalStateException(e);
 		}

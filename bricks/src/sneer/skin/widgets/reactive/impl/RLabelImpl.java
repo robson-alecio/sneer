@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import sneer.skin.widgets.reactive.TextWidget;
+import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 
@@ -17,7 +18,7 @@ public class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 
 	protected JLabel _textComponent = new JLabel();
 	private Signal<String> _source;
-	private Omnivore<String> _setter = null;
+	private Consumer<String> _setter = null;
 	private Omnivore<String> listener;
 	private static final long serialVersionUID = 1L;
 	
@@ -27,7 +28,7 @@ public class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 		addReceivers();
 	}
 
-	RLabelImpl(Signal<String> source, Omnivore<String> setter) {
+	RLabelImpl(Signal<String> source, Consumer<String> setter) {
 		this(source);
 		_setter = setter;
 	}
@@ -83,7 +84,7 @@ public class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 	}
 
 	@Override
-	public Omnivore<String> setter() {
+	public Consumer<String> setter() {
 		if(_setter==null)
 			throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 		

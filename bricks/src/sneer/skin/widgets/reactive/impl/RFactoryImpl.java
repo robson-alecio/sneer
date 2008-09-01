@@ -12,6 +12,7 @@ import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.RFactory;
 import sneer.skin.widgets.reactive.TextWidget;
+import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
@@ -22,13 +23,13 @@ public class RFactoryImpl implements RFactory {
 	private static ImageFactory imageFactory;
 
 	@Override
-	public TextWidget<JTextField> newEditableLabel(Signal<String> source, Omnivore<String> setter) {
+	public TextWidget<JTextField> newEditableLabel(Signal<String> source, Consumer<String> setter) {
 		return new REditableLabelImpl(source, setter, false);
 	}
 
 	@Override
-	public TextWidget<JTextField> newEditableLabel(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange) {
-		return new REditableLabelImpl(source, setter, notifyEveryChange);
+	public TextWidget<JTextField> newEditableLabel(Signal<String> source, Consumer<String> setter, boolean notifyOnlyWhenDoneEditing) {
+		return new REditableLabelImpl(source, setter, notifyOnlyWhenDoneEditing);
 	}
 
 	@Override
@@ -47,8 +48,8 @@ public class RFactoryImpl implements RFactory {
 	}
 
 	@Override
-	public TextWidget<JTextField> newTextField(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange) {
-		return new RTextFieldImpl(source, setter, notifyEveryChange);
+	public TextWidget<JTextField> newTextField(Signal<String> source, Omnivore<String> setter, boolean notifyOnlyWhenDoneEditing) {
+		return new RTextFieldImpl(source, setter, notifyOnlyWhenDoneEditing);
 	}
 
 	@Override

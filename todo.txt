@@ -1,7 +1,6 @@
 ﻿MAIN ROADMAP
 ===================
 
-	- [Sandro] ContactManager.getContacts - Delete this method. It should never have been exposed.
 	- Dashboard - Make it open by default when Sneer is run.
 	- SneerFreedom7Test - Test brick publishing with a lib.
 	---- INITIAL CLEANUP DONE

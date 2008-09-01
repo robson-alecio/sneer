@@ -21,6 +21,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 
 import sneer.skin.widgets.reactive.TextWidget;
+import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.lang.Pair;
 import wheel.reactive.Signal;
@@ -35,7 +36,7 @@ public abstract class RAbstractField<WIDGET extends JComponent> extends JPanel i
 	public int _state = ENABLED_SAVED_STATE;
 
 	protected Signal<String> _source;
-	protected Omnivore<String> _setter;
+	protected Consumer<String> _setter;
 	public WIDGET _textComponent;
 	
 	protected Omnivore<String> _fieldReciver;
@@ -46,7 +47,7 @@ public abstract class RAbstractField<WIDGET extends JComponent> extends JPanel i
 	public abstract Omnivore<String> fieldReceiver();
 	public abstract Omnivore<Pair<String, String>> textChangedReceiver();
 	
-	RAbstractField(WIDGET textComponent, Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange) {
+	RAbstractField(WIDGET textComponent, Signal<String> source, Consumer<String> setter, boolean notifyOnlyWhenDoneEditing) {
 		_source = source;
 		_setter = setter;
 		_textComponent = textComponent;
@@ -54,7 +55,7 @@ public abstract class RAbstractField<WIDGET extends JComponent> extends JPanel i
 		initComponents();
 		addReceivers();
 		if (_state == ENABLED_SAVED_STATE)
-			addChangeListeners(notifyEveryChange);
+			addChangeListeners(notifyOnlyWhenDoneEditing);
 		
 		_defaultBorder = textComponent.getBorder();
 		setOpaque(false);
@@ -112,7 +113,7 @@ public abstract class RAbstractField<WIDGET extends JComponent> extends JPanel i
 		}
 	}
 
-	public void addChangeListeners(boolean notifyEveryChange) {
+	public void addChangeListeners(boolean notifyOnlyWhenDoneEditing) {
 		_textComponent.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -121,7 +122,7 @@ public abstract class RAbstractField<WIDGET extends JComponent> extends JPanel i
 			}
 		});
 
-		if(notifyEveryChange){
+		if(!notifyOnlyWhenDoneEditing){
 			notifyEveryChange();
 			return;
 		}
@@ -223,7 +224,7 @@ public abstract class RAbstractField<WIDGET extends JComponent> extends JPanel i
 	}
 	
 	@Override
-	public Omnivore<String> setter(){
+	public Consumer<String> setter(){
 		return _setter;
 	}	
 }

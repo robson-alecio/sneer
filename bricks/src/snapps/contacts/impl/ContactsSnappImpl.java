@@ -50,7 +50,7 @@ public class ContactsSnappImpl implements ContactsSnapp {
 	
 	@Override
 	public void init(Container container) {	
-		_contactList = _rfactory.newList(_contacts.getContacts().output(),
+		_contactList = _rfactory.newList(_contacts.contacts(),
 				new LabelProvider<Contact>() {
 
 					@Override

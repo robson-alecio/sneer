@@ -9,6 +9,7 @@ import javax.swing.border.TitledBorder;
 
 import snapps.contacts.ContactsSnapp;
 import sneer.kernel.container.Inject;
+import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.skin.snappmanager.SnappManager;
@@ -19,7 +20,6 @@ import wheel.graphics.Images;
 import wheel.lang.Functor;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Adapter;
-import wheel.reactive.impl.mocks.RandomBoolean;
 
 public class ContactsSnappImpl implements ContactsSnapp {
 
@@ -32,8 +32,8 @@ public class ContactsSnappImpl implements ContactsSnapp {
 	@Inject
 	static private RFactory _rfactory;
 
-//	@Inject
-//	static private ConnectionManager _connectionManager;
+	@Inject
+	static private ConnectionManager _connectionManager;
 
 	private ListWidget<Contact> _contactList;
 
@@ -56,9 +56,8 @@ public class ContactsSnappImpl implements ContactsSnapp {
 					@Override
 					public Signal<Image> imageFor(Contact contact) {
 						
-//						Signal<Boolean> isOnline = _connectionManager.connectionFor(contact).isOnline();
+						Signal<Boolean> isOnline = _connectionManager.connectionFor(contact).isOnline();
 						
-						Signal<Boolean> isOnline = new RandomBoolean().output();
 						Functor<Boolean, Image> functor = new Functor<Boolean, Image>(){
 							@Override
 							public Image evaluate(Boolean value) {

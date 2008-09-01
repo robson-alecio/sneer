@@ -40,16 +40,23 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 	
 	private static final Border noFocusBorder = new EmptyBorder(1, 1, 1, 1);
     private static final Border SAFE_NO_FOCUS_BORDER = new EmptyBorder(1, 1, 1, 1);
+
+	private final Omnivore<ListValueChange> _listReceiver = new Omnivore<ListValueChange>(){
+		@Override
+		public void consume(ListValueChange valueObject) {
+			revalidate();
+			repaint();
+	}};
     
 	RListImpl(ListSignal<ELEMENT> source, LabelProvider<ELEMENT> labelProvider) {
 		_source = source;
 		_labelProvider = labelProvider;
 		initModel();
-		addReceiverListener();
+		addListReceiver();
 		
 		class DefaultListCellRenderer implements ListCellRenderer{
 		    
-			Map<Object, JPanel> cacheLines = new HashMap<Object, JPanel>(); //Optimize cleanup for giant lists
+			Map<Object, JPanel> cacheLines = new HashMap<Object, JPanel>(); //Fix this might be a leak
 			
 			private Border getNoFocusBorder() {
 				if (System.getSecurityManager() != null) {
@@ -113,13 +120,8 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 	}
 	
     
-	private void addReceiverListener() {
-		_source.addListReceiver(new Omnivore<ListValueChange>(){
-			@Override
-			public void consume(ListValueChange valueObject) {
-				revalidate();
-				repaint();
-		}});
+	private void addListReceiver() {
+		_source.addListReceiver(_listReceiver);
 	}
 	
 	private void initModel() {

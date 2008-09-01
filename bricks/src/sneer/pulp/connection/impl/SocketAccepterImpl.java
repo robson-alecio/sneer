@@ -107,7 +107,7 @@ public class SocketAccepterImpl implements SocketAccepter {
 		
 		try {
 			
-			_log.info("starting server socket at {}", port);
+			System.out.println("starting server socket at port " + port);
 			_serverSocket = _network.openServerSocket(port);
 			_lights.turnOff(_cantOpenServerSocket);
 		} catch (IOException e) {

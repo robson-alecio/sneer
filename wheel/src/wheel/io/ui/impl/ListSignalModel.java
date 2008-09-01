@@ -20,6 +20,7 @@ public class ListSignalModel<T> extends AbstractListModel {
 	private final ListSignal<T> _input;
 	private final List<Omnivore<?>> _elementReceivers = new LinkedList<Omnivore<?>>();
 	private final SignalChooser<T> _chooser;
+	private final ListChangeReceiver _listReceiverToAvoidGc = new ListChangeReceiver();
 
 	public ListSignalModel(ListSignal<T> input, SignalChooser<T> chooser) {
 		_input = input;
@@ -28,7 +29,7 @@ public class ListSignalModel<T> extends AbstractListModel {
 		int size = _input.currentSize();
 		for (int i = 0; i < size; i++) addReceiverToElement(i);
 			
-		_input.addListReceiver(new ListChangeReceiver());
+		_input.addListReceiver(_listReceiverToAvoidGc);
 	}
 
 	public ListSignalModel(ListSignal<T> input) {
@@ -105,9 +106,10 @@ public class ListSignalModel<T> extends AbstractListModel {
 	}
 
 	private <U> Omnivore<U> createElementReceiver(final int index) {
-		return new Omnivore<U>() { public void consume(U ignored) {
+		Omnivore<U> elementReceiver = new Omnivore<U>() { public void consume(U ignored) {
 			fireContentsChanged(this, index, index);
 		}};
+		return elementReceiver;
 	}
 
 	private static final long serialVersionUID = 1L;

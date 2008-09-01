@@ -80,6 +80,8 @@ public class DashboardImpl implements Dashboard, Runnable {
 		addExitAction(tray);
 		
 		addSnappManagerReceiver();
+		
+		open();
 	}
 
 	private void addSnappManagerReceiver() {
@@ -173,20 +175,21 @@ public class DashboardImpl implements Dashboard, Runnable {
 			}
 			@Override
 			public void run() {
-				SwingUtilities.invokeLater(
-					new Runnable(){
-						public void run() {
-							jframe.setState(Frame.NORMAL);
-							jframe.setVisible(true);
-							jframe.requestFocusInWindow();						}
-					}
-				);
+				SwingUtilities.invokeLater( new Runnable(){ public void run() {
+					open();						
+				}});
 			}
 		};
 		tray.setDefaultAction(cmd);
 		tray.addAction(cmd);
 	}
-
+	
+	private void open() {
+		jframe.setState(Frame.NORMAL);
+		jframe.setVisible(true);
+		jframe.requestFocusInWindow();
+	}
+	
 	private void addExitAction(TrayIconImpl tray) {
 		Action cmd = new Action(){
 			@Override

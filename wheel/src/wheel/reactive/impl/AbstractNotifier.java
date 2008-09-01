@@ -58,6 +58,18 @@ public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 		}
 	}
 
+	@Override
+	protected void finalize() throws Throwable {
+		StringBuilder result = new StringBuilder();
+		result.append("Abstract notifier finalized.\n");
+		ReceiverHolder<Omnivore<VC>>[] copyToAvoidConcurrentModificationAsResultOfNotifications = copyOfListeners();
+		for (ReceiverHolder<Omnivore<VC>> reference : copyToAvoidConcurrentModificationAsResultOfNotifications)
+			result.append("\tReceiver: " + reference._alias + "\n");
+		System.err.println(result);
+		
+	}
+
+	
 }
 
 class ReceiverHolder<T> extends java.lang.ref.WeakReference<T>{
@@ -74,7 +86,8 @@ class ReceiverHolder<T> extends java.lang.ref.WeakReference<T>{
 	}
 	
 	static String getAlias(Object object) {
-		return "" + object.getClass() + "@" + System.identityHashCode(object);
+		//return "" + object.getClass() + "@" + System.identityHashCode(object);
+		return object.toString();
 	}
 
 }

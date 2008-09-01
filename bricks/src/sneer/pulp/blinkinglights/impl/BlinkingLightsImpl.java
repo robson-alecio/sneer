@@ -24,6 +24,8 @@ public class BlinkingLightsImpl implements BlinkingLights {
 
 	@Override
 	public Light turnOn(String message, Throwable t, long timeout) {
+		System.out.println("Blinking Light turned on: " + message);
+		
 		Light result = new LightImpl(message, t, timeout); 
 		_lights.add(result);
 		return result;

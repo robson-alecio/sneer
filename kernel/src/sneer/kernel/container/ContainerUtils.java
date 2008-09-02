@@ -15,10 +15,6 @@ public class ContainerUtils {
         return new SimpleContainer(implementationBindings);
     }
 
-    public static Container newContainer() {
-        return new SimpleContainer();
-    }
-	
     public static void stopContainer() {
     	_container = null;
     }

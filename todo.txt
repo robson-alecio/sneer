@@ -1,7 +1,7 @@
 ﻿MAIN ROADMAP
 ===================
 
-	- Hold element receivers from gc in ListSignalModel
+	- Make receivers reference their Signals.
 
 	- Contact List - (Host addresses for Sneer developers are HARDCODED)
 		- Name

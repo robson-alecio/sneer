@@ -15,39 +15,35 @@ import sneer.skin.widgets.reactive.ImageWidget;
 import wheel.lang.Omnivore;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
+import wheel.reactive.impl.Receiver;
 import wheel.reactive.impl.RegisterImpl;
 
 public class RImageImpl extends JPanel implements ImageWidget{
 
-	private final Register<Image> _image = new RegisterImpl<Image>(null);
-	private Omnivore<Image> _listener;
 	private static final long serialVersionUID = 1L;
+
+	private final Register<Image> _image = new RegisterImpl<Image>(null);
+	
+	@SuppressWarnings("unused")
+	private final Receiver<Image> _imageReceiver;
+	
 	private ImageFactory _imageFactory;
+	
 	private Omnivore<Image> _setter;
 	
 	RImageImpl(ImageFactory imageFactory, Signal<Image> source, Omnivore<Image> setter){
 		setOpaque(false);
 		_imageFactory = imageFactory;
 		_setter = setter;
-		
-		//_image.setter().consume(source.currentValue());
-		
-		source.addReceiver(imageReceiver());
+		_imageReceiver = imageReceiverFor(source);
 	}
 
 	RImageImpl(ImageFactory imageFactory, Signal<Image> source) {
 		this(imageFactory, source, null);
 	}
 
-
-	private Omnivore<Image> imageReceiver() {
-		if(_listener==null)
-			_listener = createImageReceiver();
-		return _listener;
-	}
-
-	private Omnivore<Image> createImageReceiver() {
-		return new Omnivore<Image>() {
+	private Receiver<Image> imageReceiverFor(Signal<Image> signal) {
+		return new Receiver<Image>(signal) {
 			public void consume(final Image image) {
 				_image.setter().consume(image);
 

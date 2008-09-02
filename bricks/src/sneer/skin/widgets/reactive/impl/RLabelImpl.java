@@ -11,26 +11,36 @@ import javax.swing.SwingUtilities;
 
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.lang.Consumer;
-import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
+import wheel.reactive.impl.Receiver;
 
 public class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 
-	protected JLabel _textComponent = new JLabel();
-	private Signal<String> _source;
-	private Consumer<String> _setter = null;
-	private Omnivore<String> listener;
 	private static final long serialVersionUID = 1L;
 	
+	protected final JLabel _textComponent = new JLabel();
+	private final Signal<String> _source;
+	private final Consumer<String> _setter;
+	@SuppressWarnings("unused")
+	private final Receiver<String> _textReceiver;
+	
 	RLabelImpl(Signal<String> text){
-		_source = text;
-		initComponents();
-		addReceivers();
+		this(text, null);
 	}
 
 	RLabelImpl(Signal<String> source, Consumer<String> setter) {
-		this(source);
 		_setter = setter;
+		_source = source;
+		_textReceiver = new Receiver<String>(source) {
+			public void consume(final String value) {
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						_textComponent.setText(value);
+					}
+				});
+			}
+		};
+		initComponents();
 	}
 
 	private void initComponents() {
@@ -43,24 +53,6 @@ public class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 		setOpaque(false);
 		_textComponent.setText(_source.currentValue());
 		add(_textComponent, c);
-	}
-
-	private void addReceivers() {
-		_source.addReceiver(textReceiver());
-	}
-
-	private Omnivore<String> textReceiver() {
-		if(listener==null)
-			listener = new Omnivore<String>() {
-				public void consume(final String text) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							_textComponent.setText(text);
-						}
-					});
-				}
-			};
-		return listener;
 	}
 
 	@Override

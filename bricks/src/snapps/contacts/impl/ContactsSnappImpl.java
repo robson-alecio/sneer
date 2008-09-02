@@ -62,7 +62,7 @@ public class ContactsSnappImpl implements ContactsSnapp {
 		return "My Contacts";
 	}
 	
-	public final class ContactLabelProvider extends LabelProvider<Contact> {
+	public final class ContactLabelProvider implements LabelProvider<Contact> {
 		
 		@Override
 		public Signal<Image> imageFor(Contact contact) {

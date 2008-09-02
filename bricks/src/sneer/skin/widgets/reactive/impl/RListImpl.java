@@ -50,7 +50,6 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 	private void repaintList() {
 			revalidate();
 			repaint();
-//			repaint();
 	}
     
 	RListImpl(ListSignal<ELEMENT> source, LabelProvider<ELEMENT> labelProvider) {
@@ -90,7 +89,7 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 					panel.setLayout(new BorderLayout(5, 5));
 
 					Signal<String> slabel = _labelProvider.labelFor(getElement(value));
-					Signal<Image> sicon = _labelProvider.imageFor(getElement(value));
+					Signal<Image> sicon = _labelProvider.cachedImageFor(getElement(value));
 					
 
 					TextWidget<JLabel> label = rfactory.newLabel(slabel);

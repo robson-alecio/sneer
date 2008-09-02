@@ -1,8 +1,9 @@
 ﻿MAIN ROADMAP
 ===================
 
-	- [Klaus] Make receivers reference their Signals.
 	- [Sandro] Make LabelProvider back into an interface again. I will make receivers reference their signals and that will already solve the problem.
+	- [Sandro] Fix contact list presentation problem. DONT SPECULATE. DONT DO TRIAL AND ERROR. Learn how the JList repaint works and make ours work properly. This point of the code is CRITICAL because all of us will be trusting the online/offline icon as the single indicator to see if our friends are connected, if Sneer is working or has a bug, etc. The last thing we need is to be fooled by a bug in the gui repaint(). :P
+	- [Klaus] Make receivers reference their Signals.
 
 	- Contact List - (Host addresses for Sneer developers are HARDCODED)
 		- Name

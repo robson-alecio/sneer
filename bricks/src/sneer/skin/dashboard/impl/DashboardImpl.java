@@ -18,6 +18,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import sneer.kernel.container.Inject;
+import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.skin.dashboard.Dashboard;
 import sneer.skin.dashboard.SnappFrame;
@@ -48,6 +49,9 @@ public class DashboardImpl implements Dashboard, Runnable {
 		
 	@Inject
 	static private SnappManager _snappManager;
+
+	@Inject
+	private BlinkingLights _blinkingLights;
 		
 	private Dimension screenSize;
 	private Rectangle bounds;
@@ -68,20 +72,25 @@ public class DashboardImpl implements Dashboard, Runnable {
 		initWindows();	
 		resizeWindow();
 
+		initTrayIconIfPossible();
+		
+		addSnappManagerReceiver();
+		
+		open();
+	}
+
+	private void initTrayIconIfPossible() {
 		TrayIconImpl tray = null;
 		try {
 			tray = new TrayIconImpl(logoIconURL());
 		} catch (SystemTrayNotSupported e1) {
+			_blinkingLights.turnOn(e1.getMessage());
 			changeWindowCloseEventToMinimizeEvent();
 			return;
 		}
 		
 		addOpenWindowAction(tray);
 		addExitAction(tray);
-		
-		addSnappManagerReceiver();
-		
-		open();
 	}
 
 	private void addSnappManagerReceiver() {

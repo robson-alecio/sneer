@@ -1,7 +1,8 @@
 ﻿MAIN ROADMAP
 ===================
 
-	- Make receivers reference their Signals.
+	- [Klaus] Make receivers reference their Signals.
+	- [Sandro] Make LabelProvider back into an interface again. I will make receivers reference their signals and that will already solve the problem.
 
 	- Contact List - (Host addresses for Sneer developers are HARDCODED)
 		- Name

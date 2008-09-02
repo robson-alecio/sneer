@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import wheel.lang.Omnivore;
+import wheel.lang.Types;
 import wheel.reactive.EventSource;
 
 public abstract class AbstractNotifier<VC> implements EventSource<VC> {
@@ -43,7 +44,7 @@ public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 	@Override
 	public void addReceiver(Omnivore<? super VC> receiver) {
 		synchronized (_receivers) {
-			_receivers.add(new ReceiverHolder<Omnivore<? super VC>>(receiver));
+			_receivers.add(holderFor(receiver));
 			initReceiver(receiver);
 		}
 	}
@@ -53,7 +54,8 @@ public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 	@Override
 	public void removeReceiver(Object receiver) {
 		synchronized (_receivers) {
-			boolean wasThere = _receivers.remove(receiver); //Optimize consider a Set for when there is a great number of receivers.
+			final Omnivore<? super VC> typedReceiver = Types.cast(receiver);
+			boolean wasThere = _receivers.remove(holderFor(typedReceiver)); //Optimize consider a Set for when there is a great number of receivers.
 			assert wasThere;
 		}
 	}
@@ -66,15 +68,17 @@ public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 		for (ReceiverHolder<Omnivore<VC>> reference : copyToAvoidConcurrentModificationAsResultOfNotifications)
 			result.append("\tReceiver: " + reference._alias + "\n");
 		System.err.println(result);
-		
 	}
-
 	
+	private ReceiverHolder<Omnivore<? super VC>> holderFor(
+			Omnivore<? super VC> receiver) {
+		return new ReceiverHolder<Omnivore<? super VC>>(receiver);
+	}
 }
 
 class ReceiverHolder<T> extends java.lang.ref.WeakReference<T>{
 	
-	String _alias;
+	final String _alias;
 	
 	ReceiverHolder(T receiver) {
 		this(receiver, getAlias(receiver));
@@ -83,6 +87,17 @@ class ReceiverHolder<T> extends java.lang.ref.WeakReference<T>{
 	ReceiverHolder(T receiver, String alias) {
 		super(receiver);
 		_alias = alias;
+	}
+	
+	@Override
+	public String toString() {
+		return _alias;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		final ReceiverHolder<T> holder = Types.cast(obj);
+		return holder.get() == get();
 	}
 	
 	static String getAlias(Object object) {

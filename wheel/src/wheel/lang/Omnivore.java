@@ -1,6 +1,6 @@
 package wheel.lang;
 
-/** Can consume any value without ever throwing IllegalArgument. */
+/** Can consume any value without ever throwing IllegalParameter. */
 public interface Omnivore<VO> extends Consumer<VO> {
 
 	void consume(VO valueObject);

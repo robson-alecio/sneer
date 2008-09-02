@@ -5,8 +5,8 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
-import wheel.lang.Types;
 import wheel.lang.Omnivore;
+import wheel.lang.Types;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.VisitingListReceiver;
@@ -26,9 +26,6 @@ public class ListSignalModel<T> extends AbstractListModel {
 		_input = input;
 		_chooser = chooser;
 		
-		int size = _input.currentSize();
-		for (int i = 0; i < size; i++) addReceiverToElement(i);
-			
 		_input.addListReceiver(_listReceiverToAvoidGc);
 	}
 
@@ -87,7 +84,7 @@ public class ListSignalModel<T> extends AbstractListModel {
 	private void addReceiverToElement(int index) {
 		T element = getElementAt(index);
 
-		Omnivore<?> receiver = createElementReceiver(index);
+		Omnivore<?> receiver = createElementReceiver(element);
 		_elementReceivers.add(index, receiver);
 		
 		if (_chooser == null) return;
@@ -105,11 +102,14 @@ public class ListSignalModel<T> extends AbstractListModel {
 		signal.removeReceiver(casted);
 	}
 
-	private <U> Omnivore<U> createElementReceiver(final int index) {
-		Omnivore<U> elementReceiver = new Omnivore<U>() { public void consume(U ignored) {
-			fireContentsChanged(this, index, index);
+	private <U> Omnivore<U> createElementReceiver(final T element) {
+		return new Omnivore<U>() { public void consume(U ignored) {
+			int i = 0;
+			for (T candidate : _input) {  //Optimize
+				if (candidate == element) fireContentsChanged(this, i, i);
+				i++;
+			}
 		}};
-		return elementReceiver;
 	}
 
 	private static final long serialVersionUID = 1L;

@@ -25,20 +25,20 @@ public class ContactsSnappImpl implements ContactsSnapp {
 
 	private static final Image ONLINE = getImage("online.png");
 	private static final Image OFFLINE = getImage("offline.png");
+	
+	@Inject
+	static private SnappManager _snapps;
 
 	@Inject
 	static private ContactManager _contacts;
-
-	@Inject
-	static private RFactory _rfactory;
-
+	
 	@Inject
 	static private ConnectionManager _connectionManager;
 
-	private ListWidget<Contact> _contactList;
-
 	@Inject
-	static private SnappManager _snapps;
+	static private RFactory _rfactory;
+	
+	private ListWidget<Contact> _contactList;
 	
 	public ContactsSnappImpl(){
 		_snapps.registerSnapp(this);
@@ -54,7 +54,7 @@ public class ContactsSnappImpl implements ContactsSnapp {
 		
 		container.setLayout(new BorderLayout());
 		container.add(_contactList.getComponent(), BorderLayout.CENTER);
-		_contactList.getComponent().setBorder(new TitledBorder(new EmptyBorder(5,5,5,5), "My Contacts"));
+		_contactList.getComponent().setBorder(new TitledBorder(new EmptyBorder(5,5,5,5), getName()));
 	}
 
 	@Override
@@ -66,15 +66,12 @@ public class ContactsSnappImpl implements ContactsSnapp {
 		
 		@Override
 		public Signal<Image> imageFor(Contact contact) {
-
 //			Signal<Boolean> isOnline = new RandomBoolean().output();
 			Signal<Boolean> isOnline = _connectionManager.connectionFor(contact).isOnline();
 
-			Functor<Boolean, Image> functor = new Functor<Boolean, Image>(){
-				@Override
-				public Image evaluate(Boolean value) {
-					return value?ONLINE:OFFLINE;
-				}};
+			Functor<Boolean, Image> functor = new Functor<Boolean, Image>(){@Override public Image evaluate(Boolean value) {
+				return value?ONLINE:OFFLINE;
+			}};
 			
 			Adapter<Boolean, Image> imgSource = new Adapter<Boolean, Image>(isOnline, functor);
 			return imgSource.output();

@@ -142,8 +142,7 @@ class ConnectionImpl implements ByteConnection {
 		} catch (IOException e) {
 			_logger.info(e.getMessage(), e);
 			_socketHolder.crash(mySocket);
-			throw new RuntimeException(e);
-			//return null;
+			return null;
 		} 
 
 	}

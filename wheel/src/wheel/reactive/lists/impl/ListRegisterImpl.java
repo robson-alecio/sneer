@@ -39,7 +39,7 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 		}
 
 		@Override
-		protected void initReceiver(Omnivore<ListValueChange> receiver) {}
+		protected void initReceiver(Omnivore<? super ListValueChange> receiver) {}
 
 		@Override
 		protected void notifyReceivers(ListValueChange valueChange) {

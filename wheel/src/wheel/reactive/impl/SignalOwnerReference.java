@@ -23,7 +23,7 @@ public class SignalOwnerReference<T> implements Signal<T> {
 		_delegate.addListReceiver(receiver);
 	}
 
-	public void addReceiver(Omnivore<T> receiver) {
+	public void addReceiver(Omnivore<? super T> receiver) {
 		_delegate.addReceiver(receiver);
 	}
 

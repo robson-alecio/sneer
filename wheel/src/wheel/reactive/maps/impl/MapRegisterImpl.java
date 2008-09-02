@@ -87,7 +87,7 @@ public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 		}
 
 		@Override
-		protected void initReceiver(Omnivore<SetValueChange<Map.Entry<K, V>>> receiver) {
+		protected void initReceiver(Omnivore<? super SetValueChange<Map.Entry<K, V>>> receiver) {
 			if (_map.isEmpty()) return;
 			receiver.consume(asChange(currentElements()));
 		}

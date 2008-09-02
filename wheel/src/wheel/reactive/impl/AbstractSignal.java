@@ -35,7 +35,7 @@ public abstract class AbstractSignal<T> extends AbstractNotifier<T> implements S
 	}
 
 	@Override
-	protected void initReceiver(Omnivore<T> receiver) {
+	protected void initReceiver(Omnivore<? super T> receiver) {
 		T currentValue = currentValue();
 		if (currentValue == null) return;
 		receiver.consume(currentValue);

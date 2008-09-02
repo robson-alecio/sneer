@@ -3,6 +3,8 @@ package snapps.contacts.impl;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Image;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
@@ -20,6 +22,7 @@ import wheel.graphics.Images;
 import wheel.lang.Functor;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Adapter;
+import wheel.reactive.impl.mocks.RandomBoolean;
 
 public class ContactsSnappImpl implements ContactsSnapp {
 
@@ -53,11 +56,20 @@ public class ContactsSnappImpl implements ContactsSnapp {
 		_contactList = _rfactory.newList(_contacts.contacts(),
 				new LabelProvider<Contact>() {
 
+					private final Map<Contact, Signal<Image>> _imagesByContact = new HashMap<Contact, Signal<Image>>();
+
 					@Override
 					public Signal<Image> imageFor(Contact contact) {
+						if (!_imagesByContact.containsKey(contact))
+							_imagesByContact.put(contact, createImageSignal(contact));
 						
+						return _imagesByContact.get(contact);
+					}
+
+					private Signal<Image> createImageSignal(Contact contact) {
 						Signal<Boolean> isOnline = _connectionManager.connectionFor(contact).isOnline();
-						
+//						Signal<Boolean> isOnline = new RandomBoolean().output();
+
 						Functor<Boolean, Image> functor = new Functor<Boolean, Image>(){
 							@Override
 							public Image evaluate(Boolean value) {
@@ -65,7 +77,7 @@ public class ContactsSnappImpl implements ContactsSnapp {
 							}};
 						
 						Adapter<Boolean, Image> imgSource = new Adapter<Boolean, Image>(isOnline, functor);
-						return imgSource.output();	
+						return imgSource.output();
 					}
 
 					@Override

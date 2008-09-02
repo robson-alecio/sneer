@@ -25,7 +25,10 @@ public class ListSignalModel<T> extends AbstractListModel {
 	public ListSignalModel(ListSignal<T> input, SignalChooser<T> chooser) {
 		_input = input;
 		_chooser = chooser;
-		
+
+		int size = _input.currentSize();
+		for (int i = 0; i < size; i++) addReceiverToElement(i);
+
 		_input.addListReceiver(_listReceiverToAvoidGc);
 	}
 
@@ -37,8 +40,10 @@ public class ListSignalModel<T> extends AbstractListModel {
 
 		@Override
 		public void elementAdded(int index) {
+			System.out.println("added");
+
 			addReceiverToElement(index);
-			fireIntervalAdded(this, index, index);
+			fireIntervalAdded(ListSignalModel.this, index, index);
 		}
 
 		@Override
@@ -48,7 +53,7 @@ public class ListSignalModel<T> extends AbstractListModel {
 
 		@Override
 		public void elementRemoved(int index) {
-			fireIntervalRemoved(this, index, index);
+			fireIntervalRemoved(ListSignalModel.this, index, index);
 		}
 
 		@Override
@@ -59,7 +64,7 @@ public class ListSignalModel<T> extends AbstractListModel {
 		@Override
 		public void elementReplaced(int index) {
 			addReceiverToElement(index);
-			fireContentsChanged(this, index, index);
+			fireContentsChanged(ListSignalModel.this, index, index);
 		}
 
 	}
@@ -73,6 +78,7 @@ public class ListSignalModel<T> extends AbstractListModel {
 	}
 
 	private void removeReceiverFromElement(int index) {
+		System.out.println("Remove");
 		T element = getElementAt(index);
 		Omnivore<?> receiver = _elementReceivers.remove(index);
 
@@ -106,12 +112,11 @@ public class ListSignalModel<T> extends AbstractListModel {
 		return new Omnivore<U>() { public void consume(U ignored) {
 			int i = 0;
 			for (T candidate : _input) {  //Optimize
-				if (candidate == element) fireContentsChanged(this, i, i);
+				if (candidate == element) {
+					fireContentsChanged(ListSignalModel.this, i, i);
+				}
 				i++;
-			}
-		}};
-	}
+			}}};}
 
 	private static final long serialVersionUID = 1L;
-
 }

@@ -44,9 +44,14 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 	private final Omnivore<ListValueChange> _listReceiver = new Omnivore<ListValueChange>(){
 		@Override
 		public void consume(ListValueChange valueObject) {
+			repaintList();
+	}};
+
+	private void repaintList() {
 			revalidate();
 			repaint();
-	}};
+//			repaint();
+	}
     
 	RListImpl(ListSignal<ELEMENT> source, LabelProvider<ELEMENT> labelProvider) {
 		_source = source;
@@ -58,6 +63,12 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 		    
 			Map<Object, JPanel> cacheLines = new HashMap<Object, JPanel>(); //Fix this might be a leak
 			
+			Omnivore<Object> _listRepainter = new Omnivore<Object>(){
+				@Override
+				public void consume(Object ignore) {
+					repaintList();
+				}};
+			
 			private Border getNoFocusBorder() {
 				if (System.getSecurityManager() != null) {
 					return SAFE_NO_FOCUS_BORDER;
@@ -66,8 +77,7 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 			}
 			
 			@Override
-			public Component getListCellRendererComponent(JList lst, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-				
+			public Component getListCellRendererComponent(JList ignored, Object value, int ignored2, boolean isSelected, boolean cellHasFocus) {
 				JPanel panel;
 				if (cacheLines.containsKey(value)) {
 					panel = cacheLines.get(value);
@@ -79,10 +89,9 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 					panel.setOpaque(false);
 					panel.setLayout(new BorderLayout(5, 5));
 
-					Signal<String> slabel = _labelProvider
-							.labelFor(getElement(value));
-					Signal<Image> sicon = _labelProvider
-							.imageFor(getElement(value));
+					Signal<String> slabel = _labelProvider.labelFor(getElement(value));
+					Signal<Image> sicon = _labelProvider.imageFor(getElement(value));
+					
 
 					TextWidget<JLabel> label = rfactory.newLabel(slabel);
 					panel.add(label.getComponent(), BorderLayout.CENTER);
@@ -90,6 +99,9 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 					ImageWidget image = rfactory.newImage(sicon);
 					panel.add(image.getComponent(), BorderLayout.WEST);
 					panel.setOpaque(false);
+
+					label.output().addReceiver(_listRepainter);
+					image.output().addReceiver(_listRepainter);
 
 					cacheLines.put(value, panel);
 				}
@@ -126,12 +138,13 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 	
 	private void initModel() {
 		
-		setModel(new ListSignalModel<ELEMENT>(_source, new ListSignalModel.SignalChooser<ELEMENT>(){
-			@Override
-			public Signal<?>[] signalsToReceiveFrom(ELEMENT element) {
-				return new Signal<?>[]{_labelProvider.imageFor(element), 
-									   _labelProvider.labelFor(element)};
-			}}));
+//		setModel(new ListSignalModel<ELEMENT>(_source, new ListSignalModel.SignalChooser<ELEMENT>(){
+//			@Override
+//			public Signal<?>[] signalsToReceiveFrom(ELEMENT element) {
+//				return new Signal<?>[]{_labelProvider.imageFor(element), 
+//									   _labelProvider.labelFor(element)};
+//			}}));
+		setModel(new ListSignalModel<ELEMENT>(_source));
 	}
 
 	@Override

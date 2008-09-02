@@ -9,11 +9,11 @@ class SimpleBinder {
 
 	private final List<Object> _implementations = new ArrayList<Object>();
 	
-	void bind(Object implementation) {
+	synchronized void bind(Object implementation) {
 		_implementations.add(implementation);
 	}
 	
-	Object implementationFor(Class<?> type) {
+	synchronized Object implementationFor(Class<?> type) {
 		Object result = null;
 		for (Object candidate : _implementations) { //Optimize preserving clash semantics.
 			if (!instanceOf(candidate, type)) continue;

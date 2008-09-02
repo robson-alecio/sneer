@@ -76,8 +76,6 @@ public class ListSignalModelTest {
 		r1.setter().consume("1c");
 		r2.setter().consume("2c");
 		assertEvents("Changed 0 0, ");
-		
-		
 	}
 
 	private Register<String> addElement(String value) {

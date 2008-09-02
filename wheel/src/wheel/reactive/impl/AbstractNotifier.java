@@ -8,7 +8,7 @@ import wheel.reactive.EventSource;
 
 public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 
-	private final List<ReceiverHolder<Omnivore<VC>>> _receivers = new ArrayList<ReceiverHolder<Omnivore<VC>>>(); //Fix: Potential object leak. Receivers must be weak referenced. This is equivalent to the whiteboard pattern too, from a receiver referencing perspective. Conceptually, it is only the receiver that references the signal.
+	private final List<ReceiverHolder<Omnivore<? super VC>>> _receivers = new ArrayList<ReceiverHolder<Omnivore<? super VC>>>(); //Fix: Potential object leak. Receivers must be weak referenced. This is equivalent to the whiteboard pattern too, from a receiver referencing perspective. Conceptually, it is only the receiver that references the signal.
 
 	protected void notifyReceivers(VC valueChange) {
 		synchronized (_receivers) {
@@ -41,14 +41,14 @@ public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 	}
 
 	@Override
-	public void addReceiver(Omnivore<VC> receiver) {
+	public void addReceiver(Omnivore<? super VC> receiver) {
 		synchronized (_receivers) {
-			_receivers.add(new ReceiverHolder<Omnivore<VC>>(receiver));
+			_receivers.add(new ReceiverHolder<Omnivore<? super VC>>(receiver));
 			initReceiver(receiver);
 		}
 	}
 
-	protected abstract void initReceiver(Omnivore<VC> receiver);
+	protected abstract void initReceiver(Omnivore<? super VC> receiver);
 	
 	@Override
 	public void removeReceiver(Object receiver) {

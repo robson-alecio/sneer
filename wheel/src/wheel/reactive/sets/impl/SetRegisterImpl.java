@@ -53,7 +53,7 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 		}
 
 		@Override
-		protected void initReceiver(Omnivore<SetValueChange<T>> receiver) {
+		protected void initReceiver(Omnivore<? super SetValueChange<T>> receiver) {
 			if (_contents.isEmpty()) return;
 			receiver.consume(new SetValueChangeImpl<T>(contentsCopy(), null));
 		}

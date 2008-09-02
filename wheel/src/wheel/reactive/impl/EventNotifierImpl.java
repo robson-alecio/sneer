@@ -9,7 +9,7 @@ public class EventNotifierImpl<VO> implements EventNotifier<VO> {
 	static class MyOutput<VO> extends AbstractNotifier<VO> {
 
 		@Override
-		protected void initReceiver(Omnivore<VO> receiver) {	
+		protected void initReceiver(Omnivore<? super VO> receiver) {	
 			//EventNotifiers dont need to init receivers like Signals do.
 		}
 		

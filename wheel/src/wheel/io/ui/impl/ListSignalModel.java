@@ -40,8 +40,6 @@ public class ListSignalModel<T> extends AbstractListModel {
 
 		@Override
 		public void elementAdded(int index) {
-			System.out.println("added");
-
 			addReceiverToElement(index);
 			fireIntervalAdded(ListSignalModel.this, index, index);
 		}

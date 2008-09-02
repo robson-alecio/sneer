@@ -1,37 +1,38 @@
 package wheel.reactive.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import wheel.lang.Omnivore;
-import wheel.lang.Types;
 import wheel.reactive.Signal;
 
 public abstract class Receiver<T> implements Omnivore<T> {
 	
-	private final Object _signalReference;
+	private final List<Signal<? extends T>> _signals = new ArrayList<Signal<? extends T>>();
 
 	public Receiver(Signal<T> signal) {
-		signal.addReceiver(this);
-		_signalReference = signal;
+		addToSignal(signal);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public Receiver(Signal... signals) {
 		for (Signal<T> signal : signals) {
+			addToSignal(signal);
+		}
+	}
+
+	public void addToSignal(Signal<? extends T> signal) {
+		if (null == signal)
+			throw new IllegalArgumentException();
+		if (_signals.add(signal)) {
 			signal.addReceiver(this);
 		}
-		_signalReference = signals;
 	}
 	
 	public void removeFromSignals() {
-		for (Signal<T> signal : signals()) {
+		for (Signal<? extends T> signal : _signals) {
 			signal.removeReceiver(this);
 		}
+		_signals.clear();
 	}
-
-	private Signal<T>[] signals() {
-		if (_signalReference instanceof Signal[]) {
-			return Types.cast(_signalReference);
-		}
-		return Types.cast(new Signal[] { Types.cast(_signalReference) });
-	}
-
 }

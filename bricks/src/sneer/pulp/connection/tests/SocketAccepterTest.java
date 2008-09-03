@@ -27,7 +27,8 @@ public class SocketAccepterTest extends BrickTestSupport {
 	public void testSocketAccept() throws Exception {
 		_portKeeper.portSetter().consume(9090);
 
-		Receiver<ByteArraySocket> receiver = new Receiver<ByteArraySocket>(_accepter.lastAcceptedSocket()) { @Override public void consume(ByteArraySocket socket) {
+		@SuppressWarnings("unused")
+		Receiver<ByteArraySocket> _acceptedSocketReceiverAvoidGc = new Receiver<ByteArraySocket>(_accepter.lastAcceptedSocket()) { @Override public void consume(ByteArraySocket socket) {
 			try {
 				byte[] request = socket.read();
 				String s = new String(request);

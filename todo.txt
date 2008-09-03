@@ -1,10 +1,11 @@
 ﻿MAIN ROADMAP
 ===================
 
-	- [Sandro] Snapps and Widget - Revise. No method should have more than 10 lines.
 	- Receivers
 		- Make all code use "new Receiver(signal)" instead of signal.addReceiver(Omnivore). All uses are now causing deprecated warnings.
 		- Remove @Deprecated annotation from EventSource, ListSignal and SetSignal methods.
+	- Remove all console output from tests except "Test left files open...".
+	- [Sandro] Snapps and Widgets - Revise. No method should have more than 10 lines.
 
 	- Contact List - (Host addresses for Sneer developers are HARDCODED)
 		- Online indicator icon

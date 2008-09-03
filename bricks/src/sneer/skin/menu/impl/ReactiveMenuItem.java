@@ -1,22 +1,28 @@
-package wheel.io.ui.widgets;
+package sneer.skin.menu.impl;
 
 import java.awt.HeadlessException;
 
 import javax.swing.JMenuItem;
 
-import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
+import wheel.reactive.impl.Receiver;
 
-public class ReactiveMenuItem extends JMenuItem implements Omnivore<String> {
+public class ReactiveMenuItem extends JMenuItem {
 
 	private static final long serialVersionUID = 1L;
 
 	Signal<String> _label;
+
+	@SuppressWarnings("unused")
+	private final Receiver<String> _textReceiverCoisatoAvoidGc;
 	
 	public ReactiveMenuItem(Signal<String> label) throws HeadlessException {
 		_label = label;
 		setText(_label.currentValue());
-		_label.addReceiver(this);
+		
+		_textReceiverCoisatoAvoidGc = new Receiver<String>(_label){ @Override public void consume(String valueObject) {
+			setText(valueObject);
+		}};
 	}
 	
 	@Override
@@ -28,10 +34,5 @@ public class ReactiveMenuItem extends JMenuItem implements Omnivore<String> {
 	@Override
 	public String getText() {
 		return _label.currentValue();
-	}
-
-	@Override
-	public void consume(String valueObject) {
-		setText(valueObject);
 	}
 }

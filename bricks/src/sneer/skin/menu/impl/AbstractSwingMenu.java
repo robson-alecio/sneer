@@ -11,7 +11,6 @@ import sneer.skin.menu.Menu;
 import wheel.io.ui.action.Action;
 import wheel.io.ui.action.ReactiveAction;
 import wheel.io.ui.action.SelectableAction;
-import wheel.io.ui.widgets.ReactiveMenuItem;
 
 public abstract class AbstractSwingMenu implements Menu<JComponent>{
 	

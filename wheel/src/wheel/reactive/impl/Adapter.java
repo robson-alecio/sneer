@@ -4,20 +4,20 @@ import wheel.lang.Functor;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 
-public class Adapter<T1, T2> {
+public class Adapter<IN, OUT> {
 
 	@SuppressWarnings("unused")
-	private Receiver<T1> _receiver;
+	private Receiver<IN> _receiver;
 	
-	private Register<T2> _register = new RegisterImpl<T2>(null);
+	private Register<OUT> _register = new RegisterImpl<OUT>(null);
 
-	public Adapter(Signal<T1> input, final Functor<T1, T2> functor) {
-		_receiver = new Receiver<T1>(input) { @Override public void consume(T1 inputValue) {
+	public Adapter(Signal<IN> input, final Functor<IN, OUT> functor) {
+		_receiver = new Receiver<IN>(input) { @Override public void consume(IN inputValue) {
 			_register.setter().consume(functor.evaluate(inputValue));
 		}};
 	}
 
-	public Signal<T2> output() {
-		return _register.output();
+	public Signal<OUT> output() {
+		return new SignalOwnerReference<OUT>(_register.output(), this);
 	}
 }

@@ -13,9 +13,12 @@ import sneer.kernel.container.tests.BrickTestSupport;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.skin.widgets.reactive.RFactory;
 import sneer.skin.widgets.reactive.TextWidget;
-import wheel.lang.Omnivore;
+import wheel.reactive.impl.Receiver;
 
 public class OwnNameKeeperDemo extends BrickTestSupport {
+
+	@SuppressWarnings("unused")
+	private static Receiver<String> _receiver;
 
 	@Inject
 	private RFactory rfactory;
@@ -27,14 +30,9 @@ public class OwnNameKeeperDemo extends BrickTestSupport {
 		OwnNameKeeperDemo demo = initializeDemo();
 		createWidgets(demo);
 		
-		demo.ownNameKeeper.name().addReceiver(
-				new Omnivore<String>(){
-					@Override
-					public void consume(String valueObject) {
-						System.out.println(valueObject);
-					}
-				}
-			);
+		_receiver = new Receiver<String>(demo.ownNameKeeper.name()){@Override public void consume(String valueObject) {
+			System.out.println(valueObject);
+		}};
 	}
 	
 	private static OwnNameKeeperDemo initializeDemo() {
@@ -46,21 +44,20 @@ public class OwnNameKeeperDemo extends BrickTestSupport {
 		return demo;
 	}
 
-	private static void createWidgets(OwnNameKeeperDemo demo) {
-		
-		TextWidget<JTextField> newTextField1 = demo.rfactory.newTextField(demo.ownNameKeeper.name(), demo.ownNameKeeper.nameSetter());
-		final JFrame frm1 =createTestFrame(newTextField1);
-		
-		TextWidget<JTextField> newTextField2 = demo.rfactory.newEditableLabel(demo.ownNameKeeper.name(), demo.ownNameKeeper.nameSetter());
-		final JFrame frm2 =createTestFrame(newTextField2);
-		
-		frm1.setBounds(10, 10, 300, 100);
-		frm2.setBounds(10, 120, 300, 100);
+	private static void createWidgets(final OwnNameKeeperDemo demo) {
 		
 		SwingUtilities.invokeLater(
 			new Runnable(){
 				@Override
 				public void run() {
+					TextWidget<JTextField> newTextField1 = demo.rfactory.newTextField(demo.ownNameKeeper.name(), demo.ownNameKeeper.nameSetter());
+					final JFrame frm1 =createTestFrame(newTextField1);
+					
+					TextWidget<JTextField> newTextField2 = demo.rfactory.newEditableLabel(demo.ownNameKeeper.name(), demo.ownNameKeeper.nameSetter());
+					final JFrame frm2 =createTestFrame(newTextField2);
+					
+					frm1.setBounds(10, 10, 300, 100);
+					frm2.setBounds(10, 120, 300, 100);
 					frm1.setVisible(true);
 					frm2.setVisible(true);
 				}

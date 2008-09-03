@@ -1,12 +1,9 @@
 ﻿MAIN ROADMAP
 ===================
 
-	- [Sandro] Make LabelProvider back into an interface again. I will make receivers reference their signals and that will already solve the problem.
-	- [Sandro] Fix contact list presentation problem. DONT SPECULATE. DONT DO TRIAL AND ERROR. Learn how the JList repaint works and make ours work properly. This point of the code is CRITICAL because all of us will be trusting the online/offline icon as the single indicator to see if our friends are connected, if Sneer is working or has a bug, etc. The last thing we need is to be fooled by a bug in the gui repaint(). :P
-	- [Klaus] Make receivers reference their Signals.
+	- [Sandro] Snapps and Widget - Revise. No method should have more than 10 lines.
 
 	- Contact List - (Host addresses for Sneer developers are HARDCODED)
-		- Name
 		- Online indicator icon
 	---------------------------------- FIRST DOGFOOD RELEASE - Anelise can start testing for real. All bugs she finds get fixed immediately. Improvement suggestions are added to this todo list.
 
@@ -52,16 +49,15 @@
 	- Exception Handling - Revise and correct
 	- Fix and remove all task comments in the code except for Optimize (Fix Urgent, Fix, Refactor and Implement).
 	---------------------------------- "NO BROKEN WINDOWS" status achieved. From now on code is ALWAYS kept 99.999% clean. 
-	
+
 	- Blinking lights
 		- API
 		- GUI
 	- Transparent Persistence
 	- Screen Viewing à la VNC - There is a free vnc client implementation in Java. If there is no free server implementation in java, just send the entire screen over using gzip compression for now.
 	---- WE DROP VNC
-	
-    - File Transfer
-	- Traffic Prioritization by tuple type
+
+	- Own Name - Show contacts' names in contact list
 	- MSN Client
 		- Contact Unification
 	- Messaging - Grand unification of instant messages and email
@@ -69,6 +65,8 @@
 		- Offline Messaging (equivalent to "email")
 		- Group Messages
 		- History
+    - File Transfer
+	- Traffic Prioritization by tuple type
 	- Wind History
     - File Sharing
     	- Public Files

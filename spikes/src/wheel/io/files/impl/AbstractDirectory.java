@@ -1,6 +1,5 @@
 package wheel.io.files.impl;
 
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -13,6 +12,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.io.IOUtils;
 
 import wheel.io.files.Directory;
 import wheel.io.files.impl.CloseableWithListener.Listener;
@@ -34,7 +35,7 @@ public abstract class AbstractDirectory implements Directory {
 		InputStream input = null;
 		try {
 			input = openFile(fileName);
-			return new DataInputStream(input).readUTF();
+			return IOUtils.toString(input);
 		} finally {
 			if (input != null) input.close();
 		}

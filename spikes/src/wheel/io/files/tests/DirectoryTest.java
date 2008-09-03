@@ -11,6 +11,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -133,6 +134,11 @@ public abstract class DirectoryTest extends TestThatUsesFiles {
 			fail("Should not be allowed to rename a file with a stream open on it.");
 		} catch (IOException expected) {}
 		in.close();
+	}
+	
+	public void testCreateFile() throws IOException{
+		_subject.createFile("foo.txt", "bar");
+		Assert.assertEquals("foo", _subject.contentsAsString("foo.txt"));
 	}
 
 }

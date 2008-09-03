@@ -22,6 +22,7 @@ import wheel.io.serialization.impl.XStreamBinarySerializer;
 import wheel.lang.Omnivore;
 import wheel.lang.Types;
 import wheel.reactive.Signal;
+import wheel.reactive.impl.Receiver;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
@@ -103,8 +104,8 @@ class SignalConnection implements Visitable {
 	}
 
 
-	private Omnivore<Object> createScoutFor(final PublicKey publicKey, final Class<? extends Brick> brickInterface, final String signalPath) {
-		Omnivore<Object> result = new Omnivore<Object>() {@Override public void consume(Object notification) {
+	private Omnivore<Object> createScoutFor(final PublicKey publicKey, final Class<? extends Brick> brickInterface, final String signalPath, Signal<Object> signal) {
+		Receiver<Object> result = new Receiver<Object>(signal) {@Override public void consume(Object notification) {
 			send(new Notification(publicKey, brickInterface, signalPath, notification));
 		}};
 		_scoutsToAvoidGC.add(result); //Fix: This is a Leak.
@@ -135,10 +136,9 @@ class SignalConnection implements Visitable {
 	}
 
 	private void addNicknameScout(final PublicKey publicKey, final Contact contact) {
-		Omnivore<String> scout = new Omnivore<String>(){@Override public void consume(String nickname) {
+		Receiver<String> scout = new Receiver<String>(contact.nickname()){@Override public void consume(String nickname) {
 			send(new NotificationOfContact(publicKey, toRemoteContact(contact)));
 		}};
-		contact.nickname().addReceiver(scout);
 		_scoutsToAvoidGC.add(scout);
 	}
 
@@ -212,7 +212,7 @@ class SignalConnection implements Visitable {
 		Brick brick = target.brickProxyFor(brickInterface);
 		signal = invokeSignal(brick, brickInterface, signalName);
 				
-		signal.addReceiver(createScoutFor(publicKey, brickInterface, signalName));
+		createScoutFor(publicKey, brickInterface, signalName, signal);
 	}
 	
 	private Signal<Object> invokeSignal(Brick brick, Class<? extends Brick> correspondingBrickInterface, String signalName) {

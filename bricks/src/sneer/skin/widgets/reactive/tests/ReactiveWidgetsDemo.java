@@ -15,6 +15,8 @@ import wheel.reactive.impl.RegisterImpl;
 
 public class ReactiveWidgetsDemo {
 
+	private static Omnivore<String> _receiver;
+
 	public static void main(String[] args) throws Exception {
 		Container container = ContainerUtils.getContainer();
 
@@ -24,38 +26,37 @@ public class ReactiveWidgetsDemo {
 		TextWidget<?> newTextField;
 		
 		newTextField = rfactory.newTextField(register.output(), register.setter());
-		createTestFrame(newTextField).setBounds(10, 10, 300, 100);
+		createTestFrame(newTextField, 10, 10, 300, 100);
 
 		newTextField = rfactory.newEditableLabel(register.output(), register.setter());
-		createTestFrame(newTextField).setBounds(10, 120, 300, 100);
+		createTestFrame(newTextField, 10, 120, 300, 100);
 
 		newTextField = rfactory.newLabel(register.output());
-		createTestFrame(newTextField).setBounds(10, 240, 300, 100);
+		createTestFrame(newTextField, 10, 240, 300, 100);
 
-		register.output().addReceiver(
-			new Omnivore<String>(){
-				@Override
-				public void consume(String valueObject) {
-					System.out.println(valueObject);
-				}
+		_receiver = new Omnivore<String>(){
+			@Override
+			public void consume(String valueObject) {
+				System.out.println(valueObject);
 			}
-		);
+		};
+		register.output().addReceiver(_receiver);
 	}
 
-	private static JFrame createTestFrame(final TextWidget<?> textWidget) {
-		final JFrame frm = new JFrame(textWidget.getClass().getSimpleName());
-		frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frm.getContentPane().setLayout(new FlowLayout());
-		frm.getContentPane().add(textWidget.getComponent());
-
+	private static void createTestFrame(final TextWidget<?> textWidget, final int x, final int y, final int width, final int height) {
 		SwingUtilities.invokeLater(
 			new Runnable(){
 				@Override
 				public void run() {
+					final JFrame frm = new JFrame();
+					frm.setTitle(textWidget.getClass().getSimpleName());
+					frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					frm.getContentPane().setLayout(new FlowLayout());
+					frm.getContentPane().add(textWidget.getComponent());
 					frm.setVisible(true);
+					frm.setBounds(x, y, width, height);
 				}
 			}
 		);
-		return frm;
 	}
 }

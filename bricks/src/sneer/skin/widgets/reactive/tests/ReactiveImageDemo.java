@@ -12,6 +12,7 @@ import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.RFactory;
 import wheel.graphics.Images;
 import wheel.lang.Functor;
+import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Adapter;
 import wheel.reactive.impl.mocks.RandomBoolean;
@@ -20,6 +21,7 @@ public class ReactiveImageDemo {
 	
 	private static final Image ONLINE = getImage("sample.png");
 	private static final Image OFFLINE = getImage("sampleOff.png");
+	private static Omnivore<Object> _logReceiver;
 	
 	private static Image getImage(String fileName) {
 		return Images.getImage(ReactiveImageDemo.class.getResource(fileName));
@@ -40,23 +42,30 @@ public class ReactiveImageDemo {
 		Adapter<Boolean, Image> imgSource = new Adapter<Boolean, Image>(isOnline, functor);	
 		
 		ImageWidget img = rfactory.newImage(imgSource.output());
-		createTestFrame(img).setBounds(10, 10, 300, 100);
+		createTestFrame(img, 10, 10, 300, 100);
+		
+		_logReceiver = new Omnivore<Object>(){@Override public void consume(Object valueObject) {
+			System.out.println(valueObject);
+		}};
+		
+		isOnline.addReceiver(_logReceiver);
+		imgSource.output().addReceiver(_logReceiver);
 	}
 
-	private static JFrame createTestFrame(final ImageWidget img) {
-		final JFrame frm = new JFrame(img.getClass().getSimpleName());
-		frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frm.getContentPane().setLayout(new FlowLayout());
-		frm.getContentPane().add(img.getComponent());
+	private static void createTestFrame(final ImageWidget img, final int x, final int y, final int width, final int height) {
 
 		SwingUtilities.invokeLater(
 			new Runnable(){
 				@Override
 				public void run() {
+					final JFrame frm = new JFrame(img.getClass().getSimpleName());
+					frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					frm.getContentPane().setLayout(new FlowLayout());
+					frm.getContentPane().add(img.getComponent());
+					frm.setBounds(x, y, width, height);
 					frm.setVisible(true);
 				}
 			}
 		);
-		return frm;
 	}
 }

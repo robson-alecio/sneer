@@ -31,22 +31,33 @@ public class REditableLabelImpl extends JPanel implements TextWidget<JTextField>
 	REditableLabelImpl(Signal<String> source, Consumer<String> setter, boolean notifyOnlyWhenDoneEditing) {
 		_source = source;
 		_setter = setter;
-		text = new RTextFieldImpl(source, setter, notifyOnlyWhenDoneEditing);
-		label = new RLabelImpl(source, setter);
+		initWidget(source, setter, notifyOnlyWhenDoneEditing);
+	}
 
-		this.setLayout(new GridBagLayout());
-		GridBagConstraints c;
-		c = new GridBagConstraints(0,0,1,1,1.0,1.0,
-					GridBagConstraints.EAST, 
-					GridBagConstraints.BOTH,
-					new Insets(0,0,0,0),0,0);
-		
-		add(label, c);
-		add(text, c);
-		text.setVisible(false);
-		
-		addEditLabelListener();		
-		addCommitChangesListener();
+	private void initWidget(final Signal<String> source, final Consumer<String> setter,	final boolean notifyOnlyWhenDoneEditing) {
+		SwingUtilities.invokeLater(
+				new Runnable() {
+					@Override
+					public void run() {
+						text = new RTextFieldImpl(source, setter, notifyOnlyWhenDoneEditing);
+						label = new RLabelImpl(source, setter);
+						
+						REditableLabelImpl.this.setLayout(new GridBagLayout());
+						GridBagConstraints c;
+						c = new GridBagConstraints(0,0,1,1,1.0,1.0,
+								GridBagConstraints.EAST, 
+								GridBagConstraints.BOTH,
+								new Insets(0,0,0,0),0,0);
+						
+						add(label, c);
+						add(text, c);
+						text.setVisible(false);
+						
+						addEditLabelListener();		
+						addCommitChangesListener();
+					}
+				}
+		);	
 	}
 
 	private void commitChanges() {

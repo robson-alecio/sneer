@@ -52,13 +52,37 @@ public abstract class RAbstractField<WIDGET extends JComponent> extends JPanel i
 		_setter = setter;
 		_textComponent = textComponent;
 		_state = (setter == null) ? DISABLED_STATE : ENABLED_SAVED_STATE;
-		initComponents();
+		initAbstractWidget(textComponent, notifyOnlyWhenDoneEditing);
 		addReceivers();
-		if (_state == ENABLED_SAVED_STATE)
-			addChangeListeners(notifyOnlyWhenDoneEditing);
-		
-		_defaultBorder = textComponent.getBorder();
-		setOpaque(false);
+	}
+	
+	private void initAbstractWidget(final WIDGET textComponent, final boolean notifyOnlyWhenDoneEditing) {
+		SwingUtilities.invokeLater(
+				new Runnable() {
+					@Override
+					public void run() {
+						setLayout(new GridBagLayout());
+						GridBagConstraints c;
+						c = new GridBagConstraints(0,0,1,1,1.0,1.0,
+									GridBagConstraints.EAST, 
+									GridBagConstraints.BOTH,
+									new Insets(0,0,0,0),0,0);
+						if (_textComponent instanceof JTextComponent) {
+							JTextComponent txt = (JTextComponent) _textComponent;
+							txt.selectAll();
+						}
+						add(_textComponent, c);
+						updateView();
+						firstUpdate();
+						
+						if (_state == ENABLED_SAVED_STATE)
+							addChangeListeners(notifyOnlyWhenDoneEditing);
+						
+						_defaultBorder = textComponent.getBorder();
+						setOpaque(false);
+					}
+				}
+		);	
 	}
 
 	RAbstractField(WIDGET textComponent, Signal<String> source) {
@@ -68,22 +92,6 @@ public abstract class RAbstractField<WIDGET extends JComponent> extends JPanel i
 	private void addReceivers() {
 		_fieldReciver=fieldReceiver();
 		_source.addReceiver(_fieldReciver);
-	}
-
-	public void initComponents() {
-		this.setLayout(new GridBagLayout());
-		GridBagConstraints c;
-		c = new GridBagConstraints(0,0,1,1,1.0,1.0,
-					GridBagConstraints.EAST, 
-					GridBagConstraints.BOTH,
-					new Insets(0,0,0,0),0,0);
-		if (_textComponent instanceof JTextComponent) {
-			JTextComponent txt = (JTextComponent) _textComponent;
-			txt.selectAll();
-		}
-		add(_textComponent, c);
-		updateView();
-		firstUpdate();
 	}
 
 	private void firstUpdate() {

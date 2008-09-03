@@ -9,8 +9,8 @@ import sneer.pulp.internetaddresskeeper.InternetAddress;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;
 import sneer.pulp.threadpool.ThreadPool;
-import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
+import wheel.reactive.impl.Receiver;
 
 public class OutgoingAttempt {
 
@@ -32,15 +32,15 @@ public class OutgoingAttempt {
 	private final Object _isTryingToOpenMonitor = new Object();
 	
 	private Signal<Boolean> _isOnline;
-	private final Omnivore<Boolean> _isOnlineReceiver = new Omnivore<Boolean>() {	@Override public void consume(Boolean isOnline) {
-		handleIsOnline(isOnline);
-	}};
+	private final Receiver<Boolean> _isOnlineReceiver;
 
 
 	OutgoingAttempt(InternetAddress address) {
 		_address = address;
 		_isOnline = _connectionManager.connectionFor(_address.contact()).isOnline();
-		_isOnline.addReceiver(_isOnlineReceiver);
+		_isOnlineReceiver = new Receiver<Boolean>(_isOnline) {@Override public void consume(Boolean isOnline) {
+			handleIsOnline(isOnline);
+		}};
 	}
 
 	
@@ -86,6 +86,6 @@ public class OutgoingAttempt {
 	}
 
 	void crash() {
-		_isOnline.removeReceiver(_isOnlineReceiver);
+		_isOnlineReceiver.removeFromSignals();
 	}
 }

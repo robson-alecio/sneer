@@ -32,6 +32,8 @@
 
 	- Open Jar leak - Fix in Freedom7Test
 	- Replace the AnnotatedFieldInjector by the StaticFieldInjector - Need to create our own TestRunner?
+	- ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do.
+		- SetSignal - Revise it also. 
 	- ContainerUtils.getContainer() - Drop. Fix all uses.
 	- Output folders - Make all source folders compile to the default folder (bin) and fix the tests. Is this possible?
 	- Simplest Possible Kernel - What is it? Just injection?

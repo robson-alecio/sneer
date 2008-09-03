@@ -19,7 +19,8 @@ public class ListSignalModel<T> extends AbstractListModel {
 	private final ListSignal<T> _input;
 	private final List<Receiver<?>> _elementReceivers = new LinkedList<Receiver<?>>();
 	private final SignalChooser<T> _chooser;
-	private final ListChangeReceiver _listReceiverToAvoidGc = new ListChangeReceiver();
+	@SuppressWarnings("unused")
+	private final ListChangeReceiver _listReceiverToAvoidGc;
 
 	public ListSignalModel(ListSignal<T> input, SignalChooser<T> chooser) {
 		_input = input;
@@ -28,14 +29,18 @@ public class ListSignalModel<T> extends AbstractListModel {
 		int size = _input.currentSize();
 		for (int i = 0; i < size; i++) addReceiverToElement(i);
 
-		_input.addListReceiver(_listReceiverToAvoidGc);
+		_listReceiverToAvoidGc = new ListChangeReceiver(_input);
 	}
 
 	public ListSignalModel(ListSignal<T> input) {
 		this(input, null);
 	}
 
-	private class ListChangeReceiver extends VisitingListReceiver {
+	private class ListChangeReceiver extends VisitingListReceiver<T> {
+
+		private ListChangeReceiver(ListSignal<T> input) {
+			super(input);
+		}
 
 		@Override
 		public void elementAdded(int index) {
@@ -67,7 +72,7 @@ public class ListSignalModel<T> extends AbstractListModel {
 	}
 	
 	public int getSize() {
-		return _input.currentSize();
+		return _input.size().currentValue();
 	}
 	
 	public T getElementAt(int index) {

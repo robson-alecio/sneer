@@ -7,7 +7,11 @@ import wheel.reactive.lists.impl.VisitingListReceiver;
 public class Collector<IN, OUT> {
 
 
-	public class MyReceiver extends VisitingListReceiver {
+	public class MyReceiver extends VisitingListReceiver<IN> {
+
+		public MyReceiver(ListSignal<IN> input) {
+			super(input);
+		}
 
 		@Override
 		public void elementAdded(int index) {
@@ -36,17 +40,15 @@ public class Collector<IN, OUT> {
 
 	}
 
-	private final ListSignal<IN> _input;
 	private final ListRegister<OUT> _output = new ListRegisterImpl<OUT>();
 	private final Functor<IN, OUT> _functor;
 
 	public Collector(ListSignal<IN> input, Functor<IN, OUT> functor) {
-		_input = input;
 		_functor = functor;
 		
-		for (IN element : _input)
+		for (IN element : input)
 			_output.add(_functor.evaluate(element));
-		_input.addListReceiver(new MyReceiver());
+		new MyReceiver(input);
 	}
 
 	public ListSignal<OUT> output() {

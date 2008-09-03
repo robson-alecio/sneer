@@ -2,31 +2,20 @@ package wheel.reactive.lists.impl;
 
 import wheel.reactive.lists.ListSignal;
 
-public abstract class SimpleListReceiver<T> extends VisitingListReceiver {
+public abstract class SimpleListReceiver<T> extends VisitingListReceiver<T> {
 	
 	public SimpleListReceiver(ListSignal<T> listSignal) {
-		_listSignal = listSignal;
-		for (T element : _listSignal) elementPresent(element);
-		startReceiving();
+		super(listSignal);
+		for (T element : _input) elementPresent(element);
 	}
 	
-	private void startReceiving() {
-		_listSignal.addListReceiver(this);
-	}
-	
-	public void crash() {
-		_listSignal.removeListReceiver(this);
-	}
-
-	private final ListSignal<T> _listSignal;
-
 	protected abstract void elementPresent(T element);
 	protected abstract void elementAdded(T newElement);
 	protected abstract void elementToBeRemoved(T element);
 
 	@Override
 	public void elementAdded(int index){
-		elementAdded(_listSignal.currentGet(index));
+		elementAdded(_input.currentGet(index));
 	}
 
 	@Override
@@ -41,7 +30,7 @@ public abstract class SimpleListReceiver<T> extends VisitingListReceiver {
 
 	@Override
 	public void elementToBeRemoved(int index) {
-		elementToBeRemoved(_listSignal.currentGet(index));
+		elementToBeRemoved(_input.currentGet(index));
 	}
 
 	@Override

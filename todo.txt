@@ -2,9 +2,13 @@
 ===================
 
 	- [Sandro] Snapps and Widget - Revise. No method should have more than 10 lines.
+	- Receivers - Make all code use "new Receiver(signal)" instead of signal.addReceiver(Omnivore). All uses are now causing deprecated warnings.
 
 	- Contact List - (Host addresses for Sneer developers are HARDCODED)
 		- Online indicator icon
+		- [Sandro] Get DynDns running on your machine
+		- [Bamboo] Get DynDns running on your machine
+		- [Klaus] Get DynDns running on your machine
 	---------------------------------- FIRST DOGFOOD RELEASE - Anelise can start testing for real. All bugs she finds get fixed immediately. Improvement suggestions are added to this todo list.
 
 	- Brick Publish (Supposedly working already)

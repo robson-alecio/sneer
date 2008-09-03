@@ -12,7 +12,9 @@ import wheel.reactive.CollectionSignal;
 
 public interface SetSignal<T> extends CollectionSignal<T> {
 
+	@Deprecated
 	void addSetReceiver(Omnivore<SetValueChange<T>> receiver);
+	@Deprecated
 	void removeSetReceiver(Object receiver);
 
 	public interface SetValueChange<E> {

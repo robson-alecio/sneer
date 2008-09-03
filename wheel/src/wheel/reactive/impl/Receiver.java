@@ -21,6 +21,7 @@ public abstract class Receiver<T> implements Omnivore<T> {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public void addToSignal(Signal<? extends T> signal) {
 		if (null == signal)
 			throw new IllegalArgumentException();
@@ -29,6 +30,7 @@ public abstract class Receiver<T> implements Omnivore<T> {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void removeFromSignals() {
 		for (Signal<? extends T> signal : _signals) {
 			signal.removeReceiver(this);

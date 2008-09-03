@@ -5,7 +5,7 @@ import sneer.pulp.connection.SocketAccepter;
 import sneer.pulp.connection.SocketReceiver;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.threadpool.ThreadPool;
-import wheel.lang.Omnivore;
+import wheel.reactive.impl.Receiver;
 
 public class SocketReceiverImpl implements SocketReceiver {
 
@@ -14,17 +14,15 @@ public class SocketReceiverImpl implements SocketReceiver {
 	
 	@Inject
 	static private ThreadPool _threadPool;
-
 	
-	private final Omnivore<ByteArraySocket> _receiverThatCannotBeGCd = new Omnivore<ByteArraySocket>() { @Override public void consume(final ByteArraySocket socket) {
-		_threadPool.registerActor(new Runnable(){@Override public void run() {
-			new IndividualSocketReceiver(socket);
-		}});
-	}};
+	@SuppressWarnings("unused")
+	private final Receiver<ByteArraySocket> _receiverThatCannotBeGCd;
 
 	SocketReceiverImpl() {
-		_socketAccepter.lastAcceptedSocket().addReceiver(_receiverThatCannotBeGCd);
+		_receiverThatCannotBeGCd = new Receiver<ByteArraySocket>(_socketAccepter.lastAcceptedSocket()) { @Override public void consume(final ByteArraySocket socket) {
+			_threadPool.registerActor(new Runnable(){@Override public void run() {
+				new IndividualSocketReceiver(socket);
+			}});
+		}};
 	}
-	
-	
 }

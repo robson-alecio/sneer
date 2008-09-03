@@ -13,7 +13,7 @@ import sneer.pulp.connection.SocketAccepter;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.impl.ByteArraySocketImpl;
 import sneer.pulp.port.PortKeeper;
-import wheel.lang.Omnivore;
+import wheel.reactive.impl.Receiver;
 
 public class SocketAccepterTest extends BrickTestSupport {
 
@@ -26,7 +26,8 @@ public class SocketAccepterTest extends BrickTestSupport {
 	@Test(timeout=3000)
 	public void testSocketAccept() throws Exception {
 		_portKeeper.portSetter().consume(9090);
-		Omnivore<ByteArraySocket> omnivore = new Omnivore<ByteArraySocket>() { @Override public void consume(ByteArraySocket socket) {
+
+		Receiver<ByteArraySocket> receiver = new Receiver<ByteArraySocket>(_accepter.lastAcceptedSocket()) { @Override public void consume(ByteArraySocket socket) {
 			try {
 				byte[] request = socket.read();
 				String s = new String(request);
@@ -35,7 +36,6 @@ public class SocketAccepterTest extends BrickTestSupport {
 				e.printStackTrace();
 			}
 		}};
-		_accepter.lastAcceptedSocket().addReceiver(omnivore);
 
 		SneerClient client = new SneerClient();
 		while(!client.connected(9090));

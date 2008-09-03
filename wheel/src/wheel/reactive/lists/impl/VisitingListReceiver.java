@@ -9,7 +9,6 @@ public abstract class VisitingListReceiver<T> implements Omnivore<ListValueChang
 
 	protected final ListSignal<T> _input;
 
-	@SuppressWarnings("deprecation")
 	public VisitingListReceiver(ListSignal<T> input) {
 		_input = input;
 		input.addListReceiver(this);

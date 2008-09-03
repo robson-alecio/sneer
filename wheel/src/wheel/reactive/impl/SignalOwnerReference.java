@@ -19,6 +19,7 @@ public class SignalOwnerReference<T> implements Signal<T> {
 		_referenceToAvoidGC = objectToSaveFromGC;
 	}
 
+	@Override
 	public void addListReceiver(Omnivore<ListValueChange> receiver) {
 		_delegate.addListReceiver(receiver);
 	}
@@ -27,8 +28,8 @@ public class SignalOwnerReference<T> implements Signal<T> {
 		_delegate.addReceiver(receiver);
 	}
 
-	public void addSetReceiver(
-			Omnivore<wheel.reactive.sets.SetSignal.SetValueChange<T>> receiver) {
+	@Override
+	public void addSetReceiver(Omnivore<SetValueChange<T>> receiver) {
 		_delegate.addSetReceiver(receiver);
 	}
 

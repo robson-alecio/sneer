@@ -15,11 +15,9 @@ import javax.swing.SwingUtilities;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import wheel.io.ui.impl.ListSignalModel;
-import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.lists.ListSignal;
-import wheel.reactive.lists.ListValueChange;
 
 public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 
@@ -29,30 +27,17 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 
 	private final ListSignal<ELEMENT> _source;
 
-	private final Omnivore<ListValueChange> _listReceiver = new Omnivore<ListValueChange>() {
-		@Override
-		public void consume(ListValueChange valueObject) {
-			repaintList();
-		}
-	};
-
 	private void repaintList() {
-		SwingUtilities.invokeLater(
-				new Runnable() {
-					@Override
-					public void run() {
-						revalidate();
-						repaint();
-					}
-				}
-		);	
+		SwingUtilities.invokeLater(new Runnable() {@Override public void run() {
+			revalidate();
+			repaint();
+		}});	
 	}
 
 	RListImpl(ListSignal<ELEMENT> source, LabelProvider<ELEMENT> labelProvider) {
 		_source = source;
 		_labelProvider = labelProvider;
 		initModel();
-		addListReceiver();
 
 		class DefaultListCellRenderer implements ListCellRenderer {
 
@@ -61,8 +46,6 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 			@Override
 			public Component getListCellRendererComponent(JList ignored, Object value, int ignored2, boolean isSelected, boolean cellHasFocus) {
 				
-//				System.out.println(Thread.currentThread());
-				
 				Signal<String> slabel = _labelProvider.labelFor(getElement(value));
 				Signal<Image> sicon = _labelProvider.imageFor(getElement(value));
 				
@@ -70,7 +53,6 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 				JLabel label = (JLabel) renderer.getListCellRendererComponent(ignored, value, ignored2, isSelected, cellHasFocus);
 				label.setIcon(icon);
 				label.setText(slabel.currentValue());
-				
 				
 				@SuppressWarnings("unused")
 				Receiver<Object> _listRepainter = new Receiver<Object>() {
@@ -91,12 +73,7 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 
 	}
 
-	private void addListReceiver() {
-		_source.addListReceiver(_listReceiver);
-	}
-
 	private void initModel() {
-//		setModel(new ListSignalModel<ELEMENT>(_source));
 		setModel(new ListSignalModel<ELEMENT>(_source, new ListSignalModel.SignalChooser<ELEMENT>(){
 		@Override
 		public Signal<?>[] signalsToReceiveFrom(ELEMENT element) {

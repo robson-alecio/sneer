@@ -1,6 +1,7 @@
 package wheel.reactive.impl;
 
 import java.io.Serializable;
+import java.lang.ref.WeakReference;
 import java.util.Iterator;
 
 import org.apache.commons.collections.iterators.EmptyIterator;
@@ -36,11 +37,13 @@ public class RegisterImpl<VO> implements Register<VO> {
 			return new SingletonIterator(_currentValue);
 		}
 
+		@SuppressWarnings("deprecation")
 		@Override
 		public void addListReceiver(Omnivore<ListValueChange> receiver) {
 			throw new NotImplementedYet(); //Implement
 		}
 
+		@SuppressWarnings("deprecation")
 		@Override
 		public void removeListReceiver(Object receiver) {
 			removeReceiver(receiver);
@@ -69,7 +72,7 @@ public class RegisterImpl<VO> implements Register<VO> {
 			if (isSameValue(newValue)) return;
 			_currentValue = newValue;
 			
-			_output.notifyReceivers(newValue);
+			output().notifyReceivers(newValue);
 		}
 		
 	}
@@ -77,7 +80,7 @@ public class RegisterImpl<VO> implements Register<VO> {
 
 	private VO _currentValue;
 	private final Omnivore<VO> _setter = new MySetter();
-	private final AbstractSignal<VO> _output = new MyOutput();
+	private WeakReference<AbstractSignal<VO>> _output;
 	
 	
 	public RegisterImpl(VO initialValue) {
@@ -93,8 +96,11 @@ public class RegisterImpl<VO> implements Register<VO> {
 	}
 
 
-	public Signal<VO> output() {
-		return _output;
+	public AbstractSignal<VO> output() {
+		if (_output == null || _output.get() == null)
+			_output = new WeakReference<AbstractSignal<VO>>(new MyOutput());
+		
+		return _output.get();
 	}
 
 

@@ -5,10 +5,10 @@ import javax.swing.JTextField;
 
 import wheel.io.ui.impl.UserImpl;
 import wheel.lang.Consumer;
-import wheel.lang.Omnivore;
 import wheel.lang.Pair;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
+import wheel.reactive.impl.Receiver;
 
 public class RTextFieldImpl extends RAbstractField<JTextField> {
 
@@ -17,8 +17,8 @@ public class RTextFieldImpl extends RAbstractField<JTextField> {
 	}
 
 	@Override
-	public Omnivore<String> fieldReceiver() {
-		return new Omnivore<String>() {
+	public Receiver<String> fieldReceiver() {
+		return new Receiver<String>(_source) {
 			public void consume(final String text) {
 				setText(text);
 			}
@@ -26,8 +26,8 @@ public class RTextFieldImpl extends RAbstractField<JTextField> {
 	}
 
 	@Override
-	public Omnivore<Pair<String, String>> textChangedReceiver() {
-		return new Omnivore<Pair<String, String>>() {
+	public Receiver<Pair<String, String>> textChangedReceiver() {
+		return new Receiver<Pair<String, String>>() {
 			public void consume(Pair<String, String> value) {
 				if (!value._a.equals(value._b))
 					try {

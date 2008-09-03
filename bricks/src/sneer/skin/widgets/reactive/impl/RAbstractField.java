@@ -22,9 +22,9 @@ import javax.swing.text.JTextComponent;
 
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.lang.Consumer;
-import wheel.lang.Omnivore;
 import wheel.lang.Pair;
 import wheel.reactive.Signal;
+import wheel.reactive.impl.Receiver;
 
 public abstract class RAbstractField<WIDGET extends JComponent> extends JPanel implements TextWidget<WIDGET> {
 	private static final long serialVersionUID = 1L;
@@ -39,13 +39,13 @@ public abstract class RAbstractField<WIDGET extends JComponent> extends JPanel i
 	protected Consumer<String> _setter;
 	public WIDGET _textComponent;
 	
-	protected Omnivore<String> _fieldReciver;
-	protected Omnivore<Pair<String, String>> _textChangedReceiver;
+	protected Receiver<String> _fieldReciver;
+	protected Receiver<Pair<String, String>> _textChangedReceiver;
 
 	private Border _defaultBorder;
 	
-	public abstract Omnivore<String> fieldReceiver();
-	public abstract Omnivore<Pair<String, String>> textChangedReceiver();
+	public abstract Receiver<String> fieldReceiver();
+	public abstract Receiver<Pair<String, String>> textChangedReceiver();
 	
 	RAbstractField(WIDGET textComponent, Signal<String> source, Consumer<String> setter, boolean notifyOnlyWhenDoneEditing) {
 		_source = source;
@@ -91,7 +91,7 @@ public abstract class RAbstractField<WIDGET extends JComponent> extends JPanel i
 	
 	private void addReceivers() {
 		_fieldReciver=fieldReceiver();
-		_source.addReceiver(_fieldReciver);
+//		_source.addReceiver(_fieldReciver);
 	}
 
 	private void firstUpdate() {

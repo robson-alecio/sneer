@@ -5,9 +5,8 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
-import wheel.lang.Omnivore;
-import wheel.lang.Types;
 import wheel.reactive.Signal;
+import wheel.reactive.impl.Receiver;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.VisitingListReceiver;
 
@@ -18,7 +17,7 @@ public class ListSignalModel<T> extends AbstractListModel {
 	}
 
 	private final ListSignal<T> _input;
-	private final List<Omnivore<?>> _elementReceivers = new LinkedList<Omnivore<?>>();
+	private final List<Receiver<?>> _elementReceivers = new LinkedList<Receiver<?>>();
 	private final SignalChooser<T> _chooser;
 	private final ListChangeReceiver _listReceiverToAvoidGc = new ListChangeReceiver();
 
@@ -76,45 +75,31 @@ public class ListSignalModel<T> extends AbstractListModel {
 	}
 
 	private void removeReceiverFromElement(int index) {
-		System.out.println("Remove");
-		T element = getElementAt(index);
-		Omnivore<?> receiver = _elementReceivers.remove(index);
-
 		if (_chooser == null) return;
-		for (Signal<?> signal : _chooser.signalsToReceiveFrom(element))
-			removeReceiverFromSignal(receiver, signal);
+
+		_elementReceivers.remove(index).removeFromSignals();
 	}
 
 	private void addReceiverToElement(int index) {
-		T element = getElementAt(index);
+		if (_chooser == null) return;
 
-		Omnivore<?> receiver = createElementReceiver(element);
+		T element = getElementAt(index);
+		Receiver<Object> receiver = createElementReceiver(element);
 		_elementReceivers.add(index, receiver);
 		
-		if (_chooser == null) return;
 		for (Signal<?> signal : _chooser.signalsToReceiveFrom(element))
-			addReceiverToSignal(receiver, signal);
+			receiver.addToSignal(signal);
 	}
 
-	private <U> void addReceiverToSignal(Omnivore<?> receiver, Signal<U> signal) {
-		Omnivore<U> castedReceiver = Types.cast(receiver);
-		signal.addReceiver(castedReceiver);
-	}
-	
-	private <U> void removeReceiverFromSignal(Omnivore<?> receiver, Signal<U> signal) {
-		Omnivore<U> casted = Types.cast(receiver);
-		signal.removeReceiver(casted);
-	}
-
-	private <U> Omnivore<U> createElementReceiver(final T element) {
-		return new Omnivore<U>() { public void consume(U ignored) {
+	private Receiver<Object> createElementReceiver(final T element) {
+		return new Receiver<Object>() { public void consume(Object ignored) {
 			int i = 0;
 			for (T candidate : _input) {  //Optimize
-				if (candidate == element) {
+				if (candidate == element)
 					fireContentsChanged(ListSignalModel.this, i, i);
-				}
 				i++;
-			}}};}
+			}}};
+	}
 
 	private static final long serialVersionUID = 1L;
 }

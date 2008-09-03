@@ -41,6 +41,7 @@ public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 		return new ReceiverHolder[size];
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void addReceiver(Omnivore<? super VC> receiver) {
 		synchronized (_receivers) {
@@ -51,6 +52,7 @@ public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 
 	protected abstract void initReceiver(Omnivore<? super VC> receiver);
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void removeReceiver(Object receiver) {
 		synchronized (_receivers) {

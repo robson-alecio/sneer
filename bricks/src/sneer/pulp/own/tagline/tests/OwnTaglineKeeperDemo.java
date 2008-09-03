@@ -13,19 +13,12 @@ import sneer.kernel.container.tests.BrickTestSupport;
 import sneer.pulp.own.tagline.OwnTaglineKeeper;
 import sneer.skin.widgets.reactive.RFactory;
 import sneer.skin.widgets.reactive.TextWidget;
-import wheel.lang.Omnivore;
+import wheel.reactive.impl.Receiver;
 
 public class OwnTaglineKeeperDemo extends BrickTestSupport {
 
-	private static final Omnivore<String> log;
-	static{
-		log = new Omnivore<String>() {
-			@Override
-			public void consume(String valueObject) {
-				System.out.println(valueObject);
-			}
-		};
-	}
+	@SuppressWarnings("unused")
+	private static Receiver<String> _log;
 
 	@Inject
 	private RFactory _rfactory;
@@ -36,7 +29,9 @@ public class OwnTaglineKeeperDemo extends BrickTestSupport {
 	public static void main(String[] args) throws Exception {
 		OwnTaglineKeeperDemo demo = initializeDemo();
 		createWidgets(demo);
-		demo._ownTaglineKeeper.tagline().addReceiver(log);
+		_log = new Receiver<String>(demo._ownTaglineKeeper.tagline()){@Override public void consume(String valueObject) {
+			System.out.println(valueObject);
+		}};
 	}
 	
 	private static OwnTaglineKeeperDemo initializeDemo() {
@@ -48,26 +43,20 @@ public class OwnTaglineKeeperDemo extends BrickTestSupport {
 		return demo;
 	}
 
-	private static void createWidgets(OwnTaglineKeeperDemo demo) {
-		
-		TextWidget<JTextField> newTextField1 = demo._rfactory.newTextField(demo._ownTaglineKeeper.tagline(), demo._ownTaglineKeeper.taglineSetter());
-		final JFrame frm1 =createTestFrame(newTextField1);
-		
-		TextWidget<JTextField> newTextField2 = demo._rfactory.newEditableLabel(demo._ownTaglineKeeper.tagline(), demo._ownTaglineKeeper.taglineSetter());
-		final JFrame frm2 =createTestFrame(newTextField2);
-		
-		frm1.setBounds(10, 10, 300, 100);
-		frm2.setBounds(10, 120, 300, 100);
-		
-		SwingUtilities.invokeLater(
-			new Runnable(){
-				@Override
-				public void run() {
-					frm1.setVisible(true);
-					frm2.setVisible(true);
-				}
-			}
-		);
+	private static void createWidgets(final OwnTaglineKeeperDemo demo) {
+		SwingUtilities.invokeLater(	new Runnable(){ @Override
+			public void run() {
+				TextWidget<JTextField> newTextField1 = demo._rfactory.newTextField(demo._ownTaglineKeeper.tagline(), demo._ownTaglineKeeper.taglineSetter());
+				final JFrame frm1 =createTestFrame(newTextField1);
+				
+				TextWidget<JTextField> newTextField2 = demo._rfactory.newEditableLabel(demo._ownTaglineKeeper.tagline(), demo._ownTaglineKeeper.taglineSetter());
+				final JFrame frm2 =createTestFrame(newTextField2);
+				
+				frm1.setBounds(10, 10, 300, 100);
+				frm2.setBounds(10, 120, 300, 100);
+				frm1.setVisible(true);
+				frm2.setVisible(true);
+			}});
 	}
 
 	private static JFrame createTestFrame(final TextWidget<?> textWidget) {

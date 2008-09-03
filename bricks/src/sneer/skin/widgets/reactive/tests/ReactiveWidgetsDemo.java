@@ -9,13 +9,14 @@ import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.skin.widgets.reactive.RFactory;
 import sneer.skin.widgets.reactive.TextWidget;
-import wheel.lang.Omnivore;
 import wheel.reactive.Register;
+import wheel.reactive.impl.Receiver;
 import wheel.reactive.impl.RegisterImpl;
 
 public class ReactiveWidgetsDemo {
 
-	private static Omnivore<String> _receiver;
+	@SuppressWarnings("unused")
+	private static Receiver<String> _receiver;
 
 	public static void main(String[] args) throws Exception {
 		Container container = ContainerUtils.getContainer();
@@ -34,13 +35,12 @@ public class ReactiveWidgetsDemo {
 		newTextField = rfactory.newLabel(register.output());
 		createTestFrame(newTextField, 10, 240, 300, 100);
 
-		_receiver = new Omnivore<String>(){
+		_receiver = new Receiver<String>(register.output()){
 			@Override
 			public void consume(String valueObject) {
 				System.out.println(valueObject);
 			}
 		};
-		register.output().addReceiver(_receiver);
 	}
 
 	private static void createTestFrame(final TextWidget<?> textWidget, final int x, final int y, final int width, final int height) {

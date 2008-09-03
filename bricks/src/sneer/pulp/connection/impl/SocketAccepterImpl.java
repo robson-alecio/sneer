@@ -12,11 +12,11 @@ import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;
 import sneer.pulp.port.PortKeeper;
 import sneer.pulp.threadpool.ThreadPool;
-import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 import wheel.reactive.EventNotifier;
 import wheel.reactive.EventSource;
 import wheel.reactive.impl.EventNotifierImpl;
+import wheel.reactive.impl.Receiver;
 
 public class SocketAccepterImpl implements SocketAccepter {
 	
@@ -49,15 +49,16 @@ public class SocketAccepterImpl implements SocketAccepter {
 
 	private Light _cantAcceptSocket;
 
-	private final Omnivore<Integer> _portReceiverToAvoidGC = new Omnivore<Integer>() { @Override public void consume(Integer port) {
-		setPort(port);
-	}};
+	@SuppressWarnings("unused")
+	private final Receiver<Integer> _portReceiverToAvoidGC;
 
 	SocketAccepterImpl() {
 		_threadPool.registerActor(new Runnable(){ @Override public void run() {
 			listenToSneerPort();
 		}});
-		_portKeeper.port().addReceiver(_portReceiverToAvoidGC);
+		_portReceiverToAvoidGC = new Receiver<Integer>(_portKeeper.port()) { @Override public void consume(Integer port) {
+			setPort(port);
+		}};
 	}
 
 	@Override

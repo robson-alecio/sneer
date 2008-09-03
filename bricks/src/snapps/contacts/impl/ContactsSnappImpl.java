@@ -3,6 +3,8 @@ package snapps.contacts.impl;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Image;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
@@ -64,22 +66,33 @@ public class ContactsSnappImpl implements ContactsSnapp {
 	
 	public final class ContactLabelProvider implements LabelProvider<Contact> {
 		
+		private final Map<Contact, Signal<Image>> _imagesByContact = new HashMap<Contact, Signal<Image>>();
+		
 		@Override
 		public Signal<Image> imageFor(Contact contact) {
-//			Signal<Boolean> isOnline = new RandomBoolean().output();
-			Signal<Boolean> isOnline = _connectionManager.connectionFor(contact).isOnline();
-
-			Functor<Boolean, Image> functor = new Functor<Boolean, Image>(){@Override public Image evaluate(Boolean value) {
-				return value?ONLINE:OFFLINE;
-			}};
+			if (!_imagesByContact.containsKey(contact))
+				_imagesByContact.put(contact, createImageSignal(contact));
 			
-			Adapter<Boolean, Image> imgSource = new Adapter<Boolean, Image>(isOnline, functor);
-			return imgSource.output();
+			return _imagesByContact.get(contact);
 		}
 
 		@Override
 		public Signal<String> labelFor(Contact contact) {
 			return contact.nickname();
+		}
+
+		private Signal<Image> createImageSignal(Contact contact) {
+			Signal<Boolean> isOnline = _connectionManager.connectionFor(contact).isOnline();
+//			Signal<Boolean> isOnline = new RandomBoolean().output();
+
+			Functor<Boolean, Image> functor = new Functor<Boolean, Image>(){
+				@Override
+				public Image evaluate(Boolean value) {
+					return value?ONLINE:OFFLINE;
+				}};
+			
+			Adapter<Boolean, Image> imgSource = new Adapter<Boolean, Image>(isOnline, functor);
+			return imgSource.output();
 		}
 	}
 }

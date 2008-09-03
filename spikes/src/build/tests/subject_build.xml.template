@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="AntBuild" default="compile">
+
+	<path id="classpath">
+		<pathelement path="distr/bin"/>
+		<pathelement path="bricks/lib/bcprov-jdk16-139.jar"/>
+		<pathelement path="kernel/lib/asm-all-3.1.jar"/>
+	</path>
+
+	<target name="compile">
+		<javac srcdir="wheel/src"
+				destdir="distr/bin"
+				listfiles="true"
+				failonerror="true"
+				debug="on"
+				target="1.5"
+		>
+			<classpath refid="classpath"/>
+		</javac>
+		<javac srcdir="spikes/src"
+				destdir="distr/bin"
+				listfiles="true"
+				failonerror="true"
+				debug="on"
+				target="1.5"
+		>
+			<classpath refid="classpath"/>
+		</javac>
+	</target>
+</project>

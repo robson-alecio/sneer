@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="spikes/src"/>
+	<classpathentry kind="src" output="sneerAPI-bin" path="wheel/src"/>
+	<classpathentry kind="lib" path="kernel/lib/asm-all-3.1.jar"/>
+	<classpathentry kind="lib" path="bricks/lib/bcprov-jdk16-139.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

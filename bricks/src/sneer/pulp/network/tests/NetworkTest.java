@@ -14,7 +14,7 @@ import sneer.pulp.network.Network;
 import sneer.pulp.threadpool.ThreadPool;
 
 
-public abstract class NetworkTest extends BrickTestSupport {
+public class NetworkTest extends BrickTestSupport {
 
 	@Inject
 	private Network _network;

@@ -30,6 +30,7 @@
 
 	- Open Jar leak - Fix in Freedom7Test
 	- Replace the AnnotatedFieldInjector by the StaticFieldInjector - Need to create our own TestRunner?
+		- Injection Strategy - Revise. Consider using constructor.
 	- ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do.
 		- SetSignal - Revise it also. 
 	- ContainerUtils.getContainer() - Drop. Fix all uses.
@@ -191,7 +192,6 @@ OLD STUFF
 	- Add Tab/Window Support
 
 Container
-	- replace AnnotatedFieldInjector with StaticFieldInjector which will enable removing the use of @Inject and Startable 
 	- include author's pk into brick hashcode
 	- use brick hashcode as key on BrickManager 
 		- hash com libs

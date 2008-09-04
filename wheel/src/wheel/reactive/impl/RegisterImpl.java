@@ -37,13 +37,11 @@ public class RegisterImpl<VO> implements Register<VO> {
 			return new SingletonIterator(_currentValue);
 		}
 
-		@SuppressWarnings("deprecation")
 		@Override
 		public void addListReceiver(Omnivore<ListValueChange> receiver) {
 			throw new NotImplementedYet(); //Implement
 		}
 
-		@SuppressWarnings("deprecation")
 		@Override
 		public void removeListReceiver(Object receiver) {
 			removeReceiver(receiver);

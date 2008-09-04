@@ -8,20 +8,22 @@
 	- [Sandro] Snapps and Widgets - Revise. No method should have more than 10 lines.
 
 	- Contact List - (Host addresses for Sneer developers are HARDCODED)
-		- [Rodrigo seek pairing] DynDNS Client ;)	
+		- DynDNS Client ;)	
 	---------------------------------- FIRST DOGFOOD RELEASE - Anelise can start testing for real. All bugs she finds get fixed immediately. Improvement suggestions are added to this todo list.
+
+	- Wind
+	---- WE DROP SKYPE CHAT :)
 
 	- Brick Publish (Supposedly working already)
 		- MainDemo - Publish all necessary bricks instead of just producing them.
 
 	- [Petra] Tray and Dashboard Titlebar Icon
+	- [Petra] Online and Offline Icons
 
 	- [Kalecser] Continuous Integration with Clover test coverage
 		- Low maintenance build: Interpret the .classpath file and compile the build exactly as Eclipse would.
 		- Cyclic dependency detection: Compile one sourcefolder at a time, from the last in the .classpath list (most basic (wheel)) to the first in the list (most high-level (spikes)), without the other uncompiled sourcefolders in the path.
 	
-	- Wind
-	---- WE DROP SKYPE CHAT :)
 	
 	- Voice Calls - Migrate from the old sneermonolith project
 	---- WE DROP SKYPE :)

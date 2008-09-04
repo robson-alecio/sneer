@@ -33,7 +33,7 @@ public class CheckIpClientImplTest {
 		
 	}
 
-	private HttpClient setUpHttpClientMockFor(final String ip) {
+	private HttpClient setUpHttpClientMockFor(final String ip) throws IOException {
 		final String responseBody = /*"HTTP/1.1 200 OK\n" +
 			"Content-Type: text/html\n" +
 			"Server: DynDNS-CheckIP/1.0\n" +

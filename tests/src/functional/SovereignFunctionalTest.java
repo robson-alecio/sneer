@@ -22,14 +22,7 @@ public abstract class SovereignFunctionalTest extends BrickTestSupport {
 	}
 	
 	@After
-	public void cleanUpDirectories() {
-		releaseCommunity();
-		//ApiClassLoader.checkAllInstancesAreFreed();
-		//FileUtils.deleteDirectory(rootFolder());
-	}
-
-
-	private void releaseCommunity() {
+	public void releaseCommunity() {
 		_community = null;
 		_a = null;
 		_b = null;

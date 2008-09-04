@@ -14,9 +14,9 @@ import org.junit.Test;
 
 import wheel.io.JarBuilder;
 import wheel.io.Streams;
-import wheel.testutil.TestThatUsesFiles;
+import wheel.testutil.TestThatMightUseFiles;
 
-public class JarBuilderTest extends TestThatUsesFiles {
+public class JarBuilderTest extends TestThatMightUseFiles {
 
 	@Test
 	public void testSimpleJar() throws Exception {

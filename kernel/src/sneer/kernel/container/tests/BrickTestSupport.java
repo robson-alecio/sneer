@@ -7,9 +7,9 @@ import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.Injector;
 import sneer.kernel.container.impl.AnnotatedFieldInjector;
-import wheel.testutil.TestThatUsesFiles;
+import wheel.testutil.TestThatMightUseFiles;
 
-public class BrickTestSupport extends TestThatUsesFiles {
+public class BrickTestSupport extends TestThatMightUseFiles {
 	
     protected Object[] getBindings() {
     	return new Object[]{};

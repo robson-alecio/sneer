@@ -8,7 +8,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 
-public class TestThatUsesFiles {
+public class TestThatMightUseFiles {
 
 	private File _tmpDirectory;
 

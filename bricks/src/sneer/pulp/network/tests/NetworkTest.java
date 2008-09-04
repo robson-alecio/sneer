@@ -11,11 +11,10 @@ import sneer.kernel.container.tests.BrickTestSupport;
 import sneer.pulp.network.ByteArrayServerSocket;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;
-import sneer.pulp.network.impl.inmemory.InMemoryNetwork;
 import sneer.pulp.threadpool.ThreadPool;
 
 
-public class InMemoryNetworkTest extends BrickTestSupport {
+public abstract class NetworkTest extends BrickTestSupport {
 
 	@Inject
 	private Network _network;
@@ -24,11 +23,6 @@ public class InMemoryNetworkTest extends BrickTestSupport {
 	private ThreadPool _threadPool;
 
 	
-	@Override
-	protected Object[] getBindings() {
-		return new Object[]{new InMemoryNetwork()};
-	}
-
 	@Test
 	public void testNetworkMessages() throws Exception {
 		final ByteArrayServerSocket server = _network.openServerSocket(9090);

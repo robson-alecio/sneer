@@ -3,17 +3,17 @@ package wheel.reactive.lists;
 import wheel.lang.Omnivore;
 import wheel.reactive.RegisterBase;
 
-public interface ListRegister<VO> extends RegisterBase {
+public interface ListRegister<T> extends RegisterBase {
 
-	ListSignal<VO> output();
+	ListSignal<T> output();
 
-	void add(VO element);
-	Omnivore<VO> adder();
-	VO get(int index);
+	void add(T element);
+	Omnivore<T> adder();
+	T get(int index);
 
-	boolean remove(VO element);
+	boolean remove(T element);
 	void remove(int index);
 	
-	void replace(int index, VO newElement);
+	void replace(int index, T newElement);
 	
 }

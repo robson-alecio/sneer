@@ -5,10 +5,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import wheel.lang.Omnivore;
+import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.AbstractNotifier;
-import wheel.reactive.lists.ListSignal;
+import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.lists.ListRegister;
+import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListValueChange;
 
 public class ListRegisterImpl<VO> implements ListRegister<VO> {
@@ -17,7 +19,9 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 	private class MyOutput extends AbstractNotifier<ListValueChange> implements ListSignal<VO> {
 
 		private static final long serialVersionUID = 1L;
-
+		
+		Register<Integer> _size = new RegisterImpl<Integer>(0);
+		
 		@Override
 		public VO currentGet(int index) {
 			return _list.get(index);
@@ -30,12 +34,14 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 
 		@Override
 		public void addListReceiver(Omnivore<ListValueChange> receiver) {
-			addReceiver(receiver);		
+			addReceiver(receiver);	
+			_size.setter().consume(currentSize());
 		}
 		
 		@Override
 		public void removeListReceiver(Object receiver) {
 			removeReceiver(receiver);		
+			_size.setter().consume(currentSize());
 		}
 
 		@Override
@@ -52,9 +58,8 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 
 		@Override
 		public Signal<Integer> size() {
-			throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+			return _size.output();
 		}
-
 	}
 
 	private final List<VO> _list = new ArrayList<VO>();

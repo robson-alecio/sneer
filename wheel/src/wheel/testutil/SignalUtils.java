@@ -1,4 +1,4 @@
-package functional;
+package wheel.testutil;
 
 import wheel.reactive.Signal;
 import wheel.reactive.sets.SetSignal;

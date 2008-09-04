@@ -3,7 +3,7 @@ package functional.freedom2;
 import org.junit.Test;
 
 import wheel.reactive.Signal;
-import functional.SignalUtils;
+import wheel.testutil.SignalUtils;
 import functional.SovereignFunctionalTest;
 import functional.SovereignParty;
 
@@ -56,5 +56,10 @@ public abstract class Freedom2Test extends SovereignFunctionalTest {
 		SignalUtils.waitForValue("Dr Ana", anasName);
 	}
 
+	@Test (timeout = 1000)
+	public void testOnline() {
+//		waitUntilOnline(_a);
+//		assertTrue(_a.isOnline());
+	}
 
 }

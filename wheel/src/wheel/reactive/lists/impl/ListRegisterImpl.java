@@ -20,8 +20,6 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 
 		private static final long serialVersionUID = 1L;
 		
-		Register<Integer> _size = new RegisterImpl<Integer>(0);
-		
 		@Override
 		public VO currentGet(int index) {
 			return _list.get(index);
@@ -35,13 +33,11 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 		@Override
 		public void addListReceiver(Omnivore<ListValueChange> receiver) {
 			addReceiver(receiver);	
-			_size.setter().consume(currentSize());
 		}
 		
 		@Override
 		public void removeListReceiver(Object receiver) {
 			removeReceiver(receiver);		
-			_size.setter().consume(currentSize());
 		}
 
 		@Override
@@ -62,6 +58,8 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 		}
 	}
 
+	Register<Integer> _size = new RegisterImpl<Integer>(0);
+
 	private final List<VO> _list = new ArrayList<VO>();
 	private MyOutput _output = new MyOutput();
 	
@@ -69,6 +67,7 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 		synchronized (_list){
 			_list.add(element);
 			_output.notifyReceivers(new ListElementAdded(_list.size() - 1));
+			_size.setter().consume(_list.size());
 		}
 	}
 	
@@ -95,6 +94,8 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 			_output.notifyReceivers(new ListElementToBeRemoved(index));
 			_list.remove(index);
 			_output.notifyReceivers(new ListElementRemoved(index));
+
+			_size.setter().consume(_list.size());
 		}
 	}
 

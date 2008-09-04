@@ -19,9 +19,14 @@ public class ListRegisterImplTest {
 		final ListRegister<String> register = new ListRegisterImpl<String>();
 		
 		final ArrayList<Integer> sizes = new ArrayList<Integer>();
-		new Receiver<Integer>(register.output().size()) {@Override public void consume(Integer value) {
+		
+		@SuppressWarnings("unused")
+		final Receiver<Integer> sizeReceiver = new Receiver<Integer>(register.output().size()) {@Override public void consume(Integer value) {
 			sizes.add(value);
 		}};
+		
+		assertEquals(0, register.output().currentSize());
+		assertListEquals(sizes, 0);
 		
 		register.add("spam");
 		

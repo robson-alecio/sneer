@@ -5,9 +5,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
-import org.apache.commons.lang.StringUtils;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
@@ -17,9 +17,9 @@ import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.dyndns.DynDns;
 import sneer.pulp.dyndns.DynDnsException;
 import sneer.pulp.httpclient.HttpClient;
-import sneer.pulp.httpclient.HttpRequest;
-import sneer.pulp.httpclient.HttpResponse;
 import wheel.io.Base64;
+import wheel.lang.Pair;
+import wheel.lang.Types;
 
 public class DynDnsTest {
 
@@ -62,28 +62,36 @@ public class DynDnsTest {
 		
 		final HttpClient client = context.mock(HttpClient.class);
 		context.checking(new Expectations() {{
-			final HttpRequest request = context.mock(HttpRequest.class);
-			one(client).newRequest("https://members.dyndns.org/nic/update?hostname=" + hostname + "&myip=" + ip + "&wildcard=NOCHG&mx=NOCHG&backmx=NOCHG");
-				will(returnValue(request));
-			one(request).setHeader(with("User-Agent"), with(wellFormedUserAgent()));
-			one(request).setHeader("Authorization", "Basic " + encode(user + ":" + password));
-			final HttpResponse response = context.mock(HttpResponse.class);
-			one(request).submit(); will(returnValue(response));
-			one(response).body(); will(returnValue(responseText));
+			one(client).get(
+				with("https://members.dyndns.org/nic/update?hostname=" + hostname + "&myip=" + ip + "&wildcard=NOCHG&mx=NOCHG&backmx=NOCHG"),
+				with(pairs(
+						Pair.pair("User-Agent", "Sneer - DynDns Client - 0.1"),
+						Pair.pair("Authorization", "Basic " + encode(user + ":" + password)))));
+			will(returnValue(responseText));
 		}});
 		return client;
 	}
 	
-	private BaseMatcher<String> wellFormedUserAgent() {
-		return new BaseMatcher<String>() {
+	private <A, B> Matcher<Pair<A, B>[]> pairs(final Pair<A, B>...expected) {
+		return new BaseMatcher<Pair<A, B>[]>() {
 			@Override
 			public boolean matches(Object value) {
-				return 3 == StringUtils.split(value.toString(), '-').length;
+				final Pair<A, B>[] actual = Types.cast(value);
+				if (actual.length != expected.length)
+					return false;
+				
+				for (int i = 0; i < expected.length; i++) {
+					if (!actual[i].equals(expected[i])) {
+						return false;
+					}
+				}
+				
+				return true;
 			}
 
 			@Override
 			public void describeTo(Description description) {
-				description.appendText("<well-formed user agent that includes company name, model number, and software build revision>");
+				description.appendValueList("[", ", ", "]", expected);
 			}
 		};
 	}

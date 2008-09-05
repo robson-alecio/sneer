@@ -9,7 +9,6 @@ import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.Inject;
 import sneer.pulp.checkip.CheckIp;
 import sneer.pulp.httpclient.HttpClient;
-import sneer.pulp.httpclient.HttpRequest;
 
 public class CheckIpImpl implements CheckIp {
 	
@@ -39,7 +38,6 @@ public class CheckIpImpl implements CheckIp {
 	}
 
 	private String submitHttpRequest() throws IOException {
-		final HttpRequest request = _client.newRequest("http://checkip.dyndns.org/");
-		return request.submit().body();
+		return _client.get("http://checkip.dyndns.org/");
 	}
 }

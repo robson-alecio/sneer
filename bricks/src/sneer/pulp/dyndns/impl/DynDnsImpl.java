@@ -8,9 +8,8 @@ import sneer.kernel.container.Inject;
 import sneer.pulp.dyndns.DynDns;
 import sneer.pulp.dyndns.DynDnsException;
 import sneer.pulp.httpclient.HttpClient;
-import sneer.pulp.httpclient.HttpRequest;
-import sneer.pulp.httpclient.HttpResponse;
 import wheel.io.Base64;
+import wheel.lang.Pair;
 
 public class DynDnsImpl implements DynDns {
 	
@@ -37,11 +36,11 @@ public class DynDnsImpl implements DynDns {
 
 	private String submitUpdateRequest(String hostname, String ip, String user, String password) {
 		try {
-			final HttpRequest request = _client.newRequest("https://members.dyndns.org/nic/update?hostname=" + hostname + "&myip=" + ip + "&wildcard=NOCHG&mx=NOCHG&backmx=NOCHG");
-			request.setHeader("User-Agent", "Sneer - DynDns Client - 0.1");
-			request.setHeader("Authorization", "Basic " + encode(user + ":" + password));
-			final HttpResponse response = request.submit();
-			return response.body();
+			final String response = _client.get(
+					"https://members.dyndns.org/nic/update?hostname=" + hostname + "&myip=" + ip + "&wildcard=NOCHG&mx=NOCHG&backmx=NOCHG",
+					Pair.pair("User-Agent", "Sneer - DynDns Client - 0.1"),
+					Pair.pair("Authorization", "Basic " + encode(user + ":" + password)));
+			return response;
 		} catch (IOException e) {
 			throw new DynDnsException(e);
 		}

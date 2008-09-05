@@ -6,13 +6,21 @@
 		- Remove @Deprecated annotation from EventSource.
 	- Remove all console output from tests except "Test left files open...".
 	- [Sandro] Snapps and Widgets - Revise. No method should have more than 10 lines.
+	- Types.cast() inline now that the respective warning is ignored in the project because of warnings in varargs... 
 
 	- Contact List - (Host addresses for Sneer developers are HARDCODED)
 		- DynDNS Client ;)	
 	---------------------------------- FIRST DOGFOOD RELEASE - Anelise can start testing for real. All bugs she finds get fixed immediately. Improvement suggestions are added to this todo list.
 
+	- Blinking lights
+		- API
+		- GUI
 	- Wind
-	---- WE DROP SKYPE CHAT :)
+	- Voice Calls - Migrate from the old sneermonolith project
+	---- WE DROP SKYPE :)
+	- Screen Viewing à la VNC - There is a free vnc client implementation in Java. If there is no free server implementation in java, just send screen deltas over using gzip compression for now.
+	---- WE DROP VNC
+	---------------------------------- LAST DOGFOOD RELEASE - Now we start cleaning up until we reach "No Broken Windows" status.
 
 	- Brick Publish (Supposedly working already)
 		- MainDemo - Publish all necessary bricks instead of just producing them.
@@ -25,8 +33,6 @@
 		- Cyclic dependency detection: Compile one sourcefolder at a time, from the last in the .classpath list (most basic (wheel)) to the first in the list (most high-level (spikes)), without the other uncompiled sourcefolders in the path.
 	
 	
-	- Voice Calls - Migrate from the old sneermonolith project
-	---- WE DROP SKYPE :)
 
 	- Open Jar leak - Fix in Freedom7Test
 	- Replace the AnnotatedFieldInjector by the StaticFieldInjector - Need to create our own TestRunner?
@@ -34,6 +40,7 @@
 	- ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do.
 		- SetSignal - Revise it also. 
 	- ContainerUtils.getContainer() - Drop. Fix all uses.
+	- Threading model - Revise. Tests should not leave threads running. "No one gets left behind"
 	- Output folders - Make all source folders compile to the default folder (bin) and fix the tests. Is this possible?
 	- Simplest Possible Kernel - What is it? Just injection?
 		- Simplify the container because of the removal of the Enhancer (MakeSerializable is a Spike now).
@@ -58,12 +65,7 @@
 	- Fix and remove all task comments in the code except for Optimize (Fix Urgent, Fix, Refactor and Implement).
 	---------------------------------- "NO BROKEN WINDOWS" status achieved. From now on code is ALWAYS kept 99.999% clean. 
 
-	- Blinking lights
-		- API
-		- GUI
 	- Transparent Persistence
-	- Screen Viewing à la VNC - There is a free vnc client implementation in Java. If there is no free server implementation in java, just send the entire screen over using gzip compression for now.
-	---- WE DROP VNC
 
 	- Own Name - Show contacts' names in contact list
 	- MSN Client

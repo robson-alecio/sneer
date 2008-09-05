@@ -89,6 +89,6 @@ public class DynDnsTest {
 	}
 
 	public static String encode(String value) {
-		return Base64.encode(value.getBytes());
+		return Base64.encode(value);
 	}
 }

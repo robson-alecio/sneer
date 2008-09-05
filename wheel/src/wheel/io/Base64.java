@@ -8,4 +8,8 @@ public class Base64 {
 		return new Base64Encoder().encode(bytes);
 	}
 
+	public static String encode(String text) {
+		return encode(text.getBytes());
+	}
+
 }

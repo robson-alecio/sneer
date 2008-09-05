@@ -48,7 +48,7 @@ public class DynDnsImpl implements DynDns {
 	}
 
 	private String encode(final String text) {
-		return Base64.encode(text.getBytes());
+		return Base64.encode(text);
 	}
 
 }

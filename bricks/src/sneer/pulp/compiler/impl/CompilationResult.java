@@ -53,7 +53,6 @@ public class CompilationResult implements Result {
 		
 	}
 
-	@SuppressWarnings("unchecked")
 	private List<CompilationError> parseErrorString(String string) throws IOException {
 		List<CompilationError> result = new ArrayList<CompilationError>();
 		List<String> lines = IOUtils.readLines(new StringReader(string));

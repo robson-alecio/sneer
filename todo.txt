@@ -1,12 +1,8 @@
 ﻿MAIN ROADMAP
 ===================
 
-	- [Sandro] Receivers
-		- Make all code use "new Receiver(signal)" instead of signal.addReceiver(Omnivore). All uses are now causing deprecated warnings.
-		- Remove @Deprecated annotation from EventSource.
 	- Remove all console output from tests except "Test left files open...".
 	- [Sandro] Snapps and Widgets - Revise. No method should have more than 10 lines.
-	- Types.cast() inline now that the respective warning is ignored in the project because of warnings in varargs... 
 
 	- Contact List - (Host addresses for Sneer developers are HARDCODED)
 		- DynDNS Client ;)	

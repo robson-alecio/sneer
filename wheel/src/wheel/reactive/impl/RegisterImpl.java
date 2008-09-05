@@ -30,7 +30,6 @@ public class RegisterImpl<VO> implements Register<VO> {
 			return _currentValue == null ? 0 : 1;
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public Iterator<VO> iterator() {
 			if (_currentValue == null) return EmptyIterator.INSTANCE;

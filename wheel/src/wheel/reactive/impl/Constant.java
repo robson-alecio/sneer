@@ -28,7 +28,6 @@ public class Constant<TYPE> extends AbstractSignal<TYPE> {
 		return _constantValue == null ? 0 : 1;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Iterator<TYPE> iterator() {
 		if (_constantValue == null) return EmptyIterator.INSTANCE;

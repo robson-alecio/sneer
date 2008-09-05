@@ -5,17 +5,17 @@ import java.io.IOException;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.Inject;
-import sneer.pulp.dyndns.updater.DynDns;
-import sneer.pulp.dyndns.updater.DynDnsException;
+import sneer.pulp.dyndns.updater.Updater;
+import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.httpclient.HttpClient;
 import wheel.io.Base64;
 import wheel.lang.Pair;
 
-public class DynDnsImpl implements DynDns {
+public class UpdaterImpl implements Updater {
 	
 	public static void main(String[] args) throws Exception {
 		final Container container = ContainerUtils.newContainer();
-		final DynDns client = container.produce(DynDns.class);
+		final Updater client = container.produce(Updater.class);
 		if (client.update("test.dyndns.org", "123.45.67.89", "test", "test")) {
 			System.out.println("record updated");
 		}
@@ -25,13 +25,13 @@ public class DynDnsImpl implements DynDns {
 	private static HttpClient _client;
 	
 	@Override
-	public boolean update(String hostname, String ip, String user, String password) throws DynDnsException {
+	public boolean update(String hostname, String ip, String user, String password) throws UpdaterException {
 		final String response = submitUpdateRequest(hostname, ip, user, password).trim();
 		if (response.startsWith("good"))
 			return true;
 		if (response.startsWith("nochg"))
 			return false;
-		throw new DynDnsException(response);
+		throw new UpdaterException(response);
 	}
 
 	private String submitUpdateRequest(String hostname, String ip, String user, String password) {
@@ -42,7 +42,7 @@ public class DynDnsImpl implements DynDns {
 					Pair.pair("Authorization", "Basic " + encode(user + ":" + password)));
 			return response;
 		} catch (IOException e) {
-			throw new DynDnsException(e);
+			throw new UpdaterException(e);
 		}
 	}
 

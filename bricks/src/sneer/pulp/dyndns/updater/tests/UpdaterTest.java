@@ -11,13 +11,13 @@ import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
 import sneer.kernel.container.ContainerUtils;
-import sneer.pulp.dyndns.updater.DynDns;
-import sneer.pulp.dyndns.updater.DynDnsException;
+import sneer.pulp.dyndns.updater.Updater;
+import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.httpclient.HttpClient;
 import wheel.io.Base64;
 import wheel.lang.Pair;
 
-public class DynDnsTest {
+public class UpdaterTest {
 
 	private final Mockery context = new JUnit4Mockery();
 	
@@ -31,7 +31,7 @@ public class DynDnsTest {
 		assertFalse(runDynDnsWithResponse("nochg\n"));
 	}
 	
-	@Test(expected=DynDnsException.class)
+	@Test(expected=UpdaterException.class)
 	public void testFailure() throws IOException {
 		runDynDnsWithResponse("abuse\n");
 	}
@@ -44,7 +44,7 @@ public class DynDnsTest {
 		
 		final HttpClient client = setUpHttpClientMockFor(hostname, ip, user, password, responseText);
 		
-		final DynDns dyndns = ContainerUtils.newContainer(client).produce(DynDns.class);
+		final Updater dyndns = ContainerUtils.newContainer(client).produce(Updater.class);
 		final boolean returnValue = dyndns.update(hostname, ip, user, password);
 		
 		context.assertIsSatisfied();

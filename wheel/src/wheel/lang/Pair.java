@@ -3,22 +3,6 @@ package wheel.lang;
 import java.io.Serializable;
 
 public class Pair<A, B> implements Serializable {
-	
-
-
-	public static <A, B> Pair<A, B> pair(A a, B b) {
-		return new Pair<A, B>(a, b);
-	}
-	
-	public final A _a;
-	public final B _b;
-
-	public Pair(A a, B b) {
-		_a = a;
-		_b = b;
-	}
-
-	private static final long serialVersionUID = 1L;
 
 	@Override
 	public int hashCode() {
@@ -28,7 +12,7 @@ public class Pair<A, B> implements Serializable {
 		result = prime * result + ((_b == null) ? 0 : _b.hashCode());
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -37,7 +21,7 @@ public class Pair<A, B> implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final Pair<?, ?> other = (Pair<?, ?>) obj;
+		Pair<?, ?> other = (Pair<?, ?>) obj;
 		if (_a == null) {
 			if (other._a != null)
 				return false;
@@ -51,8 +35,22 @@ public class Pair<A, B> implements Serializable {
 		return true;
 	}
 
+	public final A _a;
+	public final B _b;
+
+	public Pair(A a, B b) {
+		_a = a;
+		_b = b;
+	}
+
+	private static final long serialVersionUID = 1L;
+	
 	@Override
 	public String toString() {
 		return "Pair[" + _a + ", " + _b + "]";
+	}
+
+	public static <A, B> Pair<A, B> pair(A a, B b) {
+		return new Pair<A, B>(a, b);
 	}
 }

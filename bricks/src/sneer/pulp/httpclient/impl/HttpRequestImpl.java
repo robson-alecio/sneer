@@ -16,7 +16,7 @@ public class HttpRequestImpl implements HttpRequest {
 
 	@Override
 	public void setHeader(String name, String value) {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+		_connection.setRequestProperty(name, value);
 	}
 
 	@Override

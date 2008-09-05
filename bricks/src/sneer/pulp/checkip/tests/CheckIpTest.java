@@ -1,4 +1,4 @@
-package sneer.pulp.checkipclient.impl.tests;
+package sneer.pulp.checkip.tests;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,18 +6,19 @@ import java.io.IOException;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
+import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
-import sneer.pulp.checkipclient.CheckIpClient;
+import sneer.pulp.checkip.CheckIp;
 import sneer.pulp.httpclient.HttpClient;
 import sneer.pulp.httpclient.HttpRequest;
 import sneer.pulp.httpclient.HttpResponse;
 
-public class CheckIpClientImplTest {
+public class CheckIpTest {
 	
-	private final Mockery context = new Mockery();
+	private final Mockery context = new JUnit4Mockery();
 	
 	@Test
 	public void test() throws IOException {
@@ -26,7 +27,7 @@ public class CheckIpClientImplTest {
 		final HttpClient client = setUpHttpClientMockFor(ip);
 		
 		final Container container = ContainerUtils.newContainer(client);
-		final CheckIpClient checkIp = container.produce(CheckIpClient.class);
+		final CheckIp checkIp = container.produce(CheckIp.class);
 		assertEquals(ip, checkIp.check());
 		
 		context.assertIsSatisfied();
@@ -51,8 +52,8 @@ public class CheckIpClientImplTest {
 			final HttpRequest request = context.mock(HttpRequest.class);
 			one(client).newRequest("http://checkip.dyndns.org/"); will(returnValue(request));
 			HttpResponse response = context.mock(HttpResponse.class);
-			one(response).body(); will(returnValue(responseBody));
 			one(request).submit(); will(returnValue(response));
+			one(response).body(); will(returnValue(responseBody));
 		}});
 		return client;
 	}

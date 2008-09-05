@@ -1,4 +1,4 @@
-package sneer.pulp.checkipclient.impl;
+package sneer.pulp.checkip.impl;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -7,15 +7,15 @@ import java.util.regex.Pattern;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.Inject;
-import sneer.pulp.checkipclient.CheckIpClient;
+import sneer.pulp.checkip.CheckIp;
 import sneer.pulp.httpclient.HttpClient;
 import sneer.pulp.httpclient.HttpRequest;
 
-public class CheckIpClientImpl implements CheckIpClient {
+public class CheckIpImpl implements CheckIp {
 	
 	public static void main(String[] args) throws Exception {
 		final Container container = ContainerUtils.newContainer();
-		final CheckIpClient client = container.produce(CheckIpClient.class);
+		final CheckIp client = container.produce(CheckIp.class);
 		System.out.println(client.check());
 	}
 	

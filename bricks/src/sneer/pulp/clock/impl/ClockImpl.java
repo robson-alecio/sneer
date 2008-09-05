@@ -15,4 +15,9 @@ public class ClockImpl implements Clock {
 		Threads.sleepWithoutInterruptions(millis);
 	}
 
+	@Override
+	public void setAlarm(int millis, Runnable runnable) {
+		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+	}
+
 }

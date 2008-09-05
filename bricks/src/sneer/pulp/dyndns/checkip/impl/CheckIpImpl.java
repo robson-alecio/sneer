@@ -29,10 +29,10 @@ public class CheckIpImpl implements CheckIp {
 		return parse(responseBody);
 	}
 
-	private String parse(final String responseBody) {
+	private String parse(final String responseBody) throws IOException {
 		final Matcher matcher = _responsePattern.matcher(responseBody);
 		if (!matcher.find()) {
-			throw new IllegalStateException("Unrecognized checkip response: " + responseBody);
+			throw new IOException("Unrecognized checkip response: " + responseBody);
 		}
 		return matcher.group(1);
 	}

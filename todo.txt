@@ -1,7 +1,7 @@
 ﻿MAIN ROADMAP
 ===================
 
-	- Receivers
+	- [Sandro] Receivers
 		- Make all code use "new Receiver(signal)" instead of signal.addReceiver(Omnivore). All uses are now causing deprecated warnings.
 		- Remove @Deprecated annotation from EventSource.
 	- Remove all console output from tests except "Test left files open...".

@@ -10,28 +10,39 @@ import sneer.pulp.crypto.Sneer1024;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.mesh.Party;
+import sneer.pulp.own.name.OwnNameKeeper;
 import wheel.lang.Functor;
 
 public class KeyManagerImpl implements KeyManager {
 
-	private final PublicKey _ownKey = createMickeyMouseKey();
+	private PublicKey _ownKey;
 	
 	private final Map<Contact, PublicKey> _keyByContact = new HashMap<Contact, PublicKey>();
 
 	private final Map<PublicKey, Party> _partiesByPublicKey = new HashMap<PublicKey, Party>();
 
 	@Inject
+	private static OwnNameKeeper _ownName;
+
+	@Inject
 	private static Crypto _crypto;
 
-	private PublicKey createMickeyMouseKey() {
-		String string = "" + System.currentTimeMillis() + System.nanoTime() + hashCode();
-		Sneer1024 sneer1024 = _crypto.digest(string.getBytes());
-		return new PublicKeyImpl(sneer1024);
-	}
 
 	@Override
 	public PublicKey ownPublicKey() {
+		if (_ownKey == null)
+			_ownKey = generateMickeyMouseKey();
 		return _ownKey;
+	}
+
+	private PublicKey generateMickeyMouseKey() {
+		String name = _ownName.name().currentValue();
+		
+		String string = name.equals("[My Full Name]")
+			? 	"" + System.currentTimeMillis() + System.nanoTime() + hashCode()
+			: name;
+	
+		return generateMickeyMouseKey(string);
 	}
 
 	@Override
@@ -84,5 +95,11 @@ public class KeyManagerImpl implements KeyManager {
 	@Override
 	public PublicKey unmarshall(byte[] bytes) {
 		return new PublicKeyImpl(_crypto.unmarshallSneer1024(bytes));
+	}
+
+	@Override
+	public PublicKey generateMickeyMouseKey(String string) {
+		Sneer1024 sneer1024 = _crypto.digest(string.getBytes());
+		return new PublicKeyImpl(sneer1024);
 	}
 }

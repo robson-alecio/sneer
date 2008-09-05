@@ -85,11 +85,7 @@ class ConnectionImpl implements ByteConnection {
 	}
 
 	void manageIncomingSocket(ByteArraySocket socket) {
-		//Implement: Reject if my own pk.
-		//Challenge pk.
-		
 		_socketHolder.setSocketIfNecessary(socket);
-		
 	}
 	
 	@Override

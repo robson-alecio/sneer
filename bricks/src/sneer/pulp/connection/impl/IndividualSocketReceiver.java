@@ -35,21 +35,34 @@ class IndividualSocketReceiver {
 		_socket = socket;
 
 		try {
-			tryToServe();
+			if (!tryToServe()) _socket.crash();
 		} catch (Exception e) {
 			_logger.info("Exception thrown by incoming socket.", e);
 			_socket.crash();
 		}
 	}
 
-	private void tryToServe() throws IOException {
+	private boolean tryToServe() throws IOException {
 		shakeHands();
 
-		byte[] publicKeyBytes = _socket.read();
-		PublicKey peersPublicKey = _keyManager.unmarshall(publicKeyBytes);	
+		PublicKey peersPublicKey = peersPublicKey();	
+
+		if (peersPublicKey.equals(_keyManager.ownPublicKey()))
+			return false;
+			
+		//Implement: Challenge pk.
+
+		_socket.write(ProtocolTokens.OK);
 
 		Contact contact = produceContact(peersPublicKey);
 		_connectionManager.manageIncomingSocket(contact, _socket);
+		return true;
+	}
+
+	private PublicKey peersPublicKey() throws IOException {
+		byte[] publicKeyBytes = _socket.read();
+		PublicKey peersPublicKey = _keyManager.unmarshall(publicKeyBytes);
+		return peersPublicKey;
 	}
 
 	private Contact produceContact(PublicKey peersPublicKey) {
@@ -86,10 +99,9 @@ class IndividualSocketReceiver {
 	private void shakeHands() throws IOException {
 		while (true) {
 			byte[] header = _socket.read();
-			if (Arrays.equals(header, ProtocolTokens.SNEER_WIRE_PROTOCOL_1)) {
-				_socket.write(ProtocolTokens.OK);
+			if (Arrays.equals(header, ProtocolTokens.SNEER_WIRE_PROTOCOL_1))
 				return;
-			}
+
 			discardFirstDataPacket();
 			_socket.write(ProtocolTokens.FALLBACK);
 		}

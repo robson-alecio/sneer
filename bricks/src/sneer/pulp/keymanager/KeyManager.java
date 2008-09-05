@@ -18,4 +18,6 @@ public interface KeyManager extends Brick {
 	Party partyGiven(PublicKey pk);
 
 	PublicKey unmarshall(byte[] publicKeyBytes);
+
+	PublicKey generateMickeyMouseKey(String nick); //Just until we implement real keys.
 }

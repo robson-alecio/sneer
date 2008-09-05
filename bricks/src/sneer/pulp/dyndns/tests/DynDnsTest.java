@@ -5,9 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
@@ -19,7 +16,6 @@ import sneer.pulp.dyndns.DynDnsException;
 import sneer.pulp.httpclient.HttpClient;
 import wheel.io.Base64;
 import wheel.lang.Pair;
-import wheel.lang.Types;
 
 public class DynDnsTest {
 
@@ -63,39 +59,14 @@ public class DynDnsTest {
 		final HttpClient client = context.mock(HttpClient.class);
 		context.checking(new Expectations() {{
 			one(client).get(
-				with("https://members.dyndns.org/nic/update?hostname=" + hostname + "&myip=" + ip + "&wildcard=NOCHG&mx=NOCHG&backmx=NOCHG"),
-				with(pairs(
-						Pair.pair("User-Agent", "Sneer - DynDns Client - 0.1"),
-						Pair.pair("Authorization", "Basic " + encode(user + ":" + password)))));
+				"https://members.dyndns.org/nic/update?hostname=" + hostname + "&myip=" + ip + "&wildcard=NOCHG&mx=NOCHG&backmx=NOCHG",
+				Pair.pair("User-Agnt", "Sneer - DynDns Client - 0.1"),
+				Pair.pair("Authorization", "Basic " + encode(user + ":" + password)));
 			will(returnValue(responseText));
 		}});
 		return client;
 	}
 	
-	private <A, B> Matcher<Pair<A, B>[]> pairs(final Pair<A, B>...expected) {
-		return new BaseMatcher<Pair<A, B>[]>() {
-			@Override
-			public boolean matches(Object value) {
-				final Pair<A, B>[] actual = Types.cast(value);
-				if (actual.length != expected.length)
-					return false;
-				
-				for (int i = 0; i < expected.length; i++) {
-					if (!actual[i].equals(expected[i])) {
-						return false;
-					}
-				}
-				
-				return true;
-			}
-
-			@Override
-			public void describeTo(Description description) {
-				description.appendValueList("[", ", ", "]", expected);
-			}
-		};
-	}
-
 	public static String encode(String value) {
 		return Base64.encode(value);
 	}

@@ -14,8 +14,7 @@ public abstract class Receiver<T> implements Omnivore<T> {
 		addToSignal(signal);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public Receiver(EventSource... signals) {
+	public Receiver(EventSource<T>... signals) {
 		for (EventSource<T> signal : signals) {
 			addToSignal(signal);
 		}

@@ -1,9 +1,10 @@
 package wheel.reactive.tests;
 
-import wheel.lang.Types;
 import wheel.lang.Omnivore;
-import wheel.reactive.Signal;
+import wheel.lang.Types;
 import wheel.reactive.Register;
+import wheel.reactive.Signal;
+import wheel.reactive.Solder;
 import wheel.reactive.impl.RegisterImpl;
 
 public class LoopbackTester {
@@ -16,9 +17,13 @@ public class LoopbackTester {
 		_output = Types.cast(output);
 				
 		Signal<Object> castedInput = Types.cast(input);
-		castedInput.addReceiver(_inputValue1.setter());
-		castedInput.addReceiver(_inputValue2.setter());
-		castedInput.addReceiver(_inputValue3.setter());
+
+		@SuppressWarnings("unused")
+		Object s1 = new Solder<Object>(castedInput, _inputValue1.setter());
+		@SuppressWarnings("unused")
+		Object s2 = new Solder<Object>(castedInput, _inputValue2.setter());
+		@SuppressWarnings("unused")
+		Object s3 = new Solder<Object>(castedInput, _inputValue3.setter());
 	}
 	
 	private final Omnivore<Object> _output;

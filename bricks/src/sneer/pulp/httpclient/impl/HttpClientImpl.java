@@ -12,7 +12,7 @@ import wheel.lang.Pair;
 class HttpClientImpl implements HttpClient {
 
 	@Override
-	public String get(String url, @SuppressWarnings("unchecked") Pair... headers) throws IOException {
+	public String get(String url, Pair<String, String>... headers) throws IOException {
 		final URLConnection connection = new URL(url).openConnection();
 		for (Pair<String, String> header : headers) {
 			connection.setRequestProperty(header._a, header._b);

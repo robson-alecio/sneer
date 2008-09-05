@@ -1,4 +1,4 @@
-package sneer.pulp.dyndns;
+package sneer.pulp.dyndns.updater;
 
 public class DynDnsException extends RuntimeException {
 

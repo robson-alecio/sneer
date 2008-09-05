@@ -1,4 +1,4 @@
-package sneer.pulp.checkip.impl;
+package sneer.pulp.dyndns.checkip.impl;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.Inject;
-import sneer.pulp.checkip.CheckIp;
+import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.httpclient.HttpClient;
 
 public class CheckIpImpl implements CheckIp {

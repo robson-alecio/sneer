@@ -1,4 +1,4 @@
-package sneer.pulp.checkip.tests;
+package sneer.pulp.dyndns.checkip.tests;
 
 import static org.junit.Assert.assertEquals;
 
@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
-import sneer.pulp.checkip.CheckIp;
+import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.httpclient.HttpClient;
 
 public class CheckIpTest {

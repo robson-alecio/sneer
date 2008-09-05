@@ -1,12 +1,12 @@
-package sneer.pulp.dyndns.impl;
+package sneer.pulp.dyndns.updater.impl;
 
 import java.io.IOException;
 
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.Inject;
-import sneer.pulp.dyndns.DynDns;
-import sneer.pulp.dyndns.DynDnsException;
+import sneer.pulp.dyndns.updater.DynDns;
+import sneer.pulp.dyndns.updater.DynDnsException;
 import sneer.pulp.httpclient.HttpClient;
 import wheel.io.Base64;
 import wheel.lang.Pair;

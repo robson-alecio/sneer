@@ -1,4 +1,4 @@
-package sneer.pulp.dyndns;
+package sneer.pulp.dyndns.updater;
 
 import sneer.kernel.container.Brick;
 

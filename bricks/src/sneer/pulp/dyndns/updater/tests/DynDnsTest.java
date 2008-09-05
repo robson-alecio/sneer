@@ -1,4 +1,4 @@
-package sneer.pulp.dyndns.tests;
+package sneer.pulp.dyndns.updater.tests;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -11,8 +11,8 @@ import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
 import sneer.kernel.container.ContainerUtils;
-import sneer.pulp.dyndns.DynDns;
-import sneer.pulp.dyndns.DynDnsException;
+import sneer.pulp.dyndns.updater.DynDns;
+import sneer.pulp.dyndns.updater.DynDnsException;
 import sneer.pulp.httpclient.HttpClient;
 import wheel.io.Base64;
 import wheel.lang.Pair;
@@ -60,7 +60,7 @@ public class DynDnsTest {
 		context.checking(new Expectations() {{
 			one(client).get(
 				"https://members.dyndns.org/nic/update?hostname=" + hostname + "&myip=" + ip + "&wildcard=NOCHG&mx=NOCHG&backmx=NOCHG",
-				Pair.pair("User-Agnt", "Sneer - DynDns Client - 0.1"),
+				Pair.pair("User-Agent", "Sneer - DynDns Client - 0.1"),
 				Pair.pair("Authorization", "Basic " + encode(user + ":" + password)));
 			will(returnValue(responseText));
 		}});

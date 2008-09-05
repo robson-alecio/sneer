@@ -1,4 +1,4 @@
-package sneer.pulp.checkip;
+package sneer.pulp.dyndns.checkip;
 
 import java.io.IOException;
 

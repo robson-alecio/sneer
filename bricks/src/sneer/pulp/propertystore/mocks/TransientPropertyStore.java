@@ -1,0 +1,22 @@
+package sneer.pulp.propertystore.mocks;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import sneer.pulp.propertystore.PropertyStore;
+
+public class TransientPropertyStore implements PropertyStore {
+
+	private Map<String, String> _properties = new HashMap<String, String>();
+
+	@Override
+	public String get(String key) {
+		return _properties.get(key);
+	}
+
+	@Override
+	public void set(String key, String value) {
+		_properties.put(key, value);
+	}
+
+}

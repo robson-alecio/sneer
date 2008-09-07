@@ -23,25 +23,20 @@ import javax.swing.SwingUtilities;
 
 import snapps.location.LocationKeeper;
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.Startable;
 import sneer.pulp.threadpool.ThreadPool;
 
-public class LocationGuiImpl implements Startable {
+public class LocationGuiImpl {
 
 	@Inject
-	private LocationKeeper _keeper;
+	static private LocationKeeper _keeper;
 
 	@Inject
-	private ThreadPool _pool;
+	static private ThreadPool _pool;
 
-	@Override
-	public void start() throws Exception {
-		_pool.registerActor(new Runnable() {
-			@Override
-			public void run() {
-				openGUI();
-			}
-		});
+	LocationGuiImpl() {
+		_pool.registerActor(new Runnable() { @Override public void run() {
+			openGUI();
+		}});
 	}
 
 	private JLabel _mapHolder = new JLabel();

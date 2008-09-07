@@ -10,7 +10,6 @@ import sneer.kernel.container.ClassLoaderFactory;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Injector;
 import sneer.kernel.container.LegoException;
-import sneer.kernel.container.Startable;
 import sneer.kernel.container.impl.classloader.EclipseClassLoaderFactory;
 import sneer.pulp.config.SneerConfig;
 import sneer.pulp.config.impl.SneerConfigImpl;
@@ -63,20 +62,10 @@ public class SimpleContainer implements Container {
 		}
 
 		inject(component);
-		handleLifecycle(intrface, component);
 		return component;
 	}
 
-	private <T> void handleLifecycle(Class<T> clazz, T component) {
-		if (component instanceof Startable) {
-			try {
-				((Startable)component).start();
-			} catch (Exception e) {
-				throw new LegoException("Error starting brick: "+clazz.getName(), e);
-			}
-		}
-	}
-	
+
 	private <T> T lookup(Class<T> clazz) throws Exception {
 
 		Object result = bindingFor(clazz);
@@ -143,7 +132,6 @@ public class SimpleContainer implements Container {
 			return _sneerConfig;
 		}
 		_sneerConfig = new SneerConfigImpl();
-		handleLifecycle(SneerConfig.class, _sneerConfig);
 		return _sneerConfig;
 	}
 

@@ -24,13 +24,6 @@ public class ContainerTest {
         assertSame(sample, subject);
 	}
 	
-	@Test
-	public void testLifecycle() throws Exception {
-		Container c = new SimpleContainer();
-        Lifecycle lifecycle = c.produce(Lifecycle.class);
-        assertTrue(lifecycle.startCalled());
-	}
-	
 	
 	@Test
 	public void testInjectInjector() throws Exception {

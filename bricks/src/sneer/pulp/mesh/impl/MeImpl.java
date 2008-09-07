@@ -6,7 +6,6 @@ import java.util.Map;
 import sneer.kernel.container.Brick;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.Startable;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.keymanager.PublicKey;
@@ -18,7 +17,7 @@ import wheel.reactive.lists.impl.SimpleListReceiver;
 import wheel.reactive.sets.SetSignal;
 
 
-class MeImpl extends AbstractParty implements Me, Startable {
+class MeImpl extends AbstractParty implements Me {
 
 	@Inject
 	static private ContactManager _contactManager;
@@ -33,8 +32,7 @@ class MeImpl extends AbstractParty implements Me, Startable {
 
 
 	
-	@Override
-	public void start() throws Exception {
+	MeImpl() {
 		registerWithKeyManager();
 		registerContactReceiver();
 	}

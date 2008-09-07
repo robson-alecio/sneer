@@ -4,10 +4,9 @@ import java.io.File;
 
 import org.apache.commons.lang.SystemUtils;
 
-import sneer.kernel.container.Startable;
 import sneer.pulp.config.SneerConfig;
 
-public class SneerConfigImpl implements SneerConfig, Startable {
+public class SneerConfigImpl implements SneerConfig {
 
 	private File _sneerDirectory;
 	
@@ -15,9 +14,7 @@ public class SneerConfigImpl implements SneerConfig, Startable {
 
 	private File _tmpDirectory;
 	
-	@Override
-	public void start() throws Exception {
-		
+	public SneerConfigImpl() {
 		File userHome = SystemUtils.getUserHome();
 		
 		_sneerDirectory = new File(userHome, ".sneer");

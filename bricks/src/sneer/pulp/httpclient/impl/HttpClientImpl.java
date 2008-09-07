@@ -20,9 +20,8 @@ class HttpClientImpl implements HttpClient {
 	}
 
 	private void setRequestProperties(final URLConnection connection, Pair<String, String>... headers) {
-		for (Pair<String, String> header : headers) {
+		for (Pair<String, String> header : headers)
 			connection.setRequestProperty(header._a, header._b);
-		}
 	}
 
 	private String readString(final URLConnection connection) throws IOException {

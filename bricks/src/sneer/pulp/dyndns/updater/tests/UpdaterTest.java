@@ -44,8 +44,8 @@ public class UpdaterTest {
 		
 		final HttpClient client = setUpHttpClientMockFor(hostname, ip, user, password, responseText);
 		
-		final Updater dyndns = ContainerUtils.newContainer(client).produce(Updater.class);
-		final boolean returnValue = dyndns.update(hostname, ip, user, password);
+		final Updater updater = ContainerUtils.newContainer(client).produce(Updater.class);
+		final boolean returnValue = updater.update(hostname, ip, user, password);
 		
 		context.assertIsSatisfied();
 		

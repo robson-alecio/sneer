@@ -23,20 +23,20 @@ public class UpdaterTest {
 	
 	@Test
 	public void testUpdateSuccess() throws IOException {
-		assertTrue(runDynDnsWithResponse("good 123.456.78.90\n"));
+		assertTrue(runUpdaterWithResponse("good 123.456.78.90\n"));
 	}
 	
 	@Test
 	public void testUpdateNoChange() throws IOException {
-		assertFalse(runDynDnsWithResponse("nochg\n"));
+		assertFalse(runUpdaterWithResponse("nochg\n"));
 	}
 	
 	@Test(expected=UpdaterException.class)
 	public void testFailure() throws IOException {
-		runDynDnsWithResponse("abuse\n");
+		runUpdaterWithResponse("abuse\n");
 	}
 
-	private boolean runDynDnsWithResponse(final String responseText) throws IOException {
+	private boolean runUpdaterWithResponse(final String responseText) throws IOException {
 		final String hostname = "hostname";
 		final String ip = "123.456.78.90";
 		final String user = "user";

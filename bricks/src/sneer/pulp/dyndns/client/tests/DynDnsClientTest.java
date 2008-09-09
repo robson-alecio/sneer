@@ -52,7 +52,8 @@ Unacceptable Client Behavior
 				will(returnValue(ownIp.output()));
 			oneOf(ownAccountKeeper).ownAccount();
 				will(returnValue(ownAccount.output()));
-			oneOf(updater).update(ownAccount.output().currentValue(), ownIp.output().currentValue());
+			final Account account = ownAccount.output().currentValue();
+			oneOf(updater).update(account.host(), account.user(), account.password(), ownIp.output().currentValue());
 				will(returnValue(true));
 		}});
 		

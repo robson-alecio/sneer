@@ -2,6 +2,7 @@ package sneer.pulp.dyndns.client.impl;
 
 import sneer.kernel.container.Inject;
 import sneer.pulp.dyndns.client.DynDnsClient;
+import sneer.pulp.dyndns.ownaccount.Account;
 import sneer.pulp.dyndns.ownaccount.OwnAccountKeeper;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.dyndns.updater.Updater;
@@ -27,7 +28,8 @@ class DynDnsClientImpl implements DynDnsClient {
 //	}};
 
 	protected void update(String ip) {
-		_updater.update(_ownAccountKeeper.ownAccount().currentValue(), ip);
+		final Account account = _ownAccountKeeper.ownAccount().currentValue();
+		_updater.update(account.host(), account.user(), account.password(), ip);
 	}
 
 }

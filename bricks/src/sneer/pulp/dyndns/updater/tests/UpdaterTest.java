@@ -11,7 +11,6 @@ import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
 import sneer.kernel.container.ContainerUtils;
-import sneer.pulp.dyndns.ownaccount.impl.SimpleAccount;
 import sneer.pulp.dyndns.updater.Updater;
 import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.httpclient.HttpClient;
@@ -46,7 +45,7 @@ public class UpdaterTest {
 		final HttpClient client = setUpHttpClientMockFor(hostname, ip, user, password, responseText);
 		
 		final Updater updater = ContainerUtils.newContainer(client).produce(Updater.class);
-		final boolean returnValue = updater.update(new SimpleAccount(hostname, user, password), ip);
+		final boolean returnValue = updater.update(hostname, user, password, ip);
 		
 		context.assertIsSatisfied();
 		

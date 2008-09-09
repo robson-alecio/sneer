@@ -10,6 +10,7 @@ import java.util.Properties;
 import sneer.kernel.container.Inject;
 import sneer.pulp.config.persistence.PersistenceConfig;
 import sneer.pulp.propertystore.PropertyStore;
+import wheel.io.Streams;
 
 public class PropertyStoreImpl implements PropertyStore {
 
@@ -43,10 +44,14 @@ public class PropertyStoreImpl implements PropertyStore {
 	}
 
 	private void persist() {
+		FileOutputStream out = null;
 		try {
-			_properties.store(out(), "Sneer System Persistence File - Handle with Care :)");
+			out = out();
+			_properties.store(out, "Sneer System Persistence File - Handle with Care :)");
 		} catch (IOException e) {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+		} finally {
+			if (out != null)	Streams.crash(out);
 		}
 	}
 

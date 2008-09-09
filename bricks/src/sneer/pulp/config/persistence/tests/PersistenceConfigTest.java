@@ -16,11 +16,11 @@ public class PersistenceConfigTest extends TestThatMightUseFiles {
 	
 	private File _dir = new File(tmpDirectory(), "foo");
 	private final SneerConfig _config = new SneerConfigImpl(_dir);
-	private final PersistenceConfig _subject1 = ContainerUtils.newContainer(_config).produce(PersistenceConfig.class);
+	private final PersistenceConfig _subject = ContainerUtils.newContainer(_config).produce(PersistenceConfig.class);
 
 	@Test
 	public void testPersistenceConfig() {
-		assertEquals(_dir, _subject1.persistenceDirectory());
+		assertEquals(_dir, _subject.persistenceDirectory());
 	}
 	
 }

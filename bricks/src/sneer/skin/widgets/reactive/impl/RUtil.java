@@ -15,5 +15,4 @@ public abstract class RUtil {
 		
 		return size;
 	}
-
 }

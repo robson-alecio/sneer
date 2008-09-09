@@ -19,9 +19,7 @@ public class ApiClassLoader extends URLClassLoader {
 	public ApiClassLoader(SneerConfig config, ClassLoader parent) {
 		super(new URL[0], parent);
 		_config = config;
-		
 		_instances.add(new WeakReference<ApiClassLoader>(this));
-		System.out.println("Instances: " + _instances.size());
 	}
 
 	static public void checkAllInstancesAreFreed() {

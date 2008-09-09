@@ -107,8 +107,6 @@ public class SocketAccepterImpl implements SocketAccepter {
 		if (port == 0) return;
 		
 		try {
-			
-			System.out.println("starting server socket at port " + port);
 			_serverSocket = _network.openServerSocket(port);
 			_lights.turnOff(_cantOpenServerSocket);
 		} catch (IOException e) {

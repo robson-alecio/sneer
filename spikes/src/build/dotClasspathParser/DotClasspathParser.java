@@ -33,7 +33,6 @@ public class DotClasspathParser {
 		final List<String> libPaths = new ArrayList<String>();
 		while (matcher.find()){
 			final String lib = matcher.group(1);
-			System.out.println("Lib: " + lib);
 			libPaths .add(lib);
 		}
 		return libPaths;
@@ -47,7 +46,6 @@ public class DotClasspathParser {
 		final List<String> sourcePaths = new ArrayList<String>();
 		while (matcher.find()){
 			final String srcPath = matcher.group(1);
-			System.out.println("Source path: " + srcPath);
 			sourcePaths .add(srcPath);
 		}
 		return sourcePaths;

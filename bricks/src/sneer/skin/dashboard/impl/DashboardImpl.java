@@ -19,6 +19,7 @@ import javax.swing.WindowConstants;
 
 import sneer.kernel.container.Inject;
 import sneer.pulp.blinkinglights.BlinkingLights;
+import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.skin.dashboard.Dashboard;
 import sneer.skin.dashboard.SnappFrame;
@@ -31,6 +32,7 @@ import wheel.graphics.Images;
 import wheel.io.ui.action.Action;
 import wheel.io.ui.impl.TrayIconImpl;
 import wheel.io.ui.impl.TrayIconImpl.SystemTrayNotSupported;
+import wheel.reactive.impl.Receiver;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
 public class DashboardImpl implements Dashboard, Runnable {
@@ -46,12 +48,20 @@ public class DashboardImpl implements Dashboard, Runnable {
 	
 	@Inject
 	static private MainMenu mainMenu;
+	
+	@Inject
+	static private OwnNameKeeper _ownNameKeeper;
 		
 	@Inject
 	static private SnappManager _snappManager;
 
 	@Inject
 	private BlinkingLights _blinkingLights;
+	
+	@SuppressWarnings("unused")
+	private final Receiver<String> _ownNameReceiver = new Receiver<String>(_ownNameKeeper.name()) { @Override public void consume(String value) {
+		updateTitle();
+	}};
 		
 	private Dimension screenSize;
 	private Rectangle bounds;
@@ -117,10 +127,11 @@ public class DashboardImpl implements Dashboard, Runnable {
 	}
 
 	private void initWindows() {
-		jframe = new JFrame();
-		jframe.setIconImage(Images.getImage(logoIconURL()));
-		jframe.setTitle("Sneer");
-		
+		initFrame();
+		initRootPanel();
+	}
+
+	private void initRootPanel() {
 		rootPanel = new JPanel();
 		
 		rootPanel = (JPanel) jframe.getContentPane();
@@ -130,6 +141,13 @@ public class DashboardImpl implements Dashboard, Runnable {
 		contentPanel = new ContentPane();
 		rootPanel.add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new FlowLayout());
+	}
+
+	private void initFrame() {
+		jframe = new JFrame();
+		jframe.setIconImage(Images.getImage(logoIconURL()));
+
+		updateTitle();
 	}
 
 	private SnappFrame installSnapp(final Snapp snapp) {
@@ -248,6 +266,12 @@ public class DashboardImpl implements Dashboard, Runnable {
 	public void moveSnappUp(SnappFrame frame) {
 		contentPanel.remove(frame.getContent());
 		contentPanel.add(frame.getContent());
+	}
+
+	private void updateTitle() {
+		if (jframe == null) return;
+		
+		jframe.setTitle("Sneer - " + _ownNameKeeper.getName());
 	}	
 }
 

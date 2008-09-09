@@ -28,7 +28,6 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	@Inject	@SuppressWarnings("unused")
 	private static SocketReceiver _networkDaemon2;
 
-	
 	@Inject
 	private static OwnNameKeeper _ownName;
 
@@ -44,10 +43,10 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	@Inject
 	private static InternetAddressKeeper _addressKeeper;
 
-
-
 	@Override
 	public void start(String ownName, int port) {
+		assertIsHardcodedNick(ownName);
+		
 		System.out.println("Starting Sneer on port " + port);
 
 		_ownName.nameSetter().consume(ownName);
@@ -57,35 +56,61 @@ class MainDemoBrickImpl implements MainDemoBrick {
 		addContacts();
 	}
 
+	private void assertIsHardcodedNick(String nick) {
+		if (!isHardcodedNick(nick))
+			throw new IllegalArgumentException(nick + " is not one of the hardcoded nicknames.");
+	}
+
+	private boolean isHardcodedNick(String nick) {
+		for (ContactInfo contact : hardcodedContacts())
+			if (contact._nick.equals(nick)) return true;
+		return false;
+	}
 
 	private void addContacts() {
-		addConnectionTo("Bamboo", "rodrigobamboo.dyndns.org", 5923);
-		addConnectionTo("Bihaiko", "bihaiko.dyndns.org", 5923);
-		addConnectionTo("Daniel", "dfcsantos.homelinux.com");
-		addConnectionTo("Klaus", "klaus.selfip.net", 5923);
-		addConnectionTo("Klaus", "200.169.90.89", 5923);
-		addConnectionTo("Nell", "anelisedaux.dyndns.org", 5924);
-		addConnectionTo("Localhost", "localhost");
+		for (ContactInfo contact : hardcodedContacts()) {
+			addConnectionTo(contact);
+		}
 	}
-	
 
-	private void addConnectionTo(String nick, String host) {
-		addConnectionTo(nick, host, 7777);
+	private ContactInfo[] hardcodedContacts() {
+		return new ContactInfo[] {
+			new ContactInfo("Bamboo", "rodrigobamboo.dyndns.org", 5923),
+			new ContactInfo("Bihaiko", "bihaiko.dyndns.org", 5923),
+			new ContactInfo("Daniel", "dfcsantos.homelinux.com"),
+			new ContactInfo("Klaus", "klaus.selfip.net", 5923),
+			new ContactInfo("Klaus", "200.169.90.89", 5923),
+			new ContactInfo("Nell", "anelisedaux.dyndns.org", 5924),
+			new ContactInfo("Localhost", "localhost"),
+		};
 	}
-	
-	
-	private void addConnectionTo(String nick, String host, int port) {
-		if (nick.equals(_ownName.name().currentValue())) return;
+
+	public static class ContactInfo {
+		public final String _nick;
+		public final String _host;
+		public final int _port;
+
+		public ContactInfo(String nick, String host, int port) {
+			_nick = nick;
+			_host = host;
+			_port = port;
+		}
+
+		public ContactInfo(String nick, String host) {
+			this(nick, host, 7777);
+		}
+	}
+
+	private void addConnectionTo(ContactInfo endPoint) {
+		if (endPoint._nick.equals(_ownName.name().currentValue())) return;
 		
-		Contact contact = produceContact(nick);
-		_addressKeeper.add(contact, host, port);
+		Contact contact = produceContact(endPoint._nick);
+		_addressKeeper.add(contact, endPoint._host, endPoint._port);
 	}
-
 
 	private PublicKey mickeyMouseKey(String nick) {
 		return _keyManager.generateMickeyMouseKey(nick);
 	}
-
 
 	private Contact produceContact(String nick) {
 		Contact result = _contactManager.contactGiven(nick);

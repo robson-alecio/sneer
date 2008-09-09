@@ -2,7 +2,6 @@ package main.impl;
 
 import main.MainDemoBrick;
 import snapps.contacts.ContactsSnapp;
-import snapps.owner.OwnerSnapp;
 import sneer.kernel.container.Inject;
 import sneer.pulp.connection.SocketOriginator;
 import sneer.pulp.connection.SocketReceiver;
@@ -21,11 +20,7 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	private static Dashboard _gui1;
 	
 	@Inject	@SuppressWarnings("unused")
-	private static OwnerSnapp _gui2;
-	
-	@Inject	@SuppressWarnings("unused")
 	private static ContactsSnapp _gui3;
-
 	
 	@Inject	@SuppressWarnings("unused")
 	private static SocketOriginator _networkDaemon1;

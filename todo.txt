@@ -3,7 +3,7 @@
 
 	- Remove all console output from tests except "Test left files open...".
 
-	- Contact List - (Host addresses for Sneer developers are HARDCODED)
+	- Contact List - ([Done] Host addresses for Sneer developers are HARDCODED)
 		- DynDNS Client ;)	
 	---------------------------------- FIRST DOGFOOD RELEASE - Anelise can start testing for real. All bugs she finds get fixed immediately. Improvement suggestions are added to this todo list.
 

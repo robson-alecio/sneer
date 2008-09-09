@@ -65,10 +65,11 @@ class MainDemoBrickImpl implements MainDemoBrick {
 
 	private void addContacts() {
 		addConnectionTo("Bamboo", "rodrigobamboo.dyndns.org", 5923);
-		addConnectionTo("Bihaiko", "????");
+		addConnectionTo("Bihaiko", "bihaiko.dyndns.org", 5923);
 		addConnectionTo("Daniel", "dfcsantos.homelinux.com");
 		addConnectionTo("Klaus", "klaus.selfip.net", 5923);
 		addConnectionTo("Klaus", "200.169.90.89", 5923);
+		addConnectionTo("Nell", "anelisedaux.dyndns.org", 5924);
 		addConnectionTo("Localhost", "localhost");
 	}
 	

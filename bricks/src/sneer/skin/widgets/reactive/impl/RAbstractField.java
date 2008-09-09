@@ -4,10 +4,13 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.lang.reflect.Method;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -16,8 +19,6 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 
 import sneer.skin.widgets.reactive.TextWidget;
@@ -26,194 +27,136 @@ import wheel.lang.Pair;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
 
-public abstract class RAbstractField<WIDGET extends JComponent> extends JPanel implements TextWidget<WIDGET> {
+public abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel implements TextWidget<WIDGET> {
 	private static final long serialVersionUID = 1L;
 
-	public static final int ENABLED_SAVED_STATE = 0;
-	public static final int ENABLED_UNSAVED_STATE = 1;
-	public static final int DISABLED_STATE = 2;
+	public boolean _notified = true;
+	private final boolean _notifyOnlyWhenDoneEditing;
 
-	public int _state = ENABLED_SAVED_STATE;
-
-	protected Signal<String> _source;
-	protected Consumer<String> _setter;
-	public WIDGET _textComponent;
+	protected final Signal<String> _source;
+	protected final Consumer<String> _setter;
+	public final WIDGET _textComponent;
 	
 	protected Receiver<String> _fieldReciver;
 	protected Receiver<Pair<String, String>> _textChangedReceiver;
 
-	private Border _defaultBorder;
+	protected ChangeInfoDecorator _decorator;
+
+	protected abstract Receiver<String> fieldReceiver();
+	protected abstract Receiver<Pair<String, String>> textChangedReceiver();
 	
-	public abstract Receiver<String> fieldReceiver();
-	public abstract Receiver<Pair<String, String>> textChangedReceiver();
+	RAbstractField(WIDGET textComponent, Signal<String> source) {
+		this(textComponent, source, null, false);
+	}
 	
 	RAbstractField(WIDGET textComponent, Signal<String> source, Consumer<String> setter, boolean notifyOnlyWhenDoneEditing) {
 		_source = source;
 		_setter = setter;
 		_textComponent = textComponent;
-		_state = (setter == null) ? DISABLED_STATE : ENABLED_SAVED_STATE;
-		initAbstractWidget(textComponent, notifyOnlyWhenDoneEditing);
-		addReceivers();
+		_notifyOnlyWhenDoneEditing = notifyOnlyWhenDoneEditing;
+		
+		initGui();
+		initReceivers();
+		initChangeListeners();
 	}
 	
-	private void initAbstractWidget(final WIDGET textComponent, final boolean notifyOnlyWhenDoneEditing) {
-		SwingUtilities.invokeLater(
-				new Runnable() {
-					@Override
-					public void run() {
-						setLayout(new GridBagLayout());
-						GridBagConstraints c;
-						c = new GridBagConstraints(0,0,1,1,1.0,1.0,
-									GridBagConstraints.EAST, 
-									GridBagConstraints.BOTH,
-									new Insets(0,0,0,0),0,0);
-						if (_textComponent instanceof JTextComponent) {
-							JTextComponent txt = (JTextComponent) _textComponent;
-							txt.selectAll();
-						}
-						add(_textComponent, c);
-						updateView();
-						firstUpdate();
-						
-						if (_state == ENABLED_SAVED_STATE)
-							addChangeListeners(notifyOnlyWhenDoneEditing);
-						
-						_defaultBorder = textComponent.getBorder();
-						setOpaque(false);
-					}
-				}
-		);	
-	}
-
-	RAbstractField(WIDGET textComponent, Signal<String> source) {
-		this(textComponent, source, null, false);
-	}
-	
-	private void addReceivers() {
-		_fieldReciver=fieldReceiver();
-//		_source.addReceiver(_fieldReciver);
-	}
-
-	private void firstUpdate() {
-		fieldReceiver().consume(_source.currentValue());
-	}
-
-	public void updateView() {
-		switch (_state) {
-		case ENABLED_SAVED_STATE:
-			if (_textComponent instanceof JTextComponent) {
-				JTextComponent txt = (JTextComponent) _textComponent;
-				txt.setEditable(true);
-			}
-			_textComponent.setBorder(_defaultBorder);
-			break;
-		case DISABLED_STATE:
-			if (_textComponent instanceof JTextComponent) {
-				JTextComponent txt = (JTextComponent) _textComponent;
-				txt.setEditable(false);
-			}
-			_textComponent.setBorder(_defaultBorder);
-			break;
-		case ENABLED_UNSAVED_STATE:
-			_textComponent.setBorder(new CompoundBorder(new LineBorder(Color.red),
-					new EmptyBorder(2, 2, 2, 2)));
-			break;
-		}
-	}
-
-	public void addChangeListeners(boolean notifyOnlyWhenDoneEditing) {
-		_textComponent.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				_state = ENABLED_UNSAVED_STATE;
-				updateView();
-			}
-		});
-
-		if(!notifyOnlyWhenDoneEditing){
-			notifyEveryChange();
-			return;
+	private void initGui() {
+		if(_setter == null){
+			_textComponent.setEditable(false);
 		}
 		
-		notifyActionPerformed();
-	}
-	private void notifyEveryChange() {
-		if (_textComponent instanceof JTextComponent) {
-			JTextComponent txt = (JTextComponent) _textComponent;
-			txt.getDocument().addDocumentListener(
-					new DocumentListener(){
-						
-						@Override
-						public void changedUpdate(DocumentEvent e) {
-							commitTextChanges();
-						}
-						
-						@Override
-						public void insertUpdate(DocumentEvent e) {
-							commitTextChanges();
-						}
-						
-						@Override
-						public void removeUpdate(DocumentEvent e) {
-							commitTextChanges();
-						}
-					}
-			);
-		}
+		setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints(0,0,1,1,1.0,1.0, 
+													 GridBagConstraints.EAST, 
+													 GridBagConstraints.BOTH, new Insets(0,0,0,0),0,0);
+		add(_textComponent, c);
+		_decorator = new ChangeInfoDecorator(_textComponent.getBorder(), _textComponent);
+		setOpaque(false);
 	}
 	
-	private void notifyActionPerformed() {
-		_textComponent.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
+	private void initReceivers() {
+		_textChangedReceiver = textChangedReceiver();
+		_fieldReciver=fieldReceiver();	
+	}
+
+	private void initChangeListeners() {
+		addKeyListenerToCommitOnKeyTyped();
+		addFocusListenerToCommitWhenLost();		
+		addDoneListenerCommiter();
+	}
+	
+	private void addKeyListenerToCommitOnKeyTyped() {
+		_textComponent.addKeyListener(new KeyAdapter() { @Override public void keyTyped(KeyEvent e) {
+			setNotified(!_notifyOnlyWhenDoneEditing);
+			_textComponent.invalidate();
+			_textComponent.getParent().validate();
+		
+			if (!_notifyOnlyWhenDoneEditing)
+				commitTextChanges();		
+		}});
+	}
+	
+	private void addFocusListenerToCommitWhenLost() {
+		_textComponent.addFocusListener(new FocusAdapter() { @Override public void focusLost(FocusEvent e) {
+			commitTextChanges();
+		}});
+	}
+	
+	private void addDoneListenerCommiter() {
+		try {
+			Method m = _textComponent.getClass().getMethod("addActionListener", new Class[]{ActionListener.class});
+			m.invoke(_textComponent, new Object[]{new ActionListener(){@Override public void actionPerformed(ActionEvent e) {
 				commitTextChanges();
-			}
-		});
-		_textComponent.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
+			}}});
+		} catch (Exception ex) {
+			_textComponent.addKeyListener(new KeyAdapter() { @Override public void keyTyped(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
-					commitTextChanges();
-			}
-		});
-//		_area.addActionListener(new ActionListener(){ //ENTER KEY
-//			public void actionPerformed(ActionEvent e) {
-//				commitTextChanges();
-//			}
-//		});
+					commitTextChanges();		
+			}});
+		} 	
 	}
 
 	public void commitTextChanges() {
-		_textChangedReceiver = textChangedReceiver();
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				Pair<String, String> pair = new Pair<String, String>(_source.currentValue(), getText());
-				_textChangedReceiver.consume(pair);
-				_textComponent.revalidate();
-				_state = ENABLED_SAVED_STATE;
-				updateView();
-			}
-		});
+		SwingUtilities.invokeLater(new Runnable() {@Override public void run() {
+			Pair<String, String> pair = new Pair<String, String>(_source.currentValue(), getText());
+			_textChangedReceiver.consume(pair);
+			_textComponent.revalidate();
+			setNotified(true);
+		}});
 	}
-
+	
 	public String getText() {
-		try {
-			return (String) _textComponent.getClass().getMethod("getText", new Class[0]).invoke(_textComponent, new Object[0]);
-		} catch (Exception e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement
-		}
+		return tryReadText();
 	}
 	
 	public void setText(final String text) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					_textComponent.getClass().getMethod("setText", new Class[]{String.class}).invoke(_textComponent, new Object[]{text});
-				} catch (Exception e) {
-					throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement
+		SwingUtilities.invokeLater(new Runnable() {@Override public void run() {
+				String currentValue = tryReadText();
+				
+				if(currentValue==null || text==null){
+					trySetText(text);
+					return;
 				}
-			}
-		});
+				
+				if(!currentValue.equals(text))
+					trySetText(text);
+		}});
+	}
+	
+	private void trySetText(final String text){
+		try {
+			_textComponent.getClass().getMethod("setText", new Class[]{String.class}).invoke(_textComponent, new Object[]{text});
+		} catch (Exception e) {
+			throw new wheel.lang.exceptions.NotImplementedYet("Invalid Widget", e);
+		}		
+	}
+
+	private String tryReadText(){
+		try {
+			return (String) _textComponent.getClass().getMethod("getText", new Class[0]).invoke(_textComponent, new Object[0]);
+		} catch (Exception e) {
+			throw new wheel.lang.exceptions.NotImplementedYet("Invalid Widget", e);
+		}
 	}
 	
 	@Override
@@ -234,5 +177,31 @@ public abstract class RAbstractField<WIDGET extends JComponent> extends JPanel i
 	@Override
 	public Consumer<String> setter(){
 		return _setter;
+	}
+	
+	private void setNotified(boolean isNotified) {
+		_notified = isNotified;
+		_decorator.decorate(_notified);
+	}
+}
+
+class ChangeInfoDecorator{
+	
+	private final Border _defaultBorder;
+	private final JComponent _target;
+	
+	ChangeInfoDecorator(Border defaultBorder, JComponent target){
+		_defaultBorder = defaultBorder;
+		_target = target;
+	}
+	
+	void decorate(final boolean _notified) {
+		SwingUtilities.invokeLater(new Runnable() {@Override public void run() {
+			if(_notified) {
+				_target.setBorder(_defaultBorder);
+				return;
+			}
+			_target.setBorder(new CompoundBorder(new LineBorder(Color.red), new EmptyBorder(2, 2, 2, 2)));
+		}});
 	}	
 }

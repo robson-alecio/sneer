@@ -24,37 +24,31 @@ public class RImageImpl extends JPanel implements ImageWidget{
 
 	private final Register<Image> _image = new RegisterImpl<Image>(null);
 	
-	@SuppressWarnings("unused")
-	private final Receiver<Image> _imageReceiver;
-	
 	private ImageFactory _imageFactory;
 	
 	private Omnivore<Image> _setter;
+	
+	@SuppressWarnings("unused")
+	private final Receiver<Image> _imageReceiverAvoidGc;
+	
+	RImageImpl(ImageFactory imageFactory, Signal<Image> source) {
+		this(imageFactory, source, null);
+	}
 	
 	RImageImpl(ImageFactory imageFactory, Signal<Image> source, Omnivore<Image> setter){
 		setOpaque(false);
 		_imageFactory = imageFactory;
 		_setter = setter;
-		_imageReceiver = imageReceiverFor(source);
-	}
-
-	RImageImpl(ImageFactory imageFactory, Signal<Image> source) {
-		this(imageFactory, source, null);
+		_imageReceiverAvoidGc = imageReceiverFor(source);
 	}
 
 	private Receiver<Image> imageReceiverFor(Signal<Image> signal) {
-		return new Receiver<Image>(signal) {
-			public void consume(final Image image) {
-				_image.setter().consume(image);
-
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						revalidate();
-						repaint();
-					}
-				});
-			}
-		};
+		return new Receiver<Image>(signal) {@Override public void consume(final Image image) {
+			_image.setter().consume(image);
+			SwingUtilities.invokeLater( new Runnable() {@Override public void run() {
+				revalidate();
+				repaint();
+		}});}};
 	}
 
 	@Override

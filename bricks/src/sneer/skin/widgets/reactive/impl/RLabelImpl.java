@@ -21,8 +21,9 @@ public class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 	protected final JLabel _textComponent = new JLabel();
 	private final Signal<String> _source;
 	private final Consumer<String> _setter;
+	
 	@SuppressWarnings("unused")
-	private final Receiver<String> _textReceiver;
+	private final Receiver<String> _textReceiverAvoidGc;
 	
 	RLabelImpl(Signal<String> text){
 		this(text, null);
@@ -31,25 +32,20 @@ public class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 	RLabelImpl(Signal<String> source, Consumer<String> setter) {
 		_setter = setter;
 		_source = source;
-		_textReceiver = new Receiver<String>(source) {
-			public void consume(final String value) {
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						_textComponent.setText(value);
-					}
-				});
-			}
-		};
+		_textReceiverAvoidGc = new Receiver<String>(source) {@Override public void consume(final String value) {
+			SwingUtilities.invokeLater(new Runnable() {@Override public void run() {
+				_textComponent.setText(value);
+		}});}};
 		initComponents();
 	}
 
 	private void initComponents() {
-		this.setLayout(new GridBagLayout());
+		setLayout(new GridBagLayout());
 		GridBagConstraints c;
 		c = new GridBagConstraints(0,0,1,1,1.0,1.0,
-					GridBagConstraints.EAST, 
-					GridBagConstraints.BOTH,
-					new Insets(0,0,0,0),0,0);
+				GridBagConstraints.EAST, 
+				GridBagConstraints.BOTH,
+				new Insets(0,0,0,0),0,0);
 		setOpaque(false);
 		_textComponent.setText(_source.currentValue());
 		add(_textComponent, c);
@@ -82,5 +78,4 @@ public class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 		
 		return _setter;
 	}
-
 }

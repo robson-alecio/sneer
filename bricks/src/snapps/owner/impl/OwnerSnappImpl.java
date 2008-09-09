@@ -55,16 +55,25 @@ public class OwnerSnappImpl implements OwnerSnapp {
 		_container = container;
 		container.setLayout(new GridBagLayout());
 		
+		initOwnNameKeeper(container);
+		initOwnTaglineKeeper(container);
+		initOwnAvatarKeeper(container);
+
+	}
+
+	private void initOwnNameKeeper(Container container) {
 		GridBagConstraints c;
-		
 		c = getConstraints(0, 5,10,0,10);
 		editableLabel = rfactory.newEditableLabel(
-	        	_ownNameKeeper.name(), 
+				_ownNameKeeper.name(), 
 				_ownNameKeeper.nameSetter());
 		c.anchor = GridBagConstraints.SOUTHEAST;
 		
-        container.add(editableLabel.getComponent(), c);
- 
+		container.add(editableLabel.getComponent(), c);
+	}
+	
+	private void initOwnTaglineKeeper(Container container) {
+		GridBagConstraints c;
 		c = getConstraints(1, 0,10,0,0);
         JSeparator separator = new JSeparator();
 		container.add(separator, c);
@@ -76,8 +85,10 @@ public class OwnerSnappImpl implements OwnerSnapp {
 		c.anchor = GridBagConstraints.NORTHEAST;
 
         container.add(editableLabel.getComponent(), c);
-        
-        
+	}
+
+	private void initOwnAvatarKeeper(Container container) {
+		GridBagConstraints c;
 		c = new GridBagConstraints(1,0, 1,3,0.0,0.0,
 				GridBagConstraints.EAST, 
 				GridBagConstraints.BOTH,
@@ -87,7 +98,7 @@ public class OwnerSnappImpl implements OwnerSnapp {
 		container.add(avatar.getComponent(), c);
 		addMouseLitener(avatar);
 	}
-
+	
 	private void addMouseLitener(ImageWidget avatar) {
 		avatar.getMainWidget().addMouseListener(new MouseAdapter(){
 			@Override

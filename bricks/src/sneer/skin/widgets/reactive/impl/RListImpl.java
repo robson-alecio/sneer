@@ -55,12 +55,9 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 				label.setText(slabel.currentValue());
 				
 				@SuppressWarnings("unused")
-				Receiver<Object> _listRepainter = new Receiver<Object>() {
-					@Override
-					public void consume(Object ignore) {
-						repaintList();
-					}
-				};
+				Receiver<Object> _listRepainter = new Receiver<Object>() {@Override	public void consume(Object ignore) {
+					repaintList();
+				}};
 
 				return label;
 			}

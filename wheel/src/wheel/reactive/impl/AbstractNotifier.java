@@ -61,9 +61,12 @@ public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 
 	@Override
 	protected void finalize() throws Throwable {
+		ReceiverHolder<Omnivore<VC>>[] copyToAvoidConcurrentModificationAsResultOfNotifications = copyOfListeners();
+		if(copyToAvoidConcurrentModificationAsResultOfNotifications.length==0)
+			return;
+		
 		StringBuilder result = new StringBuilder();
 		result.append("Abstract notifier finalized.\n");
-		ReceiverHolder<Omnivore<VC>>[] copyToAvoidConcurrentModificationAsResultOfNotifications = copyOfListeners();
 		
 		if(copyToAvoidConcurrentModificationAsResultOfNotifications.length==0)
 			return;

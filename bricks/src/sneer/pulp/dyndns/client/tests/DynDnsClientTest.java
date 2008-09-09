@@ -13,6 +13,7 @@ import sneer.pulp.dyndns.ownaccount.OwnAccountKeeper;
 import sneer.pulp.dyndns.ownaccount.impl.SimpleAccount;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.dyndns.updater.Updater;
+import sneer.pulp.propertystore.mocks.TransientPropertyStore;
 import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;
 
@@ -39,7 +40,7 @@ Unacceptable Client Behavior
 	 */
 	
 	@Test
-	public void updateOnIpChange() {
+	public void updateOnIpChange() throws Exception {
 		
 		final Mockery context = new JUnit4Mockery();
 		final Register<String> ownIp = new RegisterImpl<String>("123.45.67.89");
@@ -48,20 +49,28 @@ Unacceptable Client Behavior
 		final OwnAccountKeeper ownAccountKeeper = context.mock(OwnAccountKeeper.class);
 		final Updater updater = context.mock(Updater.class);
 		context.checking(new Expectations() {{
-			oneOf(ownIpDiscoverer).ownIp();
+			exactly(2).of(ownIpDiscoverer).ownIp();
 				will(returnValue(ownIp.output()));
-			oneOf(ownAccountKeeper).ownAccount();
+				
+			atLeast(1).of(ownAccountKeeper).ownAccount();
 				will(returnValue(ownAccount.output()));
+				
 			final Account account = ownAccount.output().currentValue();
 			oneOf(updater).update(account.host(), account.user(), account.password(), ownIp.output().currentValue());
-				will(returnValue(true));
 		}});
 		
-		final Container container = ContainerUtils.newContainer(ownIpDiscoverer, ownAccountKeeper, updater);
-		container.produce(DynDnsClient.class);
+		final TransientPropertyStore propertyStore = new TransientPropertyStore();
+
+		restart(ownIpDiscoverer, ownAccountKeeper, updater, propertyStore);
+		
+		restart(ownIpDiscoverer, ownAccountKeeper, updater, propertyStore);
 		
 		context.assertIsSatisfied();
-		
+	}
+
+	private void restart(final Object... bindings) {
+		final Container container = ContainerUtils.newContainer(bindings);
+		container.produce(DynDnsClient.class);
 	}
 	
 	@Test

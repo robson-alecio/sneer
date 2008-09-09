@@ -44,15 +44,16 @@ public class PropertyStoreImpl implements PropertyStore {
 	}
 
 	private void persist() {
-		FileOutputStream out = null;
 		try {
-			out = out();
-			_properties.store(out, "Sneer System Persistence File - Handle with Care :)");
+			FileOutputStream out = out();
+			try {
+				_properties.store(out, "Sneer System Persistence File - Handle with Care :)");
+			} finally {
+				Streams.crash(out);
+			}
 		} catch (IOException e) {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
-		} finally {
-			if (out != null)	Streams.crash(out);
-		}
+		} 
 	}
 
 	private FileInputStream in() throws FileNotFoundException {

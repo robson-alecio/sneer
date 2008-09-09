@@ -1,14 +1,16 @@
 package sneer.pulp.dyndns.updater;
 
-public class UpdaterException extends RuntimeException {
+import wheel.lang.exceptions.FriendlyException;
+
+public abstract class UpdaterException extends FriendlyException {
 
 	private static final long serialVersionUID = 1L;
 
-	public UpdaterException(String message) {
-		super(message);
+	public UpdaterException(String message, String help) {
+		super(message, help);
 	}
 
-	public UpdaterException(Throwable cause) {
-		super(cause);
+	public UpdaterException(Throwable cause, String help) {
+		super(cause, help);
 	}
 }

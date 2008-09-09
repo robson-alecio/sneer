@@ -1,10 +1,10 @@
-package sneer.pulp.config.impl;
+package sneer.kernel.container.impl;
 
 import java.io.File;
 
 import org.apache.commons.lang.SystemUtils;
 
-import sneer.pulp.config.SneerConfig;
+import sneer.kernel.container.SneerConfig;
 
 public class SneerConfigImpl implements SneerConfig {
 
@@ -15,9 +15,11 @@ public class SneerConfigImpl implements SneerConfig {
 	private File _tmpDirectory;
 	
 	public SneerConfigImpl() {
-		File userHome = SystemUtils.getUserHome();
-		
-		_sneerDirectory = new File(userHome, ".sneer");
+		this(new File(SystemUtils.getUserHome(), ".sneer"));
+	}
+
+	public SneerConfigImpl(File sneerDirectory) {
+		_sneerDirectory = sneerDirectory;
 		checkFile(_sneerDirectory);
 
 		_tmpDirectory = new File(_sneerDirectory, "tmp");

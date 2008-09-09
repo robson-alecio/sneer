@@ -9,13 +9,13 @@ import javax.swing.SwingUtilities;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.tests.BrickTestSupport;
+import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.skin.widgets.reactive.RFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.reactive.impl.Receiver;
 
-public class OwnNameKeeperDemo extends BrickTestSupport {
+public class OwnNameKeeperDemo extends TestThatIsInjected {
 
 	@SuppressWarnings("unused")
 	private static Receiver<String> _receiver;

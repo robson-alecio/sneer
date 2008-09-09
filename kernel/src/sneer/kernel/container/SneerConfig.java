@@ -1,4 +1,4 @@
-package sneer.pulp.config;
+package sneer.kernel.container;
 
 import java.io.File;
 

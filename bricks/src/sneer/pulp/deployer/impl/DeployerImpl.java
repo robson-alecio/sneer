@@ -9,12 +9,12 @@ import org.apache.commons.io.FilenameUtils;
 
 import sneer.kernel.container.Inject;
 import sneer.kernel.container.Injector;
+import sneer.kernel.container.SneerConfig;
 import sneer.kernel.container.utils.metaclass.MetaClass;
 import sneer.pulp.classpath.Classpath;
 import sneer.pulp.classpath.ClasspathFactory;
 import sneer.pulp.compiler.JavaCompiler;
 import sneer.pulp.compiler.Result;
-import sneer.pulp.config.SneerConfig;
 import sneer.pulp.dependency.Dependency;
 import sneer.pulp.dependency.DependencyManager;
 import sneer.pulp.deployer.BrickBundle;

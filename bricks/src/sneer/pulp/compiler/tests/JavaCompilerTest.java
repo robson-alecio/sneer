@@ -16,14 +16,14 @@ import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.tests.BrickTestSupport;
+import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.classpath.Classpath;
 import sneer.pulp.classpath.ClasspathFactory;
 import sneer.pulp.compiler.CompilationError;
 import sneer.pulp.compiler.Result;
 import wheel.io.Jars;
 
-public class JavaCompilerTest extends BrickTestSupport {
+public class JavaCompilerTest extends TestThatIsInjected {
 
 	private static final String TEST_FILE_PREFIX = "sneer-test-";
 

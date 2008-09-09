@@ -7,11 +7,11 @@ import java.security.MessageDigest;
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.tests.BrickTestSupport;
+import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.crypto.Crypto;
 import wheel.lang.StringUtils;
 
-public class CryptoTest extends BrickTestSupport {
+public class CryptoTest extends TestThatIsInjected {
 
 	@Inject
 	private Crypto _crypto;

@@ -10,9 +10,8 @@ import sneer.kernel.container.ClassLoaderFactory;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Injector;
 import sneer.kernel.container.LegoException;
+import sneer.kernel.container.SneerConfig;
 import sneer.kernel.container.impl.classloader.EclipseClassLoaderFactory;
-import sneer.pulp.config.SneerConfig;
-import sneer.pulp.config.impl.SneerConfigImpl;
 import wheel.lang.Types;
 
 public class SimpleContainer implements Container {

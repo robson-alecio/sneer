@@ -9,7 +9,7 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
-import sneer.pulp.config.SneerConfig;
+import sneer.kernel.container.SneerConfig;
 		
 public class ApiClassLoader extends URLClassLoader {
 

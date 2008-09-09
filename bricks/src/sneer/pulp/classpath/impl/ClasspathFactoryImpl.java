@@ -5,10 +5,10 @@ import java.util.List;
 
 import sneer.kernel.container.Brick;
 import sneer.kernel.container.Inject;
+import sneer.kernel.container.SneerConfig;
 import sneer.kernel.container.utils.io.BrickApiFilter;
 import sneer.pulp.classpath.Classpath;
 import sneer.pulp.classpath.ClasspathFactory;
-import sneer.pulp.config.SneerConfig;
 import wheel.io.Jars;
 
 public class ClasspathFactoryImpl implements ClasspathFactory {

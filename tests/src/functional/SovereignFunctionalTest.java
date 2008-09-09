@@ -4,9 +4,9 @@ import org.junit.After;
 import org.junit.Before;
 
 import sneer.kernel.container.ContainerUtils;
-import sneer.kernel.container.tests.BrickTestSupport;
+import sneer.kernel.container.tests.TestThatIsInjected;
 
-public abstract class SovereignFunctionalTest extends BrickTestSupport {
+public abstract class SovereignFunctionalTest extends TestThatIsInjected {
 
 	protected abstract SovereignCommunity createNewCommunity();
 

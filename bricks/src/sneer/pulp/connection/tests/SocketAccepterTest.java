@@ -8,14 +8,14 @@ import java.net.Socket;
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.tests.BrickTestSupport;
+import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.connection.SocketAccepter;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.impl.ByteArraySocketImpl;
 import sneer.pulp.port.PortKeeper;
 import wheel.reactive.impl.Receiver;
 
-public class SocketAccepterTest extends BrickTestSupport {
+public class SocketAccepterTest extends TestThatIsInjected {
 
 	@Inject
 	private PortKeeper _portKeeper;

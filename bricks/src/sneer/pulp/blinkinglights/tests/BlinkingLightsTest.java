@@ -8,12 +8,12 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.tests.BrickTestSupport;
+import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import wheel.lang.FrozenTime;
 
-public class BlinkingLightsTest extends BrickTestSupport {
+public class BlinkingLightsTest extends TestThatIsInjected {
 
 	@Inject
 	private BlinkingLights _lights;

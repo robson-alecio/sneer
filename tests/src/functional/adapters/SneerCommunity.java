@@ -5,7 +5,7 @@ import java.io.File;
 import org.apache.commons.lang.StringUtils;
 
 import sneer.kernel.container.ContainerUtils;
-import sneer.pulp.config.SneerConfig;
+import sneer.kernel.container.SneerConfig;
 import sneer.pulp.network.Network;
 import sneer.pulp.network.impl.inmemory.InMemoryNetwork;
 import functional.SovereignCommunity;

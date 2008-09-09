@@ -10,7 +10,7 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 
 import sneer.kernel.container.Inject;
-import sneer.pulp.config.SneerConfig;
+import sneer.kernel.container.SneerConfig;
 import sneer.pulp.crypto.Crypto;
 import sneer.pulp.crypto.Sneer1024;
 import sneer.pulp.dependency.Dependency;

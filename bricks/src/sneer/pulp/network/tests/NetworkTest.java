@@ -7,14 +7,14 @@ import java.io.IOException;
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.tests.BrickTestSupport;
+import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.network.ByteArrayServerSocket;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;
 import sneer.pulp.threadpool.ThreadPool;
 
 
-public class NetworkTest extends BrickTestSupport {
+public class NetworkTest extends TestThatIsInjected {
 
 	@Inject
 	private Network _network;

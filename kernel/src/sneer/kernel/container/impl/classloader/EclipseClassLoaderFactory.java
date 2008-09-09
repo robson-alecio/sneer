@@ -9,10 +9,10 @@ import java.util.WeakHashMap;
 import org.apache.commons.lang.SystemUtils;
 
 import sneer.kernel.container.ClassLoaderFactory;
+import sneer.kernel.container.SneerConfig;
 import sneer.kernel.container.utils.FileUtils;
 import sneer.kernel.container.utils.io.BrickImplFilter;
 import sneer.kernel.container.utils.io.JavaFilter;
-import sneer.pulp.config.SneerConfig;
 
 public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 

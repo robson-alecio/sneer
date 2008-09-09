@@ -2,7 +2,6 @@
 ===================
 
 	- Remove all console output from tests except "Test left files open...".
-	- [Sandro] Snapps and Widgets - Revise. No method should have more than 10 lines.
 
 	- Contact List - (Host addresses for Sneer developers are HARDCODED)
 		- DynDNS Client ;)	

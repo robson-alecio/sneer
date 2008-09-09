@@ -23,9 +23,8 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 
 	private static final long serialVersionUID = 1L;
 
-	private LabelProvider<ELEMENT> _labelProvider;
-
-	private final ListSignal<ELEMENT> _source;
+	protected final ListSignal<ELEMENT> _source;
+	protected LabelProvider<ELEMENT> _labelProvider;
 
 	private void repaintList() {
 		SwingUtilities.invokeLater(new Runnable() {@Override public void run() {

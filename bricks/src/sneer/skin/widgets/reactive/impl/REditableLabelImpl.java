@@ -1,5 +1,6 @@
 package sneer.skin.widgets.reactive.impl;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -22,21 +23,21 @@ import wheel.reactive.Signal;
 public class REditableLabelImpl extends JPanel implements TextWidget<JTextField>{
 
 	private static final long serialVersionUID = 1L;
-	protected RLabelImpl _label;
-	protected RTextFieldImpl _text;
 	
-	private final Signal<String> _source;
-	private final Consumer<String> _setter;
+	protected final RLabelImpl _label;
+	protected final RTextFieldImpl _text;
+	protected final Signal<String> _source;
+	protected final Consumer<String> _setter;
 
 	REditableLabelImpl(Signal<String> source, Consumer<String> setter, boolean notifyOnlyWhenDoneEditing) {
 		_source = source;
 		_setter = setter;
-		initWidget(source, setter, notifyOnlyWhenDoneEditing);
-	}
-
-	private void initWidget(final Signal<String> source, final Consumer<String> setter,	final boolean notifyOnlyWhenDoneEditing) {
 		_text = new RTextFieldImpl(source, setter, notifyOnlyWhenDoneEditing);
 		_label = new RLabelImpl(source, setter);
+		initWidget();
+	}
+
+	private void initWidget() {
 		
 		REditableLabelImpl.this.setLayout(new GridBagLayout());
 		GridBagConstraints c;
@@ -55,7 +56,7 @@ public class REditableLabelImpl extends JPanel implements TextWidget<JTextField>
 		_label.setVisible(true);
 	}
 
-	private void commitChanges() {
+	protected void commitChanges() {
 		SwingUtilities.invokeLater(new Runnable(){@Override public void run() {
 			_text.setVisible(false);
 			_label.setVisible(true);
@@ -105,5 +106,20 @@ public class REditableLabelImpl extends JPanel implements TextWidget<JTextField>
 	@Override
 	public Consumer<String> setter(){
 		return _setter;
+	}
+	
+	@Override
+	public Dimension getMinimumSize() {
+		return RUtil.limitSize(super.getMinimumSize());
+	}
+	
+	@Override
+	public Dimension getPreferredSize() {
+		return RUtil.limitSize(super.getPreferredSize());
+	}
+	
+	@Override
+	public Dimension getMaximumSize() {
+		return RUtil.limitSize(super.getMaximumSize());
 	}
 }

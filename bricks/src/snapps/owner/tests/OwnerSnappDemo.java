@@ -1,5 +1,7 @@
 package snapps.owner.tests;
 
+import java.awt.BorderLayout;
+
 import snapps.owner.OwnerSnapp;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
@@ -14,8 +16,6 @@ import wheel.reactive.Signal;
 
 public class OwnerSnappDemo  {
 	
-	static int y = 10;
-
 	public static void main(String[] args) throws Exception {
 
 		Container container = ContainerUtils.getContainer();
@@ -45,18 +45,20 @@ class SnappTest implements Snapp{
 	private final Omnivore<String> _setter;
 	
 	public SnappTest(RFactory rfactory, Signal<String> output,	Omnivore<String> setter, SnappManager manager) {
-				_rfactory = rfactory;
-				_output = output;
-				_setter = setter;
-				manager.registerSnapp(this);
+		_rfactory = rfactory;
+		_output = output;
+		_setter = setter;
+		manager.registerSnapp(this);
 	}
 
 	@Override
 	public void init(java.awt.Container container) {
+		container.setLayout(new BorderLayout());
 		container.add(
-			_rfactory.newEditableLabel(_output, _setter, true).getComponent()
+			_rfactory.newEditableLabel(_output, _setter).getComponent(), BorderLayout.CENTER
 		);
 	}
+	
 	@Override
 	public String getName() {
 		return "Output Test";

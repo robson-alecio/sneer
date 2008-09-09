@@ -1,5 +1,6 @@
 package sneer.skin.widgets.reactive.impl;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -18,9 +19,9 @@ public class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 
 	private static final long serialVersionUID = 1L;
 	
-	protected final JLabel _textComponent = new JLabel();
-	private final Signal<String> _source;
-	private final Consumer<String> _setter;
+	protected final JLabel _textComponent;
+	protected final Signal<String> _source;
+	protected final Consumer<String> _setter;
 	
 	@SuppressWarnings("unused")
 	private final Receiver<String> _textReceiverAvoidGc;
@@ -30,6 +31,7 @@ public class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 	}
 
 	RLabelImpl(Signal<String> source, Consumer<String> setter) {
+		_textComponent = new JLabel();
 		_setter = setter;
 		_source = source;
 		_textReceiverAvoidGc = new Receiver<String>(source) {@Override public void consume(final String value) {
@@ -77,5 +79,20 @@ public class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 			throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 		
 		return _setter;
+	}
+	
+	@Override
+	public Dimension getMinimumSize() {
+		return RUtil.limitSize(super.getMinimumSize());
+	}
+	
+	@Override
+	public Dimension getPreferredSize() {
+		return RUtil.limitSize(super.getPreferredSize());
+	}
+	
+	@Override
+	public Dimension getMaximumSize() {
+		return RUtil.limitSize(super.getMaximumSize());
 	}
 }

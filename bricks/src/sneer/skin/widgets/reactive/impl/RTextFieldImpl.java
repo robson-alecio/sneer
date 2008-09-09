@@ -12,6 +12,8 @@ import wheel.reactive.impl.Receiver;
 
 public class RTextFieldImpl extends RAbstractField<JTextField> {
 	
+	private static final long serialVersionUID = 1L;
+
 	RTextFieldImpl(Signal<String> source) {
 		this(source, null, true);
 	}
@@ -43,6 +45,4 @@ public class RTextFieldImpl extends RAbstractField<JTextField> {
 	public JComponent[] getWidgets() {
 		return new JComponent[]{_textComponent};
 	}
-
-	private static final long serialVersionUID = 1L;
 }

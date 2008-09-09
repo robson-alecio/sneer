@@ -1,6 +1,7 @@
 package sneer.skin.widgets.reactive.impl;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -28,19 +29,20 @@ import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
 
 public abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel implements TextWidget<WIDGET> {
+	
 	private static final long serialVersionUID = 1L;
-
-	public boolean _notified = true;
-	private final boolean _notifyOnlyWhenDoneEditing;
-
+	
+	protected final boolean _notifyOnlyWhenDoneEditing;
 	protected final Signal<String> _source;
 	protected final Consumer<String> _setter;
-	public final WIDGET _textComponent;
-	
-	protected Receiver<String> _fieldReciver;
-	protected Receiver<Pair<String, String>> _textChangedReceiver;
+	protected final WIDGET _textComponent;
 
-	protected ChangeInfoDecorator _decorator;
+	protected final Receiver<String> _fieldReciver;
+	protected final Receiver<Pair<String, String>> _textChangedReceiver;
+
+	protected final ChangeInfoDecorator _decorator;
+	
+	public boolean _notified = true;
 
 	protected abstract Receiver<String> fieldReceiver();
 	protected abstract Receiver<Pair<String, String>> textChangedReceiver();
@@ -54,9 +56,11 @@ public abstract class RAbstractField<WIDGET extends JTextComponent> extends JPan
 		_setter = setter;
 		_textComponent = textComponent;
 		_notifyOnlyWhenDoneEditing = notifyOnlyWhenDoneEditing;
+		_textChangedReceiver = textChangedReceiver();
+		_fieldReciver=fieldReceiver();	
+		_decorator = new ChangeInfoDecorator(_textComponent.getBorder(), _textComponent);
 		
 		initGui();
-		initReceivers();
 		initChangeListeners();
 	}
 	
@@ -70,13 +74,7 @@ public abstract class RAbstractField<WIDGET extends JTextComponent> extends JPan
 													 GridBagConstraints.EAST, 
 													 GridBagConstraints.BOTH, new Insets(0,0,0,0),0,0);
 		add(_textComponent, c);
-		_decorator = new ChangeInfoDecorator(_textComponent.getBorder(), _textComponent);
 		setOpaque(false);
-	}
-	
-	private void initReceivers() {
-		_textChangedReceiver = textChangedReceiver();
-		_fieldReciver=fieldReceiver();	
 	}
 
 	private void initChangeListeners() {
@@ -177,6 +175,21 @@ public abstract class RAbstractField<WIDGET extends JTextComponent> extends JPan
 	@Override
 	public Consumer<String> setter(){
 		return _setter;
+	}
+	
+	@Override
+	public Dimension getMinimumSize() {
+		return RUtil.limitSize(super.getMinimumSize());
+	}
+	
+	@Override
+	public Dimension getPreferredSize() {
+		return RUtil.limitSize(super.getPreferredSize());
+	}
+	
+	@Override
+	public Dimension getMaximumSize() {
+		return RUtil.limitSize(super.getMaximumSize());
 	}
 	
 	private void setNotified(boolean isNotified) {

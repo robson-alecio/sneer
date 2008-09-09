@@ -22,11 +22,9 @@ public class RImageImpl extends JPanel implements ImageWidget{
 
 	private static final long serialVersionUID = 1L;
 
-	private final Register<Image> _image = new RegisterImpl<Image>(null);
-	
-	private ImageFactory _imageFactory;
-	
-	private Omnivore<Image> _setter;
+	protected final Register<Image> _image;
+	protected final ImageFactory _imageFactory;
+	protected final Omnivore<Image> _setter;
 	
 	@SuppressWarnings("unused")
 	private final Receiver<Image> _imageReceiverAvoidGc;
@@ -37,6 +35,7 @@ public class RImageImpl extends JPanel implements ImageWidget{
 	
 	RImageImpl(ImageFactory imageFactory, Signal<Image> source, Omnivore<Image> setter){
 		setOpaque(false);
+		_image = new RegisterImpl<Image>(null);
 		_imageFactory = imageFactory;
 		_setter = setter;
 		_imageReceiverAvoidGc = imageReceiverFor(source);

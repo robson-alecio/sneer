@@ -76,6 +76,10 @@ class DynDnsClientImpl implements DynDnsClient {
 		State reactTo(@SuppressWarnings("unused") Account accountNotification) {
 			return this;
 		}
+
+		State reactToAlarm() {
+			throw new IllegalStateException();
+		}
 		
 	}
 	
@@ -111,9 +115,17 @@ class DynDnsClientImpl implements DynDnsClient {
 		RetryLaterState(IOException e) {
 			super("It was not possible to connect to the dyndns server. Sneer will retry again in " + retryTimeoutInMinutes + " minutes.", e);
 			_clock.addAlarm(retryTimeoutInMinutes * 60 * 1000, new Runnable() { @Override public void run() {
-				retry();
+				synchronized (_stateMonitor) {
+					_state = _state.reactToAlarm();
+				}
 			}});
 		}
+		
+		@Override
+		State reactToAlarm() {
+			return retry();
+		}
+
 	}
 	
 	private final class BadAuthState extends ErrorState {

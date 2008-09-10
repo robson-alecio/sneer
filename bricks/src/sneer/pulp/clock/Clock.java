@@ -6,5 +6,7 @@ public interface Clock {
 
 	void sleep(int millis);
 
-	Alarm setAlarm(int millis, Runnable runnable);
+	void addAlarm(int millisFromNow, Runnable runnable);
+	void addPeriodicAlarm(int periodInMillis, Runnable runnable);
+
 }

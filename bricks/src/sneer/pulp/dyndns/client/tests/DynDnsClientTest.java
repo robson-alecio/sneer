@@ -17,7 +17,6 @@ import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
-import sneer.pulp.clock.Alarm;
 import sneer.pulp.clock.mocks.ClockMock;
 import sneer.pulp.dyndns.client.DynDnsClient;
 import sneer.pulp.dyndns.ownaccount.Account;
@@ -107,8 +106,7 @@ Unacceptable Client Behavior
 		final Container container = startDynDnsClient();
 		final Light light = assertBlinkingLight(error, container);
 		
-		Alarm alarm = clock.triggerAlarm(0);
-		assertFalse(alarm.isOn());
+		clock.triggerAlarm(0);
 		assertFalse(light.isOn());
 		context.assertIsSatisfied();
 	}

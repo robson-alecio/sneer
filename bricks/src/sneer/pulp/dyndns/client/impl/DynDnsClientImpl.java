@@ -6,7 +6,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import sneer.kernel.container.Inject;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
-import sneer.pulp.clock.Alarm;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.dyndns.client.DynDnsClient;
 import sneer.pulp.dyndns.ownaccount.Account;
@@ -42,12 +41,12 @@ class DynDnsClientImpl implements DynDnsClient {
 	
 	private AtomicReference<State> _state = new AtomicReference<State>(new DefaultState());
 	
-	final Receiver<Account> _ownAccountReceiver = new Receiver<Account>(_ownAccountKeeper.ownAccount()) { @Override public void consume(Account value) {
-		state().update(value);
+	final Receiver<Account> _ownAccountReceiver = new Receiver<Account>(_ownAccountKeeper.ownAccount()) { @Override public void consume(Account account) {
+		state().reactTo(account);
 	}};
 	
-	final Receiver<String> _ownIpReceiver = new Receiver<String>(_ownIpDiscoverer.ownIp()) { @Override public void consume(String value) {
-		state().update(value);
+	final Receiver<String> _ownIpReceiver = new Receiver<String>(_ownIpDiscoverer.ownIp()) { @Override public void consume(String ownIp) {
+		state().reactTo(ownIp);
 	}};
 	
 	private void submitUpdateRequest(final Account account, String ip) {
@@ -64,19 +63,19 @@ class DynDnsClientImpl implements DynDnsClient {
 	}
 	
 	abstract class State {
-		void update(@SuppressWarnings("unused") String newIp) {
-			// log(newIp);
+		
+		void reactTo(@SuppressWarnings("unused") String ownIpNotification) {
+		}
+		
+		void reactTo(@SuppressWarnings("unused") Account accountNotification) {
 		}
 
-		void update(@SuppressWarnings("unused") Account newAccount) {
-			// log(newAccount);
-		}
 	}
 	
 	private final class DefaultState extends State {
 		
 		@Override
-		void update(String ip) {
+		void reactTo(String ip) {
 			if (ip.equals(lastIp())) return;
 			
 			submitUpdateRequest(currentAccount(), ip);
@@ -103,12 +102,9 @@ class DynDnsClientImpl implements DynDnsClient {
 		
 		static final int retryTimeoutInMinutes = 5;
 		
-		private final Alarm _alarm;
-
 		RetryLaterState(IOException e) {
 			super("It was not possible to connect to the dyndns server. Sneer will retry again in " + retryTimeoutInMinutes + " minutes.", e);
-			_alarm = _clock.setAlarm(retryTimeoutInMinutes * 60 * 1000, new Runnable() { @Override public void run() {
-				_alarm.turnOff();
+			_clock.addAlarm(retryTimeoutInMinutes * 60 * 1000, new Runnable() { @Override public void run() {
 				retry();
 			}});
 		}
@@ -121,7 +117,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		}
 
 		@Override
-		void update(Account newAccount) {
+		void reactTo(Account newAccount) {
 			retry();
 		}
 	}

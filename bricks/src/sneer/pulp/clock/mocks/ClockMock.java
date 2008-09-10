@@ -1,20 +1,26 @@
 package sneer.pulp.clock.mocks;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import sneer.pulp.clock.Alarm;
 import sneer.pulp.clock.Clock;
 
 public class ClockMock implements Clock {
 
-	private final List<AlarmMock> _alarms = new ArrayList<AlarmMock>();
+	private final List<Runnable> _alarms = new ArrayList<Runnable>();
+	private final Set<Runnable> _periodicAlarms = new HashSet<Runnable>();
 
 	@Override
-	public Alarm setAlarm(int millis, Runnable runnable) {
-		final AlarmMock alarm = new AlarmMock(runnable);
-		_alarms.add(alarm);
-		return alarm;
+	public void addAlarm(int millisFromNow, Runnable runnable) {
+		_alarms.add(runnable);
+	}
+
+	@Override
+	public void addPeriodicAlarm(int millis, Runnable runnable) {
+		_alarms.add(runnable);
+		_periodicAlarms.add(runnable);
 	}
 
 	@Override
@@ -27,10 +33,11 @@ public class ClockMock implements Clock {
 		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
-	public Alarm triggerAlarm(int alarmIndex) {
-		final AlarmMock alarm = _alarms.get(alarmIndex);
+	public void triggerAlarm(int alarmIndex) {
+		Runnable alarm = _alarms.get(alarmIndex);
+		if (!_periodicAlarms.contains(alarm))
+			_alarms.remove(alarmIndex);
 		alarm.run();
-		return alarm;
 	}
 
 }

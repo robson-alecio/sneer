@@ -25,7 +25,7 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	private final Register<String> _ownIp = new RegisterImpl<String>(null);
 	
 	private OwnIpDiscovererImpl() {
-		_clock.setAlarm(11 * 60 * 1000, new Runnable() { @Override public void run() {
+		_clock.addPeriodicAlarm(11 * 60 * 1000, new Runnable() { @Override public void run() {
 			try {
 				ipDiscovery();
 			} catch (IOException e) {

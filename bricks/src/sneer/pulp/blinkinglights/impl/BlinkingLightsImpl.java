@@ -23,8 +23,7 @@ public class BlinkingLightsImpl implements BlinkingLights {
 		reg.add(new LightImpl("Warning", null, -1));
 		
 		try {
-			String err = null;
-			err.toString();
+			throw new NullPointerException();
 		} catch (NullPointerException e) {
 			reg.add(new LightImpl("Error", e, -1));
 		}

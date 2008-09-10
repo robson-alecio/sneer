@@ -30,8 +30,8 @@ public class Streams {
 			clazz.getMethod("close", new Class[0]).invoke(closeable, new Object[0]);
 		} catch (Exception e) {
 			Throwable cause = e.getCause();
-			if(cause==null)	Log.log(e);
-			else Log.log(cause);
+			if(cause==null)	Logger.log(e);
+			else Logger.log(cause);
 		}
 	}
 

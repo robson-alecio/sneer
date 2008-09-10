@@ -4,7 +4,7 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.net.URL;
 
-import wheel.io.Log;
+import wheel.io.Logger;
 
 public class FileManagerAccess {
 
@@ -30,7 +30,7 @@ public class FileManagerAccess {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			Log.log(e);
+			Logger.log(e);
 		}
 	}
 }

@@ -27,7 +27,6 @@ public class SetValueChangeImpl<T> implements SetValueChange<T> {
 		return result;
 	}
 
-	@SuppressWarnings("unchecked")
 	private static <CT> Collection<CT> nullToEmpty(Collection<CT> collection) {
 		return collection == null ? Collections.EMPTY_LIST : collection;
 	}

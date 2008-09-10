@@ -19,11 +19,12 @@ import sneer.pulp.deployer.BrickBundle;
 import sneer.pulp.deployer.BrickFile;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
-import sneer.pulp.log.Logger;
 import sneer.pulp.mesh.Party;
 import wheel.reactive.maps.MapRegister;
 import wheel.reactive.maps.MapSignal;
 import wheel.reactive.maps.impl.MapRegisterImpl;
+import static wheel.io.Logger.log;
+
 
 
 public class BrickManagerImpl implements BrickManager {
@@ -31,9 +32,6 @@ public class BrickManagerImpl implements BrickManager {
 	@Inject
 	private SneerConfig _config;
 
-	@Inject
-	private Logger _log;
-	
 	@Inject
 	private DependencyManager _dependencyManager;
 	
@@ -119,7 +117,7 @@ public class BrickManagerImpl implements BrickManager {
 	@Override
 	public void install(BrickFile brick) throws BrickManagerException {
 		String brickName = brick.name();
-		_log.debug("Installing brick: "+brickName);
+		log("Installing brick: "+brickName);
 		
 		//0. resolve injected Bricks
 		if(!brick.resolved())

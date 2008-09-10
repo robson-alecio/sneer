@@ -32,7 +32,6 @@ public class JavaFilter extends SimpleFilter {
 		results.add(metaClass);
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<MetaClass> listMetaClasses() {
 		if(_cache != null) {
 			return _cache;

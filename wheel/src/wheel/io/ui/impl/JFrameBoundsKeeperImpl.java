@@ -8,7 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import wheel.io.Log;
+import wheel.io.Logger;
 import wheel.io.ui.BoundsPersistence;
 import wheel.io.ui.JFrameBoundsKeeper;
 
@@ -31,9 +31,9 @@ public class JFrameBoundsKeeperImpl implements JFrameBoundsKeeper {
 		try {
 			SwingUtilities.invokeAndWait(keepBoundsRunnable);
 		} catch (InterruptedException e) {
-			Log.log(e);
+			Logger.log(e);
 		} catch (InvocationTargetException e) {
-			Log.log(e);
+			Logger.log(e);
 		}
 	}
 

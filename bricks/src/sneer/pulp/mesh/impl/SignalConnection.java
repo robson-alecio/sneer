@@ -13,7 +13,6 @@ import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
-import sneer.pulp.log.Logger;
 import sneer.pulp.mesh.Me;
 import sneer.pulp.mesh.Party;
 import sneer.pulp.threadpool.ThreadPool;
@@ -25,6 +24,8 @@ import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.SimpleListReceiver;
+import static wheel.io.Logger.log;
+
 
 class SignalConnection implements Visitable {
 
@@ -37,9 +38,6 @@ class SignalConnection implements Visitable {
 	@Inject
 	static private KeyManager _keyManager;
 	
-	@Inject
-	static private Logger _logger;
-
 	private final ByteConnection _connection;
 
 	private final PriorityQueue<byte[]> _priorityQueue = new PriorityQueue<byte[]>(10);
@@ -189,7 +187,7 @@ class SignalConnection implements Visitable {
 	private PeerProxy produceProxy(PublicKey publicKey) {
 		AbstractParty target = produceParty(publicKey);
 		if (target instanceof Me) {
-			_logger.info("Illegal notification.");
+			log("Illegal notification.");
 			return null;
 		}
 		return (PeerProxy)target;

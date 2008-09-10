@@ -15,7 +15,8 @@ import sneer.pulp.crypto.Crypto;
 import sneer.pulp.crypto.Sneer1024;
 import sneer.pulp.dependency.Dependency;
 import sneer.pulp.dependency.DependencyManager;
-import sneer.pulp.log.Logger;
+import static wheel.io.Logger.log;
+
 
 public class DependencyManagerImpl implements DependencyManager {
 
@@ -25,9 +26,6 @@ public class DependencyManagerImpl implements DependencyManager {
 	@Inject
 	private static SneerConfig _config;
 	
-	@Inject
-	private static Logger _log;
-
 	private File _root;
 	
 	private Map<String, List<Dependency>> _dependenciesByBrick = new HashMap<String, List<Dependency>>();
@@ -59,7 +57,7 @@ public class DependencyManagerImpl implements DependencyManager {
 	}
 
 	private Dependency install(Dependency dependency) throws IOException {
-		_log.info("Installing dependency: "+dependency.file() + "["+dependency.sneer1024().toHexa()+"]");
+		log("Installing dependency: {} [{}]", dependency.file(), dependency.sneer1024().toHexa());
 
 		//1. check registry first
 		File file = dependency.file();

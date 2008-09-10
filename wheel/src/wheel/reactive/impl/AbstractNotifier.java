@@ -3,6 +3,7 @@ package wheel.reactive.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import static wheel.io.Logger.log;
 import wheel.lang.Omnivore;
 import wheel.lang.Types;
 import wheel.reactive.EventSource;
@@ -28,7 +29,7 @@ public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 	private void notify(ReceiverHolder<Omnivore<VC>> reference, VC valueChange) {
 		Omnivore<VC> receiver = reference.get();
 		if (receiver == null) {
-			System.err.println("Receiver has been garbage collected. (" + reference._alias + ")");
+			log("Receiver has been garbage collected. ({})", reference._alias);
 			_receivers.remove(reference);
 			return;
 		}

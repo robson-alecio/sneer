@@ -7,7 +7,6 @@ import sneer.kernel.container.Inject;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.keymanager.KeyManager;
-import sneer.pulp.log.Logger;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.lang.Omnivore;
@@ -15,15 +14,14 @@ import wheel.lang.Threads;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
+import static wheel.io.Logger.log;
+
 
 class ConnectionImpl implements ByteConnection {
 
 	@Inject
 	static private KeyManager _keyManager;
 	
-	@Inject
-	static private Logger _logger;
-
 	@Inject
 	static private ThreadPool _threadPool;
 	
@@ -72,7 +70,7 @@ class ConnectionImpl implements ByteConnection {
 		try {
 			return tryToShakeHands(socket);
 		} catch (IOException e) {
-			_logger.info(e.getMessage());
+			log(e);
 			return false;
 		}
 	}
@@ -104,7 +102,7 @@ class ConnectionImpl implements ByteConnection {
 			mySocket.write(array);
 			return true;
 		} catch (IOException iox) {
-			_logger.info(iox.getMessage(), iox);
+			log(iox);
 			_socketHolder.crash(mySocket);
 			return false;
 		}
@@ -136,7 +134,7 @@ class ConnectionImpl implements ByteConnection {
 		try {
 			return mySocket.read();
 		} catch (IOException e) {
-			_logger.info(e.getMessage(), e);
+			log(e);
 			_socketHolder.crash(mySocket);
 			return null;
 		} 

@@ -6,7 +6,6 @@ import sneer.kernel.container.Inject;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.connection.SocketAccepter;
-import sneer.pulp.log.Logger;
 import sneer.pulp.network.ByteArrayServerSocket;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;
@@ -17,6 +16,8 @@ import wheel.reactive.EventNotifier;
 import wheel.reactive.EventSource;
 import wheel.reactive.impl.EventNotifierImpl;
 import wheel.reactive.impl.Receiver;
+import static wheel.io.Logger.log;
+
 
 public class SocketAccepterImpl implements SocketAccepter {
 	
@@ -31,9 +32,6 @@ public class SocketAccepterImpl implements SocketAccepter {
 
 	@Inject
 	static private ThreadPool _threadPool;
-
-	@Inject
-	static private Logger _log;
 
 	private EventNotifier<ByteArraySocket> _notifier = new EventNotifierImpl<ByteArraySocket>();
 
@@ -118,7 +116,7 @@ public class SocketAccepterImpl implements SocketAccepter {
 	private void crashServerSocketIfNecessary() {
 		if(_serverSocket == null) return;
 
-		_log.info("crashing server socket");
+		log("crashing server socket");
 		_isStopped = true;
 		_serverSocket.crash();
 	}

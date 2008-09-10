@@ -13,6 +13,7 @@ import org.apache.commons.io.filefilter.OrFileFilter;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 
 import sneer.kernel.container.utils.FileUtils;
+import wheel.lang.exceptions.NotImplementedYet;
 
 /**
  * Includes all files outside hidden directories
@@ -36,19 +37,16 @@ public class SimpleFilter extends DirectoryWalker {
 		return _root;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<File> list() {
 		List<File> result = new ArrayList<File>();
 		return (List<File>) walkAndCollect(result);
 	}
 	
-	@SuppressWarnings("unchecked")
-	protected Collection walkAndCollect(Collection c) {
+	protected <T> Collection<T> walkAndCollect(Collection<T> c) {
 		try {
 			walk(_root, c);
 		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
+			throw new NotImplementedYet();
 		}
 		return c;
 	}

@@ -28,7 +28,6 @@ public class DeepCopier {
 	 * Produce a deep copy of the given object. Serializes the entire object to a byte array in memory. Recommended for
 	 * relatively small objects, such as individual transactions.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T> T deepCopy(T original, Serializer serializer) {
 		try {
 		    ByteArrayOutputStream byteOut = new ByteArrayOutputStream();

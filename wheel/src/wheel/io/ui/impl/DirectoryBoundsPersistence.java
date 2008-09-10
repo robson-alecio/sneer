@@ -8,7 +8,7 @@ import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 
-import wheel.io.Log;
+import wheel.io.Logger;
 import wheel.io.Streams;
 import wheel.io.files.Directory;
 import wheel.io.ui.BoundsPersistence;
@@ -44,7 +44,6 @@ public class DirectoryBoundsPersistence implements BoundsPersistence {
 
 	}
 
-	@SuppressWarnings("unchecked")
 	private Map<String, Rectangle> getStoredBounds() {
 		if (!_directory.fileExists(BOUNDS_FILE_NAME))
 			return new HashMap<String, Rectangle>();
@@ -58,9 +57,9 @@ public class DirectoryBoundsPersistence implements BoundsPersistence {
 				return (Map<String, Rectangle>) savedBounds;
 
 		} catch (IOException e) {
-			Log.log(e);
+			Logger.log(e);
 		} catch (ClassNotFoundException e) {
-			Log.log(e);
+			Logger.log(e);
 		} finally {
 			if (objectInputStream != null)
 				Streams.crash(objectInputStream);
@@ -82,7 +81,7 @@ public class DirectoryBoundsPersistence implements BoundsPersistence {
 			objectOutputStream.writeObject(_storedBounds);
 			objectOutputStream.flush();
 		} catch (IOException e) {
-			Log.log(e);
+			Logger.log(e);
 		} finally {
 			if (objectOutputStream != null)
 				Streams.crash(objectOutputStream);

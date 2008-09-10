@@ -15,15 +15,12 @@ import sneer.pulp.classpath.ClasspathFactory;
 import sneer.pulp.compiler.CompilerException;
 import sneer.pulp.compiler.JavaCompiler;
 import sneer.pulp.compiler.Result;
-import sneer.pulp.log.Logger;
-
 import com.sun.tools.javac.Main;
+import static wheel.io.Logger.log;
+
 
 public class JavaCompilerImpl implements JavaCompiler {
 
-	@Inject
-	private Logger _log;
-	
 	@Inject
 	private ClasspathFactory _classpathFactory;
 
@@ -36,7 +33,7 @@ public class JavaCompilerImpl implements JavaCompiler {
 	public Result compile(List<File> sourceFiles, File destination, Classpath classpath) throws CompilerException {
 		
 		File tmpFile = createArgsFileForJavac(sourceFiles);
-		_log.info("Compiling {} files to {}", sourceFiles.size(), destination);
+		log("Compiling {} files to {}", sourceFiles.size(), destination);
 
 		String[] parameters = {
 				"-classpath", classpath.asJavacArgument(),
@@ -44,7 +41,7 @@ public class JavaCompilerImpl implements JavaCompiler {
 				"-encoding","UTF-8",
 				"@"+tmpFile.getAbsolutePath()
 		};
-		_log.debug("compiler cli: {}",StringUtils.join(parameters, " "));
+		log("compiler cli: {}",StringUtils.join(parameters, " "));
 
 		StringWriter writer = new StringWriter();
 		int code = Main.compile(parameters, new PrintWriter(writer));

@@ -2,12 +2,13 @@
 ===================
 
 	- DynDNS Client ;)	
-	---------------------------------- FIRST DOGFOOD RELEASE - Anelise can start testing for real. All bugs she finds get fixed immediately. Improvement suggestions are added to this todo list.
-
 	- Blinking lights
 		- API
 		- GUI
 	- Rudimentary Logging
+		- Logger.inline(String message, Object... messageInsets) - implement properly
+	---------------------------------- FIRST DOGFOOD RELEASE - Anelise can start testing for real. All bugs she finds get fixed immediately. Improvement suggestions are added to this todo list.
+
 	- Wind
 	- Voice Calls - Migrate from the old sneermonolith project
 	---- WE DROP SKYPE :)

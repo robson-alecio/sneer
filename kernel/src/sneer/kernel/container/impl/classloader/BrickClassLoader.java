@@ -18,7 +18,7 @@ import org.apache.commons.io.IOUtils;
 import sneer.kernel.container.Inject;
 import sneer.pulp.dependency.Dependency;
 import sneer.pulp.dependency.DependencyManager;
-import sneer.pulp.log.Logger;
+import static wheel.io.Logger.log;
 import wheel.lang.Threads;
 
 public class BrickClassLoader extends EnhancingClassLoader {
@@ -32,9 +32,6 @@ public class BrickClassLoader extends EnhancingClassLoader {
 	private Map<String, byte[]> _cache; 
 	
 	private ClassLoader _delegate;
-	
-	@Inject
-	private Logger _log;
 	
 	@Inject
 	private DependencyManager _dependencyManager;
@@ -62,7 +59,7 @@ public class BrickClassLoader extends EnhancingClassLoader {
 		
 		if(bytes != null) {
 			Class<?> result  = defineClass(name, bytes);
-			if(_log.isDebugEnabled()) _log.debug("Class {} loaded by {}",name, toString());
+			log("Class {} loaded by {}", name, toString());
 			return result;
 		}
 			
@@ -70,7 +67,7 @@ public class BrickClassLoader extends EnhancingClassLoader {
 		try {
 			Class<?> result = delegate().loadClass(name);
 			if(result != null) {
-				if(_log.isDebugEnabled()) _log.debug("Class {} loaded by _delegate_ ",name, toString());			
+				log("Class {} loaded by _delegate_ ",name, toString());			
 				return result;
 			}
 		} catch (ClassNotFoundException e) {

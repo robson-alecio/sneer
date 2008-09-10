@@ -9,10 +9,11 @@ import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
-import sneer.pulp.log.Logger;
 import sneer.pulp.network.ByteArraySocket;
 import wheel.lang.Functor;
 import wheel.lang.exceptions.IllegalParameter;
+import static wheel.io.Logger.log;
+
 
 class IndividualSocketReceiver {
 
@@ -25,9 +26,6 @@ class IndividualSocketReceiver {
 	@Inject
 	static private ConnectionManager _connectionManager;
 
-	@Inject
-	static private Logger _logger;
-	
 	
 	private final ByteArraySocket _socket;
 	
@@ -37,7 +35,7 @@ class IndividualSocketReceiver {
 		try {
 			if (!tryToServe()) _socket.crash();
 		} catch (Exception e) {
-			_logger.info("Exception thrown by incoming socket.", e);
+			log(e, "Exception thrown by incoming socket.");
 			_socket.crash();
 		}
 	}

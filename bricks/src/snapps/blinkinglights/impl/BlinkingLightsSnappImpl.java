@@ -70,7 +70,9 @@ public class BlinkingLightsSnappImpl implements BlinkingLightsSnapp {
 		scrollPane.getViewport().add(_lightsList.getComponent());
 		scrollPane.setMinimumSize(size(container));
 		scrollPane.setPreferredSize(size(container));
-		_lightsList.getComponent().setBorder(new TitledBorder(new EmptyBorder(5,5,5,5), getName()));
+		scrollPane.setBorder(new TitledBorder(new EmptyBorder(5,5,5,5), getName()));
+		_lightsList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
+		scrollPane.setBackground(_lightsList.getComponent().getBackground());
 	}
 
 	private Dimension size(Container container) {

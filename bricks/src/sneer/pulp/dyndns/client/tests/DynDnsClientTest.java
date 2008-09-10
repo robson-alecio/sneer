@@ -1,6 +1,12 @@
 package sneer.pulp.dyndns.client.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
+import java.util.List;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -9,6 +15,10 @@ import org.junit.Test;
 
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
+import sneer.pulp.blinkinglights.BlinkingLights;
+import sneer.pulp.blinkinglights.Light;
+import sneer.pulp.clock.Alarm;
+import sneer.pulp.clock.mocks.ClockMock;
 import sneer.pulp.dyndns.client.DynDnsClient;
 import sneer.pulp.dyndns.ownaccount.Account;
 import sneer.pulp.dyndns.ownaccount.OwnAccountKeeper;
@@ -18,6 +28,7 @@ import sneer.pulp.dyndns.updater.BadAuthException;
 import sneer.pulp.dyndns.updater.Updater;
 import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.propertystore.mocks.TransientPropertyStore;
+import wheel.lang.exceptions.FriendlyException;
 import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;
 
@@ -50,6 +61,7 @@ Unacceptable Client Behavior
 	final OwnAccountKeeper ownAccountKeeper = context.mock(OwnAccountKeeper.class);
 	final Updater updater = context.mock(Updater.class);
 	final TransientPropertyStore propertyStore = new TransientPropertyStore();
+	final ClockMock clock = new ClockMock();
 	
 	@Test
 	public void updateOnIpChange() throws Exception {
@@ -73,32 +85,82 @@ Unacceptable Client Behavior
 	}
 	
 	@Test
-	public void userInterventionRequiredAfterFailure() throws UpdaterException, IOException {
+	public void retryAfterIOException() throws Exception {
+		
+		final IOException error = new IOException();
 		
 		context.checking(new Expectations() {{
-			exactly(1).of(ownIpDiscoverer).ownIp();
+			allowing(ownIpDiscoverer).ownIp();
 				will(returnValue(ownIp.output()));
-			atLeast(1).of(ownAccountKeeper).ownAccount();
+				
+			allowing(ownAccountKeeper).ownAccount();
 				will(returnValue(ownAccount.output()));
-			
-			exactly(1).of(updater).update(anyString(), anyString(), anyString(), with(ownIp.output().currentValue()));
-				will(throwException(new BadAuthException()));
-		}
-
-		private String anyString() {
-			return with(any(String.class));
+				
+			final Account account = ownAccount.output().currentValue();
+			exactly(1).of(updater).update(account.host(), account.user(), account.password(), ownIp.output().currentValue());
+				will(throwException(error));
+				
+			exactly(1).of(updater).update(account.host(), account.user(), account.password(), ownIp.output().currentValue());
 		}});
 		
-		startDynDnsClient();
+
+		final Container container = startDynDnsClient();
+		final Light light = assertBlinkingLight(error, container);
 		
-		ownIp.setter().consume("111.111.111.111");
+		Alarm alarm = clock.triggerAlarm(0);
+		assertFalse(alarm.isOn());
+		assertFalse(light.isOn());
+		context.assertIsSatisfied();
+	}
+	
+	@Test
+	public void userInterventionRequiredAfterFailure() throws UpdaterException, IOException {
+		
+		final BadAuthException error = new BadAuthException();
+		final Account account = ownAccount.output().currentValue();
+		final String newIp = "111.111.111.111";
+		
+		context.checking(new Expectations() {{
+			allowing(ownIpDiscoverer).ownIp();
+				will(returnValue(ownIp.output()));
+			allowing(ownAccountKeeper).ownAccount();
+				will(returnValue(ownAccount.output()));
+			
+			exactly(1).of(updater).update(account.host(), account.user(), account.password(), ownIp.output().currentValue());
+				will(throwException(error));
+				
+			exactly(1).of(updater).update(account.host(), account.user(), "*" + account.password(), newIp);
+		}});
+		
+		final Container container = startDynDnsClient();
+		final Light light = assertBlinkingLight(error, container);
+		
+		// new ip should be ignored while new account is not provided
+		ownIp.setter().consume(newIp);
+		
+		// providing a new account should cause it
+		// to resume updating dyndns
+		ownAccount.setter().consume(new SimpleAccount(account.host(), account.user(), "*" + account.password()));
+		assertFalse(light.isOn());
 		
 		context.assertIsSatisfied();
 	}
 
-	private void startDynDnsClient() {
-		final Container container = ContainerUtils.newContainer(ownIpDiscoverer, ownAccountKeeper, updater, propertyStore);
-		container.produce(DynDnsClient.class);
+	private Light assertBlinkingLight(final Exception expectedError, final Container container) {
+		final List<Light> lights = container.produce(BlinkingLights.class).listLights();
+		assertEquals(1, lights.size());
+		final Light light = lights.get(0);
+		assertTrue(light.isOn());
+		if (expectedError instanceof FriendlyException) {
+			assertEquals(((FriendlyException)expectedError).getHelp(), light.message());
+		}
+		assertSame(expectedError, light.error());
+		return light;
 	}
 
+	private Container startDynDnsClient() {
+		final Container container = ContainerUtils.newContainer(ownIpDiscoverer, ownAccountKeeper, updater, propertyStore, clock);
+		container.produce(DynDnsClient.class);
+		return container;
+	}
 }

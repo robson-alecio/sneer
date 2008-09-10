@@ -3,15 +3,18 @@ package sneer.pulp.clock.mocks;
 import java.util.ArrayList;
 import java.util.List;
 
+import sneer.pulp.clock.Alarm;
 import sneer.pulp.clock.Clock;
 
 public class ClockMock implements Clock {
 
-	private final List<Runnable> _alarms = new ArrayList<Runnable>();
+	private final List<AlarmMock> _alarms = new ArrayList<AlarmMock>();
 
 	@Override
-	public void setAlarm(int millis, Runnable runnable) {
-		_alarms .add(runnable);
+	public Alarm setAlarm(int millis, Runnable runnable) {
+		final AlarmMock alarm = new AlarmMock(runnable);
+		_alarms.add(alarm);
+		return alarm;
 	}
 
 	@Override
@@ -24,8 +27,10 @@ public class ClockMock implements Clock {
 		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
-	public void triggerAlarm(int alarmIndex) {
-		_alarms.get(alarmIndex).run();
+	public Alarm triggerAlarm(int alarmIndex) {
+		final AlarmMock alarm = _alarms.get(alarmIndex);
+		alarm.run();
+		return alarm;
 	}
 
 }

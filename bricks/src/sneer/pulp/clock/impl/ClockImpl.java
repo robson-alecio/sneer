@@ -1,5 +1,6 @@
 package sneer.pulp.clock.impl;
 
+import sneer.pulp.clock.Alarm;
 import sneer.pulp.clock.Clock;
 import wheel.lang.Threads;
 
@@ -16,7 +17,7 @@ public class ClockImpl implements Clock {
 	}
 
 	@Override
-	public void setAlarm(int millis, Runnable runnable) {
+	public Alarm setAlarm(int millis, Runnable runnable) {
 		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	}
 

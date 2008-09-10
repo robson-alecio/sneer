@@ -6,5 +6,5 @@ public interface Clock {
 
 	void sleep(int millis);
 
-	void setAlarm(int millis, Runnable runnable);
+	Alarm setAlarm(int millis, Runnable runnable);
 }

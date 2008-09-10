@@ -1,13 +1,13 @@
 ﻿MAIN ROADMAP
 ===================
 
-	- Contact List - ([Done] Host addresses for Sneer developers are HARDCODED)
-		- DynDNS Client ;)	
+	- DynDNS Client ;)	
 	---------------------------------- FIRST DOGFOOD RELEASE - Anelise can start testing for real. All bugs she finds get fixed immediately. Improvement suggestions are added to this todo list.
 
 	- Blinking lights
 		- API
 		- GUI
+	- Rudimentary Logging
 	- Wind
 	- Voice Calls - Migrate from the old sneermonolith project
 	---- WE DROP SKYPE :)

@@ -38,7 +38,7 @@ class DynDnsClientImpl implements DynDnsClient {
 	@Inject
 	static private Clock _clock;
 	
-	private State _state = new DefaultState();
+	private State _state = new Happy();
 	private final Object _stateMonitor = new Object();
 	
 	final Receiver<Account> _ownAccountReceiver = new Receiver<Account>(_ownAccountKeeper.ownAccount()) { @Override public void consume(Account account) {
@@ -57,11 +57,11 @@ class DynDnsClientImpl implements DynDnsClient {
 		try {
 			_updater.update(account.host(), account.user(), account.password(), ip);
 			recordLastIp(ip);
-			return new DefaultState();
+			return new Happy();
 		} catch (BadAuthException e) {
 			return new BadAuthState(e);
 		} catch (IOException e) {
-			return new RetryLaterState(e);
+			return new Waiting(e);
 		} catch (UpdaterException e) {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
@@ -83,7 +83,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		
 	}
 	
-	private final class DefaultState extends State {
+	private final class Happy extends State {
 		
 		@Override
 		State reactTo(String ip) {
@@ -94,11 +94,11 @@ class DynDnsClientImpl implements DynDnsClient {
 
 	}
 	
-	private abstract class ErrorState extends State {
+	private abstract class Sad extends State {
 		
 		private final Light _light;
 		
-		ErrorState(String message, Exception e) {
+		Sad(String message, Exception e) {
 			_light = _blinkingLights.turnOn(message, e);
 		}
 
@@ -108,11 +108,11 @@ class DynDnsClientImpl implements DynDnsClient {
 		}
 	}
 	
-	private final class RetryLaterState extends ErrorState {
+	private final class Waiting extends Sad {
 		
 		static final int retryTimeoutInMinutes = 5;
 		
-		RetryLaterState(IOException e) {
+		Waiting(IOException e) {
 			super("It was not possible to connect to the dyndns server. Sneer will retry again in " + retryTimeoutInMinutes + " minutes.", e);
 			_clock.addAlarm(retryTimeoutInMinutes * 60 * 1000, new Runnable() { @Override public void run() {
 				synchronized (_stateMonitor) {
@@ -128,7 +128,7 @@ class DynDnsClientImpl implements DynDnsClient {
 
 	}
 	
-	private final class BadAuthState extends ErrorState {
+	private final class BadAuthState extends Sad {
 
 		BadAuthState(BadAuthException e) {
 			super(e.getHelp(), e);

@@ -9,10 +9,26 @@ import org.apache.commons.collections.Predicate;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import wheel.lang.FrozenTime;
+import wheel.reactive.lists.ListSignal;
+import wheel.reactive.lists.impl.ListRegisterImpl;
 
 public class BlinkingLightsImpl implements BlinkingLights {
 
 	private List<Light> _lights = new ArrayList<Light>();
+	
+	//Fix Make BK reactive
+	private static ListRegisterImpl<Light> reg;
+	static{
+		reg = new ListRegisterImpl<Light>();
+		reg.add(new LightImpl("Warning", null, -1));
+		
+		try {
+			String err = null;
+			err.toString();
+		} catch (NullPointerException e) {
+			reg.add(new LightImpl("Error", e, -1));
+		}
+	}
 
 	@Override
 	public void turnOff(Light light) {
@@ -52,6 +68,12 @@ public class BlinkingLightsImpl implements BlinkingLights {
 				return ((Light)candidate).isOn();
 			}
 		});
+	}
+
+	@Override
+	public ListSignal<Light> lights() {
+		return reg.output(); //Fix Make BK reactive
+
 	}
 }
 

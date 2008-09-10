@@ -64,11 +64,11 @@ class DynDnsClientImpl implements DynDnsClient {
 	}
 	
 	abstract class State {
-		public void update(@SuppressWarnings("unused") String newIp) {
+		void update(@SuppressWarnings("unused") String newIp) {
 			// log(newIp);
 		}
 
-		public void update(@SuppressWarnings("unused") Account newAccount) {
+		void update(@SuppressWarnings("unused") Account newAccount) {
 			// log(newAccount);
 		}
 	}
@@ -76,7 +76,7 @@ class DynDnsClientImpl implements DynDnsClient {
 	private final class DefaultState extends State {
 		
 		@Override
-		public void update(String ip) {
+		void update(String ip) {
 			if (ip.equals(lastIp())) return;
 			
 			submitUpdateRequest(currentAccount(), ip);
@@ -88,7 +88,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		
 		private final Light _light;
 		
-		public ErrorState(String message, Exception e) {
+		ErrorState(String message, Exception e) {
 			_light = _blinkingLights.turnOn(message, e);
 		}
 
@@ -105,7 +105,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		
 		private final Alarm _alarm;
 
-		public RetryLaterState(IOException e) {
+		RetryLaterState(IOException e) {
 			super("It was not possible to connect to the dyndns server. Sneer will retry again in " + retryTimeoutInMinutes + " minutes.", e);
 			_alarm = _clock.setAlarm(retryTimeoutInMinutes * 60 * 1000, new Runnable() { @Override public void run() {
 				_alarm.turnOff();
@@ -116,12 +116,12 @@ class DynDnsClientImpl implements DynDnsClient {
 	
 	private final class BadAuthState extends ErrorState {
 
-		public BadAuthState(BadAuthException e) {
+		BadAuthState(BadAuthException e) {
 			super(e.getHelp(), e);
 		}
 
 		@Override
-		public void update(Account newAccount) {
+		void update(Account newAccount) {
 			retry();
 		}
 	}
@@ -134,7 +134,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		return _state.get();
 	}
 	
-	public void switchTo(State state) {
+	void switchTo(State state) {
 		_state.set(state);
 	}
 

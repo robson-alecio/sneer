@@ -1,6 +1,7 @@
 package sneer.pulp.dyndns.client.impl;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicReference;
 
 import sneer.kernel.container.Inject;
 import sneer.pulp.blinkinglights.BlinkingLights;
@@ -39,14 +40,14 @@ class DynDnsClientImpl implements DynDnsClient {
 	@Inject
 	static private Clock _clock;
 	
-	private State _state = new DefaultState();
+	private AtomicReference<State> _state = new AtomicReference<State>(new DefaultState());
 	
 	final Receiver<Account> _ownAccountReceiver = new Receiver<Account>(_ownAccountKeeper.ownAccount()) { @Override public void consume(Account value) {
-		_state.update(value);
+		state().update(value);
 	}};
 	
 	final Receiver<String> _ownIpReceiver = new Receiver<String>(_ownIpDiscoverer.ownIp()) { @Override public void consume(String value) {
-		_state.update(value);
+		state().update(value);
 	}};
 	
 	private void submitUpdateRequest(final Account account, String ip) {
@@ -129,8 +130,12 @@ class DynDnsClientImpl implements DynDnsClient {
 		_propertyStore.set(LAST_IP_KEY, ip);
 	}
 
+	private State state() {
+		return _state.get();
+	}
+	
 	public void switchTo(State state) {
-		_state = state;
+		_state.set(state);
 	}
 
 	private String lastIp() {
@@ -144,4 +149,5 @@ class DynDnsClientImpl implements DynDnsClient {
 	private String currentIp() {
 		return _ownIpDiscoverer.ownIp().currentValue();
 	}
+
 }

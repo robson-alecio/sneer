@@ -8,6 +8,8 @@ import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Date;
 
+import org.apache.commons.io.output.NullOutputStream;
+
 import wheel.lang.exceptions.NotImplementedYet;
 
 public class Logger {
@@ -17,11 +19,6 @@ public class Logger {
 		logHeader(inline(message, messageInsets));
 		logSeparator();
 		flush();
-	}
-
-	/** Example: inline("User {} is not allowed to access the {} report.", "Peter", "TPS") returns: "User Peter is not allowed to access the TPS report." */
-	private static String inline(String message, Object... messageInsets) {
-		return message + " " + Arrays.toString(messageInsets);
 	}
 
 	/** See log(String, Object...) for examples.*/
@@ -39,9 +36,16 @@ public class Logger {
 		log(throwable, throwable.getMessage());
 	}
 
+	public static void redirectTo(File file) throws FileNotFoundException {
+		redirectTo(new FileOutputStream(file, true));
+	}
+
+	public static void redirectTo(OutputStream outputStream) {
+		_log = new PrintWriter(outputStream);
+	}
 	
 	
-	static private PrintWriter _log = new PrintWriter(System.out);
+	static private PrintWriter _log = new PrintWriter(new NullOutputStream());
 
 	
 	private static void flush() {
@@ -64,12 +68,9 @@ public class Logger {
 	}
 
 	
-	private static void redirectTo(OutputStream outputStream) {
-		_log = new PrintWriter(outputStream);
-	}
-	
-	public static void redirectTo(File file) throws FileNotFoundException {
-		redirectTo(new FileOutputStream(file, true));
+	/** Example: inline("User {} is not allowed to access the {} report.", "Peter", "TPS") returns: "User Peter is not allowed to access the TPS report." */
+	private static String inline(String message, Object... messageInsets) {
+		return message + " " + Arrays.toString(messageInsets);
 	}
 
 

@@ -14,13 +14,13 @@ public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 
 	protected void notifyReceivers(VC valueChange) {
 		synchronized (_receivers) {
-			ReceiverHolder<Omnivore<VC>>[] copyToAvoidConcurrentModificationAsResultOfNotifications = copyOfListeners();
-			for (ReceiverHolder<Omnivore<VC>> reference : copyToAvoidConcurrentModificationAsResultOfNotifications)
+			ReceiverHolder<Omnivore<VC>>[] receivers = copyOfReceiversToAvoidConcurrentModificationAsResultOfNotifications();
+			for (ReceiverHolder<Omnivore<VC>> reference : receivers)
 				notify(reference, valueChange);
 		}
 	}
 
-	private ReceiverHolder<Omnivore<VC>>[] copyOfListeners() {
+	private ReceiverHolder<Omnivore<VC>>[] copyOfReceiversToAvoidConcurrentModificationAsResultOfNotifications() {
 		ReceiverHolder<Omnivore<VC>>[] result = createArray(_receivers.size());
 		_receivers.toArray(result);
 		return result;
@@ -62,19 +62,19 @@ public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 
 	@Override
 	protected void finalize() throws Throwable {
-		ReceiverHolder<Omnivore<VC>>[] copyToAvoidConcurrentModificationAsResultOfNotifications = copyOfListeners();
-		if(copyToAvoidConcurrentModificationAsResultOfNotifications.length==0)
-			return;
-		
+		ReceiverHolder<Omnivore<VC>>[] receivers = copyOfReceiversToAvoidConcurrentModificationAsResultOfNotifications();
+		if(receivers.length != 0)
+			log(debugMessage(receivers));
+	}
+
+	private String debugMessage(ReceiverHolder<Omnivore<VC>>[] receivers) {
 		StringBuilder result = new StringBuilder();
 		result.append("Abstract notifier finalized.\n");
 		
-		if(copyToAvoidConcurrentModificationAsResultOfNotifications.length==0)
-			return;
-		
-		for (ReceiverHolder<Omnivore<VC>> reference : copyToAvoidConcurrentModificationAsResultOfNotifications)
+		for (ReceiverHolder<Omnivore<VC>> reference : receivers)
 			result.append("\tReceiver: " + reference._alias + "\n");
-		System.err.println(result);
+		
+		return result.toString();
 	}
 	
 	private ReceiverHolder<Omnivore<? super VC>> holderFor(

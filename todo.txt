@@ -26,11 +26,13 @@
 		- Low maintenance build: Interpret the .classpath file and compile the build exactly as Eclipse would.
 		- Cyclic dependency detection: Compile one sourcefolder at a time, from the last in the .classpath list (most basic (wheel)) to the first in the list (most high-level (spikes)), without the other uncompiled sourcefolders in the path.
 	
-	
 
 	- Open Jar leak - Fix in Freedom7Test
-	- Replace the AnnotatedFieldInjector by the StaticFieldInjector - Need to create our own TestRunner?
-		- Injection Strategy - Revise. Consider using constructor.
+	- Debugging Strategy - Revise so that all debugging info doesnt go into the log file. 
+	- Injection Strategy - Revise
+		- Drop @Inject - Replace the AnnotatedFieldInjector by the StaticFieldInjector
+		- Consider using constructor (produces more lines of code but can be generated later with boo). Tests will run MUCH faster because classes have to be loaded only once.
+		- Consider using direct static access to generated classes that redirect based on thread context (refer to Rodrigo's ContextVariables idea).
 	- ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do.
 		- SetSignal - Revise it also. 
 	- ContainerUtils.getContainer() - Drop. Fix all uses.

@@ -8,19 +8,19 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 
+import wheel.io.Logger;
+
 public class TestThatMightUseFiles {
 
 	private File _tmpDirectory;
 
 	protected File tmpDirectory() {
-		if (_tmpDirectory == null) {
-			File parent = new File(System.getProperty("java.io.tmpdir"));
-			_tmpDirectory = new File(parent, "" + System.nanoTime());
-			assertTrue(_tmpDirectory.mkdirs());
-		}
+		if (_tmpDirectory == null)
+			_tmpDirectory = createTmpDirectory();
+
 		return _tmpDirectory;
 	}
-	
+
 	@After
 	public void cleanup() {
 		if (_tmpDirectory == null) return;
@@ -39,11 +39,19 @@ public class TestThatMightUseFiles {
 				return;
 			} catch (IOException e) {
 				if (System.currentTimeMillis() - t0 > 1000) {
-					System.err.println("Test left files open: " + e.getMessage());
+					Logger.log("Test left files open: {}", e.getMessage());
 					return;
 				}
 				System.gc();
 			}
 		}
 	}
+	
+	private File createTmpDirectory() {
+		File result = new File(System.getProperty("java.io.tmpdir"), "" + System.nanoTime());
+		assertTrue(result.mkdirs());
+		return result;
+	}
+	
+
 }

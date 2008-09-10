@@ -1,5 +1,7 @@
 package snapps.blinkinglights.tests;
 
+import javax.swing.SwingUtilities;
+
 import snapps.blinkinglights.BlinkingLightsSnapp;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
@@ -18,12 +20,18 @@ public class BlinkingLightsSnappDemo  {
 		bl.turnOn("This is a Warning!");
 		
 		try {
-			String test = null;
-			test.toString();
-		} catch (NullPointerException e) {
+			throw new RuntimeException();
+		} catch (Exception e) {
 			bl.turnOn("This is a Error!",e);
 		}
 		
 		container.produce(BlinkingLightsSnapp.class);
+		
+		waitUntilTheGuiThreadStarts();
 	}
+	
+	private static void waitUntilTheGuiThreadStarts() throws Exception {
+		SwingUtilities.invokeAndWait(new Runnable(){@Override public void run() {}});
+	}
+
 }

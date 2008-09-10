@@ -69,17 +69,9 @@ class DynDnsClientImpl implements DynDnsClient {
 	
 	abstract class State {
 		
-		State reactTo(@SuppressWarnings("unused") String ownIpNotification) {
-			return this;
-		}
-		
-		State reactTo(@SuppressWarnings("unused") Account accountNotification) {
-			return this;
-		}
-
-		State reactToAlarm() {
-			throw new IllegalStateException();
-		}
+		abstract State reactTo(String ownIpNotification);
+		abstract State reactTo(Account accountNotification);
+		abstract State reactToAlarm();
 		
 	}
 	
@@ -90,6 +82,16 @@ class DynDnsClientImpl implements DynDnsClient {
 			if (ip.equals(lastIp())) return this;
 			
 			return submitUpdateRequest(currentAccount(), ip);
+		}
+
+		@Override
+		State reactTo(Account accountNotification) {
+			return this;
+		}
+
+		@Override
+		State reactToAlarm() {
+			throw new IllegalStateException();
 		}
 
 	}
@@ -126,6 +128,16 @@ class DynDnsClientImpl implements DynDnsClient {
 			return retry();
 		}
 
+		@Override
+		State reactTo(String ownIpNotification) {
+			return this;
+		}
+
+		@Override
+		State reactTo(Account accountNotification) {
+			return this;
+		}
+
 	}
 	
 	private final class BadAuthState extends Sad {
@@ -137,6 +149,16 @@ class DynDnsClientImpl implements DynDnsClient {
 		@Override
 		State reactTo(Account newAccount) {
 			return retry();
+		}
+
+		@Override
+		State reactTo(String ownIpNotification) {
+			return this;
+		}
+
+		@Override
+		State reactToAlarm() {
+			throw new IllegalStateException();
 		}
 	}
 	

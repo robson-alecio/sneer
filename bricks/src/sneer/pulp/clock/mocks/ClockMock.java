@@ -33,6 +33,7 @@ public class ClockMock implements Clock {
 		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
+	@Deprecated //Tests that use this break the encapsulation of the bricks they are testing. Use something like ClockMock.advanceTime(millis). 
 	public void triggerAlarm(int alarmIndex) {
 		Runnable alarm = _alarms.get(alarmIndex);
 		if (!_periodicAlarms.contains(alarm))

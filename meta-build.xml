@@ -57,7 +57,11 @@
 			</fileset>
 		</path>
 		
-		<javac destdir="${build.dir}" classpathref="wheel.lib.classpath">
+		<javac destdir="${build.dir}"
+			classpathref="wheel.lib.classpath"
+			listfiles="true"
+			failonerror="true"
+			debug="on">
 			<src path="wheel/src" />
 			<src path="meta/src" />
 		</javac>

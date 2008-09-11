@@ -14,9 +14,15 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 	private final List<String> _libs = new ArrayList<String>();
 	private final List<String> _srcs = new ArrayList<String>();
 	private final Directory _directory;
+	private final boolean _compileSourceFoldersTogether;
 
 	public AntFileBuilderToFilesystem(final Directory directory) {
+		this(directory, false);
+	}
+
+	public AntFileBuilderToFilesystem(Directory directory, boolean compileSourceFoldersTogether) {
 		_directory = directory;
+		_compileSourceFoldersTogether = compileSourceFoldersTogether;
 	}
 
 	@Override
@@ -68,6 +74,43 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 		builder.append("\n");
 		
 		builder.append("\t<target name=\"compile\">\n");
+		builder.append("\t\t<mkdir dir=\"distr/bin\"/>\n");
+		builder.append(appendJavacCall());
+		builder.append("\t</target>\n");
+		builder.append("</project>");
+		return builder;
+	}
+
+	private String appendJavacCall() {
+		if (_compileSourceFoldersTogether)
+			return getJavacCallsWithSourceFoldersTogether();
+		
+		return getJavacCallsWithSeparateSourceFolders();
+	}
+
+	private String getJavacCallsWithSourceFoldersTogether() {
+		StringBuilder builder = new StringBuilder();
+		
+		builder.append(	
+				"\t\t<javac\n"+
+					"\t\t\t\tdestdir=\"distr/bin\"\n" +
+					"\t\t\t\tlistfiles=\"true\"\n" +
+					"\t\t\t\tfailonerror=\"true\"\n" +
+					"\t\t\t\tdebug=\"on\"\n" +
+					"\t\t\t\ttarget=\"1.5\"\n" +
+					"\t\t>\n");
+		
+		for (final String src : _srcs){
+			builder.append("\t\t\t<src path=\"" + src + "\"/>\n");		      
+		}
+		
+		builder.append("\t\t\t<classpath refid=\"classpath\"/>\n" +
+						"\t\t</javac>\n");	
+		return builder.toString();
+	}
+
+	private String getJavacCallsWithSeparateSourceFolders() {
+		StringBuilder builder = new StringBuilder();
 		for (final String src : _srcs){
 			builder.append(	
 					"\t\t<javac srcdir=\""+ src +"\"\n"+
@@ -80,9 +123,8 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 							"\t\t\t<classpath refid=\"classpath\"/>\n" +
 						"\t\t</javac>\n");		      
 		}
-		builder.append("\t</target>\n");
-		builder.append("</project>");
-		return builder;
+		
+		return builder.toString();
 	}
 
 }

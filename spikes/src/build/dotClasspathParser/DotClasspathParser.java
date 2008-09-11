@@ -27,12 +27,12 @@ public class DotClasspathParser {
 	}
 
 	private static List<String> getLibs(final String classpathString) {
-		final Pattern sourcePattern = Pattern.compile(".+classpathentry kind=\"lib\".+path=\"(.+)\".+");
+		final Pattern sourcePattern = Pattern.compile(".+classpathentry kind=\"lib\"(.+)?\\spath=\"([^\"]+)\".+");
 		final Matcher matcher = sourcePattern.matcher(classpathString);
 
 		final List<String> libPaths = new ArrayList<String>();
 		while (matcher.find()){
-			final String lib = matcher.group(1);
+			final String lib = matcher.group(2);
 			libPaths .add(lib);
 		}
 		return libPaths;
@@ -40,12 +40,12 @@ public class DotClasspathParser {
 	}
 
 	private static List<String> getSrcPaths(final String classpathString) {
-		final Pattern sourcePattern = Pattern.compile(".+classpathentry kind=\"src\".+path=\"(.+)\".+");
+		final Pattern sourcePattern = Pattern.compile(".+classpathentry kind=\"src\"(.+)?(\\s)?path=\"(.+)\".+");
 		final Matcher matcher = sourcePattern.matcher(classpathString);
 
 		final List<String> sourcePaths = new ArrayList<String>();
 		while (matcher.find()){
-			final String srcPath = matcher.group(1);
+			final String srcPath = matcher.group(3);
 			sourcePaths .add(srcPath);
 		}
 		return sourcePaths;

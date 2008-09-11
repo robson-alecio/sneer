@@ -65,7 +65,7 @@ public class TupleSpaceImpl implements TupleSpace {
 		
 		for (Tuple candidate : _tuples)
 			if (Types.instanceOf(candidate, tupleType)) {
-				T casted = cast(candidate);
+				T casted = (T)(candidate);
 				result.add(casted);
 			}
 		

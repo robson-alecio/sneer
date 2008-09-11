@@ -3,6 +3,7 @@ package build;
 import java.io.IOException;
 
 import wheel.io.files.impl.DurableDirectory;
+import build.antFileGenerator.AntFileBuilderToFilesystem;
 import build.antFileGenerator.DotClasspathToAntConverter;
 import build.dotClasspathParser.DotClasspath;
 import build.dotClasspathParser.DotClasspathParser;
@@ -13,9 +14,10 @@ public class GenerateAntFile {
 
 	public static void main(final String[] args) throws IOException {
 		
-		if (args.length != 0)
-			System.out.println("Usage: GenerateAntFile \n the program assumes that there is a .classpath file and the isn't a build.xml in current directory");
-		
+		if (args.length != 1){
+			System.out.println("Usage: GenerateAntFile -sourcefolderstogether|-separatedsourcefolders\n the program assumes that there is a .classpath file in current directory");
+			System.exit(0);
+		}
 		
 		final DurableDirectory directory = new DurableDirectory(".");
 		
@@ -29,9 +31,13 @@ public class GenerateAntFile {
 		final String dotClasspathAsString = directory.contentsAsString(CLASSPATH);
 		final DotClasspath classpath = DotClasspathParser.parse(dotClasspathAsString);
 
-		final DotClasspathToAntConverter converter = new DotClasspathToAntConverter(directory);
+		boolean compileSourceFoldersTogether = args[0].equals("-sourcefolderstogether");
+		AntFileBuilderToFilesystem antFileBuilder = new AntFileBuilderToFilesystem(directory,compileSourceFoldersTogether);
+		final DotClasspathToAntConverter converter = new DotClasspathToAntConverter(antFileBuilder);
 		
 		converter.createAntFile(classpath);
+		
+		System.out.println("build.xml written");
 		
 	}
 

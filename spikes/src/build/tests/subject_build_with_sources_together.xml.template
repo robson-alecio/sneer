@@ -10,22 +10,15 @@
 
 	<target name="compile">
 		<mkdir dir="distr/bin"/>
-		<javac srcdir="wheel/src"
+		<javac
 				destdir="distr/bin"
 				listfiles="true"
 				failonerror="true"
 				debug="on"
 				target="1.5"
 		>
-			<classpath refid="classpath"/>
-		</javac>
-		<javac srcdir="spikes/src"
-				destdir="distr/bin"
-				listfiles="true"
-				failonerror="true"
-				debug="on"
-				target="1.5"
-		>
+			<src path="wheel/src"/>
+			<src path="spikes/src"/>
 			<classpath refid="classpath"/>
 		</javac>
 	</target>

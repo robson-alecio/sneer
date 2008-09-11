@@ -3,11 +3,16 @@
 	
 	<property name="build.dir" value="build" />
 	
-	<target name="build" depends="build.xml.generation">
+	<target name="clean">
+		<delete dir="distr"/>
+		<delete dir="${build.dir}"/>
+	</target>
+	
+	<target name="build" depends="clean, build.xml.generation">
 		<ant antfile="build.xml" />
 	</target>
 	
-	 <taskdef resource="clovertasks"/>
+	<taskdef resource="clovertasks"/>
 	<target name="clover" depends="build">
 		<clover-setup initString="mycoverage.db"/>
 		<clover-report>

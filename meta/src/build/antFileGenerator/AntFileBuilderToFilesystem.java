@@ -11,6 +11,7 @@ import wheel.io.files.Directory;
 
 public class AntFileBuilderToFilesystem implements AntFileBuilder {
 
+	private static final String BUILD_DIR_PROPERTY = "build.dir";
 	private final List<String> _libs = new ArrayList<String>();
 	private final List<String> _srcs = new ArrayList<String>();
 	private final Directory _directory;
@@ -65,8 +66,9 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 		builder.append(("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n" +
 		"<project name=\"AntBuild\" default=\"compile\">\n" +
 		"\n"));
+		builder.append("\t<property name=\"" + BUILD_DIR_PROPERTY + "\" location=\"build\" />\n\n");
 		builder.append("\t<path id=\"classpath\">\n");
-		builder.append("\t\t<pathelement path=\"distr/bin\"/>\n");
+		builder.append("\t\t<pathelement path=\"${" + BUILD_DIR_PROPERTY + "}\"/>\n");
 		for (final String lib : _libs)
 			builder.append("\t\t<pathelement path=\"" + lib + "\"/>\n");
 		builder.append("\t</path>\n");
@@ -74,7 +76,7 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 		builder.append("\n");
 		
 		builder.append("\t<target name=\"compile\">\n");
-		builder.append("\t\t<mkdir dir=\"distr/bin\"/>\n");
+		builder.append("\t\t<mkdir dir=\"${" + BUILD_DIR_PROPERTY + "}\"/>\n");
 		builder.append(appendJavacCall());
 		builder.append("\t</target>\n");
 		builder.append("</project>");
@@ -93,7 +95,7 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 		
 		builder.append(	
 				"\t\t<javac\n"+
-					"\t\t\t\tdestdir=\"distr/bin\"\n" +
+					"\t\t\t\tdestdir=\"${" + BUILD_DIR_PROPERTY + "}\"\n" +
 					"\t\t\t\tlistfiles=\"true\"\n" +
 					"\t\t\t\tfailonerror=\"true\"\n" +
 					"\t\t\t\tdebug=\"on\"\n" +

@@ -2,14 +2,16 @@
 
 <project name="AntBuild" default="compile">
 
+	<property name="build.dir" location="build" />
+
 	<path id="classpath">
-		<pathelement path="distr/bin"/>
+		<pathelement path="${build.dir}"/>
 		<pathelement path="bricks/lib/bcprov-jdk16-139.jar"/>
 		<pathelement path="kernel/lib/asm-all-3.1.jar"/>
 	</path>
 
 	<target name="compile">
-		<mkdir dir="distr/bin"/>
+		<mkdir dir="${build.dir}"/>
 		<javac srcdir="wheel/src"
 				destdir="distr/bin"
 				listfiles="true"

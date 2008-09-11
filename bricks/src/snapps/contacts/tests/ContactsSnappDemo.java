@@ -37,18 +37,18 @@ public class ContactsSnappDemo  {
 		Contact contact = manager.addContact("Nell");
 		
 		SnappManager snapps = container.produce(SnappManager.class);
-		new NicknameTest(rfactory, snapps, contact, manager);
+		new NicknameDemo(rfactory, snapps, contact, manager);
 	}
 }
 
-class NicknameTest implements Snapp{
+class NicknameDemo implements Snapp{
 
 	private final RFactory _rfactory;
 	private final SnappManager _snapps;
 	private final Contact _test;
 	private final ContactManager _manager;
 
-	public NicknameTest(RFactory rfactory, SnappManager snapps, Contact test, ContactManager manager) {
+	public NicknameDemo(RFactory rfactory, SnappManager snapps, Contact test, ContactManager manager) {
 		_rfactory = rfactory;
 		_snapps = snapps;
 		_test = test;

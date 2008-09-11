@@ -31,20 +31,20 @@ public class OwnerSnappDemo  {
 		container.produce(OwnerSnapp.class);
 		
 		SnappManager manager = container.produce(SnappManager.class);
-		new SnappTest(rfactory, ownNameKeeper.name(), ownNameKeeper.nameSetter(), manager);
-		new SnappTest(rfactory, ownTaglineKeeper.tagline(), ownTaglineKeeper.taglineSetter(), manager);
+		new OwnerSnappDemoSnapp(rfactory, ownNameKeeper.name(), ownNameKeeper.nameSetter(), manager);
+		new OwnerSnappDemoSnapp(rfactory, ownTaglineKeeper.tagline(), ownTaglineKeeper.taglineSetter(), manager);
 		
 		container.produce(Dashboard.class);
 	}
 }
 
-class SnappTest implements Snapp{
+class OwnerSnappDemoSnapp implements Snapp{
 
 	private final RFactory _rfactory;
 	private final Signal<String> _output;
 	private final Omnivore<String> _setter;
 	
-	public SnappTest(RFactory rfactory, Signal<String> output,	Omnivore<String> setter, SnappManager manager) {
+	public OwnerSnappDemoSnapp(RFactory rfactory, Signal<String> output,	Omnivore<String> setter, SnappManager manager) {
 		_rfactory = rfactory;
 		_output = output;
 		_setter = setter;

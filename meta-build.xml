@@ -1,10 +1,30 @@
 <?xml version="1.0"?>
-<project name="sneer meta build" default="build">
+<project name="sneer meta build" default="test">
 	
 	<property name="build.dir" value="build" />
 	
+	<target name="test" depends="build">
+		<junit haltonfailure="true" printsummary="true">
+			<classpath>
+				<fileset dir=".">
+					<include name="**/lib/**/*.jar" />
+				</fileset>
+				<pathelement location="${build.dir}" />
+				
+				<!-- resource files required by tests -->
+				<pathelement location="meta/src" />
+			</classpath>
+			
+			<batchtest todir="${build.dir}">
+				<fileset dir="${build.dir}">
+					<include name="**/tests/*Test.class" />
+				</fileset>
+				<formatter type="plain"/>
+			</batchtest>
+		</junit>
+	</target>
+	
 	<target name="clean">
-		<delete dir="distr"/>
 		<delete dir="${build.dir}"/>
 	</target>
 	
@@ -16,10 +36,10 @@
 	<target name="clover" depends="build">
 		<clover-setup initString="mycoverage.db"/>
 		<clover-report>
-		       <current outfile="coverage.xml">
-		          <format type="xml"/>
-		       </current>
-		    </clover-report>
+	       <current outfile="coverage.xml">
+	          <format type="xml"/>
+	       </current>
+	    </clover-report>
 	</target>
 	
 	<target name="build.xml.generation" depends="init">

@@ -1,34 +1,19 @@
 package sneer.pulp.blinkinglights.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
-
+import sneer.kernel.container.Inject;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
-import wheel.lang.FrozenTime;
+import sneer.pulp.clock.Clock;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 
 public class BlinkingLightsImpl implements BlinkingLights {
-
-	private List<Light> _lights = new ArrayList<Light>();
 	
-	//Fix Make BK reactive
-	private static ListRegisterImpl<Light> reg;
-	static{
-		reg = new ListRegisterImpl<Light>();
-		reg.add(new LightImpl("Warning", null, -1));
-		
-		try {
-			throw new NullPointerException();
-		} catch (NullPointerException e) {
-			reg.add(new LightImpl("Error", e, -1));
-		}
-	}
-
+	@Inject
+	static private Clock _clock;	
+	
+	private final ListRegisterImpl<Light> _lights = new ListRegisterImpl<Light>();
+	
 	@Override
 	public void turnOff(Light light) {
 		if(light == null) return;
@@ -38,8 +23,8 @@ public class BlinkingLightsImpl implements BlinkingLights {
 	}
 
 	@Override
-	public Light turnOn(String message, Throwable t, long timeout) {
-		Light result = new LightImpl(message, t, timeout); 
+	public Light turnOn(String message, Throwable t, int timeout) {
+		Light result = new LightImpl(message, t, timeout, _clock); 
 		_lights.add(result);
 		return result;
 	}
@@ -55,73 +40,8 @@ public class BlinkingLightsImpl implements BlinkingLights {
 	}
 
 	@Override
-	public List<Light> listLights() {
-		prune();
-		return new ArrayList<Light>(_lights);
-	}
-
-	private void prune() {
-		CollectionUtils.filter(_lights, new Predicate() {
-			@Override
-			public boolean evaluate(Object candidate) {
-				return ((Light)candidate).isOn();
-			}
-		});
-	}
-
-	@Override
 	public ListSignal<Light> lights() {
-		return reg.output(); //Fix Make BK reactive
-
+		return _lights.output();
 	}
-}
-
-class LightImpl implements Light {
-	static final int NEVER = -1;
-
-	private String _message;
-
-	private boolean _isOn = true;
-
-	private Throwable _error;
-
-	private final long _expirationTime;
-
-	public LightImpl(String message, Throwable error, long timeout) {
-		_message = message;
-		_error = error;
-		_expirationTime = timeout == NEVER
-			? NEVER
-			: FrozenTime.frozenTimeMillis() + timeout;
-	}
-
-	@Override
-	public Throwable error() {
-		return _error;
-	}
-
-	@Override
-	public boolean isOn() {
-		checkTimeout();
-		return _isOn;
-	}
-
-	private void checkTimeout() {
-		if (!_isOn) return;
-		if (_expirationTime == NEVER) return;
-		
-		
-		if (FrozenTime.frozenTimeMillis() >= _expirationTime)
-			_isOn = false;
-	}
-
-	@Override
-	public String message() {
-		return _message;
-	}
-
-	@Override
-	public void turnOff() {
-		_isOn = false;
-	}
+	
 }

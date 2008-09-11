@@ -20,9 +20,10 @@ public class BlinkingLightsSnappDemo  {
 		bl.turnOn("This is a Warning!");
 		
 		try {
-			throw new RuntimeException();
-		} catch (Exception e) {
-			bl.turnOn("This is a Error!",e);
+			String error = null;
+			error.toString();
+		} catch (NullPointerException e) {
+			bl.turnOn("This is a Error!", e);
 		}
 		
 		container.produce(BlinkingLightsSnapp.class);

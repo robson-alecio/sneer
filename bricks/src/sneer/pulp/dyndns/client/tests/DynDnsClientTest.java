@@ -6,7 +6,6 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -30,6 +29,7 @@ import sneer.pulp.propertystore.mocks.TransientPropertyStore;
 import wheel.lang.exceptions.FriendlyException;
 import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;
+import wheel.reactive.lists.ListSignal;
 
 public class DynDnsClientTest {
 	
@@ -145,9 +145,9 @@ Unacceptable Client Behavior
 	}
 
 	private Light assertBlinkingLight(final Exception expectedError, final Container container) {
-		final List<Light> lights = container.produce(BlinkingLights.class).listLights();
-		assertEquals(1, lights.size());
-		final Light light = lights.get(0);
+		final ListSignal<Light> lights = container.produce(BlinkingLights.class).lights();
+		assertEquals(1, lights.currentSize());
+		final Light light = lights.currentGet(0);
 		assertTrue(light.isOn());
 		if (expectedError instanceof FriendlyException) {
 			assertEquals(((FriendlyException)expectedError).getHelp(), light.message());

@@ -12,7 +12,6 @@ import java.io.PrintStream;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
@@ -82,10 +81,6 @@ public class BlinkingLightsSnappImpl implements BlinkingLightsSnapp {
 
 	private void initWarnings() {
 		_lightsList.getComponent().addMouseListener(new MouseAdapter(){ @Override public void mouseReleased(final MouseEvent event) {
-			
-			if(isInvalidMouseClick(event)) 
-				return;
-			
 			Light light = getClickedLight(event);
             
             if(light.isWarn()){
@@ -122,10 +117,6 @@ public class BlinkingLightsSnappImpl implements BlinkingLightsSnapp {
 			list.setSelectedIndex(list.locationToIndex(event.getPoint()));
             Light light = (Light)list.getSelectedValue();
 			return light;
-		}
-
-		private boolean isInvalidMouseClick(final MouseEvent event) {
-			return SwingUtilities.isLeftMouseButton(event) && event.getClickCount()<=1;
 		}});
 	}
 	

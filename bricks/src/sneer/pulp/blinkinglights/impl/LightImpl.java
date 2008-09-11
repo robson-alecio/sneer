@@ -13,22 +13,22 @@ public class LightImpl implements Light {
 	
 	private Throwable _error;
 	
-	private final int _expirationTime;
+	private final int _timeout;
 
 	public LightImpl(String message, Throwable error, int timeout, Clock clock, BlinkingLights blinkingLights) {
 		_message = message;
 		_error = error;
 		
 		if(timeout == NEVER){
-			_expirationTime =  NEVER;
+			_timeout =  NEVER;
 			return;
 		}
-		_expirationTime = timeout;
+		_timeout = timeout;
 		addAlarm(clock, blinkingLights);
 	}
 
 	private void addAlarm(Clock clock, final BlinkingLights blinkingLights) {
-		clock.addAlarm(_expirationTime, new Runnable() { @Override public void run() {
+		clock.addAlarm(_timeout, new Runnable() { @Override public void run() {
 			blinkingLights.turnOff(LightImpl.this);	
 		}});
 	}

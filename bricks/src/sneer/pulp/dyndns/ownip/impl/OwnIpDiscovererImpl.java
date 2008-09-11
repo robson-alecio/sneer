@@ -13,6 +13,8 @@ import wheel.reactive.impl.RegisterImpl;
 
 class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	
+	static final int RETRY_TIME = 11 * 60 * 1000;
+
 	@Inject
 	static private Clock _clock;
 	
@@ -25,7 +27,7 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	private final Register<String> _ownIp = new RegisterImpl<String>(null);
 	
 	private OwnIpDiscovererImpl() {
-		_clock.addPeriodicAlarm(11 * 60 * 1000, new Runnable() { @Override public void run() {
+		_clock.addPeriodicAlarm(RETRY_TIME, new Runnable() { @Override public void run() {
 			try {
 				ipDiscovery();
 			} catch (IOException e) {
@@ -49,4 +51,8 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 		return _ownIp .output();
 	}
 
+	@Override
+	public int getRetryTime(){
+		return RETRY_TIME;
+	}
 }

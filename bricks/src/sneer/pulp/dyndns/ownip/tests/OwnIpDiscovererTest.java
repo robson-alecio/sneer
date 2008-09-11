@@ -52,9 +52,10 @@ public class OwnIpDiscovererTest {
 			receiver.consume(value);
 		}};
 		
-		clock.triggerAlarm(0);
-		clock.triggerAlarm(0);
-		clock.triggerAlarm(0);
+		clock.advanceTime(1);
+		clock.advanceTime(discoverer.getRetryTime());
+		clock.advanceTime(discoverer.getRetryTime());
+		clock.advanceTime(discoverer.getRetryTime());
 		
 		context.assertIsSatisfied();
 	}

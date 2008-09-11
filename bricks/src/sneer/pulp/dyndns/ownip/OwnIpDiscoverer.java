@@ -7,4 +7,6 @@ public interface OwnIpDiscoverer extends Brick {
 	
 	Signal<String> ownIp();
 
+	int getRetryTime();
+
 }

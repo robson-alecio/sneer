@@ -106,7 +106,7 @@ Unacceptable Client Behavior
 		final Container container = startDynDnsClient();
 		final Light light = assertBlinkingLight(error, container);
 		
-		clock.triggerAlarm(0);
+		clock.advanceTime(300001);
 		assertFalse(light.isOn());
 		context.assertIsSatisfied();
 	}

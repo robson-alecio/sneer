@@ -51,8 +51,10 @@ public class BlinkingLightsTest extends TestThatIsInjected {
 		
 		assertTrue(light.isOn());
 		
-		clock.triggerAlarm(0);
+		clock.advanceTime(timeout);		
+		assertTrue(light.isOn());
 		
+		clock.advanceTime(1);		
 		assertFalse(light.isOn());
 	}
 }

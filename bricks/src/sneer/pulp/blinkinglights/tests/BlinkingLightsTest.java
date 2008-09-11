@@ -53,11 +53,6 @@ public class BlinkingLightsTest extends TestThatIsInjected {
 		final String message = "some error";
 		final NullPointerException exception = new NullPointerException();
 		final int timeout = 1000;
-
-//		context.checking(new Expectations() {{
-//			exactly(1).of(clck).addAlarm(with(timeout), with(any(Runnable.class)));
-//		}});
-
 		final Runnable clockTriger[] = new Runnable[1];
 		
 		context.checking(new Expectations() {{

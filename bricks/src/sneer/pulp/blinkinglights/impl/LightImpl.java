@@ -1,8 +1,8 @@
 package sneer.pulp.blinkinglights.impl;
 
+import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.clock.Clock;
-import wheel.lang.FrozenTime;
 
 public class LightImpl implements Light {
 	static final int NEVER = -1;
@@ -15,13 +15,22 @@ public class LightImpl implements Light {
 	
 	private final int _expirationTime;
 
-	private final Clock _clock;
-
-	public LightImpl(String message, Throwable error, int timeout, Clock clock) {
+	public LightImpl(String message, Throwable error, int timeout, Clock clock, BlinkingLights blinkingLights) {
 		_message = message;
 		_error = error;
-		_clock = clock;
-		_expirationTime = timeout == NEVER ? NEVER : timeout;
+		
+		if(timeout == NEVER){
+			_expirationTime =  NEVER;
+			return;
+		}
+		_expirationTime = timeout;
+		addAlarm(clock, blinkingLights);
+	}
+
+	private void addAlarm(Clock clock, final BlinkingLights blinkingLights) {
+		clock.addAlarm(_expirationTime, new Runnable() { @Override public void run() {
+			blinkingLights.turnOff(LightImpl.this);	
+		}});
 	}
 	
 	@Override
@@ -31,20 +40,7 @@ public class LightImpl implements Light {
 	
 	@Override
 	public boolean isOn() {
-		checkTimeout();
 		return _isOn;
-	}
-	
-	private void checkTimeout() {
-		if (!_isOn) return;
-		if (_expirationTime == NEVER) return;
-		
-		_clock.addAlarm(_expirationTime, new Runnable() { @Override public void run() {
-			turnOff();	
-		}});
-		
-		if (FrozenTime.frozenTimeMillis() > _expirationTime)
-			_isOn = false;
 	}
 	
 	@Override

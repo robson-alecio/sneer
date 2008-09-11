@@ -22,7 +22,7 @@ public class GenerateAntFile {
 		final DurableDirectory directory = new DurableDirectory(".");
 		
 		if (directory.fileExists("build.xml"))
-			throw new IllegalStateException("File build.xml already exists");
+			directory.deleteFile("build.xml");
 		
 		if (!directory.fileExists(CLASSPATH))
 			throw new IllegalStateException("File .classpath does not exist");

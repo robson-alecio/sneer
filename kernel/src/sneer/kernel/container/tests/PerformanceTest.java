@@ -26,8 +26,6 @@ public class PerformanceTest {
 		ClassLoader cl1 = o1.getClass().getClassLoader();
 		ClassLoader cl2 = o2.getClass().getClassLoader();
 		assertNotSame(cl1, cl2);
-		//System.out.println(ObjectUtils.identityToString(cl1));
-		//System.out.println(ObjectUtils.identityToString(cl2));
 	}
 
 

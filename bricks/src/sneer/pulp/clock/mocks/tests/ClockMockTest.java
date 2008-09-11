@@ -31,19 +31,19 @@ public class ClockMockTest extends TestThatIsInjected {
 		assertEquals(0,_lastRunned);
 		assertEquals(0,_lastCount);
 		
-		clock.advanceTime(10);	
+		clock.advanceTime(10);	//time=11
 		assertEquals(10,_lastRunned);
 		assertEquals(1,_lastCount);
 		
-		clock.advanceTime(20);	
+		clock.advanceTime(20);	//time=21
 		assertEquals(30,_lastRunned);
 		assertEquals(1,_lastCount);
 		
-		clock.advanceTime(20);	
+		clock.advanceTime(20);	//time=41
 		assertEquals(50,_lastRunned);
 		assertEquals(1,_lastCount);
 		
-		clock.advanceTime(110);	
+		clock.advanceTime(110);	//time=151
 		assertEquals(20,_lastRunned);
 		assertEquals(8,_lastCount);
 		

@@ -8,22 +8,25 @@ import java.util.List;
 
 import org.junit.Test;
 
-import sneer.kernel.container.Inject;
-import sneer.kernel.container.tests.TestThatIsInjected;
+import sneer.kernel.container.Container;
+import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.clock.Clock;
+import sneer.pulp.clock.realtime.mocks.BrokenClock;
 
-public class ClockTest extends TestThatIsInjected {
+public class ClockTest {
 
 	int _lastRunned = 0;
 	int _lastCount = 0;
-	List<Integer> _order = new ArrayList<Integer>();
 	
-	@Inject
-	static private Clock clock;
+	final List<Integer> _order = new ArrayList<Integer>();
+	final BrokenClock mock = new BrokenClock();
 	
 	@Test
 	public void test() throws Exception {
-		
+
+		final Container container = ContainerUtils.newContainer(mock);
+		final Clock clock = container.produce(Clock.class);
+
 		clock.addAlarm(50, newEmptyRunnable(50));
 		clock.addPeriodicAlarm(20, newEmptyRunnable(20));
 		clock.addAlarm(10, newEmptyRunnable(10));
@@ -48,7 +51,7 @@ public class ClockTest extends TestThatIsInjected {
 	}
 
 	private void step(int plusTime, int time, int count) {
-		clock.advanceTime(plusTime);	
+		mock.advanceTime(plusTime);	
 		assertEquals(time, _lastRunned);
 		assertEquals(count, _lastCount);
 	}

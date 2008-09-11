@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
-import sneer.pulp.clock.Clock;
+import sneer.pulp.clock.realtime.mocks.BrokenClock;
 import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.propertystore.PropertyStore;
@@ -20,7 +20,8 @@ import wheel.reactive.impl.Receiver;
 
 public class OwnIpDiscovererTest {
 	
-	private final Mockery context = new JUnit4Mockery();
+	final Mockery context = new JUnit4Mockery();
+	final BrokenClock _mock = new BrokenClock();
 	
 	@Test
 	public void testFirstTime() throws IOException {
@@ -47,8 +48,7 @@ public class OwnIpDiscovererTest {
 			
 		}});
 		
-		final Container container = ContainerUtils.newContainer(checkip, store);
-		final Clock clock = container.produce(Clock.class);
+		final Container container = ContainerUtils.newContainer(_mock, checkip, store);
 		final OwnIpDiscoverer discoverer = container.produce(OwnIpDiscoverer.class);
 		
 		@SuppressWarnings("unused")
@@ -56,8 +56,8 @@ public class OwnIpDiscovererTest {
 			receiver.consume(value);
 		}};
 		
-		clock.advanceTime(1);
-		clock.advanceTime(retryTime * 3);
+		_mock.advanceTime(1);
+		_mock.advanceTime(retryTime * 3);
 		
 		context.assertIsSatisfied();
 	}

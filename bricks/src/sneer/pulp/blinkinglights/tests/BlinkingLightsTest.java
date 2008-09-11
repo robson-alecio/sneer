@@ -7,37 +7,37 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import sneer.kernel.container.Inject;
+import sneer.kernel.container.Container;
+import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
-import sneer.pulp.blinkinglights.impl.LightImpl;
-import sneer.pulp.clock.Clock;
+import sneer.pulp.clock.realtime.mocks.BrokenClock;
 
 public class BlinkingLightsTest extends TestThatIsInjected {
 
-	@Inject
-	private static BlinkingLights _lights;
+	final BrokenClock _mock = new BrokenClock();
+	final Container _container = ContainerUtils.newContainer(_mock);
 
-	@Inject
-	private static Clock clock;
-	
 	@Test
 	public void testLights() throws Exception {
-		assertLightCount(0);
 		
-		Light light = _lights.turnOn(Light.ERROR_TYPE, "some error", new NullPointerException());
+		final BlinkingLights lights = _container.produce(BlinkingLights.class);
+		
+		assertLightCount(0, lights);
+		
+		Light light = lights.turnOn(Light.ERROR_TYPE, "some error", new NullPointerException());
 		assertTrue(light.isOn());
 		assertEquals("some error", light.message());
 		assertNotNull(light.error());
-		assertLightCount(1);
+		assertLightCount(1, lights);
 		
-		_lights.turnOff(light);
+		lights.turnOff(light);
 		assertFalse(light.isOn());
-		assertLightCount(0);
+		assertLightCount(0, lights);
 	}
 
-	private void assertLightCount(int count) {
+	private void assertLightCount(int count, BlinkingLights _lights) {
 		assertEquals(count, _lights.lights().currentSize());
 	}
 	
@@ -48,14 +48,15 @@ public class BlinkingLightsTest extends TestThatIsInjected {
 		final NullPointerException exception = new NullPointerException();
 		final int timeout = 1000;
 
-		final Light light = new LightImpl(Light.ERROR_TYPE, message, exception, timeout, clock, _lights);
-		
+		final BlinkingLights lights = _container.produce(BlinkingLights.class);
+		final Light light = lights.turnOn(Light.ERROR_TYPE, message, exception, timeout);
+
 		assertTrue(light.isOn());
 		
-		clock.advanceTime(timeout);		
+		_mock.advanceTime(timeout);		
 		assertTrue(light.isOn());
 		
-		clock.advanceTime(1);		
+		_mock.advanceTime(1);		
 		assertFalse(light.isOn());
 	}
 }

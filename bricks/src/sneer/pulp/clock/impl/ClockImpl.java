@@ -5,21 +5,41 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import sneer.kernel.container.Inject;
 import sneer.pulp.clock.Clock;
+import sneer.pulp.clock.realtime.RealtimeClock;
+import wheel.lang.Threads;
 
 class ClockImpl implements Clock {
+	
+	@Inject
+	private static RealtimeClock _realtime;
 
-	int _currentTime = 0;
+	long _currentTime = 0;//_realtime.currentTimeMillis();
+	
 	final List<Alarm> _alarms = new ArrayList<Alarm>();
+	
+	ClockImpl(){
+		//Fix
+		Threads.startDaemon("Clock", new Runnable(){@Override public void run() {
+			while (true) {
+				if(_currentTime<_realtime.currentTimeMillis()){
+					_currentTime=_realtime.currentTimeMillis();
+					checkTime();
+				}
+				Threads.sleepWithoutInterruptions(1);
+			}
+		}}); 
+	}
 
 	@Override
 	public void addAlarm(int millisFromNow, Runnable runnable) {
-		_alarms.add(new Alarm(this, runnable, millisFromNow, false));
+		_alarms.add(new Alarm(runnable, millisFromNow, false));
 	}
 
 	@Override
 	public void addPeriodicAlarm(int millis, Runnable runnable) {
-		_alarms.add(new Alarm(this, runnable, millis, true));
+		_alarms.add(new Alarm(runnable, millis, true));
 	}
 
 	@Override
@@ -55,37 +75,29 @@ class ClockImpl implements Clock {
 		}
 	}
 
-	public void advanceTime(int plusTime) {
-		_currentTime = _currentTime+plusTime;
-		checkTime();
-	}
-}
-
-class Alarm{
-	
-	final int _increment;
-	
-	int _millisFromNow;
-	final Runnable _runnable;
-
-	private final ClockImpl _clockMock;
-
-	Alarm(ClockImpl clockMock, Runnable runnable, int millisFromNow, boolean isPeriodic) {
-		_clockMock = clockMock;
-		_increment = isPeriodic ? millisFromNow : 0;
-		_millisFromNow = millisFromNow;
-		_runnable = runnable;
-	}
-	
-	boolean tryRun(){
-		if(_clockMock._currentTime <= _millisFromNow )
-			return false;
+	private class Alarm{
 		
-		_runnable.run();
+		final int _increment;
 		
-		if(_increment==0) _clockMock._alarms.remove(this); //NotPeriodic.remove
-		else _millisFromNow = _millisFromNow+_increment;   //Periodic.incrementTime 
+		int _millisFromNow;
+		final Runnable _runnable;
+
+		Alarm(Runnable runnable, int millisFromNow, boolean isPeriodic) {
+			_increment = isPeriodic ? millisFromNow : 0;
+			_millisFromNow = millisFromNow;
+			_runnable = runnable;
+		}
 		
-		return true;
+		boolean tryRun(){
+			if(_currentTime <= _millisFromNow )
+				return false;
+			
+			_runnable.run();
+			
+			if(_increment==0) _alarms.remove(this); //NotPeriodic.remove
+			else _millisFromNow = _millisFromNow+_increment;   //Periodic.incrementTime 
+			
+			return true;
+		}
 	}
 }

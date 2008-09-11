@@ -1,6 +1,10 @@
 package sneer.pulp.clock.mocks.tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -13,6 +17,7 @@ public class ClockMockTest extends TestThatIsInjected {
 	final ClockMock clock = new ClockMock();
 	int _lastRunned = 0;
 	int _lastCount = 0;
+	List<Integer> _order = new ArrayList<Integer>();
 	
 	@Test
 	public void test() throws Exception {
@@ -38,9 +43,16 @@ public class ClockMockTest extends TestThatIsInjected {
 		assertEquals(50,_lastRunned);
 		assertEquals(1,_lastCount);
 		
-		clock.advanceTime(1000);	
+		clock.advanceTime(110);	
 		assertEquals(20,_lastRunned);
-		assertEquals(3,_lastCount);
+		assertEquals(8,_lastCount);
+		
+		Integer lastInteger = null;
+		for (Integer timeout : _order) {
+			if(lastInteger!=null)
+				assertTrue(timeout>=lastInteger);
+			lastInteger = timeout;
+		}
 		
 	}
 
@@ -63,6 +75,7 @@ public class ClockMockTest extends TestThatIsInjected {
 		public void run() {
 			_test._lastRunned = _timeout;
 			_test._lastCount = ++count;
+			_test._order.add(_timeout * _test._lastCount);
 		}
 	}
 }

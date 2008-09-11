@@ -32,17 +32,25 @@ public class ClockMock implements Clock {
 		return _currentTime;
 	}
 
-	public void checkTime() {
-		Collections.sort(_alarms, 
-			new Comparator<Tupla>(){@Override public int compare(Tupla tupla0, Tupla tupla1) {
-				return tupla0._millisFromNow - tupla1._millisFromNow;
-			}});
-		
-		List<Tupla> tmp = new ArrayList<Tupla>(_alarms);
-		
-		
-		for (Tupla tupla : tmp)
-			if(!tupla.tryRun())	return;
+	private void checkTime() {
+		int i = 1;
+		while(i>0){
+			Collections.sort(_alarms, 
+				new Comparator<Tupla>(){@Override public int compare(Tupla tupla0, Tupla tupla1) {
+					return tupla0._millisFromNow - tupla1._millisFromNow;
+				}});
+			
+			List<Tupla> tmp = new ArrayList<Tupla>(_alarms);
+			
+			for (i = 0; i < tmp.size(); i++) {
+				Tupla tupla = tmp.get(i);
+				if(!tupla.tryRun())	{
+					if(tupla._increment>0)
+						return;
+					break;
+				}
+			}
+		}
 	}
 
 	public void advanceTime(int plusTime) {

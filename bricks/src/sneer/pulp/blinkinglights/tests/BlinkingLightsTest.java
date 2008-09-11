@@ -12,14 +12,14 @@ import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.impl.LightImpl;
-import sneer.pulp.clock.mocks.ClockMock;
+import sneer.pulp.clock.mocks.BrokenClock;
 
 public class BlinkingLightsTest extends TestThatIsInjected {
 
 	@Inject
 	private BlinkingLights _lights;
 
-	final ClockMock clock = new ClockMock();
+	final BrokenClock clock = new BrokenClock();
 	
 	@Test
 	public void testLights() throws Exception {

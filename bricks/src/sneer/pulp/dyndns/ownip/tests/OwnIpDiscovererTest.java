@@ -9,7 +9,7 @@ import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
 import sneer.kernel.container.ContainerUtils;
-import sneer.pulp.clock.mocks.ClockMock;
+import sneer.pulp.clock.mocks.BrokenClock;
 import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.propertystore.PropertyStore;
@@ -24,7 +24,7 @@ public class OwnIpDiscovererTest {
 	@Test
 	public void testFirstTime() throws IOException {
 		
-		final ClockMock clock = new ClockMock();
+		final BrokenClock clock = new BrokenClock();
 		final CheckIp checkip = context.mock(CheckIp.class);
 		final Omnivore<String> receiver = context.mock(Omnivore.class);
 		final PropertyStore store = new TransientPropertyStore();

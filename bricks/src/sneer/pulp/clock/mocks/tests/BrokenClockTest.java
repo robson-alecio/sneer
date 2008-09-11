@@ -9,12 +9,12 @@ import java.util.List;
 import org.junit.Test;
 
 import sneer.kernel.container.tests.TestThatIsInjected;
-import sneer.pulp.clock.mocks.ClockMock;
+import sneer.pulp.clock.mocks.BrokenClock;
 
-public class ClockMockTest extends TestThatIsInjected {
+public class BrokenClockTest extends TestThatIsInjected {
 
 
-	final ClockMock clock = new ClockMock();
+	final BrokenClock clock = new BrokenClock();
 	int _lastRunned = 0;
 	int _lastCount = 0;
 	List<Integer> _order = new ArrayList<Integer>();
@@ -58,10 +58,10 @@ public class ClockMockTest extends TestThatIsInjected {
 	private static class MyRunnable implements Runnable{
 
 		private final int _timeout;
-		private final ClockMockTest _test;
+		private final BrokenClockTest _test;
 		private int count = 0;
 
-		public MyRunnable(int timeout, ClockMockTest test) {
+		public MyRunnable(int timeout, BrokenClockTest test) {
 			_timeout = timeout;
 			_test = test;
 		}

@@ -25,37 +25,32 @@ public class ClockMockTest extends TestThatIsInjected {
 		clock.addAlarm(50, newEmptyRunnable(50));
 		clock.addPeriodicAlarm(20, newEmptyRunnable(20));
 		clock.addAlarm(10, newEmptyRunnable(10));
+		clock.addPeriodicAlarm(35, newEmptyRunnable(35));
 		clock.addAlarm(30, newEmptyRunnable(30));
 
-		clock.advanceTime(1);	
-		assertEquals(0,_lastRunned);
-		assertEquals(0,_lastCount);
-		
-		clock.advanceTime(10);	//time=11
-		assertEquals(10,_lastRunned);
-		assertEquals(1,_lastCount);
-		
-		clock.advanceTime(20);	//time=21
-		assertEquals(30,_lastRunned);
-		assertEquals(1,_lastCount);
-		
-		clock.advanceTime(20);	//time=41
-		assertEquals(50,_lastRunned);
-		assertEquals(1,_lastCount);
-		
-		clock.advanceTime(110);	//time=151
-		assertEquals(20,_lastRunned);
-		assertEquals(8,_lastCount);
-		
+		step(1,0,0); 		//time = 01 []
+		step(11, 10, 1); 	//time = 11 [10]
+		step(20, 30, 1); 	//time = 31 [10, 20, 30]
+		step(20, 50, 1); 	//time = 51 [10, 20, 30, 35, 40, 50]
+		step(30, 20, 4); 	//time = 81 [10, 20, 30, 35, 40, 50, 60, 70, 80]
+	}
+
+	@Test
+	public void testCallTime() {
 		Integer lastInteger = null;
 		for (Integer timeout : _order) {
 			if(lastInteger!=null)
 				assertTrue(timeout>=lastInteger);
 			lastInteger = timeout;
 		}
-		
 	}
 
+	private void step(int plusTime, int time, int count) {
+		clock.advanceTime(plusTime);	
+		assertEquals(time, _lastRunned);
+		assertEquals(count, _lastCount);
+	}
+	
 	private Runnable newEmptyRunnable(int timeout) {
 		return new MyRunnable(timeout, this);
 	}

@@ -44,8 +44,13 @@ public class ClockMock implements Clock {
 			
 			for (i = 0; i < tmp.size(); i++) {
 				Tupla tupla = tmp.get(i);
-				if(!tupla.tryRun())
+				if(!tupla.tryRun()) //Break Last Timeout
 					break;
+				
+				if(tupla._increment>0){ //Break Periodic
+					i=1;
+					break;
+				}
 			}
 		}
 	}

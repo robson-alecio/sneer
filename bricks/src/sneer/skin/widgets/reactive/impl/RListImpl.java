@@ -1,7 +1,5 @@
 package sneer.skin.widgets.reactive.impl;
 
-import static wheel.lang.Types.cast;
-
 import java.awt.Component;
 import java.awt.Image;
 
@@ -62,7 +60,7 @@ public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 			}
 
 			private ELEMENT getElement(Object value) {
-				return cast(value);
+				return (ELEMENT)value;
 			}
 		}
 		setCellRenderer(new DefaultListCellRenderer());

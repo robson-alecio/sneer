@@ -26,11 +26,10 @@ import wheel.reactive.sets.impl.SetRegisterImpl;
 public class BrickProxy implements InvocationHandler {
 
 	static public <B extends Brick> B createFor(Class<B> brickInterface, SignalPublisher intermediary) {
-		return cast(
-			Proxy.newProxyInstance(
+		return (B)Proxy.newProxyInstance(
 				BrickProxy.class.getClassLoader(),
 				new Class<?>[]{ brickInterface },
-				new BrickProxy(brickInterface, intermediary)));
+				new BrickProxy(brickInterface, intermediary));
 	}
 	
 	static void handleNotification(Brick brick, String signalName, Object notification) {

@@ -1,7 +1,5 @@
 package sneer.kernel.container.impl;
 
-import static wheel.lang.Types.cast;
-
 import java.io.File;
 import java.lang.reflect.Constructor;
 
@@ -44,7 +42,7 @@ public class SimpleContainer implements Container {
 
 	@Override
 	public <T> T produce(Class<T> type) {
-		T result = cast(_binder.implementationFor(type));
+		T result = (T)_binder.implementationFor(type);
 		if (result == null) {
 			result = instantiate(type);
 			_binder.bind(result);
@@ -68,14 +66,14 @@ public class SimpleContainer implements Container {
 	private <T> T lookup(Class<T> clazz) throws Exception {
 
 		Object result = bindingFor(clazz);
-	    if(result != null) return cast(result);
+	    if(result != null) return (T)result;
 
 		String implementation = implementationFor(clazz); 
 		File brickDirectory = sneerConfig().brickDirectory(clazz);
 		ClassLoader cl = getClassLoader(clazz, brickDirectory);
 		Class<?> impl = cl.loadClass(implementation);
 		result = construct(impl);
-		return cast(result);		
+		return (T)result;		
 
 	}
 

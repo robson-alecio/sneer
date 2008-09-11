@@ -123,8 +123,7 @@ class PeerProxy extends AbstractParty implements SignalPublisher {
 			
 			_brickProxiesByInterface.put(brickInterface, result);
 		}
-		
-		return Types.cast(result);
+		return (B)result;
 	}
 
 	@Override

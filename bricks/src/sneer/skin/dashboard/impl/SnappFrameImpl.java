@@ -5,20 +5,12 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import sneer.skin.dashboard.SnappFrame;
 
 public class SnappFrameImpl extends JPanel implements SnappFrame {
 
 	private static final long serialVersionUID = 1L;
-
-	public SnappFrameImpl() {
-//		setBorder(
-//			new CompoundBorder(
-//				new BevelBorder(BevelBorder.RAISED),
-//				new EmptyBorder(5,5,5,5)));
-	}
 
 	@Override
 	public Dimension getPreferredSize() {
@@ -55,22 +47,5 @@ public class SnappFrameImpl extends JPanel implements SnappFrame {
 	@Override
 	public Container getContent() {
 		return this;
-	}
-	
-	@Override
-	public void setVisible(final boolean visible) {
-		SwingUtilities.invokeLater(
-			new Runnable(){
-				@Override
-				public void run() {
-					setVisible(visible);
-					setVisibleFromSuper(visible);
-				}
-			}
-		);
-	}
-	
-	private void setVisibleFromSuper(boolean visible) {
-		super.setVisible(visible);
 	}
 }

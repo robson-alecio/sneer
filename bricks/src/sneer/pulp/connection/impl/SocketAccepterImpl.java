@@ -1,5 +1,7 @@
 package sneer.pulp.connection.impl;
 
+import static wheel.io.Logger.log;
+
 import java.io.IOException;
 
 import sneer.kernel.container.Inject;
@@ -16,7 +18,6 @@ import wheel.reactive.EventNotifier;
 import wheel.reactive.EventSource;
 import wheel.reactive.impl.EventNotifierImpl;
 import wheel.reactive.impl.Receiver;
-import static wheel.io.Logger.log;
 
 
 public class SocketAccepterImpl implements SocketAccepter {
@@ -103,11 +104,14 @@ public class SocketAccepterImpl implements SocketAccepter {
 
 	private void openServerSocket(int port) {
 		if (port == 0) return;
-		
+		Light starting = _lights.turnOn(Light.INFO_TYPE, "Starting Sneer on port " + port);
 		try {
 			_serverSocket = _network.openServerSocket(port);
 			_lights.turnOff(_cantOpenServerSocket);
+			_lights.turnOff(starting);
+			_lights.turnOn(Light.INFO_TYPE, "Open socket at port " + port);
 		} catch (IOException e) {
+			_lights.turnOff(starting);
 			if (!_isStopped)
 				_cantOpenServerSocket = _lights.turnOn(Light.ERROR_TYPE, "Error trying to open socket at "+port, e);
 		}

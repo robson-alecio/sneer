@@ -1,6 +1,7 @@
 package main.impl;
 
 import main.MainDemoBrick;
+import snapps.blinkinglights.BlinkingLightsSnapp;
 import snapps.contacts.ContactsSnapp;
 import sneer.kernel.container.Inject;
 import sneer.pulp.connection.SocketOriginator;
@@ -21,6 +22,9 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	
 	@Inject	@SuppressWarnings("unused")
 	private static ContactsSnapp _gui3;
+	
+	@Inject	@SuppressWarnings("unused")
+	private static BlinkingLightsSnapp _gui4;
 	
 	@Inject	@SuppressWarnings("unused")
 	private static SocketOriginator _networkDaemon1;
@@ -47,8 +51,6 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	public void start(String ownName, int port) {
 		assertIsHardcodedNick(ownName);
 		
-		System.out.println("Starting Sneer on port " + port);
-
 		_ownName.nameSetter().consume(ownName);
 		
 		_portKeeper.portSetter().consume(port);

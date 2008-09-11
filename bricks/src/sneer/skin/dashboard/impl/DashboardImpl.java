@@ -159,6 +159,7 @@ public class DashboardImpl implements Dashboard, Runnable {
 				public void run() {
 					contentPanel.add(sf);
 					snapp.init(sf);
+					sf.revalidate();
 				}
 			}
 		);

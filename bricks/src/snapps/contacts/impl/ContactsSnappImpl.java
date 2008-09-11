@@ -2,8 +2,10 @@ package snapps.contacts.impl;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Image;
 
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
@@ -51,12 +53,21 @@ public class ContactsSnappImpl implements ContactsSnapp {
 	@Override
 	public void init(Container container) {	
 		_contactList = _rfactory.newList(_contacts.contacts(), new ContactLabelProvider());
-		
+		JScrollPane scrollPane = new JScrollPane();
 		container.setLayout(new BorderLayout());
-		container.add(_contactList.getComponent(), BorderLayout.CENTER);
-		_contactList.getComponent().setBorder(new TitledBorder(new EmptyBorder(5,5,5,5), getName()));
+		container.add(scrollPane, BorderLayout.CENTER);
+		scrollPane.getViewport().add(_contactList.getComponent());
+		scrollPane.setMinimumSize(size(container));
+		scrollPane.setPreferredSize(size(container));
+		scrollPane.setBorder(new TitledBorder(new EmptyBorder(5,5,5,5), getName()));
+		_contactList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
+		scrollPane.setBackground(_contactList.getComponent().getBackground());
 	}
 
+	private Dimension size(Container container) {
+		return new Dimension(container.getSize().width, 150 );
+	}
+	
 	@Override
 	public String getName() {
 		return "My Contacts";

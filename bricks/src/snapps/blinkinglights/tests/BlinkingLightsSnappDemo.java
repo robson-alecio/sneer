@@ -22,8 +22,7 @@ public class BlinkingLightsSnappDemo  {
 		bl.turnOn(Light.WARN_TYPE, "This is a Warning!");
 		
 		try {
-			String error = null;
-			error.toString();
+			throw new NullPointerException();
 		} catch (NullPointerException e) {
 			bl.turnOn(Light.ERROR_TYPE, "This is a Error!", e);
 		}

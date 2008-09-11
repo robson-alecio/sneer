@@ -31,7 +31,9 @@ public class OwnIpDiscovererTest {
 		
 		final String ip1 = "123.45.67.89";
 		final String ip2 = "12.34.56.78";
-		
+
+		int retryTime = 11 * 60 * 1000;
+
 		context.checking(new Expectations() {{
 			final Sequence seq = context.sequence("sequence");
 			
@@ -53,9 +55,7 @@ public class OwnIpDiscovererTest {
 		}};
 		
 		clock.advanceTime(1);
-		clock.advanceTime(discoverer.getRetryTime());
-		clock.advanceTime(discoverer.getRetryTime());
-		clock.advanceTime(discoverer.getRetryTime());
+		clock.advanceTime(retryTime * 3);
 		
 		context.assertIsSatisfied();
 	}

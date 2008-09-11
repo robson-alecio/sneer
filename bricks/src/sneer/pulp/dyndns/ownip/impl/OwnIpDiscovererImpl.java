@@ -50,9 +50,4 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	public Signal<String> ownIp() {
 		return _ownIp .output();
 	}
-
-	@Override
-	public int getRetryTime(){
-		return RETRY_TIME;
-	}
 }

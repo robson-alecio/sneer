@@ -5,6 +5,7 @@
 	<classpathentry kind="src" path="bricks/src"/>
 	<classpathentry kind="src" output="sneerAPI-bin" path="kernel/src"/>
 	<classpathentry kind="src" output="sneerAPI-bin" path="wheel/src"/>
+	<classpathentry kind="src" path="meta/src"/>
 	<classpathentry kind="lib" path="spikes/lib/Filters.jar"/>
 	<classpathentry kind="lib" path="spikes/lib/lucene-demos-2.3.2.jar"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/pulp/compiler/lib/compiler-7-ea-b17-02_aug_2007.jar"/>

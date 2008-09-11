@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name="sneer meta build" default="build">
 	
-	<property name="build.dir" value="bin" />
+	<property name="build.dir" value="build" />
 	
 	<target name="build" depends="build.xml.generation">
 		<ant antfile="build.xml" />
@@ -9,16 +9,21 @@
 	
 	<target name="build.xml.generation" depends="init">
 		
-		<javac srcdir="spikes/src" destdir="${build.dir}">
-			<include name="build/**/*.java" />
+		<path id="wheel.lib.classpath">
+			<fileset dir="wheel/lib">
+				<include name="**/*.jar" />
+			</fileset>
+		</path>
+		
+		<javac destdir="${build.dir}" classpathref="wheel.lib.classpath">
+			<src path="wheel/src" />
+			<src path="meta/src" />
 		</javac>
 		
 		<java classname="build.GenerateAntFile">
 			<classpath>
 				<pathelement location="${build.dir}" />
-				<fileset dir="wheel/lib">
-					<include name="**/*.jar" />
-				</fileset>
+				<path refid="wheel.lib.classpath" />
 			</classpath>
 			<arg value="-sourcefolderstogether" />
 		</java>

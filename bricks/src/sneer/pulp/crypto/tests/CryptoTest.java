@@ -8,8 +8,8 @@ import org.junit.Test;
 
 import sneer.kernel.container.Inject;
 import sneer.kernel.container.tests.TestThatIsInjected;
+import sneer.pulp.crypto.ByteArrayUtils;
 import sneer.pulp.crypto.Crypto;
-import wheel.lang.StringUtils;
 
 public class CryptoTest extends TestThatIsInjected {
 
@@ -62,6 +62,6 @@ public class CryptoTest extends TestThatIsInjected {
 	}
 
 	private void assertHexa(String expected, byte[] hash) {
-		assertEquals(expected, StringUtils.toHexa(hash));
+		assertEquals(expected, ByteArrayUtils.toHexa(hash));
 	}
 }

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.bouncycastle.util.encoders.Hex;
 
 public class StringUtils {
 	
@@ -17,10 +16,6 @@ public class StringUtils {
 		}
 	}
 	
-	public static String toHexa(byte[] bytes) {
-		return new String(Hex.encode(bytes));
-	}
-
 	public static String[] splitRight(String line, char separator, int maxParts) {
 		final List<String> parts = new ArrayList<String>(maxParts);
 		int endIndex = line.length();

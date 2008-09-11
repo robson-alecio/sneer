@@ -12,7 +12,5 @@ public interface BrickBundle {
 
 	void add(DeploymentJar jar) throws DeployerException;
 
-	void prettyPrint();
-
 	void sort();
 }

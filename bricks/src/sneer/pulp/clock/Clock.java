@@ -9,4 +9,6 @@ public interface Clock {
 	void addAlarm(int millisFromNow, Runnable runnable);
 	void addPeriodicAlarm(int periodInMillis, Runnable runnable);
 
+	void advanceTime(int plusTime);
+
 }

@@ -1,4 +1,4 @@
-package sneer.pulp.clock.broken.tests;
+package sneer.pulp.clock.impl.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -10,16 +10,16 @@ import org.junit.Test;
 
 import sneer.kernel.container.Inject;
 import sneer.kernel.container.tests.TestThatIsInjected;
-import sneer.pulp.clock.broken.BrokenClock;
+import sneer.pulp.clock.Clock;
 
-public class BrokenClockTest extends TestThatIsInjected {
+public class ClockTest extends TestThatIsInjected {
 
 	int _lastRunned = 0;
 	int _lastCount = 0;
 	List<Integer> _order = new ArrayList<Integer>();
 	
 	@Inject
-	static private BrokenClock clock;
+	static private Clock clock;
 	
 	@Test
 	public void test() throws Exception {
@@ -60,10 +60,10 @@ public class BrokenClockTest extends TestThatIsInjected {
 	private static class MyRunnable implements Runnable{
 
 		private final int _timeout;
-		private final BrokenClockTest _test;
+		private final ClockTest _test;
 		private int count = 0;
 
-		public MyRunnable(int timeout, BrokenClockTest test) {
+		public MyRunnable(int timeout, ClockTest test) {
 			_timeout = timeout;
 			_test = test;
 		}

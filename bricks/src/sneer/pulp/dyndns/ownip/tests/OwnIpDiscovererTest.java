@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
-import sneer.pulp.clock.broken.BrokenClock;
+import sneer.pulp.clock.Clock;
 import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.propertystore.PropertyStore;
@@ -48,7 +48,7 @@ public class OwnIpDiscovererTest {
 		}});
 		
 		final Container container = ContainerUtils.newContainer(checkip, store);
-		final BrokenClock clock = container.produce(BrokenClock.class);
+		final Clock clock = container.produce(Clock.class);
 		final OwnIpDiscoverer discoverer = container.produce(OwnIpDiscoverer.class);
 		
 		@SuppressWarnings("unused")

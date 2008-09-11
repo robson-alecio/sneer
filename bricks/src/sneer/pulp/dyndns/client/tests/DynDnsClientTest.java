@@ -16,7 +16,7 @@ import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
-import sneer.pulp.clock.broken.BrokenClock;
+import sneer.pulp.clock.Clock;
 import sneer.pulp.dyndns.client.DynDnsClient;
 import sneer.pulp.dyndns.ownaccount.Account;
 import sneer.pulp.dyndns.ownaccount.OwnAccountKeeper;
@@ -103,7 +103,7 @@ Unacceptable Client Behavior
 		
 
 		final Container container = startDynDnsClient();
-		final BrokenClock clock = container.produce(BrokenClock.class);
+		final Clock clock = container.produce(Clock.class);
 		
 		final Light light = assertBlinkingLight(error, container);
 		
@@ -159,7 +159,7 @@ Unacceptable Client Behavior
 
 	private Container startDynDnsClient() {
 		final Container container = ContainerUtils.newContainer(ownIpDiscoverer, ownAccountKeeper, updater, propertyStore);
-		container.produce(BrokenClock.class);
+		container.produce(Clock.class);
 		container.produce(DynDnsClient.class);
 		return container;
 	}

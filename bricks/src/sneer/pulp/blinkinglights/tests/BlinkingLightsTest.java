@@ -61,8 +61,9 @@ public class BlinkingLightsTest extends TestThatIsInjected {
 		}});
 		
 		FrozenTime.freezeForCurrentThread(1);
-		assertEquals(light, lights.turnOn(message, exception, timeout));
+		assertTrue(light.isOn());
 		
+		FrozenTime.freezeForCurrentThread(timeout-1);
 		assertTrue(light.isOn());
 		
 		FrozenTime.freezeForCurrentThread(timeout);

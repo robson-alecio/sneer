@@ -1,13 +1,13 @@
-package sneer.pulp.clock.mocks;
+package sneer.pulp.clock.broken.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import sneer.pulp.clock.Clock;
+import sneer.pulp.clock.broken.BrokenClock;
 
-public class BrokenClock implements Clock {
+class BrokenClockImpl implements BrokenClock {
 
 	int _currentTime = 0;
 	final List<Alarm> _alarms = new ArrayList<Alarm>();
@@ -68,9 +68,9 @@ class Alarm{
 	int _millisFromNow;
 	final Runnable _runnable;
 
-	private final BrokenClock _clockMock;
+	private final BrokenClockImpl _clockMock;
 
-	Alarm(BrokenClock clockMock, Runnable runnable, int millisFromNow, boolean isPeriodic) {
+	Alarm(BrokenClockImpl clockMock, Runnable runnable, int millisFromNow, boolean isPeriodic) {
 		_clockMock = clockMock;
 		_increment = isPeriodic ? millisFromNow : 0;
 		_millisFromNow = millisFromNow;

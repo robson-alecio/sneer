@@ -3,7 +3,7 @@ package sneer.pulp.clock.impl;
 import sneer.pulp.clock.Clock;
 import wheel.lang.Threads;
 
-public class ClockImpl implements Clock {
+class ClockImpl implements Clock {
 
 	@Override
 	public long time() {

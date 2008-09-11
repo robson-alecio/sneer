@@ -1,4 +1,4 @@
-package sneer.pulp.clock.mocks.tests;
+package sneer.pulp.clock.broken.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -8,16 +8,18 @@ import java.util.List;
 
 import org.junit.Test;
 
+import sneer.kernel.container.Inject;
 import sneer.kernel.container.tests.TestThatIsInjected;
-import sneer.pulp.clock.mocks.BrokenClock;
+import sneer.pulp.clock.broken.BrokenClock;
 
 public class BrokenClockTest extends TestThatIsInjected {
 
-
-	final BrokenClock clock = new BrokenClock();
 	int _lastRunned = 0;
 	int _lastCount = 0;
 	List<Integer> _order = new ArrayList<Integer>();
+	
+	@Inject
+	static private BrokenClock clock;
 	
 	@Test
 	public void test() throws Exception {

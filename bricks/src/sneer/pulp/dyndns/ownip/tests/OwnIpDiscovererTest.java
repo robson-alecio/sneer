@@ -8,8 +8,9 @@ import org.jmock.Sequence;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
+import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
-import sneer.pulp.clock.mocks.BrokenClock;
+import sneer.pulp.clock.broken.BrokenClock;
 import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.propertystore.PropertyStore;
@@ -24,7 +25,6 @@ public class OwnIpDiscovererTest {
 	@Test
 	public void testFirstTime() throws IOException {
 		
-		final BrokenClock clock = new BrokenClock();
 		final CheckIp checkip = context.mock(CheckIp.class);
 		final Omnivore<String> receiver = context.mock(Omnivore.class);
 		final PropertyStore store = new TransientPropertyStore();
@@ -47,7 +47,9 @@ public class OwnIpDiscovererTest {
 			
 		}});
 		
-		final OwnIpDiscoverer discoverer = ContainerUtils.newContainer(clock, checkip, store).produce(OwnIpDiscoverer.class);
+		final Container container = ContainerUtils.newContainer(checkip, store);
+		final BrokenClock clock = container.produce(BrokenClock.class);
+		final OwnIpDiscoverer discoverer = container.produce(OwnIpDiscoverer.class);
 		
 		@SuppressWarnings("unused")
 		final Receiver<String> refToAvoidGc = new Receiver<String>(discoverer.ownIp()) { @Override public void consume(String value) {

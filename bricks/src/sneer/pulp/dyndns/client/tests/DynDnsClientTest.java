@@ -16,7 +16,7 @@ import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
-import sneer.pulp.clock.mocks.BrokenClock;
+import sneer.pulp.clock.broken.BrokenClock;
 import sneer.pulp.dyndns.client.DynDnsClient;
 import sneer.pulp.dyndns.ownaccount.Account;
 import sneer.pulp.dyndns.ownaccount.OwnAccountKeeper;
@@ -60,7 +60,6 @@ Unacceptable Client Behavior
 	final OwnAccountKeeper ownAccountKeeper = context.mock(OwnAccountKeeper.class);
 	final Updater updater = context.mock(Updater.class);
 	final TransientPropertyStore propertyStore = new TransientPropertyStore();
-	final BrokenClock clock = new BrokenClock();
 	
 	@Test
 	public void updateOnIpChange() throws Exception {
@@ -104,6 +103,8 @@ Unacceptable Client Behavior
 		
 
 		final Container container = startDynDnsClient();
+		final BrokenClock clock = container.produce(BrokenClock.class);
+		
 		final Light light = assertBlinkingLight(error, container);
 		
 		clock.advanceTime(300001);
@@ -157,7 +158,8 @@ Unacceptable Client Behavior
 	}
 
 	private Container startDynDnsClient() {
-		final Container container = ContainerUtils.newContainer(ownIpDiscoverer, ownAccountKeeper, updater, propertyStore, clock);
+		final Container container = ContainerUtils.newContainer(ownIpDiscoverer, ownAccountKeeper, updater, propertyStore);
+		container.produce(BrokenClock.class);
 		container.produce(DynDnsClient.class);
 		return container;
 	}

@@ -3,8 +3,15 @@
 	
 	<property name="build.dir" value="build" />
 	
-	<target name="test" depends="build">
-		<junit haltonfailure="true" printsummary="true">
+	<target name="test" depends="test.execution, test.verification">
+	</target>
+	
+	<target name="test.verification" if="junit.failures">
+		<fail>Test failures! Check the output for details.</fail>
+	</target>
+		
+	<target name="test.execution" depends="build">
+		<junit printsummary="true" failureproperty="junit.failures">
 			<classpath>
 				<fileset dir=".">
 					<include name="**/lib/**/*.jar" />

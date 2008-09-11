@@ -10,16 +10,16 @@ import sneer.pulp.clock.Clock;
 public class ClockMock implements Clock {
 
 	int _currentTime = 0;
-	final List<Tupla> _alarms = new ArrayList<Tupla>();
+	final List<Alarm> _alarms = new ArrayList<Alarm>();
 
 	@Override
 	public void addAlarm(int millisFromNow, Runnable runnable) {
-		_alarms.add(new Tupla(this, runnable, millisFromNow, false));
+		_alarms.add(new Alarm(this, runnable, millisFromNow, false));
 	}
 
 	@Override
 	public void addPeriodicAlarm(int millis, Runnable runnable) {
-		_alarms.add(new Tupla(this, runnable, millis, true));
+		_alarms.add(new Alarm(this, runnable, millis, true));
 	}
 
 	@Override
@@ -36,18 +36,18 @@ public class ClockMock implements Clock {
 		int i = 1;
 		while(i>0){
 			Collections.sort(_alarms, 
-				new Comparator<Tupla>(){@Override public int compare(Tupla tupla0, Tupla tupla1) {
-					return tupla0._millisFromNow - tupla1._millisFromNow;
+				new Comparator<Alarm>(){@Override public int compare(Alarm alarm0, Alarm alarm1) {
+					return alarm0._millisFromNow - alarm1._millisFromNow;
 				}});
 			
-			List<Tupla> tmp = new ArrayList<Tupla>(_alarms);
+			List<Alarm> tmp = new ArrayList<Alarm>(_alarms);
 			
 			for (i = 0; i < tmp.size(); i++) {
-				Tupla tupla = tmp.get(i);
-				if(!tupla.tryRun()) //Break Last Timeout
+				Alarm alarm = tmp.get(i);
+				if(!alarm.tryRun()) //Break Last Timeout
 					break;
 				
-				if(tupla._increment>0){ //Break Periodic
+				if(alarm._increment>0){ //Break Periodic
 					i=1;
 					break;
 				}
@@ -61,7 +61,7 @@ public class ClockMock implements Clock {
 	}
 }
 
-class Tupla{
+class Alarm{
 	
 	final int _increment;
 	
@@ -70,7 +70,7 @@ class Tupla{
 
 	private final ClockMock _clockMock;
 
-	Tupla(ClockMock clockMock, Runnable runnable, int millisFromNow, boolean isPeriodic) {
+	Alarm(ClockMock clockMock, Runnable runnable, int millisFromNow, boolean isPeriodic) {
 		_clockMock = clockMock;
 		_increment = isPeriodic ? millisFromNow : 0;
 		_millisFromNow = millisFromNow;

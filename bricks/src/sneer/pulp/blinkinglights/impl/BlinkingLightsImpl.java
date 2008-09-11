@@ -23,20 +23,20 @@ public class BlinkingLightsImpl implements BlinkingLights {
 	}
 
 	@Override
-	public Light turnOn(String message, Throwable t, int timeout) {
-		Light result = new LightImpl(message, t, timeout, _clock, this); 
+	public Light turnOn(int type, String message, Throwable t, int timeout) {
+		Light result = new LightImpl(type, message, t, timeout, _clock, this); 
 		_lights.add(result);
 		return result;
 	}
 
 	@Override
-	public Light turnOn(String message, Throwable t) {
-		return turnOn(message, t, LightImpl.NEVER);
+	public Light turnOn(int type, String message, Throwable t) {
+		return turnOn(type, message, t, LightImpl.NEVER);
 	}
 
 	@Override
-	public Light turnOn(String message) {
-		return turnOn(message, null);
+	public Light turnOn(int type, String message) {
+		return turnOn(type, message, null);
 	}
 
 	@Override

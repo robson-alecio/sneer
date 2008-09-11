@@ -30,6 +30,7 @@ import wheel.reactive.impl.Constant;
 
 public class BlinkingLightsSnappImpl implements BlinkingLightsSnapp {
 
+	static final Image INFO = getImage("info.png");
 	static final Image ERROR = getImage("error.png");
 	static final Image WARN = getImage("warn.png");
 	
@@ -76,7 +77,7 @@ public class BlinkingLightsSnappImpl implements BlinkingLightsSnapp {
 	}
 
 	private Dimension size(Container container) {
-		return new Dimension(container.getSize().width,80 );
+		return new Dimension(container.getSize().width, 90 );
 	}
 
 	private void initWarnings() {
@@ -87,28 +88,33 @@ public class BlinkingLightsSnappImpl implements BlinkingLightsSnapp {
 			
 			Light light = getClickedLight(event);
             
-            if(isWarningLight(light)){
-                JOptionPane.showMessageDialog(_container, light.message(), "Warning:", JOptionPane.WARNING_MESSAGE);
+            if(light.isWarn()){
+                JOptionPane.showMessageDialog(_container, createMessage(light), "Warn:", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            JOptionPane.showMessageDialog(_container, getErrorMessage(light), "Error:", JOptionPane.ERROR_MESSAGE);
+            if(light.isError()){
+            	JOptionPane.showMessageDialog(_container, createMessage(light), "Error:", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            JOptionPane.showMessageDialog(_container, createMessage(light), "Info:", JOptionPane.INFORMATION_MESSAGE);
 		}
 
-		private String getErrorMessage(Light light) {
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			PrintStream ps = new PrintStream(out);
-			light.error().printStackTrace(ps);
-			String stack = new String(out.toByteArray());
-			ps.close();
+		private String createMessage(Light light) {
+			String stack = "";
+			String msg = "";
 			
-			String msg = light.error().getMessage();
-			msg = msg==null?"":msg + "\n ";
+			if(light.error()!=null){
+				ByteArrayOutputStream out = new ByteArrayOutputStream();
+				PrintStream ps = new PrintStream(out);
+				light.error().printStackTrace(ps);
+				stack = "\n " + new String(out.toByteArray());
+				ps.close();
+				msg = light.error().getMessage();
+			}
+			
+			msg = msg==null?"":msg;
 			
 			return light.message() + "\n " + msg + stack;
-		}
-
-		private boolean isWarningLight(Light light) {
-			return light.error()==null;
 		}
 
 		private Light getClickedLight(final MouseEvent event) {
@@ -132,6 +138,7 @@ public class BlinkingLightsSnappImpl implements BlinkingLightsSnapp {
 		
 		Constant<Image> _error = new Constant<Image>(ERROR);
 		Constant<Image> _warn = new Constant<Image>(WARN);
+		Constant<Image> _info = new Constant<Image>(INFO);
 		
 		@Override
 		public Signal<String> labelFor(Light light) {
@@ -140,7 +147,13 @@ public class BlinkingLightsSnappImpl implements BlinkingLightsSnapp {
 
 		@Override
 		public Signal<Image> imageFor(Light light) {
-			return light.error()==null?_warn:_error;
+			if(light.isError()) 
+				return _error;
+			
+			if(light.isWarn()) 
+				return _warn;
+			
+			return _info;
 		}
 	}
 }

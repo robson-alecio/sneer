@@ -19,6 +19,7 @@ import javax.swing.WindowConstants;
 
 import sneer.kernel.container.Inject;
 import sneer.pulp.blinkinglights.BlinkingLights;
+import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.skin.dashboard.Dashboard;
@@ -94,7 +95,7 @@ public class DashboardImpl implements Dashboard, Runnable {
 		try {
 			tray = new TrayIconImpl(logoIconURL());
 		} catch (SystemTrayNotSupported e1) {
-			_blinkingLights.turnOn(e1.getMessage() + " When closing the Sneer window, it will be minimized instead of closed.");
+			_blinkingLights.turnOn(Light.INFO_TYPE, e1.getMessage() + " When closing the Sneer window, it will be minimized instead of closed.");
 			changeWindowCloseEventToMinimizeEvent();
 			return;
 		}

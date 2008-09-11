@@ -95,7 +95,7 @@ public class SocketAccepterImpl implements SocketAccepter {
 					_lights.turnOff(_cantAcceptSocket);
 				} catch (IOException e) {
 					if (!_isStopped) 
-						_cantAcceptSocket = _lights.turnOn("Error accepting client connection", e);
+						_cantAcceptSocket = _lights.turnOn(Light.ERROR_TYPE, "Error accepting client connection", e);
 				} 
 			}
 		}});
@@ -109,7 +109,7 @@ public class SocketAccepterImpl implements SocketAccepter {
 			_lights.turnOff(_cantOpenServerSocket);
 		} catch (IOException e) {
 			if (!_isStopped)
-				_cantOpenServerSocket = _lights.turnOn("Error trying to open socket at "+port, e);
+				_cantOpenServerSocket = _lights.turnOn(Light.ERROR_TYPE, "Error trying to open socket at "+port, e);
 		}
 	}
 

@@ -101,7 +101,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		private final Light _light;
 		
 		Sad(String message, Exception e) {
-			_light = _blinkingLights.turnOn(message, e);
+			_light = _blinkingLights.turnOn(Light.ERROR_TYPE, message, e);
 		}
 
 		protected State retry() {

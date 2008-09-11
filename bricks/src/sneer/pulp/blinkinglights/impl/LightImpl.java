@@ -5,17 +5,21 @@ import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.clock.Clock;
 
 public class LightImpl implements Light {
-	static final int NEVER = -1;
+	
+	static final int NEVER = 0;
 	
 	private String _message;
 	
 	private boolean _isOn = true;
 	
-	private Throwable _error;
+	private final Throwable _error;
 	
 	private final int _timeout;
+	
+	private final int _type;
 
-	public LightImpl(String message, Throwable error, int timeout, Clock clock, BlinkingLights blinkingLights) {
+	public LightImpl(int type, String message, Throwable error, int timeout, Clock clock, BlinkingLights blinkingLights) {
+		_type = type;
 		_message = message;
 		_error = error;
 		
@@ -51,5 +55,20 @@ public class LightImpl implements Light {
 	@Override
 	public void turnOff() {
 		_isOn = false;
+	}
+
+	@Override
+	public boolean isError() {
+		return _type == ERROR_TYPE;
+	}
+
+	@Override
+	public boolean isInfo() {
+		return _type == INFO_TYPE;
+	}
+
+	@Override
+	public boolean isWarn() {
+		return _type == WARN_TYPE;
 	}
 }

@@ -25,7 +25,7 @@ public class BlinkingLightsTest extends TestThatIsInjected {
 	public void testLights() throws Exception {
 		assertLightCount(0);
 		
-		Light light = _lights.turnOn("some error", new NullPointerException());
+		Light light = _lights.turnOn(Light.ERROR_TYPE, "some error", new NullPointerException());
 		assertTrue(light.isOn());
 		assertEquals("some error", light.message());
 		assertNotNull(light.error());
@@ -47,7 +47,7 @@ public class BlinkingLightsTest extends TestThatIsInjected {
 		final NullPointerException exception = new NullPointerException();
 		final int timeout = 1000;
 
-		final Light light = new LightImpl(message, exception, timeout, clock, _lights);
+		final Light light = new LightImpl(Light.ERROR_TYPE, message, exception, timeout, clock, _lights);
 		
 		assertTrue(light.isOn());
 		

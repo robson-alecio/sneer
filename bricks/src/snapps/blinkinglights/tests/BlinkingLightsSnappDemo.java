@@ -6,6 +6,7 @@ import snapps.blinkinglights.BlinkingLightsSnapp;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.blinkinglights.BlinkingLights;
+import sneer.pulp.blinkinglights.Light;
 import sneer.skin.dashboard.Dashboard;
 
 public class BlinkingLightsSnappDemo  {
@@ -17,13 +18,14 @@ public class BlinkingLightsSnappDemo  {
 		container.produce(Dashboard.class);
 		BlinkingLights bl = container.produce(BlinkingLights.class);
 		
-		bl.turnOn("This is a Warning!");
+		bl.turnOn(Light.INFO_TYPE, "This is a Info!");
+		bl.turnOn(Light.WARN_TYPE, "This is a Warning!");
 		
 		try {
 			String error = null;
 			error.toString();
 		} catch (NullPointerException e) {
-			bl.turnOn("This is a Error!", e);
+			bl.turnOn(Light.ERROR_TYPE, "This is a Error!", e);
 		}
 		
 		container.produce(BlinkingLightsSnapp.class);

@@ -43,7 +43,7 @@ public class LightImpl implements Light {
 			turnOff();	
 		}});
 		
-		if (FrozenTime.frozenTimeMillis() >= _expirationTime)
+		if (FrozenTime.frozenTimeMillis() > _expirationTime)
 			_isOn = false;
 	}
 	

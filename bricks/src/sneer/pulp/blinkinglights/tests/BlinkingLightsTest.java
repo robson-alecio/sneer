@@ -5,9 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import org.jmock.Expectations;
-import org.jmock.Mockery;
-import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
@@ -23,8 +20,6 @@ public class BlinkingLightsTest extends TestThatIsInjected {
 	@Inject
 	private BlinkingLights _lights;
 
-	final Mockery context = new JUnit4Mockery();
-	final BlinkingLights lights = context.mock(BlinkingLights.class);
 	final ClockMock clock = new ClockMock();
 	
 	@Test
@@ -54,19 +49,13 @@ public class BlinkingLightsTest extends TestThatIsInjected {
 		final int timeout = 1000;
 		final Light light = new LightImpl(message, exception, timeout, clock);
 		
-		context.checking(new Expectations() {{
-			exactly(1).of(lights).turnOn(message, exception, timeout);
-				will(returnValue(light));				
-				
-		}});
-		
 		FrozenTime.freezeForCurrentThread(1);
 		assertTrue(light.isOn());
 		
-		FrozenTime.freezeForCurrentThread(timeout-1);
+		FrozenTime.freezeForCurrentThread(timeout);
 		assertTrue(light.isOn());
 		
-		FrozenTime.freezeForCurrentThread(timeout);
+		FrozenTime.freezeForCurrentThread(timeout+1);
 		assertFalse(light.isOn());
 	}
 }

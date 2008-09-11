@@ -11,7 +11,7 @@
 	</target>
 		
 	<target name="test.execution" depends="build">
-		<junit printsummary="true" failureproperty="junit.failures">
+		<junit printsummary="true" failureproperty="junit.failures" fork="yes">
 			<classpath>
 				<fileset dir=".">
 					<include name="**/lib/**/*.jar" />

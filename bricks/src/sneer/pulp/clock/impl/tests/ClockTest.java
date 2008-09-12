@@ -27,11 +27,11 @@ public class ClockTest {
 		final Container container = ContainerUtils.newContainer(mock);
 		final Clock clock = container.produce(Clock.class);
 
-		clock.addAlarm(50, newEmptyRunnable(50));
-		clock.addPeriodicAlarm(20, newEmptyRunnable(20));
-		clock.addAlarm(10, newEmptyRunnable(10));
-		clock.addPeriodicAlarm(35, newEmptyRunnable(35));
-		clock.addAlarm(30, newEmptyRunnable(30));
+		clock.addAlarm(50, new MyRunnable(50));
+		clock.addPeriodicAlarm(20, new MyRunnable(20));
+		clock.addAlarm(10, new MyRunnable(10));
+		clock.addPeriodicAlarm(35, new MyRunnable(35));
+		clock.addAlarm(30, new MyRunnable(30));
 
 		step(1,0,0); 		//time = 01 []
 		step(11, 10, 1); 	//time = 11 [10]
@@ -56,26 +56,20 @@ public class ClockTest {
 		assertEquals(count, _lastCount);
 	}
 	
-	private Runnable newEmptyRunnable(int timeout) {
-		return new MyRunnable(timeout, this);
-	}
-	
-	private static class MyRunnable implements Runnable{
+	private class MyRunnable implements Runnable{
 
 		private final int _timeout;
-		private final ClockTest _test;
 		private int count = 0;
 
-		public MyRunnable(int timeout, ClockTest test) {
+		public MyRunnable(int timeout) {
 			_timeout = timeout;
-			_test = test;
 		}
 
 		@Override
 		public void run() {
-			_test._lastRunned = _timeout;
-			_test._lastCount = ++count;
-			_test._order.add(_timeout * _test._lastCount);
+			_lastRunned = _timeout;
+			_lastCount = ++count;
+			_order.add(_timeout * _lastCount);
 		}
 	}
 }

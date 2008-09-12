@@ -19,12 +19,12 @@ class ClockImpl implements Clock {
 	
 	final List<Alarm> _alarms = new ArrayList<Alarm>();
 	
-	ClockImpl(){
+	ClockImpl() {
 		//Fix
-		Threads.startDaemon("Clock", new Runnable(){@Override public void run() {
+		Threads.startDaemon("Clock", new Runnable() { @Override public void run() {
 			while (true) {
-				if(_currentTime<_realtime.currentTimeMillis()){
-					_currentTime=_realtime.currentTimeMillis();
+				if(_currentTime != _realtime.currentTimeMillis()){
+					_currentTime = _realtime.currentTimeMillis();
 					checkTime();
 				}
 				Threads.sleepWithoutInterruptions(1);
@@ -58,7 +58,8 @@ class ClockImpl implements Clock {
 			Collections.sort(_alarms, 
 				new Comparator<Alarm>(){@Override public int compare(Alarm alarm0, Alarm alarm1) {
 					return alarm0._millisFromNow - alarm1._millisFromNow;
-				}});
+				}}
+			);
 			
 			List<Alarm> tmp = new ArrayList<Alarm>(_alarms);
 			

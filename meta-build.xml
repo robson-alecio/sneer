@@ -54,6 +54,14 @@
 	    </clover-report>
 	</target>
 	
+	<target name="clover-report-for-tests" depends="init-clover">
+			<clover-report>
+		       <current outfile="coverage.xml">
+		          <format type="xml"/>
+		       </current>
+		    </clover-report>
+	</target>
+	
 	<target name="build.xml.generation" depends="init">
 		
 		<path id="wheel.lib.classpath">

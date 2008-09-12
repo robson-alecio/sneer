@@ -22,7 +22,7 @@ import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.RFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 
-public class OwnerSnappImpl implements OwnerSnapp {
+class OwnerSnappImpl implements OwnerSnapp {
 
 	@Inject
 	static private OwnNameKeeper _ownNameKeeper;
@@ -40,9 +40,9 @@ public class OwnerSnappImpl implements OwnerSnapp {
 	static private ImageSelector _imageSelector;
 
 	@Inject
-	static private RFactory rfactory;
+	static private RFactory _rfactory;
 
-	private TextWidget<JTextField> editableLabel;
+	private TextWidget<JTextField> _editableLabel;
 
 	private Container _container;
 
@@ -64,12 +64,12 @@ public class OwnerSnappImpl implements OwnerSnapp {
 	private void initOwnNameKeeper(Container container) {
 		GridBagConstraints c;
 		c = getConstraints(0, 5,10,0,10);
-		editableLabel = rfactory.newEditableLabel(
+		_editableLabel = _rfactory.newEditableLabel(
 				_ownNameKeeper.name(), 
 				_ownNameKeeper.nameSetter());
 		c.anchor = GridBagConstraints.SOUTHEAST;
 		
-		container.add(editableLabel.getComponent(), c);
+		container.add(_editableLabel.getComponent(), c);
 	}
 	
 	private void initOwnTaglineKeeper(Container container) {
@@ -79,12 +79,12 @@ public class OwnerSnappImpl implements OwnerSnapp {
 		container.add(separator, c);
         
 		c = getConstraints(2, 0,10,5,10);
-        editableLabel = rfactory.newEditableLabel(
+        _editableLabel = _rfactory.newEditableLabel(
         		_ownTaglineKeeper.tagline(), 
         		_ownTaglineKeeper.taglineSetter());
 		c.anchor = GridBagConstraints.NORTHEAST;
 
-        container.add(editableLabel.getComponent(), c);
+        container.add(_editableLabel.getComponent(), c);
 	}
 
 	private void initOwnAvatarKeeper(Container container) {
@@ -94,7 +94,7 @@ public class OwnerSnappImpl implements OwnerSnapp {
 				GridBagConstraints.BOTH,
 				new Insets(5,0,5,5),0,0);
 		
-		ImageWidget avatar = rfactory.newImage(_ownAvatarKeeper.avatar(48));
+		ImageWidget avatar = _rfactory.newImage(_ownAvatarKeeper.avatar(48));
 		container.add(avatar.getComponent(), c);
 		addMouseLitener(avatar);
 	}

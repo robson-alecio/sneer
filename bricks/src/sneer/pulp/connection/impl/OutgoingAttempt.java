@@ -12,7 +12,7 @@ import sneer.pulp.threadpool.ThreadPool;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
 
-public class OutgoingAttempt {
+class OutgoingAttempt {
 
 	@Inject
 	static private Network _network;
@@ -24,16 +24,17 @@ public class OutgoingAttempt {
 	static private ThreadPool _threadPool;
 
 	@Inject
-	static Clock _clock;
+	static private Clock _clock;
 
 	private final InternetAddress _address;
 
-	private boolean _isTryingToOpen = false;
 	private final Object _isTryingToOpenMonitor = new Object();
-	
-	private Signal<Boolean> _isOnline;
-	private final Receiver<Boolean> _isOnlineReceiver;
 
+	private final Receiver<Boolean> _isOnlineReceiver;
+	
+	private boolean _isTryingToOpen = false;
+
+	private Signal<Boolean> _isOnline;
 
 	OutgoingAttempt(InternetAddress address) {
 		_address = address;

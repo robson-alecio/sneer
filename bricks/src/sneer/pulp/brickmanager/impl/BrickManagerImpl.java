@@ -25,23 +25,21 @@ import wheel.reactive.maps.MapSignal;
 import wheel.reactive.maps.impl.MapRegisterImpl;
 import static wheel.io.Logger.log;
 
-
-
-public class BrickManagerImpl implements BrickManager {
+class BrickManagerImpl implements BrickManager {
 
 	@Inject
-	private SneerConfig _config;
+	private static SneerConfig _config;
 
 	@Inject
-	private DependencyManager _dependencyManager;
+	private static DependencyManager _dependencyManager;
 	
 	@Inject
-	private KeyManager _keyManager;
+	private static KeyManager _keyManager;
 	
 	@Inject
-	private Container _container;
+	private static Container _container;
 	
-	private MapRegister<String, BrickFile> _bricksByName = new MapRegisterImpl<String, BrickFile>();
+	private final MapRegister<String, BrickFile> _bricksByName = new MapRegisterImpl<String, BrickFile>();
 
 	@Override
 	public void install(BrickBundle bundle) {

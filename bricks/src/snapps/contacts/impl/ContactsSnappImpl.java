@@ -23,7 +23,7 @@ import wheel.lang.Functor;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Adapter;
 
-public class ContactsSnappImpl implements ContactsSnapp {
+class ContactsSnappImpl implements ContactsSnapp {
 
 	private static final Image ONLINE = getImage("online.png");
 	private static final Image OFFLINE = getImage("offline.png");

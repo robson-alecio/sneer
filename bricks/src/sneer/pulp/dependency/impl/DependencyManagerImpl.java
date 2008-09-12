@@ -17,8 +17,7 @@ import sneer.pulp.dependency.Dependency;
 import sneer.pulp.dependency.DependencyManager;
 import static wheel.io.Logger.log;
 
-
-public class DependencyManagerImpl implements DependencyManager {
+class DependencyManagerImpl implements DependencyManager {
 
 	@Inject
 	private static Crypto _crypto;
@@ -28,9 +27,9 @@ public class DependencyManagerImpl implements DependencyManager {
 	
 	private File _root;
 	
-	private Map<String, List<Dependency>> _dependenciesByBrick = new HashMap<String, List<Dependency>>();
+	private final Map<String, List<Dependency>> _dependenciesByBrick = new HashMap<String, List<Dependency>>();
 
-	private Map<Sneer1024, Dependency> _dependenciesBySneer1024Hash = new HashMap<Sneer1024, Dependency>();
+	private final Map<Sneer1024, Dependency> _dependenciesBySneer1024Hash = new HashMap<Sneer1024, Dependency>();
 
 	
 	public DependencyManagerImpl() {

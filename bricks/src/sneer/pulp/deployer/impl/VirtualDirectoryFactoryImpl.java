@@ -12,7 +12,7 @@ import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import sneer.kernel.container.Injector;
 import sneer.kernel.container.utils.io.SimpleFilter;
 
-public class VirtualDirectoryFactoryImpl implements VirtualDirectoryFactory {
+class VirtualDirectoryFactoryImpl implements VirtualDirectoryFactory {
 
 	private File _root;
 
@@ -20,7 +20,7 @@ public class VirtualDirectoryFactoryImpl implements VirtualDirectoryFactory {
 
 	private Injector _injector;
 
-	public VirtualDirectoryFactoryImpl(File root, Injector injector) {
+	VirtualDirectoryFactoryImpl(File root, Injector injector) {
 		_root = root;
 		_injector = injector;
 	}

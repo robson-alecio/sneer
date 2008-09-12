@@ -7,7 +7,7 @@ import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.reactive.impl.Receiver;
 
-public class SocketReceiverImpl implements SocketReceiver {
+class SocketReceiverImpl implements SocketReceiver {
 
 	@Inject
 	static private SocketAccepter _socketAccepter;

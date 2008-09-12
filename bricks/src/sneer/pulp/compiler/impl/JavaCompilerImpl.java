@@ -18,8 +18,7 @@ import sneer.pulp.compiler.Result;
 import com.sun.tools.javac.Main;
 import static wheel.io.Logger.log;
 
-
-public class JavaCompilerImpl implements JavaCompiler {
+class JavaCompilerImpl implements JavaCompiler {
 
 	@Inject
 	private ClasspathFactory _classpathFactory;

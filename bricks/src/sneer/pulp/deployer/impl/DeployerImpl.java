@@ -22,22 +22,22 @@ import sneer.pulp.deployer.BrickFile;
 import sneer.pulp.deployer.Deployer;
 import sneer.pulp.deployer.DeployerException;
 
-public class DeployerImpl implements Deployer {
+class DeployerImpl implements Deployer {
 
 	@Inject
-	private SneerConfig _config;
+	private static SneerConfig _config;
 	
 	@Inject
-	private JavaCompiler _compiler;
+	private static JavaCompiler _compiler;
 	
 	@Inject
-	private ClasspathFactory _cpFactory;
+	private static ClasspathFactory _cpFactory;
 	
 	@Inject
-	private Injector _injector;
+	private static Injector _injector;
 	
 	@Inject
-	private DependencyManager _dependencies;
+	private static DependencyManager _dependencies;
 	
 	
 //	public void deploy(BrickBundle received) {

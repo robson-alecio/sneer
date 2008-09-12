@@ -18,10 +18,10 @@ import wheel.reactive.impl.Receiver;
 public class SocketAccepterTest extends TestThatIsInjected {
 
 	@Inject
-	private PortKeeper _portKeeper;
+	private static PortKeeper _portKeeper;
 	
 	@Inject
-	private SocketAccepter _accepter;
+	private static SocketAccepter _accepter;
 	
 	@Test(timeout=3000)
 	public void testSocketAccept() throws Exception {

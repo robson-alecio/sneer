@@ -16,7 +16,7 @@ import sneer.pulp.deployer.DeployerException;
 import sneer.pulp.keymanager.PublicKey;
 import wheel.lang.exceptions.NotImplementedYet;
 
-public class BrickFileImpl implements BrickFile {
+class BrickFileImpl implements BrickFile {
 
 	private static final long serialVersionUID = 1L;
 
@@ -31,13 +31,13 @@ public class BrickFileImpl implements BrickFile {
 	
 	private PublicKey _origin;
 	
-	private List<Dependency> _dependencies = new ArrayList<Dependency>();
+	private final List<Dependency> _dependencies = new ArrayList<Dependency>();
 
-	public BrickFileImpl(String brickName) {
+	BrickFileImpl(String brickName) {
 		_brickName = brickName;
 	}
 
-	public BrickFileImpl(File target) {
+	BrickFileImpl(File target) {
 		this(target.getName());
 		add(new File(target,name()+"-api.jar"));
 		add(new File(target,name()+"-api-src.jar"));

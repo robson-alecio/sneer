@@ -27,7 +27,7 @@ import wheel.graphics.Images;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Constant;
 
-public class BlinkingLightsSnappImpl implements BlinkingLightsSnapp {
+class BlinkingLightsSnappImpl implements BlinkingLightsSnapp {
 
 	static final Image INFO = getImage("info.png");
 	static final Image ERROR = getImage("error.png");

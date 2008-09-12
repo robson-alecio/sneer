@@ -14,7 +14,6 @@ import wheel.lang.Functor;
 import wheel.lang.exceptions.IllegalParameter;
 import static wheel.io.Logger.log;
 
-
 class IndividualSocketReceiver {
 
 	@Inject
@@ -25,7 +24,6 @@ class IndividualSocketReceiver {
 	
 	@Inject
 	static private ConnectionManager _connectionManager;
-
 	
 	private final ByteArraySocket _socket;
 	

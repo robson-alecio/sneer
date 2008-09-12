@@ -15,7 +15,7 @@ import sneer.pulp.compiler.CompilerException;
 import sneer.pulp.compiler.Result;
 import wheel.lang.StringUtils;
 
-public class CompilationResult implements Result {
+class CompilationResult implements Result {
 
 	private int _compilerCode;
 	

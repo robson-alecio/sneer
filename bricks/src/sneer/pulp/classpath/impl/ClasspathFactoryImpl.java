@@ -11,10 +11,10 @@ import sneer.pulp.classpath.Classpath;
 import sneer.pulp.classpath.ClasspathFactory;
 import wheel.io.Jars;
 
-public class ClasspathFactoryImpl implements ClasspathFactory {
+class ClasspathFactoryImpl implements ClasspathFactory {
 
 	@Inject
-	private SneerConfig _config;
+	private static SneerConfig _config;
 	
 	private Classpath _sneerApi;
 

@@ -7,7 +7,7 @@ import sneer.pulp.clock.Clock;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 
-public class BlinkingLightsImpl implements BlinkingLights {
+class BlinkingLightsImpl implements BlinkingLights {
 	
 	@Inject
 	static private Clock _clock;	

@@ -14,7 +14,7 @@ import wheel.testutil.TestThatMightUseFiles;
 
 public class PersistenceConfigTest extends TestThatMightUseFiles {
 	
-	private File _dir = new File(tmpDirectory(), "foo");
+	private final File _dir = new File(tmpDirectory(), "foo");
 	private final SneerConfig _config = new SneerConfigImpl(_dir);
 	private final PersistenceConfig _subject = ContainerUtils.newContainer(_config).produce(PersistenceConfig.class);
 

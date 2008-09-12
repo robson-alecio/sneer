@@ -4,7 +4,7 @@ import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.clock.Clock;
 
-public class LightImpl implements Light {
+class LightImpl implements Light {
 	
 	static final int NEVER = 0;
 	

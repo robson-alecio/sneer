@@ -28,10 +28,10 @@ public class JavaCompilerTest extends TestThatIsInjected {
 	private static final String TEST_FILE_PREFIX = "sneer-test-";
 
 	@Inject
-	private sneer.pulp.compiler.JavaCompiler _compiler;
+	private static sneer.pulp.compiler.JavaCompiler _compiler;
 	
 	@Inject
-	private ClasspathFactory _factory;
+	private static ClasspathFactory _factory;
 	
 	@Test
 	public void testCompile() throws Exception {

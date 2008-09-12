@@ -10,13 +10,12 @@ import sneer.pulp.contacts.Contact;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.own.name.OwnNameKeeper;
 
-public class ConnectionManagerImpl implements ConnectionManager {
+class ConnectionManagerImpl implements ConnectionManager {
 
 	@Inject
-	private OwnNameKeeper _nameKeeper;
+	private static OwnNameKeeper _nameKeeper;
 
 	private final Map<Contact, ByteConnection> _connectionsByContact = new HashMap<Contact, ByteConnection>();
-
 
 	@Override
 	public synchronized ConnectionImpl connectionFor(Contact contact) {

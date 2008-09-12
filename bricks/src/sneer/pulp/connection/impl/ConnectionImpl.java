@@ -16,7 +16,6 @@ import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 import static wheel.io.Logger.log;
 
-
 class ConnectionImpl implements ByteConnection {
 
 	@Inject
@@ -25,15 +24,15 @@ class ConnectionImpl implements ByteConnection {
 	@Inject
 	static private ThreadPool _threadPool;
 	
-	private Register<Boolean> _isOnline = new RegisterImpl<Boolean>(false);
+	private final Register<Boolean> _isOnline = new RegisterImpl<Boolean>(false);
 
 	private final SocketHolder _socketHolder = new SocketHolder(_isOnline.setter());
-
-	private volatile Omnivore<byte[]> _receiver;
 
 	private final String _label;
 
 	private final Contact _contact;
+	
+	private volatile Omnivore<byte[]> _receiver;
 	
 	ConnectionImpl(String label, Contact contact) {
 		_label = label;

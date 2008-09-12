@@ -19,8 +19,7 @@ import wheel.reactive.EventSource;
 import wheel.reactive.impl.EventNotifierImpl;
 import wheel.reactive.impl.Receiver;
 
-
-public class SocketAccepterImpl implements SocketAccepter {
+class SocketAccepterImpl implements SocketAccepter {
 	
 	@Inject
 	static private PortKeeper _portKeeper;
@@ -34,13 +33,13 @@ public class SocketAccepterImpl implements SocketAccepter {
 	@Inject
 	static private ThreadPool _threadPool;
 
-	private EventNotifier<ByteArraySocket> _notifier = new EventNotifierImpl<ByteArraySocket>();
+	private final EventNotifier<ByteArraySocket> _notifier = new EventNotifierImpl<ByteArraySocket>();
+
+	private final transient Object _portToListenMonitor = new Object();
 
 	private ByteArrayServerSocket _serverSocket;
 	
 	private volatile boolean _isStopped;
-
-	private final transient Object _portToListenMonitor = new Object();
 
 	private int _portToListen;
 	

@@ -8,7 +8,7 @@ import org.apache.commons.lang.StringUtils;
 
 import sneer.pulp.classpath.Classpath;
 
-abstract public class ClasspathSupport implements Classpath {
+abstract class ClasspathSupport implements Classpath {
 
 	protected static final File RT_JAR = new File(System.getProperty("java.home")+File.separator+"lib"+File.separator+"rt.jar"); 
 

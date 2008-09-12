@@ -10,7 +10,7 @@ import sneer.pulp.deployer.BrickBundle;
 import sneer.pulp.deployer.BrickFile;
 import sneer.pulp.deployer.DeployerException;
 
-public class BrickBundleImpl implements BrickBundle {
+class BrickBundleImpl implements BrickBundle {
 	
 	private List<BrickFile> _bricks = new ArrayList<BrickFile>();
 

@@ -3,8 +3,6 @@ package sneer.pulp.classpath.impl;
 import java.io.File;
 import java.util.List;
 
-
-
 /**
  * Elements are .jar files
  */

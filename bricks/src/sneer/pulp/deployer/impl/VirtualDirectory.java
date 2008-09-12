@@ -22,10 +22,10 @@ import wheel.io.JarBuilder;
 import wheel.lang.Collections;
 import wheel.lang.Functor;
 
-public class VirtualDirectory {
+class VirtualDirectory {
 
 	@Inject
-	private DeploymentJarFactory _sneerDeploymentFactory;
+	private static DeploymentJarFactory _sneerDeploymentFactory;
 	
 	private String _brickName;
 	
@@ -33,17 +33,17 @@ public class VirtualDirectory {
 
 	private File _path;
 	
-	private List<MetaClass> _apiClassFiles = new ArrayList<MetaClass>();
+	private List<File> _jarFiles;
+	
+	private ImplClasses _implClasses;
 	
 	private List<File> _apiSourceFiles = new ArrayList<File>();
 	
 	private List<File> _implSourceFiles = new ArrayList<File>();
-	
-	private List<File> _jarFiles;
 
-	private ImplClasses _implClasses;
+	private final List<MetaClass> _apiClassFiles = new ArrayList<MetaClass>();
 
-	public VirtualDirectory(File root, File path) {
+	VirtualDirectory(File root, File path) {
 		_root = root;
 		_path = path;
 	}

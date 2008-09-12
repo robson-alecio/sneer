@@ -42,5 +42,4 @@ class SocketHolder {
 		if (_socket == null) return;
 		crash(_socket);
 	}
-
 }

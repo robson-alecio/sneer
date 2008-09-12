@@ -2,7 +2,7 @@ package sneer.pulp.connection.impl;
 
 import wheel.lang.StringUtils;
 
-public interface ProtocolTokens {
+interface ProtocolTokens {
 
 	static final byte[] FALLBACK = StringUtils.toByteArray("Fallback");
 	static final byte[] OK = StringUtils.toByteArray("OK");

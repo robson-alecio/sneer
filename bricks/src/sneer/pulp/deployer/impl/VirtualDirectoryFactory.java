@@ -3,7 +3,7 @@ package sneer.pulp.deployer.impl;
 import java.io.File;
 import java.util.List;
 
-public interface VirtualDirectoryFactory {
+interface VirtualDirectoryFactory {
 
 	File rootDirectory();
 

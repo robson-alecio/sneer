@@ -4,7 +4,7 @@ import org.apache.commons.lang.StringUtils;
 
 import sneer.pulp.compiler.CompilationError;
 
-public class CompilationErrorImpl implements CompilationError {
+class CompilationErrorImpl implements CompilationError {
 
 	private String _fileName;
 	

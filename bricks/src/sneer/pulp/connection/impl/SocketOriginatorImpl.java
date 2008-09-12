@@ -9,7 +9,7 @@ import sneer.pulp.internetaddresskeeper.InternetAddress;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
-public class SocketOriginatorImpl implements SocketOriginator {
+class SocketOriginatorImpl implements SocketOriginator {
 
 	@Inject
 	static private InternetAddressKeeper _internetAddressKeeper;

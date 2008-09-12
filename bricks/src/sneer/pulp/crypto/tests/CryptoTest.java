@@ -14,7 +14,7 @@ import sneer.pulp.crypto.Crypto;
 public class CryptoTest extends TestThatIsInjected {
 
 	@Inject
-	private Crypto _crypto;
+	private static Crypto _crypto;
 	
 	private static final String INPUT = "The quick brown fox jumps over the lazy dog"; 
 

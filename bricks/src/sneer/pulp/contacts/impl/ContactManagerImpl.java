@@ -13,9 +13,9 @@ import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 
-public class ContactManagerImpl implements ContactManager {
+class ContactManagerImpl implements ContactManager {
     
-    private ListRegister<Contact> _contacts = new ListRegisterImpl<Contact>();
+    private final ListRegister<Contact> _contacts = new ListRegisterImpl<Contact>();
 
 	@Override
 	synchronized public Contact addContact(String nickname) throws IllegalParameter {
@@ -82,7 +82,6 @@ public class ContactManagerImpl implements ContactManager {
 class ContactImpl implements Contact {
 
 	private final Register<String> _nickname;
-	
 	
 	public ContactImpl(String nickname) {
 		_nickname = new RegisterImpl<String>(nickname);

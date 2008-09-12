@@ -17,8 +17,6 @@ import sneer.skin.widgets.reactive.RFactory;
 
 public class ContactsSnappDemo  {
 	
-	static int y = 10;
-
 	public static void main(String[] args) throws Exception {
 
 		Container container = ContainerUtils.getContainer();

@@ -14,7 +14,7 @@ import sneer.pulp.crypto.Crypto;
 import sneer.pulp.crypto.Digester;
 import sneer.pulp.crypto.Sneer1024;
 
-public class CryptoImpl implements Crypto {
+class CryptoImpl implements Crypto {
 
 	static {
 		Security.addProvider(new BouncyCastleProvider()); //Optimize: remove this static dependency. Use Bouncycastle classes directly

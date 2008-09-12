@@ -11,7 +11,7 @@ import org.junit.Test;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.clock.Clock;
-import sneer.pulp.clock.realtime.mocks.BrokenClock;
+import sneer.pulp.clock.realtime.mocks.RealtimeClockMock;
 
 public class ClockTest {
 
@@ -19,7 +19,7 @@ public class ClockTest {
 	int _lastCount = 0;
 	
 	final List<Integer> _order = new ArrayList<Integer>();
-	final BrokenClock mock = new BrokenClock();
+	final RealtimeClockMock mock = new RealtimeClockMock();
 	
 	@Test
 	public void test() throws Exception {

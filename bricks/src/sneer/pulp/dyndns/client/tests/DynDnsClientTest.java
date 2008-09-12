@@ -17,7 +17,7 @@ import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.clock.Clock;
-import sneer.pulp.clock.realtime.mocks.BrokenClock;
+import sneer.pulp.clock.realtime.mocks.RealtimeClockMock;
 import sneer.pulp.dyndns.client.DynDnsClient;
 import sneer.pulp.dyndns.ownaccount.Account;
 import sneer.pulp.dyndns.ownaccount.OwnAccountKeeper;
@@ -61,7 +61,7 @@ Unacceptable Client Behavior
 	final OwnAccountKeeper ownAccountKeeper = context.mock(OwnAccountKeeper.class);
 	final Updater updater = context.mock(Updater.class);
 	final TransientPropertyStore propertyStore = new TransientPropertyStore();
-	final BrokenClock _mock = new BrokenClock();
+	final RealtimeClockMock _mock = new RealtimeClockMock();
 	
 	@Test
 	public void updateOnIpChange() throws Exception {

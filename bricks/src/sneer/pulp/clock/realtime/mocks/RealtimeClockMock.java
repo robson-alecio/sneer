@@ -3,7 +3,7 @@ package sneer.pulp.clock.realtime.mocks;
 import sneer.pulp.clock.realtime.RealtimeClock;
 import wheel.lang.Threads;
 
-public class BrokenClock implements RealtimeClock {
+public class RealtimeClockMock implements RealtimeClock {
 
 	private volatile long _currentTime;
 
@@ -12,8 +12,14 @@ public class BrokenClock implements RealtimeClock {
 		return _currentTime;
 	}
 	
+	@Override
+	public void setOwner(Runnable owner) {
+		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+	}
+
 	public void advanceTime(int plusTime) {
 		_currentTime = _currentTime + plusTime;
 		Threads.sleepWithoutInterruptions(500);
 	}
+	
 }

@@ -12,11 +12,11 @@ import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
-import sneer.pulp.clock.realtime.mocks.BrokenClock;
+import sneer.pulp.clock.realtime.mocks.RealtimeClockMock;
 
 public class BlinkingLightsTest extends TestThatIsInjected {
 
-	final BrokenClock _mock = new BrokenClock();
+	final RealtimeClockMock _mock = new RealtimeClockMock();
 	final Container _container = ContainerUtils.newContainer(_mock);
 
 	@Test

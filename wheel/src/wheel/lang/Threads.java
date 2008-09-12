@@ -3,6 +3,8 @@ package wheel.lang;
 import java.util.HashSet;
 import java.util.Set;
 
+import static wheel.io.Logger.log;
+
 
 public class Threads {
 
@@ -20,7 +22,7 @@ public class Threads {
 		try {
 			Thread.sleep(milliseconds);
 		} catch (InterruptedException e) {
-			throw new IllegalStateException(e);
+			log("Unsuccessful attempt to interrupt thread: {}", Thread.currentThread().getName());
 		}
 	}
 

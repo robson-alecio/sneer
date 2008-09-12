@@ -44,18 +44,16 @@ class ClockImpl implements Clock {
 
 	@Override
 	public void sleep(int millis) {
-		Object monitor = new Object();
-		synchronized (monitor) {
-			addAlarm(millis, notifier(monitor));
-			Threads.waitWithoutInterruptions(monitor);
+		Runnable notifier = createNotifier();
+		synchronized (notifier) {
+			addAlarm(millis, notifier);
+			Threads.waitWithoutInterruptions(notifier);
 		}
 	}
 
-	private Runnable notifier(final Object monitor) {
-		return new Runnable() { @Override public void run() {
-			synchronized (monitor) {
-				monitor.notify();
-			}
+	private Runnable createNotifier() {
+		return new Runnable() { @Override synchronized public void run() {
+			notify();
 		}};
 	}
 

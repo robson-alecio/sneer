@@ -15,7 +15,7 @@ class ClockImpl implements Clock {
 	@Inject
 	private static RealtimeClock _realtime;
 
-	long _currentTime = 0;//_realtime.currentTimeMillis();
+	long _currentTime = _realtime.currentTimeMillis();
 	
 	final List<Alarm> _alarms = new ArrayList<Alarm>();
 	

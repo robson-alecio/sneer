@@ -12,11 +12,6 @@ public class RealtimeClockMock implements RealtimeClock {
 		return _currentTime;
 	}
 	
-	@Override
-	public void setOwner(Runnable owner) {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
-	}
-
 	public void advanceTime(int plusTime) {
 		_currentTime = _currentTime + plusTime;
 		Threads.sleepWithoutInterruptions(500);

@@ -9,9 +9,4 @@ public class RealtimeClockImpl implements RealtimeClock {
 		return System.currentTimeMillis();
 	}
 
-	@Override
-	public void setOwner(Runnable owner) {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
-	}
-	
 }

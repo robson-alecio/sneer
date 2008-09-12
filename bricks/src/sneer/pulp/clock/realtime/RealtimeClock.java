@@ -4,6 +4,4 @@ public interface RealtimeClock {
 
 	long currentTimeMillis();
 
-	void setOwner(Runnable owner);
-	
 }

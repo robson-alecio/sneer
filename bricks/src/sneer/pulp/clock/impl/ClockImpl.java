@@ -44,7 +44,19 @@ class ClockImpl implements Clock {
 
 	@Override
 	public void sleep(int millis) {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+		Object monitor = new Object();
+		synchronized (monitor) {
+			addAlarm(millis, notifier(monitor));
+			Threads.waitWithoutInterruptions(monitor);
+		}
+	}
+
+	private Runnable notifier(final Object monitor) {
+		return new Runnable() { @Override public void run() {
+			synchronized (monitor) {
+				monitor.notify();
+			}
+		}};
 	}
 
 	@Override

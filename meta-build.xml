@@ -10,7 +10,7 @@
 		<fail>Test failures! Check the output for details.</fail>
 	</target>
 		
-	<target name="test.execution" depends="build, init-clover">
+	<target name="test.execution" depends="build">
 		<junit printsummary="true" failureproperty="junit.failures" fork="yes">
 			<classpath>
 				<fileset dir=".">
@@ -46,7 +46,7 @@
 		<clover-setup initString="mycoverage.db"/>
 	</target>
 	
-	<target name="clover-report" depends="test.execution">
+	<target name="clover-report" depends="init-clover, test.execution">
 		<clover-report>
 	       <current outfile="coverage.xml">
 	          <format type="xml"/>
@@ -58,6 +58,9 @@
 		
 		<path id="wheel.lib.classpath">
 			<fileset dir="wheel/lib">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="meta/lib">
 				<include name="**/*.jar" />
 			</fileset>
 		</path>

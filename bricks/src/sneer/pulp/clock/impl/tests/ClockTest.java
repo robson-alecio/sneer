@@ -15,7 +15,7 @@ import sneer.pulp.clock.realtime.mocks.BrokenClock;
 
 public class ClockTest {
 
-	int _lastRunned = 0;
+	int _lastRun = 0;
 	int _lastCount = 0;
 	
 	final List<Integer> _order = new ArrayList<Integer>();
@@ -27,13 +27,15 @@ public class ClockTest {
 		final Container container = ContainerUtils.newContainer(mock);
 		final Clock clock = container.produce(Clock.class);
 
+//		mock.advanceTime(1000);    //The test should work even with this line because everything is relative. No time value here is absolute.
+		
 		clock.addAlarm(50, new MyRunnable(50));
 		clock.addPeriodicAlarm(20, new MyRunnable(20));
 		clock.addAlarm(10, new MyRunnable(10));
 		clock.addPeriodicAlarm(35, new MyRunnable(35));
 		clock.addAlarm(30, new MyRunnable(30));
 
-		step(1,0,0); 		//time = 01 []
+		step(01, 00, 0); 	//time = 01 []
 		step(11, 10, 1); 	//time = 11 [10]
 		step(20, 30, 1); 	//time = 31 [10, 20, 30]
 		step(20, 50, 1); 	//time = 51 [10, 20, 30, 35, 40, 50]
@@ -42,6 +44,8 @@ public class ClockTest {
 
 	@Test
 	public void testCallTime() {
+//		assertFalse(_order.isEmpty());   //_order will always be empty. JUnit runs each test on a new instance of the test class.
+		
 		Integer lastInteger = null;
 		for (Integer timeout : _order) {
 			if(lastInteger!=null)
@@ -52,7 +56,7 @@ public class ClockTest {
 
 	private void step(int plusTime, int time, int count) {
 		mock.advanceTime(plusTime);	
-		assertEquals(time, _lastRunned);
+		assertEquals(time, _lastRun);
 		assertEquals(count, _lastCount);
 	}
 	
@@ -67,7 +71,7 @@ public class ClockTest {
 
 		@Override
 		public void run() {
-			_lastRunned = _timeout;
+			_lastRun = _timeout;
 			_lastCount = ++count;
 			_order.add(_timeout * _lastCount);
 		}

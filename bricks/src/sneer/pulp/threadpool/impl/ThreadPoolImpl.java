@@ -6,6 +6,7 @@ import java.util.List;
 import sneer.kernel.container.Inject;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.threadpool.ThreadPool;
+import wheel.lang.Threads;
 
 public class ThreadPoolImpl implements ThreadPool {
 
@@ -18,10 +19,7 @@ public class ThreadPoolImpl implements ThreadPool {
 	@Override
 	public void registerActor(Runnable actor) {
 		_actors.add(actor);
-
-		Thread daemon = new Thread(actor, inferThreadName());
-        daemon.setDaemon(true);
-        daemon.start();
+		Threads.startDaemon(inferThreadName(), actor);
 	}
 
 	private String inferThreadName() {

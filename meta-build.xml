@@ -40,7 +40,7 @@
 	</target>
 	
 	<taskdef resource="clovertasks"/>
-	<target name="clover" depends="build">
+	<target name="clover" depends="test.execution">
 		<clover-setup initString="mycoverage.db"/>
 		<clover-report>
 	       <current outfile="coverage.xml">

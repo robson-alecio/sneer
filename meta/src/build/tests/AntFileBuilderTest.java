@@ -16,7 +16,7 @@ import build.antFileGenerator.DotClasspathToAntConverter;
 import build.dotClasspathParser.DotClasspath;
 
 
-public class AntFileBuilderTests {
+public class AntFileBuilderTest {
 
 	
 	private Directory _directory;

@@ -2,7 +2,7 @@ package sneer.pulp.dyndns.ownaccount.impl;
 
 import sneer.pulp.dyndns.ownaccount.Account;
 
-public class SimpleAccount implements Account {
+class SimpleAccount implements Account {
 
 	private final String _host;
 	private final String _password;

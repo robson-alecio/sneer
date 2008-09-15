@@ -20,7 +20,6 @@ import sneer.pulp.clock.Clock;
 import sneer.pulp.dyndns.client.DynDnsClient;
 import sneer.pulp.dyndns.ownaccount.Account;
 import sneer.pulp.dyndns.ownaccount.OwnAccountKeeper;
-import sneer.pulp.dyndns.ownaccount.impl.SimpleAccount;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.dyndns.updater.BadAuthException;
 import sneer.pulp.dyndns.updater.Updater;
@@ -55,7 +54,9 @@ Unacceptable Client Behavior
 	
 	final Mockery _context = new JUnit4Mockery();
 	final Register<String> _ownIp = new RegisterImpl<String>("123.45.67.89");
-	final RegisterImpl<Account> _ownAccount = new RegisterImpl<Account>(new SimpleAccount("test.dyndns.org", "test", "test"));
+	final AccountMock _accountMock = new AccountMock();
+	final RegisterImpl<Account> _ownAccount = new RegisterImpl<Account>(_accountMock);
+	
 	final OwnIpDiscoverer _ownIpDiscoverer = _context.mock(OwnIpDiscoverer.class);
 	final OwnAccountKeeper _ownAccountKeeper = _context.mock(OwnAccountKeeper.class);
 	final Updater updater = _context.mock(Updater.class);
@@ -137,7 +138,9 @@ Unacceptable Client Behavior
 		
 		// providing a new account should cause it
 		// to resume updating dyndns
-		_ownAccount.setter().consume(new SimpleAccount(account.host(), account.user(), "*" + account.password()));
+		AccountMock mock = new AccountMock();
+		mock.password = "*test";
+		_ownAccount.setter().consume(mock);
 		assertFalse(light.isOn());
 		
 		_context.assertIsSatisfied();
@@ -161,3 +164,10 @@ Unacceptable Client Behavior
 		return container;
 	}
 }
+
+class AccountMock implements Account{
+	String password = "test";
+	@Override public String host() { return "test.dyndns.org";}
+	@Override public String user() {return "test";}
+	@Override public String password() {return password;}
+};

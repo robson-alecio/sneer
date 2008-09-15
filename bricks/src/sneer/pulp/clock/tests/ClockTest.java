@@ -1,6 +1,5 @@
 package sneer.pulp.clock.tests;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -17,33 +16,15 @@ public class ClockTest extends TestThatIsInjected {
 	@Inject
 	static private Clock _subject;
 	
-	int _lastRun = 0;
-	int _lastCount = 0;
-	
-	final List<Integer> _order = new ArrayList<Integer>();
-	
 	@Test
-	public void test() throws Exception {
-
-//		_subject.advanceTime(1000);    //The test should work even with this line because everything is relative. No time value here is absolute.
+	public void testAlarms() throws Exception {
+		final List<Integer> _order = new ArrayList<Integer>();
 		
-		_subject.addAlarm(50, new MyRunnable(50));
-		_subject.addPeriodicAlarm(20, new MyRunnable(20));
-		_subject.addAlarm(10, new MyRunnable(10));
-		_subject.addPeriodicAlarm(35, new MyRunnable(35));
-		_subject.addAlarm(30, new MyRunnable(30));
-
-		step(01, 00, 0); 	//time = 01 []
-		step(11, 10, 1); 	//time = 11 [10]
-		step(20, 30, 1); 	//time = 31 [10, 20, 30]
-		step(20, 50, 1); 	//time = 51 [10, 20, 30, 35, 40, 50]
-		step(30, 20, 4); 	//time = 81 [10, 20, 30, 35, 40, 50, 60, 70, 80]
-	}
-
-	@Test
-	public void testCallTime() {
-
-//		Assert.assertFalse(_order.isEmpty());   //_order will always be empty. JUnit runs each test on a new instance of the test class.
+		_subject.addAlarm(50, new MyRunnable(50, _order));
+		_subject.addPeriodicAlarm(20, new MyRunnable(20, _order));
+		_subject.addAlarm(10, new MyRunnable(10, _order));
+		_subject.addPeriodicAlarm(35, new MyRunnable(35, _order));
+		_subject.addAlarm(30, new MyRunnable(30,_order));
 		
 		Integer lastInteger = null;
 		for (Integer timeout : _order) {
@@ -53,27 +34,21 @@ public class ClockTest extends TestThatIsInjected {
 		}
 	}
 
-	private void step(int plusTime, int time, int count) {
-		_subject.advanceTime(plusTime);	
-		assertEquals(time, _lastRun);
-		assertEquals(count, _lastCount);
-//		System.out.println(_order);
-	}
-	
 	private class MyRunnable implements Runnable{
 
 		private final int _timeout;
-		private int count = 0;
+		private final List<Integer> _order;
+		private int _count = 0;
 
-		public MyRunnable(int timeout) {
+		public MyRunnable(int timeout, List<Integer> order) {
 			_timeout = timeout;
+			_order = order;
 		}
 
 		@Override
 		public void run() {
-			_lastRun = _timeout;
-			_lastCount = ++count;
-			_order.add(_timeout * _lastCount);
+			_count++;
+			_order.add(_timeout * _count);
 		}
 	}
 }

@@ -1,17 +1,18 @@
 package sneer.pulp.clock.impl;
 
-import java.util.Iterator;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import sneer.pulp.clock.Clock;
 import wheel.lang.Threads;
 
-class ClockImpl implements Clock {
+class ClockImpl implements Clock{
 	
 	long _currentTime = 0;
 	
-	final Set<Alarm> _alarms = new TreeSet<Alarm>();
+	final List<Alarm> _alarms = new ArrayList<Alarm>();
 	
 	
 	@Override
@@ -51,27 +52,30 @@ class ClockImpl implements Clock {
 	}
 	
 	private void checkTime() {
-		boolean tryAgain = true;
-
-		while(tryAgain){
-			Iterator<Alarm> iterator = _alarms.iterator();
+		int i = 1;
+		while(i>0){
+			Collections.sort(_alarms, 
+				new Comparator<Alarm>(){@Override public int compare(Alarm alarm0, Alarm alarm1) {
+					return alarm0._millisFromNow - alarm1._millisFromNow;
+				}}
+			);
 			
-			while(iterator.hasNext()) {
-				Alarm alarm = iterator.next();
+			List<Alarm> tmp = new ArrayList<Alarm>(_alarms);
+			
+			for (i = 0; i < tmp.size(); i++) {
+				Alarm alarm = tmp.get(i);
+				if(!alarm.tryRun()) //Break Last Timeout
+					break;
 				
-				tryAgain = alarm.tryRunAndRemove(iterator);
-				
-				if(!tryAgain) //Break Last Timeout
-					break;				
-
 				if(alarm._increment>0){ //Break Periodic
+					i=1;
 					break;
 				}
 			}
 		}
 	}
 
-	private class Alarm implements Comparable<Alarm>{
+	private class Alarm{
 		
 		final int _increment;
 		
@@ -84,30 +88,17 @@ class ClockImpl implements Clock {
 			_runnable = runnable;
 		}
 		
-		boolean tryRunAndRemove(Iterator<Alarm> iterator){
+		boolean tryRun(){
 			System.err.println("Sandro, fix this please: currentTime is absolute, millisFromNow is relative.");
 			if(_currentTime <= _millisFromNow )
 				return false;
 			
 			_runnable.run();
-			iterator.remove();
 			
-			if(_increment==0)  
-				return true; //NotPeriodic
-				
-			_millisFromNow = _millisFromNow+_increment;   //Periodic.incrementTime 
-			_alarms.add(this);
+			if(_increment==0) _alarms.remove(this); //NotPeriodic.remove
+			else _millisFromNow = _millisFromNow+_increment;   //Periodic.incrementTime 
+			
 			return true;
-		}
-
-		@Override
-		public int compareTo(Alarm alarm) {
-			return _millisFromNow-alarm._millisFromNow;
-		}
-		
-		@Override
-		public String toString() {
-			return "Alarm: " + _millisFromNow;
 		}
 	}
 }

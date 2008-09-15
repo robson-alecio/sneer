@@ -7,7 +7,7 @@ import wheel.io.ui.BoundsPersistence;
 import wheel.io.ui.impl.DirectoryBoundsPersistence;
 import junit.framework.TestCase;
 
-public class DirectoryBoundsPersistenceTests extends TestCase {
+public class DirectoryBoundsPersistenceTest extends TestCase {
 
 	
 	public void testPersistBounds(){

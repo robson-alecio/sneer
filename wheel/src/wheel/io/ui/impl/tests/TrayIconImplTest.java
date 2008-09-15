@@ -16,7 +16,7 @@ import junit.framework.TestCase;
 import wheel.io.ui.action.Action;
 import wheel.io.ui.impl.TrayIconImpl;
 
-public class TrayIconImplTests extends TestCase {
+public class TrayIconImplTest extends TestCase {
 
 	
 	private TrayIconImpl _subject;

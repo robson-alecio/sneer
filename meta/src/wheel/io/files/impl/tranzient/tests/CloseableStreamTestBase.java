@@ -6,7 +6,7 @@ import wheel.io.files.impl.CloseableWithListener;
 import wheel.io.files.impl.CloseableWithListener.Listener;
 import junit.framework.TestCase;
 
-public abstract class CloseableStreamTest extends TestCase {
+public abstract class CloseableStreamTestBase extends TestCase {
 
 	private CloseableWithListener _subject;
 	private CloseableWithListener _lastClosedStream;

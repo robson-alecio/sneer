@@ -10,7 +10,7 @@ import spikes.klaus.prevalence.Transactor;
 import junit.framework.TestCase;
 
 
-public abstract class TransactorTest extends TestCase {
+public abstract class TransactorTestBase extends TestCase {
 
 	private static class ExecutionProbe implements Transaction, Serializable {
 		private boolean wasExecuted = false;
@@ -53,7 +53,7 @@ public abstract class TransactorTest extends TestCase {
 	
 
 	public void testTransactionExecution() {
-		synchronized (TransactorTest.class) {
+		synchronized (TransactorTestBase.class) {
 			EXPECTED_BUSINESS_SYSTEM = _subject.businessSystem();
 			EXECUTIONS = 0;
 	

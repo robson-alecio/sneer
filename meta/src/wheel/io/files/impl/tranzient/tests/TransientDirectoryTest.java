@@ -2,9 +2,9 @@ package wheel.io.files.impl.tranzient.tests;
 
 import wheel.io.files.Directory;
 import wheel.io.files.impl.tranzient.TransientDirectory;
-import wheel.io.files.tests.DirectoryTest;
+import wheel.io.files.tests.DirectoryTestBase;
 
-public class TransientDirectoryTest extends DirectoryTest {
+public class TransientDirectoryTest extends DirectoryTestBase {
 
 
 	@Override

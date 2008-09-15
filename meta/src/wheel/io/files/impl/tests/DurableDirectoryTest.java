@@ -5,9 +5,9 @@ import java.io.IOException;
 
 import wheel.io.files.Directory;
 import wheel.io.files.impl.DurableDirectory;
-import wheel.io.files.tests.DirectoryTest;
+import wheel.io.files.tests.DirectoryTestBase;
 
-public class DurableDirectoryTest extends DirectoryTest {
+public class DurableDirectoryTest extends DirectoryTestBase {
 
 	@Override
 	protected Directory subject() throws IOException {

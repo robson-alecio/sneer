@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import wheel.io.files.impl.CloseableWithListener;
 import wheel.io.files.impl.tranzient.ByteListInputStream;
 
-public class ByteListInputStreamTests  extends CloseableStreamTest  {
+public class ByteListInputStreamTest  extends CloseableStreamTestBase  {
 
 	public void testByteListInputStream() throws IOException{
 		ArrayList<Byte> bytesList = new ArrayList<Byte>();

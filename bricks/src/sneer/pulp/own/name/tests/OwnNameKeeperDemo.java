@@ -15,7 +15,6 @@ import sneer.skin.widgets.reactive.RFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.reactive.impl.Receiver;
 
-
 public class OwnNameKeeperDemo extends TestThatIsInjected {
 
 	@SuppressWarnings("unused")

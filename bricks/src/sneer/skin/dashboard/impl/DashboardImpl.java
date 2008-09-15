@@ -36,7 +36,7 @@ import wheel.io.ui.impl.TrayIconImpl.SystemTrayNotSupported;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
-public class DashboardImpl implements Dashboard, Runnable {
+class DashboardImpl implements Dashboard, Runnable {
 	
 	private static transient final int _WIDTH = 250;
 	private static transient final int _HOFFSET = 30;

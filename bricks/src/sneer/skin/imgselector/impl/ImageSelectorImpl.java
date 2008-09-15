@@ -16,12 +16,12 @@ import sneer.skin.image.ImageFactory;
 import sneer.skin.imgselector.ImageSelector;
 import wheel.lang.Omnivore;
 
-public class ImageSelectorImpl implements ImageSelector {
+class ImageSelectorImpl implements ImageSelector {
 	
 	@Inject
-	private static ImageFactory imageFactory;
-	private static ImageDialog dlg;
-	
+	private static ImageFactory _imageFactory;
+
+	private static ImageDialog _dialog;
 	
 	private File selectFile() {
 		JFileChooser fileChooser = new JFileChooser(".");
@@ -37,8 +37,8 @@ public class ImageSelectorImpl implements ImageSelector {
 	}
 
 	private void showImage(File file, Omnivore<Image> imageSetter) {
-		dlg = new ImageDialog(file, imageFactory, imageSetter);
-		dlg.setVisible(true);
+		_dialog = new ImageDialog(file, _imageFactory, imageSetter);
+		_dialog.setVisible(true);
 	}
 
 	@Override
@@ -47,9 +47,9 @@ public class ImageSelectorImpl implements ImageSelector {
 		if (file==null) return;
 		if (!file.exists()) return;
 		
-		if(dlg!=null){
-			dlg.setVisible(false);
-			dlg.dispose();
+		if(_dialog!=null){
+			_dialog.setVisible(false);
+			_dialog.dispose();
 		}
 		
 		showImage(file, imageSetter);

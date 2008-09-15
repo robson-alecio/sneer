@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 
 import sneer.skin.dashboard.SnappFrame;
 
-public class SnappFrameImpl extends JPanel implements SnappFrame {
+class SnappFrameImpl extends JPanel implements SnappFrame {
 
 	private static final long serialVersionUID = 1L;
 

@@ -18,14 +18,14 @@ import javax.swing.border.BevelBorder;
 
 import wheel.lang.Omnivore;
 
-public class Keyhole extends JComponent {
+class Keyhole extends JComponent {
     private static final long serialVersionUID = 1L;
 	
 	private final JLayeredPane _layeredPane;
 
 	private Point _mouseLocation;
 	private Point _layeredPaneLocation;
-	private Robot robot;
+	private Robot _robot;
 
 	private final Omnivore<Image> _imageSetter;
 	
@@ -36,7 +36,7 @@ public class Keyhole extends JComponent {
     	setPreferredSize(new Dimension(128,128));
         addMouseListeners(layeredPane);
 		try {
-			robot = new Robot();
+			_robot = new Robot();
 		} catch (AWTException e) {
 			e.printStackTrace();
 		}
@@ -81,7 +81,7 @@ public class Keyhole extends JComponent {
 	
 	private BufferedImage getHoleSorceImage() {
 		Point holeLocation = getLocationOnScreen();
-		BufferedImage buffer = robot.createScreenCapture(
+		BufferedImage buffer = _robot.createScreenCapture(
 				new Rectangle(holeLocation.x+2, holeLocation.y+2,
 						getWidth()-4, getHeight()-4));
 		return buffer;

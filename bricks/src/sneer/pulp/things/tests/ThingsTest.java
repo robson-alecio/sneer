@@ -10,7 +10,6 @@ import wheel.reactive.sets.SetSignal;
 import wheel.testutil.TestDashboard;
 import wheel.testutil.TestOfInterface;
 
-
 public abstract class ThingsTest extends TestOfInterface<ThingHome> {
 
 	private static final int _THINGS_TO_ADD = 50;

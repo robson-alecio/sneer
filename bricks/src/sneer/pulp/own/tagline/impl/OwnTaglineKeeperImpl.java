@@ -6,7 +6,7 @@ import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 
-public class OwnTaglineKeeperImpl implements OwnTaglineKeeper {
+class OwnTaglineKeeperImpl implements OwnTaglineKeeper {
 
 	private Register<String> _tagline = new RegisterImpl<String>("[My Tagline]");
 

@@ -22,7 +22,7 @@ import javax.swing.ImageIcon;
 import sneer.skin.image.ImageFactory;
 import wheel.graphics.Images;
 
-public class ImageFactoryImpl implements ImageFactory {
+class ImageFactoryImpl implements ImageFactory {
 	
 	protected HashMap<String,ImageIcon> map = new HashMap<String,ImageIcon>();
 	protected HashMap<ImageIcon,Image> mapBytes = new HashMap<ImageIcon,Image>();

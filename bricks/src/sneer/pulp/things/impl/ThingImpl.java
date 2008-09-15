@@ -2,7 +2,7 @@ package sneer.pulp.things.impl;
 
 import sneer.pulp.things.Thing;
 
-public class ThingImpl implements Thing {
+class ThingImpl implements Thing {
 
 	private final String _name;
 	private final String _description;

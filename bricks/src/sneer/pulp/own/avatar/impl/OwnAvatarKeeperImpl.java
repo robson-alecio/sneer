@@ -12,7 +12,7 @@ import wheel.reactive.Signal;
 import wheel.reactive.impl.Adapter;
 import wheel.reactive.impl.RegisterImpl;
 
-public class OwnAvatarKeeperImpl implements OwnAvatarKeeper {
+class OwnAvatarKeeperImpl implements OwnAvatarKeeper {
 
 	private Register<Image> _avatar = new RegisterImpl<Image>(null);
 	

@@ -18,7 +18,7 @@ import javax.swing.WindowConstants;
 import sneer.skin.image.ImageFactory;
 import wheel.lang.Omnivore;
 
-public class ImageDialog extends JDialog {
+class ImageDialog extends JDialog {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -32,7 +32,6 @@ public class ImageDialog extends JDialog {
 	private ImageFactory _imageFactory;
 
 	private final Omnivore<Image> _imageSetter;
-
 
     ImageDialog(File file, ImageFactory imageFactory, Omnivore<Image> imageSetter) {
     	_file = file;

@@ -12,13 +12,11 @@ import java.net.Socket;
 import sneer.pulp.network.ByteArraySocket;
 import wheel.io.Streams;
 
-
 public class ByteArraySocketImpl implements ByteArraySocket {
 
 	private final Socket _socket;
 	private final DataOutputStream _outputStream;
 	private final DataInputStream _inputStream;
-
 	
 	public ByteArraySocketImpl(String serverIpAddress, int serverPort) throws IOException {
 		this(new Socket(serverIpAddress, serverPort)); //Fix: Ask Matias about TCP socket parameters to make the socket low-latency instead of high-throughput.

@@ -8,13 +8,12 @@ import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.lang.Threads;
 
-public class ThreadPoolImpl implements ThreadPool {
+class ThreadPoolImpl implements ThreadPool {
 
 	@Inject
 	static private OwnNameKeeper _ownNameKeeper;
 	
 	private final List<Runnable> _actors = new ArrayList<Runnable>();
-	
 	
 	@Override
 	public void registerActor(Runnable actor) {

@@ -5,7 +5,7 @@ import wheel.io.network.PortNumberRegister;
 import wheel.lang.Consumer;
 import wheel.reactive.Signal;
 
-public class PortKeeperImpl implements PortKeeper {
+class PortKeeperImpl implements PortKeeper {
 
 	private PortNumberRegister _register = new PortNumberRegister(0);
 	

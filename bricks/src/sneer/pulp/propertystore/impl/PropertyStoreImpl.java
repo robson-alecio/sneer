@@ -12,7 +12,7 @@ import sneer.pulp.config.persistence.PersistenceConfig;
 import sneer.pulp.propertystore.PropertyStore;
 import wheel.io.Streams;
 
-public class PropertyStoreImpl implements PropertyStore {
+class PropertyStoreImpl implements PropertyStore {
 
 	@Inject
 	static private PersistenceConfig _config;
@@ -29,7 +29,6 @@ public class PropertyStoreImpl implements PropertyStore {
 		_properties.setProperty(property, value);
 		persist();
 	}
-	
 	
 	private Properties loadProperties() {
 		Properties result = new Properties();

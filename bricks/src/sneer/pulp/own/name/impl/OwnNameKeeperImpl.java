@@ -6,7 +6,7 @@ import wheel.reactive.Signal;
 import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;
 
-public class OwnNameKeeperImpl implements OwnNameKeeper {
+class OwnNameKeeperImpl implements OwnNameKeeper {
 
 	private Register<String> _name = new RegisterImpl<String>("[My Full Name]");
 	

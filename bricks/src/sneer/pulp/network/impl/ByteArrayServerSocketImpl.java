@@ -10,12 +10,11 @@ import java.net.ServerSocket;
 import sneer.pulp.network.ByteArrayServerSocket;
 import sneer.pulp.network.ByteArraySocket;
 
-
-public class ByteArrayServerSocketImpl implements ByteArrayServerSocket {
+class ByteArrayServerSocketImpl implements ByteArrayServerSocket {
 
 	private final ServerSocket _serverSocket;
 
-	public ByteArrayServerSocketImpl(int port) throws IOException {
+	ByteArrayServerSocketImpl(int port) throws IOException {
 		_serverSocket = new ServerSocket(port);
 	}
 

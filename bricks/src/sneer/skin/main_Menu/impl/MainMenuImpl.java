@@ -6,9 +6,8 @@ import sneer.kernel.container.Inject;
 import sneer.skin.main_Menu.MainMenu;
 import sneer.skin.menu.Menu;
 import sneer.skin.menu.MenuFactory;
-import sneer.skin.menu.impl.MenuBar;
 
-public class MainMenuImpl extends MenuBar implements MainMenu{
+class MainMenuImpl implements MainMenu{
 
 	private static final long serialVersionUID = 1L;
 
@@ -17,11 +16,17 @@ public class MainMenuImpl extends MenuBar implements MainMenu{
 	
 	private static transient Menu<JComponent> sneerMenu;
 	private static boolean initializaded = false;
+
+	private final Menu<JComponent> _delegate;
+	
+	MainMenuImpl(){
+		_delegate = menuFactory.createMenuBar();
+	}
 	
 	public void initialize() {
 		initializaded = true;
 		sneerMenu = menuFactory.createMenuGroup("Menu");
-		addGroup(sneerMenu);
+		_delegate.addGroup(sneerMenu);
 	}
 
 	public Menu<JComponent> getSneerMenu() {
@@ -31,5 +36,10 @@ public class MainMenuImpl extends MenuBar implements MainMenu{
 			}
 			return sneerMenu;
 		}
+	}
+
+	@Override
+	public JComponent getWidget() {
+		return _delegate.getWidget();
 	}
 }

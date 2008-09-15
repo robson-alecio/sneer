@@ -12,7 +12,7 @@ import wheel.io.ui.action.Action;
 import wheel.io.ui.action.ReactiveAction;
 import wheel.io.ui.action.SelectableAction;
 
-public abstract class AbstractSwingMenu implements Menu<JComponent>{
+abstract class AbstractSwingMenu implements Menu<JComponent>{
 	
 	@Override
 	public void addAction(final Action action) {

@@ -5,7 +5,7 @@ import javax.swing.JComponent;
 import sneer.skin.menu.Menu;
 import sneer.skin.menu.MenuFactory;
 
-public class MenuFactoryImpl implements MenuFactory<JComponent> {
+class MenuFactoryImpl implements MenuFactory<JComponent> {
 
 	public Menu<JComponent> createMenuBar(){
 		return new MenuBar();

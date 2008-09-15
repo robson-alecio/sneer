@@ -7,7 +7,7 @@ import javax.swing.JMenuItem;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
 
-public class ReactiveMenuItem extends JMenuItem {
+class ReactiveMenuItem extends JMenuItem {
 
 	private static final long serialVersionUID = 1L;
 

@@ -1,7 +1,6 @@
 ﻿MAIN ROADMAP
 ===================
 
-	- sneer.pulp.clock.realtime - delete this folder and subfolders.
 	- [Sandro] ClockTest - Uncomment the two lines that are commented. The test should run but it fails. Fix.
 	- [Sandro] ClockImpl.checkTime() - Refactor. I (Klaus) cannot understand it. Use a TreeSet so you never have to sort the collection. User iterator.remove() to remove the elements.
 	- [Sandro] Revise your field names. They must all start with underscores.

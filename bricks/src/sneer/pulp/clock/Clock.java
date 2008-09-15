@@ -1,5 +1,6 @@
 package sneer.pulp.clock;
 
+
 public interface Clock {
 	
 	long time();
@@ -8,5 +9,7 @@ public interface Clock {
 
 	void addAlarm(int millisFromNow, Runnable runnable);
 	void addPeriodicAlarm(int periodInMillis, Runnable runnable);
+
+	void advanceTime(int deltaMillis);
 
 }

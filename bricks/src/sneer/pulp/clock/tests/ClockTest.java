@@ -1,4 +1,4 @@
-package sneer.pulp.clock.impl.tests;
+package sneer.pulp.clock.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -8,32 +8,30 @@ import java.util.List;
 
 import org.junit.Test;
 
-import sneer.kernel.container.Container;
-import sneer.kernel.container.ContainerUtils;
+import sneer.kernel.container.Inject;
+import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.clock.Clock;
-import sneer.pulp.clock.realtime.mocks.RealtimeClockMock;
 
-public class ClockTest {
+public class ClockTest extends TestThatIsInjected {
 
+	@Inject
+	static private Clock _subject;
+	
 	int _lastRun = 0;
 	int _lastCount = 0;
 	
 	final List<Integer> _order = new ArrayList<Integer>();
-	final RealtimeClockMock mock = new RealtimeClockMock();
 	
 	@Test
 	public void test() throws Exception {
 
-		final Container container = ContainerUtils.newContainer(mock);
-		final Clock clock = container.produce(Clock.class);
-
-//		mock.advanceTime(1000);    //The test should work even with this line because everything is relative. No time value here is absolute.
+//		_subject.advanceTime(1000);    //The test should work even with this line because everything is relative. No time value here is absolute.
 		
-		clock.addAlarm(50, new MyRunnable(50));
-		clock.addPeriodicAlarm(20, new MyRunnable(20));
-		clock.addAlarm(10, new MyRunnable(10));
-		clock.addPeriodicAlarm(35, new MyRunnable(35));
-		clock.addAlarm(30, new MyRunnable(30));
+		_subject.addAlarm(50, new MyRunnable(50));
+		_subject.addPeriodicAlarm(20, new MyRunnable(20));
+		_subject.addAlarm(10, new MyRunnable(10));
+		_subject.addPeriodicAlarm(35, new MyRunnable(35));
+		_subject.addAlarm(30, new MyRunnable(30));
 
 		step(01, 00, 0); 	//time = 01 []
 		step(11, 10, 1); 	//time = 11 [10]
@@ -44,7 +42,8 @@ public class ClockTest {
 
 	@Test
 	public void testCallTime() {
-//		assertFalse(_order.isEmpty());   //_order will always be empty. JUnit runs each test on a new instance of the test class.
+
+//		Assert.assertFalse(_order.isEmpty());   //_order will always be empty. JUnit runs each test on a new instance of the test class.
 		
 		Integer lastInteger = null;
 		for (Integer timeout : _order) {
@@ -55,7 +54,7 @@ public class ClockTest {
 	}
 
 	private void step(int plusTime, int time, int count) {
-		mock.advanceTime(plusTime);	
+		_subject.advanceTime(plusTime);	
 		assertEquals(time, _lastRun);
 		assertEquals(count, _lastCount);
 	}

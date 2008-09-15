@@ -5,33 +5,16 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.clock.Clock;
-import sneer.pulp.clock.realtime.RealtimeClock;
 import wheel.lang.Threads;
 
 class ClockImpl implements Clock {
 	
-	@Inject
-	private static RealtimeClock _realtime;
-
-	long _currentTime = _realtime.currentTimeMillis();
+	long _currentTime = 0;
 	
 	final List<Alarm> _alarms = new ArrayList<Alarm>();
 	
-	ClockImpl() {
-		//Fix
-		Threads.startDaemon("Clock", new Runnable() { @Override public void run() {
-			while (true) {
-				if(_currentTime != _realtime.currentTimeMillis()){
-					_currentTime = _realtime.currentTimeMillis();
-					checkTime();
-				}
-				Threads.sleepWithoutInterruptions(1);
-			}
-		}}); 
-	}
-
+	
 	@Override
 	public void addAlarm(int millisFromNow, Runnable runnable) {
 		_alarms.add(new Alarm(runnable, millisFromNow, false));
@@ -62,6 +45,12 @@ class ClockImpl implements Clock {
 		return _currentTime;
 	}
 
+	@Override
+	public void advanceTime(int deltaMillis) {
+		_currentTime = _currentTime + deltaMillis;
+		checkTime();
+	}
+	
 	private void checkTime() {
 		int i = 1;
 		while(i>0){

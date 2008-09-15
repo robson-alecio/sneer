@@ -10,7 +10,7 @@ import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
 
-public class RTextFieldImpl extends RAbstractField<JTextField> {
+class RTextFieldImpl extends RAbstractField<JTextField> {
 	
 	private static final long serialVersionUID = 1L;
 

@@ -28,7 +28,7 @@ import wheel.lang.Pair;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
 
-public abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel implements TextWidget<WIDGET> {
+abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel implements TextWidget<WIDGET> {
 	
 	private static final long serialVersionUID = 1L;
 	

@@ -20,7 +20,7 @@ import sneer.skin.widgets.reactive.TextWidget;
 import wheel.lang.Consumer;
 import wheel.reactive.Signal;
 
-public class REditableLabelImpl extends JPanel implements TextWidget<JTextField>{
+class REditableLabelImpl extends JPanel implements TextWidget<JTextField>{
 
 	private static final long serialVersionUID = 1L;
 	

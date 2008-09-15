@@ -6,7 +6,7 @@ import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 
-public class SnappManagerImpl implements SnappManager {
+class SnappManagerImpl implements SnappManager {
 
 	ListRegister<Snapp> _snapps = new ListRegisterImpl<Snapp>();
 	

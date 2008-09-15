@@ -17,7 +17,7 @@ import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 
-public class RFactoryImpl implements RFactory {
+class RFactoryImpl implements RFactory {
 	
 	@Inject
 	private static ImageFactory imageFactory;

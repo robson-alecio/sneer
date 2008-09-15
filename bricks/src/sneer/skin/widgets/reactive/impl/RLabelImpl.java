@@ -15,7 +15,7 @@ import wheel.lang.Consumer;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
 
-public class RLabelImpl extends JPanel implements TextWidget<JLabel>{
+class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 
 	private static final long serialVersionUID = 1L;
 	

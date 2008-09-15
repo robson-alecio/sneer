@@ -2,7 +2,7 @@ package sneer.skin.widgets.reactive.impl;
 
 import java.awt.Dimension;
 
-public abstract class RUtil {
+abstract class RUtil {
 
 	static final int _MinimumSize = 20;
 

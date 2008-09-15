@@ -18,7 +18,7 @@ import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.impl.RegisterImpl;
 
-public class RImageImpl extends JPanel implements ImageWidget{
+class RImageImpl extends JPanel implements ImageWidget{
 
 	private static final long serialVersionUID = 1L;
 

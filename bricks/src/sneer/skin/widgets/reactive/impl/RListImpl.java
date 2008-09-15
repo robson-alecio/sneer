@@ -17,7 +17,7 @@ import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.lists.ListSignal;
 
-public class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
+class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 
 	private static final long serialVersionUID = 1L;
 

@@ -1,8 +1,6 @@
 ﻿MAIN ROADMAP
 ===================
 
-	- [Sandro] ClockTest - Uncomment the two lines that are commented. The test should run but it fails. Fix.
-
 	- [Klaus] Priority?
 		- Revise ThingHomeImpl visibility
 		- Revise ByteArraySocketImpl visibility		

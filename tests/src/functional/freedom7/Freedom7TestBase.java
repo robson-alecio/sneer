@@ -10,10 +10,10 @@ import org.junit.Test;
 
 import sneer.kernel.container.Inject;
 import sneer.pulp.compiler.JavaCompiler;
-import functional.SovereignFunctionalTest;
+import functional.SovereignFunctionalTestBase;
 import functional.SovereignParty;
 
-public abstract class Freedom7Test extends SovereignFunctionalTest {
+public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	
 	@Inject
 	private JavaCompiler _compiler;

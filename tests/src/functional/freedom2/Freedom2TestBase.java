@@ -4,10 +4,10 @@ import org.junit.Test;
 
 import wheel.reactive.Signal;
 import wheel.testutil.SignalUtils;
-import functional.SovereignFunctionalTest;
+import functional.SovereignFunctionalTestBase;
 import functional.SovereignParty;
 
-public abstract class Freedom2Test extends SovereignFunctionalTest {
+public abstract class Freedom2TestBase extends SovereignFunctionalTestBase {
 
 	
 	@Test (timeout = 1000)

@@ -6,7 +6,7 @@ import org.junit.Before;
 import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.tests.TestThatIsInjected;
 
-public abstract class SovereignFunctionalTest extends TestThatIsInjected {
+public abstract class SovereignFunctionalTestBase extends TestThatIsInjected {
 
 	protected abstract SovereignCommunity createNewCommunity();
 

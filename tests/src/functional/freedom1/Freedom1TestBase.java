@@ -4,11 +4,11 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import functional.SovereignFunctionalTest;
+import functional.SovereignFunctionalTestBase;
 import functional.SovereignParty;
 
 
-public abstract class Freedom1Test extends SovereignFunctionalTest {
+public abstract class Freedom1TestBase extends SovereignFunctionalTestBase {
 	
 	@Test (timeout = 1000)
 	public void testOwnName() {

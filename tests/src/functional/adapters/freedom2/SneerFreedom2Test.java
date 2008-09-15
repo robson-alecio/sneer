@@ -2,9 +2,9 @@ package functional.adapters.freedom2;
 
 import functional.SovereignCommunity;
 import functional.adapters.SneerCommunity;
-import functional.freedom2.Freedom2Test;
+import functional.freedom2.Freedom2TestBase;
 
-public class SneerFreedom2Test extends Freedom2Test {
+public class SneerFreedom2Test extends Freedom2TestBase {
 
 	@Override
 	protected SovereignCommunity createNewCommunity() {

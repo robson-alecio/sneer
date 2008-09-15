@@ -20,11 +20,15 @@
 				
 				<!-- resource files required by tests -->
 				<pathelement location="meta/src" />
+				<pathelement location="wheel/src" />
 			</classpath>
 			
 			<batchtest todir="${build.dir}">
 				<fileset dir="${build.dir}">
 					<include name="**/tests/*Test.class" />
+				</fileset>
+				<fileset dir="tests/src">
+					<include name="**/*Test.java" />
 				</fileset>
 				<formatter type="plain"/>
 			</batchtest>

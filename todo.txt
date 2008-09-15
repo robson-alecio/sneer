@@ -2,11 +2,10 @@
 ===================
 
 	- [Sandro] ClockTest - Uncomment the two lines that are commented. The test should run but it fails. Fix.
-	- [Sandro] ClockImpl.checkTime() - Refactor. I (Klaus) cannot understand it. Use a TreeSet so you never have to sort the collection. User iterator.remove() to remove the elements.
-	- [Sandro] Revise your field names. They must all start with underscores.
+
+	- [Klaus] Priority?
 		- Revise ThingHomeImpl visibility
-		- Revise ByteArraySocketImpl visibility
-		
+		- Revise ByteArraySocketImpl visibility		
 	- DynDNS Client ;)
 		- BL should not be turned off during attempt. Only if successful.
 		- Should not block while doing submitUpdateRequest(...). Create a new state for that.

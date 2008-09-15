@@ -57,6 +57,7 @@ public class ClockTest extends TestThatIsInjected {
 		_subject.advanceTime(plusTime);	
 		assertEquals(time, _lastRun);
 		assertEquals(count, _lastCount);
+//		System.out.println(_order);
 	}
 	
 	private class MyRunnable implements Runnable{

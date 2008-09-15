@@ -1,7 +1,7 @@
 ﻿MAIN ROADMAP
 ===================
 
-	- [Klaus] Priority?
+	- [Sandro]
 		- Revise ThingHomeImpl visibility
 		- Revise ByteArraySocketImpl visibility		
 	- DynDNS Client ;)

@@ -54,7 +54,7 @@ Unacceptable Client Behavior
 	
 	final Mockery _context = new JUnit4Mockery();
 	final Register<String> _ownIp = new RegisterImpl<String>("123.45.67.89");
-	final AccountMock _accountMock = new AccountMock();
+	final AccountMock _accountMock = new AccountMock("test");
 	final RegisterImpl<Account> _ownAccount = new RegisterImpl<Account>(_accountMock);
 	
 	final OwnIpDiscoverer _ownIpDiscoverer = _context.mock(OwnIpDiscoverer.class);
@@ -138,8 +138,7 @@ Unacceptable Client Behavior
 		
 		// providing a new account should cause it
 		// to resume updating dyndns
-		AccountMock mock = new AccountMock();
-		mock.password = "*test";
+		AccountMock mock = new AccountMock("*test");
 		_ownAccount.setter().consume(mock);
 		assertFalse(light.isOn());
 		
@@ -166,7 +165,10 @@ Unacceptable Client Behavior
 }
 
 class AccountMock implements Account{
-	String password = "test";
+	final String password;
+	public AccountMock(String ppassword) {
+		password = ppassword;
+	}
 	@Override public String host() { return "test.dyndns.org";}
 	@Override public String user() {return "test";}
 	@Override public String password() {return password;}

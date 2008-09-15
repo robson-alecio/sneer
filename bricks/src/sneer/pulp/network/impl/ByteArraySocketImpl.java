@@ -19,13 +19,15 @@ class ByteArraySocketImpl implements ByteArraySocket {
 	private final DataInputStream _inputStream;
 	
 	public ByteArraySocketImpl(String serverIpAddress, int serverPort) throws IOException {
-		this(new Socket(serverIpAddress, serverPort)); //Fix: Ask Matias about TCP socket parameters to make the socket low-latency instead of high-throughput.
+		this(new Socket(serverIpAddress, serverPort));
 	}
 
 	public ByteArraySocketImpl(Socket socket) throws IOException {
 		_socket = socket;
 		_outputStream = new DataOutputStream(_socket.getOutputStream());
 		_inputStream = new DataInputStream(_socket.getInputStream());
+		
+		_socket.setTcpNoDelay(true);
 	}
 
 	@Override

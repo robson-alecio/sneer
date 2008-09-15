@@ -53,25 +53,25 @@ Unacceptable Client Behavior
 
 	 */
 	
-	final Mockery context = new JUnit4Mockery();
-	final Register<String> ownIp = new RegisterImpl<String>("123.45.67.89");
-	final RegisterImpl<Account> ownAccount = new RegisterImpl<Account>(new SimpleAccount("test.dyndns.org", "test", "test"));
-	final OwnIpDiscoverer ownIpDiscoverer = context.mock(OwnIpDiscoverer.class);
-	final OwnAccountKeeper ownAccountKeeper = context.mock(OwnAccountKeeper.class);
-	final Updater updater = context.mock(Updater.class);
-	final TransientPropertyStore propertyStore = new TransientPropertyStore();
+	final Mockery _context = new JUnit4Mockery();
+	final Register<String> _ownIp = new RegisterImpl<String>("123.45.67.89");
+	final RegisterImpl<Account> _ownAccount = new RegisterImpl<Account>(new SimpleAccount("test.dyndns.org", "test", "test"));
+	final OwnIpDiscoverer _ownIpDiscoverer = _context.mock(OwnIpDiscoverer.class);
+	final OwnAccountKeeper _ownAccountKeeper = _context.mock(OwnAccountKeeper.class);
+	final Updater updater = _context.mock(Updater.class);
+	final TransientPropertyStore _propertyStore = new TransientPropertyStore();
 	
 	@Test
 	public void updateOnIpChange() throws Exception {
-		context.checking(new Expectations() {{
-			exactly(2).of(ownIpDiscoverer).ownIp();
-				will(returnValue(ownIp.output()));
+		_context.checking(new Expectations() {{
+			exactly(2).of(_ownIpDiscoverer).ownIp();
+				will(returnValue(_ownIp.output()));
 				
-			atLeast(1).of(ownAccountKeeper).ownAccount();
-				will(returnValue(ownAccount.output()));
+			atLeast(1).of(_ownAccountKeeper).ownAccount();
+				will(returnValue(_ownAccount.output()));
 				
-			final Account account = ownAccount.output().currentValue();
-			exactly(1).of(updater).update(account.host(), account.user(), account.password(), ownIp.output().currentValue());
+			final Account account = _ownAccount.output().currentValue();
+			exactly(1).of(updater).update(account.host(), account.user(), account.password(), _ownIp.output().currentValue());
 		}});
 		
 
@@ -79,7 +79,7 @@ Unacceptable Client Behavior
 		
 		startDynDnsClient();
 		
-		context.assertIsSatisfied();
+		_context.assertIsSatisfied();
 	}
 	
 	@Test
@@ -87,18 +87,18 @@ Unacceptable Client Behavior
 		
 		final IOException error = new IOException();
 		
-		context.checking(new Expectations() {{
-			allowing(ownIpDiscoverer).ownIp();
-				will(returnValue(ownIp.output()));
+		_context.checking(new Expectations() {{
+			allowing(_ownIpDiscoverer).ownIp();
+				will(returnValue(_ownIp.output()));
 				
-			allowing(ownAccountKeeper).ownAccount();
-				will(returnValue(ownAccount.output()));
+			allowing(_ownAccountKeeper).ownAccount();
+				will(returnValue(_ownAccount.output()));
 				
-			final Account account = ownAccount.output().currentValue();
-			exactly(1).of(updater).update(account.host(), account.user(), account.password(), ownIp.output().currentValue());
+			final Account account = _ownAccount.output().currentValue();
+			exactly(1).of(updater).update(account.host(), account.user(), account.password(), _ownIp.output().currentValue());
 				will(throwException(error));
 				
-			exactly(1).of(updater).update(account.host(), account.user(), account.password(), ownIp.output().currentValue());
+			exactly(1).of(updater).update(account.host(), account.user(), account.password(), _ownIp.output().currentValue());
 		}});
 		
 
@@ -107,23 +107,23 @@ Unacceptable Client Behavior
 		
 		container.produce(Clock.class).advanceTime(300001);
 		assertFalse(light.isOn());
-		context.assertIsSatisfied();
+		_context.assertIsSatisfied();
 	}
 	
 	@Test
 	public void userInterventionRequiredAfterFailure() throws UpdaterException, IOException {
 		
 		final BadAuthException error = new BadAuthException();
-		final Account account = ownAccount.output().currentValue();
+		final Account account = _ownAccount.output().currentValue();
 		final String newIp = "111.111.111.111";
 		
-		context.checking(new Expectations() {{
-			allowing(ownIpDiscoverer).ownIp();
-				will(returnValue(ownIp.output()));
-			allowing(ownAccountKeeper).ownAccount();
-				will(returnValue(ownAccount.output()));
+		_context.checking(new Expectations() {{
+			allowing(_ownIpDiscoverer).ownIp();
+				will(returnValue(_ownIp.output()));
+			allowing(_ownAccountKeeper).ownAccount();
+				will(returnValue(_ownAccount.output()));
 			
-			exactly(1).of(updater).update(account.host(), account.user(), account.password(), ownIp.output().currentValue());
+			exactly(1).of(updater).update(account.host(), account.user(), account.password(), _ownIp.output().currentValue());
 				will(throwException(error));
 				
 			exactly(1).of(updater).update(account.host(), account.user(), "*" + account.password(), newIp);
@@ -133,14 +133,14 @@ Unacceptable Client Behavior
 		final Light light = assertBlinkingLight(error, container);
 		
 		// new ip should be ignored while new account is not provided
-		ownIp.setter().consume(newIp);
+		_ownIp.setter().consume(newIp);
 		
 		// providing a new account should cause it
 		// to resume updating dyndns
-		ownAccount.setter().consume(new SimpleAccount(account.host(), account.user(), "*" + account.password()));
+		_ownAccount.setter().consume(new SimpleAccount(account.host(), account.user(), "*" + account.password()));
 		assertFalse(light.isOn());
 		
-		context.assertIsSatisfied();
+		_context.assertIsSatisfied();
 	}
 
 	private Light assertBlinkingLight(final Exception expectedError, final Container container) {
@@ -156,7 +156,7 @@ Unacceptable Client Behavior
 	}
 
 	private Container startDynDnsClient() {
-		final Container container = ContainerUtils.newContainer(ownIpDiscoverer, ownAccountKeeper, updater, propertyStore);
+		final Container container = ContainerUtils.newContainer(_ownIpDiscoverer, _ownAccountKeeper, updater, _propertyStore);
 		container.produce(DynDnsClient.class);
 		return container;
 	}

@@ -16,7 +16,7 @@ import sneer.pulp.httpclient.HttpClient;
 
 public class CheckIpTest {
 	
-	private final Mockery context = new JUnit4Mockery();
+	private final Mockery _context = new JUnit4Mockery();
 	
 	@Test
 	public void test() throws IOException {
@@ -28,7 +28,7 @@ public class CheckIpTest {
 		final CheckIp checkIp = container.produce(CheckIp.class);
 		assertEquals(ip, checkIp.check());
 		
-		context.assertIsSatisfied();
+		_context.assertIsSatisfied();
 		
 	}
 
@@ -38,8 +38,8 @@ public class CheckIpTest {
 			+ ip
 			+ "</body></html>";
 		
-		final HttpClient client = context.mock(HttpClient.class);
-		context.checking(new Expectations() {{
+		final HttpClient client = _context.mock(HttpClient.class);
+		_context.checking(new Expectations() {{
 			one(client).get("http://checkip.dyndns.org/"); will(returnValue(responseBody));
 		}});
 		return client;

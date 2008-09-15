@@ -24,7 +24,7 @@ import wheel.reactive.sets.SetRegister;
 import wheel.reactive.sets.SetSignal;
 import wheel.reactive.sets.impl.SetRegisterImpl;
 
-public class ThingHomeImpl implements ThingHome {
+class ThingHomeImpl implements ThingHome {
 
 	private static final String TEXT_FIELD = "text";
 	private final Directory _directory = new RAMDirectory();

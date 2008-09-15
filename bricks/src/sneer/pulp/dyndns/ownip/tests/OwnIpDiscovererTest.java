@@ -21,7 +21,7 @@ import wheel.reactive.impl.Receiver;
 public class OwnIpDiscovererTest {
 	
 	final Mockery context = new JUnit4Mockery();
-	final RealtimeClockMock _mock = new RealtimeClockMock();
+	final RealtimeClockMock _clock = new RealtimeClockMock();
 	
 	@Test
 	public void testFirstTime() throws IOException {
@@ -48,7 +48,7 @@ public class OwnIpDiscovererTest {
 			
 		}});
 		
-		final Container container = ContainerUtils.newContainer(_mock, checkip, store);
+		final Container container = ContainerUtils.newContainer(_clock, checkip, store);
 		final OwnIpDiscoverer discoverer = container.produce(OwnIpDiscoverer.class);
 		
 		@SuppressWarnings("unused")
@@ -56,8 +56,8 @@ public class OwnIpDiscovererTest {
 			receiver.consume(value);
 		}};
 		
-		_mock.advanceTime(1);
-		_mock.advanceTime(retryTime * 3);
+		_clock.advanceTime(1);
+		_clock.advanceTime(retryTime * 3);
 		
 		context.assertIsSatisfied();
 	}

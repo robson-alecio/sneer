@@ -7,8 +7,8 @@ public interface Clock {
 
 	void sleep(int millis);
 
-	void addAlarm(int millisFromNow, Runnable runnable);
-	void addPeriodicAlarm(int periodInMillis, Runnable runnable);
+	void addAlarm(int millisFromCurrentTime, Runnable runnable);
+	void addPeriodicAlarm(int periodInMillisFromCurrentTime, Runnable runnable);
 
 	void advanceTime(int deltaMillis);
 

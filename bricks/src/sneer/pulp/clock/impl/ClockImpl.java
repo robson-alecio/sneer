@@ -9,19 +9,19 @@ import wheel.lang.Threads;
 
 class ClockImpl implements Clock {
 	
-	long _currentTime = 0;
+	long _currentTimeMilles = 0;
 	
 	final Set<Alarm> _alarms = new TreeSet<Alarm>();
 	
 	
 	@Override
-	public void addAlarm(int millisFromNow, Runnable runnable) {
-		_alarms.add(new Alarm(runnable, millisFromNow, false));
+	public void addAlarm(int millisFromCurrentTime, Runnable runnable) {
+		_alarms.add(new Alarm(runnable, millisFromCurrentTime, false));
 	}
 
 	@Override
-	public void addPeriodicAlarm(int millis, Runnable runnable) {
-		_alarms.add(new Alarm(runnable, millis, true));
+	public void addPeriodicAlarm(int millisFromCurrentTime, Runnable runnable) {
+		_alarms.add(new Alarm(runnable, millisFromCurrentTime, true));
 	}
 
 	@Override
@@ -41,12 +41,12 @@ class ClockImpl implements Clock {
 
 	@Override
 	public long time() {
-		return _currentTime;
+		return _currentTimeMilles;
 	}
 
 	@Override
 	public void advanceTime(int deltaMillis) {
-		_currentTime = _currentTime + deltaMillis;
+		_currentTimeMilles = _currentTimeMilles + deltaMillis;
 		checkTime();
 	}
 	
@@ -77,18 +77,17 @@ class ClockImpl implements Clock {
 		
 		final int _increment;
 		
-		int _millisFromNow;
+		long _nextAlarmAbsoluteTimeMillies;
 		final Runnable _runnable;
 
-		Alarm(Runnable runnable, int millisFromNow, boolean isPeriodic) {
-			_increment = isPeriodic ? millisFromNow : 0;
-			_millisFromNow = millisFromNow;
+		Alarm(Runnable runnable, int millisFromCurrentTime, boolean isPeriodic) {
+			_increment = isPeriodic ? millisFromCurrentTime : 0;
+			_nextAlarmAbsoluteTimeMillies = millisFromCurrentTime + _currentTimeMilles;
 			_runnable = runnable;
 		}
 		
 		boolean tryRunAndRemove(Iterator<Alarm> iterator){
-			System.err.println("Sandro, fix this please: currentTime is absolute, millisFromNow is relative.");
-			if(_currentTime <= _millisFromNow )
+			if(_currentTimeMilles <= _nextAlarmAbsoluteTimeMillies )
 				return false;
 			
 			_runnable.run();
@@ -97,19 +96,19 @@ class ClockImpl implements Clock {
 			if(_increment==0)  
 				return true; //NotPeriodic
 				
-			_millisFromNow = _millisFromNow+_increment;   //Periodic.incrementTime 
+			_nextAlarmAbsoluteTimeMillies = _nextAlarmAbsoluteTimeMillies+_increment;   //Periodic.incrementTime 
 			_alarms.add(this);
 			return true;
 		}
 
 		@Override
 		public int compareTo(Alarm alarm) {
-			return _millisFromNow-alarm._millisFromNow;
+			return (int) (_nextAlarmAbsoluteTimeMillies-alarm._nextAlarmAbsoluteTimeMillies);
 		}
 		
 		@Override
 		public String toString() {
-			return "Alarm: " + _millisFromNow;
+			return "Alarm: " + _nextAlarmAbsoluteTimeMillies;
 		}
 	}
 }

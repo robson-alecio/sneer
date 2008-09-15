@@ -23,7 +23,7 @@ import wheel.reactive.sets.SetSignal.SetValueChange;
 import wheel.reactive.sets.impl.SetRegisterImpl;
 
 
-public class BrickProxy implements InvocationHandler {
+class BrickProxy implements InvocationHandler {
 
 	static public <B extends Brick> B createFor(Class<B> brickInterface, SignalPublisher intermediary) {
 		return (B)Proxy.newProxyInstance(

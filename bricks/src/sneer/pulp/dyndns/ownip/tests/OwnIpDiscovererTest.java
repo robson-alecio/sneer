@@ -20,13 +20,13 @@ import wheel.reactive.impl.Receiver;
 
 public class OwnIpDiscovererTest {
 	
-	final Mockery context = new JUnit4Mockery();
+	final Mockery _context = new JUnit4Mockery();
 	
 	@Test
 	public void testFirstTime() throws IOException {
 		
-		final CheckIp checkip = context.mock(CheckIp.class);
-		final Omnivore<String> receiver = context.mock(Omnivore.class);
+		final CheckIp checkip = _context.mock(CheckIp.class);
+		final Omnivore<String> receiver = _context.mock(Omnivore.class);
 		final PropertyStore store = new TransientPropertyStore();
 		
 		final String ip1 = "123.45.67.89";
@@ -34,8 +34,8 @@ public class OwnIpDiscovererTest {
 
 		int retryTime = 11 * 60 * 1000;
 
-		context.checking(new Expectations() {{
-			final Sequence seq = context.sequence("sequence");
+		_context.checking(new Expectations() {{
+			final Sequence seq = _context.sequence("sequence");
 			
 			one(checkip).check(); will(returnValue(ip1)); inSequence(seq);
 			one(receiver).consume(ip1); inSequence(seq);
@@ -59,7 +59,7 @@ public class OwnIpDiscovererTest {
 		clock.advanceTime(1);
 		clock.advanceTime(retryTime * 3);
 		
-		context.assertIsSatisfied();
+		_context.assertIsSatisfied();
 	}
 
 }

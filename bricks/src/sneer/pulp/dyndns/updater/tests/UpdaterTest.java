@@ -21,7 +21,7 @@ import wheel.lang.Pair;
 
 public class UpdaterTest {
 
-	private final Mockery context = new JUnit4Mockery();
+	private final Mockery _context = new JUnit4Mockery();
 	
 	@Test
 	public void testUpdateSuccess() throws Exception {
@@ -89,7 +89,7 @@ public class UpdaterTest {
 		final Updater updater = ContainerUtils.newContainer(client).produce(Updater.class);
 		updater.update(hostname, user, password, ip);
 		
-		context.assertIsSatisfied();
+		_context.assertIsSatisfied();
 		
 	}
 
@@ -97,8 +97,8 @@ public class UpdaterTest {
 			final String ip, final String user, final String password,
 			final String responseText) throws IOException {
 		
-		final HttpClient client = context.mock(HttpClient.class);
-		context.checking(new Expectations() {{
+		final HttpClient client = _context.mock(HttpClient.class);
+		_context.checking(new Expectations() {{
 			one(client).get(
 				"https://members.dyndns.org/nic/update?hostname=" + hostname + "&myip=" + ip + "&wildcard=NOCHG&mx=NOCHG&backmx=NOCHG",
 				Pair.pair("User-Agent", "Sneer - DynDns Client - 0.1"),

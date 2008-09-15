@@ -13,7 +13,7 @@ import sneer.pulp.mesh.Party;
 import sneer.pulp.own.name.OwnNameKeeper;
 import wheel.lang.Functor;
 
-public class KeyManagerImpl implements KeyManager {
+class KeyManagerImpl implements KeyManager {
 
 	private PublicKey _ownKey;
 	

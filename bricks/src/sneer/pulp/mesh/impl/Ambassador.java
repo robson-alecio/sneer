@@ -1,6 +1,6 @@
 package sneer.pulp.mesh.impl;
 
-public interface Ambassador {
+interface Ambassador {
 
 	void visit(Visitable visitable);
 	

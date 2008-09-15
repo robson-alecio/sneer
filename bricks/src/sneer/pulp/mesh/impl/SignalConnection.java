@@ -48,8 +48,6 @@ class SignalConnection implements Visitable {
 
 	private Serializer _serializer = new XStreamBinarySerializer();
 
-
-
 	SignalConnection(Contact contact) {
 		_connection = _connectionManager.connectionFor(contact);
 		_connection.setReceiver(new Omnivore<byte[]>(){public void consume(byte[] packetReceived) {

@@ -7,7 +7,7 @@ class NotificationOfContact implements Ambassador {
 	private final PublicKey _publicKey;
 	private final RemoteContact _newContact;
 
-	public NotificationOfContact(PublicKey publicKey, RemoteContact newContact) {
+	NotificationOfContact(PublicKey publicKey, RemoteContact newContact) {
 		_publicKey = publicKey;
 		_newContact = newContact;
 	}

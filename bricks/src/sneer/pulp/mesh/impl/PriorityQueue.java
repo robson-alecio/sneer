@@ -5,7 +5,7 @@ import java.util.List;
 
 import wheel.lang.Threads;
 
-public class PriorityQueue<T> {
+class PriorityQueue<T> {
 
 	private final PriorityQueue<T> _nextQueue;
 	private final List<T> _myElements = new LinkedList<T>();
@@ -13,7 +13,7 @@ public class PriorityQueue<T> {
 	
 	private int _totalElements;
 
-	public PriorityQueue(int minimumPriority) {
+	PriorityQueue(int minimumPriority) {
 		_nextQueue = minimumPriority == 0
 			? null
 			: new PriorityQueue<T>(minimumPriority - 1);

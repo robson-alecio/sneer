@@ -4,7 +4,7 @@ import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.mesh.Party;
 import wheel.lang.Functor;
 
-public class ProxyFactory implements Functor<PublicKey, Party> {
+class ProxyFactory implements Functor<PublicKey, Party> {
 
 	static final ProxyFactory INSTANCE = new ProxyFactory();
 

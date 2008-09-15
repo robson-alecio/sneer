@@ -8,16 +8,13 @@ import wheel.reactive.impl.RegisterImpl;
 
 public class RemoteContact implements Contact {
 
-
+	private final PublicKey _publicKey;
+	private final RegisterImpl<String> _nickname;
+	
 	RemoteContact(PublicKey publicKey, String nickname) {
 		_publicKey = publicKey;
 		_nickname = new RegisterImpl<String>(nickname);
 	}
-	
-	
-	private final PublicKey _publicKey;
-	private final RegisterImpl<String> _nickname;
-
 	
 	@Override
 	public Signal<String> nickname() {

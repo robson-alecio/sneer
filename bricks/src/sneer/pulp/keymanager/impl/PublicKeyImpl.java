@@ -11,7 +11,7 @@ class PublicKeyImpl implements PublicKey {
 
 	private Sneer1024 _sneer1024;
 	
-	public PublicKeyImpl(Sneer1024 sneer1024) {
+	PublicKeyImpl(Sneer1024 sneer1024) {
 		_sneer1024 = sneer1024;
 	}
 

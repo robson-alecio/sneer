@@ -16,7 +16,6 @@ import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 import wheel.reactive.sets.SetSignal;
 
-
 class MeImpl extends AbstractParty implements Me {
 
 	@Inject
@@ -31,7 +30,6 @@ class MeImpl extends AbstractParty implements Me {
 	private final Map<Contact, SignalConnection> _signalConnectionsByContact = new HashMap<Contact, SignalConnection>();
 
 
-	
 	MeImpl() {
 		registerWithKeyManager();
 		registerContactReceiver();

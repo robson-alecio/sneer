@@ -3,7 +3,7 @@ package sneer.pulp.mesh.impl;
 import sneer.kernel.container.Brick;
 import sneer.pulp.keymanager.PublicKey;
 
-public class Subscription implements Ambassador {
+class Subscription implements Ambassador {
 
 	private final PublicKey _publicKey;
 	private final String _signalName;
@@ -18,6 +18,4 @@ public class Subscription implements Ambassador {
 	public void visit(Visitable visitable) {
 		visitable.serveSubscriptionTo(_publicKey, _brickInterface, _signalName);
 	}
-
-
 }

@@ -14,6 +14,4 @@ interface Visitable {
 	void serveSubscriptionTo(PublicKey publicKey, Class<? extends Brick> brickInterface, String signalName);
 
 	void serveSubscriptionToContacts(PublicKey publicKey);
-
-
 }

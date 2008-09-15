@@ -16,14 +16,8 @@ import sneer.pulp.httpclient.HttpClient;
 import wheel.io.Base64;
 import wheel.lang.Pair;
 
-public class UpdaterImpl implements Updater {
+class UpdaterImpl implements Updater {
 	
-	public static void main(String[] args) throws Exception {
-		final Container container = ContainerUtils.newContainer();
-		final Updater client = container.produce(Updater.class);
-		client.update("test.dyndns.org", "test", "test", "123.45.67.89");
-	}
-
 	@Inject
 	private static HttpClient _client;
 
@@ -73,4 +67,9 @@ public class UpdaterImpl implements Updater {
 		return Base64.encode(text);
 	}
 
+	public static void main(String[] args) throws Exception {
+		final Container container = ContainerUtils.newContainer();
+		final Updater client = container.produce(Updater.class);
+		client.update("test.dyndns.org", "test", "test", "123.45.67.89");
+	}
 }

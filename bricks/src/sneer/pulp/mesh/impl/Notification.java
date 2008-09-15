@@ -10,7 +10,7 @@ class Notification implements Ambassador {
 	private final String _signalName;
 	private final Object _payload;
 
-	public Notification(PublicKey publicKey, Class<? extends Brick> brickInterface, String signalName, Object notification) {
+	Notification(PublicKey publicKey, Class<? extends Brick> brickInterface, String signalName, Object notification) {
 		_publicKey = publicKey;
 		_brickInterface = brickInterface;
 		_signalName = signalName;

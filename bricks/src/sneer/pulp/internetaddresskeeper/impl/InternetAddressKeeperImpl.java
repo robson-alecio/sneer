@@ -7,7 +7,7 @@ import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 
-public class InternetAddressKeeperImpl implements InternetAddressKeeper {
+class InternetAddressKeeperImpl implements InternetAddressKeeper {
 
 	private ListRegister<InternetAddress> _addresses = new ListRegisterImpl<InternetAddress>();
 	

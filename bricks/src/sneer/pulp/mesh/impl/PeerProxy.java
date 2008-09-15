@@ -16,11 +16,6 @@ import wheel.reactive.lists.impl.ListRegisterImpl;
 
 class PeerProxy extends AbstractParty implements SignalPublisher {
 
-	PeerProxy(PublicKey publicKey) {
-		if (publicKey == null) throw new IllegalArgumentException("Public key cannot be null.");
-		_publicKey = publicKey;
-	}
-
 	private final PublicKey _publicKey;
 	private final Set<AbstractParty> _intermediaries = new HashSet<AbstractParty>();
 
@@ -29,6 +24,11 @@ class PeerProxy extends AbstractParty implements SignalPublisher {
 	protected final Map<String, Register<Object>> _registersBySignalPath = new HashMap<String, Register<Object>>();
 	private ListRegister<RemoteContact> _contactsCache;
 
+	PeerProxy(PublicKey publicKey) {
+		if (publicKey == null) throw new IllegalArgumentException("Public key cannot be null.");
+		_publicKey = publicKey;
+	}
+	
 	private AbstractParty closestIntermediary() { //Optimize
 		int closestDistance = Integer.MAX_VALUE;
 		AbstractParty result = null;

@@ -100,6 +100,7 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 					"\t\t\t\tfailonerror=\"true\"\n" +
 					"\t\t\t\tdebug=\"on\"\n" +
 					"\t\t\t\ttarget=\"1.5\"\n" +
+					"\t\t\t\tencoding=\"utf-8\"\n" +
 					"\t\t>\n");
 		
 		for (final String src : _srcs){
@@ -116,11 +117,12 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 		for (final String src : _srcs){
 			builder.append(	
 					"\t\t<javac srcdir=\""+ src +"\"\n"+
-						"\t\t\t\tdestdir=\"distr/bin\"\n" +
+						"\t\t\t\tdestdir=\"${" + BUILD_DIR_PROPERTY + "}\"\n" +
 						"\t\t\t\tlistfiles=\"true\"\n" +
 						"\t\t\t\tfailonerror=\"true\"\n" +
 						"\t\t\t\tdebug=\"on\"\n" +
 						"\t\t\t\ttarget=\"1.5\"\n" +
+						"\t\t\t\tencoding=\"utf-8\"\n" +
 						"\t\t>\n" +
 							"\t\t\t<classpath refid=\"classpath\"/>\n" +
 						"\t\t</javac>\n");		      

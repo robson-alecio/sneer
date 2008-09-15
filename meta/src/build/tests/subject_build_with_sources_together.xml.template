@@ -18,6 +18,7 @@
 				failonerror="true"
 				debug="on"
 				target="1.5"
+				encoding="utf-8"
 		>
 			<src path="wheel/src"/>
 			<src path="spikes/src"/>

@@ -13,20 +13,22 @@
 	<target name="compile">
 		<mkdir dir="${build.dir}"/>
 		<javac srcdir="wheel/src"
-				destdir="distr/bin"
+				destdir="${build.dir}"
 				listfiles="true"
 				failonerror="true"
 				debug="on"
 				target="1.5"
+				encoding="utf-8"
 		>
 			<classpath refid="classpath"/>
 		</javac>
 		<javac srcdir="spikes/src"
-				destdir="distr/bin"
+				destdir="${build.dir}"
 				listfiles="true"
 				failonerror="true"
 				debug="on"
 				target="1.5"
+				encoding="utf-8"
 		>
 			<classpath refid="classpath"/>
 		</javac>

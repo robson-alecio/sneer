@@ -78,7 +78,8 @@
 			classpathref="wheel.lib.classpath"
 			listfiles="true"
 			failonerror="true"
-			debug="on">
+			debug="on"
+			encoding="utf-8">
 			<src path="wheel/src" />
 			<src path="meta/src" />
 		</javac>

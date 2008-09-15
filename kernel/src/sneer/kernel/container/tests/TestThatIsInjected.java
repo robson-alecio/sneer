@@ -16,7 +16,11 @@ public class TestThatIsInjected extends TestThatMightUseFiles {
     }
     
 	@Before
-	public void injectDependencies()throws Exception {
+	public void before() throws Exception {
+		injectDependencies();
+	}
+
+	private void injectDependencies() {
 		Container container = ContainerUtils.newContainer(getBindings());
 	    Injector injector = new AnnotatedFieldInjector(container);
 

@@ -3,7 +3,6 @@ package sneer.pulp.connection.tests;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
-import java.net.Socket;
 
 import org.junit.Test;
 
@@ -11,7 +10,8 @@ import sneer.kernel.container.Inject;
 import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.connection.SocketAccepter;
 import sneer.pulp.network.ByteArraySocket;
-import sneer.pulp.network.impl.ByteArraySocketImpl;
+import sneer.pulp.network.Network;
+import sneer.pulp.network.impl.inmemory.InMemoryNetwork;
 import sneer.pulp.port.PortKeeper;
 import wheel.reactive.impl.Receiver;
 
@@ -22,8 +22,20 @@ public class SocketAccepterTest extends TestThatIsInjected {
 	
 	@Inject
 	private static SocketAccepter _accepter;
+
+	@Inject
+	private static Network _network;
 	
-	@Test(timeout=3000)
+	
+	
+	@Override
+	protected Object[] getBindings() {
+		return new Object[]{ new InMemoryNetwork() };
+	}
+
+
+
+	@Test //(timeout=3000)
 	public void testSocketAccept() throws Exception {
 		_portKeeper.portSetter().consume(9090);
 
@@ -43,26 +55,27 @@ public class SocketAccepterTest extends TestThatIsInjected {
 		String reply = client.talk("hello");
 		assertEquals("HELLO", reply);
 	}
-}
-
-
-class SneerClient {
 	
-	private ByteArraySocket _socket;
-	
-	public boolean connected(int port) {
-		try {
-			_socket = new ByteArraySocketImpl(new Socket("127.0.0.1", port));
-			return true;
-		} catch (Exception ignored) {
-			//ignored.printStackTrace(System.err);
-			return false;
+	static class SneerClient {
+		
+		private ByteArraySocket _socket;
+		
+		boolean connected(int port) {
+			try {
+				_socket = _network.openSocket("localhost", port);
+				return true;
+			} catch (Exception ignored) {
+				//ignored.printStackTrace();
+				return false;
+			}
+		}
+		
+		String talk(String message) throws IOException {
+			_socket.write(message.getBytes());
+			byte[] buffer = _socket.read();
+			return new String(buffer);
 		}
 	}
-	
-	public String talk(String message) throws IOException {
-		_socket.write(message.getBytes());
-		byte[] buffer = _socket.read();
-		return new String(buffer);
-	}
 }
+
+

@@ -12,7 +12,7 @@ import java.net.Socket;
 import sneer.pulp.network.ByteArraySocket;
 import wheel.io.Streams;
 
-public class ByteArraySocketImpl implements ByteArraySocket {
+class ByteArraySocketImpl implements ByteArraySocket {
 
 	private final Socket _socket;
 	private final DataOutputStream _outputStream;

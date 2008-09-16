@@ -2,7 +2,6 @@ package spikes.bamboo;
 
 import static org.junit.Assert.assertNull;
 
-import org.junit.Before;
 import org.junit.Test;
 
 public class JUnitExpectationsTest {
@@ -21,17 +20,4 @@ public class JUnitExpectationsTest {
 		_instance = new Object();
 	}
 	
-	@Before
-	public void before() {
-		System.out.println("before");
-	}
-	
-	@Test(timeout=500)
-	public void test() {
-		try {
-			Thread.sleep(20000);
-		} catch (InterruptedException e) {
-			System.out.println("Interrupted");
-		}
-	}
 }

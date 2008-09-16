@@ -55,7 +55,7 @@ class DynDnsClientImpl implements DynDnsClient {
 
 	private State submitUpdateRequest(final Account account, String ip) {
 		try {
-			_updater.update(account.host(), account.user(), account.password(), ip);
+			_updater.update(account.host, account.dynDnsUser, account.password, ip);
 			recordLastIp(ip);
 			return new Happy();
 		} catch (BadAuthException e) {

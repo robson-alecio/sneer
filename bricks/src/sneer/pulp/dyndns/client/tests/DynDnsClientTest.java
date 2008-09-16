@@ -54,8 +54,8 @@ Unacceptable Client Behavior
 	
 	final Mockery _context = new JUnit4Mockery();
 	final Register<String> _ownIp = new RegisterImpl<String>("123.45.67.89");
-	final AccountMock _accountMock = new AccountMock("test");
-	final RegisterImpl<Account> _ownAccount = new RegisterImpl<Account>(_accountMock);
+	final Account _account = new Account("test.dyndns.org", "test", "test");
+	final RegisterImpl<Account> _ownAccount = new RegisterImpl<Account>(_account);
 	
 	final OwnIpDiscoverer _ownIpDiscoverer = _context.mock(OwnIpDiscoverer.class);
 	final OwnAccountKeeper _ownAccountKeeper = _context.mock(OwnAccountKeeper.class);
@@ -72,7 +72,7 @@ Unacceptable Client Behavior
 				will(returnValue(_ownAccount.output()));
 				
 			final Account account = _ownAccount.output().currentValue();
-			exactly(1).of(updater).update(account.host(), account.user(), account.password(), _ownIp.output().currentValue());
+			exactly(1).of(updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
 		}});
 		
 
@@ -96,10 +96,10 @@ Unacceptable Client Behavior
 				will(returnValue(_ownAccount.output()));
 				
 			final Account account = _ownAccount.output().currentValue();
-			exactly(1).of(updater).update(account.host(), account.user(), account.password(), _ownIp.output().currentValue());
+			exactly(1).of(updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
 				will(throwException(error));
 				
-			exactly(1).of(updater).update(account.host(), account.user(), account.password(), _ownIp.output().currentValue());
+			exactly(1).of(updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
 		}});
 		
 
@@ -124,10 +124,10 @@ Unacceptable Client Behavior
 			allowing(_ownAccountKeeper).ownAccount();
 				will(returnValue(_ownAccount.output()));
 			
-			exactly(1).of(updater).update(account.host(), account.user(), account.password(), _ownIp.output().currentValue());
+			exactly(1).of(updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
 				will(throwException(error));
 				
-			exactly(1).of(updater).update(account.host(), account.user(), "*" + account.password(), newIp);
+			exactly(1).of(updater).update(account.host, account.dynDnsUser, "*" + account.password, newIp);
 		}});
 		
 		final Container container = startDynDnsClient();
@@ -136,10 +136,8 @@ Unacceptable Client Behavior
 		// new ip should be ignored while new account is not provided
 		_ownIp.setter().consume(newIp);
 		
-		// providing a new account should cause it
-		// to resume updating dyndns
-		AccountMock mock = new AccountMock("*test");
-		_ownAccount.setter().consume(mock);
+		Account changed = new Account("test.dyndns.org", "test", "*test");
+		_ownAccount.setter().consume(changed);
 		assertFalse(light.isOn());
 		
 		_context.assertIsSatisfied();
@@ -164,12 +162,3 @@ Unacceptable Client Behavior
 	}
 }
 
-class AccountMock implements Account{
-	final String password;
-	public AccountMock(String ppassword) {
-		password = ppassword;
-	}
-	@Override public String host() { return "test.dyndns.org";}
-	@Override public String user() {return "test";}
-	@Override public String password() {return password;}
-};

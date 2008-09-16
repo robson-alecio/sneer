@@ -15,11 +15,12 @@ public abstract class Receiver<T> implements Omnivore<T> {
 	}
 	
 	public Receiver(EventSource<T>... signals) {
-		for (EventSource<T> signal : signals) {
+		for (EventSource<T> signal : signals)
 			addToSignal(signal);
-		}
 	}
 
+	protected Receiver() {}
+	
 	public void addToSignal(EventSource<? extends T> signal) {
 		if (null == signal)
 			throw new IllegalArgumentException();

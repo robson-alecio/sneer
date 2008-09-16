@@ -166,10 +166,6 @@ class DynDnsClientImpl implements DynDnsClient {
 		_propertyStore.set(LAST_IP_KEY, ip);
 	}
 
-	void switchTo(State state) {
-		_state = state;
-	}
-
 	private String lastIp() {
 		return _propertyStore.get(LAST_IP_KEY);
 	}

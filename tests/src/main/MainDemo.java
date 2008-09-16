@@ -4,6 +4,7 @@ import javax.swing.SwingUtilities;
 
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
+import wheel.io.Logger;
 
 public class MainDemo {
 
@@ -18,6 +19,8 @@ public class MainDemo {
 	}
 
 	private static void tryToRun(String[] args) throws Exception {
+		Logger.redirectTo(System.out);
+		
 		demo().start(ownName(args), port(args));
 		waitUntilTheGuiThreadStarts();
 	}

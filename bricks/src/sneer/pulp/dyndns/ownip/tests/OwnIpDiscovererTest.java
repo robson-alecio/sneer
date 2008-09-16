@@ -36,6 +36,8 @@ public class OwnIpDiscovererTest {
 
 		_context.checking(new Expectations() {{
 			final Sequence seq = _context.sequence("sequence");
+
+			one(receiver).consume(null); inSequence(seq);
 			
 			one(checkip).check(); will(returnValue(ip1)); inSequence(seq);
 			one(receiver).consume(ip1); inSequence(seq);

@@ -23,13 +23,13 @@ public class ReceiverTest {
 		final RegisterImpl<String> register2 = new RegisterImpl<String>(null);
 		register2.setter().consume("bar");
 		
-		assertEquals("foo", received.toString());
+		assertEquals("nullfoo", received.toString());
 		receiver.addToSignal(register2.output());
-		assertEquals("foobar", received.toString());
+		assertEquals("nullfoobar", received.toString());
 
 		consume("baz1");
 		register2.setter().consume("baz2");
-		assertEquals("foobarbaz1baz2", received.toString());
+		assertEquals("nullfoobarbaz1baz2", received.toString());
 	}
 	
 	@Test
@@ -37,12 +37,12 @@ public class ReceiverTest {
 		
 		consume("foo");
 		consume("bar");
-		assertEquals("foobar", received.toString());
+		assertEquals("nullfoobar", received.toString());
 		
 		receiver.removeFromSignals();
 		
 		consume("baz");
-		assertEquals("foobar", received.toString());
+		assertEquals("nullfoobar", received.toString());
 		
 	}
 

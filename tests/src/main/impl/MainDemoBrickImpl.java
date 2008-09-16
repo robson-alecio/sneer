@@ -8,6 +8,7 @@ import sneer.pulp.connection.SocketOriginator;
 import sneer.pulp.connection.SocketReceiver;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
+import sneer.pulp.dyndns.client.DynDnsClient;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
@@ -21,16 +22,19 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	private static Dashboard _gui1;
 	
 	@Inject	@SuppressWarnings("unused")
-	private static ContactsSnapp _gui3;
+	private static ContactsSnapp _gui2;
 	
 	@Inject	@SuppressWarnings("unused")
-	private static BlinkingLightsSnapp _gui4;
+	private static BlinkingLightsSnapp _gui3;
 	
 	@Inject	@SuppressWarnings("unused")
 	private static SocketOriginator _networkDaemon1;
 	
 	@Inject	@SuppressWarnings("unused")
 	private static SocketReceiver _networkDaemon2;
+
+	@Inject	@SuppressWarnings("unused")
+	private static DynDnsClient _dynDns;
 
 	@Inject
 	private static OwnNameKeeper _ownName;

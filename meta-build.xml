@@ -51,14 +51,22 @@
 	</target>
 	
 	<target name="clover-report" depends="init-clover, test.execution">
+		
+		<fileset id="clover.sources">
+			<include name="**/*.java" />
+			<exclude name="spikes/**" />
+		</fileset>
+		
 		<clover-report>
 	       <current outfile="clover.xml">
 	          <format type="xml"/>
+	       	  <fileset refid="clover.sources" />
 	       </current>
 	    </clover-report>
 		<clover-report>
 	       <current outfile="clover">
 	          <format type="html"/>
+	       	  <fileset refid="clover.sources" />
 	       </current>
 	    </clover-report>
 	</target>

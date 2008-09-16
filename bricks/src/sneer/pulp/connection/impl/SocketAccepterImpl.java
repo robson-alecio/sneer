@@ -5,6 +5,7 @@ import static wheel.io.Logger.log;
 import java.io.IOException;
 
 import sneer.kernel.container.Inject;
+import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.connection.SocketAccepter;
@@ -95,7 +96,7 @@ class SocketAccepterImpl implements SocketAccepter {
 					_lights.turnOff(_cantAcceptSocket);
 				} catch (IOException e) {
 					if (!_isStopped) 
-						_cantAcceptSocket = _lights.turnOn(Light.ERROR_TYPE, "Error accepting client connection", e);
+						_cantAcceptSocket = _lights.turnOn(LightType.ERROR, "Error accepting client connection", e);
 				} 
 			}
 		}});
@@ -103,16 +104,16 @@ class SocketAccepterImpl implements SocketAccepter {
 
 	private void openServerSocket(int port) {
 		if (port == 0) return;
-		Light starting = _lights.turnOn(Light.INFO_TYPE, "Starting Sneer on port " + port);
+		Light starting = _lights.turnOn(LightType.INFO, "Starting Sneer on port " + port);
 		try {
 			_serverSocket = _network.openServerSocket(port);
 			_lights.turnOff(_cantOpenServerSocket);
 			_lights.turnOff(starting);
-			_lights.turnOn(Light.INFO_TYPE, "Open socket at port " + port);
+			_lights.turnOn(LightType.INFO, "Open socket at port " + port);
 		} catch (IOException e) {
 			_lights.turnOff(starting);
 			if (!_isStopped)
-				_cantOpenServerSocket = _lights.turnOn(Light.ERROR_TYPE, "Error trying to open socket at "+port, e);
+				_cantOpenServerSocket = _lights.turnOn(LightType.ERROR, "Error trying to open socket at "+port, e);
 		}
 	}
 

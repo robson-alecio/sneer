@@ -3,6 +3,7 @@ package sneer.pulp.dyndns.client.impl;
 import java.io.IOException;
 
 import sneer.kernel.container.Inject;
+import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.clock.Clock;
@@ -103,7 +104,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		private final Light _light;
 		
 		Sad(String message, Exception e) {
-			_light = _blinkingLights.turnOn(Light.ERROR_TYPE, message, e);
+			_light = _blinkingLights.turnOn(LightType.ERROR, message, e);
 		}
 
 		protected State retry() {

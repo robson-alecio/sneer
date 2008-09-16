@@ -1,6 +1,7 @@
 package sneer.pulp.blinkinglights.impl;
 
 import sneer.kernel.container.Inject;
+import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.clock.Clock;
@@ -23,19 +24,19 @@ class BlinkingLightsImpl implements BlinkingLights {
 	}
 
 	@Override
-	public Light turnOn(int type, String message, Throwable t, int timeout) {
+	public Light turnOn(LightType type, String message, Throwable t, int timeout) {
 		Light result = new LightImpl(type, message, t, timeout, _clock, this); 
 		_lights.add(result);
 		return result;
 	}
 
 	@Override
-	public Light turnOn(int type, String message, Throwable t) {
+	public Light turnOn(LightType type, String message, Throwable t) {
 		return turnOn(type, message, t, LightImpl.NEVER);
 	}
 
 	@Override
-	public Light turnOn(int type, String message) {
+	public Light turnOn(LightType type, String message) {
 		return turnOn(type, message, null);
 	}
 

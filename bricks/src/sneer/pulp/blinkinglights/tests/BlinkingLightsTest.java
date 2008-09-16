@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import sneer.kernel.container.Inject;
 import sneer.kernel.container.tests.TestThatIsInjected;
+import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.clock.Clock;
@@ -26,7 +27,7 @@ public class BlinkingLightsTest extends TestThatIsInjected {
 	public void testLights() throws Exception {
 		assertLightCount(0, _subject);
 		
-		Light light = _subject.turnOn(Light.ERROR_TYPE, "some error", new NullPointerException());
+		Light light = _subject.turnOn(LightType.ERROR, "some error", new NullPointerException());
 		assertTrue(light.isOn());
 		assertEquals("some error", light.message());
 		assertNotNull(light.error());
@@ -48,7 +49,7 @@ public class BlinkingLightsTest extends TestThatIsInjected {
 		final NullPointerException exception = new NullPointerException();
 		final int timeout = 1000;
 
-		final Light light = _subject.turnOn(Light.ERROR_TYPE, message, exception, timeout);
+		final Light light = _subject.turnOn(LightType.ERROR, message, exception, timeout);
 
 		assertTrue(light.isOn());
 		

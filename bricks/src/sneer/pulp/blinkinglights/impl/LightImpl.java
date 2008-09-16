@@ -1,5 +1,6 @@
 package sneer.pulp.blinkinglights.impl;
 
+import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.clock.Clock;
@@ -16,10 +17,10 @@ class LightImpl implements Light {
 	
 	private final int _timeout;
 	
-	private final int _type;
+	private final LightType _type;
 
-	public LightImpl(int type, String message, Throwable error, int timeout, Clock clock, BlinkingLights blinkingLights) {
-		_type = type;
+	public LightImpl(LightType type, String message, Throwable error, int timeout, Clock clock, BlinkingLights blinkingLights) {
+		_type = type!=null?type:LightType.INFO;
 		_message = message;
 		_error = error;
 		
@@ -58,17 +59,7 @@ class LightImpl implements Light {
 	}
 
 	@Override
-	public boolean isError() {
-		return _type == ERROR_TYPE;
-	}
-
-	@Override
-	public boolean isInfo() {
-		return _type == INFO_TYPE;
-	}
-
-	@Override
-	public boolean isWarn() {
-		return _type == WARN_TYPE;
+	public LightType type() {
+		return _type;
 	}
 }

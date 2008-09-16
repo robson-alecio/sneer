@@ -1,5 +1,6 @@
 ﻿MAIN ROADMAP
 ===================
+	- [Klaus] Solve hudson freezing during tests
 	- [Sandro]
 		- Revise ByteArraySocketImpl visibility		
 	- DynDNS Client ;)

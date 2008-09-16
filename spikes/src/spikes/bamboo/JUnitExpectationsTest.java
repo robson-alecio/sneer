@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
-public class JUnitTimeoutSpike {
+public class JUnitExpectationsTest {
 	
 	public Object _instance;
 	

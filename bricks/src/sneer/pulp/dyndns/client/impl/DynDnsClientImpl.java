@@ -43,12 +43,14 @@ class DynDnsClientImpl implements DynDnsClient {
 	
 	final Receiver<Account> _ownAccountReceiver = new Receiver<Account>(_ownAccountKeeper.ownAccount()) { @Override public void consume(Account account) {
 		synchronized (_stateMonitor) {
+			if (account == null) return;
 			_state = _state.reactTo(account);
 		}
 	}};
 	
 	final Receiver<String> _ownIpReceiver = new Receiver<String>(_ownIpDiscoverer.ownIp()) { @Override public void consume(String ownIp) {
 		synchronized (_stateMonitor) {
+			if (ownIp == null) return;
 			_state = _state.reactTo(ownIp);
 		}
 	}};

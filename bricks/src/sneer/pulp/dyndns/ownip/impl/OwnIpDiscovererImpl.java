@@ -48,6 +48,6 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 
 	@Override
 	public Signal<String> ownIp() {
-		return _ownIp .output();
+		return _ownIp.output();
 	}
 }

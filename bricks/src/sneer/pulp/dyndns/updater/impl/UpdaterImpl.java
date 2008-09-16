@@ -14,6 +14,7 @@ import sneer.pulp.dyndns.updater.Updater;
 import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.httpclient.HttpClient;
 import wheel.io.Base64;
+import wheel.io.Logger;
 import wheel.lang.Pair;
 
 class UpdaterImpl implements Updater {
@@ -57,9 +58,10 @@ class UpdaterImpl implements Updater {
 	}
 
 	private String submitUpdateRequest(final String host, final String user, final String password, String ip) throws IOException {
+		Logger.log("Submitting DynDns update for host: {} ip: {}", host, ip);
 		return _client.get(
 				"https://members.dyndns.org/nic/update?hostname=" + host + "&myip=" + ip + "&wildcard=NOCHG&mx=NOCHG&backmx=NOCHG",
-				Pair.pair("User-Agent", "Sneer - DynDns Client - 0.1"),
+				Pair.pair("User-Agent", "SneerAlfa - DynDns ClientAlfa - 0.1"),
 				Pair.pair("Authorization", "Basic " + encode(user + ":" + password)));
 	}
 

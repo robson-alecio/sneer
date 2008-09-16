@@ -18,8 +18,8 @@ import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.dyndns.client.DynDnsClient;
-import sneer.pulp.dyndns.ownaccount.Account;
-import sneer.pulp.dyndns.ownaccount.DnyDnsAccountKeeper;
+import sneer.pulp.dyndns.ownaccount.DynDnsAccount;
+import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.dyndns.updater.BadAuthException;
 import sneer.pulp.dyndns.updater.Updater;
@@ -54,11 +54,11 @@ Unacceptable Client Behavior
 	
 	final Mockery _context = new JUnit4Mockery();
 	final Register<String> _ownIp = new RegisterImpl<String>("123.45.67.89");
-	final Account _account = new Account("test.dyndns.org", "test", "test");
-	final RegisterImpl<Account> _ownAccount = new RegisterImpl<Account>(_account);
+	final DynDnsAccount _account = new DynDnsAccount("test.dyndns.org", "test", "test");
+	final RegisterImpl<DynDnsAccount> _ownAccount = new RegisterImpl<DynDnsAccount>(_account);
 	
 	final OwnIpDiscoverer _ownIpDiscoverer = _context.mock(OwnIpDiscoverer.class);
-	final DnyDnsAccountKeeper _ownAccountKeeper = _context.mock(DnyDnsAccountKeeper.class);
+	final DynDnsAccountKeeper _ownAccountKeeper = _context.mock(DynDnsAccountKeeper.class);
 	final Updater updater = _context.mock(Updater.class);
 	final TransientPropertyStore _propertyStore = new TransientPropertyStore();
 	
@@ -71,7 +71,7 @@ Unacceptable Client Behavior
 			atLeast(1).of(_ownAccountKeeper).ownAccount();
 				will(returnValue(_ownAccount.output()));
 				
-			final Account account = _ownAccount.output().currentValue();
+			final DynDnsAccount account = _ownAccount.output().currentValue();
 			exactly(1).of(updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
 		}});
 		
@@ -95,7 +95,7 @@ Unacceptable Client Behavior
 			allowing(_ownAccountKeeper).ownAccount();
 				will(returnValue(_ownAccount.output()));
 				
-			final Account account = _ownAccount.output().currentValue();
+			final DynDnsAccount account = _ownAccount.output().currentValue();
 			exactly(1).of(updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
 				will(throwException(error));
 				
@@ -115,7 +115,7 @@ Unacceptable Client Behavior
 	public void userInterventionRequiredAfterFailure() throws UpdaterException, IOException {
 		
 		final BadAuthException error = new BadAuthException();
-		final Account account = _ownAccount.output().currentValue();
+		final DynDnsAccount account = _ownAccount.output().currentValue();
 		final String newIp = "111.111.111.111";
 		
 		_context.checking(new Expectations() {{
@@ -136,7 +136,7 @@ Unacceptable Client Behavior
 		// new ip should be ignored while new account is not provided
 		_ownIp.setter().consume(newIp);
 		
-		Account changed = new Account("test.dyndns.org", "test", "*test");
+		DynDnsAccount changed = new DynDnsAccount("test.dyndns.org", "test", "*test");
 		_ownAccount.setter().consume(changed);
 		assertFalse(light.isOn());
 		

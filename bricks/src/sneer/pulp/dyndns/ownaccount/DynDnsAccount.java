@@ -1,8 +1,8 @@
 package sneer.pulp.dyndns.ownaccount;
 
-public class Account {
+public class DynDnsAccount {
 	
-	public Account(String pHost, String pDynDnsUser, String pPassword) {
+	public DynDnsAccount(String pHost, String pDynDnsUser, String pPassword) {
 		host = pHost;
 		dynDnsUser = pDynDnsUser;
 		password = pPassword;

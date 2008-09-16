@@ -9,6 +9,8 @@ import sneer.pulp.connection.SocketReceiver;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.dyndns.client.DynDnsClient;
+import sneer.pulp.dyndns.ownaccount.DynDnsAccount;
+import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
@@ -37,6 +39,9 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	private static DynDnsClient _dynDns;
 
 	@Inject
+	private static DynDnsAccountKeeper _dynDnsAccountKeeper;
+
+	@Inject
 	private static OwnNameKeeper _ownName;
 
 	@Inject
@@ -52,12 +57,14 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	private static InternetAddressKeeper _addressKeeper;
 
 	@Override
-	public void start(String ownName, int port) {
+	public void start(String ownName, int port, DynDnsAccount ddAccount) {
 		assertIsHardcodedNick(ownName);
 		
 		_ownName.nameSetter().consume(ownName);
 		
 		_portKeeper.portSetter().consume(port);
+		
+		_dynDnsAccountKeeper.accountSetter().consume(ddAccount);
 		
 		addContacts();
 	}
@@ -84,7 +91,7 @@ class MainDemoBrickImpl implements MainDemoBrick {
 			new ContactInfo("Bamboo", "rodrigobamboo.dyndns.org", 5923),
 			new ContactInfo("Bihaiko", "bihaiko.dyndns.org", 5923),
 			new ContactInfo("Daniel", "dfcsantos.homelinux.com"),
-			new ContactInfo("Klaus", "klaus.selfip.net", 5923),
+			new ContactInfo("Klaus", "klausw.selfip.net", 5923),
 			new ContactInfo("Klaus", "200.169.90.89", 5923),
 			new ContactInfo("Nell", "anelisedaux.dyndns.org", 5924),
 			new ContactInfo("Localhost", "localhost"),

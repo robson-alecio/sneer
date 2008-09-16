@@ -101,7 +101,7 @@ public class UpdaterTest {
 		_context.checking(new Expectations() {{
 			one(client).get(
 				"https://members.dyndns.org/nic/update?hostname=" + hostname + "&myip=" + ip + "&wildcard=NOCHG&mx=NOCHG&backmx=NOCHG",
-				Pair.pair("User-Agent", "Sneer - DynDns Client - 0.1"),
+				Pair.pair("User-Agent", "SneerAlfa - DynDns ClientAlfa - 0.1"),
 				Pair.pair("Authorization", "Basic " + encode(user + ":" + password)));
 			will(returnValue(responseText));
 		}});

@@ -7,25 +7,25 @@ import org.junit.Test;
 
 import sneer.kernel.container.Inject;
 import sneer.kernel.container.tests.TestThatIsInjected;
-import sneer.pulp.dyndns.ownaccount.Account;
-import sneer.pulp.dyndns.ownaccount.DnyDnsAccountKeeper;
+import sneer.pulp.dyndns.ownaccount.DynDnsAccount;
+import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
 
 public class DynDnsAccountKeeperTest extends TestThatIsInjected {
 
 	@Inject
-	private static DnyDnsAccountKeeper _subject;
+	private static DynDnsAccountKeeper _subject;
 	
 	@Test
 	public void testAccountKeeper() {
 		assertNull(ownAccount());
 		
-		_subject.accountSetter().consume(new Account("neide.dyndns.org", "neide", "abc123"));
+		_subject.accountSetter().consume(new DynDnsAccount("neide.dyndns.org", "neide", "abc123"));
 		assertEquals("neide.dyndns.org", ownAccount().host);
 		assertEquals("neide", ownAccount().dynDnsUser);
 		assertEquals("abc123", ownAccount().password);
 	}
 
-	private Account ownAccount() {
+	private DynDnsAccount ownAccount() {
 		return _subject.ownAccount().currentValue();
 	} 
 	

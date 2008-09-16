@@ -1,23 +1,23 @@
 package sneer.pulp.dyndns.ownaccount.impl;
 
-import sneer.pulp.dyndns.ownaccount.Account;
-import sneer.pulp.dyndns.ownaccount.DnyDnsAccountKeeper;
+import sneer.pulp.dyndns.ownaccount.DynDnsAccount;
+import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
 import wheel.lang.Omnivore;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 
-public class DynDnsAccountKeeperImpl implements DnyDnsAccountKeeper {
+public class DynDnsAccountKeeperImpl implements DynDnsAccountKeeper {
 
-	private Register<Account> _ownAccount = new RegisterImpl<Account>(null);
+	private Register<DynDnsAccount> _ownAccount = new RegisterImpl<DynDnsAccount>(null);
 
 	@Override
-	public Signal<Account> ownAccount() {
+	public Signal<DynDnsAccount> ownAccount() {
 		return _ownAccount.output();
 	}
 
 	@Override
-	public Omnivore<Account> accountSetter() {
+	public Omnivore<DynDnsAccount> accountSetter() {
 		return _ownAccount.setter();
 	}
 

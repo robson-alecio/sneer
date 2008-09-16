@@ -9,6 +9,7 @@ import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.Inject;
 import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.httpclient.HttpClient;
+import wheel.io.Logger;
 
 class CheckIpImpl implements CheckIp {
 	
@@ -20,7 +21,9 @@ class CheckIpImpl implements CheckIp {
 	@Override
 	public String check() throws IOException {
 		final String responseBody = submitHttpRequest();
-		return parse(responseBody);
+		String result = parse(responseBody);
+		Logger.log("Own Ip Checked: {}", result);
+		return result;
 	}
 
 	private String parse(final String responseBody) throws IOException {

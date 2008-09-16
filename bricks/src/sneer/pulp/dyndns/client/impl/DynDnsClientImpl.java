@@ -7,8 +7,8 @@ import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.dyndns.client.DynDnsClient;
-import sneer.pulp.dyndns.ownaccount.Account;
-import sneer.pulp.dyndns.ownaccount.DnyDnsAccountKeeper;
+import sneer.pulp.dyndns.ownaccount.DynDnsAccount;
+import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.dyndns.updater.BadAuthException;
 import sneer.pulp.dyndns.updater.Updater;
@@ -24,7 +24,7 @@ class DynDnsClientImpl implements DynDnsClient {
 	static private OwnIpDiscoverer _ownIpDiscoverer;
 	
 	@Inject
-	static private DnyDnsAccountKeeper _ownAccountKeeper;
+	static private DynDnsAccountKeeper _ownAccountKeeper;
 	
 	@Inject
 	static private Updater _updater;
@@ -41,7 +41,7 @@ class DynDnsClientImpl implements DynDnsClient {
 	private State _state = new Happy();
 	private final Object _stateMonitor = new Object();
 	
-	final Receiver<Account> _ownAccountReceiver = new Receiver<Account>(_ownAccountKeeper.ownAccount()) { @Override public void consume(Account account) {
+	final Receiver<DynDnsAccount> _ownAccountReceiver = new Receiver<DynDnsAccount>(_ownAccountKeeper.ownAccount()) { @Override public void consume(DynDnsAccount account) {
 		synchronized (_stateMonitor) {
 			if (account == null) return;
 			_state = _state.reactTo(account);
@@ -55,7 +55,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		}
 	}};
 
-	private State submitUpdateRequest(final Account account, String ip) {
+	private State submitUpdateRequest(final DynDnsAccount account, String ip) {
 		try {
 			_updater.update(account.host, account.dynDnsUser, account.password, ip);
 			recordLastIp(ip);
@@ -72,7 +72,7 @@ class DynDnsClientImpl implements DynDnsClient {
 	abstract class State {
 		
 		abstract State reactTo(String ownIpNotification);
-		abstract State reactTo(Account accountNotification);
+		abstract State reactTo(DynDnsAccount accountNotification);
 		abstract State reactToAlarm();
 		
 	}
@@ -87,7 +87,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		}
 
 		@Override
-		State reactTo(Account accountNotification) {
+		State reactTo(DynDnsAccount accountNotification) {
 			return this;
 		}
 
@@ -136,7 +136,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		}
 
 		@Override
-		State reactTo(Account accountNotification) {
+		State reactTo(DynDnsAccount accountNotification) {
 			return this;
 		}
 
@@ -149,7 +149,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		}
 
 		@Override
-		State reactTo(Account newAccount) {
+		State reactTo(DynDnsAccount newAccount) {
 			return retry();
 		}
 
@@ -172,7 +172,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		return _propertyStore.get(LAST_IP_KEY);
 	}
 
-	private Account currentAccount() {
+	private DynDnsAccount currentAccount() {
 		return _ownAccountKeeper.ownAccount().currentValue();
 	}
 

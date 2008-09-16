@@ -5,6 +5,7 @@ import org.junit.Before;
 
 import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.tests.TestThatIsInjected;
+import wheel.testutil.Timebox;
 
 public abstract class SovereignFunctionalTestBase extends TestThatIsInjected {
 
@@ -14,9 +15,16 @@ public abstract class SovereignFunctionalTestBase extends TestThatIsInjected {
 	
 	protected SovereignParty _a;
 	protected SovereignParty _b;
+
 	
 	@Before
-	public void initNewCommunity() {
+	public void beforeSovereignTest() {
+		new Timebox(30000) { @Override public void run() {
+			initCommunity();
+		}};
+	}
+
+	private void initCommunity() {
 		_community = createNewCommunity();
 		createAndConnectParties();
 	}

@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import sneer.pulp.things.Thing;
 import sneer.pulp.things.ThingHome;
+import wheel.lang.Daemon;
 import wheel.lang.Threads;
 import wheel.reactive.sets.SetSignal;
 import wheel.testutil.TestDashboard;
@@ -46,7 +47,7 @@ public abstract class ThingsTestBase extends TestOfInterface<ThingHome> {
 	}
 
 	private void startAddingThread() {
-		Threads.startDaemon("Thing Adder", new Runnable() { @Override public void run() {
+		new Daemon("Thing Adder") { @Override public void run() {
 			int i = 0;
 			while (i <= _THINGS_TO_ADD) {
 				_subject.create("thing" + i, "description thing" + i + " " + _LARGE_TEXT);
@@ -56,13 +57,11 @@ public abstract class ThingsTestBase extends TestOfInterface<ThingHome> {
 					Threads.sleepWithoutInterruptions(50);
 				}
 			}
-		}});
+		}};
 	}
 
 	private void startFindingThread(final int thingsToFind) {
-		Threads.startDaemon("Thing Finder", new Runnable() {
-
-		@Override public void run() {
+		new Daemon("Thing Finder") { @Override public void run() {
 			int i = 0;
 			while (i < _THINGS_TO_ADD) {
 				SetSignal<Thing> found = _subject.search("thing"+i);
@@ -76,7 +75,7 @@ public abstract class ThingsTestBase extends TestOfInterface<ThingHome> {
 					Threads.sleepWithoutInterruptions(10);
 			}
 			_isConcurrencyTestDone = true;
-		}});
+		}};
 	}
 
 	private void searchApartmentAds() {

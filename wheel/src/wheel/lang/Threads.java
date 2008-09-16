@@ -1,9 +1,9 @@
 package wheel.lang;
 
+import static wheel.io.Logger.log;
+
 import java.util.HashSet;
 import java.util.Set;
-
-import static wheel.io.Logger.log;
 
 
 public class Threads {
@@ -44,9 +44,12 @@ public class Threads {
 		return Thread.currentThread().getContextClassLoader();
 	}
 
-	public static void startDaemon(String threadName, Runnable runnable) {
-        Thread daemon = new Thread(runnable, threadName);
-        daemon.setDaemon(true);
-        daemon.start();
+	public static void startDaemon(String threadName, final Runnable runnable) {
+        new Daemon(threadName) { @Override public void run() {
+			runnable.run();
+		}};
 	}
+
 }
+
+

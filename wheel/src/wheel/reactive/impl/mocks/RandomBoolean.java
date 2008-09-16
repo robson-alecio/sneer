@@ -2,6 +2,7 @@ package wheel.reactive.impl.mocks;
 
 import java.util.Random;
 
+import wheel.lang.Daemon;
 import wheel.lang.Threads;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
@@ -13,9 +14,9 @@ public class RandomBoolean {
 	private Register<Boolean> _register = new RegisterImpl<Boolean>(false);
 
 	{
-		Threads.startDaemon("Random Boolean", new Runnable(){ @Override public void run() {
+		new Daemon("Random Boolean") { @Override public void run() {
 			while (true) sleepAndFlip();
-		}});
+		}};
 	}
 	
 	public Signal<Boolean> output() {

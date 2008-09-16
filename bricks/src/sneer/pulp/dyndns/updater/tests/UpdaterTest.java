@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.kernel.container.ContainerUtils;
@@ -22,15 +23,16 @@ import wheel.lang.Pair;
 public class UpdaterTest {
 
 	private final Mockery _context = new JUnit4Mockery();
-	
-	@Test
-	public void testUpdateSuccess() throws Exception {
-		runUpdaterWithResponse("good 123.456.78.90\n");
-	}
-	
+
 	@Test(expected=UnexpectedResponseException.class)
 	public void testUpdateSuccessNot() throws Exception {
 		runUpdaterWithResponse("good 127.0.0.1\n");
+	}
+	
+	@Ignore
+	@Test
+	public void testUpdateSuccess() throws Exception {
+		runUpdaterWithResponse("good 123.456.78.90\n");
 	}
 	
 	@Test(expected=ServerErrorException.class)

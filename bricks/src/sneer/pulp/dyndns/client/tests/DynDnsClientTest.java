@@ -19,7 +19,7 @@ import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.dyndns.client.DynDnsClient;
 import sneer.pulp.dyndns.ownaccount.Account;
-import sneer.pulp.dyndns.ownaccount.OwnAccountKeeper;
+import sneer.pulp.dyndns.ownaccount.DnyDnsAccountKeeper;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.dyndns.updater.BadAuthException;
 import sneer.pulp.dyndns.updater.Updater;
@@ -58,7 +58,7 @@ Unacceptable Client Behavior
 	final RegisterImpl<Account> _ownAccount = new RegisterImpl<Account>(_account);
 	
 	final OwnIpDiscoverer _ownIpDiscoverer = _context.mock(OwnIpDiscoverer.class);
-	final OwnAccountKeeper _ownAccountKeeper = _context.mock(OwnAccountKeeper.class);
+	final DnyDnsAccountKeeper _ownAccountKeeper = _context.mock(DnyDnsAccountKeeper.class);
 	final Updater updater = _context.mock(Updater.class);
 	final TransientPropertyStore _propertyStore = new TransientPropertyStore();
 	

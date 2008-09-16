@@ -8,12 +8,12 @@ import org.junit.Test;
 import sneer.kernel.container.Inject;
 import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.dyndns.ownaccount.Account;
-import sneer.pulp.dyndns.ownaccount.OwnAccountKeeper;
+import sneer.pulp.dyndns.ownaccount.DnyDnsAccountKeeper;
 
-public class OwnAccountKeeperTest extends TestThatIsInjected {
+public class DynDnsAccountKeeperTest extends TestThatIsInjected {
 
 	@Inject
-	private static OwnAccountKeeper _subject;
+	private static DnyDnsAccountKeeper _subject;
 	
 	@Test
 	public void testAccountKeeper() {

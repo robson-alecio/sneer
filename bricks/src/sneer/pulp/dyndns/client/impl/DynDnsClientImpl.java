@@ -8,7 +8,7 @@ import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.dyndns.client.DynDnsClient;
 import sneer.pulp.dyndns.ownaccount.Account;
-import sneer.pulp.dyndns.ownaccount.OwnAccountKeeper;
+import sneer.pulp.dyndns.ownaccount.DnyDnsAccountKeeper;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.dyndns.updater.BadAuthException;
 import sneer.pulp.dyndns.updater.Updater;
@@ -24,7 +24,7 @@ class DynDnsClientImpl implements DynDnsClient {
 	static private OwnIpDiscoverer _ownIpDiscoverer;
 	
 	@Inject
-	static private OwnAccountKeeper _ownAccountKeeper;
+	static private DnyDnsAccountKeeper _ownAccountKeeper;
 	
 	@Inject
 	static private Updater _updater;

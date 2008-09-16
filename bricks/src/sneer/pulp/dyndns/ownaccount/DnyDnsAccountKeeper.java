@@ -4,7 +4,7 @@ import sneer.kernel.container.Brick;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 
-public interface OwnAccountKeeper extends Brick {
+public interface DnyDnsAccountKeeper extends Brick {
 	
 	Signal<Account> ownAccount();
 

@@ -10,7 +10,4 @@ public interface OwnNameKeeper extends Brick {
 
 	Omnivore<String> nameSetter();
 
-	void setName(String name);
-
-	String getName();
 }

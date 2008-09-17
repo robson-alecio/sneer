@@ -273,7 +273,7 @@ class DashboardImpl implements Dashboard, Runnable {
 	private void updateTitle() {
 		if (jframe == null) return;
 		
-		jframe.setTitle("Sneer - " + _ownNameKeeper.getName());
+		jframe.setTitle("Sneer - " + _ownNameKeeper.name().currentValue());
 	}	
 }
 

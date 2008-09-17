@@ -1,6 +1,7 @@
 package sneer.pulp.clock.tests;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,9 @@ public class ClockTest extends TestThatIsInjected {
 		_subject.addAlarm(10, new MyRunnable(10, _order));
 		_subject.addPeriodicAlarm(35, new MyRunnable(35, _order));
 		_subject.addAlarm(30, new MyRunnable(30,_order));
+		
+		_subject.advanceTime(81);
+		assertEquals(81, _subject.time());
 		
 		Integer lastInteger = null;
 		for (Integer timeout : _order) {

@@ -40,7 +40,7 @@ public class OwnNameKeeperDemo extends TestThatIsInjected {
 		Container container = ContainerUtils.getContainer();
 		demo.rfactory = container.produce(RFactory.class);	
 		demo.ownNameKeeper = container.produce(OwnNameKeeper.class);
-		demo.ownNameKeeper.setName("Sandro Luiz Bihaiko");
+		demo.ownNameKeeper.nameSetter().consume("Sandro Luiz Bihaiko");
 		return demo;
 	}
 

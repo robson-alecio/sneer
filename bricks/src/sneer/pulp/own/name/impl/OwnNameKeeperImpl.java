@@ -19,14 +19,4 @@ class OwnNameKeeperImpl implements OwnNameKeeper {
 	public Omnivore<String> nameSetter() {
 		return _name.setter();
 	}
-
-	@Override
-	public void setName(String name) {
-		nameSetter().consume(name);
-	}
-
-	@Override
-	public String getName() {
-		return name().currentValue();
-	}
 }

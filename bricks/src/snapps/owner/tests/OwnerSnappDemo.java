@@ -21,7 +21,7 @@ public class OwnerSnappDemo  {
 		Container container = ContainerUtils.getContainer();
 
 		OwnNameKeeper ownNameKeeper = container.produce(OwnNameKeeper.class);
-		ownNameKeeper.setName("Sandro Bihaiko");
+		ownNameKeeper.nameSetter().consume("Sandro Bihaiko");
 		
 		OwnTaglineKeeper ownTaglineKeeper = container.produce(OwnTaglineKeeper.class);
 		ownTaglineKeeper.taglineSetter().consume("Minha frase do dia!!");

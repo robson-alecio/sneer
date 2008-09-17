@@ -40,7 +40,7 @@ class ClockImpl implements Clock {
 	}
 
 	@Override
-	public long time() {
+	synchronized public long time() {
 		return _currentTimeMillis;
 	}
 
@@ -61,6 +61,7 @@ class ClockImpl implements Clock {
 		boolean tryAgain = true;
 
 		while(tryAgain) {
+			System.err.println("Sandro please fix this bug. " + System.currentTimeMillis());
 			Iterator<Alarm> iterator = _alarms.iterator();
 			
 			while(iterator.hasNext()) {

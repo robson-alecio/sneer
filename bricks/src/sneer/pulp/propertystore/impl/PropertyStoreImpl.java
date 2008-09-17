@@ -10,12 +10,14 @@ import java.util.Properties;
 import sneer.kernel.container.Inject;
 import sneer.pulp.config.persistence.PersistenceConfig;
 import sneer.pulp.propertystore.PropertyStore;
+import wheel.io.Logger;
 import wheel.io.Streams;
 
 class PropertyStoreImpl implements PropertyStore {
 
 	@Inject
 	static private PersistenceConfig _config;
+
 	
 	private final Properties _properties = loadProperties();
 
@@ -36,6 +38,7 @@ class PropertyStoreImpl implements PropertyStore {
 			result.load(in());
 		} catch (FileNotFoundException e) {
 			//OK. No properties were saved yet.
+			Logger.log("No properties found yet.");
 		} catch (IOException e) {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
@@ -56,6 +59,7 @@ class PropertyStoreImpl implements PropertyStore {
 	}
 
 	private FileInputStream in() throws FileNotFoundException {
+		Logger.log("Reading Sneer properties file from: {}", propertiesFile());
 		return new FileInputStream(propertiesFile());
 	}
 

@@ -41,7 +41,9 @@ public class Logger {
 	}
 
 	public static void redirectTo(OutputStream outputStream) {
+		log("Redirecting log");
 		_log = new PrintWriter(outputStream);
+		log("Log redirected to here.");
 	}
 	
 	

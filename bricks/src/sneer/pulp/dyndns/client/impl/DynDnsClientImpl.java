@@ -108,7 +108,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		}
 
 		protected State retry() {
-			_light.turnOff();
+			_blinkingLights.turnOff(_light);
 			return submitUpdateRequest(currentAccount(), currentIp());
 		}
 	}

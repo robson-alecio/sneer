@@ -56,13 +56,11 @@ class ClockImpl implements Clock {
 	}
 	
 	private void wakeUpAlarmsIfNecessary() {
-		while (true) {
+		while (!_alarms.isEmpty()) {
 			Alarm first = _alarms.first();
-			
-			if (first == null) break;
-			if (!first.isTimeToWakeUp()) break;
-			
+			if(!first.isTimeToWakeUp()) break;
 			first.tryRunAndRemove();
+			
 			if(first.isPeriodic())
 				_alarms.add(first);
 		}

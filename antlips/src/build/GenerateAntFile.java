@@ -21,8 +21,8 @@ public class GenerateAntFile {
 		
 		final DurableDirectory directory = new DurableDirectory(".");
 		
-		if (directory.fileExists("build.xml"))
-			directory.deleteFile("build.xml");
+		if (directory.fileExists(AntFileBuilderToFilesystem.FILENAME))
+			directory.deleteFile(AntFileBuilderToFilesystem.FILENAME);
 		
 		if (!directory.fileExists(CLASSPATH))
 			throw new IllegalStateException("File .classpath does not exist");

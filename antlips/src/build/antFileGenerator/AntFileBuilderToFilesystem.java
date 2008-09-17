@@ -11,12 +11,13 @@ import wheel.io.files.Directory;
 
 public class AntFileBuilderToFilesystem implements AntFileBuilder {
 
+	public static final String FILENAME = "antlips.xml";
+	
 	private static final String BUILD_DIR_PROPERTY = "build.dir";
 	private final List<String> _libs = new ArrayList<String>();
 	private final List<String> _srcs = new ArrayList<String>();
 	private final Directory _directory;
 	private final boolean _compileSourceFoldersTogether;
-	private final String fileName = "antlips.xml";
 
 	public AntFileBuilderToFilesystem(final Directory directory) {
 		this(directory, false);
@@ -41,11 +42,11 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 	public void build() {
 		final StringBuilder builder = generateAntFile();
 		
-		final OutputStream file = createOrCry(_directory, fileName);
+		final OutputStream file = createOrCry(_directory, FILENAME);
 		try {
 			IOUtils.write(builder.toString(), file);
 		} catch (final IOException e) {
-			throw new IllegalStateException("Error creating file " + fileName, e);
+			throw new IllegalStateException("Error creating file " + FILENAME, e);
 		} finally {
 			IOUtils.closeQuietly(file);
 		}

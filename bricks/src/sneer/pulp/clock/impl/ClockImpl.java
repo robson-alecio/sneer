@@ -78,10 +78,13 @@ class ClockImpl implements Clock {
 		}
 		
 		void wakeUp() {
-			tryRunAndRemove();
-			
-			if (isPeriodic())
-				_alarms.add(this);
+			_runnable.run();
+
+			_alarms.remove(this);
+
+			if (!isPeriodic()) return;
+			_wakeUpTime = _wakeUpTime + _period;
+			_alarms.add(this);
 		}
 
 		public boolean isPeriodic() {
@@ -92,13 +95,6 @@ class ClockImpl implements Clock {
 			return _currentTimeMillis >= _wakeUpTime;
 		}
 		
-		private void tryRunAndRemove(){
-			_runnable.run();
-			_alarms.remove(this);
-			
-			_wakeUpTime = _wakeUpTime + _period;
-		}
-
 		@Override
 		public int compareTo(Alarm alarm) {
 			return (int) (_wakeUpTime - alarm._wakeUpTime);

@@ -16,8 +16,7 @@
 		
 	<target name="test-execution" depends="build">
 		<junit printsummary="true" failureproperty="junit.failures"
-				fork="yes"
-				dir="${build.dir}">
+				fork="yes">
 			<classpath>
 				<fileset dir=".">
 					<include name="**/lib/**/*.jar" />
@@ -50,17 +49,17 @@
 		<ant antfile="antlips.xml" />
 	</target>
 	
-	<target name="clover-report">
-		
+	<target name="init-clover">
 		<taskdef resource="cloverlib.xml" classpath="${builder.project}/lib/clover.jar"/>
 		<clover-setup initString="mycoverage.db"/>
+	</target>
+	
+	<target name="clover-report" depends="init-clover, test-execution">
 		
 		<fileset dir="${build.dir}" id="clover.sources">
 			<include name="**/*.java" />
 			<exclude name="spikes/**" />
 		</fileset>
-		
-		<antcall target="test-execution" />
 		
 		<clover-report>
 	       <current outfile="clover.xml">

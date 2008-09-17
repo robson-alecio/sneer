@@ -26,6 +26,7 @@
 			<batchtest todir="${build.dir}">
 				<fileset dir="${build.dir}">
 					<include name="**/tests/*Test.class" />
+					<exclude name="**/spikes/src/**" />
 				</fileset>
 				<fileset dir="tests/src">
 					<include name="**/*Test.java" />

@@ -92,9 +92,6 @@ class ClockImpl implements Clock {
 			_runnable.run();
 			_alarms.remove(this);
 			
-			if(_increment==0)  
-				return true; //NotPeriodic
-				
 			_nextAlarmAbsoluteTimeMillis = _nextAlarmAbsoluteTimeMillis+_increment;   //Periodic.incrementTime 
 			return true;
 		}

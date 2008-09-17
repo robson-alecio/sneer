@@ -18,5 +18,10 @@ public class TransientPropertyStore implements PropertyStore {
 	public void set(String key, String value) {
 		_properties.put(key, value);
 	}
+	
+	@Override
+	public String toString() {
+		return _properties.toString();
+	}
 
 }

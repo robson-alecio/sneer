@@ -39,11 +39,9 @@
 		<delete dir="${build.dir}"/>
 	</target>
 	
-	<target name="build" depends="clean, build.xml.generation">
+	<target name="build" depends="clean, build.xml.generation, copyResources">
 		<ant antfile="build.xml" />
 	</target>
-	
-	
 	
 	<taskdef resource="cloverlib.xml" classpath="clover.jar"/>
 	<target name="init-clover">
@@ -87,7 +85,9 @@
 			listfiles="true"
 			failonerror="true"
 			debug="on"
-			encoding="utf-8">
+			encoding="utf-8"
+			source="1.6"
+         	target="1.6">
 			<src path="wheel/src" />
 			<src path="meta/src" />
 		</javac>
@@ -103,6 +103,34 @@
 	
 	<target name="init">
 		<mkdir dir="${build.dir}" />
+	</target>	
+	
+	
+	<target name="copyResources">
+		
+		<copy todir="${build.dir}">
+			<fileset dir="./meta/src">
+				<include name="**/**" />
+				<exclude name="**/*.java" />
+			</fileset>			
+			<fileset dir="./wheel/src">
+				<include name="**/**" />
+				<exclude name="**/*.java" />
+			</fileset>			
+			<fileset dir="./kernel/src">
+				<include name="**/**" />
+				<exclude name="**/*.java" />
+			</fileset>			
+			<fileset dir="./bricks/src">
+				<include name="**/**" />
+				<exclude name="**/*.java" />
+			</fileset>			
+			<fileset dir="./tests/src">
+				<include name="**/**" />
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>		
+
 	</target>
 	
 </project>

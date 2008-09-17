@@ -13,16 +13,19 @@ public class ClockTickerTest extends TestThatIsInjected {
 	@Inject
 	static private Clock _clock;
 
-	@Inject @SuppressWarnings("unused")
+	@Inject @SuppressWarnings("unused") //Interesting, isnt it? ;)
 	static private ClockTicker _subject;
 
 	@Test (timeout = 3000)
 	public void testTicking() {
+		waitForATick();
+		waitForATick();
+	}
+
+	private void waitForATick() {
 		long t0 = _clock.time();
-		while (t0 == _clock.time()) {
-			System.out.println("Waiting...");
-			Threads.sleepWithoutInterruptions(500);
-		}
+		while (t0 == _clock.time());
+			Threads.sleepWithoutInterruptions(1);
 	}
 	
 }

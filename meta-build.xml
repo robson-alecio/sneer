@@ -109,8 +109,7 @@
 	
 	
 	<target name="copyResources">
-		<mkdir dir="${build.dir}/../../clover"/>
-		<copy todir="${build.dir}/../../clover">
+		<copy todir="${build.dir}">
 			<fileset dir="./meta/src">
 				<include name="**/**" />
 				<exclude name="**/*.java" />

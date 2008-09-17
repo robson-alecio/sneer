@@ -28,9 +28,25 @@ public class GenerateAntFile {
 			throw new IllegalStateException("File .classpath does not exist");
 		
 		System.out.println("generating build.xml");
-		final String dotClasspathAsString = directory.contentsAsString(CLASSPATH);
+		String dotClasspathAsString = directory.contentsAsString(CLASSPATH);
+//		System.out.println(dotClasspathAsString);
+		
+		final String lines[] = dotClasspathAsString.split("\n");
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < lines.length; i++) {
+			if(lines[i].indexOf("spikes\\src")<0 
+			&& lines[i].indexOf("spikes/src")<0
+			&& lines[i].indexOf("spikes/lib")<0
+			&& lines[i].indexOf("spikes\\lib")<0)
+				builder.append(lines[i]).append("\n");
+		}
+//		System.out.println("****************************************************");
+		
+		dotClasspathAsString = builder.toString();	
+//		System.out.println(dotClasspathAsString);
+		
 		final DotClasspath classpath = DotClasspathParser.parse(dotClasspathAsString);
-
+		
 		boolean compileSourceFoldersTogether = args[0].equals("-sourcefolderstogether");
 		AntFileBuilderToFilesystem antFileBuilder = new AntFileBuilderToFilesystem(directory,compileSourceFoldersTogether);
 		final DotClasspathToAntConverter converter = new DotClasspathToAntConverter(antFileBuilder);

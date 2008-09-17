@@ -8,6 +8,7 @@ import sneer.kernel.container.Container;
 import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
+import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.mesh.Me;
 import sneer.pulp.mesh.Party;
@@ -18,6 +19,9 @@ import wheel.reactive.sets.SetSignal;
 
 class MeImpl extends AbstractParty implements Me {
 
+	@Inject
+	static protected KeyManager _keyManager;
+	
 	@Inject
 	static private ContactManager _contactManager;
 
@@ -124,6 +128,11 @@ class MeImpl extends AbstractParty implements Me {
 	public <B extends Brick> SetSignal<B> allImmediateContactBrickCounterparts(
 			Class<B> class1) {
 		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+	}
+
+	@Override
+	protected KeyManager keyManager() {
+		return _keyManager;
 	}
 
 

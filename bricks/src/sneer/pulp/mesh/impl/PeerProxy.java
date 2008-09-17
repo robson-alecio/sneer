@@ -6,7 +6,9 @@ import java.util.Map;
 import java.util.Set;
 
 import sneer.kernel.container.Brick;
+import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
+import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
 import wheel.lang.Types;
 import wheel.reactive.Register;
@@ -16,6 +18,9 @@ import wheel.reactive.lists.impl.ListRegisterImpl;
 
 class PeerProxy extends AbstractParty implements SignalPublisher {
 
+	@Inject
+	static protected KeyManager _keyManager;
+	
 	private final PublicKey _publicKey;
 	private final Set<AbstractParty> _intermediaries = new HashSet<AbstractParty>();
 
@@ -134,6 +139,11 @@ class PeerProxy extends AbstractParty implements SignalPublisher {
 	@Override
 	void subscribeTo(PublicKey targetPK, Class<? extends Brick> brickInterface, String signalName, PublicKey intermediaryPKIgnored) {
 		closestIntermediary().subscribeTo(targetPK , brickInterface, signalName, _publicKey);
+	}
+
+	@Override
+	protected KeyManager keyManager() {
+		return _keyManager;
 	}
 
 

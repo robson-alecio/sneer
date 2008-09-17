@@ -1,6 +1,5 @@
 ﻿MAIN ROADMAP
 ===================
-	- [Sandro] fix ClockImpl.checkTime() so the OwnIpDiscovererTest can be un-ignored again.
 	- [Rodrigo helping Kalecser] Fix the Hudson build.
 	- DynDNS Client ;)
 		- Make clock tick. 

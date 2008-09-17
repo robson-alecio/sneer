@@ -40,7 +40,7 @@
 		<delete dir="${build.dir}"/>
 	</target>
 	
-	<target name="build" depends="clean, build.xml.generation, copyResources">
+	<target name="build" depends="clean, build.xml.generation">
 		<ant antfile="build.xml" />
 	</target>
 	
@@ -106,36 +106,5 @@
 	<target name="init">
 		<mkdir dir="${build.dir}" />
 	</target>	
-	
-	
-	<target name="copyResources">
-		<copy todir="${build.dir}">
-			<fileset dir="./meta/src">
-				<include name="**/**" />
-				<exclude name="**/*.java" />
-			</fileset>			
-			<fileset dir="./wheel/src">
-				<include name="**/**" />
-				<exclude name="**/*.java" />
-			</fileset>			
-			<fileset dir="./kernel/src">
-				<include name="**/**" />
-				<exclude name="**/*.java" />
-			</fileset>			
-			<fileset dir="./bricks/src">
-				<include name="**/**" />
-				<exclude name="**/*.java" />
-			</fileset>			
-			<fileset dir="./tests/src">
-				<include name="**/**" />
-				<exclude name="**/*.java" />
-			</fileset>
-			<fileset dir="./spikes/src">
-				<include name="**/**" />
-				<exclude name="**/*.java" />
-			</fileset>
-		</copy>		
-
-	</target>
 	
 </project>

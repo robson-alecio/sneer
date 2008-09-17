@@ -30,7 +30,6 @@ public class AntFileBuilderTest {
 			Arrays.asList("kernel/lib/asm-all-3.1.jar", "bricks/lib/bcprov-jdk16-139.jar"));
 	}
 	
-	
 	@Test
 	public void testAntFileBuilder() throws IOException{				
 		
@@ -38,28 +37,39 @@ public class AntFileBuilderTest {
 		
 		final String subjectAntFileTemplate = getSubjectAntFile();
 		final String generated = _directory.contentsAsString("build.xml");
-		Assert.assertEquals(subjectAntFileTemplate, generated);
 		
+		compareLineByLine(generated, subjectAntFileTemplate);
 	}
-	
+
 	@Test
 	public void testAntFileBuilderCompileSourceFoldersTogether() throws IOException{				
 		
 		new DotClasspathToAntConverter(new AntFileBuilderToFilesystem(_directory, true)).createAntFile(_classpath);
 		
-		final String subjectAntFileTemplate = getSourceFoldersTogetherSubjectAntFile();
+		final String subjectAntFileTemplate = getSourceFoldersTogetherSubjectAntFile(); 
 		final String generated = _directory.contentsAsString("build.xml");
-		Assert.assertEquals(subjectAntFileTemplate, generated);
 		
+		compareLineByLine(generated, subjectAntFileTemplate);
+	}
+	
+	private void compareLineByLine(String expected, String found) {
+		String expectedLines[] = expected.split("\n"); 
+		String foundLines[] = found.split("\n");
+		
+		Assert.assertEquals(expectedLines.length, foundLines.length);
+		
+		for (int i = 0; i < expectedLines.length; i++) {
+			Assert.assertEquals(expectedLines[i].trim(), foundLines[i].trim());
+		}
 	}
 	
 	static String getSourceFoldersTogetherSubjectAntFile() throws IOException{
-		return getSubjectFile("subject_build_with_sources_together.xml.template");
+		return getSubjectFile("subject_build_with_sources_together.template.xml");
 	}
 
 
 	static String getSubjectAntFile() throws IOException {
-		return getSubjectFile("subject_build.xml.template");
+		return getSubjectFile("subject_build.template.xml");
 	}
 
 

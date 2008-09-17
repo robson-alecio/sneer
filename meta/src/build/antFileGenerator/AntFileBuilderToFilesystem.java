@@ -75,12 +75,33 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 		
 		builder.append("\n");
 		
-		builder.append("\t<target name=\"compile\">\n");
+		builder.append("\t<target name=\"compile\" depends='copyResources'>\n");
 		builder.append("\t\t<mkdir dir=\"${" + BUILD_DIR_PROPERTY + "}\"/>\n");
 		builder.append(appendJavacCall());
-		builder.append("\t</target>\n");
+		builder.append("\t</target>\n\n");
+		
+		
+		builder
+		.append("\t<target name='copyResources'>\n")
+			.append("\t\t<copy todir='${build.dir}'>\n");
+					appendFileSetsToCopy(builder);
+		builder
+			.append("\t\t</copy>\n")
+		.append("\t</target>\n");
+		
 		builder.append("</project>");
 		return builder;
+	}
+
+	private void appendFileSetsToCopy(StringBuilder builder) {
+		
+		for (String src : _srcs) {
+			builder
+			.append("\t\t\t<fileset dir='").append(src).append("'>\n")
+			.append("\t\t\t\t<include name='**/**'/>\n")
+			.append("\t\t\t\t<exclude name='**/*.java'/>\n")
+			.append("\t\t\t</fileset>\n");
+		}
 	}
 
 	private String appendJavacCall() {

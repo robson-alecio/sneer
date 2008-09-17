@@ -30,8 +30,6 @@ public class GenerateAntFile {
 		System.out.println("generating build.xml");
 		final String dotClasspathAsString = directory.contentsAsString(CLASSPATH);
 		
-		System.out.println(dotClasspathAsString);
-		
 		final DotClasspath classpath = DotClasspathParser.parse(dotClasspathAsString);
 		
 		boolean compileSourceFoldersTogether = args[0].equals("-sourcefolderstogether");

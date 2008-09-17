@@ -1,9 +1,6 @@
 package sneer.pulp.clock.impl;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import sneer.pulp.clock.Clock;
@@ -13,7 +10,7 @@ class ClockImpl implements Clock {
 	
 	long _currentTimeMillis = 0;
 	
-	final Set<Alarm> _alarms = new TreeSet<Alarm>();
+	final SortedSet<Alarm> _alarms = new TreeSet<Alarm>();
 	
 	
 	@Override
@@ -59,25 +56,15 @@ class ClockImpl implements Clock {
 	}
 	
 	private void checkTime() {
-
-		List<Alarm> tmpPeriodics = new ArrayList<Alarm>();
-		Iterator<Alarm> iterator = _alarms.iterator();
+		
+		while(_alarms.size()>0) {
+			Alarm alarm = _alarms.first();
 			
-		while(iterator.hasNext()) {
-			Alarm alarm = iterator.next();
-			
-			if(!alarm.tryRunAndRemove(iterator)) //Break Last Timeout
+			if(!alarm.tryRunAndRemove(alarm)) //Break Last Timeout
 				break;				
 			
-			if(alarm.isPeriodic()){ //Store Periodic
-				tmpPeriodics.add(alarm);
-				break;
-			}
-		}
-		
-		if(tmpPeriodics.size()>0){
-			_alarms.addAll(tmpPeriodics);
-			checkTime();
+			if(alarm.isPeriodic()) //Store Periodic
+				_alarms.add(alarm);
 		}
 	}
 
@@ -98,12 +85,12 @@ class ClockImpl implements Clock {
 			return _increment>0;
 		}
 		
-		boolean tryRunAndRemove(Iterator<Alarm> iterator){
+		boolean tryRunAndRemove(Alarm alarm){
 			if(_currentTimeMillis <= _nextAlarmAbsoluteTimeMillis )
 				return false;
 			
 			_runnable.run();
-			iterator.remove();
+			_alarms.remove(alarm);
 			
 			if(_increment==0)  
 				return true; //NotPeriodic

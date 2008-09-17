@@ -20,6 +20,8 @@ import wheel.reactive.impl.Receiver;
 class DynDnsClientImpl implements DynDnsClient {
 	
 	private static final String LAST_IP_KEY = "dyndns.lastIp";
+	private static final String LAST_UPDATE_REQUEST_STATE_KEY = "dyndns.lastUpdateRequestState";
+	private static final String LAST_UPDATE_REQUEST_TIME_KEY = "dyndns.lastUpdateRequestTime";
 
 	@Inject
 	static private OwnIpDiscoverer _ownIpDiscoverer;
@@ -58,6 +60,7 @@ class DynDnsClientImpl implements DynDnsClient {
 
 	private State submitUpdateRequest(final DynDnsAccount account, String ip) {
 		try {
+			recordLastUpdateRequestInfo();
 			_updater.update(account.host, account.dynDnsUser, account.password, ip);
 			recordLastIp(ip);
 			return new Happy();
@@ -167,6 +170,11 @@ class DynDnsClientImpl implements DynDnsClient {
 	
 	private void recordLastIp(String ip) {
 		_propertyStore.set(LAST_IP_KEY, ip);
+	}
+	
+	private void recordLastUpdateRequestInfo() {
+		_propertyStore.set(LAST_UPDATE_REQUEST_TIME_KEY, ""+_clock.time());
+		_propertyStore.set(LAST_UPDATE_REQUEST_STATE_KEY, _state.getClass().getSimpleName()) ;
 	}
 
 	private String lastIp() {

@@ -73,11 +73,13 @@
 	
 	<target name="build.xml.generation" depends="init">
 		
+		<property name="builder.project" value="antlips" />
+		
 		<path id="wheel.lib.classpath">
 			<fileset dir="wheel/lib">
 				<include name="**/*.jar" />
 			</fileset>
-			<fileset dir="meta/lib">
+			<fileset dir="${builder.project}/lib">
 				<include name="**/*.jar" />
 			</fileset>
 		</path>
@@ -91,7 +93,7 @@
 			source="1.6"
          	target="1.6">
 			<src path="wheel/src" />
-			<src path="meta/src" />
+			<src path="${builder.project}/src" />
 		</javac>
 		
 		<java classname="build.GenerateAntFile">

@@ -60,7 +60,7 @@ class ClockImpl implements Clock {
 		while(_alarms.size()>0) {
 			Alarm alarm = _alarms.first();
 			
-			if(!alarm.tryRunAndRemove()) //Break Last Timeout
+			if(!alarm.tryRunAndRemove())
 				break;				
 			
 			if(alarm.isPeriodic()) //Store Periodic

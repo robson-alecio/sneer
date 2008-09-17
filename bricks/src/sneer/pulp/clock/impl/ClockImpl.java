@@ -71,9 +71,9 @@ class ClockImpl implements Clock {
 		long _wakeUpTime;
 		final Runnable _runnable;
 
-		Alarm(Runnable runnable, int millisFromCurrentTime, boolean isPeriodic) {
-			_period = isPeriodic ? millisFromCurrentTime : 0;
-			_wakeUpTime = millisFromCurrentTime + _currentTimeMillis;
+		Alarm(Runnable runnable, int millisFromNow, boolean isPeriodic) {
+			_period = isPeriodic ? millisFromNow : 0;
+			_wakeUpTime = _currentTimeMillis + millisFromNow;
 			_runnable = runnable;
 		}
 		

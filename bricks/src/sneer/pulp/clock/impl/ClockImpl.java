@@ -72,12 +72,12 @@ class ClockImpl implements Clock {
 		
 		final int _increment;
 		
-		long _nextAlarmAbsoluteTimeMillis;
+		long _wakeUpTime;
 		final Runnable _runnable;
 
 		Alarm(Runnable runnable, int millisFromCurrentTime, boolean isPeriodic) {
 			_increment = isPeriodic ? millisFromCurrentTime : 0;
-			_nextAlarmAbsoluteTimeMillis = millisFromCurrentTime + _currentTimeMillis;
+			_wakeUpTime = millisFromCurrentTime + _currentTimeMillis;
 			_runnable = runnable;
 		}
 		
@@ -86,24 +86,24 @@ class ClockImpl implements Clock {
 		}
 
 		boolean isTimeToWakeUp() {
-			return _currentTimeMillis >= _nextAlarmAbsoluteTimeMillis;
+			return _currentTimeMillis >= _wakeUpTime;
 		}
 		
 		private void tryRunAndRemove(){
 			_runnable.run();
 			_alarms.remove(this);
 			
-			_nextAlarmAbsoluteTimeMillis = _nextAlarmAbsoluteTimeMillis+_increment;   //Periodic.incrementTime 
+			_wakeUpTime = _wakeUpTime+_increment;   //Periodic.incrementTime 
 		}
 
 		@Override
 		public int compareTo(Alarm alarm) {
-			return (int) (_nextAlarmAbsoluteTimeMillis-alarm._nextAlarmAbsoluteTimeMillis);
+			return (int) (_wakeUpTime-alarm._wakeUpTime);
 		}
 		
 		@Override
 		public String toString() {
-			return "Alarm: " + _nextAlarmAbsoluteTimeMillis;
+			return "Alarm: " + _wakeUpTime;
 		}
 	}
 

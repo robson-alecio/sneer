@@ -36,7 +36,7 @@ public class AntFileBuilderTest {
 		new DotClasspathToAntConverter(_directory).createAntFile(_classpath);
 		
 		final String subjectAntFileTemplate = getSubjectAntFile();
-		final String generated = _directory.contentsAsString("generated-build.xml");
+		final String generated = _directory.contentsAsString("antlips.xml");
 		
 		compareLineByLine(generated, subjectAntFileTemplate);
 	}
@@ -47,7 +47,7 @@ public class AntFileBuilderTest {
 		new DotClasspathToAntConverter(new AntFileBuilderToFilesystem(_directory, true)).createAntFile(_classpath);
 		
 		final String subjectAntFileTemplate = getSourceFoldersTogetherSubjectAntFile(); 
-		final String generated = _directory.contentsAsString("generated-build.xml");
+		final String generated = _directory.contentsAsString("antlips.xml");
 		
 		compareLineByLine(generated, subjectAntFileTemplate);
 	}

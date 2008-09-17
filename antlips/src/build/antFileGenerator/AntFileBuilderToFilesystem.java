@@ -16,7 +16,7 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 	private final List<String> _srcs = new ArrayList<String>();
 	private final Directory _directory;
 	private final boolean _compileSourceFoldersTogether;
-	private final String fileName = "generated-build.xml";
+	private final String fileName = "antlips.xml";
 
 	public AntFileBuilderToFilesystem(final Directory directory) {
 		this(directory, false);

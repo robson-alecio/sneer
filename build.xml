@@ -45,7 +45,7 @@
 	</target>
 	
 	<target name="build" depends="clean, build.xml.generation">
-		<ant antfile="generated-build.xml" />
+		<ant antfile="antlips.xml" />
 	</target>
 	
 	<target name="clover-report">

@@ -63,7 +63,7 @@ class ClockImpl implements Clock {
 			if(!alarm.tryRunAndRemove())
 				break;				
 			
-			if(alarm.isPeriodic()) //Store Periodic
+			if(alarm.isPeriodic())
 				_alarms.add(alarm);
 		}
 	}

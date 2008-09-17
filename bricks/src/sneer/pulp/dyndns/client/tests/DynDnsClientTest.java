@@ -62,6 +62,52 @@ Unacceptable Client Behavior
 	final Updater updater = _context.mock(Updater.class);
 	final TransientPropertyStore _propertyStore = new TransientPropertyStore();
 	
+	
+	@Test
+	public void testPersistState() throws Exception {
+	
+		final IOException error = new IOException();
+		
+		_context.checking(new Expectations() {{
+			allowing(_ownIpDiscoverer).ownIp();
+				will(returnValue(_ownIp.output()));
+				
+			allowing(_ownAccountKeeper).ownAccount();
+				will(returnValue(_ownAccount.output()));
+				
+			final DynDnsAccount account = _ownAccount.output().currentValue();
+			exactly(1).of(updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
+				will(throwException(error));
+				
+			allowing(updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
+		}});
+		
+		Container container = newContainer();
+		Clock clock = container.produce(Clock.class);
+		container.produce(DynDnsClient.class);
+		
+		int retryTime = 300000;
+		
+		clock.advanceTime(retryTime);
+		clock.advanceTime(retryTime-1);
+		
+		final long storeClockTime = clock.time();
+		
+		container = newContainer();
+		clock = container.produce(Clock.class);
+
+		clock.advanceTimeTo(storeClockTime);
+		container.produce(DynDnsClient.class);
+
+		final ListSignal<Light> lights = container.produce(BlinkingLights.class).lights();
+		assertEquals(1, lights.currentSize());
+		final Light light = lights.currentGet(0);
+
+		assertTrue(light.isOn());
+		clock.advanceTime(1);
+		assertFalse(light.isOn());
+	}
+
 	@Test
 	public void updateOnIpChange() throws Exception {
 		_context.checking(new Expectations() {{
@@ -156,9 +202,15 @@ Unacceptable Client Behavior
 	}
 
 	private Container startDynDnsClient() {
-		final Container container = ContainerUtils.newContainer(_ownIpDiscoverer, _ownAccountKeeper, updater, _propertyStore);
+		final Container container = newContainer();
 		container.produce(DynDnsClient.class);
 		return container;
 	}
+
+	private Container newContainer() {
+		return ContainerUtils.newContainer(_ownIpDiscoverer, _ownAccountKeeper, updater, _propertyStore);
+	}
+	
+
 }
 

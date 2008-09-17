@@ -8,4 +8,6 @@ public interface PropertyStore extends Brick {
 
 	void set(String key, String value);
 
+	boolean containsKey(String property);
+
 }

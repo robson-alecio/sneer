@@ -44,6 +44,20 @@ class DynDnsClientImpl implements DynDnsClient {
 	private State _state = new Happy();
 	private final Object _stateMonitor = new Object();
 	
+	DynDnsClientImpl(){
+		restorePersistentState();
+	}
+	
+	private void restorePersistentState() {
+		if(!_propertyStore.containsKey(LAST_UPDATE_REQUEST_STATE_KEY))
+			return;
+		
+		String recordedStateId = _propertyStore.get(LAST_UPDATE_REQUEST_STATE_KEY);
+		if(recordedStateId.equals(getStateId(Waiting.class)))
+			_state = new Waiting();
+			
+	}
+
 	final Receiver<DynDnsAccount> _ownAccountReceiver = new Receiver<DynDnsAccount>(_ownAccountKeeper.ownAccount()) { @Override public void consume(DynDnsAccount account) {
 		synchronized (_stateMonitor) {
 			if (account == null) return;
@@ -119,14 +133,37 @@ class DynDnsClientImpl implements DynDnsClient {
 	private final class Waiting extends Sad {
 		
 		static final int retryTimeoutInMinutes = 5;
+	
 		
+		Waiting() {
+			super("Setting dyndns client to persistent state", new InterruptedException());
+			
+			long oldAlarm = lastUpdateRequestTime()+retryTimeoutImMillis();
+			long now =_clock.time();
+			
+			if(now>=oldAlarm){
+				addAlarm(0);
+				return;
+			} 
+			
+			addAlarm(oldAlarm-now);
+		}
+
 		Waiting(IOException e) {
 			super("It was not possible to connect to the dyndns server. Sneer will retry again in " + retryTimeoutInMinutes + " minutes.", e);
-			_clock.addAlarm(retryTimeoutInMinutes * 60 * 1000, new Runnable() { @Override public void run() {
+			addAlarm(retryTimeoutImMillis());
+		}
+
+		private void addAlarm(long millisFromNow) {
+			_clock.addAlarm((int)millisFromNow, new Runnable() { @Override public void run() {
 				synchronized (_stateMonitor) {
 					_state = _state.reactToAlarm();
 				}
 			}});
+		}
+
+		private int retryTimeoutImMillis() {
+			return retryTimeoutInMinutes * 60 * 1000;
 		}
 		
 		@Override
@@ -174,11 +211,25 @@ class DynDnsClientImpl implements DynDnsClient {
 	
 	private void recordLastUpdateRequestInfo() {
 		_propertyStore.set(LAST_UPDATE_REQUEST_TIME_KEY, ""+_clock.time());
-		_propertyStore.set(LAST_UPDATE_REQUEST_STATE_KEY, _state.getClass().getSimpleName()) ;
+		_propertyStore.set(LAST_UPDATE_REQUEST_STATE_KEY, getStateId()) ;
+	}
+
+	private String getStateId(Class<? extends State> clazz) {
+		return clazz.getName();
+	}
+
+	private String getStateId() {
+		return getStateId(_state.getClass());
 	}
 
 	private String lastIp() {
 		return _propertyStore.get(LAST_IP_KEY);
+	}
+	
+	private long lastUpdateRequestTime() {
+		if(_propertyStore.containsKey(LAST_UPDATE_REQUEST_TIME_KEY))
+			return Long.parseLong(_propertyStore.get(LAST_UPDATE_REQUEST_TIME_KEY));
+		return 0;
 	}
 
 	private DynDnsAccount currentAccount() {

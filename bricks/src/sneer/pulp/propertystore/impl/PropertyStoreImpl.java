@@ -27,6 +27,11 @@ class PropertyStoreImpl implements PropertyStore {
 	}
 	
 	@Override
+	public boolean containsKey(String property) {
+		return _properties.containsKey(property);
+	}
+	
+	@Override
 	public void set(String property, String value) {
 		_properties.setProperty(property, value);
 		persist();

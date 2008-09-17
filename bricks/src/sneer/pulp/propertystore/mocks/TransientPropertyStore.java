@@ -24,4 +24,9 @@ public class TransientPropertyStore implements PropertyStore {
 		return _properties.toString();
 	}
 
+	@Override
+	public boolean containsKey(String property) {
+		return _properties.containsKey(property);
+	}
+
 }

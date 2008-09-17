@@ -93,7 +93,7 @@ class ClockImpl implements Clock {
 			_runnable.run();
 			_alarms.remove(this);
 			
-			_wakeUpTime = _wakeUpTime + _period;   //Periodic.incrementTime 
+			_wakeUpTime = _wakeUpTime + _period;
 		}
 
 		@Override

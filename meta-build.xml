@@ -130,6 +130,10 @@
 				<include name="**/**" />
 				<exclude name="**/*.java" />
 			</fileset>
+			<fileset dir="./spikes/src">
+				<include name="**/**" />
+				<exclude name="**/*.java" />
+			</fileset>
 		</copy>		
 
 	</target>

@@ -2,6 +2,7 @@
 <project name="sneer meta build" default="test">
 	
 	<property name="build.dir" value="bin" />
+	<property name="builder.project" value="antlips" />
 	
 	<target name="test" depends="test.execution, test.verification">
 	</target>
@@ -19,7 +20,7 @@
 				<pathelement location="${build.dir}" />
 				
 				<!-- resource files required by tests -->
-				<pathelement location="meta/src" />
+				<pathelement location="${builder.project}/src" />
 				<pathelement location="wheel/src" />
 			</classpath>
 			
@@ -45,6 +46,7 @@
 	</target>
 	
 	<taskdef resource="cloverlib.xml" classpath="clover.jar"/>
+	
 	<target name="init-clover">
 		<clover-setup initString="mycoverage.db"/>
 	</target>
@@ -73,7 +75,6 @@
 	
 	<target name="build.xml.generation" depends="init">
 		
-		<property name="builder.project" value="antlips" />
 		
 		<path id="wheel.lib.classpath">
 			<fileset dir="wheel/lib">

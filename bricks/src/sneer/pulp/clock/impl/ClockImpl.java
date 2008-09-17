@@ -58,11 +58,9 @@ class ClockImpl implements Clock {
 	private void wakeUpAlarmsIfNecessary() {
 		while (!_alarms.isEmpty()) {
 			Alarm first = _alarms.first();
-			if(!first.isTimeToWakeUp()) break;
-			first.tryRunAndRemove();
+			if (!first.isTimeToWakeUp()) break;
 			
-			if(first.isPeriodic())
-				_alarms.add(first);
+			first.wakeUp();
 		}
 	}
 
@@ -79,6 +77,13 @@ class ClockImpl implements Clock {
 			_runnable = runnable;
 		}
 		
+		void wakeUp() {
+			tryRunAndRemove();
+			
+			if (isPeriodic())
+				_alarms.add(this);
+		}
+
 		public boolean isPeriodic() {
 			return _period>0;
 		}

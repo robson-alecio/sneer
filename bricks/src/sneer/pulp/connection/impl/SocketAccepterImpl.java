@@ -93,10 +93,11 @@ class SocketAccepterImpl implements SocketAccepter {
 				try {
 					ByteArraySocket clientSocket = _serverSocket.accept();
 					_notifier.notifyReceivers(clientSocket);
-					_lights.turnOff(_cantAcceptSocket);
+					if (_cantAcceptSocket != null)
+						_lights.turnOff(_cantAcceptSocket);
 				} catch (IOException e) {
 					if (!_isStopped) 
-						_cantAcceptSocket = _lights.turnOn(LightType.ERROR, "Error accepting client connection", e);
+						_cantAcceptSocket = _lights.turnOn(LightType.ERROR, "Unable to accept client connection", e);
 				} 
 			}
 		}});
@@ -104,16 +105,16 @@ class SocketAccepterImpl implements SocketAccepter {
 
 	private void openServerSocket(int port) {
 		if (port == 0) return;
-		Light starting = _lights.turnOn(LightType.INFO, "Starting Sneer on port " + port);
+		Light starting = _lights.turnOn(LightType.INFO, "Trying to listen on TCP port " + port + "...");
 		try {
 			_serverSocket = _network.openServerSocket(port);
-			_lights.turnOff(_cantOpenServerSocket);
+			if (_cantOpenServerSocket != null) _lights.turnOff(_cantOpenServerSocket);
 			_lights.turnOff(starting);
-			_lights.turnOn(LightType.INFO, "Open socket at port " + port);
+			_lights.turnOn(LightType.GOOD_NEWS, "TCP port opened: " + port, 7000);
 		} catch (IOException e) {
 			_lights.turnOff(starting);
 			if (!_isStopped)
-				_cantOpenServerSocket = _lights.turnOn(LightType.ERROR, "Error trying to open socket at "+port, e);
+				_cantOpenServerSocket = _lights.turnOn(LightType.ERROR, "Unable to listen on TCP port " + port, e);
 		}
 	}
 

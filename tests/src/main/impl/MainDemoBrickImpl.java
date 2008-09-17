@@ -4,6 +4,7 @@ import main.MainDemoBrick;
 import snapps.blinkinglights.BlinkingLightsSnapp;
 import snapps.contacts.ContactsSnapp;
 import sneer.kernel.container.Inject;
+import sneer.pulp.clockticker.ClockTicker;
 import sneer.pulp.connection.SocketOriginator;
 import sneer.pulp.connection.SocketReceiver;
 import sneer.pulp.contacts.Contact;
@@ -33,6 +34,9 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	
 	@Inject	@SuppressWarnings("unused")
 	private static SocketReceiver _networkDaemon2;
+
+	@Inject	@SuppressWarnings("unused")
+	private static ClockTicker _ticker;
 
 //Commented to avoid calling checkIp too often while persistence isnt ready.
 //	@Inject	@SuppressWarnings("unused")

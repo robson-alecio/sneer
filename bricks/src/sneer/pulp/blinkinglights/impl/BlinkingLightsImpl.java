@@ -5,6 +5,7 @@ import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.clock.Clock;
+import wheel.io.Logger;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 
@@ -32,6 +33,11 @@ class BlinkingLightsImpl implements BlinkingLights {
 	}
 
 	@Override
+	public Light turnOn(LightType type, String message, int timeToLive) {
+		return turnOn(type, message, null, timeToLive);
+	}
+
+	@Override
 	public Light turnOn(LightType type, String message) {
 		return turnOn(type, message, null);
 	}
@@ -43,9 +49,8 @@ class BlinkingLightsImpl implements BlinkingLights {
 	
 	@Override
 	public void turnOff(Light light) {
-		if(light == null) return;
-		
 		if (!_lights.remove(light)) return;
+		Logger.log("Light removed");
 		((LightImpl)light).turnOff();
 	}
 	
@@ -54,5 +59,5 @@ class BlinkingLightsImpl implements BlinkingLights {
 			turnOff(light);	
 		}});
 	}
-	
+
 }

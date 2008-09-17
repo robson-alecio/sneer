@@ -66,8 +66,8 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 	public void add(VO element){
 		synchronized (_list){
 			_list.add(element);
-			_output.notifyReceivers(new ListElementAdded(_list.size() - 1));
 			_size.setter().consume(_list.size());
+			_output.notifyReceivers(new ListElementAdded(_list.size() - 1));
 		}
 	}
 	
@@ -80,7 +80,7 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 	public boolean remove(VO element) {
 		synchronized (_list) {
 			int index = _list.indexOf(element);
-			if (index == -1) return false;
+			if (index == -1) throw new IllegalArgumentException("ListRegister did not contain element to be removed: " + element);
 			
 			remove(index);
 
@@ -93,9 +93,8 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 		synchronized (_list) {
 			_output.notifyReceivers(new ListElementToBeRemoved(index));
 			_list.remove(index);
-			_output.notifyReceivers(new ListElementRemoved(index));
-
 			_size.setter().consume(_list.size());
+			_output.notifyReceivers(new ListElementRemoved(index));
 		}
 	}
 

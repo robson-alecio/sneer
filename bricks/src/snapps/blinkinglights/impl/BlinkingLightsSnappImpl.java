@@ -46,7 +46,8 @@ class BlinkingLightsSnappImpl implements BlinkingLightsSnapp {
 	private Container _container;
 
 	private final static Map<LightType, Constant<Image>> _images = new HashMap<LightType, Constant<Image>>();
-	static{
+	static {
+		_images.put(LightType.GOOD_NEWS, new Constant<Image>(loadImage("good_news.png")));
 		_images.put(LightType.INFO, new Constant<Image>(loadImage("info.png")));
 		_images.put(LightType.WARN, new Constant<Image>(loadImage("warn.png")));
 		_images.put(LightType.ERROR, new Constant<Image>(loadImage("error.png")));

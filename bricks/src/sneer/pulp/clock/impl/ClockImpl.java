@@ -60,8 +60,8 @@ class ClockImpl implements Clock {
 		while(_alarms.size()>0) {
 			Alarm alarm = _alarms.first();
 			
-			if(!alarm.tryRunAndRemove())
-				break;				
+			if(!alarm.isTimeToWakeUp()) break;
+			alarm.tryRunAndRemove();
 			
 			if(alarm.isPeriodic())
 				_alarms.add(alarm);
@@ -84,16 +84,16 @@ class ClockImpl implements Clock {
 		public boolean isPeriodic() {
 			return _increment>0;
 		}
+
+		boolean isTimeToWakeUp() {
+			return _currentTimeMillis >= _nextAlarmAbsoluteTimeMillis;
+		}
 		
-		boolean tryRunAndRemove(){
-			if(_currentTimeMillis <= _nextAlarmAbsoluteTimeMillis )
-				return false;
-			
+		private void tryRunAndRemove(){
 			_runnable.run();
 			_alarms.remove(this);
 			
 			_nextAlarmAbsoluteTimeMillis = _nextAlarmAbsoluteTimeMillis+_increment;   //Periodic.incrementTime 
-			return true;
 		}
 
 		@Override

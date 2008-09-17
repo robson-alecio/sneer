@@ -52,10 +52,10 @@ class ClockImpl implements Clock {
 	@Override
 	synchronized public void advanceTimeTo(long absoluteTimeMillis) {
 		_currentTimeMillis = absoluteTimeMillis;
-		checkTime();
+		wakeUpAlarmsIfNecessary();
 	}
 	
-	private void checkTime() {
+	private void wakeUpAlarmsIfNecessary() {
 		
 		while(_alarms.size()>0) {
 			Alarm alarm = _alarms.first();

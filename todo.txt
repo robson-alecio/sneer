@@ -35,8 +35,9 @@
 	- Debugging Strategy - Revise so that all debugging info doesnt go into the log file. 
 	- Injection Strategy - Revise
 		- Drop @Inject - Replace the AnnotatedFieldInjector by the StaticFieldInjector
-		- Consider using constructor (produces more lines of code but can be generated later with boo). Tests will run MUCH faster because classes have to be loaded only once.
+		- Consider using constructor (produces more lines of code but can be generated later with boo). Tests will run MUCH faster because classes have to be loaded only once. Downside is all instances created inside the brick will have to be passed (and hold) references to the bricks they need. 
 		- Consider using direct static access to generated classes that redirect based on thread context (refer to Rodrigo's ContextVariables idea).
+		- Consider the "gel" alternative in which bricks dont depend on each other. They just produce and consume tuples from the medium.
 	- ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do.
 		- SetSignal - Revise it also. 
 	- ContainerUtils.getContainer() - Drop. Fix all uses.

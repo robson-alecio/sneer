@@ -16,6 +16,7 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 	private final List<String> _srcs = new ArrayList<String>();
 	private final Directory _directory;
 	private final boolean _compileSourceFoldersTogether;
+	private final String fileName = "generated-build.xml";
 
 	public AntFileBuilderToFilesystem(final Directory directory) {
 		this(directory, false);
@@ -40,7 +41,6 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 	public void build() {
 		final StringBuilder builder = generateAntFile();
 		
-		final String fileName = "build.xml";
 		final OutputStream file = createOrCry(_directory, fileName);
 		try {
 			IOUtils.write(builder.toString(), file);

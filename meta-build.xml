@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="sneer meta build" default="test">
+<project name="sneer" default="test">
 	
 	<property name="build.dir" value="bin" />
 	<property name="builder.project" value="antlips" />
@@ -45,7 +45,7 @@
 	</target>
 	
 	<target name="build" depends="clean, build.xml.generation">
-		<ant antfile="build.xml" />
+		<ant antfile="generated-build.xml" />
 	</target>
 	
 	<target name="clover-report">

@@ -15,12 +15,12 @@ class ClockImpl implements Clock {
 	
 	
 	@Override
-	public void addAlarm(int millisFromCurrentTime, Runnable runnable) {
+	synchronized public void addAlarm(int millisFromCurrentTime, Runnable runnable) {
 		_alarms.add(new Alarm(runnable, millisFromCurrentTime, false));
 	}
 
 	@Override
-	public void addPeriodicAlarm(int millisFromCurrentTime, Runnable runnable) {
+	synchronized public void addPeriodicAlarm(int millisFromCurrentTime, Runnable runnable) {
 		_alarms.add(new Alarm(runnable, millisFromCurrentTime, true));
 	}
 
@@ -45,15 +45,22 @@ class ClockImpl implements Clock {
 	}
 
 	@Override
-	public void advanceTime(int deltaMillis) {
-		_currentTimeMillis = _currentTimeMillis + deltaMillis;
+	synchronized public void advanceTime(int deltaMillis) {
+		advanceTimeTo(_currentTimeMillis + deltaMillis);
+	}
+
+	
+	@Override
+	synchronized public void advanceTimeTo(long absoluteTimeMillis) {
+		_currentTimeMillis = absoluteTimeMillis;
 		checkTime();
 	}
+
 	
 	private void checkTime() {
 		boolean tryAgain = true;
 
-		while(tryAgain){
+		while(tryAgain) {
 			Iterator<Alarm> iterator = _alarms.iterator();
 			
 			while(iterator.hasNext()) {
@@ -111,4 +118,5 @@ class ClockImpl implements Clock {
 			return "Alarm: " + _nextAlarmAbsoluteTimeMillies;
 		}
 	}
+
 }

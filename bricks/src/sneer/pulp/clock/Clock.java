@@ -11,5 +11,6 @@ public interface Clock {
 	void addPeriodicAlarm(int periodInMillisFromCurrentTime, Runnable runnable);
 
 	void advanceTime(int deltaMillis);
+	void advanceTimeTo(long absoluteTimeMillis);
 
 }

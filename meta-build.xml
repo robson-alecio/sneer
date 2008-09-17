@@ -4,14 +4,17 @@
 	<property name="build.dir" value="bin" />
 	<property name="builder.project" value="antlips" />
 	
-	<target name="test" depends="test.execution, test.verification">
+	<target name="test" depends="test-execution, test-verification">
 	</target>
 	
-	<target name="test.verification" if="junit.failures">
+	<target name="hudson" depends="clover-report, test-verification">
+	</target>
+	
+	<target name="test-verification" if="junit.failures">
 		<fail>Test failures! Check the output for details.</fail>
 	</target>
 		
-	<target name="test.execution" depends="build">
+	<target name="test-execution" depends="build">
 		<junit printsummary="true" failureproperty="junit.failures" fork="yes">
 			<classpath>
 				<fileset dir=".">
@@ -45,18 +48,17 @@
 		<ant antfile="build.xml" />
 	</target>
 	
-	<taskdef resource="cloverlib.xml" classpath="clover.jar"/>
-	
-	<target name="init-clover">
+	<target name="clover-report">
+		
+		<taskdef resource="cloverlib.xml" classpath="${builder.project}/lib/clover.jar"/>
 		<clover-setup initString="mycoverage.db"/>
-	</target>
-	
-	<target name="clover-report" depends="init-clover, test.execution">
 		
 		<fileset dir="${build.dir}" id="clover.sources">
 			<include name="**/*.java" />
 			<exclude name="spikes/**" />
 		</fileset>
+		
+		<antcall target="test-execution" />
 		
 		<clover-report>
 	       <current outfile="clover.xml">

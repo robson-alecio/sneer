@@ -51,7 +51,7 @@
 	
 	<target name="clover-report" depends="init-clover, test.execution">
 		
-		<fileset id="clover.sources">
+		<fileset dir="${build.dir}" id="clover.sources">
 			<include name="**/*.java" />
 			<exclude name="spikes/**" />
 		</fileset>
@@ -62,6 +62,7 @@
 	       	  <fileset refid="clover.sources" />
 	       </current>
 	    </clover-report>
+		
 		<clover-report>
 	       <current outfile="clover">
 	          <format type="html"/>

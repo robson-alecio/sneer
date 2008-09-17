@@ -9,7 +9,7 @@ import wheel.lang.Threads;
 
 class ClockImpl implements Clock {
 	
-	long _currentTimeMilles = 0;
+	long _currentTimeMillis = 0;
 	
 	final Set<Alarm> _alarms = new TreeSet<Alarm>();
 	
@@ -41,12 +41,12 @@ class ClockImpl implements Clock {
 
 	@Override
 	public long time() {
-		return _currentTimeMilles;
+		return _currentTimeMillis;
 	}
 
 	@Override
 	public void advanceTime(int deltaMillis) {
-		_currentTimeMilles = _currentTimeMilles + deltaMillis;
+		_currentTimeMillis = _currentTimeMillis + deltaMillis;
 		checkTime();
 	}
 	
@@ -82,12 +82,12 @@ class ClockImpl implements Clock {
 
 		Alarm(Runnable runnable, int millisFromCurrentTime, boolean isPeriodic) {
 			_increment = isPeriodic ? millisFromCurrentTime : 0;
-			_nextAlarmAbsoluteTimeMillies = millisFromCurrentTime + _currentTimeMilles;
+			_nextAlarmAbsoluteTimeMillies = millisFromCurrentTime + _currentTimeMillis;
 			_runnable = runnable;
 		}
 		
 		boolean tryRunAndRemove(Iterator<Alarm> iterator){
-			if(_currentTimeMilles <= _nextAlarmAbsoluteTimeMillies )
+			if(_currentTimeMillis <= _nextAlarmAbsoluteTimeMillies )
 				return false;
 			
 			_runnable.run();

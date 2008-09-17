@@ -129,8 +129,4 @@ class OwnerSnappImpl implements OwnerSnapp {
 		return c;
 	}
 
-	@Override
-	public String getName() {
-		return "Owner";
-	}
 }

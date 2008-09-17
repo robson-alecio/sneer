@@ -131,8 +131,7 @@ class BlinkingLightsSnappImpl implements BlinkingLightsSnapp {
 		return new Dimension(container.getSize().width, 90 );
 	}
 	
-	@Override
-	public String getName() {
+	private String getName() {
 		return "Blinking Lights";
 	}
 

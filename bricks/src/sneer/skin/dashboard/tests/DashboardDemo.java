@@ -56,10 +56,6 @@ class Snapp1 implements Snapp{
 		
 		
 	}
-	@Override
-	public String getName() {
-		return this.getClass().getSimpleName();
-	}
 }
 
 class Snapp2 implements Snapp{
@@ -73,10 +69,6 @@ class Snapp2 implements Snapp{
 		container.add(new JCheckBox("Option 3"));
 		container.add(new JCheckBox("Option 4"));
 	}
-	@Override
-	public String getName() {
-		return this.getClass().getSimpleName();
-	}
 }
 
 class Snapp3 implements Snapp{
@@ -85,9 +77,5 @@ class Snapp3 implements Snapp{
 		container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
 		JTextArea textArea = new JTextArea(15, 20);
         container.add(new JScrollPane(textArea));
-	}
-	@Override
-	public String getName() {
-		return this.getClass().getSimpleName();
 	}
 }

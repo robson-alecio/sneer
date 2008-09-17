@@ -61,8 +61,5 @@ class NicknameDemo implements Snapp{
 		container.add(field);
 		field.setBorder(new TitledBorder("Change Nickname Here:"));
 	}
-	@Override
-	public String getName() {
-		return "Output Test";
-	}
+	
 }

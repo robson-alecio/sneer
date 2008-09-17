@@ -59,8 +59,4 @@ class OwnerSnappDemoSnapp implements Snapp{
 		);
 	}
 	
-	@Override
-	public String getName() {
-		return "Output Test";
-	}
 }

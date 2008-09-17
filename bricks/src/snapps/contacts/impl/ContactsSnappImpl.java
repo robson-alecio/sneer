@@ -68,8 +68,7 @@ class ContactsSnappImpl implements ContactsSnapp {
 		return new Dimension(container.getSize().width, 150 );
 	}
 	
-	@Override
-	public String getName() {
+	private String getName() {
 		return "My Contacts";
 	}
 	

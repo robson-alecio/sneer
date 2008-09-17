@@ -6,6 +6,7 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.Sequence;
 import org.jmock.integration.junit4.JUnit4Mockery;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.kernel.container.Container;
@@ -22,6 +23,7 @@ public class OwnIpDiscovererTest {
 	
 	final Mockery _context = new JUnit4Mockery();
 	
+	@Ignore
 	@Test
 	public void testFirstTime() throws IOException {
 		

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name="sneer meta build" default="test">
 	
-	<property name="build.dir" value="build" />
+	<property name="build.dir" value="bin" />
 	
 	<target name="test" depends="test.execution, test.verification">
 	</target>

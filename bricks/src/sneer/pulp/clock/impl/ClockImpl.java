@@ -70,19 +70,19 @@ class ClockImpl implements Clock {
 
 	private class Alarm implements Comparable<Alarm>{
 		
-		final int _increment;
+		final int _period;
 		
 		long _wakeUpTime;
 		final Runnable _runnable;
 
 		Alarm(Runnable runnable, int millisFromCurrentTime, boolean isPeriodic) {
-			_increment = isPeriodic ? millisFromCurrentTime : 0;
+			_period = isPeriodic ? millisFromCurrentTime : 0;
 			_wakeUpTime = millisFromCurrentTime + _currentTimeMillis;
 			_runnable = runnable;
 		}
 		
 		public boolean isPeriodic() {
-			return _increment>0;
+			return _period>0;
 		}
 
 		boolean isTimeToWakeUp() {
@@ -93,12 +93,12 @@ class ClockImpl implements Clock {
 			_runnable.run();
 			_alarms.remove(this);
 			
-			_wakeUpTime = _wakeUpTime+_increment;   //Periodic.incrementTime 
+			_wakeUpTime = _wakeUpTime + _period;   //Periodic.incrementTime 
 		}
 
 		@Override
 		public int compareTo(Alarm alarm) {
-			return (int) (_wakeUpTime-alarm._wakeUpTime);
+			return (int) (_wakeUpTime - alarm._wakeUpTime);
 		}
 		
 		@Override

@@ -66,15 +66,19 @@ class ClockImpl implements Clock {
 		while(iterator.hasNext()) {
 			Alarm alarm = iterator.next();
 			
-			if(alarm.isPeriodic()) //Store Periodic
-				tmpPeriodics.add(alarm);
-			
 			if(!alarm.tryRunAndRemove(iterator)) //Break Last Timeout
 				break;				
+			
+			if(alarm.isPeriodic()){ //Store Periodic
+				tmpPeriodics.add(alarm);
+				break;
+			}
 		}
 		
-		_alarms.addAll(tmpPeriodics);
-		
+		if(tmpPeriodics.size()>0){
+			_alarms.addAll(tmpPeriodics);
+			checkTime();
+		}
 	}
 
 	private class Alarm implements Comparable<Alarm>{

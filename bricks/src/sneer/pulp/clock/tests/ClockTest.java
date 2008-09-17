@@ -30,6 +30,7 @@ public class ClockTest extends TestThatIsInjected {
 		_subject.advanceTime(81);
 		assertEquals(81, _subject.time());
 		
+		System.out.println(_order);
 		Integer lastInteger = null;
 		for (Integer timeout : _order) {
 			if(lastInteger!=null)

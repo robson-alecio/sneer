@@ -16,7 +16,7 @@ public class TestThatIsInjected extends TestThatMightUseFiles {
     }
     
 	@Before
-	public void before() throws Exception {
+	final public void beforeTestThatIsInjected() throws Exception {
 		injectDependencies();
 	}
 

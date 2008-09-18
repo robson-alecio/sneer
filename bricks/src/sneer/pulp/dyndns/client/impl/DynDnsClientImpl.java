@@ -3,9 +3,9 @@ package sneer.pulp.dyndns.client.impl;
 import java.io.IOException;
 
 import sneer.kernel.container.Inject;
-import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
+import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.dyndns.client.DynDnsClient;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccount;
@@ -15,6 +15,7 @@ import sneer.pulp.dyndns.updater.BadAuthException;
 import sneer.pulp.dyndns.updater.Updater;
 import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.propertystore.PropertyStore;
+import sneer.pulp.threadpool.ThreadPool;
 import wheel.reactive.impl.Receiver;
 
 class DynDnsClientImpl implements DynDnsClient {
@@ -37,6 +38,9 @@ class DynDnsClientImpl implements DynDnsClient {
 	static private BlinkingLights _blinkingLights;
 	
 	@Inject
+	static private ThreadPool _threadPool;
+	
+	@Inject
 	static private Clock _clock;
 	
 	private Light _light;
@@ -57,19 +61,6 @@ class DynDnsClientImpl implements DynDnsClient {
 		}
 	}};
 
-	private State submitUpdateRequest(final DynDnsAccount account, String ip) {
-		try {
-			_updater.update(account.host, account.dynDnsUser, account.password, ip);
-			recordLastIp(ip);
-			return new Happy();
-		} catch (BadAuthException e) {
-			return new BadAuthState(e);
-		} catch (IOException e) {
-			return new Waiting(e);
-		} catch (UpdaterException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
-		}
-	}
 	
 	abstract class State {
 		
@@ -91,11 +82,65 @@ class DynDnsClientImpl implements DynDnsClient {
 		State reactTo(String ip) {
 			if (ip.equals(lastIp())) return this;
 			
-			return submitUpdateRequest(currentAccount(), ip);
+			return new Requesting(ip);
 		}
 
 		@Override
 		State reactTo(DynDnsAccount accountNotification) {
+			return this;
+		}
+
+		@Override
+		State reactToAlarm() {
+			throw new IllegalStateException();
+		}
+	}
+	
+	private class Requesting extends State {
+
+		private String _lastOwnIpNotification;
+		private DynDnsAccount _lastAccountNotification;
+
+		Requesting(final String ip) {
+			Runnable toRun = new Runnable(){ @Override public void run() {
+				State state = submitUpdateRequest(currentAccount(), ip);
+				synchronized (_stateMonitor) {
+					_state = state;
+				}
+
+				if(_lastOwnIpNotification!=null)
+					_state.reactTo(_lastOwnIpNotification);
+
+				if(_lastAccountNotification!=null)
+					_state.reactTo(_lastAccountNotification);
+			}};
+			_threadPool.registerActor(toRun);
+			
+		}
+		
+		private State submitUpdateRequest(final DynDnsAccount account, String ip) {
+			try {
+				_updater.update(account.host, account.dynDnsUser, account.password, ip);
+				recordLastIp(ip);
+				return new Happy();
+			} catch (BadAuthException e) {
+				return new BadAuthState(e);
+			} catch (IOException e) {
+				return new Waiting(e);
+			} catch (UpdaterException e) {
+				throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			}
+		}
+		
+		@Override
+		State reactTo(String ownIpNotification) {
+			_lastOwnIpNotification = ownIpNotification;
+			return this;
+		}
+
+		@Override
+		State reactTo(DynDnsAccount accountNotification) {
+			_lastAccountNotification = accountNotification;
 			return this;
 		}
 
@@ -112,7 +157,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		}
 
 		protected State retry() {
-			return submitUpdateRequest(currentAccount(), currentIp());
+			return new Requesting(currentIp());
 		}
 		
 		private void refreshErrorLight(String message, Exception e) {

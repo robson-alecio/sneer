@@ -27,6 +27,7 @@ import sneer.pulp.dyndns.updater.BadAuthException;
 import sneer.pulp.dyndns.updater.Updater;
 import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.propertystore.mocks.TransientPropertyStore;
+import sneer.pulp.threadpool.mocks.ThreadPoolMock;
 import wheel.lang.exceptions.FriendlyException;
 import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;
@@ -63,6 +64,7 @@ Unacceptable Client Behavior
 	final DynDnsAccountKeeper _ownAccountKeeper = _context.mock(DynDnsAccountKeeper.class);
 	final Updater updater = _context.mock(Updater.class);
 	final TransientPropertyStore _propertyStore = new TransientPropertyStore();
+	final ThreadPoolMock _threadPool = new ThreadPoolMock();;
 	
 	@Test
 	public void updateOnIpChange() throws Exception {
@@ -105,10 +107,14 @@ Unacceptable Client Behavior
 		}});
 		
 
-		final Container container = startDynDnsClient();
+		final Container container = startDynDnsClient(_threadPool);
+		_threadPool.runAll();
+		
 		final Light light = assertBlinkingLight(error, container);
 		
 		container.produce(Clock.class).advanceTime(300001);
+		
+		_threadPool.runAll();
 		assertFalse(light.isOn());
 		_context.assertIsSatisfied();
 	}
@@ -132,7 +138,9 @@ Unacceptable Client Behavior
 			exactly(1).of(updater).update(account.host, account.dynDnsUser, "*" + account.password, newIp);
 		}});
 		
-		final Container container = startDynDnsClient();
+		final Container container = startDynDnsClient(_threadPool);
+		_threadPool.runAll();
+		
 		final Light light = assertBlinkingLight(error, container);
 		
 		// new ip should be ignored while new account is not provided
@@ -140,6 +148,8 @@ Unacceptable Client Behavior
 		
 		DynDnsAccount changed = new DynDnsAccount("test.dyndns.org", "test", "*test");
 		_ownAccount.setter().consume(changed);
+
+		_threadPool.runAll();
 		assertFalse(light.isOn());
 		
 		_context.assertIsSatisfied();
@@ -157,8 +167,8 @@ Unacceptable Client Behavior
 		return light;
 	}
 
-	private Container startDynDnsClient() {
-		final Container container = newContainer();
+	private Container startDynDnsClient(Object...mocks) {
+		final Container container = newContainer(mocks);
 		container.produce(DynDnsClient.class);
 		return container;
 	}

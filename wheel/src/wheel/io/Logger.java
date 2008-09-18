@@ -47,9 +47,9 @@ public class Logger {
 	}
 	
 	
-//	static private PrintWriter _log = new PrintWriter(new NullOutputStream());
+	static private PrintWriter _log = new PrintWriter(new NullOutputStream());
 	
-	static private PrintWriter _log = new PrintWriter(System.err);
+//	static private PrintWriter _log = new PrintWriter(System.err);
 
 	
 	private static void flush() {

@@ -25,7 +25,7 @@ import sneer.pulp.blinkinglights.Light;
 import sneer.skin.snappmanager.SnappManager;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
-import sneer.skin.widgets.reactive.RFactory;
+import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.graphics.Images;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Constant;
@@ -39,7 +39,7 @@ class BlinkingLightsSnappImpl implements BlinkingLightsSnapp {
 	static private BlinkingLights _blinkingLights;
 
 	@Inject
-	static private RFactory _rfactory;
+	static private ReactiveWidgetFactory _rfactory;
 	
 	private ListWidget<Light> _lightsList;
 

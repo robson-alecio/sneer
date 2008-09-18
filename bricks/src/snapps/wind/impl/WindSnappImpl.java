@@ -23,7 +23,7 @@ import sneer.pulp.blinkinglights.LightType;
 import sneer.skin.snappmanager.SnappManager;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
-import sneer.skin.widgets.reactive.RFactory;
+import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.graphics.Images;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Constant;
@@ -37,7 +37,7 @@ class WindSnappImpl implements WindSnapp {
 	static private BlinkingLights _blinkingLights;
 
 	@Inject
-	static private RFactory _rfactory;
+	static private ReactiveWidgetFactory _rfactory;
 
 	private final static Signal<Image> _meImage;
 	//private final static Signal<Image> _otherImage;

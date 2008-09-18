@@ -10,7 +10,7 @@ import sneer.pulp.own.tagline.OwnTaglineKeeper;
 import sneer.skin.dashboard.Dashboard;
 import sneer.skin.snappmanager.SnappManager;
 import sneer.skin.viewmanager.Snapp;
-import sneer.skin.widgets.reactive.RFactory;
+import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 
@@ -26,7 +26,7 @@ public class OwnerSnappDemo  {
 		OwnTaglineKeeper ownTaglineKeeper = container.produce(OwnTaglineKeeper.class);
 		ownTaglineKeeper.taglineSetter().consume("Minha frase do dia!!");
 		
-		RFactory rfactory = container.produce(RFactory.class);
+		ReactiveWidgetFactory rfactory = container.produce(ReactiveWidgetFactory.class);
 		
 		container.produce(OwnerSnapp.class);
 		
@@ -40,11 +40,11 @@ public class OwnerSnappDemo  {
 
 class OwnerSnappDemoSnapp implements Snapp{
 
-	private final RFactory _rfactory;
+	private final ReactiveWidgetFactory _rfactory;
 	private final Signal<String> _output;
 	private final Omnivore<String> _setter;
 	
-	public OwnerSnappDemoSnapp(RFactory rfactory, Signal<String> output,	Omnivore<String> setter, SnappManager manager) {
+	public OwnerSnappDemoSnapp(ReactiveWidgetFactory rfactory, Signal<String> output,	Omnivore<String> setter, SnappManager manager) {
 		_rfactory = rfactory;
 		_output = output;
 		_setter = setter;

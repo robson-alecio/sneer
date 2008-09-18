@@ -11,7 +11,7 @@ import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.Inject;
 import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.own.name.OwnNameKeeper;
-import sneer.skin.widgets.reactive.RFactory;
+import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.reactive.impl.Receiver;
 
@@ -21,7 +21,7 @@ public class OwnNameKeeperDemo extends TestThatIsInjected {
 	private static Receiver<String> _receiver;
 
 	@Inject
-	private RFactory rfactory;
+	private ReactiveWidgetFactory rfactory;
 	
 	@Inject
 	private OwnNameKeeper ownNameKeeper;
@@ -38,7 +38,7 @@ public class OwnNameKeeperDemo extends TestThatIsInjected {
 	private static OwnNameKeeperDemo initializeDemo() {
 		OwnNameKeeperDemo demo = new OwnNameKeeperDemo();
 		Container container = ContainerUtils.getContainer();
-		demo.rfactory = container.produce(RFactory.class);	
+		demo.rfactory = container.produce(ReactiveWidgetFactory.class);	
 		demo.ownNameKeeper = container.produce(OwnNameKeeper.class);
 		demo.ownNameKeeper.nameSetter().consume("Sandro Luiz Bihaiko");
 		return demo;

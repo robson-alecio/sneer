@@ -17,7 +17,7 @@ import sneer.pulp.contacts.ContactManager;
 import sneer.skin.snappmanager.SnappManager;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
-import sneer.skin.widgets.reactive.RFactory;
+import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.graphics.Images;
 import wheel.lang.Functor;
 import wheel.reactive.Signal;
@@ -38,7 +38,7 @@ class ContactsSnappImpl implements ContactsSnapp {
 	static private ConnectionManager _connectionManager;
 
 	@Inject
-	static private RFactory _rfactory;
+	static private ReactiveWidgetFactory _rfactory;
 	
 	private ListWidget<Contact> _contactList;
 	

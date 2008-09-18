@@ -10,7 +10,7 @@ import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 
-public interface RFactory {
+public interface ReactiveWidgetFactory {
 
 	ImageWidget newImage(Signal<Image> source);
 	ImageWidget newImage(Signal<Image> source, Omnivore<Image> setter);

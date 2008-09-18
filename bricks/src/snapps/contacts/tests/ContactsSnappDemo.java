@@ -13,7 +13,7 @@ import sneer.pulp.contacts.ContactManager;
 import sneer.skin.dashboard.Dashboard;
 import sneer.skin.snappmanager.SnappManager;
 import sneer.skin.viewmanager.Snapp;
-import sneer.skin.widgets.reactive.RFactory;
+import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 
 public class ContactsSnappDemo  {
 	
@@ -24,7 +24,7 @@ public class ContactsSnappDemo  {
 		container.produce(Dashboard.class);
 		container.produce(ContactsSnapp.class);
 		
-		RFactory rfactory = container.produce(RFactory.class);
+		ReactiveWidgetFactory rfactory = container.produce(ReactiveWidgetFactory.class);
 
 		ContactManager manager = container.produce(ContactManager.class);
 		
@@ -41,12 +41,12 @@ public class ContactsSnappDemo  {
 
 class NicknameDemo implements Snapp{
 
-	private final RFactory _rfactory;
+	private final ReactiveWidgetFactory _rfactory;
 	private final SnappManager _snapps;
 	private final Contact _test;
 	private final ContactManager _manager;
 
-	public NicknameDemo(RFactory rfactory, SnappManager snapps, Contact test, ContactManager manager) {
+	public NicknameDemo(ReactiveWidgetFactory rfactory, SnappManager snapps, Contact test, ContactManager manager) {
 		_rfactory = rfactory;
 		_snapps = snapps;
 		_test = test;

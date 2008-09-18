@@ -1,6 +1,5 @@
 ﻿MAIN ROADMAP
 ===================
-	- RFactory - Rename to ReactiveWidgetFactory
 	- [Rodrigo helping Kalecser] Fix the Hudson build.
 	- DynDNS Client ;)
 		- BL should not be turned off during attempt. Only if successful.

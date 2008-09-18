@@ -19,7 +19,7 @@ import sneer.pulp.own.tagline.OwnTaglineKeeper;
 import sneer.skin.imgselector.ImageSelector;
 import sneer.skin.snappmanager.SnappManager;
 import sneer.skin.widgets.reactive.ImageWidget;
-import sneer.skin.widgets.reactive.RFactory;
+import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 
 class OwnerSnappImpl implements OwnerSnapp {
@@ -40,7 +40,7 @@ class OwnerSnappImpl implements OwnerSnapp {
 	static private ImageSelector _imageSelector;
 
 	@Inject
-	static private RFactory _rfactory;
+	static private ReactiveWidgetFactory _rfactory;
 
 	private TextWidget<JTextField> _editableLabel;
 

@@ -11,7 +11,7 @@ import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.Inject;
 import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.own.tagline.OwnTaglineKeeper;
-import sneer.skin.widgets.reactive.RFactory;
+import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.reactive.impl.Receiver;
 
@@ -21,7 +21,7 @@ public class OwnTaglineKeeperDemo extends TestThatIsInjected {
 	private static Receiver<String> _log;
 
 	@Inject
-	private RFactory _rfactory;
+	private ReactiveWidgetFactory _rfactory;
 	
 	@Inject
 	private OwnTaglineKeeper _ownTaglineKeeper;
@@ -37,7 +37,7 @@ public class OwnTaglineKeeperDemo extends TestThatIsInjected {
 	private static OwnTaglineKeeperDemo initializeDemo() {
 		OwnTaglineKeeperDemo demo = new OwnTaglineKeeperDemo();
 		Container container = ContainerUtils.getContainer();
-		demo._rfactory = container.produce(RFactory.class);	
+		demo._rfactory = container.produce(ReactiveWidgetFactory.class);	
 		demo._ownTaglineKeeper = container.produce(OwnTaglineKeeper.class);
 		demo._ownTaglineKeeper.taglineSetter().consume("O novo parágrafo começa depois do ponto final.");
 		return demo;

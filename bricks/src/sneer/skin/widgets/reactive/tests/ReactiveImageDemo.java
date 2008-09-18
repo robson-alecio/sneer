@@ -9,7 +9,7 @@ import javax.swing.SwingUtilities;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.skin.widgets.reactive.ImageWidget;
-import sneer.skin.widgets.reactive.RFactory;
+import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.graphics.Images;
 import wheel.lang.Functor;
 import wheel.reactive.Signal;
@@ -28,7 +28,7 @@ public class ReactiveImageDemo {
 	public static void main(String[] args) throws Exception {
 		Container container = ContainerUtils.getContainer();
 
-		RFactory rfactory = container.produce(RFactory.class);
+		ReactiveWidgetFactory rfactory = container.produce(ReactiveWidgetFactory.class);
 		
 		Signal<Boolean> isOnline = new RandomBoolean().output();
 		Functor<Boolean, Image> functor = new Functor<Boolean, Image>(){

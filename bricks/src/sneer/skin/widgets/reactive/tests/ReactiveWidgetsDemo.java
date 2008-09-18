@@ -7,7 +7,7 @@ import javax.swing.SwingUtilities;
 
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
-import sneer.skin.widgets.reactive.RFactory;
+import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.reactive.Register;
 import wheel.reactive.impl.Receiver;
@@ -21,7 +21,7 @@ public class ReactiveWidgetsDemo {
 	public static void main(String[] args) throws Exception {
 		Container container = ContainerUtils.getContainer();
 
-		RFactory rfactory = container.produce(RFactory.class);
+		ReactiveWidgetFactory rfactory = container.produce(ReactiveWidgetFactory.class);
 		Register<String> register = new RegisterImpl<String>("Jose das Coves");
 				
 		TextWidget<?> newTextField;

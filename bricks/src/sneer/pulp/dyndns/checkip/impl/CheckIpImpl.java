@@ -24,12 +24,22 @@ class CheckIpImpl implements CheckIp {
 		return result;
 	}
 
-	private String parse(final String responseBody) throws IOException {
+	private String parse(String responseBody) throws IOException {
 		final Matcher matcher = _responsePattern.matcher(responseBody);
-		if (!matcher.find()) {
-			throw new IOException("Unrecognized checkip response: " + responseBody);
-		}
-		return matcher.group(1);
+		if (!matcher.find())
+			throwBadResponse(responseBody);
+
+		String result = matcher.group(1);
+		if (result == null)
+			throwBadResponse(responseBody);
+		
+		return result;
+	}
+
+	private void throwBadResponse(String responseBody) throws IOException {
+		String message = "Unrecognized checkip response: " + responseBody;
+		Logger.log(message);
+		throw new IOException(message);
 	}
 
 	private String submitHttpRequest() throws IOException {

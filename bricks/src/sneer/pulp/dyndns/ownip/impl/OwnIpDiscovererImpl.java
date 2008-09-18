@@ -16,7 +16,7 @@ import wheel.reactive.impl.RegisterImpl;
 
 class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	
-	private static final int RETRY_TIME_MINUTES = 11;
+	private static final int RETRY_TIME_MINUTES = 11; //The minimum required period is 10 mins, or it is considered abuse.
 	private static final String LAST_IP_KEY = "ownIp.ip";
 	private static final String LAST_CHECK_TIME_KEY = "ownIp.lastUpdateRequestTime";
 

@@ -39,6 +39,7 @@ class DynDnsClientImpl implements DynDnsClient {
 	@Inject
 	static private Clock _clock;
 	
+	private Light _light;
 	private State _state = new Happy();
 	private final Object _stateMonitor = new Object();
 	
@@ -80,6 +81,12 @@ class DynDnsClientImpl implements DynDnsClient {
 	
 	private final class Happy extends State {
 		
+		Happy() {
+			if(_light==null) return;
+			_blinkingLights.turnOff(_light);
+			_light = null;
+		}
+		
 		@Override
 		State reactTo(String ip) {
 			if (ip.equals(lastIp())) return this;
@@ -96,20 +103,22 @@ class DynDnsClientImpl implements DynDnsClient {
 		State reactToAlarm() {
 			throw new IllegalStateException();
 		}
-
 	}
 	
 	private abstract class Sad extends State {
 		
-		private final Light _light;
-		
 		Sad(String message, Exception e) {
-			_light = _blinkingLights.turnOn(LightType.ERROR, message, e);
+			refreshErrorLight(message, e);
 		}
 
 		protected State retry() {
-			_blinkingLights.turnOff(_light);
 			return submitUpdateRequest(currentAccount(), currentIp());
+		}
+		
+		private void refreshErrorLight(String message, Exception e) {
+			if(_light!=null && _light.isOn())
+				_blinkingLights.turnOff(_light);
+			_light = _blinkingLights.turnOn(LightType.ERROR, message, e);
 		}
 	}
 	
@@ -188,5 +197,4 @@ class DynDnsClientImpl implements DynDnsClient {
 	private String currentIp() {
 		return _ownIpDiscoverer.ownIp().currentValue();
 	}
-
 }

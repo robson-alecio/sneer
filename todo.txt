@@ -1,10 +1,12 @@
 ﻿MAIN ROADMAP
 ===================
+	- [Sandro] DynDnsClient state persistence is "generic" for any state. Refactor: Make it simpler: specific for the waiting state. Use only one key: LAST_UPDATE_REQUEST_TIME_KEY. If the store contains that key, you know you are in a waiting state. Only make things generic when necessary, not speculatively. Actually, the waiting period in DynDnsClient does not need to be persisted. What you have to persist is the period in OwnIpDiscoverer.  
+	- RFactory - Rename to ReactiveWidgetFactory
 	- [Rodrigo helping Kalecser] Fix the Hudson build.
 	- DynDNS Client ;)
 		- BL should not be turned off during attempt. Only if successful.
 		- Should not block while doing submitUpdateRequest(...). Create a new state for that.
-	- [Sandro] Create a better icon for LightType.INFO. Blue is being used for the new LightType.GOOD_NEWS.
+	- [Sandro] Create a light-gray icon for LightType.INFO. Blue is being used for the new LightType.GOOD_NEWS.
 	- Rudimentary Logging
 		- Logger.inline(String message, Object... messageInsets) - implement properly
 	---------------------------------- FIRST DOGFOOD RELEASE - Anelise can start testing for real. All bugs she finds get fixed immediately. Improvement suggestions are added to this todo list.

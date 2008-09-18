@@ -69,7 +69,8 @@ class BlinkingLightsSnappImpl implements BlinkingLightsSnapp {
 		LightType type = light.type();
 		String title = type.name();
 		int optType = type==LightType.ERROR?JOptionPane.ERROR_MESSAGE: 
-					  type==LightType.WARN? JOptionPane.WARNING_MESSAGE:
+			  		  type==LightType.WARN? JOptionPane.WARNING_MESSAGE:
+				      type==LightType.GOOD_NEWS? JOptionPane.PLAIN_MESSAGE:
 						  				 JOptionPane.INFORMATION_MESSAGE;
 		
 		JOptionPane.showMessageDialog(_container, createMessage(light), title, optType);

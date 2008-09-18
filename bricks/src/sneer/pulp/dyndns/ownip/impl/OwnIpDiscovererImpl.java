@@ -92,7 +92,7 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 			turnOnErrorLight();
 			return;
 		}
-		lastLight  = _blinkingLights.turnOn(LightType.INFO, "Checked Ip: " + current, 10000);
+		lastLight  = _blinkingLights.turnOn(LightType.INFO, "Checked Ip: " + ip, 10000);
 		
 	}
 

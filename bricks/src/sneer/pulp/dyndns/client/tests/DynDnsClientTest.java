@@ -65,40 +65,6 @@ Unacceptable Client Behavior
 	final TransientPropertyStore _propertyStore = new TransientPropertyStore();
 	
 	@Test
-	public void testPersistState() throws Exception {
-		final IOException error = new IOException();
-		
-		_context.checking(new Expectations() {{
-			allowing(_ownIpDiscoverer).ownIp();
-				will(returnValue(_ownIp.output()));
-				
-			allowing(_ownAccountKeeper).ownAccount();
-				will(returnValue(_ownAccount.output()));
-				
-			final DynDnsAccount account = _ownAccount.output().currentValue();
-			exactly(1).of(updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
-				will(throwException(error));
-				
-			exactly(2).of(updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
-		}});
-		
-		Container container = newContainer();
-		Clock clock = container.produce(Clock.class);
-		container.produce(DynDnsClient.class);
-		
-		int retryTime = 300000;
-		
-		clock.advanceTime(retryTime);
-		clock.advanceTime(retryTime-1);
-		
-		container = newContainer(clock);
-		container.produce(DynDnsClient.class);
-
-		clock.advanceTime(1);
-		_context.assertIsSatisfied();
-	}
-
-	@Test
 	public void updateOnIpChange() throws Exception {
 		_context.checking(new Expectations() {{
 			exactly(2).of(_ownIpDiscoverer).ownIp();

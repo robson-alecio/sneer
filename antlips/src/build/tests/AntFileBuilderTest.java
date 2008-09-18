@@ -24,7 +24,7 @@ public class AntFileBuilderTest {
 	public void setup(){
 		_directory = new TransientDirectory();
 		_classpath = new DotClasspath(
-			Arrays.asList("spikes/src", "wheel/src"),
+			Arrays.asList(DotClasspath.entry("spikes/src"), DotClasspath.entry("wheel/src", "sneerAPI-bin")),
 			Arrays.asList("kernel/lib/asm-all-3.1.jar", "bricks/lib/bcprov-jdk16-139.jar"));
 	}
 	
@@ -36,7 +36,7 @@ public class AntFileBuilderTest {
 		final String subjectAntFileTemplate = getSubjectAntFile();
 		final String generated = _directory.contentsAsString("antlips.xml");
 		
-		compareLineByLine(generated, subjectAntFileTemplate);
+		compareLineByLine(subjectAntFileTemplate, generated);
 	}
 
 	@Test

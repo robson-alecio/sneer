@@ -26,7 +26,7 @@ public class DotClasspathToAntConverterTest {
 		Assert.assertEquals(
 				"lib bricks/lib/bcprov-jdk16-139.jar\n" +
 				"lib kernel/lib/asm-all-3.1.jar\n" +
-				"compile wheel/src\n" +
+				"compile wheel/src to sneerAPI-bin\n" +
 				"compile spikes/src",
 				fakeAntFileBuilder.getStatements());
 				

@@ -1,5 +1,7 @@
 package build.tests.environment;
 
+import org.apache.commons.lang.StringUtils;
+
 import build.antFileGenerator.AntFileBuilder;
 
 public class FakeAntFileBuilder implements AntFileBuilder {
@@ -20,9 +22,12 @@ public class FakeAntFileBuilder implements AntFileBuilder {
 	}
 
 	@Override
-	public void addCompileEntry(final String src) {
+	public void addCompileEntry(final String src, final String output) {
 		_statements.append("\n");
-		_statements.append("compile " + src );
+		_statements.append("compile " + src);
+		if (!StringUtils.isEmpty(output)) {
+			_statements.append(" to " + output);
+		}
 	}
 
 	@Override

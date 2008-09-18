@@ -24,14 +24,14 @@ public class DotClasspathToAntConverter {
 		for (final String lib : reversedCopy(classpath.getLibs()))
 			_antFileBuilder.addClasspathEntry(lib);
 		
-		for (final String src : reversedCopy(classpath.getSrcs()))
-			_antFileBuilder.addCompileEntry(src);
+		for (final DotClasspath.Entry entry: reversedCopy(classpath.getSrcs()))
+			_antFileBuilder.addCompileEntry(entry._src, entry._output);
 		
 		_antFileBuilder.build();
 	}
 
-	private ArrayList<String> reversedCopy(final List<String> collection) {
-		final ArrayList<String> libsReversed = new ArrayList<String>(collection);
+	private <T> ArrayList<T> reversedCopy(final List<T> collection) {
+		final ArrayList<T> libsReversed = new ArrayList<T>(collection);
 		Collections.reverse(libsReversed);
 		return libsReversed;
 	}

@@ -2,7 +2,7 @@
 
 <project name="AntBuild" default="compile">
 
-	<property name="build.dir" location="build" />
+	<property name="build.dir" location="bin" />
 
 	<path id="classpath">
 		<pathelement path="${build.dir}"/>

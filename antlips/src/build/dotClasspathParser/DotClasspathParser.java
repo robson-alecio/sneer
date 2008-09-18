@@ -15,15 +15,12 @@ public class DotClasspathParser {
 		Validate.notNull(classpathString, "classpathString was null");
 		Validate.notEmpty(classpathString, "classpathString was empty");
 
-		final List<String> sourcePaths = getSrcPaths(classpathString);
+		final List<DotClasspath.Entry> sourcePaths = getSrcPaths(classpathString);
 		final List<String> libs = getLibs(classpathString);
 		
 		final DotClasspath dotClassPath = new DotClasspath(sourcePaths, libs);
 
-		
-
 		return dotClassPath;
-
 	}
 
 	private static List<String> getLibs(final String classpathString) {
@@ -39,14 +36,15 @@ public class DotClasspathParser {
 
 	}
 
-	private static List<String> getSrcPaths(final String classpathString) {
-		final Pattern sourcePattern = Pattern.compile(".+classpathentry kind=\"src\"(.+)?(\\s)?path=\"(.+)\".+");
+	private static List<DotClasspath.Entry> getSrcPaths(final String classpathString) {
+		final Pattern sourcePattern = Pattern.compile(".+classpathentry kind=\"src\"(?:\\soutput=\"(.+)\")?(\\s)?path=\"(.+)\".+");
 		final Matcher matcher = sourcePattern.matcher(classpathString);
 
-		final List<String> sourcePaths = new ArrayList<String>();
+		final List<DotClasspath.Entry> sourcePaths = new ArrayList<DotClasspath.Entry>();
 		while (matcher.find()){
+			final String outputPath = matcher.group(1);
 			final String srcPath = matcher.group(3);
-			sourcePaths .add(srcPath);
+			sourcePaths.add(DotClasspath.entry(srcPath, outputPath));
 		}
 		return sourcePaths;
 	}

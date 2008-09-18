@@ -2,7 +2,7 @@
 
 <project name="AntBuild" default="compile">
 
-	<property name="build.dir" location="build" />
+	<property name="build.dir" location="bin" />
 
 	<path id="classpath">
 		<pathelement path="${build.dir}"/>
@@ -13,7 +13,7 @@
 	<target name="compile" depends='copyResources'>
 		<mkdir dir="${build.dir}"/>
 		<javac srcdir="wheel/src"
-				destdir="${build.dir}"
+				destdir="sneerAPI-bin"
 				listfiles="true"
 				failonerror="true"
 				debug="on"

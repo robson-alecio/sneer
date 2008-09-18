@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 
 import wheel.io.files.Directory;
+import wheel.lang.Pair;
 
 public class AntFileBuilderToFilesystem implements AntFileBuilder {
 
@@ -15,7 +17,7 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 	
 	private static final String BUILD_DIR_PROPERTY = "build.dir";
 	private final List<String> _libs = new ArrayList<String>();
-	private final List<String> _srcs = new ArrayList<String>();
+	private final List<Pair<String, String>> _srcs = new ArrayList<Pair<String, String>>();
 	private final Directory _directory;
 	private final boolean _compileSourceFoldersTogether;
 
@@ -34,8 +36,8 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 	}
 
 	@Override
-	public void addCompileEntry(final String src) {
-		_srcs.add(src);
+	public void addCompileEntry(final String src, final String output) {
+		_srcs.add(Pair.pair(src, output));
 	}
 
 	@Override
@@ -67,7 +69,7 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 		builder.append(("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n" +
 		"<project name=\"AntBuild\" default=\"compile\">\n" +
 		"\n"));
-		builder.append("\t<property name=\"" + BUILD_DIR_PROPERTY + "\" location=\"build\" />\n\n");
+		builder.append("\t<property name=\"" + BUILD_DIR_PROPERTY + "\" location=\"bin\" />\n\n");
 		builder.append("\t<path id=\"classpath\">\n");
 		builder.append("\t\t<pathelement path=\"${" + BUILD_DIR_PROPERTY + "}\"/>\n");
 		for (final String lib : _libs)
@@ -96,9 +98,9 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 
 	private void appendFileSetsToCopy(StringBuilder builder) {
 		
-		for (String src : _srcs) {
+		for (Pair<String, String> src : _srcs) {
 			builder
-			.append("\t\t\t<fileset dir='").append(src).append("'>\n")
+			.append("\t\t\t<fileset dir='").append(src._a).append("'>\n")
 			.append("\t\t\t\t<include name='**/**'/>\n")
 			.append("\t\t\t\t<exclude name='**/*.java'/>\n")
 			.append("\t\t\t</fileset>\n");
@@ -125,8 +127,8 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 					"\t\t\t\tencoding=\"utf-8\"\n" +
 					"\t\t>\n");
 		
-		for (final String src : _srcs){
-			builder.append("\t\t\t<src path=\"" + src + "\"/>\n");		      
+		for (final Pair<String, String> src : _srcs){
+			builder.append("\t\t\t<src path=\"" + src._a + "\"/>\n");		      
 		}
 		
 		builder.append("\t\t\t<classpath refid=\"classpath\"/>\n" +
@@ -136,10 +138,13 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 
 	private String getJavacCallsWithSeparateSourceFolders() {
 		StringBuilder builder = new StringBuilder();
-		for (final String src : _srcs){
+		for (final Pair<String, String> src : _srcs){
+			final String destdir = StringUtils.isEmpty(src._b)
+				? "${" + BUILD_DIR_PROPERTY + "}"
+				: src._b;
 			builder.append(	
-					"\t\t<javac srcdir=\""+ src +"\"\n"+
-						"\t\t\t\tdestdir=\"${" + BUILD_DIR_PROPERTY + "}\"\n" +
+					"\t\t<javac srcdir=\""+ src._a +"\"\n"+
+						"\t\t\t\tdestdir=\"" + destdir + "\"\n" +
 						"\t\t\t\tlistfiles=\"true\"\n" +
 						"\t\t\t\tfailonerror=\"true\"\n" +
 						"\t\t\t\tdebug=\"on\"\n" +

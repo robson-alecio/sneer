@@ -88,7 +88,7 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 		_store.set(LAST_IP_KEY, ip);
 		_ownIp.setter().consume(ip);
 
-		if(current==null){
+		if(ip==null){
 			turnOnErrorLight();
 			return;
 		}

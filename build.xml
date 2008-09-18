@@ -56,8 +56,8 @@
 	
 	<target name="clover-report" depends="init-clover, test-execution">
 		
-		<fileset dir="${build.dir}" id="clover.sources">
-			<include name="**/*.java" />
+		<fileset dir="." id="clover.sources">
+			<include name="*/src/**/*.java" />
 			<exclude name="spikes/**" />
 		</fileset>
 		

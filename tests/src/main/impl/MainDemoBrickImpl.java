@@ -10,6 +10,7 @@ import sneer.pulp.connection.SocketOriginator;
 import sneer.pulp.connection.SocketReceiver;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
+import sneer.pulp.dyndns.client.DynDnsClient;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccount;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
@@ -42,9 +43,8 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	@Inject	@SuppressWarnings("unused")
 	private static ClockTicker _ticker;
 
-//Commented to avoid calling checkIp too often while persistence isnt ready.
-//	@Inject	@SuppressWarnings("unused")
-//	private static DynDnsClient _dynDns;
+	@Inject	@SuppressWarnings("unused")
+	private static DynDnsClient _dynDns;
 
 	@Inject
 	private static DynDnsAccountKeeper _dynDnsAccountKeeper;

@@ -32,19 +32,19 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	@Inject
 	static private BlinkingLights _blinkingLights;
 	
-	private final Register<String> _ownIp = new RegisterImpl<String>(null);
+	private final Register<String> _ownIp;
 
 	private Light lastLight = null;
 	
 	private OwnIpDiscovererImpl() {
-		restoreLastRecordIp();
+		_ownIp = new RegisterImpl<String>(restoreIp());
 		initAlarm();
 	}
 
-	private void restoreLastRecordIp() {
-		String current = _store.get(LAST_IP_KEY);
-		_ownIp.setter().consume(current);
-		lastLight  = _blinkingLights.turnOn(LightType.INFO, "Stored Ip: " + current, 10000);
+	private String restoreIp() {
+		String result = _store.get(LAST_IP_KEY);
+		lastLight  = _blinkingLights.turnOn(LightType.INFO, "Own Ip Restored: " + result, 10000);
+		return result;
 	}
 
 	private void tryIpDiscovery() {

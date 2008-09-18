@@ -33,9 +33,7 @@ public class SocketAccepterTest extends TestThatIsInjected {
 		return new Object[]{ new InMemoryNetwork() };
 	}
 
-
-
-	@Test //(timeout=3000)
+	@Test(timeout=5000)
 	public void testSocketAccept() throws Exception {
 		_portKeeper.portSetter().consume(9090);
 

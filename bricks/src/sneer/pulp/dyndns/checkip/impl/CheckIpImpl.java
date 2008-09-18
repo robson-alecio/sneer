@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import sneer.kernel.container.Container;
-import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.Inject;
 import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.httpclient.HttpClient;
@@ -38,9 +36,4 @@ class CheckIpImpl implements CheckIp {
 		return _client.get("http://checkip.dyndns.org/");
 	}
 	
-	public static void main(String[] args) throws Exception {
-		final Container container = ContainerUtils.newContainer();
-		final CheckIp client = container.produce(CheckIp.class);
-		System.out.println(client.check());
-	}
 }

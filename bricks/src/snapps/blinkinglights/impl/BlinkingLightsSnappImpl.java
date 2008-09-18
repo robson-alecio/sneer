@@ -116,7 +116,8 @@ class BlinkingLightsSnappImpl implements BlinkingLightsSnapp {
 	private void initMouseListener() {
 		_lightsList.getComponent().addMouseListener(new MouseAdapter(){ @Override public void mouseReleased(final MouseEvent event) {
 			Light light = getClickedLight(event);
-			showMessage(light);
+			if(light!=null)
+				showMessage(light);
 		}
 		
 		private Light getClickedLight(final MouseEvent event) {

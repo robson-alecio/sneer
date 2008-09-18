@@ -47,6 +47,8 @@ public class OwnIpDiscovererTest {
 			one(checkip).check(); will(returnValue(ip2)); inSequence(seq);
 			one(receiver).consume(ip2); inSequence(seq);
 			
+			one(checkip).check(); will(returnValue(ip2)); inSequence(seq);
+
 		}});
 		
 		final Container container = ContainerUtils.newContainer(checkip, store);

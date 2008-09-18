@@ -6,6 +6,8 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -62,10 +64,8 @@ Unacceptable Client Behavior
 	final Updater updater = _context.mock(Updater.class);
 	final TransientPropertyStore _propertyStore = new TransientPropertyStore();
 	
-	
 	@Test
 	public void testPersistState() throws Exception {
-	
 		final IOException error = new IOException();
 		
 		_context.checking(new Expectations() {{
@@ -79,7 +79,7 @@ Unacceptable Client Behavior
 			exactly(1).of(updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
 				will(throwException(error));
 				
-			allowing(updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
+			exactly(2).of(updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
 		}});
 		
 		Container container = newContainer();
@@ -91,21 +91,11 @@ Unacceptable Client Behavior
 		clock.advanceTime(retryTime);
 		clock.advanceTime(retryTime-1);
 		
-		final long storeClockTime = clock.time();
-		
-		container = newContainer();
-		clock = container.produce(Clock.class);
-
-		clock.advanceTimeTo(storeClockTime);
+		container = newContainer(clock);
 		container.produce(DynDnsClient.class);
 
-		final ListSignal<Light> lights = container.produce(BlinkingLights.class).lights();
-		assertEquals(1, lights.currentSize());
-		final Light light = lights.currentGet(0);
-
-		assertTrue(light.isOn());
 		clock.advanceTime(1);
-		assertFalse(light.isOn());
+		_context.assertIsSatisfied();
 	}
 
 	@Test
@@ -207,8 +197,17 @@ Unacceptable Client Behavior
 		return container;
 	}
 
-	private Container newContainer() {
-		return ContainerUtils.newContainer(_ownIpDiscoverer, _ownAccountKeeper, updater, _propertyStore);
+	private Container newContainer(Object...mocks) {
+		List<Object> list = new ArrayList<Object>();
+		for (Object mock : mocks) {
+			list.add(mock);
+		}
+		list.add(_ownIpDiscoverer);
+		list.add(_ownAccountKeeper);
+		list.add(updater);
+		list.add(_propertyStore);
+		
+		return ContainerUtils.newContainer(list.toArray());
 	}
 	
 

@@ -23,7 +23,7 @@ public class OwnIpDiscovererTest {
 	final Mockery _context = new JUnit4Mockery();
 	
 	@Test
-	public void testFirstTime() throws IOException {
+	public void testDiscovery() throws IOException {
 		
 		final CheckIp checkip = _context.mock(CheckIp.class);
 		final Omnivore<String> receiver = _context.mock(Omnivore.class);
@@ -37,8 +37,6 @@ public class OwnIpDiscovererTest {
 		_context.checking(new Expectations() {{
 			final Sequence seq = _context.sequence("sequence");
 
-			one(receiver).consume(null); inSequence(seq);
-			
 			one(checkip).check(); will(returnValue(ip1)); inSequence(seq);
 			one(receiver).consume(ip1); inSequence(seq);
 			
@@ -60,8 +58,9 @@ public class OwnIpDiscovererTest {
 		}};
 		
 		Clock clock = container.produce(Clock.class);
-		clock.advanceTime(1);
-		clock.advanceTime(retryTime * 3);
+		clock.advanceTime(retryTime);
+		clock.advanceTime(retryTime);
+		clock.advanceTime(retryTime);
 		
 		_context.assertIsSatisfied();
 	}

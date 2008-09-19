@@ -38,7 +38,7 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	
 	private OwnIpDiscovererImpl() {
 		_ownIp = new RegisterImpl<String>(restoreIp());
-		initAlarm();
+		scheduleNextDiscovery();
 	}
 
 	private String restoreIp() {
@@ -55,30 +55,24 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 		}
 	}
 
-	private void initAlarm() {
-		int newAlarm = 0;
-		if(_store.containsKey(LAST_CHECK_TIME_KEY)){
-			long lastCheckedTime = Long.parseLong(_store.get(LAST_CHECK_TIME_KEY));
-			newAlarm = (int)(lastCheckedTime + retryTimeMillis() -_clock.time());
-		}
-		
-		_clock.addAlarm(newAlarm, new Runnable() { @Override public void run() {
+	private void scheduleNextDiscovery() {
+		_clock.wakeUpNoEarlierThan(timeForNextDiscovery(), new Runnable() { @Override public void run() {
 			tryIpDiscovery();
-			addPeriodicAlarm();
+			scheduleNextDiscovery();
 		}});
 	}
 
-	private void addPeriodicAlarm() {
-		_clock.addPeriodicAlarm(retryTimeMillis(), new Runnable() { @Override public void run() {
-			tryIpDiscovery();
-		}});
+	private long timeForNextDiscovery() {
+		return _store.containsKey(LAST_CHECK_TIME_KEY)
+			? Long.parseLong(_store.get(LAST_CHECK_TIME_KEY)) + retryTimeMillis()
+			: 0;
 	}
-	
+
 	protected void ipDiscovery() throws IOException {
 		turnOffLastLight();
-		
+
 		_store.set(LAST_CHECK_TIME_KEY, "" + _clock.time());
-		
+
 		final String ip = _checkip.check();
 		final String current = _store.get(LAST_IP_KEY);
 		

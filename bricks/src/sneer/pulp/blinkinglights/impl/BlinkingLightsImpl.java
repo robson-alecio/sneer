@@ -55,7 +55,7 @@ class BlinkingLightsImpl implements BlinkingLights {
 	}
 	
 	private void turnOffIn(final Light light, int millisFromNow) {
-		_clock.addAlarm(millisFromNow, new Runnable() { @Override public void run() {
+		_clock.wakeUpInAtLeast(millisFromNow, new Runnable() { @Override public void run() {
 			turnOff(light);	
 		}});
 	}

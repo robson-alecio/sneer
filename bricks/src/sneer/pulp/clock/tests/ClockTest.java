@@ -16,16 +16,17 @@ public class ClockTest extends TestThatIsInjected {
 
 	@Inject
 	static private Clock _subject;
+	private StringBuilder _events = new StringBuilder();
 	
 	@Test
 	public void testAlarms() throws Exception {
 		final List<Integer> _order = new ArrayList<Integer>();
 		
-		_subject.addAlarm(50, new MyRunnable(50, _order));
-		_subject.addPeriodicAlarm(20, new MyRunnable(20, _order));
-		_subject.addAlarm(10, new MyRunnable(10, _order));
-		_subject.addPeriodicAlarm(35, new MyRunnable(35, _order));
-		_subject.addAlarm(30, new MyRunnable(30,_order));
+		_subject.wakeUpInAtLeast(50, new MyRunnable(50, _order));
+		_subject.wakeUpEvery(20, new MyRunnable(20, _order));
+		_subject.wakeUpInAtLeast(10, new MyRunnable(10, _order));
+		_subject.wakeUpEvery(35, new MyRunnable(35, _order));
+		_subject.wakeUpInAtLeast(30, new MyRunnable(30,_order));
 		
 		_subject.advanceTime(81);
 		assertEquals(81, _subject.time());
@@ -55,4 +56,26 @@ public class ClockTest extends TestThatIsInjected {
 			_order.add(_timeout * _count);
 		}
 	}
+	
+	@Test
+	public void testAlarmThatAddsAlarm() throws Exception {
+		_subject.wakeUpInAtLeast(1, new Runnable(){ @Override public void run() {
+			_events.append("first");
+			_subject.wakeUpInAtLeast(1, new Runnable(){ @Override public void run() {
+				_events.append("second");
+			}});
+		}});
+		
+		_subject.advanceTime(2);
+		assertEvents("first");
+
+		_subject.advanceTime(1);
+		assertEvents("second");
+	}
+
+	private void assertEvents(String expected) {
+		assertEquals(expected, _events.toString());
+		_events = new StringBuilder();
+	}
+
 }

@@ -12,22 +12,31 @@ class ClockImpl implements Clock {
 	
 	final SortedSet<Alarm> _alarms = new TreeSet<Alarm>();
 	
-	
 	@Override
-	synchronized public void addAlarm(int millisFromCurrentTime, Runnable runnable) {
+	synchronized public void wakeUpNoEarlierThan(long timeToWakeUp, Runnable runnable) {
+		int millisFromNow = timeToWakeUp <= _currentTimeMillis
+			? 0
+			: (int)(timeToWakeUp - _currentTimeMillis);
+		wakeUpInAtLeast(millisFromNow, runnable);
+	}
+
+	@Override
+	synchronized public void wakeUpInAtLeast(int millisFromCurrentTime, Runnable runnable) {
 		_alarms.add(new Alarm(runnable, millisFromCurrentTime, false));
+		wakeUpAlarmsIfNecessary();
 	}
 
 	@Override
-	synchronized public void addPeriodicAlarm(int millisFromCurrentTime, Runnable runnable) {
+	synchronized public void wakeUpEvery(int millisFromCurrentTime, Runnable runnable) {
 		_alarms.add(new Alarm(runnable, millisFromCurrentTime, true));
+		wakeUpAlarmsIfNecessary();
 	}
 
 	@Override
-	public void sleep(int millis) {
+	public void sleepAtLeast(int millis) {
 		Runnable notifier = createNotifier();
 		synchronized (notifier) {
-			addAlarm(millis, notifier);
+			wakeUpInAtLeast(millis, notifier);
 			Threads.waitWithoutInterruptions(notifier);
 		}
 	}
@@ -66,29 +75,29 @@ class ClockImpl implements Clock {
 
 	private class Alarm implements Comparable<Alarm>{
 		
-		final int _period;
+		final int _minimumPeriod;
 		
 		long _wakeUpTime;
 		final Runnable _runnable;
 
 		Alarm(Runnable runnable, int millisFromNow, boolean isPeriodic) {
-			_period = isPeriodic ? millisFromNow : 0;
+			if (millisFromNow < 0) throw new IllegalArgumentException();
+			_minimumPeriod = isPeriodic ? millisFromNow : 0;
 			_wakeUpTime = _currentTimeMillis + millisFromNow;
 			_runnable = runnable;
 		}
 		
 		void wakeUp() {
+			_alarms.remove(this);
 			_runnable.run();
 
-			_alarms.remove(this);
-
 			if (!isPeriodic()) return;
-			_wakeUpTime = _wakeUpTime + _period;
+			_wakeUpTime = _currentTimeMillis + _minimumPeriod;
 			_alarms.add(this);
 		}
 
 		public boolean isPeriodic() {
-			return _period>0;
+			return _minimumPeriod>0;
 		}
 
 		boolean isTimeToWakeUp() {

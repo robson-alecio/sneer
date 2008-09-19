@@ -70,7 +70,7 @@ class OutgoingAttempt {
 				}
 			}
 
-			_clock.sleep(1000 * 20);
+			_clock.sleepAtLeast(1000 * 20);
 		}
 	}
 

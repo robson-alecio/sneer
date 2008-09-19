@@ -177,7 +177,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		}
 
 		private void addAlarm(long millisFromNow) {
-			_clock.addAlarm((int)millisFromNow, new Runnable() { @Override public void run() {
+			_clock.wakeUpInAtLeast((int)millisFromNow, new Runnable() { @Override public void run() {
 				synchronized (_stateMonitor) {
 					_state = _state.reactToAlarm();
 				}

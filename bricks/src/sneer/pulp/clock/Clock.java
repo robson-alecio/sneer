@@ -5,10 +5,11 @@ public interface Clock {
 	
 	long time();
 
-	void sleep(int millis);
+	void sleepAtLeast(int millis);
 
-	void addAlarm(int millisFromCurrentTime, Runnable runnable);
-	void addPeriodicAlarm(int periodInMillisFromCurrentTime, Runnable runnable);
+	void wakeUpNoEarlierThan(long timeToWakeUp, Runnable runnable);
+	void wakeUpInAtLeast(int millisFromNow, Runnable runnable);
+	void wakeUpEvery(int minimumPeriodInMillis, Runnable runnable);
 
 	void advanceTime(int deltaMillis);
 	void advanceTimeTo(long absoluteTimeMillis);

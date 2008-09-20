@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.util.Arrays;
 import java.util.Date;
 
 import org.apache.commons.io.output.NullOutputStream;
@@ -73,8 +72,20 @@ public class Logger {
 
 	
 	/** Example: inline("User {} is not allowed to access the {} report.", "Peter", "TPS") returns: "User Peter is not allowed to access the TPS report." */
-	private static String inline(String message, Object... messageInsets) {
-		return message + " " + Arrays.toString(messageInsets);
+	private static String inline(String message, Object... insets) {
+		String result = "";
+		String[] parts = message.split("\\{\\}");
+		int i = 0;
+		while (true) {
+			if (i == parts.length) break;
+			result += parts[i];
+			
+			if (i == insets.length) break;
+			result += insets[i];
+			
+			i++;
+		}
+		return result;
 	}
 
 

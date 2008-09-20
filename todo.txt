@@ -1,6 +1,7 @@
 ﻿MAIN ROADMAP
 ===================
-	- [Rodrigo helping Kalecser] Fix the Hudson build.
+	- [Rodrigo and Kalecser] Fix the Hudson build.
+	- [Sandro] Introduce yourself on the sneercoders group.
 	- Rudimentary Logging
 		- Logger.inline(String message, Object... messageInsets) - implement properly
 	---------------------------------- FIRST DOGFOOD RELEASE - Anelise can start testing for real. All bugs she finds get fixed immediately. Improvement suggestions are added to this todo list.

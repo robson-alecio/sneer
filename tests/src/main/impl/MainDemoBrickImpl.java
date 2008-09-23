@@ -99,6 +99,7 @@ class MainDemoBrickImpl implements MainDemoBrick {
 			new ContactInfo("Bamboo", "rodrigobamboo.dyndns.org", 5923),
 			new ContactInfo("Bihaiko", "bihaiko.dyndns.org", 5923),
 			new ContactInfo("Daniel", "dfcsantos.homelinux.com"),
+			new ContactInfo("Douglas", "dtgiacomini.dyndns.com", 5923),
 			new ContactInfo("Klaus", "klausw.selfip.net", 5923),
 			new ContactInfo("Klaus", "200.169.90.89", 5923),
 			new ContactInfo("Nell", "anelisedaux.dyndns.org", 5924),

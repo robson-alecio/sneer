@@ -76,6 +76,7 @@
     	- Public Files
 	- Brick
 		- Uninstall
+			auditing
 		- Update
 	- Kernel Update
 		- Auto Update
@@ -93,7 +94,8 @@
 	- Revise project structure - sourcefolders, package names, build.xml, etc
 	---------------------------------- DEVELOPER COMMUNITY BETA RELEASE
 	
-	- Public Forums
+	- Public Forums/Blog/Fotolog?
+		- Rich text?
 	- TopTen
 	- Annotations/Comments/Tags
 	- Synonyms
@@ -124,7 +126,8 @@
 	- Secure Channel-Crypto
 	- Persistence-Crypto
 	- Simple CPU Sharing
-	- Multiple Look-N-Feels
+	- Appearance (Visual Identity)
+		- Multiple Look-N-Feels
 		- Napkin Default Look-N-Feel
 	---------------------------------- MAJOR PUBLIC RELEASE (2.0)
 	
@@ -163,6 +166,27 @@
 
 [END OF OFFICIAL TODO LIST]
 
+
+
+CONTAINER STUFF
+	- Concurrency
+		- Brick Types:
+			- Synchronized (Default) - "Must" return "instantly". See "Natural Selection". 
+			- @FreeThreaded
+		- "Natural Selection" - Community decides who lives.
+			- Stats - Provide users with stats about brick responsiveness.
+			- Kill - Allow users to kill unresponsive bricks 
+		- Swing
+			- Gui bricks (Snapps) are always called in their (can there be more than one?) Swing thread, so they can operate freely on the gui.
+			- Can only reference Synchronized bricks.
+
+	- Persistence
+		- Brick Types:
+			- Persistent (@Model)
+				- implies Synchronized
+				- Can only reference @Model bricks
+				- Transaction Log for all incoming calls
+			- Transient (default)
 
 
 

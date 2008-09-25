@@ -11,8 +11,8 @@ import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.skin.dashboard.Dashboard;
-import sneer.skin.snappmanager.SnappManager;
-import sneer.skin.viewmanager.Snapp;
+import sneer.skin.snappmanager.Instrument;
+import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 
 public class ContactsSnappDemo  {
@@ -34,24 +34,24 @@ public class ContactsSnappDemo  {
 		manager.addContact("Bamboo");
 		Contact contact = manager.addContact("Nell");
 		
-		SnappManager snapps = container.produce(SnappManager.class);
+		InstrumentManager snapps = container.produce(InstrumentManager.class);
 		new NicknameDemo(rfactory, snapps, contact, manager);
 	}
 }
 
-class NicknameDemo implements Snapp{
+class NicknameDemo implements Instrument{
 
 	private final ReactiveWidgetFactory _rfactory;
-	private final SnappManager _snapps;
+	private final InstrumentManager _snapps;
 	private final Contact _test;
 	private final ContactManager _manager;
 
-	public NicknameDemo(ReactiveWidgetFactory rfactory, SnappManager snapps, Contact test, ContactManager manager) {
+	public NicknameDemo(ReactiveWidgetFactory rfactory, InstrumentManager snapps, Contact test, ContactManager manager) {
 		_rfactory = rfactory;
 		_snapps = snapps;
 		_test = test;
 		_manager = manager;
-		_snapps.registerSnapp(this);
+		_snapps.registerInstrument(this);
 	}
 
 	@Override

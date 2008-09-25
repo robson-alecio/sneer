@@ -23,12 +23,12 @@ import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.skin.dashboard.Dashboard;
-import sneer.skin.dashboard.SnappFrame;
+import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.image.DefaultIcons;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.main_Menu.MainMenu;
-import sneer.skin.snappmanager.SnappManager;
-import sneer.skin.viewmanager.Snapp;
+import sneer.skin.snappmanager.Instrument;
+import sneer.skin.snappmanager.InstrumentManager;
 import wheel.graphics.Images;
 import wheel.io.ui.action.Action;
 import wheel.io.ui.impl.TrayIconImpl;
@@ -54,7 +54,7 @@ class DashboardImpl implements Dashboard, Runnable {
 	static private OwnNameKeeper _ownNameKeeper;
 		
 	@Inject
-	static private SnappManager _snappManager;
+	static private InstrumentManager _snappManager;
 
 	@Inject
 	private BlinkingLights _blinkingLights;
@@ -72,7 +72,7 @@ class DashboardImpl implements Dashboard, Runnable {
 	private transient JPanel contentPanel;
 	
 	@SuppressWarnings("unused")
-	private SimpleListReceiver<Snapp> _snappsReceiver;
+	private SimpleListReceiver<Instrument> _snappsReceiver;
 	
 	public DashboardImpl() {
 		threadPool.registerActor(this);
@@ -105,20 +105,20 @@ class DashboardImpl implements Dashboard, Runnable {
 	}
 
 	private void addSnappManagerReceiver() {
-		_snappsReceiver = new SimpleListReceiver<Snapp>(_snappManager.installedSnapps()){
+		_snappsReceiver = new SimpleListReceiver<Instrument>(_snappManager.installedInstruments()){
 
 			@Override
-			protected void elementAdded(Snapp newElement) {
+			protected void elementAdded(Instrument newElement) {
 				installSnapp(newElement);
 			}
 
 			@Override
-			protected void elementPresent(Snapp element) {
+			protected void elementPresent(Instrument element) {
 				installSnapp(element);
 			}
 
 			@Override
-			protected void elementToBeRemoved(Snapp element) {
+			protected void elementToBeRemoved(Instrument element) {
 				throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 			}};
 	}
@@ -151,8 +151,8 @@ class DashboardImpl implements Dashboard, Runnable {
 		updateTitle();
 	}
 
-	private SnappFrame installSnapp(final Snapp snapp) {
-		final SnappFrameImpl sf = new SnappFrameImpl();
+	private InstrumentWindow installSnapp(final Instrument snapp) {
+		final InstrumentWindowImpl sf = new InstrumentWindowImpl();
 		SwingUtilities.invokeLater(
 			new Runnable(){
 				@Override
@@ -253,19 +253,19 @@ class DashboardImpl implements Dashboard, Runnable {
 	
 	
 	@Override
-	public void moveSnapp(int index, SnappFrame frame) {
+	public void moveSnapp(int index, InstrumentWindow frame) {
 		contentPanel.remove(frame.getContent());
 		contentPanel.add(frame.getContent(), index);
 	}
 
 	@Override
-	public void moveSnappDown(SnappFrame frame) {
+	public void moveSnappDown(InstrumentWindow frame) {
 		contentPanel.remove(frame.getContent());
 		contentPanel.add(frame.getContent(), 0);
 	}
 
 	@Override
-	public void moveSnappUp(SnappFrame frame) {
+	public void moveSnappUp(InstrumentWindow frame) {
 		contentPanel.remove(frame.getContent());
 		contentPanel.add(frame.getContent());
 	}

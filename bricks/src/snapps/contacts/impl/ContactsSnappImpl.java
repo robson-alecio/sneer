@@ -14,7 +14,7 @@ import sneer.kernel.container.Inject;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
-import sneer.skin.snappmanager.SnappManager;
+import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
@@ -29,7 +29,7 @@ class ContactsSnappImpl implements ContactsSnapp {
 	private static final Image OFFLINE = getImage("offline.png");
 	
 	@Inject
-	static private SnappManager _snapps;
+	static private InstrumentManager _snapps;
 
 	@Inject
 	static private ContactManager _contacts;
@@ -43,7 +43,7 @@ class ContactsSnappImpl implements ContactsSnapp {
 	private ListWidget<Contact> _contactList;
 	
 	public ContactsSnappImpl(){
-		_snapps.registerSnapp(this);
+		_snapps.registerInstrument(this);
 	} 
 
 	private static Image getImage(String fileName) {

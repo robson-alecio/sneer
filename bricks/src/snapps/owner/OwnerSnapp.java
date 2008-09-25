@@ -1,8 +1,8 @@
 package snapps.owner;
 
-import sneer.skin.viewmanager.Snapp;
+import sneer.skin.snappmanager.Instrument;
 
-public interface OwnerSnapp extends Snapp {
+public interface OwnerSnapp extends Instrument {
 
 
 }

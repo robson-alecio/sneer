@@ -2,6 +2,8 @@
 ===================
 	- [Rodrigo and Kalecser] Fix the Hudson build.
 	- [Sandro] Introduce yourself on the sneercoders group.
+	- [Sandro] "Snapp" - Rename to "Instrument" when refering to gui windows
+	- Snapps - Move to respective .gui subpackage in the pulp except for Wind.
 	- Rudimentary Logging
 		- Logger.inline(String message, Object... messageInsets) - implement properly
 	---------------------------------- FIRST DOGFOOD RELEASE - Anelise can start testing for real. All bugs she finds get fixed immediately. Improvement suggestions are added to this todo list.

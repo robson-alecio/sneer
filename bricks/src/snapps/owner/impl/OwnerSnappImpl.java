@@ -17,7 +17,7 @@ import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.own.tagline.OwnTaglineKeeper;
 import sneer.skin.imgselector.ImageSelector;
-import sneer.skin.snappmanager.SnappManager;
+import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
@@ -34,7 +34,7 @@ class OwnerSnappImpl implements OwnerSnapp {
 	static private OwnAvatarKeeper _ownAvatarKeeper;
 
 	@Inject
-	static private SnappManager _snappManager;
+	static private InstrumentManager _snappManager;
 
 	@Inject
 	static private ImageSelector _imageSelector;
@@ -47,7 +47,7 @@ class OwnerSnappImpl implements OwnerSnapp {
 	private Container _container;
 
 	public OwnerSnappImpl(){
-		_snappManager.registerSnapp(this);
+		_snappManager.registerInstrument(this);
 	}
 	
 	@Override

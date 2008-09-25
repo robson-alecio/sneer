@@ -20,7 +20,7 @@ import sneer.kernel.container.Inject;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
-import sneer.skin.snappmanager.SnappManager;
+import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
@@ -31,7 +31,7 @@ import wheel.reactive.impl.Constant;
 class WindSnappImpl implements WindSnapp {
 	
 	@Inject
-	static private SnappManager _snapps;
+	static private InstrumentManager _snapps;
 
 	@Inject
 	static private BlinkingLights _blinkingLights;
@@ -52,7 +52,7 @@ class WindSnappImpl implements WindSnapp {
 	}
 	
 	public WindSnappImpl(){
-		_snapps.registerSnapp(this);
+		_snapps.registerInstrument(this);
 	} 
 	
 	private static Image loadImage(String fileName) {

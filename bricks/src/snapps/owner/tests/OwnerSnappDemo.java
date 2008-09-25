@@ -8,8 +8,8 @@ import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.own.tagline.OwnTaglineKeeper;
 import sneer.skin.dashboard.Dashboard;
-import sneer.skin.snappmanager.SnappManager;
-import sneer.skin.viewmanager.Snapp;
+import sneer.skin.snappmanager.Instrument;
+import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
@@ -30,7 +30,7 @@ public class OwnerSnappDemo  {
 		
 		container.produce(OwnerSnapp.class);
 		
-		SnappManager manager = container.produce(SnappManager.class);
+		InstrumentManager manager = container.produce(InstrumentManager.class);
 		new OwnerSnappDemoSnapp(rfactory, ownNameKeeper.name(), ownNameKeeper.nameSetter(), manager);
 		new OwnerSnappDemoSnapp(rfactory, ownTaglineKeeper.tagline(), ownTaglineKeeper.taglineSetter(), manager);
 		
@@ -38,17 +38,17 @@ public class OwnerSnappDemo  {
 	}
 }
 
-class OwnerSnappDemoSnapp implements Snapp{
+class OwnerSnappDemoSnapp implements Instrument{
 
 	private final ReactiveWidgetFactory _rfactory;
 	private final Signal<String> _output;
 	private final Omnivore<String> _setter;
 	
-	public OwnerSnappDemoSnapp(ReactiveWidgetFactory rfactory, Signal<String> output,	Omnivore<String> setter, SnappManager manager) {
+	public OwnerSnappDemoSnapp(ReactiveWidgetFactory rfactory, Signal<String> output,	Omnivore<String> setter, InstrumentManager manager) {
 		_rfactory = rfactory;
 		_output = output;
 		_setter = setter;
-		manager.registerSnapp(this);
+		manager.registerInstrument(this);
 	}
 
 	@Override

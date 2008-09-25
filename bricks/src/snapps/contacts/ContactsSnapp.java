@@ -1,8 +1,8 @@
 package snapps.contacts;
 
-import sneer.skin.viewmanager.Snapp;
+import sneer.skin.snappmanager.Instrument;
 
-public interface ContactsSnapp extends Snapp {
+public interface ContactsSnapp extends Instrument {
 
 
 }

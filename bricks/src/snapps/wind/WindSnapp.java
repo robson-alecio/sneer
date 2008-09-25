@@ -1,8 +1,8 @@
 package snapps.wind;
 
 import sneer.kernel.container.Brick;
-import sneer.skin.viewmanager.Snapp;
+import sneer.skin.snappmanager.Instrument;
 
-public interface WindSnapp extends Brick, Snapp {
+public interface WindSnapp extends Brick, Instrument {
 
 }

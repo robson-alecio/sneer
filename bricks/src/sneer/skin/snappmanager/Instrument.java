@@ -1,8 +1,8 @@
-package sneer.skin.viewmanager;
+package sneer.skin.snappmanager;
 
 import java.awt.Container;
 
-public interface Snapp {
+public interface Instrument {
 
 	void init(Container container);
 

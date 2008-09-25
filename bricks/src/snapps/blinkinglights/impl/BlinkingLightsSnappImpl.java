@@ -22,7 +22,7 @@ import sneer.kernel.container.Inject;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
-import sneer.skin.snappmanager.SnappManager;
+import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
@@ -33,7 +33,7 @@ import wheel.reactive.impl.Constant;
 class BlinkingLightsSnappImpl implements BlinkingLightsSnapp {
 	
 	@Inject
-	static private SnappManager _snapps;
+	static private InstrumentManager _snapps;
 
 	@Inject
 	static private BlinkingLights _blinkingLights;
@@ -54,7 +54,7 @@ class BlinkingLightsSnappImpl implements BlinkingLightsSnapp {
 	}
 	
 	public BlinkingLightsSnappImpl(){
-		_snapps.registerSnapp(this);
+		_snapps.registerInstrument(this);
 	} 
 	
 	private static Image loadImage(String fileName) {

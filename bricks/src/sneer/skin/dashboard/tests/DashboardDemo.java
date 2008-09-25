@@ -12,8 +12,8 @@ import javax.swing.JTextArea;
 
 import sneer.kernel.container.ContainerUtils;
 import sneer.skin.dashboard.Dashboard;
-import sneer.skin.snappmanager.SnappManager;
-import sneer.skin.viewmanager.Snapp;
+import sneer.skin.snappmanager.Instrument;
+import sneer.skin.snappmanager.InstrumentManager;
 import wheel.lang.Threads;
 
 public class DashboardDemo  {
@@ -21,22 +21,22 @@ public class DashboardDemo  {
 	public static void main(String[] args) throws Exception {
 		sneer.kernel.container.Container container = ContainerUtils.getContainer();
 
-		SnappManager snappManager = container.produce(SnappManager.class);
+		InstrumentManager snappManager = container.produce(InstrumentManager.class);
 		installSampleSnapps(snappManager);
 		container.produce(Dashboard.class);
 
 		Threads.sleepWithoutInterruptions(30000);
 	}
 	
-	private static void installSampleSnapps(SnappManager snappManager) {
-		snappManager.registerSnapp(new Snapp1());
-		snappManager.registerSnapp(new Snapp2());
-		snappManager.registerSnapp(new Snapp3());
+	private static void installSampleSnapps(InstrumentManager snappManager) {
+		snappManager.registerInstrument(new Snapp1());
+		snappManager.registerInstrument(new Snapp2());
+		snappManager.registerInstrument(new Snapp3());
     }
 	
 }
 
-class Snapp1 implements Snapp{
+class Snapp1 implements Instrument{
 
 	@Override
 	public void init(Container container) {
@@ -58,7 +58,7 @@ class Snapp1 implements Snapp{
 	}
 }
 
-class Snapp2 implements Snapp{
+class Snapp2 implements Instrument{
 
 	@Override
 	public void init(Container container) {
@@ -71,7 +71,7 @@ class Snapp2 implements Snapp{
 	}
 }
 
-class Snapp3 implements Snapp{
+class Snapp3 implements Instrument{
 	@Override
 	public void init(Container container) {
 		container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));

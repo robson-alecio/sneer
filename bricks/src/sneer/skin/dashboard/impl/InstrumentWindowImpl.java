@@ -6,9 +6,9 @@ import java.awt.Rectangle;
 
 import javax.swing.JPanel;
 
-import sneer.skin.dashboard.SnappFrame;
+import sneer.skin.dashboard.InstrumentWindow;
 
-class SnappFrameImpl extends JPanel implements SnappFrame {
+class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 
 	private static final long serialVersionUID = 1L;
 

@@ -1,4 +1,4 @@
-package snapps.wind.impl;
+package snapps.wind.gui.impl;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -12,56 +12,65 @@ import java.io.PrintStream;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import snapps.wind.WindSnapp;
+import snapps.wind.Shout;
+import snapps.wind.Wind;
+import snapps.wind.gui.WindGui;
 import sneer.kernel.container.Inject;
-import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
+import sneer.pulp.keymanager.KeyManager;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
+import sneer.skin.widgets.reactive.TextWidget;
 import wheel.graphics.Images;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Constant;
 
-class WindSnappImpl implements WindSnapp {
+class WindGuiImpl implements WindGui {
 	
 	@Inject
-	static private InstrumentManager _snapps;
+	static private InstrumentManager _instruments;
 
 	@Inject
-	static private BlinkingLights _blinkingLights;
+	static private Wind _wind;
 
 	@Inject
 	static private ReactiveWidgetFactory _rfactory;
 
+	@Inject
+	static private KeyManager _keyManager;
+
 	private final static Signal<Image> _meImage;
-	//private final static Signal<Image> _otherImage;
+	private final static Signal<Image> _otherImage;
 	
-	private ListWidget<Light> _lightsList;
+	private ListWidget<Shout> _shoutsList;
+	private TextWidget<JTextField> _myShout;
 
 	private Container _container;
 
 	static {
 		_meImage = new Constant<Image>(loadImage("me.png"));
-		//_otherImage = new Constant<Image>(loadImage("other.png"));
+		_otherImage = new Constant<Image>(loadImage("other.png"));
 	}
 	
-	public WindSnappImpl(){
-		_snapps.registerInstrument(this);
+	public WindGuiImpl() {
+		_instruments.registerInstrument(this);
 	} 
 	
 	private static Image loadImage(String fileName) {
-		return Images.getImage(WindSnappImpl.class.getResource(fileName));
+		return Images.getImage(WindGuiImpl.class.getResource(fileName));
 	}
 
-	private Signal<Image> image(@SuppressWarnings("unused") Light light) {
-		//return _images.get(light.type());
-		return _meImage;
+	private Signal<Image> image(Shout shout) {
+		return shout.publisher == _keyManager.ownPublicKey()
+			? _meImage
+			: _otherImage;
 	}	
 
 	private void showMessage(Light light){
@@ -94,7 +103,8 @@ class WindSnappImpl implements WindSnapp {
 	@Override
 	public void init(Container container) {
 		_container = container;
-		_lightsList = _rfactory.newList(_blinkingLights.lights(), new BlinkingLightsLabelProvider());
+		_shoutsList = _rfactory.newList(_wind.shoutsHeard(), new ShoutLabelProvider());
+		_myShout = _rfactory.newTextField(new Constant<String>(""), _wind.megaphone(), true);
 		
 		iniGui();
 		initMouseListener();
@@ -104,16 +114,20 @@ class WindSnappImpl implements WindSnapp {
 		JScrollPane scrollPane = new JScrollPane();
 		_container.setLayout(new BorderLayout());
 		_container.add(scrollPane, BorderLayout.CENTER);
-		scrollPane.getViewport().add(_lightsList.getComponent());
+		_container.add(_myShout.getComponent(), BorderLayout.SOUTH);
+		
+		scrollPane.getViewport().add(_shoutsList.getComponent());
 		scrollPane.setMinimumSize(size(_container));
 		scrollPane.setPreferredSize(size(_container));
 		scrollPane.setBorder(new TitledBorder(new EmptyBorder(5,5,5,5), getName()));
-		_lightsList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
-		scrollPane.setBackground(_lightsList.getComponent().getBackground());
+		_shoutsList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
+		scrollPane.setBackground(_shoutsList.getComponent().getBackground());
+		
+		
 	}
 	
 	private void initMouseListener() {
-		_lightsList.getComponent().addMouseListener(new MouseAdapter(){ @Override public void mouseReleased(final MouseEvent event) {
+		_shoutsList.getComponent().addMouseListener(new MouseAdapter(){ @Override public void mouseReleased(final MouseEvent event) {
 			Light light = getClickedLight(event);
 			showMessage(light);
 		}
@@ -127,23 +141,23 @@ class WindSnappImpl implements WindSnapp {
 	}
 
 	private Dimension size(Container container) {
-		return new Dimension(container.getSize().width, 90 );
+		return new Dimension(container.getSize().width, 300 );
 	}
 	
 	private String getName() {
 		return "Wind";
 	}
 
-	public final class BlinkingLightsLabelProvider implements LabelProvider<Light> {
+	final class ShoutLabelProvider implements LabelProvider<Shout> {
 				
 		@Override
-		public Signal<String> labelFor(Light light) {
-			return new Constant<String>(light.message());
+		public Signal<String> labelFor(Shout shout) {
+			return new Constant<String>(shout.phrase);
 		}
 
 		@Override
-		public Signal<Image> imageFor(Light light) {
-			return image(light);
+		public Signal<Image> imageFor(Shout shout) {
+			return image(shout);
 		}
 	}
 }

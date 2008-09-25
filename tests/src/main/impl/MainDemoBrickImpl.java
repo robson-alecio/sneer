@@ -3,7 +3,7 @@ package main.impl;
 import main.MainDemoBrick;
 import snapps.blinkinglights.BlinkingLightsSnapp;
 import snapps.contacts.ContactsSnapp;
-import snapps.wind.WindSnapp;
+import snapps.wind.gui.WindGui;
 import sneer.kernel.container.Inject;
 import sneer.pulp.clockticker.ClockTicker;
 import sneer.pulp.connection.SocketOriginator;
@@ -32,7 +32,7 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	private static BlinkingLightsSnapp _gui3;
 
 	@Inject	@SuppressWarnings("unused")
-	private static WindSnapp _gui4;
+	private static WindGui _gui4;
 	
 	@Inject	@SuppressWarnings("unused")
 	private static SocketOriginator _networkDaemon1;

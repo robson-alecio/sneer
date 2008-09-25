@@ -15,7 +15,7 @@ import wheel.io.serialization.DeepCopier;
 import wheel.lang.Threads;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Adder;
-import wheel.reactive.sets.SetSignal;
+import wheel.reactive.lists.ListSignal;
 
 public class WindUserImpl implements WindUser {
 
@@ -55,11 +55,11 @@ public class WindUserImpl implements WindUser {
 
 	@Override
 	public void shout(String phrase) {
-		_wind.shout(phrase);
+		_wind.megaphone().consume(phrase);
 	}
 
 	@Override
-	public SetSignal<Shout> shoutsHeard() {
+	public ListSignal<Shout> shoutsHeard() {
 		return _wind.shoutsHeard();
 	}
 

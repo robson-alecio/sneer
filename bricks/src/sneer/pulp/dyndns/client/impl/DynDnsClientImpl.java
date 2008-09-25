@@ -50,6 +50,7 @@ class DynDnsClientImpl implements DynDnsClient {
 	final Receiver<DynDnsAccount> _ownAccountReceiver = new Receiver<DynDnsAccount>(_ownAccountKeeper.ownAccount()) { @Override public void consume(DynDnsAccount account) {
 		synchronized (_stateMonitor) {
 			if (account == null) return;
+			if (currentIp() == null) return;
 			_state = _state.reactTo(account);
 		}
 	}};
@@ -57,6 +58,7 @@ class DynDnsClientImpl implements DynDnsClient {
 	final Receiver<String> _ownIpReceiver = new Receiver<String>(_ownIpDiscoverer.ownIp()) { @Override public void consume(String ownIp) {
 		synchronized (_stateMonitor) {
 			if (ownIp == null) return;
+			if (currentAccount() == null) return;
 			_state = _state.reactTo(ownIp);
 		}
 	}};
@@ -120,7 +122,8 @@ class DynDnsClientImpl implements DynDnsClient {
 		
 		private State submitUpdateRequest(final DynDnsAccount account, String ip) {
 			try {
-				_updater.update(account.host, account.dynDnsUser, account.password, ip);
+				_updater.update
+				(account.host, account.dynDnsUser, account.password, ip);
 				recordLastIp(ip);
 				return new Happy();
 			} catch (BadAuthException e) {

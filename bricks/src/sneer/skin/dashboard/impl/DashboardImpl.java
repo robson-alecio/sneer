@@ -109,12 +109,12 @@ class DashboardImpl implements Dashboard, Runnable {
 
 			@Override
 			protected void elementAdded(Instrument newElement) {
-				installSnapp(newElement);
+				install(newElement);
 			}
 
 			@Override
 			protected void elementPresent(Instrument element) {
-				installSnapp(element);
+				install(element);
 			}
 
 			@Override
@@ -151,14 +151,14 @@ class DashboardImpl implements Dashboard, Runnable {
 		updateTitle();
 	}
 
-	private InstrumentWindow installSnapp(final Instrument snapp) {
+	private InstrumentWindow install(final Instrument instrument) {
 		final InstrumentWindowImpl sf = new InstrumentWindowImpl();
 		SwingUtilities.invokeLater(
 			new Runnable(){
 				@Override
 				public void run() {
 					contentPanel.add(sf);
-					snapp.init(sf);
+					instrument.init(sf);
 					sf.revalidate();
 				}
 			}

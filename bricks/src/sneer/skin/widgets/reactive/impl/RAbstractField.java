@@ -24,7 +24,6 @@ import javax.swing.text.JTextComponent;
 
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.lang.Consumer;
-import wheel.lang.Pair;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
 
@@ -38,14 +37,13 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	protected final WIDGET _textComponent;
 
 	protected final Receiver<String> _fieldReciver;
-	protected final Receiver<Pair<String, String>> _textChangedReceiver;
 
 	protected final ChangeInfoDecorator _decorator;
 	
 	public boolean _notified = true;
 
 	protected abstract Receiver<String> fieldReceiver();
-	protected abstract Receiver<Pair<String, String>> textChangedReceiver();
+	protected abstract void consume(String text);
 	
 	RAbstractField(WIDGET textComponent, Signal<String> source) {
 		this(textComponent, source, null, false);
@@ -56,7 +54,6 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 		_setter = setter;
 		_textComponent = textComponent;
 		_notifyOnlyWhenDoneEditing = notifyOnlyWhenDoneEditing;
-		_textChangedReceiver = textChangedReceiver();
 		_fieldReciver=fieldReceiver();	
 		_decorator = new ChangeInfoDecorator(_textComponent.getBorder(), _textComponent);
 		
@@ -115,16 +112,27 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	}
 
 	public void commitTextChanges() {
+		if (getText().equals( currentValue())) return;
+		
 		SwingUtilities.invokeLater(new Runnable() {@Override public void run() {
-			Pair<String, String> pair = new Pair<String, String>(_source.currentValue(), getText());
-			_textChangedReceiver.consume(pair);
-			_textComponent.revalidate();
+			consume(getText());
+			refreshTextComponent();
 			setNotified(true);
 		}});
 	}
+
+	private void refreshTextComponent() {
+		_textComponent.setText(currentValue());
+		_textComponent.revalidate();
+	}
+
+	private String currentValue() {
+		return _source.currentValue();
+	}
 	
 	public String getText() {
-		return tryReadText();
+		String tmp = tryReadText();
+		return tmp==null ? "": tmp;
 	}
 	
 	public void setText(final String text) {

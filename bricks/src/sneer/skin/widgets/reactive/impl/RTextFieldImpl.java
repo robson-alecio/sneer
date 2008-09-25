@@ -5,7 +5,6 @@ import javax.swing.JTextField;
 
 import wheel.io.ui.impl.UserImpl;
 import wheel.lang.Consumer;
-import wheel.lang.Pair;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
@@ -28,21 +27,20 @@ class RTextFieldImpl extends RAbstractField<JTextField> {
 			setText(text);
 		}};
 	}
-
+	
 	@Override
-	public Receiver<Pair<String, String>> textChangedReceiver() {
-		return new Receiver<Pair<String, String>>() {@Override public void consume(Pair<String, String> value) {
-			if (!value._a.equals(value._b))
-				try {
-					_setter.consume(value._b);
-				} catch (IllegalParameter ip) {
-					new UserImpl().acknowledge(ip);
-				}
-		}};
+	protected void consume(String text) {
+		try {
+			_setter.consume(text);
+		} catch (IllegalParameter ip) {
+			new UserImpl().acknowledge(ip);
+		}
 	}
 	
 	@Override
 	public JComponent[] getWidgets() {
 		return new JComponent[]{_textComponent};
 	}
+
+
 }

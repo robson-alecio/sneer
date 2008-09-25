@@ -2,7 +2,9 @@ package sneer.skin.snappmanager;
 
 import java.awt.Container;
 
-public interface Instrument {
+import sneer.skin.GuiBrick;
+
+public interface Instrument extends GuiBrick {
 
 	void init(Container container);
 

@@ -5,7 +5,7 @@ import snapps.wind.Probe;
 import snapps.wind.Shout;
 import sneer.pulp.keymanager.PublicKey;
 import wheel.reactive.Signal;
-import wheel.reactive.sets.SetSignal;
+import wheel.reactive.lists.ListSignal;
 
 
 public interface WindUser {
@@ -17,7 +17,7 @@ public interface WindUser {
 	Signal<Integer> connectAndCountTrafficTo(WindUser peer);
 
 	void shout(String string);
-	SetSignal<Shout> shoutsHeard();
+	ListSignal<Shout> shoutsHeard();
 
 	
 	/////////////////////////////////////Used only by the test implementation:

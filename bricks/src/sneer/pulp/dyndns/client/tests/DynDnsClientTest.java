@@ -69,7 +69,7 @@ Unacceptable Client Behavior
 	@Test
 	public void updateOnIpChange() throws Exception {
 		_context.checking(new Expectations() {{
-			exactly(2).of(_ownIpDiscoverer).ownIp();
+			allowing(_ownIpDiscoverer).ownIp();
 				will(returnValue(_ownIp.output()));
 				
 			atLeast(1).of(_ownAccountKeeper).ownAccount();

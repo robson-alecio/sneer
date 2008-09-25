@@ -1,11 +1,12 @@
 package snapps.wind;
 
-import wheel.reactive.sets.SetSignal;
+import wheel.lang.Omnivore;
+import wheel.reactive.lists.ListSignal;
 
 public interface Wind {
 
-	void shout(String phrase);
+	ListSignal<Shout> shoutsHeard();
 
-	SetSignal<Shout> shoutsHeard();
+	Omnivore<String> megaphone();
 
 }

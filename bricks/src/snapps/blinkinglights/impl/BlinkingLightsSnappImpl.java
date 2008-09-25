@@ -137,7 +137,7 @@ class BlinkingLightsSnappImpl implements BlinkingLightsSnapp {
 		return "Blinking Lights";
 	}
 
-	public final class BlinkingLightsLabelProvider implements LabelProvider<Light> {
+	final class BlinkingLightsLabelProvider implements LabelProvider<Light> {
 				
 		@Override
 		public Signal<String> labelFor(Light light) {

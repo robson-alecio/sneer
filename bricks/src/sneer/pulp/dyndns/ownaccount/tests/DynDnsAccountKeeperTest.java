@@ -1,8 +1,5 @@
 package sneer.pulp.dyndns.ownaccount.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;

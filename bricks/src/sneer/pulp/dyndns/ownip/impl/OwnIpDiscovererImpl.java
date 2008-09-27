@@ -7,9 +7,9 @@ import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.clock.Clock;
+import sneer.pulp.datastore.DataStore;
 import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
-import sneer.pulp.propertystore.PropertyStore;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
@@ -27,7 +27,7 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	static private CheckIp _checkip;
 	
 	@Inject
-	static private PropertyStore _store;
+	static private DataStore _store;
 	
 	@Inject
 	static private BlinkingLights _blinkingLights;
@@ -64,14 +64,14 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 
 	private long timeForNextDiscovery() {
 		return _store.containsKey(LAST_CHECK_TIME_KEY)
-			? Long.parseLong(_store.get(LAST_CHECK_TIME_KEY)) + retryTimeMillis()
+			? _store.getLong(LAST_CHECK_TIME_KEY) + retryTimeMillis()
 			: 0;
 	}
 
 	protected void ipDiscovery() throws IOException {
 		turnOffLastLight();
 
-		_store.set(LAST_CHECK_TIME_KEY, "" + _clock.time());
+		_store.set(LAST_CHECK_TIME_KEY, _clock.time());
 
 		final String ip = _checkip.check();
 		final String current = _store.get(LAST_IP_KEY);

@@ -1,9 +1,5 @@
 package sneer.pulp.crypto.tests;
 
-import static org.junit.Assert.assertEquals;
-
-import java.security.MessageDigest;
-
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
@@ -33,31 +29,10 @@ public class CryptoTest extends TestThatIsInjected {
  
 	
 	@Test
-	public void testSha512() throws Exception {
-		MessageDigest digester = MessageDigest.getInstance("SHA-512", "SUN");
-		byte[] hash = digester.digest(INPUT.getBytes());
-		assertEquals(512, hash.length * 8);
-		assertHexa(SHA512, hash);
-	}
-	
-	@Test
-	public void testWhirlPool() throws Exception {
-		MessageDigest digester = MessageDigest.getInstance("WHIRLPOOL", "BC");
-		byte[] hash = digester.digest(INPUT.getBytes());
-		assertEquals(512, hash.length * 8);
-		assertHexa(WHIRLPOOL, hash);
-	}
-	
-	@Test
 	public void testSneer1024() throws Exception {
 		byte[] hash = _crypto.digest(INPUT.getBytes()).bytes();
 		assertEquals(1024, hash.length * 8);
 		assertHexa(SHA512 + WHIRLPOOL, hash);
-		
-//		hash = _crypto.sneer1024("input".getBytes());
-//		assertEquals(1024, hash.length * 8);
-//		assertNotEquals("","");
-//		assertHexa(SHA512 + WHIRLPOOL, hash);
 		
 	}
 

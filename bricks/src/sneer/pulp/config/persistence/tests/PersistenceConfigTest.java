@@ -1,7 +1,5 @@
 package sneer.pulp.config.persistence.tests;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.File;
 
 import org.junit.Test;

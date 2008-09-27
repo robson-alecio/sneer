@@ -1,7 +1,5 @@
 package sneer.pulp.connection.tests;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.IOException;
 
 import org.junit.Test;

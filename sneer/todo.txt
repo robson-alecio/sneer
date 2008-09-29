@@ -3,11 +3,12 @@
 	- [Rodrigo and Kalecser] Fix the Hudson build.
 	- [Sandro] Introduce yourself on the sneercoders group.
 	- [Sandro] "Snapp" - Rename to "Instrument" when refering to gui windows
-	- [Sandro] notifyAllChanges - Fix
-	- Snapps - Move to respective .gui subpackage in the pulp except for Wind.
+	- [Sandro] notifyAllChanges boolean in Reactive fields - Fix
+	- [Sandro] Snapps - Move to respective .gui subpackage in the pulp except for Wind.
 	---------------------------------- FIRST DOGFOOD RELEASE - Anelise can start testing for real. All bugs she finds get fixed immediately. Improvement suggestions are added to this todo list.
 
 	- Wind
+		- ByteConnection legacy protocol - migrate all uses to new protocol.
 	- Voice Calls - Migrate from the old sneermonolith project
 	---- WE DROP SKYPE :)
 	- Screen Viewing à la VNC - There is a free vnc client implementation in Java. If there is no free server implementation in java, just send screen deltas over using gzip compression for now.

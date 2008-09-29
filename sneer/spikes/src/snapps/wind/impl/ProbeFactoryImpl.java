@@ -3,10 +3,10 @@ package snapps.wind.impl;
 import snapps.wind.ConnectionSide;
 import snapps.wind.Probe;
 import snapps.wind.ProbeFactory;
-import snapps.wind.Tuple;
-import snapps.wind.TupleSpace;
 import sneer.kernel.container.Inject;
 import sneer.pulp.keymanager.PublicKey;
+import sneer.pulp.tuples.Tuple;
+import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 

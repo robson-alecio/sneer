@@ -1,4 +1,4 @@
-package snapps.wind.impl;
+package sneer.pulp.tuples.impl;
 
 import static wheel.lang.Types.cast;
 
@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import snapps.wind.Tuple;
-import snapps.wind.TupleSpace;
 import sneer.pulp.keymanager.PublicKey;
+import sneer.pulp.tuples.Tuple;
+import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Functor;
 import wheel.lang.Nulls;
 import wheel.lang.Omnivore;

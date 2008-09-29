@@ -1,6 +1,7 @@
 package snapps.wind;
 
 import sneer.pulp.keymanager.PublicKey;
+import sneer.pulp.tuples.Tuple;
 
 public class Shout extends Tuple {
 

@@ -1,4 +1,4 @@
-package snapps.wind;
+package sneer.pulp.tuples;
 
 import sneer.pulp.keymanager.PublicKey;
 

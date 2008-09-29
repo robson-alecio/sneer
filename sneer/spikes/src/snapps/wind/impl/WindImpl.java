@@ -1,11 +1,11 @@
 package snapps.wind.impl;
 
 import snapps.wind.Shout;
-import snapps.wind.TupleSpace;
 import snapps.wind.Wind;
 import sneer.kernel.container.Inject;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.keymanager.KeyManager;
+import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Omnivore;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;

@@ -3,8 +3,8 @@ package snapps.wind.impl;
 import static wheel.lang.Types.cast;
 import snapps.wind.ConnectionSide;
 import snapps.wind.Probe;
-import snapps.wind.Tuple;
-import snapps.wind.TupleSpace;
+import sneer.pulp.tuples.Tuple;
+import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Omnivore;
 
 public class ProbeImpl implements Probe {

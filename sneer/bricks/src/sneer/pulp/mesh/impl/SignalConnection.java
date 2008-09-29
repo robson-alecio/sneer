@@ -50,7 +50,7 @@ class SignalConnection implements Visitable {
 
 	SignalConnection(Contact contact) {
 		_connection = _connectionManager.connectionFor(contact);
-		_connection.setReceiver(new Omnivore<byte[]>(){public void consume(byte[] packetReceived) {
+		_connection.setLegacyReceiver(new Omnivore<byte[]>(){public void consume(byte[] packetReceived) {
 			receive(packetReceived);
 		}});
 		startSender();

@@ -108,7 +108,7 @@ class ConnectionImpl implements ByteConnection {
 	}
 
 
-	public void setReceiver(Omnivore<byte[]> receiver) {
+	public void setLegacyReceiver(Omnivore<byte[]> receiver) {
 		if (_receiver != null) throw new IllegalStateException();
 		_receiver = receiver;
 	}

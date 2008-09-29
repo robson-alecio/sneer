@@ -8,6 +8,7 @@ public interface ByteConnection {
 	Signal<Boolean> isOnline();
 
 	void send(byte[] array);
-	void setReceiver(Omnivore<byte[]> receiver);
+	void setLegacyReceiver(Omnivore<byte[]> receiver); //Refactor
+	
 	
 }

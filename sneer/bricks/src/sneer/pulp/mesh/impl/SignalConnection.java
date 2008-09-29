@@ -80,7 +80,7 @@ class SignalConnection implements Visitable {
 		_threadPool.registerActor(new Runnable() { public void run() {
 			while (!_isCrashed) {
 				byte[] toSend = _priorityQueue.waitForNext();
-				_connection.send(toSend);
+				_connection.legacySend(toSend);
 			}
 		}});
 	}

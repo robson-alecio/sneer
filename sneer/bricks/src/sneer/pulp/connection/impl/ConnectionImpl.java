@@ -1,5 +1,7 @@
 package sneer.pulp.connection.impl;
 
+import static wheel.io.Logger.log;
+
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -11,12 +13,15 @@ import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
+import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
-import static wheel.io.Logger.log;
 
 class ConnectionImpl implements ByteConnection {
+
+	private static final byte LEGACY_PROTOCOL = 0;
+	private static final byte NEW_PROTOCOL = 1;
 
 	@Inject
 	static private KeyManager _keyManager;
@@ -32,7 +37,7 @@ class ConnectionImpl implements ByteConnection {
 
 	private final Contact _contact;
 	
-	private volatile Omnivore<byte[]> _receiver;
+	private volatile Omnivore<byte[]> _legacyReceiver;
 	
 	ConnectionImpl(String label, Contact contact) {
 		_label = label;
@@ -86,9 +91,22 @@ class ConnectionImpl implements ByteConnection {
 	}
 	
 	@Override
-	public void send(byte[] array) {
-		while (!tryToSend(array))
+	public void legacySend(byte[] array) {
+		byte[] packet = flagWithProtocol(array, LEGACY_PROTOCOL);
+		while (!tryToSend(packet))
 			Threads.sleepWithoutInterruptions(10); //Optimize Use wait/notify.
+	}
+
+	private byte[] flagWithProtocol(byte[] array, byte protocol) {
+		byte[] result = makeSpaceForFlag(array);
+		result[0] = protocol;
+		return result;
+	}
+
+	private byte[] makeSpaceForFlag(byte[] array) {
+		byte[] result = new byte[array.length + 1];
+		System.arraycopy(array, 0, result, 1, array.length);
+		return result;
 	}
 
 
@@ -109,8 +127,8 @@ class ConnectionImpl implements ByteConnection {
 
 
 	public void setLegacyReceiver(Omnivore<byte[]> receiver) {
-		if (_receiver != null) throw new IllegalStateException();
-		_receiver = receiver;
+		if (_legacyReceiver != null) throw new IllegalStateException();
+		_legacyReceiver = receiver;
 	}
 	
 	private void startReceiving() {
@@ -120,11 +138,28 @@ class ConnectionImpl implements ByteConnection {
 				if (packet == null)
 					Threads.sleepWithoutInterruptions(10); //Optimize Use wait/notify
 				else
-					_receiver.consume(packet);
+					notifyReceiver(packet);
 			}
 		}});
 	}
 
+	private void notifyReceiver(byte[] packet) {
+		byte[] payload = new byte[packet.length - 1];
+		byte protocolByte = packet[0];
+		
+		System.arraycopy(packet, 1, payload, 0, payload.length);
+		
+		if (protocolByte == LEGACY_PROTOCOL) {
+			_legacyReceiver.consume(payload);
+			return;
+		}
+
+		if (protocolByte == NEW_PROTOCOL) {
+			throw new NotImplementedYet();
+		}
+		
+		throw new IllegalStateException("Illegal protocol byte: " + protocolByte);
+	}
 
 	private byte[] tryToReceive() {
 		ByteArraySocket mySocket = _socketHolder.socket();

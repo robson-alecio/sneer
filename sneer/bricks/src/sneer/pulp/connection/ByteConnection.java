@@ -7,7 +7,7 @@ public interface ByteConnection {
 
 	Signal<Boolean> isOnline();
 
-	void send(byte[] array);
+	void legacySend(byte[] array);
 	void setLegacyReceiver(Omnivore<byte[]> receiver); //Refactor
 	
 	

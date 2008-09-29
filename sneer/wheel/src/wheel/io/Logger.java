@@ -23,6 +23,7 @@ public class Logger {
 	/** See log(String, Object...) for examples.*/
 	static public void log(Throwable throwable, String message, Object... messageInsets) {
 		try {
+			if (message == null) message = throwable.getClass().getName();
 			logHeader(inline(message, messageInsets));
 			throwable.printStackTrace(_log);
 			logSeparator();
@@ -65,7 +66,6 @@ public class Logger {
 
 	
 	private static void logSeparator() {
-		_log.println();
 		_log.println();
 		_log.flush();
 	}

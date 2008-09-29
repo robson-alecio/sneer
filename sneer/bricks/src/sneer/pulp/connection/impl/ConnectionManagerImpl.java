@@ -18,10 +18,10 @@ class ConnectionManagerImpl implements ConnectionManager {
 	private final Map<Contact, ByteConnection> _connectionsByContact = new HashMap<Contact, ByteConnection>();
 
 	@Override
-	public synchronized ConnectionImpl connectionFor(Contact contact) {
-		ConnectionImpl result = (ConnectionImpl) _connectionsByContact.get(contact);
+	public synchronized ByteConnectionImpl connectionFor(Contact contact) {
+		ByteConnectionImpl result = (ByteConnectionImpl) _connectionsByContact.get(contact);
 		if (result == null) {
-			result = new ConnectionImpl("" + _nameKeeper.name(), contact);
+			result = new ByteConnectionImpl("" + _nameKeeper.name(), contact);
 			_connectionsByContact.put(contact, result);
 		}
 		return result;
@@ -29,13 +29,13 @@ class ConnectionManagerImpl implements ConnectionManager {
 
 	@Override
 	public void manageIncomingSocket(Contact contact, ByteArraySocket socket) {
-		ConnectionImpl connection = connectionFor(contact);
+		ByteConnectionImpl connection = connectionFor(contact);
 		connection.manageIncomingSocket(socket);
 	}
 
 	@Override
 	public void manageOutgoingSocket(Contact contact, ByteArraySocket socket) {
-		ConnectionImpl connection = connectionFor(contact);
+		ByteConnectionImpl connection = connectionFor(contact);
 		connection.manageOutgoingSocket(socket);
 	}
 }

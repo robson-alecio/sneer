@@ -13,12 +13,11 @@ import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
-import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 
-class ConnectionImpl implements ByteConnection {
+class ByteConnectionImpl implements ByteConnection {
 
 	private static final byte LEGACY_PROTOCOL = 0;
 	private static final byte NEW_PROTOCOL = 1;
@@ -38,8 +37,9 @@ class ConnectionImpl implements ByteConnection {
 	private final Contact _contact;
 	
 	private volatile Omnivore<byte[]> _legacyReceiver;
+	private volatile Omnivore<byte[]> _receiver;
 	
-	ConnectionImpl(String label, Contact contact) {
+	ByteConnectionImpl(String label, Contact contact) {
 		_label = label;
 		_contact = contact;
 		startReceiving();
@@ -130,6 +130,11 @@ class ConnectionImpl implements ByteConnection {
 		if (_legacyReceiver != null) throw new IllegalStateException();
 		_legacyReceiver = receiver;
 	}
+
+	public void setReceiver(Omnivore<byte[]> receiver) {
+		if (_receiver != null) throw new IllegalStateException();
+		_receiver = receiver;
+	}
 	
 	private void startReceiving() {
 		_threadPool.registerActor(new Runnable() { @Override public void run() {
@@ -155,7 +160,8 @@ class ConnectionImpl implements ByteConnection {
 		}
 
 		if (protocolByte == NEW_PROTOCOL) {
-			throw new NotImplementedYet();
+			_receiver.consume(payload);
+			return;
 		}
 		
 		throw new IllegalStateException("Illegal protocol byte: " + protocolByte);
@@ -173,6 +179,13 @@ class ConnectionImpl implements ByteConnection {
 			return null;
 		} 
 
+	}
+
+	@Override
+	public void send(byte[] payload) {
+		byte[] packet = flagWithProtocol(payload, NEW_PROTOCOL);
+		while (!tryToSend(packet))
+			Threads.sleepWithoutInterruptions(10); //Optimize Use wait/notify.
 	}
 
 }

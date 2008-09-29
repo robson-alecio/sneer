@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import wheel.lang.Collections;
@@ -14,8 +13,7 @@ import functional.SovereignParty;
 
 public abstract class Freedom5TestBase extends SovereignFunctionalTestBase {
 	
-	@Ignore
-	@Test (timeout = 1000)
+	@Test (timeout = 2000)
 	public void shoutToTheWind() {
 		
 		SovereignParty c = _community.createParty("Cid");

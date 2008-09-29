@@ -18,6 +18,7 @@ import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.port.PortKeeper;
+import sneer.pulp.probe.ProbeManager;
 import sneer.skin.dashboard.Dashboard;
 
 class MainDemoBrickImpl implements MainDemoBrick {
@@ -45,6 +46,9 @@ class MainDemoBrickImpl implements MainDemoBrick {
 
 	@Inject	@SuppressWarnings("unused")
 	private static DynDnsClient _dynDns;
+
+	@Inject	@SuppressWarnings("unused")
+	private static ProbeManager _probes;
 
 	@Inject
 	private static DynDnsAccountKeeper _dynDnsAccountKeeper;

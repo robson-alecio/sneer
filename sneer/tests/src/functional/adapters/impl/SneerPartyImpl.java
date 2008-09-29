@@ -2,6 +2,8 @@ package functional.adapters.impl;
 
 import java.io.File;
 
+import snapps.wind.Shout;
+import snapps.wind.Wind;
 import sneer.kernel.container.Brick;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Inject;
@@ -20,10 +22,12 @@ import sneer.pulp.mesh.Me;
 import sneer.pulp.mesh.Party;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.port.PortKeeper;
+import sneer.pulp.probe.ProbeManager;
 import wheel.lang.Threads;
 import wheel.lang.Types;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
+import wheel.reactive.lists.ListSignal;
 import functional.SovereignParty;
 import functional.adapters.SneerParty;
 
@@ -48,6 +52,14 @@ public class SneerPartyImpl implements SneerParty {
 
 	@Inject
 	static private InternetAddressKeeper _internetAddressKeeper;
+
+	@Inject
+	static private Wind _wind;
+
+	@SuppressWarnings("unused")
+	@Inject
+	static private ProbeManager _probes;
+	
 	
 	@SuppressWarnings("unused") //We need to start this brick so that it listens to others and does its thing.
 	@Inject
@@ -138,11 +150,11 @@ public class SneerPartyImpl implements SneerParty {
     public Signal<String> navigateAndGetName(String nicknamePath) {
 		String[] path = nicknamePath.split("/");
 		
-		Party peer = _me;
+		Party candidate = _me;
 		for (String nickname : path)
-			peer = waitForContact(peer, nickname);
+			candidate = waitForContact(candidate, nickname);
 		
-		return peer.brickProxyFor(OwnNameKeeper.class).name();
+		return candidate.brickProxyFor(OwnNameKeeper.class).name();
     }
 
 	private Party waitForContact(Party peer, String nickname) {
@@ -190,6 +202,16 @@ public class SneerPartyImpl implements SneerParty {
 	@Override
 	public Brick produce(Class<? extends Brick> brick) {
 		return Types.cast(_container.produce(brick));
+	}
+
+	@Override
+	public void shout(String phrase) {
+		_wind.megaphone().consume(phrase);
+	}
+
+	@Override
+	public ListSignal<Shout> shoutsHeard() {
+		return _wind.shoutsHeard();
 	}
 
 	

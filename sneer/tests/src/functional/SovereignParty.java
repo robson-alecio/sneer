@@ -2,11 +2,13 @@ package functional;
 
 import java.io.File;
 
+import snapps.wind.Shout;
 import sneer.kernel.container.Brick;
 import sneer.pulp.deployer.BrickBundle;
 import sneer.pulp.deployer.BrickFile;
 import sneer.pulp.keymanager.PublicKey;
 import wheel.reactive.Signal;
+import wheel.reactive.lists.ListSignal;
 
 
 public interface SovereignParty {
@@ -27,5 +29,9 @@ public interface SovereignParty {
 	void meToo(SovereignParty party, String brickName) throws Exception;
 	BrickFile brick(String brickName);
 	Brick produce(Class<? extends Brick> brick);
+	
+	
+	void shout(String string);
+	ListSignal<Shout> shoutsHeard();
 
 }

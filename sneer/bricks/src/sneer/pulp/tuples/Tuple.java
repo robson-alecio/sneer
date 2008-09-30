@@ -2,7 +2,7 @@ package sneer.pulp.tuples;
 
 import sneer.pulp.keymanager.PublicKey;
 
-public class Tuple {
+public abstract class Tuple {
 
 	public Tuple(PublicKey pPublisher, long pPublicationTime) {
 		publisher = pPublisher;

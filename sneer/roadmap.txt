@@ -1,7 +1,6 @@
 ﻿MAIN ROADMAP
 ===================
 	- [Rodrigo and Kalecser] Fix the Hudson build.
-	- [Sandro] notifyAllChanges boolean in Reactive fields - Fix
 
 	- ByteConnection legacy protocol - migrate all uses to new protocol.
 

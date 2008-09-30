@@ -19,10 +19,10 @@ public interface ReactiveWidgetFactory {
 	TextWidget<JLabel> newLabel(Signal<String> source, Omnivore<String> setter);
 	
 	TextWidget<JTextField> newEditableLabel(Signal<String> source, Consumer<String> setter);
-	TextWidget<JTextField> newEditableLabel(Signal<String> source, Consumer<String> setter,	boolean notifyEveryChange); //Fix notifyEveryChange
+	TextWidget<JTextField> newEditableLabel(Signal<String> source, Consumer<String> setter, boolean notifyOnlyWhenDoneEditing);
 	
 	TextWidget<JTextField> newTextField(Signal<String> source, Omnivore<String> setter);
-	TextWidget<JTextField> newTextField(Signal<String> source, Omnivore<String> setter, boolean notifyEveryChange); //Fix notifyEveryChange
+	TextWidget<JTextField> newTextField(Signal<String> source, Omnivore<String> setter, boolean notifyOnlyWhenDoneEditing);
 	
 	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> _labelProvider);
 

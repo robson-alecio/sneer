@@ -13,7 +13,7 @@ import functional.SovereignParty;
 
 public abstract class Freedom5TestBase extends SovereignFunctionalTestBase {
 	
-	@Test (timeout = 2000)
+	@Test (timeout = 4000)
 	public void shoutToTheWind() {
 		
 		SovereignParty c = _community.createParty("Cid");
@@ -42,8 +42,15 @@ public abstract class Freedom5TestBase extends SovereignFunctionalTestBase {
 	}
 
 	private void waitForShoutsHeardBy(SovereignParty user, String shoutsExpected) {
-		while (!shoutsExpected.equals(concat(user.shoutsHeard())))
-			Threads.sleepWithoutInterruptions(10);
+		while (true) {
+			String heard = concat(user.shoutsHeard());
+			if (shoutsExpected.equals(heard)) return;
+			try {
+				Threads.sleepWithoutInterruptions(10);
+			} catch (RuntimeException ignored) {
+				throw new IllegalStateException("Expected: " + shoutsExpected + "  was: " + heard);
+			}
+		}
 	}
 	
 	private String concat(ListSignal<?> listSignal) {

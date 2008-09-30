@@ -1,8 +1,8 @@
 package main.impl;
 
 import main.MainDemoBrick;
-import snapps.blinkinglights.BlinkingLightsSnapp;
-import snapps.contacts.ContactsSnapp;
+import snapps.blinkinglights.gui.BlinkingLightsGui;
+import snapps.contacts.gui.ContactsGui;
 import snapps.wind.gui.WindGui;
 import sneer.kernel.container.Inject;
 import sneer.pulp.clockticker.ClockTicker;
@@ -27,10 +27,10 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	private static Dashboard _gui1;
 	
 	@Inject	@SuppressWarnings("unused")
-	private static ContactsSnapp _gui2;
+	private static ContactsGui _gui2;
 	
 	@Inject	@SuppressWarnings("unused")
-	private static BlinkingLightsSnapp _gui3;
+	private static BlinkingLightsGui _gui3;
 
 	@Inject	@SuppressWarnings("unused")
 	private static WindGui _gui4;

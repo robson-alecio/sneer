@@ -1,10 +1,7 @@
 ﻿MAIN ROADMAP
 ===================
 	- [Rodrigo and Kalecser] Fix the Hudson build.
-	- [Sandro] Introduce yourself on the sneercoders group.
-	- [Sandro] "Snapp" - Rename to "Instrument" when refering to gui windows
 	- [Sandro] notifyAllChanges boolean in Reactive fields - Fix
-	- [Sandro] Snapps - Move to respective .gui subpackage in the pulp except for Wind.
 
 	- ByteConnection legacy protocol - migrate all uses to new protocol.
 

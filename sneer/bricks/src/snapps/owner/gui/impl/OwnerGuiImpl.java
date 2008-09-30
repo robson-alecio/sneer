@@ -1,4 +1,4 @@
-package snapps.owner.impl;
+package snapps.owner.gui.impl;
 
 import java.awt.Container;
 import java.awt.Cursor;
@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
-import snapps.owner.OwnerSnapp;
+import snapps.owner.gui.OwnerGui;
 import sneer.kernel.container.Inject;
 import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.pulp.own.name.OwnNameKeeper;
@@ -22,7 +22,7 @@ import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 
-class OwnerSnappImpl implements OwnerSnapp {
+class OwnerGuiImpl implements OwnerGui {
 
 	@Inject
 	static private OwnNameKeeper _ownNameKeeper;
@@ -34,7 +34,7 @@ class OwnerSnappImpl implements OwnerSnapp {
 	static private OwnAvatarKeeper _ownAvatarKeeper;
 
 	@Inject
-	static private InstrumentManager _snappManager;
+	static private InstrumentManager _instrumentManager;
 
 	@Inject
 	static private ImageSelector _imageSelector;
@@ -46,8 +46,8 @@ class OwnerSnappImpl implements OwnerSnapp {
 
 	private Container _container;
 
-	public OwnerSnappImpl(){
-		_snappManager.registerInstrument(this);
+	OwnerGuiImpl(){
+		_instrumentManager.registerInstrument(this);
 	}
 	
 	@Override
@@ -128,5 +128,4 @@ class OwnerSnappImpl implements OwnerSnapp {
 					new Insets(top,left,botton,right),0,0);
 		return c;
 	}
-
 }

@@ -5,7 +5,7 @@ import java.awt.BorderLayout;
 import javax.swing.JComponent;
 import javax.swing.border.TitledBorder;
 
-import snapps.contacts.ContactsSnapp;
+import snapps.contacts.gui.ContactsGui;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.contacts.Contact;
@@ -15,14 +15,14 @@ import sneer.skin.snappmanager.Instrument;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 
-public class ContactsSnappDemo  {
+public class ContactsDemo  {
 	
 	public static void main(String[] args) throws Exception {
 
 		Container container = ContainerUtils.getContainer();
 
 		container.produce(Dashboard.class);
-		container.produce(ContactsSnapp.class);
+		container.produce(ContactsGui.class);
 		
 		ReactiveWidgetFactory rfactory = container.produce(ReactiveWidgetFactory.class);
 
@@ -34,24 +34,24 @@ public class ContactsSnappDemo  {
 		manager.addContact("Bamboo");
 		Contact contact = manager.addContact("Nell");
 		
-		InstrumentManager snapps = container.produce(InstrumentManager.class);
-		new NicknameDemo(rfactory, snapps, contact, manager);
+		InstrumentManager instrumentManager = container.produce(InstrumentManager.class);
+		new NicknameDemo(rfactory, instrumentManager, contact, manager);
 	}
 }
 
 class NicknameDemo implements Instrument{
 
 	private final ReactiveWidgetFactory _rfactory;
-	private final InstrumentManager _snapps;
+	private final InstrumentManager _instrumentManager;
 	private final Contact _test;
 	private final ContactManager _manager;
 
-	public NicknameDemo(ReactiveWidgetFactory rfactory, InstrumentManager snapps, Contact test, ContactManager manager) {
+	public NicknameDemo(ReactiveWidgetFactory rfactory, InstrumentManager instrumentManager, Contact test, ContactManager manager) {
 		_rfactory = rfactory;
-		_snapps = snapps;
+		_instrumentManager = instrumentManager;
 		_test = test;
 		_manager = manager;
-		_snapps.registerInstrument(this);
+		_instrumentManager.registerInstrument(this);
 	}
 
 	@Override

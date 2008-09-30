@@ -2,7 +2,7 @@ package snapps.blinkinglights.tests;
 
 import javax.swing.SwingUtilities;
 
-import snapps.blinkinglights.BlinkingLightsSnapp;
+import snapps.blinkinglights.gui.BlinkingLightsGui;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.blinkinglights.LightType;
@@ -13,7 +13,7 @@ import wheel.io.Logger;
 import wheel.lang.Daemon;
 import wheel.lang.Threads;
 
-public class BlinkingLightsSnappDemo  {
+public class BlinkingLightsDemo  {
 	
 	public static void main(String[] args) throws Exception {
 		Logger.redirectTo(System.out);
@@ -40,7 +40,7 @@ public class BlinkingLightsSnappDemo  {
 			bl.turnOn(LightType.ERROR, "This is an Error!", e);
 		}
 		
-		container.produce(BlinkingLightsSnapp.class);
+		container.produce(BlinkingLightsGui.class);
 		
 		waitUntilTheGuiThreadStarts();
 	}

@@ -1,4 +1,4 @@
-package snapps.blinkinglights.impl;
+package snapps.blinkinglights.gui.impl;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -17,7 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import snapps.blinkinglights.BlinkingLightsSnapp;
+import snapps.blinkinglights.gui.BlinkingLightsGui;
 import sneer.kernel.container.Inject;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.blinkinglights.BlinkingLights;
@@ -30,10 +30,10 @@ import wheel.graphics.Images;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Constant;
 
-class BlinkingLightsSnappImpl implements BlinkingLightsSnapp {
+class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 	
 	@Inject
-	static private InstrumentManager _snapps;
+	static private InstrumentManager _instrumentManager;
 
 	@Inject
 	static private BlinkingLights _blinkingLights;
@@ -53,12 +53,12 @@ class BlinkingLightsSnappImpl implements BlinkingLightsSnapp {
 		_images.put(LightType.ERROR, new Constant<Image>(loadImage("error.png")));
 	}
 	
-	public BlinkingLightsSnappImpl(){
-		_snapps.registerInstrument(this);
+	public BlinkingLightsGuiImpl(){
+		_instrumentManager.registerInstrument(this);
 	} 
 	
 	private static Image loadImage(String fileName) {
-		return Images.getImage(BlinkingLightsSnappImpl.class.getResource(fileName));
+		return Images.getImage(BlinkingLightsGuiImpl.class.getResource(fileName));
 	}
 
 	private Constant<Image> image(Light light) {

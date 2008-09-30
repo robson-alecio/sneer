@@ -2,7 +2,7 @@ package snapps.owner.tests;
 
 import java.awt.BorderLayout;
 
-import snapps.owner.OwnerSnapp;
+import snapps.owner.gui.OwnerGui;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.own.name.OwnNameKeeper;
@@ -14,7 +14,7 @@ import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 
-public class OwnerSnappDemo  {
+public class OwnerDemo  {
 	
 	public static void main(String[] args) throws Exception {
 
@@ -28,23 +28,23 @@ public class OwnerSnappDemo  {
 		
 		ReactiveWidgetFactory rfactory = container.produce(ReactiveWidgetFactory.class);
 		
-		container.produce(OwnerSnapp.class);
+		container.produce(OwnerGui.class);
 		
 		InstrumentManager manager = container.produce(InstrumentManager.class);
-		new OwnerSnappDemoSnapp(rfactory, ownNameKeeper.name(), ownNameKeeper.nameSetter(), manager);
-		new OwnerSnappDemoSnapp(rfactory, ownTaglineKeeper.tagline(), ownTaglineKeeper.taglineSetter(), manager);
+		new OwnerInstrument(rfactory, ownNameKeeper.name(), ownNameKeeper.nameSetter(), manager);
+		new OwnerInstrument(rfactory, ownTaglineKeeper.tagline(), ownTaglineKeeper.taglineSetter(), manager);
 		
 		container.produce(Dashboard.class);
 	}
 }
 
-class OwnerSnappDemoSnapp implements Instrument{
+class OwnerInstrument implements Instrument{
 
 	private final ReactiveWidgetFactory _rfactory;
 	private final Signal<String> _output;
 	private final Omnivore<String> _setter;
 	
-	public OwnerSnappDemoSnapp(ReactiveWidgetFactory rfactory, Signal<String> output,	Omnivore<String> setter, InstrumentManager manager) {
+	public OwnerInstrument(ReactiveWidgetFactory rfactory, Signal<String> output,	Omnivore<String> setter, InstrumentManager manager) {
 		_rfactory = rfactory;
 		_output = output;
 		_setter = setter;
@@ -58,5 +58,4 @@ class OwnerSnappDemoSnapp implements Instrument{
 			_rfactory.newEditableLabel(_output, _setter).getComponent(), BorderLayout.CENTER
 		);
 	}
-	
 }

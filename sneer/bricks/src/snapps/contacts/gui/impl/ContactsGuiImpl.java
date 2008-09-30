@@ -1,4 +1,4 @@
-package snapps.contacts.impl;
+package snapps.contacts.gui.impl;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -9,7 +9,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import snapps.contacts.ContactsSnapp;
+import snapps.contacts.gui.ContactsGui;
 import sneer.kernel.container.Inject;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
@@ -23,13 +23,13 @@ import wheel.lang.Functor;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Adapter;
 
-class ContactsSnappImpl implements ContactsSnapp {
+class ContactsGuiImpl implements ContactsGui {
 
 	private static final Image ONLINE = getImage("online.png");
 	private static final Image OFFLINE = getImage("offline.png");
 	
 	@Inject
-	static private InstrumentManager _snapps;
+	static private InstrumentManager _instrumentManager;
 
 	@Inject
 	static private ContactManager _contacts;
@@ -42,12 +42,12 @@ class ContactsSnappImpl implements ContactsSnapp {
 	
 	private ListWidget<Contact> _contactList;
 	
-	public ContactsSnappImpl(){
-		_snapps.registerInstrument(this);
+	ContactsGuiImpl(){
+		_instrumentManager.registerInstrument(this);
 	} 
 
 	private static Image getImage(String fileName) {
-		return Images.getImage(ContactsSnappImpl.class.getResource(fileName));
+		return Images.getImage(ContactsGuiImpl.class.getResource(fileName));
 	}
 	
 	@Override

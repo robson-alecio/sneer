@@ -21,17 +21,17 @@ public class DashboardDemo  {
 	public static void main(String[] args) throws Exception {
 		sneer.kernel.container.Container container = ContainerUtils.getContainer();
 
-		InstrumentManager snappManager = container.produce(InstrumentManager.class);
-		installSampleSnapps(snappManager);
+		InstrumentManager instrumentManager = container.produce(InstrumentManager.class);
+		installSampleInstrument(instrumentManager);
 		container.produce(Dashboard.class);
 
 		Threads.sleepWithoutInterruptions(30000);
 	}
 	
-	private static void installSampleSnapps(InstrumentManager snappManager) {
-		snappManager.registerInstrument(new Snapp1());
-		snappManager.registerInstrument(new Snapp2());
-		snappManager.registerInstrument(new Snapp3());
+	private static void installSampleInstrument(InstrumentManager manager) {
+		manager.registerInstrument(new Snapp1());
+		manager.registerInstrument(new Snapp2());
+		manager.registerInstrument(new Snapp3());
     }
 	
 }

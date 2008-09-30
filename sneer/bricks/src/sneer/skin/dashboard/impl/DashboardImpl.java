@@ -54,7 +54,7 @@ class DashboardImpl implements Dashboard, Runnable {
 	static private OwnNameKeeper _ownNameKeeper;
 		
 	@Inject
-	static private InstrumentManager _snappManager;
+	static private InstrumentManager _instrumentManager;
 
 	@Inject
 	private BlinkingLights _blinkingLights;
@@ -72,7 +72,7 @@ class DashboardImpl implements Dashboard, Runnable {
 	private transient JPanel contentPanel;
 	
 	@SuppressWarnings("unused")
-	private SimpleListReceiver<Instrument> _snappsReceiver;
+	private SimpleListReceiver<Instrument> _instrumentsReceiver;
 	
 	public DashboardImpl() {
 		threadPool.registerActor(this);
@@ -85,7 +85,7 @@ class DashboardImpl implements Dashboard, Runnable {
 
 		initTrayIconIfPossible();
 		
-		addSnappManagerReceiver();
+		addInstrumentsReceiver();
 		
 		open();
 	}
@@ -104,8 +104,8 @@ class DashboardImpl implements Dashboard, Runnable {
 		addExitAction(tray);
 	}
 
-	private void addSnappManagerReceiver() {
-		_snappsReceiver = new SimpleListReceiver<Instrument>(_snappManager.installedInstruments()){
+	private void addInstrumentsReceiver() {
+		_instrumentsReceiver = new SimpleListReceiver<Instrument>(_instrumentManager.installedInstruments()){
 
 			@Override
 			protected void elementAdded(Instrument newElement) {
@@ -253,19 +253,19 @@ class DashboardImpl implements Dashboard, Runnable {
 	
 	
 	@Override
-	public void moveSnapp(int index, InstrumentWindow frame) {
+	public void moveInstrument(int index, InstrumentWindow frame) {
 		contentPanel.remove(frame.getContent());
 		contentPanel.add(frame.getContent(), index);
 	}
 
 	@Override
-	public void moveSnappDown(InstrumentWindow frame) {
+	public void moveInstrumentDown(InstrumentWindow frame) {
 		contentPanel.remove(frame.getContent());
 		contentPanel.add(frame.getContent(), 0);
 	}
 
 	@Override
-	public void moveSnappUp(InstrumentWindow frame) {
+	public void moveInstrumentUp(InstrumentWindow frame) {
 		contentPanel.remove(frame.getContent());
 		contentPanel.add(frame.getContent());
 	}

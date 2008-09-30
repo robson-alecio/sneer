@@ -6,8 +6,8 @@ public interface Dashboard{
 
 	Container getRootPanel();
 	Container getContentPanel();
-	void moveSnapp(int index, InstrumentWindow frame);
-	void moveSnappUp(InstrumentWindow frame);
-	void moveSnappDown(InstrumentWindow frame);
+	void moveInstrument(int index, InstrumentWindow frame);
+	void moveInstrumentUp(InstrumentWindow frame);
+	void moveInstrumentDown(InstrumentWindow frame);
 	
 }

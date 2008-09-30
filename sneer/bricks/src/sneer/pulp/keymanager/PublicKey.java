@@ -1,8 +1,7 @@
 package sneer.pulp.keymanager;
 
-import java.io.Serializable;
 
-public interface PublicKey extends Serializable {
+public interface PublicKey {
 
 	byte[] bytes();
 	

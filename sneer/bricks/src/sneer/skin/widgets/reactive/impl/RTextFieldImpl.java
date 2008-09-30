@@ -13,10 +13,6 @@ class RTextFieldImpl extends RAbstractField<JTextField> {
 	
 	private static final long serialVersionUID = 1L;
 
-	RTextFieldImpl(Signal<String> source) {
-		this(source, null, true);
-	}
-
 	RTextFieldImpl(Signal<String> source, Consumer<String> setter, boolean notifyOnlyWhenDoneEditing) {
 		super(new JTextField(), source, setter, notifyOnlyWhenDoneEditing);
 	}

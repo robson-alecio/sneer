@@ -3,10 +3,10 @@ package functional.freedom5;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.junit.Assert;
 import org.junit.Test;
 
 import wheel.lang.Collections;
+import wheel.lang.Threads;
 import wheel.reactive.lists.ListSignal;
 import functional.SovereignFunctionalTestBase;
 import functional.SovereignParty;
@@ -28,10 +28,10 @@ public abstract class Freedom5TestBase extends SovereignFunctionalTestBase {
 		c.shout("C!!!");
 		d.shout("D!!!");
 
-		assertShoutsHeardBy(_a, "A!!!, B!!!, C!!!, D!!!");
-		assertShoutsHeardBy(_b, "A!!!, B!!!, C!!!, D!!!");
-		assertShoutsHeardBy(c, "A!!!, B!!!, C!!!, D!!!");
-		assertShoutsHeardBy(d, "A!!!, B!!!, C!!!, D!!!");
+		waitForShoutsHeardBy(_a, "A!!!, B!!!, C!!!, D!!!");
+		waitForShoutsHeardBy(_b, "A!!!, B!!!, C!!!, D!!!");
+		waitForShoutsHeardBy(c, "A!!!, B!!!, C!!!, D!!!");
+		waitForShoutsHeardBy(d, "A!!!, B!!!, C!!!, D!!!");
 		
 		//Implement: Measure traffic among peers
 //		assertSame(8, abTraffic.currentValue());
@@ -41,9 +41,9 @@ public abstract class Freedom5TestBase extends SovereignFunctionalTestBase {
 		
 	}
 
-	private void assertShoutsHeardBy(SovereignParty user, String shoutsExpected) {
-		shoutsExpected.toString();
-		Assert.assertEquals(shoutsExpected, concat(user.shoutsHeard()));
+	private void waitForShoutsHeardBy(SovereignParty user, String shoutsExpected) {
+		while (!shoutsExpected.equals(concat(user.shoutsHeard())))
+			Threads.sleepWithoutInterruptions(10);
 	}
 	
 	private String concat(ListSignal<?> listSignal) {

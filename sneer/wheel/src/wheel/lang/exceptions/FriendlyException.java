@@ -13,6 +13,11 @@ public class FriendlyException extends Exception {
 		_help = help;
 	}
 
+	public FriendlyException(Throwable cause, String message, String help) {
+		super(message, cause);
+		_help = help;
+	}
+
 
 	public FriendlyException(Throwable cause, String help) {
 		super(cause.getMessage(), cause);

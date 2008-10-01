@@ -1,11 +1,15 @@
 package sneer.skin.sound;
 
 import sneer.pulp.tuples.Tuple;
+import wheel.lang.ImmutableByteArray;
 
 /** A packet of PCM-encoded sound: 8000Hz, 16 bits, 2 Channels (Stereo), Signed, Little Endian */
 public class PcmSoundPacket extends Tuple {
 
-	/** A newly created array with a copy of the contents of this packet. You can write to this array. See description of this interface.*/
-	//byte[] payload();
+	public final ImmutableByteArray _payload;
+
+	public PcmSoundPacket(byte[] bufferToCopy, int bytesToCopy) {
+		_payload = new ImmutableByteArray(bufferToCopy, bytesToCopy);
+	}
 	
 }

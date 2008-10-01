@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         id="sneerBuilder"
+         name="Sneer Project Checker"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            hasNature="true">
+         <run
+               class="snuggin.builder.SneerBuilder">
+         </run>
+      </builder>
+   </extension>
+   <extension
+         id="sneerNature"
+         name="Sneer Project Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="snuggin.builder.SneerNature">
+         </run>
+      </runtime>
+      <builder
+            id="snuggin.sneerBuilder">
+      </builder>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            objectClass="org.eclipse.core.resources.IProject"
+            nameFilter="*"
+            id="snuggin.contribution1">
+         <action
+               label="Toggle Sneer Nature"
+               class="snuggin.builder.ToggleNatureAction"
+               menubarPath="additions"
+               enablesFor="+"
+               id="snuggin.addRemoveNatureAction">
+         </action>
+      </objectContribution>
+   </extension>
+   <extension
+         id="sneerProblem"
+         name="Sneer Problem"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <persistent
+            value="true">
+      </persistent>
+   </extension>
+
+</plugin>

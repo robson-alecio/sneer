@@ -24,13 +24,16 @@ public class SpeexMicrophone extends Thread {
 	public SpeexMicrophone(AudioConsumer consumer) throws LineUnavailableException {
 		_consumer = consumer;
 		
-		_line = AudioCommon.getInstance().bestAvailableTargetDataLine();
+		_line = AudioCommon.bestAvailableTargetDataLine();
 		_line.open();
 		_line.start();
 		
 		_format = _line.getFormat();
 		_encoder.init(AudioUtil.NARROWBAND_ENCODING, AudioUtil.SOUND_QUALITY, (int) _format.getFrameRate(), _format.getChannels());
 
+		System.out.println("Frame size: " + _encoder.getFrameSize());
+
+		
 		setDaemon(true);
 		start();
 	}

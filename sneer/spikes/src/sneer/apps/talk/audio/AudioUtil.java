@@ -9,15 +9,13 @@ public class AudioUtil {
 
 	static final int SAMPLE_SIZE_IN_BITS = 16;
 
-	static final int CHANNELS = 2; //for linux/alsa compatibility, should not use mono
+	private static final int CHANNELS = 2; //for linux/alsa compatibility, should not use mono
 
 	static final boolean SIGNED = true;
 
 	static final boolean BIG_ENDIAN = false;
 
 	static final int FRAMES_PER_AUDIO_PACKET = 10;
-
-	static final int PCM_BUFFER_SIZE = SAMPLE_RATE * FRAME_DURATION_MILLIS * CHANNELS * SAMPLE_SIZE_IN_BITS / 8 / 1000;
 
 	static final AudioFormat AUDIO_FORMAT = new AudioFormat(SAMPLE_RATE, SAMPLE_SIZE_IN_BITS, CHANNELS, SIGNED, BIG_ENDIAN);
 

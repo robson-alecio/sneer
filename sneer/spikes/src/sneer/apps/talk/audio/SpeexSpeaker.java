@@ -18,7 +18,7 @@ public class SpeexSpeaker {
 
 	
 	public SpeexSpeaker() throws LineUnavailableException {
-		_line = AudioCommon.getInstance().bestAvailableSourceDataLine();
+		_line = AudioCommon.bestAvailableSourceDataLine();
 		_line.open();
 		_line.start();
 		

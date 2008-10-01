@@ -1,5 +1,6 @@
 package sneer.apps.talk.audio;
 
+
 public class LoopbackTest {
 
 	public LoopbackTest() {
@@ -10,6 +11,7 @@ public class LoopbackTest {
 			final SpeexSpeaker finalSpeaker = speaker;
 			microphone = new SpeexMicrophone(new SpeexMicrophone.AudioConsumer() {
 				public void audio(byte[][] contents) {
+					
 					finalSpeaker.sendAudio(contents);
 
 				}
@@ -17,7 +19,8 @@ public class LoopbackTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.print("\n\nTalk into the mic now. Your own voice will be played. Closing in 15 seconds...");
+		System.out.println("\n\nTalk into the mic now. Your own voice will be played. Closing in 15 seconds...");
+		System.out.print("Closing in 15 seconds...");
 		try {
 			Thread.sleep(15000);
 		} catch (Exception e) {

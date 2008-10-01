@@ -3,8 +3,6 @@ package snapps.wind.impl;
 import snapps.wind.Shout;
 import snapps.wind.Wind;
 import sneer.kernel.container.Inject;
-import sneer.pulp.clock.Clock;
-import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Omnivore;
 import wheel.reactive.lists.ListRegister;
@@ -16,11 +14,6 @@ class WindImpl implements Wind, Omnivore<Shout> {
 	@Inject
 	static private TupleSpace _environment;
 
-	@Inject
-	static private Clock _clock;
-	
-	@Inject
-	static private KeyManager _keyManager;
 
 	private ListRegister<Shout> _shoutsHeard = new ListRegisterImpl<Shout>();
 
@@ -46,7 +39,7 @@ class WindImpl implements Wind, Omnivore<Shout> {
 	}
 
 	private void shout(String phrase) {
-		_environment.publish(new Shout(_keyManager.ownPublicKey(), _clock.time(), phrase));
+		_environment.publish(new Shout(phrase));
 	}
 	
 

@@ -2,15 +2,29 @@ package sneer.pulp.tuples;
 
 import java.lang.reflect.Field;
 
+import sneer.kernel.container.Inject;
+import sneer.pulp.clock.Clock;
+import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
 
 public abstract class Tuple {
 
+	@Inject
+	static private Clock _clock;
+
+	@Inject
+	static private KeyManager _keys;
+	
+	
+	public Tuple() {
+		this(_keys.ownPublicKey(), _clock.time());
+	}
+	
 	public Tuple(PublicKey pPublisher, long pPublicationTime) {
 		publisher = pPublisher;
 		publicationTime = pPublicationTime;
 	}
-	
+
 	public final PublicKey publisher;
 	public final long publicationTime;
 	

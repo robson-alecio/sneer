@@ -19,7 +19,7 @@ public class LoopbackTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("\n\nTalk into the mic now. Your own voice will be played. Closing in 15 seconds...");
+		System.out.println("\n\nTalk into the mic now. Your own voice will be played.");
 		System.out.print("Closing in 15 seconds...");
 		try {
 			Thread.sleep(15000);

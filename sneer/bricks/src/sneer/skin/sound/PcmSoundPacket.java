@@ -1,4 +1,4 @@
-package sneer.pulp.audio;
+package sneer.skin.sound;
 
 import sneer.pulp.tuples.Tuple;
 

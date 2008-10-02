@@ -1,8 +1,6 @@
 ﻿MAIN ROADMAP
 ===================
-	- [Rodrigo and Kalecser] Fix the Hudson build.
-
-	- ByteConnection legacy protocol - migrate all uses to new protocol.
+	- [Rodrigo] Fix the Hudson build.
 
 	- Wind
 		- Gui - Shouter's nick, Shout time. new SimpleDateFormat("HH:mm").format(date) + " <b>"+ sender + ":</b> " + text;
@@ -17,6 +15,8 @@
 
 	- Brick Publish (Supposedly working already)
 		- MainDemo - Publish all necessary bricks instead of just producing them.
+
+	- ByteConnection legacy protocol - migrate all uses to new protocol.
 
 	- [Petra] Tray and Dashboard Titlebar Icon
 	- [Petra] Online and Offline Icons

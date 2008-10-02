@@ -70,15 +70,15 @@ class WindGuiImpl implements WindGui {
 	public void init(Container container) {
 		_container = container;
 		_shoutsList = _rfactory.newList(_wind.shoutsHeard(), new ShoutLabelProvider());
+		_shoutsList.setLineSpace(8);
 		_myShout = _rfactory.newTextField(new Constant<String>(""), _wind.megaphone(), true);
-		
 		iniGui();
 	}
 
 	private void iniGui() {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
+		
 		_container.setLayout(new BorderLayout());
 		_container.add(scrollPane, BorderLayout.CENTER);
 		_container.add(_myShout.getComponent(), BorderLayout.SOUTH);

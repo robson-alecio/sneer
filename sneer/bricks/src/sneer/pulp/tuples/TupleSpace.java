@@ -9,7 +9,7 @@ public interface TupleSpace {
 
 	void publish(Tuple tuple);
 
-	<T extends Tuple> void addSubscription(Omnivore<T> subscriber, Class<T> tupleType);
+	<T extends Tuple> void addSubscription(Class<T> tupleType, Omnivore<T> subscriber);
 
 	<T extends Tuple> Iterable<T> tuples(Class<T> tupleType);
 

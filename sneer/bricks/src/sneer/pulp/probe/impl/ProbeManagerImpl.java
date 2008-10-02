@@ -36,7 +36,7 @@ public class ProbeManagerImpl implements ProbeManager, Omnivore<Tuple> {
 	
 	{
 		registerContactReceiver();
-		_tuples.addSubscription(this, Tuple.class);
+		_tuples.addSubscription(Tuple.class, this);
 	}
 
 	@Override

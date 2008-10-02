@@ -18,7 +18,7 @@ class WindImpl implements Wind, Omnivore<Shout> {
 	private ListRegister<Shout> _shoutsHeard = new ListRegisterImpl<Shout>();
 
 	{
-		_environment.addSubscription(this, Shout.class);
+		_environment.addSubscription(Shout.class, this);
 	}
 
 	@Override

@@ -54,7 +54,7 @@ public class TupleSpaceImpl implements TupleSpace {
 	}
 
 	@Override
-	public <T extends Tuple> void addSubscription(Omnivore<T> subscriber,	Class<T> tupleType) {
+	public <T extends Tuple> void addSubscription(Class<T> tupleType,	Omnivore<T> subscriber) {
 		_subscriptions.add(new Subscription(subscriber, tupleType));
 	}
 

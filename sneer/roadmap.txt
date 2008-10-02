@@ -5,10 +5,13 @@
 	- ByteConnection legacy protocol - migrate all uses to new protocol.
 
 	- Wind
-		- Gui - Shouter's nick, Shout time. See ConversationFrame in sneer_monolith. new SimpleDateFormat("HH:mm").format(date) + " <b>"+ sender + ":</b> " + text;
-	- Voice Calls - Migrate from the old sneermonolith project
+		- Gui - Shouter's nick, Shout time. new SimpleDateFormat("HH:mm").format(date) + " <b>"+ sender + ":</b> " + text;
+	- Voice Calls
+		- Mic brick started. See LoopbackTest spike.
 	---- WE DROP SKYPE :)
-	- Screen Viewing à la VNC - There is a free vnc client implementation in Java. If there is no free server implementation in java, just send screen deltas over using gzip compression for now.
+	- WatchMe - Screen Viewing à la VNC
+		- Unignore ImageCodecTest and make it pass.
+			- Consider the image a grid of cells (64x64 pixels). If a cell changes, compress it with png and send it over.
 	---- WE DROP VNC
 	---------------------------------- LAST DOGFOOD RELEASE - Now we start cleaning up until we reach "No Broken Windows" status.
 

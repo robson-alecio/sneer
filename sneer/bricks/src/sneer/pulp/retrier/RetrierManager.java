@@ -1,7 +1,9 @@
 package sneer.pulp.retrier;
 
-public interface RetrierManager {
+import sneer.kernel.container.Brick;
 
-	Retrier startRetrier(int periodBetweenAttempts, Task task);
+public interface RetrierManager extends Brick {
+
+	Retrier startRetrier(String threadName, int periodBetweenAttempts, Task task);
 
 }

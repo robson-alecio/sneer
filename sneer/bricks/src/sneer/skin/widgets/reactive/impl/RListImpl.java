@@ -13,7 +13,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JWindow;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingUtilities;
 
@@ -27,7 +26,9 @@ import wheel.reactive.lists.ListSignal;
 class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 
 	private static final long serialVersionUID = 1L;
+	private int _lineSpace = 0;
 
+	private final Resizer _resizer;
 	protected final ListSignal<ELEMENT> _source;
 	protected LabelProvider<ELEMENT> _labelProvider;
 
@@ -41,9 +42,12 @@ class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 	RListImpl(ListSignal<ELEMENT> source, LabelProvider<ELEMENT> labelProvider) {
 		_source = source;
 		_labelProvider = labelProvider;
+		_resizer = new Resizer();
 		initModel();
 
 		class DefaultListCellRenderer implements ListCellRenderer {
+			
+			static final int scrollWidth = 20;
 
 			@Override
 			public Component getListCellRendererComponent(JList ignored, Object value, int ignored2, boolean isSelected, boolean cellHasFocus) {
@@ -74,19 +78,15 @@ class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 				new Receiver<Object>() {@Override	public void consume(Object ignore) {
 					repaintList();
 				}};
-
-				packLines(area, root);
+				
+				_resizer.packComponent(area, RListImpl.this.getSize().width-scrollWidth);
+				addLineSpace(root);
 				return root;
 			}
 
-			private void packLines(JTextArea area, JPanel root) { //Optimize - implement pack method without JWindow
-				Dimension listSize = RListImpl.this.getSize();
-				root.setPreferredSize(new Dimension(listSize.width-20, listSize.height*5));
-				JWindow win = new JWindow();
-				win.add(root);
-				win.pack();
-				root.setPreferredSize(new Dimension(listSize.width-20, area.getPreferredSize().height));
-				win.remove(root);
+			private void addLineSpace(JPanel root) {
+				Dimension psize = root.getPreferredSize();
+				root.setPreferredSize(new Dimension(psize.width, psize.height+_lineSpace));
 			}
 
 			private ELEMENT getElement(Object value) {
@@ -124,5 +124,10 @@ class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 	@Override
 	public ListSignal<ELEMENT> output() {
 		return _source;
+	}
+
+	@Override
+	public void setLineSpace(int lineSpace) {
+		_lineSpace = lineSpace;
 	}
 }

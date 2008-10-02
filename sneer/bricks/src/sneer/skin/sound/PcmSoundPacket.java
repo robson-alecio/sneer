@@ -8,8 +8,8 @@ public class PcmSoundPacket extends Tuple {
 
 	public final ImmutableByteArray _payload;
 
-	public PcmSoundPacket(byte[] bufferToCopy, int bytesToCopy) {
-		_payload = new ImmutableByteArray(bufferToCopy, bytesToCopy);
+	public PcmSoundPacket(ImmutableByteArray payload) {
+		_payload = payload;
 	}
 	
 }

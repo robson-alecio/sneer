@@ -1,12 +1,19 @@
 package sneer.skin.widgets.reactive.impl;
 
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JWindow;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingUtilities;
 
@@ -38,25 +45,48 @@ class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 
 		class DefaultListCellRenderer implements ListCellRenderer {
 
-			private javax.swing.DefaultListCellRenderer renderer = new javax.swing.DefaultListCellRenderer();
-
 			@Override
 			public Component getListCellRendererComponent(JList ignored, Object value, int ignored2, boolean isSelected, boolean cellHasFocus) {
 				
-				Signal<String> slabel = _labelProvider.labelFor(getElement(value));
-				Signal<Image> sicon = _labelProvider.imageFor(getElement(value));
+				Signal<String> signalText = _labelProvider.labelFor(getElement(value));
+				Signal<Image> signalImage = _labelProvider.imageFor(getElement(value));
+
+				JPanel root = new JPanel();
+				root.setLayout(new GridBagLayout());
+				root.setOpaque(false);
 				
-				ImageIcon icon = new ImageIcon(sicon.currentValue());
-				JLabel label = (JLabel) renderer.getListCellRendererComponent(ignored, value, ignored2, isSelected, cellHasFocus);
-				label.setIcon(icon);
-				label.setText(slabel.currentValue());
+				JLabel icon = new JLabel(new ImageIcon(signalImage.currentValue()));
+				icon.setOpaque(false);
 				
-				@SuppressWarnings("unused")
-				Receiver<Object> _listRepainter = new Receiver<Object>() {@Override	public void consume(Object ignore) {
+				JTextArea area = new JTextArea();
+				area.setWrapStyleWord(true);
+				area.setLineWrap(true);
+				area.setText(signalText.currentValue());
+				
+				root.add(icon, new GridBagConstraints(0,0,1,1,0,0, 
+						GridBagConstraints.NORTHWEST, 
+						GridBagConstraints.NONE, new Insets(0,0,0,0), 0,0));
+
+				root.add(area, new GridBagConstraints(1,0,1,1,1.,1., 
+						GridBagConstraints.NORTHWEST, 
+						GridBagConstraints.BOTH, new Insets(0,0,0,0), 0,0));;
+						
+				new Receiver<Object>() {@Override	public void consume(Object ignore) {
 					repaintList();
 				}};
 
-				return label;
+				packLines(area, root);
+				return root;
+			}
+
+			private void packLines(JTextArea area, JPanel root) { //Optimize - implement pack method without JWindow
+				Dimension listSize = RListImpl.this.getSize();
+				root.setPreferredSize(new Dimension(listSize.width-20, listSize.height*5));
+				JWindow win = new JWindow();
+				win.add(root);
+				win.pack();
+				root.setPreferredSize(new Dimension(listSize.width-20, area.getPreferredSize().height));
+				win.remove(root);
 			}
 
 			private ELEMENT getElement(Object value) {

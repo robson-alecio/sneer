@@ -7,6 +7,7 @@ import java.awt.Image;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
@@ -76,6 +77,8 @@ class WindGuiImpl implements WindGui {
 
 	private void iniGui() {
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
 		_container.setLayout(new BorderLayout());
 		_container.add(scrollPane, BorderLayout.CENTER);
 		_container.add(_myShout.getComponent(), BorderLayout.SOUTH);

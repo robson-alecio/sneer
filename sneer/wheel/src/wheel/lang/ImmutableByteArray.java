@@ -8,6 +8,7 @@ public class ImmutableByteArray {
 
 	public ImmutableByteArray(byte[] bufferToCopy, int bytesToCopy) {
 		_payload = Arrays.copyOf(bufferToCopy, bytesToCopy);
+		_payload.toString();
 	}
 
 }

@@ -20,7 +20,7 @@ import wheel.reactive.lists.ListSignal;
 class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 	
 	@Inject
-	private static ImageFactory imageFactory;
+	private static ImageFactory _imageFactory;
 
 	@Override
 	public TextWidget<JTextField> newEditableLabel(Signal<String> source, Consumer<String> setter) {
@@ -54,12 +54,12 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 
 	@Override
 	public ImageWidget newImage(Signal<Image> source,Omnivore<Image> setter) {
-		return new RImageImpl(imageFactory, source, setter);
+		return new RImageImpl(_imageFactory, source, setter);
 	}
 
 	@Override
 	public ImageWidget newImage(Signal<Image> source) {
-		return new RImageImpl(imageFactory, source);
+		return new RImageImpl(_imageFactory, source);
 	}
 
 	@Override

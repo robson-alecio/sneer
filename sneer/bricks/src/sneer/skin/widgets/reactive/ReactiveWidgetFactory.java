@@ -4,6 +4,7 @@ import java.awt.Image;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
@@ -24,7 +25,7 @@ public interface ReactiveWidgetFactory {
 	TextWidget<JTextField> newTextField(Signal<String> source, Omnivore<String> setter);
 	TextWidget<JTextField> newTextField(Signal<String> source, Omnivore<String> setter, boolean notifyOnlyWhenDoneEditing);
 	
-	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> _labelProvider);
-	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> provider, boolean htmlSupport);
+	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> labelProvider);
+	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> labelProvider,	ListCellRenderer cellRenderer);
 
 }

@@ -1,4 +1,4 @@
-package sneer.skin.widgets.reactive.impl;
+package snapps.wind.gui.impl;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
+import javax.swing.ListCellRenderer;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Style;
@@ -23,62 +24,67 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
-import sneer.skin.widgets.resizer.Resizer;
+import snapps.wind.Shout;
+import sneer.kernel.container.Inject;
+import sneer.pulp.contacts.Contact;
+import sneer.pulp.keymanager.KeyManager;
+import sneer.pulp.own.name.OwnNameKeeper;
+import sneer.skin.widgets.reactive.LabelProvider;
 import wheel.reactive.Signal;
-import wheel.reactive.impl.Receiver;
 
-class RListStyledCellRenderer<ELEMENT> extends RListSimpleCellRenderer<ELEMENT>  {
+class RListStyledCellRenderer implements ListCellRenderer {
 
+	@Inject
+	private static KeyManager _keys;
+
+	@Inject
+	private static OwnNameKeeper _ownName;
+	
 	private static final String SHOUT = "shout";
 	private static final String SHOUT_TIME = "shoutTime";
 	private static final String SHOUTERS_NICK = "shoutersNick";
-	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("dd/MM/yy HH:mm");
-	private static final int scrollWidth = 20;
-	private final Resizer _resizer;
+	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("HH:mm");
+	private static final int SCROLL_WIDTH = 10;
 	
-	RListStyledCellRenderer(RListImpl<ELEMENT> rlist, Resizer resizer) {
-		super(rlist);
-		_resizer = resizer;
+	private static final int SPACE_BETWEEN_LINES = 5;
+	
+	private final LabelProvider<Shout> _labelProvider;
+	
+	RListStyledCellRenderer(LabelProvider<Shout> labelProvider) {
+		_labelProvider = labelProvider;
 	}
 
 	@Override
-	public Component getListCellRendererComponent(JList ignored, Object value, int ignored2, boolean isSelected, boolean cellHasFocus) {
-
-		JComponent icon = createIcon(value);
-		JComponent text = createText(value);
+	public Component getListCellRendererComponent(JList jList, Object element, int ignored2, boolean isSelected, boolean cellHasFocus) {
+		Shout shout = (Shout)element;
+		JComponent icon = createIcon(shout);
+		JComponent text = createText(shout);
 		JComponent root = createRootPanel(icon, text);
 
-		new Receiver<Object>() {
-			@Override
-			public void consume(Object ignore) {
-				_rlist.repaintList();
-			}
-		};
-
-		_resizer.pack(text, _rlist.getSize().width - scrollWidth);
+		Resizer.pack(text, jList.getWidth() - SCROLL_WIDTH);
 		addLineSpace(root);
 		return root;
 	}
 	
-	private JComponent createIcon(Object value) {
-		Signal<Image> signalImage = _rlist._labelProvider.imageFor(getElement(value));
+	private JComponent createIcon(Shout shout) {
+		Signal<Image> signalImage = _labelProvider.imageFor(shout);
 		JLabel icon = new JLabel(new ImageIcon(signalImage.currentValue()));
 		icon.setOpaque(false);
 		return icon;
 	}
 	
-	private JComponent createText(Object value) {
-		Signal<String> signalText = _rlist._labelProvider.labelFor(getElement(value));
-		JTextPane area = new JTextPane();
+	private JComponent createText(Shout shout) {
 		StyledDocument doc = new DefaultStyledDocument();
 	    initDocumentStyles(doc);
 	    
-		appendStyledText(doc, getShoutersNick() + " ", SHOUTERS_NICK);
-		appendStyledText(doc, getFormatedShoutTime() + "\n", SHOUT_TIME);
+		appendStyledText(doc, getShoutersNick(shout), SHOUTERS_NICK);
+		appendStyledText(doc, getFormatedShoutTime(shout) + "\n", SHOUT_TIME);
+		Signal<String> signalText = _labelProvider.labelFor(shout);
 		appendStyledText(doc, signalText.currentValue(), SHOUT);
 
-		area.setDocument(doc);
-		return area;
+		JTextPane result = new JTextPane();
+		result.setDocument(doc);
+		return result;
 	}
 
 	private void appendStyledText(StyledDocument doc, String msg, String style) {
@@ -89,14 +95,20 @@ class RListStyledCellRenderer<ELEMENT> extends RListSimpleCellRenderer<ELEMENT> 
 		}
 	}
 
-	private String getFormatedShoutTime() {
-		//Implement get tuple shout time
-		return FORMAT.format(new Date());
+	private String getFormatedShoutTime(Shout shout) {
+		return FORMAT.format(new Date(shout.publicationTime));
 	}
 
-	private String getShoutersNick() {
-		//Implement get tuple shouter's nick
-		return ("SENDER").toUpperCase();
+	private String getShoutersNick(Shout shout) {
+		if (isMyOwnShout(shout))
+			return "";
+		
+		Contact contact = _keys.contactGiven(shout.publisher);
+		return contact == null ? "<Unknown> " : contact.nickname().currentValue() + " ";
+	}
+
+	private boolean isMyOwnShout(Shout shout) {
+		return _keys.ownPublicKey().equals(shout.publisher);
 	}
 
 	private void initDocumentStyles(StyledDocument doc) {
@@ -131,6 +143,7 @@ class RListStyledCellRenderer<ELEMENT> extends RListSimpleCellRenderer<ELEMENT> 
 
 	private void addLineSpace(JComponent root) {
 		Dimension psize = root.getPreferredSize();
-		root.setPreferredSize(new Dimension(psize.width, psize.height + _rlist.getLineSpace()));
+		root.setPreferredSize(new Dimension(psize.width, psize.height + SPACE_BETWEEN_LINES));
 	}
+	
 }

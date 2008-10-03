@@ -8,6 +8,5 @@ public interface ListWidget<ELEMENT> extends Widget<JList>{
 
 	ListSignal<ELEMENT> output();
 	void setLabelProvider(LabelProvider<ELEMENT> labelProvider);
-	void setLineSpace(int lineSpace);
 	
 }

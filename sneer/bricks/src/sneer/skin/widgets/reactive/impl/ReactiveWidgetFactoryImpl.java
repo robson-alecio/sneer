@@ -4,6 +4,7 @@ import java.awt.Image;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 
 import sneer.kernel.container.Inject;
 import sneer.skin.image.ImageFactory;
@@ -12,7 +13,6 @@ import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
-import sneer.skin.widgets.resizer.Resizer;
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
@@ -22,9 +22,6 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 	
 	@Inject
 	private static ImageFactory _imageFactory;
-
-	@Inject
-	private static Resizer _resizer;
 
 	@Override
 	public TextWidget<JTextField> newEditableLabel(Signal<String> source, Consumer<String> setter) {
@@ -68,11 +65,11 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 
 	@Override
 	public <T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> provider) {
-		return new RListImpl<T>(source, provider);
+		return newList(source, provider, null);
 	}
 
 	@Override
-	public <T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> provider, boolean htmlSupport) {
-		return new RListImpl<T>(source, provider, _resizer, htmlSupport);
+	public <T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> provider, ListCellRenderer cellRenderer) {
+		return new RListImpl<T>(source, provider, cellRenderer);
 	}
 }

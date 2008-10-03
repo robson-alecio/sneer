@@ -69,8 +69,8 @@ class WindGuiImpl implements WindGui {
 	@Override
 	public void init(Container container) {
 		_container = container;
-		_shoutsList = _rfactory.newList(_wind.shoutsHeard(), new ShoutLabelProvider(), true);
-		_shoutsList.setLineSpace(5);
+		ShoutLabelProvider labelProvider = new ShoutLabelProvider();
+		_shoutsList = _rfactory.newList(_wind.shoutsHeard(), labelProvider, new RListStyledCellRenderer(labelProvider));
 		_myShout = _rfactory.newTextField(new Constant<String>(""), _wind.megaphone(), true);
 		iniGui();
 	}

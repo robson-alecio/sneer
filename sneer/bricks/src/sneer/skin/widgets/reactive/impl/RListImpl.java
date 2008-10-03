@@ -2,11 +2,11 @@ package sneer.skin.widgets.reactive.impl;
 
 import javax.swing.JComponent;
 import javax.swing.JList;
+import javax.swing.ListCellRenderer;
 import javax.swing.SwingUtilities;
 
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
-import sneer.skin.widgets.resizer.Resizer;
 import wheel.io.ui.impl.ListSignalModel;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
@@ -17,7 +17,6 @@ class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 
 	protected final ListSignal<ELEMENT> _source;
 	protected LabelProvider<ELEMENT> _labelProvider;
-	private int _lineSpace = 0;
 
 	void repaintList() {
 		SwingUtilities.invokeLater(new Runnable() {@Override public void run() {
@@ -26,19 +25,15 @@ class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 		}});	
 	}
 
-	RListImpl(ListSignal<ELEMENT> source, LabelProvider<ELEMENT> labelProvider, Resizer resizer, boolean htmlSupport) {
+	RListImpl(ListSignal<ELEMENT> source, LabelProvider<ELEMENT> labelProvider, ListCellRenderer cellRenderer ) {
 		_source = source;
 		_labelProvider = labelProvider;
 		initModel();
 		
-		if(htmlSupport)
-			setCellRenderer(new RListStyledCellRenderer<ELEMENT>(this, resizer));
-		else
-			setCellRenderer(new RListSimpleCellRenderer<ELEMENT>(this));
-	}
-
-	RListImpl(ListSignal<ELEMENT> source, LabelProvider<ELEMENT> labelProvider) {
-		this(source, labelProvider, null, false);
+		setCellRenderer(cellRenderer == null
+			? new RListSimpleCellRenderer<ELEMENT>(this)
+			: cellRenderer
+		);
 	}
 
 	private void initModel() {
@@ -70,12 +65,5 @@ class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 		return _source;
 	}
 
-	@Override
-	public void setLineSpace(int lineSpace) {
-		_lineSpace = lineSpace;
-	}
 
-	int getLineSpace() {
-		return _lineSpace;
-	}
 }

@@ -1,4 +1,4 @@
-package sneer.skin.widgets.resizer.impl;
+package snapps.wind.gui.impl;
 
 import java.awt.Container;
 import java.awt.Dimension;
@@ -6,12 +6,9 @@ import java.awt.Dimension;
 import javax.swing.JComponent;
 import javax.swing.JWindow;
 
-import sneer.skin.widgets.resizer.Resizer;
+class Resizer {
 
-class ResizerImpl implements Resizer {
-
-	@Override
-	public void pack(JComponent component, int maxWidth) { //Optimize - implement pack method without JWindow
+	static void pack(JComponent component, int maxWidth) { //Optimize - implement pack method without JWindow
 		Container root = component.getParent();
 		root.setPreferredSize(new Dimension(maxWidth, Integer.MAX_VALUE));
 		JWindow win = new JWindow();

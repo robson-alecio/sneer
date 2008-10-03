@@ -1,4 +1,4 @@
-package functional.freedom7;
+package wheel.io;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,14 +14,14 @@ public class SourceFileWriter {
 	}
 
 	public void write(String className, String code) throws IOException {
-		FileUtils.writeStringToFile(classFile(className), "package " + packageName(className) + ";\n" + code);
+		FileUtils.writeStringToFile(javaFile(className), "package " + packageName(className) + ";\n" + code);
 	}
 
 	private String packageName(String className) {
 		return className.substring(0, className.lastIndexOf('.'));
 	}
 
-	private File classFile(String className) {
+	public File javaFile(String className) {
 		return new File(_root, className.replace('.', '/') + ".java");
 	}
 

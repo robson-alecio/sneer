@@ -54,6 +54,9 @@ public class SimpleContainer implements Container {
 		T component;
 		try {
 			component = lookup(intrface);
+		} catch (ClassNotFoundException e) {
+			String message = ImplementationGenerator.generateFor(intrface);
+			throw new LegoException(message, e);
 		} catch (Exception e) {
 			throw new LegoException(" >>>" + e.getClass().getSimpleName() + ": " + e.getMessage(), e);
 		}
@@ -79,13 +82,8 @@ public class SimpleContainer implements Container {
 
 	private <T> Object construct(Class<?> impl) throws Exception {
 		Constructor<?> c = impl.getDeclaredConstructor();
-		boolean before = c.isAccessible();
 		c.setAccessible(true);
-		try {
-			return c.newInstance();
-		} finally {
-			c.setAccessible(before);
-		}
+		return c.newInstance();
 	}
 
 	private ClassLoader getClassLoader(Class<?> brickClass, File brickDirectory) {
@@ -109,12 +107,7 @@ public class SimpleContainer implements Container {
 		if(!type.isInterface())
 			return type.getName();
 		
-		return implementationFor(type.getName());
-	}
-
-	private String implementationFor(String brickInterface) {
-		int index = brickInterface.lastIndexOf(".");
-		return brickInterface.substring(0, index) + ".impl" + brickInterface.substring(index) + "Impl";
+		return ImplementationGenerator.implementationNameFor(type.getName());
 	}
 
 	//Fix: check if this code will work on production

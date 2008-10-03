@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import sneer.kernel.container.Inject;
 import sneer.pulp.compiler.JavaCompiler;
+import wheel.io.SourceFileWriter;
 import functional.SovereignFunctionalTestBase;
 import functional.SovereignParty;
 

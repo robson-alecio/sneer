@@ -32,7 +32,7 @@ class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 		initModel();
 		
 		if(htmlSupport)
-			setCellRenderer(new RListHtmlCellRenderer<ELEMENT>(this, resizer));
+			setCellRenderer(new RListStyledCellRenderer<ELEMENT>(this, resizer));
 		else
 			setCellRenderer(new RListSimpleCellRenderer<ELEMENT>(this));
 	}

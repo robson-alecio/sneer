@@ -28,7 +28,6 @@ import snapps.wind.Shout;
 import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.keymanager.KeyManager;
-import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.skin.widgets.reactive.LabelProvider;
 import wheel.reactive.Signal;
 
@@ -37,9 +36,6 @@ class RListStyledCellRenderer implements ListCellRenderer {
 	@Inject
 	private static KeyManager _keys;
 
-	@Inject
-	private static OwnNameKeeper _ownName;
-	
 	private static final String SHOUT = "shout";
 	private static final String SHOUT_TIME = "shoutTime";
 	private static final String SHOUTERS_NICK = "shoutersNick";

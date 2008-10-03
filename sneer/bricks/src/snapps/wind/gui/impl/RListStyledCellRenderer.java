@@ -78,7 +78,7 @@ class RListStyledCellRenderer implements ListCellRenderer {
 	    initDocumentStyles(doc);
 	    
 		appendStyledText(doc, getShoutersNick(shout), SHOUTERS_NICK);
-		appendStyledText(doc, getFormatedShoutTime(shout) + "\n", SHOUT_TIME);
+		appendStyledText(doc, getFormatedShoutTime(shout) + " ", SHOUT_TIME);
 		Signal<String> signalText = _labelProvider.labelFor(shout);
 		appendStyledText(doc, signalText.currentValue(), SHOUT);
 

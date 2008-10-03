@@ -32,7 +32,7 @@ class RListStyledCellRenderer<ELEMENT> extends RListSimpleCellRenderer<ELEMENT> 
 	private static final String SHOUT = "shout";
 	private static final String SHOUT_TIME = "shoutTime";
 	private static final String SHOUTERS_NICK = "shoutersNick";
-	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("dd/MM/yy HH:mm");
 	private static final int scrollWidth = 20;
 	private final Resizer _resizer;
 	

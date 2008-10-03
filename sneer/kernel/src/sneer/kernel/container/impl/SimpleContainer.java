@@ -55,7 +55,7 @@ public class SimpleContainer implements Container {
 		try {
 			component = lookup(intrface);
 		} catch (Exception e) {
-			throw new LegoException("Error creating: "+intrface.getName(), e);
+			throw new LegoException(" >>>" + e.getClass().getSimpleName() + ": " + e.getMessage(), e);
 		}
 
 		inject(component);

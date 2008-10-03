@@ -25,5 +25,6 @@ public interface ReactiveWidgetFactory {
 	TextWidget<JTextField> newTextField(Signal<String> source, Omnivore<String> setter, boolean notifyOnlyWhenDoneEditing);
 	
 	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> _labelProvider);
+	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> _labelProvider, boolean htmlSupport);
 
 }

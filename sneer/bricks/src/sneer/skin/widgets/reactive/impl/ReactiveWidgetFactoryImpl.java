@@ -66,4 +66,9 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 	public <T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> provider) {
 		return new RListImpl<T>(source, provider);
 	}
+
+	@Override
+	public <T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> provider, boolean htmlSupport) {
+		return new RListImpl<T>(source, provider, htmlSupport);
+	}
 }

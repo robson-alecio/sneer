@@ -29,12 +29,12 @@ import wheel.reactive.impl.Receiver;
 
 class RListStyledCellRenderer<ELEMENT> extends RListSimpleCellRenderer<ELEMENT>  {
 
-	private static final String MESSAGE = "message";
-	private static final String TIME = "time";
-	private static final String SENDER = "sender";
-	static final int scrollWidth = 20;
+	private static final String SHOUT = "shout";
+	private static final String SHOUT_TIME = "shoutTime";
+	private static final String SHOUTERS_NICK = "shoutersNick";
+	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+	private static final int scrollWidth = 20;
 	private final Resizer _resizer;
-	private final SimpleDateFormat FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 	
 	RListStyledCellRenderer(RListImpl<ELEMENT> rlist, Resizer resizer) {
 		super(rlist);
@@ -42,8 +42,7 @@ class RListStyledCellRenderer<ELEMENT> extends RListSimpleCellRenderer<ELEMENT> 
 	}
 
 	@Override
-	public Component getListCellRendererComponent(JList ignored, Object value,
-			int ignored2, boolean isSelected, boolean cellHasFocus) {
+	public Component getListCellRendererComponent(JList ignored, Object value, int ignored2, boolean isSelected, boolean cellHasFocus) {
 
 		JComponent icon = createIcon(value);
 		JComponent text = createText(value);
@@ -74,15 +73,15 @@ class RListStyledCellRenderer<ELEMENT> extends RListSimpleCellRenderer<ELEMENT> 
 		StyledDocument doc = new DefaultStyledDocument();
 	    initDocumentStyles(doc);
 	    
-		appendSyledText(doc, getSender() + " ", SENDER);
-		appendSyledText(doc, getFormatedDate() + "\n", TIME);
-		appendSyledText(doc, signalText.currentValue(), MESSAGE);
+		appendStyledText(doc, getShoutersNick() + " ", SHOUTERS_NICK);
+		appendStyledText(doc, getFormatedShoutTime() + "\n", SHOUT_TIME);
+		appendStyledText(doc, signalText.currentValue(), SHOUT);
 
 		area.setDocument(doc);
 		return area;
 	}
 
-	private void appendSyledText(StyledDocument doc, String msg, String style) {
+	private void appendStyledText(StyledDocument doc, String msg, String style) {
 		try {
 			doc.insertString(doc.getLength(), msg, doc.getStyle(style));
 		} catch (BadLocationException e) {
@@ -90,29 +89,29 @@ class RListStyledCellRenderer<ELEMENT> extends RListSimpleCellRenderer<ELEMENT> 
 		}
 	}
 
-	private String getFormatedDate() {
-		//Implement get tuple date
+	private String getFormatedShoutTime() {
+		//Implement get tuple shout time
 		return FORMAT.format(new Date());
 	}
 
-	private String getSender() {
-		//Implement get tuple sender
+	private String getShoutersNick() {
+		//Implement get tuple shouter's nick
 		return ("SENDER").toUpperCase();
 	}
 
 	private void initDocumentStyles(StyledDocument doc) {
 		Style def = StyleContext.getDefaultStyleContext().getStyle( StyleContext.DEFAULT_STYLE );
 
-	    Style sender = doc.addStyle( SENDER, def );
+	    Style sender = doc.addStyle( SHOUTERS_NICK, def );
 	    StyleConstants.setForeground(sender, Color.DARK_GRAY);
 	    StyleConstants.setFontSize( sender, 11 );
 	    StyleConstants.setBold(sender, true);
 	    
-	    Style time = doc.addStyle( TIME, def );
+	    Style time = doc.addStyle( SHOUT_TIME, def );
 	    StyleConstants.setFontSize( time, 10 );
 	    StyleConstants.setForeground(time, Color.LIGHT_GRAY);
 
-	    doc.addStyle( MESSAGE, def );
+	    doc.addStyle( SHOUT, def );
 	}
 
 	private JComponent createRootPanel(JComponent icon, JComponent area) {

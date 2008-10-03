@@ -6,6 +6,7 @@ import javax.swing.SwingUtilities;
 
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
+import sneer.skin.widgets.resizer.Resizer;
 import wheel.io.ui.impl.ListSignalModel;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
@@ -25,19 +26,19 @@ class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 		}});	
 	}
 
-	RListImpl(ListSignal<ELEMENT> source, LabelProvider<ELEMENT> labelProvider, boolean htmlSupport) {
+	RListImpl(ListSignal<ELEMENT> source, LabelProvider<ELEMENT> labelProvider, Resizer resizer, boolean htmlSupport) {
 		_source = source;
 		_labelProvider = labelProvider;
 		initModel();
 		
 		if(htmlSupport)
-			setCellRenderer(new RListHtmlCellRenderer<ELEMENT>(this));
+			setCellRenderer(new RListHtmlCellRenderer<ELEMENT>(this, resizer));
 		else
 			setCellRenderer(new RListSimpleCellRenderer<ELEMENT>(this));
 	}
 
 	RListImpl(ListSignal<ELEMENT> source, LabelProvider<ELEMENT> labelProvider) {
-		this(source, labelProvider, false);
+		this(source, labelProvider, null, false);
 	}
 
 	private void initModel() {

@@ -13,16 +13,19 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import sneer.skin.widgets.resizer.Resizer;
+
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
 
 class RListHtmlCellRenderer<ELEMENT> extends RListSimpleCellRenderer<ELEMENT>  {
 
 	static final int scrollWidth = 20;
-	private final Resizer _resizer = new Resizer();
+	private final Resizer _resizer;
 	
-	RListHtmlCellRenderer(RListImpl<ELEMENT> rlist) {
+	RListHtmlCellRenderer(RListImpl<ELEMENT> rlist, Resizer resizer) {
 		super(rlist);
+		_resizer = resizer;
 	}
 
 	@Override
@@ -60,7 +63,7 @@ class RListHtmlCellRenderer<ELEMENT> extends RListSimpleCellRenderer<ELEMENT>  {
 			}
 		};
 
-		_resizer.packComponent(area, _rlist.getSize().width - scrollWidth);
+		_resizer.pack(area, _rlist.getSize().width - scrollWidth);
 		addLineSpace(root);
 		return root;
 	}

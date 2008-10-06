@@ -36,19 +36,28 @@ import wheel.io.ui.impl.TrayIconImpl.SystemTrayNotSupported;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
+//Fix this class using "transient" fields. Fix to use the correct 
+//persistent system. Store and restore the last window size and position
 class DashboardImpl implements Dashboard, Runnable {
 	
-	private static transient final int _WIDTH = 250;
-	private static transient final int _HOFFSET = 30;
+	private Dimension _screenSize;
+	private Rectangle _bounds;
+	
+	private transient JFrame _jframe;
+	private transient JPanel _rootPanel;
+	private transient JPanel _contentPanel;
+	
+	private static transient final int WIDTH = 250;
+	private static transient final int H_OFFSET = 30;
 	
 	@Inject
-	static private ThreadPool threadPool;
+	static private ThreadPool _threadPool;
 	
 	@Inject
-	static private ImageFactory imageFactory;
+	static private ImageFactory _imageFactory;
 	
 	@Inject
-	static private MainMenu mainMenu;
+	static private MainMenu _mainMenu;
 	
 	@Inject
 	static private OwnNameKeeper _ownNameKeeper;
@@ -57,36 +66,25 @@ class DashboardImpl implements Dashboard, Runnable {
 	static private InstrumentManager _instrumentManager;
 
 	@Inject
-	private BlinkingLights _blinkingLights;
+	static private BlinkingLights _blinkingLights;
 	
 	@SuppressWarnings("unused")
 	private final Receiver<String> _ownNameReceiver = new Receiver<String>(_ownNameKeeper.name()) { @Override public void consume(String value) {
 		updateTitle();
 	}};
 		
-	private Dimension screenSize;
-	private Rectangle bounds;
-	
-	private transient JFrame jframe;
-	private transient JPanel rootPanel;
-	private transient JPanel contentPanel;
-	
 	@SuppressWarnings("unused")
 	private SimpleListReceiver<Instrument> _instrumentsReceiver;
 	
-	public DashboardImpl() {
-		threadPool.registerActor(this);
+	DashboardImpl() {
+		_threadPool.registerActor(this);
 	}
 
 	private void initialize() {
-		
 		initWindows();	
 		resizeWindow();
-
 		initTrayIconIfPossible();
-		
 		addInstrumentsReceiver();
-		
 		open();
 	}
 
@@ -124,7 +122,7 @@ class DashboardImpl implements Dashboard, Runnable {
 	}
 
 	private URL logoIconURL() {
-		return imageFactory.getImageUrl(DefaultIcons.logo16x16);
+		return _imageFactory.getImageUrl(DefaultIcons.logo16x16);
 	}
 
 	private void initWindows() {
@@ -132,23 +130,25 @@ class DashboardImpl implements Dashboard, Runnable {
 		initRootPanel();
 	}
 
-	private void initRootPanel() {
-		rootPanel = new JPanel();
-		
-		rootPanel = (JPanel) jframe.getContentPane();
-		
-		rootPanel.setLayout(new BorderLayout());
-		rootPanel.add(mainMenu.getWidget(), BorderLayout.NORTH);
-		contentPanel = new ContentPane();
-		rootPanel.add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(new FlowLayout());
-	}
-
 	private void initFrame() {
-		jframe = new JFrame();
-		jframe.setIconImage(Images.getImage(logoIconURL()));
-
+		_jframe = new JFrame();
+		_jframe.setIconImage(Images.getImage(logoIconURL()));
 		updateTitle();
+	}
+	
+	private void updateTitle() {
+		if (_jframe == null) return;
+		_jframe.setTitle("Sneer - " + _ownNameKeeper.name().currentValue());
+	}	
+	
+	private void initRootPanel() {
+		_rootPanel = new JPanel();
+		_rootPanel = (JPanel) _jframe.getContentPane();
+		_rootPanel.setLayout(new BorderLayout());
+		_rootPanel.add(_mainMenu.getWidget(), BorderLayout.NORTH);
+		_contentPanel = new ContentPane();
+		_rootPanel.add(_contentPanel, BorderLayout.CENTER);
+		_contentPanel.setLayout(new FlowLayout());
 	}
 
 	private InstrumentWindow install(final Instrument instrument) {
@@ -157,7 +157,7 @@ class DashboardImpl implements Dashboard, Runnable {
 			new Runnable(){
 				@Override
 				public void run() {
-					contentPanel.add(sf);
+					_contentPanel.add(sf);
 					instrument.init(sf);
 					sf.revalidate();
 				}
@@ -168,30 +168,30 @@ class DashboardImpl implements Dashboard, Runnable {
 	
 	private void resizeWindow() {
 		Dimension newSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-		if(bounds==null || screenSize==null || !screenSize.equals(newSize)){
-			screenSize  = newSize;
-			bounds = new Rectangle((int) screenSize.getWidth() - _WIDTH, 0, _WIDTH,	
-								   (int) screenSize.getHeight() - _HOFFSET);
+		if(_bounds==null || _screenSize==null || !_screenSize.equals(newSize)){
+			_screenSize  = newSize;
+			_bounds = new Rectangle((int) _screenSize.getWidth() - WIDTH, 0, WIDTH,	
+								   (int) _screenSize.getHeight() - H_OFFSET);
 		}
-		jframe.setBounds(bounds);
+		_jframe.setBounds(_bounds);
 	}
 	
 	private void persistWindowsProperties() {
-		jframe.addWindowListener(new WindowAdapter() {
+		_jframe.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				bounds = jframe.getBounds();
+				_bounds = _jframe.getBounds();
 			}
 		});
 	}
 
 	private void changeWindowCloseEventToMinimizeEvent() {
-		jframe.setDefaultCloseOperation ( WindowConstants.DO_NOTHING_ON_CLOSE );
-		jframe.addWindowListener(new WindowAdapter() {
+		_jframe.setDefaultCloseOperation ( WindowConstants.DO_NOTHING_ON_CLOSE );
+		_jframe.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				bounds = jframe.getBounds();
-				jframe.setState(Frame.ICONIFIED);
+				_bounds = _jframe.getBounds();
+				_jframe.setState(Frame.ICONIFIED);
 			}
 		});
 	}
@@ -214,9 +214,9 @@ class DashboardImpl implements Dashboard, Runnable {
 	}
 	
 	private void open() {
-		jframe.setState(Frame.NORMAL);
-		jframe.setVisible(true);
-		jframe.requestFocusInWindow();
+		_jframe.setState(Frame.NORMAL);
+		_jframe.setVisible(true);
+		_jframe.requestFocusInWindow();
 	}
 	
 	private void addExitAction(TrayIconImpl tray) {
@@ -232,8 +232,8 @@ class DashboardImpl implements Dashboard, Runnable {
 			}
 		};
 		tray.addAction(cmd);
-		mainMenu.getSneerMenu().addSeparator();
-		mainMenu.getSneerMenu().addAction(cmd);
+		_mainMenu.getSneerMenu().addSeparator();
+		_mainMenu.getSneerMenu().addAction(cmd);
 	}
 
 	@Override
@@ -243,38 +243,32 @@ class DashboardImpl implements Dashboard, Runnable {
 	
 	@Override
 	public Container getContentPanel() {
-		return contentPanel;
+		return _contentPanel;
 	}
 	
 	@Override
 	public Container getRootPanel() {
-		return rootPanel;
+		return _rootPanel;
 	}
 	
 	
 	@Override
 	public void moveInstrument(int index, InstrumentWindow frame) {
-		contentPanel.remove(frame.getContent());
-		contentPanel.add(frame.getContent(), index);
+		_contentPanel.remove(frame.getContent());
+		_contentPanel.add(frame.getContent(), index);
 	}
 
 	@Override
 	public void moveInstrumentDown(InstrumentWindow frame) {
-		contentPanel.remove(frame.getContent());
-		contentPanel.add(frame.getContent(), 0);
+		_contentPanel.remove(frame.getContent());
+		_contentPanel.add(frame.getContent(), 0);
 	}
 
 	@Override
 	public void moveInstrumentUp(InstrumentWindow frame) {
-		contentPanel.remove(frame.getContent());
-		contentPanel.add(frame.getContent());
+		_contentPanel.remove(frame.getContent());
+		_contentPanel.add(frame.getContent());
 	}
-
-	private void updateTitle() {
-		if (jframe == null) return;
-		
-		jframe.setTitle("Sneer - " + _ownNameKeeper.name().currentValue());
-	}	
 }
 
 class ContentPane extends JPanel{
@@ -286,6 +280,5 @@ class ContentPane extends JPanel{
 		super.paintComponent(g);
 		g.setColor(new Color(0, 0, 0, 50));
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
-	
 	}
 }

@@ -42,7 +42,7 @@ class WindListCellRenderer implements ListCellRenderer {
 	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("HH:mm");
 	private static final int SCROLL_WIDTH = 10;
 	
-	private static final int SPACE_BETWEEN_LINES = 5;
+	private static final int SPACE_BETWEEN_LINES = 3;
 	
 	private final LabelProvider<Shout> _labelProvider;
 	
@@ -141,5 +141,4 @@ class WindListCellRenderer implements ListCellRenderer {
 		Dimension psize = root.getPreferredSize();
 		root.setPreferredSize(new Dimension(psize.width, psize.height + SPACE_BETWEEN_LINES));
 	}
-	
 }

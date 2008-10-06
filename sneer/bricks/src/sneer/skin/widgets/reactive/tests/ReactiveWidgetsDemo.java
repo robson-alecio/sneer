@@ -51,19 +51,14 @@ public class ReactiveWidgetsDemo {
 	}
 
 	private static void createTestFrame(final TextWidget<?> textWidget, final int x, final int y, final int width, final int height, final String title) {
-		SwingUtilities.invokeLater(
-			new Runnable(){
-				@Override
-				public void run() {
-					final JFrame frm = new JFrame();
-					frm.setTitle(textWidget.getClass().getSimpleName() + " - " + title);
-					frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					frm.getContentPane().setLayout(new FlowLayout());
-					frm.getContentPane().add(textWidget.getComponent());
-					frm.setVisible(true);
-					frm.setBounds(x, y, width, height);
-				}
-			}
-		);
+		SwingUtilities.invokeLater(new Runnable(){@Override public void run() {
+			final JFrame frm = new JFrame();
+			frm.setTitle(textWidget.getClass().getSimpleName() + " - " + title);
+			frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frm.getContentPane().setLayout(new FlowLayout());
+			frm.getContentPane().add(textWidget.getComponent());
+			frm.setVisible(true);
+			frm.setBounds(x, y, width, height);
+		}});
 	}
 }

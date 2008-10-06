@@ -14,7 +14,6 @@ import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.lang.Consumer;
@@ -57,10 +56,8 @@ class REditableLabelImpl extends JPanel implements TextWidget<JTextField>{
 	}
 
 	protected void commitChanges() {
-		SwingUtilities.invokeLater(new Runnable(){@Override public void run() {
-			_text.setVisible(false);
-			_label.setVisible(true);
-		}});
+		_text.setVisible(false);
+		_label.setVisible(true);
 	}
 
 	private void addCommitChangesListener() {

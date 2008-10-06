@@ -3,7 +3,6 @@ package sneer.skin.widgets.reactive.impl;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
-import javax.swing.SwingUtilities;
 
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
@@ -19,10 +18,8 @@ class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 	protected LabelProvider<ELEMENT> _labelProvider;
 
 	void repaintList() {
-		SwingUtilities.invokeLater(new Runnable() {@Override public void run() {
-			revalidate();
-			repaint();
-		}});	
+		revalidate();
+		repaint();
 	}
 
 	RListImpl(ListSignal<ELEMENT> source, LabelProvider<ELEMENT> labelProvider, ListCellRenderer cellRenderer ) {

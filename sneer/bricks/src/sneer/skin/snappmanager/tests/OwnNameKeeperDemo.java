@@ -45,24 +45,16 @@ public class OwnNameKeeperDemo extends TestThatIsInjected {
 	}
 
 	private static void createWidgets(final OwnNameKeeperDemo demo) {
-		
-		SwingUtilities.invokeLater(
-			new Runnable(){
-				@Override
-				public void run() {
-					TextWidget<JTextField> newTextField1 = demo.rfactory.newTextField(demo.ownNameKeeper.name(), demo.ownNameKeeper.nameSetter());
-					final JFrame frm1 =createTestFrame(newTextField1);
-					
-					TextWidget<JTextField> newTextField2 = demo.rfactory.newEditableLabel(demo.ownNameKeeper.name(), demo.ownNameKeeper.nameSetter());
-					final JFrame frm2 =createTestFrame(newTextField2);
-					
-					frm1.setBounds(10, 10, 300, 100);
-					frm2.setBounds(10, 120, 300, 100);
-					frm1.setVisible(true);
-					frm2.setVisible(true);
-				}
-			}
-		);
+		SwingUtilities.invokeLater( new Runnable(){ @Override public void run() {
+			TextWidget<JTextField> newTextField1 = demo.rfactory.newTextField(demo.ownNameKeeper.name(), demo.ownNameKeeper.nameSetter());
+			final JFrame frm1 =createTestFrame(newTextField1);
+			TextWidget<JTextField> newTextField2 = demo.rfactory.newEditableLabel(demo.ownNameKeeper.name(), demo.ownNameKeeper.nameSetter());
+			final JFrame frm2 =createTestFrame(newTextField2);
+			frm1.setBounds(10, 10, 300, 100);
+			frm2.setBounds(10, 120, 300, 100);
+			frm1.setVisible(true);
+			frm2.setVisible(true);
+		}});
 	}
 
 	private static JFrame createTestFrame(final TextWidget<?> textWidget) {

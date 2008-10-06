@@ -44,19 +44,18 @@ public class OwnTaglineKeeperDemo extends TestThatIsInjected {
 	}
 
 	private static void createWidgets(final OwnTaglineKeeperDemo demo) {
-		SwingUtilities.invokeLater(	new Runnable(){ @Override
-			public void run() {
-				TextWidget<JTextField> newTextField1 = demo._rfactory.newTextField(demo._ownTaglineKeeper.tagline(), demo._ownTaglineKeeper.taglineSetter());
-				final JFrame frm1 =createTestFrame(newTextField1);
-				
-				TextWidget<JTextField> newTextField2 = demo._rfactory.newEditableLabel(demo._ownTaglineKeeper.tagline(), demo._ownTaglineKeeper.taglineSetter());
-				final JFrame frm2 =createTestFrame(newTextField2);
-				
-				frm1.setBounds(10, 10, 300, 100);
-				frm2.setBounds(10, 120, 300, 100);
-				frm1.setVisible(true);
-				frm2.setVisible(true);
-			}});
+		SwingUtilities.invokeLater(new Runnable(){ @Override public void run() {
+			TextWidget<JTextField> newTextField1 = demo._rfactory.newTextField(demo._ownTaglineKeeper.tagline(), demo._ownTaglineKeeper.taglineSetter());
+			final JFrame frm1 =createTestFrame(newTextField1);
+			
+			TextWidget<JTextField> newTextField2 = demo._rfactory.newEditableLabel(demo._ownTaglineKeeper.tagline(), demo._ownTaglineKeeper.taglineSetter());
+			final JFrame frm2 =createTestFrame(newTextField2);
+			
+			frm1.setBounds(10, 10, 300, 100);
+			frm2.setBounds(10, 120, 300, 100);
+			frm1.setVisible(true);
+			frm2.setVisible(true);
+		}});
 	}
 
 	private static JFrame createTestFrame(final TextWidget<?> textWidget) {

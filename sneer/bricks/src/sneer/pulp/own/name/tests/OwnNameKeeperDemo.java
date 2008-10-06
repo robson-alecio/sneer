@@ -55,15 +55,13 @@ public class OwnNameKeeperDemo extends TestThatIsInjected {
 	}
 
 	private static void createTestFrame(final TextWidget<?> textWidget, final int x, final int y, final int w, final int h) {
-
-		SwingUtilities.invokeLater(	new Runnable(){@Override
-			public void run() {
-				JFrame frm = new JFrame(textWidget.getClass().getSimpleName());
-				frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frm.getContentPane().setLayout(new FlowLayout());
-				frm.getContentPane().add(textWidget.getComponent());
-				frm.setBounds(x, y, w, h);
-				frm.setVisible(true);
-			}});
+		SwingUtilities.invokeLater(	new Runnable(){@Override	public void run() {
+			JFrame frm = new JFrame(textWidget.getClass().getSimpleName());
+			frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frm.getContentPane().setLayout(new FlowLayout());
+			frm.getContentPane().add(textWidget.getComponent());
+			frm.setBounds(x, y, w, h);
+			frm.setVisible(true);
+		}});
 	}
 }

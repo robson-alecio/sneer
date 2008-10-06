@@ -153,16 +153,11 @@ class DashboardImpl implements Dashboard, Runnable {
 
 	private InstrumentWindow install(final Instrument instrument) {
 		final InstrumentWindowImpl sf = new InstrumentWindowImpl();
-		SwingUtilities.invokeLater(
-			new Runnable(){
-				@Override
-				public void run() {
-					_contentPanel.add(sf);
-					instrument.init(sf);
-					sf.revalidate();
-				}
-			}
-		);
+		SwingUtilities.invokeLater(new Runnable(){	@Override public void run() {
+			_contentPanel.add(sf);
+			instrument.init(sf);
+			sf.revalidate();
+		}});
         return sf;
 	}
 	

@@ -44,19 +44,13 @@ public class ReactiveImageDemo {
 	}
 
 	private static void createTestFrame(final ImageWidget img, final int x, final int y, final int width, final int height) {
-
-		SwingUtilities.invokeLater(
-			new Runnable(){
-				@Override
-				public void run() {
-					final JFrame frm = new JFrame(img.getClass().getSimpleName());
-					frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					frm.getContentPane().setLayout(new FlowLayout());
-					frm.getContentPane().add(img.getComponent());
-					frm.setBounds(x, y, width, height);
-					frm.setVisible(true);
-				}
-			}
-		);
+		SwingUtilities.invokeLater(new Runnable(){@Override public void run() {
+			final JFrame frm = new JFrame(img.getClass().getSimpleName());
+			frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frm.getContentPane().setLayout(new FlowLayout());
+			frm.getContentPane().add(img.getComponent());
+			frm.setBounds(x, y, width, height);
+			frm.setVisible(true);
+		}});
 	}
 }

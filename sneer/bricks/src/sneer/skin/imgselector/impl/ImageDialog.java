@@ -12,7 +12,6 @@ import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLayeredPane;
-import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import sneer.kernel.container.Inject;
@@ -47,15 +46,8 @@ class ImageDialog extends JDialog {
 		addSizeListener();
 		addCloseListener();
 		
-		SwingUtilities.invokeLater(
-			new Runnable() {
-				@Override
-				public void run() {
-					_picture.setLocation(0, 0);
-					setVisible(true);
-				}
-			}
-		);		
+		_picture.setLocation(0, 0);
+		setVisible(true);
 	}
 
 	private void addCloseListener() {
@@ -101,22 +93,11 @@ class ImageDialog extends JDialog {
     
 	private void addSizeListener() {
 		Toolkit.getDefaultToolkit().setDynamicLayout(true);
-		getContentPane().addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentResized(ComponentEvent e) {
-				_picture.setVisible(false);
-				_picture.setIcon(getIcon(_file, getHeight(), getWidth()));
-				SwingUtilities.invokeLater(
-					new Runnable() {
-						@Override
-						public void run() {
-							_picture.setVisible(true);
-						}
-					}
-				);
-			}
-			
-		});
+		getContentPane().addComponentListener(new ComponentAdapter() { @Override public void componentResized(ComponentEvent e) {
+			_picture.setVisible(false);
+			_picture.setIcon(getIcon(_file, getHeight(), getWidth()));
+			_picture.setVisible(true);
+		}});
 	}
 	
 	private ImageIcon getIcon(final File file, int height, int width) {

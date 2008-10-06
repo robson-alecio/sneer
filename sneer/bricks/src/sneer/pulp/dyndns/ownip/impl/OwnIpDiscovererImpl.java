@@ -10,6 +10,7 @@ import sneer.pulp.clock.Clock;
 import sneer.pulp.datastore.DataStore;
 import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
+import wheel.io.Logger;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
@@ -34,7 +35,8 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	
 	private final Register<String> _ownIp;
 
-	private Light lastLight = null;
+	private Light _light = null;
+	
 	
 	private OwnIpDiscovererImpl() {
 		_ownIp = new RegisterImpl<String>(restoreIp());
@@ -43,15 +45,16 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 
 	private String restoreIp() {
 		String result = _store.get(LAST_IP_KEY);
-		lastLight  = _blinkingLights.turnOn(LightType.INFO, "Own Ip Restored: " + result, 10000);
+		Logger.log("Own Ip Restored: {}", result);
 		return result;
 	}
 
 	private void tryIpDiscovery() {
 		try {
 			ipDiscovery();
+			turnOffLightIfNecessary();
 		} catch (IOException e) {
-			turnOnErrorLight(e);
+			turnOnErrorLightIfNecessary(e);
 		}
 	}
 
@@ -69,8 +72,6 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	}
 
 	protected void ipDiscovery() throws IOException {
-		turnOffLastLight();
-
 		_store.set(LAST_CHECK_TIME_KEY, _clock.time());
 
 		final String ip = _checkip.check();
@@ -82,11 +83,7 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 		_store.set(LAST_IP_KEY, ip);
 		_ownIp.setter().consume(ip);
 
-		if(ip==null){
-			turnOnErrorLight();
-			return;
-		}
-		lastLight  = _blinkingLights.turnOn(LightType.INFO, "Checked Ip: " + ip, 10000);
+		Logger.log("Own Ip Discovered: {}", ip);
 		
 	}
 
@@ -99,26 +96,18 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 		return RETRY_TIME_MINUTES * 60 * 1000;
 	}
 	
-	private void turnOnErrorLight() {
-		turnOnErrorLight(null);
-	}
-	
-	private void turnOnErrorLight(IOException e) {
+	private void turnOnErrorLightIfNecessary(IOException e) {
+		if (_light != null) return;
+		
 		String msg = "It was not possible to discover your ip. " +
 					 "Sneer will retry again in " + RETRY_TIME_MINUTES + " minutes.";
-		if(e==null)
-			lastLight  = _blinkingLights.turnOn(LightType.ERROR, msg);
-		else
-			lastLight  = _blinkingLights.turnOn(LightType.ERROR, msg, e);
+		
+		_light  = _blinkingLights.turnOn(LightType.ERROR, msg, e);
 	}
 	
-	private void turnOffLastLight() {
-		try {
-			if (lastLight!=null 
-			&& !lastLight.isOn())	
-				_blinkingLights.turnOff(lastLight);
-		} catch (RuntimeException e) {
-			//ignore
-		}
+	private void turnOffLightIfNecessary() {
+		if (_light == null) return; 
+		_blinkingLights.turnOff(_light);
+		_light = null;
 	}
 }

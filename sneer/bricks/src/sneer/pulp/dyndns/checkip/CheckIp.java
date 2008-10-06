@@ -6,6 +6,7 @@ import sneer.kernel.container.Brick;
 
 public interface CheckIp extends Brick {
 	
+	/** Never returns null. */
 	String check() throws IOException;
 
 }

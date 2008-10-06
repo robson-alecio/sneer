@@ -2,8 +2,9 @@
 ===================
 	- [Rodrigo] Fix Hudson Build - Focus on making the dependency cycles among src folders fail so we can eliminate them.
 
+	- One persistence directory per user.
+
 	- Wind
-		- [Sandro] Gui - Shouter's nick, Shout time. new SimpleDateFormat("HH:mm").format(date) + " <b>"+ sender + ":</b> " + text;
 	- Contacts - Hidden contacts on Sneer startup (Bug).
 	- Voice Calls
 		- Mic brick started. See LoopbackTest spike.

@@ -2,8 +2,6 @@ package sneer.pulp.dyndns.updater.impl;
 
 import java.io.IOException;
 
-import sneer.kernel.container.Container;
-import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.Inject;
 import sneer.pulp.dyndns.updater.BadAuthException;
 import sneer.pulp.dyndns.updater.InvalidHostException;
@@ -69,9 +67,4 @@ class UpdaterImpl implements Updater {
 		return Base64.encode(text);
 	}
 
-	public static void main(String[] args) throws Exception {
-		final Container container = ContainerUtils.newContainer();
-		final Updater client = container.produce(Updater.class);
-		client.update("test.dyndns.org", "test", "test", "123.45.67.89");
-	}
 }

@@ -11,16 +11,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import sneer.kernel.container.Inject;
-import sneer.skin.image.ImageFactory;
 import sneer.skin.imgselector.ImageSelector;
 import wheel.lang.Omnivore;
 
 class ImageSelectorImpl implements ImageSelector {
 	
-	@Inject
-	private static ImageFactory _imageFactory;
-
 	private static ImageDialog _dialog;
 	
 	private File selectFile() {
@@ -37,7 +32,7 @@ class ImageSelectorImpl implements ImageSelector {
 	}
 
 	private void showImage(File file, Omnivore<Image> imageSetter) {
-		_dialog = new ImageDialog(file, _imageFactory, imageSetter);
+		_dialog = new ImageDialog(file, imageSetter);
 		_dialog.setVisible(true);
 	}
 

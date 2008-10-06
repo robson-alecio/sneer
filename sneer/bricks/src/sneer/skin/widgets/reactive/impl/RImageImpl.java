@@ -10,6 +10,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import sneer.kernel.container.Inject;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.widgets.reactive.ImageWidget;
 import wheel.lang.Omnivore;
@@ -20,23 +21,23 @@ import wheel.reactive.impl.RegisterImpl;
 
 class RImageImpl extends JPanel implements ImageWidget{
 
-	private static final long serialVersionUID = 1L;
+	@Inject
+	private static ImageFactory _imageFactory;
 
 	protected final Register<Image> _image;
-	protected final ImageFactory _imageFactory;
 	protected final Omnivore<Image> _setter;
+	private static final long serialVersionUID = 1L;
 	
 	@SuppressWarnings("unused")
 	private final Receiver<Image> _imageReceiverAvoidGc;
 	
-	RImageImpl(ImageFactory imageFactory, Signal<Image> source) {
-		this(imageFactory, source, null);
+	RImageImpl(Signal<Image> source) {
+		this(source, null);
 	}
 	
-	RImageImpl(ImageFactory imageFactory, Signal<Image> source, Omnivore<Image> setter){
+	RImageImpl(Signal<Image> source, Omnivore<Image> setter){
 		setOpaque(false);
 		_image = new RegisterImpl<Image>(null);
-		_imageFactory = imageFactory;
 		_setter = setter;
 		_imageReceiverAvoidGc = imageReceiverFor(source);
 	}

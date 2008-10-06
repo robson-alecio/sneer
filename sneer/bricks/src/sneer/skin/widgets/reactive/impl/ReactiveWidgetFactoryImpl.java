@@ -6,8 +6,6 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 
-import sneer.kernel.container.Inject;
-import sneer.skin.image.ImageFactory;
 import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
@@ -20,9 +18,6 @@ import wheel.reactive.lists.ListSignal;
 
 class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 	
-	@Inject
-	private static ImageFactory _imageFactory;
-
 	@Override
 	public TextWidget<JTextField> newEditableLabel(Signal<String> source, Consumer<String> setter) {
 		return new REditableLabelImpl(source, setter, false);
@@ -55,12 +50,12 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 
 	@Override
 	public ImageWidget newImage(Signal<Image> source,Omnivore<Image> setter) {
-		return new RImageImpl(_imageFactory, source, setter);
+		return new RImageImpl(source, setter);
 	}
 
 	@Override
 	public ImageWidget newImage(Signal<Image> source) {
-		return new RImageImpl(_imageFactory, source);
+		return new RImageImpl(source);
 	}
 
 	@Override

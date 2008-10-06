@@ -15,6 +15,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
+import sneer.kernel.container.Inject;
 import sneer.skin.image.ImageFactory;
 import wheel.lang.Omnivore;
 
@@ -29,13 +30,14 @@ class ImageDialog extends JDialog {
 	private int _preferredHeight;
 	private int _preferredWidth;
 	private JLayeredPane _layeredPane;
-	private ImageFactory _imageFactory;
+	
+	@Inject
+	private static ImageFactory _imageFactory;
 
 	private final Omnivore<Image> _imageSetter;
 
-    ImageDialog(File file, ImageFactory imageFactory, Omnivore<Image> imageSetter) {
+    ImageDialog(File file, Omnivore<Image> imageSetter) {
     	_file = file;
-    	_imageFactory = imageFactory;
 		_imageSetter = imageSetter;
 		_picture = new Picture();
 		

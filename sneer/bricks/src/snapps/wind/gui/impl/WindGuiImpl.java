@@ -70,7 +70,7 @@ class WindGuiImpl implements WindGui {
 	public void init(Container container) {
 		_container = container;
 		ShoutLabelProvider labelProvider = new ShoutLabelProvider();
-		_shoutsList = _rfactory.newList(_wind.shoutsHeard(), labelProvider, new RListStyledCellRenderer(labelProvider));
+		_shoutsList = _rfactory.newList(_wind.shoutsHeard(), labelProvider, new WindListCellRenderer(labelProvider));
 		_myShout = _rfactory.newTextField(new Constant<String>(""), _wind.megaphone(), true);
 		iniGui();
 	}

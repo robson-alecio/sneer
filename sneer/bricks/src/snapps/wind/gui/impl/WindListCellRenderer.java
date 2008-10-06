@@ -31,7 +31,7 @@ import sneer.pulp.keymanager.KeyManager;
 import sneer.skin.widgets.reactive.LabelProvider;
 import wheel.reactive.Signal;
 
-class RListStyledCellRenderer implements ListCellRenderer {
+class WindListCellRenderer implements ListCellRenderer {
 
 	@Inject
 	private static KeyManager _keys;
@@ -46,7 +46,7 @@ class RListStyledCellRenderer implements ListCellRenderer {
 	
 	private final LabelProvider<Shout> _labelProvider;
 	
-	RListStyledCellRenderer(LabelProvider<Shout> labelProvider) {
+	WindListCellRenderer(LabelProvider<Shout> labelProvider) {
 		_labelProvider = labelProvider;
 	}
 

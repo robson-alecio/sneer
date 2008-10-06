@@ -276,7 +276,6 @@ class ContentPane extends JPanel{
 
 	@Override
 	public void paintComponent(Graphics g) {
-		//TODO: add a gradient user configuration
 		super.paintComponent(g);
 		g.setColor(new Color(0, 0, 0, 50));
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());

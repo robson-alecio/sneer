@@ -3,7 +3,10 @@ package build.antFileGenerator;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -16,6 +19,9 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 	public static final String FILENAME = "antlips.xml";
 	
 	private static final String BUILD_DIR_PROPERTY = "build.dir";
+
+	private static final String DEFAULT_DEST_DIR = "${" + BUILD_DIR_PROPERTY + "}";
+	
 	private final List<String> _libs = new ArrayList<String>();
 	private final List<Pair<String, String>> _srcs = new ArrayList<Pair<String, String>>();
 	private final Directory _directory;
@@ -71,7 +77,9 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 		"\n"));
 		builder.append("\t<property name=\"" + BUILD_DIR_PROPERTY + "\" location=\"bin\" />\n\n");
 		builder.append("\t<path id=\"classpath\">\n");
-		builder.append("\t\t<pathelement path=\"${" + BUILD_DIR_PROPERTY + "}\"/>\n");
+		
+		for (final String destDir : uniqueDestDirs())
+			builder.append("\t\t<pathelement path=\"" + destDir + "\"/>\n");
 		for (final String lib : _libs)
 			builder.append("\t\t<pathelement path=\"" + lib + "\"/>\n");
 		builder.append("\t</path>\n");
@@ -94,6 +102,15 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 		
 		builder.append("</project>");
 		return builder;
+	}
+
+	private Iterable<String> uniqueDestDirs() {
+		if (_compileSourceFoldersTogether)
+			return Arrays.asList(DEFAULT_DEST_DIR);
+		final Set<String> destDirs = new HashSet<String>();
+		for (Pair<String, String> src : _srcs)
+			destDirs.add(destDirFor(src));
+		return destDirs;
 	}
 
 	private void appendFileSetsToCopy(StringBuilder builder) {
@@ -139,9 +156,7 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 	private String getJavacCallsWithSeparateSourceFolders() {
 		StringBuilder builder = new StringBuilder();
 		for (final Pair<String, String> src : _srcs){
-			final String destdir = StringUtils.isEmpty(src._b)
-				? "${" + BUILD_DIR_PROPERTY + "}"
-				: src._b;
+			final String destdir = destDirFor(src);
 			builder.append(	
 					"\t\t<javac srcdir=\""+ src._a +"\"\n"+
 						"\t\t\t\tdestdir=\"" + destdir + "\"\n" +
@@ -156,6 +171,12 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 		}
 		
 		return builder.toString();
+	}
+
+	private String destDirFor(final Pair<String, String> src) {
+		return StringUtils.isEmpty(src._b)
+			? DEFAULT_DEST_DIR
+			: src._b;
 	}
 
 }

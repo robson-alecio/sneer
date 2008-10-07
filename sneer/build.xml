@@ -104,7 +104,7 @@
 				<pathelement location="${build.dir}" />
 				<path refid="wheel.lib.classpath" />
 			</classpath>
-			<arg value="-sourcefolderstogether" />
+			<arg value="-separatedsourcefolders" />
 		</java>
 	</target>
 	

@@ -36,7 +36,7 @@ public class AntFileBuilderTest {
 		final String subjectAntFileTemplate = getSubjectAntFile();
 		final String generated = _directory.contentsAsString("antlips.xml");
 		
-		compareLineByLine(subjectAntFileTemplate, generated);
+		assertEqualsIgnoringWhitespace(subjectAntFileTemplate, generated);
 	}
 
 	@Test
@@ -47,18 +47,15 @@ public class AntFileBuilderTest {
 		final String subjectAntFileTemplate = getSourceFoldersTogetherSubjectAntFile(); 
 		final String generated = _directory.contentsAsString("antlips.xml");
 		
-		compareLineByLine(generated, subjectAntFileTemplate);
+		assertEqualsIgnoringWhitespace(subjectAntFileTemplate, generated);
 	}
 	
-	private void compareLineByLine(String expected, String found) {
-		String expectedLines[] = expected.split("\n"); 
-		String foundLines[] = found.split("\n");
-		
-		Assert.assertEquals(expectedLines.length, foundLines.length);
-		
-		for (int i = 0; i < expectedLines.length; i++) {
-			Assert.assertEquals(expectedLines[i].trim(), foundLines[i].trim());
-		}
+	private void assertEqualsIgnoringWhitespace(String expected, String found) {
+		Assert.assertEquals(normalizeWhitespace(expected), normalizeWhitespace(found));
+	}
+
+	private String normalizeWhitespace(String expected) {
+		return expected.trim().replace("\r\n", "\n");
 	}
 	
 	static String getSourceFoldersTogetherSubjectAntFile() throws IOException{

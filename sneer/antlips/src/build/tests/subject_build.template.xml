@@ -5,6 +5,7 @@
 	<property name="build.dir" location="bin" />
 
 	<path id="classpath">
+		<pathelement path="sneerAPI-bin"/>
 		<pathelement path="${build.dir}"/>
 		<pathelement path="bricks/lib/bcprov-jdk16-139.jar"/>
 		<pathelement path="kernel/lib/asm-all-3.1.jar"/>

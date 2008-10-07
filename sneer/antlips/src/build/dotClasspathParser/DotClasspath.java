@@ -31,7 +31,6 @@ public class DotClasspath {
 		_libs = libs;
 	}
 
-
 	public List<String> getLibs() {
 		return _libs;
 	}
@@ -39,8 +38,4 @@ public class DotClasspath {
 	public List<Entry> getSrcs() {
 		return _sourcePaths;
 	}
-
-
-	
-
 }

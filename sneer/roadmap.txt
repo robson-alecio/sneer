@@ -2,7 +2,7 @@
 ===================
 	- [Rodrigo] Fix Hudson Build - Focus on making the dependency cycles among src folders fail so we can eliminate them.
 
-	- Contacts - Fix: Contacts sometimes don't appear on MainDemo startup
+	- [Sandro pairing] - Fix: Contacts sometimes don't appear on MainDemo startup. Shouts don't appear if list is flooded with them (Use "MainDemo Localhost foo foo" to send a flood of shouts).
 	- Make ImageDelta extend Tuple - Run ImageCodecTest - Fix: Tuple isn't injected.
 
 	- Wind

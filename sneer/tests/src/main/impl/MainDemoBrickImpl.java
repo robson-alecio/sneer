@@ -69,69 +69,84 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	private static InternetAddressKeeper _addressKeeper;
 
 	@Override
-	public void start(String ownName, int port, DynDnsAccount ddAccount) {
-		assertIsHardcodedNick(ownName);
-		
+	public void start(String ownName, String dynDnsUserName, String dynDnsPassword) {
 		_ownName.nameSetter().consume(ownName);
+
+		_portKeeper.portSetter().consume(portFor(ownName));
 		
-		_portKeeper.portSetter().consume(port);
-		
-		_dynDnsAccountKeeper.accountSetter().consume(ddAccount);
+		initDynDnsAccount(ownName, dynDnsUserName, dynDnsPassword);
 		
 		addContacts();
 	}
 
-	private void assertIsHardcodedNick(String nick) {
-		if (!isHardcodedNick(nick))
-			throw new IllegalArgumentException(nick + " is not one of the hardcoded nicknames.");
+	private void initDynDnsAccount(String ownName, String dynDnsUserName, String dynDnsPassword) {
+		_dynDnsAccountKeeper.accountSetter().consume(
+			new DynDnsAccount(dynDnsHostFor(ownName), dynDnsUserName, dynDnsPassword));
 	}
 
-	private boolean isHardcodedNick(String nick) {
-		for (ContactInfo contact : hardcodedContacts())
-			if (contact._nick.equals(nick)) return true;
-		return false;
+	private String dynDnsHostFor(String ownName) {
+		return contactInfoFor(ownName)._host;
 	}
+
+	private Integer portFor(String ownName) {
+		return contactInfoFor(ownName)._port;
+	}
+	
+	private ContactInfo contactInfoFor(String ownName) {
+		for (ContactInfo candidate : contacts())
+			if (candidate._nick.equals(ownName)) return candidate;
+		throw new IllegalArgumentException(ownName + " is not one of the hardcoded names. If you want to use this Alpha version of Sneer please let us know at sneercoders@googlegroups.com and we will hardcode your name for now.");
+	}
+	
 
 	private void addContacts() {
-		for (ContactInfo contact : hardcodedContacts()) {
-			addConnectionTo(contact);
+		for (ContactInfo contact : contacts()) {
+			if (contact._nick.equals(ownName())) continue;
+			addConnections(contact);
 		}
 	}
 
-	private ContactInfo[] hardcodedContacts() {
+	private void addConnections(ContactInfo contact) {
+		String nick = contact._nick;
+		addConnectionTo(nick, contact._host, contact._port);
+		
+		for (String host : alternativeHostsFor(nick))
+			addConnectionTo(nick, host, contact._port);
+	}
+
+	private String[] alternativeHostsFor(String nick) {
+		if (nick.equals("Klaus")) return new String[]{"200.169.90.89", "10.42.11.19"};
+		return new String[]{};
+	}
+
+	private ContactInfo[] contacts() {
 		return new ContactInfo[] {
 			new ContactInfo("Bamboo", "rodrigobamboo.dyndns.org", 5923),
 			new ContactInfo("Bihaiko", "bihaiko.dyndns.org", 5923),
-			new ContactInfo("Daniel", "dfcsantos.homelinux.com"),
+			new ContactInfo("Daniel", "dfcsantos.homelinux.com", 7777),
 			new ContactInfo("Douglas", "dtgiacomini.dyndns.com", 5923),
 			new ContactInfo("Klaus", "klausw.selfip.net", 5923),
-			new ContactInfo("Klaus", "200.169.90.89", 5923),
 			new ContactInfo("Nell", "anelisedaux.dyndns.org", 5924),
-			new ContactInfo("Localhost", "localhost"),
+			new ContactInfo("Localhost", "localhost", 7777),
 		};
 	}
 
-	public static class ContactInfo {
-		public final String _nick;
-		public final String _host;
-		public final int _port;
+	static class ContactInfo {
+		final String _nick;
+		final String _host;
+		final int _port;
 
-		public ContactInfo(String nick, String host, int port) {
+		ContactInfo(String nick, String host, int port) {
 			_nick = nick;
 			_host = host;
 			_port = port;
 		}
 
-		public ContactInfo(String nick, String host) {
-			this(nick, host, 7777);
-		}
 	}
 
-	private void addConnectionTo(ContactInfo endPoint) {
-		if (endPoint._nick.equals(_ownName.name().currentValue())) return;
-		
-		Contact contact = produceContact(endPoint._nick);
-		_addressKeeper.add(contact, endPoint._host, endPoint._port);
+	private void addConnectionTo(String nick, String host, int port) {
+		Contact contact = produceContact(nick);
+		_addressKeeper.add(contact, host, port);
 	}
 
 	private PublicKey mickeyMouseKey(String nick) {
@@ -146,5 +161,10 @@ class MainDemoBrickImpl implements MainDemoBrick {
 		_keyManager.addKey(result, mickeyMouseKey(nick));
 		return result;
 	}
+
+	private String ownName() {
+		return _ownName.name().currentValue();
+	}
+
 
 }

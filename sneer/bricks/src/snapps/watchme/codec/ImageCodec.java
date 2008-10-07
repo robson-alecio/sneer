@@ -6,8 +6,8 @@ import sneer.kernel.container.Brick;
 
 public interface ImageCodec extends Brick {
 
-	Iterable<ImageDelta> encodeDeltas(BufferedImage imageA, BufferedImage imageB);
+	Iterable<ImageDelta> encodeDeltas(BufferedImage original, BufferedImage target);
 
-	BufferedImage decodeDeltas(BufferedImage imageA, Iterable<ImageDelta> deltas);
+	BufferedImage decodeDeltas(BufferedImage original, Iterable<ImageDelta> deltas);
 
 }

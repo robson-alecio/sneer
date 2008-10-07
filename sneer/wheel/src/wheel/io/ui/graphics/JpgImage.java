@@ -1,4 +1,4 @@
-package wheel.graphics;
+package wheel.io.ui.graphics;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

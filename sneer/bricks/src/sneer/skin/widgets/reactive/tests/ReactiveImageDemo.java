@@ -10,7 +10,7 @@ import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
-import wheel.graphics.Images;
+import wheel.io.ui.graphics.Images;
 import wheel.lang.Functor;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Adapter;

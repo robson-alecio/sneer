@@ -2,6 +2,7 @@
 ===================
 	- [Rodrigo] Fix Hudson Build - Focus on making the dependency cycles among src folders fail so we can eliminate them.
 
+	- Make ImageDelta extend Tuple - Run ImageCodecTest - Fix: Tuple isn't injected.
 	- One persistence directory per user.
 
 	- Wind

@@ -21,7 +21,7 @@ import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
-import wheel.graphics.Images;
+import wheel.io.ui.graphics.Images;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Constant;
 

@@ -35,7 +35,7 @@ public abstract class EnhancingClassLoader extends ClassLoader {
 			resolveClass(c);
 		}
 		
-		if(!c.isInterface() && _injector != null /* don't remove this check. BrickClassLoaders may be created without an Injector */)
+		if(!c.isInterface() && _injector != null) // don't remove this check. BrickClassLoaders may be created without an Injector
 			_injector.inject(c);
 		
 		return c;

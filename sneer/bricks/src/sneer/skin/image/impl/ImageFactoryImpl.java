@@ -20,7 +20,7 @@ import java.util.HashMap;
 import javax.swing.ImageIcon;
 
 import sneer.skin.image.ImageFactory;
-import wheel.graphics.Images;
+import wheel.io.ui.graphics.Images;
 
 class ImageFactoryImpl implements ImageFactory {
 	

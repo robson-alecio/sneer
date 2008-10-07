@@ -8,7 +8,8 @@ import sneer.kernel.container.Inject;
 import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.skin.image.ImageFactory;
-import wheel.graphics.Images;
+import static wheel.io.ui.graphics.Images.isSameImage;
+import static wheel.io.ui.graphics.Images.getImage;
 
 public class OwnAvatarKeeperTest extends TestThatIsInjected {
 
@@ -19,7 +20,7 @@ public class OwnAvatarKeeperTest extends TestThatIsInjected {
 	private static ImageFactory _imageFactory;
 
 	private BufferedImage loadImage(String fileName) throws Exception {
-		return _imageFactory.createBufferedImage(Images.getImage(getClass().getResource(fileName)));
+		return _imageFactory.createBufferedImage(getImage(getClass().getResource(fileName)));
 	}
 
 	@Test
@@ -41,21 +42,6 @@ public class OwnAvatarKeeperTest extends TestThatIsInjected {
 		toTest = _imageFactory.createBufferedImage(_avatarKeeper.avatar(10).currentValue());
 		assertFalse(isSameImage(white, toTest));
 		assertTrue(isSameImage(_imageFactory.getScaledInstance(white, 10,10), toTest));
-	}
-
-	public boolean isSameImage(BufferedImage image1, BufferedImage image2) {
-		if (image1.getWidth() != image2.getWidth()
-				|| image1.getHeight() != image2.getHeight()) {
-			return (false);
-		}
-		for (int x = 0; x < image1.getWidth(); x++) {
-			for (int y = 0; y < image1.getHeight(); y++) {
-				if (image1.getRGB(x, y) != image2.getRGB(x, y)) {
-					return (false);
-				}
-			}
-		}
-		return (true);
 	}
 
 }

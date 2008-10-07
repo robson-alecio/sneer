@@ -1,7 +1,13 @@
 package snapps.watchme.codec;
 
-import sneer.pulp.tuples.Tuple;
+import java.awt.image.BufferedImage;
 
-public class ImageDelta extends Tuple {
+public class ImageDelta {
+
+	public final BufferedImage target;
+
+	public ImageDelta(BufferedImage pTarget) {
+		target = pTarget;
+	}
 
 }

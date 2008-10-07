@@ -15,11 +15,11 @@ import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.security.InvalidParameterException;
 
-import wheel.graphics.Images;
 import wheel.io.ui.TrayIcon;
 import wheel.io.ui.action.Action;
 import wheel.io.ui.action.ActionUtility;
 import wheel.io.ui.action.ReactiveAction;
+import wheel.io.ui.graphics.Images;
 import wheel.lang.exceptions.Catcher;
 import wheel.lang.exceptions.PrintStackTracer;
 

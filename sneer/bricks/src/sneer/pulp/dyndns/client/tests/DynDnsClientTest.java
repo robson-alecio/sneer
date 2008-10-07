@@ -62,7 +62,7 @@ Unacceptable Client Behavior
 	
 	final OwnIpDiscoverer _ownIpDiscoverer = _context.mock(OwnIpDiscoverer.class);
 	final DynDnsAccountKeeper _ownAccountKeeper = _context.mock(DynDnsAccountKeeper.class);
-	final Updater updater = _context.mock(Updater.class);
+	final Updater _updater = _context.mock(Updater.class);
 	final TransientPropertyStore _propertyStore = new TransientPropertyStore();
 	final ThreadPoolMock _threadPool = new ThreadPoolMock();;
 	
@@ -76,7 +76,7 @@ Unacceptable Client Behavior
 				will(returnValue(_ownAccount.output()));
 				
 			final DynDnsAccount account = _ownAccount.output().currentValue();
-			exactly(1).of(updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
+			exactly(1).of(_updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
 		}});
 		
 
@@ -100,10 +100,10 @@ Unacceptable Client Behavior
 				will(returnValue(_ownAccount.output()));
 				
 			final DynDnsAccount account = _ownAccount.output().currentValue();
-			exactly(1).of(updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
+			exactly(1).of(_updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
 				will(throwException(error));
 				
-			exactly(1).of(updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
+			exactly(1).of(_updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
 		}});
 		
 
@@ -132,10 +132,10 @@ Unacceptable Client Behavior
 			allowing(_ownAccountKeeper).ownAccount();
 				will(returnValue(_ownAccount.output()));
 			
-			exactly(1).of(updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
+			exactly(1).of(_updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
 				will(throwException(error));
 				
-			exactly(1).of(updater).update(account.host, account.dynDnsUser, "*" + account.password, newIp);
+			exactly(1).of(_updater).update(account.host, account.dynDnsUser, "*" + account.password, newIp);
 		}});
 		
 		final Container container = startDynDnsClient(_threadPool);
@@ -180,7 +180,7 @@ Unacceptable Client Behavior
 		}
 		list.add(_ownIpDiscoverer);
 		list.add(_ownAccountKeeper);
-		list.add(updater);
+		list.add(_updater);
 		list.add(_propertyStore);
 		
 		return ContainerUtils.newContainer(list.toArray());

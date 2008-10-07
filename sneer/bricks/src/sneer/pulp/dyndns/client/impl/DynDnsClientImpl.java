@@ -12,6 +12,7 @@ import sneer.pulp.dyndns.ownaccount.DynDnsAccount;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.dyndns.updater.BadAuthException;
+import sneer.pulp.dyndns.updater.InvalidHostException;
 import sneer.pulp.dyndns.updater.Updater;
 import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.propertystore.PropertyStore;
@@ -21,6 +22,7 @@ import wheel.reactive.impl.Receiver;
 class DynDnsClientImpl implements DynDnsClient {
 	
 	private static final String LAST_IP_KEY = "dyndns.lastIp";
+	private static final String LAST_HOST_KEY = "dyndns.lastHost";
 
 	@Inject
 	static private OwnIpDiscoverer _ownIpDiscoverer;
@@ -43,78 +45,65 @@ class DynDnsClientImpl implements DynDnsClient {
 	@Inject
 	static private Clock _clock;
 	
-	private Light _light;
-	private State _state = new Happy();
 	private final Object _stateMonitor = new Object();
+	private State _state = new Happy();
+	private Light _light;
 	
-	final Receiver<DynDnsAccount> _ownAccountReceiver = new Receiver<DynDnsAccount>(_ownAccountKeeper.ownAccount()) { @Override public void consume(DynDnsAccount account) {
+	final Receiver<Object> _reactionTrigger = new Receiver<Object>() { @Override public void consume(Object ignored) {
 		synchronized (_stateMonitor) {
-			if (account == null) return;
-			if (currentIp() == null) return;
-			_state = _state.reactTo(account);
+			_state = _state.react();
 		}
 	}};
 	
-	final Receiver<String> _ownIpReceiver = new Receiver<String>(_ownIpDiscoverer.ownIp()) { @Override public void consume(String ownIp) {
-		synchronized (_stateMonitor) {
-			if (ownIp == null) return;
-			if (currentAccount() == null) return;
-			_state = _state.reactTo(ownIp);
-		}
-	}};
-
+	{
+		_reactionTrigger.addToSignal(_ownAccountKeeper.ownAccount());
+		_reactionTrigger.addToSignal(_ownIpDiscoverer.ownIp());
+	}
+	
 	
 	abstract class State {
 		
-		abstract State reactTo(String ownIpNotification);
-		abstract State reactTo(DynDnsAccount accountNotification);
-		abstract State reactToAlarm();
+		abstract State react();
+		abstract State wakeUp();
 		
 	}
 	
 	private final class Happy extends State {
 		
 		Happy() {
-			if(_light==null) return;
+			if (_light == null) return;
 			_blinkingLights.turnOff(_light);
 			_light = null;
 		}
 		
 		@Override
-		State reactTo(String ip) {
-			if (ip.equals(lastIp())) return this;
+		State react() {
+			if (currentIp() == null) return this;
+			if (currentHost() == null) return this;
 			
-			return new Requesting(ip);
+			if (currentIp().equals(lastIp()) && currentHost().equals(lastHost())) return this;
+			
+			return new Requesting();
 		}
 
 		@Override
-		State reactTo(DynDnsAccount accountNotification) {
-			return this;
-		}
-
-		@Override
-		State reactToAlarm() {
+		State wakeUp() {
 			throw new IllegalStateException();
 		}
 	}
 	
 	private class Requesting extends State {
 
-		private String _lastOwnIpNotification;
-		private DynDnsAccount _lastAccountNotification;
-
-		Requesting(final String ip) {
+		private boolean _isReactionPending = false;
+		
+		Requesting() {
 			Runnable toRun = new Runnable(){ @Override public void run() {
-				State state = submitUpdateRequest(currentAccount(), ip);
+				State state = submitUpdateRequest(currentAccount(), currentIp());
 				synchronized (_stateMonitor) {
 					_state = state;
+					if (_isReactionPending)
+						_state = _state.react();
 				}
-
-				if(_lastOwnIpNotification!=null)
-					_state.reactTo(_lastOwnIpNotification);
-
-				if(_lastAccountNotification!=null)
-					_state.reactTo(_lastAccountNotification);
 			}};
 			_threadPool.registerActor(toRun);
 			
@@ -122,12 +111,13 @@ class DynDnsClientImpl implements DynDnsClient {
 		
 		private State submitUpdateRequest(final DynDnsAccount account, String ip) {
 			try {
-				_updater.update
-				(account.host, account.dynDnsUser, account.password, ip);
-				recordLastIp(ip);
+				_updater.update(account.host, account.dynDnsUser, account.password, ip);
+				recordLastSuccess(ip, account.host);
 				return new Happy();
 			} catch (BadAuthException e) {
-				return new BadAuthState(e);
+				return new BadAccountState(e, account);
+			} catch (InvalidHostException e) {
+				return new BadAccountState(e, account);
 			} catch (IOException e) {
 				return new Waiting(e);
 			} catch (UpdaterException e) {
@@ -136,19 +126,13 @@ class DynDnsClientImpl implements DynDnsClient {
 		}
 		
 		@Override
-		State reactTo(String ownIpNotification) {
-			_lastOwnIpNotification = ownIpNotification;
+		State react() {
+			_isReactionPending = true;
 			return this;
 		}
 
 		@Override
-		State reactTo(DynDnsAccount accountNotification) {
-			_lastAccountNotification = accountNotification;
-			return this;
-		}
-
-		@Override
-		State reactToAlarm() {
+		State wakeUp() {
 			throw new IllegalStateException();
 		}
 	}
@@ -160,11 +144,11 @@ class DynDnsClientImpl implements DynDnsClient {
 		}
 
 		protected State retry() {
-			return new Requesting(currentIp());
+			return new Requesting();
 		}
 		
 		private void refreshErrorLight(String message, Exception e) {
-			if(_light!=null && _light.isOn())
+			if(_light != null)
 				_blinkingLights.turnOff(_light);
 			_light = _blinkingLights.turnOn(LightType.ERROR, message, e);
 		}
@@ -182,7 +166,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		private void addAlarm(long millisFromNow) {
 			_clock.wakeUpInAtLeast((int)millisFromNow, new Runnable() { @Override public void run() {
 				synchronized (_stateMonitor) {
-					_state = _state.reactToAlarm();
+					_state = _state.wakeUp();
 				}
 			}});
 		}
@@ -192,51 +176,50 @@ class DynDnsClientImpl implements DynDnsClient {
 		}
 		
 		@Override
-		State reactToAlarm() {
+		State wakeUp() {
 			return retry();
 		}
 
 		@Override
-		State reactTo(String ownIpNotification) {
-			return this;
-		}
-
-		@Override
-		State reactTo(DynDnsAccount accountNotification) {
+		State react() {
 			return this;
 		}
 
 	}
 	
-	private final class BadAuthState extends Sad {
+	private final class BadAccountState extends Sad {
 
-		BadAuthState(BadAuthException e) {
+		private final DynDnsAccount _lastAccount;
+
+		BadAccountState(UpdaterException e, DynDnsAccount account) {
 			super(e.getHelp(), e);
+			_lastAccount = account;
 		}
 
 		@Override
-		State reactTo(DynDnsAccount newAccount) {
+		State react() {
+			if (_lastAccount.equals(currentAccount())) return this;
 			return retry();
 		}
 
 		@Override
-		State reactTo(String ownIpNotification) {
-			return this;
-		}
-
-		@Override
-		State reactToAlarm() {
+		State wakeUp() {
 			throw new IllegalStateException();
 		}
 	}
 	
-	private void recordLastIp(String ip) {
+	private void recordLastSuccess(String ip, String host) {
 		_propertyStore.set(LAST_IP_KEY, ip);
+		_propertyStore.set(LAST_HOST_KEY, host);
 	}
 	
 	private String lastIp() {
 		return _propertyStore.get(LAST_IP_KEY);
 	}
+	private Object lastHost() {
+		return _propertyStore.get(LAST_HOST_KEY);
+	}
+	
 
 	private DynDnsAccount currentAccount() {
 		return _ownAccountKeeper.ownAccount().currentValue();
@@ -244,5 +227,10 @@ class DynDnsClientImpl implements DynDnsClient {
 
 	private String currentIp() {
 		return _ownIpDiscoverer.ownIp().currentValue();
+	}
+	
+	private String currentHost() {
+		if (currentAccount() == null) return null;
+		return currentAccount().host;
 	}
 }

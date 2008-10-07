@@ -2,17 +2,16 @@
 ===================
 	- [Rodrigo] Fix Hudson Build - Focus on making the dependency cycles among src folders fail so we can eliminate them.
 
+	- Contacts - Fix: Contacts sometimes don't appear on MainDemo startup
 	- Make ImageDelta extend Tuple - Run ImageCodecTest - Fix: Tuple isn't injected.
-	- One persistence directory per user.
 
 	- Wind
-	- Contacts - Hidden contacts on Sneer startup (Bug).
 	- Voice Calls
-		- Mic brick started. See LoopbackTest spike.
+		- Mic brick started. Refer to LoopbackTest spike.
 	---- WE DROP SKYPE :)
 	- WatchMe - Screen Viewing à la VNC
-		- Unignore ImageCodecTest and make it pass.
-			- Consider the image a grid of cells (64x64 pixels). If a cell changes, compress it with png and send it over.
+		- ImageCodecTest
+			- Model the image as a grid of cells (64x64 pixels). If a cell changes, compress it with png and send it over.
 	---- WE DROP VNC
 	---------------------------------- LAST DOGFOOD RELEASE - Now we start cleaning up until we reach "No Broken Windows" status.
 

@@ -8,6 +8,9 @@ import javax.sound.sampled.SourceDataLine;
 
 import org.xiph.speex.SpeexDecoder;
 
+import sneer.skin.sound.mic.impl.AudioCommon;
+import sneer.skin.sound.mic.impl.AudioUtil;
+
 public class SpeexSpeaker {
 	
 	private SourceDataLine _line;

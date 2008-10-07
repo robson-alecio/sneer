@@ -1,4 +1,4 @@
-package sneer.apps.talk.audio;
+package sneer.skin.sound.mic.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +12,7 @@ import javax.sound.sampled.Mixer;
 import javax.sound.sampled.Port;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
+
 
 import wheel.io.Logger;
 import wheel.lang.exceptions.NotImplementedYet;

@@ -22,6 +22,7 @@
 					<include name="**/lib/**/*.jar" />
 				</fileset>
 				<pathelement location="${build.dir}" />
+				<pathelement location="sneerAPI-bin" />
 				
 				<!-- resource files required by tests -->
 				<pathelement location="${builder.project}/src" />

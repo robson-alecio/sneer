@@ -8,6 +8,9 @@ import javax.sound.sampled.TargetDataLine;
 
 import org.xiph.speex.SpeexEncoder;
 
+import sneer.skin.sound.mic.impl.AudioCommon;
+import sneer.skin.sound.mic.impl.AudioUtil;
+
 import wheel.io.Logger;
 
 public class SpeexMicrophone extends Thread {

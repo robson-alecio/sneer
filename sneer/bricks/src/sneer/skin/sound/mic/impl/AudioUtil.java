@@ -1,4 +1,4 @@
-package sneer.apps.talk.audio;
+package sneer.skin.sound.mic.impl;
 
 import javax.sound.sampled.*;
 
@@ -7,7 +7,7 @@ public class AudioUtil {
 
 	static final int SAMPLE_RATE = 8000;
 
-	static final int SAMPLE_SIZE_IN_BITS = 16;
+	public static final int SAMPLE_SIZE_IN_BITS = 16;
 
 	private static final int CHANNELS = 2; //for linux/alsa compatibility, should not use mono
 
@@ -15,13 +15,13 @@ public class AudioUtil {
 
 	static final boolean BIG_ENDIAN = false;
 
-	static final int FRAMES_PER_AUDIO_PACKET = 10;
+	public static final int FRAMES_PER_AUDIO_PACKET = 10;
 
 	static final AudioFormat AUDIO_FORMAT = new AudioFormat(SAMPLE_RATE, SAMPLE_SIZE_IN_BITS, CHANNELS, SIGNED, BIG_ENDIAN);
 
-	static final int SOUND_QUALITY = 8; //From 0 (bad) to 10 (good);
+	public static final int SOUND_QUALITY = 8; //From 0 (bad) to 10 (good);
 
-	static final int NARROWBAND_ENCODING = 0;
+	public static final int NARROWBAND_ENCODING = 0;
 
 	public static final Integer RECEIVING_PACKET_LAG_THRESHOLD = 1000 / FRAME_DURATION_MILLIS / FRAMES_PER_AUDIO_PACKET;
 

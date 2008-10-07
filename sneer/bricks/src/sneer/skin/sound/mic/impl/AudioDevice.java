@@ -1,4 +1,4 @@
-package sneer.apps.talk.audio;
+package sneer.skin.sound.mic.impl;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.Mixer;

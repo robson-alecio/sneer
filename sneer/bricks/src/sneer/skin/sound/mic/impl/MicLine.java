@@ -3,7 +3,6 @@ package sneer.skin.sound.mic.impl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
-import sneer.apps.talk.audio.AudioCommon;
 import sneer.skin.sound.PcmSoundPacket;
 import wheel.lang.ImmutableByteArray;
 import wheel.lang.exceptions.FriendlyException;

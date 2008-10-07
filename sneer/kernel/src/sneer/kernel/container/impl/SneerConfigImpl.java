@@ -15,7 +15,7 @@ public class SneerConfigImpl implements SneerConfig {
 	private File _tmpDirectory;
 	
 	public SneerConfigImpl() {
-		this(new File(SystemUtils.getUserHome(), ".sneer"));
+		this(new File(userHome(), ".sneer"));
 	}
 
 	public SneerConfigImpl(File sneerDirectory) {
@@ -61,4 +61,12 @@ public class SneerConfigImpl implements SneerConfig {
 		checkFile(result);
 		return result;
 	}
+
+	private static String userHome() {
+		String override = System.getProperty("home_override");
+		if (override != null) return override;
+		
+		return System.getProperty("user.home");
+	}
+
 }

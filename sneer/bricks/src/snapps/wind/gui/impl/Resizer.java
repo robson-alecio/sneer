@@ -8,13 +8,13 @@ import javax.swing.JWindow;
 
 class Resizer {
 
-	static void pack(JComponent component, int maxWidth) { //Optimize - implement pack method without JWindow
+	static void pack(JComponent component, int maxWidth, int headerHeight ) { //Optimize - implement pack method without JWindow
 		Container root = component.getParent();
 		root.setPreferredSize(new Dimension(maxWidth, Integer.MAX_VALUE));
 		JWindow win = new JWindow();
 		win.add(root);
 		win.pack();
-		root.setPreferredSize(new Dimension(maxWidth, component.getPreferredSize().height));
+		root.setPreferredSize(new Dimension(maxWidth, component.getPreferredSize().height + headerHeight));
 		win.remove(root);
 	}
 }

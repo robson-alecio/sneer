@@ -5,11 +5,14 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Image;
 
+import javax.swing.BoundedRangeModel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import snapps.wind.Shout;
 import snapps.wind.Wind;
@@ -76,19 +79,31 @@ class WindGuiImpl implements WindGui {
 	}
 
 	private void iniGui() {
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		
+		JScrollPane scrollPane = createScrollPane();
+		scrollPane.getViewport().add(_shoutsList.getComponent());
 		_container.setLayout(new BorderLayout());
 		_container.add(scrollPane, BorderLayout.CENTER);
-		_container.add(_myShout.getComponent(), BorderLayout.SOUTH);
-		
-		scrollPane.getViewport().add(_shoutsList.getComponent());
+		_container.add(_myShout.getComponent(), BorderLayout.SOUTH);		
+		_shoutsList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
+	}
+
+	private JScrollPane createScrollPane() {
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setMinimumSize(size(_container));
 		scrollPane.setPreferredSize(size(_container));
 		scrollPane.setBorder(new TitledBorder(new EmptyBorder(5,5,5,5), getName()));
-		_shoutsList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
 		scrollPane.setBackground(_shoutsList.getComponent().getBackground());
+		addAutoScrollListener(scrollPane);
+		return scrollPane;
+	}
+
+	private void addAutoScrollListener(JScrollPane scrollPane) {//Optimize better auto-scroll
+		final BoundedRangeModel model = scrollPane.getVerticalScrollBar().getModel();
+		model.addChangeListener(new ChangeListener(){@Override	public void stateChanged(ChangeEvent e) {
+			int max = model.getMaximum();
+			model.setValue(max);
+		}});
 	}
 
 	private Dimension size(Container container) {

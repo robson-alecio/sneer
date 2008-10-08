@@ -4,12 +4,12 @@
 	<property name="build.dir" value="bin" />
 	<property name="builder.project" value="antlips" />
 	
-	<target name="hudson" depends="antlips.xml">
+	<target name="hudson" depends="clean, antlips.xml">
 		<ant antfile="antlips.xml" target="clover-report" />
 	</target>
 	
-	<target name="clean" depends="antlips.xml">
-		<ant antfile="antlips.xml" target="clean" />
+	<target name="clean">
+		<delete dir="${build.dir}" />
 	</target>
 	
 	<target name="test" depends="antlips.xml">
@@ -51,6 +51,6 @@
 	
 	<target name="init">
 		<mkdir dir="${build.dir}" />
-	</target>	
+	</target>
 	
 </project>

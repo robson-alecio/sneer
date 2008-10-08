@@ -4,7 +4,9 @@ import static wheel.io.ui.graphics.Images.copy;
 import static wheel.io.ui.graphics.Images.getImage;
 
 import java.awt.image.BufferedImage;
+import java.util.List;
 
+import org.apache.commons.lang.SerializationUtils;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -39,16 +41,18 @@ public class ImageCodecTest extends TestThatIsInjected {
 		final BufferedImage image2 = loadImage("together2.png");
 		
 		ImageDelta full = new ImageDelta(image1,0,0);
-		int fullSize = full.data().length;
-
-		Iterable<ImageDelta> deltas = _subject.encodeDeltas(image1, image2);
+		int fullSizeBytes = SerializationUtils.serialize(full).length;
 		
-		int deltaSize = 0;
-		for (ImageDelta delta : deltas) {
-			deltaSize = deltaSize+ delta.data().length;
-		}
-		assertTrue(deltas.iterator().hasNext());
-		assertTrue(deltaSize<=fullSize);
+		List<ImageDelta> deltas = _subject.encodeDeltas(image1, image2);
+		int deltaSizeBytes = SerializationUtils.serialize(deltas.toArray()).length;
+		
+		assertTrue(deltas.size()>0);
+		assertTrue(deltaSizeBytes>0);
+		assertTrue(deltaSizeBytes<=fullSizeBytes);
+		
+//		System.out.println(deltas.size());
+//		System.out.println(fullSizeBytes);
+//		System.out.println(deltaSizeBytes);
 		
 		BufferedImage result = _subject.decodeDeltas(image1, deltas);
 		Assert.assertEquals(image2, result);

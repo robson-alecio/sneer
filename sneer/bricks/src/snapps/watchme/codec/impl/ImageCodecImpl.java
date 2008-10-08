@@ -43,7 +43,7 @@ class ImageCodecImpl implements ImageCodec {
 	}
 	
 	@Override
-	public Iterable<ImageDelta> encodeDeltas(BufferedImage original, BufferedImage target) {
+	public List<ImageDelta> encodeDeltas(BufferedImage original, BufferedImage target) {
 		List<ImageDelta> result = new ArrayList<ImageDelta>();
 		SplitCounter counter = new SplitCounter(original);
 		splitImage(original, target, result, counter);
@@ -60,6 +60,10 @@ class ImageCodecImpl implements ImageCodec {
 		BufferedImage img0 = original.getSubimage(x, y, CELL_SIZE, CELL_SIZE);
 		BufferedImage img1 = target.getSubimage(x, y, CELL_SIZE, CELL_SIZE);
 		if(!Images.isSameImage(img0, img1))
-			result.add(new ImageDelta(img1,x,y));
+			try {
+				result.add(new ImageDelta(img1,x,y));
+			} catch (InterruptedException e) {
+				throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			}
 	}
 }

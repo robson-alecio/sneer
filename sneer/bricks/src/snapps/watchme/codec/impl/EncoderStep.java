@@ -15,19 +15,11 @@ import wheel.io.ui.graphics.Images;
 class EncoderStep{
 	private final BufferedImage _original;
 	private final BufferedImage _target;
-	private final int _widthInCells;
-	private final int _heightInCells;
-	private final int _widthRemainderPixels;
-	private final int _heightRemainderPixels;
 	private final List<ImageDelta> _result;
 	
 	EncoderStep(BufferedImage original, BufferedImage target){
 		_original = original;
 		_target = target;
-		_widthRemainderPixels = original.getWidth() % CELL_SIZE;
-		_heightRemainderPixels = original.getHeight() % CELL_SIZE;
-		_widthInCells = original.getWidth() / CELL_SIZE;
-		_heightInCells = original.getHeight() / CELL_SIZE;
 		_result = new ArrayList<ImageDelta>();
 		produceResult();
 	}

@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.apache.commons.lang.SerializationUtils;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import snapps.watchme.codec.ImageCodec;
@@ -16,6 +15,7 @@ import snapps.watchme.codec.ImageDelta;
 import sneer.kernel.container.Inject;
 import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.skin.image.ImageFactory;
+import wheel.io.ui.graphics.Images;
 
 public class ImageCodecTest extends TestThatIsInjected {
 	
@@ -34,28 +34,36 @@ public class ImageCodecTest extends TestThatIsInjected {
 	}
 
 	@Test
-	@Ignore
 	public void encodeImage() throws Exception {
+		encodeAndDecode("together1.png", "together3.png");
+	}
+	
+	@Test
+	public void encodeChangeInBorder() throws Exception {
+		encodeAndDecode("together1.png", "together2.png");
+	}
+
+	private void encodeAndDecode(String imgAName, String imgBName)
+			throws Exception, InterruptedException {
+		final BufferedImage imageA = loadImage(imgAName);
+		final BufferedImage imageB = loadImage(imgBName);
 		
-		final BufferedImage image1 = loadImage("together1.png");
-		final BufferedImage image2 = loadImage("together2.png");
-		
-		ImageDelta full = new ImageDelta(image1,0,0);
+		ImageDelta full = new ImageDelta(imageA,0,0);
 		int fullSizeBytes = SerializationUtils.serialize(full).length;
 		
-		List<ImageDelta> deltas = _subject.encodeDeltas(image1, image2);
+		List<ImageDelta> deltas = _subject.encodeDeltas(imageA, imageB);
 		int deltaSizeBytes = SerializationUtils.serialize(deltas.toArray()).length;
 		
 		assertTrue(deltas.size()>0);
 		assertTrue(deltaSizeBytes>0);
 		assertTrue(deltaSizeBytes<=fullSizeBytes);
 		
-//		System.out.println(deltas.size());
-//		System.out.println(fullSizeBytes);
-//		System.out.println(deltaSizeBytes);
+		System.out.println(deltas.size());
+		System.out.println(fullSizeBytes);
+		System.out.println(deltaSizeBytes);
 		
-		BufferedImage result = _subject.decodeDeltas(image1, deltas);
-		Assert.assertEquals(image2, result);
+		BufferedImage result = _subject.decodeDeltas(imageA, deltas);
+		Assert.assertTrue(Images.isSameImage(imageB, result));
 	}
 
 	private BufferedImage loadImage(String fileName) throws Exception {

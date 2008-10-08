@@ -5,6 +5,7 @@
 	- [Klaus pairing] Make ImageDelta extend Tuple - Run ImageCodecTest - Fix: Tuple isn't injected.
 
 	- Wind
+		- Focus - Request focus to the 
 	- Voice Calls
 		- Mic brick started. Refer to LoopbackTest spike.
 	---- WE DROP SKYPE :)

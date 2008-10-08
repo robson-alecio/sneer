@@ -5,7 +5,7 @@
 	<property name="builder.project" value="antlips" />
 	
 	<target name="hudson" depends="antlips.xml">
-		<ant antfile="clover-build.xml" />
+		<ant antfile="antlips.xml" target="clover-report" />
 	</target>
 	
 	<target name="clean" depends="antlips.xml">

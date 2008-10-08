@@ -90,4 +90,35 @@
 <%
 	}
 %>	</target>
+
+	<!-- clover support -->
+	<target name="init-clover">
+		<property name="clover.jar" location="antlips/lib/clover.jar" />
+		<taskdef resource="cloverlib.xml" classpath="${clover.jar}"/>
+		<clover-setup initString="mycoverage.db"/>
+	</target>
+	
+	<target name="clover-report" depends="clean, init-clover, test-execution">
+		<fileset dir="." id="clover.sources">
+<%
+	for (Pair<String, String> src : value.srcs()) {
+%>			<include name="<%=src._a%>/**/*.java" />
+<%
+	}
+%>		</fileset>
+		
+		<clover-report>
+	       <current outfile="clover.xml">
+	          <format type="xml"/>
+	       	  <fileset refid="clover.sources" />
+	       </current>
+	    </clover-report>
+		
+		<clover-report>
+	       <current outfile="clover">
+	          <format type="html"/>
+	       	  <fileset refid="clover.sources" />
+	       </current>
+	    </clover-report>
+	</target>
 </project>

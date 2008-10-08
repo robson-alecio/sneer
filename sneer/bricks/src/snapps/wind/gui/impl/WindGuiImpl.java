@@ -1,13 +1,17 @@
 package snapps.wind.gui.impl;
 
-import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 
 import javax.swing.BoundedRangeModel;
+import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
@@ -19,6 +23,7 @@ import snapps.wind.Wind;
 import snapps.wind.gui.WindGui;
 import sneer.kernel.container.Inject;
 import sneer.pulp.keymanager.KeyManager;
+import sneer.skin.image.ImageFactory;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
@@ -41,6 +46,9 @@ class WindGuiImpl implements WindGui {
 
 	@Inject
 	static private KeyManager _keyManager;
+	
+	@Inject
+	static private ImageFactory _imageFactory;
 
 	private final static Signal<Image> _meImage;
 	private final static Signal<Image> _otherImage;
@@ -49,6 +57,8 @@ class WindGuiImpl implements WindGui {
 	private TextWidget<JTextField> _myShout;
 
 	private Container _container;
+
+	private JToggleButton _lock;
 
 	static {
 		_meImage = new Constant<Image>(loadImage("me.png"));
@@ -75,16 +85,51 @@ class WindGuiImpl implements WindGui {
 		ShoutLabelProvider labelProvider = new ShoutLabelProvider();
 		_shoutsList = _rfactory.newList(_wind.shoutsHeard(), labelProvider, new WindListCellRenderer(labelProvider));
 		_myShout = _rfactory.newTextField(new Constant<String>(""), _wind.megaphone(), true);
+		_container.setBackground(_shoutsList.getComponent().getBackground());
 		iniGui();
 	}
 
 	private void iniGui() {
 		JScrollPane scrollPane = createScrollPane();
 		scrollPane.getViewport().add(_shoutsList.getComponent());
-		_container.setLayout(new BorderLayout());
-		_container.add(scrollPane, BorderLayout.CENTER);
-		_container.add(_myShout.getComponent(), BorderLayout.SOUTH);		
+		
+		initAutoScroll();
+		
+		_container.setLayout(new GridBagLayout());
+		_container.add(scrollPane, new GridBagConstraints(0, 0, 2, 1, 1., 1.,
+				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+				new Insets(0, 0, 0, 0), 0, 0));
+
+		_container.add(_myShout.getComponent(), new GridBagConstraints(0, 1, 1, 1, 1., 0,
+				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+				new Insets(0, 5, 5, 0), 0, 0));
+
+		_container.add(_lock, new GridBagConstraints(1, 1, 1, 1, 0, 0,
+				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+				new Insets(0, 5, 5, 5), 0, 0));		
+		
 		_shoutsList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
+	}
+
+	private void initAutoScroll() {
+		_lock = new JToggleButton();
+		_lock.setPreferredSize(new Dimension(20,20));
+		_lock.setBorder(new EmptyBorder(0,0,0,0));
+		_lock.getModel().addChangeListener(new ChangeListener(){
+			
+			private final ImageIcon LOCK_ICON = _imageFactory.getIcon(WindGuiImpl.class, "lock.png");
+			private final ImageIcon UNLOCK_ICON = _imageFactory.getIcon(WindGuiImpl.class, "unlock.png");
+			{
+				_lock.setIcon(UNLOCK_ICON);
+			}
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				if(_lock.isSelected())
+					_lock.setIcon(LOCK_ICON);
+				else
+					_lock.setIcon(UNLOCK_ICON);
+			}});
 	}
 
 	private JScrollPane createScrollPane() {
@@ -92,8 +137,8 @@ class WindGuiImpl implements WindGui {
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setMinimumSize(size(_container));
 		scrollPane.setPreferredSize(size(_container));
-		scrollPane.setBorder(new TitledBorder(new EmptyBorder(5,5,5,5), getName()));
-		scrollPane.setBackground(_shoutsList.getComponent().getBackground());
+		scrollPane.setBorder(new TitledBorder(new EmptyBorder(5,5,2,2), getName()));
+		scrollPane.setOpaque(false);
 		addAutoScrollListener(scrollPane);
 		return scrollPane;
 	}
@@ -101,13 +146,13 @@ class WindGuiImpl implements WindGui {
 	private void addAutoScrollListener(JScrollPane scrollPane) {//Optimize better auto-scroll
 		final BoundedRangeModel model = scrollPane.getVerticalScrollBar().getModel();
 		model.addChangeListener(new ChangeListener(){@Override	public void stateChanged(ChangeEvent e) {
-			int max = model.getMaximum();
-			model.setValue(max);
+			if(!_lock.isSelected())
+				model.setValue(model.getMaximum());
 		}});
 	}
 
 	private Dimension size(Container container) {
-		return new Dimension(container.getSize().width, 300 );
+		return new Dimension(container.getSize().width, 298 );
 	}
 	
 	private String getName() {

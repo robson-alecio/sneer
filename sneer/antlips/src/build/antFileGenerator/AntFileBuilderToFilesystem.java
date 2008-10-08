@@ -11,6 +11,7 @@ import java.util.Set;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
+import wheel.io.codegeneration.Template;
 import wheel.io.files.Directory;
 import wheel.lang.Pair;
 
@@ -43,18 +44,23 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 
 	@Override
 	public void addCompileEntry(final String src, final String output) {
-		_srcs.add(Pair.pair(src, output));
+		_srcs.add(Pair.pair(src, safeDestDir(output)));
 	}
 
 	@Override
 	public void build() {
-		final StringBuilder builder = generateAntFile();
-		
-		final OutputStream file = createOrCry(_directory, FILENAME);
 		try {
-			IOUtils.write(builder.toString(), file);
+			final String script = generateAntScript();
+			writeAntFile(script);
 		} catch (final IOException e) {
 			throw new IllegalStateException("Error creating file " + FILENAME, e);
+		} 
+	}
+
+	private void writeAntFile(final String contents) throws IOException {
+		final OutputStream file = createOrCry(_directory, FILENAME);
+		try {
+			IOUtils.write(contents, file);
 		} finally {
 			IOUtils.closeQuietly(file);
 		}
@@ -69,114 +75,38 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 		}
 	}
 
-	private StringBuilder generateAntFile() {
-		final StringBuilder builder = new StringBuilder();
-		
-		builder.append(("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n" +
-		"<project name=\"AntBuild\" default=\"compile\">\n" +
-		"\n"));
-		builder.append("\t<property name=\"" + BUILD_DIR_PROPERTY + "\" location=\"bin\" />\n\n");
-		builder.append("\t<path id=\"classpath\">\n");
-		
-		for (final String destDir : uniqueDestDirs())
-			builder.append("\t\t<pathelement path=\"" + destDir + "\"/>\n");
-		for (final String lib : _libs)
-			builder.append("\t\t<pathelement path=\"" + lib + "\"/>\n");
-		builder.append("\t</path>\n");
-		
-		builder.append("\n");
-		
-		builder.append("\t<target name=\"compile\" depends='copyResources'>\n");
-		builder.append("\t\t<mkdir dir=\"${" + BUILD_DIR_PROPERTY + "}\"/>\n");
-		builder.append(appendJavacCall());
-		builder.append("\t</target>\n\n");
-		
-		
-		builder
-		.append("\t<target name='copyResources'>\n")
-			.append("\t\t<copy todir='${build.dir}'>\n");
-					appendFileSetsToCopy(builder);
-		builder
-			.append("\t\t</copy>\n")
-		.append("\t</target>\n");
-		
-		builder.append("</project>");
-		return builder;
+	private String generateAntScript() throws IOException {
+		return Template.evaluate(loadTemplateString(), this);
 	}
 
-	private Iterable<String> uniqueDestDirs() {
+	private String loadTemplateString() throws IOException {
+		final String templateName = _compileSourceFoldersTogether
+			? "source-folders-together.template"
+			: "separate-source-folders.template";
+		return IOUtils.toString(getClass().getResourceAsStream(templateName));
+	}
+	
+	public Iterable<Pair<String, String>> srcs() {
+		return _srcs;
+	}
+
+	public Iterable<String> destDirs() {
 		if (_compileSourceFoldersTogether)
 			return Arrays.asList(DEFAULT_DEST_DIR);
 		final Set<String> destDirs = new HashSet<String>();
 		for (Pair<String, String> src : _srcs)
-			destDirs.add(destDirFor(src));
+			destDirs.add(src._b);
 		return destDirs;
 	}
-
-	private void appendFileSetsToCopy(StringBuilder builder) {
-		
-		for (Pair<String, String> src : _srcs) {
-			builder
-			.append("\t\t\t<fileset dir='").append(src._a).append("'>\n")
-			.append("\t\t\t\t<include name='**/**'/>\n")
-			.append("\t\t\t\t<exclude name='**/*.java'/>\n")
-			.append("\t\t\t</fileset>\n");
-		}
-	}
-
-	private String appendJavacCall() {
-		if (_compileSourceFoldersTogether)
-			return getJavacCallsWithSourceFoldersTogether();
-		
-		return getJavacCallsWithSeparateSourceFolders();
-	}
-
-	private String getJavacCallsWithSourceFoldersTogether() {
-		StringBuilder builder = new StringBuilder();
-		
-		builder.append(	
-				"\t\t<javac\n"+
-					"\t\t\t\tdestdir=\"${" + BUILD_DIR_PROPERTY + "}\"\n" +
-					"\t\t\t\tlistfiles=\"true\"\n" +
-					"\t\t\t\tfailonerror=\"true\"\n" +
-					"\t\t\t\tdebug=\"on\"\n" +
-					"\t\t\t\ttarget=\"1.5\"\n" +
-					"\t\t\t\tencoding=\"utf-8\"\n" +
-					"\t\t>\n");
-		
-		for (final Pair<String, String> src : _srcs){
-			builder.append("\t\t\t<src path=\"" + src._a + "\"/>\n");		      
-		}
-		
-		builder.append("\t\t\t<classpath refid=\"classpath\"/>\n" +
-						"\t\t</javac>\n");	
-		return builder.toString();
-	}
-
-	private String getJavacCallsWithSeparateSourceFolders() {
-		StringBuilder builder = new StringBuilder();
-		for (final Pair<String, String> src : _srcs){
-			final String destdir = destDirFor(src);
-			builder.append(	
-					"\t\t<javac srcdir=\""+ src._a +"\"\n"+
-						"\t\t\t\tdestdir=\"" + destdir + "\"\n" +
-						"\t\t\t\tlistfiles=\"true\"\n" +
-						"\t\t\t\tfailonerror=\"true\"\n" +
-						"\t\t\t\tdebug=\"on\"\n" +
-						"\t\t\t\ttarget=\"1.5\"\n" +
-						"\t\t\t\tencoding=\"utf-8\"\n" +
-						"\t\t>\n" +
-							"\t\t\t<classpath refid=\"classpath\"/>\n" +
-						"\t\t</javac>\n");		      
-		}
-		
-		return builder.toString();
-	}
-
-	private String destDirFor(final Pair<String, String> src) {
-		return StringUtils.isEmpty(src._b)
+	
+	private String safeDestDir(final String destDir) {
+		return StringUtils.isEmpty(destDir)
 			? DEFAULT_DEST_DIR
-			: src._b;
+			: destDir;
+	}
+
+	public List<String> libs() {
+		return _libs;
 	}
 
 }

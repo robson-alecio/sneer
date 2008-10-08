@@ -56,7 +56,6 @@
 	</target>
 	
 	<target name="clover-report" depends="init-clover, test-execution">
-		
 		<fileset dir="." id="clover.sources">
 			<include name="*/src/**/*.java" />
 			<exclude name="spikes/**" />
@@ -100,9 +99,10 @@
 			<src path="${builder.project}/src" />
 		</javac>
 		
-		<java classname="build.GenerateAntFile">
+		<java classname="build.GenerateAntFile" fork="true">
 			<classpath>
 				<pathelement location="${build.dir}" />
+				<pathelement location="${builder.project}/src" />
 				<path refid="wheel.lib.classpath" />
 			</classpath>
 			<arg value="-separatedsourcefolders" />

@@ -10,32 +10,34 @@
 		<pathelement path="kernel/lib/asm-all-3.1.jar"/>
 	</path>
 
-	<target name="compile" depends='copyResources'>
-		<mkdir dir="${build.dir}"/>
+	<target name="compile" depends="copyResources">
 		<javac
-				destdir="${build.dir}"
-				listfiles="true"
-				failonerror="true"
-				debug="on"
-				target="1.5"
-				encoding="utf-8"
-		>
-			<src path="wheel/src"/>
-			<src path="spikes/src"/>
+			destdir="${build.dir}"
+			listfiles="true"
+			failonerror="true"
+			debug="on"
+			target="1.5"
+			encoding="utf-8">
+			<src path="wheel/src" />
+			<src path="spikes/src" />
 			<classpath refid="classpath"/>
 		</javac>
 	</target>
 
-	<target name='copyResources'>
-		<copy todir='${build.dir}'>
-			<fileset dir='wheel/src'>
+	<target name="copyResources" depends="init">
+		<copy todir="${build.dir}">
+			<fileset dir="wheel/src">
 				<include name='**/**'/>
 				<exclude name='**/*.java'/>
 			</fileset>
-			<fileset dir='spikes/src'>
+			<fileset dir="spikes/src">
 				<include name='**/**'/>
 				<exclude name='**/*.java'/>
 			</fileset>
 		</copy>
+	</target>
+	
+	<target name="init">
+		<mkdir dir="${build.dir}"/>
 	</target>
 </project>

@@ -11,40 +11,50 @@
 		<pathelement path="kernel/lib/asm-all-3.1.jar"/>
 	</path>
 
-	<target name="compile" depends='copyResources'>
-		<mkdir dir="${build.dir}"/>
+	<target name="compile" depends="copyResources">
+
 		<javac srcdir="wheel/src"
 				destdir="sneerAPI-bin"
 				listfiles="true"
 				failonerror="true"
 				debug="on"
 				target="1.5"
-				encoding="utf-8"
-		>
+				encoding="utf-8">
 			<classpath refid="classpath"/>
 		</javac>
+
 		<javac srcdir="spikes/src"
 				destdir="${build.dir}"
 				listfiles="true"
 				failonerror="true"
 				debug="on"
 				target="1.5"
-				encoding="utf-8"
-		>
+				encoding="utf-8">
 			<classpath refid="classpath"/>
 		</javac>
+
 	</target>
 
-	<target name='copyResources'>
-		<copy todir='${build.dir}'>
-			<fileset dir='wheel/src'>
-				<include name='**/**'/>
-				<exclude name='**/*.java'/>
-			</fileset>
-			<fileset dir='spikes/src'>
+	<target name="copyResources" depends="init">
+
+		<copy todir="sneerAPI-bin">
+			<fileset dir="wheel/src">
 				<include name='**/**'/>
 				<exclude name='**/*.java'/>
 			</fileset>
 		</copy>
+
+		<copy todir="${build.dir}">
+			<fileset dir="spikes/src">
+				<include name='**/**'/>
+				<exclude name='**/*.java'/>
+			</fileset>
+		</copy>
+
+	</target>
+	
+	<target name="init">
+		<mkdir dir="sneerAPI-bin"/>
+		<mkdir dir="${build.dir}"/>
 	</target>
 </project>

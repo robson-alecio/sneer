@@ -35,7 +35,6 @@
 			encoding="utf-8"
 			source="1.6"
          	target="1.6">
-			<compilerarg value="-Xlint:unchecked"/>
 			<src path="wheel/src" />
 			<src path="${builder.project}/src" />
 		</javac>

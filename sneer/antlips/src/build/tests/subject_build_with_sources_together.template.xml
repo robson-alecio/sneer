@@ -10,7 +10,7 @@
 		<pathelement path="kernel/lib/asm-all-3.1.jar"/>
 	</path>
 
-	<target name="compile" depends="copyResources">
+	<target name="compile" depends="copy-resources">
 		<javac
 			destdir="${build.dir}"
 			listfiles="true"
@@ -24,7 +24,7 @@
 		</javac>
 	</target>
 
-	<target name="copyResources" depends="init">
+	<target name="copy-resources" depends="init">
 		<copy todir="${build.dir}">
 			<fileset dir="wheel/src">
 				<include name='**/**'/>

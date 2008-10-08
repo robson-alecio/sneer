@@ -13,7 +13,7 @@
 	}
 %>	</path>
 
-	<target name="compile" depends="copyResources">
+	<target name="compile" depends="copy-resources">
 		<javac
 			destdir="${build.dir}"
 			listfiles="true"
@@ -30,7 +30,7 @@
 		</javac>
 	</target>
 
-	<target name="copyResources" depends="init">
+	<target name="copy-resources" depends="init">
 		<copy todir="${build.dir}">
 <%
 	for (Pair<String, String> src : value.srcs()) {

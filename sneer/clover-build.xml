@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<project name="sneer clover build" default="hudson">
+
+	<import file="antlips.xml" />
+	
+	<property name="clover.jar" location="antlips/lib/clover.jar" />
+
+	<target name="hudson" depends="clean, clover-report, test-verification">
+	</target>
+
+	<target name="init-clover">
+		<taskdef resource="cloverlib.xml" classpath="${clover.jar}"/>
+		<clover-setup initString="mycoverage.db"/>
+	</target>
+	
+	<target name="clover-report" depends="init-clover, test-execution">
+		<fileset dir="." id="clover.sources">
+			<include name="*/src/**/*.java" />
+			<exclude name="spikes/**" />
+		</fileset>
+		
+		<clover-report>
+	       <current outfile="clover.xml">
+	          <format type="xml"/>
+	       	  <fileset refid="clover.sources" />
+	       </current>
+	    </clover-report>
+		
+		<clover-report>
+	       <current outfile="clover">
+	          <format type="html"/>
+	       	  <fileset refid="clover.sources" />
+	       </current>
+	    </clover-report>
+	</target>
+</project>

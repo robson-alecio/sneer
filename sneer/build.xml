@@ -4,76 +4,16 @@
 	<property name="build.dir" value="bin" />
 	<property name="builder.project" value="antlips" />
 	
-	<target name="test" depends="test-execution, test-verification">
+	<target name="hudson" depends="antlips.xml">
+		<ant antfile="clover-build.xml" />
 	</target>
 	
-	<target name="hudson" depends="clover-report, test-verification">
+	<target name="clean" depends="antlips.xml">
+		<ant antfile="antlips.xml" target="clean" />
 	</target>
 	
-	<target name="test-verification" if="junit.failures">
-		<fail>Test failures! Check the output for details.</fail>
-	</target>
-		
-	<target name="test-execution" depends="build">
-		<junit printsummary="true" failureproperty="junit.failures"
-				fork="yes">
-			<classpath>
-				<fileset dir=".">
-					<include name="**/lib/**/*.jar" />
-				</fileset>
-				<pathelement location="${build.dir}" />
-				<pathelement location="sneerAPI-bin" />
-				
-				<!-- resource files required by tests -->
-				<pathelement location="${builder.project}/src" />
-				<pathelement location="wheel/src" />
-			</classpath>
-			
-			<batchtest todir="${build.dir}">
-				<fileset dir="${build.dir}">
-					<include name="**/tests/*Test.class" />
-					<exclude name="**/spikes/src/**" />
-				</fileset>
-				<fileset dir="tests/src">
-					<include name="**/*Test.java" />
-				</fileset>
-				<formatter type="plain"/>
-			</batchtest>
-		</junit>
-	</target>
-	
-	<target name="clean">
-		<delete dir="${build.dir}"/>
-	</target>
-	
-	<target name="build" depends="clean, antlips.xml">
+	<target name="test" depends="antlips.xml">
 		<ant antfile="antlips.xml" />
-	</target>
-	
-	<target name="init-clover">
-		<taskdef resource="cloverlib.xml" classpath="${builder.project}/lib/clover.jar"/>
-		<clover-setup initString="mycoverage.db"/>
-	</target>
-	
-	<target name="clover-report" depends="init-clover, test-execution">
-		<fileset dir="." id="clover.sources">
-			<include name="*/src/**/*.java" />
-			<exclude name="spikes/**" />
-		</fileset>
-		
-		<clover-report>
-	       <current outfile="clover.xml">
-	          <format type="xml"/>
-	       	  <fileset refid="clover.sources" />
-	       </current>
-	    </clover-report>
-		
-		<clover-report>
-	       <current outfile="clover">
-	          <format type="html"/>
-	       	  <fileset refid="clover.sources" />
-	       </current>
-	    </clover-report>
 	</target>
 	
 	<target name="antlips.xml" depends="init">

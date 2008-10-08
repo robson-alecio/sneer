@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="AntBuild" default="compile">
+<project name="AntBuild" default="test">
 
 	<property name="build.dir" location="bin" />
 
@@ -17,7 +17,32 @@
 	}
 %>	</path>
 
-	<target name="compile" depends="copyResources">
+	<target name="test" depends="test-execution, test-verification">
+	</target>
+	
+	<target name="test-verification" if="junit.failures">
+		<fail>Test failures! Check the output for details.</fail>
+	</target>
+		
+	<target name="test-execution" depends="compile">
+		<junit printsummary="true" failureproperty="junit.failures" fork="yes">
+			<classpath>
+				<path refid="classpath" />
+			</classpath>
+<%
+	for (final String destDir : value.destDirs()) {
+%>			<batchtest todir="<%=destDir%>">
+				<fileset dir="<%=destDir%>">
+					<include name="**/tests/*Test.class" />
+				</fileset>
+				<formatter type="plain"/>
+			</batchtest>
+<%
+	}
+%>		</junit>
+	</target>
+
+	<target name="compile" depends="copy-resources">
 <%
 	for (Pair<String, String> src : value.srcs()) {
 %>
@@ -35,7 +60,7 @@
 %>
 	</target>
 
-	<target name="copyResources" depends="init">
+	<target name="copy-resources" depends="init">
 <%
 	for (Pair<String, String> src : value.srcs()) {
 %>
@@ -54,6 +79,14 @@
 <%
 	for (final String destDir : value.destDirs()) {
 %>		<mkdir dir="<%=destDir%>"/>
+<%
+	}
+%>	</target>
+
+	<target name="clean">
+<%
+	for (final String destDir : value.destDirs()) {
+%>		<delete dir="<%=destDir%>"/>
 <%
 	}
 %>	</target>

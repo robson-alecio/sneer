@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="AntBuild" default="compile">
+<project name="AntBuild" default="test">
 
 	<property name="build.dir" location="bin" />
 
@@ -11,7 +11,34 @@
 		<pathelement path="kernel/lib/asm-all-3.1.jar"/>
 	</path>
 
-	<target name="compile" depends="copyResources">
+	<target name="test" depends="test-execution, test-verification">
+	</target>
+	
+	<target name="test-verification" if="junit.failures">
+		<fail>Test failures! Check the output for details.</fail>
+	</target>
+		
+	<target name="test-execution" depends="compile">
+		<junit printsummary="true" failureproperty="junit.failures" fork="yes">
+			<classpath>
+				<path refid="classpath" />
+			</classpath>
+			<batchtest todir="sneerAPI-bin">
+				<fileset dir="sneerAPI-bin">
+					<include name="**/tests/*Test.class" />
+				</fileset>
+				<formatter type="plain"/>
+			</batchtest>
+			<batchtest todir="${build.dir}">
+				<fileset dir="${build.dir}">
+					<include name="**/tests/*Test.class" />
+				</fileset>
+				<formatter type="plain"/>
+			</batchtest>
+		</junit>
+	</target>
+
+	<target name="compile" depends="copy-resources">
 
 		<javac srcdir="wheel/src"
 				destdir="sneerAPI-bin"
@@ -35,7 +62,7 @@
 
 	</target>
 
-	<target name="copyResources" depends="init">
+	<target name="copy-resources" depends="init">
 
 		<copy todir="sneerAPI-bin">
 			<fileset dir="wheel/src">
@@ -56,5 +83,10 @@
 	<target name="init">
 		<mkdir dir="sneerAPI-bin"/>
 		<mkdir dir="${build.dir}"/>
+	</target>
+
+	<target name="clean">
+		<delete dir="sneerAPI-bin"/>
+		<delete dir="${build.dir}"/>
 	</target>
 </project>

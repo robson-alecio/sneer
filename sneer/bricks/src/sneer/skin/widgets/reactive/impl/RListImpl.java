@@ -17,10 +17,10 @@ class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 	protected final ListSignal<ELEMENT> _source;
 	protected LabelProvider<ELEMENT> _labelProvider;
 
-	void repaintList() {
-		revalidate();
-		repaint();
-	}
+//	void repaintList() {
+//		revalidate();
+//		repaint();
+//	}
 
 	RListImpl(ListSignal<ELEMENT> source, LabelProvider<ELEMENT> labelProvider, ListCellRenderer cellRenderer ) {
 		_source = source;

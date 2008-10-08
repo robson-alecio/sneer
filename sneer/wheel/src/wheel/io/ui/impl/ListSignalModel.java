@@ -1,9 +1,11 @@
 package wheel.io.ui.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
+import javax.swing.SwingUtilities;
 
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
@@ -43,9 +45,11 @@ public class ListSignalModel<T> extends AbstractListModel {
 		}
 
 		@Override
-		public void elementAdded(int index) {
+		public void elementAdded(final int index) {
 			addReceiverToElement(index);
-			fireIntervalAdded(ListSignalModel.this, index, index);
+			invokeAndWait(new Runnable(){ @Override public void run() {
+				fireIntervalAdded(ListSignalModel.this, index, index);
+			}});
 		}
 
 		@Override
@@ -54,8 +58,10 @@ public class ListSignalModel<T> extends AbstractListModel {
 		}
 
 		@Override
-		public void elementRemoved(int index) {
-			fireIntervalRemoved(ListSignalModel.this, index, index);
+		public void elementRemoved(final int index) {
+			invokeAndWait(new Runnable(){ @Override public void run() {
+				fireIntervalRemoved(ListSignalModel.this, index, index);
+			}});
 		}
 
 		@Override
@@ -64,9 +70,11 @@ public class ListSignalModel<T> extends AbstractListModel {
 		}
 
 		@Override
-		public void elementReplaced(int index) {
+		public void elementReplaced(final int index) {
 			addReceiverToElement(index);
-			fireContentsChanged(ListSignalModel.this, index, index);
+			invokeAndWait(new Runnable(){ @Override public void run() {
+				fireContentsChanged(ListSignalModel.this, index, index);
+			}});
 		}
 
 	}
@@ -104,6 +112,16 @@ public class ListSignalModel<T> extends AbstractListModel {
 					fireContentsChanged(ListSignalModel.this, i, i);
 				i++;
 			}}};
+	}
+
+	private void invokeAndWait(Runnable runnable) { //Fix This is no longer necessary after the container is calling gui brick code only in the Swing thread.
+		try {
+			SwingUtilities.invokeAndWait(runnable);
+		} catch (InterruptedException e) {
+			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+		} catch (InvocationTargetException e) {
+			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+		}
 	}
 
 	private static final long serialVersionUID = 1L;

@@ -89,4 +89,32 @@
 		<delete dir="sneerAPI-bin"/>
 		<delete dir="${build.dir}"/>
 	</target>
+
+	<!-- clover support -->
+	<target name="init-clover">
+		<property name="clover.jar" location="antlips/lib/clover.jar" />
+		<taskdef resource="cloverlib.xml" classpath="${clover.jar}"/>
+		<clover-setup initString="mycoverage.db"/>
+	</target>
+	
+	<target name="clover-report" depends="clean, init-clover, test-execution">
+		<fileset dir="." id="clover.sources">
+			<include name="wheel/src/**/*.java" />
+			<include name="spikes/src/**/*.java" />
+		</fileset>
+		
+		<clover-report>
+	       <current outfile="clover.xml">
+	          <format type="xml"/>
+	       	  <fileset refid="clover.sources" />
+	       </current>
+	    </clover-report>
+		
+		<clover-report>
+	       <current outfile="clover">
+	          <format type="html"/>
+	       	  <fileset refid="clover.sources" />
+	       </current>
+	    </clover-report>
+	</target>
 </project>

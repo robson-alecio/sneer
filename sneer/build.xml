@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="sneer" default="test">
+<project name="sneer" default="clean-test">
 	
 	<property name="build.dir" value="bin" />
 	<property name="builder.project" value="antlips" />
@@ -8,9 +8,15 @@
 		<ant antfile="antlips.xml" target="clover-report" />
 	</target>
 	
-	<target name="clean">
+	<target name="clean" depends="delete-build-dir, antlips.xml">
+		<ant antfile="antlips.xml" target="clean" />
+	</target>
+	
+	<target name="delete-build-dir">
 		<delete dir="${build.dir}" />
 	</target>
+	
+	<target name="clean-test" depends="clean, test" />
 	
 	<target name="test" depends="antlips.xml">
 		<ant antfile="antlips.xml" />

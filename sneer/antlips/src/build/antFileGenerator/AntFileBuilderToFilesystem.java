@@ -82,7 +82,7 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 	private String loadTemplateString() throws IOException {
 		final String templateName = _compileSourceFoldersTogether
 			? "source-folders-together.template"
-			: "separate-source-folders.template";
+			: "source-folders-separate.template";
 		return IOUtils.toString(getClass().getResourceAsStream(templateName));
 	}
 	

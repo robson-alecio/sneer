@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="AntBuild" default="compile">
+
+	<property name="build.dir" location="bin" />
+
+	<path id="classpath">
+<%
+	for (final String destDir : value.destDirs()) {
+%>		<pathelement path="<%=destDir%>"/>
+<%
+	}
+	
+	for (final String lib : value.libs()) {
+%>		<pathelement path="<%=lib%>"/>
+<%
+	}
+%>	</path>
+
+	<target name="compile" depends="copyResources">
+<%
+	for (Pair<String, String> src : value.srcs()) {
+%>
+		<javac srcdir="<%=src._a%>"
+				destdir="<%=src._b%>"
+				listfiles="true"
+				failonerror="true"
+				debug="on"
+				target="1.5"
+				encoding="utf-8">
+			<classpath refid="classpath"/>
+		</javac>
+<%
+	}
+%>
+	</target>
+
+	<target name="copyResources" depends="init">
+<%
+	for (Pair<String, String> src : value.srcs()) {
+%>
+		<copy todir="<%=src._b%>">
+			<fileset dir="<%=src._a%>">
+				<include name='**/**'/>
+				<exclude name='**/*.java'/>
+			</fileset>
+		</copy>
+<%
+	}
+%>
+	</target>
+	
+	<target name="init">
+<%
+	for (final String destDir : value.destDirs()) {
+%>		<mkdir dir="<%=destDir%>"/>
+<%
+	}
+%>	</target>
+</project>

@@ -1,7 +1,8 @@
 ﻿MAIN ROADMAP
 ===================
+	- [Rodrigo] Build
 	- [Sandro pairing] - Fix: Contacts sometimes don't appear on MainDemo startup. Shouts don't appear if list is flooded with them (Use "MainDemo Localhost foo foo" to send a flood of shouts).
-	- Make ImageDelta extend Tuple - Run ImageCodecTest - Fix: Tuple isn't injected.
+	- [Klaus pairing] Make ImageDelta extend Tuple - Run ImageCodecTest - Fix: Tuple isn't injected.
 
 	- Wind
 	- Voice Calls
@@ -20,11 +21,6 @@
 
 	- [Petra] Tray and Dashboard Titlebar Icon
 	- [Petra] Online and Offline Icons
-
-	- [Kalecser] Continuous Integration with Clover test coverage
-		- Low maintenance build: Interpret the .classpath file and compile the build exactly as Eclipse would.
-		- Cyclic dependency detection: Compile one sourcefolder at a time, from the last in the .classpath list (most basic (wheel)) to the first in the list (most high-level (spikes)), without the other uncompiled sourcefolders in the path.
-	
 
 	- Open Jar leak - Fix in Freedom7Test
 	- Debugging Strategy - Revise so that all debugging info doesnt go into the log file. 

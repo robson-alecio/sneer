@@ -4,18 +4,16 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.SwingUtilities;
 
-import wheel.io.Logger;
-
 public class GuiThread {
 	
 	public static void invokeLater(Runnable runnable) { //Fix This method is called sometimes from swing's thread and other times from aplication's thread. Split the caller method (if it is possible), and delete this 'invokeLater' method.
-		try {
-			if( SwingUtilities.isEventDispatchThread())
-				Logger.log("GuiThread.invokeLather:");
-			assertNotInGuiThread();
-		} catch (RuntimeException e) {
-			Logger.log(e);
-		}
+//		try {
+//			if( SwingUtilities.isEventDispatchThread())
+//				Logger.log("GuiThread.invokeLather:");
+//			assertNotInGuiThread();
+//		} catch (RuntimeException e) {
+//			Logger.log(e);
+//		}
 		SwingUtilities.invokeLater(runnable);
 	}
 	

@@ -8,9 +8,11 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
+import java.awt.image.MemoryImageSource;
 import java.awt.image.PixelGrabber;
 import java.io.File;
 import java.net.MalformedURLException;
@@ -46,19 +48,6 @@ class ImageFactoryImpl implements ImageFactory {
     public ImageIcon getIcon(Class<?> anchor, String relativeImagePath){
     	return getIcon(anchor.getResource(relativeImagePath));
     }
-
-	public ImageIcon getIcon(URL url){
-		String id = new StringBuffer().append("|").append(url.getPath()).toString(); 
-		if(map.containsKey(id)){
-			return map.get(id);
-		}
-		Image img = Images.getImage(url);
-		ImageIcon icon = new ImageIcon(img);
-			
-		map.put(id, icon);
-		mapBytes.put(icon, img);
-		return map.get(id);		
-	}
  
     @Override
     public BufferedImage createBufferedImage(Image image) throws IllegalArgumentException {
@@ -72,6 +61,19 @@ class ImageFactoryImpl implements ImageFactory {
 		}
     }
 
+	private ImageIcon getIcon(URL url){
+		String id = new StringBuffer().append("|").append(url.getPath()).toString(); 
+		if(map.containsKey(id)){
+			return map.get(id);
+		}
+		Image img = Images.getImage(url);
+		ImageIcon icon = new ImageIcon(img);
+			
+		map.put(id, icon);
+		mapBytes.put(icon, img);
+		return map.get(id);		
+	}
+	
 	private BufferedImage tryToCreateBufferedImage(Image image)	throws InterruptedException {
 		loadImage(image);
         int w = image.getWidth(null);
@@ -147,6 +149,21 @@ class ImageFactoryImpl implements ImageFactory {
 		return this.getClass().getResource(name);
 	}
 
+    @Override
+	public Image toImage(int width, int height, int[] data) {
+		MemoryImageSource mis = new MemoryImageSource(width, height, data,	0, width);
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		return tk.createImage(mis);
+	}
+
+    @Override
+	public int[] toSerializableData(int width, int height, Image img) throws InterruptedException {
+		int[] pixels = new int[ width * height ];
+		PixelGrabber pg = new PixelGrabber(img, 0, 0, width, height, pixels,	0, width);
+		pg.grabPixels();
+		return pixels;
+	}
+    
 	private void loadImage(Image image) throws InterruptedException, IllegalArgumentException {
         Component dummy = new Component(){ private static final long serialVersionUID = 1L; };
         MediaTracker tracker = new MediaTracker(dummy);

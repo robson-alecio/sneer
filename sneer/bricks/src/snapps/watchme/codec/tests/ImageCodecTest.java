@@ -43,26 +43,31 @@ public class ImageCodecTest extends TestThatIsInjected {
 		encodeAndDecode("together1.png", "together2.png");
 	}
 
-	private void encodeAndDecode(String imgAName, String imgBName)
-			throws Exception, InterruptedException {
+	private void encodeAndDecode(String imgAName, String imgBName)	throws Exception, InterruptedException {
 		final BufferedImage imageA = loadImage(imgAName);
 		final BufferedImage imageB = loadImage(imgBName);
 		
-		ImageDelta full = new ImageDelta(imageA,0,0);
+		int[] dataA =_imageFactory.toSerializableData(imageA.getWidth(), imageA.getHeight(), imageA);
+		
+		ImageDelta full = new ImageDelta(dataA,0,0, imageA.getWidth(), imageA.getHeight());
 		int fullSizeBytes = SerializationUtils.serialize(full).length;
 		
 		List<ImageDelta> deltas = _subject.encodeDeltas(imageA, imageB);
 		int deltaSizeBytes = SerializationUtils.serialize(deltas.toArray()).length;
 		
 		assertTrue(deltas.size()>0);
-		assertTrue(deltaSizeBytes>0);
 		assertTrue(deltaSizeBytes<=fullSizeBytes);
 		
 		System.out.println(deltas.size());
 		System.out.println(fullSizeBytes);
 		System.out.println(deltaSizeBytes);
-		
+
 		BufferedImage result = _subject.decodeDeltas(imageA, deltas);
+
+		deltas.clear();
+		int emptyDeltaSizeBytes = SerializationUtils.serialize(deltas.toArray()).length;
+		assertTrue(deltaSizeBytes>emptyDeltaSizeBytes);
+		
 		Assert.assertTrue(Images.isSameImage(imageB, result));
 	}
 

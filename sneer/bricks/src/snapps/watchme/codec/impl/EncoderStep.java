@@ -10,12 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import snapps.watchme.codec.ImageDelta;
+import sneer.kernel.container.Inject;
+import sneer.skin.image.ImageFactory;
 import wheel.io.ui.graphics.Images;
 
 class EncoderStep{
 	private final BufferedImage _original;
 	private final BufferedImage _target;
 	private final List<ImageDelta> _result;
+
+	@Inject
+	private static ImageFactory _imageFactory;
 	
 	EncoderStep(BufferedImage original, BufferedImage target){
 		_original = original;
@@ -43,7 +48,8 @@ class EncoderStep{
 		BufferedImage img1 = _target.getSubimage(x, y, width, height);
 		if(!Images.isSameImage(img0, img1))
 			try {
-				_result.add(new ImageDelta(img1,x,y));
+				int[] data = _imageFactory.toSerializableData(CELL_SIZE,CELL_SIZE, img1);
+				_result.add(new ImageDelta(data,x,y, CELL_SIZE,CELL_SIZE));
 			} catch (InterruptedException e) {
 				throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 			}

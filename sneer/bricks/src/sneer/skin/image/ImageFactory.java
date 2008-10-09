@@ -22,5 +22,8 @@ public interface ImageFactory extends DefaultIcons{
 	BufferedImage getScaledInstance(Image image, double scale);
 	BufferedImage getScaledInstance(Image image, int width, int height);
 	BufferedImage getScaledInstance(Image image, int width, int height, GraphicsConfiguration gc);
+	
+	Image toImage(int width, int height, int[] data);
+	int[] toSerializableData(int width, int height, Image img) throws InterruptedException;
 
 }

@@ -1,13 +1,19 @@
 package snapps.watchme.codec.impl;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
 import snapps.watchme.codec.ImageCodec;
 import snapps.watchme.codec.ImageDelta;
+import sneer.kernel.container.Inject;
+import sneer.skin.image.ImageFactory;
 import wheel.io.ui.graphics.Images;
 
 class ImageCodecImpl implements ImageCodec {
+	
+	@Inject
+	private static ImageFactory _imageFactory;
 
 	@Override
 	public List<ImageDelta> encodeDeltas(BufferedImage original, BufferedImage target) {
@@ -24,7 +30,7 @@ class ImageCodecImpl implements ImageCodec {
 	}
 
 	private void applyDelta(BufferedImage result, ImageDelta delta) {
-		result.getGraphics().drawImage(delta.imageCell(), delta.x, delta.y, null);
+		Image img = _imageFactory.toImage(delta.height, delta.height, delta.imageData);
+		result.getGraphics().drawImage(img, delta.x, delta.y, null);
 	}
-	
 }

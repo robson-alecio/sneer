@@ -6,7 +6,7 @@ import javax.swing.SwingUtilities;
 
 public class GuiThread {
 	
-	public static void invokeAndWait(Runnable runnable) { //Fix This method is called sometimes from swing's thread and other times from aplication's thread. Split the caller method (if it is possible), and delete this 'invokeLater' method.
+	public static void invokeAndWait(Runnable runnable) { //Fix This method is called sometimes from swing's thread and other times from aplication's thread. Split the caller method (if it is possible), and delete this method.
 		if(SwingUtilities.isEventDispatchThread())
 			runnable.run();
 		else

@@ -2,6 +2,8 @@ package sneer.pulp.tuples;
 
 import java.lang.reflect.Field;
 
+import org.apache.commons.lang.ArrayUtils;
+
 import sneer.kernel.container.Inject;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.keymanager.KeyManager;
@@ -34,9 +36,15 @@ public abstract class Tuple {
 		int result = 1;
 		
 		for (Field field : getClass().getFields())
-			result = (prime * result) + getFieldValue(field, this).hashCode();
+			result = (prime * result) + hashCode(getFieldValue(field, this));
 		
 		return result;
+	}
+
+	private int hashCode(Object obj) {
+		if (obj == null) return 0;
+		if (obj.getClass().isArray()) return ArrayUtils.hashCode(obj);
+		return obj.hashCode();
 	}
 
 	@Override
@@ -63,9 +71,13 @@ public abstract class Tuple {
 		Object myValue = getFieldValue(field, this);
 		Object hisValue = getFieldValue(field, other);
 		
-		return myValue == null
-			? hisValue == null
-			: myValue.equals(hisValue);
+		return equals(myValue, hisValue);
+	}
+
+	private boolean equals(Object myValue, Object hisValue) {
+		if (myValue == null) return hisValue == null;
+		if (myValue.getClass().isArray()) return ArrayUtils.isEquals(myValue, hisValue);
+		return myValue.equals(hisValue);
 	}
 	
 	

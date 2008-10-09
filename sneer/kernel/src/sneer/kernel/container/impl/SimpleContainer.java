@@ -10,6 +10,7 @@ import sneer.kernel.container.Injector;
 import sneer.kernel.container.LegoException;
 import sneer.kernel.container.SneerConfig;
 import sneer.kernel.container.impl.classloader.EclipseClassLoaderFactory;
+import sneer.pulp.tuples.Tuple;
 import wheel.lang.Types;
 
 public class SimpleContainer implements Container {
@@ -30,6 +31,8 @@ public class SimpleContainer implements Container {
 		
 		_binder.bind(this);
 		_binder.bind(_injector);
+		
+		_injector.inject(Tuple.class); //Refactor this looks wierd here.
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import sneer.kernel.container.Inject;
 import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.skin.image.ImageFactory;
+import wheel.lang.exceptions.Hiccup;
 import static wheel.io.ui.graphics.Images.isSameImage;
 import static wheel.io.ui.graphics.Images.getImage;
 
@@ -19,12 +20,12 @@ public class OwnAvatarKeeperTest extends TestThatIsInjected {
 	@Inject
 	private static ImageFactory _imageFactory;
 
-	private BufferedImage loadImage(String fileName) throws Exception {
+	private BufferedImage loadImage(String fileName) throws Hiccup {
 		return _imageFactory.createBufferedImage(getImage(getClass().getResource(fileName)));
 	}
 
 	@Test
-	public void testImage() throws Exception {
+	public void testImage() throws Hiccup {
 
 		BufferedImage toTest;
 		BufferedImage black = loadImage("black.png");

@@ -23,6 +23,7 @@ import javax.swing.ImageIcon;
 
 import sneer.skin.image.ImageFactory;
 import wheel.io.ui.graphics.Images;
+import wheel.lang.exceptions.Hiccup;
 
 class ImageFactoryImpl implements ImageFactory {
 	
@@ -49,15 +50,16 @@ class ImageFactoryImpl implements ImageFactory {
     	return getIcon(anchor.getResource(relativeImagePath));
     }
  
+    /** @throws Hiccup */
     @Override
-    public BufferedImage createBufferedImage(Image image) throws IllegalArgumentException {
+    public BufferedImage createBufferedImage(Image image) throws Hiccup {
     	if (image instanceof BufferedImage)
 			return (BufferedImage)image;
     	
         try {
 			return tryToCreateBufferedImage(image);
 		} catch (InterruptedException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new IllegalStateException();
 		}
     }
 
@@ -123,19 +125,19 @@ class ImageFactoryImpl implements ImageFactory {
     }
      
     @Override
-    public BufferedImage getScaledInstance(Image image, int width, int height) {
+    public BufferedImage getScaledInstance(Image image, int width, int height) throws Hiccup {
     	BufferedImage converted = createBufferedImage(image);
     	return getScaledInstance(converted, width, height, null);
     }
     
     @Override
-    public BufferedImage getScaledInstance(Image image, double scale) {
+    public BufferedImage getScaledInstance(Image image, double scale) throws Hiccup {
     	BufferedImage converted = createBufferedImage(image);
     	return getScaledInstance(converted, (int)(converted.getWidth()*scale), (int)(converted.getHeight()*scale));
     }
     
     @Override
-    public BufferedImage getScaledInstance(Image image, int width, int height, GraphicsConfiguration gc) {
+    public BufferedImage getScaledInstance(Image image, int width, int height, GraphicsConfiguration gc) throws Hiccup {
       	BufferedImage converted = createBufferedImage(image);
       	
       	if (gc == null)
@@ -156,11 +158,18 @@ class ImageFactoryImpl implements ImageFactory {
 		return tk.createImage(mis);
 	}
 
+    /** @throws Hiccup */
     @Override
-	public int[] toSerializableData(int width, int height, Image img) throws InterruptedException {
+	public int[] toSerializableData(BufferedImage img) throws Hiccup {
+		int width = img.getWidth();
+		int height = img.getHeight();
 		int[] pixels = new int[ width * height ];
-		PixelGrabber pg = new PixelGrabber(img, 0, 0, width, height, pixels,	0, width);
-		pg.grabPixels();
+		PixelGrabber pg = new PixelGrabber(img, 0, 0, width, height, pixels, 0, width);
+		try {
+			pg.grabPixels();
+		} catch (InterruptedException e) {
+			throw new IllegalStateException();
+		}
 		return pixels;
 	}
     

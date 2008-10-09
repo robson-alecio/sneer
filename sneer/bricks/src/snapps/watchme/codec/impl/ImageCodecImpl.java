@@ -9,6 +9,7 @@ import snapps.watchme.codec.ImageDelta;
 import sneer.kernel.container.Inject;
 import sneer.skin.image.ImageFactory;
 import wheel.io.ui.graphics.Images;
+import wheel.lang.exceptions.Hiccup;
 
 class ImageCodecImpl implements ImageCodec {
 	
@@ -16,7 +17,7 @@ class ImageCodecImpl implements ImageCodec {
 	private static ImageFactory _imageFactory;
 
 	@Override
-	public List<ImageDelta> encodeDeltas(BufferedImage original, BufferedImage target) {
+	public List<ImageDelta> encodeDeltas(BufferedImage original, BufferedImage target) throws Hiccup {
 		return new EncoderStep(original, target).result();
 	}
 
@@ -30,7 +31,7 @@ class ImageCodecImpl implements ImageCodec {
 	}
 
 	private void applyDelta(BufferedImage result, ImageDelta delta) {
-		Image img = _imageFactory.toImage(delta.height, delta.height, delta.imageData);
+		Image img = _imageFactory.toImage(delta.width, delta.height, delta.imageData);
 		result.getGraphics().drawImage(img, delta.x, delta.y, null);
 	}
 }

@@ -1,8 +1,8 @@
 package snapps.watchme.codec;
 
-import java.io.Serializable;
+import sneer.pulp.tuples.Tuple;
 
-public class ImageDelta implements Serializable {
+public class ImageDelta extends Tuple {
 
 	public final int x;
 	public final int y;

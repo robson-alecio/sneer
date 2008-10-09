@@ -13,6 +13,7 @@ import snapps.watchme.codec.ImageDelta;
 import sneer.kernel.container.Inject;
 import sneer.skin.image.ImageFactory;
 import wheel.io.ui.graphics.Images;
+import wheel.lang.exceptions.Hiccup;
 
 class EncoderStep{
 	private final BufferedImage _original;
@@ -22,7 +23,7 @@ class EncoderStep{
 	@Inject
 	private static ImageFactory _imageFactory;
 	
-	EncoderStep(BufferedImage original, BufferedImage target){
+	EncoderStep(BufferedImage original, BufferedImage target) throws Hiccup {
 		_original = original;
 		_target = target;
 		_result = new ArrayList<ImageDelta>();
@@ -33,25 +34,20 @@ class EncoderStep{
 		return _result;
 	}
 
-	private void produceResult() {
+	private void produceResult() throws Hiccup {
 		for (int x = 0; x < _original.getWidth(); x = x + CELL_SIZE) 
 			for (int y = 0; y < _original.getHeight(); y = y + CELL_SIZE) 
 				addImageDeltaIfNecessary(x, y);
-		
-		
 	}
 	
-	private void addImageDeltaIfNecessary(int x, int y) {
+	private void addImageDeltaIfNecessary(int x, int y) throws Hiccup {
 		int width = Math.min(CELL_SIZE, _original.getWidth() - x);
 		int height = Math.min(CELL_SIZE, _original.getHeight() - y);
 		BufferedImage img0 = _original.getSubimage(x, y, width, height);
 		BufferedImage img1 = _target.getSubimage(x, y, width, height);
-		if(!Images.isSameImage(img0, img1))
-			try {
-				int[] data = _imageFactory.toSerializableData(CELL_SIZE,CELL_SIZE, img1);
-				_result.add(new ImageDelta(data,x,y, CELL_SIZE,CELL_SIZE));
-			} catch (InterruptedException e) {
-				throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
-			}
+		if(Images.isSameImage(img0, img1)) return;
+		
+		int[] data = _imageFactory.toSerializableData(img1);
+		_result.add(new ImageDelta(data,x,y, width, height));
 	}
 }

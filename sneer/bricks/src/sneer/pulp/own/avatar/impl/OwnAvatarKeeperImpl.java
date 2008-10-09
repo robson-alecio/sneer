@@ -7,6 +7,7 @@ import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.skin.image.ImageFactory;
 import wheel.lang.Functor;
 import wheel.lang.Omnivore;
+import wheel.lang.exceptions.Hiccup;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Adapter;
@@ -22,7 +23,12 @@ class OwnAvatarKeeperImpl implements OwnAvatarKeeper {
 	@Override
 	public Signal<Image> avatar(final int squareSize) {
 		Adapter<Image, Image> result = new Adapter<Image, Image>(_avatar.output(), new Functor<Image, Image>() { @Override public Image evaluate(Image original) {
-			return _imageFactory.getScaledInstance(original, squareSize, squareSize);
+			try {
+				return _imageFactory.getScaledInstance(original, squareSize, squareSize);
+			} catch (Hiccup e) {
+				return null;
+				// Fix We cannot simply swallow this hiccup. Big design changes are necessary.
+			}
 		}});
 		return result.output();
 	}

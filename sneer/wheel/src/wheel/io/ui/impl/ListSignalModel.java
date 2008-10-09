@@ -46,9 +46,15 @@ public class ListSignalModel<T> extends AbstractListModel {
 		@Override
 		public void elementAdded(final int index) {
 			addReceiverToElement(index);
-			GuiThread.invokeLater(new Runnable(){ @Override public void run() {
+			//Fix prevent a application thread call
+			try {
+				GuiThread.assertInGuiThread();
 				fireIntervalAdded(ListSignalModel.this, index, index);
-			}});
+			} catch (RuntimeException e) {
+				GuiThread.strictInvokeAndWait(new Runnable(){ @Override public void run() {
+					fireIntervalAdded(ListSignalModel.this, index, index);
+				}});
+			}
 		}
 
 		@Override
@@ -58,9 +64,15 @@ public class ListSignalModel<T> extends AbstractListModel {
 
 		@Override
 		public void elementRemoved(final int index) {
-			GuiThread.invokeLater(new Runnable(){ @Override public void run() {
+			//Fix prevent a application thread call
+			try {
+				GuiThread.assertInGuiThread();
 				fireIntervalRemoved(ListSignalModel.this, index, index);
-			}});
+			} catch (RuntimeException e) {
+				GuiThread.strictInvokeAndWait(new Runnable(){ @Override public void run() {
+					fireIntervalRemoved(ListSignalModel.this, index, index);
+				}});
+			}			
 		}
 
 		@Override
@@ -112,9 +124,14 @@ public class ListSignalModel<T> extends AbstractListModel {
 	}
 
 	private void contentsChanges(final int index) {
-		GuiThread.invokeLater(new Runnable(){ @Override public void run() {
-			fireContentsChanged(ListSignalModel.this, index, index);
-		}});		
+		//Fix prevent a application thread call
+		try {
+			GuiThread.assertInGuiThread();
+			fireContentsChanged(ListSignalModel.this, index, index);		} catch (RuntimeException e) {
+			GuiThread.strictInvokeAndWait(new Runnable(){ @Override public void run() {
+				fireContentsChanged(ListSignalModel.this, index, index);
+			}});
+		}	
 	}
 	
 	private static final long serialVersionUID = 1L;

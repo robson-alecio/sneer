@@ -5,7 +5,6 @@
 		- (Klaus, Can't reproduce this in my pc) Shouts don't appear if list is flooded with them (Use "MainDemo Localhost foo foo" to send a flood of shouts).
 		- Revise all uses of Gui thread;
 			- Revise all GuiThread.invokeLather to delete this method [RLabelIml, RTextFieldImpl, ListSignalModel]
-			- Use assertInGuiThread() in strategic points to make sure they are running in the GUI thread.  
 	- [Klaus pairing] Make ImageDelta extend Tuple - Run ImageCodecTest - Fix: Tuple isn't injected.
 
 	- Wind

@@ -6,8 +6,12 @@ import javax.swing.SwingUtilities;
 
 public class GuiThread {
 	
+	public static void invokeLater(Runnable runnable) { //Fix This method is called sometimes from swing's thread and other times from aplication's thread. Split the caller method (if it is possible), and delete this 'invokeLater' method.
+		SwingUtilities.invokeLater(runnable);
+	}
+	
 	public static void strictInvokeAndWait(Runnable runnable) { //Fix Calling this from brick code is no longer necessary after the container is calling gui brick code only in the Swing thread.
-//		assertNotInGuiThread();
+		assertNotInGuiThread();
 		try {
 			SwingUtilities.invokeAndWait(runnable);
 		} catch (InterruptedException e) {
@@ -18,7 +22,7 @@ public class GuiThread {
 	}
 
 	public static void strictInvokeLater(Runnable runnable) { //Fix Calling this from brick code is no longer necessary after the container is calling gui brick code only in the Swing thread.
-//		assertNotInGuiThread();
+		assertNotInGuiThread();
 		SwingUtilities.invokeLater(runnable);
 	}
 
@@ -26,8 +30,7 @@ public class GuiThread {
 		if (!SwingUtilities.isEventDispatchThread()) throw new IllegalStateException("Should be running in the GUI thread."); 
 	}
 
-//	private static void assertNotInGuiThread() {
-//		if (SwingUtilities.isEventDispatchThread()) throw new IllegalStateException("Should NOT be running in the GUI thread."); 
-//	}
-
+	private static void assertNotInGuiThread() {
+		if (SwingUtilities.isEventDispatchThread()) throw new IllegalStateException("Should NOT be running in the GUI thread."); 
+	}
 }

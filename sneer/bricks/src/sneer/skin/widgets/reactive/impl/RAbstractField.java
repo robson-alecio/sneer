@@ -134,17 +134,16 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	}
 	
 	public void setText(final String text) {
-		GuiThread.invokeLater(new Runnable(){ @Override public void run() {
-			String currentValue = tryReadText();
-			
-			if(currentValue==null || text==null){
-				trySetText(text);
-				return;
-			}
-			
-			if(!currentValue.equals(text))
-				trySetText(text);
-		}});
+		GuiThread.assertInGuiThread();
+		String currentValue = tryReadText();
+		
+		if(currentValue==null || text==null){
+			trySetText(text);
+			return;
+		}
+		
+		if(!currentValue.equals(text))
+			trySetText(text);
 	}
 	
 	private void trySetText(final String text){

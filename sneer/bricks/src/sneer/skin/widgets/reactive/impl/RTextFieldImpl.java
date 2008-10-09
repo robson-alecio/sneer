@@ -3,6 +3,7 @@ package sneer.skin.widgets.reactive.impl;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
 
+import wheel.io.ui.GuiThread;
 import wheel.io.ui.impl.UserImpl;
 import wheel.lang.Consumer;
 import wheel.lang.exceptions.IllegalParameter;
@@ -20,7 +21,9 @@ class RTextFieldImpl extends RAbstractField<JTextField> {
 	@Override
 	public Receiver<String> fieldReceiver() {
 		return new Receiver<String>(_source) {@Override public void consume(final String text) {
-			setText(text);
+			GuiThread.invokeLater(new Runnable(){ @Override public void run() {
+				setText(text);
+			}});
 		}};
 	}
 	

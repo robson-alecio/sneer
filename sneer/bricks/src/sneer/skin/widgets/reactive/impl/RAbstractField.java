@@ -113,12 +113,10 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 
 	public void commitTextChanges() {
 		if (getText().equals( currentValue())) return;
-		
-		GuiThread.strictInvokeLater(new Runnable() {@Override public void run() {
-			consume(getText());
-			refreshTextComponent();
-			setNotified(true);
-		}});
+		GuiThread.assertInGuiThread();
+		consume(getText());
+		refreshTextComponent();
+		setNotified(true);
 	}
 
 	private void refreshTextComponent() {
@@ -136,16 +134,16 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	}
 	
 	public void setText(final String text) {
-		GuiThread.strictInvokeLater(new Runnable() {@Override public void run() {
-				String currentValue = tryReadText();
-				
-				if(currentValue==null || text==null){
-					trySetText(text);
-					return;
-				}
-				
-				if(!currentValue.equals(text))
-					trySetText(text);
+		GuiThread.invokeLater(new Runnable(){ @Override public void run() {
+			String currentValue = tryReadText();
+			
+			if(currentValue==null || text==null){
+				trySetText(text);
+				return;
+			}
+			
+			if(!currentValue.equals(text))
+				trySetText(text);
 		}});
 	}
 	
@@ -217,12 +215,11 @@ class ChangeInfoDecorator{
 	}
 	
 	void decorate(final boolean _notified) {
-		GuiThread.strictInvokeLater(new Runnable() {@Override public void run() {
-			if(_notified) {
-				_target.setBorder(_defaultBorder);
-				return;
-			}
-			_target.setBorder(new CompoundBorder(new LineBorder(Color.red), new EmptyBorder(2, 2, 2, 2)));
-		}});
+		GuiThread.assertInGuiThread();
+		if(_notified) {
+			_target.setBorder(_defaultBorder);
+			return;
+		}
+		_target.setBorder(new CompoundBorder(new LineBorder(Color.red), new EmptyBorder(2, 2, 2, 2)));
 	}	
 }

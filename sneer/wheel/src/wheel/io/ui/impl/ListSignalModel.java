@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
-import static wheel.io.ui.GuiThread.strictInvokeAndWait;
+import wheel.io.ui.GuiThread;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.lists.ListSignal;
@@ -46,7 +46,7 @@ public class ListSignalModel<T> extends AbstractListModel {
 		@Override
 		public void elementAdded(final int index) {
 			addReceiverToElement(index);
-			strictInvokeAndWait(new Runnable(){ @Override public void run() {
+			GuiThread.invokeLater(new Runnable(){ @Override public void run() {
 				fireIntervalAdded(ListSignalModel.this, index, index);
 			}});
 		}
@@ -58,7 +58,7 @@ public class ListSignalModel<T> extends AbstractListModel {
 
 		@Override
 		public void elementRemoved(final int index) {
-			strictInvokeAndWait(new Runnable(){ @Override public void run() {
+			GuiThread.invokeLater(new Runnable(){ @Override public void run() {
 				fireIntervalRemoved(ListSignalModel.this, index, index);
 			}});
 		}
@@ -112,7 +112,7 @@ public class ListSignalModel<T> extends AbstractListModel {
 	}
 
 	private void contentsChanges(final int index) {
-		strictInvokeAndWait(new Runnable(){ @Override public void run() {
+		GuiThread.invokeLater(new Runnable(){ @Override public void run() {
 			fireContentsChanged(ListSignalModel.this, index, index);
 		}});		
 	}

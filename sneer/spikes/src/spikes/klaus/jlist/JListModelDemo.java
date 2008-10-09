@@ -4,8 +4,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JList;
-import javax.swing.SwingUtilities;
-
+import wheel.io.ui.GuiThread;
 import wheel.io.ui.impl.ListSignalModel;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.impl.ListRegisterImpl;
@@ -26,7 +25,7 @@ public class JListModelDemo {
 
 		frame.setVisible(true);
 		
-		SwingUtilities.invokeAndWait(new Runnable(){ @Override public void run() {
+		GuiThread.strictInvokeAndWait(new Runnable(){ @Override public void run() {
 			list.adder().consume("11111");
 		}});
 		

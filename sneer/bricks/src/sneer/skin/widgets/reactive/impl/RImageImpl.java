@@ -8,11 +8,10 @@ import java.awt.RenderingHints;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-
 import sneer.kernel.container.Inject;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.widgets.reactive.ImageWidget;
+import wheel.io.ui.GuiThread;
 import wheel.lang.Omnivore;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
@@ -45,7 +44,7 @@ class RImageImpl extends JPanel implements ImageWidget{
 	private Receiver<Image> imageReceiverFor(Signal<Image> signal) {
 		return new Receiver<Image>(signal) {@Override public void consume(final Image image) {
 			_image.setter().consume(image);
-			SwingUtilities.invokeLater( new Runnable() {@Override public void run() {
+			GuiThread.strictInvokeLater( new Runnable() {@Override public void run() {
 				revalidate();
 				repaint();
 		}});}};

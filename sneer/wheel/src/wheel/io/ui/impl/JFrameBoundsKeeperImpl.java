@@ -3,13 +3,12 @@ package wheel.io.ui.impl;
 import java.awt.Rectangle;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import wheel.io.Logger;
 import wheel.io.ui.BoundsPersistence;
+import wheel.io.ui.GuiThread;
 import wheel.io.ui.JFrameBoundsKeeper;
 
 public class JFrameBoundsKeeperImpl implements JFrameBoundsKeeper {
@@ -28,13 +27,7 @@ public class JFrameBoundsKeeperImpl implements JFrameBoundsKeeper {
 			return;
 		}
 		
-		try {
-			SwingUtilities.invokeAndWait(keepBoundsRunnable);
-		} catch (InterruptedException e) {
-			Logger.log(e);
-		} catch (InvocationTargetException e) {
-			Logger.log(e);
-		}
+		GuiThread.strictInvokeAndWait(keepBoundsRunnable);
 	}
 
 	private Runnable keepBoundsRunnable(final JFrame frame, final String id) {

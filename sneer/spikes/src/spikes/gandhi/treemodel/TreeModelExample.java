@@ -11,7 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
@@ -19,6 +18,7 @@ import javax.swing.event.TreeWillExpandListener;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 
+import wheel.io.ui.GuiThread;
 import wheel.lang.Threads;
 
 public class TreeModelExample extends JFrame {
@@ -98,7 +98,7 @@ public class TreeModelExample extends JFrame {
 		return new Runnable() { @Override public void run() {
 			while (true) {
 				try {
-					SwingUtilities.invokeAndWait(new Runnable(){@Override public void run() {
+					GuiThread.strictInvokeAndWait(new Runnable(){@Override public void run() {
 						addNode();
 					}});
 				} catch (Exception e) {
@@ -112,7 +112,7 @@ public class TreeModelExample extends JFrame {
 		return new Runnable() { @Override public void run() {
 			while (true) {
 				try {
-					SwingUtilities.invokeAndWait(new Runnable(){@Override public void run() {
+					GuiThread.strictInvokeAndWait(new Runnable(){@Override public void run() {
 						removeNode();
 					}});
 				} catch (Exception e) {

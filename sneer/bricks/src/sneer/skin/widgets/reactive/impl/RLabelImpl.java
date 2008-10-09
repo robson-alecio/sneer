@@ -8,9 +8,9 @@ import java.awt.Insets;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import sneer.skin.widgets.reactive.TextWidget;
+import wheel.io.ui.GuiThread;
 import wheel.lang.Consumer;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
@@ -35,7 +35,7 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 		_setter = setter;
 		_source = source;
 		_textReceiverAvoidGc = new Receiver<String>(source) {@Override public void consume(final String value) {
-			SwingUtilities.invokeLater(new Runnable() {@Override public void run() {
+			GuiThread.strictInvokeLater(new Runnable() {@Override public void run() {
 				_textComponent.setText(value);
 		}});}};
 		initComponents();

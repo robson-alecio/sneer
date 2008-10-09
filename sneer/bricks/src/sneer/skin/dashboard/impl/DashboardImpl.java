@@ -14,7 +14,6 @@ import java.net.URL;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import sneer.kernel.container.Inject;
@@ -200,7 +199,7 @@ class DashboardImpl implements Dashboard, Runnable {
 			}
 			@Override
 			public void run() {
-				SwingUtilities.invokeLater( new Runnable(){ public void run() {
+				GuiThread.strictInvokeLater( new Runnable(){ public void run() {
 					open();						
 				}});
 			}

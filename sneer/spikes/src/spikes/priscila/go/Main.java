@@ -9,9 +9,8 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-
 import spikes.priscila.go.GoBoard.StoneColor;
+import wheel.io.ui.GuiThread;
 import wheel.lang.Threads;
 
 
@@ -158,7 +157,7 @@ public class Main extends JFrame{
 			_scrollYDelta = scrollDeltaFor(e.getY());
 			
 			repaint();
-			SwingUtilities.invokeLater(new Runnable() { @Override public void run() {
+			GuiThread.strictInvokeLater(new Runnable() { @Override public void run() {
 				int x = toScreenPosition(e.getX());
 				int y = toScreenPosition(e.getY());
 				if(_board.canPlayStone(unscrollX(x), unscrollY(y)))

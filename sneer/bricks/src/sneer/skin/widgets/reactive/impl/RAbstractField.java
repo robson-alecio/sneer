@@ -15,7 +15,6 @@ import java.lang.reflect.Method;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -23,6 +22,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.text.JTextComponent;
 
 import sneer.skin.widgets.reactive.TextWidget;
+import wheel.io.ui.GuiThread;
 import wheel.lang.Consumer;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
@@ -114,7 +114,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	public void commitTextChanges() {
 		if (getText().equals( currentValue())) return;
 		
-		SwingUtilities.invokeLater(new Runnable() {@Override public void run() {
+		GuiThread.strictInvokeLater(new Runnable() {@Override public void run() {
 			consume(getText());
 			refreshTextComponent();
 			setNotified(true);
@@ -136,7 +136,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	}
 	
 	public void setText(final String text) {
-		SwingUtilities.invokeLater(new Runnable() {@Override public void run() {
+		GuiThread.strictInvokeLater(new Runnable() {@Override public void run() {
 				String currentValue = tryReadText();
 				
 				if(currentValue==null || text==null){
@@ -217,7 +217,7 @@ class ChangeInfoDecorator{
 	}
 	
 	void decorate(final boolean _notified) {
-		SwingUtilities.invokeLater(new Runnable() {@Override public void run() {
+		GuiThread.strictInvokeLater(new Runnable() {@Override public void run() {
 			if(_notified) {
 				_target.setBorder(_defaultBorder);
 				return;

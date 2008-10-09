@@ -4,8 +4,6 @@ import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.Inject;
@@ -13,6 +11,7 @@ import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
+import wheel.io.ui.GuiThread;
 import wheel.reactive.impl.Receiver;
 
 public class OwnNameKeeperDemo extends TestThatIsInjected {
@@ -55,7 +54,7 @@ public class OwnNameKeeperDemo extends TestThatIsInjected {
 	}
 
 	private static void createTestFrame(final TextWidget<?> textWidget, final int x, final int y, final int w, final int h) {
-		SwingUtilities.invokeLater(	new Runnable(){@Override	public void run() {
+		GuiThread.strictInvokeLater(	new Runnable(){@Override	public void run() {
 			JFrame frm = new JFrame(textWidget.getClass().getSimpleName());
 			frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frm.getContentPane().setLayout(new FlowLayout());

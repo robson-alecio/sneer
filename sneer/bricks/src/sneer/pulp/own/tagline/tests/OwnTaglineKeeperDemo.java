@@ -4,8 +4,6 @@ import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.Inject;
@@ -13,6 +11,7 @@ import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.own.tagline.OwnTaglineKeeper;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
+import wheel.io.ui.GuiThread;
 import wheel.reactive.impl.Receiver;
 
 public class OwnTaglineKeeperDemo extends TestThatIsInjected {
@@ -44,7 +43,7 @@ public class OwnTaglineKeeperDemo extends TestThatIsInjected {
 	}
 
 	private static void createWidgets(final OwnTaglineKeeperDemo demo) {
-		SwingUtilities.invokeLater(new Runnable(){ @Override public void run() {
+		GuiThread.strictInvokeLater(new Runnable(){ @Override public void run() {
 			TextWidget<JTextField> newTextField1 = demo._rfactory.newTextField(demo._ownTaglineKeeper.tagline(), demo._ownTaglineKeeper.taglineSetter());
 			final JFrame frm1 =createTestFrame(newTextField1);
 			

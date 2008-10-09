@@ -12,10 +12,10 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 
 import wheel.io.ui.CancelledByUser;
+import wheel.io.ui.GuiThread;
 import wheel.io.ui.User;
 import wheel.io.ui.Util;
 import wheel.lang.Omnivore;
@@ -222,7 +222,7 @@ public class UserImpl implements User {
 
 	@Override
 	public void saveAs(final String title, final String buttonTitle, final String[] suffixes, final String description, final Omnivore<File> callback) {
-		SwingUtilities.invokeLater(new Runnable(){ public void run(){
+		GuiThread.strictInvokeLater(new Runnable(){ public void run(){
 			final JFileChooser fc = new JFileChooser(); 
 			fc.setDialogTitle(title);
 			fc.setApproveButtonText(buttonTitle);
@@ -247,7 +247,7 @@ public class UserImpl implements User {
 	
 	@Override
 	public void chooseDirectory(final String title, final String buttonTitle, final Omnivore<File> callback) {
-		SwingUtilities.invokeLater(new Runnable(){ public void run(){
+		GuiThread.strictInvokeLater(new Runnable(){ public void run(){
 			final JFileChooser fc = new JFileChooser();
 			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			fc.setApproveButtonText(buttonTitle);

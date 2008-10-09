@@ -4,12 +4,11 @@ import java.awt.FlowLayout;
 import java.awt.Image;
 
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
+import wheel.io.ui.GuiThread;
 import wheel.io.ui.graphics.Images;
 import wheel.lang.Functor;
 import wheel.reactive.Signal;
@@ -44,7 +43,7 @@ public class ReactiveImageDemo {
 	}
 
 	private static void createTestFrame(final ImageWidget img, final int x, final int y, final int width, final int height) {
-		SwingUtilities.invokeLater(new Runnable(){@Override public void run() {
+		GuiThread.strictInvokeLater(new Runnable(){@Override public void run() {
 			final JFrame frm = new JFrame(img.getClass().getSimpleName());
 			frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frm.getContentPane().setLayout(new FlowLayout());

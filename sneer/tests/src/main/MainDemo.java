@@ -1,10 +1,9 @@
 package main;
 
-import javax.swing.SwingUtilities;
-
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import wheel.io.Logger;
+import wheel.io.ui.GuiThread;
 
 public class MainDemo {
 
@@ -43,6 +42,6 @@ public class MainDemo {
 	}
 	
 	private static void waitUntilTheGuiThreadStarts() throws Exception {
-		SwingUtilities.invokeAndWait(new Runnable(){@Override public void run() {}});
+		GuiThread.strictInvokeAndWait(new Runnable(){@Override public void run() {}});
 	}
 }

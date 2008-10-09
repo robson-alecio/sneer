@@ -19,11 +19,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 
 import snapps.location.LocationKeeper;
 import sneer.kernel.container.Inject;
 import sneer.pulp.threadpool.ThreadPool;
+import wheel.io.ui.GuiThread;
 
 public class LocationGuiImpl {
 
@@ -61,7 +61,7 @@ public class LocationGuiImpl {
 		_address.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SwingUtilities.invokeLater(new Runnable() {
+				GuiThread.strictInvokeLater(new Runnable() {
 					public void run() {
 						updateAddress(_address.getText());
 					}

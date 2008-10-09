@@ -29,6 +29,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import wheel.io.ui.GuiThread;
+
 //Refactor: Break this into several classes.
 public class Language {
 	
@@ -118,7 +120,7 @@ public class Language {
 	// Fix: the code below is responsible for translation file creation... *maybe* should be moved to an utility class
 
 	public static void main(String[] args) {
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		GuiThread.strictInvokeLater(new Runnable() {
 			public void run() {
 				createAndShowGUI();
 			}

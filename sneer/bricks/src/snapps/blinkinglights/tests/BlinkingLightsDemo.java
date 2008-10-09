@@ -1,7 +1,5 @@
 package snapps.blinkinglights.tests;
 
-import javax.swing.SwingUtilities;
-
 import snapps.blinkinglights.gui.BlinkingLightsGui;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
@@ -10,6 +8,7 @@ import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.clockticker.ClockTicker;
 import sneer.skin.dashboard.Dashboard;
 import wheel.io.Logger;
+import wheel.io.ui.GuiThread;
 import wheel.lang.Daemon;
 import wheel.lang.Threads;
 
@@ -46,7 +45,7 @@ public class BlinkingLightsDemo  {
 	}
 	
 	private static void waitUntilTheGuiThreadStarts() throws Exception {
-		SwingUtilities.invokeAndWait(new Runnable(){@Override public void run() {}});
+		GuiThread.strictInvokeAndWait(new Runnable(){@Override public void run() {}});
 	}
 
 }

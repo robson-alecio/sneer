@@ -134,7 +134,7 @@ public class Template {
 	}
 
 	private static <ARG> Class<Functor<ARG, String>> compileJavaCode(String javaCode) {
-		final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+		final JavaCompiler compiler = compiler();
 		final RAMJavaFileManager fileManager = new RAMJavaFileManager(compiler.getStandardFileManager(null, null, null));
 		try {
 			final JavaFileObject javaFileObject = new StringJavaFileObject("Template", javaCode);
@@ -153,6 +153,12 @@ public class Template {
 		} finally {
 			Streams.crash(fileManager);
 		}
+	}
+
+	private static JavaCompiler compiler() {
+		final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+		if (compiler == null) throw new RuntimeException("System Java Compiler not found. You must run this using a JDK, not merely a JRE.");
+		return compiler;
 	}
 
 	private static final class RAMFileObjectClassLoader extends ClassLoader {

@@ -109,11 +109,17 @@ public class ListSignalModel<T> extends AbstractListModel {
 			int i = 0;
 			for (T candidate : _input) {  //Optimize
 				if (candidate == element)
-					fireContentsChanged(ListSignalModel.this, i, i);
+					invokeAndWait(i);
 				i++;
 			}}};
 	}
 
+	private void invokeAndWait(final int i) {
+		invokeAndWait(new Runnable(){ @Override public void run() {
+			fireContentsChanged(ListSignalModel.this, i, i);
+		}});		
+	}
+	
 	private void invokeAndWait(Runnable runnable) { //Fix This is no longer necessary after the container is calling gui brick code only in the Swing thread.
 		try {
 			SwingUtilities.invokeAndWait(runnable);

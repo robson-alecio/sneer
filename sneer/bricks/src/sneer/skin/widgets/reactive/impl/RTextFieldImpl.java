@@ -21,7 +21,7 @@ class RTextFieldImpl extends RAbstractField<JTextField> {
 	@Override
 	public Receiver<String> fieldReceiver() {
 		return new Receiver<String>(_source) {@Override public void consume(final String text) {
-			GuiThread.invokeLater(new Runnable(){ @Override public void run() {
+			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
 				setText(text);
 			}});
 		}};

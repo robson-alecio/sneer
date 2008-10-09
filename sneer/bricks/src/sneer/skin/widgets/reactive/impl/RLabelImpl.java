@@ -35,7 +35,7 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 		_setter = setter;
 		_source = source;
 		_textReceiverAvoidGc = new Receiver<String>(source) {@Override public void consume(final String value) {
-			GuiThread.invokeLater(new Runnable() {@Override public void run() {
+			GuiThread.invokeAndWait(new Runnable() {@Override public void run() {
 				_textComponent.setText(value);
 		}});}};
 		initComponents();

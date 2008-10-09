@@ -1,10 +1,10 @@
 ﻿MAIN ROADMAP
 ===================
 	- [Rodrigo] Build
-	- [Sandro pairing] - Fix: Contacts sometimes don't appear on MainDemo startup.
+	- [Sandro pairing] GuiThread
 		- Shouts don't appear if list is flooded with them (Use "MainDemo Localhost foo foo" to send a flood of shouts).
 		- Revise all uses of Gui thread;
-			- Uncomment all commented lines in GuiThread to make sure we are not reentering the GUI thread redundantly. Run sneer and fix problems.
+			- Revise all GuiThread.invokeLather to delete this method
 			- Use assertInGuiThread() in strategic points to make sure they are running in the GUI thread.  
 	- [Klaus pairing] Make ImageDelta extend Tuple - Run ImageCodecTest - Fix: Tuple isn't injected.
 

@@ -7,12 +7,10 @@ import javax.swing.SwingUtilities;
 public class GuiThread {
 	
 	public static void invokeAndWait(Runnable runnable) { //Fix This method is called sometimes from swing's thread and other times from aplication's thread. Split the caller method (if it is possible), and delete this 'invokeLater' method.
-		try {
-			GuiThread.assertInGuiThread();
+		if(SwingUtilities.isEventDispatchThread())
 			runnable.run();
-		} catch (IllegalStateException e) {
+		else
 			strictInvokeAndWait(runnable);
-		}
 	}
 	
 	public static void strictInvokeAndWait(Runnable runnable) { //Fix Calling this from brick code is no longer necessary after the container is calling gui brick code only in the Swing thread.

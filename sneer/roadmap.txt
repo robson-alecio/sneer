@@ -3,7 +3,6 @@
 	- [Rodrigo] Build
 	- [Sandro pairing] GuiThread
 		- (Klaus, Can't reproduce this in my pc) Shouts don't appear if list is flooded with them (Use "MainDemo Localhost foo foo" to send a flood of shouts).
-		- Revise all GuiThread.invokeAndWait to delete this method [RLabelImpl, RTextFieldImpl, ListSignalModel]
 	- [Klaus pairing] Make ImageDelta extend Tuple - Run ImageCodecTest - Fix: Tuple isn't injected.
 
 	- Wind

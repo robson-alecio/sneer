@@ -18,8 +18,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import sneer.kernel.container.Inject;
-import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.blinkinglights.BlinkingLights;
+import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.skin.dashboard.Dashboard;
@@ -29,6 +29,7 @@ import sneer.skin.image.ImageFactory;
 import sneer.skin.main_Menu.MainMenu;
 import sneer.skin.snappmanager.Instrument;
 import sneer.skin.snappmanager.InstrumentManager;
+import wheel.io.ui.GuiThread;
 import wheel.io.ui.action.Action;
 import wheel.io.ui.graphics.Images;
 import wheel.io.ui.impl.TrayIconImpl;
@@ -153,7 +154,7 @@ class DashboardImpl implements Dashboard, Runnable {
 
 	private InstrumentWindow install(final Instrument instrument) {
 		final InstrumentWindowImpl sf = new InstrumentWindowImpl();
-		SwingUtilities.invokeLater(new Runnable(){	@Override public void run() {
+		GuiThread.strictInvokeAndWait(new Runnable(){	@Override public void run() {
 			_contentPanel.add(sf);
 			instrument.init(sf);
 			sf.revalidate();

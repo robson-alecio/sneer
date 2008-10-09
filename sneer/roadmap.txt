@@ -1,7 +1,12 @@
 ﻿MAIN ROADMAP
 ===================
 	- [Rodrigo] Build
-	- [Sandro pairing] - Fix: Contacts sometimes don't appear on MainDemo startup. Shouts don't appear if list is flooded with them (Use "MainDemo Localhost foo foo" to send a flood of shouts).
+	- [Sandro pairing] - Fix: Contacts sometimes don't appear on MainDemo startup.
+		- Shouts don't appear if list is flooded with them (Use "MainDemo Localhost foo foo" to send a flood of shouts).
+		- Revise all uses of Gui thread;
+			- Redirect all invokeAndWait() and invokeLater() calls to wheel's GuiThread.strictInvokeAndWait() and strictInvokeLater();
+			- Uncomment all commented lines in GuiThread. Run sneer and fix problems.
+			- Use assertInGuiThread() in strategic points to make sure they are running in the GUI thread.  
 	- [Klaus pairing] Make ImageDelta extend Tuple - Run ImageCodecTest - Fix: Tuple isn't injected.
 
 	- Wind

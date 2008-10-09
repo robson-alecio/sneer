@@ -1,12 +1,11 @@
 package wheel.io.ui.impl;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
-import javax.swing.SwingUtilities;
 
+import static wheel.io.ui.GuiThread.strictInvokeAndWait;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.lists.ListSignal;
@@ -47,7 +46,7 @@ public class ListSignalModel<T> extends AbstractListModel {
 		@Override
 		public void elementAdded(final int index) {
 			addReceiverToElement(index);
-			invokeAndWait(new Runnable(){ @Override public void run() {
+			strictInvokeAndWait(new Runnable(){ @Override public void run() {
 				fireIntervalAdded(ListSignalModel.this, index, index);
 			}});
 		}
@@ -59,7 +58,7 @@ public class ListSignalModel<T> extends AbstractListModel {
 
 		@Override
 		public void elementRemoved(final int index) {
-			invokeAndWait(new Runnable(){ @Override public void run() {
+			strictInvokeAndWait(new Runnable(){ @Override public void run() {
 				fireIntervalRemoved(ListSignalModel.this, index, index);
 			}});
 		}
@@ -72,9 +71,7 @@ public class ListSignalModel<T> extends AbstractListModel {
 		@Override
 		public void elementReplaced(final int index) {
 			addReceiverToElement(index);
-			invokeAndWait(new Runnable(){ @Override public void run() {
-				fireContentsChanged(ListSignalModel.this, index, index);
-			}});
+			contentsChanges(index);
 		}
 
 	}
@@ -109,26 +106,16 @@ public class ListSignalModel<T> extends AbstractListModel {
 			int i = 0;
 			for (T candidate : _input) {  //Optimize
 				if (candidate == element)
-					invokeAndWait(i);
+					contentsChanges(i);
 				i++;
 			}}};
 	}
 
-	private void invokeAndWait(final int i) {
-		invokeAndWait(new Runnable(){ @Override public void run() {
-			fireContentsChanged(ListSignalModel.this, i, i);
+	private void contentsChanges(final int index) {
+		strictInvokeAndWait(new Runnable(){ @Override public void run() {
+			fireContentsChanged(ListSignalModel.this, index, index);
 		}});		
 	}
 	
-	private void invokeAndWait(Runnable runnable) { //Fix This is no longer necessary after the container is calling gui brick code only in the Swing thread.
-		try {
-			SwingUtilities.invokeAndWait(runnable);
-		} catch (InterruptedException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
-		} catch (InvocationTargetException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
-		}
-	}
-
 	private static final long serialVersionUID = 1L;
 }

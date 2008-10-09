@@ -5,7 +5,7 @@
 		- (Klaus, Can't reproduce this in my pc) Shouts don't appear if list is flooded with them (Use "MainDemo Localhost foo foo" to send a flood of shouts).
 
 	- Wind
-		- Focus - Request focus to the 
+		- Focus - Inform the user a message has arrived. See how ConversationFrame in monolith does it. I think it only requests focus.
 	- Voice Calls
 		- Mic brick started. Refer to LoopbackTest spike.
 	---- WE DROP SKYPE :)

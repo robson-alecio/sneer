@@ -52,15 +52,5 @@ class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 		return this;
 	}
 
-	@Override
-	public void setLabelProvider(LabelProvider<ELEMENT> labelProvider) {
-		_labelProvider = labelProvider;
-	}
-
-	@Override
-	public ListSignal<ELEMENT> output() {
-		return _source;
-	}
-
 
 }

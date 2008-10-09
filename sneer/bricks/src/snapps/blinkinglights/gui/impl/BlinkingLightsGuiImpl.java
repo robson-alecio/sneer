@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
@@ -103,7 +104,11 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 	}
 
 	private void iniGui() {
+		//Optimize set the scroll panel size to same size of window to prevent a BL label crop.
+		//			 label now:        "bla, bla, bla, bla, bla, bla, b"  (crop: "la")  
+		//			 label after fix: "bla, bla, bla, bla, bla, bla..."
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		_container.setLayout(new BorderLayout());
 		_container.add(scrollPane, BorderLayout.CENTER);
 		scrollPane.getViewport().add(_lightsList.getComponent());
@@ -130,7 +135,7 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 	}
 
 	private Dimension size(Container container) {
-		return new Dimension(container.getSize().width, 90 );
+		return new Dimension(container.getSize().width, 150 );
 	}
 	
 	private String getName() {

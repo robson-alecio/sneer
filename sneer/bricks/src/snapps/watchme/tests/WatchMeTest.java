@@ -3,6 +3,7 @@ package snapps.watchme.tests;
 import static wheel.io.ui.graphics.Images.getImage;
 
 import java.awt.image.BufferedImage;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -33,11 +34,9 @@ public class WatchMeTest extends TestThatIsInjected {
 	@Inject
 	private static ImageFactory _imageFactory;
 	@Inject
-	private static KeyManager _keys;
-	@Inject
 	private static Clock _clock;
 	@Inject
-	private static TupleSpace _tupleSpace;
+	private static TupleSpace _sharedSpace;
 
 	@Inject
 	private static WatchMe _subject;
@@ -45,7 +44,7 @@ public class WatchMeTest extends TestThatIsInjected {
 	final private Mockery _context = new JUnit4Mockery();
 	final private Screenshotter _shotter = _context.mock(Screenshotter.class);
 	
-	private volatile BufferedImage _screenObserved;
+	private AtomicReference<BufferedImage> _screenObserved = new AtomicReference<BufferedImage>(null);
 
 	@Override
 	protected Object[] getBindings() {
@@ -66,33 +65,49 @@ public class WatchMeTest extends TestThatIsInjected {
 			one(_shotter).takeScreenshot(); will(returnValue(image2)); inSequence(seq);
 			one(_shotter).takeScreenshot(); will(returnValue(image3)); inSequence(seq);
 		}});
-		
-		Container container2 = ContainerUtils.newContainer(_tupleSpace, _keys); 
+
+		Container container2 = ContainerUtils.newContainer(_sharedSpace); 
 		WatchMe subject2 = container2.produce(WatchMe.class);
 
-		EventSource<BufferedImage> screens = subject2.screenStreamFor(ownKey());
+
+		
+		// Fix: This is an ugly workaround for the fact that class Tuple will be shared
+		// among both containers but will be injected with the KeyManager of the
+		// last created container. The correct behaviour is to use the ownPublicKey
+		// from the first container.
+		PublicKey key = container2.produce(KeyManager.class).ownPublicKey();
+
+		
+		
+		EventSource<BufferedImage> screens = subject2.screenStreamFor(key);
 		@SuppressWarnings("unused")
 		Receiver<BufferedImage> receiverToAvoidGC = new Receiver<BufferedImage>(screens){@Override public void consume(BufferedImage screen) {
-			_screenObserved = screen;
-			System.out.println(screen);
+			_screenObserved.set(screen);
+			System.out.println(System.nanoTime());
 		}};
 		
 		_subject.startShowingMyScreen();
-		while (_screenObserved == null) Threads.sleepWithoutInterruptions(10);
-		while (!Images.isSameImage(image1, _screenObserved)) Threads.sleepWithoutInterruptions(10);
+		waitForImage(image1);
 
 		_clock.advanceTime(500);
-		while (!Images.isSameImage(image2, _screenObserved)) Threads.sleepWithoutInterruptions(10);
+		waitForImage(image2);
 
 		_clock.advanceTime(500);
-		while (!Images.isSameImage(image3, _screenObserved)) Threads.sleepWithoutInterruptions(10);
+		waitForImage(image3);
 		
 		_context.assertIsSatisfied();
 		
 	}
 
-	private PublicKey ownKey() {
-		return _keys.ownPublicKey();
+	private void waitForImage(BufferedImage expected) {
+		int i = 0;
+		while (true) {
+			System.out.println("Waiting " + i++);
+			BufferedImage observed = _screenObserved.get();
+			if (observed != null)
+				if (Images.isSameImage(expected, observed)) return;
+			Threads.sleepWithoutInterruptions(10);
+		}
 	}
 
 	private BufferedImage loadImage(String fileName) throws Hiccup {

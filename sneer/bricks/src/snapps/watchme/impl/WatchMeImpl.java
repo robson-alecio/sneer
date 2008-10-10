@@ -91,10 +91,12 @@ class WatchMeImpl implements WatchMe {
 		List<ImageDelta> deltas = _codec.encodeDeltas(_previous, shot);
 		for (ImageDelta delta : deltas)
 			_tupleSpace.publish(delta);
+		
+		_previous = shot;
 	}
 
 	private BufferedImage generateBlankImage(int width, int height) {
-		return new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+		return new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 	}
 
 	@Override

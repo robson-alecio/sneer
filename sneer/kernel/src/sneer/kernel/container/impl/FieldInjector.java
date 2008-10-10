@@ -37,8 +37,6 @@ public abstract class FieldInjector implements Injector {
 	protected void setValueOnField(Object obj, Field field, Object component) {
 		field.setAccessible(true);
 		try {
-			//Object value = field.get(obj);
-			//if (value == null) return;
 			field.set(obj, component);
 		} catch (Exception e) {
 			throw new LegoException("error injecting component into field: "+field.getName(),e);

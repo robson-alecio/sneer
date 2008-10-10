@@ -17,4 +17,7 @@ public class PersistenceConfigMock implements PersistenceConfig {
 		return _persistenceDirectory;
 	}
 
+	@Override
+	public void setPersistenceDirectory(File directory) {
+	}
 }

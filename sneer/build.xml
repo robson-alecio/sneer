@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <project name="sneer" default="clean-test">
 	
-	<property name="build.dir" value="bin" />
+	<property name="build.dir" value="bin/build" />
 	<property name="builder.project" value="antlips" />
 	
 	<target name="hudson" depends="clean, antlips.xml">
-		<ant antfile="antlips.xml" target="clover-report" />
+		<ant inheritall="true" antfile="antlips.xml" target="clover-report" />
 	</target>
 	
 	<target name="clean" depends="delete-build-dir, antlips.xml">
-		<ant antfile="antlips.xml" target="clean" />
+		<ant inheritall="true" antfile="antlips.xml" target="clean" />
 	</target>
 	
 	<target name="delete-build-dir">
@@ -19,7 +19,7 @@
 	<target name="clean-test" depends="clean, test" />
 	
 	<target name="test" depends="antlips.xml">
-		<ant antfile="antlips.xml" />
+		<ant inheritall="true" antfile="antlips.xml" />
 	</target>
 	
 	<target name="antlips.xml" depends="init">
@@ -45,7 +45,7 @@
 			<src path="${builder.project}/src" />
 		</javac>
 		
-		<java classname="build.GenerateAntFile" fork="true">
+		<java classname="antlips.GenerateAntFile" fork="true">
 			<classpath>
 				<pathelement location="${build.dir}" />
 				<pathelement location="${builder.project}/src" />

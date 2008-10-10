@@ -19,7 +19,7 @@ public abstract class SovereignFunctionalTestBase extends TestThatIsInjected {
 	
 	@Before
 	public void beforeSovereignTest() {
-		new Timebox(30000) { @Override public void run() {
+		new Timebox(5000) { @Override public void run() {
 			initCommunity();
 		}};
 	}

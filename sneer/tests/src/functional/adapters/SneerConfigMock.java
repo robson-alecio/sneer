@@ -2,8 +2,6 @@ package functional.adapters;
 
 import java.io.File;
 
-import org.apache.commons.lang.SystemUtils;
-
 import sneer.kernel.container.SneerConfig;
 
 public class SneerConfigMock implements SneerConfig {
@@ -28,11 +26,6 @@ public class SneerConfigMock implements SneerConfig {
 	@Override
 	public File brickRootDirectory() {
 		return _brickDirectory;
-	}
-
-	@Override
-	public File eclipseDirectory() {
-		return new File(SystemUtils.getUserDir(), "sneerAPI-bin");
 	}
 
 	@Override

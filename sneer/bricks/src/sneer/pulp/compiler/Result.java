@@ -2,7 +2,7 @@ package sneer.pulp.compiler;
 
 import java.util.List;
 
-import sneer.kernel.container.utils.metaclass.MetaClass;
+import wheel.io.codegeneration.MetaClass;
 
 public interface Result {
 

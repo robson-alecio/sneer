@@ -7,5 +7,7 @@ import sneer.kernel.container.Brick;
 public interface PersistenceConfig extends Brick {
 
 	File persistenceDirectory();
+
+	void setPersistenceDirectory(File directory);
 	
 }

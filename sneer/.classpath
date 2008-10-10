@@ -2,20 +2,21 @@
 <classpath>
 	<classpathentry kind="src" path="spikes/src"/>
 	<classpathentry kind="src" path="tests/src"/>
+	<classpathentry kind="src" output="bin-kernel" path="kernel/impl/src"/>
 	<classpathentry kind="src" path="bricks/src"/>
-	<classpathentry kind="src" output="sneerAPI-bin" path="kernel/src"/>
+	<classpathentry kind="src" output="bin-kernel" path="kernel/api/src"/>
 	<classpathentry kind="src" path="antlips/src"/>
-	<classpathentry kind="src" output="sneerAPI-bin" path="wheel/src"/>
+	<classpathentry kind="src" output="bin-kernel" path="wheel/src"/>
 	<classpathentry kind="lib" path="spikes/lib/Filters.jar"/>
 	<classpathentry kind="lib" path="spikes/lib/lucene-demos-2.3.2.jar"/>
+	<classpathentry kind="lib" path="kernel/lib/asm-all-3.1.jar"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/pulp/compiler/lib/compiler-7-ea-b17-02_aug_2007.jar"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/pulp/crypto/lib/bcprov-jdk16-139.jar"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/pulp/log/lib/log4j-1.2.15.jar"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/pulp/log/lib/slf4j-api-1.5.0.jar"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/pulp/log/lib/slf4j-log4j12-1.5.0.jar"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/pulp/lucene/lib/lucene-core-2.3.2.jar"/>
-	<classpathentry kind="lib" path="kernel/lib/asm-all-3.1.jar"/>
-	<classpathentry kind="lib" path="wheel/lib/junit-4.4.jar"/>
+	<classpathentry kind="lib" path="wheel/lib/junit-4.4.jar" sourcepath="C:/java/junit-4.4-src.jar"/>
 	<classpathentry kind="lib" path="wheel/lib/xstream-1.2.2.jar"/>
 	<classpathentry kind="lib" path="wheel/lib/commons-io-1.4.jar" sourcepath="wheel/lib/commons-io-1.4-src.zip"/>
 	<classpathentry kind="lib" path="wheel/lib/commons-collections-3.2.jar"/>

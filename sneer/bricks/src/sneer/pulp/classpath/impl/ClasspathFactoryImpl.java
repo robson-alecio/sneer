@@ -4,17 +4,17 @@ import java.io.File;
 import java.util.List;
 
 import sneer.kernel.container.Brick;
+import sneer.kernel.container.ContainerConfig;
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.SneerConfig;
-import sneer.kernel.container.utils.io.BrickApiFilter;
 import sneer.pulp.classpath.Classpath;
 import sneer.pulp.classpath.ClasspathFactory;
 import wheel.io.Jars;
+import wheel.io.codegeneration.ClassUtils;
 
 class ClasspathFactoryImpl implements ClasspathFactory {
 
 	@Inject
-	private static SneerConfig _config;
+	private ContainerConfig _config;
 	
 	private Classpath _sneerApi;
 
@@ -42,13 +42,17 @@ class ClasspathFactoryImpl implements ClasspathFactory {
 			/*  
 			 * running from eclipse ?
 			 */
-
-			Classpath cp = newClasspath();
-			Classpath kernelPlusWheel = new DirectoryBasedClasspath(_config.eclipseDirectory());
-			Classpath allBrickApis = new FilteredClasspath(new BrickApiFilter(_config.brickRootDirectory()));
-			_sneerApi = cp.compose(kernelPlusWheel.compose(allBrickApis));
+			_sneerApi = buildEclipseClasspath();
 			return _sneerApi;
 		}
+	}
+
+	private Classpath buildEclipseClasspath() {
+		Classpath cp = newClasspath();
+		Classpath kernelPlusWheel = new DirectoryBasedClasspath(ClassUtils.rootDirectoryFor(Brick.class));
+		Classpath allBrickApis = new FilteredClasspath(new BrickApiFilter(_config.brickRootDirectory()));
+		final Classpath sneerApi = cp.compose(kernelPlusWheel.compose(allBrickApis));
+		return sneerApi;
 	}
 
 	@Override

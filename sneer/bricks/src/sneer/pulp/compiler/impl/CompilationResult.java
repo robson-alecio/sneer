@@ -8,11 +8,11 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 
-import sneer.kernel.container.utils.io.JavaFilter;
-import sneer.kernel.container.utils.metaclass.MetaClass;
 import sneer.pulp.compiler.CompilationError;
 import sneer.pulp.compiler.CompilerException;
 import sneer.pulp.compiler.Result;
+import wheel.io.codegeneration.JavaFilter;
+import wheel.io.codegeneration.MetaClass;
 import wheel.lang.StringUtils;
 
 class CompilationResult implements Result {

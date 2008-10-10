@@ -6,10 +6,10 @@ import java.util.Iterator;
 
 import org.apache.commons.io.FileUtils;
 
-import sneer.kernel.container.utils.metaclass.MetaClass;
 import sneer.pulp.compiler.JavaCompiler;
 import sneer.pulp.compiler.Result;
 import wheel.io.JarBuilder;
+import wheel.io.codegeneration.MetaClass;
 import wheel.lang.Collections;
 import wheel.lang.Types;
 

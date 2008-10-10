@@ -25,7 +25,7 @@ public abstract class Freedom2TestBase extends SovereignFunctionalTestBase {
 	}
 
 	
-	@Test (timeout = 3000)
+	@Test (timeout = 10000)
 	public void testNicknames() {
 		SovereignParty c = _community.createParty("Carla Costa");
 		SovereignParty d = _community.createParty("Denis Dalton");

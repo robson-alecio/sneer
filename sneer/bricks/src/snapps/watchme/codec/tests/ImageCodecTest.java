@@ -54,10 +54,8 @@ public class ImageCodecTest extends TestThatIsInjected {
 		final BufferedImage imageA = loadImage(imgAName);
 		final BufferedImage imageB = loadImage(imgBName);
 		
-		int[] dataA =_imageFactory.toSerializableData(imageA);
-		
-		ImageDelta full = new ImageDelta(dataA,0,0, imageA.getWidth(), imageA.getHeight());
-		int fullSizeBytes = serialize(full).length;
+		int[] imageData =_imageFactory.toSerializableData(imageA);
+		int fullSizeBytes = imageData.length * 4;
 		
 		List<ImageDelta> deltas = _subject.encodeDeltas(imageA, imageB);
 		int deltaSizeBytes = serialize(deltas.toArray()).length;
@@ -65,10 +63,6 @@ public class ImageCodecTest extends TestThatIsInjected {
 		assertTrue(deltas.size()>0);
 		assertTrue(deltaSizeBytes<fullSizeBytes);
 		
-		System.out.println(deltas.size());
-		System.out.println(fullSizeBytes);
-		System.out.println(deltaSizeBytes);
-
 		BufferedImage result = _subject.decodeDeltas(imageA, deltas);
 
 		deltas.clear();

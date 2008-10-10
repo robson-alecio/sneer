@@ -199,9 +199,8 @@ class DashboardImpl implements Dashboard, Runnable {
 			}
 			@Override
 			public void run() {
-				GuiThread.strictInvokeLater( new Runnable(){ public void run() {
-					open();						
-				}});
+				GuiThread.assertInGuiThread();
+				open();						
 			}
 		};
 		tray.setDefaultAction(cmd);

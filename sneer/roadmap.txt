@@ -1,11 +1,9 @@
 ﻿MAIN ROADMAP
 ===================
 	- [Rodrigo] Build
-	- [Sandro pairing] GuiThread
-		- (Klaus, Can't reproduce this in my pc) Shouts don't appear if list is flooded with them (Use "MainDemo Localhost foo foo" to send a flood of shouts).
 
 	- Wind
-		- Focus - Inform the user a message has arrived. See how ConversationFrame in monolith does it. I think it only requests focus.
+		- [Sandro] Focus - Inform the user a message has arrived. See how ConversationFrame in monolith does it. I think it only requests focus.
 	- Voice Calls
 		- Mic brick started. Refer to LoopbackTest spike.
 	---- WE DROP SKYPE :)
@@ -17,6 +15,7 @@
 
 	- Brick Publish (Supposedly working already)
 		- MainDemo - Publish all necessary bricks instead of just producing them.
+	- 
 
 	- ByteConnection legacy protocol - migrate all uses to new protocol.
 
@@ -28,7 +27,7 @@
 	- Injection Strategy - Revise
 		- Drop @Inject - Replace the AnnotatedFieldInjector by the StaticFieldInjector
 		- Consider using constructor (produces more lines of code but can be generated later with boo). Tests will run MUCH faster because classes have to be loaded only once. Downside is all instances created inside the brick will have to be passed (and hold) references to the bricks they need. 
-		- Consider using direct static access to generated classes that redirect based on thread context (refer to Rodrigo's ContextVariables idea).
+		- Consider using direct static access to bricks. Classloader will point to generated classes that will intercept and allow for mockability and container stuff.
 		- Consider the "gel" alternative in which bricks dont depend on each other. They just produce and consume tuples from the medium.
 	- ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do.
 		- SetSignal - Revise it also. 

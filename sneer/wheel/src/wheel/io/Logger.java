@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.io.output.NullOutputStream;
@@ -12,6 +13,8 @@ import org.apache.commons.io.output.NullOutputStream;
 import wheel.lang.exceptions.NotImplementedYet;
 
 public class Logger {
+
+	private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	/** Example: log("User {} is not allowed to access the {} report.", "Peter", "TPS") will produce the following log entry: "User Peter is not allowed to access the TPS report." */
 	static public void log(String message, Object... messageInsets) {
@@ -61,7 +64,7 @@ public class Logger {
 	
 	
 	private static void logHeader(String entry) {
-		_log.println("" + new Date() + "  " + entry);
+		_log.println("" + SIMPLE_DATE_FORMAT.format(new Date()) + "  " + entry);
 	}
 
 	

@@ -92,7 +92,7 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		
 		msg = msg==null?"":msg;
 		
-		return light.message() + "\n " + msg + stack;
+		return light.caption() + "\n " + msg + stack;
 	}	
 	@Override
 	public void init(Container container) {
@@ -146,7 +146,7 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 				
 		@Override
 		public Signal<String> labelFor(Light light) {
-			return new Constant<String>(light.message());
+			return new Constant<String>(light.caption());
 		}
 
 		@Override

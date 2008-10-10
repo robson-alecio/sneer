@@ -8,7 +8,4 @@ public abstract class Daemon extends Thread {
 		start();
 	}
 	
-	@Override
-	public abstract void run();
-
 }

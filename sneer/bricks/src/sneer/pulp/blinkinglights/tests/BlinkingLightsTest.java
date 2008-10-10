@@ -24,7 +24,7 @@ public class BlinkingLightsTest extends TestThatIsInjected {
 		
 		Light light = _subject.turnOn(LightType.ERROR, "some error", new NullPointerException());
 		assertTrue(light.isOn());
-		assertEquals("some error", light.message());
+		assertEquals("some error", light.caption());
 		assertNotNull(light.error());
 		assertLightCount(1, _subject);
 		

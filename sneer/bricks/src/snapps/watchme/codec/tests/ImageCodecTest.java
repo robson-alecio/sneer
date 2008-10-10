@@ -63,13 +63,14 @@ public class ImageCodecTest extends TestThatIsInjected {
 		assertTrue(deltas.size()>0);
 		assertTrue(deltaSizeBytes<fullSizeBytes);
 		
-		BufferedImage result = _subject.decodeDeltas(imageA, deltas);
+		for (ImageDelta delta : deltas)
+			_subject.applyDelta(imageA, delta);
 
 		deltas.clear();
 		int emptyDeltaSizeBytes = SerializationUtils.serialize(deltas.toArray()).length;
 		assertTrue(deltaSizeBytes>emptyDeltaSizeBytes);
 		
-		Assert.assertTrue(Images.isSameImage(imageB, result));
+		Assert.assertTrue(Images.isSameImage(imageB, imageA));
 	}
 
 	private byte[] serialize(Object obj) {

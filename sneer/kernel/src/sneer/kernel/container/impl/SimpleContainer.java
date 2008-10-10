@@ -11,6 +11,7 @@ import sneer.kernel.container.LegoException;
 import sneer.kernel.container.SneerConfig;
 import sneer.kernel.container.impl.classloader.EclipseClassLoaderFactory;
 import sneer.pulp.tuples.Tuple;
+import wheel.io.Logger;
 import wheel.lang.Types;
 
 public class SimpleContainer implements Container {
@@ -58,6 +59,7 @@ public class SimpleContainer implements Container {
 		try {
 			component = lookup(intrface);
 		} catch (ClassNotFoundException e) {
+			Logger.log("Impl for {} not found. Please wait while generating.", intrface);
 			String message = ImplementationGenerator.generateFor(intrface);
 			throw new LegoException(message, e);
 		} catch (Exception e) {

@@ -10,6 +10,6 @@ public interface ImageCodec extends Brick {
 
 	List<ImageDelta> encodeDeltas(BufferedImage original, BufferedImage target) throws Hiccup;
 
-	BufferedImage decodeDeltas(BufferedImage original, Iterable<ImageDelta> deltas);
+	void applyDelta(BufferedImage image, ImageDelta delta);
 
 }

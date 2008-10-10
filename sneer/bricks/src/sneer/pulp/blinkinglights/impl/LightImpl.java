@@ -7,18 +7,18 @@ class LightImpl implements Light {
 	
 	static final int NEVER = 0;
 	
-	private String _message;
-	
-	private boolean _isOn = true;
-	
-	private final Throwable _error;
-	
-	private final LightType _type;
+	boolean _isOn = false;
 
-	public LightImpl(LightType type, String message, Throwable error) {
+	private final LightType _type;
+	private final String _caption;
+	
+	Throwable _error;
+	String _helpMessage;
+	
+
+	public LightImpl(LightType type, String caption) {
 		_type = type;
-		_message = message;
-		_error = error;
+		_caption = caption;
 	}
 
 	@Override
@@ -32,8 +32,8 @@ class LightImpl implements Light {
 	}
 	
 	@Override
-	public String message() {
-		return _message;
+	public String caption() {
+		return _caption;
 	}
 	
 	@Override
@@ -44,5 +44,10 @@ class LightImpl implements Light {
 	void turnOff() {
 		_isOn = false;
 	}
-	
+
+	@Override
+	public String helpMessage() {
+		return _helpMessage;
+	}
+
 }

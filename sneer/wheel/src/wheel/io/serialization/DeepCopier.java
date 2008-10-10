@@ -86,6 +86,7 @@ public class DeepCopier {
 			_inputStream = inputStream;
 			_serializer = serializer;
 			_classLoader = classLoader;
+			setDaemon(true);
 		}
 
 		@Override

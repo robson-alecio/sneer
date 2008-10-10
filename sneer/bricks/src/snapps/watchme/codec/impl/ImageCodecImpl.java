@@ -8,7 +8,6 @@ import snapps.watchme.codec.ImageCodec;
 import snapps.watchme.codec.ImageDelta;
 import sneer.kernel.container.Inject;
 import sneer.skin.image.ImageFactory;
-import wheel.io.ui.graphics.Images;
 import wheel.lang.exceptions.Hiccup;
 
 class ImageCodecImpl implements ImageCodec {
@@ -22,16 +21,8 @@ class ImageCodecImpl implements ImageCodec {
 	}
 
 	@Override
-	public BufferedImage decodeDeltas(BufferedImage original,	Iterable<ImageDelta> deltas) {
-		BufferedImage result = Images.copy(original);
-		for (ImageDelta delta : deltas)
-			applyDelta(result, delta);
-		
-		return result;
-	}
-
-	private void applyDelta(BufferedImage result, ImageDelta delta) {
-		Image img = _imageFactory.toImage(delta.width, delta.height, delta.imageData);
-		result.getGraphics().drawImage(img, delta.x, delta.y, null);
+	public void applyDelta(BufferedImage image, ImageDelta delta) {
+		Image cell = _imageFactory.toImage(delta.width, delta.height, delta.imageData);
+		image.getGraphics().drawImage(cell, delta.x, delta.y, null);
 	}
 }

@@ -6,6 +6,7 @@ import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.clock.Clock;
 import wheel.io.Logger;
+import wheel.lang.exceptions.FriendlyException;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 
@@ -18,12 +19,8 @@ class BlinkingLightsImpl implements BlinkingLights {
 
 	@Override
 	public Light turnOn(LightType type, String message, Throwable t, int timeout) {
-		Light result = new LightImpl(type, message, t); 
-		_lights.add(result);
-		
-		if (timeout != LightImpl.NEVER)
-			turnOffIn(result, timeout);
-		
+		Light result = prepare(type, message);
+		turnOnIfNecessary(result, t, "Get an expert sovereign friend to help you. ;)", timeout);
 		return result;
 	}
 
@@ -49,8 +46,10 @@ class BlinkingLightsImpl implements BlinkingLights {
 	
 	@Override
 	public void turnOff(Light light) {
-		if (!_lights.remove(light)) return;
-		Logger.log("Light removed");
+		if (!light.isOn()) return;
+		
+		_lights.remove(light);
+		Logger.log("Light removed: ", light.caption());
 		((LightImpl)light).turnOff();
 	}
 	
@@ -59,5 +58,36 @@ class BlinkingLightsImpl implements BlinkingLights {
 			turnOff(light);	
 		}});
 	}
+
+	@Override
+	public Light prepare(LightType type, String caption) {
+		return new LightImpl(type, caption);
+	}
+
+	@Override
+	public void turnOnIfNecessary(Light light, FriendlyException e) {
+		turnOnIfNecessary(light, e, LightImpl.NEVER);
+	}
+
+	@Override
+	public void turnOnIfNecessary(Light light, FriendlyException e, int timeout) {
+		turnOnIfNecessary(light, e, e.getHelp(), timeout);
+	}
+
+	@Override
+	public void turnOnIfNecessary(Light pLight, Throwable e, String helpMessage, int timeout) {
+		if (!(pLight instanceof LightImpl)) throw new IllegalArgumentException();
+		LightImpl light = (LightImpl)pLight;
+
+		light._isOn = true;
+		_lights.add(light);
+		
+		light._error = e;
+		light._helpMessage = helpMessage;
+		
+		if (timeout != LightImpl.NEVER)
+			turnOffIn(light, timeout);
+	}
+
 
 }

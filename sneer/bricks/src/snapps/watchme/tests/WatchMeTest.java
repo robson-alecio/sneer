@@ -5,11 +5,14 @@ import static wheel.io.ui.graphics.Images.getImage;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.atomic.AtomicReference;
 
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.Sequence;
 import org.jmock.integration.junit4.JUnit4Mockery;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import snapps.watchme.WatchMe;
@@ -51,8 +54,7 @@ public class WatchMeTest extends TestThatIsInjected {
 		return new Object[] { _shotter };
 	}
 
-	@Ignore
-	@Test //(timeout = 7000)
+	@Test
 	public void watchMe() throws Exception, Hiccup {
 		final BufferedImage image1 = loadImage("screen1.png");
 		final BufferedImage image2 = loadImage("screen2.png");
@@ -66,15 +68,15 @@ public class WatchMeTest extends TestThatIsInjected {
 			one(_shotter).takeScreenshot(); will(returnValue(image3)); inSequence(seq);
 		}});
 
-		Container container2 = ContainerUtils.newContainer(_sharedSpace); 
+		Container container2 = ContainerUtils.newContainer(_sharedSpace, _clock); 
 		WatchMe subject2 = container2.produce(WatchMe.class);
 
 
 		
 		// Fix: This is an ugly workaround for the fact that class Tuple will be shared
-		// among both containers but will be injected with the KeyManager of the
-		// last created container. The correct behaviour is to use the ownPublicKey
-		// from the first container.
+		// among both containers in this test but will be injected with the KeyManager
+		// of the last created container. Instead, this test should use
+		// KeyManager.ownPublicKey() from the first container.
 		PublicKey key = container2.produce(KeyManager.class).ownPublicKey();
 
 		
@@ -83,7 +85,6 @@ public class WatchMeTest extends TestThatIsInjected {
 		@SuppressWarnings("unused")
 		Receiver<BufferedImage> receiverToAvoidGC = new Receiver<BufferedImage>(screens){@Override public void consume(BufferedImage screen) {
 			_screenObserved.set(screen);
-			System.out.println(System.nanoTime());
 		}};
 		
 		_subject.startShowingMyScreen();
@@ -94,20 +95,41 @@ public class WatchMeTest extends TestThatIsInjected {
 
 		_clock.advanceTime(500);
 		waitForImage(image3);
-		
+
 		_context.assertIsSatisfied();
 		
+	}
+
+	private void showImage(String title, final BufferedImage image) {
+		JFrame frame = new JFrame(title);
+		frame.setBounds(0,0, 1100, 800);
+		
+		JLabel label = new JLabel();
+		label.setIcon(new ImageIcon(image));
+		frame.getContentPane().add(label);
+		
+		frame.setVisible(true);
 	}
 
 	private void waitForImage(BufferedImage expected) {
 		int i = 0;
 		while (true) {
-			System.out.println("Waiting " + i++);
 			BufferedImage observed = _screenObserved.get();
 			if (observed != null)
 				if (Images.isSameImage(expected, observed)) return;
-			Threads.sleepWithoutInterruptions(10);
+			
+			if (i++ == 40) giveUp(expected, observed);
+			
+			Threads.sleepWithoutInterruptions(10); //Optimize Use wait/notify
 		}
+	}
+
+	private void giveUp(BufferedImage expected, BufferedImage observed) {
+		System.err.println("Expected image not received. JFrames opened for comparison...");
+		showImage("Expected", expected);
+		showImage("Observed", observed);
+		Threads.sleepWithoutInterruptions(30000);
+		fail();
 	}
 
 	private BufferedImage loadImage(String fileName) throws Hiccup {

@@ -12,11 +12,11 @@ public class ImageDelta extends Tuple {
 	
 	public int[]  imageData;
 	
-	public ImageDelta(int[] pImageData, int pX, int pY, int pWidth, int pHeight) { 
-		this.x = pX;
-		this.y = pY;
-		this.width = pWidth;
-		this.height = pHeight;
-		this.imageData =  pImageData;
+	public ImageDelta(int[] imageData_, int x_, int y_, int width_, int height_) { 
+		x = x_;
+		y = y_;
+		width = width_;
+		height = height_;
+		imageData =  imageData_;
 	}
 }

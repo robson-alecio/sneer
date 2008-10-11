@@ -1,16 +1,21 @@
 ﻿MAIN ROADMAP
 ===================
-	- [Rodrigo] Build
 
+	- WatchMe - Screen Viewing à la VNC
+		- GUI
+			- One toggle button that calls WatchMe.startShowingMyScreen() and stopShowingMyScreen();
+			- Listen to WatchMe.screenStreamFor() for ALL contacts. Open one 1024x768 Window for each contact for the screens received by that contact, the moment the first screen is received from that contact. The window has no title bar and can be closed normally with Alt-F4.
+			- Obs: For now, it is only working on 1024x768 resolution.
+		- Solve the OutOfMem that will happen because Tuples are never GC'd :)
+	---- WE DROP VNC
+
+	- [Rodrigo] Build
+	- [Rodrigo] Clover Report
 	- Wind
 		- [Sandro] Focus - Inform the user a message has arrived. See how ConversationFrame in monolith does it. I think it only requests focus.
 	- Voice Calls
 		- Mic brick started. Refer to LoopbackTest spike.
 	---- WE DROP SKYPE :)
-	- WatchMe - Screen Viewing à la VNC
-		- ImageCodecTest
-			- Model the image as a grid of cells (64x64 pixels). If a cell changes, compress it with png and send it over.
-	---- WE DROP VNC
 	---------------------------------- LAST DOGFOOD RELEASE - Now we start cleaning up until we reach "No Broken Windows" status.
 
 	- Brick Publish (Supposedly working already)

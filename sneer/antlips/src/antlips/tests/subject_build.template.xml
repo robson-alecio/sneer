@@ -3,6 +3,7 @@
 <project name="AntBuild" default="test">
 
 	<property name="build.dir" location="bin" />
+	<property name="clover.jar" location="antlips/lib/clover.jar" />
 
 	<path id="classpath">
 		<pathelement path="sneerAPI-bin"/>
@@ -23,6 +24,7 @@
 			<sysproperty key="java.awt.headless" value="${java.awt.headless}" />
 			<classpath>
 				<path refid="classpath" />
+				<pathelement location="${clover.jar}" />
 			</classpath>
 			<batchtest todir="sneerAPI-bin">
 				<fileset dir="sneerAPI-bin">
@@ -93,7 +95,6 @@
 
 	<!-- clover support -->
 	<target name="init-clover">
-		<property name="clover.jar" location="antlips/lib/clover.jar" />
 		<taskdef resource="cloverlib.xml" classpath="${clover.jar}"/>
 		<clover-setup initString="mycoverage.db"/>
 	</target>

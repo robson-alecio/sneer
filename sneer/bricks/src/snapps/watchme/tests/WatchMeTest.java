@@ -2,6 +2,7 @@ package snapps.watchme.tests;
 
 import static wheel.io.ui.graphics.Images.getImage;
 
+import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -56,6 +57,10 @@ public class WatchMeTest extends TestThatIsInjected {
 
 	@Test
 	public void watchMe() throws Exception, Hiccup {
+		
+		if (GraphicsEnvironment.isHeadless())
+			return;
+		
 		final BufferedImage image1 = loadImage("screen1.png");
 		final BufferedImage image2 = loadImage("screen2.png");
 		final BufferedImage image3 = loadImage("screen3.png");

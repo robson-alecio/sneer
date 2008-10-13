@@ -3,6 +3,7 @@ package snapps.watchme.codec.tests;
 import static wheel.io.ui.graphics.Images.copy;
 import static wheel.io.ui.graphics.Images.getImage;
 
+import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
@@ -51,6 +52,10 @@ public class ImageCodecTest extends TestThatIsInjected {
 	}
 
 	private void encodeAndDecode(String imgAName, String imgBName)	throws Hiccup {
+		
+		if (GraphicsEnvironment.isHeadless())
+			return;
+		
 		final BufferedImage imageA = loadImage(imgAName);
 		final BufferedImage imageB = loadImage(imgBName);
 		

@@ -1,5 +1,9 @@
 package sneer.pulp.own.avatar.tests;
 
+import static wheel.io.ui.graphics.Images.getImage;
+import static wheel.io.ui.graphics.Images.isSameImage;
+
+import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
 
 import org.junit.Test;
@@ -9,8 +13,6 @@ import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.skin.image.ImageFactory;
 import wheel.lang.exceptions.Hiccup;
-import static wheel.io.ui.graphics.Images.isSameImage;
-import static wheel.io.ui.graphics.Images.getImage;
 
 public class OwnAvatarKeeperTest extends TestThatIsInjected {
 
@@ -26,6 +28,9 @@ public class OwnAvatarKeeperTest extends TestThatIsInjected {
 
 	@Test
 	public void testImage() throws Hiccup {
+		
+		if (GraphicsEnvironment.isHeadless())
+			return;
 
 		BufferedImage toTest;
 		BufferedImage black = loadImage("black.png");

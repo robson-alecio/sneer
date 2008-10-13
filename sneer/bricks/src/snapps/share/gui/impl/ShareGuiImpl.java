@@ -13,6 +13,7 @@ import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 
 import snapps.share.gui.ShareGui;
+import snapps.watchme.WatchMe;
 import sneer.kernel.container.Inject;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.snappmanager.InstrumentManager;
@@ -23,9 +24,12 @@ public class ShareGuiImpl implements ShareGui {
 	static private InstrumentManager _instrumentManager;
 	
 	@Inject
+	static private WatchMe _watchMe;
+	
+	@Inject
 	static private ImageFactory _imageFactory;
 
-	JToggleButton _watchMe;
+	JToggleButton _watchMeButton;
 	private final ImageIcon WATCHME_ON;
 	private final ImageIcon WATCHME_OFF;
 	{
@@ -34,7 +38,7 @@ public class ShareGuiImpl implements ShareGui {
 	}
 
 
-	JToggleButton _listenToMe;
+	JToggleButton _listenToMeButton;
 	private final ImageIcon LISTEN_TO_ME_ON;
 	private final ImageIcon LISTEN_TO_ME_OFF;
 	{
@@ -54,15 +58,23 @@ public class ShareGuiImpl implements ShareGui {
 	public void init(Container container) {
 		container.setBackground(Color.WHITE);
 		container.setLayout(new FlowLayout());
-		_watchMe = createButton(container, WATCHME_ON, WATCHME_OFF, "Watch Me!");
-		_listenToMe = createButton(container, LISTEN_TO_ME_ON, LISTEN_TO_ME_OFF, "Listen To Me!");
+		_watchMeButton = createButton(container, WATCHME_ON, WATCHME_OFF, "Watch Me!");
+		_listenToMeButton = createButton(container, LISTEN_TO_ME_ON, LISTEN_TO_ME_OFF, "Listen To Me!");
 		
-		_watchMe.addMouseListener(new MouseAdapter() {	@Override public void mouseReleased(MouseEvent e) {
-			//Implement add watch me call
-		}});
-		
-		_listenToMe.addMouseListener(new MouseAdapter() {	@Override public void mouseReleased(MouseEvent e) {
+		createWatchMeButtonListener();
+		createListenToMeButtonListener();
+	}
+	
+	private void createListenToMeButtonListener() {
+		_listenToMeButton.addMouseListener(new MouseAdapter() {	@Override public void mouseReleased(MouseEvent e) {
 			//Implement add listen to me call
+		}});
+	}
+
+	private void createWatchMeButtonListener() {
+		_watchMeButton.addMouseListener(new MouseAdapter() {	@Override public void mouseReleased(MouseEvent e) {
+			if(_watchMeButton.isSelected()) _watchMe.startShowingMyScreen();
+			else _watchMe.stopShowingMyScreen();
 		}});
 	}
 

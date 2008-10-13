@@ -3,7 +3,6 @@
 
 	- WatchMe - Screen Viewing à la VNC
 		- GUI
-			- One toggle button that calls WatchMe.startShowingMyScreen() and stopShowingMyScreen();
 			- Listen to WatchMe.screenStreamFor() for ALL contacts. Open one 1024x768 Window for each contact for the screens received by that contact, the moment the first screen is received from that contact. The window has no title bar and can be closed normally with Alt-F4.
 			- Obs: For now, it is only working on 1024x768 resolution.
 		- Solve the OutOfMem that will happen because Tuples are never GC'd :)

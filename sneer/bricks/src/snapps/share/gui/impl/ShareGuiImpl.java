@@ -28,7 +28,16 @@ public class ShareGuiImpl implements ShareGui {
 	
 	@Inject
 	static private ImageFactory _imageFactory;
-
+	
+//	@Inject
+//	static private ContactManager _contactManager;
+//	
+//	@Inject
+//	static private WatchMeWindowManager _windowManager;
+//	
+//	@Inject
+//	private static OwnNameKeeper _ownName;
+	
 	JToggleButton _watchMeButton;
 	private final ImageIcon WATCHME_ON;
 	private final ImageIcon WATCHME_OFF;
@@ -63,8 +72,23 @@ public class ShareGuiImpl implements ShareGui {
 		
 		createWatchMeButtonListener();
 		createListenToMeButtonListener();
+		
+		createContactsListReceiver();
 	}
 	
+	private void createContactsListReceiver() {
+//		Iterator<Contact> contacts  =_contactManager.contacts().iterator();
+//		while (contacts.hasNext()) {
+//			Contact contact = contacts.next();
+//			if (contact.nickname().equals(ownName())) continue;
+//			_windowManager.createWatchMeWindowFor(contact);					
+//		}
+	}
+
+//	private String ownName() {
+//		return _ownName.name().currentValue();
+//	}
+
 	private void createListenToMeButtonListener() {
 		_listenToMeButton.addMouseListener(new MouseAdapter() {	@Override public void mouseReleased(MouseEvent e) {
 			//Implement add listen to me call

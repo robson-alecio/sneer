@@ -3,6 +3,7 @@ package main.impl;
 import main.MainDemoBrick;
 import snapps.blinkinglights.gui.BlinkingLightsGui;
 import snapps.contacts.gui.ContactsGui;
+import snapps.share.gui.ShareGui;
 import snapps.wind.gui.WindGui;
 import sneer.kernel.container.Inject;
 import sneer.pulp.clockticker.ClockTicker;
@@ -34,6 +35,9 @@ class MainDemoBrickImpl implements MainDemoBrick {
 
 	@Inject	@SuppressWarnings("unused")
 	private static WindGui _gui4;
+	
+	@Inject	@SuppressWarnings("unused")
+	private static ShareGui _gui5;
 	
 	@Inject	@SuppressWarnings("unused")
 	private static SocketOriginator _networkDaemon1;

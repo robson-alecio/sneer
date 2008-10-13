@@ -26,6 +26,7 @@
 		
 	<target name="test-execution" depends="compile">
 		<junit printsummary="true" failureproperty="junit.failures" fork="yes">
+			<sysproperty key="java.awt.headless" value="${java.awt.headless}" />
 			<classpath>
 				<path refid="classpath" />
 			</classpath>

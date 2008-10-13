@@ -68,7 +68,7 @@ public class ShareGuiImpl implements ShareGui {
 
 	private JToggleButton createButton(Container container, final Icon onIcon, final Icon offIcon, String tip) {
 		final JToggleButton btn = new JToggleButton(offIcon);
-		btn.setPreferredSize(new Dimension(32,32));
+		btn.setPreferredSize(new Dimension(40,40));
 		btn.setBorder(new EmptyBorder(2,2,2,2));
 		btn.setOpaque(true);
 		btn.setBackground(Color.WHITE);

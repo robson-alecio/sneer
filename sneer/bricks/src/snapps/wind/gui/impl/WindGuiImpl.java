@@ -152,7 +152,7 @@ class WindGuiImpl implements WindGui {
 	}
 
 	private Dimension size(Container container) {
-		return new Dimension(container.getSize().width, 298 );
+		return new Dimension(container.getSize().width, 248 );
 	}
 	
 	private String getName() {

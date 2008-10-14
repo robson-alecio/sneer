@@ -19,5 +19,6 @@ public interface KeyManager extends Brick {
 
 	PublicKey unmarshall(byte[] publicKeyBytes);
 
+	@Deprecated
 	PublicKey generateMickeyMouseKey(String nick); //Just until we implement real keys.
 }

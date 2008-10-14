@@ -11,8 +11,8 @@ public class MainDemo {
 		try {
 			tryToRun(args);
 		} catch (Exception e) {
-			System.err.println("Usage: MainDemo yourOwnName dynDnsUser dnyDnsPassword\n");
-			e.printStackTrace();
+			System.err.println(e.getClass() + " " + e.getMessage());
+			System.err.println("\nUsage: MainDemo yourOwnName dynDnsUser dnyDnsPassword\n");
 			System.exit(1);
 		}
 	}

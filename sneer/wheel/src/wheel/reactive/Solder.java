@@ -5,9 +5,9 @@ import wheel.reactive.impl.Receiver;
 
 public class Solder<T> extends Receiver<T> {
 
-	private final Omnivore<T> _omnivore;
+	private final Omnivore<? super T> _omnivore;
 
-	public Solder(Signal<T> signal, Omnivore<T> omnivore) {
+	public Solder(EventSource<? extends T> signal, Omnivore<? super T> omnivore) {
 		_omnivore = omnivore;
 		addToSignal(signal);
 	}

@@ -3,7 +3,6 @@ package snapps.watchme.gui.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import snapps.watchme.WatchMe;
 import snapps.watchme.gui.WatchMeWindowManager;
 import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
@@ -24,8 +23,6 @@ public class WatchMeWindowManagerImpl implements WatchMeWindowManager{
 	@Inject
 	private static OwnNameKeeper _ownName;
 	
-	@Inject
-	private static WatchMe _watchMe;
 	
 	Map<Contact, WatchMeWindow> _windows = new HashMap<Contact, WatchMeWindow>();
 
@@ -50,8 +47,8 @@ public class WatchMeWindowManagerImpl implements WatchMeWindowManager{
 	
 	public WatchMeWindowManagerImpl() {
 		PublicKey ownPublicKey = _keyManager.ownPublicKey();
-		WatchMeWindow watchMeWindow = new WatchMeWindow(ownPublicKey);
-		_windows.put(_keyManager.contactGiven(ownPublicKey) , watchMeWindow);
+		WatchMeWindow window = new WatchMeWindow(ownPublicKey);
+		_windows.put(_keyManager.contactGiven(ownPublicKey) , window);
 	}
 
 	public void startReceivingScreensFrom(Contact contact) {

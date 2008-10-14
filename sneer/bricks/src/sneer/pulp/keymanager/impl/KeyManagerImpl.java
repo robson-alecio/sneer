@@ -97,6 +97,7 @@ class KeyManagerImpl implements KeyManager {
 		return new PublicKeyImpl(_crypto.unmarshallSneer1024(bytes));
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public PublicKey generateMickeyMouseKey(String string) {
 		Sneer1024 sneer1024 = _crypto.digest(string.getBytes());

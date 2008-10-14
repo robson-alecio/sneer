@@ -1,15 +1,18 @@
 package spikes.klaus;
 
-import java.awt.DisplayMode;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
+import javax.swing.JWindow;
 
 public class Anything {
 
 	public static void main(String[] args) {
-		GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-		DisplayMode mode = device.getDisplayMode();
-		System.out.println("" + mode.getWidth() + " x " + mode.getHeight());
+		JWindow window = new JWindow();
+		window.setBounds(0, 0, 300, 300);
+		window.setName("Banana");
+		window.setVisible(true);
+		
+//		GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+//		DisplayMode mode = device.getDisplayMode();
+//		System.out.println("" + mode.getWidth() + " x " + mode.getHeight());
 	}
 
 }

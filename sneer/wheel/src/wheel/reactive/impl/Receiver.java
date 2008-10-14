@@ -10,12 +10,12 @@ public abstract class Receiver<T> implements Omnivore<T> {
 	
 	private final List<EventSource<? extends T>> _eventSources = new ArrayList<EventSource<? extends T>>();
 
-	public Receiver(EventSource<T> signal) {
+	public Receiver(EventSource<? extends T> signal) {
 		addToSignal(signal);
 	}
 	
-	public Receiver(EventSource<T>... signals) {
-		for (EventSource<T> signal : signals)
+	public Receiver(EventSource<? extends T>... signals) {
+		for (EventSource<? extends T> signal : signals)
 			addToSignal(signal);
 	}
 

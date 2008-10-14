@@ -4,6 +4,7 @@ import main.MainDemoBrick;
 import snapps.blinkinglights.gui.BlinkingLightsGui;
 import snapps.contacts.gui.ContactsGui;
 import snapps.share.gui.ShareGui;
+import snapps.watchme.gui.WatchMeWindowManager;
 import snapps.wind.gui.WindGui;
 import sneer.kernel.container.Inject;
 import sneer.pulp.clockticker.ClockTicker;
@@ -38,7 +39,10 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	
 	@Inject	@SuppressWarnings("unused")
 	private static ShareGui _gui5;
-	
+
+	@Inject	@SuppressWarnings("unused")
+	private static WatchMeWindowManager _gui6;
+
 	@Inject	@SuppressWarnings("unused")
 	private static SocketOriginator _networkDaemon1;
 	
@@ -155,6 +159,7 @@ class MainDemoBrickImpl implements MainDemoBrick {
 		_addressKeeper.add(contact, host, port);
 	}
 
+	@SuppressWarnings("deprecation")
 	private PublicKey mickeyMouseKey(String nick) {
 		return _keyManager.generateMickeyMouseKey(nick);
 	}

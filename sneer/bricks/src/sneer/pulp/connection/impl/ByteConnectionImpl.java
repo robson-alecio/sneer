@@ -174,7 +174,7 @@ class ByteConnectionImpl implements ByteConnection {
 		try {
 			return mySocket.read();
 		} catch (IOException e) {
-			log("Connection with peer closed: {} - {}", e.getClass(), e.getMessage());
+			log("Connection with peer closed: {} {}", e.getClass().getName(), e.getMessage());
 			_socketHolder.crash(mySocket);
 			return null;
 		} 

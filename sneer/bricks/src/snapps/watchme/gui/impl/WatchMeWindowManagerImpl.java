@@ -21,13 +21,7 @@ public class WatchMeWindowManagerImpl implements WatchMeWindowManager{
 		if(_windows.containsKey(contact)) return;
 		
 		PublicKey key = _keyManager.keyGiven(contact);
-		
-//		//Fix Klaus, how works keymanager?
-//		if(key==null) {
-//			key = _keyManager.generateMickeyMouseKey(contact.nickname().currentValue());
-//			_keyManager.addKey(contact, key);
-//		}
-		
+			
 		WatchMeWindow window = new WatchMeWindow(key);
 		_windows.put(contact, window);
 	}

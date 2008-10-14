@@ -50,7 +50,6 @@ public class WatchMeWindowManagerImpl implements WatchMeWindowManager{
 	
 	public WatchMeWindowManagerImpl() {
 		WatchMeWindow watchMeWindow = new WatchMeWindow(_keyManager.ownPublicKey());
-		watchMeWindow.setVisible(true);
 	}
 
 	public void startReceivingScreensFrom(Contact contact) {

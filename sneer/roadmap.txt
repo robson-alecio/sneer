@@ -8,8 +8,6 @@
 		- Solve the OutOfMem that will happen because Tuples are never GC'd :)
 	---- WE DROP VNC
 
-	- [Rodrigo] Build
-	- [Rodrigo] Clover Report
 	- Wind
 		- [Sandro] Focus - Inform the user a message has arrived. See how ConversationFrame in monolith does it. I think it only requests focus.
 		- Ctrl-C and Ctrl-V in wind list.

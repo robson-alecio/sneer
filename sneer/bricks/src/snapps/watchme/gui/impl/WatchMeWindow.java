@@ -3,11 +3,12 @@ package snapps.watchme.gui.impl;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Image;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.WindowConstants;
 
 import snapps.watchme.WatchMe;
 import sneer.kernel.container.Inject;
@@ -26,13 +27,10 @@ public class WatchMeWindow extends JFrame {
 	@Inject
 	private static WatchMe _watchMe;
 	
-	@Inject
-	private static ReactiveWidgetFactory _factory;
-	
-	private Register<Image> _imageRegister = new RegisterImpl<Image>(null);
-
 	@SuppressWarnings("unused")
 	private Omnivore<Image> _receiverToAvoidGc;
+	
+	private JLabel _imageLabel = new JLabel();
 
 	public WatchMeWindow(PublicKey key) {
 		createReceiver(key);
@@ -41,31 +39,27 @@ public class WatchMeWindow extends JFrame {
 
 	private void initGui() {
 		GuiThread.invokeAndWait(new Runnable(){	@Override public void run() {
-			ImageWidget imageWidget = _factory.newImage(_imageRegister.output());
-				
+			
 			setBounds(0,0,1024,768);
 			Container contentPane = getContentPane();
 			contentPane.setLayout(new BorderLayout());
-			contentPane.add(imageWidget.getComponent(), BorderLayout.CENTER);
-				
+			contentPane.add(_imageLabel, BorderLayout.CENTER);
 			initWindowListener();
 		}});
 	}
 
 	private void initWindowListener() {
-		addWindowListener(new WindowAdapter(){ @Override public void windowClosed(WindowEvent e) {
-			dispose();
-		}});
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 	}
 
 	private void createReceiver(PublicKey key) {
 		final EventSource<BufferedImage> screens = _watchMe.screenStreamFor(key);
 	
 		_receiverToAvoidGc = new Receiver<Image>(screens){ @Override public void consume(Image img) {
-			System.out.println("WatchMe image: " + img);
-			if (!isVisible()) setVisible(true);
-			_imageRegister.setter().consume(img);
+			if (!isVisible() && isEnabled()) setVisible(true);
+			ImageIcon icon = new ImageIcon(img);
+			_imageLabel.setIcon(icon);
+			_imageLabel.repaint();
 		}};
 	}
-
 }

@@ -44,10 +44,10 @@ class RImageImpl extends JPanel implements ImageWidget{
 	private Receiver<Image> imageReceiverFor(Signal<Image> signal) {
 		return new Receiver<Image>(signal) {@Override public void consume(final Image image) {
 			_image.setter().consume(image);
-			GuiThread.strictInvokeLater( new Runnable() {@Override public void run() {
-				revalidate();
-				repaint();
-		}});}};
+			GuiThread.assertInGuiThread();
+			revalidate();
+			repaint();
+		}};
 	}
 
 	@Override

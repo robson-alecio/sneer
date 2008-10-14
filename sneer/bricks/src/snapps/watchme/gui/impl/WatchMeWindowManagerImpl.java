@@ -49,11 +49,8 @@ public class WatchMeWindowManagerImpl implements WatchMeWindowManager{
 	};
 	
 	public WatchMeWindowManagerImpl() {
-//		EventSource<BufferedImage> screens = _watchMe.screenStreamFor(_keyManager.ownPublicKey());
-//		screens.addReceiver(new Omnivore<Image>(){ @Override public void consume(Image img) {
-//			imageResgiter.setter().consume(img);
-//		}});
-//		return screen;
+		WatchMeWindow watchMeWindow = new WatchMeWindow(_keyManager.ownPublicKey());
+		watchMeWindow.setVisible(true);
 	}
 
 	public void startReceivingScreensFrom(Contact contact) {

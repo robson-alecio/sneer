@@ -16,8 +16,6 @@ import snapps.share.gui.ShareGui;
 import snapps.watchme.WatchMe;
 import snapps.watchme.gui.WatchMeWindowManager;
 import sneer.kernel.container.Inject;
-import sneer.pulp.contacts.ContactManager;
-import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.snappmanager.InstrumentManager;
 
@@ -28,6 +26,9 @@ public class ShareGuiImpl implements ShareGui {
 	
 	@Inject
 	static private WatchMe _watchMe;
+
+	@Inject
+	static private WatchMeWindowManager	_watchMeWindowManager;
 	
 	@Inject
 	static private ImageFactory _imageFactory;

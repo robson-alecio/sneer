@@ -15,6 +15,7 @@ import sneer.kernel.container.Inject;
 import sneer.pulp.keymanager.PublicKey;
 import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
+import wheel.io.ui.GuiThread;
 import wheel.lang.Omnivore;
 import wheel.reactive.EventSource;
 import wheel.reactive.Register;
@@ -37,14 +38,16 @@ public class WatchMeWindow extends JFrame {
 	}
 
 	private void initGui() {
-		ImageWidget imageWidget = _factory.newImage(imageResgiter.output());
-		
-		setBounds(0,0,1024,768);
-		Container contentPane = getContentPane();
-		contentPane.setLayout(new BorderLayout());
-		contentPane.add(imageWidget.getComponent(), BorderLayout.CENTER);
-
-		initWindowListener();
+		GuiThread.invokeAndWait(new Runnable(){	@Override public void run() {
+			ImageWidget imageWidget = _factory.newImage(imageResgiter.output());
+				
+			setBounds(0,0,1024,768);
+			Container contentPane = getContentPane();
+			contentPane.setLayout(new BorderLayout());
+			contentPane.add(imageWidget.getComponent(), BorderLayout.CENTER);
+				
+			initWindowListener();
+		}});
 	}
 
 	private void initWindowListener() {

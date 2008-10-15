@@ -1,6 +1,5 @@
 package sneer.pulp.connection.impl;
 
-import static wheel.io.Logger.log;
 import static wheel.io.Logger.logShort;
 
 import java.io.IOException;
@@ -75,7 +74,7 @@ class ByteConnectionImpl implements ByteConnection {
 		try {
 			return tryToShakeHands(socket);
 		} catch (IOException e) {
-			log(e);
+			logShort(e, "Exception while shaking hands in outgoing connection.");
 			return false;
 		}
 	}
@@ -120,8 +119,8 @@ class ByteConnectionImpl implements ByteConnection {
 			mySocket.write(array);
 			return true;
 		} catch (IOException iox) {
-			log(iox);
 			_socketHolder.crash(mySocket);
+			logShort(iox, "Error trying to send packet. ");
 			return false;
 		}
 	}
@@ -140,7 +139,7 @@ class ByteConnectionImpl implements ByteConnection {
 	private void startReceiving() {
 		_threadPool.registerActor(new Runnable() { @Override public void run() {
 			while (true) {
-				if (!tryToReceiveFrom())
+				if (!tryToReceive())
 					Threads.sleepWithoutInterruptions(10); //Optimize Use wait/notify
 			}
 		}});
@@ -165,7 +164,7 @@ class ByteConnectionImpl implements ByteConnection {
 		throw new Exception("Illegal protocol byte: " + protocolByte);
 	}
 
-	private boolean tryToReceiveFrom() {
+	private boolean tryToReceive() {
 		ByteArraySocket mySocket = _socketHolder.socket();
 		if (mySocket ==  null) return false;
 

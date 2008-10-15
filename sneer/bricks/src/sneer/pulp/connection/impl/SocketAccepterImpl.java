@@ -105,14 +105,11 @@ class SocketAccepterImpl implements SocketAccepter {
 
 	private void openServerSocket(int port) {
 		if (port == 0) return;
-		Light starting = _lights.turnOn(LightType.INFO, "Trying to listen on TCP port " + port + "...");
 		try {
 			_serverSocket = _network.openServerSocket(port);
 			if (_cantOpenServerSocket != null) _lights.turnOff(_cantOpenServerSocket);
-			_lights.turnOff(starting);
 			_lights.turnOn(LightType.GOOD_NEWS, "TCP port opened: " + port, 7000);
 		} catch (IOException e) {
-			_lights.turnOff(starting);
 			if (!_isStopped)
 				_cantOpenServerSocket = _lights.turnOn(LightType.ERROR, "Unable to listen on TCP port " + port, e);
 		}

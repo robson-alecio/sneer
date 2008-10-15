@@ -20,7 +20,7 @@ import wheel.lang.Omnivore;
 import wheel.reactive.EventSource;
 import wheel.reactive.impl.Receiver;
 
-public class WatchMeReceiver extends JFrame {
+public class WatchMeReceiver{
 	
 	@Inject
 	private static WatchMe _watchMe;
@@ -36,15 +36,21 @@ public class WatchMeReceiver extends JFrame {
 	@SuppressWarnings("unused")
 	private Receiver<Contact> _keyChangeReceiverToAvoidGc;
 
+	private final Contact _contact;
+	private JFrame _window;
+	
 	public WatchMeReceiver(Contact contact) {
+		_contact = contact;
 		createReceiver(contact);
 	}
 
 	private void initGui() {
 		GuiThread.invokeAndWait(new Runnable(){	@Override public void run() {
-			
-			setBounds(0,0,1024,768);
-			Container contentPane = getContentPane();
+			String nick = _contact.nickname().currentValue();
+			System.out.println("Watchin '" + nick + "'");
+			_window = new JFrame(nick);
+			_window.setBounds(0,0,1024,768);
+			Container contentPane = _window.getContentPane();
 			contentPane.setLayout(new BorderLayout());
 			contentPane.add(_imageLabel, BorderLayout.CENTER);
 			initWindowListener();
@@ -52,7 +58,7 @@ public class WatchMeReceiver extends JFrame {
 	}
 
 	private void initWindowListener() {
-		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		_window.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 	}
 
 	private void createReceiver(final Contact contact) {
@@ -72,10 +78,17 @@ public class WatchMeReceiver extends JFrame {
 		initGui();
 		final EventSource<BufferedImage> screens = _watchMe.screenStreamFor(key);
 		_imageReceiverToAvoidGc = new Receiver<Image>(screens){ @Override public void consume(Image img) {
-			if (!isVisible()) setVisible(true);
+			if(_window==null) initGui();
+			if (!_window.isVisible()) _window.setVisible(true);
 			ImageIcon icon = new ImageIcon(img);
 			_imageLabel.setIcon(icon);
 			_imageLabel.repaint();
 		}};
+	}
+	
+	void dispose(){
+		if(_window==null) 
+			_window.dispose();
+		_window = null;
 	}
 }

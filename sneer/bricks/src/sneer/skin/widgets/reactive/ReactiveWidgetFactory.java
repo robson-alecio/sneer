@@ -27,5 +27,8 @@ public interface ReactiveWidgetFactory {
 	
 	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> labelProvider);
 	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> labelProvider,	ListCellRenderer cellRenderer);
+	
+	WindowWidget newFrame(Signal<String> source);
+	WindowWidget newFrame(Signal<String> source, Omnivore<String> setter);
 
 }

@@ -11,6 +11,7 @@ import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
+import sneer.skin.widgets.reactive.WindowWidget;
 import wheel.io.ui.GuiThread;
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
@@ -78,4 +79,18 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 		GuiThread.assertInGuiThread();
 		return new RListImpl<T>(source, provider, cellRenderer);
 	}
+	
+	@Override
+	public WindowWidget newFrame(Signal<String> source) {
+		GuiThread.assertInGuiThread();
+		return new RFrameImpl(source);
+	}
+
+	@Override
+	public WindowWidget newFrame(Signal<String> source, Omnivore<String> setter) {
+		GuiThread.assertInGuiThread();
+		return new RFrameImpl(source, setter);
+	}
+
+
 }

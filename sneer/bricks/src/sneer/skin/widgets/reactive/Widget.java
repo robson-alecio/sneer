@@ -1,10 +1,9 @@
 package sneer.skin.widgets.reactive;
 
-import javax.swing.JComponent;
+import java.awt.Container;
 
-public interface Widget<MAINCOMPONENT extends JComponent> {
+public interface Widget<MAINCOMPONENT extends Container> {
 
-	JComponent getComponent();
 	MAINCOMPONENT getMainWidget();
 
 }

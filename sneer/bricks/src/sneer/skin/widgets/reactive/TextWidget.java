@@ -5,7 +5,7 @@ import javax.swing.JComponent;
 import wheel.lang.Consumer;
 import wheel.reactive.Signal;
 
-public interface TextWidget<WIDGET extends JComponent> extends Widget<WIDGET> {
+public interface TextWidget<WIDGET extends JComponent> extends ComponentWidget<WIDGET> {
 
 	Signal<String> output();
 	

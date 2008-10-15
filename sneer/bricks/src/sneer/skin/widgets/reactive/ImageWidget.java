@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 
-public interface ImageWidget extends Widget<JPanel>{
+public interface ImageWidget extends ComponentWidget<JPanel>{
 
 	Signal<Image> output();
 	Omnivore<Image> setter();	

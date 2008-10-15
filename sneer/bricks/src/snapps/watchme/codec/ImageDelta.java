@@ -10,9 +10,9 @@ public class ImageDelta extends Tuple {
 	public final int width;
 	public final int height;
 	
-	public int[]  imageData;
+	public byte[]  imageData;
 	
-	public ImageDelta(int[] imageData_, int x_, int y_, int width_, int height_) { 
+	public ImageDelta(byte[] imageData_, int x_, int y_, int width_, int height_) { 
 		x = x_;
 		y = y_;
 		width = width_;

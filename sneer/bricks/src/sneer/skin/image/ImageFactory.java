@@ -25,7 +25,7 @@ public interface ImageFactory extends DefaultIcons{
 	BufferedImage getScaledInstance(Image image, int width, int height) throws Hiccup;
 	BufferedImage getScaledInstance(Image image, int width, int height, GraphicsConfiguration gc) throws Hiccup;
 	
-	Image toImage(int width, int height, int[] data);
-	int[] toSerializableData(BufferedImage img) throws Hiccup;
+	Image fromPngData(byte[] data);
+	byte[] toPngData(BufferedImage img) throws Hiccup;
 
 }

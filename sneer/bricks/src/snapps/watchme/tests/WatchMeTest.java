@@ -125,11 +125,14 @@ public class WatchMeTest extends TestThatIsInjected {
 			
 			if (i++ == 40) giveUp(expected, observed);
 			
-			Threads.sleepWithoutInterruptions(10); //Optimize Use wait/notify
+			Threads.sleepWithoutInterruptions(300); //Optimize Use wait/notify
 		}
 	}
 
 	private void giveUp(BufferedImage expected, BufferedImage observed) {
+		if (observed == null)
+			fail("Observed image was null.");
+		
 		showImage("Expected", expected);
 		showImage("Observed", observed);
 		System.err.println("Expected image not received. JFrames opened for comparison. Closing in 30 sec...");

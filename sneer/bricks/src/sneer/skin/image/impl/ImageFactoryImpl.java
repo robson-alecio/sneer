@@ -8,17 +8,19 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.RenderingHints;
-import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
-import java.awt.image.MemoryImageSource;
 import java.awt.image.PixelGrabber;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import sneer.skin.image.ImageFactory;
@@ -152,25 +154,24 @@ class ImageFactoryImpl implements ImageFactory {
 	}
 
     @Override
-	public Image toImage(int width, int height, int[] data) {
-		MemoryImageSource mis = new MemoryImageSource(width, height, data,	0, width);
-		Toolkit tk = Toolkit.getDefaultToolkit();
-		return tk.createImage(mis);
+	public Image fromPngData(byte[] bytes) {
+    	try {
+			return ImageIO.read(new ByteArrayInputStream(bytes));
+		} catch (IOException e) {
+			throw new IllegalStateException();
+		}
 	}
 
     /** @throws Hiccup */
     @Override
-	public int[] toSerializableData(BufferedImage img) throws Hiccup {
-		int width = img.getWidth();
-		int height = img.getHeight();
-		int[] pixels = new int[ width * height ];
-		PixelGrabber pg = new PixelGrabber(img, 0, 0, width, height, pixels, 0, width);
+	public byte[] toPngData(BufferedImage img) throws Hiccup {
+    	ByteArrayOutputStream result = new ByteArrayOutputStream();
 		try {
-			pg.grabPixels();
-		} catch (InterruptedException e) {
+			ImageIO.write(img, "png", result);
+		} catch (IOException e1) {
 			throw new IllegalStateException();
 		}
-		return pixels;
+		return result.toByteArray();
 	}
     
 	private void loadImage(Image image) throws InterruptedException, IllegalArgumentException {

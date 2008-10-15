@@ -23,7 +23,7 @@ import wheel.reactive.impl.EventNotifierImpl;
 
 class WatchMeImpl implements WatchMe {
 
-	private static final int PERIOD_IN_MILLIS = 5000;
+	private static final int PERIOD_IN_MILLIS = 500;
 
 	@Inject
 	static private Screenshotter _shotter;

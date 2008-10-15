@@ -47,7 +47,7 @@ class EncoderStep{
 		BufferedImage img1 = _target.getSubimage(x, y, width, height);
 		if(Images.isSameImage(img0, img1)) return;
 		
-		int[] data = _imageFactory.toSerializableData(img1);
+		byte[] data = _imageFactory.toPngData(img1);
 		_result.add(new ImageDelta(data,x,y, width, height));
 	}
 }

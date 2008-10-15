@@ -32,8 +32,8 @@ public class ImageCodecTest extends TestThatIsInjected {
 	public void encodeSameImage() throws Hiccup {
 		final BufferedImage image1 = new BufferedImage(64, 64, BufferedImage.TYPE_3BYTE_BGR);
 	
-		Iterable<ImageDelta> deltas = _subject.encodeDeltas(image1, copy(image1));
-		assertFalse(deltas.iterator().hasNext());
+		List<ImageDelta> deltas = _subject.encodeDeltas(image1, copy(image1));
+		assertTrue(deltas.isEmpty());
 	}
 
 	@Test
@@ -59,14 +59,13 @@ public class ImageCodecTest extends TestThatIsInjected {
 		final BufferedImage imageA = loadImage(imgAName);
 		final BufferedImage imageB = loadImage(imgBName);
 		
-		int[] imageData =_imageFactory.toSerializableData(imageA);
-		int fullSizeBytes = imageData.length * 4;
+		byte[] imageData =_imageFactory.toPngData(imageA);
 		
 		List<ImageDelta> deltas = _subject.encodeDeltas(imageA, imageB);
 		int deltaSizeBytes = serialize(deltas.toArray()).length;
 		
 		assertTrue(deltas.size()>0);
-		assertTrue(deltaSizeBytes<fullSizeBytes);
+		assertTrue(deltaSizeBytes < imageData.length);
 		
 		for (ImageDelta delta : deltas)
 			_subject.applyDelta(imageA, delta);

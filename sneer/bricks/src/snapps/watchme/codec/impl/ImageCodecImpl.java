@@ -22,7 +22,7 @@ class ImageCodecImpl implements ImageCodec {
 
 	@Override
 	public void applyDelta(BufferedImage image, ImageDelta delta) {
-		Image cell = _imageFactory.toImage(delta.width, delta.height, delta.imageData);
+		Image cell = _imageFactory.fromPngData(delta.imageData);
 		image.getGraphics().drawImage(cell, delta.x, delta.y, null);
 	}
 }

@@ -120,7 +120,7 @@ class ClockImpl implements Clock {
 	public void timebox(int timeoutMillis, final Runnable runnable) {
 		new Timebox(timeoutMillis) {
 			@Override
-			public void run() {
+			public void runInTimebox() {
 				runnable.run();
 			}
 			

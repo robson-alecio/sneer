@@ -12,6 +12,7 @@ public class Images {
 	}
 	
 	static public boolean isSameImage(BufferedImage image1, BufferedImage image2) {
+		int timeThis;
 		if (image1.getWidth() != image2.getWidth()) return false;
 		if (image1.getHeight() != image2.getHeight()) return false;
 		

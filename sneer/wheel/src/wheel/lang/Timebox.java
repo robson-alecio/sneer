@@ -4,30 +4,43 @@ import wheel.lang.exceptions.TimeIsUp;
 
 public abstract class Timebox implements Runnable {
 
-	public Timebox(final int millis) {
-		_worker = Thread.currentThread();
+	private final int _durationInMillis;
 
-		new Daemon("Timebox") { @Override public void run() {
-			sleepFor(millis);
-			timeIsUp();
-		}};
-		
-		run();
-		done();
-	}
-
-	private final Thread _worker;
-	private boolean _isDone = false;
-
-	private synchronized void done() {
-		_isDone = true;
+	public Timebox(int durationInMillis, boolean runNow) {
+		_durationInMillis = durationInMillis;
+		if (runNow) run();
 	}
 	
-	@SuppressWarnings("deprecation")
-	private synchronized void timeIsUp() {
-		if (_isDone) return;
-		_worker.stop(new TimeIsUp());
+	public Timebox(int durationInMillis) {
+		this(durationInMillis, true);
 	}
+	
+	protected abstract void runInTimebox();
+	
+	@Override
+	final public void run() {
+		final Thread worker = Thread.currentThread();
+		final ByRef<Boolean> isDone = ByRef.newInstance();
+		isDone.value = false;
+		
+		new Daemon("Timebox") { @Override public void run() {
+			sleepFor(_durationInMillis);
+			synchronized (isDone) {
+				if (!isDone.value) stopWorker(worker);
+			}
+		}};
+
+		runInTimebox();
+		synchronized (isDone) {
+			isDone.value = true;
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	private void stopWorker(Thread thread) {
+		thread.stop(new TimeIsUp());
+	}
+
 
 	protected void sleepFor(final int millis) {
 		Threads.sleepWithoutInterruptions(millis);

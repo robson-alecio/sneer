@@ -9,6 +9,6 @@ public class ByRef<T> {
 	private ByRef() {
 	}
 	
-	public T value;
+	volatile public T value;
 
 }

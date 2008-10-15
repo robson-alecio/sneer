@@ -31,23 +31,30 @@ final class GuiBrickInvocationHandler<T> implements InvocationHandler {
 	}
 
 	@Override
-	public Object invoke(final Object proxy, final Method method, final Object[] args)
-			throws Throwable {
-		final ByRef<Object> returnValue = ByRef.newInstance();
+	public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
+		final ByRef<Object> result = ByRef.newInstance();
+
 		GuiThread.invokeAndWait(new Runnable() { @Override public void run() {
 			_clock.timebox(TIMEOUT, new Runnable() { @Override public void run() {
 				try {
-					returnValue.value = method.invoke(_component, args);
+					result.value = method.invoke(_component, args);
 				} catch (IllegalArgumentException e) {
-					throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+					throw new IllegalStateException();
 				} catch (IllegalAccessException e) {
-					throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+					throw new IllegalStateException();
 				} catch (InvocationTargetException e) {
-					throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+					result.value = e.getCause();
 				}
 			}});
 		}});
-		return returnValue.value;
+		
+		if (result.value == null)
+			return null;
+		
+		if (result.value instanceof Throwable)
+			throw (Throwable)result.value;
+		
+		return result.value;
 	}
 
 }

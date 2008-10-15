@@ -172,7 +172,7 @@ class ByteConnectionImpl implements ByteConnection {
 			notifyReceiver(mySocket.read());
 			return true;
 		} catch (Exception e) {
-			logShort(e, "Connection with peer closed.");
+			logShort(e, "Error trying to receive packet.");
 			_socketHolder.crash(mySocket);
 			return false;
 		} 

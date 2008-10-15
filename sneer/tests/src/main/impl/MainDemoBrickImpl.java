@@ -88,6 +88,8 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	}
 
 	private void initDynDnsAccount(String ownName, String dynDnsUserName, String dynDnsPassword) {
+		if (dynDnsUserName == null) return;
+		
 		_dynDnsAccountKeeper.accountSetter().consume(
 			new DynDnsAccount(dynDnsHostFor(ownName), dynDnsUserName, dynDnsPassword));
 	}

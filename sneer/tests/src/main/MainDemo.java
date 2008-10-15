@@ -12,7 +12,7 @@ public class MainDemo {
 			tryToRun(args);
 		} catch (Exception e) {
 			System.err.println(e.getClass() + " " + e.getMessage());
-			System.err.println("\nUsage: MainDemo yourOwnName dynDnsUser dnyDnsPassword\n");
+			System.err.println("\nUsage: MainDemo yourOwnName [dynDnsUser dnyDnsPassword]\n");
 			System.exit(1);
 		}
 	}
@@ -34,10 +34,12 @@ public class MainDemo {
 	}
 
 	private static String dynDnsUser(String[] args) {
+		if (args.length < 2) return null;
 		return args[1];
 	}
 
 	private static String dynDnsPassword(String[] args) {
+		if (args.length < 2) return null;
 		return args[2];
 	}
 	

@@ -1,15 +1,22 @@
 package sneer.kernel.container.tests;
 
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import javax.swing.SwingUtilities;
 
+import static org.hamcrest.Matchers.instanceOf;
 import org.junit.Test;
 
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.tests.impl.SomeGuiBrickImpl;
+import sneer.pulp.clock.Clock;
 import wheel.lang.ByRef;
+import wheel.lang.Daemon;
+import wheel.lang.Threads;
+import wheel.lang.exceptions.TimeIsUp;
 
 public class GuiBrickTest {
 	
@@ -27,6 +34,34 @@ public class GuiBrickTest {
 		assertSame(swingThread(), brick.guiBrickThread());
 	}
 	
+	@Test
+	public void testGuiBrickRunsInsideTimebox() throws Exception {
+		final Container container = ContainerUtils.newContainer();
+		final SomeGuiBrick brick = container.produce(SomeGuiBrick.class);
+		final Clock clock = container.produce(Clock.class);
+		advanceClockInSeparateThread(clock);
+		try {
+			brick.slowMethod();
+		} catch (Exception e) {
+			assertThat(rootCause(e), instanceOf(TimeIsUp.class));
+			return;
+		}
+		fail("timebox should have stopped the method");
+	}
+
+	private void advanceClockInSeparateThread(final Clock clock) {
+		new Daemon("Timebox") { @Override public void run() {
+			Threads.sleepWithoutInterruptions(500);
+			clock.advanceTime(5000);
+		}};
+	}
+	
+	private Throwable rootCause(Throwable e) {
+		if (e.getCause() != null)
+			return rootCause(e.getCause());
+		return e;
+	}
+
 	@Test
 	public void testNonGuiBrickRunsInCurrentThread() throws Exception {
 		final SomeVanillaBrick brick = ContainerUtils.newContainer().produce(SomeVanillaBrick.class);

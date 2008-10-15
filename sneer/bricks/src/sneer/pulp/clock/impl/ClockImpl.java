@@ -5,6 +5,7 @@ import java.util.TreeSet;
 
 import sneer.pulp.clock.Clock;
 import wheel.lang.Threads;
+import wheel.lang.Timebox;
 
 class ClockImpl implements Clock {
 	
@@ -113,6 +114,21 @@ class ClockImpl implements Clock {
 		public String toString() {
 			return "Alarm: " + _wakeUpTime;
 		}
+	}
+
+	@Override
+	public void timebox(int timeoutMillis, final Runnable runnable) {
+		new Timebox(timeoutMillis) {
+			@Override
+			public void run() {
+				runnable.run();
+			}
+			
+			@Override
+			protected void sleepFor(int millis) {
+				sleepAtLeast(millis);
+			}
+		};
 	}
 
 }

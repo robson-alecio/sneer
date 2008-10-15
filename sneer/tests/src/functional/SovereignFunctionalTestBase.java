@@ -5,7 +5,7 @@ import org.junit.Before;
 
 import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.tests.TestThatIsInjected;
-import wheel.testutil.Timebox;
+import wheel.lang.Timebox;
 
 public abstract class SovereignFunctionalTestBase extends TestThatIsInjected {
 
@@ -15,7 +15,6 @@ public abstract class SovereignFunctionalTestBase extends TestThatIsInjected {
 	
 	protected SovereignParty _a;
 	protected SovereignParty _b;
-
 	
 	@Before
 	public void beforeSovereignTest() {

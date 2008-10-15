@@ -4,7 +4,7 @@ package sneer.pulp.clock;
 public interface Clock {
 	
 	long time();
-
+	
 	void sleepAtLeast(int millis);
 
 	void wakeUpNoEarlierThan(long timeToWakeUp, Runnable runnable);
@@ -13,5 +13,7 @@ public interface Clock {
 
 	void advanceTime(int deltaMillis);
 	void advanceTimeTo(long absoluteTimeMillis);
+
+	void timebox(int timeoutMillis, Runnable runnable);
 
 }

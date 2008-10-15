@@ -9,4 +9,9 @@ public class SomeGuiBrickImpl implements SomeGuiBrick {
 		return Thread.currentThread();
 	}
 
+	@Override
+	public void slowMethod() throws InterruptedException {
+		Thread.sleep(1000);
+	}
+
 }

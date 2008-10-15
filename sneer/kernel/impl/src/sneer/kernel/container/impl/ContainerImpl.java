@@ -2,10 +2,6 @@ package sneer.kernel.container.impl;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 
 import sneer.kernel.container.Brick;
 import sneer.kernel.container.ClassLoaderFactory;
@@ -14,12 +10,11 @@ import sneer.kernel.container.ContainerException;
 import sneer.kernel.container.Injector;
 import sneer.kernel.container.SneerConfig;
 import sneer.kernel.container.impl.classloader.EclipseClassLoaderFactory;
+import sneer.pulp.clock.Clock;
 import sneer.pulp.config.persistence.PersistenceConfig;
 import sneer.pulp.tuples.Tuple;
 import sneer.skin.GuiBrick;
 import wheel.io.Logger;
-import wheel.io.ui.GuiThread;
-import wheel.lang.ByRef;
 import wheel.lang.Types;
 
 public class ContainerImpl implements Container {
@@ -35,8 +30,7 @@ public class ContainerImpl implements Container {
 	private ClassLoader _apiClassLoader;
 
 	public ContainerImpl(Object... bindings) {
-		for (Object implementation : bindings)
-			_binder.bind(decorate(implementation));
+		bindNonGuiBricks(bindings);
 		
 		_binder.bind(this);
 		_binder.bind(_injector);
@@ -44,7 +38,23 @@ public class ContainerImpl implements Container {
 		_sneerConfig = produceSneerConfig();
 		produce(PersistenceConfig.class).setPersistenceDirectory(_sneerConfig.sneerDirectory());
 		
+		bindGuiBricks(bindings);
+		
 		_injector.inject(Tuple.class); //Refactor this looks wierd here.
+	}
+
+	private void bindNonGuiBricks(Object... bindings) {
+		for (Object implementation : bindings) {
+			if (implementation instanceof GuiBrick)
+				continue;
+			_binder.bind(implementation);
+		}
+	}
+	
+	private void bindGuiBricks(Object... bindings) {
+		for (Object implementation : bindings)
+			if (implementation instanceof GuiBrick)
+				_binder.bind(decorate(implementation));
 	}
 
 	@Override
@@ -66,33 +76,15 @@ public class ContainerImpl implements Container {
 	}
 	
 	private <T> T decorate(final T component) {
-		if (component instanceof GuiBrick) {
-			final Class<? extends Object> componentClass = component.getClass();
-			return (T) Proxy.newProxyInstance(componentClass.getClassLoader(), componentClass.getInterfaces(), new InvocationHandler() {
-
-				@Override
-				public Object invoke(final Object proxy, final Method method, final Object[] args)
-						throws Throwable {
-					final ByRef<Object> returnValue = ByRef.newInstance();
-					GuiThread.invokeAndWait(new Runnable() { @Override public void run() {
-						try {
-							returnValue.value = method.invoke(component, args);
-						} catch (IllegalArgumentException e) {
-							throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
-						} catch (IllegalAccessException e) {
-							throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
-						} catch (InvocationTargetException e) {
-							throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
-						}
-					}});
-					return returnValue.value;
-				}
-				
-			});
-		}
+		if (component instanceof GuiBrick)
+			return GuiBrickInvocationHandler.decorate(clock(), component);
 		return component;
 	}
-	
+
+	private Clock clock() {
+		return produce(Clock.class);
+	}
+
 	private <T> T instantiate(Class<T> intrface) throws ContainerException {
 		T component;
 		try {

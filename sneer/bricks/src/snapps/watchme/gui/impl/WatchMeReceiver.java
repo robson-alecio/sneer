@@ -15,6 +15,8 @@ import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
+import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
+import sneer.skin.widgets.reactive.WindowWidget;
 import wheel.io.ui.GuiThread;
 import wheel.lang.Omnivore;
 import wheel.reactive.EventSource;
@@ -28,6 +30,9 @@ public class WatchMeReceiver{
 	@Inject
 	private static KeyManager _keyManager;
 	
+	@Inject
+	private static ReactiveWidgetFactory _factory;
+	
 	@SuppressWarnings("unused")
 	private Omnivore<Image> _imageReceiverToAvoidGc;
 	
@@ -37,7 +42,7 @@ public class WatchMeReceiver{
 	private Receiver<Contact> _keyChangeReceiverToAvoidGc;
 
 	private final Contact _contact;
-	private JFrame _window;
+	private WindowWidget<JFrame> _windowWidget;
 	
 	public WatchMeReceiver(Contact contact) {
 		_contact = contact;
@@ -46,11 +51,11 @@ public class WatchMeReceiver{
 
 	private void initGui() {
 		GuiThread.invokeAndWait(new Runnable(){	@Override public void run() {
-			String nick = _contact.nickname().currentValue();
-			System.out.println("Watchin '" + nick + "'");
-			_window = new JFrame(nick);
-			_window.setBounds(0,0,1024,768);
-			Container contentPane = _window.getContentPane();
+			System.out.println("Watchin '" + _contact.nickname().currentValue() + "'");
+			_windowWidget = _factory.newFrame(_contact.nickname());
+			JFrame frm = _windowWidget.getMainWidget();
+			frm.setBounds(0,0,1024,768);
+			Container contentPane = frm.getContentPane();
 			contentPane.setLayout(new BorderLayout());
 			contentPane.add(_imageLabel, BorderLayout.CENTER);
 			initWindowListener();
@@ -58,7 +63,7 @@ public class WatchMeReceiver{
 	}
 
 	private void initWindowListener() {
-		_window.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		_windowWidget.getMainWidget().setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 	}
 
 	private void createReceiver(final Contact contact) {
@@ -77,8 +82,11 @@ public class WatchMeReceiver{
 	private void startWindowPaint(PublicKey key) {
 		final EventSource<BufferedImage> screens = _watchMe.screenStreamFor(key);
 		_imageReceiverToAvoidGc = new Receiver<Image>(screens){ @Override public void consume(Image img) {
-			if(_window==null) initGui();
-			if (!_window.isVisible()) _window.setVisible(true);
+			if(_windowWidget==null) initGui();
+			
+			JFrame frm = _windowWidget.getMainWidget();
+			if (!frm.isVisible()) frm.setVisible(true);
+			
 			ImageIcon icon = new ImageIcon(img);
 			_imageLabel.setIcon(icon);
 			_imageLabel.repaint();
@@ -86,8 +94,9 @@ public class WatchMeReceiver{
 	}
 	
 	void dispose(){
-		if(_window==null) 
-			_window.dispose();
-		_window = null;
+		JFrame frm = _windowWidget.getMainWidget();
+		if(frm==null) 
+			frm.dispose();
+		_windowWidget = null;
 	}
 }

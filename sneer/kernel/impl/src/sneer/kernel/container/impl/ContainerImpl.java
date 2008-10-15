@@ -2,6 +2,10 @@ package sneer.kernel.container.impl;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 import sneer.kernel.container.Brick;
 import sneer.kernel.container.ClassLoaderFactory;
@@ -12,7 +16,10 @@ import sneer.kernel.container.SneerConfig;
 import sneer.kernel.container.impl.classloader.EclipseClassLoaderFactory;
 import sneer.pulp.config.persistence.PersistenceConfig;
 import sneer.pulp.tuples.Tuple;
+import sneer.skin.GuiBrick;
 import wheel.io.Logger;
+import wheel.io.ui.GuiThread;
+import wheel.lang.ByRef;
 import wheel.lang.Types;
 
 public class ContainerImpl implements Container {
@@ -29,7 +36,7 @@ public class ContainerImpl implements Container {
 
 	public ContainerImpl(Object... bindings) {
 		for (Object implementation : bindings)
-			_binder.bind(implementation);
+			_binder.bind(decorate(implementation));
 		
 		_binder.bind(this);
 		_binder.bind(_injector);
@@ -52,10 +59,38 @@ public class ContainerImpl implements Container {
 	public <T> T produce(Class<T> type) {
 		T result = (T)_binder.implementationFor(type);
 		if (result == null) {
-			result = instantiate(type);
+			result = decorate(instantiate(type));
 			_binder.bind(result);
 		}
 		return result;
+	}
+	
+	private <T> T decorate(final T component) {
+		if (component instanceof GuiBrick) {
+			final Class<? extends Object> componentClass = component.getClass();
+			return (T) Proxy.newProxyInstance(componentClass.getClassLoader(), componentClass.getInterfaces(), new InvocationHandler() {
+
+				@Override
+				public Object invoke(final Object proxy, final Method method, final Object[] args)
+						throws Throwable {
+					final ByRef<Object> returnValue = ByRef.newInstance();
+					GuiThread.invokeAndWait(new Runnable() { @Override public void run() {
+						try {
+							returnValue.value = method.invoke(component, args);
+						} catch (IllegalArgumentException e) {
+							throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+						} catch (IllegalAccessException e) {
+							throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+						} catch (InvocationTargetException e) {
+							throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+						}
+					}});
+					return returnValue.value;
+				}
+				
+			});
+		}
+		return component;
 	}
 	
 	private <T> T instantiate(Class<T> intrface) throws ContainerException {

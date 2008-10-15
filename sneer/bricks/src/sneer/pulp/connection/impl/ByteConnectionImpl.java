@@ -1,6 +1,7 @@
 package sneer.pulp.connection.impl;
 
 import static wheel.io.Logger.log;
+import static wheel.io.Logger.logShort;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -139,16 +140,13 @@ class ByteConnectionImpl implements ByteConnection {
 	private void startReceiving() {
 		_threadPool.registerActor(new Runnable() { @Override public void run() {
 			while (true) {
-				byte[] packet = tryToReceive();
-				if (packet == null)
+				if (!tryToReceiveFrom())
 					Threads.sleepWithoutInterruptions(10); //Optimize Use wait/notify
-				else
-					notifyReceiver(packet);
 			}
 		}});
 	}
 
-	private void notifyReceiver(byte[] packet) {
+	private void notifyReceiver(byte[] packet) throws Exception { //Refactor This Exception will go away once all legacy transmission is moved to the new protocol.
 		byte[] payload = new byte[packet.length - 1];
 		byte protocolByte = packet[0];
 		
@@ -164,21 +162,21 @@ class ByteConnectionImpl implements ByteConnection {
 			return;
 		}
 		
-		throw new IllegalStateException("Illegal protocol byte: " + protocolByte);
+		throw new Exception("Illegal protocol byte: " + protocolByte);
 	}
 
-	private byte[] tryToReceive() {
+	private boolean tryToReceiveFrom() {
 		ByteArraySocket mySocket = _socketHolder.socket();
-		if (mySocket ==  null) return null;
-		
-		try {
-			return mySocket.read();
-		} catch (IOException e) {
-			log("Connection with peer closed: {} {}", e.getClass().getName(), e.getMessage());
-			_socketHolder.crash(mySocket);
-			return null;
-		} 
+		if (mySocket ==  null) return false;
 
+		try {
+			notifyReceiver(mySocket.read());
+			return true;
+		} catch (Exception e) {
+			logShort(e, "Connection with peer closed.");
+			_socketHolder.crash(mySocket);
+			return false;
+		} 
 	}
 
 	@Override

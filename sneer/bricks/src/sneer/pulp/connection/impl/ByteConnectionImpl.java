@@ -4,6 +4,8 @@ import static wheel.io.Logger.logShort;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import sneer.kernel.container.Inject;
 import sneer.pulp.connection.ByteConnection;
@@ -38,10 +40,13 @@ class ByteConnectionImpl implements ByteConnection {
 	
 	private volatile Omnivore<byte[]> _legacyReceiver;
 	private volatile Omnivore<byte[]> _receiver;
-	
+
+	private final BlockingQueue<byte[]> _payloadsToSend = new LinkedBlockingQueue<byte[]>();
+
 	ByteConnectionImpl(String label, Contact contact) {
 		_label = label;
 		_contact = contact;
+		startSending();
 		startReceiving();
 	}
 
@@ -136,6 +141,27 @@ class ByteConnectionImpl implements ByteConnection {
 		_receiver = receiver;
 	}
 	
+	private void startSending() {
+		_threadPool.registerActor(new Runnable() { @Override public void run() {
+			while (true) {
+				byte[] packet = flagWithProtocol(waitForNextPayload(), NEW_PROTOCOL);
+				if (!tryToSend(packet)) {
+					_payloadsToSend.clear();
+					Threads.sleepWithoutInterruptions(10); //Optimize Use wait/notify.
+				}
+			}
+		}});
+
+	}
+
+	private byte[] waitForNextPayload() {
+		try {
+			return _payloadsToSend.take();
+		} catch (InterruptedException e) {
+			throw new IllegalStateException();
+		}
+	}
+
 	private void startReceiving() {
 		_threadPool.registerActor(new Runnable() { @Override public void run() {
 			while (true) {
@@ -180,9 +206,7 @@ class ByteConnectionImpl implements ByteConnection {
 
 	@Override
 	public void send(byte[] payload) {
-		byte[] packet = flagWithProtocol(payload, NEW_PROTOCOL);
-		while (!tryToSend(packet))
-			Threads.sleepWithoutInterruptions(10); //Optimize Use wait/notify.
+		_payloadsToSend.add(payload);
 	}
 
 }

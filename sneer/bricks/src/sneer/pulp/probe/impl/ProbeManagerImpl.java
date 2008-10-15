@@ -33,7 +33,6 @@ public class ProbeManagerImpl implements ProbeManager, Omnivore<Tuple> {
 	private static Serializer _serializer = new XStreamBinarySerializer();
 	private static final ClassLoader CLASSLOADER_FOR_TUPLES = TupleSpace.class.getClassLoader();
 
-	
 	{
 		registerContactReceiver();
 		_tuples.addSubscription(Tuple.class, this);

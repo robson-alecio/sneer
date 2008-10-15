@@ -75,7 +75,6 @@ public class WatchMeReceiver{
 	}
 
 	private void startWindowPaint(PublicKey key) {
-		initGui();
 		final EventSource<BufferedImage> screens = _watchMe.screenStreamFor(key);
 		_imageReceiverToAvoidGc = new Receiver<Image>(screens){ @Override public void consume(Image img) {
 			if(_window==null) initGui();

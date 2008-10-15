@@ -7,15 +7,10 @@ import snapps.watchme.gui.RemoteWatchMeWindows;
 import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
-import sneer.pulp.keymanager.KeyManager;
-import sneer.pulp.keymanager.PublicKey;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
 public class RemoteWatchMeWindowsImpl implements RemoteWatchMeWindows{
 
-	@Inject
-	private static KeyManager _keyManager;
-	
 	@Inject
 	static private ContactManager _contactManager;
 	

@@ -133,9 +133,9 @@ public class WatchMeTest extends TestThatIsInjected {
 		if (observed == null)
 			fail("Observed image was null.");
 		
+		System.err.println("Expected image not received. Opening for comparison. Closing in 30 sec...");
 		showImage("Expected", expected);
 		showImage("Observed", observed);
-		System.err.println("Expected image not received. JFrames opened for comparison. Closing in 30 sec...");
 		Threads.sleepWithoutInterruptions(30000);
 		fail();
 	}

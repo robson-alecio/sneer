@@ -24,7 +24,7 @@ public class Logger {
 	}
 
 	public static void logShort(Exception e, String message, String... insets) {
-		log(inline(message, (Object[])insets) + e.getClass().getSimpleName() + " " + e.getMessage());
+		log(inline(message, (Object[])insets) + " " + e.getClass().getSimpleName() + " " + e.getMessage());
 	}
 	
 	/** See log(String, Object...) for examples.*/

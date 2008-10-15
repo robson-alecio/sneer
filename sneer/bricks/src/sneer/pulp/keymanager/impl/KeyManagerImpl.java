@@ -12,6 +12,9 @@ import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.mesh.Party;
 import sneer.pulp.own.name.OwnNameKeeper;
 import wheel.lang.Functor;
+import wheel.reactive.EventNotifier;
+import wheel.reactive.EventSource;
+import wheel.reactive.impl.EventNotifierImpl;
 
 class KeyManagerImpl implements KeyManager {
 
@@ -20,6 +23,8 @@ class KeyManagerImpl implements KeyManager {
 	private final Map<Contact, PublicKey> _keyByContact = new HashMap<Contact, PublicKey>();
 
 	private final Map<PublicKey, Party> _partiesByPublicKey = new HashMap<PublicKey, Party>();
+
+	private EventNotifier<Contact> _keyChanges = new EventNotifierImpl<Contact>();
 
 	@Inject
 	private static OwnNameKeeper _ownName;
@@ -80,6 +85,7 @@ class KeyManagerImpl implements KeyManager {
 	public synchronized void addKey(Contact contact, PublicKey publicKey) {
 		if(keyGiven(contact) != null) throw new IllegalArgumentException("There already was a public key registered for contact: " + contact.nickname().currentValue());
 		_keyByContact.put(contact, publicKey);
+		_keyChanges.notifyReceivers(contact);
 	}
 
 
@@ -102,5 +108,10 @@ class KeyManagerImpl implements KeyManager {
 	public PublicKey generateMickeyMouseKey(String string) {
 		Sneer1024 sneer1024 = _crypto.digest(string.getBytes());
 		return new PublicKeyImpl(sneer1024);
+	}
+
+	@Override
+	public EventSource<Contact> keyChanges() {
+		return _keyChanges .output();
 	}
 }

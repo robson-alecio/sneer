@@ -12,29 +12,32 @@ import javax.swing.WindowConstants;
 
 import snapps.watchme.WatchMe;
 import sneer.kernel.container.Inject;
+import sneer.pulp.contacts.Contact;
+import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
-import sneer.skin.widgets.reactive.ImageWidget;
-import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.io.ui.GuiThread;
 import wheel.lang.Omnivore;
 import wheel.reactive.EventSource;
-import wheel.reactive.Register;
 import wheel.reactive.impl.Receiver;
-import wheel.reactive.impl.RegisterImpl;
 
-public class WatchMeWindow extends JFrame {
+public class WatchMeReceiver extends JFrame {
 	
 	@Inject
 	private static WatchMe _watchMe;
 	
+	@Inject
+	private static KeyManager _keyManager;
+	
 	@SuppressWarnings("unused")
-	private Omnivore<Image> _receiverToAvoidGc;
+	private Omnivore<Image> _imageReceiverToAvoidGc;
 	
 	private JLabel _imageLabel = new JLabel();
 
-	public WatchMeWindow(PublicKey key) {
-		createReceiver(key);
-		initGui();
+	@SuppressWarnings("unused")
+	private Receiver<Contact> _keyChangeReceiverToAvoidGc;
+
+	public WatchMeReceiver(Contact contact) {
+		createReceiver(contact);
 	}
 
 	private void initGui() {
@@ -52,11 +55,24 @@ public class WatchMeWindow extends JFrame {
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 	}
 
-	private void createReceiver(PublicKey key) {
+	private void createReceiver(final Contact contact) {
+		PublicKey key = _keyManager.keyGiven(contact);
+		if(key==null){
+			_keyChangeReceiverToAvoidGc = new Receiver<Contact>(_keyManager.keyChanges()){@Override public void consume(Contact value) {
+				if(contact!=value) return;
+				startWindowPaint(_keyManager.keyGiven(contact));
+				_keyChangeReceiverToAvoidGc = null;
+			}};
+			return;
+		}
+		startWindowPaint(key);
+	}
+
+	private void startWindowPaint(PublicKey key) {
+		initGui();
 		final EventSource<BufferedImage> screens = _watchMe.screenStreamFor(key);
-	
-		_receiverToAvoidGc = new Receiver<Image>(screens){ @Override public void consume(Image img) {
-			if (!isVisible() && isEnabled()) setVisible(true);
+		_imageReceiverToAvoidGc = new Receiver<Image>(screens){ @Override public void consume(Image img) {
+			if (!isVisible()) setVisible(true);
 			ImageIcon icon = new ImageIcon(img);
 			_imageLabel.setIcon(icon);
 			_imageLabel.repaint();

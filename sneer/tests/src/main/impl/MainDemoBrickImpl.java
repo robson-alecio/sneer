@@ -4,7 +4,7 @@ import main.MainDemoBrick;
 import snapps.blinkinglights.gui.BlinkingLightsGui;
 import snapps.contacts.gui.ContactsGui;
 import snapps.share.gui.ShareGui;
-import snapps.watchme.gui.WatchMeWindowManager;
+import snapps.watchme.gui.RemoteWatchMeWindows;
 import snapps.wind.gui.WindGui;
 import sneer.kernel.container.Inject;
 import sneer.pulp.clockticker.ClockTicker;
@@ -41,7 +41,7 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	private static ShareGui _gui5;
 
 	@Inject	@SuppressWarnings("unused")
-	private static WatchMeWindowManager _gui6;
+	private static RemoteWatchMeWindows _gui6;
 
 	@Inject	@SuppressWarnings("unused")
 	private static SocketOriginator _networkDaemon1;

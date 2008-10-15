@@ -23,6 +23,8 @@ import wheel.reactive.impl.EventNotifierImpl;
 
 class WatchMeImpl implements WatchMe {
 
+	private static final int PERIOD_IN_MILLIS = 5000;
+
 	@Inject
 	static private Screenshotter _shotter;
 	@Inject
@@ -43,13 +45,17 @@ class WatchMeImpl implements WatchMe {
 
 	@Override
 	public EventSource<BufferedImage> screenStreamFor(final PublicKey publisher) {
+		if(publisher==null) {
+			throw new IllegalArgumentException("The publisher argument can't be null.");
+		}
+		
 		final EventNotifierImpl<BufferedImage> result = new EventNotifierImpl<BufferedImage>();
 		final BufferedImage screen = generateBlankImage(1024, 768);
 		
 		_tupleSpace.addSubscription(ImageDelta.class, new Omnivore<ImageDelta>(){@Override public void consume(ImageDelta delta) {
 			if (delta.publisher != publisher) {
-				System.out.println(delta.publisher);
-				System.out.println(publisher);
+				System.out.println("1."+delta.publisher);
+				System.out.println("2."+publisher);
 				return;
 			}
 			_codec.applyDelta(screen, delta);
@@ -65,7 +71,7 @@ class WatchMeImpl implements WatchMe {
 		_pool.registerActor(new Runnable(){ @Override public void run() {
 			while (_isRunning) {
 				doPublishShot();
-				_clock.sleepAtLeast(500);
+				_clock.sleepAtLeast(PERIOD_IN_MILLIS);
 			}
 			_previous = null;
 		}});

@@ -23,6 +23,10 @@ public class Logger {
 		flush();
 	}
 
+	public static void logShort(Exception e, String message, String... insets) {
+		log(inline(message, (Object[])insets) + e.getClass().getSimpleName() + " " + e.getMessage());
+	}
+	
 	/** See log(String, Object...) for examples.*/
 	static public void log(Throwable throwable, String message, Object... messageInsets) {
 		try {

@@ -53,11 +53,9 @@ class WatchMeImpl implements WatchMe {
 		final BufferedImage screen = generateBlankImage(1024, 768);
 		
 		_tupleSpace.addSubscription(ImageDelta.class, new Omnivore<ImageDelta>(){@Override public void consume(ImageDelta delta) {
-			if (!delta.publisher.equals(publisher)) {
-				System.out.println("1."+delta.publisher);
-				System.out.println("2."+publisher);
+			if (!delta.publisher.equals(publisher))
 				return;
-			}
+			
 			_codec.applyDelta(screen, delta);
 			result.notifyReceivers(screen);
 		}});

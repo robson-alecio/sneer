@@ -15,6 +15,8 @@ import wheel.lang.ByRef;
 
 final class GuiBrickInvocationHandler<T> implements InvocationHandler {
 
+	private static final int TIMEOUT = 5000;
+
 	public static <T> T decorate(final Clock clock, final T component) {
 		final Class<? extends Object> componentClass = component.getClass();
 		return (T) Proxy.newProxyInstance(componentClass.getClassLoader(), componentClass.getInterfaces(), new GuiBrickInvocationHandler<T>(clock, component));
@@ -33,7 +35,7 @@ final class GuiBrickInvocationHandler<T> implements InvocationHandler {
 			throws Throwable {
 		final ByRef<Object> returnValue = ByRef.newInstance();
 		GuiThread.invokeAndWait(new Runnable() { @Override public void run() {
-			_clock.timebox(5000, new Runnable() { @Override public void run() {
+			_clock.timebox(TIMEOUT, new Runnable() { @Override public void run() {
 				try {
 					returnValue.value = method.invoke(_component, args);
 				} catch (IllegalArgumentException e) {

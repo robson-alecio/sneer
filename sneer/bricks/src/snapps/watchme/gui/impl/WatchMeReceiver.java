@@ -22,7 +22,7 @@ import wheel.lang.Omnivore;
 import wheel.reactive.EventSource;
 import wheel.reactive.impl.Receiver;
 
-public class WatchMeReceiver{
+class WatchMeReceiver{
 	
 	@Inject
 	private static WatchMe _watchMe;
@@ -36,15 +36,15 @@ public class WatchMeReceiver{
 	@SuppressWarnings("unused")
 	private Omnivore<Image> _imageReceiverToAvoidGc;
 	
-	private JLabel _imageLabel = new JLabel();
 
 	@SuppressWarnings("unused")
 	private Receiver<Contact> _keyChangeReceiverToAvoidGc;
 
 	private final Contact _contact;
 	private WindowWidget<JFrame> _windowWidget;
+	private JLabel _imageLabel = new JLabel();
 	
-	public WatchMeReceiver(Contact contact) {
+	WatchMeReceiver(Contact contact) {
 		_contact = contact;
 		createReceiver(contact);
 	}

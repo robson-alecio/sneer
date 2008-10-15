@@ -9,12 +9,15 @@ import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
-public class RemoteWatchMeWindowsImpl implements RemoteWatchMeWindows{
+class RemoteWatchMeWindowsImpl implements RemoteWatchMeWindows{
+
+	Map<Contact, WatchMeReceiver> _remoteReceivers = new HashMap<Contact, WatchMeReceiver>();
 
 	@Inject
 	static private ContactManager _contactManager;
-	
-	Map<Contact, WatchMeReceiver> _remoteReceivers = new HashMap<Contact, WatchMeReceiver>();
+
+	@SuppressWarnings("unused")
+	private WatchMeReceiver _ownReceiverToAvoidGc;
 
 	@SuppressWarnings("unused")
 	private SimpleListReceiver<Contact> _contactReceiverToAvoidGc = new SimpleListReceiver<Contact>(_contactManager.contacts()){
@@ -34,9 +37,6 @@ public class RemoteWatchMeWindowsImpl implements RemoteWatchMeWindows{
 			stopReceivingScreensFrom(contact);
 		}
 	};
-
-	@SuppressWarnings("unused")
-	private WatchMeReceiver _ownReceiverToAvoidGc;
 	
 	public void startReceivingScreensFrom(Contact contact) {
 		WatchMeReceiver receiver = new WatchMeReceiver(contact);

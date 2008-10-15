@@ -2,6 +2,7 @@ package sneer.skin.widgets.reactive;
 
 import java.awt.Image;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
@@ -28,7 +29,7 @@ public interface ReactiveWidgetFactory {
 	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> labelProvider);
 	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> labelProvider,	ListCellRenderer cellRenderer);
 	
-	WindowWidget newFrame(Signal<String> source);
-	WindowWidget newFrame(Signal<String> source, Omnivore<String> setter);
+	WindowWidget<JFrame> newFrame(Signal<String> source);
+	WindowWidget<JFrame> newFrame(Signal<String> source, Omnivore<String> setter);
 
 }

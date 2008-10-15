@@ -2,6 +2,7 @@ package sneer.skin.widgets.reactive.impl;
 
 import java.awt.Image;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
@@ -81,13 +82,13 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 	}
 	
 	@Override
-	public WindowWidget newFrame(Signal<String> source) {
+	public WindowWidget<JFrame> newFrame(Signal<String> source) {
 		GuiThread.assertInGuiThread();
 		return new RFrameImpl(source);
 	}
 
 	@Override
-	public WindowWidget newFrame(Signal<String> source, Omnivore<String> setter) {
+	public WindowWidget<JFrame> newFrame(Signal<String> source, Omnivore<String> setter) {
 		GuiThread.assertInGuiThread();
 		return new RFrameImpl(source, setter);
 	}

@@ -9,7 +9,7 @@ import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.impl.RegisterImpl;
 
-class RFrameImpl extends JFrame implements WindowWidget{
+class RFrameImpl extends JFrame implements WindowWidget<JFrame>{
 
 	protected final Register<String> _titleRegister;
 	protected final Omnivore<String> _titleSetter;

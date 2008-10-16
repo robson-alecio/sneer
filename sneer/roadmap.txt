@@ -2,9 +2,6 @@
 ===================
 
 	- WatchMe - Screen Viewing à la VNC
-		- GUI
-			- Listen to WatchMe.screenStreamFor() for ALL contacts. Open one 1024x768 Window for each contact for the screens received by that contact, the moment the first screen is received from that contact. The window has no title bar and can be closed normally with Alt-F4.
-			- Obs: For now, it is only working on 1024x768 resolution.
 		- Solve the OutOfMem that will happen because Tuples are never GC'd :)
 	---- WE DROP VNC
 
@@ -13,7 +10,12 @@
 		- Ctrl-C and Ctrl-V in wind list.
 	- Voice Calls
 		- Mic brick started. Refer to LoopbackTest spike.
-	---- WE DROP SKYPE :)
+		- Choose which contact I want to hear
+			"Same Room" - It would be pretty cool to be able to hear other contacts in a lower volume, simulating a "same room" work environment :D
+		---- WE DROP SKYPE :)
+	
+	- Flooding- Solve tuple flooding on the network.
+	
 	---------------------------------- LAST DOGFOOD RELEASE - Now we start cleaning up until we reach "No Broken Windows" status.
 
 	- Brick Publish (Supposedly working already)

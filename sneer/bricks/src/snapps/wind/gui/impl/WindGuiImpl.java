@@ -23,7 +23,6 @@ import snapps.wind.Wind;
 import snapps.wind.gui.WindGui;
 import sneer.kernel.container.Inject;
 import sneer.pulp.keymanager.KeyManager;
-import sneer.skin.image.ImageFactory;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
@@ -32,6 +31,8 @@ import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.ui.graphics.Images;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Constant;
+import wheel.reactive.impl.Receiver;
+import wheel.reactive.lists.ListValueChange;
 
 class WindGuiImpl implements WindGui {
 	
@@ -47,11 +48,10 @@ class WindGuiImpl implements WindGui {
 	@Inject
 	static private KeyManager _keyManager;
 	
-	@Inject
-	static private ImageFactory _imageFactory;
-
 	private final static Signal<Image> _meImage;
 	private final static Signal<Image> _otherImage;
+	private final static Image LOCK_ICON;
+	private final static Image UNLOCK_ICON;
 	
 	private ListWidget<Shout> _shoutsList;
 	private TextWidget<JTextField> _myShout;
@@ -60,9 +60,13 @@ class WindGuiImpl implements WindGui {
 
 	private JToggleButton _lock;
 
+	private Receiver<ListValueChange> _shoutReceiverToAvoidGc;
+
 	static {
 		_meImage = new Constant<Image>(loadImage("me.png"));
 		_otherImage = new Constant<Image>(loadImage("other.png"));
+		LOCK_ICON = loadImage("lock.png");
+		UNLOCK_ICON = loadImage("unlock.png");
 	}
 	
 	public WindGuiImpl() {
@@ -87,6 +91,7 @@ class WindGuiImpl implements WindGui {
 		_myShout = _rfactory.newTextField(new Constant<String>(""), _wind.megaphone(), true);
 		_container.setBackground(_shoutsList.getComponent().getBackground());
 		iniGui();
+		initShoutListener();
 	}
 
 	private void iniGui() {
@@ -111,24 +116,30 @@ class WindGuiImpl implements WindGui {
 		_shoutsList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
 	}
 
+	private void initShoutListener() {
+		_shoutReceiverToAvoidGc = new Receiver<ListValueChange>(){ @Override public void consume(ListValueChange value) {
+			shoutAlert();
+		}};
+		_wind.shoutsHeard().addListReceiver(_shoutReceiverToAvoidGc);
+	}
+	
+	private void shoutAlert() {
+		_myShout.getMainWidget().requestFocusInWindow();
+		_myShout.getMainWidget().requestFocus();
+	}	
+	
 	private void initAutoScroll() {
 		_lock = new JToggleButton();
 		_lock.setPreferredSize(new Dimension(20,20));
 		_lock.setBorder(new EmptyBorder(0,0,0,0));
+		
 		_lock.getModel().addChangeListener(new ChangeListener(){
-			
-			private final ImageIcon LOCK_ICON = _imageFactory.getIcon(WindGuiImpl.class, "lock.png");
-			private final ImageIcon UNLOCK_ICON = _imageFactory.getIcon(WindGuiImpl.class, "unlock.png");
-			{
-				_lock.setIcon(UNLOCK_ICON);
-			}
-			
-			@Override
-			public void stateChanged(ChangeEvent e) {
+			{ _lock.setIcon(new ImageIcon(UNLOCK_ICON)); }
+			@Override public void stateChanged(ChangeEvent e) {
 				if(_lock.isSelected())
-					_lock.setIcon(LOCK_ICON);
+					_lock.setIcon(new ImageIcon(LOCK_ICON));
 				else
-					_lock.setIcon(UNLOCK_ICON);
+					_lock.setIcon(new ImageIcon(UNLOCK_ICON));
 			}});
 	}
 

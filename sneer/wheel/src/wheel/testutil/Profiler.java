@@ -65,7 +65,6 @@ public class Profiler {
 		if (_totalTimeOutside == 0) return;
 
 		if (now() - _lastLogTime < 1000L * 1000 * 1000 * 30) return;
-		System.out.println(now() - _lastLogTime);
 		_lastLogTime = now();
 		
 		Logger.log("{} is running during {}% of the time", _name, percentageInside());

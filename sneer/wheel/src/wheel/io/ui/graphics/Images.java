@@ -24,8 +24,7 @@ public class Images {
 		}
 	}
 
-	private static boolean doIsSameImage(BufferedImage image1,
-			BufferedImage image2) {
+	private static boolean doIsSameImage(BufferedImage image1, BufferedImage image2) {
 		if (image1.getWidth() != image2.getWidth()) return false;
 		if (image1.getHeight() != image2.getHeight()) return false;
 		

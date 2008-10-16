@@ -1,12 +1,10 @@
 package sneer.kernel.container.tests;
 
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 import javax.swing.SwingUtilities;
 
-import static org.hamcrest.Matchers.instanceOf;
 import org.junit.Test;
 
 import sneer.kernel.container.Container;
@@ -42,8 +40,7 @@ public class GuiBrickTest {
 		advanceClockInSeparateThread(clock);
 		try {
 			brick.slowMethod();
-		} catch (Exception e) {
-			assertThat(rootCause(e), instanceOf(TimeIsUp.class));
+		} catch (TimeIsUp e) {
 			return;
 		}
 		fail("timebox should have stopped the method");
@@ -56,11 +53,6 @@ public class GuiBrickTest {
 		}};
 	}
 	
-	private Throwable rootCause(Throwable e) {
-		if (e.getCause() != null)
-			return rootCause(e.getCause());
-		return e;
-	}
 
 	@Test
 	public void testNonGuiBrickRunsInCurrentThread() throws Exception {

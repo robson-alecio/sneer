@@ -20,28 +20,28 @@ class BlinkingLightsImpl implements BlinkingLights {
 
 	
 	@Override
-	public Light turnOn(LightType type, String message, Throwable t, int timeout) {
+	public Light turnOn(LightType type, String caption, Throwable t, int timeout) {
 		Light result = prepare(type);
-		turnOnIfNecessary(result, message, "Get an expert sovereign friend to help you. ;)", t, timeout);
+		turnOnIfNecessary(result, caption, "Get an expert sovereign friend to help you. ;)", t, timeout);
 		return result;
 	}
 
 	
 	@Override
-	public Light turnOn(LightType type, String message, Throwable t) {
-		return turnOn(type, message, t, LightImpl.NEVER);
+	public Light turnOn(LightType type, String caption, Throwable t) {
+		return turnOn(type, caption, t, LightImpl.NEVER);
 	}
 
 
 	@Override
-	public Light turnOn(LightType type, String message, int timeToLive) {
-		return turnOn(type, message, null, timeToLive);
+	public Light turnOn(LightType type, String caption, int timeToLive) {
+		return turnOn(type, caption, null, timeToLive);
 	}
 
 
 	@Override
-	public Light turnOn(LightType type, String message) {
-		return turnOn(type, message, null);
+	public Light turnOn(LightType type, String caption) {
+		return turnOn(type, caption, null);
 	}
 
 	
@@ -100,6 +100,7 @@ class BlinkingLightsImpl implements BlinkingLights {
 		light._isOn = true;
 		_lights.add(light);
 		
+		light._caption = caption;
 		light._error = t;
 		light._helpMessage = helpMessage;
 		

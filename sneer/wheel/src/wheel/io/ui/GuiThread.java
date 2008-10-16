@@ -4,31 +4,24 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.SwingUtilities;
 
-import wheel.lang.Timebox;
-
 public class GuiThread {
 	
 	public static void invokeAndWait(final Runnable runnable) { //Fix This method is called sometimes from swing's thread and other times from aplication's thread. Split the caller method (if it is possible), and delete this method.
 		if(SwingUtilities.isEventDispatchThread())
-			new Timebox(7000){ @Override protected void runInTimebox() {
-				runnable.run();
-			}};
+			runnable.run();
 		else
 			strictInvokeAndWait(runnable);
 	}
 	
 	public static void strictInvokeAndWait(final Runnable runnable) { //Fix Calling this from brick code is no longer necessary after the container is calling gui brick code only in the Swing thread.
 		assertNotInGuiThread();
-		new Timebox(7000){ @Override protected void runInTimebox() {
-			try {
-				SwingUtilities.invokeAndWait(runnable);
-			} catch (InterruptedException e) {
-				throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
-			} catch (InvocationTargetException e) {
-				throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
-			}
-		}};
-		
+		try {
+			SwingUtilities.invokeAndWait(runnable);
+		} catch (InterruptedException e) {
+			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+		} catch (InvocationTargetException e) {
+			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+		}
 	}
 
 	public static void strictInvokeLater(Runnable runnable) { //Fix Calling this from brick code is no longer necessary after the container is calling gui brick code only in the Swing thread.

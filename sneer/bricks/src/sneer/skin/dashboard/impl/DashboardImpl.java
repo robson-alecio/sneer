@@ -29,6 +29,7 @@ import sneer.skin.main_Menu.MainMenu;
 import sneer.skin.snappmanager.Instrument;
 import sneer.skin.snappmanager.InstrumentManager;
 import wheel.io.ui.GuiThread;
+import wheel.io.ui.TimeboxedEventQueue;
 import wheel.io.ui.action.Action;
 import wheel.io.ui.graphics.Images;
 import wheel.io.ui.impl.TrayIconImpl;

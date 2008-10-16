@@ -11,7 +11,7 @@ public class SomeGuiBrickImpl implements SomeGuiBrick {
 
 	@Override
 	public void slowMethod() throws InterruptedException {
-		Thread.sleep(1000);
+		Thread.sleep(10000);
 	}
 
 }

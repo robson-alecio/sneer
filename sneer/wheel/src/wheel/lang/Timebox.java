@@ -23,18 +23,10 @@ public abstract class Timebox implements Runnable {
 		
 		startTimer(isDone);
 
-		work();
+		runInTimebox();
 
 		synchronized (isDone) {
 			isDone.value = true;
-		}
-	}
-
-	private void work() {
-		try {
-			runInTimebox();
-		} catch (TimeIsUp tiu) {
-			throw new TimeIsUp();
 		}
 	}
 
@@ -46,12 +38,12 @@ public abstract class Timebox implements Runnable {
 			synchronized (isDone) {
 				if (!isDone.value) stopThread(worker);
 			}
-		}};
+		}}.setPriority(Thread.MAX_PRIORITY);
 	}
 
 	@SuppressWarnings("deprecation")
 	private void stopThread(Thread thread) {
-		thread.stop(new TimeIsUp());
+		thread.stop(new TimeIsUp(thread.getStackTrace()));
 	}
 
 

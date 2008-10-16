@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Window;
 
 import javax.swing.BoundedRangeModel;
 import javax.swing.ImageIcon;
@@ -125,9 +126,16 @@ class WindGuiImpl implements WindGui {
 	}
 	
 	private void shoutAlert() {
-		SwingUtilities.windowForComponent(_container).toFront();
+		Window window = SwingUtilities.windowForComponent(_container);
 		_myShout.getMainWidget().requestFocus();
-	}	
+		
+		if(window.hasFocus()) return;
+		alertUser(window);
+	}
+
+	private void alertUser(Window window) {
+		window.toFront();
+	}
 	
 	private void initAutoScroll() {
 		_lock = new JToggleButton();

@@ -1,6 +1,8 @@
 ﻿MAIN ROADMAP
 ===================
 
+	- Gui freezes - Timebox the Swing events
+
 	- WatchMe - Screen Viewing à la VNC
 		- Solve the OutOfMem that will happen because Tuples are never GC'd :)
 	---- WE DROP VNC

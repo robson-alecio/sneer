@@ -8,7 +8,6 @@
 	---- WE DROP VNC
 
 	- Wind
-		- [Sandro] Focus - Inform the user a message has arrived. See how ConversationFrame in monolith does it. I think it only requests focus.
 		- Ctrl-C and Ctrl-V in wind list.
 	- Voice Calls
 		- Mic brick started. Refer to LoopbackTest spike.

@@ -139,18 +139,18 @@ class DynDnsClientImpl implements DynDnsClient {
 	
 	private abstract class Sad extends State {
 		
-		Sad(String message, Exception e) {
-			refreshErrorLight(message, e);
+		Sad(String caption, Exception e) {
+			refreshErrorLight(caption, e);
 		}
 
 		protected State retry() {
 			return new Requesting();
 		}
 		
-		private void refreshErrorLight(String message, Exception e) {
+		private void refreshErrorLight(String caption, Exception e) {
 			if(_light != null)
 				_blinkingLights.turnOffIfNecessary(_light);
-			_light = _blinkingLights.turnOn(LightType.ERROR, message, e);
+			_light = _blinkingLights.turnOn(LightType.ERROR, caption, e);
 		}
 	}
 	
@@ -192,7 +192,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		private final DynDnsAccount _lastAccount;
 
 		BadAccountState(UpdaterException e, DynDnsAccount account) {
-			super(e.getHelp(), e);
+			super(e.getMessage(), e);
 			_lastAccount = account;
 		}
 

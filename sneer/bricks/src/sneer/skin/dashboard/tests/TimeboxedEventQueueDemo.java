@@ -1,4 +1,4 @@
-package spikes.sandro.eventQueue;
+package sneer.skin.dashboard.tests;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+
+import sneer.skin.dashboard.impl.TimeboxedEventQueue;
 
 public class TimeboxedEventQueueDemo {
 

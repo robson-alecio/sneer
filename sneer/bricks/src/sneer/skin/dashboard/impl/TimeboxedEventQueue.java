@@ -1,4 +1,4 @@
-package spikes.sandro.eventQueue;
+package sneer.skin.dashboard.impl;
 
 import java.awt.AWTEvent;
 import java.awt.EventQueue;
@@ -8,7 +8,7 @@ import wheel.lang.Timebox;
 
 public class TimeboxedEventQueue extends EventQueue {
 
-	private final int TIMEOUT = 3000;
+	private final int TIMEOUT = 7000;
 	private static TimeboxedEventQueue _singleton;
 
 	private TimeboxedEventQueue() {}

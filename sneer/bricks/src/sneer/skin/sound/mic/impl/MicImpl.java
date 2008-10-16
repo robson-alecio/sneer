@@ -67,7 +67,7 @@ public class MicImpl implements Mic {
 		synchronized (this) {
 			if (!isOpen()) return false;
 
-			retrier = _retriers.startRetrier("Microphone Line Acquirer", 5000, new Task() { @Override public void execute() throws FriendlyException {
+			retrier = _retriers.startRetrier(5000, new Task() { @Override public void execute() throws FriendlyException {
 				MicLine.tryToAcquire();
 				wakeUp();
 			}});

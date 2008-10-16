@@ -72,7 +72,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		
 		Happy() {
 			if (_light == null) return;
-			_blinkingLights.turnOff(_light);
+			_blinkingLights.turnOffIfNecessary(_light);
 			_light = null;
 		}
 		
@@ -149,7 +149,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		
 		private void refreshErrorLight(String message, Exception e) {
 			if(_light != null)
-				_blinkingLights.turnOff(_light);
+				_blinkingLights.turnOffIfNecessary(_light);
 			_light = _blinkingLights.turnOn(LightType.ERROR, message, e);
 		}
 	}

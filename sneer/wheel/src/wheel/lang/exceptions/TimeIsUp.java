@@ -1,6 +1,6 @@
 package wheel.lang.exceptions;
 
-public class TimeIsUp extends Throwable {
+public class TimeIsUp extends Error {
 	
 	public TimeIsUp() {
 		super("Timebox ended.");

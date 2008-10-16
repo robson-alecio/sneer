@@ -10,15 +10,14 @@ class LightImpl implements Light {
 	boolean _isOn = false;
 
 	private final LightType _type;
-	private final String _caption;
 	
+	String _caption;
 	Throwable _error;
 	String _helpMessage;
 	
 
-	public LightImpl(LightType type, String caption) {
+	public LightImpl(LightType type) {
 		_type = type;
-		_caption = caption;
 	}
 
 	@Override

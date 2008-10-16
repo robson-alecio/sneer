@@ -41,7 +41,7 @@ class WatchMeImpl implements WatchMe {
 	
 	private BufferedImage _previous;
 	private boolean _isRunning;
-	private final Light _light = _lights.prepare(LightType.ERROR, "Unable to take Screenshot");
+	private final Light _light = _lights.prepare(LightType.ERROR);
 
 	@Override
 	public EventSource<BufferedImage> screenStreamFor(final PublicKey publisher) {
@@ -79,8 +79,8 @@ class WatchMeImpl implements WatchMe {
 	private void doPublishShot() {
 		try {
 			tryToPublishShot();
-			_lights.turnOff(_light);
-		} catch (Hiccup expected) {			
+			_lights.turnOffIfNecessary(_light);
+		} catch (Hiccup ok) {			
 		} catch (FriendlyException e) {
 			_lights.turnOnIfNecessary(_light, e);
 		}

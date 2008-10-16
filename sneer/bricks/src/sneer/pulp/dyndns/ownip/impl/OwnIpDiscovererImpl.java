@@ -107,7 +107,7 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	
 	private void turnOffLightIfNecessary() {
 		if (_light == null) return; 
-		_blinkingLights.turnOff(_light);
+		_blinkingLights.turnOffIfNecessary(_light);
 		_light = null;
 	}
 }

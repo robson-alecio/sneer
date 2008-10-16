@@ -7,8 +7,8 @@ import sneer.pulp.retrier.Task;
 class RetrierManagerImpl implements RetrierManager {
 
 	@Override
-	public Retrier startRetrier(String threadName, int periodBetweenAttempts, Task task) {
-		return new RetrierImpl(threadName, periodBetweenAttempts, task);
+	public Retrier startRetrier(int periodBetweenAttempts, Task task) {
+		return new RetrierImpl(periodBetweenAttempts, task);
 	}
 
 }

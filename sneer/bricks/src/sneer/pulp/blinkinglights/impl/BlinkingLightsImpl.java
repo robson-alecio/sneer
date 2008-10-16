@@ -15,37 +15,44 @@ class BlinkingLightsImpl implements BlinkingLights {
 	@Inject
 	static private Clock _clock;
 
+	
 	private final ListRegisterImpl<Light> _lights = new ListRegisterImpl<Light>();
 
+	
 	@Override
 	public Light turnOn(LightType type, String message, Throwable t, int timeout) {
-		Light result = prepare(type, message);
-		turnOnIfNecessary(result, t, "Get an expert sovereign friend to help you. ;)", timeout);
+		Light result = prepare(type);
+		turnOnIfNecessary(result, message, "Get an expert sovereign friend to help you. ;)", t, timeout);
 		return result;
 	}
 
+	
 	@Override
 	public Light turnOn(LightType type, String message, Throwable t) {
 		return turnOn(type, message, t, LightImpl.NEVER);
 	}
+
 
 	@Override
 	public Light turnOn(LightType type, String message, int timeToLive) {
 		return turnOn(type, message, null, timeToLive);
 	}
 
+
 	@Override
 	public Light turnOn(LightType type, String message) {
 		return turnOn(type, message, null);
 	}
 
+	
 	@Override
 	public ListSignal<Light> lights() {
 		return _lights.output();
 	}
 	
+	
 	@Override
-	public void turnOff(Light light) {
+	public void turnOffIfNecessary(Light light) {
 		if (!light.isOn()) return;
 		
 		_lights.remove(light);
@@ -53,41 +60,51 @@ class BlinkingLightsImpl implements BlinkingLights {
 		((LightImpl)light).turnOff();
 	}
 	
+	
 	private void turnOffIn(final Light light, int millisFromNow) {
 		_clock.wakeUpInAtLeast(millisFromNow, new Runnable() { @Override public void run() {
-			turnOff(light);	
+			turnOffIfNecessary(light);	
 		}});
 	}
 
+	
 	@Override
-	public Light prepare(LightType type, String caption) {
-		return new LightImpl(type, caption);
+	public Light prepare(LightType type) {
+		return new LightImpl(type);
 	}
 
+	
 	@Override
 	public void turnOnIfNecessary(Light light, FriendlyException e) {
 		turnOnIfNecessary(light, e, LightImpl.NEVER);
 	}
 
+	
 	@Override
 	public void turnOnIfNecessary(Light light, FriendlyException e, int timeout) {
-		turnOnIfNecessary(light, e, e.getHelp(), timeout);
+		turnOnIfNecessary(light, e.getMessage(), e.getHelp(), e, timeout);
 	}
 
+	
 	@Override
-	public void turnOnIfNecessary(Light pLight, Throwable e, String helpMessage, int timeout) {
+	public void turnOnIfNecessary(Light light, String caption, String helpMessage, Throwable t) {
+		turnOnIfNecessary(light, caption, helpMessage, t, LightImpl.NEVER);
+	}
+
+	
+	@Override
+	public void turnOnIfNecessary(Light pLight, String caption, String helpMessage, Throwable t, int timeout) {
 		if (!(pLight instanceof LightImpl)) throw new IllegalArgumentException();
 		LightImpl light = (LightImpl)pLight;
 
 		light._isOn = true;
 		_lights.add(light);
 		
-		light._error = e;
+		light._error = t;
 		light._helpMessage = helpMessage;
 		
 		if (timeout != LightImpl.NEVER)
 			turnOffIn(light, timeout);
 	}
-
 
 }

@@ -29,8 +29,6 @@ import wheel.lang.exceptions.NotImplementedYet;
 
 public class AudioCommon {
 
-	public static final AudioCommon instance = new AudioCommon();
-
 	private static List<AudioDevice> _inputDevices = new ArrayList<AudioDevice>();
 	private static List<AudioDevice> _outputDevices = new ArrayList<AudioDevice>();
 
@@ -39,7 +37,7 @@ public class AudioCommon {
 	}
 
 	
-	public static void refreshDeviceList() { 
+	private static void refreshDeviceList() { 
 
 		Mixer.Info[] mixerInfos = AudioSystem.getMixerInfo();
 		System.out.println("Available Mixers: " + mixerInfos.length);
@@ -145,7 +143,7 @@ public class AudioCommon {
 		}
 	}
 
-	public List<Mixer> getPortMixers() {
+	private List<Mixer> getPortMixers() {
 		List<Mixer> supportingMixers = new ArrayList<Mixer>();
 		Mixer.Info[] aMixerInfos = AudioSystem.getMixerInfo();
 		for (int i = 0; i < aMixerInfos.length; i++) {
@@ -157,7 +155,7 @@ public class AudioCommon {
 		return supportingMixers;
 	}
 
-	public boolean arePortsSupported(Mixer mixer) {
+	private boolean arePortsSupported(Mixer mixer) {
 		Line.Info[] infos;
 		infos = mixer.getSourceLineInfo();
 		for (int i = 0; i < infos.length; i++)
@@ -170,7 +168,7 @@ public class AudioCommon {
 		return false;
 	}
 
-	public Port.Info[] getPortInfo(Mixer mixer) {
+	private Port.Info[] getPortInfo(Mixer mixer) {
 		Line.Info[] infos;
 		List<Port.Info> portInfoList = new ArrayList<Port.Info>();
 		infos = mixer.getSourceLineInfo();
@@ -184,7 +182,7 @@ public class AudioCommon {
 		return new Port.Info[0];
 	}
 	
-	public static Mixer bestAvailableMixerForInput(){
+	private static Mixer bestAvailableMixerForInput(){
 		if (_inputDevices.isEmpty())
 			return null;
 		for(AudioDevice device:_inputDevices)
@@ -199,7 +197,7 @@ public class AudioCommon {
 		return _inputDevices.get(0).getMixer();
 	}
 	
-	public static Mixer bestAvailableMixerForOutput(){
+	private static Mixer bestAvailableMixerForOutput(){
 		if (_outputDevices.isEmpty())
 			return null;
 		for(AudioDevice device:_outputDevices)
@@ -220,15 +218,14 @@ public class AudioCommon {
 			if (mixer != null)
 				return AudioSystem.getTargetDataLine(AudioUtil.AUDIO_FORMAT, mixer.getMixerInfo());
 		} catch (IllegalArgumentException iae){
-			throw new NotImplementedYet();
+			Logger.logShort(iae, "Trying to getTargetDataLine. (Mic)");
 		} catch (LineUnavailableException e) {
-			Logger.log(e, "Failed to get target data line with best available mixer. Trying default data line...");
+			Logger.log(e, "Failed to get target data line (Mic) with best available mixer. Trying default data line...");
 		}
 		
 		try{
 			return AudioSystem.getTargetDataLine(AudioUtil.AUDIO_FORMAT);
 		} catch (LineUnavailableException e) {
-			Logger.log(e, "Failed to get default target data line.");
 			throw new NotImplementedYet();
 		}
 	}
@@ -240,32 +237,23 @@ public class AudioCommon {
 				return AudioSystem.getSourceDataLine(AudioUtil.AUDIO_FORMAT);
 			return AudioSystem.getSourceDataLine(AudioUtil.AUDIO_FORMAT, mixer.getMixerInfo());
 		}catch(IllegalArgumentException iae){
-			//
+			Logger.logShort(iae, "Trying to getSourceDataLine. (Speaker)");
 		} catch (LineUnavailableException e) {
-			//
+			Logger.log(e, "Failed to get source data line (Speaker) with best available mixer. Trying default data line...");
 		}
 		try{
 			return AudioSystem.getSourceDataLine(AudioUtil.AUDIO_FORMAT);
 		} catch (LineUnavailableException e) {
-			//
+			throw new NotImplementedYet();
 		}
-		return null;
 	}
 	
-	public static boolean isPlaybackPossible(){
-		if (bestAvailableSourceDataLine()==null)
-			return false;
-		return true;
+	private static boolean isPlaybackPossible() {
+		return bestAvailableSourceDataLine() != null;
 	}
 	
-	public static boolean isCapturePossible(){
-		if (bestAvailableTargetDataLine()==null)
-			return false;
-		return true;
-	}
-	
-	public boolean isPlaybackAndCapturePossible(){
-		return isPlaybackPossible()&&isCapturePossible();
+	private static boolean isCapturePossible() {
+		return bestAvailableTargetDataLine() !=null;
 	}
 	
 	public static void main(String[] args){

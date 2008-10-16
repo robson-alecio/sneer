@@ -1,9 +1,9 @@
 package sneer.pulp.retrier;
 
-import sneer.kernel.container.Brick;
+import sneer.kernel.container.ConcurrentBrick;
 
-public interface RetrierManager extends Brick {
+public interface RetrierManager extends ConcurrentBrick {
 
-	Retrier startRetrier(String threadName, int periodBetweenAttempts, Task task);
+	Retrier startRetrier(int periodBetweenAttempts, Task task);
 
 }

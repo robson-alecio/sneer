@@ -94,7 +94,7 @@ class SocketAccepterImpl implements SocketAccepter {
 					ByteArraySocket clientSocket = _serverSocket.accept();
 					_notifier.notifyReceivers(clientSocket);
 					if (_cantAcceptSocket != null)
-						_lights.turnOff(_cantAcceptSocket);
+						_lights.turnOffIfNecessary(_cantAcceptSocket);
 				} catch (IOException e) {
 					if (!_isStopped) 
 						_cantAcceptSocket = _lights.turnOn(LightType.ERROR, "Unable to accept client connection", e);
@@ -107,7 +107,7 @@ class SocketAccepterImpl implements SocketAccepter {
 		if (port == 0) return;
 		try {
 			_serverSocket = _network.openServerSocket(port);
-			if (_cantOpenServerSocket != null) _lights.turnOff(_cantOpenServerSocket);
+			if (_cantOpenServerSocket != null) _lights.turnOffIfNecessary(_cantOpenServerSocket);
 			_lights.turnOn(LightType.GOOD_NEWS, "TCP port opened: " + port, 7000);
 		} catch (IOException e) {
 			if (!_isStopped)

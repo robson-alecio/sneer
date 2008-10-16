@@ -9,7 +9,7 @@ public class AudioUtil {
 
 	public static final int SAMPLE_SIZE_IN_BITS = 16;
 
-	private static final int CHANNELS = 2; //for linux/alsa compatibility, should not use mono
+	private static final int CHANNELS = 2; //for linux/alsa compatibility do not use mono
 
 	static final boolean SIGNED = true;
 

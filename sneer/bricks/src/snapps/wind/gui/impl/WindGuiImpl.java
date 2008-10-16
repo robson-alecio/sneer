@@ -13,6 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
@@ -91,7 +92,7 @@ class WindGuiImpl implements WindGui {
 		_myShout = _rfactory.newTextField(new Constant<String>(""), _wind.megaphone(), true);
 		_container.setBackground(_shoutsList.getComponent().getBackground());
 		iniGui();
-		initShoutListener();
+		initShoutReceiver();
 	}
 
 	private void iniGui() {
@@ -116,7 +117,7 @@ class WindGuiImpl implements WindGui {
 		_shoutsList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
 	}
 
-	private void initShoutListener() {
+	private void initShoutReceiver() {
 		_shoutReceiverToAvoidGc = new Receiver<ListValueChange>(){ @Override public void consume(ListValueChange value) {
 			shoutAlert();
 		}};
@@ -124,7 +125,7 @@ class WindGuiImpl implements WindGui {
 	}
 	
 	private void shoutAlert() {
-		_myShout.getMainWidget().requestFocusInWindow();
+		SwingUtilities.windowForComponent(_container).toFront();
 		_myShout.getMainWidget().requestFocus();
 	}	
 	

@@ -62,7 +62,6 @@ public class CopyAndPasteDemo extends JFrame implements ClipboardOwner {
 
 	private String getClipboardData() throws UnsupportedFlavorException,	IOException {
 		Transferable contents = clipboard.getContents(this);
-		if (contents == null) return "Nothing in Clip Board!";
 		return (String) contents.getTransferData(DataFlavor.stringFlavor);
 	}
 	

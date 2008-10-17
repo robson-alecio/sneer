@@ -6,13 +6,23 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.Window;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
+import javax.swing.AbstractAction;
 import javax.swing.BoundedRangeModel;
 import javax.swing.ImageIcon;
+import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
@@ -36,7 +46,7 @@ import wheel.reactive.impl.Constant;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.lists.ListValueChange;
 
-class WindGuiImpl implements WindGui {
+class WindGuiImpl implements WindGui, ClipboardOwner {
 	
 	@Inject
 	static private InstrumentManager _instruments;
@@ -116,6 +126,7 @@ class WindGuiImpl implements WindGui {
 				new Insets(0, 5, 5, 5), 0, 0));		
 		
 		_shoutsList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
+		createKeyMaps();
 	}
 
 	private void initShoutReceiver() {
@@ -190,5 +201,31 @@ class WindGuiImpl implements WindGui {
 		public Signal<Image> imageFor(Shout shout) {
 			return image(shout);
 		}
+	}
+
+	@Override
+	public void lostOwnership(Clipboard arg0, Transferable arg1) {
+		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+	}
+	
+	private void createKeyMaps() {
+		int modifiers = getPortableSoModifiers();
+		final KeyStroke ctrlc = KeyStroke.getKeyStroke(KeyEvent.VK_C, modifiers);
+		
+		JList list = _shoutsList.getMainWidget();
+		list.getInputMap().put(ctrlc,  "ctrlc");
+		list.getActionMap().put("ctrlc",  new AbstractAction(){@Override public void actionPerformed(ActionEvent e) {
+			copySelectedShoutToClipboard();
+		}});
+	}
+
+	private int getPortableSoModifiers() {
+		return Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+	}
+	
+	private void copySelectedShoutToClipboard() {
+		String text = _shoutsList.getMainWidget().getSelectedValue().toString();
+		StringSelection fieldContent = new StringSelection(text);
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(fieldContent, this);	
 	}
 }

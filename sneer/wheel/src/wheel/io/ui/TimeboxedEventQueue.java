@@ -4,9 +4,7 @@ import java.awt.AWTEvent;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 
-import wheel.io.Logger;
 import wheel.lang.Timebox;
-import wheel.lang.exceptions.TimeIsUp;
 
 public class TimeboxedEventQueue extends EventQueue {
 
@@ -52,11 +50,7 @@ public class TimeboxedEventQueue extends EventQueue {
 		
 		private void setEventAndRun(AWTEvent event){
 			_event = event;
-			try {
-				this.run();
-			} catch (TimeIsUp timeIsUp) {
-				Logger.log(timeIsUp);
-			}
+			this.run();
 		}
 	}
 }

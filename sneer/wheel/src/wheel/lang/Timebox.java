@@ -1,5 +1,6 @@
 package wheel.lang;
 
+import wheel.io.Logger;
 import wheel.lang.exceptions.TimeIsUp;
 
 public abstract class Timebox implements Runnable {
@@ -45,7 +46,9 @@ public abstract class Timebox implements Runnable {
 
 	@SuppressWarnings("deprecation")
 	private void stopThread(Thread thread) {
-		thread.stop(new TimeIsUp(thread.getStackTrace()));
+		TimeIsUp timeIsUp = new TimeIsUp(thread.getStackTrace());
+		Logger.log(timeIsUp);
+		thread.stop(timeIsUp);
 	}
 
 }

@@ -44,7 +44,7 @@ public class TupleSpaceImpl implements TupleSpace {
 	}
 
 	private static final int TUPLE_SPACE_SIZE_LIMIT = 1000;
-	private final Set<Tuple> _tuples = Collections.synchronizedSet(new LinkedHashSet<Tuple>());
+	private final Set<Tuple> _tuples = Collections.synchronizedSet(new LinkedHashSet<Tuple>()); //Refactor This synchronization will no longer be necessary when the container guarantees synchronization of model bricks.
 	private final List<Subscription> _subscriptions = new ArrayList<Subscription>();
 
 	@Override
@@ -52,16 +52,21 @@ public class TupleSpaceImpl implements TupleSpace {
 		if (tuple == null) throw new IllegalArgumentException();
 		
 		if (!_tuples.add(tuple)) return;
-		
-		if (_tuples.size() > TUPLE_SPACE_SIZE_LIMIT)  {
-			synchronized (_tuples) {
-				Iterator<Tuple> tuplesIterator = _tuples.iterator();
-				if (tuplesIterator.hasNext()) _tuples.remove(tuplesIterator.next());
-			}
-		}
+
+		capSize();
 		
 		for (Subscription subscription : _subscriptions)
 			subscription.filterAndNotify(tuple);
+	}
+
+	private void capSize() {
+		if (_tuples.size() <= TUPLE_SPACE_SIZE_LIMIT) return;
+		
+		synchronized (_tuples) {  //Refactor This synchronization will no longer be necessary when the container guarantees synchronization of model bricks.
+			Iterator<Tuple> tuplesIterator = _tuples.iterator();
+			tuplesIterator.next();
+			tuplesIterator.remove();
+		}
 	}
 
 	@Override

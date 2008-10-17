@@ -13,14 +13,14 @@
 		- Solve the OutOfMem that will happen because Tuples are never GC'd :)
 	---- WE DROP VNC
 
-	
 	- Flooding - Solve tuple flooding on the network.
 	
-	---------------------------------- LAST DOGFOOD RELEASE - Now we start cleaning up until we reach "No Broken Windows" status.
+	---------------------------------- LAST DOGFOOD RELEASE
+	
+	Now we start cleaning up until we reach "No Broken Windows" status:
 
 	- Brick Publish (Supposedly working already)
 		- MainDemo - Publish all necessary bricks instead of just producing them.
-	- 
 
 	- ByteConnection legacy protocol - migrate all uses to new protocol.
 

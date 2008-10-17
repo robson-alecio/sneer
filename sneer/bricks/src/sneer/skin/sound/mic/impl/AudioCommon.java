@@ -9,10 +9,8 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.Line;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Mixer;
-import javax.sound.sampled.Port;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
-
 
 import wheel.io.Logger;
 import wheel.lang.exceptions.NotImplementedYet;
@@ -143,45 +141,45 @@ public class AudioCommon {
 		}
 	}
 
-	private List<Mixer> getPortMixers() {
-		List<Mixer> supportingMixers = new ArrayList<Mixer>();
-		Mixer.Info[] aMixerInfos = AudioSystem.getMixerInfo();
-		for (int i = 0; i < aMixerInfos.length; i++) {
-			Mixer mixer = AudioSystem.getMixer(aMixerInfos[i]);
-			boolean bSupportsPorts = arePortsSupported(mixer);
-			if (bSupportsPorts)
-				supportingMixers.add(mixer);
-		}
-		return supportingMixers;
-	}
+//	private List<Mixer> getPortMixers() {
+//		List<Mixer> supportingMixers = new ArrayList<Mixer>();
+//		Mixer.Info[] aMixerInfos = AudioSystem.getMixerInfo();
+//		for (int i = 0; i < aMixerInfos.length; i++) {
+//			Mixer mixer = AudioSystem.getMixer(aMixerInfos[i]);
+//			boolean bSupportsPorts = arePortsSupported(mixer);
+//			if (bSupportsPorts)
+//				supportingMixers.add(mixer);
+//		}
+//		return supportingMixers;
+//	}
 
-	private boolean arePortsSupported(Mixer mixer) {
-		Line.Info[] infos;
-		infos = mixer.getSourceLineInfo();
-		for (int i = 0; i < infos.length; i++)
-			if (infos[i] instanceof Port.Info)
-				return true;
-		infos = mixer.getTargetLineInfo();
-		for (int i = 0; i < infos.length; i++)
-			if (infos[i] instanceof Port.Info)
-				return true;
-		return false;
-	}
+//	private boolean arePortsSupported(Mixer mixer) {
+//		Line.Info[] infos;
+//		infos = mixer.getSourceLineInfo();
+//		for (int i = 0; i < infos.length; i++)
+//			if (infos[i] instanceof Port.Info)
+//				return true;
+//		infos = mixer.getTargetLineInfo();
+//		for (int i = 0; i < infos.length; i++)
+//			if (infos[i] instanceof Port.Info)
+//				return true;
+//		return false;
+//	}
 
-	private Port.Info[] getPortInfo(Mixer mixer) {
-		Line.Info[] infos;
-		List<Port.Info> portInfoList = new ArrayList<Port.Info>();
-		infos = mixer.getSourceLineInfo();
-		for (int i = 0; i < infos.length; i++)
-			if (infos[i] instanceof Port.Info)
-				portInfoList.add((Port.Info) infos[i]);
-		infos = mixer.getTargetLineInfo();
-		for (int i = 0; i < infos.length; i++)
-			if (infos[i] instanceof Port.Info)
-				portInfoList.add((Port.Info) infos[i]);
-		return new Port.Info[0];
-	}
-	
+//	private Port.Info[] getPortInfo(Mixer mixer) {
+//		Line.Info[] infos;
+//		List<Port.Info> portInfoList = new ArrayList<Port.Info>();
+//		infos = mixer.getSourceLineInfo();
+//		for (int i = 0; i < infos.length; i++)
+//			if (infos[i] instanceof Port.Info)
+//				portInfoList.add((Port.Info) infos[i]);
+//		infos = mixer.getTargetLineInfo();
+//		for (int i = 0; i < infos.length; i++)
+//			if (infos[i] instanceof Port.Info)
+//				portInfoList.add((Port.Info) infos[i]);
+//		return new Port.Info[0];
+//	}
+//	
 	private static Mixer bestAvailableMixerForInput(){
 		if (_inputDevices.isEmpty())
 			return null;

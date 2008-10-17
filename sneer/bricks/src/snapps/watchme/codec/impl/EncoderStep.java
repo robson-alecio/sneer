@@ -35,8 +35,8 @@ class EncoderStep{
 	}
 
 	private void produceResult() throws Hiccup {
-		for (int x = 0; x < _original.getWidth(); x = x + CELL_SIZE) 
-			for (int y = 0; y < _original.getHeight(); y = y + CELL_SIZE) 
+		for (int y = 0; y < _original.getHeight(); y = y + CELL_SIZE) 
+			for (int x = 0; x < _original.getWidth(); x = x + CELL_SIZE) 
 				addImageDeltaIfNecessary(x, y);
 	}
 	

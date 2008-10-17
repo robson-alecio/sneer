@@ -1,6 +1,8 @@
 ﻿MAIN ROADMAP
 ===================
 
+	- Gui Timeboxing - Uncomment in DashboardImpl, run MainDemo and solve crashes.
+
 	- Voice Calls
 		- Mic brick started. Refer to MicLoopbackDemo.
 		- Choose which contact I want to hear
@@ -10,7 +12,8 @@
 	---- WE DROP SKYPE :)
 
 	- WatchMe - Screen Viewing à la VNC
-		- Solve the OutOfMem that will happen because Tuples are never GC'd :)
+		- [Douglas] Keep only the last 1000 published Tuples, instead of all.
+		- Images.isSameImage() - Optimize - It is using 40% of the CPU on Klaus's machine.
 	---- WE DROP VNC
 
 	- Flooding - Solve tuple flooding on the network.

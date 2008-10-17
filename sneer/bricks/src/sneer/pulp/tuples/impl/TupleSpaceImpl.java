@@ -4,8 +4,10 @@ import static wheel.lang.Types.cast;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -41,7 +43,8 @@ public class TupleSpaceImpl implements TupleSpace {
 
 	}
 
-	private final Set<Tuple> _tuples = new HashSet<Tuple>();
+	private static final int TUPLE_SPACE_SIZE_LIMIT = 1000;
+	private final Set<Tuple> _tuples = Collections.synchronizedSet(new LinkedHashSet<Tuple>());
 	private final List<Subscription> _subscriptions = new ArrayList<Subscription>();
 
 	@Override
@@ -49,6 +52,14 @@ public class TupleSpaceImpl implements TupleSpace {
 		if (tuple == null) throw new IllegalArgumentException();
 		
 		if (!_tuples.add(tuple)) return;
+		
+		if (_tuples.size() > TUPLE_SPACE_SIZE_LIMIT)  {
+			synchronized (_tuples) {
+				Iterator<Tuple> tuplesIterator = _tuples.iterator();
+				if (tuplesIterator.hasNext()) _tuples.remove(tuplesIterator.next());
+			}
+		}
+		
 		for (Subscription subscription : _subscriptions)
 			subscription.filterAndNotify(tuple);
 	}

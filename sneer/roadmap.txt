@@ -1,17 +1,18 @@
 ﻿MAIN ROADMAP
 ===================
 
-	- Gui Timeboxing - Uncomment in DashboardImpl, run MainDemo and solve crashes.
-
+	- Wind
+		- Show selected shouts in different color
+		- Copy to clipboard automatically without need of ctrl+c
+		- History
 	- Voice Calls
 		- Mic brick started. Refer to MicLoopbackDemo.
 		- Choose which contact I want to hear
-			"Same Room" - It would be pretty cool to be able to hear other contacts in a lower volume, simulating a "same room" work environment :D
-
 	---- WE DROP SKYPE :)
 
 	- WatchMe - Screen Viewing à la VNC
 		- [Douglas] Keep only the last 1000 published Tuples, instead of all.
+			- Test case
 		- Images.isSameImage() - Optimize - It is using 40% of the CPU on Klaus's machine.
 	---- WE DROP VNC
 
@@ -67,6 +68,7 @@
 	- Transparent Persistence
 
 	- Own Name - Show contacts' names in contact list
+	- Same Room - It would be pretty cool to be able to hear other contacts in a lower volume, simulating a "same room" work environment :D
 	- MSN Client
 		- Contact Unification
 	- Messaging - Grand unification of instant messages and email

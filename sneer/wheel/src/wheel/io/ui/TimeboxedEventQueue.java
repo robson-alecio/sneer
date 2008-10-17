@@ -22,13 +22,13 @@ public class TimeboxedEventQueue extends EventQueue {
 		_singleton.pop();
 	}
 
+
 	private TimeboxedEventQueue(int timeboxDuration) {
-		_timeboxDuration = timeboxDuration;
+		_timebox = new QueueTimebox(timeboxDuration);
 	}
 
+	private final QueueTimebox _timebox;
 	
-	private final QueueTimebox _timebox = new QueueTimebox();
-	private final int _timeboxDuration;
 
 	
 	@Override
@@ -39,8 +39,8 @@ public class TimeboxedEventQueue extends EventQueue {
 	
 	private final class QueueTimebox extends Timebox {
 		
-		private QueueTimebox() {
-			super(_timeboxDuration, false);
+		private QueueTimebox(int timeboxDuration) {
+			super(timeboxDuration, false);
 		}
 
 		AWTEvent _event;

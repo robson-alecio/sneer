@@ -80,7 +80,7 @@ class DashboardImpl implements Dashboard, Runnable {
 	private SimpleListReceiver<Instrument> _instrumentsReceiver;
 	
 	DashboardImpl() {
-		//TimeboxedEventQueue.startQueueing(TIMEOUT_FOR_GUI_EVENTS);
+		TimeboxedEventQueue.startQueueing(TIMEOUT_FOR_GUI_EVENTS);
 		_threadPool.registerActor(this);
 	}
 

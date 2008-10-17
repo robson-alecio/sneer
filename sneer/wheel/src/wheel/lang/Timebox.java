@@ -34,7 +34,9 @@ public abstract class Timebox implements Runnable {
 		final Thread worker = Thread.currentThread();
 
 		new Daemon("Timebox") { @Override public void run() {
-			sleepFor(_durationInMillis);
+			
+			Threads.sleepWithoutInterruptions(_durationInMillis);
+			
 			synchronized (isDone) {
 				if (!isDone.value) stopThread(worker);
 			}
@@ -44,11 +46,6 @@ public abstract class Timebox implements Runnable {
 	@SuppressWarnings("deprecation")
 	private void stopThread(Thread thread) {
 		thread.stop(new TimeIsUp(thread.getStackTrace()));
-	}
-
-
-	protected void sleepFor(final int millis) {
-		Threads.sleepWithoutInterruptions(millis);
 	}
 
 }

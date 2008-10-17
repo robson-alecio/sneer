@@ -1,21 +1,21 @@
 ﻿MAIN ROADMAP
 ===================
 
-	- Gui freezes - Timebox the Swing events
 
 	- WatchMe - Screen Viewing à la VNC
+		- Direction - Top-to-bottom instead of left-to-right.
 		- Solve the OutOfMem that will happen because Tuples are never GC'd :)
 	---- WE DROP VNC
 
 	- Wind
 		- Ctrl-C and Ctrl-V in wind list.
 	- Voice Calls
-		- Mic brick started. Refer to LoopbackTest spike.
+		- Mic brick started. Refer to MicLoopbackDemo.
 		- Choose which contact I want to hear
 			"Same Room" - It would be pretty cool to be able to hear other contacts in a lower volume, simulating a "same room" work environment :D
 		---- WE DROP SKYPE :)
 	
-	- Flooding- Solve tuple flooding on the network.
+	- Flooding - Solve tuple flooding on the network.
 	
 	---------------------------------- LAST DOGFOOD RELEASE - Now we start cleaning up until we reach "No Broken Windows" status.
 

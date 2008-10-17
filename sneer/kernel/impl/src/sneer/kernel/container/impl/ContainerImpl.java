@@ -10,7 +10,6 @@ import sneer.kernel.container.ContainerException;
 import sneer.kernel.container.Injector;
 import sneer.kernel.container.SneerConfig;
 import sneer.kernel.container.impl.classloader.EclipseClassLoaderFactory;
-import sneer.pulp.clock.Clock;
 import sneer.pulp.config.persistence.PersistenceConfig;
 import sneer.pulp.tuples.Tuple;
 import sneer.skin.GuiBrick;
@@ -77,12 +76,8 @@ public class ContainerImpl implements Container {
 	
 	private <T> T decorate(final T component) {
 		if (component instanceof GuiBrick)
-			return GuiBrickInvocationHandler.decorate(clock(), component);
+			return GuiBrickInvocationHandler.decorate(component);
 		return component;
-	}
-
-	private Clock clock() {
-		return produce(Clock.class);
 	}
 
 	private <T> T instantiate(Class<T> intrface) throws ContainerException {

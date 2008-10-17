@@ -14,6 +14,6 @@ public interface Clock {
 	void advanceTime(int deltaMillis);
 	void advanceTimeTo(long absoluteTimeMillis);
 
-	void timebox(int timeoutMillis, Runnable runnable);
+	//void timebox(int timeoutMillis, Runnable runnable);
 
 }

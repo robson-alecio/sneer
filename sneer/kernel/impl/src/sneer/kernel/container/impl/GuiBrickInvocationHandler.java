@@ -8,25 +8,19 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import sneer.pulp.clock.Clock;
-
 import wheel.io.ui.GuiThread;
 import wheel.lang.ByRef;
 
 final class GuiBrickInvocationHandler<T> implements InvocationHandler {
 
-	private static final int TIMEOUT = 5000;
-
-	public static <T> T decorate(final Clock clock, final T component) {
+	public static <T> T decorate(final T component) {
 		final Class<? extends Object> componentClass = component.getClass();
-		return (T) Proxy.newProxyInstance(componentClass.getClassLoader(), componentClass.getInterfaces(), new GuiBrickInvocationHandler<T>(clock, component));
+		return (T) Proxy.newProxyInstance(componentClass.getClassLoader(), componentClass.getInterfaces(), new GuiBrickInvocationHandler<T>(component));
 	}
 	
-	private final Clock _clock;
 	private final T _component;
 
-	private GuiBrickInvocationHandler(Clock clock, T component) {
-		_clock = clock;
+	private GuiBrickInvocationHandler(T component) {
 		_component = component;
 	}
 
@@ -35,17 +29,15 @@ final class GuiBrickInvocationHandler<T> implements InvocationHandler {
 		final ByRef<Object> result = ByRef.newInstance();
 
 		GuiThread.invokeAndWait(new Runnable() { @Override public void run() {
-			_clock.timebox(TIMEOUT, new Runnable() { @Override public void run() {
-				try {
-					result.value = method.invoke(_component, args);
-				} catch (IllegalArgumentException e) {
-					throw new IllegalStateException();
-				} catch (IllegalAccessException e) {
-					throw new IllegalStateException();
-				} catch (InvocationTargetException e) {
-					result.value = e.getCause();
-				}
-			}});
+			try {
+				result.value = method.invoke(_component, args);
+			} catch (IllegalArgumentException e) {
+				throw new IllegalStateException();
+			} catch (IllegalAccessException e) {
+				throw new IllegalStateException();
+			} catch (InvocationTargetException e) {
+				result.value = e.getCause();
+			}
 		}});
 		
 		if (result.value == null)

@@ -10,10 +10,8 @@ import org.junit.Test;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.tests.impl.SomeGuiBrickImpl;
-import sneer.pulp.clock.Clock;
+import wheel.io.ui.TimeboxedEventQueue;
 import wheel.lang.ByRef;
-import wheel.lang.Daemon;
-import wheel.lang.Threads;
 import wheel.lang.exceptions.TimeIsUp;
 
 public class GuiBrickTest {
@@ -34,25 +32,27 @@ public class GuiBrickTest {
 	
 	@Test
 	public void testGuiBrickRunsInsideTimebox() throws Exception {
+		int timeoutForGuiEvents = 10;
+		TimeboxedEventQueue.startQueueing(timeoutForGuiEvents);
+
+		try {
+			runInsideTimebox();
+		} finally {
+			TimeboxedEventQueue.stopQueueing();
+		}
+	}
+
+
+	private void runInsideTimebox() {
 		final Container container = ContainerUtils.newContainer();
 		final SomeGuiBrick brick = container.produce(SomeGuiBrick.class);
-		final Clock clock = container.produce(Clock.class);
-		advanceClockInSeparateThread(clock);
 		try {
 			brick.slowMethod();
-		} catch (TimeIsUp e) {
+		} catch (TimeIsUp expected) {
 			return;
 		}
 		fail("timebox should have stopped the method");
 	}
-
-	private void advanceClockInSeparateThread(final Clock clock) {
-		new Daemon("Timebox") { @Override public void run() {
-			Threads.sleepWithoutInterruptions(500);
-			clock.advanceTime(5000);
-		}};
-	}
-	
 
 	@Test
 	public void testNonGuiBrickRunsInCurrentThread() throws Exception {

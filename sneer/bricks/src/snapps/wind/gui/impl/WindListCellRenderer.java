@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Style;
@@ -55,11 +56,10 @@ class WindListCellRenderer implements ListCellRenderer {
 	public Component getListCellRendererComponent(JList jList, Object element, int ignored2, boolean isSelected, boolean cellHasFocus) {
 		Shout shout = (Shout)element;
 		JComponent nick = createNick(shout);
-		JComponent shoutTime = createShoutTime(shout);
+		JComponent shoutTime = createShoutTime(shout, isSelected);
 		JComponent shoutText = createShoutText(shout);
-		JComponent root = createRootPanel(nick, shoutTime, shoutText);
+		JComponent root = createRootPanel(nick, shoutTime, shoutText, isSelected);
 
-//		shoutTime.setPreferredSize(new Dimension(50,15));
 		Resizer.pack(shoutText, jList.getWidth() - SCROLL_WIDTH, 25);
 		
 		addLineSpace(root);
@@ -82,17 +82,20 @@ class WindListCellRenderer implements ListCellRenderer {
 	private JComponent getNickAsText(Shout shout) {
 		Contact contact = _keys.contactGiven(shout.publisher);
 		String nick = contact == null ? "<Unknown> " : contact.nickname().currentValue() + " ";
-		JLabel icon = new JLabel(nick,  SwingConstants.LEFT);
-		icon.setFont(new Font(icon.getFont().getFontName() , Font.BOLD, 11));
-		icon.setForeground(Color.DARK_GRAY);
-		return icon;
+		JLabel labelNick = new JLabel(nick,  SwingConstants.LEFT);
+		labelNick.setFont(new Font(labelNick.getFont().getFontName() , Font.BOLD, 11));
+		labelNick.setForeground(Color.DARK_GRAY);
+		labelNick.setOpaque(false);
+		return labelNick;
 	}
 
-	private JComponent createShoutTime(Shout shout) {
-		JLabel icon = new JLabel(getFormatedShoutTime(shout) + " ",  SwingConstants.RIGHT);
-		icon.setFont(new Font(icon.getFont().getFontName() , 0, 11));
-		icon.setForeground(Color.LIGHT_GRAY);
-		return icon;
+	private JComponent createShoutTime(Shout shout, boolean isSelected) {
+		JLabel label = new JLabel(getFormatedShoutTime(shout) + " ",  SwingConstants.RIGHT);
+		label.setFont(new Font(label.getFont().getFontName() , 0, 11));
+		label.setOpaque(false);
+		if(isSelected) label.setForeground(Color.WHITE);
+		else label.setForeground(Color.LIGHT_GRAY);
+		return label;
 	}
 
 	private JComponent createShoutText(Shout shout) {
@@ -106,6 +109,7 @@ class WindListCellRenderer implements ListCellRenderer {
 	    appendStyledText(doc, msg, style);
 		JTextPane result = new JTextPane();
 		result.setDocument(doc);
+		result.setOpaque(false);
 		return result;
 	}	
 	
@@ -136,11 +140,14 @@ class WindListCellRenderer implements ListCellRenderer {
 	    doc.addStyle( SHOUT, def );
 	}
 
-	private JComponent createRootPanel(JComponent nick, JComponent time, JComponent shout) {
+	private JComponent createRootPanel(JComponent nick, JComponent time, JComponent shout, boolean isSelected) {
 		JPanel root = new JPanel();
 		root.setLayout(new GridBagLayout());
-		root.setOpaque(false);
+		root.setOpaque(true);
 
+		if(!isSelected) root.setBackground(UIManager.getColor("List.background"));
+		else root.setBackground(UIManager.getColor("TextField.selectionBackground"));
+		
 		root.add(nick, new GridBagConstraints(0, 0, 1, 1, 1., 0,
 				GridBagConstraints.SOUTHEAST, GridBagConstraints.HORIZONTAL,
 				new Insets(0, 0, 0, 0), 0, 0));

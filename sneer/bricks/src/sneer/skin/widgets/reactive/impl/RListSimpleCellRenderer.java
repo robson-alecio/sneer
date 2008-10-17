@@ -27,7 +27,7 @@ class RListSimpleCellRenderer<ELEMENT> implements ListCellRenderer {
 		Signal<Image> sicon = _rlist._labelProvider.imageFor(getElement(value));
 
 		ImageIcon icon = new ImageIcon(sicon.currentValue());
-		JLabel label = (JLabel) renderer.getListCellRendererComponent(ignored, 	value, ignored2, isSelected, cellHasFocus);
+		JLabel label = (JLabel) renderer.getListCellRendererComponent(ignored, value, ignored2, isSelected, cellHasFocus);
 		label.setIcon(icon);
 		label.setText(slabel.currentValue());
 

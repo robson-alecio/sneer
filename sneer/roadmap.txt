@@ -7,8 +7,7 @@
 		- Mic brick started. Refer to MicLoopbackDemo.
 		- Choose which contact I want to hear
 			"Same Room" - It would be pretty cool to be able to hear other contacts in a lower volume, simulating a "same room" work environment :D
-	- Wind
-		- Ctrl-C and Ctrl-V in wind list.
+
 	---- WE DROP SKYPE :)
 
 	- WatchMe - Screen Viewing à la VNC

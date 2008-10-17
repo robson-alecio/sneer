@@ -40,17 +40,18 @@ import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
+import wheel.io.Logger;
 import wheel.io.ui.graphics.Images;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Constant;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.lists.ListValueChange;
 
-class WindGuiImpl implements WindGui, ClipboardOwner {
+class WindGuiImpl implements WindGui {
 	
 	@Inject
 	static private InstrumentManager _instruments;
-
+	
 	@Inject
 	static private Wind _wind;
 
@@ -62,8 +63,6 @@ class WindGuiImpl implements WindGui, ClipboardOwner {
 	
 	private final static Signal<Image> _meImage;
 	private final static Signal<Image> _otherImage;
-	private final static Image LOCK_ICON;
-	private final static Image UNLOCK_ICON;
 	
 	private ListWidget<Shout> _shoutsList;
 	private TextWidget<JTextField> _myShout;
@@ -74,11 +73,11 @@ class WindGuiImpl implements WindGui, ClipboardOwner {
 
 	private Receiver<ListValueChange> _shoutReceiverToAvoidGc;
 
+	private JScrollPane _scrollPane;
+
 	static {
 		_meImage = new Constant<Image>(loadImage("me.png"));
 		_otherImage = new Constant<Image>(loadImage("other.png"));
-		LOCK_ICON = loadImage("lock.png");
-		UNLOCK_ICON = loadImage("unlock.png");
 	}
 	
 	public WindGuiImpl() {
@@ -104,16 +103,15 @@ class WindGuiImpl implements WindGui, ClipboardOwner {
 		_container.setBackground(_shoutsList.getComponent().getBackground());
 		iniGui();
 		initShoutReceiver();
+		new WindClipboardSupport();
 	}
 
 	private void iniGui() {
-		JScrollPane scrollPane = createScrollPane();
-		scrollPane.getViewport().add(_shoutsList.getComponent());
-		
-		initAutoScroll();
+		createScrollPane();
+		_scrollPane.getViewport().add(_shoutsList.getComponent());
 		
 		_container.setLayout(new GridBagLayout());
-		_container.add(scrollPane, new GridBagConstraints(0, 0, 2, 1, 1., 1.,
+		_container.add(_scrollPane, new GridBagConstraints(0, 0, 2, 1, 1., 1.,
 				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 				new Insets(0, 0, 0, 0), 0, 0));
 
@@ -126,7 +124,6 @@ class WindGuiImpl implements WindGui, ClipboardOwner {
 				new Insets(0, 5, 5, 5), 0, 0));		
 		
 		_shoutsList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
-		createKeyMaps();
 	}
 
 	private void initShoutReceiver() {
@@ -148,38 +145,14 @@ class WindGuiImpl implements WindGui, ClipboardOwner {
 		window.toFront();
 	}
 	
-	private void initAutoScroll() {
-		_lock = new JToggleButton();
-		_lock.setPreferredSize(new Dimension(20,20));
-		_lock.setBorder(new EmptyBorder(0,0,0,0));
-		
-		_lock.getModel().addChangeListener(new ChangeListener(){
-			{ _lock.setIcon(new ImageIcon(UNLOCK_ICON)); }
-			@Override public void stateChanged(ChangeEvent e) {
-				if(_lock.isSelected())
-					_lock.setIcon(new ImageIcon(LOCK_ICON));
-				else
-					_lock.setIcon(new ImageIcon(UNLOCK_ICON));
-			}});
-	}
-
-	private JScrollPane createScrollPane() {
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setMinimumSize(size(_container));
-		scrollPane.setPreferredSize(size(_container));
-		scrollPane.setBorder(new TitledBorder(new EmptyBorder(5,5,2,2), getName()));
-		scrollPane.setOpaque(false);
-		addAutoScrollListener(scrollPane);
-		return scrollPane;
-	}
-
-	private void addAutoScrollListener(JScrollPane scrollPane) {//Optimize better auto-scroll
-		final BoundedRangeModel model = scrollPane.getVerticalScrollBar().getModel();
-		model.addChangeListener(new ChangeListener(){@Override	public void stateChanged(ChangeEvent e) {
-			if(!_lock.isSelected())
-				model.setValue(model.getMaximum());
-		}});
+	private void createScrollPane() {
+		_scrollPane = new JScrollPane();
+		_scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		_scrollPane.setMinimumSize(size(_container));
+		_scrollPane.setPreferredSize(size(_container));
+		_scrollPane.setBorder(new TitledBorder(new EmptyBorder(5,5,2,2), getName()));
+		_scrollPane.setOpaque(false);
+		new WindAutoscrollSupport();
 	}
 
 	private Dimension size(Container container) {
@@ -190,8 +163,7 @@ class WindGuiImpl implements WindGui, ClipboardOwner {
 		return "Wind";
 	}
 
-	final class ShoutLabelProvider implements LabelProvider<Shout> {
-				
+	private final class ShoutLabelProvider implements LabelProvider<Shout> {
 		@Override
 		public Signal<String> labelFor(Shout shout) {
 			return new Constant<String>(shout.phrase);
@@ -203,29 +175,79 @@ class WindGuiImpl implements WindGui, ClipboardOwner {
 		}
 	}
 
-	@Override
-	public void lostOwnership(Clipboard arg0, Transferable arg1) {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
-	}
-	
-	private void createKeyMaps() {
-		int modifiers = getPortableSoModifiers();
-		final KeyStroke ctrlc = KeyStroke.getKeyStroke(KeyEvent.VK_C, modifiers);
+	private final class WindAutoscrollSupport{
 		
-		JList list = _shoutsList.getMainWidget();
-		list.getInputMap().put(ctrlc,  "ctrlc");
-		list.getActionMap().put("ctrlc",  new AbstractAction(){@Override public void actionPerformed(ActionEvent e) {
-			copySelectedShoutToClipboard();
-		}});
-	}
+		private final Image LOCK_ICON;
+		private final Image UNLOCK_ICON;
 
-	private int getPortableSoModifiers() {
-		return Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+		private WindAutoscrollSupport() {
+			LOCK_ICON = loadImage("lock.png");
+			UNLOCK_ICON = loadImage("unlock.png");
+			addAutoScrollToggleButton();
+			addAutoScrollListener();
+		}
+
+		private void addAutoScrollToggleButton() {
+			_lock = new JToggleButton();
+			_lock.setPreferredSize(new Dimension(20,20));
+			_lock.setBorder(new EmptyBorder(0,0,0,0));
+			
+			_lock.getModel().addChangeListener(new ChangeListener(){
+				{ _lock.setIcon(new ImageIcon(UNLOCK_ICON)); }
+				@Override public void stateChanged(ChangeEvent e) {
+					if(_lock.isSelected())
+						_lock.setIcon(new ImageIcon(LOCK_ICON));
+					else
+						_lock.setIcon(new ImageIcon(UNLOCK_ICON));
+				}});
+		}
+
+		private void addAutoScrollListener() {//Optimize better auto-scroll
+			final BoundedRangeModel model = _scrollPane.getVerticalScrollBar().getModel();
+			model.addChangeListener(new ChangeListener(){@Override	public void stateChanged(ChangeEvent e) {
+				if(!_lock.isSelected())
+					model.setValue(model.getMaximum());
+			}});
+		}
 	}
 	
-	private void copySelectedShoutToClipboard() {
-		String text = _shoutsList.getMainWidget().getSelectedValue().toString();
-		StringSelection fieldContent = new StringSelection(text);
-		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(fieldContent, this);	
+	private final class WindClipboardSupport implements ClipboardOwner{
+		{
+			int modifiers = getPortableSoModifiers();
+			final KeyStroke ctrlc = KeyStroke.getKeyStroke(KeyEvent.VK_C, modifiers);
+			
+			JList list = _shoutsList.getMainWidget();
+			list.getInputMap().put(ctrlc,  "ctrlc");
+			list.getActionMap().put("ctrlc",  new AbstractAction(){@Override public void actionPerformed(ActionEvent e) {
+				copySelectedShoutToClipboard();
+			}});
+		}
+		
+		@Override
+		public void lostOwnership(Clipboard arg0, Transferable arg1) {
+			Logger.log("Lost Clipboard Ownership.");
+		}
+		
+		private int getPortableSoModifiers() {
+			return Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+		}
+		
+		private void copySelectedShoutToClipboard() {
+			JList list = _shoutsList.getMainWidget();
+			Object values[] = list.getSelectedValues();
+			if(values == null || values.length == 0) return;
+			
+			StringBuilder builder = new StringBuilder();
+			for (Object value : values) {
+				Shout shout = (Shout) value;
+				if(values.length>1)
+					builder	.append(ShoutUtils.publisherNick(shout)).append(" - ")
+					.append(ShoutUtils.getFormatedShoutTime(shout)).append("\n");
+				builder.append(list.getSelectedValue().toString()).append("\n\n");
+			}
+			
+			StringSelection fieldContent = new StringSelection(builder.toString());
+			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(fieldContent, this);	
+		}
 	}
 }

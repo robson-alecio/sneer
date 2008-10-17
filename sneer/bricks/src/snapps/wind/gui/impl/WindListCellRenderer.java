@@ -8,8 +8,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -28,20 +26,13 @@ import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
 import snapps.wind.Shout;
-import sneer.kernel.container.Inject;
-import sneer.pulp.contacts.Contact;
-import sneer.pulp.keymanager.KeyManager;
 import sneer.skin.widgets.reactive.LabelProvider;
 import wheel.reactive.Signal;
 
 class WindListCellRenderer implements ListCellRenderer {
 
-	@Inject
-	private static KeyManager _keys;
-
 	private static final String SHOUT = "shout";
 	private static final String SHOUTERS_NICK = "shoutersNick";
-	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("HH:mm");
 	private static final int SCROLL_WIDTH = 10;
 	
 	private static final int SPACE_BETWEEN_LINES = 0;
@@ -67,7 +58,7 @@ class WindListCellRenderer implements ListCellRenderer {
 	}
 	
 	private JComponent createNick(Shout shout) {
-		if (isMyOwnShout(shout))
+		if (ShoutUtils.isMyOwnShout(shout))
 			return getNickAsIcon(shout);
 		return getNickAsText(shout);
 	}
@@ -80,8 +71,7 @@ class WindListCellRenderer implements ListCellRenderer {
 	}
 
 	private JComponent getNickAsText(Shout shout) {
-		Contact contact = _keys.contactGiven(shout.publisher);
-		String nick = contact == null ? "<Unknown> " : contact.nickname().currentValue() + " ";
+		String nick = ShoutUtils.publisherNick(shout);
 		JLabel labelNick = new JLabel(nick,  SwingConstants.LEFT);
 		labelNick.setFont(new Font(labelNick.getFont().getFontName() , Font.BOLD, 11));
 		labelNick.setForeground(Color.DARK_GRAY);
@@ -90,7 +80,7 @@ class WindListCellRenderer implements ListCellRenderer {
 	}
 
 	private JComponent createShoutTime(Shout shout, boolean isSelected) {
-		JLabel label = new JLabel(getFormatedShoutTime(shout) + " ",  SwingConstants.RIGHT);
+		JLabel label = new JLabel(ShoutUtils.getFormatedShoutTime(shout) + " ",  SwingConstants.RIGHT);
 		label.setFont(new Font(label.getFont().getFontName() , 0, 11));
 		label.setOpaque(false);
 		if(isSelected) label.setForeground(Color.WHITE);
@@ -119,14 +109,6 @@ class WindListCellRenderer implements ListCellRenderer {
 		} catch (BadLocationException e) {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
-	}
-
-	private String getFormatedShoutTime(Shout shout) {
-		return FORMAT.format(new Date(shout.publicationTime));
-	}
-
-	private boolean isMyOwnShout(Shout shout) {
-		return _keys.ownPublicKey().equals(shout.publisher);
 	}
 
 	private void initDocumentStyles(StyledDocument doc) {

@@ -1,19 +1,18 @@
 ﻿MAIN ROADMAP
 ===================
 
-
-	- WatchMe - Screen Viewing à la VNC
-		- Direction - Top-to-bottom instead of left-to-right.
-		- Solve the OutOfMem that will happen because Tuples are never GC'd :)
-	---- WE DROP VNC
-
-	- Wind
-		- Ctrl-C and Ctrl-V in wind list.
 	- Voice Calls
 		- Mic brick started. Refer to MicLoopbackDemo.
 		- Choose which contact I want to hear
 			"Same Room" - It would be pretty cool to be able to hear other contacts in a lower volume, simulating a "same room" work environment :D
-		---- WE DROP SKYPE :)
+	- Wind
+		- Ctrl-C and Ctrl-V in wind list.
+	---- WE DROP SKYPE :)
+
+	- WatchMe - Screen Viewing à la VNC
+		- Solve the OutOfMem that will happen because Tuples are never GC'd :)
+	---- WE DROP VNC
+
 	
 	- Flooding - Solve tuple flooding on the network.
 	

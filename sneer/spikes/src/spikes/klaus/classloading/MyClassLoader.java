@@ -1,50 +1,99 @@
 package spikes.klaus.classloading;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.net.URLClassLoader;
-import java.security.CodeSource;
-import java.security.PermissionCollection;
 import java.util.Arrays;
 import java.util.Enumeration;
-import java.util.jar.Manifest;
 
-public class MyClassLoader extends URLClassLoader {
+import org.apache.commons.io.FileUtils;
 
-	MyClassLoader() {
-		super(new URL[0], null);
+import wheel.lang.exceptions.NotImplementedYet;
+
+public class MyClassLoader extends ClassLoader {
+
+	private final File _classRoot;
+	
+	private int _indentLevel = 0;
+	
+
+	MyClassLoader(File classRoot) {
+		super(null);
+		_classRoot = classRoot;
 	}
 
+	@Override
+	public Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+		try {
+			entering("loadClass", name, resolve);
+			return doLoadClass(name, resolve);
+		} finally {
+			exiting("loadClass", name, resolve);
+		}
+	}
+
+	private Class<?> doLoadClass(String name, boolean resolve) throws ClassNotFoundException {
+	    Class<?> result = findLoadedClass(name);
+	    if (result != null) return result;
+
+	    String filename = name.replace('.', '/')+".class";
+	    File file = new File(_classRoot, filename);
+
+	    result = file.exists()
+	    	? define(name, file)
+	    	: findSystemClass(name);
+	    
+	    if (result == null)
+	    	throw new ClassNotFoundException(name);
+
+	     if (resolve) resolveClass(result);
+
+	     return result;
+	}
+
+	
+	private Class<?> define(String name, File classFile) {
+		try {
+			entering("define", name);
+			return doDefine(name, classFile);
+		} finally {
+			exiting("define", name);
+		}
+	}
+
+	private Class<?> doDefine(String name, File classFile) throws ClassFormatError {
+		byte bytes[] = null;
+	    try {
+	    	bytes = FileUtils.readFileToByteArray(classFile);
+	    } catch(IOException ie) {
+	    	throw new NotImplementedYet();
+	    }
+
+	    return defineClass(name, bytes, 0, bytes.length);
+	}
+
+	
+	
+	
 	private void entering(String method, Object... args) {
-		System.out.println("Entering " + method + " args: " + Arrays.toString(args));
+		System.out.println(indent() + "Entering " + method + " args: " + Arrays.toString(args));
+		_indentLevel++;
 	}
 	
-	private void exiting(String method) {
-		System.out.println("Exiting " + method);
+	private void exiting(String method, Object... args) {
+		_indentLevel--;
+		System.out.println(indent() + "Exiting " + method + " args: " + Arrays.toString(args));
 	}
 
-	@Override
-	protected void addURL(URL url) {
-		try {
-			entering("addURL",url);
-			super.addURL(url);
-		} finally {
-			exiting("addURL");
-		}
+	
+	
+	private String indent() {
+		String result = "";
+		for (int i = 0; i < _indentLevel; i++)
+			result += "  ";
 		
-	}
-
-	@Override
-	protected Package definePackage(String name, Manifest man, URL url)
-			throws IllegalArgumentException {
-		try {
-			entering("definePackage",name, man, url);
-			return super.definePackage(name, man, url);
-		} finally {
-			exiting("definePackage");
-		}
-		
+		return result;
 	}
 
 	@Override
@@ -76,28 +125,6 @@ public class MyClassLoader extends URLClassLoader {
 			return super.findResources(name);
 		} finally {
 			exiting("findResources");
-		}
-		
-	}
-
-	@Override
-	protected PermissionCollection getPermissions(CodeSource codesource) {
-		try {
-			entering("getPermissions",codesource);
-			return super.getPermissions(codesource);
-		} finally {
-			exiting("getPermissions");
-		}
-		
-	}
-
-	@Override
-	public URL[] getURLs() {
-		try {
-			entering("getURLs");
-			return super.getURLs();
-		} finally {
-			exiting("getURLs");
 		}
 		
 	}
@@ -205,20 +232,8 @@ public class MyClassLoader extends URLClassLoader {
 		} finally {
 			exiting("loadClass");
 		}
-		
 	}
 
-	@Override
-	protected synchronized Class<?> loadClass(String name, boolean resolve)
-			throws ClassNotFoundException {
-		try {
-			entering("loadClass",name, resolve);
-			return super.loadClass(name, resolve);
-		} finally {
-			exiting("loadClass");
-		}
-		
-	}
 
 	@Override
 	public synchronized void setClassAssertionStatus(String className,

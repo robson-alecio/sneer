@@ -3,7 +3,7 @@ package spikes.klaus.classloading;
 
 public class HelloWorld {
 
-	HelloWorld() {
+	public HelloWorld() {
 		System.out.println("Hello World");
 	}
 

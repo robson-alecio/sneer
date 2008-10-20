@@ -134,7 +134,7 @@ class MainDemoBrickImpl implements MainDemoBrick {
 			new ContactInfo("Bamboo", "rodrigobamboo.dyndns.org", 5923),
 			new ContactInfo("Bihaiko", "bihaiko.dyndns.org", 5923),
 			new ContactInfo("Daniel", "dfcsantos.homelinux.com", 7777),
-			new ContactInfo("Douglas", "dtgiacomini.dyndns.com", 5923),
+			new ContactInfo("Douglas", "dtgiacomini.dyndns.org", 5923),
 			new ContactInfo("Duno", "duno.dyndns.org", 5923),
 			new ContactInfo("Klaus", "klausw.selfip.net", 5923),
 			new ContactInfo("Localhost", "localhost", 7777),

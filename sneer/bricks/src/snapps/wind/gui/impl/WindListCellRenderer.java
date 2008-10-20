@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Style;
@@ -127,8 +126,8 @@ class WindListCellRenderer implements ListCellRenderer {
 		root.setLayout(new GridBagLayout());
 		root.setOpaque(true);
 
-		if(!isSelected) root.setBackground(UIManager.getColor("List.background"));
-		else root.setBackground(UIManager.getColor("TextField.selectionBackground"));
+		if(isSelected) root.setBackground(Color.LIGHT_GRAY);
+		else root.setBackground(Color.WHITE);
 		
 		root.add(nick, new GridBagConstraints(0, 0, 1, 1, 1., 0,
 				GridBagConstraints.SOUTHEAST, GridBagConstraints.HORIZONTAL,

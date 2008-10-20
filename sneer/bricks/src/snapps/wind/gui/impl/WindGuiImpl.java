@@ -29,6 +29,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import snapps.wind.Shout;
 import snapps.wind.Wind;
@@ -125,6 +127,16 @@ class WindGuiImpl implements WindGui {
 		
 		_shoutsList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
 	}
+	
+	private void createScrollPane() {
+		_scrollPane = new JScrollPane();
+		_scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		_scrollPane.setMinimumSize(size(_container));
+		_scrollPane.setPreferredSize(size(_container));
+		_scrollPane.setBorder(new TitledBorder(new EmptyBorder(5,5,2,2), getName()));
+		_scrollPane.setOpaque(false);
+		new WindAutoscrollSupport();
+	}
 
 	private void initShoutReceiver() {
 		_shoutReceiverToAvoidGc = new Receiver<ListValueChange>(){ @Override public void consume(ListValueChange value) {
@@ -144,16 +156,6 @@ class WindGuiImpl implements WindGui {
 	private void alertUser(Window window) {
 		window.toFront();
 	}
-	
-	private void createScrollPane() {
-		_scrollPane = new JScrollPane();
-		_scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		_scrollPane.setMinimumSize(size(_container));
-		_scrollPane.setPreferredSize(size(_container));
-		_scrollPane.setBorder(new TitledBorder(new EmptyBorder(5,5,2,2), getName()));
-		_scrollPane.setOpaque(false);
-		new WindAutoscrollSupport();
-	}
 
 	private Dimension size(Container container) {
 		return new Dimension(container.getSize().width, 248 );
@@ -163,6 +165,7 @@ class WindGuiImpl implements WindGui {
 		return "Wind";
 	}
 
+	
 	private final class ShoutLabelProvider implements LabelProvider<Shout> {
 		@Override
 		public Signal<String> labelFor(Shout shout) {
@@ -175,6 +178,7 @@ class WindGuiImpl implements WindGui {
 		}
 	}
 
+	
 	private final class WindAutoscrollSupport{
 		
 		private final Image LOCK_ICON;
@@ -211,14 +215,27 @@ class WindGuiImpl implements WindGui {
 		}
 	}
 	
+	
 	private final class WindClipboardSupport implements ClipboardOwner{
-		{
+		
+		private WindClipboardSupport(){
+			addSelectionChangeListener();
+			addKeyStrokeListener();
+		}
+
+		private void addKeyStrokeListener() {
+			JList list = _shoutsList.getMainWidget();
 			int modifiers = getPortableSoModifiers();
 			final KeyStroke ctrlc = KeyStroke.getKeyStroke(KeyEvent.VK_C, modifiers);
-			
-			JList list = _shoutsList.getMainWidget();
 			list.getInputMap().put(ctrlc,  "ctrlc");
 			list.getActionMap().put("ctrlc",  new AbstractAction(){@Override public void actionPerformed(ActionEvent e) {
+				copySelectedShoutToClipboard();
+			}});
+		}
+
+		private void addSelectionChangeListener() {
+			JList list = _shoutsList.getMainWidget();
+			list.getSelectionModel().addListSelectionListener(new ListSelectionListener(){ @Override public void valueChanged(ListSelectionEvent e) {
 				copySelectedShoutToClipboard();
 			}});
 		}
@@ -243,10 +260,11 @@ class WindGuiImpl implements WindGui {
 				if(values.length>1)
 					builder	.append(ShoutUtils.publisherNick(shout)).append(" - ")
 					.append(ShoutUtils.getFormatedShoutTime(shout)).append("\n");
-				builder.append(list.getSelectedValue().toString()).append("\n\n");
+				builder.append(shout.toString()).append("\n\n");
 			}
 			
-			StringSelection fieldContent = new StringSelection(builder.toString());
+			String out = builder.toString().substring(0, builder.length()-2);
+			StringSelection fieldContent = new StringSelection(out);
 			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(fieldContent, this);	
 		}
 	}

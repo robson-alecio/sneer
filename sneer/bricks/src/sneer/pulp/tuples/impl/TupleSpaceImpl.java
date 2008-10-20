@@ -73,7 +73,19 @@ public class TupleSpaceImpl implements TupleSpace {
 	public <T extends Tuple> void addSubscription(Class<T> tupleType,	Omnivore<T> subscriber) {
 		_subscriptions.add(new Subscription(subscriber, tupleType));
 	}
-
+	
+	@Override
+	public <T extends Tuple> void removeSubscription(Class<T> tupleType,	Omnivore<T> subscriber) {
+		final Iterator<Subscription> iterator = _subscriptions.iterator();
+		while (iterator.hasNext()) {
+			final Subscription current = iterator.next();
+			if (current._tupleType == tupleType
+				&& current._subscriber == subscriber) {
+				iterator.remove();
+				break;
+			}
+		}
+	}
 
 	@Override
 	public <T extends Tuple> Iterable<T> tuples(Class<T> tupleType) {

@@ -6,7 +6,7 @@ public class TestTuple extends Tuple {
 
 	public final int[] intArray;
 	
-	TestTuple(int[] pIntArray) {
+	TestTuple(int... pIntArray) {
 		intArray = pIntArray;
 	}
 	

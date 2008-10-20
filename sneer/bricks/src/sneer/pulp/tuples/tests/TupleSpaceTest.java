@@ -1,9 +1,12 @@
 package sneer.pulp.tuples.tests;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
 import sneer.kernel.container.tests.TestThatIsInjected;
+import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Omnivore;
 
@@ -47,6 +50,23 @@ public class TupleSpaceTest extends TestThatIsInjected {
 		
 		while (_garbageCollectedCounter != 200)
 			System.gc();
+	}
+	
+	@Test
+	public void testRemoveSubscription() {
+		final ArrayList<Tuple> tuples = new ArrayList<Tuple>();
+		final Omnivore<TestTuple> consumer = new Omnivore<TestTuple>() {
+			@Override
+			public void consume(TestTuple value) {
+				tuples.add(value);
+			}
+		};
+		_subject.addSubscription(TestTuple.class, consumer);
+		final TestTuple tuple = new TestTuple(42);
+		_subject.publish(tuple);
+		_subject.removeSubscription(TestTuple.class, consumer);
+		_subject.publish(new TestTuple(-1));
+		assertArrayEquals(new Object[] { tuple }, tuples.toArray());
 	}
 	
 }

@@ -12,9 +12,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 
+import snapps.contacts.gui.ContactAction;
+import snapps.contacts.gui.ContactsGui;
 import snapps.share.gui.ShareGui;
 import snapps.watchme.WatchMe;
 import sneer.kernel.container.Inject;
+import sneer.pulp.contacts.Contact;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.snappmanager.InstrumentManager;
 
@@ -28,6 +31,9 @@ public class ShareGuiImpl implements ShareGui {
 
 	@Inject
 	static private ImageFactory _imageFactory;
+	
+	@Inject
+	static private ContactsGui _contactGui;
 	
 	JToggleButton _watchMeButton;
 	private final ImageIcon WATCHME_ON;
@@ -62,12 +68,46 @@ public class ShareGuiImpl implements ShareGui {
 		_listenToMeButton = createButton(container, LISTEN_TO_ME_ON, LISTEN_TO_ME_OFF, "Listen To Me!");
 		
 		createWatchMeButtonListener();
-		createListenToMeButtonListener();
 		
-//		createContactsListReceiver();
+		createListenToMeButtonListener();
+		addListenContactAction();
 	}
-	
 
+	private void addListenContactAction() {
+		_contactGui.addContactAction(new ContactAction(){
+
+			boolean isStarted = false;
+			private Contact _contact;
+
+			@Override
+			public boolean isEnabled() {
+				return true;  //Optimize return true only when remote microphone is shared.
+			}
+
+			@Override
+			public boolean isVisible() {
+				return true;  //Optimize return true only when remote microphone is shared.
+			}
+
+			@Override
+			public void setActive(Contact contact) {
+				_contact = contact;
+			}
+
+			@Override
+			public String caption() {
+				if(isStarted)
+					return "stop listen";
+				return "start listen";
+			}
+
+			@Override
+			public void run() {
+				isStarted = !isStarted;
+				System.out.println(_contact);
+				throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+			}});
+	}
 
 	private void createListenToMeButtonListener() {
 		_listenToMeButton.addMouseListener(new MouseAdapter() {	@Override public void mouseReleased(MouseEvent e) {

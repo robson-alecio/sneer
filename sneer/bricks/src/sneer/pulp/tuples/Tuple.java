@@ -22,7 +22,7 @@ public abstract class Tuple {
 		this(_keys.ownPublicKey(), _clock.time());
 	}
 	
-	public Tuple(PublicKey pPublisher, long pPublicationTime) {
+	protected Tuple(PublicKey pPublisher, long pPublicationTime) {
 		publisher = pPublisher;
 		publicationTime = pPublicationTime;
 	}

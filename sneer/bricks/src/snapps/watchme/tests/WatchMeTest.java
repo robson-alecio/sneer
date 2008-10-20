@@ -95,10 +95,10 @@ public class WatchMeTest extends TestThatIsInjected {
 		_subject.startShowingMyScreen();
 		waitForImage(image1);
 
-		_clock.advanceTime(500);
+		_clock.advanceTime(1000);
 		waitForImage(image2);
 
-		_clock.advanceTime(500);
+		_clock.advanceTime(1000);
 		waitForImage(image3);
 
 		_context.assertIsSatisfied();

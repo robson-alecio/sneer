@@ -4,8 +4,6 @@ import static wheel.io.Logger.logShort;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import sneer.kernel.container.Inject;
 import sneer.pulp.connection.ByteConnection;
@@ -33,6 +31,8 @@ class ByteConnectionImpl implements ByteConnection {
 	private final Register<Boolean> _isOnline = new RegisterImpl<Boolean>(false);
 
 	private final SocketHolder _socketHolder = new SocketHolder(_isOnline.setter());
+	
+	private volatile Sender _sender;
 
 	private final String _label;
 
@@ -40,8 +40,6 @@ class ByteConnectionImpl implements ByteConnection {
 	
 	private volatile Omnivore<byte[]> _legacyReceiver;
 	private volatile Omnivore<byte[]> _receiver;
-
-	private final BlockingQueue<byte[]> _payloadsToSend = new LinkedBlockingQueue<byte[]>();
 
 	ByteConnectionImpl(String label, Contact contact) {
 		_label = label;
@@ -144,23 +142,24 @@ class ByteConnectionImpl implements ByteConnection {
 	private void startSending() {
 		_threadPool.registerActor(new Runnable() { @Override public void run() {
 			while (true) {
-				byte[] packet = flagWithProtocol(waitForNextPayload(), NEW_PROTOCOL);
-				if (!tryToSend(packet)) {
-					_payloadsToSend.clear();
+				byte[] packet = flagWithProtocol(waitForNextPacket(), NEW_PROTOCOL);
+				if (tryToSend(packet))
+					_sender.currentPacketSent();
+				else
 					Threads.sleepWithoutInterruptions(10); //Optimize Use wait/notify.
-				}
 			}
 		}});
-
 	}
-
-	private byte[] waitForNextPayload() {
-		try {
-			return _payloadsToSend.take();
-		} catch (InterruptedException e) {
-			throw new IllegalStateException();
+	
+	private byte[] waitForNextPacket() {
+		while (true) {
+			if (_sender == null) { //Fix: When the old protocol dies, the _sender should never be null. It no longer needs to be volatile either. 
+				Threads.sleepWithoutInterruptions(10);
+				continue;
+			}
+			return _sender.currentPacketToSend();
 		}
-	}
+	}	
 
 	private void startReceiving() {
 		_threadPool.registerActor(new Runnable() { @Override public void run() {
@@ -205,8 +204,9 @@ class ByteConnectionImpl implements ByteConnection {
 	}
 
 	@Override
-	public void send(byte[] payload) {
-		_payloadsToSend.add(payload);
+	public void setSender(Sender sender) {
+		if (_sender != null) throw new IllegalStateException();
+		_sender = sender;
 	}
 
 }

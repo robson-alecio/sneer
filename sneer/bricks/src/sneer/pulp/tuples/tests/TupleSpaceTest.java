@@ -9,6 +9,7 @@ import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Omnivore;
+import wheel.lang.Threads;
 
 public class TupleSpaceTest extends TestThatIsInjected {
 
@@ -48,8 +49,10 @@ public class TupleSpaceTest extends TestThatIsInjected {
 				}
 			});
 		
-		while (_garbageCollectedCounter != 200)
+		while (_garbageCollectedCounter != 200) {
 			System.gc();
+			Threads.sleepWithoutInterruptions(20);
+		}
 	}
 	
 	@Test

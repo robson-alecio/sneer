@@ -22,4 +22,8 @@ public interface TupleSpace extends Brick {
 
 	<T extends Tuple> Iterable<T> mostRecentTupleByGroup(Class<T> tupleType, PublicKey publisher,  Predicate<? super T> filter, Functor<? super T, Object> grouping);
 
+	Tuple tuple(long index);
+
+	long tupleCount();
+
 }

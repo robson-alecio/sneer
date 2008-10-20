@@ -1,11 +1,11 @@
 package sneer.pulp.probe.impl;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import sneer.kernel.container.Inject;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;
+import sneer.pulp.connection.ByteConnection.Sender;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.probe.ProbeManager;
@@ -14,9 +14,11 @@ import sneer.pulp.tuples.TupleSpace;
 import wheel.io.serialization.Serializer;
 import wheel.io.serialization.impl.XStreamBinarySerializer;
 import wheel.lang.Omnivore;
+import wheel.lang.Threads;
+import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
-public class ProbeManagerImpl implements ProbeManager, Omnivore<Tuple> {
+public class ProbeManagerImpl implements ProbeManager {
 
 	@Inject
 	static private TupleSpace _tuples;
@@ -29,57 +31,42 @@ public class ProbeManagerImpl implements ProbeManager, Omnivore<Tuple> {
 	
 	@SuppressWarnings("unused")
 	private SimpleListReceiver<Contact> _contactListReceiverToAvoidGC;
+	
 
 	private static Serializer _serializer = new XStreamBinarySerializer();
 	private static final ClassLoader CLASSLOADER_FOR_TUPLES = TupleSpace.class.getClassLoader();
 
 	{
 		registerContactReceiver();
-		_tuples.addSubscription(Tuple.class, this);
 	}
 
-	@Override
-	public void consume(Tuple tuple) {
-		byte[] packet = _serializer.serialize(tuple);
-		for (ByteConnection connection : onlineConnections())
-			connection.send(packet);
-	}
-
-	private Iterable<ByteConnection> onlineConnections() {
-		ArrayList<ByteConnection> result = new ArrayList<ByteConnection>();
-		for (Contact contact :_contacts.contacts()) {
-			ByteConnection connection = _connections.connectionFor(contact);
-			if (connection.isOnline().currentValue()) result.add(connection);
-		}
-		return result;
-	}
-	
 	private void registerContactReceiver() {
 		_contactListReceiverToAvoidGC = new SimpleListReceiver<Contact>(_contacts.contacts()){
 
 			@Override
 			protected void elementPresent(Contact contact) {
-				receivePacketsFrom(contact);
+				initCommunications(contact);
 			}
 
 			@Override
 			protected void elementAdded(Contact contact) {
-				receivePacketsFrom(contact);
+				initCommunications(contact);
 			}
 
 			@Override
 			protected void elementToBeRemoved(Contact contact) {
-				//My receiver will be naturally garbage collected;
+				throw new NotImplementedYet();
 			}
 			
 		};
 	}
 
-
-	private void receivePacketsFrom(Contact contact) {
-		_connections.connectionFor(contact).setReceiver(new Omnivore<byte[]>(){ @Override public void consume(byte[] packet) {
+	private void initCommunications(Contact contact) {
+		ByteConnection connection = _connections.connectionFor(contact);
+		connection.setReceiver(new Omnivore<byte[]>(){ @Override public void consume(byte[] packet) {
 			_tuples.publish((Tuple)desserialize(packet));
 		}});
+		connection.setSender(new MySender());
 	}
 
 	private Object desserialize(byte[] packet) {
@@ -89,6 +76,29 @@ public class ProbeManagerImpl implements ProbeManager, Omnivore<Tuple> {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		} catch (IOException e) {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+		}
+	}
+
+	
+	private final class MySender implements Sender {
+		private long _nextTupleToSend = 0;
+
+		@Override
+		public void currentPacketSent() {
+			_nextTupleToSend++;
+		}
+
+		@Override
+		public byte[] currentPacketToSend() {
+			while (_nextTupleToSend >= _tuples.tupleCount())
+				Threads.sleepWithoutInterruptions(10); //Optimize Use wait/notify.
+
+			while (true) {
+				Tuple result = _tuples.tuple(_nextTupleToSend);
+				if (result != null)
+					return _serializer.serialize(result);
+				_nextTupleToSend++;					
+			}
 		}
 	}
 

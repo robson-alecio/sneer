@@ -1,8 +1,6 @@
 ﻿MAIN ROADMAP
 ===================
 
-	- ShareGui - Break into two separate Instruments
-
 	- Wind
 		- History
 	- Voice Calls

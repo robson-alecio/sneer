@@ -1,4 +1,4 @@
-package snapps.watchme.gui.impl;
+package snapps.watchme.gui.windows.impl;
 
 import java.awt.BorderLayout;
 import java.awt.Container;

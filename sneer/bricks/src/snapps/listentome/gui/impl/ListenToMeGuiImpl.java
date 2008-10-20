@@ -1,4 +1,4 @@
-package snapps.share.gui.impl;
+package snapps.listentome.gui.impl;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -14,8 +14,7 @@ import javax.swing.border.EmptyBorder;
 
 import snapps.contacts.actions.ContactAction;
 import snapps.contacts.actions.ContactActionManager;
-import snapps.share.gui.ShareGui;
-import snapps.watchme.WatchMe;
+import snapps.listentome.gui.ListenToMeGui;
 import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
 import sneer.skin.image.ImageFactory;
@@ -23,13 +22,10 @@ import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.sound.mic.Mic;
 import sneer.skin.sound.speaker.Speaker;
 
-public class ShareGuiImpl implements ShareGui {
+public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a better snapp window support
 
 	@Inject
 	static private InstrumentManager _instrumentManager;
-	
-	@Inject
-	static private WatchMe _watchMe;
 
 	@Inject
 	static private ImageFactory _imageFactory;
@@ -43,15 +39,6 @@ public class ShareGuiImpl implements ShareGui {
 	@Inject
 	static private Mic _mic;
 	
-	JToggleButton _watchMeButton;
-	private final ImageIcon WATCHME_ON;
-	private final ImageIcon WATCHME_OFF;
-	{
-		WATCHME_ON = loadIcon("watchMeOn.png");
-		WATCHME_OFF = loadIcon("watchMeOff.png");
-	}
-
-
 	JToggleButton _listenToMeButton;
 	private final ImageIcon LISTEN_TO_ME_ON;
 	private final ImageIcon LISTEN_TO_ME_OFF;
@@ -60,22 +47,19 @@ public class ShareGuiImpl implements ShareGui {
 		LISTEN_TO_ME_OFF = loadIcon("listenToMeOff.png");
 	}
 
-	ShareGuiImpl(){
+	ListenToMeGuiImpl(){
 		_instrumentManager.registerInstrument(this);
 	}
 	
 	private ImageIcon loadIcon(String fileName) {
-		return _imageFactory.getIcon(ShareGuiImpl.class, fileName);
+		return _imageFactory.getIcon(this.getClass(), fileName);
 	}
 
 	@Override
 	public void init(Container container) {
 		container.setBackground(Color.WHITE);
 		container.setLayout(new FlowLayout());
-		_watchMeButton = createButton(container, WATCHME_ON, WATCHME_OFF, "Watch Me!");
 		_listenToMeButton = createButton(container, LISTEN_TO_ME_ON, LISTEN_TO_ME_OFF, "Listen To Me!");
-		
-		createWatchMeButtonListener();
 		
 		createListenToMeButtonListener();
 		addListenContactAction();
@@ -132,13 +116,6 @@ public class ShareGuiImpl implements ShareGui {
 	protected void listenToMeOn() {
 		_mic.open();
 		_speaker.open();
-	}
-
-	private void createWatchMeButtonListener() {
-		_watchMeButton.addMouseListener(new MouseAdapter() {	@Override public void mouseReleased(MouseEvent e) {
-			if(_watchMeButton.isSelected()) _watchMe.startShowingMyScreen();
-			else _watchMe.stopShowingMyScreen();
-		}});
 	}
 
 	private JToggleButton createButton(Container container, final Icon onIcon, final Icon offIcon, String tip) {

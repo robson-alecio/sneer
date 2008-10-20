@@ -3,8 +3,9 @@ package main.impl;
 import main.MainDemoBrick;
 import snapps.blinkinglights.gui.BlinkingLightsGui;
 import snapps.contacts.gui.ContactsGui;
-import snapps.share.gui.ShareGui;
-import snapps.watchme.gui.RemoteWatchMeWindows;
+import snapps.listentome.gui.ListenToMeGui;
+import snapps.watchme.gui.WatchMeGui;
+import snapps.watchme.gui.windows.RemoteWatchMeWindows;
 import snapps.wind.gui.WindGui;
 import sneer.kernel.container.Inject;
 import sneer.pulp.clockticker.ClockTicker;
@@ -38,10 +39,13 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	private static WindGui _gui4;
 	
 	@Inject	@SuppressWarnings("unused")
-	private static ShareGui _gui5;
+	private static WatchMeGui _gui5;
 
 	@Inject	@SuppressWarnings("unused")
-	private static RemoteWatchMeWindows _gui6;
+	private static ListenToMeGui _gui6;
+
+	@Inject	@SuppressWarnings("unused")
+	private static RemoteWatchMeWindows _gui7;
 
 	@Inject	@SuppressWarnings("unused")
 	private static SocketOriginator _networkDaemon1;

@@ -1,9 +1,9 @@
-package snapps.watchme.gui.impl;
+package snapps.watchme.gui.windows.impl;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import snapps.watchme.gui.RemoteWatchMeWindows;
+import snapps.watchme.gui.windows.RemoteWatchMeWindows;
 import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;

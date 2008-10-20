@@ -6,9 +6,9 @@ import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.config.persistence.PersistenceConfig;
 import sneer.pulp.config.persistence.mocks.PersistenceConfigMock;
 import sneer.pulp.propertystore.PropertyStore;
-import wheel.testutil.TestThatMightUseFiles;
+import wheel.testutil.TestThatMightUseResources;
 
-public class PropertyStoreTest extends TestThatMightUseFiles {
+public class PropertyStoreTest extends TestThatMightUseResources {
 
 	@Test
 	public void testPropertyStore() {

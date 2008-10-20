@@ -12,9 +12,9 @@ import org.junit.Test;
 
 import wheel.io.JarBuilder;
 import wheel.io.Streams;
-import wheel.testutil.TestThatMightUseFiles;
+import wheel.testutil.TestThatMightUseResources;
 
-public class JarBuilderTest extends TestThatMightUseFiles {
+public class JarBuilderTest extends TestThatMightUseResources {
 
 	@Test
 	public void testSimpleJar() throws Exception {

@@ -9,7 +9,7 @@ import org.junit.Assert;
 
 import wheel.io.Logger;
 
-public class TestThatMightUseFiles extends Assert {
+public class TestThatMightUseResources extends Assert {
 
 	private File _tmpDirectory;
 

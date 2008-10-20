@@ -11,9 +11,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import wheel.io.files.Directory;
-import wheel.testutil.TestThatMightUseFiles;
+import wheel.testutil.TestThatMightUseResources;
 
-public abstract class DirectoryTestBase extends TestThatMightUseFiles {
+public abstract class DirectoryTestBase extends TestThatMightUseResources {
 	
 	protected Directory _subject;
 	

@@ -6,9 +6,9 @@ import org.junit.Before;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.Injector;
-import wheel.testutil.TestThatMightUseFiles;
+import wheel.testutil.TestThatMightUseResources;
 
-public class TestThatIsInjected extends TestThatMightUseFiles {
+public class TestThatIsInjected extends TestThatMightUseResources {
 	
     protected Object[] getBindings() {
     	return new Object[]{};

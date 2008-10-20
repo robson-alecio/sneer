@@ -12,16 +12,20 @@ import org.junit.runner.RunWith;
 
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
+import sneer.pulp.keymanager.KeyManager;
+import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.speaker.Speaker;
+import wheel.lang.ImmutableByteArray;
 
 @RunWith(JMock.class)
 public class SpeakerTest  {
 	
 	Mockery mockery = new JUnit4Mockery();
 	
+	@SuppressWarnings("deprecation")
 	@Test
 	public void test() throws Exception {
 		
@@ -45,19 +49,23 @@ public class SpeakerTest  {
 		}});
 		
 		final Container container = ContainerUtils.newContainer(audio);
+		final KeyManager keyManager = container.produce(KeyManager.class);
 		final TupleSpace tupleSpace = container.produce(TupleSpace.class);
 		final Speaker speaker = container.produce(Speaker.class);
 		speaker.open();
 		
-		tupleSpace.publish(pcmSoundPacketFor(pcmPayload1));
-		tupleSpace.publish(pcmSoundPacketFor(pcmPayload2));
+		final PublicKey contactKey = keyManager.generateMickeyMouseKey("contact");
+		tupleSpace.publish(pcmSoundPacketFor(contactKey, pcmPayload1));
+		tupleSpace.publish(pcmSoundPacketFor(contactKey, pcmPayload2));
+		tupleSpace.publish(pcmSoundPacketFor(keyManager.ownPublicKey(), pcmPayload2));
 		
 		speaker.close();
-		tupleSpace.publish(pcmSoundPacketFor(pcmPayload1));
+		tupleSpace.publish(pcmSoundPacketFor(contactKey, pcmPayload1));
 	}
 
-	private PcmSoundPacket pcmSoundPacketFor(final byte[] pcmPayload) {
-		return PcmSoundPacket.newInstance(pcmPayload, pcmPayload.length);
+	private PcmSoundPacket pcmSoundPacketFor(PublicKey publicKey, final byte[] pcmPayload) {
+		final PcmSoundPacket packet = new PcmSoundPacket(publicKey, System.currentTimeMillis(), new ImmutableByteArray(pcmPayload, pcmPayload.length));
+		return packet;
 	}
 
 }

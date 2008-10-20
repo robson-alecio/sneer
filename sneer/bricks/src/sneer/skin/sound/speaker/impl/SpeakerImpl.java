@@ -4,6 +4,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
 import sneer.kernel.container.Inject;
+import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.Audio;
@@ -16,11 +17,16 @@ public class SpeakerImpl implements Speaker {
 	private static TupleSpace _tupleSpace;
 	
 	@Inject
+	private static KeyManager _keyManager;
+	
+	@Inject
 	private static Audio _audio;
 	
 	private SourceDataLine _line;
 
 	private final Omnivore<PcmSoundPacket> _pcmSoundPacketConsumer = new Omnivore<PcmSoundPacket>(){ @Override public void consume(PcmSoundPacket packet) {
+		if (packet.publisher == _keyManager.ownPublicKey())
+			return;
 		final byte[] buffer = packet._payload.copy();
 		_line.write(buffer, 0, buffer.length);
 	}};

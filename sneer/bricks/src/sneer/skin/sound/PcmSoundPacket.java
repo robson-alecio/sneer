@@ -1,5 +1,6 @@
 package sneer.skin.sound;
 
+import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.tuples.Tuple;
 import wheel.lang.ImmutableByteArray;
 
@@ -13,6 +14,11 @@ public class PcmSoundPacket extends Tuple {
 	public final ImmutableByteArray _payload;
 
 	public PcmSoundPacket(ImmutableByteArray payload) {
+		_payload = payload;
+	}
+
+	public PcmSoundPacket(PublicKey pPublisher, long pPublicationTime, ImmutableByteArray payload) {
+		super(pPublisher, pPublicationTime);
 		_payload = payload;
 	}
 	

@@ -2,8 +2,6 @@
 ===================
 
 	- Wind
-		- Show selected shouts in different color
-		- Copy to clipboard automatically without need of ctrl+c
 		- History
 	- Voice Calls
 		- Mic brick started. Refer to MicLoopbackDemo.

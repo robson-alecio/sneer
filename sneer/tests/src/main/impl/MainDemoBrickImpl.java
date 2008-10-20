@@ -33,20 +33,20 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	private static ContactsGui _gui2;
 	
 	@Inject	@SuppressWarnings("unused")
-	private static BlinkingLightsGui _gui3;
-
-	@Inject	@SuppressWarnings("unused")
-	private static WindGui _gui4;
+	private static WindGui _gui3;
 	
 	@Inject	@SuppressWarnings("unused")
-	private static WatchMeGui _gui5;
+	private static WatchMeGui _gui4;
 
 	@Inject	@SuppressWarnings("unused")
-	private static ListenToMeGui _gui6;
+	private static ListenToMeGui _gui5;
 
 	@Inject	@SuppressWarnings("unused")
-	private static RemoteWatchMeWindows _gui7;
+	private static RemoteWatchMeWindows _gui6;
 
+	@Inject	@SuppressWarnings("unused")
+	private static BlinkingLightsGui _lastGui;
+	
 	@Inject	@SuppressWarnings("unused")
 	private static SocketOriginator _networkDaemon1;
 	

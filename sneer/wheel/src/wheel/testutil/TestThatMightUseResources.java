@@ -8,6 +8,7 @@ import org.junit.After;
 import org.junit.Assert;
 
 import wheel.io.Logger;
+import wheel.lang.Daemon;
 
 public class TestThatMightUseResources extends Assert {
 
@@ -21,7 +22,12 @@ public class TestThatMightUseResources extends Assert {
 	}
 
 	@After
-	public void cleanup() {
+	public void afterTestThatMightUseResources() {
+		Daemon.killAllInstances();
+		deleteFiles();
+	}
+
+	private void deleteFiles() {
 		if (_tmpDirectory == null) return;
 		try {
 			tryToClean(_tmpDirectory);

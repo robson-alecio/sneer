@@ -109,8 +109,6 @@ class ContactsGuiImpl implements ContactsGui {
 		private PopUpSupport() {
 			final JList list = _contactList.getMainWidget();
 			list.addMouseListener(new MouseAdapter(){ @Override public void mouseReleased(MouseEvent e) {
-				int index = list.locationToIndex(e.getPoint());
-				list.getSelectionModel().setSelectionInterval(index, index);
 				if (e.isPopupTrigger())
 					tryShowContactMenu(e);
 			}});
@@ -119,7 +117,8 @@ class ContactsGuiImpl implements ContactsGui {
 		private void tryShowContactMenu(MouseEvent e) {
 			JList list = _contactList.getMainWidget();
 			int index = list.locationToIndex(e.getPoint());
-			Contact contact = (Contact) list.getModel().getElementAt(index);
+			list.getSelectionModel().setSelectionInterval(index, index);
+			Contact contact = (Contact) list.getSelectedValue();
 			
 			JPopupMenu popupMain = new JPopupMenu();	
 			for (ContactAction action : _actionsManager.actions()) {

@@ -24,6 +24,7 @@ public class FriendlyException extends Exception {
 		_help = help;
 	}
 
+	/** A useful help message to the end-user.*/
 	public String getHelp() {
 		return _help;
 	}

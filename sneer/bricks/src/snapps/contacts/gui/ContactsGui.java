@@ -4,5 +4,6 @@ import sneer.skin.snappmanager.Instrument;
 
 public interface ContactsGui extends Instrument {
 
-
+	void addContactAction(ContactAction action);
+	void removeContactAction(String contactActionCaption);
 }

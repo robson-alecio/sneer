@@ -3,8 +3,9 @@ package sneer.skin.sound.mic.impl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
+import sneer.kernel.container.Inject;
 import sneer.skin.sound.PcmSoundPacket;
-import wheel.lang.ImmutableByteArray;
+import sneer.skin.sound.kernel.Audio;
 import wheel.lang.exceptions.FriendlyException;
 
 class MicLine {
@@ -14,6 +15,9 @@ class MicLine {
 	private static final int NUMBER_OF_CHANNELS = 2;
 	private static final int ONE_HUNDRETH_OF_A_SECOND = SAMPLE_RATE_IN_HZ / 100;
 
+	@Inject
+	static private Audio _audio;
+	
 	static private TargetDataLine _delegate;
 	
 	static void close() {
@@ -23,7 +27,7 @@ class MicLine {
 	}
 
 	static void tryToAcquire() throws FriendlyException {
-		TargetDataLine result = AudioCommon.bestAvailableTargetDataLine();
+		TargetDataLine result = _audio.bestAvailableTargetDataLine();
 		
 		if (result == null)
 			throwFriendly("Unable to find a target data line for your mic.");
@@ -51,7 +55,7 @@ class MicLine {
 
 		int read = _delegate.read(pcmBuffer, 0, pcmBuffer.length);
 
-		return new PcmSoundPacket(new ImmutableByteArray(pcmBuffer, read));
+		return PcmSoundPacket.newInstance(pcmBuffer, read);
 	}
 
 	private static void throwFriendly(String specifics) throws FriendlyException {

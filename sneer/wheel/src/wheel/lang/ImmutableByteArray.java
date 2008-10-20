@@ -16,6 +16,12 @@ public class ImmutableByteArray {
 		return result;
 	}
 	
+	public byte[] copy() {
+		final byte[] copy = new byte[_payload.length];
+		System.arraycopy(_payload, 0, copy, 0, copy.length);
+		return copy;
+	}
+	
 	@Override
 	public String toString() {
 		return Arrays.toString(_payload);

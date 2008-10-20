@@ -1,4 +1,4 @@
-package sneer.skin.sound.mic.impl;
+package sneer.skin.sound.kernel.impl;
 
 import java.util.ArrayList;
 import java.util.List;

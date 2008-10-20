@@ -8,8 +8,8 @@ import javax.sound.sampled.TargetDataLine;
 
 import org.xiph.speex.SpeexEncoder;
 
-import sneer.skin.sound.mic.impl.AudioCommon;
-import sneer.skin.sound.mic.impl.AudioUtil;
+import sneer.skin.sound.kernel.impl.AudioCommon;
+import sneer.skin.sound.kernel.impl.AudioUtil;
 
 import wheel.io.Logger;
 

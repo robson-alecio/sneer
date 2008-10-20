@@ -8,7 +8,9 @@
 		- History
 	- Voice Calls
 		- Mic brick started. Refer to MicLoopbackDemo.
-		- Choose which contact I want to hear
+		- First Step: When I press the button I listen to everyone and everyone listens to me.
+		- Second Step: Rooms.
+		
 	---- WE DROP SKYPE :)
 
 	- WatchMe - Screen Viewing à la VNC

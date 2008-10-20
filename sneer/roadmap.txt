@@ -2,7 +2,6 @@
 ===================
 
 	- ShareGui - Break into two separate Instruments
-	- Contact Popup Menu - Do not expose that in the ContactGui interface. Use a separate ContactActionManager Brick.
 
 	- Wind
 		- History

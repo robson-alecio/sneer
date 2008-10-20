@@ -1,9 +1,9 @@
-package snapps.contacts.gui.impl;
+package snapps.contacts.actions.impl;
 
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
 
-import snapps.contacts.gui.ContactAction;
+import snapps.contacts.actions.ContactAction;
 import sneer.pulp.contacts.Contact;
 
 public class SwingActionAdapter implements ContactAction, javax.swing.Action {

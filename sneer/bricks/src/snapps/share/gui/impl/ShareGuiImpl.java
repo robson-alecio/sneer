@@ -12,8 +12,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 
-import snapps.contacts.gui.ContactAction;
-import snapps.contacts.gui.ContactsGui;
+import snapps.contacts.actions.ContactAction;
+import snapps.contacts.actions.ContactActionManager;
 import snapps.share.gui.ShareGui;
 import snapps.watchme.WatchMe;
 import sneer.kernel.container.Inject;
@@ -35,8 +35,8 @@ public class ShareGuiImpl implements ShareGui {
 	static private ImageFactory _imageFactory;
 	
 	@Inject
-	static private ContactsGui _contactGui;
-	
+	static private ContactActionManager _actionsManager;
+
 	@Inject
 	static private Speaker _speaker;
 	
@@ -82,7 +82,7 @@ public class ShareGuiImpl implements ShareGui {
 	}
 
 	private void addListenContactAction() {
-		_contactGui.addContactAction(new ContactAction(){
+		_actionsManager.addContactAction(new ContactAction(){
 
 			boolean isStarted = false;
 			private Contact _contact;

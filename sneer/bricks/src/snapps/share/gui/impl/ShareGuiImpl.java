@@ -20,6 +20,8 @@ import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.snappmanager.InstrumentManager;
+import sneer.skin.sound.mic.Mic;
+import sneer.skin.sound.speaker.Speaker;
 
 public class ShareGuiImpl implements ShareGui {
 
@@ -34,6 +36,12 @@ public class ShareGuiImpl implements ShareGui {
 	
 	@Inject
 	static private ContactsGui _contactGui;
+	
+	@Inject
+	static private Speaker _speaker;
+	
+	@Inject
+	static private Mic _mic;
 	
 	JToggleButton _watchMeButton;
 	private final ImageIcon WATCHME_ON;
@@ -111,8 +119,19 @@ public class ShareGuiImpl implements ShareGui {
 
 	private void createListenToMeButtonListener() {
 		_listenToMeButton.addMouseListener(new MouseAdapter() {	@Override public void mouseReleased(MouseEvent e) {
-			//Implement add listen to me call
+			if (_listenToMeButton.isSelected()) listenToMeOn();
+			else listenToMeOff();
 		}});
+	}
+
+	protected void listenToMeOff() {
+		_mic.close();
+		_speaker.close();
+	}
+
+	protected void listenToMeOn() {
+		_mic.open();
+		_speaker.open();
 	}
 
 	private void createWatchMeButtonListener() {

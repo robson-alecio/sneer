@@ -1,11 +1,12 @@
 package sneer.pulp.tuples;
 
+import sneer.kernel.container.Brick;
 import sneer.pulp.keymanager.PublicKey;
 import wheel.lang.Functor;
 import wheel.lang.Omnivore;
 import wheel.lang.Predicate;
 
-public interface TupleSpace {
+public interface TupleSpace extends Brick {
 
 	void publish(Tuple tuple);
 

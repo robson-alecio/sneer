@@ -7,15 +7,13 @@
 	- Wind
 		- History
 	- Voice Calls
-		- Mic brick started. Refer to MicLoopbackDemo.
 		- First Step: When I press the button I listen to everyone and everyone listens to me.
 		- Second Step: Rooms.
 		
 	---- WE DROP SKYPE :)
 
 	- WatchMe - Screen Viewing à la VNC
-		- [Douglas] Keep only the last 1000 published Tuples, instead of all.
-			- Test case
+		- Send only the latest delta for each cell. Do not queue every single delta.
 		- Images.isSameImage() - Optimize - It is using 40% of the CPU on Klaus's machine.
 	---- WE DROP VNC
 

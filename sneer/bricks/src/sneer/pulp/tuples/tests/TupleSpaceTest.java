@@ -13,6 +13,8 @@ public class TupleSpaceTest extends TestThatIsInjected {
 	private static TupleSpace _subject;
 	
 	private TestTuple _received;
+	private volatile int _garbageCollectedCounter = 0;	
+
 	
 	@Test
 	public void tuplesContainingArrays() {
@@ -31,6 +33,20 @@ public class TupleSpaceTest extends TestThatIsInjected {
 		_received = null;
 		_subject.publish(b);
 		assertNull(_received);
-}
+	}
+	
+	@Test(timeout=2000)
+	public void tuplesLimitSize() {
+		for (int i = 0; i < 1200; i++)
+			_subject.publish(new TestTuple(new int[]{i}) {
+				@Override
+				protected void finalize() throws Throwable {
+					TupleSpaceTest.this._garbageCollectedCounter++;
+				}
+			});
+		
+		while (_garbageCollectedCounter != 200)
+			System.gc();
+	}
 	
 }

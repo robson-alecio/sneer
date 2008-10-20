@@ -41,7 +41,7 @@ import wheel.reactive.lists.impl.SimpleListReceiver;
 //persistent system. Store and restore the last window size and position
 class DashboardImpl implements Dashboard, Runnable {
 	
-	private static final int TIMEOUT_FOR_GUI_EVENTS = 7000;
+	private static final int TIMEOUT_FOR_GUI_EVENTS = 30 * 1000;
 	
 	private Dimension _screenSize;
 	private Rectangle _bounds;

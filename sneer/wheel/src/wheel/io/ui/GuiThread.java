@@ -36,4 +36,8 @@ public class GuiThread {
 	private static void assertNotInGuiThread() {
 		if (SwingUtilities.isEventDispatchThread()) throw new IllegalStateException("Should NOT be running in the GUI thread."); 
 	}
+
+	public static void invokeLater(Runnable runnable) {
+		SwingUtilities.invokeLater(runnable);
+	}
 }

@@ -25,7 +25,7 @@ public class SpeakerImpl implements Speaker {
 	private SourceDataLine _line;
 
 	private final Omnivore<PcmSoundPacket> _pcmSoundPacketConsumer = new Omnivore<PcmSoundPacket>(){ @Override public void consume(PcmSoundPacket packet) {
-		if (packet.publisher == _keyManager.ownPublicKey())
+		if (_keyManager.ownPublicKey().equals(packet.publisher))
 			return;
 		final byte[] buffer = packet._payload.copy();
 		_line.write(buffer, 0, buffer.length);

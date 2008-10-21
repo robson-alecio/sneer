@@ -1,4 +1,4 @@
-package snapps.contacts.actions.impl;
+package snapps.contacts.gui.impl;
 
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;

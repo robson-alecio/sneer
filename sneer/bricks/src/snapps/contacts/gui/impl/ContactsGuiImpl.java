@@ -16,7 +16,6 @@ import javax.swing.border.TitledBorder;
 
 import snapps.contacts.actions.ContactAction;
 import snapps.contacts.actions.ContactActionManager;
-import snapps.contacts.actions.impl.SwingActionAdapter;
 import snapps.contacts.gui.ContactsGui;
 import sneer.kernel.container.Inject;
 import sneer.pulp.connection.ConnectionManager;

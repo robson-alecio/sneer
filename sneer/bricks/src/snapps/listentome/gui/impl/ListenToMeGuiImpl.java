@@ -73,12 +73,12 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 
 			@Override
 			public boolean isEnabled() {
-				return true;  //Optimize return true only when remote microphone is shared.
+				return true;  //Fix return true only when remote microphone is shared.
 			}
 
 			@Override
 			public boolean isVisible() {
-				return true;  //Optimize return true only when remote microphone is shared.
+				return true;  //Fix return true only when remote microphone is shared.
 			}
 
 			@Override

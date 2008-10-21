@@ -77,7 +77,8 @@ public class ListSignalModel<T> extends AbstractListModel {
 	}
 	
 	public int getSize() {
-		return _input.size().currentValue();
+		Signal<Integer> size = _input.size();
+		return size.currentValue();
 	}
 	
 	public T getElementAt(int index) {

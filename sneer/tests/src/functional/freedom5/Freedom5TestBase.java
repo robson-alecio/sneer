@@ -40,6 +40,18 @@ public abstract class Freedom5TestBase extends SovereignFunctionalTestBase {
 //		assertSame(8, cdTraffic.currentValue());
 		
 	}
+	
+	@Test(timeout=4000)
+	public void canHearPastShouts() {
+		
+		_a.shout("A!!!");
+		_b.shout("B!!!");
+		
+		SovereignParty c = _community.createParty("Cid");
+		c.bidirectionalConnectTo(_b);
+
+		waitForShoutsHeardBy(c, "A!!!, B!!!");
+	}
 
 	private void waitForShoutsHeardBy(SovereignParty user, String shoutsExpected) {
 		while (true) {

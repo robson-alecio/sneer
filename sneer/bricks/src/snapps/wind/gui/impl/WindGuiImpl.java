@@ -36,7 +36,6 @@ import snapps.wind.Shout;
 import snapps.wind.Wind;
 import snapps.wind.gui.WindGui;
 import sneer.kernel.container.Inject;
-import sneer.pulp.keymanager.KeyManager;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
@@ -60,11 +59,7 @@ class WindGuiImpl implements WindGui {
 	@Inject
 	static private ReactiveWidgetFactory _rfactory;
 
-	@Inject
-	static private KeyManager _keyManager;
-	
 	private final static Signal<Image> _meImage;
-	private final static Signal<Image> _otherImage;
 	
 	private ListWidget<Shout> _shoutsList;
 	private TextWidget<JTextField> _myShout;
@@ -79,7 +74,6 @@ class WindGuiImpl implements WindGui {
 
 	static {
 		_meImage = new Constant<Image>(loadImage("me.png"));
-		_otherImage = new Constant<Image>(loadImage("other.png"));
 	}
 	
 	public WindGuiImpl() {
@@ -91,9 +85,9 @@ class WindGuiImpl implements WindGui {
 	}
 
 	private Signal<Image> image(Shout shout) {
-		return shout.publisher == _keyManager.ownPublicKey()
-			? _meImage
-			: _otherImage;
+		if (!ShoutUtils.isMyOwnShout(shout))
+			return new Constant<Image>(null);
+		return _meImage;
 	}	
 
 	@Override

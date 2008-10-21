@@ -9,7 +9,7 @@ import sneer.pulp.contacts.Contact;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.own.name.OwnNameKeeper;
 
-public abstract class ShoutUtils {
+abstract class ShoutUtils {
 
 	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("HH:mm");
 	

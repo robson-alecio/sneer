@@ -5,7 +5,7 @@ import java.io.IOException;
 import sneer.kernel.container.Inject;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;
-import sneer.pulp.connection.ByteConnection.Sender;
+import sneer.pulp.connection.ByteConnection.PacketScheduler;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.probe.ProbeManager;
@@ -80,11 +80,11 @@ public class ProbeManagerImpl implements ProbeManager {
 	}
 
 	
-	private final class MySender implements Sender {
+	private final class MySender implements PacketScheduler {
 		private long _nextTupleToSend = 0;
 
 		@Override
-		public void currentPacketSent() {
+		public void lastRequestedPacketWasSent() {
 			_nextTupleToSend++;
 		}
 

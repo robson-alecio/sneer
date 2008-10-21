@@ -32,7 +32,7 @@ class ByteConnectionImpl implements ByteConnection {
 
 	private final SocketHolder _socketHolder = new SocketHolder(_isOnline.setter());
 	
-	private volatile Sender _sender;
+	private volatile PacketScheduler _sender;
 
 	private final String _label;
 
@@ -144,7 +144,7 @@ class ByteConnectionImpl implements ByteConnection {
 			while (true) {
 				byte[] packet = flagWithProtocol(waitForNextPacket(), NEW_PROTOCOL);
 				if (tryToSend(packet))
-					_sender.currentPacketSent();
+					_sender.lastRequestedPacketWasSent();
 				else
 					Threads.sleepWithoutInterruptions(10); //Optimize Use wait/notify.
 			}
@@ -204,7 +204,7 @@ class ByteConnectionImpl implements ByteConnection {
 	}
 
 	@Override
-	public void setSender(Sender sender) {
+	public void setSender(PacketScheduler sender) {
 		if (_sender != null) throw new IllegalStateException();
 		_sender = sender;
 	}

@@ -5,17 +5,17 @@ import wheel.reactive.Signal;
 
 public interface ByteConnection {
 
-	public interface Sender {
-		byte[] currentPacketToSend();
-		void currentPacketSent();
-
+	public interface PacketScheduler {
+		byte[] highestPriorityPacketToSend();
+		void lastRequestedPacketWasSent();
 	}
+	
 	Signal<Boolean> isOnline();
 
 	void legacySend(byte[] packet); //Refactor: delete
 	void setLegacyReceiver(Omnivore<byte[]> receiver); //Refactor: delete
 
-	void setSender(Sender sender);
+	void setSender(PacketScheduler sender);
 	void setReceiver(Omnivore<byte[]> receiver);
 	
 }

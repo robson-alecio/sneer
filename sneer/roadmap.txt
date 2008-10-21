@@ -2,7 +2,6 @@
 ===================
 
 	- Wind
-		- Scroll - Remove PC-XT-Style "Scroll Lock" button :) If the scrollbar is all the way down, do auto-scroll, otherwise don't.
 		- History
 	- Voice Calls
 		- SoundLoopbackDemo - Invert the order of the mic.open() and speaker.open() lines and get it to work.

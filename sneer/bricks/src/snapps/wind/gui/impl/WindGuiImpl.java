@@ -17,18 +17,14 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.BoundedRangeModel;
-import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.JToggleButton;
 import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -42,11 +38,14 @@ import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.Logger;
+import wheel.io.ui.GuiThread;
 import wheel.io.ui.graphics.Images;
+import wheel.lang.ByRef;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Constant;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.lists.ListValueChange;
+import wheel.reactive.lists.impl.SimpleListReceiver;
 
 class WindGuiImpl implements WindGui {
 	
@@ -66,11 +65,13 @@ class WindGuiImpl implements WindGui {
 
 	private Container _container;
 
-	private JToggleButton _lock;
-
 	private Receiver<ListValueChange> _shoutReceiverToAvoidGc;
 
 	private JScrollPane _scrollPane;
+
+	@SuppressWarnings("unused")
+	private WindAutoscrollSupport _autoscrollSupportToAvoidGc;
+	
 
 	static {
 		_meImage = new Constant<Image>(loadImage("me.png"));
@@ -93,17 +94,18 @@ class WindGuiImpl implements WindGui {
 	@Override
 	public void init(Container container) {
 		_container = container;
-		ShoutLabelProvider labelProvider = new ShoutLabelProvider();
-		_shoutsList = _rfactory.newList(_wind.shoutsHeard(), labelProvider, new WindListCellRenderer(labelProvider));
-		_myShout = _rfactory.newTextField(new Constant<String>(""), _wind.megaphone(), true);
-		_container.setBackground(_shoutsList.getComponent().getBackground());
 		iniGui();
+		_autoscrollSupportToAvoidGc.placeAtEnd();
 		initShoutReceiver();
 		new WindClipboardSupport();
 	}
 
 	private void iniGui() {
-		createScrollPane();
+		initScrollPane();
+		initListReceiversInOrder();
+		
+		_myShout = _rfactory.newTextField(new Constant<String>(""), _wind.megaphone(), true);
+		_container.setBackground(_shoutsList.getComponent().getBackground());
 		_scrollPane.getViewport().add(_shoutsList.getComponent());
 		
 		_container.setLayout(new GridBagLayout());
@@ -113,23 +115,30 @@ class WindGuiImpl implements WindGui {
 
 		_container.add(_myShout.getComponent(), new GridBagConstraints(0, 1, 1, 1, 1., 0,
 				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-				new Insets(0, 5, 5, 0), 0, 0));
+				new Insets(0, 5, 5, 5), 0, 0));
 
-		_container.add(_lock, new GridBagConstraints(1, 1, 1, 1, 0, 0,
-				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-				new Insets(0, 5, 5, 5), 0, 0));		
-		
 		_shoutsList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
 	}
+
+	private void initListReceiversInOrder() {
+		_autoscrollSupportToAvoidGc.initPreChangeReceiver();
+		initShoutList();
+		_autoscrollSupportToAvoidGc.initPosChangeReceiver();
+	}
+
+	private void initShoutList() {
+		ShoutLabelProvider labelProvider = new ShoutLabelProvider();
+		_shoutsList = _rfactory.newList(_wind.shoutsHeard(), labelProvider, new WindListCellRenderer(labelProvider));
+	}
 	
-	private void createScrollPane() {
+	private void initScrollPane() {
 		_scrollPane = new JScrollPane();
 		_scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		_scrollPane.setMinimumSize(size(_container));
 		_scrollPane.setPreferredSize(size(_container));
 		_scrollPane.setBorder(new TitledBorder(new EmptyBorder(5,5,2,2), getName()));
 		_scrollPane.setOpaque(false);
-		new WindAutoscrollSupport();
+		_autoscrollSupportToAvoidGc = new WindAutoscrollSupport();
 	}
 
 	private void initShoutReceiver() {
@@ -158,7 +167,6 @@ class WindGuiImpl implements WindGui {
 	private String getName() {
 		return "Wind";
 	}
-
 	
 	private final class ShoutLabelProvider implements LabelProvider<Shout> {
 		@Override
@@ -172,43 +180,53 @@ class WindGuiImpl implements WindGui {
 		}
 	}
 
-	
 	private final class WindAutoscrollSupport{
 		
-		private final Image LOCK_ICON;
-		private final Image UNLOCK_ICON;
+		@SuppressWarnings("unused")
+		private SimpleListReceiver<Shout> _preChangeReceiverAvoidGc;
+		
+		@SuppressWarnings("unused")
+		private SimpleListReceiver<Shout> _posChangeReceiverAvoidGc;
+		
+		protected boolean _shouldAutoscroll = true;
 
-		private WindAutoscrollSupport() {
-			LOCK_ICON = loadImage("lock.png");
-			UNLOCK_ICON = loadImage("unlock.png");
-			addAutoScrollToggleButton();
-			addAutoScrollListener();
+		private void initPreChangeReceiver() {
+			_preChangeReceiverAvoidGc = new SimpleListReceiver<Shout>(_wind.shoutsHeard()){ 
+				private void fire() {
+					_shouldAutoscroll = isAtEnd();
+				}
+				@Override protected void elementAdded(Shout newElement) {	fire();	}
+				@Override protected void elementPresent(Shout element) {fire();	}
+				@Override protected void elementToBeRemoved(Shout element) {fire();}};
 		}
-
-		private void addAutoScrollToggleButton() {
-			_lock = new JToggleButton();
-			_lock.setPreferredSize(new Dimension(20,20));
-			_lock.setBorder(new EmptyBorder(0,0,0,0));
-			
-			_lock.getModel().addChangeListener(new ChangeListener(){
-				{ _lock.setIcon(new ImageIcon(UNLOCK_ICON)); }
-				@Override public void stateChanged(ChangeEvent e) {
-					if(_lock.isSelected())
-						_lock.setIcon(new ImageIcon(LOCK_ICON));
-					else
-						_lock.setIcon(new ImageIcon(UNLOCK_ICON));
-				}});
+		
+		private void initPosChangeReceiver() {
+			_posChangeReceiverAvoidGc = new SimpleListReceiver<Shout>(_wind.shoutsHeard()){ 
+				private void fire() {
+					if(_shouldAutoscroll) placeAtEnd();
+				}
+				@Override protected void elementAdded(Shout newElement) {	fire();	}
+				@Override protected void elementPresent(Shout element) {fire();	}
+				@Override protected void elementToBeRemoved(Shout element) {fire();}};
 		}
-
-		private void addAutoScrollListener() {//Optimize better auto-scroll
-			final BoundedRangeModel model = _scrollPane.getVerticalScrollBar().getModel();
-			model.addChangeListener(new ChangeListener(){@Override	public void stateChanged(ChangeEvent e) {
-				if(!_lock.isSelected())
-					model.setValue(model.getMaximum());
+		
+		private boolean isAtEnd() {
+			final ByRef<Boolean> result = ByRef.newInstance();
+			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
+				result.value =  scrollModel().getValue() + scrollModel().getExtent() == scrollModel().getMaximum();
+			}});
+			return result.value;
+		}		
+		
+		private void placeAtEnd() {
+			GuiThread.invokeLater(new Runnable(){ @Override public void run() {
+				scrollModel().setValue(scrollModel().getMaximum()-scrollModel().getExtent());
 			}});
 		}
+		private BoundedRangeModel scrollModel() {
+			return _scrollPane.getVerticalScrollBar().getModel();
+		}
 	}
-	
 	
 	private final class WindClipboardSupport implements ClipboardOwner{
 		

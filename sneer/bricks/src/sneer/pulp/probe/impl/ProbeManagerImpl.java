@@ -66,7 +66,7 @@ public class ProbeManagerImpl implements ProbeManager {
 		connection.setReceiver(new Omnivore<byte[]>(){ @Override public void consume(byte[] packet) {
 			_tuples.publish((Tuple)desserialize(packet));
 		}});
-		connection.setSender(new MySender());
+		connection.setSender(new MyScheduler());
 	}
 
 	private Object desserialize(byte[] packet) {
@@ -80,7 +80,7 @@ public class ProbeManagerImpl implements ProbeManager {
 	}
 
 	
-	private final class MySender implements PacketScheduler {
+	private final class MyScheduler implements PacketScheduler {
 		private long _nextTupleToSend = 0;
 
 		@Override
@@ -89,7 +89,7 @@ public class ProbeManagerImpl implements ProbeManager {
 		}
 
 		@Override
-		public byte[] currentPacketToSend() {
+		public byte[] highestPriorityPacketToSend() {
 			while (_nextTupleToSend >= _tuples.tupleCount())
 				Threads.sleepWithoutInterruptions(10); //Optimize Use wait/notify.
 

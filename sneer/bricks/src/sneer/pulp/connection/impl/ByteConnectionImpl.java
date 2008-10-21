@@ -32,7 +32,7 @@ class ByteConnectionImpl implements ByteConnection {
 
 	private final SocketHolder _socketHolder = new SocketHolder(_isOnline.setter());
 	
-	private volatile PacketScheduler _sender;
+	private volatile PacketScheduler _scheduler;
 
 	private final String _label;
 
@@ -122,8 +122,7 @@ class ByteConnectionImpl implements ByteConnection {
 			mySocket.write(array);
 			return true;
 		} catch (IOException iox) {
-			_socketHolder.crash(mySocket);
-			logShort(iox, "Error trying to send packet. ");
+			crash(mySocket, iox, "Error trying to send packet. ");
 			return false;
 		}
 	}
@@ -144,7 +143,7 @@ class ByteConnectionImpl implements ByteConnection {
 			while (true) {
 				byte[] packet = flagWithProtocol(waitForNextPacket(), NEW_PROTOCOL);
 				if (tryToSend(packet))
-					_sender.lastRequestedPacketWasSent();
+					_scheduler.lastRequestedPacketWasSent();
 				else
 					Threads.sleepWithoutInterruptions(10); //Optimize Use wait/notify.
 			}
@@ -153,11 +152,11 @@ class ByteConnectionImpl implements ByteConnection {
 	
 	private byte[] waitForNextPacket() {
 		while (true) {
-			if (_sender == null) { //Fix: When the old protocol dies, the _sender should never be null. It no longer needs to be volatile either. 
+			if (_scheduler == null) { //Fix: When the old protocol dies, the _sender should never be null. It no longer needs to be volatile either. 
 				Threads.sleepWithoutInterruptions(10);
 				continue;
 			}
-			return _sender.currentPacketToSend();
+			return _scheduler.highestPriorityPacketToSend();
 		}
 	}	
 
@@ -197,16 +196,21 @@ class ByteConnectionImpl implements ByteConnection {
 			notifyReceiver(mySocket.read());
 			return true;
 		} catch (Exception e) {
-			logShort(e, "Error trying to receive packet.");
-			_socketHolder.crash(mySocket);
+			crash(mySocket, e, "Error trying to receive packet.");
 			return false;
 		} 
 	}
 
+	private void crash(ByteArraySocket mySocket, Exception e,
+			final String message) {
+		logShort(e, message);
+		_socketHolder.crash(mySocket);
+	}
+
 	@Override
 	public void setSender(PacketScheduler sender) {
-		if (_sender != null) throw new IllegalStateException();
-		_sender = sender;
+		if (_scheduler != null) throw new IllegalStateException();
+		_scheduler = sender;
 	}
 
 }

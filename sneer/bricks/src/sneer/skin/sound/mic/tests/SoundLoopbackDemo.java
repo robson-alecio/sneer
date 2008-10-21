@@ -8,7 +8,7 @@ import sneer.skin.sound.speaker.Speaker;
 import wheel.io.Logger;
 import wheel.lang.Threads;
 
-public class PlayerDemo {
+public class SoundLoopbackDemo {
 
 	public static void main(String[] args) {
 		Logger.redirectTo(System.out);

@@ -141,16 +141,17 @@ class ByteConnectionImpl implements ByteConnection {
 	private void startSending() {
 		_threadPool.registerActor(new Runnable() { @Override public void run() {
 			while (true) {
-				byte[] packet = flagWithProtocol(waitForNextPacket(), NEW_PROTOCOL);
-				if (tryToSend(packet))
-					_scheduler.lastRequestedPacketWasSent();
+				Packet packet = waitForNextPacket();
+				byte[] payload = flagWithProtocol(packet.payload(), NEW_PROTOCOL);
+				if (tryToSend(payload))
+					_scheduler.packetWasSent(packet);
 				else
 					Threads.sleepWithoutInterruptions(10); //Optimize Use wait/notify.
 			}
 		}});
 	}
 	
-	private byte[] waitForNextPacket() {
+	private Packet waitForNextPacket() {
 		while (true) {
 			if (_scheduler == null) { //Fix: When the old protocol dies, the _sender should never be null. It no longer needs to be volatile either. 
 				Threads.sleepWithoutInterruptions(10);

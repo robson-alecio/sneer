@@ -7,11 +7,7 @@ public interface TupleSpace extends Brick {
 
 	void publish(Tuple tuple);
 
-	<T extends Tuple> void addSubscription(Class<T> tupleType, Omnivore<T> subscriber);
-	<T extends Tuple> void removeSubscription(Class<T> tupleType, Omnivore<T> subscriber);
-
-	long tupleCount();
-	Tuple tuple(long index);
-
+	<T extends Tuple> void addSubscription(Class<T> tupleType, Omnivore<? super T> subscriber);
+	<T extends Tuple> void removeSubscription(Class<T> tupleType, Object subscriber);
 
 }

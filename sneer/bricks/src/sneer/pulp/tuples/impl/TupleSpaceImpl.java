@@ -19,10 +19,10 @@ public class TupleSpaceImpl implements TupleSpace {
 
 	static class Subscription {
 
-		private final Omnivore<Tuple> _subscriber;
+		private final Omnivore<? super Tuple> _subscriber;
 		private final Class<? extends Tuple> _tupleType;
 
-		<T extends Tuple> Subscription(Omnivore<T> subscriber, Class<T> tupleType) {
+		<T extends Tuple> Subscription(Omnivore<? super T> subscriber, Class<T> tupleType) {
 			_subscriber = cast(subscriber);
 			_tupleType = tupleType;
 		}
@@ -65,37 +65,22 @@ public class TupleSpaceImpl implements TupleSpace {
 	}
 
 	@Override
-	public synchronized <T extends Tuple> void addSubscription(Class<T> tupleType,	Omnivore<T> subscriber) {
+	public synchronized <T extends Tuple> void addSubscription(Class<T> tupleType,	Omnivore<? super T> subscriber) {
 		_subscriptions.add(new Subscription(subscriber, tupleType));
 	}
 	
 	@Override
-	public synchronized <T extends Tuple> void removeSubscription(Class<T> tupleType,	Omnivore<T> subscriber) {
+	public synchronized <T extends Tuple> void removeSubscription(Class<T> tupleType, Object subscriber) {
 		final Iterator<Subscription> iterator = _subscriptions.iterator();
 		while (iterator.hasNext()) {
 			final Subscription current = iterator.next();
 			if (current._tupleType == tupleType
 				&& current._subscriber == subscriber) {
 				iterator.remove();
-				break;
+				return;
 			}
 		}
-	}
-
-
-	@Override
-	public synchronized Tuple tuple(long index) {
-		long i = index - _offset;
-		if (i < 0) return null;
-		Tuple[] array = _tuples.toArray(new Tuple[0]);  // Optimize
-		if (i >= array.length)
-			return null;
-		return array[(int) i]; 
-	}
-
-	@Override
-	public synchronized long tupleCount() {
-		return _offset + _tuples.size();
+		throw new IllegalArgumentException("Subscription not found.");
 	}
 
 }

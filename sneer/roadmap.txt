@@ -2,8 +2,9 @@
 ===================
 
 	- Wind
-		- History
-		- OOME - Fix - Notice it happens even if only scrolling up and down through the shouts.
+		- History - Hear shouts by peers shouted when I was off-line.
+			- Unignore Freedom5.canHearPastShouts().
+		- [Sandro] OOME - Fix - Notice it happens even if only scrolling up and down through the shouts.
 	- Voice Calls
 		- SoundLoopbackDemo - Invert the order of the mic.open() and speaker.open() lines and get it to work.
 		- First Step: When I press the button I listen to everyone and everyone listens to me.
@@ -11,7 +12,6 @@
 	---- WE DROP SKYPE :)
 
 	- WatchMe - Screen Viewing à la VNC
-		- Send only the latest delta for each cell. Do not queue every single delta.
 		- Images.isSameImage() - Optimize - It is using 40% of the CPU on Klaus's machine.
 	---- WE DROP VNC
 

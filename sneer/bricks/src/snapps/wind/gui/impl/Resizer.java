@@ -6,12 +6,16 @@ import java.awt.Dimension;
 import javax.swing.JComponent;
 import javax.swing.JWindow;
 
+import wheel.io.ui.GuiThread;
+
 class Resizer {
 
+	static JWindow win = new JWindow();
+	
 	static void pack(JComponent component, int maxWidth, int headerHeight ) { //Optimize - implement pack method without JWindow
+		GuiThread.assertInGuiThread();
 		Container root = component.getParent();
 		root.setPreferredSize(new Dimension(maxWidth, Integer.MAX_VALUE));
-		JWindow win = new JWindow();
 		win.add(root);
 		win.pack();
 		root.setPreferredSize(new Dimension(maxWidth, component.getPreferredSize().height + headerHeight));

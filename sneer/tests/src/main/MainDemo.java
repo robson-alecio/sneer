@@ -4,6 +4,7 @@ import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import wheel.io.Logger;
 import wheel.io.ui.GuiThread;
+import wheel.testutil.MemorySentinel;
 
 public class MainDemo {
 
@@ -19,6 +20,7 @@ public class MainDemo {
 
 	private static void tryToRun(String[] args) throws Exception {
 		Logger.redirectTo(System.out);
+		MemorySentinel.startLoggingMemoryUsageIncrease();
 		
 		demo().start(ownName(args), dynDnsUser(args), dynDnsPassword(args));
 		waitUntilTheGuiThreadStarts();

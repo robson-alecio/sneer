@@ -10,10 +10,10 @@ public class MemorySentinel {
 	private static final int PERIOD_IN_MILLIS = 2000;
 	static private boolean _isRunning = false;
 	
-	private static long _usedMBsHigh;
+	private static long _usedMBsHigh = 0;
 	
 	synchronized public static void startLoggingMemoryUsageIncrease() {
-		init();
+		checkAlreadyRunning();
 		
 		new Daemon(name()) { @Override public void run() {
 			while (true) step();
@@ -21,7 +21,7 @@ public class MemorySentinel {
 	}
 
 
-	private static void init() {
+	private static void checkAlreadyRunning() {
 		if (_isRunning) throw new IllegalStateException();
 		_isRunning = true;
 	}
@@ -44,7 +44,7 @@ public class MemorySentinel {
 
 
 	private static long usedMBs() {
-		return (Runtime.getRuntime().maxMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024);
+		return (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024);
 	}
 
 

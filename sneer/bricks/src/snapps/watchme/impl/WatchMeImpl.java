@@ -6,6 +6,7 @@ import java.util.List;
 import snapps.watchme.WatchMe;
 import snapps.watchme.codec.ImageCodec;
 import snapps.watchme.codec.ImageDelta;
+import snapps.watchme.codec.ImageCodec.Decoder;
 import sneer.kernel.container.Inject;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
@@ -51,12 +52,13 @@ class WatchMeImpl implements WatchMe {
 		
 		final EventNotifierImpl<BufferedImage> result = new EventNotifierImpl<BufferedImage>();
 		final BufferedImage screen = generateBlankImage(1024, 768);
+		final Decoder decoder = _codec.createDecoder(screen);
 		
 		_tupleSpace.addSubscription(ImageDelta.class, new Omnivore<ImageDelta>(){@Override public void consume(ImageDelta delta) {
 			if (!delta.publisher.equals(publisher))
 				return;
 			
-			_codec.applyDelta(screen, delta);
+			decoder.applyDelta(delta);
 			result.notifyReceivers(screen);
 		}});
 		

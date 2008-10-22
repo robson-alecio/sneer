@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import snapps.watchme.codec.ImageCodec;
 import snapps.watchme.codec.ImageDelta;
+import snapps.watchme.codec.ImageCodec.Decoder;
 import sneer.kernel.container.Inject;
 import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.skin.image.ImageFactory;
@@ -67,8 +68,9 @@ public class ImageCodecTest extends TestThatIsInjected {
 		assertTrue(deltas.size()>0);
 		assertTrue(deltaSizeBytes < imageData.length);
 		
+		Decoder decoder = _subject.createDecoder(imageA);
 		for (ImageDelta delta : deltas)
-			_subject.applyDelta(imageA, delta);
+			decoder.applyDelta(delta);
 
 		deltas.clear();
 		int emptyDeltaSizeBytes = SerializationUtils.serialize(deltas.toArray()).length;

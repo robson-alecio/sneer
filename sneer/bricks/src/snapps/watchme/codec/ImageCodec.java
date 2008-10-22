@@ -8,8 +8,12 @@ import wheel.lang.exceptions.Hiccup;
 
 public interface ImageCodec extends Brick {
 
+	public interface Decoder {
+		boolean applyDelta(ImageDelta delta);
+	}
+
 	List<ImageDelta> encodeDeltas(BufferedImage original, BufferedImage target) throws Hiccup;
 
-	void applyDelta(BufferedImage image, ImageDelta delta);
+	Decoder createDecoder(BufferedImage image);
 
 }

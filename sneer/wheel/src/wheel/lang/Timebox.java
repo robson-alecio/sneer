@@ -22,13 +22,18 @@ public abstract class Timebox implements Runnable {
 	final public void run() {
 		final ByRef<Boolean> isDone = ByRef.newInstance(false);
 		
-		startTimer(isDone);
+		try {
+			startTimer(isDone);
 
-		runInTimebox();
+			runInTimebox();
 
-		synchronized (isDone) {
-			isDone.value = true;
+			synchronized (isDone) {
+				isDone.value = true;
+			}
+		} catch (TimeIsUp timeIsUp) {
+			Logger.log(timeIsUp);
 		}
+
 	}
 
 	private void startTimer(final ByRef<Boolean> isDone) {
@@ -47,7 +52,6 @@ public abstract class Timebox implements Runnable {
 	@SuppressWarnings("deprecation")
 	private void stopThread(Thread thread) {
 		TimeIsUp timeIsUp = new TimeIsUp(thread.getStackTrace());
-		Logger.log(timeIsUp);
 		thread.stop(timeIsUp);
 	}
 

@@ -20,7 +20,7 @@ public class MainDemo {
 
 	private static void tryToRun(String[] args) throws Exception {
 		Logger.redirectTo(System.out);
-		MemorySentinel.startLoggingMemoryUsageIncrease();
+		MemorySentinel.startLoggingSignificantMemoryUsageChanges();
 		
 		demo().start(ownName(args), dynDnsUser(args), dynDnsPassword(args));
 		waitUntilTheGuiThreadStarts();

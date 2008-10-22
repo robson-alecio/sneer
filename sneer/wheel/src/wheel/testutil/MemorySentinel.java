@@ -10,9 +10,9 @@ public class MemorySentinel {
 	private static final int PERIOD_IN_MILLIS = 2000;
 	static private boolean _isRunning = false;
 	
-	private static long _usedMBsHigh = 0;
+	private static long _lastUsedMBs = 0;
 	
-	synchronized public static void startLoggingMemoryUsageIncrease() {
+	synchronized public static void startLoggingSignificantMemoryUsageChanges() {
 		checkAlreadyRunning();
 		
 		new Daemon(name()) { @Override public void run() {
@@ -33,13 +33,22 @@ public class MemorySentinel {
 
 	
 	static private void step() {
+		logAnySignificantMemoryUsageChange();
 		Threads.sleepWithoutInterruptions(PERIOD_IN_MILLIS);
-		long used = usedMBs();
-		if (used - _usedMBsHigh <= 0) return;
+	}
+
+
+	private static void logAnySignificantMemoryUsageChange() {
+		if (!isSignificant()) return;
 		gc();
-		if (used - _usedMBsHigh <= 0) return;
-		_usedMBsHigh = used;
-		Logger.log("=== MEMORY USED: {} MB", used);
+		if (!isSignificant()) return;
+		_lastUsedMBs = usedMBs();
+		Logger.log("=== MEMORY USED: {} MB", _lastUsedMBs);
+	}
+
+
+	private static boolean isSignificant() {
+		return usedMBs() - _lastUsedMBs != 0;
 	}
 
 

@@ -12,6 +12,7 @@
 	---- WE DROP SKYPE :)
 
 	- WatchMe - Screen Viewing à la VNC
+		- Apply only latest deltas, not older ones.
 		- Images.isSameImage() - Optimize - It is using 40% of the CPU on Klaus's machine.
 	---- WE DROP VNC
 

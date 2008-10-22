@@ -16,6 +16,7 @@
 	---- WE DROP VNC
 
 	- Flooding - Solve tuple flooding on the network.
+		- First step: Eliminate "echo" - Don't send tuples back to the original publisher :P
 	
 	---------------------------------- DOGFOOD RELEASE
 	

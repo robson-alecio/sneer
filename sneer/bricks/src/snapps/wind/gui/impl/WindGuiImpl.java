@@ -69,7 +69,6 @@ class WindGuiImpl implements WindGui {
 
 	private JScrollPane _scrollPane;
 
-	@SuppressWarnings("unused")
 	private WindAutoscrollSupport _autoscrollSupportToAvoidGc;
 	
 

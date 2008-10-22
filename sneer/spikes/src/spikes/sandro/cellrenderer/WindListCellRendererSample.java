@@ -69,7 +69,8 @@ class WindListCellRendererSample implements ListCellRenderer {
 
 			@Override
 			public Signal<String> labelFor(String element) {
-				return new Constant<String>("bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla");
+				return new Constant<String>("bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, " +
+						"bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla");
 			}
 		});
 		jlist.setCellRenderer(renderer);
@@ -94,6 +95,7 @@ class WindListCellRendererSample implements ListCellRenderer {
 	private static final String SHOUTERS_NICK = "shoutersNick";
 	
 	private static final int SPACE_BETWEEN_LINES = 0;
+	private static final int SCROLL_WIDTH = 10;
 	
 	private final LabelProvider<String> _labelProvider;
 	private boolean _flag;
@@ -109,7 +111,9 @@ class WindListCellRendererSample implements ListCellRenderer {
 		JComponent shoutTime = createShoutTime(isSelected);
 		JComponent shoutText = createShoutText(shout);
 		JComponent root = createRootPanel(nick, shoutTime, shoutText, isSelected);
-
+		
+		FixedResizerCopy.pack(shoutText, jList.getWidth() - SCROLL_WIDTH, 25);
+		
 		addLineSpace(root);
 		return root;
 	}

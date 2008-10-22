@@ -4,6 +4,7 @@ import sneer.kernel.container.Brick;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.mesh.Party;
 import wheel.lang.Functor;
+import wheel.lang.Producer;
 import wheel.reactive.EventSource;
 
 public interface KeyManager extends Brick {
@@ -13,7 +14,7 @@ public interface KeyManager extends Brick {
 	void addKey(Contact contact, PublicKey publicKey);
 	PublicKey keyGiven(Contact contact);
 	Contact contactGiven(PublicKey peersPublicKey);
-	Contact contactGiven(PublicKey publicKey, Functor<PublicKey, Contact> factoryToUseIfAbsent);
+	Contact contactGiven(PublicKey publicKey, Producer<Contact> producerToUseIfAbsent);
 
 	EventSource<Contact> keyChanges();
 	

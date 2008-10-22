@@ -58,8 +58,8 @@ class WatchMeImpl implements WatchMe {
 			if (!delta.publisher.equals(publisher))
 				return;
 			
-			decoder.applyDelta(delta);
-			result.notifyReceivers(screen);
+			if (decoder.applyDelta(delta));
+				result.notifyReceivers(screen);
 		}});
 		
 		return result.output();

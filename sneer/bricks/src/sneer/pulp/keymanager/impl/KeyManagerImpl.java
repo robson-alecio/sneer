@@ -12,6 +12,7 @@ import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.mesh.Party;
 import sneer.pulp.own.name.OwnNameKeeper;
 import wheel.lang.Functor;
+import wheel.lang.Producer;
 import wheel.reactive.EventNotifier;
 import wheel.reactive.EventSource;
 import wheel.reactive.impl.EventNotifierImpl;
@@ -70,16 +71,6 @@ class KeyManagerImpl implements KeyManager {
 		return result;
 	}
 
-	@Override
-	public synchronized Contact contactGiven(PublicKey peersPublicKey, Functor<PublicKey, Contact> factoryToUseIfAbsent) {
-		Contact result = contactGiven(peersPublicKey);
-		if (result != null) return result;
-		
-		result = factoryToUseIfAbsent.evaluate(peersPublicKey);
-		addKey(result, peersPublicKey);
-		return result;
-	}
-
 
 	@Override
 	public synchronized void addKey(Contact contact, PublicKey publicKey) {
@@ -114,4 +105,13 @@ class KeyManagerImpl implements KeyManager {
 	public EventSource<Contact> keyChanges() {
 		return _keyChanges .output();
 	}
+
+	@Override
+	public Contact contactGiven(PublicKey peersPublicKey, Producer<Contact> producerToUseIfAbsent) {
+		Contact result = contactGiven(peersPublicKey);
+		if (result != null) return result;
+		
+		result = producerToUseIfAbsent.produce();
+		addKey(result, peersPublicKey);
+		return result;	}
 }

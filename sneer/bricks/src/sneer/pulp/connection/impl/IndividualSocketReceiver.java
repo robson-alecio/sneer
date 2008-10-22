@@ -11,7 +11,7 @@ import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.network.ByteArraySocket;
 import wheel.io.Logger;
-import wheel.lang.Functor;
+import wheel.lang.Producer;
 import wheel.lang.exceptions.IllegalParameter;
 
 class IndividualSocketReceiver {
@@ -62,7 +62,7 @@ class IndividualSocketReceiver {
 	}
 
 	private Contact produceContact(PublicKey peersPublicKey) {
-		return _keyManager.contactGiven(peersPublicKey, new Functor<PublicKey, Contact>(){@Override public Contact evaluate(PublicKey value) {
+		return _keyManager.contactGiven(peersPublicKey, new Producer<Contact>(){@Override public Contact produce() {
 			return createUnconfirmedContact();
 		}});
 	}

@@ -19,8 +19,8 @@
 		- Images.isSameImage() - Optimize - It is using 40% of the CPU on Klaus's machine.
 	---- WE DROP VNC
 
-		
-	---------------------------------- DOGFOOD RELEASE
+	---------------------------------- DOGFOOD RELEASE (We have a decent VNC+Skype replacement we use to develop Sneer)
+
 	
 	Now we start cleaning up until we reach "No Broken Windows" status:
 
@@ -67,10 +67,18 @@
 	- Fix and remove all task comments in the code except for Optimize (Fix Urgent, Fix, Refactor and Implement).
 	---------------------------------- "NO BROKEN WINDOWS" status achieved. From now on code is ALWAYS kept 99.999% clean. 
 
-	- Transparent Persistence
 
+	- Contact CRUD
+		- Nicknames
 	- Own Name - Show contacts' names in contact list
 		- Freedom2Test - Unignore and make it pass.
+	- WatchMe and Audio session replays
+	
+	--------------------------------- "SNEERCAST" RELEASE (Remote collaborating (includes Pair Programming) teams all over the world can use Sneer as their tool. People can replay sessions to see what we have been doing in Sneer or in any other project that uses Sneer for collaborating)
+	
+	
+	- Transparent Persistence
+
 	- Same Room - It would be pretty cool to be able to hear other contacts in a lower volume, simulating a "same room" work environment :D
 	- MSN Client
 		- Contact Unification
@@ -90,8 +98,6 @@
 	- Kernel Update
 		- Auto Update
 		- KernelJockey - Cannot run new version if threads are still left over from previous run.
-	- Contact CRUD
-		- Nicknames
 	- MeToo
 	- Security
 		- Sandboxing
@@ -101,7 +107,7 @@
 	- Authentication (PK)
 	- Issue Tracking
 	- Revise project structure - sourcefolders, package names, build.xml, etc
-	---------------------------------- DEVELOPER COMMUNITY BETA RELEASE
+	---------------------------------- DEVELOPER COMMUNITY BETA RELEASE (Sneer is an actual sovereign software platform for developers to start targeting)
 	
 	- Public Forums
 	- TopTen
@@ -119,9 +125,11 @@
 	- Dashboard
 		- Drag n Drop for reordering Snapps
 	- Installer.EXE for Windows
-	---------------------------------- PUBLIC RELEASE (1.0)
+	---------------------------------- PUBLIC RELEASE (1.0) (Sneer starts being attractive to the public in general)
 
 	- OMetaBoo support
+	---------------------------------- OMETABOO RELEASE (Sneer developers (includes independent app developers) gain productivity beyond their wildest dreams)
+	
 	- Auto Update for Bricks
 	- Thumbnails in Pic Chooser
 	- GiveNTake

@@ -56,10 +56,5 @@ public abstract class Freedom2TestBase extends SovereignFunctionalTestBase {
 		SignalUtils.waitForValue("Dr Ana", anasName);
 	}
 
-	@Test (timeout = 1000)
-	public void testOnline() {
-//		waitUntilOnline(_a);
-//		assertTrue(_a.isOnline());
-	}
 
 }

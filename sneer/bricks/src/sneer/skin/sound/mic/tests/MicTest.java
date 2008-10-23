@@ -45,12 +45,9 @@ public class MicTest {
 	public void testPacketSequence() throws Exception {
 		
 		final HashMap<Integer, PcmSoundPacket> seenPackets = new HashMap<Integer, PcmSoundPacket>();
-		tupleSpace.addSubscription(PcmSoundPacket.class, new Omnivore<PcmSoundPacket>() {
-			@Override
-			public void consume(PcmSoundPacket packet) {
-				seenPackets.put(packet._sequence, packet);
-			}
-		});
+		tupleSpace.addSubscription(PcmSoundPacket.class, new Omnivore<PcmSoundPacket>() { @Override public void consume(PcmSoundPacket packet) {
+			seenPackets.put(packet._sequence, packet);
+		}});
 		
 		final ByRef<Integer> sequence = ByRef.newInstance(0);
 		mockery.checking(new Expectations() {{

@@ -15,6 +15,12 @@ class ImageCodecImpl implements ImageCodec {
 	}
 
 	@Override
+	public Decoder createDecoder() {
+		return new DecoderImpl();
+	}
+	
+	
+	@Override
 	public Decoder createDecoder(BufferedImage image) {
 		return new DecoderImpl(image);
 	}

@@ -51,15 +51,14 @@ class WatchMeImpl implements WatchMe {
 		}
 		
 		final EventNotifierImpl<BufferedImage> result = new EventNotifierImpl<BufferedImage>();
-		final BufferedImage screen = generateBlankImage(1024, 768);
-		final Decoder decoder = _codec.createDecoder(screen);
+		final Decoder decoder = _codec.createDecoder();
 		
 		_tupleSpace.addSubscription(ImageDelta.class, new Omnivore<ImageDelta>(){@Override public void consume(ImageDelta delta) {
 			if (!delta.publisher.equals(publisher))
 				return;
 			
 			if (decoder.applyDelta(delta));
-				result.notifyReceivers(screen);
+				result.notifyReceivers(decoder.screen());
 		}});
 		
 		return result.output();

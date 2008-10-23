@@ -16,10 +16,13 @@ class DecoderImpl implements Decoder {
 	@Inject
 	private static ImageFactory _imageFactory;
 
-	private final BufferedImage _image;
+	private BufferedImage _image;
 
 	private Map<Pair<Integer, Integer>, Long> _timesByPosition = new HashMap<Pair<Integer, Integer>, Long>();
 
+	public DecoderImpl() {
+	}	
+	
 	public DecoderImpl(BufferedImage image) {
 		_image = image;
 	}
@@ -29,8 +32,16 @@ class DecoderImpl implements Decoder {
 		if (!isNew(delta)) return false;
 		
 		Image cell = _imageFactory.fromPngData(delta.imageData);
+		
+		if (_image == null) _image = generateBlankImage(1024, 768);
+		
 		_image.getGraphics().drawImage(cell, delta.x, delta.y, null);
 		return true;
+	}
+	
+	@Override
+	public BufferedImage screen() {
+		return _image;
 	}
 
 	private boolean isNew(ImageDelta delta) {
@@ -49,6 +60,10 @@ class DecoderImpl implements Decoder {
 
 	private Pair<Integer, Integer> position(ImageDelta delta) {
 		return new Pair<Integer, Integer>(delta.x, delta.y);
+	}
+	
+	private BufferedImage generateBlankImage(int width, int height) {
+		return new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 	}
 
 }

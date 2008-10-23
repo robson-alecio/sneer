@@ -6,7 +6,9 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
@@ -17,7 +19,6 @@ import snapps.contacts.actions.ContactActionManager;
 import snapps.listentome.gui.ListenToMeGui;
 import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
-import sneer.skin.image.ImageFactory;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.sound.mic.Mic;
 import sneer.skin.sound.speaker.Speaker;
@@ -28,9 +29,6 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 	static private InstrumentManager _instrumentManager;
 
 	@Inject
-	static private ImageFactory _imageFactory;
-	
-	@Inject
 	static private ContactActionManager _actionsManager;
 
 	@Inject
@@ -40,26 +38,24 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 	static private Mic _mic;
 	
 	JToggleButton _listenToMeButton;
-	private final ImageIcon LISTEN_TO_ME_ON;
-	private final ImageIcon LISTEN_TO_ME_OFF;
-	{
-		LISTEN_TO_ME_ON = loadIcon("listenToMeOn.png");
-		LISTEN_TO_ME_OFF = loadIcon("listenToMeOff.png");
-	}
 
 	ListenToMeGuiImpl(){
 		_instrumentManager.registerInstrument(this);
 	}
 	
 	private ImageIcon loadIcon(String fileName) {
-		return _imageFactory.getIcon(this.getClass(), fileName);
+		try {
+			return new ImageIcon(ImageIO.read(this.getClass().getResource(fileName)));
+		} catch (IOException e) {
+			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+		}
 	}
 
 	@Override
 	public void init(Container container) {
 		container.setBackground(Color.WHITE);
 		container.setLayout(new FlowLayout());
-		_listenToMeButton = createButton(container, LISTEN_TO_ME_ON, LISTEN_TO_ME_OFF, "Listen To Me!");
+		_listenToMeButton = createButton(container, "Listen To Me!");
 		
 		createListenToMeButtonListener();
 		addListenContactAction();
@@ -118,23 +114,27 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 		_speaker.open();
 	}
 
-	private JToggleButton createButton(Container container, final Icon onIcon, final Icon offIcon, String tip) {
-		final JToggleButton btn = new JToggleButton(offIcon);
+	private JToggleButton createButton(Container container, String tip) {
+		final JToggleButton btn = new JToggleButton();
 		btn.setPreferredSize(new Dimension(40,40));
 		btn.setBorder(new EmptyBorder(2,2,2,2));
 		btn.setOpaque(true);
 		btn.setBackground(Color.WHITE);
 		btn.setToolTipText(tip);
-		addMouseListener(onIcon, offIcon, btn);
+		addMouseListener(btn);
 		container.add(btn);
 		return btn;
 	}
 
-	private void addMouseListener(final Icon onIcon, final Icon offIcon, final JToggleButton btn) {
+	private void addMouseListener(final JToggleButton btn) {
 		btn.addMouseListener(new MouseAdapter() {
+			Icon LISTEN_TO_ME_ON = loadIcon("listenToMeOn.png");
+			Icon LISTEN_TO_ME_OFF = loadIcon("listenToMeOff.png");
+			{btn.setIcon(LISTEN_TO_ME_OFF);}
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				btn.setIcon(onIcon);
+				btn.setIcon(LISTEN_TO_ME_ON);
 			}
 
 			@Override
@@ -145,9 +145,9 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				if (btn.isSelected())
-					btn.setIcon(onIcon);
+					btn.setIcon(LISTEN_TO_ME_ON);
 				else
-					btn.setIcon(offIcon);
+					btn.setIcon(LISTEN_TO_ME_OFF);
 			}
 		});
 	}

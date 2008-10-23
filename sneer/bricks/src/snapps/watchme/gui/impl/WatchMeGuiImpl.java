@@ -6,7 +6,9 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
@@ -15,7 +17,6 @@ import javax.swing.border.EmptyBorder;
 import snapps.watchme.WatchMe;
 import snapps.watchme.gui.WatchMeGui;
 import sneer.kernel.container.Inject;
-import sneer.skin.image.ImageFactory;
 import sneer.skin.snappmanager.InstrumentManager;
 
 class WatchMeGuiImpl implements WatchMeGui{ //Optimize need a better snapp window support
@@ -24,30 +25,26 @@ class WatchMeGuiImpl implements WatchMeGui{ //Optimize need a better snapp windo
 	static private InstrumentManager _instrumentManager;
 	
 	@Inject
-	static private ImageFactory _imageFactory;
-
-	@Inject
 	static private WatchMe _watchMe;
 	
 	JToggleButton _watchMeButton;
 	
-	private final ImageIcon WATCHME_ON;
-	private final ImageIcon WATCHME_OFF;
-
 	WatchMeGuiImpl() {
 		_instrumentManager.registerInstrument(this);
-		WATCHME_ON = loadIcon("watchMeOn.png");
-		WATCHME_OFF = loadIcon("watchMeOff.png");
 	}
 
 	private ImageIcon loadIcon(String fileName) {
-		return _imageFactory.getIcon(this.getClass(), fileName);
+		try {
+			return new ImageIcon(ImageIO.read(this.getClass().getResource(fileName)));
+		} catch (IOException e) {
+			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+		}
 	}
 
 	public void init(Container container) {
 		container.setBackground(Color.WHITE);
 		container.setLayout(new FlowLayout());
-		_watchMeButton = createButton(container, WATCHME_ON, WATCHME_OFF, 	"Watch Me!");
+		_watchMeButton = createButton(container, "Watch Me!");
 		createWatchMeButtonListener();
 	}
 
@@ -63,23 +60,27 @@ class WatchMeGuiImpl implements WatchMeGui{ //Optimize need a better snapp windo
 		});
 	}
 
-	private JToggleButton createButton(Container container, final Icon onIcon, final Icon offIcon, String tip) {
-		final JToggleButton btn = new JToggleButton(offIcon);
+	private JToggleButton createButton(Container container, String tip) {
+		final JToggleButton btn = new JToggleButton();
 		btn.setPreferredSize(new Dimension(40,40));
 		btn.setBorder(new EmptyBorder(2,2,2,2));
 		btn.setOpaque(true);
 		btn.setBackground(Color.WHITE);
 		btn.setToolTipText(tip);
-		addMouseListener(onIcon, offIcon, btn);
+		addMouseListener(btn);
 		container.add(btn);
 		return btn;
 	}
 	
-	private void addMouseListener(final Icon onIcon, final Icon offIcon, final JToggleButton btn) {
+	private void addMouseListener(final JToggleButton btn) {
 		btn.addMouseListener(new MouseAdapter() {
+			Icon WATCHME_ON = loadIcon("watchMeOn.png");
+			Icon WATCHME_OFF = loadIcon("watchMeOff.png");
+			{btn.setIcon(WATCHME_OFF);}
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				btn.setIcon(onIcon);
+				btn.setIcon(WATCHME_ON);
 			}
 
 			@Override
@@ -90,9 +91,9 @@ class WatchMeGuiImpl implements WatchMeGui{ //Optimize need a better snapp windo
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				if (btn.isSelected())
-					btn.setIcon(onIcon);
+					btn.setIcon(WATCHME_ON);
 				else
-					btn.setIcon(offIcon);
+					btn.setIcon(WATCHME_OFF);
 			}
 		});
 	}

@@ -7,11 +7,12 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.MediaTracker;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.PixelGrabber;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 
 import javax.imageio.ImageIO;
@@ -57,15 +58,31 @@ public class SpeedTest {
 		}
 		
 		{
-		 	ByteArrayOutputStream result = new ByteArrayOutputStream();
-			BufferedImage img01 =createBufferedImage(Images.getImage(SpeedTest.class.getResource("screen1.png")));
-			ImageIO.write(img01, "png", result);
-			result.close();
-
-			BufferedImage img02 =createBufferedImage(Toolkit.getDefaultToolkit().createImage(result.toByteArray()));
-			boolean isEqual = Arrays.equals(toPixel01(img01), toPixel01(img02));
-			System.out.println("\nImageIO.write() = " + isEqual);
+		 	testImageIoWrite("png");
+		 	testImageIoWrite("jpeg");
+		 	testImageIoWrite("gif");
+		 	testImageIoWrite("bmp");
+		 	testImageIoWrite("wbmp");
 		}
+	}
+
+	private static void testImageIoWrite(String type) throws InterruptedException, IOException {
+		ByteArrayOutputStream result = new ByteArrayOutputStream();
+		BufferedImage img01 =createBufferedImage(Images.getImage(SpeedTest.class.getResource("screen1.png")));
+		ImageIO.write(img01, type, result);
+		byte[] byteArray = result.toByteArray();
+		result.close();
+		
+		if(byteArray.length==0){
+			System.out.println("\nnot converted to " + type + " (" + byteArray.length + " bytes)");
+			return;
+		}
+
+		System.out.println("\nconverted to " + type + " (" + byteArray.length + " bytes)");
+
+		BufferedImage img02 =ImageIO.read(new ByteArrayInputStream(byteArray));
+		boolean isEqual = Arrays.equals(toPixel01(img01), toPixel01(img02));
+		System.out.println("[" + type + "] ImageIO.write() = " + isEqual);
 	}
 	
 	public static int[] toPixel01(BufferedImage image) {

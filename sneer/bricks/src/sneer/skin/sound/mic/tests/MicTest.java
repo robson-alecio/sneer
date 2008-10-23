@@ -44,16 +44,15 @@ public class MicTest {
 	@Test
 	public void testPacketSequence() throws Exception {
 		
-		final Object monitor = new Object();
-		final ByRef<Integer> sequence = ByRef.newInstance(0);
 		final HashMap<Integer, PcmSoundPacket> seenPackets = new HashMap<Integer, PcmSoundPacket>();
 		tupleSpace.addSubscription(PcmSoundPacket.class, new Omnivore<PcmSoundPacket>() {
 			@Override
-			public void consume(PcmSoundPacket value) {
-				seenPackets.put(value._sequence, value);
+			public void consume(PcmSoundPacket packet) {
+				seenPackets.put(packet._sequence, packet);
 			}
 		});
 		
+		final ByRef<Integer> sequence = ByRef.newInstance(0);
 		mockery.checking(new Expectations() {{
 			allowing(audio).bestAvailableTargetDataLine();
 				will(returnValue(targetDataLine));
@@ -63,14 +62,9 @@ public class MicTest {
 			final Sequence main = mockery.sequence("main");
 			allowing(targetDataLine).read(with(aNonNull(byte[].class)), with(0), with(320));
 				will(new CustomAction("notify thread") { @Override public Object invoke(Invocation invocation) throws Throwable {
-					if (++sequence.value > 2) {
-						synchronized (monitor) {
-							monitor.notify();
-						}
-					}
 					final byte[] buffer = (byte[]) invocation.getParameter(0);
-					writeInt(buffer, sequence.value);
-					return 320;
+					writeInt(buffer, ++sequence.value);
+					return buffer.length;
 				}}); inSequence(main);
 				
 			one(targetDataLine).close();
@@ -79,13 +73,11 @@ public class MicTest {
 		
 		mic.open();
 		
-		synchronized (monitor) {
-			monitor.wait();
-		}
+		Threads.sleepWithoutInterruptions(100);
 		
 		mic.close();
 		
-		Threads.sleepWithoutInterruptions(200);
+		Threads.sleepWithoutInterruptions(100);
 		
 		assertEquals(sequence.value.intValue(), seenPackets.size());
 		for (PcmSoundPacket packet : seenPackets.values()) {

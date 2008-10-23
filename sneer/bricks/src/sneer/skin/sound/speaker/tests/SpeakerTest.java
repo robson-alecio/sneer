@@ -119,7 +119,7 @@ public class SpeakerTest  {
 		clock.advanceTime(1000);
 		
 		speaker.close();
-		tupleSpace.publish(pcmSoundPacketFor(contactKey, pcmPayload));
+		tupleSpace.acquire(pcmSoundPacketFor(contactKey, pcmPayload));
 		
 		clock.advanceTime(1000);
 	}

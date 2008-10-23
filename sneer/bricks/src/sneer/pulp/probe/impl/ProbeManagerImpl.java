@@ -12,6 +12,8 @@ import sneer.pulp.connection.ByteConnection.Packet;
 import sneer.pulp.connection.ByteConnection.PacketScheduler;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
+import sneer.pulp.keymanager.KeyManager;
+import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.probe.ProbeManager;
 import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
@@ -27,12 +29,17 @@ public class ProbeManagerImpl implements ProbeManager {
 
 	@Inject
 	static private TupleSpace _tuples;
-	
+
 	@Inject
 	static private ContactManager _contacts;
 
 	@Inject
 	static private ConnectionManager _connections;
+
+	@Inject
+	static private KeyManager _keyManager;
+	
+	
 	
 	@SuppressWarnings("unused")
 	private SimpleListReceiver<Contact> _contactListReceiverToAvoidGC;
@@ -69,9 +76,9 @@ public class ProbeManagerImpl implements ProbeManager {
 	private void initCommunications(Contact contact) {
 		ByteConnection connection = _connections.connectionFor(contact);
 		connection.setReceiver(new Omnivore<byte[]>(){ @Override public void consume(byte[] packet) {
-			_tuples.publish((Tuple)desserialize(packet));
+			_tuples.acquire((Tuple)desserialize(packet));
 		}});
-		connection.setSender(new MyScheduler());
+		connection.setSender(new MyScheduler(contact));
 	}
 
 	private Object desserialize(byte[] packet) {
@@ -88,8 +95,11 @@ public class ProbeManagerImpl implements ProbeManager {
 	private static final class MyScheduler implements PacketScheduler, Omnivore<Tuple> {
 
 		private final List<Tuple> _stack = Collections.synchronizedList(new LinkedList<Tuple>());
+		private final Contact _contact;
+		private PublicKey _contactsPK;
 		
-		{
+		private MyScheduler(Contact contact) {
+			_contact = contact;
 			_tuples.addSubscription(Tuple.class, this);
 		}
 		
@@ -112,7 +122,25 @@ public class ProbeManagerImpl implements ProbeManager {
 
 		@Override
 		public void consume(Tuple tuple) {
+			if (!isClearToSend(tuple)) return;
+			
 			_stack.add(tuple);
+		}
+
+		private boolean isClearToSend(Tuple tuple) {
+			initContactsPKIfNecessary();
+			if (_contactsPK == null) return false;
+			
+			return !isEcho(tuple);
+		}
+
+		private boolean isEcho(Tuple tuple) {
+			return _contactsPK.equals(tuple.publisher());
+		}
+
+		private void initContactsPKIfNecessary() {
+			if (_contactsPK != null) return;
+			_contactsPK = _keyManager.keyGiven(_contact);
 		}
 
 	}

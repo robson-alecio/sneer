@@ -54,7 +54,7 @@ class WatchMeImpl implements WatchMe {
 		final Decoder decoder = _codec.createDecoder();
 		
 		_tupleSpace.addSubscription(ImageDelta.class, new Omnivore<ImageDelta>(){@Override public void consume(ImageDelta delta) {
-			if (!delta.publisher.equals(publisher))
+			if (!delta.publisher().equals(publisher))
 				return;
 			
 			if (decoder.applyDelta(delta));

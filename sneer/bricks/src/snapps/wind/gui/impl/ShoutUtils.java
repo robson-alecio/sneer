@@ -21,16 +21,16 @@ abstract class ShoutUtils {
 
 	static String publisherNick(Shout shout) {
 		if(isMyOwnShout(shout)) return _ownName.name().currentValue();
-		Contact contact = _keyManager.contactGiven(shout.publisher);
+		Contact contact = _keyManager.contactGiven(shout.publisher());
 		String nick = contact == null ? "<Unknown> " : contact.nickname().currentValue() + " ";
 		return nick;
 	}
 
 	static String getFormatedShoutTime(Shout shout) {
-		return FORMAT.format(new Date(shout.publicationTime));
+		return FORMAT.format(new Date(shout.publicationTime()));
 	}
 
 	static boolean isMyOwnShout(Shout shout) {
-		return _keyManager.ownPublicKey().equals(shout.publisher);
+		return _keyManager.ownPublicKey().equals(shout.publisher());
 	}
 }

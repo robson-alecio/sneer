@@ -38,6 +38,8 @@ public class WatchMeTest extends TestThatIsInjected {
 	@Inject
 	private static ImageFactory _imageFactory;
 	@Inject
+	private static KeyManager _keys;
+	@Inject
 	private static Clock _clock;
 	@Inject
 	private static TupleSpace _sharedSpace;
@@ -73,18 +75,10 @@ public class WatchMeTest extends TestThatIsInjected {
 			one(_shotter).takeScreenshot(); will(returnValue(image3)); inSequence(seq);
 		}});
 
-		Container container2 = ContainerUtils.newContainer(_sharedSpace, _clock); 
+		Container container2 = ContainerUtils.newContainer(_sharedSpace); 
 		WatchMe subject2 = container2.produce(WatchMe.class);
 
-
-		
-		// Fix: This is an ugly workaround for the fact that class Tuple will be shared
-		// among both containers in this test but will be injected with the KeyManager
-		// of the last created container. Instead, this test should use
-		// KeyManager.ownPublicKey() from the first container.
-		PublicKey key = container2.produce(KeyManager.class).ownPublicKey();
-
-		
+		PublicKey key = _keys.ownPublicKey();
 		
 		EventSource<BufferedImage> screens = subject2.screenStreamFor(key);
 		@SuppressWarnings("unused")

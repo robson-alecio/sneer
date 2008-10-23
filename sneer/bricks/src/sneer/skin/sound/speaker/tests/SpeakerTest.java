@@ -70,9 +70,9 @@ public class SpeakerTest  {
 		speaker.open();
 		
 		final PublicKey contactKey = generateContactKey();
-		tupleSpace.publish(pcmSoundPacketFor(contactKey, pcmPayload1));
-		tupleSpace.publish(pcmSoundPacketFor(contactKey, pcmPayload2));
-		tupleSpace.publish(pcmSoundPacketFor(ownPublickKey(), pcmPayload2));
+		tupleSpace.acquire(pcmSoundPacketFor(contactKey, pcmPayload1));
+		tupleSpace.acquire(pcmSoundPacketFor(contactKey, pcmPayload2));
+		tupleSpace.acquire(pcmSoundPacketFor(ownPublickKey(), pcmPayload2));
 		
 		clock.advanceTime(1000);
 	}
@@ -114,7 +114,7 @@ public class SpeakerTest  {
 		speaker.open();
 		
 		final PublicKey contactKey = generateContactKey();
-		tupleSpace.publish(pcmSoundPacketFor(contactKey, pcmPayload));
+		tupleSpace.acquire(pcmSoundPacketFor(contactKey, pcmPayload));
 		
 		clock.advanceTime(1000);
 		

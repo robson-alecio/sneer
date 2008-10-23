@@ -40,7 +40,7 @@ public class SpeedTest {
 			long t1 = System.nanoTime();
 			System.out.println("toPixels02(): \n" + (t1 - t0) + "\n");
 		}
-		
+
 		{
 			long t0 = System.nanoTime();
 			boolean isEqual = Arrays.equals(pixels01, pixels02);

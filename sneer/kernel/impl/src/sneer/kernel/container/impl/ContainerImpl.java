@@ -11,7 +11,6 @@ import sneer.kernel.container.Injector;
 import sneer.kernel.container.SneerConfig;
 import sneer.kernel.container.impl.classloader.EclipseClassLoaderFactory;
 import sneer.pulp.config.persistence.PersistenceConfig;
-import sneer.pulp.tuples.Tuple;
 import sneer.skin.GuiBrick;
 import wheel.io.Logger;
 import wheel.lang.Types;
@@ -38,8 +37,6 @@ public class ContainerImpl implements Container {
 		produce(PersistenceConfig.class).setPersistenceDirectory(_sneerConfig.sneerDirectory());
 		
 		bindGuiBricks(bindings);
-		
-		_injector.inject(Tuple.class); //Refactor this looks wierd here.
 	}
 
 	private void bindNonGuiBricks(Object... bindings) {

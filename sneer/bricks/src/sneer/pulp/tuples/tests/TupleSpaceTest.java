@@ -13,11 +13,22 @@ import wheel.lang.Threads;
 
 public class TupleSpaceTest extends TestThatIsInjected {
 
+	private static final class MyTestTuple extends TestTuple {
+		private MyTestTuple(int[] intArray_) {
+			super(intArray_);
+		}
+
+		@Override
+		protected void finalize() throws Throwable {
+			_garbageCollectedCounter++;
+		}
+	}
+
 	@Inject
 	private static TupleSpace _subject;
 	
 	private TestTuple _received;
-	private volatile int _garbageCollectedCounter = 0;	
+	private static volatile int _garbageCollectedCounter = 0;	
 
 	
 	@Test
@@ -42,12 +53,7 @@ public class TupleSpaceTest extends TestThatIsInjected {
 	@Test(timeout=2000)
 	public void tuplesLimitSize() {
 		for (int i = 0; i < 1200; i++)
-			_subject.publish(new TestTuple(new int[]{i}) {
-				@Override
-				protected void finalize() throws Throwable {
-					TupleSpaceTest.this._garbageCollectedCounter++;
-				}
-			});
+			_subject.publish(new MyTestTuple(new int[] {i}));
 		
 		while (_garbageCollectedCounter != 200) {
 			System.gc();

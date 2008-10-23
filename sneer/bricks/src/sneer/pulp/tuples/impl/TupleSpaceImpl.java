@@ -8,15 +8,23 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import sneer.kernel.container.Inject;
+import sneer.pulp.clock.Clock;
+import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Omnivore;
 import wheel.lang.Types;
 
 public class TupleSpaceImpl implements TupleSpace {
+
+	@Inject
+	KeyManager _keyManager;
+
+	@Inject
+	Clock _clock;
 	
 	//Refactor The synchronization will no longer be necessary when the container guarantees synchronization of model bricks.
-
 	static class Subscription {
 
 		private final Omnivore<? super Tuple> _subscriber;
@@ -44,14 +52,22 @@ public class TupleSpaceImpl implements TupleSpace {
 
 	@Override
 	public synchronized void publish(Tuple tuple) {
-		if (tuple == null) throw new IllegalArgumentException();
-		
+		stamp(tuple);
+		acquire(tuple);
+	}
+
+	@Override
+	public void acquire(Tuple tuple) {
 		if (!_tuples.add(tuple)) return;
 
 		capSize();
 		
 		for (Subscription subscription : _subscriptions)
 			subscription.filterAndNotify(tuple);
+	}
+
+	private void stamp(Tuple tuple) {
+		tuple.stamp(_keyManager.ownPublicKey(), _clock.time());
 	}
 
 	private void capSize() {

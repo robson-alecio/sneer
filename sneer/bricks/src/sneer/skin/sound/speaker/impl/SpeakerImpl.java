@@ -88,7 +88,7 @@ public class SpeakerImpl implements Speaker, Omnivore<PcmSoundPacket> {
 	}
 
 	private boolean isMine(PcmSoundPacket packet) {
-		return _keyManager.ownPublicKey().equals(packet.publisher);
+		return _keyManager.ownPublicKey().equals(packet.publisher());
 	}
 
 	private void write(PcmSoundPacket packet) {
@@ -98,7 +98,7 @@ public class SpeakerImpl implements Speaker, Omnivore<PcmSoundPacket> {
 	}
 	
 	protected boolean isOlderThanLast(PcmSoundPacket packet) {
-		return packet.publicationTime < _lastWritten.publicationTime;
+		return packet.publicationTime() < _lastWritten.publicationTime();
 	}
 
 }

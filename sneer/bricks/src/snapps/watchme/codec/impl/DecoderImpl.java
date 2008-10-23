@@ -47,9 +47,9 @@ class DecoderImpl implements Decoder {
 	private boolean isNew(ImageDelta delta) {
 		Pair<Integer, Integer> position = position(delta);
 		Long previousTime = previousTime(position);
-		if (delta.publicationTime < previousTime) return false;
+		if (delta.publicationTime() < previousTime) return false;
 		
-		_timesByPosition.put(position, delta.publicationTime);
+		_timesByPosition.put(position, delta.publicationTime());
 		return true;
 	}
 

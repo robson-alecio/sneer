@@ -20,6 +20,7 @@ import sneer.pulp.deployer.BrickFile;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.mesh.Party;
+import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.maps.MapRegister;
 import wheel.reactive.maps.MapSignal;
 import wheel.reactive.maps.impl.MapRegisterImpl;
@@ -94,7 +95,8 @@ class BrickManagerImpl implements BrickManager {
 	private BrickFile retrieveRemoteBrick(PublicKey origin, String brickName) {
 		Party party = _keyManager.partyGiven(origin);
 		
-		return party.brickProxyFor(BrickManager.class).brick(brickName);
+		throw new NotImplementedYet();
+		//return party.brickProxyFor(BrickManager.class).brick(brickName);
 	}
 
 	@Override

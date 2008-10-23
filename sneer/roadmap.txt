@@ -1,6 +1,11 @@
 ﻿MAIN ROADMAP
 ===================
 
+	- Fixes
+		- Discover why the ListenToMe and WatchMe Instruments when loaded make memory consumption increase some 20MB.
+		- Flooding - Solve tuple flooding on the network.
+			- First step: Eliminate "echo" - Don't send tuples back to the original publisher :P
+
 	- Wind
 		- History - Hear shouts by peers shouted when I was off-line.
 			- Unignore Freedom5.canHearPastShouts().
@@ -14,9 +19,7 @@
 		- Images.isSameImage() - Optimize - It is using 40% of the CPU on Klaus's machine.
 	---- WE DROP VNC
 
-	- Flooding - Solve tuple flooding on the network.
-		- First step: Eliminate "echo" - Don't send tuples back to the original publisher :P
-	
+		
 	---------------------------------- DOGFOOD RELEASE
 	
 	Now we start cleaning up until we reach "No Broken Windows" status:

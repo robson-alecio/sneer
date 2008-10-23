@@ -14,6 +14,7 @@
 		- History - Hear shouts by peers shouted when I was off-line.
 			- Unignore Freedom5.canHearPastShouts().
 	- Voice Calls
+		- SpeakerTest.testPlayingOrder: remove @Ignore and make it pass
 		- First Step: When I press the button I listen to everyone and everyone listens to me.
 			- PCM to Speex codec
 			- Block PCM tuples from being sent over the wire

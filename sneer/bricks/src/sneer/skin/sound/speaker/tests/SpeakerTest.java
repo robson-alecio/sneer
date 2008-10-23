@@ -7,6 +7,7 @@ import org.jmock.Mockery;
 import org.jmock.Sequence;
 import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -24,31 +25,34 @@ import wheel.lang.ImmutableByteArray;
 @RunWith(JMock.class)
 public class SpeakerTest  {
 	
-	final Mockery mockery = new JUnit4Mockery();
-	final Audio audio = mockery.mock(Audio.class);
-	final Container container = ContainerUtils.newContainer(audio);
-	final KeyManager keyManager = container.produce(KeyManager.class);
-	final TupleSpace tupleSpace = container.produce(TupleSpace.class);
-	final Clock clock = container.produce(Clock.class);
-	final Speaker speaker = container.produce(Speaker.class);
-	final SourceDataLine sourceDataLine = mockery.mock(SourceDataLine.class);
+	private final Mockery mockery = new JUnit4Mockery();
+	private final Audio audio = mockery.mock(Audio.class);
+	private final Container container = ContainerUtils.newContainer(audio);
+	private final KeyManager keyManager = container.produce(KeyManager.class);
+	private final TupleSpace tupleSpace = container.produce(TupleSpace.class);
+	private final Clock clock = container.produce(Clock.class);
+	private final Speaker speaker = container.produce(Speaker.class);
+	private final SourceDataLine sourceDataLine = mockery.mock(SourceDataLine.class);
 	
-	public class CommonExpectations extends Expectations {{
-		try {
-			allowing(audio).bestAvailableSourceDataLine(); will(returnValue(sourceDataLine));
-			
-			final Sequence main = mainSequence();
-			allowing(sourceDataLine).isActive(); will(returnValue(true));
-			one(sourceDataLine).open(); inSequence(main);
-			one(sourceDataLine).start(); inSequence(main);
-		} catch (Exception e) {
-			throw new IllegalStateException(e);
+	public class CommonExpectations extends Expectations {
+		private final Sequence _mainSequence = mockery.sequence("main");
+		
+		{
+			try {
+				allowing(audio).bestAvailableSourceDataLine(); will(returnValue(sourceDataLine));
+				
+				allowing(sourceDataLine).isActive(); will(returnValue(true));
+				one(sourceDataLine).open(); inMainSequence();
+				one(sourceDataLine).start(); inMainSequence();
+			} catch (Exception e) {
+				throw new IllegalStateException(e);
+			}
+		}
+
+		protected void inMainSequence() {
+			inSequence(_mainSequence);
 		}
 	}
-
-	protected Sequence mainSequence() {
-		return mockery.sequence("main");
-	}}
 	
 	@Test
 	public void testOnlyTuplesFromContactsGetPlayed() throws Exception {
@@ -58,9 +62,9 @@ public class SpeakerTest  {
 		
 		mockery.checking(new CommonExpectations() {{
 			one(sourceDataLine).write(pcmPayload1, 0, pcmPayload1.length);
-				will(returnValue(pcmPayload1.length)); inSequence(mainSequence());
+				will(returnValue(pcmPayload1.length)); inMainSequence();
 			one(sourceDataLine).write(pcmPayload2, 0, pcmPayload2.length);
-				will(returnValue(pcmPayload2.length)); inSequence(mainSequence());
+				will(returnValue(pcmPayload2.length)); inMainSequence();
 		}});
 		
 		speaker.open();
@@ -74,12 +78,36 @@ public class SpeakerTest  {
 	}
 	
 	@Test
+	@Ignore
+	public void testPlayingOrder() {
+		final byte[] pcmPayload1 = new byte[] { 1, 2, 3, 5 };
+		final byte[] pcmPayload2 = new byte[] { 7, 11, 13, 17 };
+		
+		mockery.checking(new CommonExpectations() {{
+			one(sourceDataLine).write(pcmPayload1, 0, pcmPayload1.length);
+				will(returnValue(pcmPayload1.length)); inMainSequence();
+			one(sourceDataLine).write(pcmPayload2, 0, pcmPayload2.length);
+				will(returnValue(pcmPayload2.length)); inMainSequence();
+		}});
+		
+		speaker.open();
+		
+		final PublicKey contactKey = generateContactKey();
+		final PcmSoundPacket packet1 = pcmSoundPacketFor(contactKey, pcmPayload1);
+		final PcmSoundPacket packet2 = pcmSoundPacketFor(contactKey, pcmPayload2);
+		tupleSpace.publish(packet2);
+		tupleSpace.publish(packet1);
+		
+		clock.advanceTime(1000);
+	}
+	
+	@Test
 	public void testTuplesPublishedAfterCloseAreNotPlayed() {
 		final byte[] pcmPayload = new byte[] { 1, 2, 3, 5 };
 		
 		mockery.checking(new CommonExpectations() {{
 			one(sourceDataLine).write(pcmPayload, 0, pcmPayload.length);
-				will(returnValue(pcmPayload.length)); inSequence(mainSequence());
+				will(returnValue(pcmPayload.length)); inMainSequence();
 			one(sourceDataLine).close();
 		}});
 		

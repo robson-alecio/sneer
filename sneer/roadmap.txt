@@ -2,22 +2,24 @@
 ===================
 
 	- Fixes
-		- Discover why the ListenToMe and WatchMe Instruments when loaded make memory consumption increase some 20MB.
+		- [Douglas] Discover why the WatchMeGui, ListenToMeGui and RemoteWatchMeWindows bricks when loaded make memory consumption increase some 20MB. Comment them out in MainDemoBrickImpl and notice mem consumption is much lower.
 		- Flooding - Solve tuple flooding on the network.
 			- First step: Eliminate "echo" - Don't send tuples back to the original publisher :P
+
+	- WatchMe - Screen Viewing à la VNC
+		- Images.isSameImage() - Optimize - It is using 40% of the CPU on Klaus's machine.
+	---- WE DROP VNC
 
 	- Wind
 		- History - Hear shouts by peers shouted when I was off-line.
 			- Unignore Freedom5.canHearPastShouts().
 	- Voice Calls
-		- SoundLoopbackDemo - Invert the order of the mic.open() and speaker.open() lines and get it to work.
 		- First Step: When I press the button I listen to everyone and everyone listens to me.
+			- PCM to Speex codec
+			- Block PCM tuples from being sent over the wire
 		- Second Step: Rooms.
 	---- WE DROP SKYPE :)
 
-	- WatchMe - Screen Viewing à la VNC
-		- Images.isSameImage() - Optimize - It is using 40% of the CPU on Klaus's machine.
-	---- WE DROP VNC
 
 	---------------------------------- DOGFOOD RELEASE (We have a decent VNC+Skype replacement we use to develop Sneer)
 

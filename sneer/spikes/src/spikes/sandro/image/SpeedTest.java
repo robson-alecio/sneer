@@ -7,16 +7,21 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.MediaTracker;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.PixelGrabber;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.Arrays;
+
+import javax.imageio.ImageIO;
 
 import wheel.io.ui.graphics.Images;
 
 public class SpeedTest {
 	
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws Exception {
 		
 		int[] pixels01;
 		{
@@ -51,7 +56,17 @@ public class SpeedTest {
 			long t1 = System.nanoTime();
 			System.out.println("for: \n" + (t1 - t0));
 		}
+		
+		{
+		 	ByteArrayOutputStream result = new ByteArrayOutputStream();
+			BufferedImage img01 =createBufferedImage(Images.getImage(SpeedTest.class.getResource("screen1.png")));
+			ImageIO.write(img01, "png", result);
+			result.close();
 
+			BufferedImage img02 =createBufferedImage(Toolkit.getDefaultToolkit().createImage(result.toByteArray()));
+			boolean isEqual = Arrays.equals(toPixel01(img01), toPixel01(img02));
+			System.out.println("\nImageIO.write() = " + isEqual);
+		}
 	}
 	
 	public static int[] toPixel01(BufferedImage image) {

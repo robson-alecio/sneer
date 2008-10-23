@@ -1,5 +1,7 @@
 package sneer.skin.sound.mic.impl;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
@@ -54,11 +56,17 @@ class MicLine {
 		];
 
 		int read = _delegate.read(pcmBuffer, 0, pcmBuffer.length);
-		return PcmSoundPacket.newInstance(pcmBuffer, read);
+		return PcmSoundPacket.newInstance(pcmBuffer, read, nextInt());
 	}
 
 	private static void throwFriendly(String specifics) throws FriendlyException {
 		throw new FriendlyException("Mic not working", specifics + " Try changing your operating system's mic and mixer settings.");
+	}
+	
+	private static final AtomicInteger _ids = new AtomicInteger();
+
+	private static int nextInt() {
+		return _ids.incrementAndGet();
 	}
 
 }

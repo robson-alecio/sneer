@@ -133,8 +133,10 @@ public class SpeakerTest  {
 		return keyManager.ownPublicKey();
 	}
 
+	private int _packetSequence = 0;
+	
 	private PcmSoundPacket pcmSoundPacketFor(PublicKey publicKey, final byte[] pcmPayload) {
-		return new PcmSoundPacket(publicKey, clock.time(), new ImmutableByteArray(pcmPayload, pcmPayload.length));
+		return new PcmSoundPacket(publicKey, clock.time(), new ImmutableByteArray(pcmPayload, pcmPayload.length), ++_packetSequence);
 	}
 
 }

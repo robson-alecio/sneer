@@ -24,7 +24,7 @@ public class SpeakerImpl implements Speaker, Omnivore<PcmSoundPacket> {
 	
 	private SourceDataLine _line;
 
-	private PcmSoundPacket _lastWritten = new PcmSoundPacket(null, 0, null);
+	private PcmSoundPacket _lastWritten = new PcmSoundPacket(null, 0, null, 0);
 
 	@Override
 	public void consume(PcmSoundPacket packet) {

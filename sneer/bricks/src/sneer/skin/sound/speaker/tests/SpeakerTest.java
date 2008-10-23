@@ -38,7 +38,7 @@ public class SpeakerTest  {
 			allowing(audio).bestAvailableSourceDataLine(); will(returnValue(sourceDataLine));
 			
 			final Sequence main = mockery.sequence("main");
-			
+			allowing(sourceDataLine).isActive(); will(returnValue(true));
 			one(sourceDataLine).open(); inSequence(main);
 			one(sourceDataLine).start(); inSequence(main);
 			one(sourceDataLine).write(pcmPayload1, 0, pcmPayload1.length);

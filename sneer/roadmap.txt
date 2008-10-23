@@ -2,7 +2,7 @@
 ===================
 
 	- Fixes
-		- [Douglas] Discover why the WatchMeGui, ListenToMeGui and RemoteWatchMeWindows bricks when loaded make memory consumption increase some 20MB. Comment them out in MainDemoBrickImpl and notice mem consumption is much lower.
+		Fixed - [Douglas] Discover why the WatchMeGui, ListenToMeGui and RemoteWatchMeWindows bricks when loaded make memory consumption increase some 20MB. Comment them out in MainDemoBrickImpl and notice mem consumption is much lower.
 		- Flooding - Solve tuple flooding on the network.
 			- First step: Eliminate "echo" - Don't send tuples back to the original publisher :P
 

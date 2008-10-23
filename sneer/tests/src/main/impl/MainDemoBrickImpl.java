@@ -135,6 +135,7 @@ class MainDemoBrickImpl implements MainDemoBrick {
 
 	private ContactInfo[] contacts() {
 		return new ContactInfo[] {
+			new ContactInfo("agnaldo4j", "agnaldo4j.selfip.com", 5923),
 			new ContactInfo("Bamboo", "rodrigobamboo.dyndns.org", 5923),
 			new ContactInfo("Bihaiko", "bihaiko.dyndns.org", 5923),
 			new ContactInfo("Daniel", "dfcsantos.homelinux.com", 7777),

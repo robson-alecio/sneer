@@ -164,7 +164,7 @@ public class SneerPartyImpl implements SneerParty {
 				if (candidateNick.equals(nickname))
 					return peer.navigateTo(candidate);
 			}
-			Thread.yield();
+			Threads.sleepWithoutInterruptions(10);
 		}
 	}
 

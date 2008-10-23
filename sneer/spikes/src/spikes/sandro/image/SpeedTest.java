@@ -21,34 +21,34 @@ public class SpeedTest {
 		int[] pixels01;
 		{
 			BufferedImage img =createBufferedImage(Images.getImage(SpeedTest.class.getResource("screen1.png")));
-			long t0 = System.currentTimeMillis();
+			long t0 = System.nanoTime();
 			pixels01 = toPixel01(img);
-			long t1 = System.currentTimeMillis();
+			long t1 = System.nanoTime();
 			System.out.println("toPixels01(): \n" + (t1 - t0) + "\n");
 		}
 		
 		int[] pixels02;
 		{
 			BufferedImage img =createBufferedImage(Images.getImage(SpeedTest.class.getResource("screen1.png")));
-			long t0 = System.currentTimeMillis();
+			long t0 = System.nanoTime();
 			pixels02 = toPixels02(img);
-			long t1 = System.currentTimeMillis();
+			long t1 = System.nanoTime();
 			System.out.println("toPixels02(): \n" + (t1 - t0) + "\n");
 		}
 		
 		{
-			long t0 = System.currentTimeMillis();
+			long t0 = System.nanoTime();
 			boolean isEqual = Arrays.equals(pixels01, pixels02);
-			long t1 = System.currentTimeMillis();
+			long t1 = System.nanoTime();
 			System.out.println("Arrays.equals(" + isEqual + "): \n" + (t1 - t0) + "\n");
 		}
 		
 		{
-			long t0 = System.currentTimeMillis();
+			long t0 = System.nanoTime();
 			for (int i = 0; i < pixels01.length; i++) {
 				if(pixels01[i]!=pixels02[i]) throw new RuntimeException("ERROR!");
 			}
-			long t1 = System.currentTimeMillis();
+			long t1 = System.nanoTime();
 			System.out.println("for: \n" + (t1 - t0));
 		}
 

@@ -18,14 +18,13 @@ import sneer.pulp.deployer.Deployer;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
-import sneer.pulp.mesh.Me;
-import sneer.pulp.mesh.Party;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.port.PortKeeper;
 import sneer.pulp.probe.ProbeManager;
 import wheel.lang.Threads;
 import wheel.lang.Types;
 import wheel.lang.exceptions.IllegalParameter;
+import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 import functional.SovereignParty;
@@ -47,9 +46,6 @@ public class SneerPartyImpl implements SneerParty {
 	@Inject
 	static private OwnNameKeeper _ownNameKeeper;
 	
-	@Inject
-	static private Me _me;
-
 	@Inject
 	static private InternetAddressKeeper _internetAddressKeeper;
 
@@ -148,25 +144,9 @@ public class SneerPartyImpl implements SneerParty {
 
 	@Override
     public Signal<String> navigateAndGetName(String nicknamePath) {
-		String[] path = nicknamePath.split("/");
-		
-		Party candidate = _me;
-		for (String nickname : path)
-			candidate = waitForContact(candidate, nickname);
-		
-		return candidate.brickProxyFor(OwnNameKeeper.class).name();
+		throw new NotImplementedYet();
     }
 
-	private Party waitForContact(Party peer, String nickname) {
-		while (true) {
-			for (Contact candidate : peer.contacts()) {
-				String candidateNick = candidate.nickname().currentValue();
-				if (candidateNick.equals(nickname))
-					return peer.navigateTo(candidate);
-			}
-			Threads.sleepWithoutInterruptions(10);
-		}
-	}
 
 	@Override
 	public int sneerPort() {

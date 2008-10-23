@@ -16,9 +16,6 @@ public interface ByteConnection {
 	
 	Signal<Boolean> isOnline();
 
-	void legacySend(byte[] packet); //Refactor: delete
-	void setLegacyReceiver(Omnivore<byte[]> receiver); //Refactor: delete
-
 	void setSender(PacketScheduler sender);
 	void setReceiver(Omnivore<byte[]> receiver);
 	

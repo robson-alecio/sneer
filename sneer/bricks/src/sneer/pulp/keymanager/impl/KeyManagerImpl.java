@@ -9,9 +9,7 @@ import sneer.pulp.crypto.Crypto;
 import sneer.pulp.crypto.Sneer1024;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
-import sneer.pulp.mesh.Party;
 import sneer.pulp.own.name.OwnNameKeeper;
-import wheel.lang.Functor;
 import wheel.lang.Producer;
 import wheel.reactive.EventNotifier;
 import wheel.reactive.EventSource;
@@ -22,8 +20,6 @@ class KeyManagerImpl implements KeyManager {
 	private PublicKey _ownKey;
 	
 	private final Map<Contact, PublicKey> _keyByContact = new HashMap<Contact, PublicKey>();
-
-	private final Map<PublicKey, Party> _partiesByPublicKey = new HashMap<PublicKey, Party>();
 
 	private EventNotifier<Contact> _keyChanges = new EventNotifierImpl<Contact>();
 
@@ -54,21 +50,6 @@ class KeyManagerImpl implements KeyManager {
 	@Override
 	public PublicKey keyGiven(Contact contact) {
 		return _keyByContact.get(contact);
-	}
-
-	@Override
-	public Party partyGiven(PublicKey pk) {
-		return partyGiven(pk, null);
-	}
-
-	@Override
-	public synchronized Party partyGiven(PublicKey pk, Functor<PublicKey, Party> factoryToUseIfAbsent) {
-		Party result = _partiesByPublicKey.get(pk);
-		if (result == null && factoryToUseIfAbsent != null) {
-			result = factoryToUseIfAbsent.evaluate(pk);
-			_partiesByPublicKey.put(pk, result);
-		}
-		return result;
 	}
 
 

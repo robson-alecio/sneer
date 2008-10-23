@@ -27,8 +27,6 @@
 
 	- Snuggin - All start using it and feeding it with rules.
 
-	- ByteConnection legacy protocol - migrate all uses to new protocol.
-
 	- [Petra] Tray and Dashboard Titlebar Icon
 	- [Petra] Online and Offline Icons
 
@@ -70,6 +68,7 @@
 	- Transparent Persistence
 
 	- Own Name - Show contacts' names in contact list
+		- Freedom2Test - Unignore and make it pass.
 	- Same Room - It would be pretty cool to be able to hear other contacts in a lower volume, simulating a "same room" work environment :D
 	- MSN Client
 		- Contact Unification

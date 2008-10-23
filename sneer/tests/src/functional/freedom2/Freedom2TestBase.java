@@ -1,5 +1,6 @@
 package functional.freedom2;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import wheel.reactive.Signal;
@@ -9,7 +10,7 @@ import functional.SovereignParty;
 
 public abstract class Freedom2TestBase extends SovereignFunctionalTestBase {
 
-	
+	@Ignore
 	@Test (timeout = 1000)
 	public void testRemoteNameChange() {
 
@@ -24,7 +25,7 @@ public abstract class Freedom2TestBase extends SovereignFunctionalTestBase {
 		SignalUtils.waitForValue("Dr Barros", _a.navigateAndGetName("Bruno Barros"));
 	}
 
-	
+	@Ignore
 	@Test (timeout = 10000)
 	public void testNicknames() {
 		SovereignParty c = _community.createParty("Carla Costa");

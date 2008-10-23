@@ -19,9 +19,6 @@ import wheel.reactive.impl.RegisterImpl;
 
 class ByteConnectionImpl implements ByteConnection {
 
-	private static final byte LEGACY_PROTOCOL = 0;
-	private static final byte NEW_PROTOCOL = 1;
-
 	@Inject
 	static private KeyManager _keyManager;
 	
@@ -38,7 +35,6 @@ class ByteConnectionImpl implements ByteConnection {
 
 	private final Contact _contact;
 	
-	private volatile Omnivore<byte[]> _legacyReceiver;
 	private volatile Omnivore<byte[]> _receiver;
 
 	ByteConnectionImpl(String label, Contact contact) {
@@ -93,25 +89,6 @@ class ByteConnectionImpl implements ByteConnection {
 		_socketHolder.setSocketIfNecessary(socket);
 	}
 	
-	@Override
-	public void legacySend(byte[] array) {
-		byte[] packet = flagWithProtocol(array, LEGACY_PROTOCOL);
-		while (!tryToSend(packet))
-			Threads.sleepWithoutInterruptions(10); //Optimize Use wait/notify.
-	}
-
-	private byte[] flagWithProtocol(byte[] array, byte protocol) {
-		byte[] result = makeSpaceForFlag(array);
-		result[0] = protocol;
-		return result;
-	}
-
-	private byte[] makeSpaceForFlag(byte[] array) {
-		byte[] result = new byte[array.length + 1];
-		System.arraycopy(array, 0, result, 1, array.length);
-		return result;
-	}
-
 
 	private boolean tryToSend(byte[] array) {
 
@@ -128,11 +105,6 @@ class ByteConnectionImpl implements ByteConnection {
 	}
 
 
-	public void setLegacyReceiver(Omnivore<byte[]> receiver) {
-		if (_legacyReceiver != null) throw new IllegalStateException();
-		_legacyReceiver = receiver;
-	}
-
 	public void setReceiver(Omnivore<byte[]> receiver) {
 		if (_receiver != null) throw new IllegalStateException();
 		_receiver = receiver;
@@ -142,8 +114,7 @@ class ByteConnectionImpl implements ByteConnection {
 		_threadPool.registerActor(new Runnable() { @Override public void run() {
 			while (true) {
 				Packet packet = waitForNextPacket();
-				byte[] payload = flagWithProtocol(packet.payload(), NEW_PROTOCOL);
-				if (tryToSend(payload))
+				if (tryToSend(packet.payload()))
 					_scheduler.packetWasSent(packet);
 				else
 					Threads.sleepWithoutInterruptions(10); //Optimize Use wait/notify.
@@ -170,31 +141,12 @@ class ByteConnectionImpl implements ByteConnection {
 		}});
 	}
 
-	private void notifyReceiver(byte[] packet) throws Exception { //Refactor This Exception will go away once all legacy transmission is moved to the new protocol.
-		byte[] payload = new byte[packet.length - 1];
-		byte protocolByte = packet[0];
-		
-		System.arraycopy(packet, 1, payload, 0, payload.length);
-		
-		if (protocolByte == LEGACY_PROTOCOL) {
-			_legacyReceiver.consume(payload);
-			return;
-		}
-
-		if (protocolByte == NEW_PROTOCOL) {
-			_receiver.consume(payload);
-			return;
-		}
-		
-		throw new Exception("Illegal protocol byte: " + protocolByte);
-	}
-
 	private boolean tryToReceive() {
 		ByteArraySocket mySocket = _socketHolder.socket();
 		if (mySocket ==  null) return false;
 
 		try {
-			notifyReceiver(mySocket.read());
+			_receiver.consume(mySocket.read());
 			return true;
 		} catch (Exception e) {
 			crash(mySocket, e, "Error trying to receive packet.");

@@ -2,8 +2,6 @@ package sneer.pulp.keymanager;
 
 import sneer.kernel.container.Brick;
 import sneer.pulp.contacts.Contact;
-import sneer.pulp.mesh.Party;
-import wheel.lang.Functor;
 import wheel.lang.Producer;
 import wheel.reactive.EventSource;
 
@@ -18,8 +16,8 @@ public interface KeyManager extends Brick {
 
 	EventSource<Contact> keyChanges();
 	
-	Party partyGiven(PublicKey pk, Functor<PublicKey, Party> factoryToUseIfAbsent);
-	Party partyGiven(PublicKey pk);
+//	Party partyGiven(PublicKey pk, Functor<PublicKey, Party> factoryToUseIfAbsent);
+//	Party partyGiven(PublicKey pk);
 
 	PublicKey unmarshall(byte[] publicKeyBytes);
 

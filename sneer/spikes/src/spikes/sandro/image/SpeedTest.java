@@ -12,7 +12,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.PixelGrabber;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.util.Arrays;
 
 import javax.imageio.ImageIO;

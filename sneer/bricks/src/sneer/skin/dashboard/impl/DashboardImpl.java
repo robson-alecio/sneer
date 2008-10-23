@@ -37,8 +37,7 @@ import wheel.io.ui.impl.TrayIconImpl.SystemTrayNotSupported;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
-//Fix this class using "transient" fields. Fix to use the correct 
-//persistent system. Store and restore the last window size and position
+//Implement Persist window size and position
 class DashboardImpl implements Dashboard, Runnable {
 	
 	private static final int TIMEOUT_FOR_GUI_EVENTS = 30 * 1000;

@@ -13,7 +13,7 @@ public class PcmSoundPacket extends Tuple {
 
 	public final ImmutableByteArray _payload;
 
-	public PcmSoundPacket(ImmutableByteArray payload) {
+	private PcmSoundPacket(ImmutableByteArray payload) {
 		_payload = payload;
 	}
 

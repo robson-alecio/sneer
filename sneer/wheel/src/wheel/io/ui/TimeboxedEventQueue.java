@@ -31,7 +31,7 @@ public class TimeboxedEventQueue extends EventQueue {
 	
 	@Override
 	protected void dispatchEvent(final AWTEvent event) {
-		_timebox.setEventAndRun(event);
+		_timebox.dispatch(event);
 	}
 	
 	
@@ -43,14 +43,29 @@ public class TimeboxedEventQueue extends EventQueue {
 
 		AWTEvent _event;
 
-		@Override 
-		protected void runInTimebox() {
-			TimeboxedEventQueue.super.dispatchEvent(_event);
-		}
 		
-		private void setEventAndRun(AWTEvent event){
+		private void dispatch(AWTEvent event) {
+			if (isAlreadyInTimebox()) {
+				doDispatchEvent(event);
+				return;
+			}
+
 			_event = event;
 			this.run();
+		}
+
+		@Override 
+		protected void runInTimebox() {
+			doDispatchEvent(_event);
+		}
+		
+		private void doDispatchEvent(AWTEvent event) {
+			TimeboxedEventQueue.super.dispatchEvent(event);
+		}
+		
+
+		private boolean isAlreadyInTimebox() {
+			return workerThread() == Thread.currentThread();
 		}
 	}
 }

@@ -12,7 +12,7 @@ public class SomeGuiBrickImpl implements SomeGuiBrick {
 
 	@Override
 	public void slowMethod() {
-		Threads.sleepWithoutInterruptions(1000);
+		Threads.sleepWithoutInterruptions(4000);
 	}
 
 }

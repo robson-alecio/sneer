@@ -40,8 +40,18 @@ public class SpeedTest {
 			long t0 = System.currentTimeMillis();
 			boolean isEqual = Arrays.equals(pixels01, pixels02);
 			long t1 = System.currentTimeMillis();
-			System.out.println("Arrays.equals(" + isEqual + "): \n" + (t1 - t0));
+			System.out.println("Arrays.equals(" + isEqual + "): \n" + (t1 - t0) + "\n");
 		}
+		
+		{
+			long t0 = System.currentTimeMillis();
+			for (int i = 0; i < pixels01.length; i++) {
+				if(pixels01[i]!=pixels02[i]) throw new RuntimeException("ERROR!");
+			}
+			long t1 = System.currentTimeMillis();
+			System.out.println("for: \n" + (t1 - t0));
+		}
+
 	}
 	
 	public static int[] toPixel01(BufferedImage image) {

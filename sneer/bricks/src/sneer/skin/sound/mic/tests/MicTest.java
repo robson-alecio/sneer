@@ -23,8 +23,6 @@ import org.junit.runner.RunWith;
 
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
-import sneer.pulp.clock.Clock;
-import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.Audio;
@@ -36,14 +34,12 @@ import wheel.lang.Threads;
 @RunWith(JMock.class)
 public class MicTest {
 	
-	final Mockery mockery = new JUnit4Mockery();
-	final Audio audio = mockery.mock(Audio.class);
-	final Container container = ContainerUtils.newContainer(audio /*, threadPool */);
-	final KeyManager keyManager = container.produce(KeyManager.class);
-	final TupleSpace tupleSpace = container.produce(TupleSpace.class);
-	final Clock clock = container.produce(Clock.class);
-	final Mic mic = container.produce(Mic.class);
-	final TargetDataLine targetDataLine = mockery.mock(TargetDataLine.class);
+	private final Mockery mockery = new JUnit4Mockery();
+	private final Audio audio = mockery.mock(Audio.class);
+	private final Container container = ContainerUtils.newContainer(audio /*, threadPool */);
+	private final TupleSpace tupleSpace = container.produce(TupleSpace.class);
+	private final Mic mic = container.produce(Mic.class);
+	private final TargetDataLine targetDataLine = mockery.mock(TargetDataLine.class);
 		
 	@Test
 	public void testPacketSequence() throws Exception {

@@ -1,5 +1,7 @@
 package sneer.pulp.brickmanager.impl;
 
+import static wheel.io.Logger.log;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -19,12 +21,10 @@ import sneer.pulp.deployer.BrickBundle;
 import sneer.pulp.deployer.BrickFile;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
-import sneer.pulp.mesh.Party;
 import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.maps.MapRegister;
 import wheel.reactive.maps.MapSignal;
 import wheel.reactive.maps.impl.MapRegisterImpl;
-import static wheel.io.Logger.log;
 
 class BrickManagerImpl implements BrickManager {
 
@@ -84,19 +84,14 @@ class BrickManagerImpl implements BrickManager {
 				inBundle = brick(wanted);
 				if(inBundle == null) {
 					//not found. must ask other peer via network
-					BrickFile justGotten = retrieveRemoteBrick(brick.origin(), injected.brickName());
-					install(justGotten);
+					
+					throw new NotImplementedYet();
+					//BrickFile justGotten = retrieveRemoteBrick(brick.origin(), injected.brickName());
+					//install(justGotten);
 				}
 			}
 		}
 		brick.resolved(true);
-	}
-
-	private BrickFile retrieveRemoteBrick(PublicKey origin, String brickName) {
-		Party party = _keyManager.partyGiven(origin);
-		
-		throw new NotImplementedYet();
-		//return party.brickProxyFor(BrickManager.class).brick(brickName);
 	}
 
 	@Override

@@ -54,7 +54,6 @@ class MicLine {
 		];
 
 		int read = _delegate.read(pcmBuffer, 0, pcmBuffer.length);
-
 		return PcmSoundPacket.newInstance(pcmBuffer, read);
 	}
 

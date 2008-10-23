@@ -1,5 +1,7 @@
 package sneer.skin.sound;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.tuples.Tuple;
 import wheel.lang.ImmutableByteArray;
@@ -12,6 +14,8 @@ public class PcmSoundPacket extends Tuple {
 	}
 
 	public final ImmutableByteArray _payload;
+	
+	public final int _sequence = nextInt();
 
 	private PcmSoundPacket(ImmutableByteArray payload) {
 		_payload = payload;
@@ -21,5 +25,10 @@ public class PcmSoundPacket extends Tuple {
 		super(pPublisher, pPublicationTime);
 		_payload = payload;
 	}
-	
+
+	private static final AtomicInteger _ids = new AtomicInteger();
+
+	private static int nextInt() {
+		return _ids.incrementAndGet();
+	}	
 }

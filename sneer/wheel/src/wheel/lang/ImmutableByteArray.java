@@ -26,7 +26,8 @@ public class ImmutableByteArray {
 	public String toString() {
 		return Arrays.toString(_payload);
 	}
-	
-	
 
+	public byte get(int index) {
+		return _payload[index];
+	}
 }

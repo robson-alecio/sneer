@@ -45,7 +45,7 @@ class WindImpl implements Wind, Omnivore<Shout> {
 		_shoutsHeard = Bubble.wrapStateMachine(prevayler);
 		
 		for (Shout shout: _shoutsHeard.output())
-			_environment.publish(shout);
+			_environment.acquire(shout);
 		
 		_environment.addSubscription(Shout.class, this);
 	}

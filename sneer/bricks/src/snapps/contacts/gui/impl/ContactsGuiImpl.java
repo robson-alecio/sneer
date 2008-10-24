@@ -76,7 +76,7 @@ class ContactsGuiImpl implements ContactsGui {
 	}
 
 	private Dimension size(Container container) {
-		return new Dimension(container.getSize().width, 180 );
+		return new Dimension(container.getSize().width, 200 );
 	}
 	
 	private String getName() {

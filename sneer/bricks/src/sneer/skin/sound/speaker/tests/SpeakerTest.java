@@ -7,7 +7,6 @@ import org.jmock.Mockery;
 import org.jmock.Sequence;
 import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -74,10 +73,10 @@ public class SpeakerTest  {
 		tupleSpace.acquire(pcmSoundPacketFor(contactKey, pcmPayload2));
 		tupleSpace.acquire(pcmSoundPacketFor(ownPublickKey(), pcmPayload2));
 		
+		clock.advanceTime(500);
 	}
 	
 	@Test
-	@Ignore
 	public void testPlayingOrder() {
 		final byte[] pcmPayload1 = new byte[] { 1, 2, 3, 5 };
 		final byte[] pcmPayload2 = new byte[] { 7, 11, 13, 17 };
@@ -97,6 +96,8 @@ public class SpeakerTest  {
 		tupleSpace.acquire(packet2);
 		tupleSpace.acquire(packet1);
 		
+		clock.advanceTime(500);
+		
 	}
 	
 	@Test
@@ -113,9 +114,12 @@ public class SpeakerTest  {
 		
 		final PublicKey contactKey = generateContactKey();
 		tupleSpace.acquire(pcmSoundPacketFor(contactKey, pcmPayload));
+		clock.advanceTime(500);
 		
 		speaker.close();
 		tupleSpace.acquire(pcmSoundPacketFor(contactKey, pcmPayload));
+		clock.advanceTime(500);
+		
 	}
 
 	@SuppressWarnings("deprecation")

@@ -1,9 +1,16 @@
 package sneer.skin.sound.speaker.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
 import sneer.kernel.container.Inject;
+import sneer.pulp.clock.Clock;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
@@ -13,6 +20,8 @@ import wheel.lang.Omnivore;
 
 public class SpeakerImpl implements Speaker, Omnivore<PcmSoundPacket> {
 	
+	private static final int FLUSH_INTERVAL = 300;
+
 	@Inject
 	private static TupleSpace _tupleSpace;
 	
@@ -22,31 +31,44 @@ public class SpeakerImpl implements Speaker, Omnivore<PcmSoundPacket> {
 	@Inject
 	private static Audio _audio;
 	
+	@Inject
+	private static Clock _clock;
+	
+	private List<PcmSoundPacket> _buffer = new ArrayList<PcmSoundPacket>();
+	
 	private SourceDataLine _line;
 
 	private PcmSoundPacket _lastWritten = new PcmSoundPacket(null, 0, null, 0);
+	
+	{
+		_clock.wakeUpEvery(FLUSH_INTERVAL, new Runnable() { @Override public void run() {
+			flush();
+		}});
+	}
 
 	@Override
 	public void consume(PcmSoundPacket packet) {
 		if (isMine(packet))
 			return;
 		
-		if (isOlderThanLast(packet))
+		if (isOlderThanLastPlayed(packet))
 			return;
 		
-		ensureLineIsOpen();		
 		write(packet);
 	}
 	
 	@Override
 	public void open() {
+		if (!isClosed())
+			return;
+		
 		initSourceDataLine();
 		startListeningToPcmSoundPackets();
 	}
 
 	@Override
 	public void close() {
-		if (_line == null)
+		if (isClosed())
 			return;
 		
 		stopListeningToPcmSoundPackets();
@@ -58,7 +80,7 @@ public class SpeakerImpl implements Speaker, Omnivore<PcmSoundPacket> {
 		_tupleSpace.addSubscription(PcmSoundPacket.class, this);
 	}
 
-	private void initSourceDataLine() {
+	private synchronized void initSourceDataLine() {
 		_line = _audio.bestAvailableSourceDataLine();
 		openSourceDataLine();
 	}
@@ -67,12 +89,12 @@ public class SpeakerImpl implements Speaker, Omnivore<PcmSoundPacket> {
 		_tupleSpace.removeSubscription(PcmSoundPacket.class, this);
 	}
 
-	private void closeSourceDataLine() {
+	private synchronized void closeSourceDataLine() {
 		_line.close();
 		_line = null;
 	}
 
-	private void ensureLineIsOpen() {
+	private synchronized void ensureLineIsOpen() {
 		if (!_line.isActive()) {
 			openSourceDataLine();
 		}
@@ -92,12 +114,52 @@ public class SpeakerImpl implements Speaker, Omnivore<PcmSoundPacket> {
 	}
 
 	private void write(PcmSoundPacket packet) {
-		_lastWritten = packet;
-		final byte[] buffer = packet._payload.copy();
-		_line.write(buffer, 0, buffer.length);
+		synchronized (_buffer) {
+			_buffer.add(packet);
+		}
 	}
 	
-	protected boolean isOlderThanLast(PcmSoundPacket packet) {
+	private void flush() {
+		if (isClosed())
+			return;
+		
+		ensureLineIsOpen();		
+		
+		synchronized (_buffer) {
+			sortBuffer();
+			playBuffer();
+		}
+	}
+
+	private synchronized boolean isClosed() {
+		return _line == null;
+	}
+
+	private synchronized void playBuffer() {
+		final PcmSoundPacket first = _buffer.get(0);
+		final Iterator<PcmSoundPacket> iterator = _buffer.iterator();
+		while (iterator.hasNext()) {
+			final PcmSoundPacket packet = iterator.next();
+			if (packet.publicationTime() - first.publicationTime() > FLUSH_INTERVAL)
+				break;
+			play(packet);
+			iterator.remove();
+		}
+	}
+
+	private void sortBuffer() {
+		Collections.sort(_buffer, new Comparator<PcmSoundPacket>() { @Override public int compare(PcmSoundPacket x, PcmSoundPacket y) {
+			return x._sequence - y._sequence;
+		}});
+	}
+
+	private void play(final PcmSoundPacket packet) {
+		final byte[] buffer = packet._payload.copy();
+		_line.write(buffer, 0, buffer.length);
+		_lastWritten = packet;
+	}
+	
+	protected boolean isOlderThanLastPlayed(PcmSoundPacket packet) {
 		return packet.publicationTime() < _lastWritten.publicationTime();
 	}
 

@@ -42,6 +42,7 @@ public abstract class Timebox implements Runnable {
 	private final int _durationInMillis;
 	private long _timeDue = 0;
 	private Thread _worker;
+	private boolean _isBlockStatusLogged = false;
 	
 	
 	protected abstract void runInTimebox();
@@ -75,6 +76,7 @@ public abstract class Timebox implements Runnable {
 	synchronized private void runPost() {
 		_timeDue = 0;
 		_worker = null;
+		_isBlockStatusLogged = false;
 		_activeTimeboxes.remove(this);
 	}
 
@@ -82,7 +84,7 @@ public abstract class Timebox implements Runnable {
 		if (isDone()) return;
 		if (now < _timeDue) return;
 		
-		stopThread(_worker);
+		tryToStopThread(_worker);
 	}
 
 	private boolean isDone() {
@@ -90,11 +92,36 @@ public abstract class Timebox implements Runnable {
 	}
 
 	@SuppressWarnings("deprecation")
-	private void stopThread(Thread thread) {
+	private void tryToStopThread(Thread thread) {
+		if (dealWithBlocked(thread)) return;			
+		
 		TimeIsUp timeIsUp = new TimeIsUp(thread.getStackTrace());
 		thread.stop(timeIsUp);
 	}
 	
+	private boolean dealWithBlocked(Thread thread) {
+		if (!isBlocked(thread)) return false;
+		if (!_isBlockStatusLogged) {
+			_isBlockStatusLogged = true;
+			logBlockedStatus(thread);
+		}
+		return true;
+	}
+
+	private void logBlockedStatus(Thread thread) {
+		TimeIsUp timeIsUp = new TimeIsUp(thread.getStackTrace());
+		Logger.log(timeIsUp, "Thread running in timebox is blocked waiting for a sunchronization monitor and cannot be stopped.");
+	}
+
+	private boolean isBlocked(Thread thread) {
+		int tries = 0;
+		while (thread.getState() == Thread.State.BLOCKED) {
+			if (tries++ == 30) return true;
+			Threads.sleepWithoutInterruptions(100);
+		}
+		return false;
+	}
+
 	protected Thread workerThread() {
 		return _worker;
 	}

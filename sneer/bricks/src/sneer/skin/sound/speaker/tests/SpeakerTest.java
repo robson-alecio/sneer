@@ -74,7 +74,6 @@ public class SpeakerTest  {
 		tupleSpace.acquire(pcmSoundPacketFor(contactKey, pcmPayload2));
 		tupleSpace.acquire(pcmSoundPacketFor(ownPublickKey(), pcmPayload2));
 		
-		clock.advanceTime(1000);
 	}
 	
 	@Test
@@ -98,7 +97,6 @@ public class SpeakerTest  {
 		tupleSpace.acquire(packet2);
 		tupleSpace.acquire(packet1);
 		
-		clock.advanceTime(1000);
 	}
 	
 	@Test
@@ -116,12 +114,8 @@ public class SpeakerTest  {
 		final PublicKey contactKey = generateContactKey();
 		tupleSpace.acquire(pcmSoundPacketFor(contactKey, pcmPayload));
 		
-		clock.advanceTime(1000);
-		
 		speaker.close();
 		tupleSpace.acquire(pcmSoundPacketFor(contactKey, pcmPayload));
-		
-		clock.advanceTime(1000);
 	}
 
 	@SuppressWarnings("deprecation")

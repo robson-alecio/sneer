@@ -108,8 +108,8 @@ class ReceiverHolder<T> extends java.lang.ref.WeakReference<T>{
 	}
 	
 	static String getAlias(Object object) {
-		//return "" + object.getClass() + "@" + System.identityHashCode(object);
-		return object.toString();
+		return "" + object.getClass() + "@" + System.identityHashCode(object);
+		//USE object.toString() HERE ONLY FORDEBUGGING. DO NOT COMMIT.
 	}
 
 }

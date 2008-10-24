@@ -95,8 +95,8 @@ public class SpeakerTest  {
 		final PublicKey contactKey = generateContactKey();
 		final PcmSoundPacket packet1 = pcmSoundPacketFor(contactKey, pcmPayload1);
 		final PcmSoundPacket packet2 = pcmSoundPacketFor(contactKey, pcmPayload2);
-		tupleSpace.publish(packet2);
-		tupleSpace.publish(packet1);
+		tupleSpace.acquire(packet2);
+		tupleSpace.acquire(packet1);
 		
 		clock.advanceTime(1000);
 	}

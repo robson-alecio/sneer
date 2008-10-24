@@ -126,6 +126,8 @@ public class SpeakerImpl implements Speaker, Omnivore<PcmSoundPacket> {
 		ensureLineIsOpen();		
 		
 		synchronized (_buffer) {
+			if (_buffer.isEmpty())
+				return;
 			sortBuffer();
 			playBuffer();
 		}

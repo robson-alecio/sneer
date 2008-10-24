@@ -121,6 +121,22 @@ public class SpeakerTest  {
 		clock.advanceTime(500);
 		
 	}
+	
+	@Test
+	public void testSilentChannel() {
+		
+		mockery.checking(new CommonExpectations() {{
+			one(sourceDataLine).close();
+		}});
+		
+		speaker.open();
+		
+		clock.advanceTime(500);
+		
+		speaker.close();
+		
+		clock.advanceTime(500);
+	}
 
 	@SuppressWarnings("deprecation")
 	private PublicKey generateContactKey() {

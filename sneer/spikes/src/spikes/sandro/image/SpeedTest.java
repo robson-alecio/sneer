@@ -67,11 +67,14 @@ public class SpeedTest {
 	}
 
 	private static void testImageIoWrite(String type) throws InterruptedException, IOException {
-		ByteArrayOutputStream result = new ByteArrayOutputStream();
 		BufferedImage img01 =createBufferedImage(Images.getImage(SpeedTest.class.getResource("screen1.png")));
-		ImageIO.write(img01, type, result);
-		byte[] byteArray = result.toByteArray();
-		result.close();
+
+		long t0 = System.nanoTime();
+		byte[] byteArray = convert(type, img01);
+		long t1 = System.nanoTime();
+		System.out.println("Conversion: " + (t1 - t0) + "\n");
+
+		
 		
 		if(byteArray.length==0){
 			System.out.println("\nnot converted to " + type + " (" + byteArray.length + " bytes)");
@@ -83,6 +86,15 @@ public class SpeedTest {
 		BufferedImage img02 =ImageIO.read(new ByteArrayInputStream(byteArray));
 		boolean isEqual = Arrays.equals(toPixel01(img01), toPixel01(img02));
 		System.out.println("[" + type + "] ImageIO.write() = " + isEqual);
+	}
+
+	private static byte[] convert(String type, BufferedImage img01)
+			throws IOException {
+		ByteArrayOutputStream result = new ByteArrayOutputStream();
+		ImageIO.write(img01, type, result);
+		byte[] byteArray = result.toByteArray();
+		result.close();
+		return byteArray;
 	}
 	
 	public static int[] toPixel01(BufferedImage image) {

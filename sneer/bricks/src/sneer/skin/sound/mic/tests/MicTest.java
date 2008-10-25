@@ -46,7 +46,7 @@ public class MicTest {
 		
 		final HashMap<Integer, PcmSoundPacket> seenPackets = new HashMap<Integer, PcmSoundPacket>();
 		tupleSpace.addSubscription(PcmSoundPacket.class, new Omnivore<PcmSoundPacket>() { @Override public void consume(PcmSoundPacket packet) {
-			seenPackets.put(packet._sequence, packet);
+			seenPackets.put(packet.sequence, packet);
 		}});
 		
 		final ByRef<Integer> sequence = ByRef.newInstance(0);
@@ -78,7 +78,7 @@ public class MicTest {
 		
 		assertEquals(sequence.value.intValue(), seenPackets.size());
 		for (PcmSoundPacket packet : seenPackets.values()) {
-			assertEquals(readInt(packet._payload.copy()), packet._sequence);
+			assertEquals(readInt(packet.payload.copy()), packet.sequence);
 		}
 	}
 

@@ -49,8 +49,8 @@ public class OwnIpDiscovererTest {
 
 		}});
 		
-		final Container container = ContainerUtils.newContainer(checkip, store);
-		final OwnIpDiscoverer discoverer = container.produce(OwnIpDiscoverer.class);
+		Container container = ContainerUtils.newContainer(checkip, store);
+		OwnIpDiscoverer discoverer = container.produce(OwnIpDiscoverer.class);
 		
 		@SuppressWarnings("unused")
 		final Receiver<String> refToAvoidGc = new Receiver<String>(discoverer.ownIp()) { @Override public void consume(String value) {

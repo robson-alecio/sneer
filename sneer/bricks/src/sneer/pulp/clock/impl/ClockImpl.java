@@ -4,6 +4,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import sneer.pulp.clock.Clock;
+import sneer.pulp.threadpool.Stepper;
 import wheel.lang.Threads;
 
 class ClockImpl implements Clock {
@@ -22,13 +23,13 @@ class ClockImpl implements Clock {
 
 	@Override
 	synchronized public void wakeUpInAtLeast(int millisFromCurrentTime, Runnable runnable) {
-		_alarms.add(new Alarm(runnable, millisFromCurrentTime, false));
+		_alarms.add(new Alarm(runnable, millisFromCurrentTime));
 		wakeUpAlarmsIfNecessary();
 	}
 
 	@Override
-	synchronized public void wakeUpEvery(int millisFromCurrentTime, Runnable runnable) {
-		_alarms.add(new Alarm(runnable, millisFromCurrentTime, true));
+	synchronized public void wakeUpEvery(int period, Stepper stepper) {
+		_alarms.add(new Alarm(stepper, period));
 		wakeUpAlarmsIfNecessary();
 	}
 
@@ -75,29 +76,28 @@ class ClockImpl implements Clock {
 
 	private class Alarm implements Comparable<Alarm>{
 		
-		final int _minimumPeriod;
+		final int _period;
 		
 		long _wakeUpTime;
-		final Runnable _runnable;
+		final Stepper _stepper;
 
-		Alarm(Runnable runnable, int millisFromNow, boolean isPeriodic) {
-			if (millisFromNow < 0) throw new IllegalArgumentException();
-			_minimumPeriod = isPeriodic ? millisFromNow : 0;
-			_wakeUpTime = _currentTimeMillis + millisFromNow;
-			_runnable = runnable;
+		Alarm(final Runnable runnable, int millisFromNow) {
+			this(singleStepperFor(runnable), millisFromNow);
 		}
-		
+
+		public Alarm(Stepper stepper, int period) {
+			if (period < 0) throw new IllegalArgumentException();
+			_period = period;
+			_wakeUpTime = _currentTimeMillis + period;
+			_stepper = stepper;
+		}
+
 		void wakeUp() {
 			_alarms.remove(this);
-			_runnable.run();
+			if (!_stepper.step()) return;
 
-			if (!isPeriodic()) return;
-			_wakeUpTime = _currentTimeMillis + _minimumPeriod;
+			_wakeUpTime = _currentTimeMillis + _period;
 			_alarms.add(this);
-		}
-
-		public boolean isPeriodic() {
-			return _minimumPeriod>0;
 		}
 
 		boolean isTimeToWakeUp() {
@@ -115,19 +115,11 @@ class ClockImpl implements Clock {
 		}
 	}
 
-//	@Override
-//	public void timebox(int timeoutMillis, final Runnable runnable) {
-//		new Timebox(timeoutMillis) {
-//			@Override
-//			public void runInTimebox() {
-//				runnable.run();
-//			}
-//			
-//			@Override
-//			protected void sleepFor(int millis) {
-//				sleepAtLeast(millis);
-//			}
-//		};
-//	}
+	private static Stepper singleStepperFor(final Runnable runnable) {
+		return new Stepper() { @Override public boolean step() {
+			runnable.run();
+			return false;
+		}};
+	}
 
 }

@@ -8,6 +8,7 @@ import org.junit.Test;
 import sneer.kernel.container.Inject;
 import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.clock.Clock;
+import sneer.pulp.threadpool.Stepper;
 
 public class ClockTest extends TestThatIsInjected {
 
@@ -19,11 +20,11 @@ public class ClockTest extends TestThatIsInjected {
 	public void testAlarms() throws Exception {
 		final List<Integer> _order = new ArrayList<Integer>();
 		
-		_subject.wakeUpInAtLeast(50, new MyRunnable(50, _order));
-		_subject.wakeUpEvery(20, new MyRunnable(20, _order));
-		_subject.wakeUpInAtLeast(10, new MyRunnable(10, _order));
-		_subject.wakeUpEvery(35, new MyRunnable(35, _order));
-		_subject.wakeUpInAtLeast(30, new MyRunnable(30,_order));
+		_subject.wakeUpInAtLeast(50, new Worker(50, _order));
+		_subject.wakeUpEvery(20, new Worker(20, _order));
+		_subject.wakeUpInAtLeast(10, new Worker(10, _order));
+		_subject.wakeUpEvery(35, new Worker(35, _order));
+		_subject.wakeUpInAtLeast(30, new Worker(30,_order));
 		
 		_subject.advanceTime(81);
 		assertEquals(81, _subject.time());
@@ -36,21 +37,27 @@ public class ClockTest extends TestThatIsInjected {
 		}
 	}
 
-	private class MyRunnable implements Runnable{
+	private class Worker implements Stepper, Runnable {
 
 		private final int _timeout;
 		private final List<Integer> _order;
 		private int _count = 0;
 
-		public MyRunnable(int timeout, List<Integer> order) {
+		public Worker(int timeout, List<Integer> order) {
 			_timeout = timeout;
 			_order = order;
 		}
 
 		@Override
-		public void run() {
+		public boolean step() {
 			_count++;
 			_order.add(_timeout * _count);
+			return true;
+		}
+
+		@Override
+		public void run() {
+			step();
 		}
 	}
 	

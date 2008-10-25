@@ -5,14 +5,14 @@
 		- Flooding - Solve tuple flooding on the network.
 
 	- WatchMe - Screen Viewing à la VNC
-		- Images.isSameImage() - Optimize - It is using 40% of the CPU on Klaus's machine.
+		- [Douglas] Optimize - Stop using isSameImage() and cache the last pixel array (int[]) for each cell.
 	---- WE DROP VNC
 
 	- Wind
 		- History - Hear shouts by peers shouted when I was off-line.
 			- Unignore Freedom5.canHearPastShouts().
 	- Voice Calls
-		- SpeakerTest.testPlayingOrder: remove @Ignore and make it pass
+		- SpeakerTest.testReceivingOutOfOrder: remove @Ignore and make it pass - Implement SpeakerBufferImpl. It is currently only a passthru.
 		- First Step: When I press the button I listen to everyone and everyone listens to me.
 			- PCM to Speex codec
 			- Block PCM tuples from being sent over the wire

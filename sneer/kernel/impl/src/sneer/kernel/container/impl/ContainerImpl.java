@@ -12,7 +12,6 @@ import sneer.kernel.container.SneerConfig;
 import sneer.kernel.container.impl.classloader.EclipseClassLoaderFactory;
 import sneer.pulp.config.persistence.PersistenceConfig;
 import sneer.skin.GuiBrick;
-import wheel.io.Logger;
 import wheel.lang.Types;
 
 public class ContainerImpl implements Container {

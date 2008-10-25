@@ -77,7 +77,7 @@ class ImplementationGenerator {
 	}
 
 	private String successMessage(Class<?> intrface) {
-		return " >>> Succefully Generated Impl for: " + intrface.getName() + " (Refresh your IDE).";
+		return " >>> Successfully Generated Impl for: " + intrface.getName() + " (Refresh your IDE).";
 	}
 
 	private String failureMessage(Class<?> intrface, Exception e) {

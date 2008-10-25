@@ -82,7 +82,7 @@ public class ContainerImpl implements Container {
 		try {
 			component = lookup(intrface);
 		} catch (ClassNotFoundException e) {
-			Logger.log("Impl for {} not found. Please wait while generating.", intrface);
+			System.out.println("Impl for " + intrface + " not found. Please wait while generating...");
 			String message = ImplementationGenerator.generateFor(intrface);
 			throw new ContainerException(message, e);
 		} catch (Exception e) {

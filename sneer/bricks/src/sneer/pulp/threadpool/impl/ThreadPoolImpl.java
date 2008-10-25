@@ -1,10 +1,8 @@
 package sneer.pulp.threadpool.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import sneer.kernel.container.Inject;
 import sneer.pulp.own.name.OwnNameKeeper;
+import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.lang.Threads;
 
@@ -13,12 +11,17 @@ class ThreadPoolImpl implements ThreadPool {
 	@Inject
 	static private OwnNameKeeper _ownNameKeeper;
 	
-	private final List<Runnable> _actors = new ArrayList<Runnable>();
 	
 	@Override
 	public void registerActor(Runnable actor) {
-		_actors.add(actor);
 		Threads.startDaemon(inferThreadName(), actor);
+	}
+
+	@Override
+	public void registerStepper(final Stepper stepper) {
+		Threads.startDaemon(inferThreadName(), new Runnable() { @Override public void run() {
+			while (stepper.step());
+		}});
 	}
 
 	private String inferThreadName() {
@@ -33,6 +36,5 @@ class ThreadPoolImpl implements ThreadPool {
 	private String toSimpleClassName(String className) {
 		return className.substring(className.lastIndexOf(".") + 1);
 	}
-
 
 }

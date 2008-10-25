@@ -11,18 +11,18 @@ public class PcmSoundPacket extends Tuple {
 		return new PcmSoundPacket(new ImmutableByteArray(pcmBuffer, read), sequence);
 	}
 
-	public final ImmutableByteArray _payload;
+	public final ImmutableByteArray payload;
 	
-	public final int _sequence;
+	public final int sequence;
 
-	private PcmSoundPacket(ImmutableByteArray payload, int sequence) {
-		_payload = payload;
-		_sequence = sequence;
+	private PcmSoundPacket(ImmutableByteArray payload_, int sequence_) {
+		payload = payload_;
+		sequence = sequence_;
 	}
 
-	public PcmSoundPacket(PublicKey pPublisher, long pPublicationTime, ImmutableByteArray payload, int sequence) {
-		super(pPublisher, pPublicationTime);
-		_payload = payload;
-		_sequence = sequence;
+	public PcmSoundPacket(PublicKey publisher, long publicationTime, ImmutableByteArray payload_, int sequence_) {
+		super(publisher, publicationTime);
+		payload = payload_;
+		sequence = sequence_;
 	}
 }

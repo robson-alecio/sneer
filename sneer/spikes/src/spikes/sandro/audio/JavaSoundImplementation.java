@@ -111,7 +111,5 @@ public class JavaSoundImplementation implements Sound{
 		stopCapture = stop;
 	}
 	
-	public static void main(String args[]) {
-		new AudioCaptureDemoGui(new JavaSoundImplementation()).setVisible(true) ;
-	}
+
 }

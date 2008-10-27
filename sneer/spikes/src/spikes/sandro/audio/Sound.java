@@ -2,10 +2,9 @@ package spikes.sandro.audio;
 
 public interface Sound {
 
-	void captureAudio();
+	void startRecord();
+	void stopRecord();
 
-	void playAudio();
-
-	void stopCapture(boolean stop);
-
+	void startPlay();
+	void stopPlay();
 }

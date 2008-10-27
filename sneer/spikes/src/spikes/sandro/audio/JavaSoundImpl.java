@@ -12,42 +12,31 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 
-public class JavaSoundImplementation implements Sound{
+public class JavaSoundImpl implements Sound{
 
-	AudioFormat _audioFormat = new AudioFormat(8000.0F, 16, 1, true, false);
-	ByteArrayOutputStream _buffer;
-	boolean _stopCapture = false;
+	private AudioFormat _audioFormat = new AudioFormat(8000.0F, 16, 1, true, false);
+	private ByteArrayOutputStream _buffer;
+	private boolean _stopCapture = false;
+	private boolean _stopPlay = false;
 
-	public void captureAudio() {
+	@Override
+	public void startRecord() {
 		new CaptureThread().start();
-	}
-
-	public void playAudio() {
-		new PlayThread().start();
 	}
 	
 	@Override
-	public void stopCapture(boolean stop) {
-		_stopCapture = stop;
+	public void stopRecord() {
+		_stopCapture = false;
 	}
-	
-	private SourceDataLine play() throws LineUnavailableException, IOException {
-		int cnt;
-		byte tempBuffer[] = new byte[10000];
-		DataLine.Info dataLineInfo = new DataLine.Info(SourceDataLine.class,	_audioFormat);
-		SourceDataLine sourceDataLine = (SourceDataLine) AudioSystem.getLine(dataLineInfo);
-		sourceDataLine.open(_audioFormat);
-		sourceDataLine.start();
 
-		byte[] audioData = _buffer.toByteArray();
-		
-		AudioInputStream _toPlayInputStream = new AudioInputStream(new ByteArrayInputStream(audioData), 
-													  _audioFormat, audioData.length / _audioFormat.getFrameSize());
-		while ((cnt = _toPlayInputStream.read(tempBuffer, 0, tempBuffer.length)) != -1) {
-			if (cnt > 0) sourceDataLine.write(tempBuffer, 0, cnt);
-		}
-		sourceDataLine.drain();
-		return sourceDataLine;
+	@Override
+	public void stopPlay() {
+		_stopPlay = false;
+	}	
+	
+	@Override
+	public void startPlay() {
+		new PlayThread().start();
 	}
 	
 	private void record() throws LineUnavailableException {
@@ -65,7 +54,29 @@ public class JavaSoundImplementation implements Sound{
 		}
 	}	
 	
-	class CaptureThread extends Thread {
+	private SourceDataLine play() throws LineUnavailableException, IOException {
+		int cnt;
+		byte tempBuffer[] = new byte[10000];
+		DataLine.Info dataLineInfo = new DataLine.Info(SourceDataLine.class,	_audioFormat);
+		SourceDataLine sourceDataLine = (SourceDataLine) AudioSystem.getLine(dataLineInfo);
+		sourceDataLine.open(_audioFormat);
+		sourceDataLine.start();
+
+		_stopPlay = false;
+		while (!_stopPlay) {
+			byte[] audioData = _buffer.toByteArray();
+			_buffer = new ByteArrayOutputStream();
+			AudioInputStream _toPlayInputStream = new AudioInputStream(new ByteArrayInputStream(audioData), 
+														  _audioFormat, audioData.length / _audioFormat.getFrameSize());
+			while ((cnt = _toPlayInputStream.read(tempBuffer, 0, tempBuffer.length)) != -1) {
+				if (cnt > 0) sourceDataLine.write(tempBuffer, 0, cnt);
+			}
+		}
+		sourceDataLine.drain();
+		return sourceDataLine;
+	}
+	
+	private class CaptureThread extends Thread {
 		@Override
 		public void run() {
 			try {
@@ -79,7 +90,7 @@ public class JavaSoundImplementation implements Sound{
 		}
 	}
 
-	class PlayThread extends Thread {
+	private class PlayThread extends Thread {
 		@Override
 		public void run() {
 			SourceDataLine sourceDataLine = null;

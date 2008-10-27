@@ -43,7 +43,7 @@ public class LoopBackGui extends JFrame {
 
 	private void createPlayListeners() {
 		_play.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent e) {
-			if(_record.isSelected())
+			if(_play.isSelected())
 				_sound.startPlay();
 			else
 				_sound.stopPlay();

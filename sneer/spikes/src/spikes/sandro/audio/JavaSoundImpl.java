@@ -2,7 +2,6 @@ package spikes.sandro.audio;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -38,7 +37,7 @@ public class JavaSoundImpl implements Sound{
 		new PlayThread().start();
 	}
 	
-	private void record() throws Exception {
+	private TargetDataLine record() throws Exception {
 		System.out.println("Start Record!");
 		byte tempBuffer[] = new byte[10000];
 		DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, _audioFormat);
@@ -46,7 +45,6 @@ public class JavaSoundImpl implements Sound{
 		targetDataLine.open(_audioFormat);
 		targetDataLine.start();
 		
-		_buffer = new ByteArrayOutputStream();
 		_stopCapture = false;
 		while (!_stopCapture) {
 			int cnt = targetDataLine.read(tempBuffer, 0, tempBuffer.length);
@@ -57,6 +55,7 @@ public class JavaSoundImpl implements Sound{
 			
 		}
 		System.out.println("Stop Record!");
+		return targetDataLine;
 	}	
 	
 	private SourceDataLine play() throws Exception {
@@ -86,20 +85,26 @@ public class JavaSoundImpl implements Sound{
 			}
 		}
 		System.out.println("Stop Play!");
-		sourceDataLine.drain();
 		return sourceDataLine;
 	}
 	
 	private class CaptureThread extends Thread {
 		@Override
 		public void run() {
+			TargetDataLine targetDataLine = null;
 			try {
-				record();
+				targetDataLine = record();
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.exit(0);
 			} finally{
-				try { _buffer.close(); } catch (IOException e) {/* ignore */}
+				try { 
+					targetDataLine.stop();
+					targetDataLine.drain();
+					targetDataLine.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -114,7 +119,13 @@ public class JavaSoundImpl implements Sound{
 				e.printStackTrace();
 				System.exit(0);
 			} finally{
-				try { sourceDataLine.close(); } catch (Exception e) {/* ignore */}
+				try { 
+					sourceDataLine.stop();
+					sourceDataLine.drain();
+					sourceDataLine.close(); 
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

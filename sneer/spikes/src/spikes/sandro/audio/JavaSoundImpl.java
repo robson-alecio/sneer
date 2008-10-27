@@ -26,12 +26,12 @@ public class JavaSoundImpl implements Sound{
 	
 	@Override
 	public void stopRecord() {
-		_stopCapture = false;
+		_stopCapture = true;
 	}
 
 	@Override
 	public void stopPlay() {
-		_stopPlay = false;
+		_stopPlay = true;
 	}	
 	
 	@Override
@@ -52,6 +52,7 @@ public class JavaSoundImpl implements Sound{
 			int cnt = targetDataLine.read(tempBuffer, 0, tempBuffer.length);
 			if (cnt > 0) _buffer.write(tempBuffer, 0, cnt);
 		}
+		System.out.println("Stop Record!");
 	}	
 	
 	private SourceDataLine play() throws LineUnavailableException, IOException {
@@ -72,6 +73,7 @@ public class JavaSoundImpl implements Sound{
 				if (cnt > 0) sourceDataLine.write(tempBuffer, 0, cnt);
 			}
 		}
+		System.out.println("Stop Play!");
 		sourceDataLine.drain();
 		return sourceDataLine;
 	}

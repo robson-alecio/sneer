@@ -8,22 +8,26 @@ import sneer.pulp.threadpool.ThreadPool;
 
 public class ThreadPoolMock implements ThreadPool {
 
-	List<Runnable> _toRunList = new ArrayList<Runnable>();
+	List<Runnable> _actors = new ArrayList<Runnable>();
+	List<Stepper> _steppers = new ArrayList<Stepper>();
 
 	@Override
 	public void registerStepper(final Stepper stepper) {
-		registerActor(new Runnable() { @Override public void run() {
-			while (stepper.step());
-		}});
+		_steppers.add(stepper);
 	}
 
 	@Override
 	public void registerActor(Runnable runnable) {
-		_toRunList.add(runnable);
+		_actors.add(runnable);
 	}
 
-	public void runAll(){
-		for (Runnable toRun : _toRunList) toRun.run();
-		_toRunList.clear();
+	public void startAllActors(){
+		for (Runnable toRun : _actors) toRun.run();
+		_actors.clear();
 	}
+
+	public Stepper stepper(int i) {
+		return _steppers.get(i);
+	}
+
 }

@@ -5,9 +5,10 @@ import javax.sound.sampled.SourceDataLine;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.Sequence;
+import org.jmock.api.Invocation;
 import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
-import org.junit.Ignore;
+import org.jmock.lib.action.CustomAction;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -20,125 +21,152 @@ import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.speaker.Speaker;
+import sneer.skin.sound.speaker.buffer.SpeakerBuffer;
+import sneer.skin.sound.speaker.buffer.SpeakerBuffers;
 import wheel.lang.ImmutableByteArray;
+import wheel.lang.Omnivore;
 
 
 @RunWith(JMock.class)
 public class SpeakerTest extends TestThatIsInjected {
 	
-	private final Mockery mockery = new JUnit4Mockery();
+	@Inject private static Speaker _subject;
 	
-	private final Audio audio = mockery.mock(Audio.class);
-	private final SourceDataLine line = mockery.mock(SourceDataLine.class);
+	@Inject private static Clock _clock;
+	@Inject private static KeyManager _keyManager;
+	@Inject private static TupleSpace _tupleSpace;
 
-	@Inject private static Clock clock;
-	@Inject private static KeyManager keyManager;
-	@Inject private static TupleSpace tupleSpace;
-	@Inject private static Speaker speaker;
+	private final Mockery _mockery = new JUnit4Mockery();
 	
-	private final byte[] _pcm1 = new byte[] { 1, 2, 3, 5 };
-	private final byte[] _pcm2 = new byte[] { 7, 11, 13, 17 };
-
-	private int _packetSequence = 0;
-
+	private final Audio _audio = _mockery.mock(Audio.class);
+	private final SourceDataLine _line = _mockery.mock(SourceDataLine.class);
+	private final SpeakerBuffers _buffers = _mockery.mock(SpeakerBuffers.class);
+	private final SpeakerBuffer _buffer = _mockery.mock(SpeakerBuffer.class);
+	
+	private Omnivore<? super PcmSoundPacket> _consumer;
+	
 	
 	@Override
 	protected Object[] getBindings() {
-		return new Object[]{ audio };
+		return new Object[]{ _audio, _buffers };
 	}
 
 
 	@Test
 	public void testSilentChannel() throws Exception {
-		mockery.checking(new Expectations() {{
-			one(audio).bestAvailableSourceDataLine(); will(returnValue(line));
-			one(line).close();
-		}});
+		_mockery.checking(new CommonExpectations());
 		
-		speaker.open();
-		speaker.close();
+		_subject.open();
+		_subject.close();
 	}
 
 	
 	@Test
 	public void testOnlyTuplesFromContactsGetPlayed() throws Exception {
-		mockery.checking(new SoundExpectations());
+		_mockery.checking(new SoundExpectations());
 
-		speaker.open();
-		contactPacket(_pcm1);
-		contactPacket(_pcm2);
+		_subject.open();
+		_tupleSpace.acquire(p1());
+		_tupleSpace.acquire(p2());
 
-		myPacket(_pcm1);
+		_tupleSpace.acquire(myPacket(new byte[] {-1, 17, 0, 42}));
+		
+		_subject.close();
 	}
 
 	
 	@Test
 	public void testTuplesPublishedAfterCloseAreNotPlayed() throws Exception {
-		mockery.checking(new SoundExpectations() {{
-			one(line).close();
-		}});
+		_mockery.checking(new SoundExpectations());
 		
-		speaker.open();
-		contactPacket(_pcm1);
-		contactPacket(_pcm2);
+		_subject.open();
+		
+		_tupleSpace.acquire(p1());
+		_tupleSpace.acquire(p2());
 
-		speaker.close();
-		contactPacket(_pcm1);
+		_subject.close();
+		_tupleSpace.acquire(p1());
 	}
 
-	
-	@Ignore
+
 	@Test
-	public void testReceivingOutOfOrder() throws Exception {
-		mockery.checking(new SoundExpectations());
-		speaker.open();
+	public void testPacketsAreSentToDataLine() throws Exception {
+		final Sequence main = _mockery.sequence("main");
+		_mockery.checking(new CommonExpectations(){{
+			one(_line).isActive(); will(returnValue(false)); inSequence(main);
+			one(_line).open(); inSequence(main);
+			one(_line).start(); inSequence(main);
+			allowing(_line).isActive(); will(returnValue(true));
+			
+			one(_line).write(new byte[]{1, 2, 3, 5}, 0, 4); inSequence(main);
+			one(_line).write(new byte[]{7, 11, 13, 17}, 0, 4); inSequence(main);
+		}});
+		_subject.open();
 		
-		PcmSoundPacket p1 = pcmSoundPacketFor(contactKey(), _pcm1);
-		PcmSoundPacket p2 = pcmSoundPacketFor(contactKey(), _pcm2);
-		tupleSpace.acquire(p2);
-		tupleSpace.acquire(p1);
+		_consumer.consume(p1());
+		_consumer.consume(p2());
+
+		_subject.close();
+		
 	}
+
 	
-
-	class SoundExpectations extends Expectations {
-		private final Sequence _mainSequence = mockery.sequence("main");
+	class SoundExpectations extends CommonExpectations {
+		private final Sequence _mainSequence = _mockery.sequence("main");
 		
-		public SoundExpectations() throws Exception {
-			one(audio).bestAvailableSourceDataLine(); will(returnValue(line)); inMainSequence();
+		SoundExpectations() throws Exception {
+			one(_buffer).consume(p1()); inSequence(_mainSequence);
+			one(_buffer).consume(p2()); inSequence(_mainSequence);
+		}
+	}
 
-			one(line).isActive(); will(returnValue(false)); inMainSequence();
-			one(line).open(); inMainSequence();
-			one(line).start(); inMainSequence();
-			allowing(line).isActive(); will(returnValue(true));
+	
+	class CommonExpectations extends Expectations {
+		
+		CommonExpectations() throws Exception {
+			one(_audio).bestAvailableSourceDataLine(); will(returnValue(_line));
+			one(_buffers).createBufferFor(with(aNonNull(Omnivore.class))); will(new CustomAction("keep buffer") { @Override public Object invoke(Invocation invocation) {
+				_consumer = (Omnivore<? super PcmSoundPacket>) invocation.getParameter(0);
+				return _buffer;
+			}});;
 
-			one(line).write(_pcm1, 0, _pcm1.length); will(returnValue(_pcm1.length)); inMainSequence();
-			one(line).write(_pcm2, 0, _pcm2.length); will(returnValue(_pcm2.length)); inMainSequence();
+			one(_buffer).crash();
+			one(_line).close();
 		}
 
-		protected void inMainSequence() {
-			inSequence(_mainSequence);
-		}
 	}
 
 	
 	@SuppressWarnings("deprecation")
 	private PublicKey contactKey() {
-		return keyManager.generateMickeyMouseKey("contact");
+		return _keyManager.generateMickeyMouseKey("contact");
 	}
 
 	
-	private void myPacket(byte[] pcm) {
-		tupleSpace.acquire(pcmSoundPacketFor(keyManager.ownPublicKey(), pcm));
+	private PcmSoundPacket myPacket(byte[] pcm) {
+		return pcmSoundPacketFor(_keyManager.ownPublicKey(), pcm, 1);
 	}
 
 	
-	private void contactPacket(byte[] pcm) {
-		tupleSpace.acquire(pcmSoundPacketFor(contactKey(), pcm));
+	private PcmSoundPacket contactPacket(byte[] pcm, int sequence) {
+		return pcmSoundPacketFor(contactKey(), pcm, sequence);
 	}
 	
 	
-	private PcmSoundPacket pcmSoundPacketFor(PublicKey publicKey, final byte[] pcmPayload) {
-		return new PcmSoundPacket(publicKey, clock.time(), new ImmutableByteArray(pcmPayload, pcmPayload.length), ++_packetSequence);
+	private PcmSoundPacket pcmSoundPacketFor(PublicKey publicKey, final byte[] pcmPayload, int sequence) {
+		return new PcmSoundPacket(publicKey, _clock.time(), new ImmutableByteArray(pcmPayload, pcmPayload.length), sequence);
 	}
+
+	
+	private PcmSoundPacket p1() {
+		return contactPacket(new byte[] { 1, 2, 3, 5 }, 1);
+	}
+	
+	
+	private PcmSoundPacket p2() {
+		return contactPacket(new byte[] { 7, 11, 13, 17 }, 2);
+	}
+
+
 
 }

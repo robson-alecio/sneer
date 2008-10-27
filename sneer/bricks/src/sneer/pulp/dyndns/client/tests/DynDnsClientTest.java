@@ -108,13 +108,13 @@ Unacceptable Client Behavior
 		
 
 		final Container container = startDynDnsClient(_threadPool);
-		_threadPool.runAll();
+		_threadPool.startAllActors();
 		
 		final Light light = assertBlinkingLight(error, container);
 		
 		container.produce(Clock.class).advanceTime(300001);
 		
-		_threadPool.runAll();
+		_threadPool.startAllActors();
 		assertFalse(light.isOn());
 		_context.assertIsSatisfied();
 	}
@@ -139,7 +139,7 @@ Unacceptable Client Behavior
 		}});
 		
 		final Container container = startDynDnsClient(_threadPool);
-		_threadPool.runAll();
+		_threadPool.startAllActors();
 		
 		final Light light = assertBlinkingLight(error, container);
 		
@@ -149,7 +149,7 @@ Unacceptable Client Behavior
 		DynDnsAccount changed = new DynDnsAccount("test.dyndns.org", "test", "*test");
 		_ownAccount.setter().consume(changed);
 
-		_threadPool.runAll();
+		_threadPool.startAllActors();
 		assertFalse(light.isOn());
 		
 		_context.assertIsSatisfied();

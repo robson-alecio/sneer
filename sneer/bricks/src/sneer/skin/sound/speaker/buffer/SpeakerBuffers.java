@@ -6,6 +6,6 @@ import wheel.lang.Omnivore;
 
 public interface SpeakerBuffers extends Brick {
 
-	Omnivore<PcmSoundPacket> createBufferFor(Omnivore<? super PcmSoundPacket> consumer);
+	SpeakerBuffer createBufferFor(Omnivore<? super PcmSoundPacket> consumer);
 	
 }

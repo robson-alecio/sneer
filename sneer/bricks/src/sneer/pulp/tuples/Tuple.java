@@ -118,6 +118,11 @@ public abstract class Tuple {
 		_publisher = publisher;
 		_publicationTime = time; 
 	}
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + ":" + hashCode();
+	}
 	
 	
 }

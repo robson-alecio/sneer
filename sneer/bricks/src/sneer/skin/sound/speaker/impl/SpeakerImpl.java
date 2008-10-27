@@ -1,10 +1,9 @@
 package sneer.skin.sound.speaker.impl;
 
 import sneer.kernel.container.Inject;
-import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.speaker.Speaker;
+import sneer.skin.sound.speaker.buffer.SpeakerBuffer;
 import sneer.skin.sound.speaker.buffer.SpeakerBuffers;
-import wheel.lang.Omnivore;
 
 class SpeakerImpl implements Speaker {
 	
@@ -15,14 +14,16 @@ class SpeakerImpl implements Speaker {
 	
 	private PacketPlayer _consumer;
 
+	private SpeakerBuffer _buffer;
+
 	
 	@Override
 	synchronized public void open() {
 		if (_producer != null) return;
 
 		_consumer = new PacketPlayer();
-		Omnivore<PcmSoundPacket> buffer = _buffers.createBufferFor(_consumer);
-		_producer = new PacketSubscriber(buffer);
+		_buffer = _buffers.createBufferFor(_consumer);
+		_producer = new PacketSubscriber(_buffer);
 	}
 
 	
@@ -32,9 +33,11 @@ class SpeakerImpl implements Speaker {
 
 		_producer.crash();
 		_consumer.crash();
+		_buffer.crash();
 
 		_producer = null;
 		_consumer = null;
+		_buffer = null;
 	}
 
 }

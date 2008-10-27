@@ -10,6 +10,8 @@ class SimpleBinder {
 	private final List<Object> _implementations = new ArrayList<Object>();
 	
 	synchronized void bind(Object implementation) {
+		if (implementation == null)
+			throw new IllegalArgumentException();
 		_implementations.add(implementation);
 	}
 	

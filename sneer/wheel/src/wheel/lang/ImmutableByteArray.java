@@ -30,4 +30,21 @@ public class ImmutableByteArray {
 	public byte get(int index) {
 		return _payload[index];
 	}
+
+	@Override
+	public int hashCode() {
+		return Arrays.hashCode(_payload);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		ImmutableByteArray other = (ImmutableByteArray) obj;
+
+		return (Arrays.equals(_payload, other._payload));
+	}
+	
+	
 }

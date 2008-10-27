@@ -38,6 +38,7 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 	static private Mic _mic;
 	
 	JToggleButton _listenToMeButton;
+	JToggleButton _loopBackButton;
 
 	ListenToMeGuiImpl(){
 		_instrumentManager.registerInstrument(this);
@@ -55,9 +56,11 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 	public void init(Container container) {
 		container.setBackground(Color.WHITE);
 		container.setLayout(new FlowLayout());
-		_listenToMeButton = createButton(container, "Listen To Me!");
+		_listenToMeButton = createButton(container, "Listen To Me", "listenToMeOn.png", "listenToMeOff.png");
+		_loopBackButton = createButton(container, "Loop Back Test", "loopbackOn.png", "loopbackOff.png");
 		
 		createListenToMeButtonListener();
+		createLoopBackButtonListener();
 		addListenContactAction();
 	}
 
@@ -104,6 +107,12 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 		}});
 	}
 
+	private void createLoopBackButtonListener() {
+		_loopBackButton.addMouseListener(new MouseAdapter() {	@Override public void mouseReleased(MouseEvent e) {
+			throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+		}});
+	}
+
 	protected void listenToMeOff() {
 		_mic.close();
 		_speaker.close();
@@ -114,27 +123,27 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 		_speaker.open();
 	}
 
-	private JToggleButton createButton(Container container, String tip) {
+	private JToggleButton createButton(Container container, String tip, String onIcon, String offIcon) {
 		final JToggleButton btn = new JToggleButton();
 		btn.setPreferredSize(new Dimension(40,40));
 		btn.setBorder(new EmptyBorder(2,2,2,2));
 		btn.setOpaque(true);
 		btn.setBackground(Color.WHITE);
 		btn.setToolTipText(tip);
-		addMouseListener(btn);
+		addMouseListener(btn, onIcon, offIcon);
 		container.add(btn);
 		return btn;
 	}
 
-	private void addMouseListener(final JToggleButton btn) {
+	private void addMouseListener(final JToggleButton btn, final String onIconName, final String offIconName) {
 		btn.addMouseListener(new MouseAdapter() {
-			Icon LISTEN_TO_ME_ON = loadIcon("listenToMeOn.png");
-			Icon LISTEN_TO_ME_OFF = loadIcon("listenToMeOff.png");
-			{btn.setIcon(LISTEN_TO_ME_OFF);}
+			Icon ON_ICON = loadIcon(onIconName);
+			Icon OFF_ICON = loadIcon(offIconName);
+			{btn.setIcon(OFF_ICON);}
 			
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				btn.setIcon(LISTEN_TO_ME_ON);
+				btn.setIcon(ON_ICON);
 			}
 
 			@Override
@@ -145,9 +154,9 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				if (btn.isSelected())
-					btn.setIcon(LISTEN_TO_ME_ON);
+					btn.setIcon(ON_ICON);
 				else
-					btn.setIcon(LISTEN_TO_ME_OFF);
+					btn.setIcon(OFF_ICON);
 			}
 		});
 	}

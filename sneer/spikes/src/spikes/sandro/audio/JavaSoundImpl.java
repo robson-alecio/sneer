@@ -8,14 +8,13 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 
 public class JavaSoundImpl implements Sound{
 
 	private AudioFormat _audioFormat = new AudioFormat(8000.0F, 16, 1, true, false);
-	private ByteArrayOutputStream _buffer;
+	private ByteArrayOutputStream _buffer = new ByteArrayOutputStream();
 	private boolean _stopCapture = false;
 	private boolean _stopPlay = false;
 
@@ -39,7 +38,8 @@ public class JavaSoundImpl implements Sound{
 		new PlayThread().start();
 	}
 	
-	private void record() throws LineUnavailableException {
+	private void record() throws Exception {
+		System.out.println("Start Record!");
 		byte tempBuffer[] = new byte[10000];
 		DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, _audioFormat);
 		TargetDataLine targetDataLine = (TargetDataLine) AudioSystem.getLine(dataLineInfo);
@@ -50,12 +50,17 @@ public class JavaSoundImpl implements Sound{
 		_stopCapture = false;
 		while (!_stopCapture) {
 			int cnt = targetDataLine.read(tempBuffer, 0, tempBuffer.length);
-			if (cnt > 0) _buffer.write(tempBuffer, 0, cnt);
+			if (cnt > 0){
+				_buffer.write(tempBuffer, 0, cnt);
+				System.out.println(_buffer.size() + " bytes recorded...");				
+			}
+			
 		}
 		System.out.println("Stop Record!");
 	}	
 	
-	private SourceDataLine play() throws LineUnavailableException, IOException {
+	private SourceDataLine play() throws Exception {
+		System.out.println("Start Play!");
 		int cnt;
 		byte tempBuffer[] = new byte[10000];
 		DataLine.Info dataLineInfo = new DataLine.Info(SourceDataLine.class,	_audioFormat);
@@ -66,7 +71,14 @@ public class JavaSoundImpl implements Sound{
 		_stopPlay = false;
 		while (!_stopPlay) {
 			byte[] audioData = _buffer.toByteArray();
+			if(audioData.length == 0){
+				System.out.println("nothing to play...");
+				Thread.sleep(1000);
+				continue;
+			}
+			System.out.println(audioData.length + " bytes to play");				
 			_buffer = new ByteArrayOutputStream();
+
 			AudioInputStream _toPlayInputStream = new AudioInputStream(new ByteArrayInputStream(audioData), 
 														  _audioFormat, audioData.length / _audioFormat.getFrameSize());
 			while ((cnt = _toPlayInputStream.read(tempBuffer, 0, tempBuffer.length)) != -1) {
@@ -84,7 +96,7 @@ public class JavaSoundImpl implements Sound{
 			try {
 				record();
 			} catch (Exception e) {
-				System.out.println(e);
+				e.printStackTrace();
 				System.exit(0);
 			} finally{
 				try { _buffer.close(); } catch (IOException e) {/* ignore */}
@@ -99,7 +111,7 @@ public class JavaSoundImpl implements Sound{
 			try {
 				sourceDataLine = play();
 			} catch (Exception e) {
-				System.out.println(e);
+				e.printStackTrace();
 				System.exit(0);
 			} finally{
 				try { sourceDataLine.close(); } catch (Exception e) {/* ignore */}

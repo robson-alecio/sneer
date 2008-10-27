@@ -2,11 +2,13 @@ package spikes.sandro.audio;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 
@@ -19,7 +21,12 @@ public class JavaSoundImpl implements Sound{
 
 	@Override
 	public void startRecord() {
-		new CaptureThread().start();
+		new Recorder().start();
+	}
+	
+	@Override
+	public void startPlay() {
+		new Player().start();
 	}
 	
 	@Override
@@ -32,100 +39,131 @@ public class JavaSoundImpl implements Sound{
 		_stopPlay = true;
 	}	
 	
-	@Override
-	public void startPlay() {
-		new PlayThread().start();
-	}
 	
-	private TargetDataLine record() throws Exception {
-		System.out.println("Start Record!");
-		byte tempBuffer[] = new byte[10000];
-		DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, _audioFormat);
-		TargetDataLine targetDataLine = (TargetDataLine) AudioSystem.getLine(dataLineInfo);
-		targetDataLine.open(_audioFormat);
-		targetDataLine.start();
-		
-		_stopCapture = false;
-		while (!_stopCapture) {
-			int cnt = targetDataLine.read(tempBuffer, 0, tempBuffer.length);
-			if (cnt > 0){
-				_buffer.write(tempBuffer, 0, cnt);
-				System.out.println(_buffer.size() + " bytes recorded...");				
+	private class Recorder extends Thread {
+		@Override 
+		public void run() {
+			System.out.println("Start Record!");
+			TargetDataLine targetDataLine = initDataLine();
+			
+			_stopCapture = false;
+			while (!_stopCapture) {
+				appendBytesInBuffer(targetDataLine);
 			}
 			
+			System.out.println("Stop Record!");
+			finalizeDataLine(targetDataLine);
 		}
-		System.out.println("Stop Record!");
-		return targetDataLine;
-	}	
-	
-	private SourceDataLine play() throws Exception {
-		System.out.println("Start Play!");
-		int cnt;
-		byte tempBuffer[] = new byte[10000];
-		DataLine.Info dataLineInfo = new DataLine.Info(SourceDataLine.class,	_audioFormat);
-		SourceDataLine sourceDataLine = (SourceDataLine) AudioSystem.getLine(dataLineInfo);
-		sourceDataLine.open(_audioFormat);
-		sourceDataLine.start();
-
-		_stopPlay = false;
-		while (!_stopPlay) {
-			byte[] audioData = _buffer.toByteArray();
-			if(audioData.length == 0){
-				System.out.println("nothing to play...");
-				Thread.sleep(1000);
-				continue;
-			}
-			System.out.println(audioData.length + " bytes to play");				
-			_buffer = new ByteArrayOutputStream();
-
-			AudioInputStream _toPlayInputStream = new AudioInputStream(new ByteArrayInputStream(audioData), 
-														  _audioFormat, audioData.length / _audioFormat.getFrameSize());
-			while ((cnt = _toPlayInputStream.read(tempBuffer, 0, tempBuffer.length)) != -1) {
-				if (cnt > 0) sourceDataLine.write(tempBuffer, 0, cnt);
-			}
-		}
-		System.out.println("Stop Play!");
-		return sourceDataLine;
-	}
-	
-	private class CaptureThread extends Thread {
-		@Override
-		public void run() {
+		
+		private TargetDataLine initDataLine(){
+			DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, _audioFormat);
 			TargetDataLine targetDataLine = null;
 			try {
-				targetDataLine = record();
+				targetDataLine = (TargetDataLine) AudioSystem.getLine(dataLineInfo);
+				targetDataLine.open(_audioFormat);
+			}  catch (LineUnavailableException e) {
+				if(targetDataLine !=null)  
+					targetDataLine.close();
+				throw new IllegalStateException("Can't Play!", e);
+			} 
+			targetDataLine.start();
+			return targetDataLine;
+		}
+
+		private void appendBytesInBuffer(TargetDataLine targetDataLine) {
+			byte tmpArray[] = new byte[10000];
+			int cnt = targetDataLine.read(tmpArray, 0, tmpArray.length);
+			if (cnt > 0){
+				_buffer.write(tmpArray, 0, cnt);
+				System.out.println(_buffer.size() + " bytes recorded...");				
+			}
+		}
+		
+		private void finalizeDataLine(TargetDataLine dataLine) {
+			try { 
+				dataLine.stop();
+				dataLine.drain();
+				dataLine.close();
 			} catch (Exception e) {
 				e.printStackTrace();
-				System.exit(0);
-			} finally{
-				try { 
-					targetDataLine.stop();
-					targetDataLine.drain();
-					targetDataLine.close();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
 			}
 		}
 	}
-
-	private class PlayThread extends Thread {
-		@Override
+	
+	
+	private class Player extends Thread {
+		@Override 
 		public void run() {
+			System.out.println("Start Play!");
+			SourceDataLine dataLine = initDataLine();
+
+			_stopPlay = false;
+			while (!_stopPlay) {
+				byte[] audioData = readBytesAndCreateNewBuffer();
+				if(audioData.length == 0){
+					nothigToPlayTrySleep();
+					continue;
+				}
+				
+				System.out.println(audioData.length + " bytes to play");		
+				AudioInputStream source = new AudioInputStream(new ByteArrayInputStream(audioData), _audioFormat,
+																				 audioData.length / _audioFormat.getFrameSize());
+				playBytesFromBuffer(dataLine, source);
+			}
+			
+			System.out.println("Stop Play!");
+			finalizeDataLine(dataLine);
+		}
+
+		private SourceDataLine initDataLine() {
 			SourceDataLine sourceDataLine = null;
+			DataLine.Info dataLineInfo = new DataLine.Info(SourceDataLine.class,	_audioFormat);
 			try {
-				sourceDataLine = play();
+				sourceDataLine = (SourceDataLine) AudioSystem.getLine(dataLineInfo);
+				sourceDataLine.open(_audioFormat);
+			} catch (LineUnavailableException e) {
+				if(sourceDataLine !=null)  
+					sourceDataLine.close();
+				throw new IllegalStateException("Can't Play!", e);
+			} 
+			sourceDataLine.start();
+			return sourceDataLine;
+		}
+		
+		private byte[] readBytesAndCreateNewBuffer() {
+			byte[] audioData = _buffer.toByteArray();
+			_buffer = new ByteArrayOutputStream();
+			return audioData;
+		}
+		
+		private void nothigToPlayTrySleep() {
+			System.out.println("nothing to play...");
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			}
+		}
+		
+		private void playBytesFromBuffer(SourceDataLine dataLine, 	AudioInputStream _sourceStream) {
+			try {
+				int cnt;
+				byte tmpBytes[] = new byte[10000];
+				while ((cnt = _sourceStream.read(tmpBytes, 0, tmpBytes.length)) != -1) {
+					if (cnt > 0) dataLine.write(tmpBytes, 0, cnt);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}	
+		}
+		
+		private void finalizeDataLine(SourceDataLine dataLine) {
+			try { 
+				dataLine.stop();
+				dataLine.drain();
+				dataLine.close();
 			} catch (Exception e) {
 				e.printStackTrace();
-				System.exit(0);
-			} finally{
-				try { 
-					sourceDataLine.stop();
-					sourceDataLine.drain();
-					sourceDataLine.close(); 
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
 			}
 		}
 	}

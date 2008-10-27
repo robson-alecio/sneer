@@ -12,7 +12,7 @@ import javax.sound.sampled.TargetDataLine;
 
 public class JavaSoundImpl implements Sound{
 
-	private AudioFormat _audioFormat = new AudioFormat(8000.0F, 16, 1, true, false);
+	private AudioFormat _audioFormat = new AudioFormat(8000.0F, 16, 1, true, true);
 	private ByteArrayOutputStream _buffer = new ByteArrayOutputStream();
 	private boolean _stopCapture = false;
 	private boolean _stopPlay = false;

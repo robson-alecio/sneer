@@ -12,10 +12,6 @@ public class AudioCaptureDemoGui extends JFrame {
 
 	private final Sound _sound;
 	
-	public static void main(String args[]) {
-		new AudioCaptureDemoGui(new JavaSoundImplementation()).setVisible(true) ;
-	}
-	
 	public AudioCaptureDemoGui(Sound sound) throws HeadlessException {
 		super("Capture/Playback Demo");
 		_sound = sound;

@@ -2,114 +2,95 @@ package spikes.sandro.audio;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
+import java.io.IOException;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 
 public class JavaSoundImplementation implements Sound{
 
-	boolean stopCapture = false;
-	ByteArrayOutputStream byteArrayOutputStream;
-	AudioFormat audioFormat;
-	TargetDataLine targetDataLine;
-	AudioInputStream audioInputStream;
-	SourceDataLine sourceDataLine;
+	AudioFormat _audioFormat = new AudioFormat(8000.0F, 16, 1, true, false);
+	ByteArrayOutputStream _buffer;
+	boolean _stopCapture = false;
 
 	public void captureAudio() {
-		try {
-			audioFormat = getAudioFormat();
-			DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
-			targetDataLine = (TargetDataLine) AudioSystem.getLine(dataLineInfo);
-			targetDataLine.open(audioFormat);
-			targetDataLine.start();
-			Thread captureThread = new Thread(new CaptureThread());
-			captureThread.start();
-		} catch (Exception e) {
-			System.out.println(e);
-			System.exit(0);
-		}
+		new CaptureThread().start();
 	}
 
 	public void playAudio() {
-		try {
-			byte audioData[] = byteArrayOutputStream.toByteArray();
-			InputStream byteArrayInputStream = new ByteArrayInputStream(audioData);
-			AudioFormat format = getAudioFormat();
-			audioInputStream = new AudioInputStream(byteArrayInputStream,	format, audioData.length / format.getFrameSize());
-			DataLine.Info dataLineInfo = new DataLine.Info(SourceDataLine.class, format);
-			sourceDataLine = (SourceDataLine) AudioSystem.getLine(dataLineInfo);
-			sourceDataLine.open(format);
-			sourceDataLine.start();
-
-			Thread playThread = new Thread(new PlayThread());
-			playThread.start();
-		} catch (Exception e) {
-			System.out.println(e);
-			System.exit(0);
-		}
+		new PlayThread().start();
 	}
-
-	public AudioFormat getAudioFormat() {
-		float sampleRate = 8000.0F;	// 8000,11025,16000,22050,44100
-		int sampleSizeInBits = 16;	// 8,16
-		int channels = 1;	// 1,2
-		boolean signed = true;// true,false
-		boolean bigEndian = false;// true,false
-		return new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
+	
+	@Override
+	public void stopCapture(boolean stop) {
+		_stopCapture = stop;
 	}
-
-	class CaptureThread extends Thread {
+	
+	private SourceDataLine play() throws LineUnavailableException, IOException {
+		int cnt;
 		byte tempBuffer[] = new byte[10000];
+		DataLine.Info dataLineInfo = new DataLine.Info(SourceDataLine.class,	_audioFormat);
+		SourceDataLine sourceDataLine = (SourceDataLine) AudioSystem.getLine(dataLineInfo);
+		sourceDataLine.open(_audioFormat);
+		sourceDataLine.start();
 
+		byte[] audioData = _buffer.toByteArray();
+		
+		AudioInputStream _toPlayInputStream = new AudioInputStream(new ByteArrayInputStream(audioData), 
+													  _audioFormat, audioData.length / _audioFormat.getFrameSize());
+		while ((cnt = _toPlayInputStream.read(tempBuffer, 0, tempBuffer.length)) != -1) {
+			if (cnt > 0) sourceDataLine.write(tempBuffer, 0, cnt);
+		}
+		sourceDataLine.drain();
+		return sourceDataLine;
+	}
+	
+	private void capture() throws LineUnavailableException {
+		byte tempBuffer[] = new byte[10000];
+		DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, _audioFormat);
+		TargetDataLine targetDataLine = (TargetDataLine) AudioSystem.getLine(dataLineInfo);
+		targetDataLine.open(_audioFormat);
+		targetDataLine.start();
+		
+		_buffer = new ByteArrayOutputStream();
+		_stopCapture = false;
+		while (!_stopCapture) {
+			int cnt = targetDataLine.read(tempBuffer, 0, tempBuffer.length);
+			if (cnt > 0) _buffer.write(tempBuffer, 0, cnt);
+		}
+	}	
+	
+	class CaptureThread extends Thread {
 		@Override
 		public void run() {
-			byteArrayOutputStream = new ByteArrayOutputStream();
-			stopCapture = false;
 			try {
-				while (!stopCapture) {
-					int cnt = targetDataLine.read(tempBuffer, 0, tempBuffer.length);
-					if (cnt > 0) {
-						byteArrayOutputStream.write(tempBuffer, 0, cnt);
-					}
-				}
-				byteArrayOutputStream.close();
+				capture();
 			} catch (Exception e) {
 				System.out.println(e);
 				System.exit(0);
+			} finally{
+				try { _buffer.close(); } catch (IOException e) {/* ignore */}
 			}
 		}
 	}
 
 	class PlayThread extends Thread {
-		byte tempBuffer[] = new byte[10000];
-		
 		@Override
 		public void run() {
+			SourceDataLine sourceDataLine = null;
 			try {
-				int cnt;
-				while ((cnt = audioInputStream.read(tempBuffer, 0, tempBuffer.length)) != -1) {
-					if (cnt > 0) {
-						sourceDataLine.write(tempBuffer, 0, cnt);
-					}
-				}
-				sourceDataLine.drain();
-				sourceDataLine.close();
+				sourceDataLine = play();
 			} catch (Exception e) {
 				System.out.println(e);
 				System.exit(0);
+			} finally{
+				try { sourceDataLine.close(); } catch (Exception e) {/* ignore */}
 			}
 		}
 	}
-	
-	@Override
-	public void stopCapture(boolean stop) {
-		stopCapture = stop;
-	}
-	
-
 }

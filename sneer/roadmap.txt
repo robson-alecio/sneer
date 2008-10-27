@@ -14,6 +14,7 @@
 	- Voice Calls
 		- First Step: When I press the button I listen to everyone and everyone listens to me.
 			- Loopback button - Add to the ListenToMe instrument. Make it work.
+			- SpeakerBuffer - Make it smart.
 			- PCM to Speex codec
 			- Block PCM tuples from being sent over the wire
 		- Second Step: Rooms.

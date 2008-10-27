@@ -13,7 +13,6 @@ import sneer.skin.sound.speaker.buffer.SpeakerBuffer;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 
-
 class SpeakerBufferImpl implements SpeakerBuffer {
 
 	@Inject
@@ -22,7 +21,7 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 	private final Omnivore<? super PcmSoundPacket> _consumer;
 	private boolean _isRunning = true;
 
-	private PcmSoundPacket _lastPacket = new PcmSoundPacket(null,0,null,0);
+	private PcmSoundPacket _lastPlayed = new PcmSoundPacket(null,0,null,0);
 	
 	private final SortedSet<PcmSoundPacket> _sortedSet = new TreeSet<PcmSoundPacket>(new Comparator<PcmSoundPacket>(){@Override public int compare(PcmSoundPacket packet1, PcmSoundPacket packet2) {
 		return packet1.sequence - packet2.sequence; 
@@ -46,7 +45,7 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 
 	@Override
 	public synchronized void consume(PcmSoundPacket packet) {
-		if(_lastPacket.sequence>packet.sequence) return;
+		if(_lastPlayed.sequence>packet.sequence) return;
 		_sortedSet.add(packet);
 	}
 
@@ -59,8 +58,8 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 		if (!_isRunning) return false;
 		
 		Iterator<PcmSoundPacket> iterator = _sortedSet.iterator();
-		_lastPacket = iterator.next();
-		_consumer.consume(_lastPacket);
+		_lastPlayed = iterator.next();
+		_consumer.consume(_lastPlayed);
 		iterator.remove();
 		
 		return true;

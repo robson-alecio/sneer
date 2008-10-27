@@ -50,7 +50,7 @@ public class JavaSoundImplementation implements Sound{
 		return sourceDataLine;
 	}
 	
-	private void capture() throws LineUnavailableException {
+	private void record() throws LineUnavailableException {
 		byte tempBuffer[] = new byte[10000];
 		DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, _audioFormat);
 		TargetDataLine targetDataLine = (TargetDataLine) AudioSystem.getLine(dataLineInfo);
@@ -69,7 +69,7 @@ public class JavaSoundImplementation implements Sound{
 		@Override
 		public void run() {
 			try {
-				capture();
+				record();
 			} catch (Exception e) {
 				System.out.println(e);
 				System.exit(0);

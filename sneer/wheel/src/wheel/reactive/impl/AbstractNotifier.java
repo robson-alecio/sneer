@@ -45,8 +45,8 @@ public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 	public void addReceiver(Omnivore<? super VC> receiver) {
 		synchronized (_receivers) {
 			_receivers.add(holderFor(receiver));
-			initReceiver(receiver);
 		}
+		initReceiver(receiver);
 	}
 
 	protected abstract void initReceiver(Omnivore<? super VC> receiver);

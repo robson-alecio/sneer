@@ -1,6 +1,5 @@
 package spikes.klaus;
 
-import wheel.lang.Threads;
 
 
 
@@ -10,10 +9,14 @@ public class Anything {
 
 	public static void main(String[] args) {
 
-		for (int i = 0; i <= 100; i++)
-			new Thread("Test " + i) { @Override public void run() {
-				testTime();
-			}}.start();
+		System.out.println(Short.MAX_VALUE);
+		System.out.println(Short.MIN_VALUE);
+		
+//		for (int i = 0; i <= 0; i++)
+//			new Thread("Test " + i) { @Override public void run() {
+//				Thread.currentThread().setPriority(MAX_PRIORITY);
+//				testTime();
+//			}}.start();
 
 		
 //		while (true) {
@@ -36,24 +39,24 @@ public class Anything {
 //		System.out.println("" + mode.getWidth() + " x " + mode.getHeight());
 	}
 
-	private static void testTime() {
-		long t0 = now();
-		int counter = 0;
-
-		while (true) {
-			Threads.sleepWithoutInterruptions(1);
-			long now = now();
-			
-			if (now - t0 > 10L * 1000 * 1000 * 1000) break;
-			counter++;
-		}
-		
-		System.out.println(counter / 10);
-	}
-	
-	static private long now() {
-		return System.nanoTime();
-	}
+//	private static void testTime() {
+//		long t0 = now();
+//		int counter = 0;
+//
+//		while (true) {
+//			Threads.sleepWithoutInterruptions(1);
+//			long now = now();
+//			
+//			if (now - t0 > 20L * 1000 * 1000 * 1000) break;
+//			counter++;
+//		}
+//		
+//		System.out.println(counter / 20);
+//	}
+//	
+//	static private long now() {
+//		return System.nanoTime();
+//	}
 
 
 }

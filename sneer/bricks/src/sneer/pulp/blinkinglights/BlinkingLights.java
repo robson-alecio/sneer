@@ -9,6 +9,7 @@ public interface BlinkingLights {
 
 	void turnOnIfNecessary(Light light, FriendlyException e);
 	void turnOnIfNecessary(Light light, FriendlyException e, int timeout);
+	void turnOnIfNecessary(Light light, String caption, String helpMessage);
 	void turnOnIfNecessary(Light light, String caption, String helpMessage, Throwable t);
 	void turnOnIfNecessary(Light light, String caption, String helpMessage, Throwable t, int timeout);
 
@@ -20,6 +21,7 @@ public interface BlinkingLights {
 	void turnOffIfNecessary(Light light);
 
 	ListSignal<Light> lights();
+
 
 
 

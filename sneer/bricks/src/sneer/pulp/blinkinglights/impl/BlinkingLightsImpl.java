@@ -14,10 +14,8 @@ class BlinkingLightsImpl implements BlinkingLights {
 	
 	@Inject
 	static private Clock _clock;
-
 	
 	private final ListRegisterImpl<Light> _lights = new ListRegisterImpl<Light>();
-
 	
 	@Override
 	public Light turnOn(LightType type, String caption, Throwable t, int timeout) {
@@ -25,31 +23,26 @@ class BlinkingLightsImpl implements BlinkingLights {
 		turnOnIfNecessary(result, caption, "Get an expert sovereign friend to help you. ;)", t, timeout);
 		return result;
 	}
-
 	
 	@Override
 	public Light turnOn(LightType type, String caption, Throwable t) {
 		return turnOn(type, caption, t, LightImpl.NEVER);
 	}
 
-
 	@Override
 	public Light turnOn(LightType type, String caption, int timeToLive) {
 		return turnOn(type, caption, null, timeToLive);
 	}
 
-
 	@Override
 	public Light turnOn(LightType type, String caption) {
 		return turnOn(type, caption, null);
 	}
-
 	
 	@Override
 	public ListSignal<Light> lights() {
 		return _lights.output();
 	}
-	
 	
 	@Override
 	public void turnOffIfNecessary(Light light) {
@@ -59,7 +52,6 @@ class BlinkingLightsImpl implements BlinkingLights {
 		Logger.log("Light removed: ", light.caption());
 		((LightImpl)light).turnOff();
 	}
-	
 	
 	private void turnOffIn(final Light light, int millisFromNow) {
 		_clock.wakeUpInAtLeast(millisFromNow, new Runnable() { @Override public void run() {
@@ -85,6 +77,10 @@ class BlinkingLightsImpl implements BlinkingLights {
 		turnOnIfNecessary(light, e.getMessage(), e.getHelp(), e, timeout);
 	}
 
+	@Override
+	public void turnOnIfNecessary(Light light, String caption, String helpMessage) {
+		turnOnIfNecessary(light, caption, helpMessage, null, LightImpl.NEVER);
+	}
 	
 	@Override
 	public void turnOnIfNecessary(Light light, String caption, String helpMessage, Throwable t) {
@@ -95,8 +91,9 @@ class BlinkingLightsImpl implements BlinkingLights {
 	@Override
 	public void turnOnIfNecessary(Light pLight, String caption, String helpMessage, Throwable t, int timeout) {
 		if (!(pLight instanceof LightImpl)) throw new IllegalArgumentException();
-		LightImpl light = (LightImpl)pLight;
-
+		if (pLight.isOn()) return;
+		
+		final LightImpl light = (LightImpl)pLight;
 		light._isOn = true;
 		_lights.add(light);
 		

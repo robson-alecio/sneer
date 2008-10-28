@@ -28,6 +28,9 @@ public class BlinkingLightsTest extends TestThatIsInjected {
 		assertNotNull(light.error());
 		assertLightCount(1, _subject);
 		
+		_subject.turnOnIfNecessary(light, "foo", "bar");
+		assertLightCount(1, _subject);
+		
 		_subject.turnOffIfNecessary(light);
 		assertFalse(light.isOn());
 		assertLightCount(0, _subject);

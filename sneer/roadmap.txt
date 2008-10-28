@@ -13,7 +13,8 @@
 			- Unignore Freedom5.canHearPastShouts().
 	- Voice Calls
 		- First Step: When I press the button I listen to everyone and everyone listens to me.
-			- SpeakerBuffer - Make it smart.
+			- Loopback button - Add to the ListenToMe instrument. Make it work.
+			- SpeakerBuffer - Unignore SpeakerBufferTest.sequencing().
 			- PCM to Speex codec
 			- Block PCM tuples from being sent over the wire
 		- Second Step: Rooms.
@@ -27,8 +28,7 @@
 
 	- Brick Publish (Supposedly working already)
 		- MainDemo - Publish all necessary bricks instead of just producing them.
-
-	- Snuggin - All start using it and feeding it with rules.
+	- ContainerUtils.getContainer() - Drop. Fix all uses.
 
 	- [Petra] Tray and Dashboard Titlebar Icon
 	- [Petra] Online and Offline Icons
@@ -42,8 +42,8 @@
 		- Consider the "gel" alternative in which bricks dont depend on each other. They just produce and consume tuples from the medium.
 	- ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do.
 		- SetSignal - Revise it also. 
-	- ContainerUtils.getContainer() - Drop. Fix all uses.
 	- Threading model - Revise. Tests should not leave threads running. "No one gets left behind"
+	- Snuggin - All start using it and feeding it with rules.
 	- Output folders - Make all source folders compile to the default folder (bin) and fix the tests. Is this possible?
 	- Simplest Possible Kernel - What is it? Just injection?
 		- Simplify the container because of the removal of the Enhancer (MakeSerializable is a Spike now).
@@ -73,9 +73,7 @@
 		- Nicknames
 	- Own Name - Show contacts' names in contact list
 		- Freedom2Test - Unignore and make it pass.
-	- WatchMe and Audio session replays
-	
-	--------------------------------- "SNEERCAST" RELEASE (Remote collaborating (includes Pair Programming) teams all over the world can use Sneer as their tool. People can replay sessions to see what we have been doing in Sneer or in any other project that uses Sneer for collaborating)
+	--------------------------------- "SNEERCAST" RELEASE (Remote collaborating (includes Pair Programming) teams all over the world can use Sneer as their tool.)
 	
 	
 	- Transparent Persistence

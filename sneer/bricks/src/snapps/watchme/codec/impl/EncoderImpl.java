@@ -28,37 +28,43 @@ class EncoderImpl implements Encoder {
 	@Inject
 	private static ImageFactory _imageFactory;	
 	
-	private Map<Pair<Integer, Integer>, int[]> _lastPixels = new HashMap<Pair<Integer, Integer>, int[]>();
+	private Map<Pair<Integer, Integer>, int[]> _previousPixelsByCellCoordinate = new HashMap<Pair<Integer, Integer>, int[]>();
 	
 	public List<ImageDelta> generateDeltas(BufferedImage shot) throws Hiccup {
-		_generateDeltasProfiler.enter();
-		final List<ImageDelta> result = new ArrayList<ImageDelta>();
-		for (int y = 0; y < shot.getHeight(); y = y + CELL_SIZE) { 
-			for (int x = 0; x < shot.getWidth(); x = x + CELL_SIZE) { 
-				ImageDelta imageDelta = addImageDeltaIfNecessary(shot, x, y);
-				if (imageDelta != null)
-					result.add(imageDelta);
-			}
+		try {
+			_generateDeltasProfiler.enter();
+			return doGenerateDeltas(shot);
+		} finally {
+			_generateDeltasProfiler.exit();
 		}
-		_generateDeltasProfiler.exit();
+	}
+
+	private List<ImageDelta> doGenerateDeltas(BufferedImage shot) throws Hiccup {
+		final List<ImageDelta> result = new ArrayList<ImageDelta>();
+		
+		for (int y = 0; y < shot.getHeight(); y = y + CELL_SIZE) 
+			for (int x = 0; x < shot.getWidth(); x = x + CELL_SIZE) 
+				addImageDeltaIfNecessary(shot, x, y, result);
+
 		return result;
 	}	
 
-	private ImageDelta addImageDeltaIfNecessary(BufferedImage _shot, int x, int y) throws Hiccup {
-		int width = Math.min(CELL_SIZE, _shot.getWidth() - x);
-		int height = Math.min(CELL_SIZE, _shot.getHeight() - y);		
+	private void addImageDeltaIfNecessary(BufferedImage _shot, int x, int y, List<ImageDelta> result) throws Hiccup {
+		int cellWidth = Math.min(CELL_SIZE, _shot.getWidth() - x);
+		int cellHeight = Math.min(CELL_SIZE, _shot.getHeight() - y);		
 		
-		BufferedImage img1 = _shot.getSubimage(x, y, width, height);
+		BufferedImage img1 = _shot.getSubimage(x, y, cellWidth, cellHeight);
 		
 		int[] currentPixels = Images.pixels(img1);
-		int[] previousPixels = _lastPixels.get(Pair.pair(x, y));		
+		int[] previousPixels = _previousPixelsByCellCoordinate.get(Pair.pair(x, y));		
 		
-		if(previousPixels != null && Arrays.equals(previousPixels, currentPixels)) return null;
+		if(previousPixels != null && Arrays.equals(previousPixels, currentPixels))
+			return;
 		
-		_lastPixels.put(Pair.pair(x, y), currentPixels);
+		_previousPixelsByCellCoordinate.put(Pair.pair(x, y), currentPixels);
 		
 		byte[] data = _imageFactory.toPngData(img1);
-		return new ImageDelta(data, x, y, width, height);	
+		result.add(new ImageDelta(data, x, y, cellWidth, cellHeight));
 	}
 	
 }

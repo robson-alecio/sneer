@@ -88,7 +88,6 @@ class ByteConnectionImpl implements ByteConnection {
 	void manageIncomingSocket(ByteArraySocket socket) {
 		_socketHolder.setSocketIfNecessary(socket);
 	}
-	
 
 	private boolean tryToSend(byte[] array) {
 

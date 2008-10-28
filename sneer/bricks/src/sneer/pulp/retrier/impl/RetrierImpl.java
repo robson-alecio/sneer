@@ -7,6 +7,7 @@ import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.retrier.Retrier;
 import sneer.pulp.retrier.Task;
+import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.lang.exceptions.FriendlyException;
 import wheel.lang.exceptions.Hiccup;
@@ -26,9 +27,11 @@ class RetrierImpl implements Retrier {
 
 	
 	RetrierImpl(final int periodBetweenAttempts, final Task task) {
-		_threads.registerActor(new Runnable() { @Override public void run() {
-			while (!wasSuccessful(task))
-				_clock.sleepAtLeast(periodBetweenAttempts);
+		_threads.registerStepper(new Stepper() { @Override public boolean step() {
+			if (wasSuccessful(task))
+				return false;
+			_clock.sleepAtLeast(periodBetweenAttempts);
+			return true;
 		}});
 	}
 

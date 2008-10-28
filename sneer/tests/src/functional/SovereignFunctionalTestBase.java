@@ -6,6 +6,7 @@ import org.junit.Before;
 import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.tests.TestThatIsInjected;
 import wheel.lang.Timebox;
+import wheel.lang.exceptions.TimeIsUp;
 
 public abstract class SovereignFunctionalTestBase extends TestThatIsInjected {
 
@@ -21,8 +22,8 @@ public abstract class SovereignFunctionalTestBase extends TestThatIsInjected {
 		new Timebox(5000) { @Override protected void runInTimebox() {
 			try {
 				initCommunity();
-			} catch (Throwable t) {
-				t.printStackTrace();
+			} catch (TimeIsUp t) {
+				throw new RuntimeException(t);
 			}
 		}};
 	}

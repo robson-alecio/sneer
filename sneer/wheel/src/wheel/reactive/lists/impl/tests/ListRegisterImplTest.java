@@ -1,7 +1,7 @@
 package wheel.reactive.lists.impl.tests;
 
 import static org.junit.Assert.assertEquals;
-import static wheel.testutil.TestUtils.assertListEquals;
+import static wheel.testutil.TestUtils.assertSameContents;
 
 import java.util.ArrayList;
 
@@ -26,16 +26,16 @@ public class ListRegisterImplTest {
 		}};
 		
 		assertEquals(0, register.output().currentSize());
-		assertListEquals(sizes, 0);
+		assertSameContents(sizes, 0);
 		
 		register.add("spam");
 		
 		assertEquals(1, register.output().currentSize());
-		assertListEquals(sizes, 0, 1);
+		assertSameContents(sizes, 0, 1);
 		
 		register.add("eggs");
 		assertEquals(2, register.output().currentSize());
-		assertListEquals(sizes, 0, 1, 2);
+		assertSameContents(sizes, 0, 1, 2);
 	}
 
 }

@@ -28,6 +28,12 @@ class ClockImpl implements Clock {
 	}
 
 	@Override
+	synchronized public void wakeUpNowAndEvery(int period, Stepper stepper) {
+		stepper.step();
+		wakeUpEvery(period, stepper);
+	}
+
+	@Override
 	synchronized public void wakeUpEvery(int period, Stepper stepper) {
 		_alarms.add(new Alarm(stepper, period));
 		wakeUpAlarmsIfNecessary();

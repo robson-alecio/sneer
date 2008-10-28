@@ -24,8 +24,6 @@ public class SocketAccepterTest extends TestThatIsInjected {
 	@Inject
 	private static Network _network;
 	
-	
-	
 	@Override
 	protected Object[] getBindings() {
 		return new Object[]{ new InMemoryNetwork() };

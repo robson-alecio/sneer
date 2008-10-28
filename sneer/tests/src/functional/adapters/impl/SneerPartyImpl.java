@@ -8,6 +8,7 @@ import sneer.kernel.container.Brick;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Inject;
 import sneer.pulp.brickmanager.BrickManager;
+import sneer.pulp.clock.Clock;
 import sneer.pulp.connection.SocketOriginator;
 import sneer.pulp.connection.SocketReceiver;
 import sneer.pulp.contacts.Contact;
@@ -36,6 +37,9 @@ public class SneerPartyImpl implements SneerParty {
 
 	@Inject
 	static private Container _container;
+	
+	@Inject
+	static private Clock _clock;
 
 	@Inject
 	static private ContactManager _contactManager;
@@ -134,6 +138,7 @@ public class SneerPartyImpl implements SneerParty {
 			Contact contact = _keyManager.contactGiven(publicKey);
 			if (contact != null) return contact;
 			Threads.sleepWithoutInterruptions(1);
+			_clock.advanceTime(60 * 1000);
 		}
 	}
 

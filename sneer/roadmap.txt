@@ -5,7 +5,7 @@
 		- Flooding - Solve tuple flooding on the network.
 
 	- WatchMe - Screen Viewing à la VNC
-		- [Douglas] Optimize - Stop using isSameImage() and cache the last pixel array (int[]) for each cell.
+		[Done] - [Douglas] Optimize - Stop using isSameImage() and cache the last pixel array (int[]) for each cell.
 	---- WE DROP VNC
 
 	- Wind

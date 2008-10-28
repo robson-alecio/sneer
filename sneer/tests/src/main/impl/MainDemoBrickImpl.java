@@ -27,6 +27,9 @@ import sneer.skin.dashboard.Dashboard;
 class MainDemoBrickImpl implements MainDemoBrick {
 
 	@Inject	@SuppressWarnings("unused")
+	private static ClockTicker _ticker;
+
+	@Inject	@SuppressWarnings("unused")
 	private static Dashboard _gui1;
 	
 	@Inject	@SuppressWarnings("unused")
@@ -52,9 +55,6 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	
 	@Inject	@SuppressWarnings("unused")
 	private static SocketReceiver _networkDaemon2;
-
-	@Inject	@SuppressWarnings("unused")
-	private static ClockTicker _ticker;
 
 	@Inject	@SuppressWarnings("unused")
 	private static DynDnsClient _dynDns;

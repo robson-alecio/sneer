@@ -74,6 +74,7 @@ class WatchMeImpl implements WatchMe {
 				doPublishShot();
 				_clock.sleepAtLeast(PERIOD_IN_MILLIS);
 			}
+			_encoder = null;
 		}});
 	}
 

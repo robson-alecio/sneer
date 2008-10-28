@@ -5,6 +5,7 @@ import java.awt.Image;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.ListCellRenderer;
 
 import sneer.skin.widgets.reactive.ImageWidget;
@@ -55,6 +56,18 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 	public TextWidget<JTextField> newTextField(Signal<String> source, Omnivore<String> setter, boolean notifyOnlyWhenDoneEditing) {
 		GuiThread.assertInGuiThread();
 		return new RTextFieldImpl(source, setter, notifyOnlyWhenDoneEditing);
+	}
+
+	@Override
+	public TextWidget<JTextPane> newTextPane(Signal<String> source, Omnivore<String> setter) {
+		GuiThread.assertInGuiThread();
+		return new RTextPaneImpl(source, setter, false);
+	}
+
+	@Override
+	public TextWidget<JTextPane> newTextPane(Signal<String> source, Omnivore<String> setter, boolean notifyOnlyWhenDoneEditing) {
+		GuiThread.assertInGuiThread();
+		return new RTextPaneImpl(source, setter, notifyOnlyWhenDoneEditing);
 	}
 
 	@Override

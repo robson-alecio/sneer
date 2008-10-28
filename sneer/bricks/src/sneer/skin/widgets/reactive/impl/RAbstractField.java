@@ -23,7 +23,9 @@ import javax.swing.text.JTextComponent;
 
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.ui.GuiThread;
+import wheel.io.ui.impl.UserImpl;
 import wheel.lang.Consumer;
+import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
 
@@ -38,13 +40,10 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 
 	protected final Receiver<String> _fieldReciver;
 
-	protected final ChangeInfoDecorator _decorator;
+	protected ChangeInfoDecorator _decorator;
 	
 	public boolean _notified = true;
 
-	protected abstract Receiver<String> fieldReceiver();
-	protected abstract void consume(String text);
-	
 	RAbstractField(WIDGET textComponent, Signal<String> source) {
 		this(textComponent, source, null, false);
 	}
@@ -97,7 +96,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 		}});
 	}
 	
-	private void addDoneListenerCommiter() {
+	protected void addDoneListenerCommiter() {
 		try {
 			Method m = _textComponent.getClass().getMethod("addActionListener", new Class[]{ActionListener.class});
 			m.invoke(_textComponent, new Object[]{new ActionListener(){@Override public void actionPerformed(ActionEvent e) {
@@ -200,6 +199,27 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	private void setNotified(boolean isNotified) {
 		_notified = isNotified;
 		_decorator.decorate(_notified);
+	}
+	
+	@Override
+	public JComponent[] getWidgets() {
+		return new JComponent[]{_textComponent};
+	}
+	
+	public Receiver<String> fieldReceiver() {
+		return new Receiver<String>(_source) {@Override public void consume(final String text) {
+			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
+				setText(text);
+			}});
+		}};
+	}
+	
+	protected void consume(String text) {
+		try {
+			_setter.consume(text);
+		} catch (IllegalParameter ip) {
+			new UserImpl().acknowledge(ip);
+		}
 	}
 }
 

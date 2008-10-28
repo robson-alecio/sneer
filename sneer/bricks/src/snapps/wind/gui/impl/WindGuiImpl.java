@@ -19,7 +19,7 @@ import javax.swing.AbstractAction;
 import javax.swing.BoundedRangeModel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
@@ -61,7 +61,7 @@ class WindGuiImpl implements WindGui {
 	private final static Signal<Image> _meImage;
 	
 	private ListWidget<Shout> _shoutsList;
-	private TextWidget<JTextField> _myShout;
+	private TextWidget<JTextPane> _myShout;
 
 	private Container _container;
 
@@ -103,7 +103,8 @@ class WindGuiImpl implements WindGui {
 		initScrollPane();
 		initListReceiversInOrder();
 		
-		_myShout = _rfactory.newTextField(new Constant<String>(""), _wind.megaphone(), true);
+		_myShout = _rfactory.newTextPane(new Constant<String>(""), _wind.megaphone(), true);
+		
 		_container.setBackground(_shoutsList.getComponent().getBackground());
 		_scrollPane.getViewport().add(_shoutsList.getComponent());
 		

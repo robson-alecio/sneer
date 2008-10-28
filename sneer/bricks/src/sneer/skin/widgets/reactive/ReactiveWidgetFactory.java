@@ -5,6 +5,7 @@ import java.awt.Image;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.ListCellRenderer;
 
 import wheel.lang.Consumer;
@@ -26,6 +27,9 @@ public interface ReactiveWidgetFactory {
 	TextWidget<JTextField> newTextField(Signal<String> source, Omnivore<String> setter);
 	TextWidget<JTextField> newTextField(Signal<String> source, Omnivore<String> setter, boolean notifyOnlyWhenDoneEditing);
 	
+	TextWidget<JTextPane> newTextPane(Signal<String> source, Omnivore<String> setter);
+	TextWidget<JTextPane> newTextPane(Signal<String> source, Omnivore<String> setter, boolean notifyOnlyWhenDoneEditing);
+
 	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> labelProvider);
 	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> labelProvider,	ListCellRenderer cellRenderer);
 	

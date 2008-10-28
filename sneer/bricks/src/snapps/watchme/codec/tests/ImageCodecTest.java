@@ -14,6 +14,7 @@ import org.junit.Test;
 import snapps.watchme.codec.ImageCodec;
 import snapps.watchme.codec.ImageDelta;
 import snapps.watchme.codec.ImageCodec.Decoder;
+import snapps.watchme.codec.ImageCodec.Encoder;
 import sneer.kernel.container.Inject;
 import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.skin.image.ImageFactory;
@@ -32,8 +33,10 @@ public class ImageCodecTest extends TestThatIsInjected {
 	@Test
 	public void encodeSameImage() throws Hiccup {
 		final BufferedImage image1 = new BufferedImage(64, 64, BufferedImage.TYPE_3BYTE_BGR);
-	
-		List<ImageDelta> deltas = _subject.encodeDeltas(image1, copy(image1));
+		final Encoder encoder = _subject.createEncoder();
+		encoder.generateDeltas(image1);
+		
+		List<ImageDelta> deltas = encoder.generateDeltas(copy(image1));
 		assertTrue(deltas.isEmpty());
 	}
 
@@ -62,7 +65,10 @@ public class ImageCodecTest extends TestThatIsInjected {
 		
 		byte[] imageData =_imageFactory.toPngData(imageA);
 		
-		List<ImageDelta> deltas = _subject.encodeDeltas(imageA, imageB);
+		final Encoder encoder = _subject.createEncoder();
+		encoder.generateDeltas(imageA);
+		
+		List<ImageDelta> deltas = encoder.generateDeltas(imageB);
 		int deltaSizeBytes = serialize(deltas.toArray()).length;
 		
 		assertTrue(deltas.size()>0);

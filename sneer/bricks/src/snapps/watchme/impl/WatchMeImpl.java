@@ -7,6 +7,7 @@ import snapps.watchme.WatchMe;
 import snapps.watchme.codec.ImageCodec;
 import snapps.watchme.codec.ImageDelta;
 import snapps.watchme.codec.ImageCodec.Decoder;
+import snapps.watchme.codec.ImageCodec.Encoder;
 import sneer.kernel.container.Inject;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
@@ -40,9 +41,10 @@ class WatchMeImpl implements WatchMe {
 	@Inject
 	static private Clock _clock;
 	
-	private BufferedImage _previous;
 	private boolean _isRunning;
 	private final Light _light = _lights.prepare(LightType.ERROR);
+
+	private Encoder _encoder;
 
 	@Override
 	public EventSource<BufferedImage> screenStreamFor(final PublicKey publisher) {
@@ -72,9 +74,7 @@ class WatchMeImpl implements WatchMe {
 				doPublishShot();
 				_clock.sleepAtLeast(PERIOD_IN_MILLIS);
 			}
-			_previous = null;
 		}});
-
 	}
 
 	private void doPublishShot() {
@@ -90,18 +90,12 @@ class WatchMeImpl implements WatchMe {
 	private void tryToPublishShot() throws Hiccup, FriendlyException {
 		BufferedImage shot = _shotter.takeScreenshot();
 		
-		if (_previous == null)
-			_previous = generateBlankImage(shot.getWidth(), shot.getHeight());
+		if (_encoder == null)
+			_encoder = _codec.createEncoder();
 		
-		List<ImageDelta> deltas = _codec.encodeDeltas(_previous, shot);
+		List<ImageDelta> deltas = _encoder.generateDeltas(shot);
 		for (ImageDelta delta : deltas)
 			_tupleSpace.publish(delta);
-		
-		_previous = shot;
-	}
-
-	private BufferedImage generateBlankImage(int width, int height) {
-		return new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 	}
 
 	@Override

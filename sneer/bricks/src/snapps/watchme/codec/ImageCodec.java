@@ -13,9 +13,13 @@ public interface ImageCodec extends Brick {
 
 		BufferedImage screen();
 	}
+	
+	public interface Encoder {
+		public List<ImageDelta> generateDeltas(BufferedImage shot) throws Hiccup;
+	}	
 
-	List<ImageDelta> encodeDeltas(BufferedImage original, BufferedImage target) throws Hiccup;
-
+	Encoder createEncoder() throws Hiccup;	
+	
 	Decoder createDecoder();
 	
 	Decoder createDecoder(BufferedImage image);

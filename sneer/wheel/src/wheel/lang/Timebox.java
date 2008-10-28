@@ -95,7 +95,7 @@ public abstract class Timebox implements Runnable {
 	private void tryToStopThread(Thread thread) {
 		if (dealWithBlocked(thread)) return;			
 		
-		TimeIsUp timeIsUp = new TimeIsUp(thread.getStackTrace());
+		TimeIsUp timeIsUp = new TimeIsUp(thread.getStackTrace(), "Timebox ended.");
 		thread.stop(timeIsUp);
 	}
 	
@@ -109,8 +109,8 @@ public abstract class Timebox implements Runnable {
 	}
 
 	private void logBlockedStatus(Thread thread) {
-		TimeIsUp timeIsUp = new TimeIsUp(thread.getStackTrace());
-		Logger.log(timeIsUp, "Thread running in timebox is blocked waiting for a sunchronization monitor and cannot be stopped.");
+		TimeIsUp timeIsUp = new TimeIsUp(thread.getStackTrace(), "Thread running in timebox is blocked waiting for a synchronization monitor and cannot be stopped.");
+		Logger.log(timeIsUp);
 	}
 
 	private boolean isBlocked(Thread thread) {

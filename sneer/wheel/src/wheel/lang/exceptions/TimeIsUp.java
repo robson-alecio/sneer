@@ -2,8 +2,8 @@ package wheel.lang.exceptions;
 
 public class TimeIsUp extends Error {
 	
-	public TimeIsUp(StackTraceElement[] stackTrace) {
-		super("Timebox ended.");
+	public TimeIsUp(StackTraceElement[] stackTrace, String message) {
+		super(message);
 		setStackTrace(stackTrace);
 	}
 

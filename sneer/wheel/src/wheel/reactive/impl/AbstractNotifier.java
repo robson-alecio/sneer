@@ -1,6 +1,7 @@
 package wheel.reactive.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static wheel.io.Logger.log;
@@ -10,14 +11,12 @@ import wheel.reactive.EventSource;
 
 public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 
-	private final List<ReceiverHolder<Omnivore<? super VC>>> _receivers = new ArrayList<ReceiverHolder<Omnivore<? super VC>>>(); //Fix: Potential object leak. Receivers must be weak referenced. This is equivalent to the whiteboard pattern too, from a receiver referencing perspective. Conceptually, it is only the receiver that references the signal.
+	private final List<ReceiverHolder<Omnivore<? super VC>>> _receivers = Collections.synchronizedList(new ArrayList<ReceiverHolder<Omnivore<? super VC>>>()); //Fix: Potential object leak. Receivers must be weak referenced. This is equivalent to the whiteboard pattern too, from a receiver referencing perspective. Conceptually, it is only the receiver that references the signal.
 
 	protected void notifyReceivers(VC valueChange) {
-		synchronized (_receivers) {
-			ReceiverHolder<Omnivore<VC>>[] receivers = copyOfReceiversToAvoidConcurrentModificationAsResultOfNotifications();
-			for (ReceiverHolder<Omnivore<VC>> reference : receivers)
-				notify(reference, valueChange);
-		}
+		ReceiverHolder<Omnivore<VC>>[] receivers = copyOfReceiversToAvoidConcurrentModificationAsResultOfNotifications();
+		for (ReceiverHolder<Omnivore<VC>> reference : receivers)
+			notify(reference, valueChange);
 	}
 
 	private ReceiverHolder<Omnivore<VC>>[] copyOfReceiversToAvoidConcurrentModificationAsResultOfNotifications() {
@@ -43,9 +42,7 @@ public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 
 	@Override
 	public void addReceiver(Omnivore<? super VC> receiver) {
-		synchronized (_receivers) {
-			_receivers.add(holderFor(receiver));
-		}
+		_receivers.add(holderFor(receiver));
 		initReceiver(receiver);
 	}
 
@@ -53,11 +50,9 @@ public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 	
 	@Override
 	public void removeReceiver(Object receiver) {
-		synchronized (_receivers) {
-			final Omnivore<? super VC> typedReceiver = Types.cast(receiver);
-			boolean wasThere = _receivers.remove(holderFor(typedReceiver)); //Optimize consider a Set for when there is a great number of receivers.
-			assert wasThere;
-		}
+		final Omnivore<? super VC> typedReceiver = Types.cast(receiver);
+		boolean wasThere = _receivers.remove(holderFor(typedReceiver)); //Optimize consider a Set for when there is a great number of receivers.
+		assert wasThere;
 	}
 
 	@Override

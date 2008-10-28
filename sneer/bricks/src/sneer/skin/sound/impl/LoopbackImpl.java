@@ -10,32 +10,25 @@ class LoopbackImpl implements Loopback{
 
 	private final Recorder _recorder;
 	private final Player _player;
+	private final int DELAY = 3000;
 
 	LoopbackImpl(){
 		AudioFormat _audioFormat = new AudioFormat(8000.0F, 16, 1, true, true);
-		ByteArrayOutputStream _buffer = new ByteArrayOutputStream();
-		
-		_recorder = new Recorder(_audioFormat, _buffer);
-		_player = new Player(_audioFormat, _buffer);
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		_recorder = new Recorder(_audioFormat, buffer, DELAY);
+		_player = new Player(_audioFormat, buffer, DELAY);
 	}
 	
 	@Override
-	public void startRecord() {
-		_recorder.startRecorder();
-	}
-	
-	@Override
-	public void stopRecord() {
+	public void close() {
 		_recorder.stopRecorder();
-	}
-	
-	@Override
-	public void startPlayer() {
-		_player.startPlayer();
+		_player.stopPlayer();
 	}
 
 	@Override
-	public void stopPlayer() {
-		_player.stopPlayer();
+	public void open() {
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		_recorder.startRecorder(buffer);
+		_player.startPlayer(buffer);
 	}	
 }

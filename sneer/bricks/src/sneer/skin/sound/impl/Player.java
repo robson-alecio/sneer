@@ -19,15 +19,17 @@ class Player implements Runnable {
 	
 	private boolean _stopPlay = true;
 	
-	private AudioFormat _audioFormat;
+	private final int _delay;
+	private final AudioFormat _audioFormat;
 	private ByteArrayOutputStream _buffer;
 
 	@Inject
 	static private ThreadPool _threads;
 
-	Player(AudioFormat audioFormat, ByteArrayOutputStream buffer) {
+	Player(AudioFormat audioFormat, ByteArrayOutputStream buffer, int delay) {
 		_audioFormat = audioFormat;
 		_buffer = buffer;
+		_delay = delay;
 	}
 	
 	@Override
@@ -85,11 +87,10 @@ class Player implements Runnable {
 		}
 	}
 
-	private void playBytesFromBuffer(SourceDataLine dataLine,
-			AudioInputStream _sourceStream) {
+	private void playBytesFromBuffer(SourceDataLine dataLine, AudioInputStream _sourceStream) {
 		try {
 			int cnt;
-			byte tmpBytes[] = new byte[10000];
+			byte tmpBytes[] = new byte[_delay];
 			while ((cnt = _sourceStream.read(tmpBytes, 0, tmpBytes.length)) != -1) {
 				if (cnt > 0)
 					dataLine.write(tmpBytes, 0, cnt);
@@ -116,5 +117,10 @@ class Player implements Runnable {
 
 	public void stopPlayer() {
 		_stopPlay = true;
+	}
+
+	public void startPlayer(ByteArrayOutputStream buffer) {
+		_buffer = buffer;
+		startPlayer();
 	}
 }

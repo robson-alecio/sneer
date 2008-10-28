@@ -16,15 +16,17 @@ class Recorder implements Runnable {
 	
 	private boolean _stopCapture = true;
 	
-	private AudioFormat _audioFormat;
+	private final int _delay;
+	private final AudioFormat _audioFormat;
 	private ByteArrayOutputStream _buffer;
 	
 	@Inject
 	static private ThreadPool _threads;
 	
-	Recorder(AudioFormat audioFormat, ByteArrayOutputStream buffer) {
+	Recorder(AudioFormat audioFormat, ByteArrayOutputStream buffer, int delay) {
 		_audioFormat = audioFormat;
 		_buffer = buffer;
+		_delay = delay;
 	}
 
 	@Override
@@ -57,7 +59,7 @@ class Recorder implements Runnable {
 	}
 
 	private void appendBytesInBuffer(TargetDataLine targetDataLine) {
-		byte tmpArray[] = new byte[10000];
+		byte tmpArray[] = new byte[_delay];
 		int cnt = targetDataLine.read(tmpArray, 0, tmpArray.length);
 		if (cnt > 0) {
 			_buffer.write(tmpArray, 0, cnt);
@@ -82,5 +84,10 @@ class Recorder implements Runnable {
 
 	void stopRecorder() {
 		_stopCapture = true;
+	}
+
+	public void startRecorder(ByteArrayOutputStream buffer) {
+		_buffer = buffer;
+		startRecorder();
 	}
 }

@@ -13,7 +13,6 @@
 			- Unignore Freedom5.canHearPastShouts().
 	- Voice Calls
 		- First Step: When I press the button I listen to everyone and everyone listens to me.
-			- Loopback button - Add to the ListenToMe instrument. Make it work.
 			- SpeakerBuffer - Unignore SpeakerBufferTest.sequencing().
 			- PCM to Speex codec
 			- Block PCM tuples from being sent over the wire

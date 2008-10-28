@@ -27,13 +27,13 @@ import sneer.skin.sound.speaker.Speaker;
 public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a better snapp window support
 
 	@Inject
+	static private Loopback _loopback;
+
+	@Inject
 	static private InstrumentManager _instrumentManager;
 
 	@Inject
 	static private ContactActionManager _actionsManager;
-
-	@Inject
-	static private Loopback _loopback;
 
 	@Inject
 	static private Speaker _speaker;
@@ -42,8 +42,7 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 	static private Mic _mic;
 	
 	JToggleButton _listenToMeButton;
-	JToggleButton _playerButton;
-	JToggleButton _recorderButton;
+	JToggleButton _loopBackButton;
 
 	ListenToMeGuiImpl(){
 		_instrumentManager.registerInstrument(this);
@@ -62,12 +61,10 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 		container.setBackground(Color.WHITE);
 		container.setLayout(new FlowLayout());
 		_listenToMeButton = createButton(container, "Listen To Me", "listenToMeOn.png", "listenToMeOff.png");
-		_recorderButton = createButton(container, "Recorder");
-		_playerButton = createButton(container, "Player");
+		_loopBackButton = createButton(container, "Loop Back Test", "loopbackOn.png", "loopbackOff.png");
 		
 		createListenToMeButtonListener();
-		createPlayerButtonListener();
-		createRecorderButtonListener();
+		createLoopBackButtonListener();
 		addListenContactAction();
 	}
 
@@ -114,35 +111,13 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 		}});
 	}
 
-	private void createRecorderButtonListener() {
-		final Icon ON_ICON = loadIcon("recorderOn.png");
-		final Icon OFF_ICON = loadIcon("recorderOff.png");
-		{ _recorderButton.setIcon(ON_ICON); }
-		
-		_recorderButton.addMouseListener(new MouseAdapter() {	@Override public void mouseReleased(MouseEvent e) {
-			if(_recorderButton.isSelected()){
-				_loopback.startRecord();
-				_recorderButton.setIcon(OFF_ICON);
-			} else {
-				_loopback.stopRecord();
-				_recorderButton.setIcon(ON_ICON);
+	private void createLoopBackButtonListener() {
+		_loopBackButton.addMouseListener(new MouseAdapter() {	@Override public void mouseReleased(MouseEvent e) {
+			if(_loopBackButton.isSelected()){
+				_loopback.open();
+				return;
 			}
-		}});
-	}
-
-	private void createPlayerButtonListener() {
-		final Icon ON_ICON = loadIcon("playerOn.png");
-		final Icon OFF_ICON = loadIcon("playerOff.png");
-		{ _playerButton.setIcon(ON_ICON); }
-		
-		_playerButton.addMouseListener(new MouseAdapter() {	@Override public void mouseReleased(MouseEvent e) {
-			if(_playerButton.isSelected()){
-				_loopback.startPlayer();
-				_playerButton.setIcon(OFF_ICON);
-			} else {
-				_loopback.stopPlayer();
-				_playerButton.setIcon(ON_ICON);
-			}
+			_loopback.close();
 		}});
 	}
 
@@ -157,22 +132,17 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 	}
 
 	private JToggleButton createButton(Container container, String tip, String onIcon, String offIcon) {
-		final JToggleButton btn = createButton(container, tip);
-		addMouseListener(btn, onIcon, offIcon);
-		return btn;
-	}
-
-	private JToggleButton createButton(Container container, String tip) {
 		final JToggleButton btn = new JToggleButton();
 		btn.setPreferredSize(new Dimension(40,40));
 		btn.setBorder(new EmptyBorder(2,2,2,2));
 		btn.setOpaque(true);
 		btn.setBackground(Color.WHITE);
 		btn.setToolTipText(tip);
+		addMouseListener(btn, onIcon, offIcon);
 		container.add(btn);
 		return btn;
-	}	
-	
+	}
+
 	private void addMouseListener(final JToggleButton btn, final String onIconName, final String offIconName) {
 		btn.addMouseListener(new MouseAdapter() {
 			Icon ON_ICON = loadIcon(onIconName);

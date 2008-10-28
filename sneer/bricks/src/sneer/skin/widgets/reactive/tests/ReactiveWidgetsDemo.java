@@ -3,10 +3,12 @@ package sneer.skin.widgets.reactive.tests;
 import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
+
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
+import sneer.skin.widgets.reactive.WindowWidget;
 import wheel.io.ui.GuiThread;
 import wheel.reactive.Register;
 import wheel.reactive.impl.Receiver;
@@ -20,27 +22,42 @@ public class ReactiveWidgetsDemo {
 	public static void main(String[] args) throws Exception {
 		Container container = ContainerUtils.getContainer();
 
-		ReactiveWidgetFactory rfactory = container.produce(ReactiveWidgetFactory.class);
-		Register<String> register = new RegisterImpl<String>("Jose das Coves");
-				
-		TextWidget<?> newTextField;
+		final ReactiveWidgetFactory rfactory = container.produce(ReactiveWidgetFactory.class);
+		final Register<String> register = new RegisterImpl<String>("Jose das Coves");
 		
-		newTextField = rfactory.newTextField(register.output(), register.setter());
-		createTestFrame(newTextField, 10, 10, 300, 100, "notifyOnlyWhenDoneEditing=false");
+		GuiThread.strictInvokeAndWait(new Runnable(){ @Override public void run() {
+				TextWidget<?> textWidget;
+				
+				textWidget = rfactory.newTextField(register.output(), register.setter());
+				createTestFrame(textWidget, 10, 10, 300, 100, "notifyOnlyWhenDoneEditing=false");
 
-		newTextField = rfactory.newEditableLabel(register.output(), register.setter());
-		createTestFrame(newTextField, 10, 120, 300, 100, "notifyOnlyWhenDoneEditing=false");
+				textWidget = rfactory.newEditableLabel(register.output(), register.setter());
+				createTestFrame(textWidget, 10, 120, 300, 100, "notifyOnlyWhenDoneEditing=false");
 
-		newTextField = rfactory.newLabel(register.output());
-		createTestFrame(newTextField, 10, 240, 300, 100, "notifyOnlyWhenDoneEditing=false");
+				textWidget = rfactory.newLabel(register.output());
+				createTestFrame(textWidget, 10, 240, 300, 100, "notifyOnlyWhenDoneEditing=false");
 
+				textWidget = rfactory.newTextPane(register.output(), register.setter());
+				createTestFrame(textWidget, 10, 340, 300, 100, "notifyOnlyWhenDoneEditing=false");
+				
+				textWidget = rfactory.newTextField(register.output(), register.setter(), true);
+				createTestFrame(textWidget, 350, 10, 300, 100, "notifyOnlyWhenDoneEditing=true");
 
-		newTextField = rfactory.newTextField(register.output(), register.setter(), true);
-		createTestFrame(newTextField, 350, 10, 300, 100, "notifyOnlyWhenDoneEditing=true");
+				textWidget = rfactory.newEditableLabel(register.output(), register.setter(), true);
+				createTestFrame(textWidget, 350, 120, 300, 100, "notifyOnlyWhenDoneEditing=true");
 
-		newTextField = rfactory.newEditableLabel(register.output(), register.setter(), true);
-		createTestFrame(newTextField, 350, 120, 300, 100, "notifyOnlyWhenDoneEditing=true");
+				textWidget = rfactory.newTextPane(register.output(), register.setter(), true);
+				createTestFrame(textWidget, 350, 240, 300, 100, "notifyOnlyWhenDoneEditing=true");
+				
+				WindowWidget<JFrame> frame = rfactory.newFrame(register.output(), register.setter());
+				frame.getMainWidget().setBounds(350, 340, 300, 100);
+				frame.getMainWidget().setVisible(true);
+		}});
 
+		addConsoleLogger(register);
+	}
+
+	private static void addConsoleLogger(final Register<String> register) {
 		_receiver = new Receiver<String>(register.output()){
 			@Override
 			public void consume(String valueObject) {
@@ -50,7 +67,6 @@ public class ReactiveWidgetsDemo {
 	}
 
 	private static void createTestFrame(final TextWidget<?> textWidget, final int x, final int y, final int width, final int height, final String title) {
-		GuiThread.strictInvokeLater(new Runnable(){@Override public void run() {
 			final JFrame frm = new JFrame();
 			frm.setTitle(textWidget.getClass().getSimpleName() + " - " + title);
 			frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -58,6 +74,5 @@ public class ReactiveWidgetsDemo {
 			frm.getContentPane().add(textWidget.getComponent());
 			frm.setVisible(true);
 			frm.setBounds(x, y, width, height);
-		}});
 	}
 }

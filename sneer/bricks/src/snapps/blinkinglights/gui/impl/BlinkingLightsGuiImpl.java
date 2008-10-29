@@ -75,29 +75,26 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 
 	private void showMessage(Light light){
 		_alertWindow.setTitle(light.type().name());
-		setAlertWindowBounds();
-		Container panel = _alertWindow.getContentPane();
-		panel.setLayout(new BorderLayout());
-		
-		_alertTextPane = new JTextPane();
 		_alertTextPane.setText(createMessage(light));
-		_alertTextPane.setOpaque(false);
-		_alertTextPane.setEditable(false);
-		
-		JScrollPane scroll = new JScrollPane();
-		scroll.getViewport().add(_alertTextPane);
-		scroll.setOpaque(false);
-		panel.add(scroll, BorderLayout.CENTER);
-		scroll.setBorder(new EmptyBorder(5,5,5,5));
-		
+		setAlertWindowBounds(light);
 		_alertWindow.setVisible(true);
 	}
 
-	private void setAlertWindowBounds() {
+	private void setAlertWindowBounds(Light light) {
 		int windowWidth = 300;
+		int windowHeight = _container.getHeight();
 		int space = 20;
+
 		Point location = _container.getLocationOnScreen();
-		_alertWindow.setBounds(location.x-windowWidth-space, location.y, windowWidth, _container.getHeight());
+		int y = location.y;
+		if(light.error()!=null){
+			y = y - windowHeight;
+			windowWidth = windowWidth * 2;
+			windowHeight = windowHeight * 2;
+		}
+		int x = location.x-windowWidth-space;
+		
+		_alertWindow.setBounds(x, y, windowWidth, windowHeight);
 	}
 
 	private String createMessage(Light light) {
@@ -132,6 +129,19 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		//			 label now:        "bla, bla, bla, bla, bla, bla, b"  (crop: "la")  
 		//			 label after fix: "bla, bla, bla, bla, bla, bla..."
 		_alertWindow = new JDialog((JFrame)SwingUtilities.windowForComponent(_container), false);
+		
+		_alertTextPane = new JTextPane();
+		_alertTextPane.setOpaque(false);
+		_alertTextPane.setEditable(false);
+		
+		JScrollPane scroll = new JScrollPane();
+		scroll.getViewport().add(_alertTextPane);
+		scroll.setOpaque(false);
+		
+		Container panel = _alertWindow.getContentPane();
+		panel.setLayout(new BorderLayout());		panel.add(scroll, BorderLayout.CENTER);
+		scroll.setBorder(new EmptyBorder(5,5,5,5));
+		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		_container.setLayout(new BorderLayout());

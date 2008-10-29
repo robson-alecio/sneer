@@ -4,6 +4,7 @@ import main.MainDemoBrick;
 import snapps.blinkinglights.gui.BlinkingLightsGui;
 import snapps.contacts.gui.ContactsGui;
 import snapps.listentome.gui.ListenToMeGui;
+import snapps.memorymeter.gui.MemoryMeterGui;
 import snapps.watchme.gui.WatchMeGui;
 import snapps.watchme.gui.windows.RemoteWatchMeWindows;
 import snapps.wind.gui.WindGui;
@@ -47,8 +48,8 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	@Inject	@SuppressWarnings("unused")
 	private static RemoteWatchMeWindows _gui6;
 
-//	@Inject	@SuppressWarnings("unused")
-//	private static MemoryMeterGui _gui7;
+	@Inject	@SuppressWarnings("unused")
+	private static MemoryMeterGui _gui7;
 
 	@Inject	@SuppressWarnings("unused")
 	private static BlinkingLightsGui _lastGui;

@@ -1,23 +1,34 @@
 ﻿MAIN ROADMAP
 ===================
 
-	- Fixes
-		- Flooding - Solve tuple flooding on the network.
+	- Unreachable blinking light - Fix - It is on even for contacts on both sides of an online connection sometimes. :P
 
-	- WatchMe - Screen Viewing à la VNC
-		[Done] - [Douglas] Optimize - Stop using isSameImage() and cache the last pixel array (int[]) for each cell.
-	---- WE DROP VNC
-
+	- Unclutter the Log - Create a MemoryMeter instrument that shows how much RAM is being used. This is the start of the "Endoscope" project.
+		- Free some space in the dashboard: Show only online contacts in the list, for now.
+			- Create a ListFilter that is a ListSignalAdapter.
+	
+	- Blinking Lights
+		- Stop using modal dialogs or the gui timebox gets angry. :)
+			- HelpMessage - Show light.helpMessage() followed by the throwable() stack trace, if not null. Show this in a scrollable window.
+	
 	- Wind
 		- History - Hear shouts by peers shouted when I was off-line.
 			- Unignore Freedom5.canHearPastShouts().
+			
 	- Voice Calls
 		- First Step: When I press the button I listen to everyone and everyone listens to me.
 			- SpeakerBuffer - Unignore SpeakerBufferTest.sequencing().
-			- PCM to Speex codec
+			- [Douglas] PCM to Speex codec
 			- Block PCM tuples from being sent over the wire
 		- Second Step: Rooms.
 	---- WE DROP SKYPE :)
+	
+	- Fixes
+		- Flooding - Solve tuple flooding on the network.
+
+	WatchMe
+		- Accelerate.
+	---- WE DROP VNC
 
 
 	---------------------------------- DOGFOOD RELEASE (We have a decent VNC+Skype replacement we use to develop Sneer)

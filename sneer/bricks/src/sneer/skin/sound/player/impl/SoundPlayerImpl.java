@@ -33,11 +33,9 @@ class SoundPlayerImpl implements SoundPlayer, Runnable {
 		URL url = nextUrlToPlay();
 		AudioInputStream audioInputStream = tryInitAudioInputStream(url);
 		AudioFormat audioFormat = audioInputStream.getFormat();
-		DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
-		SourceDataLine dataLine = tryInitSourceDataLine(audioFormat, info);
-		dataLine.start();
+		SourceDataLine dataLine = tryInitSourceDataLine(audioFormat);
 
-		int bufferSize = (int) audioFormat.getSampleRate() 	* audioFormat.getFrameSize();
+		int bufferSize = (int) audioFormat.getSampleRate() * audioFormat.getFrameSize();
 		byte[] buffer = new byte[bufferSize];
 
 		try {
@@ -74,11 +72,13 @@ class SoundPlayerImpl implements SoundPlayer, Runnable {
 		}
 	} 
 
-	private SourceDataLine tryInitSourceDataLine(	AudioFormat audioFormat, DataLine.Info info) {
+	private SourceDataLine tryInitSourceDataLine(	AudioFormat audioFormat) {
+		DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
 		SourceDataLine dataLine = null;
 		try{
 			dataLine = (SourceDataLine) AudioSystem	.getLine(info);
 			dataLine.open(audioFormat);
+			dataLine.start();
 		} catch (LineUnavailableException e) {
 				if (dataLine != null)	dataLine.close();
 				throw new IllegalStateException("Can't Play!", e);

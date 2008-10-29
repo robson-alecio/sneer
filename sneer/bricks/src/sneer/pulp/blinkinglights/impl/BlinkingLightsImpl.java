@@ -20,7 +20,7 @@ class BlinkingLightsImpl implements BlinkingLights {
 	@Override
 	public Light turnOn(LightType type, String caption, Throwable t, int timeout) {
 		Light result = prepare(type);
-		turnOnIfNecessary(result, caption, "Get an expert sovereign friend to help you. ;)", t, timeout);
+		turnOnIfNecessary(result, caption, "If this problem doesn't go away on its own, get an expert sovereign friend to help you. ;)", t, timeout);
 		return result;
 	}
 	

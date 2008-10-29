@@ -97,8 +97,8 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 			@Override
 			public String caption() {
 				if(isStarted)
-					return "stop listen";
-				return "start listen";
+					return "Stop listening";
+				return "Listen";
 			}
 
 			@Override

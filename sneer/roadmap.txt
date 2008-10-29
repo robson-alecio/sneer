@@ -1,14 +1,16 @@
 ﻿MAIN ROADMAP
 ===================
 
-	- Unreachable blinking light - Fix - It is on even for contacts on both sides of an online connection sometimes. :P
+	- [Rodrigo] Unreachable blinking light - Fix - It is on even for contacts on both sides of an online connection sometimes. :P
+		- Currently the BL logic is in the ConnectionManager, too far from the entry point of new sockets (SocketAccepter) and the new redundant socket is discarded before getting there. Make it a separate "ReachabilitySentinel" brick, simply listening to SocketAccepter.lastAcceptedSocket() 
 
-	- Unclutter the Log - Create a MemoryMeter instrument that shows how much RAM is being used. This is the start of the "Endoscope" project.
-		- Free some space in the dashboard: Show only online contacts in the list, for now.
-			- Create a ListFilter that is a ListSignalAdapter.
+	- Unclutter the Log
+		- [Sandro] Create a MemoryMeter instrument that shows how much RAM is being used. This is the start of the "Endoscope" project.
+			- Free some space in the dashboard: Show only online contacts in the list, for now.
+				- Create a ListFilter that is a ListSignalAdapter.
 	
 	- Wind
-		- History - Hear shouts by peers shouted when I was off-line.
+		- [Klaus] History - Hear shouts by peers shouted when I was off-line.
 			- Unignore Freedom5.canHearPastShouts().
 			
 	- Voice Calls
@@ -17,12 +19,14 @@
 			- [Douglas] PCM to Speex codec
 			- Block PCM tuples from being sent over the wire
 		- Second Step: Rooms.
+
+	- Flooding - Solve tuple flooding on the network.
+
 	---- WE DROP SKYPE :)
 	
-	- Fixes
-		- Flooding - Solve tuple flooding on the network.
 
 	WatchMe
+		- [Sandro] Allow closing the remote WatchMe window
 		- Accelerate.
 	---- WE DROP VNC
 

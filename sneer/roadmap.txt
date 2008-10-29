@@ -7,10 +7,6 @@
 		- Free some space in the dashboard: Show only online contacts in the list, for now.
 			- Create a ListFilter that is a ListSignalAdapter.
 	
-	- Blinking Lights
-		- Stop using modal dialogs or the gui timebox gets angry. :)
-			- HelpMessage - Show light.helpMessage() followed by the throwable() stack trace, if not null. Show this in a scrollable window.
-	
 	- Wind
 		- History - Hear shouts by peers shouted when I was off-line.
 			- Unignore Freedom5.canHearPastShouts().

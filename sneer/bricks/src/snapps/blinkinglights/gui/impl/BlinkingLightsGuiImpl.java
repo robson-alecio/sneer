@@ -13,6 +13,7 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.BoundedRangeModel;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -37,6 +38,7 @@ import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
+import wheel.io.ui.GuiThread;
 import wheel.io.ui.graphics.Images;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Constant;
@@ -154,15 +156,26 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 			return light;
 		}
 		
-		private void show(Light light){
-			setWindowTitle(light);
-			setWindowsMessage(light);
-			setWindowBounds(light);
-			_window.setVisible(true);
+		private void show(final Light light){
+				setWindowTitle(light);
+				setWindowsMessage(light);
+				setWindowBounds(light);
+				_window.setVisible(true);
+				placeScrollAtTheBegining();
+		}
+
+		private void placeScrollAtTheBegining() {
+			GuiThread.invokeLater(new Runnable(){ @Override public void run() {
+				scrollModel().setValue(scrollModel().getMinimum()-scrollModel().getExtent());
+			}});
+		}
+
+		private BoundedRangeModel scrollModel() {
+			return _scroll.getVerticalScrollBar().getModel();
 		}
 
 		private void setWindowTitle(Light light) {
-			_window.setTitle(light.type().name());
+			_window.setTitle(light.caption());
 			_window.setIconImage(image(light).currentValue());
 		}
 		
@@ -212,7 +225,6 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		    
 		    Style help = doc.addStyle( HELP, def );
 		    StyleConstants.setBold(help, true);
-		    StyleConstants.setFontSize( help, 14 );
 		    doc.addStyle(HELP, help);
 		    
 		    Style stack = doc.addStyle( STACK_TRACE, def );

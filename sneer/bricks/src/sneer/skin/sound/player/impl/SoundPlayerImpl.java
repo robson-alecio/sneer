@@ -27,7 +27,7 @@ class SoundPlayerImpl implements SoundPlayer, Runnable {
 		_threads.registerActor(this);
 	}
 	
-	Collection<URL> urls = Collections.synchronizedCollection(new ArrayList<URL>());
+	final static private Collection<URL> urls = Collections.synchronizedCollection(new ArrayList<URL>());
 	
 	public void playNext() {
 		URL url = nextUrlToPlay();

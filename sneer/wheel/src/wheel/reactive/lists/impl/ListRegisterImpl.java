@@ -49,7 +49,9 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 		}
 
 		public Iterator<VO> iterator() {
-			return new ArrayList<VO>(_list).iterator(); //Optimize
+			synchronized (_list) {
+				return new ArrayList<VO>(_list).iterator(); //Optimize
+			}
 		}
 
 		@Override
@@ -63,33 +65,31 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 	private final List<VO> _list = new ArrayList<VO>();
 	private MyOutput _output = new MyOutput();
 	
-	public void add(VO element){
-		synchronized (_list){
+	public void add(VO element) {
+		synchronized (_list) {
 			_list.add(element);
 			_size.setter().consume(_list.size());
-			_output.notifyReceivers(new ListElementAdded(_list.size() - 1));
 		}
+		_output.notifyReceivers(new ListElementAdded(_list.size() - 1));
 	}
 	
-	public boolean remove(VO element) {
+	public void remove(VO element) {
 		synchronized (_list) {
 			int index = _list.indexOf(element);
 			if (index == -1) throw new IllegalArgumentException("ListRegister did not contain element to be removed: " + element);
 			
 			remove(index);
-
-			return true;
 		}
 	}
 
 	@Override
 	public void remove(int index) {
+		_output.notifyReceivers(new ListElementToBeRemoved(index));
 		synchronized (_list) {
-			_output.notifyReceivers(new ListElementToBeRemoved(index));
 			_list.remove(index);
 			_size.setter().consume(_list.size());
-			_output.notifyReceivers(new ListElementRemoved(index));
 		}
+		_output.notifyReceivers(new ListElementRemoved(index));
 	}
 
 	public ListSignal<VO> output() {
@@ -105,12 +105,12 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 
 	@Override
 	public void replace(int index, VO newElement) {
+		_output.notifyReceivers(new ListElementToBeReplaced(index));
 		synchronized (_list) {
-			_output.notifyReceivers(new ListElementToBeReplaced(index));
 			_list.remove(index);
 			_list.add(index, newElement);
-			_output.notifyReceivers(new ListElementReplaced(index));
 		}
+		_output.notifyReceivers(new ListElementReplaced(index));
 	}
 
 

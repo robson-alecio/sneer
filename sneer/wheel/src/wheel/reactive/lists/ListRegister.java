@@ -10,7 +10,7 @@ public interface ListRegister<T> extends RegisterBase {
 	void add(T element);
 	Omnivore<T> adder();
 
-	boolean remove(T element);
+	void remove(T element);
 	void remove(int index);
 	
 	void replace(int index, T newElement);

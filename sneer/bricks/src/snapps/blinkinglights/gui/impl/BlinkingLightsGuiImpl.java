@@ -49,10 +49,7 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 	private ListWidget<Light> _lightsList;
 
 	private Container _container;
-
-	private JDialog _alertWindow;
-	private JTextPane _alertTextPane;
-
+	
 	private final static Map<LightType, Constant<Image>> _images = new HashMap<LightType, Constant<Image>>();
 	static {
 		_images.put(LightType.GOOD_NEWS, new Constant<Image>(loadImage("good_news.png")));
@@ -65,83 +62,18 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		_instrumentManager.registerInstrument(this);
 	} 
 	
-	private static Image loadImage(String fileName) {
-		return Images.getImage(BlinkingLightsGuiImpl.class.getResource(fileName));
-	}
-
-	private Constant<Image> image(Light light) {
-		return _images.get(light.type());
-	}	
-
-	private void showMessage(Light light){
-		_alertWindow.setTitle(light.type().name());
-		_alertTextPane.setText(createMessage(light));
-		setAlertWindowBounds(light);
-		_alertWindow.setVisible(true);
-	}
-
-	private void setAlertWindowBounds(Light light) {
-		int windowWidth = 300;
-		int windowHeight = _container.getHeight();
-		int space = 20;
-
-		Point location = _container.getLocationOnScreen();
-		int y = location.y;
-		if(light.error()!=null){
-			y = y - windowHeight;
-			windowWidth = windowWidth * 2;
-			windowHeight = windowHeight * 2;
-		}
-		int x = location.x-windowWidth-space;
-		
-		_alertWindow.setBounds(x, y, windowWidth, windowHeight);
-	}
-
-	private String createMessage(Light light) {
-		String stack = "";
-		String msg = "";
-		
-		if(light.error()!=null){
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			PrintStream ps = new PrintStream(out);
-			light.error().printStackTrace(ps);
-			stack = "\n " + new String(out.toByteArray());
-			ps.close();
-			msg = light.error().getMessage();
-		}
-		
-		msg = msg==null?"":msg;
-		
-		return light.caption() + "\n " + msg + stack;
-	}	
-	
 	@Override
 	public void init(Container container) {
 		_container = container;
 		_lightsList = _rfactory.newList(_blinkingLights.lights(), new BlinkingLightsLabelProvider());
-		
 		iniGui();
-		initMouseListener();
+		new AlertWindowSupport();
 	}
 
 	private void iniGui() {
 		//Optimize set the scroll panel size to same size of window to prevent a BL label crop.
 		//			 label now:        "bla, bla, bla, bla, bla, bla, b"  (crop: "la")  
 		//			 label after fix: "bla, bla, bla, bla, bla, bla..."
-		_alertWindow = new JDialog((JFrame)SwingUtilities.windowForComponent(_container), false);
-		
-		_alertTextPane = new JTextPane();
-		_alertTextPane.setOpaque(false);
-		_alertTextPane.setEditable(false);
-		
-		JScrollPane scroll = new JScrollPane();
-		scroll.getViewport().add(_alertTextPane);
-		scroll.setOpaque(false);
-		
-		Container panel = _alertWindow.getContentPane();
-		panel.setLayout(new BorderLayout());		panel.add(scroll, BorderLayout.CENTER);
-		scroll.setBorder(new EmptyBorder(5,5,5,5));
-		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		_container.setLayout(new BorderLayout());
@@ -154,21 +86,6 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		scrollPane.setBackground(_lightsList.getComponent().getBackground());
 	}
 	
-	private void initMouseListener() {
-		_lightsList.getComponent().addMouseListener(new MouseAdapter(){ @Override public void mouseReleased(final MouseEvent event) {
-			Light light = getClickedLight(event);
-			if(light!=null)
-				showMessage(light);
-		}
-		
-		private Light getClickedLight(final MouseEvent event) {
-			JList list = (JList)event.getSource();
-			list.setSelectedIndex(list.locationToIndex(event.getPoint()));
-			Light light = (Light)list.getSelectedValue();
-			return light;
-		}});
-	}
-
 	private Dimension size(Container container) {
 		return new Dimension(container.getSize().width, 100 );
 	}
@@ -176,8 +93,97 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 	private String getName() {
 		return "Blinking Lights";
 	}
+	
+	private static Image loadImage(String fileName) {
+		return Images.getImage(BlinkingLightsGuiImpl.class.getResource(fileName));
+	}
 
-	final class BlinkingLightsLabelProvider implements LabelProvider<Light> {
+	private Constant<Image> image(Light light) {
+		return _images.get(light.type());
+	}
+	
+	private final class AlertWindowSupport{
+		private JDialog _window;
+		private JTextPane _textPane;
+		private JScrollPane _scroll;
+		
+		private AlertWindowSupport(){
+			initGui();
+			initMouseListener();
+		}
+
+		private void initGui() {
+			_window = new JDialog((JFrame)SwingUtilities.windowForComponent(_container), false);
+			
+			_textPane = new JTextPane();
+			_textPane.setOpaque(false);
+			_textPane.setEditable(false);
+			
+			_scroll = new JScrollPane();
+			_scroll.getViewport().add(_textPane);
+			_scroll.setOpaque(false);
+			
+			Container panel = _window.getContentPane();
+			panel.setLayout(new BorderLayout());		panel.add(_scroll, BorderLayout.CENTER);
+			_scroll.setBorder(new EmptyBorder(5,5,5,5));
+		}
+		
+		private void initMouseListener() {
+			_lightsList.getComponent().addMouseListener(new MouseAdapter(){ @Override public void mouseReleased(final MouseEvent event) {
+				Light light = getClickedLight(event);
+				if(light!=null)	show(light);
+			}});
+		}		
+
+		private Light getClickedLight(final MouseEvent event) {
+			JList list = (JList)event.getSource();
+			list.setSelectedIndex(list.locationToIndex(event.getPoint()));
+			Light light = (Light)list.getSelectedValue();
+			return light;
+		}
+		
+		private void show(Light light){
+			_window.setTitle(light.type().name());
+			_textPane.setText(createMessage(light));
+			setAlertWindowBounds(light);
+			_window.setVisible(true);
+		}
+		
+		private void setAlertWindowBounds(Light light) {
+			int windowWidth = 300;
+			int windowHeight = _container.getHeight();
+			int space = 20;
+			
+			Point location = _container.getLocationOnScreen();
+			int y = location.y;
+			if(light.error()!=null){
+				y = y - windowHeight;
+				windowWidth = windowWidth * 2;
+				windowHeight = windowHeight * 2;
+			}
+			int x = location.x-windowWidth-space;
+			
+			_window.setBounds(x, y, windowWidth, windowHeight);
+		}
+
+		private String createMessage(Light light) {
+			String stack = "";
+			String msg = "";
+			
+			if(light.error()!=null){
+				ByteArrayOutputStream out = new ByteArrayOutputStream();
+				PrintStream ps = new PrintStream(out);
+				light.error().printStackTrace(ps);
+				stack = "\n " + new String(out.toByteArray());
+				ps.close();
+				msg = light.error().getMessage();
+			}
+			msg = msg==null?"":msg;
+			return light.caption() + "\n " + msg + stack;
+		}	
+	}
+	
+	private final class BlinkingLightsLabelProvider implements LabelProvider<Light> {
 				
 		@Override
 		public Signal<String> labelFor(Light light) {

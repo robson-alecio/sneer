@@ -10,6 +10,7 @@
 				- Create a ListFilter that is a ListSignalAdapter.
 	
 	- Wind
+		- [Sandro] Small sound alert for when a shout arrives
 		- [Klaus] History - Hear shouts by peers shouted when I was off-line.
 			- Unignore Freedom5.canHearPastShouts().
 			

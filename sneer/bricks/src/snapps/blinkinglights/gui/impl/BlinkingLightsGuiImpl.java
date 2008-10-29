@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.ByteArrayOutputStream;
@@ -11,18 +12,21 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import snapps.blinkinglights.gui.BlinkingLightsGui;
 import sneer.kernel.container.Inject;
-import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
+import sneer.pulp.blinkinglights.LightType;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
@@ -46,6 +50,9 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 
 	private Container _container;
 
+	private JDialog _alertWindow;
+	private JTextPane _alertTextPane;
+
 	private final static Map<LightType, Constant<Image>> _images = new HashMap<LightType, Constant<Image>>();
 	static {
 		_images.put(LightType.GOOD_NEWS, new Constant<Image>(loadImage("good_news.png")));
@@ -67,14 +74,30 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 	}	
 
 	private void showMessage(Light light){
-		LightType type = light.type();
-		String title = type.name();
-		int optType = type==LightType.ERROR?JOptionPane.ERROR_MESSAGE: 
-			  		  type==LightType.WARN? JOptionPane.WARNING_MESSAGE:
-				      type==LightType.GOOD_NEWS? JOptionPane.PLAIN_MESSAGE:
-						  				 JOptionPane.INFORMATION_MESSAGE;
+		_alertWindow.setTitle(light.type().name());
+		setAlertWindowBounds();
+		Container panel = _alertWindow.getContentPane();
+		panel.setLayout(new BorderLayout());
 		
-		JOptionPane.showMessageDialog(_container, createMessage(light), title, optType);
+		_alertTextPane = new JTextPane();
+		_alertTextPane.setText(createMessage(light));
+		_alertTextPane.setOpaque(false);
+		_alertTextPane.setEditable(false);
+		
+		JScrollPane scroll = new JScrollPane();
+		scroll.getViewport().add(_alertTextPane);
+		scroll.setOpaque(false);
+		panel.add(scroll, BorderLayout.CENTER);
+		scroll.setBorder(new EmptyBorder(5,5,5,5));
+		
+		_alertWindow.setVisible(true);
+	}
+
+	private void setAlertWindowBounds() {
+		int windowWidth = 300;
+		int space = 20;
+		Point location = _container.getLocationOnScreen();
+		_alertWindow.setBounds(location.x-windowWidth-space, location.y, windowWidth, _container.getHeight());
 	}
 
 	private String createMessage(Light light) {
@@ -94,6 +117,7 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		
 		return light.caption() + "\n " + msg + stack;
 	}	
+	
 	@Override
 	public void init(Container container) {
 		_container = container;
@@ -107,6 +131,7 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		//Optimize set the scroll panel size to same size of window to prevent a BL label crop.
 		//			 label now:        "bla, bla, bla, bla, bla, bla, b"  (crop: "la")  
 		//			 label after fix: "bla, bla, bla, bla, bla, bla..."
+		_alertWindow = new JDialog((JFrame)SwingUtilities.windowForComponent(_container), false);
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		_container.setLayout(new BorderLayout());

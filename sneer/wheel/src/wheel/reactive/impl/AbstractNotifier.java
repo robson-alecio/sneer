@@ -11,6 +11,9 @@ import wheel.reactive.EventSource;
 
 public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 
+	private static final ReceiverHolder<?>[] RECEIVER_HOLDER_ARRAY_TYPE = new ReceiverHolder[0];
+
+	
 	private final List<ReceiverHolder<Omnivore<? super VC>>> _receivers = Collections.synchronizedList(new ArrayList<ReceiverHolder<Omnivore<? super VC>>>()); //Fix: Potential object leak. Receivers must be weak referenced. This is equivalent to the whiteboard pattern too, from a receiver referencing perspective. Conceptually, it is only the receiver that references the signal.
 
 	protected void notifyReceivers(VC valueChange) {
@@ -20,9 +23,7 @@ public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 	}
 
 	private ReceiverHolder<Omnivore<VC>>[] copyOfReceiversToAvoidConcurrentModificationAsResultOfNotifications() {
-		ReceiverHolder<Omnivore<VC>>[] result = createArray(_receivers.size());
-		_receivers.toArray(result);
-		return result;
+		return (ReceiverHolder<Omnivore<VC>>[]) _receivers.toArray(RECEIVER_HOLDER_ARRAY_TYPE);
 	}
 
 	private void notify(ReceiverHolder<Omnivore<VC>> reference, VC valueChange) {
@@ -34,10 +35,6 @@ public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 		}
 
 		receiver.consume(valueChange);
-	}
-
-	private ReceiverHolder<Omnivore<VC>>[] createArray(int size) {
-		return new ReceiverHolder[size];
 	}
 
 	@Override

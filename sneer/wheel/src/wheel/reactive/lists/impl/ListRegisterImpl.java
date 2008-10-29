@@ -71,12 +71,6 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 		}
 	}
 	
-	public VO get(int index){
-		synchronized (_list){
-			return _list.get(index);
-		}
-	}
-	
 	public boolean remove(VO element) {
 		synchronized (_list) {
 			int index = _list.indexOf(element);

@@ -30,14 +30,10 @@ class SoundPlayerImpl implements SoundPlayer, Runnable {
 	Collection<URL> urls = Collections.synchronizedCollection(new ArrayList<URL>());
 	
 	public void playNext() {
-		Iterator<URL> iterator = urls.iterator();
-		URL url = iterator.next();
-		iterator.remove();
+		URL url = nextUrlToPlay();
 		AudioInputStream audioInputStream = tryInitAudioInputStream(url);
 		AudioFormat audioFormat = audioInputStream.getFormat();
 		DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
-		
-		checkFileFormat(url, info);
 		SourceDataLine dataLine = tryInitSourceDataLine(audioFormat, info);
 		dataLine.start();
 
@@ -53,7 +49,7 @@ class SoundPlayerImpl implements SoundPlayer, Runnable {
 				}
 			} 
 		} catch (IOException e) {
-			throw new IllegalStateException("IOException: " + url, e);
+			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		} finally {
 			dataLine.drain();
 			dataLine.stop();
@@ -61,19 +57,20 @@ class SoundPlayerImpl implements SoundPlayer, Runnable {
 		}
 	}
 
-	private void checkFileFormat(URL url, DataLine.Info info) {
-		if (!AudioSystem.isLineSupported(info)) {
-			throw new IllegalArgumentException("Unsupported Audio: " + url.toString()); //Implement
-		}
+	private URL nextUrlToPlay() {
+		Iterator<URL> iterator = urls.iterator();
+		URL url = iterator.next();
+		iterator.remove();
+		return url;
 	}
-	
+
 	private AudioInputStream tryInitAudioInputStream(URL url) {
 		try {
 			return AudioSystem.getAudioInputStream(url);
 		} catch (UnsupportedAudioFileException e) {
-			throw new IllegalStateException("Can't Play this Audio Format! " + url, e);
+			throw new IllegalArgumentException("Unsupported Audio: " + url.toString()); //Implement
 		} catch (IOException e) {
-			throw new IllegalStateException("IOException: " + url, e);
+			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
 	} 
 

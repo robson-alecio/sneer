@@ -150,20 +150,20 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		}
 		
 		private void setAlertWindowBounds(Light light) {
-			int windowWidth = 300;
-			int windowHeight = _container.getHeight();
 			int space = 20;
+			_window.pack();
 			
+			int windowHeight = _container.getHeight();
 			Point location = _container.getLocationOnScreen();
 			int y = location.y;
+			int x = location.x;
 			if(light.error()!=null){
 				y = y - windowHeight;
-				windowWidth = windowWidth * 2;
 				windowHeight = windowHeight * 2;
 			}
-			int x = location.x-windowWidth-space;
+			int width = _window.getWidth() + space;
+			_window.setBounds(x - width - space, y, width, windowHeight);
 			
-			_window.setBounds(x, y, windowWidth, windowHeight);
 		}
 
 		private String createMessage(Light light) {

@@ -2,7 +2,6 @@ package snapps.contacts.gui.impl;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -67,16 +66,15 @@ class ContactsGuiImpl implements ContactsGui {
 		container.setLayout(new BorderLayout());
 		container.add(scrollPane, BorderLayout.CENTER);
 		scrollPane.getViewport().add(_contactList.getComponent());
-		scrollPane.setMinimumSize(size(container));
-		scrollPane.setPreferredSize(size(container));
 		scrollPane.setBorder(new TitledBorder(new EmptyBorder(5,5,5,5), getName()));
 		_contactList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
 		scrollPane.setBackground(_contactList.getComponent().getBackground());
 		new PopUpSupport();
 	}
-
-	private Dimension size(Container container) {
-		return new Dimension(container.getSize().width, 220 );
+	
+	@Override
+	public int defaultHeight() {
+		return 220;
 	}
 	
 	private String getName() {

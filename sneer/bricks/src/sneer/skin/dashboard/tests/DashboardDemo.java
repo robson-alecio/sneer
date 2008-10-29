@@ -40,8 +40,7 @@ class Snapp1 implements Instrument{
 
 	@Override
 	public void init(Container container) {
-		container.setLayout(new BoxLayout(container, 
-				BoxLayout.PAGE_AXIS));
+		container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
 		
 		DefaultComboBoxModel model = new DefaultComboBoxModel(
 			new Object[]{"Blue","Read", "Black", "White"}
@@ -56,6 +55,11 @@ class Snapp1 implements Instrument{
 		
 		
 	}
+
+	@Override
+	public int defaultHeight() {
+		return 50;
+	}
 }
 
 class Snapp2 implements Instrument{
@@ -69,6 +73,11 @@ class Snapp2 implements Instrument{
 		container.add(new JCheckBox("Option 3"));
 		container.add(new JCheckBox("Option 4"));
 	}
+
+	@Override
+	public int defaultHeight() {
+		return 50;
+	}
 }
 
 class Snapp3 implements Instrument{
@@ -77,5 +86,10 @@ class Snapp3 implements Instrument{
 		container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
 		JTextArea textArea = new JTextArea(15, 20);
         container.add(new JScrollPane(textArea));
+	}
+	
+	@Override
+	public int defaultHeight() {
+		return 50;
 	}
 }

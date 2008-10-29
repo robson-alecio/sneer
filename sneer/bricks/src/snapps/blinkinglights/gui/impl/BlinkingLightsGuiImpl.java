@@ -3,7 +3,6 @@ package snapps.blinkinglights.gui.impl;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
@@ -87,15 +86,14 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		_container.setLayout(new BorderLayout());
 		_container.add(scrollPane, BorderLayout.CENTER);
 		scrollPane.getViewport().add(_lightsList.getComponent());
-		scrollPane.setMinimumSize(size(_container));
-		scrollPane.setPreferredSize(size(_container));
 		scrollPane.setBorder(new TitledBorder(new EmptyBorder(5,5,5,5), getName()));
 		_lightsList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
 		scrollPane.setBackground(_lightsList.getComponent().getBackground());
 	}
-	
-	private Dimension size(Container container) {
-		return new Dimension(container.getSize().width, 100 );
+
+	@Override
+	public int defaultHeight() {
+		return 100;
 	}
 	
 	private String getName() {

@@ -159,9 +159,18 @@ class DashboardImpl implements Dashboard, Runnable {
 		GuiThread.strictInvokeAndWait(new Runnable(){	@Override public void run() {
 			_contentPanel.add(sf);
 			instrument.init(sf);
+			if(instrument.defaultHeight()>Instrument.ANY_HEIGHT)
+				resizeContainer(instrument, sf);
 			sf.revalidate();
 		}});
         return sf;
+	}
+
+	private void resizeContainer(final Instrument instrument,	final InstrumentWindowImpl sf) {
+		int width = sf.getSize().width;
+		Dimension size = new Dimension(width, instrument.defaultHeight());
+		sf.setMinimumSize(size);
+		sf.setPreferredSize(size);
 	}
 	
 	private void resizeWindow() {

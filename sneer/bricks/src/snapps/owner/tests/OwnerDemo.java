@@ -58,4 +58,9 @@ class OwnerInstrument implements Instrument{
 			_rfactory.newEditableLabel(_output, _setter).getComponent(), BorderLayout.CENTER
 		);
 	}
+
+	@Override
+	public int defaultHeight() {
+		return ANY_HEIGHT;
+	}
 }

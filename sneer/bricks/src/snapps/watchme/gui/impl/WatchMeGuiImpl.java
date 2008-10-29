@@ -41,6 +41,7 @@ class WatchMeGuiImpl implements WatchMeGui{ //Optimize need a better snapp windo
 		}
 	}
 
+	@Override
 	public void init(Container container) {
 		container.setBackground(Color.WHITE);
 		container.setLayout(new FlowLayout());
@@ -48,6 +49,11 @@ class WatchMeGuiImpl implements WatchMeGui{ //Optimize need a better snapp windo
 		createWatchMeButtonListener();
 	}
 
+	@Override
+	public int defaultHeight() {
+		return ANY_HEIGHT;
+	}
+	
 	private void createWatchMeButtonListener() {
 		_watchMeButton.addMouseListener(new MouseAdapter() {
 			@Override

@@ -47,6 +47,9 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	@Inject	@SuppressWarnings("unused")
 	private static RemoteWatchMeWindows _gui6;
 
+//	@Inject	@SuppressWarnings("unused")
+//	private static MemoryMeterGui _gui7;
+
 	@Inject	@SuppressWarnings("unused")
 	private static BlinkingLightsGui _lastGui;
 	

@@ -128,4 +128,9 @@ class OwnerGuiImpl implements OwnerGui {
 					new Insets(top,left,botton,right),0,0);
 		return c;
 	}
+
+	@Override
+	public int defaultHeight() {
+		return ANY_HEIGHT;
+	}
 }

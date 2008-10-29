@@ -67,7 +67,12 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 		createLoopBackButtonListener();
 		addListenContactAction();
 	}
-
+	
+	@Override
+	public int defaultHeight() {
+		return ANY_HEIGHT;
+	}
+	
 	private void addListenContactAction() {
 		_actionsManager.addContactAction(new ContactAction(){
 

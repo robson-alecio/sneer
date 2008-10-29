@@ -1,7 +1,6 @@
 package snapps.wind.gui.impl;
 
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -33,6 +32,7 @@ import snapps.wind.Wind;
 import snapps.wind.gui.WindGui;
 import sneer.kernel.container.Inject;
 import sneer.skin.snappmanager.InstrumentManager;
+import sneer.skin.sound.player.SoundPlayer;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
@@ -54,6 +54,9 @@ class WindGuiImpl implements WindGui {
 	
 	@Inject
 	static private Wind _wind;
+	
+	@Inject
+	static private SoundPlayer _player;
 
 	@Inject
 	static private ReactiveWidgetFactory _rfactory;
@@ -134,8 +137,6 @@ class WindGuiImpl implements WindGui {
 	private void initScrollPane() {
 		_scrollPane = new JScrollPane();
 		_scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		_scrollPane.setMinimumSize(size(_container));
-		_scrollPane.setPreferredSize(size(_container));
 		_scrollPane.setBorder(new TitledBorder(new EmptyBorder(5,5,2,2), getName()));
 		_scrollPane.setOpaque(false);
 		_autoscrollSupportToAvoidGc = new WindAutoscrollSupport();
@@ -152,16 +153,19 @@ class WindGuiImpl implements WindGui {
 		Window window = SwingUtilities.windowForComponent(_container);
 		_myShout.getMainWidget().requestFocus();
 		
-		if(window.hasFocus()) return;
-		alertUser(window);
+		if(window.isActive()) return;
+			alertUser(window);
 	}
 
 	private void alertUser(Window window) {
 		window.toFront();
+		_player.play(this.getClass().getResource("alert.wav"));
 	}
 
-	private Dimension size(Container container) {
-		return new Dimension(container.getSize().width, 248 );
+
+	@Override
+	public int defaultHeight() {
+		return 248;
 	}
 	
 	private String getName() {

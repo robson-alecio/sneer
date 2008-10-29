@@ -61,5 +61,10 @@ class NicknameDemo implements Instrument{
 		container.add(field);
 		field.setBorder(new TitledBorder("Change Nickname Here:"));
 	}
+
+	@Override
+	public int defaultHeight() {
+		return 100;
+	}
 	
 }

@@ -1,6 +1,7 @@
 package snapps.blinkinglights.gui.impl;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -21,6 +22,11 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
+import javax.swing.text.StyledDocument;
 
 import snapps.blinkinglights.gui.BlinkingLightsGui;
 import sneer.kernel.container.Inject;
@@ -103,6 +109,11 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 	}
 	
 	private final class AlertWindowSupport{
+		private static final int HORIZONTAL_LIMIT = 600;
+		
+		private static final String HELP = "HELP";
+		private static final String STACK_TRACE = "STACK_TRACE";
+		
 		private JDialog _window;
 		private JTextPane _textPane;
 		private JScrollPane _scroll;
@@ -118,6 +129,7 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 			_textPane = new JTextPane();
 			_textPane.setOpaque(false);
 			_textPane.setEditable(false);
+			initDocumentStyles(_textPane.getStyledDocument());
 			
 			_scroll = new JScrollPane();
 			_scroll.getViewport().add(_textPane);
@@ -143,13 +155,34 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		}
 		
 		private void show(Light light){
-			_window.setTitle(light.type().name());
-			_textPane.setText(createMessage(light));
-			setAlertWindowBounds(light);
+			setWindowTitle(light);
+			setWindowsMessage(light);
+			setWindowBounds(light);
 			_window.setVisible(true);
 		}
+
+		private void setWindowTitle(Light light) {
+			_window.setTitle(light.type().name());
+			_window.setIconImage(image(light).currentValue());
+		}
 		
-		private void setAlertWindowBounds(Light light) {
+		private void setWindowsMessage(Light light) {
+			_textPane.setText("");
+			StyledDocument doc = _textPane.getStyledDocument();
+			appendStyledText(doc, light.helpMessage(), HELP);
+			
+			if(light.error()==null) return;
+			
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			PrintStream ps = new PrintStream(out);
+			light.error().printStackTrace(ps);
+			String stack = new String(out.toByteArray());
+			ps.close();
+			
+			appendStyledText(doc, "\n\n" + stack.trim(), STACK_TRACE);
+		}	
+		
+		private void setWindowBounds(Light light) {
 			int space = 20;
 			_window.pack();
 			
@@ -162,25 +195,31 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 				windowHeight = windowHeight * 2;
 			}
 			int width = _window.getWidth() + space;
+			if(width>HORIZONTAL_LIMIT) width = HORIZONTAL_LIMIT;
 			_window.setBounds(x - width - space, y, width, windowHeight);
-			
+		}
+		
+		private void appendStyledText(StyledDocument doc, String msg, String style) {
+			try {
+				doc.insertString(doc.getLength(), msg, doc.getStyle(style));
+			} catch (BadLocationException e) {
+				throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			}
 		}
 
-		private String createMessage(Light light) {
-			String stack = "";
-			String msg = "";
-			
-			if(light.error()!=null){
-				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				PrintStream ps = new PrintStream(out);
-				light.error().printStackTrace(ps);
-				stack = "\n " + new String(out.toByteArray());
-				ps.close();
-				msg = light.error().getMessage();
-			}
-			msg = msg==null?"":msg;
-			return light.caption() + "\n " + msg + stack;
-		}	
+		private void initDocumentStyles(StyledDocument doc) {
+			Style def = StyleContext.getDefaultStyleContext().getStyle( StyleContext.DEFAULT_STYLE );
+		    
+		    Style help = doc.addStyle( HELP, def );
+		    StyleConstants.setBold(help, true);
+		    StyleConstants.setFontSize( help, 14 );
+		    doc.addStyle(HELP, help);
+		    
+		    Style stack = doc.addStyle( STACK_TRACE, def );
+		    StyleConstants.setForeground(stack, Color.DARK_GRAY);
+		    StyleConstants.setFontSize( stack, 11 );
+		    doc.addStyle(STACK_TRACE, stack);
+		}
 	}
 	
 	private final class BlinkingLightsLabelProvider implements LabelProvider<Light> {

@@ -64,10 +64,14 @@ public class ProbeManagerImpl implements ProbeManager {
 
 	private void initCommunications(Contact contact) {
 		ByteConnection connection = _connections.connectionFor(contact);
-		connection.setReceiver(new Omnivore<byte[]>(){ @Override public void consume(byte[] packet) {
-			_tuples.acquire((Tuple)desserialize(packet));
-		}});
+		connection.setReceiver(createReceiver());
 		connection.setSender(new SchedulerImpl(contact));
+	}
+
+	private Omnivore<byte[]> createReceiver() {
+		return new Omnivore<byte[]>(){ @Override public void consume(byte[] packet) {
+			_tuples.acquire((Tuple)desserialize(packet));
+		}};
 	}
 
 	private Object desserialize(byte[] packet) {

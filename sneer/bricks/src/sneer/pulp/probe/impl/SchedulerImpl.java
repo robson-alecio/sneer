@@ -3,12 +3,10 @@
  */
 package sneer.pulp.probe.impl;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 import sneer.kernel.container.Inject;
-import sneer.pulp.connection.ByteConnection.Packet;
 import sneer.pulp.connection.ByteConnection.PacketScheduler;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.keymanager.KeyManager;
@@ -28,9 +26,12 @@ final class SchedulerImpl implements PacketScheduler, Omnivore<Tuple> {
 	static private final Serializer _serializer = new XStreamBinarySerializer();
 
 	
-	private final List<byte[]> _toSend = Collections.synchronizedList(new LinkedList<byte[]>());
 	private final Contact _contact;
 	private PublicKey _contactsPK;
+
+	private final List<Tuple> _toSend = new LinkedList<Tuple>();
+	private int _lastTupleSent;
+
 	
 	SchedulerImpl(Contact contact) {
 		_contact = contact;
@@ -38,19 +39,27 @@ final class SchedulerImpl implements PacketScheduler, Omnivore<Tuple> {
 	}
 	
 	@Override
-	public Packet highestPriorityPacketToSend() {
-		while (_toSend.isEmpty())
-			Threads.sleepWithoutInterruptions(10);
-
+	public byte[] highestPriorityPacketToSend() {
 		synchronized (_toSend) {
-			int newest = _toSend.size() - 1;
-			return new MyPacket(_toSend.get(newest), newest);
+			if (_toSend.isEmpty())
+				Threads.waitWithoutInterruptions(_toSend);
+		}
+
+		return _serializer.serialize(mostRecentTuple()); //Optimize: Use same serialized form of this tuple for all interested contacts.
+	}
+
+	private Tuple mostRecentTuple() {
+		synchronized (_toSend) {
+			_lastTupleSent = _toSend.size() - 1;
+			return _toSend.get(_lastTupleSent);
 		}
 	}
-	
+
 	@Override
-	public void packetWasSent(Packet packet) {
-		_toSend.remove(((MyPacket)packet)._position);
+	public void previousPacketWasSent() {
+		synchronized (_toSend) {
+			_toSend.remove(_lastTupleSent);
+		}
 	}
 
 
@@ -58,7 +67,10 @@ final class SchedulerImpl implements PacketScheduler, Omnivore<Tuple> {
 	public void consume(Tuple tuple) {
 		if (!isClearToSend(tuple)) return;
 		
-		_toSend.add(_serializer.serialize(tuple));
+		synchronized (_toSend) {
+			_toSend.add(tuple); //Fix This is a leak: dont keep packets for contacts that are offline.
+			_toSend.notify();
+		}
 	}
 
 	private boolean isClearToSend(Tuple tuple) {
@@ -79,19 +91,4 @@ final class SchedulerImpl implements PacketScheduler, Omnivore<Tuple> {
 
 }
 
-class MyPacket implements Packet {
 
-	final int _position;
-	private final byte[] _payload;
-
-	MyPacket(byte[] payload, int position) {
-		_payload = payload;
-		_position = position;
-	}
-
-	@Override
-	public byte[] payload() {
-		return _payload;
-	}
-
-}

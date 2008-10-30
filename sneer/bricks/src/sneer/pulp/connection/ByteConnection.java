@@ -5,13 +5,9 @@ import wheel.reactive.Signal;
 
 public interface ByteConnection {
 
-	public interface Packet {
-		byte[] payload();
-	}
-	
 	public interface PacketScheduler {
-		Packet highestPriorityPacketToSend();
-		void packetWasSent(Packet packet);
+		byte[] highestPriorityPacketToSend();
+		void previousPacketWasSent();
 	}
 	
 	Signal<Boolean> isOnline();

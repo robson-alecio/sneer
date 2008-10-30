@@ -94,17 +94,13 @@ public class TrayIconImpl implements TrayIcon {
 
 		final MenuItem menuItem = new MenuItem(action.caption());
 		
-		menuItem.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent ignored) {
-				try {
-					action.run();
-				} catch (Throwable t) {
-					_catcher.catchThis(t);
-				}
+		menuItem.addActionListener(new ActionListener() {@Override public void actionPerformed(ActionEvent ignored) {
+			try {
+				action.run();
+			} catch (Throwable t) {
+				_catcher.catchThis(t);
 			}
-		});
-
+		}});
 		popup.add(menuItem);
 	}
 

@@ -35,7 +35,6 @@ abstract class AbstractSwingMenu implements Menu<JComponent>{
 			}
 			
 			menuItem = new SneerCheckBoxMenuItem(action.caption(),((SelectableAction)action).isSelected());
-			
 		}else{
 			if (action instanceof ReactiveAction) {
 				menuItem = new ReactiveMenuItem(((ReactiveAction)action).signalCaption());
@@ -47,14 +46,10 @@ abstract class AbstractSwingMenu implements Menu<JComponent>{
 	}
 
 	private void addMenuItem(final Action action,	final JMenuItem menuItem) {
-		menuItem.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent ignored) {
-				action.run();
-				menuItem.setText(action.caption());
-			}
-		});
-
+		menuItem.addActionListener(new ActionListener() {@Override public void actionPerformed(ActionEvent ignored) {
+			action.run();
+			menuItem.setText(action.caption());
+		}});
 		getWidget().add(menuItem);
 	}
 	
@@ -66,10 +61,5 @@ abstract class AbstractSwingMenu implements Menu<JComponent>{
 	@Override
 	public void clearAll() {
 		getWidget().removeAll();
-	}
-
-	public AbstractSwingMenu() {
-		super();
-		// Implement Auto-generated constructor stub
 	}
 }

@@ -74,7 +74,7 @@ class ContactsGuiImpl implements ContactsGui {
 	
 	@Override
 	public int defaultHeight() {
-		return 220;
+		return 144;
 	}
 	
 	private String getName() {

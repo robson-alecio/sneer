@@ -12,7 +12,6 @@ public interface ByteConnection {
 	
 	Signal<Boolean> isOnline();
 
-	void setSender(PacketScheduler sender);
-	void setReceiver(Omnivore<byte[]> receiver);
+	void initCommunications(PacketScheduler sender, Omnivore<byte[]> receiver);
 	
 }

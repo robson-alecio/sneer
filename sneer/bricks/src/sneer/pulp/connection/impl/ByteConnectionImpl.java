@@ -19,29 +19,23 @@ import wheel.reactive.impl.RegisterImpl;
 
 class ByteConnectionImpl implements ByteConnection {
 
-	@Inject
-	static private KeyManager _keyManager;
+	@Inject static private KeyManager _keyManager;
+	@Inject static private ThreadPool _threadPool;
 	
-	@Inject
-	static private ThreadPool _threadPool;
-	
-	private final Register<Boolean> _isOnline = new RegisterImpl<Boolean>(false);
-
-	private final SocketHolder _socketHolder = new SocketHolder(_isOnline.setter());
-	
-	private volatile PacketScheduler _scheduler;
 
 	private final String _label;
-
 	private final Contact _contact;
+
+	private final Register<Boolean> _isOnline = new RegisterImpl<Boolean>(false);
+	private final SocketHolder _socketHolder = new SocketHolder(_isOnline.setter());
 	
-	private volatile Omnivore<byte[]> _receiver;
+	private PacketScheduler _scheduler;
+	private Omnivore<byte[]> _receiver;
+
 
 	ByteConnectionImpl(String label, Contact contact) {
 		_label = label;
 		_contact = contact;
-		startSending();
-		startReceiving();
 	}
 
 	@Override
@@ -90,7 +84,6 @@ class ByteConnectionImpl implements ByteConnection {
 	}
 
 	private boolean tryToSend(byte[] array) {
-
 		ByteArraySocket mySocket = _socketHolder.socket();
 		if (mySocket == null) return false;
 		
@@ -104,38 +97,22 @@ class ByteConnectionImpl implements ByteConnection {
 	}
 
 
-	public void setReceiver(Omnivore<byte[]> receiver) {
-		if (_receiver != null) throw new IllegalStateException();
-		_receiver = receiver;
-	}
-	
 	private void startSending() {
 		_threadPool.registerActor(new Runnable() { @Override public void run() {
 			while (true) {
-				byte[] packet = waitForNextPacket();
-				if (tryToSend(packet))
+				if (tryToSend(_scheduler.highestPriorityPacketToSend()))
 					_scheduler.previousPacketWasSent();
 				else
-					Threads.sleepWithoutInterruptions(10); //Optimize Use wait/notify.
+					Threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify.
 			}
 		}});
 	}
 	
-	private byte[] waitForNextPacket() {
-		while (true) {
-			if (_scheduler == null) { //Fix: When the old protocol dies, the _sender should never be null. It no longer needs to be volatile either. 
-				Threads.sleepWithoutInterruptions(10);
-				continue;
-			}
-			return _scheduler.highestPriorityPacketToSend();
-		}
-	}	
-
 	private void startReceiving() {
 		_threadPool.registerActor(new Runnable() { @Override public void run() {
 			while (true) {
 				if (!tryToReceive())
-					Threads.sleepWithoutInterruptions(10); //Optimize Use wait/notify
+					Threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify
 			}
 		}});
 	}
@@ -160,9 +137,13 @@ class ByteConnectionImpl implements ByteConnection {
 	}
 
 	@Override
-	public void setSender(PacketScheduler sender) {
+	public void initCommunications(PacketScheduler sender, Omnivore<byte[]> receiver) {
 		if (_scheduler != null) throw new IllegalStateException();
 		_scheduler = sender;
+		_receiver = receiver;
+
+		startSending();
+		startReceiving();
 	}
 
 }

@@ -64,8 +64,7 @@ public class ProbeManagerImpl implements ProbeManager {
 
 	private void initCommunications(Contact contact) {
 		ByteConnection connection = _connections.connectionFor(contact);
-		connection.setReceiver(createReceiver());
-		connection.setSender(new SchedulerImpl(contact));
+		connection.initCommunications(new SchedulerImpl(contact), createReceiver());
 	}
 
 	private Omnivore<byte[]> createReceiver() {

@@ -70,7 +70,7 @@ public class MicTest {
 		
 		mic.open();
 		
-		Threads.sleepWithoutInterruptions(500); //Fix: Use wait/notify
+		Threads.sleepWithoutInterruptions(500); //Optimize: Use wait/notify
 		
 		mic.close();
 		

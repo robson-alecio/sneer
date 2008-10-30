@@ -10,7 +10,6 @@ import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.network.ByteArraySocket;
-import wheel.io.Logger;
 import wheel.lang.Producer;
 import wheel.lang.exceptions.IllegalParameter;
 
@@ -33,7 +32,7 @@ class IndividualSocketReceiver {
 		try {
 			if (!tryToServe()) _socket.crash();
 		} catch (Exception e) {
-			Logger.logShort(e, "Exception thrown by incoming socket.");
+			//Logger.logShort(e, "Exception thrown by incoming socket.");
 			_socket.crash();
 		}
 	}

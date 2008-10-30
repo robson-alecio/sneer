@@ -3,9 +3,6 @@
 
 	- Fix Leak - SchedulerImpl - dont keep packets for contacts that are offline. 
 
-	- [Sandro] Fix Gui Glitches
-		- Wind auto-scroll stops working when a multi-line shout is typed
-
 	- [Rodrigo] Unreachable blinking light - Fix - It is on even for contacts on both sides of an online connection sometimes. :P
 		- Currently the BL logic is in the ConnectionManager, too far from the entry point of new sockets (SocketAccepter) and the new redundant socket is discarded before getting there. Make it a separate "ReachabilitySentinel" brick, simply listening to SocketAccepter.lastAcceptedSocket() 
 

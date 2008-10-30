@@ -12,6 +12,7 @@ import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
@@ -103,10 +104,10 @@ class WindGuiImpl implements WindGui {
 	}
 
 	private void iniGui() {
+		_myShout = _rfactory.newTextPane(new Constant<String>(""), _wind.megaphone(), true);
+
 		initScrollPane();
 		initListReceiversInOrder();
-		
-		_myShout = _rfactory.newTextPane(new Constant<String>(""), _wind.megaphone(), true);
 		
 		_container.setBackground(_shoutsList.getComponent().getBackground());
 		_scrollPane.getViewport().add(_shoutsList.getComponent());
@@ -193,6 +194,13 @@ class WindGuiImpl implements WindGui {
 		private SimpleListReceiver<Shout> _posChangeReceiverAvoidGc;
 		
 		protected boolean _shouldAutoscroll = true;
+		
+		{ initKeyTypedListener();}
+		private void initKeyTypedListener() {
+			_myShout.getMainWidget().addKeyListener(new KeyAdapter(){@Override public void keyReleased(KeyEvent e) {
+				if(_shouldAutoscroll) placeAtEnd();
+			}});
+		}
 
 		private void initPreChangeReceiver() {
 			_preChangeReceiverAvoidGc = new SimpleListReceiver<Shout>(_wind.shoutsHeard()){ 

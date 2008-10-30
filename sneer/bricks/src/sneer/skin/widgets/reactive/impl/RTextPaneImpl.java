@@ -33,8 +33,8 @@ class RTextPaneImpl extends RAbstractField<JTextPane> {
 	protected void addDoneListenerCommiter() {
         Keymap kMap=_textComponent.getKeymap();
         kMap.addActionForKeyStroke(KeyStroke.getKeyStroke("ENTER"), new AbstractAction(){ @Override public void actionPerformed(ActionEvent e) {
-        	commitTextChanges();		
-		}});
+        	commitTextChanges();
+ 		}});
         insertLineBreakerListenerFor(kMap, "control ENTER");
         insertLineBreakerListenerFor(kMap, "shift ENTER");
         insertLineBreakerListenerFor(kMap, "alt ENTER");
@@ -47,7 +47,7 @@ class RTextPaneImpl extends RAbstractField<JTextPane> {
 	}
 
     protected void insertLineBreak() {
-        try {
+         try {
 			int carretPosition = _textComponent.getCaretPosition();
 			StyledDocument document = (StyledDocument) _textComponent.getDocument();
 			SimpleAttributeSet attributes = new SimpleAttributeSet( document.getCharacterElement(carretPosition).getAttributes());
@@ -58,4 +58,9 @@ class RTextPaneImpl extends RAbstractField<JTextPane> {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
     }
+    
+	@Override
+	public String getText() {
+		return super.getText().trim();
+	}
 }

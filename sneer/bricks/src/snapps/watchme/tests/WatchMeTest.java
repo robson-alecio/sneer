@@ -117,7 +117,7 @@ public class WatchMeTest extends TestThatIsInjected {
 			if (observed != null)
 				if (Images.isSameImage(expected, observed)) return;
 			
-			if (i++ == 40) giveUp(expected, observed);
+			if (i++ == 100) giveUp(expected, observed);
 			
 			Threads.sleepWithoutInterruptions(300); //Optimize Use wait/notify
 		}

@@ -70,11 +70,11 @@ public class MicTest {
 		
 		mic.open();
 		
-		Threads.sleepWithoutInterruptions(100); //Fix: Use wait/notify
+		Threads.sleepWithoutInterruptions(500); //Fix: Use wait/notify
 		
 		mic.close();
 		
-		Threads.sleepWithoutInterruptions(100);
+		Threads.sleepWithoutInterruptions(500);
 		
 		assertEquals(sequence.value.intValue(), seenPackets.size());
 		for (PcmSoundPacket packet : seenPackets.values()) {

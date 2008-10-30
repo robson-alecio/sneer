@@ -12,8 +12,6 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 
 import snapps.memorymeter.gui.MemoryMeterGui;
 import sneer.kernel.container.Inject;
@@ -51,28 +49,25 @@ public class MemoryMeterGuiImpl implements MemoryMeterGui {
 	}
 
 	private void initGui(Container container) {
-		_totalMemory.setText("Total: " + _meter.maxMBs() + "Mb");
+		_totalMemory.setText("(Max " + _meter.maxMBs() + ")");
 		initReactiveLabels();
 		
 		JPanel root = new JPanel();
-		root.setBorder(new TitledBorder(new EmptyBorder(5,5,2,2), getName()));	
 		root.setOpaque(false);
 		root.setLayout(new GridBagLayout());
 		
-		root.add(_totalMemory, new GridBagConstraints(1, 0, 1, 1, 1., 0,
-				GridBagConstraints.EAST, GridBagConstraints.BOTH,
-				new Insets(0, 0, 0, 0), 0, 0));
-		_totalMemory.setIcon(_memoryIcon);
-
-		root.add(_maxUsedMemory.getMainWidget(), new GridBagConstraints(1, 1, 1, 1, 1., 0,
-				GridBagConstraints.EAST, GridBagConstraints.BOTH,
-				new Insets(0, 0, 0, 0), 0, 0));
-		_maxUsedMemory.getMainWidget().setIcon(_memoryIcon);
-
-		root.add(_currentMemory.getMainWidget(), new GridBagConstraints(1, 2, 1, 1, 1., 0,
-				GridBagConstraints.NORTHEAST, GridBagConstraints.BOTH,
-				new Insets(0, 0, 0, 0), 0, 0));
+		root.add(_currentMemory.getMainWidget(), new GridBagConstraints(0, 0, 1, 1, 1., 0,
+				GridBagConstraints.EAST, GridBagConstraints.NONE,
+				new Insets(2, 0, 2, 0), 0, 0));
 		_currentMemory.getMainWidget().setIcon(_memoryIcon);
+		
+		root.add(_maxUsedMemory.getMainWidget(), new GridBagConstraints(1,0, 1, 1, 1., 0,
+				GridBagConstraints.CENTER, GridBagConstraints.NONE,
+				new Insets(2, 0, 2, 0), 0, 0));
+		
+		root.add(_totalMemory, new GridBagConstraints(2, 0, 1, 1, 1., 0,
+				GridBagConstraints.WEST, GridBagConstraints.NONE,
+				new Insets(2, 0, 2, 0), 0, 0));
 		
 		changeLabelFont(_totalMemory);
 		changeLabelFont(_maxUsedMemory.getMainWidget());
@@ -87,18 +82,14 @@ public class MemoryMeterGuiImpl implements MemoryMeterGui {
 		label.setFont(label.getFont().deriveFont(Font.ITALIC));
 	}
 
-	private String getName() {
-		return "Memory Meter";
-	}
-
 	private void initReactiveLabels() {
 		Functor<Integer, String> functor = new Functor<Integer, String>(){@Override public String evaluate(Integer value) {
-			return "Max.Used: " + value + "Mb";
+			return "Peak: " + value;
 		}};
 		_maxUsedMemory = _factory.newLabel(new Adapter<Integer, String>(_meter.usedMBsPeak(), functor).output());
 		
 		functor = new Functor<Integer, String>(){@Override public String evaluate(Integer value) {
-			return "Current: " + value + "Mb";
+			return "MB Used: " + value;
 		}};
 		_currentMemory = _factory.newLabel(new Adapter<Integer, String>(_meter.usedMBs(), functor).output());
 	}

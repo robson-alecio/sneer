@@ -51,7 +51,7 @@ public class MemoryMeterGuiImpl implements MemoryMeterGui {
 	}
 
 	private void initGui(Container container) {
-		_totalMemory.setText("Total: " + _meter.totalMemory() + "Mb");
+		_totalMemory.setText("Total: " + _meter.maxMBs() + "Mb");
 		initReactiveLabels();
 		
 		JPanel root = new JPanel();
@@ -95,12 +95,12 @@ public class MemoryMeterGuiImpl implements MemoryMeterGui {
 		Functor<Integer, String> functor = new Functor<Integer, String>(){@Override public String evaluate(Integer value) {
 			return "Max.Used: " + value + "Mb";
 		}};
-		_maxUsedMemory = _factory.newLabel(new Adapter<Integer, String>(_meter.maxUsedMemory(), functor).output());
+		_maxUsedMemory = _factory.newLabel(new Adapter<Integer, String>(_meter.usedMBsPeak(), functor).output());
 		
 		functor = new Functor<Integer, String>(){@Override public String evaluate(Integer value) {
 			return "Current: " + value + "Mb";
 		}};
-		_currentMemory = _factory.newLabel(new Adapter<Integer, String>(_meter.currentMemory(), functor).output());
+		_currentMemory = _factory.newLabel(new Adapter<Integer, String>(_meter.usedMBs(), functor).output());
 	}
 
 	@Override

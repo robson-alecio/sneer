@@ -5,8 +5,8 @@ import wheel.reactive.Signal;
 
 public interface MemoryMeter extends Brick{
 	
-	Signal<Integer> currentMemory();
-	Signal<Integer> maxUsedMemory();
+	Signal<Integer> usedMBs();
+	Signal<Integer> usedMBsPeak();
 
-	int totalMemory();
+	int maxMBs();
 }

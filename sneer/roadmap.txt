@@ -4,7 +4,6 @@
 	- Fix Leak - SchedulerImpl - dont keep packets for contacts that are offline. 
 
 	- [Sandro] Fix Gui Glitches
-		- Menu >> Exit has a redundant separator line
 		- Wind auto-scroll stops working when a multi-line shout is typed
 
 	- [Rodrigo] Unreachable blinking light - Fix - It is on even for contacts on both sides of an online connection sometimes. :P

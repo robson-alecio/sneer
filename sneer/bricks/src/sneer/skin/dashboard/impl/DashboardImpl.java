@@ -238,7 +238,6 @@ class DashboardImpl implements Dashboard, Runnable {
 			}
 		};
 		tray.addAction(cmd);
-		_mainMenu.getSneerMenu().addSeparator();
 		_mainMenu.getSneerMenu().addAction(cmd);
 	}
 

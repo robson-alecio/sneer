@@ -3,6 +3,7 @@ package sneer.pulp.tuples.impl;
 import static wheel.lang.Types.cast;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -42,10 +43,13 @@ public class TupleSpaceImpl implements TupleSpace {
 
 	}
 
-	private static final int TUPLE_SPACE_SIZE_LIMIT = 1000;
-	private final Set<Tuple> _tuples = new LinkedHashSet<Tuple>();
+	private static final int TRANSIENT_TUPLES_MAX = 1000;
+	private final Set<Tuple> _transientTuples = new LinkedHashSet<Tuple>();
 	private final List<Subscription> _subscriptions = new ArrayList<Subscription>();
-	private long _offset = 0;
+	
+	private final Set<Class<? extends Tuple>> _typesToKeep = new HashSet<Class<? extends Tuple>>();
+	private final Set<Tuple> _keptTuples = new HashSet<Tuple>();
+
 
 	@Override
 	public synchronized void publish(Tuple tuple) {
@@ -54,26 +58,35 @@ public class TupleSpaceImpl implements TupleSpace {
 	}
 
 	@Override
-	public void acquire(Tuple tuple) {
-		if (!_tuples.add(tuple)) return;
-
-		capSize();
-		
+	public synchronized void acquire(Tuple tuple) {
+		if (!_transientTuples.add(tuple)) return;
+		capTransientTuples();
+		keepIfNecessary(tuple);
+				
 		for (Subscription subscription : _subscriptions)
 			subscription.filterAndNotify(tuple);
 	}
 
+	
+	private void keepIfNecessary(Tuple tuple) {
+		for (Class<? extends Tuple> typeToKeep : _typesToKeep)
+			if (Types.instanceOf(tuple, typeToKeep)) {
+				_keptTuples.add(tuple);
+				return;
+			}
+	}
+
+	
 	private void stamp(Tuple tuple) {
 		tuple.stamp(_keyManager.ownPublicKey(), _clock.time());
 	}
 
-	private void capSize() {
-		if (_tuples.size() <= TUPLE_SPACE_SIZE_LIMIT) return;
+	private void capTransientTuples() {
+		if (_transientTuples.size() <= TRANSIENT_TUPLES_MAX) return;
 
-		Iterator<Tuple> tuplesIterator = _tuples.iterator();
+		Iterator<Tuple> tuplesIterator = _transientTuples.iterator();
 		tuplesIterator.next();
 		tuplesIterator.remove();
-		_offset++;
 		
 	}
 
@@ -91,6 +104,11 @@ public class TupleSpaceImpl implements TupleSpace {
 			} 
 
 		throw new IllegalArgumentException("Subscription not found.");
+	}
+
+	@Override
+	public void keep(Class<? extends Tuple> tupleType) {
+		_typesToKeep.add(tupleType);
 	}
 
 }

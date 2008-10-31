@@ -52,20 +52,35 @@ public class TupleSpaceTest extends TestThatIsInjected {
 	}
 	
 	
-	@Test(timeout=2000)
+	@Test (timeout = 2000)
 	public void tuplesLimitSize() {
-		for (int i = 0; i < 1200; i++)
-			_subject.publish(new MyTestTuple(new int[] {i}));
+		publishMyTestTuples(1000 + 42);
 		
-		while (_garbageCollectedCounter != 200) {
+		while (_garbageCollectedCounter != 42) {
 			System.gc();
 			Threads.sleepWithoutInterruptions(20);
 		}
 	}
+
+	
+	@Test (timeout = 2000)
+	public void keepingTuples() {
+		_subject.keep(MyTestTuple.class);
+		publishMyTestTuples(1000 + 42);
+
+		System.gc();
+		assertEquals(0, _garbageCollectedCounter);
+	}
+
+
+	private void publishMyTestTuples(int amount) {
+		for (int i = 0; i < amount; i++)
+			_subject.publish(new MyTestTuple(new int[] {i}));
+	}
 	
 	
 	@Test
-	public void testRemoveSubscription() {
+	public void removeSubscription() {
 		final ArrayList<Tuple> tuples = new ArrayList<Tuple>();
 		final Omnivore<TestTuple> consumer = new Omnivore<TestTuple>() {
 			@Override

@@ -31,6 +31,7 @@ public class TupleSpaceTest extends TestThatIsInjected {
 	private static volatile int _garbageCollectedCounter = 0;	
 
 	
+	
 	@Test
 	public void tuplesContainingArrays() {
 		TestTuple a = new TestTuple(new int[]{1, 2, 3});
@@ -50,6 +51,7 @@ public class TupleSpaceTest extends TestThatIsInjected {
 		assertNull(_received);
 	}
 	
+	
 	@Test(timeout=2000)
 	public void tuplesLimitSize() {
 		for (int i = 0; i < 1200; i++)
@@ -60,6 +62,7 @@ public class TupleSpaceTest extends TestThatIsInjected {
 			Threads.sleepWithoutInterruptions(20);
 		}
 	}
+	
 	
 	@Test
 	public void testRemoveSubscription() {
@@ -73,7 +76,7 @@ public class TupleSpaceTest extends TestThatIsInjected {
 		_subject.addSubscription(TestTuple.class, consumer);
 		final TestTuple tuple = new TestTuple(42);
 		_subject.publish(tuple);
-		_subject.removeSubscription(TestTuple.class, consumer);
+		_subject.removeSubscription(consumer);
 		_subject.publish(new TestTuple(-1));
 		assertArrayEquals(new Object[] { tuple }, tuples.toArray());
 	}

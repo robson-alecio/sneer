@@ -25,7 +25,7 @@ class PacketSubscriber implements Omnivore<PcmSoundPacket> {
 	
 	synchronized void crash() {
 		_isRunning = false;
-		_tupleSpace.removeSubscription(PcmSoundPacket.class, this);
+		_tupleSpace.removeSubscription(this);
 	}
 	
 	

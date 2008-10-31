@@ -18,11 +18,8 @@ import wheel.lang.Types;
 
 public class TupleSpaceImpl implements TupleSpace {
 
-	@Inject
-	KeyManager _keyManager;
-
-	@Inject
-	Clock _clock;
+	@Inject static private KeyManager _keyManager;
+	@Inject static private Clock _clock;
 	
 	//Refactor The synchronization will no longer be necessary when the container guarantees synchronization of model bricks.
 	static class Subscription {
@@ -86,16 +83,13 @@ public class TupleSpaceImpl implements TupleSpace {
 	}
 	
 	@Override
-	public synchronized <T extends Tuple> void removeSubscription(Class<T> tupleType, Object subscriber) {
-		final Iterator<Subscription> iterator = _subscriptions.iterator();
-		while (iterator.hasNext()) {
-			final Subscription current = iterator.next();
-			if (current._tupleType == tupleType
-				&& current._subscriber == subscriber) {
-				iterator.remove();
+	public synchronized <T extends Tuple> void removeSubscription(Object subscriber) {
+		for (Subscription victim : _subscriptions)
+			if (victim._subscriber == subscriber) {
+				_subscriptions.remove(victim);
 				return;
-			}
-		}
+			} 
+
 		throw new IllegalArgumentException("Subscription not found.");
 	}
 

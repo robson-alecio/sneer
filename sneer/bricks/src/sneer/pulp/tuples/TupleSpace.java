@@ -9,6 +9,6 @@ public interface TupleSpace extends Brick {
 	void acquire(Tuple someTupleThatCameFromAContact);
 
 	<T extends Tuple> void addSubscription(Class<T> tupleType, Omnivore<? super T> subscriber);
-	<T extends Tuple> void removeSubscription(Class<T> tupleType, Object subscriber);
+	<T extends Tuple> void removeSubscription(Object subscriber);
 
 }

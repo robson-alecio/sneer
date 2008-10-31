@@ -78,12 +78,12 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 			int index = _list.indexOf(element);
 			if (index == -1) throw new IllegalArgumentException("ListRegister did not contain element to be removed: " + element);
 			
-			remove(index);
+			removeAt(index);
 		}
 	}
 
 	@Override
-	public void remove(int index) {
+	public void removeAt(int index) {
 		_output.notifyReceivers(new ListElementToBeRemoved(index));
 		synchronized (_list) {
 			_list.remove(index);

@@ -25,7 +25,7 @@ public class Collector<IN, OUT> {
 
 		@Override
 		public void elementRemoved(int index) {
-			_output.remove(index);
+			_output.removeAt(index);
 		}
 
 		@Override

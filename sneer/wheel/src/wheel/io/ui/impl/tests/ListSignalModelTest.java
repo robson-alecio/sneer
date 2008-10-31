@@ -39,9 +39,9 @@ public class ListSignalModelTest {
 		r2.setter().consume("2b");
 		assertEvents("Changed 1 1, Changed 2 2, ");
 		
-		_listRegister.remove(4);
-		_listRegister.remove(0);
-		_listRegister.remove(1);
+		_listRegister.removeAt(4);
+		_listRegister.removeAt(0);
+		_listRegister.removeAt(1);
 		assertEvents("Removed 4 4, Removed 0 0, Removed 1 1, ");
 		
 		r1.setter().consume("1c");

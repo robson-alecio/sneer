@@ -20,6 +20,7 @@ import sneer.kernel.container.Inject;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
+import sneer.pulp.signal.listsorter.ListSorter;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
@@ -28,6 +29,7 @@ import wheel.io.ui.graphics.Images;
 import wheel.lang.Functor;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Adapter;
+import wheel.reactive.lists.ListSignal;
 
 class ContactsGuiImpl implements ContactsGui {
 	
@@ -49,7 +51,12 @@ class ContactsGuiImpl implements ContactsGui {
 	@Inject
 	static private ReactiveWidgetFactory _rfactory;
 	
+	@Inject
+	static private ListSorter<Contact> _sorter;
+	
 	private ListWidget<Contact> _contactList;
+	
+	private ListSignal<Contact> _sortedList;
 	
 	ContactsGuiImpl(){
 		_instrumentManager.registerInstrument(this);
@@ -61,7 +68,8 @@ class ContactsGuiImpl implements ContactsGui {
 	
 	@Override
 	public void init(Container container) {	
-		_contactList = _rfactory.newList(_contacts.contacts(), new ContactLabelProvider());
+		new SorterSupport();
+		_contactList = _rfactory.newList(_sortedList, new ContactLabelProvider());
 		JScrollPane scrollPane = new JScrollPane();
 		container.setLayout(new BorderLayout());
 		container.add(scrollPane, BorderLayout.CENTER);
@@ -79,6 +87,10 @@ class ContactsGuiImpl implements ContactsGui {
 	
 	private String getName() {
 		return "My Contacts";
+	}
+
+	private Boolean isOnline(Contact contact) {
+		return _connectionManager.connectionFor(contact).isOnline().currentValue();
 	}
 	
 	private final class ContactLabelProvider implements LabelProvider<Contact> {
@@ -100,6 +112,24 @@ class ContactsGuiImpl implements ContactsGui {
 			return imgSource.output();
 		}
 	}
+	
+	private final class SorterSupport {{
+		_sortedList = _contacts.contacts();
+//		_sortedList = _sorter.sort(_contacts.contacts(), new Comparator<Contact>(){ public int compare(Contact contact1, Contact contact2) {
+//				boolean isOnline1 = isOnline(contact1);
+//				boolean isOnline2 = isOnline(contact1);
+//	
+//				if(isOnline1!=isOnline2){
+//					if(isOnline1) return 1;
+//					return -1;
+//				}
+//				return nick(contact1).compareTo(nick(contact2));
+//			}
+//			private String nick(Contact contact1) {
+//				return contact1.nickname().currentValue();
+//			}
+//		});
+	}}
 	
 	private final class PopUpSupport {
 		

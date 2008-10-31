@@ -28,7 +28,7 @@ public class ListSorterTest extends TestThatIsInjected {
 		src.add(30);
 		
 		ListSignal<Integer> sortedList = _sorter.sort(src.output(), 
-				new Comparator<Integer>(){@Override public int compare(Integer integer1, Integer integer2) {
+				new Comparator<Integer>() { @Override public int compare(Integer integer1, Integer integer2) {
 					return integer1- integer2;
 		}});
 		

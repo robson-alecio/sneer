@@ -44,7 +44,7 @@ public class ListSignalModel<T> extends AbstractListModel {
 		}
 
 		@Override
-		public void elementAdded(final int index) {
+		public void elementAdded(final int index, Object value) {
 			addReceiverToElement(index);
 			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
 				fireIntervalAdded(ListSignalModel.this, index, index);

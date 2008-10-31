@@ -5,7 +5,7 @@ public interface ListValueChange {
 	void accept(Visitor visitor);
 	
 	public interface Visitor {
-		void elementAdded(int index);
+		void elementAdded(int index, Object value);
 		void elementToBeRemoved(int index);
 		void elementRemoved(int index);
 		void elementToBeReplaced(int index);

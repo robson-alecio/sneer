@@ -70,7 +70,7 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 			_list.add(element);
 			_size.setter().consume(_list.size());
 		}
-		_output.notifyReceivers(new ListElementAdded(_list.size() - 1));
+		_output.notifyReceivers(new ListElementAdded(_list.size() - 1, element));
 	}
 	
 	public void remove(VO element) {

@@ -14,7 +14,7 @@ public class Collector<IN, OUT> {
 		}
 
 		@Override
-		public void elementAdded(int index) {
+		public void elementAdded(int index, Object value) {
 			_output.add(_functor.evaluate(_input.currentGet(index)));
 		}
 

@@ -20,7 +20,6 @@ import sneer.kernel.container.Inject;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
-import sneer.pulp.signal.listsorter.ListSorter;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
@@ -51,8 +50,8 @@ class ContactsGuiImpl implements ContactsGui {
 	@Inject
 	static private ReactiveWidgetFactory _rfactory;
 	
-	@Inject
-	static private ListSorter<Contact> _sorter;
+//	@Inject
+//	static private ListSorter<Contact> _sorter;
 	
 	private ListWidget<Contact> _contactList;
 	
@@ -89,9 +88,9 @@ class ContactsGuiImpl implements ContactsGui {
 		return "My Contacts";
 	}
 
-	private Boolean isOnline(Contact contact) {
-		return _connectionManager.connectionFor(contact).isOnline().currentValue();
-	}
+//	private Boolean isOnline(Contact contact) {
+//		return _connectionManager.connectionFor(contact).isOnline().currentValue();
+//	}
 	
 	private final class ContactLabelProvider implements LabelProvider<Contact> {
 		@Override

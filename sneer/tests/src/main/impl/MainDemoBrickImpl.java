@@ -12,6 +12,7 @@ import sneer.kernel.container.Inject;
 import sneer.pulp.clockticker.ClockTicker;
 import sneer.pulp.connection.SocketOriginator;
 import sneer.pulp.connection.SocketReceiver;
+import sneer.pulp.connection.reachability.ReachabilitySentinel;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.dyndns.client.DynDnsClient;
@@ -62,6 +63,9 @@ class MainDemoBrickImpl implements MainDemoBrick {
 
 	@Inject	@SuppressWarnings("unused")
 	private static DynDnsClient _dynDns;
+	
+	@Inject	@SuppressWarnings("unused")
+	private static ReachabilitySentinel _reachabilitySentinel;	
 
 	@Inject	@SuppressWarnings("unused")
 	private static ProbeManager _probes;

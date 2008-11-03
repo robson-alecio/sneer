@@ -5,13 +5,13 @@ public interface ListValueChange<T> {
 	void accept(Visitor<T> visitor);
 	
 	public interface Visitor<T> {
-		void elementInserted(int index, T value);
-		void elementAdded(int index, T value);
+		void elementInserted(int index, T element);
+		void elementAdded(int index, T element);
 		
-		void elementToBeRemoved(int index, T value);
-		void elementRemoved(int index, T value);
+		void elementToBeRemoved(int index, T element);
+		void elementRemoved(int index, T element);
 		
-		void elementToBeReplaced(int index, T oldValue, T newValue);
-		void elementReplaced(int index, T oldValue, T newValue);
+		void elementToBeReplaced(int index, T oldElement, T newElement);
+		void elementReplaced(int index, T oldElement, T newElement);
 	}
 }

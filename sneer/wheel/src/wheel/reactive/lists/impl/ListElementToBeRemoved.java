@@ -2,23 +2,14 @@ package wheel.reactive.lists.impl;
 
 import wheel.reactive.lists.ListValueChange;
 
+final class ListElementToBeRemoved<T> extends AbstractListValueChange<T> implements ListValueChange<T> {
 
-public final class ListElementToBeRemoved<T> implements ListValueChange<T> {
-
-	private final int _index;
-	private final T _element;
-
-	public ListElementToBeRemoved(int index, T element) {
-		_index = index;
-		_element = element;
-	}
-
-	public void accept(Visitor<T> visitor) {
-		visitor.elementToBeRemoved(_index, _element);
+	ListElementToBeRemoved(int index, T element) {
+		super(index, element);
 	}
 
 	@Override
-	public String toString() {
-		return "List element removed at " + _index;
+	public void accept(Visitor<T> visitor) {
+		visitor.elementToBeRemoved(_index, _element);
 	}
 }

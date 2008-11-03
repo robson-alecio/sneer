@@ -2,25 +2,14 @@ package wheel.reactive.lists.impl;
 
 import wheel.reactive.lists.ListValueChange;
 
+final class ListElementReplaced<T> extends AbstractListElementReplacement<T> implements ListValueChange<T> {
 
-public final class ListElementReplaced<T> implements ListValueChange<T> {
-
-	private final int _index;
-	private final T _old;
-	private final T _new;
-
-	public ListElementReplaced(int index, T oldElement, T newElement) {
-		_index = index;
-		_old = oldElement;
-		_new = newElement;
-	}
-
-	public void accept(Visitor<T> visitor) {
-		visitor.elementReplaced(_index, _old, _new);
+	ListElementReplaced(int index, T oldElement, T newElement) {
+		super(index, oldElement, newElement);
 	}
 
 	@Override
-	public String toString() {
-		return "List element replaced at " + _index;
+	public void accept(Visitor<T> visitor) {
+		visitor.elementReplaced(_index, _element, _newElement);
 	}
 }

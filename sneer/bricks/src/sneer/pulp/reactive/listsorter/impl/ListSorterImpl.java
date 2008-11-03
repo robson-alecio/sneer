@@ -1,4 +1,4 @@
-package sneer.pulp.signal.listsorter.impl;
+package sneer.pulp.reactive.listsorter.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import sneer.pulp.signal.listsorter.ListSorter;
+import sneer.pulp.reactive.listsorter.ListSorter;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.AbstractSignal;

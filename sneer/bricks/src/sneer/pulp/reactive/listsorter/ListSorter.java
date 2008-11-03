@@ -1,4 +1,4 @@
-package sneer.pulp.signal.listsorter;
+package sneer.pulp.reactive.listsorter;
 
 import java.util.Comparator;
 

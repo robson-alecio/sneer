@@ -1,4 +1,4 @@
-package sneer.pulp.signal.listsorter.tests;
+package sneer.pulp.reactive.listsorter.tests;
 
 import java.util.Comparator;
 
@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import sneer.kernel.container.Inject;
 import sneer.kernel.container.tests.TestThatIsInjected;
-import sneer.pulp.signal.listsorter.ListSorter;
+import sneer.pulp.reactive.listsorter.ListSorter;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;

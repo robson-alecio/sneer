@@ -116,7 +116,7 @@ class ContactsGuiImpl implements ContactsGui {
 		_sortedList = _contacts.contacts();
 //		_sortedList = _sorter.sort(_contacts.contacts(), new Comparator<Contact>(){ public int compare(Contact contact1, Contact contact2) {
 //				boolean isOnline1 = isOnline(contact1);
-//				boolean isOnline2 = isOnline(contact1);
+//				boolean isOnline2 = isOnline(contact2);
 //	
 //				if(isOnline1!=isOnline2){
 //					if(isOnline1) return 1;

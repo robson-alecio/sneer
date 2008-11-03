@@ -48,7 +48,7 @@ public class Constant<TYPE> extends AbstractSignal<TYPE> {
 	}
 
 	@Override
-	public void addListReceiver(Omnivore<ListValueChange> receiver) {
+	public void addListReceiver(Omnivore<ListValueChange<TYPE>> receiver) {
 		throw new NotImplementedYet(); //Implement
 	}
 

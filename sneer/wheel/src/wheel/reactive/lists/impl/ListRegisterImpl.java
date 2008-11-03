@@ -16,7 +16,7 @@ import wheel.reactive.lists.ListValueChange;
 public class ListRegisterImpl<VO> implements ListRegister<VO> {
 	
 
-	private class MyOutput extends AbstractNotifier<ListValueChange> implements ListSignal<VO> {
+	private class MyOutput extends AbstractNotifier<ListValueChange<VO>> implements ListSignal<VO> {
 
 		private static final long serialVersionUID = 1L;
 		
@@ -31,7 +31,7 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 		}
 
 		@Override
-		public void addListReceiver(Omnivore<ListValueChange> receiver) {
+		public void addListReceiver(Omnivore<ListValueChange<VO>> receiver) {
 			addReceiver(receiver);	
 		}
 		
@@ -41,10 +41,10 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 		}
 
 		@Override
-		protected void initReceiver(Omnivore<? super ListValueChange> receiver) {}
+		protected void initReceiver(Omnivore<? super ListValueChange<VO>> receiver) {}
 
 		@Override
-		protected void notifyReceivers(ListValueChange valueChange) {
+		protected void notifyReceivers(ListValueChange<VO> valueChange) {
 			super.notifyReceivers(valueChange);
 		}
 
@@ -58,6 +58,7 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 		public Signal<Integer> size() {
 			return _size.output();
 		}
+
 	}
 
 	Register<Integer> _size = new RegisterImpl<Integer>(0);
@@ -70,7 +71,7 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 			_list.add(element);
 			_size.setter().consume(_list.size());
 		}
-		_output.notifyReceivers(new ListElementAdded(_list.size() - 1, element));
+		_output.notifyReceivers(new ListElementAdded<VO>(_list.size() - 1, element));
 	}
 	
 	public void remove(VO element) {
@@ -84,12 +85,13 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 
 	@Override
 	public void removeAt(int index) {
-		_output.notifyReceivers(new ListElementToBeRemoved(index));
+		VO oldValue = _list.get(index);
+		_output.notifyReceivers(new ListElementToBeRemoved<VO>(index, oldValue));
 		synchronized (_list) {
 			_list.remove(index);
 			_size.setter().consume(_list.size());
 		}
-		_output.notifyReceivers(new ListElementRemoved(index));
+		_output.notifyReceivers(new ListElementRemoved<VO>(index, oldValue));
 	}
 
 	public ListSignal<VO> output() {
@@ -105,12 +107,14 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 
 	@Override
 	public void replace(int index, VO newElement) {
-		_output.notifyReceivers(new ListElementToBeReplaced(index));
+		
+		VO old = _list.get(index);
+		_output.notifyReceivers(new ListElementToBeReplaced<VO>(index, old, newElement));
 		synchronized (_list) {
 			_list.remove(index);
 			_list.add(index, newElement);
 		}
-		_output.notifyReceivers(new ListElementReplaced(index));
+		_output.notifyReceivers(new ListElementReplaced<VO>(index, old, newElement));
 	}
 
 

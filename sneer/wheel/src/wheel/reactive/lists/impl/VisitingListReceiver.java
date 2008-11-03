@@ -5,7 +5,7 @@ import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListValueChange;
 import wheel.reactive.lists.ListValueChange.Visitor;
 
-public abstract class VisitingListReceiver<T> implements Omnivore<ListValueChange>, Visitor {
+public abstract class VisitingListReceiver<T> implements Omnivore<ListValueChange<T>>, Visitor<T> {
 
 	protected final ListSignal<T> _input;
 
@@ -15,7 +15,7 @@ public abstract class VisitingListReceiver<T> implements Omnivore<ListValueChang
 	}
 
 	@Override
-	public void consume(ListValueChange listChange) {
+	public void consume(ListValueChange<T> listChange) {
 		listChange.accept(this);
 	}
 

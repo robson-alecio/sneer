@@ -10,7 +10,6 @@ import sneer.pulp.signal.listsorter.ListSorter;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.AbstractSignal;
-import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListValueChange;
 import wheel.reactive.lists.ListValueChange.Visitor;
@@ -52,31 +51,36 @@ class ListSorterImpl<T> implements ListSorter<T>{
 		
 		private void addResortReceiver() {
 			synchronized (_monitor) {
-				_input.addListReceiver(new Omnivore<ListValueChange>(){@Override public void consume(ListValueChange change) {
-					change.accept(new Visitor() {
+				_input.addListReceiver(new Omnivore<ListValueChange<T>>(){@Override public void consume(ListValueChange<T> change) {
+					change.accept(new Visitor<T>() {
 
 						@Override
-						public void elementAdded(int index, Object value) {
+						public void elementInserted(int index, T value) {
 							throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 						}
 
 						@Override
-						public void elementRemoved(int index) {
+						public void elementAdded(int index, T value) {
 							throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 						}
 
 						@Override
-						public void elementReplaced(int index) {
+						public void elementRemoved(int index, T value) {
 							throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 						}
 
 						@Override
-						public void elementToBeRemoved(int index) {
+						public void elementReplaced(int index, T oldValue, T newValue ) {
 							throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 						}
 
 						@Override
-						public void elementToBeReplaced(int index) {
+						public void elementToBeRemoved(int index, T value) {
+							throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+						}
+
+						@Override
+						public void elementToBeReplaced(int index, T oldValue, T newValue ) {
 							throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 						}
 						
@@ -111,7 +115,7 @@ class ListSorterImpl<T> implements ListSorter<T>{
 		}
 	
 		@Override 
-		public void addListReceiver(Omnivore<ListValueChange> receiver) {
+		public void addListReceiver(Omnivore<ListValueChange<T>> receiver) {
 			_register.output().addListReceiver(receiver);
 		}
 		

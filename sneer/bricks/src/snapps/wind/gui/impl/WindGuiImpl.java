@@ -69,7 +69,7 @@ class WindGuiImpl implements WindGui {
 
 	private Container _container;
 
-	private Receiver<ListValueChange> _shoutReceiverToAvoidGc;
+	private Receiver<ListValueChange<Shout>> _shoutReceiverToAvoidGc;
 
 	private JScrollPane _scrollPane;
 
@@ -144,7 +144,7 @@ class WindGuiImpl implements WindGui {
 	}
 
 	private void initShoutReceiver() {
-		_shoutReceiverToAvoidGc = new Receiver<ListValueChange>(){ @Override public void consume(ListValueChange value) {
+		_shoutReceiverToAvoidGc = new Receiver<ListValueChange<Shout>>(){ @Override public void consume(ListValueChange<Shout> value) {
 			shoutAlert();
 		}};
 		_wind.shoutsHeard().addListReceiver(_shoutReceiverToAvoidGc);
@@ -209,7 +209,12 @@ class WindGuiImpl implements WindGui {
 				}
 				@Override protected void elementAdded(Shout newElement) {	fire();	}
 				@Override protected void elementPresent(Shout element) {fire();	}
-				@Override protected void elementToBeRemoved(Shout element) {fire();}};
+				@Override protected void elementToBeRemoved(Shout element) {fire();}
+				
+				@Override
+				public void elementInserted(int index, Shout value) {
+					throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+				}};
 		}
 		
 		private void initPosChangeReceiver() {
@@ -219,7 +224,12 @@ class WindGuiImpl implements WindGui {
 				}
 				@Override protected void elementAdded(Shout newElement) {	fire();	}
 				@Override protected void elementPresent(Shout element) {fire();	}
-				@Override protected void elementToBeRemoved(Shout element) {fire();}};
+				@Override protected void elementToBeRemoved(Shout element) {fire();}
+				
+				@Override
+				public void elementInserted(int index, Shout value) {
+					throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+				}};
 		}
 		
 		private boolean isAtEnd() {

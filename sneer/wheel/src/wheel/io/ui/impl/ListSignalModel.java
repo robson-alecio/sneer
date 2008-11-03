@@ -44,7 +44,7 @@ public class ListSignalModel<T> extends AbstractListModel {
 		}
 
 		@Override
-		public void elementAdded(final int index, Object value) {
+		public void elementAdded(final int index, T value) {
 			addReceiverToElement(index);
 			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
 				fireIntervalAdded(ListSignalModel.this, index, index);
@@ -52,28 +52,32 @@ public class ListSignalModel<T> extends AbstractListModel {
 		}
 
 		@Override
-		public void elementToBeRemoved(int index) {
+		public void elementToBeRemoved(int index, T value) {
 			removeReceiverFromElement(index);
 		}
 
 		@Override
-		public void elementRemoved(final int index) {
+		public void elementRemoved(final int index, T value) {
 			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
 				fireIntervalRemoved(ListSignalModel.this, index, index);
 			}});		
 		}
 
 		@Override
-		public void elementToBeReplaced(int index) {
+		public void elementToBeReplaced(int index, T oldValue, T newValue) {
 			removeReceiverFromElement(index);
 		}
 
 		@Override
-		public void elementReplaced(final int index) {
+		public void elementReplaced(final int index, T oldValue, T newValue) {
 			addReceiverToElement(index);
 			contentsChanges(index);
 		}
 
+		@Override
+		public void elementInserted(int index, T value) {
+			throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+		}
 	}
 	
 	public int getSize() {

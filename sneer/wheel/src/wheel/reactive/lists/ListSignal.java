@@ -5,7 +5,7 @@ import wheel.reactive.CollectionSignal;
 
 public interface ListSignal<T> extends CollectionSignal<T> {
 	
-	public void addListReceiver(Omnivore<ListValueChange> receiver);
+	public void addListReceiver(Omnivore<ListValueChange<T>> receiver);
 	public void removeListReceiver(Object receiver);
 
 	public T currentGet(int index);

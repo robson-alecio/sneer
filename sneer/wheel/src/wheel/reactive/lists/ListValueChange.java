@@ -1,14 +1,17 @@
 package wheel.reactive.lists;
 
-public interface ListValueChange {
+public interface ListValueChange<T> {
 	
-	void accept(Visitor visitor);
+	void accept(Visitor<T> visitor);
 	
-	public interface Visitor {
-		void elementAdded(int index, Object value);
-		void elementToBeRemoved(int index);
-		void elementRemoved(int index);
-		void elementToBeReplaced(int index);
-		void elementReplaced(int index);
+	public interface Visitor<T> {
+		void elementInserted(int index, T value);
+		void elementAdded(int index, T value);
+		
+		void elementToBeRemoved(int index, T value);
+		void elementRemoved(int index, T value);
+		
+		void elementToBeReplaced(int index, T oldValue, T newValue);
+		void elementReplaced(int index, T oldValue, T newValue);
 	}
 }

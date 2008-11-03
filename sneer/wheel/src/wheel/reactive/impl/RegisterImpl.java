@@ -16,7 +16,7 @@ import wheel.reactive.lists.ListValueChange;
 public class RegisterImpl<VO> implements Register<VO> {
 
 
-	class MyOutput extends AbstractSignal<VO> implements java.io.Serializable {
+	class MyOutput extends AbstractSignal<VO> implements Serializable {
 
 		@Override
 		public VO currentValue() {
@@ -37,7 +37,7 @@ public class RegisterImpl<VO> implements Register<VO> {
 		}
 
 		@Override
-		public void addListReceiver(Omnivore<ListValueChange> receiver) {
+		public void addListReceiver(Omnivore<ListValueChange<VO>> receiver) {
 			throw new NotImplementedYet(); //Implement
 		}
 

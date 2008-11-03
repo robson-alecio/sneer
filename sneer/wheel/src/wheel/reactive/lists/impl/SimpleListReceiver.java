@@ -14,29 +14,26 @@ public abstract class SimpleListReceiver<T> extends VisitingListReceiver<T> {
 	protected abstract void elementToBeRemoved(T element);
 
 	@Override
-	public void elementAdded(int index, Object value){
-		elementAdded(_input.currentGet(index));
+	public void elementAdded(int index, T value){
+		elementAdded(value);
 	}
 
 	@Override
-	public void elementToBeReplaced(int index) {
-		elementToBeRemoved(index);
+	public void elementToBeReplaced(int index, T oldValue, T newValue) {
+		elementToBeRemoved(index, newValue);
 	}
 
 	@Override
-	public void elementReplaced(int index) {
-		elementAdded(index, null);
+	public void elementReplaced(int index, T oldValue, T newValue) {
+		elementAdded(index, newValue);
 	}
 
 	@Override
-	public void elementToBeRemoved(int index) {
-		elementToBeRemoved(_input.currentGet(index));
+	public void elementToBeRemoved(int index, T value) {
+		elementToBeRemoved(value);
 	}
 
 	@Override
-	public void elementRemoved(int index) {		
+	public void elementRemoved(int index, T value) {		
 	}
-	
-
-
 }

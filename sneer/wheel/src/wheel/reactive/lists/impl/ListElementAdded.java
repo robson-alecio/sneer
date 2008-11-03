@@ -3,18 +3,18 @@ package wheel.reactive.lists.impl;
 import wheel.reactive.lists.ListValueChange;
 
 
-public final class ListElementAdded implements ListValueChange {
+public final class ListElementAdded<T> implements ListValueChange<T> {
 
 	private final int _index;
-	private final Object _value;
+	private final T _element;
 
-	public ListElementAdded(int index, Object value) {
+	public ListElementAdded(int index, T element) {
 		_index = index;
-		_value = value;
+		_element = element;
 	}
 
-	public void accept(Visitor visitor) {
-		visitor.elementAdded(_index, _value);
+	public void accept(Visitor<T> visitor) {
+		visitor.elementAdded(_index, _element);
 	}
 
 	@Override

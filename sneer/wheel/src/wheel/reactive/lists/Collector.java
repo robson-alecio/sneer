@@ -14,30 +14,34 @@ public class Collector<IN, OUT> {
 		}
 
 		@Override
-		public void elementAdded(int index, Object value) {
-			_output.add(_functor.evaluate(_input.currentGet(index)));
+		public void elementAdded(int index, IN value) {
+			_output.add(_functor.evaluate(value));
 		}
 
 		@Override
-		public void elementToBeRemoved(int ignored) {
+		public void elementToBeRemoved(int ignored, IN value) {
 			//The output source will do pre notification (to be removed) as well as notification (removed) when the element is removed from it.
 		}
 
 		@Override
-		public void elementRemoved(int index) {
+		public void elementRemoved(int index, Object value) {
 			_output.removeAt(index);
 		}
 
 		@Override
-		public void elementToBeReplaced(int ignored) {
+		public void elementToBeReplaced(int ignored, IN oldValue, IN newValue) {
 			//The output source will do pre notification (to be replaced) as well as notification (replaced) when the element is replaced there.
 		}
 
 		@Override
-		public void elementReplaced(int index) {
+		public void elementReplaced(int index, IN oldValue, IN newValue) {
 			_output.replace(index, _functor.evaluate(_input.currentGet(index)));
 		}
 
+		@Override
+		public void elementInserted(int index, Object value) {
+			throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+		}
 	}
 
 	private final ListRegister<OUT> _output = new ListRegisterImpl<OUT>();

@@ -20,7 +20,7 @@ public class SignalOwnerReference<T> implements Signal<T> {
 	}
 
 	@Override
-	public void addListReceiver(Omnivore<ListValueChange> receiver) {
+	public void addListReceiver(Omnivore<ListValueChange<T>> receiver) {
 		_delegate.addListReceiver(receiver);
 	}
 

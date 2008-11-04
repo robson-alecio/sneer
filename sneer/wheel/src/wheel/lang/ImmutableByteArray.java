@@ -3,11 +3,19 @@ package wheel.lang;
 import java.util.Arrays;
 
 public class ImmutableByteArray {
+	
+	public static ImmutableByteArray takeOwnership(byte[] payload) {
+		return new ImmutableByteArray(payload);
+	}
 
 	private byte[] _payload;
 
+	private ImmutableByteArray(byte[] privatePayload) {
+		_payload = privatePayload;
+	}
+	
 	public ImmutableByteArray(byte[] bufferToCopy, int bytesToCopy) {
-		_payload = Arrays.copyOf(bufferToCopy, bytesToCopy);
+		this(Arrays.copyOf(bufferToCopy, bytesToCopy));
 	}
 
 	public int copyTo(byte[] dest) {
@@ -45,6 +53,6 @@ public class ImmutableByteArray {
 
 		return (Arrays.equals(_payload, other._payload));
 	}
-	
+
 	
 }

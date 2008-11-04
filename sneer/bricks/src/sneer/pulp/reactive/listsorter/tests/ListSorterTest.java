@@ -37,5 +37,17 @@ public class ListSorterTest extends TestThatIsInjected {
 		
 		src.remove(40);
 		TestUtils.assertSameContents(sortedList, 5, 10, 20, 30);
+
+		src.add(40);
+		TestUtils.assertSameContents(sortedList, 5, 10, 20, 30, 40);
+		
+		src.add(20);
+		TestUtils.assertSameContents(sortedList, 5, 10, 20, 20, 30, 40);
+		
+		src.remove(20);
+		TestUtils.assertSameContents(sortedList, 5, 10, 20, 30, 40);
+		
+		src.remove(20);
+		TestUtils.assertSameContents(sortedList, 5, 10, 30, 40);
 	}
 }

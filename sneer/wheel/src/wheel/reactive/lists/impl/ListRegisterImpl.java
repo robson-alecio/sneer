@@ -71,6 +71,7 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 	private final List<VO> _list = new ArrayList<VO>();
 	private MyOutput _output = new MyOutput();
 	
+	@Override
 	public void add(VO element) {
 		synchronized (_list) {
 			_list.add(element);
@@ -79,6 +80,16 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 		_output.notifyReceivers(new ListElementAdded<VO>(_list.size() - 1, element));
 	}
 	
+	@Override
+	public void addAt(int index, VO element) {
+		synchronized (_list) {
+			_list.add(index, element);
+			_size.setter().consume(_list.size());
+		}
+		_output.notifyReceivers(new ListElementAdded<VO>(_list.size() - 1, element));
+	}
+	
+	@Override
 	public void remove(VO element) {
 		synchronized (_list) {
 			int index = _list.indexOf(element);

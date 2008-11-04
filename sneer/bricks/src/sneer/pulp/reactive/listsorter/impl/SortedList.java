@@ -3,6 +3,7 @@
  */
 package sneer.pulp.reactive.listsorter.impl;
 
+import java.util.Arrays;
 import java.util.Comparator;
 
 import wheel.lang.Omnivore;
@@ -26,20 +27,11 @@ final class SortedList<T> implements Visitor<T>{
 	}
 	
 	private void init() {
-//		List<T> tmp = copy(_input);
-//		Collections.sort(tmp, _comparator);
-//		
-//		for (T element : tmp)
-//			_sorted.add(element);
+		T tmp[] = _input.toArray();
+		Arrays.sort(tmp, _comparator);
+		for (T element : tmp) 
+			_sorted.add(element);
 	}
-
-//	private Object[] copy(ListSignal<T> source) {
-//		Object result[] = new Object[source.currentSize()];
-//		for (int i = 0; i < result.length; i++) {
-//			result[i] = source.currentGet(i);
-//		}
-//		return result;
-//	}
 	
 	private void addReceiver() {
 		synchronized (_monitor) {
@@ -48,37 +40,23 @@ final class SortedList<T> implements Visitor<T>{
 			}});
 		}
 	}
-
-	@Override
-	public void elementAdded(int index, T element) {
-//		Collections.binarySearch(copy(), element, _comparator);
-		
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+	
+	private void sortedAdd(T element) {
+		int location = Arrays.binarySearch(_sorted.output().toArray(), element, _comparator);
+		location = location<0 ? -location-1 : location;
+		_sorted.addAt(location, element);
 	}
 
-	@Override
-	public void elementInserted(int index, T element) {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
-	}
-
-	@Override
-	public void elementRemoved(int index, T element) {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
-	}
+	@Override public void elementAdded(int index, T element) { sortedAdd(element); }
+	@Override public void elementInserted(int index, T element) { sortedAdd(element); }
+	@Override public void elementRemoved(int index, T element) { _sorted.remove(element); }
+	@Override public void elementToBeRemoved(int index, T element) { /*ignore*/ }
+	@Override public void elementToBeReplaced(int index, T oldElement, T newElement) { /*ignore*/ }
 
 	@Override
 	public void elementReplaced(int index, T oldElement, T newElement) {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
-	}
-
-	@Override
-	public void elementToBeRemoved(int index, T element) {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
-	}
-
-	@Override
-	public void elementToBeReplaced(int index, T oldElement, T newElement) {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+		_sorted.remove(oldElement);
+		sortedAdd(newElement);
 	}
 
 	public ListSignal<T> output() {

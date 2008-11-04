@@ -8,6 +8,7 @@ public interface ListRegister<T> extends CollectionRegisterBase {
 	ListSignal<T> output();
 
 	void add(T element);
+	void addAt(int index, T element);
 	Omnivore<T> adder();
 
 	void remove(T element);

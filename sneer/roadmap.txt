@@ -8,7 +8,6 @@
 
 	- [Sandro]  Free some space on the dashboard
 		- Sort contacts by Online, Nick.
-			- Create a ListSorter.
 	
 	- Wind
 		- [Sandro] >>>Small<<< sound alert for when a shout arrives :)

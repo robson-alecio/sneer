@@ -19,6 +19,11 @@ public abstract class SimpleListReceiver<T> extends VisitingListReceiver<T> {
 	}
 
 	@Override
+	public void elementInserted(int index, T value){
+		elementAdded(value);
+	}
+
+	@Override
 	public void elementToBeReplaced(int index, T oldValue, T newValue) {
 		elementToBeRemoved(index, newValue);
 	}

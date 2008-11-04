@@ -17,13 +17,15 @@ final class SortedList<T> implements Visitor<T>{
 	private final ListSignal<T> _input;
 	private final Comparator<T> _comparator;
 	private final ListRegisterImpl<T> _sorted = new ListRegisterImpl<T>();
-	private final Object _monitor = new Object();
+	private Omnivore<ListValueChange<T>> _receiverAvoidGc;
 	
 	SortedList(ListSignal<T> input, Comparator<T> comparator) {
 		_input = input;
 		_comparator = comparator;
-		init();
-		addReceiver();
+		synchronized (_input) {
+			init();
+			intReceiver();
+		}
 	}
 	
 	private void init() {
@@ -33,12 +35,11 @@ final class SortedList<T> implements Visitor<T>{
 			_sorted.add(element);
 	}
 	
-	private void addReceiver() {
-		synchronized (_monitor) {
-			_input.addListReceiver(new Omnivore<ListValueChange<T>>(){@Override public void consume(ListValueChange<T> change) {
-				change.accept(SortedList.this);
-			}});
-		}
+	private void intReceiver() {
+		_receiverAvoidGc = new Omnivore<ListValueChange<T>>(){@Override public void consume(ListValueChange<T> change) {
+			change.accept(SortedList.this);
+		}};
+		_input.addListReceiver(_receiverAvoidGc);
 	}
 	
 	private void sortedAdd(T element) {

@@ -36,11 +36,6 @@ class RemoteWatchMeWindowsImpl implements RemoteWatchMeWindows{
 		protected void elementToBeRemoved(Contact contact) {
 			stopReceivingScreensFrom(contact);
 		}
-
-		@Override
-		public void elementInserted(int index, Contact value) {
-			throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
-		}
 	};
 	
 	public void startReceivingScreensFrom(Contact contact) {

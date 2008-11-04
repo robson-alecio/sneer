@@ -36,11 +36,7 @@ class SocketOriginatorImpl implements SocketOriginator {
 			protected void elementToBeRemoved(InternetAddress address) {
 				stopAddressing(address);
 			}
-
-			@Override
-			public void elementInserted(int index, InternetAddress value) {
-				throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
-			}};
+		};
 	}
 	
 

@@ -1,7 +1,7 @@
 package wheel.io.ui.impl;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.AbstractListModel;
 
@@ -18,7 +18,7 @@ public class ListSignalModel<T> extends AbstractListModel {
 	}
 
 	private final ListSignal<T> _input;
-	private final List<Receiver<?>> _elementReceivers = new LinkedList<Receiver<?>>();
+	private final Map<T, Receiver<?>> _elementReceivers = new HashMap<T, Receiver<?>>();
 	private final SignalChooser<T> _chooser;
 	@SuppressWarnings("unused")
 	private final ListChangeReceiver _listReceiverToAvoidGc;
@@ -27,9 +27,9 @@ public class ListSignalModel<T> extends AbstractListModel {
 		_input = input;
 		_chooser = chooser;
 
-		int size = _input.currentSize();
-		for (int i = 0; i < size; i++) addReceiverToElement(i);
-
+		for (T element : input) 
+			addReceiverToElement(element);
+		
 		_listReceiverToAvoidGc = new ListChangeReceiver(_input);
 	}
 
@@ -45,7 +45,7 @@ public class ListSignalModel<T> extends AbstractListModel {
 
 		@Override
 		public void elementAdded(final int index, T value) {
-			addReceiverToElement(index);
+			addReceiverToElement(value);
 			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
 				fireIntervalAdded(ListSignalModel.this, index, index);
 			}});		
@@ -53,7 +53,7 @@ public class ListSignalModel<T> extends AbstractListModel {
 
 		@Override
 		public void elementToBeRemoved(int index, T value) {
-			removeReceiverFromElement(index);
+			removeReceiverFromElement(value);
 		}
 
 		@Override
@@ -65,18 +65,21 @@ public class ListSignalModel<T> extends AbstractListModel {
 
 		@Override
 		public void elementToBeReplaced(int index, T oldValue, T newValue) {
-			removeReceiverFromElement(index);
+			removeReceiverFromElement(oldValue);
 		}
 
 		@Override
 		public void elementReplaced(final int index, T oldValue, T newValue) {
-			addReceiverToElement(index);
+			addReceiverToElement(newValue);
 			contentsChanges(index);
 		}
 
 		@Override
-		public void elementInserted(int index, T value) {
-			throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+		public void elementInserted(final int index, final T value) {
+			addReceiverToElement(value);
+			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
+				fireIntervalAdded(ListSignalModel.this, index, index);
+			}});		
 		}
 	}
 	
@@ -89,18 +92,17 @@ public class ListSignalModel<T> extends AbstractListModel {
 		return _input.currentGet(index);
 	}
 
-	private void removeReceiverFromElement(int index) {
+	private void removeReceiverFromElement(T element) {
 		if (_chooser == null) return;
 
-		_elementReceivers.remove(index).removeFromSignals();
+		_elementReceivers.remove(element).removeFromSignals();
 	}
 
-	private void addReceiverToElement(int index) {
+	private void addReceiverToElement(T element) {
 		if (_chooser == null) return;
 
-		T element = getElementAt(index);
 		Receiver<Object> receiver = createElementReceiver(element);
-		_elementReceivers.add(index, receiver);
+		_elementReceivers.put(element, receiver);
 		
 		for (Signal<?> signal : _chooser.signalsToReceiveFrom(element))
 			receiver.addToSignal(signal);

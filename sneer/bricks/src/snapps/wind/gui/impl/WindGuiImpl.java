@@ -225,11 +225,7 @@ class WindGuiImpl implements WindGui {
 				@Override protected void elementAdded(Shout newElement) {	fire();	}
 				@Override protected void elementPresent(Shout element) {fire();	}
 				@Override protected void elementToBeRemoved(Shout element) {fire();}
-				
-				@Override
-				public void elementInserted(int index, Shout value) {
-					throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
-				}};
+			};
 		}
 		
 		private boolean isAtEnd() {

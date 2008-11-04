@@ -122,11 +122,7 @@ class DashboardImpl implements Dashboard, Runnable {
 			protected void elementToBeRemoved(Instrument element) {
 				throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 			}
-
-			@Override
-			public void elementInserted(int index, Instrument value) {
-				throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
-			}};
+		};
 	}
 
 	private URL logoIconURL() {

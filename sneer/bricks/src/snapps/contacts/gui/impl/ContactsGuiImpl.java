@@ -16,10 +16,12 @@ import javax.swing.border.TitledBorder;
 import snapps.contacts.actions.ContactAction;
 import snapps.contacts.actions.ContactActionManager;
 import snapps.contacts.gui.ContactsGui;
+import snapps.contacts.gui.comparator.ContactsComparator;
 import sneer.kernel.container.Inject;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
+import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
@@ -36,6 +38,9 @@ class ContactsGuiImpl implements ContactsGui {
 	private static final Image OFFLINE = getImage("offline.png");
 	
 	@Inject
+	static private ContactsComparator _comparator;
+	
+	@Inject
 	static private InstrumentManager _instrumentManager;
 
 	@Inject
@@ -50,8 +55,8 @@ class ContactsGuiImpl implements ContactsGui {
 	@Inject
 	static private ReactiveWidgetFactory _rfactory;
 	
-//	@Inject
-//	static private ListSorter<Contact> _sorter;
+	@Inject
+	static private ListSorter<Contact> _sorter;
 	
 	private ListWidget<Contact> _contactList;
 	
@@ -88,10 +93,6 @@ class ContactsGuiImpl implements ContactsGui {
 		return "My Contacts";
 	}
 
-//	private Boolean isOnline(Contact contact) {
-//		return _connectionManager.connectionFor(contact).isOnline().currentValue();
-//	}
-	
 	private final class ContactLabelProvider implements LabelProvider<Contact> {
 		@Override
 		public Signal<String> labelFor(Contact contact) {
@@ -114,20 +115,7 @@ class ContactsGuiImpl implements ContactsGui {
 	
 	private final class SorterSupport {{
 		_sortedList = _contacts.contacts();
-//		_sortedList = _sorter.sort(_contacts.contacts(), new Comparator<Contact>(){ public int compare(Contact contact1, Contact contact2) {
-//				boolean isOnline1 = isOnline(contact1);
-//				boolean isOnline2 = isOnline(contact2);
-//	
-//				if(isOnline1!=isOnline2){
-//					if(isOnline1) return 1;
-//					return -1;
-//				}
-//				return nick(contact1).compareTo(nick(contact2));
-//			}
-//			private String nick(Contact contact1) {
-//				return contact1.nickname().currentValue();
-//			}
-//		});
+//		_sortedList = _sorter.sort(_contacts.contacts(), _comparator);
 	}}
 	
 	private final class PopUpSupport {

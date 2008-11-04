@@ -42,6 +42,13 @@ public class ListSorterTest extends TestThatIsInjected {
 			
 			one(_visitor).elementToBeRemoved(2, 30);
 			one(_visitor).elementRemoved(2, 30);
+			
+			one(_visitor).elementToBeRemoved(3, 50);
+			one(_visitor).elementRemoved(3, 50);
+			
+			one(_visitor).elementToBeRemoved(2, 40);
+			one(_visitor).elementRemoved(2, 40);
+			one(_visitor).elementAdded(1, 10);
 		}});		
 		
 		ListRegister<Integer> src = new ListRegisterImpl<Integer>();
@@ -62,8 +69,8 @@ public class ListSorterTest extends TestThatIsInjected {
 		src.remove(20);
 		src.remove(30);
 		
-//		src.removeAt(1); //Fix
-//		src.replace(0, 60);
+		src.removeAt(1);
+		src.replace(0, 10);
 	}
 	
 	@Test
@@ -80,20 +87,15 @@ public class ListSorterTest extends TestThatIsInjected {
 		src.add(10);
 		
 		TestUtils.assertSameContents(sortedList, 10, 10, 20, 20, 20, 30, 30);
-		
 		src.remove(20);
 		TestUtils.assertSameContents(sortedList, 10, 10, 20, 20, 30, 30);
-		
 		src.remove(20);
 		TestUtils.assertSameContents(sortedList, 10, 10, 20, 30, 30);
-		
 		src.removeAt(2);
 		TestUtils.assertSameContents(sortedList, 10, 10, 30, 30);
-		
 		src.removeAt(3);
 		TestUtils.assertSameContents(sortedList, 10, 30, 30);
 	}	
-	
 	
 	@Test
 	public void replaceTest() {
@@ -110,16 +112,12 @@ public class ListSorterTest extends TestThatIsInjected {
 		src.add(10);
 		
 		TestUtils.assertSameContents(sortedList, 10, 10, 20, 20, 20, 30, 30);
-		
 		src.replace(0, 60);
 		TestUtils.assertSameContents(sortedList, 10, 10, 20, 20, 20, 30, 60);
-		
 		src.replace(2, 40);
 		TestUtils.assertSameContents(sortedList, 10, 10, 20, 20, 30, 40, 60);
-		
 		src.replace(5, 50);
 		TestUtils.assertSameContents(sortedList, 10, 10, 20, 30, 40, 50, 60);
-		
 		src.replace(6, 5);
 		TestUtils.assertSameContents(sortedList, 5, 10, 20, 30, 40, 50, 60);
 	}	
@@ -132,19 +130,14 @@ public class ListSorterTest extends TestThatIsInjected {
 
 		src.add(20);
 		TestUtils.assertSameContents(sortedList, 20);
-		
 		src.add(10);
 		TestUtils.assertSameContents(sortedList, 10, 20);
-
 		src.addAt(1, 5);
 		TestUtils.assertSameContents(sortedList, 5, 10, 20);
-
 		src.add(10);
 		TestUtils.assertSameContents(sortedList, 5, 10, 10, 20);
-
 		src.add(30);
 		TestUtils.assertSameContents(sortedList, 5, 10, 10, 20, 30);
-
 		src.add(1);
 		TestUtils.assertSameContents(sortedList, 1, 5, 10, 10, 20, 30);
 	}

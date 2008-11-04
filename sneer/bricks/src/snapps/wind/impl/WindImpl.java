@@ -18,6 +18,7 @@ class WindImpl implements Wind, Omnivore<Shout> {
 
 	{
 		_environment.addSubscription(Shout.class, this);
+		_environment.keep(Shout.class);
 	}
 
 	@Override

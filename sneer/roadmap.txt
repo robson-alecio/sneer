@@ -1,7 +1,7 @@
 ﻿MAIN ROADMAP
 ===================
 
-	- [Sandro] Allow closing the remote WatchMe window
+	- [Sandro] Allow closing the WatchMe window that shows the remote screen. It is ok if it reopens automatically when the next screen arrives.
 
 	- Fix Leak - SchedulerImpl - dont keep packets for contacts that are offline. 
 

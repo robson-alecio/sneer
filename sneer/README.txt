@@ -22,7 +22,7 @@ build.xml - If you don't use Eclipse, this ANT build file will compile Sneer and
 
 Main Class: main.MainDemo - Run it and follow usage instructions.
 
-home_override - You can set this system property to make Sneer run in a different directory, so you can have several different Sneer installations running at the same time.
+home_override - You can set this Java system property to make Sneer run in a different directory, so you can have several different Sneer installations running at the same time. Example: java -Dhome_override=some/other/directory main.MainDemo YourName
 
 JUnit Tests - They are found inside the *.tests packages. For example, the sneer.kernel.tests package contains the JUnit tests referring to the Sneer kernel.
 

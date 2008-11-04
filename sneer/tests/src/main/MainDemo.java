@@ -10,11 +10,17 @@ public class MainDemo {
 	public static void main(String[] args) {
 		try {
 			tryToRun(args);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			showUsageMessage();
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.err.println("\nUsage: MainDemo yourOwnName [dynDnsUser dnyDnsPassword]\n");
+			showUsageMessage();
 			System.exit(1);
 		}
+	}
+
+	private static void showUsageMessage() {
+		System.err.println("\nUsage: MainDemo yourOwnName [dynDnsUser dnyDnsPassword]\n");
 	}
 
 	private static void tryToRun(String[] args) throws Exception {

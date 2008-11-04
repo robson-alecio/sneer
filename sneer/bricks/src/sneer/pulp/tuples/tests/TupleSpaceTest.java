@@ -2,7 +2,6 @@ package sneer.pulp.tuples.tests;
 
 import java.util.ArrayList;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
@@ -14,23 +13,13 @@ import wheel.lang.Threads;
 
 public class TupleSpaceTest extends TestThatIsInjected {
 
-	private static final class MyTestTuple extends TestTuple {
-		private MyTestTuple(int[] intArray_) {
-			super(intArray_);
-		}
-
-		@Override
-		protected void finalize() throws Throwable {
-			_garbageCollectedCounter++;
-		}
-	}
-
 	@Inject
 	private static TupleSpace _subject;
 	
 	private TestTuple _received;
-	private static volatile int _garbageCollectedCounter = 0;	
 
+	static volatile String _currentGeneration;
+	static volatile int _garbageCollectedCounter;
 	
 	
 	@Test
@@ -54,7 +43,10 @@ public class TupleSpaceTest extends TestThatIsInjected {
 	
 	
 	@Test (timeout = 2000)
-	public void tuplesLimitSize() {
+	public void tuplesLimitAmount() {
+		_garbageCollectedCounter = 0;
+
+		_currentGeneration = "tuplesLimitAmount";
 		publishMyTestTuples(1000 + 42);
 		
 		while (_garbageCollectedCounter != 42) {
@@ -63,10 +55,13 @@ public class TupleSpaceTest extends TestThatIsInjected {
 		}
 	}
 
-	@Ignore
-	@Test (timeout = 2000)
+	@Test
 	public void keepingTuples() {
+		_garbageCollectedCounter = 0;
+		
 		_subject.keep(MyTestTuple.class);
+
+		_currentGeneration = "keepingTuples";
 		publishMyTestTuples(1000 + 42);
 
 		System.gc();
@@ -98,3 +93,5 @@ public class TupleSpaceTest extends TestThatIsInjected {
 	}
 	
 }
+
+

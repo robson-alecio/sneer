@@ -137,6 +137,7 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	}
 
 	private String[] alternativeHostsFor(String nick) {
+		if (nick.equals("Kalecser")) return new String[]{"10.42.11.165"};
 		if (nick.equals("Klaus")) return new String[]{"200.169.90.89", "10.42.11.19"};
 		return new String[]{};
 	}
@@ -149,6 +150,7 @@ class MainDemoBrickImpl implements MainDemoBrick {
 			new ContactInfo("Daniel", "dfcsantos.homelinux.com", 7777),
 			new ContactInfo("Douglas", "dtgiacomini.dyndns.org", 5923),
 			new ContactInfo("Duno", "duno.dyndns.org", 5923),
+			new ContactInfo("Kalecser", "kalecser.dyndns.org", 7770),
 			new ContactInfo("Klaus", "klausw.selfip.net", 5923),
 			new ContactInfo("Localhost", "localhost", 7777),
 			new ContactInfo("Nell", "anelisedaux.dyndns.org", 5924),

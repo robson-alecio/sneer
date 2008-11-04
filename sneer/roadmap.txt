@@ -9,7 +9,6 @@
 		- Sort contacts by Online, Nick.
 	
 	- Wind
-		- [Sandro] >>>Small<<< sound alert for when a shout arrives :)
 		- shoutsHeard() sort by publication time. 
 		- [Klaus] History - Hear shouts by peers shouted when I was off-line.
 			- Unignore Freedom5.canHearPastShouts().

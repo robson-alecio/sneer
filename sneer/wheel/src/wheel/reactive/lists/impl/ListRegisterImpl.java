@@ -86,7 +86,7 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 			_list.add(index, element);
 			_size.setter().consume(_list.size());
 		}
-		_output.notifyReceivers(new ListElementAdded<VO>(_list.size() - 1, element));
+		_output.notifyReceivers(new ListElementAdded<VO>(index, element));
 	}
 	
 	@Override

@@ -3,9 +3,11 @@ package sneer.skin.sound.mic.tests;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.tuples.TupleSpace;
+import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.mic.Mic;
 import sneer.skin.sound.speaker.Speaker;
 import wheel.io.Logger;
+import wheel.lang.Omnivore;
 import wheel.lang.Threads;
 
 public class SoundLoopbackDemo {
@@ -19,6 +21,22 @@ public class SoundLoopbackDemo {
 
 		container2.produce(Mic.class).open();
 		container1.produce(Speaker.class).open();
+		
+		tuples.addSubscription(PcmSoundPacket.class, new Omnivore<PcmSoundPacket>() {
+			@Override
+			public void consume(PcmSoundPacket packet) {
+				System.out.print("new byte[] {\n\t");
+				int index = 0;
+				for (byte b : packet.payload.copy()) {
+					System.out.print(b +  ", ");
+					if (++index == 10) {
+						System.out.print("\n\t");
+						index = 0;
+					}
+				}
+				System.out.println("\n},");
+			}
+		});
 		
 		Threads.sleepWithoutInterruptions(10000);
 	}

@@ -1,4 +1,4 @@
-package snapps.listentome.speex;
+package snapps.listentome.speextuples;
 
 import sneer.pulp.tuples.Tuple;
 

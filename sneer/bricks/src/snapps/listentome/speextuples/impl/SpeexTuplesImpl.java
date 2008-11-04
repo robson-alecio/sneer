@@ -1,26 +1,27 @@
-package snapps.listentome.speex.impl;
+package snapps.listentome.speextuples.impl;
 
-import org.xiph.speex.SpeexEncoder;
-
-import snapps.listentome.speex.SpeexCodec;
-import snapps.listentome.speex.SpeexPacket;
+import snapps.listentome.speex.Encoder;
+import snapps.listentome.speex.Speex;
+import snapps.listentome.speextuples.SpeexPacket;
+import snapps.listentome.speextuples.SpeexTuples;
 import sneer.kernel.container.Inject;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.impl.AudioUtil;
 import wheel.lang.Omnivore;
 
-class SpeexCodecImpl implements SpeexCodec {
+class SpeexTuplesImpl implements SpeexTuples {
 
+	@Inject
+	private static Speex _speex;
 	private byte[][] _frames = newFramesArray();
-	private final SpeexEncoder _encoder = new SpeexEncoder();
+	private final Encoder _encoder = _speex.newEncoder();
 	private int _frameIndex;
 
 	@Inject
 	static private TupleSpace _tupleSpace; 
 	
-	public SpeexCodecImpl() {
-		_encoder.init(AudioUtil.NARROWBAND_ENCODING, AudioUtil.SOUND_QUALITY, 8000, 1);
+	public SpeexTuplesImpl() {
 		_tupleSpace.addSubscription(PcmSoundPacket.class, new Omnivore<PcmSoundPacket>() { @Override public void consume(PcmSoundPacket packet) {
 			if (encode(packet.payload.copy()))
 				flush();
@@ -38,11 +39,9 @@ class SpeexCodecImpl implements SpeexCodec {
 	}
 
 	private boolean encode(final byte[] pcmBuffer) {
-		if (!_encoder.processData(pcmBuffer, 0, pcmBuffer.length)) return false;
+		if (!_encoder.processData(pcmBuffer)) return false;
 		
-		byte[] speexBuffer = new byte[_encoder.getProcessedDataByteSize()]; //Speex will always fit in the pcm space because it is compressed.
-		_encoder.getProcessedData(speexBuffer, 0);
-		_frames[_frameIndex++] = speexBuffer;
+		_frames[_frameIndex++] = _encoder.getProcessedData();
 		return _frameIndex == AudioUtil.FRAMES_PER_AUDIO_PACKET;
 	}
 

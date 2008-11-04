@@ -1,4 +1,4 @@
-package snapps.listentome.speex.tests;
+package snapps.listentome.speextuples.tests;
 
 import java.io.StreamCorruptedException;
 import java.util.ArrayList;
@@ -8,8 +8,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.xiph.speex.SpeexDecoder;
 
-import snapps.listentome.speex.SpeexCodec;
-import snapps.listentome.speex.SpeexPacket;
+import snapps.listentome.speextuples.SpeexPacket;
+import snapps.listentome.speextuples.SpeexTuples;
 import sneer.kernel.container.Inject;
 import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.clock.Clock;
@@ -21,7 +21,7 @@ import sneer.skin.sound.kernel.impl.AudioUtil;
 import wheel.lang.ImmutableByteArray;
 import wheel.lang.Omnivore;
 
-public class SpeexCodecTest extends TestThatIsInjected{
+public class SpeexTuplesTest extends TestThatIsInjected{
 	
 	@Inject
 	private static KeyManager _keyManager;
@@ -32,7 +32,7 @@ public class SpeexCodecTest extends TestThatIsInjected{
 
 	@SuppressWarnings("unused")
 	@Inject
-	private static SpeexCodec _subject;
+	private static SpeexTuples _subject;
 
 	@Test
 	@Ignore

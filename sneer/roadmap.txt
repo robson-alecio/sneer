@@ -3,8 +3,6 @@
 
 	- [Sandro] Allow closing the remote WatchMe window
 
-	- [Klaus] Update README.txt
-
 	- Fix Leak - SchedulerImpl - dont keep packets for contacts that are offline. 
 
 	- [Sandro]  Free some space on the dashboard

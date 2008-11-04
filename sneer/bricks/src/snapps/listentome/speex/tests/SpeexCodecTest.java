@@ -68,10 +68,10 @@ public class SpeexCodecTest extends TestThatIsInjected{
 		return pcm;
 	}
 	
-	@SuppressWarnings("deprecation")
-	private PublicKey contactKey() {
-		return _keyManager.generateMickeyMouseKey("contact");
-	}
+//	@SuppressWarnings("deprecation")
+//	private PublicKey contactKey() {
+//		return _keyManager.generateMickeyMouseKey("contact");
+//	}
 
 	
 	private PcmSoundPacket myPacket(byte[] pcm) {

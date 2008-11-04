@@ -9,5 +9,7 @@ public interface ListSignal<T> extends CollectionSignal<T> {
 	public void removeListReceiver(Object receiver);
 
 	public T currentGet(int index);
+	
+	public T[] toArray();
 
 }

@@ -2,7 +2,7 @@ package wheel.reactive;
 
 import java.io.Serializable;
 
-public interface RegisterBase extends Serializable {
+public interface CollectionRegisterBase extends Serializable {
 
 	CollectionSignal<?> output();
 	

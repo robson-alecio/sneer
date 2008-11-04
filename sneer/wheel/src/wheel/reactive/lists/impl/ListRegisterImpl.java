@@ -15,7 +15,6 @@ import wheel.reactive.lists.ListValueChange;
 
 public class ListRegisterImpl<VO> implements ListRegister<VO> {
 	
-
 	private class MyOutput extends AbstractNotifier<ListValueChange<VO>> implements ListSignal<VO> {
 
 		private static final long serialVersionUID = 1L;
@@ -59,6 +58,12 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 			return _size.output();
 		}
 
+		@Override
+		public VO[] toArray() {
+			synchronized (_list) {
+				return (VO[]) _list.toArray();
+			}
+		}
 	}
 
 	Register<Integer> _size = new RegisterImpl<Integer>(0);

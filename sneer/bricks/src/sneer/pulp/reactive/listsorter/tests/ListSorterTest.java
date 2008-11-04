@@ -2,7 +2,6 @@ package sneer.pulp.reactive.listsorter.tests;
 
 import java.util.Comparator;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
@@ -19,7 +18,6 @@ public class ListSorterTest extends TestThatIsInjected {
 	private static ListSorter<Integer> _sorter;
 
 	@Test
-	@Ignore
 	public void test() {
 		ListRegister<Integer> src = new ListRegisterImpl<Integer>();
 		src.add(10);

@@ -1,9 +1,9 @@
 package wheel.reactive.lists;
 
 import wheel.lang.Omnivore;
-import wheel.reactive.RegisterBase;
+import wheel.reactive.CollectionRegisterBase;
 
-public interface ListRegister<T> extends RegisterBase {
+public interface ListRegister<T> extends CollectionRegisterBase {
 
 	ListSignal<T> output();
 

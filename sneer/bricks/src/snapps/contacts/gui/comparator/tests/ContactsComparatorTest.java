@@ -23,7 +23,7 @@ import wheel.testutil.TestUtils;
 public class ContactsComparatorTest {
 	
 	private final Mockery _mockery = new JUnit4Mockery();	
-	private ListSorter<Contact> _sorter;
+	private ListSorter _sorter;
 	private final ListRegister<Contact> _contacts = new ListRegisterImpl<Contact>();
 	ConnectionManager _connectionManagerMock = _mockery.mock(ConnectionManager.class);
 	

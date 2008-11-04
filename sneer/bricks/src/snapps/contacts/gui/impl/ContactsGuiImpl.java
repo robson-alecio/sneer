@@ -56,7 +56,7 @@ class ContactsGuiImpl implements ContactsGui {
 	static private ReactiveWidgetFactory _rfactory;
 	
 	@Inject
-	static private ListSorter<Contact> _sorter;
+	static private ListSorter _sorter;
 	
 	private ListWidget<Contact> _contactList;
 	
@@ -72,7 +72,9 @@ class ContactsGuiImpl implements ContactsGui {
 	
 	@Override
 	public void init(Container container) {	
-		new SorterSupport();
+//		_sortedList = _contacts.contacts();
+		_sortedList = _sorter.sort(_contacts.contacts(), _comparator);
+		
 		_contactList = _rfactory.newList(_sortedList, new ContactLabelProvider());
 		JScrollPane scrollPane = new JScrollPane();
 		container.setLayout(new BorderLayout());
@@ -112,11 +114,6 @@ class ContactsGuiImpl implements ContactsGui {
 			return imgSource.output();
 		}
 	}
-	
-	private final class SorterSupport {{
-		_sortedList = _contacts.contacts();
-//		_sortedList = _sorter.sort(_contacts.contacts(), _comparator);
-	}}
 	
 	private final class PopUpSupport {
 		

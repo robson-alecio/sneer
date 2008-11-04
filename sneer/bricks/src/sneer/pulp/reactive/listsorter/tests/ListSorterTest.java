@@ -21,7 +21,7 @@ import wheel.testutil.TestUtils;
 public class ListSorterTest extends TestThatIsInjected {
 	
 	@Inject
-	private static ListSorter<Integer> _sorter;
+	private static ListSorter _sorter;
 
 	private final Mockery _mockery = new JUnit4Mockery();	
 	

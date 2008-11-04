@@ -4,8 +4,8 @@ import java.util.Comparator;
 
 import wheel.reactive.lists.ListSignal;
 
-public interface ListSorter<T> {
+public interface ListSorter {
 
-   ListSignal<T> sort(ListSignal<T> input, Comparator<T> comparator);
+	<T> ListSignal<T> sort(ListSignal<T> input, Comparator<T> comparator);
 
 }

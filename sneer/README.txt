@@ -9,27 +9,24 @@ BY COMMITTING ANY FILES, INCLUDING, BUT NOT LIMITED TO, SOURCE CODE, IMAGES, DOC
 YOU ARE NOT ALLOWED TO COMMIT TO THE SNEER PROJECT REPOSITORY ANY FILE IF YOU DO NOT OWN ALL INTELLECTUAL PROPERTY RIGHTS TO THE CONTENTS OF THAT FILE, INCLUDING, BUT NOT LIMITED TO, ALL MENTIONED ABOVE. IF YOU WANT THE SNEER PROJECT REPOSITORY TO INCLUDE A CLASS LIBRARY OR ANY OTHER MATERIAL OWNED BY A THIRD PARTY, YOU MUST ASK KLAUS WUESTEFELD TO COMMIT IT.
 
 
-GETTING SNEER SOURCE CODE
+RUNNING SNEER SOURCE CODE
 =============================
 
-http://sovereigncomputing.net/svn/sneer/ - is the Subversion (SVN) repository root. https works too. Just check out the trunk.
+http://sovereigncomputing.net/svn/sneer/ - is the Subversion (SVN) repository root. https works too. Just check out trunk/sneer.
 
-JRE6 - Use the latest stable version of it. Before reporting bugs or problems, please make sure you are not using another JRE.
+JDK6 - Use the latest stable version of it. Before reporting bugs or problems, please make sure you are not using another JDK. To build Sneer we use the java compiler, so it has to be JDK, not the JRE.
 
-Eclipse 3.3 or newer - You can use other IDEs but it is strongly recommended that you use Eclipse because Sneer is a self-contained Eclipse project and will compile out of the box with zero errors and zero warnings.
+Eclipse 3.4 or newer - You can use other IDEs but it is strongly recommended that you use Eclipse because Sneer is a self-contained Eclipse project and will compile out of the box with zero errors and zero warnings.
 
-Anyway:
-Sourcepath: [changing too often still]
-Classpath: [changing too often still]
-Main class: [not yet moved to new structure]
+build.xml - If you don't use Eclipse, this ANT build file will compile Sneer and run all tests.
 
-sneer.user_home_override - You can set this system property to make Sneer run in a different directory, so you can have several different Sneer installations running at the same time.
+Main Class: main.MainDemo - Run it and follow usage instructions.
 
-build.xml - This ANT build file will produce the runnable Sneer.jar file. //THIS IS OLD AND MUST BE FIXED
+home_override - You can set this system property to make Sneer run in a different directory, so you can have several different Sneer installations running at the same time.
 
 JUnit Tests - They are found inside the *.tests packages. For example, the sneer.kernel.tests package contains the JUnit tests referring to the Sneer kernel.
 
-Functional Tests - They are JUnit tests too, but are so high-level they use adapters to run against the actual implementation. Using adapters keeps the tests pure, unpolluted by implementation details. These tests and their adapters are found in the .\tests source folder. 
+Functional Tests - They are JUnit tests too, but are so high-level they use adapters to run against the actual implementation. Using adapters keeps the tests clear without implementation details. These tests and their adapters are found in the ./tests/src source folder. 
 
 
 "WHAT CAN I DO TO HELP?"
@@ -41,27 +38,15 @@ That's the spirit.  :)
 
 2) Show Sneer to other people and help them use it.
 
-3) Translate the Sneer language file to new languages.
+3) Report problems and bugs.
 
-4) Report problems and bugs.
+4) Discuss your wishes and ideas for Sneer.
 
-5) Discuss your wishes and ideas for Sneer.
+5) Develop your own sovereign applications to run on Sneer.
 
-6) Develop your own sovereign applications to run on Sneer.
+6) Get well-known in the sovereign development community.
 
-7) Code for Sneer.
-
-
-CODING FOR SNEER
-====================
-
-If you have done all the above and are ready to code for Sneer, start by searching comments in the code with the words Fix, Refactor, Implement or Optimize (or simply open the Eclipse Tasks View). That is how we track feature and issue tasks.
-
-Find the EASIEST, MOST TRIVIAL task to do and submit a patch. You will be evaluated less on the cleverness and sofistication of your solution and more on your ability to spot EASY and TRIVIAL steps to take. :) 
-
-Repeat until you get the hang of it and we gain confidence in you to give you committer rights.
-
-Writing JUnit tests to improve test coverage is also a very popular move. ;)
+7) Come work with us on Sneer.
 
 
 GETTING IN TOUCH

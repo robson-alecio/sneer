@@ -24,7 +24,7 @@ final class SortedList<T> implements Visitor<T>{
 		_comparator = comparator;
 		synchronized (_input) {
 			init();
-			intReceiver();
+			initReceiver();
 		}
 	}
 	
@@ -35,7 +35,7 @@ final class SortedList<T> implements Visitor<T>{
 			_sorted.add(element);
 	}
 	
-	private void intReceiver() {
+	private void initReceiver() {
 		_receiverAvoidGc = new Omnivore<ListValueChange<T>>(){@Override public void consume(ListValueChange<T> change) {
 			change.accept(SortedList.this);
 		}};

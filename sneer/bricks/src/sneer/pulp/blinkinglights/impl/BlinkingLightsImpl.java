@@ -20,7 +20,7 @@ class BlinkingLightsImpl implements BlinkingLights {
 	@Override
 	public Light turnOn(LightType type, String caption, Throwable t, int timeout) {
 		Light result = prepare(type);
-		turnOnIfNecessary(result, caption, "If this problem doesn't go away on its own, get an expert sovereign friend to help you. ;)", t, timeout);
+		turnOnIfNecessary(result, caption, null, t, timeout);
 		return result;
 	}
 	
@@ -99,7 +99,7 @@ class BlinkingLightsImpl implements BlinkingLights {
 		
 		light._caption = caption;
 		light._error = t;
-		light._helpMessage = helpMessage;
+		light._helpMessage = helpMessage == null ? "If this problem doesn't go away on its own, get an expert sovereign friend to help you. ;)" : helpMessage;
 		
 		if (timeout != LightImpl.NEVER)
 			turnOffIn(light, timeout);

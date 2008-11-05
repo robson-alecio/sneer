@@ -22,17 +22,10 @@ import wheel.reactive.impl.Receiver;
 
 class SocketAccepterImpl implements SocketAccepter {
 	
-	@Inject
-	static private PortKeeper _portKeeper;
-	
-	@Inject
-	static private Network _network;
-	
-	@Inject
-	static private BlinkingLights _lights;
-
-	@Inject
-	static private ThreadPool _threadPool;
+	@Inject static private PortKeeper _portKeeper;
+	@Inject static private Network _network;
+	@Inject static private BlinkingLights _lights;
+	@Inject static private ThreadPool _threadPool;
 
 	private final EventNotifier<ByteArraySocket> _notifier = new EventNotifierImpl<ByteArraySocket>();
 
@@ -44,9 +37,9 @@ class SocketAccepterImpl implements SocketAccepter {
 
 	private int _portToListen;
 	
-	private Light _cantOpenServerSocket;
+	private Light _cantOpenServerSocket = _lights.prepare(LightType.ERROR);
 
-	private Light _cantAcceptSocket;
+	private final Light _cantAcceptSocket = _lights.prepare(LightType.ERROR);
 
 	@SuppressWarnings("unused")
 	private final Receiver<Integer> _portReceiverToAvoidGC;
@@ -93,11 +86,10 @@ class SocketAccepterImpl implements SocketAccepter {
 				try {
 					ByteArraySocket clientSocket = _serverSocket.accept();
 					_notifier.notifyReceivers(clientSocket);
-					if (_cantAcceptSocket != null)
-						_lights.turnOffIfNecessary(_cantAcceptSocket);
+					_lights.turnOffIfNecessary(_cantAcceptSocket);
 				} catch (IOException e) {
 					if (!_isStopped) 
-						_cantAcceptSocket = _lights.turnOn(LightType.ERROR, "Unable to accept client connection", e);
+						_lights.turnOnIfNecessary(_cantAcceptSocket, "Unable to accept client connection", null, e);
 				} 
 			}
 		}});
@@ -107,12 +99,21 @@ class SocketAccepterImpl implements SocketAccepter {
 		if (port == 0) return;
 		try {
 			_serverSocket = _network.openServerSocket(port);
-			if (_cantOpenServerSocket != null) _lights.turnOffIfNecessary(_cantOpenServerSocket);
+			_lights.turnOffIfNecessary(_cantOpenServerSocket);
 			_lights.turnOn(LightType.GOOD_NEWS, "TCP port opened: " + port, 7000);
 		} catch (IOException e) {
 			if (!_isStopped)
-				_cantOpenServerSocket = _lights.turnOn(LightType.ERROR, "Unable to listen on TCP port " + port, e);
+				_lights.turnOnIfNecessary(_cantOpenServerSocket, "Unable to listen on TCP port " + port, helpMessage(), e);
 		}
+	}
+
+	private String helpMessage() {
+		return "Typical causes:\n" +
+			"- You might have another Sneer instance already running\n" +
+			"- Some other application is already using that port\n" +
+			"- Your operating system or firewall is blocking that port, especially if it is below 1024\n" +
+			"\n" +
+			"You can run multiple Sneer instances on the same machine but each has to use a separate TCP port.";
 	}
 
 	private void crashServerSocketIfNecessary() {

@@ -5,6 +5,7 @@ import java.util.Comparator;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
@@ -12,8 +13,10 @@ import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.listsorter.ListSorter.SignalChooser;
 import wheel.lang.Omnivore;
+import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Constant;
+import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListValueChange;
@@ -113,6 +116,10 @@ public class ListSorterTest extends TestThatIsInjected {
 		src.removeAt(3);
 		TestUtils.assertSameContents(sortedList, _10, _30, _30);
 	}	
+
+	private Signal<Integer> signal(Register<Integer> r10) {
+		return r10.output();
+	}	
 	
 	@Test
 	public void replaceTest() {
@@ -157,6 +164,42 @@ public class ListSorterTest extends TestThatIsInjected {
 		TestUtils.assertSameContents(sortedList, _05, _10, _10, _20, _30);
 		src.add(_01);
 		TestUtils.assertSameContents(sortedList, _01, _05, _10, _10, _20, _30);
+	}
+	
+	@Ignore
+	@Test
+	public void signalChooserTest() {
+		ListRegister<Signal<Integer>> src = new ListRegisterImpl<Signal<Integer>>();
+		ListSignal<Signal<Integer>> sortedList = _sorter.sort(src.output(), integerComparator(), _chooser);
+
+		Register<Integer> r15 = new RegisterImpl<Integer>(15);
+		Register<Integer> r25 = new RegisterImpl<Integer>(25);
+		Register<Integer> r35 = new RegisterImpl<Integer>(35);
+		
+		Signal<Integer> s15 = signal(r15);
+		Signal<Integer> s25 = signal(r25);
+		Signal<Integer> s35 = signal(r35);
+		
+		src.add(s15);
+		src.add(s25);
+		src.add(s35);
+		
+		src.add(_10);
+		src.add(_20);
+		src.add(_30);
+		src.add(_40);
+		
+		TestUtils.assertSameContents(sortedList, _10, s15, _20, s25, _30, s35, _40);
+		
+		r15.setter().consume(50);
+		TestUtils.assertSameContents(sortedList, _10, _20, s25, _30, s35, _40, s15);
+		
+		r25.setter().consume(5);
+		TestUtils.assertSameContents(sortedList,  s25, _10, _20, _30, s35, _40, s15);
+		
+		r35.setter().consume(29);
+		TestUtils.assertSameContents(sortedList,  s25, _10, _20, s35, _30, _40, s15);
+		
 	}
 	
 	private Comparator<Signal<Integer>> integerComparator() {

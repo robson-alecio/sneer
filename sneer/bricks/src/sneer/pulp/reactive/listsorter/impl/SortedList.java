@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import wheel.lang.Omnivore;
+import wheel.reactive.impl.ListSignalOwnerReference;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListValueChange;
 import wheel.reactive.lists.ListValueChange.Visitor;
@@ -61,6 +62,6 @@ final class SortedList<T> implements Visitor<T>{
 	}
 
 	public ListSignal<T> output() {
-		return _sorted.output();
+		return new ListSignalOwnerReference<T>(_sorted.output(), this);
 	}
 }

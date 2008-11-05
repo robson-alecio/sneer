@@ -72,9 +72,7 @@ class ContactsGuiImpl implements ContactsGui {
 	
 	@Override
 	public void init(Container container) {	
-//		_sortedList = _contacts.contacts();
 		_sortedList = _sorter.sort(_contacts.contacts(), _comparator);
-		
 		_contactList = _rfactory.newList(_sortedList, new ContactLabelProvider());
 		JScrollPane scrollPane = new JScrollPane();
 		container.setLayout(new BorderLayout());

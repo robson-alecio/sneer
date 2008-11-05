@@ -25,7 +25,7 @@ public class ContactsComparatorImpl implements ContactsComparator {
 		}
 
 	private String nick(Contact contact1) {
-		return contact1.nickname().currentValue();
+		return contact1.nickname().currentValue().toLowerCase();
 	}
 
 	Boolean isOnline(Contact contact) {

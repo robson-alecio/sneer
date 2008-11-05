@@ -30,15 +30,19 @@ public class ContactsComparatorTest {
 	@Test
 	public void testComparator() {
 		
+		final MyContact truea = new MyContact("a", true);
 		final MyContact trueA = new MyContact("A", true);
 		final MyContact trueB = new MyContact("B", true);
 		final MyContact falseA = new MyContact("A", false);
 		final MyContact falseB = new MyContact("B", false);
 
 		_mockery.checking(new Expectations(){{
+			allowing(_connectionManagerMock).connectionFor(truea); 
+			will(returnValue(new MyByteConnection(truea)));
+			
 			allowing(_connectionManagerMock).connectionFor(trueA); 
-				will(returnValue(new MyByteConnection(trueA)));
-				
+			will(returnValue(new MyByteConnection(trueA)));
+			
 			allowing(_connectionManagerMock).connectionFor(trueB);  
 				will(returnValue(new MyByteConnection(trueB)));
 				
@@ -57,9 +61,10 @@ public class ContactsComparatorTest {
 		_contacts.add(trueB);
 		_contacts.add(trueA);
 		_contacts.add(falseB);
+		_contacts.add(truea);
 		
 		ListSignal<Contact> sortedList = _sorter.sort(_contacts.output(), comparator);
-		TestUtils.assertSameContents(sortedList, trueA, trueB, falseA, falseB);
+		TestUtils.assertSameContents(sortedList, trueA, truea, trueB, falseA, falseB);
 	}
 }
 class MyByteConnection implements ByteConnection{

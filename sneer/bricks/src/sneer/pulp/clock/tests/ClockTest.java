@@ -37,6 +37,19 @@ public class ClockTest extends TestThatIsInjected {
 		}
 	}
 
+	@Test
+	public void testSimultaneousAlarms() throws Exception {
+		final List<Integer> _order = new ArrayList<Integer>();
+		
+		_subject.wakeUpInAtLeast(10, new Worker(10, _order));
+		_subject.wakeUpInAtLeast(10, new Worker(10, _order));
+		
+		_subject.advanceTime(10);
+		
+		assertEquals(2, _order.size());
+	}
+
+	
 	private class Worker implements Stepper, Runnable {
 
 		private final int _timeout;

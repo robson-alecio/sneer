@@ -44,12 +44,16 @@ class ClockImpl implements Clock {
 		Runnable notifier = createNotifier();
 		synchronized (notifier) {
 			wakeUpInAtLeast(millis, notifier);
+			System.out.println("waiting");
 			Threads.waitWithoutInterruptions(notifier);
+			System.out.println("waiting done");
+
 		}
 	}
 
 	private Runnable createNotifier() {
 		return new Runnable() { @Override synchronized public void run() {
+			System.out.println("notifying");
 			notify();
 		}};
 	}
@@ -80,7 +84,11 @@ class ClockImpl implements Clock {
 		}
 	}
 
+	static private long _nextSequence = 0;
+
 	private class Alarm implements Comparable<Alarm>{
+
+		final long _sequence = _nextSequence++;
 		
 		final int _period;
 		
@@ -112,6 +120,8 @@ class ClockImpl implements Clock {
 		
 		@Override
 		public int compareTo(Alarm alarm) {
+			if (_wakeUpTime == alarm._wakeUpTime)
+				return (int)(_sequence - alarm._sequence);
 			return (int) (_wakeUpTime - alarm._wakeUpTime);
 		}
 		

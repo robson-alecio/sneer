@@ -5,15 +5,16 @@ import static wheel.io.Logger.log;
 import java.io.IOException;
 
 import sneer.kernel.container.Inject;
-import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
+import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.connection.SocketAccepter;
 import sneer.pulp.network.ByteArrayServerSocket;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;
 import sneer.pulp.port.PortKeeper;
 import sneer.pulp.threadpool.ThreadPool;
+import wheel.io.Logger;
 import wheel.lang.Threads;
 import wheel.reactive.EventNotifier;
 import wheel.reactive.EventSource;
@@ -84,15 +85,24 @@ class SocketAccepterImpl implements SocketAccepter {
 		_threadPool.registerActor(new Runnable() { @Override public void run() {
 			while (!_isStopped) {
 				try {
-					ByteArraySocket clientSocket = _serverSocket.accept();
-					_notifier.notifyReceivers(clientSocket);
-					_lights.turnOffIfNecessary(_cantAcceptSocket);
+					dealWith(_serverSocket.accept());
 				} catch (IOException e) {
-					if (!_isStopped) 
-						_lights.turnOnIfNecessary(_cantAcceptSocket, "Unable to accept client connection", null, e);
+					dealWith(e);
 				} 
 			}
 		}});
+
+	}
+	
+	private void dealWith(ByteArraySocket incomingSocket) {
+		_lights.turnOffIfNecessary(_cantAcceptSocket);
+		Logger.log("Incoming socket received");
+		_notifier.notifyReceivers(incomingSocket);
+	}
+
+	private void dealWith(IOException e) {
+		if (!_isStopped) 
+			_lights.turnOnIfNecessary(_cantAcceptSocket, "Unable to accept client connection", null, e);
 	}
 
 	private void openServerSocket(int port) {

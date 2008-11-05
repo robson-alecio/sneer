@@ -23,8 +23,8 @@ public class Logger {
 		flush();
 	}
 
-	public static void logShort(Exception e, String message, String... insets) {
-		log(inline(message, (Object[])insets) + " " + e.getClass().getSimpleName() + " " + e.getMessage());
+	public static void logShort(Exception e, String message, Object... insets) {
+		log(inline(message, insets) + " " + e.getClass().getSimpleName() + " " + e.getMessage());
 	}
 	
 	/** See log(String, Object...) for examples.*/

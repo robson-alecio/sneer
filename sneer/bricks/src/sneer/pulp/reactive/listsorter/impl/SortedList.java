@@ -6,6 +6,7 @@ package sneer.pulp.reactive.listsorter.impl;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import sneer.pulp.reactive.listsorter.ListSorter.SignalChooser;
 import wheel.lang.Omnivore;
 import wheel.reactive.impl.ListSignalOwnerReference;
 import wheel.reactive.lists.ListSignal;
@@ -19,10 +20,12 @@ final class SortedList<T> extends VisitorAdapter<T>{
 	private final Comparator<T> _comparator;
 	private final ListRegisterImpl<T> _sorted = new ListRegisterImpl<T>();
 	private Omnivore<ListValueChange<T>> _receiverAvoidGc;
+	private SignalChooser<T> _chooser;
 	
-	SortedList(ListSignal<T> input, Comparator<T> comparator) {
+	SortedList(ListSignal<T> input, Comparator<T> comparator, SignalChooser<T> chooser) {
 		_input = input;
 		_comparator = comparator;
+		_chooser = chooser;
 		synchronized (_input) {
 			init();
 			initReceiver();

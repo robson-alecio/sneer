@@ -8,7 +8,7 @@ import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.list.ContactInfo;
 import sneer.pulp.reactive.listsorter.ListSorter;
-import wheel.lang.Omnivore;
+import sneer.pulp.reactive.listsorter.ListSorter.SignalChooser;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Constant;
 import wheel.reactive.lists.ListRegister;
@@ -20,6 +20,9 @@ public class ContactInfoComparatorTest {
 	
 	private ListSorter _sorter;
 	private final ListRegister<ContactInfo> _contacts = new ListRegisterImpl<ContactInfo>();
+	private final SignalChooser<ContactInfo> _chooser = new SignalChooser<ContactInfo>(){ @Override public Signal<?>[] signalsToReceiveFrom(ContactInfo element) {
+		return new Signal<?>[]{element.isOnline(), element.contact().nickname()};
+	}};
 	
 	@Test
 	public void testComparator() {
@@ -40,7 +43,7 @@ public class ContactInfoComparatorTest {
 		_contacts.add(falseB);
 		_contacts.add(truea);
 		
-		ListSignal<ContactInfo> sortedList = _sorter.sort(_contacts.output(), comparator);
+		ListSignal<ContactInfo> sortedList = _sorter.sort(_contacts.output(), comparator, _chooser);
 		TestUtils.assertSameContents(sortedList, trueA, truea, trueB, falseA, falseB);
 	}
 }
@@ -49,7 +52,6 @@ class ContactInfoMock extends ContactInfo{
 
 	ContactInfoMock(final String nick, boolean isOnline) {
 		super( new Contact(){ @Override public Signal<String> nickname() { return new Constant<String>(nick); }}, 
-				new Omnivore<Boolean>(){ @Override public void consume(Boolean value) {/* ignore */	}},
 				new Constant<Boolean>(isOnline)
 		);
 		_isOnline = new Constant<Boolean>(isOnline);

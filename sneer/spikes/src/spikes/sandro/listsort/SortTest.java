@@ -12,6 +12,7 @@ import javax.swing.SwingUtilities;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.reactive.listsorter.ListSorter;
+import sneer.pulp.reactive.listsorter.ListSorter.SignalChooser;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
@@ -36,7 +37,11 @@ public class SortTest {
 			return o1.compareTo(o2);
 		}};
 		
-		ListSignal<Integer> sorted = sorter.sort(source.output(), comparator);
+		final SignalChooser<Integer> chooser = new SignalChooser<Integer>(){ @Override public Signal<?>[] signalsToReceiveFrom(Integer element) {
+			return new Signal<?>[]{new Constant<Integer>(element)};
+		}};
+		
+		ListSignal<Integer> sorted = sorter.sort(source.output(), comparator, chooser);
 		initGui(container, sorted);
 		addData(source);
 	}

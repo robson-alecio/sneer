@@ -8,7 +8,7 @@ import wheel.reactive.lists.ListSignal;
 class ListSorterImpl implements ListSorter{
 
 	@Override
-	public <T> ListSignal<T> sort(final ListSignal<T> input, final Comparator<T> comparator) {
-		return new SortedList<T>(input, comparator).output();
+	public <T> ListSignal<T> sort(final ListSignal<T> input, final Comparator<T> comparator, final SignalChooser<T> chooser) {
+		return new SortedList<T>(input, comparator, chooser).output();
 	}
 }

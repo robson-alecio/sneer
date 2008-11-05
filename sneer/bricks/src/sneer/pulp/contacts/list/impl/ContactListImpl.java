@@ -55,10 +55,7 @@ class ContactListImpl extends ListRegisterImpl<ContactInfo> implements ContactLi
 	}		
 	
 	private void addContact(final Contact contact) {
-		Omnivore<Boolean> onlineReceiver = new Omnivore<Boolean>(){ @Override public void consume(Boolean isOnLine) {
-			contactConnectionChanged(contact);
-		}};
-		ContactInfo contactInfo = new ContactInfo(contact, onlineReceiver);
+		ContactInfo contactInfo = new ContactInfo(contact);
 		_contactInfos.put(contact, contactInfo);
 		add(contactInfo);
 	}	
@@ -71,10 +68,6 @@ class ContactListImpl extends ListRegisterImpl<ContactInfo> implements ContactLi
 			@Override public void elementReplaced(int index, Contact oldContact, Contact newContact) { replaceContact( oldContact, newContact); }
 		};
 		change.accept(_visitor);
-	}
-	
-	private void contactConnectionChanged(Contact contact) {
-		//Implement
 	}
 	
 	@Override

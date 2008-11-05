@@ -123,7 +123,6 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 
 	@Override
 	public void replace(int index, VO newElement) {
-		
 		VO old = _list.get(index);
 		_output.notifyReceivers(new ListElementToBeReplaced<VO>(index, old, newElement));
 		synchronized (_list) {
@@ -132,7 +131,11 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 		}
 		_output.notifyReceivers(new ListElementReplaced<VO>(index, old, newElement));
 	}
-
+	
+	@Override
+	public int indexOf(VO element) {
+		return _list.indexOf(element);
+	}
 
 	private static final long serialVersionUID = 1L;
 }

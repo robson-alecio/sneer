@@ -38,6 +38,5 @@ class ConnectionManagerImpl implements ConnectionManager {
 		ByteConnectionImpl connection = connectionFor(
 				contact);
 		connection.manageOutgoingSocket(socket);
-	}
-	
+	}	
 }

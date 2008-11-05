@@ -10,10 +10,10 @@ import wheel.lang.Omnivore;
 import wheel.reactive.impl.ListSignalOwnerReference;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListValueChange;
-import wheel.reactive.lists.ListValueChange.Visitor;
+import wheel.reactive.lists.VisitorAdapter;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 
-final class SortedList<T> implements Visitor<T>{
+final class SortedList<T> extends VisitorAdapter<T>{
 	
 	private final ListSignal<T> _input;
 	private final Comparator<T> _comparator;
@@ -44,24 +44,30 @@ final class SortedList<T> implements Visitor<T>{
 	}
 	
 	private void sortedAdd(T element) {
-		int location = Arrays.binarySearch(_sorted.output().toArray(), element, _comparator);
-		location = location<0 ? -location-1 : location;
-		_sorted.addAt(location, element);
+		synchronized (_sorted) {
+			int location = Arrays.binarySearch(_sorted.output().toArray(), element, _comparator);
+			location = location<0 ? -location-1 : location;
+			_sorted.addAt(location, element);
+		}
 	}
-
-	@Override public void elementAdded(int index, T element) { sortedAdd(element); }
-	@Override public void elementInserted(int index, T element) { sortedAdd(element); }
-	@Override public void elementRemoved(int index, T element) { _sorted.remove(element); }
-	@Override public void elementToBeRemoved(int index, T element) { /*ignore*/ }
-	@Override public void elementToBeReplaced(int index, T oldElement, T newElement) { /*ignore*/ }
-
-	@Override
-	public void elementReplaced(int index, T oldElement, T newElement) {
-		_sorted.remove(oldElement);
+	
+	private void remove(T element) {
+		synchronized (_sorted) {
+			_sorted.remove(element);
+		}
+	}
+	
+	private void replace(T oldElement, T newElement) {
+		remove(oldElement);
 		sortedAdd(newElement);
 	}
 
 	public ListSignal<T> output() {
 		return new ListSignalOwnerReference<T>(_sorted.output(), this);
 	}
+	
+	@Override public void elementAdded(int index, T element) { sortedAdd(element); }
+	@Override public void elementInserted(int index, T element) { sortedAdd(element); }
+	@Override public void elementRemoved(int index, T element) { remove(element); }
+	@Override public void elementReplaced(int index, T oldElement, T newElement) { replace(oldElement, newElement); }
 }

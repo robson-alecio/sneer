@@ -1,0 +1,60 @@
+package snapps.contacts.gui.comparator.tests;
+
+import org.junit.Test;
+
+import snapps.contacts.gui.comparator.ContactInfoComparator;
+import sneer.kernel.container.Container;
+import sneer.kernel.container.ContainerUtils;
+import sneer.pulp.contacts.Contact;
+import sneer.pulp.contacts.list.ContactInfo;
+import sneer.pulp.reactive.listsorter.ListSorter;
+import wheel.lang.Omnivore;
+import wheel.reactive.Signal;
+import wheel.reactive.impl.Constant;
+import wheel.reactive.lists.ListRegister;
+import wheel.reactive.lists.ListSignal;
+import wheel.reactive.lists.impl.ListRegisterImpl;
+import wheel.testutil.TestUtils;
+
+public class ContactInfoComparatorTest {
+	
+	private ListSorter _sorter;
+	private final ListRegister<ContactInfo> _contacts = new ListRegisterImpl<ContactInfo>();
+	
+	@Test
+	public void testComparator() {
+		
+		final ContactInfoMock truea = new ContactInfoMock("a", true);
+		final ContactInfoMock trueA = new ContactInfoMock("A", true);
+		final ContactInfoMock trueB = new ContactInfoMock("B", true);
+		final ContactInfoMock falseA = new ContactInfoMock("A", false);
+		final ContactInfoMock falseB = new ContactInfoMock("B", false);
+
+		Container container =  ContainerUtils.newContainer();
+		ContactInfoComparator comparator = container.produce(ContactInfoComparator.class);
+		_sorter = container.produce(ListSorter.class);
+
+		_contacts.add(falseA);
+		_contacts.add(trueB);
+		_contacts.add(trueA);
+		_contacts.add(falseB);
+		_contacts.add(truea);
+		
+		ListSignal<ContactInfo> sortedList = _sorter.sort(_contacts.output(), comparator);
+		TestUtils.assertSameContents(sortedList, trueA, truea, trueB, falseA, falseB);
+	}
+}
+
+class ContactInfoMock extends ContactInfo{
+
+	ContactInfoMock(final String nick, boolean isOnline) {
+		super( new Contact(){ @Override public Signal<String> nickname() { return new Constant<String>(nick); }}, 
+				new Omnivore<Boolean>(){ @Override public void consume(Boolean value) {/* ignore */	}},
+				new Constant<Boolean>(isOnline)
+		);
+		_isOnline = new Constant<Boolean>(isOnline);
+	}
+
+	@Override public Signal<Boolean> isOnline() {	return _isOnline;	}
+	@Override public String toString() { return isOnline().currentValue() + " - " + contact().nickname();}
+}

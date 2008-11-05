@@ -6,7 +6,6 @@ import wheel.reactive.lists.impl.VisitingListReceiver;
 
 public class Collector<IN, OUT> {
 
-
 	public class MyReceiver extends VisitingListReceiver<IN> {
 
 		public MyReceiver(ListSignal<IN> input) {
@@ -24,7 +23,7 @@ public class Collector<IN, OUT> {
 		}
 
 		@Override
-		public void elementRemoved(int index, Object value) {
+		public void elementRemoved(int index, IN value) {
 			_output.removeAt(index);
 		}
 
@@ -39,7 +38,7 @@ public class Collector<IN, OUT> {
 		}
 
 		@Override
-		public void elementInserted(int index, Object value) {
+		public void elementInserted(int index, IN value) {
 			throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 		}
 	}

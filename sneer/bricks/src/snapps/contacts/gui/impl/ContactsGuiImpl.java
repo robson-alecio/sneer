@@ -16,11 +16,11 @@ import javax.swing.border.TitledBorder;
 import snapps.contacts.actions.ContactAction;
 import snapps.contacts.actions.ContactActionManager;
 import snapps.contacts.gui.ContactsGui;
-import snapps.contacts.gui.comparator.ContactsComparator;
+import snapps.contacts.gui.comparator.ContactInfoComparator;
 import sneer.kernel.container.Inject;
-import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
-import sneer.pulp.contacts.ContactManager;
+import sneer.pulp.contacts.list.ContactInfo;
+import sneer.pulp.contacts.list.ContactList;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.LabelProvider;
@@ -38,29 +38,25 @@ class ContactsGuiImpl implements ContactsGui {
 	private static final Image OFFLINE = getImage("offline.png");
 	
 	@Inject
-	static private ContactsComparator _comparator;
+	static private ContactInfoComparator _comparator;
 	
 	@Inject
 	static private InstrumentManager _instrumentManager;
 
 	@Inject
-	static private ContactManager _contacts;
-	
-	@Inject
 	static private ContactActionManager _actionsManager;
-
-	@Inject
-	static private ConnectionManager _connectionManager;
 
 	@Inject
 	static private ReactiveWidgetFactory _rfactory;
 	
 	@Inject
+	static private ContactList _contacts;
+	
+	@Inject
 	static private ListSorter _sorter;
 	
-	private ListWidget<Contact> _contactList;
-	
-	private ListSignal<Contact> _sortedList;
+	private ListSignal<ContactInfo> _sortedList;
+	private ListWidget<ContactInfo> _contactList;
 	
 	ContactsGuiImpl(){
 		_instrumentManager.registerInstrument(this);
@@ -72,8 +68,10 @@ class ContactsGuiImpl implements ContactsGui {
 	
 	@Override
 	public void init(Container container) {	
-		_sortedList = _sorter.sort(_contacts.contacts(), _comparator);
+		_sortedList = _sorter.sort(_contacts.output() , _comparator);
 		_contactList = _rfactory.newList(_sortedList, new ContactLabelProvider());
+//		_contactList = _rfactory.newList(_contacts.output(), new ContactLabelProvider());
+		
 		JScrollPane scrollPane = new JScrollPane();
 		container.setLayout(new BorderLayout());
 		container.add(scrollPane, BorderLayout.CENTER);
@@ -93,20 +91,19 @@ class ContactsGuiImpl implements ContactsGui {
 		return "My Contacts";
 	}
 
-	private final class ContactLabelProvider implements LabelProvider<Contact> {
+	private final class ContactLabelProvider implements LabelProvider<ContactInfo> {
 		@Override
-		public Signal<String> labelFor(Contact contact) {
-			return contact.nickname();
+		public Signal<String> labelFor(ContactInfo info) {
+			return info.contact().nickname();
 		}
 
 		@Override
-		public Signal<Image> imageFor(Contact contact) {
-			Signal<Boolean> isOnline = _connectionManager.connectionFor(contact).isOnline();
-			Functor<Boolean, Image> functor = new Functor<Boolean, Image>(){
-				@Override
-				public Image evaluate(Boolean value) {
-					return value?ONLINE:OFFLINE;
-				}};
+		public Signal<Image> imageFor(ContactInfo info) {
+			Functor<Boolean, Image> functor = new Functor<Boolean, Image>(){ @Override public Image evaluate(Boolean value) {
+				return value?ONLINE:OFFLINE;
+			}};
+			
+			Signal<Boolean> isOnline = info.isOnline();
 			
 			Adapter<Boolean, Image> imgSource = new Adapter<Boolean, Image>(isOnline, functor);
 			return imgSource.output();

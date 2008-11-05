@@ -5,15 +5,16 @@ import wheel.reactive.CollectionRegisterBase;
 
 public interface ListRegister<T> extends CollectionRegisterBase {
 
+	Omnivore<T> adder();
 	ListSignal<T> output();
+
+	int indexOf(T element);
 
 	void add(T element);
 	void addAt(int index, T element);
-	Omnivore<T> adder();
 
 	void remove(T element);
 	void removeAt(int index);
 	
 	void replace(int index, T newElement);
-	
 }

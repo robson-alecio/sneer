@@ -37,7 +37,7 @@ public abstract class SimpleListReceiver<T> extends VisitingListReceiver<T> {
 	public void elementToBeRemoved(int index, T value) {
 		elementToBeRemoved(value);
 	}
-
+	
 	@Override
 	public void elementRemoved(int index, T value) {		
 	}

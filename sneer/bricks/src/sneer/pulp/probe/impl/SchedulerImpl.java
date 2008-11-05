@@ -17,6 +17,8 @@ import wheel.io.serialization.Serializer;
 import wheel.io.serialization.impl.XStreamBinarySerializer;
 import wheel.lang.Omnivore;
 import wheel.lang.Threads;
+import wheel.reactive.Signal;
+import wheel.reactive.impl.Receiver;
 
 final class SchedulerImpl implements PacketScheduler, Omnivore<Tuple> {
 
@@ -29,35 +31,58 @@ final class SchedulerImpl implements PacketScheduler, Omnivore<Tuple> {
 	private final Contact _contact;
 	private PublicKey _contactsPK;
 
+	private boolean _isOnline = false;
+
 	private final List<Tuple> _toSend = new LinkedList<Tuple>();
+	private boolean _toSendWasDrained = false;
 	private int _lastTupleSent;
 
 	
-	SchedulerImpl(Contact contact) {
+	SchedulerImpl(Contact contact, Signal<Boolean> isOnline) {
 		_contact = contact;
-		_tuples.addSubscription(Tuple.class, this);
+		
+		new Receiver<Boolean>(isOnline){ @Override public void consume(Boolean cameOnline) {
+			if (cameOnline)
+				_tuples.addSubscription(Tuple.class, SchedulerImpl.this);
+			else if (_isOnline) {
+				_tuples.removeSubscription(SchedulerImpl.this);
+			}
+
+			synchronized (_toSend) {
+				_isOnline = cameOnline;
+				if (!_isOnline)
+					drainToSendQueue();
+			}
+		}};
+
+	}
+
+	private void drainToSendQueue() {
+		_toSend.clear();
+		_toSendWasDrained = true;
 	}
 	
+
 	@Override
 	public byte[] highestPriorityPacketToSend() {
+		Tuple result;
 		synchronized (_toSend) {
 			if (_toSend.isEmpty())
 				Threads.waitWithoutInterruptions(_toSend);
+			result = mostRecentTuple();
 		}
-
-		return _serializer.serialize(mostRecentTuple()); //Optimize: Use same serialized form of this tuple for all interested contacts.
+		return _serializer.serialize(result); //Optimize: Use same serialized form of this tuple for all interested contacts.
 	}
 
 	private Tuple mostRecentTuple() {
-		synchronized (_toSend) {
-			_lastTupleSent = _toSend.size() - 1;
-			return _toSend.get(_lastTupleSent);
-		}
+		_lastTupleSent = _toSend.size() - 1;
+		return _toSend.get(_lastTupleSent);
 	}
 
 	@Override
 	public void previousPacketWasSent() {
 		synchronized (_toSend) {
+			if (_toSendWasDrained) return;
 			_toSend.remove(_lastTupleSent);
 		}
 	}
@@ -65,10 +90,16 @@ final class SchedulerImpl implements PacketScheduler, Omnivore<Tuple> {
 
 	@Override
 	public void consume(Tuple tuple) {
+		synchronized (_toSend) {
+			if (!_isOnline) return;
+		}
+
 		if (!isClearToSend(tuple)) return;
 		
 		synchronized (_toSend) {
-			_toSend.add(tuple); //Fix This is a leak: dont keep packets for contacts that are offline.
+			if (!_isOnline) return;
+			_toSendWasDrained = false;
+			_toSend.add(tuple);
 			_toSend.notify();
 		}
 	}

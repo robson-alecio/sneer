@@ -1,7 +1,7 @@
 ﻿MAIN ROADMAP
 ===================
 
-	- Fix Leak - SchedulerImpl - dont keep packets for contacts that are offline. 
+	- [Sandro] GC button in MemMeter instead of chip icon.
 
 	- [Sandro]  Free some space on the dashboard
 		- Sort contacts by Online, Nick.

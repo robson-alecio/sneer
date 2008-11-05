@@ -7,7 +7,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import wheel.lang.Collections;
-import wheel.lang.Threads;
 import wheel.reactive.lists.ListSignal;
 import functional.SovereignFunctionalTestBase;
 import functional.SovereignParty;
@@ -60,9 +59,9 @@ public abstract class Freedom5TestBase extends SovereignFunctionalTestBase {
 			String heard = concat(user.shoutsHeard());
 			if (shoutsExpected.equals(heard)) return;
 			try {
-				Threads.sleepWithoutInterruptions(10);
-			} catch (RuntimeException ignored) {
-				throw new IllegalStateException("Expected: " + shoutsExpected + "  was: " + heard);
+				Thread.sleep(10);
+			} catch (InterruptedException ignored) {
+				throw new RuntimeException("Interrupted while waiting for: " + shoutsExpected + "  was still: " + heard);
 			}
 		}
 	}

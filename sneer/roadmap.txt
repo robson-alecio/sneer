@@ -1,8 +1,6 @@
 ﻿MAIN ROADMAP
 ===================
 
-	- [Douglas, Rodrigo] Fix the ImmutableByteArray security breach.
-
 	- Fix Leak - SchedulerImpl - dont keep packets for contacts that are offline. 
 
 	- [Sandro]  Free some space on the dashboard

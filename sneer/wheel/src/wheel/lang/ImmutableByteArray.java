@@ -4,18 +4,10 @@ import java.util.Arrays;
 
 public class ImmutableByteArray {
 	
-	public static ImmutableByteArray takeOwnership(byte[] payload) {
-		return new ImmutableByteArray(payload);
-	}
+	private final byte[] _payload;
 
-	private byte[] _payload;
-
-	private ImmutableByteArray(byte[] privatePayload) {
-		_payload = privatePayload;
-	}
-	
 	public ImmutableByteArray(byte[] bufferToCopy, int bytesToCopy) {
-		this(Arrays.copyOf(bufferToCopy, bytesToCopy));
+		_payload = Arrays.copyOf(bufferToCopy, bytesToCopy);
 	}
 
 	public int copyTo(byte[] dest) {

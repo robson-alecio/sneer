@@ -3,6 +3,8 @@ package snapps.watchme.gui.windows.impl;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Image;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
@@ -55,15 +57,23 @@ class WatchMeReceiver{
 			_windowWidget = _factory.newFrame(_contact.nickname());
 			JFrame frm = _windowWidget.getMainWidget();
 			frm.setBounds(0,0,1024,768);
-			Container contentPane = frm.getContentPane();
-			contentPane.setLayout(new BorderLayout());
-			contentPane.add(_imageLabel, BorderLayout.CENTER);
-			initWindowListener();
+			initFrame(frm);
 		}});
 	}
-
-	private void initWindowListener() {
-		_windowWidget.getMainWidget().setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+	
+	private void initFrame(JFrame frm) {
+		Container contentPane = frm.getContentPane();
+		contentPane.setLayout(new BorderLayout());
+		contentPane.add(_imageLabel, BorderLayout.CENTER);
+		initFrameListener();
+	}
+	
+	private void initFrameListener() {
+		final JFrame frame = _windowWidget.getMainWidget();
+		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		frame.addWindowListener(new WindowAdapter(){ @Override public void windowClosing(WindowEvent e) {
+			frame.setVisible(false);
+		}});
 	}
 
 	private void createReceiver(final Contact contact) {

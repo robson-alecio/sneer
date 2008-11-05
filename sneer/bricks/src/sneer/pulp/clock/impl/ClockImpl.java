@@ -44,16 +44,13 @@ class ClockImpl implements Clock {
 		Runnable notifier = createNotifier();
 		synchronized (notifier) {
 			wakeUpInAtLeast(millis, notifier);
-			System.out.println("waiting");
 			Threads.waitWithoutInterruptions(notifier);
-			System.out.println("waiting done");
 
 		}
 	}
 
 	private Runnable createNotifier() {
 		return new Runnable() { @Override synchronized public void run() {
-			System.out.println("notifying");
 			notify();
 		}};
 	}

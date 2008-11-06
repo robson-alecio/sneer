@@ -75,9 +75,10 @@ class ContactsGuiImpl implements ContactsGui {
 	
 	@Override
 	public void init(Container container) {	
+		ContactLabelProvider labelProvider = new ContactLabelProvider();
+		ContactsGuiCellRenderer cellRenderer = new ContactsGuiCellRenderer(labelProvider);
 		_sortedList = _sorter.sort(_contacts.output() , _comparator, _chooser);
-		_contactList = _rfactory.newList(_sortedList, new ContactLabelProvider());
-//		_contactList = _rfactory.newList(_contacts.output(), new ContactLabelProvider());
+		_contactList = _rfactory.newList(_sortedList, labelProvider, cellRenderer);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		container.setLayout(new BorderLayout());
@@ -98,7 +99,7 @@ class ContactsGuiImpl implements ContactsGui {
 		return "My Contacts";
 	}
 
-	private final class ContactLabelProvider implements LabelProvider<ContactInfo> {
+	final class ContactLabelProvider implements LabelProvider<ContactInfo> {
 		@Override
 		public Signal<String> labelFor(ContactInfo info) {
 			return info.contact().nickname();

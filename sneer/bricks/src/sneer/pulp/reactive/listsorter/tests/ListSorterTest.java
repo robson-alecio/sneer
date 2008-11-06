@@ -162,15 +162,28 @@ public class ListSorterTest extends TestThatIsInjected {
 		
 		ListSignal<Signal<Integer>> sortedList = _sorter.sort(src.output(), integerComparator(), _chooser);
 		
+		assertEquals(2 , listSize(sortedList));
 		TestUtils.assertSameContents(sortedList, _10, _20);
+		
 		src.addAt(1, _05);
+		assertEquals(3 , listSize(sortedList));
 		TestUtils.assertSameContents(sortedList, _05, _10, _20);
+		
 		src.add(_10);
+		assertEquals(4 , listSize(sortedList));
 		TestUtils.assertSameContents(sortedList, _05, _10, _10, _20);
+		
 		src.add(_30);
+		assertEquals(5 , listSize(sortedList));
 		TestUtils.assertSameContents(sortedList, _05, _10, _10, _20, _30);
+
 		src.add(_01);
+		assertEquals(6 , listSize(sortedList));
 		TestUtils.assertSameContents(sortedList, _01, _05, _10, _10, _20, _30);
+	}
+
+	private int listSize(ListSignal<Signal<Integer>> sortedList) {
+		return sortedList.size().currentValue().intValue();
 	}
 	
 	@Test
@@ -213,7 +226,6 @@ public class ListSorterTest extends TestThatIsInjected {
 		
 		r45.setter().consume(60);
 		TestUtils.assertSameContents(sortedList,  s25, _10, _20, s35, _30, _40, s15, s45);
-		
 	}
 	
 	private Comparator<Signal<Integer>> integerComparator() {

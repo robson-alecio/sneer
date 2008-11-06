@@ -58,6 +58,11 @@ public class ProbeManagerImpl implements ProbeManager {
 			protected void elementToBeRemoved(Contact contact) {
 				throw new NotImplementedYet();
 			}
+
+			@Override
+			protected void elementMovedTo(Contact element, int newIndex) {
+				throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+			}
 		};
 	}
 

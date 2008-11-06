@@ -1,6 +1,5 @@
 package snapps.contacts.gui.comparator.tests;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import snapps.contacts.gui.comparator.ContactInfoComparator;
@@ -26,7 +25,6 @@ public class ContactInfoComparatorTest {
 	}};
 	
 	@Test
-	@Ignore
 	public void testComparator() {
 		
 		final ContactInfoMock truea = new ContactInfoMock("a", true);
@@ -41,12 +39,14 @@ public class ContactInfoComparatorTest {
 
 		_contacts.add(falseA);
 		_contacts.add(trueB);
+		
+		ListSignal<ContactInfo> sortedList = _sorter.sort(_contacts.output(), comparator, _chooser);
+		
 		_contacts.add(trueA);
 		_contacts.add(falseB);
 		_contacts.add(truea);
 		
-		ListSignal<ContactInfo> sortedList = _sorter.sort(_contacts.output(), comparator, _chooser);
-		TestUtils.assertSameContents(sortedList, trueA, truea, trueB, falseA, falseB);
+		TestUtils.assertSameContents(sortedList, truea, trueA, trueB, falseA, falseB);
 	}
 }
 

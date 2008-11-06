@@ -41,6 +41,11 @@ public class Collector<IN, OUT> {
 		public void elementInserted(int index, IN value) {
 			throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 		}
+
+		@Override
+		public void elementMoved(int oldIndex, int newIndex, IN element) {
+			throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+		}
 	}
 
 	private final ListRegister<OUT> _output = new ListRegisterImpl<OUT>();

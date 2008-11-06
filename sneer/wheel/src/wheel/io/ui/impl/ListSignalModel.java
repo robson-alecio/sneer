@@ -81,6 +81,13 @@ public class ListSignalModel<T> extends AbstractListModel {
 				fireIntervalAdded(ListSignalModel.this, index, index);
 			}});		
 		}
+
+		@Override
+		public void elementMoved(final int oldIndex, final int newIndex, T element) {
+			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
+				fireContentsChanged(ListSignalModel.this, oldIndex, newIndex);
+			}});
+		}
 	}
 	
 	public int getSize() {

@@ -66,9 +66,8 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 		}
 	}
 
-	Register<Integer> _size = new RegisterImpl<Integer>(0);
-
-	private final List<VO> _list = new ArrayList<VO>();
+	protected final Register<Integer> _size = new RegisterImpl<Integer>(0);
+	protected final List<VO> _list = new ArrayList<VO>();
 	private MyOutput _output = new MyOutput();
 	
 	@Override
@@ -130,6 +129,21 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 			_list.add(index, newElement);
 		}
 		_output.notifyReceivers(new ListElementReplaced<VO>(index, old, newElement));
+	}
+	
+	@Override
+	public void move(int oldIndex, int newIndex) {
+		if(oldIndex==newIndex) return;
+		newIndex = newIndex>oldIndex ? newIndex-1 : newIndex;
+		newIndex = newIndex<0 ? 0 : newIndex;
+		
+		VO element;
+		synchronized (_list) {
+			element = _list.get(oldIndex);
+			_list.remove(oldIndex);
+			_list.add(newIndex, element);
+		}
+		_output.notifyReceivers(new ListElementMoved<VO>(oldIndex, newIndex, element));
 	}
 	
 	@Override

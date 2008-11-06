@@ -17,4 +17,5 @@ public interface ListRegister<T> extends CollectionRegisterBase {
 	void removeAt(int index);
 	
 	void replace(int index, T newElement);
+	void move(int oldIndex, int newIndex);
 }

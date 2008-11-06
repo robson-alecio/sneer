@@ -34,12 +34,9 @@ final class SortedList<T> extends VisitorAdapter<T>{
 	}
 	
 	private void init() {
-		T tmp[] = _input.toArray();
-		Arrays.sort(tmp, _comparator);
-		for (T element : tmp) {
-			_sorted.add(element);
-			addReceiverToElement(element);
-		}
+		for (T element : _input) {
+			sortedAdd(element);
+		}		
 	}
 	
 	private void initReceiver() {
@@ -78,19 +75,38 @@ final class SortedList<T> extends VisitorAdapter<T>{
 					isFirstTime = false;
 					return;
 				}
-				relocate(element);
-			}
-			@Override
-			protected void finalize() throws Throwable {
-				System.out.println(this);
+				move(element);
 			}
 		};
+	}
+
+	private int findSortedLocation(T element) {
+		T[] array = _sorted.output().toArray();
+		return findSortedLocation(element, array);
+	}
+	
+	private int findSortedLocation(T element, T[] array) {
+		int location = Arrays.binarySearch(array, element, _comparator);
+		location = location<0 ? -location-1 : location;
+		
+		if(isInvalidLocation(array, location)){//Optimize try don't repeat binary search
+			array[location] = array[location+1];
+			location = findSortedLocation(element, array);
+		}
+		
+		return location;
+	}
+
+	private boolean isInvalidLocation(T[] array, int location) {
+		if(array.length>location+1){
+			return _comparator.compare(array[location], array[location+1]) > 0;
+		}
+		return false;
 	}
 	
 	private void sortedAdd(T element) {
 		synchronized (_sorted) {
-			int location = Arrays.binarySearch(_sorted.output().toArray(), element, _comparator);
-			location = location<0 ? -location-1 : location;
+			int location = findSortedLocation(element);
 			_sorted.addAt(location, element);
 		}
 		addReceiverToElement(element);
@@ -108,8 +124,13 @@ final class SortedList<T> extends VisitorAdapter<T>{
 		sortedAdd(newElement);
 	}
 
-	private void relocate(T element) {
-		replace(element, element);
+	private void move(T element) {
+		synchronized (_sorted) {
+			int oldIndex = _sorted.indexOf(element);
+			int newIndex = findSortedLocation(element);
+			
+			_sorted.move(oldIndex, newIndex);
+		}
 	}
 
 	public ListSignal<T> output() {
@@ -120,4 +141,10 @@ final class SortedList<T> extends VisitorAdapter<T>{
 	@Override public void elementInserted(int index, T element) { sortedAdd(element); }
 	@Override public void elementRemoved(int index, T element) { remove(element); }
 	@Override public void elementReplaced(int index, T oldElement, T newElement) { replace(oldElement, newElement); }
+	
+	@Override
+	public String toString() {
+		return "SortedList - size: " +  _sorted.output().size().currentValue() + 
+				" (" + Arrays.toString(_sorted.output().toArray()) + ")";
+	}
 }

@@ -46,16 +46,9 @@ public class SortTest {
 			return o2.value.compareTo(o1.value);
 		}};
 		
-		final SignalChooser<ByRef<Integer>> chooser = new SignalChooser<ByRef<Integer>>() {
-			Map<ByRef<Integer>, Signal<?>[]> signals = new HashMap<ByRef<Integer>, Signal<?>[]>();
-			
-			@Override
-			public Signal<?>[] signalsToReceiveFrom(ByRef<Integer> element) {
-				if(!signals.containsKey(element))
-					signals.put(element, new Signal<?>[] { _registers.get(element).output() });
-				return signals.get(element);
-			}
-		};
+		final SignalChooser<ByRef<Integer>> chooser = new SignalChooser<ByRef<Integer>>() {	@Override public Signal<?>[] signalsToReceiveFrom(ByRef<Integer> element) {
+			return new Signal<?>[] { _registers.get(element).output() };
+		}};
 		
 		add(source, -5);
 		add(source, -2);
@@ -68,13 +61,9 @@ public class SortTest {
 
 	private static void add(ListRegister<ByRef<Integer>> source, int value) {
 		ByRef<Integer> byRefValue = ByRef.newInstance(value);
-		if(!_registers.containsKey(byRefValue)){
-			Register<Integer> register = new RegisterImpl<Integer>(value);
-			_registers.put(byRefValue, register);
-		}		
+		_registers.put(byRefValue, new RegisterImpl<Integer>(value));
 		_byRefs.put(key(value), byRefValue);
 		source.add(byRefValue);
-		
 	}
 
 	private static int key(int value) {

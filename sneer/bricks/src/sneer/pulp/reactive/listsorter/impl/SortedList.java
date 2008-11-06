@@ -33,6 +33,22 @@ final class SortedList<T> extends VisitorAdapter<T>{
 		}
 	}
 	
+	private void init() {
+		T tmp[] = _input.toArray();
+		Arrays.sort(tmp, _comparator);
+		for (T element : tmp) {
+			_sorted.add(element);
+			addReceiverToElement(element);
+		}
+	}
+	
+	private void initReceiver() {
+		_receiverAvoidGc = new Omnivore<ListValueChange<T>>(){@Override public void consume(ListValueChange<T> change) {
+			change.accept(SortedList.this);
+		}};
+		_input.addListReceiver(_receiverAvoidGc);
+	}
+	
 	private void removeReceiverFromElement(T element) {
 		synchronized (_elementReceivers) {
 			if (_chooser == null) return;
@@ -69,20 +85,6 @@ final class SortedList<T> extends VisitorAdapter<T>{
 				System.out.println(this);
 			}
 		};
-	}
-
-	private void init() {
-		T tmp[] = _input.toArray();
-		Arrays.sort(tmp, _comparator);
-		for (T element : tmp) 
-			_sorted.add(element);
-	}
-	
-	private void initReceiver() {
-		_receiverAvoidGc = new Omnivore<ListValueChange<T>>(){@Override public void consume(ListValueChange<T> change) {
-			change.accept(SortedList.this);
-		}};
-		_input.addListReceiver(_receiverAvoidGc);
 	}
 	
 	private void sortedAdd(T element) {

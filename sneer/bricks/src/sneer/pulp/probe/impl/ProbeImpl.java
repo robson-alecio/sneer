@@ -40,6 +40,7 @@ final class ProbeImpl implements Omnivore<Tuple> {
 
 
 	private Receiver<Boolean> createIsOnlineReceiver(Signal<Boolean> isOnlineSignal) {
+		System.out.println("Probe: " + System.identityHashCode(isOnlineSignal));
 		return new Receiver<Boolean>(isOnlineSignal){ @Override public void consume(Boolean isOnline) {
 			dealWithIsOnline(isOnline);
 		}};

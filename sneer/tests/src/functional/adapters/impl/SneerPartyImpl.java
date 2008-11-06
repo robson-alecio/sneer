@@ -147,6 +147,7 @@ public class SneerPartyImpl implements SneerParty {
 
 	private void waitUntilOnline(Contact contact) {
 		ByteConnection connection = _connectionManager.connectionFor(contact);
+		System.out.println("SneerParty: " + System.identityHashCode(connection.isOnline()));
 		while (!connection.isOnline().currentValue())
 			Threads.sleepWithoutInterruptions(1);
 	}

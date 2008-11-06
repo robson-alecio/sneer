@@ -23,7 +23,7 @@ public class RegisterImpl<VO> implements Register<VO> {
 		@Override
 		public void consume(VO newValue) {
 			
-			System.out.println("consuming: " + newValue);
+			//System.out.println("consuming: " + newValue);
 			
 			if (isSameValue(newValue)) return;
 			_currentValue = newValue;

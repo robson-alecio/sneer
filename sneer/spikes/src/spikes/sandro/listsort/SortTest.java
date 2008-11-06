@@ -57,7 +57,7 @@ public class SortTest {
 			}
 		};
 		
-		add(source, -4);
+		add(source, -5);
 		add(source, -2);
 		
 		ListSignal<ByRef<Integer>> sorted = sorter.sort(source.output(), comparator, chooser);
@@ -99,8 +99,8 @@ public class SortTest {
 			JToggleButton button = new JToggleButton("Test");
 			button.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 				changeValue(2);
-				changeValue(4);
-				changeValue(6);
+				changeValue(5);
+				changeValue(3);
 			}});
 			
 			frame.getContentPane().add(button, BorderLayout.SOUTH);
@@ -136,7 +136,7 @@ public class SortTest {
 		add(source, -3);
 		add(source, -1);
 		add(source, 0);
-		add(source, -5);
+		add(source, -4);
 		add(source, -6);
 	}
 }

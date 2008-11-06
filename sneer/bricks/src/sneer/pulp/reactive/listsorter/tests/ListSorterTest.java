@@ -168,35 +168,43 @@ public class ListSorterTest extends TestThatIsInjected {
 	@Test
 	public void signalChooserTest() {
 		ListRegister<Signal<Integer>> src = new ListRegisterImpl<Signal<Integer>>();
-		ListSignal<Signal<Integer>> sortedList = _sorter.sort(src.output(), integerComparator(), _chooser);
 
 		Register<Integer> r15 = new RegisterImpl<Integer>(15);
 		Register<Integer> r25 = new RegisterImpl<Integer>(25);
 		Register<Integer> r35 = new RegisterImpl<Integer>(35);
+		Register<Integer> r45 = new RegisterImpl<Integer>(45);
 		
 		Signal<Integer> s15 = signal(r15);
 		Signal<Integer> s25 = signal(r25);
 		Signal<Integer> s35 = signal(r35);
+		Signal<Integer> s45 = signal(r45);
 		
+		
+		ListSignal<Signal<Integer>> sortedList = _sorter.sort(src.output(), integerComparator(), _chooser);
+
 		src.add(s15);
 		src.add(s25);
 		src.add(s35);
+		src.add(s45);
 		
 		src.add(_10);
 		src.add(_20);
 		src.add(_30);
 		src.add(_40);
 		
-		TestUtils.assertSameContents(sortedList, _10, s15, _20, s25, _30, s35, _40);
+		TestUtils.assertSameContents(sortedList, _10, s15, _20, s25, _30, s35, _40, s45);
 		
 		r15.setter().consume(50);
-		TestUtils.assertSameContents(sortedList, _10, _20, s25, _30, s35, _40, s15);
+		TestUtils.assertSameContents(sortedList, _10, _20, s25, _30, s35, _40, s45, s15);
 		
 		r25.setter().consume(5);
-		TestUtils.assertSameContents(sortedList,  s25, _10, _20, _30, s35, _40, s15);
+		TestUtils.assertSameContents(sortedList,  s25, _10, _20, _30, s35, _40, s45, s15);
 		
 		r35.setter().consume(29);
-		TestUtils.assertSameContents(sortedList,  s25, _10, _20, s35, _30, _40, s15);
+		TestUtils.assertSameContents(sortedList,  s25, _10, _20, s35, _30, _40, s45, s15);
+		
+		r45.setter().consume(60);
+		TestUtils.assertSameContents(sortedList,  s25, _10, _20, s35, _30, _40, s15, s45);
 		
 	}
 	

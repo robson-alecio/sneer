@@ -16,13 +16,10 @@ import javax.swing.border.TitledBorder;
 import snapps.contacts.actions.ContactAction;
 import snapps.contacts.actions.ContactActionManager;
 import snapps.contacts.gui.ContactsGui;
-import snapps.contacts.gui.comparator.ContactInfoComparator;
 import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.list.ContactInfo;
 import sneer.pulp.contacts.list.ContactList;
-import sneer.pulp.reactive.listsorter.ListSorter;
-import sneer.pulp.reactive.listsorter.ListSorter.SignalChooser;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
@@ -31,15 +28,11 @@ import wheel.io.ui.graphics.Images;
 import wheel.lang.Functor;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Adapter;
-import wheel.reactive.lists.ListSignal;
 
 class ContactsGuiImpl implements ContactsGui {
 	
 	private static final Image ONLINE = getImage("online.png");
 	private static final Image OFFLINE = getImage("offline.png");
-	
-	@Inject
-	static private ContactInfoComparator _comparator;
 	
 	@Inject
 	static private InstrumentManager _instrumentManager;
@@ -53,20 +46,23 @@ class ContactsGuiImpl implements ContactsGui {
 	@Inject
 	static private ContactList _contacts;
 	
-	@Inject
-	static private ListSorter _sorter;
+//	@Inject
+//	static private ContactInfoComparator _comparator;
+//	
+//	@Inject
+//	static private ListSorter _sorter;
+//	
+//	private final SignalChooser<ContactInfo> _chooser;
+//
+//	private ListSignal<ContactInfo> _sortedList;
 	
-	private final SignalChooser<ContactInfo> _chooser;
-
-	private ListSignal<ContactInfo> _sortedList;
 	private ListWidget<ContactInfo> _contactList;
-
 	
 	ContactsGuiImpl(){
 		_instrumentManager.registerInstrument(this);
-		_chooser = new SignalChooser<ContactInfo>(){ @Override public Signal<?>[] signalsToReceiveFrom(ContactInfo element) {
-			return new Signal<?>[]{element.isOnline(), element.contact().nickname()};
-		}};
+//		_chooser = new SignalChooser<ContactInfo>(){ @Override public Signal<?>[] signalsToReceiveFrom(ContactInfo element) {
+//			return new Signal<?>[]{element.isOnline(), element.contact().nickname()};
+//		}};
 	} 
 
 	private static Image getImage(String fileName) {
@@ -75,8 +71,9 @@ class ContactsGuiImpl implements ContactsGui {
 	
 	@Override
 	public void init(Container container) {	
-		_sortedList = _sorter.sort(_contacts.output() , _comparator, _chooser);
-		_contactList = _rfactory.newList(_sortedList, new ContactLabelProvider());
+//		_sortedList = _sorter.sort(_contacts.output() , _comparator, _chooser);
+//		_contactList = _rfactory.newList(_sortedList, new ContactLabelProvider());
+		_contactList = _rfactory.newList(_contacts.output(), new ContactLabelProvider());
 		
 		JScrollPane scrollPane = new JScrollPane();
 		container.setLayout(new BorderLayout());

@@ -5,7 +5,6 @@ import java.util.Comparator;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
@@ -166,7 +165,6 @@ public class ListSorterTest extends TestThatIsInjected {
 		TestUtils.assertSameContents(sortedList, _01, _05, _10, _10, _20, _30);
 	}
 	
-	@Ignore
 	@Test
 	public void signalChooserTest() {
 		ListRegister<Signal<Integer>> src = new ListRegisterImpl<Signal<Integer>>();

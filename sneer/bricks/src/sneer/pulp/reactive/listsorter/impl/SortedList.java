@@ -5,6 +5,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
+import wheel.reactive.impl.Receiver;
+
 import sneer.pulp.reactive.listsorter.ListSorter.SignalChooser;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
@@ -19,7 +21,7 @@ final class SortedList<T> extends VisitorAdapter<T>{
 	private final ListSignal<T> _input;
 	private final Comparator<T> _comparator;
 	private final ListRegisterImpl<T> _sorted = new ListRegisterImpl<T>();
-	private final Map<T, Omnivore<Object>> _elementReceivers = new HashMap<T, Omnivore<Object>>();
+	private final Map<T, Receiver<Object>> _elementReceivers = new HashMap<T, Receiver<Object>>();
 	private Omnivore<ListValueChange<T>> _receiverAvoidGc;
 	private SignalChooser<T> _chooser;
 	
@@ -51,7 +53,7 @@ final class SortedList<T> extends VisitorAdapter<T>{
 			if (_chooser == null) return;
 			if (!_elementReceivers.containsKey(element) ) return;
 			
-			_elementReceivers.remove(element);
+			_elementReceivers.remove(element).removeFromSignals();;
 		}
 	}
 
@@ -59,16 +61,16 @@ final class SortedList<T> extends VisitorAdapter<T>{
 		synchronized (_elementReceivers) {
 			if (_chooser == null) return;
 			
-			Omnivore<Object> receiver = createElementReceiver(element);
+			Receiver<Object> receiver = createElementReceiver(element);
 			_elementReceivers.put(element, receiver);
 			
 			for (Signal<?> signal : _chooser.signalsToReceiveFrom(element))
-				signal.addReceiver(receiver);
+				receiver.addToSignal(signal);
 		}
 	}
 
-	private Omnivore<Object> createElementReceiver(final T element) {
-		return new Omnivore<Object>() { 
+	private Receiver<Object> createElementReceiver(final T element) {
+		return new Receiver<Object>() { 
 			boolean isFirstTime = true;
 			public void consume(Object ignored1) {
 				if(isFirstTime){

@@ -7,9 +7,10 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -37,7 +38,7 @@ public class MemoryMeterGuiImpl implements MemoryMeterGui {
 	TextWidget<JLabel> _maxUsedMemory;
 	TextWidget<JLabel> _currentMemory;
 
-	private Icon _memoryIcon = new ImageIcon(this.getClass().getResource("memory.png"));
+//	private Icon _memoryIcon = new ImageIcon(this.getClass().getResource("memory.png"));
 
 	public MemoryMeterGuiImpl() {
 		_instruments.registerInstrument(this);
@@ -56,18 +57,28 @@ public class MemoryMeterGuiImpl implements MemoryMeterGui {
 		root.setOpaque(false);
 		root.setLayout(new GridBagLayout());
 		
-		root.add(_currentMemory.getMainWidget(), new GridBagConstraints(0, 0, 1, 1, 1., 0,
-				GridBagConstraints.EAST, GridBagConstraints.NONE,
-				new Insets(2, 0, 2, 0), 0, 0));
-		_currentMemory.getMainWidget().setIcon(_memoryIcon);
-		
-		root.add(_maxUsedMemory.getMainWidget(), new GridBagConstraints(1,0, 1, 1, 1., 0,
+		JButton gc = new JButton("GC");
+		gc.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
+			System.gc();
+		}});
+
+		root.add(gc, new GridBagConstraints(0, 0, 1, 1, 1., 0,
 				GridBagConstraints.CENTER, GridBagConstraints.NONE,
 				new Insets(2, 0, 2, 0), 0, 0));
 		
-		root.add(_totalMemory, new GridBagConstraints(2, 0, 1, 1, 1., 0,
+		root.add(_currentMemory.getMainWidget(), new GridBagConstraints(1, 0, 1, 1, 1., 0,
+				GridBagConstraints.EAST, GridBagConstraints.NONE,
+				new Insets(2, 0, 2, 0), 0, 0));
+//		_currentMemory.getMainWidget().setIcon(_memoryIcon);
+		
+		root.add(_maxUsedMemory.getMainWidget(), new GridBagConstraints(2,0, 1, 1, 1., 0,
+				GridBagConstraints.CENTER, GridBagConstraints.NONE,
+				new Insets(2, 0, 2, 0), 0, 0));
+		
+		root.add(_totalMemory, new GridBagConstraints(3, 0, 1, 1, 1., 0,
 				GridBagConstraints.WEST, GridBagConstraints.NONE,
 				new Insets(2, 0, 2, 0), 0, 0));
+		
 		
 		changeLabelFont(_totalMemory);
 		changeLabelFont(_maxUsedMemory.getMainWidget());

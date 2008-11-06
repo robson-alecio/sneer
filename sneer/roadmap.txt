@@ -1,8 +1,6 @@
 ﻿MAIN ROADMAP
 ===================
 
-	- [Sandro] GC button in MemMeter instead of chip icon.
-
 	- [Sandro]  Free some space on the dashboard
 		- Sort contacts by Online, Nick.
 	

@@ -5,7 +5,6 @@ import java.util.Comparator;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
@@ -72,8 +71,11 @@ public class ListSorterTest extends TestThatIsInjected {
 		}});		
 		
 		ListRegister<Signal<Integer>> src = new ListRegisterImpl<Signal<Integer>>();
+	
+		src.add(_60);
+		src.remove(_60);
+
 		ListSignal<Signal<Integer>> sortedList = _sorter.sort(src.output(), integerComparator(), _chooser);
-		
 		Omnivore<ListValueChange<Signal<Integer>>> consumer = new Omnivore<ListValueChange<Signal<Integer>>>(){ @Override public void consume(ListValueChange<Signal<Integer>> value) {
 			value.accept(_visitor);
 		}};
@@ -96,10 +98,12 @@ public class ListSorterTest extends TestThatIsInjected {
 	@Test
 	public void removeTest() {
 		ListRegister<Signal<Integer>> src = new ListRegisterImpl<Signal<Integer>>();
-		ListSignal<Signal<Integer>> sortedList = _sorter.sort(src.output(), integerComparator(), _chooser);
 
 		src.add(_20);
 		src.add(_10);
+		
+		ListSignal<Signal<Integer>> sortedList = _sorter.sort(src.output(), integerComparator(), _chooser);
+
 		src.add(_20);
 		src.add(_30);
 		src.add(_20);
@@ -125,10 +129,12 @@ public class ListSorterTest extends TestThatIsInjected {
 	public void replaceTest() {
 		
 		ListRegister<Signal<Integer>> src = new ListRegisterImpl<Signal<Integer>>();
-		ListSignal<Signal<Integer>> sortedList = _sorter.sort(src.output(), integerComparator(), _chooser);
 
 		src.add(_30);
 		src.add(_30);
+		
+		ListSignal<Signal<Integer>> sortedList = _sorter.sort(src.output(), integerComparator(), _chooser);
+		
 		src.add(_20);
 		src.add(_20);
 		src.add(_10);
@@ -150,11 +156,12 @@ public class ListSorterTest extends TestThatIsInjected {
 	public void addTest() {
 		
 		ListRegister<Signal<Integer>> src = new ListRegisterImpl<Signal<Integer>>();
-		ListSignal<Signal<Integer>> sortedList = _sorter.sort(src.output(), integerComparator(), _chooser);
 
 		src.add(_20);
-		TestUtils.assertSameContents(sortedList, _20);
 		src.add(_10);
+		
+		ListSignal<Signal<Integer>> sortedList = _sorter.sort(src.output(), integerComparator(), _chooser);
+		
 		TestUtils.assertSameContents(sortedList, _10, _20);
 		src.addAt(1, _05);
 		TestUtils.assertSameContents(sortedList, _05, _10, _20);
@@ -166,7 +173,6 @@ public class ListSorterTest extends TestThatIsInjected {
 		TestUtils.assertSameContents(sortedList, _01, _05, _10, _10, _20, _30);
 	}
 	
-	@Ignore
 	@Test
 	public void signalChooserTest() {
 		ListRegister<Signal<Integer>> src = new ListRegisterImpl<Signal<Integer>>();

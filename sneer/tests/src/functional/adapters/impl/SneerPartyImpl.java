@@ -9,12 +9,13 @@ import sneer.kernel.container.Container;
 import sneer.kernel.container.Inject;
 import sneer.pulp.brickmanager.BrickManager;
 import sneer.pulp.clock.Clock;
+import sneer.pulp.connection.ByteConnection;
+import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.connection.SocketOriginator;
 import sneer.pulp.connection.SocketReceiver;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.deployer.BrickBundle;
-import sneer.pulp.deployer.BrickFile;
 import sneer.pulp.deployer.Deployer;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.pulp.keymanager.KeyManager;
@@ -43,6 +44,9 @@ public class SneerPartyImpl implements SneerParty {
 
 	@Inject
 	static private ContactManager _contactManager;
+
+	@Inject
+	static private ConnectionManager _connectionManager;
 	
 	@Inject
 	static private PortKeeper _sneerPortKeeper;
@@ -97,6 +101,9 @@ public class SneerPartyImpl implements SneerParty {
 		_internetAddressKeeper.add(contact, MOCK_ADDRESS, sneerParty.sneerPort());
 		
 		sneerParty.giveNicknameTo(this, this.ownName());
+		System.out.println("Waiting");
+		waitUntilOnline(contact);
+		System.out.println("OK");
 	}
 
 	private void storePublicKey(Contact contact, PublicKey publicKey) {
@@ -131,7 +138,18 @@ public class SneerPartyImpl implements SneerParty {
 		} catch (IllegalParameter e) {
 			throw new IllegalStateException(e);
 		}
+		
+		System.out.println("Waiting");
+		waitUntilOnline(contact);
+		System.out.println("OK");
+
     }
+
+	private void waitUntilOnline(Contact contact) {
+		ByteConnection connection = _connectionManager.connectionFor(contact);
+		while (!connection.isOnline().currentValue())
+			Threads.sleepWithoutInterruptions(1);
+	}
 
 	private Contact waitForContactGiven(PublicKey publicKey) {
 		while (true) {
@@ -163,18 +181,6 @@ public class SneerPartyImpl implements SneerParty {
 		return _keyManager.ownPublicKey();
 	}
 
-
-	@Override
-	public void meToo(SovereignParty party, String brickName) throws Exception {
-		BrickFile brick = party.brick(brickName);
-		//TODO: send copy via network
-		_brickManager.install(brick);
-	}
-
-	@Override
-	public BrickFile brick(String brickName) {
-		return _brickManager.brick(brickName);
-	}
 
 	@Override
 	public BrickBundle publishBricks(File sourceDirectory) {

@@ -5,7 +5,6 @@ import java.io.File;
 import snapps.wind.Shout;
 import sneer.kernel.container.Brick;
 import sneer.pulp.deployer.BrickBundle;
-import sneer.pulp.deployer.BrickFile;
 import sneer.pulp.keymanager.PublicKey;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
@@ -26,8 +25,6 @@ public interface SovereignParty {
 	
 
 	BrickBundle publishBricks(File sourceDirectory);
-	void meToo(SovereignParty party, String brickName) throws Exception;
-	BrickFile brick(String brickName);
 	Brick produce(Class<? extends Brick> brick);
 	
 	

@@ -13,7 +13,7 @@ import functional.SovereignParty;
 
 public abstract class Freedom5TestBase extends SovereignFunctionalTestBase {
 	
-	@Test (timeout = 4000)
+	@Test (timeout = 8000)
 	public void shoutToTheWind() {
 		
 		SovereignParty c = _community.createParty("Cid");

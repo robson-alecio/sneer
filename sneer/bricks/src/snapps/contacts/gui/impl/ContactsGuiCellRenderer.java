@@ -36,8 +36,10 @@ class ContactsGuiCellRenderer implements ListCellRenderer {
 		label.setIcon(icon);
 		label.setText(slabel.currentValue());
 		
-		if(!contactInfo.isOnline().currentValue())
-			label.setForeground(Color.LIGHT_GRAY);
+		if(!contactInfo.isOnline().currentValue()){
+			if(isSelected) label.setForeground(Color.GRAY);
+			else label.setForeground(Color.LIGHT_GRAY);
+		}
 
 		return label;
 	}

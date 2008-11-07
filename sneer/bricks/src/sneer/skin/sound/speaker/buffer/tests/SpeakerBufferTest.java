@@ -1,5 +1,8 @@
 package sneer.skin.sound.speaker.buffer.tests;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.Sequence;
@@ -21,7 +24,6 @@ import sneer.skin.sound.speaker.buffer.SpeakerBuffers;
 import wheel.lang.ImmutableByteArray;
 import wheel.lang.Omnivore;
 
-
 @RunWith(JMock.class)
 public class SpeakerBufferTest extends TestThatIsInjected {
 	
@@ -29,6 +31,8 @@ public class SpeakerBufferTest extends TestThatIsInjected {
 	
 	@Inject private static Clock _clock;
 	@Inject private static KeyManager _keyManager;
+
+	private final List<Long> _sequenceRecorder = new ArrayList<Long>();
 
 	private final ThreadPoolMock _threads = new ThreadPoolMock();
 
@@ -85,23 +89,24 @@ public class SpeakerBufferTest extends TestThatIsInjected {
 		feedInputInDifferentThread(buffer, input);
 		
 		expectOutputSequence(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 21, 600, 601, 602, -700, -701);
-		
 	}
 	
-	private Omnivore<? super PcmSoundPacket> sequenceRecorder() {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+	private Omnivore<PcmSoundPacket> sequenceRecorder() {
+		return new Omnivore<PcmSoundPacket>(){ @Override public void consume(PcmSoundPacket value) {
+			_sequenceRecorder.add(new Long(value.sequence));
+		}};
 	}
-
-	private void expectOutputSequence(@SuppressWarnings("unused") int... sequences) {
-		//Loop:
+	
+	private void expectOutputSequence(long... sequences) {
+		for (int i = 0; i < sequences.length; i++) {
 			_threads.stepper(0).step();
-			
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+			assertEquals(sequences[i], _sequenceRecorder.get(i).longValue()); 
+		}
 	}
 
 	private void feedInputInDifferentThread(SpeakerBuffer buffer, int[] input) {
 		for (int sequence : input)
-			buffer.consume(contactPacket(new byte[] { 7, 11, 13, 17 }, sequence));
+			buffer.consume(contactPacket(new byte[] { (byte) 7, 11, 13, 17 }, sequence));
 	}
 
 	@SuppressWarnings("deprecation")

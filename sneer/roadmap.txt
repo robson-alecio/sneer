@@ -1,8 +1,5 @@
 ﻿MAIN ROADMAP
 ===================
-
-	- [Sandro]  Free some space on the dashboard
-		- Sort contacts by Online, Nick.
 	
 	- Wind
 		- [Klaus] History - Hear shouts by peers shouted when I was off-line.

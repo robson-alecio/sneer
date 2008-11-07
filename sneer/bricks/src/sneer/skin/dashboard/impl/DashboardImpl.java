@@ -122,11 +122,6 @@ class DashboardImpl implements Dashboard, Runnable {
 			protected void elementToBeRemoved(Instrument element) {
 				throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 			}
-
-			@Override
-			protected void elementMovedTo(Instrument element, int newIndex) {
-				throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
-			}
 		};
 	}
 

@@ -13,6 +13,7 @@ public interface ListSorter extends Brick{
 		Signal<?>[] signalsToReceiveFrom(E element);
 	}
 	
+	<T> ListSignal<T> sort(ListSignal<T> input, Comparator<T> comparator);
 	<T> ListSignal<T> sort(ListSignal<T> input, Comparator<T> comparator, SignalChooser<T> chooser);
 
 }

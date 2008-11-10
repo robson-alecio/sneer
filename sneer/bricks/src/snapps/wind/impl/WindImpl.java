@@ -29,7 +29,7 @@ class WindImpl implements Wind, Omnivore<Shout> {
 		_environment.keep(Shout.class);
 		
 		_comparator = new Comparator<Shout>(){ @Override public int compare(Shout o1, Shout o2) {
-			return (int) (o2.publicationTime() - o1.publicationTime());
+			return (int) (o1.publicationTime() - o2.publicationTime());
 		}};
 		
 		_sortedShouts = _sorter.sort(_shoutsHeard.output(), _comparator);

@@ -56,7 +56,7 @@ class MicLine {
 		];
 
 		int read = _delegate.read(pcmBuffer, 0, pcmBuffer.length);
-		return PcmSoundPacket.newInstance(pcmBuffer, read, nextInt());
+		return PcmSoundPacket.newInstance(pcmBuffer, read, (short)nextInt());
 	}
 
 	private static void throwFriendly(String specifics) throws FriendlyException {

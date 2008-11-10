@@ -144,27 +144,27 @@ public class SpeakerTest extends TestThatIsInjected {
 
 	
 	private PcmSoundPacket myPacket(byte[] pcm) {
-		return pcmSoundPacketFor(_keyManager.ownPublicKey(), pcm, 1);
+		return pcmSoundPacketFor(_keyManager.ownPublicKey(), pcm, (short)1);
 	}
 
 	
-	private PcmSoundPacket contactPacket(byte[] pcm, int sequence) {
+	private PcmSoundPacket contactPacket(byte[] pcm, short sequence) {
 		return pcmSoundPacketFor(contactKey(), pcm, sequence);
 	}
 	
 	
-	private PcmSoundPacket pcmSoundPacketFor(PublicKey publicKey, final byte[] pcmPayload, int sequence) {
+	private PcmSoundPacket pcmSoundPacketFor(PublicKey publicKey, final byte[] pcmPayload, short sequence) {
 		return new PcmSoundPacket(publicKey, _clock.time(), new ImmutableByteArray(pcmPayload, pcmPayload.length), sequence);
 	}
 
 	
 	private PcmSoundPacket p1() {
-		return contactPacket(new byte[] { 1, 2, 3, 5 }, 1);
+		return contactPacket(new byte[] { 1, 2, 3, 5 }, (short)1);
 	}
 	
 	
 	private PcmSoundPacket p2() {
-		return contactPacket(new byte[] { 7, 11, 13, 17 }, 2);
+		return contactPacket(new byte[] { 7, 11, 13, 17 }, (short)2);
 	}
 
 

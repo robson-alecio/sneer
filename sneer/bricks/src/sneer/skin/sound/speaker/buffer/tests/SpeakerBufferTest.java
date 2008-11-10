@@ -34,7 +34,7 @@ public class SpeakerBufferTest extends TestThatIsInjected {
 	
 	@Inject private static KeyManager _keyManager;
 
-	private final List<Integer> _sequenceRecorder = new ArrayList<Integer>();
+	private final List<Short> _sequenceRecorder = new ArrayList<Short>();
 
 	private final ThreadPoolMock _threads = new ThreadPoolMock();
 
@@ -123,7 +123,7 @@ public class SpeakerBufferTest extends TestThatIsInjected {
 	
 	private void firstFeedInput(SpeakerBuffer buffer, int[] input) {
 		for (int i = 0; i < input.length; i++) {
-			int sequence = input[i];
+			short sequence = (short)input[i];
 			consumeSequence(buffer, sequence);
 			if(sequence == FIRT_GROUP_TRIGGER)
 				return;
@@ -131,7 +131,7 @@ public class SpeakerBufferTest extends TestThatIsInjected {
 	}
 	
 	private void consumeSequence(SpeakerBuffer buffer, int sequence) {
-		buffer.consume(contactPacket(new byte[] { (byte) 7, 11, 13, 17 }, sequence));
+		buffer.consume(contactPacket(new byte[] { (byte) 7, 11, 13, 17 }, (short)sequence));
 	}
 
 	@SuppressWarnings("deprecation")
@@ -139,23 +139,23 @@ public class SpeakerBufferTest extends TestThatIsInjected {
 		return _keyManager.generateMickeyMouseKey("contact");
 	}
 
-	private PcmSoundPacket contactPacket(byte[] pcm, int sequence) {
+	private PcmSoundPacket contactPacket(byte[] pcm, short sequence) {
 		return pcmSoundPacketFor(contactKey(), pcm, sequence);
 	}
 	
-	private PcmSoundPacket pcmSoundPacketFor(PublicKey publicKey, final byte[] pcmPayload, int sequence) {
+	private PcmSoundPacket pcmSoundPacketFor(PublicKey publicKey, final byte[] pcmPayload, short sequence) {
 		return new PcmSoundPacket(publicKey, _clock.time(), new ImmutableByteArray(pcmPayload, pcmPayload.length), sequence);
 	}
 	
 	private PcmSoundPacket p0() {
-		return contactPacket(new byte[] { 1, 2, 3, 5 }, 10);
+		return contactPacket(new byte[] { 1, 2, 3, 5 }, (short)10);
 	}
 	
 	private PcmSoundPacket p1() {
-		return contactPacket(new byte[] { 1, 2, 3, 5 }, 800);
+		return contactPacket(new byte[] { 1, 2, 3, 5 }, (short)800);
 	}
 	
 	private PcmSoundPacket p2() {
-		return contactPacket(new byte[] { 7, 11, 13, 17 }, 801);
+		return contactPacket(new byte[] { 7, 11, 13, 17 }, (short)801);
 	}
 }

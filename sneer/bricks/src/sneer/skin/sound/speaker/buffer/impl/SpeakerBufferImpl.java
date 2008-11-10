@@ -15,13 +15,16 @@ import wheel.lang.Threads;
 
 class SpeakerBufferImpl implements SpeakerBuffer {
 
+	private static final int MAX_INTERRUPTED = 30;
+	private static final int MAX_GAP = 500;
+
 	@Inject
 	static private ThreadPool _threads;
 	
 	private final Omnivore<? super PcmSoundPacket> _consumer;
 	private boolean _isRunning = true;
 
-	private PcmSoundPacket _lastPlayed = new PcmSoundPacket(null,0,null,0);
+	private int _lastPlayed = -1;
 	
 	private final SortedSet<PcmSoundPacket> _sortedSet = new TreeSet<PcmSoundPacket>(new Comparator<PcmSoundPacket>(){@Override public int compare(PcmSoundPacket packet1, PcmSoundPacket packet2) {
 		return packet1.sequence - packet2.sequence; 
@@ -45,7 +48,7 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 
 	@Override
 	public synchronized void consume(PcmSoundPacket packet) {
-		if(_lastPlayed.sequence>packet.sequence) return;
+		if(_lastPlayed>packet.sequence) return;
 		_sortedSet.add(packet);
 	}
 
@@ -57,11 +60,70 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 		
 		if (!_isRunning) return false;
 		
-		Iterator<PcmSoundPacket> iterator = _sortedSet.iterator();
-		_lastPlayed = iterator.next();
-		_consumer.consume(_lastPlayed);
-		iterator.remove();
-		
+		leftDrain(_lastPlayed);
+		drainOldPackets();
+		playUninterruptedPackets();
+		playInterruptedPackets();
 		return true;
+	}
+
+	private void drainOldPackets() {
+		Iterator<PcmSoundPacket> iterator = _sortedSet.iterator();
+		if(!iterator.hasNext()) return;
+		PcmSoundPacket previous = iterator.next();
+		
+		while (iterator.hasNext()) {
+			PcmSoundPacket packet = iterator.next();
+			if(packet.sequence  > previous.sequence + MAX_GAP){
+				_lastPlayed = packet.sequence-1;
+				leftDrain(previous.sequence);
+				return;
+			}
+			previous = packet;
+		}		
+	}
+
+	private void leftDrain(int limit) {
+		Iterator<PcmSoundPacket> iterator = _sortedSet.iterator();
+		while (iterator.hasNext()) {
+			PcmSoundPacket packet = iterator.next();
+			if(packet.sequence>limit) return;
+			System.out.println("drain: " + packet.sequence);
+			iterator.remove();
+			continue;
+		}	
+	}
+
+	private void playInterruptedPackets() {
+		if(_sortedSet.size()<2) return;
+		PcmSoundPacket lastPacket = _sortedSet.last();
+		int maxSequenceToPlay = lastPacket.sequence - MAX_INTERRUPTED;
+		Iterator<PcmSoundPacket> iterator = _sortedSet.iterator();
+		while (iterator.hasNext()) {
+			PcmSoundPacket packet = iterator.next();
+			if(packet.sequence>maxSequenceToPlay) return;
+			play(packet);
+			iterator.remove();
+		}	
+	}
+
+	private void playUninterruptedPackets() {
+		Iterator<PcmSoundPacket> iterator = _sortedSet.iterator();
+		while (iterator.hasNext()) {
+			PcmSoundPacket packet = iterator.next();
+			if(nextSequenceToPlay() != packet.sequence) return;
+			play(packet);
+			iterator.remove();
+		}
+	}
+	
+	private void play(PcmSoundPacket packet) {
+		_lastPlayed = packet.sequence;
+		_consumer.consume(packet);
+		System.out.println("play: " + packet.sequence);
+	}
+
+	private int nextSequenceToPlay() {
+		return _lastPlayed+1;
 	}
 }

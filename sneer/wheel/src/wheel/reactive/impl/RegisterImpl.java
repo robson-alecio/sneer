@@ -12,7 +12,9 @@ public class RegisterImpl<VO> implements Register<VO> {
 
 		@Override
 		public VO currentValue() {
-			return _currentValue;
+			synchronized (RegisterImpl.this) {
+				return _currentValue;
+			}
 		}
 
 		private static final long serialVersionUID = 1L;
@@ -22,18 +24,18 @@ public class RegisterImpl<VO> implements Register<VO> {
 
 		@Override
 		public void consume(VO newValue) {
-			
-			//System.out.println("consuming: " + newValue);
-			
 			if (isSameValue(newValue)) return;
-			_currentValue = newValue;
+
+			synchronized (RegisterImpl.this) {
+				_currentValue = newValue;
 			
-			output().notifyReceivers(newValue);
+				output().notifyReceivers(newValue);
+			}
 		}
 		
 	}
 
-	private VO _currentValue;
+	private volatile VO _currentValue;
 	private final Omnivore<VO> _setter = new MySetter();
 	private WeakReference<AbstractSignal<VO>> _output;
 	
@@ -50,9 +52,12 @@ public class RegisterImpl<VO> implements Register<VO> {
 	}
 
 
-	public AbstractSignal<VO> output() {
-		if (_output == null || _output.get() == null)
+	public synchronized AbstractSignal<VO> output() {
+		if (_output == null)
 			_output = new WeakReference<AbstractSignal<VO>>(new MyOutput());
+		else if	(_output.get() == null) {
+			_output = new WeakReference<AbstractSignal<VO>>(new MyOutput());
+		}
 		
 		return _output.get();
 	}

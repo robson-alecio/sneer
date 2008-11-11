@@ -40,7 +40,6 @@ final class ProbeImpl implements Omnivore<Tuple> {
 
 
 	private Receiver<Boolean> createIsOnlineReceiver(Signal<Boolean> isOnlineSignal) {
-		System.out.println("Probe: " + System.identityHashCode(isOnlineSignal));
 		return new Receiver<Boolean>(isOnlineSignal){ @Override public void consume(Boolean isOnline) {
 			dealWithIsOnline(isOnline);
 		}};
@@ -51,8 +50,6 @@ final class ProbeImpl implements Omnivore<Tuple> {
 			boolean wasOnline = _isOnline;
 			_isOnline = isOnline;
 
-			System.out.println(ownName() + sequence++ + "isOnline: " + isOnline);
-			
 			if (isOnline)
 				_tuples.addSubscription(Tuple.class, this);
 			else if (wasOnline) {
@@ -73,17 +70,15 @@ final class ProbeImpl implements Omnivore<Tuple> {
 		if (!isClearToSend(tuple)) return;
 		
 		synchronized (_isOnlineMonitor) {
-			if (!_isOnline) {
-				System.out.println("Discarding: " + tuple);
-				return;
-			}
+			if (!_isOnline)	return;
 			_scheduler.add(tuple);
 		}
 	}
 
 	private boolean isClearToSend(Tuple tuple) {
 		initContactsPKIfNecessary();
-		if (_contactsPK == null) return false;
+		if (_contactsPK == null)
+			return false;
 		
 		return !isEcho(tuple);
 	}
@@ -97,6 +92,7 @@ final class ProbeImpl implements Omnivore<Tuple> {
 		_contactsPK = _keyManager.keyGiven(_contact);
 	}
 
+	
 }
 
 

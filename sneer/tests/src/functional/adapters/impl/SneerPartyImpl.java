@@ -101,9 +101,7 @@ public class SneerPartyImpl implements SneerParty {
 		_internetAddressKeeper.add(contact, MOCK_ADDRESS, sneerParty.sneerPort());
 		
 		sneerParty.giveNicknameTo(this, this.ownName());
-		System.out.println("Waiting");
 		waitUntilOnline(contact);
-		System.out.println("OK");
 	}
 
 	private void storePublicKey(Contact contact, PublicKey publicKey) {
@@ -139,15 +137,13 @@ public class SneerPartyImpl implements SneerParty {
 			throw new IllegalStateException(e);
 		}
 		
-		System.out.println("Waiting");
 		waitUntilOnline(contact);
-		System.out.println("OK");
 
     }
 
 	private void waitUntilOnline(Contact contact) {
 		ByteConnection connection = _connectionManager.connectionFor(contact);
-		System.out.println("SneerParty: " + System.identityHashCode(connection.isOnline()));
+		
 		while (!connection.isOnline().currentValue())
 			Threads.sleepWithoutInterruptions(1);
 	}

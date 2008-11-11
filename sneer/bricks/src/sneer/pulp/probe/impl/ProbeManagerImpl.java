@@ -1,6 +1,8 @@
 package sneer.pulp.probe.impl;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import sneer.kernel.container.Inject;
 import sneer.pulp.connection.ByteConnection;
@@ -32,6 +34,8 @@ public class ProbeManagerImpl implements ProbeManager {
 	
 	@SuppressWarnings("unused")
 	private SimpleListReceiver<Contact> _contactListReceiverToAvoidGC;
+
+	private Set<ProbeImpl> _probes = new HashSet<ProbeImpl>();
 	
 
 	private static Serializer _serializer = new XStreamBinarySerializer();
@@ -63,7 +67,13 @@ public class ProbeManagerImpl implements ProbeManager {
 
 	private void initCommunications(Contact contact) {
 		ByteConnection connection = _connections.connectionFor(contact);
-		connection.initCommunications(new ProbeImpl(contact, connection.isOnline())._scheduler, createReceiver());
+		connection.initCommunications(createProbe(contact, connection)._scheduler, createReceiver());
+	}
+
+	private ProbeImpl createProbe(Contact contact, ByteConnection connection) {
+		ProbeImpl result = new ProbeImpl(contact, connection.isOnline());
+		_probes.add(result);
+		return result;
 	}
 
 	private Omnivore<byte[]> createReceiver() {

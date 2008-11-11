@@ -40,7 +40,7 @@ public class WindTest extends TestThatIsInjected {
 				continue;
 			}
 			
-			assertTrue(previusShout.publicationTime() > _shout.publicationTime());
+			assertTrue(previusShout.publicationTime() < _shout.publicationTime());
 			previusShout = _shout;
 		}
 	}

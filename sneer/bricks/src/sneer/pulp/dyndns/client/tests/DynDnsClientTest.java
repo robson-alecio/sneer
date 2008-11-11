@@ -161,7 +161,7 @@ Unacceptable Client Behavior
 		final Light light = lights.currentGet(0);
 		assertTrue(light.isOn());
 		if (expectedError instanceof FriendlyException) {
-			assertEquals(((FriendlyException)expectedError).getMessage(), light.caption());
+			assertEquals(((FriendlyException)expectedError).getMessage(), light.helpMessage());
 		}
 		assertSame(expectedError, light.error());
 		return light;

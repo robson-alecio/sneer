@@ -19,7 +19,6 @@ class ContactListImpl extends ListRegisterImpl<ContactInfo> implements ContactLi
 	@Inject
 	static private ContactManager _contacts;
 	
-	@SuppressWarnings("unused")
 	private Visitor<Contact> _visitor;
 	
 	private final Map<Contact, ContactInfo> _contactInfos = new HashMap<Contact, ContactInfo>();

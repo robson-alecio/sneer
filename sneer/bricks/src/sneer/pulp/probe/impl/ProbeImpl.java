@@ -7,7 +7,6 @@ import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
-import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Omnivore;
@@ -18,7 +17,6 @@ final class ProbeImpl implements Omnivore<Tuple> {
 
 	@Inject static private TupleSpace _tuples;
 	@Inject static private KeyManager _keyManager;
-	@Inject static private OwnNameKeeper _name;
 
 	
 	private final Contact _contact;
@@ -30,7 +28,6 @@ final class ProbeImpl implements Omnivore<Tuple> {
 	
 	@SuppressWarnings("unused")
 	private final Receiver<Boolean> _receiverToAvoidGC;
-	static private int sequence;
 
 	
 	ProbeImpl(Contact contact, Signal<Boolean> isOnline) {
@@ -57,11 +54,6 @@ final class ProbeImpl implements Omnivore<Tuple> {
 				_scheduler.drain();
 			}
 		}
-	}
-
-
-	private String ownName() {
-		return _name.name().currentValue();
 	}
 
 

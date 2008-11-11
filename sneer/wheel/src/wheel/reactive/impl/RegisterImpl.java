@@ -45,7 +45,7 @@ public class RegisterImpl<VO> implements Register<VO> {
 	}
 
 
-	public boolean isSameValue(VO value) {
+	private boolean isSameValue(VO value) {
 		if (value == _currentValue) return true; 
 		if (value != null && value.equals(_currentValue)) return true;
 		return false;

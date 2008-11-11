@@ -53,7 +53,6 @@ class WatchMeReceiver{
 
 	private void initGui() {
 		GuiThread.invokeAndWait(new Runnable(){	@Override public void run() {
-			System.out.println("Watchin '" + _contact.nickname().currentValue() + "'");
 			_windowWidget = _factory.newFrame(_contact.nickname());
 			JFrame frm = _windowWidget.getMainWidget();
 			frm.setBounds(0,0,1024,768);

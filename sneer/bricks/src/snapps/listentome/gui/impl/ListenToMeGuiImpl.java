@@ -104,8 +104,7 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 			@Override
 			public void run() {
 				isStarted = !isStarted;
-				System.out.println(_contact);
-				throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+				throw new wheel.lang.exceptions.NotImplementedYet("" + _contact); // Implement
 			}});
 	}
 

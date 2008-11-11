@@ -13,10 +13,10 @@ public interface BlinkingLights {
 	void turnOnIfNecessary(Light light, String caption, String helpMessage, Throwable t);
 	void turnOnIfNecessary(Light light, String caption, String helpMessage, Throwable t, int timeout);
 
-	Light turnOn(LightType type, String message);
-	Light turnOn(LightType type, String message, int timeToLive);
-	Light turnOn(LightType type, String message, Throwable t);
-	Light turnOn(LightType type, String message, Throwable t, int timeToLive);
+	Light turnOn(LightType type, String caption, String helpMessage);
+	Light turnOn(LightType type, String caption, String helpMessage, int timeToLive);
+	Light turnOn(LightType type, String caption, String helpMessage, Throwable t);
+	Light turnOn(LightType type, String caption, String helpMessage, Throwable t, int timeToLive);
 
 	void turnOffIfNecessary(Light light);
 

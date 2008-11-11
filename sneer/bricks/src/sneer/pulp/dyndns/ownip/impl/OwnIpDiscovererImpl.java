@@ -99,10 +99,9 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	private void turnOnErrorLightIfNecessary(IOException e) {
 		if (_light != null) return;
 		
-		String msg = "It was not possible to discover your ip. " +
-					 "Sneer will retry again in " + RETRY_TIME_MINUTES + " minutes.";
+		String msg = "Sneer will retry again in " + RETRY_TIME_MINUTES + " minutes.";
 		
-		_light  = _blinkingLights.turnOn(LightType.ERROR, msg, e);
+		_light  = _blinkingLights.turnOn(LightType.ERROR, "It was not possible to discover your ip.", msg, e);
 	}
 	
 	private void turnOffLightIfNecessary() {

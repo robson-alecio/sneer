@@ -96,7 +96,7 @@ class DashboardImpl implements Dashboard, Runnable {
 		try {
 			tray = new TrayIconImpl(logoIconURL());
 		} catch (SystemTrayNotSupported e1) {
-			_blinkingLights.turnOn(LightType.INFO, e1.getMessage() + " When closing the Sneer window, it will be minimized instead of closed.");
+			_blinkingLights.turnOn(LightType.INFO, "Minimizing Sneer Window", e1.getMessage() + " When closing the Sneer window, it will be minimized instead of closed.");
 			changeWindowCloseEventToMinimizeEvent();
 			return;
 		}

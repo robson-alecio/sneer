@@ -139,18 +139,18 @@ class DynDnsClientImpl implements DynDnsClient {
 	
 	private abstract class Sad extends State {
 		
-		Sad(String caption, Exception e) {
-			refreshErrorLight(caption, e);
+		Sad(String caption, String message, Exception e) {
+			refreshErrorLight(caption, message, e);
 		}
 
 		protected State retry() {
 			return new Requesting();
 		}
 		
-		private void refreshErrorLight(String caption, Exception e) {
+		private void refreshErrorLight(String caption, String message, Exception e) {
 			if(_light != null)
 				_blinkingLights.turnOffIfNecessary(_light);
-			_light = _blinkingLights.turnOn(LightType.ERROR, caption, e);
+			_light = _blinkingLights.turnOn(LightType.ERROR, caption, message, e);
 		}
 	}
 	
@@ -159,7 +159,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		static final int retryTimeoutInMinutes = 5;
 	
 		Waiting(IOException e) {
-			super("It was not possible to connect to the dyndns server. Sneer will retry again in " + retryTimeoutInMinutes + " minutes.", e);
+			super("Dyndns Error:", "It was not possible to connect to the dyndns server. Sneer will retry again in " + retryTimeoutInMinutes + " minutes.", e);
 			addAlarm(retryTimeoutImMillis());
 		}
 
@@ -192,7 +192,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		private final DynDnsAccount _lastAccount;
 
 		BadAccountState(UpdaterException e, DynDnsAccount account) {
-			super(e.getMessage(), e);
+			super("Bad Dyndns Account State", e.getMessage(), e);
 			_lastAccount = account;
 		}
 

@@ -34,7 +34,7 @@ class ScreenshotterImpl implements Screenshotter {
 		try {
 			return new Robot(_device);
 		} catch (AWTException e) {
-			_lights.turnOn(LightType.ERROR, "Screenshots wont work", e);
+			_lights.turnOn(LightType.ERROR, "Screenshots wont work",  "Get an expert sovereign friend to help you.", e);
 			return null;
 		}
 	}

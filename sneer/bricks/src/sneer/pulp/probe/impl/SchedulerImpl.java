@@ -17,7 +17,6 @@ class SchedulerImpl implements PacketScheduler {
 	private boolean _wasDrained = false;
 	private int _lastTupleSent;
 
-	
 	@Override
 	public byte[] highestPriorityPacketToSend() {
 		Tuple tuple = highestPriorityTupleToSend();
@@ -31,7 +30,6 @@ class SchedulerImpl implements PacketScheduler {
 		_lastTupleSent = _toSend.size() - 1;
 		return _toSend.get(_lastTupleSent);
 	}
-
 
 	@Override
 	public synchronized void previousPacketWasSent() {
@@ -49,5 +47,4 @@ class SchedulerImpl implements PacketScheduler {
 		_toSend.add(tuple);
 		notify();
 	}
-
 }

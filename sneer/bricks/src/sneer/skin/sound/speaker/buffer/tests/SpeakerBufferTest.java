@@ -8,6 +8,7 @@ import org.jmock.Mockery;
 import org.jmock.Sequence;
 import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -74,6 +75,7 @@ public class SpeakerBufferTest extends TestThatIsInjected {
 	}
 	
 	@Test
+	@Ignore
 	public void sequencing() {
 		int[] input = new int[] {
 			0, 1, 2, 3, //Happy
@@ -83,8 +85,8 @@ public class SpeakerBufferTest extends TestThatIsInjected {
 			20, 22, 21, //Different order, with gap: will wait
 			51, // More than 30 gap since last played (11): will cause 20, 21 to be played.
 			600, 601, 602, // More than 500 gap: will cause buffer to drain (22, 51 will not be played)
-			604//, //Gap
-			//-700, -701 // More than 500 gap in the other direction will cause buffer to drain (604 will not be played)
+			604, //Gap
+			-700, -701 // More than 500 gap in the other direction will cause buffer to drain (604 will not be played)
 		};
 
 		SpeakerBuffer buffer = _subject.createBufferFor(sequenceRecorder());
@@ -108,12 +110,12 @@ public class SpeakerBufferTest extends TestThatIsInjected {
 		consumeSequence(buffer, 602); 
 		_threads.stepper(0).step();   // drain 22, 51
 		
-//		consumeSequence(buffer, 604);
-//		_threads.stepper(0).step();   // gap
-//		
-//		consumeSequence(buffer, -700);
-//		consumeSequence(buffer, -701);
-//		_threads.stepper(0).step(); // drain 604, sort and play others
+		consumeSequence(buffer, 604);
+		_threads.stepper(0).step();   // gap
+		
+		consumeSequence(buffer, -700);
+		consumeSequence(buffer, -701);
+		_threads.stepper(0).step(); // drain 604, sort and play others
 		
 		for (int i = 0; i < sequences.length; i++) {
 			assertEquals(sequences[i], _sequenceRecorder.get(i).longValue()); 

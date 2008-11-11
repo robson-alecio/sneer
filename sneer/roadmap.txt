@@ -7,6 +7,7 @@
 			
 	- Voice Calls
 		- First Step: When I press the button I listen to everyone and everyone listens to me.
+			- SpeakerBuffer - Unignore SpeakerBufferTest.sequencing().
 			- [Douglas] PCM to Speex codec
 			- Block PCM tuples from being sent over the wire
 		- Second Step: Rooms.

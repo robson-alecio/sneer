@@ -1,6 +1,5 @@
 package wheel.reactive.impl;
 
-import java.io.Serializable;
 import java.lang.ref.WeakReference;
 
 import wheel.lang.Omnivore;
@@ -8,7 +7,7 @@ import wheel.reactive.Register;
 
 public class RegisterImpl<VO> implements Register<VO> {
 
-	class MyOutput extends AbstractSignal<VO> implements Serializable {
+	class MyOutput extends AbstractSignal<VO> {
 
 		@Override
 		public VO currentValue() {
@@ -17,26 +16,25 @@ public class RegisterImpl<VO> implements Register<VO> {
 			}
 		}
 
-		private static final long serialVersionUID = 1L;
 	}
 
-	class MySetter implements Omnivore<VO>, Serializable { private static final long serialVersionUID = 1L;
+	class MySetter implements Omnivore<VO> {
 
 		@Override
 		public void consume(VO newValue) {
-			if (isSameValue(newValue)) return;
-
 			synchronized (RegisterImpl.this) {
+				if (isSameValue(newValue)) return;
+
 				_currentValue = newValue;
 			
+				if (_output == null) return;
 				output().notifyReceivers(newValue);
 			}
 		}
 		
 	}
 
-	private volatile VO _currentValue;
-	private final Omnivore<VO> _setter = new MySetter();
+	private VO _currentValue;
 	private WeakReference<AbstractSignal<VO>> _output;
 	
 	public RegisterImpl(VO initialValue) {
@@ -64,8 +62,7 @@ public class RegisterImpl<VO> implements Register<VO> {
 
 
 	public Omnivore<VO> setter() {
-		return _setter;
+		return new MySetter();
 	}
 
-	private static final long serialVersionUID = 1L;
 }

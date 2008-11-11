@@ -83,15 +83,13 @@ public class SpeakerBufferTest extends TestThatIsInjected {
 			20, 22, 21, //Different order, with gap: will wait
 			51, // More than 30 gap since last played (11): will cause 20, 21 to be played.
 			600, 601, 602, // More than 500 gap: will cause buffer to drain (22, 51 will not be played)
-			604, //Gap
-			Short.MAX_VALUE, Short.MAX_VALUE-2, Short.MAX_VALUE-1, //Move to Begin (x -1)
-			-Short.MAX_VALUE+1, -Short.MAX_VALUE //Play after previous line 
+			604//, //Gap
+			//-700, -701 // More than 500 gap in the other direction will cause buffer to drain (604 will not be played)
 		};
 
 		SpeakerBuffer buffer = _subject.createBufferFor(sequenceRecorder());
 		
-		expectOutputSequence( input, buffer, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 21, 600, 601, 602 , 
-		-Short.MAX_VALUE-3, -Short.MAX_VALUE-2, -Short.MAX_VALUE-1, -Short.MAX_VALUE, -Short.MAX_VALUE+1);
+		expectOutputSequence( input, buffer, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 21, 600, 601, 602);// , -700, -701);
 	}
 	
 	private Omnivore<PcmSoundPacket> sequenceRecorder() {
@@ -110,15 +108,12 @@ public class SpeakerBufferTest extends TestThatIsInjected {
 		consumeSequence(buffer, 602); 
 		_threads.stepper(0).step();   // drain 22, 51
 		
-		consumeSequence(buffer, 604);
-		_threads.stepper(0).step();   // gap
-		
-		consumeSequence(buffer, Short.MAX_VALUE);
-		consumeSequence(buffer, Short.MAX_VALUE-2);
-		consumeSequence(buffer, Short.MAX_VALUE-1);
-		consumeSequence(buffer, -Short.MAX_VALUE);
-		consumeSequence(buffer, -Short.MAX_VALUE+1);
-		_threads.stepper(0).step(); // drain 604, sort and play others
+//		consumeSequence(buffer, 604);
+//		_threads.stepper(0).step();   // gap
+//		
+//		consumeSequence(buffer, -700);
+//		consumeSequence(buffer, -701);
+//		_threads.stepper(0).step(); // drain 604, sort and play others
 		
 		for (int i = 0; i < sequences.length; i++) {
 			assertEquals(sequences[i], _sequenceRecorder.get(i).longValue()); 

@@ -29,7 +29,7 @@ public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 	private void notify(ReceiverHolder<Omnivore<VC>> reference, VC valueChange) {
 		Omnivore<VC> receiver = reference.get();
 		if (receiver == null) {
-			//log("Receiver has been garbage collected. ({})", reference._alias);
+			log("Receiver has been garbage collected. ({})", reference._alias);
 			_receivers.remove(reference);
 			return;
 		}

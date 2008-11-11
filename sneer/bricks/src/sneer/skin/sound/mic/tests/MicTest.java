@@ -44,7 +44,7 @@ public class MicTest {
 	@Test
 	public void testPacketSequence() throws Exception {
 		
-		final HashMap<Short, PcmSoundPacket> seenPackets = new HashMap<Short, PcmSoundPacket>();
+		final HashMap<Integer, PcmSoundPacket> seenPackets = new HashMap<Integer, PcmSoundPacket>();
 		tupleSpace.addSubscription(PcmSoundPacket.class, new Omnivore<PcmSoundPacket>() { @Override public void consume(PcmSoundPacket packet) {
 			seenPackets.put(packet.sequence, packet);
 		}});

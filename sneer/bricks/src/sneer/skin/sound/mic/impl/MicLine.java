@@ -20,6 +20,8 @@ class MicLine {
 	@Inject
 	static private Audio _audio;
 	
+	private static boolean isCrescentSequence = true;
+	
 	static private TargetDataLine _delegate;
 	
 	static void close() {
@@ -66,7 +68,11 @@ class MicLine {
 	private static final AtomicInteger _ids = new AtomicInteger();
 
 	private static int nextInt() {
-		return _ids.incrementAndGet();
+		if(_ids.shortValue() == Short.MAX_VALUE) isCrescentSequence = false;
+		if(_ids.shortValue() == Short.MIN_VALUE) isCrescentSequence = true;
+		
+		if(isCrescentSequence)
+			return _ids.incrementAndGet();
+		return -_ids.decrementAndGet();
 	}
-
 }

@@ -18,9 +18,6 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 	private static final int MAX_INTERRUPTED = 30;
 	private static final int MAX_GAP = 500;
 
-	@Inject
-	static private ThreadPool _threads;
-	
 	private final Omnivore<? super PcmSoundPacket> _consumer;
 	private boolean _isRunning = true;
 
@@ -30,7 +27,8 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 		return packet1.sequence - packet2.sequence; 
 	}});
 
-	{
+	@Inject
+	static private ThreadPool _threads; {
 		_threads.registerStepper(new Stepper() { @Override public boolean step() {
 			return doStep();
 		}});
@@ -48,7 +46,6 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 
 	@Override
 	public synchronized void consume(PcmSoundPacket packet) {
-		if(_lastPlayed>packet.sequence) return;
 		_sortedSet.add(packet);
 	}
 
@@ -60,11 +57,36 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 		
 		if (!_isRunning) return false;
 		
+		tryInvertBuffer();
 		leftDrain(_lastPlayed);
 		drainOldPackets();
 		playUninterruptedPackets();
 		playInterruptedPackets();
 		return true;
+	}
+
+	private void tryInvertBuffer() {
+		if(_sortedSet.size()<3) return;
+		
+		PcmSoundPacket first = _sortedSet.first();
+		if(first.sequence>=0) return;
+		
+		PcmSoundPacket last = _sortedSet.last();
+		if(last.sequence<0) return;
+		
+		if(last.sequence - first.sequence < Short.MAX_VALUE ) return; 
+		
+		int counter = 1;
+		while(last.sequence>0){
+			_sortedSet.remove(last);
+			if(last.sequence > Short.MAX_VALUE-500){
+				ReverseSequence reverseSequence = new ReverseSequence(last, -Short.MAX_VALUE - counter);
+				_sortedSet.add(reverseSequence);
+				_lastPlayed = reverseSequence.sequence-1;
+				counter++;			
+			}  
+			last = _sortedSet.last();
+		}
 	}
 
 	private void drainOldPackets() {
@@ -88,7 +110,6 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 		while (iterator.hasNext()) {
 			PcmSoundPacket packet = iterator.next();
 			if(packet.sequence>limit) return;
-			System.out.println("drain: " + packet.sequence);
 			iterator.remove();
 			continue;
 		}	
@@ -120,10 +141,16 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 	private void play(PcmSoundPacket packet) {
 		_lastPlayed = packet.sequence;
 		_consumer.consume(packet);
-		System.out.println("play: " + packet.sequence);
 	}
 
 	private int nextSequenceToPlay() {
 		return _lastPlayed+1;
+	}
+}
+
+class ReverseSequence extends PcmSoundPacket{
+
+	ReverseSequence(PcmSoundPacket packet, int seq) {
+		super(packet.publisher(), packet.publicationTime(), packet.payload, seq);
 	}
 }

@@ -31,7 +31,6 @@ public class WindTest extends TestThatIsInjected {
 			_tupleSpace.publish(shout);
 		}
 		
-		
 		Shout previusShout = null;
 		for (Shout _shout : _wind.shoutsHeard()) {
 			

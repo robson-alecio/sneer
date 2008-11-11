@@ -13,6 +13,7 @@
 					- Do simple regression tests.
 				- Move speex jar to the brick lib folder. See other bricks for examples.
 				- Make all classes in sneer.skin.sound.kernel.impl package local instead of public.
+				- Inject the codec in MainDemoBrickImpl.  
 			- Block PCM tuples from being sent over the wire
 		- Second Step: Rooms.
 

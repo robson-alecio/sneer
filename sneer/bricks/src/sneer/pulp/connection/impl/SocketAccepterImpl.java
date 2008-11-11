@@ -110,7 +110,7 @@ class SocketAccepterImpl implements SocketAccepter {
 		try {
 			_serverSocket = _network.openServerSocket(port);
 			_lights.turnOffIfNecessary(_cantOpenServerSocket);
-			_lights.turnOn(LightType.GOOD_NEWS, "TCP port opened: " + port, "Your Sneer is using a TCP port number " + port + " to connect with others. Everything is ok!", 7000);
+			_lights.turnOn(LightType.GOOD_NEWS, "TCP port opened: " + port, "Sneer has successfully opened TCP port " + port + " to receive incoming connections from others.", 7000);
 		} catch (IOException e) {
 			if (!_isStopped)
 				_lights.turnOnIfNecessary(_cantOpenServerSocket, "Unable to listen on TCP port " + port, helpMessage(), e);

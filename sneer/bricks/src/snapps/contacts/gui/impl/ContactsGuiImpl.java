@@ -132,7 +132,8 @@ class ContactsGuiImpl implements ContactsGui {
 			JList list = _contactList.getMainWidget();
 			int index = list.locationToIndex(e.getPoint());
 			list.getSelectionModel().setSelectionInterval(index, index);
-			Contact contact = (Contact) list.getSelectedValue();
+			ContactInfo contactInfo = (ContactInfo) list.getSelectedValue();
+			Contact contact = contactInfo.contact();
 			
 			JPopupMenu popupMain = new JPopupMenu();	
 			for (ContactAction action : _actionsManager.actions()) {

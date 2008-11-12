@@ -66,6 +66,8 @@ public class TupleSpaceTest extends TestThatIsInjected {
 
 		System.gc();
 		assertEquals(0, _garbageCollectedCounter);
+		
+		assertEquals(1042, _subject.keptTuples().size());
 	}
 
 

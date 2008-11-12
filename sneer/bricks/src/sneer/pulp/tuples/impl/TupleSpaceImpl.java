@@ -3,6 +3,7 @@ package sneer.pulp.tuples.impl;
 import static wheel.lang.Types.cast;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -107,8 +108,13 @@ public class TupleSpaceImpl implements TupleSpace {
 	}
 
 	@Override
-	public void keep(Class<? extends Tuple> tupleType) {
+	public synchronized void keep(Class<? extends Tuple> tupleType) {
 		_typesToKeep.add(tupleType);
+	}
+
+	@Override
+	public synchronized Collection<Tuple> keptTuples() {
+		return new ArrayList<Tuple>(_keptTuples);
 	}
 
 }

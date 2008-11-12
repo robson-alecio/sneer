@@ -3,7 +3,6 @@ package functional.freedom5;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import wheel.lang.Collections;
@@ -41,7 +40,7 @@ public abstract class Freedom5TestBase extends SovereignFunctionalTestBase {
 		
 	}
 	
-	@Ignore
+
 	@Test(timeout=4000)
 	public void canHearPastShouts() {
 		

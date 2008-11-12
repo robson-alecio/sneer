@@ -47,13 +47,20 @@ final class ProbeImpl implements Omnivore<Tuple> {
 			boolean wasOnline = _isOnline;
 			_isOnline = isOnline;
 
-			if (isOnline)
+			if (isOnline) {
 				_tuples.addSubscription(Tuple.class, this);
-			else if (wasOnline) {
+				sendKeptTuples();
+			} else if (wasOnline) {
 				_tuples.removeSubscription(this);
 				_scheduler.drain();
 			}
 		}
+	}
+
+
+	private void sendKeptTuples() {
+		for (Tuple kept : _tuples.keptTuples())
+			consume(kept);
 	}
 
 

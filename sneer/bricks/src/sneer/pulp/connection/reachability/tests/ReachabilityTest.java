@@ -11,7 +11,6 @@ import sneer.pulp.clock.Clock;
 import sneer.pulp.connection.mocks.SocketAccepterMock;
 import sneer.pulp.connection.reachability.ReachabilitySentinel;
 import sneer.pulp.network.ByteArraySocket;
-import wheel.io.Logger;
 
 public class ReachabilityTest extends TestThatIsInjected {
 	
@@ -36,9 +35,6 @@ public class ReachabilityTest extends TestThatIsInjected {
 
 	@Test
 	public void testBlinkingLightWhenUnreachable() throws Exception {
-		
-		Logger.redirectTo(System.out);
-		
 		assertEquals(0, _lights.lights().currentSize());
 		
 		_clock.advanceTime(30*1000);

@@ -18,6 +18,22 @@ import wheel.reactive.lists.impl.ListRegisterImpl;
 
 final class SortedList<T> extends VisitorAdapter<T>{
 	
+	private class ElementReceiver extends Receiver<Object> {
+		
+		private final T _element;
+		private volatile boolean _isActive;
+
+		ElementReceiver(T element) {
+			_element = element;
+		}
+
+		@Override
+		public void consume(Object ignored) {
+			if (!_isActive) return;
+			move(_element);
+		}
+	}
+
 	private final ListSignal<T> _input;
 	private final Comparator<T> _comparator;
 	private final ListRegisterImpl<T> _sorted = new ListRegisterImpl<T>();
@@ -53,7 +69,7 @@ final class SortedList<T> extends VisitorAdapter<T>{
 			if (_chooser == null) return;
 			if (!_elementReceivers.containsKey(element) ) return;
 			
-			_elementReceivers.remove(element).removeFromSignals();;
+			_elementReceivers.remove(element).removeFromSignals();
 		}
 	}
 
@@ -61,26 +77,16 @@ final class SortedList<T> extends VisitorAdapter<T>{
 		synchronized (_elementReceivers) {
 			if (_chooser == null) return;
 			
-			Receiver<Object> receiver = createElementReceiver(element);
+			ElementReceiver receiver = new ElementReceiver(element);
 			_elementReceivers.put(element, receiver);
 			
 			for (Signal<?> signal : _chooser.signalsToReceiveFrom(element))
 				receiver.addToSignal(signal);
+			
+			receiver._isActive = true;
 		}
 	}
 
-	private Receiver<Object> createElementReceiver(final T element) {
-		return new Receiver<Object>() { 
-			boolean isFirstTime = true;
-			public void consume(Object ignored1) {
-				if(isFirstTime){
-					isFirstTime = false;
-					return;
-				}
-				move(element);
-			}
-		};
-	}
 
 	private int findSortedLocation(T element) {
 		T[] array = _sorted.output().toArray();

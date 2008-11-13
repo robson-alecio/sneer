@@ -11,16 +11,16 @@ public class MainDemo {
 		try {
 			tryToRun(args);
 		} catch (ArrayIndexOutOfBoundsException e) {
-			showUsageMessage();
+			exitWithUsageMessage();
 		} catch (Exception e) {
 			e.printStackTrace();
-			showUsageMessage();
-			System.exit(1);
+			exitWithUsageMessage();
 		}
 	}
 
-	private static void showUsageMessage() {
+	private static void exitWithUsageMessage() {
 		System.err.println("\nUsage: MainDemo yourOwnName [dynDnsUser dnyDnsPassword]\n");
+		System.exit(1);
 	}
 
 	private static void tryToRun(String[] args) throws Exception {

@@ -71,7 +71,7 @@ public class ListSignalModel<T> extends AbstractListModel {
 		@Override
 		public void elementReplaced(final int index, T oldValue, T newValue) {
 			addReceiverToElement(newValue);
-			contentsChanges(index);
+			contentsChanged(index);
 		}
 
 		@Override
@@ -120,12 +120,12 @@ public class ListSignalModel<T> extends AbstractListModel {
 			int i = 0;
 			for (T candidate : _input) {  //Optimize
 				if (candidate == element)
-					contentsChanges(i);
+					contentsChanged(i);
 				i++;
 			}}};
 	}
 
-	private void contentsChanges(final int index) {
+	private void contentsChanged(final int index) {
 		GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
 			fireContentsChanged(ListSignalModel.this, index, index);
 		}});

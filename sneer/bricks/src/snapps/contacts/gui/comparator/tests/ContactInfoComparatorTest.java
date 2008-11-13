@@ -8,7 +8,7 @@ import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.list.ContactInfo;
 import sneer.pulp.reactive.listsorter.ListSorter;
-import sneer.pulp.reactive.listsorter.ListSorter.SignalChooser;
+import sneer.pulp.reactive.signalchooser.ElementsObserverFactory.SignalChooser;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Constant;
 import wheel.reactive.lists.ListRegister;

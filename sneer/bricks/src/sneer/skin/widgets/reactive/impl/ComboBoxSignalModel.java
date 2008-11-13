@@ -1,19 +1,16 @@
-package wheel.io.ui.impl;
+package sneer.skin.widgets.reactive.impl;
 
 import javax.swing.ComboBoxModel;
 
+import sneer.pulp.reactive.signalchooser.ElementsObserverFactory.SignalChooser;
 import wheel.reactive.lists.ListSignal;
 
-public class ComboBoxSignalModel<T> extends ListSignalModel<T> implements ComboBoxModel {
+public class ComboBoxSignalModel<T> extends ListSignalModelImpl<T> implements ComboBoxModel {
 
 	private Object _selectedItem;
 
-	public ComboBoxSignalModel(ListSignal<T> input, SignalChooser<T> chooser) {
+	ComboBoxSignalModel(ListSignal<T> input, SignalChooser<T> chooser) {
 		super(input, chooser);
-	}
-
-	public ComboBoxSignalModel(ListSignal<T> input) {
-		super(input);
 	}
 
 	@Override

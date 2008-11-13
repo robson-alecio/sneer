@@ -8,8 +8,10 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ListCellRenderer;
 
+import sneer.pulp.reactive.signalchooser.ElementsObserverFactory.SignalChooser;
 import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.LabelProvider;
+import sneer.skin.widgets.reactive.ListSignalModel;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
@@ -95,6 +97,11 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 	}
 	
 	@Override
+	public <T> ListSignalModel<T> newListSignalModel(ListSignal<T> input, SignalChooser<T> chooser) {
+		return new ListSignalModelImpl<T>(input, chooser);
+	}
+	
+	@Override
 	public WindowWidget<JFrame> newFrame(Signal<String> source) {
 		GuiThread.assertInGuiThread();
 		return new RFrameImpl(source);
@@ -105,6 +112,4 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 		GuiThread.assertInGuiThread();
 		return new RFrameImpl(source, setter);
 	}
-
-
 }

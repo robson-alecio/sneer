@@ -1,4 +1,4 @@
-package wheel.io.ui.impl.tests;
+package sneer.skin.widgets.reactive.tests;
 
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
@@ -6,16 +6,21 @@ import javax.swing.event.ListDataListener;
 import org.junit.Assert;
 import org.junit.Test;
 
-import wheel.io.ui.impl.ListSignalModel;
-import wheel.io.ui.impl.ListSignalModel.SignalChooser;
+import sneer.kernel.container.Inject;
+import sneer.kernel.container.tests.TestThatIsInjected;
+import sneer.pulp.reactive.signalchooser.ElementsObserverFactory.SignalChooser;
+import sneer.skin.widgets.reactive.ListSignalModel;
+import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 
-public class ListSignalModelTest {
+public class ListSignalModelTest extends TestThatIsInjected {
 
+	@Inject private static ReactiveWidgetFactory _factory; 
+	
 	private ListRegister<Register<String>> _listRegister = new ListRegisterImpl<Register<String>>();
 	private StringBuilder _events;
 
@@ -26,14 +31,14 @@ public class ListSignalModelTest {
 		addElement("0");
 		assertEvents("");
 		
-		ListSignalModel<Register<String>> subject = new ListSignalModel<Register<String>>(_listRegister.output(), chooser());
+		ListSignalModel<Register<String>> subject = _factory.newListSignalModel(_listRegister.output(), chooser());
 		subject.addListDataListener(eventRecorder());
 		
 		Register<String> r1 = addElement("1");
 		Register<String> r2 = addElement("2");
 		addElement("3");
 		addElement("4");
-		assertEvents("Changed 1 1, Added 1 1, Changed 2 2, Added 2 2, Changed 3 3, Added 3 3, Changed 4 4, Added 4 4, ");
+		assertEvents("Added 1 1, Added 2 2, Added 3 3, Added 4 4, ");
 		
 		r1.setter().consume("1b");
 		r2.setter().consume("2b");
@@ -83,7 +88,6 @@ public class ListSignalModelTest {
 	private void assertEvents(String expected) {
 		Assert.assertEquals(expected, _events.toString());
 		clearEvents();
-		
 	}
 
 	private void recordEvent(ListDataEvent event) {
@@ -104,6 +108,4 @@ public class ListSignalModelTest {
 	private void clearEvents() {
 		_events = new StringBuilder();
 	}
-	
-
 }

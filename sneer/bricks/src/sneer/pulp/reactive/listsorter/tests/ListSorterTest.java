@@ -10,7 +10,7 @@ import org.junit.Test;
 import sneer.kernel.container.Inject;
 import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.reactive.listsorter.ListSorter;
-import sneer.pulp.reactive.listsorter.ListSorter.SignalChooser;
+import sneer.pulp.reactive.signalchooser.ElementsObserverFactory.SignalChooser;
 import wheel.lang.Omnivore;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;

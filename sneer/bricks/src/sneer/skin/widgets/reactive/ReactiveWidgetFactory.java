@@ -8,6 +8,8 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ListCellRenderer;
 
+import sneer.pulp.reactive.signalchooser.ElementsObserverFactory.SignalChooser;
+
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
@@ -32,6 +34,7 @@ public interface ReactiveWidgetFactory {
 
 	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> labelProvider);
 	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> labelProvider,	ListCellRenderer cellRenderer);
+	<T> ListSignalModel<T> newListSignalModel(ListSignal<T> input, SignalChooser<T> chooser);
 	
 	WindowWidget<JFrame> newFrame(Signal<String> source);
 	WindowWidget<JFrame> newFrame(Signal<String> source, Omnivore<String> setter);

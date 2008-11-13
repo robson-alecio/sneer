@@ -1,6 +1,11 @@
 ﻿MAIN ROADMAP
 ===================
 	
+	- [Sandro] Eliminate repeated code: ListSignalModel and SortedList. ListSignalModel should also have the ElementReceiver._isActive logic that SortedList now has. 
+		- *Observer, *Listener -> *Receiver
+	
+	- MemMeter: MB Used: X [GCButton] Peak: Y (Z Max)  - Where GCButton is a small recycling logo.
+	
 	- Wind
 		- Persist Shouts.
 			

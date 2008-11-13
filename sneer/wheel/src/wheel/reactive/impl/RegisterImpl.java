@@ -11,9 +11,7 @@ public class RegisterImpl<VO> implements Register<VO> {
 
 		@Override
 		public VO currentValue() {
-			synchronized (RegisterImpl.this) {
-				return _currentValue;
-			}
+			return _currentValue;
 		}
 
 	}
@@ -22,14 +20,12 @@ public class RegisterImpl<VO> implements Register<VO> {
 
 		@Override
 		public void consume(VO newValue) {
-			synchronized (RegisterImpl.this) {
-				if (isSameValue(newValue)) return;
+			if (isSameValue(newValue)) return;
 
-				_currentValue = newValue;
+			_currentValue = newValue;
 			
-				if (_output == null) return;
-				output().notifyReceivers(newValue);
-			}
+			if (_output == null) return;
+			output().notifyReceivers(newValue);
 		}
 		
 	}

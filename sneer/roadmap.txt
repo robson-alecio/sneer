@@ -1,6 +1,10 @@
 ﻿MAIN ROADMAP
 ===================
 	
+	- [Klaus] Fix: Gui is freezing on synchronized block because thread that is notified by RegisterImpl calls invokeAndWait() which causes the gui thread to run which in turn asks for currentValue() on the register's signal which is synchronized with the notification that started it all. :( This synchronization was the solution to the problem in Freedom5Test in which isOnline().currentValue() would return true before notifying its listeners.
+	
+	- [Sandro] Eliminate repeated code: ListSignalModel and SortedList. ListSignalModel should also have the ElementReceiver._isActive logic that SortedList now has. 
+	
 	- Wind
 		- Persist Shouts.
 			

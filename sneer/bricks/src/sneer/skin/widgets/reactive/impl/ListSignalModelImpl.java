@@ -20,8 +20,7 @@ public class ListSignalModelImpl<T> extends AbstractListModel implements ListSig
 	
 	private final ListSignal<T> _input;
 	
-	@SuppressWarnings("unused")
-	private ModelChangeReceiver _modelChangeReceiverToAvoidGc;
+	private ModelChangeReceiver _modelChangeReceiver;
 
 	@SuppressWarnings("unused")
 	private SignalChooserManager<T> _signalChooserManagerToAvoidGc;
@@ -31,8 +30,8 @@ public class ListSignalModelImpl<T> extends AbstractListModel implements ListSig
 	ListSignalModelImpl(ListSignal<T> input, SignalChooser<T> chooser) {
 		_input = input;
 		_chooser = chooser;
-		_modelChangeReceiverToAvoidGc = new ModelChangeReceiver(_input);
-		_signalChooserManagerToAvoidGc = _signalChooserManagerFactory.newManager(input, _modelChangeReceiverToAvoidGc);
+		_modelChangeReceiver = new ModelChangeReceiver(_input);
+		_signalChooserManagerToAvoidGc = _signalChooserManagerFactory.newManager(input, _modelChangeReceiver);
 	}
 
 	private class ModelChangeReceiver extends VisitingListReceiver<T> implements ListOfSignalsReceiver<T> {

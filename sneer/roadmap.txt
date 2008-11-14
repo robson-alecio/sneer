@@ -18,6 +18,7 @@
 				- Make all classes in sneer.skin.sound.kernel.impl package local instead of public.
 				- Inject the codec in MainDemoBrickImpl.  
 			- Block PCM tuples from being sent over the wire
+				- SpeexTuples does: ProbeManager.block(PcmSoundPacket.class);
 		- Second Step: Rooms.
 
 	- Flooding - Solve tuple flooding on the network.

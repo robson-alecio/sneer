@@ -15,6 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 import snapps.memorymeter.gui.MemoryMeterGui;
 import sneer.kernel.container.Inject;
@@ -61,6 +62,9 @@ public class MemoryMeterGuiImpl implements MemoryMeterGui {
 		
 		JButton gc = new JButton(_memoryIcon);
 		gc.setMargin(new Insets(0,0,0,0));
+		gc.setBorder(new EmptyBorder(0,0,0,0));
+		gc.setOpaque(true);
+		gc.setBackground(Color.WHITE);
 		gc.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 			System.gc();
 		}});

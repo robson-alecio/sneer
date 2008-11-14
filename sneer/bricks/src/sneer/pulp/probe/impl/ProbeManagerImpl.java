@@ -59,7 +59,7 @@ public class ProbeManagerImpl implements ProbeManager {
 			}
 
 			@Override
-			protected void elementToBeRemoved(Contact contact) {
+			protected void elementRemoved(Contact contact) {
 				throw new NotImplementedYet();
 			}
 		};

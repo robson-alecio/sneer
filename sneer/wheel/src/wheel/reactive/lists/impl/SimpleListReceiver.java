@@ -11,11 +11,11 @@ public abstract class SimpleListReceiver<T> extends VisitingListReceiver<T> {
 	
 	protected abstract void elementPresent(T element);
 	protected abstract void elementAdded(T newElement);
-	protected abstract void elementToBeRemoved(T element);
+	protected abstract void elementRemoved(T element);
 
 	@Override
 	public void elementMoved(int oldIndex, int newIndex, T element) {
-		// Ignore, don't notify this event in SimpleListReceiver.
+		// No additions or removals happened.
 	}	
 	
 	@Override
@@ -28,22 +28,16 @@ public abstract class SimpleListReceiver<T> extends VisitingListReceiver<T> {
 		elementAdded(value);
 	}
 
-	@Override
-	public void elementToBeReplaced(int index, T oldValue, T newValue) {
-		elementToBeRemoved(index, newValue);
-	}
 
 	@Override
 	public void elementReplaced(int index, T oldValue, T newValue) {
-		elementAdded(index, newValue);
+		elementRemoved(oldValue);
+		elementAdded(newValue);
 	}
 
-	@Override
-	public void elementToBeRemoved(int index, T value) {
-		elementToBeRemoved(value);
-	}
 	
 	@Override
 	public void elementRemoved(int index, T value) {		
+		elementRemoved(value);
 	}
 }

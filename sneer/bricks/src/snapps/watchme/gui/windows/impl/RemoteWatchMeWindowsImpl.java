@@ -33,7 +33,7 @@ class RemoteWatchMeWindowsImpl implements RemoteWatchMeWindows{
 		}
 
 		@Override
-		protected void elementToBeRemoved(Contact contact) {
+		protected void elementRemoved(Contact contact) {
 			stopReceivingScreensFrom(contact);
 		}
 	};

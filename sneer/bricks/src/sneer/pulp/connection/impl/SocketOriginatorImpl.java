@@ -33,7 +33,7 @@ class SocketOriginatorImpl implements SocketOriginator {
 			}
 			
 			@Override
-			protected void elementToBeRemoved(InternetAddress address) {
+			protected void elementRemoved(InternetAddress address) {
 				stopAddressing(address);
 			}
 		};

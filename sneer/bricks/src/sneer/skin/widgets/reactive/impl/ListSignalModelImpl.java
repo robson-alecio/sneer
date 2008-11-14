@@ -43,9 +43,6 @@ public class ListSignalModelImpl<T> extends AbstractListModel implements ListSig
 			super(input);
 		}
 
-		@Override public void elementToBeRemoved(int index, T value) { /*ignore*/	}
-		@Override public void elementToBeReplaced(int index, T oldValue, T newValue) { /*ignore*/	}
-
 		@Override
 		public void elementAdded(final int index, T value) {
 			_elementsObserver.elementAdded(value);

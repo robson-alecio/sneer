@@ -209,7 +209,7 @@ class WindGuiImpl implements WindGui {
 				}
 				@Override protected void elementAdded(Shout newElement) {	fire();	}
 				@Override protected void elementPresent(Shout element) {fire();	}
-				@Override protected void elementToBeRemoved(Shout element) {fire();}
+				@Override protected void elementRemoved(Shout element) {fire();}
 				
 				@Override
 				public void elementInserted(int index, Shout value) {
@@ -224,7 +224,7 @@ class WindGuiImpl implements WindGui {
 				}
 				@Override protected void elementAdded(Shout newElement) {	fire();	}
 				@Override protected void elementPresent(Shout element) {fire();	}
-				@Override protected void elementToBeRemoved(Shout element) {fire();}
+				@Override protected void elementRemoved(Shout element) {fire();}
 			};
 		}
 		

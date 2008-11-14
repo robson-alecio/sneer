@@ -18,18 +18,8 @@ public class Collector<IN, OUT> {
 		}
 
 		@Override
-		public void elementToBeRemoved(int ignored, IN value) {
-			//The output source will do pre notification (to be removed) as well as notification (removed) when the element is removed from it.
-		}
-
-		@Override
 		public void elementRemoved(int index, IN value) {
 			_output.removeAt(index);
-		}
-
-		@Override
-		public void elementToBeReplaced(int ignored, IN oldValue, IN newValue) {
-			//The output source will do pre notification (to be replaced) as well as notification (replaced) when the element is replaced there.
 		}
 
 		@Override

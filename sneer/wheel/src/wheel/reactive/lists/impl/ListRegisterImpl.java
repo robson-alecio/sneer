@@ -100,10 +100,9 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 
 	@Override
 	public void removeAt(int index) {
-		VO oldValue = _list.get(index);
-		_output.notifyReceivers(new ListElementToBeRemoved<VO>(index, oldValue));
+		VO oldValue;
 		synchronized (_list) {
-			_list.remove(index);
+			oldValue = _list.remove(index);
 			_size.setter().consume(_list.size());
 		}
 		_output.notifyReceivers(new ListElementRemoved<VO>(index, oldValue));
@@ -122,10 +121,9 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 
 	@Override
 	public void replace(int index, VO newElement) {
-		VO old = _list.get(index);
-		_output.notifyReceivers(new ListElementToBeReplaced<VO>(index, old, newElement));
+		VO old;
 		synchronized (_list) {
-			_list.remove(index);
+			old = _list.remove(index);
 			_list.add(index, newElement);
 		}
 		_output.notifyReceivers(new ListElementReplaced<VO>(index, old, newElement));

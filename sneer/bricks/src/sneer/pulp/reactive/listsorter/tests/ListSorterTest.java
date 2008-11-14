@@ -56,16 +56,12 @@ public class ListSorterTest extends TestThatIsInjected {
 			one(_visitor).elementAdded(2, _20);
 			one(_visitor).elementAdded(4, _40);
 			
-			one(_visitor).elementToBeRemoved(2, _20);
 			one(_visitor).elementRemoved(2, _20);
 			
-			one(_visitor).elementToBeRemoved(2, _30);
 			one(_visitor).elementRemoved(2, _30);
 			
-			one(_visitor).elementToBeRemoved(3, _50);
 			one(_visitor).elementRemoved(3, _50);
 			
-			one(_visitor).elementToBeRemoved(2, _40);
 			one(_visitor).elementRemoved(2, _40);
 			one(_visitor).elementAdded(1, _10);
 		}});		

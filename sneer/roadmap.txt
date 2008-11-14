@@ -3,7 +3,7 @@
 	
 	- [Sandro] ListSignalModel and SortedList
 		- Migrate to ListOfSignalsReceiver Interface.
-		- Prevent duplicate elements and store element index.
+		- Support duplicate elements by storing element index.
 	
 	- Wind
 		- Persist Shouts. Unignore TuplePersistenceTest.

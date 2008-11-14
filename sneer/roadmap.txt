@@ -7,7 +7,7 @@
 	- MemMeter: MB Used: X [GCButton] Peak: Y (Z Max)  - Where GCButton is a small recycling logo.
 	
 	- Wind
-		- Persist Shouts.
+		- Persist Shouts. Unignore TuplePersistenceTest.
 			
 	- Voice Calls
 		- First Step: When I press the button I listen to everyone and everyone listens to me.

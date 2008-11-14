@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import sneer.kernel.container.Inject;
+import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.pulp.reactive.signalchooser.SignalChooserManager;
 import sneer.pulp.reactive.signalchooser.SignalChooserManagerFactory;
@@ -14,7 +15,7 @@ import wheel.reactive.lists.ListValueChange;
 import wheel.reactive.lists.VisitorAdapter;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 
-final class SortedVisitor<T> extends VisitorAdapter<T>{
+final class SortedVisitor<T> extends VisitorAdapter<T> implements ListOfSignalsReceiver<T>{
 
 	private final ListSignal<T> _input;
 	private final SorterSupport _sorter;
@@ -23,15 +24,14 @@ final class SortedVisitor<T> extends VisitorAdapter<T>{
 	private static SignalChooserManagerFactory _signalChooserManagerFactory;
 	
 	@SuppressWarnings("unused")
-	private SignalChooserManager<T> _signalChooserManagerToAvoidGc;	
+	private SignalChooserManager<T> _signalChooserManagerToAvoidGc;
+	private final SignalChooser<T> _chooser;	
 	
 	SortedVisitor(ListSignal<T> input, Comparator<T> comparator, SignalChooser<T> chooser) {
 		_input = input;
+		_chooser = chooser;
 		_sorter = new SorterSupport(comparator);
-		_signalChooserManagerToAvoidGc = _signalChooserManagerFactory.newManager(input, chooser, 
-			new Omnivore<T>(){ @Override public void consume(T element) {
-				_sorter.move(element);
-			}});
+		_signalChooserManagerToAvoidGc = _signalChooserManagerFactory.newManager(input, this);
 	}
 	
 	ListSignal<T> output() {
@@ -114,5 +114,15 @@ final class SortedVisitor<T> extends VisitorAdapter<T>{
 				_sorted.move(oldIndex, newIndex);
 			}
 		}
+	}
+
+	@Override
+	public void elementSignalChanged(int index, T element) {
+		_sorter.move(element);
+	}
+
+	@Override
+	public SignalChooser<T> signalChooser() {
+		return _chooser;
 	}
 }

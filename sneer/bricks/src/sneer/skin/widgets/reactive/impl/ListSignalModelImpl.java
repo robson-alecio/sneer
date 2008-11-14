@@ -3,12 +3,12 @@ package sneer.skin.widgets.reactive.impl;
 import javax.swing.AbstractListModel;
 
 import sneer.kernel.container.Inject;
+import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.pulp.reactive.signalchooser.SignalChooserManager;
 import sneer.pulp.reactive.signalchooser.SignalChooserManagerFactory;
 import sneer.skin.widgets.reactive.ListSignalModel;
 import wheel.io.ui.GuiThread;
-import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.VisitingListReceiver;
@@ -25,17 +25,17 @@ public class ListSignalModelImpl<T> extends AbstractListModel implements ListSig
 
 	@SuppressWarnings("unused")
 	private SignalChooserManager<T> _signalChooserManagerToAvoidGc;
+
+	private final SignalChooser<T> _chooser;
 	
 	ListSignalModelImpl(ListSignal<T> input, SignalChooser<T> chooser) {
 		_input = input;
+		_chooser = chooser;
 		_modelChangeReceiverToAvoidGc = new ModelChangeReceiver(_input);
-		_signalChooserManagerToAvoidGc = _signalChooserManagerFactory.newManager(input, chooser, 
-			new Omnivore<T>(){ @Override public void consume(T element) {
-				elementChanged(element);
-			}});
+		_signalChooserManagerToAvoidGc = _signalChooserManagerFactory.newManager(input, _modelChangeReceiverToAvoidGc);
 	}
 
-	private class ModelChangeReceiver extends VisitingListReceiver<T> {
+	private class ModelChangeReceiver extends VisitingListReceiver<T> implements ListOfSignalsReceiver<T> {
 
 		private ModelChangeReceiver(ListSignal<T> input) {
 			super(input);
@@ -72,6 +72,16 @@ public class ListSignalModelImpl<T> extends AbstractListModel implements ListSig
 			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
 				fireContentsChanged(ListSignalModelImpl.this, oldIndex, newIndex);
 			}});
+		}
+
+		@Override
+		public void elementSignalChanged(int index, T element) {
+			elementChanged(element);
+		}
+
+		@Override
+		public SignalChooser<T> signalChooser() {
+			return _chooser;
 		}
 	}
 	

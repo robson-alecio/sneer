@@ -57,36 +57,11 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 		
 		if (!_isRunning) return false;
 		
-		tryInvertBuffer();
 		leftDrain(_lastPlayed);
 		drainOldPackets();
 		playUninterruptedPackets();
 		playInterruptedPackets();
 		return true;
-	}
-
-	private void tryInvertBuffer() {
-		if(_sortedSet.size()<3) return;
-		
-		PcmSoundPacket first = _sortedSet.first();
-		if(first.sequence>=0) return;
-		
-		PcmSoundPacket last = _sortedSet.last();
-		if(last.sequence<0) return;
-		
-		if(last.sequence - first.sequence < Short.MAX_VALUE ) return; 
-		
-		int counter = 1;
-		while(last.sequence>0){
-			_sortedSet.remove(last);
-			if(last.sequence > Short.MAX_VALUE-500){
-				ReverseSequence reverseSequence = new ReverseSequence(last, -Short.MAX_VALUE - counter);
-				_sortedSet.add(reverseSequence);
-				_lastPlayed = reverseSequence.sequence-1;
-				counter++;			
-			}  
-			last = _sortedSet.last();
-		}
 	}
 
 	private void drainOldPackets() {

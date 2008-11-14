@@ -20,8 +20,6 @@ class MicLine {
 	@Inject
 	static private Audio _audio;
 	
-	private static boolean isCrescentSequence = true;
-	
 	static private TargetDataLine _delegate;
 	
 	static void close() {
@@ -58,7 +56,7 @@ class MicLine {
 		];
 
 		int read = _delegate.read(pcmBuffer, 0, pcmBuffer.length);
-		return PcmSoundPacket.newInstance(pcmBuffer, read, (short)nextInt());
+		return PcmSoundPacket.newInstance(pcmBuffer, read, nextShort());
 	}
 
 	private static void throwFriendly(String specifics) throws FriendlyException {
@@ -67,12 +65,9 @@ class MicLine {
 	
 	private static final AtomicInteger _ids = new AtomicInteger();
 
-	private static int nextInt() {
-		if(_ids.shortValue() == Short.MAX_VALUE) isCrescentSequence = false;
-		if(_ids.shortValue() == Short.MIN_VALUE) isCrescentSequence = true;
-		
-		if(isCrescentSequence)
-			return _ids.incrementAndGet();
-		return -_ids.decrementAndGet();
+	private static short nextShort() {
+		if(_ids.compareAndSet(Short.MAX_VALUE, Short.MIN_VALUE))
+			return Short.MIN_VALUE;
+		return (short)_ids.incrementAndGet();
 	}
 }

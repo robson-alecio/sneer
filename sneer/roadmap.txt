@@ -1,6 +1,10 @@
 ﻿MAIN ROADMAP
 ===================
 	
+	- [Sandro] ListSignalModel and SortedList
+		- Migrate to ListOfSignalsReceiver Interface.
+		- Prevent duplicate elements and store element index.
+	
 	- Wind
 		- Persist Shouts. Unignore TuplePersistenceTest.
 			

@@ -1,8 +1,6 @@
 ﻿MAIN ROADMAP
 ===================
 	
-	- MemMeter: MB Used: X [GCButton] Peak: Y (Z Max)  - Where GCButton is a small recycling logo.
-	
 	- Wind
 		- Persist Shouts. Unignore TuplePersistenceTest.
 			

@@ -9,7 +9,6 @@ import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Omnivore;
-import wheel.lang.Threads;
 
 public class TupleSpaceTest extends TestThatIsInjected {
 
@@ -18,9 +17,6 @@ public class TupleSpaceTest extends TestThatIsInjected {
 	
 	private TestTuple _received;
 
-	static volatile String _currentGeneration;
-	static volatile int _garbageCollectedCounter;
-	
 	
 	@Test
 	public void tuplesContainingArrays() {
@@ -42,43 +38,8 @@ public class TupleSpaceTest extends TestThatIsInjected {
 	}
 	
 	
-	@Test (timeout = 2000)
-	public void tuplesLimitAmount() {
-		_garbageCollectedCounter = 0;
-
-		_currentGeneration = "tuplesLimitAmount";
-		publishMyTestTuples(1000 + 42);
-		
-		while (_garbageCollectedCounter != 42) {
-			System.gc();
-			Threads.sleepWithoutInterruptions(20);
-		}
-	}
-
 	@Test
-	public void keepingTuples() {
-		_garbageCollectedCounter = 0;
-		
-		_subject.keep(MyTestTuple.class);
-
-		_currentGeneration = "keepingTuples";
-		publishMyTestTuples(1000 + 42);
-
-		System.gc();
-		assertEquals(0, _garbageCollectedCounter);
-		
-		assertEquals(1042, _subject.keptTuples().size());
-	}
-
-
-	private void publishMyTestTuples(int amount) {
-		for (int i = 0; i < amount; i++)
-			_subject.publish(new MyTestTuple(new int[] {i}));
-	}
-	
-	
-	@Test
-	public void removeSubscription() {
+	public void subscriptionRemoval() {
 		final ArrayList<Tuple> tuples = new ArrayList<Tuple>();
 		final Omnivore<TestTuple> consumer = new Omnivore<TestTuple>() {
 			@Override

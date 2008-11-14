@@ -15,5 +15,7 @@ public interface TupleSpace extends Brick {
 	
 	void keep(Class<? extends Tuple> tupleType);
 	Collection<Tuple> keptTuples();
+	
+	void crash();
 
 }

@@ -22,6 +22,7 @@ public class TupleSpaceImpl implements TupleSpace {
 
 	@Inject static private KeyManager _keyManager;
 	@Inject static private Clock _clock;
+	//@Inject static private PersistenceConfig _config;
 	
 	//Refactor The synchronization will no longer be necessary when the container guarantees synchronization of model bricks.
 	static class Subscription {
@@ -50,8 +51,15 @@ public class TupleSpaceImpl implements TupleSpace {
 	
 	private final Set<Class<? extends Tuple>> _typesToKeep = new HashSet<Class<? extends Tuple>>();
 	private final Set<Tuple> _keptTuples = new HashSet<Tuple>();
+	
+	//private final Prevayler _prevayler;
 
+	
+	TupleSpaceImpl() {
+		//_prevayler = PrevaylerFactory.createPrevayler(_keptTuples, _config.persistenceDirectory().getAbsolutePath());
+	}
 
+	
 	@Override
 	public synchronized void publish(Tuple tuple) {
 		stamp(tuple);
@@ -115,6 +123,11 @@ public class TupleSpaceImpl implements TupleSpace {
 	@Override
 	public synchronized Collection<Tuple> keptTuples() {
 		return new ArrayList<Tuple>(_keptTuples);
+	}
+
+	@Override
+	public void crash() {
+		//_prevayler.close();
 	}
 
 }

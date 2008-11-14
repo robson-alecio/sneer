@@ -1,10 +1,9 @@
 package sneer.pulp.propertystore.impl;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Properties;
 
 import sneer.kernel.container.Inject;
@@ -12,8 +11,12 @@ import sneer.pulp.config.persistence.PersistenceConfig;
 import sneer.pulp.propertystore.PropertyStore;
 import wheel.io.Logger;
 import wheel.io.Streams;
+import wheel.io.files.Directory;
 
 class PropertyStoreImpl implements PropertyStore {
+
+	private static final String FILE_NAME = "propertystore.txt";
+
 
 	@Inject
 	static private PersistenceConfig _config;
@@ -52,7 +55,7 @@ class PropertyStoreImpl implements PropertyStore {
 
 	private void persist() {
 		try {
-			FileOutputStream out = out();
+			OutputStream out = out();
 			try {
 				_properties.store(out, "Sneer System Persistence File - Handle with Care :)");
 			} finally {
@@ -63,17 +66,19 @@ class PropertyStoreImpl implements PropertyStore {
 		} 
 	}
 
-	private FileInputStream in() throws FileNotFoundException {
-		Logger.log("Reading Sneer properties file from: {}", propertiesFile());
-		return new FileInputStream(propertiesFile());
+	private InputStream in() throws IOException {
+		Logger.log("Reading Sneer properties file from: {}", FILE_NAME);
+		return directory().openFile(FILE_NAME);
 	}
 
-	private FileOutputStream out() throws FileNotFoundException {
-		return new FileOutputStream(propertiesFile());
+	private OutputStream out() throws IOException {
+		if (directory().fileExists(FILE_NAME))
+			directory().deleteFile(FILE_NAME);
+		
+		return directory().createFile(FILE_NAME);
 	}
 
-	private File propertiesFile() {
-		return new File(_config.persistenceDirectory(), "propertystore.txt");
+	private Directory directory() {
+		return _config.persistenceDirectory();
 	}
-
 }

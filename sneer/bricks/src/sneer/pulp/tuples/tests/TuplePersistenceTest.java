@@ -4,13 +4,14 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.kernel.container.ContainerUtils;
-import sneer.pulp.config.persistence.PersistenceConfig;
 import sneer.pulp.config.persistence.mocks.PersistenceConfigMock;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.testutil.TestThatMightUseResources;
 
-
 public class TuplePersistenceTest extends TestThatMightUseResources {
+
+	private final PersistenceConfigMock _persistenceMock  = new PersistenceConfigMock();
+
 
 	@Ignore
 	@Test
@@ -32,14 +33,10 @@ public class TuplePersistenceTest extends TestThatMightUseResources {
 
 	
 	private TupleSpace createSubject() {
-		return ContainerUtils.newContainer(config()).produce(TupleSpace.class);
+		return ContainerUtils.newContainer(_persistenceMock).produce(TupleSpace.class);
 	}
 	
 	
-	private PersistenceConfig config() {
-		return new PersistenceConfigMock(tmpDirectory());
-	}
-
 }
 
 

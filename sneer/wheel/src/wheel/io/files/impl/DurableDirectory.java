@@ -62,15 +62,21 @@ public class DurableDirectory extends AbstractDirectory {
 	}
 
 
-	public DurableDirectory(String path) throws IOException {
+	public DurableDirectory(String path) {
 		_delegate = new File(path);
-		if (!_delegate.exists() && !_delegate.mkdirs()) throw new IOException("Unable to create directory " + _delegate);
 	}
 
 
 	private final File _delegate;
 
 
+	public void mkdirs() throws IOException {
+		if (_delegate.exists()) return;
+		if (_delegate.mkdirs()) return;
+		throw new IOException("Unable to create directory " + _delegate);
+	}
+	
+	
 	public OutputStream createFile(String name) throws IOException {
 		assertNotClosed();
 

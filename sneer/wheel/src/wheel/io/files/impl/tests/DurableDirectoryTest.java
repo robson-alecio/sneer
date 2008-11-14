@@ -11,7 +11,9 @@ public class DurableDirectoryTest extends DirectoryTestBase {
 
 	@Override
 	protected Directory subject() throws IOException {
-		return new DurableDirectory(tmpDirectory().getAbsolutePath());
+		DurableDirectory result = new DurableDirectory(tmpDirectory().getAbsolutePath());
+		result.mkdirs();
+		return result;
 	}
 
 	@Override

@@ -4,7 +4,10 @@ import wheel.lang.Consumer;
 
 public interface Journal {
 
-	/** All existing entries will be passed to the entryConsumer. */
-	Consumer<Object> open(Consumer<Object> entryConsumer);
+	/**
+	 * @param previousEntryConsumer to which all existing entries in the journal will be passed before this method returns.
+	 * @return a consumer for appending entries to the journal.
+	 */
+	Consumer<Object> open(Consumer<Object> previousEntryConsumer);
 	
 }

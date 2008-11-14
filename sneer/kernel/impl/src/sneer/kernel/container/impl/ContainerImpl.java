@@ -1,6 +1,7 @@
 package sneer.kernel.container.impl;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 
 import sneer.kernel.container.Brick;
@@ -12,6 +13,7 @@ import sneer.kernel.container.SneerConfig;
 import sneer.kernel.container.impl.classloader.EclipseClassLoaderFactory;
 import sneer.pulp.config.persistence.PersistenceConfig;
 import sneer.skin.GuiBrick;
+import wheel.io.files.impl.DurableDirectory;
 import wheel.lang.Types;
 
 public class ContainerImpl implements Container {
@@ -26,16 +28,22 @@ public class ContainerImpl implements Container {
 
 	private ClassLoader _apiClassLoader;
 
-	public ContainerImpl(Object... bindings) {
+	public ContainerImpl(Object... bindings) throws IOException {
 		bindNonGuiBricks(bindings);
 		
 		_binder.bind(this);
 		_binder.bind(_injector);
 		
 		_sneerConfig = produceSneerConfig();
-		produce(PersistenceConfig.class).setPersistenceDirectory(_sneerConfig.sneerDirectory());
+		produce(PersistenceConfig.class).setPersistenceDirectory(persistenceDirectory());
 		
 		bindGuiBricks(bindings);
+	}
+
+	private DurableDirectory persistenceDirectory() throws IOException {
+		DurableDirectory result = new DurableDirectory(_sneerConfig.sneerDirectory().getAbsolutePath());
+		result.mkdirs();
+		return result;
 	}
 
 	private void bindNonGuiBricks(Object... bindings) {

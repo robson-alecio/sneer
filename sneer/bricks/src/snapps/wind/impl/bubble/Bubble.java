@@ -16,13 +16,13 @@ public class Bubble {
 
 	public static <STATE_MACHINE> STATE_MACHINE wrapStateMachine(Prevayler prevayler) {
 		Object stateMachine = prevayler.prevalentSystem();
-		return (STATE_MACHINE)wrap(stateMachine, prevayler, new ArrayList<String>());  //Refactor Remove this cast and use Casts.uncheckedCast() instead, when the Sun compiler can handle it (bug fixed in JDK7). Remove the @SuppressWarnings for this method.
+		return (STATE_MACHINE)wrap(stateMachine, prevayler, new ArrayList<String>());
 	}
 
 	private static <T> T wrap(Object object, Prevayler prevayler, List<String> getterMethodPath) {
 		InvocationHandler handler = new Bubble(object, prevayler, getterMethodPath).handler();
 		Object proxy = Proxy.newProxyInstance(object.getClass().getClassLoader(), object.getClass().getInterfaces(), handler);
-		return (T)proxy;  //Refactor Remove this cast and use Casts.uncheckedCast() instead, when the Sun compiler can handle it (bug fixed in JDK7). Remove the @SuppressWarnings for this method.
+		return (T)proxy;
 	}
 
 	private Bubble(Object stateMachine, Prevayler prevayler, List<String> getterMethodPath) {

@@ -22,7 +22,7 @@ import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.list.ContactInfo;
 import sneer.pulp.contacts.list.ContactList;
 import sneer.pulp.reactive.listsorter.ListSorter;
-import sneer.pulp.reactive.signalchooser.ElementsObserverFactory.SignalChooser;
+import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;

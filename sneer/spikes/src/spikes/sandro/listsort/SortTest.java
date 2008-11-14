@@ -17,7 +17,7 @@ import javax.swing.SwingUtilities;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.reactive.listsorter.ListSorter;
-import sneer.pulp.reactive.signalchooser.ElementsObserverFactory.SignalChooser;
+import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;

@@ -3,7 +3,7 @@ package sneer.pulp.reactive.listsorter.impl;
 import java.util.Comparator;
 
 import sneer.pulp.reactive.listsorter.ListSorter;
-import sneer.pulp.reactive.signalchooser.ElementsObserverFactory.SignalChooser;
+import sneer.pulp.reactive.signalchooser.SignalChooser;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 

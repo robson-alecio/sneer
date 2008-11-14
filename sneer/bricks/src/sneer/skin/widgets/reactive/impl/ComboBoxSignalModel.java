@@ -2,7 +2,7 @@ package sneer.skin.widgets.reactive.impl;
 
 import javax.swing.ComboBoxModel;
 
-import sneer.pulp.reactive.signalchooser.ElementsObserverFactory.SignalChooser;
+import sneer.pulp.reactive.signalchooser.SignalChooser;
 import wheel.reactive.lists.ListSignal;
 
 public class ComboBoxSignalModel<T> extends ListSignalModelImpl<T> implements ComboBoxModel {

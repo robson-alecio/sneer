@@ -4,10 +4,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import sneer.kernel.container.Inject;
-import sneer.pulp.reactive.signalchooser.ElementsObserverFactory;
-import sneer.pulp.reactive.signalchooser.ElementsObserverFactory.ElementListener;
-import sneer.pulp.reactive.signalchooser.ElementsObserverFactory.ElementsObserver;
-import sneer.pulp.reactive.signalchooser.ElementsObserverFactory.SignalChooser;
+import sneer.pulp.reactive.signalchooser.ElementListener;
+import sneer.pulp.reactive.signalchooser.SignalChooser;
+import sneer.pulp.reactive.signalchooser.SignalChooserManager;
+import sneer.pulp.reactive.signalchooser.SignalChooserManagerFactory;
 import wheel.lang.Omnivore;
 import wheel.reactive.impl.ListSignalOwnerReference;
 import wheel.reactive.lists.ListSignal;
@@ -17,17 +17,19 @@ import wheel.reactive.lists.impl.ListRegisterImpl;
 
 final class SortedVisitor<T> extends VisitorAdapter<T> implements ElementListener<T>{
 
-	@Inject
-	private static ElementsObserverFactory _contentManager;
-
 	private final ListSignal<T> _input;
 	private final SorterSupport _sorter;
-	private final ElementsObserver<T> _elementsObserver;
+
+	@Inject
+	private static SignalChooserManagerFactory _signalChooserManagerFactory;
+	
+	@SuppressWarnings("unused")
+	private SignalChooserManager<T> _signalChooserManagerToAvoidGc;	
 	
 	SortedVisitor(ListSignal<T> input, Comparator<T> comparator, SignalChooser<T> chooser) {
 		_input = input;
-		_elementsObserver = _contentManager.newObserver(chooser, this);
 		_sorter = new SorterSupport(comparator);
+		_signalChooserManagerToAvoidGc = _signalChooserManagerFactory.newManager(input, chooser, this);
 	}
 	
 	ListSignal<T> output() {
@@ -91,14 +93,12 @@ final class SortedVisitor<T> extends VisitorAdapter<T> implements ElementListene
 				int location = findSortedLocation(element);
 				_sorted.addAt(location, element);
 			}
-			_elementsObserver.elementAdded(element);
 		}
 		
 		private void remove(T element) {
 			synchronized (_sorted) {
 				_sorted.remove(element);
 			}
-			_elementsObserver.elementRemoved(element);
 		}
 
 		private void replace(T oldElement, T newElement) {

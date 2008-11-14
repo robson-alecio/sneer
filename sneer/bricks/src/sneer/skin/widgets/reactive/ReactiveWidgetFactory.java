@@ -8,8 +8,7 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.ListCellRenderer;
 
-import sneer.pulp.reactive.signalchooser.ElementsObserverFactory.SignalChooser;
-
+import sneer.pulp.reactive.signalchooser.SignalChooser;
 import wheel.lang.Consumer;
 import wheel.lang.Omnivore;
 import wheel.reactive.Signal;

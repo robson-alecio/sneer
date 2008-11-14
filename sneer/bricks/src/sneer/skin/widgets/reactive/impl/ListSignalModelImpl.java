@@ -3,9 +3,9 @@ package sneer.skin.widgets.reactive.impl;
 import javax.swing.AbstractListModel;
 
 import sneer.kernel.container.Inject;
-import sneer.pulp.reactive.signalchooser.ElementsObserverFactory;
-import sneer.pulp.reactive.signalchooser.ElementsObserverFactory.ElementsObserver;
-import sneer.pulp.reactive.signalchooser.ElementsObserverFactory.SignalChooser;
+import sneer.pulp.reactive.signalchooser.SignalChooser;
+import sneer.pulp.reactive.signalchooser.SignalChooserManager;
+import sneer.pulp.reactive.signalchooser.SignalChooserManagerFactory;
 import sneer.skin.widgets.reactive.ListSignalModel;
 import wheel.io.ui.GuiThread;
 import wheel.reactive.Signal;
@@ -14,38 +14,31 @@ import wheel.reactive.lists.impl.VisitingListReceiver;
 
 public class ListSignalModelImpl<T> extends AbstractListModel implements ListSignalModel<T>{
 
+	@Inject
+	private static SignalChooserManagerFactory _signalChooserManagerFactory;
+	
 	private final ListSignal<T> _input;
 	
-	@Inject
-	private static ElementsObserverFactory _contentManager;
-	private ElementsObserver<T> _elementsObserver;
-	
 	@SuppressWarnings("unused")
-	private ListChangeReceiver _listReceiverToAvoidGc;
+	private ModelChangeReceiver _modelChangeReceiverToAvoidGc;
+
+	@SuppressWarnings("unused")
+	private SignalChooserManager<T> _signalChooserManagerToAvoidGc;
 	
 	ListSignalModelImpl(ListSignal<T> input, SignalChooser<T> chooser) {
 		_input = input;
-		initModel(chooser);
+		_modelChangeReceiverToAvoidGc = new ModelChangeReceiver(_input);
+		_signalChooserManagerToAvoidGc = _signalChooserManagerFactory.newManager(input, chooser, this);
 	}
 
-	private void initModel(SignalChooser<T> chooser) {
-		_elementsObserver = _contentManager.newObserver(chooser, this);
+	private class ModelChangeReceiver extends VisitingListReceiver<T> {
 
-		for (T element : _input)
-			_elementsObserver.elementAdded(element);
-
-		_listReceiverToAvoidGc = new ListChangeReceiver(_input);
-	}
-
-	private class ListChangeReceiver extends VisitingListReceiver<T> {
-
-		private ListChangeReceiver(ListSignal<T> input) {
+		private ModelChangeReceiver(ListSignal<T> input) {
 			super(input);
 		}
 
 		@Override
 		public void elementAdded(final int index, T value) {
-			_elementsObserver.elementAdded(value);
 			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
 				fireIntervalAdded(ListSignalModelImpl.this, index, index);
 			}});		
@@ -53,7 +46,6 @@ public class ListSignalModelImpl<T> extends AbstractListModel implements ListSig
 
 		@Override
 		public void elementRemoved(final int index, T value) {
-			_elementsObserver.elementRemoved(value);
 			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
 				fireIntervalRemoved(ListSignalModelImpl.this, index, index);
 			}});		
@@ -61,14 +53,11 @@ public class ListSignalModelImpl<T> extends AbstractListModel implements ListSig
 
 		@Override
 		public void elementReplaced(final int index, T oldValue, T newValue) {
-			_elementsObserver.elementRemoved(oldValue);
-			_elementsObserver.elementAdded(newValue);
 			contentsChanged(index);
 		}
 
 		@Override
 		public void elementInserted(final int index, final T value) {
-			_elementsObserver.elementAdded(value);
 			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
 				fireIntervalAdded(ListSignalModelImpl.this, index, index);
 			}});		
@@ -105,7 +94,6 @@ public class ListSignalModelImpl<T> extends AbstractListModel implements ListSig
 				contentsChanged(i);
 			i++;
 		}
-	}
-	
+	}	
 	private static final long serialVersionUID = 1L;
 }

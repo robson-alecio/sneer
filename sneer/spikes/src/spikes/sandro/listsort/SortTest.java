@@ -2,8 +2,6 @@ package spikes.sandro.listsort;
 
 import java.awt.BorderLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -11,7 +9,6 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
-import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
 
 import sneer.kernel.container.Container;
@@ -26,73 +23,60 @@ import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Constant;
 import wheel.reactive.impl.RegisterImpl;
+import wheel.reactive.impl.mocks.RandomBoolean;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 
 public class SortTest {
 	
-	static final Map<Integer, ByRef<Integer>> _byRefs = new HashMap<Integer, ByRef<Integer>>();
-	static final Map<ByRef<Integer>, Register<Integer>> _registers = new HashMap<ByRef<Integer>, Register<Integer>>();
+	static final Map<String, ByRef<String>> _byRefs = new HashMap<String, ByRef<String>>();
+	static final Map<ByRef<String>, Register<String>> _registers = new HashMap<ByRef<String>, Register<String>>();
+	static final Map<String, RandomBoolean> _onlineMap = new HashMap<String, RandomBoolean>();
 
 	public static void main(String[] args) throws Exception {
 		
-		ListRegister<ByRef<Integer>> source = new ListRegisterImpl<ByRef<Integer>>();
+		ListRegister<ByRef<String>> source = new ListRegisterImpl<ByRef<String>>();
 		
 		Container container = ContainerUtils.newContainer();
 		ListSorter sorter = container.produce(ListSorter.class);
 		
-		Comparator<ByRef<Integer>> comparator = new Comparator<ByRef<Integer>>(){ @Override public int compare(ByRef<Integer> o1, ByRef<Integer> o2) {
-			return o2.value.compareTo(o1.value);
+		Comparator<ByRef<String>> comparator = new Comparator<ByRef<String>>(){ @Override public int compare(ByRef<String> o1, ByRef<String> o2) {
+			boolean online1 = _onlineMap.get(o1.value).output().currentValue();
+			boolean online2 = _onlineMap.get(o2.value).output().currentValue();
+			if(online1!=online2)
+				return online1?-1:1;
+			return 0;
+//			return o2.value.compareTo(o1.value);
 		}};
 		
-		final SignalChooser<ByRef<Integer>> chooser = new SignalChooser<ByRef<Integer>>() {	@Override public Signal<?>[] signalsToReceiveFrom(ByRef<Integer> element) {
-			return new Signal<?>[] { _registers.get(element).output() };
+		final SignalChooser<ByRef<String>> chooser = new SignalChooser<ByRef<String>>() {	@Override public Signal<?>[] signalsToReceiveFrom(ByRef<String> element) {
+			return new Signal<?>[] { _registers.get(element).output(), 
+										 _onlineMap.get(element.value).output() };
 		}};
 		
-		add(source, -5);
-		add(source, -2);
-		
-		ListSignal<ByRef<Integer>> sorted = sorter.sort(source.output(), comparator, chooser);
+		ListSignal<ByRef<String>> sorted = sorter.sort(source.output(), comparator, chooser);
 		initGui(container, sorted);
 		addData(source);
 		
 	}
 
-	private static void add(ListRegister<ByRef<Integer>> source, int value) {
-		ByRef<Integer> byRefValue = ByRef.newInstance(value);
-		_registers.put(byRefValue, new RegisterImpl<Integer>(value));
-		_byRefs.put(key(value), byRefValue);
+	private static void add(ListRegister<ByRef<String>> source, String value) {
+		ByRef<String> byRefValue = ByRef.newInstance(value);
+		_registers.put(byRefValue, new RegisterImpl<String>(value));
+		_byRefs.put(value, byRefValue);
+		_onlineMap.put(value, new RandomBoolean());
 		source.add(byRefValue);
 	}
-
-	private static int key(int value) {
-		return value<0?-value:value;
-	}
 	
-	private static void changeValue(int value) {
-		ByRef<Integer> byRef = _byRefs.get(key(value));
-		byRef.value = -byRef.value;
-		Register<Integer> register = _registers.get(byRef);
-		register.setter().consume(byRef.value);
-	}
-	
-	private static void initGui(final Container container, final ListSignal<ByRef<Integer>> sorted) throws Exception {
+	private static void initGui(final Container container, final ListSignal<ByRef<String>> sorted) throws Exception {
 		SwingUtilities.invokeAndWait(new Runnable(){ @Override public void run() {
 			ReactiveWidgetFactory factory = container.produce(ReactiveWidgetFactory.class);
 			JFrame frame = new JFrame();
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.getContentPane().setLayout(new BorderLayout());
-			ListWidget<ByRef<Integer>> widget;
+			ListWidget<ByRef<String>> widget;
 			
-			JToggleButton button = new JToggleButton("Test");
-			button.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
-				changeValue(2);
-				changeValue(5);
-				changeValue(3);
-			}});
-			
-			frame.getContentPane().add(button, BorderLayout.SOUTH);
 			try {
 				widget = factory.newList(sorted, newLabelProvider());
 				frame.getContentPane().add(widget.getMainWidget(), BorderLayout.CENTER);
@@ -104,28 +88,35 @@ public class SortTest {
 		}});
 	}
 
-	private static LabelProvider<ByRef<Integer>> newLabelProvider()	throws IOException {
-		return new LabelProvider<ByRef<Integer>>(){
+	private static LabelProvider<ByRef<String>> newLabelProvider()	throws IOException {
+		return new LabelProvider<ByRef<String>>(){
 			
 			Signal<Image> _on = new Constant<Image>(ImageIO.read(SortTest.class.getResource("online.png")));
 			Signal<Image> _off = new Constant<Image>(ImageIO.read(SortTest.class.getResource("offline.png")));
 			
 			@Override
-			public Signal<Image> imageFor(ByRef<Integer> element) {
-				return element.value>=0 ? _on : _off;
+			public Signal<Image> imageFor(ByRef<String> element) {
+				return _onlineMap.get(element.value).output().currentValue() ? _on : _off;
 			}
 
 			@Override
-			public Signal<String> labelFor(ByRef<Integer> element) {
+			public Signal<String> labelFor(ByRef<String> element) {
 				return new Constant<String>(""+element.value);
 			}};
 	}
 
-	private static void addData(ListRegister<ByRef<Integer>> source) {
-		add(source, -3);
-		add(source, -1);
-		add(source, 0);
-		add(source, -4);
-		add(source, -6);
+	private static void addData(ListRegister<ByRef<String>> source) {
+		add(source,"agnaldo4j");
+		add(source,"Bamboo");
+		add(source,"Bihaiko");
+		add(source,"Daniel");
+		add(source,"Douglas");
+		add(source,"Duno");
+		add(source,"Kalecser");
+		add(source,"Klaus");
+		add(source,"Localhost");
+		add(source,"Nell");
+		add(source,"Priscila");
+		add(source,"Vitor");
 	}
 }

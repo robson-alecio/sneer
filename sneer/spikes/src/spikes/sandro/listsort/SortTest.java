@@ -46,8 +46,7 @@ public class SortTest {
 			boolean online2 = _onlineMap.get(o2.value).output().currentValue();
 			if(online1!=online2)
 				return online1?-1:1;
-			return 0;
-//			return o2.value.compareTo(o1.value);
+			return o2.value.compareTo(o1.value);
 		}};
 		
 		final SignalChooser<ByRef<String>> chooser = new SignalChooser<ByRef<String>>() {	@Override public Signal<?>[] signalsToReceiveFrom(ByRef<String> element) {

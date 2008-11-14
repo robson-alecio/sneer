@@ -19,6 +19,7 @@
 				- Inject the codec in MainDemoBrickImpl.  
 			- Block PCM tuples from being sent over the wire
 				- SpeexTuples does: ProbeManager.block(PcmSoundPacket.class);
+		- Refactor: Use Sandro's spike simpler audio init code.
 		- Second Step: Rooms.
 
 	- Flooding - Solve tuple flooding on the network.

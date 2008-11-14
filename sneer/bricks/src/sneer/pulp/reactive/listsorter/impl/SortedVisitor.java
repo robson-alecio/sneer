@@ -30,7 +30,6 @@ final class SortedVisitor<T> extends VisitorAdapter<T>{
 		_sorter = new SorterSupport(comparator);
 		_signalChooserManagerToAvoidGc = _signalChooserManagerFactory.newManager(input, chooser, 
 			new Omnivore<T>(){ @Override public void consume(T element) {
-				if(element==null) return;
 				_sorter.move(element);
 			}});
 	}

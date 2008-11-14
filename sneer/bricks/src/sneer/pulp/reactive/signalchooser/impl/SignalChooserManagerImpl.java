@@ -14,34 +14,33 @@ import wheel.reactive.lists.impl.VisitingListReceiver;
 class SignalChooserManagerImpl<T> implements SignalChooserManager<T>{
 	
 	private final SignalChooser<T> _chooser;
-	private final Map<T, Receiver<Object>> _elementReceiversToAvoidCg = new HashMap<T, Receiver<Object>>();
+	private final Map<T, Receiver<Object>> _elementReceiversToAvoidGc = new HashMap<T, Receiver<Object>>();
 	
-	@SuppressWarnings("unused")
-	private final Omnivore<T> _elementContentChangedReceiverToAvoidGc;
+	private final Omnivore<T> _elementContentChangedReceiver;
 	
 	@SuppressWarnings("unused")
 	private ElementVisitingListReceiver _elementVisitingListReceiverToAvoidGc;
 	
 	SignalChooserManagerImpl(ListSignal<T> input, SignalChooser<T> chooser, Omnivore<T> elementContentChangedReceiver) {
 		_chooser = chooser;
-		_elementContentChangedReceiverToAvoidGc = elementContentChangedReceiver;
+		_elementContentChangedReceiver = elementContentChangedReceiver;
 		_elementVisitingListReceiverToAvoidGc = new ElementVisitingListReceiver(input);
 	}
 	
 	public void elementRemoved(T element) {
-		synchronized (_elementReceiversToAvoidCg) {
+		synchronized (_elementReceiversToAvoidGc) {
 			if (_chooser == null) return;
-			if (!_elementReceiversToAvoidCg.containsKey(element) ) return;
-			_elementReceiversToAvoidCg.remove(element).removeFromSignals();
+			if (!_elementReceiversToAvoidGc.containsKey(element) ) return;
+			_elementReceiversToAvoidGc.remove(element).removeFromSignals();
 		}
 	}
 
 	public void elementAdded(T element) {
-		synchronized (_elementReceiversToAvoidCg) {
+		synchronized (_elementReceiversToAvoidGc) {
 			if (_chooser == null) return;
 			
 			ElementReceiver receiver = new ElementReceiver(element);
-			_elementReceiversToAvoidCg.put(element, receiver);
+			_elementReceiversToAvoidGc.put(element, receiver);
 			
 			for (Signal<?> signal : _chooser.signalsToReceiveFrom(element))
 				receiver.addToSignal(signal);
@@ -61,7 +60,7 @@ class SignalChooserManagerImpl<T> implements SignalChooserManager<T>{
 		@Override
 		public void consume(Object ignored) {
 			if (!_isActive) return;
-			_elementContentChangedReceiverToAvoidGc.consume(_element);
+			_elementContentChangedReceiver.consume(_element);
 		}
 	}
 	

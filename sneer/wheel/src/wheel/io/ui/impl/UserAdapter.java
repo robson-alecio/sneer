@@ -4,7 +4,7 @@ import java.awt.Font;
 import java.io.File;
 
 import wheel.io.ui.User;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.lang.exceptions.Catcher;
 import wheel.lang.exceptions.FriendlyException;
 import wheel.reactive.Signal;
@@ -21,7 +21,7 @@ public abstract class UserAdapter implements User {
 		throw new wheel.lang.exceptions.NotImplementedYet();
 	}
 
-	public void saveAs(String title, String buttonTitle, String[] suffixes, String description, Omnivore<File> callback) {
+	public void saveAs(String title, String buttonTitle, String[] suffixes, String description, Consumer<File> callback) {
 		// Implement Auto-generated method stub
 		throw new wheel.lang.exceptions.NotImplementedYet();
 	}
@@ -76,7 +76,7 @@ public abstract class UserAdapter implements User {
 	}
 
 	@Override
-	public Omnivore<Notification> briefNotifier() {
+	public Consumer<Notification> briefNotifier() {
 		// Implement Auto-generated method stub
 		throw new wheel.lang.exceptions.NotImplementedYet();
 	}
@@ -107,7 +107,7 @@ public abstract class UserAdapter implements User {
 
 	@Override
 	public void confirmWithTimeout(String proposition, int timeout,
-			Omnivore<Boolean> callback) {
+			Consumer<Boolean> callback) {
 		// Implement Auto-generated method stub
 		throw new wheel.lang.exceptions.NotImplementedYet();
 	}
@@ -119,7 +119,7 @@ public abstract class UserAdapter implements User {
 	}
 	
 	@Override
-	public void chooseDirectory(String title, String buttonTitle, Omnivore<File> callback) {
+	public void chooseDirectory(String title, String buttonTitle, Consumer<File> callback) {
 		// Implement Auto-generated method stub
 		throw new wheel.lang.exceptions.NotImplementedYet();
 	}

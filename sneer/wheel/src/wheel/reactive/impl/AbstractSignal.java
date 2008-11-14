@@ -4,7 +4,7 @@
 
 package wheel.reactive.impl;
 
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.Signal;
 
 public abstract class AbstractSignal<T> extends AbstractNotifier<T> implements Signal<T> {
@@ -19,7 +19,7 @@ public abstract class AbstractSignal<T> extends AbstractNotifier<T> implements S
 	}
 
 	@Override
-	protected void initReceiver(Omnivore<? super T> receiver) {
+	protected void initReceiver(Consumer<? super T> receiver) {
 		receiver.consume(currentValue());
 	}
 }

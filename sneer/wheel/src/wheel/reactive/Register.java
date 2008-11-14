@@ -1,11 +1,11 @@
 package wheel.reactive;
 
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 
 public interface Register<T>{
 
 	Signal<T> output();
 	
-	Omnivore<T> setter();
+	Consumer<T> setter();
 
 }

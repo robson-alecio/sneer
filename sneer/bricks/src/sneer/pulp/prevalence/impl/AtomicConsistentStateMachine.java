@@ -4,42 +4,49 @@ import sneer.pulp.prevalence.StateMachine;
 
 public class AtomicConsistentStateMachine implements StateMachine {
 
+	public static class Inconsistency extends Error {
+		public Inconsistency(Throwable cause) {
+			super("State machine is inconsistent.", cause);
+		}
+	}
+
+	
 	private final StateMachine _business;
-	private volatile Error _firstError;
+	private volatile Throwable _firstInconsistency;
 
 	public AtomicConsistentStateMachine(StateMachine business) {
 		_business = business;
 	}
 
 	@Override
-	public Object changeState(Object event) {
-		return performProtected(event, null);
+	public Object changeState(Object event) throws Inconsistency {
+		return performConsistent(event, null);
 	}
 
 	@Override
-	public Object queryState(Object query) {
-		return performProtected(null, query);
+	public Object queryState(Object query) throws Inconsistency {
+		return performConsistent(null, query);
 	}
 
-	private Object performProtected(Object event, Object query) {
+	private Object performConsistent(Object event, Object query) throws Inconsistency {
 		try {
 			return perform(event, query);
-		} catch (Error e) {
-			keepFirstError(e);
+		} catch (Throwable t) {
+			keepFirstInconsistency(t);
 			return null;
 		} finally {
-			checkError();
+			checkConsistency();
 		}
 	}
 
-	synchronized private void keepFirstError(Error e) {
-		if (_firstError != null) return;
-		_firstError = e;
+	synchronized private void keepFirstInconsistency(Throwable t) {
+		if (_firstInconsistency != null) return;
+		_firstInconsistency = t;
 	}
 
-	synchronized private void checkError() throws Error {
-		if (_firstError != null)
-			throw new Error("State machine is inconsistent.", _firstError);
+	synchronized private void checkConsistency() throws Inconsistency {
+		if (_firstInconsistency != null)
+			throw new Inconsistency(_firstInconsistency);
 	}
 	
 	private Object perform(Object event, Object query) {

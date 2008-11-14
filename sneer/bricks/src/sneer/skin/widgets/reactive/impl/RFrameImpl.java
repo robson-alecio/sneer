@@ -3,7 +3,7 @@ package sneer.skin.widgets.reactive.impl;
 import javax.swing.JFrame;
 
 import sneer.skin.widgets.reactive.WindowWidget;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
@@ -12,7 +12,7 @@ import wheel.reactive.impl.RegisterImpl;
 class RFrameImpl extends JFrame implements WindowWidget<JFrame>{
 
 	protected final Register<String> _titleRegister;
-	protected final Omnivore<String> _titleSetter;
+	protected final Consumer<String> _titleSetter;
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -23,7 +23,7 @@ class RFrameImpl extends JFrame implements WindowWidget<JFrame>{
 		this(source, null);
 	}
 	
-	RFrameImpl(Signal<String> source, Omnivore<String> setter){
+	RFrameImpl(Signal<String> source, Consumer<String> setter){
 		_titleRegister = new RegisterImpl<String>(null);
 		_titleSetter = setter;
 		_titleReceiverAvoidGc = titleReceiverFor(source);
@@ -42,7 +42,7 @@ class RFrameImpl extends JFrame implements WindowWidget<JFrame>{
 	}
 
 	@Override
-	public Omnivore<String> setter() {
+	public Consumer<String> setter() {
 		return _titleSetter;
 	}
 

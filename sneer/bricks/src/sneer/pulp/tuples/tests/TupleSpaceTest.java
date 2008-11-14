@@ -8,7 +8,7 @@ import sneer.kernel.container.Inject;
 import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 
 public class TupleSpaceTest extends TestThatIsInjected {
 
@@ -25,7 +25,7 @@ public class TupleSpaceTest extends TestThatIsInjected {
 		assertTrue(a.hashCode() == b.hashCode());
 		assertEquals(a, b);
 
-		_subject.addSubscription(TestTuple.class, new Omnivore<TestTuple>(){@Override public void consume(TestTuple received) {
+		_subject.addSubscription(TestTuple.class, new Consumer<TestTuple>(){@Override public void consume(TestTuple received) {
 			_received = received;
 		}});
 		
@@ -41,7 +41,7 @@ public class TupleSpaceTest extends TestThatIsInjected {
 	@Test
 	public void subscriptionRemoval() {
 		final ArrayList<Tuple> tuples = new ArrayList<Tuple>();
-		final Omnivore<TestTuple> consumer = new Omnivore<TestTuple>() {
+		final Consumer<TestTuple> consumer = new Consumer<TestTuple>() {
 			@Override
 			public void consume(TestTuple value) {
 				tuples.add(value);

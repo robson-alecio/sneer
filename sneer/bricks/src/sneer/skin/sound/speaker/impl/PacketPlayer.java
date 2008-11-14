@@ -6,9 +6,9 @@ import javax.sound.sampled.SourceDataLine;
 import sneer.kernel.container.Inject;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.Audio;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 
-class PacketPlayer implements Omnivore<PcmSoundPacket> {
+class PacketPlayer implements Consumer<PcmSoundPacket> {
 
 	@Inject private static Audio _audio;
 

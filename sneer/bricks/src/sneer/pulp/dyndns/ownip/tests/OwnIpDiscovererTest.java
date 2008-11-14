@@ -15,7 +15,7 @@ import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.propertystore.PropertyStore;
 import sneer.pulp.propertystore.mocks.TransientPropertyStore;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.impl.Receiver;
 
 public class OwnIpDiscovererTest {
@@ -26,7 +26,7 @@ public class OwnIpDiscovererTest {
 	public void testDiscovery() throws IOException {
 		
 		final CheckIp checkip = _context.mock(CheckIp.class);
-		final Omnivore<String> receiver = _context.mock(Omnivore.class);
+		final Consumer<String> receiver = _context.mock(Consumer.class);
 		final PropertyStore store = new TransientPropertyStore();
 		
 		final String ip1 = "123.45.67.89";

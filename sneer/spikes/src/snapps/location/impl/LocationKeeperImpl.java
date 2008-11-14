@@ -1,7 +1,7 @@
 package snapps.location.impl;
 
 import snapps.location.LocationKeeper;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
@@ -18,7 +18,7 @@ public class LocationKeeperImpl implements LocationKeeper {
 	}
 
 	@Override
-	public Omnivore<String> locationSetter() {
+	public Consumer<String> locationSetter() {
 		return _location.setter();
 	}
 	
@@ -28,7 +28,7 @@ public class LocationKeeperImpl implements LocationKeeper {
 	}
 
 	@Override
-	public Omnivore<String> latitudeSetter() {
+	public Consumer<String> latitudeSetter() {
 		return _latitude.setter();
 	}
 	
@@ -38,7 +38,7 @@ public class LocationKeeperImpl implements LocationKeeper {
 	}
 
 	@Override
-	public Omnivore<String> longitudeSetter() {
+	public Consumer<String> longitudeSetter() {
 		return _longitude.setter();
 	}
 

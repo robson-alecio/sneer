@@ -2,11 +2,11 @@ package wheel.lang;
 
 import wheel.lang.exceptions.IllegalParameter;
 
-public class IntegerParser implements Consumer<String> {
+public class IntegerParser implements PickyConsumer<String> {
 
-	private final Consumer<Integer> _endConsumer;
+	private final PickyConsumer<Integer> _endConsumer;
 
-	public IntegerParser(Consumer<Integer> endConsumer) {
+	public IntegerParser(PickyConsumer<Integer> endConsumer) {
 		_endConsumer = endConsumer;
 	}
 

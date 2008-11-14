@@ -16,7 +16,7 @@ import javax.swing.WindowConstants;
 
 import sneer.kernel.container.Inject;
 import sneer.skin.image.ImageFactory;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 
 class ImageDialog extends JDialog {
 	
@@ -33,9 +33,9 @@ class ImageDialog extends JDialog {
 	@Inject
 	private static ImageFactory _imageFactory;
 
-	private final Omnivore<Image> _imageSetter;
+	private final Consumer<Image> _imageSetter;
 
-    ImageDialog(File file, Omnivore<Image> imageSetter) {
+    ImageDialog(File file, Consumer<Image> imageSetter) {
     	_file = file;
 		_imageSetter = imageSetter;
 		_picture = new Picture();

@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
-import wheel.lang.Consumer;
+import wheel.lang.PickyConsumer;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
@@ -72,8 +72,8 @@ class ContactManagerImpl implements ContactManager {
 	}
 
 	@Override
-	public Consumer<String> nicknameSetterFor(final Contact contact) {
-		return new Consumer<String>(){ @Override public void consume(String newNickname) {
+	public PickyConsumer<String> nicknameSetterFor(final Contact contact) {
+		return new PickyConsumer<String>(){ @Override public void consume(String newNickname) {
 			changeNickname(contact, newNickname);
 		}};
 	}

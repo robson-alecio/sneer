@@ -1,7 +1,7 @@
 package sneer.pulp.own.tagline.impl;
 
 import sneer.pulp.own.tagline.OwnTaglineKeeper;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
@@ -16,7 +16,7 @@ class OwnTaglineKeeperImpl implements OwnTaglineKeeper {
 	}
 
 	@Override
-	public Omnivore<String> taglineSetter() {
+	public Consumer<String> taglineSetter() {
 		return _tagline.setter();
 	}
 }

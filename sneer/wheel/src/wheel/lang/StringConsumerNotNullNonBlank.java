@@ -2,12 +2,12 @@ package wheel.lang;
 
 import wheel.lang.exceptions.IllegalParameter;
 
-public class StringConsumerNotNullNonBlank implements Consumer<String> {
+public class StringConsumerNotNullNonBlank implements PickyConsumer<String> {
 
 	private final String _friendlyName;
-	private final Consumer<String> _endConsumer;
+	private final PickyConsumer<String> _endConsumer;
 
-	public StringConsumerNotNullNonBlank(String friendlyName,	Consumer<String> endConsumer) {
+	public StringConsumerNotNullNonBlank(String friendlyName,	PickyConsumer<String> endConsumer) {
 		_friendlyName = friendlyName;
 		_endConsumer = endConsumer;
 	}

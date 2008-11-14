@@ -22,7 +22,7 @@ import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.speaker.buffer.SpeakerBuffer;
 import sneer.skin.sound.speaker.buffer.SpeakerBuffers;
 import wheel.lang.ImmutableByteArray;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 
 @RunWith(JMock.class)
 public class SpeakerBufferTest extends TestThatIsInjected {
@@ -39,7 +39,7 @@ public class SpeakerBufferTest extends TestThatIsInjected {
 
 	private final Mockery _mockery = new JUnit4Mockery();
 	
-	private final Omnivore<PcmSoundPacket> _consumer = _mockery.mock(Omnivore.class);
+	private final Consumer<PcmSoundPacket> _consumer = _mockery.mock(Consumer.class);
 	
 	@Override
 	protected Object[] getBindings() {
@@ -98,8 +98,8 @@ public class SpeakerBufferTest extends TestThatIsInjected {
 			buffer.consume(packet(sequence));
 	}
 	
-	private Omnivore<PcmSoundPacket> sequenceRecorder() {
-		return new Omnivore<PcmSoundPacket>(){ @Override public void consume(PcmSoundPacket value) {
+	private Consumer<PcmSoundPacket> sequenceRecorder() {
+		return new Consumer<PcmSoundPacket>(){ @Override public void consume(PcmSoundPacket value) {
 			_recordedSequence.add(value.sequence);
 		}};
 	}

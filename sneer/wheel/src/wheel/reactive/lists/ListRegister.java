@@ -1,11 +1,11 @@
 package wheel.reactive.lists;
 
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.CollectionRegisterBase;
 
 public interface ListRegister<T> extends CollectionRegisterBase {
 
-	Omnivore<T> adder();
+	Consumer<T> adder();
 	ListSignal<T> output();
 
 	int indexOf(T element);

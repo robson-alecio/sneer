@@ -1,6 +1,6 @@
 package wheel.reactive.impl;
 
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.EventNotifier;
 import wheel.reactive.EventSource;
 
@@ -9,7 +9,7 @@ public class EventNotifierImpl<VO> implements EventNotifier<VO> {
 	static class MyOutput<VO> extends AbstractNotifier<VO> {
 
 		@Override
-		protected void initReceiver(Omnivore<? super VO> receiver) {	
+		protected void initReceiver(Consumer<? super VO> receiver) {	
 			//EventNotifiers dont need to init receivers like Signals do.
 		}
 		

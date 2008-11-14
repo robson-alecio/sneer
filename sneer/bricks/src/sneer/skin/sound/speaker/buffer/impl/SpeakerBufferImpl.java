@@ -10,7 +10,7 @@ import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.speaker.buffer.SpeakerBuffer;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.lang.Threads;
 
 class SpeakerBufferImpl implements SpeakerBuffer {
@@ -18,7 +18,7 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 	private static final int MAX_INTERRUPTED = 30;
 	private static final int MAX_GAP = 500;
 
-	private final Omnivore<? super PcmSoundPacket> _consumer;
+	private final Consumer<? super PcmSoundPacket> _consumer;
 	private boolean _isRunning = true;
 
 	private int _lastPlayed = -1;
@@ -40,7 +40,7 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 		notify();
 	}
 	
-	public SpeakerBufferImpl(Omnivore<? super PcmSoundPacket> consumer) {
+	public SpeakerBufferImpl(Consumer<? super PcmSoundPacket> consumer) {
 		_consumer = consumer;
 	}
 

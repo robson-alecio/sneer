@@ -11,7 +11,7 @@ import sneer.kernel.container.Inject;
 import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Constant;
@@ -72,7 +72,7 @@ public class ListSorterTest extends TestThatIsInjected {
 		src.remove(_60);
 
 		ListSignal<Signal<Integer>> sortedList = _sorter.sort(src.output(), integerComparator(), _chooser);
-		Omnivore<ListValueChange<Signal<Integer>>> consumer = new Omnivore<ListValueChange<Signal<Integer>>>(){ @Override public void consume(ListValueChange<Signal<Integer>> value) {
+		Consumer<ListValueChange<Signal<Integer>>> consumer = new Consumer<ListValueChange<Signal<Integer>>>(){ @Override public void consume(ListValueChange<Signal<Integer>> value) {
 			value.accept(_visitor);
 		}};
 		sortedList.addListReceiver(consumer);

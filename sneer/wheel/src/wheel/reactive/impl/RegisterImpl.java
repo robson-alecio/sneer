@@ -2,7 +2,7 @@ package wheel.reactive.impl;
 
 import java.lang.ref.WeakReference;
 
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.Register;
 
 public class RegisterImpl<VO> implements Register<VO> {
@@ -16,7 +16,7 @@ public class RegisterImpl<VO> implements Register<VO> {
 
 	}
 
-	class MySetter implements Omnivore<VO> {
+	class MySetter implements Consumer<VO> {
 
 		@Override
 		public void consume(VO newValue) {
@@ -57,7 +57,7 @@ public class RegisterImpl<VO> implements Register<VO> {
 	}
 
 
-	public Omnivore<VO> setter() {
+	public Consumer<VO> setter() {
 		return new MySetter();
 	}
 

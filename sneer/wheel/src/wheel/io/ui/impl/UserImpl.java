@@ -18,7 +18,7 @@ import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.GuiThread;
 import wheel.io.ui.User;
 import wheel.io.ui.Util;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.Catcher;
 import wheel.lang.exceptions.FriendlyException;
@@ -27,13 +27,13 @@ public class UserImpl implements User {
 
 
 	private String _title;
-	private Omnivore<Notification> _briefNotifier;
+	private Consumer<Notification> _briefNotifier;
 
 	public UserImpl() {
 		//used by SimpleContainer
 	} 
 
-	public UserImpl(String title, Omnivore<Notification> briefNotifier) { 
+	public UserImpl(String title, Consumer<Notification> briefNotifier) { 
 		//Fix: receive the parent component instead of passing null to the JOptionPane in order not to be application modal.
 		_title = title;
 		_briefNotifier = briefNotifier;
@@ -103,7 +103,7 @@ public class UserImpl implements User {
 		}
 	}
 	
-	public void confirmWithTimeout(String proposition, int timeout, Omnivore<Boolean> callback) {
+	public void confirmWithTimeout(String proposition, int timeout, Consumer<Boolean> callback) {
 		String message = adaptPrompt(proposition);
 		JOptionPane pane = new JOptionPane(message,JOptionPane.QUESTION_MESSAGE,JOptionPane.YES_NO_OPTION);
 		showOptionPaneWithTimeout(null,pane,timeout,callback);
@@ -167,7 +167,7 @@ public class UserImpl implements User {
 		dialog.setVisible(true);
 	}
 	
-	private void showOptionPaneWithTimeout(JComponent parentComponent, JOptionPane pane, int timeout, Omnivore<Boolean> callback){
+	private void showOptionPaneWithTimeout(JComponent parentComponent, JOptionPane pane, int timeout, Consumer<Boolean> callback){
 		final JDialog dialog = pane.createDialog(parentComponent, _title);
 		dialog.setModal(false);
 		DialogTimeoutRunner timeoutRunner= new DialogTimeoutRunner(dialog, pane, timeout, callback);
@@ -177,11 +177,11 @@ public class UserImpl implements User {
 	public class DialogTimeoutRunner extends Thread{
 		private Dialog _dialog;
 		private JOptionPane _pane;
-		private Omnivore<Boolean> _callback;
+		private Consumer<Boolean> _callback;
 		private int _timeout;
 		private String _originalTitle;
 		
-		public DialogTimeoutRunner(Dialog dialog, JOptionPane pane, int timeout, Omnivore<Boolean> callback){
+		public DialogTimeoutRunner(Dialog dialog, JOptionPane pane, int timeout, Consumer<Boolean> callback){
 			_dialog = dialog;
 			_pane = pane;
 			_callback = callback;
@@ -216,12 +216,12 @@ public class UserImpl implements User {
 	}
 
 	@Override
-	public Omnivore<Notification> briefNotifier() {
+	public Consumer<Notification> briefNotifier() {
 		return _briefNotifier;
 	}
 
 	@Override
-	public void saveAs(final String title, final String buttonTitle, final String[] suffixes, final String description, final Omnivore<File> callback) {
+	public void saveAs(final String title, final String buttonTitle, final String[] suffixes, final String description, final Consumer<File> callback) {
 		GuiThread.strictInvokeLater(new Runnable(){ public void run(){
 			final JFileChooser fc = new JFileChooser(); 
 			fc.setDialogTitle(title);
@@ -246,7 +246,7 @@ public class UserImpl implements User {
 	}
 	
 	@Override
-	public void chooseDirectory(final String title, final String buttonTitle, final Omnivore<File> callback) {
+	public void chooseDirectory(final String title, final String buttonTitle, final Consumer<File> callback) {
 		GuiThread.strictInvokeLater(new Runnable(){ public void run(){
 			final JFileChooser fc = new JFileChooser();
 			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);

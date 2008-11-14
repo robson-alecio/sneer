@@ -1,13 +1,13 @@
 package wheel.reactive;
 
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.impl.Receiver;
 
 public class Solder<T> extends Receiver<T> {
 
-	private final Omnivore<? super T> _omnivore;
+	private final Consumer<? super T> _omnivore;
 
-	public Solder(EventSource<? extends T> signal, Omnivore<? super T> omnivore) {
+	public Solder(EventSource<? extends T> signal, Consumer<? super T> omnivore) {
 		_omnivore = omnivore;
 		addToSignal(signal);
 	}

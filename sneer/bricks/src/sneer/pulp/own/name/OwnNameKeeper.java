@@ -1,13 +1,13 @@
 package sneer.pulp.own.name;
 
 import sneer.kernel.container.Brick;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.Signal;
 
 public interface OwnNameKeeper extends Brick {
 
 	Signal<String> name();
 
-	Omnivore<String> nameSetter();
+	Consumer<String> nameSetter();
 
 }

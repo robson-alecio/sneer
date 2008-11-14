@@ -12,7 +12,7 @@ import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.impl.AudioUtil;
 import wheel.lang.ImmutableByteArray;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 
 class SpeexTuplesImpl implements SpeexTuples {
 
@@ -32,13 +32,13 @@ class SpeexTuplesImpl implements SpeexTuples {
 	static private KeyManager _keyManager;
 	
 	public SpeexTuplesImpl() {
-		_tupleSpace.addSubscription(PcmSoundPacket.class, new Omnivore<PcmSoundPacket>() { @Override public void consume(PcmSoundPacket packet) {
+		_tupleSpace.addSubscription(PcmSoundPacket.class, new Consumer<PcmSoundPacket>() { @Override public void consume(PcmSoundPacket packet) {
 			if (!isMine(packet))
 				return;
 			if (encode(packet.payload.copy()))
 				flush();
 		}});
-		_tupleSpace.addSubscription(SpeexPacket.class, new Omnivore<SpeexPacket>() { @Override public void consume(SpeexPacket packet) {
+		_tupleSpace.addSubscription(SpeexPacket.class, new Consumer<SpeexPacket>() { @Override public void consume(SpeexPacket packet) {
 			if (isMine(packet))
 				return;
 			decode(packet);

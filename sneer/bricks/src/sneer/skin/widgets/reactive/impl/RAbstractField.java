@@ -24,7 +24,7 @@ import javax.swing.text.JTextComponent;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.ui.GuiThread;
 import wheel.io.ui.impl.UserImpl;
-import wheel.lang.Consumer;
+import wheel.lang.PickyConsumer;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
@@ -35,7 +35,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	
 	protected final boolean _notifyOnlyWhenDoneEditing;
 	protected final Signal<String> _source;
-	protected final Consumer<String> _setter;
+	protected final PickyConsumer<String> _setter;
 	protected final WIDGET _textComponent;
 
 	protected final Receiver<String> _fieldReciver;
@@ -48,7 +48,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 		this(textComponent, source, null, false);
 	}
 	
-	RAbstractField(WIDGET textComponent, Signal<String> source, Consumer<String> setter, boolean notifyOnlyWhenDoneEditing) {
+	RAbstractField(WIDGET textComponent, Signal<String> source, PickyConsumer<String> setter, boolean notifyOnlyWhenDoneEditing) {
 		_source = source;
 		_setter = setter;
 		_textComponent = textComponent;
@@ -177,7 +177,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	}
 	
 	@Override
-	public Consumer<String> setter(){
+	public PickyConsumer<String> setter(){
 		return _setter;
 	}
 	

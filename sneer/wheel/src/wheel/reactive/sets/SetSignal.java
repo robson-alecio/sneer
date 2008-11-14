@@ -6,13 +6,13 @@ package wheel.reactive.sets;
 
 import java.util.Collection;
 
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.CollectionSignal;
 
 
 public interface SetSignal<T> extends CollectionSignal<T> {
 
-	void addSetReceiver(Omnivore<SetValueChange<T>> receiver);
+	void addSetReceiver(Consumer<SetValueChange<T>> receiver);
 	void removeSetReceiver(Object receiver);
 
 	public interface SetValueChange<E> {

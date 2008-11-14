@@ -24,7 +24,7 @@ import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.impl.AudioUtil;
 import wheel.lang.ByRef;
 import wheel.lang.ImmutableByteArray;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 
 @RunWith(JMock.class)
 public class SpeexTuplesTest extends TestThatIsInjected{
@@ -73,7 +73,7 @@ public class SpeexTuplesTest extends TestThatIsInjected{
 		}});
 		
 		final ByRef<SpeexPacket> packet = ByRef.newInstance();
-		_tupleSpace.addSubscription(SpeexPacket.class, new Omnivore<SpeexPacket>() { @Override public void consume(SpeexPacket value) {
+		_tupleSpace.addSubscription(SpeexPacket.class, new Consumer<SpeexPacket>() { @Override public void consume(SpeexPacket value) {
 			assertNull(packet.value);
 			packet.value = value;
 		}});
@@ -97,7 +97,7 @@ public class SpeexTuplesTest extends TestThatIsInjected{
 		}});
 		
 		final ByRef<PcmSoundPacket> packet = ByRef.newInstance();
-		_tupleSpace.addSubscription(PcmSoundPacket.class, new Omnivore<PcmSoundPacket>() { @Override public void consume(PcmSoundPacket value) {
+		_tupleSpace.addSubscription(PcmSoundPacket.class, new Consumer<PcmSoundPacket>() { @Override public void consume(PcmSoundPacket value) {
 			assertNull(packet.value);
 			packet.value = value;
 		}});

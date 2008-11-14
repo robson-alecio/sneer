@@ -1,14 +1,14 @@
 package sneer.pulp.connection.impl;
 
 import sneer.pulp.network.ByteArraySocket;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 
 class SocketHolder {
 
 	private volatile ByteArraySocket _socket;
-	private final Omnivore<Boolean> _activityReceiver;
+	private final Consumer<Boolean> _activityReceiver;
 
-	public SocketHolder(Omnivore<Boolean> activityReceiver) {
+	public SocketHolder(Consumer<Boolean> activityReceiver) {
 		_activityReceiver = activityReceiver;
 	}
 

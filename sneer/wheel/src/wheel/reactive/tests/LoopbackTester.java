@@ -1,6 +1,6 @@
 package wheel.reactive.tests;
 
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.lang.Types;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
@@ -13,7 +13,7 @@ public class LoopbackTester {
 	private Register<Object> _inputValue2 = new RegisterImpl<Object>(null);
 	private Register<Object> _inputValue3 = new RegisterImpl<Object>(null);
 
-	public LoopbackTester(Signal<?> input, Omnivore<?> output) {
+	public LoopbackTester(Signal<?> input, Consumer<?> output) {
 		_output = Types.cast(output);
 				
 		Signal<Object> castedInput = Types.cast(input);
@@ -26,7 +26,7 @@ public class LoopbackTester {
 		Object s3 = new Solder<Object>(castedInput, _inputValue3.setter());
 	}
 	
-	private final Omnivore<Object> _output;
+	private final Consumer<Object> _output;
 
 
 	public void test() {

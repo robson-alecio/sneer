@@ -1,13 +1,13 @@
 package wheel.io.ui;
 
 import wheel.io.ui.action.CancellableAction;
-import wheel.lang.Consumer;
+import wheel.lang.PickyConsumer;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Signal;
 
 public class ValueChangePane extends CancellableAction {
 
-	public ValueChangePane(String caption, String prompt, User user, Signal<?> signal, Consumer<String> setter) {
+	public ValueChangePane(String caption, String prompt, User user, Signal<?> signal, PickyConsumer<String> setter) {
 		
 		_caption = caption;
 		_prompt = prompt;
@@ -18,7 +18,7 @@ public class ValueChangePane extends CancellableAction {
 	
 	private final Signal<?> _signal;
 	private final User _user;
-	private final Consumer<String> _setter;
+	private final PickyConsumer<String> _setter;
 	private final String _caption;
 	private final String _prompt;
 

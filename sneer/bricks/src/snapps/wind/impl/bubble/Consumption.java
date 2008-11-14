@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.prevayler.TransactionWithQuery;
 
-import wheel.lang.Consumer;
+import wheel.lang.PickyConsumer;
 import wheel.lang.FrozenTime;
 import wheel.lang.exceptions.IllegalParameter;
 
@@ -24,18 +24,18 @@ class Consumption implements TransactionWithQuery {
 
 	public Object executeAndQuery(Object stateMachine, Date date) throws IllegalParameter {
 		FrozenTime.freezeForCurrentThread(date.getTime());
-		Consumer<Object> consumer = navigateToConsumer(stateMachine);
+		PickyConsumer<Object> consumer = navigateToConsumer(stateMachine);
 		consumer.consume(_valueObject);
 		return null;
 	}
 
-	private Consumer<Object> navigateToConsumer(Object stateMachine) {
+	private PickyConsumer<Object> navigateToConsumer(Object stateMachine) {
 		Object candidate = stateMachine;
 
 		for (int i = 0; i < _consumerGetterPath.length; i++)
 			candidate = invoke(candidate, _consumerGetterPath[i]);
 		
-		return (Consumer<Object>)candidate;
+		return (PickyConsumer<Object>)candidate;
 	}
 
 

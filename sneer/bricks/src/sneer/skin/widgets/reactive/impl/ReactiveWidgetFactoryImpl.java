@@ -17,21 +17,21 @@ import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import sneer.skin.widgets.reactive.WindowWidget;
 import wheel.io.ui.GuiThread;
+import wheel.lang.PickyConsumer;
 import wheel.lang.Consumer;
-import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 
 class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 	
 	@Override
-	public TextWidget<JTextField> newEditableLabel(Signal<String> source, Consumer<String> setter) {
+	public TextWidget<JTextField> newEditableLabel(Signal<String> source, PickyConsumer<String> setter) {
 		GuiThread.assertInGuiThread();
 		return new REditableLabelImpl(source, setter, false);
 	}
 
 	@Override
-	public TextWidget<JTextField> newEditableLabel(Signal<String> source, Consumer<String> setter, boolean notifyOnlyWhenDoneEditing) {
+	public TextWidget<JTextField> newEditableLabel(Signal<String> source, PickyConsumer<String> setter, boolean notifyOnlyWhenDoneEditing) {
 		GuiThread.assertInGuiThread();
 		return new REditableLabelImpl(source, setter, notifyOnlyWhenDoneEditing);
 	}
@@ -43,37 +43,37 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 	}
 
 	@Override
-	public TextWidget<JLabel> newLabel(Signal<String> source, Omnivore<String> setter) {
+	public TextWidget<JLabel> newLabel(Signal<String> source, Consumer<String> setter) {
 		GuiThread.assertInGuiThread();
 		return new RLabelImpl(source, setter);
 	}
 
 	@Override
-	public TextWidget<JTextField> newTextField(Signal<String> source, Omnivore<String> setter) {
+	public TextWidget<JTextField> newTextField(Signal<String> source, Consumer<String> setter) {
 		GuiThread.assertInGuiThread();
 		return new RTextFieldImpl(source, setter, false);
 	}
 
 	@Override
-	public TextWidget<JTextField> newTextField(Signal<String> source, Omnivore<String> setter, boolean notifyOnlyWhenDoneEditing) {
+	public TextWidget<JTextField> newTextField(Signal<String> source, Consumer<String> setter, boolean notifyOnlyWhenDoneEditing) {
 		GuiThread.assertInGuiThread();
 		return new RTextFieldImpl(source, setter, notifyOnlyWhenDoneEditing);
 	}
 
 	@Override
-	public TextWidget<JTextPane> newTextPane(Signal<String> source, Omnivore<String> setter) {
+	public TextWidget<JTextPane> newTextPane(Signal<String> source, Consumer<String> setter) {
 		GuiThread.assertInGuiThread();
 		return new RTextPaneImpl(source, setter, false);
 	}
 
 	@Override
-	public TextWidget<JTextPane> newTextPane(Signal<String> source, Omnivore<String> setter, boolean notifyOnlyWhenDoneEditing) {
+	public TextWidget<JTextPane> newTextPane(Signal<String> source, Consumer<String> setter, boolean notifyOnlyWhenDoneEditing) {
 		GuiThread.assertInGuiThread();
 		return new RTextPaneImpl(source, setter, notifyOnlyWhenDoneEditing);
 	}
 
 	@Override
-	public ImageWidget newImage(Signal<Image> source,Omnivore<Image> setter) {
+	public ImageWidget newImage(Signal<Image> source,Consumer<Image> setter) {
 		GuiThread.assertInGuiThread();
 		return new RImageImpl(source, setter);
 	}
@@ -108,7 +108,7 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 	}
 
 	@Override
-	public WindowWidget<JFrame> newFrame(Signal<String> source, Omnivore<String> setter) {
+	public WindowWidget<JFrame> newFrame(Signal<String> source, Consumer<String> setter) {
 		GuiThread.assertInGuiThread();
 		return new RFrameImpl(source, setter);
 	}

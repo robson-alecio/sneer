@@ -2,7 +2,7 @@ package sneer.pulp.port.impl;
 
 import sneer.pulp.port.PortKeeper;
 import wheel.io.network.PortNumberRegister;
-import wheel.lang.Consumer;
+import wheel.lang.PickyConsumer;
 import wheel.reactive.Signal;
 
 class PortKeeperImpl implements PortKeeper {
@@ -15,7 +15,7 @@ class PortKeeperImpl implements PortKeeper {
 	}
 
 	@Override
-	public Consumer<Integer> portSetter() {
+	public PickyConsumer<Integer> portSetter() {
 		return _register.setter();
 	}
 

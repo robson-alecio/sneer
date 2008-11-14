@@ -24,7 +24,7 @@ import sneer.skin.sound.speaker.Speaker;
 import sneer.skin.sound.speaker.buffer.SpeakerBuffer;
 import sneer.skin.sound.speaker.buffer.SpeakerBuffers;
 import wheel.lang.ImmutableByteArray;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 
 
 @RunWith(JMock.class)
@@ -43,7 +43,7 @@ public class SpeakerTest extends TestThatIsInjected {
 	private final SpeakerBuffers _buffers = _mockery.mock(SpeakerBuffers.class);
 	private final SpeakerBuffer _buffer = _mockery.mock(SpeakerBuffer.class);
 	
-	private Omnivore<? super PcmSoundPacket> _consumer;
+	private Consumer<? super PcmSoundPacket> _consumer;
 	
 	
 	@Override
@@ -125,8 +125,8 @@ public class SpeakerTest extends TestThatIsInjected {
 		
 		CommonExpectations() throws Exception {
 			one(_audio).bestAvailableSourceDataLine(); will(returnValue(_line));
-			one(_buffers).createBufferFor(with(aNonNull(Omnivore.class))); will(new CustomAction("keep buffer") { @Override public Object invoke(Invocation invocation) {
-				_consumer = (Omnivore<? super PcmSoundPacket>) invocation.getParameter(0);
+			one(_buffers).createBufferFor(with(aNonNull(Consumer.class))); will(new CustomAction("keep buffer") { @Override public Object invoke(Invocation invocation) {
+				_consumer = (Consumer<? super PcmSoundPacket>) invocation.getParameter(0);
 				return _buffer;
 			}});;
 

@@ -7,7 +7,7 @@ import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.mic.Mic;
 import sneer.skin.sound.speaker.Speaker;
 import wheel.io.Logger;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.lang.Threads;
 
 public class SoundLoopbackDemo {
@@ -22,7 +22,7 @@ public class SoundLoopbackDemo {
 		container2.produce(Mic.class).open();
 		container1.produce(Speaker.class).open();
 		
-		tuples.addSubscription(PcmSoundPacket.class, new Omnivore<PcmSoundPacket>() {
+		tuples.addSubscription(PcmSoundPacket.class, new Consumer<PcmSoundPacket>() {
 			@Override
 			public void consume(PcmSoundPacket packet) {
 				System.out.print("new byte[] {\n\t");

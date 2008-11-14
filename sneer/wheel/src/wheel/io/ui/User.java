@@ -2,7 +2,7 @@ package wheel.io.ui;
 
 import java.io.File;
 
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.lang.exceptions.Catcher;
 import wheel.lang.exceptions.FriendlyException;
 
@@ -15,9 +15,9 @@ public interface User {
 
 	boolean confirm(String proposition);
 	boolean confirmOrCancel(String proposition) throws CancelledByUser;
-	void confirmWithTimeout(String proposition, int timeout, Omnivore<Boolean> callback);
+	void confirmWithTimeout(String proposition, int timeout, Consumer<Boolean> callback);
 
-	Omnivore<Notification> briefNotifier();
+	Consumer<Notification> briefNotifier();
 	void acknowledgeNotification(String notification);
 	void acknowledgeNotification(String notification, String replacementForBoringOK);
 	void acknowledgeUnexpectedProblem(String description);
@@ -27,8 +27,8 @@ public interface User {
 	void acknowledge(Throwable t);
 	void acknowledgeFriendlyException(FriendlyException e);
 	
-	void saveAs(String title, String buttonTitle, String[] suffixes, String description, Omnivore<File> callback);
-	void chooseDirectory(String title, String buttonTitle, Omnivore<File> callback) ;
+	void saveAs(String title, String buttonTitle, String[] suffixes, String description, Consumer<File> callback);
+	void chooseDirectory(String title, String buttonTitle, Consumer<File> callback) ;
 	
 	Catcher catcher();
 

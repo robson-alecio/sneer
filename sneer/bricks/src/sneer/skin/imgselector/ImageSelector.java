@@ -2,10 +2,10 @@ package sneer.skin.imgselector;
 
 import java.awt.Image;
 
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 
 public interface ImageSelector {
 
-	void open(Omnivore<Image> avatarSetter);
+	void open(Consumer<Image> avatarSetter);
 
 }

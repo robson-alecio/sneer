@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.AbstractNotifier;
 import wheel.reactive.maps.MapRegister;
@@ -61,7 +61,7 @@ public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 		}
 
 		@Override
-		public void addSetReceiver(Omnivore<SetValueChange<Map.Entry<K,V>>> receiver) {
+		public void addSetReceiver(Consumer<SetValueChange<Map.Entry<K,V>>> receiver) {
 			addReceiver(receiver);		
 		}
 		
@@ -87,7 +87,7 @@ public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 		}
 
 		@Override
-		protected void initReceiver(Omnivore<? super SetValueChange<Map.Entry<K, V>>> receiver) {
+		protected void initReceiver(Consumer<? super SetValueChange<Map.Entry<K, V>>> receiver) {
 			if (_map.isEmpty()) return;
 			receiver.consume(asChange(currentElements()));
 		}

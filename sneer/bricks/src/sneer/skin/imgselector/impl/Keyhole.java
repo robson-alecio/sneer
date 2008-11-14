@@ -16,7 +16,7 @@ import javax.swing.JComponent;
 import javax.swing.JLayeredPane;
 import javax.swing.border.BevelBorder;
 
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 
 class Keyhole extends JComponent {
     private static final long serialVersionUID = 1L;
@@ -27,9 +27,9 @@ class Keyhole extends JComponent {
 	private Point _layeredPaneLocation;
 	private Robot _robot;
 
-	private final Omnivore<Image> _imageSetter;
+	private final Consumer<Image> _imageSetter;
 	
-    Keyhole(JLayeredPane layeredPane, Omnivore<Image> imageSetter) {
+    Keyhole(JLayeredPane layeredPane, Consumer<Image> imageSetter) {
 		_layeredPane = layeredPane;
 		_imageSetter = imageSetter;
     	setBorder(new BevelBorder(BevelBorder.LOWERED));

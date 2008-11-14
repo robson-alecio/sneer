@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import sneer.skin.widgets.reactive.TextWidget;
-import wheel.lang.Consumer;
+import wheel.lang.PickyConsumer;
 import wheel.reactive.Signal;
 
 class REditableLabelImpl extends JPanel implements TextWidget<JTextField>{
@@ -26,9 +26,9 @@ class REditableLabelImpl extends JPanel implements TextWidget<JTextField>{
 	protected final RLabelImpl _label;
 	protected final RTextFieldImpl _text;
 	protected final Signal<String> _source;
-	protected final Consumer<String> _setter;
+	protected final PickyConsumer<String> _setter;
 
-	REditableLabelImpl(Signal<String> source, Consumer<String> setter, boolean notifyOnlyWhenDoneEditing) {
+	REditableLabelImpl(Signal<String> source, PickyConsumer<String> setter, boolean notifyOnlyWhenDoneEditing) {
 		_source = source;
 		_setter = setter;
 		_text = new RTextFieldImpl(source, setter, notifyOnlyWhenDoneEditing);
@@ -101,7 +101,7 @@ class REditableLabelImpl extends JPanel implements TextWidget<JTextField>{
 	}
 	
 	@Override
-	public Consumer<String> setter(){
+	public PickyConsumer<String> setter(){
 		return _setter;
 	}
 	

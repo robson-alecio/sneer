@@ -28,7 +28,7 @@ import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.mic.Mic;
 import wheel.lang.ByRef;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.lang.Threads;
 
 @RunWith(JMock.class)
@@ -45,7 +45,7 @@ public class MicTest {
 	public void testPacketSequence() throws Exception {
 		
 		final HashMap<Integer, PcmSoundPacket> seenPackets = new HashMap<Integer, PcmSoundPacket>();
-		tupleSpace.addSubscription(PcmSoundPacket.class, new Omnivore<PcmSoundPacket>() { @Override public void consume(PcmSoundPacket packet) {
+		tupleSpace.addSubscription(PcmSoundPacket.class, new Consumer<PcmSoundPacket>() { @Override public void consume(PcmSoundPacket packet) {
 			seenPackets.put(packet.sequence, packet);
 		}});
 		

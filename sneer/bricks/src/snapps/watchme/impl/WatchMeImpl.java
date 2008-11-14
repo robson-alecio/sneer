@@ -17,7 +17,7 @@ import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.screenshotter.Screenshotter;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.lang.exceptions.FriendlyException;
 import wheel.lang.exceptions.Hiccup;
 import wheel.reactive.EventSource;
@@ -55,7 +55,7 @@ class WatchMeImpl implements WatchMe {
 		final EventNotifierImpl<BufferedImage> result = new EventNotifierImpl<BufferedImage>();
 		final Decoder decoder = _codec.createDecoder();
 		
-		_tupleSpace.addSubscription(ImageDelta.class, new Omnivore<ImageDelta>(){@Override public void consume(ImageDelta delta) {
+		_tupleSpace.addSubscription(ImageDelta.class, new Consumer<ImageDelta>(){@Override public void consume(ImageDelta delta) {
 			if (!delta.publisher().equals(publisher))
 				return;
 			

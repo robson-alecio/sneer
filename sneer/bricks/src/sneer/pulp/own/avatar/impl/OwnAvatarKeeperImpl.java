@@ -6,7 +6,7 @@ import sneer.kernel.container.Inject;
 import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.skin.image.ImageFactory;
 import wheel.lang.Functor;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.lang.exceptions.Hiccup;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
@@ -34,7 +34,7 @@ class OwnAvatarKeeperImpl implements OwnAvatarKeeper {
 	}
 
 	@Override
-	public Omnivore<Image> avatarSetter() {
+	public Consumer<Image> avatarSetter() {
 		return _avatar.setter();
 	}
 }

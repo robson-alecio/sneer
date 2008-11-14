@@ -12,7 +12,7 @@ import sneer.kernel.container.Inject;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.widgets.reactive.ImageWidget;
 import wheel.io.ui.GuiThread;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
@@ -24,7 +24,7 @@ class RImageImpl extends JPanel implements ImageWidget{
 	private static ImageFactory _imageFactory;
 
 	protected final Register<Image> _image;
-	protected final Omnivore<Image> _setter;
+	protected final Consumer<Image> _setter;
 	private static final long serialVersionUID = 1L;
 	
 	@SuppressWarnings("unused")
@@ -34,7 +34,7 @@ class RImageImpl extends JPanel implements ImageWidget{
 		this(source, null);
 	}
 	
-	RImageImpl(Signal<Image> source, Omnivore<Image> setter){
+	RImageImpl(Signal<Image> source, Consumer<Image> setter){
 		setOpaque(false);
 		_image = new RegisterImpl<Image>(null);
 		_setter = setter;
@@ -107,7 +107,7 @@ class RImageImpl extends JPanel implements ImageWidget{
 	}
 
 	@Override
-	public Omnivore<Image> setter() {
+	public Consumer<Image> setter() {
 		if(_setter!=null) return _setter;
 		throw new RuntimeException("The widget is readonly.");
 	}

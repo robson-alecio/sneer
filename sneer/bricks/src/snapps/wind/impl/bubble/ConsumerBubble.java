@@ -7,26 +7,18 @@ import org.prevayler.Prevayler;
 import wheel.lang.Consumer;
 import wheel.lang.exceptions.IllegalParameter;
 
-
 @SuppressWarnings("unchecked")
-class ConsumerBubble implements Consumer {
+class ConsumerBubble extends PickyConsumerBubble implements Consumer {
 
-	private final List<String> _getterPathToConsumer;
-	private final Prevayler _prevayler;
-
-	ConsumerBubble(Prevayler prevayler, List<String> getterPathToConsumer) {
-		_getterPathToConsumer = getterPathToConsumer;
-		_prevayler = prevayler;
+	ConsumerBubble(Prevayler prevayler, List<String> getterPathToOmnivore) {
+		super(prevayler, getterPathToOmnivore);
 	}
 
-	public void consume(Object vo) throws IllegalParameter {
+	@Override
+	public void consume(Object vo) {
 		try {
-			_prevayler.execute(new Consumption(_getterPathToConsumer, vo));
+			super.consume(vo);
 		} catch (IllegalParameter e) {
-			throw e;
-		} catch (RuntimeException e) {
-			throw e;
-		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}
 	}

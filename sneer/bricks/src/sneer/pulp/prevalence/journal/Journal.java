@@ -1,8 +1,10 @@
 package sneer.pulp.prevalence.journal;
 
+import wheel.lang.Consumer;
+
 public interface Journal {
 
-	void append(Object entry);
-	Iterable<Object> allEntries();
+	/** All existing entries will be passed to the entryConsumer. */
+	Consumer<Object> open(Consumer<Object> entryConsumer);
 	
 }

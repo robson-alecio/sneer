@@ -1,9 +1,9 @@
 package sneer.skin.sound.speaker.buffer;
 
 import sneer.skin.sound.PcmSoundPacket;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 
-public interface SpeakerBuffer extends Omnivore<PcmSoundPacket>{
+public interface SpeakerBuffer extends Consumer<PcmSoundPacket>{
 
 	void crash();
 

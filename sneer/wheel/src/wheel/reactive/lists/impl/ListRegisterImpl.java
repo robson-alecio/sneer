@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.AbstractNotifier;
@@ -30,7 +30,7 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 		}
 
 		@Override
-		public void addListReceiver(Omnivore<ListValueChange<VO>> receiver) {
+		public void addListReceiver(Consumer<ListValueChange<VO>> receiver) {
 			addReceiver(receiver);	
 		}
 		
@@ -40,7 +40,7 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 		}
 
 		@Override
-		protected void initReceiver(Omnivore<? super ListValueChange<VO>> receiver) {}
+		protected void initReceiver(Consumer<? super ListValueChange<VO>> receiver) {}
 
 		@Override
 		protected void notifyReceivers(ListValueChange<VO> valueChange) {
@@ -113,8 +113,8 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 	}
 
 	@Override
-	public Omnivore<VO> adder() {
-		return new Omnivore<VO>() { @Override public void consume(VO valueObject) {
+	public Consumer<VO> adder() {
+		return new Consumer<VO>() { @Override public void consume(VO valueObject) {
 			add(valueObject);
 		}};
 	}

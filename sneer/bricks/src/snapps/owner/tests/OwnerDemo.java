@@ -11,7 +11,7 @@ import sneer.skin.dashboard.Dashboard;
 import sneer.skin.snappmanager.Instrument;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.Signal;
 
 public class OwnerDemo  {
@@ -42,9 +42,9 @@ class OwnerInstrument implements Instrument{
 
 	private final ReactiveWidgetFactory _rfactory;
 	private final Signal<String> _output;
-	private final Omnivore<String> _setter;
+	private final Consumer<String> _setter;
 	
-	public OwnerInstrument(ReactiveWidgetFactory rfactory, Signal<String> output,	Omnivore<String> setter, InstrumentManager manager) {
+	public OwnerInstrument(ReactiveWidgetFactory rfactory, Signal<String> output,	Consumer<String> setter, InstrumentManager manager) {
 		_rfactory = rfactory;
 		_output = output;
 		_setter = setter;

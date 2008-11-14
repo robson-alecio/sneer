@@ -1,11 +1,11 @@
 package wheel.reactive.lists.impl;
 
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListValueChange;
 import wheel.reactive.lists.ListValueChange.Visitor;
 
-public abstract class VisitingListReceiver<T> implements Omnivore<ListValueChange<T>>, Visitor<T> {
+public abstract class VisitingListReceiver<T> implements Consumer<ListValueChange<T>>, Visitor<T> {
 
 	protected final ListSignal<T> _input;
 

@@ -3,10 +3,10 @@ package wheel.reactive.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.EventSource;
 
-public abstract class Receiver<T> implements Omnivore<T> {
+public abstract class Receiver<T> implements Consumer<T> {
 	
 	private final List<EventSource<? extends T>> _eventSources = new ArrayList<EventSource<? extends T>>();
 

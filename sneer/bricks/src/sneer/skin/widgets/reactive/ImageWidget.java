@@ -4,11 +4,11 @@ import java.awt.Image;
 
 import javax.swing.JPanel;
 
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.Signal;
 
 public interface ImageWidget extends ComponentWidget<JPanel>{
 
 	Signal<Image> output();
-	Omnivore<Image> setter();	
+	Consumer<Image> setter();	
 }

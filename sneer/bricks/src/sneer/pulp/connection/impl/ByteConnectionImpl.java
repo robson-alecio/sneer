@@ -11,7 +11,7 @@ import sneer.pulp.contacts.Contact;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.threadpool.ThreadPool;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.lang.Threads;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
@@ -30,7 +30,7 @@ class ByteConnectionImpl implements ByteConnection {
 	private final SocketHolder _socketHolder = new SocketHolder(_isOnline.setter());
 	
 	private PacketScheduler _scheduler;
-	private Omnivore<byte[]> _receiver;
+	private Consumer<byte[]> _receiver;
 
 
 	ByteConnectionImpl(String label, Contact contact) {
@@ -137,7 +137,7 @@ class ByteConnectionImpl implements ByteConnection {
 	}
 
 	@Override
-	public void initCommunications(PacketScheduler sender, Omnivore<byte[]> receiver) {
+	public void initCommunications(PacketScheduler sender, Consumer<byte[]> receiver) {
 		if (_scheduler != null) throw new IllegalStateException();
 		_scheduler = sender;
 		_receiver = receiver;

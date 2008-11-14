@@ -14,7 +14,7 @@ import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.io.serialization.Serializer;
 import wheel.io.serialization.impl.XStreamBinarySerializer;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
@@ -76,8 +76,8 @@ public class ProbeManagerImpl implements ProbeManager {
 		return result;
 	}
 
-	private Omnivore<byte[]> createReceiver() {
-		return new Omnivore<byte[]>(){ @Override public void consume(byte[] packet) {
+	private Consumer<byte[]> createReceiver() {
+		return new Consumer<byte[]>(){ @Override public void consume(byte[] packet) {
 			_tuples.acquire((Tuple)desserialize(packet));
 		}};
 	}

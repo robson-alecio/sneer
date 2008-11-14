@@ -15,7 +15,7 @@ import sneer.pulp.clock.Clock;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.lang.Types;
 
 public class TupleSpaceImpl implements TupleSpace {
@@ -27,10 +27,10 @@ public class TupleSpaceImpl implements TupleSpace {
 	//Refactor The synchronization will no longer be necessary when the container guarantees synchronization of model bricks.
 	static class Subscription {
 
-		private final Omnivore<? super Tuple> _subscriber;
+		private final Consumer<? super Tuple> _subscriber;
 		private final Class<? extends Tuple> _tupleType;
 
-		<T extends Tuple> Subscription(Omnivore<? super T> subscriber, Class<T> tupleType) {
+		<T extends Tuple> Subscription(Consumer<? super T> subscriber, Class<T> tupleType) {
 			_subscriber = cast(subscriber);
 			_tupleType = tupleType;
 		}
@@ -100,7 +100,7 @@ public class TupleSpaceImpl implements TupleSpace {
 	}
 
 	@Override
-	public synchronized <T extends Tuple> void addSubscription(Class<T> tupleType,	Omnivore<? super T> subscriber) {
+	public synchronized <T extends Tuple> void addSubscription(Class<T> tupleType,	Consumer<? super T> subscriber) {
 		_subscriptions.add(new Subscription(subscriber, tupleType));
 	}
 	

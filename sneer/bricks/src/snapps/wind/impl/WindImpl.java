@@ -7,12 +7,12 @@ import snapps.wind.Wind;
 import sneer.kernel.container.Inject;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.tuples.TupleSpace;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 
-class WindImpl implements Wind, Omnivore<Shout> {
+class WindImpl implements Wind, Consumer<Shout> {
 
 	@Inject
 	static private TupleSpace _environment;
@@ -46,8 +46,8 @@ class WindImpl implements Wind, Omnivore<Shout> {
 	}
 
 	@Override
-	public Omnivore<String> megaphone() {
-		return new Omnivore<String>(){ @Override public void consume(String phrase) {
+	public Consumer<String> megaphone() {
+		return new Consumer<String>(){ @Override public void consume(String phrase) {
 			shout(phrase);
 		}};
 	}

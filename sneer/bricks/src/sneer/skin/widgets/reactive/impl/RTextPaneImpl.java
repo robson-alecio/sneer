@@ -12,7 +12,7 @@ import javax.swing.text.Keymap;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyledDocument;
 
-import wheel.lang.Consumer;
+import wheel.lang.PickyConsumer;
 import wheel.reactive.Signal;
 
 class RTextPaneImpl extends RAbstractField<JTextPane> {
@@ -20,7 +20,7 @@ class RTextPaneImpl extends RAbstractField<JTextPane> {
 	private static final String LINE_BREAK_STRING = "\n\r";
 	private static final long serialVersionUID = 1L;
 
-	RTextPaneImpl(Signal<String> source, Consumer<String> setter, boolean notifyOnlyWhenDoneEditing) {
+	RTextPaneImpl(Signal<String> source, PickyConsumer<String> setter, boolean notifyOnlyWhenDoneEditing) {
 		super(new JTextPane(), source, setter, notifyOnlyWhenDoneEditing);
 		LineBorder border = new LineBorder(Color.LIGHT_GRAY);
 		_textComponent.setBorder(border);

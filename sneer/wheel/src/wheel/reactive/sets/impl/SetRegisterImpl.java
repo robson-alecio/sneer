@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.AbstractNotifier;
@@ -26,7 +26,7 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 	private class MyOutput extends AbstractNotifier<SetValueChange<T>> implements SetSignal<T> {
 
 		@Override
-		public void addSetReceiver(Omnivore<SetValueChange<T>> receiver) {
+		public void addSetReceiver(Consumer<SetValueChange<T>> receiver) {
 			addReceiver(receiver);
 		}
 
@@ -53,7 +53,7 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 		}
 
 		@Override
-		protected void initReceiver(Omnivore<? super SetValueChange<T>> receiver) {
+		protected void initReceiver(Consumer<? super SetValueChange<T>> receiver) {
 			if (_contents.isEmpty()) return;
 			receiver.consume(new SetValueChangeImpl<T>(contentsCopy(), null));
 		}

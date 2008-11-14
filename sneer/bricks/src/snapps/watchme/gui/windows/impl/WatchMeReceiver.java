@@ -20,7 +20,7 @@ import sneer.pulp.keymanager.PublicKey;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.WindowWidget;
 import wheel.io.ui.GuiThread;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.EventSource;
 import wheel.reactive.impl.Receiver;
 
@@ -36,7 +36,7 @@ class WatchMeReceiver{
 	private static ReactiveWidgetFactory _factory;
 	
 	@SuppressWarnings("unused")
-	private Omnivore<Image> _imageReceiverToAvoidGc;
+	private Consumer<Image> _imageReceiverToAvoidGc;
 	
 
 	@SuppressWarnings("unused")

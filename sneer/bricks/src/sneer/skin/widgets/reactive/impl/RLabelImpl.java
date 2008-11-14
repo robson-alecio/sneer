@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.ui.GuiThread;
-import wheel.lang.Consumer;
+import wheel.lang.PickyConsumer;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
 
@@ -21,7 +21,7 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 	
 	protected final JLabel _textComponent;
 	protected final Signal<String> _source;
-	protected final Consumer<String> _setter;
+	protected final PickyConsumer<String> _setter;
 	
 	@SuppressWarnings("unused")
 	private final Receiver<String> _textReceiverAvoidGc;
@@ -30,7 +30,7 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 		this(text, null);
 	}
 
-	RLabelImpl(Signal<String> source, Consumer<String> setter) {
+	RLabelImpl(Signal<String> source, PickyConsumer<String> setter) {
 		_textComponent = new JLabel();
 		_setter = setter;
 		_source = source;
@@ -74,7 +74,7 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 	}
 
 	@Override
-	public Consumer<String> setter() {
+	public PickyConsumer<String> setter() {
 		if(_setter==null)
 			throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 		

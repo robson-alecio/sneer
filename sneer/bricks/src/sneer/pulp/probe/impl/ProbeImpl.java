@@ -9,11 +9,11 @@ import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
 
-final class ProbeImpl implements Omnivore<Tuple> {
+final class ProbeImpl implements Consumer<Tuple> {
 
 	@Inject static private TupleSpace _tuples;
 	@Inject static private KeyManager _keyManager;

@@ -8,7 +8,7 @@ import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.contacts.list.ContactInfo;
 import sneer.pulp.contacts.list.ContactList;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.lists.ListValueChange;
 import wheel.reactive.lists.VisitorAdapter;
 import wheel.reactive.lists.ListValueChange.Visitor;
@@ -22,7 +22,7 @@ class ContactListImpl extends ListRegisterImpl<ContactInfo> implements ContactLi
 	private Visitor<Contact> _visitor;
 	
 	private final Map<Contact, ContactInfo> _contactInfos = new HashMap<Contact, ContactInfo>();
-	private Omnivore<ListValueChange<Contact>> _contactListReceiverToAvoidGc;
+	private Consumer<ListValueChange<Contact>> _contactListReceiverToAvoidGc;
 
 	ContactListImpl(){
 		initRegisterContent();
@@ -36,7 +36,7 @@ class ContactListImpl extends ListRegisterImpl<ContactInfo> implements ContactLi
 	}
 
 	private void initContactsListReceiver() {
-		_contactListReceiverToAvoidGc = new Omnivore<ListValueChange<Contact>>(){@Override public void consume(ListValueChange<Contact> change) {
+		_contactListReceiverToAvoidGc = new Consumer<ListValueChange<Contact>>(){@Override public void consume(ListValueChange<Contact> change) {
 			contactListChanged(change);
 		}};
 		_contacts.contacts().addListReceiver(_contactListReceiverToAvoidGc);

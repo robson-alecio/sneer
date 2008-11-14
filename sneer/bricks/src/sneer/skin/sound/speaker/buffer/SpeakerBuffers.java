@@ -2,10 +2,10 @@ package sneer.skin.sound.speaker.buffer;
 
 import sneer.kernel.container.Brick;
 import sneer.skin.sound.PcmSoundPacket;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 
 public interface SpeakerBuffers extends Brick {
 
-	SpeakerBuffer createBufferFor(Omnivore<? super PcmSoundPacket> consumer);
+	SpeakerBuffer createBufferFor(Consumer<? super PcmSoundPacket> consumer);
 	
 }

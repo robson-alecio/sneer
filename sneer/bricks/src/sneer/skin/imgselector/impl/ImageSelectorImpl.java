@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import sneer.skin.imgselector.ImageSelector;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 
 class ImageSelectorImpl implements ImageSelector {
 	
@@ -31,13 +31,13 @@ class ImageSelectorImpl implements ImageSelector {
 		return null;
 	}
 
-	private void showImage(File file, Omnivore<Image> imageSetter) {
+	private void showImage(File file, Consumer<Image> imageSetter) {
 		_dialog = new ImageDialog(file, imageSetter);
 		_dialog.setVisible(true);
 	}
 
 	@Override
-	public void open(Omnivore<Image> imageSetter) {
+	public void open(Consumer<Image> imageSetter) {
 		File file = selectFile();
 		if (file==null) return;
 		if (!file.exists()) return;

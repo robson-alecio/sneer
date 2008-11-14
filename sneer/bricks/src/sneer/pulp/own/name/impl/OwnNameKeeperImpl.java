@@ -1,7 +1,7 @@
 package sneer.pulp.own.name.impl;
 
 import sneer.pulp.own.name.OwnNameKeeper;
-import wheel.lang.Omnivore;
+import wheel.lang.Consumer;
 import wheel.reactive.Signal;
 import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;
@@ -16,7 +16,7 @@ class OwnNameKeeperImpl implements OwnNameKeeper {
 	}
 
 	@Override
-	public Omnivore<String> nameSetter() {
+	public Consumer<String> nameSetter() {
 		return _name.setter();
 	}
 }

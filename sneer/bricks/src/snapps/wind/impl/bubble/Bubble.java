@@ -9,8 +9,8 @@ import java.util.List;
 
 import org.prevayler.Prevayler;
 
+import wheel.lang.PickyConsumer;
 import wheel.lang.Consumer;
-import wheel.lang.Omnivore;
 
 public class Bubble {
 
@@ -70,10 +70,10 @@ public class Bubble {
 		pathToObject.add(methodName);
 
 		Class<?> type = method.getReturnType();
-		if (Omnivore.class.isAssignableFrom(type))
-			return new OmnivoreBubble(_prevayler, pathToObject);
 		if (Consumer.class.isAssignableFrom(type))
 			return new ConsumerBubble(_prevayler, pathToObject);
+		if (PickyConsumer.class.isAssignableFrom(type))
+			return new PickyConsumerBubble(_prevayler, pathToObject);
 		
 		if (type == Void.class) throw new UnsupportedOperationException("Void methods such as " + method + " are not supported.");
 		

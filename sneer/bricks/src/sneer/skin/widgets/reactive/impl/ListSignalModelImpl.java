@@ -91,7 +91,6 @@ public class ListSignalModelImpl<T> extends AbstractListModel implements ListSig
 	}
 	
 	public void elementChanged(T element) {
-		if(element==null) return;
 		int i = 0;
 		for (T candidate : _input) {  //Optimize
 			if (candidate == element)

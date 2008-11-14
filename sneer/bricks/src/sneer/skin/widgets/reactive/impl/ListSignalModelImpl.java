@@ -8,6 +8,7 @@ import sneer.pulp.reactive.signalchooser.SignalChooserManager;
 import sneer.pulp.reactive.signalchooser.SignalChooserManagerFactory;
 import sneer.skin.widgets.reactive.ListSignalModel;
 import wheel.io.ui.GuiThread;
+import wheel.lang.Omnivore;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.VisitingListReceiver;
@@ -28,7 +29,10 @@ public class ListSignalModelImpl<T> extends AbstractListModel implements ListSig
 	ListSignalModelImpl(ListSignal<T> input, SignalChooser<T> chooser) {
 		_input = input;
 		_modelChangeReceiverToAvoidGc = new ModelChangeReceiver(_input);
-		_signalChooserManagerToAvoidGc = _signalChooserManagerFactory.newManager(input, chooser, this);
+		_signalChooserManagerToAvoidGc = _signalChooserManagerFactory.newManager(input, chooser, 
+			new Omnivore<T>(){ @Override public void consume(T element) {
+				elementChanged(element);
+			}});
 	}
 
 	private class ModelChangeReceiver extends VisitingListReceiver<T> {
@@ -86,8 +90,8 @@ public class ListSignalModelImpl<T> extends AbstractListModel implements ListSig
 		}});
 	}
 	
-	@Override
 	public void elementChanged(T element) {
+		if(element==null) return;
 		int i = 0;
 		for (T candidate : _input) {  //Optimize
 			if (candidate == element)

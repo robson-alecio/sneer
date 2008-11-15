@@ -25,7 +25,7 @@ import wheel.lang.exceptions.NotImplementedYet;
 // and use *the same mixer* in your java application to open multiple
 // SourceDataLines to play simultaneous sounds.
 
-public class AudioCommon {
+class AudioCommon {
 
 	private static List<AudioDevice> _inputDevices = new ArrayList<AudioDevice>();
 	private static List<AudioDevice> _outputDevices = new ArrayList<AudioDevice>();

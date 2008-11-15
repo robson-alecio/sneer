@@ -3,7 +3,7 @@ package sneer.skin.sound.kernel.impl;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.Mixer;
 
-public class AudioDevice {
+class AudioDevice {
 	private Mixer _mixer;
 	private AudioFormat _format;
 	

@@ -2,7 +2,7 @@ package sneer.skin.sound.kernel.impl;
 
 import javax.sound.sampled.*;
 
-public class AudioUtil {
+class AudioUtil {
 	static final private int FRAME_DURATION_MILLIS = 20;
 
 	static final int SAMPLE_RATE = 8000;

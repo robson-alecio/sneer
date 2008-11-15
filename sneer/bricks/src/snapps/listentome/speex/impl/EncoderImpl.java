@@ -3,23 +3,30 @@ package snapps.listentome.speex.impl;
 import org.xiph.speex.SpeexEncoder;
 
 import snapps.listentome.speex.Encoder;
-import sneer.skin.sound.kernel.impl.AudioUtil;
+import sneer.kernel.container.Inject;
+import sneer.skin.sound.kernel.Audio;
 
-public class EncoderImpl implements Encoder {
+class EncoderImpl implements Encoder {
 
 	private final SpeexEncoder _encoder = new SpeexEncoder();
 	
+	@Inject
+	private static Audio _audio;
+	
 	EncoderImpl() {
-		_encoder.init(AudioUtil.NARROWBAND_ENCODING, AudioUtil.SOUND_QUALITY, 8000, 1);
+		_encoder.init(_audio.narrowbandEncoding(), _audio.soundQuality(), (int) _audio.audioFormat().getFrameRate(), _audio.audioFormat().getChannels());
 	}
 
 	@Override
 	public byte[] getProcessedData() {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+		byte[] speexBuffer = new byte[_encoder.getProcessedDataByteSize()];
+		_encoder.getProcessedData(speexBuffer, 0);
+		return speexBuffer;
 	}
 
 	@Override
 	public boolean processData(byte[] pcmBuffer) {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+		return _encoder.processData(pcmBuffer, 0, pcmBuffer.length);
 	}
+
 }

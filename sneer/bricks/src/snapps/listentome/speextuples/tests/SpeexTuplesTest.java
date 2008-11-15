@@ -21,7 +21,7 @@ import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
-import sneer.skin.sound.kernel.impl.AudioUtil;
+import sneer.skin.sound.kernel.Audio;
 import wheel.lang.ByRef;
 import wheel.lang.ImmutableByteArray;
 import wheel.lang.Consumer;
@@ -40,6 +40,9 @@ public class SpeexTuplesTest extends TestThatIsInjected{
 	@Inject
 	private static SpeexTuples _subject;
 	
+	@Inject
+	private static Audio _audio;
+	
 	private final Mockery _mockery = new JUnit4Mockery();
 	
 	private final Speex _speex = _mockery.mock(Speex.class);
@@ -50,9 +53,9 @@ public class SpeexTuplesTest extends TestThatIsInjected{
 	
 	{
 		_mockery.checking(new Expectations() {{
-			allowing(_speex).newEncoder();
+			allowing(_speex).createEncoder();
 				will(returnValue(_encoder));
-			allowing(_speex).newDecoder();
+			allowing(_speex).createDecoder();
 				will(returnValue(_decoder));
 		}});
 	}
@@ -62,7 +65,7 @@ public class SpeexTuplesTest extends TestThatIsInjected{
 		
 		_mockery.checking(new Expectations() {{ 
 			final Sequence main = _mockery.sequence("main");
-			for (byte i=0; i<AudioUtil.FRAMES_PER_AUDIO_PACKET * 2; i+=2) {
+			for (byte i=0; i<_audio.framesPerAudioPacket() * 2; i+=2) {
 				one(_encoder).processData(new byte[] { i });
 					will(returnValue(false)); inSequence(main);
 				one(_encoder).processData(new byte[] { (byte) (i + 1) });
@@ -117,7 +120,7 @@ public class SpeexTuplesTest extends TestThatIsInjected{
 	}
 
 	private void assertFrames(final byte[][] frames) {
-		assertEquals(AudioUtil.FRAMES_PER_AUDIO_PACKET, frames.length);
+		assertEquals(_audio.framesPerAudioPacket(), frames.length);
 		int i = 0;
 		for (byte[] frame : frames)  {
 			assertArrayEquals(new byte[] { (byte) (i*2) }, frame);
@@ -148,7 +151,7 @@ public class SpeexTuplesTest extends TestThatIsInjected{
 	}
 	
 	private byte[][] frames() {
-		byte[][] frames = new byte[AudioUtil.FRAMES_PER_AUDIO_PACKET * 2][];
+		byte[][] frames = new byte[_audio.framesPerAudioPacket() * 2][];
 		for (int i=0; i<frames.length; ++i)
 			frames[i] = new byte[] { (byte) i };
 		return frames;

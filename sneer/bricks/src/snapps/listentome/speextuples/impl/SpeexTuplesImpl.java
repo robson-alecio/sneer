@@ -10,7 +10,7 @@ import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
-import sneer.skin.sound.kernel.impl.AudioUtil;
+import sneer.skin.sound.kernel.Audio;
 import wheel.lang.ImmutableByteArray;
 import wheel.lang.Consumer;
 
@@ -19,11 +19,14 @@ class SpeexTuplesImpl implements SpeexTuples {
 	@Inject
 	private static Speex _speex;
 	
+	@Inject
+	private static Audio _audio;	
+	
 	private byte[][] _frames = newFramesArray();
 	private int _frameIndex;
 	
-	private final Encoder _encoder = _speex.newEncoder();
-	private final Decoder _decoder = _speex.newDecoder();
+	private final Encoder _encoder = _speex.createEncoder();
+	private final Decoder _decoder = _speex.createDecoder();
 
 	@Inject
 	static private TupleSpace _tupleSpace; 
@@ -50,7 +53,7 @@ class SpeexTuplesImpl implements SpeexTuples {
 	}
 	
 	private static byte[][] newFramesArray() {
-		return new byte[AudioUtil.FRAMES_PER_AUDIO_PACKET][];
+		return new byte[_audio.framesPerAudioPacket()][];
 	}
 
 	private void flush() {
@@ -63,7 +66,7 @@ class SpeexTuplesImpl implements SpeexTuples {
 		if (!_encoder.processData(pcmBuffer)) return false;
 		
 		_frames[_frameIndex++] = _encoder.getProcessedData();
-		return _frameIndex == AudioUtil.FRAMES_PER_AUDIO_PACKET;
+		return _frameIndex == _audio.framesPerAudioPacket();
 	}
 	
 	protected void decode(SpeexPacket packet) {

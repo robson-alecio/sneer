@@ -2,19 +2,21 @@ package snapps.listentome.speex.impl;
 
 import java.io.StreamCorruptedException;
 
-import javax.sound.sampled.AudioFormat;
-
 import org.xiph.speex.SpeexDecoder;
 
 import snapps.listentome.speex.Decoder;
-import sneer.skin.sound.kernel.impl.AudioUtil;
+import sneer.kernel.container.Inject;
+import sneer.skin.sound.kernel.Audio;
 
-public class DecoderImpl implements Decoder {
+class DecoderImpl implements Decoder {
 	
 	private final SpeexDecoder _decoder = new SpeexDecoder();
 	
-	DecoderImpl(AudioFormat format) {
-		_decoder.init(AudioUtil.NARROWBAND_ENCODING, (int) format.getFrameRate(), format.getChannels(), false);
+	@Inject
+	private static Audio _audio;
+	
+	DecoderImpl() {
+		_decoder.init(_audio.narrowbandEncoding(), (int) _audio.audioFormat().getFrameRate(), _audio.audioFormat().getChannels(), _audio.audioFormat().isBigEndian());
 	}
 
 	public byte[] getProcessedData() {

@@ -21,7 +21,6 @@
 	<classpathentry kind="lib" path="wheel/lib/commons-io-1.4.jar" sourcepath="wheel/lib/commons-io-1.4-src.zip"/>
 	<classpathentry kind="lib" path="wheel/lib/commons-collections-3.2.jar"/>
 	<classpathentry kind="lib" path="wheel/lib/commons-lang-2.3.jar" sourcepath="wheel/lib/commons-lang-2.3-src.zip"/>
-	<classpathentry kind="lib" path="spikes/lib/speex.jar"/>
 	<classpathentry kind="lib" path="bricks/src/snapps/wind/impl/lib/prevayler-2.3.jar" sourcepath="bricks/src/snapps/wind/impl/lib/prevayler-2.3.src.zip"/>
 	<classpathentry kind="lib" path="bricks/src/snapps/wind/impl/lib/xpp3_min-1.1.3_8.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
@@ -29,5 +28,6 @@
 	<classpathentry kind="lib" path="wheel/lib/jmock-2.5.1/hamcrest-library-1.1.jar"/>
 	<classpathentry kind="lib" path="wheel/lib/jmock-2.5.1/jmock-2.5.1.jar"/>
 	<classpathentry kind="lib" path="wheel/lib/jmock-2.5.1/jmock-junit4-2.5.1.jar"/>
+	<classpathentry kind="lib" path="bricks/src/snapps/listentome/speex/impl/lib/speex.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

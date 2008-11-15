@@ -4,6 +4,7 @@ import main.MainDemoBrick;
 import snapps.blinkinglights.gui.BlinkingLightsGui;
 import snapps.contacts.gui.ContactsGui;
 import snapps.listentome.gui.ListenToMeGui;
+import snapps.listentome.speextuples.SpeexTuples;
 import snapps.memorymeter.gui.MemoryMeterGui;
 import snapps.watchme.gui.WatchMeGui;
 import snapps.watchme.gui.windows.RemoteWatchMeWindows;
@@ -66,6 +67,9 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	
 	@Inject	@SuppressWarnings("unused")
 	private static ReachabilitySentinel _reachabilitySentinel;	
+	
+	@Inject	@SuppressWarnings("unused")
+	private static SpeexTuples _speexTuples;	
 
 	@Inject	@SuppressWarnings("unused")
 	private static ProbeManager _probes;

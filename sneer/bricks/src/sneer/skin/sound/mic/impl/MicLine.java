@@ -15,7 +15,7 @@ class MicLine {
 	private static final int SAMPLE_RATE_IN_HZ = 8000;
 	private static final int SAMPLE_SIZE_IN_BITS = 16;
 	private static final int NUMBER_OF_CHANNELS = 2;
-	private static final int ONE_HUNDRETH_OF_A_SECOND = SAMPLE_RATE_IN_HZ / 100;
+	private static final int ONE_FIFTIETH_OF_A_SECOND = SAMPLE_RATE_IN_HZ / 50;
 
 	@Inject
 	static private Audio _audio;
@@ -52,7 +52,7 @@ class MicLine {
 		byte[] pcmBuffer = new byte[
 			SAMPLE_SIZE_IN_BITS / 8 *
 			NUMBER_OF_CHANNELS *
-			ONE_HUNDRETH_OF_A_SECOND
+			ONE_FIFTIETH_OF_A_SECOND
 		];
 
 		int read = _delegate.read(pcmBuffer, 0, pcmBuffer.length);

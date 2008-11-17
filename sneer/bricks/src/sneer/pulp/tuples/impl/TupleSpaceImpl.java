@@ -2,6 +2,9 @@ package sneer.pulp.tuples.impl;
 
 import static wheel.lang.Types.cast;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -9,8 +12,14 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.prevayler.Prevayler;
+import org.prevayler.PrevaylerFactory;
+import org.prevayler.foundation.serialization.XStreamSerializer;
+
+import snapps.wind.impl.bubble.Bubble;
 import sneer.kernel.container.Inject;
 import sneer.pulp.clock.Clock;
+import sneer.pulp.config.persistence.PersistenceConfig;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
@@ -23,7 +32,7 @@ public class TupleSpaceImpl implements TupleSpace {
 
 	@Inject static private KeyManager _keyManager;
 	@Inject static private Clock _clock;
-	//@Inject static private PersistenceConfig _config;
+	@Inject static private PersistenceConfig _config;
 	
 	//Refactor The synchronization will no longer be necessary when the container guarantees synchronization of model bricks.
 	static class Subscription {
@@ -51,10 +60,39 @@ public class TupleSpaceImpl implements TupleSpace {
 	private final List<Subscription> _subscriptions = new ArrayList<Subscription>();
 	
 	private final Set<Class<? extends Tuple>> _typesToKeep = new HashSet<Class<? extends Tuple>>();
-	private final ListRegister<Tuple> _keptTuples = new ListRegisterImpl<Tuple>();
+	private final ListRegister<Tuple> _keptTuples;
 	
 	
 	TupleSpaceImpl() {
+		_keptTuples = Bubble.wrapStateMachine(prevayler(new ListRegisterImpl<Tuple>()));
+	}
+
+
+	private Prevayler prevayler(Serializable system) {
+		PrevaylerFactory factory = prevaylerFactory(system);
+
+		try {
+			return factory.create();
+		} catch (IOException e) {
+			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+		} catch (ClassNotFoundException e) {
+			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+		}
+	}
+
+
+	private PrevaylerFactory prevaylerFactory(Serializable system) {
+		PrevaylerFactory factory = new PrevaylerFactory();
+		factory.configurePrevalentSystem(system);
+		factory.configurePrevalenceDirectory(directory());
+		factory.configureJournalSerializer(new XStreamSerializer());
+		factory.configureTransactionFiltering(false);
+		return factory;
+	}
+
+
+	private String directory() {
+		return new File(_config.persistenceDirectory(), "tuplespace").getAbsolutePath();
 	}
 
 	
@@ -85,7 +123,7 @@ public class TupleSpaceImpl implements TupleSpace {
 
 
 	private void keep(Tuple tuple) {
-		_keptTuples.add(tuple);
+		_keptTuples.adder().consume(tuple);
 	}
 
 	
@@ -104,7 +142,12 @@ public class TupleSpaceImpl implements TupleSpace {
 
 	@Override
 	public synchronized <T extends Tuple> void addSubscription(Class<T> tupleType,	Consumer<? super T> subscriber) {
-		_subscriptions.add(new Subscription(subscriber, tupleType));
+		Subscription subscription = new Subscription(subscriber, tupleType);
+
+		for (Tuple kept : _keptTuples.output())
+			subscription.filterAndNotify(kept);
+
+		_subscriptions.add(subscription);
 	}
 	
 	@Override

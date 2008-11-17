@@ -6,18 +6,22 @@ import sneer.pulp.config.persistence.PersistenceConfig;
 
 public class PersistenceConfigMock implements PersistenceConfig {
 
-	private final File _persistenceDirectory;
+	private final String _persistenceDirectory;
 
 	public PersistenceConfigMock(File directory) {
+		this(directory.getAbsolutePath());
+	}
+
+	public PersistenceConfigMock(String directory) {
 		_persistenceDirectory = directory;
 	}
 	
 	@Override
-	public File persistenceDirectory() {
+	public String persistenceDirectory() {
 		return _persistenceDirectory;
 	}
 
 	@Override
-	public void setPersistenceDirectory(File directory) {
+	public void setPersistenceDirectory(String directory) {
 	}
 }

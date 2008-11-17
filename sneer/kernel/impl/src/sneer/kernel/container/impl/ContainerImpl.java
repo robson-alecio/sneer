@@ -38,8 +38,8 @@ public class ContainerImpl implements Container {
 		bindGuiBricks(bindings);
 	}
 
-	private File persistenceDirectory() {
-		return new File(_sneerConfig.sneerDirectory().getAbsolutePath());
+	private String persistenceDirectory() {
+		return _sneerConfig.sneerDirectory().getAbsolutePath();
 	}
 
 	private void bindNonGuiBricks(Object... bindings) {

@@ -29,21 +29,6 @@ public class TupleGcTest extends TestThatIsInjected {
 		}
 	}
 
-	@Test
-	public void keepingTuples() {
-		_garbageCollectedCounter = 0;
-		
-		_subject.keep(GcTestTuple.class);
-
-		_currentGeneration = "keepingTuples";
-		publishMyTestTuples(1000 + 42);
-
-		System.gc();
-		assertEquals(0, _garbageCollectedCounter);
-		
-		assertEquals(1042, _subject.keptTuples().size());
-	}
-
 
 	private void publishMyTestTuples(int amount) {
 		for (int i = 0; i < amount; i++)

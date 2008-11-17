@@ -49,18 +49,11 @@ final class ProbeImpl implements Consumer<Tuple> {
 
 			if (isOnline) {
 				_tuples.addSubscription(Tuple.class, this);
-				sendKeptTuples();
 			} else if (wasOnline) {
 				_tuples.removeSubscription(this);
 				_scheduler.drain();
 			}
 		}
-	}
-
-
-	private void sendKeptTuples() {
-		for (Tuple kept : _tuples.keptTuples())
-			consume(kept);
 	}
 
 
@@ -93,5 +86,3 @@ final class ProbeImpl implements Consumer<Tuple> {
 
 	
 }
-
-

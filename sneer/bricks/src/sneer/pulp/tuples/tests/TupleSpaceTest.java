@@ -41,13 +41,11 @@ public class TupleSpaceTest extends TestThatIsInjected {
 	@Test
 	public void subscriptionRemoval() {
 		final ArrayList<Tuple> tuples = new ArrayList<Tuple>();
-		final Consumer<TestTuple> consumer = new Consumer<TestTuple>() {
-			@Override
-			public void consume(TestTuple value) {
-				tuples.add(value);
-			}
-		};
+		final Consumer<TestTuple> consumer = new Consumer<TestTuple>() { @Override public void consume(TestTuple value) {
+			tuples.add(value);
+		}};
 		_subject.addSubscription(TestTuple.class, consumer);
+		
 		final TestTuple tuple = new TestTuple(42);
 		_subject.publish(tuple);
 		_subject.removeSubscription(consumer);

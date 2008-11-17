@@ -8,9 +8,9 @@ public class PrevaylerImpl implements Prevayler {
 
 	@Override
 	public StateMachine makeAcid(StateMachine business, Journal journal) {
-		return new DurableStateMachine(journal,
-			new AtomicConsistentStateMachine(
-				new IsolatedStateMachine(business)));
+		StateMachine isolated = new IsolatedStateMachine(business);
+		StateMachine durable = new DurableStateMachine(isolated, journal);
+		return new AtomicConsistentStateMachine(durable);
 	}
 
 }

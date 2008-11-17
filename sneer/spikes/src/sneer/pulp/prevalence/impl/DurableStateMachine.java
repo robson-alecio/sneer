@@ -3,14 +3,14 @@ package sneer.pulp.prevalence.impl;
 import sneer.pulp.prevalence.StateMachine;
 import sneer.pulp.prevalence.journal.Journal;
 
-public class DurableStateMachine implements StateMachine {
+class DurableStateMachine implements StateMachine {
 
 	@SuppressWarnings("unused")
 	private final StateMachine _business;
 	@SuppressWarnings("unused")
 	private final Journal _journal;
 
-	public DurableStateMachine(Journal journal, StateMachine business) {
+	DurableStateMachine(StateMachine business, Journal journal) {
 		_business = business;
 		_journal = journal;
 	}

@@ -22,6 +22,7 @@ public class TupleSpaceImpl implements TupleSpace {
 
 	@Inject static private KeyManager _keyManager;
 	@Inject static private Clock _clock;
+	//@Inject static private JournalFactory _journalFactory;
 	//@Inject static private PersistenceConfig _config;
 	
 	//Refactor The synchronization will no longer be necessary when the container guarantees synchronization of model bricks.
@@ -51,12 +52,14 @@ public class TupleSpaceImpl implements TupleSpace {
 	
 	private final Set<Class<? extends Tuple>> _typesToKeep = new HashSet<Class<? extends Tuple>>();
 	private final Set<Tuple> _keptTuples = new HashSet<Tuple>();
+	//private final Consumer<Object> _journalAppender;
 	
-	//private final Prevayler _prevayler;
-
 	
 	TupleSpaceImpl() {
-		//_prevayler = PrevaylerFactory.createPrevayler(_keptTuples, _config.persistenceDirectory().getAbsolutePath());
+		//Journal journal = _journalFactory.createJournal(_config.persistenceDirectory());
+		//_journalAppender = journal.open(new Consumer<Object>() { @Override public void consume(Object entry) {
+		//	_keptTuples.add((Tuple) entry);
+		//}});
 	}
 
 	
@@ -78,11 +81,17 @@ public class TupleSpaceImpl implements TupleSpace {
 
 	
 	private void keepIfNecessary(Tuple tuple) {
-		for (Class<? extends Tuple> typeToKeep : _typesToKeep)
+		for (Class<? extends Tuple> typeToKeep : _typesToKeep) //Optimize
 			if (Types.instanceOf(tuple, typeToKeep)) {
-				_keptTuples.add(tuple);
+				keep(tuple);
 				return;
 			}
+	}
+
+
+	private void keep(Tuple tuple) {
+		//_journalAppender.consume(tuple);
+		_keptTuples.add(tuple);
 	}
 
 	
@@ -127,7 +136,7 @@ public class TupleSpaceImpl implements TupleSpace {
 
 	@Override
 	public void crash() {
-		//_prevayler.close();
+		System.out.println("Necessary?");
 	}
 
 }

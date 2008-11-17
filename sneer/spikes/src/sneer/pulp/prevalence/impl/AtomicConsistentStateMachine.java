@@ -2,10 +2,10 @@ package sneer.pulp.prevalence.impl;
 
 import sneer.pulp.prevalence.StateMachine;
 
-public class AtomicConsistentStateMachine implements StateMachine {
+class AtomicConsistentStateMachine implements StateMachine {
 
-	public static class Inconsistency extends Error {
-		public Inconsistency(Throwable cause) {
+	static class Inconsistency extends Error {
+		Inconsistency(Throwable cause) {
 			super("State machine is inconsistent.", cause);
 		}
 	}
@@ -14,7 +14,7 @@ public class AtomicConsistentStateMachine implements StateMachine {
 	private final StateMachine _business;
 	private volatile Throwable _firstInconsistency;
 
-	public AtomicConsistentStateMachine(StateMachine business) {
+	AtomicConsistentStateMachine(StateMachine business) {
 		_business = business;
 	}
 
@@ -29,6 +29,8 @@ public class AtomicConsistentStateMachine implements StateMachine {
 	}
 
 	private Object performConsistent(Object event, Object query) throws Inconsistency {
+		checkConsistency();
+
 		try {
 			return perform(event, query);
 		} catch (Throwable t) {

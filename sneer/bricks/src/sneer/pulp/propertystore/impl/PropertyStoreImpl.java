@@ -42,13 +42,16 @@ class PropertyStoreImpl implements PropertyStore {
 	
 	private Properties loadProperties() {
 		Properties result = new Properties();
+		InputStream in = null;
 		try {
-			result.load(in());
+			in = in();
+			result.load(in);
 		} catch (FileNotFoundException e) {
-			//OK. No properties were saved yet.
 			Logger.log("No properties found yet.");
 		} catch (IOException e) {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+		} finally {
+			if (in != null) Streams.crash(in);
 		}
 		return result;
 	}

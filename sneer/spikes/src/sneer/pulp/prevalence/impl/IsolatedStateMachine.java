@@ -6,14 +6,14 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import sneer.pulp.prevalence.StateMachine;
 
-public class IsolatedStateMachine implements StateMachine {
+class IsolatedStateMachine implements StateMachine {
 
 	private final StateMachine _business;
 	private final Lock _write;
 	private final Lock _read;
 
 	
-	public IsolatedStateMachine(StateMachine business) {
+	IsolatedStateMachine(StateMachine business) {
 		_business = business;
 		
 		ReadWriteLock lock = new ReentrantReadWriteLock(true);

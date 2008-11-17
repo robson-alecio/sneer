@@ -1,13 +1,14 @@
 package sneer.pulp.config.persistence;
 
 
+import java.io.File;
+
 import sneer.kernel.container.Brick;
-import wheel.io.files.Directory;
 
 public interface PersistenceConfig extends Brick {
 
-	Directory persistenceDirectory();
+	File persistenceDirectory();
 
-	void setPersistenceDirectory(Directory directory);
+	void setPersistenceDirectory(File directory);
 	
 }

@@ -9,7 +9,7 @@ import wheel.testutil.TestThatMightUseResources;
 
 public class PropertyStoreTest extends TestThatMightUseResources {
 
-	private final PersistenceConfigMock _persistenceMock = new PersistenceConfigMock();
+	private final PersistenceConfigMock _persistenceMock = new PersistenceConfigMock(tmpDirectory());
 
 	@Test
 	public void testPropertyStore() {

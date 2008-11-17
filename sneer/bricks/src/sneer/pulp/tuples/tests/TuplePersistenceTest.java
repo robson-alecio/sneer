@@ -11,7 +11,7 @@ import wheel.testutil.TestThatMightUseResources;
 @Ignore
 public class TuplePersistenceTest extends TestThatMightUseResources {
 
-	private final PersistenceConfigMock _persistenceMock  = new PersistenceConfigMock();
+	private final PersistenceConfigMock _persistenceMock  = new PersistenceConfigMock(tmpDirectory());
 
 
 	@Test

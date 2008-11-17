@@ -1,23 +1,23 @@
 package sneer.pulp.config.persistence.mocks;
 
+import java.io.File;
+
 import sneer.pulp.config.persistence.PersistenceConfig;
-import wheel.io.files.Directory;
-import wheel.io.files.impl.tranzient.TransientDirectory;
 
 public class PersistenceConfigMock implements PersistenceConfig {
 
-	private final Directory _persistenceDirectory;
+	private final File _persistenceDirectory;
 
-	public PersistenceConfigMock() {
-		_persistenceDirectory = new TransientDirectory();
+	public PersistenceConfigMock(File directory) {
+		_persistenceDirectory = directory;
 	}
 	
 	@Override
-	public Directory persistenceDirectory() {
+	public File persistenceDirectory() {
 		return _persistenceDirectory;
 	}
 
 	@Override
-	public void setPersistenceDirectory(Directory directory) {
+	public void setPersistenceDirectory(File directory) {
 	}
 }

@@ -1,19 +1,20 @@
 package sneer.pulp.config.persistence.impl;
 
+import java.io.File;
+
 import sneer.pulp.config.persistence.PersistenceConfig;
-import wheel.io.files.Directory;
 
 class PersistenceConfigImpl implements PersistenceConfig {
 
-	private Directory _directory;
+	private File _directory;
 
 	@Override
-	public Directory persistenceDirectory() {
+	public File persistenceDirectory() {
 		return _directory;
 	}
 
 	@Override
-	public void setPersistenceDirectory(Directory directory) {
+	public void setPersistenceDirectory(File directory) {
 		if (null != _directory)
 			throw new IllegalStateException("Persistence directory was already set.");
 		_directory = directory;

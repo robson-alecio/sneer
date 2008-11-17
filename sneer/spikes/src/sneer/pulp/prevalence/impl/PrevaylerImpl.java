@@ -2,14 +2,13 @@ package sneer.pulp.prevalence.impl;
 
 import sneer.pulp.prevalence.Prevayler;
 import sneer.pulp.prevalence.StateMachine;
-import sneer.pulp.prevalence.journal.Journal;
 
 public class PrevaylerImpl implements Prevayler {
 
 	@Override
-	public StateMachine makeAcid(StateMachine business, Journal journal) {
+	public StateMachine makeAcid(StateMachine business, String prevalenceDirectory) {
 		StateMachine isolated = new IsolatedStateMachine(business);
-		StateMachine durable = new DurableStateMachine(isolated, journal);
+		StateMachine durable = new DurableStateMachine(isolated, prevalenceDirectory);
 		return new AtomicConsistentStateMachine(durable);
 	}
 

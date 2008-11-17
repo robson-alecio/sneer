@@ -14,7 +14,7 @@ class JournalImpl implements Journal {
 	}
 
 	@Override
-	public Consumer<Object> open(Consumer<Object> previousEntryConsumer) {
+	public Consumer<Object> open(String directory, Consumer<Object> previousEntryConsumer) {
 		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	}
 

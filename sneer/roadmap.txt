@@ -1,12 +1,16 @@
 ﻿MAIN ROADMAP
 ===================
 	
+	- Persistence clashes
+		- Use a different persistence directory for the Localhost user. Call him Dummy.
+	
 	- [Sandro] ListSignalModel and SortedList
 		- Migrate to ListOfSignalsReceiver Interface.
 		- Support duplicate elements by storing element index.
 	
 	- Wind
-		- Persist Shouts. Unignore TuplePersistenceTest.
+		- Persist Shouts.
+			- Fix: recovered shouts have <Unknown> publisher.
 			
 	- Voice Calls
 		- First Step: When I press the button I listen to everyone and everyone listens to me.

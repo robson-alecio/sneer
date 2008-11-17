@@ -1,7 +1,8 @@
 package sneer.pulp.reactive.listsorter.impl;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import sneer.kernel.container.Inject;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
@@ -65,27 +66,25 @@ final class SortedVisitor<T> extends VisitorAdapter<T> implements ListOfSignalsR
 		}
 		
 		private int findSortedLocation(T element) {
-			T[] array = _sorted.output().toArray();
-			return findSortedLocation(element, array);
+			return findSortedLocation(element, _sorted.output().currentElements());
 		}
 		
-		private int findSortedLocation(T element, T[] array) {
-			int location = Arrays.binarySearch(array, element, _comparator);
+		private int findSortedLocation(T element, List<T> list) {
+			int location = Collections.binarySearch(list, element, _comparator);
 			location = location<0 ? -location-1 : location;
 			
-			if(isInvalidLocation(array, location)){//Optimize try don't repeat binary search
-				array[location] = array[location+1];
-				location = findSortedLocation(element, array);
+			if(isInvalidLocation(list, location)){  //Refactor: What is this for?
+				list.set(location, list.get(location+1));
+				location = findSortedLocation(element, list);
 			}
 			
 			return location;
 		}
 
-		private boolean isInvalidLocation(T[] array, int location) {
-			if(array.length>location+1){
-				return _comparator.compare(array[location], array[location+1]) > 0;
-			}
-			return false;
+		private boolean isInvalidLocation(List<T> list, int location) {
+			if (location+1 >= list.size()) return false;
+			
+			return _comparator.compare(list.get(location), list.get(location+1)) > 0;
 		}
 		
 		private void sortedAdd(T element) {
@@ -108,7 +107,7 @@ final class SortedVisitor<T> extends VisitorAdapter<T> implements ListOfSignalsR
 		
 		private void move(T element) {
 			synchronized (_sorted) {
-				int oldIndex = _sorted.indexOf(element);
+				int oldIndex = _sorted.output().currentIndexOf(element);
 				int newIndex = findSortedLocation(element);
 				
 				_sorted.move(oldIndex, newIndex);

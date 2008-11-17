@@ -19,7 +19,6 @@ public interface SetSignal<T> extends CollectionSignal<T> {
 		Collection<E> elementsAdded();
 		Collection<E> elementsRemoved();
 	}
-
-	Collection<T> currentElements();
 	
+	boolean currentContains(T element);
 }

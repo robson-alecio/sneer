@@ -8,8 +8,6 @@ public interface ListRegister<T> extends CollectionRegisterBase {
 	Consumer<T> adder();
 	ListSignal<T> output();
 
-	int indexOf(T element);
-
 	void add(T element);
 	void addAt(int index, T element);
 

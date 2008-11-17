@@ -4,6 +4,7 @@
 
 package wheel.reactive.sets.impl;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -36,9 +37,9 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 		}
 
 		@Override
-		public Set<T> currentElements() {
+		public Collection<T> currentElements() {
 			synchronized (_contents) {
-				return contentsCopy();
+				return new HashSet<T>(_contents);
 			}
 		}
 
@@ -70,6 +71,11 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 		@Override
 		public Signal<Integer> size() {
 			return _size.output();
+		}
+
+		@Override
+		public boolean currentContains(T element) {
+			return _contents.contains(element);
 		}
 		
 	}

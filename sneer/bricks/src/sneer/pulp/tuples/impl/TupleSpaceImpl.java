@@ -3,7 +3,6 @@ package sneer.pulp.tuples.impl;
 import static wheel.lang.Types.cast;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -17,12 +16,13 @@ import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
 import wheel.lang.Types;
+import wheel.reactive.lists.ListRegister;
+import wheel.reactive.lists.impl.ListRegisterImpl;
 
 public class TupleSpaceImpl implements TupleSpace {
 
 	@Inject static private KeyManager _keyManager;
 	@Inject static private Clock _clock;
-	//@Inject static private JournalFactory _journalFactory;
 	//@Inject static private PersistenceConfig _config;
 	
 	//Refactor The synchronization will no longer be necessary when the container guarantees synchronization of model bricks.
@@ -51,15 +51,10 @@ public class TupleSpaceImpl implements TupleSpace {
 	private final List<Subscription> _subscriptions = new ArrayList<Subscription>();
 	
 	private final Set<Class<? extends Tuple>> _typesToKeep = new HashSet<Class<? extends Tuple>>();
-	private final Set<Tuple> _keptTuples = new HashSet<Tuple>();
-	//private final Consumer<Object> _journalAppender;
+	private final ListRegister<Tuple> _keptTuples = new ListRegisterImpl<Tuple>();
 	
 	
 	TupleSpaceImpl() {
-		//Journal journal = _journalFactory.createJournal(_config.persistenceDirectory());
-		//_journalAppender = journal.open(new Consumer<Object>() { @Override public void consume(Object entry) {
-		//	_keptTuples.add((Tuple) entry);
-		//}});
 	}
 
 	
@@ -90,7 +85,6 @@ public class TupleSpaceImpl implements TupleSpace {
 
 
 	private void keep(Tuple tuple) {
-		//_journalAppender.consume(tuple);
 		_keptTuples.add(tuple);
 	}
 
@@ -130,8 +124,8 @@ public class TupleSpaceImpl implements TupleSpace {
 	}
 
 	@Override
-	public synchronized Collection<Tuple> keptTuples() {
-		return new ArrayList<Tuple>(_keptTuples);
+	public synchronized List<Tuple> keptTuples() {
+		return _keptTuples.output().currentElements();
 	}
 
 	@Override

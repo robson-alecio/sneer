@@ -1,7 +1,7 @@
 package wheel.reactive.maps.impl;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -70,10 +70,9 @@ public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 			removeReceiver(receiver);		
 		}
 
-
 		@Override
-		public Collection<Map.Entry<K, V>> currentElements() {
-			return new ArrayList<Map.Entry<K, V>>(_map.entrySet());
+		public Collection<Entry<K, V>> currentElements() {
+			return new HashSet<Entry<K, V>>(_map.entrySet());
 		}
 
 		@Override
@@ -89,7 +88,7 @@ public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 		@Override
 		protected void initReceiver(Consumer<? super SetValueChange<Map.Entry<K, V>>> receiver) {
 			if (_map.isEmpty()) return;
-			receiver.consume(asChange(currentElements()));
+			receiver.consume(asChange(_map.entrySet()));
 		}
 
 		private SetValueChange<Entry<K, V>> asChange(Collection<Entry<K, V>> entries) {
@@ -104,6 +103,11 @@ public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 		@Override
 		public Signal<Integer> size() {
 			throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+		}
+
+		@Override
+		public boolean currentContains(Entry<K, V> entry) {
+			return _map.entrySet().contains(entry);
 		}
 
 

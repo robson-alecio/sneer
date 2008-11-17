@@ -1,15 +1,17 @@
 package wheel.reactive.lists;
 
+import java.util.List;
+
 import wheel.lang.Consumer;
 import wheel.reactive.CollectionSignal;
 
 public interface ListSignal<T> extends CollectionSignal<T> {
 	
-	public void addListReceiver(Consumer<ListValueChange<T>> receiver);
-	public void removeListReceiver(Object receiver);
+	void addListReceiver(Consumer<ListValueChange<T>> receiver);
+	void removeListReceiver(Object receiver);
 
-	public T currentGet(int index);
+	T currentGet(int index);
+	int currentIndexOf(T element);
+	List<T> currentElements();
 	
-	public T[] toArray();
-
 }

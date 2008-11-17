@@ -25,6 +25,11 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 		}
 
 		@Override
+		public int currentIndexOf(VO element) {
+			return _list.indexOf(element);
+		}
+
+		@Override
 		public int currentSize() {
 			return _list.size();
 		}
@@ -59,17 +64,20 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 		}
 
 		@Override
-		public VO[] toArray() {
+		public List<VO> currentElements() {
 			synchronized (_list) {
-				return (VO[]) _list.toArray();
+				return new ArrayList<VO>(_list);
 			}
 		}
+
 	}
 
-	protected final Register<Integer> _size = new RegisterImpl<Integer>(0);
+	
 	protected final List<VO> _list = new ArrayList<VO>();
+	protected final Register<Integer> _size = new RegisterImpl<Integer>(0);
 	private MyOutput _output = new MyOutput();
 	
+
 	@Override
 	public void add(VO element) {
 		synchronized (_list) {
@@ -144,10 +152,5 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 		_output.notifyReceivers(new ListElementMoved<VO>(oldIndex, newIndex, element));
 	}
 	
-	@Override
-	public int indexOf(VO element) {
-		return _list.indexOf(element);
-	}
-
 	private static final long serialVersionUID = 1L;
 }

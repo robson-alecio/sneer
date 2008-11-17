@@ -8,12 +8,12 @@ import sneer.pulp.config.persistence.mocks.PersistenceConfigMock;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.testutil.TestThatMightUseResources;
 
-@Ignore
 public class TuplePersistenceTest extends TestThatMightUseResources {
 
 	private final PersistenceConfigMock _persistenceMock  = new PersistenceConfigMock(tmpDirectory());
 
 
+	@Ignore
 	@Test
 	public void testTuplePersistence() {
 		TupleSpace subject1 = createSubject();

@@ -57,7 +57,7 @@ public class MicTest {
 			allowing(targetDataLine).start();
 			
 			final Sequence main = mockery.sequence("main");
-			allowing(targetDataLine).read(with(aNonNull(byte[].class)), with(0), with(320));
+			allowing(targetDataLine).read(with(aNonNull(byte[].class)), with(0), with(640));
 				will(new CustomAction("read sequence number as packet") { @Override public Object invoke(Invocation invocation) throws Throwable {
 					final byte[] buffer = (byte[]) invocation.getParameter(0);
 					writeInt(buffer, ++sequence.value);

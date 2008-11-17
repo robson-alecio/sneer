@@ -216,7 +216,7 @@ class AudioCommon {
 			if (mixer != null)
 				return AudioSystem.getTargetDataLine(AudioUtil.AUDIO_FORMAT, mixer.getMixerInfo());
 		} catch (IllegalArgumentException iae){
-			Logger.logShort(iae, "Trying to getTargetDataLine. (Mic)");
+			Logger.logShort(iae, "Error trying to getTargetDataLine (Mic) with best available mixer. Trying default data line now...");
 		} catch (LineUnavailableException e) {
 			Logger.log(e, "Failed to get target data line (Mic) with best available mixer. Trying default data line...");
 		}
@@ -234,10 +234,10 @@ class AudioCommon {
 			if (mixer == null)
 				return AudioSystem.getSourceDataLine(AudioUtil.AUDIO_FORMAT);
 			return AudioSystem.getSourceDataLine(AudioUtil.AUDIO_FORMAT, mixer.getMixerInfo());
-		}catch(IllegalArgumentException iae){
-			Logger.logShort(iae, "Trying to getSourceDataLine. (Speaker)");
+		} catch(IllegalArgumentException iae){
+			Logger.logShort(iae, "Error trying to getSourceDataLine (Speaker) with best available mixer. Trying default data line now...");
 		} catch (LineUnavailableException e) {
-			Logger.log(e, "Failed to get source data line (Speaker) with best available mixer. Trying default data line...");
+			Logger.log(e, "Failed to get source data line (Speaker) with best available mixer. Trying default data line now...");
 		}
 		try{
 			return AudioSystem.getSourceDataLine(AudioUtil.AUDIO_FORMAT);

@@ -5,7 +5,6 @@ import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.clock.Clock;
-import wheel.io.Logger;
 import wheel.lang.exceptions.FriendlyException;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
@@ -49,7 +48,6 @@ class BlinkingLightsImpl implements BlinkingLights {
 		if (!light.isOn()) return;
 		
 		_lights.remove(light);
-		Logger.log("Light removed: ", light.caption());
 		((LightImpl)light).turnOff();
 	}
 	

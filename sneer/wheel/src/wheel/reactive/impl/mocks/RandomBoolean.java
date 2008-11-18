@@ -24,7 +24,7 @@ public class RandomBoolean {
 	}
 
 	private void sleepAndFlip() {
-		Threads.sleepWithoutInterruptions(RANDOM.nextInt(6000));
+		Threads.sleepWithoutInterruptions(RANDOM.nextInt(2000));
 		_register.setter().consume(!_register.output().currentValue());
 	}
 	

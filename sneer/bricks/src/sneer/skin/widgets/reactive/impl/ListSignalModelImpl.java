@@ -43,14 +43,14 @@ public class ListSignalModelImpl<T> extends AbstractListModel implements ListSig
 		@Override
 		public void elementAdded(final int index, T value) {
 			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
-				fireIntervalAdded(ListSignalModelImpl.this, index, index);
+				fireIntervalAdded(ListSignalModelImpl.this, index, _input.currentSize());
 			}});		
 		}
 
 		@Override
 		public void elementRemoved(final int index, T value) {
 			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
-				fireIntervalRemoved(ListSignalModelImpl.this, index, index);
+				fireIntervalRemoved(ListSignalModelImpl.this, index, _input.currentSize());
 			}});		
 		}
 
@@ -62,20 +62,22 @@ public class ListSignalModelImpl<T> extends AbstractListModel implements ListSig
 		@Override
 		public void elementInserted(final int index, final T value) {
 			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
-				fireIntervalAdded(ListSignalModelImpl.this, index, index);
+				fireIntervalAdded(ListSignalModelImpl.this, index, _input.currentSize());
 			}});		
 		}
 
 		@Override
 		public void elementMoved(final int oldIndex, final int newIndex, T element) {
 			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
-				fireContentsChanged(ListSignalModelImpl.this, oldIndex, newIndex);
+				fireContentsChanged(ListSignalModelImpl.this, oldIndex, _input.currentSize());
 			}});
 		}
 
 		@Override
-		public void elementSignalChanged(int index, T element) {
-			elementChanged(element);
+		public void elementSignalChanged(int index, final T element) {
+			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
+				elementChanged(element);
+			}});			
 		}
 
 		@Override

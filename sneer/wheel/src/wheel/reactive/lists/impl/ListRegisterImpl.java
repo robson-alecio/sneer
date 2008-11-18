@@ -140,14 +140,17 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 	@Override
 	public void move(int oldIndex, int newIndex) {
 		if(oldIndex==newIndex) return;
-		newIndex = newIndex>oldIndex ? newIndex-1 : newIndex;
-		newIndex = newIndex<0 ? 0 : newIndex;
+		int tmpIndex = newIndex>oldIndex ? newIndex-1 : newIndex;
+		tmpIndex = newIndex<0 ? 0 : newIndex;
 		
 		VO element;
 		synchronized (_list) {
 			element = _list.get(oldIndex);
 			_list.remove(oldIndex);
-			_list.add(newIndex, element);
+			if(newIndex > _list.size())
+				_list.add(element);
+			else
+				_list.add(tmpIndex, element);
 		}
 		_output.notifyReceivers(new ListElementMoved<VO>(oldIndex, newIndex, element));
 	}

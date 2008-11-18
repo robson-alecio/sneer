@@ -1,7 +1,7 @@
 package sneer.pulp.reactive.signalchooser.impl;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
@@ -16,28 +16,39 @@ class SignalChooserManagerImpl<T> implements SignalChooserManager<T>{
 	@SuppressWarnings("unused")
 	private ElementVisitingListReceiver _elementVisitingListReceiverToAvoidGc;
 
-	private final Map<T, Receiver<Object>> _elementReceiversToAvoidGc = new HashMap<T, Receiver<Object>>();
+	private final List<ElementReceiver> _elementReceiversToAvoidGc = new ArrayList<ElementReceiver>();
 	private final ListOfSignalsReceiver<T> _listOfSignalsReceiver;
+	private final Object _monitor = new Object();
 	
 	public SignalChooserManagerImpl(ListSignal<T> input, ListOfSignalsReceiver<T> listOfSignalsReceiver) {
 		_listOfSignalsReceiver = listOfSignalsReceiver;
 		_elementVisitingListReceiverToAvoidGc = new ElementVisitingListReceiver(input);
 	}
+	
+	
+	private void checkElementIndex(int index, T element) { //Fix Remove this method after bugfix (run SortTest to see the bug)
+		ElementReceiver receiver = _elementReceiversToAvoidGc.get(index);
+		T actual = receiver._element;
+		if(actual!=element) 
+			throw new IllegalStateException("Wrong element index!! index:" + index + ", expected=" + element + ", actual=" + actual  );
+		receiver._lastCheckedIndex = index;
+	}
 
-	public void elementRemoved(T element) {
-		synchronized (_elementReceiversToAvoidGc) {
+	public void elementRemoved(int index, T element) {
+		synchronized (_monitor) {
 			if (signalChooser() == null) return;
-			if (!_elementReceiversToAvoidGc.containsKey(element) ) return;
-			_elementReceiversToAvoidGc.remove(element).removeFromSignals();
+			checkElementIndex(index, element);
+			_elementReceiversToAvoidGc.remove(index);
 		}
 	}
 
 	public void elementAdded(int index, T element) {
-		synchronized (_elementReceiversToAvoidGc) {
+		synchronized (_monitor) {
 			if (signalChooser() == null) return;
 			
-			ElementReceiver receiver = new ElementReceiver(index, element);
-			_elementReceiversToAvoidGc.put(element, receiver);
+			ElementReceiver receiver = new ElementReceiver(element);
+			_elementReceiversToAvoidGc.add(index, receiver);
+			checkElementIndex(index, element);
 			
 			for (Signal<?> signal : signalChooser().signalsToReceiveFrom(element))
 				receiver.addToSignal(signal);
@@ -46,24 +57,52 @@ class SignalChooserManagerImpl<T> implements SignalChooserManager<T>{
 		}
 	}
 
+	public void elementMoved(int oldIndex, int newIndex, T element) {
+		synchronized (_monitor) {
+			if(oldIndex==newIndex) return;
+			int tmpIndex = newIndex>oldIndex ? newIndex-1 : newIndex;
+			tmpIndex = newIndex<0 ? 0 : newIndex;
+			
+			ElementReceiver receiver = _elementReceiversToAvoidGc.get(oldIndex);
+			checkElementIndex(oldIndex, element);
+			_elementReceiversToAvoidGc.remove(oldIndex);
+
+			int size = _elementReceiversToAvoidGc.size();
+			if(tmpIndex > size){
+				_elementReceiversToAvoidGc.add(receiver);
+				tmpIndex = size;
+			}else
+				_elementReceiversToAvoidGc.add(tmpIndex, receiver);
+			checkElementIndex(tmpIndex, element);
+		}
+	}
+	
 	private SignalChooser<T> signalChooser() {
 		return _listOfSignalsReceiver.signalChooser();
 	}
 	
 	private class ElementReceiver extends Receiver<Object> {
+		public int _lastCheckedIndex = -1;
 		private final T _element;
-		private final int _index;
 		private volatile boolean _isActive;
 
-		ElementReceiver( int index, T element) {
-			_index = index;
+		ElementReceiver(T element) {
 			_element = element;
 		}
 
 		@Override
 		public void consume(Object ignored) {
 			if (!_isActive) return;
-			_listOfSignalsReceiver.elementSignalChanged(_index, _element);
+			synchronized (_monitor) {
+				int index = _elementReceiversToAvoidGc.indexOf(this);
+				index = index < 0 ? _lastCheckedIndex: index;
+				_listOfSignalsReceiver.elementSignalChanged( index, _element);
+			}
+		}
+		
+		@Override
+		public String toString() {
+			return "ElementReceiver(index:" + _lastCheckedIndex + ", element:"+ _element + ")";
 		}
 	}
 	
@@ -75,14 +114,14 @@ class SignalChooserManagerImpl<T> implements SignalChooserManager<T>{
 				SignalChooserManagerImpl.this.elementAdded(index++, element);
 		}
 		
-		@Override public void elementMoved(int oldIndex, int newIndex, T element) { /*ignore*/}
+		@Override public void elementMoved(int oldIndex, int newIndex, T element) {SignalChooserManagerImpl.this.elementMoved(oldIndex, newIndex, element);}
 		@Override public void elementAdded(int index, T element)   {	 SignalChooserManagerImpl.this.elementAdded(index, element); }
 		@Override public void elementInserted(int index, T element) { SignalChooserManagerImpl.this.elementAdded(index, element);	}
-		@Override public void elementRemoved(int index, T element) { SignalChooserManagerImpl.this.elementRemoved(element); }
+		@Override public void elementRemoved(int index, T element) { SignalChooserManagerImpl.this.elementRemoved(index, element); }
 
 		@Override
 		public void elementReplaced(int index, T oldElement, T newElement) {
-			SignalChooserManagerImpl.this.elementRemoved(oldElement);
+			SignalChooserManagerImpl.this.elementRemoved(index, oldElement);
 			SignalChooserManagerImpl.this.elementAdded(index, newElement);
 		}
 	}

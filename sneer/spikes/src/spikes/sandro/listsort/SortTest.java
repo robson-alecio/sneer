@@ -46,7 +46,7 @@ public class SortTest {
 			boolean online2 = _onlineMap.get(o2.value).output().currentValue();
 			if(online1!=online2)
 				return online1?-1:1;
-			return o2.value.compareTo(o1.value);
+			return o1.value.compareTo(o2.value);
 		}};
 		
 		final SignalChooser<ByRef<String>> chooser = new SignalChooser<ByRef<String>>() {	@Override public Signal<?>[] signalsToReceiveFrom(ByRef<String> element) {
@@ -95,27 +95,28 @@ public class SortTest {
 			
 			@Override
 			public Signal<Image> imageFor(ByRef<String> element) {
-				return _onlineMap.get(element.value).output().currentValue() ? _on : _off;
+				return isOnline(element) ? _on : _off;
+			}
+
+			private Boolean isOnline(ByRef<String> element) {
+				return _onlineMap.get(element.value).output().currentValue();
 			}
 
 			@Override
 			public Signal<String> labelFor(ByRef<String> element) {
-				return new Constant<String>(""+element.value);
+				return new Constant<String>(" " + isOnline(element) + " - " +element.value);
 			}};
 	}
 
 	private static void addData(ListRegister<ByRef<String>> source) {
-		add(source,"agnaldo4j");
-		add(source,"Bamboo");
-		add(source,"Bihaiko");
-		add(source,"Daniel");
-		add(source,"Douglas");
-		add(source,"Duno");
-		add(source,"Kalecser");
-		add(source,"Klaus");
-		add(source,"Localhost");
-		add(source,"Nell");
-		add(source,"Priscila");
-		add(source,"Vitor");
+		add(source,"1");
+		add(source,"2");
+		add(source,"3");
+		add(source,"4");
+		add(source,"5");
+		add(source,"6");
+		add(source,"7");
+		add(source,"8");
+		add(source,"9");
 	}
 }

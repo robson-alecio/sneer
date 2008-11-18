@@ -8,7 +8,6 @@ import org.jmock.Mockery;
 import org.jmock.Sequence;
 import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -64,7 +63,6 @@ public class SpeakerBufferTest extends TestThatIsInjected {
 	}
 	
 	@Test
-	@Ignore
 	public void sequencing() {
 		int[] input = new int[] {
 			0, 1, 2, 3, //Happy
@@ -78,11 +76,13 @@ public class SpeakerBufferTest extends TestThatIsInjected {
 			604, //Gap
 			-3, -2, -1, // More than 500 gap in the other direction will also cause buffer to drain (604 will not be played)
 			Short.MAX_VALUE-2, Short.MAX_VALUE-1, Short.MAX_VALUE,
-			Short.MIN_VALUE+1, Short.MIN_VALUE
+			Short.MIN_VALUE+2, Short.MIN_VALUE, Short.MIN_VALUE +1
 		};
 
 		feedInputSequence(input);
-		expectOutputSequence(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 21, 600, 601, 602, -700, -699);
+		expectOutputSequence(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 21, 600, 601, 602, -3, -2, -1,
+				Short.MAX_VALUE-1, Short.MAX_VALUE,
+				Short.MIN_VALUE, Short.MIN_VALUE+1);
 	}
 
 	private void feedInputSequence(int[] input) {
@@ -100,7 +100,7 @@ public class SpeakerBufferTest extends TestThatIsInjected {
 	
 	private void expectOutputSequence(int... sequences) {
 		for (int i = 0; i < sequences.length; i++)
-			assertEquals(_recordedSequence.get(i), (Object)sequences[i]); 
+			assertEquals((int)_recordedSequence.get(i), (Object)sequences[i]); 
 	}
 	
 	private PcmSoundPacket packet(int sequence) {

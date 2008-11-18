@@ -25,4 +25,9 @@ public class PcmSoundPacket extends Tuple {
 		payload = payload_;
 		sequence = sequence_;
 	}
+	
+	@Override
+	public String toString() {
+		return "PcmSoundPacket(" + sequence + ")";
+	}
 }

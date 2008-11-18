@@ -25,13 +25,11 @@ class SignalChooserManagerImpl<T> implements SignalChooserManager<T>{
 		_elementVisitingListReceiverToAvoidGc = new ElementVisitingListReceiver(input);
 	}
 	
-	
 	private void checkElementIndex(int index, T element) { //Fix Remove this method after bugfix (run SortTest to see the bug)
 		ElementReceiver receiver = _elementReceiversToAvoidGc.get(index);
 		T actual = receiver._element;
 		if(actual!=element) 
 			throw new IllegalStateException("Wrong element index!! index:" + index + ", expected=" + element + ", actual=" + actual  );
-		receiver._lastCheckedIndex = index;
 	}
 
 	public void elementRemoved(int index, T element) {
@@ -82,7 +80,6 @@ class SignalChooserManagerImpl<T> implements SignalChooserManager<T>{
 	}
 	
 	private class ElementReceiver extends Receiver<Object> {
-		public int _lastCheckedIndex = -1;
 		private final T _element;
 		private volatile boolean _isActive;
 
@@ -95,23 +92,19 @@ class SignalChooserManagerImpl<T> implements SignalChooserManager<T>{
 			if (!_isActive) return;
 			synchronized (_monitor) {
 				int index = _elementReceiversToAvoidGc.indexOf(this);
-				index = index < 0 ? _lastCheckedIndex: index;
-				_listOfSignalsReceiver.elementSignalChanged( index, _element);
+				_listOfSignalsReceiver.elementSignalChanged( index,  _element);
 			}
-		}
-		
-		@Override
-		public String toString() {
-			return "ElementReceiver(index:" + _lastCheckedIndex + ", element:"+ _element + ")";
 		}
 	}
 	
 	private class ElementVisitingListReceiver extends VisitingListReceiver<T>{
 		public ElementVisitingListReceiver(ListSignal<T> input) {
 			super(input);
-			int index = 0;
-			for (T element : _input)
-				SignalChooserManagerImpl.this.elementAdded(index++, element);
+			synchronized (_monitor) {
+				int index = 0;
+				for (T element : _input)
+					SignalChooserManagerImpl.this.elementAdded(index++, element);
+			}
 		}
 		
 		@Override public void elementMoved(int oldIndex, int newIndex, T element) {SignalChooserManagerImpl.this.elementMoved(oldIndex, newIndex, element);}

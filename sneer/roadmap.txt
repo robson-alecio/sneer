@@ -1,12 +1,12 @@
 ﻿MAIN ROADMAP
 ===================
 	
+	- Fix: TestThatIsInjected cannot depend on PersistenceConfig.
+	
 	- Persistence clashes
 		- Use a different persistence directory for the Localhost user. Call him Dummy.
 	
 	- [Sandro] ListSignalModel and SortedList
-		- [Done] Migrate to ListOfSignalsReceiver Interface.
-		- [Done] Support duplicate elements by storing element index.
 		- Fix Sort Bug (see SortTest)
 	
 	- Wind

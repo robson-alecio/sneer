@@ -1,8 +1,6 @@
 ﻿MAIN ROADMAP
 ===================
 	
-	- Fix: TestThatIsInjected cannot depend on PersistenceConfig.
-	
 	- Persistence clashes
 		- Use a different persistence directory for the Localhost user. Call him Dummy.
 	

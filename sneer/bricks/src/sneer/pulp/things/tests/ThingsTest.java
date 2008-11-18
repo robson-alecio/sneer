@@ -4,9 +4,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.things.Thing;
 import sneer.pulp.things.ThingHome;
+import tests.TestThatIsInjected;
 import wheel.lang.Daemon;
 import wheel.lang.Threads;
 import wheel.reactive.sets.SetSignal;

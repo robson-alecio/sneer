@@ -3,8 +3,8 @@ package sneer.pulp.own.name.tests;
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.own.name.OwnNameKeeper;
+import tests.TestThatIsInjected;
 
 public class OwnNameKeeperTest extends TestThatIsInjected {
 

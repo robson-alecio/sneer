@@ -7,10 +7,10 @@ import javax.swing.JTextField;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
+import tests.TestThatIsInjected;
 import wheel.io.ui.GuiThread;
 import wheel.reactive.impl.Receiver;
 

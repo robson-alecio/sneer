@@ -5,12 +5,12 @@ import java.io.IOException;
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.connection.SocketAccepter;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;
 import sneer.pulp.network.impl.inmemory.InMemoryNetwork;
 import sneer.pulp.port.PortKeeper;
+import tests.TestThatIsInjected;
 import wheel.reactive.impl.Receiver;
 
 public class SocketAccepterTest extends TestThatIsInjected {

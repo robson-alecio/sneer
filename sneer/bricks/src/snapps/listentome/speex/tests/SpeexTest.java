@@ -18,7 +18,7 @@ import snapps.listentome.speex.Decoder;
 import snapps.listentome.speex.Encoder;
 import snapps.listentome.speex.Speex;
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.tests.TestThatIsInjected;
+import tests.TestThatIsInjected;
 
 public class SpeexTest extends TestThatIsInjected {
 	

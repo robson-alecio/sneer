@@ -5,8 +5,8 @@ import org.junit.Test;
 import snapps.wind.Shout;
 import snapps.wind.Wind;
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.tuples.TupleSpace;
+import tests.TestThatIsInjected;
 
 public class WindTest extends TestThatIsInjected {
 

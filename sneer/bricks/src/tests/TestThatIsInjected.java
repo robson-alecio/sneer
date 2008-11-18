@@ -1,4 +1,4 @@
-package sneer.kernel.container.tests;
+package tests;
 
 
 import org.apache.commons.lang.ArrayUtils;

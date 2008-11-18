@@ -9,9 +9,9 @@ import java.awt.image.BufferedImage;
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.skin.image.ImageFactory;
+import tests.TestThatIsInjected;
 import wheel.lang.exceptions.Hiccup;
 
 public class OwnAvatarKeeperTest extends TestThatIsInjected {

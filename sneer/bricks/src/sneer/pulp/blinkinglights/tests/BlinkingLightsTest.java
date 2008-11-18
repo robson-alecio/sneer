@@ -3,11 +3,11 @@ package sneer.pulp.blinkinglights.tests;
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.clock.Clock;
+import tests.TestThatIsInjected;
 
 public class BlinkingLightsTest extends TestThatIsInjected {
 

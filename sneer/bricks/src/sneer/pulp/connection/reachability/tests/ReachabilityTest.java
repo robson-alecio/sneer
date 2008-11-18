@@ -5,12 +5,12 @@ import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.connection.mocks.SocketAccepterMock;
 import sneer.pulp.connection.reachability.ReachabilitySentinel;
 import sneer.pulp.network.ByteArraySocket;
+import tests.TestThatIsInjected;
 
 public class ReachabilityTest extends TestThatIsInjected {
 	

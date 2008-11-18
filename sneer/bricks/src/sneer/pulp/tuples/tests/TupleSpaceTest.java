@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
+import tests.TestThatIsInjected;
 import wheel.lang.Consumer;
 
 public class TupleSpaceTest extends TestThatIsInjected {

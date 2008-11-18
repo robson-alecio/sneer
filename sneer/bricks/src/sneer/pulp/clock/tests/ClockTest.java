@@ -6,9 +6,9 @@ import java.util.List;
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.threadpool.Stepper;
+import tests.TestThatIsInjected;
 
 public class ClockTest extends TestThatIsInjected {
 

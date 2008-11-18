@@ -13,7 +13,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
@@ -23,6 +22,7 @@ import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.speaker.Speaker;
 import sneer.skin.sound.speaker.buffer.SpeakerBuffer;
 import sneer.skin.sound.speaker.buffer.SpeakerBuffers;
+import tests.TestThatIsInjected;
 import wheel.lang.ImmutableByteArray;
 import wheel.lang.Consumer;
 

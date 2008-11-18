@@ -12,11 +12,11 @@ import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.classpath.Classpath;
 import sneer.pulp.classpath.ClasspathFactory;
 import sneer.pulp.compiler.CompilationError;
 import sneer.pulp.compiler.Result;
+import tests.TestThatIsInjected;
 import wheel.io.Jars;
 
 public class JavaCompilerTest extends TestThatIsInjected {

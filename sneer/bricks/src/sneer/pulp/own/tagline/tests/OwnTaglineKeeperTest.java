@@ -3,8 +3,8 @@ package sneer.pulp.own.tagline.tests;
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.own.tagline.OwnTaglineKeeper;
+import tests.TestThatIsInjected;
 
 public class OwnTaglineKeeperTest extends TestThatIsInjected {
 

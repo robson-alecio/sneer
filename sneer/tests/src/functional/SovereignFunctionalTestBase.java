@@ -4,7 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 
 import sneer.kernel.container.ContainerUtils;
-import sneer.kernel.container.tests.TestThatIsInjected;
+import tests.TestThatIsInjected;
 import wheel.lang.Timebox;
 import wheel.lang.exceptions.TimeIsUp;
 

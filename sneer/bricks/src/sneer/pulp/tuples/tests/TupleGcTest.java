@@ -3,8 +3,8 @@ package sneer.pulp.tuples.tests;
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.tuples.TupleSpace;
+import tests.TestThatIsInjected;
 import wheel.lang.Threads;
 
 public class TupleGcTest extends TestThatIsInjected {

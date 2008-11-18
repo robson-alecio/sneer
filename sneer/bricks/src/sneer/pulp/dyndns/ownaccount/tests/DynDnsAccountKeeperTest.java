@@ -3,9 +3,9 @@ package sneer.pulp.dyndns.ownaccount.tests;
 import org.junit.Test;
 
 import sneer.kernel.container.Inject;
-import sneer.kernel.container.tests.TestThatIsInjected;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccount;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
+import tests.TestThatIsInjected;
 
 public class DynDnsAccountKeeperTest extends TestThatIsInjected {
 

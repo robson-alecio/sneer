@@ -33,7 +33,7 @@ public class ListSignalModelImpl<T> extends AbstractListModel implements ListSig
 		_modelChangeReceiver = new ModelChangeReceiver(_input);
 		_signalChooserManagerToAvoidGc = _signalChooserManagerFactory.newManager(input, _modelChangeReceiver);
 	}
-
+	
 	private class ModelChangeReceiver extends VisitingListReceiver<T> implements ListOfSignalsReceiver<T> {
 
 		private ModelChangeReceiver(ListSignal<T> input) {
@@ -43,14 +43,14 @@ public class ListSignalModelImpl<T> extends AbstractListModel implements ListSig
 		@Override
 		public void elementAdded(final int index, T value) {
 			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
-				fireIntervalAdded(ListSignalModelImpl.this, index, _input.currentSize());
+				fireIntervalAdded(ListSignalModelImpl.this, index, index);
 			}});		
 		}
 
 		@Override
 		public void elementRemoved(final int index, T value) {
 			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
-				fireIntervalRemoved(ListSignalModelImpl.this, index, _input.currentSize());
+				fireIntervalRemoved(ListSignalModelImpl.this, index, index);
 			}});		
 		}
 
@@ -62,21 +62,21 @@ public class ListSignalModelImpl<T> extends AbstractListModel implements ListSig
 		@Override
 		public void elementInserted(final int index, final T value) {
 			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
-				fireIntervalAdded(ListSignalModelImpl.this, index, _input.currentSize());
+				fireIntervalAdded(ListSignalModelImpl.this, index, index);
 			}});		
 		}
 
 		@Override
-		public void elementMoved(final int oldIndex, final int newIndex, T element) {
+		public void elementMoved(final int oldIndex, final int newIndex, final T value) {
 			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
-				fireContentsChanged(ListSignalModelImpl.this, oldIndex, _input.currentSize());
+				fireContentsChanged(ListSignalModelImpl.this, oldIndex, newIndex);
 			}});
 		}
 
 		@Override
-		public void elementSignalChanged(int index, final T element) {
+		public void elementSignalChanged(final int index, final T value) {
 			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
-				elementChanged(element);
+				elementChanged(value);
 			}});			
 		}
 

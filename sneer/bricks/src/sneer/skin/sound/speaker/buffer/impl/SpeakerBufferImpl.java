@@ -22,7 +22,6 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 	
 	private final SortedSet<PcmSoundPacket> _sortedSet = new TreeSet<PcmSoundPacket>(
 		new Comparator<PcmSoundPacket>(){@Override public int compare(PcmSoundPacket packet1, PcmSoundPacket packet2) {
-
 			//This subtraction only works because shorts are promoted to int before subtraction
 			if(Math.abs(packet1.sequence - packet2.sequence) > MAX_GAP )
 				return packet1.sequence+MAX_GAP - (packet2.sequence+MAX_GAP); 
@@ -43,14 +42,9 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 	@Override
 	public synchronized void consume(PcmSoundPacket packet) {
 		drainIfNecessary(packet);
-		if(_lastPlayed+1 == packet.sequence){
-			play(packet);
-			return;
-		}
 		_sortedSet.add(packet);
 		doStep();
 	}
-
 
 	private synchronized boolean doStep() {
 		if (!_isRunning) return false;
@@ -129,6 +123,7 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 	}
 	
 	private void play(PcmSoundPacket packet) {
+//		System.out.println("play " + packet.sequence);
 		_lastPlayed = packet.sequence;
 		_consumer.consume(packet);
 	}

@@ -44,7 +44,6 @@ public class SpeakerBufferTest extends TestThatIsInjected {
 	}
 
 	@Test
-	@Ignore
 	public void inverseOrder() throws Exception {
 		testBuffering(p2(), p1());
 	}

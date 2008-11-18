@@ -13,14 +13,14 @@ public class PcmSoundPacket extends Tuple {
 
 	public final ImmutableByteArray payload;
 	
-	public final int sequence;
+	public final short sequence;
 
 	private PcmSoundPacket(ImmutableByteArray payload_, short sequence_) {
 		payload = payload_;
 		sequence = sequence_;
 	}
 
-	public PcmSoundPacket(PublicKey publisher, long publicationTime, ImmutableByteArray payload_, int sequence_) {
+	public PcmSoundPacket(PublicKey publisher, long publicationTime, ImmutableByteArray payload_, short sequence_) {
 		super(publisher, publicationTime);
 		payload = payload_;
 		sequence = sequence_;

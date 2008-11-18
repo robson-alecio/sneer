@@ -28,6 +28,8 @@ final class SortedVisitor<T> extends VisitorAdapter<T> implements ListOfSignalsR
 	private SignalChooserManager<T> _signalChooserManagerToAvoidGc;
 	private final SignalChooser<T> _chooser;	
 	
+	private final Object _monitor = new Object();
+	
 	SortedVisitor(ListSignal<T> input, Comparator<T> comparator, SignalChooser<T> chooser) {
 		_input = input;
 		_chooser = chooser;
@@ -54,7 +56,7 @@ final class SortedVisitor<T> extends VisitorAdapter<T> implements ListOfSignalsR
 		
 		private SorterSupport(Comparator<T> comparator) {
 			_comparator = comparator;
-			synchronized (_input) {
+			synchronized (_monitor) {
 				initSortedList();
 				_input.addListReceiver(_receiverAvoidGc);
 			}
@@ -88,14 +90,14 @@ final class SortedVisitor<T> extends VisitorAdapter<T> implements ListOfSignalsR
 		}
 		
 		private void sortedAdd(T element) {
-			synchronized (_sorted) {
+			synchronized (_monitor) {
 				int location = findSortedLocation(element);
 				_sorted.addAt(location, element);
 			}
 		}
 		
 		private void remove(T element) {
-			synchronized (_sorted) {
+			synchronized (_monitor) {
 				_sorted.remove(element);
 			}
 		}
@@ -106,7 +108,7 @@ final class SortedVisitor<T> extends VisitorAdapter<T> implements ListOfSignalsR
 		}
 		
 		private void move(T element) {
-			synchronized (_sorted) {
+			synchronized (_monitor) {
 				int oldIndex = _sorted.output().currentIndexOf(element);
 				int newIndex = findSortedLocation(element);
 				

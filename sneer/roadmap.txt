@@ -1,9 +1,6 @@
 ﻿MAIN ROADMAP
 ===================
 	
-	- Persistence clashes
-		- Use a different persistence directory for the Localhost user. Call him Dummy.
-	
 	- [Sandro] ListSignalModel and SortedList
 		- Fix Sort Bug (see SortTest)
 	

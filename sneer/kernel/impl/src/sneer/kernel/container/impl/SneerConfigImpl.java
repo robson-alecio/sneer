@@ -4,7 +4,7 @@ import java.io.File;
 
 import sneer.kernel.container.SneerConfig;
 
-public class SneerConfigImpl implements SneerConfig {
+class SneerConfigImpl implements SneerConfig {
 
 	private File _sneerDirectory;
 	
@@ -12,22 +12,17 @@ public class SneerConfigImpl implements SneerConfig {
 
 	private File _tmpDirectory;
 	
-	public SneerConfigImpl() {
-		this(new File(userHome(), ".sneer"));
-	}
-
-	public SneerConfigImpl(File sneerDirectory) {
-		_sneerDirectory = sneerDirectory;
-		checkFile(_sneerDirectory);
-
+	{
+		_sneerDirectory = new File(userHome(), ".sneer");
+		_sneerDirectory.mkdirs();
+		
 		_tmpDirectory = new File(_sneerDirectory, "tmp");
-		checkFile(_tmpDirectory);
+		_tmpDirectory.mkdirs();
 		
 		_brickDirectory = new File(_sneerDirectory, "bricks");
-		checkFile(_brickDirectory);
+		_brickDirectory.mkdirs();
 	}
-	
-	
+
 	@Override
 	public File sneerDirectory() {
 		return _sneerDirectory;
@@ -43,15 +38,11 @@ public class SneerConfigImpl implements SneerConfig {
 		return _tmpDirectory;
 	}
 
-	private void checkFile(File file) {
-		if(!file.exists()) file.mkdirs();
-	}
-
 	@Override
 	public File brickDirectory(Class<?> brickClass) {
 		String name = brickClass.getName();
 		File result = new File(_brickDirectory, name);
-		checkFile(result);
+		result.mkdirs();
 		return result;
 	}
 

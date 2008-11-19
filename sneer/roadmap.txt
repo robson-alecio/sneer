@@ -4,6 +4,12 @@
 	- [Sandro] ListSignalModel and SortedList
 		- Fix Sort Bug (see SortTest)
 	
+	- Wind
+		- [Sandro] Fix: shout edit field cannot grow too much, or else it covers the shout list.
+		- [Sandro] SoundPlayerImpl: Use BL instead of: throw new IllegalStateException("Can't Play!", e);
+			- See how WatchMeImpl uses the new, much simpler BL sematics.
+		  
+	
 	- Voice Calls
 		- First Step: When I press the button I listen to everyone and everyone listens to me.
 			- SpeakerBuffer - Unignore SpeakerBufferTest.sequencing().

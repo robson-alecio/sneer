@@ -16,15 +16,16 @@ import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import sneer.kernel.container.Inject;
+import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.skin.sound.player.SoundPlayer;
+import wheel.lang.Threads;
 
-class SoundPlayerImpl implements SoundPlayer, Runnable {
+class SoundPlayerImpl implements SoundPlayer, Stepper {
 
 	@Inject
-	static private ThreadPool _threads;
-	{
-		_threads.registerActor(this);
+	static private ThreadPool _threads; {
+		_threads.registerStepper(this);
 	}
 	
 	final static private Collection<URL> urls = Collections.synchronizedCollection(new ArrayList<URL>());
@@ -87,20 +88,17 @@ class SoundPlayerImpl implements SoundPlayer, Runnable {
 	}
 
 	@Override
-	public void run() {
-		while(true){
-			if(urls.size()>0) playNext();
-			else
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
-				}
-		}
+	public boolean step() {
+		if(urls.size() > 0) playNext();
+		else
+			Threads.sleepWithoutInterruptions(50); //Optimize: Use wait/notify.
+			
+		return true;
 	}
 
 	@Override
 	public void play(URL url) {
 		urls.add(url);
 	}
+
 }

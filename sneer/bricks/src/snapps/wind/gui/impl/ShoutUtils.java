@@ -22,8 +22,9 @@ abstract class ShoutUtils {
 	static String publisherNick(Shout shout) {
 		if(isMyOwnShout(shout)) return _ownName.name().currentValue();
 		Contact contact = _keyManager.contactGiven(shout.publisher());
-		String nick = contact == null ? "<Unknown> " : contact.nickname().currentValue() + " ";
-		return nick;
+		return contact == null
+			? "Unknown Public Key: " + shout.publisher() + " "
+			: contact.nickname().currentValue() + " ";
 	}
 
 	static String getFormatedShoutTime(Shout shout) {

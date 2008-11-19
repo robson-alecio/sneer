@@ -123,6 +123,7 @@ public class TupleSpaceImpl implements TupleSpace {
 
 
 	private void keep(Tuple tuple) {
+		if (_keptTuples.output().currentIndexOf(tuple) != -1) return; //Optimize
 		_keptTuples.adder().consume(tuple);
 	}
 

@@ -56,7 +56,7 @@ public class TupleSpaceImpl implements TupleSpace {
 	}
 
 	private static final int TRANSIENT_CACHE_SIZE = 1000;
-	private final Set<Tuple> _transientTuples = new LinkedHashSet<Tuple>();
+	private final Set<Tuple> _transientTupleCache = new LinkedHashSet<Tuple>();
 	private final List<Subscription> _subscriptions = new ArrayList<Subscription>();
 	
 	private final Set<Class<? extends Tuple>> _typesToKeep = new HashSet<Class<? extends Tuple>>();
@@ -104,26 +104,37 @@ public class TupleSpaceImpl implements TupleSpace {
 
 	@Override
 	public synchronized void acquire(Tuple tuple) {
-		if (!_transientTuples.add(tuple)) return;
+		if (!_transientTupleCache.add(tuple)) return;
 		capTransientTuples();
+		
+		if (isAlreadyKept(tuple)) return;
 		keepIfNecessary(tuple);
 				
 		for (Subscription subscription : _subscriptions)
 			subscription.filterAndNotify(tuple);
 	}
 
-	
+
 	private void keepIfNecessary(Tuple tuple) {
+		if (shouldKeep(tuple)) keep(tuple);
+	}
+
+	
+	private boolean shouldKeep(Tuple tuple) {
 		for (Class<? extends Tuple> typeToKeep : _typesToKeep) //Optimize
-			if (Types.instanceOf(tuple, typeToKeep)) {
-				keep(tuple);
-				return;
-			}
+			if (Types.instanceOf(tuple, typeToKeep))
+				return true;
+
+		return false;
+	}
+
+
+	private boolean isAlreadyKept(Tuple tuple) {
+		return _keptTuples.output().currentIndexOf(tuple) != -1;  //Optimize
 	}
 
 
 	private void keep(Tuple tuple) {
-		if (_keptTuples.output().currentIndexOf(tuple) != -1) return; //Optimize
 		_keptTuples.adder().consume(tuple);
 	}
 
@@ -133,9 +144,9 @@ public class TupleSpaceImpl implements TupleSpace {
 	}
 
 	private void capTransientTuples() {
-		if (_transientTuples.size() <= TRANSIENT_CACHE_SIZE) return;
+		if (_transientTupleCache.size() <= TRANSIENT_CACHE_SIZE) return;
 
-		Iterator<Tuple> tuplesIterator = _transientTuples.iterator();
+		Iterator<Tuple> tuplesIterator = _transientTupleCache.iterator();
 		tuplesIterator.next();
 		tuplesIterator.remove();
 		

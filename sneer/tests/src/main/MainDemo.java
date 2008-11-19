@@ -2,10 +2,13 @@ package main;
 
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
+import sneer.pulp.own.name.OwnNameKeeper;
 import wheel.io.Logger;
 import wheel.io.ui.GuiThread;
 
 public class MainDemo {
+
+	private static Container _container;
 
 	public static void main(String[] args) {
 		try {
@@ -25,13 +28,24 @@ public class MainDemo {
 
 	private static void tryToRun(String[] args) throws Exception {
 		Logger.redirectTo(System.out);
-		demo().start(ownName(args), dynDnsUser(args), dynDnsPassword(args));
+		
+		setOwnName(ownName(args));
+		demo().start(dynDnsUser(args), dynDnsPassword(args));
+		
 		waitUntilTheGuiThreadStarts();
 	}
 
+	private static void setOwnName(String ownName) {
+		container().produce(OwnNameKeeper.class).nameSetter().consume(ownName);
+	}
+
+	private static Container container() {
+		if (_container == null) _container = ContainerUtils.newContainer();
+		return _container;
+	}
+
 	private static MainDemoBrick demo() {
-		Container container = ContainerUtils.newContainer();
-		return container.produce(MainDemoBrick.class);
+		return container().produce(MainDemoBrick.class);
 	}
 	
 	private static String ownName(String[] args) {

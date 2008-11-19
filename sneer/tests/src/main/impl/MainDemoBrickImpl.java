@@ -93,35 +93,33 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	private static InternetAddressKeeper _addressKeeper;
 
 	@Override
-	public void start(String ownName, String dynDnsUserName, String dynDnsPassword) {
-		_ownName.nameSetter().consume(ownName);
-
-		_portKeeper.portSetter().consume(portFor(ownName));
+	public void start(String dynDnsUserName, String dynDnsPassword) {
+		_portKeeper.portSetter().consume(port());
 		
-		initDynDnsAccount(ownName, dynDnsUserName, dynDnsPassword);
+		initDynDnsAccount(dynDnsUserName, dynDnsPassword);
 		
 		addContacts();
 	}
 
-	private void initDynDnsAccount(String ownName, String dynDnsUserName, String dynDnsPassword) {
+	private void initDynDnsAccount(String dynDnsUserName, String dynDnsPassword) {
 		if (dynDnsUserName == null) return;
 		
 		_dynDnsAccountKeeper.accountSetter().consume(
-			new DynDnsAccount(dynDnsHostFor(ownName), dynDnsUserName, dynDnsPassword));
+			new DynDnsAccount(dynDnsHost(), dynDnsUserName, dynDnsPassword));
 	}
 
-	private String dynDnsHostFor(String ownName) {
-		return contactInfoFor(ownName)._host;
+	private String dynDnsHost() {
+		return contactInfoFor(ownName())._host;
 	}
 
-	private Integer portFor(String ownName) {
-		return contactInfoFor(ownName)._port;
+	private Integer port() {
+		return contactInfoFor(ownName())._port;
 	}
 	
-	private ContactInfo contactInfoFor(String ownName) {
+	private ContactInfo contactInfoFor(String name) {
 		for (ContactInfo candidate : contacts())
-			if (candidate._nick.equals(ownName)) return candidate;
-		throw new IllegalArgumentException(ownName + " is not one of the hardcoded names. If you want to use this Alpha version of Sneer please let us know at sneercoders@googlegroups.com and we will hardcode your name for now.");
+			if (candidate._nick.equals(name)) return candidate;
+		throw new IllegalArgumentException(name + " is not one of the hardcoded names. If you want to use this Alpha version of Sneer please let us know at sneercoders@googlegroups.com and we will hardcode your name for now.");
 	}
 	
 

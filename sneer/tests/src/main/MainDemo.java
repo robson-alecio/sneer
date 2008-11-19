@@ -1,5 +1,7 @@
 package main;
 
+import java.io.File;
+
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.own.name.OwnNameKeeper;
@@ -22,17 +24,27 @@ public class MainDemo {
 	}
 
 	private static void exitWithUsageMessage() {
-		System.err.println("\nUsage: MainDemo yourOwnName [dynDnsUser dnyDnsPassword]\n");
+		System.err.println("\nUsage: MainDemo yourOwnName [dynDnsUser dnyDnsPassword]");
+		System.err.println("      or: MainDemo Dummy\n");
 		System.exit(1);
 	}
 
 	private static void tryToRun(String[] args) throws Exception {
 		Logger.redirectTo(System.out);
+
+		checkForDummy(args);
 		
 		setOwnName(ownName(args));
 		demo().start(dynDnsUser(args), dynDnsPassword(args));
 		
 		waitUntilTheGuiThreadStarts();
+	}
+
+	private static void checkForDummy(String[] args) {
+		if (!"Dummy".equals(ownName(args))) return;
+		
+		File dummyHome = new File(System.getProperty("user.home"), ".sneerdummy");
+		System.setProperty("home_override", dummyHome.getAbsolutePath());
 	}
 
 	private static void setOwnName(String ownName) {

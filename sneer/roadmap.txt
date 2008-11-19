@@ -8,6 +8,7 @@
 		- Fix Sort Bug (see SortTest)
 	
 	- Wind
+		- Fix: Shouts are being duplicated when they are recovered from another peer.
 		- Persist Shouts.
 			- Fix: recovered shouts have <Unknown> publisher.
 			

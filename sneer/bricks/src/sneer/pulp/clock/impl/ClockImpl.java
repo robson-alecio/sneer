@@ -5,7 +5,9 @@ import java.util.TreeSet;
 
 import sneer.pulp.clock.Clock;
 import sneer.pulp.threadpool.Stepper;
+import wheel.lang.ByRef;
 import wheel.lang.Threads;
+import wheel.lang.Timebox;
 
 class ClockImpl implements Clock {
 	
@@ -29,7 +31,7 @@ class ClockImpl implements Clock {
 
 	@Override
 	synchronized public void wakeUpNowAndEvery(int period, Stepper stepper) {
-		stepper.step();
+		step(stepper);
 		wakeUpEvery(period, stepper);
 	}
 
@@ -45,7 +47,6 @@ class ClockImpl implements Clock {
 		synchronized (notifier) {
 			wakeUpInAtLeast(millis, notifier);
 			Threads.waitWithoutInterruptions(notifier);
-
 		}
 	}
 
@@ -81,6 +82,16 @@ class ClockImpl implements Clock {
 		}
 	}
 
+	
+	private boolean step(final Stepper stepper) {
+		final ByRef<Boolean> result = ByRef.newInstance(); 
+		new Timebox(3000) { @Override protected void runInTimebox() {
+			result.value = stepper.step();
+		}};
+		return result.value;
+	}
+
+	
 	static private long _nextSequence = 0;
 
 	private class Alarm implements Comparable<Alarm>{
@@ -105,7 +116,7 @@ class ClockImpl implements Clock {
 
 		void wakeUp() {
 			_alarms.remove(this);
-			if (!_stepper.step()) return;
+			if (!step(_stepper)) return;
 
 			_wakeUpTime = _currentTimeMillis + _period;
 			_alarms.add(this);

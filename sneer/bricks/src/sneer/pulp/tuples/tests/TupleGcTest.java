@@ -21,7 +21,8 @@ public class TupleGcTest extends TestThatIsInjected {
 		_garbageCollectedCounter = 0;
 
 		_currentGeneration = "tuplesLimitAmount";
-		publishMyTestTuples(1000 + 42);
+		int cache = _subject.transientCacheSize();
+		publishMyTestTuples(cache + 42);
 		
 		while (_garbageCollectedCounter != 42) {
 			System.gc();

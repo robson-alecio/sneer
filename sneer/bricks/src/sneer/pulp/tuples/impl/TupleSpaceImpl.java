@@ -55,7 +55,7 @@ public class TupleSpaceImpl implements TupleSpace {
 
 	}
 
-	private static final int TRANSIENT_TUPLES_MAX = 1000;
+	private static final int TRANSIENT_CACHE_SIZE = 1000;
 	private final Set<Tuple> _transientTuples = new LinkedHashSet<Tuple>();
 	private final List<Subscription> _subscriptions = new ArrayList<Subscription>();
 	
@@ -132,7 +132,7 @@ public class TupleSpaceImpl implements TupleSpace {
 	}
 
 	private void capTransientTuples() {
-		if (_transientTuples.size() <= TRANSIENT_TUPLES_MAX) return;
+		if (_transientTuples.size() <= TRANSIENT_CACHE_SIZE) return;
 
 		Iterator<Tuple> tuplesIterator = _transientTuples.iterator();
 		tuplesIterator.next();
@@ -174,6 +174,12 @@ public class TupleSpaceImpl implements TupleSpace {
 	@Override
 	public void crash() {
 		System.out.println("Necessary?");
+	}
+
+
+	@Override
+	public int transientCacheSize() {
+		return TRANSIENT_CACHE_SIZE;
 	}
 
 }

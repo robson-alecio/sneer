@@ -13,6 +13,8 @@ public interface TupleSpace extends Brick {
 	<T extends Tuple> void addSubscription(Class<T> tupleType, Consumer<? super T> subscriber);
 	<T extends Tuple> void removeSubscription(Object subscriber);
 	
+	int transientCacheSize();
+
 	void keep(Class<? extends Tuple> tupleType);
 	List<Tuple> keptTuples();
 	

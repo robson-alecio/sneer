@@ -5,9 +5,11 @@ import java.util.TreeSet;
 
 import sneer.pulp.clock.Clock;
 import sneer.pulp.threadpool.Stepper;
+import wheel.io.Logger;
 import wheel.lang.ByRef;
 import wheel.lang.Threads;
 import wheel.lang.Timebox;
+import wheel.lang.exceptions.TimeIsUp;
 
 class ClockImpl implements Clock {
 	
@@ -86,7 +88,12 @@ class ClockImpl implements Clock {
 	private boolean step(final Stepper stepper) {
 		final ByRef<Boolean> result = ByRef.newInstance(); 
 		new Timebox(3000) { @Override protected void runInTimebox() {
-			result.value = stepper.step();
+			try {
+				result.value = stepper.step();
+			} catch (TimeIsUp t) {
+				Logger.log("Stepper stopped due to timebox expiry: " + stepper);
+				result.value = false;
+			}
 		}};
 		return result.value;
 	}

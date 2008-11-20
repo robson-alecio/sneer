@@ -115,7 +115,7 @@ class WindGuiImpl implements WindGui {
 		
 		JScrollPane scrollShout = new JScrollPane();
 		scrollShout.setOpaque(false);
-		JPanel hnorizontalLimit = new JPanel(){
+		JPanel horizontalLimit = new JPanel(){
 			@Override
 			public Dimension getPreferredSize() {
 				Dimension preferredSize = super.getPreferredSize();
@@ -123,9 +123,9 @@ class WindGuiImpl implements WindGui {
 				return preferredSize;
 			}
 		};
-		hnorizontalLimit.setLayout(new BorderLayout());
-		hnorizontalLimit.add(_myShout.getComponent());
-		scrollShout.getViewport().add(hnorizontalLimit);	
+		horizontalLimit.setLayout(new BorderLayout());
+		horizontalLimit.add(_myShout.getComponent());
+		scrollShout.getViewport().add(horizontalLimit);	
 		
 		JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, _scrollPane, scrollShout);
 		split.setOpaque(false);

@@ -1,9 +1,6 @@
 ﻿MAIN ROADMAP
 ===================
 	
-	- Wind
-		- [Sandro] Fix: shout edit field cannot grow too much, or else it covers the shout list.
-
 	- [Sandro] ListSignalModel and SortedList
 		- Fix Sort Bug (see SortTest)
 	

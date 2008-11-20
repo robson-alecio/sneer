@@ -19,6 +19,7 @@ import javax.swing.BoundedRangeModel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
@@ -112,15 +113,8 @@ class WindGuiImpl implements WindGui {
 		_container.setBackground(_shoutsList.getComponent().getBackground());
 		_scrollPane.getViewport().add(_shoutsList.getComponent());
 		
-		JScrollPane verticalLimit = new JScrollPane(){
-			@Override
-			public Dimension getPreferredSize() {
-				Dimension preferredSize = super.getPreferredSize();
-				preferredSize.setSize(preferredSize.getWidth(), 60);
-				return preferredSize;
-			}			
-		};
-		verticalLimit.setOpaque(false);
+		JScrollPane scrollShout = new JScrollPane();
+		scrollShout.setOpaque(false);
 		JPanel hnorizontalLimit = new JPanel(){
 			@Override
 			public Dimension getPreferredSize() {
@@ -131,15 +125,18 @@ class WindGuiImpl implements WindGui {
 		};
 		hnorizontalLimit.setLayout(new BorderLayout());
 		hnorizontalLimit.add(_myShout.getComponent());
-		verticalLimit.getViewport().add(hnorizontalLimit);	
+		scrollShout.getViewport().add(hnorizontalLimit);	
 		
+		JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, _scrollPane, scrollShout);
+		split.setOpaque(false);
+		split.setDividerLocation((int) (defaultHeight()*0.75)); 
+		split.setDividerSize(3);
 		_container.setLayout(new BorderLayout());
-		_container.add(_scrollPane, BorderLayout.CENTER);
-		_container.add(verticalLimit, BorderLayout.SOUTH);
+		_container.add(split, BorderLayout.CENTER);
 
 		_shoutsList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
 		_myShout.getComponent().setBorder(new EmptyBorder(0,0,0,0));
-		verticalLimit.setBorder(new EmptyBorder(5,5,5,5));
+		scrollShout.setBorder(new EmptyBorder(5,5,5,5));
 	}
 
 	private void initListReceiversInOrder() {

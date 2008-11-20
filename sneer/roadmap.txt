@@ -31,7 +31,8 @@
 		- Remove titles: My Contacts, Wind and Blinking Lights
 		- Remove all borders: lists occupy entire instrument space. Shout edit field has no border
 		- Add a good news BL: Caption: "OK", help message: "Everything is working fine. If there is a problem, you shall be notified here."
-		
+	
+	- [Sandro] Change GC icon to something like this: http://www.rogerwendell.com/images/recycle/recycle_logo.gif
 
 	---------------------------------- DOGFOOD RELEASE (We have a decent VNC+Skype replacement we use to develop Sneer)
 

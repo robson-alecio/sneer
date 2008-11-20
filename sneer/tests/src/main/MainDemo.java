@@ -25,7 +25,7 @@ public class MainDemo {
 
 	private static void exitWithUsageMessage() {
 		System.err.println("\nUsage: MainDemo yourOwnName [dynDnsUser dnyDnsPassword]");
-		System.err.println("      or: MainDemo Dummy\n");
+		System.err.println(  "   or: MainDemo Dummy\n");
 		System.exit(1);
 	}
 

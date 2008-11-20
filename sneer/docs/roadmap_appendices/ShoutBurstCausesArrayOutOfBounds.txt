@@ -1,4 +1,5 @@
-When 
+The following exceptions happened when a burst of shouts arrived from a peer:
+
 
 Exception in thread "AWT-EventQueue-1" java.lang.ArrayIndexOutOfBoundsException: 9
 	at javax.swing.plaf.basic.BasicListUI.updateLayoutState(BasicListUI.java:1349)

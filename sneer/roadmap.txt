@@ -1,10 +1,12 @@
 ﻿MAIN ROADMAP
 ===================
 	
-	- [Sandro] Fix ArrayIndexOutOfBound (see appendices)
+	- [Sandro] Fix: ArrayIndexOutOfBound (see appendices)
 	
 	- [Sandro] ListSignalModel and SortedList
-		- Fix Sort Bug (see SortTest)
+		- Fix: Sort Bug (see SortTest)
+	
+	- [Sandro] Fix: Shouts that are larger than the size of the shout list do not scroll properly.
 	
 	- Voice Calls
 		- First Step: When I press the button I listen to everyone and everyone listens to me.
@@ -20,10 +22,16 @@
 	---- WE DROP SKYPE :)
 	
 
-	WatchMe
+	- WatchMe
 		- Accelerate.
 	---- WE DROP VNC
 
+
+	- [Sandro] Elegance Experiment
+		- Remove titles: My Contacts, Wind and Blinking Lights
+		- Remove all borders: lists occupy entire instrument space. Shout edit field has no border
+		- Add a good news BL: Caption: "OK", help message: "Everything is working fine. If there is a problem, you shall be notified here."
+		
 
 	---------------------------------- DOGFOOD RELEASE (We have a decent VNC+Skype replacement we use to develop Sneer)
 

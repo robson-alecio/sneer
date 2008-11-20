@@ -1,6 +1,8 @@
 ﻿MAIN ROADMAP
 ===================
 	
+	- [Sandro] Fix ArrayIndexOutOfBound (see appendices)
+	
 	- [Sandro] ListSignalModel and SortedList
 		- Fix Sort Bug (see SortTest)
 	

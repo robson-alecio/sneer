@@ -16,13 +16,21 @@ import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import sneer.kernel.container.Inject;
+import sneer.pulp.blinkinglights.BlinkingLights;
+import sneer.pulp.blinkinglights.Light;
+import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.skin.sound.player.SoundPlayer;
 import wheel.lang.Threads;
+import wheel.lang.exceptions.FriendlyException;
 
 class SoundPlayerImpl implements SoundPlayer, Stepper {
 
+	@Inject
+	static private BlinkingLights _lights;
+	private final Light _light = _lights.prepare(LightType.ERROR);
+	
 	@Inject
 	static private ThreadPool _threads; {
 		_threads.registerStepper(this);
@@ -34,12 +42,13 @@ class SoundPlayerImpl implements SoundPlayer, Stepper {
 		URL url = nextUrlToPlay();
 		AudioInputStream audioInputStream = tryInitAudioInputStream(url);
 		AudioFormat audioFormat = audioInputStream.getFormat();
-		SourceDataLine dataLine = tryInitSourceDataLine(audioFormat);
 
 		int bufferSize = (int) audioFormat.getSampleRate() * audioFormat.getFrameSize();
 		byte[] buffer = new byte[bufferSize];
 
+		SourceDataLine dataLine = null;
 		try {
+			dataLine = tryInitSourceDataLine(audioFormat);
 			int bytesRead = 0;
 			while (bytesRead >= 0) {
 				bytesRead = audioInputStream.read(buffer, 0, buffer.length);
@@ -49,7 +58,12 @@ class SoundPlayerImpl implements SoundPlayer, Stepper {
 			} 
 		} catch (IOException e) {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+		} catch (LineUnavailableException e) {
+			_lights.turnOnIfNecessary(_light, new FriendlyException(e, "Error: audio line is unavailable, can't play a sound!", 
+																				  "Get an expert sovereign friend to help you."));
+			if (dataLine != null)	dataLine.close();
 		} finally {
+			if (dataLine == null) return;
 			dataLine.drain();
 			dataLine.stop();
 			dataLine.close();
@@ -73,17 +87,11 @@ class SoundPlayerImpl implements SoundPlayer, Stepper {
 		}
 	} 
 
-	private SourceDataLine tryInitSourceDataLine(	AudioFormat audioFormat) {
+	private SourceDataLine tryInitSourceDataLine(	AudioFormat audioFormat) throws LineUnavailableException {
 		DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
-		SourceDataLine dataLine = null;
-		try{
-			dataLine = (SourceDataLine) AudioSystem	.getLine(info);
-			dataLine.open(audioFormat);
-			dataLine.start();
-		} catch (LineUnavailableException e) {
-				if (dataLine != null)	dataLine.close();
-				throw new IllegalStateException("Can't Play!", e);
-		}
+		SourceDataLine dataLine = (SourceDataLine) AudioSystem	.getLine(info);
+		dataLine.open(audioFormat);
+		dataLine.start();
 		return dataLine;
 	}
 
@@ -92,7 +100,6 @@ class SoundPlayerImpl implements SoundPlayer, Stepper {
 		if(urls.size() > 0) playNext();
 		else
 			Threads.sleepWithoutInterruptions(50); //Optimize: Use wait/notify.
-			
 		return true;
 	}
 
@@ -100,5 +107,4 @@ class SoundPlayerImpl implements SoundPlayer, Stepper {
 	public void play(URL url) {
 		urls.add(url);
 	}
-
 }

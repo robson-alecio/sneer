@@ -12,7 +12,8 @@
 			- SpeakerBuffer - Unignore SpeakerBufferTest.sequencing().
 			- Block PCM tuples from being sent over the wire
 				- SpeexTuples does: ProbeManager.block(PcmSoundPacket.class);
-		- Refactor: Use Sandro's spike simpler audio init code.
+		- [Sandro] Refactor: Use Sandro's spike simpler audio init code.
+			- Remove duplication between SoundPlayer and Speaker.
 		- Second Step: Rooms.
 
 	- Flooding - Solve tuple flooding on the network.

@@ -1,10 +1,9 @@
 package snapps.wind.gui.impl;
 
+import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.Dimension;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.datatransfer.Clipboard;
@@ -18,6 +17,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.BoundedRangeModel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
@@ -112,16 +112,34 @@ class WindGuiImpl implements WindGui {
 		_container.setBackground(_shoutsList.getComponent().getBackground());
 		_scrollPane.getViewport().add(_shoutsList.getComponent());
 		
-		_container.setLayout(new GridBagLayout());
-		_container.add(_scrollPane, new GridBagConstraints(0, 0, 2, 1, 1., 1.,
-				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-				new Insets(0, 0, 0, 0), 0, 0));
-
-		_container.add(_myShout.getComponent(), new GridBagConstraints(0, 1, 1, 1, 1., 0,
-				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-				new Insets(0, 5, 5, 5), 0, 0));
+		JScrollPane verticalLimit = new JScrollPane(){
+			@Override
+			public Dimension getPreferredSize() {
+				Dimension preferredSize = super.getPreferredSize();
+				preferredSize.setSize(preferredSize.getWidth(), 60);
+				return preferredSize;
+			}			
+		};
+		verticalLimit.setOpaque(false);
+		JPanel hnorizontalLimit = new JPanel(){
+			@Override
+			public Dimension getPreferredSize() {
+				Dimension preferredSize = super.getPreferredSize();
+				preferredSize.setSize(_container.getWidth()-30, preferredSize.getHeight());
+				return preferredSize;
+			}
+		};
+		hnorizontalLimit.setLayout(new BorderLayout());
+		hnorizontalLimit.add(_myShout.getComponent());
+		verticalLimit.getViewport().add(hnorizontalLimit);	
+		
+		_container.setLayout(new BorderLayout());
+		_container.add(_scrollPane, BorderLayout.CENTER);
+		_container.add(verticalLimit, BorderLayout.SOUTH);
 
 		_shoutsList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
+		_myShout.getComponent().setBorder(new EmptyBorder(0,0,0,0));
+		verticalLimit.setBorder(new EmptyBorder(5,5,5,5));
 	}
 
 	private void initListReceiversInOrder() {

@@ -91,4 +91,9 @@ public class ProbeManagerImpl implements ProbeManager {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
 	}
+
+	@Override
+	public void blockTupleType(Class<? extends Tuple> type) {
+		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+	}
 }

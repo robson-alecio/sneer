@@ -5,13 +5,22 @@ import java.util.Set;
 
 public abstract class Daemon extends Thread {
 
-	static private final Set<Daemon> _instances = new HashSet<Daemon>(); 
+	static private final Set<Daemon> _instances = new HashSet<Daemon>();
+
+	private final boolean _isInterruptible; 
+	
 	
 	public Daemon(String name) {
+		this(name, false);
+	}
+
+	public Daemon(String name, boolean isInterruptible) {
 		super(name);
+		_isInterruptible = isInterruptible;
+		addInstance(this);
+
 		setDaemon(true);
 		start();
-		addInstance(this);
 	}
 
 	synchronized static private void addInstance(Daemon instance) {
@@ -25,5 +34,15 @@ public abstract class Daemon extends Thread {
 		
 		_instances.clear();
 	}
+
+	@Override
+	public void interrupt() {
+		if (!_isInterruptible)
+			throw new UnsupportedOperationException("This daemon is not interruptible.");
+		
+		super.interrupt();
+	}
+	
+	
 	
 }

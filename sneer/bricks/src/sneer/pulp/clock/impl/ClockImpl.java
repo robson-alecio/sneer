@@ -93,6 +93,7 @@ class ClockImpl implements Clock {
 			} catch (TimeIsUp t) {
 				Logger.log("Stepper stopped due to timebox expiry: " + stepper);
 				result.value = false;
+				throw t;
 			}
 		}};
 		return result.value;

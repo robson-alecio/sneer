@@ -7,6 +7,8 @@
 		- Fix: Sort Bug (see SortTest)
 	
 	- [Sandro] Fix: Shouts that are larger than the size of the shout list do not scroll properly.
+
+	- Environment.my(BrickType.class) - Support for newly developed bricks.
 	
 	- Voice Calls
 		- First Step: When I press the button I listen to everyone and everyone listens to me.
@@ -34,10 +36,12 @@
 	
 	- [Sandro] Change GC icon to something like this: http://www.rogerwendell.com/images/recycle/recycle_logo.gif
 
-	---------------------------------- DOGFOOD RELEASE (We have a decent VNC+Skype replacement we use to develop Sneer)
+	2008---------------------------------- DOGFOOD RELEASE (We have a decent VNC+Skype replacement we use to develop Sneer)
 
 	
 	Now we start cleaning up until we reach "No Broken Windows" status:
+
+	- Mocotó Test Framework
 
 	- Brick Publish (Supposedly working already)
 		- MainDemo - Publish all necessary bricks instead of just producing them.
@@ -48,11 +52,8 @@
 
 	- Open Jar leak - Fix in Freedom7Test
 	- Debugging Strategy - Revise so that all debugging info doesnt go into the log file. 
-	- Injection Strategy - Revise
-		- Drop @Inject - Replace the AnnotatedFieldInjector by the StaticFieldInjector
-		- Consider using constructor (produces more lines of code but can be generated later with boo). Tests will run MUCH faster because classes have to be loaded only once. Downside is all instances created inside the brick will have to be passed (and hold) references to the bricks they need. 
-		- Consider using direct static access to bricks. Classloader will point to generated classes that will intercept and allow for mockability and container stuff.
-		- Consider the "gel" alternative in which bricks dont depend on each other. They just produce and consume tuples from the medium.
+	- Injection Strategy
+		- @Inject -> Environment.my
 	- ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do.
 		- SetSignal - Revise it also. 
 	- Threading model - Revise. Tests should not leave threads running. "No one gets left behind"
@@ -79,18 +80,56 @@
 	- Logging - Revise all uses of logging, out and err.
 	- Exception Handling - Revise and correct
 	- Fix and remove all task comments in the code except for Optimize (Fix Urgent, Fix, Refactor and Implement).
-	---------------------------------- "NO BROKEN WINDOWS" status achieved. From now on code is ALWAYS kept 99.999% clean. 
+	- Responsive threading model for snapps. Snapps can NEVER block the Swing gui thread. Maybe have one event dispatch thread per Snapp. Snapps still have to comply with invokeLater/invokeAndWait to modify gui from other threads or live with the consequences. Test to see if they can ruin/interfere with the entire Sneer gui even having acess to their own components. 
+	28/FEV ---------------------------------- "NO BROKEN WINDOWS" status achieved. From now on code is ALWAYS kept 99.999% clean. 
 
 
-	- Contact CRUD
+	- Contact CRUD Instrument
 		- Nicknames
 	- Own Name - Show contacts' names in contact list
 		- Freedom2Test - Unignore and make it pass.
-	--------------------------------- "SNEERCAST" RELEASE (Remote collaborating (includes Pair Programming) teams all over the world can use Sneer as their tool.)
+	30/MAR --------------------------------- "SNEERCAST" RELEASE (Remote collaborating (includes Pair Programming) teams all over the world can use Sneer as their tool.)
 	
 	
 	- Transparent Persistence
 
+	- Traffic Prioritization by tuple type
+	- Affinity
+		- Access control to all other snapps by affinity.
+		- Authentication (PK)
+	30/APR --------------------------------------
+
+	- TopTen
+		- Card CD?
+			- Installer.EXE for Windows
+	30/MAY --------------------------------------
+
+	- Issue Tracking
+		- Voting
+		- WindPlugin
+	- Brick
+		- Uninstall
+		- Update
+	- Kernel Update
+		- Auto Update
+		- KernelJockey - Cannot run new version if threads are still left over from previous run.
+	- MeToo
+	    - File Transfer
+	- Annotations/Comments/Tags
+	- Synonyms
+	- Revise project structure - sourcefolders, package names, build.xml, etc
+	---------------------------------- TOP TEN RELEASE (FISL)
+
+	- Security
+		- Sandboxing
+
+	- Wind History Queries
+	---------------------------------- PUBLIC RELEASE (1.0) (Sovereign platform ok)
+
+    - File Sharing
+    	- Public Files
+	
+	
 	- Same Room - It would be pretty cool to be able to hear other contacts in a lower volume, simulating a "same room" work environment :D
 	- MSN Client
 		- Contact Unification
@@ -99,32 +138,8 @@
 		- Offline Messaging (equivalent to "email")
 		- Group Messages
 		- History
-    - File Transfer
-	- Traffic Prioritization by tuple type
-	- Wind History
-    - File Sharing
-    	- Public Files
-	- Brick
-		- Uninstall
-		- Update
-	- Kernel Update
-		- Auto Update
-		- KernelJockey - Cannot run new version if threads are still left over from previous run.
-	- MeToo
-	- Security
-		- Sandboxing
-	- Responsive threading model for snapps. Snapps can NEVER block the Swing gui thread. Maybe have one event dispatch thread per Snapp. Snapps still have to comply with invokeLater/invokeAndWait to modify gui from other threads or live with the consequences. Test to see if they can ruin/interfere with the entire Sneer gui even having acess to their own components. 
-	- Affinity
-		- Access control to all other snapps by affinity.
-	- Authentication (PK)
-	- Issue Tracking
-	- Revise project structure - sourcefolders, package names, build.xml, etc
-	---------------------------------- DEVELOPER COMMUNITY BETA RELEASE (Sneer is an actual sovereign software platform for developers to start targeting)
-	
-	- Public Forums
-	- TopTen
-	- Annotations/Comments/Tags
-	- Synonyms
+		- Public Forums
+
 	- Avatars
 		- Show in Contact List
 		- Show in chat frame
@@ -136,8 +151,7 @@
 	- Profile - City, Birthday, etc (?)
 	- Dashboard
 		- Drag n Drop for reordering Snapps
-	- Installer.EXE for Windows
-	---------------------------------- PUBLIC RELEASE (1.0) (Sneer starts being attractive to the public in general)
+	---------------------------------- PUBLIC RELEASE (2.0) (Sneer starts being attractive to the public in general)
 
 	- OMetaBoo support
 	---------------------------------- OMETABOO RELEASE (Sneer developers (includes independent app developers) gain productivity beyond their wildest dreams)
@@ -156,7 +170,7 @@
 	- Simple CPU Sharing
 	- Multiple Look-N-Feels
 		- Napkin Default Look-N-Feel
-	---------------------------------- MAJOR PUBLIC RELEASE (2.0)
+	---------------------------------- MAJOR PUBLIC RELEASE (3.0)
 	
 	- Drop XStream? - Consider using asm to inject "implements Serializable" in all bricks instead of using xstream
 		- Measure Performance gain, if any

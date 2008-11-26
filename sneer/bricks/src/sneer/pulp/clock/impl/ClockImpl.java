@@ -3,19 +3,22 @@ package sneer.pulp.clock.impl;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import sneer.kernel.container.Inject;
 import sneer.pulp.clock.Clock;
+import sneer.pulp.exceptionhandling.ExceptionHandler;
+import sneer.pulp.exceptionhandling.Fallible;
 import sneer.pulp.threadpool.Stepper;
-import wheel.io.Logger;
 import wheel.lang.ByRef;
 import wheel.lang.Threads;
 import wheel.lang.Timebox;
-import wheel.lang.exceptions.TimeIsUp;
 
 class ClockImpl implements Clock {
 	
 	long _currentTimeMillis = 0;
 	
 	final SortedSet<Alarm> _alarms = new TreeSet<Alarm>();
+	
+	@Inject private static ExceptionHandler _exceptionHandler;
 	
 	@Override
 	synchronized public void wakeUpNoEarlierThan(long timeToWakeUp, Runnable runnable) {
@@ -86,16 +89,12 @@ class ClockImpl implements Clock {
 
 	
 	private boolean step(final Stepper stepper) {
-		final ByRef<Boolean> result = ByRef.newInstance(); 
-		new Timebox(3000) { @Override protected void runInTimebox() {
-			try {
+		final ByRef<Boolean> result = ByRef.newInstance(false); 
+		_exceptionHandler.shield(new Fallible() { @Override public void run() throws Throwable {
+			new Timebox(3000) { @Override protected void runInTimebox() {
 				result.value = stepper.step();
-			} catch (TimeIsUp t) {
-				Logger.log("Stepper stopped due to timebox expiry: " + stepper);
-				result.value = false;
-				throw t;
-			}
-		}};
+			}};
+		}});
 		return result.value;
 	}
 

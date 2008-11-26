@@ -27,12 +27,20 @@ public abstract class Daemon extends Thread {
 		_instances.add(instance);
 	}
 
-	@SuppressWarnings("deprecation")
 	synchronized static public void killAllInstances() {
 		for (Daemon victim : _instances)
-			victim.stop();
+			victim.dieQuietly();
 		
 		_instances.clear();
+	}
+
+	@SuppressWarnings("deprecation")
+	private void dieQuietly() {
+		this.setUncaughtExceptionHandler(new UncaughtExceptionHandler() { @Override public void uncaughtException(Thread t, Throwable ignored) {
+			//Do nothing.
+		}});
+			
+		this.stop();
 	}
 
 	@Override

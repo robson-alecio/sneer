@@ -61,7 +61,7 @@ class ImageFactoryImpl implements ImageFactory {
         try {
 			return tryToCreateBufferedImage(image);
 		} catch (InterruptedException e) {
-			throw new IllegalStateException();
+			throw new IllegalStateException(e);
 		}
     }
 

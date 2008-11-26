@@ -20,7 +20,7 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 	
 	private final SortedSet<PcmSoundPacket> _sortedSet = new TreeSet<PcmSoundPacket>(
 		new Comparator<PcmSoundPacket>(){@Override public int compare(PcmSoundPacket packet1, PcmSoundPacket packet2) {
-			if(isResetingSequence(packet2, packet1) )
+			if(isDiferenceGreaterThanMaxGap(packet2, packet1) )
 				return packet1.sequence + packet2.sequence; 
 			
 			return packet1.sequence - packet2.sequence; 
@@ -52,10 +52,9 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 		if(!iterator.hasNext()) return;
 		PcmSoundPacket previous = iterator.next();
 
-		if(isResetingSequence(previous, packet)){
+		if(isDiferenceGreaterThanMaxGap(previous, packet)){
 			_lastPlayed = packet.sequence-1;
 			leftDrain(previous.sequence);
-			return;
 		}
 	}
 
@@ -66,24 +65,13 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 		
 		while (iterator.hasNext()) {
 			PcmSoundPacket packet = iterator.next();
-			if(isResetingSequence(previous, packet)){
+			if(isDiferenceGreaterThanMaxGap(previous, packet)){
 				_lastPlayed = packet.sequence-1;
 				leftDrain(previous.sequence);
 				return;
 			}
 			previous = packet;
 		}		
-	}
-
-	private boolean isResetingSequence(PcmSoundPacket previous, PcmSoundPacket packet) {
-		return isResetingSequence(previous.sequence, packet.sequence);
-	}
-
-	
-	private boolean isResetingSequence(int previousSequence, int packetSequence) {
-		//This subtraction only works because shorts are promoted to int before subtraction
-		if(_lastPlayed<Short.MIN_VALUE) return false;
-		return Math.abs(packetSequence-previousSequence)  > MAX_GAP;
 	}
 
 	private void leftDrain(int limit) {
@@ -93,41 +81,32 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 			if(packet.sequence>limit) return;
 			iterator.remove();
 //			System.out.println("drain " + packet.sequence);
-			continue;
-		}	
-	}
-
-	private void playInterruptedPackets() {
-		if(_sortedSet.size()<2) return;
-		PcmSoundPacket lastPacket = _sortedSet.last();
-		int maxSequenceToPlay = lastPacket.sequence - MAX_INTERRUPTED;
-		Iterator<PcmSoundPacket> iterator = _sortedSet.iterator();
-		while (iterator.hasNext()) {
-			PcmSoundPacket packet = iterator.next();
-			if(packet.sequence>maxSequenceToPlay) return;
-			play(packet);
-			iterator.remove();
 		}	
 	}
 	
-	private void resetingSequencePlay() {
-		Iterator<PcmSoundPacket> iterator = _sortedSet.iterator();
-		while (iterator.hasNext()) {
-			PcmSoundPacket packet = iterator.next();
-			if(!isResetingSequence(lastPlayed(), packet.sequence)) return;
-			play(packet);
-			iterator.remove();
-		}	
+	interface BreakCondition {
+		boolean evaluate(PcmSoundPacket currentPacket);
 	}
-
+	
+	private void resetingSequencePlay() {
+		tryToPlayAndRemove(new BreakCondition() {@Override public boolean evaluate(PcmSoundPacket currentPacket) {
+			return !isDiferenceGreaterThanMaxGap(lastPlayed(), currentPacket.sequence);
+		}});				
+	}
+	
 	private void playUninterruptedPackets() {
-		Iterator<PcmSoundPacket> iterator = _sortedSet.iterator();
-		while (iterator.hasNext()) {
-			PcmSoundPacket packet = iterator.next();
-			if(nextSequenceToPlay() != packet.sequence) return;
-			play(packet);
-			iterator.remove();
-		}
+		tryToPlayAndRemove(new BreakCondition() {@Override public boolean evaluate(PcmSoundPacket currentPacket) {
+			return nextSequenceToPlay() != currentPacket.sequence;
+		}});
+	}
+	
+	private void playInterruptedPackets() {
+		if(_sortedSet.size()<2) return;
+		PcmSoundPacket lastPacket = _sortedSet.last();
+		final int maxSequenceToPlay = lastPacket.sequence - MAX_INTERRUPTED;
+		tryToPlayAndRemove(new BreakCondition() {@Override public boolean evaluate(PcmSoundPacket currentPacket) {
+			return currentPacket.sequence>maxSequenceToPlay;
+		}});		
 	}
 	
 	private void play(PcmSoundPacket packet) {
@@ -136,6 +115,16 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 		_consumer.consume(packet);
 	}
 
+	private void tryToPlayAndRemove(BreakCondition breakCondition) {
+		Iterator<PcmSoundPacket> iterator = _sortedSet.iterator();
+		while (iterator.hasNext()) {
+			PcmSoundPacket packet = iterator.next();
+			if(breakCondition.evaluate(packet)) return;
+			play(packet);
+			iterator.remove();
+		}
+	}
+	
 	private int nextSequenceToPlay() {
 		return lastPlayed()+1;
 	}
@@ -144,5 +133,15 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 		if(_lastPlayed>= Short.MAX_VALUE)
 			_lastPlayed = Short.MIN_VALUE-1;
 		return _lastPlayed;
+	}
+	
+	private boolean isDiferenceGreaterThanMaxGap(PcmSoundPacket previous, PcmSoundPacket packet) {
+		return isDiferenceGreaterThanMaxGap(previous.sequence, packet.sequence);
+	}
+	
+	private boolean isDiferenceGreaterThanMaxGap(int previousSequence, int packetSequence) {
+		//This subtraction only works because shorts are promoted to int before subtraction
+		if(_lastPlayed<Short.MIN_VALUE) return false;
+		return Math.abs(packetSequence-previousSequence)  > MAX_GAP;
 	}
 }

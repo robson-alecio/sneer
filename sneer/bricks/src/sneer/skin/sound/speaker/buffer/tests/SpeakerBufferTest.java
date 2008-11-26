@@ -78,15 +78,15 @@ public class SpeakerBufferTest extends TestThatIsInjected {
 			51, // More than 30 gap since last played (11): will cause 20, 21 to be played.
 			600, 601, 602, // More than 500 gap: will cause buffer to drain (23, 51 will not be played)
 			604, //Gap
-			-3, -2, -1 // More than 500 gap in the other direction will also cause buffer to drain (604 will not be played)
-//			Short.MAX_VALUE-2, Short.MAX_VALUE, Short.MAX_VALUE-1,
-//			Short.MIN_VALUE+2, Short.MIN_VALUE, Short.MIN_VALUE +1
+			-3, -2, -1, // More than 500 gap in the other direction will also cause buffer to drain (604 will not be played)
+			Short.MAX_VALUE-2, Short.MAX_VALUE, Short.MAX_VALUE-1,
+			Short.MIN_VALUE+2, Short.MIN_VALUE, Short.MIN_VALUE +1
 		};
 
 		feedInputSequence(input);
-		expectOutputSequence(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 21, 600, 601, 602, -3, -2, -1);
-//				Short.MAX_VALUE-2, Short.MAX_VALUE-1, Short.MAX_VALUE,
-//				Short.MIN_VALUE, Short.MIN_VALUE+1, Short.MIN_VALUE+2);
+		expectOutputSequence(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 21, 600, 601, 602, -3, -2, -1,
+				Short.MAX_VALUE-2, Short.MAX_VALUE-1, Short.MAX_VALUE,
+				Short.MIN_VALUE, Short.MIN_VALUE+1, Short.MIN_VALUE+2);
 	}
 
 	private void feedInputSequence(int[] input) {

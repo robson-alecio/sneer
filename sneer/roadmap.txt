@@ -12,7 +12,6 @@
 	
 	- Voice Calls
 		- First Step: When I press the button I listen to everyone and everyone listens to me.
-			- SpeakerBuffer - Unignore SpeakerBufferTest.sequencing().
 		- [Sandro] Refactor: Use Sandro's spike simpler audio init code.
 			- Remove duplication between SoundPlayer and Speaker.
 		- Second Step: Rooms.

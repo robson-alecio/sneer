@@ -33,7 +33,6 @@ class SpeakerImpl implements Speaker {
 
 		_producer.crash();
 		_consumer.crash();
-		_buffer.crash();
 
 		_producer = null;
 		_consumer = null;

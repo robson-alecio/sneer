@@ -8,7 +8,6 @@ import java.util.TreeSet;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.speaker.buffer.SpeakerBuffer;
 import wheel.lang.Consumer;
-import wheel.lang.Threads;
 
 class SpeakerBufferImpl implements SpeakerBuffer {
 
@@ -16,7 +15,6 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 	private static final int MAX_GAP = 500;
 
 	private final Consumer<? super PcmSoundPacket> _consumer;
-	private boolean _isRunning = true;
 
 	private int _lastPlayed = -1;
 	
@@ -28,12 +26,6 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 			return packet1.sequence - packet2.sequence; 
 	}});
 
-	@Override
-	public synchronized void crash() {
-		_isRunning = false;
-		notify();
-	}
-	
 	public SpeakerBufferImpl(Consumer<? super PcmSoundPacket> consumer) {
 		_consumer = consumer;
 	}
@@ -42,28 +34,17 @@ class SpeakerBufferImpl implements SpeakerBuffer {
 	public synchronized void consume(PcmSoundPacket packet) {
 		if(packet.sequence==nextSequenceToPlay()){
 			play(packet);
+			return;
 		}
 		
 		drainIfNecessary(packet);
 		_sortedSet.add(packet);
-		doStep();
-	}
-
-	private synchronized boolean doStep() {
-		if (!_isRunning) return false;
-		
-		if (_sortedSet.isEmpty())
-			Threads.waitWithoutInterruptions(this);
-		
-		if (!_isRunning) return false;
-		
 		leftDrain(_lastPlayed);
 		drainOldPackets();
 		playUninterruptedPackets();
 		playInterruptedPackets();
-		return true;
 	}
-	
+
 	private void drainIfNecessary(PcmSoundPacket packet) {
 		Iterator<PcmSoundPacket> iterator = _sortedSet.iterator();
 		if(!iterator.hasNext()) return;

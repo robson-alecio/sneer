@@ -5,6 +5,4 @@ import wheel.lang.Consumer;
 
 public interface SpeakerBuffer extends Consumer<PcmSoundPacket>{
 
-	void crash();
-
 }

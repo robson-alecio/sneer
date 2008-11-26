@@ -130,10 +130,8 @@ public class SpeakerTest extends TestThatIsInjected {
 				return _buffer;
 			}});;
 
-			one(_buffer).crash();
 			one(_line).close();
 		}
-
 	}
 
 	

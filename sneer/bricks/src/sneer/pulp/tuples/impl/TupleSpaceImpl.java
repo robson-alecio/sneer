@@ -11,6 +11,8 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
@@ -21,8 +23,11 @@ import sneer.kernel.container.Inject;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.config.persistence.PersistenceConfig;
 import sneer.pulp.keymanager.KeyManager;
+import sneer.pulp.threadpool.Stepper;
+import sneer.pulp.threadpool.ThreadPool;
 import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
+import sneer.pulp.tuples.config.TupleSpaceConfig;
 import wheel.lang.Consumer;
 import wheel.lang.Types;
 import wheel.reactive.lists.ListRegister;
@@ -32,7 +37,9 @@ public class TupleSpaceImpl implements TupleSpace {
 
 	@Inject static private KeyManager _keyManager;
 	@Inject static private Clock _clock;
-	@Inject static private PersistenceConfig _config;
+	@Inject static private PersistenceConfig _persistenceConfig;
+	@Inject static private ThreadPool _threads;
+	@Inject static private TupleSpaceConfig _config;
 	
 	//Refactor The synchronization will no longer be necessary when the container guarantees synchronization of model bricks.
 	static class Subscription {
@@ -51,8 +58,6 @@ public class TupleSpaceImpl implements TupleSpace {
 			
 			_subscriber.consume(tuple);
 		}
-
-
 	}
 
 	private static final int TRANSIENT_CACHE_SIZE = 1000;
@@ -61,10 +66,31 @@ public class TupleSpaceImpl implements TupleSpace {
 	
 	private final Set<Class<? extends Tuple>> _typesToKeep = new HashSet<Class<? extends Tuple>>();
 	private final ListRegister<Tuple> _keptTuples;
-	
-	
+	private final BlockingQueue<Tuple> _acquisitionQueue;
+
 	TupleSpaceImpl() {
 		_keptTuples = Bubble.wrapStateMachine(prevayler(new ListRegisterImpl<Tuple>()));
+		_acquisitionQueue = _config.isAcquisitionSynchronous() ? null : new LinkedBlockingQueue<Tuple>(); 
+		if (_acquisitionQueue != null) {
+			_threads.registerStepper(createStepper());
+		}
+	}
+
+
+	private Stepper createStepper() {
+		return new Stepper() { @Override public boolean step() {
+			Tuple tuple = popAcquisition();
+			if (tuple != null) processAcquisition(tuple);
+			return true;
+		}};
+	}
+		
+	private Tuple popAcquisition() {
+		try {
+			return _acquisitionQueue.take();
+		} catch (InterruptedException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 
@@ -92,7 +118,7 @@ public class TupleSpaceImpl implements TupleSpace {
 
 
 	private String directory() {
-		return new File(_config.persistenceDirectory(), "tuplespace").getAbsolutePath();
+		return new File(_persistenceConfig.persistenceDirectory(), "tuplespace").getAbsolutePath();
 	}
 
 	
@@ -103,7 +129,25 @@ public class TupleSpaceImpl implements TupleSpace {
 	}
 
 	@Override
-	public synchronized void acquire(Tuple tuple) {
+	public void acquire(Tuple tuple) {
+		if (_acquisitionQueue != null) {
+			enqueue(tuple);
+			return;
+		}
+		processAcquisition(tuple);
+	}
+
+
+	private void enqueue(Tuple tuple) {
+		try {
+			_acquisitionQueue.put(tuple);
+		} catch (InterruptedException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
+
+	private synchronized void processAcquisition(Tuple tuple) {
 		if (!_transientTupleCache.add(tuple)) return;
 		capTransientTuples();
 		

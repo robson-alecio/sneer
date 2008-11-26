@@ -3,15 +3,15 @@ package sneer.pulp.probe.impl;
 import java.util.LinkedList;
 import java.util.List;
 
+import sneer.kernel.container.Inject;
 import sneer.pulp.connection.ByteConnection.PacketScheduler;
+import sneer.pulp.serialization.Serializer;
 import sneer.pulp.tuples.Tuple;
-import wheel.io.serialization.Serializer;
-import wheel.io.serialization.impl.XStreamBinarySerializer;
 import wheel.lang.Threads;
 
 class SchedulerImpl implements PacketScheduler {
 
-	static private final Serializer _serializer = new XStreamBinarySerializer();
+	@Inject static private Serializer _serializer;
 
 	private final List<Tuple> _toSend = new LinkedList<Tuple>();
 	private boolean _wasDrained = false;

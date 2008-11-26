@@ -1,10 +1,8 @@
 package sneer.pulp.probe;
 
-import sneer.pulp.tuples.Tuple;
+import sneer.kernel.container.Brick;
 
 
-public interface ProbeManager {
-
-	void blockTupleType(Class<? extends Tuple> type);
+public interface ProbeManager extends Brick {
 
 }

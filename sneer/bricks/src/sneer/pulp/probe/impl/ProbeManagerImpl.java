@@ -10,10 +10,9 @@ import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.probe.ProbeManager;
+import sneer.pulp.serialization.Serializer;
 import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
-import wheel.io.serialization.Serializer;
-import wheel.io.serialization.impl.XStreamBinarySerializer;
 import wheel.lang.Consumer;
 import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.lists.impl.SimpleListReceiver;
@@ -21,15 +20,10 @@ import wheel.reactive.lists.impl.SimpleListReceiver;
 public class ProbeManagerImpl implements ProbeManager {
 
 
-	@Inject
-	static private TupleSpace _tuples;
-
-	@Inject
-	static private ContactManager _contacts;
-
-	@Inject
-	static private ConnectionManager _connections;
-
+	@Inject static private TupleSpace _tuples;
+	@Inject static private ContactManager _contacts;
+	@Inject static private ConnectionManager _connections;
+	@Inject private static Serializer _serializer;
 	
 	
 	@SuppressWarnings("unused")
@@ -38,7 +32,6 @@ public class ProbeManagerImpl implements ProbeManager {
 	private Set<ProbeImpl> _probes = new HashSet<ProbeImpl>();
 	
 
-	private static Serializer _serializer = new XStreamBinarySerializer();
 	private static final ClassLoader CLASSLOADER_FOR_TUPLES = TupleSpace.class.getClassLoader();
 
 	{
@@ -92,8 +85,4 @@ public class ProbeManagerImpl implements ProbeManager {
 		}
 	}
 
-	@Override
-	public void blockTupleType(Class<? extends Tuple> type) {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
-	}
 }

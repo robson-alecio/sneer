@@ -5,6 +5,7 @@ package sneer.pulp.probe.impl;
 
 import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
+import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.tuples.Tuple;
@@ -17,6 +18,7 @@ final class ProbeImpl implements Consumer<Tuple> {
 
 	@Inject static private TupleSpace _tuples;
 	@Inject static private KeyManager _keyManager;
+	@Inject static private TupleFilterManager _filter;
 
 	
 	private final Contact _contact;
@@ -42,7 +44,7 @@ final class ProbeImpl implements Consumer<Tuple> {
 		}};
 	}
 
-	private void dealWithIsOnline(Boolean isOnline) {
+	private void dealWithIsOnline(boolean isOnline) {
 		synchronized (_isOnlineMonitor) {
 			boolean wasOnline = _isOnline;
 			_isOnline = isOnline;
@@ -71,6 +73,8 @@ final class ProbeImpl implements Consumer<Tuple> {
 		initContactsPKIfNecessary();
 		if (_contactsPK == null)
 			return false;
+
+		if (_filter.isBlocked(tuple)) return false;
 		
 		return !isEcho(tuple);
 	}

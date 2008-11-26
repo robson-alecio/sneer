@@ -6,6 +6,7 @@ import snapps.listentome.speex.Speex;
 import snapps.listentome.speextuples.SpeexPacket;
 import snapps.listentome.speextuples.SpeexTuples;
 import sneer.kernel.container.Inject;
+import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
@@ -16,11 +17,13 @@ import wheel.lang.Consumer;
 
 class SpeexTuplesImpl implements SpeexTuples {
 
-	@Inject
-	private static Speex _speex;
-	
-	@Inject
-	private static Audio _audio;	
+	@Inject private static Speex _speex;
+	@Inject private static Audio _audio;	
+	@Inject static private TupleSpace _tupleSpace; 
+	@Inject static private KeyManager _keyManager;
+	@Inject static private TupleFilterManager _filter; {
+		_filter.block(PcmSoundPacket.class);
+	}
 	
 	private byte[][] _frames = newFramesArray();
 	private int _frameIndex;
@@ -28,11 +31,6 @@ class SpeexTuplesImpl implements SpeexTuples {
 	private final Encoder _encoder = _speex.createEncoder();
 	private final Decoder _decoder = _speex.createDecoder();
 
-	@Inject
-	static private TupleSpace _tupleSpace; 
-	
-	@Inject
-	static private KeyManager _keyManager;
 	
 	public SpeexTuplesImpl() {
 		_tupleSpace.addSubscription(PcmSoundPacket.class, new Consumer<PcmSoundPacket>() { @Override public void consume(PcmSoundPacket packet) {

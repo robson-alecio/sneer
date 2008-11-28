@@ -26,9 +26,8 @@ class Player implements Runnable {
 	@Inject
 	static private ThreadPool _threads;
 
-	Player(AudioFormat audioFormat, ByteArrayOutputStream buffer, int delay) {
+	Player(AudioFormat audioFormat, int delay) {
 		_audioFormat = audioFormat;
-		_buffer = buffer;
 		_delay = delay;
 	}
 	
@@ -110,17 +109,13 @@ class Player implements Runnable {
 		}
 	}
 
-	public void startPlayer() {
-		_stopPlay = false;
-		_threads.registerActor(this);
-	}
-
 	public void stopPlayer() {
 		_stopPlay = true;
 	}
 
 	public void startPlayer(ByteArrayOutputStream buffer) {
 		_buffer = buffer;
-		startPlayer();
+		_stopPlay = false;
+		_threads.registerActor(this);
 	}
 }

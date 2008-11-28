@@ -14,9 +14,8 @@ class LoopbackImpl implements Loopback{
 
 	LoopbackImpl(){
 		AudioFormat _audioFormat = new AudioFormat(8000.0F, 16, 1, true, true);
-		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-		_recorder = new Recorder(_audioFormat, buffer, DELAY);
-		_player = new Player(_audioFormat, buffer, DELAY);
+		_recorder = new Recorder(_audioFormat, DELAY);
+		_player = new Player(_audioFormat, DELAY);
 	}
 	
 	@Override

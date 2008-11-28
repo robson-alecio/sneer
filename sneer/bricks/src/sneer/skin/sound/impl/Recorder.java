@@ -23,9 +23,8 @@ class Recorder implements Runnable {
 	@Inject
 	static private ThreadPool _threads;
 	
-	Recorder(AudioFormat audioFormat, ByteArrayOutputStream buffer, int delay) {
+	Recorder(AudioFormat audioFormat, int delay) {
 		_audioFormat = audioFormat;
-		_buffer = buffer;
 		_delay = delay;
 	}
 
@@ -36,7 +35,7 @@ class Recorder implements Runnable {
 
 		_stopCapture = false;
 		while (!_stopCapture) {
-			appendBytesInBuffer(targetDataLine);
+			appendBytesToBuffer(targetDataLine);
 		}
 
 		Logger.log("Stop Record!");
@@ -58,12 +57,12 @@ class Recorder implements Runnable {
 		return targetDataLine;
 	}
 
-	private void appendBytesInBuffer(TargetDataLine targetDataLine) {
+	private void appendBytesToBuffer(TargetDataLine targetDataLine) {
 		byte tmpArray[] = new byte[_delay];
 		int cnt = targetDataLine.read(tmpArray, 0, tmpArray.length);
 		if (cnt > 0) {
 			_buffer.write(tmpArray, 0, cnt);
-			Logger.log(_buffer.size() + " bytes recorded...");
+			Logger.log(cnt + " bytes recorded...");
 		}
 	}
 
@@ -77,17 +76,13 @@ class Recorder implements Runnable {
 		}
 	}
 
-	void startRecorder() {
-		_stopCapture = false;
-		_threads.registerActor(this);
-	}
-
 	void stopRecorder() {
 		_stopCapture = true;
 	}
 
 	public void startRecorder(ByteArrayOutputStream buffer) {
 		_buffer = buffer;
-		startRecorder();
+		_stopCapture = false;
+		_threads.registerActor(this);
 	}
 }

@@ -10,7 +10,6 @@ import java.util.Iterator;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -21,14 +20,16 @@ import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
+import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.player.SoundPlayer;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.FriendlyException;
 
 class SoundPlayerImpl implements SoundPlayer, Stepper {
 
-	@Inject
-	static private BlinkingLights _lights;
+	@Inject static private BlinkingLights _lights;
+	@Inject static private Audio _audio;
+	
 	private final Light _light = _lights.prepare(LightType.ERROR);
 	
 	@Inject
@@ -48,7 +49,7 @@ class SoundPlayerImpl implements SoundPlayer, Stepper {
 
 		SourceDataLine dataLine = null;
 		try {
-			dataLine = tryInitSourceDataLine(audioFormat);
+			dataLine = _audio.openSourceDataLine(audioFormat);
 			int bytesRead = 0;
 			while (bytesRead >= 0) {
 				bytesRead = audioInputStream.read(buffer, 0, buffer.length);
@@ -86,14 +87,6 @@ class SoundPlayerImpl implements SoundPlayer, Stepper {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
 	} 
-
-	private SourceDataLine tryInitSourceDataLine(	AudioFormat audioFormat) throws LineUnavailableException {
-		DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
-		SourceDataLine dataLine = (SourceDataLine) AudioSystem	.getLine(info);
-		dataLine.open(audioFormat);
-		dataLine.start();
-		return dataLine;
-	}
 
 	@Override
 	public boolean step() {

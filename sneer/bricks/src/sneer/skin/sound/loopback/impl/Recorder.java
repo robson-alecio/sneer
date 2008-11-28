@@ -1,4 +1,4 @@
-package sneer.skin.sound.impl;
+package sneer.skin.sound.loopback.impl;
 
 import java.io.ByteArrayOutputStream;
 

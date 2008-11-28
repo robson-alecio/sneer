@@ -11,23 +11,18 @@ class PacketSubscriber implements Consumer<PcmSoundPacket> {
 	@Inject private static TupleSpace _tupleSpace;
 	@Inject private static KeyManager _keyManager;
 	
-	
+	private boolean _isRunning = true;
+	private Consumer<PcmSoundPacket> _consumer;
+
 	public PacketSubscriber(Consumer<PcmSoundPacket> consumer) {
 		_consumer = consumer;
 		_tupleSpace.addSubscription(PcmSoundPacket.class, this);
 	}
 	
-	
-	private boolean _isRunning = true;
-
-	private Consumer<PcmSoundPacket> _consumer;
-
-	
 	synchronized void crash() {
 		_isRunning = false;
 		_tupleSpace.removeSubscription(this);
 	}
-	
 	
 	@Override
 	synchronized public void consume(PcmSoundPacket packet) {
@@ -37,10 +32,7 @@ class PacketSubscriber implements Consumer<PcmSoundPacket> {
 		_consumer.consume(packet);
 	}
 
-	
 	private boolean isMine(PcmSoundPacket packet) {
 		return _keyManager.ownPublicKey().equals(packet.publisher());
 	}
-
-	
 }

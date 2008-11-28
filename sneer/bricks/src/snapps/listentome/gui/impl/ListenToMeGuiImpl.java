@@ -20,14 +20,14 @@ import snapps.listentome.gui.ListenToMeGui;
 import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
 import sneer.skin.snappmanager.InstrumentManager;
-import sneer.skin.sound.Loopback;
+import sneer.skin.sound.loopback.LoopbackTester;
 import sneer.skin.sound.mic.Mic;
 import sneer.skin.sound.speaker.Speaker;
 
 public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a better snapp window support
 
 	@Inject
-	static private Loopback _loopback;
+	static private LoopbackTester _loopback;
 
 	@Inject
 	static private InstrumentManager _instrumentManager;

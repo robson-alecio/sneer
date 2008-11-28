@@ -1,6 +1,9 @@
 package sneer.skin.sound.kernel.impl;
 
 import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 
@@ -9,13 +12,25 @@ import sneer.skin.sound.kernel.Audio;
 class AudioImpl implements Audio {
 
 	@Override
-	public SourceDataLine bestAvailableSourceDataLine() {
-		return AudioCommon.bestAvailableSourceDataLine();
+	public SourceDataLine openSourceDataLine(AudioFormat audioFormat) throws LineUnavailableException {
+		DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
+		SourceDataLine dataLine = (SourceDataLine) AudioSystem	.getLine(info);
+		dataLine.open();
+		dataLine.start();
+		return dataLine;
+	}
+	
+	@Override
+	public SourceDataLine openSourceDataLine() throws LineUnavailableException {
+		return openSourceDataLine(AudioUtil.AUDIO_FORMAT);
 	}
 
 	@Override
-	public TargetDataLine bestAvailableTargetDataLine() {
-		return AudioCommon.bestAvailableTargetDataLine();
+	public TargetDataLine openTargetDataLine() throws LineUnavailableException {
+		TargetDataLine dataLine = AudioSystem	.getTargetDataLine(AudioUtil.AUDIO_FORMAT);
+		dataLine.open();
+		dataLine.start();
+		return dataLine;
 	}
 
 	@Override
@@ -52,5 +67,4 @@ class AudioImpl implements Audio {
 	public int soundQuality() {
 		return AudioUtil.SOUND_QUALITY;
 	}
-
 }

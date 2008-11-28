@@ -31,7 +31,6 @@ import wheel.lang.Consumer;
 public class SpeakerTest extends TestThatIsInjected {
 	
 	@Inject private static Speaker _subject;
-	
 	@Inject private static Clock _clock;
 	@Inject private static KeyManager _keyManager;
 	@Inject private static TupleSpace _tupleSpace;
@@ -45,12 +44,10 @@ public class SpeakerTest extends TestThatIsInjected {
 	
 	private Consumer<? super PcmSoundPacket> _consumer;
 	
-	
 	@Override
 	protected Object[] getBindings() {
 		return new Object[]{ _audio, _buffers };
 	}
-
 
 	@Test
 	public void testSilentChannel() throws Exception {
@@ -59,7 +56,6 @@ public class SpeakerTest extends TestThatIsInjected {
 		_subject.open();
 		_subject.close();
 	}
-
 	
 	@Test
 	public void testOnlyTuplesFromContactsGetPlayed() throws Exception {
@@ -73,7 +69,6 @@ public class SpeakerTest extends TestThatIsInjected {
 		
 		_subject.close();
 	}
-
 	
 	@Test
 	public void testTuplesPublishedAfterCloseAreNotPlayed() throws Exception {
@@ -88,18 +83,18 @@ public class SpeakerTest extends TestThatIsInjected {
 		_tupleSpace.acquire(p1());
 	}
 
-
 	@Test
 	public void testPacketsAreSentToDataLine() throws Exception {
 		final Sequence main = _mockery.sequence("main");
 		_mockery.checking(new CommonExpectations(){{
+			one(_audio).openSourceDataLine(); will(returnValue(_line));
 			one(_line).isActive(); will(returnValue(false)); inSequence(main);
-			one(_line).open(); inSequence(main);
-			one(_line).start(); inSequence(main);
-			allowing(_line).isActive(); will(returnValue(true));
-			
 			one(_line).write(new byte[]{1, 2, 3, 5}, 0, 4); inSequence(main);
 			one(_line).write(new byte[]{7, 11, 13, 17}, 0, 4); inSequence(main);
+			one(_line).stop(); inSequence(main);
+			one(_line).drain(); inSequence(main);
+			one(_line).close(); inSequence(main);
+			allowing(_line).isActive(); will(returnValue(true));
 		}});
 		_subject.open();
 		
@@ -107,9 +102,7 @@ public class SpeakerTest extends TestThatIsInjected {
 		_consumer.consume(p2());
 
 		_subject.close();
-		
 	}
-
 	
 	class SoundExpectations extends CommonExpectations {
 		private final Sequence _mainSequence = _mockery.sequence("main");
@@ -120,51 +113,37 @@ public class SpeakerTest extends TestThatIsInjected {
 		}
 	}
 
-	
 	class CommonExpectations extends Expectations {
-		
 		CommonExpectations() throws Exception {
-			one(_audio).bestAvailableSourceDataLine(); will(returnValue(_line));
 			one(_buffers).createBufferFor(with(aNonNull(Consumer.class))); will(new CustomAction("keep buffer") { @Override public Object invoke(Invocation invocation) {
 				_consumer = (Consumer<? super PcmSoundPacket>) invocation.getParameter(0);
 				return _buffer;
 			}});;
-
-			one(_line).close();
 		}
 	}
 
-	
 	@SuppressWarnings("deprecation")
 	private PublicKey contactKey() {
 		return _keyManager.generateMickeyMouseKey("contact");
 	}
-
 	
 	private PcmSoundPacket myPacket(byte[] pcm) {
 		return pcmSoundPacketFor(_keyManager.ownPublicKey(), pcm, (short)1);
 	}
 
-	
 	private PcmSoundPacket contactPacket(byte[] pcm, short sequence) {
 		return pcmSoundPacketFor(contactKey(), pcm, sequence);
 	}
 	
-	
 	private PcmSoundPacket pcmSoundPacketFor(PublicKey publicKey, final byte[] pcmPayload, short sequence) {
 		return new PcmSoundPacket(publicKey, _clock.time(), new ImmutableByteArray(pcmPayload, pcmPayload.length), sequence);
 	}
-
 	
 	private PcmSoundPacket p1() {
 		return contactPacket(new byte[] { 1, 2, 3, 5 }, (short)1);
 	}
 	
-	
 	private PcmSoundPacket p2() {
 		return contactPacket(new byte[] { 7, 11, 13, 17 }, (short)2);
 	}
-
-
-
 }

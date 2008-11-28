@@ -65,7 +65,7 @@ ROADMAP TO PRODUCE
 
 	- Voice Calls
 		- First Step: When I press the button I listen to everyone and everyone listens to me.
-		- [Sandro] Refactor: Use Sandro's spike simpler audio init code.
+		- Refactor: Use Sandro's spike simpler audio init code.
 			- Remove duplication between SoundPlayer and Speaker.
 		- Second Step: Rooms.
 

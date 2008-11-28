@@ -1,66 +1,39 @@
-﻿MAIN ROADMAP
-===================
-	
-	- [Sandro] Fix: ArrayIndexOutOfBound (see appendices)
-	
-	- [Sandro] ListSignalModel and SortedList
-		- Fix: Sort Bug (see SortTest)
-	
+﻿ROADMAP TO BECOME MORE PRODUCTIVE
+=====================================
+[The ROADMAP TO PRODUCE is below]
+
 	- Environment.my(BrickType.class) - Support for newly developed bricks.
-	
-	- Voice Calls
-		- First Step: When I press the button I listen to everyone and everyone listens to me.
-		- [Sandro] Refactor: Use Sandro's spike simpler audio init code.
-			- Remove duplication between SoundPlayer and Speaker.
-		- Second Step: Rooms.
-
-	- Flooding - Solve tuple flooding on the network.
-
-	---- WE DROP SKYPE :)
-	
-
-	- WatchMe
-		- Accelerate.
-	---- WE DROP VNC
-
-
-	- [Sandro] Elegance Experiment
-		- Remove titles: My Contacts, Wind and Blinking Lights
-		- Remove all borders: lists occupy entire instrument space. Shout edit field has no border
-		- Add a good news BL: Caption: "OK", help message: "Everything is working fine. If there is a problem, you shall be notified here."
-	
-	- [Sandro] Change GC icon to something like this: http://www.rogerwendell.com/images/recycle/recycle_logo.gif
-
-	2008---------------------------------- DOGFOOD RELEASE (We have a decent VNC+Skype replacement we use to develop Sneer)
-
-	
-	Now we start cleaning up until we reach "No Broken Windows" status:
 
 	- Mocotó Test Framework
 
-	- Brick Publish (Supposedly working already)
-		- MainDemo - Publish all necessary bricks instead of just producing them.
 	- ContainerUtils.getContainer() - Drop. Fix all uses.
 
-	- [Petra] Tray and Dashboard Titlebar Icon
-	- [Petra] Online and Offline Icons
+	- Debugging Strategy - Revise so that all debugging info doesn't go into the log file. 
 
-	- Open Jar leak - Fix in Freedom7Test
-	- Debugging Strategy - Revise so that all debugging info doesnt go into the log file. 
-	- Injection Strategy
-		- @Inject -> Environment.my
+	- @Inject -> my()
+
 	- ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do.
 		- SetSignal - Revise it also. 
-	- Threading model - Revise. Tests should not leave threads running. "No one gets left behind"
-	- Snuggin - All start using it and feeding it with rules.
+
+	- Responsive threading model for snapps. Snapps can NEVER block the Swing gui thread. Maybe have one event dispatch thread per Snapp. Snapps still have to comply with invokeLater/invokeAndWait to modify gui from other threads or live with the consequences. Test to see if they can ruin/interfere with the entire Sneer gui even having acess to their own components. 
+
 	- Output folders - Make all source folders compile to the default folder (bin) and fix the tests. Is this possible?
+	
+	- Revise SneerFreedom*Test classes. They are all the same
+
 	- Simplest Possible Kernel - What is it? Just injection?
 		- Simplify the container because of the removal of the Enhancer (MakeSerializable is a Spike now).
 		- ASM - Move asm*.jar to a brick lib
 			- Remove kernel dependency. Make it pluggable in the kernel.
-	- Move or delete stuff we have not yet covered in the roadmap
-		- [done] Example: Delete GiveNTake
+	
+	- Transparent Persistence
+
+	- Snuggin - Initial rules
+	
 	- Revise entire project structure
+		- Move or delete stuff we have not yet covered in the roadmap
+			- [done] Example: Delete GiveNTake
+
 		- Sneer
 			- Installer
 			- Wheel (+ Commons)
@@ -70,34 +43,81 @@
 			- Skin (Bricks)
 		- Snapps (Bricks)
 			- ...
-	- Refactor AbstractSwingMenu.addAction and the SelectableAction hierarchy. Too many casts. 
-	- Revise SneerFreedom*Test classes. They are all the same
-	- Logging - Revise all uses of logging, out and err.
-	- Exception Handling - Revise and correct
-	- Fix and remove all task comments in the code except for Optimize (Fix Urgent, Fix, Refactor and Implement).
-	- Responsive threading model for snapps. Snapps can NEVER block the Swing gui thread. Maybe have one event dispatch thread per Snapp. Snapps still have to comply with invokeLater/invokeAndWait to modify gui from other threads or live with the consequences. Test to see if they can ruin/interfere with the entire Sneer gui even having acess to their own components. 
-	28/FEV ---------------------------------- "NO BROKEN WINDOWS" status achieved. From now on code is ALWAYS kept 99.999% clean. 
 
+	- Logging - Revise all uses of logging, out and err.
+
+	- Exception Handling - Revise and correct
+
+	- Fix and remove all task comments in the code except for Optimize (Fix Urgent, Fix, Refactor and Implement).
+
+
+
+
+ROADMAP TO PRODUCE
+======================
+
+	- [Sandro] Fix: ArrayIndexOutOfBound (see docs/roadmap_appendices)
+	
+	- ListSignalModel and SortedList
+		- Fix: Sort Bug (see SortTest)
+
+	- [Sandro] Change GC icon to something like this: http://www.rogerwendell.com/images/recycle/recycle_logo.gif
+
+	- Voice Calls
+		- First Step: When I press the button I listen to everyone and everyone listens to me.
+		- [Sandro] Refactor: Use Sandro's spike simpler audio init code.
+			- Remove duplication between SoundPlayer and Speaker.
+		- Second Step: Rooms.
+
+	- Refactor AbstractSwingMenu.addAction and the SelectableAction hierarchy. Too many casts. 
+
+	- WatchMe
+		- Accelerate.
+	2008---------------------------------- DOGFOOD RELEASE (We have a decent VNC+Skype replacement we use to develop Sneer)
+
+	- Brick Publish (Supposedly working already)
+		- MainDemo - Publish all necessary bricks instead of just producing them.
+
+	- Open Jar leak - Fix in Freedom7Test
+
+	- Flooding - Solve tuple flooding on the network.
+
+	- [Sandro] Elegance Experiment
+		- Remove titles: My Contacts, Wind and Blinking Lights
+		- Remove all borders: lists occupy entire instrument space. Shout edit field has no border
+		- Add a good news BL: Caption: "OK", help message: "Everything is working fine. If there is a problem, you shall be notified here."
+
+	- [Petra] Tray and Dashboard Titlebar Icon
+	- [Petra] Online and Offline Icons
+	30/JAN ---------------------------------
+
+	- Own Name - Show contacts' names in contact list
+		- Freedom2Test - Unignore and make it pass.
 
 	- Contact CRUD Instrument
 		- Nicknames
-	- Own Name - Show contacts' names in contact list
-		- Freedom2Test - Unignore and make it pass.
-	30/MAR --------------------------------- "SNEERCAST" RELEASE (Remote collaborating (includes Pair Programming) teams all over the world can use Sneer as their tool.)
-	
-	
-	- Transparent Persistence
 
 	- Traffic Prioritization by tuple type
+	30/FEB --------------------------------------
+
+	- Authentication (PK)
+
 	- Affinity
 		- Access control to all other snapps by affinity.
-		- Authentication (PK)
-	30/APR --------------------------------------
+	30/MAR -------------------------------------- "SNEERCAST" RELEASE (Remote collaborating (includes Pair Programming) teams all over the world can use Sneer as their tool.)
 
 	- TopTen
-		- Card CD?
-			- Installer.EXE for Windows
+	30/APR --------------------------------------
 	30/MAY --------------------------------------
+
+	- Synonyms
+
+	- Annotations/Comments/Tags
+
+	- Free Software Forum - Make a Splash
+		- Installer.EXE for Windows
+			- Card CD?
+	25/JUN --------------------------------------
 
 	- Issue Tracking
 		- Voting
@@ -110,10 +130,6 @@
 		- KernelJockey - Cannot run new version if threads are still left over from previous run.
 	- MeToo
 	    - File Transfer
-	- Annotations/Comments/Tags
-	- Synonyms
-	- Revise project structure - sourcefolders, package names, build.xml, etc
-	---------------------------------- TOP TEN RELEASE (FISL)
 
 	- Security
 		- Sandboxing
@@ -251,11 +267,7 @@ Container
 
 Klaus
 	contacts() - change from ListSignal to SetSignal.
-	- Package namespace - revise sneer.lego? sneer.kernel? sneer.bricks? - Consider using kernel, pulp and skin.
-	- Make build.xml run again. 
-	- README.txt - Update sourcepath, classpath, main class and build.xml references
 	=================================================== RELEASE
-	- KeyManager <-> Mesh dependency cycle - Eliminate.
 	- "Interface.allImplementors()" - Simplify use by injecting a SetSignal with all Bricks that implement a non-brick interface defined by another brick.  
 	- UDP instead of TCP
 

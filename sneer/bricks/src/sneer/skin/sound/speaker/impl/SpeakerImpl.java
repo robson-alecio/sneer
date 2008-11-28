@@ -7,11 +7,15 @@ import sneer.skin.sound.speaker.buffer.SpeakerBuffers;
 
 class SpeakerImpl implements Speaker {
 	
-	@Inject static private SpeakerBuffers _buffers;
+	@Inject
+	static private SpeakerBuffers _buffers;
 	
 	private PacketSubscriber _producer;
+	
 	private PacketPlayer _consumer;
+
 	private SpeakerBuffer _buffer;
+
 	
 	@Override
 	synchronized public void open() {
@@ -21,6 +25,7 @@ class SpeakerImpl implements Speaker {
 		_buffer = _buffers.createBufferFor(_consumer);
 		_producer = new PacketSubscriber(_buffer);
 	}
+
 	
 	@Override
 	synchronized public void close() {

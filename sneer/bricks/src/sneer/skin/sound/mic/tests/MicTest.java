@@ -36,10 +36,10 @@ public class MicTest {
 	
 	private final Mockery mockery = new JUnit4Mockery();
 	private final Audio audio = mockery.mock(Audio.class);
-	private final TargetDataLine targetDataLine = mockery.mock(TargetDataLine.class);
 	private final Container container = ContainerUtils.newContainer(audio /*, threadPool */);
 	private final TupleSpace tupleSpace = container.produce(TupleSpace.class);
 	private final Mic mic = container.produce(Mic.class);
+	private final TargetDataLine targetDataLine = mockery.mock(TargetDataLine.class);
 		
 	@Test
 	public void testPacketSequence() throws Exception {
@@ -51,10 +51,8 @@ public class MicTest {
 		
 		final ByRef<Integer> sequence = ByRef.newInstance(0);
 		mockery.checking(new Expectations() {{
-			
-			allowing(audio).openTargetDataLine(); will(returnValue(targetDataLine));
-			allowing(targetDataLine).isActive(); will(returnValue(true));
-			
+			allowing(audio).openTargetDataLine();
+				will(returnValue(targetDataLine));
 			allowing(targetDataLine).open();
 			allowing(targetDataLine).start();
 			
@@ -65,10 +63,9 @@ public class MicTest {
 					writeInt(buffer, ++sequence.value);
 					return buffer.length;
 				}}); inSequence(main);
-			
-			one(targetDataLine).stop(); inSequence(main);
-			one(targetDataLine).drain(); inSequence(main);
-			one(targetDataLine).close(); inSequence(main);
+				
+			one(targetDataLine).close();
+				inSequence(main);
 		}});
 		
 		mic.open();

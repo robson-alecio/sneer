@@ -1,13 +1,11 @@
 package snapps.wind.gui.impl;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.Insets;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -30,6 +28,7 @@ import wheel.reactive.Signal;
 
 class WindListCellRenderer implements ListCellRenderer {
 
+	private static final int MIN_SHOUT_WIDTH = 200;
 	private static final String SHOUT = "shout";
 	private static final String SHOUTERS_NICK = "shoutersNick";
 	private static final int SCROLL_WIDTH = 10;
@@ -48,10 +47,8 @@ class WindListCellRenderer implements ListCellRenderer {
 		JComponent nick = createNick(shout);
 		JComponent shoutTime = createShoutTime(shout, isSelected);
 		JComponent shoutText = createShoutText(shout);
-		JComponent root = createRootPanel(nick, shoutTime, shoutText, isSelected);
+		JComponent root = createRootPanel( nick, shoutTime, shoutText, isSelected, jList);
 
-		Resizer.pack(shoutText, jList.getWidth() - SCROLL_WIDTH, 25);
-		
 		addLineSpace(root);
 		return root;
 	}
@@ -121,30 +118,38 @@ class WindListCellRenderer implements ListCellRenderer {
 	    doc.addStyle( SHOUT, def );
 	}
 
-	private JComponent createRootPanel(JComponent nick, JComponent time, JComponent shout, boolean isSelected) {
+	private JComponent createRootPanel(JComponent nick, JComponent time, JComponent shout, boolean isSelected, final JList list) {
 		JPanel root = new JPanel();
-		root.setLayout(new GridBagLayout());
+		root.setLayout(new BorderLayout());
 		root.setOpaque(true);
 
 		if(isSelected) root.setBackground(Color.LIGHT_GRAY);
 		else root.setBackground(Color.WHITE);
 		
-		root.add(nick, new GridBagConstraints(0, 0, 1, 1, 1., 0,
-				GridBagConstraints.SOUTHEAST, GridBagConstraints.HORIZONTAL,
-				new Insets(0, 0, 0, 0), 0, 0));
-
-		root.add(time, new GridBagConstraints(1, 0, 1, 1, 1., 0,
-				GridBagConstraints.SOUTHEAST, GridBagConstraints.HORIZONTAL,
-				new Insets(0, 0, 0, 0), 0, 0));
-
-		root.add(shout, new GridBagConstraints(0, 1, 2, 1, 1., 1.,
-				GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH,
-				new Insets(0, 0, 0, 0), 0, 0));
+		JPanel top = new JPanel();
+		top.setLayout(new BorderLayout());
+		top.add(nick, BorderLayout.CENTER);
+		top.add(time, BorderLayout.EAST);
 		
-//		nick.setBorder(new LineBorder(Color.BLACK));
-//		time.setBorder(new LineBorder(Color.BLUE));
-//		shout.setBorder(new LineBorder(Color.RED));
+		root.add(top, BorderLayout.NORTH);
+
+		JPanel horizontalLimit = new JPanel();
+		horizontalLimit.setLayout(new BorderLayout());
+		horizontalLimit.add(shout);
+		horizontalLimit.setOpaque(false);
+		int width = getShoutLimitWidth(list);
+		
+		Resizer.pack(shout, width - SCROLL_WIDTH, 0);
+		root.add(horizontalLimit, BorderLayout.CENTER);
+
 		return root;
+	}
+
+	private int getShoutLimitWidth(final JList list) {
+		int width = list.getSize().width;
+		if(width<MIN_SHOUT_WIDTH) 
+			width=MIN_SHOUT_WIDTH;
+		return width;
 	}
 
 	private void addLineSpace(JComponent root) {

@@ -49,7 +49,7 @@ class DashboardImpl implements Dashboard, Runnable {
 	private transient JPanel _rootPanel;
 	private transient JPanel _contentPanel;
 	
-	private static transient final int WIDTH = 250;
+	private static transient final int WIDTH = 280;
 	private static transient final int H_OFFSET = 30;
 	
 	@Inject

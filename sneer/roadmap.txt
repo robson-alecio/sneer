@@ -6,8 +6,6 @@
 	- [Sandro] ListSignalModel and SortedList
 		- Fix: Sort Bug (see SortTest)
 	
-	- [Sandro] Fix: Shouts that are larger than the size of the shout list do not scroll properly.
-
 	- Environment.my(BrickType.class) - Support for newly developed bricks.
 	
 	- Voice Calls

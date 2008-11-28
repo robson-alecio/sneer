@@ -22,7 +22,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
@@ -152,7 +151,6 @@ class WindGuiImpl implements WindGui {
 	
 	private void initScrollPane() {
 		_scrollPane = new JScrollPane();
-		_scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		_scrollPane.setBorder(new TitledBorder(new EmptyBorder(5,5,2,2), getName()));
 		_scrollPane.setOpaque(false);
 		_autoscrollSupportToAvoidGc = new WindAutoscrollSupport();

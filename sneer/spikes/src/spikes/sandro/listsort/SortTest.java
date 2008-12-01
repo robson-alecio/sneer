@@ -11,14 +11,16 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
+import wheel.io.ui.TimeboxedEventQueue;
 import wheel.lang.ByRef;
+import wheel.lang.Environment;
+import static wheel.lang.Environment.my;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Constant;
@@ -36,10 +38,21 @@ public class SortTest {
 
 	public static void main(String[] args) throws Exception {
 		
+		Environment.runWith(ContainerUtils.newContainer(), new Runnable(){ @Override public void run() {
+			try {
+				start();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}});
+		
+	}
+
+	private static void start() throws Exception {
+		
 		ListRegister<ByRef<String>> source = new ListRegisterImpl<ByRef<String>>();
 		
-		Container container = ContainerUtils.newContainer();
-		ListSorter sorter = container.provide(ListSorter.class);
+		ListSorter sorter = my(ListSorter.class);
 		
 		Comparator<ByRef<String>> comparator = new Comparator<ByRef<String>>(){ @Override public int compare(ByRef<String> o1, ByRef<String> o2) {
 			boolean online1 = _onlineMap.get(o1.value).output().currentValue();
@@ -55,9 +68,9 @@ public class SortTest {
 		}};
 		
 		ListSignal<ByRef<String>> sorted = sorter.sort(source.output(), comparator, chooser);
-		initGui(container, sorted);
+		initGui(sorted);
 		addData(source);
-		
+
 	}
 
 	private static void add(ListRegister<ByRef<String>> source, String value) {
@@ -68,9 +81,11 @@ public class SortTest {
 		source.add(byRefValue);
 	}
 	
-	private static void initGui(final Container container, final ListSignal<ByRef<String>> sorted) throws Exception {
+	private static void initGui(final ListSignal<ByRef<String>> sorted) throws Exception {
+		TimeboxedEventQueue.startQueueing(3000);
+		
 		SwingUtilities.invokeAndWait(new Runnable(){ @Override public void run() {
-			ReactiveWidgetFactory factory = container.provide(ReactiveWidgetFactory.class);
+			ReactiveWidgetFactory factory = Environment.my(ReactiveWidgetFactory.class);
 			JFrame frame = new JFrame();
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.getContentPane().setLayout(new BorderLayout());

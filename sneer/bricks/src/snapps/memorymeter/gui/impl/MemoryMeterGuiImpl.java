@@ -9,7 +9,11 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -41,11 +45,20 @@ public class MemoryMeterGuiImpl implements MemoryMeterGui {
 	TextWidget<JLabel> _maxUsedMemory;
 	TextWidget<JLabel> _currentMemory;
 
-	private Icon _memoryIcon = new ImageIcon(this.getClass().getResource("recycle.png"));
+	private static final Icon _memoryIconOn = load("recycleOn.png");
+	private static final Icon _memoryIconOff = load("recycleOff.png");
 
 	public MemoryMeterGuiImpl() {
 		_instruments.registerInstrument(this);
 	} 
+	
+	static Icon load(String resourceName){
+		try {
+			return new ImageIcon(ImageIO.read(MemoryMeterGuiImpl.class.getResource(resourceName)));
+		} catch (IOException e) {
+			throw new wheel.lang.exceptions.NotImplementedYet(e);
+		}
+	}
 	
 	@Override
 	public void init(Container container) {
@@ -60,7 +73,7 @@ public class MemoryMeterGuiImpl implements MemoryMeterGui {
 		root.setOpaque(false);
 		root.setLayout(new GridBagLayout());
 		
-		JButton gc = new JButton(_memoryIcon);
+		final JButton gc = new JButton(_memoryIconOff);
 		gc.setMargin(new Insets(0,0,0,0));
 		gc.setBorder(new EmptyBorder(0,0,0,0));
 		gc.setOpaque(true);
@@ -68,6 +81,10 @@ public class MemoryMeterGuiImpl implements MemoryMeterGui {
 		gc.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 			System.gc();
 		}});
+		gc.addMouseListener(new MouseAdapter(){
+			@Override public void mouseEntered(MouseEvent e) { gc.setIcon(_memoryIconOn);	}
+			@Override public void mouseExited(MouseEvent e) { gc.setIcon(_memoryIconOff); }
+		});
 		
 		root.add(_currentMemory.getMainWidget(), new GridBagConstraints(0, 0, 1, 1, 1., 0,
 				GridBagConstraints.EAST, GridBagConstraints.NONE,

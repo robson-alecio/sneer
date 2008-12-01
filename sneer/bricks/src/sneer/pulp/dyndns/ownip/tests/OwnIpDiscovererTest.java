@@ -7,6 +7,7 @@ import org.jmock.Mockery;
 import org.jmock.Sequence;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
@@ -17,7 +18,9 @@ import sneer.pulp.propertystore.PropertyStore;
 import sneer.pulp.propertystore.mocks.TransientPropertyStore;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.Receiver;
+import wheel.testutil.WheelEnvironment;
 
+@RunWith(WheelEnvironment.class)
 public class OwnIpDiscovererTest {
 	
 	final Mockery _context = new JUnit4Mockery();

@@ -13,6 +13,7 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
@@ -32,7 +33,9 @@ import wheel.lang.exceptions.FriendlyException;
 import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.lists.ListSignal;
+import wheel.testutil.WheelEnvironment;
 
+@RunWith(WheelEnvironment.class)
 public class DynDnsClientTest {
 	
 	/*

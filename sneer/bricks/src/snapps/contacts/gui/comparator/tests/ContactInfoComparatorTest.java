@@ -1,6 +1,7 @@
 package snapps.contacts.gui.comparator.tests;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import snapps.contacts.gui.comparator.ContactInfoComparator;
 import sneer.kernel.container.Container;
@@ -15,7 +16,9 @@ import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 import wheel.testutil.TestUtils;
+import wheel.testutil.WheelEnvironment;
 
+@RunWith(WheelEnvironment.class)
 public class ContactInfoComparatorTest {
 	
 	private ListSorter _sorter;

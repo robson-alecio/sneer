@@ -69,6 +69,4 @@ public abstract class Freedom5TestBase extends SovereignFunctionalTestBase {
 		List<?> sorted = Collections.sortByToString(listSignal);
 		return StringUtils.join(sorted, ", ");
 	}
-
-
 }

@@ -1,9 +1,11 @@
 package wheel.testutil;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.junit.internal.runners.InitializationError;
 import org.junit.internal.runners.JUnit4ClassRunner;
+import org.junit.internal.runners.TestMethod;
 import org.junit.runner.notification.RunNotifier;
 
 import wheel.lang.ByRef;
@@ -41,6 +43,31 @@ public class WheelEnvironment extends JUnit4ClassRunner {
 			superInvokeTestMethod(arg0, arg1);
 		}});
 	}
+	
+	@Override
+	protected TestMethod wrapMethod(Method method) {
+		return new TestMethod(method, getTestClass()) {
+			@Override
+			public void invoke(final Object test) {
+				Environment.runWith(environmentProvider(), new Runnable() { @Override public void run() {
+					superInvoke(test);
+				}});
+			}
+			
+			private void superInvoke(Object test) {
+				try {
+					super.invoke(test);
+				} catch (IllegalArgumentException e) {
+					throw new RuntimeException(e);
+				} catch (IllegalAccessException e) {
+					throw new RuntimeException(e);
+				} catch (InvocationTargetException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		};
+	}
+	
 	
 	protected void superInvokeTestMethod(Method arg0, RunNotifier arg1) {
 		super.invokeTestMethod(arg0, arg1);

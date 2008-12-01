@@ -41,7 +41,7 @@ public class MemoryMeterGuiImpl implements MemoryMeterGui {
 	TextWidget<JLabel> _maxUsedMemory;
 	TextWidget<JLabel> _currentMemory;
 
-	private Icon _memoryIcon = new ImageIcon(this.getClass().getResource("trash.png"));
+	private Icon _memoryIcon = new ImageIcon(this.getClass().getResource("recycle.png"));
 
 	public MemoryMeterGuiImpl() {
 		_instruments.registerInstrument(this);

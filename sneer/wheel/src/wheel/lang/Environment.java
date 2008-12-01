@@ -6,15 +6,12 @@ public class Environment {
 		<T> T provide(Class<T> intrface);
 	}
 	
-	private final static ThreadLocal<Provider> _provider = new ThreadLocal<Provider>() {
-		@Override
-		protected Provider initialValue() {
-			return null;
-		};
-	};
+	public static Provider current() {
+		return _provider.get();
+	}
 	
 	public static <T> void runWith(Provider provider, Runnable runnable) {
-		final Provider previous = _provider.get();
+		final Provider previous = current();
 		
 		System.out.println("setting provider" + Thread.currentThread());
 		_provider.set(provider);
@@ -27,9 +24,17 @@ public class Environment {
 	}
 	
 	public static <T> T my(Class<T> brickType) {
-		final Provider provider = _provider.get();
+		final Provider provider = current();
 		if (provider == null)
 			throw new IllegalStateException("Unable to provide thread " + Thread.currentThread() + " with implementation for " + brickType);
 		return provider.provide(brickType);
 	}
+	
+	private final static ThreadLocal<Provider> _provider = new ThreadLocal<Provider>() {
+		@Override
+		protected Provider initialValue() {
+			return null;
+		};
+	};
+	
 }

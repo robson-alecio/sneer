@@ -5,8 +5,10 @@ public class Environment {
 	public interface Provider {
 		<T> T provide(Class<T> intrface);
 	}
-	
-	public static Provider current() {
+
+	public interface Memento {}
+
+	private static Provider current() {
 		return _provider.get();
 	}
 	
@@ -22,6 +24,14 @@ public class Environment {
 			_provider.set(previous);
 		}
 	}
+
+	public static <T> void runWith(Memento memento, Runnable runnable) {
+		runWith(((MementoImpl)memento)._provider, runnable);
+	}
+
+	public static Memento memento() {
+		return new MementoImpl(_provider.get());
+	}
 	
 	public static <T> T my(Class<T> brickType) {
 		final Provider provider = current();
@@ -36,5 +46,10 @@ public class Environment {
 			return null;
 		};
 	};
-	
+
+}
+
+class MementoImpl implements Environment.Memento {
+	MementoImpl(Environment.Provider provider) {_provider = provider;}
+	final Environment.Provider _provider;
 }

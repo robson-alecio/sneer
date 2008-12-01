@@ -7,30 +7,39 @@ import org.junit.Test;
 import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.lang.Environment;
+import wheel.lang.Threads;
 
 public class ThreadPoolTest {
 
 	final ThreadPool subject = ContainerUtils.newContainer().provide(ThreadPool.class);
+
+	final Object binding = new Object();
+
+	final Object ranMonitor = new Object();
+	volatile boolean ran = false;
 	
-	@Test
+	@Test (timeout = 2000)
 	public void testEnvironmentIsPropagated() throws Exception {
-		final Environment.Provider provider1 = new Environment.Provider() { @Override public <T> T provide(Class<T> intrface) {
-			return null;
+		
+		
+		final Environment.Provider provider = new Environment.Provider() { @Override public <T> T provide(Class<T> intrface) {
+			return (T) binding;
 		}};
 		
-		final java.util.concurrent.Exchanger<Environment.Provider> exchanger = new java.util.concurrent.Exchanger<Environment.Provider>();
-		
-		Environment.runWith(provider1, new Runnable() { @Override public void run() {
+		Environment.runWith(provider, new Runnable() { @Override public void run() {
 			subject.registerActor(new Runnable() { @Override public void run() {
-				try {
-					assertSame(provider1, exchanger.exchange(Environment.current()));
-				} catch (InterruptedException e) {
-					throw new IllegalStateException(e);
+				assertSame(binding, Environment.my(Object.class));
+				synchronized (ranMonitor) {
+					ran = true;
+					ranMonitor.notify();
 				}
 			}});
 		}});
 		
-		assertSame(provider1, exchanger.exchange(provider1));
+		synchronized (ranMonitor) {
+			if (!ran)
+				Threads.waitWithoutInterruptions(ranMonitor);
+		}
 	}
 
 }

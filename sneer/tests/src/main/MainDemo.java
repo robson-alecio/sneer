@@ -7,7 +7,6 @@ import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.tuples.config.TupleSpaceConfig;
 import wheel.io.Logger;
-import wheel.io.ui.GuiThread;
 import wheel.lang.Environment;
 
 public class MainDemo {
@@ -40,7 +39,6 @@ public class MainDemo {
 			setOwnName(ownName(args));
 			demo().start(dynDnsUser(args), dynDnsPassword(args));			
 		}});
-		waitUntilTheGuiThreadStarts();
 	}
 
 	private static void checkForDummy(String[] args) {
@@ -85,7 +83,4 @@ public class MainDemo {
 		return args[2];
 	}
 	
-	private static void waitUntilTheGuiThreadStarts() throws Exception {
-		GuiThread.strictInvokeAndWait(new Runnable(){@Override public void run() {}});
-	}
 }

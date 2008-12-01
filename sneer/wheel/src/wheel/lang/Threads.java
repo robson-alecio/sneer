@@ -3,7 +3,7 @@ package wheel.lang;
 import java.util.HashSet;
 import java.util.Set;
 
-import wheel.lang.Environment.Provider;
+import wheel.lang.Environment.Memento;
 
 
 public class Threads {
@@ -45,9 +45,9 @@ public class Threads {
 	}
 
 	public static void startDaemon(String threadName, final Runnable runnable) {
-		final Provider environment = Environment.current();
+		final Memento memento = Environment.memento();
         new Daemon(threadName) { @Override public void run() {
-			Environment.runWith(environment, runnable);
+			Environment.runWith(memento, runnable);
 		}};
 	}
 

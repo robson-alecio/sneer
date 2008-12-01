@@ -3,6 +3,7 @@ package sneer.pulp.connection.tests;
 import java.io.IOException;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import sneer.kernel.container.Inject;
 import sneer.pulp.connection.SocketAccepter;
@@ -12,7 +13,9 @@ import sneer.pulp.network.impl.inmemory.InMemoryNetwork;
 import sneer.pulp.port.PortKeeper;
 import tests.TestThatIsInjected;
 import wheel.reactive.impl.Receiver;
+import wheel.testutil.WheelEnvironment;
 
+@RunWith(WheelEnvironment.class)
 public class SocketAccepterTest extends TestThatIsInjected {
 
 	@Inject

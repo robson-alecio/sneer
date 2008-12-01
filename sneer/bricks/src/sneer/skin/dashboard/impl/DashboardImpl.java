@@ -34,7 +34,6 @@ import wheel.io.ui.action.Action;
 import wheel.io.ui.graphics.Images;
 import wheel.io.ui.impl.TrayIconImpl;
 import wheel.io.ui.impl.TrayIconImpl.SystemTrayNotSupported;
-import wheel.lang.Environment;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
@@ -80,7 +79,6 @@ class DashboardImpl implements Dashboard, Runnable {
 	private SimpleListReceiver<Instrument> _instrumentsReceiver;
 	
 	DashboardImpl() {
-		TimeboxedEventQueue.startQueueing(Environment.current(), TIMEOUT_FOR_GUI_EVENTS);
 		_threadPool.registerActor(this);
 	}
 
@@ -90,6 +88,10 @@ class DashboardImpl implements Dashboard, Runnable {
 		initTrayIconIfPossible();
 		addInstrumentsReceiver();
 		open();
+	}
+
+	private void waitUntilTheGuiThreadStarts() {
+		GuiThread.strictInvokeAndWait(new Runnable(){@Override public void run() {}});
 	}
 
 	private void initTrayIconIfPossible() {
@@ -245,7 +247,9 @@ class DashboardImpl implements Dashboard, Runnable {
 
 	@Override
 	public void run() {
+		TimeboxedEventQueue.startQueueing(TIMEOUT_FOR_GUI_EVENTS);
 		initialize();
+		waitUntilTheGuiThreadStarts();
 	}
 	
 	@Override

@@ -1,5 +1,7 @@
 package spikes.sandro.listsort;
 
+import static wheel.lang.Environment.my;
+
 import java.awt.BorderLayout;
 import java.awt.Image;
 import java.io.IOException;
@@ -20,11 +22,9 @@ import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.io.ui.TimeboxedEventQueue;
 import wheel.lang.ByRef;
 import wheel.lang.Environment;
-import static wheel.lang.Environment.my;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Constant;
-import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.impl.mocks.RandomBoolean;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
@@ -50,38 +50,31 @@ public class SortTest {
 
 	private static void start() throws Exception {
 		
-		ListRegister<ByRef<String>> source = new ListRegisterImpl<ByRef<String>>();
+		ListRegister<SortTestElement> source = new ListRegisterImpl<SortTestElement>();
 		
 		ListSorter sorter = my(ListSorter.class);
 		
-		Comparator<ByRef<String>> comparator = new Comparator<ByRef<String>>(){ @Override public int compare(ByRef<String> o1, ByRef<String> o2) {
-			boolean online1 = _onlineMap.get(o1.value).output().currentValue();
-			boolean online2 = _onlineMap.get(o2.value).output().currentValue();
-			if(online1!=online2)
-				return online1?-1:1;
-			return o1.value.compareTo(o2.value);
+		Comparator<SortTestElement> comparator = new Comparator<SortTestElement>(){ @Override public int compare(SortTestElement o1, SortTestElement o2) {
+			boolean online1 = o1.isOnline().currentValue();
+			boolean online2 = o2.isOnline().currentValue();
+
+			if (online1 != online2)
+				return online1 ? -1 : 1;
+
+			return o1.nick().compareTo(o2.nick());
 		}};
 		
-		final SignalChooser<ByRef<String>> chooser = new SignalChooser<ByRef<String>>() {	@Override public Signal<?>[] signalsToReceiveFrom(ByRef<String> element) {
-			return new Signal<?>[] { _registers.get(element).output(), 
-										 _onlineMap.get(element.value).output() };
+		final SignalChooser<SortTestElement> chooser = new SignalChooser<SortTestElement>() {	@Override public Signal<?>[] signalsToReceiveFrom(SortTestElement element) {
+			return new Signal<?>[] { element.isOnline() };
 		}};
 		
-		ListSignal<ByRef<String>> sorted = sorter.sort(source.output(), comparator, chooser);
+		ListSignal<SortTestElement> sorted = sorter.sort(source.output(), comparator, chooser);
 		initGui(sorted);
 		addData(source);
 
 	}
 
-	private static void add(ListRegister<ByRef<String>> source, String value) {
-		ByRef<String> byRefValue = ByRef.newInstance(value);
-		_registers.put(byRefValue, new RegisterImpl<String>(value));
-		_byRefs.put(value, byRefValue);
-		_onlineMap.put(value, new RandomBoolean());
-		source.add(byRefValue);
-	}
-	
-	private static void initGui(final ListSignal<ByRef<String>> sorted) throws Exception {
+	private static void initGui(final ListSignal<SortTestElement> sorted) throws Exception {
 		TimeboxedEventQueue.startQueueing(3000);
 		
 		SwingUtilities.invokeAndWait(new Runnable(){ @Override public void run() {
@@ -89,7 +82,7 @@ public class SortTest {
 			JFrame frame = new JFrame();
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.getContentPane().setLayout(new BorderLayout());
-			ListWidget<ByRef<String>> widget;
+			ListWidget<SortTestElement> widget;
 			
 			try {
 				widget = factory.newList(sorted, newLabelProvider());
@@ -102,36 +95,30 @@ public class SortTest {
 		}});
 	}
 
-	private static LabelProvider<ByRef<String>> newLabelProvider()	throws IOException {
-		return new LabelProvider<ByRef<String>>(){
+	private static LabelProvider<SortTestElement> newLabelProvider()	throws IOException {
+		return new LabelProvider<SortTestElement>(){
 			
 			Signal<Image> _on = new Constant<Image>(ImageIO.read(SortTest.class.getResource("online.png")));
 			Signal<Image> _off = new Constant<Image>(ImageIO.read(SortTest.class.getResource("offline.png")));
 			
 			@Override
-			public Signal<Image> imageFor(ByRef<String> element) {
-				return isOnline(element) ? _on : _off;
-			}
-
-			private Boolean isOnline(ByRef<String> element) {
-				return _onlineMap.get(element.value).output().currentValue();
+			public Signal<Image> imageFor(SortTestElement element) {
+				return element.isOnline().currentValue() ? _on : _off;
 			}
 
 			@Override
-			public Signal<String> labelFor(ByRef<String> element) {
-				return new Constant<String>(" " + isOnline(element) + " - " +element.value);
+			public Signal<String> labelFor(SortTestElement element) {
+				return new Constant<String>(element.nick());
 			}};
 	}
 
-	private static void addData(ListRegister<ByRef<String>> source) {
-		add(source,"1");
-		add(source,"2");
-		add(source,"3");
-		add(source,"4");
-		add(source,"5");
-		add(source,"6");
-		add(source,"7");
-		add(source,"8");
-		add(source,"9");
+	private static void addData(ListRegister<SortTestElement> source) {
+		source.add(new SortTestElement());
+		source.add(new SortTestElement());
+		source.add(new SortTestElement());
+		source.add(new SortTestElement());
+		source.add(new SortTestElement());
+		source.add(new SortTestElement());
+		source.add(new SortTestElement());
 	}
 }

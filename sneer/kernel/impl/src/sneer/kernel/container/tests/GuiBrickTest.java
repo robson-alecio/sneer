@@ -12,7 +12,6 @@ import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.tests.impl.SomeGuiBrickImpl;
 import wheel.io.ui.TimeboxedEventQueue;
 import wheel.lang.ByRef;
-import wheel.lang.Environment;
 import wheel.lang.exceptions.TimeIsUp;
 
 public class GuiBrickTest {

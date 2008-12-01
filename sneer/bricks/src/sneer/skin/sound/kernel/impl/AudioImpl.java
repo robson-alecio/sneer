@@ -22,12 +22,12 @@ class AudioImpl implements Audio {
 	
 	@Override
 	public SourceDataLine openSourceDataLine() throws LineUnavailableException {
-		return openSourceDataLine(AudioUtil.AUDIO_FORMAT);
+		return openSourceDataLine(audioFormat());
 	}
 
 	@Override
 	public TargetDataLine openTargetDataLine() throws LineUnavailableException {
-		TargetDataLine dataLine = AudioSystem	.getTargetDataLine(AudioUtil.AUDIO_FORMAT);
+		TargetDataLine dataLine = AudioSystem	.getTargetDataLine(audioFormat());
 		dataLine.open();
 		dataLine.start();
 		return dataLine;

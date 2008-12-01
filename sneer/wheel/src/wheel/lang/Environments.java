@@ -29,11 +29,11 @@ public class Environments {
 		return new MementoImpl(current());
 	}
 	
-	public static <T> T my(Class<T> brickType) {
-		final Environment provider = current();
-		if (provider == null)
-			throw new IllegalStateException("Unable to provide thread " + Thread.currentThread() + " with implementation for " + brickType);
-		return provider.provide(brickType);
+	public static <T> T my(Class<T> intrface) {
+		final Environment environment = current();
+		if (environment == null)
+			throw new IllegalStateException("Unable to provide thread " + Thread.currentThread() + " with implementation for " + intrface);
+		return environment.provide(intrface);
 	}
 	
 	private final static ThreadLocal<Environment> _environment = new ThreadLocal<Environment>() {

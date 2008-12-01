@@ -34,8 +34,8 @@ public class ContactInfoComparatorTest {
 		final ContactInfoMock falseB = new ContactInfoMock("B", false);
 
 		Container container =  ContainerUtils.newContainer();
-		ContactInfoComparator comparator = container.produce(ContactInfoComparator.class);
-		_sorter = container.produce(ListSorter.class);
+		ContactInfoComparator comparator = container.provide(ContactInfoComparator.class);
+		_sorter = container.provide(ListSorter.class);
 
 		_contacts.add(falseA);
 		_contacts.add(trueB);

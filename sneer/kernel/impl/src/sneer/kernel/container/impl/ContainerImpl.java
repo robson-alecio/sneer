@@ -33,7 +33,7 @@ public class ContainerImpl implements Container {
 		_binder.bind(_injector);
 		
 		_sneerConfig = produceSneerConfig();
-		produce(PersistenceConfig.class).setPersistenceDirectory(persistenceDirectory());
+		provide(PersistenceConfig.class).setPersistenceDirectory(persistenceDirectory());
 		
 		bindGuiBricks(bindings);
 	}
@@ -65,7 +65,7 @@ public class ContainerImpl implements Container {
 	}
 
 	@Override
-	public <T> T produce(Class<T> type) {
+	public <T> T provide(Class<T> type) {
 		T result = (T)_binder.implementationFor(type);
 		if (result == null) {
 			result = decorate(instantiate(type));

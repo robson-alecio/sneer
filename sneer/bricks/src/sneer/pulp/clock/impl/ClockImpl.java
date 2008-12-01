@@ -6,9 +6,9 @@ import java.util.TreeSet;
 import sneer.kernel.container.Inject;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
-import sneer.pulp.exceptionhandling.Fallible;
 import sneer.pulp.threadpool.Stepper;
 import wheel.lang.ByRef;
+import wheel.lang.Fallible;
 import wheel.lang.Threads;
 import wheel.lang.Timebox;
 

@@ -10,7 +10,7 @@ import sneer.kernel.container.Injector;
 import sneer.pulp.config.persistence.mocks.PersistenceConfigMock;
 import wheel.testutil.TestThatMightUseResources;
 
-public class TestThatIsInjected extends TestThatMightUseResources {
+public abstract class TestThatIsInjected extends TestThatMightUseResources {
 	
 	private Object[] getMyBindings() {
 		return ArrayUtils.add(getBindings(), new PersistenceConfigMock(tmpDirectory()));
@@ -27,7 +27,7 @@ public class TestThatIsInjected extends TestThatMightUseResources {
 
 	private void injectDependencies() {
 		Container container = ContainerUtils.newContainer(getMyBindings());
-	    Injector injector = container.produce(Injector.class);
+	    Injector injector = container.provide(Injector.class);
 	    injector.inject(this);
 	}
 

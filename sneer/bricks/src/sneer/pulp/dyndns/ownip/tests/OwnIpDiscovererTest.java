@@ -50,14 +50,14 @@ public class OwnIpDiscovererTest {
 		}});
 		
 		Container container = ContainerUtils.newContainer(checkip, store);
-		OwnIpDiscoverer discoverer = container.produce(OwnIpDiscoverer.class);
+		OwnIpDiscoverer discoverer = container.provide(OwnIpDiscoverer.class);
 		
 		@SuppressWarnings("unused")
 		final Receiver<String> refToAvoidGc = new Receiver<String>(discoverer.ownIp()) { @Override public void consume(String value) {
 			receiver.consume(value);
 		}};
 		
-		Clock clock = container.produce(Clock.class);
+		Clock clock = container.provide(Clock.class);
 		clock.advanceTime(retryTime);
 		clock.advanceTime(retryTime);
 		clock.advanceTime(retryTime);

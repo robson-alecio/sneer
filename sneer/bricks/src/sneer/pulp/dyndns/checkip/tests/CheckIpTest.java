@@ -25,7 +25,7 @@ public class CheckIpTest {
 		final HttpClient client = setUpHttpClientMockFor(ip);
 		
 		final Container container = ContainerUtils.newContainer(client);
-		final CheckIp checkIp = container.produce(CheckIp.class);
+		final CheckIp checkIp = container.provide(CheckIp.class);
 		assertEquals(ip, checkIp.check());
 		
 		_context.assertIsSatisfied();

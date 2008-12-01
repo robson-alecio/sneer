@@ -43,7 +43,7 @@ public class TuplePersistenceTest extends TestThatMightUseResources {
 
 	
 	private TupleSpace createSubject() {
-		return ContainerUtils.newContainer(_persistenceMock).produce(TupleSpace.class);
+		return ContainerUtils.newContainer(_persistenceMock).provide(TupleSpace.class);
 	}
 	
 	

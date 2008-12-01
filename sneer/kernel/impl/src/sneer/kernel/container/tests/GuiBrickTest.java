@@ -19,14 +19,14 @@ public class GuiBrickTest {
 	@Test
 	public void testGuiBrickProducedByConventionRunsInSwingThread() throws Exception {
 		final Container container = ContainerUtils.newContainer();
-		final SomeGuiBrick brick = container.produce(SomeGuiBrick.class);
+		final SomeGuiBrick brick = container.provide(SomeGuiBrick.class);
 		assertSame(swingThread(), brick.guiBrickThread());
 	}
 
 	@Test
 	public void testInjectedGuiBrickRunsInSwingThread() throws Exception {
 		final Container container = ContainerUtils.newContainer(new SomeGuiBrickImpl());
-		final SomeGuiBrick brick = container.produce(SomeGuiBrick.class);
+		final SomeGuiBrick brick = container.provide(SomeGuiBrick.class);
 		assertSame(swingThread(), brick.guiBrickThread());
 	}
 	
@@ -45,7 +45,7 @@ public class GuiBrickTest {
 
 	private void runInsideTimebox() {
 		final Container container = ContainerUtils.newContainer();
-		final SomeGuiBrick brick = container.produce(SomeGuiBrick.class);
+		final SomeGuiBrick brick = container.provide(SomeGuiBrick.class);
 		try {
 			brick.slowMethod();
 		} catch (TimeIsUp expected) {
@@ -56,7 +56,7 @@ public class GuiBrickTest {
 
 	@Test
 	public void testNonGuiBrickRunsInCurrentThread() throws Exception {
-		final SomeVanillaBrick brick = ContainerUtils.newContainer().produce(SomeVanillaBrick.class);
+		final SomeVanillaBrick brick = ContainerUtils.newContainer().provide(SomeVanillaBrick.class);
 		assertSame(Thread.currentThread(), brick.brickThread());
 	}
 	

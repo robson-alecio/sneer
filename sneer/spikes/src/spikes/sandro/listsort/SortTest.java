@@ -39,7 +39,7 @@ public class SortTest {
 		ListRegister<ByRef<String>> source = new ListRegisterImpl<ByRef<String>>();
 		
 		Container container = ContainerUtils.newContainer();
-		ListSorter sorter = container.produce(ListSorter.class);
+		ListSorter sorter = container.provide(ListSorter.class);
 		
 		Comparator<ByRef<String>> comparator = new Comparator<ByRef<String>>(){ @Override public int compare(ByRef<String> o1, ByRef<String> o2) {
 			boolean online1 = _onlineMap.get(o1.value).output().currentValue();
@@ -70,7 +70,7 @@ public class SortTest {
 	
 	private static void initGui(final Container container, final ListSignal<ByRef<String>> sorted) throws Exception {
 		SwingUtilities.invokeAndWait(new Runnable(){ @Override public void run() {
-			ReactiveWidgetFactory factory = container.produce(ReactiveWidgetFactory.class);
+			ReactiveWidgetFactory factory = container.provide(ReactiveWidgetFactory.class);
 			JFrame frame = new JFrame();
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.getContentPane().setLayout(new BorderLayout());

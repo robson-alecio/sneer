@@ -12,7 +12,7 @@ public class ImageSelectorDemo  {
 	public static void main(String[] args) throws Exception {
 		sneer.kernel.container.Container container = ContainerUtils.getContainer();
 
-		ImageSelector imageSelector = container.produce(ImageSelector.class);
+		ImageSelector imageSelector = container.provide(ImageSelector.class);
 		imageSelector.open(new Consumer<Image>(){@Override public void consume(Image valueObject) {
 			//OK
 		}});

@@ -37,8 +37,8 @@ public class MicTest {
 	private final Mockery mockery = new JUnit4Mockery();
 	private final Audio audio = mockery.mock(Audio.class);
 	private final Container container = ContainerUtils.newContainer(audio /*, threadPool */);
-	private final TupleSpace tupleSpace = container.produce(TupleSpace.class);
-	private final Mic mic = container.produce(Mic.class);
+	private final TupleSpace tupleSpace = container.provide(TupleSpace.class);
+	private final Mic mic = container.provide(Mic.class);
 	private final TargetDataLine targetDataLine = mockery.mock(TargetDataLine.class);
 		
 	@Test

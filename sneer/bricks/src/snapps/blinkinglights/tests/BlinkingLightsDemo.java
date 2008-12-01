@@ -19,9 +19,9 @@ public class BlinkingLightsDemo  {
 		
 		Container container = ContainerUtils.getContainer();
 
-		container.produce(Dashboard.class);
-		container.produce(ClockTicker.class);
-		final BlinkingLights bl = container.produce(BlinkingLights.class);
+		container.provide(Dashboard.class);
+		container.provide(ClockTicker.class);
+		final BlinkingLights bl = container.provide(BlinkingLights.class);
 		
 		new Daemon("Blinker") { @Override public void run() {
 			while (true) {
@@ -39,7 +39,7 @@ public class BlinkingLightsDemo  {
 			bl.turnOn(LightType.ERROR, "Error", "This is an Error!", e);
 		}
 		
-		container.produce(BlinkingLightsGui.class);
+		container.provide(BlinkingLightsGui.class);
 		
 		waitUntilTheGuiThreadStarts();
 	}

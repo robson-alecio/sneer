@@ -1,4 +1,4 @@
-package sneer.pulp.exceptionhandling;
+package wheel.lang;
 
 public interface Fallible {
 

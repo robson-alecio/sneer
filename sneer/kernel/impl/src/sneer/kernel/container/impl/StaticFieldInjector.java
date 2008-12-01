@@ -20,7 +20,7 @@ public class StaticFieldInjector extends FieldInjector	 {
 		if (!type.isInterface()) return;
 		if (!Brick.class.isAssignableFrom(type)) return;
 		
-		Object component = _container.produce(type);
+		Object component = _container.provide(type);
 		setValueOnField(obj, field, component);
 	}
 }

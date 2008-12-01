@@ -21,8 +21,8 @@ public class PerformanceTest {
 	public void testClassLoading() throws Exception {
 		Container c1 = new ContainerImpl();
 		Container c2 = new ContainerImpl();
-		Object o1 = c1.produce(Clock.class);
-		Object o2 = c2.produce(Clock.class);
+		Object o1 = c1.provide(Clock.class);
+		Object o2 = c2.provide(Clock.class);
 		ClassLoader cl1 = o1.getClass().getClassLoader();
 		ClassLoader cl2 = o2.getClass().getClassLoader();
 		assertNotSame(cl1, cl2);

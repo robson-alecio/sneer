@@ -189,7 +189,7 @@ public class SneerPartyImpl implements SneerParty {
 
 	@Override
 	public Brick produce(Class<? extends Brick> brick) {
-		return Types.cast(_container.produce(brick));
+		return Types.cast(_container.provide(brick));
 	}
 
 	@Override

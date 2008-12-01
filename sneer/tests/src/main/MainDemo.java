@@ -49,7 +49,7 @@ public class MainDemo {
 	}
 
 	private static void setOwnName(String ownName) {
-		container().produce(OwnNameKeeper.class).nameSetter().consume(ownName);
+		container().provide(OwnNameKeeper.class).nameSetter().consume(ownName);
 	}
 
 	private static Container container() {
@@ -66,7 +66,7 @@ public class MainDemo {
 	}
 
 	private static MainDemoBrick demo() {
-		return container().produce(MainDemoBrick.class);
+		return container().provide(MainDemoBrick.class);
 	}
 	
 	private static String ownName(String[] args) {

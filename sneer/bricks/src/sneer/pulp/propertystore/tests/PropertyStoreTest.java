@@ -28,7 +28,7 @@ public class PropertyStoreTest extends TestThatMightUseResources {
 	}
 
 	private PropertyStore createSubject() {
-		return ContainerUtils.newContainer(_persistenceMock).produce(PropertyStore.class);
+		return ContainerUtils.newContainer(_persistenceMock).provide(PropertyStore.class);
 	}
 	
 }

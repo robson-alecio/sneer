@@ -21,12 +21,12 @@ public class ContactsDemo  {
 
 		Container container = ContainerUtils.getContainer();
 
-		container.produce(Dashboard.class);
-		container.produce(ContactsGui.class);
+		container.provide(Dashboard.class);
+		container.provide(ContactsGui.class);
 		
-		ReactiveWidgetFactory rfactory = container.produce(ReactiveWidgetFactory.class);
+		ReactiveWidgetFactory rfactory = container.provide(ReactiveWidgetFactory.class);
 
-		ContactManager manager = container.produce(ContactManager.class);
+		ContactManager manager = container.provide(ContactManager.class);
 		
  
 		manager.addContact("Sandro");
@@ -34,7 +34,7 @@ public class ContactsDemo  {
 		manager.addContact("Bamboo");
 		Contact contact = manager.addContact("Nell");
 		
-		InstrumentManager instrumentManager = container.produce(InstrumentManager.class);
+		InstrumentManager instrumentManager = container.provide(InstrumentManager.class);
 		new NicknameDemo(rfactory, instrumentManager, contact, manager);
 	}
 }

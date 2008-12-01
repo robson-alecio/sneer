@@ -16,11 +16,11 @@ public class SoundLoopbackDemo {
 		Logger.redirectTo(System.out);
 	
 		final Container container1 = ContainerUtils.newContainer();
-		final TupleSpace tuples = container1.produce(TupleSpace.class);
+		final TupleSpace tuples = container1.provide(TupleSpace.class);
 		final Container container2 = ContainerUtils.newContainer(tuples);
 
-		container2.produce(Mic.class).open();
-		container1.produce(Speaker.class).open();
+		container2.provide(Mic.class).open();
+		container1.provide(Speaker.class).open();
 		
 		tuples.addSubscription(PcmSoundPacket.class, new Consumer<PcmSoundPacket>() {
 			@Override

@@ -63,6 +63,8 @@ ROADMAP TO PRODUCE
 	- ListSignalModel and SortedList
 		- Fix: Sort Bug (see SortTest)
 
+	- [Sandro] Standalone Demos - Adapt to my() or delete.
+
 	- Voice Calls
 		- First Step: When I press the button I listen to everyone and everyone listens to me.
 		- Refactor: Use Sandro's spike simpler audio init code.

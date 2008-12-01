@@ -7,7 +7,7 @@ import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.tuples.config.TupleSpaceConfig;
 import wheel.io.Logger;
-import wheel.lang.Environment;
+import wheel.lang.Environments;
 
 public class MainDemo {
 
@@ -35,7 +35,7 @@ public class MainDemo {
 
 		checkForDummy(args);
 		
-		Environment.runWith(container(), new Runnable() { @Override public void run() {
+		Environments.runWith(container(), new Runnable() { @Override public void run() {
 			setOwnName(ownName(args));
 			demo().start(dynDnsUser(args), dynDnsPassword(args));			
 		}});

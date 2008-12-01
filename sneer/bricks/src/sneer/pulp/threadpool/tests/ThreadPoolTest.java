@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.threadpool.ThreadPool;
+import wheel.lang.Environments;
 import wheel.lang.Environment;
 import wheel.lang.Threads;
 
@@ -22,13 +23,13 @@ public class ThreadPoolTest {
 	public void testEnvironmentIsPropagated() throws Exception {
 		
 		
-		final Environment.Provider provider = new Environment.Provider() { @Override public <T> T provide(Class<T> intrface) {
+		final Environment environment = new Environment() { @Override public <T> T provide(Class<T> intrface) {
 			return (T) binding;
 		}};
 		
-		Environment.runWith(provider, new Runnable() { @Override public void run() {
+		Environments.runWith(environment, new Runnable() { @Override public void run() {
 			subject.registerActor(new Runnable() { @Override public void run() {
-				assertSame(binding, Environment.my(Object.class));
+				assertSame(binding, Environments.my(Object.class));
 				synchronized (ranMonitor) {
 					ran = true;
 					ranMonitor.notify();

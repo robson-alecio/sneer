@@ -4,9 +4,9 @@ import java.awt.AWTEvent;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 
-import wheel.lang.Environment;
+import wheel.lang.Environments;
 import wheel.lang.Timebox;
-import wheel.lang.Environment.Memento;
+import wheel.lang.Environments.Memento;
 
 public class TimeboxedEventQueue extends EventQueue {
 
@@ -24,7 +24,7 @@ public class TimeboxedEventQueue extends EventQueue {
 
 
 	private TimeboxedEventQueue(int timeboxDuration) {
-		_environment = Environment.memento();
+		_environment = Environments.memento();
 		_timebox = new QueueTimebox(timeboxDuration);
 	}
 
@@ -54,7 +54,7 @@ public class TimeboxedEventQueue extends EventQueue {
 
 			_event = event;
 //			this.run();
-			Environment.runWith(_environment, this);
+			Environments.runWith(_environment, this);
 		}
 
 		@Override 

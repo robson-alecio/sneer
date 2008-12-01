@@ -7,8 +7,8 @@ import org.junit.internal.runners.InitializationError;
 import org.junit.runner.notification.RunNotifier;
 
 import wheel.lang.ByRef;
+import wheel.lang.Environments;
 import wheel.lang.Environment;
-import wheel.lang.Environment.Provider;
 import wheel.lang.exceptions.WheelExceptionHandler;
 import wheel.lang.exceptions.impl.WheelExceptionHandlerImpl;
 
@@ -21,7 +21,7 @@ public class JMockWheelEnvironment extends JMock {
 	@Override
 	protected Object createTest() throws Exception {
 		final ByRef<Object> result = ByRef.newInstance();
-		Environment.runWith(environmentProvider(), new Runnable() { @Override public void run()  {
+		Environments.runWith(environment(), new Runnable() { @Override public void run()  {
 			try {
 				result.value = superCreateTest();
 			} catch (Exception e) {
@@ -37,7 +37,7 @@ public class JMockWheelEnvironment extends JMock {
 	
 	@Override
 	protected void invokeTestMethod(final Method arg0, final RunNotifier arg1) {
-		Environment.runWith(environmentProvider(), new Runnable() { @Override public void run() {
+		Environments.runWith(environment(), new Runnable() { @Override public void run() {
 			superInvokeTestMethod(arg0, arg1);
 		}});
 	}
@@ -46,8 +46,8 @@ public class JMockWheelEnvironment extends JMock {
 		super.invokeTestMethod(arg0, arg1);
 	}
 	
-	private Provider environmentProvider() {
-		return new Environment.Provider() {
+	private Environment environment() {
+		return new Environment() {
 			@Override
 			public <T> T provide(Class<T> intrface) {
 				if (WheelExceptionHandler.class == intrface)

@@ -25,7 +25,7 @@ public class SneerCommunity implements SovereignCommunity {
 	
 	@Override
 	public SovereignParty createParty(String name) {
-		System.out.println("createParty - " + Thread.currentThread());
+//		System.out.println("createParty - " + Thread.currentThread());
 		SneerParty result = produceSneerParty(name);
 		
 		result.setOwnName(name);

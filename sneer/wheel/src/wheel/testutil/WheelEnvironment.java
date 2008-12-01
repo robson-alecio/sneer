@@ -7,6 +7,7 @@ import org.junit.internal.runners.InitializationError;
 import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.internal.runners.TestMethod;
 
+import wheel.lang.ByRef;
 import wheel.lang.Environment;
 import wheel.lang.Environment.Provider;
 import wheel.lang.exceptions.WheelExceptionHandler;
@@ -16,6 +17,23 @@ public class WheelEnvironment extends JUnit4ClassRunner {
 	
 	public WheelEnvironment(Class<?> testClass) throws InitializationError {
 		super(testClass);
+	}
+	
+	@Override
+	protected Object createTest() throws Exception {
+		final ByRef<Object> result = ByRef.newInstance();
+		Environment.runWith(environmentProvider(), new Runnable() { @Override public void run()  {
+			try {
+				result.value = superCreateTest();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}});
+		return result.value;
+	}
+	
+	private Object superCreateTest() throws Exception {
+		return super.createTest();
 	}
 	
 	@Override
@@ -36,13 +54,13 @@ public class WheelEnvironment extends JUnit4ClassRunner {
 					}
 				}});
 			}
-			
+
 			private void superInvoke(Object test) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 				super.invoke(test);
 			}
 		};
 	}
-
+	
 	private Provider environmentProvider() {
 		return new Environment.Provider() {
 			@Override

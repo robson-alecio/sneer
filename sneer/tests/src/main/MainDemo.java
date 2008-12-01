@@ -8,6 +8,7 @@ import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.tuples.config.TupleSpaceConfig;
 import wheel.io.Logger;
 import wheel.io.ui.GuiThread;
+import wheel.lang.Environment;
 
 public class MainDemo {
 
@@ -30,14 +31,15 @@ public class MainDemo {
 		System.exit(1);
 	}
 
-	private static void tryToRun(String[] args) throws Exception {
+	private static void tryToRun(final String[] args) throws Exception {
 		Logger.redirectTo(System.out);
 
 		checkForDummy(args);
 		
-		setOwnName(ownName(args));
-		demo().start(dynDnsUser(args), dynDnsPassword(args));
-		
+		Environment.runWith(container(), new Runnable() { @Override public void run() {
+			setOwnName(ownName(args));
+			demo().start(dynDnsUser(args), dynDnsPassword(args));			
+		}});
 		waitUntilTheGuiThreadStarts();
 	}
 

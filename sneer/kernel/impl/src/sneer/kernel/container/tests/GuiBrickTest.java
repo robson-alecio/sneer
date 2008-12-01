@@ -12,6 +12,7 @@ import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.tests.impl.SomeGuiBrickImpl;
 import wheel.io.ui.TimeboxedEventQueue;
 import wheel.lang.ByRef;
+import wheel.lang.Environment;
 import wheel.lang.exceptions.TimeIsUp;
 
 public class GuiBrickTest {
@@ -33,7 +34,7 @@ public class GuiBrickTest {
 	@Test
 	public void testGuiBrickRunsInsideTimebox() throws Exception {
 		int timeoutForGuiEvents = 10;
-		TimeboxedEventQueue.startQueueing(timeoutForGuiEvents);
+		TimeboxedEventQueue.startQueueing(Environment.current(), timeoutForGuiEvents);
 
 		try {
 			runInsideTimebox();

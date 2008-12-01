@@ -13,12 +13,12 @@ public class Environment {
 	public static <T> void runWith(Provider provider, Runnable runnable) {
 		final Provider previous = current();
 		
-		System.out.println("setting provider" + Thread.currentThread());
+//		System.out.println("setting provider" + Thread.currentThread());
 		_provider.set(provider);
 		try {
 			runnable.run();
 		} finally {
-			System.out.println("resetting provider" + Thread.currentThread());
+//			System.out.println("resetting provider" + Thread.currentThread());
 			_provider.set(previous);
 		}
 	}

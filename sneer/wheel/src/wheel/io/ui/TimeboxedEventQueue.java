@@ -4,15 +4,17 @@ import java.awt.AWTEvent;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 
+import wheel.lang.Environment;
 import wheel.lang.Timebox;
+import wheel.lang.Environment.Provider;
 
 public class TimeboxedEventQueue extends EventQueue {
 
 	private static TimeboxedEventQueue _singleton;
 
-	public static void startQueueing(int timeboxDuration) {
+	public static void startQueueing(Environment.Provider environment, int timeboxDuration) {
 		if (_singleton != null) throw new IllegalStateException();
-		_singleton = new TimeboxedEventQueue(timeboxDuration);
+		_singleton = new TimeboxedEventQueue(environment, timeboxDuration);
 		
 		Toolkit.getDefaultToolkit().getSystemEventQueue().push(_singleton);
 	}
@@ -21,13 +23,13 @@ public class TimeboxedEventQueue extends EventQueue {
 	}
 
 
-	private TimeboxedEventQueue(int timeboxDuration) {
+	private TimeboxedEventQueue(Provider environment, int timeboxDuration) {
+		_environment = environment;
 		_timebox = new QueueTimebox(timeboxDuration);
 	}
 
 	private final QueueTimebox _timebox;
-	
-
+	private final Provider _environment;
 	
 	@Override
 	protected void dispatchEvent(final AWTEvent event) {
@@ -51,7 +53,8 @@ public class TimeboxedEventQueue extends EventQueue {
 			}
 
 			_event = event;
-			this.run();
+//			this.run();
+			Environment.runWith(_environment, this);
 		}
 
 		@Override 

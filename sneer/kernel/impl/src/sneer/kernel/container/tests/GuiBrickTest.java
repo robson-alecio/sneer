@@ -34,7 +34,7 @@ public class GuiBrickTest {
 	@Test
 	public void testGuiBrickRunsInsideTimebox() throws Exception {
 		int timeoutForGuiEvents = 10;
-		TimeboxedEventQueue.startQueueing(Environment.current(), timeoutForGuiEvents);
+		TimeboxedEventQueue.startQueueing(null, timeoutForGuiEvents);
 
 		try {
 			runInsideTimebox();

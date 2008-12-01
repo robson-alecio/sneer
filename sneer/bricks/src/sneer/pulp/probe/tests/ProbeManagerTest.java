@@ -3,7 +3,6 @@ package sneer.pulp.probe.tests;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.api.Invocation;
-import org.jmock.integration.junit4.JMock;
 import org.jmock.lib.action.CustomAction;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,8 +21,9 @@ import sneer.pulp.tuples.TupleSpace;
 import tests.TestThatIsInjected;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.Constant;
+import wheel.testutil.JMockWheelEnvironment;
 
-@RunWith(JMock.class)
+@RunWith(JMockWheelEnvironment.class)
 public class ProbeManagerTest extends TestThatIsInjected {
 
 	@SuppressWarnings("unused")

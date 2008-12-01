@@ -4,17 +4,17 @@ import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;
+
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.kernel.container.Inject;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
-import tests.TestThatIsInjected;
 import wheel.io.ui.GuiThread;
 import wheel.reactive.impl.Receiver;
 
-public class OwnNameKeeperDemo extends TestThatIsInjected {
+public class OwnNameKeeperDemo {
 
 	@SuppressWarnings("unused")
 	private static Receiver<String> _receiver;

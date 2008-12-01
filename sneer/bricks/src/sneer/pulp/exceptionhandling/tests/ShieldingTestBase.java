@@ -11,7 +11,7 @@ import tests.TestThatIsInjected;
 import wheel.lang.Fallible;
 
 @RunWith(JMock.class)
-public class ShieldingTestBase extends TestThatIsInjected {
+public abstract class ShieldingTestBase extends TestThatIsInjected {
 
 	protected final Mockery _mockery = new JUnit4Mockery();
 	protected final ExceptionHandler _handlerMock = _mockery.mock(ExceptionHandler.class);
@@ -26,5 +26,4 @@ public class ShieldingTestBase extends TestThatIsInjected {
 	protected Object[] getBindings() {
 		return new Object[] { _handlerMock };
 	}
-
 }

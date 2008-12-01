@@ -6,11 +6,14 @@ import static wheel.testutil.TestUtils.assertSameContents;
 import java.util.ArrayList;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.impl.ListRegisterImpl;
+import wheel.testutil.WheelEnvironment;
 
+@RunWith(WheelEnvironment.class)
 public class ListRegisterImplTest {
 	
 	@Test

@@ -112,7 +112,7 @@ Unacceptable Client Behavior
 		
 		final Light light = assertBlinkingLight(error, container);
 		
-		container.produce(Clock.class).advanceTime(300001);
+		container.provide(Clock.class).advanceTime(300001);
 		
 		_threadPool.startAllActors();
 		assertFalse(light.isOn());
@@ -156,7 +156,7 @@ Unacceptable Client Behavior
 	}
 
 	private Light assertBlinkingLight(final Exception expectedError, final Container container) {
-		final ListSignal<Light> lights = container.produce(BlinkingLights.class).lights();
+		final ListSignal<Light> lights = container.provide(BlinkingLights.class).lights();
 		assertEquals(1, lights.currentSize());
 		final Light light = lights.currentGet(0);
 		assertTrue(light.isOn());
@@ -169,7 +169,7 @@ Unacceptable Client Behavior
 
 	private Container startDynDnsClient(Object...mocks) {
 		final Container container = newContainer(mocks);
-		container.produce(DynDnsClient.class);
+		container.provide(DynDnsClient.class);
 		return container;
 	}
 

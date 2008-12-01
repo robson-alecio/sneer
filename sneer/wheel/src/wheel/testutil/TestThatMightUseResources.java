@@ -6,11 +6,13 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.runner.RunWith;
 
 import wheel.io.Logger;
 import wheel.lang.Daemon;
 
-public class TestThatMightUseResources extends Assert {
+@RunWith(WheelEnvironment.class)
+public abstract class TestThatMightUseResources extends Assert {
 
 	private File _tmpDirectory;
 

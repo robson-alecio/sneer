@@ -22,7 +22,7 @@ public class ReactiveWidgetsDemo {
 	public static void main(String[] args) throws Exception {
 		Container container = ContainerUtils.getContainer();
 
-		final ReactiveWidgetFactory rfactory = container.produce(ReactiveWidgetFactory.class);
+		final ReactiveWidgetFactory rfactory = container.provide(ReactiveWidgetFactory.class);
 		final Register<String> register = new RegisterImpl<String>("Jose das Coves");
 		
 		GuiThread.strictInvokeAndWait(new Runnable(){ @Override public void run() {

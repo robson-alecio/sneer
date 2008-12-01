@@ -76,7 +76,7 @@ public class WatchMeTest extends TestThatIsInjected {
 		}});
 
 		Container container2 = ContainerUtils.newContainer(_sharedSpace); 
-		WatchMe subject2 = container2.produce(WatchMe.class);
+		WatchMe subject2 = container2.provide(WatchMe.class);
 
 		PublicKey key = _keys.ownPublicKey();
 		

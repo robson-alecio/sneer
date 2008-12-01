@@ -20,7 +20,7 @@ public class ContainerTest {
 	public void testImplementationBinding() throws Exception {
         Sample sample = new MySample();
         Container c = new ContainerImpl(sample);
-        Sample subject = c.produce(Sample.class);
+        Sample subject = c.provide(Sample.class);
         assertSame(sample, subject);
 	}
 	
@@ -28,7 +28,7 @@ public class ContainerTest {
 	@Test
 	public void testInjectInjector() throws Exception {
 		Container c = new ContainerImpl();
-		UsesInjector component = c.produce(UsesInjector.class);
+		UsesInjector component = c.provide(UsesInjector.class);
 		Injector injector = component.injector();
 		assertNotNull(injector);
 		assertTrue(injector instanceof AnnotatedFieldInjector || injector instanceof StaticFieldInjector);
@@ -38,7 +38,7 @@ public class ContainerTest {
 	public void testInjectStaticField() throws Exception {
 		Container c = new ContainerImpl();
 		assertNull(Static.sample);
-		Static ignored = c.produce(Static.class);
+		Static ignored = c.provide(Static.class);
 		ignored.toString();
 		assertNotNull(Static.sample);
 	}

@@ -20,21 +20,21 @@ public class OwnerDemo  {
 
 		Container container = ContainerUtils.getContainer();
 
-		OwnNameKeeper ownNameKeeper = container.produce(OwnNameKeeper.class);
+		OwnNameKeeper ownNameKeeper = container.provide(OwnNameKeeper.class);
 		ownNameKeeper.nameSetter().consume("Sandro Bihaiko");
 		
-		OwnTaglineKeeper ownTaglineKeeper = container.produce(OwnTaglineKeeper.class);
+		OwnTaglineKeeper ownTaglineKeeper = container.provide(OwnTaglineKeeper.class);
 		ownTaglineKeeper.taglineSetter().consume("Minha frase do dia!!");
 		
-		ReactiveWidgetFactory rfactory = container.produce(ReactiveWidgetFactory.class);
+		ReactiveWidgetFactory rfactory = container.provide(ReactiveWidgetFactory.class);
 		
-		container.produce(OwnerGui.class);
+		container.provide(OwnerGui.class);
 		
-		InstrumentManager manager = container.produce(InstrumentManager.class);
+		InstrumentManager manager = container.provide(InstrumentManager.class);
 		new OwnerInstrument(rfactory, ownNameKeeper.name(), ownNameKeeper.nameSetter(), manager);
 		new OwnerInstrument(rfactory, ownTaglineKeeper.tagline(), ownTaglineKeeper.taglineSetter(), manager);
 		
-		container.produce(Dashboard.class);
+		container.provide(Dashboard.class);
 	}
 }
 

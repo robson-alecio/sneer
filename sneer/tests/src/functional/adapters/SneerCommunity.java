@@ -25,6 +25,7 @@ public class SneerCommunity implements SovereignCommunity {
 	
 	@Override
 	public SovereignParty createParty(String name) {
+		System.out.println("createParty - " + Thread.currentThread());
 		SneerParty result = produceSneerParty(name);
 		
 		result.setOwnName(name);
@@ -36,7 +37,7 @@ public class SneerCommunity implements SovereignCommunity {
 	private SneerParty produceSneerParty(String name) {
 		Object[] bindings = new Object[] {_network, sneerConfigForParty(name)};
 	
-		return ContainerUtils.newContainer(bindings).produce(SneerParty.class);
+		return ContainerUtils.newContainer(bindings).provide(SneerParty.class);
 	}
 
 	private SneerConfig sneerConfigForParty(String name) {

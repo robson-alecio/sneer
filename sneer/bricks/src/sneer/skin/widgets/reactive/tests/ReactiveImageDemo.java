@@ -27,7 +27,7 @@ public class ReactiveImageDemo {
 	public static void main(String[] args) throws Exception {
 		Container container = ContainerUtils.getContainer();
 
-		ReactiveWidgetFactory rfactory = container.produce(ReactiveWidgetFactory.class);
+		ReactiveWidgetFactory rfactory = container.provide(ReactiveWidgetFactory.class);
 		
 		Signal<Boolean> isOnline = new RandomBoolean().output();
 		Functor<Boolean, Image> functor = new Functor<Boolean, Image>(){

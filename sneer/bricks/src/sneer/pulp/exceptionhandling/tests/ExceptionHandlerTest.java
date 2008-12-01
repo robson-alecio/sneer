@@ -4,9 +4,9 @@ import org.junit.Test;
 
 import sneer.kernel.container.Inject;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
-import sneer.pulp.exceptionhandling.Fallible;
 import tests.TestThatIsInjected;
 import wheel.lang.ByRef;
+import wheel.lang.Fallible;
 
 public class ExceptionHandlerTest extends TestThatIsInjected {
 

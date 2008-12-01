@@ -21,9 +21,9 @@ public class DashboardDemo  {
 	public static void main(String[] args) throws Exception {
 		sneer.kernel.container.Container container = ContainerUtils.getContainer();
 
-		InstrumentManager instrumentManager = container.produce(InstrumentManager.class);
+		InstrumentManager instrumentManager = container.provide(InstrumentManager.class);
 		installSampleInstrument(instrumentManager);
-		container.produce(Dashboard.class);
+		container.provide(Dashboard.class);
 
 		Threads.sleepWithoutInterruptions(30000);
 	}

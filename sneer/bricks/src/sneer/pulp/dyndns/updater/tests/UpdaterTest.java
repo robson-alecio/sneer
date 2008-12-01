@@ -92,7 +92,7 @@ public class UpdaterTest {
 		
 		final HttpClient client = setUpHttpClientMockFor(hostname, ip, user, password, responseText);
 		
-		final Updater updater = ContainerUtils.newContainer(client).produce(Updater.class);
+		final Updater updater = ContainerUtils.newContainer(client).provide(Updater.class);
 		updater.update(hostname, user, password, ip);
 		
 		_context.assertIsSatisfied();

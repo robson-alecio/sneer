@@ -159,7 +159,7 @@ class BrickManagerImpl implements BrickManager {
 
 	private void runOnceOnInstall(BrickFile installed) {
 		Class<? extends Brick> clazz = resolveBrickInterface(installed);
-		_container.produce(clazz);
+		_container.provide(clazz);
 	}
 
 	private Class<? extends Brick> resolveBrickInterface(BrickFile installed) {

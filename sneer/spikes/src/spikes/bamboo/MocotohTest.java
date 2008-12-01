@@ -1,6 +1,6 @@
 package spikes.bamboo;
 
-import static spikes.bamboo.Environment.my;
+import static wheel.lang.Environment.my;
 
 import org.junit.Assert;
 import org.junit.Test;

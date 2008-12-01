@@ -9,7 +9,7 @@ public class LocationGuiMain  {
 
 	public static void main(String[] args) throws Exception {
 		Container container = ContainerUtils.getContainer();
-		container.produce(LocationGui.class);
+		container.provide(LocationGui.class);
 		Threads.sleepWithoutInterruptions(40000);
 	}
 }

@@ -8,7 +8,7 @@ public class SoundPlayerDemo {
 	
 	public static void main(String[] args) {
 		Container container = ContainerUtils.getContainer();
-		SoundPlayer player = container.produce(SoundPlayer.class);	
+		SoundPlayer player = container.provide(SoundPlayer.class);	
 		player.play(SoundPlayerDemo.class.getResource("test.wav"));
 	}
 }

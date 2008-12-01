@@ -1,12 +1,16 @@
 package wheel.reactive.impl;
 
+import static wheel.io.Logger.log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static wheel.io.Logger.log;
 import wheel.lang.Consumer;
+import wheel.lang.Environment;
+import wheel.lang.Fallible;
 import wheel.lang.Types;
+import wheel.lang.exceptions.WheelExceptionHandler;
 import wheel.reactive.EventSource;
 
 public abstract class AbstractNotifier<VC> implements EventSource<VC> {
@@ -38,9 +42,11 @@ public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 	}
 
 	@Override
-	public void addReceiver(Consumer<? super VC> receiver) {
+	public void addReceiver(final Consumer<? super VC> receiver) {
 		_receivers.add(holderFor(receiver));
-		initReceiver(receiver);
+		Environment.my(WheelExceptionHandler.class).shield(new Fallible() { @Override public void run() throws Throwable {
+			initReceiver(receiver);
+		}});
 	}
 
 	protected abstract void initReceiver(Consumer<? super VC> receiver);

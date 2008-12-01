@@ -1,10 +1,10 @@
 package sneer.kernel.container;
 
+import wheel.lang.Environment;
 
-
-public interface Container {
+public interface Container extends Environment.Provider {
 	
-	<T> T produce(Class<T> type) throws ContainerException;
+	<T> T provide(Class<T> intrface);
 
 	Class<? extends Brick> resolve(String brickName) throws ClassNotFoundException;
 

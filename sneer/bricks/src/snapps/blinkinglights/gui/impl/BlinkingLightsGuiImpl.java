@@ -40,6 +40,7 @@ import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.io.ui.GuiThread;
 import wheel.io.ui.graphics.Images;
 import wheel.reactive.Signal;
+import wheel.reactive.Signals;
 import wheel.reactive.impl.Constant;
 
 class BlinkingLightsGuiImpl implements BlinkingLightsGui {
@@ -59,10 +60,10 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 	
 	private final static Map<LightType, Constant<Image>> _images = new HashMap<LightType, Constant<Image>>();
 	static {
-		_images.put(LightType.GOOD_NEWS, new Constant<Image>(loadImage("good_news.png")));
-		_images.put(LightType.INFO, new Constant<Image>(loadImage("info.png")));
-		_images.put(LightType.WARN, new Constant<Image>(loadImage("warn.png")));
-		_images.put(LightType.ERROR, new Constant<Image>(loadImage("error.png")));
+		_images.put(LightType.GOOD_NEWS, Signals.constant(loadImage("good_news.png")));
+		_images.put(LightType.INFO, Signals.constant(loadImage("info.png")));
+		_images.put(LightType.WARN, Signals.constant(loadImage("warn.png")));
+		_images.put(LightType.ERROR, Signals.constant(loadImage("error.png")));
 	}
 	
 	public BlinkingLightsGuiImpl(){

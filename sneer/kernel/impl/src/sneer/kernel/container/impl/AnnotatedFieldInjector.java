@@ -15,7 +15,7 @@ public class AnnotatedFieldInjector extends FieldInjector	 {
 	protected void injectOnField(Object obj, Field field) {
 		Inject inject = field.getAnnotation(Inject.class);
 		if(inject != null) {
-		    Object component = _container.produce(field.getType());
+		    Object component = _container.provide(field.getType());
 		    setValueOnField(obj, field, component);
 		}
 	}

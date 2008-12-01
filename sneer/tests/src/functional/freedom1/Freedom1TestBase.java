@@ -10,6 +10,7 @@ public abstract class Freedom1TestBase extends SovereignFunctionalTestBase {
 	
 	@Test (timeout = 1000)
 	public void testOwnName() {
+		System.out.println(Thread.currentThread());
 		SovereignParty me = _community.createParty("Klaus");
 		changeNameTo(me, "Klaus W");
 		changeNameTo(me, "Wuestefeld, Klaus");

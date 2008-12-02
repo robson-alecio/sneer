@@ -12,17 +12,12 @@ import sneer.skin.sound.kernel.Audio;
 class AudioImpl implements Audio {
 
 	@Override
-	public SourceDataLine openSourceDataLine(AudioFormat audioFormat) throws LineUnavailableException {
-		DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
+	public SourceDataLine openSourceDataLine() throws LineUnavailableException {
+		DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat());
 		SourceDataLine dataLine = (SourceDataLine) AudioSystem	.getLine(info);
 		dataLine.open();
 		dataLine.start();
 		return dataLine;
-	}
-	
-	@Override
-	public SourceDataLine openSourceDataLine() throws LineUnavailableException {
-		return openSourceDataLine(audioFormat());
 	}
 
 	@Override
@@ -66,5 +61,10 @@ class AudioImpl implements Audio {
 	@Override
 	public int soundQuality() {
 		return AudioUtil.SOUND_QUALITY;
+	}
+
+	@Override
+	public SourceDataLine openSourceDataLine(AudioFormat audioFormat) {
+		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 	}
 }

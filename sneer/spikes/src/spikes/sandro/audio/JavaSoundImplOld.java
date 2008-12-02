@@ -4,27 +4,21 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 
-import sneer.kernel.container.Container;
-import sneer.kernel.container.ContainerUtils;
-import sneer.skin.sound.kernel.Audio;
+public class JavaSoundImplOld implements Sound{
 
-public class JavaSoundImpl implements Sound {
-	
+	private AudioFormat _audioFormat = new AudioFormat(8000.0F, 16, 1, true, true);
 	private ByteArrayOutputStream _buffer = new ByteArrayOutputStream();
 	private boolean _stopCapture = false;
 	private boolean _stopPlay = false;
-	private Audio _audio;
 
-	{
-		Container container = ContainerUtils.newContainer();
-		_audio = container.provide(Audio.class);
-	}
-	
 	@Override
 	public void startRecord() {
 		new Recorder().start();
@@ -50,12 +44,7 @@ public class JavaSoundImpl implements Sound {
 		@Override 
 		public void run() {
 			System.out.println("Start Record!");
-			TargetDataLine targetDataLine;
-			try {
-				targetDataLine = _audio.openTargetDataLine();
-			} catch (LineUnavailableException e) {
-				throw new IllegalStateException(e);
-			}
+			TargetDataLine targetDataLine = initDataLine();
 			
 			_stopCapture = false;
 			while (!_stopCapture) {
@@ -64,6 +53,21 @@ public class JavaSoundImpl implements Sound {
 			
 			System.out.println("Stop Record!");
 			finalizeDataLine(targetDataLine);
+		}
+		
+		private TargetDataLine initDataLine(){
+			DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, _audioFormat);
+			TargetDataLine targetDataLine = null;
+			try {
+				targetDataLine = (TargetDataLine) AudioSystem.getLine(dataLineInfo);
+				targetDataLine.open(_audioFormat);
+			}  catch (LineUnavailableException e) {
+				if(targetDataLine !=null)  
+					targetDataLine.close();
+				throw new IllegalStateException("Can't Play!", e);
+			} 
+			targetDataLine.start();
+			return targetDataLine;
 		}
 
 		private void appendBytesInBuffer(TargetDataLine targetDataLine) {
@@ -91,12 +95,7 @@ public class JavaSoundImpl implements Sound {
 		@Override 
 		public void run() {
 			System.out.println("Start Play!");
-			SourceDataLine dataLine;
-			try {
-				dataLine = _audio.openSourceDataLine();
-			} catch (LineUnavailableException e) {
-				throw new IllegalStateException(e);
-			}
+			SourceDataLine dataLine = initDataLine();
 
 			_stopPlay = false;
 			while (!_stopPlay) {
@@ -107,13 +106,28 @@ public class JavaSoundImpl implements Sound {
 				}
 				
 				System.out.println(audioData.length + " bytes to play");		
-				AudioInputStream source = new AudioInputStream(new ByteArrayInputStream(audioData), _audio.audioFormat(),
-																				 audioData.length / _audio.audioFormat().getFrameSize());
+				AudioInputStream source = new AudioInputStream(new ByteArrayInputStream(audioData), _audioFormat,
+																				 audioData.length / _audioFormat.getFrameSize());
 				playBytesFromBuffer(dataLine, source);
 			}
 			
 			System.out.println("Stop Play!");
 			finalizeDataLine(dataLine);
+		}
+
+		private SourceDataLine initDataLine() {
+			SourceDataLine sourceDataLine = null;
+			DataLine.Info dataLineInfo = new DataLine.Info(SourceDataLine.class,	_audioFormat);
+			try {
+				sourceDataLine = (SourceDataLine) AudioSystem.getLine(dataLineInfo);
+				sourceDataLine.open(_audioFormat);
+			} catch (LineUnavailableException e) {
+				if(sourceDataLine !=null)  
+					sourceDataLine.close();
+				throw new IllegalStateException("Can't Play!", e);
+			} 
+			sourceDataLine.start();
+			return sourceDataLine;
 		}
 		
 		private byte[] readBytesAndCreateNewBuffer() {

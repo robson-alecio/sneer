@@ -7,10 +7,9 @@ import javax.sound.sampled.TargetDataLine;
 
 import sneer.kernel.container.Brick;
 
-public interface Audio extends Brick{
+public interface Audio extends Brick {
 
 	TargetDataLine openTargetDataLine() throws LineUnavailableException;
-	
 	SourceDataLine openSourceDataLine() throws LineUnavailableException;
 	SourceDataLine openSourceDataLine(AudioFormat audioFormat) throws LineUnavailableException;
 	

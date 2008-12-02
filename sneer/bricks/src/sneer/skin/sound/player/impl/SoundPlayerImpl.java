@@ -24,6 +24,7 @@ import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.player.SoundPlayer;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.FriendlyException;
+import wheel.lang.exceptions.NotImplementedYet;
 
 class SoundPlayerImpl implements SoundPlayer, Stepper {
 
@@ -40,6 +41,7 @@ class SoundPlayerImpl implements SoundPlayer, Stepper {
 	final static private Collection<URL> urls = Collections.synchronizedCollection(new ArrayList<URL>());
 	
 	public void playNext() {
+		if (1 == 1) throw new NotImplementedYet();
 		URL url = nextUrlToPlay();
 		AudioInputStream audioInputStream = tryInitAudioInputStream(url);
 		AudioFormat audioFormat = audioInputStream.getFormat();

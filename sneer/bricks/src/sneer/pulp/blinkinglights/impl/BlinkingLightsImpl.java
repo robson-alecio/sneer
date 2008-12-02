@@ -78,6 +78,11 @@ class BlinkingLightsImpl implements BlinkingLights {
 	}
 	
 	@Override
+	public void turnOnIfNecessary(Light light, String caption, Throwable t) {
+		turnOnIfNecessary(light, caption, null, t, LightImpl.NEVER);
+	}
+
+	@Override
 	public void turnOnIfNecessary(Light light, String caption, String helpMessage, Throwable t) {
 		turnOnIfNecessary(light, caption, helpMessage, t, LightImpl.NEVER);
 	}
@@ -98,4 +103,5 @@ class BlinkingLightsImpl implements BlinkingLights {
 		if (timeout != LightImpl.NEVER)
 			turnOffIn(light, timeout);
 	}
+
 }

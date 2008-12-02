@@ -1,30 +1,25 @@
 package sneer.skin.sound.loopback.impl;
 
-import sneer.kernel.container.Inject;
-import sneer.pulp.clock.Clock;
+import java.io.ByteArrayOutputStream;
+
 import sneer.skin.sound.loopback.LoopbackTester;
-import sneer.skin.sound.mic.Mic;
-import sneer.skin.sound.speaker.Speaker;
+import wheel.io.Logger;
 
 class LoopbackTesterImpl implements LoopbackTester{
 
-	@Inject static private Mic _mic;
-	@Inject static private Speaker _speaker;
-	@Inject static private Clock _clock;
-	
-	private final int DELAY = 3000;
-
 	@Override
-	public void close() {
-		_mic.close();
-		_speaker.close();
+	public void stop() {
+		Recorder.stop();
+		Player.stop();
+		Logger.log("Audio Loopback Tester stopped.");
 	}
 
 	@Override
-	public void open() {
-		_mic.open();
-		_clock.wakeUpNoEarlierThan(DELAY, new Runnable(){ @Override public void run() {
-			_speaker.open();
-		}});
+	public void start() {
+		Logger.log("Audio Loopback Tester started.");
+
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		Recorder.start(buffer);
+		Player.start(buffer);
 	}	
 }

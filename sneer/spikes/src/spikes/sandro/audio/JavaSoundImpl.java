@@ -92,11 +92,7 @@ public class JavaSoundImpl implements Sound {
 		public void run() {
 			System.out.println("Start Play!");
 			SourceDataLine dataLine;
-			try {
-				dataLine = _audio.openSourceDataLine();
-			} catch (LineUnavailableException e) {
-				throw new IllegalStateException(e);
-			}
+			dataLine = _audio.tryToOpenSourceDataLine();
 
 			_stopPlay = false;
 			while (!_stopPlay) {
@@ -107,8 +103,8 @@ public class JavaSoundImpl implements Sound {
 				}
 				
 				System.out.println(audioData.length + " bytes to play");		
-				AudioInputStream source = new AudioInputStream(new ByteArrayInputStream(audioData), _audio.audioFormat(),
-																				 audioData.length / _audio.audioFormat().getFrameSize());
+				AudioInputStream source = new AudioInputStream(new ByteArrayInputStream(audioData), _audio.defaultAudioFormat(),
+																				 audioData.length / _audio.defaultAudioFormat().getFrameSize());
 				playBytesFromBuffer(dataLine, source);
 			}
 			

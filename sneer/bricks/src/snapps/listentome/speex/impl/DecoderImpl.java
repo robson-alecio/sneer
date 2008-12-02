@@ -16,7 +16,7 @@ class DecoderImpl implements Decoder {
 	private static Audio _audio;
 	
 	DecoderImpl() {
-		_decoder.init(_audio.narrowbandEncoding(), (int) _audio.audioFormat().getFrameRate(), _audio.audioFormat().getChannels(), _audio.audioFormat().isBigEndian());
+		_decoder.init(SpeexConstants.NARROWBAND_ENCODING, (int)_audio.defaultAudioFormat().getFrameRate(), _audio.defaultAudioFormat().getChannels(), _audio.defaultAudioFormat().isBigEndian());
 	}
 
 	public byte[] getProcessedData() {

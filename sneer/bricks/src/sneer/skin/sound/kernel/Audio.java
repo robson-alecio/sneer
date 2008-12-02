@@ -9,21 +9,11 @@ import sneer.kernel.container.Brick;
 
 public interface Audio extends Brick {
 
+	AudioFormat defaultAudioFormat();
+
 	TargetDataLine openTargetDataLine() throws LineUnavailableException;
-	SourceDataLine openSourceDataLine() throws LineUnavailableException;
-	SourceDataLine openSourceDataLine(AudioFormat audioFormat) throws LineUnavailableException;
+	SourceDataLine tryToOpenSourceDataLine();
+	SourceDataLine tryToOpenSourceDataLine(AudioFormat audioFormat);
 	
-	AudioFormat audioFormat();
-	
-	int sampleRate();
-	
-	boolean signed();
-	
-	int narrowbandEncoding();
-	
-	int framesPerAudioPacket();
-	
-	int soundQuality();
-	
-	int sampleSizeInBits();
+
 }

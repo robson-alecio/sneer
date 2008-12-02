@@ -14,7 +14,7 @@ class EncoderImpl implements Encoder {
 	private static Audio _audio;
 	
 	EncoderImpl() {
-		_encoder.init(_audio.narrowbandEncoding(), _audio.soundQuality(), (int) _audio.audioFormat().getFrameRate(), _audio.audioFormat().getChannels());
+		_encoder.init(SpeexConstants.NARROWBAND_ENCODING, SpeexConstants.SOUND_QUALITY, (int) _audio.defaultAudioFormat().getFrameRate(), _audio.defaultAudioFormat().getChannels());
 	}
 
 	@Override

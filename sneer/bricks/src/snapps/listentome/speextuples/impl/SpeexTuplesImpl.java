@@ -11,19 +11,20 @@ import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
-import sneer.skin.sound.kernel.Audio;
-import wheel.lang.ImmutableByteArray;
 import wheel.lang.Consumer;
+import wheel.lang.ImmutableByteArray;
 
 class SpeexTuplesImpl implements SpeexTuples {
 
 	@Inject private static Speex _speex;
-	@Inject private static Audio _audio;	
 	@Inject static private TupleSpace _tupleSpace; 
 	@Inject static private KeyManager _keyManager;
 	@Inject static private TupleFilterManager _filter; {
 		_filter.block(PcmSoundPacket.class);
 	}
+
+	static private final int FRAMES_PER_AUDIO_PACKET = 10;
+
 	
 	private byte[][] _frames = newFramesArray();
 	private int _frameIndex;
@@ -51,7 +52,7 @@ class SpeexTuplesImpl implements SpeexTuples {
 	}
 	
 	private static byte[][] newFramesArray() {
-		return new byte[_audio.framesPerAudioPacket()][];
+		return new byte[FRAMES_PER_AUDIO_PACKET][];
 	}
 
 	private void flush() {
@@ -64,11 +65,16 @@ class SpeexTuplesImpl implements SpeexTuples {
 		if (!_encoder.processData(pcmBuffer)) return false;
 		
 		_frames[_frameIndex++] = _encoder.getProcessedData();
-		return _frameIndex == _audio.framesPerAudioPacket();
+		return _frameIndex == FRAMES_PER_AUDIO_PACKET;
 	}
 	
 	protected void decode(SpeexPacket packet) {
 		for (byte[] frame : _decoder.decode(packet._frames))
 			_tupleSpace.acquire(new PcmSoundPacket(packet.publisher(), packet.publicationTime(), new ImmutableByteArray(frame, frame.length), (short)0));
+	}
+
+	@Override
+	public int framesPerAudioPacket() {
+		return FRAMES_PER_AUDIO_PACKET;
 	}
 }

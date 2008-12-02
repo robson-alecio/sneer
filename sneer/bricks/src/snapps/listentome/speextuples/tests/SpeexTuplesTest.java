@@ -20,11 +20,10 @@ import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
-import sneer.skin.sound.kernel.Audio;
 import tests.TestThatIsInjected;
 import wheel.lang.ByRef;
-import wheel.lang.ImmutableByteArray;
 import wheel.lang.Consumer;
+import wheel.lang.ImmutableByteArray;
 
 @RunWith(JMock.class)
 public class SpeexTuplesTest extends TestThatIsInjected{
@@ -36,12 +35,8 @@ public class SpeexTuplesTest extends TestThatIsInjected{
 	@Inject
 	private static TupleSpace _tupleSpace;
 
-	@SuppressWarnings("unused")
 	@Inject
 	private static SpeexTuples _subject;
-	
-	@Inject
-	private static Audio _audio;
 	
 	private final Mockery _mockery = new JUnit4Mockery();
 	
@@ -65,13 +60,13 @@ public class SpeexTuplesTest extends TestThatIsInjected{
 		
 		_mockery.checking(new Expectations() {{ 
 			final Sequence main = _mockery.sequence("main");
-			for (byte i=0; i<_audio.framesPerAudioPacket() * 2; i+=2) {
+			for (byte i=0; i<_subject.framesPerAudioPacket() * 2; i+=2) {
 				one(_encoder).processData(new byte[] { i });
 					will(returnValue(false)); inSequence(main);
 				one(_encoder).processData(new byte[] { (byte) (i + 1) });
 					will(returnValue(true)); inSequence(main);
 				one(_encoder).getProcessedData();
-					will(returnValue(new byte[] { (byte) (i*2) }));
+					will(returnValue(new byte[] { (byte) (i*42) }));
 			}
 		}});
 		
@@ -92,7 +87,7 @@ public class SpeexTuplesTest extends TestThatIsInjected{
 	public void testSpeexToPcm() {
 		
 		final byte[][] speexPacketPayload = new byte[][] { {0} };
-		final byte[] pcmPacketPayload = new byte[] { 42 };
+		final byte[] pcmPacketPayload = new byte[] { 17 };
 		
 		_mockery.checking(new Expectations() {{ 
 			one(_decoder).decode(speexPacketPayload);
@@ -120,10 +115,10 @@ public class SpeexTuplesTest extends TestThatIsInjected{
 	}
 
 	private void assertFrames(final byte[][] frames) {
-		assertEquals(_audio.framesPerAudioPacket(), frames.length);
+		assertEquals(_subject.framesPerAudioPacket(), frames.length);
 		int i = 0;
 		for (byte[] frame : frames)  {
-			assertArrayEquals(new byte[] { (byte) (i*2) }, frame);
+			assertArrayEquals(new byte[] { (byte) (i*42) }, frame);
 			i += 2;
 		}
 	}
@@ -151,7 +146,7 @@ public class SpeexTuplesTest extends TestThatIsInjected{
 	}
 	
 	private byte[][] frames() {
-		byte[][] frames = new byte[_audio.framesPerAudioPacket() * 2][];
+		byte[][] frames = new byte[_subject.framesPerAudioPacket() * 2][];
 		for (int i=0; i<frames.length; ++i)
 			frames[i] = new byte[] { (byte) i };
 		return frames;

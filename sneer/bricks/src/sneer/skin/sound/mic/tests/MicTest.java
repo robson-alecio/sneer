@@ -52,7 +52,7 @@ public class MicTest {
 		
 		final ByRef<Integer> sequence = ByRef.newInstance(0);
 		mockery.checking(new Expectations() {{
-			one(audio).tryToOpenTargetDataLine();
+			one(audio).tryToOpenCaptureLine();
 				will(returnValue(targetDataLine));
 			allowing(audio).defaultAudioFormat();
 				will(returnValue(new AudioFormat(8000, 16, 2, true, false)));

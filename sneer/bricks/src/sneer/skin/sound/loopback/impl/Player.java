@@ -23,7 +23,7 @@ class Player {
 	}
 
 	static void start(ByteArrayOutputStream buffer) {
-		_sourceDataLine = _audio.tryToOpenSourceDataLine();
+		_sourceDataLine = _audio.tryToOpenPlaybackLine();
 		if (_sourceDataLine == null) return;
 
 		_buffer = buffer;

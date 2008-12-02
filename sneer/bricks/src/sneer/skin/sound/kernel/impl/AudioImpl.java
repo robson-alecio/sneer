@@ -2,7 +2,6 @@ package sneer.skin.sound.kernel.impl;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
@@ -29,19 +28,18 @@ class AudioImpl implements Audio {
 	private Light _captureLight = _lights.prepare(LightType.ERROR);
 
 	@Override
-	public SourceDataLine tryToOpenSourceDataLine() {
-		return tryToOpenSourceDataLine(defaultAudioFormat());
+	public SourceDataLine tryToOpenPlaybackLine() {
+		return tryToOpenPlaybackLine(defaultAudioFormat());
 	}
 	
 	@Override
-	public SourceDataLine tryToOpenSourceDataLine(AudioFormat audioFormat) {
-		DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
+	public SourceDataLine tryToOpenPlaybackLine(AudioFormat audioFormat) {
 		SourceDataLine dataLine;
 		try {
-			dataLine = (SourceDataLine) AudioSystem.getLine(info);
+			dataLine = AudioSystem.getSourceDataLine(audioFormat);
 			dataLine.open();
 		} catch (LineUnavailableException e) {
-			_lights.turnOnIfNecessary(_playbackLight, "Problem with Audio Playback", e);
+			_lights.turnOnIfNecessary(_playbackLight, "Problem with Audio Playback (Speaker)", e);
 			return null;
 		}
 		
@@ -52,7 +50,7 @@ class AudioImpl implements Audio {
 
 	
 	@Override
-	public TargetDataLine tryToOpenTargetDataLine() {
+	public TargetDataLine tryToOpenCaptureLine() {
 		TargetDataLine dataLine;
 		try {
 			dataLine = AudioSystem	.getTargetDataLine(defaultAudioFormat());

@@ -27,7 +27,7 @@ class MicLine {
 
 	static void tryToAcquire() throws FriendlyException {
 		TargetDataLine result = null;
-		result = _audio.tryToOpenTargetDataLine();
+		result = _audio.tryToOpenCaptureLine();
 		if (result == null)
 			throwFriendly("Unable to find a target data line for your mic.");
 		

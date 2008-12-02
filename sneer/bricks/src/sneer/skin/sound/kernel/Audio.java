@@ -10,9 +10,9 @@ public interface Audio extends Brick {
 
 	AudioFormat defaultAudioFormat();
 
-	TargetDataLine tryToOpenTargetDataLine();
-	SourceDataLine tryToOpenSourceDataLine();
-	SourceDataLine tryToOpenSourceDataLine(AudioFormat audioFormat);
+	TargetDataLine tryToOpenCaptureLine();
+	SourceDataLine tryToOpenPlaybackLine();
+	SourceDataLine tryToOpenPlaybackLine(AudioFormat audioFormat);
 	
 
 }

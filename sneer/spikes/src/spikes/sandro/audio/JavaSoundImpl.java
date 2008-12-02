@@ -49,7 +49,7 @@ public class JavaSoundImpl implements Sound {
 		@Override 
 		public void run() {
 			System.out.println("Start Record!");
-			TargetDataLine targetDataLine = _audio.tryToOpenTargetDataLine();
+			TargetDataLine targetDataLine = _audio.tryToOpenCaptureLine();
 			
 			_stopCapture = false;
 			while (!_stopCapture) {
@@ -86,7 +86,7 @@ public class JavaSoundImpl implements Sound {
 		public void run() {
 			System.out.println("Start Play!");
 			SourceDataLine dataLine;
-			dataLine = _audio.tryToOpenSourceDataLine();
+			dataLine = _audio.tryToOpenPlaybackLine();
 
 			_stopPlay = false;
 			while (!_stopPlay) {

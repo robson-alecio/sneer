@@ -43,7 +43,7 @@ class SoundPlayerImpl implements SoundPlayer, Stepper {
 
 		SourceDataLine dataLine = null;
 		try {
-			dataLine = _audio.tryToOpenSourceDataLine(audioFormat);
+			dataLine = _audio.tryToOpenPlaybackLine(audioFormat);
 			int bytesRead = 0;
 			while (bytesRead >= 0) {
 				bytesRead = audioInputStream.read(buffer, 0, buffer.length);

@@ -87,7 +87,7 @@ public class SpeakerTest extends TestThatIsInjected {
 	public void testPacketsAreSentToDataLine() throws Exception {
 		final Sequence main = _mockery.sequence("main");
 		_mockery.checking(new CommonExpectations(){{
-			one(_audio).tryToOpenSourceDataLine(); will(returnValue(_line));
+			one(_audio).tryToOpenPlaybackLine(); will(returnValue(_line));
 			one(_line).write(new byte[]{1, 2, 3, 5}, 0, 4); inSequence(main);
 			one(_line).write(new byte[]{7, 11, 13, 17}, 0, 4); inSequence(main);
 			one(_line).close(); inSequence(main);

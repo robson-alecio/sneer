@@ -22,7 +22,7 @@ class Recorder {
 	}
 	
 	static void start(ByteArrayOutputStream buffer) {
-		final TargetDataLine targetDataLine = _audio.tryToOpenTargetDataLine();
+		final TargetDataLine targetDataLine = _audio.tryToOpenCaptureLine();
 		if (targetDataLine == null) return;
 		
 		_buffer = buffer;

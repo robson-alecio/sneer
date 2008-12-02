@@ -41,6 +41,6 @@ class PacketPlayer implements Consumer<PcmSoundPacket> {
 	
 	private void ensureLineIsOpen() {
 		if(_line == null)
-			_line = _audio.tryToOpenSourceDataLine();
+			_line = _audio.tryToOpenPlaybackLine();
 	}
 }

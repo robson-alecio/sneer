@@ -25,7 +25,8 @@ class AudioImpl implements Audio {
 
 	@Inject static private BlinkingLights _lights;
 	
-	private Light _light;
+	private Light _playbackLight = _lights.prepare(LightType.ERROR);
+	private Light _captureLight = _lights.prepare(LightType.ERROR);
 
 	@Override
 	public SourceDataLine tryToOpenSourceDataLine() {
@@ -34,28 +35,32 @@ class AudioImpl implements Audio {
 	
 	@Override
 	public SourceDataLine tryToOpenSourceDataLine(AudioFormat audioFormat) {
-		_light = _lights.prepare(LightType.ERROR);
-		
 		DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
 		SourceDataLine dataLine;
 		try {
 			dataLine = (SourceDataLine) AudioSystem.getLine(info);
 			dataLine.open();
 		} catch (LineUnavailableException e) {
-			_lights.turnOnIfNecessary(_light, "Problem with Audio Playback", e);
+			_lights.turnOnIfNecessary(_playbackLight, "Problem with Audio Playback", e);
 			return null;
 		}
 		
-		_lights.turnOffIfNecessary(_light);
+		_lights.turnOffIfNecessary(_playbackLight);
 		dataLine.start();
 		return dataLine;
 	}
 
 	
 	@Override
-	public TargetDataLine openTargetDataLine() throws LineUnavailableException {
-		TargetDataLine dataLine = AudioSystem	.getTargetDataLine(defaultAudioFormat());
-		dataLine.open();
+	public TargetDataLine tryToOpenTargetDataLine() {
+		TargetDataLine dataLine;
+		try {
+			dataLine = AudioSystem	.getTargetDataLine(defaultAudioFormat());
+			dataLine.open();
+		} catch (LineUnavailableException e) {
+			_lights.turnOnIfNecessary(_captureLight, "Problem with Audio Capture (Mic)", e);
+			return null;
+		}
 		dataLine.start();
 		return dataLine;
 	}

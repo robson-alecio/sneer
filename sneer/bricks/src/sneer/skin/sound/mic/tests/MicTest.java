@@ -9,6 +9,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.TargetDataLine;
 
 import org.jmock.Expectations;
@@ -51,10 +52,10 @@ public class MicTest {
 		
 		final ByRef<Integer> sequence = ByRef.newInstance(0);
 		mockery.checking(new Expectations() {{
-			allowing(audio).openTargetDataLine();
+			one(audio).tryToOpenTargetDataLine();
 				will(returnValue(targetDataLine));
-			allowing(targetDataLine).open();
-			allowing(targetDataLine).start();
+			allowing(audio).defaultAudioFormat();
+				will(returnValue(new AudioFormat(8000, 16, 2, true, false)));
 			
 			final Sequence main = mockery.sequence("main");
 			allowing(targetDataLine).read(with(aNonNull(byte[].class)), with(0), with(640));

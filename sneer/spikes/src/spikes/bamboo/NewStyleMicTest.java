@@ -46,7 +46,7 @@ public class NewStyleMicTest {
 				final byte[] buffer = capture();
 				final PcmSoundPacket packet = capture();
 				new Stimulus() {{
-					line = audio.openTargetDataLine();
+					line = audio.tryToOpenTargetDataLine();
 					stepper.step();
 						line.open();
 						line.start();

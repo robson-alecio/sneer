@@ -11,12 +11,12 @@ class LoopbackTesterImpl implements LoopbackTester{
 	public void stop() {
 		Recorder.stop();
 		Player.stop();
-		Logger.log("Audio Loopback Tester stopped.");
+		Logger.log("Audio Loopback Test stopped.");
 	}
 
 	@Override
 	public void start() {
-		Logger.log("Audio Loopback Tester started.");
+		Logger.log("Audio Loopback Test started.");
 
 		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 		Recorder.start(buffer);

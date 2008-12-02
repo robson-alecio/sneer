@@ -2,7 +2,6 @@ package sneer.skin.sound.loopback.impl;
 
 import java.io.ByteArrayOutputStream;
 
-import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
 import sneer.kernel.container.Inject;
@@ -23,12 +22,8 @@ class Recorder {
 	}
 	
 	static void start(ByteArrayOutputStream buffer) {
-		final TargetDataLine targetDataLine;
-		try {
-			targetDataLine = _audio.openTargetDataLine();
-		} catch (LineUnavailableException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
-		}
+		final TargetDataLine targetDataLine = _audio.tryToOpenTargetDataLine();
+		if (targetDataLine == null) return;
 		
 		_buffer = buffer;
 

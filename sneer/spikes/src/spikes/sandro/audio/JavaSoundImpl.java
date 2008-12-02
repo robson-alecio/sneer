@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 
@@ -50,12 +49,7 @@ public class JavaSoundImpl implements Sound {
 		@Override 
 		public void run() {
 			System.out.println("Start Record!");
-			TargetDataLine targetDataLine;
-			try {
-				targetDataLine = _audio.openTargetDataLine();
-			} catch (LineUnavailableException e) {
-				throw new IllegalStateException(e);
-			}
+			TargetDataLine targetDataLine = _audio.tryToOpenTargetDataLine();
 			
 			_stopCapture = false;
 			while (!_stopCapture) {

@@ -2,25 +2,22 @@ package sneer.skin.sound.mic.impl;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.TargetDataLine;
 
 import sneer.kernel.container.Inject;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.Audio;
+import wheel.lang.ImmutableByteArray;
 import wheel.lang.exceptions.FriendlyException;
 
 class MicLine {
 
-	private static final int SAMPLE_RATE_IN_HZ = 8000;
-	private static final int SAMPLE_SIZE_IN_BITS = 16;
-	private static final int NUMBER_OF_CHANNELS = 2;
-	private static final int ONE_FIFTIETH_OF_A_SECOND = SAMPLE_RATE_IN_HZ / 50;
-
-	@Inject
-	static private Audio _audio;
+	@Inject static private Audio _audio;
 	
 	static private TargetDataLine _delegate;
+
+	private static byte[] _pcmBuffer;
 	
 	static void close() {
 		if (_delegate == null) throw new IllegalStateException();
@@ -30,20 +27,11 @@ class MicLine {
 
 	static void tryToAcquire() throws FriendlyException {
 		TargetDataLine result = null;
-		try {
-			result = _audio.openTargetDataLine();
-		} catch (LineUnavailableException e) {
+		result = _audio.tryToOpenTargetDataLine();
+		if (result == null)
 			throwFriendly("Unable to find a target data line for your mic.");
-		}
-		
-		try {
-			result.open();
-		} catch (LineUnavailableException e) {
-			throwFriendly("Unable to open the data line for your mic.");
-		}
 		
 		_delegate = result;
-		_delegate.start();
 	}
 
 	static boolean isAquired() {
@@ -51,14 +39,32 @@ class MicLine {
 	}
 
 	static PcmSoundPacket read() {
-		byte[] pcmBuffer = new byte[
-			SAMPLE_SIZE_IN_BITS / 8 *
-			NUMBER_OF_CHANNELS *
-			ONE_FIFTIETH_OF_A_SECOND
-		];
+		byte[] buffer = pcmBuffer();
+		int read = _delegate.read(buffer , 0, buffer.length);
+		return new PcmSoundPacket(new ImmutableByteArray(buffer, read), nextShort());
+	}
 
-		int read = _delegate.read(pcmBuffer, 0, pcmBuffer.length);
-		return PcmSoundPacket.newInstance(pcmBuffer, read, nextShort());
+	private static byte[] pcmBuffer() {
+		if (_pcmBuffer == null)
+			_pcmBuffer = createPcmBuffer();
+
+		return _pcmBuffer;
+	}
+
+	private static byte[] createPcmBuffer() {
+		return new byte[
+            format().getSampleSizeInBits() / 8
+            * format().getChannels()
+        	* oneFiftiethOfASecond()
+    	];
+	}
+
+	private static int oneFiftiethOfASecond() {
+		return (int) format().getSampleRate() / 50;
+	}
+
+	private static AudioFormat format() {
+		return _audio.defaultAudioFormat();
 	}
 
 	private static void throwFriendly(String specifics) throws FriendlyException {

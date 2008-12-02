@@ -1,7 +1,6 @@
 package sneer.skin.sound.kernel;
 
 import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 
@@ -11,7 +10,7 @@ public interface Audio extends Brick {
 
 	AudioFormat defaultAudioFormat();
 
-	TargetDataLine openTargetDataLine() throws LineUnavailableException;
+	TargetDataLine tryToOpenTargetDataLine();
 	SourceDataLine tryToOpenSourceDataLine();
 	SourceDataLine tryToOpenSourceDataLine(AudioFormat audioFormat);
 	

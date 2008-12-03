@@ -59,6 +59,8 @@ class AudioImpl implements Audio {
 			_lights.turnOnIfNecessary(_captureLight, "Problem with Audio Capture (Mic)", e);
 			return null;
 		}
+
+		_lights.turnOffIfNecessary(_captureLight);
 		dataLine.start();
 		return dataLine;
 	}

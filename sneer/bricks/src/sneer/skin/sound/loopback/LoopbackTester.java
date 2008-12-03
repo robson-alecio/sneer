@@ -2,6 +2,6 @@ package sneer.skin.sound.loopback;
 
 public interface LoopbackTester {
 
-	void start();
+	boolean start();
 	void stop();
 }

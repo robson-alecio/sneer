@@ -22,9 +22,9 @@ class Player {
 		_isRunning = false;
 	}
 
-	static void start(ByteArrayOutputStream buffer) {
+	static boolean start(ByteArrayOutputStream buffer) {
 		_sourceDataLine = _audio.tryToOpenPlaybackLine();
-		if (_sourceDataLine == null) return;
+		if (_sourceDataLine == null) return false;
 
 		_buffer = buffer;
 		
@@ -39,6 +39,7 @@ class Player {
 
 			return true;
 		}});
+		return true;
 	}
 
 	static private void playBuffer() {

@@ -21,9 +21,9 @@ class Recorder {
 		_isRunning = false;
 	}
 	
-	static void start(ByteArrayOutputStream buffer) {
+	static boolean start(ByteArrayOutputStream buffer) {
 		final TargetDataLine targetDataLine = _audio.tryToOpenCaptureLine();
-		if (targetDataLine == null) return;
+		if (targetDataLine == null) return false;
 		
 		_buffer = buffer;
 
@@ -38,6 +38,7 @@ class Recorder {
 
 			return true;
 		}});
+		return true;
 	}
 
 	private static void record(TargetDataLine targetDataLine) {

@@ -4,13 +4,14 @@
 
 	- Environment.my(BrickType.class) - Support for newly developed bricks.
 
-	- Mocotó Test Framework
-
 	- ContainerUtils.getContainer() - Drop. Fix all uses.
 
-	- Debugging Strategy - Revise so that all debugging info doesn't go into the log file. 
-
 	- @Inject -> my()
+
+	- Debugging Strategy - Revise so that all debugging info doesn't go into the log file.
+		- Default: sysout and file. Filter by part of message: Only file or ignore. 
+
+	- Mocotó Test Framework
 
 	- ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do.
 		- SetSignal - Revise it also. 

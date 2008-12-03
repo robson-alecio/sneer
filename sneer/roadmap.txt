@@ -65,8 +65,6 @@ ROADMAP TO PRODUCE
 
 	- Voice Calls
 		- First Step: When I press the button I listen to everyone and everyone listens to me.
-		- Refactor:
-			- Remove duplication between SoundPlayer and Speaker.
 		- [Klaus] Play with audio format values on Linux.
 		- Second Step: Rooms.
 

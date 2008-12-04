@@ -8,7 +8,7 @@ import wheel.lang.exceptions.TimeIsUp;
 
 public abstract class Timebox implements Runnable {
 
-	private static final int PRECISION_IN_MILLIS = 2000;
+	private static final int PRECISION_IN_MILLIS = 50;
 	private static final Timebox[] ARRAY_TYPE = new Timebox[0];
 	
 	static private final Set<Timebox> _activeTimeboxes = java.util.Collections.synchronizedSet(new HashSet<Timebox>()); 
@@ -19,9 +19,8 @@ public abstract class Timebox implements Runnable {
 			while (true) {
 				Threads.sleepWithoutInterruptions(PRECISION_IN_MILLIS);
 			
-				long now = System.currentTimeMillis();
 				for (Timebox victim : _activeTimeboxes.toArray(ARRAY_TYPE))
-					victim.dieIfDue(now);
+					victim.payOrDie(PRECISION_IN_MILLIS);
 			}
 			
 		}};
@@ -31,7 +30,7 @@ public abstract class Timebox implements Runnable {
 	}
 	
 	public Timebox(int durationInMillis, boolean runNow) {
-		_durationInMillis = durationInMillis;
+		_millisToDie = durationInMillis;
 		if (runNow) run();
 	}
 	
@@ -39,10 +38,9 @@ public abstract class Timebox implements Runnable {
 		this(durationInMillis, true);
 	}
 
-	private final int _durationInMillis;
-	private long _timeDue = 0;
+	private int _millisToDie = 0;
 	private Thread _worker;
-	private boolean _isBlockStatusLogged = false;
+	private boolean _isBlockageAlreadyLogged = false;
 	
 	
 	protected abstract void runInTimebox();
@@ -58,57 +56,55 @@ public abstract class Timebox implements Runnable {
 
 	private void tryToRun() {
 		try {
-			runPre(System.currentTimeMillis());
+			runPre();
 			runInTimebox();
 		} finally {
 			runPost();
 		}
 	}
 
-	synchronized private void runPre(long now) {
-		if (_timeDue != 0) throw new IllegalStateException("Timebox was already running.");
+	synchronized private void runPre() {
+		if (_worker != null) throw new IllegalStateException("Timebox was already running.");
 	
-		_timeDue = now + _durationInMillis;
 		_worker = Thread.currentThread();
 		_activeTimeboxes.add(this);
 	}
 
 	synchronized private void runPost() {
-		_timeDue = 0;
 		_worker = null;
-		_isBlockStatusLogged = false;
+		_isBlockageAlreadyLogged = false;
 		_activeTimeboxes.remove(this);
 	}
 
-	synchronized private void dieIfDue(long now) {
+	synchronized private void payOrDie(long timeInMillis) {
 		if (isDone()) return;
-		if (now < _timeDue) return;
-		
-		tryToStopThread(_worker);
+
+		_millisToDie -= timeInMillis;
+		if (_millisToDie <= 0) die();
 	}
 
 	private boolean isDone() {
-		return _timeDue == 0;
+		return _worker == null;
 	}
 
 	@SuppressWarnings("deprecation")
-	private void tryToStopThread(Thread thread) {
-		if (dealWithBlocked(thread)) return;			
+	private void die() {
+		if (dealWithBlocked(_worker)) return;			
 		
-		TimeIsUp timeIsUp = new TimeIsUp(thread.getStackTrace(), "Timebox ended.");
-		thread.stop(timeIsUp);
+		TimeIsUp timeIsUp = new TimeIsUp(_worker.getStackTrace(), "Timebox ended.");
+		_worker.stop(timeIsUp);
 	}
 	
 	private boolean dealWithBlocked(Thread thread) {
 		if (!isBlocked(thread)) return false;
-		if (!_isBlockStatusLogged) {
-			_isBlockStatusLogged = true;
-			logBlockedStatus(thread);
+		if (!_isBlockageAlreadyLogged) {
+			_isBlockageAlreadyLogged = true;
+			logBlockage(thread);
 		}
 		return true;
 	}
 
-	private void logBlockedStatus(Thread thread) {
+	private void logBlockage(Thread thread) {
 		TimeIsUp timeIsUp = new TimeIsUp(thread.getStackTrace(), "Thread running in timebox is blocked waiting for a synchronization monitor and cannot be stopped.");
 		Logger.log(timeIsUp);
 	}

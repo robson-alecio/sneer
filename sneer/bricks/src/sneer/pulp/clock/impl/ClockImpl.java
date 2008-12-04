@@ -19,7 +19,7 @@ class ClockImpl implements Clock {
 	
 	final SortedSet<Alarm> _alarms = new TreeSet<Alarm>();
 	
-	final  ExceptionHandler _exceptionHandler = my(ExceptionHandler.class);
+	final ExceptionHandler _exceptionHandler = my(ExceptionHandler.class);
 	
 	@Override
 	synchronized public void wakeUpNoEarlierThan(long timeToWakeUp, Runnable runnable) {

@@ -10,6 +10,7 @@ import sneer.pulp.clock.Clock;
 import sneer.pulp.connection.mocks.SocketAccepterMock;
 import sneer.pulp.connection.reachability.ReachabilitySentinel;
 import sneer.pulp.network.ByteArraySocket;
+import tests.Contribute;
 import tests.TestThatIsInjected;
 
 public class ReachabilityTest extends TestThatIsInjected {
@@ -26,6 +27,7 @@ public class ReachabilityTest extends TestThatIsInjected {
 	
 	final private Mockery _mockery = new JUnit4Mockery();
 	
+	@Contribute
 	final private SocketAccepterMock _accepter = new SocketAccepterMock();
 
 	@Test

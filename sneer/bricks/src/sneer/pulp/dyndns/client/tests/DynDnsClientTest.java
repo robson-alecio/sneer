@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static wheel.lang.Environments.my;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,11 +31,11 @@ import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.propertystore.mocks.TransientPropertyStore;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
 import tests.ContainerEnvironment;
+import tests.Contribute;
 import wheel.lang.exceptions.FriendlyException;
 import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.lists.ListSignal;
-import static wheel.lang.Environments.my;
 
 @RunWith(ContainerEnvironment.class)
 public class DynDnsClientTest {
@@ -64,11 +65,11 @@ Unacceptable Client Behavior
 	final DynDnsAccount _account = new DynDnsAccount("test.dyndns.org", "test", "test");
 	final RegisterImpl<DynDnsAccount> _ownAccount = new RegisterImpl<DynDnsAccount>(_account);
 	
-	final OwnIpDiscoverer _ownIpDiscoverer = _context.mock(OwnIpDiscoverer.class);
-	final DynDnsAccountKeeper _ownAccountKeeper = _context.mock(DynDnsAccountKeeper.class);
-	final Updater _updater = _context.mock(Updater.class);
-	final TransientPropertyStore _propertyStore = new TransientPropertyStore();
-	final ThreadPoolMock _threadPool = new ThreadPoolMock();
+	@Contribute final OwnIpDiscoverer _ownIpDiscoverer = _context.mock(OwnIpDiscoverer.class);
+	@Contribute final DynDnsAccountKeeper _ownAccountKeeper = _context.mock(DynDnsAccountKeeper.class);
+	@Contribute final Updater _updater = _context.mock(Updater.class);
+	@Contribute final TransientPropertyStore _propertyStore = new TransientPropertyStore();
+	@Contribute final ThreadPoolMock _threadPool = new ThreadPoolMock();
 	
 	@Test
 	public void updateOnIpChange() throws Exception {

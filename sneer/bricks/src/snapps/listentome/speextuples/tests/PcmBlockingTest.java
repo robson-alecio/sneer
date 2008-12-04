@@ -9,6 +9,7 @@ import snapps.listentome.speextuples.SpeexTuples;
 import sneer.kernel.container.Inject;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.skin.sound.PcmSoundPacket;
+import tests.Contribute;
 import tests.TestThatIsInjected;
 
 public class PcmBlockingTest extends TestThatIsInjected {
@@ -19,6 +20,7 @@ public class PcmBlockingTest extends TestThatIsInjected {
 	
 	private final Mockery _mockery = new JUnit4Mockery();
 	
+	@Contribute
 	private final TupleFilterManager _filter = _mockery.mock(TupleFilterManager.class);
 	
 	{ 

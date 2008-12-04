@@ -1,7 +1,6 @@
 package tests;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 
 import org.junit.internal.runners.InitializationError;
@@ -33,28 +32,26 @@ public class ContainerEnvironment extends WheelEnvironment {
 	@Override
 	protected Object createTest() throws Exception {
 		final Object test = super.createTest();
-		_container = ContainerUtils.newContainer(boundBrickFieldsFor(test));
+		_container = ContainerUtils.newContainer(contributionsFrom(test));
 		return test;
 	}
 
-	public static Object[] boundBrickFieldsFor(Object instance) {
+	public static Object[] contributionsFrom(Object instance) {
 		final ArrayList<Object> result = new ArrayList<Object>();
 		Class<? extends Object> klass = instance.getClass();
 		while (klass != Object.class) {
-			collectBoundBrickFields(result, instance, klass);
+			collectContributedFields(result, instance, klass);
 			klass = klass.getSuperclass();
 		}
 		return result.toArray();
 	}
 
-	private static void collectBoundBrickFields(
+	private static void collectContributedFields(
 			final ArrayList<Object> collector, Object instance,
 			final Class<? extends Object> klass) {
 		
 		for (Field field : klass.getDeclaredFields()) {
-			if (Modifier.isStatic(field.getModifiers()))
-				continue;
-			if (field.getClass().isPrimitive())
+			if (field.getAnnotation(Contribute.class) == null)
 				continue;
 			final Object fieldValue = getFieldValue(field, instance);
 			if (fieldValue == null)

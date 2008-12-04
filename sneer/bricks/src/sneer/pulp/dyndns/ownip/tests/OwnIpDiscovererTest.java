@@ -16,6 +16,7 @@ import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.propertystore.PropertyStore;
 import sneer.pulp.propertystore.mocks.TransientPropertyStore;
+import tests.Contribute;
 import tests.JMockContainerEnvironment;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.Receiver;
@@ -24,8 +25,8 @@ import wheel.reactive.impl.Receiver;
 public class OwnIpDiscovererTest {
 	
 	final Mockery _context = new JUnit4Mockery();
-	final CheckIp checkip = _context.mock(CheckIp.class);
-	final PropertyStore store = new TransientPropertyStore();
+	@Contribute final CheckIp checkip = _context.mock(CheckIp.class);
+	@Contribute final PropertyStore store = new TransientPropertyStore();
 	
 	@Test
 	public void testDiscovery() throws IOException {

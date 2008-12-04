@@ -21,6 +21,7 @@ import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.speaker.Speaker;
+import tests.Contribute;
 import tests.JMockContainerEnvironment;
 import tests.TestThatIsInjected;
 import wheel.lang.Consumer;
@@ -37,9 +38,9 @@ public class SpeakerTest extends TestThatIsInjected {
 
 	private final Mockery _mockery = new JUnit4Mockery();
 	
-	private final Audio _audio = _mockery.mock(Audio.class);
+	@Contribute private final Audio _audio = _mockery.mock(Audio.class);
 	private final SourceDataLine _line = _mockery.mock(SourceDataLine.class);
-	private final SpeakerBuffers _buffers = _mockery.mock(SpeakerBuffers.class);
+	@Contribute private final SpeakerBuffers _buffers = _mockery.mock(SpeakerBuffers.class);
 	private final SpeakerBuffer _buffer = _mockery.mock(SpeakerBuffer.class);
 	
 	private Consumer<? super PcmSoundPacket> _consumer;

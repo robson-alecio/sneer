@@ -1,7 +1,5 @@
 package sneer.skin.sound.mic.impl;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.TargetDataLine;
 

@@ -26,6 +26,7 @@ import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.screenshotter.Screenshotter;
+import tests.Contribute;
 import tests.TestThatIsInjected;
 import wheel.io.ui.graphics.Images;
 import wheel.lang.Threads;
@@ -48,6 +49,8 @@ public class WatchMeTest extends TestThatIsInjected {
 	private static WatchMe _subject;
 
 	final private Mockery _context = new JUnit4Mockery();
+	
+	@Contribute
 	final private Screenshotter _shotter = _context.mock(Screenshotter.class);
 	
 	private AtomicReference<BufferedImage> _screenObserved = new AtomicReference<BufferedImage>(null);

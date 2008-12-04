@@ -10,6 +10,7 @@ import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;
 import sneer.pulp.network.impl.inmemory.InMemoryNetwork;
 import sneer.pulp.port.PortKeeper;
+import tests.Contribute;
 import tests.TestThatIsInjected;
 import wheel.reactive.impl.Receiver;
 
@@ -21,6 +22,7 @@ public class SocketAccepterTest extends TestThatIsInjected {
 	@Inject
 	private static SocketAccepter _accepter;
 
+	@Contribute
 	private final Network _network = new InMemoryNetwork();
 
 	@Test(timeout=5000)

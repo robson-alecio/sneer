@@ -28,7 +28,7 @@ public class JMockContainerEnvironment extends JMockWheelEnvironment {
 	@Override
 	protected Object createTest() throws Exception {
 		final Object test = super.createTest();
-		_container = ContainerUtils.newContainer(ContainerEnvironment.boundBrickFieldsFor(test));
+		_container = ContainerUtils.newContainer(ContainerEnvironment.contributionsFrom(test));
 		return test;
 	}
 }

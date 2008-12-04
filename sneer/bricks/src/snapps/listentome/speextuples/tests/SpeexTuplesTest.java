@@ -19,6 +19,7 @@ import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
+import tests.Contribute;
 import tests.JMockContainerEnvironment;
 import tests.TestThatIsInjected;
 import wheel.lang.ByRef;
@@ -40,6 +41,7 @@ public class SpeexTuplesTest extends TestThatIsInjected{
 	
 	private final Mockery _mockery = new JUnit4Mockery();
 	
+	@Contribute
 	private final Speex _speex = _mockery.mock(Speex.class);
 	
 	private final Encoder _encoder = _mockery.mock(Encoder.class);

@@ -18,6 +18,7 @@ import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.probe.ProbeManager;
 import sneer.pulp.serialization.Serializer;
 import sneer.pulp.tuples.TupleSpace;
+import tests.Contribute;
 import tests.JMockContainerEnvironment;
 import tests.TestThatIsInjected;
 import wheel.lang.Consumer;
@@ -35,10 +36,10 @@ public class ProbeManagerTest extends TestThatIsInjected {
 	
 	private final Mockery _mockery = new Mockery();
 	
-	private final ConnectionManager _connectionManager = _mockery.mock(ConnectionManager.class);
+	@Contribute private final ConnectionManager _connectionManager = _mockery.mock(ConnectionManager.class);
 	private final ByteConnection _connection = _mockery.mock(ByteConnection.class);
 	private PacketScheduler _scheduler;
-	private final Serializer _serializer = _mockery.mock(Serializer.class);
+	@Contribute private final Serializer _serializer = _mockery.mock(Serializer.class);
 
 	@SuppressWarnings("deprecation")
 	@Test //(timeout = 10000)

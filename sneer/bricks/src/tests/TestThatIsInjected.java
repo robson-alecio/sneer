@@ -13,7 +13,7 @@ import wheel.testutil.TestThatMightUseResources;
 @RunWith(ContainerEnvironment.class)
 public abstract class TestThatIsInjected extends TestThatMightUseResources {
 	
-	final PersistenceConfigMock _persistenceConfig = new PersistenceConfigMock(tmpDirectory());
+	@Contribute final PersistenceConfigMock _persistenceConfig = new PersistenceConfigMock(tmpDirectory());
     
 	@Before
 	final public void beforeTestThatIsInjected() throws Exception {

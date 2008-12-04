@@ -6,6 +6,7 @@ import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.runner.RunWith;
 
 import sneer.pulp.exceptionhandling.ExceptionHandler;
+import tests.Contribute;
 import tests.JMockContainerEnvironment;
 import tests.TestThatIsInjected;
 import wheel.lang.Fallible;
@@ -14,6 +15,8 @@ import wheel.lang.Fallible;
 public abstract class ShieldingTestBase extends TestThatIsInjected {
 
 	protected final Mockery _mockery = new JUnit4Mockery();
+	
+	@Contribute
 	protected final ExceptionHandler _handlerMock = _mockery.mock(ExceptionHandler.class);
 	
 	{

@@ -1,6 +1,7 @@
 package tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static wheel.lang.Environments.my;
 
@@ -14,13 +15,19 @@ import tests.foo.FooBrick;
 public class ContainerEnvironmentTest {
 	
 	int _barPingCount = 0;
-	// mocks can be initialized directly
-	// and will be made part of the test environment
-	// automatically (see #testFieldsAreAutomaticallyInjectedIntoTheEnvironment)
+	
+	@Contribute
 	final BarBrick _bar = new BarBrick() {
 		@Override
 		public void ping() {
 			++_barPingCount;
+		}
+	};
+	
+	final FooBrick _foo = new FooBrick() {
+		@Override
+		public void pingBar() {
+			throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 		}
 	};
 	
@@ -32,8 +39,13 @@ public class ContainerEnvironmentTest {
 	// annotation.
 	
 	@Test
-	public void testFieldsAreAutomaticallyInjectedIntoTheEnvironment() {
+	public void testContributedField() {
 		assertSame(_bar, my(BarBrick.class));
+	}
+	
+	@Test
+	public void testNonContributedField() {
+		assertNotSame(_foo, my(FooBrick.class));
 	}
 	
 	@Test

@@ -9,6 +9,7 @@ import sneer.kernel.container.Inject;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.pulp.tuples.config.TupleSpaceConfig;
+import tests.Contribute;
 import tests.TestThatIsInjected;
 import wheel.lang.ByRef;
 import wheel.lang.Consumer;
@@ -17,11 +18,11 @@ public class TupleSpaceResponsivenessTest extends TestThatIsInjected {
 
 	@Inject private static TupleSpace _subject;
 	
-	private final ThreadPoolMock _threads = new ThreadPoolMock();
+	@Contribute private final ThreadPoolMock _threads = new ThreadPoolMock();
 	
 	private final Mockery _mockery = new JUnit4Mockery();
 	
-	private final TupleSpaceConfig _tuplesConfig = _mockery.mock(TupleSpaceConfig.class); {
+	@Contribute private final TupleSpaceConfig _tuplesConfig = _mockery.mock(TupleSpaceConfig.class); {
 		_mockery.checking(new Expectations() {{
 			one(_tuplesConfig).isAcquisitionSynchronous();
 				will(returnValue(false));

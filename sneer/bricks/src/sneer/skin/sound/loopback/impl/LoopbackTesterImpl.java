@@ -19,7 +19,7 @@ class LoopbackTesterImpl implements LoopbackTester{
 		Logger.log("Audio Loopback Test started.");
 
 		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-		boolean isRunning = Recorder.start(buffer) &	Player.start(buffer);
+		boolean isRunning = Player.start(buffer) && Recorder.start(buffer);
 		if(!isRunning) stop();
 		return isRunning;
 	}	

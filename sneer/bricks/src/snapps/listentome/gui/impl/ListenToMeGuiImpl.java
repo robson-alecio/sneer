@@ -118,7 +118,7 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 	private void createLoopBackButtonListener() {
 		_loopBackButton.addMouseListener(new MouseAdapter() {	@Override public void mouseReleased(MouseEvent e) {
 			if(_loopBackButton.isSelected()){
-				_loopback.start();
+				_loopBackButton.setSelected(_loopback.start());
 				return;
 			}
 			_loopback.stop();

@@ -16,7 +16,7 @@ class AudioImpl implements Audio {
 
 	static private final int SAMPLE_RATE = 8000;
 	static private final int SAMPLE_SIZE_IN_BITS = 16;
-	static private final int CHANNELS = 2; //Fix: Back to 1 and run tests.  //If this doesnt work on some linux machines, try 2 channels (stereo).
+	static private final int CHANNELS = 1; //If this doesnt work on some linux machines, try 2 channels (stereo).
 	static private final boolean SIGNED = true;
 	static private final boolean BIG_ENDIAN = false;
 

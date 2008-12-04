@@ -23,7 +23,7 @@ public class WheelEnvironment extends JUnit4ClassRunner {
 	@Override
 	protected Object createTest() throws Exception {
 		final ByRef<Object> result = ByRef.newInstance();
-		Environments.runWith(environment(), new Runnable() { @Override public void run()  {
+		Environments.runWith(constructorEnvironment(), new Runnable() { @Override public void run()  {
 			try {
 				result.value = superCreateTest();
 			} catch (Exception e) {
@@ -39,7 +39,7 @@ public class WheelEnvironment extends JUnit4ClassRunner {
 	
 	@Override
 	protected void invokeTestMethod(final Method arg0, final RunNotifier arg1) {
-		Environments.runWith(environment(), new Runnable() { @Override public void run() {
+		Environments.runWith(testMethodEnvironment(), new Runnable() { @Override public void run() {
 			superInvokeTestMethod(arg0, arg1);
 		}});
 	}
@@ -49,7 +49,7 @@ public class WheelEnvironment extends JUnit4ClassRunner {
 		return new TestMethod(method, getTestClass()) {
 			@Override
 			public void invoke(final Object test) {
-				Environments.runWith(environment(), new Runnable() { @Override public void run() {
+				Environments.runWith(testMethodEnvironment(), new Runnable() { @Override public void run() {
 					superInvoke(test);
 				}});
 			}
@@ -62,13 +62,20 @@ public class WheelEnvironment extends JUnit4ClassRunner {
 				} catch (IllegalAccessException e) {
 					throw new RuntimeException(e);
 				} catch (InvocationTargetException e) {
-					throw new RuntimeException(e);
+					throw new RuntimeException(e.getTargetException());
 				}
 			}
 		};
 	}
 	
+	protected Environment testMethodEnvironment() {
+		return environment();
+	}
 	
+	protected Environment constructorEnvironment() {
+		return environment();
+	}
+
 	protected void superInvokeTestMethod(Method arg0, RunNotifier arg1) {
 		super.invokeTestMethod(arg0, arg1);
 	}

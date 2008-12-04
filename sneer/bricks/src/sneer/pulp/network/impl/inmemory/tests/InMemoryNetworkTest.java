@@ -5,9 +5,8 @@ import sneer.pulp.network.tests.NetworkTest;
 
 public class InMemoryNetworkTest extends NetworkTest {
 
-	@Override
-	protected Object[] getBindings() {
-		return new Object[]{new InMemoryNetwork()};
-	}
+	// will automatically be made available in the container
+	// by ContainerEnvironment
+	InMemoryNetwork _subject = new InMemoryNetwork();
 
 }

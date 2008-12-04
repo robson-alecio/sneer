@@ -1,9 +1,10 @@
 package sneer.pulp.clock.impl;
 
+import static wheel.lang.Environments.my;
+
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
 import sneer.pulp.threadpool.Stepper;
@@ -18,7 +19,7 @@ class ClockImpl implements Clock {
 	
 	final SortedSet<Alarm> _alarms = new TreeSet<Alarm>();
 	
-	@Inject private static ExceptionHandler _exceptionHandler;
+	final  ExceptionHandler _exceptionHandler = my(ExceptionHandler.class);
 	
 	@Override
 	synchronized public void wakeUpNoEarlierThan(long timeToWakeUp, Runnable runnable) {

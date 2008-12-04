@@ -3,7 +3,6 @@ package snapps.listentome.speextuples.tests;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.Sequence;
-import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,12 +19,13 @@ import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
+import tests.JMockContainerEnvironment;
 import tests.TestThatIsInjected;
 import wheel.lang.ByRef;
 import wheel.lang.Consumer;
 import wheel.lang.ImmutableByteArray;
 
-@RunWith(JMock.class)
+@RunWith(JMockContainerEnvironment.class)
 public class SpeexTuplesTest extends TestThatIsInjected{
 	
 	@Inject
@@ -121,11 +121,6 @@ public class SpeexTuplesTest extends TestThatIsInjected{
 			assertArrayEquals(new byte[] { (byte) (i*42) }, frame);
 			i += 2;
 		}
-	}
-
-	@Override
-	protected Object[] getBindings() {
-		return new Object[] { _speex };
 	}
 	
 	@SuppressWarnings("deprecation")

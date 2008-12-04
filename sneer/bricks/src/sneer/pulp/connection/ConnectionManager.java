@@ -1,9 +1,10 @@
 package sneer.pulp.connection;
 
+import sneer.kernel.container.Brick;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.network.ByteArraySocket;
 
-public interface ConnectionManager {
+public interface ConnectionManager extends Brick {
 
 	void manageIncomingSocket(Contact contact, ByteArraySocket socket);
 

@@ -29,13 +29,14 @@ import sneer.pulp.dyndns.updater.Updater;
 import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.propertystore.mocks.TransientPropertyStore;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
+import tests.ContainerEnvironment;
 import wheel.lang.exceptions.FriendlyException;
 import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.lists.ListSignal;
-import wheel.testutil.WheelEnvironment;
+import static wheel.lang.Environments.my;
 
-@RunWith(WheelEnvironment.class)
+@RunWith(ContainerEnvironment.class)
 public class DynDnsClientTest {
 	
 	/*
@@ -67,7 +68,7 @@ Unacceptable Client Behavior
 	final DynDnsAccountKeeper _ownAccountKeeper = _context.mock(DynDnsAccountKeeper.class);
 	final Updater _updater = _context.mock(Updater.class);
 	final TransientPropertyStore _propertyStore = new TransientPropertyStore();
-	final ThreadPoolMock _threadPool = new ThreadPoolMock();;
+	final ThreadPoolMock _threadPool = new ThreadPoolMock();
 	
 	@Test
 	public void updateOnIpChange() throws Exception {
@@ -83,9 +84,9 @@ Unacceptable Client Behavior
 		}});
 		
 
-		startDynDnsClient();
+		startDynDnsClientOn(newContainer());
 		
-		startDynDnsClient();
+		startDynDnsClientOn(newContainer());
 		
 		_context.assertIsSatisfied();
 	}
@@ -110,12 +111,12 @@ Unacceptable Client Behavior
 		}});
 		
 
-		final Container container = startDynDnsClient(_threadPool);
+		startDynDnsClient();
 		_threadPool.startAllActors();
 		
-		final Light light = assertBlinkingLight(error, container);
+		final Light light = assertBlinkingLight(error, my(Container.class));
 		
-		container.provide(Clock.class).advanceTime(300001);
+		my(Clock.class).advanceTime(300001);
 		
 		_threadPool.startAllActors();
 		assertFalse(light.isOn());
@@ -141,10 +142,10 @@ Unacceptable Client Behavior
 			exactly(1).of(_updater).update(account.host, account.dynDnsUser, "*" + account.password, newIp);
 		}});
 		
-		final Container container = startDynDnsClient(_threadPool);
+		startDynDnsClient();
 		_threadPool.startAllActors();
 		
-		final Light light = assertBlinkingLight(error, container);
+		final Light light = assertBlinkingLight(error, my(Container.class));
 		
 		// new ip should be ignored while new account is not provided
 		_ownIp.setter().consume(newIp);
@@ -170,8 +171,12 @@ Unacceptable Client Behavior
 		return light;
 	}
 
-	private Container startDynDnsClient(Object...mocks) {
-		final Container container = newContainer(mocks);
+	private Container startDynDnsClient() {
+		final Container container = my(Container.class);
+		return startDynDnsClientOn(container);
+	}
+
+	private Container startDynDnsClientOn(final Container container) {
 		container.provide(DynDnsClient.class);
 		return container;
 	}

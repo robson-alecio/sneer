@@ -52,11 +52,6 @@ public class WatchMeTest extends TestThatIsInjected {
 	
 	private AtomicReference<BufferedImage> _screenObserved = new AtomicReference<BufferedImage>(null);
 
-	@Override
-	protected Object[] getBindings() {
-		return new Object[] { _shotter };
-	}
-
 	@Test
 	public void watchMe() throws Exception, Hiccup {
 		

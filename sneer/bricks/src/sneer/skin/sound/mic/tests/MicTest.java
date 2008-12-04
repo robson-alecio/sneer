@@ -1,7 +1,5 @@
 package sneer.skin.sound.mic.tests;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -16,30 +14,32 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.Sequence;
 import org.jmock.api.Invocation;
-import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.jmock.lib.action.CustomAction;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import sneer.kernel.container.Container;
-import sneer.kernel.container.ContainerUtils;
+import sneer.kernel.container.Inject;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.mic.Mic;
+import tests.JMockContainerEnvironment;
+import tests.TestThatIsInjected;
 import wheel.lang.ByRef;
 import wheel.lang.Consumer;
 import wheel.lang.Threads;
 
-@RunWith(JMock.class)
-public class MicTest {
+@RunWith(JMockContainerEnvironment.class)
+public class MicTest extends TestThatIsInjected {
+	
+	@Inject
+	private TupleSpace tupleSpace;
+	@Inject
+	private Mic mic;
 	
 	private final Mockery mockery = new JUnit4Mockery();
 	private final Audio audio = mockery.mock(Audio.class);
-	private final Container container = ContainerUtils.newContainer(audio /*, threadPool */);
-	private final TupleSpace tupleSpace = container.provide(TupleSpace.class);
-	private final Mic mic = container.provide(Mic.class);
 	private final TargetDataLine targetDataLine = mockery.mock(TargetDataLine.class);
 		
 	@Test

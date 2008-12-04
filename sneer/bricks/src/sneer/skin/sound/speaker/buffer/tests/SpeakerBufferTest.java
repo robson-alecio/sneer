@@ -6,7 +6,6 @@ import java.util.List;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.Sequence;
-import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,11 +17,12 @@ import sneer.pulp.keymanager.PublicKey;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.speaker.buffer.SpeakerBuffer;
 import sneer.skin.sound.speaker.buffer.SpeakerBuffers;
+import tests.JMockContainerEnvironment;
 import tests.TestThatIsInjected;
 import wheel.lang.Consumer;
 import wheel.lang.ImmutableByteArray;
 
-@RunWith(JMock.class)
+@RunWith(JMockContainerEnvironment.class)
 public class SpeakerBufferTest extends TestThatIsInjected {
 	
 	@Inject private static SpeakerBuffers _subject;

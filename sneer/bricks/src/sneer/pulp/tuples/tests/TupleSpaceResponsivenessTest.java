@@ -27,11 +27,6 @@ public class TupleSpaceResponsivenessTest extends TestThatIsInjected {
 				will(returnValue(false));
 		}});
 	}
-	
-	@Override
-	protected Object[] getBindings() {
-		return new Object[]{ _threads,  _tuplesConfig };
-	}
 
 	@Test (timeout = 1000)
 	public void test() {

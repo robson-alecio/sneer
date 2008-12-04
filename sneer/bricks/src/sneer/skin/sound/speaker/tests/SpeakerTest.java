@@ -6,7 +6,6 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.Sequence;
 import org.jmock.api.Invocation;
-import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.jmock.lib.action.CustomAction;
 import org.junit.Test;
@@ -22,12 +21,13 @@ import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.speaker.Speaker;
 import sneer.skin.sound.speaker.buffer.SpeakerBuffer;
 import sneer.skin.sound.speaker.buffer.SpeakerBuffers;
+import tests.JMockContainerEnvironment;
 import tests.TestThatIsInjected;
-import wheel.lang.ImmutableByteArray;
 import wheel.lang.Consumer;
+import wheel.lang.ImmutableByteArray;
 
 
-@RunWith(JMock.class)
+@RunWith(JMockContainerEnvironment.class)
 public class SpeakerTest extends TestThatIsInjected {
 	
 	@Inject private static Speaker _subject;
@@ -43,11 +43,6 @@ public class SpeakerTest extends TestThatIsInjected {
 	private final SpeakerBuffer _buffer = _mockery.mock(SpeakerBuffer.class);
 	
 	private Consumer<? super PcmSoundPacket> _consumer;
-	
-	@Override
-	protected Object[] getBindings() {
-		return new Object[]{ _audio, _buffers };
-	}
 
 	@Test
 	public void testSilentChannel() throws Exception {

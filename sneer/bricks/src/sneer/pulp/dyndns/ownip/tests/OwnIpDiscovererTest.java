@@ -1,5 +1,7 @@
 package sneer.pulp.dyndns.ownip.tests;
 
+import static wheel.lang.Environments.my;
+
 import java.io.IOException;
 
 import org.jmock.Expectations;
@@ -9,29 +11,25 @@ import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import sneer.kernel.container.Container;
-import sneer.kernel.container.ContainerUtils;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.propertystore.PropertyStore;
 import sneer.pulp.propertystore.mocks.TransientPropertyStore;
+import tests.JMockContainerEnvironment;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.Receiver;
-import wheel.testutil.WheelEnvironment;
 
-@RunWith(WheelEnvironment.class)
+@RunWith(JMockContainerEnvironment.class)
 public class OwnIpDiscovererTest {
 	
 	final Mockery _context = new JUnit4Mockery();
+	final CheckIp checkip = _context.mock(CheckIp.class);
+	final PropertyStore store = new TransientPropertyStore();
 	
 	@Test
 	public void testDiscovery() throws IOException {
-		
-		final CheckIp checkip = _context.mock(CheckIp.class);
 		final Consumer<String> receiver = _context.mock(Consumer.class);
-		final PropertyStore store = new TransientPropertyStore();
-		
 		final String ip1 = "123.45.67.89";
 		final String ip2 = "12.34.56.78";
 
@@ -52,19 +50,16 @@ public class OwnIpDiscovererTest {
 
 		}});
 		
-		Container container = ContainerUtils.newContainer(checkip, store);
-		OwnIpDiscoverer discoverer = container.provide(OwnIpDiscoverer.class);
+		OwnIpDiscoverer discoverer = my(OwnIpDiscoverer.class);
 		
 		@SuppressWarnings("unused")
 		final Receiver<String> refToAvoidGc = new Receiver<String>(discoverer.ownIp()) { @Override public void consume(String value) {
 			receiver.consume(value);
 		}};
 		
-		Clock clock = container.provide(Clock.class);
+		Clock clock = my(Clock.class);
 		clock.advanceTime(retryTime);
 		clock.advanceTime(retryTime);
 		clock.advanceTime(retryTime);
-		
-		_context.assertIsSatisfied();
 	}
 }

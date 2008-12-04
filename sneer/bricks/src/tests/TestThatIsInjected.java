@@ -1,24 +1,19 @@
 package tests;
 
 
-import org.apache.commons.lang.ArrayUtils;
-import org.junit.Before;
+import static wheel.lang.Environments.my;
 
-import sneer.kernel.container.Container;
-import sneer.kernel.container.ContainerUtils;
+import org.junit.Before;
+import org.junit.runner.RunWith;
+
 import sneer.kernel.container.Injector;
 import sneer.pulp.config.persistence.mocks.PersistenceConfigMock;
 import wheel.testutil.TestThatMightUseResources;
 
+@RunWith(ContainerEnvironment.class)
 public abstract class TestThatIsInjected extends TestThatMightUseResources {
 	
-	private Object[] getMyBindings() {
-		return ArrayUtils.add(getBindings(), new PersistenceConfigMock(tmpDirectory()));
-	}
-
-	protected Object[] getBindings() {
-    	return new Object[]{};
-    }
+	final PersistenceConfigMock _persistenceConfig = new PersistenceConfigMock(tmpDirectory());
     
 	@Before
 	final public void beforeTestThatIsInjected() throws Exception {
@@ -26,8 +21,7 @@ public abstract class TestThatIsInjected extends TestThatMightUseResources {
 	}
 
 	private void injectDependencies() {
-		Container container = ContainerUtils.newContainer(getMyBindings());
-	    Injector injector = container.provide(Injector.class);
+	    Injector injector = my(Injector.class);
 	    injector.inject(this);
 	}
 

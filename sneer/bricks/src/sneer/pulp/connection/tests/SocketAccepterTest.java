@@ -3,7 +3,6 @@ package sneer.pulp.connection.tests;
 import java.io.IOException;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import sneer.kernel.container.Inject;
 import sneer.pulp.connection.SocketAccepter;
@@ -13,9 +12,7 @@ import sneer.pulp.network.impl.inmemory.InMemoryNetwork;
 import sneer.pulp.port.PortKeeper;
 import tests.TestThatIsInjected;
 import wheel.reactive.impl.Receiver;
-import wheel.testutil.WheelEnvironment;
 
-@RunWith(WheelEnvironment.class)
 public class SocketAccepterTest extends TestThatIsInjected {
 
 	@Inject
@@ -24,13 +21,7 @@ public class SocketAccepterTest extends TestThatIsInjected {
 	@Inject
 	private static SocketAccepter _accepter;
 
-	@Inject
-	private static Network _network;
-	
-	@Override
-	protected Object[] getBindings() {
-		return new Object[]{ new InMemoryNetwork() };
-	}
+	private final Network _network = new InMemoryNetwork();
 
 	@Test(timeout=5000)
 	public void testSocketAccept() throws Exception {
@@ -53,7 +44,7 @@ public class SocketAccepterTest extends TestThatIsInjected {
 		assertEquals("HELLO", reply);
 	}
 	
-	static class SneerClient {
+	class SneerClient {
 		
 		private ByteArraySocket _socket;
 		

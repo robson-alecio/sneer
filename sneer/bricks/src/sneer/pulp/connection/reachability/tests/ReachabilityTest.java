@@ -27,11 +27,6 @@ public class ReachabilityTest extends TestThatIsInjected {
 	final private Mockery _mockery = new JUnit4Mockery();
 	
 	final private SocketAccepterMock _accepter = new SocketAccepterMock();
-	
-	@Override
-	protected Object[] getBindings() {
-		return new Object[] {_accepter};
-	}
 
 	@Test
 	public void testBlinkingLightWhenUnreachable() throws Exception {
@@ -45,6 +40,8 @@ public class ReachabilityTest extends TestThatIsInjected {
 		_accepter._notifier.notifyReceivers(socket);
 		
 		assertEquals(0, _lights.lights().currentSize());
+		
+		_mockery.assertIsSatisfied();
 	}
 	
 	private <T>  T mock(Class<T> typeToMock) {

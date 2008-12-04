@@ -18,12 +18,12 @@ import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.probe.ProbeManager;
 import sneer.pulp.serialization.Serializer;
 import sneer.pulp.tuples.TupleSpace;
+import tests.JMockContainerEnvironment;
 import tests.TestThatIsInjected;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.Constant;
-import wheel.testutil.JMockWheelEnvironment;
 
-@RunWith(JMockWheelEnvironment.class)
+@RunWith(JMockContainerEnvironment.class)
 public class ProbeManagerTest extends TestThatIsInjected {
 
 	@SuppressWarnings("unused")
@@ -39,12 +39,6 @@ public class ProbeManagerTest extends TestThatIsInjected {
 	private final ByteConnection _connection = _mockery.mock(ByteConnection.class);
 	private PacketScheduler _scheduler;
 	private final Serializer _serializer = _mockery.mock(Serializer.class);
-	
-	@Override
-	protected Object[] getBindings() {
-		return new Object[]{_connectionManager, _serializer};
-	}
-
 
 	@SuppressWarnings("deprecation")
 	@Test //(timeout = 10000)

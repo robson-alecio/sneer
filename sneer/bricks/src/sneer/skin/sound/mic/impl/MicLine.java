@@ -41,7 +41,7 @@ class MicLine {
 	static PcmSoundPacket read() {
 		byte[] buffer = pcmBuffer();
 		int read = _delegate.read(buffer , 0, buffer.length);
-		return new PcmSoundPacket(new ImmutableByteArray(buffer, read), nextShort());
+		return new PcmSoundPacket(new ImmutableByteArray(buffer, read), (short) 0);
 	}
 
 	private static byte[] pcmBuffer() {
@@ -71,11 +71,4 @@ class MicLine {
 		throw new FriendlyException("Mic not working", specifics + " Try changing your operating system's mic and mixer settings.");
 	}
 	
-	private static final AtomicInteger _ids = new AtomicInteger();
-
-	private static short nextShort() {
-		if(_ids.compareAndSet(Short.MAX_VALUE, Short.MIN_VALUE))
-			return Short.MIN_VALUE;
-		return (short)_ids.incrementAndGet();
-	}
 }

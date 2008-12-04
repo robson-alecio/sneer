@@ -109,6 +109,13 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 	}
 
 	private void createListenToMeButtonListener() {
+		
+		
+		System.err.println("Speaker always open");
+		_speaker.open();
+		
+		
+		
 		_listenToMeButton.addMouseListener(new MouseAdapter() {	@Override public void mouseReleased(MouseEvent e) {
 			if (_listenToMeButton.isSelected()) listenToMeOn();
 			else listenToMeOff();

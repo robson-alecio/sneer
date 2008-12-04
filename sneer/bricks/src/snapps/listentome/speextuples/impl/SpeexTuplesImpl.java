@@ -1,5 +1,7 @@
 package snapps.listentome.speextuples.impl;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import snapps.listentome.speex.Decoder;
 import snapps.listentome.speex.Encoder;
 import snapps.listentome.speex.Speex;
@@ -70,11 +72,20 @@ class SpeexTuplesImpl implements SpeexTuples {
 	
 	protected void decode(SpeexPacket packet) {
 		for (byte[] frame : _decoder.decode(packet._frames))
-			_tupleSpace.acquire(new PcmSoundPacket(packet.publisher(), packet.publicationTime(), new ImmutableByteArray(frame, frame.length), (short)0));
+			_tupleSpace.acquire(new PcmSoundPacket(packet.publisher(), packet.publicationTime(), new ImmutableByteArray(frame, frame.length), nextShort()));
 	}
 
 	@Override
 	public int framesPerAudioPacket() {
 		return FRAMES_PER_AUDIO_PACKET;
 	}
+	
+	private static final AtomicInteger _ids = new AtomicInteger();
+
+	private static short nextShort() {
+		if(_ids.compareAndSet(Short.MAX_VALUE, Short.MIN_VALUE))
+			return Short.MIN_VALUE;
+		return (short)_ids.incrementAndGet();
+	}
+
 }

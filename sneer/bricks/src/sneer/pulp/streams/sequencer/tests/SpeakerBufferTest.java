@@ -1,4 +1,4 @@
-package sneer.skin.sound.speaker.buffer.tests;
+package sneer.pulp.streams.sequencer.tests;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +14,9 @@ import sneer.kernel.container.Inject;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
+import sneer.pulp.streams.sequencer.SpeakerBuffer;
+import sneer.pulp.streams.sequencer.SpeakerBuffers;
 import sneer.skin.sound.PcmSoundPacket;
-import sneer.skin.sound.speaker.buffer.SpeakerBuffer;
-import sneer.skin.sound.speaker.buffer.SpeakerBuffers;
 import tests.JMockContainerEnvironment;
 import tests.TestThatIsInjected;
 import wheel.lang.Consumer;

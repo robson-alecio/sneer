@@ -1,9 +1,9 @@
 package sneer.skin.sound.speaker.impl;
 
 import sneer.kernel.container.Inject;
+import sneer.pulp.streams.sequencer.SpeakerBuffer;
+import sneer.pulp.streams.sequencer.SpeakerBuffers;
 import sneer.skin.sound.speaker.Speaker;
-import sneer.skin.sound.speaker.buffer.SpeakerBuffer;
-import sneer.skin.sound.speaker.buffer.SpeakerBuffers;
 
 class SpeakerImpl implements Speaker {
 	

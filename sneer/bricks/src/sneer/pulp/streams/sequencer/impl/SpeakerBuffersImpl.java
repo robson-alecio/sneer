@@ -1,8 +1,8 @@
-package sneer.skin.sound.speaker.buffer.impl;
+package sneer.pulp.streams.sequencer.impl;
 
+import sneer.pulp.streams.sequencer.SpeakerBuffer;
+import sneer.pulp.streams.sequencer.SpeakerBuffers;
 import sneer.skin.sound.PcmSoundPacket;
-import sneer.skin.sound.speaker.buffer.SpeakerBuffer;
-import sneer.skin.sound.speaker.buffer.SpeakerBuffers;
 import wheel.lang.Consumer;
 
 class SpeakerBuffersImpl implements SpeakerBuffers {

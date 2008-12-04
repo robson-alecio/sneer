@@ -1,4 +1,4 @@
-package sneer.skin.sound.speaker.buffer;
+package sneer.pulp.streams.sequencer;
 
 import sneer.kernel.container.Brick;
 import sneer.skin.sound.PcmSoundPacket;

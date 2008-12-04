@@ -1,12 +1,12 @@
-package sneer.skin.sound.speaker.buffer.impl;
+package sneer.pulp.streams.sequencer.impl;
 
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import sneer.pulp.streams.sequencer.SpeakerBuffer;
 import sneer.skin.sound.PcmSoundPacket;
-import sneer.skin.sound.speaker.buffer.SpeakerBuffer;
 import wheel.lang.Consumer;
 
 class SpeakerBufferImpl implements SpeakerBuffer {

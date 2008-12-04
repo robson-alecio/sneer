@@ -26,7 +26,7 @@ public class ClockTickerImpl implements ClockTicker, Runnable {
 	
 	private void tick() {
 		_clock.advanceTimeTo(System.currentTimeMillis());
-		Threads.sleepWithoutInterruptions(500); //Precision of twice per second is OK for now.
+		Threads.sleepWithoutInterruptions(10); //Precision of 100 times per second is OK for now.
 	}
 
 }

@@ -8,7 +8,7 @@ import wheel.lang.exceptions.TimeIsUp;
 
 public abstract class Timebox implements Runnable {
 
-	private static final int PRECISION_IN_MILLIS = 50;
+	private static final int PRECISION_IN_MILLIS = 500;
 	private static final Timebox[] ARRAY_TYPE = new Timebox[0];
 	
 	static private final Set<Timebox> _activeTimeboxes = java.util.Collections.synchronizedSet(new HashSet<Timebox>()); 

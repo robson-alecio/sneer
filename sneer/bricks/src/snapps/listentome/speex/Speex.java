@@ -1,6 +1,8 @@
 package snapps.listentome.speex;
 
-public interface Speex {
+import sneer.kernel.container.Brick;
+
+public interface Speex extends Brick {
 	Encoder createEncoder();
 	Decoder createDecoder();
 }

@@ -39,13 +39,17 @@ class AudioImpl implements Audio {
 			dataLine = AudioSystem.getSourceDataLine(audioFormat);
 			dataLine.open();
 		} catch (LineUnavailableException e) {
-			_lights.turnOnIfNecessary(_playbackLight, "Problem with Audio Playback (Speaker)", e);
+			_lights.turnOnIfNecessary(_playbackLight, "Problem with Audio Playback (Speaker)", helpMessageFor("speaker"), e);
 			return null;
 		}
 		
 		_lights.turnOffIfNecessary(_playbackLight);
 		dataLine.start();
 		return dataLine;
+	}
+
+	private String helpMessageFor(String device) {
+		return "Other applications might be using the " + device + ". You might have to close them and, depending on your operating system, restart Sneer.";
 	}
 
 	
@@ -56,7 +60,7 @@ class AudioImpl implements Audio {
 			dataLine = AudioSystem	.getTargetDataLine(defaultAudioFormat());
 			dataLine.open();
 		} catch (LineUnavailableException e) {
-			_lights.turnOnIfNecessary(_captureLight, "Problem with Audio Capture (Mic)", e);
+			_lights.turnOnIfNecessary(_captureLight, "Problem with Audio Capture (Mic)", helpMessageFor("mic"), e);
 			return null;
 		}
 

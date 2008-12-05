@@ -131,15 +131,15 @@ public class SpeexTuplesTest extends TestThatIsInjected{
 	}
 	
 	private PcmSoundPacket myPacket(byte[] pcm) {
-		return pcmSoundPacketFor(ownPublicKey(), pcm, (short)1);
+		return pcmSoundPacketFor(ownPublicKey(), pcm);
 	}
 
 	private PublicKey ownPublicKey() {
 		return _keyManager.ownPublicKey();
 	}
 	
-	private PcmSoundPacket pcmSoundPacketFor(PublicKey publicKey, final byte[] pcmPayload, short sequence) {
-		return new PcmSoundPacket(publicKey, _clock.time(), new ImmutableByteArray(pcmPayload, pcmPayload.length), sequence);
+	private PcmSoundPacket pcmSoundPacketFor(PublicKey publicKey, final byte[] pcmPayload) {
+		return new PcmSoundPacket(publicKey, _clock.time(), new ImmutableByteArray(pcmPayload, pcmPayload.length));
 	}
 	
 	private byte[][] frames() {

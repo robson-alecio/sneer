@@ -9,21 +9,12 @@ public class PcmSoundPacket extends Tuple {
 
 	public final ImmutableByteArray payload;
 	
-	public final short sequence;
-
-	public PcmSoundPacket(ImmutableByteArray payload_, short sequence_) {
+	public PcmSoundPacket(ImmutableByteArray payload_) {
 		payload = payload_;
-		sequence = sequence_;
 	}
 
-	public PcmSoundPacket(PublicKey publisher, long publicationTime, ImmutableByteArray payload_, short sequence_) {
+	public PcmSoundPacket(PublicKey publisher, long publicationTime, ImmutableByteArray payload_) {
 		super(publisher, publicationTime);
 		payload = payload_;
-		sequence = sequence_;
-	}
-	
-	@Override
-	public String toString() {
-		return "PcmSoundPacket(" + sequence + ")";
 	}
 }

@@ -56,7 +56,7 @@ public class NewStyleMicTest {
 						
 						subscriber.consume(packet);
 						assertEquals(10, packet.payload.get(0));
-						assertEquals(1, packet.sequence);
+//						assertEquals(1, packet.sequence);
 				}};
 						
 				new Stimulus() {{
@@ -66,7 +66,7 @@ public class NewStyleMicTest {
 						
 						subscriber.consume(packet);
 						assertEquals(20, packet.payload.get(0));
-						assertEquals(2, packet.sequence);
+//						assertEquals(2, packet.sequence);
 				}};
 				
 				new Stimulus() {{
@@ -76,7 +76,7 @@ public class NewStyleMicTest {
 						
 						subscriber.consume(packet);
 						assertEquals(30, packet.payload.get(0));
-						assertEquals(3, packet.sequence);
+//						assertEquals(3, packet.sequence);
 				}};
 				
 				new Stimulus() {{

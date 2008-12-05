@@ -1,34 +1,39 @@
 package tests;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+import org.jmock.Mockery;
 import org.junit.internal.runners.InitializationError;
+import org.junit.internal.runners.TestMethod;
 
-import sneer.kernel.container.Container;
-import sneer.kernel.container.ContainerUtils;
-import wheel.lang.Environment;
-import wheel.testutil.JMockWheelEnvironment;
+public class JMockContainerEnvironment extends ContainerEnvironment {
 
-public class JMockContainerEnvironment extends JMockWheelEnvironment {
-	private Container _container; 
-	
-	public JMockContainerEnvironment(Class<?> testClass) throws InitializationError {
+	public JMockContainerEnvironment(Class<?> testClass)
+			throws InitializationError {
 		super(testClass);
 	}
 	
 	@Override
-	protected Environment testMethodEnvironment() {
-		return new Environment() {
+	protected TestMethod wrapMethod(Method method) {
+		return new TestMethodWithEnvironment(method, getTestClass()) {
 			@Override
-			public <T> T provide(Class<T> intrface) {
-				if (_container == null) return null;
-				return _container.provide(intrface);
+			protected void doInvoke(Object test) {
+				super.doInvoke(test);
+				mockeryFor(test).assertIsSatisfied();
 			}
 		};
 	}
-	
-	@Override
-	protected Object createTest() throws Exception {
-		final Object test = super.createTest();
-		_container = ContainerUtils.newContainer(ContainerEnvironment.contributionsFrom(test));
-		return test;
+
+	protected Mockery mockeryFor(Object test) {
+		Class<?> klass = test.getClass();
+		while (klass != Object.class) {
+			for (Field field : klass.getDeclaredFields()) {
+				if (Mockery.class.isAssignableFrom(field.getType()))
+					return (Mockery) fieldValueFor(field, test);
+			}
+			klass = klass.getSuperclass();
+		}
+		return null;
 	}
 }

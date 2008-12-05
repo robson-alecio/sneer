@@ -15,6 +15,10 @@ public abstract class TestThatIsInjected extends TestThatMightUseResources {
 	
 	@Contribute final PersistenceConfigMock _persistenceConfig = new PersistenceConfigMock(tmpDirectory());
     
+	{
+		my(ContainerEnvironment.TestSocket.class).attach(this);
+	}
+	
 	@Before
 	final public void beforeTestThatIsInjected() throws Exception {
 		injectDependencies();

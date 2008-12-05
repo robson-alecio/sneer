@@ -27,25 +27,17 @@ import wheel.lang.Consumer;
 import wheel.lang.ImmutableByteArray;
 
 @RunWith(JMockContainerEnvironment.class)
-public class SpeexTuplesTest extends TestThatIsInjected{
+public class SpeexTuplesTest extends TestThatIsInjected {
 	
-	@Inject
-	private static KeyManager _keyManager;
-	@Inject
-	private static Clock _clock;
-	@Inject
-	private static TupleSpace _tupleSpace;
-
-	@Inject
-	private static SpeexTuples _subject;
+	@Inject private static KeyManager _keyManager;
+	@Inject private static Clock _clock;
+	@Inject private static TupleSpace _tupleSpace;
+	@Inject private static SpeexTuples _subject;
 	
 	private final Mockery _mockery = new JUnit4Mockery();
-	
-	@Contribute
-	private final Speex _speex = _mockery.mock(Speex.class);
+	@Contribute private final Speex _speex = _mockery.mock(Speex.class);
 	
 	private final Encoder _encoder = _mockery.mock(Encoder.class);
-	
 	private final Decoder _decoder = _mockery.mock(Decoder.class);
 	
 	{

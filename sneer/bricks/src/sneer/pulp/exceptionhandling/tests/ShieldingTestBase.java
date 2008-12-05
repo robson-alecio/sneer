@@ -16,8 +16,7 @@ public abstract class ShieldingTestBase extends TestThatIsInjected {
 
 	protected final Mockery _mockery = new JUnit4Mockery();
 	
-	@Contribute
-	protected final ExceptionHandler _handlerMock = _mockery.mock(ExceptionHandler.class);
+	@Contribute protected final ExceptionHandler _handlerMock = _mockery.mock(ExceptionHandler.class);
 	
 	{
 		_mockery.checking(new Expectations() {{

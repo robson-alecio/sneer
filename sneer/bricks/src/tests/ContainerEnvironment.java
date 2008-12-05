@@ -5,62 +5,88 @@ import java.util.ArrayList;
 
 import org.junit.internal.runners.InitializationError;
 
-import sneer.kernel.container.Container;
-import sneer.kernel.container.ContainerUtils;
+import sneer.kernel.container.impl.ContainerImpl;
 import wheel.lang.Environment;
 import wheel.testutil.WheelEnvironment;
 
 public class ContainerEnvironment extends WheelEnvironment {
+	
+	public interface TestSocket {
+		void attach(Object testInstance);
+	}
 
-	private Container _container; 
+	private final Field[] _contributedFields; 
 	
 	public ContainerEnvironment(Class<?> testClass) throws InitializationError {
 		super(testClass);
+		_contributedFields = contributedFields(testClass);
 	}
 	
-	@Override
-	protected Environment testMethodEnvironment() {
-		return new Environment() {
-			@Override
-			public <T> T provide(Class<T> intrface) {
-				if (_container == null) return null;
-				return _container.provide(intrface);
-			}
-		};
-	}
-	
-	@Override
-	protected Object createTest() throws Exception {
-		final Object test = super.createTest();
-		_container = ContainerUtils.newContainer(contributionsFrom(test));
-		return test;
-	}
+	class TestEnvironment extends ContainerImpl implements TestSocket {
 
-	public static Object[] contributionsFrom(Object instance) {
-		final ArrayList<Object> result = new ArrayList<Object>();
-		Class<? extends Object> klass = instance.getClass();
+		private Object _testInstance;
+
+		@Override
+		public <T> T provide(Class<T> intrface) {
+			if (intrface == TestSocket.class)
+				return (T)this;
+			T value = provideContribution(intrface);
+			if (value != null)
+				return value;
+			return super.provide(intrface);
+		}
+
+		private <T> T provideContribution(Class<T> intrface) {
+			if (_testInstance == null)
+				return null;
+				
+			for (Field field : _contributedFields) {
+				final Object value = fieldValueFor(field, _testInstance);
+				if (null == value) {
+					if (intrface.isAssignableFrom(field.getClass())) {
+						throw new IllegalStateException(field + " has not been initialized.");
+					}
+					continue;
+				}
+				if (intrface.isInstance(value))
+					return (T)value;
+			}
+			return null;
+		}
+
+		@Override
+		public void attach(Object testInstance) {
+			if (_testInstance != null) throw new IllegalStateException();
+			_testInstance = testInstance;
+		}
+	}
+	
+	@Override
+	protected Environment environment() {
+		return new TestEnvironment();
+	}
+	
+	private static Field[] contributedFields(Class<? extends Object> klass) {
+		final ArrayList<Field> result = new ArrayList<Field>();
 		while (klass != Object.class) {
-			collectContributedFields(result, instance, klass);
+			collectContributedFields(result, klass);
 			klass = klass.getSuperclass();
 		}
-		return result.toArray();
+		return result.toArray(new Field[result.size()]);
 	}
 
 	private static void collectContributedFields(
-			final ArrayList<Object> collector, Object instance,
+			final ArrayList<Field> collector,
 			final Class<? extends Object> klass) {
 		
 		for (Field field : klass.getDeclaredFields()) {
 			if (field.getAnnotation(Contribute.class) == null)
 				continue;
-			final Object fieldValue = getFieldValue(field, instance);
-			if (fieldValue == null)
-				continue;
-			collector.add(fieldValue);
+			collector.add(field);
 		}
 	}
 
-	private static Object getFieldValue(Field field, Object instance) {
+	protected static Object fieldValueFor(Field field, Object instance) {
 		try {
 			field.setAccessible(true);
 			return field.get(instance);

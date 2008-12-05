@@ -18,11 +18,12 @@ import sneer.pulp.propertystore.PropertyStore;
 import sneer.pulp.propertystore.mocks.TransientPropertyStore;
 import tests.Contribute;
 import tests.JMockContainerEnvironment;
+import tests.TestThatIsInjected;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.Receiver;
 
 @RunWith(JMockContainerEnvironment.class)
-public class OwnIpDiscovererTest {
+public class OwnIpDiscovererTest extends TestThatIsInjected {
 	
 	final Mockery _context = new JUnit4Mockery();
 	@Contribute final CheckIp checkip = _context.mock(CheckIp.class);

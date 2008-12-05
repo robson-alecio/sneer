@@ -1,5 +1,8 @@
 package spikes.klaus;
 
+import wheel.lang.Daemon;
+import wheel.lang.Threads;
+
 
 
 
@@ -9,7 +12,25 @@ public class Anything {
 
 	public static void main(String[] args) {
 
-		System.out.println(System.nanoTime() % 3);
+		Daemon daemon = new Daemon("Spike") {
+			@Override
+			public void run() {
+				System.out.println("Sleeping...");
+				try {
+					Threads.sleepWithoutInterruptions(5000);
+				} catch (Error e) {
+					System.out.println(e.getClass());
+				}
+				System.out.println("Sleeping again...");
+				Threads.sleepWithoutInterruptions(5000);
+			}
+		};
+
+		Threads.sleepWithoutInterruptions(1000);
+		daemon.stop();
+		Threads.sleepWithoutInterruptions(5000);
+		
+//		System.out.println(System.nanoTime() % 3);
 		
 //		for (int i = 0; i <= 0; i++)
 //			new Thread("Test " + i) { @Override public void run() {

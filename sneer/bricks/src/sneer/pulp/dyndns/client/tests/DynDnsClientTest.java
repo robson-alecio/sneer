@@ -1,9 +1,5 @@
 package sneer.pulp.dyndns.client.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 import static wheel.lang.Environments.my;
 
 import java.io.IOException;
@@ -14,7 +10,6 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
@@ -30,15 +25,14 @@ import sneer.pulp.dyndns.updater.Updater;
 import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.propertystore.mocks.TransientPropertyStore;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
-import tests.ContainerEnvironment;
 import tests.Contribute;
+import tests.TestThatIsInjected;
 import wheel.lang.exceptions.FriendlyException;
 import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.lists.ListSignal;
 
-@RunWith(ContainerEnvironment.class)
-public class DynDnsClientTest {
+public class DynDnsClientTest extends TestThatIsInjected {
 	
 	/*
 
@@ -194,7 +188,5 @@ Unacceptable Client Behavior
 		
 		return ContainerUtils.newContainer(list.toArray());
 	}
-	
-
 }
 

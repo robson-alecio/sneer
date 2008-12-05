@@ -1,6 +1,5 @@
-package tests;
+package tests.tests;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static wheel.lang.Environments.my;
@@ -8,25 +7,25 @@ import static wheel.lang.Environments.my;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import tests.bar.BarBrick;
-import tests.foo.FooBrick;
+import tests.ContainerEnvironment;
+import tests.Contribute;
+import tests.tests.bar.BarBrick;
+import tests.tests.foo.FooBrick;
 
 @RunWith(ContainerEnvironment.class)
 public class ContainerEnvironmentTest {
 	
-	int _barPingCount = 0;
+	{
+		my(ContainerEnvironment.TestSocket.class).attach(this);
+	}
 	
 	@Contribute
 	final BarBrick _bar = new BarBrick() {
-		@Override
-		public void ping() {
-			++_barPingCount;
-		}
 	};
 	
 	final FooBrick _foo = new FooBrick() {
 		@Override
-		public void pingBar() {
+		public BarBrick bar() {
 			throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
 		}
 	};
@@ -50,9 +49,7 @@ public class ContainerEnvironmentTest {
 	
 	@Test
 	public void testBrickSeesTestEnvironment() {
-		assertEquals(0, _barPingCount);
-		my(FooBrick.class).pingBar();
-		assertEquals(1, _barPingCount);
+		assertSame(_bar, my(FooBrick.class).bar());
 	}
 
 }

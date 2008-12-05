@@ -43,6 +43,17 @@ public class Environments {
 		};
 	};
 
+	public static Environment compose(final Environment... environments) {
+		return new Environment() { @Override public <T> T provide(Class<T> intrface) {
+			for (Environment e : environments) {
+				final T result = e.provide(intrface);
+				if (null != result)
+					return result;
+			}
+			return null;
+		}};
+	}
+
 }
 
 class MementoImpl implements Environments.Memento {

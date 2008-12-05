@@ -16,7 +16,7 @@ import tests.tests.foo.FooBrick;
 public class ContainerEnvironmentTest {
 	
 	{
-		my(ContainerEnvironment.TestSocket.class).attach(this);
+		my(ContainerEnvironment.class).instanceBeingInitialized(this);
 	}
 	
 	@Contribute

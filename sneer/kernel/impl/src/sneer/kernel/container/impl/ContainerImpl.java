@@ -12,6 +12,8 @@ import sneer.kernel.container.SneerConfig;
 import sneer.kernel.container.impl.classloader.EclipseClassLoaderFactory;
 import sneer.pulp.config.persistence.PersistenceConfig;
 import sneer.skin.GuiBrick;
+import wheel.lang.Environment;
+import wheel.lang.Environments;
 import wheel.lang.Types;
 
 public class ContainerImpl implements Container {
@@ -22,11 +24,16 @@ public class ContainerImpl implements Container {
 	
 	private final SimpleBinder _binder = new SimpleBinder();
 	
+	private final Environment _environment;
+	
 	private final SneerConfig _sneerConfig;
 
 	private ClassLoader _apiClassLoader;
 
 	public ContainerImpl(Object... bindings) {
+		
+		_environment = produceEnvironment(bindings);
+		
 		bindNonGuiBricks(bindings);
 		
 		_binder.bind(this);
@@ -36,6 +43,13 @@ public class ContainerImpl implements Container {
 		provide(PersistenceConfig.class).setPersistenceDirectory(persistenceDirectory());
 		
 		bindGuiBricks(bindings);
+	}
+
+	private Environment produceEnvironment(Object[] bindings) {
+		for (Object binding : bindings)
+			if (binding instanceof Environment)
+				return Environments.compose((Environment) binding, _binder);
+		return _binder;
 	}
 
 	private String persistenceDirectory() {
@@ -66,7 +80,7 @@ public class ContainerImpl implements Container {
 
 	@Override
 	public <T> T provide(Class<T> type) {
-		T result = (T)_binder.implementationFor(type);
+		T result = _environment.provide(type);
 		if (result == null) {
 			result = decorate(instantiate(type));
 			_binder.bind(result);
@@ -144,7 +158,7 @@ public class ContainerImpl implements Container {
 	//Fix: check if this code will work on production
 	//Hack
 	private SneerConfig produceSneerConfig() {
-		Object result = bindingFor(SneerConfig.class);
+		Object result = _environment.provide(SneerConfig.class);
 		if (result != null) {
 			return (SneerConfig) result;
 		}

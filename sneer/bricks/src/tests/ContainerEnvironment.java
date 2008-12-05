@@ -5,16 +5,13 @@ import java.util.ArrayList;
 
 import org.junit.internal.runners.InitializationError;
 
-import sneer.kernel.container.impl.ContainerImpl;
+import sneer.kernel.container.ContainerUtils;
 import wheel.lang.Environment;
 import wheel.testutil.WheelEnvironment;
+import static wheel.lang.Environments.my;
 
 public class ContainerEnvironment extends WheelEnvironment {
 	
-	public interface TestSocket {
-		void attach(Object testInstance);
-	}
-
 	private final Field[] _contributedFields; 
 	
 	public ContainerEnvironment(Class<?> testClass) throws InitializationError {
@@ -22,18 +19,17 @@ public class ContainerEnvironment extends WheelEnvironment {
 		_contributedFields = contributedFields(testClass);
 	}
 	
-	class TestEnvironment extends ContainerImpl implements TestSocket {
+	class TestEnvironment implements Environment {
 
 		private Object _testInstance;
 
 		@Override
 		public <T> T provide(Class<T> intrface) {
-			if (intrface == TestSocket.class)
+			if (intrface == ContainerEnvironment.class)
+				return (T)ContainerEnvironment.this;
+			if (intrface == TestEnvironment.class)
 				return (T)this;
-			final T value = provideContribution(intrface);
-			if (value != null)
-				return value;
-			return super.provide(intrface);
+			return provideContribution(intrface);
 		}
 
 		private <T> T provideContribution(Class<T> intrface) {
@@ -57,9 +53,8 @@ public class ContainerEnvironment extends WheelEnvironment {
 				throw new IllegalStateException(field + " has not been initialized.");
 			}
 		}
-
-		@Override
-		public void attach(Object testInstance) {
+		
+		public void instanceBeingInitialized(Object testInstance) {
 			if (_testInstance != null) throw new IllegalStateException();
 			_testInstance = testInstance;
 		}
@@ -67,7 +62,7 @@ public class ContainerEnvironment extends WheelEnvironment {
 	
 	@Override
 	protected Environment environment() {
-		return new TestEnvironment();
+		return ContainerUtils.newContainer(new TestEnvironment());
 	}
 	
 	private static Field[] contributedFields(Class<? extends Object> klass) {
@@ -97,6 +92,10 @@ public class ContainerEnvironment extends WheelEnvironment {
 		} catch (Exception e) {
 			throw new IllegalStateException(e); 
 		}
+	}
+
+	public void instanceBeingInitialized(Object testInstance) {
+		my(TestEnvironment.class).instanceBeingInitialized(testInstance);
 	}
 
 }

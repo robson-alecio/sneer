@@ -5,7 +5,9 @@ import static wheel.lang.Types.instanceOf;
 import java.util.ArrayList;
 import java.util.List;
 
-class SimpleBinder {
+import wheel.lang.Environment;
+
+class SimpleBinder implements Environment {
 
 	private final List<Object> _implementations = new ArrayList<Object>();
 	
@@ -29,6 +31,11 @@ class SimpleBinder {
 	
 	private void throwClash(Class<?> type, Object imp1, Object imp2) {
 		throw new IllegalStateException("Binding clash for type " + type + ". It is implemented by " + imp1 + " and " + imp2);
+	}
+
+	@Override
+	public <T> T provide(Class<T> intrface) {
+		return (T) implementationFor(intrface);
 	}
 
 }

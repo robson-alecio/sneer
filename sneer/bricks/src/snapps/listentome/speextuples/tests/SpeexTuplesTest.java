@@ -35,6 +35,7 @@ public class SpeexTuplesTest extends TestThatIsInjected {
 	@Inject private static SpeexTuples _subject;
 	
 	private final Mockery _mockery = new JUnit4Mockery();
+	
 	@Contribute private final Speex _speex = _mockery.mock(Speex.class);
 	
 	private final Encoder _encoder = _mockery.mock(Encoder.class);

@@ -30,7 +30,7 @@ public class ContainerEnvironment extends WheelEnvironment {
 		public <T> T provide(Class<T> intrface) {
 			if (intrface == TestSocket.class)
 				return (T)this;
-			T value = provideContribution(intrface);
+			final T value = provideContribution(intrface);
 			if (value != null)
 				return value;
 			return super.provide(intrface);
@@ -43,15 +43,19 @@ public class ContainerEnvironment extends WheelEnvironment {
 			for (Field field : _contributedFields) {
 				final Object value = fieldValueFor(field, _testInstance);
 				if (null == value) {
-					if (intrface.isAssignableFrom(field.getClass())) {
-						throw new IllegalStateException(field + " has not been initialized.");
-					}
+					assertFieldCantProvide(field, intrface);
 					continue;
 				}
 				if (intrface.isInstance(value))
 					return (T)value;
 			}
 			return null;
+		}
+
+		private <T> void assertFieldCantProvide(Field field, Class<T> intrface) {
+			if (intrface.isAssignableFrom(field.getClass())) {
+				throw new IllegalStateException(field + " has not been initialized.");
+			}
 		}
 
 		@Override

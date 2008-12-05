@@ -10,4 +10,9 @@ class Packet<T> {
 		_sequence = sequence;
 	}
 
+	@Override
+	public String toString() {
+		return "" + _sequence;		
+	}
+	
 }

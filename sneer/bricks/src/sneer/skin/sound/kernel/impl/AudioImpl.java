@@ -49,7 +49,7 @@ class AudioImpl implements Audio {
 	}
 
 	private String helpMessageFor(String device) {
-		return "Other applications might be using the " + device + ". You might have to close them and, depending on your operating system, restart Sneer.";
+		return "Some application might be holding the " + device + ". Once the Firefox browser on Linux plays a sound, for example, it holds the sound device forever until you restart it. Try restarting or closing that application and maybe restarting Sneer.";
 	}
 
 	

@@ -111,7 +111,7 @@ class SequencerImpl<T> implements Sequencer<T> {
 	}
 	
 	private void produce(Pair<T, Short> pair) {
-//		System.out.println("produce " + number);
+//		System.out.println("produce " + pair._b);
 		_lastProduced = pair._b;
 		_consumer.consume(pair._a);
 	}

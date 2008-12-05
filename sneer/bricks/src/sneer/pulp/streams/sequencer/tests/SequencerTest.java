@@ -7,7 +7,6 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.Sequence;
 import org.jmock.integration.junit4.JUnit4Mockery;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -23,7 +22,7 @@ public class SequencerTest extends TestThatIsInjected {
 	
 	@Inject private static Sequencers _subject;
 	
-	private final List<Integer> _recordedSequence = new ArrayList<Integer>();
+	private final List<String> _recordedSequence = new ArrayList<String>();
 
 	private final Mockery _mockery = new JUnit4Mockery();
 	
@@ -58,7 +57,6 @@ public class SequencerTest extends TestThatIsInjected {
 	
 
 	@Test
-	@Ignore
 	public void sequencing() {
 		int[] input = new int[] {
 			0, 1, 2, 3, //Happy
@@ -82,22 +80,21 @@ public class SequencerTest extends TestThatIsInjected {
 	}
 
 	private void feedInputSequence(int[] input) {
-		Sequencer<Integer> buffer = _subject.createSequencerFor(sequenceRecorder());
+		Sequencer<String> sequencer = _subject.createSequencerFor(sequenceRecorder());
 		
-		short counter = 0;
 		for (int sequence : input)
-			buffer.sequence(sequence, counter++);
+			sequencer.sequence(""+sequence, (short)sequence);
 	}
 	
-	private Consumer<Integer> sequenceRecorder() {
-		return new Consumer<Integer>(){ @Override public void consume(Integer value) {
+	private Consumer<String> sequenceRecorder() {
+		return new Consumer<String>(){ @Override public void consume(String value) {
 			_recordedSequence.add(value);
 		}};
 	}
 	
-	private void expectOutputSequence(int... sequences) {
-		for (int i = 0; i < sequences.length; i++)
-			assertEquals((int)_recordedSequence.get(i), (Object)sequences[i]); 
+	private void expectOutputSequence(int... expected) {
+		for (int i = 0; i < expected.length; i++)
+			assertEquals(""+expected[i], _recordedSequence.get(i)); 
 	}
 	
 }

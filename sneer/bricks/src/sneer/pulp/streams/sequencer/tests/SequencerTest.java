@@ -19,7 +19,7 @@ import tests.TestThatIsInjected;
 import wheel.lang.Consumer;
 
 @RunWith(JMockContainerEnvironment.class)
-public class SpeakerBufferTest extends TestThatIsInjected {
+public class SequencerTest extends TestThatIsInjected {
 	
 	@Inject private static Sequencers _subject;
 	
@@ -27,38 +27,36 @@ public class SpeakerBufferTest extends TestThatIsInjected {
 
 	private final Mockery _mockery = new JUnit4Mockery();
 	
-	private final Consumer<Integer> _consumer = _mockery.mock(Consumer.class);
+	private final Consumer<String> _consumer = _mockery.mock(Consumer.class);
 
 	@Test
 	public void correctOrder() throws Exception {
-		testBuffering(p1(), p2());
+		testBuffering("B", 1, "C", 2);
 	}
 
 	@Test
-	@Ignore
 	public void inverseOrder() throws Exception {
-		testBuffering(p2(), p1());
+		testBuffering("C", 2, "B", 1);
 	}
 
-	private void testBuffering(Integer first, Integer second) {
+	private void testBuffering(String packet1, int sequence1, String packet2, int sequence2) {
 		_mockery.checking(new Expectations(){{
 			Sequence main = _mockery.sequence("main");
-			one(_consumer).consume(p0()); inSequence(main);
-			one(_consumer).consume(p1()); inSequence(main);
-			one(_consumer).consume(p2()); inSequence(main);
-			one(_consumer).consume(p3()); inSequence(main);
+			one(_consumer).consume("A"); inSequence(main);
+			one(_consumer).consume("B"); inSequence(main);
+			one(_consumer).consume("C"); inSequence(main);
+			one(_consumer).consume("D"); inSequence(main);
 		}});
 		
-		Sequencer<Integer> buffer = _subject.createSequencerFor(_consumer);
-		Integer initialPacket = p0();
-		Integer lastPacket = p3();
+		Sequencer<String> sequencer = _subject.createSequencerFor(_consumer);
 
-		buffer.sequence(initialPacket, (short)0);
-		buffer.sequence(first,  (short)1);
-		buffer.sequence(second,  (short)2);
-		buffer.sequence(lastPacket, (short)3);
+		sequencer.sequence("A", (short)0);
+		sequencer.sequence(packet1, (short)sequence1);
+		sequencer.sequence(packet2, (short)sequence2);
+		sequencer.sequence("D", (short)3);
 	}
 	
+
 	@Test
 	@Ignore
 	public void sequencing() {
@@ -102,19 +100,4 @@ public class SpeakerBufferTest extends TestThatIsInjected {
 			assertEquals((int)_recordedSequence.get(i), (Object)sequences[i]); 
 	}
 	
-	private Integer p0() {
-		return 10;
-	}
-	
-	private Integer p1() {
-		return 20;
-	}
-	
-	private Integer p2() {
-		return 30;
-	}
-	
-	private Integer p3() {
-		return 44;
-	}
 }

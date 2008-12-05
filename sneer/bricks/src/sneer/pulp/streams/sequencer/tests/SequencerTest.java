@@ -20,6 +20,10 @@ import wheel.lang.Consumer;
 @RunWith(JMockContainerEnvironment.class)
 public class SequencerTest extends TestThatIsInjected {
 	
+	private static final short MAX_GAP = (short)500;
+
+	private static final short BUFFER_SIZE = (short)30;
+
 	@Inject private static Sequencers _subject;
 	
 	private final List<String> _recordedSequence = new ArrayList<String>();
@@ -30,15 +34,15 @@ public class SequencerTest extends TestThatIsInjected {
 
 	@Test
 	public void correctOrder() throws Exception {
-		testBuffering("B", 1, "C", 2);
+		sequence("B", 1, "C", 2);
 	}
 
 	@Test
 	public void inverseOrder() throws Exception {
-		testBuffering("C", 2, "B", 1);
+		sequence("C", 2, "B", 1);
 	}
 
-	private void testBuffering(String packet1, int sequence1, String packet2, int sequence2) {
+	private void sequence(String packet1, int sequence1, String packet2, int sequence2) {
 		_mockery.checking(new Expectations(){{
 			Sequence main = _mockery.sequence("main");
 			one(_consumer).consume("A"); inSequence(main);
@@ -47,7 +51,7 @@ public class SequencerTest extends TestThatIsInjected {
 			one(_consumer).consume("D"); inSequence(main);
 		}});
 		
-		Sequencer<String> sequencer = _subject.createSequencerFor(_consumer);
+		Sequencer<String> sequencer = _subject.createSequencerFor(_consumer, BUFFER_SIZE, MAX_GAP);
 
 		sequencer.sequence("A", (short)0);
 		sequencer.sequence(packet1, (short)sequence1);
@@ -80,7 +84,7 @@ public class SequencerTest extends TestThatIsInjected {
 	}
 
 	private void feedInputSequence(int[] input) {
-		Sequencer<String> sequencer = _subject.createSequencerFor(sequenceRecorder());
+		Sequencer<String> sequencer = _subject.createSequencerFor(sequenceRecorder(), BUFFER_SIZE, MAX_GAP);
 		
 		for (int sequence : input)
 			sequencer.sequence(""+sequence, (short)sequence);

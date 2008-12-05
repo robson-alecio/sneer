@@ -11,8 +11,8 @@ import wheel.lang.Pair;
 
 class SequencerImpl<T> implements Sequencer<T> {
 
-	private static final int MAX_INTERRUPTED = 30;
-	private static final int MAX_GAP = 500;
+	private final short _bufferSize;
+	private final short _maxGap;
 
 	private final Consumer<? super T> _consumer;
 
@@ -26,9 +26,14 @@ class SequencerImpl<T> implements Sequencer<T> {
 			return pair1._b - pair2._b;
 	}});
 
-	public SequencerImpl(Consumer<T> consumer) {
+	
+	
+	SequencerImpl(Consumer<? super T> consumer, short bufferSize, short maxGap) {
 		_consumer = consumer;
+		_bufferSize = bufferSize;
+		_maxGap = maxGap;
 	}
+
 
 	@Override
 	public synchronized void sequence(T packet, short number) {
@@ -104,7 +109,7 @@ class SequencerImpl<T> implements Sequencer<T> {
 	private void playInterruptedPackets() {
 		if(_sortedSet.size()<2) return;
 		Pair<T, Short> lastPacket = _sortedSet.last();
-		final int maxSequenceToPlay = lastPacket._b - MAX_INTERRUPTED;
+		final int maxSequenceToPlay = lastPacket._b - _bufferSize;
 		tryToPlayAndRemove(new BreakCondition<T>() {@Override public boolean evaluate(Pair<T, Short> currentPair) {
 			return currentPair._b >maxSequenceToPlay;
 		}});		
@@ -139,6 +144,6 @@ class SequencerImpl<T> implements Sequencer<T> {
 	private boolean isDiferenceGreaterThanMaxGap(int previousSequence, int packetSequence) {
 		//This subtraction only works because shorts are promoted to int before subtraction
 		if(_lastProduced<Short.MIN_VALUE) return false;
-		return Math.abs(packetSequence-previousSequence)  > MAX_GAP;
+		return Math.abs(packetSequence-previousSequence)  > _maxGap;
 	}
 }

@@ -5,6 +5,6 @@ import wheel.lang.Consumer;
 
 public interface Sequencers extends Brick {
 
-	<T> Sequencer<T> createSequencerFor(Consumer<T> consumer);
+	<T> Sequencer<T> createSequencerFor(Consumer<T> consumer,short bufferSize, short maxGap);
 	
 }

@@ -64,7 +64,7 @@ public class SequencerTest extends TestThatIsInjected {
 	public void sequencing() {
 		int[] input = new int[] {
 			0, 1, 2, 3, //Happy
-			-1, 2, // Less than 500 negative difference: discarded
+			-1, 2, // Less than 500 negative difference (already played): discarded
 			6, 4, 5, //Different order, no gap
 			7, 11, 10, 9, 8, //Different order, no gap
 			20, 23, 21, //Different order, with gap: will wait
@@ -74,7 +74,8 @@ public class SequencerTest extends TestThatIsInjected {
 			604, //Gap
 			-3, -2, -1, // More than 500 gap in the other direction will also cause buffer to drain (604 will not be played)
 			Short.MAX_VALUE-2, Short.MAX_VALUE, Short.MAX_VALUE-1,
-			Short.MIN_VALUE+2, Short.MIN_VALUE, Short.MIN_VALUE +1
+			Short.MIN_VALUE+2, Short.MIN_VALUE, Short.MIN_VALUE +1,
+//			Short.MAX_VALUE // Less than 500 difference (already played): discarded
 		};
 
 		feedInputSequence(input);
@@ -97,6 +98,8 @@ public class SequencerTest extends TestThatIsInjected {
 	}
 	
 	private void expectOutputSequence(int... expected) {
+		assertEquals(expected.length, _recordedSequence.size());
+		
 		for (int i = 0; i < expected.length; i++)
 			assertEquals(""+expected[i], _recordedSequence.get(i)); 
 	}

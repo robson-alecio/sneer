@@ -2,6 +2,6 @@ package sneer.pulp.streams.sequencer;
 
 public interface Sequencer<T>{
 
-	void sequence(T packet, short number);
+	void sequence(T element, short number);
 
 }

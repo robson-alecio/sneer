@@ -7,7 +7,6 @@ import java.util.TreeSet;
 
 import sneer.pulp.streams.sequencer.Sequencer;
 import wheel.lang.Consumer;
-import wheel.lang.Pair;
 
 class SequencerImpl<T> implements Sequencer<T> {
 
@@ -18,12 +17,12 @@ class SequencerImpl<T> implements Sequencer<T> {
 
 	private int _lastProduced = -1;
 	
-	private final SortedSet<Pair<T, Short>> _sortedSet = new TreeSet<Pair<T, Short>>(
-		new Comparator<Pair<T, Short>>(){@Override public int compare(Pair<T, Short> pair1, Pair<T, Short> pair2) {
-			if(isDiferenceGreaterThanMaxGap(pair2._b, pair1._b) )
-				return pair1._b + pair2._b; 
+	private final SortedSet<Packet<T>> _buffer = new TreeSet<Packet<T>>(
+		new Comparator<Packet<T>>(){@Override public int compare(Packet<T> p1, Packet<T> p2) {
+			if(isDiferenceGreaterThanMaxGap(p2._sequence, p1._sequence) )
+				return p1._sequence + p2._sequence; 
 			
-			return pair1._b - pair2._b;
+			return p1._sequence - p2._sequence;
 	}});
 
 	
@@ -36,44 +35,38 @@ class SequencerImpl<T> implements Sequencer<T> {
 
 
 	@Override
-	public synchronized void sequence(T packet, short number) {
-		Pair<T, Short> pair = new Pair<T, Short>(packet, number);
-		if(number==nextSequenceToPlay()){
-			produce(pair);
-			playUninterruptedPackets();
-			return;
-		}
+	public synchronized void sequence(T element, short number) {
+		Packet<T> packet = new Packet<T>(element, number);
 		
-		drainIfNecessary(pair);
+		drainIfNecessary(packet);
 		leftDrain(_lastProduced);
-		_sortedSet.add(pair);
-		resetingSequencePlay();
+		_buffer.add(packet);
+		resetingProductionSequence();
 		drainOldPackets();
-		playUninterruptedPackets();
-		playInterruptedPackets();
+		produceUninterruptedPackets();
+		produceInterruptedPackets();
 	}
 
-	private void drainIfNecessary(Pair<T, Short> pair) {
-		Iterator<Pair<T, Short>> iterator = _sortedSet.iterator();
-		if(!iterator.hasNext()) return;
-		Pair<T, Short> previous = iterator.next();
+	private void drainIfNecessary(Packet<T> packet) {
+		if (_buffer.isEmpty()) return;
+		Packet<T> previous = _buffer.first();
 
-		if(isDiferenceGreaterThanMaxGap(previous._b, pair._b)){
-			_lastProduced = pair._b-1;
-			leftDrain(previous._b);
+		if(isDiferenceGreaterThanMaxGap(previous._sequence, packet._sequence)){
+			_lastProduced = packet._sequence-1;
+			leftDrain(previous._sequence);
 		}
 	}
 
 	private void drainOldPackets() {
-		Iterator<Pair<T, Short>> iterator = _sortedSet.iterator();
+		Iterator<Packet<T>> iterator = _buffer.iterator();
 		if(!iterator.hasNext()) return;
-		Pair<T, Short> previous = iterator.next();
+		Packet<T> previous = iterator.next();
 		
 		while (iterator.hasNext()) {
-			Pair<T, Short> packet = iterator.next();
-			if(isDiferenceGreaterThanMaxGap(previous._b, packet._b)){
-				_lastProduced = packet._b-1;
-				leftDrain(previous._b);
+			Packet<T> packet = iterator.next();
+			if(isDiferenceGreaterThanMaxGap(previous._sequence, packet._sequence)){
+				_lastProduced = packet._sequence-1;
+				leftDrain(previous._sequence);
 				return;
 			}
 			previous = packet;
@@ -81,69 +74,68 @@ class SequencerImpl<T> implements Sequencer<T> {
 	}
 
 	private void leftDrain(int limit) {
-		Iterator<Pair<T, Short>> iterator = _sortedSet.iterator();
+		Iterator<Packet<T>> iterator = _buffer.iterator();
 		while (iterator.hasNext()) {
-			Pair<T, Short> packet = iterator.next();
-			if(packet._b>limit) return;
+			Packet<T> packet = iterator.next();
+			if(packet._sequence>limit) return;
 			iterator.remove();
-//			System.out.println("drain " + packet._b);
+//			System.out.println("drain " + packet._sequence);
 		}	
 	}
 	
 	interface BreakCondition<T> {
-		boolean evaluate(Pair<T, Short> currentPair);
+		boolean evaluate(Packet<T> current);
 	}
 	
-	private void resetingSequencePlay() {
-		tryToPlayAndRemove(new BreakCondition<T>() {@Override public boolean evaluate(Pair<T, Short> currentPair) {
-			return !isDiferenceGreaterThanMaxGap(lastPlayed(), currentPair._b);
+	private void resetingProductionSequence() {
+		tryToProduceAndRemove(new BreakCondition<T>() {@Override public boolean evaluate(Packet<T> current) {
+			return !isDiferenceGreaterThanMaxGap(lastProduced(), current._sequence);
 		}});				
 	}
 	
-	private void playUninterruptedPackets() {
-		tryToPlayAndRemove(new BreakCondition<T>() {@Override public boolean evaluate(Pair<T, Short> currentPair) {
-			return nextSequenceToPlay() != currentPair._b;
+	private void produceUninterruptedPackets() {
+		tryToProduceAndRemove(new BreakCondition<T>() {@Override public boolean evaluate(Packet<T> current) {
+			return nextSequenceToProduce() != current._sequence;
 		}});
 	}
 	
-	private void playInterruptedPackets() {
-		if(_sortedSet.size()<2) return;
-		Pair<T, Short> lastPacket = _sortedSet.last();
-		final int maxSequenceToPlay = lastPacket._b - _bufferSize;
-		tryToPlayAndRemove(new BreakCondition<T>() {@Override public boolean evaluate(Pair<T, Short> currentPair) {
-			return currentPair._b >maxSequenceToPlay;
+	private void produceInterruptedPackets() {
+		if(_buffer.size()<2) return;
+		Packet<T> lastPacket = _buffer.last();
+		final int maxSequenceToProduce = lastPacket._sequence - _bufferSize;
+		tryToProduceAndRemove(new BreakCondition<T>() {@Override public boolean evaluate(Packet<T> currentPacket) {
+			return currentPacket._sequence > maxSequenceToProduce;
 		}});		
 	}
 	
-	private void produce(Pair<T, Short> pair) {
-//		System.out.println("produce " + pair._b);
-		_lastProduced = pair._b;
-		_consumer.consume(pair._a);
+	private void produce(Packet<T> packet) {
+//		System.out.println("produce " + packet._sequence);
+		_lastProduced = packet._sequence;
+		_consumer.consume(packet._payload);
 	}
 
-	private void tryToPlayAndRemove(BreakCondition<T> breakCondition) {
-		Iterator<Pair<T, Short>> iterator = _sortedSet.iterator();
+	private void tryToProduceAndRemove(BreakCondition<T> breakCondition) {
+		Iterator<Packet<T>> iterator = _buffer.iterator();
 		while (iterator.hasNext()) {
-			Pair<T, Short> pair = iterator.next();
-			if(breakCondition.evaluate(pair)) return;
-			produce(pair);
+			Packet<T> packet = iterator.next();
+			if(breakCondition.evaluate(packet)) return;
+			produce(packet);
 			iterator.remove();
 		}
 	}
 	
-	private int nextSequenceToPlay() {
-		return lastPlayed()+1;
+	private int nextSequenceToProduce() {
+		return lastProduced()+1;
 	}
 
-	private int lastPlayed() {
+	private int lastProduced() {
 		if(_lastProduced>= Short.MAX_VALUE)
 			_lastProduced = Short.MIN_VALUE-1;
 		return _lastProduced;
 	}
 	
 	private boolean isDiferenceGreaterThanMaxGap(int previousSequence, int packetSequence) {
-		//This subtraction only works because shorts are promoted to int before subtraction
-		if(_lastProduced<Short.MIN_VALUE) return false;
-		return Math.abs(packetSequence-previousSequence)  > _maxGap;
+		if(_lastProduced < Short.MIN_VALUE) return false;
+		return Math.abs(packetSequence-previousSequence) > _maxGap; //This subtraction only works because shorts are promoted to int before subtraction
 	}
 }

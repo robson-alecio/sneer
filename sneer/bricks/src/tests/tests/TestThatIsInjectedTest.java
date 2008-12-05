@@ -10,8 +10,7 @@ import static wheel.lang.Environments.my;
 
 public class TestThatIsInjectedTest extends TestThatIsInjected {
 	
-	@Contribute final BarBrick _bar = new BarBrick() {
-	};
+	@Contribute final BarBrick _bar = new BarBrick() {};
 	
 	final FooBrick _foo = my(FooBrick.class);
 	

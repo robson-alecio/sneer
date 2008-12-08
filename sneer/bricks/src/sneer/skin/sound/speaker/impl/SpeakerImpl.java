@@ -4,9 +4,9 @@ import sneer.skin.sound.speaker.Speaker;
 
 class SpeakerImpl implements Speaker {
 	
-	private PacketSubscriber _producer;
-	
 	private PacketPlayer _consumer;
+	private PacketSubscriber _producer;
+
 
 	@Override
 	synchronized public void open() {

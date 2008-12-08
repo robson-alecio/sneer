@@ -230,11 +230,6 @@ public class TupleSpaceImpl implements TupleSpace {
 		return _keptTuples.output().currentElements();
 	}
 
-	@Override
-	public void crash() {
-		System.out.println("Necessary?");
-	}
-
 
 	@Override
 	public int transientCacheSize() {

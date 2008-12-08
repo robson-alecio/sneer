@@ -26,8 +26,6 @@ public class TuplePersistenceTest extends TestThatMightUseResources {
 		subject1.publish(tuple(1));
 		subject1.publish(tuple(2));
 
-		subject1.crash();
-		
 		TupleSpace subject2 = createSubject();
 		List<Tuple> kept = subject2.keptTuples();
 		assertEquals(3, kept.size());

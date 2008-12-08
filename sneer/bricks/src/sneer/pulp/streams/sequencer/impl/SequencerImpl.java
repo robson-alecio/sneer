@@ -38,18 +38,14 @@ class SequencerImpl<T> implements Sequencer<T> {
 		Packet<T> packet = new Packet<T>(element, sequence);
 
 		if (isGapTooBig()) {
-			drain();
+			_buffer.clear();
 			produce(packet);
 			return;
 		}
 		
-		if (wasAlreadyProduced()) {
-			System.out.println("Already Produced: " + _incomingSequence + " (lastProduced: "+_lastProduced+")");
-			return;
-		}
+		if (wasAlreadyProduced()) return;
 
 		_buffer.add(packet);
-		
 		producePacketsInBuffer();
 	}
 
@@ -78,14 +74,7 @@ class SequencerImpl<T> implements Sequencer<T> {
 	}
 
 
-	private void drain() {
-		System.out.println("Drained: " + _buffer);
-		_buffer.clear();
-	}
-
-
 	private void produce(Packet<T> packet) {
-		System.out.println("produce " + packet._sequence);
 		_lastProduced = packet._sequence;
 		_consumer.consume(packet._payload);
 	}

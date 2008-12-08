@@ -10,6 +10,7 @@ import wheel.lang.Threads;
 
 public class Anything {
 
+	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
 
 		

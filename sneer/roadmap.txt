@@ -66,7 +66,6 @@ ROADMAP TO PRODUCE
 
 	- Voice Calls
 		- First Step: When I press the button I listen to everyone and everyone listens to me.
-		- [Klaus] Play with audio format values on Linux.
 		- Second Step: Rooms.
 
 	- Refactor AbstractSwingMenu.addAction and the SelectableAction hierarchy. Too many casts. 

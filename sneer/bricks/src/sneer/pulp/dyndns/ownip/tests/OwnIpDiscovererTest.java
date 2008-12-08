@@ -19,6 +19,7 @@ import sneer.pulp.propertystore.mocks.TransientPropertyStore;
 import tests.Contribute;
 import tests.JMockContainerEnvironment;
 import tests.TestThatIsInjected;
+import wheel.io.Logger;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.Receiver;
 
@@ -31,6 +32,8 @@ public class OwnIpDiscovererTest extends TestThatIsInjected {
 	
 	@Test
 	public void testDiscovery() throws IOException {
+		Logger.redirectTo(System.out);
+		
 		final Consumer<String> receiver = _context.mock(Consumer.class);
 		final String ip1 = "123.45.67.89";
 		final String ip2 = "12.34.56.78";
@@ -39,6 +42,7 @@ public class OwnIpDiscovererTest extends TestThatIsInjected {
 
 		_context.checking(new Expectations() {{
 			final Sequence seq = _context.sequence("sequence");
+			one(receiver).consume(null); inSequence(seq);
 
 			one(checkip).check(); will(returnValue(ip1)); inSequence(seq);
 			one(receiver).consume(ip1); inSequence(seq);
@@ -52,14 +56,15 @@ public class OwnIpDiscovererTest extends TestThatIsInjected {
 
 		}});
 		
-		OwnIpDiscoverer discoverer = my(OwnIpDiscoverer.class);
+		OwnIpDiscoverer subject = my(OwnIpDiscoverer.class);
 		
 		@SuppressWarnings("unused")
-		final Receiver<String> refToAvoidGc = new Receiver<String>(discoverer.ownIp()) { @Override public void consume(String value) {
+		final Receiver<String> refToAvoidGc = new Receiver<String>(subject.ownIp()) { @Override public void consume(String value) {
 			receiver.consume(value);
 		}};
 		
 		Clock clock = my(Clock.class);
+		clock.advanceTime(0);
 		clock.advanceTime(retryTime);
 		clock.advanceTime(retryTime);
 		clock.advanceTime(retryTime);

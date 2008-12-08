@@ -32,7 +32,6 @@ class ClockImpl implements Clock {
 	@Override
 	synchronized public void wakeUpInAtLeast(int millisFromCurrentTime, Runnable runnable) {
 		_alarms.add(new Alarm(runnable, millisFromCurrentTime));
-		wakeUpAlarmsIfNecessary();
 	}
 
 	@Override
@@ -44,7 +43,6 @@ class ClockImpl implements Clock {
 	@Override
 	synchronized public void wakeUpEvery(int period, Stepper stepper) {
 		_alarms.add(new Alarm(stepper, period));
-		wakeUpAlarmsIfNecessary();
 	}
 
 	@Override
@@ -92,7 +90,7 @@ class ClockImpl implements Clock {
 	private boolean step(final Stepper stepper) {
 		final ByRef<Boolean> result = ByRef.newInstance(false); 
 		_exceptionHandler.shield(new Fallible() { @Override public void run() throws Throwable {
-			new Timebox(3000) { @Override protected void runInTimebox() {
+			new Timebox(300000) { @Override protected void runInTimebox() {
 				result.value = stepper.step();
 			}};
 		}});

@@ -9,6 +9,9 @@ import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.mic.Mic;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.FriendlyException;
+import wheel.reactive.Register;
+import wheel.reactive.Signal;
+import wheel.reactive.impl.RegisterImpl;
 
 public class MicImpl implements Mic {
 
@@ -21,8 +24,14 @@ public class MicImpl implements Mic {
 	
 	private boolean _isOpen;
 	private Runnable _worker;
-
 	
+	private Register<Boolean> _isRunning = new RegisterImpl<Boolean>(false);
+	
+	@Override
+	public Signal<Boolean> isRunning() {
+		return _isRunning.output();
+	}
+
 	@Override
 	synchronized public void open() {
 		_isOpen = true;
@@ -51,6 +60,7 @@ public class MicImpl implements Mic {
 			if (doAcquireLine()) continue;
 	
 			MicLine.close();
+			_isRunning.setter().consume(false);
 
 			synchronized (this) {
 				if (!_isOpen) {
@@ -85,6 +95,7 @@ public class MicImpl implements Mic {
 		if (!MicLine.isAquired()) return false;
 		
 		_tupleSpace.publish(MicLine.read());
+		_isRunning.setter().consume(true);
 		
 		return true;
 	}
@@ -103,6 +114,4 @@ public class MicImpl implements Mic {
 	private void goToSleep() {
 		Threads.waitWithoutInterruptions(this);
 	}
-
-
 }

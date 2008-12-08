@@ -3,6 +3,7 @@ package sneer.skin.sound.speaker;
 import javax.sound.sampled.LineUnavailableException;
 
 import sneer.kernel.container.Brick;
+import wheel.reactive.Signal;
 
 public interface Speaker extends Brick {
 
@@ -10,4 +11,5 @@ public interface Speaker extends Brick {
 	 * @throws LineUnavailableException */
 	void open();
 	void close();
+	Signal<Boolean> isRunning();
 }

@@ -19,7 +19,6 @@ import sneer.pulp.propertystore.mocks.TransientPropertyStore;
 import tests.Contribute;
 import tests.JMockContainerEnvironment;
 import tests.TestThatIsInjected;
-import wheel.io.Logger;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.Receiver;
 
@@ -32,8 +31,6 @@ public class OwnIpDiscovererTest extends TestThatIsInjected {
 	
 	@Test
 	public void testDiscovery() throws IOException {
-		Logger.redirectTo(System.out);
-		
 		final Consumer<String> receiver = _context.mock(Consumer.class);
 		final String ip1 = "123.45.67.89";
 		final String ip2 = "12.34.56.78";

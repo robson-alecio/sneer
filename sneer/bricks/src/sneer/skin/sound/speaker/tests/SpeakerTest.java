@@ -101,8 +101,8 @@ public class SpeakerTest extends TestThatIsInjected {
 		private final Sequence _mainSequence = _mockery.sequence("main");
 		
 		SoundExpectations() throws Exception {
-			one(_sequencer).sequence(p1(), (short)0); inSequence(_mainSequence);
-			one(_sequencer).sequence(p2(), (short)1); inSequence(_mainSequence);
+			one(_sequencer).produceInSequence(p1(), (short)0); inSequence(_mainSequence);
+			one(_sequencer).produceInSequence(p2(), (short)1); inSequence(_mainSequence);
 		}
 	}
 

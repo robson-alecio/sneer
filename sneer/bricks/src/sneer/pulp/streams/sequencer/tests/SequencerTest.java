@@ -7,7 +7,6 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.Sequence;
 import org.jmock.integration.junit4.JUnit4Mockery;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -54,15 +53,14 @@ public class SequencerTest extends TestThatIsInjected {
 		
 		Sequencer<String> sequencer = _subject.createSequencerFor(_consumer, BUFFER_SIZE, MAX_GAP);
 
-		sequencer.sequence("A", (short)0);
-		sequencer.sequence(packet1, (short)sequence1);
-		sequencer.sequence(packet2, (short)sequence2);
-		sequencer.sequence("D", (short)3);
+		sequencer.produceInSequence("A", (short)0);
+		sequencer.produceInSequence(packet1, (short)sequence1);
+		sequencer.produceInSequence(packet2, (short)sequence2);
+		sequencer.produceInSequence("D", (short)3);
 	}
 	
 
 	@Test
-	@Ignore
 	public void sequencing() {
 		int[] input = new int[] {
 			0, 1, 2, 3, //Happy
@@ -90,7 +88,7 @@ public class SequencerTest extends TestThatIsInjected {
 		Sequencer<String> sequencer = _subject.createSequencerFor(sequenceRecorder(), BUFFER_SIZE, MAX_GAP);
 		
 		for (int sequence : input)
-			sequencer.sequence(""+sequence, (short)sequence);
+			sequencer.produceInSequence(""+sequence, (short)sequence);
 	}
 	
 	private Consumer<String> sequenceRecorder() {

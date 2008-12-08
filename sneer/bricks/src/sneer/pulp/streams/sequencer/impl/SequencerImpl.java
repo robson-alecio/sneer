@@ -15,15 +15,14 @@ class SequencerImpl<T> implements Sequencer<T> {
 
 	private final Consumer<? super T> _consumer;
 
-	private short _lastProduced = -1;
-	
 	private final SortedSet<Packet<T>> _buffer = new TreeSet<Packet<T>>(
 		new Comparator<Packet<T>>(){@Override public int compare(Packet<T> p1, Packet<T> p2) {
-			return cyclicCompare(p1._sequence, p2._sequence);
+			return shortSubtract(p1._sequence, p2._sequence);
 		}}
 	);
-	private short _incomingSequence;
 
+	private short _incomingSequence;
+	private short _lastProduced = -1;
 	
 	
 	SequencerImpl(Consumer<? super T> consumer, short bufferSize, short maxGap) {
@@ -34,20 +33,28 @@ class SequencerImpl<T> implements Sequencer<T> {
 
 
 	@Override
-	public synchronized void sequence(T element, short number) {
-		_incomingSequence = number;
+	public synchronized void produceInSequence(T element, short sequence) {
+		_incomingSequence = sequence;
+		Packet<T> packet = new Packet<T>(element, sequence);
 
-		if(isDiferenceGreaterThanMaxGap(_lastProduced, _incomingSequence)) {
+		if (isGapTooBig()) {
 			drain();
-		} else {
-			if (wasAlreadyProduced())
-				return;
+			produce(packet);
+			return;
+		}
+		
+		if (wasAlreadyProduced()) {
+			System.out.println("Already Produced: " + _incomingSequence + " (lastProduced: "+_lastProduced+")");
+			return;
 		}
 
-		Packet<T> packet = new Packet<T>(element, number);
 		_buffer.add(packet);
 		
-		
+		producePacketsInBuffer();
+	}
+
+
+	private void producePacketsInBuffer() {
 		Iterator<Packet<T>> it = _buffer.iterator();
 		while (it.hasNext()) {
 			Packet<T> candidate = it.next();
@@ -56,33 +63,18 @@ class SequencerImpl<T> implements Sequencer<T> {
 				it.remove();
 			}
 		}
-		
-		
-		produceUninterruptedPackets();
-		produceInterruptedPackets();
 	}
 
 
 	private boolean shouldProduce(Packet<T> candidate) {
-		if (candidate._sequence == _lastProduced + 1) return true;
+		if (shortSubtract(candidate._sequence, (short)1) == _lastProduced) return true;
 				
-		short s1 = candidate._sequence;
-		short in = _incomingSequence;
-		
-		if (s1 < 0 != in < 0) {
-			s1 += _maxGap;
-			in += _maxGap;
-		}
-		
-		return (s1 - in) > _bufferSize;
+		return (shortSubtract(_incomingSequence, candidate._sequence)) > _bufferSize;
 	}
 
 
 	private boolean wasAlreadyProduced() {
-		boolean result = cyclicCompare(_lastProduced, _incomingSequence) >= 0;
-		if (result)
-			System.out.println("Already Produced: " + _incomingSequence + " (lastProduced: "+_lastProduced+")");
-		return result;
+		return shortSubtract(_incomingSequence, _lastProduced) <= 0;
 	}
 
 
@@ -92,61 +84,21 @@ class SequencerImpl<T> implements Sequencer<T> {
 	}
 
 
-	interface BreakCondition<T> {
-		boolean evaluate(Packet<T> current);
-	}
-	
-	
-	private void produceUninterruptedPackets() {
-		tryToProduceAndRemove(new BreakCondition<T>() {@Override public boolean evaluate(Packet<T> current) {
-			return _lastProduced + 1 != current._sequence;
-		}});
-	}
-	
-	private void produceInterruptedPackets() {
-		if(_buffer.size()<2) return;
-		Packet<T> lastPacket = _buffer.last();
-		final int maxSequenceToProduce = lastPacket._sequence - _bufferSize;
-		tryToProduceAndRemove(new BreakCondition<T>() {@Override public boolean evaluate(Packet<T> currentPacket) {
-			return currentPacket._sequence > maxSequenceToProduce;
-		}});		
-	}
-	
 	private void produce(Packet<T> packet) {
 		System.out.println("produce " + packet._sequence);
 		_lastProduced = packet._sequence;
 		_consumer.consume(packet._payload);
 	}
 
-	private void tryToProduceAndRemove(BreakCondition<T> breakCondition) {
-		Iterator<Packet<T>> iterator = _buffer.iterator();
-		while (iterator.hasNext()) {
-			Packet<T> packet = iterator.next();
-			if(breakCondition.evaluate(packet)) return;
-			produce(packet);
-			iterator.remove();
-		}
-	}
-	
-	
-	private boolean isDiferenceGreaterThanMaxGap(short s1, short s2) {
-		if (s1 < 0 != s2 < 0) {
-			s1 += _maxGap;
-			s2 += _maxGap;
-		}
 
-		System.out.println("Gap: " + s1 + ", " + s2);
-
-		return (Math.abs(s1 - s2) > _maxGap);
+	private boolean isGapTooBig() {
+		int gap = Math.abs(shortSubtract(_lastProduced, _incomingSequence));
+		return gap > _maxGap;
 	}
 
 
-	private int cyclicCompare(short s1, short s2) {
-		if (s1 < 0 != s2 < 0) {
-			s1 += _maxGap;
-			s2 += _maxGap;
-		}
-		
-		return s1 - s2;
+	/** Subtracts two shorts without Java's default promotion to int. Normal signed 16-bit overflow semantics are allowed to happen, as one would expect.*/
+	private short shortSubtract(short s1, short s2) {
+		return (short)(s1 - s2);
 	}
 }

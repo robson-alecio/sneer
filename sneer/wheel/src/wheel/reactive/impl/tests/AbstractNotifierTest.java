@@ -1,5 +1,6 @@
 package wheel.reactive.impl.tests;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -11,9 +12,9 @@ import wheel.testutil.WheelEnvironment;
 @RunWith(WheelEnvironment.class)
 public class AbstractNotifierTest {
 	
-	@Test
-	public void testInitReceiverShielding() {
-		
+	@Test (expected = Error.class)
+	@Ignore
+	public void testThrowsBubbleUpDuringTests() {
 		new AbstractNotifier<Object>() {
 			@Override
 			protected void initReceiver(Consumer<Object> receiver) {
@@ -21,4 +22,5 @@ public class AbstractNotifierTest {
 			}
 		}.addReceiver(Signals.sink());
 	}
+
 }

@@ -13,7 +13,7 @@ import wheel.lang.Environment;
 import wheel.lang.Environments;
 import wheel.lang.Environments.Memento;
 import wheel.lang.exceptions.WheelExceptionHandler;
-import wheel.lang.exceptions.impl.WheelExceptionHandlerImpl;
+import wheel.lang.exceptions.impl.ExceptionLeaker;
 
 public class WheelEnvironment extends JUnit4ClassRunner {
 	
@@ -75,7 +75,7 @@ public class WheelEnvironment extends JUnit4ClassRunner {
 			@Override
 			public <T> T provide(Class<T> intrface) {
 				if (WheelExceptionHandler.class == intrface)
-					return (T) new WheelExceptionHandlerImpl();
+					return (T) new ExceptionLeaker();
 				return null;
 			}
 		};

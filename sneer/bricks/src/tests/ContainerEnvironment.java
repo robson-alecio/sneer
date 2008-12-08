@@ -7,6 +7,8 @@ import org.junit.internal.runners.InitializationError;
 
 import sneer.kernel.container.ContainerUtils;
 import wheel.lang.Environment;
+import wheel.lang.exceptions.WheelExceptionHandler;
+import wheel.lang.exceptions.impl.ExceptionLeaker;
 import wheel.testutil.WheelEnvironment;
 import static wheel.lang.Environments.my;
 
@@ -29,6 +31,8 @@ public class ContainerEnvironment extends WheelEnvironment {
 				return (T)ContainerEnvironment.this;
 			if (intrface == TestEnvironment.class)
 				return (T)this;
+			if (intrface == WheelExceptionHandler.class)
+				return (T)new ExceptionLeaker();
 			return provideContribution(intrface);
 		}
 

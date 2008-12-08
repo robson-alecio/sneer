@@ -23,6 +23,9 @@ import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.sound.loopback.LoopbackTester;
 import sneer.skin.sound.mic.Mic;
 import sneer.skin.sound.speaker.Speaker;
+import wheel.lang.Consumer;
+import wheel.reactive.Signal;
+import wheel.reactive.impl.And;
 
 public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a better snapp window support
 
@@ -37,15 +40,30 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 
 	@Inject
 	static private Speaker _speaker;
+
 	
 	@Inject
 	static private Mic _mic;
 	
 	JToggleButton _listenToMeButton;
 	JToggleButton _loopBackButton;
+	
+	private final Signal<Boolean> _isMicAndSpeakerRunning;
+
+	private Consumer<Boolean> _consumerToAvoidGc;
 
 	ListenToMeGuiImpl(){
 		_instrumentManager.registerInstrument(this);
+		_isMicAndSpeakerRunning = new And(_mic.isRunning(), _speaker.isRunning()).output();
+		initConsumer();
+	}
+
+	private void initConsumer() {
+		_consumerToAvoidGc = new Consumer<Boolean>(){ @Override public void consume(final Boolean value) {
+			_listenToMeButton.setSelected(value);
+			_listenToMeButton.repaint();
+		}};	
+		_isMicAndSpeakerRunning.addReceiver(_consumerToAvoidGc);
 	}
 	
 	private ImageIcon loadIcon(String fileName) {
@@ -109,16 +127,10 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 	}
 
 	private void createListenToMeButtonListener() {
-		
-		
-		System.err.println("Speaker always open");
-		_speaker.open();
-		
-		
-		
 		_listenToMeButton.addMouseListener(new MouseAdapter() {	@Override public void mouseReleased(MouseEvent e) {
 			if (_listenToMeButton.isSelected()) listenToMeOn();
 			else listenToMeOff();
+			_listenToMeButton.setSelected(false);
 		}});
 	}
 
@@ -142,41 +154,30 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 		_speaker.open();
 	}
 
-	private JToggleButton createButton(Container container, String tip, String onIcon, String offIcon) {
-		final JToggleButton btn = new JToggleButton();
+	private JToggleButton createButton(Container container, String tip, final String onIcon, final String offIcon) {
+		final JToggleButton btn = new JToggleButton(){
+			Icon ON_ICON = loadIcon(onIcon);
+			Icon OFF_ICON = loadIcon(offIcon);
+			{setIcon(OFF_ICON);}
+			
+			@Override
+			public void setSelected(boolean isSelected) {
+				super.setSelected(isSelected);
+				if (isSelected) setIcon(ON_ICON);
+				else setIcon(OFF_ICON);
+			}
+			
+			{addMouseListener(new MouseAdapter() {
+				@Override public void mouseEntered(MouseEvent e) { setIcon(ON_ICON); }
+				@Override public void mouseExited(MouseEvent e) { if(!isSelected()) setIcon(OFF_ICON);	}
+			});}
+		};
 		btn.setPreferredSize(new Dimension(40,40));
 		btn.setBorder(new EmptyBorder(2,2,2,2));
 		btn.setOpaque(true);
 		btn.setBackground(Color.WHITE);
 		btn.setToolTipText(tip);
-		addMouseListener(btn, onIcon, offIcon);
 		container.add(btn);
 		return btn;
-	}
-
-	private void addMouseListener(final JToggleButton btn, final String onIconName, final String offIconName) {
-		btn.addMouseListener(new MouseAdapter() {
-			Icon ON_ICON = loadIcon(onIconName);
-			Icon OFF_ICON = loadIcon(offIconName);
-			{btn.setIcon(OFF_ICON);}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				btn.setIcon(ON_ICON);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				mouseReleased(e);
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				if (btn.isSelected())
-					btn.setIcon(ON_ICON);
-				else
-					btn.setIcon(OFF_ICON);
-			}
-		});
 	}
 }

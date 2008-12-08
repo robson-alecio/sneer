@@ -12,6 +12,12 @@ public class Anything {
 
 	public static void main(String[] args) {
 
+		
+		System.out.println((short)(Short.MIN_VALUE - Short.MAX_VALUE));
+		System.exit(0);
+
+		
+		
 		Daemon daemon = new Daemon("Spike") {
 			@Override
 			public void run() {

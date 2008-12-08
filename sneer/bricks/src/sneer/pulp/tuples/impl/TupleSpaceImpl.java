@@ -67,6 +67,7 @@ public class TupleSpaceImpl implements TupleSpace {
 	private final Set<Class<? extends Tuple>> _typesToKeep = new HashSet<Class<? extends Tuple>>();
 	private final ListRegister<Tuple> _keptTuples;
 	private final BlockingQueue<Tuple> _acquisitionQueue;
+	private final Object _publicationMonitor = new Object();
 
 	TupleSpaceImpl() {
 		_keptTuples = Bubble.wrapStateMachine(prevayler(new ListRegisterImpl<Tuple>()));
@@ -123,9 +124,11 @@ public class TupleSpaceImpl implements TupleSpace {
 
 	
 	@Override
-	public synchronized void publish(Tuple tuple) {
-		stamp(tuple);
-		acquire(tuple);
+	public void publish(Tuple tuple) {
+		synchronized (_publicationMonitor ) {
+			stamp(tuple);
+			acquire(tuple);
+		}
 	}
 
 	@Override

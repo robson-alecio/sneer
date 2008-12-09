@@ -2,10 +2,10 @@
 =====================================
 [The ROADMAP TO PRODUCE is below]
 
+	- [Rodrigo] @RunWith(JMockContainerEnvironment.class) - Use this in TestThatIsInjected so that subclasses such as MicTest don't have to declare it. Do not waste more than 30mins trying to do this.
+
 	- @Test (expected = Exception.class) - Make our TestRunners support that. Unignore AbstractNotifierTest for example.
 		- Do our test runners support timeout?
-
-	- Environment.my(BrickType.class) - Support for newly developed bricks.
 
 	- ContainerUtils.getContainer() - Drop. Fix all uses.
 

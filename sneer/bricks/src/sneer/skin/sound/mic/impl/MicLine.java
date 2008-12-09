@@ -4,7 +4,6 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.TargetDataLine;
 
 import sneer.kernel.container.Inject;
-import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.Audio;
 import wheel.lang.ImmutableByteArray;
 import wheel.lang.exceptions.FriendlyException;
@@ -37,10 +36,10 @@ class MicLine {
 		return _delegate != null;
 	}
 
-	static PcmSoundPacket read() {
+	static ImmutableByteArray read() {
 		byte[] buffer = pcmBuffer();
 		int read = _delegate.read(buffer , 0, buffer.length);
-		return new PcmSoundPacket(new ImmutableByteArray(buffer, read), 0);
+		return new ImmutableByteArray(buffer, read);
 	}
 
 	private static byte[] pcmBuffer() {

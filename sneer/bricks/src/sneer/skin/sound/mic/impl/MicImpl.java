@@ -6,6 +6,7 @@ import sneer.pulp.retrier.RetrierManager;
 import sneer.pulp.retrier.Task;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.pulp.tuples.TupleSpace;
+import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.mic.Mic;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.FriendlyException;
@@ -15,17 +16,15 @@ import wheel.reactive.impl.RegisterImpl;
 
 public class MicImpl implements Mic {
 
-	@Inject
-	static private ThreadPool _threads;
-	@Inject
-	static private RetrierManager _retriers;
-	@Inject
-	static private TupleSpace _tupleSpace;
+	@Inject static private ThreadPool _threads;
+	@Inject static private RetrierManager _retriers;
+	@Inject static private TupleSpace _tupleSpace;
 	
 	private boolean _isOpen;
 	private Runnable _worker;
 	
 	private Register<Boolean> _isRunning = new RegisterImpl<Boolean>(false);
+	private volatile int _channel = 0;
 	
 	@Override
 	public Signal<Boolean> isRunning() {
@@ -94,7 +93,7 @@ public class MicImpl implements Mic {
 		if (!isOpen()) return false;
 		if (!MicLine.isAquired()) return false;
 		
-		_tupleSpace.publish(MicLine.read());
+		_tupleSpace.publish(new PcmSoundPacket(MicLine.read(), _channel));
 		_isRunning.setter().consume(true);
 		
 		return true;
@@ -117,6 +116,6 @@ public class MicImpl implements Mic {
 
 	@Override
 	public void setChannel(int channel) {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+		_channel = channel;
 	}
 }

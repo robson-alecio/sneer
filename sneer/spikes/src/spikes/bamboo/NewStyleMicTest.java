@@ -23,7 +23,7 @@ public class NewStyleMicTest {
 		
 		new TestSpec() {
 			
-			final Mic mic = my(Mic.class);
+			final Mic mic = my(Mic.class); //Why not simply "my()" without parameter, just like mock()?
 			final TupleSpace tuples = my(TupleSpace.class);
 			final ThreadPool threads = mock();
 			final Audio audio = mock();

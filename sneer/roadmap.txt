@@ -9,7 +9,7 @@
 
 	- ContainerUtils.getContainer() - Drop. Fix all uses.
 
-	- @Inject -> my()
+	- @Inject -> my() - Remember to stop using static fields or tests will fail wierdly.
 
 	- Debugging Strategy - Revise so that all debugging info doesn't go into the log file.
 		- Default: sysout and file. Filter by part of message: Only file or ignore. 

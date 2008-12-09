@@ -40,7 +40,10 @@ public class WheelEnvironment extends JUnit4ClassRunner {
 			} catch (IllegalAccessException e) {
 				throw new RuntimeException(e);
 			} catch (InvocationTargetException e) {
-				throw new RuntimeException(e.getTargetException());
+				Throwable tx = e.getTargetException();
+				if (tx instanceof RuntimeException) throw (RuntimeException)tx;
+				if (tx instanceof Error) throw (Error)tx;
+				throw new RuntimeException(tx);
 			}
 		}
 

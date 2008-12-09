@@ -114,4 +114,9 @@ public class MicImpl implements Mic {
 	private void goToSleep() {
 		Threads.waitWithoutInterruptions(this);
 	}
+
+	@Override
+	public void setChannel(int channel) {
+		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+	}
 }

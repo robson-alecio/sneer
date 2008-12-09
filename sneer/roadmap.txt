@@ -67,23 +67,20 @@ ROADMAP TO PRODUCE
 
 	- [Sandro] Standalone Demos - Adapt to my() or delete.
 
-	- Voice Calls
-		- First Step: When I press the button I listen to everyone and everyone listens to me.
-		- Second Step: Rooms.
-			- Baby step towards rooms: Channels.
-
 	- Refactor AbstractSwingMenu.addAction and the SelectableAction hierarchy. Too many casts. 
 
 	- WatchMe
 		- Accelerate.
+			- BandwidthMeter instrument.      kB/s(Peak)   v 12(31)    ^ 32(41)
+
 	2008---------------------------------- DOGFOOD RELEASE (We have a decent VNC+Skype replacement we use to develop Sneer)
+
+	- Flooding - Solve tuple flooding on the network.
 
 	- Brick Publish (Supposedly working already)
 		- MainDemo - Publish all necessary bricks instead of just producing them.
 
 	- Open Jar leak - Fix in Freedom7Test
-
-	- Flooding - Solve tuple flooding on the network.
 
 	- [Sandro] Elegance Experiment
 		- Remove titles: My Contacts, Wind and Blinking Lights

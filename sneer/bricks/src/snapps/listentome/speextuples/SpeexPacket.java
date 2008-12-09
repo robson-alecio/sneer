@@ -5,15 +5,17 @@ import sneer.pulp.tuples.Tuple;
 
 public class SpeexPacket extends Tuple {
 	
-	public final byte[][] _frames;
+	public final byte[][] frames;
+	public final String room;
 
-	public SpeexPacket(byte[][] frames) {
-		_frames = frames;
+	public SpeexPacket(byte[][] frames_, String room_) {
+		frames = frames_;
+		room = room_;
 	}
 
-	public SpeexPacket(PublicKey contactKey, byte[][] frames) {
+	public SpeexPacket(PublicKey contactKey, byte[][] frames_, String room_) {
 		super(contactKey, 0);
-		_frames = frames;
+		frames = frames_;
+		room = room_;
 	}
-
 }

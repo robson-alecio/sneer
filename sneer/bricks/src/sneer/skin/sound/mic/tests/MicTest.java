@@ -11,15 +11,11 @@ import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import sneer.pulp.tuples.TupleSpace;
-import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.mic.Mic;
 import tests.Contribute;
 import tests.JMockContainerEnvironment;
 import tests.TestThatIsInjected;
-import wheel.lang.Consumer;
-import wheel.lang.Threads;
 import wheel.testutil.SignalUtils;
 
 @RunWith(JMockContainerEnvironment.class)
@@ -46,32 +42,6 @@ public class MicTest extends TestThatIsInjected {
 		SignalUtils.waitForValue(false, _subject.isRunning());
 	}
 	
-	@Test (timeout = 1000)
-	public void testChannels() {
-		_mockery.checking(soundExpectations());
-	
-		int defaultChannel = 0;
-	
-		_subject.open();
-		waitForPcmPacketChannel(defaultChannel);
-	
-		_subject.setChannel(42);
-		waitForPcmPacketChannel(42);
-	}
-
-	private void waitForPcmPacketChannel(final int channel) {
-		final Object notifier = new Object();
-	
-		synchronized (notifier) { //Refactor Try to extract this "wait for notify" logic.
-			my(TupleSpace.class).addSubscription(PcmSoundPacket.class, new Consumer<PcmSoundPacket>() { @Override public void consume(PcmSoundPacket packet) {
-				if (packet.channel != channel) return;
-				synchronized (notifier) { notifier.notify(); }
-			}});
-			
-			Threads.waitWithoutInterruptions(notifier);
-		}
-	}
-
 	private Expectations soundExpectations() {
 		return new Expectations() {{
 			one(_audio).tryToOpenCaptureLine(); will(returnValue(_line));
@@ -80,5 +50,4 @@ public class MicTest extends TestThatIsInjected {
 			allowing(_line).close();
 		}};
 	}
-
 }

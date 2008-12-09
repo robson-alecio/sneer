@@ -97,7 +97,7 @@ public class SpeakerTest extends TestThatIsInjected {
 	}
 	
 	private PcmSoundPacket pcmSoundPacketFor(PublicKey publicKey, final byte[] pcmPayload) {
-		return new PcmSoundPacket(publicKey, _clock.time(), new ImmutableByteArray(pcmPayload, pcmPayload.length), 0);
+		return new PcmSoundPacket(publicKey, _clock.time(), new ImmutableByteArray(pcmPayload, pcmPayload.length));
 	}
 	
 	private PcmSoundPacket p1() {

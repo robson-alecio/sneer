@@ -11,6 +11,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 
@@ -19,11 +21,15 @@ import snapps.contacts.actions.ContactActionManager;
 import snapps.listentome.gui.ListenToMeGui;
 import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
+import sneer.skin.rooms.ActiveRoomKeeper;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.sound.loopback.LoopbackTester;
 import sneer.skin.sound.mic.Mic;
 import sneer.skin.sound.speaker.Speaker;
+import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
+import sneer.skin.widgets.reactive.TextWidget;
 import wheel.lang.Consumer;
+import wheel.lang.Environments;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.And;
 
@@ -41,7 +47,6 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 	@Inject
 	static private Speaker _speaker;
 
-	
 	@Inject
 	static private Mic _mic;
 	
@@ -52,6 +57,8 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 
 	private Consumer<Boolean> _consumerToAvoidGc;
 
+	private TextWidget<JTextField> _roomField;
+
 	ListenToMeGuiImpl(){
 		_instrumentManager.registerInstrument(this);
 		_isMicAndSpeakerRunning = new And(_mic.isRunning(), _speaker.isRunning()).output();
@@ -61,7 +68,7 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 	private void initConsumer() {
 		_consumerToAvoidGc = new Consumer<Boolean>(){ @Override public void consume(final Boolean value) {
 			_listenToMeButton.setSelected(value);
-			_listenToMeButton.repaint();
+			_roomField.getMainWidget().setEnabled(value);
 		}};	
 		_isMicAndSpeakerRunning.addReceiver(_consumerToAvoidGc);
 	}
@@ -77,13 +84,28 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 	@Override
 	public void init(Container container) {
 		container.setBackground(Color.WHITE);
-		container.setLayout(new FlowLayout());
+		container.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 5));
+		
+		ActiveRoomKeeper room = Environments.my(ActiveRoomKeeper.class);
+
+		_roomField = Environments.my(ReactiveWidgetFactory.class).newTextField(room.room(), room.setter());
+		room.setter().consume("<Room>");
+
+		container.add(_roomField.getMainWidget());
+		_roomField.getMainWidget().setPreferredSize(new Dimension(100,36));
+		
 		_listenToMeButton = createButton(container, "Listen To Me", "listenToMeOn.png", "listenToMeOff.png");
+		container.add(space(36, 10));
 		_loopBackButton = createButton(container, "Loop Back Test", "loopbackOn.png", "loopbackOff.png");
 		
 		createListenToMeButtonListener();
 		createLoopBackButtonListener();
 		addListenContactAction();
+	}
+
+	private JPanel space(final int height, final int width) {
+		return new JPanel(){{
+		setPreferredSize(new Dimension(width,height)); setOpaque(false);}};
 	}
 	
 	@Override

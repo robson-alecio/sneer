@@ -10,9 +10,12 @@ import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
+import sneer.skin.rooms.ActiveRoomKeeper;
 import sneer.skin.sound.PcmSoundPacket;
 import wheel.lang.Consumer;
+import static wheel.lang.Environments.my;
 import wheel.lang.ImmutableByteArray;
+import wheel.reactive.Signal;
 
 class SpeexTuplesImpl implements SpeexTuples {
 
@@ -25,7 +28,7 @@ class SpeexTuplesImpl implements SpeexTuples {
 
 	static private final int FRAMES_PER_AUDIO_PACKET = 10;
 
-	
+	private final Signal<String> _room = my(ActiveRoomKeeper.class).room();
 	private byte[][] _frames = newFramesArray();
 	private int _frameIndex;
 	
@@ -41,8 +44,8 @@ class SpeexTuplesImpl implements SpeexTuples {
 				flush();
 		}});
 		_tupleSpace.addSubscription(SpeexPacket.class, new Consumer<SpeexPacket>() { @Override public void consume(SpeexPacket packet) {
-			if (isMine(packet))
-				return;
+			if (isMine(packet))	return;
+			if (!_room.currentValue().equals(packet.room)) return;
 			decode(packet);
 		}});
 	}
@@ -56,7 +59,7 @@ class SpeexTuplesImpl implements SpeexTuples {
 	}
 
 	private void flush() {
-		_tupleSpace.publish(new SpeexPacket(_frames));
+		_tupleSpace.publish(new SpeexPacket(_frames, _room.currentValue()));
 		_frames = newFramesArray();
 		_frameIndex = 0;
 	}
@@ -69,8 +72,8 @@ class SpeexTuplesImpl implements SpeexTuples {
 	}
 	
 	protected void decode(SpeexPacket packet) {
-		for (byte[] frame : _decoder.decode(packet._frames))
-			_tupleSpace.acquire(new PcmSoundPacket(packet.publisher(), packet.publicationTime(), new ImmutableByteArray(frame, frame.length), 0));
+		for (byte[] frame : _decoder.decode(packet.frames))
+			_tupleSpace.acquire(new PcmSoundPacket(packet.publisher(), packet.publicationTime(), new ImmutableByteArray(frame, frame.length)));
 	}
 
 	@Override

@@ -11,6 +11,4 @@ public interface Mic extends Brick {
 	void close();
 	Signal<Boolean> isRunning();
 	
-	void setChannel(int channel);
-
 }

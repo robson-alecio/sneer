@@ -24,7 +24,6 @@ public class MicImpl implements Mic {
 	private Runnable _worker;
 	
 	private Register<Boolean> _isRunning = new RegisterImpl<Boolean>(false);
-	private volatile int _channel = 0;
 	
 	@Override
 	public Signal<Boolean> isRunning() {
@@ -93,7 +92,7 @@ public class MicImpl implements Mic {
 		if (!isOpen()) return false;
 		if (!MicLine.isAquired()) return false;
 		
-		_tupleSpace.publish(new PcmSoundPacket(MicLine.read(), _channel));
+		_tupleSpace.publish(new PcmSoundPacket(MicLine.read()));
 		_isRunning.setter().consume(true);
 		
 		return true;
@@ -112,10 +111,5 @@ public class MicImpl implements Mic {
 
 	private void goToSleep() {
 		Threads.waitWithoutInterruptions(this);
-	}
-
-	@Override
-	public void setChannel(int channel) {
-		_channel = channel;
 	}
 }

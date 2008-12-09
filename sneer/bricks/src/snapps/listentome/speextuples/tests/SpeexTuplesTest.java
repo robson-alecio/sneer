@@ -18,12 +18,14 @@ import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
+import sneer.skin.rooms.ActiveRoomKeeper;
 import sneer.skin.sound.PcmSoundPacket;
 import tests.Contribute;
 import tests.JMockContainerEnvironment;
 import tests.TestThatIsInjected;
 import wheel.lang.ByRef;
 import wheel.lang.Consumer;
+import static wheel.lang.Environments.my;
 import wheel.lang.ImmutableByteArray;
 
 @RunWith(JMockContainerEnvironment.class)
@@ -43,10 +45,8 @@ public class SpeexTuplesTest extends TestThatIsInjected {
 	
 	{
 		_mockery.checking(new Expectations() {{
-			allowing(_speex).createEncoder();
-				will(returnValue(_encoder));
-			allowing(_speex).createDecoder();
-				will(returnValue(_decoder));
+			allowing(_speex).createEncoder(); will(returnValue(_encoder));
+			allowing(_speex).createDecoder(); will(returnValue(_decoder));
 		}});
 	}
 	
@@ -56,14 +56,12 @@ public class SpeexTuplesTest extends TestThatIsInjected {
 		_mockery.checking(new Expectations() {{ 
 			final Sequence main = _mockery.sequence("main");
 			for (byte i=0; i<_subject.framesPerAudioPacket() * 2; i+=2) {
-				one(_encoder).processData(new byte[] { i });
-					will(returnValue(false)); inSequence(main);
-				one(_encoder).processData(new byte[] { (byte) (i + 1) });
-					will(returnValue(true)); inSequence(main);
-				one(_encoder).getProcessedData();
-					will(returnValue(new byte[] { (byte) (i*42) }));
+				one(_encoder).processData(new byte[] { i }); will(returnValue(false)); inSequence(main);
+				one(_encoder).processData(new byte[] { (byte) (i + 1) });	will(returnValue(true)); inSequence(main);
+				one(_encoder).getProcessedData();	will(returnValue(new byte[] { (byte) (i*42) }));
 			}
 		}});
+		
 		
 		final ByRef<SpeexPacket> packet = ByRef.newInstance();
 		_tupleSpace.addSubscription(SpeexPacket.class, new Consumer<SpeexPacket>() { @Override public void consume(SpeexPacket value) {
@@ -71,11 +69,13 @@ public class SpeexTuplesTest extends TestThatIsInjected {
 			packet.value = value;
 		}});
 		
+		setRoom("MyChannel");
 		for (byte[] frame : frames())
 			_tupleSpace.acquire(myPacket(frame));
 		
 		assertNotNull(packet.value);
-		assertFrames(packet.value._frames);
+		assertFrames(packet.value.frames);
+		assertEquals("MyChannel", packet.value.room);
 	}
 	
 	@Test
@@ -89,24 +89,32 @@ public class SpeexTuplesTest extends TestThatIsInjected {
 				will(returnValue(new byte[][] { pcmPacketPayload }));
 		}});
 		
+		setRoom("MyRoom");
+		
 		final ByRef<PcmSoundPacket> packet = ByRef.newInstance();
 		_tupleSpace.addSubscription(PcmSoundPacket.class, new Consumer<PcmSoundPacket>() { @Override public void consume(PcmSoundPacket value) {
 			assertNull(packet.value);
 			packet.value = value;
 		}});
 		
-		_tupleSpace.acquire(speexPacketFrom(contactKey(), speexPacketPayload));
+		_tupleSpace.acquire(speexPacketFrom(contactKey(), speexPacketPayload, "MyRoom"));
 		// tuples with ownPublicKey should be ignored
-		_tupleSpace.acquire(speexPacketFrom(ownPublicKey(), speexPacketPayload));
+		_tupleSpace.acquire(speexPacketFrom(ownPublicKey(), speexPacketPayload, "MyRoom"));
+			// tuples with different channel should be ignored
+		_tupleSpace.acquire(speexPacketFrom(contactKey(), speexPacketPayload, "OtherRoom"));
 		
 		final PcmSoundPacket pcmPacket = packet.value;
 		assertNotNull(pcmPacket);
 		assertArrayEquals(pcmPacketPayload, pcmPacket.payload.copy());
 		assertEquals(contactKey(), pcmPacket.publisher());
 	}
-	
-	private Tuple speexPacketFrom(PublicKey contactKey, byte[][] bs) {
-		return new SpeexPacket(contactKey, bs);
+
+	private void setRoom(String name) {
+		my(ActiveRoomKeeper.class).setter().consume(name);
+	}
+
+	private Tuple speexPacketFrom(PublicKey contactKey, byte[][] bs, String channel) {
+		return new SpeexPacket(contactKey, bs, channel);
 	}
 
 	private void assertFrames(final byte[][] frames) {
@@ -132,7 +140,7 @@ public class SpeexTuplesTest extends TestThatIsInjected {
 	}
 	
 	private PcmSoundPacket pcmSoundPacketFor(PublicKey publicKey, final byte[] pcmPayload) {
-		return new PcmSoundPacket(publicKey, _clock.time(), new ImmutableByteArray(pcmPayload, pcmPayload.length),0);
+		return new PcmSoundPacket(publicKey, _clock.time(), new ImmutableByteArray(pcmPayload, pcmPayload.length));
 	}
 	
 	private byte[][] frames() {

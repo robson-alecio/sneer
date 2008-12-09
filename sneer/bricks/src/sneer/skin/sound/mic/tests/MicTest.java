@@ -32,11 +32,22 @@ public class MicTest extends TestThatIsInjected {
 	@Contribute	private final Audio _audio = _mockery.mock(Audio.class);
 	private final TargetDataLine _line = _mockery.mock(TargetDataLine.class);
 	private final AudioFormat _format = new AudioFormat(8000, 16, 1, true, false);
-
 	
-	@Test(timeout = 3000)
-	public void testChannels() {
+	@Test
+	public void testIsRunningSignal() {
+		_mockery.checking(soundExpectations());
 		
+		SignalUtils.waitForValue(false, _subject.isRunning());
+		
+		_subject.open();
+		SignalUtils.waitForValue(true, _subject.isRunning());
+		
+		_subject.close();
+		SignalUtils.waitForValue(false, _subject.isRunning());
+	}
+	
+	@Test (timeout = 1000)
+	public void testChannels() {
 		_mockery.checking(soundExpectations());
 	
 		int defaultChannel = 0;
@@ -63,27 +74,11 @@ public class MicTest extends TestThatIsInjected {
 
 	private Expectations soundExpectations() {
 		return new Expectations() {{
-			//Sequence main = _mockery.sequence("main");
-			one(_audio).tryToOpenCaptureLine(); will(returnValue(_line));// inSequence(main);
+			one(_audio).tryToOpenCaptureLine(); will(returnValue(_line));
 			allowing(_audio).defaultAudioFormat(); will(returnValue(_format));
 			allowing(_line).read(with(aNonNull(byte[].class)), with(0), with(320)); will(returnValue(320));
-			allowing(_line).close();// inSequence(main);
+			allowing(_line).close();
 		}};
-	}
-
-	@Test
-	public void testIsRunningSignal() {
-//		Mic subject = my(Mic.class);
-		
-		_mockery.checking(soundExpectations());
-	
-		SignalUtils.waitForValue(false, _subject.isRunning());
-		
-		_subject.open();
-		SignalUtils.waitForValue(true, _subject.isRunning());
-		
-		_subject.close();
-		SignalUtils.waitForValue(false, _subject.isRunning());
 	}
 
 }

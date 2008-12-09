@@ -2,6 +2,7 @@ package sneer.pulp.streams.sequencer.tests;
 
 import java.util.ArrayList;
 import java.util.List;
+import static wheel.testutil.TestUtils.assertSameContents;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -26,7 +27,7 @@ public class SequencerTest extends TestThatIsInjected {
 
 	@Inject private static Sequencers _subject;
 	
-	private final List<String> _recordedSequence = new ArrayList<String>();
+	private final List<Integer> _recordedSequence = new ArrayList<Integer>();
 
 	private final Mockery _mockery = new JUnit4Mockery();
 	
@@ -79,29 +80,24 @@ public class SequencerTest extends TestThatIsInjected {
 		};
 
 		feedInputSequence(input);
-		expectOutputSequence(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 21, 600, 601, 602, -3, -2, -1,
-				Short.MAX_VALUE-2, Short.MAX_VALUE-1, Short.MAX_VALUE,
-				Short.MIN_VALUE, Short.MIN_VALUE+1, Short.MIN_VALUE+2);
+		assertSameContents(_recordedSequence,
+				0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 20, 21, 600, 601, 602, -3, -2, -1,
+				Short.MAX_VALUE-2, Short.MAX_VALUE-1, (int)Short.MAX_VALUE,
+				(int)Short.MIN_VALUE, Short.MIN_VALUE+1, Short.MIN_VALUE+2);
 	}
 
 	private void feedInputSequence(int[] input) {
-		Sequencer<String> sequencer = _subject.createSequencerFor(sequenceRecorder(), BUFFER_SIZE, MAX_GAP);
+		Sequencer<Integer> sequencer = _subject.createSequencerFor(sequenceRecorder(), BUFFER_SIZE, MAX_GAP);
 		
 		for (int sequence : input)
-			sequencer.produceInSequence(""+sequence, (short)sequence);
+			sequencer.produceInSequence(sequence, (short)sequence);
 	}
 	
-	private Consumer<String> sequenceRecorder() {
-		return new Consumer<String>(){ @Override public void consume(String value) {
+	private Consumer<Integer> sequenceRecorder() {
+		return new Consumer<Integer>(){ @Override public void consume(Integer value) {
 			_recordedSequence.add(value);
 		}};
 	}
 	
-	private void expectOutputSequence(int... expected) {
-		assertEquals(expected.length, _recordedSequence.size());
-		
-		for (int i = 0; i < expected.length; i++)
-			assertEquals(""+expected[i], _recordedSequence.get(i)); 
-	}
-	
+
 }

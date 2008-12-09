@@ -17,13 +17,14 @@ class MicLine {
 
 	private static byte[] _pcmBuffer;
 	
-	static void close() {
-		if (_delegate == null) throw new IllegalStateException();
+	static synchronized void close() {
+		if (_delegate == null) return;
+		
 		_delegate.close();
 		_delegate = null;
 	}
 
-	static void tryToAcquire() throws FriendlyException {
+	static synchronized void tryToAcquire() throws FriendlyException {
 		TargetDataLine result = null;
 		result = _audio.tryToOpenCaptureLine();
 		if (result == null)
@@ -32,7 +33,7 @@ class MicLine {
 		_delegate = result;
 	}
 
-	static boolean isAquired() {
+	static synchronized boolean isAquired() {
 		return _delegate != null;
 	}
 

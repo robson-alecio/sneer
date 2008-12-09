@@ -40,7 +40,7 @@ class MicLine {
 	static PcmSoundPacket read() {
 		byte[] buffer = pcmBuffer();
 		int read = _delegate.read(buffer , 0, buffer.length);
-		return new PcmSoundPacket(new ImmutableByteArray(buffer, read));
+		return new PcmSoundPacket(new ImmutableByteArray(buffer, read), 0);
 	}
 
 	private static byte[] pcmBuffer() {

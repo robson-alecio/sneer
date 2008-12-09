@@ -51,6 +51,12 @@ public class Threads {
 		}};
 	}
 
+	public static Runnable createNotifier() {
+		return new Runnable() { @Override synchronized public void run() {
+			notify();
+		}};
+	}
+
 }
 
 

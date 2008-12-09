@@ -70,7 +70,7 @@ class SpeexTuplesImpl implements SpeexTuples {
 	
 	protected void decode(SpeexPacket packet) {
 		for (byte[] frame : _decoder.decode(packet._frames))
-			_tupleSpace.acquire(new PcmSoundPacket(packet.publisher(), packet.publicationTime(), new ImmutableByteArray(frame, frame.length)));
+			_tupleSpace.acquire(new PcmSoundPacket(packet.publisher(), packet.publicationTime(), new ImmutableByteArray(frame, frame.length), 0));
 	}
 
 	@Override

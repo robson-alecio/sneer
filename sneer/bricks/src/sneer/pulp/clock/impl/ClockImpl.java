@@ -47,17 +47,11 @@ class ClockImpl implements Clock {
 
 	@Override
 	public void sleepAtLeast(int millis) {
-		Runnable notifier = createNotifier();
+		Runnable notifier = Threads.createNotifier();
 		synchronized (notifier) {
 			wakeUpInAtLeast(millis, notifier);
 			Threads.waitWithoutInterruptions(notifier);
 		}
-	}
-
-	private Runnable createNotifier() {
-		return new Runnable() { @Override synchronized public void run() {
-			notify();
-		}};
 	}
 
 	@Override

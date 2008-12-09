@@ -25,26 +25,26 @@ import wheel.testutil.SignalUtils;
 @RunWith(JMockContainerEnvironment.class)
 public class MicTest extends TestThatIsInjected {
 
-	protected final Mockery _mockery = new JUnit4Mockery();
+	private final Mockery _mockery = new JUnit4Mockery();
+	
+	private final Mic _subject = my(Mic.class);
 
-	protected final TargetDataLine _line = _mockery.mock(TargetDataLine.class);
-	protected final AudioFormat _format = new AudioFormat(8000, 16, 1, true, false);
-
-	@Contribute	protected final Audio _audio = _mockery.mock(Audio.class);
+	@Contribute	private final Audio _audio = _mockery.mock(Audio.class);
+	private final TargetDataLine _line = _mockery.mock(TargetDataLine.class);
+	private final AudioFormat _format = new AudioFormat(8000, 16, 1, true, false);
 
 	
 	@Test(timeout = 3000)
 	public void testChannels() {
-		Mic subject = my(Mic.class);
 		
 		_mockery.checking(soundExpectations());
 	
 		int defaultChannel = 0;
 	
-		subject.open();
+		_subject.open();
 		waitForPcmPacketChannel(defaultChannel);
 	
-		subject.setChannel(42);
+		_subject.setChannel(42);
 		waitForPcmPacketChannel(42);
 	}
 
@@ -73,17 +73,17 @@ public class MicTest extends TestThatIsInjected {
 
 	@Test
 	public void testIsRunningSignal() {
-		Mic subject = my(Mic.class);
+//		Mic subject = my(Mic.class);
 		
 		_mockery.checking(soundExpectations());
 	
-		SignalUtils.waitForValue(false, subject.isRunning());
+		SignalUtils.waitForValue(false, _subject.isRunning());
 		
-		subject.open();
-		SignalUtils.waitForValue(true, subject.isRunning());
+		_subject.open();
+		SignalUtils.waitForValue(true, _subject.isRunning());
 		
-		subject.close();
-		SignalUtils.waitForValue(false, subject.isRunning());
+		_subject.close();
+		SignalUtils.waitForValue(false, _subject.isRunning());
 	}
 
 }

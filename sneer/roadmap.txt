@@ -67,7 +67,7 @@ ROADMAP TO PRODUCE
 
 	- [Sandro] Standalone Demos - Adapt to my() or delete.
 
-	- Refactor AbstractSwingMenu.addAction and the SelectableAction hierarchy. Too many casts. 
+	- [Sandro] Refactor AbstractSwingMenu.addAction and the SelectableAction hierarchy. Too many casts. 
 
 	- WatchMe
 		- Accelerate.
@@ -76,6 +76,7 @@ ROADMAP TO PRODUCE
 	2008---------------------------------- DOGFOOD RELEASE (We have a decent VNC+Skype replacement we use to develop Sneer)
 
 	- Flooding - Solve tuple flooding on the network.
+		- Traffic Prioritization by tuple type
 
 	- Brick Publish (Supposedly working already)
 		- MainDemo - Publish all necessary bricks instead of just producing them.
@@ -96,8 +97,6 @@ ROADMAP TO PRODUCE
 
 	- Contact CRUD Instrument
 		- Nicknames
-
-	- Traffic Prioritization by tuple type
 	30/FEB --------------------------------------
 
 	- Authentication (PK)

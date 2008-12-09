@@ -70,6 +70,7 @@ ROADMAP TO PRODUCE
 	- Voice Calls
 		- First Step: When I press the button I listen to everyone and everyone listens to me.
 		- Second Step: Rooms.
+			- Baby step towards rooms: Channels.
 
 	- Refactor AbstractSwingMenu.addAction and the SelectableAction hierarchy. Too many casts. 
 

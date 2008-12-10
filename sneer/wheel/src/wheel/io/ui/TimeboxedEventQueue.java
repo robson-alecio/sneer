@@ -53,7 +53,6 @@ public class TimeboxedEventQueue extends EventQueue {
 			}
 
 			_event = event;
-//			this.run();
 			Environments.runWith(_environment, this);
 		}
 

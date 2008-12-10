@@ -1,6 +1,3 @@
-/**
- * 
- */
 package wheel.lang;
 
 public interface Environment {

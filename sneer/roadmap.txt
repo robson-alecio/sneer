@@ -89,6 +89,7 @@ ROADMAP TO PRODUCE
 
 	- [Petra] Tray and Dashboard Titlebar Icon
 	- [Petra] Online and Offline Icons
+	
 	30/JAN ---------------------------------
 
 	- Own Name - Show contacts' names in contact list
@@ -96,16 +97,21 @@ ROADMAP TO PRODUCE
 
 	- Contact CRUD Instrument
 		- Nicknames
+		
 	30/FEB --------------------------------------
+
+	- TopTen - First Round
+	
+	30/MAR -------------------------------------- "SNEERCAST" RELEASE (Remote collaborating (includes Pair Programming) teams all over the world can use Sneer as their tool.)
 
 	- Authentication (PK)
 
 	- Affinity
 		- Access control to all other snapps by affinity.
-	30/MAR -------------------------------------- "SNEERCAST" RELEASE (Remote collaborating (includes Pair Programming) teams all over the world can use Sneer as their tool.)
-
-	- TopTen
 	30/APR --------------------------------------
+
+	- TopTen - Second Round
+	
 	30/MAY --------------------------------------
 
 	- Synonyms

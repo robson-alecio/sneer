@@ -5,7 +5,7 @@ import wheel.lang.Consumer;
 
 class SocketHolder {
 
-	private volatile ByteArraySocket _socket;
+	private ByteArraySocket _socket;
 	private final Consumer<Boolean> _activityReceiver;
 
 	public SocketHolder(Consumer<Boolean> activityReceiver) {
@@ -16,7 +16,7 @@ class SocketHolder {
 		return _socket == null;
 	}
 
-	ByteArraySocket socket() {
+	synchronized ByteArraySocket socket() {
 		return _socket;
 	}
 

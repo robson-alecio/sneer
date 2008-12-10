@@ -4,12 +4,13 @@
 
 	- [Rodrigo] @RunWith(JMockContainerEnvironment.class) - Use this in TestThatIsInjected so that subclasses such as MicTest don't have to declare it. Do not waste more than 30mins trying to do this.
 
-	- @Test (expected = Exception.class) - Make our TestRunners support that. Unignore AbstractNotifierTest for example.
+	- [Rodrigo] @Test (expected = Exception.class) - Make our TestRunners support that. Unignore AbstractNotifierTest for example.
 		- Do our test runners support timeout?
 
 	- ContainerUtils.getContainer() - Drop. Fix all uses.
 
 	- @Inject -> my() - Remember to stop using static fields or tests will fail wierdly.
+		- [Sandro] Standalone Demos - Adapt to my() or delete.
 
 	- Debugging Strategy - Revise so that all debugging info doesn't go into the log file.
 		- Default: sysout and file. Filter by part of message: Only file or ignore. 
@@ -64,8 +65,6 @@ ROADMAP TO PRODUCE
 	
 	- ListSignalModel and SortedList
 		- Fix: Sort Bug (see SortTest)
-
-	- [Sandro] Standalone Demos - Adapt to my() or delete.
 
 	- WatchMe
 		- Accelerate.

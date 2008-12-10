@@ -67,8 +67,6 @@ ROADMAP TO PRODUCE
 
 	- [Sandro] Standalone Demos - Adapt to my() or delete.
 
-	- [Sandro] Refactor AbstractSwingMenu.addAction and the SelectableAction hierarchy. Too many casts. 
-
 	- WatchMe
 		- Accelerate.
 			- BandwidthMeter instrument.      kB/s(Peak)   v 12(31)    ^ 32(41)

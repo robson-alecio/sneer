@@ -11,7 +11,8 @@ public abstract class Timebox implements Runnable {
 	private static final int PRECISION_IN_MILLIS = 500;
 	private static final Timebox[] ARRAY_TYPE = new Timebox[0];
 	
-	static private final Set<Timebox> _activeTimeboxes = java.util.Collections.synchronizedSet(new HashSet<Timebox>()); 
+	static private final Set<Timebox> _activeTimeboxes = java.util.Collections.synchronizedSet(new HashSet<Timebox>());
+	private final int _initialDuration; 
 	
 	static {
 		Thread killer = new Thread("Timebox Killer") { @Override public void run() {
@@ -30,7 +31,7 @@ public abstract class Timebox implements Runnable {
 	}
 	
 	public Timebox(int durationInMillis, boolean runNow) {
-		_millisToDie = durationInMillis;
+		_initialDuration = durationInMillis;
 		if (runNow) run();
 	}
 	
@@ -66,6 +67,7 @@ public abstract class Timebox implements Runnable {
 	synchronized private void runPre() {
 		if (_worker != null) throw new IllegalStateException("Timebox was already running.");
 	
+		_millisToDie = _initialDuration;
 		_worker = Thread.currentThread();
 		_activeTimeboxes.add(this);
 	}

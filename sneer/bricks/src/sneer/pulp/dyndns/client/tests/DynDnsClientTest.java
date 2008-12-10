@@ -21,6 +21,7 @@ import sneer.pulp.dyndns.ownaccount.DynDnsAccount;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.dyndns.updater.BadAuthException;
+import sneer.pulp.dyndns.updater.RedundantUpdateException;
 import sneer.pulp.dyndns.updater.Updater;
 import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.propertystore.mocks.TransientPropertyStore;
@@ -154,13 +155,36 @@ Unacceptable Client Behavior
 		_context.assertIsSatisfied();
 	}
 
+	@Test
+	public void redundantUpdate() throws UpdaterException, IOException {
+		
+		final RedundantUpdateException error = new RedundantUpdateException();
+		final DynDnsAccount account = _ownAccount.output().currentValue();
+		
+		_context.checking(new Expectations() {{
+			allowing(_ownIpDiscoverer).ownIp();	will(returnValue(_ownIp.output()));
+			allowing(_ownAccountKeeper).ownAccount(); will(returnValue(_ownAccount.output()));
+			
+			exactly(1).of(_updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
+				will(throwException(error));
+		}});
+		
+		startDynDnsClient();
+		_threadPool.startAllActors();
+		
+		assertBlinkingLight(error, my(Container.class));
+		
+		_context.assertIsSatisfied();
+	}
+
+	
 	private Light assertBlinkingLight(final Exception expectedError, final Container container) {
 		final ListSignal<Light> lights = container.provide(BlinkingLights.class).lights();
 		assertEquals(1, lights.currentSize());
 		final Light light = lights.currentGet(0);
 		assertTrue(light.isOn());
 		if (expectedError instanceof FriendlyException) {
-			assertEquals(((FriendlyException)expectedError).getMessage(), light.helpMessage());
+			assertEquals(((FriendlyException)expectedError).getHelp(), light.helpMessage());
 		}
 		assertSame(expectedError, light.error());
 		return light;

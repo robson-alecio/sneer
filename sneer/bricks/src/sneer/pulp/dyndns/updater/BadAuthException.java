@@ -2,10 +2,10 @@ package sneer.pulp.dyndns.updater;
 
 public class BadAuthException extends UpdaterException {
 	
-	private static final String HELP = "Please check your dyndns account information.";
+	private static final String HELP = "The username and password pair do not match a real user. Please check your dyndns account information.";
 
 	public BadAuthException() {
-		super("The username and password pair do not match a real user", HELP);
+		super("Bad Dyndns Authorization", HELP);
 	}
 
 }

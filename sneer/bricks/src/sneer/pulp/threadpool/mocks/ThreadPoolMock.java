@@ -12,21 +12,23 @@ public class ThreadPoolMock implements ThreadPool {
 	List<Stepper> _steppers = new ArrayList<Stepper>();
 
 	@Override
-	public void registerStepper(final Stepper stepper) {
+	public synchronized void registerStepper(final Stepper stepper) {
 		_steppers.add(stepper);
 	}
 
 	@Override
-	public void registerActor(Runnable runnable) {
+	public synchronized void registerActor(Runnable runnable) {
 		_actors.add(runnable);
 	}
 
-	public void startAllActors(){
-		for (Runnable toRun : _actors) toRun.run();
+	public synchronized void startAllActors(){
+		ArrayList<Runnable> copy = new ArrayList<Runnable>(_actors);
 		_actors.clear();
+		
+		for (Runnable toRun : copy) toRun.run();
 	}
 
-	public Stepper stepper(int i) {
+	public synchronized Stepper stepper(int i) {
 		return _steppers.get(i);
 	}
 

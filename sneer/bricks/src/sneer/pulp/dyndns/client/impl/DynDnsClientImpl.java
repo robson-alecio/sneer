@@ -13,6 +13,7 @@ import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.dyndns.updater.BadAuthException;
 import sneer.pulp.dyndns.updater.InvalidHostException;
+import sneer.pulp.dyndns.updater.RedundantUpdateException;
 import sneer.pulp.dyndns.updater.Updater;
 import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.propertystore.PropertyStore;
@@ -47,7 +48,7 @@ class DynDnsClientImpl implements DynDnsClient {
 	
 	private final Object _stateMonitor = new Object();
 	private State _state = new Happy();
-	private Light _light;
+	private final Light _light = _blinkingLights.prepare(LightType.ERROR);
 	
 	final Receiver<Object> _reactionTrigger = new Receiver<Object>() { @Override public void consume(Object ignored) {
 		synchronized (_stateMonitor) {
@@ -73,7 +74,6 @@ class DynDnsClientImpl implements DynDnsClient {
 		Happy() {
 			if (_light == null) return;
 			_blinkingLights.turnOffIfNecessary(_light);
-			_light = null;
 		}
 		
 		@Override
@@ -114,6 +114,10 @@ class DynDnsClientImpl implements DynDnsClient {
 				_updater.update(account.host, account.dynDnsUser, account.password, ip);
 				recordLastSuccess(ip, account.host);
 				return new Happy();
+			} catch (RedundantUpdateException e) {
+				Happy happy = new Happy();
+				_blinkingLights.turnOnIfNecessary(_light, e);
+				return happy;
 			} catch (BadAuthException e) {
 				return new BadAccountState(e, account);
 			} catch (InvalidHostException e) {
@@ -148,9 +152,8 @@ class DynDnsClientImpl implements DynDnsClient {
 		}
 		
 		private void refreshErrorLight(String caption, String message, Exception e) {
-			if(_light != null)
-				_blinkingLights.turnOffIfNecessary(_light);
-			_light = _blinkingLights.turnOn(LightType.ERROR, caption, message, e);
+			_blinkingLights.turnOffIfNecessary(_light);
+			_blinkingLights.turnOnIfNecessary(_light, caption, message, e);
 		}
 	}
 	
@@ -192,7 +195,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		private final DynDnsAccount _lastAccount;
 
 		BadAccountState(UpdaterException e, DynDnsAccount account) {
-			super("Bad Dyndns Account State", e.getMessage(), e);
+			super(e.getMessage(), e.getHelp(), e);
 			_lastAccount = account;
 		}
 

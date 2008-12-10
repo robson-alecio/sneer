@@ -30,9 +30,9 @@ class UpdaterImpl implements Updater {
 
 	private void handleFailure(final String response) throws RedundantUpdateException, BadAuthException,
 			InvalidHostException, ServerErrorException, UnexpectedResponseException {
-		if (response.equals("nochg"))
+		if (response.indexOf("nochg") != -1)
 			throw new RedundantUpdateException();
-		if (response.equals("badauth"))
+		if (response.indexOf("badauth") != -1)
 			throw new BadAuthException();
 		if (equalsAny(response, "nohost", "numhost", "notfqdn", "abuse"))
 			throw new InvalidHostException(response);
@@ -49,9 +49,9 @@ class UpdaterImpl implements Updater {
 		return false;
 	}
 
-	private <T> boolean equalsAny(T match, T... candidates) {
-		for (T candidate : candidates)
-			if (match.equals(candidate)) return true;
+	private boolean equalsAny(String match, String... candidates) {
+		for (String candidate : candidates)
+			if (match.indexOf(candidate) != -1) return true;
 		return false;
 	}
 

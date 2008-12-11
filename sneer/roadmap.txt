@@ -11,7 +11,7 @@
 
 	- @Inject -> my() - Remember to stop using static fields or tests will fail wierdly.
 
-	- Debugging Strategy - Revise so that all debugging info doesn't go into the log file.
+	- [Klaus] Debugging Strategy - Revise so that all debugging info doesn't go into the log file.
 		- Default: sysout and file. Filter by part of message: Only file or ignore. 
 
 	- Mocotó Test Framework
@@ -59,6 +59,13 @@
 
 ROADMAP TO PRODUCE
 ======================
+
+	- [Klaus] Fix: TupleSpaceImpl.removeSubscription() is blocking the gui thread.
+
+	- Community request by Vina Callegari. He uses Eclipse 3.2.2 and it does not compile Sneer.
+		- Ask for user Name and Dyndns info using JOptionPane, if not passed as args and not persisted.
+			- Persist using PropertyStore. 
+		- [Rodrigo] Make build.xml run MainDemo by default. Use a specific target for the Hudson build that will not run MainDemo. 
 
 	- [Sandro] Fix: Replace the wind list with a simple text field immediately for now. getCellRendererComponent is called for ALL elements in the list, everytime the list changes. This is causing Gui timeouts.
 

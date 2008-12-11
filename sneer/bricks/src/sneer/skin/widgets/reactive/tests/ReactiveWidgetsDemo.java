@@ -4,12 +4,14 @@ import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 
-import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerUtils;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import sneer.skin.widgets.reactive.WindowWidget;
+import wheel.io.Logger;
 import wheel.io.ui.GuiThread;
+import wheel.io.ui.TimeboxedEventQueue;
+import wheel.lang.Environments;
 import wheel.reactive.Register;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.impl.RegisterImpl;
@@ -17,15 +19,17 @@ import wheel.reactive.impl.RegisterImpl;
 public class ReactiveWidgetsDemo {
 
 	@SuppressWarnings("unused")
-	private static Receiver<String> _receiver;
-
-	public static void main(String[] args) throws Exception {
-		Container container = ContainerUtils.getContainer();
-
-		final ReactiveWidgetFactory rfactory = container.provide(ReactiveWidgetFactory.class);
-		final Register<String> register = new RegisterImpl<String>("Jose das Coves");
+	private Receiver<String> _receiverToAvoidGc;
+	
+	private ReactiveWidgetsDemo(){
+		
+		TimeboxedEventQueue.startQueueing(5000);
 		
 		GuiThread.strictInvokeAndWait(new Runnable(){ @Override public void run() {
+
+			final ReactiveWidgetFactory rfactory = Environments.my(ReactiveWidgetFactory.class);
+			final Register<String> register = new RegisterImpl<String>("Jose das Coves");
+			
 			TextWidget<?> textWidget;
 			
 			textWidget = rfactory.newTextField(register.output(), register.setter());
@@ -53,20 +57,9 @@ public class ReactiveWidgetsDemo {
 			frame.getMainWidget().setBounds(350, 340, 300, 100);
 			frame.getMainWidget().setVisible(true);
 		}});
-
-		addConsoleLogger(register);
 	}
 
-	private static void addConsoleLogger(final Register<String> register) {
-		_receiver = new Receiver<String>(register.output()){
-			@Override
-			public void consume(String valueObject) {
-				System.out.println(valueObject);
-			}
-		};
-	}
-
-	private static void createTestFrame(final TextWidget<?> textWidget, final int x, final int y, final int width, final int height, final String title) {
+	private void createTestFrame(final TextWidget<?> textWidget, final int x, final int y, final int width, final int height, final String title) {
 		final JFrame frm = new JFrame();
 		frm.setTitle(textWidget.getClass().getSimpleName() + " - " + title);
 		frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -74,5 +67,16 @@ public class ReactiveWidgetsDemo {
 		frm.getContentPane().add(textWidget.getComponent());
 		frm.setVisible(true);
 		frm.setBounds(x, y, width, height);
+	}
+	
+	public static void main(String[] args) throws Exception {
+		Logger.redirectTo(System.out);
+		Environments.runWith(ContainerUtils.newContainer(), new Runnable(){ @Override public void run() {
+			try {
+				new ReactiveWidgetsDemo();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}});
 	}
 }

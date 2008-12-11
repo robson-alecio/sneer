@@ -10,21 +10,17 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import sneer.kernel.container.ContainerUtils;
-import sneer.skin.dashboard.Dashboard;
 import sneer.skin.snappmanager.Instrument;
 import sneer.skin.snappmanager.InstrumentManager;
+import wheel.lang.Environments;
 import wheel.lang.Threads;
 
 public class DashboardDemo  {
 
 	public static void main(String[] args) throws Exception {
-		sneer.kernel.container.Container container = ContainerUtils.getContainer();
 
-		InstrumentManager instrumentManager = container.provide(InstrumentManager.class);
+		InstrumentManager instrumentManager = Environments.my(InstrumentManager.class);
 		installSampleInstrument(instrumentManager);
-		container.provide(Dashboard.class);
-
 		Threads.sleepWithoutInterruptions(30000);
 	}
 	
@@ -33,7 +29,6 @@ public class DashboardDemo  {
 		manager.registerInstrument(new Snapp2());
 		manager.registerInstrument(new Snapp3());
     }
-	
 }
 
 class Snapp1 implements Instrument{
@@ -52,8 +47,6 @@ class Snapp1 implements Instrument{
 		
 		container.add(combo);
 		container.add(list);
-		
-		
 	}
 
 	@Override
@@ -66,8 +59,7 @@ class Snapp2 implements Instrument{
 
 	@Override
 	public void init(Container container) {
-		container.setLayout(new BoxLayout(container, 
-								BoxLayout.PAGE_AXIS));
+		container.setLayout(new BoxLayout(container,  BoxLayout.PAGE_AXIS));
 		container.add(new JCheckBox("Option 1"));
 		container.add(new JCheckBox("Option 2"));
 		container.add(new JCheckBox("Option 3"));

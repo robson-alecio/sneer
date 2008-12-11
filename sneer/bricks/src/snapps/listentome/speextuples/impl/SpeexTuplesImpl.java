@@ -1,28 +1,33 @@
 package snapps.listentome.speextuples.impl;
 
+import static wheel.lang.Environments.my;
+
+import java.util.concurrent.atomic.AtomicInteger;
+
 import snapps.listentome.speex.Decoder;
 import snapps.listentome.speex.Encoder;
 import snapps.listentome.speex.Speex;
 import snapps.listentome.speextuples.SpeexPacket;
 import snapps.listentome.speextuples.SpeexTuples;
-import sneer.kernel.container.Inject;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.keymanager.KeyManager;
+import sneer.pulp.streams.sequencer.Sequencer;
+import sneer.pulp.streams.sequencer.Sequencers;
 import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.rooms.ActiveRoomKeeper;
 import sneer.skin.sound.PcmSoundPacket;
 import wheel.lang.Consumer;
-import static wheel.lang.Environments.my;
 import wheel.lang.ImmutableByteArray;
 import wheel.reactive.Signal;
 
 class SpeexTuplesImpl implements SpeexTuples {
 
-	@Inject private static Speex _speex;
-	@Inject static private TupleSpace _tupleSpace; 
-	@Inject static private KeyManager _keyManager;
-	@Inject static private TupleFilterManager _filter; {
+	private final Sequencer<SpeexPacket> _sequencer;
+	private final Speex _speex = my(Speex.class);
+	private final TupleSpace _tupleSpace = my(TupleSpace.class);
+	private final KeyManager _keyManager = my(KeyManager.class);
+	private final TupleFilterManager _filter = my(TupleFilterManager.class); {
 		_filter.block(PcmSoundPacket.class);
 	}
 
@@ -34,20 +39,31 @@ class SpeexTuplesImpl implements SpeexTuples {
 	
 	private final Encoder _encoder = _speex.createEncoder();
 	private final Decoder _decoder = _speex.createDecoder();
-
 	
+	private final AtomicInteger _ids = new AtomicInteger();
+
 	public SpeexTuplesImpl() {
+
+		Consumer<SpeexPacket> consumer = new Consumer<SpeexPacket>(){ @Override public void consume(SpeexPacket packet) {
+			decode(packet);
+		}};
+		_sequencer = my(Sequencers.class).createSequencerFor(consumer, (short)30, (short)500);
 		_tupleSpace.addSubscription(PcmSoundPacket.class, new Consumer<PcmSoundPacket>() { @Override public void consume(PcmSoundPacket packet) {
-			if (!isMine(packet))
-				return;
+			if (!isMine(packet)) return;
 			if (encode(packet.payload.copy()))
 				flush();
 		}});
 		_tupleSpace.addSubscription(SpeexPacket.class, new Consumer<SpeexPacket>() { @Override public void consume(SpeexPacket packet) {
 			if (isMine(packet))	return;
 			if (!_room.currentValue().equals(packet.room)) return;
-			decode(packet);
+			_sequencer.produceInSequence(packet, packet.sequence);
 		}});
+	}
+
+	private short nextShort() {
+		if(_ids.compareAndSet(Short.MAX_VALUE, Short.MIN_VALUE))
+			return Short.MIN_VALUE;
+		return (short)_ids.incrementAndGet();
 	}
 	
 	private boolean isMine(Tuple packet) {
@@ -59,7 +75,7 @@ class SpeexTuplesImpl implements SpeexTuples {
 	}
 
 	private void flush() {
-		_tupleSpace.publish(new SpeexPacket(_frames, _room.currentValue()));
+		_tupleSpace.publish(new SpeexPacket(_frames, _room.currentValue(), nextShort()));
 		_frames = newFramesArray();
 		_frameIndex = 0;
 	}

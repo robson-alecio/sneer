@@ -1,5 +1,7 @@
 package snapps.listentome.speextuples.tests;
 
+import static wheel.lang.Environments.my;
+
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.Sequence;
@@ -25,7 +27,6 @@ import tests.JMockContainerEnvironment;
 import tests.TestThatIsInjected;
 import wheel.lang.ByRef;
 import wheel.lang.Consumer;
-import static wheel.lang.Environments.my;
 import wheel.lang.ImmutableByteArray;
 
 @RunWith(JMockContainerEnvironment.class)
@@ -97,11 +98,11 @@ public class SpeexTuplesTest extends TestThatIsInjected {
 			packet.value = value;
 		}});
 		
-		_tupleSpace.acquire(speexPacketFrom(contactKey(), speexPacketPayload, "MyRoom"));
+		_tupleSpace.acquire(speexPacketFrom(contactKey(), speexPacketPayload, "MyRoom", (short)0));
 		// tuples with ownPublicKey should be ignored
-		_tupleSpace.acquire(speexPacketFrom(ownPublicKey(), speexPacketPayload, "MyRoom"));
+		_tupleSpace.acquire(speexPacketFrom(ownPublicKey(), speexPacketPayload, "MyRoom", (short)1));
 			// tuples with different channel should be ignored
-		_tupleSpace.acquire(speexPacketFrom(contactKey(), speexPacketPayload, "OtherRoom"));
+		_tupleSpace.acquire(speexPacketFrom(contactKey(), speexPacketPayload, "OtherRoom", (short)2));
 		
 		final PcmSoundPacket pcmPacket = packet.value;
 		assertNotNull(pcmPacket);
@@ -113,8 +114,8 @@ public class SpeexTuplesTest extends TestThatIsInjected {
 		my(ActiveRoomKeeper.class).setter().consume(name);
 	}
 
-	private Tuple speexPacketFrom(PublicKey contactKey, byte[][] bs, String channel) {
-		return new SpeexPacket(contactKey, bs, channel);
+	private Tuple speexPacketFrom(PublicKey contactKey, byte[][] bs, String channel, short sequence) {
+		return new SpeexPacket(contactKey, bs, channel, sequence);
 	}
 
 	private void assertFrames(final byte[][] frames) {

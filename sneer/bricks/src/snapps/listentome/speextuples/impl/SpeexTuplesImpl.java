@@ -2,6 +2,8 @@ package snapps.listentome.speextuples.impl;
 
 import static wheel.lang.Environments.my;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import snapps.listentome.speex.Decoder;
@@ -11,6 +13,7 @@ import snapps.listentome.speextuples.SpeexPacket;
 import snapps.listentome.speextuples.SpeexTuples;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.keymanager.KeyManager;
+import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.streams.sequencer.Sequencer;
 import sneer.pulp.streams.sequencer.Sequencers;
 import sneer.pulp.tuples.Tuple;
@@ -23,7 +26,7 @@ import wheel.reactive.Signal;
 
 class SpeexTuplesImpl implements SpeexTuples {
 
-	private final Sequencer<SpeexPacket> _sequencer;
+	private final Map<PublicKey, Sequencer<SpeexPacket>> _sequencers = new HashMap<PublicKey, Sequencer<SpeexPacket>>();
 	private final Speex _speex = my(Speex.class);
 	private final TupleSpace _tupleSpace = my(TupleSpace.class);
 	private final KeyManager _keyManager = my(KeyManager.class);
@@ -44,10 +47,9 @@ class SpeexTuplesImpl implements SpeexTuples {
 
 	public SpeexTuplesImpl() {
 
-		Consumer<SpeexPacket> consumer = new Consumer<SpeexPacket>(){ @Override public void consume(SpeexPacket packet) {
+		final Consumer<SpeexPacket> consumer = new Consumer<SpeexPacket>(){ @Override public void consume(SpeexPacket packet) {
 			decode(packet);
 		}};
-		_sequencer = my(Sequencers.class).createSequencerFor(consumer, (short)30, (short)500);
 		_tupleSpace.addSubscription(PcmSoundPacket.class, new Consumer<PcmSoundPacket>() { @Override public void consume(PcmSoundPacket packet) {
 			if (!isMine(packet)) return;
 			if (encode(packet.payload.copy()))
@@ -56,7 +58,12 @@ class SpeexTuplesImpl implements SpeexTuples {
 		_tupleSpace.addSubscription(SpeexPacket.class, new Consumer<SpeexPacket>() { @Override public void consume(SpeexPacket packet) {
 			if (isMine(packet))	return;
 			if (!_room.currentValue().equals(packet.room)) return;
-			_sequencer.produceInSequence(packet, packet.sequence);
+
+			PublicKey publisher = packet.publisher();
+			if(!_sequencers.containsKey(publisher)) 
+				_sequencers.put(publisher, my(Sequencers.class).createSequencerFor(consumer, (short)30, (short)500));
+			
+			_sequencers.get(publisher).produceInSequence(packet, packet.sequence);
 		}});
 	}
 

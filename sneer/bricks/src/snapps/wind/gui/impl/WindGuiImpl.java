@@ -1,9 +1,11 @@
 package snapps.wind.gui.impl;
 
+import static wheel.lang.Environments.my;
+
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.datatransfer.Clipboard;
@@ -16,7 +18,6 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.BoundedRangeModel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -25,46 +26,31 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import snapps.wind.Shout;
 import snapps.wind.Wind;
 import snapps.wind.gui.WindGui;
-import sneer.kernel.container.Inject;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.sound.player.SoundPlayer;
-import sneer.skin.widgets.reactive.LabelProvider;
-import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.Logger;
 import wheel.io.ui.GuiThread;
-import wheel.io.ui.graphics.Images;
 import wheel.lang.ByRef;
-import wheel.reactive.Signal;
+import wheel.lang.Consumer;
 import wheel.reactive.impl.Constant;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.lists.ListValueChange;
+import wheel.reactive.lists.ListValueChange.Visitor;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
 class WindGuiImpl implements WindGui {
 	
-	@Inject
-	static private InstrumentManager _instruments;
-	
-	@Inject
-	static private Wind _wind;
-	
-	@Inject
-	static private SoundPlayer _player;
+	private Wind _wind;
+	private SoundPlayer _player;
+	private final ReactiveWidgetFactory _rfactory;
 
-	@Inject
-	static private ReactiveWidgetFactory _rfactory;
-
-	private final static Signal<Image> _meImage;
-	
-	private ListWidget<Shout> _shoutsList;
+	private final JTextPane _shoutsList = new JTextPane();
 	private TextWidget<JTextPane> _myShout;
 
 	private Container _container;
@@ -74,26 +60,15 @@ class WindGuiImpl implements WindGui {
 	private JScrollPane _scrollPane;
 
 	private WindAutoscrollSupport _autoscrollSupportToAvoidGc;
-	
-
-	static {
-		_meImage = new Constant<Image>(loadImage("me.png"));
-	}
+	private Consumer<ListValueChange<Shout>> _windConsumerToAvoidGc;
 	
 	public WindGuiImpl() {
-		_instruments.registerInstrument(this);
+		_wind = my(Wind.class);
+		_rfactory = my(ReactiveWidgetFactory.class);
+		_player = my(SoundPlayer.class);
+		my(InstrumentManager.class).registerInstrument(this);
 	} 
 	
-	private static Image loadImage(String fileName) {
-		return Images.getImage(WindGuiImpl.class.getResource(fileName));
-	}
-
-	private Signal<Image> image(Shout shout) {
-		if (!ShoutUtils.isMyOwnShout(shout))
-			return new Constant<Image>(null);
-		return _meImage;
-	}	
-
 	@Override
 	public void init(Container container) {
 		_container = container;
@@ -109,8 +84,8 @@ class WindGuiImpl implements WindGui {
 		initScrollPane();
 		initListReceiversInOrder();
 		
-		_container.setBackground(_shoutsList.getComponent().getBackground());
-		_scrollPane.getViewport().add(_shoutsList.getComponent());
+		_container.setBackground(Color.WHITE);
+		_scrollPane.getViewport().add(_shoutsList);
 		
 		JScrollPane scrollShout = new JScrollPane();
 		scrollShout.setOpaque(false);
@@ -133,21 +108,32 @@ class WindGuiImpl implements WindGui {
 		_container.setLayout(new BorderLayout());
 		_container.add(split, BorderLayout.CENTER);
 
-		_shoutsList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
+		_shoutsList.setBorder(new EmptyBorder(0,0,0,0));
 		_myShout.getComponent().setBorder(new EmptyBorder(0,0,0,0));
 		scrollShout.setBorder(new EmptyBorder(5,5,5,5));
 	}
 
 	private void initListReceiversInOrder() {
 		_autoscrollSupportToAvoidGc.initPreChangeReceiver();
-		initShoutList();
+		
+		_windConsumerToAvoidGc = new Consumer<ListValueChange<Shout>>(){ @Override public void consume(ListValueChange<Shout> value) { value.accept(new Visitor<Shout>(){
+				@Override public void elementAdded(int index, Shout shout) { ShoutPainter.appendShout(shout, _shoutsList); }
+				@Override public void elementRemoved(int index, Shout element) { ShoutPainter.repaintAllShoults(_wind.shoutsHeard(), _shoutsList); }
+				@Override public void elementMoved(int oldIndex, int newIndex, Shout element) { ShoutPainter.repaintAllShoults(_wind.shoutsHeard(), _shoutsList); }
+				@Override public void elementReplaced(int index, Shout oldElement, Shout newElement) { ShoutPainter.repaintAllShoults(_wind.shoutsHeard(), _shoutsList); 	}
+				@Override public void elementInserted(int index, Shout shout) {
+					if(_wind.shoutsHeard().currentSize()<index+1) {
+						ShoutPainter.repaintAllShoults(_wind.shoutsHeard(), _shoutsList);
+						return;
+					}
+					ShoutPainter.appendShout(shout, _shoutsList);
+				}
+		});}};
+		_wind.shoutsHeard().addListReceiver(_windConsumerToAvoidGc);
+		
 		_autoscrollSupportToAvoidGc.initPosChangeReceiver();
 	}
 
-	private void initShoutList() {
-		ShoutLabelProvider labelProvider = new ShoutLabelProvider();
-		_shoutsList = _rfactory.newList(_wind.shoutsHeard(), labelProvider, new WindListCellRenderer(labelProvider));
-	}
 	
 	private void initScrollPane() {
 		_scrollPane = new JScrollPane();
@@ -184,18 +170,6 @@ class WindGuiImpl implements WindGui {
 	
 	private String getName() {
 		return "Wind";
-	}
-	
-	private final class ShoutLabelProvider implements LabelProvider<Shout> {
-		@Override
-		public Signal<String> labelFor(Shout shout) {
-			return new Constant<String>(shout.phrase);
-		}
-
-		@Override
-		public Signal<Image> imageFor(Shout shout) {
-			return image(shout);
-		}
 	}
 
 	private final class WindAutoscrollSupport{
@@ -262,23 +236,14 @@ class WindGuiImpl implements WindGui {
 	private final class WindClipboardSupport implements ClipboardOwner{
 		
 		private WindClipboardSupport(){
-			addSelectionChangeListener();
 			addKeyStrokeListener();
 		}
 
 		private void addKeyStrokeListener() {
-			JList list = _shoutsList.getMainWidget();
 			int modifiers = getPortableSoModifiers();
 			final KeyStroke ctrlc = KeyStroke.getKeyStroke(KeyEvent.VK_C, modifiers);
-			list.getInputMap().put(ctrlc,  "ctrlc");
-			list.getActionMap().put("ctrlc",  new AbstractAction(){@Override public void actionPerformed(ActionEvent e) {
-				copySelectedShoutToClipboard();
-			}});
-		}
-
-		private void addSelectionChangeListener() {
-			JList list = _shoutsList.getMainWidget();
-			list.getSelectionModel().addListSelectionListener(new ListSelectionListener(){ @Override public void valueChanged(ListSelectionEvent e) {
+			_shoutsList.getInputMap().put(ctrlc,  "ctrlc");
+			_shoutsList.getActionMap().put("ctrlc",  new AbstractAction(){@Override public void actionPerformed(ActionEvent e) {
 				copySelectedShoutToClipboard();
 			}});
 		}
@@ -293,21 +258,7 @@ class WindGuiImpl implements WindGui {
 		}
 		
 		private void copySelectedShoutToClipboard() {
-			JList list = _shoutsList.getMainWidget();
-			Object values[] = list.getSelectedValues();
-			if(values == null || values.length == 0) return;
-			
-			StringBuilder builder = new StringBuilder();
-			for (Object value : values) {
-				Shout shout = (Shout) value;
-				if(values.length>1)
-					builder	.append(ShoutUtils.publisherNick(shout)).append(" - ")
-					.append(ShoutUtils.getFormatedShoutTime(shout)).append("\n");
-				builder.append(shout.toString()).append("\n\n");
-			}
-			
-			String out = builder.toString().substring(0, builder.length()-2);
-			StringSelection fieldContent = new StringSelection(out);
+			StringSelection fieldContent = new StringSelection(_shoutsList.getSelectedText());
 			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(fieldContent, this);	
 		}
 	}

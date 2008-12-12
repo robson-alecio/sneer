@@ -4,27 +4,17 @@ import wheel.lang.Daemon;
 import wheel.lang.Threads;
 
 
-
-
-
-
 public class Anything {
 
 	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
 
-		
-		System.out.println((short)(Short.MIN_VALUE - Short.MAX_VALUE));
-		System.exit(0);
-
-		
-		
 		Daemon daemon = new Daemon("Spike") {
 			@Override
 			public void run() {
 				System.out.println("Sleeping...");
 				try {
-					Threads.sleepWithoutInterruptions(5000);
+					Threads.sleepWithoutInterruptions(3000);
 				} catch (Error e) {
 					System.out.println(e.getClass());
 				}
@@ -33,7 +23,7 @@ public class Anything {
 			}
 		};
 
-		Threads.sleepWithoutInterruptions(1000);
+		Threads.sleepWithoutInterruptions(500);
 		daemon.stop();
 		Threads.sleepWithoutInterruptions(5000);
 		

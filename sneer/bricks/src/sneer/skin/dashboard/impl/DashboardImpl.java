@@ -40,7 +40,7 @@ import wheel.reactive.lists.impl.SimpleListReceiver;
 //Implement Persist window size and position
 class DashboardImpl implements Dashboard, Runnable {
 	
-	private static final int TIMEOUT_FOR_GUI_EVENTS = 30 * 1000;
+	private static final int TIMEOUT_FOR_GUI_EVENTS = 10 * 1000;
 	
 	private Dimension _screenSize;
 	private Rectangle _bounds;

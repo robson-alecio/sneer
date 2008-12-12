@@ -61,7 +61,7 @@ class SpeexTuplesImpl implements SpeexTuples {
 
 			PublicKey publisher = packet.publisher();
 			if(!_sequencers.containsKey(publisher)) 
-				_sequencers.put(publisher, my(Sequencers.class).createSequencerFor(consumer, (short)30, (short)500));
+				_sequencers.put(publisher, my(Sequencers.class).createSequencerFor(consumer, (short)15, (short)150));
 			
 			_sequencers.get(publisher).produceInSequence(packet, packet.sequence);
 		}});

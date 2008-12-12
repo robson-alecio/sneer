@@ -72,9 +72,6 @@ ROADMAP TO PRODUCE
 	- ListSignalModel and SortedList
 		- Fix: Sort Bug (see SortTest)
 
-	- Sequencer - Use for speextuples.
-		- Configure the buffer size to the equivalent of 3 seconds to eliminate lag accumulation.
-
 	- WatchMe
 		- Accelerate.
 			- BandwidthMeter instrument.      kB/s(Peak)   v 12(31)    ^ 32(41)

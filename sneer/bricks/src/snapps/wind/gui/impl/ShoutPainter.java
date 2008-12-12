@@ -24,7 +24,7 @@ abstract class ShoutPainter {
 	
 	private static void appendShout(Shout shout, StringBuilder buffer) {
 		if(ShoutUtils.isMyOwnShout(shout))
-			buffer.append("Me");
+			buffer.append("|W|");
 		else
 			buffer.append(ShoutUtils.publisherNick(shout));
 		

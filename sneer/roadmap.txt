@@ -67,8 +67,6 @@ ROADMAP TO PRODUCE
 			- Persist using PropertyStore. 
 		- [Rodrigo] Make build.xml run MainDemo by default. Use a specific target for the Hudson build that will not run MainDemo. Coordinate with Vina (Skype: vcallegari). He mentioned Eclipse has an option to generate build.xml based on its project configuration, which would possibly make antlips unnecessary. Does it make sense for us to use that?
 
-	- [Sandro] Fix: Replace the wind list with a simple text field immediately for now. getCellRendererComponent is called for ALL elements in the list, everytime the list changes. This is causing Gui timeouts.
-
 	- [Sandro] Fix: ArrayIndexOutOfBound (see docs/roadmap_appendices)
 	
 	- ListSignalModel and SortedList

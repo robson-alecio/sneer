@@ -11,7 +11,7 @@ import sneer.pulp.own.name.OwnNameKeeper;
 
 abstract class ShoutUtils {
 
-	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("HH:mm");
+	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("HH:mm:ss");
 	
 	@Inject
 	static private OwnNameKeeper _ownName;

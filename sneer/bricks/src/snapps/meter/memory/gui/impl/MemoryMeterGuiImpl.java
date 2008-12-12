@@ -1,4 +1,4 @@
-package snapps.memorymeter.gui.impl;
+package snapps.meter.memory.gui.impl;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -21,7 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import snapps.memorymeter.gui.MemoryMeterGui;
+import snapps.meter.memory.gui.MemoryMeterGui;
 import sneer.kernel.container.Inject;
 import sneer.pulp.memory.MemoryMeter;
 import sneer.skin.snappmanager.InstrumentManager;

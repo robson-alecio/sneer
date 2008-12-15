@@ -125,8 +125,8 @@ class ByteConnectionImpl implements ByteConnection {
 
 		try {
 			byte[] array = mySocket.read();
-			_receiver.consume(array);
 			_bandwidthCounter.received(array.length);
+			_receiver.consume(array);
 			return true;
 		} catch (Exception e) {
 			crash(mySocket, e, "Error trying to receive packet.");

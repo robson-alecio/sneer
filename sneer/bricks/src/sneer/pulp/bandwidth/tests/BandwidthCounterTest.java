@@ -20,27 +20,27 @@ public class BandwidthCounterTest extends TestThatIsInjected {
 		SignalUtils.waitForValue(0, _subject.downloadSpeed());
 		SignalUtils.waitForValue(0, _subject.uploadSpeed());
 		
-		_subject.packetReceived(10);
-		_subject.packetSended(10);
+		_subject.received(1024);
+		_subject.sended(1024);
 		SignalUtils.waitForValue(0, _subject.downloadSpeed());
 		SignalUtils.waitForValue(0, _subject.uploadSpeed());
 		
-		_subject.packetReceived(10);
-		_subject.packetSended(10);
+		_subject.received(1024);
+		_subject.sended(1024);
 		SignalUtils.waitForValue(0, _subject.downloadSpeed());
 		SignalUtils.waitForValue(0, _subject.uploadSpeed());
 		
 		_clock.advanceTime(1000);
-		SignalUtils.waitForValue(20, _subject.downloadSpeed());
-		SignalUtils.waitForValue(20, _subject.uploadSpeed());
+		SignalUtils.waitForValue(2, _subject.downloadSpeed());
+		SignalUtils.waitForValue(2, _subject.uploadSpeed());
 		
-		_subject.packetReceived(10);
-		_subject.packetSended(10);
-		SignalUtils.waitForValue(20, _subject.downloadSpeed());
-		SignalUtils.waitForValue(20, _subject.uploadSpeed());
+		_subject.received(1024);
+		_subject.sended(1024);
+		SignalUtils.waitForValue(2, _subject.downloadSpeed());
+		SignalUtils.waitForValue(2, _subject.uploadSpeed());
 		
 		_clock.advanceTime(1000);
-		SignalUtils.waitForValue(10, _subject.downloadSpeed());
-		SignalUtils.waitForValue(10, _subject.uploadSpeed());
+		SignalUtils.waitForValue(1, _subject.downloadSpeed());
+		SignalUtils.waitForValue(1, _subject.uploadSpeed());
 	}
 }

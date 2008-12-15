@@ -5,8 +5,8 @@ import wheel.reactive.Signal;
 
 public interface BandwidthCounter extends Brick {
 
-	void packetSended(int sizeBytes);
-	void packetReceived(int sizeBytes);
+	void sended(int sizeBytes);
+	void received(int sizeBytes);
 
 	Signal<Integer> downloadSpeed();
 	Signal<Integer> uploadSpeed();

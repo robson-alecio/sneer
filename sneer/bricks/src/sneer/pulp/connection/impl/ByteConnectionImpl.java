@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import sneer.kernel.container.Inject;
+import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.keymanager.KeyManager;
@@ -21,7 +22,7 @@ class ByteConnectionImpl implements ByteConnection {
 
 	@Inject static private KeyManager _keyManager;
 	@Inject static private ThreadPool _threadPool;
-	
+	@Inject static private BandwidthCounter _bandwidthCounter;
 
 	private final String _label;
 	private final Contact _contact;
@@ -89,6 +90,7 @@ class ByteConnectionImpl implements ByteConnection {
 		
 		try {
 			mySocket.write(array);
+			_bandwidthCounter.sended(array.length);
 			return true;
 		} catch (IOException iox) {
 			crash(mySocket, iox, "Error trying to send packet. ");
@@ -122,7 +124,9 @@ class ByteConnectionImpl implements ByteConnection {
 		if (mySocket ==  null) return false;
 
 		try {
-			_receiver.consume(mySocket.read());
+			byte[] array = mySocket.read();
+			_receiver.consume(array);
+			_bandwidthCounter.received(array.length);
 			return true;
 		} catch (Exception e) {
 			crash(mySocket, e, "Error trying to receive packet.");

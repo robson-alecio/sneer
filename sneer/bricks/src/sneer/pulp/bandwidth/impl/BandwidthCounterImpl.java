@@ -32,11 +32,11 @@ class BandwidthCounterImpl implements BandwidthCounter {
 	
 	@Override public Signal<Integer> downloadSpeed() { return _download.output(); }
 	@Override public Signal<Integer> uploadSpeed() { return _upload.output();  }
-	@Override public void packetReceived(int sizeBytes) { received.addAndGet(sizeBytes); }
-	@Override public void packetSended(int sizeBytes) { sended.addAndGet(sizeBytes); }
+	@Override public void received(int sizeBytes) { received.addAndGet(sizeBytes); }
+	@Override public void sended(int sizeBytes) { sended.addAndGet(sizeBytes); }
 	
 	private final void consolidate(){
-		_download.setter().consume(received.getAndSet(0));
-		_upload.setter().consume(sended.getAndSet(0));
+		_download.setter().consume(received.getAndSet(0)/1024);
+		_upload.setter().consume(sended.getAndSet(0)/1024);
 	}
 }

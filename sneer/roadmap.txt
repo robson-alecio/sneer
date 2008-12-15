@@ -75,7 +75,6 @@ ROADMAP TO PRODUCE
 
 	- WatchMe
 		- Accelerate.
-			- BandwidthMeter instrument.      kB/s(Peak)   v 12(31)    ^ 32(41)
 
 	2008---------------------------------- DOGFOOD RELEASE (We have a decent VNC+Skype replacement we use to develop Sneer)
 

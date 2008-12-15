@@ -67,8 +67,6 @@ ROADMAP TO PRODUCE
 		- Ask for user Name and Dyndns info using JOptionPane, if not passed as args and not persisted.
 			- Persist using PropertyStore. 
 		- [Rodrigo] Make build.xml run MainDemo by default. Use a specific target for the Hudson build that will not run MainDemo. Coordinate with Vina (Skype: vcallegari) who said he was going to do it. He also mentioned Eclipse has an option to generate build.xml based on its project configuration, which would possibly make antlips unnecessary. Does it make sense for us to use that?
-
-	- [Sandro] Fix: ArrayIndexOutOfBound (see docs/roadmap_appendices)
 	
 	- ListSignalModel and SortedList
 		- Fix: Sort Bug (see SortTest)

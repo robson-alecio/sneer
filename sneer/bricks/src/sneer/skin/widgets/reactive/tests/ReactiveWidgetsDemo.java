@@ -12,6 +12,7 @@ import wheel.io.Logger;
 import wheel.io.ui.GuiThread;
 import wheel.io.ui.TimeboxedEventQueue;
 import wheel.lang.Environments;
+import static wheel.lang.Environments.my;
 import wheel.reactive.Register;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.impl.RegisterImpl;
@@ -27,7 +28,7 @@ public class ReactiveWidgetsDemo {
 		
 		GuiThread.strictInvokeAndWait(new Runnable(){ @Override public void run() {
 
-			final ReactiveWidgetFactory rfactory = Environments.my(ReactiveWidgetFactory.class);
+			final ReactiveWidgetFactory rfactory = my(ReactiveWidgetFactory.class);
 			final Register<String> register = new RegisterImpl<String>("Jose das Coves");
 			
 			TextWidget<?> textWidget;

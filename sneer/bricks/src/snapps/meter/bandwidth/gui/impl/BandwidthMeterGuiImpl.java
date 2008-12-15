@@ -7,9 +7,7 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -19,6 +17,7 @@ import snapps.meter.bandwidth.gui.BandwidthMeterGui;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
+import wheel.io.ui.graphics.Images;
 import wheel.lang.Functor;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Adapter;
@@ -28,6 +27,10 @@ public class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 
 	private TextWidget<JLabel> _uploadField;
 	private TextWidget<JLabel> _downloadField;
+
+	private static final Icon _network = load("network.png");
+	private static final Icon _upload = load("upload.png");
+	private static final Icon _download = load("download.png");
 
 	public BandwidthMeterGuiImpl() {
 		my(InstrumentManager.class).registerInstrument(this);
@@ -43,12 +46,8 @@ public class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 	}
 	
 	static Icon load(String resourceName){
-		try {
-			return new ImageIcon(ImageIO.read(BandwidthMeterGuiImpl.class.getResource(resourceName)));
-		} catch (IOException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e);
-		}
-	}
+		return new ImageIcon(Images.getImage(BandwidthMeterGuiImpl.class.getResource(resourceName)));
+	}	
 	
 	@Override
 	public void init(Container container) {
@@ -63,6 +62,8 @@ public class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 		Signal<Integer> download = new Constant<Integer>(20); //Implement - attach in meter
 		_uploadField = factory.newLabel(new Adapter<Integer, String>(upload, new MaxHolderFunctor()).output());
 		_downloadField = factory.newLabel(new Adapter<Integer, String>(download, new MaxHolderFunctor()).output());
+		JLabel lbUpload = _uploadField.getMainWidget();
+		JLabel lbDownload = _downloadField.getMainWidget();
 		
 		JPanel root = new JPanel();
 		root.setOpaque(false);
@@ -70,12 +71,16 @@ public class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 		
 		JLabel label = new JLabel("kB/s(Peak)");
 		root.add(label);
-		root.add(_uploadField.getMainWidget());
-		root.add(_downloadField.getMainWidget());
+		root.add(lbUpload);
+		root.add(lbDownload);
 		
 		changeLabelFont(label);
-		changeLabelFont(_uploadField.getMainWidget());
-		changeLabelFont(_downloadField.getMainWidget());
+		changeLabelFont(lbUpload);
+		changeLabelFont(lbDownload);
+		
+		label.setIcon(_network);
+		lbUpload.setIcon(_upload);
+		lbDownload.setIcon(_download);
 		
 		container.setBackground(Color.WHITE);
 		container.setLayout(new BorderLayout());

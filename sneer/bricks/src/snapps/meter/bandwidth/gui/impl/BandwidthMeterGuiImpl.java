@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import snapps.meter.bandwidth.gui.BandwidthMeterGui;
+import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
@@ -21,7 +22,6 @@ import wheel.io.ui.graphics.Images;
 import wheel.lang.Functor;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Adapter;
-import wheel.reactive.impl.Constant;
 
 public class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 
@@ -57,9 +57,8 @@ public class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 	private void initGui(Container container) {
 		ReactiveWidgetFactory factory = my(ReactiveWidgetFactory.class);
 		
-		//kB/s(Peak)   v 12(31)    ^ 32(41)
-		Signal<Integer> upload = new Constant<Integer>(10); //Implement - attach in meter
-		Signal<Integer> download = new Constant<Integer>(20); //Implement - attach in meter
+		Signal<Integer> upload = my(BandwidthCounter.class).uploadSpeed();
+		Signal<Integer> download = my(BandwidthCounter.class).downloadSpeed();
 		_uploadField = factory.newLabel(new Adapter<Integer, String>(upload, new MaxHolderFunctor()).output());
 		_downloadField = factory.newLabel(new Adapter<Integer, String>(download, new MaxHolderFunctor()).output());
 		JLabel lbUpload = _uploadField.getMainWidget();

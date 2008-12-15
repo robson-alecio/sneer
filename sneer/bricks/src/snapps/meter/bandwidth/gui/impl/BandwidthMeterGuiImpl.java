@@ -28,7 +28,6 @@ public class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 	private TextWidget<JLabel> _uploadField;
 	private TextWidget<JLabel> _downloadField;
 
-	private static final Icon _network = load("network.png");
 	private static final Icon _upload = load("upload.png");
 	private static final Icon _download = load("download.png");
 
@@ -77,7 +76,6 @@ public class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 		changeLabelFont(lbUpload);
 		changeLabelFont(lbDownload);
 		
-		label.setIcon(_network);
 		lbUpload.setIcon(_upload);
 		lbDownload.setIcon(_download);
 		

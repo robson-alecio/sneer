@@ -3,6 +3,8 @@ package wheel.io.ui;
 import java.awt.AWTEvent;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
+import java.util.ArrayList;
+import java.util.List;
 
 import wheel.io.Logger;
 import wheel.lang.Environments;
@@ -14,36 +16,30 @@ public class TimeboxedEventQueue extends EventQueue {
 	private static Memento _environment;
 	private static int _timeboxDuration;
 
-	private static TimeboxedEventQueue _current;
+	private static List<TimeboxedEventQueue> _queues = new ArrayList<TimeboxedEventQueue>();
 
 	
 	static public synchronized void startQueueing(int timeboxDuration) {
-		if (_environment != null) throw new IllegalStateException("Already started.");
+		if (!_queues.isEmpty()) throw new IllegalStateException("Queueing already started.");
+
 		_environment = Environments.memento();
 		_timeboxDuration = timeboxDuration;
 		
-		startQueueing();
+		startNewQueue();
 	}
 
 	static public synchronized void stopQueueing() {
-		_current.pop();
-		_current = null;
+		for (TimeboxedEventQueue queue : _queues) queue.pop();
+		_queues.clear();
 		_environment = null;
 	}
 
-	private static void startQueueing() {
-		_current = new TimeboxedEventQueue();
-		
-		Toolkit.getDefaultToolkit().getSystemEventQueue().push(_current);
+	private static void startNewQueue() {
+		TimeboxedEventQueue newQueue = new TimeboxedEventQueue();
+		_queues.add(0, newQueue);
+		Toolkit.getDefaultToolkit().getSystemEventQueue().push(newQueue);
 	}
 
-	static private synchronized void restart() {
-		//_current.pop();  //Fix This is a leak. Call pop but find a way for the events in the queue not to be passed to the next (AWT) queue, maybe pushing a dummy queue before pushing the timeboxed queue.
-		startQueueing();
-	}
-
-
-	
 	@Override
 	protected void dispatchEvent(final AWTEvent event) {
 		new AWTEventTimebox(event);
@@ -75,7 +71,8 @@ public class TimeboxedEventQueue extends EventQueue {
 		protected void threadBlockedNotification(Thread thread) {
 			super.threadBlockedNotification(thread);
 			Logger.log("Starting new Gui Thread");
-			restart();
+
+			startNewQueue(); //This is an EventQueue leak. Not serious compared to the thread leak of the blocked threads that make these new EventQueues necessary.
 		}
 		
 	}

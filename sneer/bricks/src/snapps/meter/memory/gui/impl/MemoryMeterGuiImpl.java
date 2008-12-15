@@ -11,9 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -27,6 +25,7 @@ import sneer.pulp.memory.MemoryMeter;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
+import wheel.io.ui.graphics.Images;
 import wheel.lang.Functor;
 import wheel.reactive.impl.Adapter;
 
@@ -53,11 +52,7 @@ public class MemoryMeterGuiImpl implements MemoryMeterGui {
 	} 
 	
 	static Icon load(String resourceName){
-		try {
-			return new ImageIcon(ImageIO.read(MemoryMeterGuiImpl.class.getResource(resourceName)));
-		} catch (IOException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e);
-		}
+		return new ImageIcon(Images.getImage(MemoryMeterGuiImpl.class.getResource(resourceName)));
 	}
 	
 	@Override

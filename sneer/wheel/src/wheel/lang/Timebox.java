@@ -40,7 +40,11 @@ public abstract class Timebox implements Runnable {
 
 	private int _millisToDie = 0;
 	private Thread _worker;
-	private boolean _isBlockageAlreadyLogged = false;
+
+	private final Object _isDeadMonitor = new Object();
+	private boolean _isDead = false;
+	
+	private int _suicideAttemptsLeft = 5;
 	
 	
 	protected abstract void runInTimebox();
@@ -50,8 +54,15 @@ public abstract class Timebox implements Runnable {
 		try {
 			tryToRun();
 		} catch (TimeIsUp timeIsUp) {
-			Logger.log(timeIsUp);
+			diedWith(timeIsUp);
 		}
+	}
+
+	private void diedWith(TimeIsUp timeIsUp) {
+		synchronized (_isDeadMonitor) {
+			_isDead = true;
+		}
+		Logger.log(timeIsUp);
 	}
 
 	private void tryToRun() {
@@ -72,7 +83,6 @@ public abstract class Timebox implements Runnable {
 
 	synchronized private void runPost() {
 		_worker = null;
-		_isBlockageAlreadyLogged = false;
 		_activeTimeboxes.remove(this);
 	}
 
@@ -80,7 +90,7 @@ public abstract class Timebox implements Runnable {
 		if (isDone()) return;
 
 		_millisToDie -= timeInMillis;
-		if (_millisToDie <= 0) die();
+		if (_millisToDie <= 0) suicide();
 	}
 
 	private boolean isDone() {
@@ -88,34 +98,30 @@ public abstract class Timebox implements Runnable {
 	}
 
 	@SuppressWarnings("deprecation")
-	private void die() {
-		if (dealWithBlocked(_worker)) return;			
+	private void suicide() {
+		synchronized (_isDeadMonitor) {
+			if (_isDead) return;
+		}
+
+		if (_suicideAttemptsLeft-- == 0) {
+			_activeTimeboxes.remove(this);
+			threadBlockedNotification(_worker);
+			return;
+		}
 		
 		TimeIsUp timeIsUp = new TimeIsUp(_worker.getStackTrace(), "Timebox ended.");
 		_worker.stop(timeIsUp);
 	}
 	
-	private boolean dealWithBlocked(Thread thread) {
-		if (!isBlocked(thread)) return false;
-		if (!_isBlockageAlreadyLogged) {
-			_isBlockageAlreadyLogged = true;
-			logBlockage(thread);
-		}
-		return true;
-	}
 
 	private void logBlockage(Thread thread) {
 		TimeIsUp timeIsUp = new TimeIsUp(thread.getStackTrace(), "Thread running in timebox is blocked waiting for a synchronization monitor and cannot be stopped.");
-		Logger.log(timeIsUp);
+		diedWith(timeIsUp);
 	}
 
-	private boolean isBlocked(Thread thread) {
-		int tries = 0;
-		while (thread.getState() == Thread.State.BLOCKED) {
-			if (tries++ == 30) return true;
-			Threads.sleepWithoutInterruptions(100);
-		}
-		return false;
+
+	protected void threadBlockedNotification(Thread thread) {
+		logBlockage(thread);
 	}
 
 }

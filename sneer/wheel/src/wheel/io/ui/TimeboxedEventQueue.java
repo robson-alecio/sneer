@@ -4,52 +4,60 @@ import java.awt.AWTEvent;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 
+import wheel.io.Logger;
 import wheel.lang.Environments;
 import wheel.lang.Timebox;
 import wheel.lang.Environments.Memento;
 
 public class TimeboxedEventQueue extends EventQueue {
 
-	
-	private static TimeboxedEventQueue _singleton;
+	private static Memento _environment;
+	private static int _timeboxDuration;
+
+	private static TimeboxedEventQueue _current;
 
 	
-	public static void startQueueing(int timeboxDuration) {
-		if (_singleton != null) throw new IllegalStateException();
-		_singleton = new TimeboxedEventQueue(timeboxDuration);
-		
-		Toolkit.getDefaultToolkit().getSystemEventQueue().push(_singleton);
-	}
-
-	public static void stopQueueing() {
-		_singleton.pop();
-	}
-
-
-	private TimeboxedEventQueue(int timeboxDuration) {
-		_timeboxDuration = timeboxDuration;
+	static public synchronized void startQueueing(int timeboxDuration) {
+		if (_environment != null) throw new IllegalStateException("Already started.");
 		_environment = Environments.memento();
+		_timeboxDuration = timeboxDuration;
+		
+		startQueueing();
 	}
 
-	
-	private final int _timeboxDuration;
-	private final Memento _environment;
-	
+	static public synchronized void stopQueueing() {
+		_current.pop();
+		_current = null;
+		_environment = null;
+	}
+
+	private static void startQueueing() {
+		_current = new TimeboxedEventQueue();
+		
+		Toolkit.getDefaultToolkit().getSystemEventQueue().push(_current);
+	}
+
+	static private synchronized void restart() {
+		//_current.pop();  //Fix This is a leak. Call pop but find a way for the events in the queue not to be passed to the next (AWT) queue, maybe pushing a dummy queue before pushing the timeboxed queue.
+		startQueueing();
+	}
+
+
 	
 	@Override
 	protected void dispatchEvent(final AWTEvent event) {
-		new AWTEventTimebox(_timeboxDuration, event);
+		new AWTEventTimebox(event);
 	}
 
-	private void doDispatchEvent(AWTEvent event) {
+	private void superDispatchEvent(AWTEvent event) {
 		super.dispatchEvent(event);
 	}
 	
 	
 	private class AWTEventTimebox extends Timebox {
 		
-		private AWTEventTimebox(int timeboxDuration, AWTEvent event) {
-			super(timeboxDuration, false);
+		private AWTEventTimebox(AWTEvent event) {
+			super(_timeboxDuration, false);
 			_event = event;
 			Environments.runWith(_environment, this);
 		}
@@ -60,7 +68,14 @@ public class TimeboxedEventQueue extends EventQueue {
 
 		@Override 
 		protected void runInTimebox() {
-			doDispatchEvent(_event);
+			superDispatchEvent(_event);
+		}
+		
+		@Override
+		protected void threadBlockedNotification(Thread thread) {
+			super.threadBlockedNotification(thread);
+			Logger.log("Starting new Gui Thread");
+			restart();
 		}
 		
 	}

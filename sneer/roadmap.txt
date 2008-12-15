@@ -61,7 +61,7 @@ ROADMAP TO PRODUCE
 ======================
 
 	- [Klaus] Fix: TupleSpaceImpl.removeSubscription() is blocking the gui thread.
-		- Replace the gui thread with a discardable thread in the TimeboxedEventQueue.
+		- Replace the TimeboxedEventQueue when the thread locks.
 
 	- Community request by Vina Callegari. He uses Eclipse 3.2.2 and it does not compile Sneer.
 		- Ask for user Name and Dyndns info using JOptionPane, if not passed as args and not persisted.

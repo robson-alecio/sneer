@@ -2,7 +2,7 @@ package snapps.blinkinglights.tests;
 
 import static wheel.lang.Environments.my;
 import snapps.blinkinglights.gui.BlinkingLightsGui;
-import sneer.kernel.container.ContainerUtils;
+import sneer.kernel.container.Containers;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.skin.dashboard.Dashboard;
@@ -24,7 +24,7 @@ public class BlinkingLightsDemo {
 
 	public static void main(String[] args) throws Exception {
 		Logger.redirectTo(System.out);
-		Environments.runWith(ContainerUtils.newContainer(), new Runnable(){
+		Environments.runWith(Containers.newContainer(), new Runnable(){
 			@Override public void run() {
 				try {
 					new BlinkingLightsDemo();

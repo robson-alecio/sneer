@@ -4,7 +4,7 @@ import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
-import sneer.kernel.container.ContainerUtils;
+import sneer.kernel.container.Containers;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.lang.Environments;
 import wheel.lang.Environment;
@@ -12,7 +12,7 @@ import wheel.lang.Threads;
 
 public class ThreadPoolTest {
 
-	final ThreadPool subject = ContainerUtils.newContainer().provide(ThreadPool.class);
+	final ThreadPool subject = Containers.newContainer().provide(ThreadPool.class);
 
 	final Object binding = new Object();
 

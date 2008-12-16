@@ -8,7 +8,7 @@ import javax.swing.SwingUtilities;
 import org.junit.Test;
 
 import sneer.kernel.container.Container;
-import sneer.kernel.container.ContainerUtils;
+import sneer.kernel.container.Containers;
 import sneer.kernel.container.tests.impl.SomeGuiBrickImpl;
 import wheel.io.ui.TimeboxedEventQueue;
 import wheel.lang.ByRef;
@@ -18,14 +18,14 @@ public class GuiBrickTest {
 	
 	@Test
 	public void testGuiBrickProducedByConventionRunsInSwingThread() throws Exception {
-		final Container container = ContainerUtils.newContainer();
+		final Container container = Containers.newContainer();
 		final SomeGuiBrick brick = container.provide(SomeGuiBrick.class);
 		assertSame(swingThread(), brick.guiBrickThread());
 	}
 
 	@Test
 	public void testInjectedGuiBrickRunsInSwingThread() throws Exception {
-		final Container container = ContainerUtils.newContainer(new SomeGuiBrickImpl());
+		final Container container = Containers.newContainer(new SomeGuiBrickImpl());
 		final SomeGuiBrick brick = container.provide(SomeGuiBrick.class);
 		assertSame(swingThread(), brick.guiBrickThread());
 	}
@@ -44,7 +44,7 @@ public class GuiBrickTest {
 
 
 	private void runInsideTimebox() {
-		final Container container = ContainerUtils.newContainer();
+		final Container container = Containers.newContainer();
 		final SomeGuiBrick brick = container.provide(SomeGuiBrick.class);
 		try {
 			brick.slowMethod();
@@ -56,7 +56,7 @@ public class GuiBrickTest {
 
 	@Test
 	public void testNonGuiBrickRunsInCurrentThread() throws Exception {
-		final SomeVanillaBrick brick = ContainerUtils.newContainer().provide(SomeVanillaBrick.class);
+		final SomeVanillaBrick brick = Containers.newContainer().provide(SomeVanillaBrick.class);
 		assertSame(Thread.currentThread(), brick.brickThread());
 	}
 	

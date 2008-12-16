@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import org.junit.internal.runners.InitializationError;
 
-import sneer.kernel.container.ContainerUtils;
+import sneer.kernel.container.Containers;
 import wheel.lang.Environment;
 import wheel.lang.exceptions.WheelExceptionHandler;
 import wheel.lang.exceptions.impl.ExceptionLeaker;
@@ -66,7 +66,7 @@ public class ContainerEnvironment extends WheelEnvironment {
 	
 	@Override
 	protected Environment environment() {
-		return ContainerUtils.newContainer(new TestEnvironment());
+		return Containers.newContainer(new TestEnvironment());
 	}
 	
 	private static Field[] contributedFields(Class<? extends Object> klass) {

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import sneer.kernel.container.ContainerUtils;
+import sneer.kernel.container.Containers;
 import sneer.pulp.config.persistence.mocks.PersistenceConfigMock;
 import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
@@ -41,7 +41,7 @@ public class TuplePersistenceTest extends TestThatMightUseResources {
 
 	
 	private TupleSpace createSubject() {
-		return ContainerUtils.newContainer(_persistenceMock).provide(TupleSpace.class);
+		return Containers.newContainer(_persistenceMock).provide(TupleSpace.class);
 	}
 	
 	

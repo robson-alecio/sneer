@@ -2,7 +2,7 @@ package sneer.kernel.container;
 
 import java.lang.reflect.Constructor;
 
-public class ContainerUtils {
+public class Containers {
 	
 	public static Container newContainer(Object... implementationBindings) {
 		try {

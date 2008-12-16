@@ -2,7 +2,7 @@ package sneer.skin.imgselector.tests;
 
 import java.awt.Image;
 
-import sneer.kernel.container.ContainerUtils;
+import sneer.kernel.container.Containers;
 import sneer.skin.imgselector.ImageSelector;
 import wheel.io.Logger;
 import wheel.lang.Consumer;
@@ -13,7 +13,7 @@ public class ImageSelectorDemo  {
 
 	public static void main(String[] args) throws Exception {
 		Logger.redirectTo(System.out);
-		Environments.runWith(ContainerUtils.newContainer(), new Runnable(){ @Override public void run() {
+		Environments.runWith(Containers.newContainer(), new Runnable(){ @Override public void run() {
 			try {
 				ImageSelector imageSelector = Environments.my(ImageSelector.class);
 				imageSelector.open(new Consumer<Image>(){@Override public void consume(Image valueObject) {

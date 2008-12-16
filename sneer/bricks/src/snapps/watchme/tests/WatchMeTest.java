@@ -18,7 +18,7 @@ import org.junit.Test;
 
 import snapps.watchme.WatchMe;
 import sneer.kernel.container.Container;
-import sneer.kernel.container.ContainerUtils;
+import sneer.kernel.container.Containers;
 import sneer.kernel.container.Inject;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.keymanager.KeyManager;
@@ -73,7 +73,7 @@ public class WatchMeTest extends TestThatIsInjected {
 			one(_shotter).takeScreenshot(); will(returnValue(image3)); inSequence(seq);
 		}});
 
-		Container container2 = ContainerUtils.newContainer(_sharedSpace); 
+		Container container2 = Containers.newContainer(_sharedSpace); 
 		WatchMe subject2 = container2.provide(WatchMe.class);
 
 		PublicKey key = _keys.ownPublicKey();

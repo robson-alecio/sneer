@@ -3,7 +3,7 @@ package main;
 import java.io.File;
 
 import sneer.kernel.container.Container;
-import sneer.kernel.container.ContainerUtils;
+import sneer.kernel.container.Containers;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.tuples.config.TupleSpaceConfig;
 import wheel.io.Logger;
@@ -53,7 +53,7 @@ public class MainDemo {
 	}
 
 	private static Container container() {
-		if (_container == null) _container = ContainerUtils.newContainer(tupleSpaceConfig());
+		if (_container == null) _container = Containers.newContainer(tupleSpaceConfig());
 		return _container;
 	}
 

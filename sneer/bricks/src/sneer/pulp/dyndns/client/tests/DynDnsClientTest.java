@@ -12,7 +12,7 @@ import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
 import sneer.kernel.container.Container;
-import sneer.kernel.container.ContainerUtils;
+import sneer.kernel.container.Containers;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.clock.Clock;
@@ -204,7 +204,7 @@ Unacceptable Client Behavior
 		list.add(_updater);
 		list.add(_propertyStore);
 		
-		return ContainerUtils.newContainer(list.toArray());
+		return Containers.newContainer(list.toArray());
 	}
 }
 

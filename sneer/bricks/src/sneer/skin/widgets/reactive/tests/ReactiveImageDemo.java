@@ -7,7 +7,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
-import sneer.kernel.container.ContainerUtils;
+import sneer.kernel.container.Containers;
 import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.io.Logger;
@@ -58,7 +58,7 @@ public class ReactiveImageDemo {
 	
 	public static void main(String[] args) throws Exception {
 		Logger.redirectTo(System.out);
-		Environments.runWith(ContainerUtils.newContainer(), new Runnable(){ @Override public void run() {
+		Environments.runWith(Containers.newContainer(), new Runnable(){ @Override public void run() {
 			try {
 				new ReactiveImageDemo();
 			} catch (Exception e) {

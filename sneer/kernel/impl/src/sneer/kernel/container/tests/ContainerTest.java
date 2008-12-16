@@ -12,7 +12,7 @@ import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
 import sneer.kernel.container.Container;
-import sneer.kernel.container.ContainerUtils;
+import sneer.kernel.container.Containers;
 import sneer.kernel.container.Injector;
 import sneer.kernel.container.SneerConfig;
 import sneer.kernel.container.impl.AnnotatedFieldInjector;
@@ -42,7 +42,7 @@ public class ContainerTest {
 				will(returnValue(null));
 		}});
 		
-		final Container container = ContainerUtils.newContainer(environment);
+		final Container container = Containers.newContainer(environment);
 		
 		assertEquals("o", container.provide(Object.class));
 		assertTrue(container.provide(Sample.class) instanceof SampleImpl);

@@ -9,7 +9,7 @@ import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 
 import sneer.kernel.container.Container;
-import sneer.kernel.container.ContainerUtils;
+import sneer.kernel.container.Containers;
 import sneer.skin.sound.kernel.Audio;
 
 public class JavaSoundImpl implements Sound {
@@ -20,7 +20,7 @@ public class JavaSoundImpl implements Sound {
 	private Audio _audio;
 
 	{
-		Container container = ContainerUtils.newContainer();
+		Container container = Containers.newContainer();
 		_audio = container.provide(Audio.class);
 	}
 	

@@ -8,7 +8,7 @@ import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Before;
 import org.junit.Test;
 
-import sneer.kernel.container.ContainerUtils;
+import sneer.kernel.container.Containers;
 import sneer.pulp.dyndns.updater.BadAuthException;
 import sneer.pulp.dyndns.updater.InvalidHostException;
 import sneer.pulp.dyndns.updater.RedundantUpdateException;
@@ -92,7 +92,7 @@ public class UpdaterTest {
 		
 		final HttpClient client = setUpHttpClientMockFor(hostname, ip, user, password, responseText);
 		
-		final Updater updater = ContainerUtils.newContainer(client).provide(Updater.class);
+		final Updater updater = Containers.newContainer(client).provide(Updater.class);
 		updater.update(hostname, user, password, ip);
 		
 		_context.assertIsSatisfied();

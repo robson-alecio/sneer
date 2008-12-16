@@ -5,7 +5,7 @@ import org.junit.runner.RunWith;
 
 import snapps.contacts.gui.comparator.ContactInfoComparator;
 import sneer.kernel.container.Container;
-import sneer.kernel.container.ContainerUtils;
+import sneer.kernel.container.Containers;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.list.ContactInfo;
 import sneer.pulp.reactive.listsorter.ListSorter;
@@ -36,7 +36,7 @@ public class ContactInfoComparatorTest {
 		final ContactInfoMock falseA = new ContactInfoMock("A", false);
 		final ContactInfoMock falseB = new ContactInfoMock("B", false);
 
-		Container container =  ContainerUtils.newContainer();
+		Container container =  Containers.newContainer();
 		ContactInfoComparator comparator = container.provide(ContactInfoComparator.class);
 		_sorter = container.provide(ListSorter.class);
 

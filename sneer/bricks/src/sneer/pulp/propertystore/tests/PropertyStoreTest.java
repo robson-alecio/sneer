@@ -2,7 +2,7 @@ package sneer.pulp.propertystore.tests;
 
 import org.junit.Test;
 
-import sneer.kernel.container.ContainerUtils;
+import sneer.kernel.container.Containers;
 import sneer.pulp.config.persistence.mocks.PersistenceConfigMock;
 import sneer.pulp.propertystore.PropertyStore;
 import wheel.testutil.TestThatMightUseResources;
@@ -28,7 +28,7 @@ public class PropertyStoreTest extends TestThatMightUseResources {
 	}
 
 	private PropertyStore createSubject() {
-		return ContainerUtils.newContainer(_persistenceMock).provide(PropertyStore.class);
+		return Containers.newContainer(_persistenceMock).provide(PropertyStore.class);
 	}
 	
 }

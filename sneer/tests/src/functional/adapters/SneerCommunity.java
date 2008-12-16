@@ -4,7 +4,7 @@ import java.io.File;
 
 import org.apache.commons.lang.StringUtils;
 
-import sneer.kernel.container.ContainerUtils;
+import sneer.kernel.container.Containers;
 import sneer.kernel.container.SneerConfig;
 import sneer.pulp.network.Network;
 import sneer.pulp.network.impl.inmemory.InMemoryNetwork;
@@ -37,7 +37,7 @@ public class SneerCommunity implements SovereignCommunity {
 	private SneerParty produceSneerParty(String name) {
 		Object[] bindings = new Object[] {_network, sneerConfigForParty(name)};
 	
-		return ContainerUtils.newContainer(bindings).provide(SneerParty.class);
+		return Containers.newContainer(bindings).provide(SneerParty.class);
 	}
 
 	private SneerConfig sneerConfigForParty(String name) {

@@ -61,7 +61,7 @@ public class LocationGuiImpl {
 		_address.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				GuiThread.strictInvokeLater(new Runnable() {
+				GuiThread.invokeLater(new Runnable() {
 					public void run() {
 						updateAddress(_address.getText());
 					}

@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.text.DecimalFormat;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -30,6 +31,8 @@ public class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 
 	private static final Icon _upload = load("upload.png");
 	private static final Icon _download = load("download.png");
+	
+	private final DecimalFormat _format = new DecimalFormat("00");
 
 	public BandwidthMeterGuiImpl() {
 		my(InstrumentManager.class).registerInstrument(this);
@@ -40,7 +43,7 @@ public class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 		
 		@Override public String evaluate(Integer value) {
 			if(_maxValue<value) _maxValue=value;
-			return value.toString() + " (" + _maxValue + ")";
+			return _format.format(value) + " (" + _format.format(_maxValue) + ")";
 		}
 	}
 	

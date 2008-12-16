@@ -151,10 +151,9 @@ class WindGuiImpl implements WindGui {
 	
 	private void shoutAlert() {
 		Window window = SwingUtilities.windowForComponent(_container);
-		_myShout.getMainWidget().requestFocus();
 		
 		if(window.isActive()) return;
-			alertUser(window);
+		alertUser(window);
 	}
 
 	private void alertUser(Window window) {

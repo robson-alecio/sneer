@@ -1,4 +1,14 @@
-﻿﻿ROADMAP TO BECOME MORE PRODUCTIVE
+﻿FIXES
+=========
+
+	- [Klaus] Fix: TupleSpaceImpl.removeSubscription() is blocking the gui thread.
+
+	- [Sandro] ListSignalModel and SortedList
+		- Fix: Sort Bug (see SortTest)
+
+
+
+﻿ROADMAP TO BECOME MORE PRODUCTIVE
 =====================================
 [The ROADMAP TO PRODUCE is below]
 
@@ -7,7 +17,7 @@
 	- Remove support for "optional" _mockery field in tests.
 		- Inherit _mockery field in all tests that use it.
 
-	- [Klaus] Debugging Strategy - Revise so that all debugging info doesn't go into the log file.
+	- Debugging Strategy - Revise so that all debugging info doesn't go into the log file.
 		- Default: sysout and file. Filter by part of message: Only file or ignore. 
 
 	- Mocotó Test Framework
@@ -57,12 +67,9 @@
 ROADMAP TO PRODUCE
 ======================
 
-	- [Klaus] Fix: TupleSpaceImpl.removeSubscription() is blocking the gui thread.
-
 	- [Sandro] BandwidthMeterInstrument
 		- Use space instead of leading zeros. Support 3 digits.
-		- BandwidthCounter -> PeriodicCounterFactory. Pass the period as a parameter on the create() method. Use two generic PeriodicCounters intead of one BandwidthCounter. This will also have the advantage of not exposing the adders outside of the brick using them. packetReceived() and packetSent() are exposed to other bricks, which is not necessary now. Talk to Klaus about this.
-			- Testing that a counter has been added is not very interesting. Test that the counter is called with the correct number of bytes being sent and received. 
+		- Test that the counter is called with the correct number of bytes being sent and received. 
 
 	- ListenToMe -> Whisper
 
@@ -73,9 +80,6 @@ ROADMAP TO PRODUCE
 
 	- Community Initiative - Incorporate Gandhi's Google maps brick. (Run LocationGuiMain)
 	
-	- ListSignalModel and SortedList
-		- Fix: Sort Bug (see SortTest)
-
 	- WatchMe
 		- Accelerate.
 

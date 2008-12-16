@@ -6,8 +6,10 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.api.Invocation;
 import org.jmock.lib.action.CustomAction;
+import org.junit.Ignore;
 import org.junit.Test;
 
+import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.connection.ByteConnection.PacketScheduler;
@@ -22,12 +24,14 @@ import tests.Contribute;
 import tests.TestThatIsInjected;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.Constant;
+import wheel.testutil.SignalUtils;
 
 public class ProbeManagerTest extends TestThatIsInjected {
 
 	private final Mockery _mockery = new Mockery();
 	@Contribute private final ConnectionManager _connectionManager = _mockery.mock(ConnectionManager.class);
 	@Contribute private final Serializer _serializer = _mockery.mock(Serializer.class);
+	@Contribute private final BandwidthCounter _bandwidthCounter = _mockery.mock(BandwidthCounter.class);
 
 	@SuppressWarnings("unused")
 	private final ProbeManager _subject = my(ProbeManager.class);
@@ -38,9 +42,11 @@ public class ProbeManagerTest extends TestThatIsInjected {
 	
 	private final ByteConnection _connection = _mockery.mock(ByteConnection.class);
 	private PacketScheduler _scheduler;
+	@SuppressWarnings("unused")
+	private Consumer<byte[]> _packetReceiver;
 
-	@SuppressWarnings("deprecation")
-	@Test //(timeout = 10000)
+	@SuppressWarnings("deprecation") //mickeyMouseKey()
+	@Test (timeout = 1000)
 	public void testTupleBlocking() {
 		_mockery.checking(new Expectations(){{
 			one(_connectionManager).connectionFor(with(aNonNull(Contact.class))); will(returnValue(_connection));
@@ -81,5 +87,46 @@ public class ProbeManagerTest extends TestThatIsInjected {
 		_scheduler.previousPacketWasSent();
 		assertEquals(id, packet[0]);
 	}
+
+	@SuppressWarnings("deprecation") //mickeyMouseKey()
+	@Test (timeout = 1000)
+	@Ignore
+	public void testBandwidthReporting() {
+		_mockery.checking(new Expectations(){{
+			one(_connectionManager).connectionFor(with(aNonNull(Contact.class))); will(returnValue(_connection));
+			one(_connection).isOnline(); will(returnValue(new Constant<Boolean>(true)));
+			one(_connection).initCommunications(with(aNonNull(PacketScheduler.class)), with(aNonNull(Consumer.class)));
+				will(new CustomAction("capturing params") { @Override public Object invoke(Invocation invocation) throws Throwable {
+					_scheduler = (PacketScheduler) invocation.getParameter(0);
+					_packetReceiver = (Consumer<byte[]>)invocation.getParameter(1);
+					return null;
+				}});
+			one(_bandwidthCounter).sent(1024);
+			allowing(_serializer).serialize(with(aNonNull(TupleWithId.class)));
+				will(new CustomAction("serializing") { @Override public Object invoke(Invocation invocation) throws Throwable {
+					return new byte[1024];
+				}});
+
+		}});
+
+		Contact neide = _contactManager.addContact("Neide");
+		_keys.addKey(neide, _keys.generateMickeyMouseKey("foo"));
+
+		_tuples.acquire(new TupleTypeA(1));
+		SignalUtils.waitForValue(1, _bandwidthCounter.uploadSpeed());
+		
+		
+		_tuples.acquire(new TupleTypeB(2));
+		assertPacketToSend(2);
+
+		_filter.block(TupleTypeB.class);
+		
+		_tuples.acquire(new TupleTypeA(3));
+		_tuples.acquire(new TupleTypeB(4));
+		assertPacketToSend(3);
+		_tuples.acquire(new TupleTypeA(5));
+		assertPacketToSend(5);
+	}
+
 	
 }

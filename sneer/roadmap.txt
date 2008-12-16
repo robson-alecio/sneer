@@ -19,7 +19,8 @@
 	- ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do.
 		- SetSignal - Revise it also. 
 
-	- Responsive threading model for snapps. Snapps can NEVER block the Swing gui thread. Maybe have one event dispatch thread per Snapp. Snapps still have to comply with invokeLater/invokeAndWait to modify gui from other threads or live with the consequences. Test to see if they can ruin/interfere with the entire Sneer gui even having acess to their own components. 
+	- Responsive threading model for instruments. They can NEVER block the Swing gui thread. Maybe have one event dispatch thread per instrument. Instruments still have to comply with invokeLater/invokeAndWait to modify gui from other threads. 
+		- Security - Discover if instruments can indirectly gain access to components from other instruments.
 
 	- Output folders - Make all source folders compile to the default folder (bin) and fix the tests. Is this possible?
 	

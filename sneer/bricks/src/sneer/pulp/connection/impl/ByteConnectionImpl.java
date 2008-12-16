@@ -90,7 +90,7 @@ class ByteConnectionImpl implements ByteConnection {
 		
 		try {
 			mySocket.write(array);
-			_bandwidthCounter.sended(array.length);
+			_bandwidthCounter.sent(array.length);
 			return true;
 		} catch (IOException iox) {
 			crash(mySocket, iox, "Error trying to send packet. ");

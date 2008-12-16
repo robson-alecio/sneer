@@ -21,12 +21,12 @@ public class BandwidthCounterTest extends TestThatIsInjected {
 		SignalUtils.waitForValue(0, _subject.uploadSpeed());
 		
 		_subject.received(1024);
-		_subject.sended(1024);
+		_subject.sent(1024);
 		SignalUtils.waitForValue(0, _subject.downloadSpeed());
 		SignalUtils.waitForValue(0, _subject.uploadSpeed());
 		
 		_subject.received(1024);
-		_subject.sended(1024);
+		_subject.sent(1024);
 		SignalUtils.waitForValue(0, _subject.downloadSpeed());
 		SignalUtils.waitForValue(0, _subject.uploadSpeed());
 		
@@ -35,7 +35,7 @@ public class BandwidthCounterTest extends TestThatIsInjected {
 		SignalUtils.waitForValue(2, _subject.uploadSpeed());
 		
 		_subject.received(1024);
-		_subject.sended(1024);
+		_subject.sent(1024);
 		SignalUtils.waitForValue(2, _subject.downloadSpeed());
 		SignalUtils.waitForValue(2, _subject.uploadSpeed());
 		

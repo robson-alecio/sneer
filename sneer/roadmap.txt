@@ -62,6 +62,14 @@ ROADMAP TO PRODUCE
 
 	- [Klaus] Fix: TupleSpaceImpl.removeSubscription() is blocking the gui thread.
 
+	- [Sandro] BandwidthMeterInstrument
+		- Make it stop dancing horizontally as the number of digits displayed changes.
+		- Sended -> Sent 
+		- Use 3 seconds instead of one, to reduce socket buffer effects. 
+		- Precision. When waking up, ask the clock what time it is. The wakeUpEvery() period is only a minimum value. It is not precise.
+		- BandwidthCounter -> PeriodicCounterFactory. Pass the period as a parameter on the create() method. Use two generic PeriodicCounters intead of one BandwidthCounter. This will also have the advantage of not exposing the adders outside of the brick using them. packetReceived() and packetSent() are exposed to other bricks, which is not necessary now. Talk to Klaus about this.
+			- Testing that a counter has been added is not very interesting. Test that the counter is called with the correct number of bytes being sent and received. 
+
 	- Community request by Vina Callegari. He uses Eclipse 3.2.2 and it does not compile Sneer.
 		- Ask for user Name and Dyndns info using JOptionPane, if not passed as args and not persisted.
 			- Persist using PropertyStore. 

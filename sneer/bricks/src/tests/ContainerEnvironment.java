@@ -1,5 +1,7 @@
 package tests;
 
+import static wheel.lang.Environments.my;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
@@ -10,7 +12,6 @@ import wheel.lang.Environment;
 import wheel.lang.exceptions.WheelExceptionHandler;
 import wheel.lang.exceptions.impl.ExceptionLeaker;
 import wheel.testutil.WheelEnvironment;
-import static wheel.lang.Environments.my;
 
 public class ContainerEnvironment extends WheelEnvironment {
 	
@@ -53,8 +54,8 @@ public class ContainerEnvironment extends WheelEnvironment {
 		}
 
 		private <T> void assertFieldCantProvide(Field field, Class<T> intrface) {
-			if (intrface.isAssignableFrom(field.getClass())) {
-				throw new IllegalStateException(field + " has not been initialized.");
+			if (intrface.isAssignableFrom(field.getType())) {
+				throw new IllegalStateException(field + " has not been initialized. You might have to move its declaration up, before it is used indirectly by other declarations.");
 			}
 		}
 		

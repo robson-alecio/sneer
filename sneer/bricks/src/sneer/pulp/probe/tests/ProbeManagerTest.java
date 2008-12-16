@@ -1,12 +1,13 @@
 package sneer.pulp.probe.tests;
 
+import static wheel.lang.Environments.my;
+
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.api.Invocation;
 import org.jmock.lib.action.CustomAction;
 import org.junit.Test;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.connection.ByteConnection.PacketScheduler;
@@ -24,19 +25,19 @@ import wheel.reactive.impl.Constant;
 
 public class ProbeManagerTest extends TestThatIsInjected {
 
-	@SuppressWarnings("unused")
-	@Inject private static ProbeManager _subject;
-	@Inject private static TupleFilterManager _filter;
-	@Inject private static ContactManager _contactManager;
-	@Inject private static TupleSpace _tuples;
-	@Inject private static KeyManager _keys;
-	
 	private final Mockery _mockery = new Mockery();
-	
 	@Contribute private final ConnectionManager _connectionManager = _mockery.mock(ConnectionManager.class);
+	@Contribute private final Serializer _serializer = _mockery.mock(Serializer.class);
+
+	@SuppressWarnings("unused")
+	private final ProbeManager _subject = my(ProbeManager.class);
+	private final TupleFilterManager _filter = my(TupleFilterManager.class);
+	private final ContactManager _contactManager = my(ContactManager.class);
+	private final TupleSpace _tuples = my(TupleSpace.class);
+	private final KeyManager _keys = my(KeyManager.class);
+	
 	private final ByteConnection _connection = _mockery.mock(ByteConnection.class);
 	private PacketScheduler _scheduler;
-	@Contribute private final Serializer _serializer = _mockery.mock(Serializer.class);
 
 	@SuppressWarnings("deprecation")
 	@Test //(timeout = 10000)

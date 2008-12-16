@@ -1,8 +1,9 @@
 package sneer.pulp.clockticker.tests;
 
+import static wheel.lang.Environments.my;
+
 import org.junit.Test;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.clockticker.ClockTicker;
 import tests.TestThatIsInjected;
@@ -10,11 +11,11 @@ import wheel.lang.Threads;
 
 public class ClockTickerTest extends TestThatIsInjected {
 
-	@Inject
-	static private Clock _clock;
+	private final Clock _clock = my(Clock.class);
 
-	@Inject @SuppressWarnings("unused") //Interesting, isnt it? ;)
-	static private ClockTicker _subject;
+	{
+		my(ClockTicker.class);
+	}
 
 	@Test (timeout = 3000)
 	public void testTicking() {

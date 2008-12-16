@@ -18,32 +18,46 @@ import wheel.lang.exceptions.impl.ExceptionLeaker;
 public class WheelEnvironment extends JUnit4ClassRunner {
 	
 	public static class TestMethodWithEnvironment extends TestMethod {
+		
 		private final Memento _environment;
 
 		public TestMethodWithEnvironment(Method method, TestClass testClass) {
 			super(method, testClass);
 			_environment = Environments.memento();
 		}
+		
+		static class InvocationTargetExceptionEnvelope extends RuntimeException {
+			public InvocationTargetExceptionEnvelope(InvocationTargetException e) {
+				super(e);
+			}
+		}
 
 		@Override
-		public void invoke(final Object test) {
+		public void invoke(final Object test) throws InvocationTargetException {
+			try {
+				invokeInEnvironment(test);
+			} catch (InvocationTargetExceptionEnvelope e) {
+				throw (InvocationTargetException)e.getCause();
+			}
+		}
+
+		private void invokeInEnvironment(final Object test) {
 			Environments.runWith(_environment, new Runnable() { @Override public void run() {
-				doInvoke(test);
+				try {
+					doInvoke(test);
+				} catch (InvocationTargetException e) {
+					throw new InvocationTargetExceptionEnvelope(e);
+				}
 			}});
 		}
 
-		protected void doInvoke(Object test) {
+		protected void doInvoke(Object test) throws InvocationTargetException {
 			try {
 				superInvoke(test);
 			} catch (IllegalArgumentException e) {
 				throw new RuntimeException(e);
 			} catch (IllegalAccessException e) {
 				throw new RuntimeException(e);
-			} catch (InvocationTargetException e) {
-				Throwable tx = e.getTargetException();
-				if (tx instanceof RuntimeException) throw (RuntimeException)tx;
-				if (tx instanceof Error) throw (Error)tx;
-				throw new RuntimeException(tx);
 			}
 		}
 

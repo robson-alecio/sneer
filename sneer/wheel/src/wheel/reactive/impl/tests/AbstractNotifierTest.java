@@ -1,6 +1,5 @@
 package wheel.reactive.impl.tests;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -13,7 +12,6 @@ import wheel.testutil.WheelEnvironment;
 public class AbstractNotifierTest {
 	
 	@Test (expected = Error.class)
-	@Ignore
 	public void testThrowsBubbleUpDuringTests() {
 		new AbstractNotifier<Object>() {
 			@Override

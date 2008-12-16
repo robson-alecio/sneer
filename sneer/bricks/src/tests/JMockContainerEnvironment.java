@@ -1,6 +1,7 @@
 package tests;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.jmock.Mockery;
@@ -18,7 +19,7 @@ public class JMockContainerEnvironment extends ContainerEnvironment {
 	protected TestMethod wrapMethod(Method method) {
 		return new TestMethodWithEnvironment(method, getTestClass()) {
 			@Override
-			protected void doInvoke(Object test) {
+			protected void doInvoke(Object test) throws InvocationTargetException {
 				super.doInvoke(test);
 				assertMockeryHasBeenSatisfied(test);
 			}

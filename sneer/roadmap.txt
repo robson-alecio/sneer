@@ -2,9 +2,6 @@
 =====================================
 [The ROADMAP TO PRODUCE is below]
 
-	- [Rodrigo] @Test (expected = Exception.class) - Make our TestRunners support that. Unignore AbstractNotifierTest for example.
-		- Do our test runners support timeout?
-
 	- ContainerUtils.getContainer() - Drop. Fix all uses.
 
 	- @Inject -> my() - Remember to stop using static fields or tests will fail wierdly.

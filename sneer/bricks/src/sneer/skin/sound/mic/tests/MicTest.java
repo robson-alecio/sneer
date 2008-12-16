@@ -9,16 +9,13 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.mic.Mic;
 import tests.Contribute;
-import tests.JMockContainerEnvironment;
 import tests.TestThatIsInjected;
 import wheel.testutil.SignalUtils;
 
-@RunWith(JMockContainerEnvironment.class)
 public class MicTest extends TestThatIsInjected {
 
 	private final Mockery _mockery = new JUnit4Mockery();

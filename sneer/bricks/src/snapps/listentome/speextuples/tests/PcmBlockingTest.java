@@ -31,7 +31,6 @@ public class PcmBlockingTest extends TestThatIsInjected {
 
 	@Test
 	public void testPcmBlocking() throws Exception {
-		_mockery.assertIsSatisfied();
 	}
 	
 }

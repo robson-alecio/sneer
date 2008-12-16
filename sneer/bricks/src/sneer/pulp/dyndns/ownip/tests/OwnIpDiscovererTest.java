@@ -9,7 +9,6 @@ import org.jmock.Mockery;
 import org.jmock.Sequence;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import sneer.pulp.clock.Clock;
 import sneer.pulp.dyndns.checkip.CheckIp;
@@ -17,12 +16,10 @@ import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.propertystore.PropertyStore;
 import sneer.pulp.propertystore.mocks.TransientPropertyStore;
 import tests.Contribute;
-import tests.JMockContainerEnvironment;
 import tests.TestThatIsInjected;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.Receiver;
 
-@RunWith(JMockContainerEnvironment.class)
 public class OwnIpDiscovererTest extends TestThatIsInjected {
 	
 	final Mockery _context = new JUnit4Mockery();

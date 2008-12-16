@@ -7,7 +7,6 @@ import org.jmock.Mockery;
 import org.jmock.Sequence;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import sneer.kernel.container.Inject;
 import sneer.pulp.clock.Clock;
@@ -18,12 +17,9 @@ import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.speaker.Speaker;
 import tests.Contribute;
-import tests.JMockContainerEnvironment;
 import tests.TestThatIsInjected;
 import wheel.lang.ImmutableByteArray;
 
-
-@RunWith(JMockContainerEnvironment.class)
 public class SpeakerTest extends TestThatIsInjected {
 	
 	@Inject private static Speaker _subject;

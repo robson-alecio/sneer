@@ -5,7 +5,6 @@ import org.jmock.Mockery;
 import org.jmock.api.Invocation;
 import org.jmock.lib.action.CustomAction;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import sneer.kernel.container.Inject;
 import sneer.pulp.connection.ByteConnection;
@@ -19,12 +18,10 @@ import sneer.pulp.probe.ProbeManager;
 import sneer.pulp.serialization.Serializer;
 import sneer.pulp.tuples.TupleSpace;
 import tests.Contribute;
-import tests.JMockContainerEnvironment;
 import tests.TestThatIsInjected;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.Constant;
 
-@RunWith(JMockContainerEnvironment.class)
 public class ProbeManagerTest extends TestThatIsInjected {
 
 	@SuppressWarnings("unused")

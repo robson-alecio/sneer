@@ -42,8 +42,6 @@ public class ReachabilityTest extends TestThatIsInjected {
 		_accepter._notifier.notifyReceivers(socket);
 		
 		assertEquals(0, _lights.lights().currentSize());
-		
-		_mockery.assertIsSatisfied();
 	}
 	
 	private <T>  T mock(Class<T> typeToMock) {

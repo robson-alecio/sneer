@@ -83,8 +83,6 @@ Unacceptable Client Behavior
 		startDynDnsClientOn(newContainer());
 		
 		startDynDnsClientOn(newContainer());
-		
-		_context.assertIsSatisfied();
 	}
 	
 	@Test
@@ -116,7 +114,6 @@ Unacceptable Client Behavior
 		
 		_threadPool.startAllActors();
 		assertFalse(light.isOn());
-		_context.assertIsSatisfied();
 	}
 	
 	@Test
@@ -152,7 +149,6 @@ Unacceptable Client Behavior
 		_threadPool.startAllActors();
 		assertFalse(light.isOn());
 		
-		_context.assertIsSatisfied();
 	}
 
 	@Test
@@ -173,8 +169,6 @@ Unacceptable Client Behavior
 		_threadPool.startAllActors();
 		
 		assertBlinkingLight(error, my(Container.class));
-		
-		_context.assertIsSatisfied();
 	}
 
 	

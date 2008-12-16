@@ -7,7 +7,6 @@ import org.jmock.Mockery;
 import org.jmock.Sequence;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import snapps.listentome.speex.Decoder;
 import snapps.listentome.speex.Encoder;
@@ -23,13 +22,11 @@ import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.rooms.ActiveRoomKeeper;
 import sneer.skin.sound.PcmSoundPacket;
 import tests.Contribute;
-import tests.JMockContainerEnvironment;
 import tests.TestThatIsInjected;
 import wheel.lang.ByRef;
 import wheel.lang.Consumer;
 import wheel.lang.ImmutableByteArray;
 
-@RunWith(JMockContainerEnvironment.class)
 public class SpeexTuplesTest extends TestThatIsInjected {
 	
 	@Inject private static KeyManager _keyManager;

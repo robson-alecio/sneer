@@ -1,24 +1,22 @@
 package sneer.pulp.streams.sequencer.tests;
 
+import static wheel.testutil.TestUtils.assertSameContents;
+
 import java.util.ArrayList;
 import java.util.List;
-import static wheel.testutil.TestUtils.assertSameContents;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.Sequence;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import sneer.kernel.container.Inject;
 import sneer.pulp.streams.sequencer.Sequencer;
 import sneer.pulp.streams.sequencer.Sequencers;
-import tests.JMockContainerEnvironment;
 import tests.TestThatIsInjected;
 import wheel.lang.Consumer;
 
-@RunWith(JMockContainerEnvironment.class)
 public class SequencerTest extends TestThatIsInjected {
 	
 	private static final short MAX_GAP = (short)500;

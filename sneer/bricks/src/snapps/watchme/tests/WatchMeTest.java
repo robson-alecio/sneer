@@ -92,9 +92,6 @@ public class WatchMeTest extends TestThatIsInjected {
 
 		_clock.advanceTime(1000);
 		waitForImage(image3);
-
-		_context.assertIsSatisfied();
-		
 	}
 
 	private void showImage(String title, final BufferedImage image) {

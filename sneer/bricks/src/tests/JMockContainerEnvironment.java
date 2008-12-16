@@ -20,20 +20,27 @@ public class JMockContainerEnvironment extends ContainerEnvironment {
 			@Override
 			protected void doInvoke(Object test) {
 				super.doInvoke(test);
-				mockeryFor(test).assertIsSatisfied();
+				assertMockeryHasBeenSatisfied(test);
+			}
+
+			private void assertMockeryHasBeenSatisfied(Object test) {
+				final Mockery mockery = mockeryFor(test);
+				if (null != mockery)
+					mockery.assertIsSatisfied();
+			}
+			
+			protected Mockery mockeryFor(Object test) {
+				Class<?> klass = test.getClass();
+				while (klass != Object.class) {
+					for (Field field : klass.getDeclaredFields()) {
+						if (Mockery.class.isAssignableFrom(field.getType()))
+							return (Mockery) fieldValueFor(field, test);
+					}
+					klass = klass.getSuperclass();
+				}
+				return null;
 			}
 		};
 	}
 
-	protected Mockery mockeryFor(Object test) {
-		Class<?> klass = test.getClass();
-		while (klass != Object.class) {
-			for (Field field : klass.getDeclaredFields()) {
-				if (Mockery.class.isAssignableFrom(field.getType()))
-					return (Mockery) fieldValueFor(field, test);
-			}
-			klass = klass.getSuperclass();
-		}
-		return null;
-	}
 }

@@ -10,7 +10,7 @@ import sneer.kernel.container.Injector;
 import sneer.pulp.config.persistence.mocks.PersistenceConfigMock;
 import wheel.testutil.TestThatMightUseResources;
 
-@RunWith(ContainerEnvironment.class)
+@RunWith(JMockContainerEnvironment.class)
 public abstract class TestThatIsInjected extends TestThatMightUseResources {
 	
 	@Contribute final PersistenceConfigMock _persistenceConfig = new PersistenceConfigMock(tmpDirectory());

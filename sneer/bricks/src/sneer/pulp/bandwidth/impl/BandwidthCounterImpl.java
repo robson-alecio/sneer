@@ -13,11 +13,11 @@ import wheel.reactive.impl.RegisterImpl;
 
 class BandwidthCounterImpl implements BandwidthCounter {
 
-	private final int CONSOLIDATION_TIME = 1000;
+	private final int CONSOLIDATION_TIME = 3000;
 	
 	private final Clock _clock = my(Clock.class);
 	
-	private final AtomicInteger sended = new AtomicInteger();
+	private final AtomicInteger sent = new AtomicInteger();
 	private final AtomicInteger received  = new AtomicInteger();
 	
 	private final Register<Integer> _download = new RegisterImpl<Integer>(0); 
@@ -33,10 +33,14 @@ class BandwidthCounterImpl implements BandwidthCounter {
 	@Override public Signal<Integer> downloadSpeed() { return _download.output(); }
 	@Override public Signal<Integer> uploadSpeed() { return _upload.output();  }
 	@Override public void received(int sizeBytes) { received.addAndGet(sizeBytes); }
-	@Override public void sent(int sizeBytes) { sended.addAndGet(sizeBytes); }
+	@Override public void sent(int sizeBytes) { sent.addAndGet(sizeBytes); }
 	
 	private final void consolidate(){
-		_download.setter().consume(received.getAndSet(0)/1024);
-		_upload.setter().consume(sended.getAndSet(0)/1024);
+		_download.setter().consume(toKbytes(received));
+		_upload.setter().consume(toKbytes(sent));
+	}
+
+	private int toKbytes(AtomicInteger sum) {
+		return sum.getAndSet(0) / (1024 * CONSOLIDATION_TIME/1000);
 	}
 }

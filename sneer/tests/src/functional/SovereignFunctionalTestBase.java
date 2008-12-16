@@ -3,7 +3,6 @@ package functional;
 import org.junit.After;
 import org.junit.Before;
 
-import sneer.kernel.container.ContainerUtils;
 import tests.TestThatIsInjected;
 import wheel.lang.Timebox;
 import wheel.lang.exceptions.TimeIsUp;
@@ -38,7 +37,6 @@ public abstract class SovereignFunctionalTestBase extends TestThatIsInjected {
 		_community = null;
 		_a = null;
 		_b = null;
-		ContainerUtils.stopContainer();
 	}
 	
 	private void createAndConnectParties() {

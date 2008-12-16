@@ -23,7 +23,10 @@ class BandwidthCounterImpl implements BandwidthCounter {
 	private final Register<Integer> _download = new RegisterImpl<Integer>(0); 
 	private final Register<Integer> _upload = new RegisterImpl<Integer>(0); 
 	
+	private long _lastConsolidationTime;
+	
 	BandwidthCounterImpl(){
+		_lastConsolidationTime = _clock.time();
 		_clock.wakeUpEvery(CONSOLIDATION_TIME, new Stepper(){ @Override public boolean step() {
 			consolidate();
 			return true;
@@ -36,11 +39,17 @@ class BandwidthCounterImpl implements BandwidthCounter {
 	@Override public void sent(int sizeBytes) { sent.addAndGet(sizeBytes); }
 	
 	private final void consolidate(){
-		_download.setter().consume(toKbytes(received));
-		_upload.setter().consume(toKbytes(sent));
+		long currentTime = _clock.time();
+		int deltaTime = (int) (currentTime-_lastConsolidationTime);
+		int deltaTimeInSeconds =deltaTime/1000;
+		
+		_download.setter().consume(toKbytes(received, deltaTimeInSeconds));
+		_upload.setter().consume(toKbytes(sent, deltaTimeInSeconds));
+		
+		_lastConsolidationTime = currentTime;
 	}
 
-	private int toKbytes(AtomicInteger sum) {
-		return sum.getAndSet(0) / (1024 * CONSOLIDATION_TIME/1000);
+	private int toKbytes(AtomicInteger sum, int deltaTimeInSeconds) {
+		return sum.getAndSet(0) / (1024 * deltaTimeInSeconds);
 	}
 }

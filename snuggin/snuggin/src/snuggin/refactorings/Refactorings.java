@@ -17,13 +17,12 @@ public class Refactorings {
 	
 	public static void apply(ICompilationUnit cu, Refactoring refactoring)
 			throws CoreException {
-
+		
 		final RefactoringContext context = new RefactoringContext(parse(cu));
 		refactoring.apply(context);
 
 		cu.applyTextEdit(context.rewriteAST(), null);
 		cu.save(null, true);
-
 	}
 
 	public static void apply(IProject project, Refactoring refactoring)
@@ -31,8 +30,7 @@ public class Refactorings {
 		apply(JavaCore.create(project), refactoring);
 	}
 
-	public static void apply(final IJavaProject javaProject,
-			Refactoring refactoring) throws JavaModelException, Exception {
+	public static void apply(final IJavaProject javaProject, Refactoring refactoring) throws JavaModelException, Exception {
 		for (IPackageFragmentRoot root : javaProject.getAllPackageFragmentRoots()) {
 			if (root.getKind() != IPackageFragmentRoot.K_SOURCE)
 				continue;

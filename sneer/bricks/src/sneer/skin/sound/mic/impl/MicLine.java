@@ -1,16 +1,19 @@
 package sneer.skin.sound.mic.impl;
 
+import static wheel.lang.Environments.my;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.TargetDataLine;
 
-import sneer.kernel.container.Inject;
 import sneer.skin.sound.kernel.Audio;
 import wheel.lang.ImmutableByteArray;
 import wheel.lang.exceptions.FriendlyException;
 
 class MicLine {
 
-	@Inject static private Audio _audio;
+	private static Audio audio() {
+		return my(Audio.class);
+	}
 	
 	static private TargetDataLine _delegate;
 
@@ -25,7 +28,7 @@ class MicLine {
 
 	static synchronized void tryToAcquire() throws FriendlyException {
 		TargetDataLine result = null;
-		result = _audio.tryToOpenCaptureLine();
+		result = audio().tryToOpenCaptureLine();
 		if (result == null)
 			throwFriendly("Unable to find a target data line for your mic.");
 		
@@ -62,7 +65,7 @@ class MicLine {
 	}
 
 	private static AudioFormat format() {
-		return _audio.defaultAudioFormat();
+		return audio().defaultAudioFormat();
 	}
 
 	private static void throwFriendly(String specifics) throws FriendlyException {

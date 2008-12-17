@@ -1,6 +1,5 @@
 package sneer.pulp.connection.reachability.impl;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
@@ -9,21 +8,19 @@ import sneer.pulp.connection.SocketAccepter;
 import sneer.pulp.connection.reachability.ReachabilitySentinel;
 import sneer.pulp.threadpool.Stepper;
 import wheel.reactive.impl.Receiver;
+import static wheel.lang.Environments.my;
 
 class ReachabilitySentinelImpl implements ReachabilitySentinel {
 	
 	private static final int THIRTY_SECONDS = 30*1000;
 	
-	@Inject
-	private static SocketAccepter _socketAccepter;
+	private SocketAccepter _socketAccepter = my(SocketAccepter.class);
 	
-	@Inject
-	private static BlinkingLights _lights;
+	private BlinkingLights _lights = my(BlinkingLights.class);
 	
 	private static Light _unreachable;
 	
-	@Inject
-	private static Clock _clock;	
+	private Clock _clock = my(Clock.class);	
 	
 	private long _lastIncomingSocketTime = _clock.time();
 
@@ -47,7 +44,7 @@ class ReachabilitySentinelImpl implements ReachabilitySentinel {
 		_lights.turnOffIfNecessary(unreachableLight());
 	}
 	
-	private synchronized static Light unreachableLight() {
+	private synchronized Light unreachableLight() {
 		if (null == _unreachable)
 			_unreachable = _lights.prepare(LightType.WARN);
 		return _unreachable;

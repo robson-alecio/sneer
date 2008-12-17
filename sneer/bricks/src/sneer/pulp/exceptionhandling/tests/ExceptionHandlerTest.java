@@ -2,15 +2,15 @@ package sneer.pulp.exceptionhandling.tests;
 
 import org.junit.Test;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
 import tests.TestThatIsInjected;
 import wheel.lang.ByRef;
 import wheel.lang.Fallible;
+import static wheel.lang.Environments.my;
 
 public class ExceptionHandlerTest extends TestThatIsInjected {
 
-	@Inject private static ExceptionHandler _handler;
+	private ExceptionHandler _handler = my(ExceptionHandler.class);
 	
 	@Test
 	public void testShielding() {

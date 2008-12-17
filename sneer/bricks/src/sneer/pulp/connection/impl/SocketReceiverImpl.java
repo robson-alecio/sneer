@@ -1,19 +1,17 @@
 package sneer.pulp.connection.impl;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.connection.SocketAccepter;
 import sneer.pulp.connection.SocketReceiver;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.reactive.impl.Receiver;
+import static wheel.lang.Environments.my;
 
 class SocketReceiverImpl implements SocketReceiver {
 
-	@Inject
-	static private SocketAccepter _socketAccepter;
+	private SocketAccepter _socketAccepter = my(SocketAccepter.class);
 	
-	@Inject
-	static private ThreadPool _threadPool;
+	private ThreadPool _threadPool = my(ThreadPool.class);
 	
 	@SuppressWarnings("unused")
 	private final Receiver<ByteArraySocket> _receiverThatCannotBeGCd;

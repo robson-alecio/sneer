@@ -1,15 +1,14 @@
 package sneer.pulp.threadpool.impl;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.lang.Threads;
+import static wheel.lang.Environments.my;
 
 class ThreadPoolImpl implements ThreadPool {
 
-	@Inject
-	static private OwnNameKeeper _ownNameKeeper;
+	private OwnNameKeeper _ownNameKeeper = my(OwnNameKeeper.class);
 	
 	
 	@Override

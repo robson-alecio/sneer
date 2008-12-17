@@ -1,12 +1,12 @@
 package sneer.pulp.memory.impl;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.memory.MemoryMeter;
 import sneer.pulp.threadpool.Stepper;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
+import static wheel.lang.Environments.my;
 
 class MemoryMeterImpl implements MemoryMeter {
 
@@ -16,8 +16,7 @@ class MemoryMeterImpl implements MemoryMeter {
 	private final Register<Integer> _usedMBs = new RegisterImpl<Integer>(0);
 	private final Register<Integer> _usedMBsPeak = new RegisterImpl<Integer>(0);
 	
-	@Inject
-	static private Clock _clock; {
+	private Clock _clock = my(Clock.class); {
 		_clock.wakeUpNowAndEvery(PERIOD_IN_MILLIS, new Stepper() { @Override public boolean step() {
 			measureMemory();
 			return true;

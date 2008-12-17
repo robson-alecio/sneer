@@ -3,7 +3,6 @@ package sneer.pulp.keymanager.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.crypto.Crypto;
 import sneer.pulp.crypto.Sneer1024;
@@ -14,6 +13,7 @@ import wheel.lang.Producer;
 import wheel.reactive.EventNotifier;
 import wheel.reactive.EventSource;
 import wheel.reactive.impl.EventNotifierImpl;
+import static wheel.lang.Environments.my;
 
 class KeyManagerImpl implements KeyManager {
 
@@ -23,11 +23,9 @@ class KeyManagerImpl implements KeyManager {
 
 	private EventNotifier<Contact> _keyChanges = new EventNotifierImpl<Contact>();
 
-	@Inject
-	private static OwnNameKeeper _ownName;
+	private OwnNameKeeper _ownName = my(OwnNameKeeper.class);
 
-	@Inject
-	private static Crypto _crypto;
+	private Crypto _crypto = my(Crypto.class);
 
 
 	@Override

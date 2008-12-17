@@ -3,17 +3,16 @@ package sneer.pulp.connection.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.own.name.OwnNameKeeper;
+import static wheel.lang.Environments.my;
 
 class ConnectionManagerImpl implements ConnectionManager {
 
-	@Inject
-	private static OwnNameKeeper _nameKeeper;
+	private OwnNameKeeper _nameKeeper = my(OwnNameKeeper.class);
 	
 	private final Map<Contact, ByteConnection> _connectionsByContact = new HashMap<Contact, ByteConnection>();
 

@@ -3,20 +3,24 @@ package sneer.pulp.threadpool.tests;
 import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
-import sneer.kernel.container.Containers;
 import sneer.pulp.threadpool.ThreadPool;
-import wheel.lang.Environments;
+import tests.ContainerEnvironment;
 import wheel.lang.Environment;
+import wheel.lang.Environments;
 import wheel.lang.Threads;
+import static wheel.lang.Environments.my;
 
+@RunWith(ContainerEnvironment.class)
 public class ThreadPoolTest {
 
-	final ThreadPool subject = Containers.newContainer().provide(ThreadPool.class);
+	final ThreadPool subject = my(ThreadPool.class);
 
 	final Object binding = new Object();
 
 	final Object ranMonitor = new Object();
+	
 	volatile boolean ran = false;
 	
 	@Test (timeout = 2000)

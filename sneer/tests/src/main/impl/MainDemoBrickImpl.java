@@ -10,7 +10,6 @@ import snapps.meter.memory.gui.MemoryMeterGui;
 import snapps.watchme.gui.WatchMeGui;
 import snapps.watchme.gui.windows.RemoteWatchMeWindows;
 import snapps.wind.gui.WindGui;
-import sneer.kernel.container.Inject;
 import sneer.pulp.clockticker.ClockTicker;
 import sneer.pulp.connection.SocketOriginator;
 import sneer.pulp.connection.SocketReceiver;
@@ -27,74 +26,69 @@ import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.port.PortKeeper;
 import sneer.pulp.probe.ProbeManager;
 import sneer.skin.dashboard.Dashboard;
+import static wheel.lang.Environments.my;
 
 class MainDemoBrickImpl implements MainDemoBrick {
 
-	@Inject	@SuppressWarnings("unused")
-	private static ClockTicker _ticker;
+	@SuppressWarnings("unused")
+	private ClockTicker _ticker = my(ClockTicker.class);
 
-	@Inject	@SuppressWarnings("unused")
-	private static Dashboard _gui1;
+	@SuppressWarnings("unused")
+	private Dashboard _gui1 = my(Dashboard.class);
 	
-	@Inject	@SuppressWarnings("unused")
-	private static ContactsGui _gui2;
+	@SuppressWarnings("unused")
+	private ContactsGui _gui2 = my(ContactsGui.class);
 	
-	@Inject	@SuppressWarnings("unused")
-	private static WindGui _gui3;
+	@SuppressWarnings("unused")
+	private WindGui _gui3 = my(WindGui.class);
 	
-	@Inject	@SuppressWarnings("unused")
-	private static WatchMeGui _gui4;
+	@SuppressWarnings("unused")
+	private WatchMeGui _gui4 = my(WatchMeGui.class);
 
-	@Inject	@SuppressWarnings("unused")
-	private static ListenToMeGui _gui5;
+	@SuppressWarnings("unused")
+	private ListenToMeGui _gui5 = my(ListenToMeGui.class);
 
-	@Inject	@SuppressWarnings("unused")
-	private static RemoteWatchMeWindows _gui6;
+	@SuppressWarnings("unused")
+	private RemoteWatchMeWindows _gui6 = my(RemoteWatchMeWindows.class);
 
-	@Inject	@SuppressWarnings("unused")
-	private static MemoryMeterGui _gui7;
+	@SuppressWarnings("unused")
+	private MemoryMeterGui _gui7 = my(MemoryMeterGui.class);
 
-	@Inject	@SuppressWarnings("unused")
-	private static BandwidthMeterGui _gui8;
+	@SuppressWarnings("unused")
+	private BandwidthMeterGui _gui8 = my(BandwidthMeterGui.class);
 
-	@Inject	@SuppressWarnings("unused")
-	private static BlinkingLightsGui _lastGui;
+	@SuppressWarnings("unused")
+	private BlinkingLightsGui _lastGui = my(BlinkingLightsGui.class);
 	
-	@Inject	@SuppressWarnings("unused")
-	private static SocketOriginator _networkDaemon1;
+	@SuppressWarnings("unused")
+	private SocketOriginator _networkDaemon1 = my(SocketOriginator.class);
 	
-	@Inject	@SuppressWarnings("unused")
-	private static SocketReceiver _networkDaemon2;
+	@SuppressWarnings("unused")
+	private SocketReceiver _networkDaemon2 = my(SocketReceiver.class);
 
-	@Inject	@SuppressWarnings("unused")
-	private static DynDnsClient _dynDns;
+	@SuppressWarnings("unused")
+	private DynDnsClient _dynDns = my(DynDnsClient.class);
 	
-	@Inject	@SuppressWarnings("unused")
-	private static ReachabilitySentinel _reachabilitySentinel;	
+	@SuppressWarnings("unused")
+	private ReachabilitySentinel _reachabilitySentinel = my(ReachabilitySentinel.class);	
 	
-	@Inject	@SuppressWarnings("unused")
-	private static SpeexTuples _speexTuples;	
+	@SuppressWarnings("unused")
+	private SpeexTuples _speexTuples = my(SpeexTuples.class);	
 
-	@Inject	@SuppressWarnings("unused")
-	private static ProbeManager _probes;
+	@SuppressWarnings("unused")
+	private ProbeManager _probes = my(ProbeManager.class);
 
-	@Inject
-	private static DynDnsAccountKeeper _dynDnsAccountKeeper;
+	private DynDnsAccountKeeper _dynDnsAccountKeeper = my(DynDnsAccountKeeper.class);
 
-	@Inject
-	private static OwnNameKeeper _ownName;
+	private OwnNameKeeper _ownName = my(OwnNameKeeper.class);
 
-	@Inject
-	private static PortKeeper _portKeeper;
+	private PortKeeper _portKeeper = my(PortKeeper.class);
 
-	@Inject
-	private static ContactManager _contactManager;
+	private ContactManager _contactManager = my(ContactManager.class);
 
-	@Inject
-	private static KeyManager _keyManager;
+	private KeyManager _keyManager = my(KeyManager.class);
 	
-	@Inject
-	private static InternetAddressKeeper _addressKeeper;
+	private InternetAddressKeeper _addressKeeper = my(InternetAddressKeeper.class);
 
 	@Override
 	public void start(String dynDnsUserName, String dynDnsPassword) {

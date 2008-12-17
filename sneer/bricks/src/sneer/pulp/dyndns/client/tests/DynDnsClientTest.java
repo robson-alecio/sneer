@@ -28,6 +28,7 @@ import sneer.pulp.propertystore.mocks.TransientPropertyStore;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
 import tests.Contribute;
 import tests.TestThatIsInjected;
+import wheel.lang.Environments;
 import wheel.lang.exceptions.FriendlyException;
 import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;
@@ -184,14 +185,15 @@ Unacceptable Client Behavior
 		return light;
 	}
 
-	private Container startDynDnsClient() {
+	private void startDynDnsClient() {
 		final Container container = my(Container.class);
-		return startDynDnsClientOn(container);
+		startDynDnsClientOn(container);
 	}
 
-	private Container startDynDnsClientOn(final Container container) {
-		container.provide(DynDnsClient.class);
-		return container;
+	private void startDynDnsClientOn(final Container container) {
+		Environments.runWith(container, new Runnable() { @Override public void run() {
+			my(DynDnsClient.class);
+		}});
 	}
 
 	private Container newContainer(Object...mocks) {

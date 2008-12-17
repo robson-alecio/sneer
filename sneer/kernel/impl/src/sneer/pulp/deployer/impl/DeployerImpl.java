@@ -1,5 +1,7 @@
 package sneer.pulp.deployer.impl;
 
+import static wheel.lang.Environments.my;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,8 +9,6 @@ import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 
-import sneer.kernel.container.Inject;
-import sneer.kernel.container.Injector;
 import sneer.kernel.container.SneerConfig;
 import sneer.pulp.classpath.Classpath;
 import sneer.pulp.classpath.ClasspathFactory;
@@ -24,20 +24,13 @@ import wheel.io.codegeneration.MetaClass;
 
 class DeployerImpl implements Deployer {
 
-	@Inject
-	private SneerConfig _config;
+	private SneerConfig _config = my(SneerConfig.class);
 	
-	@Inject
-	private JavaCompiler _compiler;
+	private JavaCompiler _compiler = my(JavaCompiler.class);
 	
-	@Inject
-	private ClasspathFactory _cpFactory;
+	private ClasspathFactory _cpFactory = my(ClasspathFactory.class);
 	
-	@Inject
-	private Injector _injector;
-	
-	@Inject
-	private DependencyManager _dependencies;
+	private DependencyManager _dependencies = my(DependencyManager.class);
 	
 	
 //	public void deploy(BrickBundle received) {
@@ -79,7 +72,7 @@ class DeployerImpl implements Deployer {
 		 */
 		
 		BrickBundle result = new BrickBundleImpl();
-		VirtualDirectoryFactory factory = new VirtualDirectoryFactoryImpl(path, _injector);
+		VirtualDirectoryFactory factory = new VirtualDirectoryFactoryImpl(path);
 		List<VirtualDirectory> virtualDirectories = factory.virtualDirectories();
 
 		/*

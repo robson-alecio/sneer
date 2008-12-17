@@ -2,15 +2,14 @@ package sneer.pulp.crypto.tests;
 
 import org.junit.Test;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.crypto.ByteArrayUtils;
 import sneer.pulp.crypto.Crypto;
 import tests.TestThatIsInjected;
+import static wheel.lang.Environments.my;
 
 public class CryptoTest extends TestThatIsInjected {
 
-	@Inject
-	private static Crypto _crypto;
+	private Crypto _crypto = my(Crypto.class);
 	
 	private static final String INPUT = "The quick brown fox jumps over the lazy dog"; 
 

@@ -5,15 +5,14 @@ import java.io.StreamCorruptedException;
 import org.xiph.speex.SpeexDecoder;
 
 import snapps.listentome.speex.Decoder;
-import sneer.kernel.container.Inject;
 import sneer.skin.sound.kernel.Audio;
+import static wheel.lang.Environments.my;
 
 class DecoderImpl implements Decoder {
 	
 	private final SpeexDecoder _decoder = new SpeexDecoder();
 	
-	@Inject
-	private static Audio _audio;
+	private Audio _audio = my(Audio.class);
 	
 	DecoderImpl() {
 		_decoder.init(SpeexConstants.NARROWBAND_ENCODING, (int)_audio.defaultAudioFormat().getFrameRate(), _audio.defaultAudioFormat().getChannels(), _audio.defaultAudioFormat().isBigEndian());

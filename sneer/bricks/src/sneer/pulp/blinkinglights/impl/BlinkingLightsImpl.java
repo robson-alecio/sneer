@@ -1,6 +1,6 @@
 package sneer.pulp.blinkinglights.impl;
 
-import sneer.kernel.container.Inject;
+import static wheel.lang.Environments.my;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
@@ -11,8 +11,7 @@ import wheel.reactive.lists.impl.ListRegisterImpl;
 
 class BlinkingLightsImpl implements BlinkingLights {
 	
-	@Inject
-	static private Clock _clock;
+	private Clock _clock = my(Clock.class);
 	
 	private final ListRegisterImpl<Light> _lights = new ListRegisterImpl<Light>();
 	

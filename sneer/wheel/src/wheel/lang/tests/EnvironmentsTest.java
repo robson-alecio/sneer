@@ -1,22 +1,37 @@
 package wheel.lang.tests;
 
+import static wheel.lang.Environments.my;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 import wheel.lang.ByRef;
-import wheel.lang.Environments;
 import wheel.lang.Environment;
+import wheel.lang.Environments;
+import wheel.lang.Producer;
 import wheel.lang.Environments.Memento;
 
-public class EnvironmentTest extends Assert {
+public class EnvironmentsTest extends Assert {
 	
 	final Object _binding = new Object();
-	final ByRef<Boolean> _ran = ByRef.newInstance(false);
+	boolean _ran = false;
 	
 	@Test
 	public void testRunWithProvider() {
 		Environments.runWith(environment(), runnable());
-		assertTrue(_ran.value);
+		assertTrue(_ran);
+	}
+	
+	@Test
+	public void testBind() {
+		
+		final Producer<Object> producer = new Producer<Object>() { @Override public Object produce() {
+			_ran = true;
+			return my(Object.class);
+		}};
+		
+		final Producer<Object> proxy = Environments.bind(environment(producer), Producer.class);
+		assertSame(_binding, proxy.produce());
 	}
 
 	@Test
@@ -28,20 +43,27 @@ public class EnvironmentTest extends Assert {
 		}});
 		
 		Environments.runWith(memento.value,	runnable());
-		assertTrue(_ran.value);
+		assertTrue(_ran);
 	}
 
 	
 	private Runnable runnable() {
 		return new Runnable() { @Override public void run() {
 			assertEquals(_binding, Environments.my(Object.class));
-			_ran.value = true;
+			_ran = true;
 		}};
 	}
 
-	private Environment environment() {
+	private Environment environment(final Object... bindings) {
 		return new Environment() { @Override public <T> T provide(Class<T> intrface) {
-			return (T) _binding;
+			if (Object.class == intrface)
+				return intrface.cast(_binding);
+			
+			for (Object binding : bindings)
+				if (intrface.isInstance(binding))
+					return intrface.cast(binding);
+			
+			throw new IllegalArgumentException();
 		}};
 	}
 

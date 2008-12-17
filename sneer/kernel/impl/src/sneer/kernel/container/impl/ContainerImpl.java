@@ -7,7 +7,6 @@ import sneer.kernel.container.Brick;
 import sneer.kernel.container.ClassLoaderFactory;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerException;
-import sneer.kernel.container.Injector;
 import sneer.kernel.container.SneerConfig;
 import sneer.kernel.container.impl.classloader.EclipseClassLoaderFactory;
 import sneer.pulp.config.persistence.PersistenceConfig;
@@ -19,8 +18,6 @@ import wheel.lang.Types;
 public class ContainerImpl implements Container {
 	
 	private ClassLoaderFactory _classloaderFactory;
-	
-	private final Injector _injector = new AnnotatedFieldInjector(this);
 	
 	private final SimpleBinder _binder = new SimpleBinder();
 	
@@ -37,7 +34,6 @@ public class ContainerImpl implements Container {
 		bindNonGuiBricks(bindings);
 		
 		_binder.bind(this);
-		_binder.bind(_injector);
 		
 		_sneerConfig = produceSneerConfig();
 		provide(PersistenceConfig.class).setPersistenceDirectory(persistenceDirectory());
@@ -105,8 +101,6 @@ public class ContainerImpl implements Container {
 		} catch (Exception e) {
 			throw new ContainerException(" >>>" + e.getClass().getSimpleName() + ": " + e.getMessage(), e);
 		}
-
-		inject(component);
 		return component;
 	}
 
@@ -132,9 +126,7 @@ public class ContainerImpl implements Container {
 	}
 
 	private ClassLoader getClassLoader(Class<?> brickClass, File brickDirectory) {
-		ClassLoader result = factory().produceBrickClassLoader(brickClass, brickDirectory);
-		inject(result);
-		return result;
+		return factory().produceBrickClassLoader(brickClass, brickDirectory);
 	}
 
 	private ClassLoaderFactory factory() {
@@ -165,13 +157,5 @@ public class ContainerImpl implements Container {
 		final SneerConfigImpl newConfig = new SneerConfigImpl();
 		_binder.bind(newConfig);
 		return newConfig;
-	}
-
-	private void inject(Object component) {
-		try {
-			_injector.inject(component);
-		} catch (Throwable t) {
-			throw new ContainerException("Error injecting dependencies on: "+component, t);
-		}
 	}
 }

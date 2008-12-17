@@ -27,12 +27,12 @@ import wheel.reactive.Signal;
 class SpeexTuplesImpl implements SpeexTuples {
 
 	private final Map<PublicKey, Sequencer<SpeexPacket>> _sequencers = new HashMap<PublicKey, Sequencer<SpeexPacket>>();
-	private final Speex _speex = my(Speex.class);
 	private final TupleSpace _tupleSpace = my(TupleSpace.class);
 	private final KeyManager _keyManager = my(KeyManager.class);
 	private final TupleFilterManager _filter = my(TupleFilterManager.class); {
 		_filter.block(PcmSoundPacket.class);
 	}
+	private final Speex _speex = my(Speex.class);
 
 	static private final int FRAMES_PER_AUDIO_PACKET = 10;
 

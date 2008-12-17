@@ -3,7 +3,6 @@ package sneer.pulp.contacts.list.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.contacts.list.ContactInfo;
@@ -13,11 +12,11 @@ import wheel.reactive.lists.ListValueChange;
 import wheel.reactive.lists.VisitorAdapter;
 import wheel.reactive.lists.ListValueChange.Visitor;
 import wheel.reactive.lists.impl.ListRegisterImpl;
+import static wheel.lang.Environments.my;
 
 class ContactListImpl extends ListRegisterImpl<ContactInfo> implements ContactList{
 
-	@Inject
-	static private ContactManager _contacts;
+	private ContactManager _contacts = my(ContactManager.class);
 	
 	private Visitor<Contact> _visitor;
 	

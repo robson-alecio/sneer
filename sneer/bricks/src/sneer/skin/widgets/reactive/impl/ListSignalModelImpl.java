@@ -2,7 +2,6 @@ package sneer.skin.widgets.reactive.impl;
 
 import javax.swing.AbstractListModel;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.pulp.reactive.signalchooser.SignalChooserManager;
@@ -12,11 +11,11 @@ import wheel.io.ui.GuiThread;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.VisitingListReceiver;
+import static wheel.lang.Environments.my;
 
 public class ListSignalModelImpl<T> extends AbstractListModel implements ListSignalModel<T>{
 
-	@Inject
-	private static SignalChooserManagerFactory _signalChooserManagerFactory;
+	private SignalChooserManagerFactory _signalChooserManagerFactory = my(SignalChooserManagerFactory.class);
 	
 	private final ListSignal<T> _input;
 	

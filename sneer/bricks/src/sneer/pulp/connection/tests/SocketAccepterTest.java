@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.connection.SocketAccepter;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;
@@ -13,17 +12,17 @@ import sneer.pulp.port.PortKeeper;
 import tests.Contribute;
 import tests.TestThatIsInjected;
 import wheel.reactive.impl.Receiver;
+import static wheel.lang.Environments.my;
 
 public class SocketAccepterTest extends TestThatIsInjected {
 
-	@Inject
-	private static PortKeeper _portKeeper;
-	
-	@Inject
-	private static SocketAccepter _accepter;
-
 	@Contribute
 	private final Network _network = new InMemoryNetwork();
+
+	private PortKeeper _portKeeper = my(PortKeeper.class);
+	
+	private SocketAccepter _accepter = my(SocketAccepter.class);
+
 
 	@Test(timeout=5000)
 	public void testSocketAccept() throws Exception {

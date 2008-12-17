@@ -7,14 +7,13 @@ import java.util.Map;
 
 import snapps.watchme.codec.ImageDelta;
 import snapps.watchme.codec.ImageCodec.Decoder;
-import sneer.kernel.container.Inject;
 import sneer.skin.image.ImageFactory;
 import wheel.lang.Pair;
+import static wheel.lang.Environments.my;
 
 class DecoderImpl implements Decoder {
 
-	@Inject
-	private static ImageFactory _imageFactory;
+	private ImageFactory _imageFactory = my(ImageFactory.class);
 
 	private BufferedImage _image;
 

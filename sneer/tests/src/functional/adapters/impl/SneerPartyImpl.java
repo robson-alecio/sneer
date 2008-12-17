@@ -6,7 +6,6 @@ import snapps.wind.Shout;
 import snapps.wind.Wind;
 import sneer.kernel.container.Brick;
 import sneer.kernel.container.Container;
-import sneer.kernel.container.Inject;
 import sneer.pulp.brickmanager.BrickManager;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.connection.ByteConnection;
@@ -31,56 +30,43 @@ import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 import functional.SovereignParty;
 import functional.adapters.SneerParty;
+import static wheel.lang.Environments.my;
 
 public class SneerPartyImpl implements SneerParty {
 	
 	static private final String MOCK_ADDRESS = "localhost";
 
-	@Inject
-	static private Container _container;
+	private Container _container = my(Container.class);
 	
-	@Inject
-	static private Clock _clock;
+	private Clock _clock = my(Clock.class);
 
-	@Inject
-	static private ContactManager _contactManager;
+	private ContactManager _contactManager = my(ContactManager.class);
 
-	@Inject
-	static private ConnectionManager _connectionManager;
+	private ConnectionManager _connectionManager = my(ConnectionManager.class);
 	
-	@Inject
-	static private PortKeeper _sneerPortKeeper;
+	private PortKeeper _sneerPortKeeper = my(PortKeeper.class);
 	
-	@Inject
-	static private OwnNameKeeper _ownNameKeeper;
+	private OwnNameKeeper _ownNameKeeper = my(OwnNameKeeper.class);
 	
-	@Inject
-	static private InternetAddressKeeper _internetAddressKeeper;
+	private InternetAddressKeeper _internetAddressKeeper = my(InternetAddressKeeper.class);
 
-	@Inject
-	static private Wind _wind;
+	private Wind _wind = my(Wind.class);
 
 	@SuppressWarnings("unused")
-	@Inject
-	static private ProbeManager _probes;
+	private ProbeManager _probes = my(ProbeManager.class);
 	
 	
 	@SuppressWarnings("unused") //We need to start this brick so that it listens to others and does its thing.
-	@Inject
-	static private SocketOriginator _originator;
+	private SocketOriginator _originator = my(SocketOriginator.class);
 
 	@SuppressWarnings("unused") //We need to start this brick so that it listens to others and does its thing.
-	@Inject
-	static private SocketReceiver _receiver;
+	private SocketReceiver _receiver = my(SocketReceiver.class);
 
-	@Inject
-	static private KeyManager _keyManager;
+	private KeyManager _keyManager = my(KeyManager.class);
 	
-	@Inject
-	static private Deployer _deployer;
+	private Deployer _deployer = my(Deployer.class);
 	
-	@Inject
-	static private BrickManager _brickManager;
+	private BrickManager _brickManager = my(BrickManager.class);
 
 
 	@Override

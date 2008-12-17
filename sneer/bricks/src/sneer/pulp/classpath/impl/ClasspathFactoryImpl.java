@@ -1,11 +1,12 @@
 package sneer.pulp.classpath.impl;
 
+import static wheel.lang.Environments.my;
+
 import java.io.File;
 import java.util.List;
 
 import sneer.kernel.container.Brick;
 import sneer.kernel.container.ContainerConfig;
-import sneer.kernel.container.Inject;
 import sneer.pulp.classpath.Classpath;
 import sneer.pulp.classpath.ClasspathFactory;
 import wheel.io.Jars;
@@ -13,8 +14,7 @@ import wheel.io.codegeneration.ClassUtils;
 
 class ClasspathFactoryImpl implements ClasspathFactory {
 
-	@Inject
-	private ContainerConfig _config;
+	private ContainerConfig _config = my(ContainerConfig.class);
 	
 	private Classpath _sneerApi;
 

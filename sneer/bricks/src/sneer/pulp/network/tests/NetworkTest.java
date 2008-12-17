@@ -4,21 +4,19 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.network.ByteArrayServerSocket;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;
 import sneer.pulp.threadpool.ThreadPool;
 import tests.TestThatIsInjected;
+import static wheel.lang.Environments.my;
 
 
 public class NetworkTest extends TestThatIsInjected {
 
-	@Inject
-	private Network _network;
+	private Network _network = my(Network.class);
 	
-	@Inject
-	private ThreadPool _threadPool;
+	private ThreadPool _threadPool = my(ThreadPool.class);
 
 	
 	@Test

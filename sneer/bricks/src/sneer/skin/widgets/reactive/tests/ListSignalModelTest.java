@@ -6,7 +6,6 @@ import javax.swing.event.ListDataListener;
 import org.junit.Assert;
 import org.junit.Test;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.widgets.reactive.ListSignalModel;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
@@ -16,10 +15,11 @@ import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.impl.ListRegisterImpl;
+import static wheel.lang.Environments.my;
 
 public class ListSignalModelTest extends TestThatIsInjected {
 
-	@Inject private static ReactiveWidgetFactory _factory; 
+	private ReactiveWidgetFactory _factory = my(ReactiveWidgetFactory.class); 
 	
 	private ListRegister<Register<String>> _listRegister = new ListRegisterImpl<Register<String>>();
 	private StringBuilder _events;

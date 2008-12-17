@@ -1,12 +1,13 @@
 package sneer.skin.sound.kernel.impl;
 
+import static wheel.lang.Environments.my;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
@@ -22,7 +23,7 @@ class AudioImpl implements Audio {
 
 	static private final AudioFormat DEFAULT_AUDIO_FORMAT = new AudioFormat(SAMPLE_RATE, SAMPLE_SIZE_IN_BITS, CHANNELS, SIGNED, BIG_ENDIAN);
 
-	@Inject static private BlinkingLights _lights;
+	private BlinkingLights _lights = my(BlinkingLights.class);
 	
 	private Light _playbackLight = _lights.prepare(LightType.ERROR);
 	private Light _captureLight = _lights.prepare(LightType.ERROR);

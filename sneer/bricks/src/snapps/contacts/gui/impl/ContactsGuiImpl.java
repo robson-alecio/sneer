@@ -17,7 +17,6 @@ import snapps.contacts.actions.ContactAction;
 import snapps.contacts.actions.ContactActionManager;
 import snapps.contacts.gui.ContactsGui;
 import snapps.contacts.gui.comparator.ContactInfoComparator;
-import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.list.ContactInfo;
 import sneer.pulp.contacts.list.ContactList;
@@ -32,29 +31,24 @@ import wheel.lang.Functor;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Adapter;
 import wheel.reactive.lists.ListSignal;
+import static wheel.lang.Environments.my;
 
 class ContactsGuiImpl implements ContactsGui {
 	
 	private static final Image ONLINE = getImage("online.png");
 	private static final Image OFFLINE = getImage("offline.png");
 	
-	@Inject
-	static private InstrumentManager _instrumentManager;
+	private InstrumentManager _instrumentManager = my(InstrumentManager.class);
 
-	@Inject
-	static private ContactActionManager _actionsManager;
+	private ContactActionManager _actionsManager = my(ContactActionManager.class);
 
-	@Inject
-	static private ReactiveWidgetFactory _rfactory;
+	private ReactiveWidgetFactory _rfactory = my(ReactiveWidgetFactory.class);
 	
-	@Inject
-	static private ContactList _contacts;
+	private ContactList _contacts = my(ContactList.class);
 	
-	@Inject
-	static private ContactInfoComparator _comparator;
+	private ContactInfoComparator _comparator = my(ContactInfoComparator.class);
 	
-	@Inject
-	static private ListSorter _sorter;
+	private ListSorter _sorter = my(ListSorter.class);
 	
 	private final SignalChooser<ContactInfo> _chooser;
 

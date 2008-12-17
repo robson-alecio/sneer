@@ -14,19 +14,18 @@ import java.util.Map;
 
 import snapps.watchme.codec.ImageDelta;
 import snapps.watchme.codec.ImageCodec.Encoder;
-import sneer.kernel.container.Inject;
 import sneer.skin.image.ImageFactory;
 import wheel.io.ui.graphics.Images;
 import wheel.lang.Pair;
 import wheel.lang.exceptions.Hiccup;
 import wheel.testutil.Profiler;
+import static wheel.lang.Environments.my;
 
 class EncoderImpl implements Encoder {
 	
 	private static Profiler _generateDeltasProfiler = new Profiler("EncoderImpl.generateDeltas()");
 	
-	@Inject
-	private static ImageFactory _imageFactory;	
+	private ImageFactory _imageFactory = my(ImageFactory.class);	
 	
 	private Map<Pair<Integer, Integer>, int[]> _previousPixelsByCellCoordinate = new HashMap<Pair<Integer, Integer>, int[]>();
 	

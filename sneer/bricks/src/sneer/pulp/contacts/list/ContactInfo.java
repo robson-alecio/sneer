@@ -1,6 +1,6 @@
 package sneer.pulp.contacts.list;
 
-import sneer.kernel.container.Inject;
+import static wheel.lang.Environments.my;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import wheel.reactive.Signal;
@@ -10,11 +10,8 @@ public class ContactInfo{
 	protected final Contact _contact;
 	protected Signal<Boolean> _isOnline;
 
-	@Inject
-	static private ConnectionManager _connectionManager;
-	
 	public ContactInfo(Contact contact) {
-		this(contact, _connectionManager.connectionFor(contact).isOnline());
+		this(contact, my(ConnectionManager.class).connectionFor(contact).isOnline());
 	}
 
 	protected ContactInfo(Contact contact, Signal<Boolean> isOnline) {

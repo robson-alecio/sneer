@@ -9,19 +9,18 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.config.persistence.PersistenceConfig;
 import sneer.pulp.propertystore.PropertyStore;
 import wheel.io.Logger;
 import wheel.io.Streams;
+import static wheel.lang.Environments.my;
 
 class PropertyStoreImpl implements PropertyStore {
 
 	private static final String FILE_NAME = "propertystore.txt";
 
 
-	@Inject
-	static private PersistenceConfig _config;
+	private PersistenceConfig _config = my(PersistenceConfig.class);
 
 	
 	private final Properties _properties = loadProperties();

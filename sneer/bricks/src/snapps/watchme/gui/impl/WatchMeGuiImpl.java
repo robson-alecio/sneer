@@ -16,16 +16,14 @@ import javax.swing.border.EmptyBorder;
 
 import snapps.watchme.WatchMe;
 import snapps.watchme.gui.WatchMeGui;
-import sneer.kernel.container.Inject;
 import sneer.skin.snappmanager.InstrumentManager;
+import static wheel.lang.Environments.my;
 
 class WatchMeGuiImpl implements WatchMeGui{ //Optimize need a better snapp window support
 
-	@Inject
-	static private InstrumentManager _instrumentManager;
+	private InstrumentManager _instrumentManager = my(InstrumentManager.class);
 	
-	@Inject
-	static private WatchMe _watchMe;
+	private WatchMe _watchMe = my(WatchMe.class);
 	
 	JToggleButton _watchMeButton;
 	

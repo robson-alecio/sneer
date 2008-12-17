@@ -12,7 +12,6 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.skin.sound.kernel.Audio;
@@ -21,11 +20,12 @@ import wheel.io.Logger;
 import wheel.io.Streams;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.NotImplementedYet;
+import static wheel.lang.Environments.my;
 
 class SoundPlayerImpl implements SoundPlayer, Stepper {
 
-	@Inject static private Audio _audio;
-	@Inject static private ThreadPool _threads; {
+	private Audio _audio = my(Audio.class);
+	private ThreadPool _threads = my(ThreadPool.class); {
 		_threads.registerStepper(this);
 	}
 	

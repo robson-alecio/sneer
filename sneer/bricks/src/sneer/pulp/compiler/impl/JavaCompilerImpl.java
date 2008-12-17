@@ -9,7 +9,6 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.classpath.Classpath;
 import sneer.pulp.classpath.ClasspathFactory;
 import sneer.pulp.compiler.CompilerException;
@@ -17,11 +16,11 @@ import sneer.pulp.compiler.JavaCompiler;
 import sneer.pulp.compiler.Result;
 import com.sun.tools.javac.Main;
 import static wheel.io.Logger.log;
+import static wheel.lang.Environments.my;
 
 class JavaCompilerImpl implements JavaCompiler {
 
-	@Inject
-	private ClasspathFactory _classpathFactory;
+	private ClasspathFactory _classpathFactory = my(ClasspathFactory.class);
 
 	@Override
 	public Result compile(List<File> sourceFiles, File destination) throws CompilerException {

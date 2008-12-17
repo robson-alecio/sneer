@@ -1,15 +1,15 @@
 package sneer.skin.sound.speaker.impl;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
 import wheel.lang.Consumer;
+import static wheel.lang.Environments.my;
 
 class PacketSubscriber implements Consumer<PcmSoundPacket> {
 
-	@Inject private static TupleSpace _tupleSpace;
-	@Inject private static KeyManager _keyManager;
+	private TupleSpace _tupleSpace = my(TupleSpace.class);
+	private KeyManager _keyManager = my(KeyManager.class);
 	
 	private boolean _isRunning = true;
 	private Consumer<PcmSoundPacket> _consumer;

@@ -6,16 +6,15 @@ import java.io.IOException;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.compiler.JavaCompiler;
 import wheel.io.SourceFileWriter;
 import functional.SovereignFunctionalTestBase;
 import functional.SovereignParty;
+import static wheel.lang.Environments.my;
 
 public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	
-	@Inject
-	private JavaCompiler _compiler;
+	private JavaCompiler _compiler = my(JavaCompiler.class);
 	
 	@Test
 	public void testPublishSingleBrick() throws Exception {
@@ -141,9 +140,9 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 				"}");
 		writer.write("freedom7.z.impl.ZImpl",
 				"import sneer.kernel.container.*;\n" +
+				"import static wheel.lang.Environments.my;\n" +
 				"class ZImpl implements freedom7.z.Z {\n" +
-					"@Inject\n" +
-					"private static freedom7.y.Y _y;\n" +
+					"private freedom7.y.Y _y = my(freedom7.y.Y.class);\n" +
 					"public ZImpl() {\n" +
 						"if (_y == null) throw new IllegalStateException();\n" +
 						"System.setProperty(\"freedom7.z.Z.installed\", \"true\");\n" +

@@ -21,17 +21,15 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import snapps.location.LocationKeeper;
-import sneer.kernel.container.Inject;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.io.ui.GuiThread;
+import static wheel.lang.Environments.my;
 
 public class LocationGuiImpl {
 
-	@Inject
-	static private LocationKeeper _keeper;
+	private LocationKeeper _keeper = my(LocationKeeper.class);
 
-	@Inject
-	static private ThreadPool _pool;
+	private ThreadPool _pool = my(ThreadPool.class);
 
 	LocationGuiImpl() {
 		_pool.registerActor(new Runnable() { @Override public void run() {

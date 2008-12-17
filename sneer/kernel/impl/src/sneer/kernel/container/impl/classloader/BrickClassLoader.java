@@ -1,5 +1,8 @@
 package sneer.kernel.container.impl.classloader;
 
+import static wheel.io.Logger.log;
+import static wheel.lang.Environments.my;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,10 +18,8 @@ import java.util.jar.JarFile;
 
 import org.apache.commons.io.IOUtils;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.dependency.Dependency;
 import sneer.pulp.dependency.DependencyManager;
-import static wheel.io.Logger.log;
 import wheel.lang.Threads;
 
 public class BrickClassLoader extends EnhancingClassLoader {
@@ -33,8 +34,7 @@ public class BrickClassLoader extends EnhancingClassLoader {
 	
 	private ClassLoader _delegate;
 	
-	@Inject
-	private DependencyManager _dependencyManager;
+	private DependencyManager _dependencyManager = my(DependencyManager.class);
 	
 	public BrickClassLoader() {
 		//used for testing

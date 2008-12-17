@@ -2,15 +2,14 @@ package sneer.pulp.dyndns.ownaccount.tests;
 
 import org.junit.Test;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccount;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
 import tests.TestThatIsInjected;
+import static wheel.lang.Environments.my;
 
 public class DynDnsAccountKeeperTest extends TestThatIsInjected {
 
-	@Inject
-	private static DynDnsAccountKeeper _subject;
+	private DynDnsAccountKeeper _subject = my(DynDnsAccountKeeper.class);
 	
 	@Test
 	public void testAccountKeeper() {

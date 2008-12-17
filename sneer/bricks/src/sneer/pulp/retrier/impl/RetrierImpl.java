@@ -1,6 +1,5 @@
 package sneer.pulp.retrier.impl;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
@@ -11,15 +10,13 @@ import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.lang.exceptions.FriendlyException;
 import wheel.lang.exceptions.Hiccup;
+import static wheel.lang.Environments.my;
 
 class RetrierImpl implements Retrier {
 
-	@Inject
-	static private ThreadPool _threads;
-	@Inject
-	static private BlinkingLights _lights;
-	@Inject
-	static private Clock _clock;
+	private ThreadPool _threads = my(ThreadPool.class);
+	private BlinkingLights _lights = my(BlinkingLights.class);
+	private Clock _clock = my(Clock.class);
 	
 	
 	private volatile boolean _isStillTrying = true;

@@ -19,7 +19,6 @@ import org.junit.Test;
 import snapps.watchme.WatchMe;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
-import sneer.kernel.container.Inject;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
@@ -33,25 +32,20 @@ import wheel.lang.Threads;
 import wheel.lang.exceptions.Hiccup;
 import wheel.reactive.EventSource;
 import wheel.reactive.impl.Receiver;
+import static wheel.lang.Environments.my;
 
 public class WatchMeTest extends TestThatIsInjected {
-	
-	@Inject
-	private static ImageFactory _imageFactory;
-	@Inject
-	private static KeyManager _keys;
-	@Inject
-	private static Clock _clock;
-	@Inject
-	private static TupleSpace _sharedSpace;
 
-	@Inject
-	private static WatchMe _subject;
-
-	final private Mockery _context = new JUnit4Mockery();
+	final private Mockery _mockery = new JUnit4Mockery();
 	
 	@Contribute
-	final private Screenshotter _shotter = _context.mock(Screenshotter.class);
+	final private Screenshotter _shotter = _mockery.mock(Screenshotter.class);
+	private ImageFactory _imageFactory = my(ImageFactory.class);
+	private KeyManager _keys = my(KeyManager.class);
+	private Clock _clock = my(Clock.class);
+	private TupleSpace _sharedSpace = my(TupleSpace.class);
+
+	private WatchMe _subject = my(WatchMe.class);
 	
 	private AtomicReference<BufferedImage> _screenObserved = new AtomicReference<BufferedImage>(null);
 
@@ -65,8 +59,8 @@ public class WatchMeTest extends TestThatIsInjected {
 		final BufferedImage image2 = loadImage("screen2.png");
 		final BufferedImage image3 = loadImage("screen3.png");
 		
-		_context.checking(new Expectations() {{
-			final Sequence seq = _context.sequence("sequence");
+		_mockery.checking(new Expectations() {{
+			final Sequence seq = _mockery.sequence("sequence");
 
 			one(_shotter).takeScreenshot(); will(returnValue(image1)); inSequence(seq);
 			one(_shotter).takeScreenshot(); will(returnValue(image2)); inSequence(seq);

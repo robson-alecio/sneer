@@ -14,9 +14,9 @@ import javax.swing.JDialog;
 import javax.swing.JLayeredPane;
 import javax.swing.WindowConstants;
 
-import sneer.kernel.container.Inject;
 import sneer.skin.image.ImageFactory;
 import wheel.lang.Consumer;
+import static wheel.lang.Environments.my;
 
 class ImageDialog extends JDialog {
 	
@@ -30,8 +30,7 @@ class ImageDialog extends JDialog {
 	private int _preferredWidth;
 	private JLayeredPane _layeredPane;
 	
-	@Inject
-	private static ImageFactory _imageFactory;
+	private ImageFactory _imageFactory = my(ImageFactory.class);
 
 	private final Consumer<Image> _imageSetter;
 

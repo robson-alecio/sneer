@@ -1,6 +1,7 @@
 package sneer.pulp.brickmanager.impl;
 
 import static wheel.io.Logger.log;
+import static wheel.lang.Environments.my;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,7 +11,6 @@ import org.apache.commons.io.FileUtils;
 
 import sneer.kernel.container.Brick;
 import sneer.kernel.container.Container;
-import sneer.kernel.container.Inject;
 import sneer.kernel.container.SneerConfig;
 import sneer.kernel.container.utils.InjectedBrick;
 import sneer.pulp.brickmanager.BrickManager;
@@ -28,17 +28,13 @@ import wheel.reactive.maps.impl.MapRegisterImpl;
 
 class BrickManagerImpl implements BrickManager {
 
-	@Inject
-	private SneerConfig _config;
+	private SneerConfig _config = my(SneerConfig.class);
 
-	@Inject
-	private DependencyManager _dependencyManager;
+	private DependencyManager _dependencyManager = my(DependencyManager.class);
 	
-	@Inject
-	private KeyManager _keyManager;
+	private KeyManager _keyManager = my(KeyManager.class);
 	
-	@Inject
-	private Container _container;
+	private Container _container = my(Container.class);
 	
 	private final MapRegister<String, BrickFile> _bricksByName = new MapRegisterImpl<String, BrickFile>();
 

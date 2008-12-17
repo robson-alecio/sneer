@@ -3,16 +3,15 @@ package sneer.pulp.connection.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.connection.SocketOriginator;
 import sneer.pulp.internetaddresskeeper.InternetAddress;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
 import wheel.reactive.lists.impl.SimpleListReceiver;
+import static wheel.lang.Environments.my;
 
 class SocketOriginatorImpl implements SocketOriginator {
 
-	@Inject
-	static private InternetAddressKeeper _internetAddressKeeper;
+	private InternetAddressKeeper _internetAddressKeeper = my(InternetAddressKeeper.class);
 	
 	@SuppressWarnings("unused")
 	private SimpleListReceiver<InternetAddress> _addressReceiverToAvoidGC;

@@ -1,11 +1,11 @@
 package sneer.pulp.connection.impl;
 
 import static wheel.io.Logger.logShort;
+import static wheel.lang.Environments.my;
 
 import java.io.IOException;
 import java.util.Arrays;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.contacts.Contact;
@@ -20,9 +20,9 @@ import wheel.reactive.impl.RegisterImpl;
 
 class ByteConnectionImpl implements ByteConnection {
 
-	@Inject static private KeyManager _keyManager;
-	@Inject static private ThreadPool _threadPool;
-	@Inject static private BandwidthCounter _bandwidthCounter;
+	private KeyManager _keyManager = my(KeyManager.class);
+	private ThreadPool _threadPool = my(ThreadPool.class);
+	private BandwidthCounter _bandwidthCounter = my(BandwidthCounter.class);
 
 	private final String _label;
 	private final Contact _contact;

@@ -13,8 +13,6 @@
 ﻿ROADMAP TO BECOME MORE PRODUCTIVE
 =====================================
 
-	- @Inject -> my() - Remember to stop using static fields or tests will fail wierdly.
-
 	- Remove support for "optional" _mockery field in tests.
 		- Inherit _mockery field in all tests that use it.
 

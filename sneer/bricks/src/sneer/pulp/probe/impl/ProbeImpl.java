@@ -3,7 +3,6 @@
  */
 package sneer.pulp.probe.impl;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.keymanager.KeyManager;
@@ -13,12 +12,13 @@ import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
+import static wheel.lang.Environments.my;
 
 final class ProbeImpl implements Consumer<Tuple> {
 
-	@Inject static private TupleSpace _tuples;
-	@Inject static private KeyManager _keyManager;
-	@Inject static private TupleFilterManager _filter;
+	private TupleSpace _tuples = my(TupleSpace.class);
+	private KeyManager _keyManager = my(KeyManager.class);
+	private TupleFilterManager _filter = my(TupleFilterManager.class);
 
 	
 	private final Contact _contact;

@@ -5,15 +5,14 @@ import java.util.List;
 
 import org.junit.Test;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.threadpool.Stepper;
 import tests.TestThatIsInjected;
+import static wheel.lang.Environments.my;
 
 public class ClockTest extends TestThatIsInjected {
 
-	@Inject
-	static private Clock _subject;
+	private Clock _subject = my(Clock.class);
 	private StringBuilder _events = new StringBuilder();
 	
 	@Test

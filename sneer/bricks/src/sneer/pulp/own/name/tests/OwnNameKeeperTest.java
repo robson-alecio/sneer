@@ -2,14 +2,13 @@ package sneer.pulp.own.name.tests;
 
 import org.junit.Test;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.own.name.OwnNameKeeper;
 import tests.TestThatIsInjected;
+import static wheel.lang.Environments.my;
 
 public class OwnNameKeeperTest extends TestThatIsInjected {
 
-	@Inject
-	private static OwnNameKeeper _nameKeeper;
+	private OwnNameKeeper _nameKeeper = my(OwnNameKeeper.class);
 	
 	@Test
 	public void test() throws Exception {

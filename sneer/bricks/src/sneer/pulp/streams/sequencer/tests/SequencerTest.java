@@ -11,11 +11,11 @@ import org.jmock.Sequence;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.streams.sequencer.Sequencer;
 import sneer.pulp.streams.sequencer.Sequencers;
 import tests.TestThatIsInjected;
 import wheel.lang.Consumer;
+import static wheel.lang.Environments.my;
 
 public class SequencerTest extends TestThatIsInjected {
 	
@@ -23,7 +23,7 @@ public class SequencerTest extends TestThatIsInjected {
 
 	private static final short BUFFER_SIZE = (short)30;
 
-	@Inject private static Sequencers _subject;
+	private Sequencers _subject = my(Sequencers.class);
 	
 	private final List<Integer> _recordedSequence = new ArrayList<Integer>();
 

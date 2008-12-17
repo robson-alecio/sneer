@@ -1,10 +1,11 @@
 package snapps.wind.gui.impl;
 
+import static wheel.lang.Environments.my;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import snapps.wind.Shout;
-import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.own.name.OwnNameKeeper;
@@ -13,15 +14,17 @@ abstract class ShoutUtils {
 
 	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("HH:mm:ss");
 	
-	@Inject
-	static private OwnNameKeeper _ownName;
+	private static OwnNameKeeper ownName() {
+		return my(OwnNameKeeper.class);
+	}
 	
-	@Inject
-	static private KeyManager _keyManager;
+	private static KeyManager keyManager() {
+		return my(KeyManager.class);
+	}
 
 	static String publisherNick(Shout shout) {
-		if(isMyOwnShout(shout)) return _ownName.name().currentValue();
-		Contact contact = _keyManager.contactGiven(shout.publisher());
+		if(isMyOwnShout(shout)) return ownName().name().currentValue();
+		Contact contact = keyManager().contactGiven(shout.publisher());
 		return contact == null
 			? "Unknown Public Key: " + shout.publisher() + " "
 			: contact.nickname().currentValue() + " ";
@@ -32,6 +35,6 @@ abstract class ShoutUtils {
 	}
 
 	static boolean isMyOwnShout(Shout shout) {
-		return _keyManager.ownPublicKey().equals(shout.publisher());
+		return keyManager().ownPublicKey().equals(shout.publisher());
 	}
 }

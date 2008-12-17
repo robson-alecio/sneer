@@ -1,10 +1,14 @@
 package sneer.pulp.propertystore.tests;
 
+import static wheel.lang.Environments.my;
+
 import org.junit.Test;
 
+import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
 import sneer.pulp.config.persistence.mocks.PersistenceConfigMock;
 import sneer.pulp.propertystore.PropertyStore;
+import wheel.lang.Environments;
 import wheel.testutil.TestThatMightUseResources;
 
 public class PropertyStoreTest extends TestThatMightUseResources {
@@ -13,22 +17,25 @@ public class PropertyStoreTest extends TestThatMightUseResources {
 
 	@Test
 	public void testPropertyStore() {
-		PropertyStore subject1 = createSubject();
-
-		assertNull(subject1.get("Height"));
-		subject1.set("Height", "1,80m");
-		subject1.set("Weight", "85kg");
-		assertEquals("1,80m", subject1.get("Height"));
-		assertEquals("85kg", subject1.get("Weight"));
+		runInNewEnvironment(new Runnable() { @Override public void run() {
+			PropertyStore subject1 = my(PropertyStore.class);
+			assertNull(subject1.get("Height"));
+			subject1.set("Height", "1,80m");
+			subject1.set("Weight", "85kg");
+			assertEquals("1,80m", subject1.get("Height"));
+			assertEquals("85kg", subject1.get("Weight"));
+		}});
 		
-		PropertyStore subject2 = createSubject();
-		assertEquals("1,80m", subject2.get("Height"));
-		assertEquals("85kg", subject2.get("Weight"));
-		
+		runInNewEnvironment(new Runnable() { @Override public void run() {
+			PropertyStore subject2 = my(PropertyStore.class);
+			assertEquals("1,80m", subject2.get("Height"));
+			assertEquals("85kg", subject2.get("Weight"));
+		}});
 	}
 
-	private PropertyStore createSubject() {
-		return Containers.newContainer(_persistenceMock).provide(PropertyStore.class);
+	private void runInNewEnvironment(Runnable runnable) {
+		final Container container = Containers.newContainer(_persistenceMock);
+		Environments.runWith(container, runnable);
 	}
 	
 }

@@ -15,10 +15,9 @@ import org.apache.commons.io.IOUtils;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.FieldVisitor;
-import org.objectweb.asm.Type;
+//import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.EmptyVisitor;
 
-import sneer.kernel.container.Inject;
 import sneer.kernel.container.jar.DeploymentJar;
 import sneer.kernel.container.utils.InjectedBrick;
 import sneer.pulp.crypto.Crypto;
@@ -26,6 +25,7 @@ import sneer.pulp.crypto.Digester;
 import wheel.io.JarExploder;
 import wheel.lang.Predicate;
 import wheel.lang.exceptions.NotImplementedYet;
+import static wheel.lang.Environments.my;
 
 public class DeploymentJarImpl implements DeploymentJar {
 
@@ -39,8 +39,7 @@ public class DeploymentJarImpl implements DeploymentJar {
 
 	transient private JarFile _jarFile;
 	
-	@Inject
-	static private Crypto _crypto;
+	private Crypto _crypto = my(Crypto.class);
 
 	public DeploymentJarImpl(File file) {
 		_file = file;
@@ -237,7 +236,7 @@ public class DeploymentJarImpl implements DeploymentJar {
 
 class DependencyExtractor extends EmptyVisitor {
 
-	private String _currentField;
+//	private String _currentField;
 	
 	List<InjectedBrick> _injectedBricks = new ArrayList<InjectedBrick>();
 	
@@ -251,19 +250,19 @@ class DependencyExtractor extends EmptyVisitor {
 
 	@Override
 	public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
-		if(_currentField != null 
-				&& Inject.class.getName().equals(Type.getType(desc).getClassName())) {
-			String className = Type.getType(_currentField).getClassName();
-			InjectedBrick dep = new InjectedBrick(className);
-			_currentField = null;
-			_injectedBricks.add(dep);
-		}
+//		if(_currentField != null 
+//				&& Inject.class.getName().equals(Type.getType(desc).getClassName())) {
+//			String className = Type.getType(_currentField).getClassName();
+//			InjectedBrick dep = new InjectedBrick(className);
+//			_currentField = null;
+//			_injectedBricks.add(dep);
+//		}
 		return super.visitAnnotation(desc, visible);
 	}
 
 	@Override
 	public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
-		_currentField = desc;
+//		_currentField = desc;
 		return super.visitField(access, name, desc, signature, value);
 	}
 	

@@ -8,19 +8,17 @@ import java.awt.image.BufferedImage;
 
 import org.junit.Test;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.skin.image.ImageFactory;
 import tests.TestThatIsInjected;
 import wheel.lang.exceptions.Hiccup;
+import static wheel.lang.Environments.my;
 
 public class OwnAvatarKeeperTest extends TestThatIsInjected {
 
-	@Inject
-	private static OwnAvatarKeeper _avatarKeeper;
+	private OwnAvatarKeeper _avatarKeeper = my(OwnAvatarKeeper.class);
 	
-	@Inject
-	private static ImageFactory _imageFactory;
+	private ImageFactory _imageFactory = my(ImageFactory.class);
 
 	private BufferedImage loadImage(String fileName) throws Hiccup {
 		return _imageFactory.createBufferedImage(getImage(getClass().getResource(fileName)));

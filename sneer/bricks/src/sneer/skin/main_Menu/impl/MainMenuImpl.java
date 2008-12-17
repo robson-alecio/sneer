@@ -1,8 +1,9 @@
 package sneer.skin.main_Menu.impl;
 
+import static wheel.lang.Environments.my;
+
 import javax.swing.JComponent;
 
-import sneer.kernel.container.Inject;
 import sneer.skin.main_Menu.MainMenu;
 import sneer.skin.menu.Menu;
 import sneer.skin.menu.MenuFactory;
@@ -11,8 +12,7 @@ class MainMenuImpl implements MainMenu{
 
 	private static final long serialVersionUID = 1L;
 
-	@Inject
-	static private MenuFactory<JComponent> menuFactory;
+	private MenuFactory<JComponent> menuFactory = my(MenuFactory.class);
 	
 	private static transient Menu<JComponent> sneerMenu;
 	private static boolean initializaded = false;

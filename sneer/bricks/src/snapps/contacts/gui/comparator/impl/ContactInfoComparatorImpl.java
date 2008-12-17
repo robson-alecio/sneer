@@ -4,15 +4,14 @@
 package snapps.contacts.gui.comparator.impl;
 
 import snapps.contacts.gui.comparator.ContactInfoComparator;
-import sneer.kernel.container.Inject;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.list.ContactInfo;
+import static wheel.lang.Environments.my;
 
 public class ContactInfoComparatorImpl implements ContactInfoComparator {
 	
-	@Inject
-	private static ConnectionManager _connectionManager;
+	private ConnectionManager _connectionManager = my(ConnectionManager.class);
 
 	public int compare(ContactInfo info1, ContactInfo info2) {
 			boolean isOnline1 = info1.isOnline().currentValue();

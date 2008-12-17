@@ -2,7 +2,6 @@ package sneer.pulp.own.avatar.impl;
 
 import java.awt.Image;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.skin.image.ImageFactory;
 import wheel.lang.Functor;
@@ -12,13 +11,13 @@ import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Adapter;
 import wheel.reactive.impl.RegisterImpl;
+import static wheel.lang.Environments.my;
 
 class OwnAvatarKeeperImpl implements OwnAvatarKeeper {
 
 	private Register<Image> _avatar = new RegisterImpl<Image>(null);
 	
-	@Inject
-	private static ImageFactory _imageFactory;
+	private ImageFactory _imageFactory = my(ImageFactory.class);
 
 	@Override
 	public Signal<Image> avatar(final int squareSize) {

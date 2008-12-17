@@ -1,18 +1,18 @@
 package sneer.pulp.dyndns.checkip.impl;
 
+import static wheel.lang.Environments.my;
+
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.httpclient.HttpClient;
 import wheel.io.Logger;
 
 class CheckIpImpl implements CheckIp {
 	
-	@Inject
-	private static HttpClient _client;
+	private HttpClient _client = my(HttpClient.class);
 	
 	private static final Pattern _responsePattern = Pattern.compile("<body>Current IP Address: ((\\d|\\.)+)</body>");
 

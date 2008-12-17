@@ -2,7 +2,6 @@ package sneer.pulp.dyndns.ownip.impl;
 
 import java.io.IOException;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
@@ -14,6 +13,7 @@ import wheel.io.Logger;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
+import static wheel.lang.Environments.my;
 
 class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	
@@ -21,17 +21,13 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	private static final String LAST_IP_KEY = "ownIp.ip";
 	private static final String LAST_CHECK_TIME_KEY = "ownIp.lastUpdateRequestTime";
 
-	@Inject
-	static private Clock _clock;
+	private Clock _clock = my(Clock.class);
 	
-	@Inject
-	static private CheckIp _checkip;
+	private CheckIp _checkip = my(CheckIp.class);
 	
-	@Inject
-	static private DataStore _store;
+	private DataStore _store = my(DataStore.class);
 	
-	@Inject
-	static private BlinkingLights _blinkingLights;
+	private BlinkingLights _blinkingLights = my(BlinkingLights.class);
 	
 	private final Register<String> _ownIp;
 

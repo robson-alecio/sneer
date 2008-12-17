@@ -9,21 +9,19 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 
-import sneer.kernel.container.Inject;
 import sneer.kernel.container.SneerConfig;
 import sneer.pulp.crypto.Crypto;
 import sneer.pulp.crypto.Sneer1024;
 import sneer.pulp.dependency.Dependency;
 import sneer.pulp.dependency.DependencyManager;
 import static wheel.io.Logger.log;
+import static wheel.lang.Environments.my;
 
 class DependencyManagerImpl implements DependencyManager {
 
-	@Inject
-	private Crypto _crypto;
+	private Crypto _crypto = my(Crypto.class);
 	
-	@Inject
-	private SneerConfig _config;
+	private SneerConfig _config = my(SneerConfig.class);
 	
 	private File _root;
 	

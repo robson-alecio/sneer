@@ -1,13 +1,12 @@
 package sneer.pulp.datastore.impl;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.datastore.DataStore;
 import sneer.pulp.propertystore.PropertyStore;
+import static wheel.lang.Environments.my;
 
 class DataStoreImpl implements DataStore {
 
-	@Inject
-	static private PropertyStore _delegate;
+	private PropertyStore _delegate = my(PropertyStore.class);
 
 
 	@Override

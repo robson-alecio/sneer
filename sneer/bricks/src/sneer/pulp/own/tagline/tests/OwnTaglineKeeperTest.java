@@ -2,14 +2,13 @@ package sneer.pulp.own.tagline.tests;
 
 import org.junit.Test;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.own.tagline.OwnTaglineKeeper;
 import tests.TestThatIsInjected;
+import static wheel.lang.Environments.my;
 
 public class OwnTaglineKeeperTest extends TestThatIsInjected {
 
-	@Inject
-	private static OwnTaglineKeeper _taglineKeeper;
+	private OwnTaglineKeeper _taglineKeeper = my(OwnTaglineKeeper.class);
 	
 	@Test
 	public void test() throws Exception {

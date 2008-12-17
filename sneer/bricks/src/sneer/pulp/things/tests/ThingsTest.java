@@ -3,7 +3,6 @@ package sneer.pulp.things.tests;
 import org.junit.Assert;
 import org.junit.Test;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.things.Thing;
 import sneer.pulp.things.ThingHome;
 import tests.TestThatIsInjected;
@@ -11,11 +10,11 @@ import wheel.lang.Daemon;
 import wheel.lang.Threads;
 import wheel.reactive.sets.SetSignal;
 import wheel.testutil.TestDashboard;
+import static wheel.lang.Environments.my;
 
 public class ThingsTest extends TestThatIsInjected {
 	
-	@Inject
-	private ThingHome _subject;
+	private ThingHome _subject = my(ThingHome.class);
 
 	private static final int _THINGS_TO_ADD = 50;
 	private static final String _LARGE_TEXT = generateLargeText();

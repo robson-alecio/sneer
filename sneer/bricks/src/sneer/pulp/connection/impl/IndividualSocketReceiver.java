@@ -3,7 +3,6 @@ package sneer.pulp.connection.impl;
 import java.io.IOException;
 import java.util.Arrays;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
@@ -12,17 +11,15 @@ import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.network.ByteArraySocket;
 import wheel.lang.Producer;
 import wheel.lang.exceptions.IllegalParameter;
+import static wheel.lang.Environments.my;
 
 class IndividualSocketReceiver {
 
-	@Inject
-	static private KeyManager _keyManager;
+	private KeyManager _keyManager = my(KeyManager.class);
 	
-	@Inject
-	static private ContactManager _contactManager;
+	private ContactManager _contactManager = my(ContactManager.class);
 	
-	@Inject
-	static private ConnectionManager _connectionManager;
+	private ConnectionManager _connectionManager = my(ConnectionManager.class);
 	
 	private final ByteArraySocket _socket;
 	

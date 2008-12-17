@@ -20,7 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import snapps.meter.memory.gui.MemoryMeterGui;
-import sneer.kernel.container.Inject;
 import sneer.pulp.memory.MemoryMeter;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
@@ -28,17 +27,15 @@ import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.ui.graphics.Images;
 import wheel.lang.Functor;
 import wheel.reactive.impl.Adapter;
+import static wheel.lang.Environments.my;
 
 public class MemoryMeterGuiImpl implements MemoryMeterGui {
 
-	@Inject
-	static private InstrumentManager _instruments;
+	private InstrumentManager _instruments = my(InstrumentManager.class);
 	
-	@Inject
-	static private ReactiveWidgetFactory _factory;
+	private ReactiveWidgetFactory _factory = my(ReactiveWidgetFactory.class);
 	
-	@Inject
-	static private MemoryMeter _meter;
+	private MemoryMeter _meter = my(MemoryMeter.class);
 	
 	JLabel _totalMemory =     new JLabel();
 	TextWidget<JLabel> _maxUsedMemory;

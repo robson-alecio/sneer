@@ -13,7 +13,6 @@ import javax.swing.JLabel;
 import javax.swing.WindowConstants;
 
 import snapps.watchme.WatchMe;
-import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
@@ -23,17 +22,15 @@ import wheel.io.ui.GuiThread;
 import wheel.lang.Consumer;
 import wheel.reactive.EventSource;
 import wheel.reactive.impl.Receiver;
+import static wheel.lang.Environments.my;
 
 class WatchMeReceiver{
 	
-	@Inject
-	private static WatchMe _watchMe;
+	private WatchMe _watchMe = my(WatchMe.class);
 	
-	@Inject
-	private static KeyManager _keyManager;
+	private KeyManager _keyManager = my(KeyManager.class);
 	
-	@Inject
-	private static ReactiveWidgetFactory _factory;
+	private ReactiveWidgetFactory _factory = my(ReactiveWidgetFactory.class);
 	
 	@SuppressWarnings("unused")
 	private Consumer<Image> _imageReceiverToAvoidGc;

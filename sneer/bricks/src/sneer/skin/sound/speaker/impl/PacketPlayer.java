@@ -2,14 +2,14 @@ package sneer.skin.sound.speaker.impl;
 
 import javax.sound.sampled.SourceDataLine;
 
-import sneer.kernel.container.Inject;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.Audio;
 import wheel.lang.Consumer;
+import static wheel.lang.Environments.my;
 
 class PacketPlayer implements Consumer<PcmSoundPacket> {
 
-	@Inject private static Audio _audio;
+	private Audio _audio = my(Audio.class);
 	
 	private boolean _isRunning = true;
 	private SourceDataLine _line;

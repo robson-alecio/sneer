@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.pulp.reactive.signalchooser.SignalChooserManager;
@@ -15,14 +14,14 @@ import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListValueChange;
 import wheel.reactive.lists.VisitorAdapter;
 import wheel.reactive.lists.impl.ListRegisterImpl;
+import static wheel.lang.Environments.my;
 
 final class SortedVisitor<T> extends VisitorAdapter<T> implements ListOfSignalsReceiver<T>{
 
 	private final ListSignal<T> _input;
 	private final SorterSupport _sorter;
 
-	@Inject
-	private static SignalChooserManagerFactory _signalChooserManagerFactory;
+	private SignalChooserManagerFactory _signalChooserManagerFactory = my(SignalChooserManagerFactory.class);
 	
 	@SuppressWarnings("unused")
 	private SignalChooserManager<T> _signalChooserManagerToAvoidGc;

@@ -8,17 +8,16 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.image.BufferedImage;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.skin.screenshotter.Screenshotter;
 import wheel.lang.exceptions.FriendlyException;
 import wheel.lang.exceptions.Hiccup;
+import static wheel.lang.Environments.my;
 
 class ScreenshotterImpl implements Screenshotter {
 
-	@Inject
-	static private BlinkingLights _lights;
+	private BlinkingLights _lights = my(BlinkingLights.class);
 	
 	private final GraphicsDevice _device = defaultDevice();
 	private final Robot _robot = createRobot();

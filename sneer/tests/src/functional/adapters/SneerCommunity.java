@@ -4,10 +4,12 @@ import java.io.File;
 
 import org.apache.commons.lang.StringUtils;
 
+import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
 import sneer.kernel.container.SneerConfig;
 import sneer.pulp.network.Network;
 import sneer.pulp.network.impl.inmemory.InMemoryNetwork;
+import wheel.lang.Environments;
 import functional.SovereignCommunity;
 import functional.SovereignParty;
 
@@ -24,20 +26,16 @@ public class SneerCommunity implements SovereignCommunity {
 	
 	
 	@Override
-	public SovereignParty createParty(String name) {
+	public SovereignParty createParty(final String name) {
 //		System.out.println("createParty - " + Thread.currentThread());
-		SneerParty result = produceSneerParty(name);
-		
-		result.setOwnName(name);
-		result.setSneerPort(_nextPort++);
-		
-		return result;
+		final SneerParty party = Environments.bind(newContainer(name), SneerParty.class);
+		party.setOwnName(name);
+		party.setSneerPort(_nextPort++);
+		return party;
 	}
 
-	private SneerParty produceSneerParty(String name) {
-		Object[] bindings = new Object[] {_network, sneerConfigForParty(name)};
-	
-		return Containers.newContainer(bindings).provide(SneerParty.class);
+	private Container newContainer(String name) {
+		return Containers.newContainer(_network, sneerConfigForParty(name));
 	}
 
 	private SneerConfig sneerConfigForParty(String name) {

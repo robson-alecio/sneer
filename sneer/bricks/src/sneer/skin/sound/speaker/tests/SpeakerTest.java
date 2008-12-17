@@ -8,7 +8,6 @@ import org.jmock.Sequence;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
@@ -19,13 +18,14 @@ import sneer.skin.sound.speaker.Speaker;
 import tests.Contribute;
 import tests.TestThatIsInjected;
 import wheel.lang.ImmutableByteArray;
+import static wheel.lang.Environments.my;
 
 public class SpeakerTest extends TestThatIsInjected {
 	
-	@Inject private static Speaker _subject;
-	@Inject private static Clock _clock;
-	@Inject private static KeyManager _keyManager;
-	@Inject private static TupleSpace _tupleSpace;
+	private Speaker _subject = my(Speaker.class);
+	private Clock _clock = my(Clock.class);
+	private KeyManager _keyManager = my(KeyManager.class);
+	private TupleSpace _tupleSpace = my(TupleSpace.class);
 
 	private final Mockery _mockery = new JUnit4Mockery();
 	@Contribute private final Audio _audio = _mockery.mock(Audio.class);

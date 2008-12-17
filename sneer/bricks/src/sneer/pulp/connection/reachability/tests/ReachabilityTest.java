@@ -4,7 +4,6 @@ import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.connection.mocks.SocketAccepterMock;
@@ -12,23 +11,22 @@ import sneer.pulp.connection.reachability.ReachabilitySentinel;
 import sneer.pulp.network.ByteArraySocket;
 import tests.Contribute;
 import tests.TestThatIsInjected;
+import static wheel.lang.Environments.my;
 
 public class ReachabilityTest extends TestThatIsInjected {
 	
-	@Inject
-	private static Clock _clock;
+	@Contribute
+	final private SocketAccepterMock _accepter = new SocketAccepterMock();
 	
-	@Inject
-	private static BlinkingLights _lights;
+	private Clock _clock = my(Clock.class);
+	
+	private BlinkingLights _lights = my(BlinkingLights.class);
 	
 	@SuppressWarnings("unused")
-	@Inject
-	private static ReachabilitySentinel _subject;
+	private ReachabilitySentinel _subject = my(ReachabilitySentinel.class);
 	
 	final private Mockery _mockery = new JUnit4Mockery();
 	
-	@Contribute
-	final private SocketAccepterMock _accepter = new SocketAccepterMock();
 
 	@Test
 	public void testBlinkingLightWhenUnreachable() throws Exception {

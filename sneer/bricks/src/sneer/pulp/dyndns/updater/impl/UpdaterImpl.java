@@ -2,7 +2,6 @@ package sneer.pulp.dyndns.updater.impl;
 
 import java.io.IOException;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.dyndns.updater.BadAuthException;
 import sneer.pulp.dyndns.updater.InvalidHostException;
 import sneer.pulp.dyndns.updater.RedundantUpdateException;
@@ -14,11 +13,11 @@ import sneer.pulp.httpclient.HttpClient;
 import wheel.io.Base64;
 import wheel.io.Logger;
 import wheel.lang.Pair;
+import static wheel.lang.Environments.my;
 
 class UpdaterImpl implements Updater {
 	
-	@Inject
-	private static HttpClient _client;
+	private HttpClient _client = my(HttpClient.class);
 
 	@Override
 	public void update(final String host, final String user, final String password, String newIp) throws UpdaterException, IOException {

@@ -1,6 +1,6 @@
 package sneer.skin.sound.mic.impl;
 
-import sneer.kernel.container.Inject;
+import static wheel.lang.Environments.my;
 import sneer.pulp.retrier.Retrier;
 import sneer.pulp.retrier.RetrierManager;
 import sneer.pulp.retrier.Task;
@@ -16,9 +16,9 @@ import wheel.reactive.impl.RegisterImpl;
 
 public class MicImpl implements Mic {
 
-	@Inject static private ThreadPool _threads;
-	@Inject static private RetrierManager _retriers;
-	@Inject static private TupleSpace _tupleSpace;
+	private ThreadPool _threads = my(ThreadPool.class);
+	private RetrierManager _retriers = my(RetrierManager.class);
+	private TupleSpace _tupleSpace = my(TupleSpace.class);
 	
 	private boolean _isOpen;
 	private Runnable _worker;

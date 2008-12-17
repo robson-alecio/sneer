@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 
-import sneer.kernel.container.Injector;
 import wheel.io.codegeneration.SimpleFilter;
 
 class VirtualDirectoryFactoryImpl implements VirtualDirectoryFactory {
@@ -18,11 +17,8 @@ class VirtualDirectoryFactoryImpl implements VirtualDirectoryFactory {
 
 	private List<VirtualDirectory> _brickDirectories;
 
-	private Injector _injector;
-
-	VirtualDirectoryFactoryImpl(File root, Injector injector) {
+	VirtualDirectoryFactoryImpl(File root) {
 		_root = root;
-		_injector = injector;
 	}
 
 	private List<VirtualDirectory> createVirtualDirectories() {
@@ -31,7 +27,6 @@ class VirtualDirectoryFactoryImpl implements VirtualDirectoryFactory {
 		List<File> implFolders = filter.list();
 		for (File folder : implFolders) {
 			VirtualDirectory vd = new VirtualDirectory(_root, folder);
-			_injector.inject(vd);
 			result.add(vd);
 		}
 		return result;

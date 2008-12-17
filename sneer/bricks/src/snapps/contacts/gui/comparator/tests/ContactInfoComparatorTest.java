@@ -4,21 +4,20 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import snapps.contacts.gui.comparator.ContactInfoComparator;
-import sneer.kernel.container.Container;
-import sneer.kernel.container.Containers;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.list.ContactInfo;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
+import tests.ContainerEnvironment;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Constant;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 import wheel.testutil.TestUtils;
-import wheel.testutil.WheelEnvironment;
+import static wheel.lang.Environments.my;
 
-@RunWith(WheelEnvironment.class)
+@RunWith(ContainerEnvironment.class)
 public class ContactInfoComparatorTest {
 	
 	private ListSorter _sorter;
@@ -36,9 +35,8 @@ public class ContactInfoComparatorTest {
 		final ContactInfoMock falseA = new ContactInfoMock("A", false);
 		final ContactInfoMock falseB = new ContactInfoMock("B", false);
 
-		Container container =  Containers.newContainer();
-		ContactInfoComparator comparator = container.provide(ContactInfoComparator.class);
-		_sorter = container.provide(ListSorter.class);
+		ContactInfoComparator comparator = my(ContactInfoComparator.class);
+		_sorter = my(ListSorter.class);
 
 		_contacts.add(falseA);
 		_contacts.add(trueB);

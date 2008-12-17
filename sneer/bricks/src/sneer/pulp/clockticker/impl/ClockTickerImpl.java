@@ -1,18 +1,16 @@
 package sneer.pulp.clockticker.impl;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.clockticker.ClockTicker;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.lang.Threads;
+import static wheel.lang.Environments.my;
 
 public class ClockTickerImpl implements ClockTicker, Runnable {
 
-	@Inject
-	private static ThreadPool _threadPool;
+	private ThreadPool _threadPool = my(ThreadPool.class);
 
-	@Inject
-	private static Clock _clock;
+	private Clock _clock = my(Clock.class);
 
 	ClockTickerImpl() {
 		tick();

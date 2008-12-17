@@ -4,7 +4,6 @@ import static wheel.io.Logger.log;
 
 import java.io.IOException;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
@@ -20,13 +19,14 @@ import wheel.reactive.EventNotifier;
 import wheel.reactive.EventSource;
 import wheel.reactive.impl.EventNotifierImpl;
 import wheel.reactive.impl.Receiver;
+import static wheel.lang.Environments.my;
 
 class SocketAccepterImpl implements SocketAccepter {
 	
-	@Inject static private PortKeeper _portKeeper;
-	@Inject static private Network _network;
-	@Inject static private BlinkingLights _lights;
-	@Inject static private ThreadPool _threadPool;
+	private PortKeeper _portKeeper = my(PortKeeper.class);
+	private Network _network = my(Network.class);
+	private BlinkingLights _lights = my(BlinkingLights.class);
+	private ThreadPool _threadPool = my(ThreadPool.class);
 
 	private final EventNotifier<ByteArraySocket> _notifier = new EventNotifierImpl<ByteArraySocket>();
 

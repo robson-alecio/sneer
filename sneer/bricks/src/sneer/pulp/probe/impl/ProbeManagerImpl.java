@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
@@ -16,14 +15,15 @@ import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
 import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.lists.impl.SimpleListReceiver;
+import static wheel.lang.Environments.my;
 
 public class ProbeManagerImpl implements ProbeManager {
 
 
-	@Inject static private TupleSpace _tuples;
-	@Inject static private ContactManager _contacts;
-	@Inject static private ConnectionManager _connections;
-	@Inject private static Serializer _serializer;
+	private TupleSpace _tuples = my(TupleSpace.class);
+	private ContactManager _contacts = my(ContactManager.class);
+	private ConnectionManager _connections = my(ConnectionManager.class);
+	private Serializer _serializer = my(Serializer.class);
 	
 	
 	@SuppressWarnings("unused")

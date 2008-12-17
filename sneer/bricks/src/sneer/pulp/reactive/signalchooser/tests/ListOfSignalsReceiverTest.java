@@ -3,7 +3,6 @@ package sneer.pulp.reactive.signalchooser.tests;
 import org.junit.Assert;
 import org.junit.Test;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.pulp.reactive.signalchooser.SignalChooserManager;
@@ -16,10 +15,11 @@ import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 import wheel.reactive.lists.impl.VisitingListReceiver;
+import static wheel.lang.Environments.my;
 
 public class ListOfSignalsReceiverTest extends TestThatIsInjected {
 
-	@Inject private static SignalChooserManagerFactory _factory; 
+	private SignalChooserManagerFactory _factory = my(SignalChooserManagerFactory.class); 
 	
 	@SuppressWarnings("unused")
 	private SignalChooserManager<Register<String>> _managerToAvoidGc;

@@ -16,7 +16,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.own.name.OwnNameKeeper;
@@ -36,6 +35,7 @@ import wheel.io.ui.impl.TrayIconImpl;
 import wheel.io.ui.impl.TrayIconImpl.SystemTrayNotSupported;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.lists.impl.SimpleListReceiver;
+import static wheel.lang.Environments.my;
 
 //Implement Persist window size and position
 class DashboardImpl implements Dashboard, Runnable {
@@ -52,23 +52,17 @@ class DashboardImpl implements Dashboard, Runnable {
 	private static transient final int WIDTH = 280;
 	private static transient final int H_OFFSET = 30;
 	
-	@Inject
-	static private ThreadPool _threadPool;
+	private ThreadPool _threadPool = my(ThreadPool.class);
 	
-	@Inject
-	static private ImageFactory _imageFactory;
+	private ImageFactory _imageFactory = my(ImageFactory.class);
 	
-	@Inject
-	static private MainMenu _mainMenu;
+	private MainMenu _mainMenu = my(MainMenu.class);
 	
-	@Inject
-	static private OwnNameKeeper _ownNameKeeper;
+	private OwnNameKeeper _ownNameKeeper = my(OwnNameKeeper.class);
 		
-	@Inject
-	static private InstrumentManager _instrumentManager;
+	private InstrumentManager _instrumentManager = my(InstrumentManager.class);
 
-	@Inject
-	static private BlinkingLights _blinkingLights;
+	private BlinkingLights _blinkingLights = my(BlinkingLights.class);
 	
 	@SuppressWarnings("unused")
 	private final Receiver<String> _ownNameReceiver = new Receiver<String>(_ownNameKeeper.name()) { @Override public void consume(String value) {

@@ -8,7 +8,6 @@ import java.awt.RenderingHints;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import sneer.kernel.container.Inject;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.widgets.reactive.ImageWidget;
 import wheel.io.ui.GuiThread;
@@ -17,11 +16,11 @@ import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.impl.RegisterImpl;
+import static wheel.lang.Environments.my;
 
 class RImageImpl extends JPanel implements ImageWidget{
 
-	@Inject
-	private static ImageFactory _imageFactory;
+	private ImageFactory _imageFactory = my(ImageFactory.class);
 
 	protected final Register<Image> _image;
 	protected final Consumer<Image> _setter;

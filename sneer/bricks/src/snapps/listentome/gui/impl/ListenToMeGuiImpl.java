@@ -19,7 +19,6 @@ import javax.swing.border.EmptyBorder;
 import snapps.contacts.actions.ContactAction;
 import snapps.contacts.actions.ContactActionManager;
 import snapps.listentome.gui.ListenToMeGui;
-import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
 import sneer.skin.rooms.ActiveRoomKeeper;
 import sneer.skin.snappmanager.InstrumentManager;
@@ -32,23 +31,19 @@ import wheel.lang.Consumer;
 import wheel.lang.Environments;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.And;
+import static wheel.lang.Environments.my;
 
 public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a better snapp window support
 
-	@Inject
-	static private LoopbackTester _loopback;
+	private LoopbackTester _loopback = my(LoopbackTester.class);
 
-	@Inject
-	static private InstrumentManager _instrumentManager;
+	private InstrumentManager _instrumentManager = my(InstrumentManager.class);
 
-	@Inject
-	static private ContactActionManager _actionsManager;
+	private ContactActionManager _actionsManager = my(ContactActionManager.class);
 
-	@Inject
-	static private Speaker _speaker;
+	private Speaker _speaker = my(Speaker.class);
 
-	@Inject
-	static private Mic _mic;
+	private Mic _mic = my(Mic.class);
 	
 	JToggleButton _listenToMeButton;
 	JToggleButton _loopBackButton;

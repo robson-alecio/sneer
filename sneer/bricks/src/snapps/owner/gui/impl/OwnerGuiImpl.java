@@ -12,7 +12,6 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
 import snapps.owner.gui.OwnerGui;
-import sneer.kernel.container.Inject;
 import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.own.tagline.OwnTaglineKeeper;
@@ -21,26 +20,21 @@ import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
+import static wheel.lang.Environments.my;
 
 class OwnerGuiImpl implements OwnerGui {
 
-	@Inject
-	static private OwnNameKeeper _ownNameKeeper;
+	private OwnNameKeeper _ownNameKeeper = my(OwnNameKeeper.class);
 
-	@Inject
-	static private OwnTaglineKeeper _ownTaglineKeeper;
+	private OwnTaglineKeeper _ownTaglineKeeper = my(OwnTaglineKeeper.class);
 
-	@Inject
-	static private OwnAvatarKeeper _ownAvatarKeeper;
+	private OwnAvatarKeeper _ownAvatarKeeper = my(OwnAvatarKeeper.class);
 
-	@Inject
-	static private InstrumentManager _instrumentManager;
+	private InstrumentManager _instrumentManager = my(InstrumentManager.class);
 
-	@Inject
-	static private ImageSelector _imageSelector;
+	private ImageSelector _imageSelector = my(ImageSelector.class);
 
-	@Inject
-	static private ReactiveWidgetFactory _rfactory;
+	private ReactiveWidgetFactory _rfactory = my(ReactiveWidgetFactory.class);
 
 	private TextWidget<JTextField> _editableLabel;
 

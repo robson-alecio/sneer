@@ -2,20 +2,20 @@ package sneer.pulp.connection.impl;
 
 import java.io.IOException;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.internetaddresskeeper.InternetAddress;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;
 import sneer.pulp.threadpool.ThreadPool;
+import static wheel.lang.Environments.my;
 
 class OutgoingAttempt implements Runnable {
 
-	@Inject	static private Network _network;
-	@Inject	static private ConnectionManager _connectionManager;
-	@Inject	static private ThreadPool _threadPool; { _threadPool.registerActor(this); }
-	@Inject	static private Clock _clock;
+	private Network _network = my(Network.class);
+	private ConnectionManager _connectionManager = my(ConnectionManager.class);
+	private ThreadPool _threadPool = my(ThreadPool.class); { _threadPool.registerActor(this); }
+	private Clock _clock = my(Clock.class);
 
 	
 	private final InternetAddress _address;

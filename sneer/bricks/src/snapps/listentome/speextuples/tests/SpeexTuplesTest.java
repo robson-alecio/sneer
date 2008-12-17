@@ -13,7 +13,6 @@ import snapps.listentome.speex.Encoder;
 import snapps.listentome.speex.Speex;
 import snapps.listentome.speextuples.SpeexPacket;
 import snapps.listentome.speextuples.SpeexTuples;
-import sneer.kernel.container.Inject;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
@@ -29,13 +28,10 @@ import wheel.lang.ImmutableByteArray;
 
 public class SpeexTuplesTest extends TestThatIsInjected {
 	
-	@Inject private static KeyManager _keyManager;
-	@Inject private static Clock _clock;
-	@Inject private static TupleSpace _tupleSpace;
-	@Inject private static SpeexTuples _subject;
-	
 	private final Mockery _mockery = new JUnit4Mockery();
-	
+	private KeyManager _keyManager = my(KeyManager.class);
+	private Clock _clock = my(Clock.class);
+	private TupleSpace _tupleSpace = my(TupleSpace.class);
 	@Contribute private final Speex _speex = _mockery.mock(Speex.class);
 	
 	private final Encoder _encoder = _mockery.mock(Encoder.class);
@@ -47,6 +43,8 @@ public class SpeexTuplesTest extends TestThatIsInjected {
 			allowing(_speex).createDecoder(); will(returnValue(_decoder));
 		}});
 	}
+	
+	private SpeexTuples _subject = my(SpeexTuples.class);
 	
 	@Test
 	public void testPcmToSpeex() throws Exception {

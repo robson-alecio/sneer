@@ -15,20 +15,18 @@ import snapps.watchme.codec.ImageCodec;
 import snapps.watchme.codec.ImageDelta;
 import snapps.watchme.codec.ImageCodec.Decoder;
 import snapps.watchme.codec.ImageCodec.Encoder;
-import sneer.kernel.container.Inject;
 import sneer.skin.image.ImageFactory;
 import tests.TestThatIsInjected;
 import wheel.io.serialization.impl.XStreamBinarySerializer;
 import wheel.io.ui.graphics.Images;
 import wheel.lang.exceptions.Hiccup;
+import static wheel.lang.Environments.my;
 
 public class ImageCodecTest extends TestThatIsInjected {
 	
-	@Inject
-	static private ImageCodec _subject;
+	private ImageCodec _subject = my(ImageCodec.class);
 	
-	@Inject
-	private static ImageFactory _imageFactory;
+	private ImageFactory _imageFactory = my(ImageFactory.class);
 	
 	@Test
 	public void encodeSameImage() throws Hiccup {

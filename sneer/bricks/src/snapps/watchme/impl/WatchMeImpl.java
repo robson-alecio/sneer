@@ -8,7 +8,6 @@ import snapps.watchme.codec.ImageCodec;
 import snapps.watchme.codec.ImageDelta;
 import snapps.watchme.codec.ImageCodec.Decoder;
 import snapps.watchme.codec.ImageCodec.Encoder;
-import sneer.kernel.container.Inject;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
@@ -22,24 +21,19 @@ import wheel.lang.exceptions.FriendlyException;
 import wheel.lang.exceptions.Hiccup;
 import wheel.reactive.EventSource;
 import wheel.reactive.impl.EventNotifierImpl;
+import static wheel.lang.Environments.my;
 
 class WatchMeImpl implements WatchMe {
 
 	private static final int PERIOD_IN_MILLIS = 1000;
 
-	@Inject
-	static private Screenshotter _shotter;
-	@Inject
-	static private ImageCodec _codec;
-	@Inject
-	static private TupleSpace _tupleSpace;
-	@Inject
-	static private ThreadPool _pool;
-	@Inject
-	static private BlinkingLights _lights;
+	private Screenshotter _shotter = my(Screenshotter.class);
+	private ImageCodec _codec = my(ImageCodec.class);
+	private TupleSpace _tupleSpace = my(TupleSpace.class);
+	private ThreadPool _pool = my(ThreadPool.class);
+	private BlinkingLights _lights = my(BlinkingLights.class);
 
-	@Inject
-	static private Clock _clock;
+	private Clock _clock = my(Clock.class);
 	
 	private boolean _isRunning;
 	private final Light _light = _lights.prepare(LightType.ERROR);

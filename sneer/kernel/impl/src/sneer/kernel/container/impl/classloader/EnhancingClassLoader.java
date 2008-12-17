@@ -1,14 +1,9 @@
 package sneer.kernel.container.impl.classloader;
 
-import sneer.kernel.container.Inject;
-import sneer.kernel.container.Injector;
 import sneer.kernel.container.impl.classloader.enhancer.ByteCodeGuardian;
 import sneer.kernel.container.impl.classloader.enhancer.EnhancingByteCodeGuardian;
 
 public abstract class EnhancingClassLoader extends ClassLoader {
-
-	@Inject
-	protected Injector _injector;
 
 	private ByteCodeGuardian _guardian = EnhancingByteCodeGuardian.instance();
 
@@ -34,10 +29,6 @@ public abstract class EnhancingClassLoader extends ClassLoader {
 		if (resolve) {
 			resolveClass(c);
 		}
-		
-		if(!c.isInterface() && _injector != null) // don't remove this check. BrickClassLoaders may be created without an Injector
-			_injector.inject(c);
-		
 		return c;
 	}
 

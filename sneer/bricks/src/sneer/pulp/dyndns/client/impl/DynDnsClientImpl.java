@@ -2,7 +2,6 @@ package sneer.pulp.dyndns.client.impl;
 
 import java.io.IOException;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
@@ -19,32 +18,26 @@ import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.propertystore.PropertyStore;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.reactive.impl.Receiver;
+import static wheel.lang.Environments.my;
 
 class DynDnsClientImpl implements DynDnsClient {
 	
 	private static final String LAST_IP_KEY = "dyndns.lastIp";
 	private static final String LAST_HOST_KEY = "dyndns.lastHost";
 
-	@Inject
-	static private OwnIpDiscoverer _ownIpDiscoverer;
+	private OwnIpDiscoverer _ownIpDiscoverer = my(OwnIpDiscoverer.class);
 	
-	@Inject
-	static private DynDnsAccountKeeper _ownAccountKeeper;
+	private DynDnsAccountKeeper _ownAccountKeeper = my(DynDnsAccountKeeper.class);
 	
-	@Inject
-	static private Updater _updater;
+	private Updater _updater = my(Updater.class);
 	
-	@Inject
-	static private PropertyStore _propertyStore;
+	private PropertyStore _propertyStore = my(PropertyStore.class);
 	
-	@Inject
-	static private BlinkingLights _blinkingLights;
+	private BlinkingLights _blinkingLights = my(BlinkingLights.class);
 	
-	@Inject
-	static private ThreadPool _threadPool;
+	private ThreadPool _threadPool = my(ThreadPool.class);
 	
-	@Inject
-	static private Clock _clock;
+	private Clock _clock = my(Clock.class);
 	
 	private final Object _stateMonitor = new Object();
 	private State _state = new Happy();

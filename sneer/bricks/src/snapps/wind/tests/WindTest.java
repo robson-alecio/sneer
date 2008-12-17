@@ -4,17 +4,15 @@ import org.junit.Test;
 
 import snapps.wind.Shout;
 import snapps.wind.Wind;
-import sneer.kernel.container.Inject;
 import sneer.pulp.tuples.TupleSpace;
 import tests.TestThatIsInjected;
+import static wheel.lang.Environments.my;
 
 public class WindTest extends TestThatIsInjected {
 
-	@Inject
-	private static TupleSpace _tupleSpace;
+	private TupleSpace _tupleSpace = my(TupleSpace.class);
 	
-	@Inject
-	private static Wind _wind;
+	private Wind _wind = my(Wind.class);
 	
 	@Test
 	public void testSortedShoutsHeard() {

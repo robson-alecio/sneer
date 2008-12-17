@@ -1,5 +1,7 @@
 package snapps.blinkinglights.gui.impl;
 
+import static wheel.lang.Environments.my;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -29,7 +31,6 @@ import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
 import snapps.blinkinglights.gui.BlinkingLightsGui;
-import sneer.kernel.container.Inject;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
@@ -45,14 +46,11 @@ import wheel.reactive.impl.Constant;
 
 class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 	
-	@Inject
-	static private InstrumentManager _instrumentManager;
+	private InstrumentManager _instrumentManager = my(InstrumentManager.class);
 
-	@Inject
-	static private BlinkingLights _blinkingLights;
+	private BlinkingLights _blinkingLights = my(BlinkingLights.class);
 
-	@Inject
-	static private ReactiveWidgetFactory _rfactory;
+	private ReactiveWidgetFactory _rfactory = my(ReactiveWidgetFactory.class);
 	
 	private ListWidget<Light> _lightsList;
 

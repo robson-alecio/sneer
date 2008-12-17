@@ -2,15 +2,14 @@ package sneer.pulp.distribution.filtering.tests;
 
 import org.junit.Test;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.tuples.Tuple;
 import tests.TestThatIsInjected;
+import static wheel.lang.Environments.my;
 
 public class TupleFilterManagerTest extends TestThatIsInjected {
 
-	@Inject
-	private static TupleFilterManager _subject;
+	private TupleFilterManager _subject = my(TupleFilterManager.class);
 
 	@Test
 	public void testTupleTypeBlocking() {

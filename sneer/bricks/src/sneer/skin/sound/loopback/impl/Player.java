@@ -1,18 +1,18 @@
 package sneer.skin.sound.loopback.impl;
 
+import static sneer.skin.sound.loopback.impl.Services.audio;
+import static sneer.skin.sound.loopback.impl.Services.threads;
+
 import java.io.ByteArrayOutputStream;
+
 import javax.sound.sampled.SourceDataLine;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.threadpool.Stepper;
-import sneer.pulp.threadpool.ThreadPool;
-import sneer.skin.sound.kernel.Audio;
 import wheel.lang.Threads;
 
 class Player {
 	
-	@Inject static private ThreadPool _threads;
-	@Inject private static Audio _audio;
+	
 
 	static private ByteArrayOutputStream _buffer;
 	static private volatile boolean _isRunning;
@@ -23,13 +23,13 @@ class Player {
 	}
 
 	static boolean start(ByteArrayOutputStream buffer) {
-		_sourceDataLine = _audio.tryToOpenPlaybackLine();
+		_sourceDataLine = audio().tryToOpenPlaybackLine();
 		if (_sourceDataLine == null) return false;
 
 		_buffer = buffer;
 		
 		_isRunning = true;
-		_threads.registerStepper(new Stepper() { @Override public boolean step() {
+		threads().registerStepper(new Stepper() { @Override public boolean step() {
 			playBuffer();
 
 			if (!_isRunning) {

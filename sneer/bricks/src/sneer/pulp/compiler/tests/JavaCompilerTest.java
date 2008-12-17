@@ -11,23 +11,21 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.classpath.Classpath;
 import sneer.pulp.classpath.ClasspathFactory;
 import sneer.pulp.compiler.CompilationError;
 import sneer.pulp.compiler.Result;
 import tests.TestThatIsInjected;
 import wheel.io.Jars;
+import static wheel.lang.Environments.my;
 
 public class JavaCompilerTest extends TestThatIsInjected {
 
 	private static final String TEST_FILE_PREFIX = "sneer-test-";
 
-	@Inject
-	private static sneer.pulp.compiler.JavaCompiler _compiler;
+	private sneer.pulp.compiler.JavaCompiler _compiler = my(sneer.pulp.compiler.JavaCompiler.class);
 	
-	@Inject
-	private static ClasspathFactory _factory;
+	private ClasspathFactory _factory = my(ClasspathFactory.class);
 	
 	@Test
 	public void testCompile() throws Exception {

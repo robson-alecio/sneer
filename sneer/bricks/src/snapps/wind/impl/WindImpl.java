@@ -4,21 +4,19 @@ import java.util.Comparator;
 
 import snapps.wind.Shout;
 import snapps.wind.Wind;
-import sneer.kernel.container.Inject;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
+import static wheel.lang.Environments.my;
 
 class WindImpl implements Wind, Consumer<Shout> {
 
-	@Inject
-	static private TupleSpace _environment;
+	private TupleSpace _environment = my(TupleSpace.class);
 	
-	@Inject
-	static private ListSorter _sorter;
+	private ListSorter _sorter = my(ListSorter.class);
 	
 	private final ListSignal<Shout> _sortedShouts;
 	private final Comparator<Shout> _comparator;

@@ -7,7 +7,6 @@ import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import tests.TestThatIsInjected;
@@ -22,11 +21,11 @@ import wheel.reactive.lists.ListValueChange;
 import wheel.reactive.lists.ListValueChange.Visitor;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 import wheel.testutil.TestUtils;
+import static wheel.lang.Environments.my;
 
 public class ListSorterTest extends TestThatIsInjected {
 	
-	@Inject
-	private static ListSorter _sorter;
+	private ListSorter _sorter = my(ListSorter.class);
 
 	private final Mockery _mockery = new JUnit4Mockery();	
 	

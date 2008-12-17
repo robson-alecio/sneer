@@ -8,7 +8,6 @@ import java.util.List;
 import org.apache.commons.io.FilenameUtils;
 
 import sneer.kernel.container.Brick;
-import sneer.kernel.container.Inject;
 import sneer.kernel.container.impl.classloader.MetaClassClassLoader;
 import sneer.kernel.container.jar.DeploymentJar;
 import sneer.kernel.container.jar.DeploymentJarFactory;
@@ -21,11 +20,11 @@ import wheel.io.codegeneration.MetaClass;
 import wheel.io.codegeneration.SimpleFilter;
 import wheel.lang.Collections;
 import wheel.lang.Functor;
+import static wheel.lang.Environments.my;
 
 class VirtualDirectory {
 
-	@Inject
-	private DeploymentJarFactory _sneerDeploymentFactory;
+	private DeploymentJarFactory _sneerDeploymentFactory = my(DeploymentJarFactory.class);
 	
 	private String _brickName;
 	

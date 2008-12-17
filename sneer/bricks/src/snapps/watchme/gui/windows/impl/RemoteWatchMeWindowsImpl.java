@@ -4,17 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import snapps.watchme.gui.windows.RemoteWatchMeWindows;
-import sneer.kernel.container.Inject;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import wheel.reactive.lists.impl.SimpleListReceiver;
+import static wheel.lang.Environments.my;
 
 class RemoteWatchMeWindowsImpl implements RemoteWatchMeWindows{
 
 	Map<Contact, WatchMeReceiver> _remoteReceivers = new HashMap<Contact, WatchMeReceiver>();
 
-	@Inject
-	static private ContactManager _contactManager;
+	private ContactManager _contactManager = my(ContactManager.class);
 
 	@SuppressWarnings("unused")
 	private WatchMeReceiver _ownReceiverToAvoidGc;

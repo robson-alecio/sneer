@@ -19,7 +19,6 @@ import org.prevayler.PrevaylerFactory;
 import org.prevayler.foundation.serialization.XStreamSerializer;
 
 import snapps.wind.impl.bubble.Bubble;
-import sneer.kernel.container.Inject;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.config.persistence.PersistenceConfig;
 import sneer.pulp.keymanager.KeyManager;
@@ -32,14 +31,15 @@ import wheel.lang.Consumer;
 import wheel.lang.Types;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.impl.ListRegisterImpl;
+import static wheel.lang.Environments.my;
 
 public class TupleSpaceImpl implements TupleSpace {
 
-	@Inject static private KeyManager _keyManager;
-	@Inject static private Clock _clock;
-	@Inject static private PersistenceConfig _persistenceConfig;
-	@Inject static private ThreadPool _threads;
-	@Inject static private TupleSpaceConfig _config;
+	private KeyManager _keyManager = my(KeyManager.class);
+	private Clock _clock = my(Clock.class);
+	private PersistenceConfig _persistenceConfig = my(PersistenceConfig.class);
+	private ThreadPool _threads = my(ThreadPool.class);
+	private TupleSpaceConfig _config = my(TupleSpaceConfig.class);
 	
 	//Refactor The synchronization will no longer be necessary when the container guarantees synchronization of model bricks.
 	static class Subscription {

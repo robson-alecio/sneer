@@ -6,17 +6,13 @@ import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
 import snapps.listentome.speextuples.SpeexTuples;
-import sneer.kernel.container.Inject;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.skin.sound.PcmSoundPacket;
 import tests.Contribute;
 import tests.TestThatIsInjected;
+import static wheel.lang.Environments.my;
 
 public class PcmBlockingTest extends TestThatIsInjected {
-	
-	@SuppressWarnings("unused")
-	@Inject
-	private static SpeexTuples _subject;
 	
 	private final Mockery _mockery = new JUnit4Mockery();
 	
@@ -29,6 +25,9 @@ public class PcmBlockingTest extends TestThatIsInjected {
 		}});
 	}
 
+	@SuppressWarnings("unused")
+	private SpeexTuples _subject = my(SpeexTuples.class);
+	
 	@Test
 	public void testPcmBlocking() throws Exception {
 	}

@@ -2,15 +2,14 @@ package sneer.pulp.tuples.tests;
 
 import org.junit.Test;
 
-import sneer.kernel.container.Inject;
 import sneer.pulp.tuples.TupleSpace;
 import tests.TestThatIsInjected;
 import wheel.lang.Consumer;
+import static wheel.lang.Environments.my;
 
 public class TupleKeepingTest extends TestThatIsInjected {
 
-	@Inject
-	private static TupleSpace _subject;
+	private TupleSpace _subject = my(TupleSpace.class);
 	
 	private int _notificationCounter;
 	

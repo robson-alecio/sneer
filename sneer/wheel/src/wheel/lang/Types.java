@@ -6,8 +6,4 @@ public class Types {
 		return (T)object;
 	}
 
-	static public boolean instanceOf(Object candidate, Class<?> type) {
-		return type.isAssignableFrom(candidate.getClass());
-	}
-
 }

@@ -1,5 +1,6 @@
 package sneer.pulp.tuples.impl;
 
+import static wheel.lang.Environments.my;
 import static wheel.lang.Types.cast;
 
 import java.io.File;
@@ -28,10 +29,8 @@ import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.pulp.tuples.config.TupleSpaceConfig;
 import wheel.lang.Consumer;
-import wheel.lang.Types;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.impl.ListRegisterImpl;
-import static wheel.lang.Environments.my;
 
 public class TupleSpaceImpl implements TupleSpace {
 
@@ -53,7 +52,7 @@ public class TupleSpaceImpl implements TupleSpace {
 		}
 
 		void filterAndNotify(Tuple tuple) {
-			if (!Types.instanceOf(tuple, _tupleType))
+			if (!_tupleType.isInstance(tuple))
 				return;
 			
 			_subscriber.consume(tuple);
@@ -169,7 +168,7 @@ public class TupleSpaceImpl implements TupleSpace {
 	
 	private boolean shouldKeep(Tuple tuple) {
 		for (Class<? extends Tuple> typeToKeep : _typesToKeep) //Optimize
-			if (Types.instanceOf(tuple, typeToKeep))
+			if (typeToKeep.isInstance(tuple))
 				return true;
 
 		return false;
@@ -210,7 +209,8 @@ public class TupleSpaceImpl implements TupleSpace {
 	}
 	
 	@Override
-	public synchronized <T extends Tuple> void removeSubscription(Object subscriber) {
+	public <T extends Tuple> void removeSubscription(Object subscriber) {
+		
 		for (Subscription victim : _subscriptions)
 			if (victim._subscriber == subscriber) {
 				_subscriptions.remove(victim);
@@ -219,7 +219,7 @@ public class TupleSpaceImpl implements TupleSpace {
 
 		throw new IllegalArgumentException("Subscription not found.");
 	}
-
+	
 	@Override
 	public synchronized void keep(Class<? extends Tuple> tupleType) {
 		_typesToKeep.add(tupleType);

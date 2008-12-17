@@ -1,7 +1,5 @@
 package sneer.kernel.container.impl;
 
-import static wheel.lang.Types.instanceOf;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +18,7 @@ class SimpleBinder implements Environment {
 	synchronized Object implementationFor(Class<?> type) {
 		Object result = null;
 		for (Object candidate : _implementations) { //Optimize preserving clash semantics.
-			if (!instanceOf(candidate, type)) continue;
+			if (!type.isInstance(candidate)) continue;
 			
 			if (result != null) throwClash(type, result, candidate);
 			result = candidate;

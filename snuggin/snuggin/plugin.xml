@@ -41,6 +41,42 @@
                id="snuggin.addRemoveNatureAction">
          </action>
       </objectContribution>
+      <objectContribution
+            id="snuggin.contribution1"
+            adaptable="true"
+            objectClass="org.eclipse.core.resources.IResource">
+            
+            <enablement>
+            <or>
+ 
+            <objectClass
+                  name="org.eclipse.jdt.core.IPackageFragment">
+            </objectClass>
+            <objectClass
+                  name="org.eclipse.jdt.core.IJavaProject">
+            </objectClass>
+            <objectClass
+                  name="org.eclipse.jdt.core.ICompilationUnit">
+            </objectClass>
+            </or>
+            </enablement>
+            
+         <menu
+               id="snuggin.menu1"
+               label="Snugging Utilities"
+               path="additions">
+            <separator
+                  name="group1">
+            </separator>
+         </menu>
+         <action
+               class="snuggin.popup.actions.InjectToMy"
+               enablesFor="+"
+               id="snuggin.newAction"
+               label="@Inject -&gt; my"
+               menubarPath="snuggin.menu1/group1">
+         </action>
+      </objectContribution>
    </extension>
    <extension
          id="sneerProblem"

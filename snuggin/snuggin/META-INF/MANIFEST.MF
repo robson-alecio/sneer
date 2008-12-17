@@ -8,5 +8,6 @@ Bundle-Vendor: Sneer
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
- org.eclipse.jdt.core
-Eclipse-LazyStart: true
+ org.eclipse.jdt.core,
+ org.eclipse.text;bundle-version="3.4.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

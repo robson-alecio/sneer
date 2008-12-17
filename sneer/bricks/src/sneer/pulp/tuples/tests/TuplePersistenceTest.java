@@ -59,8 +59,7 @@ public class TuplePersistenceTest extends TestThatMightUseResources {
 
 
 	private Container newContainer() {
-		final Container c = Containers.newContainer(_persistenceMock);
-		return c;
+		return Containers.newContainer(_persistenceMock);
 	}
 }
 

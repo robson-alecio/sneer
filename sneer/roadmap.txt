@@ -68,7 +68,6 @@ ROADMAP TO PRODUCE
 
 	- [Sandro] BandwidthMeterInstrument
 		- Test that the counter is called with the correct number of bytes being sent and received. 
-		- Use space instead of leading zeros. Support 3 digits.
 
 	- ListenToMe -> Whisper
 

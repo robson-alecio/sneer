@@ -5,9 +5,9 @@ import static wheel.lang.Environments.my;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.text.DecimalFormat;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -31,8 +31,6 @@ public class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 
 	private static final Icon _upload = load("upload.png");
 	private static final Icon _download = load("download.png");
-	
-	private final DecimalFormat _format = new DecimalFormat("00");
 
 	public BandwidthMeterGuiImpl() {
 		my(InstrumentManager.class).registerInstrument(this);
@@ -43,7 +41,7 @@ public class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 		
 		@Override public String evaluate(Integer value) {
 			if(_maxValue<value) _maxValue=value;
-			return _format.format(value) + " (" + _format.format(_maxValue) + ")";
+			return value + " (" + _maxValue + ")";
 		}
 	}
 	
@@ -65,6 +63,10 @@ public class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 		_downloadField = factory.newLabel(new Adapter<Integer, String>(download, new MaxHolderFunctor()).output());
 		JLabel lbUpload = _uploadField.getMainWidget();
 		JLabel lbDownload = _downloadField.getMainWidget();
+		
+		Dimension preferedSize = new Dimension(70,16);
+		lbUpload.setPreferredSize(preferedSize);
+		lbDownload.setPreferredSize(preferedSize);
 		
 		JPanel root = new JPanel();
 		root.setOpaque(false);

@@ -3,6 +3,8 @@
 
 	- [Klaus] Fix: TupleSpaceImpl.removeSubscription() is blocking the gui thread.
 
+	- [Klaus] Fix: Discover why tests timeout so frequently on Klaus's Linux box. Sometimes they pass in under one second, sometimes they timeout after 8 seconds. Probably has something to do with the way waiting and sleeping threads affect other threads on Linux.
+
 	- [Sandro] ListSignalModel and SortedList
 		- Fix: Sort Bug (see SortTest)
 

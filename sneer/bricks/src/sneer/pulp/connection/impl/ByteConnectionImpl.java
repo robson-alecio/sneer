@@ -90,13 +90,14 @@ class ByteConnectionImpl implements ByteConnection {
 		
 		try {
 			mySocket.write(array);
-			_bandwidthCounter.sent(array.length);
-			return true;
 		} catch (IOException iox) {
 			crash(mySocket, iox, "Error trying to send packet. ");
 			return false;
 		}
-	}
+
+		_bandwidthCounter.sent(array.length);
+		return true;
+}
 
 
 	private void startSending() {
@@ -123,19 +124,20 @@ class ByteConnectionImpl implements ByteConnection {
 		ByteArraySocket mySocket = _socketHolder.socket();
 		if (mySocket ==  null) return false;
 
+		byte[] array;
 		try {
-			byte[] array = mySocket.read();
-			_bandwidthCounter.received(array.length);
-			_receiver.consume(array);
-			return true;
+			array = mySocket.read();
 		} catch (Exception e) {
 			crash(mySocket, e, "Error trying to receive packet.");
 			return false;
-		} 
+		}
+
+		_bandwidthCounter.received(array.length);
+		_receiver.consume(array);
+		return true;
 	}
 
-	private void crash(ByteArraySocket mySocket, Exception e,
-			final String message) {
+	private void crash(ByteArraySocket mySocket, Exception e, final String message) {
 		logShort(e, message);
 		_socketHolder.crash(mySocket);
 	}

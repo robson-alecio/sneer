@@ -13,18 +13,19 @@
 ﻿ROADMAP TO BECOME MORE PRODUCTIVE
 =====================================
 
-	- Remove support for "optional" _mockery field in tests.
+	- [Bamboo] Remove support for "optional" _mockery field in tests.
 		- Inherit _mockery field in all tests that use it.
 
-	- Debugging Strategy - Revise so that all debugging info doesn't go into the log file.
-		- Default: sysout and file. Filter by part of message: Only file or ignore. 
+	- [Douglas] Debugging Strategy - Revise so that all debugging info doesn't go into the log file.
+		- Default: sysout and file. Filter by part of message: Only file or ignore.
+			- Look at java.logging, Log4J, commons-logging, etc 
 
-	- Mocotó Test Framework
+	- [Bamboo] Mocotó Test Framework
 
-	- ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do.
+	- [Klaus] ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do.
 		- SetSignal - Revise it also. 
 
-	- Responsive threading model for instruments. They can NEVER block the Swing gui thread. Maybe have one event dispatch thread per instrument. Instruments still have to comply with invokeLater/invokeAndWait to modify gui from other threads. 
+	- [Klaus] Responsive threading model for instruments. They can NEVER block the Swing gui thread. Maybe have one event dispatch thread per instrument. Instruments still have to comply with invokeLater/invokeAndWait to modify gui from other threads. 
 		- Security - Discover if instruments can indirectly gain access to components from other instruments.
 
 	- Output folders - Make all source folders compile to the default folder (bin) and fix the tests. Is this possible?
@@ -69,16 +70,17 @@ ROADMAP TO PRODUCE
 	- [Sandro] BandwidthMeterInstrument
 		- Test that the counter is called with the correct number of bytes being sent and received. 
 
-	- ListenToMe -> Whisper
+	- [Sandro] ListenToMe -> Whisper
+	
+	- [Sandro] Whisper - Mixagem
 
 	- Community request by Vina Callegari. He uses Eclipse 3.2.2 and it does not compile Sneer.
-		- Ask for user Name and Dyndns info using JOptionPane, if not passed as args and not persisted.
-			- Persist using PropertyStore. 
 		- [Rodrigo] Make build.xml run MainDemo by default. Use a specific target for the Hudson build that will not run MainDemo. Coordinate with Vina (Skype: vcallegari) who said he was going to do it. He also mentioned Eclipse has an option to generate build.xml based on its project configuration, which would possibly make antlips unnecessary. Does it make sense for us to use that?
+			- Name and dyndns info in build.properties
 
-	- Community Initiative - Incorporate Gandhi's Google maps brick. (Run LocationGuiMain)
+	- [Sandro] Community Initiative - Incorporate Gandhi's Google maps brick. (Run LocationGuiMain)
 	
-	- WatchMe
+	- [All] WatchMe
 		- Accelerate.
 
 	2008---------------------------------- DOGFOOD RELEASE (We have a decent VNC+Skype replacement we use to develop Sneer)

@@ -15,11 +15,11 @@ import sneer.pulp.classpath.Classpath;
 import sneer.pulp.classpath.ClasspathFactory;
 import sneer.pulp.compiler.CompilationError;
 import sneer.pulp.compiler.Result;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import wheel.io.Jars;
 import static wheel.lang.Environments.my;
 
-public class JavaCompilerTest extends TestThatIsInjected {
+public class JavaCompilerTest extends TestInContainerEnvironment {
 
 	private static final String TEST_FILE_PREFIX = "sneer-test-";
 

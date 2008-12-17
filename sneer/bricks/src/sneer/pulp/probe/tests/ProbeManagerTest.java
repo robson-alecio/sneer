@@ -21,12 +21,12 @@ import sneer.pulp.probe.ProbeManager;
 import sneer.pulp.serialization.Serializer;
 import sneer.pulp.tuples.TupleSpace;
 import tests.Contribute;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.Constant;
 import wheel.testutil.SignalUtils;
 
-public class ProbeManagerTest extends TestThatIsInjected {
+public class ProbeManagerTest extends TestInContainerEnvironment {
 
 	private final Mockery _mockery = new Mockery();
 	@Contribute private final ConnectionManager _connectionManager = _mockery.mock(ConnectionManager.class);

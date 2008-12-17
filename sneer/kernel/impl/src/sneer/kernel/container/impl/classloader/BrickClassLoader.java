@@ -157,6 +157,5 @@ public class BrickClassLoader extends EnhancingClassLoader {
 	@Override
 	public String toString() {
 		return "BrickClassLoader ["+mainClass()+"] "+_brickDirectory;
-		
 	}
 }

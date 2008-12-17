@@ -18,11 +18,11 @@ import sneer.pulp.dyndns.updater.Updater;
 import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.httpclient.HttpClient;
 import tests.Contribute;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import wheel.io.Base64;
 import wheel.lang.Pair;
 
-public class UpdaterTest extends TestThatIsInjected {
+public class UpdaterTest extends TestInContainerEnvironment {
 
 	private final Mockery _mockery = new JUnit4Mockery();
 	

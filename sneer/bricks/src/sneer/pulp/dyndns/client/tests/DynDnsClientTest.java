@@ -27,14 +27,14 @@ import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.propertystore.mocks.TransientPropertyStore;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
 import tests.Contribute;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import wheel.lang.Environments;
 import wheel.lang.exceptions.FriendlyException;
 import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.lists.ListSignal;
 
-public class DynDnsClientTest extends TestThatIsInjected {
+public class DynDnsClientTest extends TestInContainerEnvironment {
 	
 	/*
 

@@ -3,10 +3,10 @@ package sneer.pulp.own.name.tests;
 import org.junit.Test;
 
 import sneer.pulp.own.name.OwnNameKeeper;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import static wheel.lang.Environments.my;
 
-public class OwnNameKeeperTest extends TestThatIsInjected {
+public class OwnNameKeeperTest extends TestInContainerEnvironment {
 
 	private OwnNameKeeper _nameKeeper = my(OwnNameKeeper.class);
 	

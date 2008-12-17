@@ -9,12 +9,12 @@ import sneer.pulp.threadpool.mocks.ThreadPoolMock;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.pulp.tuples.config.TupleSpaceConfig;
 import tests.Contribute;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import wheel.lang.ByRef;
 import wheel.lang.Consumer;
 import static wheel.lang.Environments.my;
 
-public class TupleSpaceResponsivenessTest extends TestThatIsInjected {
+public class TupleSpaceResponsivenessTest extends TestInContainerEnvironment {
 
 	@Contribute private final ThreadPoolMock _threads = new ThreadPoolMock();
 	

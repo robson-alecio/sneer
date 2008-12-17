@@ -6,11 +6,11 @@ import org.junit.Test;
 
 import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import wheel.lang.Consumer;
 import static wheel.lang.Environments.my;
 
-public class TupleSpaceTest extends TestThatIsInjected {
+public class TupleSpaceTest extends TestInContainerEnvironment {
 
 	private TupleSpace _subject = my(TupleSpace.class);
 	

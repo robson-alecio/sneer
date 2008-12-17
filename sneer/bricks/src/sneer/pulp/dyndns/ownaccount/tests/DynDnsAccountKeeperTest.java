@@ -4,10 +4,10 @@ import org.junit.Test;
 
 import sneer.pulp.dyndns.ownaccount.DynDnsAccount;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import static wheel.lang.Environments.my;
 
-public class DynDnsAccountKeeperTest extends TestThatIsInjected {
+public class DynDnsAccountKeeperTest extends TestInContainerEnvironment {
 
 	private DynDnsAccountKeeper _subject = my(DynDnsAccountKeeper.class);
 	

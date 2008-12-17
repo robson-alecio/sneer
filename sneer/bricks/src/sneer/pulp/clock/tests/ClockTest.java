@@ -7,10 +7,10 @@ import org.junit.Test;
 
 import sneer.pulp.clock.Clock;
 import sneer.pulp.threadpool.Stepper;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import static wheel.lang.Environments.my;
 
-public class ClockTest extends TestThatIsInjected {
+public class ClockTest extends TestInContainerEnvironment {
 
 	private Clock _subject = my(Clock.class);
 	private StringBuilder _events = new StringBuilder();

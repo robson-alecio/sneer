@@ -12,9 +12,9 @@ import org.junit.Test;
 import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.httpclient.HttpClient;
 import tests.Contribute;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 
-public class CheckIpTest extends TestThatIsInjected {
+public class CheckIpTest extends TestInContainerEnvironment {
 	
 	private final Mockery _context = new JUnit4Mockery();
 	@Contribute final HttpClient _client = _context.mock(HttpClient.class);

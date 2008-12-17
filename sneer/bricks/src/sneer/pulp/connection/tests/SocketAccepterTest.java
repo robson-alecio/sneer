@@ -10,11 +10,11 @@ import sneer.pulp.network.Network;
 import sneer.pulp.network.impl.inmemory.InMemoryNetwork;
 import sneer.pulp.port.PortKeeper;
 import tests.Contribute;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import wheel.reactive.impl.Receiver;
 import static wheel.lang.Environments.my;
 
-public class SocketAccepterTest extends TestThatIsInjected {
+public class SocketAccepterTest extends TestInContainerEnvironment {
 
 	@Contribute
 	private final Network _network = new InMemoryNetwork();

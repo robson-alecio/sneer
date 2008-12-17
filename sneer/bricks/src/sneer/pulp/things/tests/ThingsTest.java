@@ -5,14 +5,14 @@ import org.junit.Test;
 
 import sneer.pulp.things.Thing;
 import sneer.pulp.things.ThingHome;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import wheel.lang.Daemon;
 import wheel.lang.Threads;
 import wheel.reactive.sets.SetSignal;
 import wheel.testutil.TestDashboard;
 import static wheel.lang.Environments.my;
 
-public class ThingsTest extends TestThatIsInjected {
+public class ThingsTest extends TestInContainerEnvironment {
 	
 	private ThingHome _subject = my(ThingHome.class);
 

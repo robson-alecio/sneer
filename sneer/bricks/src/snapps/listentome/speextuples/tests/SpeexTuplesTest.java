@@ -21,12 +21,12 @@ import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.rooms.ActiveRoomKeeper;
 import sneer.skin.sound.PcmSoundPacket;
 import tests.Contribute;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import wheel.lang.ByRef;
 import wheel.lang.Consumer;
 import wheel.lang.ImmutableByteArray;
 
-public class SpeexTuplesTest extends TestThatIsInjected {
+public class SpeexTuplesTest extends TestInContainerEnvironment {
 	
 	private final Mockery _mockery = new JUnit4Mockery();
 	private KeyManager _keyManager = my(KeyManager.class);

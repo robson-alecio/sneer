@@ -8,11 +8,11 @@ import sneer.pulp.network.ByteArrayServerSocket;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;
 import sneer.pulp.threadpool.ThreadPool;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import static wheel.lang.Environments.my;
 
 
-public class NetworkTest extends TestThatIsInjected {
+public class NetworkTest extends TestInContainerEnvironment {
 
 	private Network _network = my(Network.class);
 	

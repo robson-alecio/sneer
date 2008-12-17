@@ -3,11 +3,11 @@ package sneer.pulp.tuples.tests;
 import org.junit.Test;
 
 import sneer.pulp.tuples.TupleSpace;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import wheel.lang.Consumer;
 import static wheel.lang.Environments.my;
 
-public class TupleKeepingTest extends TestThatIsInjected {
+public class TupleKeepingTest extends TestInContainerEnvironment {
 
 	private TupleSpace _subject = my(TupleSpace.class);
 	

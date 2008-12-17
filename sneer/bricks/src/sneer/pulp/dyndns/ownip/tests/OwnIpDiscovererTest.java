@@ -16,11 +16,11 @@ import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.propertystore.PropertyStore;
 import sneer.pulp.propertystore.mocks.TransientPropertyStore;
 import tests.Contribute;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.Receiver;
 
-public class OwnIpDiscovererTest extends TestThatIsInjected {
+public class OwnIpDiscovererTest extends TestInContainerEnvironment {
 	
 	final Mockery _context = new JUnit4Mockery();
 	@Contribute final CheckIp checkip = _context.mock(CheckIp.class);

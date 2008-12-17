@@ -4,9 +4,9 @@ import org.jmock.Mockery;
 import org.junit.After;
 import org.junit.Test;
 
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 
-public class TestThatIsInjectedWithMockeryTest extends TestThatIsInjected {
+public class TestInContainerEnvironmentWithMockeryTest extends TestInContainerEnvironment {
 
 	protected boolean _assertIsSatisfiedCalled;
 	

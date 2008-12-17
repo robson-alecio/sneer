@@ -13,10 +13,10 @@ import org.junit.Test;
 import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.mic.Mic;
 import tests.Contribute;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import wheel.testutil.SignalUtils;
 
-public class MicTest extends TestThatIsInjected {
+public class MicTest extends TestInContainerEnvironment {
 
 	private final Mockery _mockery = new JUnit4Mockery();
 	

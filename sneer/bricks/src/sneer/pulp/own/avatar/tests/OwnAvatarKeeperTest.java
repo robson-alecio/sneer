@@ -10,11 +10,11 @@ import org.junit.Test;
 
 import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.skin.image.ImageFactory;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import wheel.lang.exceptions.Hiccup;
 import static wheel.lang.Environments.my;
 
-public class OwnAvatarKeeperTest extends TestThatIsInjected {
+public class OwnAvatarKeeperTest extends TestInContainerEnvironment {
 
 	private OwnAvatarKeeper _avatarKeeper = my(OwnAvatarKeeper.class);
 	

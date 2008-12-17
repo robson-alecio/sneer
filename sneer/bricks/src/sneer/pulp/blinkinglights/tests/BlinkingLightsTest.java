@@ -8,9 +8,9 @@ import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.clock.Clock;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 
-public class BlinkingLightsTest extends TestThatIsInjected {
+public class BlinkingLightsTest extends TestInContainerEnvironment {
 
 	private BlinkingLights _subject = my(BlinkingLights.class);
 

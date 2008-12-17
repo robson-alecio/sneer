@@ -9,7 +9,7 @@ import org.junit.Test;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.widgets.reactive.ListSignalModel;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
@@ -17,7 +17,7 @@ import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 import static wheel.lang.Environments.my;
 
-public class ListSignalModelTest extends TestThatIsInjected {
+public class ListSignalModelTest extends TestInContainerEnvironment {
 
 	private ReactiveWidgetFactory _factory = my(ReactiveWidgetFactory.class); 
 	

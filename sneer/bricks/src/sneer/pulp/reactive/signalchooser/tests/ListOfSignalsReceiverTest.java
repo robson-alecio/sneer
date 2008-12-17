@@ -7,7 +7,7 @@ import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.pulp.reactive.signalchooser.SignalChooserManager;
 import sneer.pulp.reactive.signalchooser.SignalChooserManagerFactory;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
@@ -17,7 +17,7 @@ import wheel.reactive.lists.impl.ListRegisterImpl;
 import wheel.reactive.lists.impl.VisitingListReceiver;
 import static wheel.lang.Environments.my;
 
-public class ListOfSignalsReceiverTest extends TestThatIsInjected {
+public class ListOfSignalsReceiverTest extends TestInContainerEnvironment {
 
 	private SignalChooserManagerFactory _factory = my(SignalChooserManagerFactory.class); 
 	

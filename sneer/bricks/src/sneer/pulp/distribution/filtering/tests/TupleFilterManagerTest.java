@@ -4,10 +4,10 @@ import org.junit.Test;
 
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.tuples.Tuple;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import static wheel.lang.Environments.my;
 
-public class TupleFilterManagerTest extends TestThatIsInjected {
+public class TupleFilterManagerTest extends TestInContainerEnvironment {
 
 	private TupleFilterManager _subject = my(TupleFilterManager.class);
 

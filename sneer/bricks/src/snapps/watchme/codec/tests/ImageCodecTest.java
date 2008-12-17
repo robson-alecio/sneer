@@ -16,13 +16,13 @@ import snapps.watchme.codec.ImageDelta;
 import snapps.watchme.codec.ImageCodec.Decoder;
 import snapps.watchme.codec.ImageCodec.Encoder;
 import sneer.skin.image.ImageFactory;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import wheel.io.serialization.impl.XStreamBinarySerializer;
 import wheel.io.ui.graphics.Images;
 import wheel.lang.exceptions.Hiccup;
 import static wheel.lang.Environments.my;
 
-public class ImageCodecTest extends TestThatIsInjected {
+public class ImageCodecTest extends TestInContainerEnvironment {
 	
 	private ImageCodec _subject = my(ImageCodec.class);
 	

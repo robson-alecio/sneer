@@ -3,10 +3,10 @@ package sneer.pulp.own.tagline.tests;
 import org.junit.Test;
 
 import sneer.pulp.own.tagline.OwnTaglineKeeper;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import static wheel.lang.Environments.my;
 
-public class OwnTaglineKeeperTest extends TestThatIsInjected {
+public class OwnTaglineKeeperTest extends TestInContainerEnvironment {
 
 	private OwnTaglineKeeper _taglineKeeper = my(OwnTaglineKeeper.class);
 	

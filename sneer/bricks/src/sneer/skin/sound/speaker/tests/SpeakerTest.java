@@ -16,11 +16,11 @@ import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.speaker.Speaker;
 import tests.Contribute;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import wheel.lang.ImmutableByteArray;
 import static wheel.lang.Environments.my;
 
-public class SpeakerTest extends TestThatIsInjected {
+public class SpeakerTest extends TestInContainerEnvironment {
 	
 	private Speaker _subject = my(Speaker.class);
 	private Clock _clock = my(Clock.class);

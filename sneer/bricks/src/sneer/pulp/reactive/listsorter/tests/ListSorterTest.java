@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import wheel.lang.Consumer;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
@@ -23,7 +23,7 @@ import wheel.reactive.lists.impl.ListRegisterImpl;
 import wheel.testutil.TestUtils;
 import static wheel.lang.Environments.my;
 
-public class ListSorterTest extends TestThatIsInjected {
+public class ListSorterTest extends TestInContainerEnvironment {
 	
 	private ListSorter _sorter = my(ListSorter.class);
 

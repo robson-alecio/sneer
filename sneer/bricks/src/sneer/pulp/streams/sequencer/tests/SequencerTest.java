@@ -13,11 +13,11 @@ import org.junit.Test;
 
 import sneer.pulp.streams.sequencer.Sequencer;
 import sneer.pulp.streams.sequencer.Sequencers;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import wheel.lang.Consumer;
 import static wheel.lang.Environments.my;
 
-public class SequencerTest extends TestThatIsInjected {
+public class SequencerTest extends TestInContainerEnvironment {
 	
 	private static final short MAX_GAP = (short)500;
 

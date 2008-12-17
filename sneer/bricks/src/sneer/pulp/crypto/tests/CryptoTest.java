@@ -4,10 +4,10 @@ import org.junit.Test;
 
 import sneer.pulp.crypto.ByteArrayUtils;
 import sneer.pulp.crypto.Crypto;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import static wheel.lang.Environments.my;
 
-public class CryptoTest extends TestThatIsInjected {
+public class CryptoTest extends TestInContainerEnvironment {
 
 	private Crypto _crypto = my(Crypto.class);
 	

@@ -26,7 +26,7 @@ import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.screenshotter.Screenshotter;
 import tests.Contribute;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import wheel.io.ui.graphics.Images;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.Hiccup;
@@ -34,7 +34,7 @@ import wheel.reactive.EventSource;
 import wheel.reactive.impl.Receiver;
 import static wheel.lang.Environments.my;
 
-public class WatchMeTest extends TestThatIsInjected {
+public class WatchMeTest extends TestInContainerEnvironment {
 
 	final private Mockery _mockery = new JUnit4Mockery();
 	

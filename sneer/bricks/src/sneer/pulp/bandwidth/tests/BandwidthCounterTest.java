@@ -6,10 +6,10 @@ import org.junit.Test;
 
 import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.clock.Clock;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import wheel.testutil.SignalUtils;
 
-public class BandwidthCounterTest extends TestThatIsInjected {
+public class BandwidthCounterTest extends TestInContainerEnvironment {
 	
 	@Test
 	public void testConsolidation() throws Exception {

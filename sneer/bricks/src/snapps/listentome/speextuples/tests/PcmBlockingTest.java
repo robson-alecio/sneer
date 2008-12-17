@@ -9,10 +9,10 @@ import snapps.listentome.speextuples.SpeexTuples;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.skin.sound.PcmSoundPacket;
 import tests.Contribute;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import static wheel.lang.Environments.my;
 
-public class PcmBlockingTest extends TestThatIsInjected {
+public class PcmBlockingTest extends TestInContainerEnvironment {
 	
 	private final Mockery _mockery = new JUnit4Mockery();
 	

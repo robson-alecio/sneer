@@ -3,12 +3,12 @@ package sneer.pulp.exceptionhandling.tests;
 import org.junit.Test;
 
 import sneer.pulp.exceptionhandling.ExceptionHandler;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import wheel.lang.ByRef;
 import wheel.lang.Fallible;
 import static wheel.lang.Environments.my;
 
-public class ExceptionHandlerTest extends TestThatIsInjected {
+public class ExceptionHandlerTest extends TestInContainerEnvironment {
 
 	private ExceptionHandler _handler = my(ExceptionHandler.class);
 	

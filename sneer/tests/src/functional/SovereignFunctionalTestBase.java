@@ -3,11 +3,11 @@ package functional;
 import org.junit.After;
 import org.junit.Before;
 
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import wheel.lang.Timebox;
 import wheel.lang.exceptions.TimeIsUp;
 
-public abstract class SovereignFunctionalTestBase extends TestThatIsInjected {
+public abstract class SovereignFunctionalTestBase extends TestInContainerEnvironment {
 
 	protected abstract SovereignCommunity createNewCommunity();
 

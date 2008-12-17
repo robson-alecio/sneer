@@ -5,10 +5,10 @@ import org.junit.Test;
 import snapps.wind.Shout;
 import snapps.wind.Wind;
 import sneer.pulp.tuples.TupleSpace;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import static wheel.lang.Environments.my;
 
-public class WindTest extends TestThatIsInjected {
+public class WindTest extends TestInContainerEnvironment {
 
 	private TupleSpace _tupleSpace = my(TupleSpace.class);
 	

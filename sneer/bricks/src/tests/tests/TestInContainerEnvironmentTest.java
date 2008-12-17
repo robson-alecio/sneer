@@ -3,12 +3,12 @@ package tests.tests;
 import org.junit.Test;
 
 import tests.Contribute;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import tests.tests.bar.BarBrick;
 import tests.tests.foo.FooBrick;
 import static wheel.lang.Environments.my;
 
-public class TestThatIsInjectedTest extends TestThatIsInjected {
+public class TestInContainerEnvironmentTest extends TestInContainerEnvironment {
 	
 	@Contribute final BarBrick _bar = new BarBrick() {};
 	

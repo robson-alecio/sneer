@@ -10,10 +10,10 @@ import sneer.pulp.connection.mocks.SocketAccepterMock;
 import sneer.pulp.connection.reachability.ReachabilitySentinel;
 import sneer.pulp.network.ByteArraySocket;
 import tests.Contribute;
-import tests.TestThatIsInjected;
+import tests.TestInContainerEnvironment;
 import static wheel.lang.Environments.my;
 
-public class ReachabilityTest extends TestThatIsInjected {
+public class ReachabilityTest extends TestInContainerEnvironment {
 	
 	@Contribute
 	final private SocketAccepterMock _accepter = new SocketAccepterMock();

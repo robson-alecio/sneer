@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -34,12 +35,6 @@ import wheel.reactive.lists.impl.ListRegisterImpl;
 
 public class TupleSpaceImpl implements TupleSpace {
 
-	private KeyManager _keyManager = my(KeyManager.class);
-	private Clock _clock = my(Clock.class);
-	private PersistenceConfig _persistenceConfig = my(PersistenceConfig.class);
-	private ThreadPool _threads = my(ThreadPool.class);
-	private TupleSpaceConfig _config = my(TupleSpaceConfig.class);
-	
 	//Refactor The synchronization will no longer be necessary when the container guarantees synchronization of model bricks.
 	static class Subscription {
 
@@ -60,14 +55,26 @@ public class TupleSpaceImpl implements TupleSpace {
 	}
 
 	private static final int TRANSIENT_CACHE_SIZE = 1000;
+	private static final Subscription[] SUBSCRIPTION_ARRAY = new Subscription[0];
+
+	private final KeyManager _keyManager = my(KeyManager.class);
+	private final Clock _clock = my(Clock.class);
+	private final PersistenceConfig _persistenceConfig = my(PersistenceConfig.class);
+	private final ThreadPool _threads = my(ThreadPool.class);
+	private final TupleSpaceConfig _config = my(TupleSpaceConfig.class);
+
+	private final List<Subscription> _subscriptions = Collections.synchronizedList(new ArrayList<Subscription>());
+
 	private final Set<Tuple> _transientTupleCache = new LinkedHashSet<Tuple>();
-	private final List<Subscription> _subscriptions = new ArrayList<Subscription>();
-	
-	private final Set<Class<? extends Tuple>> _typesToKeep = new HashSet<Class<? extends Tuple>>();
+		private final Set<Class<? extends Tuple>> _typesToKeep = new HashSet<Class<? extends Tuple>>();
 	private final ListRegister<Tuple> _keptTuples;
+
 	private final BlockingQueue<Tuple> _acquisitionQueue;
+
 	private final Object _publicationMonitor = new Object();
 
+
+	
 	TupleSpaceImpl() {
 		_keptTuples = Bubble.wrapStateMachine(prevayler(new ListRegisterImpl<Tuple>()));
 		_acquisitionQueue = _config.isAcquisitionSynchronous() ? null : new LinkedBlockingQueue<Tuple>(); 
@@ -156,7 +163,12 @@ public class TupleSpaceImpl implements TupleSpace {
 		if (isAlreadyKept(tuple)) return;
 		keepIfNecessary(tuple);
 				
-		for (Subscription subscription : _subscriptions)
+		notifySubscriptions(tuple);
+	}
+
+
+	private void notifySubscriptions(Tuple tuple) {
+		for (Subscription subscription : _subscriptions.toArray(SUBSCRIPTION_ARRAY))
 			subscription.filterAndNotify(tuple);
 	}
 
@@ -199,10 +211,10 @@ public class TupleSpaceImpl implements TupleSpace {
 	}
 
 	@Override
-	public synchronized <T extends Tuple> void addSubscription(Class<T> tupleType,	Consumer<? super T> subscriber) {
+	public <T extends Tuple> void addSubscription(Class<T> tupleType,	Consumer<? super T> subscriber) {
 		Subscription subscription = new Subscription(subscriber, tupleType);
 
-		for (Tuple kept : _keptTuples.output())
+		for (Tuple kept : keptTuples())
 			subscription.filterAndNotify(kept);
 
 		_subscriptions.add(subscription);
@@ -210,8 +222,7 @@ public class TupleSpaceImpl implements TupleSpace {
 	
 	@Override
 	public <T extends Tuple> void removeSubscription(Object subscriber) {
-		
-		for (Subscription victim : _subscriptions)
+		for (Subscription victim : _subscriptions.toArray(SUBSCRIPTION_ARRAY))
 			if (victim._subscriber == subscriber) {
 				_subscriptions.remove(victim);
 				return;

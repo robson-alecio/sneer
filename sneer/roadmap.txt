@@ -71,17 +71,19 @@ ROADMAP TO PRODUCE
 		- Test that the counter is called with the correct number of bytes being sent and received. 
 
 	- [Sandro] ListenToMe -> Whisper
+
+	- [Sandro] Contact CRUD Instrument
+		- Add button appears on mouse hover.
 	
 	- [Sandro] Whisper - Mixagem
 
 	- Community request by Vina Callegari. He uses Eclipse 3.2.2 and it does not compile Sneer.
 		- [Rodrigo] Make build.xml run MainDemo by default. Use a specific target for the Hudson build that will not run MainDemo. Coordinate with Vina (Skype: vcallegari) who said he was going to do it. He also mentioned Eclipse has an option to generate build.xml based on its project configuration, which would possibly make antlips unnecessary. Does it make sense for us to use that?
-			- Name and dyndns info in build.properties
+			- Name and dyndns info in propertystore.txt. Use BL to signal their absence and give instructions.
 
 	- [Sandro] Community Initiative - Incorporate Gandhi's Google maps brick. (Run LocationGuiMain)
 	
-	- [All] WatchMe
-		- Accelerate.
+
 
 	2008---------------------------------- DOGFOOD RELEASE (We have a decent VNC+Skype replacement we use to develop Sneer)
 
@@ -105,10 +107,11 @@ ROADMAP TO PRODUCE
 
 	- Own Name - Show contacts' names in contact list
 		- Freedom2Test - Unignore and make it pass.
-
-	- Contact CRUD Instrument
-		- Nicknames
 		
+	- WatchMe
+		- Accelerate.
+		
+
 	30/FEB --------------------------------------
 
 	- TopTen - First Round

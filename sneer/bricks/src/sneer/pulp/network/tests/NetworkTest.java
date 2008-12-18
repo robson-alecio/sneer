@@ -21,6 +21,10 @@ public class NetworkTest extends TestInContainerEnvironment {
 	
 	@Test
 	public void testNetworkMessages() throws Exception {
+		System.out.println("opening");
+		assertNull(System.getProperty("WhyThe*IsThisTestBeingRunTwice?"));
+		System.setProperty("WhyThe*IsThisTestBeingRunTwice?", "foo");
+		
 		final ByteArrayServerSocket server = _network.openServerSocket(9090);
 		_threadPool.registerActor(new Runnable(){ @Override public void run() {
 			try {

@@ -8,7 +8,6 @@ import java.util.List;
 
 import wheel.lang.Consumer;
 import wheel.lang.Environments;
-import wheel.lang.Fallible;
 import wheel.lang.Types;
 import wheel.lang.exceptions.WheelExceptionHandler;
 import wheel.reactive.EventSource;
@@ -44,7 +43,7 @@ public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 	@Override
 	public void addReceiver(final Consumer<? super VC> receiver) {
 		_receivers.add(holderFor(receiver));
-		Environments.my(WheelExceptionHandler.class).shield(new Fallible() { @Override public void run() throws Throwable {
+		Environments.my(WheelExceptionHandler.class).shield(new Runnable() { @Override public void run() {
 			initReceiver(receiver);
 		}});
 	}

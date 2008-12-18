@@ -5,6 +5,8 @@ import java.util.List;
 
 import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
+import wheel.lang.Environments;
+import wheel.lang.Environments.Memento;
 
 public class ThreadPoolMock implements ThreadPool {
 
@@ -30,6 +32,11 @@ public class ThreadPoolMock implements ThreadPool {
 
 	public synchronized Stepper stepper(int i) {
 		return _steppers.get(i);
+	}
+
+	@Override
+	public void dispatch(Memento environment, Runnable runnable) {
+		Environments.runWith(environment, runnable);
 	}
 
 }

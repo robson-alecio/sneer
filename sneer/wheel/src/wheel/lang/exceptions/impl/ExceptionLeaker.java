@@ -1,14 +1,13 @@
 package wheel.lang.exceptions.impl;
 
-import wheel.lang.Fallible;
 import wheel.lang.exceptions.WheelExceptionHandler;
 
 public class ExceptionLeaker implements WheelExceptionHandler {
 
 	@Override
-	public void shield(Fallible fallible) {
+	public void shield(Runnable runnable) {
 		try {
-			fallible.run();
+			runnable.run();
 		} catch (RuntimeException rx) {
 			throw rx;
 		} catch (Error e) {

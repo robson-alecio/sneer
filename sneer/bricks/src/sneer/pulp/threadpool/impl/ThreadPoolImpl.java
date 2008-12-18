@@ -1,10 +1,13 @@
 package sneer.pulp.threadpool.impl;
 
+import static wheel.lang.Environments.my;
+import sneer.pulp.exceptionhandling.ExceptionHandler;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
+import wheel.lang.Environments;
 import wheel.lang.Threads;
-import static wheel.lang.Environments.my;
+import wheel.lang.Environments.Memento;
 
 class ThreadPoolImpl implements ThreadPool {
 
@@ -34,6 +37,13 @@ class ThreadPoolImpl implements ThreadPool {
 
 	private String toSimpleClassName(String className) {
 		return className.substring(className.lastIndexOf(".") + 1);
+	}
+
+	@Override
+	public void dispatch(final Memento environment, final Runnable runnable) {
+		my(ExceptionHandler.class).shield(new Runnable(){@Override public void run() {
+			Environments.runWith(environment, runnable);
+		}});
 	}
 
 }

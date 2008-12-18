@@ -1,21 +1,19 @@
 package sneer.pulp.streams.sequencer.tests;
 
+import static wheel.lang.Environments.my;
 import static wheel.testutil.TestUtils.assertSameContents;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jmock.Expectations;
-import org.jmock.Mockery;
 import org.jmock.Sequence;
-import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
 import sneer.pulp.streams.sequencer.Sequencer;
 import sneer.pulp.streams.sequencer.Sequencers;
 import tests.TestInContainerEnvironment;
 import wheel.lang.Consumer;
-import static wheel.lang.Environments.my;
 
 public class SequencerTest extends TestInContainerEnvironment {
 	

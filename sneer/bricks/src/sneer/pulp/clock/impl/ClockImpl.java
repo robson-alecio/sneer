@@ -9,7 +9,6 @@ import sneer.pulp.clock.Clock;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
 import sneer.pulp.threadpool.Stepper;
 import wheel.lang.ByRef;
-import wheel.lang.Fallible;
 import wheel.lang.Threads;
 import wheel.lang.Timebox;
 
@@ -83,7 +82,7 @@ class ClockImpl implements Clock {
 	
 	private boolean step(final Stepper stepper) {
 		final ByRef<Boolean> result = ByRef.newInstance(false); 
-		_exceptionHandler.shield(new Fallible() { @Override public void run() throws Throwable {
+		_exceptionHandler.shield(new Runnable() { @Override public void run() {
 			new Timebox(300000) { @Override protected void runInTimebox() {
 				result.value = stepper.step();
 			}};

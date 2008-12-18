@@ -1,8 +1,8 @@
 package sneer.pulp.tuples.tests;
 
+import static wheel.lang.Environments.my;
+
 import org.jmock.Expectations;
-import org.jmock.Mockery;
-import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
@@ -12,7 +12,6 @@ import tests.Contribute;
 import tests.TestInContainerEnvironment;
 import wheel.lang.ByRef;
 import wheel.lang.Consumer;
-import static wheel.lang.Environments.my;
 
 public class TupleSpaceResponsivenessTest extends TestInContainerEnvironment {
 

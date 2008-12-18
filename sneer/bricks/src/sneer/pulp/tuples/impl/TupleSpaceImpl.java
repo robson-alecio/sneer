@@ -30,6 +30,8 @@ import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.pulp.tuples.config.TupleSpaceConfig;
 import wheel.lang.Consumer;
+import wheel.lang.Environments;
+import wheel.lang.Environments.Memento;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 
@@ -40,17 +42,21 @@ public class TupleSpaceImpl implements TupleSpace {
 
 		private final Consumer<? super Tuple> _subscriber;
 		private final Class<? extends Tuple> _tupleType;
+		private final Memento _environment;
 
 		<T extends Tuple> Subscription(Consumer<? super T> subscriber, Class<T> tupleType) {
 			_subscriber = cast(subscriber);
 			_tupleType = tupleType;
+			_environment = Environments.memento();
 		}
 
-		void filterAndNotify(Tuple tuple) {
+		void filterAndNotify(final Tuple tuple) {
 			if (!_tupleType.isInstance(tuple))
 				return;
 			
-			_subscriber.consume(tuple);
+			my(ThreadPool.class).dispatch(_environment, new Runnable() { @Override public void run() {
+				_subscriber.consume(tuple);
+			}});
 		}
 	}
 

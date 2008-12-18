@@ -5,7 +5,6 @@ import org.jmock.Expectations;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
 import tests.Contribute;
 import tests.TestInContainerEnvironment;
-import wheel.lang.Fallible;
 
 public abstract class ShieldingTestBase extends TestInContainerEnvironment {
 
@@ -13,7 +12,7 @@ public abstract class ShieldingTestBase extends TestInContainerEnvironment {
 	
 	{
 		checking(new Expectations() {{
-			one(_handlerMock).shield(with(aNonNull(Fallible.class)));
+			one(_handlerMock).shield(with(aNonNull(Runnable.class)));
 		}});
 	}
 }

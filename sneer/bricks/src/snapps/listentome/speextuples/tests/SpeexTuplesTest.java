@@ -3,7 +3,6 @@ package snapps.listentome.speextuples.tests;
 import static wheel.lang.Environments.my;
 
 import org.jmock.Expectations;
-import org.jmock.Sequence;
 import org.junit.Test;
 
 import snapps.listentome.speex.Decoder;
@@ -45,11 +44,11 @@ public class SpeexTuplesTest extends TestInContainerEnvironment {
 	
 	@Test
 	public void testPcmToSpeex() throws Exception {
+		
 		checking(new Expectations() {{ 
-			final Sequence main = sequence("main");
 			for (byte i=0; i<_subject.framesPerAudioPacket() * 2; i+=2) {
-				one(_encoder).processData(new byte[] { i }); will(returnValue(false)); inSequence(main);
-				one(_encoder).processData(new byte[] { (byte) (i + 1) });	will(returnValue(true)); inSequence(main);
+				one(_encoder).processData(new byte[] { i }); will(returnValue(false));
+				one(_encoder).processData(new byte[] { (byte) (i + 1) });	will(returnValue(true));
 				one(_encoder).getProcessedData();	will(returnValue(new byte[] { (byte) (i*42) }));
 			}
 		}});

@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import org.junit.internal.runners.InitializationError;
 
 import sneer.kernel.container.Containers;
+import sneer.pulp.exceptionhandling.ExceptionHandler;
+import sneer.pulp.exceptionhandling.tests.mocks.ExceptionLeaker;
 import wheel.lang.Environment;
-import wheel.lang.exceptions.WheelExceptionHandler;
-import wheel.lang.exceptions.impl.ExceptionLeaker;
 import wheel.testutil.WheelEnvironment;
 
 public class ContainerEnvironment extends WheelEnvironment {
@@ -28,11 +28,11 @@ public class ContainerEnvironment extends WheelEnvironment {
 
 		@Override
 		public <T> T provide(Class<T> intrface) {
-			if (intrface == ContainerEnvironment.class)
+			if (intrface.isAssignableFrom(ContainerEnvironment.class))
 				return (T)ContainerEnvironment.this;
-			if (intrface == TestEnvironment.class)
+			if (intrface.isAssignableFrom(TestEnvironment.class))
 				return (T)this;
-			if (intrface == WheelExceptionHandler.class)
+			if (intrface.isAssignableFrom(ExceptionHandler.class))
 				return (T)new ExceptionLeaker();
 			return provideContribution(intrface);
 		}

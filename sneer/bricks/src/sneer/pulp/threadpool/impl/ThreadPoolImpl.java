@@ -58,11 +58,11 @@ class ThreadPoolImpl implements ThreadPool {
 
 	@Override
 	public void waitForAllDispatchingToFinish() {
-		//System.out.println("Waiting");
 		synchronized (_dispatchCounterMonitor ) {
 			if (_dispatchCounter != 0)
 				Threads.waitWithoutInterruptions(_dispatchCounterMonitor);
 		}
+		
 	}
 
 	private void dispatchCounterIncrement() {

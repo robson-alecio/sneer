@@ -17,6 +17,8 @@
 		- Default: sysout and file. Filter by part of message: Only file or ignore.
 			- Look at java.logging, Log4J, commons-logging, etc 
 
+	- [Bamboo] Make all fields initialized with my() final. Example: ThreadPoolImpl _ownNameKeeper = my(OwnNameKeeper.class);
+
 	- [Bamboo] Mocotó Test Framework
 
 	- [Klaus] ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do.

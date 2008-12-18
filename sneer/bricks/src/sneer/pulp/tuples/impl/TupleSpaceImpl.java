@@ -220,8 +220,9 @@ public class TupleSpaceImpl implements TupleSpace {
 		_subscriptions.add(subscription);
 	}
 	
+	/** Removes this subscription as soon as possible. The subscription might still receive tuple notifications from other threads AFTER this method returns, though. It is impossible to guarantee synchronicity of this method without risking deadlocks, especially with the GUI thread. If you really need to know when the subscription was removed, get in touch with us. We can change the API to provide for a callback.*/
 	@Override
-	public <T extends Tuple> void removeSubscription(Object subscriber) {
+	public <T extends Tuple> void removeSubscriptionAsync(Object subscriber) {
 		for (Subscription victim : _subscriptions.toArray(SUBSCRIPTION_ARRAY))
 			if (victim._subscriber == subscriber) {
 				_subscriptions.remove(victim);

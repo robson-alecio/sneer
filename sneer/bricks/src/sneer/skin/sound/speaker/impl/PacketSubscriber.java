@@ -21,7 +21,7 @@ class PacketSubscriber implements Consumer<PcmSoundPacket> {
 	
 	synchronized void crash() {
 		_isRunning = false;
-		_tupleSpace.removeSubscription(this);
+		_tupleSpace.removeSubscriptionAsync(this);
 	}
 	
 	@Override

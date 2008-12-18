@@ -47,7 +47,7 @@ public class TupleSpaceTest extends TestInContainerEnvironment {
 		
 		final TestTuple tuple = new TestTuple(42);
 		_subject.publish(tuple);
-		_subject.removeSubscription(consumer);
+		_subject.removeSubscriptionAsync(consumer);
 		_subject.publish(new TestTuple(-1));
 		assertArrayEquals(new Object[] { tuple }, tuples.toArray());
 	}

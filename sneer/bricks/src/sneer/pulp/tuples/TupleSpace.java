@@ -11,7 +11,7 @@ public interface TupleSpace extends Brick {
 	void acquire(Tuple someTupleThatCameFromAContact);
 
 	<T extends Tuple> void addSubscription(Class<T> tupleType, Consumer<? super T> subscriber);
-	<T extends Tuple> void removeSubscription(Object subscriber);
+	<T extends Tuple> void removeSubscriptionAsync(Object subscriber);
 	
 	int transientCacheSize();
 

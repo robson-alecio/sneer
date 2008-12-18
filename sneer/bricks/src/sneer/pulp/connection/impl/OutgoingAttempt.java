@@ -8,6 +8,7 @@ import sneer.pulp.internetaddresskeeper.InternetAddress;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;
 import sneer.pulp.threadpool.ThreadPool;
+import wheel.io.Logger;
 import static wheel.lang.Environments.my;
 
 class OutgoingAttempt implements Runnable {
@@ -51,10 +52,10 @@ class OutgoingAttempt implements Runnable {
 		try {
 			socket = _network.openSocket(_address.host(), _address.port());
 		} catch (IOException e) {
-//			Logger.logShort(e, "Unable to open socket to: ", _address);
 			return;
 		}
 		
+		Logger.log("Outgoing socket opened: " + socket);
 		_connectionManager.manageOutgoingSocket(_address.contact(), socket);
 	}
 	

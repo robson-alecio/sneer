@@ -1,6 +1,7 @@
 package sneer.pulp.connection.impl;
 
 import sneer.pulp.network.ByteArraySocket;
+import wheel.io.Logger;
 import wheel.lang.Consumer;
 
 class SocketHolder {
@@ -22,9 +23,12 @@ class SocketHolder {
 
 	synchronized void setSocketIfNecessary(ByteArraySocket newSocket) {
 		if (!isEmpty()) {
+			Logger.log("New socket crashed: " + newSocket);
 			newSocket.crash();
 			return;
 		}
+
+		Logger.log("New socket accepted: " + newSocket);
 
 		_socket = newSocket;
 		_activityReceiver.consume(true);
@@ -33,7 +37,13 @@ class SocketHolder {
 	synchronized void crash(ByteArraySocket referenceToSocket) {
 		referenceToSocket.crash();
 
-		if (referenceToSocket != _socket) return;
+		if (referenceToSocket != _socket) {
+			Logger.log("Crashing different socket: " + referenceToSocket);
+			return;
+		}
+
+		Logger.log("Crashing socket: ", _socket);
+
 		_socket = null;
 		_activityReceiver.consume(false);
 	}

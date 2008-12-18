@@ -15,7 +15,7 @@ import wheel.lang.Timebox;
 
 class ClockImpl implements Clock {
 	
-	long _currentTimeMillis = 0;
+	volatile long _currentTimeMillis = 0;
 	
 	final SortedSet<Alarm> _alarms = new TreeSet<Alarm>();
 	
@@ -55,7 +55,7 @@ class ClockImpl implements Clock {
 	}
 
 	@Override
-	synchronized public long time() {
+	public long time() {
 		return _currentTimeMillis;
 	}
 

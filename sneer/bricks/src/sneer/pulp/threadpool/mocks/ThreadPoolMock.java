@@ -39,4 +39,9 @@ public class ThreadPoolMock implements ThreadPool {
 		Environments.runWith(environment, runnable);
 	}
 
+	@Override
+	public void waitForAllDispatchingToFinish() {
+		//Dispatch is done synchronously by this mock. There is nothing to wait.
+	}
+
 }

@@ -29,6 +29,7 @@ public class TupleSpaceTest extends TestInContainerEnvironment {
 		}});
 		
 		_subject.publish(a);
+		waitForDispatch();
 		assertEquals(_received, a);
 		
 		_received = null;
@@ -49,6 +50,7 @@ public class TupleSpaceTest extends TestInContainerEnvironment {
 		_subject.publish(tuple);
 		_subject.removeSubscriptionAsync(consumer);
 		_subject.publish(new TestTuple(-1));
+		waitForDispatch();
 		assertArrayEquals(new Object[] { tuple }, tuples.toArray());
 	}
 	

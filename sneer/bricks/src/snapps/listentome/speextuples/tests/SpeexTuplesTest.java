@@ -45,7 +45,6 @@ public class SpeexTuplesTest extends TestInContainerEnvironment {
 	
 	@Test
 	public void testPcmToSpeex() throws Exception {
-		
 		checking(new Expectations() {{ 
 			final Sequence main = sequence("main");
 			for (byte i=0; i<_subject.framesPerAudioPacket() * 2; i+=2) {
@@ -66,14 +65,16 @@ public class SpeexTuplesTest extends TestInContainerEnvironment {
 		for (byte[] frame : frames())
 			_tupleSpace.acquire(myPacket(frame));
 		
+		waitForDispatch();
+		
 		assertNotNull(packet.value);
 		assertFrames(packet.value.frames);
 		assertEquals("MyChannel", packet.value.room);
 	}
 	
+	
 	@Test
 	public void testSpeexToPcm() {
-		
 		final byte[][] speexPacketPayload = new byte[][] { {0} };
 		final byte[] pcmPacketPayload = new byte[] { 17 };
 		
@@ -96,6 +97,7 @@ public class SpeexTuplesTest extends TestInContainerEnvironment {
 			// tuples with different channel should be ignored
 		_tupleSpace.acquire(speexPacketFrom(contactKey(), speexPacketPayload, "OtherRoom", (short)2));
 		
+		waitForDispatch();
 		final PcmSoundPacket pcmPacket = packet.value;
 		assertNotNull(pcmPacket);
 		assertArrayEquals(pcmPacketPayload, pcmPacket.payload.copy());

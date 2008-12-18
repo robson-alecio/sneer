@@ -5,6 +5,7 @@ import sneer.pulp.exceptionhandling.ExceptionHandler;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
+import wheel.lang.Daemon;
 import wheel.lang.Environments;
 import wheel.lang.Threads;
 import wheel.lang.Environments.Memento;
@@ -12,7 +13,10 @@ import wheel.lang.Environments.Memento;
 class ThreadPoolImpl implements ThreadPool {
 
 	private OwnNameKeeper _ownNameKeeper = my(OwnNameKeeper.class);
+	private final ExceptionHandler _exceptionHandler = my(ExceptionHandler.class);
 	
+	private final Object _dispatchCounterMonitor = new Object();
+	private int _dispatchCounter = 0;
 	
 	@Override
 	public void registerActor(Runnable actor) {
@@ -41,9 +45,38 @@ class ThreadPoolImpl implements ThreadPool {
 
 	@Override
 	public void dispatch(final Memento environment, final Runnable runnable) {
-		my(ExceptionHandler.class).shield(new Runnable(){@Override public void run() {
-			Environments.runWith(environment, runnable);
-		}});
+		dispatchCounterIncrement();
+
+		new Daemon("Dispatcher") { @Override public void run() {
+			_exceptionHandler.shield(new Runnable(){@Override public void run() {
+				Environments.runWith(environment, runnable);
+			}});
+
+			dispatchCounterDecrement();
+		}};
+	}
+
+	@Override
+	public void waitForAllDispatchingToFinish() {
+		//System.out.println("Waiting");
+		synchronized (_dispatchCounterMonitor ) {
+			if (_dispatchCounter != 0)
+				Threads.waitWithoutInterruptions(_dispatchCounterMonitor);
+		}
+	}
+
+	private void dispatchCounterIncrement() {
+		synchronized (_dispatchCounterMonitor ) {
+			_dispatchCounter++;
+		}
+	}
+
+	private void dispatchCounterDecrement() {
+		synchronized (_dispatchCounterMonitor ) {
+			_dispatchCounter--;
+			if (_dispatchCounter == 0)
+				_dispatchCounterMonitor.notifyAll();
+		}
 	}
 
 }

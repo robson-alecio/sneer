@@ -9,5 +9,6 @@ public interface ThreadPool extends Brick {
 	void registerStepper(Stepper stepper);
 	
 	void dispatch(Memento environment, Runnable runnable);
+	void waitForAllDispatchingToFinish();
 
 }

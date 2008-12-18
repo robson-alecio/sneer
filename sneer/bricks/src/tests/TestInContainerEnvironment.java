@@ -10,6 +10,7 @@ import org.jmock.internal.ExpectationBuilder;
 import org.junit.runner.RunWith;
 
 import sneer.pulp.config.persistence.mocks.PersistenceConfigMock;
+import sneer.pulp.threadpool.ThreadPool;
 import wheel.testutil.TestThatMightUseResources;
 
 @RunWith(JMockContainerEnvironment.class)
@@ -32,5 +33,9 @@ public abstract class TestInContainerEnvironment extends TestThatMightUseResourc
 	
 	protected void checking(ExpectationBuilder expectations) {
 		_mockery.checking(expectations);
+	}
+
+	protected void waitForDispatch() {
+		my(ThreadPool.class).waitForAllDispatchingToFinish();
 	}
 }

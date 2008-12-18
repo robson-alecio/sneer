@@ -66,7 +66,7 @@ public class TupleSpaceImpl implements TupleSpace {
 	private final List<Subscription> _subscriptions = Collections.synchronizedList(new ArrayList<Subscription>());
 
 	private final Set<Tuple> _transientTupleCache = new LinkedHashSet<Tuple>();
-		private final Set<Class<? extends Tuple>> _typesToKeep = new HashSet<Class<? extends Tuple>>();
+	private final Set<Class<? extends Tuple>> _typesToKeep = new HashSet<Class<? extends Tuple>>();
 	private final ListRegister<Tuple> _keptTuples;
 
 	private final BlockingQueue<Tuple> _acquisitionQueue;

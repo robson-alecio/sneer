@@ -5,8 +5,6 @@ import static wheel.lang.Environments.my;
 import java.io.IOException;
 
 import org.jmock.Expectations;
-import org.jmock.Mockery;
-import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
 import sneer.pulp.dyndns.checkip.CheckIp;
@@ -16,8 +14,7 @@ import tests.TestInContainerEnvironment;
 
 public class CheckIpTest extends TestInContainerEnvironment {
 	
-	private final Mockery _context = new JUnit4Mockery();
-	@Contribute final HttpClient _client = _context.mock(HttpClient.class);
+	@Contribute final HttpClient _client = mock(HttpClient.class);
 	
 	@Test
 	public void test() throws IOException {
@@ -28,7 +25,7 @@ public class CheckIpTest extends TestInContainerEnvironment {
 			+ ip
 			+ "</body></html>";
 		
-		_context.checking(new Expectations() {{
+		checking(new Expectations() {{
 			one(_client).get("http://checkip.dyndns.org/"); will(returnValue(responseBody));
 		}});
 		

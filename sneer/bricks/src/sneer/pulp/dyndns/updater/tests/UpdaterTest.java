@@ -5,8 +5,6 @@ import static wheel.lang.Environments.my;
 import java.io.IOException;
 
 import org.jmock.Expectations;
-import org.jmock.Mockery;
-import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
 import sneer.pulp.dyndns.updater.BadAuthException;
@@ -24,9 +22,7 @@ import wheel.lang.Pair;
 
 public class UpdaterTest extends TestInContainerEnvironment {
 
-	private final Mockery _mockery = new JUnit4Mockery();
-	
-	@Contribute final HttpClient client = _mockery.mock(HttpClient.class);
+	@Contribute final HttpClient client = mock(HttpClient.class);
 	
 	@Test
 	public void testUpdateSuccess() throws Exception {
@@ -99,7 +95,7 @@ public class UpdaterTest extends TestInContainerEnvironment {
 			final String ip, final String user, final String password,
 			final String responseText) throws IOException {
 		
-		_mockery.checking(new Expectations() {{
+		checking(new Expectations() {{
 			one(client).get(
 				"https://members.dyndns.org/nic/update?hostname=" + hostname + "&myip=" + ip + "&wildcard=NOCHG&mx=NOCHG&backmx=NOCHG",
 				Pair.pair("User-Agent", "SneerAlfa - DynDns ClientAlfa - 0.1"),

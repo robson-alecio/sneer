@@ -1,7 +1,7 @@
 package sneer.pulp.connection.reachability.tests;
 
-import org.jmock.Mockery;
-import org.jmock.integration.junit4.JUnit4Mockery;
+import static wheel.lang.Environments.my;
+
 import org.junit.Test;
 
 import sneer.pulp.blinkinglights.BlinkingLights;
@@ -11,7 +11,6 @@ import sneer.pulp.connection.reachability.ReachabilitySentinel;
 import sneer.pulp.network.ByteArraySocket;
 import tests.Contribute;
 import tests.TestInContainerEnvironment;
-import static wheel.lang.Environments.my;
 
 public class ReachabilityTest extends TestInContainerEnvironment {
 	
@@ -25,9 +24,6 @@ public class ReachabilityTest extends TestInContainerEnvironment {
 	@SuppressWarnings("unused")
 	private ReachabilitySentinel _subject = my(ReachabilitySentinel.class);
 	
-	final private Mockery _mockery = new JUnit4Mockery();
-	
-
 	@Test
 	public void testBlinkingLightWhenUnreachable() throws Exception {
 		assertEquals(0, _lights.lights().currentSize());
@@ -41,9 +37,4 @@ public class ReachabilityTest extends TestInContainerEnvironment {
 		
 		assertEquals(0, _lights.lights().currentSize());
 	}
-	
-	private <T>  T mock(Class<T> typeToMock) {
-		return _mockery.mock(typeToMock);
-	}	
-
 }

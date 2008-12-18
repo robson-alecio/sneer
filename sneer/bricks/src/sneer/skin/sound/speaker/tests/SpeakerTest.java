@@ -1,11 +1,11 @@
 package sneer.skin.sound.speaker.tests;
 
+import static wheel.lang.Environments.my;
+
 import javax.sound.sampled.SourceDataLine;
 
 import org.jmock.Expectations;
-import org.jmock.Mockery;
 import org.jmock.Sequence;
-import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
 import sneer.pulp.clock.Clock;
@@ -18,7 +18,6 @@ import sneer.skin.sound.speaker.Speaker;
 import tests.Contribute;
 import tests.TestInContainerEnvironment;
 import wheel.lang.ImmutableByteArray;
-import static wheel.lang.Environments.my;
 
 public class SpeakerTest extends TestInContainerEnvironment {
 	
@@ -27,14 +26,13 @@ public class SpeakerTest extends TestInContainerEnvironment {
 	private KeyManager _keyManager = my(KeyManager.class);
 	private TupleSpace _tupleSpace = my(TupleSpace.class);
 
-	private final Mockery _mockery = new JUnit4Mockery();
-	@Contribute private final Audio _audio = _mockery.mock(Audio.class);
-	private final SourceDataLine _line = _mockery.mock(SourceDataLine.class);
+	@Contribute private final Audio _audio = mock(Audio.class);
+	private final SourceDataLine _line = mock(SourceDataLine.class);
 	
 	
 	@Test
 	public void testSilentChannel() throws Exception {
-		_mockery.checking(new Expectations());
+		checking(new Expectations());
 		
 		_subject.open();
 		_subject.close();
@@ -42,7 +40,7 @@ public class SpeakerTest extends TestInContainerEnvironment {
 	
 	@Test
 	public void testOnlyTuplesFromContactsGetPlayed() throws Exception {
-		_mockery.checking(new SoundExpectations());
+		checking(new SoundExpectations());
 
 		_subject.open();
 		_tupleSpace.acquire(p1());
@@ -55,7 +53,7 @@ public class SpeakerTest extends TestInContainerEnvironment {
 	
 	@Test
 	public void testTuplesPublishedAfterCloseAreNotPlayed() throws Exception {
-		_mockery.checking(new SoundExpectations());
+		checking(new SoundExpectations());
 		
 		_subject.open();
 		
@@ -68,7 +66,7 @@ public class SpeakerTest extends TestInContainerEnvironment {
 
 	
 	class SoundExpectations extends Expectations {
-		private final Sequence _mainSequence = _mockery.sequence("main");
+		private final Sequence _mainSequence = sequence("main");
 		
 		SoundExpectations() throws Exception {
 			one(_audio).tryToOpenPlaybackLine(); will(returnValue(_line)); inSequence(_mainSequence);

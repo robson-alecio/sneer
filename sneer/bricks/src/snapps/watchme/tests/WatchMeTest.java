@@ -1,6 +1,7 @@
 package snapps.watchme.tests;
 
 import static wheel.io.ui.graphics.Images.getImage;
+import static wheel.lang.Environments.my;
 
 import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
@@ -11,9 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import org.jmock.Expectations;
-import org.jmock.Mockery;
 import org.jmock.Sequence;
-import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
 import snapps.watchme.WatchMe;
@@ -32,14 +31,11 @@ import wheel.lang.Threads;
 import wheel.lang.exceptions.Hiccup;
 import wheel.reactive.EventSource;
 import wheel.reactive.impl.Receiver;
-import static wheel.lang.Environments.my;
 
 public class WatchMeTest extends TestInContainerEnvironment {
-
-	final private Mockery _mockery = new JUnit4Mockery();
 	
 	@Contribute
-	final private Screenshotter _shotter = _mockery.mock(Screenshotter.class);
+	final private Screenshotter _shotter = mock(Screenshotter.class);
 	private ImageFactory _imageFactory = my(ImageFactory.class);
 	private KeyManager _keys = my(KeyManager.class);
 	private Clock _clock = my(Clock.class);
@@ -59,8 +55,8 @@ public class WatchMeTest extends TestInContainerEnvironment {
 		final BufferedImage image2 = loadImage("screen2.png");
 		final BufferedImage image3 = loadImage("screen3.png");
 		
-		_mockery.checking(new Expectations() {{
-			final Sequence seq = _mockery.sequence("sequence");
+		checking(new Expectations() {{
+			final Sequence seq = sequence("sequence");
 
 			one(_shotter).takeScreenshot(); will(returnValue(image1)); inSequence(seq);
 			one(_shotter).takeScreenshot(); will(returnValue(image2)); inSequence(seq);

@@ -6,8 +6,6 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.TargetDataLine;
 
 import org.jmock.Expectations;
-import org.jmock.Mockery;
-import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
 import sneer.skin.sound.kernel.Audio;
@@ -18,17 +16,15 @@ import wheel.testutil.SignalUtils;
 
 public class MicTest extends TestInContainerEnvironment {
 
-	private final Mockery _mockery = new JUnit4Mockery();
-	
 	private final Mic _subject = my(Mic.class);
 
-	@Contribute	private final Audio _audio = _mockery.mock(Audio.class);
-	private final TargetDataLine _line = _mockery.mock(TargetDataLine.class);
+	@Contribute	private final Audio _audio = mock(Audio.class);
+	private final TargetDataLine _line = mock(TargetDataLine.class);
 	private final AudioFormat _format = new AudioFormat(8000, 16, 1, true, false);
 	
 	@Test
 	public void testIsRunningSignal() {
-		_mockery.checking(soundExpectations());
+		checking(soundExpectations());
 		
 		SignalUtils.waitForValue(false, _subject.isRunning());
 		

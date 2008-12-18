@@ -16,7 +16,6 @@ public class BlinkingLightsTest extends TestInContainerEnvironment {
 
 	private Clock _clock = my(Clock.class);
 
-
 	@Test
 	public void testLights() throws Exception {
 		assertLightCount(0, _subject);

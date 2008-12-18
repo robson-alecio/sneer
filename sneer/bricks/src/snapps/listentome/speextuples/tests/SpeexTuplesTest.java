@@ -3,9 +3,7 @@ package snapps.listentome.speextuples.tests;
 import static wheel.lang.Environments.my;
 
 import org.jmock.Expectations;
-import org.jmock.Mockery;
 import org.jmock.Sequence;
-import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
 import snapps.listentome.speex.Decoder;
@@ -28,17 +26,16 @@ import wheel.lang.ImmutableByteArray;
 
 public class SpeexTuplesTest extends TestInContainerEnvironment {
 	
-	private final Mockery _mockery = new JUnit4Mockery();
 	private KeyManager _keyManager = my(KeyManager.class);
 	private Clock _clock = my(Clock.class);
 	private TupleSpace _tupleSpace = my(TupleSpace.class);
-	@Contribute private final Speex _speex = _mockery.mock(Speex.class);
+	@Contribute private final Speex _speex = mock(Speex.class);
 	
-	private final Encoder _encoder = _mockery.mock(Encoder.class);
-	private final Decoder _decoder = _mockery.mock(Decoder.class);
+	private final Encoder _encoder = mock(Encoder.class);
+	private final Decoder _decoder = mock(Decoder.class);
 	
 	{
-		_mockery.checking(new Expectations() {{
+		checking(new Expectations() {{
 			allowing(_speex).createEncoder(); will(returnValue(_encoder));
 			allowing(_speex).createDecoder(); will(returnValue(_decoder));
 		}});
@@ -49,8 +46,8 @@ public class SpeexTuplesTest extends TestInContainerEnvironment {
 	@Test
 	public void testPcmToSpeex() throws Exception {
 		
-		_mockery.checking(new Expectations() {{ 
-			final Sequence main = _mockery.sequence("main");
+		checking(new Expectations() {{ 
+			final Sequence main = sequence("main");
 			for (byte i=0; i<_subject.framesPerAudioPacket() * 2; i+=2) {
 				one(_encoder).processData(new byte[] { i }); will(returnValue(false)); inSequence(main);
 				one(_encoder).processData(new byte[] { (byte) (i + 1) });	will(returnValue(true)); inSequence(main);
@@ -80,7 +77,7 @@ public class SpeexTuplesTest extends TestInContainerEnvironment {
 		final byte[][] speexPacketPayload = new byte[][] { {0} };
 		final byte[] pcmPacketPayload = new byte[] { 17 };
 		
-		_mockery.checking(new Expectations() {{ 
+		checking(new Expectations() {{ 
 			one(_decoder).decode(speexPacketPayload);
 				will(returnValue(new byte[][] { pcmPacketPayload }));
 		}});

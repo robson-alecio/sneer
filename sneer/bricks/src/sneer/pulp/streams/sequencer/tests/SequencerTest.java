@@ -27,9 +27,7 @@ public class SequencerTest extends TestInContainerEnvironment {
 	
 	private final List<Integer> _recordedSequence = new ArrayList<Integer>();
 
-	private final Mockery _mockery = new JUnit4Mockery();
-	
-	private final Consumer<String> _consumer = _mockery.mock(Consumer.class);
+	private final Consumer<String> _consumer = mock(Consumer.class);
 
 	@Test
 	public void correctOrder() throws Exception {
@@ -42,8 +40,8 @@ public class SequencerTest extends TestInContainerEnvironment {
 	}
 
 	private void sequence(String packet1, int sequence1, String packet2, int sequence2) {
-		_mockery.checking(new Expectations(){{
-			Sequence main = _mockery.sequence("main");
+		checking(new Expectations(){{
+			Sequence main = sequence("main");
 			one(_consumer).consume("A"); inSequence(main);
 			one(_consumer).consume("B"); inSequence(main);
 			one(_consumer).consume("C"); inSequence(main);

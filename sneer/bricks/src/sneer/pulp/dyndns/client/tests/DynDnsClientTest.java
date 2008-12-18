@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jmock.Expectations;
-import org.jmock.Mockery;
-import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
 import sneer.kernel.container.Container;
@@ -56,20 +54,19 @@ Unacceptable Client Behavior
 
 	 */
 	
-	final Mockery _context = new JUnit4Mockery();
 	final Register<String> _ownIp = new RegisterImpl<String>("123.45.67.89");
 	final DynDnsAccount _account = new DynDnsAccount("test.dyndns.org", "test", "test");
 	final RegisterImpl<DynDnsAccount> _ownAccount = new RegisterImpl<DynDnsAccount>(_account);
 	
-	@Contribute final OwnIpDiscoverer _ownIpDiscoverer = _context.mock(OwnIpDiscoverer.class);
-	@Contribute final DynDnsAccountKeeper _ownAccountKeeper = _context.mock(DynDnsAccountKeeper.class);
-	@Contribute final Updater _updater = _context.mock(Updater.class);
+	@Contribute final OwnIpDiscoverer _ownIpDiscoverer = mock(OwnIpDiscoverer.class);
+	@Contribute final DynDnsAccountKeeper _ownAccountKeeper = mock(DynDnsAccountKeeper.class);
+	@Contribute final Updater _updater = mock(Updater.class);
 	@Contribute final TransientPropertyStore _propertyStore = new TransientPropertyStore();
 	@Contribute final ThreadPoolMock _threadPool = new ThreadPoolMock();
 	
 	@Test
 	public void updateOnIpChange() throws Exception {
-		_context.checking(new Expectations() {{
+		checking(new Expectations() {{
 			allowing(_ownIpDiscoverer).ownIp();
 				will(returnValue(_ownIp.output()));
 				
@@ -91,7 +88,7 @@ Unacceptable Client Behavior
 		
 		final IOException error = new IOException();
 		
-		_context.checking(new Expectations() {{
+		checking(new Expectations() {{
 			allowing(_ownIpDiscoverer).ownIp();
 				will(returnValue(_ownIp.output()));
 				
@@ -124,7 +121,7 @@ Unacceptable Client Behavior
 		final DynDnsAccount account = _ownAccount.output().currentValue();
 		final String newIp = "111.111.111.111";
 		
-		_context.checking(new Expectations() {{
+		checking(new Expectations() {{
 			allowing(_ownIpDiscoverer).ownIp();
 				will(returnValue(_ownIp.output()));
 			allowing(_ownAccountKeeper).ownAccount();
@@ -158,7 +155,7 @@ Unacceptable Client Behavior
 		final RedundantUpdateException error = new RedundantUpdateException();
 		final DynDnsAccount account = _ownAccount.output().currentValue();
 		
-		_context.checking(new Expectations() {{
+		checking(new Expectations() {{
 			allowing(_ownIpDiscoverer).ownIp();	will(returnValue(_ownIp.output()));
 			allowing(_ownAccountKeeper).ownAccount(); will(returnValue(_ownAccount.output()));
 			

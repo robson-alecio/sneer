@@ -3,7 +3,6 @@ package sneer.pulp.probe.tests;
 import static wheel.lang.Environments.my;
 
 import org.jmock.Expectations;
-import org.jmock.Mockery;
 import org.jmock.api.Invocation;
 import org.jmock.lib.action.CustomAction;
 import org.junit.Ignore;
@@ -28,10 +27,9 @@ import wheel.testutil.SignalUtils;
 
 public class ProbeManagerTest extends TestInContainerEnvironment {
 
-	private final Mockery _mockery = new Mockery();
-	@Contribute private final ConnectionManager _connectionManager = _mockery.mock(ConnectionManager.class);
-	@Contribute private final Serializer _serializer = _mockery.mock(Serializer.class);
-	@Contribute private final BandwidthCounter _bandwidthCounter = _mockery.mock(BandwidthCounter.class);
+	@Contribute private final ConnectionManager _connectionManager = mock(ConnectionManager.class);
+	@Contribute private final Serializer _serializer = mock(Serializer.class);
+	@Contribute private final BandwidthCounter _bandwidthCounter = mock(BandwidthCounter.class);
 
 	@SuppressWarnings("unused")
 	private final ProbeManager _subject = my(ProbeManager.class);
@@ -40,7 +38,7 @@ public class ProbeManagerTest extends TestInContainerEnvironment {
 	private final TupleSpace _tuples = my(TupleSpace.class);
 	private final KeyManager _keys = my(KeyManager.class);
 	
-	private final ByteConnection _connection = _mockery.mock(ByteConnection.class);
+	private final ByteConnection _connection = mock(ByteConnection.class);
 	private PacketScheduler _scheduler;
 	@SuppressWarnings("unused")
 	private Consumer<byte[]> _packetReceiver;
@@ -48,7 +46,7 @@ public class ProbeManagerTest extends TestInContainerEnvironment {
 	@SuppressWarnings("deprecation") //mickeyMouseKey()
 	@Test (timeout = 1000)
 	public void testTupleBlocking() {
-		_mockery.checking(new Expectations(){{
+		checking(new Expectations(){{
 			one(_connectionManager).connectionFor(with(aNonNull(Contact.class))); will(returnValue(_connection));
 			one(_connection).isOnline(); will(returnValue(new Constant<Boolean>(true)));
 			one(_connection).initCommunications(with(aNonNull(PacketScheduler.class)), with(aNonNull(Consumer.class)));
@@ -92,7 +90,7 @@ public class ProbeManagerTest extends TestInContainerEnvironment {
 	@Test (timeout = 1000)
 	@Ignore
 	public void testBandwidthReporting() {
-		_mockery.checking(new Expectations(){{
+		checking(new Expectations(){{
 			one(_connectionManager).connectionFor(with(aNonNull(Contact.class))); will(returnValue(_connection));
 			one(_connection).isOnline(); will(returnValue(new Constant<Boolean>(true)));
 			one(_connection).initCommunications(with(aNonNull(PacketScheduler.class)), with(aNonNull(Consumer.class)));

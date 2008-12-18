@@ -1,10 +1,10 @@
 package sneer.pulp.reactive.listsorter.tests;
 
+import static wheel.lang.Environments.my;
+
 import java.util.Comparator;
 
 import org.jmock.Expectations;
-import org.jmock.Mockery;
-import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
 import sneer.pulp.reactive.listsorter.ListSorter;
@@ -21,15 +21,12 @@ import wheel.reactive.lists.ListValueChange;
 import wheel.reactive.lists.ListValueChange.Visitor;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 import wheel.testutil.TestUtils;
-import static wheel.lang.Environments.my;
 
 public class ListSorterTest extends TestInContainerEnvironment {
 	
 	private ListSorter _sorter = my(ListSorter.class);
 
-	private final Mockery _mockery = new JUnit4Mockery();	
-	
-	private final Visitor<Signal<Integer>> _visitor = _mockery.mock(Visitor.class);
+	private final Visitor<Signal<Integer>> _visitor = mock(Visitor.class);
 	
 	private final Signal<Integer> _00 = new Constant<Integer>(00);
 	private final Signal<Integer> _01 = new Constant<Integer>(01);
@@ -47,7 +44,7 @@ public class ListSorterTest extends TestInContainerEnvironment {
 	
 	@Test
 	public void testVisitor() {
-		_mockery.checking(new Expectations(){{
+		checking(new Expectations(){{
 			one(_visitor).elementAdded(0, _50);
 			one(_visitor).elementAdded(0, _00);
 			one(_visitor).elementAdded(1, _10);

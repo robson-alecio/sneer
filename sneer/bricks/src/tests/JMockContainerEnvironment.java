@@ -26,8 +26,7 @@ public class JMockContainerEnvironment extends ContainerEnvironment {
 
 			private void assertMockeryHasBeenSatisfied(Object test) {
 				final Mockery mockery = mockeryFor(test);
-				if (null != mockery)
-					mockery.assertIsSatisfied();
+				mockery.assertIsSatisfied();
 			}
 			
 			protected Mockery mockeryFor(Object test) {

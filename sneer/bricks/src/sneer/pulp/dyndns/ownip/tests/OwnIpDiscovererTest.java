@@ -5,9 +5,7 @@ import static wheel.lang.Environments.my;
 import java.io.IOException;
 
 import org.jmock.Expectations;
-import org.jmock.Mockery;
 import org.jmock.Sequence;
-import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
 import sneer.pulp.clock.Clock;
@@ -22,20 +20,19 @@ import wheel.reactive.impl.Receiver;
 
 public class OwnIpDiscovererTest extends TestInContainerEnvironment {
 	
-	final Mockery _context = new JUnit4Mockery();
-	@Contribute final CheckIp checkip = _context.mock(CheckIp.class);
+	@Contribute final CheckIp checkip = mock(CheckIp.class);
 	@Contribute final PropertyStore store = new TransientPropertyStore();
 	
 	@Test
 	public void testDiscovery() throws IOException {
-		final Consumer<String> receiver = _context.mock(Consumer.class);
+		final Consumer<String> receiver = mock(Consumer.class);
 		final String ip1 = "123.45.67.89";
 		final String ip2 = "12.34.56.78";
 
 		int retryTime = 11 * 60 * 1000;
 
-		_context.checking(new Expectations() {{
-			final Sequence seq = _context.sequence("sequence");
+		checking(new Expectations() {{
+			final Sequence seq = sequence("sequence");
 			one(receiver).consume(null); inSequence(seq);
 
 			one(checkip).check(); will(returnValue(ip1)); inSequence(seq);

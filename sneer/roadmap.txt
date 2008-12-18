@@ -13,9 +13,6 @@
 ﻿ROADMAP TO BECOME MORE PRODUCTIVE
 =====================================
 
-	- [Bamboo] Remove support for "optional" _mockery field in tests.
-		- Inherit _mockery field in all tests that use it.
-
 	- [Douglas] Debugging Strategy - Revise so that all debugging info doesn't go into the log file.
 		- Default: sysout and file. Filter by part of message: Only file or ignore.
 			- Look at java.logging, Log4J, commons-logging, etc 

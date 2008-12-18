@@ -18,10 +18,8 @@ public class TupleSpaceResponsivenessTest extends TestInContainerEnvironment {
 
 	@Contribute private final ThreadPoolMock _threads = new ThreadPoolMock();
 	
-	private final Mockery _mockery = new JUnit4Mockery();
-	
-	@Contribute private final TupleSpaceConfig _tuplesConfig = _mockery.mock(TupleSpaceConfig.class); {
-		_mockery.checking(new Expectations() {{
+	@Contribute private final TupleSpaceConfig _tuplesConfig = mock(TupleSpaceConfig.class); {
+		checking(new Expectations() {{
 			one(_tuplesConfig).isAcquisitionSynchronous();
 				will(returnValue(false));
 		}});

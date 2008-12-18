@@ -9,7 +9,7 @@ import static wheel.lang.Environments.my;
 
 class PacketPlayer implements Consumer<PcmSoundPacket> {
 
-	private Audio _audio = my(Audio.class);
+	private final Audio _audio = my(Audio.class);
 	
 	private boolean _isRunning = true;
 	private SourceDataLine _line;

@@ -9,7 +9,7 @@ import static wheel.lang.Environments.my;
 
 public class CryptoTest extends TestInContainerEnvironment {
 
-	private Crypto _crypto = my(Crypto.class);
+	private final Crypto _crypto = my(Crypto.class);
 	
 	private static final String INPUT = "The quick brown fox jumps over the lazy dog"; 
 

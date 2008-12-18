@@ -9,7 +9,7 @@ import static wheel.lang.Environments.my;
 
 public class TupleFilterManagerTest extends TestInContainerEnvironment {
 
-	private TupleFilterManager _subject = my(TupleFilterManager.class);
+	private final TupleFilterManager _subject = my(TupleFilterManager.class);
 
 	@Test
 	public void testTupleTypeBlocking() {

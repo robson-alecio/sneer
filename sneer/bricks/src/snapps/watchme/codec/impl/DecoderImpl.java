@@ -13,7 +13,7 @@ import static wheel.lang.Environments.my;
 
 class DecoderImpl implements Decoder {
 
-	private ImageFactory _imageFactory = my(ImageFactory.class);
+	private final ImageFactory _imageFactory = my(ImageFactory.class);
 
 	private BufferedImage _image;
 

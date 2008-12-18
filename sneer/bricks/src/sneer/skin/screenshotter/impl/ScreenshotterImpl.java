@@ -17,7 +17,7 @@ import static wheel.lang.Environments.my;
 
 class ScreenshotterImpl implements Screenshotter {
 
-	private BlinkingLights _lights = my(BlinkingLights.class);
+	private final BlinkingLights _lights = my(BlinkingLights.class);
 	
 	private final GraphicsDevice _device = defaultDevice();
 	private final Robot _robot = createRobot();

@@ -25,7 +25,7 @@ public class JavaCompilerTest extends TestInContainerEnvironment {
 
 	private sneer.pulp.compiler.JavaCompiler _compiler = my(sneer.pulp.compiler.JavaCompiler.class);
 	
-	private ClasspathFactory _factory = my(ClasspathFactory.class);
+	private final ClasspathFactory _factory = my(ClasspathFactory.class);
 	
 	@Test
 	public void testCompile() throws Exception {

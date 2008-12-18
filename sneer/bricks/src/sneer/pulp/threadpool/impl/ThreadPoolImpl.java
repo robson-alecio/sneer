@@ -12,7 +12,7 @@ import wheel.lang.Environments.Memento;
 
 class ThreadPoolImpl implements ThreadPool {
 
-	private OwnNameKeeper _ownNameKeeper = my(OwnNameKeeper.class);
+	private final OwnNameKeeper _ownNameKeeper = my(OwnNameKeeper.class);
 	private final ExceptionHandler _exceptionHandler = my(ExceptionHandler.class);
 	
 	private final Object _dispatchCounterMonitor = new Object();

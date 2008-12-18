@@ -8,9 +8,9 @@ import static wheel.lang.Environments.my;
 
 public class ClockTickerImpl implements ClockTicker, Runnable {
 
-	private ThreadPool _threadPool = my(ThreadPool.class);
+	private final ThreadPool _threadPool = my(ThreadPool.class);
 
-	private Clock _clock = my(Clock.class);
+	private final Clock _clock = my(Clock.class);
 
 	ClockTickerImpl() {
 		tick();

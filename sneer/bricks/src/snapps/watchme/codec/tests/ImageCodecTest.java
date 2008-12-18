@@ -24,9 +24,9 @@ import static wheel.lang.Environments.my;
 
 public class ImageCodecTest extends TestInContainerEnvironment {
 	
-	private ImageCodec _subject = my(ImageCodec.class);
+	private final ImageCodec _subject = my(ImageCodec.class);
 	
-	private ImageFactory _imageFactory = my(ImageFactory.class);
+	private final ImageFactory _imageFactory = my(ImageFactory.class);
 	
 	@Test
 	public void encodeSameImage() throws Hiccup {

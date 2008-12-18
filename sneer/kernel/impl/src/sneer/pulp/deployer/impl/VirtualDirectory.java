@@ -24,7 +24,7 @@ import static wheel.lang.Environments.my;
 
 class VirtualDirectory {
 
-	private DeploymentJarFactory _sneerDeploymentFactory = my(DeploymentJarFactory.class);
+	private final DeploymentJarFactory _sneerDeploymentFactory = my(DeploymentJarFactory.class);
 	
 	private String _brickName;
 	

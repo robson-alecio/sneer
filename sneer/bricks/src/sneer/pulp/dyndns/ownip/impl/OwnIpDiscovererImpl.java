@@ -21,13 +21,13 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	private static final String LAST_IP_KEY = "ownIp.ip";
 	private static final String LAST_CHECK_TIME_KEY = "ownIp.lastUpdateRequestTime";
 
-	private Clock _clock = my(Clock.class);
+	private final Clock _clock = my(Clock.class);
 	
-	private CheckIp _checkip = my(CheckIp.class);
+	private final CheckIp _checkip = my(CheckIp.class);
 	
-	private DataStore _store = my(DataStore.class);
+	private final DataStore _store = my(DataStore.class);
 	
-	private BlinkingLights _blinkingLights = my(BlinkingLights.class);
+	private final BlinkingLights _blinkingLights = my(BlinkingLights.class);
 	
 	private final Register<String> _ownIp;
 

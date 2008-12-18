@@ -8,7 +8,7 @@ import static wheel.lang.Environments.my;
 
 public class OwnTaglineKeeperTest extends TestInContainerEnvironment {
 
-	private OwnTaglineKeeper _taglineKeeper = my(OwnTaglineKeeper.class);
+	private final OwnTaglineKeeper _taglineKeeper = my(OwnTaglineKeeper.class);
 	
 	@Test
 	public void test() throws Exception {

@@ -14,13 +14,13 @@ class ReachabilitySentinelImpl implements ReachabilitySentinel {
 	
 	private static final int THIRTY_SECONDS = 30*1000;
 	
-	private SocketAccepter _socketAccepter = my(SocketAccepter.class);
+	private final SocketAccepter _socketAccepter = my(SocketAccepter.class);
 	
-	private BlinkingLights _lights = my(BlinkingLights.class);
+	private final BlinkingLights _lights = my(BlinkingLights.class);
 	
 	private static Light _unreachable;
 	
-	private Clock _clock = my(Clock.class);	
+	private final Clock _clock = my(Clock.class);	
 	
 	private long _lastIncomingSocketTime = _clock.time();
 

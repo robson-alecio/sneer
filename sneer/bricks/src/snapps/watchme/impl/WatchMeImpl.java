@@ -27,13 +27,13 @@ class WatchMeImpl implements WatchMe {
 
 	private static final int PERIOD_IN_MILLIS = 1000;
 
-	private Screenshotter _shotter = my(Screenshotter.class);
-	private ImageCodec _codec = my(ImageCodec.class);
-	private TupleSpace _tupleSpace = my(TupleSpace.class);
-	private ThreadPool _pool = my(ThreadPool.class);
-	private BlinkingLights _lights = my(BlinkingLights.class);
+	private final Screenshotter _shotter = my(Screenshotter.class);
+	private final ImageCodec _codec = my(ImageCodec.class);
+	private final TupleSpace _tupleSpace = my(TupleSpace.class);
+	private final ThreadPool _pool = my(ThreadPool.class);
+	private final BlinkingLights _lights = my(BlinkingLights.class);
 
-	private Clock _clock = my(Clock.class);
+	private final Clock _clock = my(Clock.class);
 	
 	private boolean _isRunning;
 	private final Light _light = _lights.prepare(LightType.ERROR);

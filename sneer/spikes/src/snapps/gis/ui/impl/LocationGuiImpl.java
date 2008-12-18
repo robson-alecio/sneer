@@ -27,9 +27,9 @@ import static wheel.lang.Environments.my;
 
 public class LocationGuiImpl {
 
-	private LocationKeeper _keeper = my(LocationKeeper.class);
+	private final LocationKeeper _keeper = my(LocationKeeper.class);
 
-	private ThreadPool _pool = my(ThreadPool.class);
+	private final ThreadPool _pool = my(ThreadPool.class);
 
 	LocationGuiImpl() {
 		_pool.registerActor(new Runnable() { @Override public void run() {

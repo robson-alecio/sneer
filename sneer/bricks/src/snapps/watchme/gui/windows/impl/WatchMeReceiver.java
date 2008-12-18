@@ -26,11 +26,11 @@ import static wheel.lang.Environments.my;
 
 class WatchMeReceiver{
 	
-	private WatchMe _watchMe = my(WatchMe.class);
+	private final WatchMe _watchMe = my(WatchMe.class);
 	
-	private KeyManager _keyManager = my(KeyManager.class);
+	private final KeyManager _keyManager = my(KeyManager.class);
 	
-	private ReactiveWidgetFactory _factory = my(ReactiveWidgetFactory.class);
+	private final ReactiveWidgetFactory _factory = my(ReactiveWidgetFactory.class);
 	
 	@SuppressWarnings("unused")
 	private Consumer<Image> _imageReceiverToAvoidGc;

@@ -9,7 +9,7 @@ import static wheel.lang.Environments.my;
 
 public class ClockShieldingTest extends ShieldingTestBase {
 
-	private Clock _subject = my(Clock.class);
+	private final Clock _subject = my(Clock.class);
 	
 	private final Stepper _stepper = new Stepper() { @Override public boolean step() {
 		return false;

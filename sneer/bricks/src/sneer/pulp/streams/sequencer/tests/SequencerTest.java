@@ -21,7 +21,7 @@ public class SequencerTest extends TestInContainerEnvironment {
 
 	private static final short BUFFER_SIZE = (short)30;
 
-	private Sequencers _subject = my(Sequencers.class);
+	private final Sequencers _subject = my(Sequencers.class);
 	
 	private final List<Integer> _recordedSequence = new ArrayList<Integer>();
 

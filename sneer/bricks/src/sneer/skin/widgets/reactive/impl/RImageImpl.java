@@ -20,7 +20,7 @@ import static wheel.lang.Environments.my;
 
 class RImageImpl extends JPanel implements ImageWidget{
 
-	private ImageFactory _imageFactory = my(ImageFactory.class);
+	private final ImageFactory _imageFactory = my(ImageFactory.class);
 
 	protected final Register<Image> _image;
 	protected final Consumer<Image> _setter;

@@ -26,9 +26,9 @@ import wheel.lang.ImmutableByteArray;
 
 public class SpeexTuplesTest extends TestInContainerEnvironment {
 	
-	private KeyManager _keyManager = my(KeyManager.class);
-	private Clock _clock = my(Clock.class);
-	private TupleSpace _tupleSpace = my(TupleSpace.class);
+	private final KeyManager _keyManager = my(KeyManager.class);
+	private final Clock _clock = my(Clock.class);
+	private final TupleSpace _tupleSpace = my(TupleSpace.class);
 	@Contribute private final Speex _speex = mock(Speex.class);
 	
 	private final Encoder _encoder = mock(Encoder.class);
@@ -41,7 +41,7 @@ public class SpeexTuplesTest extends TestInContainerEnvironment {
 		}});
 	}
 	
-	private SpeexTuples _subject = my(SpeexTuples.class);
+	private final SpeexTuples _subject = my(SpeexTuples.class);
 	
 	@Test
 	public void testPcmToSpeex() throws Exception {

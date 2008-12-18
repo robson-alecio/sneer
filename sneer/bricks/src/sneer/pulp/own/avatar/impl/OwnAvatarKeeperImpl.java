@@ -17,7 +17,7 @@ class OwnAvatarKeeperImpl implements OwnAvatarKeeper {
 
 	private Register<Image> _avatar = new RegisterImpl<Image>(null);
 	
-	private ImageFactory _imageFactory = my(ImageFactory.class);
+	private final ImageFactory _imageFactory = my(ImageFactory.class);
 
 	@Override
 	public Signal<Image> avatar(final int squareSize) {

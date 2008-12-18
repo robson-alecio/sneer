@@ -13,7 +13,7 @@ class RemoteWatchMeWindowsImpl implements RemoteWatchMeWindows{
 
 	Map<Contact, WatchMeReceiver> _remoteReceivers = new HashMap<Contact, WatchMeReceiver>();
 
-	private ContactManager _contactManager = my(ContactManager.class);
+	private final ContactManager _contactManager = my(ContactManager.class);
 
 	@SuppressWarnings("unused")
 	private WatchMeReceiver _ownReceiverToAvoidGc;

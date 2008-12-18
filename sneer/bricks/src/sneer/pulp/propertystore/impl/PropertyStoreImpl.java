@@ -20,7 +20,7 @@ class PropertyStoreImpl implements PropertyStore {
 	private static final String FILE_NAME = "propertystore.txt";
 
 
-	private PersistenceConfig _config = my(PersistenceConfig.class);
+	private final PersistenceConfig _config = my(PersistenceConfig.class);
 
 	
 	private final Properties _properties = loadProperties();

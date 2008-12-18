@@ -34,7 +34,7 @@ public class BrickClassLoader extends EnhancingClassLoader {
 	
 	private ClassLoader _delegate;
 	
-	private DependencyManager _dependencyManager = my(DependencyManager.class);
+	private final DependencyManager _dependencyManager = my(DependencyManager.class);
 	
 	public BrickClassLoader() {
 		//used for testing

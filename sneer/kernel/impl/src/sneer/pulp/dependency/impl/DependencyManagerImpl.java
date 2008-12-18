@@ -19,9 +19,9 @@ import static wheel.lang.Environments.my;
 
 class DependencyManagerImpl implements DependencyManager {
 
-	private Crypto _crypto = my(Crypto.class);
+	private final Crypto _crypto = my(Crypto.class);
 	
-	private SneerConfig _config = my(SneerConfig.class);
+	private final SneerConfig _config = my(SneerConfig.class);
 	
 	private File _root;
 	

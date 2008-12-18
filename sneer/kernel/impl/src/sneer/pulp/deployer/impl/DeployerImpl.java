@@ -24,13 +24,13 @@ import wheel.io.codegeneration.MetaClass;
 
 class DeployerImpl implements Deployer {
 
-	private SneerConfig _config = my(SneerConfig.class);
+	private final SneerConfig _config = my(SneerConfig.class);
 	
-	private JavaCompiler _compiler = my(JavaCompiler.class);
+	private final JavaCompiler _compiler = my(JavaCompiler.class);
 	
-	private ClasspathFactory _cpFactory = my(ClasspathFactory.class);
+	private final ClasspathFactory _cpFactory = my(ClasspathFactory.class);
 	
-	private DependencyManager _dependencies = my(DependencyManager.class);
+	private final DependencyManager _dependencies = my(DependencyManager.class);
 	
 	
 //	public void deploy(BrickBundle received) {

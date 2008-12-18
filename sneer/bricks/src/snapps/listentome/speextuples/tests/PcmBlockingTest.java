@@ -24,7 +24,7 @@ public class PcmBlockingTest extends TestInContainerEnvironment {
 	}
 
 	@SuppressWarnings("unused")
-	private SpeexTuples _subject = my(SpeexTuples.class);
+	private final SpeexTuples _subject = my(SpeexTuples.class);
 	
 	@Test
 	public void testPcmBlocking() throws Exception {

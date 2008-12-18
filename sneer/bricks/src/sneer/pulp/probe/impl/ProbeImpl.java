@@ -16,9 +16,9 @@ import static wheel.lang.Environments.my;
 
 final class ProbeImpl implements Consumer<Tuple> {
 
-	private TupleSpace _tuples = my(TupleSpace.class);
-	private KeyManager _keyManager = my(KeyManager.class);
-	private TupleFilterManager _filter = my(TupleFilterManager.class);
+	private final TupleSpace _tuples = my(TupleSpace.class);
+	private final KeyManager _keyManager = my(KeyManager.class);
+	private final TupleFilterManager _filter = my(TupleFilterManager.class);
 
 	
 	private final Contact _contact;

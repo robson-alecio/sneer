@@ -13,10 +13,10 @@ import static wheel.lang.Environments.my;
 
 class OutgoingAttempt implements Runnable {
 
-	private Network _network = my(Network.class);
-	private ConnectionManager _connectionManager = my(ConnectionManager.class);
-	private ThreadPool _threadPool = my(ThreadPool.class); { _threadPool.registerActor(this); }
-	private Clock _clock = my(Clock.class);
+	private final Network _network = my(Network.class);
+	private final ConnectionManager _connectionManager = my(ConnectionManager.class);
+	private final ThreadPool _threadPool = my(ThreadPool.class); { _threadPool.registerActor(this); }
+	private final Clock _clock = my(Clock.class);
 
 	
 	private final InternetAddress _address;

@@ -25,7 +25,7 @@ class EncoderImpl implements Encoder {
 	
 	private static Profiler _generateDeltasProfiler = new Profiler("EncoderImpl.generateDeltas()");
 	
-	private ImageFactory _imageFactory = my(ImageFactory.class);	
+	private final ImageFactory _imageFactory = my(ImageFactory.class);	
 	
 	private Map<Pair<Integer, Integer>, int[]> _previousPixelsByCellCoordinate = new HashMap<Pair<Integer, Integer>, int[]>();
 	

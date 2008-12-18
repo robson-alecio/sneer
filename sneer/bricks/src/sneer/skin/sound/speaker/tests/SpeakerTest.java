@@ -21,10 +21,10 @@ import wheel.lang.ImmutableByteArray;
 
 public class SpeakerTest extends TestInContainerEnvironment {
 	
-	private Speaker _subject = my(Speaker.class);
-	private Clock _clock = my(Clock.class);
-	private KeyManager _keyManager = my(KeyManager.class);
-	private TupleSpace _tupleSpace = my(TupleSpace.class);
+	private final Speaker _subject = my(Speaker.class);
+	private final Clock _clock = my(Clock.class);
+	private final KeyManager _keyManager = my(KeyManager.class);
+	private final TupleSpace _tupleSpace = my(TupleSpace.class);
 
 	@Contribute private final Audio _audio = mock(Audio.class);
 	private final SourceDataLine _line = mock(SourceDataLine.class);

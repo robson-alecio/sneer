@@ -15,7 +15,7 @@ import static wheel.lang.Environments.my;
 
 public class ListSignalModelImpl<T> extends AbstractListModel implements ListSignalModel<T>{
 
-	private SignalChooserManagerFactory _signalChooserManagerFactory = my(SignalChooserManagerFactory.class);
+	private final SignalChooserManagerFactory _signalChooserManagerFactory = my(SignalChooserManagerFactory.class);
 	
 	private final ListSignal<T> _input;
 	

@@ -14,9 +14,9 @@ import static wheel.lang.Environments.my;
 
 class RetrierImpl implements Retrier {
 
-	private ThreadPool _threads = my(ThreadPool.class);
-	private BlinkingLights _lights = my(BlinkingLights.class);
-	private Clock _clock = my(Clock.class);
+	private final ThreadPool _threads = my(ThreadPool.class);
+	private final BlinkingLights _lights = my(BlinkingLights.class);
+	private final Clock _clock = my(Clock.class);
 	
 	
 	private volatile boolean _isStillTrying = true;

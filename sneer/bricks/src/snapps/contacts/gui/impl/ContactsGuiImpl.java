@@ -38,17 +38,17 @@ class ContactsGuiImpl implements ContactsGui {
 	private static final Image ONLINE = getImage("online.png");
 	private static final Image OFFLINE = getImage("offline.png");
 	
-	private InstrumentManager _instrumentManager = my(InstrumentManager.class);
+	private final InstrumentManager _instrumentManager = my(InstrumentManager.class);
 
-	private ContactActionManager _actionsManager = my(ContactActionManager.class);
+	private final ContactActionManager _actionsManager = my(ContactActionManager.class);
 
-	private ReactiveWidgetFactory _rfactory = my(ReactiveWidgetFactory.class);
+	private final ReactiveWidgetFactory _rfactory = my(ReactiveWidgetFactory.class);
 	
-	private ContactList _contacts = my(ContactList.class);
+	private final ContactList _contacts = my(ContactList.class);
 	
-	private ContactInfoComparator _comparator = my(ContactInfoComparator.class);
+	private final ContactInfoComparator _comparator = my(ContactInfoComparator.class);
 	
-	private ListSorter _sorter = my(ListSorter.class);
+	private final ListSorter _sorter = my(ListSorter.class);
 	
 	private final SignalChooser<ContactInfo> _chooser;
 

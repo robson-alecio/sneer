@@ -9,7 +9,7 @@ import static wheel.lang.Environments.my;
 
 public class DynDnsAccountKeeperTest extends TestInContainerEnvironment {
 
-	private DynDnsAccountKeeper _subject = my(DynDnsAccountKeeper.class);
+	private final DynDnsAccountKeeper _subject = my(DynDnsAccountKeeper.class);
 	
 	@Test
 	public void testAccountKeeper() {

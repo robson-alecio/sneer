@@ -10,7 +10,7 @@ import wheel.lang.ByRef;
 
 public class ExceptionHandlerTest extends TestInContainerEnvironment {
 
-	private ExceptionHandler _handler = my(ExceptionHandler.class);
+	private final ExceptionHandler _handler = my(ExceptionHandler.class);
 	
 	@Test
 	public void testShielding() {

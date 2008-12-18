@@ -11,7 +11,7 @@ import wheel.reactive.lists.impl.ListRegisterImpl;
 
 class BlinkingLightsImpl implements BlinkingLights {
 	
-	private Clock _clock = my(Clock.class);
+	private final Clock _clock = my(Clock.class);
 	
 	private final ListRegisterImpl<Light> _lights = new ListRegisterImpl<Light>();
 	

@@ -17,12 +17,12 @@ public class ReachabilityTest extends TestInContainerEnvironment {
 	@Contribute
 	final private SocketAccepterMock _accepter = new SocketAccepterMock();
 	
-	private Clock _clock = my(Clock.class);
+	private final Clock _clock = my(Clock.class);
 	
-	private BlinkingLights _lights = my(BlinkingLights.class);
+	private final BlinkingLights _lights = my(BlinkingLights.class);
 	
 	@SuppressWarnings("unused")
-	private ReachabilitySentinel _subject = my(ReachabilitySentinel.class);
+	private final ReachabilitySentinel _subject = my(ReachabilitySentinel.class);
 	
 	@Test
 	public void testBlinkingLightWhenUnreachable() throws Exception {

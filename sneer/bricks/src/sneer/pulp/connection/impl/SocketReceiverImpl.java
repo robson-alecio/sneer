@@ -9,9 +9,9 @@ import static wheel.lang.Environments.my;
 
 class SocketReceiverImpl implements SocketReceiver {
 
-	private SocketAccepter _socketAccepter = my(SocketAccepter.class);
+	private final SocketAccepter _socketAccepter = my(SocketAccepter.class);
 	
-	private ThreadPool _threadPool = my(ThreadPool.class);
+	private final ThreadPool _threadPool = my(ThreadPool.class);
 	
 	@SuppressWarnings("unused")
 	private final Receiver<ByteArraySocket> _receiverThatCannotBeGCd;

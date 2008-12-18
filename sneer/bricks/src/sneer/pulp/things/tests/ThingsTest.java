@@ -14,7 +14,7 @@ import static wheel.lang.Environments.my;
 
 public class ThingsTest extends TestInContainerEnvironment {
 	
-	private ThingHome _subject = my(ThingHome.class);
+	private final ThingHome _subject = my(ThingHome.class);
 
 	private static final int _THINGS_TO_ADD = 50;
 	private static final String _LARGE_TEXT = generateLargeText();

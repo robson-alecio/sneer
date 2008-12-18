@@ -39,7 +39,7 @@ public class DeploymentJarImpl implements DeploymentJar {
 
 	transient private JarFile _jarFile;
 	
-	private Crypto _crypto = my(Crypto.class);
+	private final Crypto _crypto = my(Crypto.class);
 
 	public DeploymentJarImpl(File file) {
 		_file = file;

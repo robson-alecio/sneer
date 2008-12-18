@@ -6,7 +6,7 @@ import static wheel.lang.Environments.my;
 
 class DataStoreImpl implements DataStore {
 
-	private PropertyStore _delegate = my(PropertyStore.class);
+	private final PropertyStore _delegate = my(PropertyStore.class);
 
 
 	@Override

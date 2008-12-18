@@ -24,17 +24,17 @@ import static wheel.lang.Environments.my;
 
 class OwnerGuiImpl implements OwnerGui {
 
-	private OwnNameKeeper _ownNameKeeper = my(OwnNameKeeper.class);
+	private final OwnNameKeeper _ownNameKeeper = my(OwnNameKeeper.class);
 
-	private OwnTaglineKeeper _ownTaglineKeeper = my(OwnTaglineKeeper.class);
+	private final OwnTaglineKeeper _ownTaglineKeeper = my(OwnTaglineKeeper.class);
 
-	private OwnAvatarKeeper _ownAvatarKeeper = my(OwnAvatarKeeper.class);
+	private final OwnAvatarKeeper _ownAvatarKeeper = my(OwnAvatarKeeper.class);
 
-	private InstrumentManager _instrumentManager = my(InstrumentManager.class);
+	private final InstrumentManager _instrumentManager = my(InstrumentManager.class);
 
-	private ImageSelector _imageSelector = my(ImageSelector.class);
+	private final ImageSelector _imageSelector = my(ImageSelector.class);
 
-	private ReactiveWidgetFactory _rfactory = my(ReactiveWidgetFactory.class);
+	private final ReactiveWidgetFactory _rfactory = my(ReactiveWidgetFactory.class);
 
 	private TextWidget<JTextField> _editableLabel;
 

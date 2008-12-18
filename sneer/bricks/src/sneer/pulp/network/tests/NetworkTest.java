@@ -14,9 +14,9 @@ import static wheel.lang.Environments.my;
 
 public class NetworkTest extends TestInContainerEnvironment {
 
-	private Network _network = my(Network.class);
+	private final Network _network = my(Network.class);
 	
-	private ThreadPool _threadPool = my(ThreadPool.class);
+	private final ThreadPool _threadPool = my(ThreadPool.class);
 
 	
 	@Test

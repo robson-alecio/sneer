@@ -24,7 +24,7 @@ public class TupleSpaceResponsivenessTest extends TestInContainerEnvironment {
 		}});
 	}
 
-	private TupleSpace _subject = my(TupleSpace.class);
+	private final TupleSpace _subject = my(TupleSpace.class);
 	
 	@Test (timeout = 1000)
 	public void test() {

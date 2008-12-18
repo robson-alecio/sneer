@@ -15,11 +15,11 @@ import static wheel.lang.Environments.my;
 
 class IndividualSocketReceiver {
 
-	private KeyManager _keyManager = my(KeyManager.class);
+	private final KeyManager _keyManager = my(KeyManager.class);
 	
-	private ContactManager _contactManager = my(ContactManager.class);
+	private final ContactManager _contactManager = my(ContactManager.class);
 	
-	private ConnectionManager _connectionManager = my(ConnectionManager.class);
+	private final ConnectionManager _connectionManager = my(ConnectionManager.class);
 	
 	private final ByteArraySocket _socket;
 	

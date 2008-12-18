@@ -12,7 +12,7 @@ import wheel.io.Logger;
 
 class CheckIpImpl implements CheckIp {
 	
-	private HttpClient _client = my(HttpClient.class);
+	private final HttpClient _client = my(HttpClient.class);
 	
 	private static final Pattern _responsePattern = Pattern.compile("<body>Current IP Address: ((\\d|\\.)+)</body>");
 

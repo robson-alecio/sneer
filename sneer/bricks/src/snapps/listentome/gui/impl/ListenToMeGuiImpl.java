@@ -35,15 +35,15 @@ import static wheel.lang.Environments.my;
 
 public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a better snapp window support
 
-	private LoopbackTester _loopback = my(LoopbackTester.class);
+	private final LoopbackTester _loopback = my(LoopbackTester.class);
 
-	private InstrumentManager _instrumentManager = my(InstrumentManager.class);
+	private final InstrumentManager _instrumentManager = my(InstrumentManager.class);
 
-	private ContactActionManager _actionsManager = my(ContactActionManager.class);
+	private final ContactActionManager _actionsManager = my(ContactActionManager.class);
 
-	private Speaker _speaker = my(Speaker.class);
+	private final Speaker _speaker = my(Speaker.class);
 
-	private Mic _mic = my(Mic.class);
+	private final Mic _mic = my(Mic.class);
 	
 	JToggleButton _listenToMeButton;
 	JToggleButton _loopBackButton;

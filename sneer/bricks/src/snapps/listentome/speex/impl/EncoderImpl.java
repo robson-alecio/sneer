@@ -10,7 +10,7 @@ class EncoderImpl implements Encoder {
 
 	private final SpeexEncoder _encoder = new SpeexEncoder();
 	
-	private Audio _audio = my(Audio.class);
+	private final Audio _audio = my(Audio.class);
 	
 	EncoderImpl() {
 		_encoder.init(SpeexConstants.NARROWBAND_ENCODING, SpeexConstants.SOUND_QUALITY, (int) _audio.defaultAudioFormat().getFrameRate(), _audio.defaultAudioFormat().getChannels());

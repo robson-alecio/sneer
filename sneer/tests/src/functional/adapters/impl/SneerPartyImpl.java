@@ -36,37 +36,37 @@ public class SneerPartyImpl implements SneerParty {
 	
 	static private final String MOCK_ADDRESS = "localhost";
 
-	private Container _container = my(Container.class);
+	private final Container _container = my(Container.class);
 	
-	private Clock _clock = my(Clock.class);
+	private final Clock _clock = my(Clock.class);
 
-	private ContactManager _contactManager = my(ContactManager.class);
+	private final ContactManager _contactManager = my(ContactManager.class);
 
-	private ConnectionManager _connectionManager = my(ConnectionManager.class);
+	private final ConnectionManager _connectionManager = my(ConnectionManager.class);
 	
-	private PortKeeper _sneerPortKeeper = my(PortKeeper.class);
+	private final PortKeeper _sneerPortKeeper = my(PortKeeper.class);
 	
-	private OwnNameKeeper _ownNameKeeper = my(OwnNameKeeper.class);
+	private final OwnNameKeeper _ownNameKeeper = my(OwnNameKeeper.class);
 	
-	private InternetAddressKeeper _internetAddressKeeper = my(InternetAddressKeeper.class);
+	private final InternetAddressKeeper _internetAddressKeeper = my(InternetAddressKeeper.class);
 
-	private Wind _wind = my(Wind.class);
+	private final Wind _wind = my(Wind.class);
 
 	@SuppressWarnings("unused")
-	private ProbeManager _probes = my(ProbeManager.class);
+	private final ProbeManager _probes = my(ProbeManager.class);
 	
 	
 	@SuppressWarnings("unused") //We need to start this brick so that it listens to others and does its thing.
-	private SocketOriginator _originator = my(SocketOriginator.class);
+	private final SocketOriginator _originator = my(SocketOriginator.class);
 
 	@SuppressWarnings("unused") //We need to start this brick so that it listens to others and does its thing.
-	private SocketReceiver _receiver = my(SocketReceiver.class);
+	private final SocketReceiver _receiver = my(SocketReceiver.class);
 
-	private KeyManager _keyManager = my(KeyManager.class);
+	private final KeyManager _keyManager = my(KeyManager.class);
 	
-	private Deployer _deployer = my(Deployer.class);
+	private final Deployer _deployer = my(Deployer.class);
 	
-	private BrickManager _brickManager = my(BrickManager.class);
+	private final BrickManager _brickManager = my(BrickManager.class);
 
 
 	@Override

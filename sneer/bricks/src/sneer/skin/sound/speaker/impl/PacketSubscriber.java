@@ -8,8 +8,8 @@ import static wheel.lang.Environments.my;
 
 class PacketSubscriber implements Consumer<PcmSoundPacket> {
 
-	private TupleSpace _tupleSpace = my(TupleSpace.class);
-	private KeyManager _keyManager = my(KeyManager.class);
+	private final TupleSpace _tupleSpace = my(TupleSpace.class);
+	private final KeyManager _keyManager = my(KeyManager.class);
 	
 	private boolean _isRunning = true;
 	private Consumer<PcmSoundPacket> _consumer;

@@ -14,7 +14,7 @@ import static wheel.lang.Environments.my;
 
 public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	
-	private JavaCompiler _compiler = my(JavaCompiler.class);
+	private final JavaCompiler _compiler = my(JavaCompiler.class);
 	
 	@Test
 	public void testPublishSingleBrick() throws Exception {

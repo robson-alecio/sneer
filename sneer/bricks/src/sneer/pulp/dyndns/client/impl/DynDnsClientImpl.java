@@ -25,19 +25,19 @@ class DynDnsClientImpl implements DynDnsClient {
 	private static final String LAST_IP_KEY = "dyndns.lastIp";
 	private static final String LAST_HOST_KEY = "dyndns.lastHost";
 
-	private OwnIpDiscoverer _ownIpDiscoverer = my(OwnIpDiscoverer.class);
+	private final OwnIpDiscoverer _ownIpDiscoverer = my(OwnIpDiscoverer.class);
 	
-	private DynDnsAccountKeeper _ownAccountKeeper = my(DynDnsAccountKeeper.class);
+	private final DynDnsAccountKeeper _ownAccountKeeper = my(DynDnsAccountKeeper.class);
 	
-	private Updater _updater = my(Updater.class);
+	private final Updater _updater = my(Updater.class);
 	
-	private PropertyStore _propertyStore = my(PropertyStore.class);
+	private final PropertyStore _propertyStore = my(PropertyStore.class);
 	
-	private BlinkingLights _blinkingLights = my(BlinkingLights.class);
+	private final BlinkingLights _blinkingLights = my(BlinkingLights.class);
 	
-	private ThreadPool _threadPool = my(ThreadPool.class);
+	private final ThreadPool _threadPool = my(ThreadPool.class);
 	
-	private Clock _clock = my(Clock.class);
+	private final Clock _clock = my(Clock.class);
 	
 	private final Object _stateMonitor = new Object();
 	private State _state = new Happy();

@@ -31,64 +31,64 @@ import static wheel.lang.Environments.my;
 class MainDemoBrickImpl implements MainDemoBrick {
 
 	@SuppressWarnings("unused")
-	private ClockTicker _ticker = my(ClockTicker.class);
+	private final ClockTicker _ticker = my(ClockTicker.class);
 
 	@SuppressWarnings("unused")
-	private Dashboard _gui1 = my(Dashboard.class);
+	private final Dashboard _gui1 = my(Dashboard.class);
 	
 	@SuppressWarnings("unused")
-	private ContactsGui _gui2 = my(ContactsGui.class);
+	private final ContactsGui _gui2 = my(ContactsGui.class);
 	
 	@SuppressWarnings("unused")
-	private WindGui _gui3 = my(WindGui.class);
+	private final WindGui _gui3 = my(WindGui.class);
 	
 	@SuppressWarnings("unused")
-	private WatchMeGui _gui4 = my(WatchMeGui.class);
+	private final WatchMeGui _gui4 = my(WatchMeGui.class);
 
 	@SuppressWarnings("unused")
-	private ListenToMeGui _gui5 = my(ListenToMeGui.class);
+	private final ListenToMeGui _gui5 = my(ListenToMeGui.class);
 
 	@SuppressWarnings("unused")
-	private RemoteWatchMeWindows _gui6 = my(RemoteWatchMeWindows.class);
+	private final RemoteWatchMeWindows _gui6 = my(RemoteWatchMeWindows.class);
 
 	@SuppressWarnings("unused")
-	private MemoryMeterGui _gui7 = my(MemoryMeterGui.class);
+	private final MemoryMeterGui _gui7 = my(MemoryMeterGui.class);
 
 	@SuppressWarnings("unused")
-	private BandwidthMeterGui _gui8 = my(BandwidthMeterGui.class);
+	private final BandwidthMeterGui _gui8 = my(BandwidthMeterGui.class);
 
 	@SuppressWarnings("unused")
-	private BlinkingLightsGui _lastGui = my(BlinkingLightsGui.class);
+	private final BlinkingLightsGui _lastGui = my(BlinkingLightsGui.class);
 	
 	@SuppressWarnings("unused")
-	private SocketOriginator _networkDaemon1 = my(SocketOriginator.class);
+	private final SocketOriginator _networkDaemon1 = my(SocketOriginator.class);
 	
 	@SuppressWarnings("unused")
-	private SocketReceiver _networkDaemon2 = my(SocketReceiver.class);
+	private final SocketReceiver _networkDaemon2 = my(SocketReceiver.class);
 
 	@SuppressWarnings("unused")
-	private DynDnsClient _dynDns = my(DynDnsClient.class);
+	private final DynDnsClient _dynDns = my(DynDnsClient.class);
 	
 	@SuppressWarnings("unused")
-	private ReachabilitySentinel _reachabilitySentinel = my(ReachabilitySentinel.class);	
+	private final ReachabilitySentinel _reachabilitySentinel = my(ReachabilitySentinel.class);	
 	
 	@SuppressWarnings("unused")
-	private SpeexTuples _speexTuples = my(SpeexTuples.class);	
+	private final SpeexTuples _speexTuples = my(SpeexTuples.class);	
 
 	@SuppressWarnings("unused")
-	private ProbeManager _probes = my(ProbeManager.class);
+	private final ProbeManager _probes = my(ProbeManager.class);
 
-	private DynDnsAccountKeeper _dynDnsAccountKeeper = my(DynDnsAccountKeeper.class);
+	private final DynDnsAccountKeeper _dynDnsAccountKeeper = my(DynDnsAccountKeeper.class);
 
-	private OwnNameKeeper _ownName = my(OwnNameKeeper.class);
+	private final OwnNameKeeper _ownName = my(OwnNameKeeper.class);
 
-	private PortKeeper _portKeeper = my(PortKeeper.class);
+	private final PortKeeper _portKeeper = my(PortKeeper.class);
 
-	private ContactManager _contactManager = my(ContactManager.class);
+	private final ContactManager _contactManager = my(ContactManager.class);
 
-	private KeyManager _keyManager = my(KeyManager.class);
+	private final KeyManager _keyManager = my(KeyManager.class);
 	
-	private InternetAddressKeeper _addressKeeper = my(InternetAddressKeeper.class);
+	private final InternetAddressKeeper _addressKeeper = my(InternetAddressKeeper.class);
 
 	@Override
 	public void start(String dynDnsUserName, String dynDnsPassword) {

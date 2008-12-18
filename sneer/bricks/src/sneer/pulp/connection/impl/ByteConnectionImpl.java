@@ -20,9 +20,9 @@ import wheel.reactive.impl.RegisterImpl;
 
 class ByteConnectionImpl implements ByteConnection {
 
-	private KeyManager _keyManager = my(KeyManager.class);
-	private ThreadPool _threadPool = my(ThreadPool.class);
-	private BandwidthCounter _bandwidthCounter = my(BandwidthCounter.class);
+	private final KeyManager _keyManager = my(KeyManager.class);
+	private final ThreadPool _threadPool = my(ThreadPool.class);
+	private final BandwidthCounter _bandwidthCounter = my(BandwidthCounter.class);
 
 	private final String _label;
 	private final Contact _contact;

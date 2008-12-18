@@ -19,7 +19,7 @@ import static wheel.lang.Environments.my;
 
 public class ListSignalModelTest extends TestInContainerEnvironment {
 
-	private ReactiveWidgetFactory _factory = my(ReactiveWidgetFactory.class); 
+	private final ReactiveWidgetFactory _factory = my(ReactiveWidgetFactory.class); 
 	
 	private ListRegister<Register<String>> _listRegister = new ListRegisterImpl<Register<String>>();
 	private StringBuilder _events;

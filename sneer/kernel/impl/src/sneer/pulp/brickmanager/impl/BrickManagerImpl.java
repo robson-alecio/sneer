@@ -28,13 +28,13 @@ import wheel.reactive.maps.impl.MapRegisterImpl;
 
 class BrickManagerImpl implements BrickManager {
 
-	private SneerConfig _config = my(SneerConfig.class);
+	private final SneerConfig _config = my(SneerConfig.class);
 
-	private DependencyManager _dependencyManager = my(DependencyManager.class);
+	private final DependencyManager _dependencyManager = my(DependencyManager.class);
 	
-	private KeyManager _keyManager = my(KeyManager.class);
+	private final KeyManager _keyManager = my(KeyManager.class);
 	
-	private Container _container = my(Container.class);
+	private final Container _container = my(Container.class);
 	
 	private final MapRegister<String, BrickFile> _bricksByName = new MapRegisterImpl<String, BrickFile>();
 

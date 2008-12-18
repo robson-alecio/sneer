@@ -11,7 +11,7 @@ import static wheel.lang.Environments.my;
 
 class SocketOriginatorImpl implements SocketOriginator {
 
-	private InternetAddressKeeper _internetAddressKeeper = my(InternetAddressKeeper.class);
+	private final InternetAddressKeeper _internetAddressKeeper = my(InternetAddressKeeper.class);
 	
 	@SuppressWarnings("unused")
 	private SimpleListReceiver<InternetAddress> _addressReceiverToAvoidGC;

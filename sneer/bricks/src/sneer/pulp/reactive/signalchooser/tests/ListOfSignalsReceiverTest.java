@@ -19,7 +19,7 @@ import static wheel.lang.Environments.my;
 
 public class ListOfSignalsReceiverTest extends TestInContainerEnvironment {
 
-	private SignalChooserManagerFactory _factory = my(SignalChooserManagerFactory.class); 
+	private final SignalChooserManagerFactory _factory = my(SignalChooserManagerFactory.class); 
 	
 	@SuppressWarnings("unused")
 	private SignalChooserManager<Register<String>> _managerToAvoidGc;

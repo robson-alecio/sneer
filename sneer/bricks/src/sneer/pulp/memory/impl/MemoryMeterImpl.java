@@ -16,7 +16,7 @@ class MemoryMeterImpl implements MemoryMeter {
 	private final Register<Integer> _usedMBs = new RegisterImpl<Integer>(0);
 	private final Register<Integer> _usedMBsPeak = new RegisterImpl<Integer>(0);
 	
-	private Clock _clock = my(Clock.class); {
+	private final Clock _clock = my(Clock.class); {
 		_clock.wakeUpNowAndEvery(PERIOD_IN_MILLIS, new Stepper() { @Override public boolean step() {
 			measureMemory();
 			return true;

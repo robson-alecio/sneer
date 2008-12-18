@@ -11,7 +11,7 @@ import static wheel.lang.Environments.my;
 
 class SchedulerImpl implements PacketScheduler {
 
-	private Serializer _serializer = my(Serializer.class);
+	private final Serializer _serializer = my(Serializer.class);
 
 	private final List<Tuple> _toSend = new LinkedList<Tuple>();
 	private boolean _wasDrained = false;

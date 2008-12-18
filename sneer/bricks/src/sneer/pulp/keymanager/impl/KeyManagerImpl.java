@@ -23,9 +23,9 @@ class KeyManagerImpl implements KeyManager {
 
 	private EventNotifier<Contact> _keyChanges = new EventNotifierImpl<Contact>();
 
-	private OwnNameKeeper _ownName = my(OwnNameKeeper.class);
+	private final OwnNameKeeper _ownName = my(OwnNameKeeper.class);
 
-	private Crypto _crypto = my(Crypto.class);
+	private final Crypto _crypto = my(Crypto.class);
 
 
 	@Override

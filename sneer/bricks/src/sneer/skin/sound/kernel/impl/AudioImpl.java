@@ -23,7 +23,7 @@ class AudioImpl implements Audio {
 
 	static private final AudioFormat DEFAULT_AUDIO_FORMAT = new AudioFormat(SAMPLE_RATE, SAMPLE_SIZE_IN_BITS, CHANNELS, SIGNED, BIG_ENDIAN);
 
-	private BlinkingLights _lights = my(BlinkingLights.class);
+	private final BlinkingLights _lights = my(BlinkingLights.class);
 	
 	private Light _playbackLight = _lights.prepare(LightType.ERROR);
 	private Light _captureLight = _lights.prepare(LightType.ERROR);

@@ -17,7 +17,7 @@ import static wheel.lang.Environments.my;
 
 class UpdaterImpl implements Updater {
 	
-	private HttpClient _client = my(HttpClient.class);
+	private final HttpClient _client = my(HttpClient.class);
 
 	@Override
 	public void update(final String host, final String user, final String password, String newIp) throws UpdaterException, IOException {

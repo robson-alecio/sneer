@@ -24,7 +24,7 @@ import wheel.testutil.TestUtils;
 
 public class ListSorterTest extends TestInContainerEnvironment {
 	
-	private ListSorter _sorter = my(ListSorter.class);
+	private final ListSorter _sorter = my(ListSorter.class);
 
 	private final Visitor<Signal<Integer>> _visitor = mock(Visitor.class);
 	

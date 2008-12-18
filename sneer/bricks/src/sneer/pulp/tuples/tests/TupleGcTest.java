@@ -9,7 +9,7 @@ import static wheel.lang.Environments.my;
 
 public class TupleGcTest extends TestInContainerEnvironment {
 
-	private TupleSpace _subject = my(TupleSpace.class);
+	private final TupleSpace _subject = my(TupleSpace.class);
 	
 	static volatile String _currentGeneration;
 	static volatile int _garbageCollectedCounter;

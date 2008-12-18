@@ -16,9 +16,9 @@ import wheel.reactive.impl.RegisterImpl;
 
 public class MicImpl implements Mic {
 
-	private ThreadPool _threads = my(ThreadPool.class);
-	private RetrierManager _retriers = my(RetrierManager.class);
-	private TupleSpace _tupleSpace = my(TupleSpace.class);
+	private final ThreadPool _threads = my(ThreadPool.class);
+	private final RetrierManager _retriers = my(RetrierManager.class);
+	private final TupleSpace _tupleSpace = my(TupleSpace.class);
 	
 	private boolean _isOpen;
 	private Runnable _worker;

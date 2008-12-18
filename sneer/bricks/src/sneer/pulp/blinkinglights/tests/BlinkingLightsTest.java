@@ -12,9 +12,9 @@ import tests.TestInContainerEnvironment;
 
 public class BlinkingLightsTest extends TestInContainerEnvironment {
 
-	private BlinkingLights _subject = my(BlinkingLights.class);
+	private final BlinkingLights _subject = my(BlinkingLights.class);
 
-	private Clock _clock = my(Clock.class);
+	private final Clock _clock = my(Clock.class);
 
 	@Test
 	public void testLights() throws Exception {

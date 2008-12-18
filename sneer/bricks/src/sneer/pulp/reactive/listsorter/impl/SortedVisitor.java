@@ -21,7 +21,7 @@ final class SortedVisitor<T> extends VisitorAdapter<T> implements ListOfSignalsR
 	private final ListSignal<T> _input;
 	private final SorterSupport _sorter;
 
-	private SignalChooserManagerFactory _signalChooserManagerFactory = my(SignalChooserManagerFactory.class);
+	private final SignalChooserManagerFactory _signalChooserManagerFactory = my(SignalChooserManagerFactory.class);
 	
 	@SuppressWarnings("unused")
 	private SignalChooserManager<T> _signalChooserManagerToAvoidGc;

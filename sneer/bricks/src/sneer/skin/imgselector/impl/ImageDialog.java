@@ -30,7 +30,7 @@ class ImageDialog extends JDialog {
 	private int _preferredWidth;
 	private JLayeredPane _layeredPane;
 	
-	private ImageFactory _imageFactory = my(ImageFactory.class);
+	private final ImageFactory _imageFactory = my(ImageFactory.class);
 
 	private final Consumer<Image> _imageSetter;
 

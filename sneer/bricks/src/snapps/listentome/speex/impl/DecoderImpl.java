@@ -12,7 +12,7 @@ class DecoderImpl implements Decoder {
 	
 	private final SpeexDecoder _decoder = new SpeexDecoder();
 	
-	private Audio _audio = my(Audio.class);
+	private final Audio _audio = my(Audio.class);
 	
 	DecoderImpl() {
 		_decoder.init(SpeexConstants.NARROWBAND_ENCODING, (int)_audio.defaultAudioFormat().getFrameRate(), _audio.defaultAudioFormat().getChannels(), _audio.defaultAudioFormat().isBigEndian());

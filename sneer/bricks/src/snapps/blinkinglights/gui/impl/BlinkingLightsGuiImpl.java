@@ -46,11 +46,11 @@ import wheel.reactive.impl.Constant;
 
 class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 	
-	private InstrumentManager _instrumentManager = my(InstrumentManager.class);
+	private final InstrumentManager _instrumentManager = my(InstrumentManager.class);
 
-	private BlinkingLights _blinkingLights = my(BlinkingLights.class);
+	private final BlinkingLights _blinkingLights = my(BlinkingLights.class);
 
-	private ReactiveWidgetFactory _rfactory = my(ReactiveWidgetFactory.class);
+	private final ReactiveWidgetFactory _rfactory = my(ReactiveWidgetFactory.class);
 	
 	private ListWidget<Light> _lightsList;
 

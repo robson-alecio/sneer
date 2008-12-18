@@ -11,7 +11,7 @@ import static wheel.lang.Environments.my;
 
 public class SentinelImpl implements Sentinel {
 
-	private User _user = my(User.class);
+	private final User _user = my(User.class);
 		
 	private Map<String, Boolean> _preAuthorizations = new HashMap<String, Boolean>();
 

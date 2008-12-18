@@ -20,10 +20,10 @@ import static wheel.lang.Environments.my;
 public class ProbeManagerImpl implements ProbeManager {
 
 
-	private TupleSpace _tuples = my(TupleSpace.class);
-	private ContactManager _contacts = my(ContactManager.class);
-	private ConnectionManager _connections = my(ConnectionManager.class);
-	private Serializer _serializer = my(Serializer.class);
+	private final TupleSpace _tuples = my(TupleSpace.class);
+	private final ContactManager _contacts = my(ContactManager.class);
+	private final ConnectionManager _connections = my(ConnectionManager.class);
+	private final Serializer _serializer = my(Serializer.class);
 	
 	
 	@SuppressWarnings("unused")

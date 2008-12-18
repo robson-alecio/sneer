@@ -11,7 +11,7 @@ import static wheel.lang.Environments.my;
 
 public class ContactInfoComparatorImpl implements ContactInfoComparator {
 	
-	private ConnectionManager _connectionManager = my(ConnectionManager.class);
+	private final ConnectionManager _connectionManager = my(ConnectionManager.class);
 
 	public int compare(ContactInfo info1, ContactInfo info2) {
 			boolean isOnline1 = info1.isOnline().currentValue();

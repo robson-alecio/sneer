@@ -8,7 +8,7 @@ import static wheel.lang.Environments.my;
 
 public class OwnNameKeeperTest extends TestInContainerEnvironment {
 
-	private OwnNameKeeper _nameKeeper = my(OwnNameKeeper.class);
+	private final OwnNameKeeper _nameKeeper = my(OwnNameKeeper.class);
 	
 	@Test
 	public void test() throws Exception {

@@ -19,9 +19,9 @@ public class SocketAccepterTest extends TestInContainerEnvironment {
 	@Contribute
 	private final Network _network = new InMemoryNetwork();
 
-	private PortKeeper _portKeeper = my(PortKeeper.class);
+	private final PortKeeper _portKeeper = my(PortKeeper.class);
 	
-	private SocketAccepter _accepter = my(SocketAccepter.class);
+	private final SocketAccepter _accepter = my(SocketAccepter.class);
 
 
 	@Test(timeout=5000)

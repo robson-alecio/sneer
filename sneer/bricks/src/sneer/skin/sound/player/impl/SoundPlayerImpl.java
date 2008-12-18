@@ -24,8 +24,8 @@ import static wheel.lang.Environments.my;
 
 class SoundPlayerImpl implements SoundPlayer, Stepper {
 
-	private Audio _audio = my(Audio.class);
-	private ThreadPool _threads = my(ThreadPool.class); {
+	private final Audio _audio = my(Audio.class);
+	private final ThreadPool _threads = my(ThreadPool.class); {
 		_threads.registerStepper(this);
 	}
 	

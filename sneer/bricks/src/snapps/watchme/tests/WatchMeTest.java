@@ -36,12 +36,12 @@ public class WatchMeTest extends TestInContainerEnvironment {
 	
 	@Contribute
 	final private Screenshotter _shotter = mock(Screenshotter.class);
-	private ImageFactory _imageFactory = my(ImageFactory.class);
-	private KeyManager _keys = my(KeyManager.class);
-	private Clock _clock = my(Clock.class);
-	private TupleSpace _sharedSpace = my(TupleSpace.class);
+	private final ImageFactory _imageFactory = my(ImageFactory.class);
+	private final KeyManager _keys = my(KeyManager.class);
+	private final Clock _clock = my(Clock.class);
+	private final TupleSpace _sharedSpace = my(TupleSpace.class);
 
-	private WatchMe _subject = my(WatchMe.class);
+	private final WatchMe _subject = my(WatchMe.class);
 	
 	private AtomicReference<BufferedImage> _screenObserved = new AtomicReference<BufferedImage>(null);
 

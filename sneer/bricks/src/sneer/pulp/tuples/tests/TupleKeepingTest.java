@@ -9,7 +9,7 @@ import static wheel.lang.Environments.my;
 
 public class TupleKeepingTest extends TestInContainerEnvironment {
 
-	private TupleSpace _subject = my(TupleSpace.class);
+	private final TupleSpace _subject = my(TupleSpace.class);
 	
 	private int _notificationCounter;
 	

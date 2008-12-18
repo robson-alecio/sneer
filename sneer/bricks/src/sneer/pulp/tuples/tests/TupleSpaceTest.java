@@ -12,7 +12,7 @@ import static wheel.lang.Environments.my;
 
 public class TupleSpaceTest extends TestInContainerEnvironment {
 
-	private TupleSpace _subject = my(TupleSpace.class);
+	private final TupleSpace _subject = my(TupleSpace.class);
 	
 	private TestTuple _received;
 

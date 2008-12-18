@@ -14,7 +14,7 @@ import wheel.io.codegeneration.ClassUtils;
 
 class ClasspathFactoryImpl implements ClasspathFactory {
 
-	private ContainerConfig _config = my(ContainerConfig.class);
+	private final ContainerConfig _config = my(ContainerConfig.class);
 	
 	private Classpath _sneerApi;
 

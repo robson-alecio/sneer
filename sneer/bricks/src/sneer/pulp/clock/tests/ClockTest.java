@@ -12,7 +12,7 @@ import static wheel.lang.Environments.my;
 
 public class ClockTest extends TestInContainerEnvironment {
 
-	private Clock _subject = my(Clock.class);
+	private final Clock _subject = my(Clock.class);
 	private StringBuilder _events = new StringBuilder();
 	
 	@Test

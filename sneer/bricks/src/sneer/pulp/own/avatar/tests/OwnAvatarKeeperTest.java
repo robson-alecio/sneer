@@ -16,9 +16,9 @@ import static wheel.lang.Environments.my;
 
 public class OwnAvatarKeeperTest extends TestInContainerEnvironment {
 
-	private OwnAvatarKeeper _avatarKeeper = my(OwnAvatarKeeper.class);
+	private final OwnAvatarKeeper _avatarKeeper = my(OwnAvatarKeeper.class);
 	
-	private ImageFactory _imageFactory = my(ImageFactory.class);
+	private final ImageFactory _imageFactory = my(ImageFactory.class);
 
 	private BufferedImage loadImage(String fileName) throws Hiccup {
 		return _imageFactory.createBufferedImage(getImage(getClass().getResource(fileName)));

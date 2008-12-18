@@ -21,9 +21,9 @@ import static wheel.lang.Environments.my;
 
 class WatchMeGuiImpl implements WatchMeGui{ //Optimize need a better snapp window support
 
-	private InstrumentManager _instrumentManager = my(InstrumentManager.class);
+	private final InstrumentManager _instrumentManager = my(InstrumentManager.class);
 	
-	private WatchMe _watchMe = my(WatchMe.class);
+	private final WatchMe _watchMe = my(WatchMe.class);
 	
 	JToggleButton _watchMeButton;
 	

@@ -16,7 +16,7 @@ import static wheel.lang.Environments.my;
 
 class ContactListImpl extends ListRegisterImpl<ContactInfo> implements ContactList{
 
-	private ContactManager _contacts = my(ContactManager.class);
+	private final ContactManager _contacts = my(ContactManager.class);
 	
 	private Visitor<Contact> _visitor;
 	

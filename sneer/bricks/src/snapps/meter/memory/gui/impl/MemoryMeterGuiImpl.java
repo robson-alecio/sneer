@@ -31,11 +31,11 @@ import static wheel.lang.Environments.my;
 
 public class MemoryMeterGuiImpl implements MemoryMeterGui {
 
-	private InstrumentManager _instruments = my(InstrumentManager.class);
+	private final InstrumentManager _instruments = my(InstrumentManager.class);
 	
-	private ReactiveWidgetFactory _factory = my(ReactiveWidgetFactory.class);
+	private final ReactiveWidgetFactory _factory = my(ReactiveWidgetFactory.class);
 	
-	private MemoryMeter _meter = my(MemoryMeter.class);
+	private final MemoryMeter _meter = my(MemoryMeter.class);
 	
 	JLabel _totalMemory =     new JLabel();
 	TextWidget<JLabel> _maxUsedMemory;

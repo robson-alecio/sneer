@@ -23,10 +23,10 @@ import static wheel.lang.Environments.my;
 
 class SocketAccepterImpl implements SocketAccepter {
 	
-	private PortKeeper _portKeeper = my(PortKeeper.class);
-	private Network _network = my(Network.class);
-	private BlinkingLights _lights = my(BlinkingLights.class);
-	private ThreadPool _threadPool = my(ThreadPool.class);
+	private final PortKeeper _portKeeper = my(PortKeeper.class);
+	private final Network _network = my(Network.class);
+	private final BlinkingLights _lights = my(BlinkingLights.class);
+	private final ThreadPool _threadPool = my(ThreadPool.class);
 
 	private final EventNotifier<ByteArraySocket> _notifier = new EventNotifierImpl<ByteArraySocket>();
 

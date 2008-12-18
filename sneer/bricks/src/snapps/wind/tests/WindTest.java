@@ -10,9 +10,9 @@ import static wheel.lang.Environments.my;
 
 public class WindTest extends TestInContainerEnvironment {
 
-	private TupleSpace _tupleSpace = my(TupleSpace.class);
+	private final TupleSpace _tupleSpace = my(TupleSpace.class);
 	
-	private Wind _wind = my(Wind.class);
+	private final Wind _wind = my(Wind.class);
 	
 	@Test
 	public void testSortedShoutsHeard() {

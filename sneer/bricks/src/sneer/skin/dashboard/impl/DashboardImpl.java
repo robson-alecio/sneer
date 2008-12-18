@@ -52,17 +52,17 @@ class DashboardImpl implements Dashboard, Runnable {
 	private static transient final int WIDTH = 280;
 	private static transient final int H_OFFSET = 30;
 	
-	private ThreadPool _threadPool = my(ThreadPool.class);
+	private final ThreadPool _threadPool = my(ThreadPool.class);
 	
-	private ImageFactory _imageFactory = my(ImageFactory.class);
+	private final ImageFactory _imageFactory = my(ImageFactory.class);
 	
-	private MainMenu _mainMenu = my(MainMenu.class);
+	private final MainMenu _mainMenu = my(MainMenu.class);
 	
-	private OwnNameKeeper _ownNameKeeper = my(OwnNameKeeper.class);
+	private final OwnNameKeeper _ownNameKeeper = my(OwnNameKeeper.class);
 		
-	private InstrumentManager _instrumentManager = my(InstrumentManager.class);
+	private final InstrumentManager _instrumentManager = my(InstrumentManager.class);
 
-	private BlinkingLights _blinkingLights = my(BlinkingLights.class);
+	private final BlinkingLights _blinkingLights = my(BlinkingLights.class);
 	
 	@SuppressWarnings("unused")
 	private final Receiver<String> _ownNameReceiver = new Receiver<String>(_ownNameKeeper.name()) { @Override public void consume(String value) {

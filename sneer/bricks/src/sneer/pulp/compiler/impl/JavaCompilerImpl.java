@@ -20,7 +20,7 @@ import static wheel.lang.Environments.my;
 
 class JavaCompilerImpl implements JavaCompiler {
 
-	private ClasspathFactory _classpathFactory = my(ClasspathFactory.class);
+	private final ClasspathFactory _classpathFactory = my(ClasspathFactory.class);
 
 	@Override
 	public Result compile(List<File> sourceFiles, File destination) throws CompilerException {

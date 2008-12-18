@@ -14,9 +14,9 @@ import static wheel.lang.Environments.my;
 
 class WindImpl implements Wind, Consumer<Shout> {
 
-	private TupleSpace _environment = my(TupleSpace.class);
+	private final TupleSpace _environment = my(TupleSpace.class);
 	
-	private ListSorter _sorter = my(ListSorter.class);
+	private final ListSorter _sorter = my(ListSorter.class);
 	
 	private final ListSignal<Shout> _sortedShouts;
 	private final Comparator<Shout> _comparator;

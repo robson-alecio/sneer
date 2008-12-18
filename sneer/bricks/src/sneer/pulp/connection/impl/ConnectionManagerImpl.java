@@ -12,7 +12,7 @@ import static wheel.lang.Environments.my;
 
 class ConnectionManagerImpl implements ConnectionManager {
 
-	private OwnNameKeeper _nameKeeper = my(OwnNameKeeper.class);
+	private final OwnNameKeeper _nameKeeper = my(OwnNameKeeper.class);
 	
 	private final Map<Contact, ByteConnection> _connectionsByContact = new HashMap<Contact, ByteConnection>();
 

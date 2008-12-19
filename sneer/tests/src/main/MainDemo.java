@@ -5,7 +5,6 @@ import java.io.File;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
 import sneer.pulp.own.name.OwnNameKeeper;
-import sneer.pulp.tuples.config.TupleSpaceConfig;
 import wheel.io.Logger;
 import wheel.lang.Environments;
 
@@ -53,17 +52,10 @@ public class MainDemo {
 	}
 
 	private static Container container() {
-		if (_container == null) _container = Containers.newContainer(tupleSpaceConfig());
+		if (_container == null) _container = Containers.newContainer();
 		return _container;
 	}
 
-	private static TupleSpaceConfig tupleSpaceConfig() {
-		return new TupleSpaceConfig() {
-			@Override public boolean isAcquisitionSynchronous() {
-				return false;
-			}
-		};
-	}
 
 	private static MainDemoBrick demo() {
 		return container().provide(MainDemoBrick.class);

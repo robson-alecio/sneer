@@ -1,14 +1,10 @@
 package sneer.pulp.threadpool.impl;
 
 import static wheel.lang.Environments.my;
-import sneer.pulp.exceptionhandling.ExceptionHandler;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
-import wheel.lang.Daemon;
-import wheel.lang.Environments;
 import wheel.lang.Threads;
-import wheel.lang.Environments.Memento;
 
 class ThreadPoolImpl implements ThreadPool {
 

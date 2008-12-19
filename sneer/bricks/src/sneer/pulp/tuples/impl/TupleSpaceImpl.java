@@ -29,7 +29,6 @@ import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
-import sneer.pulp.tuples.config.TupleSpaceConfig;
 import wheel.lang.Consumer;
 import wheel.lang.Environments;
 import wheel.lang.Threads;
@@ -97,7 +96,6 @@ public class TupleSpaceImpl implements TupleSpace {
 	private final Clock _clock = my(Clock.class);
 	private final PersistenceConfig _persistenceConfig = my(PersistenceConfig.class);
 	private final ThreadPool _threads = my(ThreadPool.class);
-	private final TupleSpaceConfig _config = my(TupleSpaceConfig.class);
 	private final ExceptionHandler _exceptionHandler = my(ExceptionHandler.class);
 
 	private final List<Subscription> _subscriptions = Collections.synchronizedList(new ArrayList<Subscription>());
@@ -109,8 +107,6 @@ public class TupleSpaceImpl implements TupleSpace {
 	private final Set<Class<? extends Tuple>> _typesToKeep = new HashSet<Class<? extends Tuple>>();
 	private final ListRegister<Tuple> _keptTuples;
 
-	private final BlockingQueue<Tuple> _acquisitionQueue; //Refactor: No longer necessary.
-
 	private final Object _publicationMonitor = new Object();
 
 
@@ -118,27 +114,6 @@ public class TupleSpaceImpl implements TupleSpace {
 	
 	TupleSpaceImpl() {
 		_keptTuples = Bubble.wrapStateMachine(prevayler(new ListRegisterImpl<Tuple>()));
-		_acquisitionQueue = _config.isAcquisitionSynchronous() ? null : new LinkedBlockingQueue<Tuple>(); 
-		if (_acquisitionQueue != null) {
-			_threads.registerStepper(createStepper());
-		}
-	}
-
-
-	private Stepper createStepper() {
-		return new Stepper() { @Override public boolean step() {
-			Tuple tuple = popAcquisition();
-			if (tuple != null) processAcquisition(tuple);
-			return true;
-		}};
-	}
-		
-	private Tuple popAcquisition() {
-		try {
-			return _acquisitionQueue.take();
-		} catch (InterruptedException e) {
-			throw new IllegalStateException(e);
-		}
 	}
 
 
@@ -179,25 +154,7 @@ public class TupleSpaceImpl implements TupleSpace {
 	}
 
 	@Override
-	public void acquire(Tuple tuple) {
-		if (_acquisitionQueue != null) {
-			enqueue(tuple);
-			return;
-		}
-		processAcquisition(tuple);
-	}
-
-
-	private void enqueue(Tuple tuple) {
-		try {
-			_acquisitionQueue.put(tuple);
-		} catch (InterruptedException e) {
-			throw new IllegalStateException(e);
-		}
-	}
-
-
-	private synchronized void processAcquisition(Tuple tuple) {
+	public synchronized void acquire(Tuple tuple) {
 		if (!_transientTupleCache.add(tuple)) return;
 		capTransientTuples();
 		

@@ -5,8 +5,6 @@ import java.util.List;
 
 import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
-import wheel.lang.Environments;
-import wheel.lang.Environments.Memento;
 
 public class ThreadPoolMock implements ThreadPool {
 

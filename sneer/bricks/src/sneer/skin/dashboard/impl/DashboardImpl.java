@@ -1,5 +1,7 @@
 package sneer.skin.dashboard.impl;
 
+import static wheel.lang.Environments.my;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -35,7 +37,6 @@ import wheel.io.ui.impl.TrayIconImpl;
 import wheel.io.ui.impl.TrayIconImpl.SystemTrayNotSupported;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.lists.impl.SimpleListReceiver;
-import static wheel.lang.Environments.my;
 
 //Implement Persist window size and position
 class DashboardImpl implements Dashboard, Runnable {
@@ -46,6 +47,7 @@ class DashboardImpl implements Dashboard, Runnable {
 	private Rectangle _bounds;
 	
 	private transient JFrame _jframe;
+
 	private transient JPanel _rootPanel;
 	private transient JPanel _contentPanel;
 	
@@ -157,9 +159,9 @@ class DashboardImpl implements Dashboard, Runnable {
 		GuiThread.strictInvokeAndWait(new Runnable(){	@Override public void run() {
 			_contentPanel.add(sf);
 			instrument.init(sf);
-			if(instrument.defaultHeight()>Instrument.ANY_HEIGHT)
-				resizeContainer(instrument, sf);
+			resizeContainer(instrument, sf);
 			sf.revalidate();
+			sf.resizeContents();
 		}});
         return sf;
 	}
@@ -169,6 +171,7 @@ class DashboardImpl implements Dashboard, Runnable {
 		Dimension size = new Dimension(width, instrument.defaultHeight());
 		sf.setMinimumSize(size);
 		sf.setPreferredSize(size);
+		sf.setSize(size);
 	}
 	
 	private void resizeWindow() {
@@ -259,20 +262,20 @@ class DashboardImpl implements Dashboard, Runnable {
 	
 	@Override
 	public void moveInstrument(int index, InstrumentWindow frame) {
-		_contentPanel.remove(frame.getContent());
-		_contentPanel.add(frame.getContent(), index);
+		_contentPanel.remove(frame.contentPane());
+		_contentPanel.add(frame.contentPane(), index);
 	}
 
 	@Override
 	public void moveInstrumentDown(InstrumentWindow frame) {
-		_contentPanel.remove(frame.getContent());
-		_contentPanel.add(frame.getContent(), 0);
+		_contentPanel.remove(frame.contentPane());
+		_contentPanel.add(frame.contentPane(), 0);
 	}
 
 	@Override
 	public void moveInstrumentUp(InstrumentWindow frame) {
-		_contentPanel.remove(frame.getContent());
-		_contentPanel.add(frame.getContent());
+		_contentPanel.remove(frame.contentPane());
+		_contentPanel.add(frame.contentPane());
 	}
 }
 

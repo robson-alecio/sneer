@@ -363,5 +363,3 @@ GiveNTake
         - 2x 3 quartos
         - 2x comercial
         - 2x churrasqueira
-
-

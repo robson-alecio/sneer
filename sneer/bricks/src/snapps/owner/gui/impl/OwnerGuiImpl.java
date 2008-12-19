@@ -15,6 +15,7 @@ import snapps.owner.gui.OwnerGui;
 import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.own.tagline.OwnTaglineKeeper;
+import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.imgselector.ImageSelector;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.ImageWidget;
@@ -45,14 +46,13 @@ class OwnerGuiImpl implements OwnerGui {
 	}
 	
 	@Override
-	public void init(Container container) {	
-		_container = container;
-		container.setLayout(new GridBagLayout());
+	public void init(InstrumentWindow window) {
+		_container = window.contentPane();
+		_container.setLayout(new GridBagLayout());
 		
-		initOwnNameKeeper(container);
-		initOwnTaglineKeeper(container);
-		initOwnAvatarKeeper(container);
-
+		initOwnNameKeeper(_container);
+		initOwnTaglineKeeper(_container);
+		initOwnAvatarKeeper(_container);
 	}
 
 	private void initOwnNameKeeper(Container container) {
@@ -125,6 +125,6 @@ class OwnerGuiImpl implements OwnerGui {
 
 	@Override
 	public int defaultHeight() {
-		return ANY_HEIGHT;
+		return DEFAULT_HEIGHT;
 	}
 }

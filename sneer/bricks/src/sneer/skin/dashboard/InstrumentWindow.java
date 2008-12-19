@@ -4,6 +4,6 @@ import java.awt.Container;
 
 public interface InstrumentWindow {
 
-	Container getContent();
-
+	Container contentPane();
+	Container toolbar();
 }

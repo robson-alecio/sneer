@@ -1,5 +1,7 @@
 package snapps.watchme.gui.impl;
 
+import static wheel.lang.Environments.my;
+
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -16,8 +18,8 @@ import javax.swing.border.EmptyBorder;
 
 import snapps.watchme.WatchMe;
 import snapps.watchme.gui.WatchMeGui;
+import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.snappmanager.InstrumentManager;
-import static wheel.lang.Environments.my;
 
 class WatchMeGuiImpl implements WatchMeGui{ //Optimize need a better snapp window support
 
@@ -40,7 +42,8 @@ class WatchMeGuiImpl implements WatchMeGui{ //Optimize need a better snapp windo
 	}
 
 	@Override
-	public void init(Container container) {
+	public void init(InstrumentWindow window) {
+		Container container = window.contentPane();
 		container.setBackground(Color.WHITE);
 		container.setLayout(new FlowLayout());
 		_watchMeButton = createButton(container, "Watch Me!");
@@ -49,7 +52,7 @@ class WatchMeGuiImpl implements WatchMeGui{ //Optimize need a better snapp windo
 
 	@Override
 	public int defaultHeight() {
-		return ANY_HEIGHT;
+		return 50;
 	}
 	
 	private void createWatchMeButtonListener() {
@@ -94,10 +97,11 @@ class WatchMeGuiImpl implements WatchMeGui{ //Optimize need a better snapp windo
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				if (btn.isSelected())
+				if (btn.isSelected()){
 					btn.setIcon(WATCHME_ON);
-				else
+				} else {
 					btn.setIcon(WATCHME_OFF);
+				}
 			}
 		});
 	}

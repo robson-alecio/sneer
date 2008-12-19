@@ -23,7 +23,6 @@ import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
@@ -34,6 +33,7 @@ import snapps.blinkinglights.gui.BlinkingLightsGui;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
+import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
@@ -69,8 +69,8 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 	} 
 	
 	@Override
-	public void init(Container container) {
-		_container = container;
+	public void init(InstrumentWindow window) {
+		_container = window.contentPane();
 		_lightsList = _rfactory.newList(_blinkingLights.lights(), new BlinkingLightsLabelProvider());
 		iniGui();
 		new AlertWindowSupport();
@@ -85,7 +85,7 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		_container.setLayout(new BorderLayout());
 		_container.add(scrollPane, BorderLayout.CENTER);
 		scrollPane.getViewport().add(_lightsList.getComponent());
-		scrollPane.setBorder(new TitledBorder(new EmptyBorder(5,5,5,5), getName()));
+		scrollPane.setBorder(new EmptyBorder(5,5,5,5));
 		_lightsList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
 		scrollPane.setBackground(_lightsList.getComponent().getBackground());
 	}
@@ -93,10 +93,6 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 	@Override
 	public int defaultHeight() {
 		return 100;
-	}
-	
-	private String getName() {
-		return "Blinking Lights";
 	}
 	
 	private static Image loadImage(String fileName) {

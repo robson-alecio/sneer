@@ -20,6 +20,7 @@ import snapps.contacts.actions.ContactAction;
 import snapps.contacts.actions.ContactActionManager;
 import snapps.listentome.gui.ListenToMeGui;
 import sneer.pulp.contacts.Contact;
+import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.rooms.ActiveRoomKeeper;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.sound.loopback.LoopbackTester;
@@ -77,7 +78,8 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 	}
 
 	@Override
-	public void init(Container container) {
+	public void init(InstrumentWindow window) {
+		Container container = window.contentPane();
 		container.setBackground(Color.WHITE);
 		container.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 5));
 		
@@ -105,7 +107,7 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 	
 	@Override
 	public int defaultHeight() {
-		return ANY_HEIGHT;
+		return 50;
 	}
 	
 	private void addListenContactAction() {

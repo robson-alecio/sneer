@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 
 import snapps.meter.bandwidth.gui.BandwidthMeterGui;
 import sneer.pulp.bandwidth.BandwidthCounter;
+import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
@@ -50,8 +51,8 @@ public class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 	}	
 	
 	@Override
-	public void init(Container container) {
-		initGui(container);
+	public void init(InstrumentWindow window) {
+		initGui(window.contentPane());
 	}
 
 	private void initGui(Container container) {
@@ -95,6 +96,6 @@ public class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 
 	@Override
 	public int defaultHeight() {
-		return ANY_HEIGHT;
+		return DEFAULT_HEIGHT;
 	}
 }

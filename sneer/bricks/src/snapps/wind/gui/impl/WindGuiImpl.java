@@ -25,11 +25,11 @@ import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 
 import snapps.wind.Shout;
 import snapps.wind.Wind;
 import snapps.wind.gui.WindGui;
+import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.sound.player.SoundPlayer;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
@@ -70,7 +70,8 @@ class WindGuiImpl implements WindGui {
 	} 
 	
 	@Override
-	public void init(Container container) {
+	public void init(InstrumentWindow window) {
+		Container container = window.contentPane();
 		_container = container;
 		iniGui();
 		_autoscrollSupportToAvoidGc.placeAtEnd();
@@ -137,7 +138,7 @@ class WindGuiImpl implements WindGui {
 	
 	private void initScrollPane() {
 		_scrollPane = new JScrollPane();
-		_scrollPane.setBorder(new TitledBorder(new EmptyBorder(5,5,2,2), getName()));
+		_scrollPane.setBorder(new EmptyBorder(5,5,2,2));
 		_scrollPane.setOpaque(false);
 		_autoscrollSupportToAvoidGc = new WindAutoscrollSupport();
 	}
@@ -167,10 +168,6 @@ class WindGuiImpl implements WindGui {
 		return 248;
 	}
 	
-	private String getName() {
-		return "Wind";
-	}
-
 	private final class WindAutoscrollSupport{
 		
 		@SuppressWarnings("unused")

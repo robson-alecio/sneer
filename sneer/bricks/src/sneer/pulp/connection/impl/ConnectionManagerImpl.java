@@ -34,8 +34,7 @@ class ConnectionManagerImpl implements ConnectionManager {
 
 	@Override
 	public void manageOutgoingSocket(Contact contact, ByteArraySocket socket) {
-		ByteConnectionImpl connection = connectionFor(
-				contact);
+		ByteConnectionImpl connection = connectionFor(contact);
 		connection.manageOutgoingSocket(socket);
 	}	
 }

@@ -1,14 +1,12 @@
 package sneer.skin.snappmanager;
 
-import java.awt.Container;
-
 import sneer.skin.GuiBrick;
+import sneer.skin.dashboard.InstrumentWindow;
 
 public interface Instrument extends GuiBrick {
 
-	static int ANY_HEIGHT = 0;
+	static int DEFAULT_HEIGHT = 25;
 	
-	void init(Container container);
+	void init(InstrumentWindow container);
 	int defaultHeight();
-
 }

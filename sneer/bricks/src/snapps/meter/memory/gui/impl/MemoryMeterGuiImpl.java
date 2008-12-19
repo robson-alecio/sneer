@@ -21,6 +21,7 @@ import javax.swing.border.EmptyBorder;
 
 import snapps.meter.memory.gui.MemoryMeterGui;
 import sneer.pulp.memory.MemoryMeter;
+import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
@@ -53,7 +54,8 @@ public class MemoryMeterGuiImpl implements MemoryMeterGui {
 	}
 	
 	@Override
-	public void init(Container container) {
+	public void init(InstrumentWindow window) {
+		Container container = window.contentPane();
 		initGui(container);
 	}
 
@@ -122,6 +124,6 @@ public class MemoryMeterGuiImpl implements MemoryMeterGui {
 
 	@Override
 	public int defaultHeight() {
-		return ANY_HEIGHT;
+		return DEFAULT_HEIGHT;
 	}
 }

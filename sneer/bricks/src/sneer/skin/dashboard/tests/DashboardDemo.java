@@ -10,31 +10,40 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import sneer.kernel.container.Containers;
+import sneer.skin.dashboard.Dashboard;
+import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.snappmanager.Instrument;
 import sneer.skin.snappmanager.InstrumentManager;
+import wheel.io.Logger;
 import wheel.lang.Environments;
-import wheel.lang.Threads;
 
 public class DashboardDemo  {
-
-	public static void main(String[] args) throws Exception {
-
-		InstrumentManager instrumentManager = Environments.my(InstrumentManager.class);
-		installSampleInstrument(instrumentManager);
-		Threads.sleepWithoutInterruptions(30000);
+	public DashboardDemo(){	
+		Environments.my(Dashboard.class);
+		installSampleInstrument();
 	}
 	
-	private static void installSampleInstrument(InstrumentManager manager) {
+	private static void installSampleInstrument() {
+		InstrumentManager manager = Environments.my(InstrumentManager.class);
 		manager.registerInstrument(new Snapp1());
 		manager.registerInstrument(new Snapp2());
 		manager.registerInstrument(new Snapp3());
     }
+	
+	public static void main(String[] args) throws Exception {
+		Logger.redirectTo(System.out);
+		Environments.runWith(Containers.newContainer(), new Runnable(){ @Override public void run() {
+			new DashboardDemo();
+		}});
+	}
 }
 
 class Snapp1 implements Instrument{
 
 	@Override
-	public void init(Container container) {
+	public void init(InstrumentWindow window) {
+		Container container = window.contentPane();
 		container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
 		
 		DefaultComboBoxModel model = new DefaultComboBoxModel(
@@ -51,14 +60,15 @@ class Snapp1 implements Instrument{
 
 	@Override
 	public int defaultHeight() {
-		return 50;
+		return 200;
 	}
 }
 
 class Snapp2 implements Instrument{
 
 	@Override
-	public void init(Container container) {
+	public void init(InstrumentWindow window) {
+		Container container = window.contentPane();
 		container.setLayout(new BoxLayout(container,  BoxLayout.PAGE_AXIS));
 		container.add(new JCheckBox("Option 1"));
 		container.add(new JCheckBox("Option 2"));
@@ -74,7 +84,8 @@ class Snapp2 implements Instrument{
 
 class Snapp3 implements Instrument{
 	@Override
-	public void init(Container container) {
+	public void init(InstrumentWindow window) {
+		Container container = window.contentPane();
 		container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
 		JTextArea textArea = new JTextArea(15, 20);
         container.add(new JScrollPane(textArea));

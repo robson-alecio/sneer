@@ -96,6 +96,8 @@ public class WatchMeTest extends TestInContainerEnvironment {
 	}
 
 	private void waitForImage(BufferedImage expected) {
+		waitForDispatch();
+
 		int i = 0;
 		while (true) {
 			BufferedImage observed = _screenObserved.get();

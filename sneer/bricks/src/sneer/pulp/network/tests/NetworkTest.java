@@ -13,19 +13,15 @@ import static wheel.lang.Environments.my;
 
 
 public class NetworkTest extends TestInContainerEnvironment {
-
-	private final Network _network = my(Network.class);
 	
 	private final ThreadPool _threadPool = my(ThreadPool.class);
-
 	
 	@Test
 	public void testNetworkMessages() throws Exception {
-		System.out.println("opening");
-		assertNull(System.getProperty("WhyThe*IsThisTestBeingRunTwice?"));
-		System.setProperty("WhyThe*IsThisTestBeingRunTwice?", "foo");
 		
-		final ByteArrayServerSocket server = _network.openServerSocket(9090);
+		final Network network = my(Network.class);
+		
+		final ByteArrayServerSocket server = network.openServerSocket(9090);
 		_threadPool.registerActor(new Runnable(){ @Override public void run() {
 			try {
 				ByteArraySocket request = server.accept();
@@ -34,7 +30,7 @@ public class NetworkTest extends TestInContainerEnvironment {
 				e.printStackTrace();
 			}
 		}});
-		ByteArraySocket client = _network.openSocket("localhost", 9090);
+		ByteArraySocket client = network.openSocket("localhost", 9090);
 		client.write("hello".getBytes());
 		byte[] reply = client.read();
 		assertEquals("HELLO", new String(reply));

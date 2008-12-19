@@ -29,7 +29,7 @@ class KeyManagerImpl implements KeyManager {
 
 
 	@Override
-	public PublicKey ownPublicKey() {
+	public synchronized PublicKey ownPublicKey() {
 		if (_ownKey == null)
 			_ownKey = generateMickeyMouseKey();
 		return _ownKey;

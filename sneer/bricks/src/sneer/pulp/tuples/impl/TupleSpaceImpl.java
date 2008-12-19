@@ -23,6 +23,7 @@ import org.prevayler.foundation.serialization.XStreamSerializer;
 import snapps.wind.impl.bubble.Bubble;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.config.persistence.PersistenceConfig;
+import sneer.pulp.exceptionhandling.ExceptionHandler;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
@@ -31,6 +32,7 @@ import sneer.pulp.tuples.TupleSpace;
 import sneer.pulp.tuples.config.TupleSpaceConfig;
 import wheel.lang.Consumer;
 import wheel.lang.Environments;
+import wheel.lang.Threads;
 import wheel.lang.Environments.Memento;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.impl.ListRegisterImpl;
@@ -38,25 +40,53 @@ import wheel.reactive.lists.impl.ListRegisterImpl;
 public class TupleSpaceImpl implements TupleSpace {
 
 	//Refactor The synchronization will no longer be necessary when the container guarantees synchronization of model bricks.
-	static class Subscription {
+	class Subscription {
 
 		private final Consumer<? super Tuple> _subscriber;
 		private final Class<? extends Tuple> _tupleType;
 		private final Memento _environment;
+		private final BlockingQueue<Tuple> _tuplesToNotify = new LinkedBlockingQueue<Tuple>(); 
 
 		<T extends Tuple> Subscription(Consumer<? super T> subscriber, Class<T> tupleType) {
 			_subscriber = cast(subscriber);
 			_tupleType = tupleType;
 			_environment = Environments.memento();
+			
+			_threads.registerStepper(new Stepper() { @Override public boolean step() {
+				Tuple tuple = waitToPopTuple();
+				if (tuple != null) notifySubscriber(tuple);
+				return true;
+			}});
+
+		}
+
+		private void notifySubscriber(final Tuple tuple) {
+			_exceptionHandler.shield(new Runnable(){@Override public void run() {
+				Environments.runWith(_environment, new Runnable() { @Override public void run() {
+					_subscriber.consume(tuple);
+				}});
+			}});
+			dispatchCounterDecrement();
+		}
+
+		private Tuple waitToPopTuple() {
+			try {
+				return _tuplesToNotify.take();
+			} catch (InterruptedException e) {
+				throw new IllegalStateException(e);
+			}
 		}
 
 		void filterAndNotify(final Tuple tuple) {
 			if (!_tupleType.isInstance(tuple))
 				return;
-			
-			my(ThreadPool.class).dispatch(_environment, new Runnable() { @Override public void run() {
-				_subscriber.consume(tuple);
-			}});
+
+			dispatchCounterIncrement();
+			try {
+				_tuplesToNotify.put(tuple);
+			} catch (InterruptedException e) {
+				throw new IllegalStateException();
+			}
 		}
 	}
 
@@ -68,16 +98,21 @@ public class TupleSpaceImpl implements TupleSpace {
 	private final PersistenceConfig _persistenceConfig = my(PersistenceConfig.class);
 	private final ThreadPool _threads = my(ThreadPool.class);
 	private final TupleSpaceConfig _config = my(TupleSpaceConfig.class);
+	private final ExceptionHandler _exceptionHandler = my(ExceptionHandler.class);
 
 	private final List<Subscription> _subscriptions = Collections.synchronizedList(new ArrayList<Subscription>());
+
+	private final Object _dispatchCounterMonitor = new Object();
+	private int _dispatchCounter = 0;
 
 	private final Set<Tuple> _transientTupleCache = new LinkedHashSet<Tuple>();
 	private final Set<Class<? extends Tuple>> _typesToKeep = new HashSet<Class<? extends Tuple>>();
 	private final ListRegister<Tuple> _keptTuples;
 
-	private final BlockingQueue<Tuple> _acquisitionQueue;
+	private final BlockingQueue<Tuple> _acquisitionQueue; //Refactor: No longer necessary.
 
 	private final Object _publicationMonitor = new Object();
+
 
 
 	
@@ -253,5 +288,29 @@ public class TupleSpaceImpl implements TupleSpace {
 	public int transientCacheSize() {
 		return TRANSIENT_CACHE_SIZE;
 	}
+
+	@Override	
+	public void waitForAllDispatchingToFinish() {
+		synchronized (_dispatchCounterMonitor ) {
+			if (_dispatchCounter != 0)
+				Threads.waitWithoutInterruptions(_dispatchCounterMonitor);
+		}
+		
+	}
+
+	private void dispatchCounterIncrement() {
+		synchronized (_dispatchCounterMonitor ) {
+			_dispatchCounter++;
+		}
+	}
+
+	private void dispatchCounterDecrement() {
+		synchronized (_dispatchCounterMonitor ) {
+			_dispatchCounter--;
+			if (_dispatchCounter == 0)
+				_dispatchCounterMonitor.notifyAll();
+		}
+	}
+
 
 }

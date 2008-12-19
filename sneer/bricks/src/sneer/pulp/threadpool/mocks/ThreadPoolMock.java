@@ -34,14 +34,5 @@ public class ThreadPoolMock implements ThreadPool {
 		return _steppers.get(i);
 	}
 
-	@Override
-	public void dispatch(Memento environment, Runnable runnable) {
-		Environments.runWith(environment, runnable);
-	}
-
-	@Override
-	public void waitForAllDispatchingToFinish() {
-		//Dispatch is done synchronously by this mock. There is nothing to wait.
-	}
 
 }

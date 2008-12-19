@@ -29,17 +29,16 @@ public class TupleSpaceResponsivenessTest extends TestInContainerEnvironment {
 	@Test (timeout = 1000)
 	public void test() {
 		final ByRef<Boolean> wasPublished = ByRef.newInstance(false);
-		final Consumer<TestTuple> consumer = new Consumer<TestTuple>() { @Override public void consume(TestTuple value) {
+		_subject.addSubscription(TestTuple.class, new Consumer<TestTuple>() { @Override public void consume(TestTuple value) {
 			wasPublished.value = true;
-		}};
-		
-		_subject.addSubscription(TestTuple.class, consumer);
+		}});
 
 		final TestTuple tuple = new TestTuple(42);
 		_subject.publish(tuple);
 		
 		assertFalse(wasPublished.value);
 		_threads.stepper(0).step();
+		_threads.stepper(1).step();
 		assertTrue(wasPublished.value);
 	}
 	

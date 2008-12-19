@@ -47,6 +47,8 @@ public class SpeakerTest extends TestInContainerEnvironment {
 		_tupleSpace.acquire(p2());
 
 		_tupleSpace.acquire(myPacket(new byte[] {-1, 17, 0, 42}));
+
+		waitForTupleDispatch();
 		
 		_subject.close();
 	}
@@ -60,8 +62,12 @@ public class SpeakerTest extends TestInContainerEnvironment {
 		_tupleSpace.acquire(p1());
 		_tupleSpace.acquire(p2());
 
+		waitForTupleDispatch();
+
 		_subject.close();
 		_tupleSpace.acquire(p1());
+		
+		waitForTupleDispatch();
 	}
 
 	

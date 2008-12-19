@@ -5,7 +5,6 @@ import org.junit.Before;
 
 import tests.TestInContainerEnvironment;
 import wheel.lang.Timebox;
-import wheel.lang.exceptions.TimeIsUp;
 
 public abstract class SovereignFunctionalTestBase extends TestInContainerEnvironment {
 
@@ -19,11 +18,7 @@ public abstract class SovereignFunctionalTestBase extends TestInContainerEnviron
 	@Before
 	public void beforeSovereignTest() {
 		new Timebox(8000) { @Override protected void runInTimebox() {
-			try {
-				initCommunity();
-			} catch (TimeIsUp t) {
-				throw new RuntimeException(t);
-			}
+			initCommunity();
 		}};
 	}
 

@@ -18,4 +18,6 @@ public interface TupleSpace extends Brick {
 	void keep(Class<? extends Tuple> tupleType);
 	List<Tuple> keptTuples();
 	
+	void waitForAllDispatchingToFinish();
+	
 }

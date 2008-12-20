@@ -13,8 +13,7 @@
 ﻿ROADMAP TO BECOME MORE PRODUCTIVE
 =====================================
 
-	- [Douglas] Debugging Strategy - Revise so that all debugging info doesn't go into the log file.
-		- Default: Log only throwables. Have "white list" of parts of messages to log.
+	- [Douglas]Default: Log only throwables. Have "white list" of parts of messages to log.
 			- GUI to delete or add parts of messages in the "white list" to log.
 
 	- [Bamboo] Mocotó Test Framework

@@ -14,8 +14,8 @@
 =====================================
 
 	- [Douglas] Debugging Strategy - Revise so that all debugging info doesn't go into the log file.
-		- Default: sysout and file. Filter by part of message: Only file or ignore.
-			- Look at java.logging, Log4J, commons-logging, etc 
+		- Default: Log only throwables. Have "white list" of parts of messages to log.
+			- GUI to delete or add parts of messages in the "white list" to log.
 
 	- [Bamboo] Mocotó Test Framework
 
@@ -82,7 +82,7 @@ ROADMAP TO PRODUCE
 	
 
 
-	2008---------------------------------- DOGFOOD RELEASE (We have a decent VNC+Skype replacement we use to develop Sneer)
+	2008---------------------------------- WWW RELEASE (Wind, WatchMe and Whisper)
 
 	- Flooding - Solve tuple flooding on the network.
 		- Traffic Prioritization by tuple type
@@ -113,7 +113,7 @@ ROADMAP TO PRODUCE
 
 	- TopTen - First Round
 	
-	30/MAR -------------------------------------- "SNEERCAST" RELEASE (Remote collaborating (includes Pair Programming) teams all over the world can use Sneer as their tool.)
+	30/MAR --------------------------------------
 
 	- Authentication (PK)
 
@@ -132,7 +132,7 @@ ROADMAP TO PRODUCE
 	- Free Software Forum - Make a Splash
 		- Installer.EXE for Windows
 			- Card CD?
-	25/JUN --------------------------------------
+	25/JUN -------------------------------------- TopTen - FISL RELEASE
 
 	- Issue Tracking
 		- Voting

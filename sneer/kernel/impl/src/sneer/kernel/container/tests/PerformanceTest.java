@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.Test;
 
 import sneer.kernel.container.Container;
-import sneer.kernel.container.impl.ContainerImpl;
+import sneer.kernel.container.Containers;
 import sneer.kernel.container.impl.classloader.MetaClassClassLoader;
 import sneer.pulp.own.name.OwnNameKeeper;
 import wheel.io.codegeneration.ClassUtils;
@@ -19,8 +19,8 @@ public class PerformanceTest {
 
 	@Test
 	public void testClassLoading() throws Exception {
-		Container c1 = new ContainerImpl();
-		Container c2 = new ContainerImpl();
+		Container c1 = Containers.newContainer();
+		Container c2 = Containers.newContainer();
 		Object o1 = c1.provide(OwnNameKeeper.class);
 		Object o2 = c2.provide(OwnNameKeeper.class);
 		ClassLoader cl1 = o1.getClass().getClassLoader();

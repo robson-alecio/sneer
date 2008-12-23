@@ -6,7 +6,7 @@ import wheel.lang.Threads;
 public class SomeGuiBrickImpl implements SomeGuiBrick {
 
 	@Override
-	public Thread guiBrickThread() {
+	public Thread currentThread() {
 		return Thread.currentThread();
 	}
 

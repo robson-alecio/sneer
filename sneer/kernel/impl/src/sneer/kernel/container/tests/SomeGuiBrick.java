@@ -4,7 +4,7 @@ import sneer.skin.GuiBrick;
 
 public interface SomeGuiBrick extends GuiBrick {
 
-	Thread guiBrickThread();
+	Thread currentThread();
 
 	void slowMethod();
 

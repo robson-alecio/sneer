@@ -27,9 +27,9 @@ public class ContainerImpl implements Container {
 
 	private ClassLoader _apiClassLoader;
 
-	public ContainerImpl(Object... bindings) {
+	public ContainerImpl(Environment environment, Object... bindings) {
 		
-		_environment = produceEnvironment(bindings);
+		_environment = composeWithBinder(environment);
 		
 		bindNonGuiBricks(bindings);
 		
@@ -41,11 +41,10 @@ public class ContainerImpl implements Container {
 		bindGuiBricks(bindings);
 	}
 
-	private Environment produceEnvironment(Object[] bindings) {
-		for (Object binding : bindings)
-			if (binding instanceof Environment)
-				return Environments.compose((Environment) binding, _binder);
-		return _binder;
+	private Environment composeWithBinder(Environment environment) {
+		return environment == null
+			? _binder
+			: Environments.compose(environment, _binder);
 	}
 
 	private String persistenceDirectory() {

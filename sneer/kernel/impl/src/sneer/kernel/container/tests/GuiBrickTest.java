@@ -20,14 +20,14 @@ public class GuiBrickTest {
 	public void testGuiBrickProducedByConventionRunsInSwingThread() throws Exception {
 		final Container container = Containers.newContainer();
 		final SomeGuiBrick brick = container.provide(SomeGuiBrick.class);
-		assertSame(swingThread(), brick.guiBrickThread());
+		assertSame(swingThread(), brick.currentThread());
 	}
 
 	@Test
 	public void testInjectedGuiBrickRunsInSwingThread() throws Exception {
 		final Container container = Containers.newContainer(new SomeGuiBrickImpl());
 		final SomeGuiBrick brick = container.provide(SomeGuiBrick.class);
-		assertSame(swingThread(), brick.guiBrickThread());
+		assertSame(swingThread(), brick.currentThread());
 	}
 	
 	@Test

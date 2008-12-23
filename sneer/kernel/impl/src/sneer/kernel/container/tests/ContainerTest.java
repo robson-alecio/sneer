@@ -12,7 +12,6 @@ import org.junit.Test;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
 import sneer.kernel.container.SneerConfig;
-import sneer.kernel.container.impl.ContainerImpl;
 import sneer.kernel.container.tests.impl.MySample;
 import sneer.kernel.container.tests.impl.SampleImpl;
 import sneer.pulp.config.persistence.PersistenceConfig;
@@ -25,14 +24,10 @@ public class ContainerTest {
 		final Mockery mockery = new JUnit4Mockery();
 		final Environment environment = mockery.mock(Environment.class);
 		mockery.checking(new Expectations() {{
-			one(environment).provide(SneerConfig.class);
-				will(returnValue(null));
-			one(environment).provide(PersistenceConfig.class);
-				will(returnValue(null));
-			one(environment).provide(Object.class);
-				will(returnValue("o"));
-			one(environment).provide(Sample.class);
-				will(returnValue(null));
+			one(environment).provide(SneerConfig.class); will(returnValue(null));
+			one(environment).provide(PersistenceConfig.class); will(returnValue(null));
+			one(environment).provide(Object.class); will(returnValue("o"));
+			one(environment).provide(Sample.class); will(returnValue(null));
 		}});
 		
 		final Container container = Containers.newContainer(environment);
@@ -46,7 +41,7 @@ public class ContainerTest {
 	@Test
 	public void testImplementationBinding() throws Exception {
         Sample sample = new MySample();
-        Container c = new ContainerImpl(sample);
+        Container c = Containers.newContainer(sample);
         Sample subject = c.provide(Sample.class);
         assertSame(sample, subject);
 	}

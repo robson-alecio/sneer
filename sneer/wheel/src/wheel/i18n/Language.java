@@ -120,11 +120,9 @@ public class Language {
 	// Fix: the code below is responsible for translation file creation... *maybe* should be moved to an utility class
 
 	public static void main(String[] args) {
-		GuiThread.strictInvokeLater(new Runnable() {
-			public void run() {
-				createAndShowGUI();
-			}
-		});
+		GuiThread.strictInvokeAndWait(new Runnable() {	public void run() {
+			createAndShowGUI();
+		}});
 	}
 
 	private static void createAndShowGUI() {

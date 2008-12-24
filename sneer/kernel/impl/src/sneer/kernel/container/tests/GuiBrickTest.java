@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 
 import javax.swing.SwingUtilities;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.kernel.container.Container;
@@ -12,22 +13,29 @@ import sneer.kernel.container.Containers;
 import sneer.kernel.container.tests.impl.SomeGuiBrickImpl;
 import wheel.io.ui.TimeboxedEventQueue;
 import wheel.lang.ByRef;
+import wheel.lang.exceptions.NotImplementedYet;
 import wheel.lang.exceptions.TimeIsUp;
 
 public class GuiBrickTest {
 	
 	@Test
-	public void testGuiBrickProducedByConventionRunsInSwingThread() throws Exception {
+	public void guiBrickRunsInSwingThread() throws Exception {
 		final Container container = Containers.newContainer();
 		final SomeGuiBrick brick = container.provide(SomeGuiBrick.class);
 		assertSame(swingThread(), brick.currentThread());
 	}
 
 	@Test
-	public void testInjectedGuiBrickRunsInSwingThread() throws Exception {
+	public void injectedGuiBrickRunsInSwingThread() throws Exception {
 		final Container container = Containers.newContainer(new SomeGuiBrickImpl());
 		final SomeGuiBrick brick = container.provide(SomeGuiBrick.class);
 		assertSame(swingThread(), brick.currentThread());
+	}
+
+	@Test
+	@Ignore
+	public void guiBrickCallbacksComeInSwingThread() throws Exception {
+		throw new NotImplementedYet();
 	}
 	
 	@Test

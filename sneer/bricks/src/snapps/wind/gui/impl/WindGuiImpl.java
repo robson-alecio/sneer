@@ -190,9 +190,9 @@ class WindGuiImpl implements WindGui {
 				private void fire() {
 					_shouldAutoscroll = isAtEnd();
 				}
-				@Override protected void elementAdded(Shout newElement) {	fire();	}
-				@Override protected void elementPresent(Shout element) {fire();	}
-				@Override protected void elementRemoved(Shout element) {fire();}
+				@Override protected void elementAdded(Shout newElement) { fire(); }
+				@Override protected void elementPresent(Shout element) { fire(); }
+				@Override protected void elementRemoved(Shout element) { fire(); }
 				
 				@Override
 				public void elementInserted(int index, Shout value) {

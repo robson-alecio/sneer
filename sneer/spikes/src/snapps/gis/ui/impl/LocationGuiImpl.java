@@ -56,16 +56,9 @@ public class LocationGuiImpl {
 		_address.setText(address);
 		updateAddress(address);
 
-		_address.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				GuiThread.invokeLater(new Runnable() {
-					public void run() {
-						updateAddress(_address.getText());
-					}
-				});
-			}
-		});
+		_address.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) {
+			updateAddress(_address.getText());
+		}});
 		_mapHolder.setBackground(Color.white);
 		content.add(_address, BorderLayout.NORTH);
 		content.add(_mapHolder, BorderLayout.CENTER);

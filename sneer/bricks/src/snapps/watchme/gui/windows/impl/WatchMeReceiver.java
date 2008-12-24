@@ -45,7 +45,12 @@ class WatchMeReceiver{
 	
 	WatchMeReceiver(Contact contact) {
 		_contact = contact;
-		createReceiver(contact);
+		
+		_keyChangeReceiverToAvoidGc = new Receiver<Contact>(_keyManager.keyChanges()){@Override public void consume(Contact contactWithNewKey) {
+			if(contactWithNewKey != _contact) return;
+			startWindowPaint(_keyManager.keyGiven(_contact));
+		}};
+
 	}
 
 	private void initGui() {
@@ -72,23 +77,13 @@ class WatchMeReceiver{
 		}});
 	}
 
-	private void createReceiver(final Contact contact) {
-		PublicKey key = _keyManager.keyGiven(contact);
-		if(key==null){
-			_keyChangeReceiverToAvoidGc = new Receiver<Contact>(_keyManager.keyChanges()){@Override public void consume(Contact value) {
-				if(contact!=value) return;
-				startWindowPaint(_keyManager.keyGiven(contact));
-				_keyChangeReceiverToAvoidGc = null;
-			}};
-			return;
-		}
-		startWindowPaint(key);
-	}
 
 	private void startWindowPaint(PublicKey key) {
+		if (key == null) return;
+		
 		final EventSource<BufferedImage> screens = _watchMe.screenStreamFor(key);
 		_imageReceiverToAvoidGc = new Receiver<Image>(screens){ @Override public void consume(Image img) {
-			if(_windowWidget==null) initGui();
+			if (_windowWidget == null) initGui();
 			
 			JFrame frm = _windowWidget.getMainWidget();
 			if (!frm.isVisible()) frm.setVisible(true);

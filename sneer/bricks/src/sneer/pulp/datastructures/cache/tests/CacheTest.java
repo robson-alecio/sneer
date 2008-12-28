@@ -45,6 +45,26 @@ public class CacheTest extends TestInContainerEnvironment{
 		assertHandle(o4);
 	}
 
+	@Test
+	public void discardOldObjects(){
+		Object o1 = new Object();
+		Object o2 = new Object();
+		Object o3 = new Object();
+		Object o4 = new Object();
+		
+		_subject.keep(o1);
+		_subject.keep(o2);
+		_subject.keep(o3);
+		_subject.keep(o1);
+		_subject.keep(o1);
+
+		_subject.keep(o4);
+		assertTrue(_subject.contains(o1));
+		assertFalse(_subject.contains(o2));
+		assertTrue(_subject.contains(o3));
+		assertTrue(_subject.contains(o4));
+	}
+
 	private void assertHandle(Object obj) {
 		int handle = _subject.handleFor(obj);
 		assertEquals(obj, _subject.getByHandle(handle));
@@ -55,5 +75,5 @@ public class CacheTest extends TestInContainerEnvironment{
 		assertNull(_subject.getByHandle(42));
 		assertNull(_subject.getByHandle(-42));
 	}
-
+	
 }

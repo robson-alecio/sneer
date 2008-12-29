@@ -239,4 +239,9 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 			return image(light);
 		}
 	}
+
+	@Override
+	public String title() {
+		return null;
+	}
 }

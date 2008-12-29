@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.HierarchyBoundsAdapter;
 import java.awt.event.HierarchyEvent;
@@ -13,57 +16,100 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 import sneer.skin.dashboard.InstrumentWindow;
 
 class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 
+	private static final int MINIMAL_TOOLBAR_HEIGHT = 14;
+
 	private static final long serialVersionUID = 1L;
 	
-	private final JLayeredPane _root = new JLayeredPane();
 	private final JPanel _contentPane = new JPanel();
-	private final JPanel _toolbar = new JPanel();
-	private final GlassPane _glassPane = new GlassPane(_contentPane, _toolbar);
 	
-	public InstrumentWindowImpl() {
+	private final JLayeredPane _toolbarRoot = new JLayeredPane(){
+		@Override public Dimension getPreferredSize() { return getToolbarDimension();}
+	};
+	private final JPanel _toolbarTitleLayer = new JPanel();
+	private final GlassPane _toolbarGlassPane = new GlassPane(_contentPane, _toolbarTitleLayer){
+		@Override public Dimension getPreferredSize() { return getToolbarDimension();}
+	};
+	private final JPanel _toolbarFakeMarginLayer = new JPanel(){
+		@Override public Dimension getPreferredSize() { return getToolbarDimension();}
+	};
+	
+	private final JPanel _actions = new JPanel();
+	private final JLabel _title = new JLabel();
+	
+	public InstrumentWindowImpl(String title) {
+		if(title!=null) _title.setText(title);
+		
+		_title.setFont(_title.getFont().deriveFont(10f));
+		_title.setBorder(new EmptyBorder(0,10,0,0));
+		
 		setLayout(new BorderLayout());
-		add(_root, BorderLayout.CENTER);
-		_root.add(_contentPane, new Integer(0));
-		_root.add(_toolbar, new Integer(1));
-		_root.add(_glassPane, new Integer(2));
+		add(_contentPane, BorderLayout.CENTER);
+		add(_toolbarRoot, BorderLayout.NORTH);
 		
-		_contentPane.setBackground(Color.BLUE);
+		JPanel tmp = new JPanel();
+		tmp.setOpaque(false);
+		_toolbarFakeMarginLayer.setLayout(new GridBagLayout());
+		_toolbarFakeMarginLayer.add(tmp, new GridBagConstraints(0,0, 1,1, 1.0,1.0, 
+				GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0,0));
 		
-		_toolbar.setOpaque(false);
-		_toolbar.setVisible(false);
+		tmp = new JPanel();
+		tmp.setBackground(Color.WHITE);
+		_toolbarFakeMarginLayer.add(tmp, new GridBagConstraints(0,1, 1,1, 1.0,1.0, 
+				GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0,0));
 		
-		_toolbar.setLayout(new FlowLayout(FlowLayout.RIGHT, 2, 0));
+		_toolbarRoot.add(_toolbarFakeMarginLayer,  new Integer(0));
+		_toolbarRoot.add(_toolbarTitleLayer, new Integer(1));
+		_toolbarRoot.add(_toolbarGlassPane, new Integer(2));
+		
+		_toolbarTitleLayer.setVisible(false);
+		_toolbarFakeMarginLayer.setOpaque(false);
+		_toolbarRoot.setOpaque(false);
+		_actions.setOpaque(false);
+		setOpaque(false);
+		
+		_toolbarTitleLayer.setBackground(Color.WHITE);
+		_contentPane.setBackground(Color.WHITE);
+		
+		_toolbarTitleLayer.setLayout(new BorderLayout());
+		_toolbarTitleLayer.add(_title, BorderLayout.WEST);
+		_toolbarTitleLayer.add(_actions, BorderLayout.CENTER);
+		_actions.setBorder(new EmptyBorder(0,0,0,4));
+		
+		_actions.setLayout(new FlowLayout(FlowLayout.RIGHT, 2, 0));
 		initWindowResizeListener();
 		
-		_glassPane.addMouseListener(new MouseAdapter(){
+		_toolbarGlassPane.addMouseListener(new MouseAdapter(){
+			@Override public void mouseEntered(MouseEvent e) { tryShowToolbar(); }
+			@Override public void mouseExited(MouseEvent e) { tryHideToolbar(); }
+		});
+	}
 
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				tryShowToolbar();
-			}
+	private Dimension getToolbarDimension() {
+		return new Dimension(getWidth(), getToolbarHeight());
+	}
 
-			@Override
-			public void mouseExited(MouseEvent e) {
-				tryHideToolbar();
-			}
-			});
+	private int getToolbarHeight() {
+		int h = (int)_toolbarTitleLayer.getPreferredSize().getHeight();
+		h = (h<MINIMAL_TOOLBAR_HEIGHT)?MINIMAL_TOOLBAR_HEIGHT:h;
+		return h;
 	}
 
 	void tryShowToolbar() {
-		if (_toolbar.getComponentCount() == 0)
-			return;
-		_toolbar.setVisible(true);
+		if (_actions.getComponentCount() == 0) return;
+		_toolbarTitleLayer.setVisible(true);
 	}
 
 	void tryHideToolbar() {
-		_toolbar.setVisible(false);
+		_toolbarTitleLayer.setVisible(false);
 	}
 
 	private void initWindowResizeListener() {
@@ -73,10 +119,10 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 	}
 	
 	void resizeContents() {
-		_contentPane.setBounds(0, 0, getWidth(), getHeight());
-		_glassPane.setBounds(_contentPane.getBounds());
-		Dimension size = _toolbar.getPreferredSize();
-		_toolbar.setBounds(getWidth() - size.width, 0, size.width, size.height);
+		_toolbarRoot.setBounds(0, 0, this.getWidth(), getToolbarHeight());
+		_toolbarTitleLayer.setBounds(0, 0, this.getWidth(), getToolbarHeight());
+		_toolbarGlassPane.setBounds(0, 0, this.getWidth(), getToolbarHeight());
+		_toolbarFakeMarginLayer.setBounds(0, 0, this.getWidth(), getToolbarHeight());
 	}
 	
 	@Override
@@ -115,19 +161,20 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 	}
 
 	@Override
-	public Container toolbar() {
-		return _toolbar;
+	public Container actions() {
+		return _actions;
 	}
 	
 	public static void main(String[] args) {
 		final JFrame frm = new JFrame();
 		frm.setBounds(10, 10, 500, 300);
 		frm.getContentPane().setLayout(new BorderLayout());
+		frm.getContentPane().setBackground(Color.GRAY);
 		
-		InstrumentWindowImpl instrument = new InstrumentWindowImpl();
+		InstrumentWindowImpl instrument = new InstrumentWindowImpl("Teste");
 		frm.getContentPane().add(instrument, BorderLayout.CENTER);
-		instrument.toolbar().add(new JButton("1"));		
-		instrument.toolbar().add(new JButton("2"));
+		instrument.actions().add(new JButton("1"));		
+		instrument.actions().add(new JButton("2"));
 		instrument.contentPane().add(new JButton("3"));
 		
 		frm.setVisible(true);

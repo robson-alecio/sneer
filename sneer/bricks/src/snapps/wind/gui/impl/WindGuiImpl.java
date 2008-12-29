@@ -103,8 +103,10 @@ class WindGuiImpl implements WindGui {
 		scrollShout.getViewport().add(horizontalLimit);	
 		
 		JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, _scrollPane, scrollShout);
+		split.setBorder(new EmptyBorder(0,0,0,0));
+
 		split.setOpaque(false);
-		split.setDividerLocation((int) (defaultHeight()*0.75)); 
+		split.setDividerLocation((int) (defaultHeight()*0.68)); 
 		split.setDividerSize(3);
 		_container.setLayout(new BorderLayout());
 		_container.add(split, BorderLayout.CENTER);
@@ -138,7 +140,7 @@ class WindGuiImpl implements WindGui {
 	
 	private void initScrollPane() {
 		_scrollPane = new JScrollPane();
-		_scrollPane.setBorder(new EmptyBorder(5,5,2,2));
+		_scrollPane.setBorder(new EmptyBorder(0,5,2,2));
 		_scrollPane.setOpaque(false);
 		_autoscrollSupportToAvoidGc = new WindAutoscrollSupport();
 	}
@@ -257,5 +259,10 @@ class WindGuiImpl implements WindGui {
 			StringSelection fieldContent = new StringSelection(_shoutsList.getSelectedText());
 			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(fieldContent, this);	
 		}
+	}
+
+	@Override
+	public String title() {
+		return null;
 	}
 }

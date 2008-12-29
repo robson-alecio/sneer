@@ -62,6 +62,11 @@ class Snapp1 implements Instrument{
 	public int defaultHeight() {
 		return 200;
 	}
+
+	@Override
+	public String title() {
+		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+	}
 }
 
 class Snapp2 implements Instrument{
@@ -80,6 +85,11 @@ class Snapp2 implements Instrument{
 	public int defaultHeight() {
 		return 50;
 	}
+
+	@Override
+	public String title() {
+		return null;
+	}
 }
 
 class Snapp3 implements Instrument{
@@ -94,5 +104,10 @@ class Snapp3 implements Instrument{
 	@Override
 	public int defaultHeight() {
 		return 50;
+	}
+	
+	@Override
+	public String title() {
+		return null;
 	}
 }

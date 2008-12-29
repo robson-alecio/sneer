@@ -98,4 +98,9 @@ public class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 	public int defaultHeight() {
 		return DEFAULT_HEIGHT;
 	}
+
+	@Override
+	public String title() {
+		return null;
+	}
 }

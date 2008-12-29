@@ -107,7 +107,7 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 	
 	@Override
 	public int defaultHeight() {
-		return 50;
+		return 65;
 	}
 	
 	private void addListenContactAction() {
@@ -198,5 +198,10 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 		btn.setToolTipText(tip);
 		container.add(btn);
 		return btn;
+	}
+
+	@Override
+	public String title() {
+		return "ListenToMe";
 	}
 }

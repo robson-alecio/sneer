@@ -127,4 +127,9 @@ class OwnerGuiImpl implements OwnerGui {
 	public int defaultHeight() {
 		return DEFAULT_HEIGHT;
 	}
+
+	@Override
+	public String title() {
+		return null;
+	}
 }

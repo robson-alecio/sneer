@@ -17,7 +17,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 
 import snapps.contacts.actions.ContactAction;
 import snapps.contacts.actions.ContactActionManager;
@@ -73,7 +72,7 @@ class ContactsGuiImpl implements ContactsGui {
 	private static Image getImage(String fileName) {
 		return Images.getImage(ContactsGuiImpl.class.getResource(fileName));
 	}
-	
+
 	@Override
 	public void init(InstrumentWindow window) {
 		Container container = window.contentPane();
@@ -86,20 +85,16 @@ class ContactsGuiImpl implements ContactsGui {
 		container.setLayout(new BorderLayout());
 		container.add(scrollPane, BorderLayout.CENTER);
 		scrollPane.getViewport().add(_contactList.getComponent());
-		scrollPane.setBorder(new TitledBorder(new EmptyBorder(5,5,5,5), getName()));
+		scrollPane.setBorder(new EmptyBorder(0,5,8,5));
 		_contactList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
 		scrollPane.setBackground(_contactList.getComponent().getBackground());
 		new PopUpSupport();
-		new ToolbarSupport(window.toolbar());
+		new ToolbarSupport(window.actions());
 	}
 	
 	@Override
 	public int defaultHeight() {
 		return 144;
-	}
-	
-	private String getName() {
-		return "My Contacts";
 	}
 
 	final class ContactLabelProvider implements LabelProvider<ContactInfo> {
@@ -124,7 +119,7 @@ class ContactsGuiImpl implements ContactsGui {
 	private final class ToolbarSupport {
 		public ToolbarSupport(Container toolbar) {
 			JButton add = new JButton(new ImageIcon(ADD));
-			add.setPreferredSize(new Dimension(22, 22));
+			add.setPreferredSize(new Dimension(16, 16));
 			add.setBorder(new EmptyBorder(0,0,0,0));
 			add.setOpaque(true);
 			add.setBackground(Color.WHITE);
@@ -167,5 +162,10 @@ class ContactsGuiImpl implements ContactsGui {
 			menu.add(item);
 			return item;
 		}
+	}
+	
+	@Override
+	public String title() {
+		return "My Contacts";
 	}
 }

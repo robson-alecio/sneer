@@ -52,7 +52,7 @@ class WatchMeGuiImpl implements WatchMeGui{ //Optimize need a better snapp windo
 
 	@Override
 	public int defaultHeight() {
-		return 50;
+		return 65;
 	}
 	
 	private void createWatchMeButtonListener() {
@@ -104,5 +104,10 @@ class WatchMeGuiImpl implements WatchMeGui{ //Optimize need a better snapp windo
 				}
 			}
 		});
+	}
+
+	@Override
+	public String title() {
+		return null;
 	}
 }

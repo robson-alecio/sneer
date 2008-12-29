@@ -1,5 +1,7 @@
 package snapps.gis.ui.impl;
 
+import static wheel.lang.Environments.my;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -22,8 +24,6 @@ import javax.swing.JTextField;
 
 import snapps.location.LocationKeeper;
 import sneer.pulp.threadpool.ThreadPool;
-import wheel.io.ui.GuiThread;
-import static wheel.lang.Environments.my;
 
 public class LocationGuiImpl {
 

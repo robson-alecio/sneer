@@ -150,12 +150,12 @@ class DashboardImpl implements Dashboard, Runnable {
 		_rootPanel.setLayout(new BorderLayout());
 		_rootPanel.add(_mainMenu.getWidget(), BorderLayout.NORTH);
 		_contentPanel = new ContentPane();
+		_contentPanel.setLayout(new FlowLayout(FlowLayout.TRAILING, 5, 1));
 		_rootPanel.add(_contentPanel, BorderLayout.CENTER);
-		_contentPanel.setLayout(new FlowLayout());
 	}
 
 	private InstrumentWindow install(final Instrument instrument) {
-		final InstrumentWindowImpl sf = new InstrumentWindowImpl();
+		final InstrumentWindowImpl sf = new InstrumentWindowImpl(instrument.title());
 		GuiThread.strictInvokeAndWait(new Runnable(){	@Override public void run() {
 			_contentPanel.add(sf);
 			instrument.init(sf);
@@ -285,7 +285,7 @@ class ContentPane extends JPanel{
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.setColor(new Color(0, 0, 0, 50));
+		g.setColor(new Color(0, 0, 0, 10));
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 	}
 }

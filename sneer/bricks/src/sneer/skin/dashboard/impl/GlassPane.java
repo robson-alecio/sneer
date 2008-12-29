@@ -18,7 +18,6 @@ class GlassPane extends JPanel implements MouseListener, MouseMotionListener, Fo
 	Container _toolbar;
 
 	public GlassPane(Container contentPane, JPanel toolbar) {
-		setVisible(false); //Fix this disable the toolbar support. Remove this line, after fix the GlassPane mouse event bug. 
 		_contentPane = contentPane;
 		_toolbar = toolbar;
 		setOpaque(false);

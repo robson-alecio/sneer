@@ -126,4 +126,9 @@ public class MemoryMeterGuiImpl implements MemoryMeterGui {
 	public int defaultHeight() {
 		return DEFAULT_HEIGHT;
 	}
+
+	@Override
+	public String title() {
+		return null;
+	}
 }

@@ -79,7 +79,6 @@ ROADMAP TO PRODUCE
 		- Test that the counter is called with the correct number of bytes being sent and received. 
 
 	- [Sandro] Contact CRUD Instrument
-		- Add button appears on mouse hover.
 	
 	- [Sandro] Whisper - Mixagem
 

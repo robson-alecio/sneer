@@ -28,6 +28,6 @@
 	<classpathentry kind="lib" path="wheel/lib/jmock-2.5.1/hamcrest-library-1.1.jar"/>
 	<classpathentry kind="lib" path="wheel/lib/jmock-2.5.1/jmock-2.5.1.jar"/>
 	<classpathentry kind="lib" path="wheel/lib/jmock-2.5.1/jmock-junit4-2.5.1.jar"/>
-	<classpathentry kind="lib" path="bricks/src/snapps/listentome/speex/impl/lib/speex.jar"/>
+	<classpathentry kind="lib" path="bricks/src/snapps/whisper/speex/impl/lib/speex.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

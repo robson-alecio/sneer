@@ -1,11 +1,11 @@
-package snapps.listentome.speextuples.tests;
+package snapps.whisper.speextuples.tests;
 
 import static wheel.lang.Environments.my;
 
 import org.jmock.Expectations;
 import org.junit.Test;
 
-import snapps.listentome.speextuples.SpeexTuples;
+import snapps.whisper.speextuples.SpeexTuples;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.skin.sound.PcmSoundPacket;
 import tests.Contribute;

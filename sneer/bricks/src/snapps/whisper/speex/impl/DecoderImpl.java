@@ -1,10 +1,10 @@
-package snapps.listentome.speex.impl;
+package snapps.whisper.speex.impl;
 
 import java.io.StreamCorruptedException;
 
 import org.xiph.speex.SpeexDecoder;
 
-import snapps.listentome.speex.Decoder;
+import snapps.whisper.speex.Decoder;
 import sneer.skin.sound.kernel.Audio;
 import static wheel.lang.Environments.my;
 

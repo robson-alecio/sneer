@@ -1,8 +1,8 @@
-package snapps.listentome.speex.impl;
+package snapps.whisper.speex.impl;
 
-import snapps.listentome.speex.Decoder;
-import snapps.listentome.speex.Encoder;
-import snapps.listentome.speex.Speex;
+import snapps.whisper.speex.Decoder;
+import snapps.whisper.speex.Encoder;
+import snapps.whisper.speex.Speex;
 
 class SpeexImpl implements Speex {
 

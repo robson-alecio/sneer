@@ -1,4 +1,4 @@
-package snapps.listentome.speextuples;
+package snapps.whisper.speextuples;
 
 import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.tuples.Tuple;

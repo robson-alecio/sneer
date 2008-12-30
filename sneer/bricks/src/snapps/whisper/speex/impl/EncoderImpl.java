@@ -1,8 +1,8 @@
-package snapps.listentome.speex.impl;
+package snapps.whisper.speex.impl;
 
 import org.xiph.speex.SpeexEncoder;
 
-import snapps.listentome.speex.Encoder;
+import snapps.whisper.speex.Encoder;
 import sneer.skin.sound.kernel.Audio;
 import static wheel.lang.Environments.my;
 

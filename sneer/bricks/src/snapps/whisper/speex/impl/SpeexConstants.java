@@ -1,4 +1,4 @@
-package snapps.listentome.speex.impl;
+package snapps.whisper.speex.impl;
 
 class SpeexConstants {
 

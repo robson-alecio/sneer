@@ -1,4 +1,4 @@
-package snapps.listentome.gui.impl;
+package snapps.whisper.gui.impl;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -18,7 +18,7 @@ import javax.swing.border.EmptyBorder;
 
 import snapps.contacts.actions.ContactAction;
 import snapps.contacts.actions.ContactActionManager;
-import snapps.listentome.gui.ListenToMeGui;
+import snapps.whisper.gui.WhisperGui;
 import sneer.pulp.contacts.Contact;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.rooms.ActiveRoomKeeper;
@@ -34,7 +34,7 @@ import wheel.reactive.Signal;
 import wheel.reactive.impl.And;
 import static wheel.lang.Environments.my;
 
-public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a better snapp window support
+public class WhisperGuiImpl implements WhisperGui { //Optimize need a better snapp window support
 
 	private final LoopbackTester _loopback = my(LoopbackTester.class);
 
@@ -46,7 +46,7 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 
 	private final Mic _mic = my(Mic.class);
 	
-	JToggleButton _listenToMeButton;
+	JToggleButton _whisperButton;
 	JToggleButton _loopBackButton;
 	
 	private final Signal<Boolean> _isMicAndSpeakerRunning;
@@ -55,7 +55,7 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 
 	private TextWidget<JTextField> _roomField;
 
-	ListenToMeGuiImpl(){
+	WhisperGuiImpl(){
 		_instrumentManager.registerInstrument(this);
 		_isMicAndSpeakerRunning = new And(_mic.isRunning(), _speaker.isRunning()).output();
 		initConsumer();
@@ -63,7 +63,7 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 
 	private void initConsumer() {
 		_consumerToAvoidGc = new Consumer<Boolean>(){ @Override public void consume(final Boolean value) {
-			_listenToMeButton.setSelected(value);
+			_whisperButton.setSelected(value);
 			_roomField.getMainWidget().setEnabled(value);
 		}};	
 		_isMicAndSpeakerRunning.addReceiver(_consumerToAvoidGc);
@@ -91,11 +91,11 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 		container.add(_roomField.getMainWidget());
 		_roomField.getMainWidget().setPreferredSize(new Dimension(100,36));
 		
-		_listenToMeButton = createButton(container, "Listen To Me", "listenToMeOn.png", "listenToMeOff.png");
+		_whisperButton = createButton(container, "Whisper", "whisperOn.png", "whisperOff.png");
 		container.add(space(36, 10));
 		_loopBackButton = createButton(container, "Loop Back Test", "loopbackOn.png", "loopbackOff.png");
 		
-		createListenToMeButtonListener();
+		createWhisperButtonListener();
 		createLoopBackButtonListener();
 		addListenContactAction();
 	}
@@ -145,11 +145,11 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 			}});
 	}
 
-	private void createListenToMeButtonListener() {
-		_listenToMeButton.addMouseListener(new MouseAdapter() {	@Override public void mouseReleased(MouseEvent e) {
-			if (_listenToMeButton.isSelected()) listenToMeOn();
-			else listenToMeOff();
-			_listenToMeButton.setSelected(false);
+	private void createWhisperButtonListener() {
+		_whisperButton.addMouseListener(new MouseAdapter() {	@Override public void mouseReleased(MouseEvent e) {
+			if (_whisperButton.isSelected()) whisperOn();
+			else whisperOff();
+			_whisperButton.setSelected(false);
 		}});
 	}
 
@@ -163,12 +163,12 @@ public class ListenToMeGuiImpl implements ListenToMeGui { //Optimize need a bett
 		}});
 	}
 
-	protected void listenToMeOff() {
+	protected void whisperOff() {
 		_mic.close();
 		_speaker.close();
 	}
 
-	protected void listenToMeOn() {
+	protected void whisperOn() {
 		_mic.open();
 		_speaker.open();
 	}

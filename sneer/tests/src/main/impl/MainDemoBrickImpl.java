@@ -3,12 +3,12 @@ package main.impl;
 import main.MainDemoBrick;
 import snapps.blinkinglights.gui.BlinkingLightsGui;
 import snapps.contacts.gui.ContactsGui;
-import snapps.listentome.gui.ListenToMeGui;
-import snapps.listentome.speextuples.SpeexTuples;
 import snapps.meter.bandwidth.gui.BandwidthMeterGui;
 import snapps.meter.memory.gui.MemoryMeterGui;
 import snapps.watchme.gui.WatchMeGui;
 import snapps.watchme.gui.windows.RemoteWatchMeWindows;
+import snapps.whisper.gui.WhisperGui;
+import snapps.whisper.speextuples.SpeexTuples;
 import snapps.wind.gui.WindGui;
 import sneer.pulp.clockticker.ClockTicker;
 import sneer.pulp.connection.SocketOriginator;
@@ -46,7 +46,7 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	private final WatchMeGui _gui4 = my(WatchMeGui.class);
 
 	@SuppressWarnings("unused")
-	private final ListenToMeGui _gui5 = my(ListenToMeGui.class);
+	private final WhisperGui _gui5 = my(WhisperGui.class);
 
 	@SuppressWarnings("unused")
 	private final RemoteWatchMeWindows _gui6 = my(RemoteWatchMeWindows.class);

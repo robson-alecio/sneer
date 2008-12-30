@@ -78,8 +78,6 @@ ROADMAP TO PRODUCE
 	- [Sandro] BandwidthMeterInstrument
 		- Test that the counter is called with the correct number of bytes being sent and received. 
 
-	- [Sandro] ListenToMe -> Whisper
-
 	- [Sandro] Contact CRUD Instrument
 		- Add button appears on mouse hover.
 	

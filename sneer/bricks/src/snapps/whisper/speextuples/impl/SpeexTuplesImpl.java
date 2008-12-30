@@ -1,4 +1,4 @@
-package snapps.listentome.speextuples.impl;
+package snapps.whisper.speextuples.impl;
 
 import static wheel.lang.Environments.my;
 
@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import snapps.listentome.speex.Decoder;
-import snapps.listentome.speex.Encoder;
-import snapps.listentome.speex.Speex;
-import snapps.listentome.speextuples.SpeexPacket;
-import snapps.listentome.speextuples.SpeexTuples;
+import snapps.whisper.speex.Decoder;
+import snapps.whisper.speex.Encoder;
+import snapps.whisper.speex.Speex;
+import snapps.whisper.speextuples.SpeexPacket;
+import snapps.whisper.speextuples.SpeexTuples;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;

@@ -1,4 +1,4 @@
-package snapps.listentome.speextuples;
+package snapps.whisper.speextuples;
 
 import sneer.kernel.container.Brick;
 

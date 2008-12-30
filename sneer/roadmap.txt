@@ -6,9 +6,6 @@
 	- [Sandro] ListSignalModel and SortedList
 		- Fix: Sort Bug (see SortTest)
 
-	- [Sandro] Remove auto-commit-setter-on-lost-focus from shout field. Make that a boolean parameter to the widget.
-		- Make sure the lost-focus event is consumed before triggering the setter (invoke later?), or else, if the setter causes a deadlock, a new gui thread will be started and it will dispatch the lost-focus event again and again and again... 
-
 
 ﻿ROADMAP TO BECOME MORE PRODUCTIVE
 =====================================

@@ -12,6 +12,8 @@ import javax.swing.text.Keymap;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyledDocument;
 
+import sneer.skin.widgets.reactive.NotificationPolicy;
+
 import wheel.lang.PickyConsumer;
 import wheel.reactive.Signal;
 
@@ -20,8 +22,8 @@ class RTextPaneImpl extends RAbstractField<JTextPane> {
 	private static final String LINE_BREAK_STRING = "\n\r";
 	private static final long serialVersionUID = 1L;
 
-	RTextPaneImpl(Signal<String> source, PickyConsumer<String> setter, boolean notifyOnlyWhenDoneEditing) {
-		super(new JTextPane(), source, setter, notifyOnlyWhenDoneEditing);
+	RTextPaneImpl(Signal<String> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy) {
+		super(new JTextPane(), source, setter, notificationPolicy);
 		LineBorder border = new LineBorder(Color.LIGHT_GRAY);
 		_textComponent.setBorder(border);
 		_decorator = new ChangeInfoDecorator(border, _textComponent){ @Override void decorate(boolean notified) {

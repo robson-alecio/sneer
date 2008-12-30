@@ -21,6 +21,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.text.JTextComponent;
 
+import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.ui.GuiThread;
 import wheel.io.ui.impl.UserImpl;
@@ -33,26 +34,28 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	
 	private static final long serialVersionUID = 1L;
 	
-	protected final boolean _notifyOnlyWhenDoneEditing;
 	protected final Signal<String> _source;
 	protected final PickyConsumer<String> _setter;
 	protected final WIDGET _textComponent;
+	protected final NotificationPolicy _notificationPolicy;
 
 	protected final Receiver<String> _fieldReciver;
 
 	protected ChangeInfoDecorator _decorator;
+	protected String _lastNotified = "";
 	
 	public boolean _notified = true;
 
+
 	RAbstractField(WIDGET textComponent, Signal<String> source) {
-		this(textComponent, source, null, false);
+		this(textComponent, source, null, NotificationPolicy.OnTyping);
 	}
 	
-	RAbstractField(WIDGET textComponent, Signal<String> source, PickyConsumer<String> setter, boolean notifyOnlyWhenDoneEditing) {
+	RAbstractField(WIDGET textComponent, Signal<String> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy) {
 		_source = source;
 		_setter = setter;
 		_textComponent = textComponent;
-		_notifyOnlyWhenDoneEditing = notifyOnlyWhenDoneEditing;
+		_notificationPolicy = notificationPolicy;
 		_fieldReciver=fieldReceiver();	
 		_decorator = new ChangeInfoDecorator(_textComponent.getBorder(), _textComponent);
 		
@@ -75,23 +78,25 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 
 	private void initChangeListeners() {
 		addKeyListenerToCommitOnKeyTyped();
-		addFocusListenerToCommitWhenLost();		
+		if ( _notificationPolicy == NotificationPolicy.OnEnterPressedOrLostFocus )
+			addFocusListenerToCommitWhenLost();
 		addDoneListenerCommiter();
 	}
-	
+
+
 	private void addKeyListenerToCommitOnKeyTyped() {
 		_textComponent.addKeyListener(new KeyAdapter() { @Override public void keyTyped(KeyEvent e) {
-			setNotified(!_notifyOnlyWhenDoneEditing);
-			_textComponent.invalidate();
-			_textComponent.getParent().validate();
-		
-			if (!_notifyOnlyWhenDoneEditing)
-				commitTextChanges();		
+			setNotified(_notificationPolicy == NotificationPolicy.OnTyping,  getText());
+			GuiThread.invokeLater(new Runnable(){ @Override public void run() {
+				_textComponent.invalidate();
+				_textComponent.getParent().validate();
+				if ( _notificationPolicy == NotificationPolicy.OnTyping ) commitTextChanges();
+			}});
 		}});
 	}
 	
 	private void addFocusListenerToCommitWhenLost() {
-		_textComponent.addFocusListener(new FocusAdapter() { @Override public void focusLost(FocusEvent e) {
+		_textComponent.addFocusListener(new FocusAdapter() {  @Override  public void focusLost(FocusEvent e) {
 			commitTextChanges();
 		}});
 	}
@@ -105,17 +110,20 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 		} catch (Exception ex) {
 			_textComponent.addKeyListener(new KeyAdapter() { @Override public void keyTyped(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
-					commitTextChanges();		
+					GuiThread.invokeLater(new Runnable(){ @Override public void run() {
+						commitTextChanges();		
+					}});
 			}});
 		} 	
 	}
 
 	public void commitTextChanges() {
-		if (getText().equals( currentValue())) return;
+		String text = getText();
+		if (text.equals( currentValue())) return;
 		GuiThread.assertInGuiThread();
-		consume(getText());
+		consume(text);
 		refreshTextComponent();
-		setNotified(true);
+		setNotified(true, text);
 	}
 
 	private void refreshTextComponent() {
@@ -196,9 +204,14 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 		return RUtil.limitSize(super.getMaximumSize());
 	}
 	
-	private void setNotified(boolean isNotified) {
+	private void setNotified(boolean isNotified, String newText) {
+		if(_lastNotified.equals(newText))
+			isNotified = true;
+			
 		_notified = isNotified;
-		_decorator.decorate(_notified);
+		_decorator.decorate(isNotified);
+		
+		if(isNotified) _lastNotified = newText;
 	}
 	
 	@Override
@@ -209,6 +222,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	public Receiver<String> fieldReceiver() {
 		return new Receiver<String>(_source) {@Override public void consume(final String text) {
 			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
+				if (!_notified) return;
 				setText(text);
 			}});
 		}};

@@ -23,13 +23,13 @@ public interface ReactiveWidgetFactory {
 	TextWidget<JLabel> newLabel(Signal<String> source, Consumer<String> setter);
 	
 	TextWidget<JTextField> newEditableLabel(Signal<String> source, PickyConsumer<String> setter);
-	TextWidget<JTextField> newEditableLabel(Signal<String> source, PickyConsumer<String> setter, boolean notifyOnlyWhenDoneEditing);
+	TextWidget<JTextField> newEditableLabel(Signal<String> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy);
 	
 	TextWidget<JTextField> newTextField(Signal<String> source, Consumer<String> setter);
-	TextWidget<JTextField> newTextField(Signal<String> source, Consumer<String> setter, boolean notifyOnlyWhenDoneEditing);
+	TextWidget<JTextField> newTextField(Signal<String> source, Consumer<String> setter, NotificationPolicy notificationPolicy);
 	
 	TextWidget<JTextPane> newTextPane(Signal<String> source, Consumer<String> setter);
-	TextWidget<JTextPane> newTextPane(Signal<String> source, Consumer<String> setter, boolean notifyOnlyWhenDoneEditing);
+	TextWidget<JTextPane> newTextPane(Signal<String> source, Consumer<String> setter, NotificationPolicy notificationPolicy);
 
 	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> labelProvider);
 	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> labelProvider,	ListCellRenderer cellRenderer);

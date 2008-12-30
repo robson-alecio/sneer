@@ -13,6 +13,7 @@ import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListSignalModel;
 import sneer.skin.widgets.reactive.ListWidget;
+import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import sneer.skin.widgets.reactive.WindowWidget;
@@ -27,13 +28,13 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 	@Override
 	public TextWidget<JTextField> newEditableLabel(Signal<String> source, PickyConsumer<String> setter) {
 		GuiThread.assertInGuiThread();
-		return new REditableLabelImpl(source, setter, false);
+		return new REditableLabelImpl(source, setter, NotificationPolicy.OnTyping);
 	}
 
 	@Override
-	public TextWidget<JTextField> newEditableLabel(Signal<String> source, PickyConsumer<String> setter, boolean notifyOnlyWhenDoneEditing) {
+	public TextWidget<JTextField> newEditableLabel(Signal<String> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy) {
 		GuiThread.assertInGuiThread();
-		return new REditableLabelImpl(source, setter, notifyOnlyWhenDoneEditing);
+		return new REditableLabelImpl(source, setter, notificationPolicy);
 	}
 
 	@Override
@@ -51,25 +52,25 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 	@Override
 	public TextWidget<JTextField> newTextField(Signal<String> source, Consumer<String> setter) {
 		GuiThread.assertInGuiThread();
-		return new RTextFieldImpl(source, setter, false);
+		return new RTextFieldImpl(source, setter, NotificationPolicy.OnTyping);
 	}
 
 	@Override
-	public TextWidget<JTextField> newTextField(Signal<String> source, Consumer<String> setter, boolean notifyOnlyWhenDoneEditing) {
+	public TextWidget<JTextField> newTextField(Signal<String> source, Consumer<String> setter, NotificationPolicy notificationPolicy) {
 		GuiThread.assertInGuiThread();
-		return new RTextFieldImpl(source, setter, notifyOnlyWhenDoneEditing);
+		return new RTextFieldImpl(source, setter, notificationPolicy);
 	}
 
 	@Override
 	public TextWidget<JTextPane> newTextPane(Signal<String> source, Consumer<String> setter) {
 		GuiThread.assertInGuiThread();
-		return new RTextPaneImpl(source, setter, false);
+		return new RTextPaneImpl(source, setter, NotificationPolicy.OnTyping);
 	}
 
 	@Override
-	public TextWidget<JTextPane> newTextPane(Signal<String> source, Consumer<String> setter, boolean notifyOnlyWhenDoneEditing) {
+	public TextWidget<JTextPane> newTextPane(Signal<String> source, Consumer<String> setter, NotificationPolicy notificationPolicy) {
 		GuiThread.assertInGuiThread();
-		return new RTextPaneImpl(source, setter, notifyOnlyWhenDoneEditing);
+		return new RTextPaneImpl(source, setter, notificationPolicy);
 	}
 
 	@Override

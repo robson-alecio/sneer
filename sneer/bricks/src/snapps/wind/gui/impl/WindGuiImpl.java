@@ -32,6 +32,7 @@ import snapps.wind.gui.WindGui;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.sound.player.SoundPlayer;
+import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.Logger;
@@ -80,7 +81,7 @@ class WindGuiImpl implements WindGui {
 	}
 
 	private void iniGui() {
-		_myShout = _rfactory.newTextPane(new Constant<String>(""), _wind.megaphone(), true);
+		_myShout = _rfactory.newTextPane(new Constant<String>(""),  _wind.megaphone(), NotificationPolicy.OnEnterPressed);
 
 		initScrollPane();
 		initListReceiversInOrder();

@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import javax.swing.JFrame;
 
 import sneer.kernel.container.Containers;
+import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import sneer.skin.widgets.reactive.WindowWidget;
@@ -24,7 +25,7 @@ public class ReactiveWidgetsDemo {
 	
 	private ReactiveWidgetsDemo(){
 		
-		TimeboxedEventQueue.startQueueing(5000);
+		TimeboxedEventQueue.startQueueing(500000);
 		
 		GuiThread.strictInvokeAndWait(new Runnable(){ @Override public void run() {
 
@@ -34,29 +35,32 @@ public class ReactiveWidgetsDemo {
 			TextWidget<?> textWidget;
 			
 			textWidget = rfactory.newTextField(register.output(), register.setter());
-			createTestFrame(textWidget, 10, 10, 300, 100, "notifyOnlyWhenDoneEditing=false");
+			createTestFrame(textWidget, 10, 10, 300, 100, "OnTyping");
 
 			textWidget = rfactory.newEditableLabel(register.output(), register.setter());
-			createTestFrame(textWidget, 10, 120, 300, 100, "notifyOnlyWhenDoneEditing=false");
+			createTestFrame(textWidget, 10, 120, 300, 100, "OnTyping");
 
 			textWidget = rfactory.newLabel(register.output());
-			createTestFrame(textWidget, 10, 240, 300, 100, "notifyOnlyWhenDoneEditing=false");
+			createTestFrame(textWidget, 10, 230, 300, 100, "OnTyping");
 
 			textWidget = rfactory.newTextPane(register.output(), register.setter());
-			createTestFrame(textWidget, 10, 340, 300, 100, "notifyOnlyWhenDoneEditing=false");
-			
-			textWidget = rfactory.newTextField(register.output(), register.setter(), true);
-			createTestFrame(textWidget, 350, 10, 300, 100, "notifyOnlyWhenDoneEditing=true");
-
-			textWidget = rfactory.newEditableLabel(register.output(), register.setter(), true);
-			createTestFrame(textWidget, 350, 120, 300, 100, "notifyOnlyWhenDoneEditing=true");
-
-			textWidget = rfactory.newTextPane(register.output(), register.setter(), true);
-			createTestFrame(textWidget, 350, 240, 300, 100, "notifyOnlyWhenDoneEditing=true");
+			createTestFrame(textWidget, 10, 340, 300, 100, "OnTyping");
 			
 			WindowWidget<JFrame> frame = rfactory.newFrame(register.output(), register.setter());
-			frame.getMainWidget().setBounds(350, 340, 300, 100);
+			frame.getMainWidget().setBounds(10, 450, 300, 100);
 			frame.getMainWidget().setVisible(true);
+			
+			textWidget = rfactory.newTextField(register.output(), register.setter(), NotificationPolicy.OnEnterPressed);
+			createTestFrame(textWidget, 350, 10, 300, 100, "OnEnterPressed");
+
+			textWidget = rfactory.newEditableLabel(register.output(), register.setter(), NotificationPolicy.OnEnterPressed);
+			createTestFrame(textWidget, 350, 120, 300, 100, "OnEnterPressed");
+
+			textWidget = rfactory.newTextPane(register.output(), register.setter(), NotificationPolicy.OnEnterPressed);
+			createTestFrame(textWidget, 350, 230, 300, 100, "OnEnterPressed");
+			
+			textWidget = rfactory.newTextPane(register.output(), register.setter(), NotificationPolicy.OnEnterPressedOrLostFocus);
+			createTestFrame(textWidget, 350, 340, 300, 100, "OnLostFocus");
 		}});
 	}
 

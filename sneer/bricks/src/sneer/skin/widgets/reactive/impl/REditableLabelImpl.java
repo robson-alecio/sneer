@@ -15,6 +15,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.lang.PickyConsumer;
 import wheel.reactive.Signal;
@@ -28,10 +29,10 @@ class REditableLabelImpl extends JPanel implements TextWidget<JTextField>{
 	protected final Signal<String> _source;
 	protected final PickyConsumer<String> _setter;
 
-	REditableLabelImpl(Signal<String> source, PickyConsumer<String> setter, boolean notifyOnlyWhenDoneEditing) {
+	REditableLabelImpl(Signal<String> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy) {
 		_source = source;
 		_setter = setter;
-		_text = new RTextFieldImpl(source, setter, notifyOnlyWhenDoneEditing);
+		_text = new RTextFieldImpl(source, setter, notificationPolicy);
 		_label = new RLabelImpl(source, setter);
 		initWidget();
 	}

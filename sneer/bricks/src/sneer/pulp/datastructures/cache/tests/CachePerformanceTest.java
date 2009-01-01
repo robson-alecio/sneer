@@ -10,16 +10,29 @@ import tests.TestInContainerEnvironment;
 
 public class CachePerformanceTest extends TestInContainerEnvironment{
 
-	private final Cache _subject= my(CacheFactory.class).createWithCapacity(3000);
+	private final Cache<Object> _subject= my(CacheFactory.class).createWithCapacity(3000);
 	
 	@Test (timeout = 200) 
-	public void cachePerformance() {
-		for(int i=1; i<=3000;i++) 
-			_subject.keep(new Object());
+	public void containsPerformance() {
+		populate();
 		
 		Object obj= new Object();
 		for(int i=1; i<=3000;i++) 
 			_subject.contains(obj);
+	}
+
+	@Test (timeout = 700) 
+	public void handleForPerformance() {
+		populate();
+		
+		Object obj = new Object();
+		for(int i=1; i<=3000;i++) 
+			_subject.handleFor(obj);
+	}
+
+	private void populate() {
+		for(int i=1; i<=3000;i++) 
+			_subject.keep(new Object());
 	}
 
 }

@@ -30,7 +30,7 @@ class DecoderImpl implements Decoder {
 	public boolean applyDelta(ImageDelta delta) {
 		if (!isNew(delta)) return false;
 		
-		Image cell = _imageFactory.fromPngData(delta.imageData);
+		Image cell = _imageFactory.fromPngData(delta.imageData.copy());
 		
 		if (_image == null) _image = generateBlankImage(1024, 768);
 		

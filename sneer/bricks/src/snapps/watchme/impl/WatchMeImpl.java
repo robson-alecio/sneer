@@ -1,8 +1,11 @@
 package snapps.watchme.impl;
 
+import static wheel.lang.Environments.my;
+
 import java.awt.image.BufferedImage;
 import java.util.List;
 
+import snapps.watchme.ImageDeltaPacket;
 import snapps.watchme.WatchMe;
 import snapps.watchme.codec.ImageCodec;
 import snapps.watchme.codec.ImageDelta;
@@ -12,23 +15,29 @@ import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.clock.Clock;
+import sneer.pulp.datastructures.cache.Cache;
+import sneer.pulp.datastructures.cache.CacheFactory;
 import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.screenshotter.Screenshotter;
+import wheel.io.Logger;
 import wheel.lang.Consumer;
+import wheel.lang.ImmutableByteArray;
 import wheel.lang.exceptions.FriendlyException;
 import wheel.lang.exceptions.Hiccup;
 import wheel.reactive.EventSource;
 import wheel.reactive.impl.EventNotifierImpl;
-import static wheel.lang.Environments.my;
 
 class WatchMeImpl implements WatchMe {
+
+	private static final int CACHE_CAPACITY = 3000;
 
 	private static final int PERIOD_IN_MILLIS = 1000;
 
 	private final Screenshotter _shotter = my(Screenshotter.class);
 	private final ImageCodec _codec = my(ImageCodec.class);
+	private final CacheFactory _cacheFactory = my(CacheFactory.class);
 	private final TupleSpace _tupleSpace = my(TupleSpace.class);
 	private final ThreadPool _pool = my(ThreadPool.class);
 	private final BlinkingLights _lights = my(BlinkingLights.class);
@@ -39,25 +48,44 @@ class WatchMeImpl implements WatchMe {
 	private final Light _light = _lights.prepare(LightType.ERROR);
 
 	private Encoder _encoder;
+	private Cache<ImmutableByteArray> _cache;
 
 	@Override
 	public EventSource<BufferedImage> screenStreamFor(final PublicKey publisher) {
-		if(publisher==null) {
+		if (publisher == null)
 			throw new IllegalArgumentException("The publisher argument can't be null.");
-		}
 		
-		final EventNotifierImpl<BufferedImage> result = new EventNotifierImpl<BufferedImage>();
+		EventNotifierImpl<BufferedImage> result = new EventNotifierImpl<BufferedImage>();
+		
+		_tupleSpace.addSubscription(ImageDeltaPacket.class, imageDeltaPacketConsumer(publisher, result));
+		
+		return result.output();
+	}
+
+	private Consumer<ImageDeltaPacket> imageDeltaPacketConsumer(final PublicKey publisher,	final EventNotifierImpl<BufferedImage> notifier) {
 		final Decoder decoder = _codec.createDecoder();
+		final Cache<ImmutableByteArray> cache = _cacheFactory.createWithCapacity(CACHE_CAPACITY);
 		
-		_tupleSpace.addSubscription(ImageDelta.class, new Consumer<ImageDelta>(){@Override public void consume(ImageDelta delta) {
+		return new Consumer<ImageDeltaPacket>(){@Override public void consume(ImageDeltaPacket delta) {
 			if (!delta.publisher().equals(publisher))
 				return;
 			
-			if (decoder.applyDelta(delta));
-				result.notifyReceivers(decoder.screen());
-		}});
-		
-		return result.output();
+			ImmutableByteArray imageData = delta.imageData;
+			
+			if (imageData == null) {
+				imageData = cache.getByHandle(delta.cacheHandle);
+			}
+			
+			if (imageData == null) {
+				Logger.log("Local WatchMe image cache out of sync with peer's cache.");
+				return;
+			}
+
+			cache.keep(imageData);
+			
+			if (decoder.applyDelta(new ImageDelta(imageData, delta.x, delta.y)));
+				notifier.notifyReceivers(decoder.screen());
+		}};
 	}
 
 	@Override
@@ -69,6 +97,7 @@ class WatchMeImpl implements WatchMe {
 				_clock.sleepAtLeast(PERIOD_IN_MILLIS);
 			}
 			_encoder = null;
+			_cache = null;
 		}});
 	}
 
@@ -85,12 +114,35 @@ class WatchMeImpl implements WatchMe {
 	private void tryToPublishShot() throws Hiccup, FriendlyException {
 		BufferedImage shot = _shotter.takeScreenshot();
 		
+		List<ImageDelta> deltas = encoder().generateDeltas(shot);
+		for (ImageDelta delta : deltas)
+			publish(delta);
+	}
+
+	private void publish(ImageDelta delta) {
+		if (cache().contains(delta.imageData))
+			publishCacheHit(delta);
+		else
+			_tupleSpace.publish(new ImageDeltaPacket(delta.x, delta.y, delta.imageData, 0));
+		
+		cache().keep(delta.imageData);
+	}
+
+	private void publishCacheHit(ImageDelta delta) {
+		int handle = cache().handleFor(delta.imageData);
+		_tupleSpace.publish(new ImageDeltaPacket(delta.x, delta.y, null, handle));
+	}
+
+	private Encoder encoder() {
 		if (_encoder == null)
 			_encoder = _codec.createEncoder();
-		
-		List<ImageDelta> deltas = _encoder.generateDeltas(shot);
-		for (ImageDelta delta : deltas)
-			_tupleSpace.publish(delta);
+		return _encoder;
+	}
+
+	private Cache<ImmutableByteArray> cache() {
+		if (_cache == null)
+			_cache = _cacheFactory.createWithCapacity(CACHE_CAPACITY);
+		return _cache;
 	}
 
 	@Override

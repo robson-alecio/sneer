@@ -4,6 +4,7 @@
 package snapps.watchme.codec.impl;
 
 import static snapps.watchme.codec.impl.CodecConstants.CELL_SIZE;
+import static wheel.lang.Environments.my;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -16,10 +17,10 @@ import snapps.watchme.codec.ImageDelta;
 import snapps.watchme.codec.ImageCodec.Encoder;
 import sneer.skin.image.ImageFactory;
 import wheel.io.ui.graphics.Images;
+import wheel.lang.ImmutableByteArray;
 import wheel.lang.Pair;
 import wheel.lang.exceptions.Hiccup;
 import wheel.testutil.Profiler;
-import static wheel.lang.Environments.my;
 
 class EncoderImpl implements Encoder {
 	
@@ -63,7 +64,7 @@ class EncoderImpl implements Encoder {
 		_previousPixelsByCellCoordinate.put(Pair.pair(x, y), currentPixels);
 		
 		byte[] data = _imageFactory.toPngData(img1);
-		result.add(new ImageDelta(data, x, y, cellWidth, cellHeight));
+		result.add(new ImageDelta(new ImmutableByteArray(data), x, y));
 	}
 	
 }

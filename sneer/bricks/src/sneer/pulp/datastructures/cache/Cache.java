@@ -1,9 +1,9 @@
 package sneer.pulp.datastructures.cache;
 
-public interface Cache {
-	void keep(Object object);
-	boolean contains(Object obj);
+public interface Cache<T> {
+	void keep(T object);
 
-	int handleFor(Object object);
-	Object getByHandle(int handle);
+	boolean contains(T object);
+	int handleFor(T object);
+	T getByHandle(int handle);
 }

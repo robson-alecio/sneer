@@ -5,6 +5,13 @@ import java.util.Arrays;
 public class ImmutableByteArray {
 	
 	private final byte[] _payload;
+	
+	private transient boolean _isHashCodeCalculated;
+	private transient int _hashCode;
+
+	public ImmutableByteArray(byte[] bufferToCopy) {
+		this(bufferToCopy, bufferToCopy.length);
+	}
 
 	public ImmutableByteArray(byte[] bufferToCopy, int bytesToCopy) {
 		_payload = Arrays.copyOf(bufferToCopy, bytesToCopy);
@@ -33,7 +40,11 @@ public class ImmutableByteArray {
 
 	@Override
 	public int hashCode() {
-		return Arrays.hashCode(_payload);
+		if (!_isHashCodeCalculated) {
+			_isHashCodeCalculated = true;
+			_hashCode = Arrays.hashCode(_payload);
+		}
+		return _hashCode;
 	}
 
 	@Override

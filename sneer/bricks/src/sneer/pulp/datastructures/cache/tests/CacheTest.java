@@ -10,7 +10,7 @@ import tests.TestInContainerEnvironment;
 
 public class CacheTest extends TestInContainerEnvironment{
 	
-	private final Cache _subject= my(CacheFactory.class).createWithCapacity(3);
+	private final Cache<Object> _subject= my(CacheFactory.class).createWithCapacity(3);
 
 	@Test
 	public void happyDayForCache(){

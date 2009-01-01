@@ -3,15 +3,11 @@ package snapps.watchme.codec.impl;
 import java.awt.image.BufferedImage;
 
 import snapps.watchme.codec.ImageCodec;
-import wheel.lang.exceptions.Hiccup;
 
 class ImageCodecImpl implements ImageCodec {
 	
-	/**
-	 * @throws Hiccup  
-	 */
 	@Override
-	public Encoder createEncoder() throws Hiccup {
+	public Encoder createEncoder() {
 		return new EncoderImpl();
 	}
 

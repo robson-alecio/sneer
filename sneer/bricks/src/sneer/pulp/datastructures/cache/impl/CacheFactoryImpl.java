@@ -6,8 +6,8 @@ import sneer.pulp.datastructures.cache.CacheFactory;
 class CacheFactoryImpl implements CacheFactory {
 
 	@Override
-	public Cache createWithCapacity(int capacity) {
-		return new CacheImpl(capacity);
+	public <T> Cache<T> createWithCapacity(int capacity) {
+		return new CacheImpl<T>(capacity);
 	}
 
 }

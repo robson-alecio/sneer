@@ -7,20 +7,20 @@ import java.util.Set;
 
 import sneer.pulp.datastructures.cache.Cache;
 
-class CacheImpl implements Cache {
+class CacheImpl<T> implements Cache<T> {
 
-	private final List<Object> _elementsInOrder;
-	private final Set<Object> _elements = new HashSet<Object>();
+	private final List<T> _elementsInOrder;
+	private final Set<T> _elements = new HashSet<T>();
 	private final int _capacity;
 	
 	public CacheImpl(int capacity) {
 		_capacity = capacity;
-		_elementsInOrder = new LinkedList<Object>();
+		_elementsInOrder = new LinkedList<T>();
 	}
 
 	@Override
-	public void keep(Object object) {
-		removeIfNecessary(object);
+	public void keep(T object) {
+		_elementsInOrder.remove(object);
 		_elementsInOrder.add(0, object);
 		_elements.add(object);
 		
@@ -30,22 +30,18 @@ class CacheImpl implements Cache {
 		_elements.remove(last);
 	}
 
-	private void removeIfNecessary(Object object) {
-		_elementsInOrder.remove(object);
-	}
-
 	@Override
-	public boolean contains(Object obj) {
+	public boolean contains(T obj) {
 		return _elements.contains(obj);
 	}
 
 	@Override
-	public int handleFor(Object object) {
+	public int handleFor(T object) {
 		return _elementsInOrder.indexOf(object); 
 	}
 
 	@Override
-	public Object getByHandle(int handle) {
+	public T getByHandle(int handle) {
 		if (handle < 0) return null;
 		if (handle >= _elementsInOrder.size()) return null;
 		

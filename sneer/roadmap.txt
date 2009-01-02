@@ -10,6 +10,8 @@
 ﻿ROADMAP TO BECOME MORE PRODUCTIVE
 =====================================
 
+	- ReactiveWidgetFactory - Change all Signal<String> to Signal<Object> (use toString() to display). This will allow linking number and date signals for example.
+
 	- [Douglas] Default: Log only throwables. Have "white list" of parts of messages to log.
 			- GUI to delete or add parts of messages in the "white list" to log.
 
@@ -82,20 +84,10 @@ ROADMAP TO PRODUCE
 	
 	- [Sandro] Whisper - Mixagem
 
-	- Community request by Vina Callegari. He uses Eclipse 3.2.2 and it does not compile Sneer.
-		- [Rodrigo] Make build.xml run MainDemo by default. Use a specific target for the Hudson build that will not run MainDemo. Coordinate with Vina (Skype: vcallegari) who said he was going to do it. He also mentioned Eclipse has an option to generate build.xml based on its project configuration, which would possibly make antlips unnecessary. Does it make sense for us to use that?
-			- Name and dyndns info in propertystore.txt. Use BL to signal their absence and give instructions.
-
-	- [Sandro] Community Initiative - Incorporate Gandhi's Google maps brick. (Run LocationGuiMain)
-	
-
-
-	2008---------------------------------- WWW RELEASE (Wind, WatchMe and Whisper)
-
-	- Flooding - Solve tuple flooding on the network.
+	- Flooding - Solve tuple flooding on the network. Discuss ideas with the team.
 		- Traffic Prioritization by tuple type
 
-	- Brick Publish (Supposedly working already)
+	- [Rodrigo] Brick Publish
 		- MainDemo - Publish all necessary bricks instead of just producing them.
 
 	- Open Jar leak - Fix in Freedom7Test
@@ -103,10 +95,16 @@ ROADMAP TO PRODUCE
 	- [Sandro] Elegance Experiment
 		- Remove titles: My Contacts, Wind and Blinking Lights
 		- Remove all borders: lists occupy entire instrument space. Shout edit field has no border
-		- Add a good news BL: Caption: "OK", help message: "Everything is working fine. If there is a problem, you shall be notified here."
 
 	- [Petra] Tray and Dashboard Titlebar Icon
 	- [Petra] Online and Offline Icons
+
+	- Community request by Vina Callegari. He uses Eclipse 3.2.2 and it does not compile Sneer.
+		- [Rodrigo] Make build.xml run MainDemo by default. Use a specific target for the Hudson build that will not run MainDemo. Coordinate with Vina (Skype: vcallegari) who said he was going to do it. He also mentioned Eclipse has an option to generate build.xml based on its project configuration, which would possibly make antlips unnecessary. Does it make sense for us to use that?
+			- Name and dyndns info in propertystore.txt. Use BL to signal their absence and give instructions.
+
+	- [Sandro] Community Initiative - Incorporate Gandhi's Google maps brick. (Run LocationGuiMain)
+
 	
 	30/JAN ---------------------------------
 
@@ -115,6 +113,10 @@ ROADMAP TO PRODUCE
 		
 	- WatchMe
 		- Accelerate.
+			- Reactivate the Cache - Set WatchMeImpl.CACHE_CAPACITY to 3000 (Currently set to zero). 
+			- Add a Sequencer for incoming ImageDeltaPackets.
+			- Flush receiver's cache every time a packet is lost to avoid inconsistency.
+				- Let peer signal interest in "lost cache packets". Do not implement this. Move this down in the roadmap when all other WatchMe tasks are done. A workaround for now is the WatchMe sender stopping and restarting WatchMe because this flushes the senders cache.
 		
 
 	30/FEB --------------------------------------

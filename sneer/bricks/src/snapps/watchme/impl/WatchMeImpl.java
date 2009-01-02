@@ -31,7 +31,7 @@ import wheel.reactive.impl.EventNotifierImpl;
 
 class WatchMeImpl implements WatchMe {
 
-	private static final int CACHE_CAPACITY = 3000;
+	private static final int CACHE_CAPACITY = 0; //3000;
 
 	private static final int PERIOD_IN_MILLIS = 1000;
 
@@ -70,11 +70,9 @@ class WatchMeImpl implements WatchMe {
 			if (!delta.publisher().equals(publisher))
 				return;
 			
-			ImmutableByteArray imageData = delta.imageData;
-			
-			if (imageData == null) {
-				imageData = cache.getByHandle(delta.cacheHandle);
-			}
+			ImmutableByteArray imageData = delta.imageData != null
+				? delta.imageData
+				: cache.getByHandle(delta.cacheHandle);
 			
 			if (imageData == null) {
 				Logger.log("Local WatchMe image cache out of sync with peer's cache.");

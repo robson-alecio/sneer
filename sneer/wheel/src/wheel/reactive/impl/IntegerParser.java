@@ -1,5 +1,6 @@
-package wheel.lang;
+package wheel.reactive.impl;
 
+import wheel.lang.PickyConsumer;
 import wheel.lang.exceptions.IllegalParameter;
 
 public class IntegerParser implements PickyConsumer<String> {

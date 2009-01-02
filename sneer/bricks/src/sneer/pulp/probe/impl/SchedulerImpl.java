@@ -27,8 +27,7 @@ class SchedulerImpl implements PacketScheduler {
 		if (_toSend.isEmpty())
 			Threads.waitWithoutInterruptions(this);
 
-//		_lastTupleSent = _toSend.size() - 1; //Fix: Uncomment this line.
-		_lastTupleSent = 0;
+		_lastTupleSent = _toSend.size() - 1;
 		return _toSend.get(_lastTupleSent);
 	}
 

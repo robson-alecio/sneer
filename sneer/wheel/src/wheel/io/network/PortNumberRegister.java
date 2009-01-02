@@ -3,8 +3,8 @@ package wheel.io.network;
 import java.io.Serializable;
 
 import wheel.lang.PickyConsumer;
-import wheel.lang.IntegerConsumerBoundaries;
 import wheel.reactive.Signal;
+import wheel.reactive.impl.IntegerConsumerBoundaries;
 import wheel.reactive.impl.RegisterImpl;
 
 public class PortNumberRegister implements Serializable{

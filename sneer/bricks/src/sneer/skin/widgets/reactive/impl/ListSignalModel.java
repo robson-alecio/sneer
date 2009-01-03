@@ -1,19 +1,20 @@
 package sneer.skin.widgets.reactive.impl;
 
+import static wheel.lang.Environments.my;
+
 import javax.swing.AbstractListModel;
+import javax.swing.ListModel;
 
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.pulp.reactive.signalchooser.SignalChooserManager;
 import sneer.pulp.reactive.signalchooser.SignalChooserManagerFactory;
-import sneer.skin.widgets.reactive.ListSignalModel;
 import wheel.io.ui.GuiThread;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.VisitingListReceiver;
-import static wheel.lang.Environments.my;
 
-public class ListSignalModelImpl<T> extends AbstractListModel implements ListSignalModel<T>{
+class ListSignalModel<T> extends AbstractListModel implements ListModel {
 
 	private final SignalChooserManagerFactory _signalChooserManagerFactory = my(SignalChooserManagerFactory.class);
 	
@@ -26,7 +27,7 @@ public class ListSignalModelImpl<T> extends AbstractListModel implements ListSig
 
 	private final SignalChooser<T> _chooser;
 	
-	ListSignalModelImpl(ListSignal<T> input, SignalChooser<T> chooser) {
+	ListSignalModel(ListSignal<T> input, SignalChooser<T> chooser) {
 		_input = input;
 		_chooser = chooser;
 		_modelChangeReceiver = new ModelChangeReceiver(_input);
@@ -42,14 +43,14 @@ public class ListSignalModelImpl<T> extends AbstractListModel implements ListSig
 		@Override
 		public void elementAdded(final int index, T value) {
 			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
-				fireIntervalAdded(ListSignalModelImpl.this, index, index);
+				fireIntervalAdded(ListSignalModel.this, index, index);
 			}});		
 		}
 
 		@Override
 		public void elementRemoved(final int index, T value) {
 			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
-				fireIntervalRemoved(ListSignalModelImpl.this, index, index);
+				fireIntervalRemoved(ListSignalModel.this, index, index);
 			}});		
 		}
 
@@ -61,14 +62,14 @@ public class ListSignalModelImpl<T> extends AbstractListModel implements ListSig
 		@Override
 		public void elementInserted(final int index, final T value) {
 			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
-				fireIntervalAdded(ListSignalModelImpl.this, index, index);
+				fireIntervalAdded(ListSignalModel.this, index, index);
 			}});		
 		}
 
 		@Override
 		public void elementMoved(final int oldIndex, final int newIndex, final T value) {
 			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
-				fireContentsChanged(ListSignalModelImpl.this, oldIndex, newIndex);
+				fireContentsChanged(ListSignalModel.this, oldIndex, newIndex);
 			}});
 		}
 
@@ -96,7 +97,7 @@ public class ListSignalModelImpl<T> extends AbstractListModel implements ListSig
 
 	private void contentsChanged(final int index) {
 		GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
-			fireContentsChanged(ListSignalModelImpl.this, index, index);
+			fireContentsChanged(ListSignalModel.this, index, index);
 		}});
 	}
 	

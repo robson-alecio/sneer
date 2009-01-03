@@ -3,10 +3,10 @@ package sneer.skin.widgets.reactive.impl;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
+import javax.swing.ListModel;
 
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.widgets.reactive.LabelProvider;
-import sneer.skin.widgets.reactive.ListSignalModel;
 import sneer.skin.widgets.reactive.ListWidget;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
@@ -33,7 +33,7 @@ class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 		SignalChooser<ELEMENT> chooser = new SignalChooser<ELEMENT>(){	@Override public Signal<?>[] signalsToReceiveFrom(ELEMENT element) {
 			return new Signal<?>[]{_labelProvider.imageFor(element), 
 								   	   _labelProvider.labelFor(element)};}};
-		ListSignalModel<ELEMENT> model = new ListSignalModelImpl<ELEMENT>(_source, chooser);
+		ListModel model = new ListSignalModel<ELEMENT>(_source, chooser);
 		setModel(model);
 	}
 

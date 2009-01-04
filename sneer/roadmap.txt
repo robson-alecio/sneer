@@ -3,7 +3,8 @@
 
 	- [Klaus] Fix: Discover why tests timeout so frequently on Klaus's Linux box. Sometimes they pass in under one second, sometimes they timeout after 8 seconds. Probably has something to do with the way waiting and sleeping threads affect other threads on Linux.
 
-	- [Sandro] ContactList - Eliminate this intermediate brick. Use ContactManager.contacts() directly. ContactInfo is a non-tuple class, which is not allowed in the brick package. This list is serving only as a shortcut for ConnectionManager.connectionFor(contact).isOnline() - it is not worth it. 
+	- [Sandro] BandwidthMeterInstrument
+		- Finish the test (Test that the counter is called with the correct number of bytes being sent and received). 
 
 	- [Sandro] ListSignalModel and SortedList
 		- Fix: Sort Bug (see SortTest)
@@ -11,6 +12,8 @@
 
 ﻿ROADMAP TO BECOME MORE PRODUCTIVE
 =====================================
+
+	- [Sandro] ContactList - Eliminate this intermediate brick. Use ContactManager.contacts() directly. ContactInfo is a non-tuple class, which is not allowed in the brick package. This list is serving only as a shortcut for ConnectionManager.connectionFor(contact).isOnline() - it is not worth it. 
 
 	- ReactiveWidgetFactory - Change all Signal<String> to Signal<Object> (use toString() to display). This will allow linking number and date signals for example.
 
@@ -78,9 +81,6 @@
 
 ROADMAP TO PRODUCE
 ======================
-
-	- [Sandro] BandwidthMeterInstrument
-		- Test that the counter is called with the correct number of bytes being sent and received. 
 
 	- [Sandro] Contact CRUD Instrument
 	

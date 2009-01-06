@@ -1,5 +1,7 @@
 package sneer.skin.sound.player.impl;
 
+import static wheel.lang.Environments.my;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -20,7 +22,6 @@ import wheel.io.Logger;
 import wheel.io.Streams;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.NotImplementedYet;
-import static wheel.lang.Environments.my;
 
 class SoundPlayerImpl implements SoundPlayer, Stepper {
 
@@ -41,15 +42,9 @@ class SoundPlayerImpl implements SoundPlayer, Stepper {
 	
 			int bufferSize = (int) audioFormat.getSampleRate() * audioFormat.getFrameSize();
 			byte[] buffer = new byte[bufferSize];
-	
-			SourceDataLine dataLine = null;
-			try {
-				dataLine = _audio.tryToOpenPlaybackLine(audioFormat);
-				playStream(dataLine, audioInputStream, buffer); 
-			} finally {
-				if (dataLine == null) return;
-				dataLine.close();
-			}
+			SourceDataLine dataLine = _audio.tryToOpenPlaybackLine(audioFormat);
+			dataLine.start();
+			playStream(dataLine, audioInputStream, buffer); 
 		} catch (IOException e) {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Use BL
 		} finally {

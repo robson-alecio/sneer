@@ -1,11 +1,16 @@
 package spikes.priscila.go.tests;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
+
 import spikes.priscila.go.GoBoard;
 import spikes.priscila.go.ToroidalGoBoard;
+import wheel.lang.exceptions.NotImplementedYet;
 
-public class GoTest extends TestCase {
+public class GoTest extends Assert {
 
+	@Test
 	public void testSingleStoneCaptureNew() {
 		String[] setup = new String[]{
 			    "+ + + + + + + + +",
@@ -31,6 +36,7 @@ public class GoTest extends TestCase {
 		assertTrue(board.stoneAt(4, 4) == null);
 	}
 
+	@Test
 	public void testSingleStoneCapture() {
 		GoBoard board = new ToroidalGoBoard(9);
 		
@@ -46,6 +52,7 @@ public class GoTest extends TestCase {
 		assertTrue(board.stoneAt(4, 3) == null);
 	}
 
+	@Test
 	public void testBigGroupCapture() {
 		String[] setup = new String[]{
 			    "+ + + + + + + + +",
@@ -74,6 +81,7 @@ public class GoTest extends TestCase {
 		);
 	}
 	
+	@Test
 	public void testSuicide() {
 		String[] setup = new String[] {
 			    "+ + + + + + + + +",
@@ -90,6 +98,7 @@ public class GoTest extends TestCase {
 		assertTrue(board.stoneAt(5, 4) == null);
 	}
 	
+	@Test
 	public void testKillOtherFirst() {
 		String[] setup = new String[]{
 			    "+ + + + + + + + +",
@@ -105,6 +114,7 @@ public class GoTest extends TestCase {
 		assertTrue(board.canPlayStone(4, 3));
 	}
 	
+	@Test
 	public void testKo() {
 		String[] setup = new String[]{
 			    "+ + + + + + + + +",
@@ -122,8 +132,38 @@ public class GoTest extends TestCase {
 		assertFalse(board.canPlayStone(4, 2));
 	}
 
+	
+	@Test
+	@Ignore
 	public void testKoWithPass() {
-		//fail();
+		throw new NotImplementedYet();
 	}
-
+	
+	@Test
+	public void testMultipleGroupKill() {
+		String[] setup = new String[]{
+			    "+ + + + + + + + +",
+				"+ + + + x + + + +",
+				"+ + + x o x + + +",
+				"+ + x o + + + + +",
+				"+ + + x + + + + +",
+				"+ + + + + + + + +",
+				"+ + + + + + + + +",
+				"+ + + + + + + + +",
+				"+ + + + + + + + +"};
+		GoBoard board = new ToroidalGoBoard(setup);
+		
+		board.playStone(4, 3);
+		assertEquals(board.printOut(),
+			 	" + + + + + + + + +\n"+
+				" + + + + x + + + +\n"+
+				" + + + x + x + + +\n"+
+				" + + x + x + + + +\n"+
+				" + + + x + + + + +\n"+
+				" + + + + + + + + +\n"+
+				" + + + + + + + + +\n"+
+				" + + + + + + + + +\n"+
+				" + + + + + + + + +\n"
+			);
+	}
 }

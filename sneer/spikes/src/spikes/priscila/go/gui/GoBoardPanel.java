@@ -79,7 +79,7 @@ public class GoBoardPanel extends JPanel {
 	}
 	
 	private void play(Move move) {
-		_board.playStone(move.getXCoordinate(), move.getYCoordinate());
+		_board.playStone(move.xCoordinate, move.yCoordinate);
 		repaint();			
 	}
 	

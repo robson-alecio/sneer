@@ -21,10 +21,10 @@ import javax.swing.border.EmptyBorder;
 import snapps.contacts.actions.ContactAction;
 import snapps.contacts.actions.ContactActionManager;
 import snapps.contacts.gui.ContactsGui;
-import snapps.contacts.gui.comparator.ContactInfoComparator;
+import snapps.contacts.gui.comparator.ContactComparator;
+import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
-import sneer.pulp.contacts.list.ContactInfo;
-import sneer.pulp.contacts.list.ContactList;
+import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.dashboard.InstrumentWindow;
@@ -50,22 +50,24 @@ class ContactsGuiImpl implements ContactsGui {
 
 	private final ReactiveWidgetFactory _rfactory = my(ReactiveWidgetFactory.class);
 	
-	private final ContactList _contacts = my(ContactList.class);
+	private final ContactManager _contacts = my(ContactManager.class);
 	
-	private final ContactInfoComparator _comparator = my(ContactInfoComparator.class);
+	private final ConnectionManager _connections = my(ConnectionManager.class);
+	
+	private final ContactComparator _comparator = my(ContactComparator.class);
 	
 	private final ListSorter _sorter = my(ListSorter.class);
 	
-	private final SignalChooser<ContactInfo> _chooser;
+	private final SignalChooser<Contact> _chooser;
 
-	private ListSignal<ContactInfo> _sortedList;
+	private ListSignal<Contact> _sortedList;
 	
-	private ListWidget<ContactInfo> _contactList;
+	private ListWidget<Contact> _contactList;
 	
 	ContactsGuiImpl(){
 		_instrumentManager.registerInstrument(this);
-		_chooser = new SignalChooser<ContactInfo>(){ @Override public Signal<?>[] signalsToReceiveFrom(ContactInfo element) {
-			return new Signal<?>[]{element.isOnline(), element.contact().nickname()};
+		_chooser = new SignalChooser<Contact>(){ @Override public Signal<?>[] signalsToReceiveFrom(Contact element) {
+			return new Signal<?>[]{_connections.connectionFor(element).isOnline(), element.nickname()};
 		}};
 	} 
 
@@ -78,7 +80,7 @@ class ContactsGuiImpl implements ContactsGui {
 		Container container = window.contentPane();
 		ContactLabelProvider labelProvider = new ContactLabelProvider();
 		ContactsGuiCellRenderer cellRenderer = new ContactsGuiCellRenderer(labelProvider);
-		_sortedList = _sorter.sort(_contacts.output() , _comparator, _chooser);
+		_sortedList = _sorter.sort(_contacts.contacts() , _comparator, _chooser);
 		_contactList = _rfactory.newList(_sortedList, labelProvider, cellRenderer);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -97,20 +99,20 @@ class ContactsGuiImpl implements ContactsGui {
 		return 144;
 	}
 
-	final class ContactLabelProvider implements LabelProvider<ContactInfo> {
+	final class ContactLabelProvider implements LabelProvider<Contact> {
+		
 		@Override
-		public Signal<String> labelFor(ContactInfo info) {
-			return info.contact().nickname();
+		public Signal<String> labelFor(Contact contact) {
+			return contact.nickname();
 		}
 
 		@Override
-		public Signal<Image> imageFor(ContactInfo info) {
+		public Signal<Image> imageFor(Contact contact) {
 			Functor<Boolean, Image> functor = new Functor<Boolean, Image>(){ @Override public Image evaluate(Boolean value) {
 				return value?ONLINE:OFFLINE;
 			}};
 			
-			Signal<Boolean> isOnline = info.isOnline();
-			
+			Signal<Boolean> isOnline = _connections.connectionFor(contact).isOnline();
 			Adapter<Boolean, Image> imgSource = new Adapter<Boolean, Image>(isOnline, functor);
 			return imgSource.output();
 		}
@@ -141,8 +143,7 @@ class ContactsGuiImpl implements ContactsGui {
 			JList list = _contactList.getMainWidget();
 			int index = list.locationToIndex(e.getPoint());
 			list.getSelectionModel().setSelectionInterval(index, index);
-			ContactInfo contactInfo = (ContactInfo) list.getSelectedValue();
-			Contact contact = contactInfo.contact();
+			Contact contact = (Contact) list.getSelectedValue();
 			
 			JPopupMenu popupMain = new JPopupMenu();	
 			for (ContactAction action : _actionsManager.actions()) {

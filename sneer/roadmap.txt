@@ -78,14 +78,11 @@
 	- Security - Discover if instruments can indirectly gain access to components from other instruments.
 
 
-
 ROADMAP TO PRODUCE
 ======================
 
 	- [Sandro] Contact CRUD Instrument
 	
-	- [Sandro] Whisper - Mixagem
-
 	- Flooding - Solve tuple flooding on the network. Discuss ideas with the team.
 		- Traffic Prioritization by tuple type
 

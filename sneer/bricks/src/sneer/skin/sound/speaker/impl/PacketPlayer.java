@@ -1,25 +1,35 @@
 package sneer.skin.sound.speaker.impl;
 
+import static wheel.lang.Environments.my;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import javax.sound.sampled.SourceDataLine;
 
+import sneer.pulp.keymanager.PublicKey;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.Audio;
 import wheel.lang.Consumer;
-import static wheel.lang.Environments.my;
 
 class PacketPlayer implements Consumer<PcmSoundPacket> {
 
 	private final Audio _audio = my(Audio.class);
 	
 	private boolean _isRunning = true;
-	private SourceDataLine _line;
+	private final Map<PublicKey, SourceDataLine> _lines = new HashMap<PublicKey, SourceDataLine>();
 	
 	synchronized void crash() {
 		_isRunning = false;
-		if (_line == null)	return;
+		if (_lines.isEmpty()) return;
 		
-		_line.close();
-		_line = null;
+		Iterator<SourceDataLine> iterator = _lines.values().iterator();
+		while (iterator.hasNext()) {
+			SourceDataLine line = iterator.next();
+			line.close();
+			iterator.remove();
+		}
 	}
 	
 	@Override
@@ -29,18 +39,20 @@ class PacketPlayer implements Consumer<PcmSoundPacket> {
 	}
 	
 	private void play(PcmSoundPacket packet) {
-			ensureLineIsOpen();
-			if(_line == null) {
-				crash();
-				return;
-			}
+		SourceDataLine line = ensureLineIsOpen(packet);
+		if (line == null) {
+			crash();
+			return;
+		}
 
 		final byte[] buffer = packet.payload.copy();
-		_line.write(buffer, 0, buffer.length);
+		line.write(buffer, 0, buffer.length);
 	}
 	
-	private void ensureLineIsOpen() {
-		if(_line == null)
-			_line = _audio.tryToOpenPlaybackLine();
+	private SourceDataLine ensureLineIsOpen(PcmSoundPacket packet) {
+		if(!_lines.containsKey(packet.publisher()))
+			_lines.put(packet.publisher(), _audio.tryToOpenPlaybackLine());
+
+		return _lines.get(packet.publisher());
 	}
 }

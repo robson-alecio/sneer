@@ -6,11 +6,16 @@ import static spikes.priscila.go.GoBoard.StoneColor.WHITE;
 import java.util.Arrays;
 
 import wheel.io.serialization.DeepCopier;
+import wheel.reactive.Register;
+import wheel.reactive.Signal;
+import wheel.reactive.impl.RegisterImpl;
 
 public class GoBoard {
 
 	public static enum StoneColor { BLACK,	WHITE; }
-
+	private final Register<Integer> _countBlackStones = new RegisterImpl<Integer>(0);
+	private final Register<Integer> _countWhiteStones = new RegisterImpl<Integer>(0);
+	
 	public GoBoard(int size) {
 		_intersections = new Intersection[size][size];
 		for (int x = 0; x < size; x++) {
@@ -72,7 +77,43 @@ public class GoBoard {
 		}
 		
 		_previousSituation = situationFound;
+		countCapturedStones();
 		next();
+	}
+
+	private void countCapturedStones() {
+		
+		int blackPreviousSituation=0;
+		int whitePreviousSituation=0;
+		int blackSituation=0;
+		int whiteSituation=0;
+		
+		for(Intersection[] intersections :_previousSituation){
+			for(Intersection intersection : intersections){
+				if(intersection._stone != null) {
+					if(intersection._stone.equals(BLACK)) 
+						blackPreviousSituation++;
+					if(intersection._stone.equals(WHITE)) 
+						whitePreviousSituation++;
+				}
+			}
+		}
+		
+		for(Intersection[] intersections :_intersections){
+			for(Intersection intersection : intersections){
+				if(intersection._stone != null) {
+					if(intersection._stone.equals(BLACK)) 
+						blackSituation++;
+					else if(intersection._stone.equals(WHITE)) 
+						whiteSituation++;
+				}
+			}
+		}
+		if(blackPreviousSituation>blackSituation)
+			_countBlackStones.setter().consume(_countBlackStones.output().currentValue() + blackPreviousSituation-blackSituation);
+		
+		if(whitePreviousSituation>whiteSituation)
+			_countWhiteStones.setter().consume(_countWhiteStones.output().currentValue() + whitePreviousSituation-whiteSituation);
 	}
 
 	private void tryToPlayStone(int x, int y) throws IllegalMove{
@@ -91,11 +132,13 @@ public class GoBoard {
 	}
 
 	private boolean killSurroundedStones(StoneColor color) {
-		for(Intersection[] column: _intersections)
-			for(Intersection intersection: column)
+		boolean wereStonesKilled = false;
+		for(Intersection[] column : _intersections)
+			for(Intersection intersection : column)
 				if (intersection.killGroupIfSurrounded(color))
-					return true;
-		return false;
+					wereStonesKilled = true;
+					
+		return wereStonesKilled;
 	}
 
 
@@ -154,5 +197,13 @@ public class GoBoard {
 			result.append("\n");
 		}
 		return result.toString();
+	}
+	
+	public Signal<Integer> blackCapturedCount() {
+		return _countBlackStones.output();
+	}
+
+	public Signal<Integer> whiteCapturedCount() {
+		return _countWhiteStones.output();
 	}
 }

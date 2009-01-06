@@ -19,8 +19,8 @@ public class GoMain {
 	
 	private void init() {
 		Register<Move> moveRegister = new RegisterImpl<Move>(null);
-		new GoFrame(moveRegister, StoneColor.BLACK);
-		new GoFrame(moveRegister, StoneColor.WHITE);
+		new GoFrame(moveRegister, StoneColor.BLACK, 0);
+		new GoFrame(moveRegister, StoneColor.WHITE, 500);
 	}
 
 	public static void main(String[] args){

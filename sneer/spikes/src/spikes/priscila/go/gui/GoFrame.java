@@ -18,12 +18,12 @@ public class GoFrame extends JFrame {
 	
 	private final StoneColor _side;
 
-	public GoFrame(Register<Move> _move, StoneColor side) {
+	public GoFrame(Register<Move> _move, StoneColor side, int horizontalPosition) {
 		
 		_side = side;
 		setTitle("Go - " + _side.name());	  
 	    setResizable(true);
-	    setSize(500, 575);
+	    setBounds(horizontalPosition, 0, 500, 575);
 	    setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		

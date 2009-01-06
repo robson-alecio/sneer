@@ -87,7 +87,8 @@ class ContactsGuiImpl implements ContactsGui {
 		container.setLayout(new BorderLayout());
 		container.add(scrollPane, BorderLayout.CENTER);
 		scrollPane.getViewport().add(_contactList.getComponent());
-		scrollPane.setBorder(new EmptyBorder(0,5,8,5));
+//		scrollPane.setBorder(new EmptyBorder(0,5,8,5));
+		scrollPane.setBorder(new EmptyBorder(0,0,0,0));
 		_contactList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
 		scrollPane.setBackground(_contactList.getComponent().getBackground());
 		new PopUpSupport();

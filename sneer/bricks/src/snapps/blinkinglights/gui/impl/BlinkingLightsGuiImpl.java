@@ -85,7 +85,8 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		_container.setLayout(new BorderLayout());
 		_container.add(scrollPane, BorderLayout.CENTER);
 		scrollPane.getViewport().add(_lightsList.getComponent());
-		scrollPane.setBorder(new EmptyBorder(5,5,5,5));
+		scrollPane.setBorder(new EmptyBorder(0,0,0,0));
+//		scrollPane.setBorder(new EmptyBorder(5,5,5,5));
 		_lightsList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
 		scrollPane.setBackground(_lightsList.getComponent().getBackground());
 	}

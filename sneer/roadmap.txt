@@ -91,9 +91,6 @@ ROADMAP TO PRODUCE
 
 	- Open Jar leak - Fix in Freedom7Test
 
-	- [Sandro] Elegance Experiment
-		- Remove all borders: lists occupy entire instrument space. Shout edit field has no border
-
 	- [Petra] Tray and Dashboard Titlebar Icon
 	- [Petra] Online and Offline Icons
 

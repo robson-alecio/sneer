@@ -82,6 +82,7 @@ class WindGuiImpl implements WindGui {
 
 	private void iniGui() {
 		_myShout = _rfactory.newTextPane(new Constant<String>(""),  _wind.megaphone(), NotificationPolicy.OnEnterPressed);
+		_myShout.getMainWidget().setBorder(new EmptyBorder(0,0,0,0));
 
 		initScrollPane();
 		initListReceiversInOrder();
@@ -114,7 +115,8 @@ class WindGuiImpl implements WindGui {
 
 		_shoutsList.setBorder(new EmptyBorder(0,0,0,0));
 		_myShout.getComponent().setBorder(new EmptyBorder(0,0,0,0));
-		scrollShout.setBorder(new EmptyBorder(5,5,5,5));
+//		scrollShout.setBorder(new EmptyBorder(5,5,5,5));
+		scrollShout.setBorder(new EmptyBorder(0,0,0,0));
 	}
 
 	private void initListReceiversInOrder() {
@@ -141,7 +143,8 @@ class WindGuiImpl implements WindGui {
 	
 	private void initScrollPane() {
 		_scrollPane = new JScrollPane();
-		_scrollPane.setBorder(new EmptyBorder(0,5,2,2));
+		_scrollPane.setBorder(new EmptyBorder(0,0,0,0));
+//		_scrollPane.setBorder(new EmptyBorder(0,5,2,2));
 		_scrollPane.setOpaque(false);
 		_autoscrollSupportToAvoidGc = new WindAutoscrollSupport();
 	}

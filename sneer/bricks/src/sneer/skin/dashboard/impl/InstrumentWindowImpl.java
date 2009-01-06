@@ -82,7 +82,7 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 		_toolbarTitleLayer.setLayout(new BorderLayout());
 		_toolbarTitleLayer.add(_title, BorderLayout.WEST);
 		_toolbarTitleLayer.add(_actions, BorderLayout.CENTER);
-		_actions.setBorder(new EmptyBorder(0,0,0,4));
+		_actions.setBorder(new EmptyBorder(0,0,0,0));
 		
 		_actions.setLayout(new FlowLayout(FlowLayout.RIGHT, 2, 0));
 		initWindowResizeListener();

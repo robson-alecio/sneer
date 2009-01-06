@@ -17,6 +17,7 @@ import java.net.URL;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+import javax.swing.border.EmptyBorder;
 
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.LightType;
@@ -148,6 +149,7 @@ class DashboardImpl implements Dashboard, Runnable {
 		_rootPanel = new JPanel();
 		_rootPanel = (JPanel) _jframe.getContentPane();
 		_rootPanel.setLayout(new BorderLayout());
+		_mainMenu.getWidget().setBorder(new EmptyBorder(0,0,0,0));
 		_rootPanel.add(_mainMenu.getWidget(), BorderLayout.NORTH);
 		_contentPanel = new ContentPane();
 		_contentPanel.setLayout(new FlowLayout(FlowLayout.TRAILING, 5, 1));
@@ -285,7 +287,7 @@ class ContentPane extends JPanel{
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.setColor(new Color(0, 0, 0, 10));
+		g.setColor(new Color(245, 245, 245));
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 	}
 }

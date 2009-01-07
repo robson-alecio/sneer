@@ -1,0 +1,7 @@
+Exception in thread "[My Full Name] - SoundPlayerImpl.<init>" java.lang.NullPointerException
+	at sneer.skin.sound.player.impl.SoundPlayerImpl.playNext(SoundPlayerImpl.java:46)
+	at sneer.skin.sound.player.impl.SoundPlayerImpl.step(SoundPlayerImpl.java:84)
+	at sneer.pulp.threadpool.impl.ThreadPoolImpl$1.run(ThreadPoolImpl.java:22)
+	at wheel.lang.Environments.runWith(Environments.java:15)
+	at wheel.lang.Environments.runWith(Environments.java:30)
+	at wheel.lang.Threads$1.run(Threads.java:50)

@@ -1,5 +1,7 @@
 package sneer.skin.widgets.reactive.tests;
 
+import static wheel.lang.Environments.my;
+
 import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
@@ -13,16 +15,11 @@ import wheel.io.Logger;
 import wheel.io.ui.GuiThread;
 import wheel.io.ui.TimeboxedEventQueue;
 import wheel.lang.Environments;
-import static wheel.lang.Environments.my;
 import wheel.reactive.Register;
-import wheel.reactive.impl.Receiver;
 import wheel.reactive.impl.RegisterImpl;
 
 public class ReactiveWidgetsDemo {
 
-	@SuppressWarnings("unused")
-	private Receiver<String> _receiverToAvoidGc;
-	
 	private ReactiveWidgetsDemo(){
 		
 		TimeboxedEventQueue.startQueueing(500000);

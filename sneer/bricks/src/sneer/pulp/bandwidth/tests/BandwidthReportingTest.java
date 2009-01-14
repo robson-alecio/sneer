@@ -41,11 +41,11 @@ public class BandwidthReportingTest extends TestInContainerEnvironment {
 
 		startAndWaitJobFinished(job, 0);
 		assertEquals(1, invokeCounter());
-		assertEquals(_OUT_PACKET_SIZE, valueNotified());
+		assertEquals(_OUT_PACKET_SIZE, notifiedValue());
 		
 		startAndWaitJobFinished(job, 1);
 		assertEquals(2, invokeCounter());
-		assertEquals(_IN_PACKET_SIZE, valueNotified());
+		assertEquals(_IN_PACKET_SIZE, notifiedValue());
 	}
 
 	private void startAndWaitJobFinished(ByRef<Thread> job, int index)	throws InterruptedException {
@@ -75,8 +75,8 @@ public class BandwidthReportingTest extends TestInContainerEnvironment {
 		return ((BandwidthCounterMock)_bandwidthCounter).invokeCounter;
 	}
 	
-	private int valueNotified() {
-		return ((BandwidthCounterMock)_bandwidthCounter).valueNotified;
+	private int notifiedValue() {
+		return ((BandwidthCounterMock)_bandwidthCounter).notifiedValue;
 	}
 	
 	private Consumer<byte[]> getCommunicationsReceiverMock(	final ByRef<Thread> job1) {
@@ -116,10 +116,10 @@ public class BandwidthReportingTest extends TestInContainerEnvironment {
 	
 	private class BandwidthCounterMock implements BandwidthCounter{
 		int invokeCounter = 0;
-		int valueNotified;
+		int notifiedValue;
 		
 		private void store(int sizeBytes) {
-			valueNotified = sizeBytes;
+			notifiedValue = sizeBytes;
 			invokeCounter++;
 		}
 		@Override public void received(int sizeBytes) { store(sizeBytes); }

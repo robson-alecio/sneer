@@ -9,10 +9,10 @@ import sneer.pulp.clock.Clock;
 import tests.TestInContainerEnvironment;
 import wheel.testutil.SignalUtils;
 
-public class BandwidthCounterTest extends TestInContainerEnvironment {
+public class BandwidthConsolidationTest extends TestInContainerEnvironment {
 	
 	@Test
-	public void testConsolidation() throws Exception {
+	public void test() throws Exception {
 		Clock _clock = my(Clock.class);		
 		BandwidthCounter _subject = my(BandwidthCounter.class);		
 		

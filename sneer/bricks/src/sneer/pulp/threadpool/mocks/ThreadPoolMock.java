@@ -32,5 +32,7 @@ public class ThreadPoolMock implements ThreadPool {
 		return _steppers.get(i);
 	}
 
-
+	public List<Runnable> getActors() {
+		return _actors;
+	}
 }

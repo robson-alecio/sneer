@@ -40,11 +40,11 @@ public class BandwidthReportingTest extends TestInContainerEnvironment {
 		final ByRef<Thread> job = initComunications(contact);
 
 		startAndWaitJobFinished(job, 0);
-		assertEquals(1, invokedCounter());
+		assertEquals(1, invokeCounter());
 		assertEquals(_OUT_PACKET_SIZE, valueNotified());
 		
 		startAndWaitJobFinished(job, 1);
-		assertEquals(2, invokedCounter());
+		assertEquals(2, invokeCounter());
 		assertEquals(_IN_PACKET_SIZE, valueNotified());
 	}
 
@@ -71,7 +71,7 @@ public class BandwidthReportingTest extends TestInContainerEnvironment {
 		return byRef;
 	}
 
-	private int invokedCounter() {
+	private int invokeCounter() {
 		return ((BandwidthCounterMock)_bandwidthCounter).invokeCounter;
 	}
 	

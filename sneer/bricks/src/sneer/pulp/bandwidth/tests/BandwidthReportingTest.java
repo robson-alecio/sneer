@@ -39,16 +39,16 @@ public class BandwidthReportingTest extends TestInContainerEnvironment {
 		
 		final ByRef<Thread> job = initComunications(contact);
 
-		startAndWaitJobFinished(job, 0);
+		startAndWaitJobToFinish(job, 0);
 		assertEquals(1, invokeCounter());
 		assertEquals(_OUT_PACKET_SIZE, notifiedValue());
 		
-		startAndWaitJobFinished(job, 1);
+		startAndWaitJobToFinish(job, 1);
 		assertEquals(2, invokeCounter());
 		assertEquals(_IN_PACKET_SIZE, notifiedValue());
 	}
 
-	private void startAndWaitJobFinished(ByRef<Thread> job, int index)	throws InterruptedException {
+	private void startAndWaitJobToFinish(ByRef<Thread> job, int index) throws InterruptedException {
 		job.value = new Thread(findActor(index));
 		job.value.start();
 		sleepWhileJobIsAlive(job);

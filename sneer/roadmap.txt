@@ -10,10 +10,12 @@
 ﻿ROADMAP TO BECOME MORE PRODUCTIVE
 =====================================
 
-	- ReactiveWidgetFactory - Change all Signal<String> to Signal<Object> (use toString() to display). This will allow linking number and date signals for example.
+	- [Sandro] ReactiveWidgetFactory - Change all Signal<String> to Signal<Object> (use toString() to display). This will allow linking number and date signals for example.
 
 	- [Douglas] Default: Log only throwables. Have "white list" of parts of messages to log.
 			- GUI to delete or add parts of messages in the "white list" to log.
+
+	- [Bamboo] Sneer script - Update from SVN, compile, run. Windows and Linux. May require ANT, no problem.
 
 	- [Bamboo] Mocotó Test Framework
 

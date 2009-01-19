@@ -155,6 +155,7 @@ class MainDemoBrickImpl implements MainDemoBrick {
 			new ContactInfo("Klaus", "klausw.selfip.net", 5923),
 			new ContactInfo("Nell", "anelisedaux.dyndns.org", 5924),
 			new ContactInfo("Priscila", "priscilavriesman.dyndns.org", 7770),
+			new ContactInfo("Ramon", "ramontramontini.dyndns.org", 7770),
 			new ContactInfo("Vitor", "vfpamp.dyndns.org", 5923),
 		};
 	}

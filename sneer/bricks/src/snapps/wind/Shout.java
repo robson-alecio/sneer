@@ -6,8 +6,8 @@ public class Shout extends Tuple {
 
 	public final String phrase;
 
-	public Shout(String pPhrase) {
-		phrase = pPhrase;
+	public Shout(String phrase_) {
+		phrase = phrase_;
 	}
 
 	@Override

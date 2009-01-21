@@ -12,7 +12,7 @@
 ﻿ROADMAP TO BECOME MORE PRODUCTIVE
 =====================================
 
-	- [Sandro] Sneer script - Update from SVN, compile, run. Windows and Linux. May require ANT, no problem.
+	- [Sandro] Webstart
 
 	- [Sandro] ReactiveWidgetFactory - Change all Signal<String> to Signal<Object> (use toString() to display). This will allow linking number and date signals for example.
 

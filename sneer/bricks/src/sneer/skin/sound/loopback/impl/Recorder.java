@@ -5,6 +5,7 @@ import static sneer.skin.sound.loopback.impl.Services.threads;
 
 import java.io.ByteArrayOutputStream;
 
+import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
 import sneer.pulp.threadpool.Stepper;
@@ -18,7 +19,7 @@ class Recorder {
 	}
 	
 	static boolean start(ByteArrayOutputStream buffer) {
-		final TargetDataLine targetDataLine = audio().tryToOpenCaptureLine();
+		final TargetDataLine targetDataLine = tryToOpenCaptureLine();
 		if (targetDataLine == null) return false;
 		
 		_buffer = buffer;
@@ -35,6 +36,14 @@ class Recorder {
 			return true;
 		}});
 		return true;
+	}
+
+	private static TargetDataLine tryToOpenCaptureLine() {
+		try {
+			return audio().tryToOpenCaptureLine();
+		} catch (LineUnavailableException e) {
+			return null;
+		}
 	}
 
 	private static void record(TargetDataLine targetDataLine) {

@@ -11,6 +11,7 @@ import java.util.List;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
@@ -38,21 +39,35 @@ class SoundPlayerImpl implements SoundPlayer, Stepper {
 		AudioInputStream audioInputStream = null;
 		try {
 			audioInputStream = tryInitAudioInputStream(url);
-			AudioFormat audioFormat = audioInputStream.getFormat();
-	
-			int bufferSize = (int) audioFormat.getSampleRate() * audioFormat.getFrameSize();
-			byte[] buffer = new byte[bufferSize];
-			SourceDataLine dataLine = _audio.tryToOpenPlaybackLine(audioFormat);
-			dataLine.start();
-			playStream(dataLine, audioInputStream, buffer); 
 		} catch (IOException e) {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Use BL
+		}
+		
+		try {
+			play(audioInputStream); 
 		} finally {
-			if (audioInputStream != null) Streams.crash(audioInputStream);
+			Streams.crash(audioInputStream);
 		} 
 	}
 
-	private void playStream(SourceDataLine dataLine, AudioInputStream audioInputStream, byte[] buffer) {
+	private void play(AudioInputStream audioInputStream) {
+		AudioFormat audioFormat = audioInputStream.getFormat();
+
+		SourceDataLine dataLine;
+		try {
+			dataLine = _audio.tryToOpenPlaybackLine(audioFormat);
+		} catch (LineUnavailableException e) {
+			return;
+		}
+		dataLine.start();
+
+		play(audioInputStream, audioFormat, dataLine);
+	}
+
+	private void play(AudioInputStream audioInputStream, AudioFormat audioFormat, SourceDataLine dataLine) {
+		int bufferSize = (int) audioFormat.getSampleRate() * audioFormat.getFrameSize();
+		byte[] buffer = new byte[bufferSize];
+
 		int bytesRead = 0;
 		while (true) {
 			bytesRead = read(audioInputStream, buffer);

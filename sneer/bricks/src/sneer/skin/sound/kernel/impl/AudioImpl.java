@@ -29,24 +29,24 @@ class AudioImpl implements Audio {
 	private Light _captureLight = _lights.prepare(LightType.ERROR);
 
 	@Override
-	public SourceDataLine tryToOpenPlaybackLine() {
+	public SourceDataLine tryToOpenPlaybackLine() throws LineUnavailableException {
 		return tryToOpenPlaybackLine(defaultAudioFormat());
 	}
 	
 	@Override
-	public SourceDataLine tryToOpenPlaybackLine(AudioFormat audioFormat) {
-		SourceDataLine dataLine;
+	public SourceDataLine tryToOpenPlaybackLine(AudioFormat audioFormat) throws LineUnavailableException {
+		SourceDataLine result;
 		try {
-			dataLine = AudioSystem.getSourceDataLine(audioFormat);
-			dataLine.open();
+			result = AudioSystem.getSourceDataLine(audioFormat);
+			result.open();
 		} catch (LineUnavailableException e) {
 			_lights.turnOnIfNecessary(_playbackLight, "Problem with Audio Playback (Speaker)", helpMessageFor("speaker"), e);
-			return null;
+			throw e;
 		}
 		
 		_lights.turnOffIfNecessary(_playbackLight);
-		dataLine.start();
-		return dataLine;
+		result.start();
+		return result;
 	}
 
 	private String helpMessageFor(String device) {
@@ -55,14 +55,14 @@ class AudioImpl implements Audio {
 
 	
 	@Override
-	public TargetDataLine tryToOpenCaptureLine() {
+	public TargetDataLine tryToOpenCaptureLine() throws LineUnavailableException {
 		TargetDataLine dataLine;
 		try {
 			dataLine = AudioSystem	.getTargetDataLine(defaultAudioFormat());
 			dataLine.open();
 		} catch (LineUnavailableException e) {
 			_lights.turnOnIfNecessary(_captureLight, "Problem with Audio Capture (Mic)", helpMessageFor("mic"), e);
-			return null;
+			throw e;
 		}
 
 		_lights.turnOffIfNecessary(_captureLight);

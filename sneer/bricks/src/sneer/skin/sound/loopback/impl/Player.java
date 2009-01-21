@@ -5,6 +5,7 @@ import static sneer.skin.sound.loopback.impl.Services.threads;
 
 import java.io.ByteArrayOutputStream;
 
+import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
 import sneer.pulp.threadpool.Stepper;
@@ -12,8 +13,6 @@ import wheel.lang.Threads;
 
 class Player {
 	
-	
-
 	static private ByteArrayOutputStream _buffer;
 	static private volatile boolean _isRunning;
 	static private SourceDataLine _sourceDataLine;
@@ -23,8 +22,11 @@ class Player {
 	}
 
 	static boolean start(ByteArrayOutputStream buffer) {
-		_sourceDataLine = audio().tryToOpenPlaybackLine();
-		if (_sourceDataLine == null) return false;
+		try {
+			_sourceDataLine = audio().tryToOpenPlaybackLine();
+		} catch (LineUnavailableException e) {
+			return false;
+		}
 
 		_buffer = buffer;
 		

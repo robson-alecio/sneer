@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 
@@ -49,7 +50,12 @@ public class JavaSoundImpl implements Sound {
 		@Override 
 		public void run() {
 			System.out.println("Start Record!");
-			TargetDataLine targetDataLine = _audio.tryToOpenCaptureLine();
+			TargetDataLine targetDataLine;
+			try {
+				targetDataLine = _audio.tryToOpenCaptureLine();
+			} catch (LineUnavailableException e) {
+				throw new RuntimeException(e);
+			}
 			
 			_stopCapture = false;
 			while (!_stopCapture) {
@@ -86,7 +92,11 @@ public class JavaSoundImpl implements Sound {
 		public void run() {
 			System.out.println("Start Play!");
 			SourceDataLine dataLine;
-			dataLine = _audio.tryToOpenPlaybackLine();
+			try {
+				dataLine = _audio.tryToOpenPlaybackLine();
+			} catch (LineUnavailableException e) {
+				throw new RuntimeException(e);
+			}
 
 			_stopPlay = false;
 			while (!_stopPlay) {

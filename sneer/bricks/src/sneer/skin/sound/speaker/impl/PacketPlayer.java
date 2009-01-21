@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
 import sneer.pulp.keymanager.PublicKey;
@@ -50,9 +51,19 @@ class PacketPlayer implements Consumer<PcmSoundPacket> {
 	}
 	
 	private SourceDataLine ensureLineIsOpen(PcmSoundPacket packet) {
-		if(!_lines.containsKey(packet.publisher()))
-			_lines.put(packet.publisher(), _audio.tryToOpenPlaybackLine());
+		PublicKey publisher = packet.publisher();
+		
+		if(!_lines.containsKey(publisher))
+			_lines.put(publisher, tryToOpenPlaybackLine());
 
-		return _lines.get(packet.publisher());
+		return _lines.get(publisher);
+	}
+
+	private SourceDataLine tryToOpenPlaybackLine() {
+		try {
+			return _audio.tryToOpenPlaybackLine();
+		} catch (LineUnavailableException e) {
+			return null;
+		}
 	}
 }

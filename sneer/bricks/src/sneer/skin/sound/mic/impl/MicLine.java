@@ -3,6 +3,7 @@ package sneer.skin.sound.mic.impl;
 import static wheel.lang.Environments.my;
 
 import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
 import sneer.skin.sound.kernel.Audio;
@@ -28,9 +29,11 @@ class MicLine {
 
 	static synchronized void tryToAcquire() throws FriendlyException {
 		TargetDataLine result = null;
-		result = audio().tryToOpenCaptureLine();
-		if (result == null)
+		try {
+			result = audio().tryToOpenCaptureLine();
+		} catch (LineUnavailableException e) {
 			throwFriendly("Unable to find a target data line for your mic.");
+		}
 		
 		_delegate = result;
 	}

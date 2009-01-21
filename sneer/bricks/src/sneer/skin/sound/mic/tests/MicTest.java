@@ -3,6 +3,7 @@ package sneer.skin.sound.mic.tests;
 import static wheel.lang.Environments.my;
 
 import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
 import org.jmock.Expectations;
@@ -23,7 +24,7 @@ public class MicTest extends TestInContainerEnvironment {
 	private final AudioFormat _format = new AudioFormat(8000, 16, 1, true, false);
 	
 	@Test
-	public void testIsRunningSignal() {
+	public void testIsRunningSignal() throws LineUnavailableException {
 		checking(soundExpectations());
 		
 		SignalUtils.waitForValue(false, _subject.isRunning());
@@ -35,7 +36,7 @@ public class MicTest extends TestInContainerEnvironment {
 		SignalUtils.waitForValue(false, _subject.isRunning());
 	}
 	
-	private Expectations soundExpectations() {
+	private Expectations soundExpectations() throws LineUnavailableException {
 		return new Expectations() {{
 			one(_audio).tryToOpenCaptureLine(); will(returnValue(_line));
 			allowing(_audio).defaultAudioFormat(); will(returnValue(_format));

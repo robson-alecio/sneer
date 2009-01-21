@@ -2,6 +2,7 @@
 
 <project name="AntBuild" default="test">
 
+	<property name="webstart.dir" location="jws" />
 	<property name="build.dir" location="bin" />
 	<property name="clover.jar" location="antlips/lib/clover.jar" />
 
@@ -123,4 +124,41 @@
 	       </current>
 	    </clover-report>
 	</target>
+	
+	<target name="makeJavaWebStart" depends="makeJnlp">
+		<jar destfile="${webstart.dir}/kernel.jar" basedir="bin-kernel"/>
+		<jar destfile="${webstart.dir}/sneer.jar" basedir="${build.dir}"/>
+	</target>
+		
+	<target name="makeJnlp" depends="copyJars">
+		<echoxml file="${webstart.dir}/sneer.jnlp">
+			<jnlp spec="1.0+" codebase="file:///${webstart.dir}" href="sneer.jnlp">
+				<information>
+					<title>Sneer!</title>
+					<vendor>Sovereign Computing</vendor>
+					<description></description>
+					<description kind="short"></description>
+					<homepage href=""/>
+					<offline-allowed/>
+				</information>
+				<resources>     
+					<jar href="sneer.jar"/>  
+					<jar href="kernel.jar"/><% 
+for (final String lib : value.libs()) { 
+	String fileName = new java.io.File(lib).getName();%>
+					<jar href="<%=fileName%>"/><% } %>					
+					<j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+				</resources>
+				<application-desc main-class="main.MainDemo"/>
+			</jnlp>
+		</echoxml>
+	</target>
+	
+	<target name="copyJars">
+		<delete dir="${webstart.dir}"/>
+		<mkdir dir="${webstart.dir}"/>
+<% for (final String lib : value.libs()) { %>
+		<copy todir="${webstart.dir}" file="<%=lib%>"/><% } %>					
+	</target>
+			
 </project>

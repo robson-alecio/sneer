@@ -2,7 +2,7 @@
 
 <project name="AntBuild" default="test">
 
-	<property name="webstart.dir" location="jws" />
+	<property name="webstart.dir" location="webstart" />
 	<property name="build.dir" location="bin" />
 	<property name="clover.jar" location="antlips/lib/clover.jar" />
 
@@ -125,17 +125,17 @@
 	</target>
 
 	<target name="makeJars">
-		<delete dir="${webstart.dir}"/>
-		<mkdir dir="${webstart.dir}"/>
+		<delete dir="${webstart.dir}/build"/>
+		<mkdir dir="${webstart.dir}/build"/>
 
-		<jar destfile="${webstart.dir}/kernel.jar">
+		<jar destfile="${webstart.dir}/build/kernel.jar">
 		    <fileset dir="bin-kernel">
 		    	<exclude name='**/*.txt'/>
 		    	<exclude name='**/tests/**'/>
 		    </fileset>
 		</jar>
 		
-		<jar destfile="${webstart.dir}/sneer.jar">
+		<jar destfile="${webstart.dir}/build/sneer.jar">
 		    <fileset dir="${build.dir}/build">
 		    	<exclude name='**/*.txt'/>
 		    	<exclude name='**/tests/**'/>
@@ -148,21 +148,21 @@
 	</target>
 
 	<target name="signJars" depends="copyJars">
-		<signjar keystore="sneerKeystore" jar="${webstart.dir}/bcprov-jdk16-139.jar" alias="bihaiko" storepass="amanda"/>
-		<signjar keystore="sneerKeystore" jar="${webstart.dir}/asm-all-3.1.jar" alias="bihaiko" storepass="amanda"/>
+		<signjar keystore="${webstart.dir}/sneerKeystore" jar="${webstart.dir}/build/bcprov-jdk16-139.jar" alias="bihaiko" storepass="amanda"/>
+		<signjar keystore="${webstart.dir}/sneerKeystore" jar="${webstart.dir}/build/asm-all-3.1.jar" alias="bihaiko" storepass="amanda"/>
 	</target>
 
 	<target name="makeJnlp" depends="signJars">
-		<echoxml file="${webstart.dir}/sneer.jnlp">
-			<jnlp spec="1.0+" codebase="file:///${webstart.dir}" href="sneer.jnlp">
+		<echoxml file="${webstart.dir}/build/sneer.jnlp">
+			<jnlp spec="1.0+" codebase="file:///${webstart.dir}/build" href="sneer.jnlp">
 				<information>
 					<title>Sneer!</title>
 					<vendor>Sovereign Computing</vendor>
-					<description></description>
-					<description kind="short"></description>
-					<homepage href=""/>
-					<offline-allowed/>
+					<description>Sovereign computing is the freedom to share information and hardware resources with your friends, any way you like.:)</description>
+					<description kind="short">Sneer is a java-based, free software platform for sovereign applications.</description>
+					<homepage href="http://sovereigncomputing.net/"/>
 				</information>
+				<update check="timeout" policy="always"/>
 				<resources>     
 					<jar href="sneer.jar"/>  
 					<jar href="kernel.jar"/>
@@ -176,8 +176,8 @@
 	</target>
 
 	<target name="copyJars">
-		<copy todir="${webstart.dir}" file="bricks/lib/bcprov-jdk16-139.jar"/>
-		<copy todir="${webstart.dir}" file="kernel/lib/asm-all-3.1.jar"/>					
+		<copy todir="${webstart.dir}/build" file="bricks/lib/bcprov-jdk16-139.jar"/>
+		<copy todir="${webstart.dir}/build" file="kernel/lib/asm-all-3.1.jar"/>					
 	</target>
-			
+
 </project>

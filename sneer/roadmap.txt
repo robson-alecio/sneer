@@ -13,6 +13,7 @@
 =====================================
 
 	- [Sandro] Webstart
+		- Singer -> Signer
 
 	- [Sandro] ReactiveWidgetFactory - Change all Signal<String> to Signal<Object> (use toString() to display). This will allow linking number and date signals for example.
 

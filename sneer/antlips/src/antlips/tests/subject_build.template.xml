@@ -120,13 +120,39 @@
 	       </current>
 	    </clover-report>
 	</target>
-	
-	<target name="makeJavaWebStart" depends="makeJnlp">
-		<jar destfile="${webstart.dir}/kernel.jar" basedir="bin-kernel"/>
-		<jar destfile="${webstart.dir}/sneer.jar" basedir="${build.dir}"/>
+
+	<target name="makeJavaWebStart" depends="makeJars, makeJnlp">
 	</target>
+
+	<target name="makeJars">
+		<delete dir="${webstart.dir}"/>
+		<mkdir dir="${webstart.dir}"/>
+
+		<jar destfile="${webstart.dir}/kernel.jar">
+		    <fileset dir="bin-kernel">
+		    	<exclude name='**/*.txt'/>
+		    	<exclude name='**/tests/**'/>
+		    </fileset>
+		</jar>
 		
-	<target name="makeJnlp" depends="copyJars">
+		<jar destfile="${webstart.dir}/sneer.jar">
+		    <fileset dir="${build.dir}/build">
+		    	<exclude name='**/*.txt'/>
+		    	<exclude name='**/tests/**'/>
+		    	<exclude name='functional/**'/>
+		    	<exclude name='spikes/**'/>
+		    	<exclude name='antlips/**'/>
+				<exclude name='build/**'/>
+		    </fileset>
+		</jar>
+	</target>
+
+	<target name="signJars" depends="copyJars">
+		<signjar keystore="sneerKeystore" jar="${webstart.dir}/bcprov-jdk16-139.jar" alias="bihaiko" storepass="amanda"/>
+		<signjar keystore="sneerKeystore" jar="${webstart.dir}/asm-all-3.1.jar" alias="bihaiko" storepass="amanda"/>
+	</target>
+
+	<target name="makeJnlp" depends="signJars">
 		<echoxml file="${webstart.dir}/sneer.jnlp">
 			<jnlp spec="1.0+" codebase="file:///${webstart.dir}" href="sneer.jnlp">
 				<information>
@@ -148,11 +174,8 @@
 			</jnlp>
 		</echoxml>
 	</target>
-	
-	<target name="copyJars">
-		<delete dir="${webstart.dir}"/>
-		<mkdir dir="${webstart.dir}"/>
 
+	<target name="copyJars">
 		<copy todir="${webstart.dir}" file="bricks/lib/bcprov-jdk16-139.jar"/>
 		<copy todir="${webstart.dir}" file="kernel/lib/asm-all-3.1.jar"/>					
 	</target>

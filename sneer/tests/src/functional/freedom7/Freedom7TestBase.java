@@ -9,6 +9,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.pulp.compiler.JavaCompiler;
+import wheel.io.Logger;
 import wheel.io.SourceFileWriter;
 import functional.SovereignFunctionalTestBase;
 import functional.SovereignParty;
@@ -26,6 +27,7 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	
 	@Test
 	public void testPublishTwoBricks() throws Exception {
+		Logger.redirectTo(System.out);
 		System.clearProperty("freedom7.y.Y.installed");
 		System.clearProperty("freedom7.z.Z.installed");
 		publisher().publishBricks(generateYandZ());

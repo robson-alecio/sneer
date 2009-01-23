@@ -136,12 +136,15 @@ class BrickManagerImpl implements BrickManager {
 	
 	private File setUpBrickDirectory(String brickName) {
 		File brickDirectory = brickDirectory(brickName);
-		//System.out.println("installing "+brickName+" on "+brickDirectory);
+		log("installing "+brickName+" on "+brickDirectory);
 		
-		if(brickDirectory.exists()) 
+		if(brickDirectory.exists()) {
+			log("cleaning");
 			tryToCleanDirectory(brickDirectory); //FixUrgent: ask permission to overwrite?
-		else 
-			brickDirectory.mkdir();
+		} else { 
+			boolean ok = brickDirectory.mkdir();
+			log("creating: " + ok);
+		}
 		return brickDirectory;
 	}
 

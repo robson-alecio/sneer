@@ -146,6 +146,7 @@ class BrickFileImpl implements BrickFile {
 
 	@Override
 	public int compareTo(BrickFile other) {
+		
 		List<InjectedBrick> bricks;
 		List<InjectedBrick> otherBricks;
 
@@ -156,26 +157,17 @@ class BrickFileImpl implements BrickFile {
 			throw new NotImplementedYet("Can't calculate dependency graph",e);
 		}
 		
-		if(bricks.isEmpty())
-			return -1; //this brick doesn't inject other bricks. Go first
-
-		if(otherBricks.isEmpty())
-			return 1; //the other brick doesn't inject other bricks. Let him go first
-		
 		boolean thisInjectOther = false;
 		for(InjectedBrick injected : bricks)
-			if(injected.brickName().equals(other.name())) {
+			if(injected.brickName().equals(other.name()))
 				thisInjectOther = true; 
-				break;
-			}
 
 		boolean otherInjectThis = false;
 		for(InjectedBrick injected : otherBricks)
-			if(injected.brickName().equals(_brickName)) {
+			if(injected.brickName().equals(_brickName))
 				otherInjectThis = true;
-				break;
-			}
 		
+		//Fix: This only detects immediate A<->B cycles.  
 		if(thisInjectOther && otherInjectThis)
 			throw new NotImplementedYet("Dependency cycle detected: "+_brickName+" <-> "+other.name());
 		

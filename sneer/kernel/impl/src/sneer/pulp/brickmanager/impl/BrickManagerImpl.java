@@ -51,13 +51,12 @@ class BrickManagerImpl implements BrickManager {
 		List<String> brickNames = bundle.brickNames();
 		for (String brickName : brickNames) {
 			BrickFile brick = bundle.brick(brickName);
-			if(okToInstall(brick)) {
-				resolve(bundle, brick);
-				install(brick);
-			} else {
-				//what should we do?
+			
+			if(!okToInstall(brick))
 				throw new BrickManagerException("brick: "+brickName+" could not be installed");
-			}
+			
+			resolve(bundle, brick);
+			install(brick);
 		}
 	}
 

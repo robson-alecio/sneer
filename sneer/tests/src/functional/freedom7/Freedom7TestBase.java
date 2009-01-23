@@ -1,5 +1,7 @@
 package functional.freedom7;
 
+import static wheel.lang.Environments.my;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -10,7 +12,6 @@ import sneer.pulp.compiler.JavaCompiler;
 import wheel.io.SourceFileWriter;
 import functional.SovereignFunctionalTestBase;
 import functional.SovereignParty;
-import static wheel.lang.Environments.my;
 
 public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	
@@ -30,6 +31,8 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 		publisher().publishBricks(generateYandZ());
 		assertEquals("true", System.getProperty("freedom7.y.Y.installed"));
 		assertEquals("true", System.getProperty("freedom7.z.Z.installed"));
+		
+		fail("The last line in BrickFileImpl must be fixed.");
 	}
 
 	@Test

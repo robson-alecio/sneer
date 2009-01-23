@@ -167,7 +167,7 @@ class BrickFileImpl implements BrickFile {
 			if(injected.brickName().equals(_brickName))
 				otherInjectThis = true;
 		
-		//Fix: This only detects immediate A<->B cycles.  
+		//Fix: This fails to detect indirect cycles. It detects only direct A<->B cycles.  
 		if(thisInjectOther && otherInjectThis)
 			throw new NotImplementedYet("Dependency cycle detected: "+_brickName+" <-> "+other.name());
 		
@@ -177,6 +177,6 @@ class BrickFileImpl implements BrickFile {
 		if(otherInjectThis)
 			return -1;
 		
-		return 0;
+		return other.name().compareTo(name()); //Fix: Correct way is: return name().compareTo(other.name()); //It is inverted here just to make a bug stand out. Once the bug is fixed this can be fixed.
 	}
 }

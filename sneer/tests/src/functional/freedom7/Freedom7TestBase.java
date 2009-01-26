@@ -27,6 +27,7 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	
 	@Test
 	public void testPublishTwoBricks() throws Exception {
+		fail("Klaus pair with Rod to fix this.");
 		Logger.redirectTo(System.out);
 		System.clearProperty("freedom7.y.Y.installed");
 		System.clearProperty("freedom7.z.Z.installed");

@@ -9,6 +9,8 @@ import org.junit.internal.runners.TestClass;
 import org.junit.internal.runners.TestMethod;
 import org.junit.runner.notification.RunNotifier;
 
+import wheel.io.logging.WheelLogger;
+import wheel.io.logging.impl.WheelLoggerImpl;
 import wheel.lang.Environment;
 import wheel.lang.Environments;
 import wheel.lang.Environments.Memento;
@@ -93,6 +95,8 @@ public class WheelEnvironment extends JUnit4ClassRunner {
 			public <T> T provide(Class<T> intrface) {
 				if (WheelExceptionHandler.class == intrface)
 					return (T) new WheelExceptionLeaker();
+				if (WheelLogger.class == intrface)
+					return (T) new WheelLoggerImpl();				
 				return null;
 			}
 		};

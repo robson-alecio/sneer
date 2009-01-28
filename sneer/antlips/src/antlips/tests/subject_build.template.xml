@@ -128,14 +128,11 @@
 		<delete dir="${webstart.dir}/build"/>
 		<mkdir dir="${webstart.dir}/build"/>
 
-		<jar destfile="${webstart.dir}/build/kernel.jar">
+		<jar destfile="${webstart.dir}/build/sneer.jar">
 		    <fileset dir="bin-kernel">
 		    	<exclude name='**/*.txt'/>
 		    	<exclude name='**/tests/**'/>
 		    </fileset>
-		</jar>
-		
-		<jar destfile="${webstart.dir}/build/sneer.jar">
 		    <fileset dir="${build.dir}/build">
 		    	<exclude name='**/*.txt'/>
 		    	<exclude name='**/tests/**'/>
@@ -150,6 +147,7 @@
 	<target name="signJars" depends="copyJars">
 		<signjar keystore="${webstart.dir}/sneerKeystore" jar="${webstart.dir}/build/bcprov-jdk16-139.jar" alias="bihaiko" storepass="amanda"/>
 		<signjar keystore="${webstart.dir}/sneerKeystore" jar="${webstart.dir}/build/asm-all-3.1.jar" alias="bihaiko" storepass="amanda"/>
+		<signjar keystore="${webstart.dir}/sneerKeystore" jar="${webstart.dir}/build/sneer.jar>" alias="bihaiko" storepass="amanda"/>	
 	</target>
 
 	<target name="makeJnlp" depends="signJars">
@@ -164,12 +162,14 @@
 				</information>
 				<update check="timeout" policy="always"/>
 				<resources>     
-					<jar href="sneer.jar"/>  
-					<jar href="kernel.jar"/>
+					<jar href="sneer.jar"/>
 					<jar href="bcprov-jdk16-139.jar"/>
 					<jar href="asm-all-3.1.jar"/>					
 					<j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
 				</resources>
+				<security>
+					<all-permissions/>
+				</security>
 				<application-desc main-class="main.MainDemo"/>
 			</jnlp>
 		</echoxml>

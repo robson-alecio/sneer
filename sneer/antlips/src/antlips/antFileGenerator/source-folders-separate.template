@@ -132,14 +132,11 @@
 		<delete dir="${webstart.dir}/build"/>
 		<mkdir dir="${webstart.dir}/build"/>
 
-		<jar destfile="${webstart.dir}/build/kernel.jar">
+		<jar destfile="${webstart.dir}/build/sneer.jar">
 		    <fileset dir="bin-kernel">
 		    	<exclude name='**/*.txt'/>
 		    	<exclude name='**/tests/**'/>
 		    </fileset>
-		</jar>
-		
-		<jar destfile="${webstart.dir}/build/sneer.jar">
 		    <fileset dir="${build.dir}/build">
 		    	<exclude name='**/*.txt'/>
 		    	<exclude name='**/tests/**'/>
@@ -155,6 +152,7 @@
 for (final String lib : value.libs()) { 
 	String fileName = new java.io.File(lib).getName();%>
 		<signjar keystore="${webstart.dir}/sneerKeystore" jar="${webstart.dir}/build/<%=fileName%>" alias="bihaiko" storepass="amanda"/><%}%>
+		<signjar keystore="${webstart.dir}/sneerKeystore" jar="${webstart.dir}/build/sneer.jar>" alias="bihaiko" storepass="amanda"/>	
 	</target>
 
 	<target name="makeJnlp" depends="signJars">
@@ -169,13 +167,15 @@ for (final String lib : value.libs()) {
 				</information>
 				<update check="timeout" policy="always"/>
 				<resources>     
-					<jar href="sneer.jar"/>  
-					<jar href="kernel.jar"/><% 
+					<jar href="sneer.jar"/><% 
 for (final String lib : value.libs()) { 
 	String fileName = new java.io.File(lib).getName();%>
 					<jar href="<%=fileName%>"/><% } %>					
 					<j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
 				</resources>
+				<security>
+					<all-permissions/>
+				</security>
 				<application-desc main-class="main.MainDemo"/>
 			</jnlp>
 		</echoxml>

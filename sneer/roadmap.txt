@@ -14,8 +14,8 @@
 ﻿ROADMAP TO BECOME MORE PRODUCTIVE
 =====================================
 
-	- [Sandro] Webstart
-		- Singer -> Signer
+	- [Sandro] MainDemo is too big. Extract login logic to a brick.
+		- Use tuples for persistence instead of a file.
 
 	- [Sandro] ReactiveWidgetFactory - Change all Signal<String> to Signal<Object> (use toString() to display). This will allow linking number and date signals for example.
 

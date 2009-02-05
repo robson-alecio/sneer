@@ -1,6 +1,11 @@
 package sneer.pulp.logging.impl;
 
 import static wheel.lang.Environments.my;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
+
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.logging.LogWhiteListEntry;
 import sneer.pulp.tuples.TupleSpace;
@@ -9,7 +14,7 @@ import wheel.lang.Consumer;
 import wheel.reactive.EventNotifier;
 import wheel.reactive.EventSource;
 import wheel.reactive.impl.EventNotifierImpl;
-import wheel.reactive.lists.ListRegister;
+import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 
 class LoggerImpl extends WheelLoggerImpl implements sneer.pulp.logging.Logger, Consumer<LogWhiteListEntry> {
@@ -19,7 +24,7 @@ class LoggerImpl extends WheelLoggerImpl implements sneer.pulp.logging.Logger, C
 		_filter.block(LogWhiteListEntry.class);
 	}
 	
-	private final ListRegisterImpl<LogWhiteListEntry> _phrases = new ListRegisterImpl<LogWhiteListEntry>();
+	private final ListRegisterImpl<String> _phrases = new ListRegisterImpl<String>();
 	
 	private final EventNotifier<String> _loggedMessages = new EventNotifierImpl<String>();	
 
@@ -29,14 +34,24 @@ class LoggerImpl extends WheelLoggerImpl implements sneer.pulp.logging.Logger, C
 	}
 	
 	@Override
-	public void consume(LogWhiteListEntry value) {
-		_phrases.adder().consume(value);
+	public ListSignal<String> phrases() {
+		return _phrases.output();
 	}
+
+	@Override
+	public void whiteListEntryAdder(String phrase) {
+		_phrases.adder().consume(phrase);
+	}
+
+	@Override
+	public void whiteListEntryRemover(String phrase) {
+		_phrases.remove(phrase);
+	}	
 	
 	@Override
-	public ListRegister<LogWhiteListEntry> whiteListEntries() {
-		return _phrases;
-	}	
+	public void consume(LogWhiteListEntry value) {
+		whiteListEntryAdder(value.phrase);
+	}
 
 	@Override
 	public Consumer<String> whiteListEntry() {
@@ -44,7 +59,7 @@ class LoggerImpl extends WheelLoggerImpl implements sneer.pulp.logging.Logger, C
 			publish(phrase);
 		}};
 	}
-	
+
 	private void publish(String phrase) {
 		_tupleSpace.publish(new LogWhiteListEntry(phrase)); 
 	}
@@ -53,19 +68,28 @@ class LoggerImpl extends WheelLoggerImpl implements sneer.pulp.logging.Logger, C
 	public EventSource<String> loggedMessages() {
 		return _loggedMessages.output();
 	}
-	
+
 	@Override
-	protected String message() {
-		String message = super.message();
-		for (LogWhiteListEntry logWhiteListEntry: _phrases.output())
-			if (message.indexOf(logWhiteListEntry.phrase) != -1)
-					return message;
-		return "";
+	protected void flush() {
+		//NOP			
 	}
 	
 	@Override
-	protected void logMessage() {
-		_loggedMessages.notifyReceivers(message());
+	protected void logThrowable(Throwable throwable) {
+	    final Writer result = new StringWriter();
+	    final PrintWriter printWriter = new PrintWriter(result);
+	    throwable.printStackTrace(printWriter);
+		_loggedMessages.notifyReceivers(result.toString());
+	}	
+	
+	@Override
+	protected void logHeader(String entry) {
+		_loggedMessages.notifyReceivers(header(entry));
 	}
+
+	@Override
+	protected void logSeparator() {
+		_loggedMessages.notifyReceivers("\n");
+	}	
 
 }

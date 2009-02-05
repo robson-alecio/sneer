@@ -119,7 +119,6 @@ class MainDemoBrickImpl implements MainDemoBrick {
 			if (candidate._nick.equals(name)) return candidate;
 		throw new IllegalArgumentException(name + " is not one of the hardcoded names. If you want to use this Alpha version of Sneer please let us know at sneercoders@googlegroups.com and we will hardcode your name for now.");
 	}
-	
 
 	private void addContacts() {
 		for (ContactInfo contact : contacts()) {

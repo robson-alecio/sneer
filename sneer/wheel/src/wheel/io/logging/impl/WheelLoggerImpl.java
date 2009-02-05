@@ -1,17 +1,16 @@
 package wheel.io.logging.impl;
 
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import wheel.io.logging.WheelLogger;
+import wheel.lang.exceptions.NotImplementedYet;
 
 public class WheelLoggerImpl implements WheelLogger {
 
-	private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	protected StringWriter _stringWriter = new StringWriter();
-	protected PrintWriter _log = new PrintWriter(_stringWriter, true);
+	private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");	
+	private PrintWriter _log = new PrintWriter(System.out);
 
 	/**
 	 * Example: log("User {} is not allowed to access the {} report.", "Peter", "TPS") 
@@ -19,8 +18,9 @@ public class WheelLoggerImpl implements WheelLogger {
 	 * "User Peter is not allowed to access the TPS report."
 	 */
 	public synchronized void log(String message, Object... messageInsets) {
-		logMessage(inline(message, messageInsets));
-		write(null);
+		logHeader(inline(message, messageInsets));
+		logSeparator();
+		flush();
 	}
 
 	public synchronized void logShort(Exception e, String message, Object... insets) {
@@ -29,23 +29,30 @@ public class WheelLoggerImpl implements WheelLogger {
 
 	/** See log(String, Object...) for examples. */
 	public synchronized void log(Throwable throwable, String message, Object... messageInsets) {
-		if (message == null)
-			message = throwable.getClass().getName();
-		logMessage(inline(message, messageInsets));
-		write(throwable);
+		try {
+			if (message == null)
+				message = throwable.getClass().getName();
+			logHeader(inline(message, messageInsets));
+			logThrowable(throwable);
+			logSeparator();
+		} finally {
+			flush();
+		}
 	}
 
 	public synchronized void log(Throwable throwable) {
 		log(throwable, throwable.getMessage());
 	}
 	
+	protected void flush() {
+		_log.flush();
+		if (_log.checkError())
+			throw new NotImplementedYet(); //TODO			
+	}
+
 	protected void logThrowable(Throwable throwable) {
 		throwable.printStackTrace(_log);
 	}
-	
-	protected void logMessage(String message) {
-		_log.println(message);
-	}	
 	
 	protected void logHeader(String entry) {
 		_log.println(header(entry));
@@ -58,29 +65,6 @@ public class WheelLoggerImpl implements WheelLogger {
 	protected void logSeparator() {
 		_log.println();
 	}
-
-	protected String message() {
-		return _stringWriter.toString();
-	}	
-	
-	protected void write(Throwable throwable) {
-		String message = message();
-
-		if (message.trim().length() > 0)
-			logHeader(message);
-
-		if (throwable != null)
-			logThrowable(throwable);
-		
-		logSeparator();
-		logMessage();
-		_stringWriter = new StringWriter();
-		_log = new PrintWriter(_stringWriter);
-	}
-	
-	protected void logMessage() {
-		System.out.print(message());
-	}	
 	
 	/**
 	 * Example: inline("User {} is not allowed to access the {} report.",

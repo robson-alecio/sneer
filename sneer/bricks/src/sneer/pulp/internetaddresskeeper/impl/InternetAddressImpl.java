@@ -34,6 +34,6 @@ class InternetAddressImpl implements InternetAddress {
 
 	@Override
 	public String toString() {
-		return _contact+" ("+_host+":"+_port+")";
+		return _contact+" ("+_host+" : "+_port+")";
 	}
 }

@@ -1,21 +1,18 @@
-﻿FIXES
-=========
+﻿CURRENT TASKS
+==================
 
-	- [Sandro] public static sneer.skin.sound.loopback.impl.Services - WTF?
+	- [Klaus] Own Name - Show contacts' names in contact list
+		- Freedom2Test - Unignore and make it pass.
 
-	- [Klaus] Fix: Discover why tests timeout so frequently on Klaus's Linux box. Sometimes they pass in under one second, sometimes they timeout after 8 seconds. Probably has something to do with the way waiting and sleeping threads affect other threads on Linux.
+	- [Sandro] public static sneer.skin.sound.loopback.impl.Services - Bricks cannot expose static methods.
 
-	- [Sandro n Bamboo] ListSignalModel and SortedList
-		- Fix: Sort Bug (see SortTest)
+	- [Sandro] Finep (in parallel)
 
+	- [Bamboo] Brick Publish
+		- MainDemo - Publish all necessary bricks instead of just producing them.
 
-﻿ROADMAP TO BECOME MORE PRODUCTIVE
-=====================================
-
-	- [Sandro] Webstart
-		- Singer -> Signer
-
-	- [Sandro] ReactiveWidgetFactory - Change all Signal<String> to Signal<Object> (use toString() to display). This will allow linking number and date signals for example.
+	- [Bamboo] Mocotó Test Framework
+		- Boojay pro-bono (in parallel)
 
 	- [Douglas] Default: Log only throwables. Have "white list" of parts of messages to log.
 			- GUI to delete or add parts of messages in the "white list" to log.
@@ -27,8 +24,34 @@
 				- LogToFile
 				- LogToGui
 
-	- [Bamboo] Mocotó Test Framework
-		- Boojay pro-bono
+
+
+NEXT TASKS
+==============
+
+	- [Klaus] Flooding - Solve tuple flooding on the network. Discuss ideas with the team.
+		- Traffic Prioritization by tuple type
+		- Bandwidth Optimization
+		- Torrentness
+
+	- [Sandro] Webstart
+
+	- [Bamboo] Transparent Persistence - Talk to Klaus
+
+
+FIXES
+=========
+
+	- [Klaus] Fix: Discover why tests timeout so frequently on Klaus's Linux box. Sometimes they pass in under one second, sometimes they timeout after 8 seconds. Probably has something to do with the way waiting and sleeping threads affect other threads on Linux.
+
+	- [Sandro n Bamboo] ListSignalModel and SortedList
+		- Fix: Sort Bug (see SortTest)
+
+
+﻿ROADMAP TO BECOME MORE PRODUCTIVE
+=====================================
+
+	- [Sandro] ReactiveWidgetFactory - Change all Signal<String> to Signal<Object> (use toString() to display). This will allow linking number and date signals for example.
 
 	- [Klaus] ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do.
 		- SetSignal - Revise it also. 
@@ -47,10 +70,9 @@
 			- Unignore and implement GuiBrickTest.guiBrickCallbacksComeInSwingThread()
 			- Delete the GuiBrickInvocationHandler.
 		- [Klaus] GuiBrick Javadoc - Revise.
-
-	- Responsive threading model for instruments. They can NEVER block the Swing gui thread.
-		- [Bamboo] Inspect ALL Brick bytecode at load-time and do not allow it to catch Throwable. This makes all non-blocking code stoppable. We will deal with blocking code later.
-		- [Bamboo] Inspect Gui Brick bytecode at load-time and do not allow it to call any code that throws Hiccup. It is equivalent and maybe easier to simply not allow the code to catch nor throw Hiccup.
+		- Responsive threading model for instruments. They can NEVER block the Swing gui thread.
+			- [Bamboo] Inspect ALL Brick bytecode at load-time and do not allow it to catch Throwable. This makes all non-blocking code stoppable. We will deal with blocking code later.
+			- [Bamboo] Inspect Gui Brick bytecode at load-time and do not allow it to call any code that throws Hiccup. It is equivalent and maybe easier to simply not allow the code to catch nor throw Hiccup.
 
 	- Output folders - Make all source folders compile to the default folder (bin) and fix the tests. Is this possible?
 	
@@ -61,8 +83,6 @@
 		- ASM - Move asm*.jar to a brick lib
 			- Remove kernel dependency. Make it pluggable in the kernel.
 	
-	- Transparent Persistence
-
 	- Snuggin - Initial rules
 	
 	- Revise entire project structure
@@ -93,29 +113,13 @@ ROADMAP TO PRODUCE
 
 	- [Sandro] Contact CRUD Instrument
 	
-	- Flooding - Solve tuple flooding on the network. Discuss ideas with the team.
-		- Traffic Prioritization by tuple type
-
-	- [Rodrigo] Brick Publish
-		- MainDemo - Publish all necessary bricks instead of just producing them.
-
 	- Open Jar leak - Fix in Freedom7Test
+
+	- [Sandro] Community Initiative - Incorporate Gandhi's Google maps brick. (Run LocationGuiMain)
 
 	- [Petra] Tray and Dashboard Titlebar Icon
 	- [Petra] Online and Offline Icons
 
-	- Community request by Vina Callegari. He uses Eclipse 3.2.2 and it does not compile Sneer.
-		- [Rodrigo] Make build.xml run MainDemo by default. Use a specific target for the Hudson build that will not run MainDemo. Coordinate with Vina (Skype: vcallegari) who said he was going to do it. He also mentioned Eclipse has an option to generate build.xml based on its project configuration, which would possibly make antlips unnecessary. Does it make sense for us to use that?
-			- Name and dyndns info in propertystore.txt. Use BL to signal their absence and give instructions.
-
-	- [Sandro] Community Initiative - Incorporate Gandhi's Google maps brick. (Run LocationGuiMain)
-
-	
-	30/JAN ---------------------------------
-
-	- Own Name - Show contacts' names in contact list
-		- Freedom2Test - Unignore and make it pass.
-		
 	- WatchMe
 		- Accelerate.
 			- Reactivate the Cache - Set WatchMeImpl.CACHE_CAPACITY to 3000 (Currently set to zero). 

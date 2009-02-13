@@ -1,0 +1,254 @@
+ 
+TELA DE JUSTIFICATIVA 
+A Tela de Justificativa resume a impressão do proponente a respeito de como se 
+enquadra dentro dos critérios 2, 3 e 5 do item 6 da Chamada Pública de Subvenção Econômica, realçando a contribuição do projeto proposto dentro de cada um dos campos de preenchimento. Os dados a serem preenchidos são os seguintes: 
+
+Inovação Principal: O campo inovação principal é destinado ao relato do empreendedor a respeito da principal inovação que o projeto apresentado ostenta, em suas próprias palavras. A idéia é que o analista do projeto consiga identificar a contribuição da empresa e sua equipe para a inovação nacional. 
+
+A Computação Soberana (CS) é um movimento que busca que o uso dos computadores, e da Internet, sejam livres de interesses corporativos e políticos. O computador, neste contexto, é visto como meio particular e privado para criar, modificar e compartilhar informações. A CS propõe sete liberdades para que as pessoas sejam soberanas de seus computadores e de suas informações pessoais, para que, assim, elas sejam também soberanas de suas próprias vidas.
+
+Nas últimas décadas, pudemos vivenciar o surgimento de vários monopólios de software que algemaram os usuários de computadores, limitando suas liberdades de escolha. Foi comum termos nossa escolha cerceada na hora de selecionar um sistema operacional ou mesmo um simples editor de texto. Vimos até mesmo sistemas governamentais, como por exemplo, o antigo sistema de declaração do imposto de renda, nos limitar a algum sistema operacional ou solução de terceiro. Em contra partida, o governo brasileiro, nas esferas federal e estaduais, e a sociedade representada em movimentos organizados, como o de Software Livre, trabalharam arduamente para nos libertar destas algemas, permitindo que hoje possamos escolher com mais autonomia.
+
+ Atualmente, uma nova batalha está sendo travada enquanto novas algemas, ainda mais poderosas, estão sendo forjadas. Grandes corporações estão coletando e catalogando informações de todo tipo. Nossos emails estão centralizados em gigantescos servidores. Nossas informações pessoais, e até o mapeamento de nossos relacionamentos, sejam eles familiar ou casual, começaram a ser capturados, armazenados e catalogados. Muitas vezes, nossas informações, que deveriam ser privadas, são utilizadas em pesquisas, marketing e até mesmo, vendidas ilegalmente. Acabamos por não sermos mais soberanos da nossa própria informação e, aos poucos, aceitamos o jugo das novas algemas. Estamos vivendo uma nova etapa, na qual a disputa não é mais pelo domínio do software, mas sim pelo domínio da informação, mesmo que em detrimento da privacidade.
+
+O projeto proposto prevê a criação de uma plataforma que trabalha de maneira altamente distribuída, sem centralizar informações, visando mais soberania e a privacidade plena para as informações pessoais. Toda autenticação de usuários é feita dois a dois, sem nenhum servidor central. Mecanismos de chaves públicas irão garantir a identidade dos usuários de forma irrefutável e guardarão a informação pessoal de cada usuário, criptografada, fragmenta com redundância, distribuída e armazenada por toda sua rede de contatos. Se por um ponto de vista esta plataforma se preocupa com a privacidade do indivíduo, sua natureza comunitária facilita trabalhos colaborativos e a distribuição da informação de forma segura e controlada. Baseado em sua rede de contatos, graus de proximidade e confiabilidade, conexões sociais e principalmente na sua vontade, o proprietário poderá permitir que as suas informações mais pessoais sejam compartilhadas apenas com as pessoas mais próximas. Por outro lado, pessoas mais distantes do seu relacionamento terão um acesso mais superficial das informações, ou mesmo acesso apenas para algumas informações mais específicas, segundo a vontade do proprietário. Toda essa distribuição de informação ocorre com um elevado grau de automatização, sempre levando em conta as conexões sociais do proprietário. Novas ferramentas poderão ser construídas,  tendo o individuo como centro da atenção. Pesquisas na web, que hoje trazem o resultado que o provedor do serviço julga mais importante, utilizarão as conexões sociais pessoais do indivíduo para obterem resultados de maior relevância pessoal e também uma maior imparcialidade. Esta é uma plataforma de acordo com as sete liberdades do Manifesto Soberano [ver Apêndice A] que posiciona o Brasil como pioneiro no desenvolvimento de aplicações soberanas. Uma resposta factível para a invasão deliberada da informação pessoal e também um novo degrau na escada rumo à liberdade plena de cada cidadão.
+ 
+"A prisão não são as grades, e a liberdade não é a rua; existem homens presos na rua e livres na prisão. É uma questão de consciência." - Gandhi.
+
+
+Impactos no Mercado: O campo impactos no mercado é destinado ao relato 
+dos impactos que o produto, serviço ou tecnologia gerados no projeto trarão 
+no mercado, tanto em benefícios para a competitividade da empresa 
+postulante como para os eventuais concorrentes e clientes a serem afetados 
+pelos resultados do projeto proposto.
+
+A construção de aplicações soberanas possui um custo elevado, que está relacionado diretamente à alta complexidade da tecnologia utilizada. Esta proposta contempla a criação de uma infra-estrutura de software reutilizável e baseada em componentes que simplifica a construção e diminui consideravelmente o custo de criação de aplicações soberanas. Ela cria no Brasil um novo mercado, um mercado de aplicações mais seguras que podem ser utilizadas em todas as áreas do conhecimento humano. Estas aplicações são tipicamente ligadas a comunidades organizadas que visam a distribuição de informação, comunicação, compartilhamento de recursos computacionais, comércio via internet, desenvolvimento social e educação à distância. O projeto também prevê a criação de material de treinamento on-line, disponibilizado gratuitamente para capacitar técnicos e programadores a desenvolverem aplicações soberanas criando assim, novas oportunidades e desenvolvimento para o Brasil.
+
+"Nunca andes pelo caminho traçado, pois ele conduz somente onde outros já foram." - Alexander Grahan Bell.
+
+Impactos na Sociedade: O campo impactos na sociedade é destinado ao 
+relato das externalidades decorrentes do projeto na visão do empreendedor, 
+nas quais o produto, serviço ou tecnologia gerados no projeto trarão de 
+retorno para a população em geral, e em especial àquela que se destina o 
+seu desenvolvimento.
+
+A capacidade da Internet, como agregadora de esforços, é algo realmente impressionante. Ferramentas colaborativas livres como o Wikepedia permitem alcançarmos mares nunca dantes navegados. Surgem conceitos como a "Inteligência Coletiva", caracterizado por um novo tipo pensamento sustentado por conexões sociais que são viáveis através da utilização das redes abertas de computação da Internet.
+
+A plataforma soberana como ferramenta colaborativa de alcance global pode ter um impacto profundo no meio acadêmico, empresarial e governamental. O pensamento livre, aliado ao trabalho coletivo de comunidades auto-gerenciadas, possibilita a criação de inúmeras ferramentas colaborativas com a capacidade de promover o desenvolvimento da sociedade com uma abrangência nunca antes testemunhada. A plataforma soberana permite que estas ferramentas sejam construídas, de maneira mais segura, mais rápida e mais produtiva. Pequenos esforços individuais serão somados, e a plataforma será um amálgama de inúmeras iniciativas de incontáveis colaboradores para realizar colossais trabalhos, impossíveis para um único indivíduo.
+
+No campo acadêmico, além dos trabalhos científicos decorrentes do projeto propriamente dito, a plataforma permitirá somar esforços em trabalhos colaborativos, com segurança e agilidade. Ferramentas de comunicação, livres de interferência política e corporativa, poderão ser construídas para ampliar as realizações científicas brasileiras em um ambiente transparente e soberano.
+
+No ambiente de trabalho, profissionais liberais, pequenas e micro-empresas poderão oferecer seus produtos e serviços diretamente aos consumidores, podendo assim competir até mesmo com grandes corporações. Surgirão novos produtos e serviços derivados das novas possibilidades oferecidas pela plataforma.
+
+Para o governo e os cidadãos, novas ferramentas com tecnologia de ponta com custos muito inferiores aos atuais, poderão ser construídas para promover o desenvolvimento social, desenvolvimento da cidadania e educação. Informações, enquetes e votações poderão contribuir para melhorar a agilidade e transparência, ligando diretamente o governo com o cidadão.
+
+Todas estas contribuições poderão ser construídas baseadas na plataforma soberana. As características modular e livre da plataforma permitirão compor novas ferramentas baseadas em esforços anteriores, de outros usuários, reduzindo ainda mais os custos e acelerando exponencialmente a produtividade coletiva.
+
+"O Gênio apenas pode respirar numa atmosfera de liberdade." - Stuart Mill
+
+Diferenciais Competitivos da Equipe: O campo diferenciais competitivos da 
+equipe envolvida no projeto é destinado ao relato pelo empreendedor de por 
+que a equipe é adequada à realização do projeto na sua visão, e no que ela 
+se diferencia de outras existentes no mercado ou na indústria no sentido de 
+sua competitividade (seja experiência, formação acadêmica, conhecimento do 
+assunto, etc.)
+
+A equipe alocada para a execução do projeto possui experiência consolidada no desenvolvimento de produtos tecnológicos em especial no desenvolvimento de soluções distribuídas baseadas em Java. São em sua maioria expoentes da comunidade de Software Livre Brasileira bem como palestrantes de renome nacional e internacional. Também têm ampla experiência em consultoria e desenvolvimento de soluções de TI para várias universidades federais brasileiras e grandes empresas como Petrobras, HSBC, Sky, GVT entre outras. Atuam também no mercado internacional de desenvolvimento de software sempre ocupando posição de destaque nos projetos que participam. Com amplo conhecimento em metodologias e processos de desenvolvimento de software, selecionaram metodologias ágeis e ferramentas que permitem o gerenciamento de equipes remotas de maneira eficiente e produtiva. A contribuição técnica da interveniente se dará com a participação de XXX engenheiros de software da empresa com ampla experiência no desenvolvimento de software. 
+
+Diferenciais Competitivos da Empresa: O campo diferenciais competitivos 
+da(s) empresa(s) participante(s) é destinado ao relato pelo empreendedor de 
+por que a empresa é adequada à realização do projeto na sua visão, e no que 
+ela se diferencia de outras existentes no mercado ou na indústria no sentido 
+de sua competitividade.
+
+
+Benefícios Alcançados – Liberdades Soberanas 
+
+Este trabalho se propõe a recuperar sete liberadades, aparentemente simples, que temos no mundo real, mas que aos poucos perdemos no mundo virtual. Estas liberdades estão descritas no “Manifesto Soberano”. Cada uma destas liberdades podem ser traduzidas em objetivos claros e serão incrementalmente alcançadas durante o desenvolvimento da plataforma soberana. São elas: 
+
+Nome Próprio – “Você é Livre para escolher para si um nome, qualquer nome.” 
+
+Hoje, é comum termos algumas dificuldades quando selecionamos um nome para ser usado na Internet, seja este nome um simples email ou mesmo um domínio de um site. Atualmente estes nomes são obrigatoriamente únicos, exclusivos do proprietário. Desta forma, quem chega primeiro registra o nome. Homônimos não são suportados pela estrutura de endereçamento que atualmente usamos na Internet. A plataforma soberana prevê o suporte a homônimos e também à mudança dinâmica de nomes e endereçamento. Desta forma o proprietário pode se chamar “Maria da Silva”, mesmo se já existirem outras “Marias” e pode a qualquer momento mudar seu nome próprio. 
+
+Apelidos – “Você é Livre para chamar seus contados do que bem entender” 
+
+Um bom exemplo para esta liberdade são os homônimos que eventualmente encontramos em nosso ambiente de trabalho. Imagine, por exemplo, duas “Ana Paula” no mesmo convívio, uma saída comum é usarmos apelidos. Uma solução possível para o problema de comunicação com as duas moças seria chamar uma delas de “Aninha” e a segunda de “Ana”. Podemos notar uma abordagem semelhante observando agendas de celular, muitos contatos de nomes iguais acabam por ser categorizados com diferentes apelidos para distinguir um contato de outro. É comum encontrar em agendas nomes como “João Pedro – Dentista” ou “Pedro José – Pintor”. Os apelidos ajudam a resolver os problemas de homônimos e também ajudam a criar nomes mais significativos para o proprietário da lista de contatos. 
+
+Mas somente apelidos não resolvem totalmente o problema de homônimos. O esquema atual de endereçamento é absoluto e por isso exige a unicidade. A plataforma soberana propõe um endereçamento relativo, tendo o ponto de partida o próprio usuário. Desta forma, se o usuário está cadastrando o nome da secretária do seu dentista, poderia cadastrar algo como “Murilo Pizzatto (Dentista)  Secretária”. Atualmente estamos presos a mecanismos absolutos de endereçamentos como, por exemplo, os IPs ou os domínios. Isto se aplica a todos os indivíduos que usam a Internet, bem como o nosso País, que acabou por estar subordinado a estes mecanismos estrangeiros e arbitrários. 
+
+Neste exempl 
+TELA DE JUSTIFICATIVA 
+A Tela de Justificativa resume a impressão do proponente a respeito de como se 
+enquadra dentro dos critérios 2, 3 e 5 do item 6 da Chamada Pública de Subvenção Econômica, realçando a contribuição do projeto proposto dentro de cada um dos campos de preenchimento. Os dados a serem preenchidos são os seguintes: 
+
+Inovação Principal: O campo inovação principal é destinado ao relato do 
+empreendedor a respeito da principal inovação que o projeto apresentado 
+ostenta, em suas próprias palavras. A idéia é que o analista do projeto 
+consiga identificar a contribuição da empresa e sua equipe para a inovação 
+nacional. 
+
+A Computação Soberana (CS) é um movimento que busca que o uso dos computadores, e da Internet, sejam livres de interesses corporativos e políticos. O computador, neste contexto, é visto como meio particular e privado para criar, modificar e compartilhar informações. A CS propõe sete liberdades para que as pessoas sejam soberanas de seus computadores e de suas informações pessoais, para que, assim, elas sejam também soberanas de suas próprias vidas. 
+
+Nas últimas décadas, pudemos vivenciar o surgimento de vários monopólios de software que algemaram os usuários de computadores limitando suas liberdades de escolha. Foi comum termos nossa escolha cerceada na hora de selecionar um sistema operacional ou mesmo um simples editor de texto. Vimos até mesmo sistemas governamentais, como por exemplo, o antigo sistema de declaração do imposto de renda, nos limitar a algum sistema operacional ou solução de terceiro. Em contra partida o governo brasileiro, nas esferas federal e estaduais, e a sociedade representada em movimentos organizados, como o de Software Livre, trabalharam arduamente, para nos libertar destas algemas, permitindo que hoje possamos escolher com mais liberdade. 
+
+Atualmente, uma nova batalha está sendo travada enquanto novas algemas, ainda mais poderosas, estão sendo forjadas. Grandes corporações estão coletando e catalogando informações de todo tipo. Nossos emails estão centralizados em gigantescos servidores. Nossas informações pessoais, e até o mapeamento de nossos relacionamentos, sejam eles familiar ou casual, começaram a ser capturados, armazenados e catalogados. Muitas vezes, nossas informações, que deveriam ser privadas, são utilizadas em pesquisas, marketing e, até mesmo, vendidas ilegalmente. Acabamos por não sermos mais soberanos da nossa própria informação e, aos poucos, vamos aceitando o julgo das novas algemas. Estamos vivendo em nova etapa, onde a disputa não é mais pelo domínio do software, mas sim pelo domínio da informação, mesmo que em detrimento da privacidade. 
+
+O projeto proposto prevê a criação de uma plataforma que trabalha maneira altamente distribuída, sem centralizar informações, visando mais soberania e a privacidade plena para as informações pessoais. Toda autenticação de usuários é feita dois a dois, sem nenhum servidor central. Mecanismos de chaves públicas irão garantir a identidade dos usuários de forma irrefutável e guardarão a informação pessoal de cada usuário, criptografada, fragmenta com redundância, distribuída e armazenada por toda sua rede de contatos. Se por um ponto de vista esta plataforma se preocupa com a privacidade do individuo, sua natureza comunitária facilita trabalhos colaborativos e a distribuição da informação de forma segura e controlada. Baseado em sua rede de contatos, graus de proximidade e confiabilidade, conexões sociais e principalmente na sua vontade, o proprietário poderá permitir que as suas informações mais pessoais sejam compartilhadas apenas com as pessoas mais próximas. Por outro lado, pessoas mais distantes do seu relacionamento terão um acesso mais superficial das informações, ou mesmo acesso apenas para algumas informações mais específicas, segundo a vontade do proprietário. Toda essa distribuição de informação ocorre com um elevado grau de automatização, sempre levando em conta as conexões sociais do proprietário. Novas ferramentas poderão ser construídas tendo o individuo como centro da atenção. Pesquisas na web, que hoje trazem o resultado que o provedor do serviço julga mais importante, utilizarão as conexões sociais pessoais do indivíduo para obterem resultados de maior relevância pessoal e também uma maior imparcialidade. Esta é uma plataforma de acordo com as sete liberdades do Manifesto Soberano [ver Apêndice A] que colocando o Brasil como pioneiro no desenvolvimento de aplicações soberanas. Uma resposta factível para a invasão deliberada da informação pessoal e também um novo degrau na escada rumo à liberdade plena de cada cidadão. 
+
+“A prisão não são as grades, e a liberdade não é a rua; existem homens presos na rua e livres na prisão. É uma questão de consciência.” - Gandhi. 
+
+Impactos no Mercado: O campo impactos no mercado é destinado ao relato 
+dos impactos que o produto, serviço ou tecnologia gerados no projeto trarão 
+no mercado, tanto em benefícios para a competitividade da empresa 
+postulante como para os eventuais concorrentes e clientes a serem afetados 
+pelos resultados do projeto proposto. 
+
+A construção de aplicações soberanas tem hoje um alto custo relacionado alta complexidade de tecnologia utilizada. Esta proposta contempla a criação de uma infra-instrutora de software, reutilizável, baseada em componentes, que simplifica a construção e diminui consideravelmente o custo de criação de aplicações soberanas. Ela cria no Brasil um novo mercado, um mercado de aplicações mais seguras que podem ser utilizadas em todas as áreas do conhecimento humano. Estas aplicações são tipicamente ligadas a comunidades organizadas de usuários que visam distribuição de informação, comunicação, compartilhamento de recursos computacionais, comércio via internet, desenvolvimento social pelo acesso a recursos computacionais e educação a distância. O projeto também prevê a criação de material de treinamento on-line, disponibilizado gratuitamente para capacitar técnicos e programadores a desenvolverem aplicações soberanas criando assim novas oportunidades e desenvolvimento para o Brasil. 
+
+"Nunca andes pelo caminho traçado, pois ele conduz somente onde outros já foram." - Alexander Grahan Bell. 
+
+Impactos na Sociedade: O campo impactos na sociedade é destinado ao 
+relato das externalidades decorrentes do projeto na visão do empreendedor, 
+nas quais o produto, serviço ou tecnologia gerados no projeto trarão de 
+retorno para a população em geral, e em especial àquela que se destina o 
+seu desenvolvimento. 
+
+A capacidade da Internet, como agregadora de esforços, é algo realmente impressionante. Ferramentas colaborativas livres como o Wikepedia permitem alcançarmos mares nunca dantes navegados. Surgem conceitos como a “Inteligência Coletiva”, caracterizado por um novo tipo pensamento sustentado por conexões sociais que são viáveis através da utilização das redes abertas de computação da Internet. 
+
+A plataforma soberana como ferramenta colaborativa de alcance global pode ter um impacto profundo no meio acadêmico, empresarial e governamental. O pensamento, livre aliado ao trabalho coletivo de comunidades auto-gerenciadas possibilita a criação de inúmeras ferramentas colaborativas promovendo o desenvolvimento da sociedade com uma abrangência nunca antes testemunhada. A plataforma soberana permite que estas ferramentas sejam construídas, de maneira mais segura, mais rápida e mais produtiva. Pequenos esforços individuais serão somados, agregando inúmeras iniciativas de incontáveis indivíduos para realizar colossais trabalhos, impossíveis para um único indivíduo. 
+
+No campo acadêmico, além dos trabalhos científicos decorrentes do projeto propriamente dito, a plataforma permitirá somar esforços em trabalhos colaborativos, com segurança e agilidade. Ferramentas de comunicação, livres de interferência política e corporativa, poderão ser construídas para ampliar as realizações científicas brasileiras em um ambiente transparente e soberano. 
+
+No ambiente de trabalho, profissionais liberais, pequenas e micro empresas poderão oferecer seus produtos e serviços diretamente aos consumidores, podendo assim competir até mesmo com grandes corporações. Surgirão novos produtos e serviços derivados das novas possibilidades oferecidas pela plataforma. 
+
+Para o governo e os cidadãos, novas ferramentas para promover o desenvolvimento social, desenvolvimento da cidadania, educação, poderão ser construídas com tecnologia de ponta com custos muito inferiores aos atuais. Informação, enquetes, votações, poderão contribuir para melhorar a agilidade e transparência do relacionamento entre o governo e o cidadão. 
+
+Todas estas contribuições poderão ser construídas baseadas na plataforma soberana, garantindo de forma transparente as sete liberdades do manifesto. As características modular e livre da plataforma permitirão compor novas ferramentas baseadas em esforços anteriores, de outros usuários, reduzindo ainda mais os custos e acelerando exponencialmente a produtividade coletiva. 
+
+“O Gênio apenas pode respirar numa atmosfera de liberdade.” - Stuart Mill 
+
+Diferenciais Competitivos da Equipe: O campo diferenciais competitivos da 
+equipe envolvida no projeto é destinado ao relato pelo empreendedor de por 
+que a equipe é adequada à realização do projeto na sua visão, e no que ela 
+se diferencia de outras existentes no mercado ou na indústria no sentido de 
+sua competitividade (seja experiência, formação acadêmica, conhecimento do 
+assunto, etc.) 
+
+A equipe alocada para a execução do projeto possui experiência consolidada no desenvolvimento de produtos tecnológicos em especial no desenvolvimento de soluções distribuídas baseadas em Java. São em sua maioria expoentes da comunidade de Software Livre Brasileira bem como palestrantes de renome nacional e internacional. Também tem ampla experiência em consultoria e desenvolvimento de soluções de TI para varias universidades federais brasileiras e grandes empresas como Petrobras, HSBC, Sky, GVT entre outras. Atuam também no mercado internacional de desenvolvimento de software sempre ocupando posição de destaque nos projetos que participam. Com amplo conhecimento em metodologias e processos de desenvolvimento de software selecionaram metodologias ágeis e ferramentas que permitem o gerenciamento de equipes remotas de maneira eficiente e produtiva. A contribuição técnica da interveniente se dará com a participação de XXX engenheiros de software da empresa com experiência ampla experiência no desenvolvimento de software. 
+
+Diferenciais Competitivos da Empresa: O campo diferenciais competitivos 
+da(s) empresa(s) participante(s) é destinado ao relato pelo empreendedor de 
+por que a empresa é adequada à realização do projeto na sua visão, e no que 
+ela se diferencia de outras existentes no mercado ou na indústria no sentido 
+de sua competitividade. 
+
+Benefícios Alcançados – Liberdades Soberanas
+
+Este trabalho se propõe a recuperar sete liberadades, aparentemente simples, que temos no mundo real, mas que aos poucos perdemos no mundo virtual. Estas liberdades estão descritas no "Manifesto Soberano". Cada uma destas liberdades podem ser traduzidas em objetivos claros e serão incrementalmente alcançadas durante o desenvolvimento da plataforma soberana. São elas:
+
+Nome Próprio – "Você é Livre para escolher para si um nome, qualquer nome."
+
+Hoje, é comum termos algumas dificuldades quando selecionamos um nome para ser usado na Internet, seja este nome um simples email ou mesmo um domínio de um site. Atualmente estes nomes são obrigatoriamente únicos, exclusivos do proprietário. Desta forma, quem chega primeiro registra o nome. Homônimos não são suportados pela estrutura de endereçamento que atualmente usamos na Internet. A plataforma soberana prevê o suporte a homônimos e também a mudança dinâmica de nomes e endereçamento. Desta forma o proprietário pode se chamar "Maria da Silva", mesmo se já existirem outras "Marias" e pode a qualquer momento mudar seu nome próprio.
+
+Apelidos – "Você é Livre para chamar seus contados do que bem entender"
+
+Um bom exemplo para esta liberdade são os homônimos que eventualmente encontramos em nosso ambiente de trabalho. Imagine, por exemplo, duas "Ana Paula" no mesmo convívio, uma saída comum é usarmos apelidos. Uma solução possível para o problema de comunicação com as duas moças seria chamar uma delas de "Aninha" e a segunda de "Ana". Podemos notar uma abordagem semelhante observando agendas de celular, muitos contatos de nomes iguais acabam por ser categorizados com diferentes apelidos para distinguir um contato de outro. É comum encontrar em agendas nomes como "João Pedro – Dentista" ou "Pedro José – Pintor". Os apelidos ajudam a resolver os problemas de homônimos e também ajudam a criar nomes mais significativos para o proprietário da lista de contatos.
+
+Mas somente apelidos não resolvem totalmente o problema de homônimos. O esquema atual de endereçamento é absoluto e por isso exige a unicidade. A plataforma soberana propõe um endereçamento relativo, tendo o ponto de partida o próprio usuário. Desta forma, se o usuário está cadastrando o nome da secretária do seu dentista, poderia cadastrar algo como "Murilo Pizzatto (Dentista) à Secretária". Atualmente estamos presos a mecanismos absolutos de endereçamentos como, por exemplo, os IPs ou os domínios. Isto se aplica a todos os indivíduos que usam a Internet, bem como o nosso País, que acabou por estar subordinado a estes mecanismos estrangeiros e arbitrários.   
+
+Neste exemplo foi usada uma seta (à) para indicar o caminho, mas a plataforma soberana permitirá utilizar qualquer formato. Se não pudesse ser usado, não seria soberano.
+
+Einstein mostrou que, até no mundo físico, absolutismo e objetividade são meras ilusões. Estamos simplesmente nos dando conta de que o mesmo se aplica ao mundo virtual.
+
+Para ser possível alcançar estas duas primeira liberdades a plataforma soberana irá implementar um mecanismo relativo de endereçamento, com serviço de nomes dinâmico. É impreterível isolar e abstrair o protocolo de rede para eliminar as dependências absolutas do mecanismo atualmente utilizado, criando uma camada acima, totalmente relativa e dinâmica. Chamaremos este artefato de "Endereçamento Soberano" (ES).
+
+Confiança – "Você é Livre para confiar em quem quiser."
+
+
+O que determina a intensidade das interações entre indivíduos, tanto no mundo real como no virtual, é o grau de confiança que existe entre elas. Atualmente a maior parte da segurança na Internet é baseada em empresas terceiras que têm como função garantir a identidade dos indivíduos durante sua interação. Uma dúzia de empresas como "Verisign" ou "Certisign" detém esta tarefa que, no final das contas, atesta que alguns sites são supostamente seguros, como sites de bancos e grandes empresas.
+
+Este mecanismo só é possível porque a maioria das pessoas confia nestas empresas certificadoras. Ciclicamente, mais pessoas acabam confiando porque muitas já confiam. Mas, se uma destas empresas certificadoras decidisse quebrar a confiança recebida pelos usuários, poderia fraudar a identidade de qualquer organização, incluindo os sites supostamente seguros. As razões porque não fazem isso são sua idoneidade e o seu maior patrimônio, a confiança de milhões de usuários.
+
+Porém, na história da humanidade vimos várias vezes a maioria ser enganada. Um exemplo foi quando a maioria do povo alemão confiou em Hitler e o resto da história já conhecemos. Uma grande diferença nesta comparação é que enquanto o povo alemão conhecia o supostamente bem intencionado líder, a maioria dos internautas nem mesmo sabem o que significa o tal "cadeadinho", símbolo de site seguro, e apenas uma fração ouviu falar em "Verisign" ou "Certisign".
+
+A plataforma soberana implementará um novo mecanismo de confiabilidade no qual o usuário simplesmente para de confiar em quem não conhece. O mecanismo de segurança proposto se baseia em redes sociais e confiabilidade transitiva. Toda a autenticação é feita dois a dois sem um servidor central. Para ilustrar, representemos a confiabilidade como uma porcentagem, onde 0% seria confiabilidade nenhuma e 100% seria confiabilidade total. Neste mecanismo, por exemplo, se o usuário disser que confia 70% em seu irmão e o irmão disser que confia 50% no cunhado dele, a confiabilidade transitiva do usuário até o cunhado será de 35% (70% x 50%). As atuais redes sociais que podemos encontrar na internet (redes como Orkut e 1oGrau) já demonstraram que todas as pessoas do planeta estão ligadas a no máximo 8 contatos de distância. Um teste simples para esta afirmação é, em uma conta do Orkut, procurar por "Obama", ele estará a no máximo oito pessoas de distância. Logo, se todos estão ligados todos podem ter a confiabilidade transitiva calculada.
+
+Perceba que, dessa forma, a confiança que o usuário tem em alguém vai sempre diminuindo à medida que as relações vão se distanciando, exatamente como na vida real. E, também como na vida real, o indivíduo pode confiar mais ou menos em determinada pessoa, dependendo do assunto. O usuário pode confiar 70% no seu irmão, quando o assunto é futebol, mas no quesito "Música", por outro lado, a confiabilidade do seu irmão, pode ser só de 1%.
+
+Privacidade – "Você é Livre para ver somente aquilo que quer ver. Você é Livre para manter informações escondidas de pessoas em quem não confia."
+
+A segunda parte da liberdade se refere obviamente ao sigilo de informações. Seguem então alguns exemplos da primeira parte da liberdade:
+
+Sempre que fizer uma busca na Internet por qualquer recurso (página, música, filme, etc.) o resultado pode ser ordenado por nível de confiabilidade, deixando automaticamente os resultados menos relevantes no final. Sendo soberano, o usuário pode decidir que quer ser interrompido por mensagens urgentes de quem tiver mais de 60% de confiabilidade, mas que todas as mensagens de remetentes com menos de 1% de confiabilidade vão direto pro lixo. Desta forma mensagens de spammers deixarão de incomodar.
+
+Expressão – “Você é Livre para se expressar.” 
+
+
+de spammers deixaram de incomodar, porque simplesmente são barradas antes
+
+Depender de um hospedeiro de sites ou de blogs não é ser livre. Estar limitado a esse tipo ridículo de veículo também está longe de ser livre.
+
+Além disso, deve ser extremamente fácil para seus amigos, para as pessoas que confiam em você, ouvir sua voz, saber da sua opinião a respeito dos assuntos que lhes interessam.
+
+Gosto musical é um exemplo bem prosaico disso.
+
+Quais são as dez melhores músicas de todos os tempos?
+Quais são as dez piores músicas?
+Quais são as dez melhores músicas de fossa?
+Quais são as dez músicas que mais teimam em sair da cabeça?
+Quais são as dez melhores músicas para se cantar no chuveiro?
+
+Tenho certeza que você estaria interessado na opinião de seus amigos, assim como muitos estariam interessados na sua opinião, neste tipo de assunto.
+
+Imagine que você dê notas para aquelas que são, na sua opinião, as dez melhores músicas para se ouvir transando.
+
+Enquanto a média das suas notas é oito, por exemplo, você percebe que as notas de uma amiga sua, muito mais exigente que você, é quatro. Para efeito de comparação, você resolve multiplicar por dois as notas dela, para que fiquem na mesma escala que as suas.
+
+Você percebe, ainda, que outro amigo seu mantém duas listas: as dez melhores para se ouvir transando em casa e as dez melhores para se ouvir transando no carro. Isso é frescura demais pra você, então você simplesmente junta as duas listas numa só e pega as dez primeiras músicas.
+
+Você, agora, pode publicar uma síntese das suas melhores músicas junto com as de seus amigos, na mesma classificação e na mesma escala.
+
+Perceba que SÍNTESE, portanto, também é uma forma de expressão.
+
+Ela é justamente a força que equilibra o caos criado por milhões de partes soberanas, publicando uma infinidade de informações da forma como bem entendem. Você tem acesso a essas informações não diretamente, se não quiser, mas através de sínteses; e sínteses feitas pelas pessoas nas quais você mais confia para cada assunto.
+
+
+
+* Sexta Liberdade - Hardware 
+
+
+Você deve ser livre para compartilhar seus recursos de hardware como bem entender.
+
+Pela primeira vez na vida, a capacidade da minha HD superou minha capacidade de instalar programas e armazenar arquivos lá dentro. Pela primeira vez, tenho espaço sobrando e são algumas dezenas de Gigas.
+
+Mesmo assim, sou obrigado a ficar fazendo backup de meus arquivos pessoais, incluindo minhas fotos digitais, para não correr o risco de perdê-los. A minha mãe se encontra exatamente na mesma situação.
+
+Depois de procurar durante horas, não encontrei solução alguma que me permitisse criar, através da internet, de forma completamente transparente, no espaço vago da minha HD, uma réplica dos arquivos da minha mãe e vice-versa.
+
+Talvez até exista tal solução, mas certamente não é de uso comum.
+
+Para sermos verdadeiramente soberanos, devemos ser capazes de nos associar livremente e compartilhar o espaço de nossas HDs. O mesmo se aplica à nossa memória RAM, nossos processadores e nossos links de internet.
+
+Com isso, podemos dizer adeus aos hospedeiros de internet, tais quais os conhecemos hoje.
+
+Se você, minha mãe e eu formarmos um cluster de 3 máquinas, teremos presenças na internet mais robustas e com maior disponibilidade que 99% dos sites comerciais de hoje, mesmo sem fazer backup.
+
+E não precisa parar por aí. Quantos amigos você tem que possuem máquinas em casa com internet rápida?
+
+Federando-se a seus amigos soberanos, você pode estabelecer uma presença praticamente invulnerável na internet.
+
+Mesmo que sua máquina seja desligada, sua presença virtual continuará viva e perfeitamente bem, hospedada nas máquinas das pessoas em quem você confia.
+
+
+
+* Sétima Liberdade - Software 
+
+
+Você deve ser livre para compartilhar todo software que usa com quem bem entender.
+
+Para isso, usar Software Livre é indispensável, claro, mas não é suficiente. O software tem que ser extremamente fácil, trivial de instalar e de usar.
+
+Recentemente, os produtos de Software Livre têm melhorado muito nisso, mas é um ponto que as principais definições de "Software Livre" ainda deixam de fora.
+
+Quanto mais amigável de instalar e de usar for determinado software, maior o número de pessoas com as quais você será livre para compartilhá-lo. 
+

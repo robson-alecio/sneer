@@ -1,11 +1,11 @@
 package functional.adapters.impl;
 
+import static wheel.lang.Environments.my;
+
 import java.io.File;
 
 import snapps.wind.Shout;
 import snapps.wind.Wind;
-import sneer.kernel.container.Brick;
-import sneer.kernel.container.Container;
 import sneer.pulp.brickmanager.BrickManager;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.connection.ByteConnection;
@@ -23,21 +23,17 @@ import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.port.PortKeeper;
 import sneer.pulp.probe.ProbeManager;
 import wheel.lang.Threads;
-import wheel.lang.Types;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 import functional.SovereignParty;
 import functional.adapters.SneerParty;
-import static wheel.lang.Environments.my;
 
 public class SneerPartyImpl implements SneerParty {
 	
 	static private final String MOCK_ADDRESS = "localhost";
 
-	private final Container _container = my(Container.class);
-	
 	private final Clock _clock = my(Clock.class);
 
 	private final ContactManager _contactManager = my(ContactManager.class);
@@ -173,10 +169,6 @@ public class SneerPartyImpl implements SneerParty {
 		return brickBundle;
 	}
 
-	@Override
-	public Brick produce(Class<? extends Brick> brick) {
-		return Types.cast(_container.provide(brick));
-	}
 
 	@Override
 	public void shout(String phrase) {

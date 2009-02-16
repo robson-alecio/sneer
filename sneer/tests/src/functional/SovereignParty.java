@@ -3,7 +3,6 @@ package functional;
 import java.io.File;
 
 import snapps.wind.Shout;
-import sneer.kernel.container.Brick;
 import sneer.pulp.deployer.BrickBundle;
 import sneer.pulp.keymanager.PublicKey;
 import wheel.reactive.Signal;
@@ -25,7 +24,6 @@ public interface SovereignParty {
 	
 
 	BrickBundle publishBricks(File sourceDirectory);
-	Brick produce(Class<? extends Brick> brick);
 	
 	
 	void shout(String string);

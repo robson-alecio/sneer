@@ -8,8 +8,7 @@
 
 	- [Sandro] Finep (in parallel)
 
-	- [Bamboo] Brick Publish
-		- MainDemo - Publish all necessary bricks instead of just producing them.
+	- [Bamboo] Transparent Persistence - Talk to Klaus
 
 	- [Bamboo] Mocotó Test Framework
 		- Boojay pro-bono (in parallel)
@@ -36,7 +35,8 @@ NEXT TASKS
 
 	- [Sandro] Webstart
 
-	- [Bamboo] Transparent Persistence - Talk to Klaus
+	- [Bamboo] Brick Publish
+		- MainDemo - Publish all necessary bricks instead of just producing them.
 
 
 FIXES

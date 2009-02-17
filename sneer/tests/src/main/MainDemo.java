@@ -17,7 +17,6 @@ import javax.swing.border.TitledBorder;
 
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
-import sneer.pulp.own.name.OwnNameKeeper;
 import wheel.io.Logger;
 import wheel.lang.Environments;
 
@@ -43,9 +42,8 @@ public class MainDemo {
 	}
 	
 	private static void exitWithUsageMessage() {
-		System.err.println("\nUsage: MainDemo " + YOUR_OWN_NAME + " [" + DYN_DNS_USER + " " + DNY_DNS_PASSWORD +"]");
-		System.err.println(  "   or: MainDemo Dummy\n");
-//		System.exit(1);
+		System.err.println("\nUsage: MainDemo [Dummy]\n");
+		System.exit(1);
 	}
 
 	private static void tryRememberArguments() throws Exception{
@@ -74,8 +72,7 @@ public class MainDemo {
 		checkForDummy(args);
 		
 		Environments.runWith(container(), new Runnable() { @Override public void run() {
-			setOwnName(ownName(args));
-			demo().start(dynDnsUser(args), dynDnsPassword(args));			
+			demo().start(ownName(args), dynDnsUser(args), dynDnsPassword(args));			
 		}});
 	}
 
@@ -84,10 +81,6 @@ public class MainDemo {
 		
 		File dummyHome = new File(System.getProperty("user.home"), ".sneerdummy");
 		System.setProperty("home_override", dummyHome.getAbsolutePath());
-	}
-
-	private static void setOwnName(String ownName) {
-		container().provide(OwnNameKeeper.class).nameSetter().consume(ownName);
 	}
 
 	private static Container container() {

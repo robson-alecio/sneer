@@ -91,7 +91,9 @@ class MainDemoBrickImpl implements MainDemoBrick {
 	private final InternetAddressKeeper _addressKeeper = my(InternetAddressKeeper.class);
 
 	@Override
-	public void start(String dynDnsUserName, String dynDnsPassword) {
+	public void start(String ownName, String dynDnsUserName, String dynDnsPassword) {
+		setOwnName(ownName);
+		
 		_portKeeper.portSetter().consume(port());
 		
 		initDynDnsAccount(dynDnsUserName, dynDnsPassword);
@@ -189,6 +191,10 @@ class MainDemoBrickImpl implements MainDemoBrick {
 		result = _contactManager.addContact(nick);
 		_keyManager.addKey(result, mickeyMouseKey(nick));
 		return result;
+	}
+
+	private void setOwnName(String ownName) {
+		_ownName.nameSetter().consume(ownName);
 	}
 
 	private String ownName() {

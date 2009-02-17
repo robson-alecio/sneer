@@ -1,14 +1,20 @@
 package sneer.pulp.own.name.impl;
 
+import sneer.pulp.contacts.Contact;
 import sneer.pulp.own.name.OwnNameKeeper;
 import wheel.lang.Consumer;
-import wheel.reactive.Signal;
 import wheel.reactive.Register;
+import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 
 class OwnNameKeeperImpl implements OwnNameKeeper {
 
-	private Register<String> _name = new RegisterImpl<String>("[My Full Name]");
+//	private final TupleSpace _space = my(TupleSpace.class); {
+//		_space.keep(OwnName.class);
+//		_space.addSubscription(OwnName.class, ownNameSubscriber());
+//	}
+	
+	private Register<String> _name = new RegisterImpl<String>("");
 	
 	@Override
 	public Signal<String> name() {
@@ -17,6 +23,23 @@ class OwnNameKeeperImpl implements OwnNameKeeper {
 
 	@Override
 	public Consumer<String> nameSetter() {
-		return _name.setter();
+		return new Consumer<String>(){ @Override public void consume(String newName) {
+			if (name().currentValue().equals(newName)) return;
+
+			_name.setter().consume(newName);
+//			_space.publish(new OwnName(newName));
+		}};
 	}
+
+	@Override
+	public Signal<String> nameOf(Contact contact) {
+		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+	}
+	
+//	private Consumer<? super OwnName> ownNameSubscriber() {
+//		return new Consumer<OwnName>() { @Override public void consume(OwnName value) {
+//			// Implement
+//		}};
+//	}
+
 }

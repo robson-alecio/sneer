@@ -146,7 +146,10 @@ public class SneerPartyImpl implements SneerParty {
 
 	@Override
     public Signal<String> navigateAndGetName(String nicknamePath) {
-		throw new NotImplementedYet();
+		if (nicknamePath.split("/").length > 1) throw new NotImplementedYet();
+		
+		Contact contact = _contactManager.contactGiven(nicknamePath);
+		return _ownNameKeeper.nameOf(contact);
     }
 
 

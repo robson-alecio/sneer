@@ -1,5 +1,7 @@
 package sneer.pulp.keymanager.impl;
 
+import static wheel.lang.Environments.my;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,12 +10,10 @@ import sneer.pulp.crypto.Crypto;
 import sneer.pulp.crypto.Sneer1024;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.keymanager.PublicKey;
-import sneer.pulp.own.name.OwnNameKeeper;
 import wheel.lang.Producer;
 import wheel.reactive.EventNotifier;
 import wheel.reactive.EventSource;
 import wheel.reactive.impl.EventNotifierImpl;
-import static wheel.lang.Environments.my;
 
 class KeyManagerImpl implements KeyManager {
 
@@ -23,8 +23,6 @@ class KeyManagerImpl implements KeyManager {
 
 	private EventNotifier<Contact> _keyChanges = new EventNotifierImpl<Contact>();
 
-	private final OwnNameKeeper _ownName = my(OwnNameKeeper.class);
-
 	private final Crypto _crypto = my(Crypto.class);
 
 
@@ -32,15 +30,12 @@ class KeyManagerImpl implements KeyManager {
 	public synchronized PublicKey ownPublicKey() {
 		if (_ownKey == null)
 			_ownKey = generateMickeyMouseKey();
+
 		return _ownKey;
 	}
 
 	private PublicKey generateMickeyMouseKey() {
-		String name = _ownName.name().currentValue();
-		
-		String string = name.equals("[My Full Name]")
-			? 	"" + System.currentTimeMillis() + System.nanoTime() + hashCode()
-			: name;
+		String string = "" + System.currentTimeMillis() + System.nanoTime() + hashCode();
 	
 		return generateMickeyMouseKey(string);
 	}

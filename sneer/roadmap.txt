@@ -8,7 +8,8 @@
 
 	- [Sandro] Finep (in parallel)
 
-	- [Bamboo] Transparent Persistence - Talk to Klaus
+	- [Bamboo] Brick Publish
+		- MainDemo - Publish all necessary bricks instead of just producing them.
 
 	- [Bamboo] Mocotó Test Framework
 		- Boojay pro-bono (in parallel)
@@ -36,8 +37,7 @@ NEXT TASKS
 	- [Sandro] MainDemo is too big - Extract Own Name and Dyndns logic to separate class. (Don't Charge) 
 	- [Sandro] Webstart
 
-	- [Bamboo] Brick Publish
-		- MainDemo - Publish all necessary bricks instead of just producing them.
+	- [Bamboo] Transparent Persistence - Talk to Klaus
 
 
 FIXES

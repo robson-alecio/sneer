@@ -9,7 +9,6 @@ import org.apache.commons.io.FileUtils;
 
 import sneer.kernel.container.jar.DeploymentJar;
 import sneer.kernel.container.jar.impl.DeploymentJarImpl;
-import sneer.kernel.container.utils.InjectedBrick;
 import sneer.pulp.dependency.Dependency;
 import sneer.pulp.deployer.BrickFile;
 import sneer.pulp.deployer.DeployerException;
@@ -115,7 +114,7 @@ class BrickFileImpl implements BrickFile {
 	}
 
 	@Override
-	public List<InjectedBrick> injectedBricks() throws IOException {
+	public List<String> injectedBricks() throws IOException {
 		return impl().injectedBricks();
 	}
 
@@ -147,8 +146,8 @@ class BrickFileImpl implements BrickFile {
 	@Override
 	public int compareTo(BrickFile other) {
 		
-		List<InjectedBrick> bricks;
-		List<InjectedBrick> otherBricks;
+		List<String> bricks;
+		List<String> otherBricks;
 
 		try {
 			bricks = impl().injectedBricks();
@@ -158,13 +157,13 @@ class BrickFileImpl implements BrickFile {
 		}
 		
 		boolean thisInjectOther = false;
-		for(InjectedBrick injected : bricks)
-			if(injected.brickName().equals(other.name()))
+		for(String injected : bricks)
+			if(injected.equals(other.name()))
 				thisInjectOther = true; 
 
 		boolean otherInjectThis = false;
-		for(InjectedBrick injected : otherBricks)
-			if(injected.brickName().equals(_brickName))
+		for(String injected : otherBricks)
+			if(injected.equals(_brickName))
 				otherInjectThis = true;
 		
 		//Fix: This fails to detect indirect cycles. It detects only direct A<->B cycles.  
@@ -177,6 +176,6 @@ class BrickFileImpl implements BrickFile {
 		if(otherInjectThis)
 			return -1;
 		
-		return other.name().compareTo(name()); //Fix: Correct way is: return name().compareTo(other.name()); //It is inverted here just to make a bug stand out. Once the bug is fixed this can be fixed.
+		return name().compareTo(other.name());
 	}
 }

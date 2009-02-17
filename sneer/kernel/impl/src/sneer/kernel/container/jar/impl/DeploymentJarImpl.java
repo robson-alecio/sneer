@@ -1,5 +1,7 @@
 package sneer.kernel.container.jar.impl;
 
+import static wheel.lang.Environments.my;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,20 +14,14 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
 import org.apache.commons.io.IOUtils;
-import org.objectweb.asm.AnnotationVisitor;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.FieldVisitor;
-//import org.objectweb.asm.Type;
-import org.objectweb.asm.commons.EmptyVisitor;
 
+import sneer.kernel.container.bytecode.dependencies.DependencyFinder;
 import sneer.kernel.container.jar.DeploymentJar;
-import sneer.kernel.container.utils.InjectedBrick;
 import sneer.pulp.crypto.Crypto;
 import sneer.pulp.crypto.Digester;
 import wheel.io.JarExploder;
 import wheel.lang.Predicate;
 import wheel.lang.exceptions.NotImplementedYet;
-import static wheel.lang.Environments.my;
 
 public class DeploymentJarImpl implements DeploymentJar {
 
@@ -173,8 +169,8 @@ public class DeploymentJarImpl implements DeploymentJar {
 	}
 
 	@Override
-	public List<InjectedBrick> injectedBricks() throws IOException {
-		final List<InjectedBrick> result = new ArrayList<InjectedBrick>();
+	public List<String> injectedBricks() throws IOException {
+		final List<String> result = new ArrayList<String>();
 		final Enumeration<JarEntry> e = jarFile().entries();
 		while (e.hasMoreElements()) {
 			final JarEntry entry = e.nextElement();
@@ -187,7 +183,7 @@ public class DeploymentJarImpl implements DeploymentJar {
 		return result;
 	}
 
-	private List<InjectedBrick> injectedBricksFor(JarEntry classEntry)
+	private List<String> injectedBricksFor(JarEntry classEntry)
 			throws IOException {
 		final InputStream is = inputStreamFor(classEntry);
 		try {
@@ -203,11 +199,8 @@ public class DeploymentJarImpl implements DeploymentJar {
 //		return brickName.replaceAll("\\.", "/") + ".class";
 //	}
 
-	private List<InjectedBrick> findInjectedBricksOnClass(InputStream is) throws IOException {
-		ClassReader classReader = new ClassReader(is);
-		DependencyExtractor extractor = new DependencyExtractor();
-		classReader.accept(extractor, 0);
-		return extractor.injectedBricks();
+	private List<String> findInjectedBricksOnClass(InputStream classFileStream) throws IOException {
+		return my(DependencyFinder.class).findDependencies(classFileStream);
 	}
 
 	@Override
@@ -232,41 +225,7 @@ public class DeploymentJarImpl implements DeploymentJar {
 	public String toString() {
 		return _file.toString();
 	}
+	
+	
 }
 
-class DependencyExtractor extends EmptyVisitor {
-
-//	private String _currentField;
-	
-	List<InjectedBrick> _injectedBricks = new ArrayList<InjectedBrick>();
-	
-	/*
-	@Override
-	public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-		super.visit(version, access, name, signature, superName, interfaces);
-		System.out.println("Class: "+name);
-	}
-	*/
-
-	@Override
-	public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
-//		if(_currentField != null 
-//				&& Inject.class.getName().equals(Type.getType(desc).getClassName())) {
-//			String className = Type.getType(_currentField).getClassName();
-//			InjectedBrick dep = new InjectedBrick(className);
-//			_currentField = null;
-//			_injectedBricks.add(dep);
-//		}
-		return super.visitAnnotation(desc, visible);
-	}
-
-	@Override
-	public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
-//		_currentField = desc;
-		return super.visitField(access, name, desc, signature, value);
-	}
-	
-	public List<InjectedBrick> injectedBricks() {
-		return _injectedBricks;
-	}
-}

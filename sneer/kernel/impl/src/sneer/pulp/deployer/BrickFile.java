@@ -6,7 +6,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import sneer.kernel.container.jar.DeploymentJar;
-import sneer.kernel.container.utils.InjectedBrick;
 import sneer.pulp.dependency.Dependency;
 import sneer.pulp.keymanager.PublicKey;
 
@@ -28,7 +27,7 @@ public interface BrickFile extends Serializable, Comparable<BrickFile> {
 	
 	List<Dependency> dependencies();
 
-	List<InjectedBrick> injectedBricks() throws IOException;
+	List<String> injectedBricks() throws IOException;
 
 	void resolved(boolean resolved);
 

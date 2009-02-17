@@ -30,11 +30,11 @@ public class Environments {
 		runWith(((MementoImpl)memento)._environment, runnable);
 	}
 
-	public static <T> T my(Class<T> intrface) {
+	public static <T> T my(Class<T> dependency) {
 		final Environment environment = current();
 		if (environment == null)
-			throw new IllegalStateException("Unable to provide thread " + Thread.currentThread() + " with implementation for " + intrface);
-		return environment.provide(intrface);
+			throw new IllegalStateException("Unable to provide thread " + Thread.currentThread() + " with implementation for " + dependency);
+		return environment.provide(dependency);
 	}
 
 	public static Environment compose(final Environment... environments) {

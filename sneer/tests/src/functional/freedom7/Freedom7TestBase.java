@@ -27,23 +27,32 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	
 	@Test
 	public void testPublishTwoBricks() throws Exception {
-		fail("Klaus pair with Rod to fix this.");
 		Logger.redirectTo(System.out);
 		System.clearProperty("freedom7.y.Y.installed");
-		System.clearProperty("freedom7.z.Z.installed");
-		publisher().publishBricks(generateYandZ());
+		System.clearProperty("freedom7.w.W.installed");
+		publisher().publishBricks(generateWandY());
 		assertEquals("true", System.getProperty("freedom7.y.Y.installed"));
-		assertEquals("true", System.getProperty("freedom7.z.Z.installed"));
-		
-		fail("The last line in BrickFileImpl must be fixed.");
+		assertEquals("true", System.getProperty("freedom7.w.W.installed"));
+	}
+	
+	@Test
+	@Ignore
+	public void testIndirectDependencies() {
+		fail("indirect dependencies break compareTo");
+	}
+	
+	@Test
+	@Ignore
+	public void testIndirectCycles() {
+		fail("indirect cycles, what's the doubt?");
 	}
 
 	@Test
 	public void testPublishBrickWithDependencies() throws Exception {
-		System.clearProperty("freedom7.z.Z.installed");
+		System.clearProperty("freedom7.w.W.installed");
 		publisher().publishBricks(generateY());
-		publisher().publishBricks(generateZ());
-		assertEquals("true", System.getProperty("freedom7.z.Z.installed"));
+		publisher().publishBricks(generateW());
+		assertEquals("true", System.getProperty("freedom7.w.W.installed"));
 	}
 	
 	@Test
@@ -56,29 +65,7 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	@Ignore
 	@Test
 	public void testMeTooSingleBrick() throws Exception {
-//		publishY();
-//		publishXandZ();
-//		receiver().meToo(publisher(), Z.class.getName());
-//		assertBrickInstallation(Z.class, receiver());
-//	
-//		Z z1 = (Z) publisher().produce(Z.class);
-//		ClassLoader libClassLoader1 = z1.libClassLoader();
-//	
-//		Z z2 = (Z) receiver().produce(Z.class);
-//		ClassLoader libClassLoader2 = z2.libClassLoader();
-//		
-//		assertNotSame("LogFactory should have been loaded on a different class loader", libClassLoader1, libClassLoader2);
-//		assertNotSame(z1, z2);
-//		assertNotSame(classLoaderFor(z1), classLoaderFor(z2));
 	}
-	
-//	private SovereignParty receiver() {
-//		return _b;
-//	}
-	
-//	private ClassLoader classLoaderFor(Object z2) {
-//		return z2.getClass().getClassLoader();
-//	}
 	
 	private File generateX() throws IOException {
 		generateLib(sourceFolder("x/freedom7/x/impl/lib/lib.jar"));
@@ -109,11 +96,11 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 		new LibBuilder(_compiler, lib, sourceFolder("bin")).build(libJar);
 	}
 
-	private File generateYandZ() throws IOException {
-		final File src = sourceFolder("src-yz");
+	private File generateWandY() throws IOException {
+		final File src = sourceFolder("src-wy");
 		final SourceFileWriter writer = new SourceFileWriter(src);
 		writeY(writer);
-		writeZ(writer);
+		writeW(writer);
 		return src;
 	}
 
@@ -133,25 +120,25 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 				"}");
 	}
 
-	private File generateZ() throws IOException {
-		final File src = sourceFolder("src-z");
-		writeZ(new SourceFileWriter(src));
+	private File generateW() throws IOException {
+		final File src = sourceFolder("src-w");
+		writeW(new SourceFileWriter(src));
 		return src;
 	}
 
-	private void writeZ(final SourceFileWriter writer) throws IOException {
-		writer.write("freedom7.z.Z",
-				"public interface Z extends sneer.kernel.container.Brick {\n" +
+	private void writeW(final SourceFileWriter writer) throws IOException {
+		writer.write("freedom7.w.W",
+				"public interface W extends sneer.kernel.container.Brick {\n" +
 					"freedom7.y.Y y();\n" +
 				"}");
-		writer.write("freedom7.z.impl.ZImpl",
+		writer.write("freedom7.w.impl.WImpl",
 				"import sneer.kernel.container.*;\n" +
 				"import static wheel.lang.Environments.my;\n" +
-				"class ZImpl implements freedom7.z.Z {\n" +
+				"class WImpl implements freedom7.w.W {\n" +
 					"private freedom7.y.Y _y = my(freedom7.y.Y.class);\n" +
-					"public ZImpl() {\n" +
+					"public WImpl() {\n" +
 						"if (_y == null) throw new IllegalStateException();\n" +
-						"System.setProperty(\"freedom7.z.Z.installed\", \"true\");\n" +
+						"System.setProperty(\"freedom7.w.W.installed\", \"true\");\n" +
 					"}" +
 					"public freedom7.y.Y y() {\n" +
 						"return _y;\n" +

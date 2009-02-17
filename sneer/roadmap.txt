@@ -9,6 +9,7 @@
 	- [Sandro] Finep (in parallel)
 
 	- [Bamboo] Brick Publish
+		- Unignore Freedom7 tests
 		- MainDemo - Publish all necessary bricks instead of just producing them.
 
 	- [Bamboo] Mocotó Test Framework

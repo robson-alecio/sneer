@@ -12,7 +12,6 @@ import org.apache.commons.io.FileUtils;
 import sneer.kernel.container.Brick;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.SneerConfig;
-import sneer.kernel.container.utils.InjectedBrick;
 import sneer.pulp.brickmanager.BrickManager;
 import sneer.pulp.brickmanager.BrickManagerException;
 import sneer.pulp.dependency.Dependency;
@@ -65,18 +64,17 @@ class BrickManagerImpl implements BrickManager {
 	}
 	
 	private void resolve(BrickBundle bundle, BrickFile brick) {
-		List<InjectedBrick> injectedBricks;
+		List<String> Strings;
 		try {
-			injectedBricks = brick.injectedBricks();
+			Strings = brick.injectedBricks();
 		} catch (IOException e) {
 			throw new BrickManagerException("Error searching for injected bricks on "+brick.name(), e);
 		}
-		for (InjectedBrick injected : injectedBricks) {
-			String wanted = injected.brickName();
-			BrickFile inBundle = bundle == null ? null : bundle.brick(wanted); 
+		for (String injected : Strings) {
+			BrickFile inBundle = bundle == null ? null : bundle.brick(injected); 
 			if(inBundle == null) { 
 				//not inBudle, try local registry
-				inBundle = brick(wanted);
+				inBundle = brick(injected);
 				if(inBundle == null) {
 					//not found. must ask other peer via network
 					

@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface DependencyManager {
 
-	List<Dependency> dependenciesFor(String brickName);
+	List<FileWithHash> dependenciesFor(String brickName);
 
-	Dependency add(String brickName, Dependency dependency) throws IOException;
+	FileWithHash add(String brickName, FileWithHash dependency) throws IOException;
 
-	Dependency newDependency(File file);
+	FileWithHash newDependency(File file);
 }

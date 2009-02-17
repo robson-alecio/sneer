@@ -14,7 +14,7 @@ import sneer.pulp.classpath.Classpath;
 import sneer.pulp.classpath.ClasspathFactory;
 import sneer.pulp.compiler.JavaCompiler;
 import sneer.pulp.compiler.Result;
-import sneer.pulp.dependency.Dependency;
+import sneer.pulp.dependency.FileWithHash;
 import sneer.pulp.dependency.DependencyManager;
 import sneer.pulp.deployer.BrickBundle;
 import sneer.pulp.deployer.BrickFile;
@@ -113,8 +113,8 @@ class DeployerImpl implements Deployer {
 
 	private void addDepedencies(BrickFile brick, List<File> dependencies) {
 		for (File file : dependencies) {
-			Dependency dependency = _dependencies.newDependency(file);
-			brick.dependencies().add(dependency);
+			FileWithHash dependency = _dependencies.newDependency(file);
+			brick.fileDependencies().add(dependency);
 		}
 	}
 

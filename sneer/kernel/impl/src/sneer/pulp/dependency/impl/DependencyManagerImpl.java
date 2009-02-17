@@ -12,7 +12,7 @@ import org.apache.commons.io.FileUtils;
 import sneer.kernel.container.SneerConfig;
 import sneer.pulp.crypto.Crypto;
 import sneer.pulp.crypto.Sneer1024;
-import sneer.pulp.dependency.Dependency;
+import sneer.pulp.dependency.FileWithHash;
 import sneer.pulp.dependency.DependencyManager;
 import static wheel.io.Logger.log;
 import static wheel.lang.Environments.my;
@@ -25,35 +25,35 @@ class DependencyManagerImpl implements DependencyManager {
 	
 	private File _root;
 	
-	private final Map<String, List<Dependency>> _dependenciesByBrick = new HashMap<String, List<Dependency>>();
+	private final Map<String, List<FileWithHash>> _dependenciesByBrick = new HashMap<String, List<FileWithHash>>();
 
-	private final Map<Sneer1024, Dependency> _dependenciesBySneer1024Hash = new HashMap<Sneer1024, Dependency>();
+	private final Map<Sneer1024, FileWithHash> _dependenciesBySneer1024Hash = new HashMap<Sneer1024, FileWithHash>();
 	
 	
 	@Override
-	public List<Dependency> dependenciesFor(String brickName) {
+	public List<FileWithHash> dependenciesFor(String brickName) {
 		return _dependenciesByBrick.get(brickName);
 	}
 
 	@Override
-	public Dependency add(String brickName, Dependency dependency) throws IOException {
-		List<Dependency> dependencies = _dependenciesByBrick.get(brickName);
+	public FileWithHash add(String brickName, FileWithHash dependency) throws IOException {
+		List<FileWithHash> dependencies = _dependenciesByBrick.get(brickName);
 		if(dependencies == null) {
-			dependencies = new ArrayList<Dependency>();
+			dependencies = new ArrayList<FileWithHash>();
 			_dependenciesByBrick.put(brickName, dependencies);
 		}
-		Dependency installed = install(dependency);
+		FileWithHash installed = install(dependency);
 		dependencies.add(installed);
 		return installed;
 	}
 
-	private Dependency install(Dependency dependency) throws IOException {
+	private FileWithHash install(FileWithHash dependency) throws IOException {
 		log("Installing dependency: {} [{}]", dependency.file(), dependency.sneer1024().toHexa());
 
 		//1. check registry first
 		File file = dependency.file();
 		Sneer1024 hash = _crypto.digest(file);
-		Dependency installed = _dependenciesBySneer1024Hash.get(hash);
+		FileWithHash installed = _dependenciesBySneer1024Hash.get(hash);
 		if(installed != null) {
 			//we already hold this jar. No need to reinstall it
 			return installed;
@@ -68,7 +68,7 @@ class DependencyManagerImpl implements DependencyManager {
 		
 		//install new dependency
 		FileUtils.copyFile(file, newFile);
-		Dependency result = newDependency(newFile);
+		FileWithHash result = newDependency(newFile);
 		_dependenciesBySneer1024Hash.put(result.sneer1024(), dependency);
 		
 		return result; 
@@ -82,7 +82,7 @@ class DependencyManagerImpl implements DependencyManager {
 	}
 
 	@Override
-	public Dependency newDependency(File file) {
+	public FileWithHash newDependency(File file) {
 		try {
 			Sneer1024 sneer1024 = _crypto.digest(file);
 			return new DependencyImpl(file, sneer1024);
@@ -100,7 +100,7 @@ class DependencyManagerImpl implements DependencyManager {
 
 }
 
-class DependencyImpl implements Dependency {
+class DependencyImpl implements FileWithHash {
 
 	private static final long serialVersionUID = 1L;
 

@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import sneer.kernel.container.jar.DeploymentJar;
-import sneer.pulp.dependency.Dependency;
+import sneer.pulp.dependency.FileWithHash;
 import sneer.pulp.keymanager.PublicKey;
 
 public interface BrickFile extends Serializable, Comparable<BrickFile> {
@@ -25,9 +25,9 @@ public interface BrickFile extends Serializable, Comparable<BrickFile> {
 
 	BrickFile copyTo(File target) throws IOException;
 	
-	List<Dependency> dependencies();
+	List<FileWithHash> fileDependencies();
 
-	List<String> injectedBricks() throws IOException;
+	Iterable<String> brickDependencies() throws IOException;
 
 	void resolved(boolean resolved);
 

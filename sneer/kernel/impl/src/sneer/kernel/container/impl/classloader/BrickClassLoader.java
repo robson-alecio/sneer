@@ -18,7 +18,7 @@ import java.util.jar.JarFile;
 
 import org.apache.commons.io.IOUtils;
 
-import sneer.pulp.dependency.Dependency;
+import sneer.pulp.dependency.FileWithHash;
 import sneer.pulp.dependency.DependencyManager;
 import wheel.lang.Threads;
 
@@ -79,7 +79,7 @@ public class BrickClassLoader extends EnhancingClassLoader {
 		if(_delegate != null) 
 			return _delegate;
 
-		List<Dependency> dependencies = _dependencyManager.dependenciesFor(_mainClass.getName());
+		List<FileWithHash> dependencies = _dependencyManager.dependenciesFor(_mainClass.getName());
 		
 		if(dependencies == null) {
 			_delegate = EmptyClassLoader.instance(); 
@@ -90,10 +90,10 @@ public class BrickClassLoader extends EnhancingClassLoader {
 		return _delegate;
 	}
 
-	private URL[] urlsForDependencies(List<Dependency> dependencies) {
+	private URL[] urlsForDependencies(List<FileWithHash> dependencies) {
 		URL[] urls = new URL[dependencies.size()];
 		int i = 0;
-		for (Dependency dependency : dependencies) {
+		for (FileWithHash dependency : dependencies) {
 			try {
 				urls[i++] = dependency.file().toURI().toURL();
 			} catch (MalformedURLException e) {

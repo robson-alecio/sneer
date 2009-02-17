@@ -14,7 +14,7 @@ import sneer.kernel.container.Container;
 import sneer.kernel.container.SneerConfig;
 import sneer.pulp.brickmanager.BrickManager;
 import sneer.pulp.brickmanager.BrickManagerException;
-import sneer.pulp.dependency.Dependency;
+import sneer.pulp.dependency.FileWithHash;
 import sneer.pulp.dependency.DependencyManager;
 import sneer.pulp.deployer.BrickBundle;
 import sneer.pulp.deployer.BrickFile;
@@ -64,17 +64,17 @@ class BrickManagerImpl implements BrickManager {
 	}
 	
 	private void resolve(BrickBundle bundle, BrickFile brick) {
-		List<String> Strings;
+		Iterable<String> brickDependencies;
 		try {
-			Strings = brick.injectedBricks();
+			brickDependencies = brick.brickDependencies();
 		} catch (IOException e) {
 			throw new BrickManagerException("Error searching for injected bricks on "+brick.name(), e);
 		}
-		for (String injected : Strings) {
-			BrickFile inBundle = bundle == null ? null : bundle.brick(injected); 
+		for (String dependency : brickDependencies) {
+			BrickFile inBundle = bundle == null ? null : bundle.brick(dependency); 
 			if(inBundle == null) { 
 				//not inBudle, try local registry
-				inBundle = brick(injected);
+				inBundle = brick(dependency);
 				if(inBundle == null) {
 					//not found. must ask other peer via network
 					
@@ -168,11 +168,11 @@ class BrickManagerImpl implements BrickManager {
 
 	private void copyDependencies(BrickFile brick, BrickFile installed) {
 		String brickName = brick.name();
-		List<Dependency> brickDependencies = brick.dependencies();
-		for (Dependency dependency : brickDependencies) {
+		List<FileWithHash> brickDependencies = brick.fileDependencies();
+		for (FileWithHash dependency : brickDependencies) {
 			try {
 				dependency = _dependencyManager.add(brickName, dependency);
-				installed.dependencies().add(dependency);
+				installed.fileDependencies().add(dependency);
 			} catch (IOException e) {
 				throw new BrickManagerException("Error installing dependecy: "+dependency, e);
 			}

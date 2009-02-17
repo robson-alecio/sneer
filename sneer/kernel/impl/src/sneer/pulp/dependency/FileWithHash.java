@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 import sneer.pulp.crypto.Sneer1024;
 
-public interface Dependency extends Serializable {
+public interface FileWithHash extends Serializable {
 
 	File file();
 	

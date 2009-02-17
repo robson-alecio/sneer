@@ -9,7 +9,7 @@ import org.apache.commons.io.FileUtils;
 
 import sneer.kernel.container.jar.DeploymentJar;
 import sneer.kernel.container.jar.impl.DeploymentJarImpl;
-import sneer.pulp.dependency.Dependency;
+import sneer.pulp.dependency.FileWithHash;
 import sneer.pulp.deployer.BrickFile;
 import sneer.pulp.deployer.DeployerException;
 import sneer.pulp.keymanager.PublicKey;
@@ -30,7 +30,7 @@ class BrickFileImpl implements BrickFile {
 	
 	private PublicKey _origin;
 	
-	private final List<Dependency> _dependencies = new ArrayList<Dependency>();
+	private final List<FileWithHash> _dependencies = new ArrayList<FileWithHash>();
 
 	BrickFileImpl(String brickName) {
 		_brickName = brickName;
@@ -109,12 +109,12 @@ class BrickFileImpl implements BrickFile {
 	}
 
 	@Override
-	public List<Dependency> dependencies() {
+	public List<FileWithHash> fileDependencies() {
 		return _dependencies;
 	}
 
 	@Override
-	public List<String> injectedBricks() throws IOException {
+	public Iterable<String> brickDependencies() throws IOException {
 		return impl().injectedBricks();
 	}
 

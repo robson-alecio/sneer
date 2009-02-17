@@ -13,6 +13,12 @@ class DependencyVisitor extends EmptyVisitor {
 	private String _type;
 	
 	@Override
+	public void visitLdcInsn(Object constValue) {
+		if (constValue instanceof Type)
+			_type = ((Type)constValue).getClassName();
+	}
+	
+	@Override
 	public void visitMethodInsn(int opcode, String owner, String name, String descriptor) {
 		if (!"my".equals(name))
 			return;
@@ -20,12 +26,6 @@ class DependencyVisitor extends EmptyVisitor {
 		_dependencies.add(_type);
 	}
 	
-	@Override
-	public void visitLdcInsn(Object constValue) {
-		if (constValue instanceof Type)
-			_type = ((Type)constValue).getClassName();
-	}
-
 	public List<String> dependencies() {
 		return _dependencies;
 	}

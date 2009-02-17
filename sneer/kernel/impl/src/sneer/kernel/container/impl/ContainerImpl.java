@@ -2,6 +2,8 @@ package sneer.kernel.container.impl;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
+import java.util.HashSet;
+import java.util.Set;
 
 import sneer.kernel.container.Brick;
 import sneer.kernel.container.ClassLoaderFactory;
@@ -26,6 +28,8 @@ public class ContainerImpl implements Container {
 	private final SneerConfig _sneerConfig;
 
 	private ClassLoader _apiClassLoader;
+
+	private Set<Class<?>> _interfacesBeingInstantiated = new HashSet<Class<?>>();
 
 	public ContainerImpl(Environment environment, Object... bindings) {
 		
@@ -90,21 +94,26 @@ public class ContainerImpl implements Container {
 	}
 
 	private <T> T instantiate(Class<T> intrface) throws ContainerException {
-		T component;
+		if (_interfacesBeingInstantiated.contains(intrface)) throw new Error("Interface " + intrface + " is already being instantiated. This can be caused by circular reference among some of these bricks: " + _interfacesBeingInstantiated);
+		_interfacesBeingInstantiated.add(intrface);
+		
 		try {
-			component = lookup(intrface);
+			
+			return tryToInstantiate(intrface);
+			
 		} catch (ClassNotFoundException e) {
 			System.out.println("Impl for " + intrface + " not found. Please wait while generating...");
 			String message = ImplementationGenerator.generateFor(intrface);
 			throw new ContainerException(message, e);
 		} catch (Exception e) {
-			throw new ContainerException(" >>>" + e.getClass().getSimpleName() + ": " + e.getMessage(), e);
+			throw new ContainerException(" >>> Exception trying to instantiate " + intrface + ": " + e.getClass().getSimpleName() + " - Message: " + e.getMessage(), e);
+		} finally {
+			_interfacesBeingInstantiated.remove(intrface);
 		}
-		return component;
 	}
 
 
-	private <T> T lookup(Class<T> clazz) throws Exception {
+	private <T> T tryToInstantiate(Class<T> clazz) throws Exception {
 
 		Object result = bindingFor(clazz);
 	    if(result != null) return (T)result;

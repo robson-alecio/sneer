@@ -10,7 +10,7 @@
 
 	- [Bamboo] Brick Publish
 		- Unignore Freedom7 tests
-		- MainDemo - Publish all necessary bricks instead of just producing them.
+		- main.Sneer - Publish all necessary bricks instead of just producing them.
 
 	- [Bamboo] Mocotó Test Framework
 		- Boojay pro-bono (in parallel)
@@ -35,7 +35,7 @@ NEXT TASKS
 		- Bandwidth Optimization
 		- Torrentness
 
-	- [Sandro] MainDemo is too big - Extract Own Name and Dyndns logic to separate class. (Don't Charge) 
+	- [Sandro] main.Sneer is too big - Extract Own Name and Dyndns logic to separate class. (Don't Charge) 
 
 	- [Bamboo] Transparent Persistence - Talk to Klaus
 

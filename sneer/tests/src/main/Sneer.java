@@ -28,24 +28,14 @@ public class Sneer {
 	private static final String DNY_DNS_PASSWORD = "dnyDnsPassword";
 	private static Container _container;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		try {
-			try {
-				tryToRun(args);
-			} catch (ArrayIndexOutOfBoundsException e) {
-				tryRememberArguments();
-			} 
-		} catch (Exception e) {
-			e.printStackTrace();
-			exitWithUsageMessage();
-		}		
+			tryToRun(args);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			tryRememberArguments();
+		} 
 	}
 	
-	private static void exitWithUsageMessage() {
-		System.err.println("\nUsage: MainDemo [Dummy]\n");
-		System.exit(1);
-	}
-
 	private static void tryRememberArguments() throws Exception{
 		Properties userInfo = new Properties();
 		File file = new File(USER_INFO_PROPERTIES_FILE);
@@ -69,18 +59,9 @@ public class Sneer {
 	private static void tryToRun(final String[] args) throws Exception {
 		Logger.redirectTo(System.out);
 
-		checkForDummy(args);
-		
 		Environments.runWith(container(), new Runnable() { @Override public void run() {
 			demo().start(ownName(args), dynDnsUser(args), dynDnsPassword(args));			
 		}});
-	}
-
-	private static void checkForDummy(String[] args) {
-		if (!"Dummy".equals(ownName(args))) return;
-		
-		File dummyHome = new File(System.getProperty("user.home"), ".sneerdummy");
-		System.setProperty("home_override", dummyHome.getAbsolutePath());
 	}
 
 	private static Container container() {
@@ -149,7 +130,6 @@ public class Sneer {
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(btn, ex.getMessage());
 					ex.printStackTrace();
-					exitWithUsageMessage();
 				}						
 			}});
 			setVisible(true);

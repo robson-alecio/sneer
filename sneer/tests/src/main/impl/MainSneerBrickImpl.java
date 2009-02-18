@@ -1,6 +1,6 @@
 package main.impl;
 
-import main.MainDemoBrick;
+import main.MainSneerBrick;
 import snapps.blinkinglights.gui.BlinkingLightsGui;
 import snapps.contacts.gui.ContactsGui;
 import snapps.meter.bandwidth.gui.BandwidthMeterGui;
@@ -28,7 +28,7 @@ import sneer.pulp.probe.ProbeManager;
 import sneer.skin.dashboard.Dashboard;
 import static wheel.lang.Environments.my;
 
-class MainDemoBrickImpl implements MainDemoBrick {
+class MainSneerBrickImpl implements MainSneerBrick {
 
 	@SuppressWarnings("unused")
 	private final ClockTicker _ticker = my(ClockTicker.class);

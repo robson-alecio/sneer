@@ -1,7 +1,7 @@
 package main;
 
 
-public interface MainDemoBrick {
+public interface MainSneerBrick {
 
 	void start(String ownName, String dynDnsUserName, String dynDnsPassword);
 

@@ -20,7 +20,7 @@ import sneer.kernel.container.Containers;
 import wheel.io.Logger;
 import wheel.lang.Environments;
 
-public class MainDemo {
+public class Sneer {
 
 	private static final String USER_INFO_PROPERTIES_FILE = "user.info.properties";
 	private static final String YOUR_OWN_NAME = "yourOwnName";
@@ -89,8 +89,8 @@ public class MainDemo {
 	}
 
 
-	private static MainDemoBrick demo() {
-		return container().provide(MainDemoBrick.class);
+	private static MainSneerBrick demo() {
+		return container().provide(MainSneerBrick.class);
 	}
 	
 	private static String ownName(String[] args) {

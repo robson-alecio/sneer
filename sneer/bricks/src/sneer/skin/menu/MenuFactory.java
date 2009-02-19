@@ -1,6 +1,8 @@
 package sneer.skin.menu;
 
-public interface MenuFactory<WIDGET> {
+import sneer.kernel.container.Brick;
+
+public interface MenuFactory<WIDGET> extends Brick {
 
 	Menu<WIDGET> createMenuBar();
 

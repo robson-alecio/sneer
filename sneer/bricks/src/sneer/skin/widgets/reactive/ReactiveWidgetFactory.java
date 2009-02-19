@@ -9,13 +9,14 @@ import javax.swing.JTextPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
+import sneer.kernel.container.Brick;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import wheel.lang.Consumer;
 import wheel.lang.PickyConsumer;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 
-public interface ReactiveWidgetFactory {
+public interface ReactiveWidgetFactory extends Brick {
 
 	ImageWidget newImage(Signal<Image> source);
 	ImageWidget newImage(Signal<Image> source, Consumer<Image> setter);

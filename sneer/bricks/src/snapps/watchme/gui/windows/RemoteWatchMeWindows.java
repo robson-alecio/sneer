@@ -1,5 +1,7 @@
 package snapps.watchme.gui.windows;
 
-public interface RemoteWatchMeWindows {
+import sneer.kernel.container.Brick;
+
+public interface RemoteWatchMeWindows extends Brick {
 
 }

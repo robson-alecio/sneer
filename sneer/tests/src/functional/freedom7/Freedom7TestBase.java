@@ -24,10 +24,18 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 		publisher().publishBricks(generateY());
 		assertEquals("true", System.getProperty("freedom7.y.Y.installed"));
 	}
+
+	@Test
+	public void testPublishBrickWithTupleType() throws Exception {
+		Logger.redirectTo(System.out);
+		
+		System.clearProperty("freedom7.v.V.installed");
+		publisher().publishBricks(generateV());
+		assertEquals("true", System.getProperty("freedom7.v.V.installed"));
+	}
 	
 	@Test
 	public void testPublishTwoBricks() throws Exception {
-		Logger.redirectTo(System.out);
 		System.clearProperty("freedom7.y.Y.installed");
 		System.clearProperty("freedom7.w.W.installed");
 		publisher().publishBricks(generateWandY());
@@ -110,12 +118,30 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 		return src;
 	}
 
+	private File generateV() throws IOException {
+		File src = sourceFolder("src-v");
+		writeV(new SourceFileWriter(src));
+		return src;
+	}
+
 	private void writeY(SourceFileWriter writer) throws IOException {
 		writer.write("freedom7.y.Y", "public interface Y extends sneer.kernel.container.Brick {}");
 		writer.write("freedom7.y.impl.YImpl",
 				"class YImpl implements freedom7.y.Y {\n" +
 					"public YImpl() {\n" +
 						"System.setProperty(\"freedom7.y.Y.installed\", \"true\");\n" +
+					"}" +
+				"}");
+	}
+
+	private void writeV(SourceFileWriter writer) throws IOException {
+		writer.write("freedom7.v.V", "public interface V extends sneer.kernel.container.Brick {}");
+		writer.write("freedom7.v.VTuple", "public class VTuple extends sneer.kernel.container.Tuple {}");
+		writer.write("freedom7.v.impl.VImpl",
+				"class VImpl implements freedom7.v.V {\n" +
+				"private freedom7.v.VTuple tuple;\n" +
+					"public VImpl() {\n" +
+						"System.setProperty(\"freedom7.v.V.installed\", \"true\");\n" +
 					"}" +
 				"}");
 	}

@@ -4,12 +4,13 @@
 	- [Klaus] Own Name - Show contacts' names in contact list
 		- Freedom2Test - Unignore and make it pass.
 
+	- [Klaus] Unignore Freedom7 dependency tests
+
 	- [Sandro] public static sneer.skin.sound.loopback.impl.Services - Bricks cannot expose static methods. (Don't charge)
 
 	- [Sandro] Finep (in parallel)
 
 	- [Bamboo] Brick Publish
-		- Unignore Freedom7 tests
 		- main.Sneer - Publish all necessary bricks instead of just producing them.
 
 	- [Bamboo] Mocotó Test Framework

@@ -1,6 +1,6 @@
 package functional.adapters;
 
-import sneer.pulp.keymanager.PublicKey;
+import sneer.kernel.container.PublicKey;
 import functional.SovereignParty;
 
 public interface SneerParty extends SovereignParty {

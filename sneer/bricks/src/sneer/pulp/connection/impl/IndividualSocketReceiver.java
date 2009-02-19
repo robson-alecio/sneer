@@ -3,11 +3,11 @@ package sneer.pulp.connection.impl;
 import java.io.IOException;
 import java.util.Arrays;
 
+import sneer.kernel.container.PublicKey;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.keymanager.KeyManager;
-import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.network.ByteArraySocket;
 import wheel.lang.Producer;
 import wheel.lang.exceptions.IllegalParameter;

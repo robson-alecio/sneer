@@ -1,7 +1,7 @@
 package snapps.whisper.speextuples;
 
-import sneer.pulp.keymanager.PublicKey;
-import sneer.pulp.tuples.Tuple;
+import sneer.kernel.container.PublicKey;
+import sneer.kernel.container.Tuple;
 
 public class SpeexPacket extends Tuple {
 	

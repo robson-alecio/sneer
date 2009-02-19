@@ -5,11 +5,11 @@ import static wheel.lang.Environments.my;
 import java.util.HashMap;
 import java.util.Map;
 
+import sneer.kernel.container.PublicKey;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.crypto.Crypto;
 import sneer.pulp.crypto.Sneer1024;
 import sneer.pulp.keymanager.KeyManager;
-import sneer.pulp.keymanager.PublicKey;
 import wheel.lang.Producer;
 import wheel.reactive.EventNotifier;
 import wheel.reactive.EventSource;
@@ -65,14 +65,14 @@ class KeyManagerImpl implements KeyManager {
 
 	@Override
 	public PublicKey unmarshall(byte[] bytes) {
-		return new PublicKeyImpl(_crypto.unmarshallSneer1024(bytes));
+		return new PublicKey(_crypto.unmarshallSneer1024(bytes));
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
 	public PublicKey generateMickeyMouseKey(String string) {
 		Sneer1024 sneer1024 = _crypto.digest(string.getBytes());
-		return new PublicKeyImpl(sneer1024);
+		return new PublicKey(sneer1024);
 	}
 
 	@Override

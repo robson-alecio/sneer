@@ -3,11 +3,11 @@
  */
 package sneer.pulp.probe.impl;
 
+import sneer.kernel.container.PublicKey;
+import sneer.kernel.container.Tuple;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.keymanager.KeyManager;
-import sneer.pulp.keymanager.PublicKey;
-import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
 import wheel.reactive.Signal;

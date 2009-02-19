@@ -2,8 +2,8 @@ package sneer.pulp.distribution.filtering.tests;
 
 import org.junit.Test;
 
+import sneer.kernel.container.Tuple;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
-import sneer.pulp.tuples.Tuple;
 import tests.TestInContainerEnvironment;
 import static wheel.lang.Environments.my;
 

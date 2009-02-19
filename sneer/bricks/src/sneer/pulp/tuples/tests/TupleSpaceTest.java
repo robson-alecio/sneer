@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import sneer.pulp.tuples.Tuple;
+import sneer.kernel.container.Tuple;
 import sneer.pulp.tuples.TupleSpace;
 import tests.TestInContainerEnvironment;
 import wheel.lang.Consumer;

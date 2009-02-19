@@ -1,26 +1,24 @@
-package sneer.pulp.keymanager.impl;
+package sneer.kernel.container;
 
 import java.util.Arrays;
 
+import sneer.kernel.container.PublicKey;
 import sneer.pulp.crypto.Sneer1024;
-import sneer.pulp.keymanager.PublicKey;
 
-class PublicKeyImpl implements PublicKey {
+public class PublicKey {
 
 	private static final long serialVersionUID = 1L;
 
 	private Sneer1024 _sneer1024;
 	
-	PublicKeyImpl(Sneer1024 sneer1024) {
+	public PublicKey(Sneer1024 sneer1024) {
 		_sneer1024 = sneer1024;
 	}
 
-	@Override
 	public byte[] bytes() {
 		return _sneer1024.bytes();
 	}
 
-	@Override
 	public String toHexa() {
 		return _sneer1024.toHexa();
 	}

@@ -8,9 +8,9 @@ import org.jmock.Expectations;
 import org.jmock.Sequence;
 import org.junit.Test;
 
+import sneer.kernel.container.PublicKey;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.keymanager.KeyManager;
-import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.Audio;

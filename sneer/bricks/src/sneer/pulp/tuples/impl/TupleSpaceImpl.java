@@ -21,13 +21,13 @@ import org.prevayler.PrevaylerFactory;
 import org.prevayler.foundation.serialization.XStreamSerializer;
 
 import snapps.wind.impl.bubble.Bubble;
+import sneer.kernel.container.Tuple;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.config.persistence.PersistenceConfig;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
-import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
 import wheel.lang.Environments;

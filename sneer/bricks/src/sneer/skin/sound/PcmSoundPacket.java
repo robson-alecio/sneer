@@ -1,7 +1,7 @@
 package sneer.skin.sound;
 
-import sneer.pulp.keymanager.PublicKey;
-import sneer.pulp.tuples.Tuple;
+import sneer.kernel.container.PublicKey;
+import sneer.kernel.container.Tuple;
 import wheel.lang.ImmutableByteArray;
 
 /** A packet of PCM-encoded sound: 8000Hz, 16 bits, 2 Channels (Stereo), Signed, Little Endian */

@@ -11,6 +11,7 @@ import org.apache.commons.io.FileUtils;
 
 import sneer.kernel.container.Brick;
 import sneer.kernel.container.Container;
+import sneer.kernel.container.PublicKey;
 import sneer.kernel.container.SneerConfig;
 import sneer.pulp.brickmanager.BrickManager;
 import sneer.pulp.brickmanager.BrickManagerException;
@@ -19,7 +20,6 @@ import sneer.pulp.dependency.DependencyManager;
 import sneer.pulp.deployer.BrickBundle;
 import sneer.pulp.deployer.BrickFile;
 import sneer.pulp.keymanager.KeyManager;
-import sneer.pulp.keymanager.PublicKey;
 import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.maps.MapRegister;
 import wheel.reactive.maps.MapSignal;

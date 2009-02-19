@@ -3,9 +3,9 @@ package sneer.pulp.probe.impl;
 import java.util.LinkedList;
 import java.util.List;
 
+import sneer.kernel.container.Tuple;
 import sneer.pulp.connection.ByteConnection.PacketScheduler;
 import sneer.pulp.serialization.Serializer;
-import sneer.pulp.tuples.Tuple;
 import wheel.lang.Threads;
 import static wheel.lang.Environments.my;
 

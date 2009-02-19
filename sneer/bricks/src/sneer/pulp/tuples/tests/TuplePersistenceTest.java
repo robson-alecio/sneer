@@ -8,8 +8,8 @@ import org.junit.Test;
 
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
+import sneer.kernel.container.Tuple;
 import sneer.pulp.config.persistence.mocks.PersistenceConfigMock;
-import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Environments;
 import wheel.testutil.TestThatMightUseResources;

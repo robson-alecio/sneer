@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import sneer.kernel.container.Tuple;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.probe.ProbeManager;
 import sneer.pulp.serialization.Serializer;
-import sneer.pulp.tuples.Tuple;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
 import wheel.lang.exceptions.NotImplementedYet;

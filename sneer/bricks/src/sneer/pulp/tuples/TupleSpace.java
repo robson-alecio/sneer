@@ -3,6 +3,7 @@ package sneer.pulp.tuples;
 import java.util.List;
 
 import sneer.kernel.container.Brick;
+import sneer.kernel.container.Tuple;
 import wheel.lang.Consumer;
 
 public interface TupleSpace extends Brick {

@@ -1,6 +1,6 @@
 package sneer.pulp.tuples.tests;
 
-import sneer.pulp.tuples.Tuple;
+import sneer.kernel.container.Tuple;
 
 public class TestTuple extends Tuple {
 

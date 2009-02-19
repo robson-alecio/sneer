@@ -13,9 +13,9 @@ import javax.swing.JLabel;
 import javax.swing.WindowConstants;
 
 import snapps.watchme.WatchMe;
+import sneer.kernel.container.PublicKey;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.keymanager.KeyManager;
-import sneer.pulp.keymanager.PublicKey;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.WindowWidget;
 import wheel.io.ui.GuiThread;

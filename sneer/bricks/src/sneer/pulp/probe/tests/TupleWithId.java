@@ -1,6 +1,6 @@
 package sneer.pulp.probe.tests;
 
-import sneer.pulp.tuples.Tuple;
+import sneer.kernel.container.Tuple;
 
 public abstract class TupleWithId extends Tuple {
 

@@ -1,5 +1,7 @@
 package sneer.pulp.deployer.impl;
 
+import static wheel.lang.Environments.my;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,14 +15,12 @@ import sneer.kernel.container.jar.DeploymentJar;
 import sneer.kernel.container.jar.DeploymentJarFactory;
 import sneer.pulp.deployer.DeployerException;
 import sneer.pulp.deployer.impl.filters.ImplFinder;
-import sneer.pulp.deployer.impl.filters.ApiSourceFileFinder;
 import sneer.pulp.deployer.impl.filters.LibFinder;
 import wheel.io.JarBuilder;
 import wheel.io.codegeneration.MetaClass;
 import wheel.io.codegeneration.SimpleFilter;
 import wheel.lang.Collections;
 import wheel.lang.Functor;
-import static wheel.lang.Environments.my;
 
 class BrickImplDirectory {
 
@@ -56,11 +56,12 @@ class BrickImplDirectory {
 	}
 
 	public List<File> api() {
-		if(_apiSourceFiles.size() > 0)
+		if(_apiSourceFiles.size() > 0) //Refactor Use null instead of size to signal.
 			return _apiSourceFiles;
 		
-		SimpleFilter walker = new ApiSourceFileFinder(_path.getParentFile());
-		_apiSourceFiles = walker.list(); 
+		for (File candidate : _path.getParentFile().listFiles())
+			if (!candidate.isDirectory()) _apiSourceFiles.add(candidate);
+ 
 		return _apiSourceFiles;
 	}
 

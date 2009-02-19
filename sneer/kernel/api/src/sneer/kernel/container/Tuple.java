@@ -1,4 +1,4 @@
-package sneer.pulp.tuples;
+package sneer.kernel.container;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.apache.commons.lang.ArrayUtils;
 
-import sneer.pulp.keymanager.PublicKey;
 
 public abstract class Tuple {
 

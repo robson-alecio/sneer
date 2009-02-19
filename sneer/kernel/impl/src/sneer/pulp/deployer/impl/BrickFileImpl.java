@@ -7,12 +7,12 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
+import sneer.kernel.container.PublicKey;
 import sneer.kernel.container.jar.DeploymentJar;
 import sneer.kernel.container.jar.impl.DeploymentJarImpl;
 import sneer.pulp.dependency.FileWithHash;
 import sneer.pulp.deployer.BrickFile;
 import sneer.pulp.deployer.DeployerException;
-import sneer.pulp.keymanager.PublicKey;
 import wheel.lang.exceptions.NotImplementedYet;
 
 class BrickFileImpl implements BrickFile {

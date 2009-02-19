@@ -6,6 +6,7 @@ import java.io.File;
 
 import snapps.wind.Shout;
 import snapps.wind.Wind;
+import sneer.kernel.container.PublicKey;
 import sneer.pulp.brickmanager.BrickManager;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.connection.ByteConnection;
@@ -18,7 +19,6 @@ import sneer.pulp.deployer.BrickBundle;
 import sneer.pulp.deployer.Deployer;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.pulp.keymanager.KeyManager;
-import sneer.pulp.keymanager.PublicKey;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.port.PortKeeper;
 import sneer.pulp.probe.ProbeManager;

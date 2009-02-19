@@ -8,9 +8,9 @@ import sneer.pulp.deployer.impl.parser.JavaSource;
 import sneer.pulp.deployer.impl.parser.JavaSourceParser;
 import wheel.io.codegeneration.SimpleFilter;
 
-public class InterfaceFinder extends SimpleFilter {
+public class ApiSourceFileFinder extends SimpleFilter {
 
-	public InterfaceFinder(File root) {
+	public ApiSourceFileFinder(File root) {
 		super(root, JAVA_SOURCE_FILE_FILTER);
 	}
 

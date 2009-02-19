@@ -13,7 +13,7 @@ import sneer.kernel.container.jar.DeploymentJar;
 import sneer.kernel.container.jar.DeploymentJarFactory;
 import sneer.pulp.deployer.DeployerException;
 import sneer.pulp.deployer.impl.filters.ImplFinder;
-import sneer.pulp.deployer.impl.filters.InterfaceFinder;
+import sneer.pulp.deployer.impl.filters.ApiSourceFileFinder;
 import sneer.pulp.deployer.impl.filters.LibFinder;
 import wheel.io.JarBuilder;
 import wheel.io.codegeneration.MetaClass;
@@ -22,7 +22,7 @@ import wheel.lang.Collections;
 import wheel.lang.Functor;
 import static wheel.lang.Environments.my;
 
-class VirtualDirectory {
+class BrickImplDirectory {
 
 	private final DeploymentJarFactory _sneerDeploymentFactory = my(DeploymentJarFactory.class);
 	
@@ -42,7 +42,7 @@ class VirtualDirectory {
 
 	private final List<MetaClass> _apiClassFiles = new ArrayList<MetaClass>();
 
-	VirtualDirectory(File root, File path) {
+	BrickImplDirectory(File root, File path) {
 		_root = root;
 		_path = path;
 	}
@@ -59,12 +59,12 @@ class VirtualDirectory {
 		if(_apiSourceFiles.size() > 0)
 			return _apiSourceFiles;
 		
-		SimpleFilter walker = new InterfaceFinder(_path.getParentFile());
+		SimpleFilter walker = new ApiSourceFileFinder(_path.getParentFile());
 		_apiSourceFiles = walker.list(); 
 		return _apiSourceFiles;
 	}
 
-	public List<File> impl() {
+	public List<File> files() {
 		if(_implSourceFiles.size() > 0)
 			return _implSourceFiles;
 		

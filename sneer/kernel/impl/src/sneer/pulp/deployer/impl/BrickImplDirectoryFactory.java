@@ -3,9 +3,9 @@ package sneer.pulp.deployer.impl;
 import java.io.File;
 import java.util.List;
 
-interface VirtualDirectoryFactory {
+interface BrickImplDirectoryFactory {
 
 	File rootDirectory();
 
-	List<VirtualDirectory> virtualDirectories();
+	List<BrickImplDirectory> implDirectories();
 }

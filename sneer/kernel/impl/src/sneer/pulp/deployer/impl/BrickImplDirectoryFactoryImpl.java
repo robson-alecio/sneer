@@ -11,22 +11,22 @@ import org.apache.commons.io.filefilter.DirectoryFileFilter;
 
 import wheel.io.codegeneration.SimpleFilter;
 
-class VirtualDirectoryFactoryImpl implements VirtualDirectoryFactory {
+class BrickImplDirectoryFactoryImpl implements BrickImplDirectoryFactory {
 
 	private File _root;
 
-	private List<VirtualDirectory> _brickDirectories;
+	private List<BrickImplDirectory> _brickImplDirectories;
 
-	VirtualDirectoryFactoryImpl(File root) {
+	BrickImplDirectoryFactoryImpl(File root) {
 		_root = root;
 	}
 
-	private List<VirtualDirectory> createVirtualDirectories() {
-		List<VirtualDirectory> result = new ArrayList<VirtualDirectory>();
+	private List<BrickImplDirectory> createImplDirectories() {
+		List<BrickImplDirectory> result = new ArrayList<BrickImplDirectory>();
 		SimpleFilter filter = new ImplDirectoryFinder(_root, DirectoryFileFilter.INSTANCE);
 		List<File> implFolders = filter.list();
 		for (File folder : implFolders) {
-			VirtualDirectory vd = new VirtualDirectory(_root, folder);
+			BrickImplDirectory vd = new BrickImplDirectory(_root, folder);
 			result.add(vd);
 		}
 		return result;
@@ -38,12 +38,12 @@ class VirtualDirectoryFactoryImpl implements VirtualDirectoryFactory {
 	}
 
 	@Override
-	public List<VirtualDirectory> virtualDirectories() {
-		if(_brickDirectories != null) {
-			return _brickDirectories;
+	public List<BrickImplDirectory> implDirectories() {
+		if(_brickImplDirectories != null) {
+			return _brickImplDirectories;
 		}
-		_brickDirectories = createVirtualDirectories();
-		return _brickDirectories;
+		_brickImplDirectories = createImplDirectories();
+		return _brickImplDirectories;
 	}
 }
 

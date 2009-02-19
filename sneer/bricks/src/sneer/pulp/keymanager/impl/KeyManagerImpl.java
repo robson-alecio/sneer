@@ -65,14 +65,14 @@ class KeyManagerImpl implements KeyManager {
 
 	@Override
 	public PublicKey unmarshall(byte[] bytes) {
-		return new PublicKey(_crypto.unmarshallSneer1024(bytes));
+		return new PublicKey(bytes);
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
 	public PublicKey generateMickeyMouseKey(String string) {
 		Sneer1024 sneer1024 = _crypto.digest(string.getBytes());
-		return new PublicKey(sneer1024);
+		return new PublicKey(sneer1024.bytes());
 	}
 
 	@Override

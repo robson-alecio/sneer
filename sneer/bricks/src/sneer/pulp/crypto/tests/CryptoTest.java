@@ -1,11 +1,12 @@
 package sneer.pulp.crypto.tests;
 
+import static wheel.lang.Environments.my;
+
+import org.bouncycastle.util.encoders.Hex;
 import org.junit.Test;
 
-import sneer.pulp.crypto.ByteArrayUtils;
 import sneer.pulp.crypto.Crypto;
 import tests.TestInContainerEnvironment;
-import static wheel.lang.Environments.my;
 
 public class CryptoTest extends TestInContainerEnvironment {
 
@@ -36,6 +37,6 @@ public class CryptoTest extends TestInContainerEnvironment {
 	}
 
 	private void assertHexa(String expected, byte[] hash) {
-		assertEquals(expected, ByteArrayUtils.toHexa(hash));
+		assertEquals(expected, new String(Hex.encode(hash)));
 	}
 }

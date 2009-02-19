@@ -19,10 +19,6 @@ public class PublicKey {
 		return _sneer1024.bytes();
 	}
 
-	public String toHexa() {
-		return _sneer1024.toHexa();
-	}
-
 	@Override
 	public String toString() {
 		return _sneer1024.toString(); 

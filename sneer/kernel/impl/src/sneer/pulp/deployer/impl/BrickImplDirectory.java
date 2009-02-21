@@ -282,6 +282,6 @@ class BrickImplDirectory {
 
 	@Override
 	public String toString() {
-		return "VirtualDirectory for " + _brickName;
+		return "ImplDirectory for " + _brickName;
 	}
 }

@@ -6,7 +6,7 @@ import sneer.pulp.threadpool.ThreadPool;
 import wheel.lang.Threads;
 import static wheel.lang.Environments.my;
 
-public class ClockTickerImpl implements ClockTicker, Runnable {
+class ClockTickerImpl implements ClockTicker, Runnable {
 
 	private final ThreadPool _threadPool = my(ThreadPool.class);
 

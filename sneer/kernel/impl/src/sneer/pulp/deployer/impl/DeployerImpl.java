@@ -138,7 +138,7 @@ class DeployerImpl implements Deployer {
 		List<File> sourceFilesInBrick = impl.files();
 		
 		if(sourceFilesInBrick == null || sourceFilesInBrick.isEmpty())
-			throw new DeployerException("Can't find source files in "+impl.rootDirectory()+". Check if your class files are public (they shouldn't be)");
+			throw new DeployerException("Can't find source files in "+impl+". Check if your class files are public (they shouldn't be)");
 
 		Classpath cp = classpath(impl, api);
 		Result result = _compiler.compile(sourceFilesInBrick, workDirectory, cp);

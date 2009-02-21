@@ -1,7 +1,5 @@
 package main;
 
-import static wheel.lang.Environments.my;
-
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,9 +17,6 @@ import javax.swing.border.TitledBorder;
 
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
-import sneer.pulp.brickmanager.BrickManager;
-import sneer.pulp.deployer.BrickBundle;
-import sneer.pulp.deployer.Deployer;
 import wheel.io.Logger;
 import wheel.lang.Environments;
 
@@ -65,9 +60,8 @@ public class Sneer {
 		Logger.redirectTo(System.out);
 
 		Environments.runWith(container(), new Runnable() { @Override public void run() {
-			BrickBundle bundle = my(Deployer.class).pack(new File("bricks/src"));
-
-			my(BrickManager.class).install(bundle);
+//			BrickBundle bundle = my(Deployer.class).pack(new File("bricks/src"));
+//			my(BrickManager.class).install(bundle);
 			
 			demo().start(ownName(args), dynDnsUser(args), dynDnsPassword(args));			
 		}});

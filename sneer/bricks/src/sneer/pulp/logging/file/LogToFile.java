@@ -1,4 +1,4 @@
-package sneer.pulp.logging;
+package sneer.pulp.logging.file;
 
 import sneer.kernel.container.Brick;
 

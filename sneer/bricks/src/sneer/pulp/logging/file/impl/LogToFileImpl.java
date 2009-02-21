@@ -1,4 +1,4 @@
-package sneer.pulp.logging.impl;
+package sneer.pulp.logging.file.impl;
 
 import static wheel.lang.Environments.my;
 
@@ -7,8 +7,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import sneer.pulp.config.persistence.PersistenceConfig;
-import sneer.pulp.logging.LogToFile;
 import sneer.pulp.logging.Logger;
+import sneer.pulp.logging.file.LogToFile;
 import wheel.reactive.impl.Receiver;
 
 class LogToFileImpl implements LogToFile {

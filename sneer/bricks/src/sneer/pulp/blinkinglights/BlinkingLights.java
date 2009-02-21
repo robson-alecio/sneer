@@ -1,9 +1,10 @@
 package sneer.pulp.blinkinglights;
 
+import sneer.kernel.container.Brick;
 import wheel.lang.exceptions.FriendlyException;
 import wheel.reactive.lists.ListSignal;
 
-public interface BlinkingLights {
+public interface BlinkingLights extends Brick {
 
 	Light prepare(LightType type);
 

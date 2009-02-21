@@ -3,7 +3,9 @@ package sneer.pulp.classpath;
 import java.io.File;
 import java.util.List;
 
-public interface ClasspathFactory {
+import sneer.kernel.container.Brick;
+
+public interface ClasspathFactory extends Brick {
 
 	Classpath newClasspath();
 

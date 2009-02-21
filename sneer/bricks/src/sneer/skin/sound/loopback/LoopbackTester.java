@@ -1,6 +1,8 @@
 package sneer.skin.sound.loopback;
 
-public interface LoopbackTester {
+import sneer.kernel.container.Brick;
+
+public interface LoopbackTester extends Brick {
 
 	boolean start();
 	void stop();

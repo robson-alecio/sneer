@@ -12,6 +12,7 @@
 
 	- [Bamboo] Brick Publish
 		- main.Sneer - Publish all necessary bricks instead of just producing them.
+			- BrickImplDirectory.isSpecialMetaInterface() - Make all those cases into annotations and delete that method.
 
 	- [Bamboo] Mocotó Test Framework
 		- Boojay pro-bono (in parallel)

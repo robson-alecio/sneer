@@ -2,7 +2,9 @@ package sneer.skin.dashboard;
 
 import java.awt.Container;
 
-public interface Dashboard{
+import sneer.kernel.container.Brick;
+
+public interface Dashboard extends Brick {
 
 	Container getRootPanel();
 	Container getContentPanel();

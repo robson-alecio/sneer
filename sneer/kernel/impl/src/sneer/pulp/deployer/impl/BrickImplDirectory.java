@@ -139,10 +139,20 @@ class BrickImplDirectory {
 	private boolean isBrick(ClassLoader cl, String className) {
 		try {
 			Class<?> c = cl.loadClass(className);
+			
+			if (isSpecialMetaInterface(c)) return false;
+			
 			return Brick.class.isAssignableFrom(c);
 		} catch (ClassNotFoundException e) {
 			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		}
+	}
+
+	private boolean isSpecialMetaInterface(Class<?> c) {
+		System.out.println("Make these into annotations and delete this method. (See roadmap)");
+		return c.getName().equals("sneer.skin.GuiBrick")
+			|| c.getName().equals("sneer.skin.snappmanager.Instrument");
+			
 	}
 
 	public DeploymentJar jarSrcApi() {

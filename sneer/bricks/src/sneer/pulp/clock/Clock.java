@@ -1,9 +1,10 @@
 package sneer.pulp.clock;
 
+import sneer.kernel.container.Brick;
 import sneer.pulp.threadpool.Stepper;
 
 
-public interface Clock {
+public interface Clock extends Brick {
 	
 	long time();
 	
@@ -16,7 +17,5 @@ public interface Clock {
 
 	void advanceTime(int deltaMillis);
 	void advanceTimeTo(long absoluteTimeMillis);
-
-	//void timebox(int timeoutMillis, Runnable runnable);
 
 }

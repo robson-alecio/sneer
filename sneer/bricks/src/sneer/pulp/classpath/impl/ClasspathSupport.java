@@ -10,8 +10,6 @@ import sneer.pulp.classpath.Classpath;
 
 abstract class ClasspathSupport implements Classpath {
 
-	protected static final File RT_JAR = new File(System.getProperty("java.home")+File.separator+"lib"+File.separator+"rt.jar"); 
-
 	protected List<File> _elements = new ArrayList<File>();
 	
 	@Override

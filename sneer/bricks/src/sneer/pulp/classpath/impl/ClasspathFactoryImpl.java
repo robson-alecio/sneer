@@ -30,9 +30,8 @@ class ClasspathFactoryImpl implements ClasspathFactory {
 
 	@Override
 	public Classpath sneerApi() {
-		if(_sneerApi != null) {
+		if(_sneerApi != null)
 			return _sneerApi;
-		}
 		
 		try {
 			/* try to load from sneer.jar */
@@ -48,11 +47,10 @@ class ClasspathFactoryImpl implements ClasspathFactory {
 	}
 
 	private Classpath buildEclipseClasspath() {
-		Classpath cp = newClasspath();
+		Classpath result = newClasspath();
 		Classpath kernelPlusWheel = new DirectoryBasedClasspath(ClassUtils.rootDirectoryFor(Brick.class));
 		Classpath allBrickApis = new FilteredClasspath(new BrickApiFilter(_config.brickRootDirectory()));
-		final Classpath sneerApi = cp.compose(kernelPlusWheel.compose(allBrickApis));
-		return sneerApi;
+		return result.compose(kernelPlusWheel.compose(allBrickApis));
 	}
 
 	@Override
@@ -62,6 +60,9 @@ class ClasspathFactoryImpl implements ClasspathFactory {
 }
 
 class SimpleClasspath extends JarBasedClasspath {
+	
+	private static final File RT_JAR = new File(System.getProperty("java.home")+File.separator+"lib"+File.separator+"rt.jar"); 
+
 	SimpleClasspath() {
 		super(RT_JAR);
 	}

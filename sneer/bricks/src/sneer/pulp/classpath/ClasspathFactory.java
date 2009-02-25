@@ -1,7 +1,6 @@
 package sneer.pulp.classpath;
 
 import java.io.File;
-import java.util.List;
 
 import sneer.kernel.container.Brick;
 
@@ -13,5 +12,5 @@ public interface ClasspathFactory extends Brick {
 
 	Classpath sneerApi();
 
-	Classpath fromJarFiles(List<File> jarFiles);
+	Classpath fromJarFiles(File... jarFiles);
 }

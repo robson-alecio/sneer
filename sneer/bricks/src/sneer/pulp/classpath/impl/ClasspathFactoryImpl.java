@@ -3,7 +3,6 @@ package sneer.pulp.classpath.impl;
 import static wheel.lang.Environments.my;
 
 import java.io.File;
-import java.util.List;
 
 import sneer.kernel.container.Brick;
 import sneer.kernel.container.ContainerConfig;
@@ -30,20 +29,34 @@ class ClasspathFactoryImpl implements ClasspathFactory {
 
 	@Override
 	public Classpath sneerApi() {
-		if(_sneerApi != null)
-			return _sneerApi;
+		if(_sneerApi == null)
+			_sneerApi = findSneerApi();
+		
+		return _sneerApi;		
+	}
+
+	private Classpath findSneerApi() {
+		
+		Classpath result = fromJarFiles(commonsLang(), commonsCollections(), commonsIo());
 		
 		try {
 			/* try to load from sneer.jar */
 			Jars.jarGiven(Brick.class);
 			throw new wheel.lang.exceptions.NotImplementedYet();	
 		} catch(StringIndexOutOfBoundsException e) {
-			/*  
-			 * running from eclipse ?
-			 */
-			_sneerApi = buildEclipseClasspath();
-			return _sneerApi;
+			return result.compose(buildEclipseClasspath());
 		}
+
+	}
+
+	private File commonsLang() {
+		return Jars.jarGiven(org.apache.commons.lang.ObjectUtils.class);
+	}
+	private File commonsCollections() {
+		return Jars.jarGiven(org.apache.commons.collections.CollectionUtils.class);
+	}
+	private File commonsIo() {
+		return Jars.jarGiven(org.apache.commons.io.FileUtils.class);
 	}
 
 	private Classpath buildEclipseClasspath() {
@@ -54,7 +67,7 @@ class ClasspathFactoryImpl implements ClasspathFactory {
 	}
 
 	@Override
-	public Classpath fromJarFiles(List<File> jarFiles) {
+	public Classpath fromJarFiles(File... jarFiles) {
 		return new JarBasedClasspath(jarFiles);
 	}
 }

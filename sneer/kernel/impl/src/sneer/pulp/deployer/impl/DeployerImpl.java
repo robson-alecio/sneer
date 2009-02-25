@@ -24,6 +24,8 @@ import wheel.io.codegeneration.MetaClass;
 
 class DeployerImpl implements Deployer {
 
+	private static final File[] FILE_ARRAY_TYPE = new File[]{};
+
 	private final SneerConfig _config = my(SneerConfig.class);
 	
 	private final JavaCompiler _compiler = my(JavaCompiler.class);
@@ -130,7 +132,7 @@ class DeployerImpl implements Deployer {
 		Classpath sneerApi = _cpFactory.sneerApi();
 		Classpath cp = sneerApi.compose(api);
 		List<File> jarFiles = impl.libs();
-		Classpath libs = _cpFactory.fromJarFiles(jarFiles);
+		Classpath libs = _cpFactory.fromJarFiles(jarFiles.toArray(FILE_ARRAY_TYPE));
 		return cp.compose(libs);
 	}
 	

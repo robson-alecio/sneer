@@ -1,11 +1,11 @@
 package sneer.pulp.compiler.tests;
 
+import static wheel.lang.Environments.my;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -17,7 +17,6 @@ import sneer.pulp.compiler.CompilationError;
 import sneer.pulp.compiler.Result;
 import tests.TestInContainerEnvironment;
 import wheel.io.Jars;
-import static wheel.lang.Environments.my;
 
 public class JavaCompilerTest extends TestInContainerEnvironment {
 
@@ -99,12 +98,9 @@ public class JavaCompilerTest extends TestInContainerEnvironment {
 		return _factory.fromJarFiles(listJarFiles(libDir));
 	}
 
-	private List<File> listJarFiles(File libDir) {
-		return Arrays.asList(libDir.listFiles(new FilenameFilter() {
-			@Override
-			public boolean accept(File dir, String name) {
-				return name.endsWith(".jar");
-			}
-		}));
+	private File[] listJarFiles(File libDir) {
+		return libDir.listFiles(new FilenameFilter() { @Override public boolean accept(File dir, String name) {
+			return name.endsWith(".jar");
+		}});
 	}
 }

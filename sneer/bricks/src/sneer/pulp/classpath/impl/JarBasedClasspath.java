@@ -1,7 +1,6 @@
 package sneer.pulp.classpath.impl;
 
 import java.io.File;
-import java.util.List;
 
 /**
  * Elements are .jar files
@@ -12,9 +11,7 @@ class JarBasedClasspath extends ClasspathSupport {
 		add(jarFile);
 	}
 
-	public JarBasedClasspath(List<File> jarFiles) {
-		for (File file : jarFiles) {
-			add(file);
-		}
+	public JarBasedClasspath(File... jarFiles) {
+		for (File file : jarFiles) add(file);
 	}
 }

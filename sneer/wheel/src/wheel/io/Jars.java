@@ -29,15 +29,17 @@ public class Jars {
 	}
 
 
-	public static URL jarGiven(Class<?> clazz) {
+	public static File jarGiven(Class<?> clazz) {
 		URL url = clazz.getResource(clazz.getSimpleName() + ".class");
 		String fullPath = url.getPath();
-		String path = fullPath.substring(0, fullPath.indexOf("!"));
+		String jarPath = fullPath.substring(0, fullPath.indexOf("!"));
+		String result;
 		try {
-			return new URL(path);
+			result = new URL(jarPath).getPath();
 		} catch (MalformedURLException e) {
-			throw new IllegalStateException(e); 
+			throw new IllegalStateException();
 		}
+		return new File(result);
 	}
 
 

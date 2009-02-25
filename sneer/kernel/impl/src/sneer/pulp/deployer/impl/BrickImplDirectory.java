@@ -32,7 +32,7 @@ class BrickImplDirectory {
 
 	private File _path;
 	
-	private List<File> _jarFiles;
+	private List<File> _libs;
 	
 	private ImplClasses _implClasses;
 	
@@ -75,12 +75,15 @@ class BrickImplDirectory {
 	}
 
 	public List<File> libs() {
-		if(_jarFiles != null && _jarFiles.size() > 0)
-			return _jarFiles;
+		if (_libs == null)
+			_libs = findLibs();
 		
+		return _libs;
+	}
+
+	private List<File> findLibs() {
 		SimpleFilter walker = new LibFinder(new File(_path, "lib"));
-		_jarFiles = walker.list(); 
-		return _jarFiles;
+		return walker.list(); 
 	}
 
 	public void grabCompiledClasses(List<MetaClass> classFiles) {

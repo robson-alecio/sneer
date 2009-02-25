@@ -83,30 +83,30 @@ class DeployerImpl implements Deployer {
 		File apiDirectory = createWorkDirectory("api");
 		List<File> interfaceFiles = mergeInterfaceFiles(implDirectories);
 		List<MetaClass> classFiles = compileApi(apiDirectory, interfaceFiles);
-		for (BrickImplDirectory virtual : implDirectories) {
-			virtual.grabCompiledClasses(classFiles);
-			result.add(virtual.jarSrcApi());
-			result.add(virtual.jarBinaryApi());
+		for (BrickImplDirectory brickDir : implDirectories) {
+			brickDir.grabCompiledClasses(classFiles);
+			result.add(brickDir.jarSrcApi());
+			result.add(brickDir.jarBinaryApi());
 		}
 		
 		/*
 		 * IMPL
 		 */
 		Classpath api = _cpFactory.fromClassDir(apiDirectory);
-		for (BrickImplDirectory virtual : implDirectories) {
-			File implDirectory = createWorkDirectory(virtual.brickName());
-			classFiles = compileImpl(implDirectory, virtual, api);
-			virtual.setImplClasses(implDirectory, classFiles);
-			result.add(virtual.jarSrcImpl());
-			result.add(virtual.jarBinaryImpl());
+		for (BrickImplDirectory brickDir : implDirectories) {
+			File workDir = createWorkDirectory(brickDir.brickName());
+			classFiles = compileImpl(workDir, brickDir, api);
+			brickDir.setImplClasses(workDir, classFiles);
+			result.add(brickDir.jarSrcImpl());
+			result.add(brickDir.jarBinaryImpl());
 		}
 		
 		/*
 		 * LIBS 
 		 */
-		for (BrickImplDirectory virtual : implDirectories) {
-			String brickName = virtual.brickName();
-			List<File> dependencies = virtual.libs();
+		for (BrickImplDirectory brickDir : implDirectories) {
+			String brickName = brickDir.brickName();
+			List<File> dependencies = brickDir.libs();
 			addDepedencies(result.brick(brickName), dependencies);
 		}
 		
@@ -132,6 +132,7 @@ class DeployerImpl implements Deployer {
 		Classpath sneerApi = _cpFactory.sneerApi();
 		Classpath cp = sneerApi.compose(api);
 		List<File> jarFiles = impl.libs();
+		
 		Classpath libs = _cpFactory.fromJarFiles(jarFiles.toArray(FILE_ARRAY_TYPE));
 		return cp.compose(libs);
 	}

@@ -25,7 +25,7 @@ import wheel.lang.Functor;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Adapter;
 
-public class BandwidthMeterGuiImpl implements BandwidthMeterGui {
+class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 
 	private TextWidget<JLabel> _uploadField;
 	private TextWidget<JLabel> _downloadField;

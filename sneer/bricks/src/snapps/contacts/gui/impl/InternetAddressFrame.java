@@ -23,7 +23,7 @@ import sneer.pulp.contacts.Contact;
 import sneer.pulp.internetaddresskeeper.InternetAddress;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
 
-public class InternetAddressFrame extends JFrame{
+class InternetAddressFrame extends JFrame{
 
 	private final Contact _contact;
 	private final InternetAddressKeeper _addressKeeper = my(InternetAddressKeeper.class);

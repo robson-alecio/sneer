@@ -30,7 +30,7 @@ import wheel.lang.Functor;
 import wheel.reactive.impl.Adapter;
 import static wheel.lang.Environments.my;
 
-public class MemoryMeterGuiImpl implements MemoryMeterGui {
+class MemoryMeterGuiImpl implements MemoryMeterGui {
 
 	private final InstrumentManager _instruments = my(InstrumentManager.class);
 	

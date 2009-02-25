@@ -34,7 +34,7 @@ import wheel.reactive.Signal;
 import wheel.reactive.impl.And;
 import static wheel.lang.Environments.my;
 
-public class WhisperGuiImpl implements WhisperGui { //Optimize need a better snapp window support
+class WhisperGuiImpl implements WhisperGui { //Optimize need a better snapp window support
 
 	private final LoopbackTester _loopback = my(LoopbackTester.class);
 

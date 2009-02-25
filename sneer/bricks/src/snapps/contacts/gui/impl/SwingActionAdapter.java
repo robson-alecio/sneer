@@ -6,7 +6,7 @@ import java.beans.PropertyChangeListener;
 import snapps.contacts.actions.ContactAction;
 import sneer.pulp.contacts.Contact;
 
-public class SwingActionAdapter implements ContactAction, javax.swing.Action {
+class SwingActionAdapter implements ContactAction, javax.swing.Action {
 
 	protected final ContactAction _action;
 	protected Contact _activeContact;

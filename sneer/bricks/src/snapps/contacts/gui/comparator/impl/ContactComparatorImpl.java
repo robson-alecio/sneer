@@ -8,7 +8,7 @@ import snapps.contacts.gui.comparator.ContactComparator;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 
-public class ContactComparatorImpl implements ContactComparator {
+class ContactComparatorImpl implements ContactComparator {
 	
 	private final ConnectionManager _connectionManager = my(ConnectionManager.class);
 

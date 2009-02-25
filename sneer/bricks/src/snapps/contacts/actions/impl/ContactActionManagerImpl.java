@@ -7,7 +7,7 @@ import java.util.TreeMap;
 import snapps.contacts.actions.ContactAction;
 import snapps.contacts.actions.ContactActionManager;
 
-public class ContactActionManagerImpl implements ContactActionManager {
+class ContactActionManagerImpl implements ContactActionManager {
 
 	Map<String, ContactAction> _actions = new TreeMap<String, ContactAction>();
 

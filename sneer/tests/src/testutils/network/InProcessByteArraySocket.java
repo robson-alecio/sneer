@@ -1,4 +1,4 @@
-package sneer.pulp.network.inprocess.impl;
+package testutils.network;
 
 import java.io.IOException;
 import java.util.LinkedList;

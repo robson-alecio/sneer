@@ -1,9 +1,9 @@
-package sneer.pulp.network.inprocess.tests;
+package testutils.network.tests;
 
 import sneer.pulp.network.Network;
-import sneer.pulp.network.inprocess.impl.InProcessNetwork;
 import sneer.pulp.network.tests.NetworkTest;
 import tests.Contribute;
+import testutils.network.InProcessNetwork;
 
 public class InProcessNetworkTest extends NetworkTest {
 

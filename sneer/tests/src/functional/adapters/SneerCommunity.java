@@ -8,7 +8,7 @@ import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
 import sneer.kernel.container.SneerConfig;
 import sneer.pulp.network.Network;
-import sneer.pulp.network.inprocess.impl.InProcessNetwork;
+import testutils.network.InProcessNetwork;
 import wheel.lang.Environments;
 import functional.SovereignCommunity;
 import functional.SovereignParty;

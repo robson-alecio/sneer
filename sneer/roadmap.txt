@@ -1,6 +1,65 @@
 ﻿CURRENT TASKS
 ==================
 
+
+
+
+                             MAIN
+
+-------------------------------------------------------------------
+                                                            BRICKS
+                       SNAPPS (SNEER APPS)
+
+                        SKIN (UI SUPPORT)
+
+                      PULP (SNEER SERVICES)
+
+            KERNEL (CONTAINER (SANDBOX, UPDATES, METOO))
+                                                            BRICKS 
+-------------------------------------------------------------------
+
+                           BRICKNESS
+              (MINIMAL BRICK SUPPORT (CONVENTIONS))
+
+              APACHE COMMONS (LANG, COLLECTION, IO)
+ 
+                             J R E
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	- [Klaus] Own Name - Show contacts' names in contact list
 		- Freedom2Test - Unignore and make it pass.
 

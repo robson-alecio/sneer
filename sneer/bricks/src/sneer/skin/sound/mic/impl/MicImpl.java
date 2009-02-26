@@ -14,7 +14,7 @@ import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 
-public class MicImpl implements Mic {
+class MicImpl implements Mic {
 
 	private final ThreadPool _threads = my(ThreadPool.class);
 	private final RetrierManager _retriers = my(RetrierManager.class);

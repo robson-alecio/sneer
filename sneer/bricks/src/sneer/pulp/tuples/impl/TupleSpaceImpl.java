@@ -36,7 +36,7 @@ import wheel.lang.Environments.Memento;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 
-public class TupleSpaceImpl implements TupleSpace {
+class TupleSpaceImpl implements TupleSpace {
 
 	//Refactor The synchronization will no longer be necessary when the container guarantees synchronization of model bricks.
 	class Subscription {

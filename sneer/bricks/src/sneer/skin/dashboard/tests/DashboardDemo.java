@@ -65,7 +65,7 @@ class Snapp1 implements Instrument{
 
 	@Override
 	public String title() {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+		return "foo";
 	}
 }
 

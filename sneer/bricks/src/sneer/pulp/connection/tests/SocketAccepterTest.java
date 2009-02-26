@@ -1,5 +1,7 @@
 package sneer.pulp.connection.tests;
 
+import static wheel.lang.Environments.my;
+
 import java.io.IOException;
 
 import org.junit.Test;
@@ -7,17 +9,16 @@ import org.junit.Test;
 import sneer.pulp.connection.SocketAccepter;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;
-import sneer.pulp.network.impl.inmemory.InMemoryNetwork;
+import sneer.pulp.network.inprocess.impl.InProcessNetwork;
 import sneer.pulp.port.PortKeeper;
 import tests.Contribute;
 import tests.TestInContainerEnvironment;
 import wheel.reactive.impl.Receiver;
-import static wheel.lang.Environments.my;
 
 public class SocketAccepterTest extends TestInContainerEnvironment {
 
 	@Contribute
-	private final Network _network = new InMemoryNetwork();
+	private final Network _network = new InProcessNetwork();
 
 	private final PortKeeper _portKeeper = my(PortKeeper.class);
 	

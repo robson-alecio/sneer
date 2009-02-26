@@ -7,7 +7,7 @@ import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 
-public class DynDnsAccountKeeperImpl implements DynDnsAccountKeeper {
+class DynDnsAccountKeeperImpl implements DynDnsAccountKeeper {
 
 	private Register<DynDnsAccount> _ownAccount = new RegisterImpl<DynDnsAccount>(null);
 

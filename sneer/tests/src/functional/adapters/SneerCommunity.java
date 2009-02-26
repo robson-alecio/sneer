@@ -8,14 +8,14 @@ import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
 import sneer.kernel.container.SneerConfig;
 import sneer.pulp.network.Network;
-import sneer.pulp.network.impl.inmemory.InMemoryNetwork;
+import sneer.pulp.network.inprocess.impl.InProcessNetwork;
 import wheel.lang.Environments;
 import functional.SovereignCommunity;
 import functional.SovereignParty;
 
 public class SneerCommunity implements SovereignCommunity {
 
-	private final Network _network = new InMemoryNetwork();
+	private final Network _network = new InProcessNetwork();
 	private int _nextPort = 10000;
 
 	private final File _tmpDirectory;
@@ -23,7 +23,6 @@ public class SneerCommunity implements SovereignCommunity {
 	public SneerCommunity(File tmpDirectory) {
 		_tmpDirectory = tmpDirectory;
 	}
-	
 	
 	@Override
 	public SovereignParty createParty(final String name) {

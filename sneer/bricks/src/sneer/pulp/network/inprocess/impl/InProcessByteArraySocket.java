@@ -1,4 +1,4 @@
-package sneer.pulp.network.impl.inmemory;
+package sneer.pulp.network.inprocess.impl;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -8,24 +8,24 @@ import sneer.pulp.network.ByteArraySocket;
 import wheel.lang.Threads;
 
 
-public class InMemoryByteArraySocket implements ByteArraySocket {
+class InProcessByteArraySocket implements ByteArraySocket {
 
-	private InMemoryByteArraySocket _counterpart;
+	private InProcessByteArraySocket _counterpart;
 	
 	private List<byte[]> _receivedObjects = new LinkedList<byte[]>();
 	
 	private volatile boolean _isCrashed = false;
 	
 
-	public InMemoryByteArraySocket() {
-		initialize(new InMemoryByteArraySocket(this));
+	public InProcessByteArraySocket() {
+		initialize(new InProcessByteArraySocket(this));
 	}
 
-	private InMemoryByteArraySocket(InMemoryByteArraySocket counterpart) {
+	private InProcessByteArraySocket(InProcessByteArraySocket counterpart) {
 		initialize(counterpart);
 	}
 
-	private void initialize(InMemoryByteArraySocket counterpart) {
+	private void initialize(InProcessByteArraySocket counterpart) {
 		_counterpart = counterpart;
 	}
 

@@ -1,4 +1,4 @@
-package sneer.pulp.network.impl.inmemory;
+package sneer.pulp.network.inprocess.impl;
 
 import java.io.IOException;
 
@@ -7,14 +7,14 @@ import sneer.pulp.network.ByteArraySocket;
 import wheel.lang.Threads;
 
 
-public class InMemoryByteArrayServerSocket implements ByteArrayServerSocket {
+class InProcessByteArrayServerSocket implements ByteArrayServerSocket {
 
 	private ByteArraySocket _clientSide;
 
 	public synchronized ByteArraySocket accept() throws IOException {
 		
 		if (_clientSide != null) throw new IOException("Port already in use.");
-		InMemoryByteArraySocket result = new InMemoryByteArraySocket();
+		InProcessByteArraySocket result = new InProcessByteArraySocket();
 		_clientSide = result.counterpart();
 		
 		notifyAll(); //Notifies all client threads.

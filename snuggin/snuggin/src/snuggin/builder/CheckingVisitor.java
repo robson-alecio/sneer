@@ -34,8 +34,16 @@ public final class CheckingVisitor extends ASTVisitor {
 		if (brickInterface == null)
 			return false;
 		
+		if (!isDefaultBrickImplFor(type, brickInterface))
+			return false;
+		
 		checkBrickTypeRules(node, brickInterface);
-		return true;
+		return false;
+	}
+
+	private boolean isDefaultBrickImplFor(ITypeBinding type, ITypeBinding brickInterface) {
+		final String defaultImplPackage = brickInterface.getPackage().getName() + ".impl";
+		return defaultImplPackage.equals(type.getPackage().getName());
 	}
 
 	private ITypeBinding brickInterfaceFor(ITypeBinding type) {

@@ -2,7 +2,6 @@ package sneer.kernel.container.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -12,8 +11,6 @@ import org.junit.Test;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
 import sneer.kernel.container.SneerConfig;
-import sneer.kernel.container.tests.impl.MySample;
-import sneer.kernel.container.tests.impl.SampleImpl;
 import sneer.pulp.config.persistence.PersistenceConfig;
 import wheel.lang.Environment;
 
@@ -33,14 +30,14 @@ public class ContainerTest {
 		final Container container = Containers.newContainer(environment);
 		
 		assertEquals("o", container.provide(Object.class));
-		assertTrue(container.provide(Sample.class) instanceof SampleImpl);
+		assertEquals("SampleImpl", container.provide(Sample.class).getClass().getSimpleName());
 		
 		mockery.assertIsSatisfied();
 	}
 
 	@Test
 	public void testImplementationBinding() throws Exception {
-        Sample sample = new MySample();
+        Sample sample = new Sample() {};
         Container c = Containers.newContainer(sample);
         Sample subject = c.provide(Sample.class);
         assertSame(sample, subject);

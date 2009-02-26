@@ -30,16 +30,24 @@ public final class CheckingVisitor extends ASTVisitor {
 			return false;
 		
 		final ITypeBinding type = node.resolveBinding();
-		if (!isBrick(type))
+		final ITypeBinding brickInterface = brickInterfaceFor(type);
+		if (brickInterface == null)
 			return false;
 		
-		checkBrickTypeRules(node);
+		checkBrickTypeRules(node, brickInterface);
 		return true;
 	}
 
-	private void checkBrickTypeRules(TypeDeclaration node) {
+	private ITypeBinding brickInterfaceFor(ITypeBinding type) {
+		for (ITypeBinding itf : type.getInterfaces())
+			if (isBrick(itf))
+				return itf;
+		return null;
+	}
+
+	private void checkBrickTypeRules(TypeDeclaration node, ITypeBinding brickInterface) {
 		if (!node.getName().toString().endsWith("Impl"))
-			addWarning(node, "Brick implementation should be named '" + node.getName() + "Impl'");
+			addWarning(node, "Brick implementation should be named '" + brickInterface.getName() + "Impl'");
 		if (Modifier.isPublic(node.getModifiers()))
 			addWarning(node, "Brick implementation must not be public.");
 	}
@@ -50,7 +58,8 @@ public final class CheckingVisitor extends ASTVisitor {
 
 	private boolean isBrick(final ITypeBinding type) {
 		for (ITypeBinding itf : type.getInterfaces())
-			if (itf.getName().endsWith("Brick"))
+			if (itf.getName().endsWith("Brick")
+				|| isBrick(itf))
 				return true;
 		return false;
 	}

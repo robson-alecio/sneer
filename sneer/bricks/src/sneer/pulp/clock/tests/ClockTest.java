@@ -8,7 +8,7 @@ import org.junit.Test;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.threadpool.Stepper;
 import tests.TestInContainerEnvironment;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 public class ClockTest extends TestInContainerEnvironment {
 

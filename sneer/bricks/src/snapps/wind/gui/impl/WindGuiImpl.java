@@ -1,6 +1,6 @@
 package snapps.wind.gui.impl;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -29,6 +29,7 @@ import javax.swing.border.EmptyBorder;
 import snapps.wind.Shout;
 import snapps.wind.Wind;
 import snapps.wind.gui.WindGui;
+import sneer.brickness.ByRef;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.sound.player.SoundPlayer;
@@ -37,7 +38,6 @@ import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.Logger;
 import wheel.io.ui.GuiThread;
-import wheel.lang.ByRef;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.Constant;
 import wheel.reactive.impl.Receiver;

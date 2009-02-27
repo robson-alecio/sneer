@@ -9,7 +9,7 @@ import javax.swing.SwingConstants;
 
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 import wheel.lang.Functor;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Adapter;

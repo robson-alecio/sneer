@@ -6,10 +6,11 @@ import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
 
+import sneer.brickness.Environments;
+import sneer.brickness.Environments.Memento;
+
 import wheel.io.Logger;
-import wheel.lang.Environments;
 import wheel.lang.Timebox;
-import wheel.lang.Environments.Memento;
 
 public class TimeboxedEventQueue extends EventQueue {
 

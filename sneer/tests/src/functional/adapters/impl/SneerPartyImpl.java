@@ -1,6 +1,6 @@
 package functional.adapters.impl;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 import java.io.File;
 

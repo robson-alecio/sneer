@@ -1,6 +1,6 @@
 package snapps.wind.gui.impl;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

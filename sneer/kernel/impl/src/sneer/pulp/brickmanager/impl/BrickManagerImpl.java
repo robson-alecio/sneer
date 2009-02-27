@@ -1,7 +1,7 @@
 package sneer.pulp.brickmanager.impl;
 
+import static sneer.brickness.Environments.my;
 import static wheel.io.Logger.log;
-import static wheel.lang.Environments.my;
 
 import java.io.File;
 import java.io.IOException;

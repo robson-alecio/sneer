@@ -1,6 +1,6 @@
 package sneer.skin.sound.mic.tests;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.LineUnavailableException;

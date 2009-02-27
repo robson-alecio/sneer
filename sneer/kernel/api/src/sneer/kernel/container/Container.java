@@ -1,6 +1,6 @@
 package sneer.kernel.container;
 
-import wheel.lang.Environment;
+import sneer.brickness.Environment;
 
 public interface Container extends Environment {
 	

@@ -1,6 +1,6 @@
 package spikes.sandro.listsort;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 import java.awt.BorderLayout;
 import java.awt.Image;
@@ -13,6 +13,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import sneer.brickness.ByRef;
+import sneer.brickness.Environments;
 import sneer.kernel.container.Containers;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
@@ -20,8 +22,6 @@ import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.io.ui.TimeboxedEventQueue;
-import wheel.lang.ByRef;
-import wheel.lang.Environments;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Constant;

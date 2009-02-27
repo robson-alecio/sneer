@@ -15,10 +15,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import sneer.brickness.Environments;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
 import wheel.io.Logger;
-import wheel.lang.Environments;
 
 public class Sneer {
 

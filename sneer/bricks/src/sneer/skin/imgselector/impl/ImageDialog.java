@@ -16,7 +16,7 @@ import javax.swing.WindowConstants;
 
 import sneer.skin.image.ImageFactory;
 import wheel.lang.Consumer;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 class ImageDialog extends JDialog {
 	

@@ -14,7 +14,7 @@ import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListValueChange;
 import wheel.reactive.lists.VisitorAdapter;
 import wheel.reactive.lists.impl.ListRegisterImpl;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 final class SortedVisitor<T> extends VisitorAdapter<T> implements ListOfSignalsReceiver<T>{
 

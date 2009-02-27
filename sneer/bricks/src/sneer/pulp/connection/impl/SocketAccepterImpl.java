@@ -1,5 +1,6 @@
 package sneer.pulp.connection.impl;
 
+import static sneer.brickness.Environments.my;
 import static wheel.io.Logger.log;
 
 import java.io.IOException;
@@ -19,7 +20,6 @@ import wheel.reactive.EventNotifier;
 import wheel.reactive.EventSource;
 import wheel.reactive.impl.EventNotifierImpl;
 import wheel.reactive.impl.Receiver;
-import static wheel.lang.Environments.my;
 
 class SocketAccepterImpl implements SocketAccepter {
 	

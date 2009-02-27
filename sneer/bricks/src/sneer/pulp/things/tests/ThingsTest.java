@@ -10,7 +10,7 @@ import wheel.lang.Daemon;
 import wheel.lang.Threads;
 import wheel.reactive.sets.SetSignal;
 import wheel.testutil.TestDashboard;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 public class ThingsTest extends TestInContainerEnvironment {
 	

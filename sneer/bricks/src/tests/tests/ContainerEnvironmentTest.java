@@ -2,7 +2,7 @@ package tests.tests;
 
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

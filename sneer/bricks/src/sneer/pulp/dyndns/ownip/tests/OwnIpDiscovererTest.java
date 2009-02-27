@@ -1,6 +1,6 @@
 package sneer.pulp.dyndns.ownip.tests;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 import java.io.IOException;
 

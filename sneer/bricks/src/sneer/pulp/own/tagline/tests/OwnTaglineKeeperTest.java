@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import sneer.pulp.own.tagline.OwnTaglineKeeper;
 import tests.TestInContainerEnvironment;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 public class OwnTaglineKeeperTest extends TestInContainerEnvironment {
 

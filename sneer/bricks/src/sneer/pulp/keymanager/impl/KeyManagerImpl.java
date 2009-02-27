@@ -1,6 +1,6 @@
 package sneer.pulp.keymanager.impl;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -8,7 +8,7 @@ import sneer.kernel.container.Tuple;
 import sneer.pulp.tuples.TupleSpace;
 import tests.TestInContainerEnvironment;
 import wheel.lang.Consumer;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 public class TupleSpaceTest extends TestInContainerEnvironment {
 

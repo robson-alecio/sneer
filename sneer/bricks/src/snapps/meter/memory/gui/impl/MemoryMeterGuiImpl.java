@@ -28,7 +28,7 @@ import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.ui.graphics.Images;
 import wheel.lang.Functor;
 import wheel.reactive.impl.Adapter;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 class MemoryMeterGuiImpl implements MemoryMeterGui {
 

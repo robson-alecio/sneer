@@ -3,7 +3,7 @@
  */
 package snapps.contacts.gui.comparator.impl;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 import snapps.contacts.gui.comparator.ContactComparator;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;

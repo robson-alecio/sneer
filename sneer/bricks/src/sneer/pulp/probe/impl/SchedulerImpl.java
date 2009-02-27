@@ -7,7 +7,7 @@ import sneer.kernel.container.Tuple;
 import sneer.pulp.connection.ByteConnection.PacketScheduler;
 import sneer.pulp.serialization.Serializer;
 import wheel.lang.Threads;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 class SchedulerImpl implements PacketScheduler {
 

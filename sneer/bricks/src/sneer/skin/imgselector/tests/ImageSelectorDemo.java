@@ -2,11 +2,11 @@ package sneer.skin.imgselector.tests;
 
 import java.awt.Image;
 
+import sneer.brickness.Environments;
 import sneer.kernel.container.Containers;
 import sneer.skin.imgselector.ImageSelector;
 import wheel.io.Logger;
 import wheel.lang.Consumer;
-import wheel.lang.Environments;
 import wheel.lang.Threads;
 
 public class ImageSelectorDemo  {

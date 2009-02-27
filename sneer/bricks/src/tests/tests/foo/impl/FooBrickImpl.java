@@ -1,6 +1,6 @@
 package tests.tests.foo.impl;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 import tests.tests.bar.BarBrick;
 import tests.tests.foo.FooBrick;
 

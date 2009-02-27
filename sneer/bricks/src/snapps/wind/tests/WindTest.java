@@ -6,7 +6,7 @@ import snapps.wind.Shout;
 import snapps.wind.Wind;
 import sneer.pulp.tuples.TupleSpace;
 import tests.TestInContainerEnvironment;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 public class WindTest extends TestInContainerEnvironment {
 

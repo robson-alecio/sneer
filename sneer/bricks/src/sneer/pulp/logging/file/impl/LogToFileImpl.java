@@ -1,6 +1,6 @@
 package sneer.pulp.logging.file.impl;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 import java.io.File;
 import java.io.FileWriter;

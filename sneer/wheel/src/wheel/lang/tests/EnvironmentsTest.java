@@ -1,15 +1,16 @@
 package wheel.lang.tests;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import wheel.lang.ByRef;
-import wheel.lang.Environment;
-import wheel.lang.Environments;
+import sneer.brickness.ByRef;
+import sneer.brickness.Environment;
+import sneer.brickness.Environments;
+import sneer.brickness.Environments.Memento;
+
 import wheel.lang.Producer;
-import wheel.lang.Environments.Memento;
 
 public class EnvironmentsTest extends Assert {
 	

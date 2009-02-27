@@ -18,7 +18,7 @@ import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.propertystore.PropertyStore;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.reactive.impl.Receiver;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 class DynDnsClientImpl implements DynDnsClient {
 	

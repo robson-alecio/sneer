@@ -1,6 +1,6 @@
 package snapps.meter.bandwidth.gui.impl;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

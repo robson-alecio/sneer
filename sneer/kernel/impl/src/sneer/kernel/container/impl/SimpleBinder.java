@@ -3,7 +3,8 @@ package sneer.kernel.container.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import wheel.lang.Environment;
+import sneer.brickness.Environment;
+
 
 class SimpleBinder implements Environment {
 

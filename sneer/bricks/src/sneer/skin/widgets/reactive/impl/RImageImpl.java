@@ -16,7 +16,7 @@ import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.impl.RegisterImpl;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 class RImageImpl extends JPanel implements ImageWidget{
 

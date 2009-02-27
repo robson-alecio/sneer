@@ -1,7 +1,7 @@
 package snapps.watchme.tests;
 
+import static sneer.brickness.Environments.my;
 import static wheel.io.ui.graphics.Images.getImage;
-import static wheel.lang.Environments.my;
 
 import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;

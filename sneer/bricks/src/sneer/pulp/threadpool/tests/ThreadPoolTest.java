@@ -1,16 +1,16 @@
 package sneer.pulp.threadpool.tests;
 
 import static org.junit.Assert.assertSame;
+import static sneer.brickness.Environments.my;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import sneer.brickness.Environment;
+import sneer.brickness.Environments;
 import sneer.pulp.threadpool.ThreadPool;
 import tests.ContainerEnvironment;
-import wheel.lang.Environment;
-import wheel.lang.Environments;
 import wheel.lang.Threads;
-import static wheel.lang.Environments.my;
 
 @RunWith(ContainerEnvironment.class)
 public class ThreadPoolTest {

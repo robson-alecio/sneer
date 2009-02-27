@@ -4,7 +4,7 @@ import sneer.pulp.clock.Clock;
 import sneer.pulp.clockticker.ClockTicker;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.lang.Threads;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 class ClockTickerImpl implements ClockTicker, Runnable {
 

@@ -1,5 +1,6 @@
 package snapps.watchme.codec.tests;
 
+import static sneer.brickness.Environments.my;
 import static wheel.io.ui.graphics.Images.copy;
 import static wheel.io.ui.graphics.Images.getImage;
 
@@ -20,7 +21,6 @@ import tests.TestInContainerEnvironment;
 import wheel.io.serialization.impl.XStreamBinarySerializer;
 import wheel.io.ui.graphics.Images;
 import wheel.lang.exceptions.Hiccup;
-import static wheel.lang.Environments.my;
 
 public class ImageCodecTest extends TestInContainerEnvironment {
 	

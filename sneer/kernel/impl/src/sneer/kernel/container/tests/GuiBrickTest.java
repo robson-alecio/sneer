@@ -8,10 +8,10 @@ import javax.swing.SwingUtilities;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import sneer.brickness.ByRef;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
 import wheel.io.ui.TimeboxedEventQueue;
-import wheel.lang.ByRef;
 import wheel.lang.exceptions.NotImplementedYet;
 import wheel.lang.exceptions.TimeIsUp;
 

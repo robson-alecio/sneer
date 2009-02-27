@@ -1,16 +1,16 @@
 package tests;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import org.junit.internal.runners.InitializationError;
 
+import sneer.brickness.Environment;
 import sneer.kernel.container.Containers;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
 import sneer.pulp.exceptionhandling.tests.mocks.ExceptionLeaker;
-import wheel.lang.Environment;
 import wheel.testutil.WheelEnvironment;
 
 public class ContainerEnvironment extends WheelEnvironment {

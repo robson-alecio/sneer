@@ -6,7 +6,7 @@ import sneer.pulp.threadpool.Stepper;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 class MemoryMeterImpl implements MemoryMeter {
 

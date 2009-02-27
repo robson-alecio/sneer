@@ -1,5 +1,6 @@
 package sneer.pulp.own.avatar.tests;
 
+import static sneer.brickness.Environments.my;
 import static wheel.io.ui.graphics.Images.getImage;
 import static wheel.io.ui.graphics.Images.isSameImage;
 
@@ -12,7 +13,6 @@ import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.skin.image.ImageFactory;
 import tests.TestInContainerEnvironment;
 import wheel.lang.exceptions.Hiccup;
-import static wheel.lang.Environments.my;
 
 public class OwnAvatarKeeperTest extends TestInContainerEnvironment {
 

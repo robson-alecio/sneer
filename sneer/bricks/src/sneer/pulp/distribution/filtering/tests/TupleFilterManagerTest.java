@@ -5,7 +5,7 @@ import org.junit.Test;
 import sneer.kernel.container.Tuple;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import tests.TestInContainerEnvironment;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 public class TupleFilterManagerTest extends TestInContainerEnvironment {
 

@@ -1,14 +1,14 @@
 package sneer.pulp.clock.impl;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import sneer.brickness.ByRef;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
 import sneer.pulp.threadpool.Stepper;
-import wheel.lang.ByRef;
 import wheel.lang.Threads;
 import wheel.lang.Timebox;
 

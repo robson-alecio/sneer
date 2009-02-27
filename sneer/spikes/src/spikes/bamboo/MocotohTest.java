@@ -1,6 +1,6 @@
 package spikes.bamboo;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 import org.junit.Assert;
 import org.junit.Test;

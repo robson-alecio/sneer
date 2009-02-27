@@ -1,6 +1,6 @@
 package sneer.pulp.logging.impl;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.logging.LogWhiteListEntry;
 import sneer.pulp.tuples.TupleSpace;

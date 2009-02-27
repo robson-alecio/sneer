@@ -21,7 +21,7 @@ import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 class OwnerGuiImpl implements OwnerGui {
 

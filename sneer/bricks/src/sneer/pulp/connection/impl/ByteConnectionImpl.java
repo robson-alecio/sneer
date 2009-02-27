@@ -1,7 +1,7 @@
 package sneer.pulp.connection.impl;
 
+import static sneer.brickness.Environments.my;
 import static wheel.io.Logger.logShort;
-import static wheel.lang.Environments.my;
 
 import java.io.IOException;
 import java.util.Arrays;

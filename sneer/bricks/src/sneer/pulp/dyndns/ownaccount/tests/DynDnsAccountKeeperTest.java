@@ -5,7 +5,7 @@ import org.junit.Test;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccount;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
 import tests.TestInContainerEnvironment;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 public class DynDnsAccountKeeperTest extends TestInContainerEnvironment {
 

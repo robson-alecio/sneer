@@ -5,7 +5,7 @@ import sneer.pulp.connection.SocketReceiver;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.reactive.impl.Receiver;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 class SocketReceiverImpl implements SocketReceiver {
 

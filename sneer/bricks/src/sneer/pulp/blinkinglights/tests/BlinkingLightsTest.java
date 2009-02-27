@@ -1,6 +1,6 @@
 package sneer.pulp.blinkinglights.tests;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 import org.junit.Test;
 

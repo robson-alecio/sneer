@@ -1,6 +1,6 @@
 package sneer.pulp.blinkinglights.impl;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;

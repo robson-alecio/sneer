@@ -1,6 +1,6 @@
 package sneer.skin.main_Menu.impl;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 import javax.swing.JComponent;
 

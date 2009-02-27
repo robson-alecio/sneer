@@ -2,7 +2,7 @@ package sneer.pulp.datastore.impl;
 
 import sneer.pulp.datastore.DataStore;
 import sneer.pulp.propertystore.PropertyStore;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 class DataStoreImpl implements DataStore {
 

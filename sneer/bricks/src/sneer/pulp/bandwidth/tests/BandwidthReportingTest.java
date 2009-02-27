@@ -1,9 +1,10 @@
 package sneer.pulp.bandwidth.tests;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 import org.junit.Test;
 
+import sneer.brickness.ByRef;
 import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;
@@ -14,7 +15,6 @@ import sneer.pulp.threadpool.ThreadPool;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
 import tests.Contribute;
 import tests.TestInContainerEnvironment;
-import wheel.lang.ByRef;
 import wheel.lang.Consumer;
 import wheel.lang.StringUtils;
 import wheel.reactive.Signal;

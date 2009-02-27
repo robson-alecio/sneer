@@ -13,7 +13,7 @@ import sneer.pulp.blinkinglights.LightType;
 import sneer.skin.screenshotter.Screenshotter;
 import wheel.lang.exceptions.FriendlyException;
 import wheel.lang.exceptions.Hiccup;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 class ScreenshotterImpl implements Screenshotter {
 

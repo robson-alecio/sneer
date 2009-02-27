@@ -1,11 +1,12 @@
 package sneer.skin.widgets.reactive.tests;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 
+import sneer.brickness.Environments;
 import sneer.kernel.container.Containers;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
@@ -14,7 +15,6 @@ import sneer.skin.widgets.reactive.WindowWidget;
 import wheel.io.Logger;
 import wheel.io.ui.GuiThread;
 import wheel.io.ui.TimeboxedEventQueue;
-import wheel.lang.Environments;
 import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;
 

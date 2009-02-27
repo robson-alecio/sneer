@@ -1,6 +1,6 @@
 package sneer.pulp.dyndns.client.tests;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,6 +9,7 @@ import java.util.List;
 import org.jmock.Expectations;
 import org.junit.Test;
 
+import sneer.brickness.Environments;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
 import sneer.pulp.blinkinglights.BlinkingLights;
@@ -26,7 +27,6 @@ import sneer.pulp.propertystore.mocks.TransientPropertyStore;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
 import tests.Contribute;
 import tests.TestInContainerEnvironment;
-import wheel.lang.Environments;
 import wheel.lang.exceptions.FriendlyException;
 import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;

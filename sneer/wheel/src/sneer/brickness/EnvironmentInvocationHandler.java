@@ -1,13 +1,14 @@
-package wheel.lang;
+package sneer.brickness;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import wheel.lang.Environments.Memento;
+import sneer.brickness.Environments.Memento;
+
 
 final class EnvironmentInvocationHandler<T> implements InvocationHandler {
 

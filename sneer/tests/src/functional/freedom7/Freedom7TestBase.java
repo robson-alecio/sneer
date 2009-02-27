@@ -1,6 +1,6 @@
 package functional.freedom7;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 import java.io.File;
 import java.io.IOException;
@@ -159,7 +159,7 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 				"}");
 		writer.write("freedom7.w.impl.WImpl",
 				"import sneer.kernel.container.*;\n" +
-				"import static wheel.lang.Environments.my;\n" +
+				"import static sneer.brickness.Environments.my;\n" +
 				"class WImpl implements freedom7.w.W {\n" +
 					"private freedom7.y.Y _y = my(freedom7.y.Y.class);\n" +
 					"public WImpl() {\n" +

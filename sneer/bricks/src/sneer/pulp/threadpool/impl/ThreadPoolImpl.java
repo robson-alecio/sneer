@@ -1,6 +1,6 @@
 package sneer.pulp.threadpool.impl;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;

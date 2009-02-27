@@ -1,9 +1,9 @@
 package snapps.gis.ui.tests;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 import snapps.gis.ui.LocationGui;
+import sneer.brickness.Environments;
 import sneer.kernel.container.Containers;
-import wheel.lang.Environments;
 import wheel.lang.Threads;
 
 public class LocationGuiMain  {

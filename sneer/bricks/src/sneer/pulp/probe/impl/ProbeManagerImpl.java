@@ -15,7 +15,7 @@ import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
 import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.lists.impl.SimpleListReceiver;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 class ProbeManagerImpl implements ProbeManager {
 	

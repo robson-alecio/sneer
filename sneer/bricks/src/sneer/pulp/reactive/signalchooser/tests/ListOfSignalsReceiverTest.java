@@ -15,7 +15,7 @@ import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 import wheel.reactive.lists.impl.VisitingListReceiver;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 public class ListOfSignalsReceiverTest extends TestInContainerEnvironment {
 

@@ -26,7 +26,7 @@ import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.port.PortKeeper;
 import sneer.pulp.probe.ProbeManager;
 import sneer.skin.dashboard.Dashboard;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 class MainSneerBrickImpl implements MainSneerBrick {
 

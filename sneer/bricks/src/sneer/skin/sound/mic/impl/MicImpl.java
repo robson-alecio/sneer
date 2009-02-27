@@ -1,6 +1,6 @@
 package sneer.skin.sound.mic.impl;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 import sneer.pulp.retrier.Retrier;
 import sneer.pulp.retrier.RetrierManager;
 import sneer.pulp.retrier.Task;

@@ -8,11 +8,11 @@ import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
+import sneer.brickness.Environment;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
 import sneer.kernel.container.SneerConfig;
 import sneer.pulp.config.persistence.PersistenceConfig;
-import wheel.lang.Environment;
 
 public class ContainerTest {
 	

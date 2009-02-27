@@ -1,6 +1,6 @@
 package sneer.pulp.tuples.impl;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 import static wheel.lang.Types.cast;
 
 import java.io.File;
@@ -21,6 +21,8 @@ import org.prevayler.PrevaylerFactory;
 import org.prevayler.foundation.serialization.XStreamSerializer;
 
 import snapps.wind.impl.bubble.Bubble;
+import sneer.brickness.Environments;
+import sneer.brickness.Environments.Memento;
 import sneer.kernel.container.Tuple;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.config.persistence.PersistenceConfig;
@@ -30,9 +32,7 @@ import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
-import wheel.lang.Environments;
 import wheel.lang.Threads;
-import wheel.lang.Environments.Memento;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 

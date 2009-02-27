@@ -1,0 +1,26 @@
+
+                   MAIN    |    FUNCTIONAL TESTS
+
+-------------------------------------------------------------------
+                                                            BRICKS
+                       SNAPPS (SNEER APPS)
+
+                        SKIN (UI SUPPORT)
+
+                      PULP (SNEER SERVICES)
+
+            KERNEL (CONTAINER (SANDBOX, UPDATES, METOO))
+            
+                        COMMON BRICKS
+                                                            BRICKS 
+-------------------------------------------------------------------
+
+                           BRICKNESS
+              (MINIMAL BRICK SUPPORT (CONVENTIONS))
+
+                         SNEER COMMONS
+
+              APACHE COMMONS (LANG, COLLECTION, IO)
+ 
+                             J R E
+

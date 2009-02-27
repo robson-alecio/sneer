@@ -3,7 +3,9 @@ package wheel.lang;
 import java.util.HashSet;
 import java.util.Set;
 
-import wheel.lang.Environments.Memento;
+import sneer.brickness.Environments;
+import sneer.brickness.Environments.Memento;
+
 
 
 public class Threads {

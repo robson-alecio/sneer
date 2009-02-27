@@ -10,7 +10,7 @@ import wheel.lang.Consumer;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 class WindImpl implements Wind, Consumer<Shout> {
 

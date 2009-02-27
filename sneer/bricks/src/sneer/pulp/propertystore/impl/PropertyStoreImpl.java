@@ -13,7 +13,7 @@ import sneer.pulp.config.persistence.PersistenceConfig;
 import sneer.pulp.propertystore.PropertyStore;
 import wheel.io.Logger;
 import wheel.io.Streams;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 class PropertyStoreImpl implements PropertyStore {
 

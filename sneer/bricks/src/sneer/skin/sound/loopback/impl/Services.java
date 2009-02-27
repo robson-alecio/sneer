@@ -1,6 +1,6 @@
 package sneer.skin.sound.loopback.impl;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.skin.sound.kernel.Audio;
 

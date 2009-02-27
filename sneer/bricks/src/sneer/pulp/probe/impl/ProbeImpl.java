@@ -12,7 +12,7 @@ import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 final class ProbeImpl implements Consumer<Tuple> {
 

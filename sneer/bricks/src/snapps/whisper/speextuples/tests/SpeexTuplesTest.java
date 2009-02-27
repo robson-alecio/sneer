@@ -1,6 +1,6 @@
 package snapps.whisper.speextuples.tests;
 
-import static wheel.lang.Environments.my;
+import static sneer.brickness.Environments.my;
 
 import org.jmock.Expectations;
 import org.junit.Test;
@@ -10,6 +10,7 @@ import snapps.whisper.speex.Encoder;
 import snapps.whisper.speex.Speex;
 import snapps.whisper.speextuples.SpeexPacket;
 import snapps.whisper.speextuples.SpeexTuples;
+import sneer.brickness.ByRef;
 import sneer.kernel.container.PublicKey;
 import sneer.kernel.container.Tuple;
 import sneer.pulp.clock.Clock;
@@ -19,7 +20,6 @@ import sneer.skin.rooms.ActiveRoomKeeper;
 import sneer.skin.sound.PcmSoundPacket;
 import tests.Contribute;
 import tests.TestInContainerEnvironment;
-import wheel.lang.ByRef;
 import wheel.lang.Consumer;
 import wheel.lang.ImmutableByteArray;
 

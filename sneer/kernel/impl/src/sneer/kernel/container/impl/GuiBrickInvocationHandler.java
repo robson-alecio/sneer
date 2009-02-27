@@ -8,8 +8,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import sneer.brickness.ByRef;
+
 import wheel.io.ui.GuiThread;
-import wheel.lang.ByRef;
 
 final class GuiBrickInvocationHandler<T> implements InvocationHandler {
 

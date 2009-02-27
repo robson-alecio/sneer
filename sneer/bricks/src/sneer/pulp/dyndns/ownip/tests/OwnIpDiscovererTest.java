@@ -8,13 +8,13 @@ import org.jmock.Expectations;
 import org.jmock.Sequence;
 import org.junit.Test;
 
+import sneer.brickness.testsupport.Contribute;
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.propertystore.PropertyStore;
 import sneer.pulp.propertystore.mocks.TransientPropertyStore;
-import tests.Contribute;
-import tests.TestInContainerEnvironment;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.Receiver;
 

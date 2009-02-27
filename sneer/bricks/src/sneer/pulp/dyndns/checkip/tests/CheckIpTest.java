@@ -7,10 +7,10 @@ import java.io.IOException;
 import org.jmock.Expectations;
 import org.junit.Test;
 
+import sneer.brickness.testsupport.Contribute;
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.httpclient.HttpClient;
-import tests.Contribute;
-import tests.TestInContainerEnvironment;
 
 public class CheckIpTest extends TestInContainerEnvironment {
 	

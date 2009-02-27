@@ -2,9 +2,9 @@ package sneer.pulp.distribution.filtering.tests;
 
 import org.junit.Test;
 
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.kernel.container.Tuple;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
-import tests.TestInContainerEnvironment;
 import static sneer.brickness.Environments.my;
 
 public class TupleFilterManagerTest extends TestInContainerEnvironment {

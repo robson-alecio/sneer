@@ -1,8 +1,8 @@
 package testutils.network.tests;
 
+import sneer.brickness.testsupport.Contribute;
 import sneer.pulp.network.Network;
 import sneer.pulp.network.tests.NetworkTest;
-import tests.Contribute;
 import testutils.network.InProcessNetwork;
 
 public class InProcessNetworkTest extends NetworkTest {

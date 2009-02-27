@@ -9,9 +9,9 @@ import javax.swing.event.ListDataListener;
 import org.junit.Assert;
 import org.junit.Test;
 
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
-import tests.TestInContainerEnvironment;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;

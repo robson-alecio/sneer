@@ -5,6 +5,8 @@ import static sneer.brickness.Environments.my;
 import org.junit.Test;
 
 import sneer.brickness.ByRef;
+import sneer.brickness.testsupport.Contribute;
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;
@@ -13,8 +15,6 @@ import sneer.pulp.contacts.Contact;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
-import tests.Contribute;
-import tests.TestInContainerEnvironment;
 import wheel.lang.Consumer;
 import wheel.lang.StringUtils;
 import wheel.reactive.Signal;

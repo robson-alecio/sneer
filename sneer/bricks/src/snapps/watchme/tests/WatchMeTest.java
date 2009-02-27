@@ -16,6 +16,8 @@ import org.jmock.Sequence;
 import org.junit.Test;
 
 import snapps.watchme.WatchMe;
+import sneer.brickness.testsupport.Contribute;
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
 import sneer.kernel.container.PublicKey;
@@ -24,8 +26,6 @@ import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.screenshotter.Screenshotter;
-import tests.Contribute;
-import tests.TestInContainerEnvironment;
 import wheel.io.ui.graphics.Images;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.Hiccup;

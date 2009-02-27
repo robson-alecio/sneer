@@ -4,8 +4,8 @@ import org.junit.Test;
 
 import snapps.wind.Shout;
 import snapps.wind.Wind;
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.pulp.tuples.TupleSpace;
-import tests.TestInContainerEnvironment;
 import static sneer.brickness.Environments.my;
 
 public class WindTest extends TestInContainerEnvironment {

@@ -9,10 +9,10 @@ import javax.sound.sampled.TargetDataLine;
 import org.jmock.Expectations;
 import org.junit.Test;
 
+import sneer.brickness.testsupport.Contribute;
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.mic.Mic;
-import tests.Contribute;
-import tests.TestInContainerEnvironment;
 import wheel.testutil.SignalUtils;
 
 public class MicTest extends TestInContainerEnvironment {

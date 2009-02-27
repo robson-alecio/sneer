@@ -4,13 +4,13 @@ import static sneer.brickness.Environments.my;
 
 import org.junit.Test;
 
+import sneer.brickness.testsupport.Contribute;
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.connection.mocks.SocketAccepterMock;
 import sneer.pulp.connection.reachability.ReachabilitySentinel;
 import sneer.pulp.network.ByteArraySocket;
-import tests.Contribute;
-import tests.TestInContainerEnvironment;
 
 public class ReachabilityTest extends TestInContainerEnvironment {
 	

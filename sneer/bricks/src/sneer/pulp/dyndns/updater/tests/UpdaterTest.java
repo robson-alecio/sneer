@@ -7,6 +7,8 @@ import java.io.IOException;
 import org.jmock.Expectations;
 import org.junit.Test;
 
+import sneer.brickness.testsupport.Contribute;
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.pulp.dyndns.updater.BadAuthException;
 import sneer.pulp.dyndns.updater.InvalidHostException;
 import sneer.pulp.dyndns.updater.RedundantUpdateException;
@@ -15,8 +17,6 @@ import sneer.pulp.dyndns.updater.UnexpectedResponseException;
 import sneer.pulp.dyndns.updater.Updater;
 import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.httpclient.HttpClient;
-import tests.Contribute;
-import tests.TestInContainerEnvironment;
 import wheel.io.Base64;
 import wheel.lang.Pair;
 

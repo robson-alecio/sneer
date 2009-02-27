@@ -6,10 +6,10 @@ import org.jmock.Expectations;
 import org.junit.Test;
 
 import snapps.whisper.speextuples.SpeexTuples;
+import sneer.brickness.testsupport.Contribute;
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.skin.sound.PcmSoundPacket;
-import tests.Contribute;
-import tests.TestInContainerEnvironment;
 
 public class PcmBlockingTest extends TestInContainerEnvironment {
 	

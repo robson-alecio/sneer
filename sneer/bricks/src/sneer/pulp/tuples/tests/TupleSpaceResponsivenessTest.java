@@ -5,10 +5,10 @@ import static sneer.brickness.Environments.my;
 import org.junit.Test;
 
 import sneer.brickness.ByRef;
+import sneer.brickness.testsupport.Contribute;
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
 import sneer.pulp.tuples.TupleSpace;
-import tests.Contribute;
-import tests.TestInContainerEnvironment;
 import wheel.lang.Consumer;
 
 public class TupleSpaceResponsivenessTest extends TestInContainerEnvironment {

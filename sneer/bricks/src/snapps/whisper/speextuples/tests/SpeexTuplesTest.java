@@ -11,6 +11,8 @@ import snapps.whisper.speex.Speex;
 import snapps.whisper.speextuples.SpeexPacket;
 import snapps.whisper.speextuples.SpeexTuples;
 import sneer.brickness.ByRef;
+import sneer.brickness.testsupport.Contribute;
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.kernel.container.PublicKey;
 import sneer.kernel.container.Tuple;
 import sneer.pulp.clock.Clock;
@@ -18,8 +20,6 @@ import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.rooms.ActiveRoomKeeper;
 import sneer.skin.sound.PcmSoundPacket;
-import tests.Contribute;
-import tests.TestInContainerEnvironment;
 import wheel.lang.Consumer;
 import wheel.lang.ImmutableByteArray;
 

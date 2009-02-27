@@ -5,14 +5,14 @@ import static sneer.brickness.Environments.my;
 import org.junit.Test;
 
 import snapps.contacts.gui.comparator.ContactComparator;
+import sneer.brickness.testsupport.Contribute;
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
-import tests.Contribute;
-import tests.TestInContainerEnvironment;
 import wheel.lang.Consumer;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Constant;

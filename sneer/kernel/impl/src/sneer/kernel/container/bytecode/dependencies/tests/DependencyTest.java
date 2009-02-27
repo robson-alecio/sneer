@@ -11,8 +11,8 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.kernel.container.bytecode.dependencies.DependencyFinder;
-import tests.TestInContainerEnvironment;
 import wheel.testutil.TestUtils;
 
 public class DependencyTest extends TestInContainerEnvironment {

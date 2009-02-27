@@ -2,8 +2,8 @@ package sneer.pulp.own.name.tests;
 
 import org.junit.Test;
 
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.pulp.own.name.OwnNameKeeper;
-import tests.TestInContainerEnvironment;
 import static sneer.brickness.Environments.my;
 
 public class OwnNameKeeperTest extends TestInContainerEnvironment {

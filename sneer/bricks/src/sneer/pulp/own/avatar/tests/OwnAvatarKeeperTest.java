@@ -9,9 +9,9 @@ import java.awt.image.BufferedImage;
 
 import org.junit.Test;
 
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.skin.image.ImageFactory;
-import tests.TestInContainerEnvironment;
 import wheel.lang.exceptions.Hiccup;
 
 public class OwnAvatarKeeperTest extends TestInContainerEnvironment {

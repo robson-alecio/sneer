@@ -2,8 +2,8 @@ package sneer.pulp.own.tagline.tests;
 
 import org.junit.Test;
 
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.pulp.own.tagline.OwnTaglineKeeper;
-import tests.TestInContainerEnvironment;
 import static sneer.brickness.Environments.my;
 
 public class OwnTaglineKeeperTest extends TestInContainerEnvironment {

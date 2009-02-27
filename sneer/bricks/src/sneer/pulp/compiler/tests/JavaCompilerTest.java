@@ -11,11 +11,11 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.pulp.classpath.Classpath;
 import sneer.pulp.classpath.ClasspathFactory;
 import sneer.pulp.compiler.CompilationError;
 import sneer.pulp.compiler.Result;
-import tests.TestInContainerEnvironment;
 import wheel.io.Jars;
 
 public class JavaCompilerTest extends TestInContainerEnvironment {

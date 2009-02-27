@@ -7,9 +7,9 @@ import java.util.Comparator;
 import org.jmock.Expectations;
 import org.junit.Test;
 
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
-import tests.TestInContainerEnvironment;
 import wheel.lang.Consumer;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;

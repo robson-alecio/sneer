@@ -10,6 +10,8 @@ import org.jmock.Expectations;
 import org.junit.Test;
 
 import sneer.brickness.Environments;
+import sneer.brickness.testsupport.Contribute;
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
 import sneer.pulp.blinkinglights.BlinkingLights;
@@ -25,8 +27,6 @@ import sneer.pulp.dyndns.updater.Updater;
 import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.propertystore.mocks.TransientPropertyStore;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
-import tests.Contribute;
-import tests.TestInContainerEnvironment;
 import wheel.lang.exceptions.FriendlyException;
 import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;

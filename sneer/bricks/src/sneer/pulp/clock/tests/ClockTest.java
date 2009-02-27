@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.junit.Test;
 
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.threadpool.Stepper;
-import tests.TestInContainerEnvironment;
 import static sneer.brickness.Environments.my;
 
 public class ClockTest extends TestInContainerEnvironment {

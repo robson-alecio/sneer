@@ -10,9 +10,9 @@ import org.jmock.Expectations;
 import org.jmock.Sequence;
 import org.junit.Test;
 
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.pulp.streams.sequencer.Sequencer;
 import sneer.pulp.streams.sequencer.Sequencers;
-import tests.TestInContainerEnvironment;
 import wheel.lang.Consumer;
 
 public class SequencerTest extends TestInContainerEnvironment {

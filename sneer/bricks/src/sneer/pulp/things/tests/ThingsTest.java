@@ -3,9 +3,9 @@ package sneer.pulp.things.tests;
 import org.junit.Assert;
 import org.junit.Test;
 
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.pulp.things.Thing;
 import sneer.pulp.things.ThingHome;
-import tests.TestInContainerEnvironment;
 import wheel.lang.Daemon;
 import wheel.lang.Threads;
 import wheel.reactive.sets.SetSignal;

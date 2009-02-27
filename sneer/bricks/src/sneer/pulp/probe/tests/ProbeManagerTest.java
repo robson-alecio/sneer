@@ -8,6 +8,8 @@ import org.jmock.lib.action.CustomAction;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import sneer.brickness.testsupport.Contribute;
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;
@@ -19,8 +21,6 @@ import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.probe.ProbeManager;
 import sneer.pulp.serialization.Serializer;
 import sneer.pulp.tuples.TupleSpace;
-import tests.Contribute;
-import tests.TestInContainerEnvironment;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.Constant;
 import wheel.testutil.SignalUtils;

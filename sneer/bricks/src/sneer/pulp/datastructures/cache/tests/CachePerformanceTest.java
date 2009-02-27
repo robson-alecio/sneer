@@ -4,9 +4,9 @@ import static sneer.brickness.Environments.my;
 
 import org.junit.Test;
 
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.pulp.datastructures.cache.Cache;
 import sneer.pulp.datastructures.cache.CacheFactory;
-import tests.TestInContainerEnvironment;
 
 public class CachePerformanceTest extends TestInContainerEnvironment{
 

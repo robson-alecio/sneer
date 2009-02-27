@@ -8,6 +8,8 @@ import org.jmock.Expectations;
 import org.jmock.Sequence;
 import org.junit.Test;
 
+import sneer.brickness.testsupport.Contribute;
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.kernel.container.PublicKey;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.keymanager.KeyManager;
@@ -15,8 +17,6 @@ import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.speaker.Speaker;
-import tests.Contribute;
-import tests.TestInContainerEnvironment;
 import wheel.lang.ImmutableByteArray;
 
 public class SpeakerTest extends TestInContainerEnvironment {

@@ -2,8 +2,8 @@ package sneer.pulp.tuples.tests;
 
 import org.junit.Test;
 
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.pulp.tuples.TupleSpace;
-import tests.TestInContainerEnvironment;
 import wheel.lang.Consumer;
 import static sneer.brickness.Environments.my;
 

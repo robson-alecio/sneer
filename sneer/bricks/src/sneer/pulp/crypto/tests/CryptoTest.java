@@ -5,8 +5,8 @@ import static sneer.brickness.Environments.my;
 import org.bouncycastle.util.encoders.Hex;
 import org.junit.Test;
 
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import sneer.pulp.crypto.Crypto;
-import tests.TestInContainerEnvironment;
 
 public class CryptoTest extends TestInContainerEnvironment {
 

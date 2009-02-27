@@ -3,7 +3,7 @@ package functional;
 import org.junit.After;
 import org.junit.Before;
 
-import tests.TestInContainerEnvironment;
+import sneer.brickness.testsupport.TestInContainerEnvironment;
 import wheel.lang.Timebox;
 
 public abstract class SovereignFunctionalTestBase extends TestInContainerEnvironment {

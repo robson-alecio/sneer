@@ -8,8 +8,8 @@ import org.junit.runner.RunWith;
 
 import sneer.brickness.Environment;
 import sneer.brickness.Environments;
+import sneer.brickness.testsupport.ContainerEnvironment;
 import sneer.pulp.threadpool.ThreadPool;
-import tests.ContainerEnvironment;
 import wheel.lang.Threads;
 
 @RunWith(ContainerEnvironment.class)

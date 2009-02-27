@@ -9,7 +9,7 @@
 
                       PULP (SNEER SERVICES)
 
-            KERNEL (CONTAINER (SANDBOX, UPDATES, METOO))
+            KERNEL (CONTAINER (PUBLISH, SANDBOX, UPDATE, METOO))
             
                         COMMON BRICKS
                                                             BRICKS 

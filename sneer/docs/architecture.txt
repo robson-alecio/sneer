@@ -1,19 +1,22 @@
 
                    MAIN    |    FUNCTIONAL TESTS
                            |
--------------------------------------------------------------------
-                                                            BRICKS
+------------------------------------------------------------------------
+                                                                  BRICKS
                        SNAPPS (SNEER APPS)
 
                         SKIN (UI SUPPORT)
 
                       PULP (SNEER SERVICES)
 
-            KERNEL (CONTAINER (PUBLISH, SANDBOX, UPDATE, METOO))
+         KERNEL (CONTAINER (PUBLISH, SANDBOX, UPDATE, METOO))
             
-                        COMMON BRICKS
-                                                            BRICKS 
--------------------------------------------------------------------
+            COMMON BRICKS (BETTER NAME?) (SIGNALS, ETC...)
+            
+                                                                  BRICKS
+------------------------------------------------------------------------
+
+         WHEEL (OLD - TO BE EXTRACTED TO BRICKS OR COMMONS)
 
                            BRICKNESS
               (MINIMAL BRICK SUPPORT (CONVENTIONS))
@@ -21,5 +24,5 @@
                          SNEER COMMONS
         (APACHE COMMONS (LANG, COLLECTION, IO), JUNIT, JMOCK)
  
-                             J R E
+                              JRE
 

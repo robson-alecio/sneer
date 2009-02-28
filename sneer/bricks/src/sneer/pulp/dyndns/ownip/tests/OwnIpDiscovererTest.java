@@ -9,7 +9,7 @@ import org.jmock.Sequence;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.Contribute;
-import sneer.brickness.testsupport.TestInBricknessEnvironment;
+import sneer.brickness.testsupport.TestInBrickness;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
@@ -18,7 +18,7 @@ import sneer.pulp.propertystore.mocks.TransientPropertyStore;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.Receiver;
 
-public class OwnIpDiscovererTest extends TestInBricknessEnvironment {
+public class OwnIpDiscovererTest extends TestInBrickness {
 	
 	@Contribute final CheckIp checkip = mock(CheckIp.class);
 	@Contribute final PropertyStore store = new TransientPropertyStore();

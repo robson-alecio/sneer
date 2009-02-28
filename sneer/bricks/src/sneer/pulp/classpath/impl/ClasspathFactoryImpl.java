@@ -13,8 +13,6 @@ import wheel.io.codegeneration.ClassUtils;
 
 class ClasspathFactoryImpl implements ClasspathFactory {
 
-	private final ContainerConfig _config = my(ContainerConfig.class);
-	
 	private Classpath _sneerApi;
 
 	@Override
@@ -62,7 +60,7 @@ class ClasspathFactoryImpl implements ClasspathFactory {
 	private Classpath buildEclipseClasspath() {
 		Classpath result = newClasspath();
 		Classpath kernelPlusWheel = new DirectoryBasedClasspath(ClassUtils.rootDirectoryFor(Brick.class));
-		Classpath allBrickApis = new FilteredClasspath(new BrickApiFilter(_config.brickRootDirectory()));
+		Classpath allBrickApis = new FilteredClasspath(new BrickApiFilter(my(ContainerConfig.class).brickRootDirectory()));
 		return result.compose(kernelPlusWheel.compose(allBrickApis));
 	}
 

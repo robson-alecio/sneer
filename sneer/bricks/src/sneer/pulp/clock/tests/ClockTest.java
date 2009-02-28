@@ -5,12 +5,12 @@ import java.util.List;
 
 import org.junit.Test;
 
-import sneer.brickness.testsupport.TestInBricknessEnvironment;
+import sneer.brickness.testsupport.TestInBrickness;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.threadpool.Stepper;
 import static sneer.brickness.Environments.my;
 
-public class ClockTest extends TestInBricknessEnvironment {
+public class ClockTest extends TestInBrickness {
 
 	private final Clock _subject = my(Clock.class);
 	private StringBuilder _events = new StringBuilder();

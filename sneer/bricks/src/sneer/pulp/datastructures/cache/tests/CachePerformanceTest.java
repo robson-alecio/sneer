@@ -4,11 +4,11 @@ import static sneer.brickness.Environments.my;
 
 import org.junit.Test;
 
-import sneer.brickness.testsupport.TestInBricknessEnvironment;
+import sneer.brickness.testsupport.TestInBrickness;
 import sneer.pulp.datastructures.cache.Cache;
 import sneer.pulp.datastructures.cache.CacheFactory;
 
-public class CachePerformanceTest extends TestInBricknessEnvironment{
+public class CachePerformanceTest extends TestInBrickness{
 
 	private final Cache<Object> _subject= my(CacheFactory.class).createWithCapacity(3000);
 	

@@ -9,7 +9,7 @@ import javax.swing.event.ListDataListener;
 import org.junit.Assert;
 import org.junit.Test;
 
-import sneer.brickness.testsupport.TestInBricknessEnvironment;
+import sneer.brickness.testsupport.TestInBrickness;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.reactive.Register;
@@ -18,7 +18,7 @@ import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 
-public class ListSignalModelTest extends TestInBricknessEnvironment {
+public class ListSignalModelTest extends TestInBrickness {
 
 	private final ReactiveWidgetFactory _factory = my(ReactiveWidgetFactory.class); 
 	

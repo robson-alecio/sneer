@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import sneer.brickness.testsupport.TestInBricknessEnvironment;
+import sneer.brickness.testsupport.TestInBrickness;
 import sneer.kernel.container.Tuple;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
 import static sneer.brickness.Environments.my;
 
-public class TupleSpaceTest extends TestInBricknessEnvironment {
+public class TupleSpaceTest extends TestInBrickness {
 
 	private final TupleSpace _subject = my(TupleSpace.class);
 	

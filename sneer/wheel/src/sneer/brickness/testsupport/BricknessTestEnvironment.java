@@ -70,7 +70,6 @@ public class BricknessTestEnvironment extends WheelEnvironment {
 	
 	@Override
 	protected Environment environment() {
-//		return Containers.newContainer(new TestEnvironment());
 		return newEnvironment();
 	}
 
@@ -107,7 +106,7 @@ public class BricknessTestEnvironment extends WheelEnvironment {
 		my(TestInstanceEnvironment.class).instanceBeingInitialized(testInstance);
 	}
 
-	public Environment newEnvironment(Object... bindings) {
+	public Environment newEnvironmentWith(Object... bindings) {
 		return new CachingEnvironment(
 				Environments.compose(
 					new ClosedEnvironment(bindings),

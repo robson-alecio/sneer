@@ -11,14 +11,14 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 
-import sneer.brickness.testsupport.TestInBricknessEnvironment;
+import sneer.brickness.testsupport.TestInBrickness;
 import sneer.pulp.classpath.Classpath;
 import sneer.pulp.classpath.ClasspathFactory;
 import sneer.pulp.compiler.CompilationError;
 import sneer.pulp.compiler.Result;
 import wheel.io.Jars;
 
-public class JavaCompilerTest extends TestInBricknessEnvironment {
+public class JavaCompilerTest extends TestInBrickness {
 
 	private static final String TEST_FILE_PREFIX = "sneer-test-";
 

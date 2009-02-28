@@ -9,12 +9,12 @@ import java.awt.image.BufferedImage;
 
 import org.junit.Test;
 
-import sneer.brickness.testsupport.TestInBricknessEnvironment;
+import sneer.brickness.testsupport.TestInBrickness;
 import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.skin.image.ImageFactory;
 import wheel.lang.exceptions.Hiccup;
 
-public class OwnAvatarKeeperTest extends TestInBricknessEnvironment {
+public class OwnAvatarKeeperTest extends TestInBrickness {
 
 	private final OwnAvatarKeeper _avatarKeeper = my(OwnAvatarKeeper.class);
 	

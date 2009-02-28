@@ -5,14 +5,14 @@ import static sneer.brickness.Environments.my;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.Contribute;
-import sneer.brickness.testsupport.TestInBricknessEnvironment;
+import sneer.brickness.testsupport.TestInBrickness;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.connection.mocks.SocketAccepterMock;
 import sneer.pulp.connection.reachability.ReachabilitySentinel;
 import sneer.pulp.network.ByteArraySocket;
 
-public class ReachabilityTest extends TestInBricknessEnvironment {
+public class ReachabilityTest extends TestInBrickness {
 	
 	@Contribute
 	final private SocketAccepterMock _accepter = new SocketAccepterMock();

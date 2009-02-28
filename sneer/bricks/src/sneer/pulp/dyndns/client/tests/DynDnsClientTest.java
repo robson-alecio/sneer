@@ -13,7 +13,7 @@ import sneer.brickness.Environment;
 import sneer.brickness.Environments;
 import sneer.brickness.testsupport.BricknessTestEnvironment;
 import sneer.brickness.testsupport.Contribute;
-import sneer.brickness.testsupport.TestInBricknessEnvironment;
+import sneer.brickness.testsupport.TestInBrickness;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.clock.Clock;
@@ -32,7 +32,7 @@ import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.lists.ListSignal;
 
-public class DynDnsClientTest extends TestInBricknessEnvironment {
+public class DynDnsClientTest extends TestInBrickness {
 	
 	/*
 
@@ -203,7 +203,7 @@ Unacceptable Client Behavior
 		list.add(_propertyStore);
 		
 		final Object[] bindings = list.toArray();
-		return my(BricknessTestEnvironment.class).newEnvironment(bindings);
+		return my(BricknessTestEnvironment.class).newEnvironmentWith(bindings);
 	}
 }
 

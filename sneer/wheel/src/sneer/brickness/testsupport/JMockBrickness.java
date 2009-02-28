@@ -8,9 +8,9 @@ import org.jmock.Mockery;
 import org.junit.internal.runners.InitializationError;
 import org.junit.internal.runners.TestMethod;
 
-public class JMockBricknessEnvironment extends BricknessTestEnvironment {
+public class JMockBrickness extends BricknessTestEnvironment {
 
-	public JMockBricknessEnvironment(Class<?> testClass)
+	public JMockBrickness(Class<?> testClass)
 			throws InitializationError {
 		super(testClass);
 	}

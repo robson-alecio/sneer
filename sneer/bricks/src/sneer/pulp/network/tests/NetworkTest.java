@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import sneer.brickness.testsupport.TestInBricknessEnvironment;
+import sneer.brickness.testsupport.TestInBrickness;
 import sneer.pulp.network.ByteArrayServerSocket;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;
@@ -12,7 +12,7 @@ import sneer.pulp.threadpool.ThreadPool;
 import static sneer.brickness.Environments.my;
 
 
-public class NetworkTest extends TestInBricknessEnvironment {
+public class NetworkTest extends TestInBrickness {
 	
 	private final ThreadPool _threadPool = my(ThreadPool.class);
 	

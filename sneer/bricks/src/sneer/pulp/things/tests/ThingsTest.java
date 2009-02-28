@@ -3,7 +3,7 @@ package sneer.pulp.things.tests;
 import org.junit.Assert;
 import org.junit.Test;
 
-import sneer.brickness.testsupport.TestInBricknessEnvironment;
+import sneer.brickness.testsupport.TestInBrickness;
 import sneer.pulp.things.Thing;
 import sneer.pulp.things.ThingHome;
 import wheel.lang.Daemon;
@@ -12,7 +12,7 @@ import wheel.reactive.sets.SetSignal;
 import wheel.testutil.TestDashboard;
 import static sneer.brickness.Environments.my;
 
-public class ThingsTest extends TestInBricknessEnvironment {
+public class ThingsTest extends TestInBrickness {
 	
 	private final ThingHome _subject = my(ThingHome.class);
 

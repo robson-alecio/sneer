@@ -8,11 +8,11 @@ import org.jmock.Expectations;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.Contribute;
-import sneer.brickness.testsupport.TestInBricknessEnvironment;
+import sneer.brickness.testsupport.TestInBrickness;
 import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.httpclient.HttpClient;
 
-public class CheckIpTest extends TestInBricknessEnvironment {
+public class CheckIpTest extends TestInBrickness {
 	
 	@Contribute final HttpClient _client = mock(HttpClient.class);
 	

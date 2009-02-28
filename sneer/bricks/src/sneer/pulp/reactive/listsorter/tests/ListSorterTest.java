@@ -7,7 +7,7 @@ import java.util.Comparator;
 import org.jmock.Expectations;
 import org.junit.Test;
 
-import sneer.brickness.testsupport.TestInBricknessEnvironment;
+import sneer.brickness.testsupport.TestInBrickness;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import wheel.lang.Consumer;
@@ -22,7 +22,7 @@ import wheel.reactive.lists.ListValueChange.Visitor;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 import wheel.testutil.TestUtils;
 
-public class ListSorterTest extends TestInBricknessEnvironment {
+public class ListSorterTest extends TestInBrickness {
 	
 	private final ListSorter _sorter = my(ListSorter.class);
 

@@ -5,13 +5,15 @@
                                                                   BRICKS
                        SNAPPS (SNEER APPS)
 
+             ----------------------------------------
+             
                         SKIN (UI SUPPORT)
 
                       PULP (SNEER SERVICES)
 
          KERNEL (CONTAINER (PUBLISH, SANDBOX, UPDATE, METOO))
             
-            COMMON BRICKS (BETTER NAME?) (SIGNALS, ETC...)
+               ROOTS (BASIC BRICKS: SIGNALS, ETC...)
             
                                                                   BRICKS
 ------------------------------------------------------------------------

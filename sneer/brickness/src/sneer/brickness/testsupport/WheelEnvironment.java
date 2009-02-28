@@ -1,4 +1,4 @@
-package wheel.testutil;
+package sneer.brickness.testsupport;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

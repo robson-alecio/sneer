@@ -14,7 +14,6 @@ import sneer.brickness.Environment;
 import sneer.brickness.Environments;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
 import sneer.pulp.exceptionhandling.tests.mocks.ExceptionLeaker;
-import wheel.testutil.WheelEnvironment;
 
 public class BricknessTestEnvironment extends WheelEnvironment {
 	

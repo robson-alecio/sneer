@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import sneer.brickness.testsupport.WheelEnvironment;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
@@ -14,7 +16,6 @@ import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.And;
 import wheel.reactive.impl.RegisterImpl;
-import wheel.testutil.WheelEnvironment;
 
 @RunWith(WheelEnvironment.class)
 public class AndTest {

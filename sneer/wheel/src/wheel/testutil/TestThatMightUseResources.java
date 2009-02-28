@@ -8,6 +8,8 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
 
+import sneer.brickness.testsupport.WheelEnvironment;
+
 import wheel.io.Logger;
 import wheel.lang.Daemon;
 

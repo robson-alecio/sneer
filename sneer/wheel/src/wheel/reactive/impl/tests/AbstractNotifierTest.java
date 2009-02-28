@@ -3,10 +3,11 @@ package wheel.reactive.impl.tests;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import sneer.brickness.testsupport.WheelEnvironment;
+
 import wheel.lang.Consumer;
 import wheel.reactive.Signals;
 import wheel.reactive.impl.AbstractNotifier;
-import wheel.testutil.WheelEnvironment;
 
 @RunWith(WheelEnvironment.class)
 public class AbstractNotifierTest {

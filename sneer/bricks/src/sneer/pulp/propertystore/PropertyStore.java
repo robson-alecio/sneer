@@ -1,6 +1,6 @@
 package sneer.pulp.propertystore;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 
 public interface PropertyStore extends Brick {
 

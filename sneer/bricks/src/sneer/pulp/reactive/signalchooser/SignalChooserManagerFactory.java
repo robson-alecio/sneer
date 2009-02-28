@@ -1,6 +1,6 @@
 package sneer.pulp.reactive.signalchooser;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 import wheel.reactive.lists.ListSignal;
 
 public interface SignalChooserManagerFactory extends Brick{

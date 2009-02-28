@@ -1,6 +1,6 @@
 package sneer.pulp.clock;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 import sneer.pulp.threadpool.Stepper;
 
 

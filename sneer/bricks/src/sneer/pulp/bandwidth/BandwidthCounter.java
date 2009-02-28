@@ -1,6 +1,6 @@
 package sneer.pulp.bandwidth;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 import wheel.reactive.Signal;
 
 public interface BandwidthCounter extends Brick {

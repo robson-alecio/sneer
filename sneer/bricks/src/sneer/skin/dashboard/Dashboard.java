@@ -2,7 +2,7 @@ package sneer.skin.dashboard;
 
 import java.awt.Container;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 
 public interface Dashboard extends Brick {
 

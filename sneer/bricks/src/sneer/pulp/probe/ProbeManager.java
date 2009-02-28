@@ -1,6 +1,6 @@
 package sneer.pulp.probe;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 
 
 public interface ProbeManager extends Brick {

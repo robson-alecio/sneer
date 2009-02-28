@@ -4,7 +4,7 @@ import static sneer.brickness.Environments.my;
 
 import java.io.File;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 import sneer.kernel.container.ContainerConfig;
 import sneer.pulp.classpath.Classpath;
 import sneer.pulp.classpath.ClasspathFactory;

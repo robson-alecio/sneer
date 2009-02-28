@@ -1,6 +1,6 @@
 package sneer.skin;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 
 /** A brick that can freely manipulate Swing components without having
  * to worry about being in the Gui thread  (AWT event dispatch thread).

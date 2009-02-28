@@ -1,6 +1,6 @@
 package sneer.brickness.testsupport.tests.bar;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 
 public interface BarBrick extends Brick {
 }

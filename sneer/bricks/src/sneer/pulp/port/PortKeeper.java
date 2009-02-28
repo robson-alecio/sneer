@@ -1,6 +1,6 @@
 package sneer.pulp.port;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 import wheel.lang.PickyConsumer;
 import wheel.reactive.Signal;
 

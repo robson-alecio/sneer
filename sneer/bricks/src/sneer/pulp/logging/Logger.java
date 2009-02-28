@@ -1,6 +1,6 @@
 package sneer.pulp.logging;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 import wheel.io.logging.WheelLogger;
 import wheel.lang.Consumer;
 import wheel.reactive.EventSource;

@@ -1,6 +1,6 @@
 package sneer.pulp.logging;
 
-import sneer.kernel.container.Tuple;
+import sneer.brickness.Tuple;
 
 public class LogWhiteListEntry extends Tuple {
 

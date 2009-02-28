@@ -5,10 +5,10 @@ import java.lang.reflect.Constructor;
 import java.util.HashSet;
 import java.util.Set;
 
+import sneer.brickness.Brick;
 import sneer.brickness.Conventions;
 import sneer.brickness.Environment;
 import sneer.brickness.Environments;
-import sneer.kernel.container.Brick;
 import sneer.kernel.container.ClassLoaderFactory;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerException;

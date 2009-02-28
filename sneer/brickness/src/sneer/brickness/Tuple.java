@@ -1,4 +1,4 @@
-package sneer.kernel.container;
+package sneer.brickness;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

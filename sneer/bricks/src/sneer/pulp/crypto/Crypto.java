@@ -3,7 +3,7 @@ package sneer.pulp.crypto;
 import java.io.File;
 import java.io.IOException;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 
 
 public interface Crypto extends Brick {

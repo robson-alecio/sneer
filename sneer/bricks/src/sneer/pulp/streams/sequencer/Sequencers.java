@@ -1,6 +1,6 @@
 package sneer.pulp.streams.sequencer;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 import wheel.lang.Consumer;
 
 public interface Sequencers extends Brick {

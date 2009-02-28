@@ -10,7 +10,7 @@ import snapps.watchme.gui.windows.RemoteWatchMeWindows;
 import snapps.whisper.gui.WhisperGui;
 import snapps.whisper.speextuples.SpeexTuples;
 import snapps.wind.gui.WindGui;
-import sneer.kernel.container.PublicKey;
+import sneer.brickness.PublicKey;
 import sneer.pulp.clockticker.ClockTicker;
 import sneer.pulp.connection.SocketOriginator;
 import sneer.pulp.connection.SocketReceiver;

@@ -22,8 +22,8 @@ import org.prevayler.foundation.serialization.XStreamSerializer;
 
 import snapps.wind.impl.bubble.Bubble;
 import sneer.brickness.Environments;
+import sneer.brickness.Tuple;
 import sneer.brickness.Environments.Memento;
-import sneer.kernel.container.Tuple;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.config.persistence.PersistenceConfig;
 import sneer.pulp.exceptionhandling.ExceptionHandler;

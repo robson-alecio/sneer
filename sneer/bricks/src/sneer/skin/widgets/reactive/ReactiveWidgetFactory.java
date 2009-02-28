@@ -9,7 +9,7 @@ import javax.swing.JTextPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import wheel.lang.Consumer;
 import wheel.lang.PickyConsumer;

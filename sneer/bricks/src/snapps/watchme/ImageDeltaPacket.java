@@ -1,6 +1,6 @@
 package snapps.watchme;
 
-import sneer.kernel.container.Tuple;
+import sneer.brickness.Tuple;
 import wheel.lang.ImmutableByteArray;
 
 public class ImageDeltaPacket extends Tuple {

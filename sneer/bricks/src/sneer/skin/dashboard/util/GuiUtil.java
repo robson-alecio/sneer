@@ -3,7 +3,7 @@ package sneer.skin.dashboard.util;
 import java.awt.Container;
 import java.awt.Window;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 
 public interface GuiUtil extends Brick {
 

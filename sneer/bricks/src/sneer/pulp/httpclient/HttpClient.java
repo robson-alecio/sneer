@@ -2,7 +2,7 @@ package sneer.pulp.httpclient;
 
 import java.io.IOException;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 import wheel.lang.Pair;
 
 public interface HttpClient extends Brick {

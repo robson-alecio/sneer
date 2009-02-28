@@ -3,7 +3,7 @@ package sneer.pulp.probe.impl;
 import java.util.LinkedList;
 import java.util.List;
 
-import sneer.kernel.container.Tuple;
+import sneer.brickness.Tuple;
 import sneer.pulp.connection.ByteConnection.PacketScheduler;
 import sneer.pulp.serialization.Serializer;
 import wheel.lang.Threads;

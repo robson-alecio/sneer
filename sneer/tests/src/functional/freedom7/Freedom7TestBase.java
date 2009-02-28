@@ -81,7 +81,7 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 		final File src = sourceFolder("x");
 		final SourceFileWriter writer = new SourceFileWriter(src);
 		writer.write("freedom7.x.X",
-				"public interface X extends sneer.kernel.container.Brick {" +
+				"public interface X extends sneer.brickness.Brick {" +
 				"}");
 		writer.write("freedom7.x.impl.XImpl",
 				"class XImpl implements freedom7.x.X {\n" +
@@ -125,7 +125,7 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	}
 
 	private void writeY(SourceFileWriter writer) throws IOException {
-		writer.write("freedom7.y.Y", "public interface Y extends sneer.kernel.container.Brick {}");
+		writer.write("freedom7.y.Y", "public interface Y extends sneer.brickness.Brick {}");
 		writer.write("freedom7.y.impl.YImpl",
 				"class YImpl implements freedom7.y.Y {\n" +
 					"public YImpl() {\n" +
@@ -135,8 +135,8 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	}
 
 	private void writeV(SourceFileWriter writer) throws IOException {
-		writer.write("freedom7.v.V", "public interface V extends sneer.kernel.container.Brick {}");
-		writer.write("freedom7.v.VTuple", "public class VTuple extends sneer.kernel.container.Tuple {}");
+		writer.write("freedom7.v.V", "public interface V extends sneer.brickness.Brick {}");
+		writer.write("freedom7.v.VTuple", "public class VTuple extends sneer.brickness.Tuple {}");
 		writer.write("freedom7.v.impl.VImpl",
 				"class VImpl implements freedom7.v.V {\n" +
 				"private freedom7.v.VTuple tuple;\n" +
@@ -154,11 +154,11 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 
 	private void writeW(final SourceFileWriter writer) throws IOException {
 		writer.write("freedom7.w.W",
-				"public interface W extends sneer.kernel.container.Brick {\n" +
+				"public interface W extends sneer.brickness.Brick {\n" +
 					"freedom7.y.Y y();\n" +
 				"}");
 		writer.write("freedom7.w.impl.WImpl",
-				"import sneer.kernel.container.*;\n" +
+				"import sneer.brickness.*;\n" +
 				"import static sneer.brickness.Environments.my;\n" +
 				"class WImpl implements freedom7.w.W {\n" +
 					"private freedom7.y.Y _y = my(freedom7.y.Y.class);\n" +

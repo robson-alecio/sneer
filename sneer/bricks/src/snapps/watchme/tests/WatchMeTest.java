@@ -16,11 +16,11 @@ import org.jmock.Sequence;
 import org.junit.Test;
 
 import snapps.watchme.WatchMe;
+import sneer.brickness.PublicKey;
 import sneer.brickness.testsupport.Contribute;
 import sneer.brickness.testsupport.TestInBrickness;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
-import sneer.kernel.container.PublicKey;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.TupleSpace;

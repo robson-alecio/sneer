@@ -5,7 +5,7 @@ import static sneer.brickness.Environments.my;
 import java.util.HashMap;
 import java.util.Map;
 
-import sneer.kernel.container.PublicKey;
+import sneer.brickness.PublicKey;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.crypto.Crypto;
 import sneer.pulp.crypto.Sneer1024;

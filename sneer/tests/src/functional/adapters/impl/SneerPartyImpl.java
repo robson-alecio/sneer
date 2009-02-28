@@ -6,7 +6,7 @@ import java.io.File;
 
 import snapps.wind.Shout;
 import snapps.wind.Wind;
-import sneer.kernel.container.PublicKey;
+import sneer.brickness.PublicKey;
 import sneer.pulp.brickmanager.BrickManager;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.connection.ByteConnection;

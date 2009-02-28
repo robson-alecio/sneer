@@ -2,7 +2,7 @@ package sneer.pulp.classpath;
 
 import java.io.File;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 
 public interface ClasspathFactory extends Brick {
 

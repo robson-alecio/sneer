@@ -2,7 +2,7 @@ package sneer.skin.imgselector;
 
 import java.awt.Image;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 import wheel.lang.Consumer;
 
 public interface ImageSelector extends Brick {

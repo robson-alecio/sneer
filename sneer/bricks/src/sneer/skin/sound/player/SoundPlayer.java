@@ -2,7 +2,7 @@ package sneer.skin.sound.player;
 
 import java.net.URL;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 
 public interface SoundPlayer extends Brick{
 	

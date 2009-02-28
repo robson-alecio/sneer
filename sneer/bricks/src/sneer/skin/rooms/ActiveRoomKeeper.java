@@ -1,6 +1,6 @@
 package sneer.skin.rooms;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 import wheel.lang.Consumer;
 import wheel.reactive.Signal;
 

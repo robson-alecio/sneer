@@ -1,6 +1,6 @@
 package sneer.pulp.things;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 import wheel.reactive.sets.SetSignal;
 
 public interface ThingHome extends Brick {

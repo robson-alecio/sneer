@@ -1,6 +1,6 @@
 package sneer.skin;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 
 public interface GuiBrickSupport extends Brick {
 

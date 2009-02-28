@@ -2,8 +2,8 @@ package sneer.pulp.distribution.filtering.tests;
 
 import org.junit.Test;
 
+import sneer.brickness.Tuple;
 import sneer.brickness.testsupport.TestInBrickness;
-import sneer.kernel.container.Tuple;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import static sneer.brickness.Environments.my;
 

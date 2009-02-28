@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
-import sneer.kernel.container.PublicKey;
+import sneer.brickness.PublicKey;
 import sneer.kernel.container.jar.DeploymentJar;
 import sneer.pulp.dependency.FileWithHash;
 

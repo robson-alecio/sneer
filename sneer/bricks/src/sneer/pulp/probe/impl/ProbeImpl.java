@@ -3,8 +3,8 @@
  */
 package sneer.pulp.probe.impl;
 
-import sneer.kernel.container.PublicKey;
-import sneer.kernel.container.Tuple;
+import sneer.brickness.PublicKey;
+import sneer.brickness.Tuple;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.keymanager.KeyManager;

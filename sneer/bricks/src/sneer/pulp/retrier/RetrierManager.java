@@ -1,6 +1,6 @@
 package sneer.pulp.retrier;
 
-import sneer.kernel.container.ConcurrentBrick;
+import sneer.brickness.ConcurrentBrick;
 
 public interface RetrierManager extends ConcurrentBrick {
 

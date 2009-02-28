@@ -1,7 +1,7 @@
 package sneer.pulp.distribution.filtering;
 
-import sneer.kernel.container.Brick;
-import sneer.kernel.container.Tuple;
+import sneer.brickness.Brick;
+import sneer.brickness.Tuple;
 
 public interface TupleFilterManager extends Brick {
 

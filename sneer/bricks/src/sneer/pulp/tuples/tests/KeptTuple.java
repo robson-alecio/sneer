@@ -1,6 +1,6 @@
 package sneer.pulp.tuples.tests;
 
-import sneer.kernel.container.Tuple;
+import sneer.brickness.Tuple;
 
 public class KeptTuple extends Tuple {
 

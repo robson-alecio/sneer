@@ -1,7 +1,7 @@
 package sneer.pulp.keymanager;
 
-import sneer.kernel.container.Brick;
-import sneer.kernel.container.PublicKey;
+import sneer.brickness.Brick;
+import sneer.brickness.PublicKey;
 import sneer.pulp.contacts.Contact;
 import wheel.lang.Producer;
 import wheel.reactive.EventSource;

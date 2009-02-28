@@ -2,7 +2,7 @@ package sneer.pulp.reactive.listsorter;
 
 import java.util.Comparator;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import wheel.reactive.lists.ListSignal;
 

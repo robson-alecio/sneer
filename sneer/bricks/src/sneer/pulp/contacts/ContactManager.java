@@ -1,6 +1,6 @@
 package sneer.pulp.contacts;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 import wheel.lang.PickyConsumer;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.lists.ListSignal;

@@ -2,7 +2,7 @@ package sneer.pulp.dyndns.updater;
 
 import java.io.IOException;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 
 public interface Updater extends Brick {
 

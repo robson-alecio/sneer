@@ -1,6 +1,6 @@
 package sneer.pulp.connection;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.network.ByteArraySocket;
 

@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 import sneer.kernel.container.impl.classloader.MetaClassClassLoader;
 import sneer.kernel.container.jar.DeploymentJar;
 import sneer.kernel.container.jar.DeploymentJarFactory;

@@ -3,7 +3,7 @@ package functional;
 import java.io.File;
 
 import snapps.wind.Shout;
-import sneer.kernel.container.PublicKey;
+import sneer.brickness.PublicKey;
 import sneer.pulp.deployer.BrickBundle;
 import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;

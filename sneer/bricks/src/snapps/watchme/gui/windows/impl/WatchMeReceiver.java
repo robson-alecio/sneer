@@ -13,7 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.WindowConstants;
 
 import snapps.watchme.WatchMe;
-import sneer.kernel.container.PublicKey;
+import sneer.brickness.PublicKey;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;

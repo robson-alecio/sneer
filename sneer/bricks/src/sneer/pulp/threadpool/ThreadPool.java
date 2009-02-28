@@ -1,6 +1,6 @@
 package sneer.pulp.threadpool;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 
 public interface ThreadPool extends Brick {
 

@@ -1,6 +1,6 @@
 package snapps.whisper.speextuples;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 
 public interface SpeexTuples extends Brick {
 

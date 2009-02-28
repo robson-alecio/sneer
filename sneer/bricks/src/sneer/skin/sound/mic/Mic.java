@@ -1,6 +1,6 @@
 package sneer.skin.sound.mic;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 import wheel.reactive.Signal;
 
 

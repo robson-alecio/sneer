@@ -1,7 +1,7 @@
 package sneer.pulp.config.persistence;
 
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 
 public interface PersistenceConfig extends Brick {
 

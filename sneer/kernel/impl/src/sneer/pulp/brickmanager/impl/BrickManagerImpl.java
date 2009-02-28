@@ -9,9 +9,9 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
+import sneer.brickness.PublicKey;
 import sneer.kernel.container.Container;
-import sneer.kernel.container.PublicKey;
 import sneer.kernel.container.SneerConfig;
 import sneer.pulp.brickmanager.BrickManager;
 import sneer.pulp.brickmanager.BrickManagerException;

@@ -1,6 +1,6 @@
 package sneer.pulp.datastructures.cache;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 
 public interface CacheFactory extends Brick {
 

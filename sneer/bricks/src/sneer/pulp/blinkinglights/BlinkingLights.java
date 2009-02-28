@@ -1,6 +1,6 @@
 package sneer.pulp.blinkinglights;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 import wheel.lang.exceptions.FriendlyException;
 import wheel.reactive.lists.ListSignal;
 

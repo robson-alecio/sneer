@@ -1,6 +1,6 @@
 package sneer.pulp.own.name;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 import sneer.pulp.contacts.Contact;
 import wheel.lang.Consumer;
 import wheel.reactive.Signal;

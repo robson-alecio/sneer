@@ -2,7 +2,7 @@ package snapps.contacts.actions;
 
 import java.util.Collection;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 
 public interface ContactActionManager extends Brick {
 

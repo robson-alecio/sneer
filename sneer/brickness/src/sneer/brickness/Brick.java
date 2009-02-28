@@ -1,4 +1,4 @@
-package sneer.kernel.container;
+package sneer.brickness;
 
 /**
  * Marker interface for Bricks.

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
+import sneer.brickness.Tuple;
 import sneer.brickness.testsupport.TestInBrickness;
-import sneer.kernel.container.Tuple;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
 import static sneer.brickness.Environments.my;

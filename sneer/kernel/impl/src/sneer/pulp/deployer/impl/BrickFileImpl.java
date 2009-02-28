@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
-import sneer.kernel.container.PublicKey;
+import sneer.brickness.PublicKey;
 import sneer.kernel.container.jar.DeploymentJar;
 import sneer.kernel.container.jar.impl.DeploymentJarImpl;
 import sneer.pulp.dependency.FileWithHash;

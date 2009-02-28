@@ -1,4 +1,4 @@
-package sneer.kernel.container;
+package sneer.brickness;
 
 public interface ConcurrentBrick extends Brick {
 

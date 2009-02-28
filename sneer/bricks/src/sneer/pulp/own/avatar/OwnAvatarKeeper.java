@@ -2,7 +2,7 @@ package sneer.pulp.own.avatar;
 
 import java.awt.Image;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 import wheel.lang.Consumer;
 import wheel.reactive.Signal;
 

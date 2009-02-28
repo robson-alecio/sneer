@@ -1,6 +1,6 @@
 package sneer.pulp.internetaddresskeeper;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 import sneer.pulp.contacts.Contact;
 import wheel.reactive.lists.ListSignal;
 

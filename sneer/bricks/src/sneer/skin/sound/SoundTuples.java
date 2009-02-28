@@ -1,6 +1,6 @@
 package sneer.skin.sound;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 
 public interface SoundTuples extends Brick {
 

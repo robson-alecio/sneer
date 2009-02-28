@@ -3,7 +3,7 @@ package sneer.pulp.distribution.filtering.impl;
 import java.util.HashSet;
 import java.util.Set;
 
-import sneer.kernel.container.Tuple;
+import sneer.brickness.Tuple;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 
 class TupleFilterManagerImpl implements TupleFilterManager {

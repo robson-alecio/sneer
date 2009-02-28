@@ -9,7 +9,7 @@ import java.util.Map;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
-import sneer.kernel.container.PublicKey;
+import sneer.brickness.PublicKey;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.Audio;
 import wheel.lang.Consumer;

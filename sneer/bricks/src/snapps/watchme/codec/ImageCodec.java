@@ -3,7 +3,7 @@ package snapps.watchme.codec;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-import sneer.kernel.container.Brick;
+import sneer.brickness.Brick;
 import wheel.lang.exceptions.Hiccup;
 
 public interface ImageCodec extends Brick {

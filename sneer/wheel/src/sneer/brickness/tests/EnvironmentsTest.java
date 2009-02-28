@@ -1,4 +1,4 @@
-package wheel.lang.tests;
+package sneer.brickness.tests;
 
 import static sneer.brickness.Environments.my;
 
@@ -18,7 +18,27 @@ public class EnvironmentsTest extends Assert {
 	boolean _ran = false;
 	
 	@Test
-	public void testRunWithProvider() {
+	public void testMyEnvironment() {
+		final Environment environment = environment();
+		Environments.runWith(environment, new Runnable() { @Override public void run() {
+			assertSame(environment, my(Environment.class));
+		}});
+	}
+	
+	@Test(expected=IllegalStateException.class)
+	public void testMyInUnsuitableEnvironment() {
+		Environments.runWith(
+			new Environment() { @Override public <T> T provide(Class<T> intrface) {
+				return null;
+			}},
+			new Runnable() { @Override public void run() {
+				my(Runnable.class);
+			}}
+		);
+	}
+	
+	@Test
+	public void testRunWith() {
 		Environments.runWith(environment(), runnable());
 		assertTrue(_ran);
 	}

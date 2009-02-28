@@ -28,13 +28,20 @@ public class Environments {
 		runWith(((MementoImpl)memento)._environment, runnable);
 	}
 
-	public static <T> T my(Class<T> dependency) {
+	public static <T> T my(Class<T> need) {
 		final Environment environment = current();
 		if (environment == null)
-			throw new IllegalStateException("Unable to provide thread " + Thread.currentThread() + " with implementation for " + dependency);
-		if (dependency == Environment.class)
+			cantFulfill(need);
+		if (need == Environment.class)
 			return (T) environment;
-		return environment.provide(dependency);
+		final T implementation = environment.provide(need);
+		if (null == implementation)
+			cantFulfill(need);
+		return implementation;
+	}
+
+	private static <T> void cantFulfill(Class<T> need) {
+		throw new IllegalStateException("Unable to provide thread " + Thread.currentThread() + " with implementation for " + need);
 	}
 
 	public static Environment compose(final Environment... environments) {

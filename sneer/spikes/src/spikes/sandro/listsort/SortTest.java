@@ -13,8 +13,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import sneer.brickness.ByRef;
 import sneer.brickness.Environments;
+import sneer.commons.lang.ByRef;
 import sneer.kernel.container.Containers;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;

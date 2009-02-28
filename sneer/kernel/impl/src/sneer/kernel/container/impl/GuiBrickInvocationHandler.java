@@ -8,7 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import sneer.brickness.ByRef;
+import sneer.commons.lang.ByRef;
 
 import wheel.io.ui.GuiThread;
 

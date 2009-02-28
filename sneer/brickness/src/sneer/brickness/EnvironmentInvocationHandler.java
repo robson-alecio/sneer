@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import sneer.brickness.Environments.Memento;
+import sneer.commons.lang.ByRef;
 
 
 final class EnvironmentInvocationHandler<T> implements InvocationHandler {

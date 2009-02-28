@@ -8,7 +8,7 @@ import javax.swing.SwingUtilities;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import sneer.brickness.ByRef;
+import sneer.commons.lang.ByRef;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
 import wheel.io.ui.TimeboxedEventQueue;

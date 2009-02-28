@@ -1,4 +1,4 @@
-package sneer.brickness;
+package sneer.commons.lang;
 
 public class ByRef<T> {
 	

@@ -5,10 +5,10 @@ import static sneer.brickness.Environments.my;
 import org.junit.Assert;
 import org.junit.Test;
 
-import sneer.brickness.ByRef;
 import sneer.brickness.Environment;
 import sneer.brickness.Environments;
 import sneer.brickness.Environments.Memento;
+import sneer.commons.lang.ByRef;
 
 import wheel.lang.Producer;
 

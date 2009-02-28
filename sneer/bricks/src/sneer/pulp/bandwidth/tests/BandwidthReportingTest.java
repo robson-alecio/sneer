@@ -4,9 +4,9 @@ import static sneer.brickness.Environments.my;
 
 import org.junit.Test;
 
-import sneer.brickness.ByRef;
 import sneer.brickness.testsupport.Contribute;
 import sneer.brickness.testsupport.TestInBrickness;
+import sneer.commons.lang.ByRef;
 import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;

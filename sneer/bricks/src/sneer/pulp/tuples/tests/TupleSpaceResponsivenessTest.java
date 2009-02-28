@@ -4,9 +4,9 @@ import static sneer.brickness.Environments.my;
 
 import org.junit.Test;
 
-import sneer.brickness.ByRef;
 import sneer.brickness.testsupport.Contribute;
 import sneer.brickness.testsupport.TestInBrickness;
+import sneer.commons.lang.ByRef;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;

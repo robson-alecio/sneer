@@ -5,7 +5,7 @@ import static sneer.brickness.Environments.my;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import sneer.brickness.ByRef;
+import sneer.commons.lang.ByRef;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
 import sneer.pulp.threadpool.Stepper;

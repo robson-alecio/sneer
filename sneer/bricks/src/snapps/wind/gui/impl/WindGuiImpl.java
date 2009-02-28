@@ -29,7 +29,7 @@ import javax.swing.border.EmptyBorder;
 import snapps.wind.Shout;
 import snapps.wind.Wind;
 import snapps.wind.gui.WindGui;
-import sneer.brickness.ByRef;
+import sneer.commons.lang.ByRef;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.sound.player.SoundPlayer;

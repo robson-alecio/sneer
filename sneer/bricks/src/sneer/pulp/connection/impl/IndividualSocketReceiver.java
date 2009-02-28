@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import sneer.brickness.PublicKey;
+import sneer.commons.lang.Producer;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.network.ByteArraySocket;
-import wheel.lang.Producer;
 import wheel.lang.exceptions.IllegalParameter;
 import static sneer.brickness.Environments.my;
 

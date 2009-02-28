@@ -9,8 +9,8 @@ import sneer.brickness.Environment;
 import sneer.brickness.Environments;
 import sneer.brickness.Environments.Memento;
 import sneer.commons.lang.ByRef;
+import sneer.commons.lang.Producer;
 
-import wheel.lang.Producer;
 
 public class EnvironmentsTest extends Assert {
 	

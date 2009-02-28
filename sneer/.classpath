@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="output" path="bin"/>
 	<classpathentry kind="src" path="spikes/src"/>
 	<classpathentry kind="src" path="tests/src"/>
 	<classpathentry kind="src" output="bin-kernel" path="kernel/impl/src"/>
@@ -8,6 +7,7 @@
 	<classpathentry kind="src" output="bin-kernel" path="kernel/api/src"/>
 	<classpathentry kind="src" path="antlips/src"/>
 	<classpathentry kind="src" output="bin-kernel" path="wheel/src"/>
+	<classpathentry kind="src" path="brickness/src"/>
 	<classpathentry kind="src" path="commons/src"/>
 	<classpathentry kind="lib" path="spikes/lib/Filters.jar"/>
 	<classpathentry kind="lib" path="spikes/lib/lucene-demos-2.3.2.jar"/>
@@ -28,4 +28,5 @@
 	<classpathentry kind="lib" path="commons/lib/commons-collections-3.2.jar"/>
 	<classpathentry kind="lib" path="commons/lib/commons-lang-2.3.jar" sourcepath="wheel/lib/commons-lang-2.3-src.zip"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>

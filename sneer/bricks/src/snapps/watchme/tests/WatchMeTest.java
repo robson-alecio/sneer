@@ -17,7 +17,7 @@ import org.junit.Test;
 
 import snapps.watchme.WatchMe;
 import sneer.brickness.testsupport.Contribute;
-import sneer.brickness.testsupport.TestInContainerEnvironment;
+import sneer.brickness.testsupport.TestInBricknessEnvironment;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
 import sneer.kernel.container.PublicKey;
@@ -32,7 +32,7 @@ import wheel.lang.exceptions.Hiccup;
 import wheel.reactive.EventSource;
 import wheel.reactive.impl.Receiver;
 
-public class WatchMeTest extends TestInContainerEnvironment {
+public class WatchMeTest extends TestInBricknessEnvironment {
 	
 	@Contribute
 	final private Screenshotter _shotter = mock(Screenshotter.class);

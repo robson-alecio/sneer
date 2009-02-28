@@ -8,11 +8,11 @@ import org.junit.runner.RunWith;
 
 import sneer.brickness.Environment;
 import sneer.brickness.Environments;
-import sneer.brickness.testsupport.ContainerEnvironment;
+import sneer.brickness.testsupport.BricknessTestEnvironment;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.lang.Threads;
 
-@RunWith(ContainerEnvironment.class)
+@RunWith(BricknessTestEnvironment.class)
 public class ThreadPoolTest {
 
 	final ThreadPool subject = my(ThreadPool.class);

@@ -3,10 +3,10 @@ package functional;
 import org.junit.After;
 import org.junit.Before;
 
-import sneer.brickness.testsupport.TestInContainerEnvironment;
+import sneer.brickness.testsupport.TestInBricknessEnvironment;
 import wheel.lang.Timebox;
 
-public abstract class SovereignFunctionalTestBase extends TestInContainerEnvironment {
+public abstract class SovereignFunctionalTestBase extends TestInBricknessEnvironment {
 
 	protected abstract SovereignCommunity createNewCommunity();
 

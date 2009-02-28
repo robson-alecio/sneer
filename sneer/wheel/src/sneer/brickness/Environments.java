@@ -32,6 +32,8 @@ public class Environments {
 		final Environment environment = current();
 		if (environment == null)
 			throw new IllegalStateException("Unable to provide thread " + Thread.currentThread() + " with implementation for " + dependency);
+		if (dependency == Environment.class)
+			return (T) environment;
 		return environment.provide(dependency);
 	}
 

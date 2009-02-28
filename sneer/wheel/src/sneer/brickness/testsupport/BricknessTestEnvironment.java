@@ -7,30 +7,33 @@ import java.util.ArrayList;
 
 import org.junit.internal.runners.InitializationError;
 
+import sneer.brickness.CachingEnvironment;
+import sneer.brickness.ClosedEnvironment;
+import sneer.brickness.ConventionBasedEnvironment;
 import sneer.brickness.Environment;
-import sneer.kernel.container.Containers;
+import sneer.brickness.Environments;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
 import sneer.pulp.exceptionhandling.tests.mocks.ExceptionLeaker;
 import wheel.testutil.WheelEnvironment;
 
-public class ContainerEnvironment extends WheelEnvironment {
+public class BricknessTestEnvironment extends WheelEnvironment {
 	
 	private final Field[] _contributedFields; 
 	
-	public ContainerEnvironment(Class<?> testClass) throws InitializationError {
+	public BricknessTestEnvironment(Class<?> testClass) throws InitializationError {
 		super(testClass);
 		_contributedFields = contributedFields(testClass);
 	}
 	
-	class TestEnvironment implements Environment {
+	class TestInstanceEnvironment implements Environment {
 
 		private Object _testInstance;
 
 		@Override
 		public <T> T provide(Class<T> intrface) {
-			if (intrface.isAssignableFrom(ContainerEnvironment.class))
-				return (T)ContainerEnvironment.this;
-			if (intrface.isAssignableFrom(TestEnvironment.class))
+			if (intrface.isAssignableFrom(BricknessTestEnvironment.class))
+				return (T)BricknessTestEnvironment.this;
+			if (intrface.isAssignableFrom(TestInstanceEnvironment.class))
 				return (T)this;
 			if (intrface.isAssignableFrom(ExceptionHandler.class))
 				return (T)new ExceptionLeaker();
@@ -67,10 +70,10 @@ public class ContainerEnvironment extends WheelEnvironment {
 	
 	@Override
 	protected Environment environment() {
-		return Containers.newContainer(new TestEnvironment());
-//		return new CachingEnvironment(Environments.compose(new TestEnvironment(), new ConventionBasedEnvironment()));
+//		return Containers.newContainer(new TestEnvironment());
+		return newEnvironment();
 	}
-	
+
 	private static Field[] contributedFields(Class<? extends Object> klass) {
 		final ArrayList<Field> result = new ArrayList<Field>();
 		while (klass != Object.class) {
@@ -101,7 +104,22 @@ public class ContainerEnvironment extends WheelEnvironment {
 	}
 
 	public void instanceBeingInitialized(Object testInstance) {
-		my(TestEnvironment.class).instanceBeingInitialized(testInstance);
+		my(TestInstanceEnvironment.class).instanceBeingInitialized(testInstance);
 	}
 
+	public Environment newEnvironment(Object... bindings) {
+		return new CachingEnvironment(
+				Environments.compose(
+					new ClosedEnvironment(bindings),
+					new TestInstanceEnvironment(),
+					new ConventionBasedEnvironment()));
+	}
+
+	public Environment newEnvironment() {
+		return new CachingEnvironment(
+				Environments.compose(
+					new TestInstanceEnvironment(),
+					new ConventionBasedEnvironment()));
+	}
+	
 }

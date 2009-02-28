@@ -9,11 +9,11 @@ import java.util.List;
 import org.jmock.Expectations;
 import org.junit.Test;
 
+import sneer.brickness.Environment;
 import sneer.brickness.Environments;
+import sneer.brickness.testsupport.BricknessTestEnvironment;
 import sneer.brickness.testsupport.Contribute;
-import sneer.brickness.testsupport.TestInContainerEnvironment;
-import sneer.kernel.container.Container;
-import sneer.kernel.container.Containers;
+import sneer.brickness.testsupport.TestInBricknessEnvironment;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.clock.Clock;
@@ -32,7 +32,7 @@ import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.lists.ListSignal;
 
-public class DynDnsClientTest extends TestInContainerEnvironment {
+public class DynDnsClientTest extends TestInBricknessEnvironment {
 	
 	/*
 
@@ -78,9 +78,9 @@ Unacceptable Client Behavior
 		}});
 		
 
-		startDynDnsClientOn(newContainer());
+		startDynDnsClientOn(newEnvironment());
 		
-		startDynDnsClientOn(newContainer());
+		startDynDnsClientOn(newEnvironment());
 	}
 	
 	@Test
@@ -106,7 +106,7 @@ Unacceptable Client Behavior
 		startDynDnsClient();
 		_threadPool.startAllActors();
 		
-		final Light light = assertBlinkingLight(error, my(Container.class));
+		final Light light = assertBlinkingLight(error, my(Environment.class));
 		
 		my(Clock.class).advanceTime(300001);
 		
@@ -136,7 +136,7 @@ Unacceptable Client Behavior
 		startDynDnsClient();
 		_threadPool.startAllActors();
 		
-		final Light light = assertBlinkingLight(error, my(Container.class));
+		final Light light = assertBlinkingLight(error, my(Environment.class));
 		
 		// new ip should be ignored while new account is not provided
 		_ownIp.setter().consume(newIp);
@@ -166,11 +166,11 @@ Unacceptable Client Behavior
 		startDynDnsClient();
 		_threadPool.startAllActors();
 		
-		assertBlinkingLight(error, my(Container.class));
+		assertBlinkingLight(error, my(Environment.class));
 	}
 
 	
-	private Light assertBlinkingLight(final Exception expectedError, final Container container) {
+	private Light assertBlinkingLight(final Exception expectedError, final Environment container) {
 		final ListSignal<Light> lights = container.provide(BlinkingLights.class).lights();
 		assertEquals(1, lights.currentSize());
 		final Light light = lights.currentGet(0);
@@ -183,17 +183,16 @@ Unacceptable Client Behavior
 	}
 
 	private void startDynDnsClient() {
-		final Container container = my(Container.class);
-		startDynDnsClientOn(container);
+		my(DynDnsClient.class);
 	}
 
-	private void startDynDnsClientOn(final Container container) {
-		Environments.runWith(container, new Runnable() { @Override public void run() {
+	private void startDynDnsClientOn(final Environment environment) {
+		Environments.runWith(environment, new Runnable() { @Override public void run() {
 			my(DynDnsClient.class);
 		}});
 	}
 
-	private Container newContainer(Object...mocks) {
+	private Environment newEnvironment(Object...mocks) {
 		List<Object> list = new ArrayList<Object>();
 		for (Object mock : mocks) {
 			list.add(mock);
@@ -203,7 +202,8 @@ Unacceptable Client Behavior
 		list.add(_updater);
 		list.add(_propertyStore);
 		
-		return Containers.newContainer(list.toArray());
+		final Object[] bindings = list.toArray();
+		return my(BricknessTestEnvironment.class).newEnvironment(bindings);
 	}
 }
 

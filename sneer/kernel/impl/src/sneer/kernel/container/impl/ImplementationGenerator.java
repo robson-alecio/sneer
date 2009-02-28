@@ -4,14 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import sneer.brickness.Conventions;
+
 import wheel.io.SourceFileWriter;
 
 class ImplementationGenerator {
-
-	static String implementationNameFor(String brickInterface) {
-		int index = brickInterface.lastIndexOf(".");
-		return brickInterface.substring(0, index) + ".impl" + brickInterface.substring(index) + "Impl";
-	}
 
 	static String generateFor(Class<?> intrface) {
 		return new ImplementationGenerator(intrface)._resultMessage;
@@ -47,7 +44,7 @@ class ImplementationGenerator {
 	}
 
 	private String implClassName() {
-		return implementationNameFor(_interface.getName());
+		return Conventions.implementationNameFor(_interface.getName());
 	}
 
 	private SourceFileWriter sourceWriter() {

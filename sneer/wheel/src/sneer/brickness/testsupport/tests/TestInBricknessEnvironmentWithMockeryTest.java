@@ -4,9 +4,9 @@ import org.jmock.Mockery;
 import org.junit.After;
 import org.junit.Test;
 
-import sneer.brickness.testsupport.TestInContainerEnvironment;
+import sneer.brickness.testsupport.TestInBricknessEnvironment;
 
-public class TestInContainerEnvironmentWithMockeryTest extends TestInContainerEnvironment {
+public class TestInBricknessEnvironmentWithMockeryTest extends TestInBricknessEnvironment {
 
 	protected boolean _assertIsSatisfiedCalled;
 	

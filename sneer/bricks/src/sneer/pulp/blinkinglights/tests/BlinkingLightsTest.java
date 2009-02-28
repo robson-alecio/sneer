@@ -4,13 +4,13 @@ import static sneer.brickness.Environments.my;
 
 import org.junit.Test;
 
-import sneer.brickness.testsupport.TestInContainerEnvironment;
+import sneer.brickness.testsupport.TestInBricknessEnvironment;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.clock.Clock;
 
-public class BlinkingLightsTest extends TestInContainerEnvironment {
+public class BlinkingLightsTest extends TestInBricknessEnvironment {
 
 	private final BlinkingLights _subject = my(BlinkingLights.class);
 

@@ -2,12 +2,12 @@ package sneer.pulp.dyndns.ownaccount.tests;
 
 import org.junit.Test;
 
-import sneer.brickness.testsupport.TestInContainerEnvironment;
+import sneer.brickness.testsupport.TestInBricknessEnvironment;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccount;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
 import static sneer.brickness.Environments.my;
 
-public class DynDnsAccountKeeperTest extends TestInContainerEnvironment {
+public class DynDnsAccountKeeperTest extends TestInBricknessEnvironment {
 
 	private final DynDnsAccountKeeper _subject = my(DynDnsAccountKeeper.class);
 	

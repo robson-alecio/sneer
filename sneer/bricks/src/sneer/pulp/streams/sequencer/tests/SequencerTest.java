@@ -10,12 +10,12 @@ import org.jmock.Expectations;
 import org.jmock.Sequence;
 import org.junit.Test;
 
-import sneer.brickness.testsupport.TestInContainerEnvironment;
+import sneer.brickness.testsupport.TestInBricknessEnvironment;
 import sneer.pulp.streams.sequencer.Sequencer;
 import sneer.pulp.streams.sequencer.Sequencers;
 import wheel.lang.Consumer;
 
-public class SequencerTest extends TestInContainerEnvironment {
+public class SequencerTest extends TestInBricknessEnvironment {
 	
 	private static final short MAX_GAP = (short)500;
 

@@ -2,12 +2,12 @@ package sneer.pulp.tuples.tests;
 
 import org.junit.Test;
 
-import sneer.brickness.testsupport.TestInContainerEnvironment;
+import sneer.brickness.testsupport.TestInBricknessEnvironment;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
 import static sneer.brickness.Environments.my;
 
-public class TupleKeepingTest extends TestInContainerEnvironment {
+public class TupleKeepingTest extends TestInBricknessEnvironment {
 
 	private final TupleSpace _subject = my(TupleSpace.class);
 	

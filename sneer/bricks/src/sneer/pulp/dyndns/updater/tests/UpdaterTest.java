@@ -8,7 +8,7 @@ import org.jmock.Expectations;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.Contribute;
-import sneer.brickness.testsupport.TestInContainerEnvironment;
+import sneer.brickness.testsupport.TestInBricknessEnvironment;
 import sneer.pulp.dyndns.updater.BadAuthException;
 import sneer.pulp.dyndns.updater.InvalidHostException;
 import sneer.pulp.dyndns.updater.RedundantUpdateException;
@@ -20,7 +20,7 @@ import sneer.pulp.httpclient.HttpClient;
 import wheel.io.Base64;
 import wheel.lang.Pair;
 
-public class UpdaterTest extends TestInContainerEnvironment {
+public class UpdaterTest extends TestInBricknessEnvironment {
 
 	@Contribute final HttpClient client = mock(HttpClient.class);
 	

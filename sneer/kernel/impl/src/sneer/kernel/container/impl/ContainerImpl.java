@@ -5,6 +5,7 @@ import java.lang.reflect.Constructor;
 import java.util.HashSet;
 import java.util.Set;
 
+import sneer.brickness.Conventions;
 import sneer.brickness.Environment;
 import sneer.brickness.Environments;
 import sneer.kernel.container.Brick;
@@ -152,7 +153,7 @@ public class ContainerImpl implements Container {
 		if(!type.isInterface())
 			return type.getName();
 		
-		return ImplementationGenerator.implementationNameFor(type.getName());
+		return Conventions.implementationNameFor(type.getName());
 	}
 
 	//Fix: check if this code will work on production

@@ -2,12 +2,12 @@ package sneer.pulp.distribution.filtering.tests;
 
 import org.junit.Test;
 
-import sneer.brickness.testsupport.TestInContainerEnvironment;
+import sneer.brickness.testsupport.TestInBricknessEnvironment;
 import sneer.kernel.container.Tuple;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import static sneer.brickness.Environments.my;
 
-public class TupleFilterManagerTest extends TestInContainerEnvironment {
+public class TupleFilterManagerTest extends TestInBricknessEnvironment {
 
 	private final TupleFilterManager _subject = my(TupleFilterManager.class);
 

@@ -1,6 +1,11 @@
 ﻿CURRENT TASKS
 ==================
 
+	- Brickness
+		- [Bamboo] Memento -> exposed Environment. 
+		- main.Sneer - Publish all necessary bricks instead of just producing them.
+			- BrickImplDirectory.isSpecialMetaInterface() - Make all those cases into annotations and delete that method.
+
 	- [Klaus] Own Name - Show contacts' names in contact list
 		- Freedom2Test - Unignore and make it pass.
 
@@ -9,10 +14,6 @@
 	- [Sandro] public static sneer.skin.sound.loopback.impl.Services - Bricks cannot expose static methods. (Don't charge)
 
 	- [Sandro] Finep (in parallel)
-
-	- [Bamboo] Brick Publish
-		- main.Sneer - Publish all necessary bricks instead of just producing them.
-			- BrickImplDirectory.isSpecialMetaInterface() - Make all those cases into annotations and delete that method.
 
 	- [Bamboo] Mocotó Test Framework
 		- Boojay pro-bono (in parallel)

@@ -1,6 +1,6 @@
 package spikes.klaus;
 
-import wheel.lang.Daemon;
+import sneer.commons.threads.Daemon;
 import wheel.lang.Threads;
 
 

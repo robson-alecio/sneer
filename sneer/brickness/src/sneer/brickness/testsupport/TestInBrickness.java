@@ -9,9 +9,9 @@ import org.jmock.integration.junit4.JUnit4Mockery;
 import org.jmock.internal.ExpectationBuilder;
 import org.junit.runner.RunWith;
 
+import sneer.commons.testutil.TestThatMightUseResources;
 import sneer.pulp.config.persistence.mocks.PersistenceConfigMock;
 import sneer.pulp.tuples.TupleSpace;
-import wheel.testutil.TestThatMightUseResources;
 
 @RunWith(JMockBrickness.class)
 public abstract class TestInBrickness extends TestThatMightUseResources {

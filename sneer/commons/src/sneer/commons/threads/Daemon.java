@@ -1,4 +1,4 @@
-package wheel.lang;
+package sneer.commons.threads;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -1,4 +1,4 @@
-package wheel.testutil;
+package sneer.commons.testutil;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,14 +6,9 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.runner.RunWith;
 
-import sneer.brickness.testsupport.WheelEnvironment;
+import sneer.commons.threads.Daemon;
 
-import wheel.io.Logger;
-import wheel.lang.Daemon;
-
-@RunWith(WheelEnvironment.class)
 public abstract class TestThatMightUseResources extends Assert {
 
 	private File _tmpDirectory;
@@ -47,10 +42,8 @@ public abstract class TestThatMightUseResources extends Assert {
 				FileUtils.deleteDirectory(tmp);
 				return;
 			} catch (IOException e) {
-				if (System.currentTimeMillis() - t0 > 1000) {
-					Logger.log("Test left files open: {}", e.getMessage());
-					return;
-				}
+				if (System.currentTimeMillis() - t0 > 1000)
+					throw new RuntimeException("Unable to delete files created by this test.", e);
 				System.gc();
 			}
 		}

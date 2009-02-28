@@ -10,9 +10,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
+import sneer.commons.testutil.TestThatMightUseResources;
+
 import wheel.io.JarBuilder;
 import wheel.io.Streams;
-import wheel.testutil.TestThatMightUseResources;
 
 public class JarBuilderTest extends TestThatMightUseResources {
 

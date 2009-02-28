@@ -10,8 +10,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import sneer.commons.testutil.TestThatMightUseResources;
+
 import wheel.io.files.Directory;
-import wheel.testutil.TestThatMightUseResources;
 
 public abstract class DirectoryTestBase extends TestThatMightUseResources {
 	

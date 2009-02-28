@@ -8,11 +8,11 @@ import org.junit.Test;
 
 import sneer.brickness.Environments;
 import sneer.brickness.Tuple;
+import sneer.commons.testutil.TestThatMightUseResources;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
 import sneer.pulp.config.persistence.mocks.PersistenceConfigMock;
 import sneer.pulp.tuples.TupleSpace;
-import wheel.testutil.TestThatMightUseResources;
 
 public class TuplePersistenceTest extends TestThatMightUseResources {
 

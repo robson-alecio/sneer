@@ -4,9 +4,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.TestInBrickness;
+import sneer.commons.threads.Daemon;
 import sneer.pulp.things.Thing;
 import sneer.pulp.things.ThingHome;
-import wheel.lang.Daemon;
 import wheel.lang.Threads;
 import wheel.reactive.sets.SetSignal;
 import wheel.testutil.TestDashboard;

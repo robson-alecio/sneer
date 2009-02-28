@@ -1,8 +1,8 @@
 package wheel.testutil;
 
 import static java.lang.System.gc;
+import sneer.commons.threads.Daemon;
 import wheel.io.Logger;
-import wheel.lang.Daemon;
 import wheel.lang.Threads;
 
 public class MemorySentinel {

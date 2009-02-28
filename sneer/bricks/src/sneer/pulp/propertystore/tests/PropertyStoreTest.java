@@ -5,11 +5,11 @@ import static sneer.brickness.Environments.my;
 import org.junit.Test;
 
 import sneer.brickness.Environments;
+import sneer.commons.testutil.TestThatMightUseResources;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
 import sneer.pulp.config.persistence.mocks.PersistenceConfigMock;
 import sneer.pulp.propertystore.PropertyStore;
-import wheel.testutil.TestThatMightUseResources;
 
 public class PropertyStoreTest extends TestThatMightUseResources {
 

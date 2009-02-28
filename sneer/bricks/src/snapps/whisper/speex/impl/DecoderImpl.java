@@ -6,7 +6,7 @@ import org.xiph.speex.SpeexDecoder;
 
 import snapps.whisper.speex.Decoder;
 import sneer.skin.sound.kernel.Audio;
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 class DecoderImpl implements Decoder {
 	

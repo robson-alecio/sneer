@@ -1,6 +1,6 @@
 package sneer.pulp.compiler.tests;
 
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 import java.io.File;
 import java.io.FilenameFilter;

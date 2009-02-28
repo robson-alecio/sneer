@@ -1,6 +1,6 @@
 package sneer.brickness.testsupport.tests.foo.impl;
 
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 import sneer.brickness.testsupport.tests.bar.BarBrick;
 import sneer.brickness.testsupport.tests.foo.FooBrick;
 

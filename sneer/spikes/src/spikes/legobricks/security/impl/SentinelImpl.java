@@ -7,7 +7,7 @@ import spikes.legobricks.security.Sentinel;
 import spikes.legobricks.security.Sorry;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 public class SentinelImpl implements Sentinel {
 

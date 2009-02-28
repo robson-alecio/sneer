@@ -1,6 +1,6 @@
 package snapps.gis.ui.impl;
 
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

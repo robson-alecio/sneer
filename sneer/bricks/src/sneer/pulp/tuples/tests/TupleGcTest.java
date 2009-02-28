@@ -5,7 +5,7 @@ import org.junit.Test;
 import sneer.brickness.testsupport.TestInBrickness;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Threads;
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 public class TupleGcTest extends TestInBrickness {
 

@@ -1,7 +1,7 @@
 package sneer.skin.sound.player.tests;
 
-import static sneer.brickness.Environments.my;
-import sneer.brickness.Environments;
+import static sneer.brickness.environments.Environments.my;
+import sneer.brickness.environments.Environments;
 import sneer.kernel.container.Containers;
 import sneer.skin.sound.player.SoundPlayer;
 import wheel.io.Logger;

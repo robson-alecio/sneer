@@ -1,6 +1,6 @@
 package snapps.watchme.gui.impl;
 
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 import java.awt.Color;
 import java.awt.Container;

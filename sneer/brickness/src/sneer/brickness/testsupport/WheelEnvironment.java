@@ -9,9 +9,9 @@ import org.junit.internal.runners.TestClass;
 import org.junit.internal.runners.TestMethod;
 import org.junit.runner.notification.RunNotifier;
 
-import sneer.brickness.Environment;
-import sneer.brickness.Environments;
-import sneer.brickness.Environments.Memento;
+import sneer.brickness.environments.Environment;
+import sneer.brickness.environments.Environments;
+import sneer.brickness.environments.Environments.Memento;
 
 import wheel.io.logging.WheelLogger;
 import wheel.io.logging.impl.WheelLoggerImpl;

@@ -6,7 +6,7 @@ import sneer.brickness.testsupport.Contribute;
 import sneer.brickness.testsupport.TestInBrickness;
 import sneer.brickness.testsupport.tests.bar.BarBrick;
 import sneer.brickness.testsupport.tests.foo.FooBrick;
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 public class TestInBricknessTest extends TestInBrickness {
 	

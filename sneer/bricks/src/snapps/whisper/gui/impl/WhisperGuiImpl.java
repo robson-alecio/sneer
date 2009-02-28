@@ -19,7 +19,7 @@ import javax.swing.border.EmptyBorder;
 import snapps.contacts.actions.ContactAction;
 import snapps.contacts.actions.ContactActionManager;
 import snapps.whisper.gui.WhisperGui;
-import sneer.brickness.Environments;
+import sneer.brickness.environments.Environments;
 import sneer.pulp.contacts.Contact;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.rooms.ActiveRoomKeeper;
@@ -32,7 +32,7 @@ import sneer.skin.widgets.reactive.TextWidget;
 import wheel.lang.Consumer;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.And;
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 class WhisperGuiImpl implements WhisperGui { //Optimize need a better snapp window support
 

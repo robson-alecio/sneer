@@ -1,6 +1,7 @@
-package sneer.brickness;
+package sneer.brickness.environments;
 
 import java.lang.reflect.Constructor;
+
 
 public class ConventionBasedEnvironment implements Environment {
 

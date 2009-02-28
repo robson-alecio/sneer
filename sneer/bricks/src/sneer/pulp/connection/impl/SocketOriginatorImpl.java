@@ -7,7 +7,7 @@ import sneer.pulp.connection.SocketOriginator;
 import sneer.pulp.internetaddresskeeper.InternetAddress;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
 import wheel.reactive.lists.impl.SimpleListReceiver;
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 class SocketOriginatorImpl implements SocketOriginator {
 

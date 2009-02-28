@@ -2,7 +2,7 @@ package sneer.kernel.container;
 
 import java.lang.reflect.Constructor;
 
-import sneer.brickness.Environment;
+import sneer.brickness.environments.Environment;
 
 
 public class Containers {

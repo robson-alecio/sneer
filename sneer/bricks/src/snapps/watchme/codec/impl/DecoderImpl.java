@@ -9,7 +9,7 @@ import snapps.watchme.codec.ImageDelta;
 import snapps.watchme.codec.ImageCodec.Decoder;
 import sneer.skin.image.ImageFactory;
 import wheel.lang.Pair;
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 class DecoderImpl implements Decoder {
 

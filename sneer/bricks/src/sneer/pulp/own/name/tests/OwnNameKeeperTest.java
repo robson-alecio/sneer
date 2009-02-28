@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import sneer.brickness.testsupport.TestInBrickness;
 import sneer.pulp.own.name.OwnNameKeeper;
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 public class OwnNameKeeperTest extends TestInBrickness {
 

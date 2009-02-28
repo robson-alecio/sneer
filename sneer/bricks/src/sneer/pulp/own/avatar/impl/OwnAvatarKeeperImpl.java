@@ -11,7 +11,7 @@ import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Adapter;
 import wheel.reactive.impl.RegisterImpl;
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 class OwnAvatarKeeperImpl implements OwnAvatarKeeper {
 

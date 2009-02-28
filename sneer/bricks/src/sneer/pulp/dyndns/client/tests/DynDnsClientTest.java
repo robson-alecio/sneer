@@ -1,6 +1,6 @@
 package sneer.pulp.dyndns.client.tests;
 
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,8 +9,8 @@ import java.util.List;
 import org.jmock.Expectations;
 import org.junit.Test;
 
-import sneer.brickness.Environment;
-import sneer.brickness.Environments;
+import sneer.brickness.environments.Environment;
+import sneer.brickness.environments.Environments;
 import sneer.brickness.testsupport.BricknessTestEnvironment;
 import sneer.brickness.testsupport.Contribute;
 import sneer.brickness.testsupport.TestInBrickness;

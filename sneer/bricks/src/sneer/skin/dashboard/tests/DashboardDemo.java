@@ -10,7 +10,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import sneer.brickness.Environments;
+import sneer.brickness.environments.Environments;
 import sneer.kernel.container.Containers;
 import sneer.skin.dashboard.Dashboard;
 import sneer.skin.dashboard.InstrumentWindow;

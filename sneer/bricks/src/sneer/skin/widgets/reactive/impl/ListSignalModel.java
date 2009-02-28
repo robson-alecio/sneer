@@ -1,6 +1,6 @@
 package sneer.skin.widgets.reactive.impl;
 
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 import javax.swing.AbstractListModel;
 import javax.swing.ListModel;

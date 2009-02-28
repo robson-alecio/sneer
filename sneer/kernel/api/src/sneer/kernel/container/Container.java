@@ -1,7 +1,7 @@
 package sneer.kernel.container;
 
 import sneer.brickness.Brick;
-import sneer.brickness.Environment;
+import sneer.brickness.environments.Environment;
 
 public interface Container extends Environment {
 	

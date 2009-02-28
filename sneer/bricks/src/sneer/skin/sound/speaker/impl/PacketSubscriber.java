@@ -4,7 +4,7 @@ import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
 import wheel.lang.Consumer;
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 class PacketSubscriber implements Consumer<PcmSoundPacket> {
 

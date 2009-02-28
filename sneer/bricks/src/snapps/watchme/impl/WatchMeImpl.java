@@ -1,6 +1,6 @@
 package snapps.watchme.impl;
 
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 import java.awt.image.BufferedImage;
 import java.util.List;

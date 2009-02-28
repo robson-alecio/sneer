@@ -1,6 +1,6 @@
 package sneer.pulp.bandwidth.impl;
 
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

@@ -5,7 +5,7 @@ import org.junit.Test;
 import sneer.brickness.Tuple;
 import sneer.brickness.testsupport.TestInBrickness;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 public class TupleFilterManagerTest extends TestInBrickness {
 

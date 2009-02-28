@@ -2,7 +2,7 @@ package sneer.skin.imgselector.tests;
 
 import java.awt.Image;
 
-import sneer.brickness.Environments;
+import sneer.brickness.environments.Environments;
 import sneer.kernel.container.Containers;
 import sneer.skin.imgselector.ImageSelector;
 import wheel.io.Logger;

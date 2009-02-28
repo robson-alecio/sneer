@@ -7,7 +7,7 @@ import snapps.watchme.gui.windows.RemoteWatchMeWindows;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import wheel.reactive.lists.impl.SimpleListReceiver;
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 class RemoteWatchMeWindowsImpl implements RemoteWatchMeWindows{
 

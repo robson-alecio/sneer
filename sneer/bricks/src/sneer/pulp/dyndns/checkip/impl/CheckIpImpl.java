@@ -1,6 +1,6 @@
 package sneer.pulp.dyndns.checkip.impl;
 
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 import java.io.IOException;
 import java.util.regex.Matcher;

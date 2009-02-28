@@ -1,6 +1,6 @@
 package sneer.pulp.probe.tests;
 
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 import org.jmock.Expectations;
 import org.jmock.api.Invocation;

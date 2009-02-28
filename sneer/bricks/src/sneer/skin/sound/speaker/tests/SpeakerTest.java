@@ -1,6 +1,6 @@
 package sneer.skin.sound.speaker.tests;
 
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 import javax.sound.sampled.SourceDataLine;
 

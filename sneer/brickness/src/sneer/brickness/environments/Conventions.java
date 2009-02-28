@@ -1,4 +1,4 @@
-package sneer.brickness;
+package sneer.brickness.environments;
 
 public class Conventions {
 

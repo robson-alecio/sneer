@@ -1,10 +1,10 @@
 package sneer.pulp.propertystore.tests;
 
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 import org.junit.Test;
 
-import sneer.brickness.Environments;
+import sneer.brickness.environments.Environments;
 import sneer.commons.testutil.TestThatMightUseResources;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;

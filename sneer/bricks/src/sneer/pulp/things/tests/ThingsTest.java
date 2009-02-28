@@ -10,7 +10,7 @@ import sneer.pulp.things.ThingHome;
 import wheel.lang.Threads;
 import wheel.reactive.sets.SetSignal;
 import wheel.testutil.TestDashboard;
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 public class ThingsTest extends TestInBrickness {
 	

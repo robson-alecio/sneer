@@ -1,12 +1,12 @@
 package sneer.skin.widgets.reactive.tests;
 
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 
-import sneer.brickness.Environments;
+import sneer.brickness.environments.Environments;
 import sneer.kernel.container.Containers;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;

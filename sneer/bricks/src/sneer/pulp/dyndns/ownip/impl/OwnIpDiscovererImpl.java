@@ -13,7 +13,7 @@ import wheel.io.Logger;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	

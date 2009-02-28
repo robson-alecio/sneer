@@ -14,7 +14,7 @@ import sneer.pulp.crypto.Crypto;
 import sneer.pulp.crypto.Sneer1024;
 import sneer.pulp.dependency.FileWithHash;
 import sneer.pulp.dependency.DependencyManager;
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 import static wheel.io.Logger.log;
 
 class DependencyManagerImpl implements DependencyManager {

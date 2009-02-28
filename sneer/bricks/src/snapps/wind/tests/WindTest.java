@@ -6,7 +6,7 @@ import snapps.wind.Shout;
 import snapps.wind.Wind;
 import sneer.brickness.testsupport.TestInBrickness;
 import sneer.pulp.tuples.TupleSpace;
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 public class WindTest extends TestInBrickness {
 

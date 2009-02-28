@@ -1,17 +1,17 @@
 package sneer.brickness.testsupport;
 
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import org.junit.internal.runners.InitializationError;
 
-import sneer.brickness.CachingEnvironment;
-import sneer.brickness.ClosedEnvironment;
-import sneer.brickness.ConventionBasedEnvironment;
-import sneer.brickness.Environment;
-import sneer.brickness.Environments;
+import sneer.brickness.environments.CachingEnvironment;
+import sneer.brickness.environments.ClosedEnvironment;
+import sneer.brickness.environments.ConventionBasedEnvironment;
+import sneer.brickness.environments.Environment;
+import sneer.brickness.environments.Environments;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
 import sneer.pulp.exceptionhandling.tests.mocks.ExceptionLeaker;
 

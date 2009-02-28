@@ -4,7 +4,7 @@ import org.xiph.speex.SpeexEncoder;
 
 import snapps.whisper.speex.Encoder;
 import sneer.skin.sound.kernel.Audio;
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 class EncoderImpl implements Encoder {
 

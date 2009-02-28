@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import sneer.brickness.testsupport.TestInBrickness;
 import sneer.pulp.own.tagline.OwnTaglineKeeper;
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 public class OwnTaglineKeeperTest extends TestInBrickness {
 

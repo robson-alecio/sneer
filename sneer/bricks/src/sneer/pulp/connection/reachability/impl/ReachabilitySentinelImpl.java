@@ -8,7 +8,7 @@ import sneer.pulp.connection.SocketAccepter;
 import sneer.pulp.connection.reachability.ReachabilitySentinel;
 import sneer.pulp.threadpool.Stepper;
 import wheel.reactive.impl.Receiver;
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 class ReachabilitySentinelImpl implements ReachabilitySentinel {
 	

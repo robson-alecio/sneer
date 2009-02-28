@@ -16,7 +16,7 @@ import sneer.pulp.compiler.JavaCompiler;
 import sneer.pulp.compiler.Result;
 import com.sun.tools.javac.Main;
 
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 import static wheel.io.Logger.log;
 
 class JavaCompilerImpl implements JavaCompiler {

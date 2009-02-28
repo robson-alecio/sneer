@@ -1,8 +1,8 @@
 package snapps.gis.ui.tests;
 
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 import snapps.gis.ui.LocationGui;
-import sneer.brickness.Environments;
+import sneer.brickness.environments.Environments;
 import sneer.kernel.container.Containers;
 import wheel.lang.Threads;
 

@@ -22,7 +22,7 @@ import wheel.io.ui.GuiThread;
 import wheel.lang.Consumer;
 import wheel.reactive.EventSource;
 import wheel.reactive.impl.Receiver;
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 class WatchMeReceiver{
 	

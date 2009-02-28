@@ -13,7 +13,7 @@ import sneer.pulp.httpclient.HttpClient;
 import wheel.io.Base64;
 import wheel.io.Logger;
 import wheel.lang.Pair;
-import static sneer.brickness.Environments.my;
+import static sneer.brickness.environments.Environments.my;
 
 class UpdaterImpl implements Updater {
 	

@@ -1,6 +1,6 @@
 package spikes.priscila.go.gui;
 
-import sneer.brickness.Environments;
+import sneer.brickness.environments.Environments;
 import sneer.kernel.container.Containers;
 import spikes.priscila.go.Move;
 import spikes.priscila.go.GoBoard.StoneColor;

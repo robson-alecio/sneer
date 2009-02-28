@@ -1,7 +1,8 @@
-package sneer.brickness;
+package sneer.brickness.environments;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 
 public class CachingEnvironment implements Environment {
 

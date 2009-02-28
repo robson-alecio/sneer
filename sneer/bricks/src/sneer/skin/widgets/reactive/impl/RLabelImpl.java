@@ -76,7 +76,7 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 	@Override
 	public PickyConsumer<String> setter() {
 		if(_setter==null)
-			throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
 		
 		return _setter;
 	}

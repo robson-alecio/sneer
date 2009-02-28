@@ -76,7 +76,7 @@ class InternetAddressFrame extends JFrame{
 	}
 	
 	public void delInternetAddress() {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+		throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
 	}
 	
 	private void newInternetAddress() {

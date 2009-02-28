@@ -15,13 +15,13 @@ import java.util.zip.ZipEntry;
 
 import org.apache.commons.io.IOUtils;
 
+import sneer.commons.lang.exceptions.NotImplementedYet;
 import sneer.kernel.container.bytecode.dependencies.DependencyFinder;
 import sneer.kernel.container.jar.DeploymentJar;
 import sneer.pulp.crypto.Crypto;
 import sneer.pulp.crypto.Digester;
 import wheel.io.JarExploder;
 import wheel.lang.Predicate;
-import wheel.lang.exceptions.NotImplementedYet;
 
 public class DeploymentJarImpl implements DeploymentJar {
 
@@ -217,7 +217,7 @@ public class DeploymentJarImpl implements DeploymentJar {
 		try {
 			return properties().getProperty(propertyName);
 		} catch (IOException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		}
 	}
 

@@ -43,7 +43,7 @@ class CryptoImpl implements Crypto {
 		try {
 			return MessageDigest.getInstance(algorithm, provider);
 		} catch (Exception e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		}
 	}
 

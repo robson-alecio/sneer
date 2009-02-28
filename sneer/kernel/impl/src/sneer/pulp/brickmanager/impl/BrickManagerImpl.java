@@ -11,6 +11,7 @@ import org.apache.commons.io.FileUtils;
 
 import sneer.brickness.Brick;
 import sneer.brickness.PublicKey;
+import sneer.commons.lang.exceptions.NotImplementedYet;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.SneerConfig;
 import sneer.pulp.brickmanager.BrickManager;
@@ -20,7 +21,6 @@ import sneer.pulp.dependency.DependencyManager;
 import sneer.pulp.deployer.BrickBundle;
 import sneer.pulp.deployer.BrickFile;
 import sneer.pulp.keymanager.KeyManager;
-import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.maps.MapRegister;
 import wheel.reactive.maps.MapSignal;
 import wheel.reactive.maps.impl.MapRegisterImpl;
@@ -99,7 +99,7 @@ class BrickManagerImpl implements BrickManager {
 			return true;
 		
 		//compare hashes
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+		throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
 	@Override
@@ -149,7 +149,7 @@ class BrickManagerImpl implements BrickManager {
 		try {
 			FileUtils.cleanDirectory(brickDirectory);
 		} catch (IOException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
 	}
 

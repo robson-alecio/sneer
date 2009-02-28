@@ -9,10 +9,10 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.commons.lang.ByRef;
+import sneer.commons.lang.exceptions.NotImplementedYet;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
 import wheel.io.ui.TimeboxedEventQueue;
-import wheel.lang.exceptions.NotImplementedYet;
 import wheel.lang.exceptions.TimeIsUp;
 
 public class GuiBrickTest {

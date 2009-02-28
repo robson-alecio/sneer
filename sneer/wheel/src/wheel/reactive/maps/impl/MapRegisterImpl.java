@@ -102,7 +102,7 @@ public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 
 		@Override
 		public Signal<Integer> size() {
-			throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
 		}
 
 		@Override

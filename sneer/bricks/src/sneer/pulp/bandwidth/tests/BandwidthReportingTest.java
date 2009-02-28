@@ -124,7 +124,7 @@ public class BandwidthReportingTest extends TestInBrickness {
 		}
 		@Override public void received(int sizeBytes) { store(sizeBytes); }
 		@Override public void sent(int sizeBytes) {	store(sizeBytes); }
-		@Override public Signal<Integer> downloadSpeed() { throw new wheel.lang.exceptions.NotImplementedYet(); }
-		@Override public Signal<Integer> uploadSpeed() {throw new wheel.lang.exceptions.NotImplementedYet(); }
+		@Override public Signal<Integer> downloadSpeed() { throw new sneer.commons.lang.exceptions.NotImplementedYet(); }
+		@Override public Signal<Integer> uploadSpeed() {throw new sneer.commons.lang.exceptions.NotImplementedYet(); }
 	};
 }

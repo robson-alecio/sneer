@@ -40,7 +40,7 @@ class ClasspathFactoryImpl implements ClasspathFactory {
 		try {
 			/* try to load from sneer.jar */
 			Jars.jarGiven(Brick.class);
-			throw new wheel.lang.exceptions.NotImplementedYet();	
+			throw new sneer.commons.lang.exceptions.NotImplementedYet();	
 		} catch(StringIndexOutOfBoundsException e) {
 			return result.compose(buildEclipseClasspath());
 		}

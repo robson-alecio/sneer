@@ -12,8 +12,9 @@ import javax.sound.sampled.Mixer;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 
+import sneer.commons.lang.exceptions.NotImplementedYet;
+
 import wheel.io.Logger;
-import wheel.lang.exceptions.NotImplementedYet;
 
 // This class is a singleton.
 

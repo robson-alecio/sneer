@@ -123,9 +123,9 @@ class TupleSpaceImpl implements TupleSpace {
 		try {
 			return factory.create();
 		} catch (IOException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		} catch (ClassNotFoundException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
 	}
 

@@ -118,7 +118,7 @@ class DynDnsClientImpl implements DynDnsClient {
 			} catch (IOException e) {
 				return new Waiting(e);
 			} catch (UpdaterException e) {
-				throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+				throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 			}
 		}
 		

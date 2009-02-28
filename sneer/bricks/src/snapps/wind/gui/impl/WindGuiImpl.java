@@ -202,7 +202,7 @@ class WindGuiImpl implements WindGui {
 				
 				@Override
 				public void elementInserted(int index, Shout value) {
-					throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+					throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
 				}};
 		}
 		

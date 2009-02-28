@@ -73,7 +73,7 @@ class WhisperGuiImpl implements WhisperGui { //Optimize need a better snapp wind
 		try {
 			return new ImageIcon(ImageIO.read(this.getClass().getResource(fileName)));
 		} catch (IOException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
 	}
 
@@ -141,7 +141,7 @@ class WhisperGuiImpl implements WhisperGui { //Optimize need a better snapp wind
 			@Override
 			public void run() {
 				isStarted = !isStarted;
-				throw new wheel.lang.exceptions.NotImplementedYet("" + _contact); // Implement
+				throw new sneer.commons.lang.exceptions.NotImplementedYet("" + _contact); // Implement
 			}});
 	}
 

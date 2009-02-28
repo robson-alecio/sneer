@@ -18,7 +18,7 @@ public class ConventionBasedEnvironment implements Environment {
 		try {
 			return instantiate(implClass);
 		} catch (Exception e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
 	}
 

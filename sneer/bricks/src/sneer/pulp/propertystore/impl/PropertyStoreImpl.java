@@ -50,7 +50,7 @@ class PropertyStoreImpl implements PropertyStore {
 		} catch (FileNotFoundException e) {
 			Logger.log("No properties found yet.");
 		} catch (IOException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		} finally {
 			if (in != null) Streams.crash(in);
 		}
@@ -66,7 +66,7 @@ class PropertyStoreImpl implements PropertyStore {
 				Streams.crash(out);
 			}
 		} catch (IOException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		} 
 	}
 

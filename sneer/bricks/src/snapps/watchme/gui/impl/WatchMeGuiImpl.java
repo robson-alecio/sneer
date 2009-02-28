@@ -37,7 +37,7 @@ class WatchMeGuiImpl implements WatchMeGui{ //Optimize need a better snapp windo
 		try {
 			return new ImageIcon(ImageIO.read(this.getClass().getResource(fileName)));
 		} catch (IOException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
 	}
 

@@ -16,7 +16,7 @@ public class Containers {
 			final Constructor<?> defaultCtor = Class.forName("sneer.kernel.container.impl.ContainerImpl").getConstructors()[0];
 			return (Container) defaultCtor.newInstance(new Object[] { environment, implementationBindings });
 		} catch (Exception e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
     }
 	

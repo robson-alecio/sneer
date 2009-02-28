@@ -141,7 +141,7 @@ public class JavaSoundImplOld implements Sound{
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+				throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 			}
 		}
 		

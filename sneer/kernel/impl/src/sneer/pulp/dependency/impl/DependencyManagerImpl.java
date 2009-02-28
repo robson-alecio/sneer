@@ -87,7 +87,7 @@ class DependencyManagerImpl implements DependencyManager {
 			Sneer1024 sneer1024 = _crypto.digest(file);
 			return new DependencyImpl(file, sneer1024);
 		} catch (IOException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Implement
 		}
 	}
 	

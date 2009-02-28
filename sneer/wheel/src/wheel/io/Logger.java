@@ -10,7 +10,8 @@ import java.util.Date;
 
 import org.apache.commons.io.output.NullOutputStream;
 
-import wheel.lang.exceptions.NotImplementedYet;
+import sneer.commons.lang.exceptions.NotImplementedYet;
+
 
 public class Logger {
 

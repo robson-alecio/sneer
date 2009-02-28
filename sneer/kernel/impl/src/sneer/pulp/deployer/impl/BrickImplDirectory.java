@@ -147,7 +147,7 @@ class BrickImplDirectory {
 			
 			return Brick.class.isAssignableFrom(c);
 		} catch (ClassNotFoundException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		}
 	}
 

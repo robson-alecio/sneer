@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import sneer.brickness.Tuple;
+import sneer.commons.lang.exceptions.NotImplementedYet;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
@@ -13,7 +14,6 @@ import sneer.pulp.probe.ProbeManager;
 import sneer.pulp.serialization.Serializer;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
-import wheel.lang.exceptions.NotImplementedYet;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 import static sneer.brickness.Environments.my;
 
@@ -77,9 +77,9 @@ class ProbeManagerImpl implements ProbeManager {
 		try {
 			return _serializer.deserialize(packet, CLASSLOADER_FOR_TUPLES);
 		} catch (ClassNotFoundException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		} catch (IOException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
 	}
 

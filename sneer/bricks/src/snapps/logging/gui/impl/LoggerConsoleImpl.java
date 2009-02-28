@@ -6,7 +6,7 @@ class LoggerConsoleImpl implements LoggerConsole {
 
 	@Override
 	public void show() {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+		throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
 	}
 
 }

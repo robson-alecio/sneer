@@ -17,7 +17,7 @@ public class SoundPlayerDemo {
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
 	}
 	

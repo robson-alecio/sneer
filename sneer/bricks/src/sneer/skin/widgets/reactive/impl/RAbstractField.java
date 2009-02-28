@@ -157,7 +157,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 		try {
 			_textComponent.getClass().getMethod("setText", new Class[]{String.class}).invoke(_textComponent, new Object[]{text});
 		} catch (Exception e) {
-			throw new wheel.lang.exceptions.NotImplementedYet("Invalid Widget", e);
+			throw new sneer.commons.lang.exceptions.NotImplementedYet("Invalid Widget", e);
 		}		
 	}
 
@@ -165,7 +165,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 		try {
 			return (String) _textComponent.getClass().getMethod("getText", new Class[0]).invoke(_textComponent, new Object[0]);
 		} catch (Exception e) {
-			throw new wheel.lang.exceptions.NotImplementedYet("Invalid Widget", e);
+			throw new sneer.commons.lang.exceptions.NotImplementedYet("Invalid Widget", e);
 		}
 	}
 	

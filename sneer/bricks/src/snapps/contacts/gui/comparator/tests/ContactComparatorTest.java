@@ -64,11 +64,11 @@ class ConnectionManagerMock implements ConnectionManager{
 			public Signal<Boolean> isOnline() {
 				return ((ContactMock)contact)._isOnline;
 			}
-			@Override public void initCommunications(PacketScheduler sender, Consumer<byte[]> receiver) { throw new wheel.lang.exceptions.NotImplementedYet();}
+			@Override public void initCommunications(PacketScheduler sender, Consumer<byte[]> receiver) { throw new sneer.commons.lang.exceptions.NotImplementedYet();}
 		};
 	}
-	@Override public void manageIncomingSocket(Contact contact, ByteArraySocket socket) { throw new wheel.lang.exceptions.NotImplementedYet(); }
-	@Override public void manageOutgoingSocket(Contact contact, ByteArraySocket socket) { throw new wheel.lang.exceptions.NotImplementedYet(); }
+	@Override public void manageIncomingSocket(Contact contact, ByteArraySocket socket) { throw new sneer.commons.lang.exceptions.NotImplementedYet(); }
+	@Override public void manageOutgoingSocket(Contact contact, ByteArraySocket socket) { throw new sneer.commons.lang.exceptions.NotImplementedYet(); }
 }
 
 class ContactMock implements Contact{

@@ -4,9 +4,9 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import sneer.commons.lang.exceptions.NotImplementedYet;
 import spikes.priscila.go.GoBoard;
 import spikes.priscila.go.ToroidalGoBoard;
-import wheel.lang.exceptions.NotImplementedYet;
 
 public class GoTest extends Assert {
 

@@ -52,7 +52,7 @@ public class ReactiveImageDemo {
 		try {
 			return ImageIO.read(ReactiveImageDemo.class.getResource(fileName));
 		} catch (IOException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
 	}
 	

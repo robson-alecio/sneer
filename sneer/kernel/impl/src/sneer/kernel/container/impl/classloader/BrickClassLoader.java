@@ -97,7 +97,7 @@ public class BrickClassLoader extends EnhancingClassLoader {
 			try {
 				urls[i++] = dependency.file().toURI().toURL();
 			} catch (MalformedURLException e) {
-				throw new wheel.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+				throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 			}
 		}
 		return urls;

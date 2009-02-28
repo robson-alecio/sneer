@@ -57,7 +57,7 @@ class RTextPaneImpl extends RAbstractField<JTextPane> {
 			document.insertString(carretPosition, LINE_BREAK_STRING, attributes);
 			_textComponent.setCaretPosition(carretPosition+1);
 		} catch (BadLocationException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
     }
     

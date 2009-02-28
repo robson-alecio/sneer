@@ -26,7 +26,7 @@ public class BricknessTestEnvironmentTest {
 	final FooBrick _foo = new FooBrick() {
 		@Override
 		public BarBrick bar() {
-			throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
 		}
 	};
 	

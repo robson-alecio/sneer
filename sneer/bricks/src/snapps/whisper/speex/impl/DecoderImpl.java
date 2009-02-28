@@ -41,7 +41,7 @@ class DecoderImpl implements Decoder {
 		try {
 			_decoder.processData(frame, 0, frame.length);
 		} catch (StreamCorruptedException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
 	}
 }

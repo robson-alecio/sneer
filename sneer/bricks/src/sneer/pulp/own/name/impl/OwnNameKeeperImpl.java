@@ -33,7 +33,7 @@ class OwnNameKeeperImpl implements OwnNameKeeper {
 
 	@Override
 	public Signal<String> nameOf(Contact contact) {
-		throw new wheel.lang.exceptions.NotImplementedYet(); // Implement
+		throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
 	}
 	
 //	private Consumer<? super OwnName> ownNameSubscriber() {

@@ -127,9 +127,9 @@ public class Template {
 		try {
 			return templateClass.newInstance();
 		} catch (InstantiationException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e);
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(e);
 		} catch (IllegalAccessException e) {
-			throw new wheel.lang.exceptions.NotImplementedYet(e);
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(e);
 		}
 	}
 

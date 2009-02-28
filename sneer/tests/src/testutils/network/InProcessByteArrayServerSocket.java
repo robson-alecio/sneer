@@ -34,6 +34,6 @@ class InProcessByteArrayServerSocket implements ByteArrayServerSocket {
 
 	@Override
 	public void crash() {
-		throw new wheel.lang.exceptions.NotImplementedYet();
+		throw new sneer.commons.lang.exceptions.NotImplementedYet();
 	}
 }

@@ -9,7 +9,8 @@ import java.util.Enumeration;
 
 import org.apache.commons.io.FileUtils;
 
-import wheel.lang.exceptions.NotImplementedYet;
+import sneer.commons.lang.exceptions.NotImplementedYet;
+
 
 public class MyClassLoader extends ClassLoader {
 

@@ -22,7 +22,7 @@ public abstract class TestThatMightUseResources extends Assert {
 
 	@After
 	public void afterTestThatMightUseResources() {
-		Daemon.killAllInstances();
+		Daemon.killAllInstances(); //Fix: This might be killing Daemons created before the test started.
 		deleteFiles();
 	}
 

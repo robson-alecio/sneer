@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="output" path="bin"/>
 	<classpathentry kind="src" path="spikes/src"/>
 	<classpathentry kind="src" path="tests/src"/>
 	<classpathentry kind="src" output="bin-kernel" path="kernel/impl/src"/>
@@ -7,24 +8,24 @@
 	<classpathentry kind="src" output="bin-kernel" path="kernel/api/src"/>
 	<classpathentry kind="src" path="antlips/src"/>
 	<classpathentry kind="src" output="bin-kernel" path="wheel/src"/>
+	<classpathentry kind="src" path="commons/src"/>
 	<classpathentry kind="lib" path="spikes/lib/Filters.jar"/>
 	<classpathentry kind="lib" path="spikes/lib/lucene-demos-2.3.2.jar"/>
 	<classpathentry kind="lib" path="kernel/lib/asm-all-3.1.jar"/>
+	<classpathentry kind="lib" path="bricks/src/snapps/wind/impl/lib/prevayler-2.3.jar" sourcepath="bricks/src/snapps/wind/impl/lib/prevayler-2.3.src.zip"/>
+	<classpathentry kind="lib" path="bricks/src/snapps/wind/impl/lib/xpp3_min-1.1.3_8.jar"/>
+	<classpathentry kind="lib" path="bricks/src/snapps/whisper/speex/impl/lib/speex.jar"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/pulp/compiler/impl/lib/compiler-7-ea-b17-02_aug_2007.jar"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/pulp/crypto/impl/lib/bcprov-jdk16-139.jar"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/pulp/things/impl/lib/lucene-core-2.3.2.jar"/>
-	<classpathentry kind="lib" path="wheel/lib/junit-4.4.jar" sourcepath="C:/java/junit-4.4-src.jar"/>
 	<classpathentry kind="lib" path="wheel/lib/xstream-1.2.2.jar"/>
-	<classpathentry kind="lib" path="wheel/lib/commons-io-1.4.jar" sourcepath="wheel/lib/commons-io-1.4-src.zip"/>
-	<classpathentry kind="lib" path="wheel/lib/commons-collections-3.2.jar"/>
-	<classpathentry kind="lib" path="wheel/lib/commons-lang-2.3.jar" sourcepath="wheel/lib/commons-lang-2.3-src.zip"/>
-	<classpathentry kind="lib" path="bricks/src/snapps/wind/impl/lib/prevayler-2.3.jar" sourcepath="bricks/src/snapps/wind/impl/lib/prevayler-2.3.src.zip"/>
-	<classpathentry kind="lib" path="bricks/src/snapps/wind/impl/lib/xpp3_min-1.1.3_8.jar"/>
+	<classpathentry kind="lib" path="commons/lib/jmock-2.5.1/hamcrest-core-1.1.jar"/>
+	<classpathentry kind="lib" path="commons/lib/jmock-2.5.1/hamcrest-library-1.1.jar"/>
+	<classpathentry kind="lib" path="commons/lib/jmock-2.5.1/jmock-2.5.1.jar"/>
+	<classpathentry kind="lib" path="commons/lib/jmock-2.5.1/jmock-junit4-2.5.1.jar"/>
+	<classpathentry kind="lib" path="commons/lib/junit-4.4.jar" sourcepath="C:/java/junit-4.4-src.jar"/>
+	<classpathentry kind="lib" path="commons/lib/commons-io-1.4.jar" sourcepath="wheel/lib/commons-io-1.4-src.zip"/>
+	<classpathentry kind="lib" path="commons/lib/commons-collections-3.2.jar"/>
+	<classpathentry kind="lib" path="commons/lib/commons-lang-2.3.jar" sourcepath="wheel/lib/commons-lang-2.3-src.zip"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="wheel/lib/jmock-2.5.1/hamcrest-core-1.1.jar"/>
-	<classpathentry kind="lib" path="wheel/lib/jmock-2.5.1/hamcrest-library-1.1.jar"/>
-	<classpathentry kind="lib" path="wheel/lib/jmock-2.5.1/jmock-2.5.1.jar"/>
-	<classpathentry kind="lib" path="wheel/lib/jmock-2.5.1/jmock-junit4-2.5.1.jar"/>
-	<classpathentry kind="lib" path="bricks/src/snapps/whisper/speex/impl/lib/speex.jar"/>
-	<classpathentry kind="output" path="bin"/>
 </classpath>

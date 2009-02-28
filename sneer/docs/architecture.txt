@@ -1,6 +1,6 @@
 
                    MAIN    |    FUNCTIONAL TESTS
-
+                           |
 -------------------------------------------------------------------
                                                             BRICKS
                        SNAPPS (SNEER APPS)
@@ -19,8 +19,7 @@
               (MINIMAL BRICK SUPPORT (CONVENTIONS))
 
                          SNEER COMMONS
-
-              APACHE COMMONS (LANG, COLLECTION, IO)
+        (APACHE COMMONS (LANG, COLLECTION, IO), JUNIT, JMOCK)
  
                              J R E
 

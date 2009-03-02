@@ -1,5 +1,5 @@
-
-                   MAIN    |    FUNCTIONAL TESTS
+                           |
+               MAIN        |        FUNCTIONAL TESTS
                            |
 ------------------------------------------------------------------------
                                                                   BRICKS
@@ -9,22 +9,21 @@
              
                         SKIN (UI SUPPORT)
 
-                      PULP (SNEER SERVICES)
+           PULP (SERVICES (CONTACTS, AFFINITY, METOO...))
 
-         KERNEL (CONTAINER (PUBLISH, SANDBOX, UPDATE, METOO))
+            KERNEL (CONTAINER (PUBLISH, SANDBOX, UPDATE))
             
-               ROOTS (BASIC BRICKS: SIGNALS, ETC...)
+     ROOTS (BASIC BRICKS: TUPLESPACE, CLOCK, THREADS, SIGNALS...)
             
                                                                   BRICKS
 ------------------------------------------------------------------------
 
          WHEEL (OLD - TO BE EXTRACTED TO BRICKS OR COMMONS)
 
-                           BRICKNESS
-              (MINIMAL BRICK SUPPORT (CONVENTIONS))
+        BRICKNESS (MINIMAL BRICK SUPPORT ("MY", CONVENTIONS))
 
-                         SNEER COMMONS
-        (APACHE COMMONS (LANG, COLLECTION, IO), JUNIT, JMOCK)
+                          SNEER COMMONS
+   (INCLUDES APACHE COMMONS (LANG, COLLECTION, IO), JUNIT AND JMOCK)
  
-                              JRE
+                               JRE
 

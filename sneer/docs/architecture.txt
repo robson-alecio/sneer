@@ -18,11 +18,11 @@
                                                                   BRICKS
 ------------------------------------------------------------------------
 
-         WHEEL (OLD - TO BE EXTRACTED TO BRICKS OR COMMONS)
+         WHEEL (OLD - TO BE EXTRACTED TO ROOTS OR COMMONS)
 
         BRICKNESS (MINIMAL BRICK SUPPORT ("MY", CONVENTIONS))
 
-                          SNEER COMMONS
+                   SNEER COMMONS (STATIC UTILS)
    (INCLUDES APACHE COMMONS (LANG, COLLECTION, IO), JUNIT AND JMOCK)
  
                                JRE

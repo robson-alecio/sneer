@@ -13,7 +13,7 @@
 
             KERNEL (CONTAINER (PUBLISH, SANDBOX, UPDATE))
             
-     ROOTS (BASIC BRICKS: TUPLESPACE, CLOCK, THREADS, SIGNALS...)
+           ROOTS (TUPLESPACE, CLOCK, THREADS, SIGNALS...)
             
                                                                   BRICKS
 ------------------------------------------------------------------------

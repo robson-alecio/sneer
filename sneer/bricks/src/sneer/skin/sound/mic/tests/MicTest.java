@@ -10,12 +10,12 @@ import org.jmock.Expectations;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.Contribute;
-import sneer.brickness.testsupport.TestInBrickness;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.mic.Mic;
 import wheel.testutil.SignalUtils;
 
-public class MicTest extends TestInBrickness {
+public class MicTest extends BrickTest {
 
 	private final Mic _subject = my(Mic.class);
 

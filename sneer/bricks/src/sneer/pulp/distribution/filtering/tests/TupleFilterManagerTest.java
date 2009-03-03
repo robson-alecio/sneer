@@ -3,11 +3,11 @@ package sneer.pulp.distribution.filtering.tests;
 import org.junit.Test;
 
 import sneer.brickness.Tuple;
-import sneer.brickness.testsupport.TestInBrickness;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import static sneer.brickness.environments.Environments.my;
 
-public class TupleFilterManagerTest extends TestInBrickness {
+public class TupleFilterManagerTest extends BrickTest {
 
 	private final TupleFilterManager _subject = my(TupleFilterManager.class);
 

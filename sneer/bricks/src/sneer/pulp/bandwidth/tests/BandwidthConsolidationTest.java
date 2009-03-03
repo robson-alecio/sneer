@@ -4,12 +4,12 @@ import static sneer.brickness.environments.Environments.my;
 
 import org.junit.Test;
 
-import sneer.brickness.testsupport.TestInBrickness;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.clock.Clock;
 import wheel.testutil.SignalUtils;
 
-public class BandwidthConsolidationTest extends TestInBrickness {
+public class BandwidthConsolidationTest extends BrickTest {
 	
 	@Test
 	public void test() throws Exception {

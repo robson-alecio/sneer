@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import snapps.contacts.gui.comparator.ContactComparator;
 import sneer.brickness.testsupport.Contribute;
-import sneer.brickness.testsupport.TestInBrickness;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
@@ -21,7 +21,7 @@ import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 import wheel.testutil.TestUtils;
 
-public class ContactComparatorTest extends TestInBrickness {
+public class ContactComparatorTest extends BrickTest {
 	
 	@Contribute final ConnectionManager _connectionsMock = new ConnectionManagerMock();
 	

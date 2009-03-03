@@ -13,7 +13,7 @@ import snapps.whisper.speextuples.SpeexTuples;
 import sneer.brickness.PublicKey;
 import sneer.brickness.Tuple;
 import sneer.brickness.testsupport.Contribute;
-import sneer.brickness.testsupport.TestInBrickness;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.commons.lang.ByRef;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.keymanager.KeyManager;
@@ -23,7 +23,7 @@ import sneer.skin.sound.PcmSoundPacket;
 import wheel.lang.Consumer;
 import wheel.lang.ImmutableByteArray;
 
-public class SpeexTuplesTest extends TestInBrickness {
+public class SpeexTuplesTest extends BrickTest {
 	
 	private final KeyManager _keyManager = my(KeyManager.class);
 	private final Clock _clock = my(Clock.class);

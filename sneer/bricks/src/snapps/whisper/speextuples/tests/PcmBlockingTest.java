@@ -7,11 +7,11 @@ import org.junit.Test;
 
 import snapps.whisper.speextuples.SpeexTuples;
 import sneer.brickness.testsupport.Contribute;
-import sneer.brickness.testsupport.TestInBrickness;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.skin.sound.PcmSoundPacket;
 
-public class PcmBlockingTest extends TestInBrickness {
+public class PcmBlockingTest extends BrickTest {
 	
 	
 	@Contribute

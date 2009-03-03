@@ -5,10 +5,10 @@ import static sneer.brickness.environments.Environments.my;
 import org.bouncycastle.util.encoders.Hex;
 import org.junit.Test;
 
-import sneer.brickness.testsupport.TestInBrickness;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.crypto.Crypto;
 
-public class CryptoTest extends TestInBrickness {
+public class CryptoTest extends BrickTest {
 
 	private final Crypto _crypto = my(Crypto.class);
 	

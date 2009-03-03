@@ -18,7 +18,7 @@ import org.junit.Test;
 import snapps.watchme.WatchMe;
 import sneer.brickness.PublicKey;
 import sneer.brickness.testsupport.Contribute;
-import sneer.brickness.testsupport.TestInBrickness;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
 import sneer.pulp.clock.Clock;
@@ -32,7 +32,7 @@ import wheel.lang.exceptions.Hiccup;
 import wheel.reactive.EventSource;
 import wheel.reactive.impl.Receiver;
 
-public class WatchMeTest extends TestInBrickness {
+public class WatchMeTest extends BrickTest {
 	
 	@Contribute
 	final private Screenshotter _shotter = mock(Screenshotter.class);

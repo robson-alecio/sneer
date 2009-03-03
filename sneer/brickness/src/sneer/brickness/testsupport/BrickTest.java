@@ -13,14 +13,14 @@ import sneer.commons.testutil.TestThatMightUseResources;
 import sneer.pulp.config.persistence.mocks.PersistenceConfigMock;
 import sneer.pulp.tuples.TupleSpace;
 
-@RunWith(JMockBrickness.class)
-public abstract class TestInBrickness extends TestThatMightUseResources {
+@RunWith(BrickTestWithMockRunner.class)
+public abstract class BrickTest extends TestThatMightUseResources {
 	
 	private final Mockery _mockery = new JUnit4Mockery();
 	@Contribute final PersistenceConfigMock _persistenceConfig = new PersistenceConfigMock(tmpDirectory());
     
 	{
-		my(BricknessTestEnvironment.class).instanceBeingInitialized(this);
+		my(BrickTestRunner.class).instanceBeingInitialized(this);
 	}
 	
 	protected Sequence sequence(String name) {

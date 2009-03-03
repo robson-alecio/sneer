@@ -16,13 +16,13 @@ import snapps.watchme.codec.ImageCodec;
 import snapps.watchme.codec.ImageDelta;
 import snapps.watchme.codec.ImageCodec.Decoder;
 import snapps.watchme.codec.ImageCodec.Encoder;
-import sneer.brickness.testsupport.TestInBrickness;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.skin.image.ImageFactory;
 import wheel.io.serialization.impl.XStreamBinarySerializer;
 import wheel.io.ui.graphics.Images;
 import wheel.lang.exceptions.Hiccup;
 
-public class ImageCodecTest extends TestInBrickness {
+public class ImageCodecTest extends BrickTest {
 	
 	private final ImageCodec _subject = my(ImageCodec.class);
 	

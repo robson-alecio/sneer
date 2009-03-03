@@ -8,13 +8,12 @@ import java.util.ArrayList;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import sneer.brickness.testsupport.WheelEnvironment;
-
+import sneer.brickness.testsupport.BrickTestRunner;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 
-@RunWith(WheelEnvironment.class)
+@RunWith(BrickTestRunner.class)
 public class ListRegisterImplTest {
 	
 	@Test

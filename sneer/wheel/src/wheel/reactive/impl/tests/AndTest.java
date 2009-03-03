@@ -1,23 +1,23 @@
 package wheel.reactive.impl.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import sneer.brickness.testsupport.WheelEnvironment;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
-
+import sneer.brickness.testsupport.BrickTestRunner;
 import wheel.lang.Consumer;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.And;
 import wheel.reactive.impl.RegisterImpl;
 
-@RunWith(WheelEnvironment.class)
+@RunWith(BrickTestRunner.class)
 public class AndTest {
 
 	Register<Boolean> _input1 = new RegisterImpl<Boolean>(false);

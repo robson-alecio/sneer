@@ -5,13 +5,13 @@ import static sneer.brickness.environments.Environments.my;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.Contribute;
-import sneer.brickness.testsupport.TestInBrickness;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.commons.lang.ByRef;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
 
-public class TupleSpaceResponsivenessTest extends TestInBrickness {
+public class TupleSpaceResponsivenessTest extends BrickTest {
 
 	@Contribute private final ThreadPoolMock _threads = new ThreadPoolMock();
 	

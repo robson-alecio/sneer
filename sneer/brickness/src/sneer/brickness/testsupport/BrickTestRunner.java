@@ -3,39 +3,85 @@ package sneer.brickness.testsupport;
 import static sneer.brickness.environments.Environments.my;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import org.junit.internal.runners.InitializationError;
+import org.junit.internal.runners.JUnit4ClassRunner;
+import org.junit.internal.runners.TestClass;
+import org.junit.internal.runners.TestMethod;
+import org.junit.runner.notification.RunNotifier;
 
 import sneer.brickness.environments.CachingEnvironment;
 import sneer.brickness.environments.ClosedEnvironment;
 import sneer.brickness.environments.ConventionBasedEnvironment;
 import sneer.brickness.environments.Environment;
 import sneer.brickness.environments.Environments;
-import sneer.pulp.exceptionhandling.ExceptionHandler;
-import sneer.pulp.exceptionhandling.tests.mocks.ExceptionLeaker;
+import sneer.brickness.environments.Environments.Memento;
 
-public class BricknessTestEnvironment extends WheelEnvironment {
-	
-	private final Field[] _contributedFields; 
-	
-	public BricknessTestEnvironment(Class<?> testClass) throws InitializationError {
-		super(testClass);
-		_contributedFields = contributedFields(testClass);
+public class BrickTestRunner extends JUnit4ClassRunner {
+
+	protected static class TestMethodWithEnvironment extends TestMethod {
+		
+		private final Memento _environment;
+
+		public TestMethodWithEnvironment(Method method, TestClass testClass) {
+			super(method, testClass);
+			_environment = Environments.memento();
+		}
+		
+		static class InvocationTargetExceptionEnvelope extends RuntimeException {
+			public InvocationTargetExceptionEnvelope(InvocationTargetException e) {
+				super(e);
+			}
+		}
+
+		@Override
+		public void invoke(final Object test) throws InvocationTargetException {
+			try {
+				invokeInEnvironment(test);
+			} catch (InvocationTargetExceptionEnvelope e) {
+				throw (InvocationTargetException)e.getCause();
+			}
+		}
+
+		private void invokeInEnvironment(final Object test) {
+			Environments.runWith(_environment, new Runnable() { @Override public void run() {
+				try {
+					doInvoke(test);
+				} catch (InvocationTargetException e) {
+					throw new InvocationTargetExceptionEnvelope(e);
+				}
+			}});
+		}
+
+		protected void doInvoke(Object test) throws InvocationTargetException {
+			try {
+				superInvoke(test);
+			} catch (IllegalArgumentException e) {
+				throw new RuntimeException(e);
+			} catch (IllegalAccessException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+		private void superInvoke(Object test) throws IllegalAccessException,
+				InvocationTargetException {
+			super.invoke(test);
+		}
 	}
-	
+
 	class TestInstanceEnvironment implements Environment {
 
 		private Object _testInstance;
 
 		@Override
 		public <T> T provide(Class<T> intrface) {
-			if (intrface.isAssignableFrom(BricknessTestEnvironment.class))
-				return (T)BricknessTestEnvironment.this;
+			if (intrface.isAssignableFrom(BrickTestRunner.class))
+				return (T)BrickTestRunner.this;
 			if (intrface.isAssignableFrom(TestInstanceEnvironment.class))
 				return (T)this;
-			if (intrface.isAssignableFrom(ExceptionHandler.class))
-				return (T)new ExceptionLeaker();
 			return provideContribution(intrface);
 		}
 
@@ -66,8 +112,16 @@ public class BricknessTestEnvironment extends WheelEnvironment {
 			_testInstance = testInstance;
 		}
 	}
+
 	
-	@Override
+	private final Field[] _contributedFields; 
+	
+	public BrickTestRunner(Class<?> testClass) throws InitializationError {
+		super(testClass);
+		_contributedFields = contributedFields(testClass);
+	}
+	
+	
 	protected Environment environment() {
 		return newEnvironment();
 	}
@@ -118,6 +172,22 @@ public class BricknessTestEnvironment extends WheelEnvironment {
 				Environments.compose(
 					new TestInstanceEnvironment(),
 					new ConventionBasedEnvironment()));
+	}
+
+	@Override
+	protected void invokeTestMethod(final Method arg0, final RunNotifier arg1) {
+		Environments.runWith(environment(), new Runnable() { @Override public void run() {
+			superInvokeTestMethod(arg0, arg1);
+		}});
+	}
+
+	@Override
+	protected TestMethod wrapMethod(Method method) {
+		return new TestMethodWithEnvironment(method, getTestClass());
+	}
+
+	protected void superInvokeTestMethod(Method arg0, RunNotifier arg1) {
+		super.invokeTestMethod(arg0, arg1);
 	}
 	
 }

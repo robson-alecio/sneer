@@ -4,11 +4,11 @@ import org.junit.Test;
 
 import snapps.wind.Shout;
 import snapps.wind.Wind;
-import sneer.brickness.testsupport.TestInBrickness;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.tuples.TupleSpace;
 import static sneer.brickness.environments.Environments.my;
 
-public class WindTest extends TestInBrickness {
+public class WindTest extends BrickTest {
 
 	private final TupleSpace _tupleSpace = my(TupleSpace.class);
 	

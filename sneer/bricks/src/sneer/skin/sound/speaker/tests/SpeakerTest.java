@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import sneer.brickness.PublicKey;
 import sneer.brickness.testsupport.Contribute;
-import sneer.brickness.testsupport.TestInBrickness;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.TupleSpace;
@@ -19,7 +19,7 @@ import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.speaker.Speaker;
 import wheel.lang.ImmutableByteArray;
 
-public class SpeakerTest extends TestInBrickness {
+public class SpeakerTest extends BrickTest {
 	
 	private final Speaker _subject = my(Speaker.class);
 	private final Clock _clock = my(Clock.class);

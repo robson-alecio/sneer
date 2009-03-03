@@ -3,7 +3,7 @@ package sneer.pulp.reactive.signalchooser.tests;
 import org.junit.Assert;
 import org.junit.Test;
 
-import sneer.brickness.testsupport.TestInBrickness;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.pulp.reactive.signalchooser.SignalChooserManager;
@@ -17,7 +17,7 @@ import wheel.reactive.lists.impl.ListRegisterImpl;
 import wheel.reactive.lists.impl.VisitingListReceiver;
 import static sneer.brickness.environments.Environments.my;
 
-public class ListOfSignalsReceiverTest extends TestInBrickness {
+public class ListOfSignalsReceiverTest extends BrickTest {
 
 	private final SignalChooserManagerFactory _factory = my(SignalChooserManagerFactory.class); 
 	

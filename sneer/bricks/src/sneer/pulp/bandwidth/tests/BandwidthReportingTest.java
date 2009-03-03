@@ -5,7 +5,7 @@ import static sneer.brickness.environments.Environments.my;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.Contribute;
-import sneer.brickness.testsupport.TestInBrickness;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.commons.lang.ByRef;
 import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.connection.ByteConnection;
@@ -20,7 +20,7 @@ import wheel.lang.StringUtils;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Constant;
 
-public class BandwidthReportingTest extends TestInBrickness {
+public class BandwidthReportingTest extends BrickTest {
 	
 	private static final byte[] _BYTE_ARRAY_OK = StringUtils.toByteArray("OK");
 	private static final int _IN_PACKET_SIZE = _BYTE_ARRAY_OK.length;

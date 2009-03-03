@@ -5,12 +5,11 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import sneer.brickness.testsupport.WheelEnvironment;
-
+import sneer.brickness.testsupport.BrickTestRunner;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.impl.RegisterImpl;
 
-@RunWith(WheelEnvironment.class)
+@RunWith(BrickTestRunner.class)
 public class ReceiverTest {
 	
 	final StringBuilder received = new StringBuilder();

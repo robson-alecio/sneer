@@ -9,7 +9,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.Contribute;
-import sneer.brickness.testsupport.TestInBrickness;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;
@@ -25,7 +25,7 @@ import wheel.lang.Consumer;
 import wheel.reactive.impl.Constant;
 import wheel.testutil.SignalUtils;
 
-public class ProbeManagerTest extends TestInBrickness {
+public class ProbeManagerTest extends BrickTest {
 
 	@Contribute private final ConnectionManager _connectionManager = mock(ConnectionManager.class);
 	@Contribute private final Serializer _serializer = mock(Serializer.class);

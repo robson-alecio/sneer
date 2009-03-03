@@ -11,11 +11,11 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import sneer.brickness.testsupport.TestInBrickness;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.kernel.container.bytecode.dependencies.DependencyFinder;
 import wheel.testutil.TestUtils;
 
-public class DependencyTest extends TestInBrickness {
+public class DependencyTest extends BrickTest {
 	
 	@Test
 	public void testFindDependencies() throws IOException {

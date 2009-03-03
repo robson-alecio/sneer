@@ -7,10 +7,9 @@ import java.util.Collections;
 import java.util.List;
 
 import sneer.brickness.environments.Environments;
-
+import sneer.pulp.exceptionhandling.ExceptionHandler;
 import wheel.lang.Consumer;
 import wheel.lang.Types;
-import wheel.lang.exceptions.WheelExceptionHandler;
 import wheel.reactive.EventSource;
 
 public abstract class AbstractNotifier<VC> implements EventSource<VC> {
@@ -44,7 +43,7 @@ public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 	@Override
 	public void addReceiver(final Consumer<? super VC> receiver) {
 		_receivers.add(holderFor(receiver));
-		Environments.my(WheelExceptionHandler.class).shield(new Runnable() { @Override public void run() {
+		Environments.my(ExceptionHandler.class).shield(new Runnable() { @Override public void run() {
 			initReceiver(receiver);
 		}});
 	}

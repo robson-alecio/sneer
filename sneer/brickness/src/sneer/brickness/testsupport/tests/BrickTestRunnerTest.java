@@ -7,16 +7,16 @@ import static sneer.brickness.environments.Environments.my;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import sneer.brickness.testsupport.BricknessTestEnvironment;
+import sneer.brickness.testsupport.BrickTestRunner;
 import sneer.brickness.testsupport.Contribute;
 import sneer.brickness.testsupport.tests.bar.BarBrick;
 import sneer.brickness.testsupport.tests.foo.FooBrick;
 
-@RunWith(BricknessTestEnvironment.class)
-public class BricknessTestEnvironmentTest {
+@RunWith(BrickTestRunner.class)
+public class BrickTestRunnerTest {
 	
 	{
-		my(BricknessTestEnvironment.class).instanceBeingInitialized(this);
+		my(BrickTestRunner.class).instanceBeingInitialized(this);
 	}
 	
 	@Contribute

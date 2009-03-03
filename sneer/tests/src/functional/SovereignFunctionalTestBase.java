@@ -3,10 +3,10 @@ package functional;
 import org.junit.After;
 import org.junit.Before;
 
-import sneer.brickness.testsupport.TestInBrickness;
+import sneer.brickness.testsupport.BrickTest;
 import wheel.lang.Timebox;
 
-public abstract class SovereignFunctionalTestBase extends TestInBrickness {
+public abstract class SovereignFunctionalTestBase extends BrickTest {
 
 	protected abstract SovereignCommunity createNewCommunity();
 

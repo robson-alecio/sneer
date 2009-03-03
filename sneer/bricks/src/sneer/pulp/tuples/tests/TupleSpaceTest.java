@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import org.junit.Test;
 
 import sneer.brickness.Tuple;
-import sneer.brickness.testsupport.TestInBrickness;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
 import static sneer.brickness.environments.Environments.my;
 
-public class TupleSpaceTest extends TestInBrickness {
+public class TupleSpaceTest extends BrickTest {
 
 	private final TupleSpace _subject = my(TupleSpace.class);
 	

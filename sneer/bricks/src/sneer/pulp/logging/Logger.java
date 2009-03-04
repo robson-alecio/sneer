@@ -1,14 +1,16 @@
 package sneer.pulp.logging;
 
 import sneer.brickness.Brick;
-import wheel.io.logging.WheelLogger;
-import wheel.lang.Consumer;
 import wheel.reactive.EventSource;
 import wheel.reactive.lists.ListRegister;
 
-public interface Logger extends WheelLogger, Brick {
+public interface Logger extends Brick {
 
-	Consumer<String> whiteListEntry();
+	void log(String message, Object... messageInsets);
+	void logShort(Exception e, String message, Object... insets);
+	void log(Throwable throwable, String message, Object... messageInsets) ;
+	void log(Throwable throwable);
+
 	public ListRegister<LogWhiteListEntry> whiteListEntries();
 	EventSource<String> loggedMessages();
 

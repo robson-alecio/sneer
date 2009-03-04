@@ -1,7 +1,8 @@
 package sneer.pulp.exceptionhandling.impl;
 
+import sneer.brickness.environments.Environments;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
-import wheel.io.Logger;
+import sneer.pulp.logging.Logger;
 
 class ExceptionHandlerImpl implements ExceptionHandler {
 
@@ -10,7 +11,7 @@ class ExceptionHandlerImpl implements ExceptionHandler {
 		try {
 			runnable.run();
 		} catch (Throwable t) {
-			Logger.log(t, "Exception shielded.");
+			Environments.my(Logger.class).log(t, "Exception shielded.");
 		}
 	}
 

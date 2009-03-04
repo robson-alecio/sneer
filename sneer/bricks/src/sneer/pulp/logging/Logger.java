@@ -11,7 +11,11 @@ public interface Logger extends Brick {
 	void log(Throwable throwable, String message, Object... messageInsets) ;
 	void log(Throwable throwable);
 
+	//Refactor: break the methods below into a separate LogDashboard brick.
+	
 	public ListRegister<LogWhiteListEntry> whiteListEntries();
 	EventSource<String> loggedMessages();
+	/**Default operation mode is to rethrow throwables instead of logging them for the benefit of unit tests.*/
+	void stopLeakingThrowables();
 
 }

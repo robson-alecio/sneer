@@ -29,7 +29,9 @@ class LoggerImpl implements sneer.pulp.logging.Logger {
 	
 	private final EventNotifier<String> _loggedMessages = new EventNotifierImpl<String>();
 	private StringWriter _stringWriter = new StringWriter();
-	private PrintWriter _log = new PrintWriter(_stringWriter, true);	
+	private PrintWriter _log = new PrintWriter(_stringWriter, true);
+
+	private boolean _shouldLeakThrowables = true;	
 
 	LoggerImpl() {
 		_tupleSpace.keep(LogWhiteListEntry.class);
@@ -86,11 +88,19 @@ class LoggerImpl implements sneer.pulp.logging.Logger {
 
 	/** See log(String, Object...) for examples. */
 	public synchronized void log(Throwable throwable, String message, Object... messageInsets) {
+		 leakIfNecessary(throwable);
+		
 		if (message == null)
 			message = throwable.getClass().getName();
 		logMessage(inline(message, messageInsets));
 		write(throwable);
 	}
+
+	private void leakIfNecessary(Throwable throwable) {
+		if (!_shouldLeakThrowables) return;
+		throw new RuntimeException("Logger is configured to leak Throwables", throwable);
+	}
+
 
 	public synchronized void log(Throwable throwable) {
 		log(throwable, throwable.getMessage());
@@ -154,6 +164,12 @@ class LoggerImpl implements sneer.pulp.logging.Logger {
 			i++;
 		}
 		return result;
+	}
+
+
+	@Override
+	public void stopLeakingThrowables() {
+		_shouldLeakThrowables = false;
 	}
 
 }

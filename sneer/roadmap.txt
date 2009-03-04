@@ -2,7 +2,6 @@
 ==================
 
 	- Brickness
-		- Unignore AbstractNotifierTest.
 		- [Bamboo] build.xml/Antlipse - Revive. (Add sneer.commons to classpath alongside wheel)
 		- [Bamboo] Memento -> exposed Environment.
 		- [Bamboo] Change signature bind(environment, intrface) -> wrap(intrface, environment)

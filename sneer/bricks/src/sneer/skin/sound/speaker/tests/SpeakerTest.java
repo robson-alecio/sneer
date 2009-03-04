@@ -9,9 +9,8 @@ import org.jmock.Sequence;
 import org.junit.Test;
 
 import sneer.brickness.PublicKey;
-import sneer.brickness.testsupport.Contribute;
 import sneer.brickness.testsupport.BrickTest;
-import sneer.pulp.clock.Clock;
+import sneer.brickness.testsupport.Contribute;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
@@ -22,13 +21,11 @@ import wheel.lang.ImmutableByteArray;
 public class SpeakerTest extends BrickTest {
 	
 	private final Speaker _subject = my(Speaker.class);
-	private final Clock _clock = my(Clock.class);
 	private final KeyManager _keyManager = my(KeyManager.class);
 	private final TupleSpace _tupleSpace = my(TupleSpace.class);
 
 	@Contribute private final Audio _audio = mock(Audio.class);
 	private final SourceDataLine _line = mock(SourceDataLine.class);
-	
 	
 	@Test
 	public void testSilentChannel() throws Exception {
@@ -48,7 +45,7 @@ public class SpeakerTest extends BrickTest {
 
 		_tupleSpace.acquire(myPacket(new byte[] {-1, 17, 0, 42}));
 
-		waitForTupleDispatch();
+		_tupleSpace.waitForAllDispatchingToFinish();
 		
 		_subject.close();
 	}
@@ -62,12 +59,12 @@ public class SpeakerTest extends BrickTest {
 		_tupleSpace.acquire(p1());
 		_tupleSpace.acquire(p2());
 
-		waitForTupleDispatch();
+		_tupleSpace.waitForAllDispatchingToFinish();
 
 		_subject.close();
 		_tupleSpace.acquire(p1());
 		
-		waitForTupleDispatch();
+		_tupleSpace.waitForAllDispatchingToFinish();
 	}
 
 	
@@ -97,7 +94,7 @@ public class SpeakerTest extends BrickTest {
 	}
 	
 	private PcmSoundPacket pcmSoundPacketFor(PublicKey publicKey, final byte[] pcmPayload) {
-		return new PcmSoundPacket(publicKey, _clock.time(), new ImmutableByteArray(pcmPayload, pcmPayload.length));
+		return new PcmSoundPacket(publicKey, 0, new ImmutableByteArray(pcmPayload, pcmPayload.length));
 	}
 	
 	private PcmSoundPacket p1() {

@@ -96,7 +96,7 @@ public class WatchMeTest extends BrickTest {
 	}
 
 	private void waitForImage(BufferedImage expected) {
-		waitForTupleDispatch();
+		_sharedSpace.waitForAllDispatchingToFinish();
 
 		int i = 0;
 		while (true) {

@@ -29,7 +29,7 @@ public class TupleSpaceTest extends BrickTest {
 		}});
 		
 		_subject.publish(a);
-		waitForTupleDispatch();
+		_subject.waitForAllDispatchingToFinish();
 		assertEquals(_received, a);
 		
 		_received = null;
@@ -50,7 +50,7 @@ public class TupleSpaceTest extends BrickTest {
 		_subject.publish(tuple);
 		_subject.removeSubscriptionAsync(consumer);
 		_subject.publish(new TestTuple(-1));
-		waitForTupleDispatch();
+		my(TupleSpace.class).waitForAllDispatchingToFinish();
 		assertArrayEquals(new Object[] { tuple }, tuples.toArray());
 	}
 	

@@ -64,7 +64,7 @@ public class SpeexTuplesTest extends BrickTest {
 		for (byte[] frame : frames())
 			_tupleSpace.acquire(myPacket(frame));
 		
-		waitForTupleDispatch();
+		_tupleSpace.waitForAllDispatchingToFinish();
 		
 		assertNotNull(packet.value);
 		assertFrames(packet.value.frames);
@@ -96,7 +96,7 @@ public class SpeexTuplesTest extends BrickTest {
 			// tuples with different channel should be ignored
 		_tupleSpace.acquire(speexPacketFrom(contactKey(), speexPacketPayload, "OtherRoom", (short)2));
 		
-		waitForTupleDispatch();
+		_tupleSpace.waitForAllDispatchingToFinish();
 		final PcmSoundPacket pcmPacket = packet.value;
 		assertNotNull(pcmPacket);
 		assertArrayEquals(pcmPacketPayload, pcmPacket.payload.copy());

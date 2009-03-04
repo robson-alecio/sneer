@@ -11,7 +11,6 @@ import org.junit.runner.RunWith;
 
 import sneer.commons.testutil.TestThatMightUseResources;
 import sneer.pulp.config.persistence.mocks.PersistenceConfigMock;
-import sneer.pulp.tuples.TupleSpace;
 
 @RunWith(BrickTestWithMockRunner.class)
 public abstract class BrickTest extends TestThatMightUseResources {
@@ -33,9 +32,5 @@ public abstract class BrickTest extends TestThatMightUseResources {
 	
 	protected void checking(ExpectationBuilder expectations) {
 		_mockery.checking(expectations);
-	}
-
-	protected void waitForTupleDispatch() {
-		my(TupleSpace.class).waitForAllDispatchingToFinish();
 	}
 }

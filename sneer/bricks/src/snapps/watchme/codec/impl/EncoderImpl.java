@@ -15,10 +15,10 @@ import java.util.Map;
 
 import snapps.watchme.codec.ImageDelta;
 import snapps.watchme.codec.ImageCodec.Encoder;
+import sneer.commons.lang.Pair;
 import sneer.skin.image.ImageFactory;
 import wheel.io.ui.graphics.Images;
 import wheel.lang.ImmutableByteArray;
-import wheel.lang.Pair;
 import wheel.lang.exceptions.Hiccup;
 import wheel.testutil.Profiler;
 

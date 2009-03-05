@@ -1,4 +1,4 @@
-package wheel.io;
+package sneer.commons.io;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -28,11 +28,7 @@ public class Streams {
 		Class<?> clazz = closeable.getClass();
 		try {
 			clazz.getMethod("close", new Class[0]).invoke(closeable, new Object[0]);
-		} catch (Exception e) {
-			Throwable cause = e.getCause();
-			if(cause==null)	Logger.log(e);
-			else Logger.log(cause);
-		}
+		} catch (Exception e) {}
 	}
 
 }

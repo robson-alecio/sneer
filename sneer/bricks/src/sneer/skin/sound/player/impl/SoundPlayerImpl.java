@@ -15,13 +15,13 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import sneer.commons.io.Streams;
 import sneer.commons.lang.exceptions.NotImplementedYet;
 import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.player.SoundPlayer;
 import wheel.io.Logger;
-import wheel.io.Streams;
 import wheel.lang.Threads;
 
 class SoundPlayerImpl implements SoundPlayer, Stepper {

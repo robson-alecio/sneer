@@ -5,6 +5,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import sneer.commons.lang.Functor;
+
 public class Collections {
 
 	private static final Comparator<Object> TO_STRING_COMPARATOR = new Comparator<Object>() {

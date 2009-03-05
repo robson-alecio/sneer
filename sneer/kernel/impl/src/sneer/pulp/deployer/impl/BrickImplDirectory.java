@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.commons.io.FilenameUtils;
 
 import sneer.brickness.Brick;
+import sneer.commons.lang.Functor;
 import sneer.kernel.container.impl.classloader.MetaClassClassLoader;
 import sneer.kernel.container.jar.DeploymentJar;
 import sneer.kernel.container.jar.DeploymentJarFactory;
@@ -20,7 +21,6 @@ import wheel.io.JarBuilder;
 import wheel.io.codegeneration.MetaClass;
 import wheel.io.codegeneration.SimpleFilter;
 import wheel.lang.Collections;
-import wheel.lang.Functor;
 
 class BrickImplDirectory {
 

@@ -1,4 +1,4 @@
-package wheel.lang;
+package sneer.commons.lang;
 
 import java.io.Serializable;
 

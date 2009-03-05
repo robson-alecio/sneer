@@ -9,10 +9,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 
+import sneer.commons.io.Streams;
 import sneer.pulp.config.persistence.PersistenceConfig;
 import sneer.pulp.propertystore.PropertyStore;
 import wheel.io.Logger;
-import wheel.io.Streams;
 import static sneer.brickness.environments.Environments.my;
 
 class PropertyStoreImpl implements PropertyStore {

@@ -9,8 +9,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import sneer.commons.io.Streams;
 import sneer.pulp.network.ByteArraySocket;
-import wheel.io.Streams;
 
 class ByteArraySocketImpl implements ByteArraySocket {
 

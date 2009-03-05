@@ -7,10 +7,10 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
+import sneer.commons.lang.Functor;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import static sneer.brickness.environments.Environments.my;
-import wheel.lang.Functor;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Adapter;
 

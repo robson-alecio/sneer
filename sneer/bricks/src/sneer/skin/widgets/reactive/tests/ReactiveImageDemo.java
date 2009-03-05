@@ -8,13 +8,13 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import sneer.brickness.environments.Environments;
+import sneer.commons.lang.Functor;
 import sneer.kernel.container.Containers;
 import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.io.Logger;
 import wheel.io.ui.GuiThread;
 import wheel.io.ui.TimeboxedEventQueue;
-import wheel.lang.Functor;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Adapter;
 import wheel.reactive.impl.mocks.RandomBoolean;

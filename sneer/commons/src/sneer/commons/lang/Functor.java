@@ -1,4 +1,4 @@
-package wheel.lang;
+package sneer.commons.lang;
 
 public interface Functor<A, B> {
 

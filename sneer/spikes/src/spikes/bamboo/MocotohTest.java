@@ -15,3 +15,8 @@ public class MocotohTest extends Assert {
 		assertEquals(0, my(Clock.class).time());
 	}
 }
+
+
+
+
+

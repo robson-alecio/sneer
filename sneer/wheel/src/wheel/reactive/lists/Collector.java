@@ -1,6 +1,6 @@
 package wheel.reactive.lists;
 
-import wheel.lang.Functor;
+import sneer.commons.lang.Functor;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 import wheel.reactive.lists.impl.VisitingListReceiver;
 

@@ -1,6 +1,6 @@
 package wheel.reactive.impl;
 
-import wheel.lang.Functor;
+import sneer.commons.lang.Functor;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 

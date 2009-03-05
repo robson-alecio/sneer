@@ -20,13 +20,13 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import snapps.meter.memory.gui.MemoryMeterGui;
+import sneer.commons.lang.Functor;
 import sneer.pulp.memory.MemoryMeter;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.ui.graphics.Images;
-import wheel.lang.Functor;
 import wheel.reactive.impl.Adapter;
 import static sneer.brickness.environments.Environments.my;
 

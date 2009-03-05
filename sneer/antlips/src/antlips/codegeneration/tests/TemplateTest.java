@@ -1,10 +1,11 @@
-package wheel.io.codegeneration.tests;
+package antlips.codegeneration.tests;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import wheel.io.codegeneration.Template;
-import wheel.lang.Functor;
+import sneer.commons.lang.Functor;
+
+import antlips.codegeneration.Template;
 
 public class TemplateTest {
 	

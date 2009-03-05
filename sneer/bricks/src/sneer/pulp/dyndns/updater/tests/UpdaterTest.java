@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import sneer.brickness.testsupport.Contribute;
 import sneer.brickness.testsupport.BrickTest;
+import sneer.commons.lang.Pair;
 import sneer.pulp.dyndns.updater.BadAuthException;
 import sneer.pulp.dyndns.updater.InvalidHostException;
 import sneer.pulp.dyndns.updater.RedundantUpdateException;
@@ -18,7 +19,6 @@ import sneer.pulp.dyndns.updater.Updater;
 import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.httpclient.HttpClient;
 import wheel.io.Base64;
-import wheel.lang.Pair;
 
 public class UpdaterTest extends BrickTest {
 

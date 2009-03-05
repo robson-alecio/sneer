@@ -1,4 +1,4 @@
-package wheel.io.codegeneration;
+package antlips.codegeneration;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -19,8 +19,9 @@ import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 import javax.tools.JavaCompiler.CompilationTask;
 
-import wheel.io.Streams;
-import wheel.lang.Functor;
+import sneer.commons.io.Streams;
+import sneer.commons.lang.Functor;
+
 
 public class Template {
 
@@ -37,8 +38,8 @@ public class Template {
 		final StringWriter writer = new StringWriter();
 
 		final String argClassName = argClass.getCanonicalName();
-		writer.write("import wheel.lang.*;"
-				+ "\nimport wheel.io.codegeneration.*;"
+		writer.write("import sneer.commons.lang.*;"
+				+ "\nimport antlips.codegeneration.*;"
 				+ "\nimport java.io.*;"
 					+ "\npublic class Template implements Functor<" + argClassName + ", String> {"
 						+ "\npublic String evaluate(" + argClassName + " value) {"

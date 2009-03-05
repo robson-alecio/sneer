@@ -1,11 +1,12 @@
-package wheel.lang.tests;
+package sneer.commons.lang.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 
-import wheel.lang.Pair;
+import sneer.commons.lang.Pair;
+
 
 public class PairTest {
 	

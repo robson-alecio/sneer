@@ -11,9 +11,10 @@ import java.util.Set;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
-import wheel.io.codegeneration.Template;
+import sneer.commons.lang.Pair;
+
 import wheel.io.files.Directory;
-import wheel.lang.Pair;
+import antlips.codegeneration.Template;
 
 public class AntFileBuilderToFilesystem implements AntFileBuilder {
 

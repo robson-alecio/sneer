@@ -7,8 +7,8 @@ import java.net.URLConnection;
 
 import org.apache.commons.io.IOUtils;
 
+import sneer.commons.lang.Pair;
 import sneer.pulp.httpclient.HttpClient;
-import wheel.lang.Pair;
 
 class HttpClientImpl implements HttpClient {
 

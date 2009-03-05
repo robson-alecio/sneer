@@ -2,9 +2,9 @@ package sneer.pulp.own.avatar.impl;
 
 import java.awt.Image;
 
+import sneer.commons.lang.Functor;
 import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.skin.image.ImageFactory;
-import wheel.lang.Functor;
 import wheel.lang.Consumer;
 import wheel.lang.exceptions.Hiccup;
 import wheel.reactive.Register;

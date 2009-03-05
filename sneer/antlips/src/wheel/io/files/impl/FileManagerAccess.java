@@ -4,8 +4,6 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.net.URL;
 
-import wheel.io.Logger;
-
 public class FileManagerAccess {
 
 	public static void openDirectory(File directory) {
@@ -30,7 +28,6 @@ public class FileManagerAccess {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			Logger.log(e);
 		}
 	}
 }

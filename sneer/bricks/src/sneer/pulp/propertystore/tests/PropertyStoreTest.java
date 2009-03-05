@@ -13,7 +13,7 @@ import sneer.pulp.propertystore.PropertyStore;
 
 public class PropertyStoreTest extends TestThatMightUseResources {
 
-	private final PersistenceConfigMock _persistenceMock = new PersistenceConfigMock(tmpDirectory());
+	private final PersistenceConfigMock _persistenceMock = new PersistenceConfigMock(tmpDirectory()); //Refactor: Use @Contribute
 
 	@Test
 	public void testPropertyStore() {

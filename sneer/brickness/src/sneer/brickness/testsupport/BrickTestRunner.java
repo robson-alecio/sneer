@@ -122,10 +122,6 @@ public class BrickTestRunner extends JUnit4ClassRunner {
 	}
 	
 	
-	protected Environment environment() {
-		return newEnvironment();
-	}
-
 	private static Field[] contributedFields(Class<? extends Object> klass) {
 		final ArrayList<Field> result = new ArrayList<Field>();
 		while (klass != Object.class) {
@@ -176,7 +172,7 @@ public class BrickTestRunner extends JUnit4ClassRunner {
 
 	@Override
 	protected void invokeTestMethod(final Method arg0, final RunNotifier arg1) {
-		Environments.runWith(environment(), new Runnable() { @Override public void run() {
+		Environments.runWith(newEnvironment(), new Runnable() { @Override public void run() {
 			superInvokeTestMethod(arg0, arg1);
 		}});
 	}
@@ -188,6 +184,11 @@ public class BrickTestRunner extends JUnit4ClassRunner {
 
 	protected void superInvokeTestMethod(Method arg0, RunNotifier arg1) {
 		super.invokeTestMethod(arg0, arg1);
+	}
+
+
+	void dispose() {
+		((CachingEnvironment)my(Environment.class)).clear();
 	}
 	
 }

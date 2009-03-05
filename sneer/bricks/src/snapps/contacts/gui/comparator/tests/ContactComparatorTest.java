@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import snapps.contacts.gui.comparator.ContactComparator;
 import sneer.brickness.testsupport.Contribute;
-import sneer.brickness.testsupport.BrickTest;
+import sneer.pulp.config.persistence.testsupport.BrickTest;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;

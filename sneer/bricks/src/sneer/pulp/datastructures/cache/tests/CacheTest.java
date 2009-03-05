@@ -4,7 +4,7 @@ import static sneer.brickness.environments.Environments.my;
 
 import org.junit.Test;
 
-import sneer.brickness.testsupport.BrickTest;
+import sneer.pulp.config.persistence.testsupport.BrickTest;
 import sneer.pulp.datastructures.cache.Cache;
 import sneer.pulp.datastructures.cache.CacheFactory;
 

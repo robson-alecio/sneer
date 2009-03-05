@@ -1,10 +1,10 @@
 package sneer.pulp.clockticker.impl;
 
+import static sneer.brickness.environments.Environments.my;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.clockticker.ClockTicker;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.lang.Threads;
-import static sneer.brickness.environments.Environments.my;
 
 class ClockTickerImpl implements ClockTicker, Runnable {
 

@@ -3,6 +3,7 @@
  */
 package sneer.pulp.probe.impl;
 
+import static sneer.brickness.environments.Environments.my;
 import sneer.brickness.PublicKey;
 import sneer.brickness.Tuple;
 import sneer.pulp.contacts.Contact;
@@ -12,7 +13,6 @@ import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
-import static sneer.brickness.environments.Environments.my;
 
 final class ProbeImpl implements Consumer<Tuple> {
 

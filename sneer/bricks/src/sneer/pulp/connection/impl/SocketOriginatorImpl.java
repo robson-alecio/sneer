@@ -1,5 +1,7 @@
 package sneer.pulp.connection.impl;
 
+import static sneer.brickness.environments.Environments.my;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,7 +9,6 @@ import sneer.pulp.connection.SocketOriginator;
 import sneer.pulp.internetaddresskeeper.InternetAddress;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
 import wheel.reactive.lists.impl.SimpleListReceiver;
-import static sneer.brickness.environments.Environments.my;
 
 class SocketOriginatorImpl implements SocketOriginator {
 

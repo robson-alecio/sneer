@@ -1,4 +1,6 @@
 package sneer.skin.imgselector.impl;
+import static sneer.brickness.environments.Environments.my;
+
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
@@ -16,7 +18,6 @@ import javax.swing.WindowConstants;
 
 import sneer.skin.image.ImageFactory;
 import wheel.lang.Consumer;
-import static sneer.brickness.environments.Environments.my;
 
 class ImageDialog extends JDialog {
 	

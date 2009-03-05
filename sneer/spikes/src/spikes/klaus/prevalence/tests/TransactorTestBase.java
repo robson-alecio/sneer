@@ -5,9 +5,9 @@ package spikes.klaus.prevalence.tests;
 
 import java.io.Serializable;
 
+import junit.framework.TestCase;
 import spikes.klaus.prevalence.Transaction;
 import spikes.klaus.prevalence.Transactor;
-import junit.framework.TestCase;
 
 
 public abstract class TransactorTestBase extends TestCase {

@@ -9,7 +9,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import sneer.commons.lang.ByRef;
-
 import wheel.io.ui.GuiThread;
 
 final class GuiBrickInvocationHandler<T> implements InvocationHandler {

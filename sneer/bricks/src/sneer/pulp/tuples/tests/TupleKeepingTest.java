@@ -1,45 +1,53 @@
 package sneer.pulp.tuples.tests;
 
+import static sneer.brickness.environments.Environments.my;
+
 import org.junit.Test;
 
-import sneer.brickness.testsupport.BrickTest;
+import sneer.brickness.testsupport.Contribute;
+import sneer.pulp.config.persistence.mocks.PersistenceConfigMock;
+import sneer.pulp.config.persistence.testsupport.BrickTest;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
-import static sneer.brickness.environments.Environments.my;
 
 public class TupleKeepingTest extends BrickTest {
 
-	private final TupleSpace _subject = my(TupleSpace.class);
-	
+	@Contribute final PersistenceConfigMock _persistenceConfig = new PersistenceConfigMock(tmpDirectory()); //Refactor: Is this necessary?
+
 	private int _notificationCounter;
 	
 	
 	@Test (timeout = 3000)
 	public void tuplesLimitAmount() {
 
-		_subject.addSubscription(KeptTuple.class, new Consumer<KeptTuple>() { @Override public void consume(KeptTuple ignored) {
+		subject().addSubscription(KeptTuple.class, new Consumer<KeptTuple>() { @Override public void consume(KeptTuple ignored) {
 			_notificationCounter++;
 		}});
 		
-		_subject.keep(KeptTuple.class);
-		_subject.publish(new KeptTuple(1));
+		subject().keep(KeptTuple.class);
+		subject().publish(new KeptTuple(1));
 		flushCache();
-		_subject.publish(new KeptTuple(1));
+		subject().publish(new KeptTuple(1));
 
-		assertEquals(1, _subject.keptTuples().size());
+		assertEquals(1, subject().keptTuples().size());
 		assertEquals(1, _notificationCounter);
 	}
 
 
+	private TupleSpace subject() {
+		return my(TupleSpace.class);
+	}
+
+
 	private void flushCache() {
-		int cacheSize = _subject.transientCacheSize();
+		int cacheSize = subject().transientCacheSize();
 		publishTestTuples(cacheSize);
 	}
 
 
 	private void publishTestTuples(int amount) {
 		for (int i = 0; i < amount; i++)
-			_subject.publish(new TestTuple(new int[] {i}));
+			subject().publish(new TestTuple(new int[] {i}));
 	}
 	
 }

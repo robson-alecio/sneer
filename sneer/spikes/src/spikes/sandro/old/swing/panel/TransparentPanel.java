@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-
 import spikes.sandro.old.swing.Util;
 import spikes.sandro.old.swing.panel.decorators.Decorator;
 import spikes.sandro.old.swing.panel.decorators.TransparentDecorator;

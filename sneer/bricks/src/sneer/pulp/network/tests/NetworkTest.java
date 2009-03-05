@@ -1,15 +1,16 @@
 package sneer.pulp.network.tests;
 
+import static sneer.brickness.environments.Environments.my;
+
 import java.io.IOException;
 
 import org.junit.Test;
 
-import sneer.brickness.testsupport.BrickTest;
+import sneer.pulp.config.persistence.testsupport.BrickTest;
 import sneer.pulp.network.ByteArrayServerSocket;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;
 import sneer.pulp.threadpool.ThreadPool;
-import static sneer.brickness.environments.Environments.my;
 
 
 public class NetworkTest extends BrickTest {

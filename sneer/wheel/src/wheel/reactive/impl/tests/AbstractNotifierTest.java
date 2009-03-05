@@ -1,15 +1,13 @@
 package wheel.reactive.impl.tests;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import sneer.brickness.testsupport.BrickTestRunner;
+import sneer.pulp.config.persistence.testsupport.BrickTest;
 import wheel.lang.Consumer;
 import wheel.reactive.Signals;
 import wheel.reactive.impl.AbstractNotifier;
 
-@RunWith(BrickTestRunner.class)
-public class AbstractNotifierTest {
+public class AbstractNotifierTest extends BrickTest {
 	
 	@Test (expected = Throwable.class)
 	public void throwablesBubbleUpDuringTests() {

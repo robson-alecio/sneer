@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 
 import org.junit.Test;
 
-import sneer.brickness.testsupport.BrickTest;
+import sneer.pulp.config.persistence.testsupport.BrickTest;
 import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.skin.image.ImageFactory;
 import wheel.lang.exceptions.Hiccup;

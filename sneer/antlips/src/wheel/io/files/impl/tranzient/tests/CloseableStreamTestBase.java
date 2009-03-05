@@ -2,9 +2,9 @@ package wheel.io.files.impl.tranzient.tests;
 
 import java.io.IOException;
 
+import junit.framework.TestCase;
 import wheel.io.files.impl.CloseableWithListener;
 import wheel.io.files.impl.CloseableWithListener.Listener;
-import junit.framework.TestCase;
 
 public abstract class CloseableStreamTestBase extends TestCase {
 

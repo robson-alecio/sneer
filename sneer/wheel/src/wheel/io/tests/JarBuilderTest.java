@@ -12,7 +12,6 @@ import org.junit.Test;
 
 import sneer.commons.io.Streams;
 import sneer.commons.testutil.TestThatMightUseResources;
-
 import wheel.io.JarBuilder;
 
 public class JarBuilderTest extends TestThatMightUseResources {

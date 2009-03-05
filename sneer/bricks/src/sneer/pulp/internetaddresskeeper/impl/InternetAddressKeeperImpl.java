@@ -3,8 +3,8 @@ package sneer.pulp.internetaddresskeeper.impl;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.internetaddresskeeper.InternetAddress;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
-import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListRegister;
+import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 
 class InternetAddressKeeperImpl implements InternetAddressKeeper {

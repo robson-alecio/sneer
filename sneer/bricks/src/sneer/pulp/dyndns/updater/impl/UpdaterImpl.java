@@ -1,5 +1,7 @@
 package sneer.pulp.dyndns.updater.impl;
 
+import static sneer.brickness.environments.Environments.my;
+
 import java.io.IOException;
 
 import sneer.commons.lang.Pair;
@@ -13,7 +15,6 @@ import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.httpclient.HttpClient;
 import wheel.io.Base64;
 import wheel.io.Logger;
-import static sneer.brickness.environments.Environments.my;
 
 class UpdaterImpl implements Updater {
 	

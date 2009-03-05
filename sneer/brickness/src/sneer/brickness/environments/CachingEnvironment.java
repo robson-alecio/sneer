@@ -20,10 +20,14 @@ public class CachingEnvironment implements Environment {
 			return (T) cachedBinding;
 		
 		final T newBinding = _delegate.provide(intrface);
-		if (null != newBinding) {
+		if (null != newBinding)
 			_cache.put(intrface, newBinding);
-		}
+		
 		return newBinding;
+	}
+
+	public void clear() {
+		_cache.clear();
 	}
 
 }

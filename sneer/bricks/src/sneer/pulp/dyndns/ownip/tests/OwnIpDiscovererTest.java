@@ -9,8 +9,8 @@ import org.jmock.Sequence;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.Contribute;
-import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.clock.Clock;
+import sneer.pulp.config.persistence.testsupport.BrickTest;
 import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.propertystore.PropertyStore;

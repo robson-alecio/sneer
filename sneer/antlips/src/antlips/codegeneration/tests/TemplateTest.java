@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import sneer.commons.lang.Functor;
-
 import antlips.codegeneration.Template;
 
 public class TemplateTest {

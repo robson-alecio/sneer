@@ -1,5 +1,8 @@
 package sneer.pulp.compiler.impl;
 
+import static sneer.brickness.environments.Environments.my;
+import static wheel.io.Logger.log;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,10 +17,8 @@ import sneer.pulp.classpath.ClasspathFactory;
 import sneer.pulp.compiler.CompilerException;
 import sneer.pulp.compiler.JavaCompiler;
 import sneer.pulp.compiler.Result;
-import com.sun.tools.javac.Main;
 
-import static sneer.brickness.environments.Environments.my;
-import static wheel.io.Logger.log;
+import com.sun.tools.javac.Main;
 
 class JavaCompilerImpl implements JavaCompiler {
 

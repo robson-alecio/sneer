@@ -3,7 +3,7 @@ package functional;
 import org.junit.After;
 import org.junit.Before;
 
-import sneer.brickness.testsupport.BrickTest;
+import sneer.pulp.config.persistence.testsupport.BrickTest;
 import wheel.lang.Timebox;
 
 public abstract class SovereignFunctionalTestBase extends BrickTest {

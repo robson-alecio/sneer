@@ -1,5 +1,6 @@
 package sneer.pulp.connection.reachability.impl;
 
+import static sneer.brickness.environments.Environments.my;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
@@ -8,7 +9,6 @@ import sneer.pulp.connection.SocketAccepter;
 import sneer.pulp.connection.reachability.ReachabilitySentinel;
 import sneer.pulp.threadpool.Stepper;
 import wheel.reactive.impl.Receiver;
-import static sneer.brickness.environments.Environments.my;
 
 class ReachabilitySentinelImpl implements ReachabilitySentinel {
 	

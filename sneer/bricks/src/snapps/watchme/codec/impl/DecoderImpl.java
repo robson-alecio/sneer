@@ -1,5 +1,7 @@
 package snapps.watchme.codec.impl;
 
+import static sneer.brickness.environments.Environments.my;
+
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
@@ -9,7 +11,6 @@ import snapps.watchme.codec.ImageDelta;
 import snapps.watchme.codec.ImageCodec.Decoder;
 import sneer.commons.lang.Pair;
 import sneer.skin.image.ImageFactory;
-import static sneer.brickness.environments.Environments.my;
 
 class DecoderImpl implements Decoder {
 

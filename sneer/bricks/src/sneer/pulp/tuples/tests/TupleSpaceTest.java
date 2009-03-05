@@ -1,16 +1,21 @@
 package sneer.pulp.tuples.tests;
 
+import static sneer.brickness.environments.Environments.my;
+
 import java.util.ArrayList;
 
 import org.junit.Test;
 
 import sneer.brickness.Tuple;
-import sneer.brickness.testsupport.BrickTest;
+import sneer.brickness.testsupport.Contribute;
+import sneer.pulp.config.persistence.mocks.PersistenceConfigMock;
+import sneer.pulp.config.persistence.testsupport.BrickTest;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
-import static sneer.brickness.environments.Environments.my;
 
 public class TupleSpaceTest extends BrickTest {
+
+	@Contribute final PersistenceConfigMock _persistenceConfig = new PersistenceConfigMock(tmpDirectory()); //Refactor: Is this necessary?
 
 	private final TupleSpace _subject = my(TupleSpace.class);
 	

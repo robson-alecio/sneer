@@ -1,5 +1,7 @@
 package sneer.pulp.dyndns.ownip.impl;
 
+import static sneer.brickness.environments.Environments.my;
+
 import java.io.IOException;
 
 import sneer.pulp.blinkinglights.BlinkingLights;
@@ -13,7 +15,6 @@ import wheel.io.Logger;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
-import static sneer.brickness.environments.Environments.my;
 
 class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	

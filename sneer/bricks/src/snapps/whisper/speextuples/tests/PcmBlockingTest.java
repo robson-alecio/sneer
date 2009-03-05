@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import snapps.whisper.speextuples.SpeexTuples;
 import sneer.brickness.testsupport.Contribute;
-import sneer.brickness.testsupport.BrickTest;
+import sneer.pulp.config.persistence.testsupport.BrickTest;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.skin.sound.PcmSoundPacket;
 

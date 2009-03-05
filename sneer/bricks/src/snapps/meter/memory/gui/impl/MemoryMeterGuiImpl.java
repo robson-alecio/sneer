@@ -1,5 +1,7 @@
 package snapps.meter.memory.gui.impl;
 
+import static sneer.brickness.environments.Environments.my;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -28,7 +30,6 @@ import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.ui.graphics.Images;
 import wheel.reactive.impl.Adapter;
-import static sneer.brickness.environments.Environments.my;
 
 class MemoryMeterGuiImpl implements MemoryMeterGui {
 

@@ -9,7 +9,6 @@ import java.awt.Insets;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-
 import spikes.sandro.old.swing.panel.TransparentPanel;
 import spikes.sandro.old.swing.panel.decorators.TitleBarDecorator;
 

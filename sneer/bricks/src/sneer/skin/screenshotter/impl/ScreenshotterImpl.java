@@ -1,5 +1,7 @@
 package sneer.skin.screenshotter.impl;
 
+import static sneer.brickness.environments.Environments.my;
+
 import java.awt.AWTException;
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
@@ -13,7 +15,6 @@ import sneer.pulp.blinkinglights.LightType;
 import sneer.skin.screenshotter.Screenshotter;
 import wheel.lang.exceptions.FriendlyException;
 import wheel.lang.exceptions.Hiccup;
-import static sneer.brickness.environments.Environments.my;
 
 class ScreenshotterImpl implements Screenshotter {
 

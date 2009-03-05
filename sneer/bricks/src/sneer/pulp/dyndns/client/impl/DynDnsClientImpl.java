@@ -1,5 +1,7 @@
 package sneer.pulp.dyndns.client.impl;
 
+import static sneer.brickness.environments.Environments.my;
+
 import java.io.IOException;
 
 import sneer.pulp.blinkinglights.BlinkingLights;
@@ -18,7 +20,6 @@ import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.propertystore.PropertyStore;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.reactive.impl.Receiver;
-import static sneer.brickness.environments.Environments.my;
 
 class DynDnsClientImpl implements DynDnsClient {
 	

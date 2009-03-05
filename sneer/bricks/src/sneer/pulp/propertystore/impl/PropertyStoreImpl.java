@@ -1,5 +1,7 @@
 package sneer.pulp.propertystore.impl;
 
+import static sneer.brickness.environments.Environments.my;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,7 +15,6 @@ import sneer.commons.io.Streams;
 import sneer.pulp.config.persistence.PersistenceConfig;
 import sneer.pulp.propertystore.PropertyStore;
 import wheel.io.Logger;
-import static sneer.brickness.environments.Environments.my;
 
 class PropertyStoreImpl implements PropertyStore {
 

@@ -18,8 +18,8 @@ import java.util.jar.JarFile;
 
 import org.apache.commons.io.IOUtils;
 
-import sneer.pulp.dependency.FileWithHash;
 import sneer.pulp.dependency.DependencyManager;
+import sneer.pulp.dependency.FileWithHash;
 import wheel.lang.Threads;
 
 public class BrickClassLoader extends EnhancingClassLoader {

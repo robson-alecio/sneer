@@ -10,7 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-
 import spikes.sandro.old.gui.community.share.SharePanel;
 import spikes.sandro.old.image.IconFactory;
 import spikes.sandro.old.swing.layout.StackLayout;

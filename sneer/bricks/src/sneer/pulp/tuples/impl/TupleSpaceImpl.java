@@ -141,7 +141,8 @@ class TupleSpaceImpl implements TupleSpace {
 
 
 	private String directory() {
-		return new File(_persistenceConfig.persistenceDirectory(), "tuplespace").getAbsolutePath();
+		String dir = _persistenceConfig.persistenceDirectory();
+		return new File(dir, "tuplespace").getAbsolutePath();
 	}
 
 	

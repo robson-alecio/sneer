@@ -1,5 +1,7 @@
 package sneer.pulp.connection.impl;
 
+import static sneer.brickness.environments.Environments.my;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,7 +10,6 @@ import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.own.name.OwnNameKeeper;
-import static sneer.brickness.environments.Environments.my;
 
 class ConnectionManagerImpl implements ConnectionManager {
 

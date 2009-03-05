@@ -1,5 +1,7 @@
 package snapps.wind.impl;
 
+import static sneer.brickness.environments.Environments.my;
+
 import java.util.Comparator;
 
 import snapps.wind.Shout;
@@ -10,7 +12,6 @@ import wheel.lang.Consumer;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
-import static sneer.brickness.environments.Environments.my;
 
 class WindImpl implements Wind, Consumer<Shout> {
 

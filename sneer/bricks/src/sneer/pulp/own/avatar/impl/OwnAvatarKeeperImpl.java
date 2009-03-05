@@ -1,5 +1,7 @@
 package sneer.pulp.own.avatar.impl;
 
+import static sneer.brickness.environments.Environments.my;
+
 import java.awt.Image;
 
 import sneer.commons.lang.Functor;
@@ -11,7 +13,6 @@ import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Adapter;
 import wheel.reactive.impl.RegisterImpl;
-import static sneer.brickness.environments.Environments.my;
 
 class OwnAvatarKeeperImpl implements OwnAvatarKeeper {
 

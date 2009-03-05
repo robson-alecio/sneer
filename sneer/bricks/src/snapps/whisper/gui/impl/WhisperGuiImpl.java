@@ -1,5 +1,7 @@
 package snapps.whisper.gui.impl;
 
+import static sneer.brickness.environments.Environments.my;
+
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -32,7 +34,6 @@ import sneer.skin.widgets.reactive.TextWidget;
 import wheel.lang.Consumer;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.And;
-import static sneer.brickness.environments.Environments.my;
 
 class WhisperGuiImpl implements WhisperGui { //Optimize need a better snapp window support
 

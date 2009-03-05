@@ -1,5 +1,8 @@
 package sneer.pulp.dependency.impl;
 
+import static sneer.brickness.environments.Environments.my;
+import static wheel.io.Logger.log;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,10 +15,8 @@ import org.apache.commons.io.FileUtils;
 import sneer.kernel.container.SneerConfig;
 import sneer.pulp.crypto.Crypto;
 import sneer.pulp.crypto.Sneer1024;
-import sneer.pulp.dependency.FileWithHash;
 import sneer.pulp.dependency.DependencyManager;
-import static sneer.brickness.environments.Environments.my;
-import static wheel.io.Logger.log;
+import sneer.pulp.dependency.FileWithHash;
 
 class DependencyManagerImpl implements DependencyManager {
 

@@ -1,5 +1,7 @@
 package snapps.owner.gui.impl;
 
+import static sneer.brickness.environments.Environments.my;
+
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.GridBagConstraints;
@@ -21,7 +23,6 @@ import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
-import static sneer.brickness.environments.Environments.my;
 
 class OwnerGuiImpl implements OwnerGui {
 

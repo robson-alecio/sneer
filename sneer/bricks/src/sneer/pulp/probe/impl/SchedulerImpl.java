@@ -1,5 +1,7 @@
 package sneer.pulp.probe.impl;
 
+import static sneer.brickness.environments.Environments.my;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -7,7 +9,6 @@ import sneer.brickness.Tuple;
 import sneer.pulp.connection.ByteConnection.PacketScheduler;
 import sneer.pulp.serialization.Serializer;
 import wheel.lang.Threads;
-import static sneer.brickness.environments.Environments.my;
 
 class SchedulerImpl implements PacketScheduler {
 

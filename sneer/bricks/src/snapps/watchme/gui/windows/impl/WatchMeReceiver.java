@@ -1,5 +1,7 @@
 package snapps.watchme.gui.windows.impl;
 
+import static sneer.brickness.environments.Environments.my;
+
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Image;
@@ -22,7 +24,6 @@ import wheel.io.ui.GuiThread;
 import wheel.lang.Consumer;
 import wheel.reactive.EventSource;
 import wheel.reactive.impl.Receiver;
-import static sneer.brickness.environments.Environments.my;
 
 class WatchMeReceiver{
 	

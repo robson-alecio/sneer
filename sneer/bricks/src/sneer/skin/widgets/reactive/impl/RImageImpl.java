@@ -1,5 +1,7 @@
 package sneer.skin.widgets.reactive.impl;
 
+import static sneer.brickness.environments.Environments.my;
+
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -8,6 +10,7 @@ import java.awt.RenderingHints;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+
 import sneer.skin.image.ImageFactory;
 import sneer.skin.widgets.reactive.ImageWidget;
 import wheel.io.ui.GuiThread;
@@ -16,7 +19,6 @@ import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.impl.RegisterImpl;
-import static sneer.brickness.environments.Environments.my;
 
 class RImageImpl extends JPanel implements ImageWidget{
 

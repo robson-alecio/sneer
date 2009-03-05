@@ -1,5 +1,7 @@
 package spikes.priscila.go.gui;
 
+import static sneer.brickness.environments.Environments.my;
+
 import java.awt.Dimension;
 
 import javax.swing.JLabel;
@@ -10,7 +12,6 @@ import javax.swing.SwingConstants;
 import sneer.commons.lang.Functor;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
-import static sneer.brickness.environments.Environments.my;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.Adapter;
 

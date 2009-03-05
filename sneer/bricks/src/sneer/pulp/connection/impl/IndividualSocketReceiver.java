@@ -1,5 +1,7 @@
 package sneer.pulp.connection.impl;
 
+import static sneer.brickness.environments.Environments.my;
+
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -11,7 +13,6 @@ import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.network.ByteArraySocket;
 import wheel.lang.exceptions.IllegalParameter;
-import static sneer.brickness.environments.Environments.my;
 
 class IndividualSocketReceiver {
 

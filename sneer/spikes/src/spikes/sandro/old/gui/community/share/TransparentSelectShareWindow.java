@@ -6,7 +6,6 @@ import java.awt.GridBagLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-
 import spikes.sandro.old.swing.layout.StackLayout;
 import spikes.sandro.old.swing.panel.GradientPanel;
 import spikes.sandro.old.swing.panel.TwoColmunsPanel;

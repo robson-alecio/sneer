@@ -14,6 +14,9 @@
             KERNEL (CONTAINER (PUBLISH, SANDBOX, UPDATE))
             
            ROOTS (TUPLESPACE, CLOCK, THREADS, SIGNALS...)
+           
+                      PERSISTENT BRICK TEST
+                        PERSISTENCECONFIG
             
                                                                   BRICKS
 ------------------------------------------------------------------------

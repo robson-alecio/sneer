@@ -1,12 +1,12 @@
 package sneer.pulp.memory.impl;
 
+import static sneer.brickness.environments.Environments.my;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.memory.MemoryMeter;
 import sneer.pulp.threadpool.Stepper;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
-import static sneer.brickness.environments.Environments.my;
 
 class MemoryMeterImpl implements MemoryMeter {
 

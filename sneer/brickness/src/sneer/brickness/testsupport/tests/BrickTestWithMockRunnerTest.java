@@ -4,7 +4,7 @@ import org.jmock.Mockery;
 import org.junit.After;
 import org.junit.Test;
 
-import sneer.brickness.testsupport.BrickTest;
+import sneer.pulp.config.persistence.testsupport.BrickTest;
 
 public class BrickTestWithMockRunnerTest extends BrickTest {
 

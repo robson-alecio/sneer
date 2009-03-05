@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 
 import spikes.sandro.old.swing.panel.TransparentPanel;
 
-
 import com.jhlabs.image.GaussianFilter;
 
 public class TransparentDecorator implements Decorator {

@@ -8,7 +8,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-
 import spikes.sandro.old.swing.layout.StackLayout;
 import spikes.sandro.old.swing.panel.ImagePanel;
 

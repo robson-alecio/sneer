@@ -1,6 +1,6 @@
 package sneer.apps.talk.audio;
 
-import javax.sound.sampled.*;
+import javax.sound.sampled.AudioFormat;
 
 class AudioUtil {
 	static final private int FRAME_DURATION_MILLIS = 20;

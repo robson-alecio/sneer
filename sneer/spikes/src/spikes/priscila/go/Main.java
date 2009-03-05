@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
+
 import spikes.priscila.go.GoBoard.StoneColor;
 import wheel.io.ui.GuiThread;
 import wheel.lang.Threads;

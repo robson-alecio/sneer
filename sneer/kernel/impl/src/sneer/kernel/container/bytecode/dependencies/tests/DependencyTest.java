@@ -11,8 +11,8 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import sneer.brickness.testsupport.BrickTest;
 import sneer.kernel.container.bytecode.dependencies.DependencyFinder;
+import sneer.pulp.config.persistence.testsupport.BrickTest;
 import wheel.testutil.TestUtils;
 
 public class DependencyTest extends BrickTest {

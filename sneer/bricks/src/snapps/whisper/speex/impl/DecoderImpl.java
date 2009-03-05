@@ -1,12 +1,13 @@
 package snapps.whisper.speex.impl;
 
+import static sneer.brickness.environments.Environments.my;
+
 import java.io.StreamCorruptedException;
 
 import org.xiph.speex.SpeexDecoder;
 
 import snapps.whisper.speex.Decoder;
 import sneer.skin.sound.kernel.Audio;
-import static sneer.brickness.environments.Environments.my;
 
 class DecoderImpl implements Decoder {
 	

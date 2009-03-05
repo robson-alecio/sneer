@@ -3,7 +3,6 @@ package wheel.reactive.impl.mocks;
 import java.util.Random;
 
 import sneer.commons.threads.Daemon;
-
 import wheel.lang.Threads;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;

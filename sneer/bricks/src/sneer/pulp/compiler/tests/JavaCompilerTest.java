@@ -11,11 +11,11 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 
-import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.classpath.Classpath;
 import sneer.pulp.classpath.ClasspathFactory;
 import sneer.pulp.compiler.CompilationError;
 import sneer.pulp.compiler.Result;
+import sneer.pulp.config.persistence.testsupport.BrickTest;
 import wheel.io.Jars;
 
 public class JavaCompilerTest extends BrickTest {

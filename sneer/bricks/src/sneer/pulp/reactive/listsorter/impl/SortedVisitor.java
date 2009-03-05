@@ -1,5 +1,7 @@
 package sneer.pulp.reactive.listsorter.impl;
 
+import static sneer.brickness.environments.Environments.my;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -14,7 +16,6 @@ import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListValueChange;
 import wheel.reactive.lists.VisitorAdapter;
 import wheel.reactive.lists.impl.ListRegisterImpl;
-import static sneer.brickness.environments.Environments.my;
 
 final class SortedVisitor<T> extends VisitorAdapter<T> implements ListOfSignalsReceiver<T>{
 

@@ -13,7 +13,6 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyledDocument;
 
 import sneer.skin.widgets.reactive.NotificationPolicy;
-
 import wheel.lang.PickyConsumer;
 import wheel.reactive.Signal;
 

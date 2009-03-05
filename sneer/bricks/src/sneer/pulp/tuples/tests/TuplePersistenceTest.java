@@ -16,7 +16,7 @@ import sneer.pulp.tuples.TupleSpace;
 
 public class TuplePersistenceTest extends TestThatMightUseResources {
 
-	private final PersistenceConfigMock _persistenceMock  = new PersistenceConfigMock(tmpDirectory());
+	private final PersistenceConfigMock _persistenceMock  = new PersistenceConfigMock(tmpDirectory()); //Refactor: Use @Contribute
 
 
 	@Test

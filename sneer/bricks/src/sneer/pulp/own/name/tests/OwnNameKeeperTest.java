@@ -1,10 +1,11 @@
 package sneer.pulp.own.name.tests;
 
+import static sneer.brickness.environments.Environments.my;
+
 import org.junit.Test;
 
-import sneer.brickness.testsupport.BrickTest;
+import sneer.pulp.config.persistence.testsupport.BrickTest;
 import sneer.pulp.own.name.OwnNameKeeper;
-import static sneer.brickness.environments.Environments.my;
 
 public class OwnNameKeeperTest extends BrickTest {
 

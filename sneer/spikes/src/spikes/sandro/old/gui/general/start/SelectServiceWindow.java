@@ -11,7 +11,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
 
-
 import spikes.sandro.old.image.IconFactory;
 import spikes.sandro.old.swing.panel.AutoZoomImage;
 import spikes.sandro.old.swing.panel.TransparentPanel;

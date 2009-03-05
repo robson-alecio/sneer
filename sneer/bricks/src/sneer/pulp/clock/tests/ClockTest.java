@@ -1,14 +1,15 @@
 package sneer.pulp.clock.tests;
 
+import static sneer.brickness.environments.Environments.my;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 
-import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.clock.Clock;
+import sneer.pulp.config.persistence.testsupport.BrickTest;
 import sneer.pulp.threadpool.Stepper;
-import static sneer.brickness.environments.Environments.my;
 
 public class ClockTest extends BrickTest {
 

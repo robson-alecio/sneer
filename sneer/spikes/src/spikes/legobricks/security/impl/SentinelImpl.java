@@ -1,5 +1,7 @@
 package spikes.legobricks.security.impl;
 
+import static sneer.brickness.environments.Environments.my;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,7 +9,6 @@ import spikes.legobricks.security.Sentinel;
 import spikes.legobricks.security.Sorry;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
-import static sneer.brickness.environments.Environments.my;
 
 public class SentinelImpl implements Sentinel {
 

@@ -16,6 +16,6 @@ public interface Logger extends Brick {
 	ListRegister<LogWhiteListEntry> whiteListEntries();
 	EventSource<String> loggedMessages();
 	/**Default operation mode is to rethrow throwables instead of logging them for the benefit of unit tests.*/
-	void stopLeakingThrowables();
+	void enterRobustMode();
 
 }

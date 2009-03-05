@@ -168,7 +168,7 @@ class LoggerImpl implements sneer.pulp.logging.Logger {
 
 
 	@Override
-	public void stopLeakingThrowables() {
+	public void enterRobustMode() {
 		_shouldLeakThrowables = false;
 	}
 

@@ -1,5 +1,6 @@
 package main.impl;
 
+import static sneer.brickness.environments.Environments.my;
 import main.MainSneerBrick;
 import snapps.blinkinglights.gui.BlinkingLightsGui;
 import snapps.contacts.gui.ContactsGui;
@@ -22,11 +23,11 @@ import sneer.pulp.dyndns.ownaccount.DynDnsAccount;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.pulp.keymanager.KeyManager;
+import sneer.pulp.logging.Logger;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.port.PortKeeper;
 import sneer.pulp.probe.ProbeManager;
 import sneer.skin.dashboard.Dashboard;
-import static sneer.brickness.environments.Environments.my;
 
 class MainSneerBrickImpl implements MainSneerBrick {
 
@@ -92,6 +93,8 @@ class MainSneerBrickImpl implements MainSneerBrick {
 
 	@Override
 	public void start(String ownName, String dynDnsUserName, String dynDnsPassword) {
+		my(Logger.class).enterRobustMode();
+
 		setOwnName(ownName);
 		
 		_portKeeper.portSetter().consume(port());

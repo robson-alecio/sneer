@@ -30,13 +30,6 @@ public class BrickTestRunnerTest {
 		}
 	};
 	
-	// DONT TRY TO USE my IN FIELD INITIALIZERS:
-	//		final ThreadPool _subject = my(ThreadPool.class);
-	// Because a full blown container is not available during
-	// the test instantiation.
-	// Use the TestThatIsInjected base class and @Inject
-	// annotation.
-	
 	@Test
 	public void testContributedField() {
 		assertSame(_bar, my(BarBrick.class));

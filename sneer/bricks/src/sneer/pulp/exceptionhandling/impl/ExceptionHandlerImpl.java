@@ -1,6 +1,6 @@
 package sneer.pulp.exceptionhandling.impl;
 
-import sneer.brickness.environments.Environments;
+import sneer.commons.environments.Environments;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
 import sneer.pulp.logging.Logger;
 

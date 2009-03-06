@@ -1,6 +1,6 @@
 package sneer.pulp.reactive.signalchooser.tests;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 
 import org.junit.Assert;
 import org.junit.Test;

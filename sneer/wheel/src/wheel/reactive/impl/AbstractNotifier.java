@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import sneer.brickness.environments.Environments;
+import sneer.commons.environments.Environments;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
 import wheel.lang.Consumer;
 import wheel.lang.Types;

@@ -1,6 +1,6 @@
 package spikes.sandro.listsort;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 
 import java.awt.BorderLayout;
 import java.awt.Image;
@@ -13,7 +13,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import sneer.brickness.environments.Environments;
+import sneer.commons.environments.Environments;
 import sneer.commons.lang.ByRef;
 import sneer.kernel.container.Containers;
 import sneer.pulp.reactive.listsorter.ListSorter;

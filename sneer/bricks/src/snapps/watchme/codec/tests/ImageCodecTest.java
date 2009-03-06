@@ -1,6 +1,6 @@
 package snapps.watchme.codec.tests;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 import static wheel.io.ui.graphics.Images.copy;
 import static wheel.io.ui.graphics.Images.getImage;
 

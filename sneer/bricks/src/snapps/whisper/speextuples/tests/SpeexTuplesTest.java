@@ -1,6 +1,6 @@
 package snapps.whisper.speextuples.tests;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 
 import org.jmock.Expectations;
 import org.junit.Test;

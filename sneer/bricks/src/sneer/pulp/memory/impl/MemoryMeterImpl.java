@@ -1,6 +1,6 @@
 package sneer.pulp.memory.impl;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.memory.MemoryMeter;
 import sneer.pulp.threadpool.Stepper;

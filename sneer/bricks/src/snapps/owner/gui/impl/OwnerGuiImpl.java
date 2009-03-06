@@ -1,6 +1,6 @@
 package snapps.owner.gui.impl;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 
 import java.awt.Container;
 import java.awt.Cursor;

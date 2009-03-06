@@ -1,6 +1,6 @@
 package sneer.pulp.propertystore.impl;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 
 import java.io.File;
 import java.io.FileInputStream;

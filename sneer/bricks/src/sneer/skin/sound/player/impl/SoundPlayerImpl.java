@@ -1,6 +1,6 @@
 package sneer.skin.sound.player.impl;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 
 import java.io.IOException;
 import java.net.URL;

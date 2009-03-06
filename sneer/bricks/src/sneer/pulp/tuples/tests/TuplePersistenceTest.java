@@ -1,13 +1,13 @@
 package sneer.pulp.tuples.tests;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 
 import java.util.List;
 
 import org.junit.Test;
 
 import sneer.brickness.Tuple;
-import sneer.brickness.environments.Environments;
+import sneer.commons.environments.Environments;
 import sneer.commons.io.StorageDirectory;
 import sneer.commons.testutil.TestThatMightUseResources;
 import sneer.kernel.container.Container;

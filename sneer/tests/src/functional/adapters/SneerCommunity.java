@@ -4,7 +4,7 @@ import java.io.File;
 
 import org.apache.commons.lang.StringUtils;
 
-import sneer.brickness.environments.Environments;
+import sneer.commons.environments.Environments;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
 import sneer.kernel.container.SneerConfig;

@@ -1,4 +1,5 @@
-package sneer.brickness.environments;
+package sneer.commons.environments;
+
 
 
 public class ClosedEnvironment implements Environment {

@@ -3,8 +3,8 @@ package wheel.lang;
 import java.util.HashSet;
 import java.util.Set;
 
-import sneer.brickness.environments.Environments;
-import sneer.brickness.environments.Environments.Memento;
+import sneer.commons.environments.Environments;
+import sneer.commons.environments.Environments.Memento;
 import sneer.commons.threads.Daemon;
 
 

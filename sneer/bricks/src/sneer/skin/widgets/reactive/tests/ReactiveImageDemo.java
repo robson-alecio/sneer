@@ -7,7 +7,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
-import sneer.brickness.environments.Environments;
+import sneer.commons.environments.Environments;
 import sneer.commons.lang.Functor;
 import sneer.kernel.container.Containers;
 import sneer.skin.widgets.reactive.ImageWidget;

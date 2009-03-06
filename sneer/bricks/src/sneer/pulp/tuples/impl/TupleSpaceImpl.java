@@ -1,6 +1,6 @@
 package sneer.pulp.tuples.impl;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 import static wheel.lang.Types.cast;
 
 import java.io.File;
@@ -22,8 +22,8 @@ import org.prevayler.foundation.serialization.XStreamSerializer;
 
 import snapps.wind.impl.bubble.Bubble;
 import sneer.brickness.Tuple;
-import sneer.brickness.environments.Environments;
-import sneer.brickness.environments.Environments.Memento;
+import sneer.commons.environments.Environments;
+import sneer.commons.environments.Environments.Memento;
 import sneer.commons.io.StorageDirectory;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.exceptionhandling.ExceptionHandler;

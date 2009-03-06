@@ -1,6 +1,6 @@
 package sneer.pulp.clock.impl;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 
 import java.util.SortedSet;
 import java.util.TreeSet;

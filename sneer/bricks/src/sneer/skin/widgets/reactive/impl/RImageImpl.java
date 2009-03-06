@@ -1,6 +1,6 @@
 package sneer.skin.widgets.reactive.impl;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 
 import java.awt.Dimension;
 import java.awt.Graphics;

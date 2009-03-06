@@ -1,6 +1,6 @@
 package sneer.skin.widgets.reactive.tests;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 
 import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;

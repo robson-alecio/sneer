@@ -1,6 +1,6 @@
 package snapps.blinkinglights.gui.impl;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

@@ -7,8 +7,8 @@ import java.util.Set;
 
 import sneer.brickness.Brick;
 import sneer.brickness.environments.BrickConventions;
-import sneer.brickness.environments.Environment;
-import sneer.brickness.environments.Environments;
+import sneer.commons.environments.Environment;
+import sneer.commons.environments.Environments;
 import sneer.commons.io.StorageDirectory;
 import sneer.kernel.container.ClassLoaderFactory;
 import sneer.kernel.container.Container;

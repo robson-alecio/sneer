@@ -2,6 +2,8 @@ package sneer.brickness.environments;
 
 import java.lang.reflect.Constructor;
 
+import sneer.commons.environments.Environment;
+
 
 public class Brickness implements Environment {
 

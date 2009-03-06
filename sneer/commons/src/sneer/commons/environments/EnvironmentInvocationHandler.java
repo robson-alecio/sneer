@@ -1,13 +1,13 @@
-package sneer.brickness.environments;
+package sneer.commons.environments;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import sneer.brickness.environments.Environments.Memento;
+import sneer.commons.environments.Environments.Memento;
 import sneer.commons.lang.ByRef;
 
 

@@ -1,13 +1,13 @@
-package sneer.brickness.environments.tests;
+package sneer.commons.environments.tests;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import sneer.brickness.environments.Environment;
-import sneer.brickness.environments.Environments;
-import sneer.brickness.environments.Environments.Memento;
+import sneer.commons.environments.Environment;
+import sneer.commons.environments.Environments;
+import sneer.commons.environments.Environments.Memento;
 import sneer.commons.lang.ByRef;
 import sneer.commons.lang.Producer;
 

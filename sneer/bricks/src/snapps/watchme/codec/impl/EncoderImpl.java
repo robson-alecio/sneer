@@ -4,7 +4,7 @@
 package snapps.watchme.codec.impl;
 
 import static snapps.watchme.codec.impl.CodecConstants.CELL_SIZE;
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;

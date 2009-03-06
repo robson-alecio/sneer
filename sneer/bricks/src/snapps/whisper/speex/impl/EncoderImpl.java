@@ -1,6 +1,6 @@
 package snapps.whisper.speex.impl;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 
 import org.xiph.speex.SpeexEncoder;
 

@@ -1,6 +1,6 @@
 package sneer.skin.sound.speaker.impl;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 
 import java.util.HashMap;
 import java.util.Iterator;

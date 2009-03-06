@@ -1,6 +1,6 @@
 package sneer.pulp.streams.sequencer.tests;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 import static wheel.testutil.TestUtils.assertSameContents;
 
 import java.util.ArrayList;

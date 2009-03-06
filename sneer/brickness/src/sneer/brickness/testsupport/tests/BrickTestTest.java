@@ -1,6 +1,6 @@
 package sneer.brickness.testsupport.tests;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 
 import org.junit.Test;
 

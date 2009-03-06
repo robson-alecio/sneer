@@ -1,7 +1,7 @@
 package sneer.brickness.testsupport;
 
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 
 import org.jmock.Mockery;
 import org.jmock.Sequence;

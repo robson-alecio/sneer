@@ -2,7 +2,7 @@ package sneer.brickness.testsupport.tests;
 
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

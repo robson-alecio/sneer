@@ -1,6 +1,6 @@
 package sneer.pulp.probe.impl;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -3,7 +3,7 @@
  */
 package sneer.pulp.probe.impl;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 import sneer.brickness.PublicKey;
 import sneer.brickness.Tuple;
 import sneer.pulp.contacts.Contact;

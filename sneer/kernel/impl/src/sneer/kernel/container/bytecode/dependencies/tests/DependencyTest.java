@@ -1,6 +1,6 @@
 package sneer.kernel.container.bytecode.dependencies.tests;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,6 +1,6 @@
 package sneer.pulp.reactive.listsorter.impl;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 
 import java.util.Collections;
 import java.util.Comparator;

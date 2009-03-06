@@ -1,6 +1,6 @@
 package snapps.whisper.gui.impl;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -21,7 +21,7 @@ import javax.swing.border.EmptyBorder;
 import snapps.contacts.actions.ContactAction;
 import snapps.contacts.actions.ContactActionManager;
 import snapps.whisper.gui.WhisperGui;
-import sneer.brickness.environments.Environments;
+import sneer.commons.environments.Environments;
 import sneer.pulp.contacts.Contact;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.rooms.ActiveRoomKeeper;

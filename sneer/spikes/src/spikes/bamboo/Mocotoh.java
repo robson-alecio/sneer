@@ -7,7 +7,7 @@ import org.junit.internal.runners.InitializationError;
 import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.internal.runners.TestMethod;
 
-import sneer.brickness.environments.Environments;
+import sneer.commons.environments.Environments;
 import sneer.kernel.container.Containers;
 
 public class Mocotoh extends JUnit4ClassRunner {

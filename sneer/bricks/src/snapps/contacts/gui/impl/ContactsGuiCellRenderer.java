@@ -1,6 +1,6 @@
 package snapps.contacts.gui.impl;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 
 import java.awt.Color;
 import java.awt.Component;

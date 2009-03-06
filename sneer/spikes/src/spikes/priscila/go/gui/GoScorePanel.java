@@ -1,6 +1,6 @@
 package spikes.priscila.go.gui;
 
-import static sneer.brickness.environments.Environments.my;
+import static sneer.commons.environments.Environments.my;
 
 import java.awt.Dimension;
 

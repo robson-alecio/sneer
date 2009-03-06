@@ -1,8 +1,8 @@
-Brick (Abstract)
+@Brick (Abstract)
 
-	Prevalent (Default) (Single Threaded)
+	Prevalent (Default) (Transparently persisted. All calls to any prevalent brick are synchronized with all other calls to all other prevalent bricks)
 
-	@NonPrevalent
-		@Concurrent
-		Single Threaded (Default)
-			@Gui
+	@NonPrevalent (Not persisted by the container. "Brick-Managed Persistence")
+		@Concurrent (Calls are free-threaded, not synchronized)
+		Single Threaded (Default) (All calls are synchronized on the brick, including callbacks)
+			@Gui (Automatically called in AWT/Swing GUI thread)

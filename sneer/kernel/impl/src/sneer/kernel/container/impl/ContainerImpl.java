@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import sneer.brickness.Brick;
-import sneer.brickness.environments.BrickConventions;
+import sneer.brickness.environment.BrickConventions;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
 import sneer.commons.io.StorageDirectory;

@@ -1,4 +1,4 @@
-package sneer.brickness.environments;
+package sneer.brickness.environment;
 
 public class BrickConventions {
 

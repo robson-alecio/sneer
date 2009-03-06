@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import sneer.brickness.environments.BrickConventions;
+import sneer.brickness.environment.BrickConventions;
 import wheel.io.SourceFileWriter;
 
 class ImplementationGenerator {

@@ -1,4 +1,4 @@
-package sneer.brickness.environments;
+package sneer.brickness.environment;
 
 import java.lang.reflect.Constructor;
 

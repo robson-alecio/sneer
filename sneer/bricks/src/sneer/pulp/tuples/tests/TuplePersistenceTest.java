@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import sneer.brickness.Tuple;
 import sneer.commons.environments.Environments;
-import sneer.commons.io.StorageDirectory;
+import sneer.commons.io.StoragePath;
 import sneer.commons.testutil.TestThatMightUseResources;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
@@ -56,7 +56,7 @@ public class TuplePersistenceTest extends TestThatMightUseResources {
 
 
 	private Container newContainer() {
-		return Containers.newContainer(new StorageDirectory(){ @Override public String getPath() {
+		return Containers.newContainer(new StoragePath(){ @Override public String get() {
 			return tmpDirectory().getAbsolutePath();
 		}});
 	}

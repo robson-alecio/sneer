@@ -5,7 +5,7 @@ import static sneer.commons.environments.Environments.my;
 import org.junit.Test;
 
 import sneer.commons.environments.Environments;
-import sneer.commons.io.StorageDirectory;
+import sneer.commons.io.StoragePath;
 import sneer.commons.testutil.TestThatMightUseResources;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
@@ -32,7 +32,7 @@ public class PropertyStoreTest extends TestThatMightUseResources {
 	}
 
 	private void runInNewEnvironment(Runnable runnable) {
-		final Container container = Containers.newContainer(new StorageDirectory(){ @Override public String getPath() {
+		final Container container = Containers.newContainer(new StoragePath(){ @Override public String get() {
 			return tmpDirectory().getAbsolutePath();
 		}});
 		Environments.runWith(container, runnable);

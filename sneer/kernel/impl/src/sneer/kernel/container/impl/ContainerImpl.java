@@ -9,7 +9,7 @@ import sneer.brickness.Brick;
 import sneer.brickness.environment.BrickConventions;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
-import sneer.commons.io.StorageDirectory;
+import sneer.commons.io.StoragePath;
 import sneer.kernel.container.ClassLoaderFactory;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerException;
@@ -48,9 +48,9 @@ public class ContainerImpl implements Container {
 	}
 
 	private void bindStorageDirectoryIfNecessary() {
-		if (_binder.provide(StorageDirectory.class) != null) return;
+		if (_binder.provide(StoragePath.class) != null) return;
 		
-		_binder.bind(new StorageDirectory(){ @Override public String getPath() {
+		_binder.bind(new StoragePath(){ @Override public String get() {
 			return _sneerConfig.sneerDirectory().getAbsolutePath();
 		}});
 	}

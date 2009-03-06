@@ -24,7 +24,7 @@ import snapps.wind.impl.bubble.Bubble;
 import sneer.brickness.Tuple;
 import sneer.commons.environments.Environments;
 import sneer.commons.environments.Environments.Memento;
-import sneer.commons.io.StorageDirectory;
+import sneer.commons.io.StoragePath;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
 import sneer.pulp.keymanager.KeyManager;
@@ -94,7 +94,7 @@ class TupleSpaceImpl implements TupleSpace {
 
 	private final KeyManager _keyManager = my(KeyManager.class);
 	private final Clock _clock = my(Clock.class);
-	private final StorageDirectory _persistenceConfig = my(StorageDirectory.class);
+	private final StoragePath _persistenceConfig = my(StoragePath.class);
 	private final ThreadPool _threads = my(ThreadPool.class);
 	private final ExceptionHandler _exceptionHandler = my(ExceptionHandler.class);
 
@@ -141,7 +141,7 @@ class TupleSpaceImpl implements TupleSpace {
 
 
 	private String directory() {
-		String dir = _persistenceConfig.getPath();
+		String dir = _persistenceConfig.get();
 		return new File(dir, "tuplespace").getAbsolutePath();
 	}
 

@@ -6,15 +6,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 import sneer.brickness.Brick;
-import sneer.brickness.environments.Conventions;
+import sneer.brickness.environments.BrickConventions;
 import sneer.brickness.environments.Environment;
 import sneer.brickness.environments.Environments;
+import sneer.commons.io.StorageDirectory;
 import sneer.kernel.container.ClassLoaderFactory;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.ContainerException;
 import sneer.kernel.container.SneerConfig;
 import sneer.kernel.container.impl.classloader.EclipseClassLoaderFactory;
-import sneer.pulp.config.persistence.PersistenceConfig;
 import sneer.skin.GuiBrick;
 import wheel.lang.Types;
 
@@ -39,21 +39,26 @@ public class ContainerImpl implements Container {
 		bindNonGuiBricks(bindings);
 		
 		_binder.bind(this);
-		
+
 		_sneerConfig = produceSneerConfig();
-		provide(PersistenceConfig.class).setPersistenceDirectory(persistenceDirectory());
+		bindStorageDirectoryIfNecessary();
+		
 		
 		bindGuiBricks(bindings);
+	}
+
+	private void bindStorageDirectoryIfNecessary() {
+		if (_binder.provide(StorageDirectory.class) != null) return;
+		
+		_binder.bind(new StorageDirectory(){ @Override public String getPath() {
+			return _sneerConfig.sneerDirectory().getAbsolutePath();
+		}});
 	}
 
 	private Environment composeWithBinder(Environment environment) {
 		return environment == null
 			? _binder
 			: Environments.compose(environment, _binder);
-	}
-
-	private String persistenceDirectory() {
-		return _sneerConfig.sneerDirectory().getAbsolutePath();
 	}
 
 	private void bindNonGuiBricks(Object... bindings) {
@@ -153,7 +158,7 @@ public class ContainerImpl implements Container {
 		if(!type.isInterface())
 			return type.getName();
 		
-		return Conventions.implementationNameFor(type.getName());
+		return BrickConventions.implementationNameFor(type.getName());
 	}
 
 	//Fix: check if this code will work on production

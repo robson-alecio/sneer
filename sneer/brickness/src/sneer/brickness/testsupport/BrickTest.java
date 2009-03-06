@@ -10,10 +10,15 @@ import org.jmock.internal.ExpectationBuilder;
 import org.junit.After;
 import org.junit.runner.RunWith;
 
+import sneer.commons.io.StorageDirectory;
 import sneer.commons.testutil.TestThatMightUseResources;
 
 @RunWith(BrickTestWithMockRunner.class)
 public abstract class BrickTest extends TestThatMightUseResources {
+	
+	@Contribute	final StorageDirectory _storageDir = new StorageDirectory(){ @Override public String getPath() {
+		return tmpDirectory().getAbsolutePath();
+	}};
 	
 	private final Mockery _mockery = new JUnit4Mockery();
     

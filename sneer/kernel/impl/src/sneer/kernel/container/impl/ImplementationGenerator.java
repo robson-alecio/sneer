@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import sneer.brickness.environments.Conventions;
+import sneer.brickness.environments.BrickConventions;
 import wheel.io.SourceFileWriter;
 
 class ImplementationGenerator {
@@ -43,7 +43,7 @@ class ImplementationGenerator {
 	}
 
 	private String implClassName() {
-		return Conventions.implementationNameFor(_interface.getName());
+		return BrickConventions.implementationNameFor(_interface.getName());
 	}
 
 	private SourceFileWriter sourceWriter() {

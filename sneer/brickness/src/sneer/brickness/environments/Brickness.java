@@ -3,7 +3,7 @@ package sneer.brickness.environments;
 import java.lang.reflect.Constructor;
 
 
-public class ConventionBasedEnvironment implements Environment {
+public class Brickness implements Environment {
 
 	@Override
 	public <T> T provide(Class<T> intrface) {
@@ -31,6 +31,6 @@ public class ConventionBasedEnvironment implements Environment {
 	}
 
 	private <T> String implementationNameFor(Class<T> intrface) {
-		return Conventions.implementationNameFor(intrface.getName());
+		return BrickConventions.implementationNameFor(intrface.getName());
 	}
 }

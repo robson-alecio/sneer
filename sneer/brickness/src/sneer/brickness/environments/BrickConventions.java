@@ -1,6 +1,6 @@
 package sneer.brickness.environments;
 
-public class Conventions {
+public class BrickConventions {
 
 	public static String implementationNameFor(String brickInterface) {
 		int index = brickInterface.lastIndexOf(".");

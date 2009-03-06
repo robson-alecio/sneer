@@ -8,16 +8,13 @@ import org.junit.Test;
 
 import sneer.brickness.Tuple;
 import sneer.brickness.environments.Environments;
+import sneer.commons.io.StorageDirectory;
 import sneer.commons.testutil.TestThatMightUseResources;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
-import sneer.pulp.config.persistence.mocks.PersistenceConfigMock;
 import sneer.pulp.tuples.TupleSpace;
 
 public class TuplePersistenceTest extends TestThatMightUseResources {
-
-	private final PersistenceConfigMock _persistenceMock  = new PersistenceConfigMock(tmpDirectory()); //Refactor: Use @Contribute
-
 
 	@Test
 	public void testTuplePersistence() {
@@ -59,7 +56,9 @@ public class TuplePersistenceTest extends TestThatMightUseResources {
 
 
 	private Container newContainer() {
-		return Containers.newContainer(_persistenceMock);
+		return Containers.newContainer(new StorageDirectory(){ @Override public String getPath() {
+			return tmpDirectory().getAbsolutePath();
+		}});
 	}
 }
 

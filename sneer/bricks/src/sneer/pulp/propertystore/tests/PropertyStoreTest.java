@@ -5,15 +5,13 @@ import static sneer.brickness.environments.Environments.my;
 import org.junit.Test;
 
 import sneer.brickness.environments.Environments;
+import sneer.commons.io.StorageDirectory;
 import sneer.commons.testutil.TestThatMightUseResources;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
-import sneer.pulp.config.persistence.mocks.PersistenceConfigMock;
 import sneer.pulp.propertystore.PropertyStore;
 
 public class PropertyStoreTest extends TestThatMightUseResources {
-
-	private final PersistenceConfigMock _persistenceMock = new PersistenceConfigMock(tmpDirectory()); //Refactor: Use @Contribute
 
 	@Test
 	public void testPropertyStore() {
@@ -34,7 +32,9 @@ public class PropertyStoreTest extends TestThatMightUseResources {
 	}
 
 	private void runInNewEnvironment(Runnable runnable) {
-		final Container container = Containers.newContainer(_persistenceMock);
+		final Container container = Containers.newContainer(new StorageDirectory(){ @Override public String getPath() {
+			return tmpDirectory().getAbsolutePath();
+		}});
 		Environments.runWith(container, runnable);
 	}
 	

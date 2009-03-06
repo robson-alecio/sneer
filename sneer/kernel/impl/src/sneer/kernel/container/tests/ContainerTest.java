@@ -12,7 +12,6 @@ import sneer.brickness.environments.Environment;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
 import sneer.kernel.container.SneerConfig;
-import sneer.pulp.config.persistence.PersistenceConfig;
 
 public class ContainerTest {
 	
@@ -22,7 +21,6 @@ public class ContainerTest {
 		final Environment environment = mockery.mock(Environment.class);
 		mockery.checking(new Expectations() {{
 			one(environment).provide(SneerConfig.class); will(returnValue(null));
-			one(environment).provide(PersistenceConfig.class); will(returnValue(null));
 			one(environment).provide(Object.class); will(returnValue("o"));
 			one(environment).provide(Sample.class); will(returnValue(null));
 		}});

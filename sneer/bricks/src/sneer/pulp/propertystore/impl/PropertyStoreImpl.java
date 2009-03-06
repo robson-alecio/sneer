@@ -11,8 +11,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 
+import sneer.commons.io.StorageDirectory;
 import sneer.commons.io.Streams;
-import sneer.pulp.config.persistence.PersistenceConfig;
 import sneer.pulp.propertystore.PropertyStore;
 import wheel.io.Logger;
 
@@ -21,7 +21,7 @@ class PropertyStoreImpl implements PropertyStore {
 	private static final String FILE_NAME = "propertystore.txt";
 
 
-	private final PersistenceConfig _config = my(PersistenceConfig.class);
+	private final StorageDirectory _config = my(StorageDirectory.class);
 
 	
 	private final Properties _properties = loadProperties();
@@ -81,7 +81,7 @@ class PropertyStoreImpl implements PropertyStore {
 	}
 
 	private File file() {
-		return new File(_config.persistenceDirectory(), FILE_NAME);
+		return new File(_config.getPath(), FILE_NAME);
 	}
 
 }

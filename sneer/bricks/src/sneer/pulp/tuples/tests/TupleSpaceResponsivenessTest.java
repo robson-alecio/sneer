@@ -7,14 +7,12 @@ import org.junit.Test;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.Contribute;
 import sneer.commons.lang.ByRef;
-import sneer.pulp.config.persistence.mocks.PersistenceConfigMock;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
 
 public class TupleSpaceResponsivenessTest extends BrickTest {
 
-	@Contribute final PersistenceConfigMock _persistenceConfig = new PersistenceConfigMock(tmpDirectory()); //Refactor: Is this necessary?
 	@Contribute private final ThreadPoolMock _threads = new ThreadPoolMock();
 	
 	private final TupleSpace _subject = my(TupleSpace.class);

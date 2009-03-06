@@ -23,12 +23,7 @@ class OwnNameKeeperImpl implements OwnNameKeeper {
 
 	@Override
 	public Consumer<String> nameSetter() {
-		return new Consumer<String>(){ @Override public void consume(String newName) {
-			if (name().currentValue().equals(newName)) return;
-
-			_name.setter().consume(newName);
-//			_space.publish(new OwnName(newName));
-		}};
+		return _name.setter();
 	}
 
 	@Override

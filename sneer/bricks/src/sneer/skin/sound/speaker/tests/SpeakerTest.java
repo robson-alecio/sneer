@@ -9,8 +9,8 @@ import org.jmock.Sequence;
 import org.junit.Test;
 
 import sneer.brickness.PublicKey;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.Contribute;
-import sneer.pulp.config.persistence.testsupport.BrickTest;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;

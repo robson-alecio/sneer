@@ -17,11 +17,11 @@ import org.junit.Test;
 
 import snapps.watchme.WatchMe;
 import sneer.brickness.PublicKey;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.Contribute;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
 import sneer.pulp.clock.Clock;
-import sneer.pulp.config.persistence.testsupport.BrickTest;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.image.ImageFactory;

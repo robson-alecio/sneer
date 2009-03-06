@@ -10,7 +10,7 @@ import org.jmock.Expectations;
 import org.jmock.Sequence;
 import org.junit.Test;
 
-import sneer.pulp.config.persistence.testsupport.BrickTest;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.streams.sequencer.Sequencer;
 import sneer.pulp.streams.sequencer.Sequencers;
 import wheel.lang.Consumer;

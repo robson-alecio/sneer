@@ -4,10 +4,10 @@ import static sneer.brickness.environments.Environments.my;
 
 import org.junit.Test;
 
+import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.Contribute;
 import sneer.brickness.testsupport.tests.bar.BarBrick;
 import sneer.brickness.testsupport.tests.foo.FooBrick;
-import sneer.pulp.config.persistence.testsupport.BrickTest;
 
 public class BrickTestTest extends BrickTest {
 	

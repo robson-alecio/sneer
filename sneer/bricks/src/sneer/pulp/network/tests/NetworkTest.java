@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import sneer.pulp.config.persistence.testsupport.BrickTest;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.network.ByteArrayServerSocket;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;

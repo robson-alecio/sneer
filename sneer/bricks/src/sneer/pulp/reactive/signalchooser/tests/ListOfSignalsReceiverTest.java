@@ -5,7 +5,7 @@ import static sneer.brickness.environments.Environments.my;
 import org.junit.Assert;
 import org.junit.Test;
 
-import sneer.pulp.config.persistence.testsupport.BrickTest;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.pulp.reactive.signalchooser.SignalChooserManager;

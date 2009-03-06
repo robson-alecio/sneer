@@ -9,7 +9,7 @@ import javax.swing.event.ListDataListener;
 import org.junit.Assert;
 import org.junit.Test;
 
-import sneer.pulp.config.persistence.testsupport.BrickTest;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.reactive.Register;

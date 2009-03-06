@@ -7,8 +7,8 @@ import java.io.IOException;
 import org.jmock.Expectations;
 import org.junit.Test;
 
+import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.Contribute;
-import sneer.pulp.config.persistence.testsupport.BrickTest;
 import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.httpclient.HttpClient;
 

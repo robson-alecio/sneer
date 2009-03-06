@@ -11,12 +11,12 @@ import org.junit.Test;
 
 import sneer.brickness.environments.Environment;
 import sneer.brickness.environments.Environments;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.BrickTestRunner;
 import sneer.brickness.testsupport.Contribute;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.clock.Clock;
-import sneer.pulp.config.persistence.testsupport.BrickTest;
 import sneer.pulp.dyndns.client.DynDnsClient;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccount;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;

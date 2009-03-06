@@ -4,9 +4,9 @@ import static sneer.brickness.environments.Environments.my;
 
 import org.junit.Test;
 
+import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.clockticker.ClockTicker;
-import sneer.pulp.config.persistence.testsupport.BrickTest;
 import wheel.lang.Threads;
 
 public class ClockTickerTest extends BrickTest {

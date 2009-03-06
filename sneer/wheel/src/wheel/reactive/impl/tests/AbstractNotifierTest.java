@@ -2,7 +2,7 @@ package wheel.reactive.impl.tests;
 
 import org.junit.Test;
 
-import sneer.pulp.config.persistence.testsupport.BrickTest;
+import sneer.brickness.testsupport.BrickTest;
 import wheel.lang.Consumer;
 import wheel.reactive.Signals;
 import wheel.reactive.impl.AbstractNotifier;

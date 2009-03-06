@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import org.junit.Test;
 
 import sneer.brickness.Tuple;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.Contribute;
 import sneer.pulp.config.persistence.mocks.PersistenceConfigMock;
-import sneer.pulp.config.persistence.testsupport.BrickTest;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
 

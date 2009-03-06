@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 import sneer.commons.testutil.TestThatMightUseResources;
 
 @RunWith(BrickTestWithMockRunner.class)
-public abstract class BrickTestWithContributions extends TestThatMightUseResources {
+public abstract class BrickTest extends TestThatMightUseResources {
 	
 	private final Mockery _mockery = new JUnit4Mockery();
     

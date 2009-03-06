@@ -16,7 +16,7 @@ import snapps.watchme.codec.ImageCodec;
 import snapps.watchme.codec.ImageDelta;
 import snapps.watchme.codec.ImageCodec.Decoder;
 import snapps.watchme.codec.ImageCodec.Encoder;
-import sneer.pulp.config.persistence.testsupport.BrickTest;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.skin.image.ImageFactory;
 import wheel.io.serialization.impl.XStreamBinarySerializer;
 import wheel.io.ui.graphics.Images;

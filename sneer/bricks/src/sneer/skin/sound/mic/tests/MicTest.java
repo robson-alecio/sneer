@@ -9,8 +9,8 @@ import javax.sound.sampled.TargetDataLine;
 import org.jmock.Expectations;
 import org.junit.Test;
 
+import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.Contribute;
-import sneer.pulp.config.persistence.testsupport.BrickTest;
 import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.mic.Mic;
 import wheel.testutil.SignalUtils;

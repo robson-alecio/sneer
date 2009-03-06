@@ -5,8 +5,8 @@ import static sneer.brickness.environments.Environments.my;
 import org.junit.Assert;
 import org.junit.Test;
 
+import sneer.brickness.testsupport.BrickTest;
 import sneer.commons.threads.Daemon;
-import sneer.pulp.config.persistence.testsupport.BrickTest;
 import sneer.pulp.things.Thing;
 import sneer.pulp.things.ThingHome;
 import wheel.lang.Threads;

@@ -7,7 +7,7 @@ import java.util.Comparator;
 import org.jmock.Expectations;
 import org.junit.Test;
 
-import sneer.pulp.config.persistence.testsupport.BrickTest;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import wheel.lang.Consumer;

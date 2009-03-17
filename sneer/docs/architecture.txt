@@ -15,9 +15,6 @@
             
            ROOTS (TUPLESPACE, CLOCK, THREADS, SIGNALS...)
            
-                      PERSISTENT BRICK TEST
-                        PERSISTENCECONFIG
-            
                                                                   BRICKS
 ------------------------------------------------------------------------
 
@@ -25,8 +22,10 @@
 
         BRICKNESS (MINIMAL BRICK SUPPORT ("MY", CONVENTIONS))
 
-                   SNEER COMMONS (STATIC UTILS)
+             SNEER COMMONS (STATIC UTILS, ENVIRONMENTS)
    (INCLUDES APACHE COMMONS (LANG, COLLECTION, IO), JUNIT AND JMOCK)
+
+                             WEBSTART
  
                                JRE
 

@@ -4,13 +4,19 @@
 
 package wheel.reactive.impl;
 
+import static sneer.commons.environments.Environments.my;
+import sneer.pulp.events.EventNotifier;
+import sneer.pulp.events.EventNotifierFactory;
 import wheel.lang.Consumer;
 import wheel.reactive.Signal;
 
-public abstract class AbstractSignal<T> extends AbstractNotifier<T> implements Signal<T> {
 
-	private static final long serialVersionUID = 1L;
+public abstract class AbstractSignal<T> implements Signal<T> {
 
+	EventNotifier<T> _notifier = my(EventNotifierFactory.class).create(new Consumer<Consumer<? super T>>(){@Override public void consume(Consumer<? super T> receiver) {
+		receiver.consume(currentValue());
+	}});
+	
 	@Override
 	public String toString() {
 		T currentValue = currentValue();
@@ -18,8 +24,16 @@ public abstract class AbstractSignal<T> extends AbstractNotifier<T> implements S
 		return currentValue.toString();
 	}
 
-	@Override
-	protected void initReceiver(Consumer<? super T> receiver) {
-		receiver.consume(currentValue());
+	protected void notifyReceivers(T value) {
+		_notifier.notifyReceivers(value);
 	}
+
+	public void removeReceiver(Object receiver) {
+		_notifier.output().removeReceiver(receiver);
+	}
+
+	public void addReceiver(Consumer<? super T> receiver) {
+		_notifier.output().addReceiver(receiver);
+	}
+	
 }

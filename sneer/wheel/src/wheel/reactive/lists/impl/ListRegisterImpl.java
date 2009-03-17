@@ -1,13 +1,16 @@
 package wheel.reactive.lists.impl;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import sneer.pulp.events.EventNotifier;
+import sneer.pulp.events.EventNotifierFactory;
 import wheel.lang.Consumer;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
-import wheel.reactive.impl.AbstractNotifier;
 import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
@@ -15,10 +18,12 @@ import wheel.reactive.lists.ListValueChange;
 
 public class ListRegisterImpl<VO> implements ListRegister<VO> {
 	
-	private class MyOutput extends AbstractNotifier<ListValueChange<VO>> implements ListSignal<VO> {
+	private class MyOutput implements ListSignal<VO> {
 
-		private static final long serialVersionUID = 1L;
-		
+		EventNotifier<ListValueChange<VO>> _notifier = my(EventNotifierFactory.class).create(new Consumer<Consumer<? super ListValueChange<VO>>>(){@Override public void consume(Consumer<? super ListValueChange<VO>> receiver) {
+			//TODO
+		}});
+
 		@Override
 		public VO currentGet(int index) {
 			return _list.get(index);
@@ -36,20 +41,16 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 
 		@Override
 		public void addListReceiver(Consumer<ListValueChange<VO>> receiver) {
-			addReceiver(receiver);	
+			_notifier.output().addReceiver(receiver);	
 		}
 		
 		@Override
 		public void removeListReceiver(Object receiver) {
-			removeReceiver(receiver);		
+			_notifier.output().removeReceiver(receiver);		
 		}
 
-		@Override
-		protected void initReceiver(Consumer<? super ListValueChange<VO>> receiver) {}
-
-		@Override
-		protected void notifyReceivers(ListValueChange<VO> valueChange) {
-			super.notifyReceivers(valueChange);
+		void notifyReceivers(ListValueChange<VO> valueChange) {
+			_notifier.notifyReceivers(valueChange);
 		}
 
 		public Iterator<VO> iterator() {

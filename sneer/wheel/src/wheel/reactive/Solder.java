@@ -1,5 +1,6 @@
 package wheel.reactive;
 
+import sneer.pulp.events.EventSource;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.Receiver;
 

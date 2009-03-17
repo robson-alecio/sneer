@@ -10,9 +10,9 @@ import sneer.commons.lang.Producer;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.crypto.Crypto;
 import sneer.pulp.crypto.Sneer1024;
+import sneer.pulp.events.EventNotifier;
+import sneer.pulp.events.EventSource;
 import sneer.pulp.keymanager.KeyManager;
-import wheel.reactive.EventNotifier;
-import wheel.reactive.EventSource;
 import wheel.reactive.impl.EventNotifierImpl;
 
 class KeyManagerImpl implements KeyManager {

@@ -1,4 +1,4 @@
-package wheel.reactive;
+package sneer.pulp.events;
 
 public interface EventNotifier<VO> {
 

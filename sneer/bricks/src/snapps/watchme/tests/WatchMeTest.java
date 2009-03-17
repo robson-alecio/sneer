@@ -22,6 +22,7 @@ import sneer.brickness.testsupport.Contribute;
 import sneer.kernel.container.Container;
 import sneer.kernel.container.Containers;
 import sneer.pulp.clock.Clock;
+import sneer.pulp.events.EventSource;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.image.ImageFactory;
@@ -29,7 +30,6 @@ import sneer.skin.screenshotter.Screenshotter;
 import wheel.io.ui.graphics.Images;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.Hiccup;
-import wheel.reactive.EventSource;
 import wheel.reactive.impl.Receiver;
 
 public class WatchMeTest extends BrickTest {

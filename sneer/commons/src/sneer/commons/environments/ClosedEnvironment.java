@@ -6,7 +6,7 @@ public class ClosedEnvironment implements Environment {
 
 	private Object[] _bindings;
 
-	public ClosedEnvironment(Object[] bindings) {
+	public ClosedEnvironment(Object... bindings) {
 		_bindings = bindings;
 	}
 

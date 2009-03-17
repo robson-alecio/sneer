@@ -1,8 +1,8 @@
 package wheel.reactive.impl;
 
+import sneer.pulp.events.EventNotifier;
+import sneer.pulp.events.EventSource;
 import wheel.lang.Consumer;
-import wheel.reactive.EventNotifier;
-import wheel.reactive.EventSource;
 
 public class EventNotifierImpl<VO> implements EventNotifier<VO> {
 

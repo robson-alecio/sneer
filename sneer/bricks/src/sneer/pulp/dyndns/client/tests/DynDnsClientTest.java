@@ -14,6 +14,7 @@ import sneer.brickness.testsupport.BrickTestRunner;
 import sneer.brickness.testsupport.Contribute;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
+import sneer.commons.io.StoragePath;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.clock.Clock;
@@ -201,6 +202,10 @@ Unacceptable Client Behavior
 		list.add(_ownAccountKeeper);
 		list.add(_updater);
 		list.add(_propertyStore);
+		
+		list.add(new StoragePath(){@Override public String get() {
+			return tmpDirectory().getAbsolutePath();
+		}});
 		
 		final Object[] bindings = list.toArray();
 		return my(BrickTestRunner.class).newEnvironmentWith(bindings);

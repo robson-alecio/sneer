@@ -3,8 +3,9 @@ package wheel.reactive.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import sneer.pulp.events.EventSource;
+
 import wheel.lang.Consumer;
-import wheel.reactive.EventSource;
 
 public abstract class Receiver<T> implements Consumer<T> {
 	

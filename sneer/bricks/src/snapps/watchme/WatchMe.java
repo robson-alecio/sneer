@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 
 import sneer.brickness.Brick;
 import sneer.brickness.PublicKey;
-import wheel.reactive.EventSource;
+import sneer.pulp.events.EventSource;
 
 public interface WatchMe extends Brick {
 

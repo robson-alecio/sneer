@@ -7,11 +7,12 @@ import java.util.Collections;
 import java.util.List;
 
 import sneer.commons.environments.Environments;
+import sneer.pulp.events.EventSource;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
 import wheel.lang.Consumer;
 import wheel.lang.Types;
-import wheel.reactive.EventSource;
 
+//@Deprecated
 public abstract class AbstractNotifier<VC> implements EventSource<VC> {
 
 	private static final ReceiverHolder<?>[] RECEIVER_HOLDER_ARRAY_TYPE = new ReceiverHolder[0];

@@ -9,6 +9,8 @@ import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.connection.SocketAccepter;
+import sneer.pulp.events.EventNotifier;
+import sneer.pulp.events.EventSource;
 import sneer.pulp.network.ByteArrayServerSocket;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;
@@ -16,8 +18,6 @@ import sneer.pulp.port.PortKeeper;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.io.Logger;
 import wheel.lang.Threads;
-import wheel.reactive.EventNotifier;
-import wheel.reactive.EventSource;
 import wheel.reactive.impl.EventNotifierImpl;
 import wheel.reactive.impl.Receiver;
 

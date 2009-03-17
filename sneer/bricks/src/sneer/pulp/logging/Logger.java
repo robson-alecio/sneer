@@ -1,7 +1,7 @@
 package sneer.pulp.logging;
 
 import sneer.brickness.Brick;
-import wheel.reactive.EventSource;
+import sneer.pulp.events.EventSource;
 import wheel.reactive.lists.ListRegister;
 
 public interface Logger extends Brick {

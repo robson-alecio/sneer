@@ -108,9 +108,7 @@ public class ContainerImpl implements Container {
 			return tryToInstantiate(intrface);
 			
 		} catch (ClassNotFoundException e) {
-			System.out.println("Impl for " + intrface + " not found. Please wait while generating...");
-			String message = ImplementationGenerator.generateFor(intrface);
-			throw new ContainerException(message, e);
+			throw new ContainerException("Impl for " + intrface + " not found.", e);
 		} catch (Exception e) {
 			throw new ContainerException(" >>> Exception trying to instantiate " + intrface + ": " + e.getClass().getSimpleName() + " - Message: " + e.getMessage(), e);
 		} finally {

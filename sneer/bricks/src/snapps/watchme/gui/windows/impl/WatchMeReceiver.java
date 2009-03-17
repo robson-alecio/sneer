@@ -17,12 +17,12 @@ import javax.swing.WindowConstants;
 import snapps.watchme.WatchMe;
 import sneer.brickness.PublicKey;
 import sneer.pulp.contacts.Contact;
+import sneer.pulp.events.EventSource;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.WindowWidget;
 import wheel.io.ui.GuiThread;
 import wheel.lang.Consumer;
-import wheel.reactive.EventSource;
 import wheel.reactive.impl.Receiver;
 
 class WatchMeReceiver{

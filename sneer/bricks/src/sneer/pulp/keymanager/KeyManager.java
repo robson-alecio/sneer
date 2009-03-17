@@ -4,7 +4,7 @@ import sneer.brickness.Brick;
 import sneer.brickness.PublicKey;
 import sneer.commons.lang.Producer;
 import sneer.pulp.contacts.Contact;
-import wheel.reactive.EventSource;
+import sneer.pulp.events.EventSource;
 
 public interface KeyManager extends Brick {
 

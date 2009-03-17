@@ -18,6 +18,7 @@ import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.datastructures.cache.Cache;
 import sneer.pulp.datastructures.cache.CacheFactory;
+import sneer.pulp.events.EventSource;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.screenshotter.Screenshotter;
@@ -26,7 +27,6 @@ import wheel.lang.Consumer;
 import wheel.lang.ImmutableByteArray;
 import wheel.lang.exceptions.FriendlyException;
 import wheel.lang.exceptions.Hiccup;
-import wheel.reactive.EventSource;
 import wheel.reactive.impl.EventNotifierImpl;
 
 class WatchMeImpl implements WatchMe {

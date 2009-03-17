@@ -1,14 +1,14 @@
 package spikes.priscila.go.tests;
 
-import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import sneer.brickness.testsupport.BrickTest;
 import sneer.commons.lang.exceptions.NotImplementedYet;
 import spikes.priscila.go.GoBoard;
 import spikes.priscila.go.ToroidalGoBoard;
 
-public class GoTest extends Assert {
+public class GoTest extends BrickTest {
 
 	@Test
 	public void testSingleStoneCaptureNew() {

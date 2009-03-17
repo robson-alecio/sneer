@@ -8,10 +8,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import sneer.pulp.distribution.filtering.TupleFilterManager;
+import sneer.pulp.events.EventNotifier;
+import sneer.pulp.events.EventSource;
 import sneer.pulp.logging.LogWhiteListEntry;
 import sneer.pulp.tuples.TupleSpace;
-import wheel.reactive.EventNotifier;
-import wheel.reactive.EventSource;
 import wheel.reactive.impl.EventNotifierImpl;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.impl.ListRegisterImpl;

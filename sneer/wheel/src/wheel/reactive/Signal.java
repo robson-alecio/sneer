@@ -1,9 +1,11 @@
 package wheel.reactive;
 
+import sneer.pulp.events.EventSource;
+
 /** @invariant this.toString().equals("" + this.currentValue()) */
 public interface Signal<VO> extends EventSource<VO> {
 	
-	public VO currentValue();
+	VO currentValue();
 	
 }
 

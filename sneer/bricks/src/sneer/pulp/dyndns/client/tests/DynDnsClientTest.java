@@ -193,11 +193,8 @@ Unacceptable Client Behavior
 		}});
 	}
 
-	private Environment newEnvironment(Object...mocks) {
+	private Environment newEnvironment() {
 		List<Object> list = new ArrayList<Object>();
-		for (Object mock : mocks) {
-			list.add(mock);
-		}
 		list.add(_ownIpDiscoverer);
 		list.add(_ownAccountKeeper);
 		list.add(_updater);

@@ -1,5 +1,7 @@
 package wheel.reactive.maps.impl;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -7,14 +9,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
+import sneer.pulp.events.EventNotifier;
+import sneer.pulp.events.EventNotifierFactory;
 import wheel.lang.Consumer;
 import wheel.reactive.Signal;
-import wheel.reactive.impl.AbstractNotifier;
 import wheel.reactive.maps.MapRegister;
 import wheel.reactive.maps.MapSignal;
 import wheel.reactive.sets.SetRegister;
 import wheel.reactive.sets.SetSignal;
-import wheel.reactive.sets.SetSignal.SetValueChange;
 import wheel.reactive.sets.impl.SetRegisterImpl;
 import wheel.reactive.sets.impl.SetValueChangeImpl;
 
@@ -47,8 +49,12 @@ public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 
 	}
 
+	private class MyOutput implements MapSignal<K,V> {
 
-	private class MyOutput extends AbstractNotifier<SetValueChange<Map.Entry<K,V>>> implements MapSignal<K,V> {
+		private final EventNotifier<SetValueChange<Map.Entry<K,V>>> _notifier = my(EventNotifierFactory.class).create(new Consumer<Consumer<? super SetValueChange<Map.Entry<K,V>>>>(){@Override public void consume(Consumer<? super SetValueChange<Entry<K, V>>> newReceiver) {
+			if (_map.isEmpty()) return;
+			newReceiver.consume(asChange(_map.entrySet()));
+		}});
 
 		@Override
 		public V currentGet(K key) {
@@ -62,12 +68,12 @@ public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 
 		@Override
 		public void addSetReceiver(Consumer<SetValueChange<Map.Entry<K,V>>> receiver) {
-			addReceiver(receiver);		
+			_notifier.output().addReceiver(receiver);		
 		}
 		
 		@Override
 		public void removeSetReceiver(Object receiver) {
-			removeReceiver(receiver);		
+			_notifier.output().removeReceiver(receiver);		
 		}
 
 		@Override
@@ -85,21 +91,12 @@ public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 			return _keys.output();
 		}
 
-		@Override
-		protected void initReceiver(Consumer<? super SetValueChange<Map.Entry<K, V>>> receiver) {
-			if (_map.isEmpty()) return;
-			receiver.consume(asChange(_map.entrySet()));
-		}
 
 		private SetValueChange<Entry<K, V>> asChange(Collection<Entry<K, V>> entries) {
 			return new SetValueChangeImpl<Entry<K, V>>(entries, null);
 		}
 
-		@Override
-		protected void notifyReceivers(SetValueChange<Entry<K, V>> change) {
-			super.notifyReceivers(change);
-		}
-
+		
 		@Override
 		public Signal<Integer> size() {
 			throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
@@ -136,8 +133,7 @@ public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 			? null
 			: new MyEntry<K,V>(key, oldValue);
 		
-		SetValueChange<Entry<K, V>> change = new SetValueChangeImpl<Entry<K,V>>(added, removed);
-		_output.notifyReceivers(change);
+		notifyReceivers(added, removed);
 	}
 
 
@@ -147,7 +143,12 @@ public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 		_keys.remove(key);
 		
 		Entry<K, V> removed = new MyEntry<K,V>(key, oldValue);
-		_output.notifyReceivers(new SetValueChangeImpl<Entry<K,V>>(null, removed));
+		notifyReceivers(null, removed);
+	}
+
+	
+	private void notifyReceivers(Entry<K, V> added, Entry<K, V> removed) {
+		_output._notifier.notifyReceivers(new SetValueChangeImpl<Entry<K,V>>(added, removed));
 	}
 
 }

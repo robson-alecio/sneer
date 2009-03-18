@@ -1,0 +1,74 @@
+﻿SMALL FIXES
+=============
+	- Timeouts - Discover why tests timeout so frequently on Klaus's Linux box. Sometimes they pass in under one second, sometimes they timeout after 8 seconds. Probably has something to do with the way waiting and sleeping threads affect other threads on Linux.
+
+	- ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
+
+	- ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do. See ListRegisterImpl.MyOutput._notifier
+		- SetSignal - Revise it also. 
+
+	- Revise SneerFreedom*Test classes. They are all the same
+
+
+TASKS
+========
+	- [Sandro]Webstart
+
+	- [Bamboo]Create/Install ("publish") brick locally
+		- [Klaus n Bamboo] build.xml/Antlipse - Revive.
+			- Eliminate upward dependencies.
+		- [Bamboo] Memento -> exposed Environment.
+		- [Bamboo] Change signature bind(environment, intrface) -> wrap(intrface, environment)
+		- main.Sneer - Publish all necessary bricks instead of just producing them.
+			- BrickImplDirectory.isSpecialMetaInterface() - Make all those cases into annotations and delete that method.
+		- Simplest Possible Kernel - What is it? Just injection?
+			- Simplify the container because of the removal of the Enhancer (MakeSerializable is a Spike now) and extraction of ConventionBasedEnvironment.
+			- ASM - Move asm*.jar to a brick lib
+				- Remove kernel dependency. Make it pluggable in the kernel.
+	
+	- Output folders - Make all source folders compile to the default folder (bin) and fix the tests. Is this possible?
+
+	- [Douglas] Logging - Default: Log only throwables. Have "white list" of parts of messages to log.
+			- GUI to delete or add parts of messages in the "white list" to log.
+			- Logger
+				whileList
+			- Bricks to listen to EventSource Logger.loggedMessages()
+				- LogToFile
+				- LogToGui
+		- [Klaus] Transparent persistence of white list
+
+	- Versioning
+
+-------------------------------------- Standalone Brick Container
+
+	- Contact Connection
+		- Own Name - Show contacts' names in contact list
+			- Freedom2Test - Unignore and make it pass.
+		- Public Key Ids
+
+	- MeToo
+		- Unignore Freedom7 dependency tests
+		- Open Jar leak - Fix in Freedom7Test
+
+	- Security
+		- Sandboxing
+
+--------------------------------------- Freedom 7
+
+	- P2P Communication (Tuples) - Solve tuple flooding on the network. Discuss ideas with the team.
+		- Traffic Prioritization by tuple type
+		- Bandwidth Optimization
+		- Torrentness
+
+--------------------------------------- Freedom 5
+
+
+	- Snuggin - Initial rules
+	
+	- Logging - Revise all uses of logging, out and err.
+
+	- Exception Handling - Revise and correct
+
+	- Fix and remove all task comments in the code except for Optimize (Fix Urgent, Fix, Refactor and Implement).
+
+        - 2x churrasqueira

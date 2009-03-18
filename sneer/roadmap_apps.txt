@@ -1,72 +1,19 @@
-﻿CURRENT TASKS
-==================
-
-	- Brickness
-		- [Bamboo] build.xml/Antlipse - Revive. (Add sneer.commons to classpath alongside wheel)
-		- [Bamboo] Memento -> exposed Environment.
-		- [Bamboo] Change signature bind(environment, intrface) -> wrap(intrface, environment)
-		- Unify Wheel Environment and Test stuff with Brick stuff.
-		- Consider moving environments from sneer.brickness.environments to sneer.commons.environments ;)
-		- main.Sneer - Publish all necessary bricks instead of just producing them.
-			- BrickImplDirectory.isSpecialMetaInterface() - Make all those cases into annotations and delete that method.
-
-	- [Klaus] Unignore Freedom7 dependency tests
-
-	- [Klaus] Own Name - Show contacts' names in contact list
-		- Freedom2Test - Unignore and make it pass.
+﻿FIXES
+=========
 
 	- [Sandro] public static sneer.skin.sound.loopback.impl.Services - Bricks cannot expose static methods. (Don't charge)
 
-	- [Sandro] Finep (in parallel)
-
-	- [Bamboo] Mocotó Test Framework
-		- Boojay pro-bono (in parallel)
-
-	- [Douglas] Default: Log only throwables. Have "white list" of parts of messages to log.
-			- GUI to delete or add parts of messages in the "white list" to log.
-			- WheelLogger
-				log*()
-			- Logger (pulp)
-				whileList
-			- Bricks to listen to EventSource Logger.loggedMessages()
-				- LogToFile
-				- LogToGui
+	- [Sandro] main.Sneer is too big - Extract Own Name and Dyndns logic to separate class. 
 
 
-
-NEXT TASKS
-==============
-
-	- [Klaus] Flooding - Solve tuple flooding on the network. Discuss ideas with the team.
-		- Traffic Prioritization by tuple type
-		- Bandwidth Optimization
-		- Torrentness
-
-	- [Sandro] main.Sneer is too big - Extract Own Name and Dyndns logic to separate class. (Don't Charge) 
-
-	- [Bamboo] Transparent Persistence - Talk to Klaus
-
-
-FIXES
+TASKS
 =========
 
-	- [Klaus] Fix: Discover why tests timeout so frequently on Klaus's Linux box. Sometimes they pass in under one second, sometimes they timeout after 8 seconds. Probably has something to do with the way waiting and sleeping threads affect other threads on Linux.
-
-	- [Sandro] DynDns user data - Use tuples to save it, not a properties file.
-
-	- [Sandro n Bamboo] ListSignalModel and SortedList
-		- Fix: Sort Bug (see SortTest)
-
-
-﻿ROADMAP TO BECOME MORE PRODUCTIVE
-=====================================
+	- [Klaus] DynDns user data - Use transparent persistence to save it, not a properties file.
 
 	- [Sandro] ReactiveWidgetFactory - Change all Signal<String> to Signal<Object> (use toString() to display). This will allow linking number and date signals for example.
 
-	- [Klaus] ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do.
-		- SetSignal - Revise it also. 
-
-	- [Priscila] GoBoard.countCapturedStones() - DRY
+﻿	- [Priscila] GoBoard.countCapturedStones() - DRY
 
 	- Gui Thread - Always call gui brick code in the gui thread. What was already done with the GuiBrickInvocationHandler does not cover callbacks. Complicated and slow weak-proxy-bubble structures would have to be created to support that. Instead, the proposed idea is:
 		- [Klaus] Make the container call the gui brick constructor in the gui thread.
@@ -84,49 +31,10 @@ FIXES
 			- [Bamboo] Inspect ALL Brick bytecode at load-time and do not allow it to catch Throwable. This makes all non-blocking code stoppable. We will deal with blocking code later.
 			- [Bamboo] Inspect Gui Brick bytecode at load-time and do not allow it to call any code that throws Hiccup. It is equivalent and maybe easier to simply not allow the code to catch nor throw Hiccup.
 
-	- Output folders - Make all source folders compile to the default folder (bin) and fix the tests. Is this possible?
-	
-	- Revise SneerFreedom*Test classes. They are all the same
-
-	- Simplest Possible Kernel - What is it? Just injection?
-		- Simplify the container because of the removal of the Enhancer (MakeSerializable is a Spike now).
-		- ASM - Move asm*.jar to a brick lib
-			- Remove kernel dependency. Make it pluggable in the kernel.
-	
-	- Snuggin - Initial rules
-	
-	- Revise entire project structure
-		- Move or delete stuff we have not yet covered in the roadmap
-			- [done] Example: Delete GiveNTake
-
-		- Sneer
-			- Installer
-			- Wheel (+ Commons)
-			- Boot (+ KernelJockey)
-			- Kernel
-			- Pulp (Bricks)
-			- Skin (Bricks)
-		- Snapps (Bricks)
-			- ...
-
-	- Logging - Revise all uses of logging, out and err.
-
-	- Exception Handling - Revise and correct
-
-	- Fix and remove all task comments in the code except for Optimize (Fix Urgent, Fix, Refactor and Implement).
-
 	- Security - Discover if instruments can indirectly gain access to components from other instruments.
-
-
-ROADMAP TO PRODUCE
-======================
-
-	- [Sandro] Webstart
 
 	- [Sandro] Contact CRUD Instrument
 	
-	- Open Jar leak - Fix in Freedom7Test
-
 	- [Sandro] Community Initiative - Incorporate Gandhi's Google maps brick. (Run LocationGuiMain)
 
 	- [Petra] Tray and Dashboard Titlebar Icon

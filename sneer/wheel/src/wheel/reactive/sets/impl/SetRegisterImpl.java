@@ -4,19 +4,23 @@
 
 package wheel.reactive.sets.impl;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import sneer.pulp.events.EventNotifier;
+import sneer.pulp.events.EventNotifierFactory;
 import wheel.lang.Consumer;
 import wheel.reactive.Register;
 import wheel.reactive.Signal;
-import wheel.reactive.impl.AbstractNotifier;
 import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.sets.SetRegister;
 import wheel.reactive.sets.SetSignal;
 import wheel.reactive.sets.SetSignal.SetValueChange;
+
 
 
 public class SetRegisterImpl<T> implements SetRegister<T> {
@@ -24,16 +28,21 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 
 	private static final long serialVersionUID = 1L;
 
-	private class MyOutput extends AbstractNotifier<SetValueChange<T>> implements SetSignal<T> {
+	private class MyOutput implements SetSignal<T> {
+
+		private final EventNotifier<SetValueChange<T>> _notifier = my(EventNotifierFactory.class).create(new Consumer<Consumer<? super SetValueChange<T>>>(){@Override public void consume(Consumer<? super SetValueChange<T>> newReceiver) {
+			if (_contents.isEmpty()) return;
+			newReceiver.consume(new SetValueChangeImpl<T>(contentsCopy(), null));
+		}});
 
 		@Override
 		public void addSetReceiver(Consumer<SetValueChange<T>> receiver) {
-			addReceiver(receiver);
+			_notifier.output().addReceiver(receiver);
 		}
 
 		@Override
 		public void removeSetReceiver(Object receiver) {
-			removeReceiver(receiver);
+			_notifier.output().removeReceiver(receiver);
 		}
 
 		@Override
@@ -51,17 +60,6 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 		@Override
 		public Iterator<T> iterator() {
 			return _contents.iterator();
-		}
-
-		@Override
-		protected void initReceiver(Consumer<? super SetValueChange<T>> receiver) {
-			if (_contents.isEmpty()) return;
-			receiver.consume(new SetValueChangeImpl<T>(contentsCopy(), null));
-		}
-
-		@Override
-		protected void notifyReceivers(SetValueChange<T> valueChange) {
-			super.notifyReceivers(valueChange);
 		}
 
 		private Set<T> contentsCopy() {
@@ -107,7 +105,7 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 			
 			_contents.addAll(change.elementsAdded());
 			_contents.removeAll(change.elementsRemoved());
-			_output.notifyReceivers(change);
+			_output._notifier.notifyReceivers(change);
 			
 			updateSize();
 		}

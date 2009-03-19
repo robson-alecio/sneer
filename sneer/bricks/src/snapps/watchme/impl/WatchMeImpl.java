@@ -18,6 +18,8 @@ import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.datastructures.cache.Cache;
 import sneer.pulp.datastructures.cache.CacheFactory;
+import sneer.pulp.events.EventNotifier;
+import sneer.pulp.events.EventNotifierFactory;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.pulp.tuples.TupleSpace;
@@ -27,7 +29,6 @@ import wheel.lang.Consumer;
 import wheel.lang.ImmutableByteArray;
 import wheel.lang.exceptions.FriendlyException;
 import wheel.lang.exceptions.Hiccup;
-import wheel.reactive.impl.EventNotifierImpl;
 
 class WatchMeImpl implements WatchMe {
 
@@ -55,14 +56,14 @@ class WatchMeImpl implements WatchMe {
 		if (publisher == null)
 			throw new IllegalArgumentException("The publisher argument can't be null.");
 		
-		EventNotifierImpl<BufferedImage> result = new EventNotifierImpl<BufferedImage>();
+		EventNotifier<BufferedImage> result = my(EventNotifierFactory.class).create();
 		
 		_tupleSpace.addSubscription(ImageDeltaPacket.class, imageDeltaPacketConsumer(publisher, result));
 		
 		return result.output();
 	}
 
-	private Consumer<ImageDeltaPacket> imageDeltaPacketConsumer(final PublicKey publisher,	final EventNotifierImpl<BufferedImage> notifier) {
+	private Consumer<ImageDeltaPacket> imageDeltaPacketConsumer(final PublicKey publisher,	final EventNotifier<BufferedImage> notifier) {
 		final Decoder decoder = _codec.createDecoder();
 		final Cache<ImmutableByteArray> cache = _cacheFactory.createWithCapacity(CACHE_CAPACITY);
 		

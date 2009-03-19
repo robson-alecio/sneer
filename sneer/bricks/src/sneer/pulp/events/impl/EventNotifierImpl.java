@@ -51,6 +51,7 @@ class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 	public void addReceiver(final Consumer<? super T> receiver) {
 		_receivers.add(holderFor(receiver));
 		Environments.my(ExceptionHandler.class).shield(new Runnable() { @Override public void run() {
+			if (_receiverHandler == null) return;
 			_receiverHandler.consume(receiver);
 		}});
 	}

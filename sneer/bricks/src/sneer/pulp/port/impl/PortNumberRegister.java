@@ -1,14 +1,11 @@
-package wheel.io.network;
-
-import java.io.Serializable;
+package sneer.pulp.port.impl;
 
 import sneer.pulp.reactive.Signal;
-
 import wheel.lang.PickyConsumer;
 import wheel.reactive.impl.IntegerConsumerBoundaries;
 import wheel.reactive.impl.RegisterImpl;
 
-public class PortNumberRegister implements Serializable{
+class PortNumberRegister {
 
 	public PortNumberRegister(Integer initialValue) {
 		_delegate = new RegisterImpl<Integer>(initialValue);
@@ -24,6 +21,4 @@ public class PortNumberRegister implements Serializable{
 		return _delegate.output();
 	}
 
-
-	private static final long serialVersionUID = 1L;
 }

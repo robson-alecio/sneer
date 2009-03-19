@@ -2,7 +2,6 @@ package sneer.pulp.port.impl;
 
 import sneer.pulp.port.PortKeeper;
 import sneer.pulp.reactive.Signal;
-import wheel.io.network.PortNumberRegister;
 import wheel.lang.PickyConsumer;
 
 class PortKeeperImpl implements PortKeeper {

@@ -17,8 +17,6 @@ import java.security.InvalidParameterException;
 
 import wheel.io.ui.TrayIcon;
 import wheel.io.ui.action.Action;
-import wheel.io.ui.action.ActionUtility;
-import wheel.io.ui.action.ReactiveAction;
 import wheel.io.ui.graphics.Images;
 import wheel.lang.exceptions.Catcher;
 import wheel.lang.exceptions.PrintStackTracer;
@@ -38,7 +36,7 @@ public class TrayIconImpl implements TrayIcon {
 
 	private final Catcher _catcher;
 
-	private ReactiveAction _defaultAction;
+	private Action _defaultAction;
 
 	public TrayIconImpl(URL icon, Catcher catcherForThrowsDuringActionExecution)
 			throws SystemTrayNotSupported {
@@ -83,11 +81,8 @@ public class TrayIconImpl implements TrayIcon {
 		this(userIcon, new PrintStackTracer());
 	}
 
-	public void addAction(Action action) {
-		addAction(ActionUtility.getReativeActionWrapper(action));
-	}
 	
-	public void addAction(final ReactiveAction action) {
+	public void addAction(final Action action) {
 		PopupMenu popup = _trayIcon.getPopupMenu();
 		if (popup.getItemCount() > 0)
 			popup.addSeparator();
@@ -112,12 +107,8 @@ public class TrayIconImpl implements TrayIcon {
 		_trayIcon.getPopupMenu().removeAll();
 	}
 
-	public void setDefaultAction(ReactiveAction defaultAction) {
+	public void setDefaultAction(Action defaultAction) {
 		_defaultAction = defaultAction;
-	}
-
-	public void setDefaultAction(final Action defaultAction) {
-		_defaultAction = ActionUtility.getReativeActionWrapper(defaultAction);
 	}
 
 	public void dispose() {

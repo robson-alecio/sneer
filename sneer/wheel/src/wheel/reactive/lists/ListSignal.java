@@ -2,8 +2,9 @@ package wheel.reactive.lists;
 
 import java.util.List;
 
+import sneer.pulp.reactive.CollectionSignal;
+
 import wheel.lang.Consumer;
-import wheel.reactive.CollectionSignal;
 
 public interface ListSignal<T> extends CollectionSignal<T> {
 	

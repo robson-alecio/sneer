@@ -6,8 +6,9 @@ package wheel.reactive.sets;
 
 import java.util.Collection;
 
+import sneer.pulp.reactive.CollectionSignal;
+
 import wheel.lang.Consumer;
-import wheel.reactive.CollectionSignal;
 
 
 public interface SetSignal<T> extends CollectionSignal<T> {

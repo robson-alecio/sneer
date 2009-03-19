@@ -32,6 +32,7 @@ import sneer.skin.snappmanager.Instrument;
 import sneer.skin.snappmanager.InstrumentManager;
 import wheel.io.ui.GuiThread;
 import wheel.io.ui.TimeboxedEventQueue;
+import wheel.io.ui.TrayIcon;
 import wheel.io.ui.action.Action;
 import wheel.io.ui.graphics.Images;
 import wheel.io.ui.impl.TrayIconImpl;
@@ -92,7 +93,7 @@ class DashboardImpl implements Dashboard, Runnable {
 	}
 
 	private void initTrayIconIfPossible() {
-		TrayIconImpl tray = null;
+		TrayIcon tray = null;
 		try {
 			tray = new TrayIconImpl(logoIconURL());
 		} catch (SystemTrayNotSupported e1) {
@@ -206,7 +207,7 @@ class DashboardImpl implements Dashboard, Runnable {
 		});
 	}
 	
-	private void addOpenWindowAction(TrayIconImpl tray) {
+	private void addOpenWindowAction(TrayIcon tray) {
 		Action cmd = new Action(){
 			@Override
 			public String caption() {
@@ -228,7 +229,7 @@ class DashboardImpl implements Dashboard, Runnable {
 		_jframe.requestFocusInWindow();
 	}
 	
-	private void addExitAction(TrayIconImpl tray) {
+	private void addExitAction(TrayIcon tray) {
 		Action cmd = new Action(){
 			@Override
 			public String caption() {

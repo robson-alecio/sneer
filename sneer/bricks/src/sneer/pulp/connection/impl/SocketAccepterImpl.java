@@ -10,6 +10,7 @@ import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.connection.SocketAccepter;
 import sneer.pulp.events.EventNotifier;
+import sneer.pulp.events.EventNotifierFactory;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.network.ByteArrayServerSocket;
 import sneer.pulp.network.ByteArraySocket;
@@ -18,7 +19,6 @@ import sneer.pulp.port.PortKeeper;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.io.Logger;
 import wheel.lang.Threads;
-import wheel.reactive.impl.EventNotifierImpl;
 import wheel.reactive.impl.Receiver;
 
 class SocketAccepterImpl implements SocketAccepter {
@@ -28,7 +28,7 @@ class SocketAccepterImpl implements SocketAccepter {
 	private final BlinkingLights _lights = my(BlinkingLights.class);
 	private final ThreadPool _threadPool = my(ThreadPool.class);
 
-	private final EventNotifier<ByteArraySocket> _notifier = new EventNotifierImpl<ByteArraySocket>();
+	private final EventNotifier<ByteArraySocket> _notifier = my(EventNotifierFactory.class).create();
 
 	private final transient Object _portToListenMonitor = new Object();
 

@@ -11,9 +11,9 @@ import sneer.pulp.contacts.Contact;
 import sneer.pulp.crypto.Crypto;
 import sneer.pulp.crypto.Sneer1024;
 import sneer.pulp.events.EventNotifier;
+import sneer.pulp.events.EventNotifierFactory;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.keymanager.KeyManager;
-import wheel.reactive.impl.EventNotifierImpl;
 
 class KeyManagerImpl implements KeyManager {
 
@@ -21,7 +21,7 @@ class KeyManagerImpl implements KeyManager {
 	
 	private final Map<Contact, PublicKey> _keyByContact = new HashMap<Contact, PublicKey>();
 
-	private EventNotifier<Contact> _keyChanges = new EventNotifierImpl<Contact>();
+	private EventNotifier<Contact> _keyChanges = my(EventNotifierFactory.class).create();
 
 	private final Crypto _crypto = my(Crypto.class);
 

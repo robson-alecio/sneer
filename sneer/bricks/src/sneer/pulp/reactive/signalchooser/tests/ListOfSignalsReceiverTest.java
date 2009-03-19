@@ -6,12 +6,12 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
+import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.pulp.reactive.signalchooser.SignalChooserManager;
 import sneer.pulp.reactive.signalchooser.SignalChooserManagerFactory;
 import wheel.reactive.Register;
-import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;

@@ -1,4 +1,4 @@
-package wheel.reactive;
+package sneer.pulp.reactive;
 
 import sneer.pulp.events.EventSource;
 

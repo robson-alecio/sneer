@@ -12,9 +12,9 @@ import javax.swing.text.Keymap;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyledDocument;
 
+import sneer.pulp.reactive.Signal;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import wheel.lang.PickyConsumer;
-import wheel.reactive.Signal;
 
 class RTextPaneImpl extends RAbstractField<JTextPane> {
 	

@@ -2,6 +2,8 @@ package wheel.reactive;
 
 import java.util.Collection;
 
+import sneer.pulp.reactive.Signal;
+
 
 public interface CollectionSignal<T> extends Iterable<T>{
 

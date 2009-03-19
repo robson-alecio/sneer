@@ -1,6 +1,6 @@
 package wheel.testutil;
 
-import wheel.reactive.Signal;
+import sneer.pulp.reactive.Signal;
 import wheel.reactive.sets.SetSignal;
 
 public class SignalUtils {

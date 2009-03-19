@@ -3,10 +3,10 @@ package sneer.pulp.reactive.signalchooser.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.pulp.reactive.signalchooser.SignalChooserManager;
-import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.VisitingListReceiver;

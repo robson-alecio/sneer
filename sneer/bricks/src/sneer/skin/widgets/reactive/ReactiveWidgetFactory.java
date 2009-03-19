@@ -10,10 +10,10 @@ import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
 import sneer.brickness.Brick;
+import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import wheel.lang.Consumer;
 import wheel.lang.PickyConsumer;
-import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 
 public interface ReactiveWidgetFactory extends Brick {

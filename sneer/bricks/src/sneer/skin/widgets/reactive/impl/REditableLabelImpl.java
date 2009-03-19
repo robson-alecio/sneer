@@ -15,10 +15,10 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import sneer.pulp.reactive.Signal;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.lang.PickyConsumer;
-import wheel.reactive.Signal;
 
 class REditableLabelImpl extends JPanel implements TextWidget<JTextField>{
 

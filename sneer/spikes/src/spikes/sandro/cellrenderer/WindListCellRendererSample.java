@@ -33,10 +33,10 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
+import sneer.pulp.reactive.Signal;
 import sneer.skin.widgets.reactive.LabelProvider;
 import wheel.io.Logger;
 import wheel.io.ui.graphics.Images;
-import wheel.reactive.Signal;
 import wheel.reactive.impl.Constant;
 import wheel.testutil.MemorySentinel;
 

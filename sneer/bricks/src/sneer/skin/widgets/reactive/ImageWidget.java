@@ -4,8 +4,9 @@ import java.awt.Image;
 
 import javax.swing.JPanel;
 
+import sneer.pulp.reactive.Signal;
+
 import wheel.lang.Consumer;
-import wheel.reactive.Signal;
 
 public interface ImageWidget extends ComponentWidget<JPanel>{
 

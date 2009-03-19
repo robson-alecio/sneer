@@ -10,9 +10,9 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
 import sneer.commons.lang.Functor;
+import sneer.pulp.reactive.Signal;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
-import wheel.reactive.Signal;
 import wheel.reactive.impl.Adapter;
 
 public class GoScorePanel extends JPanel {

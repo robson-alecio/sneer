@@ -33,6 +33,7 @@ import snapps.blinkinglights.gui.BlinkingLightsGui;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
+import sneer.pulp.reactive.Signal;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.LabelProvider;
@@ -40,7 +41,6 @@ import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.io.ui.GuiThread;
 import wheel.io.ui.graphics.Images;
-import wheel.reactive.Signal;
 import wheel.reactive.Signals;
 import wheel.reactive.impl.Constant;
 

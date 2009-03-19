@@ -17,12 +17,12 @@ import javax.swing.JPanel;
 import snapps.meter.bandwidth.gui.BandwidthMeterGui;
 import sneer.commons.lang.Functor;
 import sneer.pulp.bandwidth.BandwidthCounter;
+import sneer.pulp.reactive.Signal;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.ui.graphics.Images;
-import wheel.reactive.Signal;
 import wheel.reactive.impl.Adapter;
 
 class BandwidthMeterGuiImpl implements BandwidthMeterGui {

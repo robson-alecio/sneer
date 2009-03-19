@@ -3,7 +3,8 @@ package functional.freedom2;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import wheel.reactive.Signal;
+import sneer.pulp.reactive.Signal;
+
 import wheel.testutil.SignalUtils;
 import functional.SovereignFunctionalTestBase;
 import functional.SovereignParty;

@@ -1,9 +1,9 @@
 package wheel.io.ui;
 
+import sneer.pulp.reactive.Signal;
 import wheel.io.ui.action.CancellableAction;
 import wheel.lang.PickyConsumer;
 import wheel.lang.exceptions.IllegalParameter;
-import wheel.reactive.Signal;
 
 public class ValueChangePane extends CancellableAction {
 

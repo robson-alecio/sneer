@@ -3,7 +3,7 @@ package sneer.skin.sound.speaker;
 import javax.sound.sampled.LineUnavailableException;
 
 import sneer.brickness.Brick;
-import wheel.reactive.Signal;
+import sneer.pulp.reactive.Signal;
 
 public interface Speaker extends Brick {
 

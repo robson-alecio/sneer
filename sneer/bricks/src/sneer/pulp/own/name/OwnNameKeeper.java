@@ -2,8 +2,8 @@ package sneer.pulp.own.name;
 
 import sneer.brickness.Brick;
 import sneer.pulp.contacts.Contact;
+import sneer.pulp.reactive.Signal;
 import wheel.lang.Consumer;
-import wheel.reactive.Signal;
 
 public interface OwnNameKeeper extends Brick {
 

@@ -1,7 +1,7 @@
 package sneer.pulp.connection;
 
+import sneer.pulp.reactive.Signal;
 import wheel.lang.Consumer;
-import wheel.reactive.Signal;
 
 public interface ByteConnection {
 

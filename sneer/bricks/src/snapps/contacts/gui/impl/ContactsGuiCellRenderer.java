@@ -15,7 +15,7 @@ import javax.swing.ListCellRenderer;
 import snapps.contacts.gui.impl.ContactsGuiImpl.ContactLabelProvider;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
-import wheel.reactive.Signal;
+import sneer.pulp.reactive.Signal;
 
 class ContactsGuiCellRenderer implements ListCellRenderer {
 

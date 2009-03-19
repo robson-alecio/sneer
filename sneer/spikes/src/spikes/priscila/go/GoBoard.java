@@ -5,9 +5,10 @@ import static spikes.priscila.go.GoBoard.StoneColor.WHITE;
 
 import java.util.Arrays;
 
+import sneer.pulp.reactive.Signal;
+
 import wheel.io.serialization.DeepCopier;
 import wheel.reactive.Register;
-import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 
 public class GoBoard {

@@ -4,10 +4,10 @@ import java.util.Iterator;
 
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
+import sneer.pulp.reactive.Signal;
 import wheel.lang.PickyConsumer;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.Register;
-import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;

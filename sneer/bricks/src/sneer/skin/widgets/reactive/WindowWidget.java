@@ -2,8 +2,9 @@ package sneer.skin.widgets.reactive;
 
 import java.awt.Window;
 
+import sneer.pulp.reactive.Signal;
+
 import wheel.lang.Consumer;
-import wheel.reactive.Signal;
 
 public interface WindowWidget<WINDOW extends Window> extends Widget<WINDOW>{
 

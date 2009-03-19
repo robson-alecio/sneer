@@ -3,8 +3,9 @@ package wheel.reactive.impl;
 import java.util.Iterator;
 import java.util.List;
 
+import sneer.pulp.reactive.Signal;
+
 import wheel.lang.Consumer;
-import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListValueChange;
 

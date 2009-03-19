@@ -2,7 +2,8 @@ package sneer.skin.widgets.reactive;
 
 import java.awt.Image;
 
-import wheel.reactive.Signal;
+import sneer.pulp.reactive.Signal;
+
 
 public interface LabelProvider<ELEMENT> {
 

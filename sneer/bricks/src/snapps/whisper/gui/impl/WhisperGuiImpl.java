@@ -23,6 +23,7 @@ import snapps.contacts.actions.ContactActionManager;
 import snapps.whisper.gui.WhisperGui;
 import sneer.commons.environments.Environments;
 import sneer.pulp.contacts.Contact;
+import sneer.pulp.reactive.Signal;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.rooms.ActiveRoomKeeper;
 import sneer.skin.snappmanager.InstrumentManager;
@@ -32,7 +33,6 @@ import sneer.skin.sound.speaker.Speaker;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.lang.Consumer;
-import wheel.reactive.Signal;
 import wheel.reactive.impl.And;
 
 class WhisperGuiImpl implements WhisperGui { //Optimize need a better snapp window support

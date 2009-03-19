@@ -21,13 +21,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.text.JTextComponent;
 
+import sneer.pulp.reactive.Signal;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.ui.GuiThread;
 import wheel.io.ui.impl.UserImpl;
 import wheel.lang.PickyConsumer;
 import wheel.lang.exceptions.IllegalParameter;
-import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
 
 abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel implements TextWidget<WIDGET> {

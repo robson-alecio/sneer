@@ -1,8 +1,8 @@
 package wheel.io.serialization;
 
+import sneer.pulp.reactive.Signal;
 import wheel.lang.Consumer;
 import wheel.reactive.Register;
-import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 
 public class DeepCopyingPipe {

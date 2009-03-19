@@ -13,9 +13,9 @@ import java.util.Set;
 
 import sneer.pulp.events.EventNotifier;
 import sneer.pulp.events.EventNotifierFactory;
+import sneer.pulp.reactive.Signal;
 import wheel.lang.Consumer;
 import wheel.reactive.Register;
-import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.sets.SetRegister;
 import wheel.reactive.sets.SetSignal;

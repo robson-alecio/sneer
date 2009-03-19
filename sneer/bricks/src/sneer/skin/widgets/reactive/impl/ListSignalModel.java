@@ -5,12 +5,12 @@ import static sneer.commons.environments.Environments.my;
 import javax.swing.AbstractListModel;
 import javax.swing.ListModel;
 
+import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.pulp.reactive.signalchooser.SignalChooserManager;
 import sneer.pulp.reactive.signalchooser.SignalChooserManagerFactory;
 import wheel.io.ui.GuiThread;
-import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.VisitingListReceiver;
 

@@ -7,8 +7,8 @@ package wheel.reactive.impl;
 import static sneer.commons.environments.Environments.my;
 import sneer.pulp.events.EventNotifier;
 import sneer.pulp.events.EventNotifierFactory;
+import sneer.pulp.reactive.Signal;
 import wheel.lang.Consumer;
-import wheel.reactive.Signal;
 
 
 public abstract class AbstractSignal<T> implements Signal<T> {

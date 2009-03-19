@@ -9,7 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-import wheel.reactive.Signal;
+import sneer.pulp.reactive.Signal;
+
 
 class RListSimpleCellRenderer<ELEMENT> implements ListCellRenderer {
 

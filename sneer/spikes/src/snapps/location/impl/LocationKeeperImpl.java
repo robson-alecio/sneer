@@ -1,9 +1,9 @@
 package snapps.location.impl;
 
 import snapps.location.LocationKeeper;
+import sneer.pulp.reactive.Signal;
 import wheel.lang.Consumer;
 import wheel.reactive.Register;
-import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 
 public class LocationKeeperImpl implements LocationKeeper {

@@ -1,8 +1,8 @@
 package sneer.pulp.port;
 
 import sneer.brickness.Brick;
+import sneer.pulp.reactive.Signal;
 import wheel.lang.PickyConsumer;
-import wheel.reactive.Signal;
 
 public interface PortKeeper extends Brick {
 

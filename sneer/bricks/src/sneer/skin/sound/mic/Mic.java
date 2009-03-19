@@ -1,7 +1,7 @@
 package sneer.skin.sound.mic;
 
 import sneer.brickness.Brick;
-import wheel.reactive.Signal;
+import sneer.pulp.reactive.Signal;
 
 
 public interface Mic extends Brick {

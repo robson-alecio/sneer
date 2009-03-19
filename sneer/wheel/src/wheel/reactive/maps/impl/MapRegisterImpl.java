@@ -11,8 +11,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import sneer.pulp.events.EventNotifier;
 import sneer.pulp.events.EventNotifierFactory;
+import sneer.pulp.reactive.Signal;
 import wheel.lang.Consumer;
-import wheel.reactive.Signal;
 import wheel.reactive.maps.MapRegister;
 import wheel.reactive.maps.MapSignal;
 import wheel.reactive.sets.SetRegister;

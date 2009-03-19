@@ -3,11 +3,12 @@ package wheel.io.ui.impl;
 import java.awt.Font;
 import java.io.File;
 
+import sneer.pulp.reactive.Signal;
+
 import wheel.io.ui.User;
 import wheel.lang.Consumer;
 import wheel.lang.exceptions.Catcher;
 import wheel.lang.exceptions.FriendlyException;
-import wheel.reactive.Signal;
 
 public abstract class UserAdapter implements User {
 

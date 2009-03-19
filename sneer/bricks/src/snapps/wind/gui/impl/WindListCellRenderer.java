@@ -23,8 +23,8 @@ import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
 import snapps.wind.Shout;
+import sneer.pulp.reactive.Signal;
 import sneer.skin.widgets.reactive.LabelProvider;
-import wheel.reactive.Signal;
 
 class WindListCellRenderer implements ListCellRenderer {
 

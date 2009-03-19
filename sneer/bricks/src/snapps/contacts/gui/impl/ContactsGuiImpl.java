@@ -36,6 +36,7 @@ import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.keymanager.KeyManager;
+import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.dashboard.InstrumentWindow;
@@ -45,7 +46,6 @@ import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.io.ui.graphics.Images;
-import wheel.reactive.Signal;
 import wheel.reactive.impl.Adapter;
 import wheel.reactive.lists.ListSignal;
 

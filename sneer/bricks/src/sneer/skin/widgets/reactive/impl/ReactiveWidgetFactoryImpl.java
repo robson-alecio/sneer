@@ -9,6 +9,7 @@ import javax.swing.JTextPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
+import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.LabelProvider;
@@ -20,7 +21,6 @@ import sneer.skin.widgets.reactive.WindowWidget;
 import wheel.io.ui.GuiThread;
 import wheel.lang.Consumer;
 import wheel.lang.PickyConsumer;
-import wheel.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 
 class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {

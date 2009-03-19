@@ -9,10 +9,10 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import sneer.pulp.reactive.Signal;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.ui.GuiThread;
 import wheel.lang.PickyConsumer;
-import wheel.reactive.Signal;
 import wheel.reactive.impl.Receiver;
 
 class RLabelImpl extends JPanel implements TextWidget<JLabel>{

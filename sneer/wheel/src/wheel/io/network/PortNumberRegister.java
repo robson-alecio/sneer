@@ -2,8 +2,9 @@ package wheel.io.network;
 
 import java.io.Serializable;
 
+import sneer.pulp.reactive.Signal;
+
 import wheel.lang.PickyConsumer;
-import wheel.reactive.Signal;
 import wheel.reactive.impl.IntegerConsumerBoundaries;
 import wheel.reactive.impl.RegisterImpl;
 

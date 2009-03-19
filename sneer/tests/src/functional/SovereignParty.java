@@ -5,7 +5,7 @@ import java.io.File;
 import snapps.wind.Shout;
 import sneer.brickness.PublicKey;
 import sneer.pulp.deployer.BrickBundle;
-import wheel.reactive.Signal;
+import sneer.pulp.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 
 

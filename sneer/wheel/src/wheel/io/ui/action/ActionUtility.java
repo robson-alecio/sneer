@@ -1,6 +1,6 @@
 package wheel.io.ui.action;
 
-import wheel.reactive.Signal;
+import sneer.pulp.reactive.Signal;
 import wheel.reactive.impl.Constant;
 
 public abstract class ActionUtility {

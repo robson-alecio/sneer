@@ -1,8 +1,8 @@
 package sneer.skin.sound.speaker.impl;
 
+import sneer.pulp.reactive.Signal;
 import sneer.skin.sound.speaker.Speaker;
 import wheel.reactive.Register;
-import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 
 class SpeakerImpl implements Speaker {

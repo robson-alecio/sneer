@@ -15,6 +15,7 @@ import sneer.brickness.PublicKey;
 import sneer.brickness.Tuple;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.keymanager.KeyManager;
+import sneer.pulp.reactive.Signal;
 import sneer.pulp.streams.sequencer.Sequencer;
 import sneer.pulp.streams.sequencer.Sequencers;
 import sneer.pulp.tuples.TupleSpace;
@@ -22,7 +23,6 @@ import sneer.skin.rooms.ActiveRoomKeeper;
 import sneer.skin.sound.PcmSoundPacket;
 import wheel.lang.Consumer;
 import wheel.lang.ImmutableByteArray;
-import wheel.reactive.Signal;
 
 class SpeexTuplesImpl implements SpeexTuples {
 

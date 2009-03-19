@@ -1,7 +1,7 @@
 package snapps.location;
 
+import sneer.pulp.reactive.Signal;
 import wheel.lang.Consumer;
-import wheel.reactive.Signal;
 
 public interface LocationKeeper {
 

@@ -3,9 +3,9 @@ package wheel.reactive.impl.mocks;
 import java.util.Random;
 
 import sneer.commons.threads.Daemon;
+import sneer.pulp.reactive.Signal;
 import wheel.lang.Threads;
 import wheel.reactive.Register;
-import wheel.reactive.Signal;
 import wheel.reactive.impl.RegisterImpl;
 
 public class RandomBoolean {

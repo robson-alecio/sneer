@@ -1,7 +1,7 @@
 package sneer.pulp.dyndns.ownip;
 
 import sneer.brickness.Brick;
-import wheel.reactive.Signal;
+import sneer.pulp.reactive.Signal;
 
 public interface OwnIpDiscoverer extends Brick {
 	

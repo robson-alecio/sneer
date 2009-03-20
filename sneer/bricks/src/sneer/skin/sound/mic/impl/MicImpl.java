@@ -1,6 +1,7 @@
 package sneer.skin.sound.mic.impl;
 
 import static sneer.commons.environments.Environments.my;
+import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.retrier.Retrier;
 import sneer.pulp.retrier.RetrierManager;
@@ -11,7 +12,6 @@ import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.mic.Mic;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.FriendlyException;
-import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;
 
 class MicImpl implements Mic {

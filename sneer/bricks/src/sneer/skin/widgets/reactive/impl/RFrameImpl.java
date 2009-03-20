@@ -2,10 +2,10 @@ package sneer.skin.widgets.reactive.impl;
 
 import javax.swing.JFrame;
 
+import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.skin.widgets.reactive.WindowWidget;
 import wheel.lang.Consumer;
-import wheel.reactive.Register;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.impl.RegisterImpl;
 

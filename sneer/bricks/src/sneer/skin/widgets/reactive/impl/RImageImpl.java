@@ -11,12 +11,12 @@ import java.awt.RenderingHints;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.widgets.reactive.ImageWidget;
 import wheel.io.ui.GuiThread;
 import wheel.lang.Consumer;
-import wheel.reactive.Register;
 import wheel.reactive.impl.Receiver;
 import wheel.reactive.impl.RegisterImpl;
 

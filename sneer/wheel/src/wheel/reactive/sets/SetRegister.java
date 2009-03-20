@@ -4,7 +4,7 @@
 
 package wheel.reactive.sets;
 
-import wheel.reactive.CollectionRegister;
+import sneer.pulp.reactive.CollectionRegister;
 import wheel.reactive.sets.SetSignal.SetValueChange;
 
 

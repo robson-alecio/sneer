@@ -6,9 +6,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.clock.Clock;
+import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.threadpool.Stepper;
-import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;
 
 class BandwidthCounterImpl implements BandwidthCounter {

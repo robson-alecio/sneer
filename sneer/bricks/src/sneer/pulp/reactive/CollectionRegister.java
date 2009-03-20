@@ -1,6 +1,5 @@
-package wheel.reactive;
+package sneer.pulp.reactive;
 
-import sneer.pulp.reactive.CollectionSignal;
 
 public interface CollectionRegister<T> {
 

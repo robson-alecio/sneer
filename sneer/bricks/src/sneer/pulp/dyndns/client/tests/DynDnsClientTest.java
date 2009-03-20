@@ -27,9 +27,9 @@ import sneer.pulp.dyndns.updater.RedundantUpdateException;
 import sneer.pulp.dyndns.updater.Updater;
 import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.propertystore.mocks.TransientPropertyStore;
+import sneer.pulp.reactive.Register;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
 import wheel.lang.exceptions.FriendlyException;
-import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.lists.ListSignal;
 

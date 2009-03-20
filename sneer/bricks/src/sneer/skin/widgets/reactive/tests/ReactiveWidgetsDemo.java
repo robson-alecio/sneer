@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 
 import sneer.commons.environments.Environments;
 import sneer.kernel.container.Containers;
+import sneer.pulp.reactive.Register;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
@@ -15,7 +16,6 @@ import sneer.skin.widgets.reactive.WindowWidget;
 import wheel.io.Logger;
 import wheel.io.ui.GuiThread;
 import wheel.io.ui.TimeboxedEventQueue;
-import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;
 
 public class ReactiveWidgetsDemo {

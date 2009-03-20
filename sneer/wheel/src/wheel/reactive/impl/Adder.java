@@ -1,7 +1,7 @@
 package wheel.reactive.impl;
 
+import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import wheel.reactive.Register;
 
 public class Adder {
 

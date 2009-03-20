@@ -8,11 +8,11 @@ import org.jmock.Expectations;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
+import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import wheel.lang.Consumer;
-import wheel.reactive.Register;
 import wheel.reactive.impl.Constant;
 import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.lists.ListRegister;

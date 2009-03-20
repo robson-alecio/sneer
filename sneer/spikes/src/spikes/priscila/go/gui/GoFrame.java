@@ -10,9 +10,9 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
+import sneer.pulp.reactive.Register;
 import spikes.priscila.go.Move;
 import spikes.priscila.go.GoBoard.StoneColor;
-import wheel.reactive.Register;
 
 public class GoFrame extends JFrame {
 	

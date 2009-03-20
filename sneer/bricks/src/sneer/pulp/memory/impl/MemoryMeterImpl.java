@@ -3,9 +3,9 @@ package sneer.pulp.memory.impl;
 import static sneer.commons.environments.Environments.my;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.memory.MemoryMeter;
+import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.threadpool.Stepper;
-import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;
 
 class MemoryMeterImpl implements MemoryMeter {

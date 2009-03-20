@@ -1,8 +1,8 @@
 package wheel.reactive.impl;
 
 import sneer.commons.lang.Functor;
+import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import wheel.reactive.Register;
 
 public class Adapter<IN, OUT> {
 

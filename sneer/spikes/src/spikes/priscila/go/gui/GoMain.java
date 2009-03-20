@@ -2,10 +2,10 @@ package spikes.priscila.go.gui;
 
 import sneer.commons.environments.Environments;
 import sneer.kernel.container.Containers;
+import sneer.pulp.reactive.Register;
 import spikes.priscila.go.Move;
 import spikes.priscila.go.GoBoard.StoneColor;
 import wheel.io.ui.GuiThread;
-import wheel.reactive.Register;
 import wheel.reactive.impl.RegisterImpl;
 
 public class GoMain {

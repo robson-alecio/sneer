@@ -11,9 +11,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import sneer.brickness.testsupport.BrickTestRunner;
+import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import wheel.lang.Consumer;
-import wheel.reactive.Register;
 import wheel.reactive.impl.And;
 import wheel.reactive.impl.RegisterImpl;
 

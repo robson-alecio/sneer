@@ -1,6 +1,5 @@
-package wheel.reactive;
+package sneer.pulp.reactive;
 
-import sneer.pulp.reactive.Signal;
 import wheel.lang.Consumer;
 
 public interface Register<T>{

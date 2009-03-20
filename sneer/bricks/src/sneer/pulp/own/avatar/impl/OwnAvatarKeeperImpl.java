@@ -6,11 +6,11 @@ import java.awt.Image;
 
 import sneer.commons.lang.Functor;
 import sneer.pulp.own.avatar.OwnAvatarKeeper;
+import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.skin.image.ImageFactory;
 import wheel.lang.Consumer;
 import wheel.lang.exceptions.Hiccup;
-import wheel.reactive.Register;
 import wheel.reactive.impl.Adapter;
 import wheel.reactive.impl.RegisterImpl;
 

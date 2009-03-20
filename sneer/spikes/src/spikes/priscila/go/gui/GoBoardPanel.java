@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
+import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import spikes.priscila.go.GoBoard;
 import spikes.priscila.go.Move;
@@ -17,7 +18,6 @@ import spikes.priscila.go.ToroidalGoBoard;
 import spikes.priscila.go.GoBoard.StoneColor;
 import wheel.io.ui.GuiThread;
 import wheel.lang.Threads;
-import wheel.reactive.Register;
 import wheel.reactive.impl.Receiver;
 
 public class GoBoardPanel extends JPanel {

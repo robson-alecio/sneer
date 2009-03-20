@@ -2,8 +2,9 @@ package wheel.reactive.impl;
 
 import java.lang.ref.WeakReference;
 
+import sneer.pulp.reactive.Register;
+
 import wheel.lang.Consumer;
-import wheel.reactive.Register;
 
 public class RegisterImpl<VO> implements Register<VO> {
 

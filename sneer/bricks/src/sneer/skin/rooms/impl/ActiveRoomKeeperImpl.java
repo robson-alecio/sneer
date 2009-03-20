@@ -2,9 +2,9 @@ package sneer.skin.rooms.impl;
 
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.impl.RegisterImpl;
 import sneer.skin.rooms.ActiveRoomKeeper;
 import wheel.lang.Consumer;
-import wheel.reactive.impl.RegisterImpl;
 
 class ActiveRoomKeeperImpl implements ActiveRoomKeeper {
 

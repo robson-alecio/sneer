@@ -5,8 +5,8 @@ import sneer.pulp.clock.Clock;
 import sneer.pulp.memory.MemoryMeter;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.impl.RegisterImpl;
 import sneer.pulp.threadpool.Stepper;
-import wheel.reactive.impl.RegisterImpl;
 
 class MemoryMeterImpl implements MemoryMeter {
 

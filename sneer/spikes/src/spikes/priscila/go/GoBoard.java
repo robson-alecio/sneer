@@ -7,9 +7,9 @@ import java.util.Arrays;
 
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.impl.RegisterImpl;
 
 import wheel.io.serialization.DeepCopier;
-import wheel.reactive.impl.RegisterImpl;
 
 public class GoBoard {
 

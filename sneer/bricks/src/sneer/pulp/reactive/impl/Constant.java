@@ -1,4 +1,4 @@
-package wheel.reactive.impl;
+package sneer.pulp.reactive.impl;
 
 public class Constant<TYPE> extends AbstractSignal<TYPE> {
 

@@ -3,8 +3,8 @@ package sneer.pulp.own.tagline.impl;
 import sneer.pulp.own.tagline.OwnTaglineKeeper;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.impl.RegisterImpl;
 import wheel.lang.Consumer;
-import wheel.reactive.impl.RegisterImpl;
 
 class OwnTaglineKeeperImpl implements OwnTaglineKeeper {
 

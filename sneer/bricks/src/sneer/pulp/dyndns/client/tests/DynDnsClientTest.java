@@ -28,9 +28,9 @@ import sneer.pulp.dyndns.updater.Updater;
 import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.propertystore.mocks.TransientPropertyStore;
 import sneer.pulp.reactive.Register;
+import sneer.pulp.reactive.impl.RegisterImpl;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
 import wheel.lang.exceptions.FriendlyException;
-import wheel.reactive.impl.RegisterImpl;
 import wheel.reactive.lists.ListSignal;
 
 public class DynDnsClientTest extends BrickTest {

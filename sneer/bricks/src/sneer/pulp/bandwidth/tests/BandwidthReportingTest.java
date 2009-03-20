@@ -14,11 +14,11 @@ import sneer.pulp.connection.ByteConnection.PacketScheduler;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.impl.Constant;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
 import wheel.lang.Consumer;
 import wheel.lang.StringUtils;
-import wheel.reactive.impl.Constant;
 
 public class BandwidthReportingTest extends BrickTest {
 	

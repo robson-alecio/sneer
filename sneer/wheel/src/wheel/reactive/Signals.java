@@ -1,7 +1,7 @@
 package wheel.reactive;
 
+import sneer.pulp.reactive.impl.Constant;
 import wheel.lang.Consumer;
-import wheel.reactive.impl.Constant;
 
 public abstract class Signals {  
 	

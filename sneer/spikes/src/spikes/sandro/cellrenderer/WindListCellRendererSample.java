@@ -34,10 +34,10 @@ import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.impl.Constant;
 import sneer.skin.widgets.reactive.LabelProvider;
 import wheel.io.Logger;
 import wheel.io.ui.graphics.Images;
-import wheel.reactive.impl.Constant;
 import wheel.testutil.MemorySentinel;
 
 class WindListCellRendererSample implements ListCellRenderer {

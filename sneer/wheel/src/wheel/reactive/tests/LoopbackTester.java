@@ -2,10 +2,10 @@ package wheel.reactive.tests;
 
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.impl.RegisterImpl;
 import wheel.lang.Consumer;
 import wheel.lang.Types;
 import wheel.reactive.Solder;
-import wheel.reactive.impl.RegisterImpl;
 
 public class LoopbackTester {
 

@@ -13,10 +13,10 @@ import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.impl.RegisterImpl;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.lang.Consumer;
 import wheel.lang.Threads;
-import wheel.reactive.impl.RegisterImpl;
 
 class ByteConnectionImpl implements ByteConnection {
 

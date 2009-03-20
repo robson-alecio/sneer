@@ -8,8 +8,8 @@ import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.impl.RegisterImpl;
 import sneer.pulp.threadpool.Stepper;
-import wheel.reactive.impl.RegisterImpl;
 
 class BandwidthCounterImpl implements BandwidthCounter {
 

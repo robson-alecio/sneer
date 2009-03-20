@@ -2,7 +2,7 @@
 //This is free software. It is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the license distributed along with this file for more details.
 //Contributions: Fabio Roger Manera.
 
-package wheel.reactive.impl;
+package sneer.pulp.reactive.impl;
 
 import static sneer.commons.environments.Environments.my;
 import sneer.pulp.events.EventNotifier;
@@ -11,10 +11,10 @@ import sneer.pulp.reactive.Signal;
 import wheel.lang.Consumer;
 
 
-public abstract class AbstractSignal<T> implements Signal<T> {
+abstract class AbstractSignal<T> implements Signal<T> {
 
-	EventNotifier<T> _notifier = my(EventNotifierFactory.class).create(new Consumer<Consumer<? super T>>(){@Override public void consume(Consumer<? super T> receiver) {
-		receiver.consume(currentValue());
+	EventNotifier<T> _notifier = my(EventNotifierFactory.class).create(new Consumer<Consumer<? super T>>(){@Override public void consume(Consumer<? super T> newReceiver) {
+		newReceiver.consume(currentValue());
 	}});
 	
 	@Override

@@ -13,12 +13,12 @@ import javax.swing.JPanel;
 
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.impl.RegisterImpl;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.widgets.reactive.ImageWidget;
 import wheel.io.ui.GuiThread;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.Receiver;
-import wheel.reactive.impl.RegisterImpl;
 
 class RImageImpl extends JPanel implements ImageWidget{
 

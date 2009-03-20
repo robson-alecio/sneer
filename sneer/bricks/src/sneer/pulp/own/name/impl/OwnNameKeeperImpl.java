@@ -4,8 +4,8 @@ import sneer.pulp.contacts.Contact;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.impl.RegisterImpl;
 import wheel.lang.Consumer;
-import wheel.reactive.impl.RegisterImpl;
 
 class OwnNameKeeperImpl implements OwnNameKeeper {
 

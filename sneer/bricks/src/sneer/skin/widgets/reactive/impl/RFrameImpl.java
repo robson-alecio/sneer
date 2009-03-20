@@ -4,10 +4,10 @@ import javax.swing.JFrame;
 
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.impl.RegisterImpl;
 import sneer.skin.widgets.reactive.WindowWidget;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.Receiver;
-import wheel.reactive.impl.RegisterImpl;
 
 class RFrameImpl extends JFrame implements WindowWidget<JFrame>{
 

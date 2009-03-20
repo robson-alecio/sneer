@@ -6,8 +6,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import sneer.brickness.testsupport.BrickTestRunner;
+import sneer.pulp.reactive.impl.RegisterImpl;
 import wheel.reactive.impl.Receiver;
-import wheel.reactive.impl.RegisterImpl;
 
 @RunWith(BrickTestRunner.class)
 public class ReceiverTest {

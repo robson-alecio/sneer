@@ -8,11 +8,11 @@ import sneer.commons.lang.Functor;
 import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.impl.RegisterImpl;
 import sneer.skin.image.ImageFactory;
 import wheel.lang.Consumer;
 import wheel.lang.exceptions.Hiccup;
 import wheel.reactive.impl.Adapter;
-import wheel.reactive.impl.RegisterImpl;
 
 class OwnAvatarKeeperImpl implements OwnAvatarKeeper {
 

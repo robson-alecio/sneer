@@ -1,9 +1,9 @@
-package wheel.reactive.impl;
+package sneer.pulp.reactive.impl;
 
 import java.lang.ref.WeakReference;
 
 import sneer.pulp.reactive.Register;
-
+import sneer.pulp.reactive.Signal;
 import wheel.lang.Consumer;
 
 public class RegisterImpl<VO> implements Register<VO> {
@@ -26,7 +26,7 @@ public class RegisterImpl<VO> implements Register<VO> {
 			_currentValue = newValue;
 			
 			if (_output == null) return;
-			output().notifyReceivers(newValue);
+			((AbstractSignal<VO>)output()).notifyReceivers(newValue);
 		}
 		
 	}
@@ -47,7 +47,7 @@ public class RegisterImpl<VO> implements Register<VO> {
 	}
 
 
-	public synchronized AbstractSignal<VO> output() {
+	public synchronized Signal<VO> output() {
 		if (_output == null)
 			_output = new WeakReference<AbstractSignal<VO>>(new MyOutput());
 		else if	(_output.get() == null) {

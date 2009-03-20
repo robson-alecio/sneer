@@ -13,9 +13,9 @@ import org.junit.runner.RunWith;
 import sneer.brickness.testsupport.BrickTestRunner;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.impl.RegisterImpl;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.And;
-import wheel.reactive.impl.RegisterImpl;
 
 @RunWith(BrickTestRunner.class)
 public class AndTest {

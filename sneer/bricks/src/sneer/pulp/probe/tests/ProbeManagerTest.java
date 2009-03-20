@@ -19,10 +19,10 @@ import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.probe.ProbeManager;
+import sneer.pulp.reactive.impl.Constant;
 import sneer.pulp.serialization.Serializer;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
-import wheel.reactive.impl.Constant;
 import wheel.testutil.SignalUtils;
 
 public class ProbeManagerTest extends BrickTest {

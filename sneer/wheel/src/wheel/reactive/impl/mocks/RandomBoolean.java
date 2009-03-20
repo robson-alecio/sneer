@@ -5,8 +5,8 @@ import java.util.Random;
 import sneer.commons.threads.Daemon;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.impl.RegisterImpl;
 import wheel.lang.Threads;
-import wheel.reactive.impl.RegisterImpl;
 
 public class RandomBoolean {
 

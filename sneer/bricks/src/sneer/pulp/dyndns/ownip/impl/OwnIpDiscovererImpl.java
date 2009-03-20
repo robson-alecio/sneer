@@ -13,8 +13,8 @@ import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.impl.RegisterImpl;
 import wheel.io.Logger;
-import wheel.reactive.impl.RegisterImpl;
 
 class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	

@@ -3,6 +3,7 @@ package wheel.reactive.impl;
 import sneer.commons.lang.Functor;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.impl.RegisterImpl;
 
 public class Adapter<IN, OUT> {
 

@@ -2,6 +2,7 @@ package wheel.reactive.impl;
 
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.impl.RegisterImpl;
 
 public class And {
 

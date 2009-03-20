@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import sneer.brickness.testsupport.BrickTestRunner;
-import wheel.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.impl.RegisterImpl;
 import wheel.reactive.tests.LoopbackTester;
 
 @RunWith(BrickTestRunner.class)

@@ -1,9 +1,9 @@
 package sneer.pulp.port.impl;
 
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.impl.RegisterImpl;
 import wheel.lang.PickyConsumer;
 import wheel.reactive.impl.IntegerConsumerBoundaries;
-import wheel.reactive.impl.RegisterImpl;
 
 class PortNumberRegister {
 

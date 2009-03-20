@@ -4,8 +4,8 @@ import sneer.pulp.dyndns.ownaccount.DynDnsAccount;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.impl.RegisterImpl;
 import wheel.lang.Consumer;
-import wheel.reactive.impl.RegisterImpl;
 
 class DynDnsAccountKeeperImpl implements DynDnsAccountKeeper {
 

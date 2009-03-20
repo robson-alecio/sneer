@@ -2,8 +2,8 @@ package wheel.reactive;
 
 import sneer.pulp.reactive.CollectionSignal;
 
-public interface CollectionRegister {
+public interface CollectionRegister<T> {
 
-	CollectionSignal<?> output();
+	CollectionSignal<T> output();
 	
 }

@@ -8,7 +8,7 @@ import wheel.reactive.CollectionRegister;
 import wheel.reactive.sets.SetSignal.SetValueChange;
 
 
-public interface SetRegister<T> extends CollectionRegister {
+public interface SetRegister<T> extends CollectionRegister<T> {
 
 	SetSignal<T> output();
 

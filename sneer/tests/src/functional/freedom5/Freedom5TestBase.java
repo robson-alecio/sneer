@@ -41,7 +41,7 @@ public abstract class Freedom5TestBase extends SovereignFunctionalTestBase {
 	}
 	
 
-	@Test(timeout=4000)
+	@Test(timeout=6000)
 	public void canHearPastShouts() {
 		
 		_a.shout("A!!!");

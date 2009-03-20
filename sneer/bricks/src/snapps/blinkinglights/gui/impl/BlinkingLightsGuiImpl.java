@@ -34,6 +34,7 @@ import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.impl.Constant;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.snappmanager.InstrumentManager;
@@ -42,7 +43,6 @@ import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.io.ui.GuiThread;
 import wheel.io.ui.graphics.Images;
-import wheel.reactive.Signals;
 
 class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 	
@@ -58,16 +58,20 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 	
 	private final static Map<LightType, Constant<Image>> _images = new HashMap<LightType, Constant<Image>>();
 	static {
-		_images.put(LightType.GOOD_NEWS, Signals.constant(loadImage("good_news.png")));
-		_images.put(LightType.INFO, Signals.constant(loadImage("info.png")));
-		_images.put(LightType.WARN, Signals.constant(loadImage("warn.png")));
-		_images.put(LightType.ERROR, Signals.constant(loadImage("error.png")));
+		_images.put(LightType.GOOD_NEWS, constant(loadImage("good_news.png")));
+		_images.put(LightType.INFO, constant(loadImage("info.png")));
+		_images.put(LightType.WARN, constant(loadImage("warn.png")));
+		_images.put(LightType.ERROR, constant(loadImage("error.png")));
 	}
 	
 	public BlinkingLightsGuiImpl(){
 		_instrumentManager.registerInstrument(this);
 	} 
 	
+	private static Constant<Image> constant(Image image) {
+		return my(Signals.class).constant(image);
+	}
+
 	@Override
 	public void init(InstrumentWindow window) {
 		_container = window.contentPane();

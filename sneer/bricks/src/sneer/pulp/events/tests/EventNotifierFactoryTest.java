@@ -6,10 +6,8 @@ import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.events.EventNotifierFactory;
+import sneer.pulp.reactive.Signals;
 import wheel.lang.Consumer;
-import wheel.reactive.Signals;
-
-
 
 public class EventNotifierFactoryTest extends BrickTest {
 	
@@ -17,7 +15,7 @@ public class EventNotifierFactoryTest extends BrickTest {
 	public void throwablesBubbleUpDuringTests() {
 		my(EventNotifierFactory.class).create(new Consumer<Consumer<? super Object>>() { @Override public void consume(Consumer<Object> receiver) {
 			throw new Error();
-		}}).output().addReceiver(Signals.sink());
+		}}).output().addReceiver(my(Signals.class).sink());
 	}
 
 }

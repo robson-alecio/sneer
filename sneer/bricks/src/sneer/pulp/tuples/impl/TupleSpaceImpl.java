@@ -5,7 +5,6 @@ import static wheel.lang.Types.cast;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -117,7 +116,7 @@ class TupleSpaceImpl implements TupleSpace {
 	}
 
 
-	private Prevayler prevayler(Serializable system) {
+	private Prevayler prevayler(Object system) {
 		PrevaylerFactory factory = prevaylerFactory(system);
 
 		try {
@@ -130,7 +129,7 @@ class TupleSpaceImpl implements TupleSpace {
 	}
 
 
-	private PrevaylerFactory prevaylerFactory(Serializable system) {
+	private PrevaylerFactory prevaylerFactory(Object system) {
 		PrevaylerFactory factory = new PrevaylerFactory();
 		factory.configurePrevalentSystem(system);
 		factory.configurePrevalenceDirectory(directory());

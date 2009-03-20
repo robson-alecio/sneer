@@ -1,9 +1,9 @@
 package wheel.reactive.lists;
 
 import wheel.lang.Consumer;
-import wheel.reactive.CollectionRegisterBase;
+import wheel.reactive.CollectionRegister;
 
-public interface ListRegister<T> extends CollectionRegisterBase {
+public interface ListRegister<T> extends CollectionRegister {
 
 	Consumer<T> adder();
 	ListSignal<T> output();

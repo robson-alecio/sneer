@@ -4,11 +4,11 @@
 
 package wheel.reactive.sets;
 
-import wheel.reactive.CollectionRegisterBase;
+import wheel.reactive.CollectionRegister;
 import wheel.reactive.sets.SetSignal.SetValueChange;
 
 
-public interface SetRegister<T> extends CollectionRegisterBase {
+public interface SetRegister<T> extends CollectionRegister {
 
 	SetSignal<T> output();
 

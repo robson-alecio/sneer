@@ -71,7 +71,7 @@ public class ListSorterTest extends BrickTest {
 		Consumer<ListValueChange<Signal<Integer>>> consumer = new Consumer<ListValueChange<Signal<Integer>>>(){ @Override public void consume(ListValueChange<Signal<Integer>> value) {
 			value.accept(_visitor);
 		}};
-		sortedList.addListReceiver(consumer);
+		sortedList.addReceiver(consumer);
 		
 		src.add(_50);
 		src.add(_00);

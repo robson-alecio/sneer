@@ -11,7 +11,7 @@ public abstract class VisitingListReceiver<T> implements Consumer<ListValueChang
 
 	public VisitingListReceiver(ListSignal<T> input) {
 		_input = input;
-		input.addListReceiver(this);
+		input.addReceiver(this);
 	}
 
 	@Override

@@ -58,7 +58,7 @@ final class SortedVisitor<T> extends VisitorAdapter<T> implements ListOfSignalsR
 			_comparator = comparator;
 			synchronized (_monitor) {
 				initSortedList();
-				_input.addListReceiver(_receiverAvoidGc);
+				_input.addReceiver(_receiverAvoidGc);
 			}
 		}
 

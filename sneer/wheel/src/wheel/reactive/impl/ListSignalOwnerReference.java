@@ -18,9 +18,9 @@ public class ListSignalOwnerReference<T> extends AbstractOwnerReference<T> imple
 		_delegate = delegate;
 	}
 
-	@Override public void addListReceiver(Consumer<ListValueChange<T>> receiver) { _delegate.addListReceiver(receiver); }
+	@Override public void addReceiver(Consumer<? super ListValueChange<T>> receiver) { _delegate.addReceiver(receiver); }
 	@Override public T currentGet(int index) { return _delegate.currentGet(index); }
-	@Override public void removeListReceiver(Object receiver) { _delegate.removeListReceiver(receiver); }
+	@Override public void removeReceiver(Object receiver) { _delegate.removeReceiver(receiver); }
 	@Override public List<T> currentElements() { return _delegate.currentElements(); }
 	@Override public int currentIndexOf(T element) { return _delegate.currentIndexOf(element); }
 	@Override public int currentSize() { return _delegate.currentSize(); }

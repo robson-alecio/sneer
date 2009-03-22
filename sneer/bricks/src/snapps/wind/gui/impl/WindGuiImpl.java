@@ -135,7 +135,7 @@ class WindGuiImpl implements WindGui {
 					ShoutPainter.appendShout(shout, _shoutsList);
 				}
 		});}};
-		_wind.shoutsHeard().addListReceiver(_windConsumerToAvoidGc);
+		_wind.shoutsHeard().addReceiver(_windConsumerToAvoidGc);
 		
 		_autoscrollSupportToAvoidGc.initPosChangeReceiver();
 	}
@@ -153,7 +153,7 @@ class WindGuiImpl implements WindGui {
 		_shoutReceiverToAvoidGc = new EventReceiver<ListValueChange<Shout>>(){ @Override public void consume(ListValueChange<Shout> value) {
 			shoutAlert();
 		}};
-		_wind.shoutsHeard().addListReceiver(_shoutReceiverToAvoidGc);
+		_wind.shoutsHeard().addReceiver(_shoutReceiverToAvoidGc);
 	}
 	
 	private void shoutAlert() {

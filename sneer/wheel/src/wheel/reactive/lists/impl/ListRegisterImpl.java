@@ -40,12 +40,12 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 		}
 
 		@Override
-		public void addListReceiver(Consumer<ListValueChange<VO>> receiver) {
+		public void addReceiver(Consumer<? super ListValueChange<VO>> receiver) {
 			_notifier.output().addReceiver(receiver);	
 		}
 		
 		@Override
-		public void removeListReceiver(Object receiver) {
+		public void removeReceiver(Object receiver) {
 			_notifier.output().removeReceiver(receiver);		
 		}
 

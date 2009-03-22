@@ -19,7 +19,7 @@ import sneer.pulp.reactive.impl.RegisterImpl;
 import wheel.lang.Consumer;
 import wheel.reactive.sets.SetRegister;
 import wheel.reactive.sets.SetSignal;
-import wheel.reactive.sets.SetSignal.SetValueChange;
+import wheel.reactive.sets.SetValueChange;
 
 
 

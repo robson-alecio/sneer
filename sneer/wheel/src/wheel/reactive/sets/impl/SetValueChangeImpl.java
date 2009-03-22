@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import wheel.reactive.sets.SetSignal.SetValueChange;
+import wheel.reactive.sets.SetValueChange;
 
 public class SetValueChangeImpl<T> implements SetValueChange<T> {
 

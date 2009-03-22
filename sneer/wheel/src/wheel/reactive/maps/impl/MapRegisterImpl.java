@@ -17,6 +17,7 @@ import wheel.reactive.maps.MapRegister;
 import wheel.reactive.maps.MapSignal;
 import wheel.reactive.sets.SetRegister;
 import wheel.reactive.sets.SetSignal;
+import wheel.reactive.sets.SetValueChange;
 import wheel.reactive.sets.impl.SetRegisterImpl;
 import wheel.reactive.sets.impl.SetValueChangeImpl;
 

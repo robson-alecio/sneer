@@ -5,7 +5,6 @@
 package wheel.reactive.sets;
 
 import sneer.pulp.reactive.CollectionRegister;
-import wheel.reactive.sets.SetSignal.SetValueChange;
 
 
 public interface SetRegister<T> extends CollectionRegister<T> {

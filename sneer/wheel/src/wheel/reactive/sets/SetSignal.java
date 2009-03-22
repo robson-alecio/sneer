@@ -4,7 +4,6 @@
 
 package wheel.reactive.sets;
 
-import java.util.Collection;
 
 import sneer.pulp.reactive.CollectionSignal;
 
@@ -16,10 +15,5 @@ public interface SetSignal<T> extends CollectionSignal<T> {
 	void addSetReceiver(Consumer<SetValueChange<T>> receiver);
 	void removeSetReceiver(Object receiver);
 
-	public interface SetValueChange<E> {
-		Collection<E> elementsAdded();
-		Collection<E> elementsRemoved();
-	}
-	
 	boolean currentContains(T element);
 }

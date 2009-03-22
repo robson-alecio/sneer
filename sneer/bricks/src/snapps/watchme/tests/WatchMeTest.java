@@ -30,7 +30,7 @@ import sneer.skin.screenshotter.Screenshotter;
 import wheel.io.ui.graphics.Images;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.Hiccup;
-import wheel.reactive.impl.Receiver;
+import wheel.reactive.impl.EventReceiver;
 
 public class WatchMeTest extends BrickTest {
 	
@@ -70,7 +70,7 @@ public class WatchMeTest extends BrickTest {
 		
 		EventSource<BufferedImage> screens = subject2.screenStreamFor(key);
 		@SuppressWarnings("unused")
-		Receiver<BufferedImage> receiverToAvoidGC = new Receiver<BufferedImage>(screens){@Override public void consume(BufferedImage screen) {
+		EventReceiver<BufferedImage> receiverToAvoidGC = new EventReceiver<BufferedImage>(screens){@Override public void consume(BufferedImage screen) {
 			_screenObserved.set(screen);
 		}};
 		

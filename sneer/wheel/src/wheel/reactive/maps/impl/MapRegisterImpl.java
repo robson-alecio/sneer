@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import sneer.pulp.events.EventNotifier;
-import sneer.pulp.events.EventNotifierFactory;
+import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.reactive.Signal;
 import wheel.lang.Consumer;
 import wheel.reactive.maps.MapRegister;
@@ -51,7 +51,7 @@ public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 
 	private class MyOutput implements MapSignal<K,V> {
 
-		private final EventNotifier<SetValueChange<Map.Entry<K,V>>> _notifier = my(EventNotifierFactory.class).create(new Consumer<Consumer<? super SetValueChange<Map.Entry<K,V>>>>(){@Override public void consume(Consumer<? super SetValueChange<Entry<K, V>>> newReceiver) {
+		private final EventNotifier<SetValueChange<Map.Entry<K,V>>> _notifier = my(EventNotifiers.class).create(new Consumer<Consumer<? super SetValueChange<Map.Entry<K,V>>>>(){@Override public void consume(Consumer<? super SetValueChange<Entry<K, V>>> newReceiver) {
 			if (_map.isEmpty()) return;
 			newReceiver.consume(asChange(_map.entrySet()));
 		}});

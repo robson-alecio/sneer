@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import sneer.brickness.testsupport.BrickTestRunner;
-import wheel.reactive.impl.Receiver;
+import wheel.reactive.impl.EventReceiver;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 
@@ -24,7 +24,7 @@ public class ListRegisterImplTest {
 		final ArrayList<Integer> sizes = new ArrayList<Integer>();
 		
 		@SuppressWarnings("unused")
-		final Receiver<Integer> sizeReceiver = new Receiver<Integer>(register.output().size()) {@Override public void consume(Integer value) {
+		final EventReceiver<Integer> sizeReceiver = new EventReceiver<Integer>(register.output().size()) {@Override public void consume(Integer value) {
 			sizes.add(value);
 		}};
 		

@@ -40,7 +40,7 @@ import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.Logger;
 import wheel.io.ui.GuiThread;
 import wheel.lang.Consumer;
-import wheel.reactive.impl.Receiver;
+import wheel.reactive.impl.EventReceiver;
 import wheel.reactive.lists.ListValueChange;
 import wheel.reactive.lists.ListValueChange.Visitor;
 import wheel.reactive.lists.impl.SimpleListReceiver;
@@ -56,7 +56,7 @@ class WindGuiImpl implements WindGui {
 
 	private Container _container;
 
-	private Receiver<ListValueChange<Shout>> _shoutReceiverToAvoidGc;
+	private EventReceiver<ListValueChange<Shout>> _shoutReceiverToAvoidGc;
 
 	private JScrollPane _scrollPane;
 
@@ -150,7 +150,7 @@ class WindGuiImpl implements WindGui {
 	}
 
 	private void initShoutReceiver() {
-		_shoutReceiverToAvoidGc = new Receiver<ListValueChange<Shout>>(){ @Override public void consume(ListValueChange<Shout> value) {
+		_shoutReceiverToAvoidGc = new EventReceiver<ListValueChange<Shout>>(){ @Override public void consume(ListValueChange<Shout> value) {
 			shoutAlert();
 		}};
 		_wind.shoutsHeard().addListReceiver(_shoutReceiverToAvoidGc);

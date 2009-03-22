@@ -8,7 +8,7 @@ import sneer.pulp.clock.Clock;
 import sneer.pulp.connection.SocketAccepter;
 import sneer.pulp.connection.reachability.ReachabilitySentinel;
 import sneer.pulp.threadpool.Stepper;
-import wheel.reactive.impl.Receiver;
+import wheel.reactive.impl.EventReceiver;
 
 class ReachabilitySentinelImpl implements ReachabilitySentinel {
 	
@@ -25,10 +25,10 @@ class ReachabilitySentinelImpl implements ReachabilitySentinel {
 	private long _lastIncomingSocketTime = _clock.time();
 
 	@SuppressWarnings("unused")
-	private Receiver<Object> _receiverToAvoidGc;
+	private EventReceiver<Object> _receiverToAvoidGc;
 	
 	{
-		_receiverToAvoidGc = new Receiver<Object>(_socketAccepter.lastAcceptedSocket()) {@Override public void consume(Object value) {
+		_receiverToAvoidGc = new EventReceiver<Object>(_socketAccepter.lastAcceptedSocket()) {@Override public void consume(Object value) {
 			updateIncomingSocketTime();
 		}};
 		

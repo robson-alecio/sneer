@@ -6,59 +6,58 @@ import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import wheel.lang.Consumer;
 
-public class RegisterImpl<VO> implements Register<VO> {
+public class RegisterImpl<T> implements Register<T> {
 
-	class MyOutput extends AbstractSignal<VO> {
+	class MyOutput extends AbstractSignal<T> {
 
 		@Override
-		public VO currentValue() {
+		public T currentValue() {
 			return _currentValue;
 		}
 
 	}
 
-	class MySetter implements Consumer<VO> {
+	class MySetter implements Consumer<T> {
 
 		@Override
-		public void consume(VO newValue) {
+		public void consume(T newValue) {
 			if (isSameValue(newValue)) return;
 
 			_currentValue = newValue;
 			
 			if (_output == null) return;
-			((AbstractSignal<VO>)output()).notifyReceivers(newValue);
+			((AbstractSignal<T>)output()).notifyReceivers(newValue);
 		}
 		
 	}
 
-	private VO _currentValue;
-	private WeakReference<AbstractSignal<VO>> _output;
+	private T _currentValue;
+	private WeakReference<AbstractSignal<T>> _output;
 	
-	public RegisterImpl(VO initialValue) {
-		if (initialValue == null) return;
+	public RegisterImpl(T initialValue) {
 		setter().consume(initialValue);
 	}
 
 
-	private boolean isSameValue(VO value) {
+	private boolean isSameValue(T value) {
 		if (value == _currentValue) return true; 
 		if (value != null && value.equals(_currentValue)) return true;
 		return false;
 	}
 
 
-	public synchronized Signal<VO> output() {
+	public synchronized Signal<T> output() {
 		if (_output == null)
-			_output = new WeakReference<AbstractSignal<VO>>(new MyOutput());
+			_output = new WeakReference<AbstractSignal<T>>(new MyOutput());
 		else if	(_output.get() == null) {
-			_output = new WeakReference<AbstractSignal<VO>>(new MyOutput());
+			_output = new WeakReference<AbstractSignal<T>>(new MyOutput());
 		}
 		
 		return _output.get();
 	}
 
 
-	public Consumer<VO> setter() {
+	public Consumer<T> setter() {
 		return new MySetter();
 	}
 

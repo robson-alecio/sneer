@@ -9,20 +9,17 @@ public class Adder {
 	private final Register<Integer> _sum = new RegisterImpl<Integer>(0);
 	private final Signal<Integer> _input1;
 	private final Signal<Integer> _input2;
-	private final Receiver<Integer> _receiver;
+	@SuppressWarnings("unused")
+	private final EventReceiver<Integer> _referenceToAvoidGc;
 	
 	public Adder(Signal<Integer> input1, Signal<Integer> input2) {
 		_input1 = input1;
 		_input2 = input2;
-		_receiver = new Receiver<Integer>(input1, input2){@Override public void consume(Integer newValueIgnored) {
+		_referenceToAvoidGc = new EventReceiver<Integer>(input1, input2){@Override public void consume(Integer newValueIgnored) {
 			refresh();
 		}};
 	}
 	
-	public void removeFromSignals() {
-		_receiver.removeFromSignals();
-	}
-
 	private void refresh() {
 		int sum = _input1.currentValue() + _input2.currentValue();
 		_sum.setter().consume(sum);

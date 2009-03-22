@@ -9,7 +9,7 @@ import java.util.Date;
 
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.events.EventNotifier;
-import sneer.pulp.events.EventNotifierFactory;
+import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.logging.LogWhiteListEntry;
 import sneer.pulp.tuples.TupleSpace;
@@ -27,7 +27,7 @@ class LoggerImpl implements sneer.pulp.logging.Logger {
 	
 	private final ListRegisterImpl<LogWhiteListEntry> _phrases = new ListRegisterImpl<LogWhiteListEntry>();
 	
-	private final EventNotifier<String> _loggedMessages = my(EventNotifierFactory.class).create();
+	private final EventNotifier<String> _loggedMessages = my(EventNotifiers.class).create();
 	private StringWriter _stringWriter = new StringWriter();
 	private PrintWriter _log = new PrintWriter(_stringWriter, true);
 

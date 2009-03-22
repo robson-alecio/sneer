@@ -9,7 +9,7 @@ import java.io.IOException;
 import sneer.commons.io.StoragePath;
 import sneer.pulp.logging.Logger;
 import sneer.pulp.logging.file.LogToFile;
-import wheel.reactive.impl.Receiver;
+import wheel.reactive.impl.EventReceiver;
 
 class LogToFileImpl implements LogToFile {
 
@@ -19,10 +19,10 @@ class LogToFileImpl implements LogToFile {
 	private final Logger _logger = my(Logger.class);
 
 	@SuppressWarnings("unused")
-	private Receiver<String> _loggedMessagesReceiverAvoidGc;
+	private EventReceiver<String> _loggedMessagesReceiverAvoidGc;
 	
 	LogToFileImpl() {
-		_loggedMessagesReceiverAvoidGc = new Receiver<String>(_logger.loggedMessages()) { @Override public void consume(String message) {
+		_loggedMessagesReceiverAvoidGc = new EventReceiver<String>(_logger.loggedMessages()) { @Override public void consume(String message) {
 			appendMessage(message);
 		}};
 	}

@@ -23,7 +23,7 @@ import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.WindowWidget;
 import wheel.io.ui.GuiThread;
 import wheel.lang.Consumer;
-import wheel.reactive.impl.Receiver;
+import wheel.reactive.impl.EventReceiver;
 
 class WatchMeReceiver{
 	
@@ -38,7 +38,7 @@ class WatchMeReceiver{
 	
 
 	@SuppressWarnings("unused")
-	private Receiver<Contact> _keyChangeReceiverToAvoidGc;
+	private EventReceiver<Contact> _keyChangeReceiverToAvoidGc;
 
 	private final Contact _contact;
 	private WindowWidget<JFrame> _windowWidget;
@@ -47,7 +47,7 @@ class WatchMeReceiver{
 	WatchMeReceiver(Contact contact) {
 		_contact = contact;
 		
-		_keyChangeReceiverToAvoidGc = new Receiver<Contact>(_keyManager.keyChanges()){@Override public void consume(Contact contactWithNewKey) {
+		_keyChangeReceiverToAvoidGc = new EventReceiver<Contact>(_keyManager.keyChanges()){@Override public void consume(Contact contactWithNewKey) {
 			if(contactWithNewKey != _contact) return;
 			startWindowPaint(_keyManager.keyGiven(_contact));
 		}};
@@ -83,7 +83,7 @@ class WatchMeReceiver{
 		if (key == null) return;
 		
 		final EventSource<BufferedImage> screens = _watchMe.screenStreamFor(key);
-		_imageReceiverToAvoidGc = new Receiver<Image>(screens){ @Override public void consume(Image img) {
+		_imageReceiverToAvoidGc = new EventReceiver<Image>(screens){ @Override public void consume(Image img) {
 			if (_windowWidget == null) initGui();
 			
 			JFrame frm = _windowWidget.getMainWidget();

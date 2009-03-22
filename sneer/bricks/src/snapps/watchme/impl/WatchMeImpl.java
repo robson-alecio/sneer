@@ -19,7 +19,7 @@ import sneer.pulp.clock.Clock;
 import sneer.pulp.datastructures.cache.Cache;
 import sneer.pulp.datastructures.cache.CacheFactory;
 import sneer.pulp.events.EventNotifier;
-import sneer.pulp.events.EventNotifierFactory;
+import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.pulp.tuples.TupleSpace;
@@ -56,7 +56,7 @@ class WatchMeImpl implements WatchMe {
 		if (publisher == null)
 			throw new IllegalArgumentException("The publisher argument can't be null.");
 		
-		EventNotifier<BufferedImage> result = my(EventNotifierFactory.class).create();
+		EventNotifier<BufferedImage> result = my(EventNotifiers.class).create();
 		
 		_tupleSpace.addSubscription(ImageDeltaPacket.class, imageDeltaPacketConsumer(publisher, result));
 		

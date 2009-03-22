@@ -13,7 +13,7 @@ import sneer.pulp.reactive.Signal;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.ui.GuiThread;
 import wheel.lang.PickyConsumer;
-import wheel.reactive.impl.Receiver;
+import wheel.reactive.impl.EventReceiver;
 
 class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 
@@ -24,7 +24,7 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 	protected final PickyConsumer<String> _setter;
 	
 	@SuppressWarnings("unused")
-	private final Receiver<String> _textReceiverAvoidGc;
+	private final EventReceiver<String> _textReceiverAvoidGc;
 	
 	RLabelImpl(Signal<String> text){
 		this(text, null);
@@ -34,7 +34,7 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 		_textComponent = new JLabel();
 		_setter = setter;
 		_source = source;
-		_textReceiverAvoidGc = new Receiver<String>(source) {@Override public void consume(final String value) {
+		_textReceiverAvoidGc = new EventReceiver<String>(source) {@Override public void consume(final String value) {
 			GuiThread.invokeAndWait(new Runnable() {@Override public void run() {
 				_textComponent.setText(value);
 		}});}};

@@ -7,50 +7,31 @@ import org.junit.runner.RunWith;
 
 import sneer.brickness.testsupport.BrickTestRunner;
 import sneer.pulp.reactive.impl.RegisterImpl;
-import wheel.reactive.impl.Receiver;
+import wheel.reactive.impl.EventReceiver;
 
 @RunWith(BrickTestRunner.class)
 public class ReceiverTest {
 	
-	final StringBuilder received = new StringBuilder();
-	final RegisterImpl<String> register = new RegisterImpl<String>(null);
-	final Receiver<String> receiver = new Receiver<String>(register.output()) {@Override public void consume(String value) {
-		received.append(value);
-	}};
-	
 	@Test
 	public void testAddToSignal() {
+		final StringBuilder received = new StringBuilder();
+		RegisterImpl<String> register1 = new RegisterImpl<String>(null);
+		RegisterImpl<String> register2 = new RegisterImpl<String>("hey");
+		@SuppressWarnings("unused")
+		Object referenceToAvoidGc = new EventReceiver<String>(register1.output(), register2.output()) {@Override public void consume(String value) {
+			received.append(value);
+		}};
 		
-		consume("foo");
-		
-		final RegisterImpl<String> register2 = new RegisterImpl<String>(null);
+		assertEquals("nullhey", received.toString());
+
+		register1.setter().consume("foo");
 		register2.setter().consume("bar");
 		
-		assertEquals("nullfoo", received.toString());
-		receiver.addToSignal(register2.output());
-		assertEquals("nullfoobar", received.toString());
+		assertEquals("nullheyfoobar", received.toString());
 
-		consume("baz1");
+		register1.setter().consume("baz1");
 		register2.setter().consume("baz2");
-		assertEquals("nullfoobarbaz1baz2", received.toString());
-	}
-	
-	@Test
-	public void testRemoveFromSignals() {
-		
-		consume("foo");
-		consume("bar");
-		assertEquals("nullfoobar", received.toString());
-		
-		receiver.removeFromSignals();
-		
-		consume("baz");
-		assertEquals("nullfoobar", received.toString());
-		
-	}
-
-	private void consume(final String value) {
-		register.setter().consume(value);
+		assertEquals("nullheyfoobarbaz1baz2", received.toString());
 	}
 
 }

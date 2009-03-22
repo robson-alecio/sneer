@@ -6,14 +6,14 @@ package sneer.pulp.reactive.impl;
 
 import static sneer.commons.environments.Environments.my;
 import sneer.pulp.events.EventNotifier;
-import sneer.pulp.events.EventNotifierFactory;
+import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.reactive.Signal;
 import wheel.lang.Consumer;
 
 
 abstract class AbstractSignal<T> implements Signal<T> {
 
-	EventNotifier<T> _notifier = my(EventNotifierFactory.class).create(new Consumer<Consumer<? super T>>(){@Override public void consume(Consumer<? super T> newReceiver) {
+	EventNotifier<T> _notifier = my(EventNotifiers.class).create(new Consumer<Consumer<? super T>>(){@Override public void consume(Consumer<? super T> newReceiver) {
 		newReceiver.consume(currentValue());
 	}});
 	

@@ -1,10 +1,10 @@
 package sneer.pulp.events.impl;
 
 import sneer.pulp.events.EventNotifier;
-import sneer.pulp.events.EventNotifierFactory;
+import sneer.pulp.events.EventNotifiers;
 import wheel.lang.Consumer;
 
-class EventNotifierFactoryImpl implements EventNotifierFactory {
+class EventNotifiersImpl implements EventNotifiers {
 
 	@Override
 	public <T> EventNotifier<T> create() {

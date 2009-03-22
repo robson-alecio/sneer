@@ -3,7 +3,7 @@ package sneer.pulp.events;
 import sneer.brickness.Brick;
 import wheel.lang.Consumer;
 
-public interface EventNotifierFactory extends Brick {
+public interface EventNotifiers extends Brick {
 	
 	<T> EventNotifier<T> create();
 

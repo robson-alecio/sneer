@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import sneer.pulp.events.EventNotifier;
-import sneer.pulp.events.EventNotifierFactory;
+import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.impl.RegisterImpl;
@@ -30,7 +30,7 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 
 	private class MyOutput implements SetSignal<T> {
 
-		private final EventNotifier<SetValueChange<T>> _notifier = my(EventNotifierFactory.class).create(new Consumer<Consumer<? super SetValueChange<T>>>(){@Override public void consume(Consumer<? super SetValueChange<T>> newReceiver) {
+		private final EventNotifier<SetValueChange<T>> _notifier = my(EventNotifiers.class).create(new Consumer<Consumer<? super SetValueChange<T>>>(){@Override public void consume(Consumer<? super SetValueChange<T>> newReceiver) {
 			if (_contents.isEmpty()) return;
 			newReceiver.consume(new SetValueChangeImpl<T>(contentsCopy(), null));
 		}});

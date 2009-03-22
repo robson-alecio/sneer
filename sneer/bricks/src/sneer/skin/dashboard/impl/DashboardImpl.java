@@ -37,7 +37,7 @@ import wheel.io.ui.action.Action;
 import wheel.io.ui.graphics.Images;
 import wheel.io.ui.impl.TrayIconImpl;
 import wheel.io.ui.impl.TrayIconImpl.SystemTrayNotSupported;
-import wheel.reactive.impl.Receiver;
+import wheel.reactive.impl.EventReceiver;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
 //Implement Persist window size and position
@@ -69,7 +69,7 @@ class DashboardImpl implements Dashboard, Runnable {
 	private final BlinkingLights _blinkingLights = my(BlinkingLights.class);
 	
 	@SuppressWarnings("unused")
-	private final Receiver<String> _ownNameReceiver = new Receiver<String>(_ownNameKeeper.name()) { @Override public void consume(String value) {
+	private final EventReceiver<String> _ownNameReceiver = new EventReceiver<String>(_ownNameKeeper.name()) { @Override public void consume(String value) {
 		updateTitle();
 	}};
 		

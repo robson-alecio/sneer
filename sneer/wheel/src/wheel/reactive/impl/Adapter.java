@@ -8,12 +8,12 @@ import sneer.pulp.reactive.impl.RegisterImpl;
 public class Adapter<IN, OUT> {
 
 	@SuppressWarnings("unused")
-	private Receiver<IN> _receiver;
+	private EventReceiver<IN> _receiver;
 	
 	private Register<OUT> _register = new RegisterImpl<OUT>(null);
 
 	public Adapter(Signal<IN> input, final Functor<IN, OUT> functor) {
-		_receiver = new Receiver<IN>(input) { @Override public void consume(IN inputValue) {
+		_receiver = new EventReceiver<IN>(input) { @Override public void consume(IN inputValue) {
 			_register.setter().consume(functor.evaluate(inputValue));
 		}};
 	}

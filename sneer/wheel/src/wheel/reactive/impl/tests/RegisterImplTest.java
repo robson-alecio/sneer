@@ -1,14 +1,12 @@
 package wheel.reactive.impl.tests;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import sneer.brickness.testsupport.BrickTestRunner;
+import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.reactive.impl.RegisterImpl;
 import wheel.reactive.tests.LoopbackTester;
 
-@RunWith(BrickTestRunner.class)
-public class RegisterImplTest {
+public class RegisterImplTest extends BrickTest {
 
 	@Test
 	public void testNotification() {

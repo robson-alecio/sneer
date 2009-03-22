@@ -28,7 +28,7 @@ import wheel.io.ui.GuiThread;
 import wheel.io.ui.impl.UserImpl;
 import wheel.lang.PickyConsumer;
 import wheel.lang.exceptions.IllegalParameter;
-import wheel.reactive.impl.Receiver;
+import wheel.reactive.impl.EventReceiver;
 
 abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel implements TextWidget<WIDGET> {
 	
@@ -39,7 +39,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	protected final WIDGET _textComponent;
 	protected final NotificationPolicy _notificationPolicy;
 
-	protected final Receiver<String> _fieldReciver;
+	protected final EventReceiver<String> _fieldReciver;
 
 	protected ChangeInfoDecorator _decorator;
 	protected String _lastNotified = "";
@@ -219,8 +219,8 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 		return new JComponent[]{_textComponent};
 	}
 	
-	public Receiver<String> fieldReceiver() {
-		return new Receiver<String>(_source) {@Override public void consume(final String text) {
+	public EventReceiver<String> fieldReceiver() {
+		return new EventReceiver<String>(_source) {@Override public void consume(final String text) {
 			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
 				if (!_notified) return;
 				setText(text);

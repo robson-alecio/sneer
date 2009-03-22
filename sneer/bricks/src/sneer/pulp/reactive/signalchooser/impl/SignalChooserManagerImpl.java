@@ -3,11 +3,10 @@ package sneer.pulp.reactive.signalchooser.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.pulp.reactive.signalchooser.SignalChooserManager;
-import wheel.reactive.impl.Receiver;
+import wheel.reactive.impl.EventReceiver;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.VisitingListReceiver;
 
@@ -48,9 +47,6 @@ class SignalChooserManagerImpl<T> implements SignalChooserManager<T>{
 			_elementReceiversToAvoidGc.add(index, receiver);
 			checkElementIndex(index, element);
 			
-			for (Signal<?> signal : signalChooser().signalsToReceiveFrom(element))
-				receiver.addToSignal(signal);
-			
 			receiver._isActive = true;
 		}
 	}
@@ -79,11 +75,12 @@ class SignalChooserManagerImpl<T> implements SignalChooserManager<T>{
 		return _listOfSignalsReceiver.signalChooser();
 	}
 	
-	private class ElementReceiver extends Receiver<Object> {
+	private class ElementReceiver extends EventReceiver<Object> {
 		private final T _element;
 		private volatile boolean _isActive;
 
 		ElementReceiver(T element) {
+			super(signalChooser().signalsToReceiveFrom(element));
 			_element = element;
 		}
 

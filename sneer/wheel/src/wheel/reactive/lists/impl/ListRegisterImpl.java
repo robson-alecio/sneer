@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import sneer.pulp.events.EventNotifier;
-import sneer.pulp.events.EventNotifierFactory;
+import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.impl.RegisterImpl;
@@ -20,7 +20,7 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 	
 	private class MyOutput implements ListSignal<VO> {
 
-		EventNotifier<ListValueChange<VO>> _notifier = my(EventNotifierFactory.class).create(new Consumer<Consumer<? super ListValueChange<VO>>>(){@Override public void consume(Consumer<? super ListValueChange<VO>> receiver) {
+		EventNotifier<ListValueChange<VO>> _notifier = my(EventNotifiers.class).create(new Consumer<Consumer<? super ListValueChange<VO>>>(){@Override public void consume(Consumer<? super ListValueChange<VO>> receiver) {
 			//TODO
 		}});
 

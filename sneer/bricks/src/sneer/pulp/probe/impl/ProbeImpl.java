@@ -12,7 +12,7 @@ import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
-import wheel.reactive.impl.Receiver;
+import wheel.reactive.impl.EventReceiver;
 
 final class ProbeImpl implements Consumer<Tuple> {
 
@@ -29,7 +29,7 @@ final class ProbeImpl implements Consumer<Tuple> {
 	final SchedulerImpl _scheduler = new SchedulerImpl();
 	
 	@SuppressWarnings("unused")
-	private final Receiver<Boolean> _receiverToAvoidGC;
+	private final EventReceiver<Boolean> _receiverToAvoidGC;
 
 	
 	ProbeImpl(Contact contact, Signal<Boolean> isOnline) {
@@ -38,8 +38,8 @@ final class ProbeImpl implements Consumer<Tuple> {
 	}
 
 
-	private Receiver<Boolean> createIsOnlineReceiver(Signal<Boolean> isOnlineSignal) {
-		return new Receiver<Boolean>(isOnlineSignal){ @Override public void consume(Boolean isOnline) {
+	private EventReceiver<Boolean> createIsOnlineReceiver(Signal<Boolean> isOnlineSignal) {
+		return new EventReceiver<Boolean>(isOnlineSignal){ @Override public void consume(Boolean isOnline) {
 			dealWithIsOnline(isOnline);
 		}};
 	}

@@ -16,7 +16,7 @@ import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.propertystore.PropertyStore;
 import sneer.pulp.propertystore.mocks.TransientPropertyStore;
 import wheel.lang.Consumer;
-import wheel.reactive.impl.Receiver;
+import wheel.reactive.impl.EventReceiver;
 
 public class OwnIpDiscovererTest extends BrickTest {
 	
@@ -50,7 +50,7 @@ public class OwnIpDiscovererTest extends BrickTest {
 		OwnIpDiscoverer subject = my(OwnIpDiscoverer.class);
 		
 		@SuppressWarnings("unused")
-		final Receiver<String> refToAvoidGc = new Receiver<String>(subject.ownIp()) { @Override public void consume(String value) {
+		final EventReceiver<String> refToAvoidGc = new EventReceiver<String>(subject.ownIp()) { @Override public void consume(String value) {
 			receiver.consume(value);
 		}};
 		

@@ -1,33 +1,32 @@
 package wheel.reactive.tests;
 
+import sneer.pulp.events.receivers.impl.Solder;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.impl.RegisterImpl;
 import wheel.lang.Consumer;
-import wheel.lang.Types;
-import wheel.reactive.Solder;
+import static wheel.lang.Types.cast;
 
 public class LoopbackTester {
 
-	private Register<Object> _inputValue1 = new RegisterImpl<Object>(null);
-	private Register<Object> _inputValue2 = new RegisterImpl<Object>(null);
-	private Register<Object> _inputValue3 = new RegisterImpl<Object>(null);
-
 	public LoopbackTester(Signal<?> input, Consumer<?> output) {
-		_output = Types.cast(output);
+		_output = cast(output);
 				
-		Signal<Object> castedInput = Types.cast(input);
+		Signal<Object> castedInput = cast(input);
 
-		@SuppressWarnings("unused")
-		Object s1 = new Solder<Object>(castedInput, _inputValue1.setter());
-		@SuppressWarnings("unused")
-		Object s2 = new Solder<Object>(castedInput, _inputValue2.setter());
-		@SuppressWarnings("unused")
-		Object s3 = new Solder<Object>(castedInput, _inputValue3.setter());
+		_referenceToAvoidGc1 = new Solder<Object>(castedInput, _inputValue1.setter());
+		_referenceToAvoidGc2 = new Solder<Object>(castedInput, _inputValue2.setter());
+		_referenceToAvoidGc3 = new Solder<Object>(castedInput, _inputValue3.setter());
 	}
 	
+	private final Register<Object> _inputValue1 = new RegisterImpl<Object>(null);
+	private final Register<Object> _inputValue2 = new RegisterImpl<Object>(null);
+	private final Register<Object> _inputValue3 = new RegisterImpl<Object>(null);
+	
 	private final Consumer<Object> _output;
-
+	@SuppressWarnings("unused")	private final Object _referenceToAvoidGc1;
+	@SuppressWarnings("unused")	private final Object _referenceToAvoidGc2;
+	@SuppressWarnings("unused")	private final Object _referenceToAvoidGc3;
 
 	public void test() {
 		testWithStrings();

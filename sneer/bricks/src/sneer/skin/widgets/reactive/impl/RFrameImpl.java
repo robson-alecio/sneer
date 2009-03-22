@@ -7,7 +7,7 @@ import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.impl.RegisterImpl;
 import sneer.skin.widgets.reactive.WindowWidget;
 import wheel.lang.Consumer;
-import wheel.reactive.impl.Receiver;
+import wheel.reactive.impl.EventReceiver;
 
 class RFrameImpl extends JFrame implements WindowWidget<JFrame>{
 
@@ -17,7 +17,7 @@ class RFrameImpl extends JFrame implements WindowWidget<JFrame>{
 	private static final long serialVersionUID = 1L;
 	
 	@SuppressWarnings("unused")
-	private final Receiver<String> _titleReceiverAvoidGc;
+	private final EventReceiver<String> _titleReceiverAvoidGc;
 	
 	RFrameImpl(Signal<String> source) {
 		this(source, null);
@@ -29,8 +29,8 @@ class RFrameImpl extends JFrame implements WindowWidget<JFrame>{
 		_titleReceiverAvoidGc = titleReceiverFor(source);
 	}
 
-	private Receiver<String> titleReceiverFor(Signal<String> signal) {
-		return new Receiver<String>(signal) {@Override public void consume(final String title) {
+	private EventReceiver<String> titleReceiverFor(Signal<String> signal) {
+		return new EventReceiver<String>(signal) {@Override public void consume(final String title) {
 			_titleRegister.setter().consume(title);
 			setTitle(title);
 		}};

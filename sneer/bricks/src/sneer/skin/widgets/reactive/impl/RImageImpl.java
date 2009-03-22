@@ -18,7 +18,7 @@ import sneer.skin.image.ImageFactory;
 import sneer.skin.widgets.reactive.ImageWidget;
 import wheel.io.ui.GuiThread;
 import wheel.lang.Consumer;
-import wheel.reactive.impl.Receiver;
+import wheel.reactive.impl.EventReceiver;
 
 class RImageImpl extends JPanel implements ImageWidget{
 
@@ -29,7 +29,7 @@ class RImageImpl extends JPanel implements ImageWidget{
 	private static final long serialVersionUID = 1L;
 	
 	@SuppressWarnings("unused")
-	private final Receiver<Image> _imageReceiverAvoidGc;
+	private final EventReceiver<Image> _imageReceiverAvoidGc;
 	
 	RImageImpl(Signal<Image> source) {
 		this(source, null);
@@ -42,8 +42,8 @@ class RImageImpl extends JPanel implements ImageWidget{
 		_imageReceiverAvoidGc = imageReceiverFor(source);
 	}
 
-	private Receiver<Image> imageReceiverFor(Signal<Image> signal) {
-		return new Receiver<Image>(signal) {@Override public void consume(final Image image) {
+	private EventReceiver<Image> imageReceiverFor(Signal<Image> signal) {
+		return new EventReceiver<Image>(signal) {@Override public void consume(final Image image) {
 			_image.setter().consume(image);
 			GuiThread.invokeAndWait(new Runnable() { @Override public void run() {
 				revalidate();

@@ -17,9 +17,10 @@ import sneer.pulp.dyndns.updater.InvalidHostException;
 import sneer.pulp.dyndns.updater.RedundantUpdateException;
 import sneer.pulp.dyndns.updater.Updater;
 import sneer.pulp.dyndns.updater.UpdaterException;
+import sneer.pulp.events.EventSource;
 import sneer.pulp.propertystore.PropertyStore;
 import sneer.pulp.threadpool.ThreadPool;
-import wheel.reactive.impl.Receiver;
+import wheel.reactive.impl.EventReceiver;
 
 class DynDnsClientImpl implements DynDnsClient {
 	
@@ -44,16 +45,11 @@ class DynDnsClientImpl implements DynDnsClient {
 	private State _state = new Happy();
 	private final Light _light = _blinkingLights.prepare(LightType.ERROR);
 	
-	final Receiver<Object> _reactionTrigger = new Receiver<Object>() { @Override public void consume(Object ignored) {
+	final EventReceiver<Object> _reactionTrigger = new EventReceiver<Object>(relevantSignals()) { @Override public void consume(Object ignored) {
 		synchronized (_stateMonitor) {
 			_state = _state.react();
 		}
 	}};
-	
-	{
-		_reactionTrigger.addToSignal(_ownAccountKeeper.ownAccount());
-		_reactionTrigger.addToSignal(_ownIpDiscoverer.ownIp());
-	}
 	
 	
 	abstract class State {
@@ -210,6 +206,13 @@ class DynDnsClientImpl implements DynDnsClient {
 		_propertyStore.set(LAST_HOST_KEY, host);
 	}
 	
+	private EventSource<Object>[] relevantSignals() {
+		return new EventSource[] {
+			_ownAccountKeeper.ownAccount(),
+			_ownIpDiscoverer.ownIp()
+		};
+	}
+
 	private String lastIp() {
 		return _propertyStore.get(LAST_IP_KEY);
 	}

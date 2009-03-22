@@ -23,7 +23,6 @@ import snapps.contacts.actions.ContactActionManager;
 import snapps.whisper.gui.WhisperGui;
 import sneer.commons.environments.Environments;
 import sneer.pulp.contacts.Contact;
-import sneer.pulp.reactive.Signal;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.rooms.ActiveRoomKeeper;
 import sneer.skin.snappmanager.InstrumentManager;
@@ -32,8 +31,8 @@ import sneer.skin.sound.mic.Mic;
 import sneer.skin.sound.speaker.Speaker;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
-import wheel.lang.Consumer;
 import wheel.reactive.impl.And;
+import wheel.reactive.impl.EventReceiver;
 
 class WhisperGuiImpl implements WhisperGui { //Optimize need a better snapp window support
 
@@ -50,26 +49,19 @@ class WhisperGuiImpl implements WhisperGui { //Optimize need a better snapp wind
 	JToggleButton _whisperButton;
 	JToggleButton _loopBackButton;
 	
-	private final Signal<Boolean> _isMicAndSpeakerRunning;
-
-	private Consumer<Boolean> _consumerToAvoidGc;
+	@SuppressWarnings("unused")
+	private final Object _referenceToAvoidGc;
 
 	private TextWidget<JTextField> _roomField;
 
 	WhisperGuiImpl(){
 		_instrumentManager.registerInstrument(this);
-		_isMicAndSpeakerRunning = new And(_mic.isRunning(), _speaker.isRunning()).output();
-		initConsumer();
+		_referenceToAvoidGc = new EventReceiver<Boolean>(new And(_mic.isRunning(), _speaker.isRunning()).output()) { @Override public void consume(Boolean isRunning) {
+			_whisperButton.setSelected(isRunning);
+			_roomField.getMainWidget().setEnabled(isRunning);
+		}};
 	}
 
-	private void initConsumer() {
-		_consumerToAvoidGc = new Consumer<Boolean>(){ @Override public void consume(final Boolean value) {
-			_whisperButton.setSelected(value);
-			_roomField.getMainWidget().setEnabled(value);
-		}};	
-		_isMicAndSpeakerRunning.addReceiver(_consumerToAvoidGc);
-	}
-	
 	private ImageIcon loadIcon(String fileName) {
 		try {
 			return new ImageIcon(ImageIO.read(this.getClass().getResource(fileName)));

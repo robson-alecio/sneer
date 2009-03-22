@@ -18,7 +18,7 @@ import spikes.priscila.go.ToroidalGoBoard;
 import spikes.priscila.go.GoBoard.StoneColor;
 import wheel.io.ui.GuiThread;
 import wheel.lang.Threads;
-import wheel.reactive.impl.Receiver;
+import wheel.reactive.impl.EventReceiver;
 
 public class GoBoardPanel extends JPanel {
 	
@@ -64,13 +64,13 @@ public class GoBoardPanel extends JPanel {
 
 	private Register<Move> _moveRegister;
 	@SuppressWarnings("unused")
-	private Receiver<Move> _moveReceiverToAvoidGC;
+	private EventReceiver<Move> _moveReceiverToAvoidGC;
 	private final StoneColor _side;
 	
 	public GoBoardPanel(Register<Move> moveRegister, StoneColor side) {
 		_side = side;
 		_moveRegister=moveRegister;
-		_moveReceiverToAvoidGC=new Receiver<Move>(_moveRegister.output()){ @Override public void consume(Move move) { 
+		_moveReceiverToAvoidGC=new EventReceiver<Move>(_moveRegister.output()){ @Override public void consume(Move move) { 
 			if (move == null) return; 
 			play(move); 
 		}};

@@ -10,7 +10,7 @@ import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.connection.SocketAccepter;
 import sneer.pulp.events.EventNotifier;
-import sneer.pulp.events.EventNotifierFactory;
+import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.network.ByteArrayServerSocket;
 import sneer.pulp.network.ByteArraySocket;
@@ -19,7 +19,7 @@ import sneer.pulp.port.PortKeeper;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.io.Logger;
 import wheel.lang.Threads;
-import wheel.reactive.impl.Receiver;
+import wheel.reactive.impl.EventReceiver;
 
 class SocketAccepterImpl implements SocketAccepter {
 	
@@ -28,7 +28,7 @@ class SocketAccepterImpl implements SocketAccepter {
 	private final BlinkingLights _lights = my(BlinkingLights.class);
 	private final ThreadPool _threadPool = my(ThreadPool.class);
 
-	private final EventNotifier<ByteArraySocket> _notifier = my(EventNotifierFactory.class).create();
+	private final EventNotifier<ByteArraySocket> _notifier = my(EventNotifiers.class).create();
 
 	private final transient Object _portToListenMonitor = new Object();
 
@@ -43,13 +43,13 @@ class SocketAccepterImpl implements SocketAccepter {
 	private final Light _cantAcceptSocket = _lights.prepare(LightType.ERROR);
 
 	@SuppressWarnings("unused")
-	private final Receiver<Integer> _portReceiverToAvoidGC;
+	private final EventReceiver<Integer> _portReceiverToAvoidGC;
 
 	SocketAccepterImpl() {
 		_threadPool.registerActor(new Runnable(){ @Override public void run() {
 			listenToSneerPort();
 		}});
-		_portReceiverToAvoidGC = new Receiver<Integer>(_portKeeper.port()) { @Override public void consume(Integer port) {
+		_portReceiverToAvoidGC = new EventReceiver<Integer>(_portKeeper.port()) { @Override public void consume(Integer port) {
 			setPort(port);
 		}};
 	}

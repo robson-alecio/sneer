@@ -150,7 +150,7 @@ class WindGuiImpl implements WindGui {
 	}
 
 	private void initShoutReceiver() {
-		_shoutReceiverToAvoidGc = new EventReceiver<ListChange<Shout>>(){ @Override public void consume(ListChange<Shout> value) {
+		_shoutReceiverToAvoidGc = new EventReceiver<ListChange<Shout>>(){ @Override public void consume(ListChange<Shout> ignored) {
 			shoutAlert();
 		}};
 		_wind.shoutsHeard().addReceiver(_shoutReceiverToAvoidGc);

@@ -14,13 +14,13 @@ import sneer.pulp.reactive.impl.RegisterImpl;
 import wheel.lang.Consumer;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
-import wheel.reactive.lists.ListValueChange;
+import wheel.reactive.lists.ListChange;
 
 public class ListRegisterImpl<VO> implements ListRegister<VO> {
 	
 	private class MyOutput implements ListSignal<VO> {
 
-		EventNotifier<ListValueChange<VO>> _notifier = my(EventNotifiers.class).create(new Consumer<Consumer<? super ListValueChange<VO>>>(){@Override public void consume(Consumer<? super ListValueChange<VO>> receiver) {
+		EventNotifier<ListChange<VO>> _notifier = my(EventNotifiers.class).create(new Consumer<Consumer<? super ListChange<VO>>>(){@Override public void consume(Consumer<? super ListChange<VO>> receiver) {
 			//TODO
 		}});
 
@@ -40,7 +40,7 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 		}
 
 		@Override
-		public void addReceiver(Consumer<? super ListValueChange<VO>> receiver) {
+		public void addReceiver(Consumer<? super ListChange<VO>> receiver) {
 			_notifier.output().addReceiver(receiver);	
 		}
 		
@@ -49,7 +49,7 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 			_notifier.output().removeReceiver(receiver);		
 		}
 
-		void notifyReceivers(ListValueChange<VO> valueChange) {
+		void notifyReceivers(ListChange<VO> valueChange) {
 			_notifier.notifyReceivers(valueChange);
 		}
 

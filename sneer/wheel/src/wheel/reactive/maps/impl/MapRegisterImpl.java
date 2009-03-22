@@ -17,7 +17,7 @@ import wheel.reactive.maps.MapRegister;
 import wheel.reactive.maps.MapSignal;
 import wheel.reactive.sets.SetRegister;
 import wheel.reactive.sets.SetSignal;
-import wheel.reactive.sets.SetValueChange;
+import wheel.reactive.sets.SetChange;
 import wheel.reactive.sets.impl.SetRegisterImpl;
 import wheel.reactive.sets.impl.SetValueChangeImpl;
 
@@ -52,7 +52,7 @@ public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 
 	private class MyOutput implements MapSignal<K,V> {
 
-		private final EventNotifier<SetValueChange<Map.Entry<K,V>>> _notifier = my(EventNotifiers.class).create(new Consumer<Consumer<? super SetValueChange<Map.Entry<K,V>>>>(){@Override public void consume(Consumer<? super SetValueChange<Entry<K, V>>> newReceiver) {
+		private final EventNotifier<SetChange<Map.Entry<K,V>>> _notifier = my(EventNotifiers.class).create(new Consumer<Consumer<? super SetChange<Map.Entry<K,V>>>>(){@Override public void consume(Consumer<? super SetChange<Entry<K, V>>> newReceiver) {
 			if (_map.isEmpty()) return;
 			newReceiver.consume(asChange(_map.entrySet()));
 		}});
@@ -68,12 +68,12 @@ public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 		}
 
 		@Override
-		public void addSetReceiver(Consumer<SetValueChange<Map.Entry<K,V>>> receiver) {
+		public void addReceiver(Consumer<? super SetChange<Map.Entry<K,V>>> receiver) {
 			_notifier.output().addReceiver(receiver);		
 		}
 		
 		@Override
-		public void removeSetReceiver(Object receiver) {
+		public void removeReceiver(Object receiver) {
 			_notifier.output().removeReceiver(receiver);		
 		}
 
@@ -93,7 +93,7 @@ public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 		}
 
 
-		private SetValueChange<Entry<K, V>> asChange(Collection<Entry<K, V>> entries) {
+		private SetChange<Entry<K, V>> asChange(Collection<Entry<K, V>> entries) {
 			return new SetValueChangeImpl<Entry<K, V>>(entries, null);
 		}
 

@@ -1,8 +1,8 @@
 package wheel.reactive.lists.impl;
 
-import wheel.reactive.lists.ListValueChange;
+import wheel.reactive.lists.ListChange;
 
-final class ListElementMoved<T> extends AbstractListValueChange<T> implements ListValueChange<T> {
+final class ListElementMoved<T> extends AbstractListValueChange<T> implements ListChange<T> {
 
 	private final int _newIndex;
 

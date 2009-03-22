@@ -1,6 +1,6 @@
 package wheel.reactive.lists;
 
-import wheel.reactive.lists.ListValueChange.Visitor;
+import wheel.reactive.lists.ListChange.Visitor;
 
 public abstract class VisitorAdapter<T> implements Visitor<T> {
 

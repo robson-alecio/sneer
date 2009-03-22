@@ -5,15 +5,11 @@
 package wheel.reactive.sets;
 
 
+import sneer.pulp.events.EventSource;
 import sneer.pulp.reactive.CollectionSignal;
 
-import wheel.lang.Consumer;
 
-
-public interface SetSignal<T> extends CollectionSignal<T> {
-
-	void addSetReceiver(Consumer<SetValueChange<T>> receiver);
-	void removeSetReceiver(Object receiver);
+public interface SetSignal<T> extends CollectionSignal<T>, EventSource<SetChange<T>> {
 
 	boolean currentContains(T element);
 }

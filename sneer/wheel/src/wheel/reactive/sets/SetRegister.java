@@ -14,6 +14,6 @@ public interface SetRegister<T> extends CollectionRegister<T> {
 	void add(T elementAdded);
 	void remove(T elementRemoved);
 
-	void change(SetValueChange<T> change);
+	void change(SetChange<T> change);
 
 }

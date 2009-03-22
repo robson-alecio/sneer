@@ -41,8 +41,8 @@ import wheel.io.Logger;
 import wheel.io.ui.GuiThread;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.EventReceiver;
-import wheel.reactive.lists.ListValueChange;
-import wheel.reactive.lists.ListValueChange.Visitor;
+import wheel.reactive.lists.ListChange;
+import wheel.reactive.lists.ListChange.Visitor;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
 class WindGuiImpl implements WindGui {
@@ -56,12 +56,12 @@ class WindGuiImpl implements WindGui {
 
 	private Container _container;
 
-	private EventReceiver<ListValueChange<Shout>> _shoutReceiverToAvoidGc;
+	private EventReceiver<ListChange<Shout>> _shoutReceiverToAvoidGc;
 
 	private JScrollPane _scrollPane;
 
 	private WindAutoscrollSupport _autoscrollSupportToAvoidGc;
-	private Consumer<ListValueChange<Shout>> _windConsumerToAvoidGc;
+	private Consumer<ListChange<Shout>> _windConsumerToAvoidGc;
 	
 	public WindGuiImpl() {
 		_wind = my(Wind.class);
@@ -122,7 +122,7 @@ class WindGuiImpl implements WindGui {
 	private void initListReceiversInOrder() {
 		_autoscrollSupportToAvoidGc.initPreChangeReceiver();
 		
-		_windConsumerToAvoidGc = new Consumer<ListValueChange<Shout>>(){ @Override public void consume(ListValueChange<Shout> value) { value.accept(new Visitor<Shout>(){
+		_windConsumerToAvoidGc = new Consumer<ListChange<Shout>>(){ @Override public void consume(ListChange<Shout> value) { value.accept(new Visitor<Shout>(){
 				@Override public void elementAdded(int index, Shout shout) { ShoutPainter.appendShout(shout, _shoutsList); }
 				@Override public void elementRemoved(int index, Shout element) { ShoutPainter.repaintAllShoults(_wind.shoutsHeard(), _shoutsList); }
 				@Override public void elementMoved(int oldIndex, int newIndex, Shout element) { ShoutPainter.repaintAllShoults(_wind.shoutsHeard(), _shoutsList); }
@@ -150,7 +150,7 @@ class WindGuiImpl implements WindGui {
 	}
 
 	private void initShoutReceiver() {
-		_shoutReceiverToAvoidGc = new EventReceiver<ListValueChange<Shout>>(){ @Override public void consume(ListValueChange<Shout> value) {
+		_shoutReceiverToAvoidGc = new EventReceiver<ListChange<Shout>>(){ @Override public void consume(ListChange<Shout> value) {
 			shoutAlert();
 		}};
 		_wind.shoutsHeard().addReceiver(_shoutReceiverToAvoidGc);

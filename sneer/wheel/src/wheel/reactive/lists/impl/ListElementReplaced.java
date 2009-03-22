@@ -1,8 +1,8 @@
 package wheel.reactive.lists.impl;
 
-import wheel.reactive.lists.ListValueChange;
+import wheel.reactive.lists.ListChange;
 
-final class ListElementReplaced<T> extends AbstractListElementReplacement<T> implements ListValueChange<T> {
+final class ListElementReplaced<T> extends AbstractListElementReplacement<T> implements ListChange<T> {
 
 	ListElementReplaced(int index, T oldElement, T newElement) {
 		super(index, oldElement, newElement);

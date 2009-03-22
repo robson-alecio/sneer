@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import wheel.reactive.sets.SetValueChange;
+import wheel.reactive.sets.SetChange;
 
-public class SetValueChangeImpl<T> implements SetValueChange<T> {
+public class SetValueChangeImpl<T> implements SetChange<T> {
 
 	private final Collection<T> _elementsAdded;
 	private final Collection<T> _elementsRemoved;

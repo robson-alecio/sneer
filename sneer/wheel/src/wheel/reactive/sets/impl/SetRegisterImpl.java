@@ -19,7 +19,7 @@ import sneer.pulp.reactive.impl.RegisterImpl;
 import wheel.lang.Consumer;
 import wheel.reactive.sets.SetRegister;
 import wheel.reactive.sets.SetSignal;
-import wheel.reactive.sets.SetValueChange;
+import wheel.reactive.sets.SetChange;
 
 
 
@@ -30,18 +30,18 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 
 	private class MyOutput implements SetSignal<T> {
 
-		private final EventNotifier<SetValueChange<T>> _notifier = my(EventNotifiers.class).create(new Consumer<Consumer<? super SetValueChange<T>>>(){@Override public void consume(Consumer<? super SetValueChange<T>> newReceiver) {
+		private final EventNotifier<SetChange<T>> _notifier = my(EventNotifiers.class).create(new Consumer<Consumer<? super SetChange<T>>>(){@Override public void consume(Consumer<? super SetChange<T>> newReceiver) {
 			if (_contents.isEmpty()) return;
 			newReceiver.consume(new SetValueChangeImpl<T>(contentsCopy(), null));
 		}});
 
 		@Override
-		public void addSetReceiver(Consumer<SetValueChange<T>> receiver) {
+		public void addReceiver(Consumer<? super SetChange<T>> receiver) {
 			_notifier.output().addReceiver(receiver);
 		}
 
 		@Override
-		public void removeSetReceiver(Object receiver) {
+		public void removeReceiver(Object receiver) {
 			_notifier.output().removeReceiver(receiver);
 		}
 
@@ -97,7 +97,7 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 	}
 
 	@Override
-	public void change(SetValueChange<T> change) {
+	public void change(SetChange<T> change) {
 		synchronized (_contents) {
 			preserveDeltas(change);
 			if (change.elementsAdded().isEmpty() && change.elementsRemoved().isEmpty())
@@ -117,7 +117,7 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 			_size.setter().consume(size);
 	}
 
-	private void preserveDeltas(SetValueChange<T> change) {
+	private void preserveDeltas(SetChange<T> change) {
 		change.elementsAdded().removeAll(_contents);
 		change.elementsRemoved().retainAll(_contents);
 	}

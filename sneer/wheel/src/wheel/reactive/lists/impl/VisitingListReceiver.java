@@ -2,10 +2,10 @@ package wheel.reactive.lists.impl;
 
 import wheel.lang.Consumer;
 import wheel.reactive.lists.ListSignal;
-import wheel.reactive.lists.ListValueChange;
-import wheel.reactive.lists.ListValueChange.Visitor;
+import wheel.reactive.lists.ListChange;
+import wheel.reactive.lists.ListChange.Visitor;
 
-public abstract class VisitingListReceiver<T> implements Consumer<ListValueChange<T>>, Visitor<T> {
+public abstract class VisitingListReceiver<T> implements Consumer<ListChange<T>>, Visitor<T> {
 
 	protected final ListSignal<T> _input;
 
@@ -15,7 +15,7 @@ public abstract class VisitingListReceiver<T> implements Consumer<ListValueChang
 	}
 
 	@Override
-	public void consume(ListValueChange<T> listChange) {
+	public void consume(ListChange<T> listChange) {
 		listChange.accept(this);
 	}
 

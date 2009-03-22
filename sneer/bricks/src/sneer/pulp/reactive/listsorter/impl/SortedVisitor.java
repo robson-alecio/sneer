@@ -13,7 +13,7 @@ import sneer.pulp.reactive.signalchooser.SignalChooserManagerFactory;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.ListSignalOwnerReference;
 import wheel.reactive.lists.ListSignal;
-import wheel.reactive.lists.ListValueChange;
+import wheel.reactive.lists.ListChange;
 import wheel.reactive.lists.VisitorAdapter;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 
@@ -50,7 +50,7 @@ final class SortedVisitor<T> extends VisitorAdapter<T> implements ListOfSignalsR
 		
 		private final Comparator<T> _comparator;
 		private final ListRegisterImpl<T> _sorted = new ListRegisterImpl<T>();
-		private final Consumer<ListValueChange<T>> _receiverAvoidGc = new Consumer<ListValueChange<T>>(){@Override public void consume(ListValueChange<T> change) {
+		private final Consumer<ListChange<T>> _receiverAvoidGc = new Consumer<ListChange<T>>(){@Override public void consume(ListChange<T> change) {
 			change.accept(SortedVisitor.this);
 		}};
 		

@@ -17,8 +17,8 @@ import sneer.pulp.reactive.signalchooser.SignalChooser;
 import wheel.lang.Consumer;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
-import wheel.reactive.lists.ListValueChange;
-import wheel.reactive.lists.ListValueChange.Visitor;
+import wheel.reactive.lists.ListChange;
+import wheel.reactive.lists.ListChange.Visitor;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 import wheel.testutil.TestUtils;
 
@@ -68,7 +68,7 @@ public class ListSorterTest extends BrickTest {
 		src.remove(_60);
 
 		ListSignal<Signal<Integer>> sortedList = _sorter.sort(src.output(), integerComparator(), _chooser);
-		Consumer<ListValueChange<Signal<Integer>>> consumer = new Consumer<ListValueChange<Signal<Integer>>>(){ @Override public void consume(ListValueChange<Signal<Integer>> value) {
+		Consumer<ListChange<Signal<Integer>>> consumer = new Consumer<ListChange<Signal<Integer>>>(){ @Override public void consume(ListChange<Signal<Integer>> value) {
 			value.accept(_visitor);
 		}};
 		sortedList.addReceiver(consumer);

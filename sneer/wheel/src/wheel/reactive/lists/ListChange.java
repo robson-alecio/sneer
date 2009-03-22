@@ -1,6 +1,6 @@
 package wheel.reactive.lists;
 
-public interface ListValueChange<T> {
+public interface ListChange<T> {
 	
 	void accept(Visitor<T> visitor);
 	

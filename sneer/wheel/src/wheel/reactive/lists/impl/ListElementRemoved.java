@@ -1,8 +1,8 @@
 package wheel.reactive.lists.impl;
 
-import wheel.reactive.lists.ListValueChange;
+import wheel.reactive.lists.ListChange;
 
-final class ListElementRemoved<T> extends AbstractListValueChange<T> implements ListValueChange<T> {
+final class ListElementRemoved<T> extends AbstractListValueChange<T> implements ListChange<T> {
 
 	ListElementRemoved(int index, T element) {
 		super(index, element);

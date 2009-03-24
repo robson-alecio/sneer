@@ -7,9 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import sneer.commons.environments.Environments.Memento;
 import sneer.commons.lang.ByRef;
-
 
 final class EnvironmentInvocationHandler<T> implements InvocationHandler {
 
@@ -18,16 +16,17 @@ final class EnvironmentInvocationHandler<T> implements InvocationHandler {
 		Environments.runWith(environment, new Runnable() { @Override public void run() {
 			final T component = my(intrface);
 			final Class<? extends Object> componentClass = component.getClass();
-			result.value = (T) Proxy.newProxyInstance(componentClass.getClassLoader(), componentClass.getInterfaces(), new EnvironmentInvocationHandler<T>(Environments.memento(), component));
+			final EnvironmentInvocationHandler<T> invocationHandler = new EnvironmentInvocationHandler<T>(my(Environment.class), component);
+			result.value = (T) Proxy.newProxyInstance(componentClass.getClassLoader(), componentClass.getInterfaces(), invocationHandler);
 		}});
 		return result.value;
 	}
 	
-	private final Memento _memento;
+	private final Environment _environment;
 	private final T _component;
 
-	private EnvironmentInvocationHandler(Memento memento, T component) {
-		_memento = memento;
+	private EnvironmentInvocationHandler(Environment environment, T component) {
+		_environment = environment;
 		_component = component;
 	}
 
@@ -35,7 +34,7 @@ final class EnvironmentInvocationHandler<T> implements InvocationHandler {
 	public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
 		final ByRef<Object> result = ByRef.newInstance();
 
-		Environments.runWith(_memento, new Runnable() { @Override public void run() {
+		Environments.runWith(_environment, new Runnable() { @Override public void run() {
 			try {
 				result.value = method.invoke(_component, args);
 			} catch (IllegalArgumentException e) {

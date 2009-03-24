@@ -3,11 +3,11 @@ package wheel.lang;
 import java.util.HashSet;
 import java.util.Set;
 
+import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
-import sneer.commons.environments.Environments.Memento;
 import sneer.commons.threads.Daemon;
 
-
+import static sneer.commons.environments.Environments.my;
 
 public class Threads {
 
@@ -48,9 +48,9 @@ public class Threads {
 	}
 
 	public static void startDaemon(String threadName, final Runnable runnable) {
-		final Memento memento = Environments.memento();
+		final Environment environment = my(Environment.class);
         new Daemon(threadName) { @Override public void run() {
-			Environments.runWith(memento, runnable);
+			Environments.runWith(environment, runnable);
 		}};
 	}
 

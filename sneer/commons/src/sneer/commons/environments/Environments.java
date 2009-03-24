@@ -1,10 +1,6 @@
 package sneer.commons.environments;
 
-
-
 public class Environments {
-	
-	public interface Memento {}
 	
 	private final static ThreadLocal<Environment> _environment = new ThreadLocal<Environment>() { @Override	protected Environment initialValue() { return null;};};
 	
@@ -22,21 +18,13 @@ public class Environments {
 		return EnvironmentInvocationHandler.newInstance(environment, intrface);
 	}
 	
-	public static Memento memento() {
-		return new MementoImpl(current());
-	}
-	
-	public static <T> void runWith(Memento memento, Runnable runnable) {
-		runWith(((MementoImpl)memento)._environment, runnable);
-	}
-
 	public static <T> T my(Class<T> need) {
 		final Environment environment = current();
-		if (environment == null)
-			cantFulfill(need);
 		if (need == Environment.class)
 			return (T) environment;
 		final T implementation = environment.provide(need);
+		if (environment == null)
+			cantFulfill(need);
 		if (null == implementation)
 			cantFulfill(need);
 		return implementation;
@@ -60,10 +48,4 @@ public class Environments {
 	private static Environment current() {
 		return _environment.get();
 	}
-}
-
-
-class MementoImpl implements Environments.Memento {
-	MementoImpl(Environment environment) {_environment = environment;}
-	final Environment _environment;
 }

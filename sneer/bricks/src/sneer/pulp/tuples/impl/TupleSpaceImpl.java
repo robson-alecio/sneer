@@ -21,8 +21,8 @@ import org.prevayler.foundation.serialization.XStreamSerializer;
 
 import snapps.wind.impl.bubble.Bubble;
 import sneer.brickness.Tuple;
+import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
-import sneer.commons.environments.Environments.Memento;
 import sneer.commons.io.StoragePath;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
@@ -42,13 +42,13 @@ class TupleSpaceImpl implements TupleSpace {
 
 		private final Consumer<? super Tuple> _subscriber;
 		private final Class<? extends Tuple> _tupleType;
-		private final Memento _environment;
+		private final Environment _environment;
 		private final BlockingQueue<Tuple> _tuplesToNotify = new LinkedBlockingQueue<Tuple>(); 
 
 		<T extends Tuple> Subscription(Consumer<? super T> subscriber, Class<T> tupleType) {
 			_subscriber = cast(subscriber);
 			_tupleType = tupleType;
-			_environment = Environments.memento();
+			_environment = my(Environment.class);
 			
 			_threads.registerStepper(new Stepper() { @Override public boolean step() {
 				Tuple tuple = waitToPopTuple();

@@ -6,14 +6,15 @@ import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
 
+import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
-import sneer.commons.environments.Environments.Memento;
 import wheel.io.Logger;
 import wheel.lang.Timebox;
+import static sneer.commons.environments.Environments.my;
 
 public class TimeboxedEventQueue extends EventQueue {
 
-	private static Memento _environment;
+	private static Environment _environment;
 	private static int _timeboxDuration;
 
 	private static List<TimeboxedEventQueue> _queues = new ArrayList<TimeboxedEventQueue>();
@@ -22,7 +23,7 @@ public class TimeboxedEventQueue extends EventQueue {
 	static public synchronized void startQueueing(int timeboxDuration) {
 		if (!_queues.isEmpty()) throw new IllegalStateException("Queueing already started.");
 
-		_environment = Environments.memento();
+		_environment = my(Environment.class);
 		_timeboxDuration = timeboxDuration;
 		
 		startNewQueue();

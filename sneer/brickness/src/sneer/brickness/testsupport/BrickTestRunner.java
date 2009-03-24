@@ -18,17 +18,16 @@ import sneer.commons.environments.CachingEnvironment;
 import sneer.commons.environments.ClosedEnvironment;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
-import sneer.commons.environments.Environments.Memento;
 
 public class BrickTestRunner extends JUnit4ClassRunner {
 
 	protected static class TestMethodWithEnvironment extends TestMethod {
 		
-		private final Memento _environment;
+		private final Environment _environment;
 
 		public TestMethodWithEnvironment(Method method, TestClass testClass) {
 			super(method, testClass);
-			_environment = Environments.memento();
+			_environment = my(Environment.class);
 		}
 		
 		static class InvocationTargetExceptionEnvelope extends RuntimeException {

@@ -7,8 +7,6 @@ import org.junit.Test;
 
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
-import sneer.commons.environments.Environments.Memento;
-import sneer.commons.lang.ByRef;
 import sneer.commons.lang.Producer;
 
 
@@ -54,19 +52,6 @@ public class EnvironmentsTest extends Assert {
 		final Producer<Object> proxy = Environments.bind(environment(producer), Producer.class);
 		assertSame(_binding, proxy.produce());
 	}
-
-	@Test
-	public void testRunWithMemento() {
-		final ByRef<Memento> memento = ByRef.newInstance(); 
-		
-		Environments.runWith(environment(), new Runnable(){ @Override public void run() {
-			memento.value = Environments.memento();
-		}});
-		
-		Environments.runWith(memento.value,	runnable());
-		assertTrue(_ran);
-	}
-
 	
 	private Runnable runnable() {
 		return new Runnable() { @Override public void run() {

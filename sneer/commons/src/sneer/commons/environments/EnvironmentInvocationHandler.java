@@ -11,15 +11,20 @@ import sneer.commons.lang.ByRef;
 
 final class EnvironmentInvocationHandler<T> implements InvocationHandler {
 
-	public static <T> T newInstance(Environment environment, final Class<T> intrface) {
+	public static <T> T newInstance(final Environment environment, final Class<T> intrface) {
 		final ByRef<T> result = ByRef.newInstance();
 		Environments.runWith(environment, new Runnable() { @Override public void run() {
 			final T component = my(intrface);
-			final Class<? extends Object> componentClass = component.getClass();
-			final EnvironmentInvocationHandler<T> invocationHandler = new EnvironmentInvocationHandler<T>(my(Environment.class), component);
-			result.value = (T) Proxy.newProxyInstance(componentClass.getClassLoader(), componentClass.getInterfaces(), invocationHandler);
+			final T proxy = newInstance(environment, component);
+			result.value = proxy;
 		}});
 		return result.value;
+	}
+
+	public static <T> T newInstance(Environment environment, final T component) {
+		final Class<? extends Object> componentClass = component.getClass();
+		final EnvironmentInvocationHandler<T> invocationHandler = new EnvironmentInvocationHandler<T>(environment, component);
+		return (T) Proxy.newProxyInstance(componentClass.getClassLoader(), componentClass.getInterfaces(), invocationHandler);
 	}
 	
 	private final Environment _environment;

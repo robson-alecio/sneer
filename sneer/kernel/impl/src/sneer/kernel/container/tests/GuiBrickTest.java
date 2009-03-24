@@ -8,6 +8,8 @@ import javax.swing.SwingUtilities;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import sneer.commons.environments.Environment;
+import sneer.commons.environments.Environments;
 import sneer.commons.lang.ByRef;
 import sneer.commons.lang.exceptions.NotImplementedYet;
 import sneer.kernel.container.Container;
@@ -23,6 +25,13 @@ public class GuiBrickTest {
 		final SomeGuiBrick brick = container.provide(SomeGuiBrick.class);
 		assertSame(swingThread(), brick.currentThread());
 	}
+	
+	@Test
+	public void guiBrickRunsInContainerEnvironment() throws Exception {
+		final Container container = Containers.newContainer();
+		final SomeGuiBrick brick = container.provide(SomeGuiBrick.class);
+		assertSame(container, brick.currentEnvironment());
+	}
 
 	@Test
 	public void injectedGuiBrickRunsInSwingThread() throws Exception {
@@ -34,6 +43,11 @@ public class GuiBrickTest {
 
 			@Override
 			public void slowMethod() {
+				throw new IllegalStateException();
+			}
+
+			@Override
+			public Environment currentEnvironment() {
 				throw new IllegalStateException();
 			}
 		});
@@ -49,14 +63,18 @@ public class GuiBrickTest {
 	
 	@Test
 	public void testGuiBrickRunsInsideTimebox() throws Exception {
-		int timeoutForGuiEvents = 10;
-		TimeboxedEventQueue.startQueueing(timeoutForGuiEvents);
-
-		try {
-			runInsideTimebox();
-		} finally {
-			TimeboxedEventQueue.stopQueueing();
-		}
+		Environments.runWith(Containers.newContainer(), new Runnable() { @Override public void run() {
+			
+			int timeoutForGuiEvents = 10;
+			TimeboxedEventQueue.startQueueing(timeoutForGuiEvents);
+	
+			try {
+				runInsideTimebox();
+			} finally {
+				TimeboxedEventQueue.stopQueueing();
+			}
+			
+		}});
 	}
 
 

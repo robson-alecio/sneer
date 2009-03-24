@@ -14,17 +14,21 @@ public class Environments {
 		}
 	}
 	
-	public static <T> T bind(Environment environment, Class<T> intrface) {
+	public static <T> T wrap(Class<T> intrface, Environment environment) {
 		return EnvironmentInvocationHandler.newInstance(environment, intrface);
+	}
+	
+	public static <T> T wrap(T instance, Environment environment) {
+		return EnvironmentInvocationHandler.newInstance(environment, instance);
 	}
 	
 	public static <T> T my(Class<T> need) {
 		final Environment environment = current();
+		if (environment == null)
+			cantFulfill(need);
 		if (need == Environment.class)
 			return (T) environment;
 		final T implementation = environment.provide(need);
-		if (environment == null)
-			cantFulfill(need);
 		if (null == implementation)
 			cantFulfill(need);
 		return implementation;

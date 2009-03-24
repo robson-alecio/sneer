@@ -95,7 +95,7 @@ public class ContainerImpl implements Container {
 	
 	private <T> T decorate(final T component) {
 		if (component instanceof GuiBrick)
-			return GuiBrickInvocationHandler.decorate(component);
+			return GuiBrickInvocationHandler.decorate(Environments.wrap(component, this));
 		return component;
 	}
 

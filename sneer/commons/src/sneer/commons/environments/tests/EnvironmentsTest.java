@@ -49,7 +49,7 @@ public class EnvironmentsTest extends Assert {
 			return my(Object.class);
 		}};
 		
-		final Producer<Object> proxy = Environments.bind(environment(producer), Producer.class);
+		final Producer<Object> proxy = Environments.wrap(Producer.class, environment(producer));
 		assertSame(_binding, proxy.produce());
 	}
 	

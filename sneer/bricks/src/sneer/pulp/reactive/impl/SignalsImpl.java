@@ -5,7 +5,7 @@ import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import wheel.lang.Consumer;
 
-public class SignalsImpl implements Signals {
+class SignalsImpl implements Signals {
 
 	private static final Consumer<Object> SINK = new Consumer<Object>() { @Override public void consume(Object ignored){} };
 

@@ -7,14 +7,13 @@ import java.util.List;
 import org.junit.Test;
 
 import sneer.brickness.Tuple;
+import sneer.brickness.testsupport.BrickTest;
+import sneer.brickness.testsupport.BrickTestRunner;
+import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
-import sneer.commons.io.StoragePath;
-import sneer.commons.testutil.TestThatMightUseResources;
-import sneer.kernel.container.Container;
-import sneer.kernel.container.Containers;
 import sneer.pulp.tuples.TupleSpace;
 
-public class TuplePersistenceTest extends TestThatMightUseResources {
+public class TuplePersistenceTest extends BrickTest {
 
 	@Test
 	public void testTuplePersistence() {
@@ -47,18 +46,12 @@ public class TuplePersistenceTest extends TestThatMightUseResources {
 	}
 	
 	private void runInNewEnvironment(Runnable runnable) {
-		Environments.runWith(newContainer(), runnable);
+		final Environment newEnvironment = my(BrickTestRunner.class).newTestEnvironment();
+		Environments.runWith(newEnvironment, runnable);
 	}
 	
 	private TupleSpace createSubject() {
 		return my(TupleSpace.class);
-	}
-
-
-	private Container newContainer() {
-		return Containers.newContainer(new StoragePath(){ @Override public String get() {
-			return tmpDirectory().getAbsolutePath();
-		}});
 	}
 }
 

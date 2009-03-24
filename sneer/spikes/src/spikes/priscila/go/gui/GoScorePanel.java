@@ -11,9 +11,9 @@ import javax.swing.SwingConstants;
 
 import sneer.commons.lang.Functor;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.Signals;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
-import wheel.reactive.impl.Adapter;
 
 public class GoScorePanel extends JPanel {
 
@@ -36,8 +36,8 @@ public class GoScorePanel extends JPanel {
 	}
 
 	private Signal<String> adaptToString(Signal<Integer> input) {
-		return new Adapter<Integer, String>(input, new Functor<Integer, String>(){ @Override public String evaluate(Integer value) {
+		return my(Signals.class).adapt(input, new Functor<Integer, String>(){ @Override public String evaluate(Integer value) {
 			return "" + value;
-		}}).output();
+		}});
 	}
 }

@@ -1,5 +1,7 @@
 package sneer.skin.widgets.reactive.tests;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.io.IOException;
@@ -11,12 +13,12 @@ import sneer.commons.environments.Environments;
 import sneer.commons.lang.Functor;
 import sneer.kernel.container.Containers;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.Signals;
 import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.io.Logger;
 import wheel.io.ui.GuiThread;
 import wheel.io.ui.TimeboxedEventQueue;
-import wheel.reactive.impl.Adapter;
 import wheel.reactive.impl.mocks.RandomBoolean;
 
 public class ReactiveImageDemo {
@@ -36,8 +38,7 @@ public class ReactiveImageDemo {
 				return value?ONLINE:OFFLINE;
 			}};
 				
-			Adapter<Boolean, Image> imgSource = new Adapter<Boolean, Image>(isOnline, functor);	
-			ImageWidget img = rfactory.newImage(imgSource.output());
+			ImageWidget img = rfactory.newImage(my(Signals.class).adapt(isOnline, functor));
 			
 			JFrame frm = new JFrame(img.getClass().getSimpleName());
 			frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

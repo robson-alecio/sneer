@@ -1,5 +1,7 @@
 package sneer.pulp.reactive.impl;
 
+import sneer.commons.lang.Functor;
+import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import wheel.lang.Consumer;
 
@@ -15,6 +17,11 @@ public class SignalsImpl implements Signals {
 	@Override
 	public Consumer<Object> sink() {
 		return SINK;
+	}
+
+	@Override
+	public <A, B> Signal<B> adapt(Signal<A> input, Functor<A, B> functor) {
+		return new Adapter<A, B>(input, functor).output();
 	}
 
 }

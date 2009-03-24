@@ -37,6 +37,7 @@ import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.dashboard.InstrumentWindow;
@@ -46,7 +47,6 @@ import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.io.ui.graphics.Images;
-import wheel.reactive.impl.Adapter;
 import wheel.reactive.lists.ListSignal;
 
 class ContactsGuiImpl implements ContactsGui {
@@ -168,8 +168,7 @@ class ContactsGuiImpl implements ContactsGui {
 			}};
 			
 			Signal<Boolean> isOnline = _connections.connectionFor(contact).isOnline();
-			Adapter<Boolean, Image> imgSource = new Adapter<Boolean, Image>(isOnline, functor);
-			return imgSource.output();
+			return my(Signals.class).adapt(isOnline, functor);
 		}
 	}
 	

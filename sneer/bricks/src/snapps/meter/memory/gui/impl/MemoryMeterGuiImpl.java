@@ -24,12 +24,12 @@ import javax.swing.border.EmptyBorder;
 import snapps.meter.memory.gui.MemoryMeterGui;
 import sneer.commons.lang.Functor;
 import sneer.pulp.memory.MemoryMeter;
+import sneer.pulp.reactive.Signals;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.ui.graphics.Images;
-import wheel.reactive.impl.Adapter;
 
 class MemoryMeterGuiImpl implements MemoryMeterGui {
 
@@ -115,12 +115,12 @@ class MemoryMeterGuiImpl implements MemoryMeterGui {
 		Functor<Integer, String> functor = new Functor<Integer, String>(){@Override public String evaluate(Integer value) {
 			return "Peak: " + value;
 		}};
-		_maxUsedMemory = _factory.newLabel(new Adapter<Integer, String>(_meter.usedMBsPeak(), functor).output());
+		_maxUsedMemory = _factory.newLabel(my(Signals.class).adapt(_meter.usedMBsPeak(), functor));
 		
 		functor = new Functor<Integer, String>(){@Override public String evaluate(Integer value) {
 			return "MB Used: " + value;
 		}};
-		_currentMemory = _factory.newLabel(new Adapter<Integer, String>(_meter.usedMBs(), functor).output());
+		_currentMemory = _factory.newLabel(my(Signals.class).adapt(_meter.usedMBs(), functor));
 	}
 
 	@Override

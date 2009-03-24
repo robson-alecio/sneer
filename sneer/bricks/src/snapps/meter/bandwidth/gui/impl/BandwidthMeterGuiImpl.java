@@ -18,12 +18,12 @@ import snapps.meter.bandwidth.gui.BandwidthMeterGui;
 import sneer.commons.lang.Functor;
 import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.Signals;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.ui.graphics.Images;
-import wheel.reactive.impl.Adapter;
 
 class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 
@@ -60,8 +60,8 @@ class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 		
 		Signal<Integer> upload = my(BandwidthCounter.class).uploadSpeed();
 		Signal<Integer> download = my(BandwidthCounter.class).downloadSpeed();
-		_uploadField = factory.newLabel(new Adapter<Integer, String>(upload, new MaxHolderFunctor()).output());
-		_downloadField = factory.newLabel(new Adapter<Integer, String>(download, new MaxHolderFunctor()).output());
+		_uploadField = factory.newLabel(maxHolder(upload));
+		_downloadField = factory.newLabel(maxHolder(download));
 		JLabel lbUpload = _uploadField.getMainWidget();
 		JLabel lbDownload = _downloadField.getMainWidget();
 		
@@ -88,6 +88,10 @@ class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 		container.setBackground(Color.WHITE);
 		container.setLayout(new BorderLayout());
 		container.add(root, BorderLayout.CENTER);
+	}
+
+	private Signal<String> maxHolder(Signal<Integer> input) {
+		return my(Signals.class).adapt(input, new MaxHolderFunctor());
 	}
 
 	private void changeLabelFont(JLabel label) {

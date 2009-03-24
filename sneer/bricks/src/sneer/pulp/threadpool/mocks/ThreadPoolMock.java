@@ -21,7 +21,7 @@ public class ThreadPoolMock implements ThreadPool {
 		_actors.add(runnable);
 	}
 
-	public synchronized void startAllActors(){
+	public synchronized void runAllActors(){
 		ArrayList<Runnable> copy = new ArrayList<Runnable>(_actors);
 		_actors.clear();
 		

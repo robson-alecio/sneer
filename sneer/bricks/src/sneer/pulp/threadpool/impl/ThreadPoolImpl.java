@@ -9,7 +9,6 @@ import wheel.lang.Threads;
 class ThreadPoolImpl implements ThreadPool {
 
 	private final OwnNameKeeper _ownNameKeeper = my(OwnNameKeeper.class);
-
 	
 	@Override
 	public void registerActor(Runnable actor) {

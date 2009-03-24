@@ -40,7 +40,6 @@ public class Threads {
 		} catch (InterruptedException e) {
 			throw new IllegalStateException(e);
 		}
-		
 	}
 	
 	public static ClassLoader contextClassLoader() {
@@ -59,7 +58,6 @@ public class Threads {
 			notify();
 		}};
 	}
-
 }
 
 

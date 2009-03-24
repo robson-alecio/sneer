@@ -154,15 +154,15 @@ public class BrickTestRunner extends JUnit4ClassRunner {
 		my(TestInstanceEnvironment.class).instanceBeingInitialized(testInstance);
 	}
 
-	public Environment newEnvironmentWith(Object... bindings) {
+	public Environment newTestEnvironment(Object... bindings) {
 		return new CachingEnvironment(
 				Environments.compose(
 					new ClosedEnvironment(bindings),
-					new TestInstanceEnvironment(),
+					my(TestInstanceEnvironment.class),
 					new Brickness()));
 	}
 
-	public Environment newEnvironment() {
+	private Environment newEnvironment() {
 		return new CachingEnvironment(
 				Environments.compose(
 					new TestInstanceEnvironment(),

@@ -3,8 +3,6 @@ package sneer.pulp.dyndns.client.tests;
 import static sneer.commons.environments.Environments.my;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.jmock.Expectations;
 import org.junit.Test;
@@ -64,6 +62,9 @@ Unacceptable Client Behavior
 	@Contribute final Updater _updater = mock(Updater.class);
 	@Contribute final TransientPropertyStore _propertyStore = new TransientPropertyStore();
 	@Contribute final ThreadPoolMock _threadPool = new ThreadPoolMock();
+	@Contribute final StoragePath _storagePath = new StoragePath(){@Override public String get() {
+		return tmpDirectory().getAbsolutePath();
+	}};
 	
 	@Test
 	public void updateOnIpChange() throws Exception {
@@ -78,10 +79,17 @@ Unacceptable Client Behavior
 			exactly(1).of(_updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
 		}});
 		
-
-		startDynDnsClientOn(newEnvironment());
+		startDynDnsClientOnNewEnvironment();
+		_threadPool.runAllActors();
 		
-		startDynDnsClientOn(newEnvironment());
+		startDynDnsClientOnNewEnvironment();
+		_threadPool.runAllActors();
+	}
+
+	private void startDynDnsClientOnNewEnvironment() {
+		Environments.runWith(my(BrickTestRunner.class).newTestEnvironment(), new Runnable() { @Override public void run() {
+			my(DynDnsClient.class);
+		}});
 	}
 	
 	@Test
@@ -105,13 +113,13 @@ Unacceptable Client Behavior
 		
 
 		startDynDnsClient();
-		_threadPool.startAllActors();
+		_threadPool.runAllActors();
 		
 		final Light light = assertBlinkingLight(error, my(Environment.class));
 		
 		my(Clock.class).advanceTime(300001);
 		
-		_threadPool.startAllActors();
+		_threadPool.runAllActors();
 		assertFalse(light.isOn());
 	}
 	
@@ -135,7 +143,7 @@ Unacceptable Client Behavior
 		}});
 		
 		startDynDnsClient();
-		_threadPool.startAllActors();
+		_threadPool.runAllActors();
 		
 		final Light light = assertBlinkingLight(error, my(Environment.class));
 		
@@ -145,7 +153,7 @@ Unacceptable Client Behavior
 		DynDnsAccount changed = new DynDnsAccount("test.dyndns.org", "test", "*test");
 		_ownAccount.setter().consume(changed);
 
-		_threadPool.startAllActors();
+		_threadPool.runAllActors();
 		assertFalse(light.isOn());
 		
 	}
@@ -165,7 +173,7 @@ Unacceptable Client Behavior
 		}});
 		
 		startDynDnsClient();
-		_threadPool.startAllActors();
+		_threadPool.runAllActors();
 		
 		assertBlinkingLight(error, my(Environment.class));
 	}
@@ -185,27 +193,6 @@ Unacceptable Client Behavior
 
 	private void startDynDnsClient() {
 		my(DynDnsClient.class);
-	}
-
-	private void startDynDnsClientOn(final Environment environment) {
-		Environments.runWith(environment, new Runnable() { @Override public void run() {
-			my(DynDnsClient.class);
-		}});
-	}
-
-	private Environment newEnvironment() {
-		List<Object> list = new ArrayList<Object>();
-		list.add(_ownIpDiscoverer);
-		list.add(_ownAccountKeeper);
-		list.add(_updater);
-		list.add(_propertyStore);
-		
-		list.add(new StoragePath(){@Override public String get() {
-			return tmpDirectory().getAbsolutePath();
-		}});
-		
-		final Object[] bindings = list.toArray();
-		return my(BrickTestRunner.class).newEnvironmentWith(bindings);
 	}
 }
 

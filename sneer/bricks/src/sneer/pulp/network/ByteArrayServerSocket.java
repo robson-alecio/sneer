@@ -6,11 +6,10 @@ package sneer.pulp.network;
 
 import java.io.IOException;
 
-import sneer.kernel.container.Crashable;
 
-
-public interface ByteArrayServerSocket extends Crashable {
+public interface ByteArrayServerSocket {
 
 	ByteArraySocket accept() throws IOException;
+	void crash();
 	
 }

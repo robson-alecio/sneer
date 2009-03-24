@@ -18,9 +18,9 @@ import org.junit.Test;
 import snapps.watchme.WatchMe;
 import sneer.brickness.PublicKey;
 import sneer.brickness.testsupport.BrickTest;
+import sneer.brickness.testsupport.BrickTestRunner;
 import sneer.brickness.testsupport.Contribute;
-import sneer.kernel.container.Container;
-import sneer.kernel.container.Containers;
+import sneer.commons.environments.Environment;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.keymanager.KeyManager;
@@ -36,11 +36,11 @@ public class WatchMeTest extends BrickTest {
 	
 	@Contribute
 	final private Screenshotter _shotter = mock(Screenshotter.class);
+	private final TupleSpace _sharedSpace = my(TupleSpace.class);
+	
 	private final ImageFactory _imageFactory = my(ImageFactory.class);
 	private final KeyManager _keys = my(KeyManager.class);
 	private final Clock _clock = my(Clock.class);
-	private final TupleSpace _sharedSpace = my(TupleSpace.class);
-
 	private final WatchMe _subject = my(WatchMe.class);
 	
 	private AtomicReference<BufferedImage> _screenObserved = new AtomicReference<BufferedImage>(null);
@@ -63,7 +63,7 @@ public class WatchMeTest extends BrickTest {
 			one(_shotter).takeScreenshot(); will(returnValue(image3)); inSequence(seq);
 		}});
 
-		Container container2 = Containers.newContainer(_sharedSpace); 
+		Environment container2 = my(BrickTestRunner.class).newTestEnvironment(_sharedSpace); 
 		WatchMe subject2 = container2.provide(WatchMe.class);
 
 		PublicKey key = _keys.ownPublicKey();

@@ -1,4 +1,4 @@
-package sneer.skin.imgselector.tests;
+package spikes.demos;
 
 import java.awt.Image;
 

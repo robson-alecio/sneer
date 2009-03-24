@@ -4,14 +4,13 @@ import static sneer.commons.environments.Environments.my;
 
 import org.junit.Test;
 
+import sneer.brickness.testsupport.BrickTest;
+import sneer.brickness.testsupport.BrickTestRunner;
+import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
-import sneer.commons.io.StoragePath;
-import sneer.commons.testutil.TestThatMightUseResources;
-import sneer.kernel.container.Container;
-import sneer.kernel.container.Containers;
 import sneer.pulp.propertystore.PropertyStore;
 
-public class PropertyStoreTest extends TestThatMightUseResources {
+public class PropertyStoreTest extends BrickTest {
 
 	@Test
 	public void testPropertyStore() {
@@ -32,10 +31,8 @@ public class PropertyStoreTest extends TestThatMightUseResources {
 	}
 
 	private void runInNewEnvironment(Runnable runnable) {
-		final Container container = Containers.newContainer(new StoragePath(){ @Override public String get() {
-			return tmpDirectory().getAbsolutePath();
-		}});
-		Environments.runWith(container, runnable);
+		final Environment newEnvironment = my(BrickTestRunner.class).newTestEnvironment();
+		Environments.runWith(newEnvironment, runnable);
 	}
 	
 }

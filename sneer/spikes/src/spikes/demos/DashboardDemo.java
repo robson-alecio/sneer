@@ -1,4 +1,4 @@
-package sneer.skin.dashboard.tests;
+package spikes.demos;
 
 import java.awt.Container;
 

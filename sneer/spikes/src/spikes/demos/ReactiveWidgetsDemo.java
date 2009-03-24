@@ -1,4 +1,4 @@
-package sneer.skin.widgets.reactive.tests;
+package spikes.demos;
 
 import static sneer.commons.environments.Environments.my;
 

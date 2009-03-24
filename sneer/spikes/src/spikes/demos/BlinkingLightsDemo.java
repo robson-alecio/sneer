@@ -1,4 +1,4 @@
-package snapps.blinkinglights.tests;
+package spikes.demos;
 
 import static sneer.commons.environments.Environments.my;
 import snapps.blinkinglights.gui.BlinkingLightsGui;

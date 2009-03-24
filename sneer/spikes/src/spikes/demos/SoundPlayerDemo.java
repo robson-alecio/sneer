@@ -1,4 +1,4 @@
-package sneer.skin.sound.player.tests;
+package spikes.demos;
 
 import static sneer.commons.environments.Environments.my;
 import sneer.commons.environments.Environments;

@@ -1,6 +1,7 @@
 package sneer.container.impl;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -18,7 +19,7 @@ public class BrickInterfaceFinder {
 		_packageName = packageName;
 	}
 
-	public Class<?> find() {
+	public Class<?> find() throws FileNotFoundException {
 		for (File classFile : listClassFiles()) {
 			Class<?> klass = loadClass(classFile);
 			if (klass.isAnnotationPresent(NewBrick.class))
@@ -36,7 +37,7 @@ public class BrickInterfaceFinder {
 		}
 	}
 
-	private File[] listClassFiles() {
+	private File[] listClassFiles() throws FileNotFoundException {
 		return ClassFiles.list(_classDirectory);
 	}
 

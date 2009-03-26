@@ -165,11 +165,10 @@ public class SneerPartyImpl implements SneerParty {
 
 
 	@Override
-	public BrickBundle publishBricks(File sourceDirectory) {
+	public void publishBricks(File sourceDirectory) {
 		BrickBundle brickBundle = _deployer.pack(sourceDirectory);
 		//brickBundle.prettyPrint();
 		_brickManager.install(brickBundle);
-		return brickBundle;
 	}
 
 

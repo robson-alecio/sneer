@@ -46,9 +46,10 @@ public class Jars {
 	public static void createJar(File file, Class<?> klass) throws IOException, URISyntaxException {
 		final JarBuilder builder = new JarBuilder(file);
 		try {
-			final String classFile = klass.getCanonicalName().replace('.', '/') + ".class";
-			final URL url = klass.getResource("/" + classFile);
-			builder.add(classFile, new File(url.toURI()));
+			final String fileName = klass.getCanonicalName().replace('.', '/') + ".class";
+			final URL url = klass.getResource("/" + fileName);
+			final File classFile = new File(url.toURI());
+			builder.add(fileName, classFile);
 		} finally {
 			builder.close();
 		}

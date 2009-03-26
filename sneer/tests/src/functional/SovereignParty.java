@@ -4,7 +4,6 @@ import java.io.File;
 
 import snapps.wind.Shout;
 import sneer.brickness.PublicKey;
-import sneer.pulp.deployer.BrickBundle;
 import sneer.pulp.reactive.Signal;
 import wheel.reactive.lists.ListSignal;
 
@@ -23,7 +22,7 @@ public interface SovereignParty {
 	Signal<String> navigateAndGetName(String nicknamePath);
 	
 
-	BrickBundle publishBricks(File sourceDirectory);
+	void publishBricks(File sourceDirectory);
 	
 	
 	void shout(String string);

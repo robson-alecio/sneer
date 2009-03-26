@@ -16,7 +16,6 @@ import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.gates.logic.LogicGates;
 import sneer.pulp.reactive.impl.RegisterImpl;
-import wheel.lang.Consumer;
 import wheel.reactive.impl.EventReceiver;
 
 @RunWith(BrickTestRunner.class)

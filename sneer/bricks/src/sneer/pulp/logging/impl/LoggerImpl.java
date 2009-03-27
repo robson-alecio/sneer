@@ -44,31 +44,16 @@ class LoggerImpl implements sneer.pulp.logging.Logger {
 		return _phrases;
 	}	
 
-//	@Override
-//	public Consumer<String> whiteListEntry() {
-//		return new Consumer<String>() { @Override public void consume(String phrase) {
-//			publish(phrase);
-//		}};
-//	}
-//	
-//	private void publish(String phrase) {
-//		_tupleSpace.publish(new LogWhiteListEntry(phrase)); 
-//	}
-
 	@Override
 	public EventSource<String> loggedMessages() {
 		return _loggedMessages.output();
 	}
 	
 	private String message() {
-		String message = _stringWriter.toString();
-		for (LogWhiteListEntry logWhiteListEntry: _phrases.output())
-			if (message.indexOf(logWhiteListEntry.phrase) != -1)
-					return message;
-		return "";
+		return _stringWriter.toString();
 	}
 	
-	private void logMessage() {
+	private void notifyReceivers() {
 		_loggedMessages.notifyReceivers(message());
 	}
 
@@ -111,7 +96,7 @@ class LoggerImpl implements sneer.pulp.logging.Logger {
 	}
 
 	private void logMessage(String message) {
-		_log.println(message);
+		logHeader(message);
 	}
 
 	private void logHeader(String entry) {
@@ -122,22 +107,12 @@ class LoggerImpl implements sneer.pulp.logging.Logger {
 		return "" + SIMPLE_DATE_FORMAT.format(new Date()) + "  " + entry;
 	}
 
-	private void logSeparator() {
-		_log.println();
-	}
-
 
 	private void write(Throwable throwable) {
-		String message = message();
-	
-		if (message.trim().length() > 0)
-			logHeader(message);
-	
 		if (throwable != null)
 			logThrowable(throwable);
 		
-		logSeparator();
-		logMessage();
+		notifyReceivers();
 		_stringWriter = new StringWriter();
 		_log = new PrintWriter(_stringWriter);
 	}

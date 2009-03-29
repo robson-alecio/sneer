@@ -74,13 +74,13 @@ class WindGuiImpl implements WindGui {
 	public void init(InstrumentWindow window) {
 		Container container = window.contentPane();
 		_container = container;
-		iniGui();
+		initGui();
 		_autoscrollSupportToAvoidGc.placeAtEnd();
 		initShoutReceiver();
 		new WindClipboardSupport();
 	}
 
-	private void iniGui() {
+	private void initGui() {
 		_myShout = _rfactory.newTextPane(new Constant<String>(""),  _wind.megaphone(), NotificationPolicy.OnEnterPressed);
 		_myShout.getMainWidget().setBorder(new EmptyBorder(0,0,0,0));
 

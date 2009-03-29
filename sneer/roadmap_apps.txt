@@ -43,9 +43,9 @@ TASKS
 	- WatchMe
 		- Accelerate.
 			- Reactivate the Cache - Set WatchMeImpl.CACHE_CAPACITY to 3000 (Currently set to zero). 
-			- Add a Sequencer for incoming ImageDeltaPackets.
-			- Flush receiver's cache every time a packet is lost to avoid inconsistency.
-				- Let peer signal interest in "lost cache packets". Do not implement this. Move this down in the roadmap when all other WatchMe tasks are done. A workaround for now is the WatchMe sender stopping and restarting WatchMe because this flushes the senders cache.
+				- Add a Sequencer for incoming ImageDeltaPackets.
+				- Flush receiver's cache every time a packet is lost to avoid inconsistency.
+					- Let peer signal interest in "lost cache packets". Do not implement this. Move this down in the roadmap when all other WatchMe tasks are done. A workaround for now is the WatchMe sender stopping and restarting WatchMe because this flushes the senders cache.
 		
 
 	30/FEB --------------------------------------

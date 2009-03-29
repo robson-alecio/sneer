@@ -12,20 +12,19 @@ import wheel.reactive.lists.impl.VisitingListReceiver;
 
 class SignalChooserManagerImpl<T> implements SignalChooserManager<T>{
 	
-	@SuppressWarnings("unused")
-	private ElementVisitingListReceiver _elementVisitingListReceiverToAvoidGc;
+	@SuppressWarnings("unused")	private final Object _refToAvoidGc;
 
-	private final List<ElementReceiver> _elementReceiversToAvoidGc = new ArrayList<ElementReceiver>();
+	private final List<ElementReceiver> _elementReceivers = new ArrayList<ElementReceiver>();
 	private final ListOfSignalsReceiver<T> _listOfSignalsReceiver;
 	private final Object _monitor = new Object();
 	
 	public SignalChooserManagerImpl(ListSignal<T> input, ListOfSignalsReceiver<T> listOfSignalsReceiver) {
 		_listOfSignalsReceiver = listOfSignalsReceiver;
-		_elementVisitingListReceiverToAvoidGc = new ElementVisitingListReceiver(input);
+		_refToAvoidGc = new ElementVisitingListReceiver(input);
 	}
 	
 	private void checkElementIndex(int index, T element) { //Fix Remove this method after bugfix (run SortTest to see the bug)
-		ElementReceiver receiver = _elementReceiversToAvoidGc.get(index);
+		ElementReceiver receiver = _elementReceivers.get(index);
 		T actual = receiver._element;
 		if(actual!=element) 
 			throw new IllegalStateException("Wrong element index!! index:" + index + ", expected=" + element + ", actual=" + actual  );
@@ -35,7 +34,7 @@ class SignalChooserManagerImpl<T> implements SignalChooserManager<T>{
 		synchronized (_monitor) {
 			if (signalChooser() == null) return;
 			checkElementIndex(index, element);
-			_elementReceiversToAvoidGc.remove(index);
+			_elementReceivers.remove(index);
 		}
 	}
 
@@ -44,7 +43,7 @@ class SignalChooserManagerImpl<T> implements SignalChooserManager<T>{
 			if (signalChooser() == null) return;
 			
 			ElementReceiver receiver = new ElementReceiver(element);
-			_elementReceiversToAvoidGc.add(index, receiver);
+			_elementReceivers.add(index, receiver);
 			checkElementIndex(index, element);
 			
 			receiver._isActive = true;
@@ -57,16 +56,16 @@ class SignalChooserManagerImpl<T> implements SignalChooserManager<T>{
 			int tmpIndex = newIndex>oldIndex ? newIndex-1 : newIndex;
 			tmpIndex = newIndex<0 ? 0 : newIndex;
 			
-			ElementReceiver receiver = _elementReceiversToAvoidGc.get(oldIndex);
+			ElementReceiver receiver = _elementReceivers.get(oldIndex);
 			checkElementIndex(oldIndex, element);
-			_elementReceiversToAvoidGc.remove(oldIndex);
+			_elementReceivers.remove(oldIndex);
 
-			int size = _elementReceiversToAvoidGc.size();
+			int size = _elementReceivers.size();
 			if(tmpIndex > size){
-				_elementReceiversToAvoidGc.add(receiver);
+				_elementReceivers.add(receiver);
 				tmpIndex = size;
 			}else
-				_elementReceiversToAvoidGc.add(tmpIndex, receiver);
+				_elementReceivers.add(tmpIndex, receiver);
 			checkElementIndex(tmpIndex, element);
 		}
 	}
@@ -88,7 +87,7 @@ class SignalChooserManagerImpl<T> implements SignalChooserManager<T>{
 		public void consume(Object ignored) {
 			if (!_isActive) return;
 			synchronized (_monitor) {
-				int index = _elementReceiversToAvoidGc.indexOf(this);
+				int index = _elementReceivers.indexOf(this);
 				_listOfSignalsReceiver.elementSignalChanged( index,  _element);
 			}
 		}

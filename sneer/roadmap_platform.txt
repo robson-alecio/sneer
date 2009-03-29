@@ -1,7 +1,5 @@
 ﻿SMALL FIXES
 =============
-	- Allow EventReceiver to be used with CollectionSignals too.
-	
 	- Timeouts - Discover why tests timeout so frequently on Klaus's Linux box. Sometimes they pass in under one second, sometimes they timeout after 8 seconds. Probably has something to do with the way waiting and sleeping threads affect other threads on Linux.
 
 	- ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
@@ -16,8 +14,8 @@ TASKS
 ========
 	- [Sandro]Webstart
 
-	- build.xml/Antlipse - Revive.
-		- [Klaus] Eliminate upward dependencies.
+	- [Klaus] build.xml/Antlipse - Revive.
+		- Eliminate upward dependencies.
 
 	- [Bamboo]Create/Install ("publish") brick locally
 		- main.Sneer - Publish all necessary bricks instead of just producing them.
@@ -32,7 +30,7 @@ TASKS
 	- [Douglas] Logging - Default: Log only throwables. Have "white list" of parts of messages to log.
 			- GUI to delete or add parts of messages in the "white list" to log.
 			- Logger
-				whileList
+				- whileList - Transient. Will be transparently persisted later on.
 			- Bricks to listen to EventSource Logger.loggedMessages()
 				- LogToFile
 				- LogToGui

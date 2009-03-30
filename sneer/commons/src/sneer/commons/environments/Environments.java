@@ -1,5 +1,7 @@
 package sneer.commons.environments;
 
+import sneer.commons.lang.Producer;
+
 public class Environments {
 	
 	private final static ThreadLocal<Environment> _environment = new ThreadLocal<Environment>() { @Override	protected Environment initialValue() { return null;};};
@@ -9,6 +11,16 @@ public class Environments {
 		_environment.set(environment);
 		try {
 			runnable.run();
+		} finally {
+			_environment.set(previous);
+		}
+	}
+
+	public static <T> T produceWith(Environment environment, Producer<T> producer) {
+		final Environment previous = current();
+		_environment.set(environment);
+		try {
+			return producer.produce();
 		} finally {
 			_environment.set(previous);
 		}
@@ -52,4 +64,5 @@ public class Environments {
 	private static Environment current() {
 		return _environment.get();
 	}
+
 }

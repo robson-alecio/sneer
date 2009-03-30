@@ -29,9 +29,12 @@ public class NewContainerImpl implements NewContainer {
 		_environment.bind(instantiateInEnvironment(brickImpl));
 	}
 
+
 	private URLClassLoader classLoaderFor(final String classDirectory, String brickPackage) {
+//		return new URLClassLoader(new URL[] { toURL(
+//				classpathRootFor(classDirectory, brickPackage)) }, _parentClassLoaderWithCommonsAndContainerApiSuchAsBrickAnnotation);
 		return new URLClassLoader(new URL[] { toURL(
-			classpathRootFor(classDirectory, brickPackage)) });
+				classpathRootFor(classDirectory, brickPackage)) });
 	}
 
 	private Class<?> loadImpl(Class<?> brick, URLClassLoader classLoader) {

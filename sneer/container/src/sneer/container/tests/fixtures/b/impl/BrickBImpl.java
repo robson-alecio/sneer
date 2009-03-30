@@ -4,6 +4,9 @@ import static sneer.commons.environments.Environments.my;
 import sneer.container.tests.fixtures.a.BrickA;
 import sneer.container.tests.fixtures.b.BrickB;
 
-public class BrickBImpl implements BrickB {{
-	my(BrickA.class).setProperty("BrickB was here!");
-}}
+public class BrickBImpl implements BrickB {
+	{
+		my(BrickA.class).setProperty("BrickB was here!");
+		System.setProperty("BrickB.classLoader", getClass().getClassLoader().toString());
+	}
+}

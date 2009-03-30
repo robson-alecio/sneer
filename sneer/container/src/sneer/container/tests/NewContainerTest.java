@@ -1,7 +1,5 @@
 package sneer.container.tests;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,6 +7,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.container.BrickLoadingException;
@@ -18,7 +18,7 @@ import sneer.container.tests.fixtures.a.BrickA;
 import sneer.container.tests.fixtures.b.BrickB;
 import sneer.container.tests.fixtures.noannotation.InterfaceWithoutBrickAnnotation;
 
-public class NewContainerTest {
+public class NewContainerTest extends Assert {
 	
 	final NewContainer subject = NewContainers.newContainer();
 	
@@ -35,6 +35,19 @@ public class NewContainerTest {
 		System.setProperty("BrickA.property", "");
 		runBrick(BrickB.class);
 		assertEquals("BrickB was here!", System.getProperty("BrickA.property"));
+	}
+
+	@Ignore
+	@Test
+	public void runInSeparateClassloaders() throws Exception {
+		System.setProperty("BrickA.classLoader", "");
+		System.setProperty("BrickB.classLoader", "");
+		runBrick(BrickA.class);
+		runBrick(BrickB.class);
+		String classLoaderA = System.getProperty("BrickA.classLoader");
+		String classLoaderB = System.getProperty("BrickB.classLoader");
+		System.out.println(classLoaderA);
+		assertFalse(classLoaderA.equals(classLoaderB));
 	}
 	
 	@Test(expected=BrickLoadingException.class)

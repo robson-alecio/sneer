@@ -6,6 +6,7 @@ class BrickAImpl implements BrickA {
 	
 	{
 		System.setProperty("BrickA.ran", "true");
+		System.setProperty("BrickA.classLoader", getClass().getClassLoader().toString());
 	}
 
 	@Override

@@ -1,9 +1,11 @@
 package wheel.lang;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.util.HashSet;
 import java.util.Set;
 
-import wheel.io.Logger;
+import sneer.pulp.logging.Logger;
 import wheel.lang.exceptions.TimeIsUp;
 
 public abstract class Timebox implements Runnable {
@@ -62,7 +64,7 @@ public abstract class Timebox implements Runnable {
 		synchronized (_isDeadMonitor) {
 			_isDead = true;
 		}
-		Logger.log(timeIsUp);
+		my(Logger.class).log(timeIsUp);
 	}
 
 	private void tryToRun() {

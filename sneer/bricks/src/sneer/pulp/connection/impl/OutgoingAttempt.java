@@ -7,18 +7,16 @@ import java.io.IOException;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.internetaddresskeeper.InternetAddress;
+import sneer.pulp.logging.Logger;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;
 import sneer.pulp.threadpool.ThreadPool;
-import wheel.io.Logger;
 
-class OutgoingAttempt implements Runnable {
+class OutgoingAttempt {
 
 	private final Network _network = my(Network.class);
 	private final ConnectionManager _connectionManager = my(ConnectionManager.class);
-	private final ThreadPool _threadPool = my(ThreadPool.class); { _threadPool.registerActor(this); }
 	private final Clock _clock = my(Clock.class);
-
 	
 	private final InternetAddress _address;
 	private boolean _isRunning = true;
@@ -26,6 +24,10 @@ class OutgoingAttempt implements Runnable {
 	
 	OutgoingAttempt(InternetAddress address) {
 		_address = address;
+
+		my(ThreadPool.class).registerActor(new Runnable(){ @Override public void run() {
+			keepTryingToOpen();
+		}});
 	}
 
 	
@@ -34,11 +36,10 @@ class OutgoingAttempt implements Runnable {
 	}
 
 	
-	public void run() {
+	private void keepTryingToOpen() {
 		while (isRunning()) {
 			tryToOpen();
 			_clock.sleepAtLeast(20 * 1000);
-
 		}
 	}
 
@@ -56,7 +57,7 @@ class OutgoingAttempt implements Runnable {
 			return;
 		}
 		
-		Logger.log("Outgoing socket opened: " + socket);
+		my(Logger.class).log("Outgoing socket opened: " + socket);
 		_connectionManager.manageOutgoingSocket(_address.contact(), socket);
 	}
 	

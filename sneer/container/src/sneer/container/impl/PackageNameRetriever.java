@@ -12,25 +12,19 @@ import sneer.commons.lang.ByRef;
 
 class PackageNameRetriever {
 
-	private String _classDirectory;
-
-	PackageNameRetriever(String classDirectory) {
-		_classDirectory = classDirectory;
+	static String packageNameFor(String classDirectory) throws IOException {
+		return packageNameFor(ClassFiles.list(classDirectory)[0]);
 	}
 
-	String retrieve() throws IOException {
-		return packageNameFor(ClassFiles.list(_classDirectory)[0]);
-	}
-
-	private String packageNameFor(File file) throws IOException {
-		final ByRef<String> packageName = ByRef.newInstance();
+	static private String packageNameFor(File file) throws IOException {
+		final ByRef<String> result = ByRef.newInstance();
 		ClassReader reader = new ClassReader(IOUtils.toByteArray(new FileInputStream(file)));
-		reader.accept(new EmptyVisitor() {
-			@Override
-			public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-				packageName.value = name.substring(0, name.lastIndexOf('/')).replace('/', '.');
-			}
-		}, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
-		return packageName.value;
+		reader.accept(new EmptyVisitor() { @Override public void visit(int versionIgnored, int accessIgnored, String className, String signatureIgnored, String superNameIgnored, String[] interfacesIgnored) {
+			
+			result.value = className.substring(0, className.lastIndexOf('/')).replace('/', '.');
+			
+		}}, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
+		return result.value;
 	}
+
 }

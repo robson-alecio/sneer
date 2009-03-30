@@ -8,19 +8,19 @@ import org.apache.commons.io.FilenameUtils;
 import sneer.container.BrickLoadingException;
 import sneer.container.NewBrick;
 
-class BrickInterfaceFinder {
+class BrickInterfaceSearch {
 
-	private String _classDirectory;
-	private ClassLoader _classLoader;
-	private String _packageName;
-
-	BrickInterfaceFinder(String classDirectory, String packageName, ClassLoader classLoader) {
+	private final String _classDirectory;
+	private final ClassLoader _classLoader;
+	private final String _packageName;
+	
+	BrickInterfaceSearch(String classDirectory, String packageName, ClassLoader classLoader) {
 		_classLoader = classLoader;
 		_classDirectory = classDirectory;
 		_packageName = packageName;
 	}
 
-	Class<?> find() throws FileNotFoundException {
+	Class<?> result() throws FileNotFoundException {
 		Class<?> result = null;
 		for (File classFile : listClassFiles()) {
 			Class<?> candidate = loadClass(classFile);

@@ -23,7 +23,7 @@ public class NewContainerImpl implements NewContainer {
 		String brickPackage = packageNameFor(classDirectory);
 		URLClassLoader classLoader = classLoaderFor(classDirectory, brickPackage);
 			
-		Class<?> brick = new BrickInterfaceFinder(classDirectory, brickPackage, classLoader).find();
+		Class<?> brick = new BrickInterfaceSearch(classDirectory, brickPackage, classLoader).result();
 			
 		Class<?> brickImpl = loadImpl(brick, classLoader);
 		_environment.bind(instantiateInEnvironment(brickImpl));
@@ -78,7 +78,7 @@ public class NewContainerImpl implements NewContainer {
 	}
 
 	private String packageNameFor(String classDirectory) throws IOException {
-		return new PackageNameRetriever(classDirectory).retrieve();
+		return PackageNameRetriever.packageNameFor(classDirectory);
 	}
 
 	private File classpathRootFor(String classDirectory, String packageName) {

@@ -1,11 +1,8 @@
 package sneer.container.impl;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.URLClassLoader;
 
 import sneer.brickness.environment.BrickConventions;
@@ -17,27 +14,30 @@ import sneer.container.NewContainer;
 public class NewContainerImpl implements NewContainer {
 	
 	private final ContainerEnvironment _environment = new ContainerEnvironment();
+	private final ClassLoader _apiClassLoader = createApiClassLoader();
 
 	@Override
 	public void runBrick(final String classDirectory) throws IOException {
-		String brickPackage = packageNameFor(classDirectory);
-		URLClassLoader classLoader = classLoaderFor(classDirectory, brickPackage);
+		String packageName = packageNameFor(classDirectory);
+		ClassLoader classLoader = classLoaderFor(classDirectory, packageName);
 			
-		Class<?> brick = new BrickInterfaceSearch(classDirectory, brickPackage, classLoader).result();
+		Class<?> brick = new BrickInterfaceSearch(classDirectory, packageName, classLoader).result();
 			
 		Class<?> brickImpl = loadImpl(brick, classLoader);
 		_environment.bind(instantiateInEnvironment(brickImpl));
 	}
 
 
-	private URLClassLoader classLoaderFor(final String classDirectory, String brickPackage) {
-//		return new URLClassLoader(new URL[] { toURL(
-//				classpathRootFor(classDirectory, brickPackage)) }, _parentClassLoaderWithCommonsAndContainerApiSuchAsBrickAnnotation);
-		return new URLClassLoader(new URL[] { toURL(
-				classpathRootFor(classDirectory, brickPackage)) });
+	private ClassLoader createApiClassLoader() {
+		return getClass().getClassLoader();
 	}
 
-	private Class<?> loadImpl(Class<?> brick, URLClassLoader classLoader) {
+
+	private URLClassLoader classLoaderFor(final String classDirectory, String packageName) {
+		return new NewBrickClassLoader(classDirectory, packageName, _apiClassLoader);
+	}
+
+	private Class<?> loadImpl(Class<?> brick, ClassLoader classLoader) {
 		try {
 			return classLoader.loadClass(implNameFor(brick.getName()));
 		} catch (ClassNotFoundException e) {
@@ -72,24 +72,13 @@ public class NewContainerImpl implements NewContainer {
 		}
 	}
 
-	private URL toURL(File file) {
-		try {
-			return file.toURI().toURL();
-		} catch (MalformedURLException e) {
-			throw new IllegalStateException(e);
-		}
-	}
 
 	private String packageNameFor(String classDirectory) throws IOException {
 		return PackageNameRetriever.packageNameFor(classDirectory);
 	}
-
-	private File classpathRootFor(String classDirectory, String packageName) {
-		return new File(classDirectory.substring(0, classDirectory.length() - packageName.length()));
-	}
 	
 	private String implNameFor(final String brickInterfaceName) {
-		return BrickConventions.implementationNameFor(brickInterfaceName);
+		return BrickConventions.implClassNameFor(brickInterfaceName);
 	}
 
 }

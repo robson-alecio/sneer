@@ -156,7 +156,7 @@ public class ContainerImpl implements Container {
 		if(!type.isInterface())
 			return type.getName();
 		
-		return BrickConventions.implementationNameFor(type.getName());
+		return BrickConventions.implClassNameFor(type.getName());
 	}
 
 	//Fix: check if this code will work on production

@@ -8,7 +8,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.container.BrickLoadingException;
@@ -32,21 +31,21 @@ public class NewContainerTest extends Assert {
 	@Test
 	public void runDependentBrick() throws Exception {
 		runBrick(BrickA.class);
+
 		System.setProperty("BrickA.property", "");
 		runBrick(BrickB.class);
 		assertEquals("BrickB was here!", System.getProperty("BrickA.property"));
 	}
 
-	@Ignore
 	@Test
 	public void runInSeparateClassloaders() throws Exception {
-		System.setProperty("BrickA.classLoader", "");
-		System.setProperty("BrickB.classLoader", "");
+		System.setProperty("BrickA.classloader", "");
+		System.setProperty("BrickB.classloader", "");
 		runBrick(BrickA.class);
 		runBrick(BrickB.class);
 		String classLoaderA = System.getProperty("BrickA.classLoader");
 		String classLoaderB = System.getProperty("BrickB.classLoader");
-		System.out.println(classLoaderA);
+
 		assertFalse(classLoaderA.equals(classLoaderB));
 	}
 	
@@ -66,7 +65,8 @@ public class NewContainerTest extends Assert {
 	}
 	
 	private void runBrick(final Class<?> brick) throws IOException {
-		subject.runBrick(directoryFor(brick));
+		String directory = directoryFor(brick);
+		subject.runBrick(directory);
 	}
 
 	private String directoryFor(Class<?> klass) {

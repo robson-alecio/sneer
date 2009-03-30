@@ -16,14 +16,10 @@ TASKS
 		- Eliminate upward dependencies.
 
 	- [Bamboo]Create/Install ("publish") brick locally
-		- Unignore NewContainerTest.runInSeparateClassloaders().
-			- Uncomment NewContainerImpl.classLoaderFor().
+		- NewContainer - The simplest possible container
+			- Make a test run a brick in a directory that is not in the system ClassLoader classpath (Eclipse classpath). It will probably fail. Implement the logic using NewContainerImpl.createApiClassLoader() to return a URLClassloader that can be extended with new classpaths for new brick interfaces;
+		
 		- main.Sneer - Publish all necessary bricks instead of just producing them.
-			- BrickImplDirectory.isSpecialMetaInterface() - Make all those cases into annotations and delete that method.
-		- Simplest Possible Kernel - What is it? Just injection?
-			- Simplify the container because of the removal of the Enhancer (MakeSerializable is a Spike now) and extraction of ConventionBasedEnvironment.
-			- ASM - Move asm*.jar to a brick lib
-				- Remove kernel dependency. Make it pluggable in the kernel.
 	
 	- Output folders - Make all source folders compile to the default folder (bin) and fix the tests. Is this possible?
 

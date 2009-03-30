@@ -32,6 +32,6 @@ public class Brickness implements Environment {
 	}
 
 	private <T> String implNameFor(Class<T> intrface) {
-		return BrickConventions.implementationNameFor(intrface.getName());
+		return BrickConventions.implClassNameFor(intrface.getName());
 	}
 }

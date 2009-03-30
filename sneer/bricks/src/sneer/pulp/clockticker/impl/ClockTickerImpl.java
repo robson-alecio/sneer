@@ -6,7 +6,7 @@ import sneer.pulp.clockticker.ClockTicker;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.lang.Threads;
 
-class ClockTickerImpl implements ClockTicker, Runnable {
+class ClockTickerImpl implements ClockTicker {
 
 	private final ThreadPool _threadPool = my(ThreadPool.class);
 
@@ -14,14 +14,11 @@ class ClockTickerImpl implements ClockTicker, Runnable {
 
 	ClockTickerImpl() {
 		tick();
-		_threadPool.registerActor(this);
+		_threadPool.registerActor(new Runnable(){ @Override public void run() {
+			while (true) tick();
+		}});
 	}
 
-	@Override
-	public void run() {
-		while (true) tick();
-	}
-	
 	private void tick() {
 		_clock.advanceTimeTo(System.currentTimeMillis());
 		Threads.sleepWithoutInterruptions(10); //Precision of 100 times per second is OK for now.

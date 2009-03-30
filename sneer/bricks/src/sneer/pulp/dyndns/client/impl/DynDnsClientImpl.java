@@ -87,16 +87,14 @@ class DynDnsClientImpl implements DynDnsClient {
 		private boolean _isReactionPending = false;
 		
 		Requesting() {
-			Runnable toRun = new Runnable(){ @Override public void run() {
+			_threadPool.registerActor(new Runnable(){ @Override public void run() {
 				State state = submitUpdateRequest(currentAccount(), currentIp());
 				synchronized (_stateMonitor) {
 					_state = state;
 					if (_isReactionPending)
 						_state = _state.react();
 				}
-			}};
-			_threadPool.registerActor(toRun);
-			
+			}});
 		}
 		
 		private State submitUpdateRequest(final DynDnsAccount account, String ip) {

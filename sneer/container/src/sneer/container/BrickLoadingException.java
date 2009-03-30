@@ -2,7 +2,7 @@ package sneer.container;
 
 public class BrickLoadingException extends RuntimeException {
 
-	public BrickLoadingException(Exception cause) {
+	public BrickLoadingException(Throwable cause) {
 		super(cause);
 	}
 

@@ -10,15 +10,15 @@ import org.objectweb.asm.commons.EmptyVisitor;
 
 import sneer.commons.lang.ByRef;
 
-public class PackageNameRetriever {
+class PackageNameRetriever {
 
 	private String _classDirectory;
 
-	public PackageNameRetriever(String classDirectory) {
+	PackageNameRetriever(String classDirectory) {
 		_classDirectory = classDirectory;
 	}
 
-	public String retrieve() throws IOException {
+	String retrieve() throws IOException {
 		return packageNameFor(ClassFiles.list(_classDirectory)[0]);
 	}
 

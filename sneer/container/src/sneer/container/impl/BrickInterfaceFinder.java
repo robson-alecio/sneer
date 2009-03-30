@@ -5,27 +5,36 @@ import java.io.FileNotFoundException;
 
 import org.apache.commons.io.FilenameUtils;
 
+import sneer.container.BrickLoadingException;
 import sneer.container.NewBrick;
 
-public class BrickInterfaceFinder {
+class BrickInterfaceFinder {
 
 	private String _classDirectory;
 	private ClassLoader _classLoader;
 	private String _packageName;
 
-	public BrickInterfaceFinder(ClassLoader classLoader, String classDirectory, String packageName) {
+	BrickInterfaceFinder(ClassLoader classLoader, String classDirectory, String packageName) {
 		_classLoader = classLoader;
 		_classDirectory = classDirectory;
 		_packageName = packageName;
 	}
 
-	public Class<?> find() throws FileNotFoundException {
+	Class<?> find() throws FileNotFoundException {
+		Class<?> result = null;
 		for (File classFile : listClassFiles()) {
-			Class<?> klass = loadClass(classFile);
-			if (klass.isAnnotationPresent(NewBrick.class))
-				return klass;
+			Class<?> candidate = loadClass(classFile);
+			if (!candidate.isAnnotationPresent(NewBrick.class))
+				continue;
+			
+			if (result != null)	throw new BrickLoadingException("More than one brick interface found in '" + _classDirectory + "'.");
+			result = candidate;
 		}
-		return null;
+
+		if (result == null)
+			throw new BrickLoadingException("No brick interface found in '" + _classDirectory + "'.");
+
+		return result;
 	}
 	
 	private Class<?> loadClass(File classFile) {

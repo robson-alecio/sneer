@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
@@ -15,7 +16,7 @@ import sneer.container.NewContainer;
 import sneer.container.NewContainers;
 import sneer.container.tests.fixtures.a.BrickA;
 import sneer.container.tests.fixtures.b.BrickB;
-import sneer.container.tests.fixtures.bogus.MissingAnnotation;
+import sneer.container.tests.fixtures.noannotation.InterfaceWithoutBrickAnnotation;
 
 public class NewContainerTest {
 	
@@ -43,7 +44,7 @@ public class NewContainerTest {
 	
 	@Test(expected=BrickLoadingException.class)
 	public void noBrickInterfaceFound() throws Exception {
-		runBrick(MissingAnnotation.class);
+		runBrick(InterfaceWithoutBrickAnnotation.class);
 	}
 	
 	@Test(expected=FileNotFoundException.class)
@@ -51,14 +52,21 @@ public class NewContainerTest {
 		subject.runBrick("bogus");
 	}
 	
-	private void runBrick(final Class<?> brick) throws IOException,
-		URISyntaxException {
+	private void runBrick(final Class<?> brick) throws IOException {
 		subject.runBrick(directoryFor(brick));
 	}
 
-	private String directoryFor(Class<?> klass) throws URISyntaxException {
+	private String directoryFor(Class<?> klass) {
 		final String fileName = klass.getCanonicalName().replace('.', '/') + ".class";
 		final URL url = klass.getResource("/" + fileName);
-		return new File(url.toURI()).getParent();
+		return new File(toURI(url)).getParent();
+	}
+
+	private URI toURI(final URL url) {
+		try {
+			return url.toURI();
+		} catch (URISyntaxException e) {
+			throw new IllegalStateException();
+		}
 	}
 }

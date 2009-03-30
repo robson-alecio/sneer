@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 
-public class ClassFiles {
+class ClassFiles {
 
-	public static File[] list(final String path) throws FileNotFoundException {
+	static File[] list(final String path) throws FileNotFoundException {
 		final File directory = new File(path);
 		if (!directory.exists())
 			throw new FileNotFoundException(path);

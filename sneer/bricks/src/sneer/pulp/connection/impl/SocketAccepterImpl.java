@@ -46,12 +46,12 @@ class SocketAccepterImpl implements SocketAccepter {
 	private final EventReceiver<Integer> _portReceiverToAvoidGC;
 
 	SocketAccepterImpl() {
-		_threadPool.registerActor(new Runnable(){ @Override public void run() {
-			listenToSneerPort();
-		}});
 		_portReceiverToAvoidGC = new EventReceiver<Integer>(_portKeeper.port()) { @Override public void consume(Integer port) {
 			setPort(port);
 		}};
+		_threadPool.registerActor(new Runnable(){ @Override public void run() {
+			listenToSneerPort();
+		}});
 	}
 
 	@Override

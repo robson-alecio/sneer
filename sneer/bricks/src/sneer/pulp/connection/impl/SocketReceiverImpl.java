@@ -13,11 +13,10 @@ class SocketReceiverImpl implements SocketReceiver {
 	
 	private final ThreadPool _threadPool = my(ThreadPool.class);
 	
-	@SuppressWarnings("unused")
-	private final EventReceiver<ByteArraySocket> _receiverThatCannotBeGCd;
+	@SuppressWarnings("unused")	private final Object _refToAvoidGC;
 
 	SocketReceiverImpl() {
-		_receiverThatCannotBeGCd = new EventReceiver<ByteArraySocket>(_socketAccepter.lastAcceptedSocket()) { @Override public void consume(final ByteArraySocket socket) {
+		_refToAvoidGC = new EventReceiver<ByteArraySocket>(_socketAccepter.lastAcceptedSocket()) { @Override public void consume(final ByteArraySocket socket) {
 			_threadPool.registerActor(new Runnable(){@Override public void run() {
 				new IndividualSocketReceiver(socket);
 			}});

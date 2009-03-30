@@ -24,16 +24,26 @@ import sneer.skin.sound.player.SoundPlayer;
 import wheel.io.Logger;
 import wheel.lang.Threads;
 
-class SoundPlayerImpl implements SoundPlayer, Stepper {
+class SoundPlayerImpl implements SoundPlayer {
 
 	private final Audio _audio = my(Audio.class);
-	private final ThreadPool _threads = my(ThreadPool.class); {
-		_threads.registerStepper(this);
-	}
 	
 	final static private List<URL> urls = Collections.synchronizedList(new ArrayList<URL>());
+
+	public SoundPlayerImpl() {
+		my(ThreadPool.class).registerStepper(new Stepper(){ @Override public boolean step() {
+			playNextIfAvailable();
+			return true;
+		}});
+	}
 	
-	private void playNext() {
+	
+	private void playNextIfAvailable() {
+		if (urls.isEmpty()) {
+			Threads.sleepWithoutInterruptions(50); //Optimize: Use wait/notify.
+			return;
+		}
+
 		URL url = urls.remove(0);
 		
 		AudioInputStream audioInputStream = null;
@@ -93,14 +103,6 @@ class SoundPlayerImpl implements SoundPlayer, Stepper {
 			throw new NotImplementedYet(); //Implement BL
 		}
 	} 
-
-	@Override
-	public boolean step() {
-		if(urls.size() > 0) playNext();
-		else
-			Threads.sleepWithoutInterruptions(50); //Optimize: Use wait/notify.
-		return true;
-	}
 
 	@Override
 	public void play(URL url) {

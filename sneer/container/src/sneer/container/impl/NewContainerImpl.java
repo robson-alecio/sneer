@@ -21,17 +21,20 @@ public class NewContainerImpl implements NewContainer {
 	@Override
 	public void runBrick(final String classDirectory) throws IOException {
 		String brickPackage = packageNameFor(classDirectory);
-		File classpathRoot = classpathRootFor(classDirectory, brickPackage);
+		URLClassLoader classLoader = classLoaderFor(classDirectory, brickPackage);
 			
-		URLClassLoader classLoader = new URLClassLoader(new URL[] { toURL(classpathRoot) });
+		Class<?> brick = new BrickInterfaceFinder(classDirectory, brickPackage, classLoader).find();
 			
-		Class<?> brick = new BrickInterfaceFinder(classLoader, classDirectory, brickPackage).find();
-			
-		Class<?> brickImpl = load(classLoader, brick);
+		Class<?> brickImpl = loadImpl(brick, classLoader);
 		_environment.bind(instantiateInEnvironment(brickImpl));
 	}
 
-	private Class<?> load(URLClassLoader classLoader, Class<?> brick) {
+	private URLClassLoader classLoaderFor(final String classDirectory, String brickPackage) {
+		return new URLClassLoader(new URL[] { toURL(
+			classpathRootFor(classDirectory, brickPackage)) });
+	}
+
+	private Class<?> loadImpl(Class<?> brick, URLClassLoader classLoader) {
 		try {
 			return classLoader.loadClass(implNameFor(brick.getName()));
 		} catch (ClassNotFoundException e) {

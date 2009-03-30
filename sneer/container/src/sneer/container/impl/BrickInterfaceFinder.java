@@ -14,7 +14,7 @@ class BrickInterfaceFinder {
 	private ClassLoader _classLoader;
 	private String _packageName;
 
-	BrickInterfaceFinder(ClassLoader classLoader, String classDirectory, String packageName) {
+	BrickInterfaceFinder(String classDirectory, String packageName, ClassLoader classLoader) {
 		_classLoader = classLoader;
 		_classDirectory = classDirectory;
 		_packageName = packageName;

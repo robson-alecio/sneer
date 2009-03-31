@@ -30,7 +30,7 @@ import wheel.reactive.lists.ListSignal;
 import functional.SovereignParty;
 import functional.adapters.SneerParty;
 
-public class SneerPartyImpl implements SneerParty {
+class SneerPartyImpl implements SneerParty {
 	
 	static private final String MOCK_ADDRESS = "localhost";
 

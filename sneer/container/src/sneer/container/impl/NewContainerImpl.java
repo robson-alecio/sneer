@@ -6,6 +6,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URLClassLoader;
 
 import sneer.brickness.environment.BrickConventions;
+import sneer.brickness.environment.Brickness;
+import sneer.commons.environments.CachingEnvironment;
+import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.Producer;
 import sneer.container.BrickLoadingException;
@@ -13,8 +16,20 @@ import sneer.container.NewContainer;
 
 public class NewContainerImpl implements NewContainer {
 	
-	private final ContainerEnvironment _environment = new ContainerEnvironment();
+	private final Environment _environment;
+	private final ContainerEnvironment _containerEnvironment;
 	private final ClassLoader _apiClassLoader = createApiClassLoader();
+
+	public NewContainerImpl(Object... bindings) {
+		
+		_containerEnvironment = new ContainerEnvironment();
+		_containerEnvironment.bind(bindings);
+		
+		 _environment = new CachingEnvironment(
+				Environments.compose(
+					_containerEnvironment,
+					new Brickness()));
+	}
 
 	@Override
 	public void runBrick(final String classDirectory) throws IOException {
@@ -24,9 +39,13 @@ public class NewContainerImpl implements NewContainer {
 		Class<?> brick = new BrickInterfaceSearch(classDirectory, packageName, classLoader).result();
 			
 		Class<?> brickImpl = loadImpl(brick, classLoader);
-		_environment.bind(instantiateInEnvironment(brickImpl));
+		_containerEnvironment.bind(instantiateInEnvironment(brickImpl));
 	}
 
+	@Override
+	public Environment environment() {
+		return _environment;
+	}
 
 	private ClassLoader createApiClassLoader() {
 		return getClass().getClassLoader();

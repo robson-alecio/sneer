@@ -5,8 +5,9 @@ import java.io.File;
 import org.apache.commons.lang.StringUtils;
 
 import sneer.commons.environments.Environments;
-import sneer.kernel.container.Container;
-import sneer.kernel.container.Containers;
+import sneer.commons.io.StoragePath;
+import sneer.container.NewContainer;
+import sneer.container.NewContainers;
 import sneer.kernel.container.SneerConfig;
 import sneer.pulp.network.Network;
 import testutils.network.InProcessNetwork;
@@ -27,14 +28,20 @@ public class SneerCommunity implements SovereignCommunity {
 	@Override
 	public SovereignParty createParty(final String name) {
 //		System.out.println("createParty - " + Thread.currentThread());
-		final SneerParty party = Environments.wrap(SneerParty.class, newContainer(name));
+		final SneerParty party = Environments.wrap(SneerParty.class, newContainer(name).environment());
 		party.setOwnName(name);
 		party.setSneerPort(_nextPort++);
 		return party;
 	}
 
-	private Container newContainer(String name) {
-		return Containers.newContainer(_network, sneerConfigForParty(name));
+	private NewContainer newContainer(final String name) {
+//		return Containers.newContainer(_network, sneerConfigForParty(name)); //OLD VERSION
+
+		StoragePath storagePath = new StoragePath(){ @Override public String get() {
+			return sneerConfigForParty(name).sneerDirectory().getAbsolutePath();
+		}};
+		
+		return NewContainers.newContainer(_network, sneerConfigForParty(name), storagePath);
 	}
 
 	private SneerConfig sneerConfigForParty(String name) {

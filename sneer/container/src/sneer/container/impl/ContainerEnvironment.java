@@ -18,8 +18,9 @@ class ContainerEnvironment implements Environment {
 		return null;
 	}
 
-	void bind(Object brickImpl) {
-		_bricks.add(brickImpl);
+	void bind(Object... bindings) {
+		for (Object binding : bindings)
+			_bricks.add(binding);
 	}
 
 }

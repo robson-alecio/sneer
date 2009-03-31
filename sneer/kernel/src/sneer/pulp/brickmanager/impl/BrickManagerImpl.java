@@ -33,8 +33,6 @@ class BrickManagerImpl implements BrickManager {
 	
 	private final KeyManager _keyManager = my(KeyManager.class);
 	
-	private final Container _container = my(Container.class);
-	
 	private final MapRegister<String, BrickFile> _bricksByName = new MapRegisterImpl<String, BrickFile>();
 
 	@Override
@@ -155,12 +153,12 @@ class BrickManagerImpl implements BrickManager {
 
 	private void runOnceOnInstall(BrickFile installed) {
 		Class<? extends Brick> clazz = resolveBrickInterface(installed);
-		_container.provide(clazz);
+		my(Container.class).provide(clazz);
 	}
 
 	private Class<? extends Brick> resolveBrickInterface(BrickFile installed) {
 		try {
-			return _container.resolve(installed.name());
+			return my(Container.class).resolve(installed.name());
 		} catch (ClassNotFoundException e) {
 			throw new BrickManagerException(e.getMessage(), e);
 		}

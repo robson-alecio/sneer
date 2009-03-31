@@ -17,6 +17,9 @@ TASKS
 
 	- [Bamboo]Create/Install ("publish") brick locally
 		- NewContainer - The simplest possible container
+			- Unignore NewContainerTest.runDependentBrickWithoutDependencies().
+			- SneerCommunity.newContainer - All that mess with StoragePath and SneerConfig is ugly.
+			- ClosedEnvironment and ContainerEnvironment are very similar.
 			- Make a test run a brick in a directory that is not in the system ClassLoader classpath (Eclipse classpath). It will probably fail. Implement the logic using NewContainerImpl.createApiClassLoader() to return a URLClassloader that can be extended with new classpaths for new brick interfaces;
 		
 		- main.Sneer - Publish all necessary bricks instead of just producing them.

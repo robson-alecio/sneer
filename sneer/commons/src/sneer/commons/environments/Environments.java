@@ -27,7 +27,7 @@ public class Environments {
 	}
 	
 	public static <T> T wrap(Class<T> intrface, Environment environment) {
-		return EnvironmentInvocationHandler.newInstance(environment, intrface);
+		return EnvironmentInvocationHandler.newInstance(intrface, environment);
 	}
 	
 	public static <T> T wrap(T instance, Environment environment) {

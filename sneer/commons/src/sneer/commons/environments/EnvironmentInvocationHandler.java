@@ -11,7 +11,7 @@ import sneer.commons.lang.ByRef;
 
 final class EnvironmentInvocationHandler<T> implements InvocationHandler {
 
-	public static <T> T newInstance(final Environment environment, final Class<T> intrface) {
+	public static <T> T newInstance(final Class<T> intrface, final Environment environment) {
 		final ByRef<T> result = ByRef.newInstance();
 		Environments.runWith(environment, new Runnable() { @Override public void run() {
 			final T component = my(intrface);

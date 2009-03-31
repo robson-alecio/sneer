@@ -1,7 +1,6 @@
 package sneer.skin.sound.loopback.impl;
 
-import static sneer.skin.sound.loopback.impl.Services.audio;
-import static sneer.skin.sound.loopback.impl.Services.threads;
+import static sneer.commons.environments.Environments.my;
 
 import java.io.ByteArrayOutputStream;
 
@@ -9,6 +8,8 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
 import sneer.pulp.threadpool.Stepper;
+import sneer.pulp.threadpool.ThreadPool;
+import sneer.skin.sound.kernel.Audio;
 import wheel.lang.Threads;
 
 class Player {
@@ -23,7 +24,7 @@ class Player {
 
 	static boolean start(ByteArrayOutputStream buffer) {
 		try {
-			_sourceDataLine = audio().tryToOpenPlaybackLine();
+			_sourceDataLine = my(Audio.class).tryToOpenPlaybackLine();
 		} catch (LineUnavailableException e) {
 			return false;
 		}
@@ -31,7 +32,7 @@ class Player {
 		_buffer = buffer;
 		
 		_isRunning = true;
-		threads().registerStepper(new Stepper() { @Override public boolean step() {
+		my(ThreadPool.class).registerStepper(new Stepper() { @Override public boolean step() {
 			playBuffer();
 
 			if (!_isRunning) {

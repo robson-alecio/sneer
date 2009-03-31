@@ -1,8 +1,6 @@
 ﻿FIXES
 =========
 
-	- [Sandro] public static sneer.skin.sound.loopback.impl.Services - Bricks cannot expose static methods. (Don't charge)
-
 	- [Sandro] main.Sneer is too big - Extract Own Name and Dyndns logic to separate class. 
 
 

@@ -21,12 +21,12 @@
 	<classpathentry kind="lib" path="wheel/lib/xstream-1.2.2.jar"/>
 	<classpathentry kind="lib" path="commons/lib/jmock-2.5.1/hamcrest-core-1.1.jar"/>
 	<classpathentry kind="lib" path="commons/lib/jmock-2.5.1/hamcrest-library-1.1.jar"/>
-	<classpathentry kind="lib" path="commons/lib/jmock-2.5.1/jmock-2.5.1.jar"/>
-	<classpathentry kind="lib" path="commons/lib/jmock-2.5.1/jmock-junit4-2.5.1.jar"/>
-	<classpathentry kind="lib" path="commons/lib/junit-4.4.jar" sourcepath="C:/java/junit-4.4-src.jar"/>
-	<classpathentry kind="lib" path="commons/lib/commons-io-1.4.jar" sourcepath="wheel/lib/commons-io-1.4-src.zip"/>
-	<classpathentry kind="lib" path="commons/lib/commons-collections-3.2.jar"/>
-	<classpathentry kind="lib" path="commons/lib/commons-lang-2.3.jar" sourcepath="wheel/lib/commons-lang-2.3-src.zip"/>
+	<classpathentry exported="true" kind="lib" path="commons/lib/jmock-2.5.1/jmock-2.5.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="commons/lib/jmock-2.5.1/jmock-junit4-2.5.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="commons/lib/junit-4.4.jar" sourcepath="C:/java/junit-4.4-src.jar"/>
+	<classpathentry exported="true" kind="lib" path="commons/lib/commons-io-1.4.jar" sourcepath="wheel/lib/commons-io-1.4-src.zip"/>
+	<classpathentry exported="true" kind="lib" path="commons/lib/commons-collections-3.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="commons/lib/commons-lang-2.3.jar" sourcepath="wheel/lib/commons-lang-2.3-src.zip"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

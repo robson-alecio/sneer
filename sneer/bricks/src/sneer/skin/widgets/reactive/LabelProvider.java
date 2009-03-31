@@ -7,7 +7,7 @@ import sneer.pulp.reactive.Signal;
 
 public interface LabelProvider<ELEMENT> {
 
-	Signal<Image> imageFor(ELEMENT element);
+	Signal<? extends Image> imageFor(ELEMENT element);
 	Signal<String> labelFor(ELEMENT element);
 
 }

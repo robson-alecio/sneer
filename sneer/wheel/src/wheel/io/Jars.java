@@ -3,6 +3,7 @@ package wheel.io;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -52,6 +53,20 @@ public class Jars {
 			builder.add(fileName, classFile);
 		} finally {
 			builder.close();
+		}
+	}
+
+	public static String directoryFor(Class<?> klass) {
+		final String fileName = klass.getCanonicalName().replace('.', '/') + ".class";
+		final URL url = klass.getResource("/" + fileName);
+		return new File(toURI(url)).getParent();
+	}
+
+	private static URI toURI(final URL url) {
+		try {
+			return url.toURI();
+		} catch (URISyntaxException e) {
+			throw new IllegalStateException();
 		}
 	}
 	

@@ -1,14 +1,9 @@
 package sneer.container.tests;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.container.BrickLoadingException;
@@ -17,9 +12,11 @@ import sneer.container.NewContainers;
 import sneer.container.tests.fixtures.a.BrickA;
 import sneer.container.tests.fixtures.b.BrickB;
 import sneer.container.tests.fixtures.noannotation.InterfaceWithoutBrickAnnotation;
+import wheel.io.Jars;
 
 public class NewContainerTest extends Assert {
 	
+
 	final NewContainer subject = NewContainers.newContainer();
 	
 	@Test
@@ -31,6 +28,7 @@ public class NewContainerTest extends Assert {
 	
 	@Test
 	public void runDependentBrick() throws Exception {
+		
 		runBrick(BrickA.class);
 
 		System.setProperty("BrickA.property", "");
@@ -40,6 +38,7 @@ public class NewContainerTest extends Assert {
 
 	@Test
 	public void runInSeparateClassloaders() throws Exception {
+		
 		System.setProperty("BrickA.classloader", "");
 		System.setProperty("BrickB.classloader", "");
 		runBrick(BrickA.class);
@@ -50,7 +49,6 @@ public class NewContainerTest extends Assert {
 		assertFalse(classLoaderA.equals(classLoaderB));
 	}
 	
-	@Ignore
 	@Test(expected=BrickLoadingException.class)
 	public void runDependentBrickWithoutDependencies() throws Exception {
 		runBrick(BrickB.class);
@@ -67,21 +65,7 @@ public class NewContainerTest extends Assert {
 	}
 	
 	private void runBrick(final Class<?> brick) throws IOException {
-		String directory = directoryFor(brick);
+		String directory = Jars.directoryFor(brick);
 		subject.runBrick(directory);
-	}
-
-	private String directoryFor(Class<?> klass) {
-		final String fileName = klass.getCanonicalName().replace('.', '/') + ".class";
-		final URL url = klass.getResource("/" + fileName);
-		return new File(toURI(url)).getParent();
-	}
-
-	private URI toURI(final URL url) {
-		try {
-			return url.toURI();
-		} catch (URISyntaxException e) {
-			throw new IllegalStateException();
-		}
 	}
 }

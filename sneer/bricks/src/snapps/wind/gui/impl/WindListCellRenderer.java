@@ -62,7 +62,7 @@ class WindListCellRenderer implements ListCellRenderer {
 	}
 	
 	private JComponent getNickAsIcon(Shout shout) {
-		Signal<Image> signalImage = _labelProvider.imageFor(shout);
+		Signal<? extends Image> signalImage = _labelProvider.imageFor(shout);
 		JLabel icon = new JLabel(new ImageIcon(signalImage.currentValue()), SwingConstants.LEFT);
 		icon.setOpaque(false);
 		return icon;

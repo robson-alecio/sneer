@@ -1,11 +1,14 @@
 package main;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
 
@@ -15,10 +18,81 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import snapps.blinkinglights.gui.BlinkingLightsGui;
+import snapps.contacts.actions.ContactActionManager;
+import snapps.contacts.gui.ContactsGui;
+import snapps.contacts.gui.comparator.ContactComparator;
+import snapps.meter.bandwidth.gui.BandwidthMeterGui;
+import snapps.meter.memory.gui.MemoryMeterGui;
+import snapps.watchme.WatchMe;
+import snapps.watchme.codec.ImageCodec;
+import snapps.watchme.gui.WatchMeGui;
+import snapps.watchme.gui.windows.RemoteWatchMeWindows;
+import snapps.whisper.gui.WhisperGui;
+import snapps.whisper.speex.Speex;
+import snapps.whisper.speextuples.SpeexTuples;
+import snapps.wind.Wind;
+import snapps.wind.gui.WindGui;
 import sneer.commons.environments.Environments;
-import sneer.kernel.container.Container;
-import sneer.kernel.container.Containers;
-import wheel.io.Logger;
+import sneer.commons.io.StoragePath;
+import sneer.container.BrickLoadingException;
+import sneer.container.NewContainer;
+import sneer.container.NewContainers;
+import sneer.kernel.container.SneerConfig;
+import sneer.pulp.bandwidth.BandwidthCounter;
+import sneer.pulp.blinkinglights.BlinkingLights;
+import sneer.pulp.clock.Clock;
+import sneer.pulp.clockticker.ClockTicker;
+import sneer.pulp.connection.ConnectionManager;
+import sneer.pulp.connection.SocketAccepter;
+import sneer.pulp.connection.SocketOriginator;
+import sneer.pulp.connection.SocketReceiver;
+import sneer.pulp.connection.reachability.ReachabilitySentinel;
+import sneer.pulp.contacts.ContactManager;
+import sneer.pulp.crypto.Crypto;
+import sneer.pulp.datastore.DataStore;
+import sneer.pulp.datastructures.cache.CacheFactory;
+import sneer.pulp.distribution.filtering.TupleFilterManager;
+import sneer.pulp.dyndns.checkip.CheckIp;
+import sneer.pulp.dyndns.client.DynDnsClient;
+import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
+import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
+import sneer.pulp.dyndns.updater.Updater;
+import sneer.pulp.events.EventNotifiers;
+import sneer.pulp.exceptionhandling.ExceptionHandler;
+import sneer.pulp.httpclient.HttpClient;
+import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
+import sneer.pulp.keymanager.KeyManager;
+import sneer.pulp.logging.Logger;
+import sneer.pulp.memory.MemoryMeter;
+import sneer.pulp.network.Network;
+import sneer.pulp.own.name.OwnNameKeeper;
+import sneer.pulp.port.PortKeeper;
+import sneer.pulp.probe.ProbeManager;
+import sneer.pulp.propertystore.PropertyStore;
+import sneer.pulp.reactive.Signals;
+import sneer.pulp.reactive.gates.logic.LogicGates;
+import sneer.pulp.reactive.listsorter.ListSorter;
+import sneer.pulp.reactive.signalchooser.SignalChooserManagerFactory;
+import sneer.pulp.retrier.RetrierManager;
+import sneer.pulp.serialization.Serializer;
+import sneer.pulp.threadpool.ThreadPool;
+import sneer.pulp.tuples.TupleSpace;
+import sneer.skin.dashboard.Dashboard;
+import sneer.skin.image.ImageFactory;
+import sneer.skin.main_Menu.MainMenu;
+import sneer.skin.menu.MenuFactory;
+import sneer.skin.rooms.ActiveRoomKeeper;
+import sneer.skin.screenshotter.Screenshotter;
+import sneer.skin.snappmanager.InstrumentManager;
+import sneer.skin.sound.kernel.Audio;
+import sneer.skin.sound.loopback.LoopbackTester;
+import sneer.skin.sound.mic.Mic;
+import sneer.skin.sound.player.SoundPlayer;
+import sneer.skin.sound.speaker.Speaker;
+import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
+import wheel.io.Jars;
+
 
 public class Sneer {
 
@@ -26,14 +100,10 @@ public class Sneer {
 	private static final String YOUR_OWN_NAME = "yourOwnName";
 	private static final String DYN_DNS_USER = "dynDnsUser";
 	private static final String DNY_DNS_PASSWORD = "dnyDnsPassword";
-	private static Container _container;
+	private static NewContainer _container;
 
 	public static void main(String[] args) throws Exception {
-		try {
-			tryToRun(args);
-		} catch (ArrayIndexOutOfBoundsException e) {
-			tryRememberArguments();
-		} 
+		tryRememberArguments();
 	}
 	
 	private static void tryRememberArguments() throws Exception{
@@ -57,26 +127,106 @@ public class Sneer {
 	}
 
 	private static void tryToRun(final String[] args) throws Exception {
-		Logger.redirectTo(System.out);
+		publishAllNecessaryBricks();
 
-		Environments.runWith(container(), new Runnable() { @Override public void run() {
+		Environments.runWith(container().environment(), new Runnable() { @Override public void run() {
 //			BrickBundle bundle = my(Deployer.class).pack(new File("bricks/src"));
 //			my(BrickManager.class).install(bundle);
-			
-			demo().start(ownName(args), dynDnsUser(args), dynDnsPassword(args));			
+
+			my(MainSneerBrick.class).start(ownName(args), dynDnsUser(args), dynDnsPassword(args));
 		}});
 	}
 
-	private static Container container() {
-		if (_container == null) _container = Containers.newContainer();
+	private static void publishAllNecessaryBricks() throws BrickLoadingException, IOException {
+		publishBricks(
+				Logger.class,
+				Serializer.class,
+				ProbeManager.class,
+				Speex.class,
+				TupleFilterManager.class,
+				SpeexTuples.class,
+				ReachabilitySentinel.class,
+				Updater.class,
+				DynDnsAccountKeeper.class,
+				PropertyStore.class,
+				DataStore.class,
+				HttpClient.class,
+				CheckIp.class,
+				OwnIpDiscoverer.class,
+				DynDnsClient.class,
+				Network.class,
+				PortKeeper.class,
+				SocketAccepter.class,
+				SocketReceiver.class,
+				InternetAddressKeeper.class,
+				SocketOriginator.class,
+				BandwidthCounter.class,
+				Signals.class,
+				MemoryMeter.class,
+				RemoteWatchMeWindows.class,
+				LogicGates.class,
+				ActiveRoomKeeper.class,
+				RetrierManager.class,
+				Mic.class,
+				Speaker.class,
+				LoopbackTester.class,
+				CacheFactory.class,
+				ImageCodec.class,
+				Screenshotter.class,
+				WatchMe.class,
+				Audio.class,
+				SoundPlayer.class,
+				SneerConfig.class,
+				StoragePath.class,
+				TupleSpace.class,
+				Wind.class,
+				SignalChooserManagerFactory.class,
+				ListSorter.class,
+				ContactComparator.class,
+				ConnectionManager.class,
+				ReactiveWidgetFactory.class,
+				ContactActionManager.class,
+				ContactManager.class,
+				Crypto.class,
+				KeyManager.class,
+				BlinkingLights.class,
+				InstrumentManager.class,
+				MenuFactory.class,
+				MainMenu.class,
+				ImageFactory.class,
+				Dashboard.class,
+				EventNotifiers.class,
+				ExceptionHandler.class,
+				Clock.class,
+				OwnNameKeeper.class,
+				ThreadPool.class,
+				ClockTicker.class,
+
+				ContactsGui.class,
+				WindGui.class,
+				WatchMeGui.class,
+				WhisperGui.class,
+				MemoryMeterGui.class,
+				BandwidthMeterGui.class,
+				BlinkingLightsGui.class,
+				
+				MainSneerBrick.class
+		);
+	}
+
+	private static void publishBricks(Class<?>... bricks) throws BrickLoadingException, IOException {
+		for (Class<?> brick : bricks) {
+//			System.err.println(brick);
+			container().runBrick(Jars.directoryFor(brick));
+		}
+	}
+
+	private static NewContainer container() {
+		if (_container == null) _container = NewContainers.newContainer();
 		return _container;
 	}
 
 
-	private static MainSneerBrick demo() {
-		return container().provide(MainSneerBrick.class);
-	}
-	
 	private static String ownName(String[] args) {
 		return args[0];
 	}

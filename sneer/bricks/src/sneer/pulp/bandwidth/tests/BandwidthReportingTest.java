@@ -14,7 +14,7 @@ import sneer.pulp.connection.ByteConnection.PacketScheduler;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.Constant;
+import sneer.pulp.reactive.Signals;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
 import wheel.lang.Consumer;
@@ -110,7 +110,7 @@ public class BandwidthReportingTest extends BrickTest {
 
 	private Contact getContactMock() {
 		return new Contact(){@Override public Signal<String> nickname() {
-			return new Constant<String>("Sandro");
+			return my(Signals.class).constant("Sandro");
 		}};
 	}
 	

@@ -35,7 +35,6 @@ import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import sneer.pulp.reactive.impl.Constant;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.LabelProvider;
@@ -56,7 +55,7 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 
 	private Container _container;
 	
-	private final static Map<LightType, Constant<Image>> _images = new HashMap<LightType, Constant<Image>>();
+	private final static Map<LightType, Signal<Image>> _images = new HashMap<LightType, Signal<Image>>();
 	static {
 		_images.put(LightType.GOOD_NEWS, constant(loadImage("good_news.png")));
 		_images.put(LightType.INFO, constant(loadImage("info.png")));
@@ -64,11 +63,11 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		_images.put(LightType.ERROR, constant(loadImage("error.png")));
 	}
 	
-	public BlinkingLightsGuiImpl(){
+	BlinkingLightsGuiImpl(){
 		_instrumentManager.registerInstrument(this);
 	} 
 	
-	private static Constant<Image> constant(Image image) {
+	private static Signal<Image> constant(Image image) {
 		return my(Signals.class).constant(image);
 	}
 
@@ -104,7 +103,7 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		return Images.getImage(BlinkingLightsGuiImpl.class.getResource(fileName));
 	}
 
-	private Constant<Image> image(Light light) {
+	private Signal<Image> image(Light light) {
 		return _images.get(light.type());
 	}
 	
@@ -236,7 +235,7 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 				
 		@Override
 		public Signal<String> labelFor(Light light) {
-			return new Constant<String>(light.caption());
+			return my(Signals.class).constant(light.caption());
 		}
 
 		@Override

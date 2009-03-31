@@ -10,14 +10,14 @@ import org.junit.Test;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.Constant;
+import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.impl.RegisterImpl;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import wheel.lang.Consumer;
+import wheel.reactive.lists.ListChange;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
-import wheel.reactive.lists.ListChange;
 import wheel.reactive.lists.ListChange.Visitor;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 import wheel.testutil.TestUtils;
@@ -28,15 +28,15 @@ public class ListSorterTest extends BrickTest {
 
 	private final Visitor<Signal<Integer>> _visitor = mock(Visitor.class);
 	
-	private final Signal<Integer> _00 = new Constant<Integer>(00);
-	private final Signal<Integer> _01 = new Constant<Integer>(01);
-	private final Signal<Integer> _05 = new Constant<Integer>(05);
-	private final Signal<Integer> _10 = new Constant<Integer>(10);
-	private final Signal<Integer> _20 = new Constant<Integer>(20);
-	private final Signal<Integer> _30 = new Constant<Integer>(30);
-	private final Signal<Integer> _40 = new Constant<Integer>(40);
-	private final Signal<Integer> _50 = new Constant<Integer>(50);
-	private final Signal<Integer> _60 = new Constant<Integer>(60);
+	private final Signal<Integer> _00 = my(Signals.class).constant(00);
+	private final Signal<Integer> _01 = my(Signals.class).constant(01);
+	private final Signal<Integer> _05 = my(Signals.class).constant(05);
+	private final Signal<Integer> _10 = my(Signals.class).constant(10);
+	private final Signal<Integer> _20 = my(Signals.class).constant(20);
+	private final Signal<Integer> _30 = my(Signals.class).constant(30);
+	private final Signal<Integer> _40 = my(Signals.class).constant(40);
+	private final Signal<Integer> _50 = my(Signals.class).constant(50);
+	private final Signal<Integer> _60 = my(Signals.class).constant(60);
 
 	private final SignalChooser<Signal<Integer>> _chooser = new SignalChooser<Signal<Integer>>(){ @Override public Signal<?>[] signalsToReceiveFrom(Signal<Integer> element) {
 		return new Signal<?>[]{element};

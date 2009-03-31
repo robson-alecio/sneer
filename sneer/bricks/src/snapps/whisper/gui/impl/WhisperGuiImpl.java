@@ -50,16 +50,12 @@ class WhisperGuiImpl implements WhisperGui { //Optimize need a better snapp wind
 	JToggleButton _whisperButton;
 	JToggleButton _loopBackButton;
 	
-	final Object _referenceToAvoidGc;
+	Object _referenceToAvoidGc;
 
 	private TextWidget<JTextField> _roomField;
 
 	WhisperGuiImpl(){
 		_instrumentManager.registerInstrument(this);
-		_referenceToAvoidGc = new EventReceiver<Boolean>(isRunning()) { @Override public void consume(Boolean isRunning) {
-			_whisperButton.setSelected(isRunning);
-			_roomField.getMainWidget().setEnabled(isRunning);
-		}};
 	}
 
 	private Signal<Boolean> isRunning() {
@@ -95,6 +91,12 @@ class WhisperGuiImpl implements WhisperGui { //Optimize need a better snapp wind
 		createWhisperButtonListener();
 		createLoopBackButtonListener();
 		addListenContactAction();
+		
+		_referenceToAvoidGc = new EventReceiver<Boolean>(isRunning()) { @Override public void consume(Boolean isRunning) {
+			_whisperButton.setSelected(isRunning);
+			_roomField.getMainWidget().setEnabled(isRunning);
+		}};
+
 	}
 
 	private JPanel space(final int height, final int width) {

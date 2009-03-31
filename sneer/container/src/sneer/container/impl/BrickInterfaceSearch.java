@@ -5,8 +5,11 @@ import java.io.FileNotFoundException;
 
 import org.apache.commons.io.FilenameUtils;
 
+import sneer.brickness.Brick;
 import sneer.container.BrickLoadingException;
 import sneer.container.NewBrick;
+import sneer.skin.GuiBrick;
+import sneer.skin.snappmanager.Instrument;
 
 class BrickInterfaceSearch {
 
@@ -24,7 +27,11 @@ class BrickInterfaceSearch {
 		Class<?> result = null;
 		for (File classFile : listClassFiles()) {
 			Class<?> candidate = loadClass(classFile);
-			if (!candidate.isAnnotationPresent(NewBrick.class))
+			if (!candidate.isAnnotationPresent(NewBrick.class) && !Brick.class.isAssignableFrom(candidate))
+				continue;
+			if (candidate.getName().equals(Instrument.class.getName()))
+				continue;
+			if (candidate.getName().equals(GuiBrick.class.getName()))
 				continue;
 			
 			if (result != null)	throw new BrickLoadingException("More than one brick interface found in '" + _classDirectory + "'.");

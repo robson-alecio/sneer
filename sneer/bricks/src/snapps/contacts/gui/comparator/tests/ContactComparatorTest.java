@@ -12,7 +12,7 @@ import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.Constant;
+import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import wheel.lang.Consumer;
@@ -77,8 +77,8 @@ class ContactMock implements Contact{
 	final Signal<String> _nick;
 
 	ContactMock(String nick, boolean isOnline) {
-		_nick = new Constant<String>(nick);
-		_isOnline = new Constant<Boolean>(isOnline);
+		_nick = my(Signals.class).constant(nick);
+		_isOnline = my(Signals.class).constant(isOnline);
 	}
 
 	@Override

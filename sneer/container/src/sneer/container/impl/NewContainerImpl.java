@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URLClassLoader;
+import java.util.HashMap;
+import java.util.Map;
 
 import sneer.brickness.environment.BrickConventions;
 import sneer.brickness.environment.Brickness;
@@ -19,6 +21,7 @@ public class NewContainerImpl implements NewContainer {
 	private final Environment _environment;
 	private final ContainerEnvironment _containerEnvironment;
 	private final ClassLoader _apiClassLoader = createApiClassLoader();
+	private final Map<Class<?>, ClassLoader> _classLoadersByBrick = new HashMap<Class<?>, ClassLoader>();
 
 	public NewContainerImpl(Object... bindings) {
 		
@@ -28,7 +31,7 @@ public class NewContainerImpl implements NewContainer {
 		 _environment = new CachingEnvironment(
 				Environments.compose(
 					_containerEnvironment,
-					new Brickness()));
+					new Brickness(_classLoadersByBrick)));
 	}
 
 	@Override
@@ -37,7 +40,9 @@ public class NewContainerImpl implements NewContainer {
 		ClassLoader classLoader = classLoaderFor(classDirectory, packageName);
 			
 		Class<?> brick = new BrickInterfaceSearch(classDirectory, packageName, classLoader).result();
-			
+		
+		_classLoadersByBrick.put(brick, classLoader);
+		
 		Class<?> brickImpl = loadImpl(brick, classLoader);
 		_containerEnvironment.bind(instantiateInEnvironment(brickImpl));
 	}

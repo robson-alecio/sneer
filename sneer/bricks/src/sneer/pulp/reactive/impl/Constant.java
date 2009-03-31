@@ -1,10 +1,10 @@
 package sneer.pulp.reactive.impl;
 
-public class Constant<TYPE> extends AbstractSignal<TYPE> {
+class ConstantImpl<TYPE> extends AbstractSignal<TYPE> {
 
 	private final TYPE _constantValue;
 	
-	public Constant(TYPE constantValue){
+	public ConstantImpl(TYPE constantValue){
 		_constantValue = constantValue;
 	}
 	

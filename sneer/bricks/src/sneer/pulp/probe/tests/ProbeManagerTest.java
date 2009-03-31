@@ -19,7 +19,7 @@ import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.probe.ProbeManager;
-import sneer.pulp.reactive.impl.Constant;
+import sneer.pulp.reactive.Signals;
 import sneer.pulp.serialization.Serializer;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
@@ -48,7 +48,7 @@ public class ProbeManagerTest extends BrickTest {
 	public void testTupleBlocking() {
 		checking(new Expectations(){{
 			one(_connectionManager).connectionFor(with(aNonNull(Contact.class))); will(returnValue(_connection));
-			one(_connection).isOnline(); will(returnValue(new Constant<Boolean>(true)));
+			one(_connection).isOnline(); will(returnValue(my(Signals.class).constant(true)));
 			one(_connection).initCommunications(with(aNonNull(PacketScheduler.class)), with(aNonNull(Consumer.class)));
 				will(new CustomAction("capturing scheduler") { @Override public Object invoke(Invocation invocation) throws Throwable {
 					_scheduler = (PacketScheduler) invocation.getParameter(0);
@@ -92,7 +92,7 @@ public class ProbeManagerTest extends BrickTest {
 	public void testBandwidthReporting() {
 		checking(new Expectations(){{
 			one(_connectionManager).connectionFor(with(aNonNull(Contact.class))); will(returnValue(_connection));
-			one(_connection).isOnline(); will(returnValue(new Constant<Boolean>(true)));
+			one(_connection).isOnline(); will(returnValue(my(Signals.class).constant(true)));
 			one(_connection).initCommunications(with(aNonNull(PacketScheduler.class)), with(aNonNull(Consumer.class)));
 				will(new CustomAction("capturing params") { @Override public Object invoke(Invocation invocation) throws Throwable {
 					_scheduler = (PacketScheduler) invocation.getParameter(0);

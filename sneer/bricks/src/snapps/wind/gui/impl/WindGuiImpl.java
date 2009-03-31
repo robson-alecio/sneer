@@ -30,7 +30,7 @@ import snapps.wind.Shout;
 import snapps.wind.Wind;
 import snapps.wind.gui.WindGui;
 import sneer.commons.lang.ByRef;
-import sneer.pulp.reactive.impl.Constant;
+import sneer.pulp.reactive.impl.RegisterImpl;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.sound.player.SoundPlayer;
@@ -81,7 +81,9 @@ class WindGuiImpl implements WindGui {
 	}
 
 	private void initGui() {
-		_myShout = _rfactory.newTextPane(new Constant<String>(""),  _wind.megaphone(), NotificationPolicy.OnEnterPressed);
+//		_myShout = _rfactory.newTextPane(new Constant<String>(""),  _wind.megaphone(), NotificationPolicy.OnEnterPressed);
+		_myShout = _rfactory.newTextPane(new RegisterImpl<String>("").output(),  _wind.megaphone(), NotificationPolicy.OnEnterPressed);
+
 		_myShout.getMainWidget().setBorder(new EmptyBorder(0,0,0,0));
 
 		initScrollPane();

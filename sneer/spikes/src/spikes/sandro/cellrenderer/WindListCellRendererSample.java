@@ -1,5 +1,7 @@
 package spikes.sandro.cellrenderer;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -34,7 +36,7 @@ import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.Constant;
+import sneer.pulp.reactive.Signals;
 import sneer.skin.widgets.reactive.LabelProvider;
 import wheel.io.Logger;
 import wheel.io.ui.graphics.Images;
@@ -64,12 +66,12 @@ class WindListCellRendererSample implements ListCellRenderer {
 
 			@Override
 			public Signal<Image> imageFor(String element) {
-				return new Constant<Image>(_me);
+				return my(Signals.class).constant(_me);
 			}
 
 			@Override
 			public Signal<String> labelFor(String element) {
-				return new Constant<String>("bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, " +
+				return my(Signals.class).constant("bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, " +
 						"bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla, bla");
 			}
 		});
@@ -126,7 +128,7 @@ class WindListCellRendererSample implements ListCellRenderer {
 	}
 	
 	private JComponent getNickAsIcon(String shout) {
-		Signal<Image> signalImage = _labelProvider.imageFor(shout);
+		Signal<? extends Image> signalImage = _labelProvider.imageFor(shout);
 		JLabel icon = new JLabel(new ImageIcon(signalImage.currentValue()), SwingConstants.LEFT);
 		icon.setOpaque(false);
 		return icon;

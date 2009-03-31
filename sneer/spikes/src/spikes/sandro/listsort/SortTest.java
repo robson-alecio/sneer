@@ -18,7 +18,7 @@ import sneer.commons.lang.ByRef;
 import sneer.kernel.container.Containers;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.Constant;
+import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.widgets.reactive.LabelProvider;
@@ -98,17 +98,17 @@ public class SortTest {
 	private static LabelProvider<SortTestElement> newLabelProvider()	throws IOException {
 		return new LabelProvider<SortTestElement>(){
 			
-			Signal<Image> _on = new Constant<Image>(ImageIO.read(SortTest.class.getResource("online.png")));
-			Signal<Image> _off = new Constant<Image>(ImageIO.read(SortTest.class.getResource("offline.png")));
+			Signal<? extends Image> _on = my(Signals.class).constant(ImageIO.read(SortTest.class.getResource("online.png")));
+			Signal<? extends Image> _off = my(Signals.class).constant(ImageIO.read(SortTest.class.getResource("offline.png")));
 			
 			@Override
-			public Signal<Image> imageFor(SortTestElement element) {
+			public Signal<? extends Image> imageFor(SortTestElement element) {
 				return element.isOnline().currentValue() ? _on : _off;
 			}
 
 			@Override
 			public Signal<String> labelFor(SortTestElement element) {
-				return new Constant<String>(element.nick());
+				return my(Signals.class).constant(element.nick());
 			}};
 	}
 

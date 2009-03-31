@@ -8,14 +8,14 @@ public interface Clock extends Brick {
 	
 	long time();
 	
-	void sleepAtLeast(int millis);
+	void sleepAtLeast(long millis);
 
 	void wakeUpNoEarlierThan(long timeToWakeUp, Runnable runnable);
-	void wakeUpInAtLeast(int millisFromNow, Runnable runnable);
-	void wakeUpEvery(int minimumPeriodInMillis, Stepper stepper);
-	void wakeUpNowAndEvery(int minimumPeriodInMillis, Stepper stepper);
+	void wakeUpInAtLeast(long millisFromNow, Runnable runnable);
+	void wakeUpEvery(long minimumPeriodInMillis, Stepper stepper);
+	void wakeUpNowAndEvery(long minimumPeriodInMillis, Stepper stepper);
 
-	void advanceTime(int deltaMillis);
+	void advanceTime(long deltaMillis);
 	void advanceTimeTo(long absoluteTimeMillis);
 
 }

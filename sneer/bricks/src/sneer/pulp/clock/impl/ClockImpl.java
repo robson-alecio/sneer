@@ -22,30 +22,30 @@ class ClockImpl implements Clock {
 	
 	@Override
 	synchronized public void wakeUpNoEarlierThan(long timeToWakeUp, Runnable runnable) {
-		int millisFromNow = timeToWakeUp <= _currentTimeMillis
+		long millisFromNow = timeToWakeUp <= _currentTimeMillis
 			? 0
-			: (int)(timeToWakeUp - _currentTimeMillis);
+			: timeToWakeUp - _currentTimeMillis;
 		wakeUpInAtLeast(millisFromNow, runnable);
 	}
 
 	@Override
-	synchronized public void wakeUpInAtLeast(int millisFromCurrentTime, Runnable runnable) {
+	synchronized public void wakeUpInAtLeast(long millisFromCurrentTime, Runnable runnable) {
 		_alarms.add(new Alarm(runnable, millisFromCurrentTime));
 	}
 
 	@Override
-	synchronized public void wakeUpNowAndEvery(int period, Stepper stepper) {
+	synchronized public void wakeUpNowAndEvery(long period, Stepper stepper) {
 		step(stepper);
 		wakeUpEvery(period, stepper);
 	}
 
 	@Override
-	synchronized public void wakeUpEvery(int period, Stepper stepper) {
+	synchronized public void wakeUpEvery(long period, Stepper stepper) {
 		_alarms.add(new Alarm(stepper, period));
 	}
 
 	@Override
-	public void sleepAtLeast(int millis) {
+	public void sleepAtLeast(long millis) {
 		Runnable notifier = Threads.createNotifier();
 		synchronized (notifier) {
 			wakeUpInAtLeast(millis, notifier);
@@ -59,7 +59,7 @@ class ClockImpl implements Clock {
 	}
 
 	@Override
-	synchronized public void advanceTime(int deltaMillis) {
+	synchronized public void advanceTime(long deltaMillis) {
 		advanceTimeTo(_currentTimeMillis + deltaMillis);
 	}
 
@@ -97,17 +97,17 @@ class ClockImpl implements Clock {
 
 		final long _sequence = _nextSequence++;
 		
-		final int _period;
+		final long _period;
 		
 		long _wakeUpTime;
 		final Stepper _stepper;
 
-		Alarm(final Runnable runnable, int millisFromNow) {
+		Alarm(final Runnable runnable, long millisFromNow) {
 			this(singleStepperFor(runnable), millisFromNow);
 		}
 
-		public Alarm(Stepper stepper, int period) {
-			if (period < 0) throw new IllegalArgumentException();
+		public Alarm(Stepper stepper, long period) {
+			if (period < 0) throw new IllegalArgumentException("" + period);
 			_period = period;
 			_wakeUpTime = _currentTimeMillis + period;
 			_stepper = stepper;

@@ -6,6 +6,8 @@ import sneer.brickness.Brick;
 
 public interface Dashboard extends Brick {
 
+	void show();
+
 	Container getRootPanel();
 	Container getContentPanel();
 	void moveInstrument(int index, InstrumentWindow frame);

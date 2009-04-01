@@ -18,7 +18,7 @@ public class DynDnsAccountKeeperTest extends BrickTest {
 		
 		_subject.accountSetter().consume(new DynDnsAccount("neide.dyndns.org", "neide", "abc123"));
 		assertEquals("neide.dyndns.org", ownAccount().host);
-		assertEquals("neide", ownAccount().dynDnsUser);
+		assertEquals("neide", ownAccount().user);
 		assertEquals("abc123", ownAccount().password);
 	}
 

@@ -76,10 +76,6 @@ class DashboardImpl implements Dashboard, Runnable {
 	@SuppressWarnings("unused")
 	private SimpleListReceiver<Instrument> _instrumentsReceiver;
 	
-	DashboardImpl() {
-		_threadPool.registerActor(this);
-	}
-
 	private void initialize() {
 		initWindows();	
 		resizeWindow();
@@ -279,6 +275,11 @@ class DashboardImpl implements Dashboard, Runnable {
 	public void moveInstrumentUp(InstrumentWindow frame) {
 		_contentPanel.remove(frame.contentPane());
 		_contentPanel.add(frame.contentPane());
+	}
+
+	@Override
+	public void show() {
+		_threadPool.registerActor(this);
 	}
 }
 

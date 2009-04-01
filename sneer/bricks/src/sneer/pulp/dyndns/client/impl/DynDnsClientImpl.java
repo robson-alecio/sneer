@@ -99,7 +99,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		
 		private State submitUpdateRequest(final DynDnsAccount account, String ip) {
 			try {
-				_updater.update(account.host, account.dynDnsUser, account.password, ip);
+				_updater.update(account.host, account.user, account.password, ip);
 				recordLastSuccess(ip, account.host);
 				return new Happy();
 			} catch (RedundantUpdateException e) {

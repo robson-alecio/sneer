@@ -1,7 +1,7 @@
 ﻿FIXES
 =========
 
-	- [Sandro] main.Sneer is too big - Extract Own Name and Dyndns logic to separate class. 
+	- [Sandro] WelcomeWizard - Make name and port reactive. 
 
 
 TASKS

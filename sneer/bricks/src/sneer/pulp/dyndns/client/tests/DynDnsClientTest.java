@@ -76,7 +76,7 @@ Unacceptable Client Behavior
 				will(returnValue(_ownAccount.output()));
 				
 			final DynDnsAccount account = _ownAccount.output().currentValue();
-			exactly(1).of(_updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
+			exactly(1).of(_updater).update(account.host, account.user, account.password, _ownIp.output().currentValue());
 		}});
 		
 		startDynDnsClientOnNewEnvironment();
@@ -105,10 +105,10 @@ Unacceptable Client Behavior
 				will(returnValue(_ownAccount.output()));
 				
 			final DynDnsAccount account = _ownAccount.output().currentValue();
-			exactly(1).of(_updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
+			exactly(1).of(_updater).update(account.host, account.user, account.password, _ownIp.output().currentValue());
 				will(throwException(error));
 				
-			exactly(1).of(_updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
+			exactly(1).of(_updater).update(account.host, account.user, account.password, _ownIp.output().currentValue());
 		}});
 		
 
@@ -136,10 +136,10 @@ Unacceptable Client Behavior
 			allowing(_ownAccountKeeper).ownAccount();
 				will(returnValue(_ownAccount.output()));
 			
-			exactly(1).of(_updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
+			exactly(1).of(_updater).update(account.host, account.user, account.password, _ownIp.output().currentValue());
 				will(throwException(error));
 				
-			exactly(1).of(_updater).update(account.host, account.dynDnsUser, "*" + account.password, newIp);
+			exactly(1).of(_updater).update(account.host, account.user, "*" + account.password, newIp);
 		}});
 		
 		startDynDnsClient();
@@ -168,7 +168,7 @@ Unacceptable Client Behavior
 			allowing(_ownIpDiscoverer).ownIp();	will(returnValue(_ownIp.output()));
 			allowing(_ownAccountKeeper).ownAccount(); will(returnValue(_ownAccount.output()));
 			
-			exactly(1).of(_updater).update(account.host, account.dynDnsUser, account.password, _ownIp.output().currentValue());
+			exactly(1).of(_updater).update(account.host, account.user, account.password, _ownIp.output().currentValue());
 				will(throwException(error));
 		}});
 		

@@ -19,13 +19,10 @@ import sneer.pulp.connection.reachability.ReachabilitySentinel;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.dyndns.client.DynDnsClient;
-import sneer.pulp.dyndns.ownaccount.DynDnsAccount;
-import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.logging.Logger;
 import sneer.pulp.own.name.OwnNameKeeper;
-import sneer.pulp.port.PortKeeper;
 import sneer.pulp.probe.ProbeManager;
 import sneer.skin.dashboard.Dashboard;
 
@@ -79,57 +76,38 @@ class MainSneerBrickImpl implements MainSneerBrick {
 	@SuppressWarnings("unused")
 	private final ProbeManager _probes = my(ProbeManager.class);
 
-	private final DynDnsAccountKeeper _dynDnsAccountKeeper = my(DynDnsAccountKeeper.class);
 
-	private final OwnNameKeeper _ownName = my(OwnNameKeeper.class);
-
-	private final PortKeeper _portKeeper = my(PortKeeper.class);
-
+	
 	private final ContactManager _contactManager = my(ContactManager.class);
 
 	private final KeyManager _keyManager = my(KeyManager.class);
 	
 	private final InternetAddressKeeper _addressKeeper = my(InternetAddressKeeper.class);
 
-	@Override
-	public void start(String ownName, String dynDnsUserName, String dynDnsPassword) {
+	
+	{
 		my(Logger.class).enterRobustMode();
 
-		setOwnName(ownName);
-		
-		_portKeeper.portSetter().consume(port());
-		
-		initDynDnsAccount(dynDnsUserName, dynDnsPassword);
+		WelcomeWizard.showIfNecessary();
 		
 		addContacts();
-	}
-
-	private void initDynDnsAccount(String dynDnsUserName, String dynDnsPassword) {
-		if (dynDnsUserName == null) return;
 		
-		_dynDnsAccountKeeper.accountSetter().consume(
-			new DynDnsAccount(dynDnsHost(), dynDnsUserName, dynDnsPassword));
+		my(Dashboard.class).show();
 	}
 
-	private String dynDnsHost() {
-		return contactInfoFor(ownName())._host;
-	}
-
-	private Integer port() {
-		return contactInfoFor(ownName())._port;
-	}
 	
-	private ContactInfo contactInfoFor(String name) {
-		for (ContactInfo candidate : contacts())
-			if (candidate._nick.equals(name)) return candidate;
-		throw new IllegalArgumentException(name + " is not one of the hardcoded names. If you want to use this Alpha version of Sneer please let us know at sneercoders@googlegroups.com and we will hardcode your name for now.");
-	}
-
+	
+	
+	
 	private void addContacts() {
 		for (ContactInfo contact : contacts()) {
 			if (contact._nick.equals(ownName())) continue;
 			addConnections(contact);
 		}
+	}
+
+	private Object ownName() {
+		return my(OwnNameKeeper.class).name().currentValue();
 	}
 
 	private void addConnections(ContactInfo contact) {
@@ -196,13 +174,22 @@ class MainSneerBrickImpl implements MainSneerBrick {
 		return result;
 	}
 
-	private void setOwnName(String ownName) {
-		_ownName.nameSetter().consume(ownName);
-	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
-	private String ownName() {
-		return _ownName.name().currentValue();
-	}
+
+
+
 
 
 }

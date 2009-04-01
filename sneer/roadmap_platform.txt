@@ -10,14 +10,13 @@ TASKS
 ========
 	- [Sandro] Webstart
 
+	- [Klaus] build.xml/Antlipse - Revive.
+		- Cleanup wheel
+		- Eliminate upward dependencies.
+
 	- [Klaus] Transparent persistence for bricks
 		- [Sandro] WelcomeWizard should appear only if necessary. Add menu item to open it.
 
-	- [Klaus] build.xml/Antlipse - Revive.
-		- Eliminate upward dependencies.
-
-	- [Klaus] Cleanup wheel
-	
 	- [Bamboo]Create/Install ("publish") brick locally
 		- NewContainer - The simplest possible container
 			- Unignore NewContainerTest.runDependentBrickWithoutDependencies(). Delete old systemClassLoader logic from Brickness.
@@ -52,6 +51,8 @@ TASKS
 	- MeToo
 		- Unignore Freedom7 dependency tests
 		- Open Jar leak - Fix in Freedom7Test
+
+	- Revise commons. Daemon? Streams? TestThatMightUseResources?
 
 	- Security
 		- Sandboxing

@@ -4,7 +4,6 @@ import static sneer.commons.environments.Environments.my;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
@@ -248,34 +247,21 @@ class DashboardImpl implements Dashboard, Runnable {
 		waitUntilTheGuiThreadStarts();
 	}
 	
-	@Override
-	public Container getContentPanel() {
-		return _contentPanel;
-	}
 	
-	@Override
-	public Container getRootPanel() {
-		return _rootPanel;
-	}
-	
-	
-	@Override
-	public void moveInstrument(int index, InstrumentWindow frame) {
-		_contentPanel.remove(frame.contentPane());
-		_contentPanel.add(frame.contentPane(), index);
-	}
-
-	@Override
-	public void moveInstrumentDown(InstrumentWindow frame) {
-		_contentPanel.remove(frame.contentPane());
-		_contentPanel.add(frame.contentPane(), 0);
-	}
-
-	@Override
-	public void moveInstrumentUp(InstrumentWindow frame) {
-		_contentPanel.remove(frame.contentPane());
-		_contentPanel.add(frame.contentPane());
-	}
+//	private void moveInstrument(int index, InstrumentWindow frame) {
+//		_contentPanel.remove(frame.contentPane());
+//		_contentPanel.add(frame.contentPane(), index);
+//	}
+//
+//	private void moveInstrumentDown(InstrumentWindow frame) {
+//		_contentPanel.remove(frame.contentPane());
+//		_contentPanel.add(frame.contentPane(), 0);
+//	}
+//
+//	private void moveInstrumentUp(InstrumentWindow frame) {
+//		_contentPanel.remove(frame.contentPane());
+//		_contentPanel.add(frame.contentPane());
+//	}
 
 	@Override
 	public void show() {

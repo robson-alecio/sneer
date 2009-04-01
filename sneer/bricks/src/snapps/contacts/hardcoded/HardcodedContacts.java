@@ -1,6 +1,6 @@
 package snapps.contacts.hardcoded;
 
-import sneer.container.NewBrick;
+import sneer.container.Brick;
 
-@NewBrick
+@Brick
 public interface HardcodedContacts {}

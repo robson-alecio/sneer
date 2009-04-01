@@ -7,7 +7,7 @@ import java.awt.FlowLayout;
 import javax.swing.JFrame;
 
 import sneer.commons.environments.Environments;
-import sneer.kernel.container.Containers;
+import sneer.kernel.container.ContainersOld;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.impl.RegisterImpl;
 import sneer.skin.widgets.reactive.NotificationPolicy;
@@ -73,7 +73,7 @@ public class ReactiveWidgetsDemo {
 	
 	public static void main(String[] args) throws Exception {
 		Logger.redirectTo(System.out);
-		Environments.runWith(Containers.newContainer(), new Runnable(){ @Override public void run() {
+		Environments.runWith(ContainersOld.newContainer(), new Runnable(){ @Override public void run() {
 			try {
 				new ReactiveWidgetsDemo();
 			} catch (Exception e) {

@@ -1,9 +1,9 @@
 package sneer.skin.snappmanager;
 
-import sneer.brickness.Brick;
+import sneer.brickness.OldBrick;
 import wheel.reactive.lists.ListSignal;
 
-public interface InstrumentManager extends Brick {
+public interface InstrumentManager extends OldBrick {
 
 	void registerInstrument(Instrument instrument);
 

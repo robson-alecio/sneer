@@ -1,8 +1,8 @@
 package sneer.skin.menu;
 
-import sneer.brickness.Brick;
+import sneer.brickness.OldBrick;
 
-public interface MenuFactory<WIDGET> extends Brick {
+public interface MenuFactory<WIDGET> extends OldBrick {
 
 	Menu<WIDGET> createMenuBar();
 

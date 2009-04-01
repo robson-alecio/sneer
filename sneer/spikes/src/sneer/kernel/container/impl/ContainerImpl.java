@@ -5,20 +5,20 @@ import java.lang.reflect.Constructor;
 import java.util.HashSet;
 import java.util.Set;
 
-import sneer.brickness.Brick;
+import sneer.brickness.OldBrick;
 import sneer.brickness.environment.BrickConventions;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
 import sneer.commons.io.StoragePath;
 import sneer.kernel.container.ClassLoaderFactory;
-import sneer.kernel.container.Container;
+import sneer.kernel.container.ContainerOld;
 import sneer.kernel.container.ContainerException;
 import sneer.kernel.container.SneerConfig;
 import sneer.kernel.container.impl.classloader.EclipseClassLoaderFactory;
 import sneer.skin.GuiBrick;
 import wheel.lang.Types;
 
-public class ContainerImpl implements Container {
+public class ContainerImpl implements ContainerOld {
 	
 	private ClassLoaderFactory _classloaderFactory;
 	
@@ -76,7 +76,7 @@ public class ContainerImpl implements Container {
 	}
 
 	@Override
-	public Class<? extends Brick> resolve(String brickName) throws ClassNotFoundException {
+	public Class<? extends OldBrick> resolve(String brickName) throws ClassNotFoundException {
 		if (null == _apiClassLoader) {
 			_apiClassLoader = factory().newApiClassLoader();
 		}

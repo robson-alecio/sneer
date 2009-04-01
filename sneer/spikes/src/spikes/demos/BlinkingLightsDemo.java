@@ -3,7 +3,7 @@ package spikes.demos;
 import static sneer.commons.environments.Environments.my;
 import snapps.blinkinglights.gui.BlinkingLightsGui;
 import sneer.commons.environments.Environments;
-import sneer.kernel.container.Containers;
+import sneer.kernel.container.ContainersOld;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.skin.dashboard.Dashboard;
@@ -24,7 +24,7 @@ public class BlinkingLightsDemo {
 
 	public static void main(String[] args) throws Exception {
 		Logger.redirectTo(System.out);
-		Environments.runWith(Containers.newContainer(), new Runnable(){
+		Environments.runWith(ContainersOld.newContainer(), new Runnable(){
 			@Override public void run() {
 				try {
 					new BlinkingLightsDemo();

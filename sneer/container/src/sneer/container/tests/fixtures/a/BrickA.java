@@ -1,8 +1,8 @@
 package sneer.container.tests.fixtures.a;
 
-import sneer.container.NewBrick;
+import sneer.container.Brick;
 
-@NewBrick
+@Brick
 public interface BrickA {
 
 	void setProperty(String value);

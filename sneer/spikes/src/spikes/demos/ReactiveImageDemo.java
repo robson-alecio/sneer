@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.Functor;
-import sneer.kernel.container.Containers;
+import sneer.kernel.container.ContainersOld;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.widgets.reactive.ImageWidget;
@@ -59,7 +59,7 @@ public class ReactiveImageDemo {
 	
 	public static void main(String[] args) throws Exception {
 		Logger.redirectTo(System.out);
-		Environments.runWith(Containers.newContainer(), new Runnable(){ @Override public void run() {
+		Environments.runWith(ContainersOld.newContainer(), new Runnable(){ @Override public void run() {
 			try {
 				new ReactiveImageDemo();
 			} catch (Exception e) {

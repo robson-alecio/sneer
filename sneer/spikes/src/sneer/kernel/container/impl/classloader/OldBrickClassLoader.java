@@ -22,7 +22,7 @@ import sneer.pulp.dependency.DependencyManager;
 import sneer.pulp.dependency.FileWithHash;
 import wheel.lang.Threads;
 
-public class BrickClassLoader extends EnhancingClassLoader {
+public class OldBrickClassLoader extends EnhancingClassLoader {
 
 	private final File _brickDirectory;
 	
@@ -36,12 +36,12 @@ public class BrickClassLoader extends EnhancingClassLoader {
 	
 	private final DependencyManager _dependencyManager = my(DependencyManager.class);
 	
-	public BrickClassLoader() {
+	public OldBrickClassLoader() {
 		//used for testing
 		this(Threads.contextClassLoader(), Object.class, null);
 	}
 	
-	public BrickClassLoader(ClassLoader parent, Class<?> mainClass, File brickDirectory) {
+	public OldBrickClassLoader(ClassLoader parent, Class<?> mainClass, File brickDirectory) {
 		super(parent);
 		_brickDirectory = brickDirectory;
 		_mainClass = mainClass;

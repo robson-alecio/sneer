@@ -1,9 +1,9 @@
 package sneer.pulp.reactive.gates.logic;
 
-import sneer.container.NewBrick;
+import sneer.container.Brick;
 import sneer.pulp.reactive.Signal;
 
-@NewBrick
+@Brick
 public interface LogicGates {
 
 	Signal<Boolean> and(Signal<Boolean> a, Signal<Boolean> b);

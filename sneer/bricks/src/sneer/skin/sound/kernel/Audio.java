@@ -5,9 +5,9 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 
-import sneer.brickness.Brick;
+import sneer.brickness.OldBrick;
 
-public interface Audio extends Brick {
+public interface Audio extends OldBrick {
 
 	AudioFormat defaultAudioFormat();
 

@@ -20,8 +20,8 @@ import snapps.wind.Wind;
 import snapps.wind.gui.WindGui;
 import sneer.commons.io.StoragePath;
 import sneer.container.BrickLoadingException;
-import sneer.container.NewContainer;
-import sneer.container.NewContainers;
+import sneer.container.Container;
+import sneer.container.Containers;
 import sneer.kernel.container.SneerConfig;
 import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.blinkinglights.BlinkingLights;
@@ -162,7 +162,7 @@ public class Sneer {
 	}
 
 	static void publishBricks(Class<?>... bricks) throws BrickLoadingException, IOException {
-		NewContainer container = NewContainers.newContainer();
+		Container container = Containers.newContainer();
 
 		for (Class<?> brick : bricks)
 			container.runBrick(Jars.directoryFor(brick));

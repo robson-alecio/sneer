@@ -9,8 +9,8 @@ import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
 import sneer.commons.environments.Environment;
-import sneer.kernel.container.Container;
-import sneer.kernel.container.Containers;
+import sneer.kernel.container.ContainerOld;
+import sneer.kernel.container.ContainersOld;
 import sneer.kernel.container.SneerConfig;
 
 public class ContainerTest {
@@ -25,7 +25,7 @@ public class ContainerTest {
 			one(environment).provide(Sample.class); will(returnValue(null));
 		}});
 		
-		final Container container = Containers.newContainer(environment);
+		final ContainerOld container = ContainersOld.newContainer(environment);
 		
 		assertEquals("o", container.provide(Object.class));
 		assertEquals("SampleImpl", container.provide(Sample.class).getClass().getSimpleName());
@@ -36,7 +36,7 @@ public class ContainerTest {
 	@Test
 	public void testImplementationBinding() throws Exception {
         Sample sample = new Sample() {};
-        Container c = Containers.newContainer(sample);
+        ContainerOld c = ContainersOld.newContainer(sample);
         Sample subject = c.provide(Sample.class);
         assertSame(sample, subject);
 	}

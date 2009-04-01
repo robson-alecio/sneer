@@ -2,7 +2,7 @@ package sneer.pulp.classpath.impl;
 
 import java.io.File;
 
-import sneer.brickness.Brick;
+import sneer.brickness.OldBrick;
 import sneer.commons.lang.exceptions.NotImplementedYet;
 import sneer.pulp.classpath.Classpath;
 import sneer.pulp.classpath.ClasspathFactory;
@@ -37,7 +37,7 @@ class ClasspathFactoryImpl implements ClasspathFactory {
 		
 		try {
 			/* try to load from sneer.jar */
-			Jars.jarGiven(Brick.class);
+			Jars.jarGiven(OldBrick.class);
 			throw new sneer.commons.lang.exceptions.NotImplementedYet();	
 		} catch(StringIndexOutOfBoundsException e) {
 			return result.compose(buildEclipseClasspath());
@@ -57,7 +57,7 @@ class ClasspathFactoryImpl implements ClasspathFactory {
 
 	private Classpath buildEclipseClasspath() {
 		Classpath result = newClasspath();
-		Classpath kernelPlusWheel = new DirectoryBasedClasspath(ClassUtils.rootDirectoryFor(Brick.class));
+		Classpath kernelPlusWheel = new DirectoryBasedClasspath(ClassUtils.rootDirectoryFor(OldBrick.class));
 		Classpath allBrickApis = new FilteredClasspath(new BrickApiFilter(brickRootDirectory()));
 		return result.compose(kernelPlusWheel.compose(allBrickApis));
 	}

@@ -12,8 +12,8 @@ import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.ByRef;
 import sneer.commons.lang.exceptions.NotImplementedYet;
-import sneer.kernel.container.Container;
-import sneer.kernel.container.Containers;
+import sneer.kernel.container.ContainerOld;
+import sneer.kernel.container.ContainersOld;
 import wheel.io.ui.TimeboxedEventQueue;
 import wheel.lang.exceptions.TimeIsUp;
 
@@ -21,21 +21,21 @@ public class GuiBrickTest {
 	
 	@Test
 	public void guiBrickRunsInSwingThread() throws Exception {
-		final Container container = Containers.newContainer();
+		final ContainerOld container = ContainersOld.newContainer();
 		final SomeGuiBrick brick = container.provide(SomeGuiBrick.class);
 		assertSame(swingThread(), brick.currentThread());
 	}
 	
 	@Test
 	public void guiBrickRunsInContainerEnvironment() throws Exception {
-		final Container container = Containers.newContainer();
+		final ContainerOld container = ContainersOld.newContainer();
 		final SomeGuiBrick brick = container.provide(SomeGuiBrick.class);
 		assertSame(container, brick.currentEnvironment());
 	}
 
 	@Test
 	public void injectedGuiBrickRunsInSwingThread() throws Exception {
-		final Container container = Containers.newContainer(new SomeGuiBrick() {			
+		final ContainerOld container = ContainersOld.newContainer(new SomeGuiBrick() {			
 			@Override
 			public Thread currentThread() {
 				return Thread.currentThread();
@@ -63,7 +63,7 @@ public class GuiBrickTest {
 	
 	@Test
 	public void testGuiBrickRunsInsideTimebox() throws Exception {
-		Environments.runWith(Containers.newContainer(), new Runnable() { @Override public void run() {
+		Environments.runWith(ContainersOld.newContainer(), new Runnable() { @Override public void run() {
 			
 			int timeoutForGuiEvents = 10;
 			TimeboxedEventQueue.startQueueing(timeoutForGuiEvents);
@@ -79,7 +79,7 @@ public class GuiBrickTest {
 
 
 	private void runInsideTimebox() {
-		final Container container = Containers.newContainer();
+		final ContainerOld container = ContainersOld.newContainer();
 		final SomeGuiBrick brick = container.provide(SomeGuiBrick.class);
 		try {
 			brick.slowMethod();
@@ -91,7 +91,7 @@ public class GuiBrickTest {
 
 	@Test
 	public void testNonGuiBrickRunsInCurrentThread() throws Exception {
-		final SomeVanillaBrick brick = Containers.newContainer().provide(SomeVanillaBrick.class);
+		final SomeVanillaBrick brick = ContainersOld.newContainer().provide(SomeVanillaBrick.class);
 		assertSame(Thread.currentThread(), brick.brickThread());
 	}
 	

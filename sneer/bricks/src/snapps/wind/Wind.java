@@ -1,10 +1,10 @@
 package snapps.wind;
 
-import sneer.brickness.Brick;
+import sneer.brickness.OldBrick;
 import wheel.lang.Consumer;
 import wheel.reactive.lists.ListSignal;
 
-public interface Wind extends Brick {
+public interface Wind extends OldBrick {
 
 	ListSignal<Shout> shoutsHeard();
 

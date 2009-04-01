@@ -3,10 +3,10 @@ package sneer.pulp.crypto;
 import java.io.File;
 import java.io.IOException;
 
-import sneer.brickness.Brick;
+import sneer.brickness.OldBrick;
 
 
-public interface Crypto extends Brick {
+public interface Crypto extends OldBrick {
 
 	/**
 	 * SHA512 + Whirpool512 

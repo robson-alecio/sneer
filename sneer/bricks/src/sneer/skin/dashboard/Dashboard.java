@@ -1,5 +1,5 @@
 package sneer.skin.dashboard;
 
-import sneer.brickness.Brick;
+import sneer.brickness.OldBrick;
 
-public interface Dashboard extends Brick {}
+public interface Dashboard extends OldBrick {}

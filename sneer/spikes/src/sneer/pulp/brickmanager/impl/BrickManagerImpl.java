@@ -9,10 +9,10 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
-import sneer.brickness.Brick;
+import sneer.brickness.OldBrick;
 import sneer.brickness.PublicKey;
 import sneer.commons.lang.exceptions.NotImplementedYet;
-import sneer.kernel.container.Container;
+import sneer.kernel.container.ContainerOld;
 import sneer.kernel.container.SneerConfig;
 import sneer.pulp.brickmanager.BrickManager;
 import sneer.pulp.brickmanager.BrickManagerException;
@@ -152,13 +152,13 @@ class BrickManagerImpl implements BrickManager {
 	}
 
 	private void runOnceOnInstall(BrickFile installed) {
-		Class<? extends Brick> clazz = resolveBrickInterface(installed);
-		my(Container.class).provide(clazz);
+		Class<? extends OldBrick> clazz = resolveBrickInterface(installed);
+		my(ContainerOld.class).provide(clazz);
 	}
 
-	private Class<? extends Brick> resolveBrickInterface(BrickFile installed) {
+	private Class<? extends OldBrick> resolveBrickInterface(BrickFile installed) {
 		try {
-			return my(Container.class).resolve(installed.name());
+			return my(ContainerOld.class).resolve(installed.name());
 		} catch (ClassNotFoundException e) {
 			throw new BrickManagerException(e.getMessage(), e);
 		}

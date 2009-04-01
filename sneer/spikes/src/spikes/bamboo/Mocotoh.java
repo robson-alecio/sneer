@@ -8,7 +8,7 @@ import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.internal.runners.TestMethod;
 
 import sneer.commons.environments.Environments;
-import sneer.kernel.container.Containers;
+import sneer.kernel.container.ContainersOld;
 
 public class Mocotoh extends JUnit4ClassRunner {
 	
@@ -21,7 +21,7 @@ public class Mocotoh extends JUnit4ClassRunner {
 		return new TestMethod(method, this.getTestClass()) {
 			@Override
 			public void invoke(final Object test) {
-				Environments.runWith(Containers.newContainer(), new Runnable() { @Override public void run() {
+				Environments.runWith(ContainersOld.newContainer(), new Runnable() { @Override public void run() {
 					try {
 						superInvoke(test);
 					} catch (IllegalArgumentException e) {

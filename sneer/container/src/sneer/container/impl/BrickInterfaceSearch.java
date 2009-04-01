@@ -5,9 +5,9 @@ import java.io.FileNotFoundException;
 
 import org.apache.commons.io.FilenameUtils;
 
-import sneer.brickness.Brick;
+import sneer.brickness.OldBrick;
 import sneer.container.BrickLoadingException;
-import sneer.container.NewBrick;
+import sneer.container.Brick;
 import sneer.skin.GuiBrick;
 import sneer.skin.snappmanager.Instrument;
 
@@ -27,7 +27,7 @@ class BrickInterfaceSearch {
 		Class<?> result = null;
 		for (File classFile : listClassFiles()) {
 			Class<?> candidate = loadClass(classFile);
-			if (!candidate.isAnnotationPresent(NewBrick.class) && !Brick.class.isAssignableFrom(candidate))
+			if (!candidate.isAnnotationPresent(Brick.class) && !OldBrick.class.isAssignableFrom(candidate))
 				continue;
 			if (candidate.getName().equals(Instrument.class.getName()))
 				continue;

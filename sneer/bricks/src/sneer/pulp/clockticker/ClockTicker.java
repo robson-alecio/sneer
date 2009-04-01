@@ -1,9 +1,9 @@
 package sneer.pulp.clockticker;
 
-import sneer.brickness.Brick;
-import sneer.container.NewBrick;
+import sneer.brickness.OldBrick;
+import sneer.container.Brick;
 
-@NewBrick
-public interface ClockTicker extends Brick {
+@Brick
+public interface ClockTicker extends OldBrick {
 
 }

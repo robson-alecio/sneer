@@ -47,7 +47,7 @@ public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 			//useful for eclipse development
 			return fileClassLoader(parent);
 		}
-		return new BrickClassLoader(parent, brickClass, brickDirectory);
+		return new OldBrickClassLoader(parent, brickClass, brickDirectory);
 	}
 
 	//FixUrgent: hack to allow using bricks that are not deployed, but present in your classpath.

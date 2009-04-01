@@ -9,6 +9,6 @@ package sneer.brickness;
  * All method calls to all classes in a Brick, including callbacks, will be
  * synchronized by the container.
  */
-public interface Brick {
+public interface OldBrick {
 
 }

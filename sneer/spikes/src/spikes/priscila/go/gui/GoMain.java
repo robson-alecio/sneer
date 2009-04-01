@@ -1,7 +1,7 @@
 package spikes.priscila.go.gui;
 
 import sneer.commons.environments.Environments;
-import sneer.kernel.container.Containers;
+import sneer.kernel.container.ContainersOld;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.impl.RegisterImpl;
 import spikes.priscila.go.Move;
@@ -12,7 +12,7 @@ public class GoMain {
 	
 	
 	public GoMain() {
-		Environments.runWith(Containers.newContainer(), new Runnable() { @Override public void run() {
+		Environments.runWith(ContainersOld.newContainer(), new Runnable() { @Override public void run() {
 			init();
 		}});
 	}

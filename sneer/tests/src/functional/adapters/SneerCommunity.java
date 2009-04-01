@@ -6,8 +6,8 @@ import org.apache.commons.lang.StringUtils;
 
 import sneer.commons.environments.Environments;
 import sneer.commons.io.StoragePath;
-import sneer.container.NewContainer;
-import sneer.container.NewContainers;
+import sneer.container.Container;
+import sneer.container.Containers;
 import sneer.kernel.container.SneerConfig;
 import sneer.pulp.network.Network;
 import testutils.network.InProcessNetwork;
@@ -34,14 +34,14 @@ public class SneerCommunity implements SovereignCommunity {
 		return party;
 	}
 
-	private NewContainer newContainer(final String name) {
+	private Container newContainer(final String name) {
 //		return Containers.newContainer(_network, sneerConfigForParty(name)); //OLD VERSION
 
 		StoragePath storagePath = new StoragePath(){ @Override public String get() {
 			return sneerConfigForParty(name).sneerDirectory().getAbsolutePath();
 		}};
 		
-		return NewContainers.newContainer(_network, sneerConfigForParty(name), storagePath);
+		return Containers.newContainer(_network, sneerConfigForParty(name), storagePath);
 	}
 
 	private SneerConfig sneerConfigForParty(String name) {

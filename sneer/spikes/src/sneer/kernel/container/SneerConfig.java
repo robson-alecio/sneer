@@ -2,9 +2,9 @@ package sneer.kernel.container;
 
 import java.io.File;
 
-import sneer.container.NewBrick;
+import sneer.container.Brick;
 
-@NewBrick
+@Brick
 public interface SneerConfig extends ContainerConfig {
 	
 	File sneerDirectory();

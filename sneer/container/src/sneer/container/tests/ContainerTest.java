@@ -8,17 +8,17 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.container.BrickLoadingException;
-import sneer.container.NewContainer;
-import sneer.container.NewContainers;
+import sneer.container.Container;
+import sneer.container.Containers;
 import sneer.container.tests.fixtures.a.BrickA;
 import sneer.container.tests.fixtures.b.BrickB;
 import sneer.container.tests.fixtures.noannotation.InterfaceWithoutBrickAnnotation;
 import wheel.io.Jars;
 
-public class NewContainerTest extends Assert {
+public class ContainerTest extends Assert {
 	
 
-	final NewContainer subject = NewContainers.newContainer();
+	final Container subject = Containers.newContainer();
 	
 	@Test
 	public void runBrick() throws Exception {

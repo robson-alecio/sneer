@@ -1,10 +1,10 @@
 package sneer.pulp.logging;
 
-import sneer.brickness.Brick;
+import sneer.brickness.OldBrick;
 import sneer.pulp.events.EventSource;
 import wheel.reactive.lists.ListRegister;
 
-public interface Logger extends Brick {
+public interface Logger extends OldBrick {
 
 	void log(String message, Object... messageInsets);
 	void logShort(Exception e, String message, Object... insets);

@@ -2,9 +2,9 @@ package sneer.pulp.classpath;
 
 import java.io.File;
 
-import sneer.brickness.Brick;
+import sneer.brickness.OldBrick;
 
-public interface ClasspathFactory extends Brick {
+public interface ClasspathFactory extends OldBrick {
 
 	Classpath newClasspath();
 

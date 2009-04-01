@@ -15,7 +15,7 @@ import javax.swing.SwingUtilities;
 
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.ByRef;
-import sneer.kernel.container.Containers;
+import sneer.kernel.container.ContainersOld;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
@@ -38,7 +38,7 @@ public class SortTest {
 
 	public static void main(String[] args) throws Exception {
 		
-		Environments.runWith(Containers.newContainer(), new Runnable(){ @Override public void run() {
+		Environments.runWith(ContainersOld.newContainer(), new Runnable(){ @Override public void run() {
 			try {
 				start();
 			} catch (Exception e) {

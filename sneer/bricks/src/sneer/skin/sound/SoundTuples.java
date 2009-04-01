@@ -1,7 +1,7 @@
 package sneer.skin.sound;
 
-import sneer.brickness.Brick;
+import sneer.brickness.OldBrick;
 
-public interface SoundTuples extends Brick {
+public interface SoundTuples extends OldBrick {
 
 }

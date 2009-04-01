@@ -1,6 +1,6 @@
 package sneer.skin;
 
-import sneer.brickness.Brick;
+import sneer.brickness.OldBrick;
 
 /** A brick that can freely manipulate Swing components without having
  * to worry about being in the Gui thread  (AWT event dispatch thread).
@@ -20,6 +20,6 @@ import sneer.brickness.Brick;
  *			}
  *			//Original method bytecode
  */
-public interface GuiBrick extends Brick {
+public interface GuiBrick extends OldBrick {
 
 }

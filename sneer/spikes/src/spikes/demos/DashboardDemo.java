@@ -11,7 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import sneer.commons.environments.Environments;
-import sneer.kernel.container.Containers;
+import sneer.kernel.container.ContainersOld;
 import sneer.skin.dashboard.Dashboard;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.snappmanager.Instrument;
@@ -33,7 +33,7 @@ public class DashboardDemo  {
 	
 	public static void main(String[] args) throws Exception {
 		Logger.redirectTo(System.out);
-		Environments.runWith(Containers.newContainer(), new Runnable(){ @Override public void run() {
+		Environments.runWith(ContainersOld.newContainer(), new Runnable(){ @Override public void run() {
 			new DashboardDemo();
 		}});
 	}

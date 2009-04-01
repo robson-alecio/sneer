@@ -7,12 +7,12 @@ import java.net.URLClassLoader;
 
 import sneer.brickness.environment.BrickConventions;
 
-class NewBrickClassLoader extends URLClassLoader {
+class BrickClassLoader extends URLClassLoader {
 
 	private final String _implPackageName;
 	private final ClassLoader _apiClassLoader;
 
-	NewBrickClassLoader(String classDirectory, String packageName, ClassLoader apiClassLoader) {
+	BrickClassLoader(String classDirectory, String packageName, ClassLoader apiClassLoader) {
 		super(classpathFor(classDirectory, packageName), null); //No parent.
 		_implPackageName = BrickConventions.implPackageFor(packageName);
 		_apiClassLoader = apiClassLoader;

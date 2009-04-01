@@ -2,7 +2,7 @@ package spikes.demos;
 
 import static sneer.commons.environments.Environments.my;
 import sneer.commons.environments.Environments;
-import sneer.kernel.container.Containers;
+import sneer.kernel.container.ContainersOld;
 import sneer.skin.sound.player.SoundPlayer;
 import wheel.io.Logger;
 
@@ -23,7 +23,7 @@ public class SoundPlayerDemo {
 	
 	public static void main(String[] args) {
 		Logger.redirectTo(System.out);
-		Environments.runWith(Containers.newContainer(), new Runnable(){ @Override public void run() {
+		Environments.runWith(ContainersOld.newContainer(), new Runnable(){ @Override public void run() {
 			try {
 				new SoundPlayerDemo();
 			} catch (Exception e) {

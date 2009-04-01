@@ -14,16 +14,16 @@ import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.Producer;
 import sneer.container.BrickLoadingException;
-import sneer.container.NewContainer;
+import sneer.container.Container;
 
-public class NewContainerImpl implements NewContainer {
+public class ContainerImpl implements Container {
 	
 	private final Environment _environment;
 	private final ContainerEnvironment _containerEnvironment;
 	private final ClassLoader _apiClassLoader = createApiClassLoader();
 	private final Map<Class<?>, ClassLoader> _classLoadersByBrick = new HashMap<Class<?>, ClassLoader>();
 
-	public NewContainerImpl(Object... bindings) {
+	public ContainerImpl(Object... bindings) {
 		
 		_containerEnvironment = new ContainerEnvironment();
 		_containerEnvironment.bind(bindings);
@@ -58,7 +58,7 @@ public class NewContainerImpl implements NewContainer {
 
 
 	private URLClassLoader classLoaderFor(final String classDirectory, String packageName) {
-		return new NewBrickClassLoader(classDirectory, packageName, _apiClassLoader);
+		return new BrickClassLoader(classDirectory, packageName, _apiClassLoader);
 	}
 
 	private Class<?> loadImpl(Class<?> brick, ClassLoader classLoader) {

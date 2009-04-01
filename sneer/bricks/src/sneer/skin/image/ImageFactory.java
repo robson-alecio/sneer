@@ -7,10 +7,10 @@ import java.io.File;
 
 import javax.swing.ImageIcon;
 
-import sneer.brickness.Brick;
+import sneer.brickness.OldBrick;
 import wheel.lang.exceptions.Hiccup;
 
-public interface ImageFactory extends Brick, DefaultIcons{
+public interface ImageFactory extends OldBrick, DefaultIcons{
 
 	ImageIcon getIcon(File file);
 	ImageIcon getIcon(String relativeImagePath);

@@ -1,10 +1,10 @@
 package functional.adapters;
 
 import sneer.brickness.PublicKey;
-import sneer.container.NewBrick;
+import sneer.container.Brick;
 import functional.SovereignParty;
 
-@NewBrick
+@Brick
 public interface SneerParty extends SovereignParty {
 
 	PublicKey publicKey();

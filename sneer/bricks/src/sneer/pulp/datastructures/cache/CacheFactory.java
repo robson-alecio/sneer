@@ -1,8 +1,8 @@
 package sneer.pulp.datastructures.cache;
 
-import sneer.brickness.Brick;
+import sneer.brickness.OldBrick;
 
-public interface CacheFactory extends Brick {
+public interface CacheFactory extends OldBrick {
 
 	<T> Cache<T> createWithCapacity(int capacity);
 

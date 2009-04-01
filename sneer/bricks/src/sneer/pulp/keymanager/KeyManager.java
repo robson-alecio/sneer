@@ -1,12 +1,12 @@
 package sneer.pulp.keymanager;
 
-import sneer.brickness.Brick;
+import sneer.brickness.OldBrick;
 import sneer.brickness.PublicKey;
 import sneer.commons.lang.Producer;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.events.EventSource;
 
-public interface KeyManager extends Brick {
+public interface KeyManager extends OldBrick {
 
 	PublicKey ownPublicKey();
 

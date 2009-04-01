@@ -1,7 +1,11 @@
 ﻿FIXES
 =========
 
-	- [Sandro] WelcomeWizard - Make name and port reactive. 
+	- [Sandro] WelcomeWizard - Make name and port reactive.
+	
+	- MainSneerBrickImpl
+		- Extract contact logic
+		- Remove unused brick references because they are published by main.Sneer now.
 
 
 TASKS

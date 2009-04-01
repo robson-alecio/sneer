@@ -12,6 +12,9 @@ TASKS
 ========
 	- [Sandro]Webstart
 
+	- [Klaus] Transparent persistence for bricks
+		- [Sandro] WelcomeWizard should appear only if necessary. Add menu item to open it.
+
 	- [Klaus] build.xml/Antlipse - Revive.
 		- Eliminate upward dependencies.
 
@@ -36,8 +39,7 @@ TASKS
 			- Bricks to listen to EventSource Logger.loggedMessages()
 				- LogToFile
 				- LogToGui
-		- [Klaus] Transparent persistence of white list
-
+	
 	- Versioning
 
 -------------------------------------- Standalone Brick Container

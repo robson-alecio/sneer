@@ -48,6 +48,7 @@ import sneer.pulp.httpclient.HttpClient;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.logging.Logger;
+import sneer.pulp.logging.robust.RobustLogger;
 import sneer.pulp.memory.MemoryMeter;
 import sneer.pulp.network.Network;
 import sneer.pulp.own.name.OwnNameKeeper;
@@ -98,6 +99,7 @@ public class Sneer {
 				TupleSpace.class,
 				ConnectionManager.class,
 				Logger.class,
+				RobustLogger.class,
 				Serializer.class,
 				ProbeManager.class,
 				Speex.class,

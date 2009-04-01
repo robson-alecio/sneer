@@ -1,12 +1,12 @@
 ﻿FIXES
 =========
 
-	- [Sandro] WelcomeWizard - Make name and port reactive.
+	- [Sandro] WelcomeWizard
+		- Open it only if necessary.
+		- Make it a separate brick.
+		- Make name and port reactive.
+		- Menu item to open it.
 	
-	- MainSneerBrickImpl
-		- Extract contact logic
-		- Remove unused brick references because they are published by main.Sneer now.
-
 
 TASKS
 =========

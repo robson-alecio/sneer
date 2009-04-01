@@ -12,15 +12,15 @@ public class HardcodedContactsImpl implements HardcodedContacts {
 
 	{
 		for (ContactInfo contact : contacts())
-		addConnections(contact);
+			add(contact);
 	}
 	
-	private void addConnections(ContactInfo contact) {
+	private void add(ContactInfo contact) {
 		String nick = contact._nick;
-		addConnectionTo(nick, contact._host, contact._port);
+		addAddress(nick, contact._host, contact._port);
 		
 		for (String host : alternativeHostsFor(nick))
-			addConnectionTo(nick, host, contact._port);
+			addAddress(nick, host, contact._port);
 	}
 
 	private String[] alternativeHostsFor(String nick) {
@@ -43,7 +43,7 @@ public class HardcodedContactsImpl implements HardcodedContacts {
 			new ContactInfo("Nell", "anelisedaux.dyndns.org", 5924),
 			new ContactInfo("Priscila Vriesman", "priscilavriesman.dyndns.org", 7770),
 			new ContactInfo("Ramon Tramontini", "ramontramontini.dyndns.org", 7770),
-			new ContactInfo("Sneer Team, The", "sovereigncomputing.net", 7711),
+			new ContactInfo("Sneer Team", "sovereigncomputing.net", 7711),
 			new ContactInfo("Vitor Pamplona", "vfpamp.dyndns.org", 5923),
 		};
 	}
@@ -61,25 +61,32 @@ public class HardcodedContactsImpl implements HardcodedContacts {
 
 	}
 
-	private void addConnectionTo(String nick, String host, int port) {
+	private void addAddress(String nick, String host, int port) {
 		Contact contact = produceContact(nick);
 		my(InternetAddressKeeper.class).add(contact, host, port);
 	}
 
 	@SuppressWarnings("deprecation")
 	private PublicKey mickeyMouseKey(String nick) {
-		return my(KeyManager.class).generateMickeyMouseKey(nick);
+		return keyManager().generateMickeyMouseKey(nick);
 	}
 
 	private Contact produceContact(String nick) {
-		Contact result = my(ContactManager.class).contactGiven(nick);
+		Contact result = contactManager().contactGiven(nick);
 		if (result != null) return result;
 		
-		result = my(ContactManager.class).addContact(nick);
-		my(KeyManager.class).addKey(result, mickeyMouseKey(nick));
+		result = contactManager().addContact(nick);
+		keyManager().addKey(result, mickeyMouseKey(nick));
 		return result;
 	}
 
-	
+	private ContactManager contactManager() {
+		return my(ContactManager.class);
+	}
 
+	private KeyManager keyManager() {
+		return my(KeyManager.class);
+	}
+
+	
 }

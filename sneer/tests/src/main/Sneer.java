@@ -145,9 +145,8 @@ public class Sneer {
 				MenuFactory.class,
 				MainMenu.class,
 				ImageFactory.class,
-				HardcodedContacts.class,
 				ClockTicker.class,
-		
+
 				ContactsGui.class,
 				WindGui.class,
 				WatchMeGui.class,
@@ -156,7 +155,9 @@ public class Sneer {
 				BandwidthMeterGui.class,
 				BlinkingLightsGui.class,
 
-				Dashboard.class
+				Dashboard.class,
+				
+				HardcodedContacts.class
 		);
 	}
 

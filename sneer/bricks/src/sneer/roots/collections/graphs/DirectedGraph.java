@@ -7,7 +7,7 @@ public interface DirectedGraph<T> {
 	/** Returns an arbitrarily chosen cycle found in this directed graph, null if there are no cycles.*/
 	Iterable<T> anyCycle();
 
-	/** Returns vertices sorted such that all predecessors come before their (direct or indirect) successors.
+	/** Returns vertices sorted such that all predecessors come before their (direct or indirect) successors. Vertices with no direct or indirect predecessor/successor relationship are sorted in the order in which they were added to the graph.
 	 *  throws IllegalStateException if this graph has cycles. */
 	Iterable<T> sortedVertices();
 

@@ -18,6 +18,8 @@ TASKS
 	- [Klaus] build.xml/Antlipse - Revive.
 		- Eliminate upward dependencies.
 
+	- [Klaus] Cleanup wheel
+	
 	- [Bamboo]Create/Install ("publish") brick locally
 		- NewContainer - The simplest possible container
 			- Unignore NewContainerTest.runDependentBrickWithoutDependencies(). Delete old systemClassLoader logic from Brickness.

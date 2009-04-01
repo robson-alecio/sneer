@@ -2,8 +2,4 @@ package sneer.skin.dashboard;
 
 import sneer.brickness.Brick;
 
-public interface Dashboard extends Brick {
-
-	void show();
-
-}
+public interface Dashboard extends Brick {}

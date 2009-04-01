@@ -145,7 +145,6 @@ public class Sneer {
 				MenuFactory.class,
 				MainMenu.class,
 				ImageFactory.class,
-				Dashboard.class,
 				HardcodedContacts.class,
 				ClockTicker.class,
 		
@@ -156,8 +155,8 @@ public class Sneer {
 				MemoryMeterGui.class,
 				BandwidthMeterGui.class,
 				BlinkingLightsGui.class,
-				
-				MainSneerBrick.class
+
+				Dashboard.class
 		);
 	}
 

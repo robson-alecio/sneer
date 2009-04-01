@@ -40,7 +40,7 @@ import wheel.reactive.impl.EventReceiver;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
 //Implement Persist window size and position
-class DashboardImpl implements Dashboard, Runnable {
+class DashboardImpl implements Dashboard {
 	
 	private static final int TIMEOUT_FOR_GUI_EVENTS = 10 * 1000;
 	
@@ -75,7 +75,21 @@ class DashboardImpl implements Dashboard, Runnable {
 	@SuppressWarnings("unused")
 	private SimpleListReceiver<Instrument> _instrumentsReceiver;
 	
-	private void initialize() {
+	DashboardImpl() {
+		_threadPool.registerActor(new Runnable(){@Override public void run() {
+			init();
+		}});
+		waitUntilTheGuiThreadStarts();
+	}
+		
+	private void init() {
+		WelcomeWizard.showIfNecessary();
+
+		TimeboxedEventQueue.startQueueing(TIMEOUT_FOR_GUI_EVENTS);
+		initGui();
+	}
+	
+	private void initGui() {
 		initWindows();	
 		resizeWindow();
 		initTrayIconIfPossible();
@@ -240,13 +254,6 @@ class DashboardImpl implements Dashboard, Runnable {
 		_mainMenu.getSneerMenu().addAction(cmd);
 	}
 
-	@Override
-	public void run() {
-		TimeboxedEventQueue.startQueueing(TIMEOUT_FOR_GUI_EVENTS);
-		initialize();
-		waitUntilTheGuiThreadStarts();
-	}
-	
 	
 //	private void moveInstrument(int index, InstrumentWindow frame) {
 //		_contentPanel.remove(frame.contentPane());
@@ -263,10 +270,6 @@ class DashboardImpl implements Dashboard, Runnable {
 //		_contentPanel.add(frame.contentPane());
 //	}
 
-	@Override
-	public void show() {
-		_threadPool.registerActor(this);
-	}
 }
 
 class ContentPane extends JPanel{

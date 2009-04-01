@@ -1,7 +1,7 @@
 /**
  * 
  */
-package main.impl;
+package sneer.skin.dashboard.impl;
 
 import static sneer.commons.environments.Environments.my;
 

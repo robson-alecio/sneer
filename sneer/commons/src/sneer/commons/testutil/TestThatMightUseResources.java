@@ -5,11 +5,11 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
-import org.junit.Assert;
 
 import sneer.commons.threads.Daemon;
+import wheel.testutil.AssertUtils;
 
-public abstract class TestThatMightUseResources extends Assert {
+public abstract class TestThatMightUseResources extends AssertUtils {
 
 	private File _tmpDirectory;
 

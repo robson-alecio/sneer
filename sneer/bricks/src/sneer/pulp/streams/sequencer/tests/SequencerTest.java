@@ -1,7 +1,6 @@
 package sneer.pulp.streams.sequencer.tests;
 
 import static sneer.commons.environments.Environments.my;
-import static wheel.testutil.TestUtils.assertSameContents;
 
 import java.util.ArrayList;
 import java.util.List;

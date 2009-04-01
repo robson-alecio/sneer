@@ -19,7 +19,7 @@ import wheel.lang.Consumer;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
-import wheel.testutil.TestUtils;
+import wheel.testutil.AssertUtils;
 
 public class ContactComparatorTest extends BrickTest {
 	
@@ -52,7 +52,7 @@ public class ContactComparatorTest extends BrickTest {
 		_contacts.add(falseB);
 		_contacts.add(truea);
 		
-		TestUtils.assertSameContents(sortedList, truea, trueA, trueB, falseA, falseB);
+		AssertUtils.assertSameContents(sortedList, truea, trueA, trueB, falseA, falseB);
 	}
 }
 

@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
 import sneer.kernel.container.bytecode.dependencies.DependencyFinder;
-import wheel.testutil.TestUtils;
+import wheel.testutil.AssertUtils;
 
 public class DependencyTest extends BrickTest {
 	
@@ -21,7 +21,7 @@ public class DependencyTest extends BrickTest {
 	public void testFindDependencies() throws IOException {
 		
 		List<String> dependencies = my(DependencyFinder.class).findDependencies(classInputStreamFor(Foo.class));
-		TestUtils.assertSameContents(dependencies, "java.util.Map", "java.util.Set");
+		AssertUtils.assertSameContents(dependencies, "java.util.Map", "java.util.Set");
 		
 	}
 

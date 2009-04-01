@@ -1,7 +1,7 @@
 package wheel.reactive.lists.impl.tests;
 
 import static org.junit.Assert.assertEquals;
-import static wheel.testutil.TestUtils.assertSameContents;
+import static wheel.testutil.AssertUtils.assertSameContents;
 
 import java.util.ArrayList;
 

@@ -1,8 +1,8 @@
 package wheel.testutil;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
-public class TestUtils extends Assert {
+public class AssertUtils extends Assert {
 
 	public static void assertFloat(float expected, float actual) {
 		Assert.assertEquals(expected, actual, 0.001f);

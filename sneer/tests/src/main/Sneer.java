@@ -6,6 +6,7 @@ import snapps.blinkinglights.gui.BlinkingLightsGui;
 import snapps.contacts.actions.ContactActionManager;
 import snapps.contacts.gui.ContactsGui;
 import snapps.contacts.gui.comparator.ContactComparator;
+import snapps.contacts.hardcoded.HardcodedContacts;
 import snapps.meter.bandwidth.gui.BandwidthMeterGui;
 import snapps.meter.memory.gui.MemoryMeterGui;
 import snapps.watchme.WatchMe;
@@ -143,6 +144,7 @@ public class Sneer {
 				MainMenu.class,
 				ImageFactory.class,
 				Dashboard.class,
+				HardcodedContacts.class,
 				ClockTicker.class,
 		
 				ContactsGui.class,

@@ -5,12 +5,10 @@
 	- ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do. See ListRegisterImpl.MyOutput._notifier
 		- SetSignal - Revise it also. 
 
-	- Revise SneerFreedom*Test classes. They are all the same
-
 
 TASKS
 ========
-	- [Sandro]Webstart
+	- [Sandro] Webstart
 
 	- [Klaus] Transparent persistence for bricks
 		- [Sandro] WelcomeWizard should appear only if necessary. Add menu item to open it.

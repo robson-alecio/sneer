@@ -83,7 +83,7 @@ public class Sneer {
 
 
 	public static void main(String[] ignored) throws Exception {
-		publishBricks(
+		runBricks(
 				SneerConfig.class,
 				StoragePath.class,
 				ExceptionHandler.class,
@@ -161,7 +161,7 @@ public class Sneer {
 		);
 	}
 
-	static void publishBricks(Class<?>... bricks) throws BrickLoadingException, IOException {
+	static void runBricks(Class<?>... bricks) throws BrickLoadingException, IOException {
 		Container container = Containers.newContainer();
 
 		for (Class<?> brick : bricks)

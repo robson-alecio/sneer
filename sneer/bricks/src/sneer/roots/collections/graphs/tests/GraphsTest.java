@@ -53,11 +53,11 @@ public class GraphsTest extends BrickTest {
 
 	@Test
 	public void cycleDetection() {
-		_subject.addEdge("A", "B");
-		_subject.addEdge("C", "D");
+		_subject.addEdge("A", "B"); 
+		_subject.addEdge("C", "D"); 
 		_subject.addEdge("B", "C");
 		_subject.addEdge("A", "E");
-		_subject.addEdge("D", "B");
+		_subject.addEdge("D", "B"); //Forms the B, C, D cycle.
 		_subject.addEdge("B", "F");
 		_subject.addEdge("C", "F");
 		_subject.addEdge("A2", "A");

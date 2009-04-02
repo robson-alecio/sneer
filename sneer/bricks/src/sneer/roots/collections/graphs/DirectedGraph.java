@@ -1,14 +1,20 @@
 package sneer.roots.collections.graphs;
 
+import java.util.Collection;
+
 public interface DirectedGraph<T> {
 
-	void addEdge(T fromVertex, T toVertex);
+	/** Adds a vertex to this graph. */
+	void addVertex(T vertex);
 
-	/** Returns an arbitrarily chosen cycle found in this directed graph, null if there are no cycles.*/
-	Iterable<T> anyCycle();
+	/** Adds vertices if not already present and creates a directed edge from vertex to its successorVertex. */
+	void addEdge(T vertex, T successorVertex);
 
-	/** Returns vertices sorted such that all predecessors come before their (direct or indirect) successors. Vertices with no direct or indirect predecessor/successor relationship are sorted in the order in which they were added to the graph.
-	 *  throws IllegalStateException if this graph has cycles. */
-	Iterable<T> sortedVertices();
+	/** Returns an empty collection if there are no cycles in this graph. If there are cycles, one of them is arbitrarily chosen and all vertices in that cycle are returned in a collection. */
+	Collection<T> detectCycle();
+
+	/** Removes from this graph and returns a "leaf" vertex, i.e. a vertex that has no successors. Returns null if there are no more vertices in this graph.
+	 * Precondition: detectCycle().isEmpty() */ 
+	T pluck();
 
 }

@@ -18,7 +18,7 @@ TASKS
 		- [Sandro] WelcomeWizard should appear only if necessary. Add menu item to open it.
 
 	- [Bamboo]Create/Install ("publish") brick locally
-		- NewContainer - The simplest possible container
+		- Brickness - "The simplest possible container"
 			- main.Sneer - Run bricks in correct order.
 				- Unignore SneerFreedom1Test and SneerFreedom5Test. They now test main.Sneer ;)
 			- BrickInterfaceSearch should not know about GuiBrick and Instrument.

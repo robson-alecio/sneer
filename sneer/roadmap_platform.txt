@@ -19,13 +19,10 @@ TASKS
 
 	- [Bamboo]Create/Install ("publish") brick locally
 		- NewContainer - The simplest possible container
-			- Unignore NewContainerTest.runDependentBrickWithoutDependencies().
-				- Delete old systemClassLoader logic from Brickness.
-					- main.Sneer - Run bricks in correct order.
-						- Unignore SneerFreedom1Test and SneerFreedom5Test. They now test main.Sneer ;)
+			- main.Sneer - Run bricks in correct order.
+				- Unignore SneerFreedom1Test and SneerFreedom5Test. They now test main.Sneer ;)
 			- BrickInterfaceSearch should not know about GuiBrick and Instrument.
 			- Delete Brick interface in favor of NewBrick annotation.
-			- Brickness constructors are wierd using classloader map. Unify brickness with container.
 			- SneerCommunity.newContainer - All that mess with StoragePath and SneerConfig is ugly.
 			- ClosedEnvironment and EnvironmentWithBindings are very similar.
 			- Make a test run a brick in a directory that is not in the system ClassLoader classpath (Eclipse classpath). It will probably fail. Implement the logic using NewContainerImpl.createApiClassLoader() to return a URLClassloader that can be extended with new classpaths for new brick interfaces;

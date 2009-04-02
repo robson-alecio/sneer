@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.container.BrickLoadingException;
@@ -15,7 +14,7 @@ import sneer.container.tests.fixtures.b.BrickB;
 import sneer.container.tests.fixtures.noannotation.InterfaceWithoutBrickAnnotation;
 import wheel.io.Jars;
 
-public class ContainerTest extends Assert {
+public class BricknessTest extends Assert {
 	
 
 	final Brickness subject = new BricknessImpl();
@@ -50,7 +49,6 @@ public class ContainerTest extends Assert {
 		assertFalse(classLoaderA.equals(classLoaderB));
 	}
 	
-	@Ignore
 	@Test(expected=BrickLoadingException.class)
 	public void runDependentBrickWithoutDependencies() throws Exception {
 		runBrick(BrickB.class);

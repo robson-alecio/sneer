@@ -19,7 +19,9 @@ TASKS
 
 	- [Bamboo]Create/Install ("publish") brick locally
 		- NewContainer - The simplest possible container
-			- Unignore NewContainerTest.runDependentBrickWithoutDependencies(). Delete old systemClassLoader logic from Brickness.
+			- Unignore NewContainerTest.runDependentBrickWithoutDependencies().
+				- Delete old systemClassLoader logic from Brickness.
+					- main.Sneer - Run bricks in correct order.
 			- BrickInterfaceSearch should not know about GuiBrick and Instrument.
 			- Delete Brick interface in favor of NewBrick annotation.
 			- Brickness constructors are wierd using classloader map. Unify brickness with container.

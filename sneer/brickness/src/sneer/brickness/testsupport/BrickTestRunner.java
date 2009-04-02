@@ -13,7 +13,7 @@ import org.junit.internal.runners.TestClass;
 import org.junit.internal.runners.TestMethod;
 import org.junit.runner.notification.RunNotifier;
 
-import sneer.brickness.environment.Brickness;
+import sneer.brickness.environment.SystemBrickEnvironment;
 import sneer.commons.environments.CachingEnvironment;
 import sneer.commons.environments.ClosedEnvironment;
 import sneer.commons.environments.Environment;
@@ -159,14 +159,14 @@ public class BrickTestRunner extends JUnit4ClassRunner {
 				Environments.compose(
 					new ClosedEnvironment(bindings),
 					my(TestInstanceEnvironment.class),
-					new Brickness()));
+					new SystemBrickEnvironment()));
 	}
 
 	private Environment newEnvironment() {
 		return new CachingEnvironment(
 				Environments.compose(
 					new TestInstanceEnvironment(),
-					new Brickness()));
+					new SystemBrickEnvironment()));
 	}
 
 	@Override

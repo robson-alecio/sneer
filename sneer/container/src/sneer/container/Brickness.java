@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import sneer.commons.environments.Environment;
 
-public interface Container {
+public interface Brickness {
 
 	void runBrick(String brickDirectory) throws IOException, BrickLoadingException;
 

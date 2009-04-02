@@ -6,7 +6,7 @@ import java.util.List;
 
 import sneer.commons.environments.Environment;
 
-class ContainerEnvironment implements Environment {
+class EnvironmentWithBindings implements Environment {
 
 	private final List<Object> _bricks = Collections.synchronizedList(new ArrayList<Object>());
 	

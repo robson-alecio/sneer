@@ -20,8 +20,8 @@ import snapps.wind.Wind;
 import snapps.wind.gui.WindGui;
 import sneer.commons.io.StoragePath;
 import sneer.container.BrickLoadingException;
-import sneer.container.Container;
-import sneer.container.Containers;
+import sneer.container.Brickness;
+import sneer.container.impl.BricknessImpl;
 import sneer.kernel.container.SneerConfig;
 import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.blinkinglights.BlinkingLights;
@@ -81,9 +81,19 @@ import wheel.io.Jars;
 
 public class Sneer {
 
-
 	public static void main(String[] ignored) throws Exception {
-		runBricks(
+		Brickness container = new BricknessImpl();
+		run(container, businessBricks());
+		run(container, guiBricks());
+	}
+
+	static public void run(Brickness container, Class<?>... bricks) throws BrickLoadingException, IOException {
+		for (Class<?> brick : bricks)
+			container.runBrick(Jars.directoryFor(brick));
+	}
+
+	static public Class<?>[] businessBricks() {
+		return new Class<?>[]{
 				SneerConfig.class,
 				StoragePath.class,
 				ExceptionHandler.class,
@@ -146,7 +156,11 @@ public class Sneer {
 				MainMenu.class,
 				ImageFactory.class,
 				ClockTicker.class,
+		};
+	}
 
+	static private Class<?>[] guiBricks() {
+		return new Class<?>[] {
 				ContactsGui.class,
 				WindGui.class,
 				WatchMeGui.class,
@@ -158,14 +172,7 @@ public class Sneer {
 				Dashboard.class,
 				
 				HardcodedContacts.class
-		);
-	}
-
-	static void runBricks(Class<?>... bricks) throws BrickLoadingException, IOException {
-		Container container = Containers.newContainer();
-
-		for (Class<?> brick : bricks)
-			container.runBrick(Jars.directoryFor(brick));
+		};
 	}
 
 }

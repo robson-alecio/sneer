@@ -1,4 +1,4 @@
-package spikes.bamboo;
+package spikes.bamboo.mocotoh;
 
 import static org.junit.Assert.assertNull;
 

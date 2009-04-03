@@ -1,4 +1,4 @@
-package spikes.bamboo;
+package spikes.bamboo.mocotoh;
 
 public class TestSpec {
 	

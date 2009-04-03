@@ -1,4 +1,4 @@
-package spikes.bamboo;
+package spikes.bamboo.mocotoh;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

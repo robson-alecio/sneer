@@ -1,4 +1,4 @@
-package spikes.bamboo;
+package spikes.bamboo.mocotoh;
 
 import static sneer.commons.environments.Environments.my;
 

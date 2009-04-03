@@ -1,4 +1,4 @@
-package sneer.brickness.tests;
+package sneer.brickness.impl.tests;
 
 import java.io.File;
 
@@ -7,9 +7,9 @@ import org.junit.Test;
 
 import sneer.brickness.impl.BrickLoadingException;
 import sneer.brickness.impl.Brickness;
-import sneer.brickness.tests.fixtures.a.BrickA;
-import sneer.brickness.tests.fixtures.b.BrickB;
-import sneer.brickness.tests.fixtures.noannotation.InterfaceWithoutBrickAnnotation;
+import sneer.brickness.impl.tests.fixtures.a.BrickA;
+import sneer.brickness.impl.tests.fixtures.b.BrickB;
+import sneer.brickness.impl.tests.fixtures.noannotation.InterfaceWithoutBrickAnnotation;
 import wheel.io.Jars;
 
 public class BricknessTest extends Assert {

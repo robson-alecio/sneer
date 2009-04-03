@@ -1,4 +1,4 @@
-package sneer.brickness.tests.fixtures.a;
+package sneer.brickness.impl.tests.fixtures.a;
 
 import sneer.brickness.Brick;
 

@@ -1,8 +1,8 @@
-package sneer.brickness.tests.fixtures.b.impl;
+package sneer.brickness.impl.tests.fixtures.b.impl;
 
 import static sneer.commons.environments.Environments.my;
-import sneer.brickness.tests.fixtures.a.BrickA;
-import sneer.brickness.tests.fixtures.b.BrickB;
+import sneer.brickness.impl.tests.fixtures.a.BrickA;
+import sneer.brickness.impl.tests.fixtures.b.BrickB;
 
 public class BrickBImpl implements BrickB {
 	{

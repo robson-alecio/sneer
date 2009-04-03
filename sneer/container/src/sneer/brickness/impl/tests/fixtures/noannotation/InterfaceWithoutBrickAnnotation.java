@@ -1,4 +1,4 @@
-package sneer.brickness.tests.fixtures.noannotation;
+package sneer.brickness.impl.tests.fixtures.noannotation;
 
 public interface InterfaceWithoutBrickAnnotation {
 

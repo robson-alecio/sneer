@@ -1,6 +1,6 @@
-package sneer.brickness.tests.fixtures.a.impl;
+package sneer.brickness.impl.tests.fixtures.a.impl;
 
-import sneer.brickness.tests.fixtures.a.BrickA;
+import sneer.brickness.impl.tests.fixtures.a.BrickA;
 
 class BrickAImpl implements BrickA {
 	

@@ -1,6 +1,6 @@
 package sneer.pulp.logging.robust;
 
-import sneer.container.Brick;
+import sneer.brickness.Brick;
 
 @Brick
 public interface RobustLogger {}

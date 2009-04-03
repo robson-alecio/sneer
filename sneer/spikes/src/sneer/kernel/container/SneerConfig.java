@@ -2,7 +2,7 @@ package sneer.kernel.container;
 
 import java.io.File;
 
-import sneer.container.Brick;
+import sneer.brickness.Brick;
 
 @Brick
 public interface SneerConfig extends ContainerConfig {

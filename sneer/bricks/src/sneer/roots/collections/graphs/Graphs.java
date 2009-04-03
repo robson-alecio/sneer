@@ -1,6 +1,6 @@
 package sneer.roots.collections.graphs;
 
-import sneer.container.Brick;
+import sneer.brickness.Brick;
 
 @Brick
 public interface Graphs {

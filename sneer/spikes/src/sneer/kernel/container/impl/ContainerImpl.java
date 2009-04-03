@@ -5,8 +5,8 @@ import java.lang.reflect.Constructor;
 import java.util.HashSet;
 import java.util.Set;
 
+import sneer.brickness.BrickConventions;
 import sneer.brickness.OldBrick;
-import sneer.brickness.impl.BrickConventions;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
 import sneer.commons.io.StoragePath;

@@ -1,6 +1,6 @@
 package sneer.pulp.reactive.gates.logic;
 
-import sneer.container.Brick;
+import sneer.brickness.Brick;
 import sneer.pulp.reactive.Signal;
 
 @Brick

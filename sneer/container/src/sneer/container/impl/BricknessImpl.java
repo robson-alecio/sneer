@@ -4,7 +4,7 @@ import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import sneer.brickness.impl.BrickConventions;
+import sneer.brickness.BrickConventions;
 import sneer.commons.environments.Bindings;
 import sneer.commons.environments.CachingEnvironment;
 import sneer.commons.environments.Environment;

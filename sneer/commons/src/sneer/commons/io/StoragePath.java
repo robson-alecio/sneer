@@ -1,7 +1,7 @@
 package sneer.commons.io;
 
+import sneer.brickness.Brick;
 import sneer.commons.environments.EnvironmentProperty;
-import sneer.container.Brick;
 
 @Brick
 /** The place where you should persist your files. */

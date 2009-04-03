@@ -1,6 +1,6 @@
 package sneer.container.tests.fixtures.a;
 
-import sneer.container.Brick;
+import sneer.brickness.Brick;
 
 @Brick
 public interface BrickA {

@@ -1,7 +1,7 @@
 package sneer.pulp.threadpool;
 
+import sneer.brickness.Brick;
 import sneer.brickness.OldBrick;
-import sneer.container.Brick;
 
 @Brick
 public interface ThreadPool extends OldBrick {

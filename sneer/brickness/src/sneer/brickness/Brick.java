@@ -1,4 +1,4 @@
-package sneer.container;
+package sneer.brickness;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

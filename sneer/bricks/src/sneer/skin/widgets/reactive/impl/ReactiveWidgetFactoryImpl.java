@@ -30,12 +30,6 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 		GuiThread.assertInGuiThread();
 		return new RLabelImpl(source);
 	}
-	@Override
-	public TextWidget<JLabel> newLabel(Signal<?> source,  PickyConsumer<String> setter) {
-		GuiThread.assertInGuiThread();
-		return new RLabelImpl(source, setter);
-	}
-
 	
 	@Override
 	public ImageWidget newImage(Signal<Image> source, PickyConsumer<Image> setter) {

@@ -16,7 +16,7 @@ import snapps.whisper.speex.Speex;
 import snapps.whisper.speextuples.SpeexTuples;
 import snapps.wind.Wind;
 import snapps.wind.gui.WindGui;
-import sneer.brickness.impl.BrickLoadingException;
+import sneer.brickness.impl.BrickPlacementException;
 import sneer.brickness.impl.Brickness;
 import sneer.commons.io.StoragePath;
 import sneer.kernel.container.SneerConfig;
@@ -84,9 +84,9 @@ public class Sneer {
 		run(container, guiBricks());
 	}
 
-	static public void run(Brickness container, Class<?>... bricks) throws BrickLoadingException {
+	static public void run(Brickness container, Class<?>... bricks) throws BrickPlacementException {
 		for (Class<?> brick : bricks)
-			container.runBrick(Jars.classpathRootFor(brick), brick.getName());
+			container.placeBrick(Jars.classpathRootFor(brick), brick.getName());
 	}
 
 	static public Class<?>[] businessBricks() {

@@ -48,7 +48,7 @@ public class SneerCommunity implements SovereignCommunity {
 
 	private void runBricks(Brickness container, Class<?>... bricks) {
 		for (Class<?> brick : bricks)
-			container.runBrick(Jars.classpathRootFor(brick), brick.getName());
+			container.placeBrick(Jars.classpathRootFor(brick), brick.getName());
 	}
 
 	private Brickness newContainer(final String name) {

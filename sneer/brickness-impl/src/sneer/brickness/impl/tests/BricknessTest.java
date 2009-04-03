@@ -5,7 +5,7 @@ import java.io.File;
 import org.junit.Assert;
 import org.junit.Test;
 
-import sneer.brickness.impl.BrickLoadingException;
+import sneer.brickness.impl.BrickPlacementException;
 import sneer.brickness.impl.Brickness;
 import sneer.brickness.impl.tests.fixtures.a.BrickA;
 import sneer.brickness.impl.tests.fixtures.b.BrickB;
@@ -46,22 +46,22 @@ public class BricknessTest extends Assert {
 		assertFalse(classLoaderA.equals(classLoaderB));
 	}
 	
-	@Test(expected=BrickLoadingException.class)
+	@Test(expected=BrickPlacementException.class)
 	public void runDependentBrickWithoutDependencies() throws Exception {
 		runBrick(BrickB.class);
 	}
 	
-	@Test(expected=BrickLoadingException.class)
+	@Test(expected=BrickPlacementException.class)
 	public void noBrickInterfaceFound() throws Exception {
 		runBrick(InterfaceWithoutBrickAnnotation.class);
 	}
 
-	@Test(expected=BrickLoadingException.class)
+	@Test(expected=BrickPlacementException.class)
 	public void bogusDirectory() throws Exception {
-		subject.runBrick(new File("bogus"), "bogus");
+		subject.placeBrick(new File("bogus"), "bogus");
 	}
 	
 	private void runBrick(final Class<?> brick) {
-		subject.runBrick(Jars.classpathRootFor(brick), brick.getName());
+		subject.placeBrick(Jars.classpathRootFor(brick), brick.getName());
 	}
 }

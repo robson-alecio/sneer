@@ -25,16 +25,16 @@ public class Brickness {
 	}
 
 
-	public void runBrick(File classRootDirectory, String brickName) {
+	public void placeBrick(File classRootDirectory, String brickName) {
 		try {
-			tryToRunBrick(classRootDirectory, brickName);
+			tryToPlaceBrick(classRootDirectory, brickName);
 		} catch (Exception e) {
-			throw new BrickLoadingException(e);
+			throw new BrickPlacementException(e);
 		}
 	}
 
 
-	private void tryToRunBrick(File classRootDirectory, String brickName) throws ClassNotFoundException {
+	private void tryToPlaceBrick(File classRootDirectory, String brickName) throws ClassNotFoundException {
 		ClassLoader classLoader = newImplPackageLoader(classRootDirectory, brickName);
 		Class<?> brickImpl = classLoader.loadClass(implNameFor(brickName));
 		_bindings.bind(instantiateInEnvironment(brickImpl));
@@ -60,7 +60,7 @@ public class Brickness {
 			try {
 				return newInstance(brickImpl);
 			} catch (Exception e) {
-				throw new BrickLoadingException(e);
+				throw new BrickPlacementException(e);
 			}
 		}});
 	}

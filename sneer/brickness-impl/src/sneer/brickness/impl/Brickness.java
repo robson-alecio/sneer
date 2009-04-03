@@ -9,6 +9,7 @@ import sneer.commons.environments.Bindings;
 import sneer.commons.environments.CachingEnvironment;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
+import sneer.commons.lang.Functor;
 import sneer.commons.lang.Producer;
 
 public class Brickness {
@@ -16,6 +17,7 @@ public class Brickness {
 	private final Environment _environment;
 	private final Bindings _bindings;
 	private final ClassLoader _apiClassLoader = createApiClassLoader();
+	private Functor<Object, Object> _decorator;
 
 	public Brickness(Object... bindings) {
 		_bindings = new Bindings();
@@ -37,7 +39,13 @@ public class Brickness {
 	private void tryToPlaceBrick(File classRootDirectory, String brickName) throws ClassNotFoundException {
 		ClassLoader classLoader = newImplPackageLoader(classRootDirectory, brickName);
 		Class<?> brickImpl = classLoader.loadClass(implNameFor(brickName));
-		_bindings.bind(instantiateInEnvironment(brickImpl));
+		_bindings.bind(decorate(instantiateInEnvironment(brickImpl)));
+	}
+
+
+	private Object decorate(Object brick) {
+		if (_decorator == null) return brick;
+		return _decorator.evaluate(brick);
 	}
 
 
@@ -74,6 +82,11 @@ public class Brickness {
 
 	private String implNameFor(final String brickInterfaceName) {
 		return BrickConventions.implClassNameFor(brickInterfaceName);
+	}
+
+
+	public void setBrickDecorator(	Functor<Object, Object> decorator) {
+		_decorator = decorator;
 	}
 
 }

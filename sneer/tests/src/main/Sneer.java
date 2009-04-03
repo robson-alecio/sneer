@@ -80,11 +80,11 @@ public class Sneer {
 
 	public static void main(String[] ignored) throws Exception {
 		Brickness container = new Brickness();
-		run(container, businessBricks());
-		run(container, guiBricks());
+		placeBricks(container, businessBricks());
+		placeBricks(container, guiBricks());
 	}
 
-	static public void run(Brickness container, Class<?>... bricks) throws BrickPlacementException {
+	static public void placeBricks(Brickness container, Class<?>... bricks) throws BrickPlacementException {
 		for (Class<?> brick : bricks)
 			container.placeBrick(Jars.classpathRootFor(brick), brick.getName());
 	}

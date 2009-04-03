@@ -1,4 +1,4 @@
-@Brick (Abstract)
+@Brick
 
 	Prevalent (Default) (Transparently persisted. All calls to any prevalent brick are synchronized with all other calls to all other prevalent bricks)
 

@@ -56,10 +56,10 @@ public class Jars {
 		}
 	}
 
-	public static String directoryFor(Class<?> klass) {
+	public static File fileFor(Class<?> klass) {
 		final String fileName = klass.getCanonicalName().replace('.', '/') + ".class";
 		final URL url = klass.getResource("/" + fileName);
-		return new File(toURI(url)).getParent();
+		return new File(toURI(url));
 	}
 
 	private static URI toURI(final URL url) {

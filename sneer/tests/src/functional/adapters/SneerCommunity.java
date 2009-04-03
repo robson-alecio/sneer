@@ -42,7 +42,7 @@ public class SneerCommunity implements SovereignCommunity {
 	private void populate(Brickness container) {
 		try {
 			runBusinessBricks(container);
-			container.runBrick(Jars.directoryFor(SneerParty.class));
+			container.runBrick(Jars.fileFor(SneerParty.class));
 		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}
@@ -50,7 +50,7 @@ public class SneerCommunity implements SovereignCommunity {
 
 	private void runBusinessBricks(Brickness container) throws IOException {
 		for (Class<?> brick : Sneer.businessBricks())
-			container.runBrick(Jars.directoryFor(brick));
+			container.runBrick(Jars.fileFor(brick));
 	}
 
 	private Brickness newContainer(final String name) {

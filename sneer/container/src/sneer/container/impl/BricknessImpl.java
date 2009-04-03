@@ -1,5 +1,6 @@
 package sneer.container.impl;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -27,7 +28,9 @@ public class BricknessImpl implements Brickness {
 
 
 	@Override
-	public void runBrick(final String classDirectory) throws IOException {
+	public void runBrick(final File interfaceFile) throws IOException {
+		String classDirectory = interfaceFile.getParent();
+		
 		String packageName = packageNameFor(classDirectory);
 		ClassLoader classLoader = newBrickLoaderFor(classDirectory, packageName);
 			

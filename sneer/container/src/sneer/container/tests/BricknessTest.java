@@ -1,9 +1,11 @@
 package sneer.container.tests;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.container.BrickLoadingException;
@@ -15,7 +17,6 @@ import sneer.container.tests.fixtures.noannotation.InterfaceWithoutBrickAnnotati
 import wheel.io.Jars;
 
 public class BricknessTest extends Assert {
-	
 
 	final Brickness subject = new BricknessImpl();
 	
@@ -58,14 +59,14 @@ public class BricknessTest extends Assert {
 	public void noBrickInterfaceFound() throws Exception {
 		runBrick(InterfaceWithoutBrickAnnotation.class);
 	}
-	
+
+	@Ignore
 	@Test(expected=FileNotFoundException.class)
 	public void bogusDirectory() throws Exception {
-		subject.runBrick("bogus");
+		subject.runBrick(new File("bogus"));
 	}
 	
 	private void runBrick(final Class<?> brick) throws IOException {
-		String directory = Jars.directoryFor(brick);
-		subject.runBrick(directory);
+		subject.runBrick(Jars.fileFor(brick));
 	}
 }

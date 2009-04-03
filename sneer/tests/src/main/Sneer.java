@@ -89,7 +89,7 @@ public class Sneer {
 
 	static public void run(Brickness container, Class<?>... bricks) throws BrickLoadingException, IOException {
 		for (Class<?> brick : bricks)
-			container.runBrick(Jars.directoryFor(brick));
+			container.runBrick(Jars.fileFor(brick));
 	}
 
 	static public Class<?>[] businessBricks() {

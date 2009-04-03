@@ -5,6 +5,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import sneer.brickness.environment.BrickConventions;
+import sneer.commons.environments.Bindings;
 import sneer.commons.environments.CachingEnvironment;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
@@ -15,14 +16,14 @@ import sneer.container.Brickness;
 public class BricknessImpl implements Brickness {
 	
 	private final Environment _environment;
-	private final EnvironmentWithBindings _bindings;
+	private final Bindings _bindings;
 	private final ClassLoader _apiClassLoader = createApiClassLoader();
 
 	public BricknessImpl(Object... bindings) {
-		_bindings = new EnvironmentWithBindings();
+		_bindings = new Bindings();
 		_bindings.bind(bindings);
 		
-		 _environment = new CachingEnvironment(_bindings);
+		 _environment = new CachingEnvironment(_bindings.environment());
 	}
 
 

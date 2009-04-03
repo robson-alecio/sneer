@@ -1,8 +1,9 @@
-package sneer.brickness.environment;
+package sneer.brickness.testsupport;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+import sneer.brickness.impl.BrickConventions;
 import sneer.commons.environments.Environment;
 
 /** An environment to use when you have bricks on the classpath of the system ClassLoader, for example, when running unit tests within Eclipse.*/

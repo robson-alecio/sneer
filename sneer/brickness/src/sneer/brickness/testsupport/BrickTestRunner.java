@@ -13,7 +13,6 @@ import org.junit.internal.runners.TestClass;
 import org.junit.internal.runners.TestMethod;
 import org.junit.runner.notification.RunNotifier;
 
-import sneer.brickness.environment.SystemBrickEnvironment;
 import sneer.commons.environments.Bindings;
 import sneer.commons.environments.CachingEnvironment;
 import sneer.commons.environments.Environment;

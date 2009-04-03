@@ -4,7 +4,6 @@
 	- [Sandro] WelcomeWizard
 		- Open it only if necessary.
 		- Make it a separate brick.
-		- Make name and port reactive.
 		- Menu item to open it.
 	
 

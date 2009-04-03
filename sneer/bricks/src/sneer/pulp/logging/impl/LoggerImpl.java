@@ -7,12 +7,10 @@ import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.events.EventNotifier;
 import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.logging.LogWhiteListEntry;
-import sneer.pulp.tuples.TupleSpace;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.impl.ListRegisterImpl;
 
@@ -20,11 +18,6 @@ class LoggerImpl implements sneer.pulp.logging.Logger {
 
 	private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-	private final TupleSpace _tupleSpace = my(TupleSpace.class);
-	private final TupleFilterManager _filter = my(TupleFilterManager.class); 	{
-		_filter.block(LogWhiteListEntry.class);
-	}
-	
 	private final ListRegisterImpl<LogWhiteListEntry> _phrases = new ListRegisterImpl<LogWhiteListEntry>();
 	
 	private final EventNotifier<String> _loggedMessages = my(EventNotifiers.class).create();
@@ -33,11 +26,6 @@ class LoggerImpl implements sneer.pulp.logging.Logger {
 
 	private boolean _shouldLeakThrowables = true;	
 
-	LoggerImpl() {
-		_tupleSpace.keep(LogWhiteListEntry.class);
-		_tupleSpace.addSubscription(LogWhiteListEntry.class, _phrases.adder());
-	}
-	
 	
 	@Override
 	public ListRegister<LogWhiteListEntry> whiteListEntries() {

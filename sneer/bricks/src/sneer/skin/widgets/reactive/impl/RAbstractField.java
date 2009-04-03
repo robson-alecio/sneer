@@ -1,5 +1,7 @@
 package sneer.skin.widgets.reactive.impl;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -21,6 +23,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.text.JTextComponent;
 
+import sneer.commons.environments.Environment;
+import sneer.commons.environments.Environments;
 import sneer.pulp.reactive.Signal;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.TextWidget;
@@ -29,6 +33,7 @@ import wheel.io.ui.impl.UserImpl;
 import wheel.lang.PickyConsumer;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.impl.EventReceiver;
+
 
 abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel implements TextWidget<WIDGET> {
 	
@@ -46,12 +51,16 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	
 	public boolean _notified = true;
 
+	private final Environment _environment;
+
 
 	RAbstractField(WIDGET textComponent, Signal<?> source) {
 		this(textComponent, source, null, NotificationPolicy.OnTyping);
 	}
 	
 	RAbstractField(WIDGET textComponent, Signal<?> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy) {
+		_environment = my(Environment.class);
+		
 		_source = source;
 		_setter = setter;
 		_textComponent = textComponent;
@@ -87,6 +96,12 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	private void addKeyListenerToCommitOnKeyTyped() {
 		_textComponent.addKeyListener(new KeyAdapter() { @Override public void keyTyped(KeyEvent e) {
 			setNotified(_notificationPolicy == NotificationPolicy.OnTyping,  getText());
+			Environments.runWith(_environment, new Runnable() { @Override public void run() {
+				commitIfNecessary();
+			}});
+		}
+
+		private void commitIfNecessary() {
 			GuiThread.invokeLater(new Runnable(){ @Override public void run() {
 				_textComponent.invalidate();
 				_textComponent.getParent().validate();

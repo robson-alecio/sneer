@@ -18,12 +18,16 @@ import javax.swing.border.TitledBorder;
 
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
+import sneer.commons.lang.ByRef;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccount;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.port.PortKeeper;
+import sneer.pulp.reactive.Signal;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
+import wheel.io.ui.GuiThread;
+import wheel.lang.PickyConsumer;
 import wheel.reactive.impl.IntegerParser;
 
 class WelcomeWizard extends JDialog {
@@ -63,13 +67,11 @@ class WelcomeWizard extends JDialog {
 
 		java.awt.Container pnl = getContentPane();
 		
-		ReactiveWidgetFactory factory = my(ReactiveWidgetFactory.class);
-		
 		OwnNameKeeper nameKeeper = my(OwnNameKeeper.class);
-		_yourOwnName = factory.newTextField(nameKeeper.name(), nameKeeper.nameSetter());
+		_yourOwnName = newTextField(nameKeeper.name(), nameKeeper.nameSetter());
 		
 		PortKeeper portKeeper = my(PortKeeper.class);
-		_sneerPort = factory.newTextField(portKeeper.port(), new IntegerParser(portKeeper.portSetter()));
+		_sneerPort = newTextField(portKeeper.port(), new IntegerParser(portKeeper.portSetter()));
 		
 		pnl.setLayout(new GridLayout(6,1));
 		pnl.add(_yourOwnName.getComponent());
@@ -89,6 +91,14 @@ class WelcomeWizard extends JDialog {
 		label(_dynDnsHost, "Your DynDns Host [optional]");
 		label(_dynDnsUser, "Your DynDns User [optional]");
 		label(_dnyDnsPassword, "Your DynDns Password [optional]");
+	}
+
+	private TextWidget<JTextField> newTextField(final Signal<?> signal, final PickyConsumer<String> setter) {
+		final ByRef<TextWidget<JTextField>> result = ByRef.newInstance();
+		GuiThread.strictInvokeAndWait(new Runnable() { @Override public void run() {
+			result.value = my(ReactiveWidgetFactory.class).newTextField(signal, setter);
+		}});
+		return result.value;
 	}
 
 	private void submit() {

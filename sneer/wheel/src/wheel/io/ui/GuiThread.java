@@ -1,8 +1,13 @@
 package wheel.io.ui;
 
 import java.lang.reflect.InvocationTargetException;
+import static sneer.commons.environments.Environments.my;
+
 
 import javax.swing.SwingUtilities;
+
+import sneer.commons.environments.Environment;
+import sneer.commons.environments.Environments;
 
 public class GuiThread {
 	
@@ -16,7 +21,7 @@ public class GuiThread {
 	public static void strictInvokeAndWait(final Runnable runnable) { //Fix Calling this from brick code is no longer necessary after the container is calling gui brick code only in the Swing thread.
 		assertNotInGuiThread();
 		try {
-			SwingUtilities.invokeAndWait(runnable);
+			SwingUtilities.invokeAndWait(envolve(runnable));
 		} catch (InterruptedException e) {
 			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		} catch (InvocationTargetException e) {
@@ -26,7 +31,7 @@ public class GuiThread {
 
 	public static void strictInvokeLater(Runnable runnable) { //Fix Calling this from brick code is no longer necessary after the container is calling gui brick code only in the Swing thread.
 		assertNotInGuiThread();
-		SwingUtilities.invokeLater(runnable);
+		SwingUtilities.invokeLater(envolve(runnable));
 	}
 
 	public static void assertInGuiThread() {
@@ -38,6 +43,13 @@ public class GuiThread {
 	}
 
 	public static void invokeLater(Runnable runnable) {
-		SwingUtilities.invokeLater(runnable);
+		SwingUtilities.invokeLater(envolve(runnable));
+	}
+
+	private static Runnable envolve(final Runnable delegate) {
+		final Environment environment = my(Environment.class);
+		return new Runnable() { @Override public void run() {
+			Environments.runWith(environment, delegate);
+		}};
 	}
 }

@@ -17,6 +17,7 @@ import sneer.kernel.container.ContainersOld;
 import wheel.io.ui.TimeboxedEventQueue;
 import wheel.lang.exceptions.TimeIsUp;
 
+@Ignore
 public class GuiBrickTest {
 	
 	@Test
@@ -56,7 +57,6 @@ public class GuiBrickTest {
 	}
 
 	@Test
-	@Ignore
 	public void guiBrickCallbacksComeInSwingThread() throws Exception {
 		throw new NotImplementedYet();
 	}

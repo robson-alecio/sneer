@@ -53,7 +53,9 @@ public class SneerCommunity implements SovereignCommunity {
 
 	private Brickness newContainer(final String name) {
 		StoragePath storagePath = new StoragePath() { @Override public String get() {
-			return sneerConfigForParty(name).sneerDirectory().getAbsolutePath();
+			File result = sneerConfigForParty(name).sneerDirectory();
+			if (!result.exists()) result.mkdirs();
+			return result.getAbsolutePath();
 		}};
 		
 		return new Brickness(_network, sneerConfigForParty(name), storagePath);

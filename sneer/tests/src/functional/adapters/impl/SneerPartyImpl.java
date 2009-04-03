@@ -8,7 +8,6 @@ import snapps.wind.Shout;
 import snapps.wind.Wind;
 import sneer.brickness.PublicKey;
 import sneer.commons.lang.exceptions.NotImplementedYet;
-import sneer.pulp.brickmanager.BrickManager;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;
@@ -16,8 +15,6 @@ import sneer.pulp.connection.SocketOriginator;
 import sneer.pulp.connection.SocketReceiver;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
-import sneer.pulp.deployer.BrickBundle;
-import sneer.pulp.deployer.Deployer;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.own.name.OwnNameKeeper;
@@ -60,10 +57,6 @@ class SneerPartyImpl implements SneerParty {
 
 	private final KeyManager _keyManager = my(KeyManager.class);
 	
-	private final Deployer _deployer = my(Deployer.class);
-	
-	private final BrickManager _brickManager = my(BrickManager.class);
-
 
 	@Override
 	public void setSneerPort(int port) {
@@ -166,9 +159,10 @@ class SneerPartyImpl implements SneerParty {
 
 	@Override
 	public void publishBricks(File sourceDirectory) {
-		BrickBundle brickBundle = _deployer.pack(sourceDirectory);
+		throw new NotImplementedYet();
+		//BrickBundle brickBundle = _deployer.pack(sourceDirectory);
 		//brickBundle.prettyPrint();
-		_brickManager.install(brickBundle);
+		//_brickManager.install(brickBundle);
 	}
 
 

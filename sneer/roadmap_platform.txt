@@ -17,11 +17,12 @@ TASKS
 	- [Klaus] Transparent persistence for bricks
 		- [Sandro] WelcomeWizard should appear only if necessary. Add menu item to open it.
 
+	- [Klaus] GuiThread - Improve how environment handling is done. 
+		- Unignore GuiBrickTest.
+
 	- [Bamboo]Create/Install ("publish") brick locally
 		- Brickness - "The simplest possible container"
 			- Unify the Bindings vs Contributions metaphors.
-			- [Bamboo]main.Sneer - Run bricks in correct order.
-				- Unignore SneerFreedom1Test and SneerFreedom5Test. They now test main.Sneer ;)
 			- [Bamboo]Delete Brick interface in favor of NewBrick annotation.
 			- SneerCommunity.newContainer - All that mess with StoragePath and SneerConfig is ugly.
 			- Make a test run a brick in a directory that is not in the system ClassLoader classpath (Eclipse classpath). It will probably fail. Implement the logic using NewContainerImpl.createApiClassLoader() to return a URLClassloader that can be extended with new classpaths for new brick interfaces;

@@ -12,8 +12,6 @@ TASKS
 
 	- [Klaus] DynDns user data - Use transparent persistence to save it, not a properties file.
 
-	- [Sandro] ReactiveWidgetFactory - Change all Signal<String> to Signal<Object> (use toString() to display). This will allow linking number and date signals for example.
-
 ﻿	- [Priscila] GoBoard.countCapturedStones() - DRY
 
 	- Gui Thread - Always call gui brick code in the gui thread. What was already done with the GuiBrickInvocationHandler does not cover callbacks. Complicated and slow weak-proxy-bubble structures would have to be created to support that. Instead, the proposed idea is:

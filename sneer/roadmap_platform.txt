@@ -19,8 +19,7 @@ TASKS
 
 	- [Bamboo]Create/Install ("publish") brick locally
 		- Brickness - "The simplest possible container"
-			- Fix package naming.
-			- Rename Bindings to Contributions to unify metaphor.
+			- Unify the Bindings vs Contributions metaphors.
 			- [Bamboo]main.Sneer - Run bricks in correct order.
 				- Unignore SneerFreedom1Test and SneerFreedom5Test. They now test main.Sneer ;)
 			- [Bamboo]Delete Brick interface in favor of NewBrick annotation.

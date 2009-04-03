@@ -42,6 +42,7 @@ class BrickSorterImpl implements BrickSorter {
 			throws IOException {
 		final DirectedGraph<Class<?>> graph = my(Graphs.class).createDirectedGraph();
 		for (Class<?> brick : bricks) {
+			graph.addVertex(brick);
 			for (String dependency : dependenciesFor(brick)) {
 				System.out.println(brick.getSimpleName() + " -> " + dependency);
 				graph.addEdge(brick, loadClass(dependency));

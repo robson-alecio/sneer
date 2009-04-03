@@ -12,9 +12,6 @@ import spikes.bamboo.bricksorter.BrickSorter;
 
 public class BrickSorterApplication {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		
 		Environments.runWith(new CachingEnvironment(new SystemBrickEnvironment()), new Runnable() { public void run() {

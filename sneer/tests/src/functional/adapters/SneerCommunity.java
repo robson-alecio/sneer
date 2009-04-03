@@ -6,10 +6,9 @@ import main.Sneer;
 
 import org.apache.commons.lang.StringUtils;
 
+import sneer.brickness.impl.Brickness;
 import sneer.commons.environments.Environments;
 import sneer.commons.io.StoragePath;
-import sneer.container.Brickness;
-import sneer.container.impl.BricknessImpl;
 import sneer.kernel.container.SneerConfig;
 import sneer.pulp.network.Network;
 import testutils.network.InProcessNetwork;
@@ -57,7 +56,7 @@ public class SneerCommunity implements SovereignCommunity {
 			return sneerConfigForParty(name).sneerDirectory().getAbsolutePath();
 		}};
 		
-		return new BricknessImpl(_network, sneerConfigForParty(name), storagePath);
+		return new Brickness(_network, sneerConfigForParty(name), storagePath);
 	}
 
 	private SneerConfig sneerConfigForParty(String name) {

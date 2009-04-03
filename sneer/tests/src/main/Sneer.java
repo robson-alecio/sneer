@@ -16,10 +16,9 @@ import snapps.whisper.speex.Speex;
 import snapps.whisper.speextuples.SpeexTuples;
 import snapps.wind.Wind;
 import snapps.wind.gui.WindGui;
+import sneer.brickness.impl.BrickLoadingException;
+import sneer.brickness.impl.Brickness;
 import sneer.commons.io.StoragePath;
-import sneer.container.BrickLoadingException;
-import sneer.container.Brickness;
-import sneer.container.impl.BricknessImpl;
 import sneer.kernel.container.SneerConfig;
 import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.blinkinglights.BlinkingLights;
@@ -80,7 +79,7 @@ import wheel.io.Jars;
 public class Sneer {
 
 	public static void main(String[] ignored) throws Exception {
-		Brickness container = new BricknessImpl();
+		Brickness container = new Brickness();
 		run(container, businessBricks());
 		run(container, guiBricks());
 	}

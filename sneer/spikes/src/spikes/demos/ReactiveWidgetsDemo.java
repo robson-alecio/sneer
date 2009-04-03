@@ -43,7 +43,7 @@ public class ReactiveWidgetsDemo {
 			textWidget = rfactory.newTextPane(register.output(), register.setter());
 			createTestFrame(textWidget, 10, 340, 300, 100, "OnTyping");
 			
-			WindowWidget<JFrame> frame = rfactory.newFrame(register.output(), register.setter());
+			WindowWidget<JFrame> frame = rfactory.newFrame(register.output());
 			frame.getMainWidget().setBounds(10, 450, 300, 100);
 			frame.getMainWidget().setVisible(true);
 			

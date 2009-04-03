@@ -18,13 +18,13 @@ import javax.swing.border.TitledBorder;
 
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
-import sneer.commons.lang.Functor;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccount;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.port.PortKeeper;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
+import wheel.reactive.impl.IntegerParser;
 
 class WelcomeWizard extends JDialog {
 
@@ -69,11 +69,7 @@ class WelcomeWizard extends JDialog {
 		_yourOwnName = factory.newTextField(nameKeeper.name(), nameKeeper.nameSetter());
 		
 		PortKeeper portKeeper = my(PortKeeper.class);
-		_sneerPort = factory.newTextField(portKeeper.port(), portKeeper.portSetter(), 
-				new Functor<String, Integer>(){ @Override public Integer evaluate(String value) {
-					return (value==null)?0:Integer.parseInt(value);
-				}
-		});
+		_sneerPort = factory.newTextField(portKeeper.port(), new IntegerParser(portKeeper.portSetter()));
 		
 		pnl.setLayout(new GridLayout(6,1));
 		pnl.add(_yourOwnName.getComponent());

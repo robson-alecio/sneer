@@ -1,7 +1,5 @@
 package main;
 
-import java.io.IOException;
-
 import snapps.blinkinglights.gui.BlinkingLightsGui;
 import snapps.contacts.actions.ContactActionManager;
 import snapps.contacts.gui.ContactsGui;
@@ -87,9 +85,9 @@ public class Sneer {
 		run(container, guiBricks());
 	}
 
-	static public void run(Brickness container, Class<?>... bricks) throws BrickLoadingException, IOException {
+	static public void run(Brickness container, Class<?>... bricks) throws BrickLoadingException {
 		for (Class<?> brick : bricks)
-			container.runBrick(Jars.fileFor(brick));
+			container.runBrick(Jars.classpathRootFor(brick), brick.getName());
 	}
 
 	static public Class<?>[] businessBricks() {

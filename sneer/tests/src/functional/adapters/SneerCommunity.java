@@ -1,7 +1,6 @@
 package functional.adapters;
 
 import java.io.File;
-import java.io.IOException;
 
 import main.Sneer;
 
@@ -41,16 +40,16 @@ public class SneerCommunity implements SovereignCommunity {
 
 	private void populate(Brickness container) {
 		try {
-			runBusinessBricks(container);
-			container.runBrick(Jars.fileFor(SneerParty.class));
+			runBricks(container, Sneer.businessBricks());
+			runBricks(container, SneerParty.class);
 		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}
 	}
 
-	private void runBusinessBricks(Brickness container) throws IOException {
-		for (Class<?> brick : Sneer.businessBricks())
-			container.runBrick(Jars.fileFor(brick));
+	private void runBricks(Brickness container, Class<?>... bricks) {
+		for (Class<?> brick : bricks)
+			container.runBrick(Jars.classpathRootFor(brick), brick.getName());
 	}
 
 	private Brickness newContainer(final String name) {

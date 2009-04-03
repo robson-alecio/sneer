@@ -1,7 +1,6 @@
 package sneer.container.impl;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -28,17 +27,21 @@ public class BricknessImpl implements Brickness {
 
 
 	@Override
-	public void runBrick(final File interfaceFile) throws IOException {
-		String classDirectory = interfaceFile.getParent();
-		
-		String packageName = packageNameFor(classDirectory);
-		ClassLoader classLoader = newBrickLoaderFor(classDirectory, packageName);
-			
-		Class<?> brick = new BrickInterfaceSearch(classDirectory, packageName, classLoader).result();
-		
-		Class<?> brickImpl = loadImpl(brick, classLoader);
+	public void runBrick(File classRootDirectory, String brickName) {
+		try {
+			tryToRunBrick(classRootDirectory, brickName);
+		} catch (Exception e) {
+			throw new BrickLoadingException(e);
+		}
+	}
+
+
+	private void tryToRunBrick(File classRootDirectory, String brickName) throws ClassNotFoundException {
+		ClassLoader classLoader = newImplPackageLoader(classRootDirectory, brickName);
+		Class<?> brickImpl = classLoader.loadClass(implNameFor(brickName));
 		_bindings.bind(instantiateInEnvironment(brickImpl));
 	}
+
 
 	@Override
 	public Environment environment() {
@@ -50,50 +53,28 @@ public class BricknessImpl implements Brickness {
 	}
 
 
-	private ClassLoader newBrickLoaderFor(final String classDirectory, String packageName) {
-		return new BrickClassLoader(classDirectory, packageName, _apiClassLoader);
+	private ClassLoader newImplPackageLoader(File classRootDirectory, String brickName) {
+		String implPackage = BrickConventions.implPackageFor(brickName);
+		return new ClassLoaderForPackage(classRootDirectory, implPackage, _apiClassLoader);
 	}
 
-	private Class<?> loadImpl(Class<?> brick, ClassLoader classLoader) {
-		try {
-			return classLoader.loadClass(implNameFor(brick.getName()));
-		} catch (ClassNotFoundException e) {
-			throw new BrickLoadingException(e);
-		}
-	}
-	
 	private Object instantiateInEnvironment(final Class<?> brickImpl) {
 		return Environments.produceWith(_environment, new Producer<Object>() { @Override public Object produce() {
 			try {
-				
 				return newInstance(brickImpl);
-				
-			} catch (InstantiationException e) {
+			} catch (Exception e) {
 				throw new BrickLoadingException(e);
-			} catch (NoSuchMethodException e) {
-				throw new BrickLoadingException(e);
-			} catch (InvocationTargetException e) {
-				throw new BrickLoadingException(e.getCause());
 			}
 		}});
 	}
 
 
-	private Object newInstance(Class<?> brickImpl) throws NoSuchMethodException, InstantiationException, InvocationTargetException {
+	private Object newInstance(Class<?> brickImpl) throws NoSuchMethodException, InstantiationException, InvocationTargetException, IllegalArgumentException, IllegalAccessException {
 		Constructor<?> constructor = brickImpl.getDeclaredConstructor();
 		constructor.setAccessible(true);
-		try {
-			return constructor.newInstance();
-		} catch (IllegalAccessException e) {
-			throw new IllegalStateException();
-		}
+		return constructor.newInstance();
 	}
 
-
-	private String packageNameFor(String classDirectory) throws IOException {
-		return PackageNameRetriever.packageNameFor(classDirectory);
-	}
-	
 	private String implNameFor(final String brickInterfaceName) {
 		return BrickConventions.implClassNameFor(brickInterfaceName);
 	}

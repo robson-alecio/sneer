@@ -56,10 +56,18 @@ public class Jars {
 		}
 	}
 
-	public static File fileFor(Class<?> klass) {
-		final String fileName = klass.getCanonicalName().replace('.', '/') + ".class";
-		final URL url = klass.getResource("/" + fileName);
+	public static File fileFor(Class<?> clazz) {
+		final String fileName = clazz.getCanonicalName().replace('.', '/') + ".class";
+		final URL url = clazz.getResource("/" + fileName);
 		return new File(toURI(url));
+	}
+
+	static public File classpathRootFor(Class<?> clazz) {
+		File result = fileFor(clazz);
+		int depth = clazz.getName().split("\\.").length;
+		while (depth-- != 0)
+			result = result.getParentFile();
+		return result;
 	}
 
 	private static URI toURI(final URL url) {

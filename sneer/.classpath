@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="spikes/src"/>
 	<classpathentry kind="src" path="tests/src"/>
-	<classpathentry kind="src" path="container/src"/>
+	<classpathentry kind="src" path="brickness-impl/src"/>
 	<classpathentry kind="src" path="bricks/src"/>
 	<classpathentry kind="src" path="antlips/src"/>
 	<classpathentry kind="src" path="wheel/src"/>

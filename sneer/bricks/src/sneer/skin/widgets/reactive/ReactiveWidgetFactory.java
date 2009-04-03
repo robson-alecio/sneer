@@ -19,8 +19,7 @@ import wheel.reactive.lists.ListSignal;
 public interface ReactiveWidgetFactory extends OldBrick {
 
 	ImageWidget newImage(Signal<Image> source);
-	ImageWidget newImage(Signal<Image> source, PickyConsumer<Image> setter);
-	
+	WindowWidget<JFrame> newFrame(Signal<?> source);
 	TextWidget<JLabel> newLabel(Signal<?> source);
 	
 	TextWidget<JTextField> newEditableLabel(Signal<?> source, PickyConsumer<String> setter);
@@ -41,9 +40,4 @@ public interface ReactiveWidgetFactory extends OldBrick {
 	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> labelProvider);
 	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> labelProvider,	ListCellRenderer cellRenderer);
 	<T> ListModel newListSignalModel(ListSignal<T> input, SignalChooser<T> chooser);
-	
-	WindowWidget<JFrame> newFrame(Signal<?> source);
-	WindowWidget<JFrame> newFrame(Signal<?> source, PickyConsumer<String> setter);
-	<T> WindowWidget<JFrame> newFrame(Signal<?> source, PickyConsumer<T> setter, Functor<String, T> parser);
-
 }

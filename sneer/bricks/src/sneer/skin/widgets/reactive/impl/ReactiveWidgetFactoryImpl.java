@@ -31,11 +31,7 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 		return new RLabelImpl(source);
 	}
 	
-	@Override
-	public ImageWidget newImage(Signal<Image> source, PickyConsumer<Image> setter) {
-		GuiThread.assertInGuiThread();
-		return new RImageImpl(source, setter);
-	}
+
 	@Override
 	public ImageWidget newImage(Signal<Image> source) {
 		GuiThread.assertInGuiThread();
@@ -54,13 +50,7 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 		GuiThread.assertInGuiThread();
 		return new RFrameImpl(source);
 	}
-	@Override
-	public WindowWidget<JFrame> newFrame(Signal<?> source, PickyConsumer<String> setter) {
-		GuiThread.assertInGuiThread();
-		return new RFrameImpl(source, setter);
-	}
-	@Override public <T> WindowWidget<JFrame> newFrame(Signal<?> source, PickyConsumer<T> setter, Functor<String, T> parser) { return newFrame(source, stringAdapter(setter, parser));}
-	
+
 	
 	@Override
 	public TextWidget<JTextField> newEditableLabel(Signal<?> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy) {

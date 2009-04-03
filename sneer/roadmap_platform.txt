@@ -30,8 +30,6 @@ TASKS
 		
 		- main.Sneer - Publish all necessary bricks instead of just producing them.
 	
-	- Output folders - Make all source folders compile to the default folder (bin) and fix the tests. Is this possible?
-
 	- [Douglas] Logging - Default: Log only throwables. Have "white list" of parts of messages to log.
 			- GUI to delete or add parts of messages in the "white list" to log.
 			- Logger

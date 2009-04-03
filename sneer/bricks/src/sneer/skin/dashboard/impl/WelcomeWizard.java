@@ -49,11 +49,6 @@ class WelcomeWizard extends JDialog {
 		setVisible(true);
 	}
 
-
-	private void setOwnName(String ownName) {
-		my(OwnNameKeeper.class).nameSetter().consume(ownName);
-	}
-
 	private void initDynDnsAccount(String dynDnsHost, String dynDnsUserName, String dynDnsPassword) {
 		if (dynDnsUserName == null) return;
 	
@@ -124,25 +119,7 @@ class WelcomeWizard extends JDialog {
 		field.setBorder(new TitledBorder(caption));
 	}
 
-	private int sneerPort() {
-		return my(PortKeeper.class).port().currentValue();
-	}
-
-	private String ownName() {
-		return my(OwnNameKeeper.class).name().currentValue();
-	}
-
 	private String trim(JTextField field) {
 		return field.getText().trim();
-	}
-
-	private void setPort(String portString) {
-		int port;
-		try {
-			port = Integer.parseInt(portString);
-		} catch (NumberFormatException e) {
-			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
-		}
-		my(PortKeeper.class).portSetter().consume(port);
 	}
 }

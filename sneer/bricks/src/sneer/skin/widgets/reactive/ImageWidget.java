@@ -5,11 +5,10 @@ import java.awt.Image;
 import javax.swing.JPanel;
 
 import sneer.pulp.reactive.Signal;
-
-import wheel.lang.Consumer;
+import wheel.lang.PickyConsumer;
 
 public interface ImageWidget extends ComponentWidget<JPanel>{
 
 	Signal<Image> output();
-	Consumer<Image> setter();	
+	PickyConsumer<Image> setter();	
 }

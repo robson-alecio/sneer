@@ -12,32 +12,34 @@ import javax.swing.ListModel;
 import sneer.brickness.OldBrick;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
-import wheel.lang.Consumer;
+import sneer.commons.lang.Functor;
 import wheel.lang.PickyConsumer;
 import wheel.reactive.lists.ListSignal;
 
 public interface ReactiveWidgetFactory extends OldBrick {
 
 	ImageWidget newImage(Signal<Image> source);
-	ImageWidget newImage(Signal<Image> source, Consumer<Image> setter);
+	ImageWidget newImage(Signal<Image> source, PickyConsumer<Image> setter);
 	
-	TextWidget<JLabel> newLabel(Signal<String> source);
-	TextWidget<JLabel> newLabel(Signal<String> source, Consumer<String> setter);
+	TextWidget<JLabel> newLabel(Signal<?> source);
+	TextWidget<JLabel> newLabel(Signal<?> source, PickyConsumer<String> setter);
 	
-	TextWidget<JTextField> newEditableLabel(Signal<String> source, PickyConsumer<String> setter);
-	TextWidget<JTextField> newEditableLabel(Signal<String> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy);
+	TextWidget<JTextField> newEditableLabel(Signal<?> source, PickyConsumer<String> setter);
+	TextWidget<JTextField> newEditableLabel(Signal<?> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy);
+	<T> TextWidget<JTextField> newEditableLabel(Signal<?> source, PickyConsumer<T> setter, Functor<String, T> functor);
+	<T> TextWidget<JTextField> newEditableLabel(Signal<?> source, PickyConsumer<T> setter, Functor<String, T> functor, NotificationPolicy notificationPolicy);
 	
-	TextWidget<JTextField> newTextField(Signal<String> source, Consumer<String> setter);
-	TextWidget<JTextField> newTextField(Signal<String> source, Consumer<String> setter, NotificationPolicy notificationPolicy);
+	TextWidget<JTextField> newTextField(Signal<?> source, PickyConsumer<String> setter);
+	TextWidget<JTextField> newTextField(Signal<?> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy);
 	
-	TextWidget<JTextPane> newTextPane(Signal<String> source, Consumer<String> setter);
-	TextWidget<JTextPane> newTextPane(Signal<String> source, Consumer<String> setter, NotificationPolicy notificationPolicy);
+	TextWidget<JTextPane> newTextPane(Signal<?> source, PickyConsumer<String> setter);
+	TextWidget<JTextPane> newTextPane(Signal<?> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy);
 
 	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> labelProvider);
 	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> labelProvider,	ListCellRenderer cellRenderer);
 	<T> ListModel newListSignalModel(ListSignal<T> input, SignalChooser<T> chooser);
 	
-	WindowWidget<JFrame> newFrame(Signal<String> source);
-	WindowWidget<JFrame> newFrame(Signal<String> source, Consumer<String> setter);
+	WindowWidget<JFrame> newFrame(Signal<?> source);
+	WindowWidget<JFrame> newFrame(Signal<?> source, PickyConsumer<String> setter);
 
 }

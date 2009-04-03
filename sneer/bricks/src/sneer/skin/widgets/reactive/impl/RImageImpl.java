@@ -17,7 +17,7 @@ import sneer.pulp.reactive.impl.RegisterImpl;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.widgets.reactive.ImageWidget;
 import wheel.io.ui.GuiThread;
-import wheel.lang.Consumer;
+import wheel.lang.PickyConsumer;
 import wheel.reactive.impl.EventReceiver;
 
 class RImageImpl extends JPanel implements ImageWidget{
@@ -25,7 +25,7 @@ class RImageImpl extends JPanel implements ImageWidget{
 	private final ImageFactory _imageFactory = my(ImageFactory.class);
 
 	protected final Register<Image> _image;
-	protected final Consumer<Image> _setter;
+	protected final PickyConsumer<Image> _setter;
 	private static final long serialVersionUID = 1L;
 	
 	@SuppressWarnings("unused")
@@ -35,7 +35,7 @@ class RImageImpl extends JPanel implements ImageWidget{
 		this(source, null);
 	}
 	
-	RImageImpl(Signal<Image> source, Consumer<Image> setter){
+	RImageImpl(Signal<Image> source, PickyConsumer<Image> setter){
 		setOpaque(false);
 		_image = new RegisterImpl<Image>(null);
 		_setter = setter;
@@ -108,7 +108,7 @@ class RImageImpl extends JPanel implements ImageWidget{
 	}
 
 	@Override
-	public Consumer<Image> setter() {
+	public PickyConsumer<Image> setter() {
 		if(_setter!=null) return _setter;
 		throw new RuntimeException("The widget is readonly.");
 	}

@@ -10,7 +10,7 @@ class RTextFieldImpl extends RAbstractField<JTextField> {
 	
 	private static final long serialVersionUID = 1L;
 
-	RTextFieldImpl(Signal<String> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy) {
+	RTextFieldImpl(Signal<?> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy) {
 		super(new JTextField(), source, setter, notificationPolicy);
 	}
 }

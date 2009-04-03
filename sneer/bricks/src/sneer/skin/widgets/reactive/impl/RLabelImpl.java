@@ -20,27 +20,31 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 	private static final long serialVersionUID = 1L;
 	
 	protected final JLabel _textComponent;
-	protected final Signal<String> _source;
+	protected final Signal<?> _source;
 	protected final PickyConsumer<String> _setter;
 	
 	@SuppressWarnings("unused")
-	private final EventReceiver<String> _textReceiverAvoidGc;
+	private final EventReceiver<?> _textReceiverAvoidGc;
 	
-	RLabelImpl(Signal<String> text){
+	RLabelImpl(Signal<?> text){
 		this(text, null);
 	}
 
-	RLabelImpl(Signal<String> source, PickyConsumer<String> setter) {
+	RLabelImpl(Signal<?> source, PickyConsumer<String> setter) {
 		_textComponent = new JLabel();
 		_setter = setter;
 		_source = source;
-		_textReceiverAvoidGc = new EventReceiver<String>(source) {@Override public void consume(final String value) {
+		_textReceiverAvoidGc = new EventReceiver<Object>(source) {@Override public void consume(final Object value) {
 			GuiThread.invokeAndWait(new Runnable() {@Override public void run() {
-				_textComponent.setText(value);
+				_textComponent.setText(valueToString(value));
 		}});}};
 		initComponents();
 	}
-
+	
+	private String valueToString(final Object value) {
+		return (value==null)?"":value.toString();
+	}
+	
 	private void initComponents() {
 		setLayout(new GridBagLayout());
 		GridBagConstraints c;
@@ -49,7 +53,7 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 				GridBagConstraints.BOTH,
 				new Insets(0,0,0,0),0,0);
 		setOpaque(false);
-		_textComponent.setText(_source.currentValue());
+		_textComponent.setText(valueToString(_source.currentValue()));
 		add(_textComponent, c);
 	}
 
@@ -69,7 +73,7 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 	}
 
 	@Override
-	public Signal<String> output() {
+	public Signal<?> output() {
 		return _source;
 	}
 

@@ -6,33 +6,37 @@ import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.impl.RegisterImpl;
 import sneer.skin.widgets.reactive.WindowWidget;
-import wheel.lang.Consumer;
+import wheel.lang.PickyConsumer;
 import wheel.reactive.impl.EventReceiver;
 
 class RFrameImpl extends JFrame implements WindowWidget<JFrame>{
 
 	protected final Register<String> _titleRegister;
-	protected final Consumer<String> _titleSetter;
+	protected final PickyConsumer<String> _titleSetter;
 	
 	private static final long serialVersionUID = 1L;
 	
 	@SuppressWarnings("unused")
-	private final EventReceiver<String> _titleReceiverAvoidGc;
+	private final EventReceiver<?> _titleReceiverAvoidGc;
 	
-	RFrameImpl(Signal<String> source) {
+	RFrameImpl(Signal<?> source) {
 		this(source, null);
 	}
 	
-	RFrameImpl(Signal<String> source, Consumer<String> setter){
+	RFrameImpl(Signal<?> source, PickyConsumer<String> setter){
 		_titleRegister = new RegisterImpl<String>(null);
 		_titleSetter = setter;
 		_titleReceiverAvoidGc = titleReceiverFor(source);
 	}
 
-	private EventReceiver<String> titleReceiverFor(Signal<String> signal) {
-		return new EventReceiver<String>(signal) {@Override public void consume(final String title) {
-			_titleRegister.setter().consume(title);
-			setTitle(title);
+	private EventReceiver<?> titleReceiverFor(Signal<?> signal) {
+		return new EventReceiver<Object>(signal) {@Override public void consume(final Object title) {
+			_titleRegister.setter().consume(valueToString(title));
+			setTitle(valueToString(title));
+		}
+
+		private String valueToString(final Object title) {
+			return (title==null)?"":title.toString();
 		}};
 	}
 
@@ -42,7 +46,7 @@ class RFrameImpl extends JFrame implements WindowWidget<JFrame>{
 	}
 
 	@Override
-	public Consumer<String> setter() {
+	public PickyConsumer<String> setter() {
 		return _titleSetter;
 	}
 

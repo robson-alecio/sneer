@@ -26,10 +26,10 @@ class REditableLabelImpl extends JPanel implements TextWidget<JTextField>{
 	
 	protected final RLabelImpl _label;
 	protected final RTextFieldImpl _text;
-	protected final Signal<String> _source;
+	protected final Signal<?> _source;
 	protected final PickyConsumer<String> _setter;
 
-	REditableLabelImpl(Signal<String> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy) {
+	REditableLabelImpl(Signal<?> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy) {
 		_source = source;
 		_setter = setter;
 		_text = new RTextFieldImpl(source, setter, notificationPolicy);
@@ -97,7 +97,7 @@ class REditableLabelImpl extends JPanel implements TextWidget<JTextField>{
 	}
 
 	@Override
-	public Signal<String> output(){
+	public Signal<?> output(){
 		return _source;
 	}
 	

@@ -34,12 +34,12 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	
 	private static final long serialVersionUID = 1L;
 	
-	protected final Signal<String> _source;
+	protected final Signal<?> _source;
 	protected final PickyConsumer<String> _setter;
 	protected final WIDGET _textComponent;
 	protected final NotificationPolicy _notificationPolicy;
 
-	protected final EventReceiver<String> _fieldReciver;
+	protected final EventReceiver<?> _fieldReciver;
 
 	protected ChangeInfoDecorator _decorator;
 	protected String _lastNotified = "";
@@ -47,11 +47,11 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	public boolean _notified = true;
 
 
-	RAbstractField(WIDGET textComponent, Signal<String> source) {
+	RAbstractField(WIDGET textComponent, Signal<?> source) {
 		this(textComponent, source, null, NotificationPolicy.OnTyping);
 	}
 	
-	RAbstractField(WIDGET textComponent, Signal<String> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy) {
+	RAbstractField(WIDGET textComponent, Signal<?> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy) {
 		_source = source;
 		_setter = setter;
 		_textComponent = textComponent;
@@ -132,7 +132,11 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	}
 
 	private String currentValue() {
-		return _source.currentValue();
+		return valueToString(_source.currentValue());
+	}
+
+	private String valueToString(Object value) {
+		return (value==null)?"":value.toString();
 	}
 	
 	public String getText() {
@@ -180,7 +184,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	}	
 
 	@Override
-	public Signal<String> output(){
+	public Signal<?> output(){
 		return _source;
 	}
 	
@@ -219,11 +223,11 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 		return new JComponent[]{_textComponent};
 	}
 	
-	public EventReceiver<String> fieldReceiver() {
-		return new EventReceiver<String>(_source) {@Override public void consume(final String text) {
+	public EventReceiver<?> fieldReceiver() {
+		return new EventReceiver<Object>(_source) {@Override public void consume(final Object text) {
 			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
 				if (!_notified) return;
-				setText(text);
+				setText(valueToString(text));
 			}});
 		}};
 	}

@@ -21,7 +21,7 @@ class RTextPaneImpl extends RAbstractField<JTextPane> {
 	private static final String LINE_BREAK_STRING = "\n\r";
 	private static final long serialVersionUID = 1L;
 
-	RTextPaneImpl(Signal<String> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy) {
+	RTextPaneImpl(Signal<?> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy) {
 		super(new JTextPane(), source, setter, notificationPolicy);
 		LineBorder border = new LineBorder(Color.LIGHT_GRAY);
 		_textComponent.setBorder(border);

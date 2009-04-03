@@ -8,9 +8,9 @@ import wheel.lang.PickyConsumer;
 
 public interface TextWidget<WIDGET extends JComponent> extends ComponentWidget<WIDGET> {
 
-	Signal<String> output();
+	Signal<?> output();
 	
-	PickyConsumer<String> setter();	
+	PickyConsumer<?> setter();	
 
 	JComponent[] getWidgets();
 }

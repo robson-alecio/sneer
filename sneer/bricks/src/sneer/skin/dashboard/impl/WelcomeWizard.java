@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -21,14 +22,17 @@ import sneer.pulp.dyndns.ownaccount.DynDnsAccount;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.port.PortKeeper;
+import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
+import sneer.skin.widgets.reactive.TextWidget;
 
 
 class WelcomeWizard extends JDialog {
 
 	private final Environment _environment;
 	
-	private final JTextField _yourOwnName = new JTextField();
-	private final JTextField _sneerPort = new JTextField();
+	private TextWidget<JTextField>  _yourOwnName;
+	private TextWidget<JTextField> _sneerPort;
+	
 	private final JTextField _dynDnsHost = new JTextField();
 	private final JTextField _dynDnsUser = new JTextField();
 	private final JTextField _dnyDnsPassword = new JTextField();
@@ -64,9 +68,17 @@ class WelcomeWizard extends JDialog {
 
 		java.awt.Container pnl = getContentPane();
 		
+		ReactiveWidgetFactory factory = my(ReactiveWidgetFactory.class);
+		
+		OwnNameKeeper nameKeeper = my(OwnNameKeeper.class);
+		_yourOwnName = factory.newTextField(nameKeeper.name(), nameKeeper.nameSetter());
+		
+		PortKeeper portKeeper = my(PortKeeper.class);
+//		_sneerPort = factory.newTextField(portKeeper.port(), portKeeper.portSetter());
+		
 		pnl.setLayout(new GridLayout(6,1));
-		pnl.add(_yourOwnName);
-		pnl.add(_sneerPort);
+		pnl.add(_yourOwnName.getComponent());
+		pnl.add(_sneerPort.getComponent());
 		pnl.add(_dynDnsHost);
 		pnl.add(_dynDnsUser);
 		pnl.add(_dnyDnsPassword);
@@ -77,8 +89,8 @@ class WelcomeWizard extends JDialog {
 		}});
 		pnl.add(btn);
 
-		label(_yourOwnName, "Your Own Name");
-		label(_sneerPort, "Your Sneer Port");
+		label(_yourOwnName.getComponent(), "Your Own Name");
+		label(_sneerPort.getComponent(), "Your Sneer Port");
 		label(_dynDnsHost, "Your DynDns Host [optional]");
 		label(_dynDnsUser, "Your DynDns User [optional]");
 		label(_dnyDnsPassword, "Your DynDns Password [optional]");
@@ -97,9 +109,6 @@ class WelcomeWizard extends JDialog {
 	}
 	
 	private void restoreFieldData() {
-		_yourOwnName.setText(ownName());
-		_sneerPort.setText("" + sneerPort());
-		
 		DynDnsAccount account = my(DynDnsAccountKeeper.class).ownAccount().currentValue();
 		if (account == null) return;
 		_dynDnsHost.setText(account.host);
@@ -108,13 +117,10 @@ class WelcomeWizard extends JDialog {
 	}
 
 	private void storeFieldData() throws Exception {
-		setOwnName(trim(_yourOwnName));
-		setPort(trim(_sneerPort));
-		
 		initDynDnsAccount(trim(_dynDnsHost), trim(_dynDnsUser), trim(_dnyDnsPassword));
 	}
 
-	private void label(JTextField field, String caption) {
+	private void label(JComponent field, String caption) {
 		field.setBorder(new TitledBorder(caption));
 	}
 
@@ -137,8 +143,6 @@ class WelcomeWizard extends JDialog {
 		} catch (NumberFormatException e) {
 			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
-		
 		my(PortKeeper.class).portSetter().consume(port);
 	}
-
 }

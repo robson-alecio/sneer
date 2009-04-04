@@ -22,8 +22,7 @@ public class TransparentPropertyStoreTest extends BrickTest {
 	
 	@Test
 	public void testPropertyStore() throws IOException {
-		Brickness container = new Brickness();
-		container.setBrickDecorator(persister());
+		Brickness container = new Brickness(newPersister());
 		
 		container.placeBrick(Jars.classpathRootFor(TransientPropertyStore.class), TransientPropertyStore.class.getName());
 		Environments.runWith(container.environment(),new Runnable() { @Override public void run() {
@@ -37,8 +36,7 @@ public class TransparentPropertyStoreTest extends BrickTest {
 
 		_prevayler.close();
 		
-		Brickness container2 = new Brickness();
-		container2.setBrickDecorator(persister());
+		Brickness container2 = new Brickness(newPersister());
 		container2.placeBrick(Jars.classpathRootFor(TransientPropertyStore.class), TransientPropertyStore.class.getName());
 		Environments.runWith(container2.environment(),new Runnable() { @Override public void run() {
 			TransientPropertyStore subject2 = my(TransientPropertyStore.class);
@@ -49,7 +47,7 @@ public class TransparentPropertyStoreTest extends BrickTest {
 		_prevayler.close();
 	}
 
-	private Functor<Object, Object> persister() {
+	private Functor<Object, Object> newPersister() {
 		return new Functor<Object, Object>() {
 		@Override public Object evaluate(Object brick) {
 			_prevayler = prevayler(brick);

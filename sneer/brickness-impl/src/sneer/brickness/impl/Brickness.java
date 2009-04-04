@@ -17,15 +17,20 @@ public class Brickness {
 	private final Environment _environment;
 	private final Bindings _bindings;
 	private final ClassLoader _apiClassLoader = createApiClassLoader();
-	private Functor<Object, Object> _decorator;
+	private final Functor<Object, Object> _brickDecorator;
 
 	public Brickness(Object... bindings) {
+		this(Functor.IDENTITY, bindings);
+	}
+
+	public Brickness(Functor<Object, Object> brickDecorator, Object... bindings) {
+		_brickDecorator = brickDecorator;
+		
 		_bindings = new Bindings();
 		_bindings.bind(bindings);
 		
 		 _environment = new CachingEnvironment(_bindings.environment());
 	}
-
 
 	public void placeBrick(File classRootDirectory, String brickName) {
 		try {
@@ -35,6 +40,10 @@ public class Brickness {
 		}
 	}
 
+	public Environment environment() {
+		return _environment;
+	}
+	
 
 	private void tryToPlaceBrick(File classRootDirectory, String brickName) throws ClassNotFoundException {
 		ClassLoader classLoader = newImplPackageLoader(classRootDirectory, brickName);
@@ -44,14 +53,9 @@ public class Brickness {
 
 
 	private Object decorate(Object brick) {
-		if (_decorator == null) return brick;
-		return _decorator.evaluate(brick);
+		return _brickDecorator.evaluate(brick);
 	}
 
-
-	public Environment environment() {
-		return _environment;
-	}
 
 	private ClassLoader createApiClassLoader() {
 		return ClassLoader.getSystemClassLoader(); //TODO See roadmap
@@ -82,11 +86,6 @@ public class Brickness {
 
 	private String implNameFor(final String brickInterfaceName) {
 		return BrickConventions.implClassNameFor(brickInterfaceName);
-	}
-
-
-	public void setBrickDecorator(	Functor<Object, Object> decorator) {
-		_decorator = decorator;
 	}
 
 }

@@ -22,10 +22,7 @@ public class TransparentPropertyStoreTest extends BrickTest {
 	
 	@Test
 	public void testPropertyStore() throws IOException {
-		Brickness container = new Brickness(newPersister());
-		
-		container.placeBrick(Jars.classpathRootFor(TransientPropertyStore.class), TransientPropertyStore.class.getName());
-		Environments.runWith(container.environment(),new Runnable() { @Override public void run() {
+		runWithTransparentPersistence(new Runnable() { @Override public void run() {
 			TransientPropertyStore subject1 = my(TransientPropertyStore.class);
 			assertNull(subject1.get("Height"));
 			subject1.set("Height", "1,80m");
@@ -33,17 +30,20 @@ public class TransparentPropertyStoreTest extends BrickTest {
 			assertEquals("1,80m", subject1.get("Height"));
 			assertEquals("85kg", subject1.get("Weight"));
 		}});
-
-		_prevayler.close();
 		
-		Brickness container2 = new Brickness(newPersister());
-		container2.placeBrick(Jars.classpathRootFor(TransientPropertyStore.class), TransientPropertyStore.class.getName());
-		Environments.runWith(container2.environment(),new Runnable() { @Override public void run() {
+		runWithTransparentPersistence(new Runnable() { @Override public void run() {
 			TransientPropertyStore subject2 = my(TransientPropertyStore.class);
 			assertEquals("1,80m", subject2.get("Height"));
 			assertEquals("85kg", subject2.get("Weight"));
 		}});
+	}
+
+	private void runWithTransparentPersistence(Runnable runnable)	throws IOException {
+		Brickness container = new Brickness(newPersister());
 		
+		container.placeBrick(Jars.classpathRootFor(TransientPropertyStore.class), TransientPropertyStore.class.getName());
+		Environments.runWith(container.environment(),runnable);
+
 		_prevayler.close();
 	}
 

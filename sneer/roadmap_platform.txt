@@ -27,8 +27,6 @@ TASKS
 			- SneerCommunity.newContainer - All that mess with StoragePath and SneerConfig is ugly.
 			- Make a test run a brick in a directory that is not in the system ClassLoader classpath (Eclipse classpath). It will probably fail. Implement the logic using NewContainerImpl.createApiClassLoader() to return a URLClassloader that can be extended with new classpaths for new brick interfaces;
 		
-		- main.Sneer - Publish all necessary bricks instead of just producing them.
-	
 	- [Douglas] Logging - Default: Log only throwables. Have "white list" of parts of messages to log.
 			- GUI to delete or add parts of messages in the "white list" to log.
 			- Logger

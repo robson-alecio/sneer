@@ -6,14 +6,28 @@
                        SNAPPS (SNEER APPS)
 
              ----------------------------------------
-             
-                        SKIN (UI SUPPORT)
+ 
+                       FREEDOM 5: EXPRESSION
+                  (MeToo, TupleSpace, Routing...)
 
-           PULP (SERVICES (CONTACTS, AFFINITY, METOO...))
+                         FREEDOM 3: TRUST
+    (Affinity, SandBox, AccessControl, T4T Barter, Cryptography)
 
-            KERNEL (CONTAINER (PUBLISH, SANDBOX, UPDATE))
-            
-           ROOTS (TUPLESPACE, CLOCK, THREADS, SIGNALS...)
+                       FREEDOM 2: NICKNAMES
+			(Contacts, NickNames, Addresses, Connections)
+
+						FREEDOM 1: OWNNAME
+					   (OwnName, Public Key)
+
+                   FREEDOM 7: SOFTWARE PLATFORM
+  (Brickness: Install, Update, Concurrency, Signals, Prevalence)
+
+                        FREEDOM 6: HARDWARE
+(Clock, Threads, Files, Network, GUI, RAM (Collections), Logging...)
+                 (Security Enhanced: T4T Billing)
+
+                        FREEDOM 4: PRIVACY
+                         (Security Hooks)
            
                                                                   BRICKS
 ------------------------------------------------------------------------
@@ -29,3 +43,15 @@
  
                                JRE
 
+
+
+
+Freedoms:
+
+1 OwnName
+2 Nicknames
+3 Trust
+4 Privacy
+5 Expression
+6 Hardware
+7 Software

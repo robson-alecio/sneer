@@ -37,6 +37,9 @@ TASKS
 	
 	- Versioning
 
+	- Commons - Unify sneer.commons and apache.commons
+		- Use larvalabs version with generics
+
 -------------------------------------- Standalone Brick Container
 
 	- Contact Connection

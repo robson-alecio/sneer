@@ -96,6 +96,7 @@ public class Sneer {
 				snapps.meter.bandwidth.gui.BandwidthMeterGui.class,
 				snapps.blinkinglights.gui.BlinkingLightsGui.class,
 
+				snapps.welcomewizard.WelcomeWizard.class,
 				sneer.skin.dashboard.Dashboard.class,
 
 				snapps.contacts.hardcoded.HardcodedContacts.class,

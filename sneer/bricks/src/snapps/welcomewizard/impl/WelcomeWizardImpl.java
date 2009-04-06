@@ -1,7 +1,4 @@
-/**
- * 
- */
-package sneer.skin.dashboard.impl;
+package snapps.welcomewizard.impl;
 
 import static sneer.commons.environments.Environments.my;
 
@@ -16,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import snapps.welcomewizard.WelcomeWizard;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.ByRef;
@@ -24,33 +22,41 @@ import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.port.PortKeeper;
 import sneer.pulp.reactive.Signal;
+import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.ui.GuiThread;
 import wheel.lang.PickyConsumer;
 import wheel.reactive.impl.IntegerParser;
 
-class WelcomeWizard extends JDialog {
-
-	private final Environment _environment;
+class WelcomeWizardImpl extends JDialog implements WelcomeWizard {
 	
+	private Environment _environment;
 	private TextWidget<JTextField>  _yourOwnName;
 	private TextWidget<JTextField> _sneerPort;
 	
 	private final JTextField _dynDnsHost = new JTextField();
 	private final JTextField _dynDnsUser = new JTextField();
 	private final JTextField _dnyDnsPassword = new JTextField();
-
-	static void showIfNecessary() {
-		new WelcomeWizard();
-	}
 	
-	WelcomeWizard() {
+	private final OwnNameKeeper _nameKeeper = my(OwnNameKeeper.class);
+	
+	WelcomeWizardImpl() {
+		if(hasRequiredUserData()){
+			this.dispose();
+			return;
+		}
+		
 		_environment = my(Environment.class);
 		setModal(true);
 		initGui();
 		restoreFieldData();
 		setVisible(true);
+	}
+
+	private boolean hasRequiredUserData() {
+		String nick =  _nameKeeper.name().currentValue();
+		return  !(nick==null || nick.trim().length()==0) ;
 	}
 
 	private void initDynDnsAccount(String dynDnsHost, String dynDnsUserName, String dynDnsPassword) {
@@ -67,8 +73,7 @@ class WelcomeWizard extends JDialog {
 
 		java.awt.Container pnl = getContentPane();
 		
-		OwnNameKeeper nameKeeper = my(OwnNameKeeper.class);
-		_yourOwnName = newTextField(nameKeeper.name(), nameKeeper.nameSetter());
+		_yourOwnName = newTextField(_nameKeeper.name(), _nameKeeper.nameSetter());
 		
 		PortKeeper portKeeper = my(PortKeeper.class);
 		_sneerPort = newTextField(portKeeper.port(), new IntegerParser(portKeeper.portSetter()));
@@ -96,7 +101,7 @@ class WelcomeWizard extends JDialog {
 	private TextWidget<JTextField> newTextField(final Signal<?> signal, final PickyConsumer<String> setter) {
 		final ByRef<TextWidget<JTextField>> result = ByRef.newInstance();
 		GuiThread.strictInvokeAndWait(new Runnable() { @Override public void run() {
-			result.value = my(ReactiveWidgetFactory.class).newTextField(signal, setter);
+			result.value = my(ReactiveWidgetFactory.class).newTextField(signal, setter, NotificationPolicy.OnEnterPressedOrLostFocus);
 		}});
 		return result.value;
 	}
@@ -107,7 +112,7 @@ class WelcomeWizard extends JDialog {
 				storeFieldData();
 				setVisible(false);
 			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(WelcomeWizard.this, ex.getMessage());
+				JOptionPane.showMessageDialog(WelcomeWizardImpl.this, ex.getMessage());
 				ex.printStackTrace();
 			}
 		}});

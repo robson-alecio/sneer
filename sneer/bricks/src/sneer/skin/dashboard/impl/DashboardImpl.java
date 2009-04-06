@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
+import snapps.welcomewizard.WelcomeWizard;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.own.name.OwnNameKeeper;
@@ -83,7 +84,7 @@ class DashboardImpl implements Dashboard {
 	}
 		
 	private void init() {
-		WelcomeWizard.showIfNecessary();
+		my(WelcomeWizard.class);
 
 		TimeboxedEventQueue.startQueueing(TIMEOUT_FOR_GUI_EVENTS);
 		initGui();

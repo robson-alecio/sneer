@@ -27,7 +27,7 @@
                  (Security Enhanced: T4T Billing)
 
                         FREEDOM 4: PRIVACY
-                         (Security Hooks)
+     (Security Hooks. The Java Security Model might be enough)
            
                                                                   BRICKS
 ------------------------------------------------------------------------

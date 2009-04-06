@@ -15,7 +15,6 @@ TASKS
 		- Eliminate upward dependencies.
 
 	- [Klaus] Transparent persistence for bricks
-		- [Sandro] WelcomeWizard should appear only if necessary. Add menu item to open it.
 
 	- [Klaus] GuiThread - Improve how environment handling is done. 
 		- Unignore GuiBrickTest.

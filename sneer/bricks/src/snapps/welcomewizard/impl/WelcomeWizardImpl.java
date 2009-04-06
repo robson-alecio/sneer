@@ -22,10 +22,12 @@ import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.port.PortKeeper;
 import sneer.pulp.reactive.Signal;
+import sneer.skin.main_Menu.MainMenu;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.ui.GuiThread;
+import wheel.io.ui.action.Action;
 import wheel.lang.PickyConsumer;
 import wheel.reactive.impl.IntegerParser;
 
@@ -40,10 +42,12 @@ class WelcomeWizardImpl extends JDialog implements WelcomeWizard {
 	private final JTextField _dnyDnsPassword = new JTextField();
 	
 	private final OwnNameKeeper _nameKeeper = my(OwnNameKeeper.class);
+	private final MainMenu _mainMenu = my(MainMenu.class);	
 	
 	WelcomeWizardImpl() {
+		addWelcomeWindowAction();
+
 		if(hasRequiredUserData()){
-			this.dispose();
 			return;
 		}
 		
@@ -136,5 +140,19 @@ class WelcomeWizardImpl extends JDialog implements WelcomeWizard {
 
 	private String trim(JTextField field) {
 		return field.getText().trim();
+	}
+	
+	private void addWelcomeWindowAction() {
+		Action cmd = new Action(){
+			@Override
+			public String caption() {
+				return "Change User";
+			}
+			@Override
+			public void run() {
+				my(WelcomeWizard.class).setVisible(true);
+			}
+		};
+		_mainMenu.getSneerMenu().addAction(cmd);
 	}
 }

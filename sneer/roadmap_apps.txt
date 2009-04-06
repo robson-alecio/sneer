@@ -2,9 +2,7 @@
 =========
 
 	- [Sandro] WelcomeWizard
-		- Open it only if necessary.
-		- Make it a separate brick.
-		- Menu item to open it.
+		- Swing Timebox (menu/change user)
 	
 
 TASKS

@@ -2,10 +2,11 @@ package sneer.skin.main_Menu;
 
 import javax.swing.JComponent;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 import sneer.skin.menu.Menu;
 
-public interface MainMenu extends OldBrick {
+@Brick
+public interface MainMenu{
 
 	Menu<JComponent> getSneerMenu();
 

@@ -20,13 +20,13 @@ Eclipse 3.4 or newer - You can use other IDEs but it is strongly recommended tha
 
 build.xml - If you don't use Eclipse, this ANT build file will compile Sneer and run all tests.
 
-Main Class: main.MainDemo - Run it and follow usage instructions.
+Main Class: main.Sneer - Run it and follow usage instructions. You can also run main.SneerDummy for testing with two Sneer instances running.
 
-home_override - You can set this Java system property to make Sneer run in a different directory, so you can have several different Sneer installations running at the same time. Example: java -Dhome_override=some/other/directory main.MainDemo YourName
+home_override - You can set this Java system property to make Sneer run in a different directory, so you can have several different Sneer installations running at the same time. Example: java -Dhome_override=some/other/directory main.Sneer
 
-JUnit Tests - They are found inside the *.tests packages. For example, the sneer.kernel.tests package contains the JUnit tests referring to the Sneer kernel.
+JUnit Tests - They are found inside the *.tests packages. For example, the sneer.foo.tests package would contain the JUnit tests referring to the sneer.foo package.
 
-Functional Tests - They are JUnit tests too, but are so high-level they use adapters to run against the actual implementation. Using adapters keeps the tests clear without implementation details. These tests and their adapters are found in the ./tests/src source folder. 
+Functional Tests - They are the Freedom* classes. They are JUnit tests too, but are so high-level they use adapters to run against the actual implementation. Delegating to adapters keeps the tests clear without implementation details. The actual concrete adapters are the SneerFreedom* classes.
 
 
 "WHAT CAN I DO TO HELP?"

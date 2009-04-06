@@ -9,7 +9,6 @@ import sneer.commons.environments.Bindings;
 import sneer.commons.environments.CachingEnvironment;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
-import sneer.commons.lang.Functor;
 import sneer.commons.lang.Producer;
 
 public class Brickness {
@@ -17,13 +16,13 @@ public class Brickness {
 	private final Environment _environment;
 	private final Bindings _bindings;
 	private final ClassLoader _apiClassLoader = createApiClassLoader();
-	private final Functor<Object, Object> _brickDecorator;
+	private final BrickDecorator _brickDecorator;
 
 	public Brickness(Object... bindings) {
-		this(Functor.IDENTITY, bindings);
+		this(nullDecorator(), bindings);
 	}
 
-	public Brickness(Functor<Object, Object> brickDecorator, Object... bindings) {
+	public Brickness(BrickDecorator brickDecorator, Object... bindings) {
 		_brickDecorator = brickDecorator;
 		
 		_bindings = new Bindings();
@@ -47,13 +46,16 @@ public class Brickness {
 
 	private void tryToPlaceBrick(File classRootDirectory, String brickName) throws ClassNotFoundException {
 		ClassLoader classLoader = newImplPackageLoader(classRootDirectory, brickName);
+		Class<?> brick = _apiClassLoader.loadClass(brickName);
 		Class<?> brickImpl = classLoader.loadClass(implNameFor(brickName));
-		_bindings.bind(decorate(instantiateInEnvironment(brickImpl)));
+		_bindings.bind(decorate(brick, instantiateInEnvironment(brickImpl)));
 	}
 
 
-	private Object decorate(Object brick) {
-		return _brickDecorator.evaluate(brick);
+	private Object decorate(Class<?> brick, Object brickImpl) {
+		Object result = _brickDecorator.decorate(brick, brickImpl);
+		if (!brick.isInstance(result)) throw new IllegalStateException();
+		return result;
 	}
 
 
@@ -88,4 +90,10 @@ public class Brickness {
 		return BrickConventions.implClassNameFor(brickInterfaceName);
 	}
 
+	private static BrickDecorator nullDecorator() {
+		return new BrickDecorator() { @Override public Object decorate(Class<?> brick, Object brickImpl) {
+			return brickImpl;
+		}};
+	}
 }
+

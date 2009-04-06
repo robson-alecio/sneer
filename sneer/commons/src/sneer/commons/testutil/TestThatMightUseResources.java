@@ -42,8 +42,10 @@ public abstract class TestThatMightUseResources extends AssertUtils {
 				FileUtils.deleteDirectory(tmp);
 				return;
 			} catch (IOException e) {
-				if (System.currentTimeMillis() - t0 > 1000)
-					throw new RuntimeException("Unable to delete files created by this test.", e);
+				if (System.currentTimeMillis() - t0 > 1000) {
+					e.printStackTrace();
+					return;
+				}
 				System.gc();
 			}
 		}

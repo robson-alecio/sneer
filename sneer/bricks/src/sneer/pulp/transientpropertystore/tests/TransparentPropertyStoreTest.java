@@ -9,11 +9,12 @@ import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
 import org.prevayler.foundation.serialization.XStreamSerializer;
 
+import sneer.brickness.impl.BrickDecorator;
 import sneer.brickness.impl.Brickness;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.commons.environments.Environments;
-import sneer.commons.lang.Functor;
 import sneer.pulp.transientpropertystore.TransientPropertyStore;
+import sneer.pulp.transientpropertystore2.TransientPropertyStore2;
 import wheel.io.Jars;
 
 public class TransparentPropertyStoreTest extends BrickTest {
@@ -29,29 +30,50 @@ public class TransparentPropertyStoreTest extends BrickTest {
 			subject1.set("Weight", "85kg");
 			assertEquals("1,80m", subject1.get("Height"));
 			assertEquals("85kg", subject1.get("Weight"));
+			
+			TransientPropertyStore2 subject2 = my(TransientPropertyStore2.class);
+			
+			subject2.setSuffix("2");
+			subject2.set("Msg", "Hi!");
+			assertEquals("Hi!2", subject1.get("Msg"));
+			
+			subject2.setSuffix("World!");
+			subject2.set("Msg", "Hi!");
+			assertEquals("Hi!World!", subject1.get("Msg"));
+			
 		}});
 		
-		runWithTransparentPersistence(new Runnable() { @Override public void run() {
-			TransientPropertyStore subject2 = my(TransientPropertyStore.class);
-			assertEquals("1,80m", subject2.get("Height"));
-			assertEquals("85kg", subject2.get("Weight"));
-		}});
+//		runWithTransparentPersistence(new Runnable() { @Override public void run() {
+//			TransientPropertyStore subject1 = my(TransientPropertyStore.class);
+//			assertEquals("1,80m", subject1.get("Height"));
+//			assertEquals("85kg", subject1.get("Weight"));
+//			assertEquals("Hi!World!", subject1.get("Msg"));
+//			
+//			TransientPropertyStore2 subject2 = my(TransientPropertyStore2.class);
+//			assertEquals("World!", subject2.suffix());
+//			
+//		}});
 	}
 
 	private void runWithTransparentPersistence(Runnable runnable)	throws IOException {
 		Brickness container = new Brickness(newPersister());
+		placeBrick(container, TransientPropertyStore.class);
+		placeBrick(container, TransientPropertyStore2.class);
 		
-		container.placeBrick(Jars.classpathRootFor(TransientPropertyStore.class), TransientPropertyStore.class.getName());
-		Environments.runWith(container.environment(),runnable);
+		Environments.runWith(container.environment(), runnable);
 
 		_prevayler.close();
 	}
 
-	private Functor<Object, Object> newPersister() {
-		return new Functor<Object, Object>() {
-		@Override public Object evaluate(Object brick) {
-			_prevayler = prevayler(brick);
-			return Bubble.wrapStateMachine(_prevayler);
+	private void placeBrick(Brickness container, Class<?> brick) {
+		container.placeBrick(Jars.classpathRootFor(brick), brick.getName());
+	}
+
+	private BrickDecorator newPersister() {
+		_prevayler = prevayler(new MethodInvoker());
+		
+		return new BrickDecorator() {@Override public Object decorate(Class<?> brick, Object brickImpl) {
+			return Bubble.wrapStateMachine(brick, brickImpl, _prevayler);
 		}};
 	}
 

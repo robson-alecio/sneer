@@ -49,7 +49,7 @@ class ClasspathFactoryImpl implements ClasspathFactory {
 		return Jars.jarGiven(org.apache.commons.lang.ObjectUtils.class);
 	}
 	private File commonsCollections() {
-		return Jars.jarGiven(org.apache.commons.collections.CollectionUtils.class);
+		return Jars.jarGiven(org.apache.commons.collections15.CollectionUtils.class);
 	}
 	private File commonsIo() {
 		return Jars.jarGiven(org.apache.commons.io.FileUtils.class);

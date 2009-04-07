@@ -38,9 +38,8 @@ public class Bubble {
 			if (method.getName().equals("brickImpl"))
 				return _brickImpl;
 			
-			if (_insidePrevayler) {
+			if (_insidePrevayler)
 				return Invocation.invoke(_brickImpl,  method, args);
-			}
 			
 			_insidePrevayler = true;
 			try {

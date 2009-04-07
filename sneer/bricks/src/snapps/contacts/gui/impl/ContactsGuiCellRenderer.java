@@ -2,7 +2,6 @@ package snapps.contacts.gui.impl;
 
 import static sneer.commons.environments.Environments.my;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
 
@@ -16,6 +15,7 @@ import snapps.contacts.gui.impl.ContactsGuiImpl.ContactLabelProvider;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.reactive.Signal;
+import sneer.skin.colors.Colors;
 
 class ContactsGuiCellRenderer implements ListCellRenderer {
 
@@ -43,8 +43,8 @@ class ContactsGuiCellRenderer implements ListCellRenderer {
 		
 		Signal<Boolean> isOnline = _connections.connectionFor(contact).isOnline();
 		if(!isOnline.currentValue()){
-			if(isSelected) label.setForeground(Color.GRAY);
-			else label.setForeground(Color.LIGHT_GRAY);
+			if(isSelected) label.setForeground(my(Colors.class).hightContrast());
+			else label.setForeground(my(Colors.class).lowContrast());
 		}
 
 		return label;

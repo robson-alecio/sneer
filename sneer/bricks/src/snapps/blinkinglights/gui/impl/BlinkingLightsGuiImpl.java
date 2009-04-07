@@ -3,7 +3,6 @@ package snapps.blinkinglights.gui.impl;
 import static sneer.commons.environments.Environments.my;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Image;
 import java.awt.Point;
@@ -35,6 +34,7 @@ import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
+import sneer.skin.colors.Colors;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.LabelProvider;
@@ -225,10 +225,12 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		    doc.addStyle(HELP, help);
 		    
 		    Style stack = doc.addStyle( STACK_TRACE, def );
-		    StyleConstants.setForeground(stack, Color.DARK_GRAY);
+		    StyleConstants.setForeground(stack, my(Colors.class).hightContrast());
 		    StyleConstants.setFontSize( stack, 11 );
 		    doc.addStyle(STACK_TRACE, stack);
 		}
+
+
 	}
 	
 	private final class BlinkingLightsLabelProvider implements LabelProvider<Light> {

@@ -26,6 +26,7 @@ import javax.swing.text.JTextComponent;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
 import sneer.pulp.reactive.Signal;
+import sneer.skin.colors.Colors;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.ui.GuiThread;
@@ -38,6 +39,7 @@ import wheel.reactive.impl.EventReceiver;
 abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel implements TextWidget<WIDGET> {
 	
 	private static final long serialVersionUID = 1L;
+	static final Color INVALID = my(Colors.class).invalid();
 	
 	protected final Signal<?> _source;
 	protected final PickyConsumer<String> _setter;
@@ -254,24 +256,24 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 			new UserImpl().acknowledge(ip);
 		}
 	}
-}
-
-class ChangeInfoDecorator{
 	
-	private final Border _defaultBorder;
-	private final JComponent _target;
-	
-	ChangeInfoDecorator(Border defaultBorder, JComponent target){
-		_defaultBorder = defaultBorder;
-		_target = target;
-	}
-	
-	void decorate(final boolean _notified) {
-		GuiThread.assertInGuiThread();
-		if(_notified) {
-			_target.setBorder(_defaultBorder);
-			return;
+	protected class ChangeInfoDecorator{
+		
+		private final Border _defaultBorder;
+		private final JComponent _target;
+		
+		ChangeInfoDecorator(Border defaultBorder, JComponent target){
+			_defaultBorder = defaultBorder;
+			_target = target;
 		}
-		_target.setBorder(new CompoundBorder(new LineBorder(Color.red), new EmptyBorder(2, 2, 2, 2)));
-	}	
+		
+		void decorate(final boolean notified) {
+			GuiThread.assertInGuiThread();
+			if(notified) {
+				_target.setBorder(_defaultBorder);
+				return;
+			}
+			_target.setBorder(new CompoundBorder(new LineBorder(INVALID), new EmptyBorder(2, 2, 2, 2)));
+		}	
+	}
 }

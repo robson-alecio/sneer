@@ -3,7 +3,6 @@ package snapps.meter.memory.gui.impl;
 import static sneer.commons.environments.Environments.my;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -25,6 +24,7 @@ import snapps.meter.memory.gui.MemoryMeterGui;
 import sneer.commons.lang.Functor;
 import sneer.pulp.memory.MemoryMeter;
 import sneer.pulp.reactive.Signals;
+import sneer.skin.colors.Colors;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
@@ -72,7 +72,7 @@ class MemoryMeterGuiImpl implements MemoryMeterGui {
 		gc.setMargin(new Insets(0,0,0,0));
 		gc.setBorder(new EmptyBorder(0,0,0,0));
 		gc.setOpaque(true);
-		gc.setBackground(Color.WHITE);
+		gc.setBackground(my(Colors.class).solid());
 		gc.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 			System.gc();
 		}});
@@ -102,7 +102,7 @@ class MemoryMeterGuiImpl implements MemoryMeterGui {
 		changeLabelFont(_maxUsedMemory.getMainWidget());
 		changeLabelFont(_currentMemory.getMainWidget());
 		
-		container.setBackground(Color.WHITE);
+		container.setBackground(my(Colors.class).solid());
 		container.setLayout(new BorderLayout());
 		container.add(root, BorderLayout.CENTER);
 	}

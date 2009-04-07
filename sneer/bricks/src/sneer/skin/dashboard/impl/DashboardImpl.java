@@ -3,7 +3,6 @@ package sneer.skin.dashboard.impl;
 import static sneer.commons.environments.Environments.my;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
@@ -23,6 +22,7 @@ import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.threadpool.ThreadPool;
+import sneer.skin.colors.Colors;
 import sneer.skin.dashboard.Dashboard;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.image.DefaultIcons;
@@ -279,7 +279,7 @@ class ContentPane extends JPanel{
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.setColor(new Color(190, 190, 190));
+		g.setColor(my(Colors.class).moderateContrast());
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 	}
 }

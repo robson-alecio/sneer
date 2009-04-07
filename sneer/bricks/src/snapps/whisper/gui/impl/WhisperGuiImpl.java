@@ -2,7 +2,6 @@ package snapps.whisper.gui.impl;
 
 import static sneer.commons.environments.Environments.my;
 
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -25,6 +24,7 @@ import sneer.commons.environments.Environments;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.gates.logic.LogicGates;
+import sneer.skin.colors.Colors;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.rooms.ActiveRoomKeeper;
 import sneer.skin.snappmanager.InstrumentManager;
@@ -73,7 +73,7 @@ class WhisperGuiImpl implements WhisperGui { //Optimize need a better snapp wind
 	@Override
 	public void init(InstrumentWindow window) {
 		Container container = window.contentPane();
-		container.setBackground(Color.WHITE);
+		container.setBackground(my(Colors.class).solid());
 		container.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 5));
 		
 		ActiveRoomKeeper room = Environments.my(ActiveRoomKeeper.class);
@@ -193,7 +193,7 @@ class WhisperGuiImpl implements WhisperGui { //Optimize need a better snapp wind
 		btn.setPreferredSize(new Dimension(40,40));
 		btn.setBorder(new EmptyBorder(2,2,2,2));
 		btn.setOpaque(true);
-		btn.setBackground(Color.WHITE);
+		btn.setBackground(my(Colors.class).solid());
 		btn.setToolTipText(tip);
 		container.add(btn);
 		return btn;

@@ -2,7 +2,6 @@ package snapps.contacts.gui.impl;
 
 import static sneer.commons.environments.Environments.my;
 
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -22,6 +21,7 @@ import javax.swing.border.TitledBorder;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.internetaddresskeeper.InternetAddress;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
+import sneer.skin.colors.Colors;
 
 class InternetAddressFrame extends JFrame{
 
@@ -44,7 +44,7 @@ class InternetAddressFrame extends JFrame{
 		setTitle(contact.nickname() + "'s  Internet Addresses:");
 		
 		getContentPane().setLayout(new GridBagLayout());
-		getContentPane().setBackground(Color.WHITE);
+		getContentPane().setBackground(my(Colors.class).solid());
 		JScrollPane scroll = new JScrollPane();
 
 		scroll.getViewport().add(_lstAddresses);

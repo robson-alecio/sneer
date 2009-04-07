@@ -1,6 +1,7 @@
 package sneer.skin.widgets.reactive.impl;
 
-import java.awt.Color;
+import static sneer.commons.environments.Environments.my;
+
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -13,6 +14,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyledDocument;
 
 import sneer.pulp.reactive.Signal;
+import sneer.skin.colors.Colors;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import wheel.lang.PickyConsumer;
 
@@ -23,7 +25,7 @@ class RTextPaneImpl extends RAbstractField<JTextPane> {
 
 	RTextPaneImpl(Signal<?> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy) {
 		super(new JTextPane(), source, setter, notificationPolicy);
-		LineBorder border = new LineBorder(Color.LIGHT_GRAY);
+		LineBorder border = new LineBorder(my(Colors.class).lowContrast());
 		_textComponent.setBorder(border);
 		_decorator = new ChangeInfoDecorator(border, _textComponent){ @Override void decorate(boolean notified) {
 			//ignore, do nothing.

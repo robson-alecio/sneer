@@ -1,10 +1,14 @@
 package sneer.skin.dashboard.impl;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -14,13 +18,12 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import sneer.skin.colors.Colors;
 import sneer.skin.dashboard.InstrumentWindow;
 
 class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
@@ -34,7 +37,7 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 	private final JLayeredPane _toolbarRoot = new JLayeredPane(){
 		@Override public Dimension getPreferredSize() { return getToolbarDimension();}
 	};
-	private final JPanel _toolbarTitleLayer = new JPanel();
+	private final JPanel _toolbarTitleLayer =  new GradientPanel();
 	private final GlassPane _toolbarGlassPane = new GlassPane(_contentPane, _toolbarTitleLayer){
 		@Override public Dimension getPreferredSize() { return getToolbarDimension();}
 	};
@@ -42,10 +45,32 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 		@Override public Dimension getPreferredSize() { return getToolbarDimension();}
 	};
 	
-	private final JPanel _actions = new JPanel();
+	private final JPanel _actions = new GradientPanel();
+	
+	private class GradientPanel extends JPanel{
+		@Override protected void paintComponent( Graphics g ) {
+
+			int w = getWidth( );
+			int h = getHeight( );
+			
+			Graphics2D g2d = (Graphics2D)g;
+			GradientPaint gp = new GradientPaint(0, 0, my(Colors.class).moderateContrast(),  0, h/2, my(Colors.class).solid());
+
+			g2d.setPaint( gp );
+			g2d.fillRect( 0, 0, w, h/2 );		
+			g2d.setBackground(my(Colors.class).solid());
+			g2d.fillRect( 0, h/2, w, h );
+			
+		    setOpaque( false );
+		    super.paintComponent( g );
+		    setOpaque( true );
+		}	
+	}
+	
 	private final JLabel _title = new JLabel();
 	
 	public InstrumentWindowImpl(String title) {
+		_title.setOpaque(false);
 		if(title!=null) _title.setText(title);
 		
 		_title.setFont(_title.getFont().deriveFont(10f));
@@ -62,7 +87,7 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 				GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0,0));
 		
 		tmp = new JPanel();
-		tmp.setBackground(Color.WHITE);
+		tmp.setBackground(my(Colors.class).solid());
 		_toolbarFakeMarginLayer.add(tmp, new GridBagConstraints(0,1, 1,1, 1.0,1.0, 
 				GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0,0));
 		
@@ -71,13 +96,14 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 		_toolbarRoot.add(_toolbarGlassPane, new Integer(2));
 		
 		_toolbarTitleLayer.setVisible(false);
+		
 		_toolbarFakeMarginLayer.setOpaque(false);
 		_toolbarRoot.setOpaque(false);
-		_actions.setOpaque(false);
+//		_actions.setOpaque(false);
 		setOpaque(false);
 		
-		_toolbarTitleLayer.setBackground(Color.WHITE);
-		_contentPane.setBackground(Color.WHITE);
+		_toolbarTitleLayer.setBackground(my(Colors.class).solid());
+		_contentPane.setBackground(my(Colors.class).solid());
 		
 		_toolbarTitleLayer.setLayout(new BorderLayout());
 		_toolbarTitleLayer.add(_title, BorderLayout.WEST);
@@ -163,21 +189,5 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 	@Override
 	public Container actions() {
 		return _actions;
-	}
-	
-	public static void main(String[] args) {
-		final JFrame frm = new JFrame();
-		frm.setBounds(10, 10, 500, 300);
-		frm.getContentPane().setLayout(new BorderLayout());
-		frm.getContentPane().setBackground(Color.GRAY);
-		
-		InstrumentWindowImpl instrument = new InstrumentWindowImpl("Teste");
-		frm.getContentPane().add(instrument, BorderLayout.CENTER);
-		instrument.actions().add(new JButton("1"));		
-		instrument.actions().add(new JButton("2"));
-		instrument.contentPane().add(new JButton("3"));
-		
-		frm.setVisible(true);
-		frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 }

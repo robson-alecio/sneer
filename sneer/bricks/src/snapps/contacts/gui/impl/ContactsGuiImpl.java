@@ -3,7 +3,6 @@ package snapps.contacts.gui.impl;
 import static sneer.commons.environments.Environments.my;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -40,6 +39,7 @@ import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
+import sneer.skin.colors.Colors;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.dashboard.util.GuiUtil;
 import sneer.skin.snappmanager.InstrumentManager;
@@ -178,7 +178,7 @@ class ContactsGuiImpl implements ContactsGui {
 			add.setPreferredSize(new Dimension(16, 16));
 			add.setBorder(new EmptyBorder(0,0,0,0));
 			add.setOpaque(true);
-			add.setBackground(Color.WHITE);
+			add.setBackground(my(Colors.class).solid());
 			toolbar.add(add);
 			
 			add.addActionListener(new ActionListener(){@Override public void actionPerformed(ActionEvent e) {

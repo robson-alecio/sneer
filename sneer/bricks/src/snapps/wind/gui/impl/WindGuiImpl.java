@@ -3,7 +3,6 @@ package snapps.wind.gui.impl;
 import static sneer.commons.environments.Environments.my;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -31,6 +30,7 @@ import snapps.wind.Wind;
 import snapps.wind.gui.WindGui;
 import sneer.commons.lang.ByRef;
 import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.skin.colors.Colors;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.sound.player.SoundPlayer;
@@ -89,7 +89,7 @@ class WindGuiImpl implements WindGui {
 		initScrollPane();
 		initListReceiversInOrder();
 		
-		_container.setBackground(Color.WHITE);
+		_container.setBackground(my(Colors.class).solid());
 		_scrollPane.getViewport().add(_shoutsList);
 		
 		JScrollPane scrollShout = new JScrollPane();

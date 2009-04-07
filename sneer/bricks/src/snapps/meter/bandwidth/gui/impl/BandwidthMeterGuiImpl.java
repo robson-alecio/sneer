@@ -3,7 +3,6 @@ package snapps.meter.bandwidth.gui.impl;
 import static sneer.commons.environments.Environments.my;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -19,6 +18,7 @@ import sneer.commons.lang.Functor;
 import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
+import sneer.skin.colors.Colors;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
@@ -85,7 +85,7 @@ class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 		lbUpload.setIcon(_upload);
 		lbDownload.setIcon(_download);
 		
-		container.setBackground(Color.WHITE);
+		container.setBackground(my(Colors.class).solid());
 		container.setLayout(new BorderLayout());
 		container.add(root, BorderLayout.CENTER);
 	}

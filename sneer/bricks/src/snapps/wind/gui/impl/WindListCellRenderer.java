@@ -1,7 +1,8 @@
 package snapps.wind.gui.impl;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -24,6 +25,7 @@ import javax.swing.text.StyledDocument;
 
 import snapps.wind.Shout;
 import sneer.pulp.reactive.Signal;
+import sneer.skin.colors.Colors;
 import sneer.skin.widgets.reactive.LabelProvider;
 
 class WindListCellRenderer implements ListCellRenderer {
@@ -72,7 +74,7 @@ class WindListCellRenderer implements ListCellRenderer {
 		String nick = ShoutUtils.publisherNick(shout);
 		JLabel labelNick = new JLabel(nick,  SwingConstants.LEFT);
 		labelNick.setFont(new Font(labelNick.getFont().getFontName() , Font.BOLD, 11));
-		labelNick.setForeground(Color.DARK_GRAY);
+		labelNick.setForeground(my(Colors.class).hightContrast());
 		labelNick.setOpaque(false);
 		return labelNick;
 	}
@@ -81,8 +83,8 @@ class WindListCellRenderer implements ListCellRenderer {
 		JLabel label = new JLabel(ShoutUtils.getFormatedShoutTime(shout) + " ",  SwingConstants.RIGHT);
 		label.setFont(new Font(label.getFont().getFontName() , 0, 11));
 		label.setOpaque(false);
-		if(isSelected) label.setForeground(Color.WHITE);
-		else label.setForeground(Color.LIGHT_GRAY);
+		if(isSelected) label.setForeground(my(Colors.class).solid());
+		else label.setForeground(my(Colors.class).lowContrast());
 		return label;
 	}
 
@@ -113,7 +115,7 @@ class WindListCellRenderer implements ListCellRenderer {
 		Style def = StyleContext.getDefaultStyleContext().getStyle( StyleContext.DEFAULT_STYLE );
 
 	    Style sender = doc.addStyle( SHOUTERS_NICK, def );
-	    StyleConstants.setForeground(sender, Color.DARK_GRAY);
+	    StyleConstants.setForeground(sender, my(Colors.class).hightContrast());
 	    StyleConstants.setFontSize( sender, 11 );
 	    StyleConstants.setBold(sender, true);
 	    
@@ -125,8 +127,8 @@ class WindListCellRenderer implements ListCellRenderer {
 		root.setLayout(new BorderLayout());
 		root.setOpaque(true);
 
-		if(isSelected) root.setBackground(Color.LIGHT_GRAY);
-		else root.setBackground(Color.WHITE);
+		if(isSelected) root.setBackground(my(Colors.class).lowContrast());
+		else root.setBackground(my(Colors.class).solid());
 		
 		JPanel top = new JPanel();
 		top.setLayout(new BorderLayout());

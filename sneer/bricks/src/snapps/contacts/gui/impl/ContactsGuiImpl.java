@@ -17,6 +17,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -39,7 +40,6 @@ import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
-import sneer.skin.colors.Colors;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.dashboard.util.GuiUtil;
 import sneer.skin.snappmanager.InstrumentManager;
@@ -174,16 +174,16 @@ class ContactsGuiImpl implements ContactsGui {
 	
 	private final class ToolbarSupport {
 		public ToolbarSupport(Container toolbar) {
-			JButton add = new JButton(new ImageIcon(ADD));
+			JLabel add = new JLabel(new ImageIcon(ADD));
 			add.setPreferredSize(new Dimension(16, 16));
 			add.setBorder(new EmptyBorder(0,0,0,0));
-			add.setOpaque(true);
-			add.setBackground(my(Colors.class).solid());
+			add.setOpaque(false);
+//			add.setBackground(my(Colors.class).solid());
 			toolbar.add(add);
 			
-			add.addActionListener(new ActionListener(){@Override public void actionPerformed(ActionEvent e) {
-				showNewContactFrame();
-			}});
+//			add.addActionListener(new ActionListener(){@Override public void actionPerformed(ActionEvent e) {
+//				showNewContactFrame();
+//			}});
 		}
 	}
 	

@@ -1,6 +1,6 @@
 ﻿SMALL FIXES
 =============
-	- *ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
+	- * ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
 
 	- ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do. See ListRegisterImpl.MyOutput._notifier
 		- SetSignal - Revise it also. 
@@ -24,9 +24,9 @@ TASKS
 			- Unify the Bindings vs Contributions metaphors.
 			- [Bamboo]Delete Brick interface in favor of NewBrick annotation.
 			- SneerCommunity.newContainer - All that mess with StoragePath and SneerConfig is ugly.
-			- *Make a test run a brick in a directory that is not in the system ClassLoader classpath (Eclipse classpath). It will probably fail. Implement the logic using NewContainerImpl.createApiClassLoader() to return a URLClassloader that can be extended with new classpaths for new brick interfaces;
+			- * Make a test run a brick in a directory that is not in the system ClassLoader classpath (Eclipse classpath). It will probably fail. Implement the logic using NewContainerImpl.createApiClassLoader() to return a URLClassloader that can be extended with new classpaths for new brick interfaces;
 
-	- *Gui Thread - Always call gui brick code in the gui thread. What was already done with the GuiBrickInvocationHandler does not cover callbacks. Complicated and slow weak-proxy-bubble structures would have to be created to support that. Instead, the proposed idea is:
+	- * Gui Thread - Always call gui brick code in the gui thread. What was already done with the GuiBrickInvocationHandler does not cover callbacks. Complicated and slow weak-proxy-bubble structures would have to be created to support that. Instead, the proposed idea is:
 		- [Klaus] Make the container call the gui brick constructor in the gui thread.
 		- [Bamboo] Enhance at load-time the beginning of all public methods in all classes (including nested) in all gui brick impl packages, like this:
 			if (!EventQueue.isDispatchThread()) {

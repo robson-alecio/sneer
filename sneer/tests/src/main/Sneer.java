@@ -9,6 +9,7 @@ public class Sneer {
 
 	public static void main(String[] ignored) throws Exception {
 		Brickness container = new Brickness();
+		
 		placeBricks(container, businessBricks());
 		placeBricks(container, guiBricks());
 	}
@@ -20,7 +21,6 @@ public class Sneer {
 
 	static public Class<?>[] businessBricks() {
 		return new Class<?>[]{
-				sneer.skin.colors.Colors.class,
 				sneer.pulp.events.EventNotifiers.class,
 				sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper.class,
 				sneer.skin.image.ImageFactory.class,
@@ -89,6 +89,8 @@ public class Sneer {
 
 	private static Class<?>[] guiBricks() {
 		return new Class<?>[] {
+				sneer.hardware.logging.gui.LogConsole.class,
+				sneer.skin.colors.Colors.class,
 				snapps.contacts.gui.ContactsGui.class,
 				snapps.wind.gui.WindGui.class,
 				snapps.watchme.gui.WatchMeGui.class,
@@ -100,7 +102,7 @@ public class Sneer {
 				snapps.welcomewizard.WelcomeWizard.class,
 				sneer.skin.dashboard.Dashboard.class,
 
-				snapps.contacts.hardcoded.HardcodedContacts.class,
+				snapps.contacts.hardcoded.HardcodedContacts.class
 		};
 	}
 

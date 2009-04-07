@@ -39,7 +39,7 @@ public class Bubble {
 				return _brickImpl;
 			
 			if (_insidePrevayler) {
-				return ((MethodInvoker)_prevayler.prevalentSystem()).invoke(_brickImpl,  method, args);
+				return Invocation.invoke(_brickImpl,  method, args);
 			}
 			
 			_insidePrevayler = true;

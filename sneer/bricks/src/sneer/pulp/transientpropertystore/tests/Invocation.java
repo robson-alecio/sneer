@@ -1,5 +1,6 @@
 package sneer.pulp.transientpropertystore.tests;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Date;
 import static sneer.commons.environments.Environments.my;
@@ -9,7 +10,6 @@ import wheel.lang.FrozenTime;
 
 class Invocation implements TransactionWithQuery {
 
-//	private static final String[] EMPTY_STRING_ARRAY = new String[0];
 	private final Method _method;
 	private final Object[] _args;
 	private final Class<?> _brick;
@@ -21,10 +21,10 @@ class Invocation implements TransactionWithQuery {
 	}
 
 
-	public Object executeAndQuery(Object stateMachine, Date date) throws Exception {
+	public Object executeAndQuery(Object stateMachineIgnored, Date date) throws Exception {
 		FrozenTime.freezeForCurrentThread(date.getTime());
 		try {
-			return ((MethodInvoker)stateMachine).invoke(brickImpl(),  _method, _args);
+			return invoke(brickImpl(), _method, _args);
 		} catch (Throwable e) {
 			if (e instanceof Error) throw (Error)e;
 			if (e instanceof Exception) throw (Exception)e;
@@ -37,4 +37,16 @@ class Invocation implements TransactionWithQuery {
 		return ((BrickProxy)my(_brick)).brickImpl();
 	}
 	
+	static Object invoke(Object target, Method method, Object[] args) throws Throwable {
+		try {
+			return  method.invoke(target, args);
+		} catch (InvocationTargetException e) {
+			throw e.getCause();
+		} catch (IllegalArgumentException e) {
+			throw new IllegalStateException(e);
+		} catch (IllegalAccessException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
 }

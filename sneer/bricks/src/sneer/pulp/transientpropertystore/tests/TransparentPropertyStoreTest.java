@@ -11,13 +11,13 @@ import org.prevayler.foundation.serialization.XStreamSerializer;
 
 import sneer.brickness.impl.BrickDecorator;
 import sneer.brickness.impl.Brickness;
-import sneer.brickness.testsupport.BrickTest;
 import sneer.commons.environments.Environments;
+import sneer.commons.testutil.TestThatMightUseResources;
 import sneer.pulp.transientpropertystore.TransientPropertyStore;
 import sneer.pulp.transientpropertystore2.TransientPropertyStore2;
 import wheel.io.Jars;
 
-public class TransparentPropertyStoreTest extends BrickTest {
+public class TransparentPropertyStoreTest extends TestThatMightUseResources {
 
 	 private Prevayler _prevayler = null;
 	
@@ -70,15 +70,15 @@ public class TransparentPropertyStoreTest extends BrickTest {
 	}
 
 	private BrickDecorator newPersister() {
-		_prevayler = prevayler(new MethodInvoker());
+		_prevayler = prevayler();
 		
 		return new BrickDecorator() {@Override public Object decorate(Class<?> brick, Object brickImpl) {
 			return Bubble.wrapStateMachine(brick, brickImpl, _prevayler);
 		}};
 	}
 
-	private Prevayler prevayler(Object system) {
-		PrevaylerFactory factory = prevaylerFactory(system);
+	private Prevayler prevayler() {
+		PrevaylerFactory factory = prevaylerFactory();
 
 		try {
 			return factory.create();
@@ -90,9 +90,9 @@ public class TransparentPropertyStoreTest extends BrickTest {
 	}
 
 
-	private PrevaylerFactory prevaylerFactory(Object system) {
+	private PrevaylerFactory prevaylerFactory() {
 		PrevaylerFactory factory = new PrevaylerFactory();
-		factory.configurePrevalentSystem(system);
+		factory.configurePrevalentSystem("Ignored");
 		factory.configurePrevalenceDirectory(tmpDirectory().getAbsolutePath());
 		factory.configureJournalSerializer(new XStreamSerializer());
 		factory.configureTransactionFiltering(false);

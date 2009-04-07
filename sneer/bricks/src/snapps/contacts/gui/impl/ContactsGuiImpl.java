@@ -105,6 +105,7 @@ class ContactsGuiImpl implements ContactsGui {
 		return 144;
 	}
 	
+	@SuppressWarnings("unused")
 	private void showNewContactFrame() {
 		final JFrame frm = new JFrame("Inform Contact Nickname:");
 		frm.getContentPane(). setLayout(new GridBagLayout());

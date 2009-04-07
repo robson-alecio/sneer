@@ -20,6 +20,7 @@ public class Sneer {
 
 	static public Class<?>[] businessBricks() {
 		return new Class<?>[]{
+				sneer.skin.colors.Colors.class,
 				sneer.pulp.events.EventNotifiers.class,
 				sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper.class,
 				sneer.skin.image.ImageFactory.class,

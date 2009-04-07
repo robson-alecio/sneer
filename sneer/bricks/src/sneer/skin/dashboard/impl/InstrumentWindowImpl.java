@@ -47,6 +47,7 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 	
 	private final JPanel _actions = new GradientPanel();
 	
+
 	private class GradientPanel extends JPanel{
 		@Override protected void paintComponent( Graphics g ) {
 

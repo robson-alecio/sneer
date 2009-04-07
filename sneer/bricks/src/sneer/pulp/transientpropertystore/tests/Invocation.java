@@ -26,6 +26,7 @@ class Invocation implements TransactionWithQuery {
 		try {
 			return invoke(brickImpl(), _method, _args);
 		} catch (Throwable e) {
+			e.printStackTrace();
 			if (e instanceof Error) throw (Error)e;
 			if (e instanceof Exception) throw (Exception)e;
 			throw new Exception(e);

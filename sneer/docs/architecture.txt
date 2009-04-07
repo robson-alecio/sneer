@@ -16,14 +16,14 @@
                        FREEDOM 2: NICKNAMES
 			(Contacts, NickNames, Addresses, Connections)
 
-						FREEDOM 1: OWNNAME
+						FREEDOM 1: IDENTITY
 					   (OwnName, Public Key)
 
-                   FREEDOM 7: SOFTWARE PLATFORM
+                        FREEDOM 7: SOFTWARE
   (Brickness: Install, Update, Concurrency, Signals, Prevalence)
 
                         FREEDOM 6: HARDWARE
-(Clock, Threads, Files, Network, GUI, RAM (Collections), Logging...)
+(Clock, Threads, Files, Network, GUI support, RAM (Collections), Logging...)
                  (Security Enhanced: T4T Billing)
 
                         FREEDOM 4: PRIVACY

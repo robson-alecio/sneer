@@ -12,24 +12,6 @@ TASKS
 
 ﻿	- [Priscila] GoBoard.countCapturedStones() - DRY
 
-	- Gui Thread - Always call gui brick code in the gui thread. What was already done with the GuiBrickInvocationHandler does not cover callbacks. Complicated and slow weak-proxy-bubble structures would have to be created to support that. Instead, the proposed idea is:
-		- [Klaus] Make the container call the gui brick constructor in the gui thread.
-		- [Bamboo] Enhance at load-time the beginning of all public methods in all classes (including nested) in all gui brick impl packages, like this:
-			if (!EventQueue.isDispatchThread()) {
-				EventQueue.invokeAndWait(new Runnable(){public void run(){
-					//recursive call to outer method with same args.
-				}})
-			}
-			
-			- Unignore and implement GuiBrickTest.guiBrickCallbacksComeInSwingThread()
-			- Delete the GuiBrickInvocationHandler.
-		- [Klaus] GuiBrick Javadoc - Revise.
-		- Responsive threading model for instruments. They can NEVER block the Swing gui thread.
-			- [Bamboo] Inspect ALL Brick bytecode at load-time and do not allow it to catch Throwable. This makes all non-blocking code stoppable. We will deal with blocking code later.
-			- [Bamboo] Inspect Gui Brick bytecode at load-time and do not allow it to call any code that throws Hiccup. It is equivalent and maybe easier to simply not allow the code to catch nor throw Hiccup.
-
-	- Security - Discover if instruments can indirectly gain access to components from other instruments.
-
 	- [Sandro] Contact CRUD Instrument
 	
 	- [Sandro] Community Initiative - Incorporate Gandhi's Google maps brick. (Run LocationGuiMain)

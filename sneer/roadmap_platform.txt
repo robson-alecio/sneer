@@ -1,6 +1,6 @@
 ﻿SMALL FIXES
 =============
-	- ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
+	- *ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
 
 	- ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do. See ListRegisterImpl.MyOutput._notifier
 		- SetSignal - Revise it also. 
@@ -24,7 +24,26 @@ TASKS
 			- Unify the Bindings vs Contributions metaphors.
 			- [Bamboo]Delete Brick interface in favor of NewBrick annotation.
 			- SneerCommunity.newContainer - All that mess with StoragePath and SneerConfig is ugly.
-			- Make a test run a brick in a directory that is not in the system ClassLoader classpath (Eclipse classpath). It will probably fail. Implement the logic using NewContainerImpl.createApiClassLoader() to return a URLClassloader that can be extended with new classpaths for new brick interfaces;
+			- *Make a test run a brick in a directory that is not in the system ClassLoader classpath (Eclipse classpath). It will probably fail. Implement the logic using NewContainerImpl.createApiClassLoader() to return a URLClassloader that can be extended with new classpaths for new brick interfaces;
+
+	- *Gui Thread - Always call gui brick code in the gui thread. What was already done with the GuiBrickInvocationHandler does not cover callbacks. Complicated and slow weak-proxy-bubble structures would have to be created to support that. Instead, the proposed idea is:
+		- [Klaus] Make the container call the gui brick constructor in the gui thread.
+		- [Bamboo] Enhance at load-time the beginning of all public methods in all classes (including nested) in all gui brick impl packages, like this:
+			if (!EventQueue.isDispatchThread()) {
+				EventQueue.invokeAndWait(new Runnable(){public void run(){
+					//recursive call to outer method with same args.
+				}})
+			}
+			
+			- Unignore and implement GuiBrickTest.guiBrickCallbacksComeInSwingThread()
+			- Delete the GuiBrickInvocationHandler.
+		- [Klaus] GuiBrick Javadoc - Revise.
+		- Responsive threading model for instruments. They can NEVER block the Swing gui thread.
+			- [Bamboo] Inspect ALL Brick bytecode at load-time and do not allow it to catch Throwable. This makes all non-blocking code stoppable. We will deal with blocking code later.
+			- [Bamboo] Inspect Gui Brick bytecode at load-time and do not allow it to call any code that throws Hiccup. It is equivalent and maybe easier to simply not allow the code to catch nor throw Hiccup.
+
+	- Security - Discover if instruments can indirectly gain access to components from other instruments.
+	
 		
 	- [Douglas] Logging - Default: Log only throwables. Have "white list" of parts of messages to log.
 			- GUI to delete or add parts of messages in the "white list" to log.
@@ -37,7 +56,6 @@ TASKS
 	- Versioning
 
 	- Commons - Unify sneer.commons and apache.commons
-		- Use larvalabs version with generics
 
 -------------------------------------- Standalone Brick Container
 

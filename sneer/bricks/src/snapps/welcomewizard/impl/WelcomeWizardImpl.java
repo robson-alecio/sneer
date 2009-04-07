@@ -149,7 +149,7 @@ class WelcomeWizardImpl extends JDialog implements WelcomeWizard {
 			}
 			@Override
 			public void run() {
-				my(WelcomeWizard.class).setVisible(true);
+				WelcomeWizardImpl.this.setVisible(true);
 			}
 		};
 		_mainMenu.getSneerMenu().addAction(cmd);

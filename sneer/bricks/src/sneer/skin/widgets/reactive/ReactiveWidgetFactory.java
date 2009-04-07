@@ -18,7 +18,7 @@ import wheel.reactive.lists.ListSignal;
 public interface ReactiveWidgetFactory extends OldBrick {
 
 	ImageWidget newImage(Signal<Image> source);
-	WindowWidget<JFrame> newFrame(Signal<?> source);
+	WindowWidget<JFrame> newFrame(Signal<?> title);
 	TextWidget<JLabel> newLabel(Signal<?> source);
 	
 	TextWidget<JTextField> newEditableLabel(Signal<?> source, PickyConsumer<String> setter);

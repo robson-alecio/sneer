@@ -47,9 +47,7 @@ class WelcomeWizardImpl extends JDialog implements WelcomeWizard {
 	WelcomeWizardImpl() {
 		addWelcomeWindowAction();
 
-		if(hasRequiredUserData()){
-			return;
-		}
+		if(hasRequiredUserData()) return;
 		
 		_environment = my(Environment.class);
 		setModal(true);
@@ -59,8 +57,9 @@ class WelcomeWizardImpl extends JDialog implements WelcomeWizard {
 	}
 
 	private boolean hasRequiredUserData() {
-		String nick =  _nameKeeper.name().currentValue();
-		return  !(nick==null || nick.trim().length()==0) ;
+		String ownName =  _nameKeeper.name().currentValue();
+		if (ownName == null) return false;
+		return !ownName.trim().isEmpty();
 	}
 
 	private void initDynDnsAccount(String dynDnsHost, String dynDnsUserName, String dynDnsPassword) {
@@ -72,7 +71,7 @@ class WelcomeWizardImpl extends JDialog implements WelcomeWizard {
 
 	private void initGui() {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setTitle("Welcome, please inform your data:");
+		setTitle("User Info");
 		setBounds(10, 10, 350, 300);
 
 		java.awt.Container pnl = getContentPane();
@@ -89,17 +88,17 @@ class WelcomeWizardImpl extends JDialog implements WelcomeWizard {
 		pnl.add(_dynDnsUser);
 		pnl.add(_dnyDnsPassword);
 		
-		final JButton btn = new JButton("Start My Sneer!");
+		final JButton btn = new JButton("OK");
 		btn.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent ignored) {
 			submit();						
 		}});
 		pnl.add(btn);
 
-		label(_yourOwnName.getComponent(), "Your Own Name");
-		label(_sneerPort.getComponent(), "Your Sneer Port");
-		label(_dynDnsHost, "Your DynDns Host [optional]");
-		label(_dynDnsUser, "Your DynDns User [optional]");
-		label(_dnyDnsPassword, "Your DynDns Password [optional]");
+		label(_yourOwnName.getComponent(), "Own Name");
+		label(_sneerPort.getComponent(), "Sneer Port");
+		label(_dynDnsHost, "DynDns Host [optional]");
+		label(_dynDnsUser, "DynDns User [optional]");
+		label(_dnyDnsPassword, "DynDns Password [optional]");
 	}
 
 	private TextWidget<JTextField> newTextField(final Signal<?> signal, final PickyConsumer<String> setter) {
@@ -146,7 +145,7 @@ class WelcomeWizardImpl extends JDialog implements WelcomeWizard {
 		Action cmd = new Action(){
 			@Override
 			public String caption() {
-				return "Change User";
+				return "User Info...";
 			}
 			@Override
 			public void run() {

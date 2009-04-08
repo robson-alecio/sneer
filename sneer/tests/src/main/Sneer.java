@@ -102,7 +102,8 @@ public class Sneer {
 				sneer.skin.windowboundssetter.WindowBoundsSetter.class,
 				snapps.welcomewizard.WelcomeWizard.class,
 				sneer.skin.dashboard.Dashboard.class,
-
+				
+				sneer.skin.dashboard.util.GuiUtil.class,
 				snapps.contacts.hardcoded.HardcodedContacts.class
 		};
 	}

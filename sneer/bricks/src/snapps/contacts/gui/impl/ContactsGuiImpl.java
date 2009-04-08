@@ -4,7 +4,6 @@ import static sneer.commons.environments.Environments.my;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -14,10 +13,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -53,7 +50,6 @@ class ContactsGuiImpl implements ContactsGui {
 	
 	private static final Image ONLINE = getImage("online.png");
 	private static final Image OFFLINE = getImage("offline.png");
-	private static final Image ADD = getImage("add.png");
 	
 	private final KeyManager _keyManager = my(KeyManager.class);
 	private final ContactManager _contactManager = my(ContactManager.class);
@@ -105,7 +101,6 @@ class ContactsGuiImpl implements ContactsGui {
 		return 144;
 	}
 	
-	@SuppressWarnings("unused")
 	private void showNewContactFrame() {
 		final JFrame frm = new JFrame("Inform Contact Nickname:");
 		frm.getContentPane(). setLayout(new GridBagLayout());
@@ -174,17 +169,12 @@ class ContactsGuiImpl implements ContactsGui {
 	}
 	
 	private final class ToolbarSupport {
-		public ToolbarSupport(Container toolbar) {
-			JLabel add = new JLabel(new ImageIcon(ADD));
-			add.setPreferredSize(new Dimension(16, 16));
-			add.setBorder(new EmptyBorder(0,0,0,0));
-			add.setOpaque(false);
-//			add.setBackground(my(Colors.class).solid());
-			toolbar.add(add);
-			
-//			add.addActionListener(new ActionListener(){@Override public void actionPerformed(ActionEvent e) {
-//				showNewContactFrame();
-//			}});
+		public ToolbarSupport(JPopupMenu popupMenu) {
+			JMenuItem addContact = new JMenuItem("Add a new Contact");
+			popupMenu.add(addContact);
+			addContact.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
+				showNewContactFrame();
+			}});
 		}
 	}
 	

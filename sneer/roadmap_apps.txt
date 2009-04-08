@@ -11,7 +11,6 @@ TASKS
 ﻿	- [Priscila] GoBoard.countCapturedStones() - DRY
 
 	- [Sandro] Contact CRUD Instrument
-		- [Sandro] ContactsGuiImpl.showNewContactFrame() is unused.
 	
 	- [Sandro] Community Initiative - Incorporate Gandhi's Google maps brick. (Run LocationGuiMain)
 

@@ -11,25 +11,34 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.HierarchyBoundsAdapter;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 
 import sneer.skin.colors.Colors;
 import sneer.skin.dashboard.InstrumentWindow;
+import wheel.io.ui.graphics.Images;
 
 class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
-
+	
+	private static final Image ACTIONS = getImage("menu.png");
 	private static final int MINIMAL_TOOLBAR_HEIGHT = 14;
-
 	private static final long serialVersionUID = 1L;
 	
 	private final JPanel _contentPane = new JPanel();
@@ -46,8 +55,10 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 	};
 	
 	private final JPanel _actions = new GradientPanel();
+	private final JButton _menu = new JButton(new ImageIcon(ACTIONS));
+	private final JPopupMenu _menuActions = new JPopupMenu();
+	private final JLabel _title = new JLabel();
 	
-
 	private class GradientPanel extends JPanel{
 		@Override protected void paintComponent( Graphics g ) {
 
@@ -68,7 +79,9 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 		}	
 	}
 	
-	private final JLabel _title = new JLabel();
+	private static Image getImage(String fileName) {
+		return Images.getImage(InstrumentWindowImpl.class.getResource(fileName));
+	}
 	
 	public InstrumentWindowImpl(String title) {
 		_title.setOpaque(false);
@@ -111,13 +124,27 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 		_toolbarTitleLayer.add(_actions, BorderLayout.CENTER);
 		_actions.setBorder(new EmptyBorder(0,0,0,0));
 		
-		_actions.setLayout(new FlowLayout(FlowLayout.RIGHT, 2, 0));
+		_actions.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+		_actions.add(_menu);
+		
+		_menu.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		_menu.setOpaque(false);
+		_menu.setMargin(new Insets(0,0,0,0));
+		_menu.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
+			showActionsPopUp();
+		}});
+		
 		initWindowResizeListener();
 		
 		_toolbarGlassPane.addMouseListener(new MouseAdapter(){
 			@Override public void mouseEntered(MouseEvent e) { tryShowToolbar(); }
 			@Override public void mouseExited(MouseEvent e) { tryHideToolbar(); }
 		});
+	}
+	
+	private void showActionsPopUp() {
+		Point p = _menu.getLocation();
+		_menuActions.show(_menu, p.x, p.y);
 	}
 
 	private Dimension getToolbarDimension() {
@@ -131,7 +158,7 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 	}
 
 	void tryShowToolbar() {
-		if (_actions.getComponentCount() == 0) return;
+		if (_menuActions.getSubElements().length == 0) return;
 		_toolbarTitleLayer.setVisible(true);
 	}
 
@@ -188,7 +215,7 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 	}
 
 	@Override
-	public Container actions() {
-		return _actions;
+	public JPopupMenu actions() {
+		return _menuActions;
 	}
 }

@@ -14,30 +14,14 @@ class WindowBoundsSetterImpl implements WindowBoundsSetter{
 		_container = container;
 	}
 
-	@Override public void setBestBounds(Window window) {
-		setBestBounds(window, _container, false, 0); 
-	}
+	@Override public void setBestBounds(Window window) { 																	setBestBounds(window, _container, false, 0); }
+	@Override public void setBestBounds(Window window, Container container) { 									setBestBounds(window, container, false, 0); }
+	@Override public void setBestBounds(Window window, Container container, int horizontal_limit) {		setBestBounds(window, container, false, horizontal_limit); }
+	@Override public void setBestBounds(Window window, boolean resizeHeight) {									setBestBounds(window, _container, resizeHeight, 0); }
+	@Override public void setBestBounds(Window window, Container container, boolean resizeHeight) { 	setBestBounds(window, container, resizeHeight, 0); }
+	@Override public void setBestBounds(Window window, Container container, boolean resizeHeight , int  horizontalLimit) {
 	
-	@Override public void setBestBounds(Window window, Container container) {
-		setBestBounds(window, container, false, 0); 
-	}
-
-	@Override public void setBestBounds(Window window, Container container, int horizontal_limit) {
-		setBestBounds(window, container, false, horizontal_limit); 
-	}
-
-	@Override public void setBestBounds(Window window, boolean resizeHeight) {
-		setBestBounds(window, _container, resizeHeight, 0); 
-	}
-
-	@Override public void setBestBounds(Window window, Container container, boolean resizeHeight) {
-		setBestBounds(window, container, resizeHeight, 0); 
-	}
-	
-	@Override
-	public void setBestBounds(Window window, Container container, boolean resizeHeight , int  horizontalLimit) {
 		int space = 20;
-		
 		int windowHeight;
 		Point location;
 		
@@ -48,6 +32,7 @@ class WindowBoundsSetterImpl implements WindowBoundsSetter{
 			if(resizeHeight) windowHeight = container.getHeight();
 			location = container.getLocationOnScreen();
 		}
+		
 		int y = location.y;
 		int x = location.x;
 
@@ -61,5 +46,4 @@ class WindowBoundsSetterImpl implements WindowBoundsSetter{
 									width - widthDif, 
 									windowHeight);
 	}
-
 }

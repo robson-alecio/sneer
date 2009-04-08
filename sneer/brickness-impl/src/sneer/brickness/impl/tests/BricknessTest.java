@@ -13,23 +13,20 @@ import sneer.brickness.impl.tests.fixtures.noannotation.InterfaceWithoutBrickAnn
 import wheel.io.Jars;
 
 public class BricknessTest extends Assert {
+	
+	Brickness subject = new Brickness();
 
-	final Brickness subject = new Brickness();
-	
-	@Test
-	public void runBrick() throws Exception {
-		System.setProperty("BrickA.ran", "false");
-		runBrick(BrickA.class);
-		assertEquals("true", System.getProperty("BrickA.ran"));
+	protected void placeBrick(final Class<?> brick) {
+		subject.placeBrick(Jars.classpathRootFor(brick), brick.getName());
 	}
-	
+
 	@Test
 	public void runDependentBrick() throws Exception {
 		
-		runBrick(BrickA.class);
+		placeBrick(BrickA.class);
 
 		System.setProperty("BrickA.property", "");
-		runBrick(BrickB.class);
+		placeBrick(BrickB.class);
 		assertEquals("BrickB was here!", System.getProperty("BrickA.property"));
 	}
 
@@ -38,30 +35,33 @@ public class BricknessTest extends Assert {
 		
 		System.setProperty("BrickA.classloader", "");
 		System.setProperty("BrickB.classloader", "");
-		runBrick(BrickA.class);
-		runBrick(BrickB.class);
+		placeBrick(BrickA.class);
+		placeBrick(BrickB.class);
 		String classLoaderA = System.getProperty("BrickA.classLoader");
 		String classLoaderB = System.getProperty("BrickB.classLoader");
 
 		assertFalse(classLoaderA.equals(classLoaderB));
 	}
 	
+	@Test
+	public void runBrick() throws Exception {
+		System.setProperty("BrickA.ran", "false");
+		placeBrick(BrickA.class);
+		assertEquals("true", System.getProperty("BrickA.ran"));
+	}
+	
 	@Test(expected=BrickPlacementException.class)
 	public void runDependentBrickWithoutDependencies() throws Exception {
-		runBrick(BrickB.class);
+		placeBrick(BrickB.class);
 	}
 	
 	@Test(expected=BrickPlacementException.class)
 	public void noBrickInterfaceFound() throws Exception {
-		runBrick(InterfaceWithoutBrickAnnotation.class);
+		placeBrick(InterfaceWithoutBrickAnnotation.class);
 	}
 
 	@Test(expected=BrickPlacementException.class)
 	public void bogusDirectory() throws Exception {
 		subject.placeBrick(new File("bogus"), "bogus");
-	}
-	
-	private void runBrick(final Class<?> brick) {
-		subject.placeBrick(Jars.classpathRootFor(brick), brick.getName());
 	}
 }

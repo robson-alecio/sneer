@@ -6,7 +6,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 /** Loads only classes from a given package and its subpackages. All other loads are sent to a delegate.*/
-final class ClassLoaderForPackage extends URLClassLoader {
+class ClassLoaderForPackage extends URLClassLoader {
 
 	private final String _package;
 	private final ClassLoader _delegate;
@@ -25,10 +25,13 @@ final class ClassLoaderForPackage extends URLClassLoader {
 		if (loaded != null) return loaded;
 		
 		return name.startsWith(_package)
-			? super.loadClass(name, false)
+			? doLoadClass(name)
 			: _delegate.loadClass(name);
 	}
 
+	protected Class<?> doLoadClass(String name) throws ClassNotFoundException {
+		return super.loadClass(name, false);
+	}
 	
 	static private URL[] toURL(File file) {
 		try {

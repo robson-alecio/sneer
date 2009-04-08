@@ -2,10 +2,10 @@ package sneer.pulp.network;
 
 import java.io.IOException;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 
-
-public interface Network extends OldBrick {
+@Brick
+public interface Network{
 
 	ByteArraySocket openSocket(String hostAddress, int port) throws IOException;
 

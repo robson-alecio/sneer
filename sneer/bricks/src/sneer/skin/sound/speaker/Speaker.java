@@ -2,10 +2,11 @@ package sneer.skin.sound.speaker;
 
 import javax.sound.sampled.LineUnavailableException;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 import sneer.pulp.reactive.Signal;
 
-public interface Speaker extends OldBrick {
+@Brick
+public interface Speaker {
 
 	/** Will start playing PcmSoundPacket tuples with duration of one hundredth of a second each. 
 	 * @throws LineUnavailableException */

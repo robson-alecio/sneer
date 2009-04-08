@@ -1,10 +1,11 @@
 package sneer.pulp.reactive;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 import sneer.commons.lang.Functor;
 import wheel.lang.Consumer;
 
-public interface Signals extends OldBrick {  
+@Brick
+public interface Signals {  
 	
 	<T> Signal<T> constant(T value);
 	

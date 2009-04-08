@@ -1,9 +1,10 @@
 package sneer.pulp.events;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 import wheel.lang.Consumer;
 
-public interface EventNotifiers extends OldBrick {
+@Brick
+public interface EventNotifiers {
 	
 	<T> EventNotifier<T> create();
 

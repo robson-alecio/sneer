@@ -1,8 +1,9 @@
 package sneer.skin.sound.loopback;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 
-public interface LoopbackTester extends OldBrick {
+@Brick
+public interface LoopbackTester {
 
 	boolean start();
 	void stop();

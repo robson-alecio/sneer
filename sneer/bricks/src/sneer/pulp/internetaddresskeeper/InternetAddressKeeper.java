@@ -1,10 +1,11 @@
 package sneer.pulp.internetaddresskeeper;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 import sneer.pulp.contacts.Contact;
 import wheel.reactive.lists.ListSignal;
 
-public interface InternetAddressKeeper extends OldBrick {
+@Brick
+public interface InternetAddressKeeper {
 
 	void add(Contact contact, String host, int port);
 	

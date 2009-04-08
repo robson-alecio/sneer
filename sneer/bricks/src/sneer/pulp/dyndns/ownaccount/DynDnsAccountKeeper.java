@@ -1,10 +1,11 @@
 package sneer.pulp.dyndns.ownaccount;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 import sneer.pulp.reactive.Signal;
 import wheel.lang.Consumer;
 
-public interface DynDnsAccountKeeper extends OldBrick {
+@Brick
+public interface DynDnsAccountKeeper {
 	
 	Signal<DynDnsAccount> ownAccount();
 

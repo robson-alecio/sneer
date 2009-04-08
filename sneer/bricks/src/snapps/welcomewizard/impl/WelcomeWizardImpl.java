@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
@@ -31,7 +31,7 @@ import wheel.io.ui.action.Action;
 import wheel.lang.PickyConsumer;
 import wheel.reactive.impl.IntegerParser;
 
-class WelcomeWizardImpl extends JDialog implements WelcomeWizard {
+class WelcomeWizardImpl extends JFrame implements WelcomeWizard {
 	
 	private Environment _environment;
 	private TextWidget<JTextField>  _yourOwnName;
@@ -50,7 +50,6 @@ class WelcomeWizardImpl extends JDialog implements WelcomeWizard {
 		if(hasRequiredUserData()) return;
 		
 		_environment = my(Environment.class);
-		setModal(true);
 		initGui();
 		restoreFieldData();
 		setVisible(true);

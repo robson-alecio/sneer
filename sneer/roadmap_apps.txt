@@ -3,9 +3,6 @@
 
 	- [Sandro] ContactsGuiImpl.showNewContactFrame() is unused.
 
-	- [Sandro] WelcomeWizard
-		- Swing Timebox (menu/change user)
-	
 
 TASKS
 =========

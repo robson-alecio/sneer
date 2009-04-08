@@ -30,6 +30,7 @@ import sneer.skin.image.ImageFactory;
 import sneer.skin.main_Menu.MainMenu;
 import sneer.skin.snappmanager.Instrument;
 import sneer.skin.snappmanager.InstrumentManager;
+import sneer.skin.windowboundssetter.WindowBoundsSetter;
 import wheel.io.ui.GuiThread;
 import wheel.io.ui.TimeboxedEventQueue;
 import wheel.io.ui.TrayIcon;
@@ -147,6 +148,7 @@ class DashboardImpl implements Dashboard {
 
 	private void initFrame() {
 		_jframe = new JFrame();
+		my(WindowBoundsSetter.class).defaultContainer(_jframe.getContentPane());
 		_jframe.setIconImage(Images.getImage(logoIconURL()));
 		updateTitle();
 	}
@@ -254,7 +256,6 @@ class DashboardImpl implements Dashboard {
 		tray.addAction(cmd);
 		_mainMenu.getSneerMenu().addAction(cmd);
 	}
-
 	
 //	private void moveInstrument(int index, InstrumentWindow frame) {
 //		_contentPanel.remove(frame.contentPane());

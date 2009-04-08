@@ -5,7 +5,6 @@ import static sneer.commons.environments.Environments.my;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.ByteArrayOutputStream;
@@ -40,6 +39,7 @@ import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
+import sneer.skin.windowboundssetter.WindowBoundsSetter;
 import wheel.io.ui.GuiThread;
 import wheel.io.ui.graphics.Images;
 
@@ -193,20 +193,14 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		}	
 		
 		private void setWindowBounds(Light light) {
-			int space = 20;
 			_window.pack();
-			
-			int windowHeight = _container.getHeight();
-			Point location = _container.getLocationOnScreen();
-			int y = location.y;
-			int x = location.x;
-			if(light.error()!=null){
-				y = y - windowHeight;
-				windowHeight = windowHeight * 2;
-			}
-			int width = _window.getWidth() + space;
-			if(width>HORIZONTAL_LIMIT) width = HORIZONTAL_LIMIT;
-			_window.setBounds(x - width - space, y, width, windowHeight);
+			my(WindowBoundsSetter.class).setBestBounds(_window, _container, true, HORIZONTAL_LIMIT);
+			doubleWindowHeightOnLightError(light);
+		}
+
+		private void doubleWindowHeightOnLightError(Light light) {
+			if(light.error()!=null)
+				_window.setBounds(_window.getX(),  _window.getY(), _window.getWidth(), _window.getHeight()*2);
 		}
 		
 		private void appendStyledText(StyledDocument doc, String msg, String style) {

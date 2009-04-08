@@ -26,6 +26,7 @@ import sneer.skin.main_Menu.MainMenu;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
+import sneer.skin.windowboundssetter.WindowBoundsSetter;
 import wheel.io.ui.GuiThread;
 import wheel.io.ui.action.Action;
 import wheel.lang.PickyConsumer;
@@ -52,9 +53,16 @@ class WelcomeWizardImpl extends JFrame implements WelcomeWizard {
 		_environment = my(Environment.class);
 		initGui();
 		restoreFieldData();
-		setVisible(true);
+		open();
 	}
 
+	private void open() {
+		if(isVisible()) return;
+		
+		my(WindowBoundsSetter.class).setBestBounds(this);
+		setVisible(true);
+	}
+	
 	private boolean hasRequiredUserData() {
 		String ownName =  _nameKeeper.name().currentValue();
 		if (ownName == null) return false;
@@ -71,8 +79,9 @@ class WelcomeWizardImpl extends JFrame implements WelcomeWizard {
 	private void initGui() {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setTitle("User Info");
-		setBounds(10, 10, 350, 300);
-
+		
+		setSize(350, 300);
+		
 		java.awt.Container pnl = getContentPane();
 		
 		_yourOwnName = newTextField(_nameKeeper.name(), _nameKeeper.nameSetter());
@@ -142,14 +151,8 @@ class WelcomeWizardImpl extends JFrame implements WelcomeWizard {
 	
 	private void addWelcomeWindowAction() {
 		Action cmd = new Action(){
-			@Override
-			public String caption() {
-				return "User Info...";
-			}
-			@Override
-			public void run() {
-				WelcomeWizardImpl.this.setVisible(true);
-			}
+			@Override public String caption() { 	return "User Info...";	}
+			@Override	public void run() { 				open(); }
 		};
 		_mainMenu.getSneerMenu().addAction(cmd);
 	}

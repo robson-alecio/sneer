@@ -12,6 +12,7 @@ public interface Signals {
 	Consumer<Object> sink();
 	
 	<A, B> Signal<B> adapt(Signal<A> input, Functor<A, B> functor);
+	<A, B> Signal<B> adaptSignal(Signal<A> input, Functor<A, Signal<B>> functor);
 	
 }
 

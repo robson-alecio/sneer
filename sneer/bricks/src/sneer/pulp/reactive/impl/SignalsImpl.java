@@ -24,4 +24,9 @@ class SignalsImpl implements Signals {
 		return new Adapter<A, B>(input, functor).output();
 	}
 
+	@Override
+	public <A, B> Signal<B> adaptSignal(Signal<A> input, Functor<A, Signal<B>> functor) {
+		return new SignalAdapter<A, B>(input, functor).output();
+	}
+
 }

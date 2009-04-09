@@ -35,7 +35,7 @@ import sneer.pulp.reactive.impl.RegisterImpl;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.dashboard.InstrumentWindow;
-import sneer.skin.snappmanager.InstrumentManager;
+import sneer.skin.snappmanager.InstrumentRegistry;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
@@ -49,7 +49,7 @@ class ContactsGuiImpl implements ContactsGui {
 	private static final Image ONLINE = getImage("online.png");
 	private static final Image OFFLINE = getImage("offline.png");
 	
-	private final InstrumentManager _instrumentManager = my(InstrumentManager.class);
+	private final InstrumentRegistry _instrumentManager = my(InstrumentRegistry.class);
 	private final ContactActionManager _actionsManager = my(ContactActionManager.class);
 	private final ReactiveWidgetFactory _rfactory = my(ReactiveWidgetFactory.class);
 	private final ContactManager _contacts = my(ContactManager.class);

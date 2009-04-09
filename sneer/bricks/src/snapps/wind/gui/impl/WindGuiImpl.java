@@ -32,7 +32,7 @@ import sneer.commons.lang.ByRef;
 import sneer.pulp.reactive.impl.RegisterImpl;
 import sneer.skin.colors.Colors;
 import sneer.skin.dashboard.InstrumentWindow;
-import sneer.skin.snappmanager.InstrumentManager;
+import sneer.skin.snappmanager.InstrumentRegistry;
 import sneer.skin.sound.player.SoundPlayer;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
@@ -67,7 +67,7 @@ class WindGuiImpl implements WindGui {
 		_wind = my(Wind.class);
 		_rfactory = my(ReactiveWidgetFactory.class);
 		_player = my(SoundPlayer.class);
-		my(InstrumentManager.class).registerInstrument(this);
+		my(InstrumentRegistry.class).registerInstrument(this);
 	} 
 	
 	@Override

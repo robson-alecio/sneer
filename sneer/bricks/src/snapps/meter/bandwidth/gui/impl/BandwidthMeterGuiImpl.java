@@ -20,7 +20,7 @@ import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.colors.Colors;
 import sneer.skin.dashboard.InstrumentWindow;
-import sneer.skin.snappmanager.InstrumentManager;
+import sneer.skin.snappmanager.InstrumentRegistry;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.ui.graphics.Images;
@@ -34,7 +34,7 @@ class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 	private static final Icon _download = load("download.png");
 
 	public BandwidthMeterGuiImpl() {
-		my(InstrumentManager.class).registerInstrument(this);
+		my(InstrumentRegistry.class).registerInstrument(this);
 	} 
 	
 	class MaxHolderFunctor implements Functor<Integer, String>{

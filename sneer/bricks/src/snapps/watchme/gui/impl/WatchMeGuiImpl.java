@@ -19,11 +19,11 @@ import snapps.watchme.WatchMe;
 import snapps.watchme.gui.WatchMeGui;
 import sneer.skin.colors.Colors;
 import sneer.skin.dashboard.InstrumentWindow;
-import sneer.skin.snappmanager.InstrumentManager;
+import sneer.skin.snappmanager.InstrumentRegistry;
 
 class WatchMeGuiImpl implements WatchMeGui{ //Optimize need a better snapp window support
 
-	private final InstrumentManager _instrumentManager = my(InstrumentManager.class);
+	private final InstrumentRegistry _instrumentManager = my(InstrumentRegistry.class);
 	
 	private final WatchMe _watchMe = my(WatchMe.class);
 	

@@ -26,14 +26,14 @@ import sneer.pulp.memory.MemoryMeter;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.colors.Colors;
 import sneer.skin.dashboard.InstrumentWindow;
-import sneer.skin.snappmanager.InstrumentManager;
+import sneer.skin.snappmanager.InstrumentRegistry;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.ui.graphics.Images;
 
 class MemoryMeterGuiImpl implements MemoryMeterGui {
 
-	private final InstrumentManager _instruments = my(InstrumentManager.class);
+	private final InstrumentRegistry _instruments = my(InstrumentRegistry.class);
 	
 	private final ReactiveWidgetFactory _factory = my(ReactiveWidgetFactory.class);
 	

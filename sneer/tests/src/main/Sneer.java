@@ -56,7 +56,7 @@ public class Sneer {
 				sneer.pulp.exceptionhandling.ExceptionHandler.class,
 				sneer.pulp.connection.SocketOriginator.class,
 				sneer.pulp.serialization.Serializer.class,
-				sneer.skin.snappmanager.InstrumentManager.class,
+				sneer.skin.snappmanager.InstrumentRegistry.class,
 				sneer.skin.rooms.ActiveRoomKeeper.class,
 				sneer.skin.widgets.reactive.ReactiveWidgetFactory.class,
 				snapps.watchme.gui.windows.RemoteWatchMeWindows.class,

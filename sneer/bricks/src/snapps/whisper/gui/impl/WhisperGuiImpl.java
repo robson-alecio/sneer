@@ -27,7 +27,7 @@ import sneer.pulp.reactive.gates.logic.LogicGates;
 import sneer.skin.colors.Colors;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.rooms.ActiveRoomKeeper;
-import sneer.skin.snappmanager.InstrumentManager;
+import sneer.skin.snappmanager.InstrumentRegistry;
 import sneer.skin.sound.loopback.LoopbackTester;
 import sneer.skin.sound.mic.Mic;
 import sneer.skin.sound.speaker.Speaker;
@@ -39,7 +39,7 @@ class WhisperGuiImpl implements WhisperGui { //Optimize need a better snapp wind
 
 	private final LoopbackTester _loopback = my(LoopbackTester.class);
 
-	private final InstrumentManager _instrumentManager = my(InstrumentManager.class);
+	private final InstrumentRegistry _instrumentManager = my(InstrumentRegistry.class);
 
 	private final ContactActionManager _actionsManager = my(ContactActionManager.class);
 

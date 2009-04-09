@@ -15,7 +15,7 @@ import sneer.kernel.container.ContainersOld;
 import sneer.skin.dashboard.Dashboard;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.snappmanager.Instrument;
-import sneer.skin.snappmanager.InstrumentManager;
+import sneer.skin.snappmanager.InstrumentRegistry;
 import wheel.io.Logger;
 
 public class DashboardDemo  {
@@ -25,7 +25,7 @@ public class DashboardDemo  {
 	}
 	
 	private static void installSampleInstrument() {
-		InstrumentManager manager = Environments.my(InstrumentManager.class);
+		InstrumentRegistry manager = Environments.my(InstrumentRegistry.class);
 		manager.registerInstrument(new Snapp1());
 		manager.registerInstrument(new Snapp2());
 		manager.registerInstrument(new Snapp3());

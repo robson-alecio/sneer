@@ -19,7 +19,7 @@ import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.own.tagline.OwnTaglineKeeper;
 import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.imgselector.ImageSelector;
-import sneer.skin.snappmanager.InstrumentManager;
+import sneer.skin.snappmanager.InstrumentRegistry;
 import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
@@ -32,7 +32,7 @@ class OwnerGuiImpl implements OwnerGui {
 
 	private final OwnAvatarKeeper _ownAvatarKeeper = my(OwnAvatarKeeper.class);
 
-	private final InstrumentManager _instrumentManager = my(InstrumentManager.class);
+	private final InstrumentRegistry _instrumentManager = my(InstrumentRegistry.class);
 
 	private final ImageSelector _imageSelector = my(ImageSelector.class);
 

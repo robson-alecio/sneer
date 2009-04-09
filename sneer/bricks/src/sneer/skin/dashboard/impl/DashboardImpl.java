@@ -29,7 +29,7 @@ import sneer.skin.image.DefaultIcons;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.main_Menu.MainMenu;
 import sneer.skin.snappmanager.Instrument;
-import sneer.skin.snappmanager.InstrumentManager;
+import sneer.skin.snappmanager.InstrumentRegistry;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
 import wheel.io.ui.GuiThread;
 import wheel.io.ui.TimeboxedEventQueue;
@@ -65,7 +65,7 @@ class DashboardImpl implements Dashboard {
 	
 	private final OwnNameKeeper _ownNameKeeper = my(OwnNameKeeper.class);
 		
-	private final InstrumentManager _instrumentManager = my(InstrumentManager.class);
+	private final InstrumentRegistry _instrumentManager = my(InstrumentRegistry.class);
 
 	private final BlinkingLights _blinkingLights = my(BlinkingLights.class);
 	

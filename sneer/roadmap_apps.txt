@@ -11,12 +11,33 @@ TASKS
 
 	- [Sandro and Igor] User Info, Contact List and Contact CRUD - Don't do any other task until:
 		- The GUI is elegant. Talk to Klaus.
+			- User Info -> My Info
+				- Fields with same appearance.
+				- No title borders for single field.
+					   My Name:
+					Sneer Port:
+					My DydDns [Optional] (border)
+					      Host:
+					      User:
+					  Password:
+				- OK tamanho normal.
+			- Dashboard
+				- White top line becomes gray. Instruments will have final appearance.
+				- Instrument toolbar menu icon different from scrollbar button.
+					- Menu appears below button.
+						- add or edit a contact -> Add a Contact...
+				- Right click menu
+					- Remove Listen item.
+					- Edit Contact Info -> Contact Info... (default double click)
+					- Delete Contact...
+			- Contact Info <- Internet Addresses: (Title bar)
+					
+				 
 		- The code is clean. Talk to Klaus.
 			- Minimal Contact List (Summit showcase)
 				- Accept menu action registrations. (dependency inverted)
 				- Accept cell part renderers. (dependency inverted)
 				- [Sandro - Working] Expose Signal<Contact> selectedContact()
-				- Generic ListSignal component for contacts and internet addresses.
 				- ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
 
 	- WatchMe - Move to spikes. Remove from main.Sneer's list of bricks.

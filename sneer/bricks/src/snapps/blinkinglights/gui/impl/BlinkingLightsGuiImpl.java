@@ -35,7 +35,7 @@ import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.colors.Colors;
 import sneer.skin.dashboard.InstrumentWindow;
-import sneer.skin.snappmanager.InstrumentManager;
+import sneer.skin.snappmanager.InstrumentRegistry;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
@@ -45,7 +45,7 @@ import wheel.io.ui.graphics.Images;
 
 class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 	
-	private final InstrumentManager _instrumentManager = my(InstrumentManager.class);
+	private final InstrumentRegistry _instrumentManager = my(InstrumentRegistry.class);
 
 	private final BlinkingLights _blinkingLights = my(BlinkingLights.class);
 

@@ -1,6 +1,6 @@
 ﻿FIXES
 =========
-
+	[Sandro] GuiUtil --> WindowBoundsSetter
 
 
 TASKS

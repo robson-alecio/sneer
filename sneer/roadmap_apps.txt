@@ -2,7 +2,6 @@
 =========
 	- [Sandro] GuiUtil --> WindowBoundsSetter
 
-﻿	- [Priscila] GoBoard.countCapturedStones() - DRY
 
 TASKS
 =========

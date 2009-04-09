@@ -1,7 +1,8 @@
 ﻿FIXES
 =========
-	[Sandro] GuiUtil --> WindowBoundsSetter
+	- [Sandro] GuiUtil --> WindowBoundsSetter
 
+﻿	- [Priscila] GoBoard.countCapturedStones() - DRY
 
 TASKS
 =========
@@ -18,11 +19,12 @@ TASKS
 				- Expose Signal<Contact> selectedContact()
 				- Generic ListSignal component for contacts and internet addresses.
 				- ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
-					
+	
+	- DynDns Revision.
+		- Simplify to remove all synchronization. Let the container synchronize the brick. 
+		- Fix: Do not persist last discovered ip. Do a DNS lookup every time instead.					
 	
 	- [Sandro] Community Initiative - Incorporate Gandhi's Google maps brick. (Run LocationGuiMain)
-
-﻿	- [Priscila] GoBoard.countCapturedStones() - DRY
 
 	- TopTen - First Round
 		 - Categories (Ex.: Movies, Sports, Songs, Restaurants, etc)

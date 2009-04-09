@@ -31,12 +31,16 @@ TASKS
 					- Edit Contact Info -> Contact Info... (default double click)
 					- Delete Contact...
 			- Contact Info <- Internet Addresses: (Title bar)
-					
-				 
+				- Contact.nicknameSetter() -> ContactManager.nicknameSetterFor(Contact)
+				- Nickname: (Label)
+				- Internet Addresses (Border or Label)
+					- Reactive List
+					- New, Save, Delete buttons like Eclipse's "Run Configurations" screen
+				 	- Host:          Port:
 		- The code is clean. Talk to Klaus.
 			- Minimal Contact List (Summit showcase)
 				- Accept menu action registrations. (dependency inverted)
-				- Accept cell part renderers. (dependency inverted)
+				- Accept cell part renderers. (dependency inverted) Discuss with team.
 				- [Sandro - Working] Expose Signal<Contact> selectedContact()
 				- ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
 

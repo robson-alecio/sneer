@@ -85,26 +85,50 @@ class ContactsGuiImpl implements ContactsGui {
 		_container.setLayout(new BorderLayout());
 		_container.add(scrollPane, BorderLayout.CENTER);
 		
+		addNewContatAction(window.actions());
+		addEditContactAction();
+
 		new PopUpSupport();
-		new ToolbarSupport(window.actions());
-		new EditContactSupport();
 	}
 	
 	@Override
 	public int defaultHeight() {
 		return 144;
 	}
-
+	
+	@Override
+	public String title() {
+		return "My Contacts";
+	}
+	
+	private void addNewContatAction(JPopupMenu popupMenu) {
+		JMenuItem addContact = new JMenuItem("add or edit a contact");
+		popupMenu.add(addContact);
+		addContact.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
+			new NewContactWindow();
+		}});
+	}
+	
+	private void addEditContactAction(){
+		_actionsManager.addContactAction(new ContactAction(){
+			private Contact _contact;
+			@Override public boolean isEnabled() {return true;}
+			@Override public boolean isVisible() { return true; }
+			@Override public void setActive(Contact contact) { _contact = contact; }
+			@Override public String caption() { return "Edit Contact Info";}
+			@Override public void run() {
+				InternetAddressWindow frm = my(InternetAddressWindow.class);
+				frm.setActiveContact(_contact);
+				frm.open();
+			}});
+	}	
 	
 	final class ContactLabelProvider implements LabelProvider<Contact> {
-		
-		@Override
-		public Signal<String> labelFor(Contact contact) {
+		@Override public Signal<String> labelFor(Contact contact) {
 			return contact.nickname();
 		}
 
-		@Override
-		public Signal<Image> imageFor(Contact contact) {
+		@Override public Signal<Image> imageFor(Contact contact) {
 			Functor<Boolean, Image> functor = new Functor<Boolean, Image>(){ @Override public Image evaluate(Boolean value) {
 				return value?ONLINE:OFFLINE;
 			}};
@@ -114,18 +138,7 @@ class ContactsGuiImpl implements ContactsGui {
 		}
 	}
 	
-	private final class ToolbarSupport {
-		public ToolbarSupport(JPopupMenu popupMenu) {
-			JMenuItem addContact = new JMenuItem("add or edit a contact");
-			popupMenu.add(addContact);
-			addContact.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
-				new NewContactWindow();
-			}});
-		}
-	}
-	
 	private final class PopUpSupport {
-
 		private PopUpSupport() {
 			final JList list = _contactList.getMainWidget();
 			list.addMouseListener(new MouseAdapter(){ @Override public void mouseReleased(MouseEvent e) {
@@ -161,26 +174,5 @@ class ContactsGuiImpl implements ContactsGui {
 			menu.add(item);
 			return item;
 		}
-	}
-	
-	private final class EditContactSupport {
-		private EditContactSupport(){
-			_actionsManager.addContactAction(new ContactAction(){
-				private Contact _contact;
-				@Override public boolean isEnabled() {return true;}
-				@Override public boolean isVisible() { return true; }
-				@Override public void setActive(Contact contact) { _contact = contact; }
-				@Override public String caption() { return "Edit Contact Info";}
-				@Override public void run() {
-					InternetAddressWindow frm = my(InternetAddressWindow.class);
-					frm.setActiveContact(_contact);
-					frm.open();
-				}});
-		}
-	}
-	
-	@Override
-	public String title() {
-		return "My Contacts";
 	}
 }

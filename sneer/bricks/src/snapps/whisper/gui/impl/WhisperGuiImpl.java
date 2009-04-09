@@ -17,11 +17,8 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 
-import snapps.contacts.actions.ContactAction;
-import snapps.contacts.actions.ContactActionManager;
 import snapps.whisper.gui.WhisperGui;
 import sneer.commons.environments.Environments;
-import sneer.pulp.contacts.Contact;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.gates.logic.LogicGates;
 import sneer.skin.colors.Colors;
@@ -40,8 +37,6 @@ class WhisperGuiImpl implements WhisperGui { //Optimize need a better snapp wind
 	private final LoopbackTester _loopback = my(LoopbackTester.class);
 
 	private final InstrumentRegistry _instrumentManager = my(InstrumentRegistry.class);
-
-	private final ContactActionManager _actionsManager = my(ContactActionManager.class);
 
 	private final Speaker _speaker = my(Speaker.class);
 
@@ -90,7 +85,6 @@ class WhisperGuiImpl implements WhisperGui { //Optimize need a better snapp wind
 		
 		createWhisperButtonListener();
 		createLoopBackButtonListener();
-		addListenContactAction();
 		
 		_referenceToAvoidGc = new EventReceiver<Boolean>(isRunning()) { @Override public void consume(Boolean isRunning) {
 			_whisperButton.setSelected(isRunning);
@@ -109,40 +103,6 @@ class WhisperGuiImpl implements WhisperGui { //Optimize need a better snapp wind
 		return 65;
 	}
 	
-	private void addListenContactAction() {
-		_actionsManager.addContactAction(new ContactAction(){
-
-			boolean isStarted = false;
-			private Contact _contact;
-
-			@Override
-			public boolean isEnabled() {
-				return true;  //Fix return true only when remote microphone is shared.
-			}
-
-			@Override
-			public boolean isVisible() {
-				return true;  //Fix return true only when remote microphone is shared.
-			}
-
-			@Override
-			public void setActive(Contact contact) {
-				_contact = contact;
-			}
-
-			@Override
-			public String caption() {
-				if(isStarted)
-					return "Stop listening";
-				return "Listen";
-			}
-
-			@Override
-			public void run() {
-				isStarted = !isStarted;
-				throw new sneer.commons.lang.exceptions.NotImplementedYet("" + _contact); // Implement
-			}});
-	}
 
 	private void createWhisperButtonListener() {
 		_whisperButton.addMouseListener(new MouseAdapter() {	@Override public void mouseReleased(MouseEvent e) {

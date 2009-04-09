@@ -40,7 +40,6 @@ import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.io.ui.graphics.Images;
-import wheel.lang.Consumer;
 import wheel.reactive.lists.ListSignal;
 
 //Refactor Consider use only reactive widgets  
@@ -50,7 +49,6 @@ class ContactsGuiImpl implements ContactsGui {
 	private static final Image OFFLINE = getImage("offline.png");
 	
 	private final InstrumentRegistry _instrumentManager = my(InstrumentRegistry.class);
-	private final ContactActionManager _actionsManager = my(ContactActionManager.class);
 	private final ReactiveWidgetFactory _rfactory = my(ReactiveWidgetFactory.class);
 	private final ContactManager _contacts = my(ContactManager.class);
 	private final ConnectionManager _connections = my(ConnectionManager.class);
@@ -58,7 +56,6 @@ class ContactsGuiImpl implements ContactsGui {
 	private final ListSorter _sorter = my(ListSorter.class);
 	private final SignalChooser<Contact> _chooser;
 
-	private Consumer<Contact> _selectedContactReceiverToAvoidGC;
 	private ListSignal<Contact> _sortedList;
 	private ListWidget<Contact> _contactList;
 	private Container _container;
@@ -125,13 +122,12 @@ class ContactsGuiImpl implements ContactsGui {
 	}
 	
 	private void addEditContactAction(){
-		_actionsManager.addContactAction(new ContactAction(){
-			@Override public boolean isEnabled() {return true;}
+		my(ContactActionManager.class).addContactAction(new ContactAction(){
+			@Override public boolean isEnabled() { return true; }
 			@Override public boolean isVisible() { return true; }
-			@Override public void setActive(Contact contact) { }
 			@Override public String caption() { return "Edit Contact Info";}
 			@Override public void run() {
-				my(InternetAddressWindow.class).open(_selectedContact.output().currentValue());
+				my(InternetAddressWindow.class).open();
 			}});
 	}	
 	
@@ -161,12 +157,6 @@ class ContactsGuiImpl implements ContactsGui {
 				Contact contact = (Contact) list.getSelectedValue();
 				_selectedContact.setter().consume(contact);
 			}});
-			
-			_selectedContactReceiverToAvoidGC = new Consumer<Contact>(){ @Override public void consume(final Contact contact) {
-					if(list.getSelectedValue()==contact) return;
-					list.setSelectedValue(contact, true);
-			}};
-			_selectedContact.output().addReceiver(_selectedContactReceiverToAvoidGC);
 		}
 	}
 	
@@ -174,34 +164,25 @@ class ContactsGuiImpl implements ContactsGui {
 		private ListContactsPopUpSupport() {
 			final JList list = _contactList.getMainWidget();
 			list.addMouseListener(new MouseAdapter(){ @Override public void mouseReleased(MouseEvent e) {
+				int index = list.locationToIndex(e.getPoint());
+				list.getSelectionModel().setSelectionInterval(index, index);
 				if (e.isPopupTrigger())
 					tryShowContactMenu(e);
 			}});
 		}
 
 		private void tryShowContactMenu(MouseEvent e) {
-			JList list = _contactList.getMainWidget();
-			int index = list.locationToIndex(e.getPoint());
-			list.getSelectionModel().setSelectionInterval(index, index);
-			Contact contact = (Contact) list.getSelectedValue();
-
 			JPopupMenu popupMain = new JPopupMenu();	
-			for (ContactAction action : _actionsManager.actions()) {
-				if(!action.isVisible()) continue;
-				createMenuItem(popupMain, action, contact);
-			}
+			for (ContactAction action : my(ContactActionManager.class).actions())
+				if (action.isVisible())
+					createMenuItem(popupMain, action);
 
-			if(popupMain.getSubElements().length>0){
+			if (popupMain.getSubElements().length>0)
 				popupMain.show(e.getComponent(),e.getX(),e.getY());
-			}
 		}
 
-		private JMenuItem createMenuItem(JPopupMenu menu, ContactAction action, Contact contact) {
-			action.setActive(contact);
-			JMenuItem item = new JMenuItem(new SwingActionAdapter(action));
-			item.setText(action.caption());
-			menu.add(item);
-			return item;
+		private void createMenuItem(JPopupMenu menu, ContactAction action) {
+			menu.add(new JMenuItem(new SwingActionAdapter(action)));
 		}
 	}
 }

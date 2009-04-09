@@ -33,6 +33,7 @@ import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
 import wheel.lang.Consumer;
+import wheel.reactive.impl.EventReceiver;
 
 class InternetAddressWindowImpl extends JFrame implements InternetAddressWindow{
 
@@ -48,20 +49,16 @@ class InternetAddressWindowImpl extends JFrame implements InternetAddressWindow{
 	
 	private final Register<String> _contactProxy = new RegisterImpl<String>(null);
 	private Consumer<String> _adapterToVoidGC;
-	private Consumer<Contact> _changeContactSelectionReceiverToAvoidGC;
+	@SuppressWarnings("unused")	private final Object _refToAvoidGC;
 	
 	InternetAddressWindowImpl() {
-		//Fix: Auto-rebind not working. Check consumer notification.
-		 _changeContactSelectionReceiverToAvoidGC = new Consumer<Contact>(){ @Override public void consume(Contact contact) {
-			 System.out.println(contact);
+		 _refToAvoidGC = new EventReceiver<Contact>(my(ContactsGui.class).selectedContact()){ @Override public void consume(Contact contact) {
 			 rebindContact(contact);
 		 }};
-		my(ContactsGui.class).selectedContact().addReceiver(_changeContactSelectionReceiverToAvoidGC);
 	}
 	
 	@Override
-	public void open(Contact contact) {
-		rebindContact(contact);
+	public void open() {
 		setVisible(true);
 	}
 	

@@ -75,7 +75,7 @@ class NewContactWindow extends JFrame{
 			_keyManager.addKey(contact, mickeyMouseKey(nick));
 		}
 		
-		my(InternetAddressWindow.class).open(contact);
+		my(InternetAddressWindow.class).open();
 		
 		close();
 	}

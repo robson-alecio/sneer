@@ -22,17 +22,18 @@ import javax.swing.event.ListSelectionListener;
 
 import snapps.contacts.gui.ContactsGui;
 import snapps.contacts.internetaddress.gui.InternetAddressWindow;
+import sneer.commons.lang.Functor;
+import sneer.commons.lang.exceptions.NotImplementedYet;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.internetaddresskeeper.InternetAddress;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
-import sneer.pulp.reactive.Register;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.Signals;
 import sneer.skin.colors.Colors;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
-import wheel.lang.Consumer;
 import wheel.reactive.impl.EventReceiver;
 
 class InternetAddressWindowImpl extends JFrame implements InternetAddressWindow{
@@ -44,41 +45,34 @@ class InternetAddressWindowImpl extends JFrame implements InternetAddressWindow{
 	private final JTextField _port = new JTextField();
 	
 	private boolean _isGuiInitialized = false;
-	private Contact _contact;
 	private TextWidget<JTextField> _txtNickname;
 	
-	private final Register<String> _contactProxy = new RegisterImpl<String>(null);
-	private Consumer<String> _adapterToVoidGC;
-	@SuppressWarnings("unused")	private final Object _refToAvoidGC;
-	
-	InternetAddressWindowImpl() {
-		 _refToAvoidGC = new EventReceiver<Contact>(my(ContactsGui.class).selectedContact()){ @Override public void consume(Contact contact) {
-			 rebindContact(contact);
-		 }};
-	}
+	@SuppressWarnings("unused")	private Object _refToAvoidGC;
 	
 	@Override
 	public void open() {
+		if(!_isGuiInitialized) {
+			_isGuiInitialized = true;
+			initGui();
+		}
+		
 		setVisible(true);
 	}
 	
-	//Refactor add a better rebind support
-	private void rebindContact(Contact contact) {
-		_contact = contact;
-		if(!_isGuiInitialized) initGui();
-		
-		_contactProxy.setter().consume(_contact.nickname().currentValue());
-		_adapterToVoidGC = new Consumer<String>(){ @Override public void consume(String value) {
-			_contact.nicknameSetter().consume(value);
-		}};
-		_contactProxy.output().addReceiver(_adapterToVoidGC);
+	private void rebindContact() {
+		if (!_isGuiInitialized) return;
 		loadInternetAddressesForCurrentContact();
 	}
 
 	private void initGui() {
 		
 		setTitle("Internet Addresses:");
-		_txtNickname = my(ReactiveWidgetFactory.class).newTextField(_contactProxy.output(), _contactProxy.setter(), NotificationPolicy.OnEnterPressedOrLostFocus);
+		Signal<String> nickname = my(Signals.class).adapt(my(ContactsGui.class).selectedContact(), new Functor<Contact, String>() { @Override public String evaluate(Contact contact) {
+			//contact.nickname().
+			throw new NotImplementedYet();
+		}});
+		
+		_txtNickname = my(ReactiveWidgetFactory.class).newTextField(nickname, null /*setter*/, NotificationPolicy.OnEnterPressedOrLostFocus);
 		loadInternetAddressesForCurrentContact();
 		
 		getContentPane().setLayout(new GridBagLayout());
@@ -116,17 +110,23 @@ class InternetAddressWindowImpl extends JFrame implements InternetAddressWindow{
 			delInternetAddress();
 		}});
 		
+		listenToSignals();
 		addListSelectionListestener();
-		
+
 		this.setSize(400, 200);
 		my(WindowBoundsSetter.class).setBestBounds(this);
-		_isGuiInitialized = true;
+	}
+
+	private void listenToSignals() {
+		_refToAvoidGC = new EventReceiver<Contact>(my(ContactsGui.class).selectedContact()){ @Override public void consume(Contact contact) {
+			rebindContact();
+		}};
 	}
 
 	private void addListSelectionListestener() {
 		_lstAddresses.getSelectionModel().addListSelectionListener(
 				new ListSelectionListener(){ @Override public void valueChanged(ListSelectionEvent e) {
-					InternetAddressWrapper wrapper = (InternetAddressWrapper) _lstAddresses.getSelectedValue();
+					InternetAddressPrettyPrinter wrapper = (InternetAddressPrettyPrinter) _lstAddresses.getSelectedValue();
 					if(wrapper==null){
 						cleanFields();
 						return;
@@ -140,7 +140,7 @@ class InternetAddressWindowImpl extends JFrame implements InternetAddressWindow{
 	
 	
 	private void delInternetAddress() {
-		InternetAddressWrapper wrapper = (InternetAddressWrapper) _lstAddresses.getSelectedValue();
+		InternetAddressPrettyPrinter wrapper = (InternetAddressPrettyPrinter) _lstAddresses.getSelectedValue();
 		if(wrapper==null) return;
 		
 		InternetAddress address = wrapper._address;
@@ -153,7 +153,7 @@ class InternetAddressWindowImpl extends JFrame implements InternetAddressWindow{
 		if(host==null || host.trim().length()==0) return;
 		
 		int port = Integer.parseInt(_port.getText());
-		_addressKeeper.add(_contact, host, port);
+		_addressKeeper.add(contact(), host, port);
 		loadInternetAddressesForCurrentContact() ;
 		cleanFields();
 	}
@@ -167,16 +167,20 @@ class InternetAddressWindowImpl extends JFrame implements InternetAddressWindow{
 		DefaultListModel model = new DefaultListModel();
 		List<InternetAddress> elements = _addressKeeper.addresses().currentElements();
 		for (InternetAddress internetAddress : elements) {
-			if(internetAddress.contact()==_contact)
-				model.addElement(new InternetAddressWrapper(internetAddress));
+			if(internetAddress.contact() == contact())
+				model.addElement(new InternetAddressPrettyPrinter(internetAddress));
 		}
 		_lstAddresses.setModel(model);
 	}
 	
-	private class InternetAddressWrapper{
+	private Contact contact() {
+		return my(ContactsGui.class).selectedContact().currentValue();
+	}
+
+	private class InternetAddressPrettyPrinter{
 		final InternetAddress _address;
 		
-		public InternetAddressWrapper(InternetAddress address) {
+		public InternetAddressPrettyPrinter(InternetAddress address) {
 			_address = address;
 		}
 		

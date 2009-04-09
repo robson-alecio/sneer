@@ -10,6 +10,8 @@ import spikes.priscila.go.ToroidalGoBoard;
 
 public class GoTest extends BrickTest {
 
+	private GoBoard _board;
+	
 	@Test
 	public void testSingleStoneCaptureNew() {
 		String[] setup = new String[]{
@@ -22,34 +24,41 @@ public class GoTest extends BrickTest {
 				"+ + + + + + + + +",
 				"+ + + + + + + + +",
 				"+ + + + + + + + +"};
-		GoBoard board = new ToroidalGoBoard(setup);
+		_board = new ToroidalGoBoard(setup);
 		
-		assertTrue(board.stoneAt(4, 3) != null);
-		board.playStone(4,4);
-		assertTrue(board.stoneAt(4, 3) == null);
+		assertTrue(_board.stoneAt(4, 3) != null);
+		_board.playStone(4,4);
+		assertTrue(_board.stoneAt(4, 3) == null);
+		assertCaptured(0, 1);
 		
-		board.playStone(4,5);
-		board.playStone(0,1);
+		_board.playStone(4,5);
+		_board.playStone(0,1);
 		
-		assertTrue(board.stoneAt(4, 4) != null);
-		board.playStone(4,3);
-		assertTrue(board.stoneAt(4, 4) == null);
+		assertTrue(_board.stoneAt(4, 4) != null);
+		_board.playStone(4,3);
+		assertTrue(_board.stoneAt(4, 4) == null);
+		assertCaptured(1, 1);
+	}
+
+	private void assertCaptured(int black, int white) {
+		assertSame(black, _board.blackCapturedCount().currentValue());
+		assertSame(white, _board.whiteCapturedCount().currentValue());
 	}
 
 	@Test
 	public void testSingleStoneCapture() {
-		GoBoard board = new ToroidalGoBoard(9);
+		_board = new ToroidalGoBoard(9);
 		
-		board.playStone(4, 2);
-		board.playStone(4, 3);
-		board.playStone(3, 3);
-		board.playStone(3, 4);
-		board.playStone(5, 3);
-		board.playStone(5, 4);
+		_board.playStone(4, 2);
+		_board.playStone(4, 3);
+		_board.playStone(3, 3);
+		_board.playStone(3, 4);
+		_board.playStone(5, 3);
+		_board.playStone(5, 4);
 
-		assertTrue(board.stoneAt(4, 3) != null);
-		board.playStone(4,4);
-		assertTrue(board.stoneAt(4, 3) == null);
+		assertTrue(_board.stoneAt(4, 3) != null);
+		_board.playStone(4,4);
+		assertTrue(_board.stoneAt(4, 3) == null);
 	}
 
 	@Test
@@ -64,11 +73,11 @@ public class GoTest extends BrickTest {
 				"+ + + + + + + + +",
 				"+ + + + + + + + +",
 				"+ + + + + + + + +"};
-		GoBoard board = new ToroidalGoBoard(setup);
+		_board = new ToroidalGoBoard(setup);
 		
-		board.playStone(5, 5);
+		_board.playStone(5, 5);
 		
-		assertEquals(board.printOut(),
+		assertEquals(_board.printOut(),
 		    " + + + + + + + + +\n" +
 			" + + + + + + + + +\n" +
 			" + + + + x x + + +\n" +
@@ -79,6 +88,7 @@ public class GoTest extends BrickTest {
 			" + + + + + + + + +\n" +
 			" + + + + + + + + +\n"
 		);
+		assertCaptured(0, 3);
 	}
 	
 	@Test
@@ -93,9 +103,9 @@ public class GoTest extends BrickTest {
 				"+ + + + + + + + +",
 				"+ + + + + + + + +",
 				"+ + + + + + + + +"};
-		GoBoard board = new ToroidalGoBoard(setup);
-		assertFalse(board.canPlayStone(5, 4));
-		assertTrue(board.stoneAt(5, 4) == null);
+		_board = new ToroidalGoBoard(setup);
+		assertFalse(_board.canPlayStone(5, 4));
+		assertTrue(_board.stoneAt(5, 4) == null);
 	}
 	
 	@Test
@@ -110,8 +120,8 @@ public class GoTest extends BrickTest {
 				"+ + + + + + + + +",
 				"+ + + + + + + + +",
 				"+ + + + + + + + +"};
-		GoBoard board = new ToroidalGoBoard(setup);
-		assertTrue(board.canPlayStone(4, 3));
+		_board = new ToroidalGoBoard(setup);
+		assertTrue(_board.canPlayStone(4, 3));
 	}
 	
 	@Test
@@ -126,10 +136,10 @@ public class GoTest extends BrickTest {
 				"+ + + + + + + + +",
 				"+ + + + + + + + +",
 				"+ + + + + + + + +"};
-		GoBoard board = new ToroidalGoBoard(setup);
-		assertTrue(board.canPlayStone(4, 3));
-		board.playStone(4, 3);
-		assertFalse(board.canPlayStone(4, 2));
+		_board = new ToroidalGoBoard(setup);
+		assertTrue(_board.canPlayStone(4, 3));
+		_board.playStone(4, 3);
+		assertFalse(_board.canPlayStone(4, 2));
 	}
 
 	
@@ -151,10 +161,10 @@ public class GoTest extends BrickTest {
 				"+ + + + + + + + +",
 				"+ + + + + + + + +",
 				"+ + + + + + + + +"};
-		GoBoard board = new ToroidalGoBoard(setup);
+		_board = new ToroidalGoBoard(setup);
 		
-		board.playStone(4, 3);
-		assertEquals(board.printOut(),
+		_board.playStone(4, 3);
+		assertEquals(_board.printOut(),
 			 	" + + + + + + + + +\n"+
 				" + + + + x + + + +\n"+
 				" + + + x + x + + +\n"+
@@ -164,6 +174,7 @@ public class GoTest extends BrickTest {
 				" + + + + + + + + +\n"+
 				" + + + + + + + + +\n"+
 				" + + + + + + + + +\n"
-			);
+		);
+		assertCaptured(0, 2);
 	}
 }

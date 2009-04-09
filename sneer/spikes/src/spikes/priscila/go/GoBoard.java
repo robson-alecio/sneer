@@ -8,14 +8,13 @@ import java.util.Arrays;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.impl.RegisterImpl;
-
 import wheel.io.serialization.DeepCopier;
 
 public class GoBoard {
 
 	public static enum StoneColor { BLACK,	WHITE; }
-	private final Register<Integer> _countBlackStones = new RegisterImpl<Integer>(0);
-	private final Register<Integer> _countWhiteStones = new RegisterImpl<Integer>(0);
+	private final Register<Integer> _blackStonesCaptured = new RegisterImpl<Integer>(0);
+	private final Register<Integer> _whiteStonesCaptured = new RegisterImpl<Integer>(0);
 	
 	public GoBoard(int size) {
 		_intersections = new Intersection[size][size];
@@ -83,38 +82,26 @@ public class GoBoard {
 	}
 
 	private void countCapturedStones() {
+		countCapturedStones(_blackStonesCaptured, BLACK);
+		countCapturedStones(_whiteStonesCaptured, WHITE);
+	}
+
+	private void countCapturedStones(Register<Integer> counter,	StoneColor color) {
+		Integer captured = countCapturedStones(color);
+		counter.setter().consume(counter.output().currentValue() + captured);
+	}
+
+	private int countCapturedStones(StoneColor color) {
+		int result = 0;
 		
-		int blackPreviousSituation=0;
-		int whitePreviousSituation=0;
-		int blackSituation=0;
-		int whiteSituation=0;
+		for (int line = 0; line < size(); line++)
+			for (int column = 0; column < size(); column++) {
+				StoneColor previous = _previousSituation[line][column]._stone;
+				StoneColor current = _intersections[line][column]._stone;
+				if (previous == color && current == null) result++;
+			};
 		
-		for(Intersection[] intersections :_previousSituation){
-			for(Intersection intersection : intersections){
-				if(intersection._stone != null) {
-					if(intersection._stone.equals(BLACK)) 
-						blackPreviousSituation++;
-					if(intersection._stone.equals(WHITE)) 
-						whitePreviousSituation++;
-				}
-			}
-		}
-		
-		for(Intersection[] intersections :_intersections){
-			for(Intersection intersection : intersections){
-				if(intersection._stone != null) {
-					if(intersection._stone.equals(BLACK)) 
-						blackSituation++;
-					else if(intersection._stone.equals(WHITE)) 
-						whiteSituation++;
-				}
-			}
-		}
-		if(blackPreviousSituation>blackSituation)
-			_countBlackStones.setter().consume(_countBlackStones.output().currentValue() + blackPreviousSituation-blackSituation);
-		
-		if(whitePreviousSituation>whiteSituation)
-			_countWhiteStones.setter().consume(_countWhiteStones.output().currentValue() + whitePreviousSituation-whiteSituation);
+		return result;
 	}
 
 	private void tryToPlayStone(int x, int y) throws IllegalMove{
@@ -166,19 +153,21 @@ public class GoBoard {
 	}
 	
 	private void setup(String[] setup){
-		int y =0;
-		for(String line: setup){
-			int x=0;
-			for(char position:line.toCharArray()){
-				if(position == 'x'){
-					intersection(x++, y)._stone = BLACK;
-				} else if(position == 'o'){
-					intersection(x++, y)._stone = WHITE;
-				}else if(position == '+'){ 
-					x++;
-				}
-			}
-			y++;
+		for (int y = 0; y < setup.length; y++)
+			setupLine(y, setup[y]);
+	}
+
+	private void setupLine(int y, String line) {
+		int x = 0;
+		for(char symbol : line.toCharArray()) {
+			if (symbol == ' ') continue;
+			
+			StoneColor stone = null;
+			if(symbol == 'x') stone = BLACK;
+			if(symbol == 'o') stone = WHITE;
+			
+			intersection(x, y)._stone = stone;
+			x++;
 		}
 	}
 	
@@ -201,10 +190,10 @@ public class GoBoard {
 	}
 	
 	public Signal<Integer> blackCapturedCount() {
-		return _countBlackStones.output();
+		return _blackStonesCaptured.output();
 	}
 
 	public Signal<Integer> whiteCapturedCount() {
-		return _countWhiteStones.output();
+		return _whiteStonesCaptured.output();
 	}
 }

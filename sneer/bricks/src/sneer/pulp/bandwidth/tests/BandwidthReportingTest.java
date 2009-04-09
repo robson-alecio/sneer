@@ -17,6 +17,7 @@ import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
 import wheel.lang.Consumer;
+import wheel.lang.PickyConsumer;
 import wheel.lang.StringUtils;
 
 public class BandwidthReportingTest extends BrickTest {
@@ -108,9 +109,15 @@ public class BandwidthReportingTest extends BrickTest {
 	}
 
 	private Contact getContactMock() {
-		return new Contact(){@Override public Signal<String> nickname() {
-			return my(Signals.class).constant("Sandro");
-		}};
+		return new Contact(){
+			@Override public Signal<String> nickname() {
+				return my(Signals.class).constant("Sandro");
+			}
+
+			@Override public PickyConsumer<String> nicknameSetter() {
+				throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
+			}
+		};
 	}
 	
 	private class BandwidthCounterMock implements BandwidthCounter{

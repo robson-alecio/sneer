@@ -12,6 +12,11 @@ class InternetAddressKeeperImpl implements InternetAddressKeeper {
 	private ListRegister<InternetAddress> _addresses = new ListRegisterImpl<InternetAddress>();
 	
 	@Override
+	public void remove(InternetAddress address) {
+		_addresses.remove(address);
+	}	
+	
+	@Override
 	public ListSignal<InternetAddress> addresses() {
 		return _addresses.output();
 	}

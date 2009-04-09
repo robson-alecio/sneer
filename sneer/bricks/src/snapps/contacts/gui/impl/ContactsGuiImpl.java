@@ -27,6 +27,7 @@ import snapps.contacts.actions.ContactAction;
 import snapps.contacts.actions.ContactActionManager;
 import snapps.contacts.gui.ContactsGui;
 import snapps.contacts.gui.comparator.ContactComparator;
+import snapps.contacts.internetaddress.gui.InternetAddressWindow;
 import sneer.brickness.PublicKey;
 import sneer.commons.lang.Functor;
 import sneer.pulp.connection.ConnectionManager;
@@ -38,14 +39,15 @@ import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.dashboard.InstrumentWindow;
-import sneer.skin.dashboard.util.GuiUtil;
 import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
+import sneer.skin.windowboundssetter.WindowBoundsSetter;
 import wheel.io.ui.graphics.Images;
 import wheel.reactive.lists.ListSignal;
 
+//Refactor Consider use only reactive widgets  
 class ContactsGuiImpl implements ContactsGui {
 	
 	private static final Image ONLINE = getImage("online.png");
@@ -94,6 +96,7 @@ class ContactsGuiImpl implements ContactsGui {
 		scrollPane.setBackground(_contactList.getComponent().getBackground());
 		new PopUpSupport();
 		new ToolbarSupport(window.actions());
+		addEditContactAction();
 	}
 	
 	@Override
@@ -135,12 +138,14 @@ class ContactsGuiImpl implements ContactsGui {
 			}
 			frm.dispose();
 			
-			InternetAddressFrame frame = new InternetAddressFrame(contact);
-			my(GuiUtil.class).setWindowBounds(_container, frame, 20, 400);
-			frame.setVisible(true);
+			InternetAddressWindow window = my(InternetAddressWindow.class);
+			window.setActiveContact(contact);
+			window.open();
 		}});
 		
-		my(GuiUtil.class).setWindowBounds(_container, frm, 0, 300);
+		
+		frm.setSize(300, 150);
+		my(WindowBoundsSetter.class).setBestBounds(frm);
 		frm.setVisible(true);
 		
 	}
@@ -185,6 +190,9 @@ class ContactsGuiImpl implements ContactsGui {
 			list.addMouseListener(new MouseAdapter(){ @Override public void mouseReleased(MouseEvent e) {
 				if (e.isPopupTrigger())
 					tryShowContactMenu(e);
+				Contact contact = (Contact) list.getSelectedValue();
+				if(contact==null) return;
+				my(InternetAddressWindow.class).setActiveContact(contact);
 			}});
 		}
 
@@ -212,6 +220,20 @@ class ContactsGuiImpl implements ContactsGui {
 			menu.add(item);
 			return item;
 		}
+	}
+	
+	private void addEditContactAction() {
+		_actionsManager.addContactAction(new ContactAction(){
+			private Contact _contact;
+			@Override public boolean isEnabled() {return true;}
+			@Override public boolean isVisible() { return true; }
+			@Override public void setActive(Contact contact) { _contact = contact; }
+			@Override public String caption() { return "Edit Contact Info";}
+			@Override public void run() {
+				InternetAddressWindow frm = my(InternetAddressWindow.class);
+				frm.setActiveContact(_contact);
+				frm.open();
+			}});
 	}
 	
 	@Override

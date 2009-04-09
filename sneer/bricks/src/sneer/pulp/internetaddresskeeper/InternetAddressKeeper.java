@@ -7,8 +7,9 @@ import wheel.reactive.lists.ListSignal;
 @Brick
 public interface InternetAddressKeeper {
 
-	void add(Contact contact, String host, int port);
-	
 	ListSignal<InternetAddress> addresses();
+
+	void add(Contact contact, String host, int port);
+	void remove(InternetAddress address);
 
 }

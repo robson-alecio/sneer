@@ -11,11 +11,14 @@ import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.network.ByteArraySocket;
+import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
+import sneer.pulp.reactive.impl.RegisterImpl;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import wheel.lang.Consumer;
+import wheel.lang.PickyConsumer;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
@@ -74,20 +77,25 @@ class ConnectionManagerMock implements ConnectionManager{
 class ContactMock implements Contact{
 
 	final Signal<Boolean> _isOnline;
-	final Signal<String> _nick;
+	final Register<String> _nick = new RegisterImpl<String>("");
 
 	ContactMock(String nick, boolean isOnline) {
-		_nick = my(Signals.class).constant(nick);
+		_nick.setter().consume(nick);
 		_isOnline = my(Signals.class).constant(isOnline);
 	}
 
 	@Override
 	public Signal<String> nickname() {
-		return _nick;
+		return _nick.output();
 	}
 	
 	@Override
 	public String toString() {
-		return _isOnline.currentValue() + " - " + _nick.currentValue();
+		return _isOnline.currentValue() + " - " + _nick.output().currentValue();
+	}
+
+	@Override
+	public PickyConsumer<String> nicknameSetter() {
+		return _nick.setter();
 	}
 }

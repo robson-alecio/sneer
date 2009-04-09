@@ -25,7 +25,7 @@ public interface ReactiveWidgetFactory extends OldBrick {
 	TextWidget<JTextField> newEditableLabel(Signal<?> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy);
 	
 	TextWidget<JTextField> newTextField(Signal<?> source, PickyConsumer<String> setter);
-	TextWidget<JTextField> newTextField(Signal<?> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy);
+	TextWidget<JTextField> newTextField(Signal<?> source, PickyConsumer<? super String> setter, NotificationPolicy notificationPolicy);
 	
 	TextWidget<JTextPane> newTextPane(Signal<?> source, PickyConsumer<String> setter);
 	TextWidget<JTextPane> newTextPane(Signal<?> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy);

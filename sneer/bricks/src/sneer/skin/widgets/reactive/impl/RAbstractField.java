@@ -42,7 +42,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	static final Color INVALID = my(Colors.class).invalid();
 	
 	protected final Signal<?> _source;
-	protected final PickyConsumer<String> _setter;
+	protected final PickyConsumer<? super String> _setter;
 	protected final WIDGET _textComponent;
 	protected final NotificationPolicy _notificationPolicy;
 
@@ -60,7 +60,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 		this(textComponent, source, null, NotificationPolicy.OnTyping);
 	}
 	
-	RAbstractField(WIDGET textComponent, Signal<?> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy) {
+	RAbstractField(WIDGET textComponent, Signal<?> source, PickyConsumer<? super String> setter, NotificationPolicy notificationPolicy) {
 		_environment = my(Environment.class);
 		
 		_source = source;
@@ -206,7 +206,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	}
 	
 	@Override
-	public PickyConsumer<String> setter(){
+	public PickyConsumer<? super String> setter(){
 		return _setter;
 	}
 	

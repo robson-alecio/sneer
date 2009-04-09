@@ -60,7 +60,7 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 	
 	
 	@Override
-	public TextWidget<JTextField> newTextField(Signal<?> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy) {
+	public TextWidget<JTextField> newTextField(Signal<?> source, PickyConsumer<? super String> setter, NotificationPolicy notificationPolicy) {
 		GuiThread.assertInGuiThread();
 		return new RTextFieldImpl(source, setter, notificationPolicy);
 	}

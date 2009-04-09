@@ -18,6 +18,8 @@ TASKS
 				- Expose Signal<Contact> selectedContact()
 				- Generic ListSignal component for contacts and internet addresses.
 				- ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
+
+	- WatchMe - Move to spikes. Remove from main.Sneer's list of bricks.
 	
 	- DynDns Revision.
 		- Simplify to remove all synchronization. Let the container synchronize the brick. 

@@ -1,10 +1,7 @@
 package sneer.pulp.natures.gui.tests.fixtures.impl;
 
-import static sneer.commons.environments.Environments.my;
-
 import java.awt.EventQueue;
 
-import sneer.commons.environments.Environment;
 import sneer.pulp.natures.gui.tests.fixtures.SomeGuiBrick;
 import wheel.io.ui.GuiThread;
 
@@ -34,8 +31,4 @@ class SomeGuiBrickImpl implements SomeGuiBrick {
 		}
 	}
 	
-	@Override
-	public Environment currentEnvironment() {
-		return my(Environment.class);
-	}
 }

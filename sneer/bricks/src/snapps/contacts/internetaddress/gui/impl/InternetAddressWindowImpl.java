@@ -48,15 +48,15 @@ class InternetAddressWindowImpl extends JFrame implements InternetAddressWindow{
 	
 	private final Register<String> _contactProxy = new RegisterImpl<String>(null);
 	private Consumer<String> _adapterToVoidGC;
-	private Consumer<Contact> _selectContactReceiverToAvoidGC;
+	private Consumer<Contact> _changeContactSelectionReceiverToAvoidGC;
 	
 	InternetAddressWindowImpl() {
-		//Fix: Rebind not working. Check consumer notification.
-		 _selectContactReceiverToAvoidGC = new Consumer<Contact>(){ @Override public void consume(Contact contact) {
+		//Fix: Auto-rebind not working. Check consumer notification.
+		 _changeContactSelectionReceiverToAvoidGC = new Consumer<Contact>(){ @Override public void consume(Contact contact) {
 			 System.out.println(contact);
 			 rebindContact(contact);
 		 }};
-		my(ContactsGui.class).selectedContact().addReceiver(_selectContactReceiverToAvoidGC);
+		my(ContactsGui.class).selectedContact().addReceiver(_changeContactSelectionReceiverToAvoidGC);
 	}
 	
 	@Override

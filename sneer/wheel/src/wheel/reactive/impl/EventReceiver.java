@@ -3,7 +3,7 @@ package wheel.reactive.impl;
 import sneer.pulp.events.EventSource;
 import wheel.lang.Consumer;
 
-/** Instances of this class hold a reference to the EventSources they are receiving, so that these sources are not GCd. */
+/** Instances of this class hold a reference to the EventSources (Signals) they are receiving, so that these sources are not GCd. */
 public abstract class EventReceiver<T> implements Consumer<T> {
 	
 	@SuppressWarnings("unused")	private final Object _referenceToAvoidGc;

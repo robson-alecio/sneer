@@ -8,24 +8,21 @@ TASKS
 
 	- [Klaus] DynDns user data - Use transparent persistence to save it, not a properties file.
 
-﻿	- [Priscila] GoBoard.countCapturedStones() - DRY
 
-	- [Sandro] Contact CRUD Instrument
+	- [Sandro and Igor] User Info, Contact List and Contact CRUD - Don't do any other task until:
+		- The GUI is elegant. Talk to Klaus.
+		- The code is clean. Talk to Klaus.
+			- Minimal Contact List (Summit showcase)
+				- Accept menu action registrations. (dependency inverted)
+				- Accept cell part renderers. (dependency inverted)
+				- Expose Signal<Contact> selectedContact()
+				- Generic ListSignal component for contacts and internet addresses.
+				- ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
+					
 	
 	- [Sandro] Community Initiative - Incorporate Gandhi's Google maps brick. (Run LocationGuiMain)
 
-	- [Petra] Tray and Dashboard Titlebar Icon
-	- [Petra] Online and Offline Icons
-
-	- WatchMe
-		- Accelerate.
-			- Reactivate the Cache - Set WatchMeImpl.CACHE_CAPACITY to 3000 (Currently set to zero). 
-				- Add a Sequencer for incoming ImageDeltaPackets.
-				- Flush receiver's cache every time a packet is lost to avoid inconsistency.
-					- Let peer signal interest in "lost cache packets". Do not implement this. Move this down in the roadmap when all other WatchMe tasks are done. A workaround for now is the WatchMe sender stopping and restarting WatchMe because this flushes the senders cache.
-		
-
-	30/FEB --------------------------------------
+﻿	- [Priscila] GoBoard.countCapturedStones() - DRY
 
 	- TopTen - First Round
 		 - Categories (Ex.: Movies, Sports, Songs, Restaurants, etc)
@@ -34,12 +31,11 @@ TASKS
 		 	- CRUD
 		 - Synonyms	
 	
-	30/MAR --------------------------------------
-
 	- Authentication (PK)
 
 	- Affinity
 		- Access control to all other snapps by affinity.
+
 	30/APR --------------------------------------
 
 	- TopTen - Second Round
@@ -51,8 +47,7 @@ TASKS
 	- Annotations/Comments/Tags
 
 	- Free Software Forum - Make a Splash
-		- Installer.EXE for Windows
-			- Card CD?
+			
 	25/JUN -------------------------------------- TopTen - FISL RELEASE
 
 	- Issue Tracking
@@ -71,6 +66,18 @@ TASKS
 		- Sandboxing
 
 	- Wind History Queries
+
+	- [Petra] Tray and Dashboard Titlebar Icon
+	- [Petra] Online and Offline Icons
+	
+	- WatchMe
+	- Accelerate.
+		- Reactivate the Cache - Set WatchMeImpl.CACHE_CAPACITY to 3000 (Currently set to zero). 
+			- Add a Sequencer for incoming ImageDeltaPackets.
+			- Flush receiver's cache every time a packet is lost to avoid inconsistency.
+				- Let peer signal interest in "lost cache packets". Do not implement this. Move this down in the roadmap when all other WatchMe tasks are done. A workaround for now is the WatchMe sender stopping and restarting WatchMe because this flushes the senders cache.
+
+	
 	---------------------------------- PUBLIC RELEASE (1.0) (Sovereign platform ok)
 
     - File Sharing

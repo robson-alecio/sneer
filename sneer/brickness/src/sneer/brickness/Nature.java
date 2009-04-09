@@ -1,7 +1,10 @@
 package sneer.brickness;
 
+import java.util.List;
+
+
 public interface Nature {
 	
-	byte[] realize(byte[] classBytes);
+	List<ClassDefinition> realize(ClassDefinition classDef);
 	
 }

@@ -1,5 +1,8 @@
 package sneer.brickness.impl.tests;
 
+import java.io.IOException;
+import java.util.Arrays;
+
 import org.apache.commons.io.FileUtils;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -7,6 +10,7 @@ import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Assert;
 import org.junit.Test;
 
+import sneer.brickness.ClassDefinition;
 import sneer.brickness.impl.BrickPlacementException;
 import sneer.brickness.impl.Brickness;
 import sneer.brickness.impl.IllegalNatureException;
@@ -15,6 +19,7 @@ import sneer.brickness.impl.tests.fixtures.nature.brick.impl.BrickOfSomeNatureIm
 import sneer.brickness.impl.tests.fixtures.nature.provider.SomeNature;
 import wheel.io.Jars;
 
+// TODO: test multiple natures
 public class NatureTest extends Assert {
 	
 	@Test
@@ -24,17 +29,17 @@ public class NatureTest extends Assert {
 		
 		mockery.checking(new Expectations() {{
 			
-			final byte[] brickImplBytecode = FileUtils.readFileToByteArray(Jars.fileFor(BrickOfSomeNatureImpl.class));
-			exactly(1).of(nature).realize(brickImplBytecode);
-				will(returnValue(brickImplBytecode));
-			
+			final Class<BrickOfSomeNatureImpl> clazz = BrickOfSomeNatureImpl.class;
+			final byte[] brickImplBytecode = bytecodeFor(clazz);
+			final ClassDefinition classDef = new ClassDefinition(clazz.getName(), brickImplBytecode);
+			exactly(1).of(nature).realize(classDef);
+				will(returnValue(Arrays.asList(classDef)));
 		}});
 		
 		placeBrick(new Brickness(nature), BrickOfSomeNature.class);
 		
 		mockery.assertIsSatisfied();
 	}
-	
 	
 	@Test
 	public void natureWithoutImplementation() {
@@ -50,5 +55,9 @@ public class NatureTest extends Assert {
 	protected void placeBrick(Brickness subject, final Class<?> brick) {
 		subject.placeBrick(Jars.classpathRootFor(brick), brick.getName());
 	}
-	
+
+	private byte[] bytecodeFor(final Class<?> clazz)
+			throws IOException {
+		return FileUtils.readFileToByteArray(Jars.fileFor(clazz));
+	}
 }

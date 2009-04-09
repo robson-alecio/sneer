@@ -34,7 +34,7 @@ public class Brickness {
 		_bindings = new Bindings();
 		_bindings.bind(bindings);
 		
-		 _environment = new CachingEnvironment(_bindings.environment());
+		_environment = new CachingEnvironment(_bindings.environment());
 	}
 
 	public void placeBrick(File classRootDirectory, String brickName) {

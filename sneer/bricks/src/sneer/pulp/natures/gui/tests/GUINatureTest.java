@@ -5,7 +5,7 @@ import static sneer.commons.environments.Environments.my;
 import javax.swing.SwingUtilities;
 
 import org.junit.Assert;
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
 
 import sneer.brickness.impl.Brickness;
@@ -15,17 +15,29 @@ import sneer.pulp.natures.gui.GUI;
 import sneer.pulp.natures.gui.tests.fixtures.SomeGuiBrick;
 import wheel.io.Jars;
 
-@Ignore
 public class GUINatureTest extends Assert {
 	
 	Brickness subject = new Brickness();
 	
+	@Before
+	public void placeBricks() {
+		placeBrick(GUI.class);
+		placeBrick(SomeGuiBrick.class);
+	}
+	
+	@Test
+	public void invocationHappensInBricknessEnvironment() {
+		Environments.runWith(subject.environment(), new Runnable() { @Override public void run() {
+			try {
+				assertSame(subject.environment(), my(SomeGuiBrick.class).currentEnvironment());
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}});
+	}
+	
 	@Test
 	public void invocationHappensInTheSwingThread() {
-		placeBrick(GUI.class);  
-		
-		placeBrick(SomeGuiBrick.class);
-		
 		Environments.runWith(subject.environment(), new Runnable() { @Override public void run() {
 			try {
 				assertSame(swingThread(), my(SomeGuiBrick.class).currentThread());

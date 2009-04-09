@@ -33,6 +33,8 @@ TASKS
 				}})
 			}
 			
+			- GUI brick constructors should execute in the gui thread
+			
 			- Unignore and implement GuiBrickTest.guiBrickCallbacksComeInSwingThread()
 			- Delete the GuiBrickInvocationHandler.
 		- [Klaus] GuiBrick Javadoc - Revise.

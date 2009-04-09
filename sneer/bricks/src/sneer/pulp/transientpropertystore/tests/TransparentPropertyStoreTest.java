@@ -4,6 +4,7 @@ import static sneer.commons.environments.Environments.my;
 
 import java.io.IOException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.brickness.impl.BrickDecorator;
@@ -18,6 +19,7 @@ import wheel.io.Jars;
 public class TransparentPropertyStoreTest extends TestThatMightUseResources {
 
 	@Test
+	@Ignore
 	public void testPropertyStore() throws IOException {
 		runWithTransparentPersistence(new Runnable() { @Override public void run() {
 			TransientPropertyStore subject1 = my(TransientPropertyStore.class);

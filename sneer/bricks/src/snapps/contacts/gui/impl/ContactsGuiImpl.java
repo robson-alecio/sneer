@@ -106,27 +106,28 @@ class ContactsGuiImpl implements ContactsGui {
 	
 	private void showNewContactFrame() {
 		final JFrame frm = new JFrame("Inform Contact Nickname:");
-		frm.getContentPane(). setLayout(new GridBagLayout());
 		
+		JButton btnOk = new JButton("Ok");
+		JButton btnCancel = new JButton("Cancel");
 		final JTextField txtNick = new JTextField();
+
+		frm.getContentPane(). setLayout(new GridBagLayout());
 		frm.getContentPane().add(txtNick,  new GridBagConstraints(0,0, 2,1, 2.0,0.0, 
 				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5,5,5,5), 0, 0) );
 
-		JButton bntCancel = new JButton("Cancel");
-		frm.getContentPane().add(bntCancel,  new GridBagConstraints(0,1, 1,1, 1.0,0.0, 
+		frm.getContentPane().add(btnOk,  new GridBagConstraints(0,1, 1,1, 1.0,0.0, 
 				GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5,5,5,5), 0, 0) );
 
-		JButton bntOk = new JButton("Ok");
-		frm.getContentPane().add(bntOk,  new GridBagConstraints(1,1, 1,1, 1.0,0.0, 
+		frm.getContentPane().add(btnCancel,  new GridBagConstraints(1,1, 1,1, 1.0,0.0, 
 				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5,5,5,5), 0, 0) );
 		
 		frm.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		bntCancel.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
+		btnCancel.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 			frm.setVisible(false);
 			frm.dispose();
 		}});
 		
-		bntOk.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
+		btnOk.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 			frm.setVisible(false);
 			String nick = txtNick.getText();
 			if(nick == null || nick.trim().length() == 0)	return;
@@ -175,7 +176,7 @@ class ContactsGuiImpl implements ContactsGui {
 	
 	private final class ToolbarSupport {
 		public ToolbarSupport(JPopupMenu popupMenu) {
-			JMenuItem addContact = new JMenuItem("Add a new Contact");
+			JMenuItem addContact = new JMenuItem("add or edit a contact");
 			popupMenu.add(addContact);
 			addContact.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 				showNewContactFrame();

@@ -6,7 +6,6 @@ import sneer.pulp.contacts.Contact;
 @Brick
 public interface InternetAddressWindow {
 
-	void setActiveContact(Contact contact);
-	void open();
+	void open(Contact contact);
 
 }

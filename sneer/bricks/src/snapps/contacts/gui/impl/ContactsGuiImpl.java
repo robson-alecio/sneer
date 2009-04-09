@@ -14,7 +14,10 @@ import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import snapps.contacts.actions.ContactAction;
 import snapps.contacts.actions.ContactActionManager;
@@ -25,8 +28,10 @@ import sneer.commons.lang.Functor;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
+import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
+import sneer.pulp.reactive.impl.RegisterImpl;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.dashboard.InstrumentWindow;
@@ -35,6 +40,7 @@ import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.io.ui.graphics.Images;
+import wheel.lang.Consumer;
 import wheel.reactive.lists.ListSignal;
 
 //Refactor Consider use only reactive widgets  
@@ -50,11 +56,14 @@ class ContactsGuiImpl implements ContactsGui {
 	private final ConnectionManager _connections = my(ConnectionManager.class);
 	private final ContactComparator _comparator = my(ContactComparator.class);
 	private final ListSorter _sorter = my(ListSorter.class);
-
 	private final SignalChooser<Contact> _chooser;
+
+	private Consumer<Contact> _selectedContactReceiverToAvoidGC;
 	private ListSignal<Contact> _sortedList;
 	private ListWidget<Contact> _contactList;
 	private Container _container;
+	
+	private final Register<Contact> _selectedContact = new RegisterImpl<Contact>(null);
 	
 	private static Image getImage(String fileName) {
 		return Images.getImage(ContactsGuiImpl.class.getResource(fileName));
@@ -88,7 +97,8 @@ class ContactsGuiImpl implements ContactsGui {
 		addNewContatAction(window.actions());
 		addEditContactAction();
 
-		new PopUpSupport();
+		new ListContactsPopUpSupport();
+		new SelectedContactSupport();
 	}
 	
 	@Override
@@ -101,6 +111,11 @@ class ContactsGuiImpl implements ContactsGui {
 		return "My Contacts";
 	}
 	
+	@Override
+	public Signal<Contact> selectedContact(){
+		return _selectedContact.output();
+	}
+	
 	private void addNewContatAction(JPopupMenu popupMenu) {
 		JMenuItem addContact = new JMenuItem("add or edit a contact");
 		popupMenu.add(addContact);
@@ -111,15 +126,12 @@ class ContactsGuiImpl implements ContactsGui {
 	
 	private void addEditContactAction(){
 		_actionsManager.addContactAction(new ContactAction(){
-			private Contact _contact;
 			@Override public boolean isEnabled() {return true;}
 			@Override public boolean isVisible() { return true; }
-			@Override public void setActive(Contact contact) { _contact = contact; }
+			@Override public void setActive(Contact contact) { }
 			@Override public String caption() { return "Edit Contact Info";}
 			@Override public void run() {
-				InternetAddressWindow frm = my(InternetAddressWindow.class);
-				frm.setActiveContact(_contact);
-				frm.open();
+				my(InternetAddressWindow.class).open(_selectedContact.output().currentValue());
 			}});
 	}	
 	
@@ -138,15 +150,32 @@ class ContactsGuiImpl implements ContactsGui {
 		}
 	}
 	
-	private final class PopUpSupport {
-		private PopUpSupport() {
+	private final class SelectedContactSupport {
+
+		private SelectedContactSupport() {
+			final JList list = _contactList.getMainWidget();
+			ListSelectionModel selectionModel = list.getSelectionModel();
+			selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			
+			selectionModel.addListSelectionListener(new ListSelectionListener(){ @Override public void valueChanged(ListSelectionEvent e) {
+				Contact contact = (Contact) list.getSelectedValue();
+				_selectedContact.setter().consume(contact);
+			}});
+			
+			_selectedContactReceiverToAvoidGC = new Consumer<Contact>(){ @Override public void consume(final Contact contact) {
+					if(list.getSelectedValue()==contact) return;
+					list.setSelectedValue(contact, true);
+			}};
+			_selectedContact.output().addReceiver(_selectedContactReceiverToAvoidGC);
+		}
+	}
+	
+	private final class ListContactsPopUpSupport {
+		private ListContactsPopUpSupport() {
 			final JList list = _contactList.getMainWidget();
 			list.addMouseListener(new MouseAdapter(){ @Override public void mouseReleased(MouseEvent e) {
 				if (e.isPopupTrigger())
 					tryShowContactMenu(e);
-				Contact contact = (Contact) list.getSelectedValue();
-				if(contact==null) return;
-				my(InternetAddressWindow.class).setActiveContact(contact);
 			}});
 		}
 

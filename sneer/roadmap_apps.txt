@@ -15,7 +15,7 @@ TASKS
 			- Minimal Contact List (Summit showcase)
 				- Accept menu action registrations. (dependency inverted)
 				- Accept cell part renderers. (dependency inverted)
-				- Expose Signal<Contact> selectedContact()
+				- [Sandro - Working] Expose Signal<Contact> selectedContact()
 				- Generic ListSignal component for contacts and internet addresses.
 				- ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
 

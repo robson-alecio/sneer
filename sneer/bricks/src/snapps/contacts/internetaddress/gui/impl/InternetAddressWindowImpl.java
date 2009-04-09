@@ -20,6 +20,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import snapps.contacts.gui.ContactsGui;
 import snapps.contacts.internetaddress.gui.InternetAddressWindow;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.internetaddresskeeper.InternetAddress;
@@ -46,28 +47,34 @@ class InternetAddressWindowImpl extends JFrame implements InternetAddressWindow{
 	private TextWidget<JTextField> _txtNickname;
 	
 	private final Register<String> _contactProxy = new RegisterImpl<String>(null);
-	private Consumer<String> adapterToVoidGC;
+	private Consumer<String> _adapterToVoidGC;
+	private Consumer<Contact> _selectContactReceiverToAvoidGC;
+	
+	InternetAddressWindowImpl() {
+		//Fix: Rebind not working. Check consumer notification.
+		 _selectContactReceiverToAvoidGC = new Consumer<Contact>(){ @Override public void consume(Contact contact) {
+			 System.out.println(contact);
+			 rebindContact(contact);
+		 }};
+		my(ContactsGui.class).selectedContact().addReceiver(_selectContactReceiverToAvoidGC);
+	}
 	
 	@Override
-	public void setActiveContact(Contact contact){
-		_contact = contact;
-		if(!_isGuiInitialized) initGui();
-		rebindContact();
-	}
-
-	@Override
-	public void open() {
-		if(_contact == null) return;
+	public void open(Contact contact) {
+		rebindContact(contact);
 		setVisible(true);
 	}
-
+	
 	//Refactor add a better rebind support
-	private void rebindContact() {
+	private void rebindContact(Contact contact) {
+		_contact = contact;
+		if(!_isGuiInitialized) initGui();
+		
 		_contactProxy.setter().consume(_contact.nickname().currentValue());
-		adapterToVoidGC = new Consumer<String>(){ @Override public void consume(String value) {
+		_adapterToVoidGC = new Consumer<String>(){ @Override public void consume(String value) {
 			_contact.nicknameSetter().consume(value);
 		}};
-		_contactProxy.output().addReceiver(adapterToVoidGC);
+		_contactProxy.output().addReceiver(_adapterToVoidGC);
 		loadInternetAddressesForCurrentContact();
 	}
 

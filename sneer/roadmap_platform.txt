@@ -1,7 +1,5 @@
 ﻿SMALL FIXES
 =============
-	- * ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
-
 	- ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do. See ListRegisterImpl.MyOutput._notifier
 		- SetSignal - Revise it also. 
 

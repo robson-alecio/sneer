@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.junit.Test;
 
 import sneer.brickness.impl.BrickDecorator;
+import sneer.brickness.impl.BrickInstantiator;
 import sneer.brickness.impl.Brickness;
 import sneer.commons.environments.Environments;
 import sneer.commons.testutil.TestThatMightUseResources;
@@ -51,7 +52,7 @@ public class TransparentPropertyStoreTest extends TestThatMightUseResources {
 	}
 
 	private void runWithTransparentPersistence(Runnable runnable)	throws IOException {
-		Brickness container = new Brickness(newPersister());
+		Brickness container = new Brickness(newPrevalentInstantiator(), newPrevalentDecorator());
 		placeBrick(container, TransientPropertyStore.class);
 		placeBrick(container, TransientPropertyStore2.class);
 		
@@ -60,11 +61,15 @@ public class TransparentPropertyStoreTest extends TestThatMightUseResources {
 		Bubble.close();
 	}
 
+	private BrickInstantiator newPrevalentInstantiator() {
+		throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
+	}
+
 	private void placeBrick(Brickness container, Class<?> brick) {
 		container.placeBrick(Jars.classpathRootFor(brick), brick.getName());
 	}
 
-	private BrickDecorator newPersister() {
+	private BrickDecorator newPrevalentDecorator() {
 		return new BrickDecorator() {@Override public Object decorate(Class<?> brick, Object brickImpl) {
 			return Bubble.wrapStateMachine(brick, brickImpl, tmpDirectory());
 		}};

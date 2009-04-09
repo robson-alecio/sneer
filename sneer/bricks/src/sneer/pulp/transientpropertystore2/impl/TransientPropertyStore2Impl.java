@@ -6,6 +6,9 @@ import sneer.pulp.transientpropertystore2.TransientPropertyStore2;
 
 public class TransientPropertyStore2Impl implements TransientPropertyStore2 {
 
+	{
+		my(TransientPropertyStore.class).set("anything", "anything");
+	}
 
 	private String _suffix;
 

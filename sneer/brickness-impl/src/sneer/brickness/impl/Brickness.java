@@ -2,7 +2,6 @@ package sneer.brickness.impl;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,13 +20,15 @@ public class Brickness {
 	private final Environment _environment;
 	private final Bindings _bindings;
 	private final ClassLoader _apiClassLoader = createApiClassLoader();
+	private final BrickInstantiator _brickInstantiator;
 	private final BrickDecorator _brickDecorator;
 
 	public Brickness(Object... bindings) {
-		this(nullDecorator(), bindings);
+		this(defaultInstantiator(), defaultDecorator(), bindings);
 	}
 
-	public Brickness(BrickDecorator brickDecorator, Object... bindings) {
+	public Brickness(BrickInstantiator brickInstantiator, BrickDecorator brickDecorator, Object... bindings) {
+		_brickInstantiator = brickInstantiator;
 		_brickDecorator = brickDecorator;
 		
 		_bindings = new Bindings();
@@ -108,19 +109,25 @@ public class Brickness {
 		}});
 	}
 
-	private Object newInstance(Class<?> brickImpl) throws NoSuchMethodException, InstantiationException, InvocationTargetException, IllegalArgumentException, IllegalAccessException {
-		Constructor<?> constructor = brickImpl.getDeclaredConstructor();
-		constructor.setAccessible(true);
-		return constructor.newInstance();
+	private Object newInstance(Class<?> brickImpl) throws Exception {
+		return _brickInstantiator.instantiate(brickImpl);
 	}
 
 	private String implNameFor(final String brickInterfaceName) {
 		return BrickConventions.implClassNameFor(brickInterfaceName);
 	}
 
-	private static BrickDecorator nullDecorator() {
+	private static BrickDecorator defaultDecorator() {
 		return new BrickDecorator() { @Override public Object decorate(Class<?> brick, Object brickImpl) {
 			return brickImpl;
+		}};
+	}
+
+	private static BrickInstantiator defaultInstantiator() {
+		return new BrickInstantiator() { @Override public Object instantiate(Class<?> brickImpl) throws Exception {
+			Constructor<?> constructor = brickImpl.getDeclaredConstructor();
+			constructor.setAccessible(true);
+			return constructor.newInstance();
 		}};
 	}
 }

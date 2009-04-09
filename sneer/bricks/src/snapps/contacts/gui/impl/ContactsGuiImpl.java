@@ -4,23 +4,16 @@ import static sneer.commons.environments.Environments.my;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import snapps.contacts.actions.ContactAction;
@@ -28,12 +21,10 @@ import snapps.contacts.actions.ContactActionManager;
 import snapps.contacts.gui.ContactsGui;
 import snapps.contacts.gui.comparator.ContactComparator;
 import snapps.contacts.internetaddress.gui.InternetAddressWindow;
-import sneer.brickness.PublicKey;
 import sneer.commons.lang.Functor;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
-import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.listsorter.ListSorter;
@@ -43,7 +34,6 @@ import sneer.skin.snappmanager.InstrumentManager;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
-import sneer.skin.windowboundssetter.WindowBoundsSetter;
 import wheel.io.ui.graphics.Images;
 import wheel.reactive.lists.ListSignal;
 
@@ -53,8 +43,6 @@ class ContactsGuiImpl implements ContactsGui {
 	private static final Image ONLINE = getImage("online.png");
 	private static final Image OFFLINE = getImage("offline.png");
 	
-	private final KeyManager _keyManager = my(KeyManager.class);
-	private final ContactManager _contactManager = my(ContactManager.class);
 	private final InstrumentManager _instrumentManager = my(InstrumentManager.class);
 	private final ContactActionManager _actionsManager = my(ContactActionManager.class);
 	private final ReactiveWidgetFactory _rfactory = my(ReactiveWidgetFactory.class);
@@ -68,6 +56,10 @@ class ContactsGuiImpl implements ContactsGui {
 	private ListWidget<Contact> _contactList;
 	private Container _container;
 	
+	private static Image getImage(String fileName) {
+		return Images.getImage(ContactsGuiImpl.class.getResource(fileName));
+	}
+	
 	ContactsGuiImpl(){
 		_instrumentManager.registerInstrument(this);
 		_chooser = new SignalChooser<Contact>(){ @Override public Signal<?>[] signalsToReceiveFrom(Contact element) {
@@ -75,86 +67,34 @@ class ContactsGuiImpl implements ContactsGui {
 		}};
 	} 
 
-	private static Image getImage(String fileName) {
-		return Images.getImage(ContactsGuiImpl.class.getResource(fileName));
-	}
-
 	@Override
 	public void init(InstrumentWindow window) {
-		_container = window.contentPane();
 		ContactLabelProvider labelProvider = new ContactLabelProvider();
 		ContactsGuiCellRenderer cellRenderer = new ContactsGuiCellRenderer(labelProvider);
+
+		_container = window.contentPane();
 		_sortedList = _sorter.sort(_contacts.contacts() , _comparator, _chooser);
 		_contactList = _rfactory.newList(_sortedList, labelProvider, cellRenderer);
-		
+		_contactList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
+
 		JScrollPane scrollPane = new JScrollPane();
-		_container.setLayout(new BorderLayout());
-		_container.add(scrollPane, BorderLayout.CENTER);
 		scrollPane.getViewport().add(_contactList.getComponent());
 		scrollPane.setBorder(new EmptyBorder(0,0,0,0));
-		_contactList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
 		scrollPane.setBackground(_contactList.getComponent().getBackground());
+		
+		_container.setLayout(new BorderLayout());
+		_container.add(scrollPane, BorderLayout.CENTER);
+		
 		new PopUpSupport();
 		new ToolbarSupport(window.actions());
-		addEditContactAction();
+		new EditContactSupport();
 	}
 	
 	@Override
 	public int defaultHeight() {
 		return 144;
 	}
-	
-	private void showNewContactFrame() {
-		final JFrame frm = new JFrame("Inform Contact Nickname:");
-		
-		JButton btnOk = new JButton("Ok");
-		JButton btnCancel = new JButton("Cancel");
-		final JTextField txtNick = new JTextField();
 
-		frm.getContentPane(). setLayout(new GridBagLayout());
-		frm.getContentPane().add(txtNick,  new GridBagConstraints(0,0, 2,1, 2.0,0.0, 
-				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5,5,5,5), 0, 0) );
-
-		frm.getContentPane().add(btnOk,  new GridBagConstraints(0,1, 1,1, 1.0,0.0, 
-				GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5,5,5,5), 0, 0) );
-
-		frm.getContentPane().add(btnCancel,  new GridBagConstraints(1,1, 1,1, 1.0,0.0, 
-				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5,5,5,5), 0, 0) );
-		
-		frm.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		btnCancel.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
-			frm.setVisible(false);
-			frm.dispose();
-		}});
-		
-		btnOk.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
-			frm.setVisible(false);
-			String nick = txtNick.getText();
-			if(nick == null || nick.trim().length() == 0)	return;
-			
-			Contact contact = _contactManager.contactGiven(nick);
-			if(contact == null){
-				contact = _contactManager.addContact(nick);
-				_keyManager.addKey(contact, mickeyMouseKey(nick));
-			}
-			frm.dispose();
-			
-			InternetAddressWindow window = my(InternetAddressWindow.class);
-			window.setActiveContact(contact);
-			window.open();
-		}});
-		
-		
-		frm.setSize(300, 150);
-		my(WindowBoundsSetter.class).setBestBounds(frm);
-		frm.setVisible(true);
-		
-	}
-
-	@SuppressWarnings("deprecation")
-	private PublicKey mickeyMouseKey(String nick) {
-		return _keyManager.generateMickeyMouseKey(nick);
-	}
 	
 	final class ContactLabelProvider implements LabelProvider<Contact> {
 		
@@ -179,7 +119,7 @@ class ContactsGuiImpl implements ContactsGui {
 			JMenuItem addContact = new JMenuItem("add or edit a contact");
 			popupMenu.add(addContact);
 			addContact.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
-				showNewContactFrame();
+				new NewContactWindow();
 			}});
 		}
 	}
@@ -223,18 +163,20 @@ class ContactsGuiImpl implements ContactsGui {
 		}
 	}
 	
-	private void addEditContactAction() {
-		_actionsManager.addContactAction(new ContactAction(){
-			private Contact _contact;
-			@Override public boolean isEnabled() {return true;}
-			@Override public boolean isVisible() { return true; }
-			@Override public void setActive(Contact contact) { _contact = contact; }
-			@Override public String caption() { return "Edit Contact Info";}
-			@Override public void run() {
-				InternetAddressWindow frm = my(InternetAddressWindow.class);
-				frm.setActiveContact(_contact);
-				frm.open();
-			}});
+	private final class EditContactSupport {
+		private EditContactSupport(){
+			_actionsManager.addContactAction(new ContactAction(){
+				private Contact _contact;
+				@Override public boolean isEnabled() {return true;}
+				@Override public boolean isVisible() { return true; }
+				@Override public void setActive(Contact contact) { _contact = contact; }
+				@Override public String caption() { return "Edit Contact Info";}
+				@Override public void run() {
+					InternetAddressWindow frm = my(InternetAddressWindow.class);
+					frm.setActiveContact(_contact);
+					frm.open();
+				}});
+		}
 	}
 	
 	@Override

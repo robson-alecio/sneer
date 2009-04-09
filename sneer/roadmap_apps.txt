@@ -25,9 +25,8 @@ TASKS
 				- White top line becomes gray. Instruments will have final appearance.
 				- Instrument toolbar menu icon different from scrollbar button.
 					- Menu appears below button.
-						- add or edit a contact -> Add a Contact...
+						- add or edit a contact -> Add a Contact... (delete NewContactWindow)
 				- Right click menu
-					- Remove Listen item.
 					- Edit Contact Info -> Contact Info... (default double click)
 					- Delete Contact...
 			- Contact Info <- Internet Addresses: (Title bar)
@@ -40,10 +39,10 @@ TASKS
 		- The code is clean. Talk to Klaus.
 			- Minimal Contact List (Summit showcase)
 				- Accept menu action registrations. (dependency inverted)
-				- Accept cell part renderers. (dependency inverted) Discuss with team.
-				- [Sandro - Working] Expose Signal<Contact> selectedContact()
 				- ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
 
+	- ContactsGUI - Accept cell part renderers. (dependency inverted) Discuss with team.
+	
 	- WatchMe - Move to spikes. Remove from main.Sneer's list of bricks.
 	
 	- DynDns Revision.

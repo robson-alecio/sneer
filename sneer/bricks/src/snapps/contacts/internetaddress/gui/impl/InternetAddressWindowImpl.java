@@ -27,6 +27,7 @@ import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.impl.RegisterImpl;
 import sneer.skin.colors.Colors;
+import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
@@ -72,8 +73,8 @@ class InternetAddressWindowImpl extends JFrame implements InternetAddressWindow{
 
 	private void initGui() {
 		
-		_txtNickname = my(ReactiveWidgetFactory.class).newTextField(_contactProxy.output(), _contactProxy.setter());
-		setTitle(_contact.nickname() + "'s  Internet Addresses:");
+		setTitle("Internet Addresses:");
+		_txtNickname = my(ReactiveWidgetFactory.class).newTextField(_contactProxy.output(), _contactProxy.setter(), NotificationPolicy.OnEnterPressedOrLostFocus);
 		loadInternetAddressesForCurrentContact();
 		
 		getContentPane().setLayout(new GridBagLayout());

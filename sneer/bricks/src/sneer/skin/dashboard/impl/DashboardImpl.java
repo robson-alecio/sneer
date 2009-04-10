@@ -280,7 +280,7 @@ class ContentPane extends JPanel{
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.setColor(my(Colors.class).moderateContrast());
+		g.setColor(my(Colors.class).lowContrast());
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 	}
 }

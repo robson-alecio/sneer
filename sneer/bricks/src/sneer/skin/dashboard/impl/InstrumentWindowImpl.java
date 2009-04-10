@@ -64,7 +64,7 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 			int h = getHeight( );
 			
 			Graphics2D g2d = (Graphics2D)g;
-			GradientPaint gp = new GradientPaint(0, 0, my(Colors.class).moderateContrast(),  0, h/2, my(Colors.class).solid());
+			GradientPaint gp = new GradientPaint(0, 0, my(Colors.class).lowContrast(),  0, h/2, my(Colors.class).solid());
 
 			g2d.setPaint( gp );
 			g2d.fillRect( 0, 0, w, h/2 );		

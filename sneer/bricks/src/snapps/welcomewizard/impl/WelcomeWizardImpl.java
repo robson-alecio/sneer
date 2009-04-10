@@ -171,7 +171,7 @@ class WelcomeWizardImpl extends JFrame implements WelcomeWizard {
 	
 	private void addWelcomeWindowAction() {
 		Action cmd = new Action(){
-			@Override public String caption() { 	return "User Info...";	}
+			@Override public String caption() { 	return "My Info...";	}
 			@Override	public void run() { 				open(); }
 		};
 		_mainMenu.getSneerMenu().addAction(cmd);

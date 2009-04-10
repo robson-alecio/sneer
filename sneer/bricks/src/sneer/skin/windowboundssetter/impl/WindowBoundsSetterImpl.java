@@ -1,5 +1,6 @@
 package sneer.skin.windowboundssetter.impl;
 import java.awt.Container;
+import java.awt.IllegalComponentStateException;
 import java.awt.Point;
 import java.awt.Window;
 
@@ -26,11 +27,13 @@ class WindowBoundsSetterImpl implements WindowBoundsSetter{
 		Point location;
 		
 		windowHeight = window.getHeight();
-		if(container==null){
-			location = new Point(window.getWidth() + space*2 , 0);
-		}else{
-			if(resizeHeight) windowHeight = container.getHeight();
-			location = container.getLocationOnScreen();
+		location = defaultLocation(window, space);
+		if(container!=null){
+			try{
+				location = container.getLocationOnScreen();
+			}catch (IllegalComponentStateException e) {
+				//ignore, using default location
+			}
 		}
 		
 		int y = location.y;
@@ -45,5 +48,9 @@ class WindowBoundsSetterImpl implements WindowBoundsSetter{
 									y, 
 									width - widthDif, 
 									windowHeight);
+	}
+
+	private Point defaultLocation(Window window, int space) {
+		return new Point(window.getWidth() + space*2 , 0);
 	}
 }

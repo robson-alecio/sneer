@@ -21,6 +21,8 @@ TASKS
 					      User:
 					  Password:
 				- OK tamanho normal.
+			- ContactGui/InternetAddressWindow - fix selection/sort list
+			- ReactiveFactory - Signal<String> --> Signal<? super String>
 			- Dashboard
 				- White top line becomes gray. Instruments will have final appearance.
 				- Instrument toolbar menu icon different from scrollbar button.
@@ -41,6 +43,7 @@ TASKS
 				- Accept menu action registrations. (dependency inverted)
 				- ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
 
+		
 	- ContactsGUI - Accept cell part renderers. (dependency inverted) Discuss with team.
 	
 	- WatchMe - Move to spikes. Remove from main.Sneer's list of bricks.

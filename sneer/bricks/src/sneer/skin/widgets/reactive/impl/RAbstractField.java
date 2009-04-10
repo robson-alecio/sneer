@@ -17,10 +17,6 @@ import java.lang.reflect.Method;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.text.JTextComponent;
 
 import sneer.commons.environments.Environment;
@@ -39,7 +35,6 @@ import wheel.reactive.impl.EventReceiver;
 abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel implements TextWidget<WIDGET> {
 	
 	private static final long serialVersionUID = 1L;
-	static final Color INVALID = my(Colors.class).invalid();
 	
 	protected final Signal<?> _source;
 	protected final PickyConsumer<? super String> _setter;
@@ -68,7 +63,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 		_textComponent = textComponent;
 		_notificationPolicy = notificationPolicy;
 		_fieldReciver=fieldReceiver();	
-		_decorator = new ChangeInfoDecorator(_textComponent.getBorder(), _textComponent);
+		_decorator = new ChangeInfoDecorator(_textComponent);
 		
 		initGui();
 		initChangeListeners();
@@ -259,21 +254,25 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	
 	protected class ChangeInfoDecorator{
 		
-		private final Border _defaultBorder;
 		private final JComponent _target;
+		private boolean _isOpaque;
+		private Color _bgColor;
 		
-		ChangeInfoDecorator(Border defaultBorder, JComponent target){
-			_defaultBorder = defaultBorder;
+		ChangeInfoDecorator(JComponent target){
 			_target = target;
+			_isOpaque = target.isOpaque();
+			_bgColor = target.getBackground();
 		}
 		
 		void decorate(final boolean notified) {
 			GuiThread.assertInGuiThread();
 			if(notified) {
-				_target.setBorder(_defaultBorder);
+				_target.setOpaque(_isOpaque);
+				_target.setBackground(_bgColor);
 				return;
 			}
-			_target.setBorder(new CompoundBorder(new LineBorder(INVALID), new EmptyBorder(2, 2, 2, 2)));
+			_target.setOpaque(true);
+			_target.setBackground(my(Colors.class).invalid());
 		}	
 	}
 }

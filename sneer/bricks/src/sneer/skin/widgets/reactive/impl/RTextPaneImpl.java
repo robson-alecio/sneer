@@ -27,7 +27,7 @@ class RTextPaneImpl extends RAbstractField<JTextPane> {
 		super(new JTextPane(), source, setter, notificationPolicy);
 		LineBorder border = new LineBorder(my(Colors.class).lowContrast());
 		_textComponent.setBorder(border);
-		_decorator = new ChangeInfoDecorator(border, _textComponent){ @Override void decorate(boolean notified) {
+		_decorator = new ChangeInfoDecorator(_textComponent){ @Override void decorate(boolean notified) {
 			//ignore, do nothing.
 		}};
 	}

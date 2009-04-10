@@ -63,7 +63,7 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 			@Override public String caption() { return "Edit Contact...";}
 			@Override public void run() {
 				my(ContactInfoWindow.class).open();
-		}});
+		}}, true);
 	}
 	
 	@Override

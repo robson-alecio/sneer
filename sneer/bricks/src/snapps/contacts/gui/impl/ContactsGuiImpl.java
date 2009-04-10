@@ -91,11 +91,20 @@ class ContactsGuiImpl implements ContactsGui {
 		_container.add(scrollPane, BorderLayout.CENTER);
 		
 		addListModelListener();
-		addContatAction(window.actions());
+		addContatActions(window.actions());
+		addDefaultContactAction();
 		deleteContatAction();
 
 		new ListContactsPopUpSupport();
 		new SelectedContactSupport();
+	}
+
+	private void addDefaultContactAction() {
+		final ContactAction defaultAction = my(ContactActionManager.class).defaultAction();
+		contactList().addMouseListener(new MouseAdapter(){ @Override public void mouseReleased(MouseEvent e) {
+			if(e.getClickCount()>1)
+				defaultAction.run();
+		}});
 	}
 
 	private void addListModelListener() {
@@ -124,7 +133,7 @@ class ContactsGuiImpl implements ContactsGui {
 		return _selectedContact.output();
 	}
 	
-	private void addContatAction(JPopupMenu popupMenu) {
+	private void addContatActions(JPopupMenu popupMenu) {
 		JMenuItem add = new JMenuItem("Add a Contact...");
 		popupMenu.add(add);
 		

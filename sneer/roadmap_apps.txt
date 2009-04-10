@@ -11,7 +11,6 @@ TASKS
 
 	- [Sandro and Igor] User Info, Contact List and Contact CRUD - Don't do any other task until:
 		- ContactInfoWindowImpl
-				- Contact.nicknameSetter() -> ContactManager.nicknameSetterFor(Contact)
 				- Nickname: (Label)
 				- Internet Addresses (Border or Label)
 					- Reactive List

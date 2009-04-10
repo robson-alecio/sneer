@@ -18,7 +18,6 @@ import sneer.pulp.reactive.impl.RegisterImpl;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import wheel.lang.Consumer;
-import wheel.lang.PickyConsumer;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
@@ -92,10 +91,5 @@ class ContactMock implements Contact{
 	@Override
 	public String toString() {
 		return _isOnline.currentValue() + " - " + _nick.output().currentValue();
-	}
-
-	@Override
-	public PickyConsumer<String> nicknameSetter() {
-		return _nick.setter();
 	}
 }

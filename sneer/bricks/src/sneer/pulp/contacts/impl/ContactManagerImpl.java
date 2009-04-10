@@ -100,10 +100,4 @@ class ContactImpl implements Contact {
 	void nickname(String newNickname) {
 		_nickname.setter().consume(newNickname);
 	}
-	
-	@Override
-	public PickyConsumer<String> nicknameSetter(){
-		return _nickname.setter();
-	}
-
 }

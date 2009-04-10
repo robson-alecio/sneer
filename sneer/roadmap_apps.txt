@@ -20,11 +20,8 @@ TASKS
 					- Reactive List
 					- New, Save, Delete buttons like Eclipse's "Run Configurations" screen
 				 	- Host:          Port:
-		- The code is clean. Talk to Klaus.
-			- Minimal Contact List (Summit showcase)
-				- ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
+		- ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
 
-		
 	- ContactsGUI - Accept cell part renderers. (dependency inverted) Discuss with team.
 	
 	- WatchMe - Move to spikes. Remove from main.Sneer's list of bricks.

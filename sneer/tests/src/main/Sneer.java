@@ -91,8 +91,9 @@ public class Sneer {
 		return new Class<?>[] {
 				sneer.hardware.logging.gui.LogConsole.class,
 				sneer.skin.colors.Colors.class,
+				snapps.contacts.gui.delete.DeleteContactWindow.class,
 				snapps.contacts.gui.ContactsGui.class,
-				snapps.contacts.internetaddress.gui.ContactInfoWindow.class,
+				snapps.contacts.gui.info.ContactInfoWindow.class,
 				snapps.wind.gui.WindGui.class,
 				snapps.watchme.gui.WatchMeGui.class,
 				snapps.whisper.gui.WhisperGui.class,

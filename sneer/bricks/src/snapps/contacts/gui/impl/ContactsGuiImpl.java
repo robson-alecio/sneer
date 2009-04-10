@@ -23,7 +23,8 @@ import snapps.contacts.actions.ContactAction;
 import snapps.contacts.actions.ContactActionManager;
 import snapps.contacts.gui.ContactsGui;
 import snapps.contacts.gui.comparator.ContactComparator;
-import snapps.contacts.internetaddress.gui.ContactInfoWindow;
+import snapps.contacts.gui.delete.DeleteContactWindow;
+import snapps.contacts.gui.info.ContactInfoWindow;
 import sneer.brickness.PublicKey;
 import sneer.commons.lang.Functor;
 import sneer.pulp.connection.ConnectionManager;
@@ -93,12 +94,13 @@ class ContactsGuiImpl implements ContactsGui {
 		_container.setLayout(new BorderLayout());
 		_container.add(scrollPane, BorderLayout.CENTER);
 		
-		addNewContatAction(window.actions());
+		addContatAction(window.actions());
+		deleteContatAction();
 
 		new ListContactsPopUpSupport();
 		new SelectedContactSupport();
 	}
-	
+
 	@Override
 	public int defaultHeight() {
 		return 144;
@@ -114,10 +116,11 @@ class ContactsGuiImpl implements ContactsGui {
 		return _selectedContact.output();
 	}
 	
-	private void addNewContatAction(JPopupMenu popupMenu) {
-		JMenuItem addContact = new JMenuItem("Add a Contact...");
-		popupMenu.add(addContact);
-		addContact.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
+	private void addContatAction(JPopupMenu popupMenu) {
+		JMenuItem add = new JMenuItem("Add a Contact...");
+		popupMenu.add(add);
+		
+		add.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 			contactList().setSelectedValue(newContact(), true);
 			my(ContactInfoWindow.class).open();
 		}});
@@ -134,6 +137,10 @@ class ContactsGuiImpl implements ContactsGui {
 		return contact;
 	}
 	
+	private void deleteContatAction() {
+		my(DeleteContactWindow.class).checkAndDelete();
+	}
+
 	@SuppressWarnings("deprecation") PublicKey mickeyMouseKey(String nick) {
 		return my(KeyManager.class).generateMickeyMouseKey(nick);
 	}

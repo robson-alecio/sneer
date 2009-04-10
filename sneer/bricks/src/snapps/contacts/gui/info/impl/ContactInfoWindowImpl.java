@@ -1,4 +1,4 @@
-package snapps.contacts.internetaddress.gui.impl;
+package snapps.contacts.gui.info.impl;
 
 import static sneer.commons.environments.Environments.my;
 
@@ -23,7 +23,7 @@ import javax.swing.event.ListSelectionListener;
 import snapps.contacts.actions.ContactAction;
 import snapps.contacts.actions.ContactActionManager;
 import snapps.contacts.gui.ContactsGui;
-import snapps.contacts.internetaddress.gui.ContactInfoWindow;
+import snapps.contacts.gui.info.ContactInfoWindow;
 import sneer.commons.lang.Functor;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;

@@ -1,4 +1,4 @@
-package snapps.contacts.internetaddress.gui;
+package snapps.contacts.gui.info;
 
 import sneer.brickness.Brick;
 

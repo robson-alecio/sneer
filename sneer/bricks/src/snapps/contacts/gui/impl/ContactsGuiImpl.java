@@ -16,6 +16,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -45,18 +47,11 @@ import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.io.ui.graphics.Images;
 import wheel.reactive.lists.ListSignal;
 
-//Refactor Consider use only reactive widgets  
 class ContactsGuiImpl implements ContactsGui {
 	
 	private static final Image ONLINE = getImage("online.png");
 	private static final Image OFFLINE = getImage("offline.png");
 	
-	private final InstrumentRegistry _instrumentManager = my(InstrumentRegistry.class);
-	private final ReactiveWidgetFactory _rfactory = my(ReactiveWidgetFactory.class);
-	private final ContactManager _contacts = my(ContactManager.class);
-	private final ConnectionManager _connections = my(ConnectionManager.class);
-	private final ContactComparator _comparator = my(ContactComparator.class);
-	private final ListSorter _sorter = my(ListSorter.class);
 	private final SignalChooser<Contact> _chooser;
 
 	private ListSignal<Contact> _sortedList;
@@ -70,9 +65,9 @@ class ContactsGuiImpl implements ContactsGui {
 	}
 	
 	ContactsGuiImpl(){
-		_instrumentManager.registerInstrument(this);
+		my(InstrumentRegistry.class).registerInstrument(this);
 		_chooser = new SignalChooser<Contact>(){ @Override public Signal<?>[] signalsToReceiveFrom(Contact element) {
-			return new Signal<?>[]{_connections.connectionFor(element).isOnline(), element.nickname()};
+			return new Signal<?>[]{my(ConnectionManager.class).connectionFor(element).isOnline(), element.nickname()};
 		}};
 	} 
 
@@ -82,8 +77,9 @@ class ContactsGuiImpl implements ContactsGui {
 		ContactsGuiCellRenderer cellRenderer = new ContactsGuiCellRenderer(labelProvider);
 
 		_container = window.contentPane();
-		_sortedList = _sorter.sort(_contacts.contacts() , _comparator, _chooser);
-		_contactList = _rfactory.newList(_sortedList, labelProvider, cellRenderer);
+		_sortedList = my(ListSorter.class).sort( my(ContactManager.class).contacts() , my(ContactComparator.class), _chooser);
+		
+		_contactList = my(ReactiveWidgetFactory.class).newList(_sortedList, labelProvider, cellRenderer);
 		_contactList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -94,11 +90,23 @@ class ContactsGuiImpl implements ContactsGui {
 		_container.setLayout(new BorderLayout());
 		_container.add(scrollPane, BorderLayout.CENTER);
 		
+		addListModelListener();
 		addContatAction(window.actions());
 		deleteContatAction();
 
 		new ListContactsPopUpSupport();
 		new SelectedContactSupport();
+	}
+
+	private void addListModelListener() {
+		contactList().getModel().addListDataListener(new ListDataListener(){
+			private void changeSelectionGuiToSelectedContact() {
+				contactList().setSelectedValue(_selectedContact.output().currentValue(), true);
+			}
+			@Override public void contentsChanged(ListDataEvent e) { changeSelectionGuiToSelectedContact(); }
+			@Override public void intervalAdded(ListDataEvent e) { changeSelectionGuiToSelectedContact(); }
+			@Override public void intervalRemoved(ListDataEvent e) { changeSelectionGuiToSelectedContact(); }
+		});
 	}
 
 	@Override
@@ -158,7 +166,7 @@ class ContactsGuiImpl implements ContactsGui {
 				return value?ONLINE:OFFLINE;
 			}};
 			
-			Signal<Boolean> isOnline = _connections.connectionFor(contact).isOnline();
+			Signal<Boolean> isOnline = my(ConnectionManager.class).connectionFor(contact).isOnline();
 			return my(Signals.class).adapt(isOnline, functor);
 		}
 	}

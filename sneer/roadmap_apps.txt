@@ -10,8 +10,6 @@ TASKS
 	- [Klaus] DynDns user data - Use transparent persistence to save it, not a properties file.
 
 	- [Sandro and Igor] User Info, Contact List and Contact CRUD - Don't do any other task until:
-		- ContactGui
-				- Fix selection/sort list
 		- ContactInfoWindowImpl
 				- Edit Contact... (default double click)
 				- Contact.nicknameSetter() -> ContactManager.nicknameSetterFor(Contact)

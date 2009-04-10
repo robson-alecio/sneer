@@ -161,6 +161,6 @@ class WhisperGuiImpl implements WhisperGui { //Optimize need a better snapp wind
 
 	@Override
 	public String title() {
-		return "ListenToMe";
+		return "";
 	}
 }

@@ -10,23 +10,18 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.HierarchyBoundsAdapter;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.EtchedBorder;
 
 import sneer.skin.colors.Colors;
 import sneer.skin.dashboard.InstrumentWindow;
@@ -44,16 +39,14 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 		@Override public Dimension getPreferredSize() { return getToolbarDimension();}
 	};
 	private final JPanel _toolbarTitleLayer =  new GradientPanel();
-	private final GlassPane _toolbarGlassPane = new GlassPane(_contentPane, _toolbarTitleLayer){
-		@Override public Dimension getPreferredSize() { return getToolbarDimension();}
-	};
-//	private final JPanel _toolbarFakeMarginLayer = new JPanel(){
-//		@Override public Dimension getPreferredSize() { return getToolbarDimension();}
-//	};
 	
 	private final JPanel _actions = new GradientPanel();
-	private final JButton _menu = new JButton(new ImageIcon(ACTIONS));
 	private final JPopupMenu _menuActions = new JPopupMenu();
+	private final JLabel _menu = new JLabel(new ImageIcon(ACTIONS)){
+		@Override public boolean isVisible() {
+			return _menuActions.getSubElements().length>0;
+		}
+	};
 	private final JLabel _title = new JLabel();
 	
 	private class GradientPanel extends JPanel{
@@ -63,12 +56,10 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 			int h = getHeight( );
 			
 			Graphics2D g2d = (Graphics2D)g;
-			GradientPaint gp = new GradientPaint(0, 0, my(Colors.class).lowContrast(),  0, h/2, my(Colors.class).solid());
+			GradientPaint gp = new GradientPaint(0, 0, my(Colors.class).lowContrast(),  0, h, my(Colors.class).solid());
 
 			g2d.setPaint( gp );
-			g2d.fillRect( 0, 0, w, h/2 );		
-			g2d.setBackground(my(Colors.class).solid());
-			g2d.fillRect( 0, h/2, w, h );
+			g2d.fillRect( 0, 0, w, h );		
 			
 		    setOpaque( false );
 		    super.paintComponent( g );
@@ -91,27 +82,7 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 		add(_contentPane, BorderLayout.CENTER);
 		add(_toolbarRoot, BorderLayout.NORTH);
 		
-		JPanel tmp = new JPanel();
-		tmp.setOpaque(false);
-		
-//		_toolbarFakeMarginLayer.setLayout(new GridBagLayout());
-//		_toolbarFakeMarginLayer.add(tmp, new GridBagConstraints(0,0, 1,1, 1.0,1.0, 
-//				GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0,0));
-//		
-//		tmp = new JPanel();
-//		tmp.setBackground(my(Colors.class).solid());
-//		_toolbarFakeMarginLayer.add(tmp, new GridBagConstraints(0,1, 1,1, 1.0,1.0, 
-//				GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0,0));
-//		
-//		_toolbarRoot.add(_toolbarFakeMarginLayer,  new Integer(0));
-//		_toolbarFakeMarginLayer.setOpaque(false);
-//		_actions.setOpaque(false);
-		
-		_toolbarRoot.add(_toolbarTitleLayer, new Integer(1));
-		_toolbarRoot.add(_toolbarGlassPane, new Integer(2));
-		
-		_toolbarTitleLayer.setVisible(false);
-		
+		_toolbarRoot.add(_toolbarTitleLayer, new Integer(0));
 		_toolbarRoot.setOpaque(false);
 		setOpaque(false);
 		
@@ -126,19 +97,19 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 		_actions.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
 		_actions.add(_menu);
 		
-		_menu.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+		_menu.setBorder(new EmptyBorder(0,0,0,2));
 		_menu.setOpaque(false);
-		_menu.setMargin(new Insets(0,0,0,0));
-		_menu.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
+		_menu.addMouseListener(new MouseAdapter(){ @Override public void mouseReleased(MouseEvent e) { 
 			showActionsPopUp();
 		}});
 		
-		initWindowResizeListener();
-		
-		_toolbarGlassPane.addMouseListener(new MouseAdapter(){
-			@Override public void mouseEntered(MouseEvent e) { tryShowToolbar(); }
-			@Override public void mouseExited(MouseEvent e) { tryHideToolbar(); }
+		_menu.addMouseListener(new MouseAdapter(){
+			{_menu.setEnabled(false);}
+			@Override public void mouseEntered(MouseEvent e) {	_menu.setEnabled(true); }
+			@Override public void mouseExited(MouseEvent e) {	_menu.setEnabled(false); }
 		});
+		
+		initWindowResizeListener();
 	}
 	
 	private void showActionsPopUp() {
@@ -155,15 +126,6 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 		return h;
 	}
 
-	void tryShowToolbar() {
-		if (_menuActions.getSubElements().length == 0) return;
-		_toolbarTitleLayer.setVisible(true);
-	}
-
-	void tryHideToolbar() {
-		_toolbarTitleLayer.setVisible(false);
-	}
-
 	private void initWindowResizeListener() {
 		addHierarchyBoundsListener(new HierarchyBoundsAdapter(){@Override public void ancestorResized(HierarchyEvent e) {
 			resizeContents();
@@ -173,8 +135,6 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 	void resizeContents() {
 		_toolbarRoot.setBounds(0, 0, this.getWidth(), getToolbarHeight());
 		_toolbarTitleLayer.setBounds(0, 0, this.getWidth(), getToolbarHeight());
-		_toolbarGlassPane.setBounds(0, 0, this.getWidth(), getToolbarHeight());
-//		_toolbarFakeMarginLayer.setBounds(0, 0, this.getWidth(), getToolbarHeight());
 	}
 	
 	@Override

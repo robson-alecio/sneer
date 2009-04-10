@@ -9,8 +9,6 @@ import java.awt.FlowLayout;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Point;
@@ -50,9 +48,9 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 	private final GlassPane _toolbarGlassPane = new GlassPane(_contentPane, _toolbarTitleLayer){
 		@Override public Dimension getPreferredSize() { return getToolbarDimension();}
 	};
-	private final JPanel _toolbarFakeMarginLayer = new JPanel(){
-		@Override public Dimension getPreferredSize() { return getToolbarDimension();}
-	};
+//	private final JPanel _toolbarFakeMarginLayer = new JPanel(){
+//		@Override public Dimension getPreferredSize() { return getToolbarDimension();}
+//	};
 	
 	private final JPanel _actions = new GradientPanel();
 	private final JButton _menu = new JButton(new ImageIcon(ACTIONS));
@@ -96,24 +94,26 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 		
 		JPanel tmp = new JPanel();
 		tmp.setOpaque(false);
-		_toolbarFakeMarginLayer.setLayout(new GridBagLayout());
-		_toolbarFakeMarginLayer.add(tmp, new GridBagConstraints(0,0, 1,1, 1.0,1.0, 
-				GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0,0));
 		
-		tmp = new JPanel();
-		tmp.setBackground(my(Colors.class).solid());
-		_toolbarFakeMarginLayer.add(tmp, new GridBagConstraints(0,1, 1,1, 1.0,1.0, 
-				GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0,0));
+//		_toolbarFakeMarginLayer.setLayout(new GridBagLayout());
+//		_toolbarFakeMarginLayer.add(tmp, new GridBagConstraints(0,0, 1,1, 1.0,1.0, 
+//				GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0,0));
+//		
+//		tmp = new JPanel();
+//		tmp.setBackground(my(Colors.class).solid());
+//		_toolbarFakeMarginLayer.add(tmp, new GridBagConstraints(0,1, 1,1, 1.0,1.0, 
+//				GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0,0));
+//		
+//		_toolbarRoot.add(_toolbarFakeMarginLayer,  new Integer(0));
+//		_toolbarFakeMarginLayer.setOpaque(false);
+//		_actions.setOpaque(false);
 		
-		_toolbarRoot.add(_toolbarFakeMarginLayer,  new Integer(0));
 		_toolbarRoot.add(_toolbarTitleLayer, new Integer(1));
 		_toolbarRoot.add(_toolbarGlassPane, new Integer(2));
 		
 		_toolbarTitleLayer.setVisible(false);
 		
-		_toolbarFakeMarginLayer.setOpaque(false);
 		_toolbarRoot.setOpaque(false);
-//		_actions.setOpaque(false);
 		setOpaque(false);
 		
 		_toolbarTitleLayer.setBackground(my(Colors.class).solid());
@@ -176,7 +176,7 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 		_toolbarRoot.setBounds(0, 0, this.getWidth(), getToolbarHeight());
 		_toolbarTitleLayer.setBounds(0, 0, this.getWidth(), getToolbarHeight());
 		_toolbarGlassPane.setBounds(0, 0, this.getWidth(), getToolbarHeight());
-		_toolbarFakeMarginLayer.setBounds(0, 0, this.getWidth(), getToolbarHeight());
+//		_toolbarFakeMarginLayer.setBounds(0, 0, this.getWidth(), getToolbarHeight());
 	}
 	
 	@Override

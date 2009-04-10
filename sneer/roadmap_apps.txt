@@ -13,7 +13,6 @@ TASKS
 		- The GUI is elegant. Talk to Klaus.
 			- ContactGui/InternetAddressWindow - fix selection/sort list
 			- Dashboard
-				- White top line becomes gray. Instruments will have final appearance.
 				- Instrument toolbar menu icon different from scrollbar button.
 					- Menu appears below button.
 						- add or edit a contact -> Add a Contact... (delete NewContactWindow)

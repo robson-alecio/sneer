@@ -29,12 +29,8 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 
 	private void addMenuAction() {
 		Action cmd = new Action(){
-			@Override public String caption() {
-				return "My Log Console...";
-			}
-			@Override public void run() {
-				open();
-			}
+			@Override public String caption() {	return "My Log Console..."; }
+			@Override public void run() { open(); }
 		};
 		_mainMenu.getSneerMenu().addAction(cmd);
 	}

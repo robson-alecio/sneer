@@ -138,7 +138,7 @@ class DashboardImpl implements Dashboard {
 	}
 
 	private URL logoIconURL() {
-		return _imageFactory.getImageUrl(DefaultIcons.logo16x16);
+		return _imageFactory.getImageUrl(DefaultIcons.logoTray);
 	}
 
 	private void initWindows() {

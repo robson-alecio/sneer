@@ -11,16 +11,6 @@ TASKS
 
 	- [Sandro and Igor] User Info, Contact List and Contact CRUD - Don't do any other task until:
 		- The GUI is elegant. Talk to Klaus.
-			- User Info -> My Info
-				- Fields with same appearance.
-				- No title borders for single field.
-					   My Name:
-					Sneer Port:
-					My DydDns [Optional] (border)
-					      Host:
-					      User:
-					  Password:
-				- OK tamanho normal.
 			- ContactGui/InternetAddressWindow - fix selection/sort list
 			- ReactiveFactory - Signal<String> --> Signal<? super String>
 			- Dashboard

@@ -2,14 +2,20 @@ package snapps.welcomewizard.impl;
 
 import static sneer.commons.environments.Environments.my;
 
-import java.awt.GridLayout;
+import java.awt.Container;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
@@ -40,7 +46,7 @@ class WelcomeWizardImpl extends JFrame implements WelcomeWizard {
 	
 	private final JTextField _dynDnsHost = new JTextField();
 	private final JTextField _dynDnsUser = new JTextField();
-	private final JTextField _dnyDnsPassword = new JTextField();
+	private final JPasswordField _dynDnsPassword = new JPasswordField();
 	
 	private final OwnNameKeeper _nameKeeper = my(OwnNameKeeper.class);
 	private final MainMenu _mainMenu = my(MainMenu.class);	
@@ -78,9 +84,9 @@ class WelcomeWizardImpl extends JFrame implements WelcomeWizard {
 
 	private void initGui() {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setTitle("User Info");
+		setTitle("My Info");
 		
-		setSize(350, 300);
+		setSize(350, 260);
 		
 		java.awt.Container pnl = getContentPane();
 		
@@ -89,24 +95,42 @@ class WelcomeWizardImpl extends JFrame implements WelcomeWizard {
 		PortKeeper portKeeper = my(PortKeeper.class);
 		_sneerPort = newTextField(portKeeper.port(), new IntegerParser(portKeeper.portSetter()));
 		
-		pnl.setLayout(new GridLayout(6,1));
-		pnl.add(_yourOwnName.getComponent());
-		pnl.add(_sneerPort.getComponent());
-		pnl.add(_dynDnsHost);
-		pnl.add(_dynDnsUser);
-		pnl.add(_dnyDnsPassword);
+		pnl.setLayout(new GridBagLayout());
+		
+		addWidget(_yourOwnName.getComponent(), "My Name:", 0);
+		addWidget(_sneerPort.getComponent(), "Sneer Port:", 1);
+		
+		JPanel pnlDynDns = new JPanel();
+		pnlDynDns.setLayout(new GridBagLayout());
+
+		pnlDynDns.setBorder(new TitledBorder("My DynDns [Optional]"));
+		getContentPane().add(pnlDynDns,
+				new GridBagConstraints(0, 2, 2, 1, 1.0, 0.0,
+						GridBagConstraints.CENTER,	GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5),0, 0));
+		
+		addWidget(pnlDynDns, _dynDnsHost, "Host:", 0);
+		addWidget(pnlDynDns, _dynDnsUser, "User:", 1);
+		addWidget(pnlDynDns, _dynDnsPassword, "Password:", 2);
 		
 		final JButton btn = new JButton("OK");
+		getContentPane().add(btn,
+				new GridBagConstraints(0, 3, 2, 1, 0.0, 0.0,
+						GridBagConstraints.EAST,	GridBagConstraints.NONE, new Insets(0, 5, 5, 5),0, 0));
+
 		btn.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent ignored) {
 			submit();						
 		}});
-		pnl.add(btn);
+	}
 
-		label(_yourOwnName.getComponent(), "Own Name");
-		label(_sneerPort.getComponent(), "Sneer Port");
-		label(_dynDnsHost, "DynDns Host [optional]");
-		label(_dynDnsUser, "DynDns User [optional]");
-		label(_dnyDnsPassword, "DynDns Password [optional]");
+	private void addWidget(JComponent widget, String label, int y) {	addWidget(getContentPane(), widget, label, y);	}
+	private void addWidget(Container container, JComponent widget, String label, int y) {
+		container.add(new JLabel(label),
+				new GridBagConstraints(0, y, 1, 1, 0.0, 0.0,
+						GridBagConstraints.EAST,	GridBagConstraints.NONE, new Insets(5, 5, 5, 5),0, 0));
+		
+		container.add(widget,
+				new GridBagConstraints(1, y, 1, 1, 1.0, 0.0,
+						GridBagConstraints.WEST,	GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5),0, 0));
 	}
 
 	private TextWidget<JTextField> newTextField(final Signal<?> signal, final PickyConsumer<String> setter) {
@@ -134,15 +158,11 @@ class WelcomeWizardImpl extends JFrame implements WelcomeWizard {
 		if (account == null) return;
 		_dynDnsHost.setText(account.host);
 		_dynDnsUser.setText(account.user);
-		_dnyDnsPassword.setText(account.password);
+		_dynDnsPassword.setText(account.password);
 	}
 
 	private void storeFieldData() throws Exception {
-		initDynDnsAccount(trim(_dynDnsHost), trim(_dynDnsUser), trim(_dnyDnsPassword));
-	}
-
-	private void label(JComponent field, String caption) {
-		field.setBorder(new TitledBorder(caption));
+		initDynDnsAccount(trim(_dynDnsHost), trim(_dynDnsUser), trim(_dynDnsPassword));
 	}
 
 	private String trim(JTextField field) {

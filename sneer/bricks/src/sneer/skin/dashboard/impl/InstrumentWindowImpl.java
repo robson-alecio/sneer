@@ -11,7 +11,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -143,8 +142,7 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 	}
 	
 	private void showActionsPopUp() {
-		Point p = _menu.getLocation();
-		_menuActions.show(_menu, p.x, p.y);
+		_menuActions.show(_menu, 0, 15);
 	}
 
 	private Dimension getToolbarDimension() {

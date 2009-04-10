@@ -14,8 +14,7 @@ TASKS
 			- ContactGui/InternetAddressWindow - fix selection/sort list
 			- Dashboard
 				- Instrument toolbar
-					- Menu appears below button.
-						- add or edit a contact -> Add a Contact... (delete NewContactWindow)
+					- add or edit a contact -> Add a Contact... (delete NewContactWindow)
 				- Right click menu
 					- Edit Contact Info -> Contact Info... (default double click)
 					- Delete Contact...

@@ -44,7 +44,7 @@ class ContactsGuiCellRenderer implements ListCellRenderer {
 		Signal<Boolean> isOnline = _connections.connectionFor(contact).isOnline();
 		if(!isOnline.currentValue()){
 			if(isSelected) label.setForeground(my(Colors.class).hightContrast());
-			else label.setForeground(my(Colors.class).lowContrast());
+			else label.setForeground(my(Colors.class).moderateContrast());
 		}
 
 		return label;

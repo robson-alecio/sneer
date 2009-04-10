@@ -93,7 +93,11 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 		}};
 		
 		_txtNickname = my(ReactiveWidgetFactory.class).newTextField(nickname, setter, NotificationPolicy.OnEnterPressedOrLostFocus);
+		_txtNickname.getComponent().setBorder(new TitledBorder("Nickname:"));
+		_txtNickname.getMainWidget().setBorder(new EmptyBorder(0,0,0,0));
 		loadInternetAddressesForCurrentContact();
+		
+		_lstAddresses.setBorder(new TitledBorder("Internet Adresses:"));
 		
 		getContentPane().setLayout(new GridBagLayout());
 		getContentPane().setBackground(my(Colors.class).solid());
@@ -105,27 +109,34 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 		getContentPane().add(_txtNickname.getComponent(),  new GridBagConstraints(0,0, 4, 1, 1.0, 0.0, 
 				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0) );
 		
-		getContentPane().add(scroll,  new GridBagConstraints(0,1, 4,1, 1.0,1.0, 
+		getContentPane().add(scroll,  new GridBagConstraints(0,1, 3,1, 1.0,1.0, 
 				GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0, 0) );
 		
 		_host.setBorder(new TitledBorder("host"));
-		getContentPane().add(_host,  new GridBagConstraints(0,2, 1,1, 3.0,0.0, 
+		getContentPane().add(_host,  new GridBagConstraints(0,2, 2,1, 2.0,0.0, 
 				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0) );
 
 		_port.setBorder(new TitledBorder("port"));
-		getContentPane().add(_port,  new GridBagConstraints(1,2, 1,1, 1.0,0.0, 
+		getContentPane().add(_port,  new GridBagConstraints(2,2, 1,1, 1.0,0.0, 
 				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0) );
 		
-		JButton btnAdd = new JButton("+");
-		getContentPane().add(btnAdd,  new GridBagConstraints(2,2, 1,1, 0.0,0.0, 
-				GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(8,2,2,2), 0, 0) );
-		btnAdd.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
+		JButton btnNew = new JButton("New");
+		getContentPane().add(btnNew,  new GridBagConstraints(0,3, 1,1, 1.0,0.0, 
+				GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5,5,5,5), 0, 0) );
+		btnNew.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 			newInternetAddress();
 		}});
+
+		JButton btnSave = new JButton("Save");
+		getContentPane().add(btnSave,  new GridBagConstraints(1,3, 1,1, 0.0,0.0, 
+				GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5,5,5,5), 0, 0) );
+		btnSave.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
+			saveInternetAddress();
+		}});
 		
-		JButton btnDel = new JButton("-");
-		getContentPane().add(btnDel,  new GridBagConstraints(3,2, 1,1, 0.0,0.0, 
-				GridBagConstraints.CENTER, GridBagConstraints.VERTICAL, new Insets(8,2,2,2), 0, 0) );
+		JButton btnDel = new JButton("Delete");
+		getContentPane().add(btnDel,  new GridBagConstraints(2,3, 1,1, 1.0,0.0, 
+				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5,5,5,5), 0, 0) );
 		btnDel.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 			delInternetAddress();
 		}});
@@ -133,10 +144,14 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 		listenToSignals();
 		addListSelectionListestener();
 
-		this.setSize(400, 200);
+		this.setSize(400, 350);
 		my(WindowBoundsSetter.class).setBestBounds(this);
 	}
-
+	
+	private void saveInternetAddress() {
+		throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
+	}
+	
 	private void listenToSignals() {
 		_refToAvoidGC = new EventReceiver<Contact>(my(ContactsGui.class).selectedContact()){ @Override public void consume(Contact contact) {
 			rebindContact();

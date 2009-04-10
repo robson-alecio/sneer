@@ -20,8 +20,10 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import snapps.contacts.actions.ContactAction;
+import snapps.contacts.actions.ContactActionManager;
 import snapps.contacts.gui.ContactsGui;
-import snapps.contacts.internetaddress.gui.InternetAddressWindow;
+import snapps.contacts.internetaddress.gui.ContactInfoWindow;
 import sneer.commons.lang.Functor;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
@@ -37,7 +39,7 @@ import sneer.skin.windowboundssetter.WindowBoundsSetter;
 import wheel.lang.PickyConsumer;
 import wheel.reactive.impl.EventReceiver;
 
-class InternetAddressWindowImpl extends JFrame implements InternetAddressWindow{
+class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 
 	private final InternetAddressKeeper _addressKeeper = my(InternetAddressKeeper.class);
 	
@@ -49,6 +51,20 @@ class InternetAddressWindowImpl extends JFrame implements InternetAddressWindow{
 	private TextWidget<JTextField> _txtNickname;
 	
 	@SuppressWarnings("unused")	private Object _refToAvoidGC;
+	
+	ContactInfoWindowImpl() {
+		addContactEditAction();
+	}
+
+	private void addContactEditAction() {
+		my(ContactActionManager.class).addContactAction(new ContactAction(){
+			@Override public boolean isEnabled() { return true; }
+			@Override public boolean isVisible() { return true; }
+			@Override public String caption() { return "Edit Contact...";}
+			@Override public void run() {
+				my(ContactInfoWindow.class).open();
+		}});
+	}
 	
 	@Override
 	public void open() {
@@ -67,7 +83,7 @@ class InternetAddressWindowImpl extends JFrame implements InternetAddressWindow{
 
 	private void initGui() {
 		
-		setTitle("Internet Addresses:");
+		setTitle("Contact Info:");
 		Signal<String> nickname = my(Signals.class).adaptSignal(my(ContactsGui.class).selectedContact(), new Functor<Contact, Signal<String>>() { @Override public Signal<String> evaluate(Contact contact) {
 			return contact.nickname();
 		}});

@@ -12,10 +12,9 @@ TASKS
 	- [Sandro and Igor] User Info, Contact List and Contact CRUD - Don't do any other task until:
 		- The GUI is elegant. Talk to Klaus.
 			- ContactGui/InternetAddressWindow - fix selection/sort list
-			- Dashboard
-				- Right click menu
-					- Edit Contact Info -> Contact Info... (default double click)
 					- Delete Contact...
+			- ContactInfoWindowImpl
+					- Edit Contact... (default double click)
 			- Contact Info <- Internet Addresses: (Title bar)
 				- Contact.nicknameSetter() -> ContactManager.nicknameSetterFor(Contact)
 				- Nickname: (Label)
@@ -25,7 +24,6 @@ TASKS
 				 	- Host:          Port:
 		- The code is clean. Talk to Klaus.
 			- Minimal Contact List (Summit showcase)
-				- Accept menu action registrations. (dependency inverted)
 				- ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
 
 		

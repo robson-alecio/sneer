@@ -92,7 +92,7 @@ public class Sneer {
 				sneer.hardware.logging.gui.LogConsole.class,
 				sneer.skin.colors.Colors.class,
 				snapps.contacts.gui.ContactsGui.class,
-				snapps.contacts.internetaddress.gui.InternetAddressWindow.class,
+				snapps.contacts.internetaddress.gui.ContactInfoWindow.class,
 				snapps.wind.gui.WindGui.class,
 				snapps.watchme.gui.WatchMeGui.class,
 				snapps.whisper.gui.WhisperGui.class,

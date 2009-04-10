@@ -23,7 +23,7 @@ import snapps.contacts.actions.ContactAction;
 import snapps.contacts.actions.ContactActionManager;
 import snapps.contacts.gui.ContactsGui;
 import snapps.contacts.gui.comparator.ContactComparator;
-import snapps.contacts.internetaddress.gui.InternetAddressWindow;
+import snapps.contacts.internetaddress.gui.ContactInfoWindow;
 import sneer.brickness.PublicKey;
 import sneer.commons.lang.Functor;
 import sneer.pulp.connection.ConnectionManager;
@@ -94,7 +94,6 @@ class ContactsGuiImpl implements ContactsGui {
 		_container.add(scrollPane, BorderLayout.CENTER);
 		
 		addNewContatAction(window.actions());
-		addEditContactAction();
 
 		new ListContactsPopUpSupport();
 		new SelectedContactSupport();
@@ -120,7 +119,7 @@ class ContactsGuiImpl implements ContactsGui {
 		popupMenu.add(addContact);
 		addContact.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 			contactList().setSelectedValue(newContact(), true);
-			my(InternetAddressWindow.class).open();
+			my(ContactInfoWindow.class).open();
 		}});
 	}
 	
@@ -138,16 +137,6 @@ class ContactsGuiImpl implements ContactsGui {
 	@SuppressWarnings("deprecation") PublicKey mickeyMouseKey(String nick) {
 		return my(KeyManager.class).generateMickeyMouseKey(nick);
 	}
-	
-	private void addEditContactAction(){
-		my(ContactActionManager.class).addContactAction(new ContactAction(){
-			@Override public boolean isEnabled() { return true; }
-			@Override public boolean isVisible() { return true; }
-			@Override public String caption() { return "Edit Contact Info";}
-			@Override public void run() {
-				my(InternetAddressWindow.class).open();
-			}});
-	}	
 	
 	private JList contactList() {
 		return (JList)_contactList.getComponent();

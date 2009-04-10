@@ -13,7 +13,7 @@ TASKS
 		- The GUI is elegant. Talk to Klaus.
 			- ContactGui/InternetAddressWindow - fix selection/sort list
 			- Dashboard
-				- Instrument toolbar menu icon different from scrollbar button.
+				- Instrument toolbar
 					- Menu appears below button.
 						- add or edit a contact -> Add a Contact... (delete NewContactWindow)
 				- Right click menu

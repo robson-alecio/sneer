@@ -24,10 +24,12 @@ import snapps.contacts.actions.ContactActionManager;
 import snapps.contacts.gui.ContactsGui;
 import snapps.contacts.gui.comparator.ContactComparator;
 import snapps.contacts.internetaddress.gui.InternetAddressWindow;
+import sneer.brickness.PublicKey;
 import sneer.commons.lang.Functor;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
+import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
@@ -114,11 +116,27 @@ class ContactsGuiImpl implements ContactsGui {
 	}
 	
 	private void addNewContatAction(JPopupMenu popupMenu) {
-		JMenuItem addContact = new JMenuItem("add or edit a contact");
+		JMenuItem addContact = new JMenuItem("Add a Contact...");
 		popupMenu.add(addContact);
 		addContact.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
-			new NewContactWindow();
+			contactList().setSelectedValue(newContact(), true);
+			my(InternetAddressWindow.class).open();
 		}});
+	}
+	
+	private Contact newContact() {
+		ContactManager _contactManager = my(ContactManager.class);
+		String nick = "<nickname>";
+		Contact contact = _contactManager.contactGiven(nick);
+		if (contact == null) {
+			contact = _contactManager.addContact(nick);
+			my(KeyManager.class).addKey(contact, mickeyMouseKey(nick));
+		}
+		return contact;
+	}
+	
+	@SuppressWarnings("deprecation") PublicKey mickeyMouseKey(String nick) {
+		return my(KeyManager.class).generateMickeyMouseKey(nick);
 	}
 	
 	private void addEditContactAction(){
@@ -131,6 +149,9 @@ class ContactsGuiImpl implements ContactsGui {
 			}});
 	}	
 	
+	private JList contactList() {
+		return (JList)_contactList.getComponent();
+	}	
 	final class ContactLabelProvider implements LabelProvider<Contact> {
 		@Override public Signal<String> labelFor(Contact contact) {
 			return contact.nickname();

@@ -180,7 +180,7 @@ class InternetAddressWindowImpl extends JFrame implements InternetAddressWindow{
 	private Contact contact() {
 		return my(ContactsGui.class).selectedContact().currentValue();
 	}
-
+	
 	private class InternetAddressPrettyPrinter{
 		final InternetAddress _address;
 		

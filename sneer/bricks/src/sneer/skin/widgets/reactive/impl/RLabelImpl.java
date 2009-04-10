@@ -21,7 +21,7 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 	
 	protected final JLabel _textComponent;
 	protected final Signal<?> _source;
-	protected final PickyConsumer<String> _setter;
+	protected final PickyConsumer<? super String> _setter;
 	
 	@SuppressWarnings("unused")
 	private final EventReceiver<?> _textReceiverAvoidGc;
@@ -30,7 +30,7 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 		this(text, null);
 	}
 
-	RLabelImpl(Signal<?> source, PickyConsumer<String> setter) {
+	RLabelImpl(Signal<?> source, PickyConsumer<? super String> setter) {
 		_textComponent = new JLabel();
 		_setter = setter;
 		_source = source;
@@ -78,7 +78,7 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 	}
 
 	@Override
-	public PickyConsumer<String> setter() {
+	public PickyConsumer<? super String> setter() {
 		if(_setter==null)
 			throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
 		

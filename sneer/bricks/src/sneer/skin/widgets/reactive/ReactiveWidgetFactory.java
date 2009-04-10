@@ -21,14 +21,14 @@ public interface ReactiveWidgetFactory extends OldBrick {
 	WindowWidget<JFrame> newFrame(Signal<?> title);
 	TextWidget<JLabel> newLabel(Signal<?> source);
 	
-	TextWidget<JTextField> newEditableLabel(Signal<?> source, PickyConsumer<String> setter);
-	TextWidget<JTextField> newEditableLabel(Signal<?> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy);
+	TextWidget<JTextField> newEditableLabel(Signal<?> source, PickyConsumer<? super String> setter);
+	TextWidget<JTextField> newEditableLabel(Signal<?> source, PickyConsumer<? super String> setter, NotificationPolicy notificationPolicy);
 	
-	TextWidget<JTextField> newTextField(Signal<?> source, PickyConsumer<String> setter);
+	TextWidget<JTextField> newTextField(Signal<?> source, PickyConsumer<? super String> setter);
 	TextWidget<JTextField> newTextField(Signal<?> source, PickyConsumer<? super String> setter, NotificationPolicy notificationPolicy);
 	
-	TextWidget<JTextPane> newTextPane(Signal<?> source, PickyConsumer<String> setter);
-	TextWidget<JTextPane> newTextPane(Signal<?> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy);
+	TextWidget<JTextPane> newTextPane(Signal<?> source, PickyConsumer<? super String> setter);
+	TextWidget<JTextPane> newTextPane(Signal<?> source, PickyConsumer<? super String> setter, NotificationPolicy notificationPolicy);
 
 	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> labelProvider);
 	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> labelProvider,	ListCellRenderer cellRenderer);

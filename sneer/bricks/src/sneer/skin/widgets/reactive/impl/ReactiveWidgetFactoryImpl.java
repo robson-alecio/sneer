@@ -52,11 +52,11 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 
 	
 	@Override
-	public TextWidget<JTextField> newEditableLabel(Signal<?> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy) {
+	public TextWidget<JTextField> newEditableLabel(Signal<?> source, PickyConsumer<? super String> setter, NotificationPolicy notificationPolicy) {
 		GuiThread.assertInGuiThread();
 		return new REditableLabelImpl(source, setter, notificationPolicy);
 	}
-	@Override public TextWidget<JTextField> newEditableLabel(Signal<?> source, PickyConsumer<String> setter) { return newEditableLabel(source, setter, NotificationPolicy.OnTyping);}
+	@Override public TextWidget<JTextField> newEditableLabel(Signal<?> source, PickyConsumer<? super String> setter) { return newEditableLabel(source, setter, NotificationPolicy.OnTyping);}
 	
 	
 	@Override
@@ -64,15 +64,15 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 		GuiThread.assertInGuiThread();
 		return new RTextFieldImpl(source, setter, notificationPolicy);
 	}
-	@Override public TextWidget<JTextField> newTextField(Signal<?> source, PickyConsumer<String> setter) { return newTextField(source, setter, NotificationPolicy.OnTyping); }
+	@Override public TextWidget<JTextField> newTextField(Signal<?> source, PickyConsumer<? super String> setter) { return newTextField(source, setter, NotificationPolicy.OnTyping); }
 
 	
 	@Override
-	public TextWidget<JTextPane> newTextPane(Signal<?> source, PickyConsumer<String> setter, NotificationPolicy notificationPolicy) {
+	public TextWidget<JTextPane> newTextPane(Signal<?> source, PickyConsumer<? super String> setter, NotificationPolicy notificationPolicy) {
 		GuiThread.assertInGuiThread();
 		return new RTextPaneImpl(source, setter, notificationPolicy);
 	}
-	@Override public TextWidget<JTextPane> newTextPane(Signal<?> source, PickyConsumer<String> setter) { return newTextPane(source, setter, NotificationPolicy.OnTyping); }
+	@Override public TextWidget<JTextPane> newTextPane(Signal<?> source, PickyConsumer<? super String> setter) { return newTextPane(source, setter, NotificationPolicy.OnTyping); }
 	
 	
 	@Override

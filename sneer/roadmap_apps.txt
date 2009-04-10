@@ -12,7 +12,6 @@ TASKS
 	- [Sandro and Igor] User Info, Contact List and Contact CRUD - Don't do any other task until:
 		- The GUI is elegant. Talk to Klaus.
 			- ContactGui/InternetAddressWindow - fix selection/sort list
-			- ReactiveFactory - Signal<String> --> Signal<? super String>
 			- Dashboard
 				- White top line becomes gray. Instruments will have final appearance.
 				- Instrument toolbar menu icon different from scrollbar button.

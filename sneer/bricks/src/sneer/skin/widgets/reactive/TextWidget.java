@@ -10,7 +10,7 @@ public interface TextWidget<WIDGET extends JComponent> extends ComponentWidget<W
 
 	Signal<?> output();
 	
-	PickyConsumer<?> setter();	
+	PickyConsumer<? super String> setter();	
 
 	JComponent[] getWidgets();
 }

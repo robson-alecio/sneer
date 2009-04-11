@@ -12,7 +12,7 @@ import org.junit.Test;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.reactive.lists.ListRegister;
@@ -81,7 +81,7 @@ public class ListSignalModelTest extends BrickTest {
 	}
 
 	private Register<String> addElement(String value) {
-		RegisterImpl<String> result = new RegisterImpl<String>(value);
+		Register<String> result = my(Signals.class).newRegister(value);
 		_listRegister.add(result);
 		return result;
 	}

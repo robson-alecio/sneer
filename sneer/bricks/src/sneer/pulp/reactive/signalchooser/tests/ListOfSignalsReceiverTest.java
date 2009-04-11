@@ -8,7 +8,7 @@ import org.junit.Test;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.pulp.reactive.signalchooser.SignalChooserManager;
@@ -75,7 +75,7 @@ public class ListOfSignalsReceiverTest extends BrickTest {
 	}
 
 	private Register<String> addElement(String value) {
-		return addElement(new RegisterImpl<String>(value));
+		return addElement(my(Signals.class).newRegister(value));
 	}
 	
 	private Register<String> addElement(Register<String> register) {

@@ -6,10 +6,9 @@ import main.Sneer;
 
 import org.apache.commons.lang.StringUtils;
 
+import sneer.brickness.StoragePath;
 import sneer.brickness.impl.Brickness;
 import sneer.commons.environments.Environments;
-import sneer.commons.io.StoragePath;
-import sneer.kernel.container.SneerConfig;
 import sneer.pulp.network.Network;
 import testutils.network.InProcessNetwork;
 import wheel.io.Jars;
@@ -30,41 +29,35 @@ public class SneerCommunity implements SovereignCommunity {
 	@Override
 	public SovereignParty createParty(final String name) {
 		Brickness container = newContainer(name);
-		populate(container);
+		placeBricks(container);
 		final SneerParty party = Environments.wrap(SneerParty.class, container.environment());
 		party.setOwnName(name);
 		party.setSneerPort(_nextPort++);
 		return party;
 	}
 
-	private void populate(Brickness container) {
+	private void placeBricks(Brickness container) {
 		try {
-			runBricks(container, Sneer.businessBricks());
-			runBricks(container, SneerParty.class);
+			placeBricks(container, Sneer.businessBricks());
+			placeBricks(container, SneerParty.class);
 		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}
 	}
 
-	private void runBricks(Brickness container, Class<?>... bricks) {
+	private void placeBricks(Brickness container, Class<?>... bricks) {
 		for (Class<?> brick : bricks)
 			container.placeBrick(Jars.classpathRootFor(brick), brick.getName());
 	}
 
 	private Brickness newContainer(final String name) {
 		StoragePath storagePath = new StoragePath() { @Override public String get() {
-			File result = sneerConfigForParty(name).sneerDirectory();
+			File result = rootDirectory(name);
 			if (!result.exists()) result.mkdirs();
 			return result.getAbsolutePath();
 		}};
 		
-		return new Brickness(_network, sneerConfigForParty(name), storagePath);
-	}
-
-	private SneerConfig sneerConfigForParty(String name) {
-		File root = rootDirectory(name);
-		SneerConfig config = new SneerConfigMock(root);
-		return config;
+		return new Brickness(_network, storagePath);
 	}
 
 	private File rootDirectory(String name) {

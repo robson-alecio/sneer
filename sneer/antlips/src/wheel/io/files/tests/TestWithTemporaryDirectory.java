@@ -1,15 +1,13 @@
-package sneer.commons.testutil;
+package wheel.io.files.tests;
 
 import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
+import org.junit.Assert;
 
-import sneer.commons.threads.Daemon;
-import wheel.testutil.AssertUtils;
-
-public abstract class TestThatMightUseResources extends AssertUtils {
+public abstract class TestWithTemporaryDirectory extends Assert {
 
 	private File _tmpDirectory;
 
@@ -21,8 +19,7 @@ public abstract class TestThatMightUseResources extends AssertUtils {
 	}
 
 	@After
-	public void afterTestThatMightUseResources() {
-		Daemon.killAllInstances(); //Fix: This might be killing Daemons created before the test started.
+	public void afterTestWithTmpDirectory() {
 		deleteFiles();
 	}
 

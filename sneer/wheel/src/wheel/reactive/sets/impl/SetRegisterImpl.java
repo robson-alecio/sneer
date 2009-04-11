@@ -15,11 +15,11 @@ import sneer.pulp.events.EventNotifier;
 import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Signals;
 import wheel.lang.Consumer;
+import wheel.reactive.sets.SetChange;
 import wheel.reactive.sets.SetRegister;
 import wheel.reactive.sets.SetSignal;
-import wheel.reactive.sets.SetChange;
 
 
 
@@ -79,7 +79,7 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 	}
 
 	private final Set<T> _contents = new HashSet<T>();
-	private final Register<Integer> _size = new RegisterImpl<Integer>(0);
+	private final Register<Integer> _size = my(Signals.class).newRegister(0);
 
 	private final MyOutput _output = new MyOutput();
 

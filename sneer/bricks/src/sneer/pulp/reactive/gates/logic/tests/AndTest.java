@@ -14,15 +14,15 @@ import org.junit.runner.RunWith;
 import sneer.brickness.testsupport.BrickTestRunner;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.gates.logic.LogicGates;
-import sneer.pulp.reactive.impl.RegisterImpl;
 import wheel.reactive.impl.EventReceiver;
 
 @RunWith(BrickTestRunner.class)
 public class AndTest {
 
-	Register<Boolean> _input1 = new RegisterImpl<Boolean>(false);
-	Register<Boolean> _input2 = new RegisterImpl<Boolean>(false);
+	Register<Boolean> _input1 = my(Signals.class).newRegister(false);
+	Register<Boolean> _input2 = my(Signals.class).newRegister(false);
 	Signal<Boolean> _andResult = my(LogicGates.class).and(_input1.output(), _input2.output());
 	List<Boolean> _recorded = new ArrayList<Boolean>();
 	

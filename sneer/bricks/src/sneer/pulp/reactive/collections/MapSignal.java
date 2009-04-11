@@ -1,4 +1,4 @@
-package wheel.reactive.maps;
+package sneer.pulp.reactive.collections;
 
 import java.util.Map;
 

@@ -5,6 +5,7 @@ import static sneer.commons.environments.Environments.my;
 import org.junit.Test;
 
 import snapps.contacts.gui.comparator.ContactComparator;
+import sneer.brickness.testsupport.AssertUtils;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.Contribute;
 import sneer.pulp.connection.ByteConnection;
@@ -14,14 +15,12 @@ import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import sneer.pulp.reactive.impl.RegisterImpl;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import wheel.lang.Consumer;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.ListRegisterImpl;
-import wheel.testutil.AssertUtils;
 
 public class ContactComparatorTest extends BrickTest {
 	
@@ -76,7 +75,7 @@ class ConnectionManagerMock implements ConnectionManager{
 class ContactMock implements Contact{
 
 	final Signal<Boolean> _isOnline;
-	final Register<String> _nick = new RegisterImpl<String>("");
+	final Register<String> _nick = my(Signals.class).newRegister("");
 
 	ContactMock(String nick, boolean isOnline) {
 		_nick.setter().consume(nick);

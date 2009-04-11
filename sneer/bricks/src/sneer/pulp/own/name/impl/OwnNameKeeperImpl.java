@@ -1,10 +1,11 @@
 package sneer.pulp.own.name.impl;
 
+import static sneer.commons.environments.Environments.my;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Signals;
 import wheel.lang.Consumer;
 
 class OwnNameKeeperImpl implements OwnNameKeeper {
@@ -14,7 +15,7 @@ class OwnNameKeeperImpl implements OwnNameKeeper {
 //		_space.addSubscription(OwnName.class, ownNameSubscriber());
 //	}
 	
-	private Register<String> _name = new RegisterImpl<String>("");
+	private Register<String> _name = my(Signals.class).newRegister("");
 	
 	@Override
 	public Signal<String> name() {

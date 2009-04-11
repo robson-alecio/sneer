@@ -1,9 +1,10 @@
 package spikes.priscila.go.gui;
 
+import static sneer.commons.environments.Environments.my;
 import sneer.commons.environments.Environments;
 import sneer.kernel.container.ContainersOld;
 import sneer.pulp.reactive.Register;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Signals;
 import spikes.priscila.go.Move;
 import spikes.priscila.go.GoBoard.StoneColor;
 import wheel.io.ui.GuiThread;
@@ -18,7 +19,7 @@ public class GoMain {
 	}
 	
 	private void init() {
-		Register<Move> moveRegister = new RegisterImpl<Move>(null);
+		Register<Move> moveRegister = my(Signals.class).newRegister(null);
 		new GoFrame(moveRegister, StoneColor.BLACK, 0);
 		new GoFrame(moveRegister, StoneColor.WHITE, 500);
 	}

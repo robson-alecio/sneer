@@ -7,11 +7,11 @@ import java.util.Comparator;
 import org.jmock.Expectations;
 import org.junit.Test;
 
+import sneer.brickness.testsupport.AssertUtils;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import sneer.pulp.reactive.impl.RegisterImpl;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import wheel.lang.Consumer;
@@ -20,7 +20,6 @@ import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListChange.Visitor;
 import wheel.reactive.lists.impl.ListRegisterImpl;
-import wheel.testutil.AssertUtils;
 
 public class ListSorterTest extends BrickTest {
 	
@@ -182,10 +181,10 @@ public class ListSorterTest extends BrickTest {
 	public void signalChooserTest() {
 		ListRegister<Signal<Integer>> src = new ListRegisterImpl<Signal<Integer>>();
 
-		Register<Integer> r15 = new RegisterImpl<Integer>(15);
-		Register<Integer> r25 = new RegisterImpl<Integer>(25);
-		Register<Integer> r35 = new RegisterImpl<Integer>(35);
-		Register<Integer> r45 = new RegisterImpl<Integer>(45);
+		Register<Integer> r15 = my(Signals.class).newRegister(15);
+		Register<Integer> r25 = my(Signals.class).newRegister(25);
+		Register<Integer> r35 = my(Signals.class).newRegister(35);
+		Register<Integer> r45 = my(Signals.class).newRegister(45);
 		
 		Signal<Integer> s15 = signal(r15);
 		Signal<Integer> s25 = signal(r25);

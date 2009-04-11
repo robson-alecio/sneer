@@ -1,14 +1,15 @@
 package sneer.pulp.reactive.gates.logic.impl;
 
+import static sneer.commons.environments.Environments.my;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Signals;
 import wheel.reactive.impl.EventReceiver;
 import wheel.reactive.impl.SignalOwnerReference;
 
 class And {
 
-	private final Register<Boolean> _result = new RegisterImpl<Boolean>(false);
+	private final Register<Boolean> _result = my(Signals.class).newRegister(false);
 	private final Signal<Boolean> _a;
 	private final Signal<Boolean> _b;
 	

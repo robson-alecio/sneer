@@ -10,8 +10,7 @@ import org.jmock.internal.ExpectationBuilder;
 import org.junit.After;
 import org.junit.runner.RunWith;
 
-import sneer.commons.io.StoragePath;
-import sneer.commons.testutil.TestThatMightUseResources;
+import sneer.brickness.StoragePath;
 
 @RunWith(BrickTestWithMockRunner.class)
 public abstract class BrickTest extends TestThatMightUseResources {

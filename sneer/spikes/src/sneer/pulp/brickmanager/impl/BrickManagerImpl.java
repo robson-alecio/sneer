@@ -21,9 +21,9 @@ import sneer.pulp.dependency.FileWithHash;
 import sneer.pulp.deployer.BrickBundle;
 import sneer.pulp.deployer.BrickFile;
 import sneer.pulp.keymanager.KeyManager;
-import wheel.reactive.maps.MapRegister;
-import wheel.reactive.maps.MapSignal;
-import wheel.reactive.maps.impl.MapRegisterImpl;
+import sneer.pulp.reactive.collections.MapRegister;
+import sneer.pulp.reactive.collections.MapSignal;
+import sneer.pulp.reactive.collections.ReactiveCollections;
 
 class BrickManagerImpl implements BrickManager {
 
@@ -33,7 +33,7 @@ class BrickManagerImpl implements BrickManager {
 	
 	private final KeyManager _keyManager = my(KeyManager.class);
 	
-	private final MapRegister<String, BrickFile> _bricksByName = new MapRegisterImpl<String, BrickFile>();
+	private final MapRegister<String, BrickFile> _bricksByName = my(ReactiveCollections.class).newMapRegister();
 
 	@Override
 	public void install(BrickBundle bundle) {

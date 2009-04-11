@@ -7,12 +7,12 @@ import java.io.IOException;
 import org.jmock.Expectations;
 import org.junit.Test;
 
+import sneer.brickness.StoragePath;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.BrickTestRunner;
 import sneer.brickness.testsupport.Contribute;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
-import sneer.commons.io.StoragePath;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.clock.Clock;
@@ -26,7 +26,7 @@ import sneer.pulp.dyndns.updater.Updater;
 import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.propertystore.mocks.TransientPropertyStore;
 import sneer.pulp.reactive.Register;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Signals;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
 import wheel.lang.exceptions.FriendlyException;
 import wheel.reactive.lists.ListSignal;
@@ -53,9 +53,9 @@ Unacceptable Client Behavior
 
 	 */
 	
-	final Register<String> _ownIp = new RegisterImpl<String>("123.45.67.89");
+	final Register<String> _ownIp = my(Signals.class).newRegister("123.45.67.89");
 	final DynDnsAccount _account = new DynDnsAccount("test.dyndns.org", "test", "test");
-	final RegisterImpl<DynDnsAccount> _ownAccount = new RegisterImpl<DynDnsAccount>(_account);
+	final Register<DynDnsAccount> _ownAccount = my(Signals.class).newRegister(_account);
 	
 	@Contribute final OwnIpDiscoverer _ownIpDiscoverer = mock(OwnIpDiscoverer.class);
 	@Contribute final DynDnsAccountKeeper _ownAccountKeeper = mock(DynDnsAccountKeeper.class);

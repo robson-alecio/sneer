@@ -9,14 +9,13 @@ import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import sneer.pulp.reactive.impl.RegisterImpl;
 import sneer.skin.image.ImageFactory;
 import wheel.lang.Consumer;
 import wheel.lang.exceptions.Hiccup;
 
 class OwnAvatarKeeperImpl implements OwnAvatarKeeper {
 
-	private Register<Image> _avatar = new RegisterImpl<Image>(null);
+	private Register<Image> _avatar = my(Signals.class).newRegister(null);
 	
 	private final ImageFactory _imageFactory = my(ImageFactory.class);
 

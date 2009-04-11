@@ -8,10 +8,10 @@ import wheel.io.Jars;
 public class Sneer {
 
 	public static void main(String[] ignored) throws Exception {
-		Brickness container = new Brickness();
+		Brickness container = new Brickness(new SneerStoragePath());
 		
 		placeBricks(container, businessBricks());
-		placeBricks(container, guiBricks());
+		placeBricks(container, communicationBricks());
 	}
 
 	static public void placeBricks(Brickness container, Class<?>... bricks) throws BrickPlacementException {
@@ -20,15 +20,13 @@ public class Sneer {
 	}
 
 	static public Class<?>[] businessBricks() {
-		return new Class<?>[]{
+		return new Class<?>[] {
 				sneer.pulp.events.EventNotifiers.class,
-				sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper.class,
 				sneer.skin.image.ImageFactory.class,
+				sneer.pulp.reactive.Signals.class,
 				sneer.pulp.internetaddresskeeper.InternetAddressKeeper.class,
 				sneer.pulp.crypto.Crypto.class,
-				sneer.pulp.reactive.Signals.class,
 				sneer.pulp.reactive.listsorter.ListSorter.class,
-				sneer.kernel.container.SneerConfig.class,
 				sneer.pulp.reactive.gates.logic.LogicGates.class,
 				sneer.pulp.retrier.RetrierManager.class,
 				sneer.skin.sound.loopback.LoopbackTester.class,
@@ -41,7 +39,6 @@ public class Sneer {
 				sneer.pulp.distribution.filtering.TupleFilterManager.class,
 				snapps.whisper.speex.Speex.class,
 				sneer.pulp.datastructures.cache.CacheFactory.class,
-				sneer.commons.io.StoragePath.class,
 				sneer.pulp.propertystore.PropertyStore.class,
 				sneer.pulp.datastore.DataStore.class,
 				sneer.pulp.contacts.ContactManager.class,
@@ -50,9 +47,7 @@ public class Sneer {
 				sneer.pulp.logging.Logger.class,
 				sneer.pulp.keymanager.KeyManager.class,
 				sneer.pulp.reactive.signalchooser.SignalChooserManagerFactory.class,
-				sneer.pulp.dyndns.checkip.CheckIp.class,
 				snapps.watchme.codec.ImageCodec.class,
-				sneer.pulp.dyndns.updater.Updater.class,
 				sneer.pulp.exceptionhandling.ExceptionHandler.class,
 				sneer.pulp.connection.SocketOriginator.class,
 				sneer.pulp.serialization.Serializer.class,
@@ -66,7 +61,6 @@ public class Sneer {
 				sneer.skin.sound.kernel.Audio.class,
 				sneer.pulp.bandwidth.BandwidthCounter.class,
 				sneer.skin.screenshotter.Screenshotter.class,
-				sneer.pulp.dyndns.ownip.OwnIpDiscoverer.class,
 				sneer.pulp.own.name.OwnNameKeeper.class,
 				sneer.pulp.connection.ConnectionManager.class,
 				snapps.contacts.gui.comparator.ContactComparator.class,
@@ -76,7 +70,6 @@ public class Sneer {
 				sneer.pulp.connection.SocketAccepter.class,
 				sneer.pulp.connection.reachability.ReachabilitySentinel.class,
 				sneer.pulp.connection.SocketReceiver.class,
-				sneer.pulp.dyndns.client.DynDnsClient.class,
 				sneer.pulp.tuples.TupleSpace.class,
 				snapps.watchme.WatchMe.class,
 				sneer.skin.sound.mic.Mic.class,
@@ -87,8 +80,14 @@ public class Sneer {
 		};
 	}
 
-	private static Class<?>[] guiBricks() {
+	private static Class<?>[] communicationBricks() {
 		return new Class<?>[] {
+				sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper.class,
+				sneer.pulp.dyndns.checkip.CheckIp.class,
+				sneer.pulp.dyndns.updater.Updater.class,
+				sneer.pulp.dyndns.ownip.OwnIpDiscoverer.class,
+				sneer.pulp.dyndns.client.DynDnsClient.class,
+
 				sneer.hardware.logging.gui.LogConsole.class,
 				sneer.skin.colors.Colors.class,
 				snapps.contacts.gui.delete.DeleteContactWindow.class,

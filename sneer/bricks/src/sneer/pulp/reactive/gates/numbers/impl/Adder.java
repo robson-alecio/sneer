@@ -1,14 +1,15 @@
 package sneer.pulp.reactive.gates.numbers.impl;
 
+import static sneer.commons.environments.Environments.my;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Signals;
 import wheel.reactive.impl.EventReceiver;
 import wheel.reactive.impl.SignalOwnerReference;
 
 class Adder {
 
-	private final Register<Integer> _sum = new RegisterImpl<Integer>(0);
+	private final Register<Integer> _sum = my(Signals.class).newRegister(0);
 	private final Signal<Integer> _a;
 	private final Signal<Integer> _b;
 	@SuppressWarnings("unused") private final Object _referenceToAvoidGc;

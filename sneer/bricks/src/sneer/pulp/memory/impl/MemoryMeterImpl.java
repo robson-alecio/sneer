@@ -5,7 +5,7 @@ import sneer.pulp.clock.Clock;
 import sneer.pulp.memory.MemoryMeter;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Signals;
 import sneer.pulp.threadpool.Stepper;
 
 class MemoryMeterImpl implements MemoryMeter {
@@ -13,8 +13,8 @@ class MemoryMeterImpl implements MemoryMeter {
 	static private final int PERIOD_IN_MILLIS = 2000;
 	static private final Runtime RUNTIME = Runtime.getRuntime();
 
-	private final Register<Integer> _usedMBs = new RegisterImpl<Integer>(0);
-	private final Register<Integer> _usedMBsPeak = new RegisterImpl<Integer>(0);
+	private final Register<Integer> _usedMBs = my(Signals.class).newRegister(0);
+	private final Register<Integer> _usedMBsPeak = my(Signals.class).newRegister(0);
 	
 	private final Clock _clock = my(Clock.class); {
 		_clock.wakeUpNowAndEvery(PERIOD_IN_MILLIS, new Stepper() { @Override public boolean step() {

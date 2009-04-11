@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Signals;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.widgets.reactive.ImageWidget;
 import wheel.io.ui.GuiThread;
@@ -37,7 +37,7 @@ class RImageImpl extends JPanel implements ImageWidget{
 	
 	RImageImpl(Signal<Image> source, PickyConsumer<Image> setter){
 		setOpaque(false);
-		_image = new RegisterImpl<Image>(null);
+		_image = my(Signals.class).newRegister(null);
 		_setter = setter;
 		_imageReceiverAvoidGc = imageReceiverFor(source);
 	}

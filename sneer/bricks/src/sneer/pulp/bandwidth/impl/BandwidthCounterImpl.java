@@ -8,7 +8,7 @@ import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Signals;
 import sneer.pulp.threadpool.Stepper;
 
 class BandwidthCounterImpl implements BandwidthCounter {
@@ -20,8 +20,8 @@ class BandwidthCounterImpl implements BandwidthCounter {
 	private final AtomicInteger sent = new AtomicInteger();
 	private final AtomicInteger received  = new AtomicInteger();
 	
-	private final Register<Integer> _download = new RegisterImpl<Integer>(0); 
-	private final Register<Integer> _upload = new RegisterImpl<Integer>(0); 
+	private final Register<Integer> _download = my(Signals.class).newRegister(0); 
+	private final Register<Integer> _upload = my(Signals.class).newRegister(0); 
 	
 	private long _lastConsolidationTime;
 	

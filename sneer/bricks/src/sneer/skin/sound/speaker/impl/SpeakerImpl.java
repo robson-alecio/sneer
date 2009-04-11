@@ -1,15 +1,16 @@
 package sneer.skin.sound.speaker.impl;
 
+import static sneer.commons.environments.Environments.my;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Signals;
 import sneer.skin.sound.speaker.Speaker;
 
 class SpeakerImpl implements Speaker {
 	
 	private PacketPlayer _consumer;
 	private PacketSubscriber _producer;
-	private Register<Boolean> _isRunning = new RegisterImpl<Boolean>(false);
+	private Register<Boolean> _isRunning = my(Signals.class).newRegister(false);
 
 
 	@Override

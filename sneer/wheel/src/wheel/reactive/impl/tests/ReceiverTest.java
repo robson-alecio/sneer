@@ -1,12 +1,14 @@
 package wheel.reactive.impl.tests;
 
 import static org.junit.Assert.assertEquals;
+import static sneer.commons.environments.Environments.my;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import sneer.brickness.testsupport.BrickTestRunner;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Register;
+import sneer.pulp.reactive.Signals;
 import wheel.reactive.impl.EventReceiver;
 
 @RunWith(BrickTestRunner.class)
@@ -15,8 +17,8 @@ public class ReceiverTest {
 	@Test
 	public void testAddToSignal() {
 		final StringBuilder received = new StringBuilder();
-		RegisterImpl<String> register1 = new RegisterImpl<String>(null);
-		RegisterImpl<String> register2 = new RegisterImpl<String>("hey");
+		Register<String> register1 = my(Signals.class).newRegister(null);
+		Register<String> register2 = my(Signals.class).newRegister("hey");
 		@SuppressWarnings("unused")
 		Object referenceToAvoidGc = new EventReceiver<String>(register1.output(), register2.output()) {@Override public void consume(String value) {
 			received.append(value);

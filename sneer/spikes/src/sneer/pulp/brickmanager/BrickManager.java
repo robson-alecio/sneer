@@ -3,7 +3,7 @@ package sneer.pulp.brickmanager;
 import sneer.brickness.OldBrick;
 import sneer.pulp.deployer.BrickBundle;
 import sneer.pulp.deployer.BrickFile;
-import wheel.reactive.maps.MapSignal;
+import sneer.pulp.reactive.collections.MapSignal;
 
 public interface BrickManager extends OldBrick {
 

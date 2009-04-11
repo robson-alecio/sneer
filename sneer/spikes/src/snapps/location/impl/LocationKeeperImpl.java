@@ -1,16 +1,17 @@
 package snapps.location.impl;
 
+import static sneer.commons.environments.Environments.my;
 import snapps.location.LocationKeeper;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Signals;
 import wheel.lang.Consumer;
 
 public class LocationKeeperImpl implements LocationKeeper {
 
-	private Register<String> _location = new RegisterImpl<String>(null);
-	private Register<String> _latitude = new RegisterImpl<String>(null);
-	private Register<String> _longitude = new RegisterImpl<String>(null);
+	private Register<String> _location = my(Signals.class).newRegister(null);
+	private Register<String> _latitude = my(Signals.class).newRegister(null);
+	private Register<String> _longitude = my(Signals.class).newRegister(null);
 	
 	@Override
 	public Signal<String> location() {

@@ -13,7 +13,7 @@ import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Signals;
 import wheel.io.Logger;
 
 class OwnIpDiscovererImpl implements OwnIpDiscoverer {
@@ -36,7 +36,7 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	
 	
 	private OwnIpDiscovererImpl() {
-		_ownIp = new RegisterImpl<String>(restoreIp());
+		_ownIp = my(Signals.class).newRegister(restoreIp());
 		scheduleNextDiscovery();
 	}
 

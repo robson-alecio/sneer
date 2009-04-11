@@ -2,13 +2,14 @@ package sneer.skin.rooms.impl;
 
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Signals;
 import sneer.skin.rooms.ActiveRoomKeeper;
 import wheel.lang.Consumer;
+import static sneer.commons.environments.Environments.my;
 
 class ActiveRoomKeeperImpl implements ActiveRoomKeeper {
 
-	private final Register<String> _register = new RegisterImpl<String>("");
+	private final Register<String> _register = my(Signals.class).newRegister("");
 
 	@Override
 	public Signal<String> room() {

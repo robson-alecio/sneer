@@ -1,12 +1,14 @@
 package sneer.pulp.contacts.impl;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.util.Iterator;
 
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Signals;
 import wheel.lang.PickyConsumer;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.lists.ListRegister;
@@ -84,7 +86,7 @@ class ContactImpl implements Contact {
 	private final Register<String> _nickname;
 	
 	public ContactImpl(String nickname) {
-		_nickname = new RegisterImpl<String>(nickname);
+		_nickname = my(Signals.class).newRegister(nickname);
 	}
 
 	@Override

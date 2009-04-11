@@ -1,10 +1,12 @@
 package sneer.skin.widgets.reactive.impl;
 
+import static sneer.commons.environments.Environments.my;
+
 import javax.swing.JFrame;
 
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Signals;
 import sneer.skin.widgets.reactive.WindowWidget;
 import wheel.lang.PickyConsumer;
 import wheel.reactive.impl.EventReceiver;
@@ -24,7 +26,7 @@ class RFrameImpl extends JFrame implements WindowWidget<JFrame>{
 	}
 	
 	RFrameImpl(Signal<?> source, PickyConsumer<String> setter){
-		_titleRegister = new RegisterImpl<String>(null);
+		_titleRegister = my(Signals.class).newRegister(null);
 		_titleSetter = setter;
 		_titleReceiverAvoidGc = titleReceiverFor(source);
 	}

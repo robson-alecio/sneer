@@ -1,6 +1,7 @@
 package sneer.pulp.reactive.impl;
 
 import sneer.commons.lang.Functor;
+import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import wheel.lang.Consumer;
@@ -27,6 +28,11 @@ class SignalsImpl implements Signals {
 	@Override
 	public <A, B> Signal<B> adaptSignal(Signal<A> input, Functor<A, Signal<B>> functor) {
 		return new SignalAdapter<A, B>(input, functor).output();
+	}
+
+	@Override
+	public <T> Register<T> newRegister(T initialValue) {
+		return new RegisterImpl<T>(initialValue);
 	}
 
 }

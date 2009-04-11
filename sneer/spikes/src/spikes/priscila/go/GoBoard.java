@@ -1,5 +1,6 @@
 package spikes.priscila.go;
 
+import static sneer.commons.environments.Environments.my;
 import static spikes.priscila.go.GoBoard.StoneColor.BLACK;
 import static spikes.priscila.go.GoBoard.StoneColor.WHITE;
 
@@ -7,14 +8,14 @@ import java.util.Arrays;
 
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Signals;
 import wheel.io.serialization.DeepCopier;
 
 public class GoBoard {
 
 	public static enum StoneColor { BLACK,	WHITE; }
-	private final Register<Integer> _blackStonesCaptured = new RegisterImpl<Integer>(0);
-	private final Register<Integer> _whiteStonesCaptured = new RegisterImpl<Integer>(0);
+	private final Register<Integer> _blackStonesCaptured = my(Signals.class).newRegister(0);
+	private final Register<Integer> _whiteStonesCaptured = my(Signals.class).newRegister(0);
 	
 	public GoBoard(int size) {
 		_intersections = new Intersection[size][size];

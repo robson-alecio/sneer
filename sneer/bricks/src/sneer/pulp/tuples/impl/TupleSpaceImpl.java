@@ -20,10 +20,10 @@ import org.prevayler.PrevaylerFactory;
 import org.prevayler.foundation.serialization.XStreamSerializer;
 
 import snapps.wind.impl.bubble.Bubble;
+import sneer.brickness.StoragePath;
 import sneer.brickness.Tuple;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
-import sneer.commons.io.StoragePath;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
 import sneer.pulp.keymanager.KeyManager;

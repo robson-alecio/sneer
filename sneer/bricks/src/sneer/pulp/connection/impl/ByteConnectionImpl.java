@@ -13,7 +13,7 @@ import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Signals;
 import sneer.pulp.threadpool.ThreadPool;
 import wheel.lang.Consumer;
 import wheel.lang.Threads;
@@ -27,7 +27,7 @@ class ByteConnectionImpl implements ByteConnection {
 	private final String _label;
 	private final Contact _contact;
 
-	private final Register<Boolean> _isOnline = new RegisterImpl<Boolean>(false);
+	private final Register<Boolean> _isOnline = my(Signals.class).newRegister(false);
 	private final SocketHolder _socketHolder = new SocketHolder(_isOnline.setter());
 	
 	private PacketScheduler _scheduler;

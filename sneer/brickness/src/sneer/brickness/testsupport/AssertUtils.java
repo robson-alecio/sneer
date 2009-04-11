@@ -1,4 +1,4 @@
-package wheel.testutil;
+package sneer.brickness.testsupport;
 
 import org.junit.Assert;
 

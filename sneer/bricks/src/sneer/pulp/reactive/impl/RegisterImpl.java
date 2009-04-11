@@ -6,7 +6,7 @@ import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import wheel.lang.Consumer;
 
-public class RegisterImpl<T> implements Register<T> {
+class RegisterImpl<T> implements Register<T> {
 
 	class MyOutput extends AbstractSignal<T> {
 

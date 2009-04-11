@@ -1,4 +1,4 @@
-package wheel.reactive.maps.impl;
+package sneer.pulp.reactive.collections.impl;
 
 import static sneer.commons.environments.Environments.my;
 
@@ -12,16 +12,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import sneer.pulp.events.EventNotifier;
 import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.collections.MapRegister;
+import sneer.pulp.reactive.collections.MapSignal;
 import wheel.lang.Consumer;
-import wheel.reactive.maps.MapRegister;
-import wheel.reactive.maps.MapSignal;
 import wheel.reactive.sets.SetRegister;
 import wheel.reactive.sets.SetSignal;
 import wheel.reactive.sets.SetChange;
 import wheel.reactive.sets.impl.SetRegisterImpl;
 import wheel.reactive.sets.impl.SetValueChangeImpl;
 
-public class MapRegisterImpl<K,V> implements MapRegister<K,V> {
+class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 	
 	static class MyEntry<K,V> implements Entry<K, V> {
 

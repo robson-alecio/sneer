@@ -36,7 +36,6 @@ import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import sneer.pulp.reactive.impl.RegisterImpl;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.dashboard.InstrumentWindow;
@@ -58,7 +57,7 @@ class ContactsGuiImpl implements ContactsGui {
 	private ListWidget<Contact> _contactList;
 	private Container _container;
 	
-	private final Register<Contact> _selectedContact = new RegisterImpl<Contact>(null);
+	private final Register<Contact> _selectedContact = my(Signals.class).newRegister(null);
 	
 	private static Image getImage(String fileName) {
 		return Images.getImage(ContactsGuiImpl.class.getResource(fileName));

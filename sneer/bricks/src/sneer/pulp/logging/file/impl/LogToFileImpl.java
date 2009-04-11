@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import sneer.commons.io.StoragePath;
+import sneer.brickness.StoragePath;
 import sneer.pulp.logging.Logger;
 import sneer.pulp.logging.file.LogToFile;
 import wheel.reactive.impl.EventReceiver;

@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import sneer.commons.environments.Environments;
 import sneer.kernel.container.ContainersOld;
 import sneer.pulp.reactive.Register;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Signals;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
@@ -27,7 +27,7 @@ public class ReactiveWidgetsDemo {
 		GuiThread.strictInvokeAndWait(new Runnable(){ @Override public void run() {
 
 			final ReactiveWidgetFactory rfactory = my(ReactiveWidgetFactory.class);
-			final Register<String> register = new RegisterImpl<String>("Jose das Coves");
+			final Register<String> register = my(Signals.class).newRegister("Jose das Coves");
 			
 			TextWidget<?> textWidget;
 			

@@ -1,6 +1,5 @@
-package sneer.commons.io;
+package sneer.brickness;
 
-import sneer.brickness.Brick;
 import sneer.commons.environments.EnvironmentProperty;
 
 @Brick

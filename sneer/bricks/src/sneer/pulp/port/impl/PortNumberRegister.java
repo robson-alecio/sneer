@@ -1,17 +1,19 @@
 package sneer.pulp.port.impl;
 
+import static sneer.commons.environments.Environments.my;
+import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Signals;
 import wheel.lang.PickyConsumer;
 import wheel.reactive.impl.IntegerConsumerBoundaries;
 
 class PortNumberRegister {
 
 	public PortNumberRegister(Integer initialValue) {
-		_delegate = new RegisterImpl<Integer>(initialValue);
+		_delegate = my(Signals.class).newRegister(initialValue);
 	}
 
-	private RegisterImpl<Integer> _delegate;
+	private Register<Integer> _delegate;
 
 	public PickyConsumer<Integer> setter() {
 		return new IntegerConsumerBoundaries("Sneer Port", _delegate.setter(), 0, 65535);

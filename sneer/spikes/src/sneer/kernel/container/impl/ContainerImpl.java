@@ -7,9 +7,9 @@ import java.util.Set;
 
 import sneer.brickness.BrickConventions;
 import sneer.brickness.OldBrick;
+import sneer.brickness.StoragePath;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
-import sneer.commons.io.StoragePath;
 import sneer.kernel.container.ClassLoaderFactory;
 import sneer.kernel.container.ContainerOld;
 import sneer.kernel.container.ContainerException;

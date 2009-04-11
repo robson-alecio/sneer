@@ -1,4 +1,5 @@
-package wheel.reactive.maps;
+package sneer.pulp.reactive.collections;
+
 
 
 public interface MapRegister<K, V> {

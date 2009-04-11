@@ -3,7 +3,7 @@ package sneer.skin.sound.mic.impl;
 import static sneer.commons.environments.Environments.my;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Signals;
 import sneer.pulp.retrier.Retrier;
 import sneer.pulp.retrier.RetrierManager;
 import sneer.pulp.retrier.Task;
@@ -23,7 +23,7 @@ class MicImpl implements Mic {
 	private boolean _isOpen;
 	private Runnable _worker;
 	
-	private Register<Boolean> _isRunning = new RegisterImpl<Boolean>(false);
+	private Register<Boolean> _isRunning = my(Signals.class).newRegister(false);
 	
 	@Override
 	public Signal<Boolean> isRunning() {

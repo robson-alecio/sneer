@@ -9,7 +9,6 @@ import sneer.commons.lang.Functor;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import sneer.pulp.reactive.impl.RegisterImpl;
 
 
 
@@ -19,7 +18,7 @@ public class SignalsTest extends BrickTest {
 
 	@Test
 	public void adapt() {
-		Register<Integer> register = new RegisterImpl<Integer>(1);
+		Register<Integer> register = my(Signals.class).newRegister(1);
 		
 		Signal<String> output = _subject.adapt(register.output(), new Functor<Integer, String>() { @Override public String evaluate(Integer value) {
 			return value == 1 ? "one" : "something else";
@@ -32,9 +31,9 @@ public class SignalsTest extends BrickTest {
 
 	@Test
 	public void adaptSignal() {
-		Register<Integer> chooser = new RegisterImpl<Integer>(1);
-		final Register<String> register1 = new RegisterImpl<String>("1 foo");
-		final Register<String> register2 = new RegisterImpl<String>("2 foo");
+		Register<Integer> chooser = my(Signals.class).newRegister(1);
+		final Register<String> register1 = my(Signals.class).newRegister("1 foo");
+		final Register<String> register2 = my(Signals.class).newRegister("2 foo");
 		
 		Signal<String> output = _subject.adaptSignal(chooser.output(), new Functor<Integer, Signal<String>>() { @Override public Signal<String> evaluate(Integer value) {
 			return value == 1 ? register1.output() : register2.output();

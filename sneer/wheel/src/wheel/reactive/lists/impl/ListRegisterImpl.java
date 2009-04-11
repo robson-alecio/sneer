@@ -10,11 +10,11 @@ import sneer.pulp.events.EventNotifier;
 import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Signals;
 import wheel.lang.Consumer;
+import wheel.reactive.lists.ListChange;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
-import wheel.reactive.lists.ListChange;
 
 public class ListRegisterImpl<VO> implements ListRegister<VO> {
 	
@@ -75,7 +75,7 @@ public class ListRegisterImpl<VO> implements ListRegister<VO> {
 
 	
 	protected final List<VO> _list = new ArrayList<VO>();
-	protected final Register<Integer> _size = new RegisterImpl<Integer>(0);
+	protected final Register<Integer> _size = my(Signals.class).newRegister(0);
 	private MyOutput _output = new MyOutput();
 	
 

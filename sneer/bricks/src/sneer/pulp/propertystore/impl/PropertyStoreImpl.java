@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 
-import sneer.commons.io.StoragePath;
+import sneer.brickness.StoragePath;
 import sneer.commons.io.Streams;
 import sneer.pulp.propertystore.PropertyStore;
 import wheel.io.Logger;

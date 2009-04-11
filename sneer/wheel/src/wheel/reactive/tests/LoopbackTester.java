@@ -1,11 +1,12 @@
 package wheel.reactive.tests;
 
+import static sneer.commons.environments.Environments.my;
+import static wheel.lang.Types.cast;
 import sneer.pulp.events.receivers.impl.Solder;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.impl.RegisterImpl;
+import sneer.pulp.reactive.Signals;
 import wheel.lang.Consumer;
-import static wheel.lang.Types.cast;
 
 public class LoopbackTester {
 
@@ -19,9 +20,9 @@ public class LoopbackTester {
 		_referenceToAvoidGc3 = new Solder<Object>(castedInput, _inputValue3.setter());
 	}
 	
-	private final Register<Object> _inputValue1 = new RegisterImpl<Object>(null);
-	private final Register<Object> _inputValue2 = new RegisterImpl<Object>(null);
-	private final Register<Object> _inputValue3 = new RegisterImpl<Object>(null);
+	private final Register<Object> _inputValue1 = my(Signals.class).newRegister(null);
+	private final Register<Object> _inputValue2 = my(Signals.class).newRegister(null);
+	private final Register<Object> _inputValue3 = my(Signals.class).newRegister(null);
 	
 	private final Consumer<Object> _output;
 	@SuppressWarnings("unused")	private final Object _referenceToAvoidGc1;

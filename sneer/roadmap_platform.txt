@@ -1,8 +1,24 @@
 ﻿SMALL FIXES
 =============
+	- [Bamboo] Adapt antlips to new classpath structure. Currently we get the error: C:\eclipseworkspace\sneer\commons\src\sneer\commons\environments\tests\EnvironmentsTest.java:5: package org.junit does not exist
+
+	- [Igor] main.Sneer - Organize brick list (skin stuff goes to communicationBricks).
+
+	- [Klaus] delete commons collections lib.
+
+	- [Klaus] EventReceiver - Pass owner on creation. Signal will hold reference to receiver until owner is GC'd.
+		Instead of:
+		_refToAvoidGC = new EventReceiver<Contact>(my(ContactsGui.class).selectedContact()){ @Override public void consume(Contact contact) {
+			rebindContact();
+		}};
+		
+		Make:
+		my(Signals.class).receive(my(ContactsGui.class).selectedContact(), new Consumer<Contact>(){ @Override public void consume(Contact value) {
+			rebindContact();
+		}}, this);
+
 	- ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do. See ListRegisterImpl.MyOutput._notifier
 		- SetSignal - Revise it also. 
-
 
 TASKS
 ========

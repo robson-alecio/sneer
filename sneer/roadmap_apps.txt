@@ -12,7 +12,7 @@ TASKS
 	- [Sandro and Igor] User Info, Contact List and Contact CRUD - Don't do any other task until:
 		- ContactInfoWindowImpl
 				- Nickname: (Label)
-				- Internet Addresses (Border or Label)
+				- Internet Addresses (Border)
 					- Reactive List
 					- New, Save, Delete buttons like Eclipse's "Run Configurations" screen
 				 	- Host:          Port:

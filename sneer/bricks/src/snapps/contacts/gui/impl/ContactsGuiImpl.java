@@ -99,10 +99,9 @@ class ContactsGuiImpl implements ContactsGui {
 	}
 
 	private void addDefaultContactAction() {
-		final ContactAction defaultAction = my(ContactActionManager.class).defaultAction();
 		contactList().addMouseListener(new MouseAdapter(){ @Override public void mouseReleased(MouseEvent e) {
-			if(e.getClickCount()>1)
-				defaultAction.run();
+			if (e.getClickCount() > 1)
+				my(ContactActionManager.class).defaultAction().run();
 		}});
 	}
 

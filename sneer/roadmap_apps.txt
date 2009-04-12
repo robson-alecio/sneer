@@ -20,6 +20,7 @@ TASKS
 					- New, Save, Delete buttons like Eclipse's "Run Configurations" screen
 				 	- Host:          Port:
 		- ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
+		- [Klaus] Revise code.
 
 	- ContactsGUI - Accept cell part renderers. (dependency inverted) Discuss with team.
 	

@@ -78,9 +78,6 @@ class IndividualSocketReceiver {
 	}
 
 	private Contact tryToCreate(String nickname) {
-		if (_contactManager.isNicknameAlreadyUsed(nickname))
-			return null;
-		
 		try {
 			return _contactManager.addContact(nickname);
 		} catch (IllegalParameter e) {

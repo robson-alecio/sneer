@@ -15,20 +15,20 @@ public abstract class Freedom5TestBase extends SovereignFunctionalTestBase {
 	@Test (timeout = 5000)
 	public void shoutToTheWind() {
 		
-		SovereignParty c = _community.createParty("Cid");
-		SovereignParty d = _community.createParty("Dan");
+		SovereignParty c = createParty("Cid");
+		SovereignParty d = createParty("Dan");
 		
-		_b.bidirectionalConnectTo(c);
-		c.bidirectionalConnectTo(_a);
+		b().bidirectionalConnectTo(c);
+		c.bidirectionalConnectTo(a());
 		c.bidirectionalConnectTo(d);
 		
-		_a.shout("A!!!");
-		_b.shout("B!!!");
+		a().shout("A!!!");
+		b().shout("B!!!");
 		c.shout("C!!!");
 		d.shout("D!!!");
 
-		waitForShoutsHeardBy(_a, "A!!!, B!!!, C!!!, D!!!");
-		waitForShoutsHeardBy(_b, "A!!!, B!!!, C!!!, D!!!");
+		waitForShoutsHeardBy(a(), "A!!!, B!!!, C!!!, D!!!");
+		waitForShoutsHeardBy(b(), "A!!!, B!!!, C!!!, D!!!");
 		waitForShoutsHeardBy(c, "A!!!, B!!!, C!!!, D!!!");
 		waitForShoutsHeardBy(d, "A!!!, B!!!, C!!!, D!!!");
 		
@@ -44,11 +44,11 @@ public abstract class Freedom5TestBase extends SovereignFunctionalTestBase {
 	@Test(timeout=6000)
 	public void canHearPastShouts() {
 		
-		_a.shout("A!!!");
-		_b.shout("B!!!");
+		a().shout("A!!!");
+		b().shout("B!!!");
 		
-		SovereignParty c = _community.createParty("Cid");
-		c.bidirectionalConnectTo(_b);
+		SovereignParty c = createParty("Cid");
+		c.bidirectionalConnectTo(b());
 
 		waitForShoutsHeardBy(c, "A!!!, B!!!");
 	}

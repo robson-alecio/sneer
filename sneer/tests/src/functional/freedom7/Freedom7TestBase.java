@@ -174,7 +174,7 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 
 
 	private SovereignParty publisher() {
-		return _a;
+		return a();
 	}
 	
 	private File sourceFolder(String sourceFolder) {

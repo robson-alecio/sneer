@@ -1,30 +1,43 @@
 package functional;
 
 import org.junit.After;
-import org.junit.Before;
 
 import sneer.brickness.testsupport.BrickTest;
-import wheel.lang.Timebox;
 
 public abstract class SovereignFunctionalTestBase extends BrickTest {
 
-	protected abstract SovereignCommunity createNewCommunity();
+	private SovereignCommunity _community;
+	
+	private SovereignParty _a;
+	private SovereignParty _b;
 
-	protected SovereignCommunity _community;
 	
-	protected SovereignParty _a;
-	protected SovereignParty _b;
+	protected abstract SovereignCommunity createNewCommunity();
 	
-	@Before
-	public void beforeSovereignTest() {
-		new Timebox(8000) { @Override protected void runInTimebox() {
-			initCommunity();
-		}};
+	
+	protected SovereignParty a() {
+		init();
+		return _a;
 	}
 
-	private void initCommunity() {
+	protected SovereignParty b() {
+		init();
+		return _b;
+	}
+
+	protected SovereignParty createParty(String name) {
+		init();
+		return _community.createParty(name);
+	}
+
+	private void init() { //This is done lazily because it has to run as part of the test and not during the constructor or even during the @Before method because JUnit will not count those as part of the test's timeout.
+		if (_community != null) return;
 		_community = createNewCommunity();
-		createAndConnectParties();
+		
+		_a = _community.createParty("Ana Almeida");
+		_b = _community.createParty("Bruno Barros");
+		
+		_a.bidirectionalConnectTo(_b);
 	}
 	
 	@After
@@ -34,10 +47,5 @@ public abstract class SovereignFunctionalTestBase extends BrickTest {
 		_b = null;
 	}
 	
-	private void createAndConnectParties() {
-		_a = _community.createParty("Ana Almeida");
-		_b = _community.createParty("Bruno Barros");
-		
-		_a.bidirectionalConnectTo(_b);
-	}
+	
 }

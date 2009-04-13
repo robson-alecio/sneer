@@ -1,7 +1,8 @@
 ﻿FIXES
 =========
 	- [Sandro] GuiUtil --> WindowBoundsSetter
-	- NPE for DeleteContactWindowImpl.checkAndDelete()
+	
+	- NPE for DeleteContactWindowImpl.checkAndDelete() - Remove it from the interface and make it private.
 
 
 TASKS

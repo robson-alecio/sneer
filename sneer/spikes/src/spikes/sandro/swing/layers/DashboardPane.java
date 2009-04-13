@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -24,7 +25,7 @@ public class DashboardPane extends JPanel {
 
 	public DashboardPane()    {
 
-    	setBackground(Color.YELLOW);
+		setBackground(Color.YELLOW);
     	setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
     	add(_layeredPane);
     	
@@ -54,29 +55,58 @@ public class DashboardPane extends JPanel {
         instrumentPanel.add(new FakeInstrument());
 	}
     
-    private static void createAndShowGUI() {
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        frame.setContentPane(new DashboardPane());
-        frame.setBounds(10, 10, 320, 640);
-        frame.setVisible(true);
-    }
-
-    
     class FakeInstrument extends JPanel{
-    	JPanel _toolbar = new JPanel();
+    	private final JPanel _toolbar = new JPanel();
+    	
+    	private final JLayeredPane _instrumentRootPane = new JLayeredPane();
+    	private final GlassPane _instrumentGlassPane;
+    	private final JButton _instrumentContentPane = new JButton("Teste");
+
     	FakeInstrument(){
-            createToolbar();
+    		_instrumentGlassPane = new GlassPane();
+            initGui();
+    	}
+
+    	private void initGui() {
+        	setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        	add(_instrumentRootPane);
+        	
+        	_instrumentRootPane.add(_instrumentContentPane);
+        	_instrumentRootPane.add(_instrumentGlassPane, new Integer(1), 0);
+        	
+        	_toolbar.setOpaque(false);
+            _toolbar.setBorder(new LineBorder(Color.BLACK));
+            _layeredPane.add(_toolbar, new Integer(1), 0);
         	addComponentListener(new ComponentAdapter(){ @Override public void componentResized(ComponentEvent e) {
         		resizePanels();
+        		resizeToolbar();
     		}});
         	addMouseListenerToShowAndHideToolbar();
     	}
 
+    	private void resizePanels() {
+    		int x = 0;
+    		int y = 0;
+    		int width = getSize().width;
+    		int height = getSize().height;
+    		_instrumentContentPane.setBounds(x, y, width, height);
+    		_instrumentGlassPane.setBounds(x, y, width, height);
+    	}
+
+		private void resizeToolbar() {
+			Point layeredPanePoint = _layeredPane.getLocationOnScreen();
+    		Point instrumentPoint = getLocationOnScreen();
+    		
+    		int x = _margin;
+    		int y = instrumentPoint.y - layeredPanePoint.y - _toolbarHeight;
+    		int width = getSize().width;
+    		int height = _toolbarHeight;
+    		_toolbar.setBounds(x, y, width, height);
+		}
+    	
+    	
 		private void addMouseListenerToShowAndHideToolbar() {
-			//Fix: use glasspane.
-			addMouseListener(new MouseAdapter(){
+			_instrumentGlassPane.addMouseListener(new MouseAdapter(){
 				{ _toolbar.setVisible(false); }
 				@Override public void mouseEntered(MouseEvent e) {
 					_toolbar.setVisible(true);
@@ -87,29 +117,21 @@ public class DashboardPane extends JPanel {
 				}});
 		}
 
-    	private void createToolbar() {
-            _toolbar.setOpaque(false);
-            _toolbar.setBorder(new LineBorder(Color.BLACK));
-            _layeredPane.add(_toolbar, new Integer(2), 0);
-    	}
-
-    	private void resizePanels() {
-    		Point layeredPanePoint = _layeredPane.getLocationOnScreen();
-    		Point instrumentPoint = getLocationOnScreen();
-    		
-    		int x = _margin;
-    		int y = instrumentPoint.y - layeredPanePoint.y - _toolbarHeight;
-    		int width = getSize().width;
-    		int height = _toolbarHeight;
-    		_toolbar.setBounds(x, y, width, height);
-    	}
     }    
     
+    private static void createAndShowGUI() {
+        JFrame frame = new JFrame();
+        frame.setGlassPane(new GlassPane());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        frame.setContentPane(new DashboardPane());
+        frame.setBounds(10, 10, 300, 600);
+        frame.setVisible(true);
+    }
+    
     public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI();
-            }
-        });
+        javax.swing.SwingUtilities.invokeLater(new Runnable() { public void run() {
+        	createAndShowGUI();
+        }});
     }
 }

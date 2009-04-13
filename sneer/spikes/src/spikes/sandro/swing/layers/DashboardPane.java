@@ -1,11 +1,12 @@
 package spikes.sandro.swing.layers;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BoxLayout;
@@ -14,6 +15,18 @@ import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+
+import org.jdesktop.jxlayer.JXLayer;
+import org.jdesktop.jxlayer.plaf.AbstractLayerUI;
+
+//Window
+//- Rootpane
+//		- ContentPane - Dashbord (yellow)
+// 		- layerpane (layout instrument)
+//    			- instrument pane (red)         
+//    			- toolbar (black)
+//				- mouse listener
+//    			- fog
 
 public class DashboardPane extends JPanel {
 
@@ -24,7 +37,7 @@ public class DashboardPane extends JPanel {
 	private final int _toolbarHeight = 20;
 
 	public DashboardPane()    {
-
+		
 		setBackground(Color.YELLOW);
     	setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
     	add(_layeredPane);
@@ -50,47 +63,50 @@ public class DashboardPane extends JPanel {
 
 	private void addSomeFakeInstruments(JPanel instrumentPanel) {
 		instrumentPanel.setLayout(new GridLayout(3,2,0,1));
-        instrumentPanel.add(new FakeInstrument());
-        instrumentPanel.add(new FakeInstrument());
-        instrumentPanel.add(new FakeInstrument());
+        new FakeInstrument(instrumentPanel);
+        new FakeInstrument(instrumentPanel);
+        new FakeInstrument(instrumentPanel);
 	}
     
     class FakeInstrument extends JPanel{
     	private final JPanel _toolbar = new JPanel();
+		private AbstractLayerUI<JPanel> _instrumentGlassPane;
+		private final JXLayer<JPanel> _instrumentLayer ;
     	
-    	private final JLayeredPane _instrumentRootPane = new JLayeredPane();
-    	private final GlassPane _instrumentGlassPane;
-    	private final JButton _instrumentContentPane = new JButton("Teste");
+    	FakeInstrument(JPanel instrumentPanel) {
+			_instrumentGlassPane = new AbstractLayerUI<JPanel>() {
+				@Override
+				protected void paintLayer(Graphics2D g2, JXLayer<JPanel> l) {
+					super.paintLayer(g2, l);
+					g2.setColor(new Color(0, 100, 0, 100));
+					g2.fillRect(0, 0, l.getWidth(), l.getHeight());
+				}
 
-    	FakeInstrument(){
-    		_instrumentGlassPane = new GlassPane();
-            initGui();
-    	}
+				@Override
+				protected void processMouseEvent(MouseEvent event, 	JXLayer<JPanel> layer) {
+					_toolbar.setVisible(true);
+					if(event.getID()==MouseEvent.MOUSE_EXITED)
+						_toolbar.setVisible(false);
+				}
+			};
+			_instrumentLayer = new JXLayer<JPanel>(this, _instrumentGlassPane);
+			initGui();
+			instrumentPanel.add(_instrumentLayer);
+		}
 
     	private void initGui() {
-        	setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        	add(_instrumentRootPane);
-        	
-        	_instrumentRootPane.add(_instrumentContentPane);
-        	_instrumentRootPane.add(_instrumentGlassPane, new Integer(1), 0);
+    		_toolbar.setVisible(false);
+        	setLayout(new BorderLayout());
+        	add(new JButton("Teste"), BorderLayout.CENTER);
         	
         	_toolbar.setOpaque(false);
             _toolbar.setBorder(new LineBorder(Color.BLACK));
             _layeredPane.add(_toolbar, new Integer(1), 0);
+            
+            
         	addComponentListener(new ComponentAdapter(){ @Override public void componentResized(ComponentEvent e) {
-        		resizePanels();
         		resizeToolbar();
     		}});
-        	addMouseListenerToShowAndHideToolbar();
-    	}
-
-    	private void resizePanels() {
-    		int x = 0;
-    		int y = 0;
-    		int width = getSize().width;
-    		int height = getSize().height;
-    		_instrumentContentPane.setBounds(x, y, width, height);
-    		_instrumentGlassPane.setBounds(x, y, width, height);
     	}
 
 		private void resizeToolbar() {
@@ -103,25 +119,10 @@ public class DashboardPane extends JPanel {
     		int height = _toolbarHeight;
     		_toolbar.setBounds(x, y, width, height);
 		}
-    	
-    	
-		private void addMouseListenerToShowAndHideToolbar() {
-			_instrumentGlassPane.addMouseListener(new MouseAdapter(){
-				{ _toolbar.setVisible(false); }
-				@Override public void mouseEntered(MouseEvent e) {
-					_toolbar.setVisible(true);
-				}
-
-				@Override public void mouseExited(MouseEvent e) {
-					_toolbar.setVisible(false);
-				}});
-		}
-
     }    
     
     private static void createAndShowGUI() {
         JFrame frame = new JFrame();
-        frame.setGlassPane(new GlassPane());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.setContentPane(new DashboardPane());

@@ -13,7 +13,6 @@ TASKS
 	- [Sandro and Igor] User Info, Contact List and Contact CRUD - Don't do any other task until:
 		- Remove gradient between instruments. After the gradient is removed, talk to Klaus on how we shall solve the "hover menu bar" problem once and for all.
 		- Sneer Icon - Revert to old one. The new one looks horrible, especially when doing alt-tab on windows XP.
-		- Main menu - "My Info..." should come before "Open Log Console" in the menu, not after.
 		- ContactInfoWindowImpl
 				- Nickname: (Label)
 				- Internet Addresses (Border)

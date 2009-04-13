@@ -1,7 +1,9 @@
 ﻿SMALL FIXES
 =============
-	- [Bamboo] Adapt antlips to new classpath structure. Currently we get the error: C:\eclipseworkspace\sneer\commons\src\sneer\commons\environments\tests\EnvironmentsTest.java:5: package org.junit does not exist
-
+	- [Bamboo] Adapt antlips to support lib entries starting with:
+		kind="lib" exported="true"...   instead of just:
+		kind="lib"...
+		
 	- [Igor] main.Sneer - Organize brick list (skin stuff goes to communicationBricks).
 
 	- [Klaus] EventReceiver - Pass owner on creation. Signal will hold reference to receiver until owner is GC'd.
@@ -34,14 +36,14 @@ TASKS
 	- [Klaus] GuiThread - Improve how environment handling is done. 
 		- Unignore GuiBrickTest.
 
-	- [Bamboo]Create/Install ("publish") brick locally
+	- [Bamboo] Create/Install ("publish") brick locally
 		- Brickness - "The simplest possible container"
 			- Unify the Bindings vs Contributions metaphors.
 			- [Bamboo]Delete Brick interface in favor of NewBrick annotation.
 			- SneerCommunity.newContainer - All that mess with StoragePath and SneerConfig is ugly.
-			- * Make a test run a brick in a directory that is not in the system ClassLoader classpath (Eclipse classpath). It will probably fail. Implement the logic using NewContainerImpl.createApiClassLoader() to return a URLClassloader that can be extended with new classpaths for new brick interfaces;
+			- Make a test run a brick in a directory that is not in the system ClassLoader classpath (Eclipse classpath). It will probably fail. Implement the logic using NewContainerImpl.createApiClassLoader() to return a URLClassloader that can be extended with new classpaths for new brick interfaces;
 
-	- * Gui Thread - Always call gui brick code in the gui thread. What was already done with the GuiBrickInvocationHandler does not cover callbacks. Complicated and slow weak-proxy-bubble structures would have to be created to support that. Instead, the proposed idea is:
+	- Gui Thread - Always call gui brick code in the gui thread. What was already done with the GuiBrickInvocationHandler does not cover callbacks. Complicated and slow weak-proxy-bubble structures would have to be created to support that. Instead, the proposed idea is:
 		- [Klaus] Make the container call the gui brick constructor in the gui thread.
 		- [Bamboo] Enhance at load-time the beginning of all public methods in all classes (including nested) in all gui brick impl packages, like this:
 			if (!EventQueue.isDispatchThread()) {
@@ -58,6 +60,8 @@ TASKS
 		- Responsive threading model for instruments. They can NEVER block the Swing gui thread.
 			- [Bamboo] Inspect ALL Brick bytecode at load-time and do not allow it to catch Throwable. This makes all non-blocking code stoppable. We will deal with blocking code later.
 			- [Bamboo] Inspect Gui Brick bytecode at load-time and do not allow it to call any code that throws Hiccup. It is equivalent and maybe easier to simply not allow the code to catch nor throw Hiccup.
+
+	- Concurrency - Synchronize calls on Bricks, according to docs/brick_types.txt  
 
 	- Security - Discover if instruments can indirectly gain access to components from other instruments.
 	

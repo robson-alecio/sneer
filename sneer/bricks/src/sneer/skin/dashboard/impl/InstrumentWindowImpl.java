@@ -6,9 +6,6 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.HierarchyBoundsAdapter;
@@ -38,9 +35,9 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 	private final JLayeredPane _toolbarRoot = new JLayeredPane(){
 		@Override public Dimension getPreferredSize() { return getToolbarDimension();}
 	};
-	private final JPanel _toolbarTitleLayer =  new GradientPanel();
+	private final JPanel _toolbarTitleLayer =  new JPanel();//new GradientPanel();
 	
-	private final JPanel _actions = new GradientPanel();
+	private final JPanel _actions =  new JPanel();
 	private final JPopupMenu _menuActions = new JPopupMenu();
 	private final JLabel _menu = new JLabel(new ImageIcon(ACTIONS)){
 		@Override public boolean isVisible() {
@@ -49,23 +46,23 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 	};
 	private final JLabel _title = new JLabel();
 	
-	private class GradientPanel extends JPanel{
-		@Override protected void paintComponent( Graphics g ) {
-
-			int w = getWidth( );
-			int h = getHeight( );
-			
-			Graphics2D g2d = (Graphics2D)g;
-			GradientPaint gp = new GradientPaint(0, 0, my(Colors.class).lowContrast(),  0, h, my(Colors.class).solid());
-
-			g2d.setPaint( gp );
-			g2d.fillRect( 0, 0, w, h );		
-			
-		    setOpaque( false );
-		    super.paintComponent( g );
-		    setOpaque( true );
-		}	
-	}
+//	private class GradientPanel extends JPanel{
+//		@Override protected void paintComponent( Graphics g ) {
+//
+//			int w = getWidth( );
+//			int h = getHeight( );
+//			
+//			Graphics2D g2d = (Graphics2D)g;
+//			GradientPaint gp = new GradientPaint(0, 0, my(Colors.class).lowContrast(),  0, h, my(Colors.class).solid());
+//
+//			g2d.setPaint( gp );
+//			g2d.fillRect( 0, 0, w, h );		
+//			
+//		    setOpaque( false );
+//		    super.paintComponent( g );
+//		    setOpaque( true );
+//		}	
+//	}
 	
 	private static Image getImage(String fileName) {
 		return Images.getImage(InstrumentWindowImpl.class.getResource(fileName));
@@ -86,7 +83,7 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 		_toolbarRoot.setOpaque(false);
 		setOpaque(false);
 		
-		_toolbarTitleLayer.setBackground(my(Colors.class).solid());
+//		_toolbarTitleLayer.setBackground(my(Colors.class).solid());
 		_contentPane.setBackground(my(Colors.class).solid());
 		
 		_toolbarTitleLayer.setLayout(new BorderLayout());

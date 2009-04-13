@@ -4,8 +4,6 @@
 
 	- [Igor] main.Sneer - Organize brick list (skin stuff goes to communicationBricks).
 
-	- [Klaus] delete commons collections lib.
-
 	- [Klaus] EventReceiver - Pass owner on creation. Signal will hold reference to receiver until owner is GC'd.
 		Instead of:
 		_refToAvoidGC = new EventReceiver<Contact>(my(ContactsGui.class).selectedContact()){ @Override public void consume(Contact contact) {
@@ -22,11 +20,14 @@
 
 TASKS
 ========
+
 	- [Sandro] Webstart
 
 	- [Klaus] build.xml/Antlipse - Revive.
 		- Cleanup wheel
 		- Eliminate upward dependencies.
+
+	- [Klaus] Delete commons. They can be made available as bricks in the future if anyone really needs them.
 
 	- [Klaus] Transparent persistence for bricks
 

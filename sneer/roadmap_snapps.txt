@@ -10,6 +10,7 @@ TASKS
 	- [Klaus] DynDns user data - Use transparent persistence to save it, not a properties file.
 
 	- [Sandro and Igor] User Info, Contact List and Contact CRUD - Don't do any other task until:
+		- Remove gradient between instruments. After the gradient is removed, talk to Klaus on how we shall solve the "hover menu bar" problem once and for all.
 		- Sneer Icon - Revert to old one. The new one looks horrible, especially when doing alt-tab on windows XP.
 		- ContactsGui
 			- Use a down arrow for the menu, not the crown. The crown has a specific meaning. It should not be abused.

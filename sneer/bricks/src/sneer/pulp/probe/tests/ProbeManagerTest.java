@@ -62,7 +62,7 @@ public class ProbeManagerTest extends BrickTest {
 
 		}});
 
-		Contact neide = _contactManager.addContact("Neide");
+		Contact neide = _contactManager.produceContact("Neide");
 		_keys.addKey(neide, _keys.generateMickeyMouseKey("foo"));
 
 		_tuples.acquire(new TupleTypeA(1));
@@ -107,7 +107,7 @@ public class ProbeManagerTest extends BrickTest {
 
 		}});
 
-		Contact neide = _contactManager.addContact("Neide");
+		Contact neide = _contactManager.produceContact("Neide");
 		_keys.addKey(neide, _keys.generateMickeyMouseKey("foo"));
 
 		_tuples.acquire(new TupleTypeA(1));

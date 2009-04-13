@@ -17,9 +17,12 @@ public interface ContactManager extends OldBrick {
 	/** @throws IllegalParameter if there already is a Contact with that nickname.*/
 	Contact addContact(String nickname) throws IllegalParameter;
 
+	/** Returns a contact with the given nickname. Creates a new one if there was no contact with that nickname before. */
+	Contact produceContact(String nickname);
+
 	PickyConsumer<String> nicknameSetterFor(Contact contact);
 	
-	/** @throws IllegalParameter if nickname not used.*/
-	void removeContact(String nickname) throws IllegalParameter;
+	void removeContact(Contact contact);
+
 
 }

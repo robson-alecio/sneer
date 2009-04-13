@@ -27,12 +27,10 @@ import snapps.contacts.gui.ContactsGui;
 import snapps.contacts.gui.comparator.ContactComparator;
 import snapps.contacts.gui.delete.DeleteContactWindow;
 import snapps.contacts.gui.info.ContactInfoWindow;
-import sneer.brickness.PublicKey;
 import sneer.commons.lang.Functor;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
-import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
@@ -142,27 +140,17 @@ class ContactsGuiImpl implements ContactsGui {
 	}
 	
 	private Contact newContact() {
-		ContactManager _contactManager = my(ContactManager.class);
-		String nick = "<nickname>";
-		Contact contact = _contactManager.contactGiven(nick);
-		if (contact == null) {
-			contact = _contactManager.addContact(nick);
-			my(KeyManager.class).addKey(contact, mickeyMouseKey(nick));
-		}
-		return contact;
+		return my(ContactManager.class).produceContact("<nickname>");
 	}
 	
 	private void deleteContatAction() {
 		my(DeleteContactWindow.class).checkAndDelete();
 	}
 
-	@SuppressWarnings("deprecation") PublicKey mickeyMouseKey(String nick) {
-		return my(KeyManager.class).generateMickeyMouseKey(nick);
-	}
-	
 	private JList contactList() {
 		return (JList)_contactList.getComponent();
 	}	
+
 	final class ContactLabelProvider implements LabelProvider<Contact> {
 		@Override public Signal<String> labelFor(Contact contact) {
 			return contact.nickname();

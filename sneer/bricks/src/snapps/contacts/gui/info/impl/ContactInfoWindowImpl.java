@@ -37,6 +37,7 @@ import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
 import wheel.lang.PickyConsumer;
+import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.impl.EventReceiver;
 
 class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
@@ -88,7 +89,7 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 			return contact.nickname();
 		}});
 		
-		PickyConsumer<String> setter = new PickyConsumer<String>(){@Override public void consume(String value) {
+		PickyConsumer<String> setter = new PickyConsumer<String>(){@Override public void consume(String value) throws IllegalParameter {
 			my(ContactManager.class).nicknameSetterFor(contact()).consume(value);
 		}};
 		

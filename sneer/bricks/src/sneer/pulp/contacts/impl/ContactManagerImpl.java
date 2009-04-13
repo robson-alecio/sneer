@@ -1,9 +1,6 @@
 package sneer.pulp.contacts.impl;
 
 import static sneer.commons.environments.Environments.my;
-
-import java.util.Iterator;
-
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.reactive.Register;
@@ -25,6 +22,10 @@ class ContactManagerImpl implements ContactManager {
 		
 		checkAvailability(nickname);
 		
+		return doAddContact(nickname);
+	}
+
+	private Contact doAddContact(String nickname) {
 		Contact result = new ContactImpl(nickname); 
 		_contacts.add(result);
 		return result;
@@ -60,24 +61,22 @@ class ContactManagerImpl implements ContactManager {
 	}
 
 	@Override
-	public void removeContact(String nickname) throws IllegalParameter {
-		Iterator<Contact> iterator = _contacts.output().iterator();
-		while (iterator.hasNext()) {
-			Contact contact = iterator.next();
-			if(contact.nickname().currentValue().equals(nickname)){
-				_contacts.remove(contact);
-				return;
-			}
-		}
-		
-		throw new IllegalParameter("Nickname " + nickname + " is not used.");
+	public void removeContact(Contact contact) {
+		_contacts.remove(contact);
 	}
+	
 
 	@Override
 	public PickyConsumer<String> nicknameSetterFor(final Contact contact) {
-		return new PickyConsumer<String>(){ @Override public void consume(String newNickname) {
+		return new PickyConsumer<String>(){ @Override public void consume(String newNickname) throws IllegalParameter {
 			changeNickname(contact, newNickname);
 		}};
+	}
+
+	@Override
+	public Contact produceContact(String nickname) {
+		if (contactGiven(nickname) == null) doAddContact(nickname);
+		return contactGiven(nickname);
 	}
 }
 

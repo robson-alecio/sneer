@@ -10,6 +10,8 @@ import sneer.pulp.keymanager.KeyManager;
 
 public class HardcodedContactsImpl implements HardcodedContacts {
 
+	private static final ContactManager ContactManager = my(ContactManager.class);
+
 	{
 		for (ContactInfo contact : contacts())
 			add(contact);
@@ -72,16 +74,12 @@ public class HardcodedContactsImpl implements HardcodedContacts {
 	}
 
 	private Contact produceContact(String nick) {
-		Contact result = contactManager().contactGiven(nick);
+		Contact result = ContactManager.contactGiven(nick);
 		if (result != null) return result;
 		
-		result = contactManager().addContact(nick);
+		result = ContactManager.produceContact(nick);
 		keyManager().addKey(result, mickeyMouseKey(nick));
 		return result;
-	}
-
-	private ContactManager contactManager() {
-		return my(ContactManager.class);
 	}
 
 	private KeyManager keyManager() {

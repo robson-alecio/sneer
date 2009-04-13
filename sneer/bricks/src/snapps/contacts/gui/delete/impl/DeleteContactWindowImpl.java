@@ -70,10 +70,7 @@ class DeleteContactWindowImpl extends JFrame implements DeleteContactWindow {
 	}
 	
 	private void deleteContact(Contact contact) {
-		String nick = contact.nickname().currentValue();
-		System.out.println(nick);
-		//Fix: NPE
 		setVisible(false);
-		my(ContactManager.class).removeContact(nick);
+		my(ContactManager.class).removeContact(contact);
 	}
 }

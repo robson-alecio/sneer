@@ -18,6 +18,7 @@ import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import snapps.welcomewizard.WelcomeWizard;
+import sneer.hardware.gui.guithread.GuiThread;
 import sneer.hardware.gui.timebox.TimeboxedEventQueue;
 import sneer.hardware.gui.trayicon.SystemTrayNotSupported;
 import sneer.hardware.gui.trayicon.TrayIcon;
@@ -35,7 +36,6 @@ import sneer.skin.main_Menu.MainMenu;
 import sneer.skin.snappmanager.Instrument;
 import sneer.skin.snappmanager.InstrumentRegistry;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
-import wheel.io.ui.GuiThread;
 import wheel.io.ui.action.Action;
 import wheel.io.ui.graphics.Images;
 import wheel.reactive.impl.EventReceiver;
@@ -100,7 +100,7 @@ class DashboardImpl implements Dashboard {
 	}
 
 	private void waitUntilTheGuiThreadStarts() {
-		GuiThread.strictInvokeAndWait(new Runnable(){@Override public void run() {}});
+		my(GuiThread.class).strictInvokeAndWait(new Runnable(){@Override public void run() {}});
 	}
 
 	private void initTrayIconIfPossible() {
@@ -171,7 +171,7 @@ class DashboardImpl implements Dashboard {
 
 	private InstrumentWindow install(final Instrument instrument) {
 		final InstrumentWindowImpl sf = new InstrumentWindowImpl(instrument.title());
-		GuiThread.strictInvokeAndWait(new Runnable(){	@Override public void run() {
+		my(GuiThread.class).strictInvokeAndWait(new Runnable(){	@Override public void run() {
 			_contentPanel.add(sf);
 			instrument.init(sf);
 			resizeContainer(instrument, sf);
@@ -227,7 +227,7 @@ class DashboardImpl implements Dashboard {
 			}
 			@Override
 			public void run() {
-				GuiThread.assertInGuiThread();
+				my(GuiThread.class).assertInGuiThread();
 				open();						
 			}
 		};

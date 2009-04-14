@@ -29,7 +29,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import wheel.io.ui.GuiThread;
+import sneer.hardware.gui.guithread.GuiThread;
+import static sneer.commons.environments.Environments.my;
 
 //Refactor: Break this into several classes.
 public class Language {
@@ -120,7 +121,7 @@ public class Language {
 	// Fix: the code below is responsible for translation file creation... *maybe* should be moved to an utility class
 
 	public static void main(String[] args) {
-		GuiThread.strictInvokeAndWait(new Runnable() {	public void run() {
+		my(GuiThread.class).strictInvokeAndWait(new Runnable() {	public void run() {
 			createAndShowGUI();
 		}});
 	}

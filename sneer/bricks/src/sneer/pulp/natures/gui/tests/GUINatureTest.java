@@ -6,6 +6,7 @@ import javax.swing.SwingUtilities;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.brickness.impl.Brickness;
@@ -15,6 +16,7 @@ import sneer.pulp.natures.gui.GUI;
 import sneer.pulp.natures.gui.tests.fixtures.SomeGuiBrick;
 import wheel.io.Jars;
 
+@Ignore
 public class GUINatureTest extends Assert {
 	
 	Brickness subject = new Brickness();

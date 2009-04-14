@@ -4,11 +4,11 @@ import static sneer.commons.environments.Environments.my;
 
 import javax.swing.AbstractListModel;
 
+import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.pulp.reactive.signalchooser.SignalChooserManagerFactory;
-import wheel.io.ui.GuiThread;
 import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.impl.VisitingListReceiver;
 
@@ -36,42 +36,42 @@ class ListSignalModel<T> extends AbstractListModel {
 
 		@Override
 		public void elementAdded(final int index, T value) {
-			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
+			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
 				fireIntervalAdded(ListSignalModel.this, index, index);
 			}});		
 		}
 
 		@Override
 		public void elementRemoved(final int index, T value) {
-			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
+			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
 				fireIntervalRemoved(ListSignalModel.this, index, index);
 			}});		
 		}
 
 		@Override
 		public void elementReplaced(final int index, T oldValue, T newValue) {
-			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
+			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
 				contentsChanged(index);
 			}});
 		}
 
 		@Override
 		public void elementInserted(final int index, final T value) {
-			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
+			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
 				fireIntervalAdded(ListSignalModel.this, index, index);
 			}});		
 		}
 
 		@Override
 		public void elementMoved(final int oldIndex, final int newIndex, final T value) {
-			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
+			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
 				fireContentsChanged(ListSignalModel.this, oldIndex, newIndex);
 			}});
 		}
 
 		@Override
 		public void elementSignalChanged(final int index, final T value) {
-			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
+			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
 				elementChanged(value);
 			}});			
 		}

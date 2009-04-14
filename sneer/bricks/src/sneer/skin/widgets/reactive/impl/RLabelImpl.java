@@ -9,11 +9,12 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Signal;
 import sneer.skin.widgets.reactive.TextWidget;
-import wheel.io.ui.GuiThread;
 import wheel.lang.PickyConsumer;
 import wheel.reactive.impl.EventReceiver;
+import static sneer.commons.environments.Environments.my;
 
 class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 
@@ -35,7 +36,7 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 		_setter = setter;
 		_source = source;
 		_textReceiverAvoidGc = new EventReceiver<Object>(source) {@Override public void consume(final Object value) {
-			GuiThread.invokeAndWait(new Runnable() {@Override public void run() {
+			my(GuiThread.class).invokeAndWait(new Runnable() {@Override public void run() {
 				_textComponent.setText(valueToString(value));
 		}});}};
 		initComponents();

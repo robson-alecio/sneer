@@ -7,9 +7,10 @@ import java.awt.event.ComponentEvent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import sneer.hardware.gui.guithread.GuiThread;
 import wheel.io.ui.BoundsPersistence;
-import wheel.io.ui.GuiThread;
 import wheel.io.ui.JFrameBoundsKeeper;
+import static sneer.commons.environments.Environments.my;
 
 public class JFrameBoundsKeeperImpl implements JFrameBoundsKeeper {
 
@@ -27,7 +28,7 @@ public class JFrameBoundsKeeperImpl implements JFrameBoundsKeeper {
 			return;
 		}
 		
-		GuiThread.strictInvokeAndWait(keepBoundsRunnable);
+		my(GuiThread.class).strictInvokeAndWait(keepBoundsRunnable);
 	}
 
 	private Runnable keepBoundsRunnable(final JFrame frame, final String id) {

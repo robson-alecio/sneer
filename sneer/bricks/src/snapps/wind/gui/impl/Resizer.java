@@ -6,14 +6,15 @@ import java.awt.Dimension;
 import javax.swing.JComponent;
 import javax.swing.JWindow;
 
-import wheel.io.ui.GuiThread;
+import sneer.hardware.gui.guithread.GuiThread;
+import static sneer.commons.environments.Environments.my;
 
 class Resizer {
 
 	static JWindow win = new JWindow();
 	
 	static void pack(JComponent component, int maxWidth, int headerHeight ) { //Optimize - implement pack method without JWindow
-		GuiThread.assertInGuiThread();
+		my(GuiThread.class).assertInGuiThread();
 		Container root = component.getParent();
 		root.setPreferredSize(new Dimension(maxWidth, Integer.MAX_VALUE));
 		win.add(root);

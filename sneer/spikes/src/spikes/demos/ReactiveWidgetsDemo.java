@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import javax.swing.JFrame;
 
 import sneer.commons.environments.Environments;
+import sneer.hardware.gui.guithread.GuiThread;
 import sneer.hardware.gui.timebox.TimeboxedEventQueue;
 import sneer.kernel.container.ContainersOld;
 import sneer.pulp.reactive.Register;
@@ -16,7 +17,6 @@ import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import sneer.skin.widgets.reactive.WindowWidget;
 import wheel.io.Logger;
-import wheel.io.ui.GuiThread;
 
 public class ReactiveWidgetsDemo {
 
@@ -24,7 +24,7 @@ public class ReactiveWidgetsDemo {
 		
 		my(TimeboxedEventQueue.class).startQueueing(500000);
 		
-		GuiThread.strictInvokeAndWait(new Runnable(){ @Override public void run() {
+		my(GuiThread.class).strictInvokeAndWait(new Runnable(){ @Override public void run() {
 
 			final ReactiveWidgetFactory rfactory = my(ReactiveWidgetFactory.class);
 			final Register<String> register = my(Signals.class).newRegister("Jose das Coves");

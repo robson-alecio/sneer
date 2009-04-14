@@ -9,6 +9,7 @@ import javax.swing.JTextPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
+import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.widgets.reactive.ImageWidget;
@@ -18,22 +19,22 @@ import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import sneer.skin.widgets.reactive.WindowWidget;
-import wheel.io.ui.GuiThread;
 import wheel.lang.PickyConsumer;
 import wheel.reactive.lists.ListSignal;
+import static sneer.commons.environments.Environments.my;
 
 class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 	
 	@Override
 	public TextWidget<JLabel> newLabel(Signal<?> source) {
-		GuiThread.assertInGuiThread();
+		my(GuiThread.class).assertInGuiThread();
 		return new RLabelImpl(source);
 	}
 	
 
 	@Override
 	public ImageWidget newImage(Signal<Image> source) {
-		GuiThread.assertInGuiThread();
+		my(GuiThread.class).assertInGuiThread();
 		return new RImageImpl(source);
 	}
 	
@@ -46,14 +47,14 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 	
 	@Override
 	public WindowWidget<JFrame> newFrame(Signal<?> source) {
-		GuiThread.assertInGuiThread();
+		my(GuiThread.class).assertInGuiThread();
 		return new RFrameImpl(source);
 	}
 
 	
 	@Override
 	public TextWidget<JTextField> newEditableLabel(Signal<?> source, PickyConsumer<? super String> setter, NotificationPolicy notificationPolicy) {
-		GuiThread.assertInGuiThread();
+		my(GuiThread.class).assertInGuiThread();
 		return new REditableLabelImpl(source, setter, notificationPolicy);
 	}
 	@Override public TextWidget<JTextField> newEditableLabel(Signal<?> source, PickyConsumer<? super String> setter) { return newEditableLabel(source, setter, NotificationPolicy.OnTyping);}
@@ -61,7 +62,7 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 	
 	@Override
 	public TextWidget<JTextField> newTextField(Signal<?> source, PickyConsumer<? super String> setter, NotificationPolicy notificationPolicy) {
-		GuiThread.assertInGuiThread();
+		my(GuiThread.class).assertInGuiThread();
 		return new RTextFieldImpl(source, setter, notificationPolicy);
 	}
 	@Override public TextWidget<JTextField> newTextField(Signal<?> source, PickyConsumer<? super String> setter) { return newTextField(source, setter, NotificationPolicy.OnTyping); }
@@ -69,7 +70,7 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 	
 	@Override
 	public TextWidget<JTextPane> newTextPane(Signal<?> source, PickyConsumer<? super String> setter, NotificationPolicy notificationPolicy) {
-		GuiThread.assertInGuiThread();
+		my(GuiThread.class).assertInGuiThread();
 		return new RTextPaneImpl(source, setter, notificationPolicy);
 	}
 	@Override public TextWidget<JTextPane> newTextPane(Signal<?> source, PickyConsumer<? super String> setter) { return newTextPane(source, setter, NotificationPolicy.OnTyping); }
@@ -77,7 +78,7 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 	
 	@Override
 	public <T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> provider, ListCellRenderer cellRenderer) {
-		GuiThread.assertInGuiThread();
+		my(GuiThread.class).assertInGuiThread();
 		return new RListImpl<T>(source, provider, cellRenderer);
 	}
 	@Override public <T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> provider) { return newList(source, provider, null); }

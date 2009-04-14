@@ -10,15 +10,16 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
+import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import spikes.priscila.go.GoBoard;
 import spikes.priscila.go.Move;
 import spikes.priscila.go.ToroidalGoBoard;
 import spikes.priscila.go.GoBoard.StoneColor;
-import wheel.io.ui.GuiThread;
 import wheel.lang.Threads;
 import wheel.reactive.impl.EventReceiver;
+import static sneer.commons.environments.Environments.my;
 
 public class GoBoardPanel extends JPanel {
 	
@@ -169,7 +170,7 @@ public class GoBoardPanel extends JPanel {
 			_scrollYDelta = scrollDeltaFor(e.getY());
 			
 			repaint();
-			GuiThread.invokeLater(new Runnable() { @Override public void run() {
+			my(GuiThread.class).invokeLater(new Runnable() { @Override public void run() {
 				int x = toScreenPosition(e.getX());
 				int y = toScreenPosition(e.getY());
 				if(_board.canPlayStone(unscrollX(x), unscrollY(y)))

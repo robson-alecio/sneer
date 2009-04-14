@@ -11,12 +11,12 @@ import java.awt.RenderingHints;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.widgets.reactive.ImageWidget;
-import wheel.io.ui.GuiThread;
 import wheel.lang.PickyConsumer;
 import wheel.reactive.impl.EventReceiver;
 
@@ -45,7 +45,7 @@ class RImageImpl extends JPanel implements ImageWidget{
 	private EventReceiver<Image> imageReceiverFor(Signal<Image> signal) {
 		return new EventReceiver<Image>(signal) {@Override public void consume(final Image image) {
 			_image.setter().consume(image);
-			GuiThread.invokeAndWait(new Runnable() { @Override public void run() {
+			my(GuiThread.class).invokeAndWait(new Runnable() { @Override public void run() {
 				revalidate();
 				repaint();
 			}});

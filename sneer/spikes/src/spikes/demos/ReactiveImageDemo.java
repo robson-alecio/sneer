@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.Functor;
+import sneer.hardware.gui.guithread.GuiThread;
 import sneer.hardware.gui.timebox.TimeboxedEventQueue;
 import sneer.kernel.container.ContainersOld;
 import sneer.pulp.reactive.Signal;
@@ -18,7 +19,6 @@ import sneer.pulp.reactive.Signals;
 import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.io.Logger;
-import wheel.io.ui.GuiThread;
 import wheel.reactive.impl.mocks.RandomBoolean;
 
 public class ReactiveImageDemo {
@@ -30,7 +30,7 @@ public class ReactiveImageDemo {
 		
 		my(TimeboxedEventQueue.class).startQueueing(5000);
 		
-		GuiThread.strictInvokeAndWait(new Runnable(){@Override public void run() {
+		my(GuiThread.class).strictInvokeAndWait(new Runnable(){@Override public void run() {
 			ReactiveWidgetFactory rfactory = Environments.my(ReactiveWidgetFactory.class);
 			
 			Signal<Boolean> isOnline = new RandomBoolean().output();

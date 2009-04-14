@@ -23,6 +23,7 @@ import snapps.welcomewizard.WelcomeWizard;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.ByRef;
+import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccount;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
 import sneer.pulp.own.name.OwnNameKeeper;
@@ -33,7 +34,6 @@ import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
-import wheel.io.ui.GuiThread;
 import wheel.io.ui.action.Action;
 import wheel.lang.PickyConsumer;
 import wheel.reactive.impl.IntegerParser;
@@ -135,7 +135,7 @@ class WelcomeWizardImpl extends JFrame implements WelcomeWizard {
 
 	private TextWidget<JTextField> newTextField(final Signal<?> signal, final PickyConsumer<String> setter) {
 		final ByRef<TextWidget<JTextField>> result = ByRef.newInstance();
-		GuiThread.strictInvokeAndWait(new Runnable() { @Override public void run() {
+		my(GuiThread.class).strictInvokeAndWait(new Runnable() { @Override public void run() {
 			result.value = my(ReactiveWidgetFactory.class).newTextField(signal, setter, NotificationPolicy.OnEnterPressedOrLostFocus);
 		}});
 		return result.value;

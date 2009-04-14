@@ -22,11 +22,11 @@ import javax.swing.text.JTextComponent;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.exceptions.NotImplementedYet;
+import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Signal;
 import sneer.skin.colors.Colors;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.TextWidget;
-import wheel.io.ui.GuiThread;
 import wheel.lang.PickyConsumer;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.impl.EventReceiver;
@@ -99,7 +99,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 		}
 
 		private void commitIfNecessary() {
-			GuiThread.invokeLater(new Runnable(){ @Override public void run() {
+			my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
 				_textComponent.invalidate();
 				_textComponent.getParent().validate();
 				if ( _notificationPolicy == NotificationPolicy.OnTyping ) commitTextChanges();
@@ -122,7 +122,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 		} catch (Exception ex) {
 			_textComponent.addKeyListener(new KeyAdapter() { @Override public void keyTyped(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
-					GuiThread.invokeLater(new Runnable(){ @Override public void run() {
+					my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
 						commitTextChanges();		
 					}});
 			}});
@@ -132,7 +132,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	public void commitTextChanges() {
 		String text = getText();
 		if (text.equals( currentValue())) return;
-		GuiThread.assertInGuiThread();
+		my(GuiThread.class).assertInGuiThread();
 		consume(text);
 		refreshTextComponent();
 		setNotified(true, text);
@@ -157,7 +157,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	}
 	
 	public void setText(final String text) {
-		GuiThread.assertInGuiThread();
+		my(GuiThread.class).assertInGuiThread();
 		String currentValue = tryReadText();
 		
 		if(currentValue==null || text==null){
@@ -237,7 +237,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	
 	public EventReceiver<?> fieldReceiver() {
 		return new EventReceiver<Object>(_source) {@Override public void consume(final Object text) {
-			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
+			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
 				if (!_notified) return;
 				setText(valueToString(text));
 			}});
@@ -265,7 +265,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 		}
 		
 		void decorate(final boolean notified) {
-			GuiThread.assertInGuiThread();
+			my(GuiThread.class).assertInGuiThread();
 			if(notified) {
 				_target.setOpaque(_isOpaque);
 				_target.setBackground(_bgColor);

@@ -2,12 +2,12 @@ package spikes.priscila.go.gui;
 
 import static sneer.commons.environments.Environments.my;
 import sneer.commons.environments.Environments;
+import sneer.hardware.gui.guithread.GuiThread;
 import sneer.kernel.container.ContainersOld;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signals;
 import spikes.priscila.go.Move;
 import spikes.priscila.go.GoBoard.StoneColor;
-import wheel.io.ui.GuiThread;
 
 public class GoMain {
 	
@@ -25,7 +25,7 @@ public class GoMain {
 	}
 
 	public static void main(String[] args){
-		GuiThread.invokeAndWait(new Runnable(){@Override public void run() {
+		my(GuiThread.class).invokeAndWait(new Runnable(){@Override public void run() {
 			new GoMain();
 		}});
 	}

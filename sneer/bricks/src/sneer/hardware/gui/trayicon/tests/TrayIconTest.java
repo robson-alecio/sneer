@@ -9,28 +9,30 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.net.URL;
 
 import javax.swing.JButton;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
+import sneer.hardware.gui.trayicon.SystemTrayNotSupported;
 import sneer.hardware.gui.trayicon.TrayIcon;
 import sneer.hardware.gui.trayicon.TrayIcons;
 import wheel.io.ui.action.Action;
 
 public class TrayIconTest extends BrickTest {
 
-	private TrayIcon _subject;
+	private final TrayIcon _subject = newSubject();
 
-	@Before
-	public void createSubject() throws Exception {
-		URL userIcon = getClass().getResource("testIcon.png");
-		if(SystemTray.isSupported())
-			_subject = my(TrayIcons.class).newTrayIcon(userIcon);
+	private TrayIcon newSubject() {
+		if (!SystemTray.isSupported()) return null;
+		
+		try {
+			return my(TrayIcons.class).newTrayIcon(getClass().getResource("testIcon.png"));
+		} catch (SystemTrayNotSupported e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 	@After

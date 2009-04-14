@@ -10,10 +10,10 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
+import sneer.hardware.gui.guithread.GuiThread;
 import spikes.priscila.go.GoBoard.StoneColor;
-import wheel.io.ui.GuiThread;
 import wheel.lang.Threads;
-
+import static sneer.commons.environments.Environments.my;
 
 public class Main extends JFrame{
 	
@@ -158,7 +158,7 @@ public class Main extends JFrame{
 			_scrollYDelta = scrollDeltaFor(e.getY());
 			
 			repaint();
-			GuiThread.invokeLater(new Runnable() { @Override public void run() {
+			my(GuiThread.class).invokeLater(new Runnable() { @Override public void run() {
 				int x = toScreenPosition(e.getX());
 				int y = toScreenPosition(e.getY());
 				if(_board.canPlayStone(unscrollX(x), unscrollY(y)))

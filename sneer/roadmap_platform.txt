@@ -53,6 +53,8 @@ TASKS
 				}})
 			}
 			
+			- Unignore GuiNatureTest - GuiThread is now a brick.
+			
 			- GUI brick constructors should execute in the gui thread
 			
 			- Unignore and implement GuiBrickTest.guiBrickCallbacksComeInSwingThread()

@@ -1,5 +1,7 @@
 package wheel.io.ui.impl;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Dialog.ModalityType;
@@ -12,8 +14,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
+import sneer.hardware.gui.guithread.GuiThread;
 import wheel.io.ui.CancelledByUser;
-import wheel.io.ui.GuiThread;
 import wheel.io.ui.User;
 import wheel.io.ui.Util;
 import wheel.lang.Consumer;
@@ -220,7 +222,7 @@ public class UserImpl implements User {
 
 	@Override
 	public void saveAs(final String title, final String buttonTitle, final String[] suffixes, final String description, final Consumer<File> callback) {
-		GuiThread.strictInvokeLater(new Runnable(){ public void run(){
+		my(GuiThread.class).strictInvokeLater(new Runnable(){ public void run(){
 			final JFileChooser fc = new JFileChooser(); 
 			fc.setDialogTitle(title);
 			fc.setApproveButtonText(buttonTitle);
@@ -245,7 +247,7 @@ public class UserImpl implements User {
 	
 	@Override
 	public void chooseDirectory(final String title, final String buttonTitle, final Consumer<File> callback) {
-		GuiThread.strictInvokeLater(new Runnable(){ public void run(){
+		my(GuiThread.class).strictInvokeLater(new Runnable(){ public void run(){
 			final JFileChooser fc = new JFileChooser();
 			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			fc.setApproveButtonText(buttonTitle);

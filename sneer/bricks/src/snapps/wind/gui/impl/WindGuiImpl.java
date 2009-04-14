@@ -29,6 +29,7 @@ import snapps.wind.Shout;
 import snapps.wind.Wind;
 import snapps.wind.gui.WindGui;
 import sneer.commons.lang.ByRef;
+import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.colors.Colors;
 import sneer.skin.dashboard.InstrumentWindow;
@@ -38,7 +39,6 @@ import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.Logger;
-import wheel.io.ui.GuiThread;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.EventReceiver;
 import wheel.reactive.lists.ListChange;
@@ -221,14 +221,14 @@ class WindGuiImpl implements WindGui {
 		
 		private boolean isAtEnd() {
 			final ByRef<Boolean> result = ByRef.newInstance();
-			GuiThread.invokeAndWait(new Runnable(){ @Override public void run() {
+			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
 				result.value =  scrollModel().getValue() + scrollModel().getExtent() == scrollModel().getMaximum();
 			}});
 			return result.value;
 		}		
 		
 		private void placeAtEnd() {
-			GuiThread.invokeLater(new Runnable(){ @Override public void run() {
+			my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
 				scrollModel().setValue(scrollModel().getMaximum()-scrollModel().getExtent());
 			}});
 		}

@@ -9,7 +9,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import sneer.commons.lang.ByRef;
-import wheel.io.ui.GuiThread;
+import sneer.hardware.gui.guithread.GuiThread;
+import static sneer.commons.environments.Environments.my;
 
 final class GuiBrickInvocationHandler<T> implements InvocationHandler {
 
@@ -28,7 +29,7 @@ final class GuiBrickInvocationHandler<T> implements InvocationHandler {
 	public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
 		final ByRef<Object> result = ByRef.newInstance();
 
-		GuiThread.invokeAndWait(new Runnable() { @Override public void run() {
+		my(GuiThread.class).invokeAndWait(new Runnable() { @Override public void run() {
 			try {
 				result.value = method.invoke(_component, args);
 			} catch (IllegalArgumentException e) {

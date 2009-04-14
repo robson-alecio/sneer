@@ -18,8 +18,9 @@ import javax.swing.event.TreeWillExpandListener;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 
-import wheel.io.ui.GuiThread;
+import sneer.hardware.gui.guithread.GuiThread;
 import wheel.lang.Threads;
+import static sneer.commons.environments.Environments.my;
 
 public class TreeModelExample extends JFrame {
 
@@ -98,7 +99,7 @@ public class TreeModelExample extends JFrame {
 		return new Runnable() { @Override public void run() {
 			while (true) {
 				try {
-					GuiThread.strictInvokeAndWait(new Runnable(){@Override public void run() {
+					my(GuiThread.class).strictInvokeAndWait(new Runnable(){@Override public void run() {
 						addNode();
 					}});
 				} catch (Exception e) {
@@ -112,7 +113,7 @@ public class TreeModelExample extends JFrame {
 		return new Runnable() { @Override public void run() {
 			while (true) {
 				try {
-					GuiThread.strictInvokeAndWait(new Runnable(){@Override public void run() {
+					my(GuiThread.class).strictInvokeAndWait(new Runnable(){@Override public void run() {
 						removeNode();
 					}});
 				} catch (Exception e) {

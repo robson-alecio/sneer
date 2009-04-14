@@ -16,12 +16,12 @@ import javax.swing.WindowConstants;
 
 import snapps.watchme.WatchMe;
 import sneer.brickness.PublicKey;
+import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.WindowWidget;
-import wheel.io.ui.GuiThread;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.EventReceiver;
 
@@ -55,7 +55,7 @@ class WatchMeReceiver{
 	}
 
 	private void initGui() {
-		GuiThread.invokeAndWait(new Runnable(){	@Override public void run() {
+		my(GuiThread.class).invokeAndWait(new Runnable(){	@Override public void run() {
 			_windowWidget = _factory.newFrame(_contact.nickname());
 			JFrame frm = _windowWidget.getMainWidget();
 			frm.setBounds(0,0,1024,768);

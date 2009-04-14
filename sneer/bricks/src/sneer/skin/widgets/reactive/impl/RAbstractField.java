@@ -21,12 +21,12 @@ import javax.swing.text.JTextComponent;
 
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
+import sneer.commons.lang.exceptions.NotImplementedYet;
 import sneer.pulp.reactive.Signal;
 import sneer.skin.colors.Colors;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.TextWidget;
 import wheel.io.ui.GuiThread;
-import wheel.io.ui.impl.UserImpl;
 import wheel.lang.PickyConsumer;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.impl.EventReceiver;
@@ -248,7 +248,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 		try {
 			_setter.consume(text);
 		} catch (IllegalParameter ip) {
-			new UserImpl().acknowledge(ip);
+			throw new NotImplementedYet(ip);
 		}
 	}
 	

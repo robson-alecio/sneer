@@ -1,7 +1,5 @@
 package wheel.io.ui.impl;
 
-import static wheel.i18n.Language.translate;
-
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Dialog.ModalityType;
@@ -256,7 +254,7 @@ public class UserImpl implements User {
 			if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
 				File result = fc.getSelectedFile();
 				if (!result.isDirectory())  // User might have entered manually.
-					acknowledgeNotification(translate("This is not a valid folder:\n\n%1$s\n\nTry again.", result.getPath()));
+					acknowledgeNotification("This is not a valid folder:\n\n%1$s\n\nTry again.", result.getPath());
 				else
 					callback.consume(result);
 			}else{

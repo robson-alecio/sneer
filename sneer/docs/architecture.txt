@@ -19,39 +19,24 @@
 						FREEDOM 1: IDENTITY
 					   (OwnName, Public Key)
 
-                        FREEDOM 7: SOFTWARE
-  (Brickness: Install, Update, Concurrency, Signals, Prevalence)
+                    FREEDOM 7: SOFTWARE SHARING
+                 (Bricks: Install, Update, Remove)
 
-                        FREEDOM 6: HARDWARE
-(Clock, Threads, Files, Network, GUI support, RAM (Collections), Logging...)
-                 (Security Enhanced: T4T Billing)
+                       FREEDOM 6: HARDWARE
+      (Clock, Files, Network, GUI support, Prevalence, Logging...)
+                        (RAM: Collections)
+  (CPU: Threads, Natures (Concurrency), Consumers, Signals, Exceptions)
+                          (T4T Billing)
 
-                        FREEDOM 4: PRIVACY
-     (Security Hooks. The Java Security Model might be enough)
-           
                                                                   BRICKS
 ------------------------------------------------------------------------
 
-         WHEEL (OLD - TO BE EXTRACTED TO ROOTS OR COMMONS)
-
-        BRICKNESS (MINIMAL BRICK SUPPORT ("MY", CONVENTIONS))
-
-             SNEER COMMONS (STATIC UTILS, ENVIRONMENTS)
-   (INCLUDES APACHE COMMONS (LANG, COLLECTION, IO), JUNIT AND JMOCK)
+                            BRICKNESS 
+             (MINIMAL BRICK SUPPORT ("MY", CONVENTIONS))
 
                              WEBSTART
  
+                   FREEDOM 4: PROPERTY (PRIVACY)
+                       (Java Security Model)
+                      
                                JRE
-
-
-
-
-Freedoms:
-
-1 OwnName
-2 Nicknames
-3 Trust
-4 Privacy
-5 Expression
-6 Hardware
-7 Software

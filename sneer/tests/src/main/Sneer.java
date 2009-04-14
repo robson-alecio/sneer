@@ -103,6 +103,7 @@ public class Sneer {
 				sneer.skin.windowboundssetter.WindowBoundsSetter.class,
 				snapps.welcomewizard.WelcomeWizard.class,
 				sneer.hardware.logging.gui.LogConsole.class,
+				sneer.hardware.gui.timebox.TimeboxedEventQueue.class,
 				sneer.skin.dashboard.Dashboard.class,
 				
 				sneer.skin.dashboard.util.GuiUtil.class,

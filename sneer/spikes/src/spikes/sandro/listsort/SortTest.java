@@ -15,6 +15,7 @@ import javax.swing.SwingUtilities;
 
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.ByRef;
+import sneer.hardware.gui.timebox.TimeboxedEventQueue;
 import sneer.kernel.container.ContainersOld;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
@@ -24,7 +25,6 @@ import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
-import wheel.io.ui.TimeboxedEventQueue;
 import wheel.reactive.impl.mocks.RandomBoolean;
 import wheel.reactive.lists.ListRegister;
 import wheel.reactive.lists.ListSignal;
@@ -75,7 +75,7 @@ public class SortTest {
 	}
 
 	private static void initGui(final ListSignal<SortTestElement> sorted) throws Exception {
-		TimeboxedEventQueue.startQueueing(3000);
+		my(TimeboxedEventQueue.class).startQueueing(3000);
 		
 		SwingUtilities.invokeAndWait(new Runnable(){ @Override public void run() {
 			ReactiveWidgetFactory factory = my(ReactiveWidgetFactory.class);

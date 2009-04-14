@@ -18,6 +18,7 @@ import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import snapps.welcomewizard.WelcomeWizard;
+import sneer.hardware.gui.timebox.TimeboxedEventQueue;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.own.name.OwnNameKeeper;
@@ -32,7 +33,6 @@ import sneer.skin.snappmanager.Instrument;
 import sneer.skin.snappmanager.InstrumentRegistry;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
 import wheel.io.ui.GuiThread;
-import wheel.io.ui.TimeboxedEventQueue;
 import wheel.io.ui.TrayIcon;
 import wheel.io.ui.action.Action;
 import wheel.io.ui.graphics.Images;
@@ -87,7 +87,7 @@ class DashboardImpl implements Dashboard {
 	private void init() {
 		my(WelcomeWizard.class);
 
-		TimeboxedEventQueue.startQueueing(TIMEOUT_FOR_GUI_EVENTS);
+		my(TimeboxedEventQueue.class).startQueueing(TIMEOUT_FOR_GUI_EVENTS);
 		initGui();
 	}
 	

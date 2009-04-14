@@ -12,10 +12,11 @@ import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.ByRef;
 import sneer.commons.lang.exceptions.NotImplementedYet;
+import sneer.hardware.gui.timebox.TimeboxedEventQueue;
 import sneer.kernel.container.ContainerOld;
 import sneer.kernel.container.ContainersOld;
-import wheel.io.ui.TimeboxedEventQueue;
 import wheel.lang.exceptions.TimeIsUp;
+import static sneer.commons.environments.Environments.my;
 
 @Ignore
 public class GuiBrickTest {
@@ -66,12 +67,12 @@ public class GuiBrickTest {
 		Environments.runWith(ContainersOld.newContainer(), new Runnable() { @Override public void run() {
 			
 			int timeoutForGuiEvents = 10;
-			TimeboxedEventQueue.startQueueing(timeoutForGuiEvents);
+			my(TimeboxedEventQueue.class).startQueueing(timeoutForGuiEvents);
 	
 			try {
 				runInsideTimebox();
 			} finally {
-				TimeboxedEventQueue.stopQueueing();
+				my(TimeboxedEventQueue.class).stopQueueing();
 			}
 			
 		}});

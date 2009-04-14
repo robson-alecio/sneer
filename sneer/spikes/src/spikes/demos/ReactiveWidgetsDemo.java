@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import javax.swing.JFrame;
 
 import sneer.commons.environments.Environments;
+import sneer.hardware.gui.timebox.TimeboxedEventQueue;
 import sneer.kernel.container.ContainersOld;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signals;
@@ -16,13 +17,12 @@ import sneer.skin.widgets.reactive.TextWidget;
 import sneer.skin.widgets.reactive.WindowWidget;
 import wheel.io.Logger;
 import wheel.io.ui.GuiThread;
-import wheel.io.ui.TimeboxedEventQueue;
 
 public class ReactiveWidgetsDemo {
 
 	private ReactiveWidgetsDemo(){
 		
-		TimeboxedEventQueue.startQueueing(500000);
+		my(TimeboxedEventQueue.class).startQueueing(500000);
 		
 		GuiThread.strictInvokeAndWait(new Runnable(){ @Override public void run() {
 

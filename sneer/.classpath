@@ -5,19 +5,18 @@
 	<classpathentry kind="src" path="brickness-impl/src"/>
 	<classpathentry kind="src" path="bricks/src"/>
 	<classpathentry kind="src" path="antlips/src"/>
-	<classpathentry kind="src" path="wheel/src"/>
 	<classpathentry kind="src" path="brickness/src"/>
 	<classpathentry kind="src" path="commons/src"/>
 	<classpathentry kind="lib" path="spikes/lib/Filters.jar"/>
 	<classpathentry kind="lib" path="spikes/lib/lucene-demos-2.3.2.jar"/>
 	<classpathentry kind="lib" path="spikes/lib/asm-all-3.1.jar"/>
+	<classpathentry kind="lib" path="spikes/lib/xstream-1.2.2.jar"/>
 	<classpathentry kind="lib" path="bricks/src/snapps/wind/impl/lib/prevayler-2.3.jar" sourcepath="bricks/src/snapps/wind/impl/lib/prevayler-2.3.src.zip"/>
 	<classpathentry kind="lib" path="bricks/src/snapps/wind/impl/lib/xpp3_min-1.1.3_8.jar"/>
 	<classpathentry kind="lib" path="bricks/src/snapps/whisper/speex/impl/lib/speex.jar"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/pulp/compiler/impl/lib/compiler-7-ea-b17-02_aug_2007.jar"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/pulp/crypto/impl/lib/bcprov-jdk16-139.jar"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/pulp/things/impl/lib/lucene-core-2.3.2.jar"/>
-	<classpathentry kind="lib" path="wheel/lib/xstream-1.2.2.jar"/>
 	<classpathentry kind="lib" path="commons/lib/jmock-2.5.1/hamcrest-core-1.1.jar"/>
 	<classpathentry kind="lib" path="commons/lib/jmock-2.5.1/hamcrest-library-1.1.jar"/>
 	<classpathentry kind="lib" path="commons/lib/jmock-2.5.1/jmock-2.5.1.jar" exported="true"/>

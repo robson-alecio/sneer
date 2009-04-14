@@ -22,9 +22,8 @@ import sneer.hardware.gui.trayicon.TrayIcon;
 import sneer.hardware.gui.trayicon.TrayIcons;
 import wheel.io.ui.action.Action;
 
-public class TrayIconImplTest extends BrickTest {
+public class TrayIconTest extends BrickTest {
 
-	
 	private TrayIcon _subject;
 
 	@Before

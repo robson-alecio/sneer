@@ -6,23 +6,23 @@ import javax.swing.SwingUtilities;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.brickness.impl.Brickness;
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.ByRef;
+import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.natures.gui.GUI;
 import sneer.pulp.natures.gui.tests.fixtures.SomeGuiBrick;
 import wheel.io.Jars;
 
-@Ignore
 public class GUINatureTest extends Assert {
 	
 	Brickness subject = new Brickness();
 	
 	@Before
 	public void placeBricks() {
+		placeBrick(GuiThread.class);
 		placeBrick(GUI.class);
 		placeBrick(SomeGuiBrick.class);
 	}

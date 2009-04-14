@@ -44,7 +44,7 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 
 	@Override
 	public void addCompileEntry(final String src, final String output) {
-		_srcs.add(Pair.pair(src, safeDestDir(output)));
+		_srcs.add(Pair.of(src, safeDestDir(output)));
 	}
 
 	@Override

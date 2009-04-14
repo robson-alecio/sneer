@@ -59,8 +59,8 @@ class UpdaterImpl implements Updater {
 		Logger.log("Submitting DynDns update for host: {} ip: {}", host, ip);
 		return _client.get(
 				"https://members.dyndns.org/nic/update?hostname=" + host + "&myip=" + ip + "&wildcard=NOCHG&mx=NOCHG&backmx=NOCHG",
-				Pair.pair("User-Agent", "SneerAlfa - DynDns ClientAlfa - 0.1"),
-				Pair.pair("Authorization", "Basic " + encode(user + ":" + password)));
+				Pair.of("User-Agent", "SneerAlfa - DynDns ClientAlfa - 0.1"),
+				Pair.of("Authorization", "Basic " + encode(user + ":" + password)));
 	}
 
 	private String encode(final String text) {

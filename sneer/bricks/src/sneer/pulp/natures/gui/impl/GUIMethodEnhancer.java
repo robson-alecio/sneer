@@ -110,10 +110,10 @@ public class GUIMethodEnhancer {
 	private ArrayList<Pair<String, String>> buildThunkFieldList()
 			throws NotFoundException {
 		ArrayList<Pair<String, String>> thunkFields = new ArrayList<Pair<String, String>>();
-		thunkFields.add(Pair.pair(_method.getDeclaringClass().getName(), "target"));
+		thunkFields.add(Pair.of(_method.getDeclaringClass().getName(), "target"));
 		final CtClass[] parameters = _method.getParameterTypes();
 		for (int i = 0; i < parameters.length; i++) {
-			thunkFields.add(Pair.pair(parameters[i].getName(), "arg" + i));
+			thunkFields.add(Pair.of(parameters[i].getName(), "arg" + i));
 		}
 		return thunkFields;
 	}

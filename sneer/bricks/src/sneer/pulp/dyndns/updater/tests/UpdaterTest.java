@@ -98,8 +98,8 @@ public class UpdaterTest extends BrickTest {
 		checking(new Expectations() {{
 			one(client).get(
 				"https://members.dyndns.org/nic/update?hostname=" + hostname + "&myip=" + ip + "&wildcard=NOCHG&mx=NOCHG&backmx=NOCHG",
-				Pair.pair("User-Agent", "SneerAlfa - DynDns ClientAlfa - 0.1"),
-				Pair.pair("Authorization", "Basic " + encode(user + ":" + password)));
+				Pair.of("User-Agent", "SneerAlfa - DynDns ClientAlfa - 0.1"),
+				Pair.of("Authorization", "Basic " + encode(user + ":" + password)));
 			will(returnValue(responseText));
 		}});
 	}

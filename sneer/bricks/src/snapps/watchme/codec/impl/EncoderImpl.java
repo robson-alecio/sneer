@@ -56,12 +56,12 @@ class EncoderImpl implements Encoder {
 		BufferedImage img1 = _shot.getSubimage(x, y, cellWidth, cellHeight);
 		
 		int[] currentPixels = my(Images.class).pixels(img1);
-		int[] previousPixels = _previousPixelsByCellCoordinate.get(Pair.pair(x, y));		
+		int[] previousPixels = _previousPixelsByCellCoordinate.get(Pair.of(x, y));		
 		
 		if(previousPixels != null && Arrays.equals(previousPixels, currentPixels))
 			return;
 		
-		_previousPixelsByCellCoordinate.put(Pair.pair(x, y), currentPixels);
+		_previousPixelsByCellCoordinate.put(Pair.of(x, y), currentPixels);
 		
 		byte[] data = _imageFactory.toPngData(img1);
 		result.add(new ImageDelta(new ImmutableByteArray(data), x, y));

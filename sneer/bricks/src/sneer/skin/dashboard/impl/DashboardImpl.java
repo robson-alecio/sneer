@@ -19,6 +19,7 @@ import javax.swing.border.EmptyBorder;
 
 import snapps.welcomewizard.WelcomeWizard;
 import sneer.hardware.gui.guithread.GuiThread;
+import sneer.hardware.gui.images.Images;
 import sneer.hardware.gui.timebox.TimeboxedEventQueue;
 import sneer.hardware.gui.trayicon.SystemTrayNotSupported;
 import sneer.hardware.gui.trayicon.TrayIcon;
@@ -37,7 +38,6 @@ import sneer.skin.snappmanager.Instrument;
 import sneer.skin.snappmanager.InstrumentRegistry;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
 import wheel.io.ui.action.Action;
-import wheel.io.ui.graphics.Images;
 import wheel.reactive.impl.EventReceiver;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
@@ -149,7 +149,7 @@ class DashboardImpl implements Dashboard {
 	private void initFrame() {
 		_jframe = new JFrame();
 		my(WindowBoundsSetter.class).defaultContainer(_jframe.getContentPane());
-		_jframe.setIconImage(Images.getImage(logoIconURL()));
+		_jframe.setIconImage(my(Images.class).getImage(logoIconURL()));
 		updateTitle();
 	}
 	

@@ -15,11 +15,11 @@ import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.security.InvalidParameterException;
 
+import sneer.hardware.gui.images.Images;
 import sneer.hardware.gui.trayicon.SystemTrayNotSupported;
 import sneer.hardware.gui.trayicon.TrayIcon;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
 import wheel.io.ui.action.Action;
-import wheel.io.ui.graphics.Images;
 
 class TrayIconImpl implements TrayIcon {
 
@@ -35,7 +35,7 @@ class TrayIconImpl implements TrayIcon {
 			throw new SystemTrayNotSupported();
 
 		SystemTray tray = SystemTray.getSystemTray();
-		Image image = Images.getImage(icon);
+		Image image = my(Images.class).getImage(icon);
 		java.awt.TrayIcon trayIcon = createTrayIcon(image);
 		// trayIcon.addMouseListener(mouseListener);
 

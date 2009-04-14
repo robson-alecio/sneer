@@ -28,6 +28,7 @@ import snapps.contacts.gui.comparator.ContactComparator;
 import snapps.contacts.gui.delete.DeleteContactWindow;
 import snapps.contacts.gui.info.ContactInfoWindow;
 import sneer.commons.lang.Functor;
+import sneer.hardware.gui.images.Images;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
@@ -41,7 +42,6 @@ import sneer.skin.snappmanager.InstrumentRegistry;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
-import wheel.io.ui.graphics.Images;
 import wheel.reactive.lists.ListSignal;
 
 class ContactsGuiImpl implements ContactsGui {
@@ -58,7 +58,7 @@ class ContactsGuiImpl implements ContactsGui {
 	private final Register<Contact> _selectedContact = my(Signals.class).newRegister(null);
 	
 	private static Image getImage(String fileName) {
-		return Images.getImage(ContactsGuiImpl.class.getResource(fileName));
+		return my(Images.class).getImage(ContactsGuiImpl.class.getResource(fileName));
 	}
 	
 	ContactsGuiImpl(){

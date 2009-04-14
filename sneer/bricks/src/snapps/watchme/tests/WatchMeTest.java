@@ -1,7 +1,6 @@
 package snapps.watchme.tests;
 
 import static sneer.commons.environments.Environments.my;
-import static wheel.io.ui.graphics.Images.getImage;
 
 import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
@@ -21,13 +20,13 @@ import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.BrickTestRunner;
 import sneer.brickness.testsupport.Contribute;
 import sneer.commons.environments.Environment;
+import sneer.hardware.gui.images.Images;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.screenshotter.Screenshotter;
-import wheel.io.ui.graphics.Images;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.Hiccup;
 import wheel.reactive.impl.EventReceiver;
@@ -102,7 +101,7 @@ public class WatchMeTest extends BrickTest {
 		while (true) {
 			BufferedImage observed = _screenObserved.get();
 			if (observed != null)
-				if (Images.isSameImage(expected, observed)) return;
+				if (my(Images.class).isSameImage(expected, observed)) return;
 			
 			if (i++ == 100) giveUp(expected, observed);
 			
@@ -122,7 +121,7 @@ public class WatchMeTest extends BrickTest {
 	}
 
 	private BufferedImage loadImage(String fileName) throws Hiccup {
-		return _imageFactory.createBufferedImage(getImage(getClass().getResource(fileName)));
+		return _imageFactory.createBufferedImage(my(Images.class).getImage(getClass().getResource(fileName)));
 	}
 
 }

@@ -23,9 +23,10 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+import sneer.hardware.gui.images.Images;
 import sneer.skin.image.ImageFactory;
-import wheel.io.ui.graphics.Images;
 import wheel.lang.exceptions.Hiccup;
+import static sneer.commons.environments.Environments.my;
 
 class ImageFactoryImpl implements ImageFactory {
 	
@@ -70,7 +71,7 @@ class ImageFactoryImpl implements ImageFactory {
 		if(map.containsKey(id)){
 			return map.get(id);
 		}
-		Image img = Images.getImage(url);
+		Image img = my(Images.class).getImage(url);
 		ImageIcon icon = new ImageIcon(img);
 			
 		map.put(id, icon);

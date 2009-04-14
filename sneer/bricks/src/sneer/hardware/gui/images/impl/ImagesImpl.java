@@ -1,4 +1,4 @@
-package wheel.io.ui.graphics;
+package sneer.hardware.gui.images.impl;
 
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -7,27 +7,28 @@ import java.awt.image.PixelGrabber;
 import java.net.URL;
 import java.util.Arrays;
 
+import sneer.hardware.gui.images.Images;
+
 import wheel.lang.exceptions.Hiccup;
 
-public class Images {
+class ImagesImpl implements Images {
 
-	public static Image getImage(URL url) {
+	@Override
+	public Image getImage(URL url) {
 		return Toolkit.getDefaultToolkit().getImage(url);
 	}
 	
-	static public boolean isSameImage(BufferedImage image1, BufferedImage image2) {
-			return doIsSameImage(image1, image2);
+	@Override
+	public boolean isSameImage(BufferedImage image1, BufferedImage image2) {
+			if (image2.getWidth() != image1.getWidth()) return false;
+			if (image2.getHeight() != image1.getHeight()) return false;
+			
+			return Arrays.equals(pixels(image1), pixels(image2));
 	}
 
-	private static boolean doIsSameImage(BufferedImage image1, BufferedImage image2) {
-		if (image2.getWidth() != image1.getWidth()) return false;
-		if (image2.getHeight() != image1.getHeight()) return false;
-		
-		return Arrays.equals(pixels(image1), pixels(image2));
-	}
-	
 	/** @throws Hiccup */
-	public static int[] pixels(BufferedImage image) {
+	@Override
+	public int[] pixels(BufferedImage image) {
 		PixelGrabber result = new PixelGrabber(image, 0, 0, image.getWidth(), image.getHeight(), true);
 		try {
 			result.grabPixels();
@@ -38,7 +39,8 @@ public class Images {
 		return (int[])result.getPixels();
 	}
 
-	static public BufferedImage copy(BufferedImage original) {
+	@Override
+	public BufferedImage copy(BufferedImage original) {
 		return new BufferedImage(
 			original.getColorModel(),
 			original.copyData(null),

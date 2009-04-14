@@ -16,8 +16,8 @@ import java.util.Map;
 import snapps.watchme.codec.ImageDelta;
 import snapps.watchme.codec.ImageCodec.Encoder;
 import sneer.commons.lang.Pair;
+import sneer.hardware.gui.images.Images;
 import sneer.skin.image.ImageFactory;
-import wheel.io.ui.graphics.Images;
 import wheel.lang.ImmutableByteArray;
 import wheel.lang.exceptions.Hiccup;
 import wheel.testutil.Profiler;
@@ -55,7 +55,7 @@ class EncoderImpl implements Encoder {
 		
 		BufferedImage img1 = _shot.getSubimage(x, y, cellWidth, cellHeight);
 		
-		int[] currentPixels = Images.pixels(img1);
+		int[] currentPixels = my(Images.class).pixels(img1);
 		int[] previousPixels = _previousPixelsByCellCoordinate.get(Pair.pair(x, y));		
 		
 		if(previousPixels != null && Arrays.equals(previousPixels, currentPixels))

@@ -35,18 +35,18 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
+import sneer.hardware.gui.images.Images;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.widgets.reactive.LabelProvider;
 import wheel.io.Logger;
-import wheel.io.ui.graphics.Images;
 import wheel.testutil.MemorySentinel;
 
 class WindListCellRendererSample implements ListCellRenderer {
 
 	static final Image _me = getImage();
 	private static Image getImage(){
-		return Images.getImage(ComplexRenderingSample.class.getResource("me.png"));
+		return my(Images.class).getImage(ComplexRenderingSample.class.getResource("me.png"));
 	}	
 	
 	public static void main(String args[]) {

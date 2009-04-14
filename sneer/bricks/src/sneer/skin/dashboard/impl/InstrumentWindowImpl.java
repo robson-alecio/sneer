@@ -20,9 +20,9 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
 
+import sneer.hardware.gui.images.Images;
 import sneer.skin.colors.Colors;
 import sneer.skin.dashboard.InstrumentWindow;
-import wheel.io.ui.graphics.Images;
 
 class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 	
@@ -65,7 +65,7 @@ class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
 //	}
 	
 	private static Image getImage(String fileName) {
-		return Images.getImage(InstrumentWindowImpl.class.getResource(fileName));
+		return my(Images.class).getImage(InstrumentWindowImpl.class.getResource(fileName));
 	}
 	
 	public InstrumentWindowImpl(String title) {

@@ -22,6 +22,7 @@ import javax.swing.border.EmptyBorder;
 
 import snapps.meter.memory.gui.MemoryMeterGui;
 import sneer.commons.lang.Functor;
+import sneer.hardware.gui.images.Images;
 import sneer.pulp.memory.MemoryMeter;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.colors.Colors;
@@ -29,7 +30,6 @@ import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.snappmanager.InstrumentRegistry;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
-import wheel.io.ui.graphics.Images;
 
 class MemoryMeterGuiImpl implements MemoryMeterGui {
 
@@ -51,7 +51,7 @@ class MemoryMeterGuiImpl implements MemoryMeterGui {
 	} 
 	
 	static Icon load(String resourceName){
-		return new ImageIcon(Images.getImage(MemoryMeterGuiImpl.class.getResource(resourceName)));
+		return new ImageIcon(my(Images.class).getImage(MemoryMeterGuiImpl.class.getResource(resourceName)));
 	}
 	
 	@Override

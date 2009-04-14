@@ -1,8 +1,6 @@
 package snapps.watchme.codec.tests;
 
 import static sneer.commons.environments.Environments.my;
-import static wheel.io.ui.graphics.Images.copy;
-import static wheel.io.ui.graphics.Images.getImage;
 
 import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
@@ -17,9 +15,9 @@ import snapps.watchme.codec.ImageDelta;
 import snapps.watchme.codec.ImageCodec.Decoder;
 import snapps.watchme.codec.ImageCodec.Encoder;
 import sneer.brickness.testsupport.BrickTest;
+import sneer.hardware.gui.images.Images;
 import sneer.skin.image.ImageFactory;
 import wheel.io.serialization.impl.XStreamBinarySerializer;
-import wheel.io.ui.graphics.Images;
 import wheel.lang.exceptions.Hiccup;
 
 public class ImageCodecTest extends BrickTest {
@@ -34,7 +32,7 @@ public class ImageCodecTest extends BrickTest {
 		final Encoder encoder = _subject.createEncoder();
 		encoder.generateDeltas(image1);
 		
-		List<ImageDelta> deltas = encoder.generateDeltas(copy(image1));
+		List<ImageDelta> deltas = encoder.generateDeltas(my(Images.class).copy(image1));
 		assertTrue(deltas.isEmpty());
 	}
 
@@ -80,7 +78,7 @@ public class ImageCodecTest extends BrickTest {
 		int emptyDeltaSizeBytes = SerializationUtils.serialize(deltas.toArray()).length;
 		assertTrue(deltaSizeBytes>emptyDeltaSizeBytes);
 		
-		Assert.assertTrue(Images.isSameImage(imageB, imageA));
+		Assert.assertTrue(my(Images.class).isSameImage(imageB, imageA));
 	}
 
 	private byte[] serialize(Object obj) {
@@ -88,6 +86,6 @@ public class ImageCodecTest extends BrickTest {
 	}
 
 	private BufferedImage loadImage(String fileName) throws Hiccup {
-		return _imageFactory.createBufferedImage(getImage(getClass().getResource(fileName)));
+		return _imageFactory.createBufferedImage(my(Images.class).getImage(getClass().getResource(fileName)));
 	}
 }

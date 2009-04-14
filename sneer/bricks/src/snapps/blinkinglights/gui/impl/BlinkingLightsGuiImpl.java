@@ -29,6 +29,7 @@ import javax.swing.text.StyledDocument;
 
 import snapps.blinkinglights.gui.BlinkingLightsGui;
 import sneer.hardware.gui.guithread.GuiThread;
+import sneer.hardware.gui.images.Images;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
@@ -41,7 +42,6 @@ import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
-import wheel.io.ui.graphics.Images;
 
 class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 	
@@ -100,7 +100,7 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 	}
 	
 	private static Image loadImage(String fileName) {
-		return Images.getImage(BlinkingLightsGuiImpl.class.getResource(fileName));
+		return my(Images.class).getImage(BlinkingLightsGuiImpl.class.getResource(fileName));
 	}
 
 	private Signal<Image> image(Light light) {

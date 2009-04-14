@@ -17,7 +17,9 @@ import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 
-import wheel.io.ui.graphics.Images;
+import sneer.hardware.gui.images.Images;
+import static sneer.commons.environments.Environments.my;
+
 
 public class SpeedTest {
 	
@@ -25,7 +27,7 @@ public class SpeedTest {
 		
 		int[] pixels01;
 		{
-			BufferedImage img =createBufferedImage(Images.getImage(SpeedTest.class.getResource("screen1.png")));
+			BufferedImage img =createBufferedImage(my(Images.class).getImage(SpeedTest.class.getResource("screen1.png")));
 			long t0 = System.nanoTime();
 			pixels01 = toPixel01(img);
 			long t1 = System.nanoTime();
@@ -34,7 +36,7 @@ public class SpeedTest {
 		
 		int[] pixels02;
 		{
-			BufferedImage img =createBufferedImage(Images.getImage(SpeedTest.class.getResource("screen1.png")));
+			BufferedImage img =createBufferedImage(my(Images.class).getImage(SpeedTest.class.getResource("screen1.png")));
 			long t0 = System.nanoTime();
 			pixels02 = toPixels02(img);
 			long t1 = System.nanoTime();
@@ -67,7 +69,7 @@ public class SpeedTest {
 	}
 
 	private static void testImageIoWrite(String type) throws InterruptedException, IOException {
-		BufferedImage img01 =createBufferedImage(Images.getImage(SpeedTest.class.getResource("screen1.png")));
+		BufferedImage img01 =createBufferedImage(my(Images.class).getImage(SpeedTest.class.getResource("screen1.png")));
 
 		long t0 = System.nanoTime();
 		byte[] byteArray = convert(type, img01);

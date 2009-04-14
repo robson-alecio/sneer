@@ -1,8 +1,6 @@
 package sneer.pulp.own.avatar.tests;
 
 import static sneer.commons.environments.Environments.my;
-import static wheel.io.ui.graphics.Images.getImage;
-import static wheel.io.ui.graphics.Images.isSameImage;
 
 import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
@@ -10,6 +8,7 @@ import java.awt.image.BufferedImage;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
+import sneer.hardware.gui.images.Images;
 import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.skin.image.ImageFactory;
 import wheel.lang.exceptions.Hiccup;
@@ -21,7 +20,7 @@ public class OwnAvatarKeeperTest extends BrickTest {
 	private final ImageFactory _imageFactory = my(ImageFactory.class);
 
 	private BufferedImage loadImage(String fileName) throws Hiccup {
-		return _imageFactory.createBufferedImage(getImage(getClass().getResource(fileName)));
+		return _imageFactory.createBufferedImage(my(Images.class).getImage(getClass().getResource(fileName)));
 	}
 
 	@Test
@@ -46,6 +45,10 @@ public class OwnAvatarKeeperTest extends BrickTest {
 		toTest = _imageFactory.createBufferedImage(_avatarKeeper.avatar(10).currentValue());
 		assertFalse(isSameImage(white, toTest));
 		assertTrue(isSameImage(_imageFactory.getScaledInstance(white, 10,10), toTest));
+	}
+
+	private boolean isSameImage(BufferedImage image1, BufferedImage image2) {
+		return my(Images.class).isSameImage(image1, image2);
 	}
 
 }

@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 
 import snapps.meter.bandwidth.gui.BandwidthMeterGui;
 import sneer.commons.lang.Functor;
+import sneer.hardware.gui.images.Images;
 import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
@@ -23,7 +24,6 @@ import sneer.skin.dashboard.InstrumentWindow;
 import sneer.skin.snappmanager.InstrumentRegistry;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
-import wheel.io.ui.graphics.Images;
 
 class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 
@@ -47,7 +47,7 @@ class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 	}
 	
 	static Icon load(String resourceName){
-		return new ImageIcon(Images.getImage(BandwidthMeterGuiImpl.class.getResource(resourceName)));
+		return new ImageIcon(my(Images.class).getImage(BandwidthMeterGuiImpl.class.getResource(resourceName)));
 	}	
 	
 	@Override

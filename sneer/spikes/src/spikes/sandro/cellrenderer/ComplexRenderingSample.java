@@ -20,9 +20,10 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 
+import sneer.hardware.gui.images.Images;
 import wheel.io.Logger;
-import wheel.io.ui.graphics.Images;
 import wheel.testutil.MemorySentinel;
+import static sneer.commons.environments.Environments.my;
 
 public class ComplexRenderingSample {
 
@@ -38,7 +39,7 @@ public class ComplexRenderingSample {
 			{ new Font("Helvetica", Font.ITALIC, 8), Color.darkGray,	new ImageIcon(_me), "Computer" } };
 
 	private static Image getImage(){
-		return Images.getImage(ComplexRenderingSample.class.getResource("me.png"));
+		return my(Images.class).getImage(ComplexRenderingSample.class.getResource("me.png"));
 	}	
 	
 	public static void main(String args[]) {

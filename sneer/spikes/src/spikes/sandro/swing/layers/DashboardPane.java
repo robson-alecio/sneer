@@ -44,6 +44,9 @@ public class DashboardPane extends JPanel {
     	setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
     	add(_instrumentsAndToolbarsLayeredPane);
     	addInstrumentPanelResizer();
+    	setOpaque(true);
+    	setBackground(Color.DARK_GRAY);
+    	_instrumentsPanel.setOpaque(false);
 
         _instrumentsAndToolbarsLayeredPane.add(_instrumentsPanel);
         addSomeFakeInstruments(_instrumentsPanel);

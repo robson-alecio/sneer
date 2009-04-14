@@ -15,5 +15,10 @@ class SomeGuiBrickImpl implements SomeGuiBrick {
 	public Environment currentEnvironment() {
 		return my(Environment.class);
 	}
+
+	@Override
+	public void run(Runnable runnable) {
+		runnable.run();
+	}
 	
 }

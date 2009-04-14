@@ -2,6 +2,8 @@ package sneer.commons.lang;
 
 import java.io.Serializable;
 
+import org.apache.commons.collections15.Transformer;
+
 public class Pair<A, B> implements Serializable {
 
 	@Override
@@ -52,5 +54,21 @@ public class Pair<A, B> implements Serializable {
 
 	public static <A, B> Pair<A, B> pair(A a, B b) {
 		return new Pair<A, B>(a, b);
+	}
+
+	public static <A, B> Transformer<Pair<A, B>, A> first() {
+		return new Transformer<Pair<A, B>, A>() {
+			@Override public A transform(Pair<A, B> pair){
+				return pair._a;
+			}
+		};
+	}
+	
+	public static <A, B> Transformer<Pair<A, B>, B> second() {
+		return new Transformer<Pair<A, B>, B>() {
+			@Override public B transform(Pair<A, B> pair){
+				return pair._b;
+			}
+		};
 	}
 }

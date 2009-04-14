@@ -2,8 +2,6 @@ package sneer.pulp.natures.gui.tests;
 
 import static sneer.commons.environments.Environments.my;
 
-import javax.swing.SwingUtilities;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,24 +26,32 @@ public class GUINatureTest extends Assert {
 	}
 	
 	@Test
-	public void invocationHappensInBricknessEnvironment() {
+	public void invocationHappensInTheSwingThread() {
 		Environments.runWith(subject.environment(), new Runnable() { @Override public void run() {
-			try {
-				assertSame(subject.environment(), my(SomeGuiBrick.class).currentEnvironment());
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
+			
+			assertSame(swingThread(), my(SomeGuiBrick.class).currentThread());
+			
 		}});
 	}
 	
 	@Test
-	public void invocationHappensInTheSwingThread() {
+	public void invocationHappensInBricknessEnvironment() {
 		Environments.runWith(subject.environment(), new Runnable() { @Override public void run() {
-			try {
-				assertSame(swingThread(), my(SomeGuiBrick.class).currentThread());
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
+			
+			assertSame(subject.environment(), my(SomeGuiBrick.class).currentEnvironment());
+			
+		}});
+	}
+	
+	
+	@Test
+	public void invocationInTheSwingThreadForVoidMethod() {
+		Environments.runWith(subject.environment(), new Runnable() { @Override public void run() {
+			
+			my(SomeGuiBrick.class).run(new Runnable() { @Override public void run() {
+				assertSame(swingThread(), Thread.currentThread());
+			}});
+			
 		}});
 	}
 
@@ -53,11 +59,15 @@ public class GUINatureTest extends Assert {
 		subject.placeBrick(Jars.classpathRootFor(brick), brick.getName());
 	}
 	
-	private Thread swingThread() throws Exception {
+	private Thread swingThread() {
 		final ByRef<Thread> swingThread = ByRef.newInstance();
-		SwingUtilities.invokeAndWait(new Runnable() { @Override public void run() {
-			swingThread.value = Thread.currentThread();
-		}});
+		try {
+			my(GuiThread.class).invokeAndWait(new Runnable() { @Override public void run() {
+				swingThread.value = Thread.currentThread();
+			}});
+		} catch (Exception e) {
+			throw new IllegalStateException(e);
+		}
 		return swingThread.value;
 	}
 

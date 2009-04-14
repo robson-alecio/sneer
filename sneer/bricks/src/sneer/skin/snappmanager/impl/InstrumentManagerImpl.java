@@ -1,14 +1,15 @@
 package sneer.skin.snappmanager.impl;
 
+import static sneer.commons.environments.Environments.my;
+import sneer.pulp.reactive.collections.ListRegister;
+import sneer.pulp.reactive.collections.ListSignal;
+import sneer.pulp.reactive.collections.ReactiveCollections;
 import sneer.skin.snappmanager.Instrument;
 import sneer.skin.snappmanager.InstrumentRegistry;
-import wheel.reactive.lists.ListRegister;
-import wheel.reactive.lists.ListSignal;
-import wheel.reactive.lists.impl.ListRegisterImpl;
 
 class InstrumentRegistryImpl implements InstrumentRegistry {
 
-	ListRegister<Instrument> _instruments = new ListRegisterImpl<Instrument>();
+	ListRegister<Instrument> _instruments = my(ReactiveCollections.class).newListRegister();
 	
 	@Override
 	public void registerInstrument(Instrument instrument) {

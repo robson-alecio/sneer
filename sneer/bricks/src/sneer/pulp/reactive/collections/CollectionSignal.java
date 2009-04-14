@@ -1,6 +1,8 @@
-package sneer.pulp.reactive;
+package sneer.pulp.reactive.collections;
 
 import java.util.Collection;
+
+import sneer.pulp.reactive.Signal;
 
 
 

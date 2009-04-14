@@ -1,8 +1,8 @@
 package snapps.wind;
 
 import sneer.brickness.OldBrick;
+import sneer.pulp.reactive.collections.ListSignal;
 import wheel.lang.Consumer;
-import wheel.reactive.lists.ListSignal;
 
 public interface Wind extends OldBrick {
 

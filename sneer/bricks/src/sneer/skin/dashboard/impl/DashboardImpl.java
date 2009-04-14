@@ -27,6 +27,7 @@ import sneer.hardware.gui.trayicon.TrayIcons;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.own.name.OwnNameKeeper;
+import sneer.pulp.reactive.collections.impl.SimpleListReceiver;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.skin.colors.Colors;
 import sneer.skin.dashboard.Dashboard;
@@ -39,7 +40,6 @@ import sneer.skin.snappmanager.InstrumentRegistry;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
 import wheel.io.ui.action.Action;
 import wheel.reactive.impl.EventReceiver;
-import wheel.reactive.lists.impl.SimpleListReceiver;
 
 //Implement Persist window size and position
 class DashboardImpl implements Dashboard {

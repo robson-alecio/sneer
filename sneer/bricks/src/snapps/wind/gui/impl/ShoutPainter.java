@@ -3,7 +3,7 @@ package snapps.wind.gui.impl;
 import javax.swing.JTextPane;
 
 import snapps.wind.Shout;
-import wheel.reactive.lists.ListSignal;
+import sneer.pulp.reactive.collections.ListSignal;
 
 abstract class ShoutPainter {
 	

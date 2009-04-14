@@ -13,10 +13,10 @@ import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.probe.ProbeManager;
+import sneer.pulp.reactive.collections.impl.SimpleListReceiver;
 import sneer.pulp.serialization.Serializer;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
-import wheel.reactive.lists.impl.SimpleListReceiver;
 
 class ProbeManagerImpl implements ProbeManager {
 	

@@ -35,6 +35,7 @@ import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
+import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.dashboard.InstrumentWindow;
@@ -42,7 +43,6 @@ import sneer.skin.snappmanager.InstrumentRegistry;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
-import wheel.reactive.lists.ListSignal;
 
 class ContactsGuiImpl implements ContactsGui {
 	

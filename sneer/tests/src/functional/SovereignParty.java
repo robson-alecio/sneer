@@ -5,7 +5,7 @@ import java.io.File;
 import snapps.wind.Shout;
 import sneer.brickness.PublicKey;
 import sneer.pulp.reactive.Signal;
-import wheel.reactive.lists.ListSignal;
+import sneer.pulp.reactive.collections.ListSignal;
 
 
 public interface SovereignParty {

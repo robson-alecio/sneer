@@ -27,13 +27,13 @@ import sneer.commons.environments.Environments;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
 import sneer.pulp.keymanager.KeyManager;
+import sneer.pulp.reactive.collections.ListRegister;
+import sneer.pulp.reactive.collections.ReactiveCollections;
 import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
 import wheel.lang.Threads;
-import wheel.reactive.lists.ListRegister;
-import wheel.reactive.lists.impl.ListRegisterImpl;
 
 class TupleSpaceImpl implements TupleSpace {
 
@@ -112,7 +112,7 @@ class TupleSpaceImpl implements TupleSpace {
 
 	
 	TupleSpaceImpl() {
-		_keptTuples = Bubble.wrapStateMachine(prevayler(new ListRegisterImpl<Tuple>()));
+		_keptTuples = Bubble.wrapStateMachine(prevayler(my(ReactiveCollections.class).newListRegister()));
 	}
 
 

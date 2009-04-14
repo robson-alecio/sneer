@@ -20,15 +20,15 @@ import sneer.kernel.container.ContainersOld;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
+import sneer.pulp.reactive.collections.ListRegister;
+import sneer.pulp.reactive.collections.ListSignal;
+import sneer.pulp.reactive.collections.ReactiveCollections;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import wheel.reactive.impl.mocks.RandomBoolean;
-import wheel.reactive.lists.ListRegister;
-import wheel.reactive.lists.ListSignal;
-import wheel.reactive.lists.impl.ListRegisterImpl;
 
 public class SortTest {
 	
@@ -50,7 +50,7 @@ public class SortTest {
 
 	private static void start() throws Exception {
 		
-		ListRegister<SortTestElement> source = new ListRegisterImpl<SortTestElement>();
+		ListRegister<SortTestElement> source = my(ReactiveCollections.class).newListRegister();
 		
 		ListSorter sorter = my(ListSorter.class);
 		

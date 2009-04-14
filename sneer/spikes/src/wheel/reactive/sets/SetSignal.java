@@ -6,7 +6,7 @@ package wheel.reactive.sets;
 
 
 import sneer.pulp.events.EventSource;
-import sneer.pulp.reactive.CollectionSignal;
+import sneer.pulp.reactive.collections.CollectionSignal;
 
 
 public interface SetSignal<T> extends CollectionSignal<T>, EventSource<SetChange<T>> {

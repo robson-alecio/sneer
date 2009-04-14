@@ -15,19 +15,19 @@ import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
+import sneer.pulp.reactive.collections.ListRegister;
+import sneer.pulp.reactive.collections.ListSignal;
+import sneer.pulp.reactive.collections.ReactiveCollections;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import wheel.lang.Consumer;
-import wheel.reactive.lists.ListRegister;
-import wheel.reactive.lists.ListSignal;
-import wheel.reactive.lists.impl.ListRegisterImpl;
 
 public class ContactComparatorTest extends BrickTest {
 	
 	@Contribute final ConnectionManager _connectionsMock = new ConnectionManagerMock();
 	
 	private ListSorter _sorter;
-	private final ListRegister<Contact> _contacts = new ListRegisterImpl<Contact>();
+	private final ListRegister<Contact> _contacts = my(ReactiveCollections.class).newListRegister();
 	private final SignalChooser<Contact> _chooser = new SignalChooser<Contact>(){ @Override public Signal<?>[] signalsToReceiveFrom(Contact element) {
 		return new Signal<?>[]{((ContactMock)element)._isOnline, element.nickname() };
 	}};

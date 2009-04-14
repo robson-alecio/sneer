@@ -3,12 +3,12 @@ package sneer.pulp.reactive.signalchooser.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import sneer.pulp.reactive.collections.ListSignal;
+import sneer.pulp.reactive.collections.impl.VisitingListReceiver;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.pulp.reactive.signalchooser.SignalChooserManager;
 import wheel.reactive.impl.EventReceiver;
-import wheel.reactive.lists.ListSignal;
-import wheel.reactive.lists.impl.VisitingListReceiver;
 
 class SignalChooserManagerImpl<T> implements SignalChooserManager<T>{
 	

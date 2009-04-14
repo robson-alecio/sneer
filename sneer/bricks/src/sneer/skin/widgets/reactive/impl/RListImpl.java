@@ -6,10 +6,10 @@ import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
-import wheel.reactive.lists.ListSignal;
 
 class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 

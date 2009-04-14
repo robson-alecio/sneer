@@ -9,14 +9,14 @@ import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
+import sneer.pulp.reactive.collections.ListRegister;
+import sneer.pulp.reactive.collections.ListSignal;
+import sneer.pulp.reactive.collections.ReactiveCollections;
+import sneer.pulp.reactive.collections.impl.VisitingListReceiver;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.pulp.reactive.signalchooser.SignalChooserManager;
 import sneer.pulp.reactive.signalchooser.SignalChooserManagerFactory;
-import wheel.reactive.lists.ListRegister;
-import wheel.reactive.lists.ListSignal;
-import wheel.reactive.lists.impl.ListRegisterImpl;
-import wheel.reactive.lists.impl.VisitingListReceiver;
 
 public class ListOfSignalsReceiverTest extends BrickTest {
 
@@ -24,7 +24,7 @@ public class ListOfSignalsReceiverTest extends BrickTest {
 	
 	@SuppressWarnings("unused")
 	private SignalChooserManager<Register<String>> _managerToAvoidGc;
-	private ListRegister<Register<String>> _listRegister = new ListRegisterImpl<Register<String>>();
+	private ListRegister<Register<String>> _listRegister = my(ReactiveCollections.class).newListRegister();
 	private EventRecorder _recorder;
 
 	@Test

@@ -1,4 +1,4 @@
-package wheel.reactive.lists.impl;
+package sneer.pulp.reactive.collections.impl;
 
 import static sneer.commons.environments.Environments.my;
 
@@ -11,12 +11,12 @@ import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
+import sneer.pulp.reactive.collections.ListRegister;
+import sneer.pulp.reactive.collections.ListSignal;
 import wheel.lang.Consumer;
 import wheel.reactive.lists.ListChange;
-import wheel.reactive.lists.ListRegister;
-import wheel.reactive.lists.ListSignal;
 
-public class ListRegisterImpl<VO> implements ListRegister<VO> {
+class ListRegisterImpl<VO> implements ListRegister<VO> {
 	
 	private class MyOutput implements ListSignal<VO> {
 

@@ -4,7 +4,7 @@
 
 package wheel.reactive.sets;
 
-import sneer.pulp.reactive.CollectionRegister;
+import sneer.pulp.reactive.collections.CollectionRegister;
 
 
 public interface SetRegister<T> extends CollectionRegister<T> {

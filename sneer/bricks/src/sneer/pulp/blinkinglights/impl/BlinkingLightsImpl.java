@@ -5,15 +5,16 @@ import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.clock.Clock;
+import sneer.pulp.reactive.collections.ListRegister;
+import sneer.pulp.reactive.collections.ListSignal;
+import sneer.pulp.reactive.collections.ReactiveCollections;
 import wheel.lang.exceptions.FriendlyException;
-import wheel.reactive.lists.ListSignal;
-import wheel.reactive.lists.impl.ListRegisterImpl;
 
 class BlinkingLightsImpl implements BlinkingLights {
 	
 	private final Clock _clock = my(Clock.class);
 	
-	private final ListRegisterImpl<Light> _lights = new ListRegisterImpl<Light>();
+	private final ListRegister<Light> _lights = my(ReactiveCollections.class).newListRegister();
 	
 	@Override
 	public Light turnOn(LightType type, String caption, String helpMessage, Throwable t, int timeout) {

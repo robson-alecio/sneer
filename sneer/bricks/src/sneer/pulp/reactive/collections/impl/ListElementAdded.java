@@ -1,4 +1,4 @@
-package wheel.reactive.lists.impl;
+package sneer.pulp.reactive.collections.impl;
 
 import wheel.reactive.lists.ListChange;
 

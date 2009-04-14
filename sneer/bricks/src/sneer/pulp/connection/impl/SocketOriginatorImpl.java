@@ -8,7 +8,7 @@ import java.util.Map;
 import sneer.pulp.connection.SocketOriginator;
 import sneer.pulp.internetaddresskeeper.InternetAddress;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
-import wheel.reactive.lists.impl.SimpleListReceiver;
+import sneer.pulp.reactive.collections.impl.SimpleListReceiver;
 
 class SocketOriginatorImpl implements SocketOriginator {
 

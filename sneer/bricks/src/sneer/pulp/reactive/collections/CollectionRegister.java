@@ -1,4 +1,5 @@
-package sneer.pulp.reactive;
+package sneer.pulp.reactive.collections;
+
 
 
 public interface CollectionRegister<T> {

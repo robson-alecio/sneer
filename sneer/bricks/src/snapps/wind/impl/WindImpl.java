@@ -6,12 +6,12 @@ import java.util.Comparator;
 
 import snapps.wind.Shout;
 import snapps.wind.Wind;
+import sneer.pulp.reactive.collections.ListRegister;
+import sneer.pulp.reactive.collections.ListSignal;
+import sneer.pulp.reactive.collections.ReactiveCollections;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.tuples.TupleSpace;
 import wheel.lang.Consumer;
-import wheel.reactive.lists.ListRegister;
-import wheel.reactive.lists.ListSignal;
-import wheel.reactive.lists.impl.ListRegisterImpl;
 
 class WindImpl implements Wind, Consumer<Shout> {
 
@@ -21,7 +21,7 @@ class WindImpl implements Wind, Consumer<Shout> {
 	
 	private final ListSignal<Shout> _sortedShouts;
 	private final Comparator<Shout> _comparator;
-	private final ListRegister<Shout> _shoutsHeard = new ListRegisterImpl<Shout>();
+	private final ListRegister<Shout> _shoutsHeard = my(ReactiveCollections.class).newListRegister();
 
 	WindImpl(){
 		_environment.addSubscription(Shout.class, this);

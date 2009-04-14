@@ -1,8 +1,8 @@
 package sneer.pulp.blinkinglights;
 
 import sneer.brickness.OldBrick;
+import sneer.pulp.reactive.collections.ListSignal;
 import wheel.lang.exceptions.FriendlyException;
-import wheel.reactive.lists.ListSignal;
 
 public interface BlinkingLights extends OldBrick {
 

@@ -11,6 +11,7 @@ import javax.swing.ListModel;
 
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.LabelProvider;
@@ -20,7 +21,6 @@ import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import sneer.skin.widgets.reactive.WindowWidget;
 import wheel.lang.PickyConsumer;
-import wheel.reactive.lists.ListSignal;
 import static sneer.commons.environments.Environments.my;
 
 class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {

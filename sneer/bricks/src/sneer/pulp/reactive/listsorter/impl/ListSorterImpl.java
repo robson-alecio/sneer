@@ -3,9 +3,9 @@ package sneer.pulp.reactive.listsorter.impl;
 import java.util.Comparator;
 
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
-import wheel.reactive.lists.ListSignal;
 
 class ListSorterImpl implements ListSorter{
 

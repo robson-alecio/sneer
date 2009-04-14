@@ -6,11 +6,11 @@ import javax.swing.AbstractListModel;
 
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.collections.ListSignal;
+import sneer.pulp.reactive.collections.impl.VisitingListReceiver;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.pulp.reactive.signalchooser.SignalChooserManagerFactory;
-import wheel.reactive.lists.ListSignal;
-import wheel.reactive.lists.impl.VisitingListReceiver;
 
 class ListSignalModel<T> extends AbstractListModel {
 

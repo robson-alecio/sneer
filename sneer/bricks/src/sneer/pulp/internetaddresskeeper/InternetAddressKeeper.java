@@ -2,7 +2,7 @@ package sneer.pulp.internetaddresskeeper;
 
 import sneer.brickness.Brick;
 import sneer.pulp.contacts.Contact;
-import wheel.reactive.lists.ListSignal;
+import sneer.pulp.reactive.collections.ListSignal;
 
 @Brick
 public interface InternetAddressKeeper {

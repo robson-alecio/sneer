@@ -11,14 +11,14 @@ import sneer.pulp.events.EventNotifier;
 import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.logging.LogWhiteListEntry;
-import wheel.reactive.lists.ListRegister;
-import wheel.reactive.lists.impl.ListRegisterImpl;
+import sneer.pulp.reactive.collections.ListRegister;
+import sneer.pulp.reactive.collections.ReactiveCollections;
 
 class LoggerImpl implements sneer.pulp.logging.Logger {
 
 	private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-	private final ListRegisterImpl<LogWhiteListEntry> _phrases = new ListRegisterImpl<LogWhiteListEntry>();
+	private final ListRegister<LogWhiteListEntry> _phrases = my(ReactiveCollections.class).newListRegister();
 	
 	private final EventNotifier<String> _loggedMessages = my(EventNotifiers.class).create();
 	private StringWriter _stringWriter = new StringWriter();

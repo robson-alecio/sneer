@@ -1,8 +1,11 @@
 package wheel.reactive.lists;
 
+import static sneer.commons.environments.Environments.my;
 import sneer.commons.lang.Functor;
-import wheel.reactive.lists.impl.ListRegisterImpl;
-import wheel.reactive.lists.impl.VisitingListReceiver;
+import sneer.pulp.reactive.collections.ListRegister;
+import sneer.pulp.reactive.collections.ListSignal;
+import sneer.pulp.reactive.collections.ReactiveCollections;
+import sneer.pulp.reactive.collections.impl.VisitingListReceiver;
 
 public class Collector<IN, OUT> {
 
@@ -38,7 +41,7 @@ public class Collector<IN, OUT> {
 		}
 	}
 
-	private final ListRegister<OUT> _output = new ListRegisterImpl<OUT>();
+	private final ListRegister<OUT> _output = my(ReactiveCollections.class).newListRegister();
 	private final Functor<IN, OUT> _functor;
 
 	public Collector(ListSignal<IN> input, Functor<IN, OUT> functor) {

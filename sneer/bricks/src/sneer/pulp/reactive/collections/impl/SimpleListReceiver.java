@@ -1,6 +1,6 @@
-package wheel.reactive.lists.impl;
+package sneer.pulp.reactive.collections.impl;
 
-import wheel.reactive.lists.ListSignal;
+import sneer.pulp.reactive.collections.ListSignal;
 
 public abstract class SimpleListReceiver<T> extends VisitingListReceiver<T> {
 	

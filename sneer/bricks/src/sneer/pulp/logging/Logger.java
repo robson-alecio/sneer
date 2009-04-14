@@ -2,7 +2,7 @@ package sneer.pulp.logging;
 
 import sneer.brickness.OldBrick;
 import sneer.pulp.events.EventSource;
-import wheel.reactive.lists.ListRegister;
+import sneer.pulp.reactive.collections.ListRegister;
 
 public interface Logger extends OldBrick {
 

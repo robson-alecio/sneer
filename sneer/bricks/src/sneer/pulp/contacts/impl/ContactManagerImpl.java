@@ -6,15 +6,15 @@ import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
+import sneer.pulp.reactive.collections.ListRegister;
+import sneer.pulp.reactive.collections.ListSignal;
+import sneer.pulp.reactive.collections.ReactiveCollections;
 import wheel.lang.PickyConsumer;
 import wheel.lang.exceptions.IllegalParameter;
-import wheel.reactive.lists.ListRegister;
-import wheel.reactive.lists.ListSignal;
-import wheel.reactive.lists.impl.ListRegisterImpl;
 
 class ContactManagerImpl implements ContactManager {
     
-    private final ListRegister<Contact> _contacts = new ListRegisterImpl<Contact>();
+    private final ListRegister<Contact> _contacts = my(ReactiveCollections.class).newListRegister();
 
 	@Override
 	synchronized public Contact addContact(String nickname) throws IllegalParameter {

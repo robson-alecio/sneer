@@ -6,16 +6,17 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import sneer.pulp.reactive.collections.ListRegister;
+import sneer.pulp.reactive.collections.ListSignal;
+import sneer.pulp.reactive.collections.ReactiveCollections;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.pulp.reactive.signalchooser.SignalChooserManager;
 import sneer.pulp.reactive.signalchooser.SignalChooserManagerFactory;
 import wheel.lang.Consumer;
 import wheel.reactive.impl.ListSignalOwnerReference;
-import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListChange;
 import wheel.reactive.lists.VisitorAdapter;
-import wheel.reactive.lists.impl.ListRegisterImpl;
 
 final class SortedVisitor<T> extends VisitorAdapter<T> implements ListOfSignalsReceiver<T>{
 
@@ -49,7 +50,7 @@ final class SortedVisitor<T> extends VisitorAdapter<T> implements ListOfSignalsR
 	private class SorterSupport{
 		
 		private final Comparator<T> _comparator;
-		private final ListRegisterImpl<T> _sorted = new ListRegisterImpl<T>();
+		private final ListRegister<T> _sorted = my(ReactiveCollections.class).newListRegister();
 		private final Consumer<ListChange<T>> _receiverAvoidGc = new Consumer<ListChange<T>>(){@Override public void consume(ListChange<T> change) {
 			change.accept(SortedVisitor.this);
 		}};

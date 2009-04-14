@@ -1,7 +1,7 @@
 package sneer.skin.snappmanager;
 
 import sneer.brickness.OldBrick;
-import wheel.reactive.lists.ListSignal;
+import sneer.pulp.reactive.collections.ListSignal;
 
 public interface InstrumentRegistry extends OldBrick {
 

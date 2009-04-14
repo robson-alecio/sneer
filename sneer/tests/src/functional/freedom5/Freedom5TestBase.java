@@ -5,8 +5,9 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
+import sneer.pulp.reactive.collections.ListSignal;
+
 import wheel.lang.Collections;
-import wheel.reactive.lists.ListSignal;
 import functional.SovereignFunctionalTestBase;
 import functional.SovereignParty;
 

@@ -4,9 +4,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.collections.ListSignal;
 
 import wheel.lang.Consumer;
-import wheel.reactive.lists.ListSignal;
 import wheel.reactive.lists.ListChange;
 
 public class ListSignalOwnerReference<T> extends AbstractOwnerReference<T> implements ListSignal<T> {

@@ -40,11 +40,13 @@ class Consumption implements TransactionWithQuery {
 
 
 	private Object invoke(Object candidate, String getterName) {
+		Method getter = null;
 		try {
-			Method getter = candidate.getClass().getMethod(getterName, new Class[0]);
+			getter = candidate.getClass().getMethod(getterName, new Class[0]);
+			getter.setAccessible(true);
 			return getter.invoke(candidate, new Object[0]);
 		} catch (Exception e) {
-			throw new IllegalStateException(e);
+			throw new IllegalStateException("Exception trying to invoke " + candidate.getClass() + "." + getterName, e);
 		}
 	}
 

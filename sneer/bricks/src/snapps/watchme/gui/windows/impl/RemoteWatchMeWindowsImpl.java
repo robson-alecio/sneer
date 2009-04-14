@@ -8,7 +8,7 @@ import java.util.Map;
 import snapps.watchme.gui.windows.RemoteWatchMeWindows;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
-import wheel.reactive.lists.impl.SimpleListReceiver;
+import sneer.pulp.reactive.collections.impl.SimpleListReceiver;
 
 class RemoteWatchMeWindowsImpl implements RemoteWatchMeWindows{
 

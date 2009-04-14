@@ -1,6 +1,5 @@
-package wheel.reactive.lists;
+package sneer.pulp.reactive.collections;
 
-import sneer.pulp.reactive.CollectionRegister;
 import wheel.lang.Consumer;
 
 public interface ListRegister<T> extends CollectionRegister<T> {

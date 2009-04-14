@@ -1,7 +1,7 @@
 package sneer.pulp.reactive.signalchooser;
 
 import sneer.brickness.OldBrick;
-import wheel.reactive.lists.ListSignal;
+import sneer.pulp.reactive.collections.ListSignal;
 
 public interface SignalChooserManagerFactory extends OldBrick{
 	

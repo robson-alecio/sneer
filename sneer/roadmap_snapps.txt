@@ -17,6 +17,8 @@ TASKS
 			- Top Instrument Menu - Separate from main menu bar (2 or 3 pixels).
 			- Color - Use a color such as blue or green that will have high contrast with white (default instrument color) and with dark gray (background color).
 			- Make menu icon smaller. Center it with scrollbar.
+		- "Add a Contact..." -> "New Contact..."
+		- Fix: Right click on contacts list is doing nothing. Menu should appear.
 		- ContactInfoWindowImpl
 				- Nickname: (Label)
 				- Internet Addresses (Border)

@@ -1,11 +1,10 @@
 package spikes.igor;
 
 import javassist.CannotCompileException;
-import javassist.NotFoundException;
 
 public class Test {
 
-	public static void main(String[] args) throws CannotCompileException, NotFoundException, InstantiationException, IllegalAccessException {
+	public static void main(String[] args) throws CannotCompileException,InstantiationException, IllegalAccessException {
 		ModComConditionEvaluator evaluator1 = ModComEvaluatorFactory.getEvaluator("element == null");
 		ModComConditionEvaluator evaluator2 = ModComEvaluatorFactory.getEvaluator("element != null");
 

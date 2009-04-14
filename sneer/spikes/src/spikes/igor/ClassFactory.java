@@ -55,7 +55,7 @@ public class ClassFactory {
 		}
 	}
 
-	public static Class getClass(ClassBlueprint classBlueprint) throws CannotCompileException {
+	public static <T> Class<T> getClass(ClassBlueprint classBlueprint) throws CannotCompileException {
 		CtClass ctClass = classPool.makeClass(classBlueprint.getName());
 
 		// Set superclass

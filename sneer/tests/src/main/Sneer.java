@@ -55,6 +55,7 @@ public class Sneer {
 				sneer.skin.rooms.ActiveRoomKeeper.class,
 				sneer.skin.widgets.reactive.ReactiveWidgetFactory.class,
 				snapps.watchme.gui.windows.RemoteWatchMeWindows.class,
+				sneer.hardware.cpu.timebox.Timebox.class,
 				sneer.pulp.clock.Clock.class,
 				sneer.pulp.blinkinglights.BlinkingLights.class,
 				sneer.pulp.memory.MemoryMeter.class,

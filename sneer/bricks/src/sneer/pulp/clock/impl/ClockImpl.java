@@ -6,11 +6,12 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import sneer.commons.lang.ByRef;
+import sneer.commons.lang.exceptions.NotImplementedYet;
+import sneer.hardware.cpu.timebox.Timebox;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
 import sneer.pulp.threadpool.Stepper;
 import wheel.lang.Threads;
-import wheel.lang.Timebox;
 
 class ClockImpl implements Clock {
 	
@@ -35,7 +36,7 @@ class ClockImpl implements Clock {
 
 	@Override
 	synchronized public void wakeUpNowAndEvery(long period, Stepper stepper) {
-		step(stepper);
+		if (!step(stepper)) return;
 		wakeUpEvery(period, stepper);
 	}
 
@@ -83,9 +84,11 @@ class ClockImpl implements Clock {
 	private boolean step(final Stepper stepper) {
 		final ByRef<Boolean> result = ByRef.newInstance(false); 
 		_exceptionHandler.shield(new Runnable() { @Override public void run() {
-			new Timebox(300000) { @Override protected void runInTimebox() {
+			my(Timebox.class).run(10000, new Runnable() { @Override public void run() {
 				result.value = stepper.step();
-			}};
+			}}, new Runnable() { @Override public void run() {
+				throw new NotImplementedYet();
+			}});
 		}});
 		return result.value;
 	}

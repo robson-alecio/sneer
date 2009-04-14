@@ -1,4 +1,4 @@
-package wheel.lang;
+package sneer.hardware.cpu.timebox.impl;
 
 import static sneer.commons.environments.Environments.my;
 
@@ -6,14 +6,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 import sneer.pulp.logging.Logger;
+import wheel.lang.Threads;
 import wheel.lang.exceptions.TimeIsUp;
 
-public abstract class Timebox implements Runnable {
+abstract class OldTimebox implements Runnable { //REFACTOR Clean this up. See callers.
 
 	static private final int PRECISION_IN_MILLIS = 500;
-	static private final Timebox[] ARRAY_TYPE = new Timebox[0];
+	static private final OldTimebox[] ARRAY_TYPE = new OldTimebox[0];
 	
-	static private final Set<Timebox> _activeTimeboxes = java.util.Collections.synchronizedSet(new HashSet<Timebox>());
+	static private final Set<OldTimebox> _activeTimeboxes = java.util.Collections.synchronizedSet(new HashSet<OldTimebox>());
 	
 	static {
 		Thread killer = new Thread("Timebox Killer") { @Override public void run() {
@@ -21,7 +22,7 @@ public abstract class Timebox implements Runnable {
 			while (true) {
 				Threads.sleepWithoutInterruptions(PRECISION_IN_MILLIS);
 			
-				for (Timebox victim : _activeTimeboxes.toArray(ARRAY_TYPE))
+				for (OldTimebox victim : _activeTimeboxes.toArray(ARRAY_TYPE))
 					victim.payOrDie(PRECISION_IN_MILLIS);
 			}
 			
@@ -31,12 +32,12 @@ public abstract class Timebox implements Runnable {
 		killer.start();
 	}
 	
-	public Timebox(int durationInMillis, boolean runNow) {
+	public OldTimebox(int durationInMillis, boolean runNow) {
 		_millisToDie = durationInMillis;
 		if (runNow) run();
 	}
 	
-	public Timebox(int durationInMillis) {
+	public OldTimebox(int durationInMillis) {
 		this(durationInMillis, true);
 	}
 

@@ -19,6 +19,9 @@ import javax.swing.border.EmptyBorder;
 
 import snapps.welcomewizard.WelcomeWizard;
 import sneer.hardware.gui.timebox.TimeboxedEventQueue;
+import sneer.hardware.gui.trayicon.SystemTrayNotSupported;
+import sneer.hardware.gui.trayicon.TrayIcon;
+import sneer.hardware.gui.trayicon.TrayIcons;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.own.name.OwnNameKeeper;
@@ -33,11 +36,8 @@ import sneer.skin.snappmanager.Instrument;
 import sneer.skin.snappmanager.InstrumentRegistry;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
 import wheel.io.ui.GuiThread;
-import wheel.io.ui.TrayIcon;
 import wheel.io.ui.action.Action;
 import wheel.io.ui.graphics.Images;
-import wheel.io.ui.impl.TrayIconImpl;
-import wheel.io.ui.impl.TrayIconImpl.SystemTrayNotSupported;
 import wheel.reactive.impl.EventReceiver;
 import wheel.reactive.lists.impl.SimpleListReceiver;
 
@@ -104,17 +104,17 @@ class DashboardImpl implements Dashboard {
 	}
 
 	private void initTrayIconIfPossible() {
-		TrayIcon tray = null;
+		TrayIcon trayIcon = null;
 		try {
-			tray = new TrayIconImpl(logoIconURL());
+			trayIcon = my(TrayIcons.class).newTrayIcon(logoIconURL());
 		} catch (SystemTrayNotSupported e1) {
 			_blinkingLights.turnOn(LightType.INFO, "Minimizing Sneer Window", e1.getMessage() + " When closing the Sneer window, it will be minimized instead of closed.");
 			changeWindowCloseEventToMinimizeEvent();
 			return;
 		}
 		
-		addOpenWindowAction(tray);
-		addExitAction(tray);
+		addOpenWindowAction(trayIcon);
+		addExitAction(trayIcon);
 	}
 
 	private void addInstrumentsReceiver() {
@@ -241,7 +241,7 @@ class DashboardImpl implements Dashboard {
 		_jframe.requestFocusInWindow();
 	}
 	
-	private void addExitAction(TrayIcon tray) {
+	private void addExitAction(TrayIcon trayIcon) {
 		Action cmd = new Action(){
 			@Override
 			public String caption() {
@@ -253,7 +253,7 @@ class DashboardImpl implements Dashboard {
 				System.exit(0);
 			}
 		};
-		tray.addAction(cmd);
+		trayIcon.addAction(cmd);
 		_mainMenu.getSneerMenu().addAction(cmd);
 	}
 	

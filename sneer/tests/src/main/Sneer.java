@@ -104,6 +104,7 @@ public class Sneer {
 				snapps.welcomewizard.WelcomeWizard.class,
 				sneer.hardware.logging.gui.LogConsole.class,
 				sneer.hardware.gui.timebox.TimeboxedEventQueue.class,
+				sneer.hardware.gui.trayicon.TrayIcons.class,
 				sneer.skin.dashboard.Dashboard.class,
 				
 				sneer.skin.dashboard.util.GuiUtil.class,

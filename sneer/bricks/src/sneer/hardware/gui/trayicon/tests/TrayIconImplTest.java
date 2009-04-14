@@ -1,9 +1,10 @@
-package wheel.io.ui.impl.tests;
+package sneer.hardware.gui.trayicon.tests;
+
+import static sneer.commons.environments.Environments.my;
 
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
-import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -12,29 +13,35 @@ import java.net.URL;
 
 import javax.swing.JButton;
 
-import junit.framework.TestCase;
-import wheel.io.ui.action.Action;
-import wheel.io.ui.impl.TrayIconImpl;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-public class TrayIconImplTest extends TestCase {
+import sneer.brickness.testsupport.BrickTest;
+import sneer.hardware.gui.trayicon.TrayIcon;
+import sneer.hardware.gui.trayicon.TrayIcons;
+import wheel.io.ui.action.Action;
+
+public class TrayIconImplTest extends BrickTest {
 
 	
-	private TrayIconImpl _subject;
+	private TrayIcon _subject;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void createSubject() throws Exception {
 		URL userIcon = getClass().getResource("testIcon.png");
 		if(SystemTray.isSupported())
-			_subject = new TrayIconImpl(userIcon);
+			_subject = my(TrayIcons.class).newTrayIcon(userIcon);
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void disposeSubject() throws Exception {
 		if(SystemTray.isSupported())
 			_subject.dispose();
 	}
 	
-	public void testMenuItems() throws Exception {
+	@Test
+	public void menuItems() throws Exception {
 	
 		if(!SystemTray.isSupported())
 			return;
@@ -50,7 +57,8 @@ public class TrayIconImplTest extends TestCase {
 		
 	}
 	
-	public void testDefaultAction() throws Exception {
+	@Test
+	public void defaultAction() throws Exception {
 		if(!SystemTray.isSupported())
 			return;
 
@@ -73,7 +81,7 @@ public class TrayIconImplTest extends TestCase {
 		return menu.getItem(0);
 	}
 
-	private TrayIcon getTrayIcon() {
+	private java.awt.TrayIcon getTrayIcon() {
 		return SystemTray.getSystemTray().getTrayIcons()[0];
 	}
 

@@ -41,7 +41,7 @@ public class Brickness {
 		try {
 			tryToPlaceBrick(classRootDirectory, brickName);
 		} catch (Exception e) {
-			throw new BrickPlacementException("Failed to place brick '" + brickName + "'.", e);
+			throw new BrickPlacementException(e);
 		}
 	}
 

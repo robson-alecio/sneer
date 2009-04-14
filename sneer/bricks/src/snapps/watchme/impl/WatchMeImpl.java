@@ -24,10 +24,10 @@ import sneer.pulp.events.EventSource;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.screenshotter.Screenshotter;
+import sneer.software.exceptions.FriendlyException;
+import sneer.software.lang.Consumer;
 import wheel.io.Logger;
-import wheel.lang.Consumer;
 import wheel.lang.ImmutableByteArray;
-import wheel.lang.exceptions.FriendlyException;
 import wheel.lang.exceptions.Hiccup;
 
 class WatchMeImpl implements WatchMe {

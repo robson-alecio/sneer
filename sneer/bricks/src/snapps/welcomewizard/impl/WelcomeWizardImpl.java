@@ -34,8 +34,8 @@ import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
+import sneer.software.lang.PickyConsumer;
 import wheel.io.ui.action.Action;
-import wheel.lang.PickyConsumer;
 import wheel.reactive.impl.IntegerParser;
 
 class WelcomeWizardImpl extends JFrame implements WelcomeWizard {

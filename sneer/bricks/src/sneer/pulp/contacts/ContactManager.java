@@ -2,7 +2,7 @@ package sneer.pulp.contacts;
 
 import sneer.brickness.OldBrick;
 import sneer.pulp.reactive.collections.ListSignal;
-import wheel.lang.PickyConsumer;
+import sneer.software.lang.PickyConsumer;
 import wheel.lang.exceptions.IllegalParameter;
 
 

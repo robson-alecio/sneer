@@ -1,4 +1,4 @@
-package wheel.lang.exceptions;
+package sneer.software.exceptions;
 
 /**
  * An exception which always contains an useful help
@@ -29,5 +29,4 @@ public class FriendlyException extends Exception {
 		return _help;
 	}
 
-	private static final long serialVersionUID = 1L;
 }

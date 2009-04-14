@@ -22,7 +22,7 @@ import sneer.pulp.events.EventSource;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.WindowWidget;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 import wheel.reactive.impl.EventReceiver;
 
 class WatchMeReceiver{

@@ -16,7 +16,7 @@ import sneer.pulp.probe.ProbeManager;
 import sneer.pulp.reactive.collections.impl.SimpleListReceiver;
 import sneer.pulp.serialization.Serializer;
 import sneer.pulp.tuples.TupleSpace;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 
 class ProbeManagerImpl implements ProbeManager {
 	

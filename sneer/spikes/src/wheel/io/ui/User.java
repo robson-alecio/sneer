@@ -2,9 +2,10 @@ package wheel.io.ui;
 
 import java.io.File;
 
-import wheel.lang.Consumer;
+import sneer.software.exceptions.FriendlyException;
+import sneer.software.lang.Consumer;
+
 import wheel.lang.exceptions.Catcher;
-import wheel.lang.exceptions.FriendlyException;
 
 public interface User {
 

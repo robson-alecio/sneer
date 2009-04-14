@@ -13,7 +13,7 @@ import sneer.brickness.OldBrick;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
-import wheel.lang.PickyConsumer;
+import sneer.software.lang.PickyConsumer;
 
 public interface ReactiveWidgetFactory extends OldBrick {
 

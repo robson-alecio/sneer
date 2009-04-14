@@ -1,4 +1,4 @@
-package wheel.lang;
+package sneer.software.lang;
 
 public interface Predicate<T> {
 

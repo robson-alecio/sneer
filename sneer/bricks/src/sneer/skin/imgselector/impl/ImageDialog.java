@@ -17,7 +17,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.WindowConstants;
 
 import sneer.skin.image.ImageFactory;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 
 class ImageDialog extends JDialog {
 	

@@ -1,6 +1,6 @@
 package sneer.pulp.retrier;
 
-import wheel.lang.exceptions.FriendlyException;
+import sneer.software.exceptions.FriendlyException;
 import wheel.lang.exceptions.Hiccup;
 
 public interface Task {

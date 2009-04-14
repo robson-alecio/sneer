@@ -10,7 +10,7 @@ import sneer.commons.environments.Environments;
 import sneer.pulp.events.EventNotifier;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 import wheel.lang.Types;
 
 class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {

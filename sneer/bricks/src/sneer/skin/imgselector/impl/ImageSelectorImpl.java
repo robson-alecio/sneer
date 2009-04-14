@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import sneer.skin.imgselector.ImageSelector;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 
 class ImageSelectorImpl implements ImageSelector {
 	

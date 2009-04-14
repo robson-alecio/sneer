@@ -16,7 +16,7 @@ import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 import wheel.lang.StringUtils;
 
 public class BandwidthReportingTest extends BrickTest {

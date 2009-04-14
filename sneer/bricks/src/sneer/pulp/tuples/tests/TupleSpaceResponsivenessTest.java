@@ -9,7 +9,7 @@ import sneer.brickness.testsupport.Contribute;
 import sneer.commons.lang.ByRef;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
 import sneer.pulp.tuples.TupleSpace;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 
 public class TupleSpaceResponsivenessTest extends BrickTest {
 

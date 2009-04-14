@@ -22,7 +22,7 @@ import sneer.pulp.probe.ProbeManager;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.serialization.Serializer;
 import sneer.pulp.tuples.TupleSpace;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 import wheel.testutil.SignalUtils;
 
 public class ProbeManagerTest extends BrickTest {

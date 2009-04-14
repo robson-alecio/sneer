@@ -15,7 +15,7 @@ import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.threadpool.ThreadPool;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 import wheel.lang.Threads;
 
 class ByteConnectionImpl implements ByteConnection {

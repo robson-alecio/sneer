@@ -17,7 +17,7 @@ import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.collections.ReactiveCollections;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 import wheel.reactive.lists.ListChange;
 import wheel.reactive.lists.ListChange.Visitor;
 

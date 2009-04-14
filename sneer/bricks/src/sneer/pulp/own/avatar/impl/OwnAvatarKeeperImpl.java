@@ -10,7 +10,7 @@ import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.image.ImageFactory;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 import wheel.lang.exceptions.Hiccup;
 
 class OwnAvatarKeeperImpl implements OwnAvatarKeeper {

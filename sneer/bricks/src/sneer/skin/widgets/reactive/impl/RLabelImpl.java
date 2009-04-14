@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Signal;
 import sneer.skin.widgets.reactive.TextWidget;
-import wheel.lang.PickyConsumer;
+import sneer.software.lang.PickyConsumer;
 import wheel.reactive.impl.EventReceiver;
 import static sneer.commons.environments.Environments.my;
 

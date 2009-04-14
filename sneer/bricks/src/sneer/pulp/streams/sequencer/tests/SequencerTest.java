@@ -12,7 +12,7 @@ import org.junit.Test;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.streams.sequencer.Sequencer;
 import sneer.pulp.streams.sequencer.Sequencers;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 
 public class SequencerTest extends BrickTest {
 	

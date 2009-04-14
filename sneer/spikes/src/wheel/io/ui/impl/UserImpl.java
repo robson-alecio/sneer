@@ -15,13 +15,13 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import sneer.hardware.gui.guithread.GuiThread;
+import sneer.software.exceptions.FriendlyException;
+import sneer.software.lang.Consumer;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.io.ui.Util;
-import wheel.lang.Consumer;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.Catcher;
-import wheel.lang.exceptions.FriendlyException;
 
 public class UserImpl implements User {
 

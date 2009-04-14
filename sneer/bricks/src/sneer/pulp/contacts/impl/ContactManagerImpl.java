@@ -9,7 +9,7 @@ import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.collections.ReactiveCollections;
-import wheel.lang.PickyConsumer;
+import sneer.software.lang.PickyConsumer;
 import wheel.lang.exceptions.IllegalParameter;
 
 class ContactManagerImpl implements ContactManager {

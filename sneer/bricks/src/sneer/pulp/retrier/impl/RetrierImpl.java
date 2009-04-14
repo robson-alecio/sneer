@@ -9,7 +9,7 @@ import sneer.pulp.retrier.Retrier;
 import sneer.pulp.retrier.Task;
 import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
-import wheel.lang.exceptions.FriendlyException;
+import sneer.software.exceptions.FriendlyException;
 import wheel.lang.exceptions.Hiccup;
 
 class RetrierImpl implements Retrier {

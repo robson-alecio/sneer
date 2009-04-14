@@ -1,6 +1,6 @@
 package wheel.reactive.impl;
 
-import wheel.lang.PickyConsumer;
+import sneer.software.lang.PickyConsumer;
 import wheel.lang.exceptions.IllegalParameter;
 
 public class IntegerConsumerBoundaries implements PickyConsumer<Integer> {

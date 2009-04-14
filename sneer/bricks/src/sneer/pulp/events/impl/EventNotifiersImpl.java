@@ -2,7 +2,7 @@ package sneer.pulp.events.impl;
 
 import sneer.pulp.events.EventNotifier;
 import sneer.pulp.events.EventNotifiers;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 
 class EventNotifiersImpl implements EventNotifiers {
 

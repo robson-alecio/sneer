@@ -4,7 +4,7 @@ import java.util.List;
 
 import sneer.brickness.OldBrick;
 import sneer.brickness.Tuple;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 
 public interface TupleSpace extends OldBrick {
 

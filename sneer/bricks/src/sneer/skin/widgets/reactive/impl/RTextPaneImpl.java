@@ -16,7 +16,7 @@ import javax.swing.text.StyledDocument;
 import sneer.pulp.reactive.Signal;
 import sneer.skin.colors.Colors;
 import sneer.skin.widgets.reactive.NotificationPolicy;
-import wheel.lang.PickyConsumer;
+import sneer.software.lang.PickyConsumer;
 
 class RTextPaneImpl extends RAbstractField<JTextPane> {
 	

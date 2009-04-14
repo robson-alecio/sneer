@@ -13,7 +13,7 @@ import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.pulp.reactive.signalchooser.SignalChooserManager;
 import sneer.pulp.reactive.signalchooser.SignalChooserManagerFactory;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 import wheel.reactive.impl.ListSignalOwnerReference;
 import wheel.reactive.lists.ListChange;
 import wheel.reactive.lists.VisitorAdapter;

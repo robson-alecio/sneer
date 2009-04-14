@@ -16,7 +16,8 @@ import javax.swing.JComponent;
 import javax.swing.JLayeredPane;
 import javax.swing.border.BevelBorder;
 
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
+
 
 class Keyhole extends JComponent {
     private static final long serialVersionUID = 1L;

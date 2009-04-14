@@ -15,7 +15,7 @@ import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.propertystore.PropertyStore;
 import sneer.pulp.propertystore.mocks.TransientPropertyStore;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 import wheel.reactive.impl.EventReceiver;
 
 public class OwnIpDiscovererTest extends BrickTest {

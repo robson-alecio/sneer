@@ -5,7 +5,7 @@ import sneer.pulp.own.tagline.OwnTaglineKeeper;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 
 class OwnTaglineKeeperImpl implements OwnTaglineKeeper {
 

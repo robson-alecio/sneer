@@ -1,7 +1,7 @@
 package sneer.pulp.reactive.collections.impl;
 
 import sneer.pulp.reactive.collections.ListSignal;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 import wheel.reactive.lists.ListChange;
 import wheel.reactive.lists.ListChange.Visitor;
 

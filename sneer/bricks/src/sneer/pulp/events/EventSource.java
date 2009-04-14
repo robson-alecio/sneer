@@ -1,6 +1,6 @@
 package sneer.pulp.events;
 
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 
 public interface EventSource<VO> {
 

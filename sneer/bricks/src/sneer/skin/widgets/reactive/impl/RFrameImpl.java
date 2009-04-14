@@ -8,7 +8,7 @@ import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.widgets.reactive.WindowWidget;
-import wheel.lang.PickyConsumer;
+import sneer.software.lang.PickyConsumer;
 import wheel.reactive.impl.EventReceiver;
 
 class RFrameImpl extends JFrame implements WindowWidget<JFrame>{

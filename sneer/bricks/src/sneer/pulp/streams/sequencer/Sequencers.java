@@ -1,7 +1,7 @@
 package sneer.pulp.streams.sequencer;
 
 import sneer.brickness.OldBrick;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 
 public interface Sequencers extends OldBrick {
 

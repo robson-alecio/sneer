@@ -36,7 +36,7 @@ import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
-import wheel.lang.PickyConsumer;
+import sneer.software.lang.PickyConsumer;
 import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.impl.EventReceiver;
 

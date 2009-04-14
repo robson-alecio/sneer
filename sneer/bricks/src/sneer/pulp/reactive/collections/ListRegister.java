@@ -1,6 +1,6 @@
 package sneer.pulp.reactive.collections;
 
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 
 public interface ListRegister<T> extends CollectionRegister<T> {
 

@@ -4,7 +4,7 @@ import static sneer.commons.environments.Environments.my;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import wheel.lang.PickyConsumer;
+import sneer.software.lang.PickyConsumer;
 import wheel.reactive.impl.IntegerConsumerBoundaries;
 
 class PortNumberRegister {

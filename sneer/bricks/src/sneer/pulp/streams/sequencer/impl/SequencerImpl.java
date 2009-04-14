@@ -6,7 +6,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import sneer.pulp.streams.sequencer.Sequencer;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 
 class SequencerImpl<T> implements Sequencer<T> {
 

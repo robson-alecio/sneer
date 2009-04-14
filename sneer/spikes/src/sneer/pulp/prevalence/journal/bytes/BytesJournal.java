@@ -1,6 +1,6 @@
 package sneer.pulp.prevalence.journal.bytes;
 
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 
 public interface BytesJournal {
 

@@ -1,4 +1,4 @@
-package wheel.lang;
+package sneer.software.lang;
 
 import wheel.lang.exceptions.IllegalParameter;
 

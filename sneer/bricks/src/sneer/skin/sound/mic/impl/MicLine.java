@@ -7,8 +7,8 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
 import sneer.skin.sound.kernel.Audio;
+import sneer.software.exceptions.FriendlyException;
 import wheel.lang.ImmutableByteArray;
-import wheel.lang.exceptions.FriendlyException;
 
 class MicLine {
 

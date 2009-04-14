@@ -32,7 +32,7 @@ import sneer.pulp.reactive.collections.ReactiveCollections;
 import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.pulp.tuples.TupleSpace;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 import wheel.lang.Threads;
 
 class TupleSpaceImpl implements TupleSpace {

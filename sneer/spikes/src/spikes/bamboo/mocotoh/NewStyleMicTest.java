@@ -13,7 +13,7 @@ import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.mic.Mic;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 
 @RunWith(Mocotoh.class)
 public class NewStyleMicTest {

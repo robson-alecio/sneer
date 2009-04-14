@@ -7,7 +7,7 @@ import org.junit.Test;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.reactive.Signals;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 
 public class EventNotifierFactoryTest extends BrickTest {
 	

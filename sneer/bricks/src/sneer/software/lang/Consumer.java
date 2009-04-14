@@ -1,4 +1,4 @@
-package wheel.lang;
+package sneer.software.lang;
 
 /** Can consume any value without ever throwing IllegalParameter. */
 public interface Consumer<T> extends PickyConsumer<T> {

@@ -14,7 +14,7 @@ import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.collections.MapRegister;
 import sneer.pulp.reactive.collections.MapSignal;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 import wheel.reactive.sets.SetRegister;
 import wheel.reactive.sets.SetSignal;
 import wheel.reactive.sets.SetChange;

@@ -4,7 +4,7 @@ import javax.swing.JTextField;
 
 import sneer.pulp.reactive.Signal;
 import sneer.skin.widgets.reactive.NotificationPolicy;
-import wheel.lang.PickyConsumer;
+import sneer.software.lang.PickyConsumer;
 
 class RTextFieldImpl extends RAbstractField<JTextField> {
 	

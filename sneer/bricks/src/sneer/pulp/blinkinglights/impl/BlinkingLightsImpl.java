@@ -8,7 +8,7 @@ import sneer.pulp.clock.Clock;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.collections.ReactiveCollections;
-import wheel.lang.exceptions.FriendlyException;
+import sneer.software.exceptions.FriendlyException;
 
 class BlinkingLightsImpl implements BlinkingLights {
 	

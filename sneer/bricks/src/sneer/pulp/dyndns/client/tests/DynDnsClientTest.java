@@ -29,7 +29,7 @@ import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
-import wheel.lang.exceptions.FriendlyException;
+import sneer.software.exceptions.FriendlyException;
 
 public class DynDnsClientTest extends BrickTest {
 	

@@ -11,7 +11,7 @@ import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.tuples.TupleSpace;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 import wheel.reactive.impl.EventReceiver;
 
 final class ProbeImpl implements Consumer<Tuple> {

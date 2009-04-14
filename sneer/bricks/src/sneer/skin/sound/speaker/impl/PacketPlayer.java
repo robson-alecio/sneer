@@ -12,7 +12,7 @@ import javax.sound.sampled.SourceDataLine;
 import sneer.brickness.PublicKey;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.Audio;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 
 class PacketPlayer implements Consumer<PcmSoundPacket> {
 

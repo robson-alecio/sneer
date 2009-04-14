@@ -4,7 +4,7 @@ import sneer.brickness.Brick;
 import sneer.brickness.OldBrick;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.reactive.Signal;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 
 @Brick
 public interface OwnNameKeeper extends OldBrick {

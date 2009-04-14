@@ -1,7 +1,7 @@
 package sneer.pulp.events;
 
 import sneer.brickness.Brick;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 
 @Brick
 public interface EventNotifiers {

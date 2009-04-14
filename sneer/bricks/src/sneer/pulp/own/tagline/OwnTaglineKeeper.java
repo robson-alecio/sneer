@@ -2,7 +2,7 @@ package sneer.pulp.own.tagline;
 
 import sneer.brickness.OldBrick;
 import sneer.pulp.reactive.Signal;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 
 public interface OwnTaglineKeeper extends OldBrick {
 

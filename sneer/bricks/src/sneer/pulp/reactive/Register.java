@@ -1,6 +1,6 @@
 package sneer.pulp.reactive;
 
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 
 public interface Register<T>{
 

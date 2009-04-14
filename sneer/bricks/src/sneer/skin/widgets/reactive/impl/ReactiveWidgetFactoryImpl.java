@@ -20,7 +20,7 @@ import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import sneer.skin.widgets.reactive.WindowWidget;
-import wheel.lang.PickyConsumer;
+import sneer.software.lang.PickyConsumer;
 import static sneer.commons.environments.Environments.my;
 
 class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {

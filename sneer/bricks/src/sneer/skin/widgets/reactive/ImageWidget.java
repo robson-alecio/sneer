@@ -5,7 +5,7 @@ import java.awt.Image;
 import javax.swing.JPanel;
 
 import sneer.pulp.reactive.Signal;
-import wheel.lang.PickyConsumer;
+import sneer.software.lang.PickyConsumer;
 
 public interface ImageWidget extends ComponentWidget<JPanel>{
 

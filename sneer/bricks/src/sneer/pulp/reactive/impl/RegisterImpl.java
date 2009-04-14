@@ -4,7 +4,7 @@ import java.lang.ref.WeakReference;
 
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 
 class RegisterImpl<T> implements Register<T> {
 

@@ -9,8 +9,9 @@ import java.util.List;
 
 import org.prevayler.Prevayler;
 
-import wheel.lang.Consumer;
-import wheel.lang.PickyConsumer;
+import sneer.software.lang.Consumer;
+import sneer.software.lang.PickyConsumer;
+
 
 public class Bubble {
 

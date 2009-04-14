@@ -20,7 +20,7 @@ import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.rooms.ActiveRoomKeeper;
 import sneer.skin.sound.PcmSoundPacket;
-import wheel.lang.Consumer;
+import sneer.software.lang.Consumer;
 import wheel.lang.ImmutableByteArray;
 
 public class SpeexTuplesTest extends BrickTest {

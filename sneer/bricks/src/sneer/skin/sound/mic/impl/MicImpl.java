@@ -11,8 +11,8 @@ import sneer.pulp.threadpool.ThreadPool;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.mic.Mic;
+import sneer.software.exceptions.FriendlyException;
 import wheel.lang.Threads;
-import wheel.lang.exceptions.FriendlyException;
 
 class MicImpl implements Mic {
 

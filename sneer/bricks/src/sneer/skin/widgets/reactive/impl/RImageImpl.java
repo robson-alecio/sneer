@@ -17,7 +17,7 @@ import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.widgets.reactive.ImageWidget;
-import wheel.lang.PickyConsumer;
+import sneer.software.lang.PickyConsumer;
 import wheel.reactive.impl.EventReceiver;
 
 class RImageImpl extends JPanel implements ImageWidget{

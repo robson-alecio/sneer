@@ -1,7 +1,7 @@
 package snapps.whisper.gui;
 
-import sneer.skin.main.instrumentregistry.OldInstrument;
+import sneer.skin.main.instrumentregistry.Instrument;
 
-public interface WhisperGui extends OldInstrument {
+public interface WhisperGui extends Instrument {
 
 }

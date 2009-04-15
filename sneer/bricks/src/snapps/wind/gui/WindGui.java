@@ -1,7 +1,7 @@
 package snapps.wind.gui;
 
-import sneer.skin.main.instrumentregistry.OldInstrument;
+import sneer.skin.main.instrumentregistry.Instrument;
 
-public interface WindGui extends OldInstrument {
+public interface WindGui extends Instrument {
 
 }

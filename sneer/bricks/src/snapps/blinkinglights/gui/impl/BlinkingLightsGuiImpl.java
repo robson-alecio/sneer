@@ -36,8 +36,8 @@ import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.colors.Colors;
+import sneer.skin.main.dashboard.InstrumentWindow;
 import sneer.skin.main.instrumentregistry.InstrumentRegistry;
-import sneer.skin.old.dashboard.OldInstrumentWindow;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
@@ -72,7 +72,7 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 	}
 
 	@Override
-	public void init(OldInstrumentWindow window) {
+	public void init(InstrumentWindow window) {
 		_container = window.contentPane();
 		_lightsList = _rfactory.newList(_blinkingLights.lights(), new BlinkingLightsLabelProvider());
 		iniGui();

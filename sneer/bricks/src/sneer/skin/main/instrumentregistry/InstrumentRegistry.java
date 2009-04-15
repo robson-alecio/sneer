@@ -1,13 +1,12 @@
 package sneer.skin.main.instrumentregistry;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 import sneer.pulp.reactive.collections.ListSignal;
 
-public interface InstrumentRegistry extends OldBrick {
+@Brick
+public interface InstrumentRegistry {
 
-	void registerInstrument(OldInstrument instrument); //Fix: move to new and delete
 	void registerInstrument(Instrument instrument);
 
-	ListSignal<OldInstrument> installedOldInstruments(); //Fix: move to new and delete
 	ListSignal<Instrument> installedInstruments();
 }

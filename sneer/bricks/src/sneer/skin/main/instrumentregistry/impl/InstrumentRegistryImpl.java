@@ -6,23 +6,11 @@ import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.collections.ReactiveCollections;
 import sneer.skin.main.instrumentregistry.Instrument;
 import sneer.skin.main.instrumentregistry.InstrumentRegistry;
-import sneer.skin.main.instrumentregistry.OldInstrument;
 
 class InstrumentRegistryImpl implements InstrumentRegistry {
 
-	ListRegister<OldInstrument> _oldInstruments = my(ReactiveCollections.class).newListRegister();
 	ListRegister<Instrument> _instruments = my(ReactiveCollections.class).newListRegister();
 	
-	@Override
-	public void registerInstrument(OldInstrument instrument) {
-		_oldInstruments.add(instrument);
-	}
-
-	@Override
-	public ListSignal<OldInstrument> installedOldInstruments() {
-		return _oldInstruments.output();
-	}
-
 	@Override
 	public void registerInstrument(Instrument instrument) {
 		_instruments.add(instrument);

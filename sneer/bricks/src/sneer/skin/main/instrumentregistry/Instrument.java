@@ -6,7 +6,7 @@ import sneer.skin.main.dashboard.InstrumentWindow;
 @Brick
 public interface Instrument {
 
-	static int DEFAULT_HEIGHT = 50;
+	static int DEFAULT_HEIGHT = 30;
 	
 	void init(InstrumentWindow container);
 	int defaultHeight();

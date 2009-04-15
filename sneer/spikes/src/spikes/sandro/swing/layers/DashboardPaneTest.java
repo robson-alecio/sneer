@@ -1,7 +1,6 @@
 package spikes.sandro.swing.layers;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Point;

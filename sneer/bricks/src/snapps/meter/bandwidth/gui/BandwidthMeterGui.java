@@ -1,7 +1,7 @@
 package snapps.meter.bandwidth.gui;
 
-import sneer.skin.main.instrumentregistry.OldInstrument;
+import sneer.skin.main.instrumentregistry.Instrument;
 
-public interface BandwidthMeterGui extends OldInstrument {
+public interface BandwidthMeterGui extends Instrument {
 
 }

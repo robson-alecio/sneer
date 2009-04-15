@@ -1,8 +1,8 @@
 package snapps.owner.gui;
 
-import sneer.skin.main.instrumentregistry.OldInstrument;
+import sneer.skin.main.instrumentregistry.Instrument;
 
-public interface OwnerGui extends OldInstrument {
+public interface OwnerGui extends Instrument {
 
 
 }

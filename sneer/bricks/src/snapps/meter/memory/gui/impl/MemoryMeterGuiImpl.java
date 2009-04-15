@@ -26,8 +26,8 @@ import sneer.hardware.gui.images.Images;
 import sneer.pulp.memory.MemoryMeter;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.colors.Colors;
-import sneer.skin.old.dashboard.InstrumentWindow;
-import sneer.skin.old.snappmanager.InstrumentRegistry;
+import sneer.skin.old.dashboard.OldInstrumentWindow;
+import sneer.skin.old.instrumentregistry.InstrumentRegistry;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 
@@ -55,7 +55,7 @@ class MemoryMeterGuiImpl implements MemoryMeterGui {
 	}
 	
 	@Override
-	public void init(InstrumentWindow window) {
+	public void init(OldInstrumentWindow window) {
 		Container container = window.contentPane();
 		initGui(container);
 	}

@@ -22,8 +22,8 @@ import sneer.commons.environments.Environments;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.gates.logic.LogicGates;
 import sneer.skin.colors.Colors;
-import sneer.skin.old.dashboard.InstrumentWindow;
-import sneer.skin.old.snappmanager.InstrumentRegistry;
+import sneer.skin.old.dashboard.OldInstrumentWindow;
+import sneer.skin.old.instrumentregistry.InstrumentRegistry;
 import sneer.skin.rooms.ActiveRoomKeeper;
 import sneer.skin.sound.loopback.LoopbackTester;
 import sneer.skin.sound.mic.Mic;
@@ -66,7 +66,7 @@ class WhisperGuiImpl implements WhisperGui { //Optimize need a better snapp wind
 	}
 
 	@Override
-	public void init(InstrumentWindow window) {
+	public void init(OldInstrumentWindow window) {
 		Container container = window.contentPane();
 		container.setBackground(my(Colors.class).solid());
 		container.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 5));

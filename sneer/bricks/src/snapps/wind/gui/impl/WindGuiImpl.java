@@ -33,8 +33,8 @@ import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.impl.SimpleListReceiver;
 import sneer.skin.colors.Colors;
-import sneer.skin.old.dashboard.InstrumentWindow;
-import sneer.skin.old.snappmanager.InstrumentRegistry;
+import sneer.skin.old.dashboard.OldInstrumentWindow;
+import sneer.skin.old.instrumentregistry.InstrumentRegistry;
 import sneer.skin.sound.player.SoundPlayer;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
@@ -71,7 +71,7 @@ class WindGuiImpl implements WindGui {
 	} 
 	
 	@Override
-	public void init(InstrumentWindow window) {
+	public void init(OldInstrumentWindow window) {
 		Container container = window.contentPane();
 		_container = container;
 		initGui();

@@ -22,9 +22,9 @@ import javax.swing.border.EmptyBorder;
 
 import sneer.hardware.gui.images.Images;
 import sneer.skin.colors.Colors;
-import sneer.skin.old.dashboard.InstrumentWindow;
+import sneer.skin.old.dashboard.OldInstrumentWindow;
 
-class InstrumentWindowImpl extends JPanel implements InstrumentWindow {
+class InstrumentWindowImpl extends JPanel implements OldInstrumentWindow {
 	
 	private static final Image ACTIONS = getImage("menu.png");
 	private static final int MINIMAL_TOOLBAR_HEIGHT = 14;

@@ -33,10 +33,10 @@ import sneer.skin.colors.Colors;
 import sneer.skin.image.DefaultIcons;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.main.menu.MainMenu;
-import sneer.skin.old.dashboard.InstrumentWindow;
+import sneer.skin.old.dashboard.OldInstrumentWindow;
 import sneer.skin.old.dashboard.OldDashboard;
-import sneer.skin.old.snappmanager.InstrumentRegistry;
-import sneer.skin.old.snappmanager.OldInstrument;
+import sneer.skin.old.instrumentregistry.InstrumentRegistry;
+import sneer.skin.old.instrumentregistry.OldInstrument;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
 import wheel.io.ui.action.Action;
 import wheel.reactive.impl.EventReceiver;
@@ -118,7 +118,7 @@ class OldDashboardImpl implements OldDashboard {
 	}
 
 	private void addInstrumentsReceiver() {
-		_instrumentsReceiver = new SimpleListReceiver<OldInstrument>(_instrumentManager.installedInstruments()){
+		_instrumentsReceiver = new SimpleListReceiver<OldInstrument>(_instrumentManager.installedOldInstruments()){
 
 			@Override
 			protected void elementAdded(OldInstrument newElement) {
@@ -169,7 +169,7 @@ class OldDashboardImpl implements OldDashboard {
 		_rootPanel.add(_contentPanel, BorderLayout.CENTER);
 	}
 
-	private InstrumentWindow install(final OldInstrument instrument) {
+	private OldInstrumentWindow install(final OldInstrument instrument) {
 		final InstrumentWindowImpl sf = new InstrumentWindowImpl(instrument.title());
 		my(GuiThread.class).strictInvokeAndWait(new Runnable(){	@Override public void run() {
 			_contentPanel.add(sf);

@@ -10,7 +10,6 @@ import java.awt.event.WindowEvent;
 import java.net.URL;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
@@ -49,13 +48,11 @@ class DashboardImpl implements Dashboard {
 
 	private Dimension _screenSize;
 	private Rectangle _bounds;
-	private WindowSupport _windowSupport;
-	private JPanel _rootPanel;
 	
 	@SuppressWarnings("unused")
 	private SimpleListReceiver<Instrument> _instrumentsReceiver = new SimpleListReceiver<Instrument>(my(InstrumentRegistry.class).installedInstruments()){
-		@Override protected void elementAdded(Instrument newElement) { 	_dashboardPane.install(newElement); }
-		@Override protected void elementPresent(Instrument element) { 		_dashboardPane.install(element); }
+		@Override protected void elementAdded(Instrument instrument) { 	_dashboardPane.install(instrument); }
+		@Override protected void elementPresent(Instrument instrument) { 		_dashboardPane.install(instrument); }
 		@Override protected void elementRemoved(Instrument element) {
 			throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
 		}};
@@ -73,9 +70,9 @@ class DashboardImpl implements Dashboard {
 	}
 	
 	private void initGui() {
-		_windowSupport = new WindowSupport();
-		new TrayIconSupport();
-		_windowSupport.open();
+		WindowSupport windowSupport = new WindowSupport();
+		windowSupport.open();
+		new TrayIconSupport(windowSupport);
 	}
 	
 	private void waitUntilTheGuiThreadStarts() {
@@ -87,8 +84,10 @@ class DashboardImpl implements Dashboard {
 	}
 	
 	class TrayIconSupport {
-		
-		TrayIconSupport(){
+		private final WindowSupport _windowSupport;
+
+		TrayIconSupport(WindowSupport windowSupport){
+			_windowSupport = windowSupport;
 			TrayIcon trayIcon = null;
 			try {
 				trayIcon = my(TrayIcons.class).newTrayIcon(logoIconURL());
@@ -104,10 +103,8 @@ class DashboardImpl implements Dashboard {
 		private void addOpenWindowAction(TrayIcon tray) {
 			Action cmd = new Action(){
 				@Override public String caption() { return "Open"; }
-				@Override public void run() {
-					my(GuiThread.class).assertInGuiThread();
-					_windowSupport.open();						
-				}};
+				@Override public void run() {	_windowSupport.open();						
+			}};
 			tray.setDefaultAction(cmd);
 			tray.addAction(cmd);
 		}
@@ -115,9 +112,8 @@ class DashboardImpl implements Dashboard {
 		private void addExitAction(TrayIcon trayIcon) {
 			Action cmd = new Action(){
 				@Override public String caption() { return "Exit"; }
-				@Override public void run() {
-					System.exit(0);
-				}};
+				@Override public void run() {	System.exit(0);
+			}};
 			trayIcon.addAction(cmd);
 			my(MainMenu.class).getSneerMenu().addAction(cmd);
 		}
@@ -139,7 +135,7 @@ class DashboardImpl implements Dashboard {
 			}});
 			_frame = _rwindow.getMainWidget();
 			_frame.setIconImage(my(Images.class).getImage(logoIconURL()));
-			my(WindowBoundsSetter.class).defaultContainer(_rootPanel);
+			my(WindowBoundsSetter.class).defaultContainer(_dashboardPane);
 		}
 
 		private void initRootPanel() {

@@ -10,14 +10,14 @@
 
              ----------------------------------------
  
-                      EXPRESSION (FREEDOM 5)
-                          (TupleSpace)
-
                     SOFWARE SHARING (FREEDOM 7)
                             (MeToo)
 
                    HARDWARE SHARING (FREEDOM 6)
            (T4T Barter: Routing, Backups, Clustering)
+
+                      EXPRESSION (FREEDOM 5)
+                          (TupleSpace)
 
                         TRUST (FREEDOM 3)
                (Affinity, AccessControl (Sandbox))

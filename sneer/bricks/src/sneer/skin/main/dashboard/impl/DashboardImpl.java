@@ -6,7 +6,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -31,7 +30,6 @@ import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.impl.SimpleListReceiver;
 import sneer.pulp.threadpool.ThreadPool;
-import sneer.skin.colors.Colors;
 import sneer.skin.image.DefaultIcons;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.main.dashboard.Dashboard;
@@ -189,16 +187,5 @@ class DashboardImpl implements Dashboard {
 				}});
 			return title;
 		}
-	}
-}
-
-class ContentPane extends JPanel{
-	private static final long serialVersionUID = 1L;
-
-	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		g.setColor(my(Colors.class).lowContrast());
-		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 	}
 }

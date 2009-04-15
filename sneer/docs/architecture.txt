@@ -1,42 +1,48 @@
-                           |
-               MAIN        |        FUNCTIONAL TESTS
-                           |
+                                  |
+    WEBSTART (For new Users)      |      FUNCTIONAL TESTS
+                                  |
 ------------------------------------------------------------------------
                                                                   BRICKS
                        SNAPPS (SNEER APPS)
+       (TopTen, GiveNTake, "Things", Whatever@Home, Causes)
+       (Issue Tracking, Brick Metrics, Author Credibility)
+                          (Endoscope)
 
              ----------------------------------------
  
-                       FREEDOM 5: EXPRESSION
-                  (MeToo, TupleSpace, Routing...)
+                      EXPRESSION (FREEDOM 5)
+                          (TupleSpace)
 
-                         FREEDOM 3: TRUST
-    (Affinity, SandBox, AccessControl, T4T Barter, Cryptography)
+                    SOFWARE SHARING (FREEDOM 7)
+                            (MeToo)
 
-                       FREEDOM 2: NICKNAMES
-			(Contacts, NickNames, Addresses, Connections)
+                   HARDWARE SHARING (FREEDOM 6)
+           (T4T Barter: Routing, Backups, Clustering)
 
-						FREEDOM 1: IDENTITY
-					   (OwnName, Public Key)
+                        TRUST (FREEDOM 3)
+               (Affinity, AccessControl (Sandbox))
 
-                    FREEDOM 7: SOFTWARE SHARING
-                 (Bricks: Install, Update, Remove)
+                       CONTACTS (FREEDOM 2)
+              (NickNames, Mesh Network, Discovery)
 
-                       FREEDOM 6: HARDWARE
-      (Clock, Files, Network, GUI support, Prevalence, Logging...)
+                       IDENTITY (FREEDOM 1)
+                        (Name, Public Key)
+
+                     OWN SOFTWARE (FREEDOM 7)
+           (Bricks: Install/Update/Remove, Prevalence)
+
+                     OWN HARDWARE (FREEDOM 6)
+               (Clock, Files, Network, GUI support)
                         (RAM: Collections)
-  (CPU: Threads, Natures (Concurrency), Consumers, Signals, Exceptions)
+(CPU: Threads, Natures (Concurrency), Consumers, Signals, Exceptions)
                           (T4T Billing)
 
                                                                   BRICKS
 ------------------------------------------------------------------------
 
                             BRICKNESS 
-             (MINIMAL BRICK SUPPORT ("MY", CONVENTIONS))
+         (Minimal Brick Support ("My", Conventions, Natures))
 
-                             WEBSTART
- 
-                   FREEDOM 4: PROPERTY (PRIVACY)
-                       (Java Security Model)
-                      
                                JRE
+
+                   PROPERTY/PRIVACY (FREEDOM 4)

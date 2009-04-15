@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
-import snapps.welcomewizard.WelcomeWizard;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.hardware.gui.images.Images;
 import sneer.hardware.gui.timebox.TimeboxedEventQueue;
@@ -35,8 +34,8 @@ import sneer.skin.image.ImageFactory;
 import sneer.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.skin.main.instrumentregistry.OldInstrument;
 import sneer.skin.main.menu.MainMenu;
-import sneer.skin.old.dashboard.OldInstrumentWindow;
 import sneer.skin.old.dashboard.OldDashboard;
+import sneer.skin.old.dashboard.OldInstrumentWindow;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
 import wheel.io.ui.action.Action;
 import wheel.reactive.impl.EventReceiver;
@@ -85,8 +84,6 @@ class OldDashboardImpl implements OldDashboard {
 	}
 		
 	private void init() {
-		my(WelcomeWizard.class);
-
 		my(TimeboxedEventQueue.class).startQueueing(TIMEOUT_FOR_GUI_EVENTS);
 		initGui();
 	}

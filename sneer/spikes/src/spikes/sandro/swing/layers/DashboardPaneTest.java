@@ -1,6 +1,7 @@
 package spikes.sandro.swing.layers;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Point;
@@ -149,6 +150,8 @@ public class DashboardPaneTest extends JPanel {
 
 		@Override protected void paintLayer(Graphics2D g2, JXLayer<JPanel> l) {
 			super.paintLayer(g2, l);
+			g2.setColor(new Color(0, 100, 0, 100));
+			g2.fillRect(0, 0, l.getWidth(), l.getHeight());
 		}
 
 		@Override protected void processMouseMotionEvent(MouseEvent event, JXLayer<JPanel> layer) {

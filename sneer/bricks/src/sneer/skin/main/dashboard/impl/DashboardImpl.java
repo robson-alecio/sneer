@@ -1,6 +1,6 @@
-package sneer.skin.dashboard.impl;
+package sneer.skin.main.dashboard.impl;
 
-import sneer.skin.dashboard.Dashboard;
+import sneer.skin.main.dashboard.Dashboard;
 
 public class DashboardImpl implements Dashboard {
 

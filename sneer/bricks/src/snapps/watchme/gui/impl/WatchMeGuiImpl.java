@@ -108,6 +108,6 @@ class WatchMeGuiImpl implements WatchMeGui{ //Optimize need a better snapp windo
 
 	@Override
 	public String title() {
-		return null;
+		return "Watch Me";
 	}
 }

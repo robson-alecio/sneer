@@ -242,6 +242,6 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 
 	@Override
 	public String title() {
-		return null;
+		return "Blinking Lights";
 	}
 }

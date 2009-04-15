@@ -269,6 +269,6 @@ class WindGuiImpl implements WindGui {
 
 	@Override
 	public String title() {
-		return null;
+		return "Wind";
 	}
 }

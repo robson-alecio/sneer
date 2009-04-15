@@ -130,6 +130,6 @@ class MemoryMeterGuiImpl implements MemoryMeterGui {
 
 	@Override
 	public String title() {
-		return null;
+		return "Memory Meter";
 	}
 }

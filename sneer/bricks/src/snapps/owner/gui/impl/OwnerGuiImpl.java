@@ -131,6 +131,6 @@ class OwnerGuiImpl implements OwnerGui {
 
 	@Override
 	public String title() {
-		return null;
+		return "Owner";
 	}
 }

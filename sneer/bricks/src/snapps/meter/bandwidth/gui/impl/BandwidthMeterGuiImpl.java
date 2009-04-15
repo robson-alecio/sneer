@@ -105,6 +105,6 @@ class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 
 	@Override
 	public String title() {
-		return null;
+		return "Bandwith Meter";
 	}
 }

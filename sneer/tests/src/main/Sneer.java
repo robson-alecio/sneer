@@ -97,7 +97,7 @@ public class Sneer {
 				snapps.contacts.gui.ContactsGui.class,
 				snapps.contacts.gui.info.ContactInfoWindow.class,
 				snapps.wind.gui.WindGui.class,
-				snapps.watchme.gui.WatchMeGui.class,
+//				snapps.watchme.gui.WatchMeGui.class,
 				snapps.whisper.gui.WhisperGui.class,
 				snapps.meter.memory.gui.MemoryMeterGui.class,
 				snapps.meter.bandwidth.gui.BandwidthMeterGui.class,
@@ -108,7 +108,7 @@ public class Sneer {
 				sneer.hardware.logging.gui.LogConsole.class,
 				sneer.hardware.gui.timebox.TimeboxedEventQueue.class,
 				sneer.hardware.gui.trayicon.TrayIcons.class,
-				sneer.skin.old.dashboard.OldDashboard.class,
+				sneer.skin.main.dashboard.Dashboard.class,
 				
 				sneer.skin.main.dashboard.util.GuiUtil.class,
 				snapps.contacts.hardcoded.HardcodedContacts.class

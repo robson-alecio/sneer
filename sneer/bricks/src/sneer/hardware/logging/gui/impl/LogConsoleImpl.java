@@ -10,7 +10,7 @@ import javax.swing.JTextArea;
 
 import sneer.hardware.logging.gui.LogConsole;
 import sneer.pulp.logging.Logger;
-import sneer.skin.main_Menu.MainMenu;
+import sneer.skin.main.menu.MainMenu;
 import wheel.io.ui.action.Action;
 import wheel.reactive.impl.EventReceiver;
 

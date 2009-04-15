@@ -1,6 +1,6 @@
 package snapps.watchme.gui;
 
-import sneer.skin.snappmanager.OldInstrument;
+import sneer.skin.old.snappmanager.OldInstrument;
 
 public interface WatchMeGui  extends OldInstrument {
 

@@ -18,8 +18,8 @@ import javax.swing.border.EmptyBorder;
 import snapps.watchme.WatchMe;
 import snapps.watchme.gui.WatchMeGui;
 import sneer.skin.colors.Colors;
-import sneer.skin.olddashboard.InstrumentWindow;
-import sneer.skin.snappmanager.InstrumentRegistry;
+import sneer.skin.old.dashboard.InstrumentWindow;
+import sneer.skin.old.snappmanager.InstrumentRegistry;
 
 class WatchMeGuiImpl implements WatchMeGui{ //Optimize need a better snapp window support
 

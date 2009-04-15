@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 import org.jdesktop.jxlayer.JXLayer;
 import org.jdesktop.jxlayer.plaf.AbstractLayerUI;
@@ -31,6 +32,7 @@ import spikes.sandro.swing.layers.DashboardPane.InstrumentWindow.Toolbar;
 //							_instrumentLayer (decorator)
 //								InstrumentWindow (instrument container)
 //								_instrumentGlasspane (mouse listener)
+//						_mouseBlockButton (hack to block mose events)
 //						_toolbarPanel (0..1)
 //				Glasspane
 public class DashboardPane extends JPanel {
@@ -42,7 +44,7 @@ public class DashboardPane extends JPanel {
 	public DashboardPane()    {
 		
     	setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-    	add(_instrumentsAndToolbarsLayeredPane);
+    	add(_instrumentsAndToolbarsLayeredPane, new Integer(0));
     	addInstrumentPanelResizer();
     	setOpaque(true);
     	setBackground(Color.DARK_GRAY);
@@ -84,7 +86,9 @@ public class DashboardPane extends JPanel {
 		private void initGui() {
 			_toolbar.setVisible(false);
 	    	setLayout(new BorderLayout());
-	    	add(new JButton("Teste"), BorderLayout.CENTER);
+	    	JButton button = new JButton("Teste");
+	    	button.setBorder(new EmptyBorder(0,0,0,0));
+			add(button, BorderLayout.CENTER);
 	    	addComponentListener(new ComponentAdapter(){ @Override public void componentResized(ComponentEvent e) {
 	    		_toolbar.resizeToolbar();
 	    	}});
@@ -93,13 +97,19 @@ public class DashboardPane extends JPanel {
 		class Toolbar{
 			private static final int _OFFSET = 0;
 			private static final int _TOOLBAR_HEIGHT = 20;
+			
 			private final JPanel _toolbarPanel = new JPanel();
-
+			private final JButton _mouseBlockButton = new JButton(); //Fix: Remove this hack used to block mouse 
+																									//event dispatch to the instrument behind toolbar 
 			private Toolbar(){
-				DashboardPane.this._instrumentsAndToolbarsLayeredPane.add(_toolbarPanel, new Integer(1), 0);
+				DashboardPane.this._instrumentsAndToolbarsLayeredPane.add(_mouseBlockButton, new Integer(1));
+				DashboardPane.this._instrumentsAndToolbarsLayeredPane.add(_toolbarPanel, new Integer(2));
 			}
 
-			private void setVisible(boolean isVisible) {  _toolbarPanel.setVisible(isVisible); 	}
+			private void setVisible(boolean isVisible) {  
+				_toolbarPanel.setVisible(isVisible); 	
+				_mouseBlockButton.setVisible(isVisible);
+			}
 			private boolean isVisible() { 	return _toolbarPanel.isVisible(); 	}
 			
 			private void resizeToolbar() {
@@ -111,6 +121,7 @@ public class DashboardPane extends JPanel {
 				int width = getSize().width;
 				int height = Toolbar._TOOLBAR_HEIGHT;
 				_toolbarPanel.setBounds(x, y, width, height);
+				_mouseBlockButton.setBounds(x, y, width, height);
 			}
 
 			private boolean isOverAnyToolbar(Point mousePoint) {
@@ -122,7 +133,7 @@ public class DashboardPane extends JPanel {
 				return false;
 			}
 	
-			private void moveFog(Point mousePoint) {
+			private void hideAndShow(Point mousePoint) {
 				for (InstrumentWindow instrument : _instruments) 
 					instrument._toolbar.setVisible(getAreaOnScreen(instrument).contains(mousePoint));
 			}
@@ -141,22 +152,14 @@ public class DashboardPane extends JPanel {
 
 		@Override protected void paintLayer(Graphics2D g2, JXLayer<JPanel> l) {
 			super.paintLayer(g2, l);
-			addSomeFog(g2, l);
 		}
 
-		@Override
-		protected void processMouseMotionEvent(MouseEvent event, JXLayer<JPanel> layer) {
+		@Override protected void processMouseMotionEvent(MouseEvent event, JXLayer<JPanel> layer) {
 			Point mousePoint = event.getLocationOnScreen();
 			if(_toolbar.isOverAnyToolbar(mousePoint)) 
 				return;
 			
-			_toolbar.moveFog(mousePoint);
+			_toolbar.hideAndShow(mousePoint);
 		}
-
-		private void addSomeFog(Graphics2D g2, JXLayer<JPanel> l) {
-			g2.setColor(new Color(0, 100, 0, 100));
-			g2.fillRect(0, 0, l.getWidth(), l.getHeight());
-		}
-		
 	};
 }

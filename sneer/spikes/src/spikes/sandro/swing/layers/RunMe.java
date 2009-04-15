@@ -1,6 +1,3 @@
-/**
- * 
- */
 package spikes.sandro.swing.layers;
 
 import javax.swing.JFrame;

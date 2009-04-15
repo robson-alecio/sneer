@@ -11,10 +11,10 @@ import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
+import sneer.pulp.reactive.collections.ListChange;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
 import sneer.software.lang.Consumer;
-import wheel.reactive.lists.ListChange;
 
 class ListRegisterImpl<VO> implements ListRegister<VO> {
 	

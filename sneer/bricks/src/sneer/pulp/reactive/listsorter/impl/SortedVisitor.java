@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import sneer.pulp.reactive.collections.ListChange;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.collections.ReactiveCollections;
@@ -15,7 +16,6 @@ import sneer.pulp.reactive.signalchooser.SignalChooserManager;
 import sneer.pulp.reactive.signalchooser.SignalChooserManagerFactory;
 import sneer.software.lang.Consumer;
 import wheel.reactive.impl.ListSignalOwnerReference;
-import wheel.reactive.lists.ListChange;
 import wheel.reactive.lists.VisitorAdapter;
 
 final class SortedVisitor<T> extends VisitorAdapter<T> implements ListOfSignalsReceiver<T>{

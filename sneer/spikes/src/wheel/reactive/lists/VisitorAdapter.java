@@ -1,6 +1,6 @@
 package wheel.reactive.lists;
 
-import wheel.reactive.lists.ListChange.Visitor;
+import sneer.pulp.reactive.collections.ListChange.Visitor;
 
 public abstract class VisitorAdapter<T> implements Visitor<T> {
 

@@ -1,6 +1,6 @@
 package sneer.pulp.reactive.collections.impl;
 
-import wheel.reactive.lists.ListChange;
+import sneer.pulp.reactive.collections.ListChange;
 
 final class ListElementReplaced<T> extends AbstractListElementReplacement<T> implements ListChange<T> {
 

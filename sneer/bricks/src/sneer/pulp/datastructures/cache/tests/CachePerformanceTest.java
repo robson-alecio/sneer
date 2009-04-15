@@ -21,7 +21,7 @@ public class CachePerformanceTest extends BrickTest{
 			_subject.contains(obj);
 	}
 
-	@Test (timeout = 700) 
+	@Test (timeout = 2000) 
 	public void handleForPerformance() {
 		populate();
 		

@@ -1,4 +1,4 @@
-package wheel.reactive.lists;
+package sneer.pulp.reactive.collections;
 
 public interface ListChange<T> {
 	

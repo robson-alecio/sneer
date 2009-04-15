@@ -31,6 +31,8 @@ import snapps.wind.gui.WindGui;
 import sneer.commons.lang.ByRef;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Signals;
+import sneer.pulp.reactive.collections.ListChange;
+import sneer.pulp.reactive.collections.ListChange.Visitor;
 import sneer.pulp.reactive.collections.impl.SimpleListReceiver;
 import sneer.skin.colors.Colors;
 import sneer.skin.main.instrumentregistry.InstrumentRegistry;
@@ -42,8 +44,6 @@ import sneer.skin.widgets.reactive.TextWidget;
 import sneer.software.lang.Consumer;
 import wheel.io.Logger;
 import wheel.reactive.impl.EventReceiver;
-import wheel.reactive.lists.ListChange;
-import wheel.reactive.lists.ListChange.Visitor;
 
 class WindGuiImpl implements WindGui {
 	

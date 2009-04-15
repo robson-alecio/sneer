@@ -12,14 +12,14 @@ import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
+import sneer.pulp.reactive.collections.ListChange;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.collections.ReactiveCollections;
+import sneer.pulp.reactive.collections.ListChange.Visitor;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.software.lang.Consumer;
-import wheel.reactive.lists.ListChange;
-import wheel.reactive.lists.ListChange.Visitor;
 
 public class ListSorterTest extends BrickTest {
 	

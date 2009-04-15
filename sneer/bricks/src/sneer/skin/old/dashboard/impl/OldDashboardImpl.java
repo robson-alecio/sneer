@@ -170,7 +170,7 @@ class OldDashboardImpl implements OldDashboard {
 	}
 
 	private OldInstrumentWindow install(final OldInstrument instrument) {
-		final InstrumentWindowImpl sf = new InstrumentWindowImpl(instrument.title());
+		final OldInstrumentWindowImpl sf = new OldInstrumentWindowImpl(instrument.title());
 		my(GuiThread.class).strictInvokeAndWait(new Runnable(){	@Override public void run() {
 			_contentPanel.add(sf);
 			instrument.init(sf);
@@ -181,7 +181,7 @@ class OldDashboardImpl implements OldDashboard {
         return sf;
 	}
 
-	private void resizeContainer(final OldInstrument instrument,	final InstrumentWindowImpl sf) {
+	private void resizeContainer(final OldInstrument instrument,	final OldInstrumentWindowImpl sf) {
 		int width = sf.getSize().width;
 		Dimension size = new Dimension(width, instrument.defaultHeight());
 		sf.setMinimumSize(size);

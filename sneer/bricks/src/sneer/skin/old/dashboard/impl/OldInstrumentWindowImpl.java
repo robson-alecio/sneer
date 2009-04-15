@@ -24,7 +24,7 @@ import sneer.hardware.gui.images.Images;
 import sneer.skin.colors.Colors;
 import sneer.skin.old.dashboard.OldInstrumentWindow;
 
-class InstrumentWindowImpl extends JPanel implements OldInstrumentWindow {
+class OldInstrumentWindowImpl extends JPanel implements OldInstrumentWindow {
 	
 	private static final Image ACTIONS = getImage("menu.png");
 	private static final int MINIMAL_TOOLBAR_HEIGHT = 14;
@@ -65,10 +65,10 @@ class InstrumentWindowImpl extends JPanel implements OldInstrumentWindow {
 //	}
 	
 	private static Image getImage(String fileName) {
-		return my(Images.class).getImage(InstrumentWindowImpl.class.getResource(fileName));
+		return my(Images.class).getImage(OldInstrumentWindowImpl.class.getResource(fileName));
 	}
 	
-	public InstrumentWindowImpl(String title) {
+	public OldInstrumentWindowImpl(String title) {
 		_title.setOpaque(false);
 		if(title!=null) _title.setText(title);
 		

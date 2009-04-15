@@ -12,12 +12,12 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-class GlassPane extends JPanel implements MouseListener, MouseMotionListener, FocusListener {
+class OldGlassPane extends JPanel implements MouseListener, MouseMotionListener, FocusListener {
 
 	Container _contentPane;
 	Container _toolbar;
 
-	public GlassPane(Container contentPane, JPanel toolbar) {
+	public OldGlassPane(Container contentPane, JPanel toolbar) {
 		_contentPane = contentPane;
 		_toolbar = toolbar;
 		setOpaque(false);

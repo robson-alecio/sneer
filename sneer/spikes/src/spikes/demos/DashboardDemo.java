@@ -12,15 +12,15 @@ import javax.swing.JTextArea;
 
 import sneer.commons.environments.Environments;
 import sneer.kernel.container.ContainersOld;
+import sneer.skin.main.dashboard.Dashboard;
+import sneer.skin.main.dashboard.InstrumentWindow;
+import sneer.skin.main.instrumentregistry.Instrument;
 import sneer.skin.main.instrumentregistry.InstrumentRegistry;
-import sneer.skin.main.instrumentregistry.OldInstrument;
-import sneer.skin.old.dashboard.OldInstrumentWindow;
-import sneer.skin.old.dashboard.OldDashboard;
 import wheel.io.Logger;
 
 public class DashboardDemo  {
 	public DashboardDemo(){	
-		Environments.my(OldDashboard.class);
+		Environments.my(Dashboard.class);
 		installSampleInstrument();
 	}
 	
@@ -39,10 +39,10 @@ public class DashboardDemo  {
 	}
 }
 
-class Snapp1 implements OldInstrument{
+class Snapp1 implements Instrument{
 
 	@Override
-	public void init(OldInstrumentWindow window) {
+	public void init(InstrumentWindow window) {
 		Container container = window.contentPane();
 		container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
 		
@@ -69,10 +69,10 @@ class Snapp1 implements OldInstrument{
 	}
 }
 
-class Snapp2 implements OldInstrument{
+class Snapp2 implements Instrument{
 
 	@Override
-	public void init(OldInstrumentWindow window) {
+	public void init(InstrumentWindow window) {
 		Container container = window.contentPane();
 		container.setLayout(new BoxLayout(container,  BoxLayout.PAGE_AXIS));
 		container.add(new JCheckBox("Option 1"));
@@ -92,9 +92,9 @@ class Snapp2 implements OldInstrument{
 	}
 }
 
-class Snapp3 implements OldInstrument{
+class Snapp3 implements Instrument{
 	@Override
-	public void init(OldInstrumentWindow window) {
+	public void init(InstrumentWindow window) {
 		Container container = window.contentPane();
 		container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
 		JTextArea textArea = new JTextArea(15, 20);

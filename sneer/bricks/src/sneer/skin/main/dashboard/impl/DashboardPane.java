@@ -3,7 +3,6 @@ package sneer.skin.main.dashboard.impl;
 import static sneer.commons.environments.Environments.my;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -64,13 +63,9 @@ public class DashboardPane extends JPanel {
         _instrumentsAndToolbarsLayeredPane.add(_instrumentsPanel);
         _instrumentsPanel.setLayout(new FlowLayout(FlowLayout.TRAILING, 5, 1));
     	addComponentListener(new ComponentAdapter(){ @Override public void componentResized(ComponentEvent e) {
-    		System.out.println(1);
-    		for (InstrumentWindowImpl instrument : _instruments) {
-    			System.out.println(instrument);
+    		for (InstrumentWindowImpl instrument : _instruments) 
     			instrument.resizeInstrumentWindow();
-			}
 		}});        
-        
     }
 	
 	private void addInstrumentPanelResizer() {

@@ -1,7 +1,7 @@
 package snapps.meter.memory.gui;
 
-import sneer.skin.snappmanager.Instrument;
+import sneer.skin.snappmanager.OldInstrument;
 
-public interface MemoryMeterGui extends Instrument {
+public interface MemoryMeterGui extends OldInstrument {
 
 }

@@ -35,7 +35,7 @@ import sneer.skin.image.ImageFactory;
 import sneer.skin.main_Menu.MainMenu;
 import sneer.skin.olddashboard.OldDashboard;
 import sneer.skin.olddashboard.InstrumentWindow;
-import sneer.skin.snappmanager.Instrument;
+import sneer.skin.snappmanager.OldInstrument;
 import sneer.skin.snappmanager.InstrumentRegistry;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
 import wheel.io.ui.action.Action;
@@ -75,7 +75,7 @@ class OldDashboardImpl implements OldDashboard {
 	}};
 		
 	@SuppressWarnings("unused")
-	private SimpleListReceiver<Instrument> _instrumentsReceiver;
+	private SimpleListReceiver<OldInstrument> _instrumentsReceiver;
 	
 	OldDashboardImpl() {
 		_threadPool.registerActor(new Runnable(){@Override public void run() {
@@ -118,20 +118,20 @@ class OldDashboardImpl implements OldDashboard {
 	}
 
 	private void addInstrumentsReceiver() {
-		_instrumentsReceiver = new SimpleListReceiver<Instrument>(_instrumentManager.installedInstruments()){
+		_instrumentsReceiver = new SimpleListReceiver<OldInstrument>(_instrumentManager.installedInstruments()){
 
 			@Override
-			protected void elementAdded(Instrument newElement) {
+			protected void elementAdded(OldInstrument newElement) {
 				install(newElement);
 			}
 
 			@Override
-			protected void elementPresent(Instrument element) {
+			protected void elementPresent(OldInstrument element) {
 				install(element);
 			}
 
 			@Override
-			protected void elementRemoved(Instrument element) {
+			protected void elementRemoved(OldInstrument element) {
 				throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
 			}
 		};
@@ -169,7 +169,7 @@ class OldDashboardImpl implements OldDashboard {
 		_rootPanel.add(_contentPanel, BorderLayout.CENTER);
 	}
 
-	private InstrumentWindow install(final Instrument instrument) {
+	private InstrumentWindow install(final OldInstrument instrument) {
 		final InstrumentWindowImpl sf = new InstrumentWindowImpl(instrument.title());
 		my(GuiThread.class).strictInvokeAndWait(new Runnable(){	@Override public void run() {
 			_contentPanel.add(sf);
@@ -181,7 +181,7 @@ class OldDashboardImpl implements OldDashboard {
         return sf;
 	}
 
-	private void resizeContainer(final Instrument instrument,	final InstrumentWindowImpl sf) {
+	private void resizeContainer(final OldInstrument instrument,	final InstrumentWindowImpl sf) {
 		int width = sf.getSize().width;
 		Dimension size = new Dimension(width, instrument.defaultHeight());
 		sf.setMinimumSize(size);

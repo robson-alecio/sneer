@@ -1,8 +1,8 @@
 package snapps.blinkinglights.gui;
 
-import sneer.skin.snappmanager.Instrument;
+import sneer.skin.snappmanager.OldInstrument;
 
-public interface BlinkingLightsGui extends Instrument {
+public interface BlinkingLightsGui extends OldInstrument {
 
 
 }

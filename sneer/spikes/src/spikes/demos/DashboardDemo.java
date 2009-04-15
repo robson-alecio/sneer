@@ -14,7 +14,7 @@ import sneer.commons.environments.Environments;
 import sneer.kernel.container.ContainersOld;
 import sneer.skin.olddashboard.OldDashboard;
 import sneer.skin.olddashboard.InstrumentWindow;
-import sneer.skin.snappmanager.Instrument;
+import sneer.skin.snappmanager.OldInstrument;
 import sneer.skin.snappmanager.InstrumentRegistry;
 import wheel.io.Logger;
 
@@ -39,7 +39,7 @@ public class DashboardDemo  {
 	}
 }
 
-class Snapp1 implements Instrument{
+class Snapp1 implements OldInstrument{
 
 	@Override
 	public void init(InstrumentWindow window) {
@@ -69,7 +69,7 @@ class Snapp1 implements Instrument{
 	}
 }
 
-class Snapp2 implements Instrument{
+class Snapp2 implements OldInstrument{
 
 	@Override
 	public void init(InstrumentWindow window) {
@@ -92,7 +92,7 @@ class Snapp2 implements Instrument{
 	}
 }
 
-class Snapp3 implements Instrument{
+class Snapp3 implements OldInstrument{
 	@Override
 	public void init(InstrumentWindow window) {
 		Container container = window.contentPane();

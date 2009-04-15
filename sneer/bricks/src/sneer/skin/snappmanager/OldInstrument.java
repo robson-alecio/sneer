@@ -3,7 +3,7 @@ package sneer.skin.snappmanager;
 import sneer.skin.GuiBrick;
 import sneer.skin.olddashboard.InstrumentWindow;
 
-public interface Instrument extends GuiBrick {
+public interface OldInstrument extends GuiBrick {
 
 	static int DEFAULT_HEIGHT = 50;
 	

@@ -5,7 +5,7 @@ import sneer.pulp.reactive.collections.ListSignal;
 
 public interface InstrumentRegistry extends OldBrick {
 
-	void registerInstrument(Instrument instrument);
+	void registerInstrument(OldInstrument instrument);
 
-	ListSignal<Instrument> installedInstruments();
+	ListSignal<OldInstrument> installedInstruments();
 }

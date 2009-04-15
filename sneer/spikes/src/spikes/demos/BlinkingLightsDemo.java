@@ -6,7 +6,7 @@ import sneer.commons.environments.Environments;
 import sneer.kernel.container.ContainersOld;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.LightType;
-import sneer.skin.olddashboard.OldDashboard;
+import sneer.skin.old.dashboard.OldDashboard;
 import wheel.io.Logger;
 
 public class BlinkingLightsDemo {

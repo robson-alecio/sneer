@@ -35,7 +35,7 @@ public class Sneer {
 				sneer.pulp.httpclient.HttpClient.class,
 				sneer.pulp.network.Network.class,
 				sneer.skin.menu.MenuFactory.class,
-				sneer.skin.main_Menu.MainMenu.class,
+				sneer.skin.main.menu.MainMenu.class,
 				sneer.skin.sound.speaker.Speaker.class,
 				sneer.pulp.distribution.filtering.TupleFilterManager.class,
 				snapps.whisper.speex.Speex.class,
@@ -52,7 +52,7 @@ public class Sneer {
 				sneer.pulp.exceptionhandling.ExceptionHandler.class,
 				sneer.pulp.connection.SocketOriginator.class,
 				sneer.pulp.serialization.Serializer.class,
-				sneer.skin.snappmanager.InstrumentRegistry.class,
+				sneer.skin.old.snappmanager.InstrumentRegistry.class,
 				sneer.skin.rooms.ActiveRoomKeeper.class,
 				sneer.skin.widgets.reactive.ReactiveWidgetFactory.class,
 				snapps.watchme.gui.windows.RemoteWatchMeWindows.class,
@@ -108,9 +108,9 @@ public class Sneer {
 				sneer.hardware.logging.gui.LogConsole.class,
 				sneer.hardware.gui.timebox.TimeboxedEventQueue.class,
 				sneer.hardware.gui.trayicon.TrayIcons.class,
-				sneer.skin.olddashboard.OldDashboard.class,
+				sneer.skin.old.dashboard.OldDashboard.class,
 				
-				sneer.skin.dashboard.util.GuiUtil.class,
+				sneer.skin.main.dashboard.util.GuiUtil.class,
 				snapps.contacts.hardcoded.HardcodedContacts.class
 		};
 	}

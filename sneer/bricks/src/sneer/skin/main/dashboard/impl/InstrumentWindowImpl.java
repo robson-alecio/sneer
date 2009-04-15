@@ -13,6 +13,7 @@ public class InstrumentWindowImpl  extends JPanel implements InstrumentWindow{
 
 	public InstrumentWindowImpl(String title) {
 		_title = title;
+		_title.toString();  //Delete this line.
 	}
 
 	@Override

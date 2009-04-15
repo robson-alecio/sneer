@@ -22,7 +22,7 @@ import javax.swing.border.EmptyBorder;
 import org.jdesktop.jxlayer.JXLayer;
 import org.jdesktop.jxlayer.plaf.AbstractLayerUI;
 
-import spikes.sandro.swing.layers.DashboardPane.InstrumentWindow.Toolbar;
+import spikes.sandro.swing.layers.DashboardPaneTest.InstrumentWindow.Toolbar;
 
 // 	JFrame
 //			RootPane
@@ -35,20 +35,18 @@ import spikes.sandro.swing.layers.DashboardPane.InstrumentWindow.Toolbar;
 //						_mouseBlockButton (hack to block mose events)
 //						_toolbarPanel (0..1)
 //				Glasspane
-public class DashboardPane extends JPanel {
+public class DashboardPaneTest extends JPanel {
 
 	private final JLayeredPane _instrumentsAndToolbarsLayeredPane = new JLayeredPane();
 	private final JPanel _instrumentsPanel = new JPanel();
 	private List<InstrumentWindow> _instruments = new ArrayList<InstrumentWindow>();
 
-	public DashboardPane()    {
+	public DashboardPaneTest()    {
 		
     	setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
     	add(_instrumentsAndToolbarsLayeredPane, new Integer(0));
     	addInstrumentPanelResizer();
     	setOpaque(true);
-    	setBackground(Color.DARK_GRAY);
-    	_instrumentsPanel.setOpaque(false);
 
         _instrumentsAndToolbarsLayeredPane.add(_instrumentsPanel);
         addSomeFakeInstruments(_instrumentsPanel);
@@ -102,8 +100,8 @@ public class DashboardPane extends JPanel {
 			private final JButton _mouseBlockButton = new JButton(); //Fix: Remove this hack used to block mouse 
 																									//event dispatch to the instrument behind toolbar 
 			private Toolbar(){
-				DashboardPane.this._instrumentsAndToolbarsLayeredPane.add(_mouseBlockButton, new Integer(1));
-				DashboardPane.this._instrumentsAndToolbarsLayeredPane.add(_toolbarPanel, new Integer(2));
+				DashboardPaneTest.this._instrumentsAndToolbarsLayeredPane.add(_mouseBlockButton, new Integer(1));
+				DashboardPaneTest.this._instrumentsAndToolbarsLayeredPane.add(_toolbarPanel, new Integer(2));
 			}
 
 			private void setVisible(boolean isVisible) {  
@@ -113,7 +111,7 @@ public class DashboardPane extends JPanel {
 			private boolean isVisible() { 	return _toolbarPanel.isVisible(); 	}
 			
 			private void resizeToolbar() {
-				Point layeredPanePoint = DashboardPane.this._instrumentsAndToolbarsLayeredPane.getLocationOnScreen();
+				Point layeredPanePoint = DashboardPaneTest.this._instrumentsAndToolbarsLayeredPane.getLocationOnScreen();
 				Point instrumentPoint = getLocationOnScreen();
 				
 				int x = 0;

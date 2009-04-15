@@ -6,14 +6,14 @@ import sneer.commons.environments.Environments;
 import sneer.kernel.container.ContainersOld;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.LightType;
-import sneer.skin.old.dashboard.OldDashboard;
+import sneer.skin.main.dashboard.Dashboard;
 import wheel.io.Logger;
 
 public class BlinkingLightsDemo {
 
 	BlinkingLightsDemo() throws Exception {
 
-		my(OldDashboard.class);
+		my(Dashboard.class);
 		my(BlinkingLightsGui.class);
 		BlinkingLights bl = my(BlinkingLights.class);
 		

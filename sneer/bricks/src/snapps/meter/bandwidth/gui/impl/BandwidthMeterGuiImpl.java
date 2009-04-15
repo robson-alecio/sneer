@@ -20,8 +20,8 @@ import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.colors.Colors;
+import sneer.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.skin.old.dashboard.OldInstrumentWindow;
-import sneer.skin.old.instrumentregistry.InstrumentRegistry;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 

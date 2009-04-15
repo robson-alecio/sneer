@@ -26,8 +26,8 @@ import sneer.hardware.gui.images.Images;
 import sneer.pulp.memory.MemoryMeter;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.colors.Colors;
+import sneer.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.skin.old.dashboard.OldInstrumentWindow;
-import sneer.skin.old.instrumentregistry.InstrumentRegistry;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 

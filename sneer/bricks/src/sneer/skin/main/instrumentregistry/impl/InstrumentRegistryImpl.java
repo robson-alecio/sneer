@@ -1,12 +1,12 @@
-package sneer.skin.old.instrumentregistry.impl;
+package sneer.skin.main.instrumentregistry.impl;
 
 import static sneer.commons.environments.Environments.my;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.collections.ReactiveCollections;
-import sneer.skin.old.instrumentregistry.Instrument;
-import sneer.skin.old.instrumentregistry.InstrumentRegistry;
-import sneer.skin.old.instrumentregistry.OldInstrument;
+import sneer.skin.main.instrumentregistry.Instrument;
+import sneer.skin.main.instrumentregistry.InstrumentRegistry;
+import sneer.skin.main.instrumentregistry.OldInstrument;
 
 class InstrumentRegistryImpl implements InstrumentRegistry {
 

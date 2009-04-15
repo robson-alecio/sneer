@@ -1,4 +1,4 @@
-package sneer.skin.old.instrumentregistry;
+package sneer.skin.main.instrumentregistry;
 
 import sneer.brickness.OldBrick;
 import sneer.pulp.reactive.collections.ListSignal;

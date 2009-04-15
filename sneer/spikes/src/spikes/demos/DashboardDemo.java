@@ -12,10 +12,10 @@ import javax.swing.JTextArea;
 
 import sneer.commons.environments.Environments;
 import sneer.kernel.container.ContainersOld;
+import sneer.skin.main.instrumentregistry.InstrumentRegistry;
+import sneer.skin.main.instrumentregistry.OldInstrument;
 import sneer.skin.old.dashboard.OldInstrumentWindow;
 import sneer.skin.old.dashboard.OldDashboard;
-import sneer.skin.old.instrumentregistry.InstrumentRegistry;
-import sneer.skin.old.instrumentregistry.OldInstrument;
 import wheel.io.Logger;
 
 public class DashboardDemo  {

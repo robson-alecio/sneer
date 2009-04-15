@@ -1,4 +1,4 @@
-package sneer.skin.old.instrumentregistry;
+package sneer.skin.main.instrumentregistry;
 
 import sneer.brickness.Brick;
 import sneer.skin.main.dashboard.InstrumentWindow;

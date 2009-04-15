@@ -38,7 +38,7 @@ import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
-import sneer.skin.dashboard.InstrumentWindow;
+import sneer.skin.olddashboard.InstrumentWindow;
 import sneer.skin.snappmanager.InstrumentRegistry;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;

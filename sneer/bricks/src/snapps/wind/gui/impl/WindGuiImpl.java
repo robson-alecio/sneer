@@ -33,7 +33,7 @@ import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.impl.SimpleListReceiver;
 import sneer.skin.colors.Colors;
-import sneer.skin.dashboard.InstrumentWindow;
+import sneer.skin.olddashboard.InstrumentWindow;
 import sneer.skin.snappmanager.InstrumentRegistry;
 import sneer.skin.sound.player.SoundPlayer;
 import sneer.skin.widgets.reactive.NotificationPolicy;

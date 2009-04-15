@@ -22,7 +22,7 @@ import sneer.commons.environments.Environments;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.gates.logic.LogicGates;
 import sneer.skin.colors.Colors;
-import sneer.skin.dashboard.InstrumentWindow;
+import sneer.skin.olddashboard.InstrumentWindow;
 import sneer.skin.rooms.ActiveRoomKeeper;
 import sneer.skin.snappmanager.InstrumentRegistry;
 import sneer.skin.sound.loopback.LoopbackTester;

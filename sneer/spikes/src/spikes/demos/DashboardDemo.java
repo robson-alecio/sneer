@@ -12,8 +12,8 @@ import javax.swing.JTextArea;
 
 import sneer.commons.environments.Environments;
 import sneer.kernel.container.ContainersOld;
-import sneer.skin.dashboard.Dashboard;
-import sneer.skin.dashboard.InstrumentWindow;
+import sneer.skin.olddashboard.Dashboard;
+import sneer.skin.olddashboard.InstrumentWindow;
 import sneer.skin.snappmanager.Instrument;
 import sneer.skin.snappmanager.InstrumentRegistry;
 import wheel.io.Logger;

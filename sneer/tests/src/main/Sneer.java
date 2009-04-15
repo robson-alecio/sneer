@@ -108,7 +108,7 @@ public class Sneer {
 				sneer.hardware.logging.gui.LogConsole.class,
 				sneer.hardware.gui.timebox.TimeboxedEventQueue.class,
 				sneer.hardware.gui.trayicon.TrayIcons.class,
-				sneer.skin.dashboard.Dashboard.class,
+				sneer.skin.olddashboard.Dashboard.class,
 				
 				sneer.skin.dashboard.util.GuiUtil.class,
 				snapps.contacts.hardcoded.HardcodedContacts.class

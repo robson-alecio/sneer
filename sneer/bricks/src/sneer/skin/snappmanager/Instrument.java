@@ -1,7 +1,7 @@
 package sneer.skin.snappmanager;
 
 import sneer.skin.GuiBrick;
-import sneer.skin.dashboard.InstrumentWindow;
+import sneer.skin.olddashboard.InstrumentWindow;
 
 public interface Instrument extends GuiBrick {
 

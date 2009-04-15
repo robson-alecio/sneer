@@ -33,7 +33,7 @@ import sneer.skin.colors.Colors;
 import sneer.skin.image.DefaultIcons;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.main_Menu.MainMenu;
-import sneer.skin.olddashboard.Dashboard;
+import sneer.skin.olddashboard.OldDashboard;
 import sneer.skin.olddashboard.InstrumentWindow;
 import sneer.skin.snappmanager.Instrument;
 import sneer.skin.snappmanager.InstrumentRegistry;
@@ -42,7 +42,7 @@ import wheel.io.ui.action.Action;
 import wheel.reactive.impl.EventReceiver;
 
 //Implement Persist window size and position
-class DashboardImpl implements Dashboard {
+class OldDashboardImpl implements OldDashboard {
 	
 	private static final int TIMEOUT_FOR_GUI_EVENTS = 10 * 1000;
 	
@@ -77,7 +77,7 @@ class DashboardImpl implements Dashboard {
 	@SuppressWarnings("unused")
 	private SimpleListReceiver<Instrument> _instrumentsReceiver;
 	
-	DashboardImpl() {
+	OldDashboardImpl() {
 		_threadPool.registerActor(new Runnable(){@Override public void run() {
 			init();
 		}});

@@ -12,7 +12,7 @@ import javax.swing.JTextArea;
 
 import sneer.commons.environments.Environments;
 import sneer.kernel.container.ContainersOld;
-import sneer.skin.olddashboard.Dashboard;
+import sneer.skin.olddashboard.OldDashboard;
 import sneer.skin.olddashboard.InstrumentWindow;
 import sneer.skin.snappmanager.Instrument;
 import sneer.skin.snappmanager.InstrumentRegistry;
@@ -20,7 +20,7 @@ import wheel.io.Logger;
 
 public class DashboardDemo  {
 	public DashboardDemo(){	
-		Environments.my(Dashboard.class);
+		Environments.my(OldDashboard.class);
 		installSampleInstrument();
 	}
 	

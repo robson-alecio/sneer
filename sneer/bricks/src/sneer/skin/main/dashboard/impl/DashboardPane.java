@@ -37,15 +37,15 @@ import sneer.skin.main.instrumentregistry.Instrument;
 
 // 	JFrame
 //			RootPane
-//				DashboardParne (ContentPane) [RED]
+//				Glasspane
+//				DashboardPane (ContentPane)
 //					_instrumentsAndToolbarsLayeredPane (JLayeredPane)
+//						_toolbarPanel (0..1)
+//						_mouseBlockButton (hack to block mouse events)
 //						_instrumentsPanel (0..n)
 //							_instrumentLayer (decorator)
-//								InstrumentWindow (instrument container) [YELLOW]
 //								_instrumentGlasspane (mouse listener)
-//						_mouseBlockButton (hack to block mouse events)
-//						_toolbarPanel (0..1)
-//				Glasspane
+//								InstrumentWindow (instrument container)
 public class DashboardPane extends JPanel {
 
 	private static final Image ACTIONS = my(Images.class).getImage(DashboardPane.class.getResource("menu.png"));
@@ -214,6 +214,7 @@ public class DashboardPane extends JPanel {
 		public InstrumentGlasspane(Toolbar toolbar) { _toolbar = toolbar; }
 		
 		@Override protected void processMouseMotionEvent(MouseEvent event, JXLayer<JPanel> layer) {
+			System.out.println(event.getPoint());
 			Point mousePoint = event.getLocationOnScreen();
 			if(_toolbar.isOverAnyToolbar(mousePoint)) 
 				return;

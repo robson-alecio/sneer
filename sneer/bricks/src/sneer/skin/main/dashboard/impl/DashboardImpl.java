@@ -2,8 +2,6 @@ package sneer.skin.main.dashboard.impl;
 
 import static sneer.commons.environments.Environments.my;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Rectangle;
@@ -140,8 +138,6 @@ class DashboardImpl implements Dashboard {
 				_rwindow = my(ReactiveWidgetFactory.class).newFrame(reactiveTitle());
 			}});
 			_frame = _rwindow.getMainWidget();
-			_rootPanel = (JPanel) _frame.getContentPane();
-			_rootPanel.setBackground(Color.BLUE);
 			_frame.setIconImage(my(Images.class).getImage(logoIconURL()));
 			my(WindowBoundsSetter.class).defaultContainer(_rootPanel);
 		}
@@ -149,10 +145,7 @@ class DashboardImpl implements Dashboard {
 		private void initRootPanel() {
 			MainMenu mainMenu = my(MainMenu.class);
 			mainMenu.getWidget().setBorder(new EmptyBorder(0,0,0,0));
-
-			_rootPanel.setLayout(new BorderLayout());
-			_rootPanel.add(mainMenu.getWidget(), BorderLayout.NORTH);
-			_rootPanel.add(_dashboardPane, BorderLayout.CENTER);
+			_frame.setContentPane(_dashboardPane);
 		}	
 		
 		private void resizeWindow() {

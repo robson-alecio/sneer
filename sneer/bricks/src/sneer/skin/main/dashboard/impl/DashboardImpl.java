@@ -2,6 +2,7 @@ package sneer.skin.main.dashboard.impl;
 
 import static sneer.commons.environments.Environments.my;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Rectangle;
@@ -9,6 +10,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
@@ -35,6 +37,7 @@ class DashboardImpl implements Dashboard {
 	private static final int TIMEOUT_FOR_GUI_EVENTS = 10 * 1000;
 	
 	private final DashboardPanel _dashboardPanel = new DashboardPanel();
+	private JPanel _rootPanel = new JPanel();
 
 	private Dimension _screenSize;
 	private Rectangle _bounds;
@@ -85,15 +88,18 @@ class DashboardImpl implements Dashboard {
 			}});
 			_frame = _rwindow.getMainWidget();
 			_frame.setIconImage(IconUtil.getLogo());
-			my(WindowBoundsSetter.class).defaultContainer(_dashboardPanel);
+			my(WindowBoundsSetter.class).defaultContainer(_rootPanel);
 		}
-
-
 
 		private void initRootPanel() {
 			MainMenu mainMenu = my(MainMenu.class);
 			mainMenu.getWidget().setBorder(new EmptyBorder(0,0,0,0));
-			_frame.setContentPane(_dashboardPanel);
+			
+			_rootPanel.setLayout(new BorderLayout());
+			_rootPanel.add(mainMenu.getWidget(), BorderLayout.NORTH);
+			_rootPanel.add(_dashboardPanel, BorderLayout.CENTER);
+			
+			_frame.setContentPane(_rootPanel);
 		}	
 		
 		private void resizeWindow() {

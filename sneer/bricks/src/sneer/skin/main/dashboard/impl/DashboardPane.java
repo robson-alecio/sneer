@@ -48,6 +48,8 @@ import sneer.skin.main.instrumentregistry.Instrument;
 //								InstrumentWindow (instrument container)
 public class DashboardPane extends JPanel {
 
+	private static final int _TOOLBAR_HEIGHT = 20;
+
 	private static final Image ACTIONS = my(Images.class).getImage(DashboardPane.class.getResource("menu.png"));
 	private final JLayeredPane _instrumentsAndToolbarsLayeredPane = new JLayeredPane();
 	private final JPanel _instrumentsPanel = new JPanel();
@@ -74,9 +76,9 @@ public class DashboardPane extends JPanel {
 	private void addInstrumentPanelResizer() {
 		addComponentListener(new ComponentAdapter(){ @Override public void componentResized(ComponentEvent e) {
 			int x = 0;
-			int y = Toolbar._TOOLBAR_HEIGHT;
+			int y = _TOOLBAR_HEIGHT;
 			int width = getSize().width;
-			int height = getSize().height - Toolbar._TOOLBAR_HEIGHT;
+			int height = getSize().height - _TOOLBAR_HEIGHT;
 			_instrumentsPanel.setBounds(x, y, width, height);
 		}});
 	}
@@ -86,6 +88,7 @@ public class DashboardPane extends JPanel {
 	}
 	
 	class InstrumentWindowImpl extends JPanel implements InstrumentWindow{
+		
 		private final AbstractLayerUI<JPanel> _instrumentGlasspane;
 		private final JXLayer<JPanel> _instrumentLayer ;
 		private final Toolbar _toolbar;
@@ -93,8 +96,8 @@ public class DashboardPane extends JPanel {
 		
 		InstrumentWindowImpl(Instrument instrument) {
 			_instrument = instrument;
-			_toolbar = new Toolbar(this);
-			_instrumentGlasspane = new InstrumentGlasspane(_toolbar);
+			_toolbar = new Toolbar();
+			_instrumentGlasspane = new InstrumentGlasspane();
 			_instrumentLayer = new JXLayer<JPanel>(this, _instrumentGlasspane);
 			_instrumentsPanel.add(_instrumentLayer);
 			_instruments.add(this);
@@ -102,6 +105,107 @@ public class DashboardPane extends JPanel {
 			_toolbar.setVisible(false); 
 //			_toolbar.setVisible(true); 
 //			_toolbar._toolbarPanel.setBackground(Color.RED);
+		}
+		class InstrumentGlasspane extends AbstractLayerUI<JPanel> {
+			
+			@Override protected void processMouseMotionEvent(MouseEvent event, JXLayer<JPanel> layer) {
+				System.out.println(event.getPoint());
+				Point mousePoint = event.getLocationOnScreen();
+				if(_toolbar.isOverAnyToolbar(mousePoint)) 
+					return;
+				
+				_toolbar.hideAndShow(mousePoint);
+			}
+			
+			@Override protected void paintLayer(Graphics2D g2, JXLayer<JPanel> l) {
+				super.paintLayer(g2, l);
+				g2.setColor(new Color(0, 100, 0, 100));
+				g2.fillRect(0, 0, l.getWidth(), l.getHeight());
+			}
+			
+		}
+		
+		class Toolbar{
+			
+			private final JPopupMenu _menuActions = new JPopupMenu();
+			private final JPanel _toolbarPanel = new JPanel();
+			private final JButton _mouseBlockButton = new JButton(); //Fix: Remove this hack used to block mouse 
+																									//event dispatch to the instrument behind toolbar 
+			private final JLabel _title = new JLabel();
+			private final JLabel _menu = new JLabel(new ImageIcon(ACTIONS)){
+				@Override public boolean isVisible() {
+					return _menuActions.getSubElements().length>0;
+				}
+			};
+			
+			private Toolbar(){
+				initGui(_instrument.title());
+				DashboardPane.this._instrumentsAndToolbarsLayeredPane.add(_mouseBlockButton, new Integer(1));
+				DashboardPane.this._instrumentsAndToolbarsLayeredPane.add(_toolbarPanel, new Integer(2));
+			}
+			
+			private void initGui(String title) {
+				_title.setOpaque(false);
+				if (title != null)
+					_title.setText(title);
+				
+				_title.setFont(_title.getFont().deriveFont(10f));
+				_title.setBorder(new EmptyBorder(0, 10, 0, 0));
+				
+				_menu.setBorder(new EmptyBorder(0,0,0,2));
+				_menu.setOpaque(false);
+				_menu.addMouseListener(new MouseAdapter(){ @Override public void mouseReleased(MouseEvent e) { 
+					showActionsPopUp();
+				}});
+				
+				_menu.addMouseListener(new MouseAdapter(){
+					{_menu.setEnabled(false);}
+					@Override public void mouseEntered(MouseEvent e) {	_menu.setEnabled(true); }
+					@Override public void mouseExited(MouseEvent e) {	_menu.setEnabled(false); }
+				});			
+				
+				_toolbarPanel.setLayout(new BorderLayout());
+				_toolbarPanel.add(_title, BorderLayout.CENTER);
+				_toolbarPanel.add(_menu, BorderLayout.EAST);
+			}
+			
+			private void setVisible(boolean isVisible) {
+				if(isVisible) resizeToolbar();
+				_toolbarPanel.setVisible(isVisible); 	
+				_mouseBlockButton.setVisible(isVisible);
+			}
+			
+			private void showActionsPopUp() {	_menuActions.show(_menu, 0, 15);	}
+			private boolean isVisible() { 	return _toolbarPanel.isVisible(); 	}
+			
+			private void resizeToolbar() {
+				Point pointInstrument = getLocation();
+				
+				int x = 0;
+				int y = pointInstrument.y;
+				int width = getSize().width;
+				int height = _TOOLBAR_HEIGHT;
+				_toolbarPanel.setBounds(x, y, width, height);
+				_mouseBlockButton.setBounds(x, y, width, height);
+			}	
+			
+			private boolean isOverAnyToolbar(Point mousePoint) {
+				for (InstrumentWindowImpl instrument : _instruments) {
+					Toolbar toolbar = instrument._toolbar;
+					if(toolbar.isVisible())
+						return getAreaOnScreen(instrument._toolbar._toolbarPanel).contains(mousePoint);
+				}
+				return false;
+			}
+			
+			private void hideAndShow(Point mousePoint) {
+				for (InstrumentWindowImpl instrument : _instruments) 
+					instrument._toolbar.setVisible(getAreaOnScreen(instrument).contains(mousePoint));
+			}
+			
+			private Rectangle getAreaOnScreen(JComponent component) {
+				return new Rectangle(component.getLocationOnScreen(), component.getSize());
+			}
 		}
 
 		@Override
@@ -121,114 +225,6 @@ public class DashboardPane extends JPanel {
 		@Override public JPopupMenu actions() { return _toolbar._menuActions; }
 		@Override public Container contentPane() {	return this; }
 	}
-	
-	class Toolbar{
-		private static final int _TOOLBAR_HEIGHT = 20;
-		
-		private final JPopupMenu _menuActions = new JPopupMenu();
-		private final JPanel _toolbarPanel = new JPanel();
-		private final JButton _mouseBlockButton = new JButton(); //Fix: Remove this hack used to block mouse 
-																								//event dispatch to the instrument behind toolbar 
-		private final InstrumentWindowImpl _instrumentWindowImpl;
-		private final JLabel _title = new JLabel();
-		private final JLabel _menu = new JLabel(new ImageIcon(ACTIONS)){
-			@Override public boolean isVisible() {
-				return _menuActions.getSubElements().length>0;
-			}
-		};
-		
-		private Toolbar(InstrumentWindowImpl instrumentWindowImpl){
-			_instrumentWindowImpl = instrumentWindowImpl;
-			initGui(instrumentWindowImpl._instrument.title());
-			DashboardPane.this._instrumentsAndToolbarsLayeredPane.add(_mouseBlockButton, new Integer(1));
-			DashboardPane.this._instrumentsAndToolbarsLayeredPane.add(_toolbarPanel, new Integer(2));
-		}
-
-		private void initGui(String title) {
-			_title.setOpaque(false);
-			if (title != null)
-				_title.setText(title);
-			
-			_title.setFont(_title.getFont().deriveFont(10f));
-			_title.setBorder(new EmptyBorder(0, 10, 0, 0));
-			
-			_menu.setBorder(new EmptyBorder(0,0,0,2));
-			_menu.setOpaque(false);
-			_menu.addMouseListener(new MouseAdapter(){ @Override public void mouseReleased(MouseEvent e) { 
-				showActionsPopUp();
-			}});
-			
-			_menu.addMouseListener(new MouseAdapter(){
-				{_menu.setEnabled(false);}
-				@Override public void mouseEntered(MouseEvent e) {	_menu.setEnabled(true); }
-				@Override public void mouseExited(MouseEvent e) {	_menu.setEnabled(false); }
-			});			
-			
-			_toolbarPanel.setLayout(new BorderLayout());
-			_toolbarPanel.add(_title, BorderLayout.CENTER);
-			_toolbarPanel.add(_menu, BorderLayout.EAST);
-		}
-		
-		private void setVisible(boolean isVisible) {
-			if(isVisible) resizeToolbar();
-			_toolbarPanel.setVisible(isVisible); 	
-			_mouseBlockButton.setVisible(isVisible);
-		}
-		
-		private void showActionsPopUp() {	_menuActions.show(_menu, 0, 15);	}
-		private boolean isVisible() { 	return _toolbarPanel.isVisible(); 	}
-		
-		private void resizeToolbar() {
-			Point pointInstrument = _instrumentWindowImpl.getLocation();
-			
-			int x = 0;
-			int y = pointInstrument.y;
-			int width = getSize().width;
-			int height = Toolbar._TOOLBAR_HEIGHT;
-			_toolbarPanel.setBounds(x, y, width, height);
-			_mouseBlockButton.setBounds(x, y, width, height);
-		}	
-		
-		private boolean isOverAnyToolbar(Point mousePoint) {
-			for (InstrumentWindowImpl instrument : _instruments) {
-				Toolbar toolbar = instrument._toolbar;
-				if(toolbar.isVisible())
-					return getAreaOnScreen(instrument._toolbar._toolbarPanel).contains(mousePoint);
-			}
-			return false;
-		}
-
-		private void hideAndShow(Point mousePoint) {
-			for (InstrumentWindowImpl instrument : _instruments) 
-				instrument._toolbar.setVisible(getAreaOnScreen(instrument).contains(mousePoint));
-		}
-
-		private Rectangle getAreaOnScreen(JComponent component) {
-			return new Rectangle(component.getLocationOnScreen(), component.getSize());
-		}
-	}	
-	
-	class InstrumentGlasspane extends AbstractLayerUI<JPanel> {
-		private final Toolbar _toolbar;
-		
-		public InstrumentGlasspane(Toolbar toolbar) { _toolbar = toolbar; }
-		
-		@Override protected void processMouseMotionEvent(MouseEvent event, JXLayer<JPanel> layer) {
-			System.out.println(event.getPoint());
-			Point mousePoint = event.getLocationOnScreen();
-			if(_toolbar.isOverAnyToolbar(mousePoint)) 
-				return;
-			
-			_toolbar.hideAndShow(mousePoint);
-		}
-
-		@Override protected void paintLayer(Graphics2D g2, JXLayer<JPanel> l) {
-			super.paintLayer(g2, l);
-			g2.setColor(new Color(0, 100, 0, 100));
-			g2.fillRect(0, 0, l.getWidth(), l.getHeight());
-		}
-		
-	};
 	
 	class InstrumentInstaller{
 		private InstrumentWindow install(final Instrument instrument) {

@@ -39,17 +39,19 @@ import sneer.skin.main.instrumentregistry.Instrument;
 //		RootPane
 //			LayeredPane
 //				Glasspane
-//				ContentPane <-- DashboardPanel (JFrame.ContentPane)
-// --------------------------------------------------------------------------------------------
-//					_dashboardLayeredPane (0..n toolbars, 0..n block button, 1 instrumentsContainer )
-//						_toolbarPanel (toolbar container)
-//						_mouseBlockButton (hack to block mouse events)
-//						_instrumentsContainer (0..n instruments)
-//							_instrumentJXLayer (0..n _instrumentJXLayer)
-//								_instrumentGlasspane (mouse listener)
-//								InstrumentPanel (instrument container)
+//				ContentPane
+// --------------------------------------- [^ DashboardImpl,  v DashboardPanel ]
+//					MainMenu
+//					JXLayer
+//						GlassPane (on mouse exit hide toolbar)
+//						_dashboardLayeredPane (0..n toolbars, 0..n block button, 1 instrumentsContainer )
+//							_toolbarPanel (toolbar container)
+//							_mouseBlockButton (hack to block mouse events)
+//							_instrumentsContainer (0..n instruments)
+//								_instrumentJXLayer (0..n _instrumentJXLayer)
+//									_instrumentGlasspane (mouse listener)
+//									InstrumentPanel (instrument container)
 //
-// 	JFrame.JRootPane.JLayeredPane.DashboardPane.JLayeredPane.JPanel.JXLayer.InstrumentWindowImpl
 class DashboardPanel extends JPanel {
 
 	private static final int _TOOLBAR_HEIGHT = 20;
@@ -68,7 +70,14 @@ class DashboardPanel extends JPanel {
     	setBackground(Color.BLACK); //Fix
     	_instrumentsContainer.setBackground(Color.BLUE); //Fix
     	
-       	add(_dashboardLayeredPane, BorderLayout.CENTER);
+		JXLayer<JLayeredPane> root = new JXLayer<JLayeredPane>(_dashboardLayeredPane, 
+			new AbstractLayerUI<JLayeredPane>(){@Override protected void processMouseEvent(MouseEvent event, JXLayer<JLayeredPane> layer) {
+				if(event.getID() == MouseEvent.MOUSE_EXITED)
+					hideAllToolbars();
+			}}
+		);    	
+    	
+       	add(root, BorderLayout.CENTER);
         _dashboardLayeredPane.add(_instrumentsContainer);
         _instrumentsContainer.setLayout(new FlowLayout(FlowLayout.TRAILING, 0, 3));
     	addComponentListener(new ComponentAdapter(){ @Override public void componentResized(ComponentEvent e) {
@@ -76,6 +85,11 @@ class DashboardPanel extends JPanel {
     			instrument.resizeInstrumentPanel();
 		}});
     }
+	
+	private void hideAllToolbars() {
+		for (InstrumentPanelImpl panel : _instrumentPanels) 
+			panel._toolbar.setVisible(false);
+	}
 	
 	private void addInstrumentPanelResizer() {
 		addComponentListener(new ComponentAdapter(){ @Override public void componentResized(ComponentEvent e) {

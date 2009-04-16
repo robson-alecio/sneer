@@ -103,9 +103,9 @@ class DashboardPane extends JPanel {
 			_instrumentsContainer.add(_instrumentJXLayer);
 			_instrumentWindows.add(this);
 
-//			_toolbar.setVisible(false); 
-			_toolbar.setVisible(true); 
-			_toolbar._toolbarPanel.setBackground(Color.RED);
+			_toolbar.setVisible(false); 
+//			_toolbar.setVisible(true); 
+//			_toolbar._toolbarPanel.setBackground(Color.RED);
 		}
 		
 		private boolean isOverAnyToolbar(Point mousePoint) {

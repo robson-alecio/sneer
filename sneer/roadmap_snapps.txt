@@ -13,6 +13,7 @@ TASKS
 	- [Sandro and Igor] User Info, Contact List and Contact CRUD - Don't do any other task until:
 		- Main Menu - Bring it back.
 		- Instrument Menu Hover - Solve Definitively
+			- Fix Hidden Menu
 			- Remove Debug High Contrast Colors
 		- ContactInfoWindowImpl
 				- Nickname: (Label)

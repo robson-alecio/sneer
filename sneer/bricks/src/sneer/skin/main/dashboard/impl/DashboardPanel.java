@@ -26,7 +26,6 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 
 import org.jdesktop.jxlayer.JXLayer;
 import org.jdesktop.jxlayer.plaf.AbstractLayerUI;
@@ -68,8 +67,6 @@ class DashboardPanel extends JPanel {
     	
     	setBackground(Color.BLACK); //Fix
     	_instrumentsContainer.setBackground(Color.BLUE); //Fix
-    	_dashboardLayeredPane.setBorder(new LineBorder(Color.CYAN));//Fix
-    	_instrumentsContainer.setBorder(new LineBorder(Color.PINK));//Fix
     	
        	add(_dashboardLayeredPane, BorderLayout.CENTER);
         _dashboardLayeredPane.add(_instrumentsContainer);
@@ -111,7 +108,6 @@ class DashboardPanel extends JPanel {
 
 			_toolbar.setVisible(false); 
 			_toolbar._toolbarPanel.setBackground(Color.RED); //Fix
-			_toolbar._toolbarPanel.setBorder(new LineBorder(Color.YELLOW));//Fix
 		}
 		
 		private boolean isOverAnyToolbar(Point mousePoint) {
@@ -189,6 +185,8 @@ class DashboardPanel extends JPanel {
 				_toolbarPanel.setLayout(new BorderLayout());
 				_toolbarPanel.add(_title, BorderLayout.CENTER);
 				_toolbarPanel.add(_menu, BorderLayout.EAST);
+				
+				_menu.setBorder(new EmptyBorder(0,0,0,3));
 			}
 			
 			private void setVisible(boolean isVisible) {

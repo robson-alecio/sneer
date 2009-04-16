@@ -42,8 +42,7 @@ import sneer.skin.main.instrumentregistry.Instrument;
 //				ContentPane
 // --------------------------------------- [^ DashboardImpl,  v DashboardPanel ]
 //					MainMenu
-//					JXLayer
-//						GlassPane (on mouse exit hide toolbar)
+//					DashboardPanel
 //						_dashboardLayeredPane (0..n toolbars, 0..n block button, 1 instrumentsContainer )
 //							_toolbarPanel (toolbar container)
 //							_mouseBlockButton (hack to block mouse events)
@@ -67,17 +66,10 @@ class DashboardPanel extends JPanel {
 		setLayout(new BorderLayout());
     	addInstrumentPanelResizer();
     	
-    	setBackground(Color.BLACK); //Fix
-    	_instrumentsContainer.setBackground(Color.BLUE); //Fix
-    	
-		JXLayer<JLayeredPane> root = new JXLayer<JLayeredPane>(_dashboardLayeredPane, 
-			new AbstractLayerUI<JLayeredPane>(){@Override protected void processMouseEvent(MouseEvent event, JXLayer<JLayeredPane> layer) {
-				if(event.getID() == MouseEvent.MOUSE_EXITED)
-					hideAllToolbars();
-			}}
-		);    	
-    	
-       	add(root, BorderLayout.CENTER);
+    	setBackground(Color.BLUE); //Fix
+    	_instrumentsContainer.setBackground(Color.YELLOW); //Fix
+
+    	add(_dashboardLayeredPane, BorderLayout.CENTER);
         _dashboardLayeredPane.add(_instrumentsContainer);
         _instrumentsContainer.setLayout(new FlowLayout(FlowLayout.TRAILING, 0, 3));
     	addComponentListener(new ComponentAdapter(){ @Override public void componentResized(ComponentEvent e) {
@@ -86,7 +78,7 @@ class DashboardPanel extends JPanel {
 		}});
     }
 	
-	private void hideAllToolbars() {
+	void hideAllToolbars() {
 		for (InstrumentPanelImpl panel : _instrumentPanels) 
 			panel._toolbar.setVisible(false);
 	}
@@ -255,7 +247,7 @@ class DashboardPanel extends JPanel {
 					instrumentPanel.revalidate();
 				}
 			});
-
+//			RunMe.logTree(instrumentPanel);
 			return instrumentPanel;
 		}
 	}

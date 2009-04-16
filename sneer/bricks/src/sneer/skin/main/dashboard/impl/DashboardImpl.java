@@ -6,6 +6,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -45,7 +47,7 @@ class DashboardImpl implements Dashboard {
 	@SuppressWarnings("unused")
 	private SimpleListReceiver<Instrument> _instrumentsReceiver = new SimpleListReceiver<Instrument>(my(InstrumentRegistry.class).installedInstruments()){
 		@Override protected void elementAdded(Instrument instrument) { 	_dashboardPanel.install(instrument); }
-		@Override protected void elementPresent(Instrument instrument) { 		_dashboardPanel.install(instrument); }
+		@Override protected void elementPresent(Instrument instrument) { _dashboardPanel.install(instrument); }
 		@Override protected void elementRemoved(Instrument element) {
 			throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
 		}};
@@ -89,6 +91,11 @@ class DashboardImpl implements Dashboard {
 			_frame = _rwindow.getMainWidget();
 			_frame.setIconImage(IconUtil.getLogo());
 			my(WindowBoundsSetter.class).defaultContainer(_rootPanel);
+			
+			_frame.addWindowListener(new WindowAdapter(){
+				@Override public void windowDeactivated(WindowEvent e) {
+					_dashboardPanel.hideAllToolbars();
+				}});
 		}
 
 		private void initRootPanel() {
@@ -99,7 +106,20 @@ class DashboardImpl implements Dashboard {
 			_rootPanel.add(mainMenu.getWidget(), BorderLayout.NORTH);
 			_rootPanel.add(_dashboardPanel, BorderLayout.CENTER);
 			
-			_frame.setContentPane(_rootPanel);
+			addListenerToHideToolbarsWhenMouseExited();
+			
+//			RunMe.logTree(_dashboardPanel);
+		}
+
+		private void addListenerToHideToolbarsWhenMouseExited() {
+			//Fix: this method is a hack, consider to use a glasspane mouse listener
+			JPanel content = (JPanel) _frame.getContentPane();
+			content.setLayout(new BorderLayout());
+			content.setBorder(new EmptyBorder(0,2,0,2));
+			content.add(_rootPanel, BorderLayout.CENTER);
+			content.addMouseListener(new MouseAdapter(){ @Override public void mouseEntered(MouseEvent e) {
+				_dashboardPanel.hideAllToolbars();
+			}});
 		}	
 		
 		private void resizeWindow() {

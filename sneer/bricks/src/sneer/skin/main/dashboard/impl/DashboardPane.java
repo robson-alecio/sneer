@@ -7,7 +7,6 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -37,11 +36,11 @@ import sneer.skin.main.instrumentregistry.Instrument;
 
 //	JFrame
 //		RootPane
-//			Glasspane
-//			ContentPane
+//			LayeredPane
+//				Glasspane
+//				ContentPane <-- DashboardPane (JFrame.ContentPane)
 // --------------------------------------------------------------------------------------------
-//				DashboardPane (JFrame.ContentPane)
-//					_rootLayeredPane (DashboardPane)
+//					_dashboardLayeredPane
 //						_toolbarPanel (Toolbar)
 //						_mouseBlockButton (Toolbar - hack to block mouse events)
 //						_instrumentsContainer (DashboardPane)
@@ -49,12 +48,13 @@ import sneer.skin.main.instrumentregistry.Instrument;
 //								_instrumentGlasspane (InstrumentWindowImpl - mouse listener)
 //								InstrumentWindow (instrument container)
 //
+// 	JFrame.JRootPane.JLayeredPane.DashboardPane.JLayeredPane.JPanel.JXLayer.InstrumentWindowImpl
 class DashboardPane extends JPanel {
 
 	private static final int _TOOLBAR_HEIGHT = 20;
 	private static final Image TOOLBAR_MENU_IMAGE = my(Images.class).getImage(DashboardPane.class.getResource("menu.png"));
 	
-	private final JLayeredPane _rootLayeredPane = new JLayeredPane();
+	private final JLayeredPane _dashboardLayeredPane = new JLayeredPane();
 	private final JPanel _instrumentsContainer = new JPanel();
 	private final List<InstrumentWindowImpl> _instrumentWindows = new ArrayList<InstrumentWindowImpl>();
 
@@ -64,14 +64,14 @@ class DashboardPane extends JPanel {
 		setLayout(new BorderLayout());
     	addInstrumentPanelResizer();
 
-       	add(_rootLayeredPane, BorderLayout.CENTER);
-        _rootLayeredPane.add(_instrumentsContainer);
+       	add(_dashboardLayeredPane, BorderLayout.CENTER);
+        _dashboardLayeredPane.add(_instrumentsContainer);
         _instrumentsContainer.setLayout(new FlowLayout(FlowLayout.TRAILING, 5, 1));
     	addComponentListener(new ComponentAdapter(){ @Override public void componentResized(ComponentEvent e) {
     		for (InstrumentWindowImpl instrument : _instrumentWindows) {
     			instrument.resizeInstrumentWindow();
     		}
-		}});        
+		}});
     }
 	
 	private void addInstrumentPanelResizer() {
@@ -104,8 +104,7 @@ class DashboardPane extends JPanel {
 			_instrumentWindows.add(this);
 
 			_toolbar.setVisible(false); 
-//			_toolbar.setVisible(true); 
-//			_toolbar._toolbarPanel.setBackground(Color.RED);
+			_toolbar._toolbarPanel.setBackground(Color.RED);
 		}
 		
 		private boolean isOverAnyToolbar(Point mousePoint) {
@@ -135,11 +134,11 @@ class DashboardPane extends JPanel {
 				hideAndShow(mousePoint);
 			}
 			
-			@Override protected void paintLayer(Graphics2D g2, JXLayer<JPanel> l) {
-				super.paintLayer(g2, l);
-				g2.setColor(new Color(0, 100, 0, 100));
-				g2.fillRect(0, 0, l.getWidth(), l.getHeight());
-			}
+//			@Override protected void paintLayer(Graphics2D g2, JXLayer<JPanel> l) {
+//				super.paintLayer(g2, l);
+//				g2.setColor(new Color(0, 100, 0, 100));
+//				g2.fillRect(0, 0, l.getWidth(), l.getHeight());
+//			}
 		}
 		
 		private class Toolbar{
@@ -156,8 +155,8 @@ class DashboardPane extends JPanel {
 			
 			private Toolbar(String title){
 				initGui(title);
-				DashboardPane.this._rootLayeredPane.add(_mouseBlockButton, new Integer(1));
-				DashboardPane.this._rootLayeredPane.add(_toolbarPanel, new Integer(2));
+				DashboardPane.this._dashboardLayeredPane.add(_mouseBlockButton, new Integer(1));
+				DashboardPane.this._dashboardLayeredPane.add(_toolbarPanel, new Integer(2));
 			}
 			
 			private void initGui(String title) {
@@ -232,7 +231,6 @@ class DashboardPane extends JPanel {
 				}
 			});
 
-			_instrumentsContainer.add(instrumentWindow);
 			return instrumentWindow;
 		}
 	}

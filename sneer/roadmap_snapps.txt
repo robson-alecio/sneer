@@ -15,7 +15,6 @@ TASKS
 		- Instrument Menu Hover - Solve Definitively
 		- Instrument Menu Appearance
 			- Make menu icon smaller. Center it with scrollbar.
-		- "Add a Contact..." -> "New Contact..."
 		- ContactInfoWindowImpl
 				- Nickname: (Label)
 				- Internet Addresses (Border)

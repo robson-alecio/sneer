@@ -130,7 +130,7 @@ class ContactsGuiImpl implements ContactsGui {
 	}
 	
 	private void addContatActions(JPopupMenu popupMenu) {
-		JMenuItem add = new JMenuItem("Add a Contact...");
+		JMenuItem add = new JMenuItem("New a Contact...");
 		popupMenu.add(add);
 		
 		add.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {

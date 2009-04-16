@@ -14,7 +14,6 @@ TASKS
 		- Main Menu - Bring it back.
 		- Instrument Menu Hover - Solve Definitively
 		- Instrument Menu Appearance
-			- Top Instrument Menu - Separate from main menu bar (2 or 3 pixels).
 			- Make menu icon smaller. Center it with scrollbar.
 		- "Add a Contact..." -> "New Contact..."
 		- ContactInfoWindowImpl

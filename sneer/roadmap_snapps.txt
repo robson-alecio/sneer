@@ -12,6 +12,7 @@ TASKS
 
 	- [Sandro and Igor] User Info, Contact List and Contact CRUD - Don't do any other task until:
 		- Instrument Menu Hover - Solve Definitively
+			- Hide Toolbar (mouse exit window)
 			- Remove Debug High Contrast Colors
 		- ContactInfoWindowImpl
 				- Nickname: (Label)

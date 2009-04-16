@@ -115,7 +115,7 @@ class DashboardImpl implements Dashboard {
 			//Fix: this method is a hack, consider to use a glasspane mouse listener
 			JPanel content = (JPanel) _frame.getContentPane();
 			content.setLayout(new BorderLayout());
-			content.setBorder(new EmptyBorder(0,2,0,2));
+			content.setBorder(new EmptyBorder(0,2,2,2));
 			content.add(_rootPanel, BorderLayout.CENTER);
 			content.addMouseListener(new MouseAdapter(){ @Override public void mouseEntered(MouseEvent e) {
 				_dashboardPanel.hideAllToolbars();

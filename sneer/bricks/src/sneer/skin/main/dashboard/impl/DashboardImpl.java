@@ -7,7 +7,6 @@ import java.awt.Frame;
 import java.awt.Rectangle;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.net.URL;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -15,20 +14,12 @@ import javax.swing.border.EmptyBorder;
 
 import sneer.commons.lang.Functor;
 import sneer.hardware.gui.guithread.GuiThread;
-import sneer.hardware.gui.images.Images;
 import sneer.hardware.gui.timebox.TimeboxedEventQueue;
-import sneer.hardware.gui.trayicon.SystemTrayNotSupported;
-import sneer.hardware.gui.trayicon.TrayIcon;
-import sneer.hardware.gui.trayicon.TrayIcons;
-import sneer.pulp.blinkinglights.BlinkingLights;
-import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.impl.SimpleListReceiver;
 import sneer.pulp.threadpool.ThreadPool;
-import sneer.skin.image.DefaultIcons;
-import sneer.skin.image.ImageFactory;
 import sneer.skin.main.dashboard.Dashboard;
 import sneer.skin.main.instrumentregistry.Instrument;
 import sneer.skin.main.instrumentregistry.InstrumentRegistry;
@@ -36,7 +27,6 @@ import sneer.skin.main.menu.MainMenu;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.WindowWidget;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
-import wheel.io.ui.action.Action;
 
 class DashboardImpl implements Dashboard {
 
@@ -79,47 +69,7 @@ class DashboardImpl implements Dashboard {
 		my(GuiThread.class).strictInvokeAndWait(new Runnable(){@Override public void run() {}});
 	}
 
-	private URL logoIconURL() {
-		return my(ImageFactory.class).getImageUrl(DefaultIcons.logo16x16);
-	}
-	
-	class TrayIconSupport {
-		private final WindowSupport _windowSupport;
-
-		TrayIconSupport(WindowSupport windowSupport){
-			_windowSupport = windowSupport;
-			TrayIcon trayIcon = null;
-			try {
-				trayIcon = my(TrayIcons.class).newTrayIcon(logoIconURL());
-				addOpenWindowAction(trayIcon);
-				addExitAction(trayIcon);
-			} catch (SystemTrayNotSupported e1) {
-				my(BlinkingLights.class).turnOn(LightType.INFO, "Minimizing Sneer Window", 
-															  e1.getMessage() + " When closing the Sneer window, it will be minimized instead of closed.");
-				_windowSupport.changeWindowCloseEventToMinimizeEvent();
-			}
-		}
-		
-		private void addOpenWindowAction(TrayIcon tray) {
-			Action cmd = new Action(){
-				@Override public String caption() { return "Open"; }
-				@Override public void run() {	_windowSupport.open();						
-			}};
-			tray.setDefaultAction(cmd);
-			tray.addAction(cmd);
-		}
-		
-		private void addExitAction(TrayIcon trayIcon) {
-			Action cmd = new Action(){
-				@Override public String caption() { return "Exit"; }
-				@Override public void run() {	System.exit(0);
-			}};
-			trayIcon.addAction(cmd);
-			my(MainMenu.class).getSneerMenu().addAction(cmd);
-		}
-	}
-	
-	class WindowSupport{
+   class WindowSupport{
 		private WindowWidget<JFrame> _rwindow;
 		private JFrame _frame;
 
@@ -134,9 +84,11 @@ class DashboardImpl implements Dashboard {
 				_rwindow = my(ReactiveWidgetFactory.class).newFrame(reactiveTitle());
 			}});
 			_frame = _rwindow.getMainWidget();
-			_frame.setIconImage(my(Images.class).getImage(logoIconURL()));
+			_frame.setIconImage(IconUtil.getLogo());
 			my(WindowBoundsSetter.class).defaultContainer(_dashboardPane);
 		}
+
+
 
 		private void initRootPanel() {
 			MainMenu mainMenu = my(MainMenu.class);
@@ -154,7 +106,7 @@ class DashboardImpl implements Dashboard {
 			_rwindow.getMainWidget().setBounds(_bounds);
 		}
 
-		private void changeWindowCloseEventToMinimizeEvent() {
+		void changeWindowCloseEventToMinimizeEvent() {
 			_frame.setDefaultCloseOperation ( WindowConstants.DO_NOTHING_ON_CLOSE );
 			_frame.addWindowListener(new WindowAdapter() { @Override public void windowClosing(WindowEvent e) {
 				_bounds = _frame.getBounds();
@@ -162,7 +114,7 @@ class DashboardImpl implements Dashboard {
 			}});
 		}		
 		
-		private void open() {
+		void open() {
 			_frame.setState(Frame.NORMAL);
 			_frame.setVisible(true);
 			_frame.requestFocusInWindow();

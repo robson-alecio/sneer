@@ -12,11 +12,10 @@ TASKS
 
 	- [Sandro and Igor] User Info, Contact List and Contact CRUD - Don't do any other task until:
 		- Main Menu - Bring it back.
+		- Instrument Menu Appearance
 		- Instrument Menu Hover - Solve Definitively
-			- Fix Location (5 pixel error)
 			- Top Instrument Menu - Separate from main menu bar (2 or 3 pixels).
 			- Make menu icon smaller. Center it with scrollbar.
-		- Use 3 pixels between one instrument and the next.
 		- "Add a Contact..." -> "New Contact..."
 		- ContactInfoWindowImpl
 				- Nickname: (Label)

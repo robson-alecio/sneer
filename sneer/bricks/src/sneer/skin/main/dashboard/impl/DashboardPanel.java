@@ -26,6 +26,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import org.jdesktop.jxlayer.JXLayer;
 import org.jdesktop.jxlayer.plaf.AbstractLayerUI;
@@ -64,15 +65,18 @@ class DashboardPanel extends JPanel {
 	DashboardPanel()    {
 		setLayout(new BorderLayout());
     	addInstrumentPanelResizer();
+    	
     	setBackground(Color.BLACK); //Fix
     	_instrumentsContainer.setBackground(Color.BLUE); //Fix
+    	_dashboardLayeredPane.setBorder(new LineBorder(Color.CYAN));//Fix
+    	_instrumentsContainer.setBorder(new LineBorder(Color.PINK));//Fix
     	
        	add(_dashboardLayeredPane, BorderLayout.CENTER);
         _dashboardLayeredPane.add(_instrumentsContainer);
-        _instrumentsContainer.setLayout(new FlowLayout(FlowLayout.TRAILING, 5, 1));
+        _instrumentsContainer.setLayout(new FlowLayout(FlowLayout.TRAILING, 0, 3));
     	addComponentListener(new ComponentAdapter(){ @Override public void componentResized(ComponentEvent e) {
     		for (InstrumentPanelImpl instrument : _instrumentPanels) 
-    			instrument.resizeInstrumentWindow();
+    			instrument.resizeInstrumentPanel();
 		}});
     }
 	
@@ -107,6 +111,7 @@ class DashboardPanel extends JPanel {
 
 			_toolbar.setVisible(false); 
 			_toolbar._toolbarPanel.setBackground(Color.RED); //Fix
+			_toolbar._toolbarPanel.setBorder(new LineBorder(Color.YELLOW));//Fix
 		}
 		
 		private boolean isOverAnyToolbar(Point mousePoint) {
@@ -213,12 +218,12 @@ class DashboardPanel extends JPanel {
 			}	
 		}
 		
-		private void resizeInstrumentWindow() {
+		private void resizeInstrumentPanel() {
+			_toolbar.resizeToolbar();
 			Dimension size = new Dimension(_instrumentsContainer.getWidth(), _instrument.defaultHeight());
 			setMinimumSize(size);
 			setPreferredSize(size);
 			setSize(size);
-			_toolbar.resizeToolbar();
 		}
 
 		@Override public JPopupMenu actions() { return _toolbar._menuActions; }
@@ -228,18 +233,18 @@ class DashboardPanel extends JPanel {
 	private class InstrumentInstaller{
 		private InstrumentPanel install(final Instrument instrument) {
 			
-			final InstrumentPanelImpl instrumentWindow = new InstrumentPanelImpl(instrument);
+			final InstrumentPanelImpl instrumentPanel = new InstrumentPanelImpl(instrument);
 			
 			my(GuiThread.class).strictInvokeAndWait(new Runnable(){	
 				@Override 
 				public void run() {
-					instrument.init(instrumentWindow);
-					instrumentWindow.resizeInstrumentWindow();
-					instrumentWindow.revalidate();
+					instrument.init(instrumentPanel);
+					instrumentPanel.resizeInstrumentPanel();
+					instrumentPanel.revalidate();
 				}
 			});
 
-			return instrumentWindow;
+			return instrumentPanel;
 		}
 	}
 }

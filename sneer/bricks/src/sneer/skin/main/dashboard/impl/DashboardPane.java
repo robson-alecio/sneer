@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.IllegalComponentStateException;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -194,14 +195,20 @@ class DashboardPane extends JPanel {
 			private boolean isVisible() { 	return _toolbarPanel.isVisible(); 	}
 			
 			private void resizeToolbar() {
-				Point pointInstrument = getLocation();
+				Point pointInstrument;
+				Point pointInstrumentContainer;
+				try {
+					pointInstrument = getLocationOnScreen();
+					pointInstrumentContainer = _instrumentsContainer.getLocationOnScreen();
+				} catch (IllegalComponentStateException e) {
+					return;
+				}
 				
 				int x = 0;
-				int y = pointInstrument.y;
+				int y = pointInstrument.y - pointInstrumentContainer.y;
 				int width = getSize().width;
-				int height = _TOOLBAR_HEIGHT;
-				_toolbarPanel.setBounds(x, y, width, height);
-				_mouseBlockButton.setBounds(x, y, width, height);
+				_toolbarPanel.setBounds(x, y, width, _TOOLBAR_HEIGHT);
+				_mouseBlockButton.setBounds(x, y, width, _TOOLBAR_HEIGHT);
 			}	
 		}
 		

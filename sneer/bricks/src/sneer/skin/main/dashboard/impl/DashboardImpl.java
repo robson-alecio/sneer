@@ -34,15 +34,15 @@ class DashboardImpl implements Dashboard {
 	private static final int H_OFFSET = 30;
 	private static final int TIMEOUT_FOR_GUI_EVENTS = 10 * 1000;
 	
-	private final DashboardPane _dashboardPane = new DashboardPane();
+	private final DashboardPanel _dashboardPanel = new DashboardPanel();
 
 	private Dimension _screenSize;
 	private Rectangle _bounds;
 	
 	@SuppressWarnings("unused")
 	private SimpleListReceiver<Instrument> _instrumentsReceiver = new SimpleListReceiver<Instrument>(my(InstrumentRegistry.class).installedInstruments()){
-		@Override protected void elementAdded(Instrument instrument) { 	_dashboardPane.install(instrument); }
-		@Override protected void elementPresent(Instrument instrument) { 		_dashboardPane.install(instrument); }
+		@Override protected void elementAdded(Instrument instrument) { 	_dashboardPanel.install(instrument); }
+		@Override protected void elementPresent(Instrument instrument) { 		_dashboardPanel.install(instrument); }
 		@Override protected void elementRemoved(Instrument element) {
 			throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
 		}};
@@ -85,7 +85,7 @@ class DashboardImpl implements Dashboard {
 			}});
 			_frame = _rwindow.getMainWidget();
 			_frame.setIconImage(IconUtil.getLogo());
-			my(WindowBoundsSetter.class).defaultContainer(_dashboardPane);
+			my(WindowBoundsSetter.class).defaultContainer(_dashboardPanel);
 		}
 
 
@@ -93,7 +93,7 @@ class DashboardImpl implements Dashboard {
 		private void initRootPanel() {
 			MainMenu mainMenu = my(MainMenu.class);
 			mainMenu.getWidget().setBorder(new EmptyBorder(0,0,0,0));
-			_frame.setContentPane(_dashboardPane);
+			_frame.setContentPane(_dashboardPanel);
 		}	
 		
 		private void resizeWindow() {

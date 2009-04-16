@@ -18,7 +18,7 @@ import javax.swing.border.EmptyBorder;
 import snapps.watchme.WatchMe;
 import snapps.watchme.gui.WatchMeGui;
 import sneer.skin.colors.Colors;
-import sneer.skin.main.dashboard.InstrumentWindow;
+import sneer.skin.main.dashboard.InstrumentPanel;
 import sneer.skin.main.instrumentregistry.InstrumentRegistry;
 
 class WatchMeGuiImpl implements WatchMeGui{ //Optimize need a better snapp window support
@@ -42,7 +42,7 @@ class WatchMeGuiImpl implements WatchMeGui{ //Optimize need a better snapp windo
 	}
 
 	@Override
-	public void init(InstrumentWindow window) {
+	public void init(InstrumentPanel window) {
 		Container container = window.contentPane();
 		container.setBackground(my(Colors.class).solid());
 		container.setLayout(new FlowLayout());

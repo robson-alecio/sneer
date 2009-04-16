@@ -11,4 +11,5 @@ public class ColorsImpl implements Colors {
 	@Override public Color lowContrast() { 				return new Color(230, 230, 230); }
 	@Override public Color solid() {							return Color.WHITE; }
 	@Override public Color invalid() {						return new Color(255, 255, 200); }
+	
 }

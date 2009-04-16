@@ -4,7 +4,7 @@ import java.awt.Container;
 
 import javax.swing.JPopupMenu;
 
-public interface InstrumentWindow {
+public interface InstrumentPanel {
 
 	Container contentPane();
 	JPopupMenu actions();

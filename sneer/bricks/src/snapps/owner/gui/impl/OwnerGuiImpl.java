@@ -18,7 +18,7 @@ import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.own.tagline.OwnTaglineKeeper;
 import sneer.skin.imgselector.ImageSelector;
-import sneer.skin.main.dashboard.InstrumentWindow;
+import sneer.skin.main.dashboard.InstrumentPanel;
 import sneer.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
@@ -47,7 +47,7 @@ class OwnerGuiImpl implements OwnerGui {
 	}
 	
 	@Override
-	public void init(InstrumentWindow window) {
+	public void init(InstrumentPanel window) {
 		_container = window.contentPane();
 		_container.setLayout(new GridBagLayout());
 		

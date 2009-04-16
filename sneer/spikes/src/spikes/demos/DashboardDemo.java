@@ -13,7 +13,7 @@ import javax.swing.JTextArea;
 import sneer.commons.environments.Environments;
 import sneer.kernel.container.ContainersOld;
 import sneer.skin.main.dashboard.Dashboard;
-import sneer.skin.main.dashboard.InstrumentWindow;
+import sneer.skin.main.dashboard.InstrumentPanel;
 import sneer.skin.main.instrumentregistry.Instrument;
 import sneer.skin.main.instrumentregistry.InstrumentRegistry;
 import wheel.io.Logger;
@@ -42,7 +42,7 @@ public class DashboardDemo  {
 class Snapp1 implements Instrument{
 
 	@Override
-	public void init(InstrumentWindow window) {
+	public void init(InstrumentPanel window) {
 		Container container = window.contentPane();
 		container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
 		
@@ -72,7 +72,7 @@ class Snapp1 implements Instrument{
 class Snapp2 implements Instrument{
 
 	@Override
-	public void init(InstrumentWindow window) {
+	public void init(InstrumentPanel window) {
 		Container container = window.contentPane();
 		container.setLayout(new BoxLayout(container,  BoxLayout.PAGE_AXIS));
 		container.add(new JCheckBox("Option 1"));
@@ -94,7 +94,7 @@ class Snapp2 implements Instrument{
 
 class Snapp3 implements Instrument{
 	@Override
-	public void init(InstrumentWindow window) {
+	public void init(InstrumentPanel window) {
 		Container container = window.contentPane();
 		container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
 		JTextArea textArea = new JTextArea(15, 20);

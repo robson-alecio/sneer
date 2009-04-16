@@ -12,11 +12,9 @@ TASKS
 
 	- [Sandro and Igor] User Info, Contact List and Contact CRUD - Don't do any other task until:
 		- Instrument Menu Hover - Solve Definitively
-		- Background - Use the same shade of > > DARK < < gray for all background areas around instruments. Currently two shades of light gray are being used.
-			- Use 3 pixels between one instrument and the next.
+		- Use 3 pixels between one instrument and the next.
 		- Instrument Menu Appearance
 			- Top Instrument Menu - Separate from main menu bar (2 or 3 pixels).
-			- Color - Use a color such as blue or green that will have high contrast with white (default instrument color) and with dark gray (background color).
 			- Make menu icon smaller. Center it with scrollbar.
 		- "Add a Contact..." -> "New Contact..."
 		- ContactInfoWindowImpl

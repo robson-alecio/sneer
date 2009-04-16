@@ -20,7 +20,7 @@ import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.colors.Colors;
-import sneer.skin.main.dashboard.InstrumentWindow;
+import sneer.skin.main.dashboard.InstrumentPanel;
 import sneer.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
@@ -51,7 +51,7 @@ class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 	}	
 	
 	@Override
-	public void init(InstrumentWindow window) {
+	public void init(InstrumentPanel window) {
 		initGui(window.contentPane());
 	}
 

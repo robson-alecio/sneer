@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 
 import sneer.commons.environments.Environments;
 import sneer.kernel.container.ContainersOld;
-import sneer.skin.main.dashboard.InstrumentWindow;
+import sneer.skin.main.dashboard.InstrumentPanel;
 import sneer.skin.main.instrumentregistry.Instrument;
 import wheel.io.Logger;
 
@@ -21,11 +21,11 @@ public class RunMe{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         final Container ref[] = new Container[1];
-        DashboardPane dashboardPane = new DashboardPane();
+        DashboardPanel dashboardPane = new DashboardPanel();
         dashboardPane.install(new Instrument(){
         	@Override public String title() { return "Test 1";	}
 			@Override public int defaultHeight() { return 80; }
-			@Override public void init(InstrumentWindow container) {
+			@Override public void init(InstrumentPanel container) {
 				Container contentPane = container.contentPane();
 				contentPane.setLayout(new BorderLayout());
 				contentPane.add(new JButton("Click Me!"), BorderLayout.CENTER);

@@ -12,5 +12,5 @@ public interface Colors {
 	Color lowContrast();
 	Color solid();
 	Color invalid();
-
+	
 }

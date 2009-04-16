@@ -38,7 +38,7 @@ import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
-import sneer.skin.main.dashboard.InstrumentWindow;
+import sneer.skin.main.dashboard.InstrumentPanel;
 import sneer.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
@@ -69,7 +69,7 @@ class ContactsGuiImpl implements ContactsGui {
 	} 
 
 	@Override
-	public void init(InstrumentWindow window) {
+	public void init(InstrumentPanel window) {
 		ContactLabelProvider labelProvider = new ContactLabelProvider();
 		ContactsGuiCellRenderer cellRenderer = new ContactsGuiCellRenderer(labelProvider);
 

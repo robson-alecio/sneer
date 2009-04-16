@@ -32,46 +32,47 @@ import org.jdesktop.jxlayer.plaf.AbstractLayerUI;
 
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.hardware.gui.images.Images;
-import sneer.skin.main.dashboard.InstrumentWindow;
+import sneer.skin.main.dashboard.InstrumentPanel;
 import sneer.skin.main.instrumentregistry.Instrument;
 
 //	JFrame
 //		RootPane
 //			LayeredPane
 //				Glasspane
-//				ContentPane <-- DashboardPane (JFrame.ContentPane)
+//				ContentPane <-- DashboardPanel (JFrame.ContentPane)
 // --------------------------------------------------------------------------------------------
-//					_dashboardLayeredPane
-//						_toolbarPanel (Toolbar)
-//						_mouseBlockButton (Toolbar - hack to block mouse events)
-//						_instrumentsContainer (DashboardPane)
-//							_instrumentJXLayer (InstrumentWindowImpl - decorator)
-//								_instrumentGlasspane (InstrumentWindowImpl - mouse listener)
-//								InstrumentWindow (instrument container)
+//					_dashboardLayeredPane (0..n toolbars, 0..n block button, 1 instrumentsContainer )
+//						_toolbarPanel (toolbar container)
+//						_mouseBlockButton (hack to block mouse events)
+//						_instrumentsContainer (0..n instruments)
+//							_instrumentJXLayer (0..n _instrumentJXLayer)
+//								_instrumentGlasspane (mouse listener)
+//								InstrumentPanel (instrument container)
 //
 // 	JFrame.JRootPane.JLayeredPane.DashboardPane.JLayeredPane.JPanel.JXLayer.InstrumentWindowImpl
-class DashboardPane extends JPanel {
+class DashboardPanel extends JPanel {
 
 	private static final int _TOOLBAR_HEIGHT = 20;
-	private static final Image TOOLBAR_MENU_IMAGE = my(Images.class).getImage(DashboardPane.class.getResource("menu.png"));
+	private static final Image TOOLBAR_MENU_IMAGE = my(Images.class).getImage(DashboardPanel.class.getResource("menu.png"));
 	
 	private final JLayeredPane _dashboardLayeredPane = new JLayeredPane();
 	private final JPanel _instrumentsContainer = new JPanel();
-	private final List<InstrumentWindowImpl> _instrumentWindows = new ArrayList<InstrumentWindowImpl>();
+	private final List<InstrumentPanelImpl> _instrumentPanels = new ArrayList<InstrumentPanelImpl>();
 
 	private final InstrumentInstaller _instrumentInstaller = new InstrumentInstaller();
 	
-	DashboardPane()    {
+	DashboardPanel()    {
 		setLayout(new BorderLayout());
     	addInstrumentPanelResizer();
-
+    	setBackground(Color.BLACK); //Fix
+    	_instrumentsContainer.setBackground(Color.BLUE); //Fix
+    	
        	add(_dashboardLayeredPane, BorderLayout.CENTER);
         _dashboardLayeredPane.add(_instrumentsContainer);
         _instrumentsContainer.setLayout(new FlowLayout(FlowLayout.TRAILING, 5, 1));
     	addComponentListener(new ComponentAdapter(){ @Override public void componentResized(ComponentEvent e) {
-    		for (InstrumentWindowImpl instrument : _instrumentWindows) {
+    		for (InstrumentPanelImpl instrument : _instrumentPanels) 
     			instrument.resizeInstrumentWindow();
-    		}
 		}});
     }
 	
@@ -89,27 +90,27 @@ class DashboardPane extends JPanel {
 		_instrumentInstaller.install(instrument);
 	}
 	
-	private class InstrumentWindowImpl extends JPanel implements InstrumentWindow{
+	private class InstrumentPanelImpl extends JPanel implements InstrumentPanel{
 		
 		private final AbstractLayerUI<JPanel> _instrumentGlasspane;
 		private final JXLayer<JPanel> _instrumentJXLayer ;
 		private final Toolbar _toolbar;
 		private final Instrument _instrument;
 		
-		InstrumentWindowImpl(Instrument instrument) {
+		InstrumentPanelImpl(Instrument instrument) {
 			_instrument = instrument;
 			_toolbar = new Toolbar(_instrument.title());
 			_instrumentGlasspane = new InstrumentGlasspane();
 			_instrumentJXLayer = new JXLayer<JPanel>(this, _instrumentGlasspane);
 			_instrumentsContainer.add(_instrumentJXLayer);
-			_instrumentWindows.add(this);
+			_instrumentPanels.add(this);
 
 			_toolbar.setVisible(false); 
-			_toolbar._toolbarPanel.setBackground(Color.RED);
+			_toolbar._toolbarPanel.setBackground(Color.RED); //Fix
 		}
 		
 		private boolean isOverAnyToolbar(Point mousePoint) {
-			for (InstrumentWindowImpl instrument : _instrumentWindows) {
+			for (InstrumentPanelImpl instrument : _instrumentPanels) {
 				Toolbar toolbar = instrument._toolbar;
 				if(toolbar.isVisible()) {
 					JComponent component = instrument._toolbar._toolbarPanel;
@@ -120,7 +121,7 @@ class DashboardPane extends JPanel {
 		}		
 		
 		private void hideAndShow(Point mousePoint) {
-			for (InstrumentWindowImpl instrument : _instrumentWindows) 
+			for (InstrumentPanelImpl instrument : _instrumentPanels) 
 				instrument._toolbar.setVisible(new Rectangle(instrument.getLocationOnScreen(), 
 																				  instrument.getSize()).contains(mousePoint));
 		}
@@ -156,8 +157,8 @@ class DashboardPane extends JPanel {
 			
 			private Toolbar(String title){
 				initGui(title);
-				DashboardPane.this._dashboardLayeredPane.add(_mouseBlockButton, new Integer(1));
-				DashboardPane.this._dashboardLayeredPane.add(_toolbarPanel, new Integer(2));
+				DashboardPanel.this._dashboardLayeredPane.add(_mouseBlockButton, new Integer(1));
+				DashboardPanel.this._dashboardLayeredPane.add(_toolbarPanel, new Integer(2));
 			}
 			
 			private void initGui(String title) {
@@ -225,9 +226,9 @@ class DashboardPane extends JPanel {
 	}
 	
 	private class InstrumentInstaller{
-		private InstrumentWindow install(final Instrument instrument) {
+		private InstrumentPanel install(final Instrument instrument) {
 			
-			final InstrumentWindowImpl instrumentWindow = new InstrumentWindowImpl(instrument);
+			final InstrumentPanelImpl instrumentWindow = new InstrumentPanelImpl(instrument);
 			
 			my(GuiThread.class).strictInvokeAndWait(new Runnable(){	
 				@Override 

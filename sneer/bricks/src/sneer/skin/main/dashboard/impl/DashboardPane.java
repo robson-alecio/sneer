@@ -46,7 +46,7 @@ import sneer.skin.main.instrumentregistry.Instrument;
 //							_instrumentLayer (decorator)
 //								_instrumentGlasspane (mouse listener)
 //								InstrumentWindow (instrument container)
-public class DashboardPane extends JPanel {
+class DashboardPane extends JPanel {
 
 	private static final int _TOOLBAR_HEIGHT = 20;
 
@@ -56,7 +56,7 @@ public class DashboardPane extends JPanel {
 	private final InstrumentInstaller _installer = new InstrumentInstaller();
 	private List<InstrumentWindowImpl> _instruments = new ArrayList<InstrumentWindowImpl>();
 	
-	public DashboardPane()    {
+	DashboardPane()    {
 //    	setBackground(Color.RED);
 //     _instrumentsPanel.setBackground(Color.YELLOW);
 
@@ -83,11 +83,11 @@ public class DashboardPane extends JPanel {
 		}});
 	}
 	
-	public void install(Instrument instrument) {
+	void install(Instrument instrument) {
 		_installer.install(instrument);
 	}
 	
-	class InstrumentWindowImpl extends JPanel implements InstrumentWindow{
+	private class InstrumentWindowImpl extends JPanel implements InstrumentWindow{
 		
 		private final AbstractLayerUI<JPanel> _instrumentGlasspane;
 		private final JXLayer<JPanel> _instrumentLayer ;
@@ -106,7 +106,7 @@ public class DashboardPane extends JPanel {
 //			_toolbar.setVisible(true); 
 //			_toolbar._toolbarPanel.setBackground(Color.RED);
 		}
-		class InstrumentGlasspane extends AbstractLayerUI<JPanel> {
+		private class InstrumentGlasspane extends AbstractLayerUI<JPanel> {
 			
 			@Override protected void processMouseMotionEvent(MouseEvent event, JXLayer<JPanel> layer) {
 				System.out.println(event.getPoint());
@@ -125,7 +125,7 @@ public class DashboardPane extends JPanel {
 			
 		}
 		
-		class Toolbar{
+		private class Toolbar{
 			
 			private final JPopupMenu _menuActions = new JPopupMenu();
 			private final JPanel _toolbarPanel = new JPanel();
@@ -207,12 +207,6 @@ public class DashboardPane extends JPanel {
 				return new Rectangle(component.getLocationOnScreen(), component.getSize());
 			}
 		}
-
-		@Override
-		protected void finalize() throws Throwable {
-			_instruments.remove(this);
-			super.finalize();
-		}
 		
 		private void resizeInstrumentWindow() {
 			Dimension size = new Dimension(_instrumentsPanel.getWidth(), _instrument.defaultHeight());
@@ -226,7 +220,7 @@ public class DashboardPane extends JPanel {
 		@Override public Container contentPane() {	return this; }
 	}
 	
-	class InstrumentInstaller{
+	private class InstrumentInstaller{
 		private InstrumentWindow install(final Instrument instrument) {
 			
 			final InstrumentWindowImpl instrumentWindow = new InstrumentWindowImpl(instrument);

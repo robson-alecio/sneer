@@ -14,6 +14,7 @@ TASKS
 		- Instrument Menu Hover - Solve Definitively
 		- Use 3 pixels between one instrument and the next.
 		- Instrument Menu Appearance
+			- Fix Location (5 pixel error)
 			- Top Instrument Menu - Separate from main menu bar (2 or 3 pixels).
 			- Make menu icon smaller. Center it with scrollbar.
 		- "Add a Contact..." -> "New Contact..."

@@ -12,8 +12,19 @@ TASKS
 
 	- [Sandro and Igor] User Info, Contact List and Contact CRUD - Don't do any other task until:
 		- Instrument Menu Hover - Solve Definitively
-			- Remove Debug High Contrast Colors
+			- Make all Dashboard values easily configurable in a single place in the code
+				- Title bar
+					- Height
+					- Color
+					- Font
+						- Size
+						- Font type
+						- Color
+				- Distance between instruments
+				- Background color
+				- Etc 
 		- ContactInfoWindowImpl
+			- The "Internet Addresses" Border is around the fields and buttons too, of course. 
 			- Reactive List
 			- Implement Button Actions
 		- ListSignalModel and SortedList - Fix Sort Bug (see SortTest)

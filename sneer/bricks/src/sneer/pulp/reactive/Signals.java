@@ -2,6 +2,7 @@ package sneer.pulp.reactive;
 
 import sneer.brickness.Brick;
 import sneer.commons.lang.Functor;
+import sneer.pulp.events.EventSource;
 import sneer.software.lang.Consumer;
 
 @Brick
@@ -15,6 +16,8 @@ public interface Signals {
 	<A, B> Signal<B> adaptSignal(Signal<A> input, Functor<A, Signal<B>> functor);
 
 	<T> Register<T> newRegister(T initialValue);
-	
+
+	/** @param receiver is referenced until owner is garbage collected. Owner is weak referenced. */
+	<T> void receive(Object owner, Consumer<? super T> receiver, EventSource<? extends T>... sources);	
 }
 

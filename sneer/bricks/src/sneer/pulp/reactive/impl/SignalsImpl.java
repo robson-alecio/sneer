@@ -1,6 +1,7 @@
 package sneer.pulp.reactive.impl;
 
 import sneer.commons.lang.Functor;
+import sneer.pulp.events.EventSource;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
@@ -35,4 +36,8 @@ class SignalsImpl implements Signals {
 		return new RegisterImpl<T>(initialValue);
 	}
 
+	@Override
+	public <T> void receive(Object owner, final Consumer<? super T> delegate, EventSource<? extends T>... source) {
+		ReceiversImpl.receive(owner, delegate, source);
+	}
 }

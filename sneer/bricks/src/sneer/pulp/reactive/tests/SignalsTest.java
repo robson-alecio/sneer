@@ -9,6 +9,7 @@ import sneer.commons.lang.Functor;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
+import sneer.software.lang.Consumer;
 
 
 
@@ -45,5 +46,30 @@ public class SignalsTest extends BrickTest {
 		register2.setter().consume("2 bar");
 		assertEquals("2 bar", output.currentValue());
 	}
-	
+
+	@Test
+	public void receive() {
+		final StringBuilder received = new StringBuilder();
+		Register<String> register1 = _subject.newRegister(null);
+		Register<String> register2 = _subject.newRegister("hey");
+
+		Object owner = new Object();
+		_subject.receive(owner, new Consumer<String>() { @Override public void consume(String value) {
+			received.append(value);
+		}}, register1.output(), register2.output());
+		assertEquals("nullhey", received.toString());
+
+		register1.setter().consume("foo");
+		register2.setter().consume("bar");
+		assertEquals("nullheyfoobar", received.toString());
+
+		register1.setter().consume("baz1");
+		register2.setter().consume("baz2");
+		assertEquals("nullheyfoobarbaz1baz2", received.toString());
+
+		owner = null;
+		System.gc();
+		register1.setter().consume("banana");
+		assertFalse(received.toString().contains("banana"));
+	}
 }

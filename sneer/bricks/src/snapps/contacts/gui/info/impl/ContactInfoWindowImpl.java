@@ -40,8 +40,8 @@ import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
 import sneer.software.exceptions.IllegalParameter;
+import sneer.software.lang.Consumer;
 import sneer.software.lang.PickyConsumer;
-import wheel.reactive.impl.EventReceiver;
 
 class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 
@@ -53,9 +53,7 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 	
 	private boolean _isGuiInitialized = false;
 	private TextWidget<JTextField> _txtNickname;
-	
-	@SuppressWarnings("unused")	private Object _refToAvoidGC;
-	
+
 	ContactInfoWindowImpl() {
 		addContactEditAction();
 	}
@@ -166,9 +164,9 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 	}
 	
 	private void listenToSignals() {
-		_refToAvoidGC = new EventReceiver<Contact>(my(ContactsGui.class).selectedContact()){ @Override public void consume(Contact contact) {
+		my(Signals.class).receive(this, new Consumer<Contact>(){ @Override public void consume(Contact value) {
 			rebindContact();
-		}};
+		}}, my(ContactsGui.class).selectedContact());
 	}
 
 	private void addListSelectionListestener() {

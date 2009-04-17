@@ -16,10 +16,10 @@ import org.junit.After;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
+import sneer.hardware.gui.Action;
 import sneer.hardware.gui.trayicon.SystemTrayNotSupported;
 import sneer.hardware.gui.trayicon.TrayIcon;
 import sneer.hardware.gui.trayicon.TrayIcons;
-import wheel.io.ui.action.Action;
 
 public class TrayIconTest extends BrickTest {
 

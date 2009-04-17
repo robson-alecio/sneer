@@ -23,6 +23,7 @@ import snapps.welcomewizard.WelcomeWizard;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.ByRef;
+import sneer.hardware.gui.Action;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccount;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
@@ -35,7 +36,6 @@ import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
 import sneer.software.lang.PickyConsumer;
-import wheel.io.ui.action.Action;
 import wheel.reactive.impl.IntegerParser;
 
 class WelcomeWizardImpl extends JFrame implements WelcomeWizard {

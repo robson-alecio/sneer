@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.prevayler.Prevayler;
 
+import sneer.software.exceptions.IllegalParameter;
 import sneer.software.lang.PickyConsumer;
 
-import wheel.lang.exceptions.IllegalParameter;
 
 
 @SuppressWarnings("unchecked")

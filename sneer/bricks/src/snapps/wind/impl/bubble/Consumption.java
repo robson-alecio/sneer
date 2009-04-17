@@ -6,10 +6,10 @@ import java.util.List;
 
 import org.prevayler.TransactionWithQuery;
 
+import sneer.software.exceptions.IllegalParameter;
 import sneer.software.lang.PickyConsumer;
 
 import wheel.lang.FrozenTime;
-import wheel.lang.exceptions.IllegalParameter;
 
 class Consumption implements TransactionWithQuery {
 

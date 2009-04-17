@@ -1,5 +1,5 @@
 
-package wheel.io.ui.action;
+package sneer.hardware.gui;
 
 public interface Action {
 	String caption();

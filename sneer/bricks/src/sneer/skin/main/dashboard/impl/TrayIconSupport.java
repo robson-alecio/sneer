@@ -4,6 +4,7 @@
 package sneer.skin.main.dashboard.impl;
 
 import static sneer.commons.environments.Environments.my;
+import sneer.hardware.gui.Action;
 import sneer.hardware.gui.trayicon.SystemTrayNotSupported;
 import sneer.hardware.gui.trayicon.TrayIcon;
 import sneer.hardware.gui.trayicon.TrayIcons;
@@ -11,7 +12,6 @@ import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.skin.main.dashboard.impl.DashboardImpl.WindowSupport;
 import sneer.skin.main.menu.MainMenu;
-import wheel.io.ui.action.Action;
 
 class TrayIconSupport {
 	private final WindowSupport _windowSupport;

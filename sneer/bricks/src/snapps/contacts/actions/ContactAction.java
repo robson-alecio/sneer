@@ -1,6 +1,6 @@
 package snapps.contacts.actions;
 
-import wheel.io.ui.action.Action;
+import sneer.hardware.gui.Action;
 
 public interface ContactAction extends Action {
 	boolean isVisible();

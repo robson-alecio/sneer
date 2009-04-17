@@ -1,6 +1,6 @@
 package sneer.skin.menu;
 
-import wheel.io.ui.action.Action;
+import sneer.hardware.gui.Action;
 
 public interface Menu<WIDGET> {
 

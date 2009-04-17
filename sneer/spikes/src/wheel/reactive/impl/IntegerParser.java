@@ -1,7 +1,7 @@
 package wheel.reactive.impl;
 
+import sneer.software.exceptions.IllegalParameter;
 import sneer.software.lang.PickyConsumer;
-import wheel.lang.exceptions.IllegalParameter;
 
 public class IntegerParser implements PickyConsumer<String> {
 

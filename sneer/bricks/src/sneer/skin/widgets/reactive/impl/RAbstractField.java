@@ -27,8 +27,8 @@ import sneer.pulp.reactive.Signal;
 import sneer.skin.colors.Colors;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.TextWidget;
+import sneer.software.exceptions.IllegalParameter;
 import sneer.software.lang.PickyConsumer;
-import wheel.lang.exceptions.IllegalParameter;
 import wheel.reactive.impl.EventReceiver;
 
 

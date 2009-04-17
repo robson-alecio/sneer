@@ -1,6 +1,6 @@
 package sneer.hardware.gui.trayicon;
 
-import wheel.io.ui.action.Action;
+import sneer.hardware.gui.Action;
 
 public interface TrayIcon {
 

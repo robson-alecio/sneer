@@ -6,8 +6,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 
+import sneer.hardware.gui.Action;
 import sneer.skin.menu.Menu;
-import wheel.io.ui.action.Action;
 
 abstract class AbstractSwingMenu implements Menu<JComponent> {
 

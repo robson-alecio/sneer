@@ -22,8 +22,8 @@ import sneer.pulp.port.PortKeeper;
 import sneer.pulp.probe.ProbeManager;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.collections.ListSignal;
+import sneer.software.exceptions.IllegalParameter;
 import wheel.lang.Threads;
-import wheel.lang.exceptions.IllegalParameter;
 import functional.SovereignParty;
 import functional.adapters.SneerParty;
 

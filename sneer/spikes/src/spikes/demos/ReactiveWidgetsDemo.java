@@ -15,7 +15,7 @@ import sneer.pulp.reactive.Signals;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
-import sneer.skin.widgets.reactive.WindowWidget;
+import sneer.skin.widgets.reactive.Widget;
 import wheel.io.Logger;
 
 public class ReactiveWidgetsDemo {
@@ -43,7 +43,7 @@ public class ReactiveWidgetsDemo {
 			textWidget = rfactory.newTextPane(register.output(), register.setter());
 			createTestFrame(textWidget, 10, 340, 300, 100, "OnTyping");
 			
-			WindowWidget<JFrame> frame = rfactory.newFrame(register.output());
+			Widget<JFrame> frame = rfactory.newFrame(register.output());
 			frame.getMainWidget().setBounds(10, 450, 300, 100);
 			frame.getMainWidget().setVisible(true);
 			

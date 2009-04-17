@@ -18,7 +18,7 @@ import sneer.software.lang.PickyConsumer;
 public interface ReactiveWidgetFactory extends OldBrick {
 
 	ImageWidget newImage(Signal<Image> source);
-	WindowWidget<JFrame> newFrame(Signal<?> title);
+	Widget<JFrame> newFrame(Signal<?> title);
 	TextWidget<JLabel> newLabel(Signal<?> source);
 	
 	TextWidget<JTextField> newEditableLabel(Signal<?> source, PickyConsumer<? super String> setter);

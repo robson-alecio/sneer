@@ -1,5 +1,7 @@
 package sneer.skin.widgets.reactive.impl;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.awt.Image;
 
 import javax.swing.JFrame;
@@ -19,9 +21,8 @@ import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
-import sneer.skin.widgets.reactive.WindowWidget;
+import sneer.skin.widgets.reactive.Widget;
 import sneer.software.lang.PickyConsumer;
-import static sneer.commons.environments.Environments.my;
 
 class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 	
@@ -46,7 +47,7 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 	
 	
 	@Override
-	public WindowWidget<JFrame> newFrame(Signal<?> source) {
+	public Widget<JFrame> newFrame(Signal<?> source) {
 		my(GuiThread.class).assertInGuiThread();
 		return new RFrameImpl(source);
 	}

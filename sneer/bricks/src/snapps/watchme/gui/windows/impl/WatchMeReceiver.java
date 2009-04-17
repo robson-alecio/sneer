@@ -21,7 +21,7 @@ import sneer.pulp.contacts.Contact;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
-import sneer.skin.widgets.reactive.WindowWidget;
+import sneer.skin.widgets.reactive.Widget;
 import sneer.software.lang.Consumer;
 import wheel.reactive.impl.EventReceiver;
 
@@ -41,7 +41,7 @@ class WatchMeReceiver{
 	private EventReceiver<Contact> _keyChangeReceiverToAvoidGc;
 
 	private final Contact _contact;
-	private WindowWidget<JFrame> _windowWidget;
+	private Widget<JFrame> _windowWidget;
 	private JLabel _imageLabel = new JLabel();
 	
 	WatchMeReceiver(Contact contact) {

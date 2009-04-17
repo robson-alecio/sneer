@@ -29,7 +29,7 @@ import sneer.skin.main.instrumentregistry.Instrument;
 import sneer.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.skin.main.menu.MainMenu;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
-import sneer.skin.widgets.reactive.WindowWidget;
+import sneer.skin.widgets.reactive.Widget;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
 
 class DashboardImpl implements Dashboard {
@@ -75,7 +75,7 @@ class DashboardImpl implements Dashboard {
 	}
 
    class WindowSupport{
-		private WindowWidget<JFrame> _rwindow;
+		private Widget<JFrame> _rwindow;
 		private JFrame _frame;
 
 		WindowSupport() {

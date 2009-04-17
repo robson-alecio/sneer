@@ -14,11 +14,8 @@ TASKS
 		- Instrument Menu Hover - Solve Definitively
 			- Remove Debug High Contrast Colors
 		- ContactInfoWindowImpl
-				- Nickname: (Label)
-				- Internet Addresses (Border)
-					- Reactive List
-					- New, Save, Delete buttons like Eclipse's "Run Configurations" screen
-				 	- Host:          Port:
+			- Reactive List
+			- Implement Button Actions
 		- ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
 		- [Klaus] Revise code.
 

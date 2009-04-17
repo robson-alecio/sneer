@@ -24,12 +24,13 @@ import sneer.commons.environments.Environments;
 import sneer.commons.lang.exceptions.NotImplementedYet;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.Signals;
 import sneer.skin.colors.Colors;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.TextWidget;
 import sneer.software.exceptions.IllegalParameter;
+import sneer.software.lang.Consumer;
 import sneer.software.lang.PickyConsumer;
-import wheel.reactive.impl.EventReceiver;
 
 
 abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel implements TextWidget<WIDGET> {
@@ -40,8 +41,6 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	protected final PickyConsumer<? super String> _setter;
 	protected final WIDGET _textComponent;
 	protected final NotificationPolicy _notificationPolicy;
-
-	protected final EventReceiver<?> _fieldReciver;
 
 	protected ChangeInfoDecorator _decorator;
 	protected String _lastNotified = "";
@@ -62,7 +61,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 		_setter = setter;
 		_textComponent = textComponent;
 		_notificationPolicy = notificationPolicy;
-		_fieldReciver=fieldReceiver();	
+		startReceiving();
 		_decorator = new ChangeInfoDecorator(_textComponent);
 		
 		initGui();
@@ -235,13 +234,13 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 		return new JComponent[]{_textComponent};
 	}
 	
-	public EventReceiver<?> fieldReceiver() {
-		return new EventReceiver<Object>(_source) {@Override public void consume(final Object text) {
+	private void startReceiving() {
+		my(Signals.class).receive(this, new Consumer<Object>() {@Override public void consume(final Object text) {
 			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
 				if (!_notified) return;
 				setText(valueToString(text));
 			}});
-		}};
+		}}, _source);
 	}
 	
 	protected void consume(String text) {

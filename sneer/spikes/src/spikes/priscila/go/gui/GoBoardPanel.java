@@ -1,5 +1,7 @@
 package spikes.priscila.go.gui;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -13,13 +15,13 @@ import javax.swing.JPanel;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.Signals;
+import sneer.software.lang.Consumer;
 import spikes.priscila.go.GoBoard;
 import spikes.priscila.go.Move;
 import spikes.priscila.go.ToroidalGoBoard;
 import spikes.priscila.go.GoBoard.StoneColor;
 import wheel.lang.Threads;
-import wheel.reactive.impl.EventReceiver;
-import static sneer.commons.environments.Environments.my;
 
 public class GoBoardPanel extends JPanel {
 	
@@ -64,17 +66,16 @@ public class GoBoardPanel extends JPanel {
 	private volatile int _scrollXDelta;
 
 	private Register<Move> _moveRegister;
-	@SuppressWarnings("unused")
-	private EventReceiver<Move> _moveReceiverToAvoidGC;
 	private final StoneColor _side;
 	
 	public GoBoardPanel(Register<Move> moveRegister, StoneColor side) {
 		_side = side;
 		_moveRegister=moveRegister;
-		_moveReceiverToAvoidGC=new EventReceiver<Move>(_moveRegister.output()){ @Override public void consume(Move move) { 
+		my(Signals.class).receive(this, new Consumer<Move>() { @Override public void consume(Move move) { 
 			if (move == null) return; 
 			play(move); 
-		}};
+		}}, _moveRegister.output());
+		
 		addMouseListener();
 	    Threads.startDaemon("Go Board Scroller", new Scroller());
 	}

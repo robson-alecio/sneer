@@ -1,8 +1,8 @@
 package sneer.pulp.streams.sequencer.impl;
 
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.streams.sequencer.Sequencer;
 import sneer.pulp.streams.sequencer.Sequencers;
-import sneer.software.lang.Consumer;
 
 class SequencersImpl implements Sequencers {
 

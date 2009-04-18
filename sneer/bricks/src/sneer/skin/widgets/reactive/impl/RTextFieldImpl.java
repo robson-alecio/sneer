@@ -2,9 +2,9 @@ package sneer.skin.widgets.reactive.impl;
 
 import javax.swing.JTextField;
 
+import sneer.hardware.cpu.lang.PickyConsumer;
 import sneer.pulp.reactive.Signal;
 import sneer.skin.widgets.reactive.NotificationPolicy;
-import sneer.software.lang.PickyConsumer;
 
 class RTextFieldImpl extends RAbstractField<JTextField> {
 	

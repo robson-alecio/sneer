@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ReactiveCollections;
-import sneer.software.lang.Consumer;
 
 public class ListRegisterTest extends BrickTest {
 

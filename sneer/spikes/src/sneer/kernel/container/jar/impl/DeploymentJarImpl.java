@@ -16,11 +16,11 @@ import java.util.zip.ZipEntry;
 import org.apache.commons.io.IOUtils;
 
 import sneer.commons.lang.exceptions.NotImplementedYet;
+import sneer.hardware.cpu.lang.Predicate;
 import sneer.kernel.container.bytecode.dependencies.DependencyFinder;
 import sneer.kernel.container.jar.DeploymentJar;
 import sneer.pulp.crypto.Crypto;
 import sneer.pulp.crypto.Digester;
-import sneer.software.lang.Predicate;
 import wheel.io.JarExploder;
 
 public class DeploymentJarImpl implements DeploymentJar {

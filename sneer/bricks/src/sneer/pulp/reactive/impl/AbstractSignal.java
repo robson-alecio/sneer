@@ -5,10 +5,10 @@
 package sneer.pulp.reactive.impl;
 
 import static sneer.commons.environments.Environments.my;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.events.EventNotifier;
 import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.reactive.Signal;
-import sneer.software.lang.Consumer;
 
 
 abstract class AbstractSignal<T> implements Signal<T> {

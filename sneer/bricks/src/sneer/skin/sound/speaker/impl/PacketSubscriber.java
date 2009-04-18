@@ -1,10 +1,10 @@
 package sneer.skin.sound.speaker.impl;
 
 import static sneer.commons.environments.Environments.my;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
-import sneer.software.lang.Consumer;
 
 class PacketSubscriber implements Consumer<PcmSoundPacket> {
 

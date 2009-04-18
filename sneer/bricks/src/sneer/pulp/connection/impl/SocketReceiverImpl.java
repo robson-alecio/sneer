@@ -1,12 +1,12 @@
 package sneer.pulp.connection.impl;
 
 import static sneer.commons.environments.Environments.my;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.connection.SocketAccepter;
 import sneer.pulp.connection.SocketReceiver;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.threadpool.ThreadPool;
-import sneer.software.lang.Consumer;
 
 class SocketReceiverImpl implements SocketReceiver {
 

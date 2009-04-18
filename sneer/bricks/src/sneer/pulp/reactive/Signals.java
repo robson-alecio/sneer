@@ -2,8 +2,8 @@ package sneer.pulp.reactive;
 
 import sneer.brickness.Brick;
 import sneer.commons.lang.Functor;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.events.EventSource;
-import sneer.software.lang.Consumer;
 
 @Brick
 public interface Signals {  

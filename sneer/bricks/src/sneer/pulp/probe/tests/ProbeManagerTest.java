@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.Contribute;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;
@@ -22,7 +23,6 @@ import sneer.pulp.probe.ProbeManager;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.serialization.Serializer;
 import sneer.pulp.tuples.TupleSpace;
-import sneer.software.lang.Consumer;
 import wheel.testutil.SignalUtils;
 
 public class ProbeManagerTest extends BrickTest {

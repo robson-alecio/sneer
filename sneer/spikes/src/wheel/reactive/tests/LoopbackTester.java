@@ -2,11 +2,11 @@ package wheel.reactive.tests;
 
 import static sneer.commons.environments.Environments.my;
 import static wheel.lang.Types.cast;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.events.receivers.impl.Solder;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import sneer.software.lang.Consumer;
 
 public class LoopbackTester {
 

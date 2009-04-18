@@ -1,7 +1,7 @@
 package sneer.pulp.prevalence.journal.impl;
 
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.prevalence.journal.Journal;
-import sneer.software.lang.Consumer;
 import wheel.io.files.Directory;
 
 class JournalImpl implements Journal {

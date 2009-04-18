@@ -2,8 +2,8 @@ package sneer.skin.widgets.reactive;
 
 import javax.swing.JComponent;
 
+import sneer.hardware.cpu.lang.PickyConsumer;
 import sneer.pulp.reactive.Signal;
-import sneer.software.lang.PickyConsumer;
 
 
 public interface TextWidget<WIDGET extends JComponent> extends ComponentWidget<WIDGET> {

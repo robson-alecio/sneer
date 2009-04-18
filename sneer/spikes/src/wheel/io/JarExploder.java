@@ -13,7 +13,7 @@ import java.util.zip.ZipEntry;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
-import sneer.software.lang.Predicate;
+import sneer.hardware.cpu.lang.Predicate;
 
 
 public class JarExploder {

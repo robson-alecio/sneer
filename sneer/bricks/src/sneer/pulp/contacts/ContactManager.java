@@ -2,8 +2,8 @@ package sneer.pulp.contacts;
 
 import sneer.brickness.OldBrick;
 import sneer.hardware.cpu.exceptions.IllegalParameter;
+import sneer.hardware.cpu.lang.PickyConsumer;
 import sneer.pulp.reactive.collections.ListSignal;
-import sneer.software.lang.PickyConsumer;
 
 
 public interface ContactManager extends OldBrick {

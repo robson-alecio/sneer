@@ -1,12 +1,12 @@
 package sneer.pulp.dyndns.ownaccount.impl;
 
 import static sneer.commons.environments.Environments.my;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccount;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import sneer.software.lang.Consumer;
 
 class DynDnsAccountKeeperImpl implements DynDnsAccountKeeper {
 

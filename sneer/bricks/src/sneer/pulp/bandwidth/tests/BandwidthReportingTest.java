@@ -7,6 +7,7 @@ import org.junit.Test;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.Contribute;
 import sneer.commons.lang.ByRef;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;
@@ -16,7 +17,6 @@ import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
-import sneer.software.lang.Consumer;
 import wheel.lang.StringUtils;
 
 public class BandwidthReportingTest extends BrickTest {

@@ -1,7 +1,7 @@
 package sneer.pulp.events.receivers.impl;
 
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.events.EventSource;
-import sneer.software.lang.Consumer;
 import wheel.reactive.impl.EventReceiver;
 
 public class Solder<T> {

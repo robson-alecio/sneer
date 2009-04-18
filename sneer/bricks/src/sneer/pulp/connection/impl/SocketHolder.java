@@ -1,7 +1,7 @@
 package sneer.pulp.connection.impl;
 
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.network.ByteArraySocket;
-import sneer.software.lang.Consumer;
 import wheel.io.Logger;
 
 class SocketHolder {

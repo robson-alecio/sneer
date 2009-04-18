@@ -7,7 +7,7 @@ import java.util.List;
 import org.prevayler.TransactionWithQuery;
 
 import sneer.hardware.cpu.exceptions.IllegalParameter;
-import sneer.software.lang.PickyConsumer;
+import sneer.hardware.cpu.lang.PickyConsumer;
 
 import wheel.lang.FrozenTime;
 

@@ -7,9 +7,9 @@ import org.junit.Test;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.Contribute;
 import sneer.commons.lang.ByRef;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
 import sneer.pulp.tuples.TupleSpace;
-import sneer.software.lang.Consumer;
 
 public class TupleSpaceResponsivenessTest extends BrickTest {
 

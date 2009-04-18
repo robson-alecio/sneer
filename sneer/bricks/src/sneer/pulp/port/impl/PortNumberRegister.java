@@ -1,10 +1,10 @@
 package sneer.pulp.port.impl;
 
 import static sneer.commons.environments.Environments.my;
+import sneer.hardware.cpu.lang.PickyConsumer;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import sneer.software.lang.PickyConsumer;
 import wheel.reactive.impl.IntegerConsumerBoundaries;
 
 class PortNumberRegister {

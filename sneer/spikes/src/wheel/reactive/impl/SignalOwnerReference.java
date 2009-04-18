@@ -1,7 +1,7 @@
 package wheel.reactive.impl;
 
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.Signal;
-import sneer.software.lang.Consumer;
 
 public class SignalOwnerReference<T> extends AbstractOwnerReference<T> implements Signal<T> {
 	

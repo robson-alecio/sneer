@@ -7,13 +7,13 @@ import javax.sound.sampled.TargetDataLine;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.mic.Mic;
-import sneer.software.lang.Consumer;
 
 @RunWith(Mocotoh.class)
 public class NewStyleMicTest {

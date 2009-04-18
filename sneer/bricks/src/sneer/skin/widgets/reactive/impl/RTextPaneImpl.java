@@ -13,10 +13,10 @@ import javax.swing.text.Keymap;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyledDocument;
 
+import sneer.hardware.cpu.lang.PickyConsumer;
 import sneer.pulp.reactive.Signal;
 import sneer.skin.colors.Colors;
 import sneer.skin.widgets.reactive.NotificationPolicy;
-import sneer.software.lang.PickyConsumer;
 
 class RTextPaneImpl extends RAbstractField<JTextPane> {
 	

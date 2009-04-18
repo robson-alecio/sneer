@@ -11,8 +11,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.skin.imgselector.ImageSelector;
-import sneer.software.lang.Consumer;
 
 class ImageSelectorImpl implements ImageSelector {
 	

@@ -13,6 +13,7 @@ import snapps.whisper.speextuples.SpeexPacket;
 import snapps.whisper.speextuples.SpeexTuples;
 import sneer.brickness.PublicKey;
 import sneer.brickness.Tuple;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.hardware.ram.arrays.Arrays;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.keymanager.KeyManager;
@@ -22,7 +23,6 @@ import sneer.pulp.streams.sequencer.Sequencers;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.rooms.ActiveRoomKeeper;
 import sneer.skin.sound.PcmSoundPacket;
-import sneer.software.lang.Consumer;
 
 class SpeexTuplesImpl implements SpeexTuples {
 

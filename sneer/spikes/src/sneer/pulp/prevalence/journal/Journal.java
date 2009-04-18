@@ -1,6 +1,6 @@
 package sneer.pulp.prevalence.journal;
 
-import sneer.software.lang.Consumer;
+import sneer.hardware.cpu.lang.Consumer;
 
 public interface Journal {
 

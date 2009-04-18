@@ -8,12 +8,12 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.hardware.gui.Action;
 import sneer.hardware.logging.gui.LogConsole;
 import sneer.pulp.logging.Logger;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.main.menu.MainMenu;
-import sneer.software.lang.Consumer;
 
 class LogConsoleImpl extends JFrame implements LogConsole {
 

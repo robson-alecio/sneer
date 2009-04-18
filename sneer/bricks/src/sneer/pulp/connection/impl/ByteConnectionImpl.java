@@ -6,6 +6,7 @@ import static wheel.io.Logger.logShort;
 import java.io.IOException;
 import java.util.Arrays;
 
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.contacts.Contact;
@@ -15,7 +16,6 @@ import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.threadpool.ThreadPool;
-import sneer.software.lang.Consumer;
 import wheel.lang.Threads;
 
 class ByteConnectionImpl implements ByteConnection {

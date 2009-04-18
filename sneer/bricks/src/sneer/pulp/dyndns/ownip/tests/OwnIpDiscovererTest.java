@@ -10,12 +10,12 @@ import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.Contribute;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.propertystore.PropertyStore;
 import sneer.pulp.propertystore.mocks.TransientPropertyStore;
-import sneer.software.lang.Consumer;
 import wheel.reactive.impl.EventReceiver;
 
 public class OwnIpDiscovererTest extends BrickTest {

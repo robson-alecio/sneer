@@ -6,12 +6,12 @@ import java.awt.Image;
 
 import sneer.commons.lang.Functor;
 import sneer.hardware.cpu.exceptions.Hiccup;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.image.ImageFactory;
-import sneer.software.lang.Consumer;
 
 class OwnAvatarKeeperImpl implements OwnAvatarKeeper {
 

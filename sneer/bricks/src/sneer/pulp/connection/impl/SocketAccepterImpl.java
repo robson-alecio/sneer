@@ -5,6 +5,7 @@ import static wheel.io.Logger.log;
 
 import java.io.IOException;
 
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
@@ -18,7 +19,6 @@ import sneer.pulp.network.Network;
 import sneer.pulp.port.PortKeeper;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.threadpool.ThreadPool;
-import sneer.software.lang.Consumer;
 import wheel.io.Logger;
 import wheel.lang.Threads;
 

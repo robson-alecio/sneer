@@ -16,6 +16,7 @@ import javax.swing.WindowConstants;
 
 import snapps.watchme.WatchMe;
 import sneer.brickness.PublicKey;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.events.EventSource;
@@ -23,7 +24,6 @@ import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.Widget;
-import sneer.software.lang.Consumer;
 
 class WatchMeReceiver{
 

@@ -11,12 +11,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.events.EventNotifier;
 import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import sneer.software.lang.Consumer;
 import wheel.reactive.sets.SetChange;
 import wheel.reactive.sets.SetRegister;
 import wheel.reactive.sets.SetSignal;

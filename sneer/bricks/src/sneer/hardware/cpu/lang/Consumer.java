@@ -1,4 +1,4 @@
-package sneer.software.lang;
+package sneer.hardware.cpu.lang;
 
 /** Can consume any value without ever throwing IllegalParameter. */
 public interface Consumer<T> extends PickyConsumer<T> {

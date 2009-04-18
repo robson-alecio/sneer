@@ -10,9 +10,9 @@ import org.jmock.Sequence;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.streams.sequencer.Sequencer;
 import sneer.pulp.streams.sequencer.Sequencers;
-import sneer.software.lang.Consumer;
 
 public class SequencerTest extends BrickTest {
 	

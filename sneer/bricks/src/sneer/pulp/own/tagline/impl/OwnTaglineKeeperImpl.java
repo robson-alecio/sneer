@@ -1,11 +1,11 @@
 package sneer.pulp.own.tagline.impl;
 
 import static sneer.commons.environments.Environments.my;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.own.tagline.OwnTaglineKeeper;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import sneer.software.lang.Consumer;
 
 class OwnTaglineKeeperImpl implements OwnTaglineKeeper {
 

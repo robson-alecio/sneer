@@ -7,10 +7,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import sneer.brickness.StoragePath;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.logging.Logger;
 import sneer.pulp.logging.file.LogToFile;
 import sneer.pulp.reactive.Signals;
-import sneer.software.lang.Consumer;
 
 class LogToFileImpl implements LogToFile {
 

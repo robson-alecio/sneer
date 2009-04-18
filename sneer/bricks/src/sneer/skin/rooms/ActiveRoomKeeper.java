@@ -1,8 +1,8 @@
 package sneer.skin.rooms;
 
 import sneer.brickness.OldBrick;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.Signal;
-import sneer.software.lang.Consumer;
 
 public interface ActiveRoomKeeper extends OldBrick {
 	

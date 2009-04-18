@@ -1,4 +1,4 @@
-package sneer.software.lang;
+package sneer.hardware.cpu.lang;
 
 import sneer.hardware.cpu.exceptions.IllegalParameter;
 

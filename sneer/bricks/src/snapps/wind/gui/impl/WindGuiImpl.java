@@ -29,6 +29,7 @@ import snapps.wind.Shout;
 import snapps.wind.Wind;
 import snapps.wind.gui.WindGui;
 import sneer.commons.lang.ByRef;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.ListChange;
@@ -41,7 +42,6 @@ import sneer.skin.sound.player.SoundPlayer;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
-import sneer.software.lang.Consumer;
 import wheel.io.Logger;
 import wheel.reactive.impl.EventReceiver;
 

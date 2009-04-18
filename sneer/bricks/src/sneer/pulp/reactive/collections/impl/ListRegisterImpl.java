@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.events.EventNotifier;
 import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.reactive.Register;
@@ -14,7 +15,6 @@ import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.ListChange;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
-import sneer.software.lang.Consumer;
 
 class ListRegisterImpl<VO> implements ListRegister<VO> {
 	

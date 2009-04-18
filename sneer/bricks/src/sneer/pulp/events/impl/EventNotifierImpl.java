@@ -7,10 +7,10 @@ import java.util.Collections;
 import java.util.List;
 
 import sneer.commons.environments.Environments;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.events.EventNotifier;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
-import sneer.software.lang.Consumer;
 import wheel.lang.Types;
 
 class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {

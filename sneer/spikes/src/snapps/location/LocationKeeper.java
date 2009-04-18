@@ -1,7 +1,7 @@
 package snapps.location;
 
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.Signal;
-import sneer.software.lang.Consumer;
 
 public interface LocationKeeper {
 

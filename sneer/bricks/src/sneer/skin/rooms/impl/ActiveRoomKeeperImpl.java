@@ -1,10 +1,10 @@
 package sneer.skin.rooms.impl;
 
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.rooms.ActiveRoomKeeper;
-import sneer.software.lang.Consumer;
 import static sneer.commons.environments.Environments.my;
 
 class ActiveRoomKeeperImpl implements ActiveRoomKeeper {

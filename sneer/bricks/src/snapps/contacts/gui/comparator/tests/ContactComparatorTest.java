@@ -8,6 +8,7 @@ import snapps.contacts.gui.comparator.ContactComparator;
 import sneer.brickness.testsupport.AssertUtils;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.Contribute;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
@@ -20,7 +21,6 @@ import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.collections.ReactiveCollections;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
-import sneer.software.lang.Consumer;
 
 public class ContactComparatorTest extends BrickTest {
 	

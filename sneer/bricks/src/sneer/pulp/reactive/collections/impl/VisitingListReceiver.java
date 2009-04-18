@@ -1,9 +1,9 @@
 package sneer.pulp.reactive.collections.impl;
 
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.collections.ListChange;
 import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.collections.ListChange.Visitor;
-import sneer.software.lang.Consumer;
 
 public abstract class VisitingListReceiver<T> implements Consumer<ListChange<T>>, Visitor<T> {
 

@@ -4,8 +4,8 @@ import java.lang.ref.WeakReference;
 import java.util.HashSet;
 import java.util.Set;
 
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.events.EventSource;
-import sneer.software.lang.Consumer;
 import wheel.reactive.impl.EventReceiver;
 
 class ReceiversImpl {

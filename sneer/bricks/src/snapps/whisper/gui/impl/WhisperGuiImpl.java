@@ -19,6 +19,7 @@ import javax.swing.border.EmptyBorder;
 
 import snapps.whisper.gui.WhisperGui;
 import sneer.commons.environments.Environments;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.gates.logic.LogicGates;
@@ -31,7 +32,6 @@ import sneer.skin.sound.mic.Mic;
 import sneer.skin.sound.speaker.Speaker;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
-import sneer.software.lang.Consumer;
 
 class WhisperGuiImpl implements WhisperGui { //Optimize need a better snapp window support
 

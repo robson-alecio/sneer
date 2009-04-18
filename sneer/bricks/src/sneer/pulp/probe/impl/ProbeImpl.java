@@ -6,13 +6,13 @@ package sneer.pulp.probe.impl;
 import static sneer.commons.environments.Environments.my;
 import sneer.brickness.PublicKey;
 import sneer.brickness.Tuple;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.tuples.TupleSpace;
-import sneer.software.lang.Consumer;
 
 final class ProbeImpl implements Consumer<Tuple> {
 

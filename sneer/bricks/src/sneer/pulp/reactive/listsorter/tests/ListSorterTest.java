@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import sneer.brickness.testsupport.AssertUtils;
 import sneer.brickness.testsupport.BrickTest;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
@@ -19,7 +20,6 @@ import sneer.pulp.reactive.collections.ReactiveCollections;
 import sneer.pulp.reactive.collections.ListChange.Visitor;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
-import sneer.software.lang.Consumer;
 
 public class ListSorterTest extends BrickTest {
 	

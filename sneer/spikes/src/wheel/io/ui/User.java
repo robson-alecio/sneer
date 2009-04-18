@@ -3,7 +3,7 @@ package wheel.io.ui;
 import java.io.File;
 
 import sneer.hardware.cpu.exceptions.FriendlyException;
-import sneer.software.lang.Consumer;
+import sneer.hardware.cpu.lang.Consumer;
 
 import wheel.lang.exceptions.Catcher;
 

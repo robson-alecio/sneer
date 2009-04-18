@@ -1,6 +1,7 @@
 package sneer.pulp.connection.reachability.impl;
 
 import static sneer.commons.environments.Environments.my;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
@@ -9,7 +10,6 @@ import sneer.pulp.connection.SocketAccepter;
 import sneer.pulp.connection.reachability.ReachabilitySentinel;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.threadpool.Stepper;
-import sneer.software.lang.Consumer;
 
 class ReachabilitySentinelImpl implements ReachabilitySentinel {
 

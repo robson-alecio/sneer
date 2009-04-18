@@ -24,6 +24,7 @@ import sneer.brickness.StoragePath;
 import sneer.brickness.Tuple;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
 import sneer.pulp.keymanager.KeyManager;
@@ -32,7 +33,6 @@ import sneer.pulp.reactive.collections.ReactiveCollections;
 import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.pulp.tuples.TupleSpace;
-import sneer.software.lang.Consumer;
 import wheel.lang.Threads;
 
 class TupleSpaceImpl implements TupleSpace {

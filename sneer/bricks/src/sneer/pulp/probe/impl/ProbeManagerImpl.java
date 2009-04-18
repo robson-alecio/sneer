@@ -8,6 +8,7 @@ import java.util.Set;
 
 import sneer.brickness.Tuple;
 import sneer.commons.lang.exceptions.NotImplementedYet;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
@@ -16,7 +17,6 @@ import sneer.pulp.probe.ProbeManager;
 import sneer.pulp.reactive.collections.impl.SimpleListReceiver;
 import sneer.pulp.serialization.Serializer;
 import sneer.pulp.tuples.TupleSpace;
-import sneer.software.lang.Consumer;
 
 class ProbeManagerImpl implements ProbeManager {
 	

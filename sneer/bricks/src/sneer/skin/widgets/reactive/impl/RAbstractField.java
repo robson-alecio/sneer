@@ -23,14 +23,14 @@ import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.exceptions.NotImplementedYet;
 import sneer.hardware.cpu.exceptions.IllegalParameter;
+import sneer.hardware.cpu.lang.Consumer;
+import sneer.hardware.cpu.lang.PickyConsumer;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.colors.Colors;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.TextWidget;
-import sneer.software.lang.Consumer;
-import sneer.software.lang.PickyConsumer;
 
 
 abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel implements TextWidget<WIDGET> {

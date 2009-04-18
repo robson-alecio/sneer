@@ -9,10 +9,10 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import sneer.hardware.cpu.lang.PickyConsumer;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Signal;
 import sneer.skin.widgets.reactive.TextWidget;
-import sneer.software.lang.PickyConsumer;
 import wheel.reactive.impl.EventReceiver;
 import static sneer.commons.environments.Environments.my;
 

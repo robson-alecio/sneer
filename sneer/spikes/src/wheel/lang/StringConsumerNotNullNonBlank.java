@@ -1,7 +1,7 @@
 package wheel.lang;
 
 import sneer.hardware.cpu.exceptions.IllegalParameter;
-import sneer.software.lang.PickyConsumer;
+import sneer.hardware.cpu.lang.PickyConsumer;
 
 public class StringConsumerNotNullNonBlank implements PickyConsumer<String> {
 

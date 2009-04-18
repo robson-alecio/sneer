@@ -29,6 +29,8 @@ import snapps.contacts.gui.ContactsGui;
 import snapps.contacts.gui.info.ContactInfoWindow;
 import sneer.commons.lang.Functor;
 import sneer.hardware.cpu.exceptions.IllegalParameter;
+import sneer.hardware.cpu.lang.Consumer;
+import sneer.hardware.cpu.lang.PickyConsumer;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.internetaddresskeeper.InternetAddress;
@@ -40,8 +42,6 @@ import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
-import sneer.software.lang.Consumer;
-import sneer.software.lang.PickyConsumer;
 
 class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 

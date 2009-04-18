@@ -1,6 +1,6 @@
 package sneer.pulp.events;
 
-import sneer.software.lang.Consumer;
+import sneer.hardware.cpu.lang.Consumer;
 
 public interface EventSource<VO> {
 

@@ -5,8 +5,8 @@ import static sneer.commons.environments.Environments.my;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.tuples.TupleSpace;
-import sneer.software.lang.Consumer;
 
 public class TupleKeepingTest extends BrickTest {
 

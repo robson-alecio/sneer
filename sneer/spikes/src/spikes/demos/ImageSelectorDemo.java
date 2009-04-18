@@ -3,9 +3,9 @@ package spikes.demos;
 import java.awt.Image;
 
 import sneer.commons.environments.Environments;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.kernel.container.ContainersOld;
 import sneer.skin.imgselector.ImageSelector;
-import sneer.software.lang.Consumer;
 import wheel.io.Logger;
 import wheel.lang.Threads;
 

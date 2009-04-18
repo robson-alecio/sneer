@@ -2,10 +2,10 @@ package snapps.location.impl;
 
 import static sneer.commons.environments.Environments.my;
 import snapps.location.LocationKeeper;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import sneer.software.lang.Consumer;
 
 public class LocationKeeperImpl implements LocationKeeper {
 

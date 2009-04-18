@@ -1,8 +1,8 @@
 package sneer.pulp.port.impl;
 
+import sneer.hardware.cpu.lang.PickyConsumer;
 import sneer.pulp.port.PortKeeper;
 import sneer.pulp.reactive.Signal;
-import sneer.software.lang.PickyConsumer;
 
 class PortKeeperImpl implements PortKeeper {
 

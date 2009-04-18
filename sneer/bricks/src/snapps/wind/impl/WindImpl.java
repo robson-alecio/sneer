@@ -6,12 +6,12 @@ import java.util.Comparator;
 
 import snapps.wind.Shout;
 import snapps.wind.Wind;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.collections.ReactiveCollections;
 import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.tuples.TupleSpace;
-import sneer.software.lang.Consumer;
 
 class WindImpl implements Wind, Consumer<Shout> {
 

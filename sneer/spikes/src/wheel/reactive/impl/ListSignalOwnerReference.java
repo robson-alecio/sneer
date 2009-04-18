@@ -3,10 +3,10 @@ package wheel.reactive.impl;
 import java.util.Iterator;
 import java.util.List;
 
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.collections.ListChange;
 import sneer.pulp.reactive.collections.ListSignal;
-import sneer.software.lang.Consumer;
 
 
 public class ListSignalOwnerReference<T> extends AbstractOwnerReference<T> implements ListSignal<T> {

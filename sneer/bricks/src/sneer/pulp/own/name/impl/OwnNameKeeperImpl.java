@@ -1,12 +1,12 @@
 package sneer.pulp.own.name.impl;
 
 import static sneer.commons.environments.Environments.my;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import sneer.software.lang.Consumer;
 
 class OwnNameKeeperImpl implements OwnNameKeeper {
 

@@ -5,7 +5,7 @@ import java.util.List;
 import org.prevayler.Prevayler;
 
 import sneer.hardware.cpu.exceptions.IllegalParameter;
-import sneer.software.lang.PickyConsumer;
+import sneer.hardware.cpu.lang.PickyConsumer;
 
 
 

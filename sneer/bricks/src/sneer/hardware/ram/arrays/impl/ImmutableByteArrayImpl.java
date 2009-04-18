@@ -1,28 +1,36 @@
-package wheel.lang;
+package sneer.hardware.ram.arrays.impl;
 
 import java.util.Arrays;
 
-public class ImmutableByteArray {
+import sneer.hardware.ram.arrays.ImmutableByteArray;
+
+class ImmutableByteArrayImpl implements ImmutableByteArray {
 	
 	private final byte[] _payload;
 	
-	private transient boolean _isHashCodeCalculated;
-	private transient int _hashCode;
+	private transient int _hashCode = -1;
 
-	public ImmutableByteArray(byte[] bufferToCopy) {
+	ImmutableByteArrayImpl(byte[] bufferToCopy) {
 		this(bufferToCopy, bufferToCopy.length);
 	}
 
-	public ImmutableByteArray(byte[] bufferToCopy, int bytesToCopy) {
+	ImmutableByteArrayImpl(byte[] bufferToCopy, int bytesToCopy) {
 		_payload = Arrays.copyOf(bufferToCopy, bytesToCopy);
 	}
+	
+	@Override
+	public byte get(int index) {
+		return _payload[index];
+	}
 
+	@Override
 	public int copyTo(byte[] dest) {
 		int result = _payload.length;
 		System.arraycopy(_payload, 0, dest, 0, result);
 		return result;
 	}
-	
+
+	@Override
 	public byte[] copy() {
 		final byte[] copy = new byte[_payload.length];
 		System.arraycopy(_payload, 0, copy, 0, copy.length);
@@ -34,16 +42,11 @@ public class ImmutableByteArray {
 		return Arrays.toString(_payload);
 	}
 
-	public byte get(int index) {
-		return _payload[index];
-	}
-
 	@Override
 	public int hashCode() {
-		if (!_isHashCodeCalculated) {
-			_isHashCodeCalculated = true;
-			_hashCode = Arrays.hashCode(_payload);
-		}
+		if (_hashCode == -1)
+			_hashCode = Arrays.hashCode(_payload); //Yes one in every 4 billion hash codes will be calculated every time (the case when the hash code actually IS -1 :).
+
 		return _hashCode;
 	}
 
@@ -52,10 +55,9 @@ public class ImmutableByteArray {
 		if (this == obj) return true;
 		if (obj == null) return false;
 		if (getClass() != obj.getClass()) return false;
-		ImmutableByteArray other = (ImmutableByteArray) obj;
+		ImmutableByteArrayImpl other = (ImmutableByteArrayImpl) obj;
 
 		return (Arrays.equals(_payload, other._payload));
 	}
 
-	
 }

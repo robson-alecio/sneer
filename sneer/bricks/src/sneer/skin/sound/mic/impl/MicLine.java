@@ -6,9 +6,10 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
+import sneer.hardware.ram.arrays.Arrays;
+import sneer.hardware.ram.arrays.ImmutableByteArray;
 import sneer.skin.sound.kernel.Audio;
 import sneer.software.exceptions.FriendlyException;
-import wheel.lang.ImmutableByteArray;
 
 class MicLine {
 
@@ -45,7 +46,7 @@ class MicLine {
 	static ImmutableByteArray read() {
 		byte[] buffer = pcmBuffer();
 		int read = _delegate.read(buffer , 0, buffer.length);
-		return new ImmutableByteArray(buffer, read);
+		return my(Arrays.class).newImmutableByteArray(buffer, read);
 	}
 
 	private static byte[] pcmBuffer() {

@@ -12,6 +12,7 @@ import snapps.watchme.codec.ImageDelta;
 import snapps.watchme.codec.ImageCodec.Decoder;
 import snapps.watchme.codec.ImageCodec.Encoder;
 import sneer.brickness.PublicKey;
+import sneer.hardware.ram.arrays.ImmutableByteArray;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
@@ -27,7 +28,6 @@ import sneer.skin.screenshotter.Screenshotter;
 import sneer.software.exceptions.FriendlyException;
 import sneer.software.lang.Consumer;
 import wheel.io.Logger;
-import wheel.lang.ImmutableByteArray;
 import wheel.lang.exceptions.Hiccup;
 
 class WatchMeImpl implements WatchMe {

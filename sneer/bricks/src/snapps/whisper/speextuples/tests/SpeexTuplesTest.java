@@ -15,13 +15,13 @@ import sneer.brickness.Tuple;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.Contribute;
 import sneer.commons.lang.ByRef;
+import sneer.hardware.ram.arrays.Arrays;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.rooms.ActiveRoomKeeper;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.software.lang.Consumer;
-import wheel.lang.ImmutableByteArray;
 
 public class SpeexTuplesTest extends BrickTest {
 	
@@ -134,7 +134,7 @@ public class SpeexTuplesTest extends BrickTest {
 	}
 	
 	private PcmSoundPacket pcmSoundPacketFor(PublicKey publicKey, final byte[] pcmPayload) {
-		return new PcmSoundPacket(publicKey, _clock.time(), new ImmutableByteArray(pcmPayload, pcmPayload.length));
+		return new PcmSoundPacket(publicKey, _clock.time(), my(Arrays.class).newImmutableByteArray(pcmPayload));
 	}
 	
 	private byte[][] frames() {

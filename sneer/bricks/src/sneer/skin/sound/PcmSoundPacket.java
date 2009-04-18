@@ -2,7 +2,7 @@ package sneer.skin.sound;
 
 import sneer.brickness.PublicKey;
 import sneer.brickness.Tuple;
-import wheel.lang.ImmutableByteArray;
+import sneer.hardware.ram.arrays.ImmutableByteArray;
 
 /** A packet of PCM-encoded sound: 8000Hz, 16 bits, 2 Channels (Stereo), Signed, Little Endian */
 public class PcmSoundPacket extends Tuple {

@@ -13,6 +13,7 @@ import snapps.whisper.speextuples.SpeexPacket;
 import snapps.whisper.speextuples.SpeexTuples;
 import sneer.brickness.PublicKey;
 import sneer.brickness.Tuple;
+import sneer.hardware.ram.arrays.Arrays;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.reactive.Signal;
@@ -22,7 +23,6 @@ import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.rooms.ActiveRoomKeeper;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.software.lang.Consumer;
-import wheel.lang.ImmutableByteArray;
 
 class SpeexTuplesImpl implements SpeexTuples {
 
@@ -96,7 +96,7 @@ class SpeexTuplesImpl implements SpeexTuples {
 	
 	protected void decode(SpeexPacket packet) {
 		for (byte[] frame : _decoder.decode(packet.frames))
-			_tupleSpace.acquire(new PcmSoundPacket(packet.publisher(), packet.publicationTime(), new ImmutableByteArray(frame, frame.length)));
+			_tupleSpace.acquire(new PcmSoundPacket(packet.publisher(), packet.publicationTime(), my(Arrays.class).newImmutableByteArray(frame)));
 	}
 
 	@Override

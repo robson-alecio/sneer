@@ -11,12 +11,12 @@ import org.junit.Test;
 import sneer.brickness.PublicKey;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.Contribute;
+import sneer.hardware.ram.arrays.Arrays;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.speaker.Speaker;
-import wheel.lang.ImmutableByteArray;
 
 public class SpeakerTest extends BrickTest {
 	
@@ -94,7 +94,7 @@ public class SpeakerTest extends BrickTest {
 	}
 	
 	private PcmSoundPacket pcmSoundPacketFor(PublicKey publicKey, final byte[] pcmPayload) {
-		return new PcmSoundPacket(publicKey, 0, new ImmutableByteArray(pcmPayload, pcmPayload.length));
+		return new PcmSoundPacket(publicKey, 0, my(Arrays.class).newImmutableByteArray(pcmPayload));
 	}
 	
 	private PcmSoundPacket p1() {

@@ -8,7 +8,6 @@ import static sneer.commons.environments.Environments.my;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +16,8 @@ import snapps.watchme.codec.ImageDelta;
 import snapps.watchme.codec.ImageCodec.Encoder;
 import sneer.commons.lang.Pair;
 import sneer.hardware.gui.images.Images;
+import sneer.hardware.ram.arrays.Arrays;
 import sneer.skin.image.ImageFactory;
-import wheel.lang.ImmutableByteArray;
 import wheel.lang.exceptions.Hiccup;
 import wheel.testutil.Profiler;
 
@@ -58,13 +57,13 @@ class EncoderImpl implements Encoder {
 		int[] currentPixels = my(Images.class).pixels(img1);
 		int[] previousPixels = _previousPixelsByCellCoordinate.get(Pair.of(x, y));		
 		
-		if(previousPixels != null && Arrays.equals(previousPixels, currentPixels))
+		if(previousPixels != null && java.util.Arrays.equals(previousPixels, currentPixels))
 			return;
 		
 		_previousPixelsByCellCoordinate.put(Pair.of(x, y), currentPixels);
 		
 		byte[] data = _imageFactory.toPngData(img1);
-		result.add(new ImageDelta(new ImmutableByteArray(data), x, y));
+		result.add(new ImageDelta(my(Arrays.class).newImmutableByteArray(data), x, y));
 	}
 	
 }

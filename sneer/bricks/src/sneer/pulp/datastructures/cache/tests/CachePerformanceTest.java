@@ -12,7 +12,7 @@ public class CachePerformanceTest extends BrickTest{
 
 	private final Cache<Object> _subject= my(CacheFactory.class).createWithCapacity(3000);
 	
-	@Test (timeout = 200) 
+	@Test (timeout = 500) 
 	public void containsPerformance() {
 		populate();
 		

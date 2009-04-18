@@ -1,7 +1,7 @@
 package snapps.watchme.codec;
 
 import sneer.brickness.Tuple;
-import wheel.lang.ImmutableByteArray;
+import sneer.hardware.ram.arrays.ImmutableByteArray;
 
 public class ImageDelta extends Tuple {
 

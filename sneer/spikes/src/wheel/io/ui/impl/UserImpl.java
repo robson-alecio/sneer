@@ -14,8 +14,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
+import sneer.hardware.cpu.exceptions.FriendlyException;
 import sneer.hardware.gui.guithread.GuiThread;
-import sneer.software.exceptions.FriendlyException;
 import sneer.software.lang.Consumer;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;

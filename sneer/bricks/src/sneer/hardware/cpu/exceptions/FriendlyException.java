@@ -1,4 +1,4 @@
-package sneer.software.exceptions;
+package sneer.hardware.cpu.exceptions;
 
 /**
  * An exception which always contains an useful help

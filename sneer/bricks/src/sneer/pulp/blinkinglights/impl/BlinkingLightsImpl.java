@@ -1,6 +1,7 @@
 package sneer.pulp.blinkinglights.impl;
 
 import static sneer.commons.environments.Environments.my;
+import sneer.hardware.cpu.exceptions.FriendlyException;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
@@ -8,7 +9,6 @@ import sneer.pulp.clock.Clock;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.collections.ReactiveCollections;
-import sneer.software.exceptions.FriendlyException;
 
 class BlinkingLightsImpl implements BlinkingLights {
 	

@@ -1,6 +1,6 @@
 package sneer.software.lang;
 
-import sneer.software.exceptions.IllegalParameter;
+import sneer.hardware.cpu.exceptions.IllegalParameter;
 
 
 public interface PickyConsumer<T> {

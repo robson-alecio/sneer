@@ -1,6 +1,6 @@
 package sneer.pulp.dyndns.updater;
 
-import sneer.software.exceptions.FriendlyException;
+import sneer.hardware.cpu.exceptions.FriendlyException;
 
 public abstract class UpdaterException extends FriendlyException {
 

@@ -1,4 +1,4 @@
-package sneer.software.exceptions;
+package sneer.hardware.cpu.exceptions;
 
 /** The checked counterpart of java.lang.IllegalArgumentException
  * It is not called simply IllegalArgument because it is easy to confuse them and throw the unchecked IllegalArgumentException causing bugs.

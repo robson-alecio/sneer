@@ -15,10 +15,10 @@ import snapps.watchme.codec.ImageDelta;
 import snapps.watchme.codec.ImageCodec.Decoder;
 import snapps.watchme.codec.ImageCodec.Encoder;
 import sneer.brickness.testsupport.BrickTest;
+import sneer.hardware.cpu.exceptions.Hiccup;
 import sneer.hardware.gui.images.Images;
 import sneer.skin.image.ImageFactory;
 import wheel.io.serialization.impl.XStreamBinarySerializer;
-import wheel.lang.exceptions.Hiccup;
 
 public class ImageCodecTest extends BrickTest {
 	

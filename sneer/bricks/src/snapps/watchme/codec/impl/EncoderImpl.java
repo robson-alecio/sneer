@@ -15,10 +15,10 @@ import java.util.Map;
 import snapps.watchme.codec.ImageDelta;
 import snapps.watchme.codec.ImageCodec.Encoder;
 import sneer.commons.lang.Pair;
+import sneer.hardware.cpu.exceptions.Hiccup;
 import sneer.hardware.gui.images.Images;
 import sneer.hardware.ram.arrays.Arrays;
 import sneer.skin.image.ImageFactory;
-import wheel.lang.exceptions.Hiccup;
 import wheel.testutil.Profiler;
 
 class EncoderImpl implements Encoder {

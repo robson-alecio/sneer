@@ -1,6 +1,7 @@
 package sneer.pulp.contacts.impl;
 
 import static sneer.commons.environments.Environments.my;
+import sneer.hardware.cpu.exceptions.IllegalParameter;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.reactive.Register;
@@ -9,7 +10,6 @@ import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.collections.ReactiveCollections;
-import sneer.software.exceptions.IllegalParameter;
 import sneer.software.lang.PickyConsumer;
 
 class ContactManagerImpl implements ContactManager {

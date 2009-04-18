@@ -1,6 +1,7 @@
 package sneer.skin.sound.mic.impl;
 
 import static sneer.commons.environments.Environments.my;
+import sneer.hardware.cpu.exceptions.FriendlyException;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
@@ -11,7 +12,6 @@ import sneer.pulp.threadpool.ThreadPool;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.mic.Mic;
-import sneer.software.exceptions.FriendlyException;
 import wheel.lang.Threads;
 
 class MicImpl implements Mic {

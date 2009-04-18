@@ -1,6 +1,8 @@
 package sneer.pulp.retrier.impl;
 
 import static sneer.commons.environments.Environments.my;
+import sneer.hardware.cpu.exceptions.FriendlyException;
+import sneer.hardware.cpu.exceptions.Hiccup;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
@@ -9,8 +11,6 @@ import sneer.pulp.retrier.Retrier;
 import sneer.pulp.retrier.Task;
 import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
-import sneer.software.exceptions.FriendlyException;
-import wheel.lang.exceptions.Hiccup;
 
 class RetrierImpl implements Retrier {
 

@@ -5,13 +5,13 @@ import static sneer.commons.environments.Environments.my;
 import java.awt.Image;
 
 import sneer.commons.lang.Functor;
+import sneer.hardware.cpu.exceptions.Hiccup;
 import sneer.pulp.own.avatar.OwnAvatarKeeper;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.image.ImageFactory;
 import sneer.software.lang.Consumer;
-import wheel.lang.exceptions.Hiccup;
 
 class OwnAvatarKeeperImpl implements OwnAvatarKeeper {
 

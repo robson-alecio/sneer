@@ -6,10 +6,10 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
+import sneer.hardware.cpu.exceptions.FriendlyException;
 import sneer.hardware.ram.arrays.Arrays;
 import sneer.hardware.ram.arrays.ImmutableByteArray;
 import sneer.skin.sound.kernel.Audio;
-import sneer.software.exceptions.FriendlyException;
 
 class MicLine {
 

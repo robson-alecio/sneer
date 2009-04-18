@@ -1,7 +1,7 @@
 package sneer.pulp.retrier;
 
-import sneer.software.exceptions.FriendlyException;
-import wheel.lang.exceptions.Hiccup;
+import sneer.hardware.cpu.exceptions.FriendlyException;
+import sneer.hardware.cpu.exceptions.Hiccup;
 
 public interface Task {
 

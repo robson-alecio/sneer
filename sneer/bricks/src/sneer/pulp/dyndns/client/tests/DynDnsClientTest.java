@@ -13,6 +13,7 @@ import sneer.brickness.testsupport.BrickTestRunner;
 import sneer.brickness.testsupport.Contribute;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
+import sneer.hardware.cpu.exceptions.FriendlyException;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.clock.Clock;
@@ -29,7 +30,6 @@ import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
-import sneer.software.exceptions.FriendlyException;
 
 public class DynDnsClientTest extends BrickTest {
 	

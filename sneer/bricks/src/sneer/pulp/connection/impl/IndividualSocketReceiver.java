@@ -7,12 +7,12 @@ import java.util.Arrays;
 
 import sneer.brickness.PublicKey;
 import sneer.commons.lang.Producer;
+import sneer.hardware.cpu.exceptions.IllegalParameter;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.network.ByteArraySocket;
-import sneer.software.exceptions.IllegalParameter;
 
 class IndividualSocketReceiver {
 

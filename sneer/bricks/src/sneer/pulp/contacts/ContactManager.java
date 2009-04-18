@@ -1,8 +1,8 @@
 package sneer.pulp.contacts;
 
 import sneer.brickness.OldBrick;
+import sneer.hardware.cpu.exceptions.IllegalParameter;
 import sneer.pulp.reactive.collections.ListSignal;
-import sneer.software.exceptions.IllegalParameter;
 import sneer.software.lang.PickyConsumer;
 
 

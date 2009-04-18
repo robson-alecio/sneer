@@ -22,13 +22,13 @@ import javax.swing.text.JTextComponent;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.exceptions.NotImplementedYet;
+import sneer.hardware.cpu.exceptions.IllegalParameter;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.colors.Colors;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.TextWidget;
-import sneer.software.exceptions.IllegalParameter;
 import sneer.software.lang.Consumer;
 import sneer.software.lang.PickyConsumer;
 

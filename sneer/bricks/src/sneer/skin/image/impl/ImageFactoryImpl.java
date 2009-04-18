@@ -23,9 +23,9 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+import sneer.hardware.cpu.exceptions.Hiccup;
 import sneer.hardware.gui.images.Images;
 import sneer.skin.image.ImageFactory;
-import wheel.lang.exceptions.Hiccup;
 import static sneer.commons.environments.Environments.my;
 
 class ImageFactoryImpl implements ImageFactory {

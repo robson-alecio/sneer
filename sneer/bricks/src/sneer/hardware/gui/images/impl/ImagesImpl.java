@@ -7,9 +7,9 @@ import java.awt.image.PixelGrabber;
 import java.net.URL;
 import java.util.Arrays;
 
+import sneer.hardware.cpu.exceptions.Hiccup;
 import sneer.hardware.gui.images.Images;
 
-import wheel.lang.exceptions.Hiccup;
 
 class ImagesImpl implements Images {
 

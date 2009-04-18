@@ -1,4 +1,4 @@
-package wheel.lang.exceptions;
+package sneer.hardware.cpu.exceptions;
 
 /**
  * Marker used to indicate that a method might take more than one

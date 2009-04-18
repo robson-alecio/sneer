@@ -10,11 +10,11 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.image.BufferedImage;
 
+import sneer.hardware.cpu.exceptions.FriendlyException;
+import sneer.hardware.cpu.exceptions.Hiccup;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.skin.screenshotter.Screenshotter;
-import sneer.software.exceptions.FriendlyException;
-import wheel.lang.exceptions.Hiccup;
 
 class ScreenshotterImpl implements Screenshotter {
 

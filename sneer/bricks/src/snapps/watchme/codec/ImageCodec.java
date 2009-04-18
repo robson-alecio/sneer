@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 import sneer.brickness.OldBrick;
-import wheel.lang.exceptions.Hiccup;
+import sneer.hardware.cpu.exceptions.Hiccup;
 
 public interface ImageCodec extends OldBrick {
 

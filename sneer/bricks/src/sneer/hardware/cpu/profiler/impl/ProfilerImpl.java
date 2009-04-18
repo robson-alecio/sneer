@@ -1,10 +1,11 @@
-package wheel.testutil;
+package sneer.hardware.cpu.profiler.impl;
 
+import sneer.hardware.cpu.profiler.Profiler;
 import wheel.io.Logger;
 
-public class Profiler {
+class ProfilerImpl implements Profiler {
 
-	class Worker {
+	private class Worker {
 
 		private long _timeEntered;
 		private long _timeExited = -1;
@@ -32,7 +33,7 @@ public class Profiler {
 
 	private final ThreadLocal<Worker> _worker = new ThreadLocal<Worker>();
 
-	public Profiler(String name) {
+	public ProfilerImpl(String name) {
 		_name = name;
 	}
 

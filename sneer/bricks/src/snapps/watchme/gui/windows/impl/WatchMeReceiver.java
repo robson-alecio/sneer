@@ -20,38 +20,28 @@ import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.keymanager.KeyManager;
+import sneer.pulp.reactive.Signals;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.Widget;
 import sneer.software.lang.Consumer;
-import wheel.reactive.impl.EventReceiver;
 
 class WatchMeReceiver{
-	
+
 	private final WatchMe _watchMe = my(WatchMe.class);
-	
 	private final KeyManager _keyManager = my(KeyManager.class);
-	
 	private final ReactiveWidgetFactory _factory = my(ReactiveWidgetFactory.class);
-	
-	@SuppressWarnings("unused")
-	private Consumer<Image> _imageReceiverToAvoidGc;
-	
-
-	@SuppressWarnings("unused")
-	private EventReceiver<Contact> _keyChangeReceiverToAvoidGc;
-
 	private final Contact _contact;
+
 	private Widget<JFrame> _windowWidget;
 	private JLabel _imageLabel = new JLabel();
 	
 	WatchMeReceiver(Contact contact) {
 		_contact = contact;
 		
-		_keyChangeReceiverToAvoidGc = new EventReceiver<Contact>(_keyManager.keyChanges()){@Override public void consume(Contact contactWithNewKey) {
+		my(Signals.class).receive(this, new Consumer<Contact>() {@Override public void consume(Contact contactWithNewKey) {
 			if(contactWithNewKey != _contact) return;
 			startWindowPaint(_keyManager.keyGiven(_contact));
-		}};
-
+		}}, _keyManager.keyChanges());
 	}
 
 	private void initGui() {
@@ -83,7 +73,7 @@ class WatchMeReceiver{
 		if (key == null) return;
 		
 		final EventSource<BufferedImage> screens = _watchMe.screenStreamFor(key);
-		_imageReceiverToAvoidGc = new EventReceiver<Image>(screens){ @Override public void consume(Image img) {
+		my(Signals.class).receive(this, new Consumer<Image>() { @Override public void consume(Image img) {
 			if (_windowWidget == null) initGui();
 			
 			JFrame frm = _windowWidget.getMainWidget();
@@ -92,7 +82,7 @@ class WatchMeReceiver{
 			ImageIcon icon = new ImageIcon(img);
 			_imageLabel.setIcon(icon);
 			_imageLabel.repaint();
-		}};
+		}}, screens);
 	}
 	
 	void dispose() {

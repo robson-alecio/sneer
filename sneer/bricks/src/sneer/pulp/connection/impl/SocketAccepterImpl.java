@@ -16,10 +16,11 @@ import sneer.pulp.network.ByteArrayServerSocket;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;
 import sneer.pulp.port.PortKeeper;
+import sneer.pulp.reactive.Signals;
 import sneer.pulp.threadpool.ThreadPool;
+import sneer.software.lang.Consumer;
 import wheel.io.Logger;
 import wheel.lang.Threads;
-import wheel.reactive.impl.EventReceiver;
 
 class SocketAccepterImpl implements SocketAccepter {
 	
@@ -42,13 +43,10 @@ class SocketAccepterImpl implements SocketAccepter {
 
 	private final Light _cantAcceptSocket = _lights.prepare(LightType.ERROR);
 
-	@SuppressWarnings("unused")
-	private final EventReceiver<Integer> _portReceiverToAvoidGC;
-
 	SocketAccepterImpl() {
-		_portReceiverToAvoidGC = new EventReceiver<Integer>(_portKeeper.port()) { @Override public void consume(Integer port) {
+		my(Signals.class).receive(this, new Consumer<Integer>() { @Override public void consume(Integer port) {
 			setPort(port);
-		}};
+		}}, _portKeeper.port());
 		_threadPool.registerActor(new Runnable(){ @Override public void run() {
 			listenToSneerPort();
 		}});

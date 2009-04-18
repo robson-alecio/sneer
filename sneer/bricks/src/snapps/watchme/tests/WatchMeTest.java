@@ -24,12 +24,13 @@ import sneer.hardware.gui.images.Images;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.keymanager.KeyManager;
+import sneer.pulp.reactive.Signals;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.screenshotter.Screenshotter;
+import sneer.software.lang.Consumer;
 import wheel.lang.Threads;
 import wheel.lang.exceptions.Hiccup;
-import wheel.reactive.impl.EventReceiver;
 
 public class WatchMeTest extends BrickTest {
 	
@@ -68,10 +69,10 @@ public class WatchMeTest extends BrickTest {
 		PublicKey key = _keys.ownPublicKey();
 		
 		EventSource<BufferedImage> screens = subject2.screenStreamFor(key);
-		@SuppressWarnings("unused")
-		EventReceiver<BufferedImage> receiverToAvoidGC = new EventReceiver<BufferedImage>(screens){@Override public void consume(BufferedImage screen) {
+
+		my(Signals.class).receive(this, new Consumer<BufferedImage>() {@Override public void consume(BufferedImage screen) {
 			_screenObserved.set(screen);
-		}};
+		}}, screens);
 		
 		_subject.startShowingMyScreen();
 		waitForImage(image1);

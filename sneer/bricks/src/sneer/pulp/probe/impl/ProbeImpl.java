@@ -10,9 +10,9 @@ import sneer.pulp.contacts.Contact;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.Signals;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.software.lang.Consumer;
-import wheel.reactive.impl.EventReceiver;
 
 final class ProbeImpl implements Consumer<Tuple> {
 
@@ -27,21 +27,16 @@ final class ProbeImpl implements Consumer<Tuple> {
 	private final Object _isOnlineMonitor = new Object();
 	private boolean _isOnline = false;
 	final SchedulerImpl _scheduler = new SchedulerImpl();
-	
-	@SuppressWarnings("unused")
-	private final EventReceiver<Boolean> _receiverToAvoidGC;
 
-	
 	ProbeImpl(Contact contact, Signal<Boolean> isOnline) {
 		_contact = contact;
-		_receiverToAvoidGC = createIsOnlineReceiver(isOnline);
+		createIsOnlineReceiver(isOnline);
 	}
 
-
-	private EventReceiver<Boolean> createIsOnlineReceiver(Signal<Boolean> isOnlineSignal) {
-		return new EventReceiver<Boolean>(isOnlineSignal){ @Override public void consume(Boolean isOnline) {
+	private void createIsOnlineReceiver(Signal<Boolean> isOnlineSignal) {
+		my(Signals.class).receive(this, new Consumer<Boolean>(){ @Override public void consume(Boolean isOnline) {
 			dealWithIsOnline(isOnline);
-		}};
+		}}, isOnlineSignal);
 	}
 
 	private void dealWithIsOnline(boolean isOnline) {

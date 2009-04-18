@@ -20,6 +20,7 @@ import javax.swing.border.EmptyBorder;
 import snapps.whisper.gui.WhisperGui;
 import sneer.commons.environments.Environments;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.gates.logic.LogicGates;
 import sneer.skin.colors.Colors;
 import sneer.skin.main.dashboard.InstrumentPanel;
@@ -30,22 +31,17 @@ import sneer.skin.sound.mic.Mic;
 import sneer.skin.sound.speaker.Speaker;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
-import wheel.reactive.impl.EventReceiver;
+import sneer.software.lang.Consumer;
 
 class WhisperGuiImpl implements WhisperGui { //Optimize need a better snapp window support
 
 	private final LoopbackTester _loopback = my(LoopbackTester.class);
-
 	private final InstrumentRegistry _instrumentManager = my(InstrumentRegistry.class);
-
 	private final Speaker _speaker = my(Speaker.class);
-
 	private final Mic _mic = my(Mic.class);
-	
+
 	JToggleButton _whisperButton;
 	JToggleButton _loopBackButton;
-	
-	Object _referenceToAvoidGc;
 
 	private TextWidget<JTextField> _roomField;
 
@@ -86,10 +82,10 @@ class WhisperGuiImpl implements WhisperGui { //Optimize need a better snapp wind
 		createWhisperButtonListener();
 		createLoopBackButtonListener();
 		
-		_referenceToAvoidGc = new EventReceiver<Boolean>(isRunning()) { @Override public void consume(Boolean isRunning) {
+		my(Signals.class).receive(this, new Consumer<Boolean>() { @Override public void consume(Boolean isRunning) {
 			_whisperButton.setSelected(isRunning);
 			_roomField.getMainWidget().setEnabled(isRunning);
-		}};
+		}}, isRunning());
 
 	}
 

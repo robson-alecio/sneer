@@ -9,7 +9,8 @@ import java.io.IOException;
 import sneer.brickness.StoragePath;
 import sneer.pulp.logging.Logger;
 import sneer.pulp.logging.file.LogToFile;
-import wheel.reactive.impl.EventReceiver;
+import sneer.pulp.reactive.Signals;
+import sneer.software.lang.Consumer;
 
 class LogToFileImpl implements LogToFile {
 
@@ -17,14 +18,11 @@ class LogToFileImpl implements LogToFile {
 	private static final boolean WRITE_TO_THE_END = true;
 	private final StoragePath _persistenceConfig = my(StoragePath.class);	
 	private final Logger _logger = my(Logger.class);
-
-	@SuppressWarnings("unused")
-	private EventReceiver<String> _loggedMessagesReceiverAvoidGc;
 	
 	LogToFileImpl() {
-		_loggedMessagesReceiverAvoidGc = new EventReceiver<String>(_logger.loggedMessages()) { @Override public void consume(String message) {
+		my(Signals.class).receive(this, new Consumer<String>() { @Override public void consume(String message) {
 			appendMessage(message);
-		}};
+		}}, _logger.loggedMessages());
 	}
 
 	private void appendMessage(String message) {

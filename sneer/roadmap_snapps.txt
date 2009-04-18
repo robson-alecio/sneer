@@ -14,8 +14,8 @@ TASKS
 		- Instrument Menu Hover - Solve Definitively
 			- Make all Dashboard values easily configurable in a single place in the code
 				- Title bar
-					- Height
-					- Color
+					- Height (Use 14)
+					- Color 
 					- Font
 						- Size
 						- Font type

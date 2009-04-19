@@ -1,0 +1,25 @@
+<synth>
+	<imageIcon id="icon_off" path="menu_gray.png"/>
+	<imageIcon id="icon_on" path="menu.png"/>
+
+
+	<style id="button">
+		<insets top="2" right="2"/>
+		<state>
+			<property key="Button.icon" value="icon_off"/>
+		</state>
+
+		<state value="MOUSE_OVER">
+			<property key="Button.icon" value="icon_on"/>
+		</state>
+
+	</style>
+	<bind style="button" type="region" key="Button" />
+
+	<!-- state id="panel">
+		<imagePainter method="panelBackground" path="toolbar.png"
+			sourceInsets="0 10 10 0" paintCenter="true" stretch="true" />
+	</state>
+	<bind style="panel" type="region" key="Panel"/-->
+
+</synth>

@@ -28,7 +28,7 @@ import sneer.pulp.events.EventSource;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.screenshotter.Screenshotter;
-import wheel.io.Logger;
+import sneer.pulp.logging.Logger;
 
 class WatchMeImpl implements WatchMe {
 
@@ -76,7 +76,7 @@ class WatchMeImpl implements WatchMe {
 				: cache.getByHandle(delta.cacheHandle);
 			
 			if (imageData == null) {
-				Logger.log("Local WatchMe image cache out of sync with peer's cache.");
+				my(Logger.class).log("Local WatchMe image cache out of sync with peer's cache.");
 				return;
 			}
 

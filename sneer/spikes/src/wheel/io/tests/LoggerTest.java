@@ -1,14 +1,17 @@
 package wheel.io.tests;
 
-import static org.junit.Assert.assertTrue;
-
-import java.io.ByteArrayOutputStream;
+import static sneer.commons.environments.Environments.my;
 
 import org.junit.Test;
 
-import wheel.io.Logger;
+import sneer.brickness.testsupport.BrickTest;
+import sneer.commons.lang.ByRef;
+import sneer.hardware.cpu.lang.Consumer;
+import sneer.pulp.logging.Logger;
+import sneer.pulp.reactive.Signals;
 
-public class LoggerTest {
+
+public class LoggerTest extends BrickTest {
 
 	@Test
 	public void insets() {
@@ -44,11 +47,14 @@ public class LoggerTest {
 	
 	
 	private void assertLog(String expected, String message, Object... insets) {
-		ByteArrayOutputStream observed = new ByteArrayOutputStream();
-		Logger.redirectTo(observed);
-		Logger.log(message, insets);
+		final ByRef<String> observed = ByRef.newInstance();
+		my(Signals.class).receive(this, new Consumer<String>() { @Override public void consume(String msg) {
+			observed.value = msg;
+		}},my(Logger.class).loggedMessages());
+
+		my(Logger.class).log(message, insets);
 		
-		assertTrue(observed.toString().indexOf(expected) != -1);
+		assertTrue(observed.value.indexOf(expected) != -1);
 	}
 
 

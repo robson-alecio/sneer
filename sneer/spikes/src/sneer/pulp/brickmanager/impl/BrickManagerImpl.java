@@ -1,7 +1,7 @@
 package sneer.pulp.brickmanager.impl;
 
 import static sneer.commons.environments.Environments.my;
-import static wheel.io.Logger.log;
+import sneer.pulp.logging.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -141,6 +141,10 @@ class BrickManagerImpl implements BrickManager {
 			log("creating: " + ok);
 		}
 		return brickDirectory;
+	}
+
+	private void log(String message) {
+		my(Logger.class).log(message);
 	}
 
 	private void tryToCleanDirectory(File brickDirectory) {

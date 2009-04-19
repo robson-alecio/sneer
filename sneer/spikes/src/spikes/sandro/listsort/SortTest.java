@@ -13,10 +13,10 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import sneer.brickness.testsupport.SystemBrickEnvironment;
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.ByRef;
 import sneer.hardware.gui.timebox.TimeboxedEventQueue;
-import sneer.kernel.container.ContainersOld;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
@@ -38,7 +38,7 @@ public class SortTest {
 
 	public static void main(String[] args) throws Exception {
 		
-		Environments.runWith(ContainersOld.newContainer(), new Runnable(){ @Override public void run() {
+		Environments.runWith(new SystemBrickEnvironment(), new Runnable(){ @Override public void run() {
 			try {
 				start();
 			} catch (Exception e) {

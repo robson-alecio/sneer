@@ -2,8 +2,10 @@ package wheel.testutil;
 
 import static java.lang.System.gc;
 import sneer.commons.threads.Daemon;
-import wheel.io.Logger;
+import sneer.pulp.logging.Logger;
 import wheel.lang.Threads;
+import static sneer.commons.environments.Environments.my;
+
 
 public class MemorySentinel {
 
@@ -43,7 +45,7 @@ public class MemorySentinel {
 		gc();
 		if (!isSignificant()) return;
 		_lastUsedMBs = usedMBs();
-		Logger.log("=== MEMORY USED: {} MB", _lastUsedMBs);
+		my(Logger.class).log("=== MEMORY USED: {} MB", _lastUsedMBs);
 	}
 
 

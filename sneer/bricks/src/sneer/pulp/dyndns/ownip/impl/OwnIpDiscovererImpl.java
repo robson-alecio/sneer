@@ -14,7 +14,7 @@ import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import wheel.io.Logger;
+import sneer.pulp.logging.Logger;
 
 class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	
@@ -42,7 +42,7 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 
 	private String restoreIp() {
 		String result = _store.get(LAST_IP_KEY);
-		Logger.log("Own Ip Restored: {}", result);
+		my(Logger.class).log("Own Ip Restored: {}", result);
 		return result;
 	}
 
@@ -80,7 +80,7 @@ class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 		_store.set(LAST_IP_KEY, ip);
 		_ownIp.setter().consume(ip);
 
-		Logger.log("Own Ip Discovered: {}", ip);
+		my(Logger.class).log("Own Ip Discovered: {}", ip);
 		
 	}
 

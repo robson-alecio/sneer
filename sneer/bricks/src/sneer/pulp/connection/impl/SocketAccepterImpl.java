@@ -1,7 +1,6 @@
 package sneer.pulp.connection.impl;
 
 import static sneer.commons.environments.Environments.my;
-import static wheel.io.Logger.log;
 
 import java.io.IOException;
 
@@ -13,13 +12,13 @@ import sneer.pulp.connection.SocketAccepter;
 import sneer.pulp.events.EventNotifier;
 import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.events.EventSource;
+import sneer.pulp.logging.Logger;
 import sneer.pulp.network.ByteArrayServerSocket;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;
 import sneer.pulp.port.PortKeeper;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.threadpool.ThreadPool;
-import wheel.io.Logger;
 import wheel.lang.Threads;
 
 class SocketAccepterImpl implements SocketAccepter {
@@ -94,7 +93,7 @@ class SocketAccepterImpl implements SocketAccepter {
 	
 	private void dealWith(ByteArraySocket incomingSocket) {
 		_lights.turnOffIfNecessary(_cantAcceptSocket);
-		Logger.log("Incoming socket received");
+		my(Logger.class).log("Incoming socket received");
 		_notifier.notifyReceivers(incomingSocket);
 	}
 
@@ -127,7 +126,7 @@ class SocketAccepterImpl implements SocketAccepter {
 	private void crashServerSocketIfNecessary() {
 		if(_serverSocket == null) return;
 
-		log("crashing server socket");
+		my(Logger.class).log("crashing server socket");
 		_isStopped = true;
 		_serverSocket.crash();
 	}

@@ -1,7 +1,6 @@
 package sneer.pulp.connection.impl;
 
 import static sneer.commons.environments.Environments.my;
-import static wheel.io.Logger.logShort;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -11,6 +10,7 @@ import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.keymanager.KeyManager;
+import sneer.pulp.logging.Logger;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
@@ -68,7 +68,7 @@ class ByteConnectionImpl implements ByteConnection {
 		try {
 			return tryToShakeHands(socket);
 		} catch (IOException e) {
-			logShort(e, "Exception while shaking hands in outgoing connection.");
+			my(Logger.class).logShort(e, "Exception while shaking hands in outgoing connection.");
 			return false;
 		}
 	}
@@ -138,7 +138,7 @@ class ByteConnectionImpl implements ByteConnection {
 	}
 
 	private void crash(ByteArraySocket mySocket, Exception e, final String message) {
-		logShort(e, message);
+		my(Logger.class).logShort(e, message);
 		_socketHolder.crash(mySocket);
 	}
 

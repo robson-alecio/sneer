@@ -1,16 +1,18 @@
 package spikes.demos;
 
 import static sneer.commons.environments.Environments.my;
+import sneer.brickness.testsupport.SystemBrickEnvironment;
 import sneer.commons.environments.Environments;
-import sneer.kernel.container.ContainersOld;
+import sneer.pulp.logging.out.LogToSystemOut;
 import sneer.skin.sound.player.SoundPlayer;
-import wheel.io.Logger;
 
 public class SoundPlayerDemo {
 	
 	private final SoundPlayer _player = my(SoundPlayer.class);
 	
-	SoundPlayerDemo(){
+	SoundPlayerDemo() {
+		my(LogToSystemOut.class);
+
 		_player.play(SoundPlayerDemo.class.getResource("alert1.wav"));
 		_player.play(SoundPlayerDemo.class.getResource("alert2.wav"));
 		
@@ -22,8 +24,7 @@ public class SoundPlayerDemo {
 	}
 	
 	public static void main(String[] args) {
-		Logger.redirectTo(System.out);
-		Environments.runWith(ContainersOld.newContainer(), new Runnable(){ @Override public void run() {
+		Environments.runWith(new SystemBrickEnvironment(), new Runnable(){ @Override public void run() {
 			try {
 				new SoundPlayerDemo();
 			} catch (Exception e) {

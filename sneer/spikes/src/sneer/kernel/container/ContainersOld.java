@@ -7,6 +7,7 @@ import sneer.commons.environments.Environment;
 
 public class ContainersOld {
 	
+	@Deprecated
 	public static ContainerOld newContainer(Object... implementationBindings) {
 		return newContainer(null, implementationBindings);
 	}

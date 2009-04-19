@@ -1,7 +1,7 @@
 package sneer.pulp.dependency.impl;
 
 import static sneer.commons.environments.Environments.my;
-import static wheel.io.Logger.log;
+import sneer.pulp.logging.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,7 +49,7 @@ class DependencyManagerImpl implements DependencyManager {
 	}
 
 	private FileWithHash install(FileWithHash dependency) throws IOException {
-		log("Installing dependency: {} [{}]", dependency.file(), dependency.sneer1024().toHexa());
+		my(Logger.class).log("Installing dependency: {} [{}]", dependency.file(), dependency.sneer1024().toHexa());
 
 		//1. check registry first
 		File file = dependency.file();

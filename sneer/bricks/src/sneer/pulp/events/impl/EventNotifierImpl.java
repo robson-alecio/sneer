@@ -1,6 +1,7 @@
 package sneer.pulp.events.impl;
 
-import static wheel.io.Logger.log;
+import static sneer.commons.environments.Environments.my;
+import sneer.pulp.logging.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +40,7 @@ class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 	private void notify(ReceiverHolder<Consumer<T>> reference, T valueChange) {
 		Consumer<T> receiver = reference.get();
 		if (receiver == null) {
-			log("Receiver has been garbage collected. ({})", reference._alias);
+			my(Logger.class).log("Receiver has been garbage collected. ({})", reference._alias);
 			_receivers.remove(reference);
 			return;
 		}
@@ -67,7 +68,7 @@ class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 	protected void finalize() throws Throwable {
 		ReceiverHolder<Consumer<T>>[] receivers = copyOfReceiversToAvoidConcurrentModificationAsResultOfNotifications();
 		if(receivers.length != 0)
-			log(debugMessage(receivers));
+			my(Logger.class).log(debugMessage(receivers));
 	}
 
 	private String debugMessage(ReceiverHolder<Consumer<T>>[] receivers) {

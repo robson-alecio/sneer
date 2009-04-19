@@ -1,5 +1,7 @@
 package spikes.sandro.cellrenderer;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -21,9 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 
 import sneer.hardware.gui.images.Images;
-import wheel.io.Logger;
 import wheel.testutil.MemorySentinel;
-import static sneer.commons.environments.Environments.my;
 
 public class ComplexRenderingSample {
 
@@ -43,7 +43,6 @@ public class ComplexRenderingSample {
 	}	
 	
 	public static void main(String args[]) {
-		Logger.redirectTo(System.out);
 		MemorySentinel.startLoggingSignificantMemoryUsageChanges();
 		initGui();
 	}

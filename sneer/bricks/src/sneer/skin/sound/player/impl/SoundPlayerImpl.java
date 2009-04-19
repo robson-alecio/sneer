@@ -21,7 +21,7 @@ import sneer.pulp.threadpool.Stepper;
 import sneer.pulp.threadpool.ThreadPool;
 import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.player.SoundPlayer;
-import wheel.io.Logger;
+import sneer.pulp.logging.Logger;
 import wheel.lang.Threads;
 
 class SoundPlayerImpl implements SoundPlayer {
@@ -91,7 +91,7 @@ class SoundPlayerImpl implements SoundPlayer {
 		try {
 			return audioInputStream.read(buffer, 0, buffer.length);
 		} catch (IOException e) {
-			Logger.log(e); //Implement Make this a blinking light.
+			my(Logger.class).log(e); //Implement Make this a blinking light.
 			return -1;
 		}
 	}

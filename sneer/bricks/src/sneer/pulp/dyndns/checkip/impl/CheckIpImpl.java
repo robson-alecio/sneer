@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.httpclient.HttpClient;
-import wheel.io.Logger;
+import sneer.pulp.logging.Logger;
 
 class CheckIpImpl implements CheckIp {
 	
@@ -20,7 +20,7 @@ class CheckIpImpl implements CheckIp {
 	public String check() throws IOException {
 		final String responseBody = submitHttpRequest();
 		String result = parse(responseBody);
-		Logger.log("Own Ip Checked: {}", result);
+		my(Logger.class).log("Own Ip Checked: {}", result);
 		return result;
 	}
 
@@ -38,7 +38,7 @@ class CheckIpImpl implements CheckIp {
 
 	private void throwBadResponse(String responseBody) throws IOException {
 		String message = "Unrecognized checkip response: " + responseBody;
-		Logger.log(message);
+		my(Logger.class).log(message);
 		throw new IOException(message);
 	}
 

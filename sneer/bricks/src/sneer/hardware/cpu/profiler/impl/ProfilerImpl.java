@@ -1,7 +1,9 @@
 package sneer.hardware.cpu.profiler.impl;
 
 import sneer.hardware.cpu.profiler.Profiler;
-import wheel.io.Logger;
+import sneer.pulp.logging.Logger;
+import static sneer.commons.environments.Environments.my;
+
 
 class ProfilerImpl implements Profiler {
 
@@ -68,7 +70,7 @@ class ProfilerImpl implements Profiler {
 		if (now() - _lastLogTime < 1000L * 1000 * 1000 * 30) return;
 		_lastLogTime = now();
 		
-		Logger.log("{} is running during {}% of the time", _name, percentageInside());
+		my(Logger.class).log("{} is running during {}% of the time", _name, percentageInside());
 	}
 
 	private long percentageInside() {

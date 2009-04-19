@@ -2,16 +2,17 @@ package spikes.demos;
 
 import static sneer.commons.environments.Environments.my;
 import snapps.blinkinglights.gui.BlinkingLightsGui;
+import sneer.brickness.testsupport.SystemBrickEnvironment;
 import sneer.commons.environments.Environments;
-import sneer.kernel.container.ContainersOld;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.LightType;
+import sneer.pulp.logging.out.LogToSystemOut;
 import sneer.skin.main.dashboard.Dashboard;
-import wheel.io.Logger;
 
 public class BlinkingLightsDemo {
 
 	BlinkingLightsDemo() throws Exception {
+		my(LogToSystemOut.class);
 
 		my(Dashboard.class);
 		my(BlinkingLightsGui.class);
@@ -23,8 +24,8 @@ public class BlinkingLightsDemo {
 	}
 
 	public static void main(String[] args) throws Exception {
-		Logger.redirectTo(System.out);
-		Environments.runWith(ContainersOld.newContainer(), new Runnable(){
+		my(LogToSystemOut.class);
+		Environments.runWith(new SystemBrickEnvironment(), new Runnable(){
 			@Override public void run() {
 				try {
 					new BlinkingLightsDemo();

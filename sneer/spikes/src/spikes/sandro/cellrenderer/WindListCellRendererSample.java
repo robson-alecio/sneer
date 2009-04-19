@@ -39,7 +39,6 @@ import sneer.hardware.gui.images.Images;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.widgets.reactive.LabelProvider;
-import wheel.io.Logger;
 import wheel.testutil.MemorySentinel;
 
 class WindListCellRendererSample implements ListCellRenderer {
@@ -50,7 +49,6 @@ class WindListCellRendererSample implements ListCellRenderer {
 	}	
 	
 	public static void main(String args[]) {
-		Logger.redirectTo(System.out);
 		MemorySentinel.startLoggingSignificantMemoryUsageChanges();
 		initGui();
 	}

@@ -10,16 +10,18 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import sneer.brickness.testsupport.SystemBrickEnvironment;
 import sneer.commons.environments.Environments;
-import sneer.kernel.container.ContainersOld;
+import sneer.pulp.logging.out.LogToSystemOut;
 import sneer.skin.main.dashboard.Dashboard;
 import sneer.skin.main.dashboard.InstrumentPanel;
 import sneer.skin.main.instrumentregistry.Instrument;
 import sneer.skin.main.instrumentregistry.InstrumentRegistry;
-import wheel.io.Logger;
+
 
 public class DashboardDemo  {
-	public DashboardDemo(){	
+	public DashboardDemo() {
+		Environments.my(LogToSystemOut.class);
 		Environments.my(Dashboard.class);
 		installSampleInstrument();
 	}
@@ -32,8 +34,7 @@ public class DashboardDemo  {
     }
 	
 	public static void main(String[] args) throws Exception {
-		Logger.redirectTo(System.out);
-		Environments.runWith(ContainersOld.newContainer(), new Runnable(){ @Override public void run() {
+		Environments.runWith(new SystemBrickEnvironment(), new Runnable(){ @Override public void run() {
 			new DashboardDemo();
 		}});
 	}

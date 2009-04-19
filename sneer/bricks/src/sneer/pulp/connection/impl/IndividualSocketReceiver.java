@@ -30,7 +30,7 @@ class IndividualSocketReceiver {
 		try {
 			if (!tryToServe()) _socket.crash();
 		} catch (Exception e) {
-			//Logger.logShort(e, "Exception thrown by incoming socket.");
+			//my(Logger.class).logShort(e, "Exception thrown by incoming socket.");
 			_socket.crash();
 		}
 	}

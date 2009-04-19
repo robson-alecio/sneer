@@ -6,15 +6,21 @@ import java.awt.Container;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
+import sneer.brickness.testsupport.SystemBrickEnvironment;
 import sneer.commons.environments.Environments;
-import sneer.kernel.container.ContainersOld;
+import sneer.pulp.logging.out.LogToSystemOut;
 import sneer.skin.main.dashboard.InstrumentPanel;
 import sneer.skin.main.instrumentregistry.Instrument;
-import wheel.io.Logger;
+import static sneer.commons.environments.Environments.my;
+
+
 
 public class RunMe{
 	
-	{ createAndShowGUI(); }
+	{
+		my(LogToSystemOut.class);
+		createAndShowGUI();
+	}
 
 	private void createAndShowGUI() {
         JFrame frame = new JFrame();
@@ -41,8 +47,7 @@ public class RunMe{
     }
     
 	public static void main(String[] args) throws Exception {
-		Logger.redirectTo(System.out);
-		Environments.runWith(ContainersOld.newContainer(), new Runnable(){ @Override public void run() {
+		Environments.runWith(new SystemBrickEnvironment(), new Runnable(){ @Override public void run() {
 			new RunMe();
 		}});
 	}

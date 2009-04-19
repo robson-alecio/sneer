@@ -1,5 +1,7 @@
 package sneer.apps.talk.audio;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.util.Arrays;
 
 import javax.sound.sampled.AudioFormat;
@@ -8,7 +10,8 @@ import javax.sound.sampled.TargetDataLine;
 
 import org.xiph.speex.SpeexEncoder;
 
-import wheel.io.Logger;
+import sneer.pulp.logging.Logger;
+
 
 public class SpeexMicrophone extends Thread {
 
@@ -44,7 +47,7 @@ public class SpeexMicrophone extends Thread {
 			tryToRun();
 		} catch (RuntimeException e) {
 			if (!_running) return;
-			Logger.log(e);
+			my(Logger.class).log(e);
 		}
 	}
 

@@ -9,16 +9,16 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import sneer.brickness.testsupport.SystemBrickEnvironment;
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.Functor;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.hardware.gui.timebox.TimeboxedEventQueue;
-import sneer.kernel.container.ContainersOld;
+import sneer.pulp.logging.out.LogToSystemOut;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
-import wheel.io.Logger;
 import wheel.reactive.impl.mocks.RandomBoolean;
 
 public class ReactiveImageDemo {
@@ -27,7 +27,8 @@ public class ReactiveImageDemo {
 	private final Image OFFLINE = getImage("sampleOff.png");
 	
 	private ReactiveImageDemo(){
-		
+		my(LogToSystemOut.class);
+
 		my(TimeboxedEventQueue.class).startQueueing(5000);
 		
 		my(GuiThread.class).strictInvokeAndWait(new Runnable(){@Override public void run() {
@@ -58,8 +59,7 @@ public class ReactiveImageDemo {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		Logger.redirectTo(System.out);
-		Environments.runWith(ContainersOld.newContainer(), new Runnable(){ @Override public void run() {
+		Environments.runWith(new SystemBrickEnvironment(), new Runnable(){ @Override public void run() {
 			try {
 				new ReactiveImageDemo();
 			} catch (Exception e) {

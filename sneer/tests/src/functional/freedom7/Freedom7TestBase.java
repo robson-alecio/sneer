@@ -9,7 +9,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.pulp.compiler.JavaCompiler;
-import wheel.io.Logger;
+import sneer.pulp.logging.out.LogToSystemOut;
 import wheel.io.SourceFileWriter;
 import functional.SovereignFunctionalTestBase;
 import functional.SovereignParty;
@@ -27,7 +27,7 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 
 	@Test
 	public void testPublishBrickWithTupleType() throws Exception {
-		Logger.redirectTo(System.out);
+		my(LogToSystemOut.class);
 		
 		System.clearProperty("freedom7.v.V.installed");
 		publisher().publishBricks(generateV());

@@ -6,22 +6,24 @@ import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 
+import sneer.brickness.testsupport.SystemBrickEnvironment;
 import sneer.commons.environments.Environments;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.hardware.gui.timebox.TimeboxedEventQueue;
-import sneer.kernel.container.ContainersOld;
+import sneer.pulp.logging.out.LogToSystemOut;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import sneer.skin.widgets.reactive.Widget;
-import wheel.io.Logger;
 
 public class ReactiveWidgetsDemo {
 
 	private ReactiveWidgetsDemo(){
-		
+
+		my(LogToSystemOut.class);
+
 		my(TimeboxedEventQueue.class).startQueueing(500000);
 		
 		my(GuiThread.class).strictInvokeAndWait(new Runnable(){ @Override public void run() {
@@ -72,8 +74,7 @@ public class ReactiveWidgetsDemo {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		Logger.redirectTo(System.out);
-		Environments.runWith(ContainersOld.newContainer(), new Runnable(){ @Override public void run() {
+		Environments.runWith(new SystemBrickEnvironment(), new Runnable(){ @Override public void run() {
 			try {
 				new ReactiveWidgetsDemo();
 			} catch (Exception e) {

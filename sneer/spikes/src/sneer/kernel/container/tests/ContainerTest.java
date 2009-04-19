@@ -1,7 +1,6 @@
 package sneer.kernel.container.tests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -33,11 +32,4 @@ public class ContainerTest {
 		mockery.assertIsSatisfied();
 	}
 
-	@Test
-	public void testImplementationBinding() throws Exception {
-        Sample sample = new Sample() {};
-        ContainerOld c = ContainersOld.newContainer(sample);
-        Sample subject = c.provide(Sample.class);
-        assertSame(sample, subject);
-	}
 }

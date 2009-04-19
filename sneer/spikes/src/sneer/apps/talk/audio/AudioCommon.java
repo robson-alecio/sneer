@@ -1,5 +1,7 @@
 package sneer.apps.talk.audio;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +15,7 @@ import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 
 import sneer.commons.lang.exceptions.NotImplementedYet;
-import wheel.io.Logger;
+import sneer.pulp.logging.Logger;
 
 // This class is a singleton.
 
@@ -216,9 +218,9 @@ class AudioCommon {
 			if (mixer != null)
 				return AudioSystem.getTargetDataLine(AudioUtil.AUDIO_FORMAT, mixer.getMixerInfo());
 		} catch (IllegalArgumentException iae){
-			Logger.logShort(iae, "Trying to getTargetDataLine. (Mic)");
+			my(Logger.class).logShort(iae, "Trying to getTargetDataLine. (Mic)");
 		} catch (LineUnavailableException e) {
-			Logger.log(e, "Failed to get target data line (Mic) with best available mixer. Trying default data line...");
+			my(Logger.class).log(e, "Failed to get target data line (Mic) with best available mixer. Trying default data line...");
 		}
 		
 		try{
@@ -235,9 +237,9 @@ class AudioCommon {
 				return AudioSystem.getSourceDataLine(AudioUtil.AUDIO_FORMAT);
 			return AudioSystem.getSourceDataLine(AudioUtil.AUDIO_FORMAT, mixer.getMixerInfo());
 		}catch(IllegalArgumentException iae){
-			Logger.logShort(iae, "Trying to getSourceDataLine. (Speaker)");
+			my(Logger.class).logShort(iae, "Trying to getSourceDataLine. (Speaker)");
 		} catch (LineUnavailableException e) {
-			Logger.log(e, "Failed to get source data line (Speaker) with best available mixer. Trying default data line...");
+			my(Logger.class).log(e, "Failed to get source data line (Speaker) with best available mixer. Trying default data line...");
 		}
 		try{
 			return AudioSystem.getSourceDataLine(AudioUtil.AUDIO_FORMAT);

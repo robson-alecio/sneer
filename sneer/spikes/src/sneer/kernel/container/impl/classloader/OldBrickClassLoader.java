@@ -1,7 +1,7 @@
 package sneer.kernel.container.impl.classloader;
 
 import static sneer.commons.environments.Environments.my;
-import static wheel.io.Logger.log;
+import sneer.pulp.logging.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,7 +59,7 @@ public class OldBrickClassLoader extends EnhancingClassLoader {
 		
 		if(bytes != null) {
 			Class<?> result  = defineClass(name, bytes);
-			log("Class {} loaded by {}", name, toString());
+			my(Logger.class).log("Class {} loaded by {}", name, toString());
 			return result;
 		}
 			
@@ -67,7 +67,7 @@ public class OldBrickClassLoader extends EnhancingClassLoader {
 		try {
 			Class<?> result = delegate().loadClass(name);
 			if(result != null) {
-				log("Class {} loaded by _delegate_ ",name, toString());			
+				my(Logger.class).log("Class {} loaded by _delegate_ ",name, toString());			
 				return result;
 			}
 		} catch (ClassNotFoundException e) {

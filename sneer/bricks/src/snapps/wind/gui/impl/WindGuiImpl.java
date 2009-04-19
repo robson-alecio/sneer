@@ -42,7 +42,7 @@ import sneer.skin.sound.player.SoundPlayer;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
-import wheel.io.Logger;
+import sneer.pulp.logging.Logger;
 import wheel.reactive.impl.EventReceiver;
 
 class WindGuiImpl implements WindGui {
@@ -254,7 +254,7 @@ class WindGuiImpl implements WindGui {
 		
 		@Override
 		public void lostOwnership(Clipboard arg0, Transferable arg1) {
-			Logger.log("Lost Clipboard Ownership.");
+			my(Logger.class).log("Lost Clipboard Ownership.");
 		}
 		
 		private int getPortableSoModifiers() {

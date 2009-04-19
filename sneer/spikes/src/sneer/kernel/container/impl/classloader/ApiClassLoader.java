@@ -10,7 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sneer.kernel.container.SneerConfig;
-import wheel.io.Logger;
+import sneer.pulp.logging.Logger;
+import static sneer.commons.environments.Environments.my;
+
+
 		
 public class ApiClassLoader extends URLClassLoader {
 
@@ -41,7 +44,7 @@ public class ApiClassLoader extends URLClassLoader {
 	@Override
 	protected Class<?> findClass(String name) throws ClassNotFoundException {
 		File brickDirectory = new File(_config.brickRootDirectory(), name);
-		Logger.log("loading: " + brickDirectory);
+		my(Logger.class).log("loading: " + brickDirectory);
 		if (!brickDirectory.exists())
 			throw new ClassNotFoundException(name);
 		

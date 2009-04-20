@@ -1,26 +1,32 @@
-/**
- * 
- */
 package spikes.sandro.swing.synth;
 
+import static javax.swing.JFrame.EXIT_ON_CLOSE;
+
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.io.InputStream;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.plaf.synth.SynthLookAndFeel;
 
-class Toolbar extends JPanel{
+public class Toolbar extends JPanel{
 	
+	private final JFrame _frame = new JFrame("Toolbar Synth Test");
 	private final JLabel _title = new JLabel();
 	private final JButton _menu = new JButton();
 	
-	Toolbar(String title){
+	public Toolbar(String title){
 		initGui(title);
-		addSynthLoadAction();
-		
+		initSynthNames();
+	}
+	
+	private void initSynthNames() {
 		_menu.setName("InstrumentMenuButton");
+		_title.setName("InstrumentTitle");
+		setName("InstrumentToolbar");
 	}
 	
 	private void initGui(String title) {
@@ -33,15 +39,31 @@ class Toolbar extends JPanel{
 		add(_menu, BorderLayout.EAST);
 	}
 
-	private void addSynthLoadAction() {
-		_menu.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
-			try {
-				RunMe test = new RunMe();		
-				test.loadSynth();
-				test.initGui(10, 110, 300, 60);
-			} catch (Exception e1) {
-				throw new sneer.commons.lang.exceptions.NotImplementedYet(e1); // Fix Handle this exception.
-			}
-		}});
+
+	private static void loadSynth() throws Exception {
+		InputStream is = null;
+		try {
+			SynthLookAndFeel synth = new SynthLookAndFeel();
+			is = Toolbar.class.getResourceAsStream("toolbar.xml");
+			synth.load(is, Toolbar.class);
+			UIManager.setLookAndFeel(synth);
+		} catch (Exception e) {
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+		} finally {
+			try { is.close(); } catch (Exception e2) { /* ignore */ }
+		}
+	}
+
+	private void initGui(int x, int y, int width, int height) {
+		_frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		_frame.setContentPane(this);
+		_frame.setBounds(x, y, width, height);
+		_frame.setVisible(true);
+	}
+	
+	public static void main(String args[]) throws Exception {
+		Toolbar.loadSynth();
+		Toolbar toolbar = new Toolbar("Olá Synth!");
+		toolbar.initGui(10, 10, 300, 60);
 	}
 }

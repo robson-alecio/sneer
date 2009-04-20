@@ -22,18 +22,17 @@ import sneer.skin.widgets.reactive.TextWidget;
 
 class REditableLabelImpl extends JPanel implements TextWidget<JTextField>{
 
-	private static final long serialVersionUID = 1L;
-	
-	protected final RLabelImpl _label;
-	protected final RTextFieldImpl _text;
-	protected final Signal<?> _source;
-	protected final PickyConsumer<? super String> _setter;
+	private final RLabelImpl _label;
+	private final RTextFieldImpl _text;
+	private final Signal<?> _source;
+	private final PickyConsumer<? super String> _setter;
 
 	REditableLabelImpl(Signal<?> source, PickyConsumer<? super String> setter, NotificationPolicy notificationPolicy) {
 		_source = source;
 		_setter = setter;
 		_text = new RTextFieldImpl(source, setter, notificationPolicy);
 		_label = new RLabelImpl(source, setter);
+
 		initWidget();
 	}
 
@@ -93,7 +92,7 @@ class REditableLabelImpl extends JPanel implements TextWidget<JTextField>{
 	
 	@Override
 	public JComponent[] getWidgets() {
-		return new JComponent[]{_text._textComponent , _label._textComponent};
+		return new JComponent[]{_text._textComponent , _label.textComponent()};
 	}
 
 	@Override

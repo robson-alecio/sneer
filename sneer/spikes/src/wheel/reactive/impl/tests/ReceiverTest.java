@@ -7,9 +7,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import sneer.brickness.testsupport.BrickTestRunner;
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signals;
-import wheel.reactive.impl.EventReceiver;
 
 @RunWith(BrickTestRunner.class)
 public class ReceiverTest {
@@ -19,10 +19,10 @@ public class ReceiverTest {
 		final StringBuilder received = new StringBuilder();
 		Register<String> register1 = my(Signals.class).newRegister(null);
 		Register<String> register2 = my(Signals.class).newRegister("hey");
-		@SuppressWarnings("unused")
-		Object referenceToAvoidGc = new EventReceiver<String>(register1.output(), register2.output()) {@Override public void consume(String value) {
+
+		my(Signals.class).receive(this, new Consumer<String>() {@Override public void consume(String value) {
 			received.append(value);
-		}};
+		}}, register1.output(), register2.output());
 		
 		assertEquals("nullhey", received.toString());
 

@@ -4,6 +4,7 @@ import static sneer.commons.environments.Environments.my;
 
 import java.io.IOException;
 
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
@@ -19,39 +20,34 @@ import sneer.pulp.dyndns.updater.Updater;
 import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.propertystore.PropertyStore;
+import sneer.pulp.reactive.Signals;
 import sneer.pulp.threadpool.ThreadPool;
-import wheel.reactive.impl.EventReceiver;
 
 class DynDnsClientImpl implements DynDnsClient {
-	
+
 	private static final String LAST_IP_KEY = "dyndns.lastIp";
 	private static final String LAST_HOST_KEY = "dyndns.lastHost";
 
 	private final OwnIpDiscoverer _ownIpDiscoverer = my(OwnIpDiscoverer.class);
-	
 	private final DynDnsAccountKeeper _ownAccountKeeper = my(DynDnsAccountKeeper.class);
-	
 	private final Updater _updater = my(Updater.class);
-	
 	private final PropertyStore _propertyStore = my(PropertyStore.class);
-	
 	private final BlinkingLights _blinkingLights = my(BlinkingLights.class);
-	
 	private final ThreadPool _threadPool = my(ThreadPool.class);
-	
 	private final Clock _clock = my(Clock.class);
-	
 	private final Object _stateMonitor = new Object();
-	private State _state = new Happy();
 	private final Light _light = _blinkingLights.prepare(LightType.ERROR);
-	
-	final EventReceiver<Object> _reactionTrigger = new EventReceiver<Object>(relevantSignals()) { @Override public void consume(Object ignored) {
-		synchronized (_stateMonitor) {
-			_state = _state.react();
-		}
-	}};
-	
-	
+
+	private State _state = new Happy();
+
+	DynDnsClientImpl() {
+		my(Signals.class).receive(this, new Consumer<Object>() { @Override public void consume(Object ignored) {
+			synchronized (_stateMonitor) {
+				_state = _state.react();
+			}
+		}}, relevantSignals());
+	}
+
 	abstract class State {
 		
 		abstract State react();

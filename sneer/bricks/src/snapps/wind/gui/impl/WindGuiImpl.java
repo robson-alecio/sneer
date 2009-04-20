@@ -31,6 +31,7 @@ import snapps.wind.gui.WindGui;
 import sneer.commons.lang.ByRef;
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.hardware.gui.guithread.GuiThread;
+import sneer.pulp.logging.Logger;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.ListChange;
 import sneer.pulp.reactive.collections.ListChange.Visitor;
@@ -42,8 +43,6 @@ import sneer.skin.sound.player.SoundPlayer;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
-import sneer.pulp.logging.Logger;
-import wheel.reactive.impl.EventReceiver;
 
 class WindGuiImpl implements WindGui {
 	
@@ -55,8 +54,6 @@ class WindGuiImpl implements WindGui {
 	private TextWidget<JTextPane> _myShout;
 
 	private Container _container;
-
-	private EventReceiver<ListChange<Shout>> _shoutReceiverToAvoidGc;
 
 	private JScrollPane _scrollPane;
 
@@ -152,10 +149,9 @@ class WindGuiImpl implements WindGui {
 	}
 
 	private void initShoutReceiver() {
-		_shoutReceiverToAvoidGc = new EventReceiver<ListChange<Shout>>(){ @Override public void consume(ListChange<Shout> ignored) {
+		my(Signals.class).receive(this, new Consumer<ListChange<Shout>>() { @Override public void consume(ListChange<Shout> ignored) {
 			shoutAlert();
-		}};
-		_wind.shoutsHeard().addReceiver(_shoutReceiverToAvoidGc);
+		}}, _wind.shoutsHeard());
 	}
 	
 	private void shoutAlert() {

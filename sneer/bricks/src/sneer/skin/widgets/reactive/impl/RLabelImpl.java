@@ -1,5 +1,7 @@
 package sneer.skin.widgets.reactive.impl;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -9,24 +11,19 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.hardware.cpu.lang.PickyConsumer;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.Signals;
 import sneer.skin.widgets.reactive.TextWidget;
-import wheel.reactive.impl.EventReceiver;
-import static sneer.commons.environments.Environments.my;
 
 class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 
-	private static final long serialVersionUID = 1L;
-	
-	protected final JLabel _textComponent;
-	protected final Signal<?> _source;
-	protected final PickyConsumer<? super String> _setter;
-	
-	@SuppressWarnings("unused")
-	private final EventReceiver<?> _textReceiverAvoidGc;
-	
+	private final JLabel _textComponent;
+	private final Signal<?> _source;
+	private final PickyConsumer<? super String> _setter;
+
 	RLabelImpl(Signal<?> text){
 		this(text, null);
 	}
@@ -35,10 +32,13 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 		_textComponent = new JLabel();
 		_setter = setter;
 		_source = source;
-		_textReceiverAvoidGc = new EventReceiver<Object>(source) {@Override public void consume(final Object value) {
+
+		my(Signals.class).receive(this, new Consumer<Object>() {@Override public void consume(final Object value) {
 			my(GuiThread.class).invokeAndWait(new Runnable() {@Override public void run() {
-				_textComponent.setText(valueToString(value));
-		}});}};
+				textComponent().setText(valueToString(value));
+			}});
+		}}, source);
+
 		initComponents();
 	}
 	
@@ -54,13 +54,13 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 				GridBagConstraints.BOTH,
 				new Insets(0,0,0,0),0,0);
 		setOpaque(false);
-		_textComponent.setText(valueToString(_source.currentValue()));
-		add(_textComponent, c);
+		textComponent().setText(valueToString(_source.currentValue()));
+		add(textComponent(), c);
 	}
 
 	@Override
 	public JLabel getMainWidget() {
-		return _textComponent;
+		return textComponent();
 	}
 
 	@Override
@@ -70,7 +70,7 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 	
 	@Override
 	public JComponent[] getWidgets() {
-		return new JComponent[]{_textComponent};
+		return new JComponent[]{textComponent()};
 	}
 
 	@Override
@@ -86,6 +86,10 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 		return _setter;
 	}
 	
+	public JLabel textComponent() {
+		return _textComponent;
+	}
+
 	@Override
 	public Dimension getMinimumSize() {
 		return RUtil.limitSize(super.getMinimumSize());

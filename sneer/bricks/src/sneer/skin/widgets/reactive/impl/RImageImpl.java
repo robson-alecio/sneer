@@ -11,6 +11,7 @@ import java.awt.RenderingHints;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.hardware.cpu.lang.PickyConsumer;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Register;
@@ -18,7 +19,6 @@ import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.widgets.reactive.ImageWidget;
-import wheel.reactive.impl.EventReceiver;
 
 class RImageImpl extends JPanel implements ImageWidget{
 
@@ -26,10 +26,6 @@ class RImageImpl extends JPanel implements ImageWidget{
 
 	protected final Register<Image> _image;
 	protected final PickyConsumer<Image> _setter;
-	private static final long serialVersionUID = 1L;
-	
-	@SuppressWarnings("unused")
-	private final EventReceiver<Image> _imageReceiverAvoidGc;
 	
 	RImageImpl(Signal<Image> source) {
 		this(source, null);
@@ -39,23 +35,25 @@ class RImageImpl extends JPanel implements ImageWidget{
 		setOpaque(false);
 		_image = my(Signals.class).newRegister(null);
 		_setter = setter;
-		_imageReceiverAvoidGc = imageReceiverFor(source);
+
+		imageReceiverFor(source);
 	}
 
-	private EventReceiver<Image> imageReceiverFor(Signal<Image> signal) {
-		return new EventReceiver<Image>(signal) {@Override public void consume(final Image image) {
+	private void imageReceiverFor(Signal<Image> signal) {
+		my(Signals.class).receive(this, new Consumer<Image>() { @Override public void consume(final Image image) {
 			_image.setter().consume(image);
+
 			my(GuiThread.class).invokeAndWait(new Runnable() { @Override public void run() {
 				revalidate();
 				repaint();
 			}});
-		}};
+		}}, signal);
 	}
 
 	@Override
 	public Dimension getMaximumSize() {
 		Image current = currentImage();
-		if(current!=null)
+		if(current != null)
 			return new Dimension(current.getWidth(null), current.getHeight(null));
 		
 		return new Dimension(48, 48); //Fix This should be 0,0. See Fix below.;

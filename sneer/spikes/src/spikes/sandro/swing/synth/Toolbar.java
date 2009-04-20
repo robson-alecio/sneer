@@ -41,12 +41,17 @@ public class Toolbar extends JPanel{
 
 
 	private static void loadSynth() throws Exception {
+		SynthLookAndFeel synth = new SynthLookAndFeel();
+		loadFile(synth, "toolbar.xml");
+		loadFile(synth, "buttons.xml");
+		UIManager.setLookAndFeel(synth);
+	}
+
+	private static void loadFile(SynthLookAndFeel synth, String fileName) {
 		InputStream is = null;
 		try {
-			SynthLookAndFeel synth = new SynthLookAndFeel();
-			is = Toolbar.class.getResourceAsStream("toolbar.xml");
+			is = Toolbar.class.getResourceAsStream(fileName);
 			synth.load(is, Toolbar.class);
-			UIManager.setLookAndFeel(synth);
 		} catch (Exception e) {
 			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		} finally {

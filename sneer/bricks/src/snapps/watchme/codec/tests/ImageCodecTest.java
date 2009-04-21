@@ -17,8 +17,8 @@ import snapps.watchme.codec.ImageCodec.Encoder;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.hardware.cpu.exceptions.Hiccup;
 import sneer.hardware.gui.images.Images;
+import sneer.pulp.serialization.Serializer;
 import sneer.skin.image.ImageFactory;
-import wheel.io.serialization.impl.XStreamBinarySerializer;
 
 public class ImageCodecTest extends BrickTest {
 	
@@ -82,7 +82,7 @@ public class ImageCodecTest extends BrickTest {
 	}
 
 	private byte[] serialize(Object obj) {
-		return new XStreamBinarySerializer().serialize(obj);
+		return my(Serializer.class).serialize(obj);
 	}
 
 	private BufferedImage loadImage(String fileName) throws Hiccup {

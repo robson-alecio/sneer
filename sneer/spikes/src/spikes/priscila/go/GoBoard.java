@@ -9,7 +9,7 @@ import java.util.Arrays;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import wheel.io.serialization.DeepCopier;
+import sneer.pulp.serialization.DeepCopier;
 
 public class GoBoard {
 
@@ -65,7 +65,7 @@ public class GoBoard {
 	}
 
 	private Intersection[][] copySituation() {
-		return DeepCopier.deepCopy(_intersections);
+		return my(DeepCopier.class).deepCopy(_intersections);
 	}
 
 	public void playStone(int x, int y) {

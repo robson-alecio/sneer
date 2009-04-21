@@ -1,23 +1,68 @@
 package sneer.pulp.serialization.impl;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import sneer.pulp.serialization.Serializer;
-import wheel.io.serialization.impl.XStreamBinarySerializer;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.binary.BinaryStreamReader;
+import com.thoughtworks.xstream.io.binary.BinaryStreamWriter;
+import com.thoughtworks.xstream.mapper.CannotResolveClassException;
 
 class SerializerImpl implements Serializer {
 
-	final wheel.io.serialization.Serializer _serializer = new XStreamBinarySerializer();
-	
-	@Override
-	public Object deserialize(byte[] bytes, ClassLoader classloader)
-			throws ClassNotFoundException, IOException {
-		return _serializer.deserialize(bytes, classloader);
-		
-	}
+	// XStream instances are not thread-safe.
+    private ThreadLocal<XStream> _xstreams = new ThreadLocal<XStream>() {
+        @Override protected XStream initialValue() {
+            return new XStream();
+        }
+    };
+
+    private XStream myXStream() {
+        return _xstreams.get();
+    }
+
+    @Override
+    public void serialize(OutputStream stream, Object object) throws IOException {
+    	try {
+    		BinaryStreamWriter writer = new BinaryStreamWriter(stream);
+			myXStream().marshal(object, writer);
+			writer.flush();
+		} catch (RuntimeException rx) {
+			throw new IOException(rx);
+		}
+    }
 
 	@Override
 	public byte[] serialize(Object object) {
-		return _serializer.serialize(object);
+		ByteArrayOutputStream result = new ByteArrayOutputStream();
+		try {
+			serialize(result, object);
+		} catch (IOException e) {
+			throw new IllegalStateException(e);
+		}
+		return result.toByteArray(); 
+	}
+
+	@Override
+	public Object deserialize(InputStream stream, ClassLoader classloader) throws IOException,	ClassNotFoundException {
+		myXStream().setClassLoader(classloader);
+		try {
+			return myXStream().unmarshal(
+				new BinaryStreamReader(stream));
+		} catch (CannotResolveClassException e) {
+			throw new ClassNotFoundException(e.getMessage());
+		} catch (RuntimeException rx) {
+			throw new IOException(rx.getMessage());
+		}
+	}
+
+	@Override
+	public Object deserialize(byte[] bytes, ClassLoader classloader) throws ClassNotFoundException, IOException {
+		return deserialize(new ByteArrayInputStream(bytes), classloader);
 	}
 }

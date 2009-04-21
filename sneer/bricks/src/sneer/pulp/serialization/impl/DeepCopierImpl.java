@@ -1,4 +1,4 @@
-package wheel.io.serialization;
+package sneer.pulp.serialization.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -7,34 +7,37 @@ import java.io.InputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 
-import wheel.io.serialization.impl.XStreamBinarySerializer;
+import sneer.pulp.serialization.DeepCopier;
+import sneer.pulp.serialization.Serializer;
 
-public class DeepCopier {
-	
-	private static final XStreamBinarySerializer XSTREAM_SERIALIZER = new XStreamBinarySerializer();
+class DeepCopierImpl implements DeepCopier {
 
-	
+	private static final Serializer SERIALIZER = new SerializerImpl();
+
 	/**
 	 * Same as deepCopy(original, new JavaSerializer()).
 	 * @throws ClassNotFoundException
 	 * @throws IOException
 	 * 
 	 */
-	public static <T> T deepCopy(T original) {
-	    return deepCopy(original, XSTREAM_SERIALIZER);
+	@Override
+	public <T> T deepCopy(T original) {
+	    return deepCopy(original, SERIALIZER);
 	}
 
 	/**
 	 * Produce a deep copy of the given object. Serializes the entire object to a byte array in memory. Recommended for
 	 * relatively small objects, such as individual transactions.
 	 */
-	public static <T> T deepCopy(T original, Serializer serializer) {
+	@Override
+	public <T> T deepCopy(T original, Serializer serializer) {
 		try {
 		    ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
             serializer.serialize(byteOut, original);
             ByteArrayInputStream byteIn = new ByteArrayInputStream(byteOut.toByteArray());
             return (T) serializer.deserialize(byteIn, original.getClass().getClassLoader());
-        } catch (Exception shouldNeverHappen) {
+
+		} catch (Exception shouldNeverHappen) {
 			throw new RuntimeException(shouldNeverHappen);
         }
 	}
@@ -46,15 +49,17 @@ public class DeepCopier {
 	 * deserializing the copy.
 	 * @throws IOException 
 	 */
-	public static Object pipedDeepCopy(Object original, Serializer serializer) {
+	@Override
+	public Object pipedDeepCopy(Object original, Serializer serializer) {
 		try {
 			return naivePipedDeepCopy(original, serializer);
+
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	private static Object naivePipedDeepCopy(Object original, Serializer serializer) throws IOException, InterruptedException {
+	private Object naivePipedDeepCopy(Object original, Serializer serializer) throws IOException, InterruptedException {
 		PipedOutputStream outputStream = new PipedOutputStream();
 		PipedInputStream inputStream = new PipedInputStream(outputStream);
 
@@ -63,6 +68,7 @@ public class DeepCopier {
 
 		try {
 			serializer.serialize(outputStream, original);
+
 		} finally {
 			outputStream.close();
 		}
@@ -78,10 +84,8 @@ public class DeepCopier {
 		private final ClassLoader _classLoader;
 
 		private Object _result;
-		
 		private RuntimeException _unexpectedException;
 
-		
 		public Consumer(InputStream inputStream, Serializer serializer, ClassLoader classLoader) {
 			_inputStream = inputStream;
 			_serializer = serializer;
@@ -112,7 +116,5 @@ public class DeepCopier {
 			if (_unexpectedException != null) throw _unexpectedException;
 			return _result;
 		}
-
 	}
-
 }

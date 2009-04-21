@@ -4,12 +4,14 @@
 
 package wheel.io.network.mocks;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import sneer.pulp.serialization.DeepCopier;
 import wheel.io.network.ObjectSocket;
-import wheel.io.serialization.DeepCopier;
 import wheel.lang.Threads;
 
 
@@ -35,7 +37,7 @@ public class ObjectSocketMock implements ObjectSocket {
 
 	public void writeObject(Object object) throws IOException {
 		_permit.check();
-		_counterpart.receive(DeepCopier.deepCopy(object));
+		_counterpart.receive(my(DeepCopier.class).deepCopy(object));
 	}
 
 	private synchronized void receive(Object object) {

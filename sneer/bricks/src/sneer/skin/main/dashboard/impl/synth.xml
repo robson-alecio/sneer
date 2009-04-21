@@ -1,0 +1,50 @@
+<synth>
+
+	<imageIcon id="icon_off" path="menu_gray.png" />
+	<imageIcon id="icon_on"  path="menu.png" />
+
+	<style id="toolbar">
+		<imagePainter path="title.png" sourceInsets="5 10 2 10"
+					  paintCenter="true" stretch="true"/>
+		<insets top="5" bottom="2" left="10" right="10"/>
+	</style>
+
+	<style id="title">
+	   <font name="Verdana" size="9"/>
+	   <state>
+	       <color value="#2d92bd" type="FOREGROUND"/>
+	   </state>
+	</style>
+
+	<style id="button">
+		<insets right="10" />
+		<state>
+			<property key="Button.icon" value="icon_off" />
+		</state>
+		<state value="MOUSE_OVER">
+			<property key="Button.icon" value="icon_on" />
+		</state>
+	</style>
+	
+	<style id="container">
+	   <opaque value="true"/>
+	   <state>
+	      <color value="WHITE" type="BACKGROUND"/>
+	   </state>
+	</style>
+
+	<style id="instrumentsContainer">
+	   <opaque value="true"/>
+	   <state>
+	      <color value="#dddddd" type="BACKGROUND"/>
+	   </state>
+	</style>
+
+	<bind key="InstrumentPanel" style="container" type="name" />
+	<bind key="InstrumentsContainer" style="instrumentsContainer" type="name" />
+	<bind key="InstrumentMenuButton" style="button" type="name" />
+	<bind key="InstrumentMenuBlockButton" style="button" type="name" />
+	<bind key="InstrumentToolbar" style="toolbar" type="name"/>
+	<bind key="InstrumentTitle" style="title" type="name"/>
+
+</synth>

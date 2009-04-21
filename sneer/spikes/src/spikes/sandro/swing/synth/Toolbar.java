@@ -39,7 +39,6 @@ public class Toolbar extends JPanel{
 		add(_menu, BorderLayout.EAST);
 	}
 
-
 	private static void loadSynth() throws Exception {
 		SynthLookAndFeel synth = new SynthLookAndFeel();
 		loadFile(synth, "toolbar.xml");

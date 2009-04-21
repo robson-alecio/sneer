@@ -21,6 +21,8 @@ public class Sneer {
 
 	static public Class<?>[] businessBricks() {
 		return new Class<?>[] {
+				sneer.hardware.gui.guithread.GuiThread.class,
+				sneer.skin.main.synth.Synth.class,
 				sneer.pulp.events.EventNotifiers.class,
 				sneer.skin.image.ImageFactory.class,
 				sneer.pulp.reactive.Signals.class,
@@ -90,7 +92,6 @@ public class Sneer {
 				sneer.pulp.dyndns.ownip.OwnIpDiscoverer.class,
 				sneer.pulp.dyndns.client.DynDnsClient.class,
 
-				sneer.hardware.gui.guithread.GuiThread.class,
 				sneer.hardware.gui.images.Images.class,
 				sneer.skin.colors.Colors.class,
 				snapps.contacts.gui.delete.DeleteContactWindow.class,

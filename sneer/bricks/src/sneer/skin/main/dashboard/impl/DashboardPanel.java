@@ -7,6 +7,8 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.IllegalComponentStateException;
 import java.awt.Point;
@@ -39,7 +41,7 @@ import sneer.skin.main.synth.Synth;
 class DashboardPanel extends JPanel {
 
 	private static final int _TOOLBAR_HEIGHT = 20;
-	private static final int _SHADOW_HEIGHT = 40;
+	private static final int _SHADOW_HEIGHT = 10;
 	
 	private final Synth _synth = my(Synth.class);
 	private final JLayeredPane _dashboardLayeredPane = new JLayeredPane();
@@ -161,7 +163,9 @@ class DashboardPanel extends JPanel {
 		private class Toolbar{
 			private final JPopupMenu _menuActions = new JPopupMenu();
 			private final JPanel _toolbarPanel = new JPanel();
-			private final JPanel _toolbarShadow = new JPanel();			
+			private final JPanel _toolbarShadow = new JPanel(){ @Override public void paint(Graphics g) {
+				paintShadows(g);
+			}};	
 			
 			private final JButton _mouseBlockButton = new JButton(); //Fix: Remove this hack used to block mouse 
 																									//event dispatch to the instrument behind toolbar 
@@ -241,8 +245,31 @@ class DashboardPanel extends JPanel {
 				int height = 2*_SHADOW_HEIGHT + _TOOLBAR_HEIGHT + getSize().height;
 				
 				_toolbarShadow.setBounds(x, y-_SHADOW_HEIGHT,  width, height);
-
 			}	
+			
+			protected void paintShadows(Graphics graph) {
+				Graphics2D g2 = (Graphics2D) graph;
+				
+				int x = 0;
+				int y = 0;
+				int width = _toolbarShadow.getWidth();
+				int height = _SHADOW_HEIGHT +_TOOLBAR_HEIGHT;
+				
+				Color dark = new Color(0f, 0f, 0f, 1f);
+				Color cristal = new Color(1f, 1f, 1f, 0.0f);
+				
+				GradientPaint gp = new GradientPaint(x, y , cristal, 0f,  height, dark);  
+				g2.setPaint(gp);  
+				g2.fillRect(x, y, width, height);				
+				
+				y = (int) getBounds().getMaxY() +height;
+				height = _SHADOW_HEIGHT;
+				dark = new Color(0f, 0f, 0f, 0.4f);
+				
+				gp = new GradientPaint(x, y , dark, x,  y+height, cristal);  
+				g2.setPaint(gp);  
+				g2.fillRect(x, y, width, height);				
+			}
 		}
 		
 		private void resizeInstrumentPanel() {

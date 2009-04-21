@@ -3,6 +3,7 @@ package sneer.skin.main.dashboard.impl;
 import static sneer.commons.environments.Environments.my;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Rectangle;
@@ -11,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
@@ -28,6 +30,7 @@ import sneer.skin.main.dashboard.Dashboard;
 import sneer.skin.main.instrumentregistry.Instrument;
 import sneer.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.skin.main.menu.MainMenu;
+import sneer.skin.main.synth.Synth;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.Widget;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
@@ -38,8 +41,10 @@ class DashboardImpl implements Dashboard {
 	private static final int H_OFFSET = 30;
 	private static final int TIMEOUT_FOR_GUI_EVENTS = 10 * 1000;
 	
+	private final Synth _synth = my(Synth.class);
+	private final  MainMenu _mainMenu = my(MainMenu.class);
 	private final DashboardPanel _dashboardPanel = new DashboardPanel();
-	private JPanel _rootPanel = new JPanel();
+	private final JPanel _rootPanel = new JPanel();
 
 	private Dimension _screenSize;
 	private Rectangle _bounds;
@@ -80,10 +85,21 @@ class DashboardImpl implements Dashboard {
 
 		WindowSupport() {
 			initWindow();
-			initRootPanel();		
+			initSynth();
+			initRootPanel();	
 			resizeWindow();
 		}
 		
+		private void initSynth() {
+			Container contentPane = _frame.getContentPane();
+			contentPane.setName("DashboarContentPane");
+			_synth.attach((JPanel)contentPane);
+			
+//			JComponent menu = _mainMenu.getWidget(); Fix: Add Layout to Menu.
+//			menu.setName("DashboarMenuBar");
+//			_synth.attach(menu);
+		}
+
 		private void initWindow() {
 			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
 				_rwindow = my(ReactiveWidgetFactory.class).newFrame(reactiveTitle());
@@ -99,12 +115,12 @@ class DashboardImpl implements Dashboard {
 		}
 
 		private void initRootPanel() {
-			MainMenu mainMenu = my(MainMenu.class);
-			mainMenu.getWidget().setBorder(new EmptyBorder(0,0,0,0));
+			_mainMenu.getWidget().setBorder(new EmptyBorder(0,0,0,0));
 			
 			_rootPanel.setLayout(new BorderLayout());
-			_rootPanel.add(mainMenu.getWidget(), BorderLayout.NORTH);
+			_rootPanel.add(_mainMenu.getWidget(), BorderLayout.NORTH);
 			_rootPanel.add(_dashboardPanel, BorderLayout.CENTER);
+			_rootPanel.setOpaque(false);
 			
 			addListenerToHideToolbarsWhenMouseExited();
 			
@@ -115,7 +131,7 @@ class DashboardImpl implements Dashboard {
 			//Fix: this method is a hack, consider to use a glasspane mouse listener
 			JPanel content = (JPanel) _frame.getContentPane();
 			content.setLayout(new BorderLayout());
-			content.setBorder(new EmptyBorder(0,2,2,2));
+			content.setBorder(new EmptyBorder(0,4,4,4));
 			content.add(_rootPanel, BorderLayout.CENTER);
 			content.addMouseListener(new MouseAdapter(){ @Override public void mouseEntered(MouseEvent e) {
 				_dashboardPanel.hideAllToolbars();

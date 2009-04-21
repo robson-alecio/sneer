@@ -268,7 +268,7 @@ class DashboardPanel extends JPanel {
 				
 				gp = new GradientPaint(x, y , dark, x,  y+height, cristal);  
 				g2.setPaint(gp);  
-				g2.fillRect(x, y, width, height);				
+				g2.fillRect(x, y, width, height);	
 			}
 		}
 		

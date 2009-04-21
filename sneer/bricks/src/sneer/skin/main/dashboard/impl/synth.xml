@@ -26,22 +26,29 @@
 		</state>
 	</style>
 	
-	<style id="container">
+	<style id="instrumentContainer">
 	   <opaque value="true"/>
 	   <state>
 	      <color value="WHITE" type="BACKGROUND"/>
 	   </state>
 	</style>
 
-	<style id="instrumentsContainer">
+	<style id="container">
 	   <opaque value="true"/>
 	   <state>
 	      <color value="#dddddd" type="BACKGROUND"/>
 	   </state>
 	</style>
 
-	<bind key="InstrumentPanel" style="container" type="name" />
-	<bind key="InstrumentsContainer" style="instrumentsContainer" type="name" />
+	<style id="translucent">
+	   <opaque value="false"/>
+	</style>
+
+	<bind key="DashboarContentPane" style="container" type="name" />
+	<bind key="InstrumentsContainer" style="translucent" type="name" />
+
+	<bind key="InstrumentPanel" style="instrumentContainer" type="name" />
+	
 	<bind key="InstrumentMenuButton" style="button" type="name" />
 	<bind key="InstrumentMenuBlockButton" style="button" type="name" />
 	<bind key="InstrumentToolbar" style="toolbar" type="name"/>

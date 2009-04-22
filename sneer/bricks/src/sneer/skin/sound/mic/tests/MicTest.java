@@ -11,29 +11,30 @@ import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.Contribute;
+import sneer.pulp.reactive.SignalUtils;
 import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.mic.Mic;
-import wheel.testutil.SignalUtils;
 
 public class MicTest extends BrickTest {
 
-	private final Mic _subject = my(Mic.class);
+	private static final SignalUtils SIGNAL_UTILS = my(SignalUtils.class);
 
-	@Contribute	private final Audio _audio = mock(Audio.class);
+	private final Mic _subject = my(Mic.class);
 	private final TargetDataLine _line = mock(TargetDataLine.class);
 	private final AudioFormat _format = new AudioFormat(8000, 16, 1, true, false);
+	@Contribute	private final Audio _audio = mock(Audio.class);
 	
 	@Test
 	public void testIsRunningSignal() throws LineUnavailableException {
 		checking(soundExpectations());
 		
-		SignalUtils.waitForValue(false, _subject.isRunning());
+		SIGNAL_UTILS.waitForValue(false, _subject.isRunning());
 		
 		_subject.open();
-		SignalUtils.waitForValue(true, _subject.isRunning());
+		SIGNAL_UTILS.waitForValue(true, _subject.isRunning());
 		
 		_subject.close();
-		SignalUtils.waitForValue(false, _subject.isRunning());
+		SIGNAL_UTILS.waitForValue(false, _subject.isRunning());
 	}
 	
 	private Expectations soundExpectations() throws LineUnavailableException {

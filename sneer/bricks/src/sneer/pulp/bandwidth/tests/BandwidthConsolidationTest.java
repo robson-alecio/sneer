@@ -7,34 +7,35 @@ import org.junit.Test;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.clock.Clock;
-import wheel.testutil.SignalUtils;
+import sneer.pulp.reactive.SignalUtils;
 
 public class BandwidthConsolidationTest extends BrickTest {
 	
 	@Test
 	public void test() throws Exception {
-		Clock _clock = my(Clock.class);		
-		BandwidthCounter _subject = my(BandwidthCounter.class);		
-		
-		SignalUtils.waitForValue(0, _subject.downloadSpeed());
-		SignalUtils.waitForValue(0, _subject.uploadSpeed());
-		
-		_subject.received(1024*4);
-		_subject.sent(1024*40);
-		SignalUtils.waitForValue(0, _subject.downloadSpeed());
-		SignalUtils.waitForValue(0, _subject.uploadSpeed());
-		
-		_clock.advanceTime(4000);
-		SignalUtils.waitForValue(1, _subject.downloadSpeed());
-		SignalUtils.waitForValue(10, _subject.uploadSpeed());
-		
-		_subject.received(1024*50);
-		_subject.sent(1024*5);
-		SignalUtils.waitForValue(1, _subject.downloadSpeed());
-		SignalUtils.waitForValue(10, _subject.uploadSpeed());
-		
-		_clock.advanceTime(5000);
-		SignalUtils.waitForValue(10, _subject.downloadSpeed());
-		SignalUtils.waitForValue(1, _subject.uploadSpeed());
+		final SignalUtils signalsUtils = my(SignalUtils.class);
+		final Clock clock = my(Clock.class);		
+		final BandwidthCounter subject = my(BandwidthCounter.class);
+
+		signalsUtils.waitForValue(0, subject.downloadSpeed());
+		signalsUtils.waitForValue(0, subject.uploadSpeed());
+
+		subject.received(1024*4);
+		subject.sent(1024*40);
+		signalsUtils.waitForValue(0, subject.downloadSpeed());
+		signalsUtils.waitForValue(0, subject.uploadSpeed());
+
+		clock.advanceTime(4000);
+		signalsUtils.waitForValue(1, subject.downloadSpeed());
+		signalsUtils.waitForValue(10, subject.uploadSpeed());
+
+		subject.received(1024*50);
+		subject.sent(1024*5);
+		signalsUtils.waitForValue(1, subject.downloadSpeed());
+		signalsUtils.waitForValue(10, subject.uploadSpeed());
+
+		clock.advanceTime(5000);
+		signalsUtils.waitForValue(10, subject.downloadSpeed());
+		signalsUtils.waitForValue(1, subject.uploadSpeed());
 	}
 }

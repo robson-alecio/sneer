@@ -20,10 +20,10 @@ import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.probe.ProbeManager;
+import sneer.pulp.reactive.SignalUtils;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.serialization.Serializer;
 import sneer.pulp.tuples.TupleSpace;
-import wheel.testutil.SignalUtils;
 
 public class ProbeManagerTest extends BrickTest {
 
@@ -111,7 +111,7 @@ public class ProbeManagerTest extends BrickTest {
 		_keys.addKey(neide, _keys.generateMickeyMouseKey("foo"));
 
 		_tuples.acquire(new TupleTypeA(1));
-		SignalUtils.waitForValue(1, _bandwidthCounter.uploadSpeed());
+		my(SignalUtils.class).waitForValue(1, _bandwidthCounter.uploadSpeed());
 		
 		
 		_tuples.acquire(new TupleTypeB(2));

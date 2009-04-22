@@ -93,7 +93,7 @@ class WelcomeWizardImpl extends JFrame implements WelcomeWizard {
 		_yourOwnName = newTextField(_nameKeeper.name(), _nameKeeper.nameSetter());
 		
 		PortKeeper portKeeper = my(PortKeeper.class);
-		_sneerPort = newTextField(portKeeper.port(), my(Parsers.class).createIntegerParserFor(portKeeper.portSetter()));
+		_sneerPort = newTextField(portKeeper.port(), my(Parsers.class).newIntegerParser(portKeeper.portSetter()));
 		
 		pnl.setLayout(new GridBagLayout());
 		

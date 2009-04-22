@@ -7,7 +7,7 @@ import sneer.pulp.reactive.Parsers;
 class ParsersImpl implements Parsers {
 
 	@Override
-	public IntegerParser createIntegerParserFor(PickyConsumer<Integer> consumer) {
+	public IntegerParser newIntegerParser(PickyConsumer<Integer> consumer) {
 		return new IntegerParserImpl(consumer);
 	}
 

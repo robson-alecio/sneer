@@ -6,6 +6,6 @@ import sneer.hardware.cpu.lang.PickyConsumer;
 @Brick
 public interface Parsers {
 
-	IntegerParser createIntegerParserFor(PickyConsumer<Integer> consumer);
+	IntegerParser newIntegerParser(PickyConsumer<Integer> consumer);
 
 }

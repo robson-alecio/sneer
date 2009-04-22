@@ -2,18 +2,13 @@
 //This is free software. It is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the license distributed along with this file for more details.
 //Contributions: Kalecser Kurtz, Fabio Roger Manera.
 
-package wheel.reactive.sets;
-
-import sneer.pulp.reactive.collections.CollectionRegister;
+package sneer.pulp.reactive.collections;
 
 
-public interface SetRegister<T> extends CollectionRegister<T> {
+import sneer.pulp.events.EventSource;
 
-	SetSignal<T> output();
 
-	void add(T elementAdded);
-	void remove(T elementRemoved);
+public interface SetSignal<T> extends CollectionSignal<T>, EventSource<SetChange<T>> {
 
-	void change(SetChange<T> change);
-
+	boolean currentContains(T element);
 }

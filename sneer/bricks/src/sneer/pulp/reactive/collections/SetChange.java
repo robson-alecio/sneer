@@ -1,7 +1,7 @@
 /**
  * 
  */
-package wheel.reactive.sets;
+package sneer.pulp.reactive.collections;
 
 import java.util.Collection;
 

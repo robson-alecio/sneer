@@ -18,11 +18,11 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.store.RAMDirectory;
 
+import sneer.pulp.reactive.collections.SetRegister;
+import sneer.pulp.reactive.collections.SetSignal;
+import sneer.pulp.reactive.collections.impl.SetRegisterImpl;
 import sneer.pulp.things.Thing;
 import sneer.pulp.things.ThingHome;
-import wheel.reactive.sets.SetRegister;
-import wheel.reactive.sets.SetSignal;
-import wheel.reactive.sets.impl.SetRegisterImpl;
 
 class ThingHomeImpl implements ThingHome {
 

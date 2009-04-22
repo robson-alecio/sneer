@@ -1,10 +1,11 @@
-package wheel.reactive.sets.impl;
+package sneer.pulp.reactive.collections.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import wheel.reactive.sets.SetChange;
+import sneer.pulp.reactive.collections.SetChange;
+
 
 public class SetValueChangeImpl<T> implements SetChange<T> {
 

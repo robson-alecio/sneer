@@ -15,11 +15,9 @@ import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.collections.MapRegister;
 import sneer.pulp.reactive.collections.MapSignal;
-import wheel.reactive.sets.SetRegister;
-import wheel.reactive.sets.SetSignal;
-import wheel.reactive.sets.SetChange;
-import wheel.reactive.sets.impl.SetRegisterImpl;
-import wheel.reactive.sets.impl.SetValueChangeImpl;
+import sneer.pulp.reactive.collections.SetChange;
+import sneer.pulp.reactive.collections.SetRegister;
+import sneer.pulp.reactive.collections.SetSignal;
 
 class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 	

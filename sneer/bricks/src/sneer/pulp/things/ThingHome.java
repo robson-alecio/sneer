@@ -1,7 +1,7 @@
 package sneer.pulp.things;
 
 import sneer.brickness.OldBrick;
-import wheel.reactive.sets.SetSignal;
+import sneer.pulp.reactive.collections.SetSignal;
 
 public interface ThingHome extends OldBrick {
 

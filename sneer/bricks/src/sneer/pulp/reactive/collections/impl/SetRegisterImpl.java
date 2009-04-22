@@ -2,7 +2,7 @@
 //This is free software. It is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the license distributed along with this file for more details.
 //Contributions: Kalecser Kurtz, Fabio Roger Manera.
 
-package wheel.reactive.sets.impl;
+package sneer.pulp.reactive.collections.impl;
 
 import static sneer.commons.environments.Environments.my;
 
@@ -17,9 +17,9 @@ import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import wheel.reactive.sets.SetChange;
-import wheel.reactive.sets.SetRegister;
-import wheel.reactive.sets.SetSignal;
+import sneer.pulp.reactive.collections.SetChange;
+import sneer.pulp.reactive.collections.SetRegister;
+import sneer.pulp.reactive.collections.SetSignal;
 
 
 

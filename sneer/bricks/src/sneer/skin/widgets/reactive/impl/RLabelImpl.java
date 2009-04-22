@@ -44,7 +44,6 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 	
 	public RLabelImpl(Signal<String> source, String synthName) {
 		this(source);
-		my(Synth.class).attach(this);
 		my(Synth.class).attach(_textComponent);
 		_textComponent.setName(synthName);
 	}

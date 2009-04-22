@@ -1,17 +1,17 @@
 <synth>
 
 	<style id="toolbar">
-		<imagePainter path="title.png" sourceInsets="5 10 0 10"
-					  paintCenter="true" stretch="true"/>
-		<insets top="5" left="10" bottom="0" right="10"/>
+		<imagePainter path="title.png" sourceInsets="3 3 0 3"
+			paintCenter="true" stretch="true" />
+		<insets top="2" left="3" bottom="0" right="3" />
 	</style>
 
 	<style id="title">
-	   <property key="Label.bounds" type="insets" value="0 0 14 14"/>
-	   <font name="Verdana" size="9"/>
-	   <state>
-	       <color value="#2d92bd" type="FOREGROUND"/>
-	   </state>
+		<font name="Verdana" size="8" />
+		<state>
+			<property key="Label.margin" type="insets" value="0 0 0 0" />
+			<color value="#2d92bd" type="FOREGROUND" />
+		</state>
 	</style>
 
 	<style id="button">	

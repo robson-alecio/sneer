@@ -1,0 +1,39 @@
+<synth>
+
+	<style id="ScrollPane">
+		<insets right="5" left="5" top="5" bottom="5"/>
+	    <state>
+	    </state>
+	</style>
+	<bind style="ScrollPane" type="REGION" key="ScrollPane" />
+
+	<style id="scrollBarArrowStyle">
+	    <state>
+	        <imagePainter method="arrowButtonForeground" path="scroll_arrow_north.png" center="true" direction="north" />
+	        <imagePainter method="arrowButtonForeground" path="scroll_arrow_south.png" center="true" direction="south" />
+	        <imagePainter method="arrowButtonForeground" path="scroll_arrow_west.png" center="true" direction="west" />
+	        <imagePainter method="arrowButtonForeground" path="scroll_arrow_east.png" center="true" direction="east" />
+	    </state>
+	</style>
+	<bind style="scrollBarArrowStyle" type="REGION" key="ArrowButton" />
+
+	<style id="scrollBarThumbStyle">
+	    <state>
+	        <imagePainter method="scrollBarThumbBackground" direction="horizontal" path="scroll_grip_horizontal.png" sourceInsets="3 3 3 3" stretch="true"/>
+	        <imagePainter method="scrollBarThumbBackground" direction="vertical" path="scroll_grip_vertical.png" sourceInsets="3 3 3 3" stretch="true"/>
+	        <imagePainter method="scrollBarThumbBackground" direction="horizontal" path="scroll_thumb_horizontal.png" sourceInsets="0 7 0 7" />
+	        <imagePainter method="scrollBarThumbBackground" direction="vertical" path="scroll_thumb_vertical.png" sourceInsets="7 0 7 0" />
+	    </state>
+	
+	    <state value="DISABLED"></state>
+	</style>
+	<bind style="scrollBarThumbStyle" type="REGION" key="ScrollBarThumb" />
+
+	<style id="scrollbarTrackStyle">
+	    <state>
+	        <imagePainter method="scrollBarTrackBackground" path="scroll_track_horizontal.png" direction="horizontal" center="true" />
+	        <imagePainter method="scrollBarTrackBackground" path="scroll_track_vertical.png" direction="vertical" center="true" />
+	    </state>
+	</style>
+	<bind style="scrollbarTrackStyle" type="REGION" key="ScrollBarTrack" />
+</synth>

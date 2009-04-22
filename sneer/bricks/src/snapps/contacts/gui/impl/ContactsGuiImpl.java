@@ -15,7 +15,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
@@ -40,6 +39,8 @@ import sneer.pulp.reactive.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.main.dashboard.InstrumentPanel;
 import sneer.skin.main.instrumentregistry.InstrumentRegistry;
+import sneer.skin.main.synth.Synth;
+import sneer.skin.main.synth.scroll.SynthScrollPaneFactory;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
@@ -56,12 +57,14 @@ class ContactsGuiImpl implements ContactsGui {
 	private Container _container;
 	
 	private final Register<Contact> _selectedContact = my(Signals.class).newRegister(null);
+	private final Synth _synth = my(Synth.class);
 	
 	private static Image getImage(String fileName) {
 		return my(Images.class).getImage(ContactsGuiImpl.class.getResource(fileName));
 	}
 	
 	ContactsGuiImpl(){
+		_synth.load(this.getClass());
 		my(InstrumentRegistry.class).registerInstrument(this);
 		_chooser = new SignalChooser<Contact>(){ @Override public Signal<?>[] signalsToReceiveFrom(Contact element) {
 			return new Signal<?>[]{my(ConnectionManager.class).connectionFor(element).isOnline(), element.nickname()};
@@ -77,12 +80,11 @@ class ContactsGuiImpl implements ContactsGui {
 		_sortedList = my(ListSorter.class).sort( my(ContactManager.class).contacts() , my(ContactComparator.class), _chooser);
 		
 		_contactList = my(ReactiveWidgetFactory.class).newList(_sortedList, labelProvider, cellRenderer);
-		_contactList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
-
-		JScrollPane scrollPane = new JScrollPane();
+		_contactList.getComponent().setName("ContactList");
+		_synth.attach(_contactList.getComponent());
+		
+		JScrollPane scrollPane = my(SynthScrollPaneFactory.class).create();
 		scrollPane.getViewport().add(_contactList.getComponent());
-		scrollPane.setBorder(new EmptyBorder(0,0,0,0));
-		scrollPane.setBackground(_contactList.getComponent().getBackground());
 		
 		_container.setLayout(new BorderLayout());
 		_container.add(scrollPane, BorderLayout.CENTER);

@@ -23,6 +23,7 @@ public class Sneer {
 		return new Class<?>[] {
 				sneer.hardware.gui.guithread.GuiThread.class,
 				sneer.skin.main.synth.Synth.class,
+				sneer.skin.main.synth.scroll.SynthScrollPaneFactory.class,
 				sneer.pulp.events.EventNotifiers.class,
 				sneer.skin.image.ImageFactory.class,
 				sneer.pulp.reactive.Signals.class,

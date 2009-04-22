@@ -113,7 +113,6 @@ public class Sneer {
 				sneer.hardware.gui.trayicon.TrayIcons.class,
 				sneer.skin.main.dashboard.Dashboard.class,
 				
-				sneer.skin.main.dashboard.util.GuiUtil.class,
 				snapps.contacts.hardcoded.HardcodedContacts.class
 		};
 	}

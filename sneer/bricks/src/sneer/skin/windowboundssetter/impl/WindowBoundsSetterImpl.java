@@ -1,7 +1,9 @@
 package sneer.skin.windowboundssetter.impl;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.IllegalComponentStateException;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.Window;
 
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
@@ -23,11 +25,8 @@ class WindowBoundsSetterImpl implements WindowBoundsSetter{
 	@Override public void setBestBounds(Window window, Container container, boolean resizeHeight , int  horizontalLimit) {
 	
 		int space = 20;
-		int windowHeight;
-		Point location;
 		
-		windowHeight = window.getHeight();
-		location = defaultLocation(window, space);
+		Point location = defaultLocation(window);
 		if(container!=null){
 			try{
 				location = container.getLocationOnScreen();
@@ -44,13 +43,16 @@ class WindowBoundsSetterImpl implements WindowBoundsSetter{
 		if(horizontalLimit != 0 && width > horizontalLimit) 
 			widthDif = width - horizontalLimit;
 		
-		window.setBounds( x - width - space + widthDif, 
-									y, 
-									width - widthDif, 
-									windowHeight);
+		x = x - width - space + widthDif;
+		width = width - widthDif;
+		int height = window.getHeight();
+
+		window.setBounds( x, y, width, height);
 	}
 
-	private Point defaultLocation(Window window, int space) {
-		return new Point(window.getWidth() + space*2 , 0);
+	private Point defaultLocation(Window window) {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); 
+		return new Point((int) ((screenSize.getWidth()+window.getWidth())/2), 
+								 (int) ((screenSize.getHeight())/4));
 	}
 }

@@ -3,6 +3,7 @@ package sneer.hardware.logging.gui.impl;
 import static sneer.commons.environments.Environments.my;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -14,6 +15,7 @@ import sneer.hardware.logging.gui.LogConsole;
 import sneer.pulp.logging.Logger;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.main.menu.MainMenu;
+import sneer.skin.windowboundssetter.WindowBoundsSetter;
 
 class LogConsoleImpl extends JFrame implements LogConsole {
 
@@ -50,6 +52,7 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(scroll, BorderLayout.CENTER);
 		scroll.getViewport().add(txtLog);
-		setBounds(10,10,400,300);
+		setSize(new Dimension(400,300));
+		my(WindowBoundsSetter.class).setBestBounds(this);
 	}
 }

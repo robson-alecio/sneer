@@ -154,7 +154,7 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		private void show(final Light light){
 				setWindowTitle(light);
 				setWindowsMessage(light);
-				setWindowBounds(light);
+				setWindowBounds();
 				_window.setVisible(true);
 				placeScrollAtTheBegining();
 		}
@@ -190,15 +190,9 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 			appendStyledText(doc, "\n\n" + stack.trim(), STACK_TRACE);
 		}	
 		
-		private void setWindowBounds(Light light) {
+		private void setWindowBounds() {
 			_window.pack();
 			my(WindowBoundsSetter.class).setBestBounds(_window, _container, true, HORIZONTAL_LIMIT);
-			doubleWindowHeightOnLightError(light);
-		}
-
-		private void doubleWindowHeightOnLightError(Light light) {
-			if(light.error()!=null)
-				_window.setBounds(_window.getX(),  _window.getY(), _window.getWidth(), _window.getHeight()*2);
 		}
 		
 		private void appendStyledText(StyledDocument doc, String msg, String style) {

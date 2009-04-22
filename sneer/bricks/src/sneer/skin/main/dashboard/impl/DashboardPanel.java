@@ -39,11 +39,14 @@ import sneer.skin.main.instrumentregistry.Instrument;
 import sneer.skin.main.synth.Synth;
 
 class DashboardPanel extends JPanel {
-	private static final int _INTRUMENTS_GAP = 3;  //Fix: move this constant to synth.
-	private static final int _TOOLBAR_HEIGHT = 16; //Fix: move this constant to synth.
-	private static final int _SHADOW_HEIGHT = 20; //Fix: move this constant to synth.
-	
+
 	private final Synth _synth = my(Synth.class);
+	
+	{ _synth.load(this.getClass()); }
+	private final int _INTRUMENTS_GAP = synthValue("DashboardPanel.INTRUMENTS_GAP");  
+	private final int _TOOLBAR_HEIGHT = synthValue("DashboardPanel.TOOLBAR_HEIGHT");  
+	private final int _SHADOW_HEIGHT = synthValue("DashboardPanel.SHADOW_HEIGHT");  
+	
 	private final JLayeredPane _dashboardLayeredPane = new JLayeredPane();
 	private final JPanel _instrumentsContainer = new JPanel();
 	private final List<InstrumentPanelImpl> _instrumentPanels = new ArrayList<InstrumentPanelImpl>();
@@ -52,7 +55,6 @@ class DashboardPanel extends JPanel {
 	
 	DashboardPanel() {
 		initSynth();
-		
 		setLayout(new BorderLayout());
     	addInstrumentPanelResizer();
 
@@ -65,8 +67,11 @@ class DashboardPanel extends JPanel {
 		}});
     }
 
+	private int synthValue(String key) {
+		return (Integer)_synth.getDefaultProperty(key);
+	}
+
 	private void initSynth() {
-		_synth.load(this.getClass());		
 		setName("DashboardPanel");
 		_instrumentsContainer.setName("InstrumentsContainer");
 		_synth.attach(this);

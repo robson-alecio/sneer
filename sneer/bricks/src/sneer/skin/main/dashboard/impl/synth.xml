@@ -1,4 +1,7 @@
 <synth>
+	<defaultsProperty key="DashboardPanel.INTRUMENTS_GAP" type="integer" value="3"/>
+	<defaultsProperty key="DashboardPanel.TOOLBAR_HEIGHT" type="integer" value="16"/>
+	<defaultsProperty key="DashboardPanel.SHADOW_HEIGHT"  type="integer" value="20"/>
 
 	<style id="toolbar">
 		<imagePainter path="title.png" sourceInsets="3 3 0 3"

@@ -1,0 +1,22 @@
+<synth>
+	<imageIcon id="recycleOn" path="recycleOn.png" />
+	<imageIcon id="recycleOff" path="recycleOff.png" />
+	<imageIcon id="recycleClick" path="recycleClick.png" />
+
+	<style id="whisper">
+		<property key="Button.margin" type="insets" value="0 0 0 0"/>
+	
+		<state>
+			<property key="Button.icon" value="recycleOff" />
+		</state>
+		<state value="MOUSE_OVER">
+			<property key="Button.icon" value="recycleOn" />
+		</state>
+		<state value="PRESSED">
+			<property key="Button.icon" value="recycleClick" />
+		</state>
+	</style>
+	
+	<bind key="GCButton" style="whisper" type="name" />
+
+</synth>

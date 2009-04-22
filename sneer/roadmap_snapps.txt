@@ -11,18 +11,6 @@ TASKS
 	- [Klaus] DynDns user data - Use transparent persistence to save it, not a properties file.
 
 	- [Sandro and Igor] User Info, Contact List and Contact CRUD - Don't do any other task until:
-		- Instrument Menu Hover - Solve Definitively
-			- Make all Dashboard values easily configurable in a single place in the code
-				- Title bar
-					- Height (Use 14)
-					- Color 
-					- Font
-						- Size
-						- Font type
-						- Color
-				- Distance between instruments
-				- Background color
-				- Etc 
 		- ContactInfoWindowImpl
 			- The "Internet Addresses" Border is around the fields and buttons too, of course. 
 			- Reactive List

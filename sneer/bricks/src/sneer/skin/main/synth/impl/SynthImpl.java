@@ -30,6 +30,11 @@ class SynthImpl implements Synth {
 			}
 		}});
 	}
+	
+	@Override
+	public Object getDefaultProperty(String key){
+		return  _synth.getDefaults().get(key);
+	}
 
 	@Override
 	public void load(Object resourceBase) {

@@ -1,0 +1,22 @@
+<synth>
+	<defaultsProperty key="BandwidthText.preferedSize" type="dimension" value="70 16"/>
+
+	<style id="uploadStyle">
+		<opaque value="true" />
+		<imagePainter method="labelBackground" path="upload.png" center="true" />
+		<insets top="16" left="16" bottom="0" right="0" />
+	</style>
+
+	<style id="downloadStyle">
+		<opaque value="true" />
+		<imagePainter method="labelBackground" path="download.png" center="true" />
+		<insets top="16" left="16" bottom="0" right="0" />
+	</style>
+
+	<style id="text">
+		<insets top="0" left="0" bottom="0" right="0" />
+	</style>
+
+	<bind key="UploadIcon" style="uploadStyle" type="name" />
+	<bind key="DownloadIcon" style="downloadStyle" type="name" />
+</synth>

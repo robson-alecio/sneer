@@ -1,27 +1,28 @@
-package wheel.reactive.impl;
+package sneer.pulp.reactive.impl;
 
 import sneer.hardware.cpu.exceptions.IllegalParameter;
 import sneer.hardware.cpu.lang.PickyConsumer;
+import sneer.pulp.reactive.IntegerParser;
 
-public class IntegerParser implements PickyConsumer<String> {
+class IntegerParserImpl implements IntegerParser {
 
-	private final PickyConsumer<Integer> _endConsumer;
+	private PickyConsumer<Integer> _endConsumer;
 
-	public IntegerParser(PickyConsumer<Integer> endConsumer) {
+	IntegerParserImpl(PickyConsumer<Integer> endConsumer) {
 		_endConsumer = endConsumer;
 	}
 
-	
+	@Override
 	public void consume(String string) throws IllegalParameter {
-		int result = 0;
-		
+		Integer result;
+
 		try {
-			result = Integer.parseInt(string);
+			result = Integer.valueOf(string);
+
 		} catch (NumberFormatException e) {
 			throw new IllegalParameter(string + " is not a valid number.");
 		}
-		
+
 		_endConsumer.consume(result);
 	}
-
 }

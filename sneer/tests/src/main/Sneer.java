@@ -33,6 +33,7 @@ public class Sneer {
 				sneer.pulp.crypto.Crypto.class,
 				sneer.pulp.reactive.listsorter.ListSorter.class,
 				sneer.pulp.reactive.gates.logic.LogicGates.class,
+				sneer.pulp.reactive.Parsers.class,
 				sneer.pulp.retrier.RetrierManager.class,
 				sneer.skin.sound.loopback.LoopbackTester.class,
 				sneer.pulp.port.PortKeeper.class,

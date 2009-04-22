@@ -2,7 +2,6 @@ package snapps.contacts.gui.info.impl;
 
 import static sneer.commons.environments.Environments.my;
 
-import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -18,7 +17,6 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -37,7 +35,7 @@ import sneer.pulp.internetaddresskeeper.InternetAddress;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import sneer.skin.colors.Colors;
+import sneer.skin.main.synth.scroll.SynthScrollPaneFactory;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
@@ -99,55 +97,54 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 		_txtNickname = my(ReactiveWidgetFactory.class).newTextField(nickname, setter, NotificationPolicy.OnEnterPressedOrLostFocus);
 		JLabel _labNickname = new JLabel("Nickname:");
 		
-		getContentPane().add(_labNickname,  new GridBagConstraints(0, 0, 3, 1, 0.0, 0.0, 
+		getContentPane().add(_labNickname,  new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, 
 				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5,5,0,5), 0, 0) );
 
-		getContentPane().add(_txtNickname.getComponent(),  new GridBagConstraints(3, 0, 10, 1, 1.0, 0.0, 
+		getContentPane().add(_txtNickname.getComponent(),  new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, 
 				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5,0,0,5), 0, 0) );
 		
-		JScrollPane scroll = new JScrollPane();
+		JScrollPane scroll = my(SynthScrollPaneFactory.class).create();
 		scroll.getViewport().add(_lstAddresses);
-		scroll.setBorder(new EmptyBorder(0,0,0,0));
 		
 		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder("Internet Adresses:"));
-		panel.setLayout(new BorderLayout());
-		panel.add(scroll, BorderLayout.CENTER);
-		panel.setBackground(my(Colors.class).solid());
+		getContentPane().add(panel,  new GridBagConstraints(0, 1, 2, 1, 1.0, 1.0, 
+				GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(5,5,5,5), 0, 0) );
 		
-		getContentPane().add(panel,  new GridBagConstraints(0, 1, 12, 1, 1.0, 1.0, 
+		panel.setBorder(new TitledBorder("Internet Adresses:"));
+		panel.setLayout(new GridBagLayout());
+		panel.add(scroll,  new GridBagConstraints(0, 1, 12, 1, 1.0, 1.0, 
 				GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(5,5,5,5), 0, 0) );
 		
 		JLabel _labHost = new JLabel("Host:");
-		getContentPane().add(_labHost,  new GridBagConstraints(0, 2, 1,1, 0.0,0.0, 
+		panel.add(_labHost,  new GridBagConstraints(0, 2, 1,1, 0.0,0.0, 
 				GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0,5,0,5), 0, 0) );
 
-		getContentPane().add(_host,  new GridBagConstraints(1, 2, 7, 1, 2.0,0.0, 
+		panel.add(_host,  new GridBagConstraints(1, 2, 7, 1, 2.0,0.0, 
 				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0) );
 
 		JLabel _labPort = new JLabel("Port:");
-		getContentPane().add(_labPort,  new GridBagConstraints(9, 2, 1,1, 0.0,0.0, 
+		panel.add(_labPort,  new GridBagConstraints(9, 2, 1,1, 0.0,0.0, 
 				GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0,5,5,5), 0, 0) );
 		
-		getContentPane().add(_port,  new GridBagConstraints(10, 2, 2,1, 0.0,0.0, 
+		panel.add(_port,  new GridBagConstraints(10, 2, 2,1, 0.0,0.0, 
 				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,5), 0, 0) );
 		
 		JButton btnNew = new JButton("New");
-		getContentPane().add(btnNew,  new GridBagConstraints(7,3, 1,1, 0.0,0.0, 
+		panel.add(btnNew,  new GridBagConstraints(7,3, 1,1, 0.0,0.0, 
 				GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5,5,5,5), 0, 0) );
 		btnNew.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 			newInternetAddress();
 		}});
 
 		JButton btnSave = new JButton("Save");
-		getContentPane().add(btnSave,  new GridBagConstraints(8,3, 3, 1, 0.0,0.0, 
+		panel.add(btnSave,  new GridBagConstraints(8,3, 3, 1, 0.0,0.0, 
 				GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5,5,5,5), 0, 0) );
 		btnSave.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 			saveInternetAddress();
 		}});
 		
 		JButton btnDel = new JButton("Delete");
-		getContentPane().add(btnDel,  new GridBagConstraints(11,3, 1,1, 0.0,0.0, 
+		panel.add(btnDel,  new GridBagConstraints(11,3, 1,1, 0.0,0.0, 
 				GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5,5,5,5), 0, 0) );
 		btnDel.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 			delInternetAddress();
@@ -156,7 +153,7 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 		listenToSignals();
 		addListSelectionListestener();
 
-		this.setSize(400, 350);
+		this.setSize(400, 310);
 		my(WindowBoundsSetter.class).setBestBounds(this);
 	}
 	

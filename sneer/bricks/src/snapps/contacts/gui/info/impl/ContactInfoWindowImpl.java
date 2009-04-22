@@ -50,6 +50,7 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 	private final JList _lstAddresses = new JList();
 	private final JTextField _host = new JTextField();
 	private final JTextField _port = new JTextField();
+	private InternetAddress _selectedAdress;
 	
 	private boolean _isGuiInitialized = false;
 	private TextWidget<JTextField> _txtNickname;
@@ -160,7 +161,12 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 	}
 	
 	private void saveInternetAddress() {
-		throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
+		//Fix: change to reactive
+		InternetAddress address = _selectedAdress;
+		if(address == null) return;
+		
+		_addressKeeper.remove(address);
+		newInternetAddress();
 	}
 	
 	private void listenToSignals() {
@@ -178,9 +184,9 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 						return;
 					}
 					
-					InternetAddress address = wrapper._address;
-					_host.setText(address.host());
-					_port.setText(""+address.port());
+					_selectedAdress = wrapper._address;
+					_host.setText(_selectedAdress.host());
+					_port.setText(""+_selectedAdress.port());
 				}});
 	}
 	

@@ -1,2 +1,6 @@
 <synth>
+
+	<defaultsProperty key="ContactsGuiImpl.onlineIconName" type="string" value="online.png"/>
+	<defaultsProperty key="ContactsGuiImpl.offlineIconName" type="string" value="offline.png"/>
+
 </synth>

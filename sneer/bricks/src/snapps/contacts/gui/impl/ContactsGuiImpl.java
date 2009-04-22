@@ -47,8 +47,11 @@ import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 
 class ContactsGuiImpl implements ContactsGui {
 	
-	private static final Image ONLINE = getImage("online.png");
-	private static final Image OFFLINE = getImage("offline.png");
+	private final Synth _synth = my(Synth.class);
+	
+	{_synth.load(this.getClass());}
+	private final Image ONLINE = getImage("ContactsGuiImpl.onlineIconName");
+	private final Image OFFLINE = getImage("ContactsGuiImpl.offlineIconName");
 	
 	private final SignalChooser<Contact> _chooser;
 
@@ -57,14 +60,13 @@ class ContactsGuiImpl implements ContactsGui {
 	private Container _container;
 	
 	private final Register<Contact> _selectedContact = my(Signals.class).newRegister(null);
-	private final Synth _synth = my(Synth.class);
 	
-	private static Image getImage(String fileName) {
-		return my(Images.class).getImage(ContactsGuiImpl.class.getResource(fileName));
+	private Image getImage(String key) {
+		return my(Images.class).getImage(ContactsGuiImpl.class.getResource(
+																(String) _synth.getDefaultProperty(key)));
 	}
 	
 	ContactsGuiImpl(){
-		_synth.load(this.getClass());
 		my(InstrumentRegistry.class).registerInstrument(this);
 		_chooser = new SignalChooser<Contact>(){ @Override public Signal<?>[] signalsToReceiveFrom(Contact element) {
 			return new Signal<?>[]{my(ConnectionManager.class).connectionFor(element).isOnline(), element.nickname()};

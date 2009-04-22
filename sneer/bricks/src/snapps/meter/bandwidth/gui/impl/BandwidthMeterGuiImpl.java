@@ -70,8 +70,8 @@ class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 		container.add(_downloadText.getComponent());
 		
 		Dimension size = (Dimension) _synth.getDefaultProperty("BandwidthText.preferedSize");
-		System.out.println(size);
 		if(size!=null) return;	
+		
 		_uploadText.getComponent().setPreferredSize(size);
 		_downloadText.getComponent().setPreferredSize(size);
 	}

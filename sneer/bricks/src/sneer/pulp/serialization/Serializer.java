@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import sneer.brickness.Brick;
+
 /**
  * A strategy for writing objects to and reading objects from streams. Implementations <b>must</b> be safe for
  * concurrent use by multiple threads.
@@ -13,6 +15,7 @@ import java.io.OutputStream;
  * for journals, it must be able to write and read any transactions it will be used with, but does not need to be
  * able to write or read any other objects.
  */
+@Brick
 public interface Serializer {
 
 	/**

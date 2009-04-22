@@ -55,7 +55,6 @@ public class Sneer {
 				sneer.pulp.exceptionhandling.ExceptionHandler.class,
 				sneer.pulp.connection.SocketOriginator.class,
 				sneer.pulp.serialization.Serializer.class,
-				sneer.pulp.serialization.DeepCopier.class,
 				sneer.skin.main.instrumentregistry.InstrumentRegistry.class,
 				sneer.skin.rooms.ActiveRoomKeeper.class,
 				sneer.skin.widgets.reactive.ReactiveWidgetFactory.class,

@@ -1,5 +1,8 @@
 package sneer.pulp.serialization;
 
+import sneer.brickness.Brick;
+
+@Brick
 public interface DeepCopier {
 
 	<T> T deepCopy(T original);

@@ -1,9 +1,10 @@
 package sneer.pulp.streams.sequencer;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 import sneer.hardware.cpu.lang.Consumer;
 
-public interface Sequencers extends OldBrick {
+@Brick
+public interface Sequencers {
 
 	<T> Sequencer<T> createSequencerFor(Consumer<T> consumer,short bufferSize, short maxGap);
 	

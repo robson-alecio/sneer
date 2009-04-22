@@ -163,7 +163,7 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 	private void saveInternetAddress() {
 		//Fix: change to reactive
 		InternetAddress address = _selectedAdress;
-		if(address == null) return;
+		if(address == null || _host.getText().trim().length()==0) return;
 		
 		_addressKeeper.remove(address);
 		newInternetAddress();

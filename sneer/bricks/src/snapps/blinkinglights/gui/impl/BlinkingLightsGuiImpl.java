@@ -38,6 +38,8 @@ import sneer.pulp.reactive.Signals;
 import sneer.skin.colors.Colors;
 import sneer.skin.main.dashboard.InstrumentPanel;
 import sneer.skin.main.instrumentregistry.InstrumentRegistry;
+import sneer.skin.main.synth.Synth;
+import sneer.skin.main.synth.scroll.SynthScrollPaneFactory;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
@@ -46,13 +48,10 @@ import sneer.skin.windowboundssetter.WindowBoundsSetter;
 class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 	
 	private final InstrumentRegistry _instrumentManager = my(InstrumentRegistry.class);
-
 	private final BlinkingLights _blinkingLights = my(BlinkingLights.class);
-
 	private final ReactiveWidgetFactory _rfactory = my(ReactiveWidgetFactory.class);
-	
-	private ListWidget<Light> _lightsList;
 
+	private ListWidget<Light> _lightsList;
 	private Container _container;
 	
 	private final static Map<LightType, Signal<Image>> _images = new HashMap<LightType, Signal<Image>>();
@@ -83,15 +82,14 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		//Optimize set the scroll panel size to same size of window to prevent a BL label crop.
 		//			 label now:        "bla, bla, bla, bla, bla, bla, b"  (crop: "la")  
 		//			 label after fix: "bla, bla, bla, bla, bla, bla..."
-		JScrollPane scrollPane = new JScrollPane();
+		JScrollPane scrollPane = my(SynthScrollPaneFactory.class).create();
+		my(Synth.class).attach(_lightsList.getComponent());
+
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.getViewport().add(_lightsList.getComponent());
+
 		_container.setLayout(new BorderLayout());
 		_container.add(scrollPane, BorderLayout.CENTER);
-		scrollPane.getViewport().add(_lightsList.getComponent());
-		scrollPane.setBorder(new EmptyBorder(0,0,0,0));
-//		scrollPane.setBorder(new EmptyBorder(5,5,5,5));
-		_lightsList.getComponent().setBorder(new EmptyBorder(0,0,0,0));
-		scrollPane.setBackground(_lightsList.getComponent().getBackground());
 	}
 
 	@Override

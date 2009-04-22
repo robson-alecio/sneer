@@ -15,14 +15,12 @@ import snapps.contacts.gui.impl.ContactsGuiImpl.ContactLabelProvider;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.reactive.Signal;
-import sneer.skin.colors.Colors;
 
 class ContactsGuiCellRenderer implements ListCellRenderer {
 
 	private final DefaultListCellRenderer renderer = new DefaultListCellRenderer();
 	private final ContactLabelProvider _labelProvider;
 	private final ConnectionManager _connections = my(ConnectionManager.class);
-
 
 	ContactsGuiCellRenderer(ContactLabelProvider labelProvider) {
 		_labelProvider = labelProvider;
@@ -42,10 +40,7 @@ class ContactsGuiCellRenderer implements ListCellRenderer {
 		label.setText(slabel.currentValue());
 		
 		Signal<Boolean> isOnline = _connections.connectionFor(contact).isOnline();
-		if(!isOnline.currentValue()){
-			if(isSelected) label.setForeground(my(Colors.class).hightContrast());
-			else label.setForeground(my(Colors.class).moderateContrast());
-		}
+		label.setEnabled(!isOnline.currentValue());
 
 		return label;
 	}

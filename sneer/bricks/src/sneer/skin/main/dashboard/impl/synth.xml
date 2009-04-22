@@ -1,28 +1,27 @@
 <synth>
 
-	<imageIcon id="icon_off" path="menu_gray.png" />
-	<imageIcon id="icon_on"  path="menu.png" />
-
 	<style id="toolbar">
-		<imagePainter path="title.png" sourceInsets="5 10 2 10"
+		<imagePainter path="title.png" sourceInsets="5 10 0 10"
 					  paintCenter="true" stretch="true"/>
-		<insets top="5" bottom="2" left="10" right="10"/>
+		<insets top="5" left="10" bottom="0" right="10"/>
 	</style>
 
 	<style id="title">
+	   <property key="Label.bounds" type="insets" value="0 0 14 14"/>
 	   <font name="Verdana" size="9"/>
 	   <state>
 	       <color value="#2d92bd" type="FOREGROUND"/>
 	   </state>
 	</style>
 
-	<style id="button">
-		<insets right="10" />
+	<style id="button">	
+		<property key="Button.margin" type="insets" value="0 0 0 0"/>
+   		<insets top="0" left="0" bottom="2" right="14"/>
 		<state>
-			<property key="Button.icon" value="icon_off" />
+      		<imagePainter method="buttonBackground" path="menu_off.png" center="true"/>
 		</state>
 		<state value="MOUSE_OVER">
-			<property key="Button.icon" value="icon_on" />
+     		<imagePainter method="buttonBackground" path="menu.png" center="true"/>
 		</state>
 	</style>
 	

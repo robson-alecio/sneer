@@ -41,7 +41,7 @@ import sneer.skin.main.synth.Synth;
 class DashboardPanel extends JPanel {
 
 	private static final int _TOOLBAR_HEIGHT = 20;
-	private static final int _SHADOW_HEIGHT = 10;
+	private static final int _SHADOW_HEIGHT = 20;
 	
 	private final Synth _synth = my(Synth.class);
 	private final JLayeredPane _dashboardLayeredPane = new JLayeredPane();
@@ -255,7 +255,7 @@ class DashboardPanel extends JPanel {
 				int width = _toolbarShadow.getWidth();
 				int height = _SHADOW_HEIGHT +_TOOLBAR_HEIGHT;
 				
-				Color dark = new Color(0f, 0f, 0f, 1f);
+				Color dark = new Color(0f, 0f, 0f, 0.3f);
 				Color cristal = new Color(1f, 1f, 1f, 0.0f);
 				
 				GradientPaint gp = new GradientPaint(x, y , cristal, 0f,  height, dark);  
@@ -264,7 +264,6 @@ class DashboardPanel extends JPanel {
 				
 				y = (int) getBounds().getMaxY() +height;
 				height = _SHADOW_HEIGHT;
-				dark = new Color(0f, 0f, 0f, 0.4f);
 				
 				gp = new GradientPaint(x, y , dark, x,  y+height, cristal);  
 				g2.setPaint(gp);  

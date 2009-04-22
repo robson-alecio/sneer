@@ -1,12 +1,2 @@
 <synth>
-
-	<style id="default">
-		<font name="Verdana" size="12" />
-		<state>
-			<color value="#555555" type="FOREGROUND" />
-			<color value="WHITE" type="BACKGROUND" />
-		</state>
-	</style>
-	<bind style="default" type="region" key=".*" />
-
 </synth>

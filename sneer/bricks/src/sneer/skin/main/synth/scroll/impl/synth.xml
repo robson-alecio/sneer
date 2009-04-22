@@ -1,7 +1,7 @@
 <synth>
 
 	<style id="ScrollPane">
-		<insets right="10" left="0" top="5" bottom="5"/>
+		<insets right="10" left="0" top="7" bottom="7"/>
 	    <state>
 	    </state>
 	</style>

@@ -6,7 +6,6 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import snapps.meter.bandwidth.gui.BandwidthMeterGui;
@@ -57,7 +56,6 @@ class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 	@Override
 	public void init(InstrumentPanel window) {
 		Container container = window.contentPane();
-		my(Synth.class).attach((JComponent) container);
 		
 		TextWidget<JLabel> _uploadText = newLabel(my(BandwidthCounter.class).uploadSpeed(), "UploadText");
 		TextWidget<JLabel> _downloadText = newLabel(my(BandwidthCounter.class).downloadSpeed(), "DownloadText");

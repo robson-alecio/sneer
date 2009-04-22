@@ -8,6 +8,7 @@ import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
@@ -17,7 +18,6 @@ import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.gates.logic.LogicGates;
-import sneer.skin.colors.Colors;
 import sneer.skin.main.dashboard.InstrumentPanel;
 import sneer.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.skin.main.synth.Synth;
@@ -30,7 +30,7 @@ import sneer.skin.widgets.reactive.TextWidget;
 
 class WhisperGuiImpl implements WhisperGui {
 
-	private static final Synth _synth = my(Synth.class);
+	private final Synth _synth = my(Synth.class);
 	private final LoopbackTester _loopback = my(LoopbackTester.class);
 	private final InstrumentRegistry _instrumentManager = my(InstrumentRegistry.class);
 	private final Speaker _speaker = my(Speaker.class);
@@ -61,8 +61,8 @@ class WhisperGuiImpl implements WhisperGui {
 	@Override
 	public void init(InstrumentPanel window) {
 		Container container = window.contentPane();
-		container.setBackground(my(Colors.class).solid());
-		container.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 5));
+		_synth.attach((JComponent)container);
+		container.setLayout(new FlowLayout(FlowLayout.CENTER));
 		
 		ActiveRoomKeeper room = Environments.my(ActiveRoomKeeper.class);
 

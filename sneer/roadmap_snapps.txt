@@ -11,11 +11,11 @@ TASKS
 
 	- [Sandro and Igor] User Info, Contact List and Contact CRUD - Don't do any other task until:
 		- ContactInfoWindowImpl
-			- The "Internet Addresses" Border is around the fields and buttons too, of course. 
-			- Reactive List
-			- Implement Button Actions
+			- Reactive List (All GUI)
 		- ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
 		- [Klaus] Revise code.
+		
+	- [Sandro] Dashboard - Revise colors, gradient, font, size (layout).
 
 	- ContactsGUI - Accept cell part renderers. (dependency inverted) Discuss with team.
 	

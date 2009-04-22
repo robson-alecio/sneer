@@ -70,7 +70,7 @@ class WhisperGuiImpl implements WhisperGui {
 		room.setter().consume("<Room>");
 
 		container.add(_roomField.getMainWidget());
-		_roomField.getMainWidget().setPreferredSize(new Dimension(100,36));
+		_roomField.getMainWidget().setPreferredSize(new Dimension(100,36)); //Fix: change this to synth
 		
 		container.add(_whisperButton);
 		container.add(_loopBackButton);

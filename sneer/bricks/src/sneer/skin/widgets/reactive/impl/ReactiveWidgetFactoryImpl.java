@@ -32,6 +32,11 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 		return new RLabelImpl(source);
 	}
 	
+	@Override
+	public TextWidget<JLabel> newLabel(Signal<String> source, String synthName) {
+		my(GuiThread.class).assertInGuiThread();
+		return new RLabelImpl(source, synthName);
+	}
 
 	@Override
 	public ImageWidget newImage(Signal<Image> source) {

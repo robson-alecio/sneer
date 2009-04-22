@@ -16,11 +16,12 @@ import sneer.hardware.cpu.lang.PickyConsumer;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
+import sneer.skin.main.synth.Synth;
 import sneer.skin.widgets.reactive.TextWidget;
 
 class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 
-	private final JLabel _textComponent;
+	private final JLabel _textComponent = new JLabel();
 	private final Signal<?> _source;
 	private final PickyConsumer<? super String> _setter;
 
@@ -29,7 +30,6 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 	}
 
 	RLabelImpl(Signal<?> source, PickyConsumer<? super String> setter) {
-		_textComponent = new JLabel();
 		_setter = setter;
 		_source = source;
 
@@ -42,6 +42,13 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 		initComponents();
 	}
 	
+	public RLabelImpl(Signal<String> source, String synthName) {
+		this(source);
+		my(Synth.class).attach(this);
+		my(Synth.class).attach(_textComponent);
+		_textComponent.setName(synthName);
+	}
+
 	private String valueToString(final Object value) {
 		return (value==null)?"":value.toString();
 	}

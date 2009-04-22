@@ -39,9 +39,9 @@ import sneer.skin.main.instrumentregistry.Instrument;
 import sneer.skin.main.synth.Synth;
 
 class DashboardPanel extends JPanel {
-
-	private static final int _TOOLBAR_HEIGHT = 16;
-	private static final int _SHADOW_HEIGHT = 20;
+	private static final int _INTRUMENTS_GAP = 3;  //Fix: move this constant to synth.
+	private static final int _TOOLBAR_HEIGHT = 16; //Fix: move this constant to synth.
+	private static final int _SHADOW_HEIGHT = 20; //Fix: move this constant to synth.
 	
 	private final Synth _synth = my(Synth.class);
 	private final JLayeredPane _dashboardLayeredPane = new JLayeredPane();
@@ -58,7 +58,7 @@ class DashboardPanel extends JPanel {
 
     	add(_dashboardLayeredPane, BorderLayout.CENTER);
         _dashboardLayeredPane.add(_instrumentsContainer);
-        _instrumentsContainer.setLayout(new FlowLayout(FlowLayout.TRAILING, 0, 3));
+        _instrumentsContainer.setLayout(new FlowLayout(FlowLayout.TRAILING, 0, _INTRUMENTS_GAP));
     	addComponentListener(new ComponentAdapter(){ @Override public void componentResized(ComponentEvent e) {
     		for (InstrumentPanelImpl instrument : _instrumentPanels) 
     			instrument.resizeInstrumentPanel();

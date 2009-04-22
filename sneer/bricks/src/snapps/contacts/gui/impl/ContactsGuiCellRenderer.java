@@ -40,7 +40,7 @@ class ContactsGuiCellRenderer implements ListCellRenderer {
 		label.setText(slabel.currentValue());
 		
 		Signal<Boolean> isOnline = _connections.connectionFor(contact).isOnline();
-		label.setEnabled(!isOnline.currentValue());
+		label.setEnabled(isOnline.currentValue());
 
 		return label;
 	}

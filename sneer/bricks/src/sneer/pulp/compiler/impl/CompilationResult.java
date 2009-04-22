@@ -1,5 +1,7 @@
 package sneer.pulp.compiler.impl;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -11,9 +13,9 @@ import org.apache.commons.io.IOUtils;
 import sneer.pulp.compiler.CompilationError;
 import sneer.pulp.compiler.CompilerException;
 import sneer.pulp.compiler.Result;
+import sneer.pulp.lang.StringUtils;
 import wheel.io.codegeneration.JavaFilter;
 import wheel.io.codegeneration.MetaClass;
-import wheel.lang.StringUtils;
 
 class CompilationResult implements Result {
 
@@ -58,7 +60,7 @@ class CompilationResult implements Result {
 		List<String> lines = IOUtils.readLines(new StringReader(string));
 		for (String line : lines) {
 			if(line.indexOf(".java") > 0) {
-				final String[] parts = StringUtils.splitRight(line, ':', 3);
+				final String[] parts = my(StringUtils.class).splitRight(line, ':', 3);
 				final String fileName = parts[0];
 				final int lineNumber = Integer.parseInt(parts[1]);
 				final String message = parts[2];

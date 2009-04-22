@@ -65,6 +65,7 @@ public class Sneer {
 				sneer.pulp.blinkinglights.BlinkingLights.class,
 				sneer.pulp.memory.MemoryMeter.class,
 				sneer.skin.sound.kernel.Audio.class,
+				sneer.pulp.lang.StringUtils.class,
 				sneer.pulp.bandwidth.BandwidthCounter.class,
 				sneer.skin.screenshotter.Screenshotter.class,
 				sneer.pulp.own.name.OwnNameKeeper.class,

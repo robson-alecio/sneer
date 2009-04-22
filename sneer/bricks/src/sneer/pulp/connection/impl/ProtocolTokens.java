@@ -1,11 +1,12 @@
 package sneer.pulp.connection.impl;
 
-import wheel.lang.StringUtils;
+import static sneer.commons.environments.Environments.my;
+import sneer.pulp.lang.StringUtils;
 
 interface ProtocolTokens {
 
-	static final byte[] FALLBACK = StringUtils.toByteArray("Fallback");
-	static final byte[] OK = StringUtils.toByteArray("OK");
-	static final byte[] SNEER_WIRE_PROTOCOL_1 = StringUtils.toByteArray("Sneer Wire Protocol 1");
+	static final byte[] FALLBACK = my(StringUtils.class).toByteArray("Fallback");
+	static final byte[] OK = my(StringUtils.class).toByteArray("OK");
+	static final byte[] SNEER_WIRE_PROTOCOL_1 = my(StringUtils.class).toByteArray("Sneer Wire Protocol 1");
 
 }

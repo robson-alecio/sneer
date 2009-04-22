@@ -13,15 +13,15 @@ import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.connection.ByteConnection.PacketScheduler;
 import sneer.pulp.contacts.Contact;
+import sneer.pulp.lang.StringUtils;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.threadpool.mocks.ThreadPoolMock;
-import wheel.lang.StringUtils;
 
 public class BandwidthReportingTest extends BrickTest {
 	
-	private static final byte[] _BYTE_ARRAY_OK = StringUtils.toByteArray("OK");
+	private static final byte[] _BYTE_ARRAY_OK = my(StringUtils.class).toByteArray("OK");
 	private static final int _IN_PACKET_SIZE = _BYTE_ARRAY_OK.length;
 	private static final int _OUT_PACKET_SIZE = 1024;
 	

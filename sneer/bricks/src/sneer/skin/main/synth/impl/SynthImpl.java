@@ -30,6 +30,11 @@ class SynthImpl implements Synth {
 			}
 		}});
 	}
+
+	@Override
+	public void load(Object resourceBase) {
+		load(resourceBase.getClass());
+	}
 	
 	@Override
 	public void load(final Class<?> resourceBase){

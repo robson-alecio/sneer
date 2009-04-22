@@ -1,0 +1,37 @@
+<synth>
+	<imageIcon id="whisperOn" path="whisperOn.png" />
+	<imageIcon id="whisperOff" path="whisperOff.png" />
+	<imageIcon id="loopbackOn" path="loopbackOn.png" />
+	<imageIcon id="loopbackOff" path="loopbackOff.png" />
+
+	<style id="whisper">
+		<property key="ToggleButton.margin" type="insets" value="0 5 0 0"/>
+	
+		<state>
+			<property key="ToggleButton.icon" value="whisperOff" />
+		</state>
+		<state value="MOUSE_OVER">
+			<property key="ToggleButton.icon" value="whisperOn" />
+		</state>
+		<state value="SELECTED">
+			<property key="ToggleButton.icon" value="whisperOn" />
+		</state>
+	</style>
+
+	<style id="loopback">
+		<property key="ToggleButton.margin" type="insets" value="0 5 0 0"/>
+		<state>
+			<property key="ToggleButton.icon" value="loopbackOff" />
+		</state>
+		<state value="MOUSE_OVER">
+			<property key="ToggleButton.icon" value="loopbackOn" />
+		</state>
+		<state value="SELECTED">
+			<property key="ToggleButton.icon" value="loopbackOn" />
+		</state>
+	</style>
+	
+	<bind key="WhisperButton" style="whisper" type="name" />
+	<bind key="LoopbackButton" style="loopback" type="name" />
+
+</synth>

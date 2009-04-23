@@ -40,7 +40,7 @@ import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.main.dashboard.InstrumentPanel;
 import sneer.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.skin.main.synth.Synth;
-import sneer.skin.main.synth.scroll.SynthScrollPaneFactory;
+import sneer.skin.main.synth.scroll.SynthScrolls;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
@@ -85,7 +85,7 @@ class ContactsGuiImpl implements ContactsGui {
 		_contactList.getComponent().setName("ContactList");
 		_synth.attach(_contactList.getComponent());
 		
-		JScrollPane scrollPane = my(SynthScrollPaneFactory.class).create();
+		JScrollPane scrollPane = my(SynthScrolls.class).create();
 		scrollPane.getViewport().add(_contactList.getComponent());
 		
 		_container.setLayout(new BorderLayout());

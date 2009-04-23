@@ -39,7 +39,7 @@ import sneer.skin.colors.Colors;
 import sneer.skin.main.dashboard.InstrumentPanel;
 import sneer.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.skin.main.synth.Synth;
-import sneer.skin.main.synth.scroll.SynthScrollPaneFactory;
+import sneer.skin.main.synth.scroll.SynthScrolls;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
@@ -82,7 +82,7 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		//Optimize set the scroll panel size to same size of window to prevent a BL label crop.
 		//			 label now:        "bla, bla, bla, bla, bla, bla, b"  (crop: "la")  
 		//			 label after fix: "bla, bla, bla, bla, bla, bla..."
-		JScrollPane scrollPane = my(SynthScrollPaneFactory.class).create();
+		JScrollPane scrollPane = my(SynthScrolls.class).create();
 		my(Synth.class).attach(_lightsList.getComponent());
 
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);

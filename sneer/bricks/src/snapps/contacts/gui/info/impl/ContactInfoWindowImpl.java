@@ -35,7 +35,7 @@ import sneer.pulp.internetaddresskeeper.InternetAddress;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import sneer.skin.main.synth.scroll.SynthScrollPaneFactory;
+import sneer.skin.main.synth.scroll.SynthScrolls;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
@@ -103,7 +103,7 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 		getContentPane().add(_txtNickname.getComponent(),  new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, 
 				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5,0,0,5), 0, 0) );
 		
-		JScrollPane scroll = my(SynthScrollPaneFactory.class).create();
+		JScrollPane scroll = my(SynthScrolls.class).create();
 		scroll.getViewport().add(_lstAddresses);
 		
 		JPanel panel = new JPanel();

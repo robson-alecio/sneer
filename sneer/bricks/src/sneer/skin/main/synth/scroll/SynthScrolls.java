@@ -5,7 +5,7 @@ import javax.swing.JScrollPane;
 import sneer.brickness.Brick;
 
 @Brick
-public interface SynthScrollPaneFactory {
+public interface SynthScrolls {
 
 	JScrollPane create();
 }

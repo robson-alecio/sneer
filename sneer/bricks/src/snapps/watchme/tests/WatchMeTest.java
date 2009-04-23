@@ -30,7 +30,7 @@ import sneer.pulp.reactive.Signals;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.screenshotter.Screenshotter;
-import wheel.lang.Threads;
+import sneer.pulp.threads.Threads;
 
 public class WatchMeTest extends BrickTest {
 	
@@ -106,7 +106,7 @@ public class WatchMeTest extends BrickTest {
 			
 			if (i++ == 100) giveUp(expected, observed);
 			
-			Threads.sleepWithoutInterruptions(300); //Optimize Use wait/notify
+			my(Threads.class).sleepWithoutInterruptions(300); //Optimize Use wait/notify
 		}
 	}
 
@@ -117,7 +117,7 @@ public class WatchMeTest extends BrickTest {
 		System.err.println("Expected image not received. Opening for comparison. Closing in 30 sec...");
 		showImage("Expected", expected);
 		showImage("Observed", observed);
-		Threads.sleepWithoutInterruptions(30000);
+		my(Threads.class).sleepWithoutInterruptions(30000);
 		fail();
 	}
 

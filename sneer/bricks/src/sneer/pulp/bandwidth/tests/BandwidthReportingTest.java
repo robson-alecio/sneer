@@ -17,7 +17,7 @@ import sneer.pulp.lang.StringUtils;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import sneer.pulp.threadpool.mocks.ThreadPoolMock;
+import sneer.pulp.threads.mocks.ThreadsMock;
 
 public class BandwidthReportingTest extends BrickTest {
 	
@@ -25,7 +25,7 @@ public class BandwidthReportingTest extends BrickTest {
 	private static final int _IN_PACKET_SIZE = _BYTE_ARRAY_OK.length;
 	private static final int _OUT_PACKET_SIZE = 1024;
 	
-	@Contribute private final ThreadPoolMock _threadPool = new ThreadPoolMock();
+	@Contribute private final ThreadsMock _threads = new ThreadsMock();
 	@Contribute private final BandwidthCounter _bandwidthCounter = new BandwidthCounterMock();
 	private final ConnectionManager _connectionManager = my(ConnectionManager.class);
 	
@@ -58,7 +58,7 @@ public class BandwidthReportingTest extends BrickTest {
 	}
 
 	private Runnable findActor(int index) {
-		return _threadPool.getActors().get(index);
+		return _threads.getActors().get(index);
 	}
 
 	private ByRef<Thread> initComunications(final Contact contact) {

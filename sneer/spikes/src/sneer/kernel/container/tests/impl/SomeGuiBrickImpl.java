@@ -2,7 +2,7 @@ package sneer.kernel.container.tests.impl;
 
 import sneer.commons.environments.Environment;
 import sneer.kernel.container.tests.SomeGuiBrick;
-import wheel.lang.Threads;
+import sneer.pulp.threads.Threads;
 import static sneer.commons.environments.Environments.my;
 
 class SomeGuiBrickImpl implements SomeGuiBrick {
@@ -14,7 +14,7 @@ class SomeGuiBrickImpl implements SomeGuiBrick {
 
 	@Override
 	public void slowMethod() {
-		Threads.sleepWithoutInterruptions(4000);
+		my(Threads.class).sleepWithoutInterruptions(4000);
 	}
 	
 	@Override

@@ -9,7 +9,7 @@ import sneer.pulp.clock.Clock;
 import sneer.pulp.connection.SocketAccepter;
 import sneer.pulp.connection.reachability.ReachabilitySentinel;
 import sneer.pulp.reactive.Signals;
-import sneer.pulp.threadpool.Stepper;
+import sneer.pulp.threads.Stepper;
 
 class ReachabilitySentinelImpl implements ReachabilitySentinel {
 

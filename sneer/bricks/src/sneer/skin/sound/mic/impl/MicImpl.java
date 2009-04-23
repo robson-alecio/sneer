@@ -8,15 +8,14 @@ import sneer.pulp.reactive.Signals;
 import sneer.pulp.retrier.Retrier;
 import sneer.pulp.retrier.RetrierManager;
 import sneer.pulp.retrier.Task;
-import sneer.pulp.threadpool.ThreadPool;
+import sneer.pulp.threads.Threads;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.mic.Mic;
-import wheel.lang.Threads;
 
 class MicImpl implements Mic {
 
-	private final ThreadPool _threads = my(ThreadPool.class);
+	private final Threads _threads = my(Threads.class);
 	private final RetrierManager _retriers = my(RetrierManager.class);
 	private final TupleSpace _tupleSpace = my(TupleSpace.class);
 	
@@ -110,6 +109,6 @@ class MicImpl implements Mic {
 	}
 
 	private void goToSleep() {
-		Threads.waitWithoutInterruptions(this);
+		_threads.waitWithoutInterruptions(this);
 	}
 }

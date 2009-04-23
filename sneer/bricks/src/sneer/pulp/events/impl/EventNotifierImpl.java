@@ -1,7 +1,6 @@
 package sneer.pulp.events.impl;
 
 import static sneer.commons.environments.Environments.my;
-import sneer.pulp.logging.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +11,7 @@ import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.events.EventNotifier;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
+import sneer.pulp.logging.Logger;
 import wheel.lang.Types;
 
 class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
@@ -21,6 +21,8 @@ class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 	private final List<ReceiverHolder<Consumer<? super T>>> _receivers = Collections.synchronizedList(new ArrayList<ReceiverHolder<Consumer<? super T>>>()); //Fix: Potential object leak. Receivers must be weak referenced. This is equivalent to the whiteboard pattern too, from a receiver referencing perspective. Conceptually, it is only the receiver that references the signal.
 
 	private final Consumer<Consumer<? super T>> _receiverHandler;
+
+//	private final Logger _logger = my(Logger.class);
 
 	EventNotifierImpl(Consumer<Consumer<? super T>> receiverHandler) {
 		_receiverHandler = receiverHandler;
@@ -64,22 +66,23 @@ class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 		assert wasThere;
 	}
 
-	@Override
-	protected void finalize() throws Throwable {
-		ReceiverHolder<Consumer<T>>[] receivers = copyOfReceiversToAvoidConcurrentModificationAsResultOfNotifications();
-		if(receivers.length != 0)
-			my(Logger.class).log(debugMessage(receivers));
-	}
-
-	private String debugMessage(ReceiverHolder<Consumer<T>>[] receivers) {
-		StringBuilder result = new StringBuilder();
-		result.append("Abstract notifier finalized.\n");
-		
-		for (ReceiverHolder<Consumer<T>> reference : receivers)
-			result.append("\tReceiver: " + reference._alias + "\n");
-		
-		return result.toString();
-	}
+//	@Override
+//	protected void finalize() throws Throwable {
+//		ReceiverHolder<Consumer<T>>[] receivers = copyOfReceiversToAvoidConcurrentModificationAsResultOfNotifications();
+//		if(receivers.length != 0) {
+//			_logger.log(debugMessage(receivers));
+//		}
+//	}
+//
+//	private String debugMessage(ReceiverHolder<Consumer<T>>[] receivers) {
+//		StringBuilder result = new StringBuilder();
+//		result.append("Abstract notifier finalized.\n");
+//		
+//		for (ReceiverHolder<Consumer<T>> reference : receivers)
+//			result.append("\tReceiver: " + reference._alias + "\n");
+//		
+//		return result.toString();
+//	}
 	
 	private ReceiverHolder<Consumer<? super T>> holderFor(
 			Consumer<? super T> receiver) {

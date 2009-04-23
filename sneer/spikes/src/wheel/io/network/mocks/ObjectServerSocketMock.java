@@ -4,12 +4,13 @@
 
 package wheel.io.network.mocks;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.io.IOException;
 
+import sneer.pulp.threads.Threads;
 import wheel.io.network.ObjectServerSocket;
 import wheel.io.network.ObjectSocket;
-import wheel.lang.Threads;
-
 
 public class ObjectServerSocketMock implements ObjectServerSocket {
 
@@ -30,7 +31,7 @@ public class ObjectServerSocketMock implements ObjectServerSocket {
 		_clientSide = result.counterpart();
 		
 		notifyAll(); //Notifies all client threads.
-		Threads.waitWithoutInterruptions(this);
+		my(Threads.class).waitWithoutInterruptions(this);
 
 		_permit.check();
 		return result;
@@ -38,7 +39,7 @@ public class ObjectServerSocketMock implements ObjectServerSocket {
 
 	synchronized ObjectSocket openClientSocket() throws IOException {
 		_permit.check();
-		while (_clientSide == null) Threads.waitWithoutInterruptions(this);
+		while (_clientSide == null) my(Threads.class).waitWithoutInterruptions(this);
 		_permit.check();
 
         ObjectSocket result = _clientSide;

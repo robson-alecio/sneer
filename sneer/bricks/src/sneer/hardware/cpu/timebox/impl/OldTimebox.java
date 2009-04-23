@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import sneer.pulp.logging.Logger;
-import wheel.lang.Threads;
+import sneer.pulp.threads.Threads;
 import wheel.lang.exceptions.TimeIsUp;
 
 abstract class OldTimebox implements Runnable { //REFACTOR Clean this up. See callers.
@@ -17,16 +17,18 @@ abstract class OldTimebox implements Runnable { //REFACTOR Clean this up. See ca
 	static private final Set<OldTimebox> _activeTimeboxes = java.util.Collections.synchronizedSet(new HashSet<OldTimebox>());
 	
 	static {
+		final Threads threads = my(Threads.class);
+
 		Thread killer = new Thread("Timebox Killer") { @Override public void run() {
-			
+
 			while (true) {
-				Threads.sleepWithoutInterruptions(PRECISION_IN_MILLIS);
-			
+				threads.sleepWithoutInterruptions(PRECISION_IN_MILLIS);
+
 				for (OldTimebox victim : _activeTimeboxes.toArray(ARRAY_TYPE))
 					victim.payOrDie(PRECISION_IN_MILLIS);
-			}
-			
+			}			
 		}};
+
 		killer.setDaemon(true); //Does not use the wheel.lang.Daemon class because all of them are typically killed after each unit test.
 		killer.setPriority(Thread.MAX_PRIORITY);
 		killer.start();

@@ -18,15 +18,14 @@ import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;
 import sneer.pulp.port.PortKeeper;
 import sneer.pulp.reactive.Signals;
-import sneer.pulp.threadpool.ThreadPool;
-import wheel.lang.Threads;
+import sneer.pulp.threads.Threads;
 
 class SocketAccepterImpl implements SocketAccepter {
 	
 	private final PortKeeper _portKeeper = my(PortKeeper.class);
 	private final Network _network = my(Network.class);
 	private final BlinkingLights _lights = my(BlinkingLights.class);
-	private final ThreadPool _threadPool = my(ThreadPool.class);
+	private final Threads _threads = my(Threads.class);
 
 	private final EventNotifier<ByteArraySocket> _notifier = my(EventNotifiers.class).create();
 
@@ -46,7 +45,7 @@ class SocketAccepterImpl implements SocketAccepter {
 		my(Signals.class).receive(this, new Consumer<Integer>() { @Override public void consume(Integer port) {
 			setPort(port);
 		}}, _portKeeper.port());
-		_threadPool.registerActor(new Runnable(){ @Override public void run() {
+		_threads.registerActor(new Runnable(){ @Override public void run() {
 			listenToSneerPort();
 		}});
 	}
@@ -72,14 +71,14 @@ class SocketAccepterImpl implements SocketAccepter {
     		
     		synchronized (_portToListenMonitor) {
     			if (myPortToListen == _portToListen)
-    				Threads.waitWithoutInterruptions(_portToListenMonitor);
+    				_threads.waitWithoutInterruptions(_portToListenMonitor);
     		}
     	}
     }
 	
 	private void startAccepting() {
 		_isStopped = false;
-		_threadPool.registerActor(new Runnable() { @Override public void run() {
+		_threads.registerActor(new Runnable() { @Override public void run() {
 			while (!_isStopped) {
 				try {
 					dealWith(_serverSocket.accept());

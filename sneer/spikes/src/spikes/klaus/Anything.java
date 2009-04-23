@@ -1,31 +1,32 @@
 package spikes.klaus;
 
+import static sneer.commons.environments.Environments.my;
 import sneer.commons.threads.Daemon;
-import wheel.lang.Threads;
-
+import sneer.pulp.threads.Threads;
 
 public class Anything {
 
 	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
+		final Threads threads = my(Threads.class);
 
 		Daemon daemon = new Daemon("Spike") {
 			@Override
 			public void run() {
 				System.out.println("Sleeping...");
 				try {
-					Threads.sleepWithoutInterruptions(3000);
+					threads.sleepWithoutInterruptions(3000);
 				} catch (Error e) {
 					System.out.println(e.getClass());
 				}
 				System.out.println("Sleeping again...");
-				Threads.sleepWithoutInterruptions(5000);
+				threads.sleepWithoutInterruptions(5000);
 			}
 		};
 
-		Threads.sleepWithoutInterruptions(500);
+		threads.sleepWithoutInterruptions(500);
 		daemon.stop();
-		Threads.sleepWithoutInterruptions(5000);
+		threads.sleepWithoutInterruptions(5000);
 		
 //		System.out.println(System.nanoTime() % 3);
 		
@@ -74,6 +75,4 @@ public class Anything {
 //	static private long now() {
 //		return System.nanoTime();
 //	}
-
-
 }

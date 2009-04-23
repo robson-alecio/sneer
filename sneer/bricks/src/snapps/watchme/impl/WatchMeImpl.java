@@ -25,7 +25,7 @@ import sneer.pulp.datastructures.cache.CacheFactory;
 import sneer.pulp.events.EventNotifier;
 import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.events.EventSource;
-import sneer.pulp.threadpool.ThreadPool;
+import sneer.pulp.threads.Threads;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.screenshotter.Screenshotter;
 import sneer.pulp.logging.Logger;
@@ -40,7 +40,7 @@ class WatchMeImpl implements WatchMe {
 	private final ImageCodec _codec = my(ImageCodec.class);
 	private final CacheFactory _cacheFactory = my(CacheFactory.class);
 	private final TupleSpace _tupleSpace = my(TupleSpace.class);
-	private final ThreadPool _pool = my(ThreadPool.class);
+	private final Threads _threads = my(Threads.class);
 	private final BlinkingLights _lights = my(BlinkingLights.class);
 
 	private final Clock _clock = my(Clock.class);
@@ -90,7 +90,7 @@ class WatchMeImpl implements WatchMe {
 	@Override
 	public void startShowingMyScreen() {
 		_isRunning = true;
-		_pool.registerActor(new Runnable(){ @Override public void run() {
+		_threads.registerActor(new Runnable(){ @Override public void run() {
 			while (_isRunning) {
 				doPublishShot();
 				_clock.sleepAtLeast(PERIOD_IN_MILLIS);

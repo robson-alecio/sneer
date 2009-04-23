@@ -15,13 +15,12 @@ import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import sneer.pulp.threadpool.ThreadPool;
-import wheel.lang.Threads;
+import sneer.pulp.threads.Threads;
 
 class ByteConnectionImpl implements ByteConnection {
 
 	private final KeyManager _keyManager = my(KeyManager.class);
-	private final ThreadPool _threadPool = my(ThreadPool.class);
+	private final Threads _threads = my(Threads.class);
 	private final BandwidthCounter _bandwidthCounter = my(BandwidthCounter.class);
 
 	private final String _label;
@@ -101,21 +100,21 @@ class ByteConnectionImpl implements ByteConnection {
 
 
 	private void startSending() {
-		_threadPool.registerActor(new Runnable() { @Override public void run() {
+		_threads.registerActor(new Runnable() { @Override public void run() {
 			while (true) {
 				if (tryToSend(_scheduler.highestPriorityPacketToSend()))
 					_scheduler.previousPacketWasSent();
 				else
-					Threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify.
+					_threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify.
 			}
 		}});
 	}
 	
 	private void startReceiving() {
-		_threadPool.registerActor(new Runnable() { @Override public void run() {
+		_threads.registerActor(new Runnable() { @Override public void run() {
 			while (true) {
 				if (!tryToReceive())
-					Threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify
+					_threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify
 			}
 		}});
 	}

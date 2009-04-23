@@ -8,7 +8,7 @@ import java.util.List;
 import sneer.brickness.Tuple;
 import sneer.pulp.connection.ByteConnection.PacketScheduler;
 import sneer.pulp.serialization.Serializer;
-import wheel.lang.Threads;
+import sneer.pulp.threads.Threads;
 
 class SchedulerImpl implements PacketScheduler {
 
@@ -26,7 +26,7 @@ class SchedulerImpl implements PacketScheduler {
 
 	synchronized private Tuple highestPriorityTupleToSend() {
 		if (_toSend.isEmpty())
-			Threads.waitWithoutInterruptions(this);
+			my(Threads.class).waitWithoutInterruptions(this);
 
 		_lastTupleSent = _toSend.size() - 1;
 		return _toSend.get(_lastTupleSent);

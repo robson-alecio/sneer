@@ -8,12 +8,12 @@ import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.Contribute;
 import sneer.commons.lang.ByRef;
 import sneer.hardware.cpu.lang.Consumer;
-import sneer.pulp.threadpool.mocks.ThreadPoolMock;
+import sneer.pulp.threads.mocks.ThreadsMock;
 import sneer.pulp.tuples.TupleSpace;
 
 public class TupleSpaceResponsivenessTest extends BrickTest {
 
-	@Contribute private final ThreadPoolMock _threads = new ThreadPoolMock();
+	@Contribute private final ThreadsMock _threads = new ThreadsMock();
 	
 	private final TupleSpace _subject = my(TupleSpace.class);
 	

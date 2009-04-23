@@ -7,7 +7,7 @@ import org.junit.Test;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.clockticker.ClockTicker;
-import wheel.lang.Threads;
+import sneer.pulp.threads.Threads;
 
 public class ClockTickerTest extends BrickTest {
 
@@ -26,7 +26,7 @@ public class ClockTickerTest extends BrickTest {
 	private void waitForATick() {
 		long t0 = _clock.time();
 		while (t0 == _clock.time());
-			Threads.sleepWithoutInterruptions(1);
+			my(Threads.class).sleepWithoutInterruptions(1);
 	}
 	
 }

@@ -17,12 +17,11 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import sneer.commons.io.Streams;
 import sneer.commons.lang.exceptions.NotImplementedYet;
-import sneer.pulp.threadpool.Stepper;
-import sneer.pulp.threadpool.ThreadPool;
+import sneer.pulp.logging.Logger;
+import sneer.pulp.threads.Stepper;
+import sneer.pulp.threads.Threads;
 import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.player.SoundPlayer;
-import sneer.pulp.logging.Logger;
-import wheel.lang.Threads;
 
 class SoundPlayerImpl implements SoundPlayer {
 
@@ -31,7 +30,7 @@ class SoundPlayerImpl implements SoundPlayer {
 	final static private List<URL> urls = Collections.synchronizedList(new ArrayList<URL>());
 
 	public SoundPlayerImpl() {
-		my(ThreadPool.class).registerStepper(new Stepper(){ @Override public boolean step() {
+		my(Threads.class).registerStepper(new Stepper(){ @Override public boolean step() {
 			playNextIfAvailable();
 			return true;
 		}});
@@ -40,7 +39,7 @@ class SoundPlayerImpl implements SoundPlayer {
 	
 	private void playNextIfAvailable() {
 		if (urls.isEmpty()) {
-			Threads.sleepWithoutInterruptions(50); //Optimize: Use wait/notify.
+			my(Threads.class).sleepWithoutInterruptions(50); //Optimize: Use wait/notify.
 			return;
 		}
 

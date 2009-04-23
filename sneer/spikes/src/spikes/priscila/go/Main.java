@@ -12,7 +12,7 @@ import javax.swing.JFrame;
 
 import sneer.hardware.gui.guithread.GuiThread;
 import spikes.priscila.go.GoBoard.StoneColor;
-import wheel.lang.Threads;
+import sneer.pulp.threads.Threads;
 import static sneer.commons.environments.Environments.my;
 
 public class Main extends JFrame{
@@ -29,7 +29,7 @@ public class Main extends JFrame{
 					scrollX();
 					scrollY();
 					if (_scrollXDelta != 0 || _scrollYDelta != 0) repaint();
-					Threads.sleepWithoutInterruptions(150);
+					my(Threads.class).sleepWithoutInterruptions(150);
 				}
 			}
 		}
@@ -67,7 +67,7 @@ public class Main extends JFrame{
 		
 	    addMouseListener();
 	    
-	    Threads.startDaemon("Go Board Scroller", new Scroller());
+	    my(Threads.class).startDaemon("Go Board Scroller", new Scroller());
 	}
 
 	private void addMouseListener() {

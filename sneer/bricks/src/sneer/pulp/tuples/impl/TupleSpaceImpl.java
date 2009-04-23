@@ -30,10 +30,9 @@ import sneer.pulp.exceptionhandling.ExceptionHandler;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ReactiveCollections;
-import sneer.pulp.threadpool.Stepper;
-import sneer.pulp.threadpool.ThreadPool;
+import sneer.pulp.threads.Stepper;
+import sneer.pulp.threads.Threads;
 import sneer.pulp.tuples.TupleSpace;
-import wheel.lang.Threads;
 
 class TupleSpaceImpl implements TupleSpace {
 
@@ -94,7 +93,7 @@ class TupleSpaceImpl implements TupleSpace {
 	private final KeyManager _keyManager = my(KeyManager.class);
 	private final Clock _clock = my(Clock.class);
 	private final StoragePath _persistenceConfig = my(StoragePath.class);
-	private final ThreadPool _threads = my(ThreadPool.class);
+	private final Threads _threads = my(Threads.class);
 	private final ExceptionHandler _exceptionHandler = my(ExceptionHandler.class);
 
 	private final List<Subscription> _subscriptions = Collections.synchronizedList(new ArrayList<Subscription>());
@@ -250,7 +249,7 @@ class TupleSpaceImpl implements TupleSpace {
 	public void waitForAllDispatchingToFinish() {
 		synchronized (_dispatchCounterMonitor ) {
 			if (_dispatchCounter != 0)
-				Threads.waitWithoutInterruptions(_dispatchCounterMonitor);
+				_threads.waitWithoutInterruptions(_dispatchCounterMonitor);
 		}
 		
 	}

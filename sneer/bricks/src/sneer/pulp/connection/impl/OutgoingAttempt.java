@@ -10,7 +10,7 @@ import sneer.pulp.internetaddresskeeper.InternetAddress;
 import sneer.pulp.logging.Logger;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;
-import sneer.pulp.threadpool.ThreadPool;
+import sneer.pulp.threads.Threads;
 
 class OutgoingAttempt {
 
@@ -25,7 +25,7 @@ class OutgoingAttempt {
 	OutgoingAttempt(InternetAddress address) {
 		_address = address;
 
-		my(ThreadPool.class).registerActor(new Runnable(){ @Override public void run() {
+		my(Threads.class).registerActor(new Runnable(){ @Override public void run() {
 			keepTryingToOpen();
 		}});
 	}

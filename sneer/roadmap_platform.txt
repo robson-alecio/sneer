@@ -20,6 +20,7 @@ TASKS
 	- [Klaus] build.xml/Antlipse - Revive.
 		- Cleanup wheel
 			- Cleanup Timebox - Try making TimeIsUp a Throwable instead of an Error.
+		- Uncomment _logger field and finalize() method in EventNotifierImpl.
 		- Eliminate upward dependencies.
 
 	- [Klaus] Delete commons. They can be made available as bricks in the future if anyone really needs them.

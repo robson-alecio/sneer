@@ -1,12 +1,13 @@
 package testutils.network;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
 import sneer.pulp.network.ByteArraySocket;
-import wheel.lang.Threads;
-
+import sneer.pulp.threads.Threads;
 
 class InProcessByteArraySocket implements ByteArraySocket {
 
@@ -45,7 +46,7 @@ class InProcessByteArraySocket implements ByteArraySocket {
 	public synchronized byte[] read() throws IOException {
 		checkIsNotCrashed();
 		
-		if (_receivedObjects.isEmpty()) Threads.waitWithoutInterruptions(this);
+		if (_receivedObjects.isEmpty()) my(Threads.class).waitWithoutInterruptions(this);
 		return _receivedObjects.remove(0);
 	}
 

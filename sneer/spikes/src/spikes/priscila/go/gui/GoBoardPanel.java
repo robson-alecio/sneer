@@ -21,7 +21,7 @@ import spikes.priscila.go.GoBoard;
 import spikes.priscila.go.Move;
 import spikes.priscila.go.ToroidalGoBoard;
 import spikes.priscila.go.GoBoard.StoneColor;
-import wheel.lang.Threads;
+import sneer.pulp.threads.Threads;
 
 public class GoBoardPanel extends JPanel {
 	
@@ -37,7 +37,7 @@ public class GoBoardPanel extends JPanel {
 					scrollX();
 					scrollY();
 					if (_scrollXDelta != 0 || _scrollYDelta != 0) repaint();
-					Threads.sleepWithoutInterruptions(150);
+					my(Threads.class).sleepWithoutInterruptions(150);
 				}
 			}
 		}
@@ -77,7 +77,7 @@ public class GoBoardPanel extends JPanel {
 		}}, _moveRegister.output());
 		
 		addMouseListener();
-	    Threads.startDaemon("Go Board Scroller", new Scroller());
+	    my(Threads.class).startDaemon("Go Board Scroller", new Scroller());
 	}
 	
 	private void play(Move move) {

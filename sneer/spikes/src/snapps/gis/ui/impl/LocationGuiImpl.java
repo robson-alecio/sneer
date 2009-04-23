@@ -23,16 +23,16 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import snapps.location.LocationKeeper;
-import sneer.pulp.threadpool.ThreadPool;
+import sneer.pulp.threads.Threads;
 
 public class LocationGuiImpl {
 
 	private final LocationKeeper _keeper = my(LocationKeeper.class);
 
-	private final ThreadPool _pool = my(ThreadPool.class);
+	private final Threads _threads = my(Threads.class);
 
 	LocationGuiImpl() {
-		_pool.registerActor(new Runnable() { @Override public void run() {
+		_threads.registerActor(new Runnable() { @Override public void run() {
 			openGUI();
 		}});
 	}

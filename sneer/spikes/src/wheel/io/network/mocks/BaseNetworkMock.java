@@ -1,13 +1,14 @@
 package wheel.io.network.mocks;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import sneer.pulp.threads.Threads;
 import wheel.io.network.ObjectServerSocket;
 import wheel.io.network.ObjectSocket;
-import wheel.lang.Threads;
-
 
 public class BaseNetworkMock {
     protected final Map<Integer, ObjectServerSocket> _serverSocketByPort = new HashMap<Integer, ObjectServerSocket>();
@@ -35,7 +36,7 @@ public class BaseNetworkMock {
         try {
             return server.openClientSocket();
         } catch (IOException e) {
-            Threads.sleepWithoutInterruptions(5);
+            my(Threads.class).sleepWithoutInterruptions(5);
             return server.openClientSocket(); //TODO Eliminate this retry because client must try and reconnect anyway.
         }
     }

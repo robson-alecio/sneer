@@ -20,7 +20,7 @@ import sneer.hardware.gui.guithread.GuiThread;
 import wheel.io.ui.CancelledByUser;
 import wheel.io.ui.User;
 import wheel.io.ui.Util;
-import wheel.lang.Threads;
+import sneer.pulp.threads.Threads;
 import wheel.lang.exceptions.Catcher;
 
 public class UserImpl implements User {
@@ -195,7 +195,7 @@ public class UserImpl implements User {
 			_dialog.setVisible(true);
 			long start = System.currentTimeMillis();
 			while(true){
-				Threads.sleepWithoutInterruptions(250); //give cpu a break
+				my(Threads.class).sleepWithoutInterruptions(250); //give cpu a break
 				int elapsed = (int)(System.currentTimeMillis() - start ) / 1000;
 				if (elapsed>_timeout){
 					_callback.consume(false);

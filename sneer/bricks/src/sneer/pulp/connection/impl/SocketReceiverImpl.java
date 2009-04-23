@@ -6,17 +6,17 @@ import sneer.pulp.connection.SocketAccepter;
 import sneer.pulp.connection.SocketReceiver;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.reactive.Signals;
-import sneer.pulp.threadpool.ThreadPool;
+import sneer.pulp.threads.Threads;
 
 class SocketReceiverImpl implements SocketReceiver {
 
 	private final SocketAccepter _socketAccepter = my(SocketAccepter.class);
 	
-	private final ThreadPool _threadPool = my(ThreadPool.class);
+	private final Threads _threads = my(Threads.class);
 	
 	SocketReceiverImpl() {
 		my(Signals.class).receive(this, new Consumer<ByteArraySocket>() { @Override public void consume(final ByteArraySocket socket) {
-			_threadPool.registerActor(new Runnable(){@Override public void run() {
+			_threads.registerActor(new Runnable(){@Override public void run() {
 				new IndividualSocketReceiver(socket);
 			}});
 		}}, _socketAccepter.lastAcceptedSocket());

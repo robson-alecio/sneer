@@ -12,7 +12,7 @@ import java.util.List;
 
 import sneer.pulp.serialization.DeepCopier;
 import wheel.io.network.ObjectSocket;
-import wheel.lang.Threads;
+import sneer.pulp.threads.Threads;
 
 
 public class ObjectSocketMock implements ObjectSocket {
@@ -47,7 +47,7 @@ public class ObjectSocketMock implements ObjectSocket {
 
 	public synchronized Object readObject() throws IOException {
 		_permit.check();
-		if (_receivedObjects.isEmpty()) Threads.waitWithoutInterruptions(this);
+		if (_receivedObjects.isEmpty()) my(Threads.class).waitWithoutInterruptions(this);
 		_permit.check();
 		return _receivedObjects.remove(0);
 	}

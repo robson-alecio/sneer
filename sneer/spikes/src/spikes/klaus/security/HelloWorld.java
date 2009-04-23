@@ -1,11 +1,13 @@
 package spikes.klaus.security;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JFrame;
 
-import wheel.lang.Threads;
+import sneer.pulp.threads.Threads;
 
 public class HelloWorld implements Runnable {
 
@@ -25,7 +27,7 @@ public class HelloWorld implements Runnable {
 		System.err.println("Hello World");
 		Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
 		Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-		Threads.startDaemon("classloading spike", this);
+		my(Threads.class).startDaemon("classloading spike", this);
 
 		JFrame mainFrame = new JFrame("Sneer");
 		mainFrame.setBounds(100, 100, 400, 400);

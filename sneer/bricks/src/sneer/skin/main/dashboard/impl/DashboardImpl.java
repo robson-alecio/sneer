@@ -25,7 +25,7 @@ import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.impl.SimpleListReceiver;
-import sneer.pulp.threadpool.ThreadPool;
+import sneer.pulp.threads.Threads;
 import sneer.skin.main.dashboard.Dashboard;
 import sneer.skin.main.instrumentregistry.Instrument;
 import sneer.skin.main.instrumentregistry.InstrumentRegistry;
@@ -61,7 +61,7 @@ class DashboardImpl implements Dashboard {
 		}};
 	
 	DashboardImpl() {
-		my(ThreadPool.class).registerActor(new Runnable(){@Override public void run() {
+		my(Threads.class).registerActor(new Runnable(){@Override public void run() {
 			initGuiTimebox();
 			initGui();
 		}});

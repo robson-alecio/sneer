@@ -19,7 +19,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 
 import sneer.hardware.gui.guithread.GuiThread;
-import wheel.lang.Threads;
+import sneer.pulp.threads.Threads;
 import static sneer.commons.environments.Environments.my;
 
 public class TreeModelExample extends JFrame {
@@ -91,8 +91,8 @@ public class TreeModelExample extends JFrame {
 	}
 	
 	private void startConcurrentModelModifiers() {
-		Threads.startDaemon("Tree Model Node Adder", nodeAdder());
-		Threads.startDaemon("Tree Model Node Remover", nodeRemover());
+		my(Threads.class).startDaemon("Tree Model Node Adder", nodeAdder());
+		my(Threads.class).startDaemon("Tree Model Node Remover", nodeRemover());
 	}
 
 	private Runnable nodeAdder() {

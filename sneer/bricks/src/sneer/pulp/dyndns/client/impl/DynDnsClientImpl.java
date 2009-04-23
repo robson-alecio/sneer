@@ -21,7 +21,7 @@ import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.propertystore.PropertyStore;
 import sneer.pulp.reactive.Signals;
-import sneer.pulp.threadpool.ThreadPool;
+import sneer.pulp.threads.Threads;
 
 class DynDnsClientImpl implements DynDnsClient {
 
@@ -33,7 +33,7 @@ class DynDnsClientImpl implements DynDnsClient {
 	private final Updater _updater = my(Updater.class);
 	private final PropertyStore _propertyStore = my(PropertyStore.class);
 	private final BlinkingLights _blinkingLights = my(BlinkingLights.class);
-	private final ThreadPool _threadPool = my(ThreadPool.class);
+	private final Threads _threads = my(Threads.class);
 	private final Clock _clock = my(Clock.class);
 	private final Object _stateMonitor = new Object();
 	private final Light _light = _blinkingLights.prepare(LightType.ERROR);
@@ -83,7 +83,7 @@ class DynDnsClientImpl implements DynDnsClient {
 		private boolean _isReactionPending = false;
 		
 		Requesting() {
-			_threadPool.registerActor(new Runnable(){ @Override public void run() {
+			_threads.registerActor(new Runnable(){ @Override public void run() {
 				State state = submitUpdateRequest(currentAccount(), currentIp());
 				synchronized (_stateMonitor) {
 					_state = state;

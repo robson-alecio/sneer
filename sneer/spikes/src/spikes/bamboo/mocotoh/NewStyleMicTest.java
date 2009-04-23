@@ -8,8 +8,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import sneer.hardware.cpu.lang.Consumer;
-import sneer.pulp.threadpool.Stepper;
-import sneer.pulp.threadpool.ThreadPool;
+import sneer.pulp.threads.Stepper;
+import sneer.pulp.threads.Threads;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
 import sneer.skin.sound.kernel.Audio;
@@ -25,7 +25,7 @@ public class NewStyleMicTest {
 			
 			final Mic mic = my(Mic.class); //Why not simply "my()" without parameter, just like mock()?
 			final TupleSpace tuples = my(TupleSpace.class);
-			final ThreadPool threads = mock();
+			final Threads threads = mock();
 			final Audio audio = mock();
 			TargetDataLine line;
 			

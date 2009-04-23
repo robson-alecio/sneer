@@ -9,12 +9,12 @@ import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.retrier.Retrier;
 import sneer.pulp.retrier.Task;
-import sneer.pulp.threadpool.Stepper;
-import sneer.pulp.threadpool.ThreadPool;
+import sneer.pulp.threads.Stepper;
+import sneer.pulp.threads.Threads;
 
 class RetrierImpl implements Retrier {
 
-	private final ThreadPool _threads = my(ThreadPool.class);
+	private final Threads _threads = my(Threads.class);
 	private final BlinkingLights _lights = my(BlinkingLights.class);
 	private final Clock _clock = my(Clock.class);
 	

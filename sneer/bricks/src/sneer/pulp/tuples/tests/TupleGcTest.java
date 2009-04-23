@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.tuples.TupleSpace;
-import wheel.lang.Threads;
+import sneer.pulp.threads.Threads;
 
 public class TupleGcTest extends BrickTest {
 
@@ -26,7 +26,7 @@ public class TupleGcTest extends BrickTest {
 		
 		while (_garbageCollectedCounter != 42) {
 			System.gc();
-			Threads.sleepWithoutInterruptions(20);
+			my(Threads.class).sleepWithoutInterruptions(20);
 		}
 	}
 

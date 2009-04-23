@@ -23,7 +23,7 @@ import sneer.pulp.port.PortKeeper;
 import sneer.pulp.probe.ProbeManager;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.collections.ListSignal;
-import wheel.lang.Threads;
+import sneer.pulp.threads.Threads;
 import functional.SovereignParty;
 import functional.adapters.SneerParty;
 
@@ -120,14 +120,14 @@ class SneerPartyImpl implements SneerParty {
 		ByteConnection connection = _connectionManager.connectionFor(contact);
 		
 		while (!connection.isOnline().currentValue())
-			Threads.sleepWithoutInterruptions(1);
+			my(Threads.class).sleepWithoutInterruptions(1);
 	}
 
 	private Contact waitForContactGiven(PublicKey publicKey) {
 		while (true) {
 			Contact contact = _keyManager.contactGiven(publicKey);
 			if (contact != null) return contact;
-			Threads.sleepWithoutInterruptions(1);
+			my(Threads.class).sleepWithoutInterruptions(1);
 			_clock.advanceTime(60 * 1000);
 		}
 	}

@@ -7,8 +7,8 @@ import java.io.ByteArrayOutputStream;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
-import sneer.pulp.threadpool.Stepper;
-import sneer.pulp.threadpool.ThreadPool;
+import sneer.pulp.threads.Stepper;
+import sneer.pulp.threads.Threads;
 import sneer.skin.sound.kernel.Audio;
 class Recorder {
 	
@@ -26,7 +26,7 @@ class Recorder {
 		_buffer = buffer;
 
 		_isRunning = true;
-		my(ThreadPool.class).registerStepper(new Stepper() { @Override public boolean step() {
+		my(Threads.class).registerStepper(new Stepper() { @Override public boolean step() {
 			record(targetDataLine);
 
 			if (!_isRunning) {

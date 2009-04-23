@@ -1,7 +1,7 @@
 package sneer.pulp.clock;
 
 import sneer.brickness.Brick;
-import sneer.pulp.threadpool.Stepper;
+import sneer.pulp.threads.Stepper;
 
 @Brick
 public interface Clock {

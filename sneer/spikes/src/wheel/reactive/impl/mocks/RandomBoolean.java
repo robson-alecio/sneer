@@ -8,7 +8,7 @@ import sneer.commons.threads.Daemon;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import wheel.lang.Threads;
+import sneer.pulp.threads.Threads;
 
 public class RandomBoolean {
 
@@ -26,7 +26,7 @@ public class RandomBoolean {
 	}
 
 	private void sleepAndFlip() {
-		Threads.sleepWithoutInterruptions(RANDOM.nextInt(2000));
+		my(Threads.class).sleepWithoutInterruptions(RANDOM.nextInt(2000));
 		_register.setter().consume(!_register.output().currentValue());
 	}
 	

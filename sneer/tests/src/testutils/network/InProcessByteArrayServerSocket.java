@@ -1,11 +1,12 @@
 package testutils.network;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.io.IOException;
 
 import sneer.pulp.network.ByteArrayServerSocket;
 import sneer.pulp.network.ByteArraySocket;
-import wheel.lang.Threads;
-
+import sneer.pulp.threads.Threads;
 
 class InProcessByteArrayServerSocket implements ByteArrayServerSocket {
 
@@ -18,13 +19,13 @@ class InProcessByteArrayServerSocket implements ByteArrayServerSocket {
 		_clientSide = result.counterpart();
 		
 		notifyAll(); //Notifies all client threads.
-		Threads.waitWithoutInterruptions(this);
+		my(Threads.class).waitWithoutInterruptions(this);
 
 		return result;
 	}
 
 	synchronized ByteArraySocket openClientSocket() {
-		while (_clientSide == null) Threads.waitWithoutInterruptions(this);
+		while (_clientSide == null) my(Threads.class).waitWithoutInterruptions(this);
 
 		ByteArraySocket result = _clientSide;
         _clientSide = null;

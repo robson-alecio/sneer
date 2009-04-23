@@ -20,7 +20,7 @@ import org.apache.commons.io.IOUtils;
 
 import sneer.pulp.dependency.DependencyManager;
 import sneer.pulp.dependency.FileWithHash;
-import wheel.lang.Threads;
+import sneer.pulp.threads.Threads;
 
 public class OldBrickClassLoader extends EnhancingClassLoader {
 
@@ -38,7 +38,7 @@ public class OldBrickClassLoader extends EnhancingClassLoader {
 	
 	public OldBrickClassLoader() {
 		//used for testing
-		this(Threads.contextClassLoader(), Object.class, null);
+		this(my(Threads.class).contextClassLoader(), Object.class, null);
 	}
 	
 	public OldBrickClassLoader(ClassLoader parent, Class<?> mainClass, File brickDirectory) {

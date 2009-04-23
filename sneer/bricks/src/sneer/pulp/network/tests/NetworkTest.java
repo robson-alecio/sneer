@@ -10,12 +10,12 @@ import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.network.ByteArrayServerSocket;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;
-import sneer.pulp.threadpool.ThreadPool;
+import sneer.pulp.threads.Threads;
 
 
 public class NetworkTest extends BrickTest {
 	
-	private final ThreadPool _threadPool = my(ThreadPool.class);
+	private final Threads _threads = my(Threads.class);
 	
 	@Test
 	public void testNetworkMessages() throws Exception {
@@ -23,7 +23,7 @@ public class NetworkTest extends BrickTest {
 		final Network network = my(Network.class);
 		
 		final ByteArrayServerSocket server = network.openServerSocket(9090);
-		_threadPool.registerActor(new Runnable(){ @Override public void run() {
+		_threads.registerActor(new Runnable(){ @Override public void run() {
 			try {
 				ByteArraySocket request = server.accept();
 				request.write(new String(request.read()).toUpperCase().getBytes());

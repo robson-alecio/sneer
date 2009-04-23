@@ -3,7 +3,7 @@ package wheel.testutil;
 import static java.lang.System.gc;
 import sneer.commons.threads.Daemon;
 import sneer.pulp.logging.Logger;
-import wheel.lang.Threads;
+import sneer.pulp.threads.Threads;
 import static sneer.commons.environments.Environments.my;
 
 
@@ -36,7 +36,7 @@ public class MemorySentinel {
 	
 	static private void step() {
 		logAnySignificantMemoryUsageChange();
-		Threads.sleepWithoutInterruptions(PERIOD_IN_MILLIS);
+		my(Threads.class).sleepWithoutInterruptions(PERIOD_IN_MILLIS);
 	}
 
 

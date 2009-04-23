@@ -10,7 +10,7 @@ import sneer.commons.threads.Daemon;
 import sneer.pulp.reactive.collections.SetSignal;
 import sneer.pulp.things.Thing;
 import sneer.pulp.things.ThingHome;
-import wheel.lang.Threads;
+import sneer.pulp.threads.Threads;
 import wheel.testutil.TestDashboard;
 
 public class ThingsTest extends BrickTest {
@@ -43,7 +43,7 @@ public class ThingsTest extends BrickTest {
 		startFindingThread(5);
 		
 		while (!_isConcurrencyTestDone)
-			Threads.sleepWithoutInterruptions(10);
+			my(Threads.class).sleepWithoutInterruptions(10);
 
 		System.out.println();
 
@@ -57,7 +57,7 @@ public class ThingsTest extends BrickTest {
 				i++;
 				if (i % 5 == 0) {
 					System.out.print(".");
-					Threads.sleepWithoutInterruptions(50);
+					my(Threads.class).sleepWithoutInterruptions(50);
 				}
 			}
 		}};
@@ -75,7 +75,7 @@ public class ThingsTest extends BrickTest {
 				if (count == thingsToFind) {
 					i++;
 				} else
-					Threads.sleepWithoutInterruptions(10);
+					my(Threads.class).sleepWithoutInterruptions(10);
 			}
 			_isConcurrencyTestDone = true;
 		}};

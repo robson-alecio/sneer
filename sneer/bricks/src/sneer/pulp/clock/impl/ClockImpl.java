@@ -10,8 +10,8 @@ import sneer.commons.lang.exceptions.NotImplementedYet;
 import sneer.hardware.cpu.timebox.Timebox;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
-import sneer.pulp.threadpool.Stepper;
-import wheel.lang.Threads;
+import sneer.pulp.threads.Stepper;
+import sneer.pulp.threads.Threads;
 
 class ClockImpl implements Clock {
 	
@@ -47,10 +47,10 @@ class ClockImpl implements Clock {
 
 	@Override
 	public void sleepAtLeast(long millis) {
-		Runnable notifier = Threads.createNotifier();
+		Runnable notifier = my(Threads.class).createNotifier();
 		synchronized (notifier) {
 			wakeUpInAtLeast(millis, notifier);
-			Threads.waitWithoutInterruptions(notifier);
+			my(Threads.class).waitWithoutInterruptions(notifier);
 		}
 	}
 

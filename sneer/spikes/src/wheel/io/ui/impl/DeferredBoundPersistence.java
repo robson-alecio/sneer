@@ -1,10 +1,12 @@
 package wheel.io.ui.impl;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.awt.Rectangle;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import sneer.pulp.threads.Threads;
 import wheel.io.ui.BoundsPersistence;
-import wheel.lang.Threads;
 
 public class DeferredBoundPersistence implements BoundsPersistence {
 
@@ -33,7 +35,7 @@ public class DeferredBoundPersistence implements BoundsPersistence {
 				
 				synchronized (_isDirty){
 					if (!_isDirty.get())
-						Threads.waitWithoutInterruptions(_isDirty);
+						my(Threads.class).waitWithoutInterruptions(_isDirty);
 				}
 			
 			}
@@ -42,7 +44,7 @@ public class DeferredBoundPersistence implements BoundsPersistence {
 
 		private void deferredWriteBoundsToDisk() {
 			int diskWriteThreshold = 1000;
-			Threads.sleepWithoutInterruptions(diskWriteThreshold);
+			my(Threads.class).sleepWithoutInterruptions(diskWriteThreshold);
 			if (_isDirty.getAndSet(false)){
 				deferredWriteBoundsToDisk();
 				return;

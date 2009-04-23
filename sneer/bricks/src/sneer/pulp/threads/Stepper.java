@@ -1,4 +1,4 @@
-package sneer.pulp.threadpool;
+package sneer.pulp.threads;
 
 public interface Stepper {
 

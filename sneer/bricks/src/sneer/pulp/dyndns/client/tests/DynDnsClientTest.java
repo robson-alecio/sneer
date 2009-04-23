@@ -29,7 +29,7 @@ import sneer.pulp.propertystore.mocks.TransientPropertyStore;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.ListSignal;
-import sneer.pulp.threadpool.mocks.ThreadPoolMock;
+import sneer.pulp.threads.mocks.ThreadsMock;
 
 public class DynDnsClientTest extends BrickTest {
 	
@@ -61,7 +61,7 @@ Unacceptable Client Behavior
 	@Contribute final DynDnsAccountKeeper _ownAccountKeeper = mock(DynDnsAccountKeeper.class);
 	@Contribute final Updater _updater = mock(Updater.class);
 	@Contribute final TransientPropertyStore _propertyStore = new TransientPropertyStore();
-	@Contribute final ThreadPoolMock _threadPool = new ThreadPoolMock();
+	@Contribute final ThreadsMock _threads = new ThreadsMock();
 	@Contribute final StoragePath _storagePath = new StoragePath(){@Override public String get() {
 		return tmpDirectory().getAbsolutePath();
 	}};
@@ -80,10 +80,10 @@ Unacceptable Client Behavior
 		}});
 		
 		startDynDnsClientOnNewEnvironment();
-		_threadPool.runAllActors();
+		_threads.runAllActors();
 		
 		startDynDnsClientOnNewEnvironment();
-		_threadPool.runAllActors();
+		_threads.runAllActors();
 	}
 
 	private void startDynDnsClientOnNewEnvironment() {
@@ -113,13 +113,13 @@ Unacceptable Client Behavior
 		
 
 		startDynDnsClient();
-		_threadPool.runAllActors();
+		_threads.runAllActors();
 		
 		final Light light = assertBlinkingLight(error, my(Environment.class));
 		
 		my(Clock.class).advanceTime(300001);
 		
-		_threadPool.runAllActors();
+		_threads.runAllActors();
 		assertFalse(light.isOn());
 	}
 	
@@ -143,7 +143,7 @@ Unacceptable Client Behavior
 		}});
 		
 		startDynDnsClient();
-		_threadPool.runAllActors();
+		_threads.runAllActors();
 		
 		final Light light = assertBlinkingLight(error, my(Environment.class));
 		
@@ -153,7 +153,7 @@ Unacceptable Client Behavior
 		DynDnsAccount changed = new DynDnsAccount("test.dyndns.org", "test", "*test");
 		_ownAccount.setter().consume(changed);
 
-		_threadPool.runAllActors();
+		_threads.runAllActors();
 		assertFalse(light.isOn());
 		
 	}
@@ -173,7 +173,7 @@ Unacceptable Client Behavior
 		}});
 		
 		startDynDnsClient();
-		_threadPool.runAllActors();
+		_threads.runAllActors();
 		
 		assertBlinkingLight(error, my(Environment.class));
 	}

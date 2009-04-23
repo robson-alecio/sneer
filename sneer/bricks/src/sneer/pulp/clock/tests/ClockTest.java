@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
 import sneer.pulp.clock.Clock;
-import sneer.pulp.threadpool.Stepper;
+import sneer.pulp.threads.Stepper;
 
 public class ClockTest extends BrickTest {
 

@@ -7,7 +7,7 @@ import sneer.commons.environments.Environments;
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.logging.out.LogToSystemOut;
 import sneer.skin.imgselector.ImageSelector;
-import wheel.lang.Threads;
+import sneer.pulp.threads.Threads;
 import static sneer.commons.environments.Environments.my;
 
 
@@ -24,7 +24,7 @@ public class ImageSelectorDemo  {
 					//OK
 				}});
 
-				Threads.sleepWithoutInterruptions(30000);
+				my(Threads.class).sleepWithoutInterruptions(30000);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

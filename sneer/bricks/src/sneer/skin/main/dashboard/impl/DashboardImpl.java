@@ -6,6 +6,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -36,11 +37,14 @@ import sneer.skin.windowboundssetter.WindowBoundsSetter;
 
 class DashboardImpl implements Dashboard {
 
-	private static final int WIDTH = 280;
-	private static final int H_OFFSET = 30;
-	private static final int TIMEOUT_FOR_GUI_EVENTS = 10 * 1000;
-	
 	private final Synth _synth = my(Synth.class);
+	
+	{ _synth.load(this.getClass()); }
+	private final int WIDTH = synthValue("DashboardImpl.WIDTH");
+	private final int OFFSET = synthValue("DashboardImpl.OFFSET");
+	private final int TIMEOUT_FOR_GUI_EVENTS = synthValue("DashboardImpl.TIMEOUT_FOR_GUI_EVENTS");
+	private final Insets ROOTPANEL_INSETS  = synthValue("DashboardImpl.ROOTPANEL_INSETS");
+	
 	private final  MainMenu _mainMenu = my(MainMenu.class);
 	private final DashboardPanel _dashboardPanel = new DashboardPanel();
 	private final JPanel _rootPanel = new JPanel();
@@ -64,6 +68,10 @@ class DashboardImpl implements Dashboard {
 		waitUntilTheGuiThreadStarts();
 	}
 		
+	private <T>  T synthValue(String key){
+		return (T)_synth.getDefaultProperty(key);
+	}
+	
 	private void initGuiTimebox() {
 		my(TimeboxedEventQueue.class).startQueueing(TIMEOUT_FOR_GUI_EVENTS);
 	}
@@ -114,8 +122,6 @@ class DashboardImpl implements Dashboard {
 		}
 
 		private void initRootPanel() {
-			_mainMenu.getWidget().setBorder(new EmptyBorder(0,0,0,0));
-			
 			_rootPanel.setLayout(new BorderLayout());
 			_rootPanel.add(_mainMenu.getWidget(), BorderLayout.NORTH);
 			_rootPanel.add(_dashboardPanel, BorderLayout.CENTER);
@@ -130,7 +136,7 @@ class DashboardImpl implements Dashboard {
 			//Fix: this method is a hack, consider to use a glasspane mouse listener
 			JPanel content = (JPanel) _frame.getContentPane();
 			content.setLayout(new BorderLayout());
-			content.setBorder(new EmptyBorder(0,4,4,4));
+			content.setBorder(new EmptyBorder(ROOTPANEL_INSETS));
 			content.add(_rootPanel, BorderLayout.CENTER);
 			content.addMouseListener(new MouseAdapter(){ @Override public void mouseEntered(MouseEvent e) {
 				_dashboardPanel.hideAllToolbars();
@@ -142,7 +148,7 @@ class DashboardImpl implements Dashboard {
 			if(_bounds==null || _screenSize==null || !_screenSize.equals(newSize)){
 				_screenSize  = newSize;
 				_bounds = new Rectangle((int) _screenSize.getWidth() - WIDTH, 0, WIDTH,	
-									   				  (int) _screenSize.getHeight() - H_OFFSET);
+									   				  (int) _screenSize.getHeight() - OFFSET);
 			}
 			_rwindow.getMainWidget().setBounds(_bounds);
 		}

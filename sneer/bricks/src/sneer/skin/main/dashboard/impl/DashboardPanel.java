@@ -42,10 +42,9 @@ class DashboardPanel extends JPanel {
 
 	private final Synth _synth = my(Synth.class);
 	
-	{ _synth.load(this.getClass()); }
-	private final int _INTRUMENTS_GAP = synthValue("DashboardPanel.INTRUMENTS_GAP");  
-	private final int _TOOLBAR_HEIGHT = synthValue("DashboardPanel.TOOLBAR_HEIGHT");  
-	private final int _SHADOW_HEIGHT = synthValue("DashboardPanel.SHADOW_HEIGHT");  
+	private final int INTRUMENTS_GAP = synthValue("DashboardPanel.INTRUMENTS_GAP");  
+	private final int TOOLBAR_HEIGHT = synthValue("DashboardPanel.TOOLBAR_HEIGHT");  
+	private final int SHADOW_HEIGHT = synthValue("DashboardPanel.SHADOW_HEIGHT");  
 	
 	private final JLayeredPane _dashboardLayeredPane = new JLayeredPane();
 	private final JPanel _instrumentsContainer = new JPanel();
@@ -60,7 +59,7 @@ class DashboardPanel extends JPanel {
 
     	add(_dashboardLayeredPane, BorderLayout.CENTER);
         _dashboardLayeredPane.add(_instrumentsContainer);
-        _instrumentsContainer.setLayout(new FlowLayout(FlowLayout.TRAILING, 0, _INTRUMENTS_GAP));
+        _instrumentsContainer.setLayout(new FlowLayout(FlowLayout.TRAILING, 0, INTRUMENTS_GAP));
     	addComponentListener(new ComponentAdapter(){ @Override public void componentResized(ComponentEvent e) {
     		for (InstrumentPanelImpl instrument : _instrumentPanels) 
     			instrument.resizeInstrumentPanel();
@@ -86,9 +85,9 @@ class DashboardPanel extends JPanel {
 	private void addInstrumentPanelResizer() {
 		addComponentListener(new ComponentAdapter(){ @Override public void componentResized(ComponentEvent e) {
 			int x = 0;
-			int y = _TOOLBAR_HEIGHT;
+			int y = TOOLBAR_HEIGHT;
 			int width = getSize().width;
-			int height = getSize().height - _TOOLBAR_HEIGHT;
+			int height = getSize().height - TOOLBAR_HEIGHT;
 			_instrumentsContainer.setBounds(x, y, width, height);
 		}});
 	}
@@ -240,16 +239,16 @@ class DashboardPanel extends JPanel {
 				int x = 0;
 				int y = pointInstrument.y - pointInstrumentContainer.y;
 				int width = getSize().width;
-				_toolbarPanel.setBounds(x, y, width, _TOOLBAR_HEIGHT);
-				_mouseBlockButton.setBounds(x, y, width, _TOOLBAR_HEIGHT);
+				_toolbarPanel.setBounds(x, y, width, TOOLBAR_HEIGHT);
+				_mouseBlockButton.setBounds(x, y, width, TOOLBAR_HEIGHT);
 				resizeShadow(0, y);
 			}
 
 			private void resizeShadow(int x, int y) {
 				int width  = getSize().width;
-				int height = 2*_SHADOW_HEIGHT + _TOOLBAR_HEIGHT + getSize().height;
+				int height = 2*SHADOW_HEIGHT + TOOLBAR_HEIGHT + getSize().height;
 				
-				_toolbarShadow.setBounds(x, y-_SHADOW_HEIGHT,  width, height);
+				_toolbarShadow.setBounds(x, y-SHADOW_HEIGHT,  width, height);
 			}	
 			
 			protected void paintShadows(Graphics graph) {
@@ -258,7 +257,7 @@ class DashboardPanel extends JPanel {
 				int x = 0;
 				int y = 0;
 				int width = _toolbarShadow.getWidth();
-				int height = _SHADOW_HEIGHT +_TOOLBAR_HEIGHT;
+				int height = SHADOW_HEIGHT +TOOLBAR_HEIGHT;
 				
 				Color dark = new Color(0f, 0f, 0f, 0.3f);
 				Color cristal = new Color(1f, 1f, 1f, 0.0f);
@@ -268,7 +267,7 @@ class DashboardPanel extends JPanel {
 				g2.fillRect(x, y, width, height);		
 				
 				y = (int) getBounds().getMaxY() +height;
-				height = _SHADOW_HEIGHT;
+				height = SHADOW_HEIGHT;
 				
 				gp = new GradientPaint(x, y , dark, x,  y+height, cristal);  
 				g2.setPaint(gp);  

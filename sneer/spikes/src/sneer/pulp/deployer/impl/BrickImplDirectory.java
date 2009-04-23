@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 import sneer.commons.lang.Functor;
 import sneer.kernel.container.impl.classloader.MetaClassClassLoader;
 import sneer.kernel.container.jar.DeploymentJar;
@@ -144,8 +144,9 @@ class BrickImplDirectory {
 			Class<?> c = cl.loadClass(className);
 			
 			if (isSpecialMetaInterface(c)) return false;
-			
-			return OldBrick.class.isAssignableFrom(c);
+
+			return c.getAnnotation(Brick.class) != null;
+
 		} catch (ClassNotFoundException e) {
 			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		}

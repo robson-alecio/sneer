@@ -1,9 +1,10 @@
 package sneer.pulp.distribution.filtering;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 import sneer.brickness.Tuple;
 
-public interface TupleFilterManager extends OldBrick {
+@Brick
+public interface TupleFilterManager {
 
 	void block(Class<? extends Tuple> tupleType);
 

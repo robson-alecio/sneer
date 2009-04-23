@@ -1,7 +1,8 @@
 package sneer.pulp.logging.file;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 
-public interface LogToFile extends OldBrick {
+@Brick
+public interface LogToFile {
 
 }

@@ -1,10 +1,11 @@
 package sneer.pulp.blinkinglights;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 import sneer.hardware.cpu.exceptions.FriendlyException;
 import sneer.pulp.reactive.collections.ListSignal;
 
-public interface BlinkingLights extends OldBrick {
+@Brick
+public interface BlinkingLights {
 
 	Light prepare(LightType type);
 

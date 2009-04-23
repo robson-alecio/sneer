@@ -1,7 +1,8 @@
 package sneer.kernel.container.tests;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 
-public interface Sample extends OldBrick {
+@Brick
+public interface Sample {
 
 }

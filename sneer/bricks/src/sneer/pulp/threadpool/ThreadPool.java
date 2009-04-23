@@ -1,10 +1,9 @@
 package sneer.pulp.threadpool;
 
 import sneer.brickness.Brick;
-import sneer.brickness.OldBrick;
 
 @Brick
-public interface ThreadPool extends OldBrick {
+public interface ThreadPool {
 
 	void registerActor(Runnable runnable);
 	void registerStepper(Stepper stepper);

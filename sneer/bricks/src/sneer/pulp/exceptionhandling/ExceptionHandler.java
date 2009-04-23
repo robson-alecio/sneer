@@ -1,8 +1,9 @@
 package sneer.pulp.exceptionhandling;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 
-public interface ExceptionHandler extends OldBrick {
+@Brick
+public interface ExceptionHandler {
 
 	void shield(Runnable runnable);
 

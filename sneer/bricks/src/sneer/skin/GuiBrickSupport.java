@@ -1,7 +1,8 @@
 package sneer.skin;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 
-public interface GuiBrickSupport extends OldBrick {
+@Brick
+public interface GuiBrickSupport {
 
 }

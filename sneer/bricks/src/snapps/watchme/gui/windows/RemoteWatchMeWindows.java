@@ -1,7 +1,8 @@
 package snapps.watchme.gui.windows;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 
-public interface RemoteWatchMeWindows extends OldBrick {
+@Brick
+public interface RemoteWatchMeWindows {
 
 }

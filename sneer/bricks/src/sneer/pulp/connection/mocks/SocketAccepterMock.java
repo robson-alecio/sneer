@@ -7,8 +7,6 @@ import sneer.pulp.events.EventSource;
 import sneer.pulp.network.ByteArraySocket;
 import static sneer.commons.environments.Environments.my;
 
-
-
 public class SocketAccepterMock implements SocketAccepter {
 
 	public final EventNotifier<ByteArraySocket> _notifier = my(EventNotifiers.class).create();

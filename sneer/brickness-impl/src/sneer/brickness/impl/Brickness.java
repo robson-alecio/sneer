@@ -78,9 +78,7 @@ public class Brickness {
 	private List<Nature> naturesFor(Class<?> brick) {
 		final Brick annotation = brick.getAnnotation(Brick.class);
 		if (annotation == null) {
-			// FIXME: start throwing when all bricks are annotated
-			// throw new IllegalBrickException("Brick '" + brick.getName() + "' is not annotated as such!");
-			return Collections.emptyList();
+			throw new IllegalBrickException("Brick '" + brick.getName() + "' is not annotated as such!");
 		}
 		final Class<? extends Nature>[] natureClasses = annotation.value();
 		if (natureClasses.length == 0)

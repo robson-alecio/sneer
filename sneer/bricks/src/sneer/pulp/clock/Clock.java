@@ -1,10 +1,10 @@
 package sneer.pulp.clock;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 import sneer.pulp.threadpool.Stepper;
 
-
-public interface Clock extends OldBrick {
+@Brick
+public interface Clock {
 	
 	long time();
 	

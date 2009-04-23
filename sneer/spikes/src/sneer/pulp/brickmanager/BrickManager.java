@@ -1,11 +1,12 @@
 package sneer.pulp.brickmanager;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 import sneer.pulp.deployer.BrickBundle;
 import sneer.pulp.deployer.BrickFile;
 import sneer.pulp.reactive.collections.MapSignal;
 
-public interface BrickManager extends OldBrick {
+@Brick
+public interface BrickManager {
 
 	BrickFile brick(String brickName);
 	

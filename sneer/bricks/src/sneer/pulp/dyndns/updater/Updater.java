@@ -2,9 +2,10 @@ package sneer.pulp.dyndns.updater;
 
 import java.io.IOException;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 
-public interface Updater extends OldBrick {
+@Brick
+public interface Updater {
 
 	void update(String dynDnsHost, String dynDnsUser, String password, String newIp) throws UpdaterException, IOException;
 

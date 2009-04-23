@@ -1,7 +1,8 @@
 package sneer.pulp.dyndns.client;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 
-public interface DynDnsClient extends OldBrick {
+@Brick
+public interface DynDnsClient {
 
 }

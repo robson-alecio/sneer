@@ -1,9 +1,10 @@
 package sneer.pulp.memory;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 import sneer.pulp.reactive.Signal;
 
-public interface MemoryMeter extends OldBrick{
+@Brick
+public interface MemoryMeter {
 	
 	Signal<Integer> usedMBs();
 	Signal<Integer> usedMBsPeak();

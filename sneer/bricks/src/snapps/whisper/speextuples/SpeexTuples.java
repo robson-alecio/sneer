@@ -1,8 +1,9 @@
 package snapps.whisper.speextuples;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 
-public interface SpeexTuples extends OldBrick {
+@Brick
+public interface SpeexTuples {
 
 	int framesPerAudioPacket();
 

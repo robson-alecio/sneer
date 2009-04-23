@@ -2,9 +2,10 @@ package snapps.contacts.actions;
 
 import java.util.Collection;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 
-public interface ContactActionManager extends OldBrick {
+@Brick
+public interface ContactActionManager {
 
 	void addContactAction(ContactAction action);
 	void addContactAction(ContactAction contactAction, boolean isDefaultAction);

@@ -2,9 +2,10 @@ package sneer.skin.sound.player;
 
 import java.net.URL;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 
-public interface SoundPlayer extends OldBrick{
+@Brick
+public interface SoundPlayer {
 	
 	void play(URL file);
 	

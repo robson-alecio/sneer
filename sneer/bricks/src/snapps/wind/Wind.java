@@ -1,10 +1,11 @@
 package snapps.wind;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.collections.ListSignal;
 
-public interface Wind extends OldBrick {
+@Brick
+public interface Wind {
 
 	ListSignal<Shout> shoutsHeard();
 

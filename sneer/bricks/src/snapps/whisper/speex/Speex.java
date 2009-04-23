@@ -1,8 +1,12 @@
 package snapps.whisper.speex;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 
-public interface Speex extends OldBrick {
+@Brick
+public interface Speex {
+
 	Encoder createEncoder();
+
 	Decoder createDecoder();
+
 }

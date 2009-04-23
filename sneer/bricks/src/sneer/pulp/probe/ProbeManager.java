@@ -1,8 +1,8 @@
 package sneer.pulp.probe;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 
-
-public interface ProbeManager extends OldBrick {
+@Brick
+public interface ProbeManager {
 
 }

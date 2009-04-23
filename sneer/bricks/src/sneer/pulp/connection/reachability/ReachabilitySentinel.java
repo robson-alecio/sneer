@@ -1,7 +1,8 @@
 package sneer.pulp.connection.reachability;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 
-public interface ReachabilitySentinel extends OldBrick {
+@Brick
+public interface ReachabilitySentinel {
 
 }

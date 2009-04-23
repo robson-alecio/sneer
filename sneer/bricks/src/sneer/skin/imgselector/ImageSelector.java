@@ -2,10 +2,11 @@ package sneer.skin.imgselector;
 
 import java.awt.Image;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 import sneer.hardware.cpu.lang.Consumer;
 
-public interface ImageSelector extends OldBrick {
+@Brick
+public interface ImageSelector {
 
 	void open(Consumer<Image> avatarSetter);
 

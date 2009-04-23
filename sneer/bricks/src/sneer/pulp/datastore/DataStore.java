@@ -1,8 +1,9 @@
 package sneer.pulp.datastore;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 
-public interface DataStore extends OldBrick {
+@Brick
+public interface DataStore {
 	
 	void set(String key, String value);
 	void set(String key, long value);

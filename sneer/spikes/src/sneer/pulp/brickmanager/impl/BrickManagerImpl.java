@@ -1,7 +1,6 @@
 package sneer.pulp.brickmanager.impl;
 
 import static sneer.commons.environments.Environments.my;
-import sneer.pulp.logging.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +8,6 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
-import sneer.brickness.OldBrick;
 import sneer.brickness.PublicKey;
 import sneer.commons.lang.exceptions.NotImplementedYet;
 import sneer.kernel.container.ContainerOld;
@@ -21,6 +19,7 @@ import sneer.pulp.dependency.FileWithHash;
 import sneer.pulp.deployer.BrickBundle;
 import sneer.pulp.deployer.BrickFile;
 import sneer.pulp.keymanager.KeyManager;
+import sneer.pulp.logging.Logger;
 import sneer.pulp.reactive.collections.MapRegister;
 import sneer.pulp.reactive.collections.MapSignal;
 import sneer.pulp.reactive.collections.ReactiveCollections;
@@ -156,11 +155,11 @@ class BrickManagerImpl implements BrickManager {
 	}
 
 	private void runOnceOnInstall(BrickFile installed) {
-		Class<? extends OldBrick> clazz = resolveBrickInterface(installed);
+		Class<?> clazz = resolveBrickInterface(installed);
 		my(ContainerOld.class).provide(clazz);
 	}
 
-	private Class<? extends OldBrick> resolveBrickInterface(BrickFile installed) {
+	private Class<?> resolveBrickInterface(BrickFile installed) {
 		try {
 			return my(ContainerOld.class).resolve(installed.name());
 		} catch (ClassNotFoundException e) {

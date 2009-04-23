@@ -3,10 +3,11 @@ package snapps.watchme.codec;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 import sneer.hardware.cpu.exceptions.Hiccup;
 
-public interface ImageCodec extends OldBrick {
+@Brick
+public interface ImageCodec {
 
 	public interface Decoder {
 		boolean applyDelta(ImageDelta delta);

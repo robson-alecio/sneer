@@ -1,10 +1,10 @@
 package sneer.skin.sound.mic;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 import sneer.pulp.reactive.Signal;
 
-
-public interface Mic extends OldBrick {
+@Brick
+public interface Mic {
 
 	/** Will start publishing PcmSoundPacket tuples with duration of one hundredth of a second each. */
 	void open();

@@ -2,11 +2,12 @@ package sneer.pulp.tuples;
 
 import java.util.List;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 import sneer.brickness.Tuple;
 import sneer.hardware.cpu.lang.Consumer;
 
-public interface TupleSpace extends OldBrick {
+@Brick
+public interface TupleSpace {
 
 	void publish(Tuple newOrignalTupleByTheKing);
 	void acquire(Tuple someTupleThatCameFromAContact);

@@ -2,11 +2,12 @@ package sneer.pulp.own.avatar;
 
 import java.awt.Image;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.Signal;
 
-public interface OwnAvatarKeeper extends OldBrick {
+@Brick
+public interface OwnAvatarKeeper {
 
 	Signal<Image> avatar(int squareSize);
 

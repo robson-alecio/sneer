@@ -2,11 +2,12 @@ package snapps.watchme;
 
 import java.awt.image.BufferedImage;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 import sneer.brickness.PublicKey;
 import sneer.pulp.events.EventSource;
 
-public interface WatchMe extends OldBrick {
+@Brick
+public interface WatchMe {
 
 	void startShowingMyScreen();
 	void stopShowingMyScreen();

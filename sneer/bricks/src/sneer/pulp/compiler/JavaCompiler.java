@@ -3,10 +3,11 @@ package sneer.pulp.compiler;
 import java.io.File;
 import java.util.List;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 import sneer.pulp.classpath.Classpath;
 
-public interface JavaCompiler extends OldBrick {
+@Brick
+public interface JavaCompiler {
 	
 	Result compile(List<File> sourceFiles, File destination) throws CompilerException;
 	

@@ -2,9 +2,10 @@ package sneer.pulp.dyndns.checkip;
 
 import java.io.IOException;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 
-public interface CheckIp extends OldBrick {
+@Brick
+public interface CheckIp {
 	
 	/** Never returns null. */
 	String check() throws IOException;

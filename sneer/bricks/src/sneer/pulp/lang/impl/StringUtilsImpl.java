@@ -18,9 +18,6 @@ class StringUtilsImpl implements StringUtils {
 		return array;
 	}
 
-	/* (non-Javadoc)
-	 * @see sneer.pulp.lang.StringUtils#toByteArray(java.lang.String)
-	 */
 	@Override
 	public byte[] toByteArray(String string) {
 		try {

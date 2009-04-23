@@ -1,10 +1,11 @@
 package sneer.pulp.own.tagline;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.Signal;
 
-public interface OwnTaglineKeeper extends OldBrick {
+@Brick
+public interface OwnTaglineKeeper {
 
 	Signal<String> tagline();
 

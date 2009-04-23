@@ -1,6 +1,7 @@
 package sneer.brickness.testsupport.tests.bar;
 
-import sneer.brickness.OldBrick;
+import sneer.brickness.Brick;
 
-public interface BarBrick extends OldBrick {
+@Brick
+public interface BarBrick {
 }

@@ -9,12 +9,6 @@
 	<defaultsProperty key="Dashboard.SHADOW_HEIGHT"  type="integer" value="20"/>
 	<defaultsProperty key="Dashboard.TIMEOUT_FOR_GUI_EVENTS" type="integer" value="10000"/>
 
-	<style id="toolbar">
-		<imagePainter path="title.png" sourceInsets="2 2 0 0"
-			paintCenter="true" stretch="true" />
-		<insets top="0" left="0" bottom="2" right="0" />
-	</style>
-
 	<style id="title">
 		<opaque value="true"/>
 		<font name="Verdana" size="8" />
@@ -62,7 +56,6 @@
 	
 	<bind key="InstrumentMenuButton" style="button" type="name" />
 	<bind key="InstrumentMenuBlockButton" style="button" type="name" />
-	<bind key="InstrumentToolbar" style="toolbar" type="name"/>
 	<bind key="InstrumentTitle" style="title" type="name"/>
 
 </synth>

@@ -255,31 +255,30 @@ class DashboardPanel extends JPanel {
 			protected void paintShadows(Graphics graph) {
 				Graphics2D g2 = (Graphics2D) graph;
 				
-				int x = 0;
-				int y = 0;
-				int width = _toolbarShadow.getWidth();
-				int height = SHADOW_HEIGHT +TOOLBAR_HEIGHT;
+				Color shadow = new Color(0f, 0f, 0f, 0.3f); //Fix: move to synth
+				Color translucent = new Color(1f, 1f, 1f, 0.0f); //Fix: move to synth
 				
-				Color dark = new Color(0f, 0f, 0f, 0.3f);
-				Color cristal = new Color(1f, 1f, 1f, 0.0f);
+				g2.setColor(shadow);
+				g2.fillRect(0, SHADOW_HEIGHT +TOOLBAR_HEIGHT, VERTICAL_MARGIN-INSTRUMENT_BORDER, (int) getBounds().getMaxY()+INSTRUMENT_BORDER);	
+				
+				g2.fillRect((int) getBounds().getMaxX()+VERTICAL_MARGIN+INSTRUMENT_BORDER , SHADOW_HEIGHT +TOOLBAR_HEIGHT, 
+								VERTICAL_MARGIN-INSTRUMENT_BORDER, (int) getBounds().getMaxY()+INSTRUMENT_BORDER);
 
-				g2.setColor(dark);
-				g2.fillRect(x, height, VERTICAL_MARGIN-INSTRUMENT_BORDER, (int) getBounds().getMaxY()+INSTRUMENT_BORDER);	
-				
-				g2.fillRect((int) getBounds().getMaxX()+VERTICAL_MARGIN+INSTRUMENT_BORDER , height, 
-								VERTICAL_MARGIN-INSTRUMENT_BORDER, (int) getBounds().getMaxY()+INSTRUMENT_BORDER);	
-				
-				GradientPaint gp = new GradientPaint(x, y , cristal, 0f,  height, dark);  
+				GradientPaint gp;
+				gp = new GradientPaint(0, 0 , translucent, 0f,  SHADOW_HEIGHT +TOOLBAR_HEIGHT, shadow);  
 				g2.setPaint(gp);  
-				g2.fillRect(x, y, width, height);		
+				g2.fillRect(0, 0, _toolbarShadow.getWidth(), SHADOW_HEIGHT +TOOLBAR_HEIGHT);		
 				
-				y = (int) getBounds().getMaxY() +height;
-				height = SHADOW_HEIGHT;
-				
-				gp = new GradientPaint(x, y , dark, x,  y+height, cristal);  
+				gp = new GradientPaint(0, (int) getBounds().getMaxY() +SHADOW_HEIGHT +TOOLBAR_HEIGHT , shadow, 0,  (int) getBounds().getMaxY() +2*SHADOW_HEIGHT +TOOLBAR_HEIGHT, translucent);  
 				g2.setPaint(gp);  
-				g2.fillRect(x, y+INSTRUMENT_BORDER, width, height);	
+				g2.fillRect(0, (int) getBounds().getMaxY() +SHADOW_HEIGHT +TOOLBAR_HEIGHT+INSTRUMENT_BORDER, _toolbarShadow.getWidth(), SHADOW_HEIGHT);	
 				
+				Color color1 = new Color(70, 150, 180); //Fix: move to synth
+				Color color2 = Color.WHITE; //Fix: move to synth
+				
+				gp = new GradientPaint(0, SHADOW_HEIGHT-TOOLBAR_HEIGHT , color1, 0,  SHADOW_HEIGHT +TOOLBAR_HEIGHT, color2);  
+				g2.setPaint(gp);  
+				g2.fillRect(VERTICAL_MARGIN-INSTRUMENT_BORDER, SHADOW_HEIGHT, _toolbarShadow.getWidth()- 2*(VERTICAL_MARGIN-INSTRUMENT_BORDER), TOOLBAR_HEIGHT);		
 				
 			}
 		}

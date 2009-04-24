@@ -26,7 +26,6 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	}
 
 	@Test
-	@Ignore
 	public void testPublishBrickWithTupleType() throws Exception {
 		my(LogToSystemOut.class);
 		
@@ -139,7 +138,7 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	}
 
 	private void writeV(SourceFileWriter writer) throws IOException {
-		writer.write("freedom7.v.V", "public interface V extends sneer.brickness.Brick {}");
+		writer.write("freedom7.v.V", "@sneer.brickness.Brick public interface V {}");
 		writer.write("freedom7.v.VTuple", "public class VTuple extends sneer.brickness.Tuple {}");
 		writer.write("freedom7.v.impl.VImpl",
 				"class VImpl implements freedom7.v.V {\n" +

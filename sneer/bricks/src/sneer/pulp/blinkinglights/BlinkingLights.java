@@ -25,9 +25,4 @@ public interface BlinkingLights {
 
 	ListSignal<Light> lights();
 
-
-
-
-
-
 }

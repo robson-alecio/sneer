@@ -70,6 +70,6 @@ public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 
 	@Override
 	public ClassLoader newApiClassLoader() {
-		return new ApiClassLoader(_config, sneerApi());
+		return new OldApiClassLoader(_config, sneerApi());
 	}
 }

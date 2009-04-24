@@ -15,21 +15,21 @@ import static sneer.commons.environments.Environments.my;
 
 
 		
-public class ApiClassLoader extends URLClassLoader {
+public class OldApiClassLoader extends URLClassLoader {
 
 	private final SneerConfig _config;
-	static private final List<Reference<ApiClassLoader>> _instances = new ArrayList<Reference<ApiClassLoader>>();
+	static private final List<Reference<OldApiClassLoader>> _instances = new ArrayList<Reference<OldApiClassLoader>>();
 
-	public ApiClassLoader(SneerConfig config, ClassLoader parent) {
+	public OldApiClassLoader(SneerConfig config, ClassLoader parent) {
 		super(new URL[0], parent);
 		_config = config;
-		_instances.add(new WeakReference<ApiClassLoader>(this));
+		_instances.add(new WeakReference<OldApiClassLoader>(this));
 	}
 
 	static public void checkAllInstancesAreFreed() {
 		System.gc();
-		for (Reference<ApiClassLoader> ref : _instances) {
-			final ApiClassLoader classLoader = ref.get();
+		for (Reference<OldApiClassLoader> ref : _instances) {
+			final OldApiClassLoader classLoader = ref.get();
 			if (classLoader != null) {
 				try {
 					throw new IllegalStateException("Somebody is still holding references to an ApiClassloader");

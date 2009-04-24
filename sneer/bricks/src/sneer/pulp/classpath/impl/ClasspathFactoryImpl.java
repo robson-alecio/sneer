@@ -3,7 +3,6 @@ package sneer.pulp.classpath.impl;
 import java.io.File;
 
 import sneer.brickness.Brick;
-import sneer.commons.lang.exceptions.NotImplementedYet;
 import sneer.pulp.classpath.Classpath;
 import sneer.pulp.classpath.ClasspathFactory;
 import wheel.io.Jars;
@@ -57,18 +56,8 @@ class ClasspathFactoryImpl implements ClasspathFactory {
 	}
 
 	private Classpath buildEclipseClasspath() {
-		Classpath result = newClasspath();
 		Classpath kernelPlusWheel = new DirectoryBasedClasspath(ClassUtils.rootDirectoryFor(Brick.class));
-		Classpath allBrickApis = new FilteredClasspath(new BrickApiFilter(brickRootDirectory()));
-
-		return result.compose(kernelPlusWheel.compose(allBrickApis));
-	}
-
-	private File brickRootDirectory() {
-		//	Object specific injection - the environment must provide a specific
-		//  value for StoragePath for this brick
-		//	return new File(my(StoragePath.class).get());
-		throw new NotImplementedYet();
+		return kernelPlusWheel;
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import java.io.File;
 import org.junit.Assert;
 import org.junit.Test;
 
+import sneer.brickness.BrickLayer;
 import sneer.brickness.impl.BrickPlacementException;
 import sneer.brickness.impl.Brickness;
 import sneer.brickness.impl.tests.fixtures.a.BrickA;
@@ -63,5 +64,10 @@ public class BricknessTest extends Assert {
 	@Test(expected=BrickPlacementException.class)
 	public void bogusDirectory() throws Exception {
 		subject.placeBrick(new File("bogus"), "bogus");
+	}
+	
+	@Test
+	public void brickLayer() {
+		assertNotNull(subject.environment().provide(BrickLayer.class));
 	}
 }

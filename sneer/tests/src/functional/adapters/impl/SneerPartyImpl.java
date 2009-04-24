@@ -24,6 +24,7 @@ import sneer.pulp.probe.ProbeManager;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.threads.Threads;
+import sneer.software.bricks.Bricks;
 import functional.SovereignParty;
 import functional.adapters.SneerParty;
 
@@ -159,10 +160,7 @@ class SneerPartyImpl implements SneerParty {
 
 	@Override
 	public void publishBricks(File sourceDirectory) {
-		throw new NotImplementedYet();
-		//BrickBundle brickBundle = _deployer.pack(sourceDirectory);
-		//brickBundle.prettyPrint();
-		//_brickManager.install(brickBundle);
+		my(Bricks.class).publish(sourceDirectory);
 	}
 
 

@@ -30,6 +30,7 @@ public class SneerCommunity implements SovereignCommunity {
 	public SovereignParty createParty(final String name) {
 		Brickness container = newContainer(name);
 		placeBricks(container);
+		
 		final SneerParty party = Environments.wrap(SneerParty.class, container.environment());
 		party.setOwnName(name);
 		party.setSneerPort(_nextPort++);

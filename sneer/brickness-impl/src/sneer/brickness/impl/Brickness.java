@@ -8,6 +8,7 @@ import java.util.List;
 
 import sneer.brickness.Brick;
 import sneer.brickness.BrickConventions;
+import sneer.brickness.BrickLayer;
 import sneer.brickness.Nature;
 import sneer.commons.environments.Bindings;
 import sneer.commons.environments.CachingEnvironment;
@@ -15,11 +16,11 @@ import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.Producer;
 
-public class Brickness {
+public class Brickness implements BrickLayer {
 	
 	private final Environment _environment;
 	private final Bindings _bindings;
-	private final ClassLoader _apiClassLoader = createApiClassLoader();
+	private final ApiClassLoader _apiClassLoader = new ApiClassLoader();
 	private final BrickInstantiator _brickInstantiator;
 	private final BrickDecorator _brickDecorator;
 
@@ -32,6 +33,7 @@ public class Brickness {
 		_brickDecorator = brickDecorator;
 		
 		_bindings = new Bindings();
+		_bindings.bind(this);
 		_bindings.bind(bindings);
 		
 		_environment = new CachingEnvironment(_bindings.environment());
@@ -50,9 +52,13 @@ public class Brickness {
 	}
 
 	private void tryToPlaceBrick(File classRootDirectory, String brickName) throws ClassNotFoundException {
+		
+		_apiClassLoader.add(classRootDirectory, brickName);
+		
 		Class<?> brick = _apiClassLoader.loadClass(brickName);
 		ClassLoader classLoader = newImplPackageLoader(classRootDirectory, brick);
 		Class<?> brickImpl = classLoader.loadClass(implNameFor(brickName));
+		
 		_bindings.bind(decorate(brick, instantiateInEnvironment(brickImpl)));
 	}
 
@@ -60,10 +66,6 @@ public class Brickness {
 		Object result = _brickDecorator.decorate(brick, brickImpl);
 		if (!brick.isInstance(result)) throw new IllegalStateException();
 		return result;
-	}
-
-	private ClassLoader createApiClassLoader() {
-		return ClassLoader.getSystemClassLoader(); //TODO See roadmap
 	}
 
 	private ClassLoader newImplPackageLoader(File classRootDirectory, Class<?> brick) {

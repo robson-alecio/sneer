@@ -1,4 +1,4 @@
-package sneer.pulp.compiler.impl;
+package sneer.software.compilers.java.impl;
 
 import static sneer.commons.environments.Environments.my;
 
@@ -10,10 +10,10 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 
-import sneer.pulp.compiler.CompilationError;
-import sneer.pulp.compiler.CompilerException;
-import sneer.pulp.compiler.Result;
 import sneer.pulp.lang.StringUtils;
+import sneer.software.compilers.java.CompilationError;
+import sneer.software.compilers.java.CompilerException;
+import sneer.software.compilers.java.Result;
 import wheel.io.codegeneration.JavaFilter;
 import wheel.io.codegeneration.MetaClass;
 

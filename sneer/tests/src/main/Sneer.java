@@ -93,8 +93,8 @@ public class Sneer {
 				sneer.pulp.probe.ProbeManager.class,
 				sneer.pulp.logging.robust.RobustLogger.class,
 				
-				sneer.pulp.classpath.ClasspathFactory.class,
-				sneer.pulp.compiler.JavaCompiler.class,
+				sneer.software.compilers.classpath.ClasspathFactory.class,
+				sneer.software.compilers.java.JavaCompiler.class,
 				sneer.software.bricks.Bricks.class,
 		};
 	}

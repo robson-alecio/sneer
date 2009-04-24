@@ -1,8 +1,8 @@
-package sneer.pulp.classpath.impl;
+package sneer.software.compilers.classpath.impl;
 
 import java.io.File;
 
-import sneer.pulp.classpath.Classpath;
+import sneer.software.compilers.classpath.Classpath;
 
 class ComposedClasspath implements Classpath {
 

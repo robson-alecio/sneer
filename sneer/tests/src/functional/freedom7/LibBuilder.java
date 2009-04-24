@@ -6,8 +6,8 @@ import java.util.Iterator;
 
 import org.apache.commons.io.FileUtils;
 
-import sneer.pulp.compiler.JavaCompiler;
-import sneer.pulp.compiler.Result;
+import sneer.software.compilers.java.JavaCompiler;
+import sneer.software.compilers.java.Result;
 import wheel.io.JarBuilder;
 import wheel.io.codegeneration.MetaClass;
 import wheel.lang.Collections;

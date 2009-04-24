@@ -8,8 +8,8 @@ import java.io.IOException;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import sneer.pulp.compiler.JavaCompiler;
 import sneer.pulp.logging.out.LogToSystemOut;
+import sneer.software.compilers.java.JavaCompiler;
 import wheel.io.SourceFileWriter;
 import functional.SovereignFunctionalTestBase;
 import functional.SovereignParty;
@@ -157,7 +157,8 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 
 	private void writeW(final SourceFileWriter writer) throws IOException {
 		writer.write("freedom7.w.W",
-				"public interface W extends sneer.brickness.Brick {\n" +
+				"@sneer.brickness.Brick\n" +
+				"public interface W {\n" +
 					"freedom7.y.Y y();\n" +
 				"}");
 		writer.write("freedom7.w.impl.WImpl",

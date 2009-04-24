@@ -1,8 +1,8 @@
-package sneer.pulp.compiler.impl;
+package sneer.software.compilers.java.impl;
 
 import org.apache.commons.lang.StringUtils;
 
-import sneer.pulp.compiler.CompilationError;
+import sneer.software.compilers.java.CompilationError;
 
 class CompilationErrorImpl implements CompilationError {
 

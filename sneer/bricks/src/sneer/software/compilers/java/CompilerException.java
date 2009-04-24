@@ -1,4 +1,4 @@
-package sneer.pulp.compiler;
+package sneer.software.compilers.java;
 
 public class CompilerException extends RuntimeException {
 

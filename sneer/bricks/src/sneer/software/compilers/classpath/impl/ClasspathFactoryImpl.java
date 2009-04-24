@@ -1,10 +1,10 @@
-package sneer.pulp.classpath.impl;
+package sneer.software.compilers.classpath.impl;
 
 import java.io.File;
 
 import sneer.brickness.Brick;
-import sneer.pulp.classpath.Classpath;
-import sneer.pulp.classpath.ClasspathFactory;
+import sneer.software.compilers.classpath.Classpath;
+import sneer.software.compilers.classpath.ClasspathFactory;
 import wheel.io.Jars;
 import wheel.io.codegeneration.ClassUtils;
 

@@ -1,4 +1,4 @@
-package sneer.pulp.classpath.impl;
+package sneer.software.compilers.classpath.impl;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import sneer.pulp.classpath.Classpath;
+import sneer.software.compilers.classpath.Classpath;
 
 abstract class ClasspathSupport implements Classpath {
 

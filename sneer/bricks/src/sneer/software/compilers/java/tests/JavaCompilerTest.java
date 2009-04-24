@@ -1,4 +1,4 @@
-package sneer.pulp.compiler.tests;
+package sneer.software.compilers.java.tests;
 
 import static sneer.commons.environments.Environments.my;
 
@@ -12,17 +12,18 @@ import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
-import sneer.pulp.classpath.Classpath;
-import sneer.pulp.classpath.ClasspathFactory;
-import sneer.pulp.compiler.CompilationError;
-import sneer.pulp.compiler.Result;
+import sneer.software.compilers.classpath.Classpath;
+import sneer.software.compilers.classpath.ClasspathFactory;
+import sneer.software.compilers.java.CompilationError;
+import sneer.software.compilers.java.JavaCompiler;
+import sneer.software.compilers.java.Result;
 import wheel.io.Jars;
 
 public class JavaCompilerTest extends BrickTest {
 
 	private static final String TEST_FILE_PREFIX = "sneer-test-";
 
-	private sneer.pulp.compiler.JavaCompiler _compiler = my(sneer.pulp.compiler.JavaCompiler.class);
+	private JavaCompiler _compiler = my(JavaCompiler.class);
 	
 	private final ClasspathFactory _factory = my(ClasspathFactory.class);
 	
@@ -53,7 +54,7 @@ public class JavaCompilerTest extends BrickTest {
 		final File libFolder = createLibFolder();
 		try {
 			Jars.createJar(new File(libFolder, "lib.jar"), TestLib.class);
-			Result result = compile("class Foo extends sneer.pulp.compiler.tests.TestLib {}", libFolder);
+			Result result = compile("class Foo extends " + TestLib.class.getName() + " {}", libFolder);
 			assertSuccess(result);
 		} finally {
 			FileUtils.deleteDirectory(libFolder);

@@ -1,10 +1,10 @@
-package sneer.pulp.compiler;
+package sneer.software.compilers.java;
 
 import java.io.File;
 import java.util.List;
 
 import sneer.brickness.Brick;
-import sneer.pulp.classpath.Classpath;
+import sneer.software.compilers.classpath.Classpath;
 
 @Brick
 public interface JavaCompiler {

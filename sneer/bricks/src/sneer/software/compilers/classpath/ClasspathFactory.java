@@ -1,4 +1,4 @@
-package sneer.pulp.classpath;
+package sneer.software.compilers.classpath;
 
 import java.io.File;
 

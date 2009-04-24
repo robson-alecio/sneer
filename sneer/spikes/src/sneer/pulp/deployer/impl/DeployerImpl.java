@@ -10,16 +10,16 @@ import java.util.List;
 import org.apache.commons.io.FilenameUtils;
 
 import sneer.kernel.container.SneerConfig;
-import sneer.pulp.classpath.Classpath;
-import sneer.pulp.classpath.ClasspathFactory;
-import sneer.pulp.compiler.JavaCompiler;
-import sneer.pulp.compiler.Result;
 import sneer.pulp.dependency.DependencyManager;
 import sneer.pulp.dependency.FileWithHash;
 import sneer.pulp.deployer.BrickBundle;
 import sneer.pulp.deployer.BrickFile;
 import sneer.pulp.deployer.Deployer;
 import sneer.pulp.deployer.DeployerException;
+import sneer.software.compilers.classpath.Classpath;
+import sneer.software.compilers.classpath.ClasspathFactory;
+import sneer.software.compilers.java.JavaCompiler;
+import sneer.software.compilers.java.Result;
 import wheel.io.codegeneration.MetaClass;
 
 class DeployerImpl implements Deployer {

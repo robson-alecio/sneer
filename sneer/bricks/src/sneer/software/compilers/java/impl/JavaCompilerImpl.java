@@ -1,4 +1,4 @@
-package sneer.pulp.compiler.impl;
+package sneer.software.compilers.java.impl;
 
 import static sneer.commons.environments.Environments.my;
 import sneer.pulp.logging.Logger;
@@ -12,11 +12,11 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 
-import sneer.pulp.classpath.Classpath;
-import sneer.pulp.classpath.ClasspathFactory;
-import sneer.pulp.compiler.CompilerException;
-import sneer.pulp.compiler.JavaCompiler;
-import sneer.pulp.compiler.Result;
+import sneer.software.compilers.classpath.Classpath;
+import sneer.software.compilers.classpath.ClasspathFactory;
+import sneer.software.compilers.java.CompilerException;
+import sneer.software.compilers.java.JavaCompiler;
+import sneer.software.compilers.java.Result;
 
 import com.sun.tools.javac.Main;
 

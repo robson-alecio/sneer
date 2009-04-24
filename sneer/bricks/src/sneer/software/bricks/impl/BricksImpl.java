@@ -9,11 +9,11 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 
 import sneer.brickness.BrickLayer;
-import sneer.pulp.classpath.Classpath;
-import sneer.pulp.classpath.ClasspathFactory;
-import sneer.pulp.compiler.JavaCompiler;
-import sneer.pulp.compiler.Result;
 import sneer.software.bricks.Bricks;
+import sneer.software.compilers.classpath.Classpath;
+import sneer.software.compilers.classpath.ClasspathFactory;
+import sneer.software.compilers.java.JavaCompiler;
+import sneer.software.compilers.java.Result;
 import wheel.io.codegeneration.MetaClass;
 
 public class BricksImpl implements Bricks {
@@ -35,13 +35,10 @@ public class BricksImpl implements Bricks {
 	}
 
 	private String brickNameFor(Result result) {
-	
 		for (MetaClass metaClass : result.compiledClasses())
 			if (metaClass.isInterface())
 				return metaClass.getName();
-		
 		return null;
-		
 	}
 
 	private Result compile(File sourceDirectory, final File tempOutputDir) {

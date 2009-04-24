@@ -15,23 +15,17 @@ import sneer.pulp.tuples.TupleSpace;
 
 class WindImpl implements Wind, Consumer<Shout> {
 
-	private final TupleSpace _environment = my(TupleSpace.class);
-	
-	private final ListSorter _sorter = my(ListSorter.class);
-	
 	private final ListSignal<Shout> _sortedShouts;
-	private final Comparator<Shout> _comparator;
 	private final ListRegister<Shout> _shoutsHeard = my(ReactiveCollections.class).newListRegister();
 
 	WindImpl(){
-		_environment.addSubscription(Shout.class, this);
-		_environment.keep(Shout.class);
+		my(TupleSpace.class).addSubscription(Shout.class, this);
+		my(TupleSpace.class).keep(Shout.class);
 		
-		_comparator = new Comparator<Shout>(){ @Override public int compare(Shout o1, Shout o2) {
+		Comparator<Shout> _comparator = new Comparator<Shout>(){ @Override public int compare(Shout o1, Shout o2) {
 			return (int) (o1.publicationTime() - o2.publicationTime());
 		}};
-		
-		_sortedShouts = _sorter.sort(_shoutsHeard.output(), _comparator);
+		_sortedShouts = my(ListSorter.class).sort(_shoutsHeard.output(), _comparator);
 	}
 
 	@Override
@@ -52,6 +46,6 @@ class WindImpl implements Wind, Consumer<Shout> {
 	}
 
 	private void shout(String phrase) {
-		_environment.publish(new Shout(phrase));
+		my(TupleSpace.class).publish(new Shout(phrase));
 	}
 }

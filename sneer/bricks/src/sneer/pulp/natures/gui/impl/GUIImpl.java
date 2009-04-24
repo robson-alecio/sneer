@@ -15,9 +15,7 @@ import sneer.pulp.natures.gui.GUI;
 
 class GUIImpl implements GUI {
 	
-	private final ClassPool classPool = new ClassPool(); {
-		classPool.appendSystemPath();
-	}
+	private final ClassPool classPool = new ClassPool(true);
 
 	@Override
 	public List<ClassDefinition> realize(final ClassDefinition classDef) {
@@ -31,6 +29,7 @@ class GUIImpl implements GUI {
 				new GUIMethodEnhancer(classPool, ctClass, m, result).run();
 			}
 			result.add(toClassDefinition(ctClass));
+			ctClass.detach();
 		} catch (IOException e) {
 			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		} catch (CannotCompileException e) {

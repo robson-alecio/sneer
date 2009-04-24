@@ -5,27 +5,30 @@
 	<defaultsProperty key="Dashboard.HORIZONTAL_MARGIN" type="integer" value="5"/>
 	<defaultsProperty key="Dashboard.INSTRUMENT_BORDER" type="integer" value="3"/>
 	<defaultsProperty key="Dashboard.INTRUMENTS_GAP" type="integer" value="3"/>
-	<defaultsProperty key="Dashboard.TOOLBAR_HEIGHT" type="integer" value="16"/>
+	<defaultsProperty key="Dashboard.TOOLBAR_HEIGHT" type="integer" value="14"/>
 	<defaultsProperty key="Dashboard.SHADOW_HEIGHT"  type="integer" value="20"/>
 	<defaultsProperty key="Dashboard.TIMEOUT_FOR_GUI_EVENTS" type="integer" value="10000"/>
 
 	<style id="toolbar">
-		<imagePainter path="title.png" sourceInsets="3 3 0 3"
+		<imagePainter path="title.png" sourceInsets="2 2 0 0"
 			paintCenter="true" stretch="true" />
-		<insets top="2" left="3" bottom="0" right="3" />
+		<insets top="0" left="0" bottom="2" right="0" />
 	</style>
 
 	<style id="title">
+		<opaque value="true"/>
 		<font name="Verdana" size="8" />
+		<property key="Label.margin" type="insets" value="0 0 0 0" />
+  		<insets top="0" left="0" bottom="0" right="0"/>
 		<state>
-			<property key="Label.margin" type="insets" value="0 0 0 0" />
 			<color value="#2d92bd" type="FOREGROUND" />
+			<color value="RED" type="BACKGROUND"/>
 		</state>
 	</style>
 
 	<style id="button">	
-		<property key="Button.margin" type="insets" value="0 0 0 0"/>
-   		<insets top="0" left="0" bottom="2" right="14"/>
+		<property key="Button.margin" type="insets" value="0 8 0 0"/>
+   		<insets top="3" left="0" bottom="2" right="8"/>
 		<state>
       		<imagePainter method="buttonBackground" path="menu_off.png" center="true"/>
 		</state>

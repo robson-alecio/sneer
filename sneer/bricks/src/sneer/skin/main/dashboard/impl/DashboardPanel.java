@@ -208,9 +208,9 @@ class DashboardPanel extends JPanel {
 					showActionsPopUp();
 				}});
 				
-				_toolbarPanel.setLayout(new BorderLayout());
-				_toolbarPanel.add(_title, BorderLayout.CENTER);
-				_toolbarPanel.add(_menu, BorderLayout.EAST);
+				_toolbarPanel.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
+				_toolbarPanel.add(_title);
+				_toolbarPanel.add(_menu);
 				
 				_toolbarShadow.setBorder(new LineBorder(Color.BLACK));
 				_toolbarShadow.setOpaque(false);

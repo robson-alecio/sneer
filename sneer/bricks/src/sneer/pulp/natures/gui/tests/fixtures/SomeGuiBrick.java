@@ -9,8 +9,6 @@ import sneer.pulp.natures.gui.GUI;
 // TODO: nature inheritance (annotation Instrument interface for instance)
 // TODO: methods declaring checked exceptions
 // TODO: constructors
-// TODO: methods with primitive return type
-// TODO: methods taking arguments
 @Brick(GUI.class)
 public interface SomeGuiBrick {
 

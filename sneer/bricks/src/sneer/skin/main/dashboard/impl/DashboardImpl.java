@@ -40,10 +40,10 @@ class DashboardImpl implements Dashboard {
 	private final Synth _synth = my(Synth.class);
 	
 	{ _synth.load(this.getClass()); }
-	private final int WIDTH = synthValue("DashboardImpl.WIDTH");
-	private final int OFFSET = synthValue("DashboardImpl.OFFSET");
-	private final int TIMEOUT_FOR_GUI_EVENTS = synthValue("DashboardImpl.TIMEOUT_FOR_GUI_EVENTS");
-	private final Insets ROOTPANEL_INSETS  = synthValue("DashboardImpl.ROOTPANEL_INSETS");
+	private final int WIDTH = synthValue("Dashboard.WIDTH");
+	private final int OFFSET = synthValue("Dashboard.OFFSET");
+	private final int HORIZONTAL_MARGIN = synthValue("Dashboard.HORIZONTAL_MARGIN");  
+	private final int TIMEOUT_FOR_GUI_EVENTS = synthValue("Dashboard.TIMEOUT_FOR_GUI_EVENTS");
 	
 	private final  MainMenu _mainMenu = my(MainMenu.class);
 	private final DashboardPanel _dashboardPanel = new DashboardPanel();
@@ -125,7 +125,6 @@ class DashboardImpl implements Dashboard {
 			_rootPanel.setLayout(new BorderLayout());
 			_rootPanel.add(_mainMenu.getWidget(), BorderLayout.NORTH);
 			_rootPanel.add(_dashboardPanel, BorderLayout.CENTER);
-			_rootPanel.setOpaque(false);
 			
 			addListenerToHideToolbarsWhenMouseExited();
 			
@@ -134,11 +133,11 @@ class DashboardImpl implements Dashboard {
 
 		private void addListenerToHideToolbarsWhenMouseExited() {
 			//Fix: this method is a hack, consider to use a glasspane mouse listener
-			JPanel content = (JPanel) _frame.getContentPane();
-			content.setLayout(new BorderLayout());
-			content.setBorder(new EmptyBorder(ROOTPANEL_INSETS));
-			content.add(_rootPanel, BorderLayout.CENTER);
-			content.addMouseListener(new MouseAdapter(){ @Override public void mouseEntered(MouseEvent e) {
+			_frame.setContentPane(_rootPanel);
+			
+			Insets insets = new Insets(HORIZONTAL_MARGIN, 0 , HORIZONTAL_MARGIN, 0);
+			_rootPanel.setBorder(new EmptyBorder(insets));
+			_rootPanel.addMouseListener(new MouseAdapter(){ @Override public void mouseEntered(MouseEvent e) {
 				_dashboardPanel.hideAllToolbars();
 			}});
 		}	

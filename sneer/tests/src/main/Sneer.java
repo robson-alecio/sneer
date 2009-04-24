@@ -2,6 +2,7 @@ package main;
 
 import sneer.brickness.impl.BrickPlacementException;
 import sneer.brickness.impl.Brickness;
+import sneer.pulp.natures.gui.GUI;
 import wheel.io.Jars;
 
 
@@ -10,8 +11,15 @@ public class Sneer {
 	public static void main(String[] ignored) throws Exception {
 		Brickness container = new Brickness(new SneerStoragePath());
 		
+		placeBricks(container, natures());
 		placeBricks(container, businessBricks());
 		placeBricks(container, communicationBricks());
+	}
+
+	private static Class<?>[] natures() {
+		return new Class<?>[] {
+			GUI.class,
+		};
 	}
 
 	static public void placeBricks(Brickness container, Class<?>... bricks) throws BrickPlacementException {
@@ -83,7 +91,11 @@ public class Sneer {
 				snapps.wind.Wind.class,
 				snapps.whisper.speextuples.SpeexTuples.class,
 				sneer.pulp.probe.ProbeManager.class,
-				sneer.pulp.logging.robust.RobustLogger.class
+				sneer.pulp.logging.robust.RobustLogger.class,
+				
+				sneer.pulp.classpath.ClasspathFactory.class,
+				sneer.pulp.compiler.JavaCompiler.class,
+				sneer.software.bricks.Bricks.class,
 		};
 	}
 

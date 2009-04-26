@@ -4,7 +4,6 @@ import static sneer.commons.environments.Environments.my;
 
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 
 import javax.swing.JLabel;
 
@@ -60,7 +59,6 @@ class BandwidthMeterGuiImpl implements BandwidthMeterGui {
 		TextWidget<JLabel> _uploadText = newLabel(my(BandwidthCounter.class).uploadSpeed(), "UploadText");
 		TextWidget<JLabel> _downloadText = newLabel(my(BandwidthCounter.class).downloadSpeed(), "DownloadText");
 		
-		container.setLayout(new FlowLayout());
 		container.add(_bpsPeakLabel);
 		container.add(_uploadIcon);
 		container.add(_uploadText.getComponent());

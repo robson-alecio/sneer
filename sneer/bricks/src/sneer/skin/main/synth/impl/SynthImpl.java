@@ -68,4 +68,10 @@ class SynthImpl implements Synth {
 			}			
 		}});
 	}
+
+	@Override
+	public void attach(JComponent component, String synthName) {
+		attach(component);
+		component.setName(synthName);
+	}
 }

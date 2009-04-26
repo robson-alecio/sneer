@@ -3,7 +3,7 @@
 	<imageIcon id="recycleOff" path="recycleOff.png" />
 	<imageIcon id="recycleClick" path="recycleClick.png" />
 
-	<style id="whisper">
+	<style id="GCButtonStyle">
 		<property key="Button.margin" type="insets" value="0 0 0 0"/>
 	
 		<state>
@@ -17,6 +17,6 @@
 		</state>
 	</style>
 	
-	<bind key="GCButton" style="whisper" type="name" />
+	<bind key="GCButton" style="GCButtonStyle" type="name" />
 
 </synth>

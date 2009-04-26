@@ -76,12 +76,12 @@ class ThreadsImpl implements Threads {
 
 	@Override
 	public void registerActor(Runnable actor) {
-		my(Threads.class).startDaemon(inferThreadName(), actor);
+		startDaemon(inferThreadName(), actor);
 	}
 
 	@Override
 	public void registerStepper(final Stepper stepper) {
-		my(Threads.class).startDaemon(inferThreadName(), new Runnable() { @Override public void run() {
+		startDaemon(inferThreadName(), new Runnable() { @Override public void run() {
 			while (stepper.step());
 		}});
 	}

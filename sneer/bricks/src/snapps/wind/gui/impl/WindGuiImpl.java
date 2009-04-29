@@ -83,6 +83,7 @@ class WindGuiImpl implements WindGui {
 
 		initListReceiversInOrder();
 		_scrollPane.getViewport().add(_shoutsList);
+		_shoutsList.setEditable(false);
 		
 		JScrollPane scrollShout = my(SynthScrolls.class).create();
 		scrollShout.setOpaque(false);

@@ -1,7 +1,5 @@
 package snapps.wind.gui.impl;
 
-import static sneer.commons.environments.Environments.my;
-
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -25,7 +23,6 @@ import javax.swing.text.StyledDocument;
 
 import snapps.wind.Shout;
 import sneer.pulp.reactive.Signal;
-import sneer.skin.colors.Colors;
 import sneer.skin.widgets.reactive.LabelProvider;
 
 class WindListCellRenderer implements ListCellRenderer {
@@ -74,17 +71,14 @@ class WindListCellRenderer implements ListCellRenderer {
 		String nick = ShoutUtils.publisherNick(shout);
 		JLabel labelNick = new JLabel(nick,  SwingConstants.LEFT);
 		labelNick.setFont(new Font(labelNick.getFont().getFontName() , Font.BOLD, 11));
-		labelNick.setForeground(my(Colors.class).hightContrast());
 		labelNick.setOpaque(false);
 		return labelNick;
 	}
 
-	private JComponent createShoutTime(Shout shout, boolean isSelected) {
+	private JComponent createShoutTime(Shout shout, @SuppressWarnings("unused") boolean isSelected) {
 		JLabel label = new JLabel(ShoutUtils.getFormatedShoutTime(shout) + " ",  SwingConstants.RIGHT);
 		label.setFont(new Font(label.getFont().getFontName() , 0, 11));
 		label.setOpaque(false);
-		if(isSelected) label.setForeground(my(Colors.class).solid());
-		else label.setForeground(my(Colors.class).lowContrast());
 		return label;
 	}
 
@@ -115,21 +109,17 @@ class WindListCellRenderer implements ListCellRenderer {
 		Style def = StyleContext.getDefaultStyleContext().getStyle( StyleContext.DEFAULT_STYLE );
 
 	    Style sender = doc.addStyle( SHOUTERS_NICK, def );
-	    StyleConstants.setForeground(sender, my(Colors.class).hightContrast());
 	    StyleConstants.setFontSize( sender, 11 );
 	    StyleConstants.setBold(sender, true);
 	    
 	    doc.addStyle( SHOUT, def );
 	}
 
-	private JComponent createRootPanel(JComponent nick, JComponent time, JComponent shout, boolean isSelected, final JList list) {
+	private JComponent createRootPanel(JComponent nick, JComponent time, JComponent shout, @SuppressWarnings("unused") boolean isSelected, final JList list) {
 		JPanel root = new JPanel();
 		root.setLayout(new BorderLayout());
 		root.setOpaque(true);
 
-		if(isSelected) root.setBackground(my(Colors.class).lowContrast());
-		else root.setBackground(my(Colors.class).solid());
-		
 		JPanel top = new JPanel();
 		top.setLayout(new BorderLayout());
 		top.add(nick, BorderLayout.CENTER);

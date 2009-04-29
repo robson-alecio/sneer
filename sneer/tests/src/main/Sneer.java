@@ -108,7 +108,6 @@ public class Sneer {
 				sneer.pulp.dyndns.client.DynDnsClient.class,
 
 				sneer.hardware.gui.images.Images.class,
-				sneer.skin.colors.Colors.class,
 				snapps.contacts.gui.delete.DeleteContactWindow.class,
 				snapps.contacts.gui.ContactsGui.class,
 				snapps.contacts.gui.info.ContactInfoWindow.class,

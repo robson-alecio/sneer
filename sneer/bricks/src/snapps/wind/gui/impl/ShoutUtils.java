@@ -9,10 +9,11 @@ import snapps.wind.Shout;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.own.name.OwnNameKeeper;
+import sneer.skin.main.synth.Synth;
 
 abstract class ShoutUtils {
 
-	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("HH:mm:ss");
+	private static final SimpleDateFormat FORMAT = new SimpleDateFormat((String) my(Synth.class).getDefaultProperty("ShoutUtils.dateFormat"));
 	
 	private static OwnNameKeeper ownName() {
 		return my(OwnNameKeeper.class);

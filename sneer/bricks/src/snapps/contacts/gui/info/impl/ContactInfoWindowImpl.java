@@ -84,6 +84,13 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 
 	private void initGui() {
 		setTitle("Contact Info:");
+
+		JPanel panel = new JPanel();
+		panel.setBorder(new TitledBorder("Internet Adresses:"));
+		JLabel labNickname = new JLabel("Nickname:");
+		JLabel labPort = new JLabel("Port:");
+		JLabel labHost = new JLabel("Host:");
+		
 		Signal<String> nickname = my(Signals.class).adaptSignal(my(ContactsGui.class).selectedContact(), new Functor<Contact, Signal<String>>() { @Override public Signal<String> evaluate(Contact contact) {
 			return contact.nickname();
 		}});
@@ -92,69 +99,70 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 			my(ContactManager.class).nicknameSetterFor(contact()).consume(value);
 		}};
 		
-		getContentPane().setLayout(new GridBagLayout());
-		
 		_txtNickname = my(ReactiveWidgetFactory.class).newTextField(nickname, setter, NotificationPolicy.OnEnterPressedOrLostFocus);
-		JLabel _labNickname = new JLabel("Nickname:");
-		
-		getContentPane().add(_labNickname,  new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, 
-				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5,5,0,5), 0, 0) );
-
-		getContentPane().add(_txtNickname.getComponent(),  new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, 
-				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5,0,0,5), 0, 0) );
 		
 		JScrollPane scroll = my(SynthScrolls.class).create();
 		scroll.getViewport().add(_lstAddresses);
-		
-		JPanel panel = new JPanel();
-		getContentPane().add(panel,  new GridBagConstraints(0, 1, 2, 1, 1.0, 1.0, 
-				GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(5,5,5,5), 0, 0) );
-		
-		panel.setBorder(new TitledBorder("Internet Adresses:"));
-		panel.setLayout(new GridBagLayout());
-		panel.add(scroll,  new GridBagConstraints(0, 1, 12, 1, 1.0, 1.0, 
-				GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(5,5,5,5), 0, 0) );
-		
-		JLabel _labHost = new JLabel("Host:");
-		panel.add(_labHost,  new GridBagConstraints(0, 2, 1,1, 0.0,0.0, 
-				GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0,5,0,5), 0, 0) );
 
-		panel.add(_host,  new GridBagConstraints(1, 2, 7, 1, 2.0,0.0, 
-				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0) );
-
-		JLabel _labPort = new JLabel("Port:");
-		panel.add(_labPort,  new GridBagConstraints(9, 2, 1,1, 0.0,0.0, 
-				GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0,5,5,5), 0, 0) );
-		
-		panel.add(_port,  new GridBagConstraints(10, 2, 2,1, 0.0,0.0, 
-				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,5), 0, 0) );
-		
 		JButton btnNew = new JButton("New");
-		panel.add(btnNew,  new GridBagConstraints(7,3, 1,1, 0.0,0.0, 
-				GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5,5,5,5), 0, 0) );
 		btnNew.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 			newInternetAddress();
 		}});
-
+		
 		JButton btnSave = new JButton("Save");
-		panel.add(btnSave,  new GridBagConstraints(8,3, 3, 1, 0.0,0.0, 
-				GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5,5,5,5), 0, 0) );
 		btnSave.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 			saveInternetAddress();
 		}});
 		
 		JButton btnDel = new JButton("Delete");
-		panel.add(btnDel,  new GridBagConstraints(11,3, 1,1, 0.0,0.0, 
-				GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5,5,5,5), 0, 0) );
 		btnDel.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 			delInternetAddress();
 		}});
 		
+		setGridBagLayout(panel, labNickname, labPort, labHost, scroll, btnNew, btnSave, btnDel);
+
 		listenToSignals();
 		addListSelectionListestener();
 
 		this.setSize(400, 310);
 		my(WindowBoundsSetter.class).setBestBounds(this);
+	}
+
+	private void setGridBagLayout(JPanel panel, JLabel labNickname, JLabel labPort, JLabel labHost, JScrollPane scroll, JButton btnNew, JButton btnSave, JButton btnDel) {
+		getContentPane().setLayout(new GridBagLayout());
+		getContentPane().add(labNickname,  new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, 
+				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5,5,0,5), 0, 0) );
+
+		getContentPane().add(_txtNickname.getComponent(),  new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, 
+				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5,0,0,5), 0, 0) );
+		
+		getContentPane().add(panel,  new GridBagConstraints(0, 1, 2, 1, 1.0, 1.0, 
+				GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(5,5,5,5), 0, 0) );
+		
+		panel.setLayout(new GridBagLayout());
+		panel.add(scroll,  new GridBagConstraints(0, 1, 12, 1, 1.0, 1.0, 
+				GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(5,5,5,5), 0, 0) );
+		
+		panel.add(labHost,  new GridBagConstraints(0, 2, 1,1, 0.0,0.0, 
+				GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0,5,0,5), 0, 0) );
+
+		panel.add(_host,  new GridBagConstraints(1, 2, 7, 1, 2.0,0.0, 
+				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0) );
+
+		panel.add(labPort,  new GridBagConstraints(9, 2, 1,1, 0.0,0.0, 
+				GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0,5,5,5), 0, 0) );
+		
+		panel.add(_port,  new GridBagConstraints(10, 2, 2,1, 0.0,0.0, 
+				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,5), 0, 0) );
+		
+		panel.add(btnNew,  new GridBagConstraints(7,3, 1,1, 0.0,0.0, 
+				GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5,5,5,5), 0, 0) );
+
+		panel.add(btnSave,  new GridBagConstraints(8,3, 3, 1, 0.0,0.0, 
+				GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5,5,5,5), 0, 0) );
+
+		panel.add(btnDel,  new GridBagConstraints(11,3, 1,1, 0.0,0.0, 
+				GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5,5,5,5), 0, 0) );
 	}
 	
 	private void saveInternetAddress() {

@@ -19,17 +19,22 @@ class GuiThreadImpl implements GuiThread {
 		else
 			strictInvokeAndWait(runnable);
 	}
-	
+
 	@Override
-	public void strictInvokeAndWait(final Runnable runnable) { //Fix Calling this from brick code is no longer necessary after the container is calling gui brick code only in the Swing thread.
+	public void strictInvokeAndWait(final Environment environment, final Runnable runnable) { //Fix Calling this from brick code is no longer necessary after the container is calling gui brick code only in the Swing thread.
 		assertNotInGuiThread();
 		try {
-			SwingUtilities.invokeAndWait(envolve(runnable));
+			SwingUtilities.invokeAndWait(envolve(environment, runnable));
 		} catch (InterruptedException e) {
 			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		} catch (InvocationTargetException e) {
 			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
+	}
+	
+	@Override
+	public void strictInvokeAndWait(final Runnable runnable) { //Fix Calling this from brick code is no longer necessary after the container is calling gui brick code only in the Swing thread.
+		strictInvokeAndWait(my(Environment.class), runnable);
 	}
 
 	@Override
@@ -53,7 +58,10 @@ class GuiThreadImpl implements GuiThread {
 	}
 
 	private Runnable envolve(final Runnable delegate) {
-		final Environment environment = my(Environment.class);
+		return envolve(my(Environment.class), delegate);
+	}
+
+	private Runnable envolve(final Environment environment, final Runnable delegate) {
 		return new Runnable() { @Override public void run() {
 			Environments.runWith(environment, delegate);
 		}};

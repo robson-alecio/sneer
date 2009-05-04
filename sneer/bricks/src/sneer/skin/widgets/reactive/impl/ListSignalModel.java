@@ -65,6 +65,7 @@ class ListSignalModel<T> extends AbstractListModel {
 		@Override
 		public void elementMoved(final int oldIndex, final int newIndex, final T value) {
 			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
+				System.out.println("MODEL: " + ListSignalModel.this._input.currentElements());
 				fireContentsChanged(ListSignalModel.this, oldIndex, newIndex);
 			}});
 		}

@@ -1,17 +1,13 @@
 package sneer.pulp.natures.gui.impl;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import javassist.CannotCompileException;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMethod;
-import sneer.brickness.ClassDefinition;
-import sneer.pulp.natures.gui.GUI;
+import javassist.*;
+import sneer.brickness.*;
+import sneer.commons.environments.*;
+import sneer.pulp.natures.gui.*;
 
 class GUIImpl implements GUI {
 	
@@ -23,24 +19,79 @@ class GUIImpl implements GUI {
 		final ArrayList<ClassDefinition> result = new ArrayList<ClassDefinition>();
 		try {
 			final CtClass ctClass = classPool.makeClass(new ByteArrayInputStream(classDef.bytes()));
-			for (CtMethod m : ctClass.getDeclaredMethods()) {
-				if (Modifier.isStatic(m.getModifiers()))
-					continue;
-				new GUIMethodEnhancer(classPool, ctClass, m, result).run();
+			CtClass metadata = null;
+			try {
+				metadata = defineBrickMetadata(ctClass);
+				if (isBrickImplementation(ctClass)) {
+					result.add(toClassDefinition(metadata));
+					introduceMetadataInitializer(ctClass);
+				}
+				enhanceMethods(ctClass, result);
+				result.add(toClassDefinition(ctClass));
+			} finally {
+				ctClass.detach();
+				if(metadata != null)
+					metadata.detach();
 			}
-			result.add(toClassDefinition(ctClass));
-			ctClass.detach();
+			return result;
 		} catch (IOException e) {
 			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		} catch (CannotCompileException e) {
 			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
-		} 
-		return result;
+		} catch (NotFoundException e) {
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+		}
+	}
+
+	private void introduceMetadataInitializer(CtClass ctClass) {
+		try {
+			ctClass.makeClassInitializer().insertAfter("natures.gui.BrickMetadata.ENVIRONMENT = sneer.commons.environments.Environments.my(sneer.commons.environments.Environment.class);");
+		} catch (CannotCompileException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
+	private CtClass defineBrickMetadata(CtClass brickClass) {
+		CtClass metadata = classPool.makeClass("natures.gui.BrickMetadata");
+		metadata.setModifiers(javassist.Modifier.PUBLIC);
+		try {
+			metadata.addField(CtField.make("public static " + Environment.class.getName() + " ENVIRONMENT;", metadata));
+			return metadata;
+		} catch (CannotCompileException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
+	private boolean isBrickImplementation(CtClass ctClass) throws NotFoundException {
+		for (CtClass intrface : ctClass.getInterfaces())
+			if (isBrickInterface(intrface))
+				return true;
+		return false;
+	}
+
+	private boolean isBrickInterface(CtClass intrface) {
+		for (Object annotation : intrface.getAvailableAnnotations())
+			if (annotation instanceof Brick)
+				return true;
+		return false;
+	}
+
+	private void enhanceMethods(final CtClass ctClass,
+			final ArrayList<ClassDefinition> result) {
+		for (CtMethod m : ctClass.getDeclaredMethods()) {
+			if (Modifier.isStatic(m.getModifiers()))
+				continue;
+			new GUIMethodEnhancer(classPool, ctClass, m, result).run();
+		}
 	}
 
 	public static ClassDefinition toClassDefinition(final CtClass ctClass)
-			throws IOException, CannotCompileException {
-		return new ClassDefinition(ctClass.getName(), ctClass.toBytecode());
+			throws CannotCompileException {
+		try {
+			return new ClassDefinition(ctClass.getName(), ctClass.toBytecode());
+		} catch (IOException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 	

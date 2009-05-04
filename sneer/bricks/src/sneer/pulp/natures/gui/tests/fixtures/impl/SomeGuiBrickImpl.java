@@ -1,8 +1,13 @@
 package sneer.pulp.natures.gui.tests.fixtures.impl;
 
-import sneer.commons.environments.Environment;
-import sneer.pulp.natures.gui.tests.fixtures.SomeGuiBrick;
 import static sneer.commons.environments.Environments.my;
+
+import java.awt.event.*;
+
+import org.junit.*;
+
+import sneer.commons.environments.*;
+import sneer.pulp.natures.gui.tests.fixtures.*;
 
 class SomeGuiBrickImpl implements SomeGuiBrick {
 
@@ -19,6 +24,13 @@ class SomeGuiBrickImpl implements SomeGuiBrick {
 	@Override
 	public void run(Runnable runnable) {
 		runnable.run();
+	}
+
+	@Override
+	public ActionListener listenerFor(final Environment expectedEnvironment) {
+		return new ActionListener() { @Override public void actionPerformed(ActionEvent e) {
+			Assert.assertSame(expectedEnvironment, currentEnvironment());
+		}};
 	}
 	
 }

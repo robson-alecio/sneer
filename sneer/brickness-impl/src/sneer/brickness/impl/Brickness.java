@@ -38,6 +38,17 @@ public class Brickness implements BrickLayer {
 		
 		_environment = new CachingEnvironment(_bindings.environment());
 	}
+	
+	public Brickness(Environment environment) {
+		_brickInstantiator = defaultInstantiator();
+		_brickDecorator = defaultDecorator();
+		
+		_bindings = new Bindings();
+		_bindings.bind(this);
+		
+		_environment = new CachingEnvironment(Environments.compose(_bindings.environment(), environment));
+		
+	}
 
 	public void placeBrick(File classRootDirectory, String brickName) {
 		try {

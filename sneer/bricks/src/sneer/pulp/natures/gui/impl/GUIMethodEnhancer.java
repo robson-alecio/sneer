@@ -1,26 +1,16 @@
 package sneer.pulp.natures.gui.impl;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
-import javassist.CannotCompileException;
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtField;
-import javassist.CtMethod;
-import javassist.CtNewConstructor;
-import javassist.CtNewMethod;
-import javassist.NotFoundException;
+import javassist.*;
 
-import org.apache.commons.collections15.CollectionUtils;
-import org.apache.commons.collections15.Transformer;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections15.*;
+import org.apache.commons.lang.*;
 
-import sneer.brickness.ClassDefinition;
-import sneer.commons.environments.Environments;
-import sneer.commons.lang.Pair;
-import sneer.hardware.gui.guithread.GuiThread;
+import sneer.brickness.*;
+import sneer.commons.lang.*;
+import sneer.pulp.natures.gui.*;
 
 public class GUIMethodEnhancer {
 
@@ -40,23 +30,28 @@ public class GUIMethodEnhancer {
 
 	public void run() {
 		try {
+			createDelegate();
 			_resultingClasses.add(makeThunkFor());
 			enhanceMethod();
 		} catch (Exception e) {
 			throw new sneer.commons.lang.exceptions.NotImplementedYet(_method.toString(), e);
 		}
 	}
+
+	private void createDelegate() throws CannotCompileException {
+		_containingClass.addMethod(CtNewMethod.copy(_method, delegateMethodName(), _method.getDeclaringClass(), null));
+	}
+
+	private String delegateMethodName() {
+		return "$" + _method.getName();
+	}
 	
 	private void enhanceMethod() throws CannotCompileException, NotFoundException {
-		
 		final String thunkFullName = _method.getDeclaringClass().getName() + "." + _thunkName;
-		final String guiThreadClass = GuiThread.class.getName();
-		_method.insertBefore(
-				"if (!java.awt.EventQueue.isDispatchThread()) {"
-					+ thunkFullName + " thunk = new " + thunkFullName + "(" + thunkConstructorArguments() + ");"
-					+ "((" + guiThreadClass + ")" + Environments.class.getName() + ".my(" + guiThreadClass + ".class)).strictInvokeAndWait(thunk);"
-					+ (hasReturnValue() ? "return thunk.result;" : "return;")
-				+ "}");
+		_method.setBody(
+					"{ " + thunkFullName + " thunk = new " + thunkFullName + "(" + thunkConstructorArguments() + ");"
+					+ GUINatureRuntime.class.getName() + ".runInGuiThread(natures.gui.BrickMetadata.ENVIRONMENT, thunk);"
+					+ (hasReturnValue() ? "return thunk.result; " : "return;") + " }");
 	}
 
 	private String thunkConstructorArguments() throws NotFoundException {
@@ -87,7 +82,7 @@ public class GUIMethodEnhancer {
 				CtNewConstructor.make(
 					ctorCode, thunkClass));
 		
-		final String invocation = "target." + _method.getName() + "(" + targetInvocationList(thunkFields) + ");";
+		final String invocation = "target." + delegateMethodName() + "(" + targetInvocationList(thunkFields) + ");";
 		thunkClass.addMethod(
 				CtNewMethod.make(
 					"public void run() {" +

@@ -1,6 +1,7 @@
 package sneer.hardware.gui.guithread;
 
 import sneer.brickness.Brick;
+import sneer.commons.environments.*;
 
 @Brick
 public interface GuiThread {
@@ -12,5 +13,6 @@ public interface GuiThread {
 	void invokeLater(Runnable runnable);
 
 	void assertInGuiThread();
+	void strictInvokeAndWait(Environment environment, Runnable runnable);
 
 }

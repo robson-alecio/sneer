@@ -1,5 +1,7 @@
 package sneer.pulp.natures.gui.tests.fixtures;
 
+import java.awt.event.*;
+
 import sneer.brickness.Brick;
 import sneer.commons.environments.Environment;
 import sneer.pulp.natures.gui.GUI;
@@ -17,5 +19,7 @@ public interface SomeGuiBrick {
 	Environment currentEnvironment();
 
 	void run(Runnable runnable);
+
+	ActionListener listenerFor(Environment expectedEnvironment);
 
 }

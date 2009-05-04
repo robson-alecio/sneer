@@ -10,7 +10,7 @@ import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.collections.ReactiveCollections;
-import sneer.pulp.reactive.listsorter.ListSorter;
+import sneer.pulp.reactive.collections.listsorter.ListSorter;
 import sneer.pulp.tuples.TupleSpace;
 
 class WindImpl implements Wind, Consumer<Shout> {

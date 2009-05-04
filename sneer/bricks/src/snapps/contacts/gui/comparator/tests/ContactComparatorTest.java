@@ -19,7 +19,7 @@ import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.collections.ReactiveCollections;
-import sneer.pulp.reactive.listsorter.ListSorter;
+import sneer.pulp.reactive.collections.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 
 public class ContactComparatorTest extends BrickTest {

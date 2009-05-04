@@ -35,7 +35,7 @@ import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.ListSignal;
-import sneer.pulp.reactive.listsorter.ListSorter;
+import sneer.pulp.reactive.collections.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.main.dashboard.InstrumentPanel;
 import sneer.skin.main.instrumentregistry.InstrumentRegistry;

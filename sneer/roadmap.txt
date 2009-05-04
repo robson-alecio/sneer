@@ -1,48 +1,155 @@
 ﻿FIXES
 =========
-	
-	- NPE for DeleteContactWindowImpl.checkAndDelete() - Remove it from the interface and make it private.
+
+	- [Sandro] NPE for DeleteContactWindowImpl.checkAndDelete() - Remove it from the interface and make it private.
+
+	- [Bamboo] Adapt antlips to support lib entries starting with:
+		kind="lib" exported="true"...   instead of just:
+		kind="lib"...
+		
+	- [Igor] main.Sneer - Organize brick list (skin stuff goes to communicationBricks).
+
+	- [Klaus] EventReceiver - Pass owner on creation. Signal will hold reference to receiver until owner is GC'd.
+		- [Igor] Finish off simple cases. Pair with Klaus on the complicated ones.
 
 
 TASKS
-=========
+========
 
-	- [Klaus] DynDns user data - Use transparent persistence to save it, not a properties file.
+	- Gui Thread - Always call gui brick code in the gui thread. What was already done with the GuiBrickInvocationHandler does not cover callbacks. Complicated and slow weak-proxy-bubble structures would have to be created to support that. Instead, the proposed idea is:
+		- [Bamboo] Enhance at load-time the beginning of all public methods in all classes (including nested) in all gui brick impl packages.
+			- GUI brick constructors should execute in the gui thread
+			- Unignore and implement GuiBrickTest.guiBrickCallbacksComeInSwingThread()
+			- Delete the GuiBrickInvocationHandler.
+			- Test - Add Gui nature to gui bricks and run.
+			- GuiThread - Improve how environment handling is done. 
+				- Unignore GuiBrickTest.
+		- [Klaus] GuiBrick Javadoc - Revise.
 
 	- [Sandro and Igor] User Info, Contact List and Contact CRUD - Don't do any other task until:
 		- ContactInfoWindowImpl
 			- Reactive List (All GUI)
 		- ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
 		- [Klaus] Revise code.
+
+	- [Bamboo] Create/Install ("publish") brick locally
+		- Brickness - "The simplest possible container"
+			- Unify the Bindings vs Contributions metaphors.
+			- SneerCommunity.newContainer - All that mess with StoragePath and SneerConfig is ugly.
+			- Make a test run a brick in a directory that is not in the system ClassLoader classpath (Eclipse classpath). It will probably fail. Implement the logic using NewContainerImpl.createApiClassLoader() to return a URLClassloader that can be extended with new classpaths for new brick interfaces;
+
+	- [Klaus and Igor] build.xml/Antlipse - Revive.
+		- Cleanup wheel
+			- Cleanup Timebox - Try making TimeIsUp a Throwable instead of an Error.
+		- Uncomment _logger field and finalize() method in EventNotifierImpl.
+		- Eliminate upward dependencies.
+	
+	- Commons - Delete or convert to bricks.
+
+	- DynDns
+		- Fix: Running on more than one machine will cause redundant (abusive) updates. Do not persist last discovered IP. Do a DNS lookup every time instead.
+		- User data - Use transparent persistence to save it, not a properties file.					
+			- Transparent persistence for bricks
+		- Simplify to remove all synchronization. Let the container synchronize the brick.
+			- Concurrency - Synchronize calls on Bricks, according to docs/brick_types.txt  
+
+	- [Klaus] ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do. See ListRegisterImpl.MyOutput._notifier
+		- SetSignal - Revise it also. 
+
+	- [Sandro] Webstart
+
+	- Security - Discover if instruments can indirectly gain access to components from other instruments.
+	
+	- Logging - Default: Log only throwables. Have "white list" of parts of messages to log.
+			- GUI to delete or add parts of messages in the "white list" to log.
+			- Logger
+				- whileList - Transient. Will be transparently persisted later on.
+			- Bricks to listen to EventSource Logger.loggedMessages()
+				- LogToFile
+				- LogToGui
+	
+	- Versioning
+
+-------------------------------------- Standalone Brick Container
+
+	- Contact Connection
+		- Own Name - Show contacts' names in contact list
+			- Freedom2Test - Unignore and make it pass.
+		- Public Key Ids
+
+	- MeToo
+		- Unignore Freedom7 dependency tests
+		- Open Jar leak - Fix in Freedom7Test
+
+	- Security
+		- Sandboxing
+
+--------------------------------------- Freedom 7
+
+	- P2P Communication (Tuples) - Solve tuple flooding on the network. Discuss ideas with the team.
+		- Traffic Prioritization by tuple type
+		- Bandwidth Optimization
+		- Torrentness
+
+--------------------------------------- Freedom 5
+
+
+	- Snuggin - Initial rules
+	
+	- Logging - Revise all uses of logging, out and err.
+
+	- Exception Handling - Revise and correct
+
+	- Fix and remove all task comments in the code except for Optimize (Fix Urgent, Fix, Refactor and Implement).
+
+
+
+
+
+
+
+
+
+
+
+
+
+TASKS
+=========
+
+
 		
-	- [Sandro] Dashboard - Revise colors, gradient, font, size (layout).
+
+	- Authentication (Simple)
+
+	
+	
+	
+	
+	- Authentication (PK)
+
+
+	- Responsive threading model for instruments. They can NEVER block the Swing gui thread.
+		- [Bamboo] Inspect ALL Brick bytecode at load-time and do not allow it to catch Throwable. This makes all non-blocking code stoppable. We will deal with blocking code later.
+		- [Bamboo] Inspect Gui Brick bytecode at load-time and do not allow it to call any code that throws Hiccup. It is equivalent and maybe easier to simply not allow the code to catch nor throw Hiccup.
+
+	- Dashboard - Revise colors, gradient, font, size (layout). DO THIS ONLY AFTER TALKING TO KLAUS.
 
 	- ContactsGUI - Accept cell part renderers. (dependency inverted) Discuss with team.
 	
-	- WatchMe - Move to spikes. Remove from main.Sneer's list of bricks.
-	
-	- DynDns Revision.
-		- Simplify to remove all synchronization. Let the container synchronize the brick. 
-		- Fix: Do not persist last discovered ip. Do a DNS lookup every time instead.					
-	
 	- [Sandro] Community Initiative - Incorporate Gandhi's Google maps brick. (Run LocationGuiMain)
 
-	- TopTen - First Round
+	- TopTen
 		 - Categories (Ex.: Movies, Sports, Songs, Restaurants, etc)
 		 	- CRUD
 		 - Items 
 		 	- CRUD
 		 - Synonyms	
 	
-	- Authentication (PK)
 
 	- Affinity
 		- Access control to all other snapps by affinity.
 
-	30/APR --------------------------------------
-
-	- TopTen - Second Round
-	
 	30/MAY --------------------------------------
 
 	- Synonyms

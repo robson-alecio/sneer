@@ -4,10 +4,10 @@ import static sneer.commons.environments.Environments.my;
 
 import java.util.Random;
 
-import sneer.commons.threads.Daemon;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
+import sneer.pulp.threads.Stepper;
 import sneer.pulp.threads.Threads;
 
 public class RandomBoolean {
@@ -16,9 +16,10 @@ public class RandomBoolean {
 	private Register<Boolean> _register = my(Signals.class).newRegister(false);
 
 	{
-		new Daemon("Random Boolean") { @Override public void run() {
-			while (true) sleepAndFlip();
-		}};
+		my(Threads.class).registerStepper(new Stepper() { @Override public boolean step() {
+			sleepAndFlip();
+			return true;
+		}});
 	}
 	
 	public Signal<Boolean> output() {
@@ -26,7 +27,7 @@ public class RandomBoolean {
 	}
 
 	private void sleepAndFlip() {
-		my(Threads.class).sleepWithoutInterruptions(RANDOM.nextInt(2000));
+		my(Threads.class).sleepWithoutInterruptions(RANDOM.nextInt(5000));
 		_register.setter().consume(!_register.output().currentValue());
 	}
 	

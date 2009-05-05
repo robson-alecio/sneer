@@ -3,6 +3,7 @@ package sneer.pulp.reactive.collections.listfilter.tests;
 import static sneer.commons.environments.Environments.my;
 
 import org.jmock.Expectations;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
@@ -44,6 +45,7 @@ public class ListFilterTest extends BrickTest {
 		}};
 	}	
 	
+	@Ignore
 	@Test
 	public void testVisitor() {
 		checking(new Expectations(){{

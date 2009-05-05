@@ -3,6 +3,7 @@
 	
 	- NPE for DeleteContactWindowImpl.checkAndDelete() - Remove it from the interface and make it private.
 	- Remove @Ignore and Fix WindTest.testSortedShoutsHeard
+	
 =======
 
 	- [Sandro] NPE for DeleteContactWindowImpl.checkAndDelete() - Remove it from the interface and make it private.

@@ -52,12 +52,10 @@ public class ListSorterTest extends BrickTest {
 			one(_visitor).elementAdded(4, _40);
 			
 			one(_visitor).elementRemoved(2, _20);
-			
 			one(_visitor).elementRemoved(2, _30);
-			
 			one(_visitor).elementRemoved(3, _50);
-			
 			one(_visitor).elementRemoved(2, _40);
+			
 			one(_visitor).elementAdded(1, _10);
 		}});		
 		
@@ -112,8 +110,8 @@ public class ListSorterTest extends BrickTest {
 		AssertUtils.assertSameContents(sortedList, _10, _30, _30);
 	}	
 
-	private Signal<Integer> signal(Register<Integer> r10) {
-		return r10.output();
+	private Signal<Integer> signal(Register<Integer> register) {
+		return register.output();
 	}	
 	
 	@Test

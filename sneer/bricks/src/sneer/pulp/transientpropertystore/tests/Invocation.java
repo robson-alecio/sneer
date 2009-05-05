@@ -1,12 +1,15 @@
 package sneer.pulp.transientpropertystore.tests;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Date;
-import static sneer.commons.environments.Environments.my;
+
 import org.prevayler.TransactionWithQuery;
 
-import wheel.lang.FrozenTime;
+import sneer.pulp.lang.FrozenTime;
+
 
 class Invocation implements TransactionWithQuery {
 
@@ -22,7 +25,7 @@ class Invocation implements TransactionWithQuery {
 
 
 	public Object executeAndQuery(Object stateMachineIgnored, Date date) throws Exception {
-		FrozenTime.freezeForCurrentThread(date.getTime());
+		my(FrozenTime.class).freezeForCurrentThread(date.getTime());
 		try {
 			return invoke(brickImpl(), _method, _args);
 		} catch (Throwable e) {

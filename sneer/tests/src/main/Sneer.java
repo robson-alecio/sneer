@@ -76,7 +76,6 @@ public class Sneer {
 				sneer.pulp.memory.MemoryMeter.class,
 				sneer.skin.sound.kernel.Audio.class,
 				sneer.pulp.lang.StringUtils.class,
-				sneer.pulp.lang.FrozenTime.class,
 				sneer.pulp.bandwidth.BandwidthCounter.class,
 				sneer.skin.screenshotter.Screenshotter.class,
 				sneer.pulp.connection.ConnectionManager.class,

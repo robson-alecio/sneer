@@ -1,11 +1,9 @@
 ﻿FIXES
 =========
-	
-	- NPE for DeleteContactWindowImpl.checkAndDelete() - Remove it from the interface and make it private.
-	- Remove @Ignore and Fix WindTest.testSortedShoutsHeard
-	
-=======
 
+	- ListChange.Visitor - Remove elementInserted (redundant with elementAdded) and elementMoved methods.
+	- SignalChoosers - Receive owner for GC (like Signals.receive()) instead of returning a reference that has to be held.
+	
 	- [Sandro] NPE for DeleteContactWindowImpl.checkAndDelete() - Remove it from the interface and make it private.
 
 	- [Bamboo] Adapt antlips to support lib entries starting with:
@@ -16,6 +14,8 @@
 
 	- [Klaus] EventReceiver - Pass owner on creation. Signal will hold reference to receiver until owner is GC'd.
 		- [Igor] Finish off simple cases. Pair with Klaus on the complicated ones.
+
+	- Remove @Ignore and Fix WindTest.testSortedShoutsHeard
 
 
 TASKS

@@ -1,0 +1,109 @@
+﻿SMALL FIXES
+==============
+	- [Bamboo] Adapt antlips to support lib entries starting with:
+		kind="lib" exported="true"...   instead of just:
+		kind="lib"...
+		
+	- [Igor] main.Sneer - Organize brick list (skin stuff goes to communicationBricks).
+
+	- [Klaus] EventReceiver - Pass owner on creation. Signal will hold reference to receiver until owner is GC'd.
+		- [Igor] Finish off simple cases. Pair with Klaus on the complicated ones.
+
+	- ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do. See ListRegisterImpl.MyOutput._notifier
+		- SetSignal - Revise it also. 
+
+TASKS
+========
+
+	- [Sandro] Webstart
+
+	- [Klaus] build.xml/Antlipse - Revive.
+		- Cleanup wheel
+			- Cleanup Timebox - Try making TimeIsUp a Throwable instead of an Error.
+		- Uncomment _logger field and finalize() method in EventNotifierImpl.
+		- Eliminate upward dependencies.
+
+	- [Klaus] Delete commons. They can be made available as bricks in the future if anyone really needs them.
+
+	- [Klaus] Transparent persistence for bricks
+
+	- [Klaus] GuiThread - Improve how environment handling is done. 
+		- Unignore GuiBrickTest.
+
+	- [Bamboo] Create/Install ("publish") brick locally
+		- Brickness - "The simplest possible container"
+			- Unify the Bindings vs Contributions metaphors.
+			- [Bamboo]Delete Brick interface in favor of NewBrick annotation.
+			- SneerCommunity.newContainer - All that mess with StoragePath and SneerConfig is ugly.
+			- Make a test run a brick in a directory that is not in the system ClassLoader classpath (Eclipse classpath). It will probably fail. Implement the logic using NewContainerImpl.createApiClassLoader() to return a URLClassloader that can be extended with new classpaths for new brick interfaces;
+
+	- Gui Thread - Always call gui brick code in the gui thread. What was already done with the GuiBrickInvocationHandler does not cover callbacks. Complicated and slow weak-proxy-bubble structures would have to be created to support that. Instead, the proposed idea is:
+		- [Klaus] Make the container call the gui brick constructor in the gui thread.
+		- [Bamboo] Enhance at load-time the beginning of all public methods in all classes (including nested) in all gui brick impl packages, like this:
+			if (!EventQueue.isDispatchThread()) {
+				EventQueue.invokeAndWait(new Runnable(){public void run(){
+					//recursive call to outer method with same args.
+				}})
+			}
+			
+			- GUI brick constructors should execute in the gui thread
+			
+			- Unignore and implement GuiBrickTest.guiBrickCallbacksComeInSwingThread()
+			- Delete the GuiBrickInvocationHandler.
+		- [Klaus] GuiBrick Javadoc - Revise.
+		- Responsive threading model for instruments. They can NEVER block the Swing gui thread.
+			- [Bamboo] Inspect ALL Brick bytecode at load-time and do not allow it to catch Throwable. This makes all non-blocking code stoppable. We will deal with blocking code later.
+			- [Bamboo] Inspect Gui Brick bytecode at load-time and do not allow it to call any code that throws Hiccup. It is equivalent and maybe easier to simply not allow the code to catch nor throw Hiccup.
+
+	- Concurrency - Synchronize calls on Bricks, according to docs/brick_types.txt  
+
+	- Security - Discover if instruments can indirectly gain access to components from other instruments.
+	
+		
+	- [Douglas] Logging - Default: Log only throwables. Have "white list" of parts of messages to log.
+			- GUI to delete or add parts of messages in the "white list" to log.
+			- Logger
+				- whileList - Transient. Will be transparently persisted later on.
+			- Bricks to listen to EventSource Logger.loggedMessages()
+				- LogToFile
+				- LogToGui
+	
+	- Versioning
+
+	- Commons - Unify sneer.commons and apache.commons
+
+-------------------------------------- Standalone Brick Container
+
+	- Contact Connection
+		- Own Name - Show contacts' names in contact list
+			- Freedom2Test - Unignore and make it pass.
+		- Public Key Ids
+
+	- MeToo
+		- Unignore Freedom7 dependency tests
+		- Open Jar leak - Fix in Freedom7Test
+
+	- Revise commons. Daemon? Streams? TestThatMightUseResources?
+
+	- Security
+		- Sandboxing
+
+--------------------------------------- Freedom 7
+
+	- P2P Communication (Tuples) - Solve tuple flooding on the network. Discuss ideas with the team.
+		- Traffic Prioritization by tuple type
+		- Bandwidth Optimization
+		- Torrentness
+
+--------------------------------------- Freedom 5
+
+
+	- Snuggin - Initial rules
+	
+	- Logging - Revise all uses of logging, out and err.
+
+	- Exception Handling - Revise and correct
+
+	- Fix and remove all task comments in the code except for Optimize (Fix Urgent, Fix, Refactor and Implement).
+
+        - 2x churrasqueira

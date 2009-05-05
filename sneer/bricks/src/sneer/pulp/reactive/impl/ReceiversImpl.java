@@ -12,10 +12,10 @@ class ReceiversImpl {
 
 	private static final Set<Object> _referencesToAvoidGC = new HashSet<Object>();
 
-	static <T> void receive(Object owner, final Consumer<? super T> delegate, EventSource<? extends T>... source) {
+	static <T> void receive(Object owner, final Consumer<? super T> delegate, final EventSource<? extends T>... sources) {
 		final WeakReference<Object> weakOwner = new WeakReference<Object>(owner);
 
-		new EventReceiver<T>(source) {
+		new EventReceiver<T>(sources) {
 			{ _referencesToAvoidGC.add(this); }
 
 			@Override

@@ -7,10 +7,9 @@ import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.collections.impl.VisitingListReceiver;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
-import sneer.pulp.reactive.signalchooser.SignalChooserManager;
 import wheel.reactive.impl.EventReceiver;
 
-class SignalChooserManagerImpl<T> implements SignalChooserManager<T>{
+class SignalChooserManagerImpl<T> {
 	
 	@SuppressWarnings("unused")	private final Object _refToAvoidGc;
 

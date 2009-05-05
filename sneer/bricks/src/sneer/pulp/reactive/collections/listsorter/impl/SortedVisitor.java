@@ -13,8 +13,7 @@ import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.collections.ReactiveCollections;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
-import sneer.pulp.reactive.signalchooser.SignalChooserManager;
-import sneer.pulp.reactive.signalchooser.SignalChooserManagerFactory;
+import sneer.pulp.reactive.signalchooser.SignalChoosers;
 import wheel.reactive.impl.ListSignalOwnerReference;
 import wheel.reactive.lists.VisitorAdapter;
 
@@ -23,10 +22,10 @@ final class SortedVisitor<T> extends VisitorAdapter<T> implements ListOfSignalsR
 	private final ListSignal<T> _input;
 	private final SorterSupport _sorter;
 
-	private final SignalChooserManagerFactory _signalChooserManagerFactory = my(SignalChooserManagerFactory.class);
+	private final SignalChoosers _signalChooserManagerFactory = my(SignalChoosers.class);
 	
 	@SuppressWarnings("unused")
-	private SignalChooserManager<T> _signalChooserManagerToAvoidGc;
+	private Object _refToAvoidGc;
 	private final SignalChooser<T> _chooser;	
 	
 	private final Object _monitor = new Object();
@@ -35,7 +34,7 @@ final class SortedVisitor<T> extends VisitorAdapter<T> implements ListOfSignalsR
 		_input = input;
 		_chooser = chooser;
 		_sorter = new SorterSupport(comparator);
-		_signalChooserManagerToAvoidGc = _signalChooserManagerFactory.newManager(input, this);
+		_refToAvoidGc = _signalChooserManagerFactory.newManager(input, this);
 	}
 	
 	ListSignal<T> output() {

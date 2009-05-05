@@ -1,30 +1,25 @@
 package sneer.pulp.reactive.collections.listfilter.impl;
 
+import static sneer.commons.environments.Environments.my;
 import sneer.hardware.cpu.lang.Predicate;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.collections.ListSignal;
+import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.ReactivePredicate;
+import sneer.pulp.reactive.collections.SetSignal;
 import sneer.pulp.reactive.collections.listfilter.ListFilter;
-import sneer.pulp.reactive.signalchooser.SignalChooser;
 
 class ListFilterImpl implements ListFilter{
 
-	private static final Signal<?>[] EMPTY = new Signal<?>[0];
-	
 	@Override
-	public <T> ListSignal<T> filter(final ListSignal<T> input, final Predicate<T> predicate, final SignalChooser<T> chooser) {
-		return new FilteredVisitor<T>(input, predicate, chooser).output();
-	}
-	
-	@Override
-	public <T> ListSignal<T> filter(final ListSignal<T> input, final Predicate<T> predicate) {
-		return new FilteredVisitor<T>(input, predicate, new SignalChooser<T>(){ @Override public Signal<?>[] signalsToReceiveFrom(T element) {
-			return EMPTY;
-		}}).output();
+	public <T> SetSignal<T> filter(final SetSignal<T> input, final Predicate<T> predicate) {
+		ReactivePredicate<T> reactivePredicate = new ReactivePredicate<T>(){ @Override public Signal<Boolean> evaluate(T value) {
+			return my(Signals.class).constant(predicate.evaluate(value));
+		}};
+		return new FilteredVisitor<T>(input, reactivePredicate).output();	
 	}
 
 	@Override
-	public <T> ListSignal<T> filter(ListSignal<T> input, ReactivePredicate<T> predicate) {
-		throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
+	public <T> SetSignal<T> filter(SetSignal<T> input, ReactivePredicate<T> predicate) {
+		return new FilteredVisitor<T>(input, predicate).output();	
 	}
 }

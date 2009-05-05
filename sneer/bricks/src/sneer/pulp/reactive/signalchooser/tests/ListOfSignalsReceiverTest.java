@@ -15,15 +15,14 @@ import sneer.pulp.reactive.collections.ReactiveCollections;
 import sneer.pulp.reactive.collections.impl.VisitingListReceiver;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
-import sneer.pulp.reactive.signalchooser.SignalChooserManager;
-import sneer.pulp.reactive.signalchooser.SignalChooserManagerFactory;
+import sneer.pulp.reactive.signalchooser.SignalChoosers;
 
 public class ListOfSignalsReceiverTest extends BrickTest {
 
-	private final SignalChooserManagerFactory _factory = my(SignalChooserManagerFactory.class); 
+	private final SignalChoosers _factory = my(SignalChoosers.class); 
 	
 	@SuppressWarnings("unused")
-	private SignalChooserManager<Register<String>> _managerToAvoidGc;
+	private Object _refToAvoidGc;
 	private ListRegister<Register<String>> _listRegister = my(ReactiveCollections.class).newListRegister();
 	private EventRecorder _recorder;
 
@@ -33,7 +32,7 @@ public class ListOfSignalsReceiverTest extends BrickTest {
 		
 		addElement("0");
 		assertEvents("");
-		_managerToAvoidGc = _factory.newManager(_listRegister.output(), newListOfSignalsReceiver(_listRegister.output()));
+		_refToAvoidGc = _factory.newManager(_listRegister.output(), newListOfSignalsReceiver(_listRegister.output()));
 		
 		Register<String> r1 = addElement("1");
 		Register<String> r2 = addElement("2");

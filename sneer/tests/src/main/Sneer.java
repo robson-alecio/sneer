@@ -59,7 +59,7 @@ public class Sneer {
 				snapps.contacts.actions.ContactActionManager.class,
 				sneer.pulp.events.EventNotifiers.class,
 				sneer.pulp.keymanager.KeyManager.class,
-				sneer.pulp.reactive.signalchooser.SignalChooserManagerFactory.class,
+				sneer.pulp.reactive.signalchooser.SignalChoosers.class,
 				snapps.watchme.codec.ImageCodec.class,
 				sneer.pulp.exceptionhandling.ExceptionHandler.class,
 				sneer.pulp.connection.SocketOriginator.class,

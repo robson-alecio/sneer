@@ -10,11 +10,11 @@ import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.collections.impl.VisitingListReceiver;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
-import sneer.pulp.reactive.signalchooser.SignalChooserManagerFactory;
+import sneer.pulp.reactive.signalchooser.SignalChoosers;
 
 class ListSignalModel<T> extends AbstractListModel {
 
-	private final SignalChooserManagerFactory _signalChooserManagerFactory = my(SignalChooserManagerFactory.class);
+	private final SignalChoosers _signalChooserManagerFactory = my(SignalChoosers.class);
 	
 	private final ListSignal<T> _input;
 	

@@ -5,15 +5,15 @@ import static sneer.commons.environments.Environments.my;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
-import sneer.hardware.cpu.lang.Predicate;
+import sneer.commons.lang.Functor;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import sneer.pulp.reactive.collections.ListRegister;
-import sneer.pulp.reactive.collections.ListSignal;
-import sneer.pulp.reactive.collections.ReactiveCollections;
+import sneer.pulp.reactive.collections.ReactivePredicate;
+import sneer.pulp.reactive.collections.SetRegister;
+import sneer.pulp.reactive.collections.SetSignal;
+import sneer.pulp.reactive.collections.impl.SetRegisterImpl;
 import sneer.pulp.reactive.collections.listfilter.ListFilter;
-import sneer.pulp.reactive.signalchooser.SignalChooser;
 
 public class ListFilterTest extends BrickTest {
 	
@@ -25,40 +25,36 @@ public class ListFilterTest extends BrickTest {
 	private final Signal<Integer> _40 = my(Signals.class).constant(40);
 	private final Signal<Integer> _50 = my(Signals.class).constant(50);
 
-	private final SignalChooser<Signal<Integer>> _chooser = new SignalChooser<Signal<Integer>>(){ @Override public Signal<?>[] signalsToReceiveFrom(Signal<Integer> element) {
-		return new Signal<?>[]{element};
-	}};
-	
 	@Test
 	public void addRemoveTest() {
-		ListRegister<Signal<Integer>> src = my(ReactiveCollections.class).newListRegister();
-		ListSignal<Signal<Integer>> filtered = _subject.filter(src.output(), integerFilter(), _chooser);
+		SetRegister<Signal<Integer>> src = new SetRegisterImpl<Signal<Integer>>();
+		SetSignal<Signal<Integer>> filtered = _subject.filter(src.output(), reactivePredicate());
 
 		src.add(_10);
-		src.addAt(0, _20);
 		src.add(_30);
+		src.add(_20);
 		src.add(_40);
 		
 		assertEquals(1 , listSize(filtered));
 		assertEquals(4 , listSize(src.output()));
 		
-		src.addAt(0, _50);
+		src.add(_50);
 		assertEquals(2 , listSize(filtered));
 		assertEquals(5 , listSize(src.output()));
 	
 		src.add(_50);
-		assertEquals(3 , listSize(filtered));		
-		assertEquals(6 , listSize(src.output()));
-		
-		src.remove(_50);
 		assertEquals(2 , listSize(filtered));		
 		assertEquals(5 , listSize(src.output()));
+		
+		src.remove(_50);
+		assertEquals(1 , listSize(filtered));		
+		assertEquals(4 , listSize(src.output()));
 }
 	
 	@Test
 	public void changeValueTest() {
-		ListRegister<Signal<Integer>> src = my(ReactiveCollections.class).newListRegister();
-		ListSignal<Signal<Integer>> filtered = _subject.filter(src.output(), integerFilter(), _chooser);
+		SetRegister<Signal<Integer>> src = new SetRegisterImpl<Signal<Integer>>();
+		SetSignal<Signal<Integer>> filtered = _subject.filter(src.output(), reactivePredicate());
 		
 		Register<Integer> r15 = my(Signals.class).newRegister(15);
 		Register<Integer> r25 = my(Signals.class).newRegister(25);
@@ -73,35 +69,38 @@ public class ListFilterTest extends BrickTest {
 		src.add(s15);
 		src.add(s25);
 		src.add(s25);
-		src.addAt(0, s25);
 		src.add(s35);
+		
 		assertEquals(1 , listSize(filtered));
-		assertEquals(5 , listSize(src.output()));
+		assertEquals(3 , listSize(src.output()));
 		
 		src.add(s45);
 		assertEquals(2 , listSize(filtered));
-		assertEquals(6 , listSize(src.output()));
+		assertEquals(4 , listSize(src.output()));
 		
 		r15.setter().consume(150);
 		assertEquals(3 , listSize(filtered));
-		assertEquals(6 , listSize(src.output()));
+		assertEquals(4 , listSize(src.output()));
 		
 		r25.setter().consume(250);
-		assertEquals(6 , listSize(filtered));
-		assertEquals(6 , listSize(src.output()));
+		assertEquals(4 , listSize(filtered));
+		assertEquals(4 , listSize(src.output()));
 
 		r25.setter().consume(25);
 		assertEquals(3 , listSize(filtered));
-		assertEquals(6 , listSize(src.output()));
+		assertEquals(4 , listSize(src.output()));
 	}
 	
-	private Predicate<Signal<Integer>> integerFilter() {
-		return new Predicate<Signal<Integer>>() {  @Override public boolean evaluate(Signal<Integer> element) {
-			return element.currentValue()>30;
-		}};
+	private ReactivePredicate<Signal<Integer>> reactivePredicate() {
+		return new ReactivePredicate<Signal<Integer>>() {
+			@Override	 public Signal<Boolean> evaluate(Signal<Integer> signalValue) {
+				return my(Signals.class).adapt(signalValue, new Functor<Integer, Boolean>(){
+					@Override public Boolean evaluate(Integer integerValue) {
+						return integerValue > 30;
+		}});}};
 	}	
 	
-	private int listSize(ListSignal<Signal<Integer>> sortedList) {
+	private int listSize(SetSignal<Signal<Integer>> sortedList) {
 		return sortedList.size().currentValue().intValue();
 	}
 	

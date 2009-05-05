@@ -1,0 +1,5 @@
+<synth>
+
+	<defaultsProperty key="ShoutUtils.dateFormat" type="string" value="HH:mm:ss"/>
+
+</synth>

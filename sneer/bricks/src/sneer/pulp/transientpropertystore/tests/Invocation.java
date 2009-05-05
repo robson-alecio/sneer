@@ -8,8 +8,6 @@ import java.util.Date;
 
 import org.prevayler.TransactionWithQuery;
 
-import sneer.pulp.lang.FrozenTime;
-
 
 class Invocation implements TransactionWithQuery {
 
@@ -25,7 +23,6 @@ class Invocation implements TransactionWithQuery {
 
 
 	public Object executeAndQuery(Object stateMachineIgnored, Date date) throws Exception {
-		my(FrozenTime.class).freezeForCurrentThread(date.getTime());
 		try {
 			return invoke(brickImpl(), _method, _args);
 		} catch (Throwable e) {

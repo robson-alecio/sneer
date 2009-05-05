@@ -1,7 +1,5 @@
 package snapps.wind.impl.bubble;
 
-import static sneer.commons.environments.Environments.my;
-
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +8,6 @@ import org.prevayler.TransactionWithQuery;
 
 import sneer.hardware.cpu.exceptions.IllegalParameter;
 import sneer.hardware.cpu.lang.PickyConsumer;
-import sneer.pulp.lang.FrozenTime;
 
 class Consumption implements TransactionWithQuery {
 
@@ -25,7 +22,6 @@ class Consumption implements TransactionWithQuery {
 	private final Object _valueObject;
 
 	public Object executeAndQuery(Object stateMachine, Date date) throws IllegalParameter {
-		my(FrozenTime.class).freezeForCurrentThread(date.getTime());
 		PickyConsumer<Object> consumer = navigateToConsumer(stateMachine);
 		consumer.consume(_valueObject);
 		return null;

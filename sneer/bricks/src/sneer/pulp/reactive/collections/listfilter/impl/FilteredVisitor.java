@@ -41,11 +41,7 @@ final class FilteredVisitor<T> extends VisitorAdapter<T> implements ListOfSignal
 	@Override public void elementInserted(int index, T element) { _filterSupport.add(element);}
 	@Override public void elementRemoved(int index, T element) {_filterSupport.remove(element);}
 	@Override public void elementReplaced(int index, T oldElement, T newElement) {_filterSupport.replace(oldElement, newElement);}
-
-	@Override
-	public void elementSignalChanged(int index, T element) {
-		//Implement
-	}
+	@Override public void elementSignalChanged(int index, T element) { _filterSupport.signalChanged(element);}
 
 	@Override
 	public SignalChooser<T> signalChooser() {
@@ -58,6 +54,7 @@ final class FilteredVisitor<T> extends VisitorAdapter<T> implements ListOfSignal
 	
 	private class FilterSupport{
 		private final ListRegister<T> _filteredList = my(ReactiveCollections.class).newListRegister();
+		
 		private final Consumer<ListChange<T>> _receiverAvoidGc = new Consumer<ListChange<T>>(){@Override public void consume(ListChange<T> change) {
 			change.accept(FilteredVisitor.this);
 		}};
@@ -69,6 +66,15 @@ final class FilteredVisitor<T> extends VisitorAdapter<T> implements ListOfSignal
 			}
 		}		
 		
+		public void signalChanged(T element) {
+			synchronized (_monitor) {
+				if(_filter.select(element)) 
+					_filteredList.add(element);
+				else 
+					_filteredList.remove(element);
+			}			
+		}
+
 		private void initFilteredList() {
 			for (T element : _input)  
 				add(element);		
@@ -76,7 +82,8 @@ final class FilteredVisitor<T> extends VisitorAdapter<T> implements ListOfSignal
 
 		public void add(T element) {
 			synchronized (_monitor) {
-				if(_filter.select(element))	_filteredList.add(element);
+				if(_filter.select(element))
+					_filteredList.add(element);
 			}
 		}
 

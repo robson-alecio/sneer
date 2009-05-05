@@ -11,12 +11,12 @@ class ListFilterImpl implements ListFilter{
 	private static final Signal<?>[] EMPTY = new Signal<?>[0];
 	
 	@Override
-	public <T> ListSignal<T> sort(final ListSignal<T> input, final Filter<T> filter, final SignalChooser<T> chooser) {
+	public <T> ListSignal<T> filter(final ListSignal<T> input, final Filter<T> filter, final SignalChooser<T> chooser) {
 		return new FilteredVisitor<T>(input, filter, chooser).output();
 	}
 	
 	@Override
-	public <T> ListSignal<T> sort(final ListSignal<T> input, final Filter<T> filter) {
+	public <T> ListSignal<T> filter(final ListSignal<T> input, final Filter<T> filter) {
 		return new FilteredVisitor<T>(input, filter, new SignalChooser<T>(){ @Override public Signal<?>[] signalsToReceiveFrom(T element) {
 			return EMPTY;
 		}}).output();

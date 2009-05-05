@@ -7,7 +7,7 @@ import sneer.pulp.reactive.signalchooser.SignalChooser;
 @Brick
 public interface ListFilter {
 
-	<T> ListSignal<T> sort(ListSignal<T> input, Filter<T> filter);
-	<T> ListSignal<T> sort(ListSignal<T> input, Filter<T> filter, SignalChooser<T> chooser);
+	<T> ListSignal<T> filter(ListSignal<T> input, Filter<T> filter);
+	<T> ListSignal<T> filter(ListSignal<T> input, Filter<T> filter, SignalChooser<T> chooser);
 
 }

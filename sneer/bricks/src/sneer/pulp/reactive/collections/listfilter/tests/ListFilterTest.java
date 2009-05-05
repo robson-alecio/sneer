@@ -5,19 +5,19 @@ import static sneer.commons.environments.Environments.my;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
+import sneer.hardware.cpu.lang.Predicate;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.collections.ReactiveCollections;
-import sneer.pulp.reactive.collections.listfilter.Filter;
 import sneer.pulp.reactive.collections.listfilter.ListFilter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 
 public class ListFilterTest extends BrickTest {
 	
-	private final ListFilter _filter = my(ListFilter.class);
+	private final ListFilter _subject = my(ListFilter.class);
 
 	private final Signal<Integer> _10 = my(Signals.class).constant(10);
 	private final Signal<Integer> _20 = my(Signals.class).constant(20);
@@ -32,7 +32,7 @@ public class ListFilterTest extends BrickTest {
 	@Test
 	public void addRemoveTest() {
 		ListRegister<Signal<Integer>> src = my(ReactiveCollections.class).newListRegister();
-		ListSignal<Signal<Integer>> filtered = _filter.filter(src.output(), integerFilter(), _chooser);
+		ListSignal<Signal<Integer>> filtered = _subject.filter(src.output(), integerFilter(), _chooser);
 
 		src.add(_10);
 		src.addAt(0, _20);
@@ -49,12 +49,16 @@ public class ListFilterTest extends BrickTest {
 		src.add(_50);
 		assertEquals(3 , listSize(filtered));		
 		assertEquals(6 , listSize(src.output()));
+		
+		src.remove(_50);
+		assertEquals(2 , listSize(filtered));		
+		assertEquals(5 , listSize(src.output()));
 }
 	
 	@Test
 	public void changeValueTest() {
 		ListRegister<Signal<Integer>> src = my(ReactiveCollections.class).newListRegister();
-		ListSignal<Signal<Integer>> filtered = _filter.filter(src.output(), integerFilter(), _chooser);
+		ListSignal<Signal<Integer>> filtered = _subject.filter(src.output(), integerFilter(), _chooser);
 		
 		Register<Integer> r15 = my(Signals.class).newRegister(15);
 		Register<Integer> r25 = my(Signals.class).newRegister(25);
@@ -91,8 +95,8 @@ public class ListFilterTest extends BrickTest {
 		assertEquals(6 , listSize(src.output()));
 	}
 	
-	private Filter<Signal<Integer>> integerFilter() {
-		return new Filter<Signal<Integer>>() {  @Override public boolean select(Signal<Integer> element) {
+	private Predicate<Signal<Integer>> integerFilter() {
+		return new Predicate<Signal<Integer>>() {  @Override public boolean evaluate(Signal<Integer> element) {
 			return element.currentValue()>30;
 		}};
 	}	

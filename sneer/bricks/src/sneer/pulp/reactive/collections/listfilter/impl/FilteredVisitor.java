@@ -2,11 +2,11 @@ package sneer.pulp.reactive.collections.listfilter.impl;
 
 import static sneer.commons.environments.Environments.my;
 import sneer.hardware.cpu.lang.Consumer;
+import sneer.hardware.cpu.lang.Predicate;
 import sneer.pulp.reactive.collections.ListChange;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.collections.ReactiveCollections;
-import sneer.pulp.reactive.collections.listfilter.Filter;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.pulp.reactive.signalchooser.SignalChooserManager;
@@ -17,7 +17,7 @@ import wheel.reactive.lists.VisitorAdapter;
 final class FilteredVisitor<T> extends VisitorAdapter<T> implements ListOfSignalsReceiver<T>{
 
 	private final ListSignal<T> _input;
-	private final Filter<T> _filter;	
+	private final Predicate<T> _predicate;	
 	private final SignalChooser<T> _chooser;
 
 	private final SignalChooserManagerFactory _signalChooserManagerFactory = my(SignalChooserManagerFactory.class);
@@ -29,9 +29,9 @@ final class FilteredVisitor<T> extends VisitorAdapter<T> implements ListOfSignal
 	
 	private FilterSupport _filterSupport;
 	
-	FilteredVisitor(ListSignal<T> input, Filter<T> filter, SignalChooser<T> chooser) {
+	FilteredVisitor(ListSignal<T> input, Predicate<T> filter, SignalChooser<T> chooser) {
 		_input = input;
-		_filter = filter;
+		_predicate = filter;
 		_chooser = chooser;
 		_signalChooserManagerToAvoidGc = _signalChooserManagerFactory.newManager(input, this);
 		_filterSupport = new FilterSupport();
@@ -68,7 +68,7 @@ final class FilteredVisitor<T> extends VisitorAdapter<T> implements ListOfSignal
 		
 		public void signalChanged(T element) {
 			synchronized (_monitor) {
-				if(_filter.select(element)) 
+				if(_predicate.evaluate(element)) 
 					_filteredList.add(element);
 				else 
 					_filteredList.remove(element);
@@ -82,7 +82,7 @@ final class FilteredVisitor<T> extends VisitorAdapter<T> implements ListOfSignal
 
 		public void add(T element) {
 			synchronized (_monitor) {
-				if(_filter.select(element))
+				if(_predicate.evaluate(element))
 					_filteredList.add(element);
 			}
 		}
@@ -90,7 +90,7 @@ final class FilteredVisitor<T> extends VisitorAdapter<T> implements ListOfSignal
 		public void replace(T oldElement, T newElement) {
 			synchronized (_monitor) {
 				_filteredList.remove(oldElement);
-				if(_filter.select(newElement))	_filteredList.add(newElement);
+				if(_predicate.evaluate(newElement))	_filteredList.add(newElement);
 			}
 		}
 

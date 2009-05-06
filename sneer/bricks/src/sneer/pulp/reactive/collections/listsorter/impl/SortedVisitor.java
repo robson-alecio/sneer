@@ -10,7 +10,7 @@ import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.collections.ListChange;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
-import sneer.pulp.reactive.collections.ReactiveCollections;
+import sneer.pulp.reactive.collections.CollectionSignals;
 import sneer.pulp.reactive.collections.ListChange.Visitor;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
@@ -36,7 +36,7 @@ final class SortedVisitor<T> implements Visitor<T>, ListOfSignalsReceiver<T>{
 		_input = input;
 		_chooser = chooser;
 		_comparator = comparator;
-		_sorted = my(ReactiveCollections.class).newListRegister();
+		_sorted = my(CollectionSignals.class).newListRegister();
 		_receiverAvoidGc = new Consumer<ListChange<T>>(){@Override public void consume(ListChange<T> change) {
 			change.accept(SortedVisitor.this);
 		}};

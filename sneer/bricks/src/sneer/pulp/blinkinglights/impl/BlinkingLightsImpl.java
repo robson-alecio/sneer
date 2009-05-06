@@ -8,13 +8,13 @@ import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
-import sneer.pulp.reactive.collections.ReactiveCollections;
+import sneer.pulp.reactive.collections.CollectionSignals;
 
 class BlinkingLightsImpl implements BlinkingLights {
 	
 	private final Clock _clock = my(Clock.class);
 	
-	private final ListRegister<Light> _lights = my(ReactiveCollections.class).newListRegister();
+	private final ListRegister<Light> _lights = my(CollectionSignals.class).newListRegister();
 	
 	@Override
 	public Light turnOn(LightType type, String caption, String helpMessage, Throwable t, int timeout) {

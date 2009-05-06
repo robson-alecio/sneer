@@ -29,7 +29,7 @@ import sneer.pulp.clock.Clock;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.reactive.collections.ListRegister;
-import sneer.pulp.reactive.collections.ReactiveCollections;
+import sneer.pulp.reactive.collections.CollectionSignals;
 import sneer.pulp.threads.Stepper;
 import sneer.pulp.threads.Threads;
 import sneer.pulp.tuples.TupleSpace;
@@ -111,7 +111,7 @@ class TupleSpaceImpl implements TupleSpace {
 
 	
 	TupleSpaceImpl() {
-		_keptTuples = Bubble.wrapStateMachine(prevayler(my(ReactiveCollections.class).newListRegister()));
+		_keptTuples = Bubble.wrapStateMachine(prevayler(my(CollectionSignals.class).newListRegister()));
 	}
 
 

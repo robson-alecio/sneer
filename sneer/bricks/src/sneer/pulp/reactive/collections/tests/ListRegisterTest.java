@@ -10,13 +10,13 @@ import sneer.brickness.testsupport.BrickTest;
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.ListRegister;
-import sneer.pulp.reactive.collections.ReactiveCollections;
+import sneer.pulp.reactive.collections.CollectionSignals;
 
 public class ListRegisterTest extends BrickTest {
 
 	@Test
 	public void testSize() {
-		final ListRegister<String> _subject = my(ReactiveCollections.class).newListRegister();
+		final ListRegister<String> _subject = my(CollectionSignals.class).newListRegister();
 		final ArrayList<Integer> _sizes = new ArrayList<Integer>();
 
 		my(Signals.class).receive(this, new Consumer<Integer>() {@Override public void consume(Integer value) {

@@ -16,7 +16,7 @@ import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.ListChange;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
-import sneer.pulp.reactive.collections.ReactiveCollections;
+import sneer.pulp.reactive.collections.CollectionSignals;
 import sneer.pulp.reactive.collections.ListChange.Visitor;
 import sneer.pulp.reactive.collections.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
@@ -59,7 +59,7 @@ public class ListSorterTest extends BrickTest {
 			one(_visitor).elementAdded(1, _10);
 		}});		
 		
-		ListRegister<Signal<Integer>> src = my(ReactiveCollections.class).newListRegister();
+		ListRegister<Signal<Integer>> src = my(CollectionSignals.class).newListRegister();
 	
 		src.add(_60);
 		src.remove(_60);
@@ -86,7 +86,7 @@ public class ListSorterTest extends BrickTest {
 	
 	@Test
 	public void removeTest() {
-		ListRegister<Signal<Integer>> src = my(ReactiveCollections.class).newListRegister();
+		ListRegister<Signal<Integer>> src = my(CollectionSignals.class).newListRegister();
 
 		src.add(_20);
 		src.add(_10);
@@ -117,7 +117,7 @@ public class ListSorterTest extends BrickTest {
 	@Test
 	public void replaceTest() {
 		
-		ListRegister<Signal<Integer>> src = my(ReactiveCollections.class).newListRegister();
+		ListRegister<Signal<Integer>> src = my(CollectionSignals.class).newListRegister();
 
 		src.add(_30);
 		src.add(_30);
@@ -144,7 +144,7 @@ public class ListSorterTest extends BrickTest {
 	@Test
 	public void addTest() {
 		
-		ListRegister<Signal<Integer>> src = my(ReactiveCollections.class).newListRegister();
+		ListRegister<Signal<Integer>> src = my(CollectionSignals.class).newListRegister();
 
 		src.add(_20);
 		src.add(_10);
@@ -177,7 +177,7 @@ public class ListSorterTest extends BrickTest {
 	
 	@Test
 	public void signalChooserTest() {
-		ListRegister<Signal<Integer>> src = my(ReactiveCollections.class).newListRegister();
+		ListRegister<Signal<Integer>> src = my(CollectionSignals.class).newListRegister();
 
 		Register<Integer> r15 = my(Signals.class).newRegister(15);
 		Register<Integer> r25 = my(Signals.class).newRegister(25);

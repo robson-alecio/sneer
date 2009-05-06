@@ -35,7 +35,7 @@ public class Sneer {
 				sneer.pulp.events.EventNotifiers.class,
 				sneer.skin.image.ImageFactory.class,
 				sneer.pulp.reactive.Signals.class,
-				sneer.pulp.reactive.collections.ReactiveCollections.class,
+				sneer.pulp.reactive.collections.CollectionSignals.class,
 				sneer.pulp.logging.Logger.class,
 				sneer.pulp.internetaddresskeeper.InternetAddressKeeper.class,
 				sneer.pulp.crypto.Crypto.class,

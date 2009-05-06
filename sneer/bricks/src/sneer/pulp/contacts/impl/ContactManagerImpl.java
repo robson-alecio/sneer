@@ -10,11 +10,11 @@ import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
-import sneer.pulp.reactive.collections.ReactiveCollections;
+import sneer.pulp.reactive.collections.CollectionSignals;
 
 class ContactManagerImpl implements ContactManager {
     
-    private final ListRegister<Contact> _contacts = my(ReactiveCollections.class).newListRegister();
+    private final ListRegister<Contact> _contacts = my(CollectionSignals.class).newListRegister();
 
 	@Override
 	synchronized public Contact addContact(String nickname) throws IllegalParameter {

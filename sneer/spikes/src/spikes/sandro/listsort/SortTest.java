@@ -22,7 +22,7 @@ import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
-import sneer.pulp.reactive.collections.ReactiveCollections;
+import sneer.pulp.reactive.collections.CollectionSignals;
 import sneer.pulp.reactive.collections.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.widgets.reactive.LabelProvider;
@@ -50,7 +50,7 @@ public class SortTest {
 
 	private static void start() throws Exception {
 		
-		ListRegister<SortTestElement> source = my(ReactiveCollections.class).newListRegister();
+		ListRegister<SortTestElement> source = my(CollectionSignals.class).newListRegister();
 		
 		ListSorter sorter = my(ListSorter.class);
 		

@@ -22,7 +22,7 @@ import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.logging.Logger;
 import sneer.pulp.reactive.collections.MapRegister;
 import sneer.pulp.reactive.collections.MapSignal;
-import sneer.pulp.reactive.collections.ReactiveCollections;
+import sneer.pulp.reactive.collections.CollectionSignals;
 
 class BrickManagerImpl implements BrickManager {
 
@@ -32,7 +32,7 @@ class BrickManagerImpl implements BrickManager {
 	
 	private final KeyManager _keyManager = my(KeyManager.class);
 	
-	private final MapRegister<String, BrickFile> _bricksByName = my(ReactiveCollections.class).newMapRegister();
+	private final MapRegister<String, BrickFile> _bricksByName = my(CollectionSignals.class).newMapRegister();
 
 	@Override
 	public void install(BrickBundle bundle) {

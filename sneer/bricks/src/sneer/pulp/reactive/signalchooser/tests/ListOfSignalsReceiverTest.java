@@ -11,7 +11,7 @@ import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
-import sneer.pulp.reactive.collections.ReactiveCollections;
+import sneer.pulp.reactive.collections.CollectionSignals;
 import sneer.pulp.reactive.collections.impl.VisitingListReceiver;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
@@ -23,7 +23,7 @@ public class ListOfSignalsReceiverTest extends BrickTest {
 	
 	@SuppressWarnings("unused")
 	private Object _refToAvoidGc;
-	private ListRegister<Register<String>> _listRegister = my(ReactiveCollections.class).newListRegister();
+	private ListRegister<Register<String>> _listRegister = my(CollectionSignals.class).newListRegister();
 	private EventRecorder _recorder;
 
 	@Test

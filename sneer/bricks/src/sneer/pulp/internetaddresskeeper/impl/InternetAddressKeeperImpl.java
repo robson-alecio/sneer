@@ -6,12 +6,12 @@ import sneer.pulp.internetaddresskeeper.InternetAddress;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
-import sneer.pulp.reactive.collections.ReactiveCollections;
+import sneer.pulp.reactive.collections.CollectionSignals;
 
 class InternetAddressKeeperImpl implements InternetAddressKeeper {
 
 	private ListRegister<InternetAddress> _addresses = 
-		my(ReactiveCollections.class).newListRegister();
+		my(CollectionSignals.class).newListRegister();
 	
 	@Override
 	public void remove(InternetAddress address) {

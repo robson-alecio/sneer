@@ -10,6 +10,7 @@ import org.junit.Test;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.Contribute;
 import sneer.commons.lang.Pair;
+import sneer.hardware.io.codecs.base64.Base64;
 import sneer.pulp.dyndns.updater.BadAuthException;
 import sneer.pulp.dyndns.updater.InvalidHostException;
 import sneer.pulp.dyndns.updater.RedundantUpdateException;
@@ -18,7 +19,6 @@ import sneer.pulp.dyndns.updater.UnexpectedResponseException;
 import sneer.pulp.dyndns.updater.Updater;
 import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.httpclient.HttpClient;
-import wheel.io.Base64;
 
 public class UpdaterTest extends BrickTest {
 
@@ -105,6 +105,6 @@ public class UpdaterTest extends BrickTest {
 	}
 	
 	public static String encode(String value) {
-		return Base64.encode(value);
+		return my(Base64.class).encode(value);
 	}
 }

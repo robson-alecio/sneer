@@ -5,6 +5,7 @@ import static sneer.commons.environments.Environments.my;
 import java.io.IOException;
 
 import sneer.commons.lang.Pair;
+import sneer.hardware.io.codecs.base64.Base64;
 import sneer.pulp.dyndns.updater.BadAuthException;
 import sneer.pulp.dyndns.updater.InvalidHostException;
 import sneer.pulp.dyndns.updater.RedundantUpdateException;
@@ -13,7 +14,6 @@ import sneer.pulp.dyndns.updater.UnexpectedResponseException;
 import sneer.pulp.dyndns.updater.Updater;
 import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.httpclient.HttpClient;
-import wheel.io.Base64;
 import sneer.pulp.logging.Logger;
 
 class UpdaterImpl implements Updater {
@@ -64,7 +64,7 @@ class UpdaterImpl implements Updater {
 	}
 
 	private String encode(final String text) {
-		return Base64.encode(text);
+		return my(Base64.class).encode(text);
 	}
 
 }

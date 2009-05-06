@@ -1,7 +1,6 @@
 package wheel.reactive.tests;
 
 import static sneer.commons.environments.Environments.my;
-import static wheel.lang.Types.cast;
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.events.receivers.impl.Solder;
 import sneer.pulp.reactive.Register;
@@ -10,10 +9,10 @@ import sneer.pulp.reactive.Signals;
 
 public class LoopbackTester {
 
-	public LoopbackTester(Signal<?> input, Consumer<?> output) {
-		_output = cast(output);
+	public LoopbackTester(Signal<Object> input, Consumer<Object> output) {
+		_output = output;
 				
-		Signal<Object> castedInput = cast(input);
+		Signal<Object> castedInput = input;
 
 		_referenceToAvoidGc1 = new Solder<Object>(castedInput, _inputValue1.setter());
 		_referenceToAvoidGc2 = new Solder<Object>(castedInput, _inputValue2.setter());

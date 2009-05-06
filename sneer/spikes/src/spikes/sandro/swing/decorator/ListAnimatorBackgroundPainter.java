@@ -1,7 +1,5 @@
 package spikes.sandro.swing.decorator;
 
-import static wheel.lang.Types.cast;
-
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Graphics;
@@ -84,7 +82,7 @@ public class ListAnimatorBackgroundPainter extends AbstractComponentDecorator {
 		}
 	}
 
-	private List<Container> findOpaque(Component root) {
+	private List<? extends Container> findOpaque(Component root) {
 		List<Container> list = new ArrayList<Container>();
 		if (root.isOpaque() && root instanceof JComponent) {
 			list.add((Container) root);
@@ -99,7 +97,7 @@ public class ListAnimatorBackgroundPainter extends AbstractComponentDecorator {
 		return list;
 	}
 
-	private List<Container> findDoubleBuffered(Component root) {
+	private List<? extends Container> findDoubleBuffered(Component root) {
 		List<Container> list = new ArrayList<Container>();
 		if (root.isDoubleBuffered() && root instanceof JComponent) {
 			list.add((Container) root);
@@ -115,8 +113,8 @@ public class ListAnimatorBackgroundPainter extends AbstractComponentDecorator {
 	}
 
 	private void paintForeground(Graphics g, JComponent jc) {
-		List<JComponent> opaque = cast(findOpaque(jc));
-		List<JComponent> db = cast(findDoubleBuffered(jc));
+		List<JComponent> opaque = (List<JComponent>) findOpaque(jc);
+		List<JComponent> db = (List<JComponent>) findDoubleBuffered(jc);
 		jc.paint(g);
 		for (Iterator<JComponent> i = opaque.iterator(); i.hasNext();) {
 			i.next().setOpaque(true);
@@ -155,19 +153,19 @@ public class ListAnimatorBackgroundPainter extends AbstractComponentDecorator {
 		g.setClip(area);
 
 		// Paint background for that area
-		for (Iterator<JComponent> i = cast(components.iterator()); i.hasNext();) {
+		for (Iterator<JComponent> i = components.iterator(); i.hasNext();) {
 			JComponent c = i.next();
 			paintBackground(g, lp, c);
 		}
 
 		// Paint the bg decorators
-		for (Iterator<ListAnimatorPainter> i = cast(painters.iterator()); i.hasNext();) {
+		for (Iterator<ListAnimatorPainter> i = painters.iterator(); i.hasNext();) {
 			ListAnimatorPainter p = i.next();
 			p.paint(g.create(p.getX(), p.getY(), p.getWidth(), p.getHeight()));
 		}
 
 		// Paint foreground for the area
-		for (Iterator<JComponent> i = cast(components.iterator()); i.hasNext();) {
+		for (Iterator<JComponent> i = components.iterator(); i.hasNext();) {
 			JComponent c = i.next();
 			paintForeground(g.create(c.getX(), c.getY(), c.getWidth(), c
 					.getHeight()), c);

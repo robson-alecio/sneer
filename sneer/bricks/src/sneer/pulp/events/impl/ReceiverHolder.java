@@ -1,6 +1,5 @@
 package sneer.pulp.events.impl;
 
-import wheel.lang.Types;
 
 class ReceiverHolder<T> extends java.lang.ref.WeakReference<T> {
 	
@@ -22,7 +21,7 @@ class ReceiverHolder<T> extends java.lang.ref.WeakReference<T> {
 	
 	@Override
 	public boolean equals(Object obj) {
-		final ReceiverHolder<T> holder = Types.cast(obj);
+		final ReceiverHolder<T> holder = (ReceiverHolder<T>) obj;
 		return holder.get() == get();
 	}
 	

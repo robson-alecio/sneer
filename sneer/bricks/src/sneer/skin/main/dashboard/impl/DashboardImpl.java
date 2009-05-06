@@ -40,10 +40,10 @@ class DashboardImpl implements Dashboard {
 	private final Synth _synth = my(Synth.class);
 	
 	{ _synth.load(this.getClass()); }
-	private final int WIDTH = synthValue("Dashboard.WIDTH");
-	private final int OFFSET = synthValue("Dashboard.OFFSET");
-	private final int HORIZONTAL_MARGIN = synthValue("Dashboard.HORIZONTAL_MARGIN");  
-	private final int TIMEOUT_FOR_GUI_EVENTS = synthValue("Dashboard.TIMEOUT_FOR_GUI_EVENTS");
+	private final int WIDTH = (Integer) synthValue("Dashboard.WIDTH");
+	private final int OFFSET = (Integer) synthValue("Dashboard.OFFSET");
+	private final int HORIZONTAL_MARGIN = (Integer) synthValue("Dashboard.HORIZONTAL_MARGIN");  
+	private final int TIMEOUT_FOR_GUI_EVENTS = (Integer) synthValue("Dashboard.TIMEOUT_FOR_GUI_EVENTS");
 	
 	private final  MainMenu _mainMenu = my(MainMenu.class);
 	private final DashboardPanel _dashboardPanel = new DashboardPanel();

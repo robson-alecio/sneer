@@ -1,6 +1,6 @@
-package wheel.lang.exceptions;
+package sneer.hardware.cpu.timebox.impl;
 
-public class TimeIsUp extends Error {
+class TimeIsUp extends Error {
 	
 	public TimeIsUp(StackTraceElement[] stackTrace, String message) {
 		super(message);

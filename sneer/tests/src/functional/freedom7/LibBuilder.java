@@ -11,7 +11,6 @@ import sneer.software.compilers.java.Result;
 import wheel.io.JarBuilder;
 import wheel.io.codegeneration.MetaClass;
 import wheel.lang.Collections;
-import wheel.lang.Types;
 
 public class LibBuilder {
 
@@ -45,7 +44,7 @@ public class LibBuilder {
 	}
 
 	private Iterator<File> iterateSourceFiles() {
-		return Types.cast(FileUtils.iterateFiles(_srcFolder, new String[] { "java" }, true));
+		return FileUtils.iterateFiles(_srcFolder, new String[] { "java" }, true);
 	}
 
 }

@@ -12,7 +12,6 @@ import sneer.pulp.events.EventNotifier;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
 import sneer.pulp.logging.Logger;
-import wheel.lang.Types;
 
 class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 
@@ -61,7 +60,7 @@ class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 
 	@Override
 	public void removeReceiver(Object receiver) {
-		final Consumer<? super T> typedReceiver = Types.cast(receiver);
+		final Consumer<? super T> typedReceiver = (Consumer<? super T>) receiver;
 		boolean wasThere = _receivers.remove(holderFor(typedReceiver)); //Optimize consider a Set for when there is a great number of receivers.
 		assert wasThere;
 	}

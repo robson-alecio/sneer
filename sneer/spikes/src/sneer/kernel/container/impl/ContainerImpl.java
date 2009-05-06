@@ -15,7 +15,6 @@ import sneer.kernel.container.ContainerOld;
 import sneer.kernel.container.SneerConfig;
 import sneer.kernel.container.impl.classloader.EclipseClassLoaderFactory;
 import sneer.skin.GuiBrick;
-import wheel.lang.Types;
 
 public class ContainerImpl implements ContainerOld {
 	
@@ -79,7 +78,7 @@ public class ContainerImpl implements ContainerOld {
 		if (null == _apiClassLoader) {
 			_apiClassLoader = factory().newApiClassLoader();
 		}
-		return Types.cast(_apiClassLoader.loadClass(brickName));
+		return _apiClassLoader.loadClass(brickName);
 	}
 
 	@Override

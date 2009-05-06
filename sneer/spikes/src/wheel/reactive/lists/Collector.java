@@ -31,11 +31,6 @@ public class Collector<IN, OUT> {
 		}
 
 		@Override
-		public void elementInserted(int index, IN value) {
-			throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
-		}
-
-		@Override
 		public void elementMoved(int oldIndex, int newIndex, IN element) {
 			throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
 		}

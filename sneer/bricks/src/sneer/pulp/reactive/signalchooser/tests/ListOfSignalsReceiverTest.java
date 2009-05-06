@@ -110,9 +110,6 @@ public class ListOfSignalsReceiverTest extends BrickTest {
 		@Override public void elementAdded(int index, Register<String> element) { 
 			_recorder.record("Added", index, value(element)); }
 		
-		@Override public void elementInserted(int index, Register<String> element) {
-			_recorder.record("Inserted", index, value(element)); }
-		
 		@Override public void elementMoved(int oldIndex, int newIndex, Register<String> element) { 
 			_recorder.record("Moved", oldIndex, newIndex, value(element)); }
 		

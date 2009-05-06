@@ -104,7 +104,6 @@ class SignalChooserManagerImpl<T> {
 		
 		@Override public void elementMoved(int oldIndex, int newIndex, T element) {SignalChooserManagerImpl.this.elementMoved(oldIndex, newIndex, element);}
 		@Override public void elementAdded(int index, T element)   {	 SignalChooserManagerImpl.this.elementAdded(index, element); }
-		@Override public void elementInserted(int index, T element) { SignalChooserManagerImpl.this.elementAdded(index, element);	}
 		@Override public void elementRemoved(int index, T element) { SignalChooserManagerImpl.this.elementRemoved(index, element); }
 
 		@Override

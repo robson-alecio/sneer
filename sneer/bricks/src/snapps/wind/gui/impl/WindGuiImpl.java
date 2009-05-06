@@ -120,13 +120,6 @@ class WindGuiImpl implements WindGui {
 				@Override public void elementRemoved(int index, Shout element) { ShoutPainter.repaintAllShoults(_wind.shoutsHeard(), _shoutsList); }
 				@Override public void elementMoved(int oldIndex, int newIndex, Shout element) { ShoutPainter.repaintAllShoults(_wind.shoutsHeard(), _shoutsList); }
 				@Override public void elementReplaced(int index, Shout oldElement, Shout newElement) { ShoutPainter.repaintAllShoults(_wind.shoutsHeard(), _shoutsList); 	}
-				@Override public void elementInserted(int index, Shout shout) {
-					if(_wind.shoutsHeard().currentSize()<index+1) {
-						ShoutPainter.repaintAllShoults(_wind.shoutsHeard(), _shoutsList);
-						return;
-					}
-					ShoutPainter.appendShout(shout, _shoutsList);
-				}
 		});}};
 		my(Signals.class).receive(this, _windConsumer, _wind.shoutsHeard());
 		_autoscrollSupport.initPosChangeReceiver();
@@ -180,12 +173,7 @@ class WindGuiImpl implements WindGui {
 				}
 				@Override protected void elementAdded(Shout newElement) { fire(); }
 				@Override protected void elementPresent(Shout element) { fire(); }
-				@Override protected void elementRemoved(Shout element) { fire(); }
-				
-				@Override
-				public void elementInserted(int index, Shout value) {
-					throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
-				}};
+				@Override protected void elementRemoved(Shout element) { fire(); }};
 		}
 		
 		private void initPosChangeReceiver() {

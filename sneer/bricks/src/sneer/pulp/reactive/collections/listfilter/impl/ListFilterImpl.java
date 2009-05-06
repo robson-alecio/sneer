@@ -2,9 +2,9 @@ package sneer.pulp.reactive.collections.listfilter.impl;
 
 import static sneer.commons.environments.Environments.my;
 import sneer.hardware.cpu.lang.Predicate;
+import sneer.pulp.reactive.ReactivePredicate;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import sneer.pulp.reactive.collections.ReactivePredicate;
 import sneer.pulp.reactive.collections.SetSignal;
 import sneer.pulp.reactive.collections.listfilter.ListFilter;
 

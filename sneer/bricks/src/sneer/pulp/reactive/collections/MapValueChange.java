@@ -1,6 +1,6 @@
 package sneer.pulp.reactive.collections;
 
-public interface MapValueChange<K,V> {
+public interface MapValueChange<K,V> extends CollectionChange<V>{
 	
 	void accept(Visitor<K,V> visitor);
 	

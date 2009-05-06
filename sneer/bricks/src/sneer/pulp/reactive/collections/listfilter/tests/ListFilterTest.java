@@ -6,10 +6,10 @@ import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
 import sneer.commons.lang.Functor;
+import sneer.pulp.reactive.ReactivePredicate;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import sneer.pulp.reactive.collections.ReactivePredicate;
 import sneer.pulp.reactive.collections.SetRegister;
 import sneer.pulp.reactive.collections.SetSignal;
 import sneer.pulp.reactive.collections.impl.SetRegisterImpl;

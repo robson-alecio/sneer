@@ -2,7 +2,7 @@ package sneer.pulp.reactive.collections.listfilter;
 
 import sneer.brickness.Brick;
 import sneer.hardware.cpu.lang.Predicate;
-import sneer.pulp.reactive.collections.ReactivePredicate;
+import sneer.pulp.reactive.ReactivePredicate;
 import sneer.pulp.reactive.collections.SetSignal;
 
 @Brick

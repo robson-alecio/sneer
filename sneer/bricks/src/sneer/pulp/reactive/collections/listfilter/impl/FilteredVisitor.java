@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import sneer.hardware.cpu.lang.Consumer;
-import sneer.pulp.reactive.collections.ReactivePredicate;
+import sneer.pulp.reactive.ReactivePredicate;
 import sneer.pulp.reactive.collections.SetChange;
 import sneer.pulp.reactive.collections.SetRegister;
 import sneer.pulp.reactive.collections.SetSignal;

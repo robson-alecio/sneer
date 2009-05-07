@@ -26,6 +26,7 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	}
 
 	@Test
+	@Ignore
 	public void testPublishBrickWithTupleType() throws Exception {
 		my(LogToSystemOut.class);
 		

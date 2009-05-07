@@ -43,6 +43,7 @@ TASKS
 		- Brickness - "The simplest possible container"
 			- Unify the Bindings vs Contributions metaphors.
 			- SneerCommunity.newContainer - All that mess with StoragePath and SneerConfig is ugly.
+			- Unignore Freedom7 tests.
 			- Make a test run a brick in a directory that is not in the system ClassLoader classpath (Eclipse classpath). It will probably fail. Implement the logic using NewContainerImpl.createApiClassLoader() to return a URLClassloader that can be extended with new classpaths for new brick interfaces;
 
 	- [Klaus and Igor] build.xml/Antlipse - Revive.

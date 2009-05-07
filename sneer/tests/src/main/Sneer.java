@@ -29,11 +29,7 @@ public class Sneer {
 
 	static public Class<?>[] businessBricks() {
 		return new Class<?>[] {
-				sneer.hardware.gui.guithread.GuiThread.class, 
-				sneer.skin.main.synth.Synth.class, 
-				sneer.skin.main.synth.scroll.SynthScrolls.class, 
 				sneer.pulp.events.EventNotifiers.class,
-				sneer.skin.image.ImageFactory.class,
 				sneer.pulp.reactive.Signals.class,
 				sneer.pulp.reactive.collections.CollectionSignals.class,
 				sneer.pulp.logging.Logger.class,
@@ -102,6 +98,11 @@ public class Sneer {
 
 	private static Class<?>[] communicationBricks() {
 		return new Class<?>[] {
+				sneer.hardware.gui.guithread.GuiThread.class, 
+				sneer.skin.main.synth.Synth.class, 
+				sneer.skin.main.synth.scroll.SynthScrolls.class, 
+				sneer.skin.image.ImageFactory.class,
+
 				sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper.class,
 				sneer.pulp.dyndns.checkip.CheckIp.class,
 				sneer.pulp.dyndns.updater.Updater.class,
@@ -113,7 +114,6 @@ public class Sneer {
 				snapps.contacts.gui.ContactsGui.class,
 				snapps.contacts.gui.info.ContactInfoWindow.class,
 				snapps.wind.gui.WindGui.class,
-//				snapps.watchme.gui.WatchMeGui.class,
 				snapps.whisper.gui.WhisperGui.class,
 				snapps.meter.memory.gui.MemoryMeterGui.class,
 				snapps.meter.bandwidth.gui.BandwidthMeterGui.class,

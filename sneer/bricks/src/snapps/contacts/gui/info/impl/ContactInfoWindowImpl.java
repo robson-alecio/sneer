@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Comparator;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -27,7 +28,6 @@ import snapps.contacts.gui.ContactsGui;
 import snapps.contacts.gui.info.ContactInfoWindow;
 import sneer.commons.lang.Functor;
 import sneer.hardware.cpu.exceptions.IllegalParameter;
-import sneer.hardware.cpu.lang.Consumer;
 import sneer.hardware.cpu.lang.PickyConsumer;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.contacts.Contact;
@@ -36,6 +36,8 @@ import sneer.pulp.internetaddresskeeper.InternetAddress;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
+import sneer.pulp.reactive.collections.ListSignal;
+import sneer.pulp.reactive.collections.listsorter.ListSorter;
 import sneer.skin.main.synth.scroll.SynthScrolls;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
@@ -48,11 +50,32 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 
 	private final InternetAddressKeeper _addressKeeper = my(InternetAddressKeeper.class);
 	
+	//Implement
+//	private final SetSignal<InternetAddress> filteredAddresses;{
+//		filteredAddresses = my(SetFilter.class).filter(
+//				_addressKeeper. addresses(),
+//				new ReactivePredicate<InternetAddress>(){ @Override public Signal<Boolean> evaluate(final InternetAddress address) {
+//					return my(Signals.class).adapt(my(ContactsGui.class).selectedContact(), new Functor<Contact, Boolean>(){
+//						@Override public Boolean evaluate(Contact contact) {
+//							System.out.println(contact);
+//							return address.contact() == contact;
+//						}});
+//				}});		
+//	}
+	
+	private final ListSignal<InternetAddress> sortedAddresses;{
+		sortedAddresses = my(ListSorter.class).sort(
+				_addressKeeper. addresses(),
+//				filteredAddresses, 
+				new Comparator<InternetAddress>(){ @Override public int compare(InternetAddress o1, InternetAddress o2) {
+					return o1.host().compareTo(o2.host());
+				}});		
+	}
+	
 	private final ListWidget<InternetAddress> _lstAddresses; {
 		final Object ref[] = new Object[1];
 		my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {//Fix Use GUI Nature
-			ref[0] = my(ReactiveWidgetFactory.class).newList(
-			_addressKeeper. addresses(), 
+			ref[0] = my(ReactiveWidgetFactory.class).newList(sortedAddresses, 
 			new LabelProvider<InternetAddress>(){
 				@Override public Signal<? extends Image> imageFor(InternetAddress element) {
 					return my(Signals.class).constant(null);
@@ -64,6 +87,7 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 		}});
 		_lstAddresses = (ListWidget<InternetAddress>) ref[0];
 	}
+	
 	private final JTextField _host = new JTextField();
 	private final JTextField _port = new JTextField();
 	private InternetAddress _selectedAdress;
@@ -72,6 +96,12 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 	private TextWidget<JTextField> _txtNickname;
 
 	ContactInfoWindowImpl() {
+//		my(Signals.class).receive(this, 
+//			new Consumer<Contact>(){ @Override public void consume(Contact value) {
+//				ListModel model = _lstAddresses.getMainWidget().getModel();
+//				_lstAddresses.getMainWidget().setModel(model);
+//			}}, 
+//			my(ContactsGui.class).selectedContact());
 		addContactEditAction();
 	}
 
@@ -89,16 +119,10 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 		if(!_isGuiInitialized) {
 			_isGuiInitialized = true;
 			initGui();
-//			loadInternetAddressesForCurrentContact();
 		}
 		setVisible(true);
 	}
 	
-//	private void rebindContact() {
-//		if (!_isGuiInitialized) return;
-//		loadInternetAddressesForCurrentContact();
-//	}
-
 	private void initGui() {
 		setTitle("Contact Info:");
 
@@ -137,8 +161,6 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 		}});
 		
 		setGridBagLayout(panel, labNickname, labPort, labHost, scroll, btnNew, btnSave, btnDel);
-
-		listenToSignals();
 		addListSelectionListestener();
 
 		this.setSize(400, 310);
@@ -188,14 +210,6 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 		
 		_addressKeeper.remove(address);
 		newInternetAddress();
-	}
-	
-	private void listenToSignals() {
-		my(Signals.class).receive(this, new Consumer<Contact>(){ @Override public void consume(Contact value) {
-//			addresses().setModel(my(ReactiveWidgetFactory.class).newListSignalModel(input, chooser))
-//			
-//			rebindContact();
-		}}, my(ContactsGui.class).selectedContact());
 	}
 
 	private void addListSelectionListestener() {

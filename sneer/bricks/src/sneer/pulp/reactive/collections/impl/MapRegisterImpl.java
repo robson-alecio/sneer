@@ -15,7 +15,7 @@ import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.collections.MapRegister;
 import sneer.pulp.reactive.collections.MapSignal;
-import sneer.pulp.reactive.collections.SetChange;
+import sneer.pulp.reactive.collections.CollectionChange;
 import sneer.pulp.reactive.collections.SetRegister;
 import sneer.pulp.reactive.collections.SetSignal;
 
@@ -50,7 +50,7 @@ class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 
 	private class MyOutput implements MapSignal<K,V> {
 
-		private final EventNotifier<SetChange<Map.Entry<K,V>>> _notifier = my(EventNotifiers.class).create(new Consumer<Consumer<? super SetChange<Map.Entry<K,V>>>>(){@Override public void consume(Consumer<? super SetChange<Entry<K, V>>> newReceiver) {
+		private final EventNotifier<CollectionChange<Map.Entry<K,V>>> _notifier = my(EventNotifiers.class).create(new Consumer<Consumer<? super CollectionChange<Map.Entry<K,V>>>>(){@Override public void consume(Consumer<? super CollectionChange<Entry<K, V>>> newReceiver) {
 			if (_map.isEmpty()) return;
 			newReceiver.consume(asChange(_map.entrySet()));
 		}});
@@ -66,7 +66,7 @@ class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 		}
 
 		@Override
-		public void addReceiver(Consumer<? super SetChange<Map.Entry<K,V>>> receiver) {
+		public void addReceiver(Consumer<? super CollectionChange<Map.Entry<K,V>>> receiver) {
 			_notifier.output().addReceiver(receiver);		
 		}
 		
@@ -91,8 +91,8 @@ class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 		}
 
 
-		private SetChange<Entry<K, V>> asChange(Collection<Entry<K, V>> entries) {
-			return new SetValueChangeImpl<Entry<K, V>>(entries, null);
+		private CollectionChange<Entry<K, V>> asChange(Collection<Entry<K, V>> entries) {
+			return new CollectionChangeImpl<Entry<K, V>>(entries, null);
 		}
 
 		
@@ -147,7 +147,7 @@ class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 
 	
 	private void notifyReceivers(Entry<K, V> added, Entry<K, V> removed) {
-		_output._notifier.notifyReceivers(new SetValueChangeImpl<Entry<K,V>>(added, removed));
+		_output._notifier.notifyReceivers(new CollectionChangeImpl<Entry<K,V>>(added, removed));
 	}
 
 }

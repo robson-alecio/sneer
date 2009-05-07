@@ -33,8 +33,7 @@ import sneer.hardware.cpu.lang.Consumer;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.logging.Logger;
 import sneer.pulp.reactive.Signals;
-import sneer.pulp.reactive.collections.ListChange;
-import sneer.pulp.reactive.collections.ListChange.Visitor;
+import sneer.pulp.reactive.collections.CollectionChange;
 import sneer.pulp.reactive.collections.impl.SimpleListReceiver;
 import sneer.skin.main.dashboard.InstrumentPanel;
 import sneer.skin.main.instrumentregistry.InstrumentRegistry;
@@ -115,18 +114,20 @@ class WindGuiImpl implements WindGui {
 	private void initListReceiversInOrder() {
 		_autoscrollSupport.initPreChangeReceiver();
 		
-		Consumer<ListChange<Shout>> _windConsumer = new Consumer<ListChange<Shout>>(){ @Override public void consume(ListChange<Shout> value) { value.accept(new Visitor<Shout>(){
-				@Override public void elementAdded(int index, Shout shout) { ShoutPainter.appendShout(shout, _shoutsList); }
-				@Override public void elementRemoved(int index, Shout element) { ShoutPainter.repaintAllShoults(_wind.shoutsHeard(), _shoutsList); }
-				@Override public void elementMoved(int oldIndex, int newIndex, Shout element) { ShoutPainter.repaintAllShoults(_wind.shoutsHeard(), _shoutsList); }
-				@Override public void elementReplaced(int index, Shout oldElement, Shout newElement) { ShoutPainter.repaintAllShoults(_wind.shoutsHeard(), _shoutsList); 	}
-		});}};
+		Consumer<CollectionChange<Shout>> _windConsumer = new Consumer<CollectionChange<Shout>>(){ @Override public void consume(CollectionChange<Shout> change) {
+			for (Shout shout : change.elementsAdded()) 
+				ShoutPainter.appendShout(shout, _shoutsList);
+
+			if(!change.elementsRemoved().isEmpty())
+				ShoutPainter.repaintAllShoults(_wind.shoutsHeard(), _shoutsList);
+		}};
+		
 		my(Signals.class).receive(this, _windConsumer, _wind.shoutsHeard());
 		_autoscrollSupport.initPosChangeReceiver();
 	}
 
 	private void initShoutReceiver() {
-		my(Signals.class).receive(this, new Consumer<ListChange<Shout>>() { @Override public void consume(ListChange<Shout> ignored) {
+		my(Signals.class).receive(this, new Consumer<CollectionChange<Shout>>() { @Override public void consume(CollectionChange<Shout> ignored) {
 			shoutAlert();
 		}}, _wind.shoutsHeard());
 	}

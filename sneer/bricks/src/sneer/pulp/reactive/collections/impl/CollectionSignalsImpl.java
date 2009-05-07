@@ -4,7 +4,7 @@ import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.CollectionSignals;
 import sneer.pulp.reactive.collections.MapRegister;
 
-class ReactiveCollectionsImpl implements CollectionSignals {
+class CollectionSignalsImpl implements CollectionSignals {
 
 	@Override
 	public <K, V> MapRegister<K, V> newMapRegister() {

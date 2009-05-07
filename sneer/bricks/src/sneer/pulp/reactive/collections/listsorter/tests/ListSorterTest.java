@@ -13,10 +13,10 @@ import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
+import sneer.pulp.reactive.collections.CollectionSignals;
 import sneer.pulp.reactive.collections.ListChange;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
-import sneer.pulp.reactive.collections.CollectionSignals;
 import sneer.pulp.reactive.collections.ListChange.Visitor;
 import sneer.pulp.reactive.collections.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
@@ -68,7 +68,7 @@ public class ListSorterTest extends BrickTest {
 		Consumer<ListChange<Signal<Integer>>> consumer = new Consumer<ListChange<Signal<Integer>>>(){ @Override public void consume(ListChange<Signal<Integer>> value) {
 			value.accept(_visitor);
 		}};
-		sortedList.addReceiver(consumer);
+		sortedList.addListReceiver(consumer);
 		
 		src.add(_50);
 		src.add(_00);

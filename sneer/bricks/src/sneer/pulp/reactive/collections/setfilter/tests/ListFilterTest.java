@@ -1,4 +1,4 @@
-package sneer.pulp.reactive.collections.listfilter.tests;
+package sneer.pulp.reactive.collections.setfilter.tests;
 
 import static sneer.commons.environments.Environments.my;
 
@@ -13,11 +13,11 @@ import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.SetRegister;
 import sneer.pulp.reactive.collections.SetSignal;
 import sneer.pulp.reactive.collections.impl.SetRegisterImpl;
-import sneer.pulp.reactive.collections.listfilter.ListFilter;
+import sneer.pulp.reactive.collections.setfilter.SetFilter;
 
 public class ListFilterTest extends BrickTest {
 	
-	private final ListFilter _subject = my(ListFilter.class);
+	private final SetFilter _subject = my(SetFilter.class);
 
 	private final Signal<Integer> _10 = my(Signals.class).constant(10);
 	private final Signal<Integer> _20 = my(Signals.class).constant(20);

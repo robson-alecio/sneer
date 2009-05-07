@@ -1,17 +1,15 @@
 package sneer.pulp.internetaddresskeeper.impl;
 
-import static sneer.commons.environments.Environments.my;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.internetaddresskeeper.InternetAddress;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
-import sneer.pulp.reactive.collections.ListRegister;
-import sneer.pulp.reactive.collections.ListSignal;
-import sneer.pulp.reactive.collections.CollectionSignals;
+import sneer.pulp.reactive.collections.SetRegister;
+import sneer.pulp.reactive.collections.SetSignal;
+import sneer.pulp.reactive.collections.impl.SetRegisterImpl;
 
 class InternetAddressKeeperImpl implements InternetAddressKeeper {
 
-	private ListRegister<InternetAddress> _addresses = 
-		my(CollectionSignals.class).newListRegister();
+	private SetRegister<InternetAddress> _addresses = new SetRegisterImpl<InternetAddress>();
 	
 	@Override
 	public void remove(InternetAddress address) {
@@ -19,7 +17,7 @@ class InternetAddressKeeperImpl implements InternetAddressKeeper {
 	}	
 	
 	@Override
-	public ListSignal<InternetAddress> addresses() {
+	public SetSignal<InternetAddress> addresses() {
 		return _addresses.output();
 	}
 

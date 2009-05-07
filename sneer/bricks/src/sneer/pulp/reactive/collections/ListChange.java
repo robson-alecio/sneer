@@ -1,6 +1,6 @@
 package sneer.pulp.reactive.collections;
 
-public interface ListChange<T>  {
+public interface ListChange<T> {
 	
 	void accept(Visitor<T> visitor);
 	

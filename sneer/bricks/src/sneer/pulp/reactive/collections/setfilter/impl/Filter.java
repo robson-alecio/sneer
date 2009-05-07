@@ -1,17 +1,17 @@
-package sneer.pulp.reactive.collections.listfilter.impl;
+package sneer.pulp.reactive.collections.setfilter.impl;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.ReactivePredicate;
-import sneer.pulp.reactive.collections.SetChange;
+import sneer.pulp.reactive.collections.CollectionChange;
 import sneer.pulp.reactive.collections.SetRegister;
 import sneer.pulp.reactive.collections.SetSignal;
 import sneer.pulp.reactive.collections.impl.SetRegisterImpl;
 import wheel.reactive.impl.SetSignalOwnerReference;
 
-final class FilteredVisitor<T> {
+final class Filter<T> {
 
 	private final SetSignal<T> _input;
 	private final ReactivePredicate<T> _predicate;	
@@ -19,7 +19,7 @@ final class FilteredVisitor<T> {
 
 	private Map<T, Consumer<?>> _receiversByElement = new HashMap<T, Consumer<?>>();
 
-	FilteredVisitor(SetSignal<T> input, ReactivePredicate<T> predicate) {
+	Filter(SetSignal<T> input, ReactivePredicate<T> predicate) {
 		_input = input;
 		_predicate = predicate;
 		 _output = new SetRegisterImpl<T>();
@@ -33,7 +33,7 @@ final class FilteredVisitor<T> {
 		return new SetSignalOwnerReference<T>(_output.output(), this);
 	}
 	
-	private final Consumer<SetChange<T>> _receiverAvoidGc = new Consumer<SetChange<T>>(){@Override public void consume(SetChange<T> change) {
+	private final Consumer<CollectionChange<T>> _receiverAvoidGc = new Consumer<CollectionChange<T>>(){@Override public void consume(CollectionChange<T> change) {
 		add(change.elementsAdded());
 		remove(change.elementsRemoved());
 	}};

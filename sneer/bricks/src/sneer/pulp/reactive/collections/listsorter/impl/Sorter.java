@@ -7,19 +7,19 @@ import java.util.Comparator;
 import java.util.List;
 
 import sneer.hardware.cpu.lang.Consumer;
-import sneer.pulp.reactive.collections.ListChange;
+import sneer.pulp.reactive.collections.CollectionChange;
+import sneer.pulp.reactive.collections.CollectionSignal;
+import sneer.pulp.reactive.collections.CollectionSignals;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
-import sneer.pulp.reactive.collections.CollectionSignals;
-import sneer.pulp.reactive.collections.ListChange.Visitor;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.pulp.reactive.signalchooser.SignalChoosers;
 import wheel.reactive.impl.ListSignalOwnerReference;
 
-final class SortedVisitor<T> implements Visitor<T>, ListOfSignalsReceiver<T>{
+final class Sorter<T> implements ListOfSignalsReceiver<T>{
 
-	private final ListSignal<T> _input;
+	private final CollectionSignal<T> _input;
 
 	private final SignalChoosers _signalChooserManagerFactory = my(SignalChoosers.class);
 	
@@ -28,17 +28,21 @@ final class SortedVisitor<T> implements Visitor<T>, ListOfSignalsReceiver<T>{
 	private final SignalChooser<T> _chooser;	
 	private final Comparator<T> _comparator;
 	private final ListRegister<T> _sorted;
-	private final Consumer<ListChange<T>> _receiverAvoidGc;
+	private final Consumer<CollectionChange<T>> _receiverAvoidGc;
 	
 	private final Object _monitor = new Object();
 	
-	SortedVisitor(ListSignal<T> input, Comparator<T> comparator, SignalChooser<T> chooser) {
+	Sorter(CollectionSignal<T> input, Comparator<T> comparator, SignalChooser<T> chooser) {
 		_input = input;
 		_chooser = chooser;
 		_comparator = comparator;
 		_sorted = my(CollectionSignals.class).newListRegister();
-		_receiverAvoidGc = new Consumer<ListChange<T>>(){@Override public void consume(ListChange<T> change) {
-			change.accept(SortedVisitor.this);
+		_receiverAvoidGc = new Consumer<CollectionChange<T>>(){@Override public void consume(CollectionChange<T> change) {
+			for (T element : change.elementsRemoved()) 
+				elementRemoved(element);
+			
+			for (T element : change.elementsAdded()) 
+				elementAdded(element);
 		}};
 		
 		synchronized (_monitor) {
@@ -54,31 +58,18 @@ final class SortedVisitor<T> implements Visitor<T>, ListOfSignalsReceiver<T>{
 		return new ListSignalOwnerReference<T>(_sorted.output(), this);
 	}
 	
-	@Override public void elementAdded(int index, T element) { 
+	private void elementAdded(T element) { 
 		synchronized (_monitor) {
 			int location = findSortedLocation(element);
 			_sorted.addAt(location, element);
 		} 
 	}
 	
-	@Override public void elementRemoved(int index, T element) { 
+	private void elementRemoved(T element) { 
 		synchronized (_monitor) {
 			_sorted.remove(element);
 		} 
 	}
-	
-	@Override public void elementReplaced(int index, T oldElement, T newElement) { 
-		remove(oldElement);
-		sortedAdd(newElement); 
-	}
-	
-	@Override public void elementMoved(int oldIndex, int newIndex, T element) { 
-		synchronized (_monitor) {
-			int oldIndex1 = _sorted.output().currentIndexOf(element);
-			int newIndex1 = findSortedLocation(element);
-			_sorted.move(oldIndex1, newIndex1);
-		}
-	}	
 	
 	private int findSortedLocation(T element) {
 		return findSortedLocation(element, _sorted.output().currentElements());
@@ -103,16 +94,8 @@ final class SortedVisitor<T> implements Visitor<T>, ListOfSignalsReceiver<T>{
 	}
 	
 	private void sortedAdd(T element) {
-		synchronized (_monitor) {
-			int location = findSortedLocation(element);
-			_sorted.addAt(location, element);
-		}
-	}
-	
-	private void remove(T element) {
-		synchronized (_monitor) {
-			_sorted.remove(element);
-		}
+		int location = findSortedLocation(element);
+		_sorted.addAt(location, element);
 	}
 	
 	private void move(T element) {

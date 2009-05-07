@@ -17,7 +17,7 @@ import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import sneer.pulp.reactive.collections.SetChange;
+import sneer.pulp.reactive.collections.CollectionChange;
 import sneer.pulp.reactive.collections.SetRegister;
 import sneer.pulp.reactive.collections.SetSignal;
 
@@ -30,13 +30,13 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 
 	private class MyOutput implements SetSignal<T> {
 
-		private final EventNotifier<SetChange<T>> _notifier = my(EventNotifiers.class).create(new Consumer<Consumer<? super SetChange<T>>>(){@Override public void consume(Consumer<? super SetChange<T>> newReceiver) {
+		private final EventNotifier<CollectionChange<T>> _notifier = my(EventNotifiers.class).create(new Consumer<Consumer<? super CollectionChange<T>>>(){@Override public void consume(Consumer<? super CollectionChange<T>> newReceiver) {
 			if (_contents.isEmpty()) return;
-			newReceiver.consume(new SetValueChangeImpl<T>(contentsCopy(), null));
+			newReceiver.consume(new CollectionChangeImpl<T>(contentsCopy(), null));
 		}});
 
 		@Override
-		public void addReceiver(Consumer<? super SetChange<T>> receiver) {
+		public void addReceiver(Consumer<? super CollectionChange<T>> receiver) {
 			_notifier.output().addReceiver(receiver);
 		}
 
@@ -89,15 +89,15 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 	}
 
 	public void add(T elementAdded) {
-		change(new SetValueChangeImpl<T>(elementAdded, null));
+		change(new CollectionChangeImpl<T>(elementAdded, null));
 	}
 
 	public void remove(T elementRemoved) {
-		change(new SetValueChangeImpl<T>(null, elementRemoved));
+		change(new CollectionChangeImpl<T>(null, elementRemoved));
 	}
 
 	@Override
-	public void change(SetChange<T> change) {
+	public void change(CollectionChange<T> change) {
 		synchronized (_contents) {
 			preserveDeltas(change);
 			if (change.elementsAdded().isEmpty() && change.elementsRemoved().isEmpty())
@@ -117,7 +117,7 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 			_size.setter().consume(size);
 	}
 
-	private void preserveDeltas(SetChange<T> change) {
+	private void preserveDeltas(CollectionChange<T> change) {
 		change.elementsAdded().removeAll(_contents);
 		change.elementsRemoved().retainAll(_contents);
 	}

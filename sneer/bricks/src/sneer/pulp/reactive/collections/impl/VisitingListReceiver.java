@@ -11,12 +11,11 @@ public abstract class VisitingListReceiver<T> implements Consumer<ListChange<T>>
 
 	public VisitingListReceiver(ListSignal<T> input) {
 		_input = input;
-		input.addReceiver(this);
+		input.addListReceiver(this);
 	}
 
 	@Override
 	public void consume(ListChange<T> listChange) {
 		listChange.accept(this);
 	}
-
 }

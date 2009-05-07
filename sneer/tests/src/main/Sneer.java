@@ -29,9 +29,9 @@ public class Sneer {
 
 	static public Class<?>[] businessBricks() {
 		return new Class<?>[] {
-				sneer.hardware.gui.guithread.GuiThread.class,
-				sneer.skin.main.synth.Synth.class,
-				sneer.skin.main.synth.scroll.SynthScrolls.class,
+				sneer.hardware.gui.guithread.GuiThread.class, 
+				sneer.skin.main.synth.Synth.class, 
+				sneer.skin.main.synth.scroll.SynthScrolls.class, 
 				sneer.pulp.events.EventNotifiers.class,
 				sneer.skin.image.ImageFactory.class,
 				sneer.pulp.reactive.Signals.class,
@@ -40,6 +40,7 @@ public class Sneer {
 				sneer.pulp.internetaddresskeeper.InternetAddressKeeper.class,
 				sneer.pulp.crypto.Crypto.class,
 				sneer.pulp.reactive.collections.listsorter.ListSorter.class,
+				sneer.pulp.reactive.collections.setfilter.SetFilter.class,
 				sneer.pulp.reactive.gates.logic.LogicGates.class,
 				sneer.pulp.reactive.Parsers.class,
 				sneer.pulp.retrier.RetrierManager.class,

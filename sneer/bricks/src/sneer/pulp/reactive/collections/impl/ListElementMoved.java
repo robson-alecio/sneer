@@ -1,8 +1,9 @@
 package sneer.pulp.reactive.collections.impl;
 
-import sneer.pulp.reactive.collections.ListChange;
+import java.util.Collection;
+import java.util.Collections;
 
-final class ListElementMoved<T> extends AbstractListValueChange<T> implements ListChange<T> {
+final class ListElementMoved<T> extends AbstractListValueChange<T> {
 
 	private final int _newIndex;
 
@@ -14,5 +15,15 @@ final class ListElementMoved<T> extends AbstractListValueChange<T> implements Li
 	@Override
 	public void accept(Visitor<T> visitor) {
 		visitor.elementMoved(_index, _newIndex, _element);
+	}
+
+	@Override
+	public Collection<T> elementsAdded() {
+		return Collections.EMPTY_LIST;
+	}
+
+	@Override
+	public Collection<T> elementsRemoved() {
+		return Collections.EMPTY_LIST;
 	}
 }

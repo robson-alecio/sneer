@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.collections.SetChange;
+import sneer.pulp.reactive.collections.CollectionChange;
 import sneer.pulp.reactive.collections.SetSignal;
 
 
@@ -18,7 +18,7 @@ public class SetSignalOwnerReference<T> extends AbstractOwnerReference<T> implem
 		_delegate = delegate;
 	}
 
-	@Override public void addReceiver(Consumer<? super SetChange<T>> receiver) { _delegate.addReceiver(receiver); }
+	@Override public void addReceiver(Consumer<? super CollectionChange<T>> receiver) { _delegate.addReceiver(receiver); }
 	@Override public void removeReceiver(Object receiver) { _delegate.removeReceiver(receiver); }
 	@Override public Collection<T> currentElements() { return _delegate.currentElements(); }
 	@Override public int currentSize() { return _delegate.currentSize(); }

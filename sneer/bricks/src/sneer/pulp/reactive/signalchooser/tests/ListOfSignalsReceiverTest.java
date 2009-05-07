@@ -42,14 +42,14 @@ public class ListOfSignalsReceiverTest extends BrickTest {
 		assertEvents("Added(1)=1, Added(2)=2, Added(3)=3, Added(4)=4, Added(5)=1, "); //[ 0, 1, 2, 3, 4, 1 ]
 		
 		_listRegister.move(1, 4);
-		assertEvents("Moved(1, 4)=1, ");	//[ 0, 4, 2, 3, 1, 1 ]
+		assertEvents("Removed(1)=1, Added(4)=1, ");	//[ 0, 4, 2, 3, 1, 1 ]
 		
 		r1.setter().consume("1b");
 		r2.setter().consume("2b");
 		assertEvents("Changed(1)=1b, Changed(5)=1b, Changed(2)=2b, "); //[ 0, 2b, 3, 4, 1b, 1b ]
 
 		_listRegister.move(5, 1);
-		assertEvents("Moved(5, 1)=1b, "); 	//[ 0, 1b, 2b, 3, 4, 1b ]
+		assertEvents("Removed(5)=1b, Added(1)=1b, "); 	//[ 0, 1b, 2b, 3, 4, 1b ]
 		
 		_listRegister.removeAt(0);
 		_listRegister.removeAt(3);
@@ -65,7 +65,7 @@ public class ListOfSignalsReceiverTest extends BrickTest {
 		
 		_listRegister.move(1, 0);
 		_listRegister.move(2, 3);
-		assertEvents("Moved(1, 0)=2c, Moved(2, 3)=2c, "); //[ 2c, 1c, 1c, 2c ]
+		assertEvents("Removed(1)=2c, Added(0)=2c, Removed(2)=2c, Added(3)=2c, "); //[ 2c, 1c, 1c, 2c ]
 		
 		_listRegister.remove(r1);
 		_listRegister.remove(r1);
@@ -110,9 +110,6 @@ public class ListOfSignalsReceiverTest extends BrickTest {
 		@Override public void elementAdded(int index, Register<String> element) { 
 			_recorder.record("Added", index, value(element)); }
 		
-		@Override public void elementMoved(int oldIndex, int newIndex, Register<String> element) { 
-			_recorder.record("Moved", oldIndex, newIndex, value(element)); }
-		
 		@Override public void elementRemoved(int index, Register<String> element) { 
 			_recorder.record("Removed", index, value(element)); }
 		
@@ -128,10 +125,6 @@ public class ListOfSignalsReceiverTest extends BrickTest {
 		
 		private StringBuilder _events = new StringBuilder();
 		
-		private void record(String name, int oldIndex, int newIndex, String value) {
-			record(name, ""+oldIndex+", "+newIndex, value);
-		}
-
 		private void record(String name, int index, String oldValue, String newValue) {
 			record(name, ""+index, oldValue + "->" + newValue);
 		}

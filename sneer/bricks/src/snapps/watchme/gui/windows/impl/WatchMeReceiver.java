@@ -86,6 +86,8 @@ class WatchMeReceiver{
 	}
 	
 	void dispose() {
+		if(_windowWidget==null) return;
+		
 		JFrame frm = _windowWidget.getMainWidget();
 		if (frm != null) 
 			frm.dispose();

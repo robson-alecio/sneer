@@ -1,11 +1,10 @@
 ﻿FIXES
 =========
 
-	- ListChange.Visitor - Remove elementInserted (redundant with elementAdded) and elementMoved methods.
 	- SignalChoosers - Receive owner for GC (like Signals.receive()) instead of returning a reference that has to be held.
 	
-	- [Sandro] NPE for DeleteContactWindowImpl.checkAndDelete() - Remove it from the interface and make it private.
-
+	- Implement ProbeManager elementRemoved to remove Contacts from Gui
+	
 	- [Bamboo] Adapt antlips to support lib entries starting with:
 		kind="lib" exported="true"...   instead of just:
 		kind="lib"...
@@ -34,8 +33,6 @@ TASKS
 		- [Klaus] GuiBrick Javadoc - Revise.
 
 	- [Sandro and Igor] User Info, Contact List and Contact CRUD - Don't do any other task until:
-		- ContactInfoWindowImpl
-			- Reactive List (All GUI)
 		- ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
 		- [Klaus] Revise code.
 

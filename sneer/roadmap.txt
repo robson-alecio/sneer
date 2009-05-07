@@ -34,8 +34,6 @@ TASKS
 		- [Klaus] GuiBrick Javadoc - Revise.
 
 	- [Sandro and Igor] User Info, Contact List and Contact CRUD - Don't do any other task until:
-		- ContactInfoWindowImpl
-			- Reactive List (All GUI)
 		- ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
 		- [Klaus] Revise code.
 

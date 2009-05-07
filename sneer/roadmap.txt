@@ -16,6 +16,8 @@
 		- [Igor] Finish off simple cases. Pair with Klaus on the complicated ones.
 
 	- Remove @Ignore and Fix WindTest.testSortedShoutsHeard
+	
+	- Remove Logger Cycle.
 
 
 TASKS

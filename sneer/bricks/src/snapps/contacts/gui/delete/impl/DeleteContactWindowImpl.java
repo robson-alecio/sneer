@@ -22,7 +22,7 @@ import sneer.skin.windowboundssetter.WindowBoundsSetter;
 class DeleteContactWindowImpl extends JFrame implements DeleteContactWindow {
 	
 	private final JButton _yes = new JButton("Yes");
-
+	
 	DeleteContactWindowImpl(){
 		initGui();
 		addContactEditAction();
@@ -34,7 +34,9 @@ class DeleteContactWindowImpl extends JFrame implements DeleteContactWindow {
 			@Override public boolean isVisible() { return true; }
 			@Override public String caption() { return "Delete Contact...";}
 			@Override public void run() {
-				checkAndDelete();
+				Contact contact = my(ContactsGui.class).selectedContact().currentValue();
+				if(contact==null) return;
+				open(contact);
 			}});
 	}
 
@@ -54,23 +56,15 @@ class DeleteContactWindowImpl extends JFrame implements DeleteContactWindow {
 				GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5,5,5,5), 0, 0) );
 	}
 	
-	@Override
-	public void checkAndDelete() {
-		final Contact contact = my(ContactsGui.class).selectedContact().currentValue();
-		if(contact==null) return;
-		
+	private void open(final Contact contact) {
 		setSize(300, 100);
 		my(WindowBoundsSetter.class).setBestBounds(this);
 		setVisible(true);
 		setTitle("Delete '" + contact + "'?");
+		
 		_yes.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
-			deleteContact(contact);
 			setVisible(false);
+			my(ContactManager.class).removeContact(contact);
 		}});
-	}
-	
-	private void deleteContact(Contact contact) {
-		setVisible(false);
-		my(ContactManager.class).removeContact(contact);
 	}
 }

@@ -12,6 +12,8 @@ import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -82,10 +84,8 @@ class WindGuiImpl implements WindGui {
 
 		initListReceiversInOrder();
 		_scrollPane.getViewport().add(_shoutsList);
-		_shoutsList.setEditable(false);
 		
 		JScrollPane scrollShout = my(SynthScrolls.class).create();
-		scrollShout.setOpaque(false);
 		JPanel horizontalLimit = new JPanel(){
 			@Override
 			public Dimension getPreferredSize() {
@@ -109,6 +109,10 @@ class WindGuiImpl implements WindGui {
 
 		_shoutsList.setBorder(new EmptyBorder(0,0,0,0));
 		_myShout.getComponent().setBorder(new EmptyBorder(0,0,0,0));
+		
+		_shoutsList.addFocusListener(new FocusListener(){
+			@Override public void focusGained(FocusEvent e) { 	_shoutsList.setEditable(false); }
+			@Override public void focusLost(FocusEvent e) {		_shoutsList.setEditable(true); }});
 	}
 
 	private void initListReceiversInOrder() {

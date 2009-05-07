@@ -12,5 +12,4 @@ public interface ListSignal<T> extends CollectionSignal<T> {
 	
 	void addListReceiver(Consumer<? super ListChange<T>> receiver);
 	void removeListReceiver(Object receiver);
-	
 }

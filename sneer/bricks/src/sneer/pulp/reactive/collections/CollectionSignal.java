@@ -12,6 +12,4 @@ public interface CollectionSignal<T> extends EventSource<CollectionChange<T>>, I
 	//Refactor deprecate in favour of size().currentValue()
 	int currentSize();
 	Collection<T> currentElements();
-
-
 }

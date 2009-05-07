@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-import sneer.pulp.reactive.collections.SetChange;
+import sneer.pulp.reactive.collections.CollectionChange;
 
 
-public class SetValueChangeImpl<T> implements SetChange<T> {
+public class CollectionChangeImpl<T> implements CollectionChange<T> {
 
 	private final Collection<T> _elementsAdded;
 	private final Collection<T> _elementsRemoved;
 
-	public SetValueChangeImpl(T elementAdded, T elementRemoved) {
+	public CollectionChangeImpl(T elementAdded, T elementRemoved) {
 		this(wrap(elementAdded), wrap(elementRemoved)); //Optimize
 	}
 
-	public SetValueChangeImpl(Collection<T> added, Collection<T> removed) {
+	public CollectionChangeImpl(Collection<T> added, Collection<T> removed) {
 		_elementsAdded = nullToEmpty(added);
 		_elementsRemoved = nullToEmpty(removed);
 	}

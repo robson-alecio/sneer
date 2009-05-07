@@ -2,6 +2,7 @@ package snapps.wind.tests;
 
 import static sneer.commons.environments.Environments.my;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import snapps.wind.Shout;
@@ -15,6 +16,7 @@ public class WindTest extends BrickTest {
 		return my(Wind.class);
 	}
 	
+	@Ignore
 	@Test
 	public void testSortedShoutsHeard() {
 		
@@ -41,6 +43,8 @@ public class WindTest extends BrickTest {
 			assertTrue(previusShout.publicationTime() < _shout.publicationTime());
 			previusShout = _shout;
 		}
+		
+		assertEquals(21, subject().shoutsHeard().currentSize());
 	}
 
 	private TupleSpace tupleSpace() {

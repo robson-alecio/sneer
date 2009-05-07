@@ -1,9 +1,6 @@
 <synth>
 
 	<style id="ScrollPane">
-		<insets right="3" left="3" top="3" bottom="5"/>
-	    <state>
-	    </state>
 	</style>
 	<bind style="ScrollPane" type="REGION" key="ScrollPane" />
 

@@ -1,8 +1,8 @@
 package sneer.pulp.reactive.collections.impl;
 
-import sneer.pulp.reactive.collections.ListChange;
+import java.util.Collection;
 
-final class ListElementRemoved<T> extends AbstractListValueChange<T> implements ListChange<T> {
+final class ListElementRemoved<T> extends AbstractListValueChange<T> {
 
 	ListElementRemoved(int index, T element) {
 		super(index, element);
@@ -11,5 +11,10 @@ final class ListElementRemoved<T> extends AbstractListValueChange<T> implements 
 	@Override
 	public void accept(Visitor<T> visitor) {
 		visitor.elementRemoved(_index, _element);
+	}
+
+	@Override
+	public Collection<T> elementsRemoved() {
+		return newColection(_element);
 	}
 }

@@ -29,17 +29,16 @@ public class Sneer {
 
 	static public Class<?>[] businessBricks() {
 		return new Class<?>[] {
-				sneer.hardware.gui.guithread.GuiThread.class,
-				sneer.skin.main.synth.Synth.class,
-				sneer.skin.main.synth.scroll.SynthScrolls.class,
-				sneer.pulp.events.EventNotifiers.class,
 				sneer.skin.image.ImageFactory.class,
+
+				sneer.pulp.events.EventNotifiers.class,
 				sneer.pulp.reactive.Signals.class,
-				sneer.pulp.reactive.collections.ReactiveCollections.class,
+				sneer.pulp.reactive.collections.CollectionSignals.class,
 				sneer.pulp.logging.Logger.class,
 				sneer.pulp.internetaddresskeeper.InternetAddressKeeper.class,
 				sneer.pulp.crypto.Crypto.class,
-				sneer.pulp.reactive.listsorter.ListSorter.class,
+				sneer.pulp.reactive.collections.listsorter.ListSorter.class,
+				sneer.pulp.reactive.collections.setfilter.SetFilter.class,
 				sneer.pulp.reactive.gates.logic.LogicGates.class,
 				sneer.pulp.reactive.Parsers.class,
 				sneer.pulp.retrier.RetrierManager.class,
@@ -59,7 +58,7 @@ public class Sneer {
 				snapps.contacts.actions.ContactActionManager.class,
 				sneer.pulp.events.EventNotifiers.class,
 				sneer.pulp.keymanager.KeyManager.class,
-				sneer.pulp.reactive.signalchooser.SignalChooserManagerFactory.class,
+				sneer.pulp.reactive.signalchooser.SignalChoosers.class,
 				snapps.watchme.codec.ImageCodec.class,
 				sneer.pulp.exceptionhandling.ExceptionHandler.class,
 				sneer.pulp.connection.SocketOriginator.class,
@@ -101,6 +100,10 @@ public class Sneer {
 
 	private static Class<?>[] communicationBricks() {
 		return new Class<?>[] {
+				sneer.hardware.gui.guithread.GuiThread.class, 
+				sneer.skin.main.synth.Synth.class, 
+				sneer.skin.main.synth.scroll.SynthScrolls.class, 
+
 				sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper.class,
 				sneer.pulp.dyndns.checkip.CheckIp.class,
 				sneer.pulp.dyndns.updater.Updater.class,
@@ -108,12 +111,10 @@ public class Sneer {
 				sneer.pulp.dyndns.client.DynDnsClient.class,
 
 				sneer.hardware.gui.images.Images.class,
-				sneer.skin.colors.Colors.class,
 				snapps.contacts.gui.delete.DeleteContactWindow.class,
 				snapps.contacts.gui.ContactsGui.class,
 				snapps.contacts.gui.info.ContactInfoWindow.class,
 				snapps.wind.gui.WindGui.class,
-//				snapps.watchme.gui.WatchMeGui.class,
 				snapps.whisper.gui.WhisperGui.class,
 				snapps.meter.memory.gui.MemoryMeterGui.class,
 				snapps.meter.bandwidth.gui.BandwidthMeterGui.class,

@@ -5,10 +5,9 @@
 package sneer.pulp.reactive.collections;
 
 
-import sneer.pulp.events.EventSource;
 
 
-public interface SetSignal<T> extends CollectionSignal<T>, EventSource<SetChange<T>> {
+public interface SetSignal<T> extends CollectionSignal<T> {
 
 	boolean currentContains(T element);
 }

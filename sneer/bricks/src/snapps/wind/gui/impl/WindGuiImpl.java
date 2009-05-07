@@ -12,6 +12,8 @@ import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -33,12 +35,12 @@ import sneer.hardware.cpu.lang.Consumer;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.logging.Logger;
 import sneer.pulp.reactive.Signals;
-import sneer.pulp.reactive.collections.ListChange;
-import sneer.pulp.reactive.collections.ListChange.Visitor;
+import sneer.pulp.reactive.collections.CollectionChange;
 import sneer.pulp.reactive.collections.impl.SimpleListReceiver;
-import sneer.skin.colors.Colors;
 import sneer.skin.main.dashboard.InstrumentPanel;
 import sneer.skin.main.instrumentregistry.InstrumentRegistry;
+import sneer.skin.main.synth.Synth;
+import sneer.skin.main.synth.scroll.SynthScrolls;
 import sneer.skin.sound.player.SoundPlayer;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
@@ -46,51 +48,44 @@ import sneer.skin.widgets.reactive.TextWidget;
 
 class WindGuiImpl implements WindGui {
 	
-	private Wind _wind;
-	private SoundPlayer _player;
-	private final ReactiveWidgetFactory _rfactory;
+	{my(Synth.class).load(this.getClass());}
+
+	private final Wind _wind = my(Wind.class);
+	private final SoundPlayer _player = my(SoundPlayer.class);
+	private final ReactiveWidgetFactory _rfactory = my(ReactiveWidgetFactory.class);
 
 	private final JTextPane _shoutsList = new JTextPane();
-	private TextWidget<JTextPane> _myShout;
+	private final JScrollPane _scrollPane = my(SynthScrolls.class).create();
+	private final TextWidget<JTextPane> _myShout;{
+		final Object ref[] = new Object[1];
+		my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {//Fix Use GUI Nature
+			ref[0] = _rfactory.newTextPane(my(Signals.class).newRegister("").output(),  _wind.megaphone(), NotificationPolicy.OnEnterPressed);
+		}});
+		_myShout = (TextWidget<JTextPane>) ref[0];
+	}
+	private final WindAutoscrollSupport _autoscrollSupport = new WindAutoscrollSupport();
 
 	private Container _container;
-
-	private JScrollPane _scrollPane;
-
-	private WindAutoscrollSupport _autoscrollSupportToAvoidGc;
-	private Consumer<ListChange<Shout>> _windConsumerToAvoidGc;
 	
 	public WindGuiImpl() {
-		_wind = my(Wind.class);
-		_rfactory = my(ReactiveWidgetFactory.class);
-		_player = my(SoundPlayer.class);
 		my(InstrumentRegistry.class).registerInstrument(this);
 	} 
 	
 	@Override
 	public void init(InstrumentPanel window) {
-		Container container = window.contentPane();
-		_container = container;
+		_container = window.contentPane();
 		initGui();
-		_autoscrollSupportToAvoidGc.placeAtEnd();
+		_autoscrollSupport.placeAtEnd();
 		initShoutReceiver();
 		new WindClipboardSupport();
 	}
 
 	private void initGui() {
-//		_myShout = _rfactory.newTextPane(new Constant<String>(""),  _wind.megaphone(), NotificationPolicy.OnEnterPressed);
-		_myShout = _rfactory.newTextPane(my(Signals.class).newRegister("").output(),  _wind.megaphone(), NotificationPolicy.OnEnterPressed);
 
-		_myShout.getMainWidget().setBorder(new EmptyBorder(0,0,0,0));
-
-		initScrollPane();
 		initListReceiversInOrder();
-		
-		_container.setBackground(my(Colors.class).solid());
 		_scrollPane.getViewport().add(_shoutsList);
 		
-		JScrollPane scrollShout = new JScrollPane();
-		scrollShout.setOpaque(false);
+		JScrollPane scrollShout = my(SynthScrolls.class).create();
 		JPanel horizontalLimit = new JPanel(){
 			@Override
 			public Dimension getPreferredSize() {
@@ -114,42 +109,29 @@ class WindGuiImpl implements WindGui {
 
 		_shoutsList.setBorder(new EmptyBorder(0,0,0,0));
 		_myShout.getComponent().setBorder(new EmptyBorder(0,0,0,0));
-//		scrollShout.setBorder(new EmptyBorder(5,5,5,5));
-		scrollShout.setBorder(new EmptyBorder(0,0,0,0));
+		
+		_shoutsList.addFocusListener(new FocusListener(){
+			@Override public void focusGained(FocusEvent e) { 	_shoutsList.setEditable(false); }
+			@Override public void focusLost(FocusEvent e) {		_shoutsList.setEditable(true); }});
 	}
 
 	private void initListReceiversInOrder() {
-		_autoscrollSupportToAvoidGc.initPreChangeReceiver();
+		_autoscrollSupport.initPreChangeReceiver();
 		
-		_windConsumerToAvoidGc = new Consumer<ListChange<Shout>>(){ @Override public void consume(ListChange<Shout> value) { value.accept(new Visitor<Shout>(){
-				@Override public void elementAdded(int index, Shout shout) { ShoutPainter.appendShout(shout, _shoutsList); }
-				@Override public void elementRemoved(int index, Shout element) { ShoutPainter.repaintAllShoults(_wind.shoutsHeard(), _shoutsList); }
-				@Override public void elementMoved(int oldIndex, int newIndex, Shout element) { ShoutPainter.repaintAllShoults(_wind.shoutsHeard(), _shoutsList); }
-				@Override public void elementReplaced(int index, Shout oldElement, Shout newElement) { ShoutPainter.repaintAllShoults(_wind.shoutsHeard(), _shoutsList); 	}
-				@Override public void elementInserted(int index, Shout shout) {
-					if(_wind.shoutsHeard().currentSize()<index+1) {
-						ShoutPainter.repaintAllShoults(_wind.shoutsHeard(), _shoutsList);
-						return;
-					}
-					ShoutPainter.appendShout(shout, _shoutsList);
-				}
-		});}};
-		_wind.shoutsHeard().addReceiver(_windConsumerToAvoidGc);
-		
-		_autoscrollSupportToAvoidGc.initPosChangeReceiver();
-	}
+		Consumer<CollectionChange<Shout>> _windConsumer = new Consumer<CollectionChange<Shout>>(){ @Override public void consume(CollectionChange<Shout> change) {
+			for (Shout shout : change.elementsAdded()) 
+				ShoutPainter.appendShout(shout, _shoutsList);
 
-	
-	private void initScrollPane() {
-		_scrollPane = new JScrollPane();
-		_scrollPane.setBorder(new EmptyBorder(0,0,0,0));
-//		_scrollPane.setBorder(new EmptyBorder(0,5,2,2));
-		_scrollPane.setOpaque(false);
-		_autoscrollSupportToAvoidGc = new WindAutoscrollSupport();
+			if(!change.elementsRemoved().isEmpty())
+				ShoutPainter.repaintAllShoults(_wind.shoutsHeard(), _shoutsList);
+		}};
+		
+		my(Signals.class).receive(this, _windConsumer, _wind.shoutsHeard());
+		_autoscrollSupport.initPosChangeReceiver();
 	}
 
 	private void initShoutReceiver() {
-		my(Signals.class).receive(this, new Consumer<ListChange<Shout>>() { @Override public void consume(ListChange<Shout> ignored) {
+		my(Signals.class).receive(this, new Consumer<CollectionChange<Shout>>() { @Override public void consume(CollectionChange<Shout> ignored) {
 			shoutAlert();
 		}}, _wind.shoutsHeard());
 	}
@@ -196,12 +178,7 @@ class WindGuiImpl implements WindGui {
 				}
 				@Override protected void elementAdded(Shout newElement) { fire(); }
 				@Override protected void elementPresent(Shout element) { fire(); }
-				@Override protected void elementRemoved(Shout element) { fire(); }
-				
-				@Override
-				public void elementInserted(int index, Shout value) {
-					throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
-				}};
+				@Override protected void elementRemoved(Shout element) { fire(); }};
 		}
 		
 		private void initPosChangeReceiver() {

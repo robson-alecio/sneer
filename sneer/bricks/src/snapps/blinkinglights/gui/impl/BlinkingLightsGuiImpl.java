@@ -35,7 +35,6 @@ import sneer.pulp.blinkinglights.Light;
 import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import sneer.skin.colors.Colors;
 import sneer.skin.main.dashboard.InstrumentPanel;
 import sneer.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.skin.main.synth.Synth;
@@ -211,12 +210,9 @@ class BlinkingLightsGuiImpl implements BlinkingLightsGui {
 		    doc.addStyle(HELP, help);
 		    
 		    Style stack = doc.addStyle( STACK_TRACE, def );
-		    StyleConstants.setForeground(stack, my(Colors.class).hightContrast());
 		    StyleConstants.setFontSize( stack, 11 );
 		    doc.addStyle(STACK_TRACE, stack);
 		}
-
-
 	}
 	
 	private final class BlinkingLightsLabelProvider implements LabelProvider<Light> {

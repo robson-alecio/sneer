@@ -5,40 +5,28 @@ import static sneer.commons.environments.Environments.my;
 import java.util.HashMap;
 import java.util.Map;
 
+import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.connection.SocketOriginator;
 import sneer.pulp.internetaddresskeeper.InternetAddress;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
-import sneer.pulp.reactive.collections.impl.SimpleListReceiver;
+import sneer.pulp.reactive.collections.CollectionChange;
 
 class SocketOriginatorImpl implements SocketOriginator {
 
 	private final InternetAddressKeeper _internetAddressKeeper = my(InternetAddressKeeper.class);
-	
-	@SuppressWarnings("unused")
-	private SimpleListReceiver<InternetAddress> _addressReceiverToAvoidGC;
-
+	private final Consumer<CollectionChange<InternetAddress>> _addressReceiverToAvoidGC;
 	private final Map<InternetAddress, OutgoingAttempt> _attemptsByAddress = new HashMap<InternetAddress, OutgoingAttempt>();
 	
 	SocketOriginatorImpl() {
-		_addressReceiverToAvoidGC = new SimpleListReceiver<InternetAddress>(_internetAddressKeeper.addresses()) {
-			
-			@Override
-			protected void elementAdded(InternetAddress address) {
-				startAddressing(address);
-			}
-			
-			@Override
-			protected void elementPresent(InternetAddress address) {
-				startAddressing(address);
-			}
-			
-			@Override
-			protected void elementRemoved(InternetAddress address) {
+		_addressReceiverToAvoidGC =  new Consumer<CollectionChange<InternetAddress>>(){ @Override public void consume(CollectionChange<InternetAddress> value) {
+			for (InternetAddress address : value.elementsRemoved()) 
 				stopAddressing(address);
-			}
-		};
+
+			for (InternetAddress address : value.elementsAdded()) 
+				startAddressing(address);
+		}};
+		_internetAddressKeeper.addresses().addReceiver(_addressReceiverToAvoidGC);
 	}
-	
 
 	private void startAddressing(InternetAddress address) {
 		OutgoingAttempt attempt = new OutgoingAttempt(address);
@@ -49,6 +37,4 @@ class SocketOriginatorImpl implements SocketOriginator {
 		OutgoingAttempt attempt = _attemptsByAddress.remove(address);
 		attempt.crash();
 	}
-
-
 }

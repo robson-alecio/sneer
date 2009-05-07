@@ -18,8 +18,8 @@ import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
-import sneer.pulp.reactive.collections.ReactiveCollections;
-import sneer.pulp.reactive.listsorter.ListSorter;
+import sneer.pulp.reactive.collections.CollectionSignals;
+import sneer.pulp.reactive.collections.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 
 public class ContactComparatorTest extends BrickTest {
@@ -27,7 +27,7 @@ public class ContactComparatorTest extends BrickTest {
 	@Contribute final ConnectionManager _connectionsMock = new ConnectionManagerMock();
 	
 	private ListSorter _sorter;
-	private final ListRegister<Contact> _contacts = my(ReactiveCollections.class).newListRegister();
+	private final ListRegister<Contact> _contacts = my(CollectionSignals.class).newListRegister();
 	private final SignalChooser<Contact> _chooser = new SignalChooser<Contact>(){ @Override public Signal<?>[] signalsToReceiveFrom(Contact element) {
 		return new Signal<?>[]{((ContactMock)element)._isOnline, element.nickname() };
 	}};

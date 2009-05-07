@@ -5,9 +5,9 @@ import java.util.List;
 
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.collections.CollectionChange;
 import sneer.pulp.reactive.collections.ListChange;
 import sneer.pulp.reactive.collections.ListSignal;
-
 
 public class ListSignalOwnerReference<T> extends AbstractOwnerReference<T> implements ListSignal<T> {
 	
@@ -18,7 +18,7 @@ public class ListSignalOwnerReference<T> extends AbstractOwnerReference<T> imple
 		_delegate = delegate;
 	}
 
-	@Override public void addReceiver(Consumer<? super ListChange<T>> receiver) { _delegate.addReceiver(receiver); }
+	@Override public void addReceiver(Consumer<? super CollectionChange<T>> receiver) { _delegate.addReceiver(receiver);}
 	@Override public T currentGet(int index) { return _delegate.currentGet(index); }
 	@Override public void removeReceiver(Object receiver) { _delegate.removeReceiver(receiver); }
 	@Override public List<T> currentElements() { return _delegate.currentElements(); }
@@ -26,4 +26,6 @@ public class ListSignalOwnerReference<T> extends AbstractOwnerReference<T> imple
 	@Override public int currentSize() { return _delegate.currentSize(); }
 	@Override public Signal<Integer> size() { return _delegate.size(); }
 	@Override public Iterator<T> iterator() { return _delegate.iterator(); }
+	@Override public void addListReceiver(Consumer<? super ListChange<T>> receiver) { _delegate.addListReceiver(receiver);}
+	@Override public void removeListReceiver(Object receiver) {_delegate.removeListReceiver(receiver);}
 }

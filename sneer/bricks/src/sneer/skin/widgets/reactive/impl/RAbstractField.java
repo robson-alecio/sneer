@@ -28,7 +28,6 @@ import sneer.hardware.cpu.lang.PickyConsumer;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import sneer.skin.colors.Colors;
 import sneer.skin.widgets.reactive.NotificationPolicy;
 import sneer.skin.widgets.reactive.TextWidget;
 
@@ -271,7 +270,6 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 				return;
 			}
 			_target.setOpaque(true);
-			_target.setBackground(my(Colors.class).invalid());
 		}	
 	}
 }

@@ -4,7 +4,7 @@ import static sneer.commons.environments.Environments.my;
 import sneer.commons.lang.Functor;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
-import sneer.pulp.reactive.collections.ReactiveCollections;
+import sneer.pulp.reactive.collections.CollectionSignals;
 import sneer.pulp.reactive.collections.impl.VisitingListReceiver;
 
 public class Collector<IN, OUT> {
@@ -31,17 +31,12 @@ public class Collector<IN, OUT> {
 		}
 
 		@Override
-		public void elementInserted(int index, IN value) {
-			throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
-		}
-
-		@Override
 		public void elementMoved(int oldIndex, int newIndex, IN element) {
 			throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
 		}
 	}
 
-	private final ListRegister<OUT> _output = my(ReactiveCollections.class).newListRegister();
+	private final ListRegister<OUT> _output = my(CollectionSignals.class).newListRegister();
 	private final Functor<IN, OUT> _functor;
 
 	public Collector(ListSignal<IN> input, Functor<IN, OUT> functor) {

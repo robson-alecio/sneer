@@ -1,4 +1,4 @@
-package sneer.pulp.reactive.listsorter.tests;
+package sneer.pulp.reactive.collections.listsorter.tests;
 
 import static sneer.commons.environments.Environments.my;
 
@@ -13,12 +13,12 @@ import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
+import sneer.pulp.reactive.collections.CollectionSignals;
 import sneer.pulp.reactive.collections.ListChange;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
-import sneer.pulp.reactive.collections.ReactiveCollections;
 import sneer.pulp.reactive.collections.ListChange.Visitor;
-import sneer.pulp.reactive.listsorter.ListSorter;
+import sneer.pulp.reactive.collections.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 
 public class ListSorterTest extends BrickTest {
@@ -52,16 +52,14 @@ public class ListSorterTest extends BrickTest {
 			one(_visitor).elementAdded(4, _40);
 			
 			one(_visitor).elementRemoved(2, _20);
-			
 			one(_visitor).elementRemoved(2, _30);
-			
 			one(_visitor).elementRemoved(3, _50);
-			
 			one(_visitor).elementRemoved(2, _40);
+			
 			one(_visitor).elementAdded(1, _10);
 		}});		
 		
-		ListRegister<Signal<Integer>> src = my(ReactiveCollections.class).newListRegister();
+		ListRegister<Signal<Integer>> src = my(CollectionSignals.class).newListRegister();
 	
 		src.add(_60);
 		src.remove(_60);
@@ -70,7 +68,7 @@ public class ListSorterTest extends BrickTest {
 		Consumer<ListChange<Signal<Integer>>> consumer = new Consumer<ListChange<Signal<Integer>>>(){ @Override public void consume(ListChange<Signal<Integer>> value) {
 			value.accept(_visitor);
 		}};
-		sortedList.addReceiver(consumer);
+		sortedList.addListReceiver(consumer);
 		
 		src.add(_50);
 		src.add(_00);
@@ -88,7 +86,7 @@ public class ListSorterTest extends BrickTest {
 	
 	@Test
 	public void removeTest() {
-		ListRegister<Signal<Integer>> src = my(ReactiveCollections.class).newListRegister();
+		ListRegister<Signal<Integer>> src = my(CollectionSignals.class).newListRegister();
 
 		src.add(_20);
 		src.add(_10);
@@ -112,14 +110,14 @@ public class ListSorterTest extends BrickTest {
 		AssertUtils.assertSameContents(sortedList, _10, _30, _30);
 	}	
 
-	private Signal<Integer> signal(Register<Integer> r10) {
-		return r10.output();
+	private Signal<Integer> signal(Register<Integer> register) {
+		return register.output();
 	}	
 	
 	@Test
 	public void replaceTest() {
 		
-		ListRegister<Signal<Integer>> src = my(ReactiveCollections.class).newListRegister();
+		ListRegister<Signal<Integer>> src = my(CollectionSignals.class).newListRegister();
 
 		src.add(_30);
 		src.add(_30);
@@ -146,7 +144,7 @@ public class ListSorterTest extends BrickTest {
 	@Test
 	public void addTest() {
 		
-		ListRegister<Signal<Integer>> src = my(ReactiveCollections.class).newListRegister();
+		ListRegister<Signal<Integer>> src = my(CollectionSignals.class).newListRegister();
 
 		src.add(_20);
 		src.add(_10);
@@ -179,7 +177,7 @@ public class ListSorterTest extends BrickTest {
 	
 	@Test
 	public void signalChooserTest() {
-		ListRegister<Signal<Integer>> src = my(ReactiveCollections.class).newListRegister();
+		ListRegister<Signal<Integer>> src = my(CollectionSignals.class).newListRegister();
 
 		Register<Integer> r15 = my(Signals.class).newRegister(15);
 		Register<Integer> r25 = my(Signals.class).newRegister(25);

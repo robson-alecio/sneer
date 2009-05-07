@@ -1,8 +1,7 @@
 package sneer.pulp.reactive.collections.impl;
 
-import sneer.pulp.reactive.collections.ListChange;
 
-final class ListElementMoved<T> extends AbstractListValueChange<T> implements ListChange<T> {
+final class ListElementMoved<T> extends AbstractListValueChange<T> {
 
 	private final int _newIndex;
 

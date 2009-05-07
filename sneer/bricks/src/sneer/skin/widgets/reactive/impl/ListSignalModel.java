@@ -10,11 +10,11 @@ import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.collections.impl.VisitingListReceiver;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
-import sneer.pulp.reactive.signalchooser.SignalChooserManagerFactory;
+import sneer.pulp.reactive.signalchooser.SignalChoosers;
 
 class ListSignalModel<T> extends AbstractListModel {
 
-	private final SignalChooserManagerFactory _signalChooserManagerFactory = my(SignalChooserManagerFactory.class);
+	private final SignalChoosers _signalChooserManagerFactory = my(SignalChoosers.class);
 	
 	private final ListSignal<T> _input;
 	
@@ -53,13 +53,6 @@ class ListSignalModel<T> extends AbstractListModel {
 			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
 				contentsChanged(index);
 			}});
-		}
-
-		@Override
-		public void elementInserted(final int index, final T value) {
-			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
-				fireIntervalAdded(ListSignalModel.this, index, index);
-			}});		
 		}
 
 		@Override

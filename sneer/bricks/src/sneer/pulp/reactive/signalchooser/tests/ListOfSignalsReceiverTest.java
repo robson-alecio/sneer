@@ -11,20 +11,19 @@ import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
-import sneer.pulp.reactive.collections.ReactiveCollections;
+import sneer.pulp.reactive.collections.CollectionSignals;
 import sneer.pulp.reactive.collections.impl.VisitingListReceiver;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
-import sneer.pulp.reactive.signalchooser.SignalChooserManager;
-import sneer.pulp.reactive.signalchooser.SignalChooserManagerFactory;
+import sneer.pulp.reactive.signalchooser.SignalChoosers;
 
 public class ListOfSignalsReceiverTest extends BrickTest {
 
-	private final SignalChooserManagerFactory _factory = my(SignalChooserManagerFactory.class); 
+	private final SignalChoosers _factory = my(SignalChoosers.class); 
 	
 	@SuppressWarnings("unused")
-	private SignalChooserManager<Register<String>> _managerToAvoidGc;
-	private ListRegister<Register<String>> _listRegister = my(ReactiveCollections.class).newListRegister();
+	private Object _refToAvoidGc;
+	private ListRegister<Register<String>> _listRegister = my(CollectionSignals.class).newListRegister();
 	private EventRecorder _recorder;
 
 	@Test
@@ -33,7 +32,7 @@ public class ListOfSignalsReceiverTest extends BrickTest {
 		
 		addElement("0");
 		assertEvents("");
-		_managerToAvoidGc = _factory.newManager(_listRegister.output(), newListOfSignalsReceiver(_listRegister.output()));
+		_refToAvoidGc = _factory.newManager(_listRegister.output(), newListOfSignalsReceiver(_listRegister.output()));
 		
 		Register<String> r1 = addElement("1");
 		Register<String> r2 = addElement("2");
@@ -47,7 +46,7 @@ public class ListOfSignalsReceiverTest extends BrickTest {
 		
 		r1.setter().consume("1b");
 		r2.setter().consume("2b");
-		assertEvents("Changed(4)=1b, Changed(5)=1b, Changed(1)=2b, "); //[ 0, 2b, 3, 4, 1b, 1b ]
+		assertEvents("Changed(1)=1b, Changed(5)=1b, Changed(2)=2b, "); //[ 0, 2b, 3, 4, 1b, 1b ]
 
 		_listRegister.move(5, 1);
 		assertEvents("Moved(5, 1)=1b, "); 	//[ 0, 1b, 2b, 3, 4, 1b ]
@@ -59,7 +58,7 @@ public class ListOfSignalsReceiverTest extends BrickTest {
 		
 		r1.setter().consume("1c");
 		r2.setter().consume("2c");
-		assertEvents("Changed(2)=1c, Changed(0)=1c, Changed(1)=2c, "); //[ 1c, 2c, 1c ]
+		assertEvents("Changed(0)=1c, Changed(2)=1c, Changed(1)=2c, "); //[ 1c, 2c, 1c ]
 		
 		_listRegister.addAt(1, r2);
 		assertEvents("Added(1)=2c, "); //[ 1c, 2c, 2c, 1c ]
@@ -110,9 +109,6 @@ public class ListOfSignalsReceiverTest extends BrickTest {
 		
 		@Override public void elementAdded(int index, Register<String> element) { 
 			_recorder.record("Added", index, value(element)); }
-		
-		@Override public void elementInserted(int index, Register<String> element) {
-			_recorder.record("Inserted", index, value(element)); }
 		
 		@Override public void elementMoved(int oldIndex, int newIndex, Register<String> element) { 
 			_recorder.record("Moved", oldIndex, newIndex, value(element)); }

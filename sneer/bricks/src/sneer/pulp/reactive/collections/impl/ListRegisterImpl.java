@@ -12,6 +12,7 @@ import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
+import sneer.pulp.reactive.collections.CollectionChange;
 import sneer.pulp.reactive.collections.ListChange;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
@@ -21,6 +22,10 @@ class ListRegisterImpl<VO> implements ListRegister<VO> {
 	private class MyOutput implements ListSignal<VO> {
 
 		EventNotifier<ListChange<VO>> _notifier = my(EventNotifiers.class).create(new Consumer<Consumer<? super ListChange<VO>>>(){@Override public void consume(Consumer<? super ListChange<VO>> receiver) {
+			//TODO
+		}});
+
+		EventNotifier<CollectionChange<VO>> _notifier2 = my(EventNotifiers.class).create(new Consumer<Consumer<? super CollectionChange<VO>>>(){@Override public void consume(Consumer<? super CollectionChange<VO>> receiver) {
 			//TODO
 		}});
 
@@ -39,18 +44,9 @@ class ListRegisterImpl<VO> implements ListRegister<VO> {
 			return _list.size();
 		}
 
-		@Override
-		public void addReceiver(Consumer<? super ListChange<VO>> receiver) {
-			_notifier.output().addReceiver(receiver);	
-		}
-		
-		@Override
-		public void removeReceiver(Object receiver) {
-			_notifier.output().removeReceiver(receiver);		
-		}
-
-		void notifyReceivers(ListChange<VO> valueChange) {
+		void notifyReceivers(final AbstractListValueChange<VO> valueChange) {
 			_notifier.notifyReceivers(valueChange);
+			_notifier2.notifyReceivers(valueChange);
 		}
 
 		public Iterator<VO> iterator() {
@@ -71,6 +67,25 @@ class ListRegisterImpl<VO> implements ListRegister<VO> {
 			}
 		}
 
+		@Override
+		public void addListReceiver(Consumer<? super ListChange<VO>> receiver) {
+			_notifier.output().addReceiver(receiver);
+		}
+
+		@Override
+		public void removeListReceiver(Object receiver) {
+			_notifier.output().removeReceiver(receiver);	
+		}
+
+		@Override
+		public void removeReceiver(Object receiver) {
+			_notifier2.output().removeReceiver(receiver);
+		}
+
+		@Override
+		public void addReceiver(Consumer<? super CollectionChange<VO>> receiver) {
+			_notifier2.output().addReceiver(receiver);
+		}
 	}
 
 	

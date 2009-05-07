@@ -1,6 +1,3 @@
-/**
- * 
- */
 package sneer.pulp.reactive.collections;
 
 import java.util.Collection;

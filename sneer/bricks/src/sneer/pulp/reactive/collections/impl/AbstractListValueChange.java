@@ -35,6 +35,6 @@ abstract class AbstractListValueChange<T>  implements CollectionChange<T>, ListC
 
 	@Override
 	public Collection<T> elementsRemoved() {
-		return newColection(_element);
+		return Collections.EMPTY_LIST;
 	}
 }

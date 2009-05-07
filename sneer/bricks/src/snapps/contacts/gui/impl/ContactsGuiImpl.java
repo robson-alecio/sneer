@@ -24,7 +24,6 @@ import snapps.contacts.actions.ContactAction;
 import snapps.contacts.actions.ContactActionManager;
 import snapps.contacts.gui.ContactsGui;
 import snapps.contacts.gui.comparator.ContactComparator;
-import snapps.contacts.gui.delete.DeleteContactWindow;
 import snapps.contacts.gui.info.ContactInfoWindow;
 import sneer.commons.lang.Functor;
 import sneer.hardware.gui.images.Images;
@@ -94,7 +93,6 @@ class ContactsGuiImpl implements ContactsGui {
 		addListModelListener();
 		addContatActions(window.actions());
 		addDefaultContactAction();
-		deleteContatAction();
 
 		new ListContactsPopUpSupport();
 		new SelectedContactSupport();
@@ -145,10 +143,6 @@ class ContactsGuiImpl implements ContactsGui {
 	
 	private Contact newContact() {
 		return my(ContactManager.class).produceContact("<nickname>");
-	}
-	
-	private void deleteContatAction() {
-		my(DeleteContactWindow.class).checkAndDelete();
 	}
 
 	private JList contactList() {

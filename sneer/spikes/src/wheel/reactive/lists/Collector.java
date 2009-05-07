@@ -29,11 +29,6 @@ public class Collector<IN, OUT> {
 		public void elementReplaced(int index, IN oldValue, IN newValue) {
 			_output.replace(index, _functor.evaluate(_input.currentGet(index)));
 		}
-
-		@Override
-		public void elementMoved(int oldIndex, int newIndex, IN element) {
-			throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
-		}
 	}
 
 	private final ListRegister<OUT> _output = my(CollectionSignals.class).newListRegister();

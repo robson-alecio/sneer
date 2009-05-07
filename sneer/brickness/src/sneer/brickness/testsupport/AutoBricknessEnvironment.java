@@ -1,4 +1,4 @@
-package sneer.brickness.impl;
+package sneer.brickness.testsupport;
 
 import sneer.brickness.Brickness;
 import sneer.commons.environments.*;

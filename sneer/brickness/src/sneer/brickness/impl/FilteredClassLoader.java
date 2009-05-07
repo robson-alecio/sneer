@@ -5,7 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-public abstract class FilteredClassLoader extends URLClassLoader {
+abstract class FilteredClassLoader extends URLClassLoader {
 
 	protected final ClassLoader _delegate;
 

@@ -6,9 +6,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import sneer.brickness.BrickLayer;
+import sneer.brickness.BrickPlacementException;
 import sneer.brickness.Brickness;
 import sneer.brickness.BricknessFactory;
-import sneer.brickness.impl.BrickPlacementException;
 import sneer.brickness.impl.tests.fixtures.a.BrickA;
 import sneer.brickness.impl.tests.fixtures.b.BrickB;
 import sneer.brickness.impl.tests.fixtures.noannotation.InterfaceWithoutBrickAnnotation;

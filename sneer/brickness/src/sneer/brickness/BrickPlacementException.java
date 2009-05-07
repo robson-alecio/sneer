@@ -1,4 +1,4 @@
-package sneer.brickness.impl;
+package sneer.brickness;
 
 public class BrickPlacementException extends RuntimeException {
 

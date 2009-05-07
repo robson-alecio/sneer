@@ -9,6 +9,7 @@ import java.util.List;
 import sneer.brickness.Brick;
 import sneer.brickness.BrickConventions;
 import sneer.brickness.BrickLayer;
+import sneer.brickness.BrickPlacementException;
 import sneer.brickness.Brickness;
 import sneer.brickness.Nature;
 import sneer.commons.environments.Bindings;
@@ -66,7 +67,7 @@ public class BricknessImpl implements BrickLayer, Brickness {
 	private List<Nature> naturesFor(Class<?> brick) {
 		final Brick annotation = brick.getAnnotation(Brick.class);
 		if (annotation == null) {
-			throw new IllegalBrickException("Brick '" + brick.getName() + "' is not annotated as such!");
+			throw new BrickPlacementException("Brick '" + brick.getName() + "' is not annotated as such!");
 		}
 		final Class<? extends Nature>[] natureClasses = annotation.value();
 		if (natureClasses.length == 0)
@@ -79,7 +80,7 @@ public class BricknessImpl implements BrickLayer, Brickness {
 		for (Class<? extends Nature> natureClass : natureClasses) {
 			final Nature nature = environment().provide(natureClass);
 			if (null == nature)
-				throw new IllegalNatureException("Implementation for nature '" + natureClass.getName() + "' not found.");
+				throw new BrickPlacementException("Implementation for nature '" + natureClass.getName() + "' not found.");
 			result.add(nature);
 		}
 		return result;

@@ -1,8 +1,8 @@
 package main;
 
+import sneer.brickness.BrickPlacementException;
 import sneer.brickness.Brickness;
 import sneer.brickness.BricknessFactory;
-import sneer.brickness.impl.BrickPlacementException;
 import sneer.pulp.natures.gui.GUI;
 import wheel.io.Jars;
 

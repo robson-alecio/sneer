@@ -7,7 +7,6 @@ import java.util.Set;
 
 import sneer.pulp.logging.Logger;
 import sneer.pulp.threads.Threads;
-import wheel.lang.exceptions.TimeIsUp;
 
 abstract class OldTimebox implements Runnable { //REFACTOR Clean this up. See callers.
 

@@ -16,7 +16,6 @@ import sneer.commons.environments.Environments;
 import sneer.commons.lang.ByRef;
 import sneer.commons.lang.exceptions.NotImplementedYet;
 import sneer.hardware.gui.timebox.TimeboxedEventQueue;
-import wheel.lang.exceptions.TimeIsUp;
 
 @Ignore
 public class GuiBrickTest {
@@ -88,7 +87,7 @@ public class GuiBrickTest {
 		final SomeGuiBrick brick = environment.provide(SomeGuiBrick.class);
 		try {
 			brick.slowMethod();
-		} catch (TimeIsUp expected) {
+		} catch (Throwable expected) {
 			return;
 		}
 		fail("timebox should have stopped the method");

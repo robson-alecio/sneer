@@ -1,7 +1,6 @@
 package sneer.pulp.tuples.impl;
 
 import static sneer.commons.environments.Environments.my;
-import static wheel.lang.Types.cast;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,7 +44,7 @@ class TupleSpaceImpl implements TupleSpace {
 		private final BlockingQueue<Tuple> _tuplesToNotify = new LinkedBlockingQueue<Tuple>(); 
 
 		<T extends Tuple> Subscription(Consumer<? super T> subscriber, Class<T> tupleType) {
-			_subscriber = cast(subscriber);
+			_subscriber = (Consumer<? super Tuple>) subscriber;
 			_tupleType = tupleType;
 			_environment = my(Environment.class);
 			

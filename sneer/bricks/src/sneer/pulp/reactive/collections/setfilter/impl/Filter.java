@@ -1,10 +1,12 @@
 package sneer.pulp.reactive.collections.setfilter.impl;
 
+import static sneer.commons.environments.Environments.my;
 import java.util.HashMap;
 import java.util.Map;
 
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.ReactivePredicate;
+import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.CollectionChange;
 import sneer.pulp.reactive.collections.SetRegister;
 import sneer.pulp.reactive.collections.SetSignal;
@@ -25,18 +27,17 @@ final class Filter<T> {
 		 _output = new SetRegisterImpl<T>();
 		 
 		 add(_input);
-		
-		_input.addReceiver(_receiverAvoidGc);
+		 
+		 Consumer<CollectionChange<T>> receiver = new Consumer<CollectionChange<T>>(){@Override public void consume(CollectionChange<T> change) {
+			add(change.elementsAdded());
+			remove(change.elementsRemoved());
+		}};
+		my(Signals.class).receive(this, receiver, _input);
 	}
 
 	SetSignal<T> output() {
 		return new SetSignalOwnerReference<T>(_output.output(), this);
 	}
-	
-	private final Consumer<CollectionChange<T>> _receiverAvoidGc = new Consumer<CollectionChange<T>>(){@Override public void consume(CollectionChange<T> change) {
-		add(change.elementsAdded());
-		remove(change.elementsRemoved());
-	}};
 
 	private void add(Iterable<T> elements) {
 		for (T element : elements)
@@ -62,7 +63,7 @@ final class Filter<T> {
 				_output.remove(element);
 		}};
 		
-		_predicate.evaluate(element).addReceiver(receiver);
+		my(Signals.class).receive(this, receiver,_predicate.evaluate(element));
 		_receiversByElement.put(element, receiver);
 	}
 }

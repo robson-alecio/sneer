@@ -5,7 +5,6 @@ import java.io.File;
 import sneer.brickness.Brick;
 import sneer.software.compilers.classpath.Classpath;
 import sneer.software.compilers.classpath.ClasspathFactory;
-import wheel.io.Jars;
 import wheel.io.codegeneration.ClassUtils;
 
 class ClasspathFactoryImpl implements ClasspathFactory {
@@ -31,28 +30,17 @@ class ClasspathFactoryImpl implements ClasspathFactory {
 	}
 
 	private Classpath findSneerApi() {
-		Classpath result = fromJarFiles(commonsLang(), commonsCollections(), commonsIo());
+//		Classpath result = fromJarFiles(commonsLang(), commonsCollections(), commonsIo());
+		Classpath result = fromJarFiles(); //Refactor: Commons jar files are no longer used. 
 
-		try {
+		//try {
 			/* try to load from sneer.jar */
-			Jars.jarGiven(Brick.class);
-			throw new sneer.commons.lang.exceptions.NotImplementedYet();	
+			//Jars.jarGiven(Brick.class);
+			//throw new sneer.commons.lang.exceptions.NotImplementedYet();	
 
-		} catch(StringIndexOutOfBoundsException e) {
+		//} catch(StringIndexOutOfBoundsException e) {
 			return result.compose(buildEclipseClasspath());
-		}
-	}
-
-	private File commonsLang() {
-		return Jars.jarGiven(org.apache.commons.lang.ObjectUtils.class);
-	}
-
-	private File commonsCollections() {
-		return Jars.jarGiven(org.apache.commons.collections15.CollectionUtils.class);
-	}
-
-	private File commonsIo() {
-		return Jars.jarGiven(org.apache.commons.io.FileUtils.class);
+		//}
 	}
 
 	private Classpath buildEclipseClasspath() {

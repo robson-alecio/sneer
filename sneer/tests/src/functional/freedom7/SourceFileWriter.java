@@ -1,4 +1,4 @@
-package wheel.io;
+package functional.freedom7;
 
 import java.io.File;
 import java.io.IOException;

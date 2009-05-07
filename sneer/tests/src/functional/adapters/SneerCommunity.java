@@ -9,10 +9,10 @@ import org.apache.commons.lang.StringUtils;
 import sneer.brickness.Brickness;
 import sneer.brickness.BricknessFactory;
 import sneer.brickness.StoragePath;
+import sneer.brickness.testsupport.ClassFiles;
 import sneer.commons.environments.Environments;
 import sneer.pulp.network.Network;
 import testutils.network.InProcessNetwork;
-import wheel.io.Jars;
 import functional.SovereignCommunity;
 import functional.SovereignParty;
 
@@ -49,7 +49,7 @@ public class SneerCommunity implements SovereignCommunity {
 
 	private void placeBricks(Brickness container, Class<?>... bricks) {
 		for (Class<?> brick : bricks)
-			container.placeBrick(Jars.classpathRootFor(brick), brick.getName());
+			container.placeBrick(ClassFiles.classpathRootFor(brick), brick.getName());
 	}
 
 	private Brickness newContainer(final String name) {

@@ -2,11 +2,11 @@ package spikes.sandro.summit.register;
 
 import sneer.brickness.Brickness;
 import sneer.brickness.BricknessFactory;
+import sneer.brickness.testsupport.ClassFiles;
 import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
 import sneer.pulp.reactive.Signals;
 import spikes.sandro.summit.register.logger.SimpleLogger;
-import wheel.io.Jars;
 
 public class RunMe {
 	
@@ -29,7 +29,7 @@ public class RunMe {
 	}
 
 	private void placeBrick(Class<?> brick) {
-		container.placeBrick(Jars.classpathRootFor(brick), brick.getName());
+		container.placeBrick(ClassFiles.classpathRootFor(brick), brick.getName());
 	}
 
 	public static void main(String[] args) {

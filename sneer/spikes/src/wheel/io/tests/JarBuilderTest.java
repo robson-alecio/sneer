@@ -10,9 +10,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
+import sneer.brickness.testsupport.JarBuilder;
 import sneer.brickness.testsupport.TestThatMightUseResources;
 import sneer.commons.io.Streams;
-import wheel.io.JarBuilder;
 
 public class JarBuilderTest extends TestThatMightUseResources {
 

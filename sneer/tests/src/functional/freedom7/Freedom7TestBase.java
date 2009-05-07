@@ -10,7 +10,6 @@ import org.junit.Test;
 
 import sneer.pulp.logging.out.LogToSystemOut;
 import sneer.software.compilers.java.JavaCompiler;
-import wheel.io.SourceFileWriter;
 import functional.SovereignFunctionalTestBase;
 import functional.SovereignParty;
 

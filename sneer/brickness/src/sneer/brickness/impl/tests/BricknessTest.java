@@ -12,14 +12,14 @@ import sneer.brickness.BricknessFactory;
 import sneer.brickness.impl.tests.fixtures.a.BrickA;
 import sneer.brickness.impl.tests.fixtures.b.BrickB;
 import sneer.brickness.impl.tests.fixtures.noannotation.InterfaceWithoutBrickAnnotation;
-import wheel.io.Jars;
+import sneer.brickness.testsupport.ClassFiles;
 
 public class BricknessTest extends Assert {
 	
 	Brickness subject = BricknessFactory.newBrickContainer();
 
 	protected void placeBrick(final Class<?> brick) {
-		subject.placeBrick(Jars.classpathRootFor(brick), brick.getName());
+		subject.placeBrick(ClassFiles.classpathRootFor(brick), brick.getName());
 	}
 
 	@Test

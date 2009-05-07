@@ -3,8 +3,8 @@ package main;
 import sneer.brickness.BrickPlacementException;
 import sneer.brickness.Brickness;
 import sneer.brickness.BricknessFactory;
+import sneer.brickness.testsupport.ClassFiles;
 import sneer.pulp.natures.gui.GUI;
-import wheel.io.Jars;
 
 
 public class Sneer {
@@ -25,7 +25,7 @@ public class Sneer {
 
 	static public void placeBricks(Brickness container, Class<?>... bricks) throws BrickPlacementException {
 		for (Class<?> brick : bricks)
-			container.placeBrick(Jars.classpathRootFor(brick), brick.getName());
+			container.placeBrick(ClassFiles.classpathRootFor(brick), brick.getName());
 	}
 
 	static public Class<?>[] businessBricks() {

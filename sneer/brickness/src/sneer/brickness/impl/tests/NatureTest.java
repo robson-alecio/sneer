@@ -17,7 +17,7 @@ import sneer.brickness.ClassDefinition;
 import sneer.brickness.impl.tests.fixtures.nature.brick.BrickOfSomeNature;
 import sneer.brickness.impl.tests.fixtures.nature.brick.impl.BrickOfSomeNatureImpl;
 import sneer.brickness.impl.tests.fixtures.nature.provider.SomeNature;
-import wheel.io.Jars;
+import sneer.brickness.testsupport.ClassFiles;
 
 // TODO: test multiple natures
 public class NatureTest extends Assert {
@@ -54,11 +54,11 @@ public class NatureTest extends Assert {
 	}
 	
 	protected void placeBrick(Brickness subject, final Class<?> brick) {
-		subject.placeBrick(Jars.classpathRootFor(brick), brick.getName());
+		subject.placeBrick(ClassFiles.classpathRootFor(brick), brick.getName());
 	}
 
 	private byte[] bytecodeFor(final Class<?> clazz)
 			throws IOException {
-		return FileUtils.readFileToByteArray(Jars.fileFor(clazz));
+		return FileUtils.readFileToByteArray(ClassFiles.fileFor(clazz));
 	}
 }

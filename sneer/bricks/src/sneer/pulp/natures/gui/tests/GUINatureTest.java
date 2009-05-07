@@ -11,13 +11,13 @@ import org.junit.Test;
 
 import sneer.brickness.Brickness;
 import sneer.brickness.BricknessFactory;
+import sneer.brickness.testsupport.ClassFiles;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.ByRef;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.natures.gui.GUI;
 import sneer.pulp.natures.gui.tests.fixtures.SomeGuiBrick;
-import wheel.io.Jars;
 
 public class GUINatureTest extends Assert {
 	
@@ -73,7 +73,7 @@ public class GUINatureTest extends Assert {
 	}
 
 	private void placeBrick(final Class<?> brick) {
-		subject.placeBrick(Jars.classpathRootFor(brick), brick.getName());
+		subject.placeBrick(ClassFiles.classpathRootFor(brick), brick.getName());
 	}
 	
 	private Thread swingThread() {

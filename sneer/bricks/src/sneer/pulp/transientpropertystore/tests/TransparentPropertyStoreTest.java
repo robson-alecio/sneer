@@ -9,11 +9,11 @@ import org.junit.Test;
 
 import sneer.brickness.Brickness;
 import sneer.brickness.BricknessFactory;
+import sneer.brickness.testsupport.ClassFiles;
 import sneer.brickness.testsupport.TestThatMightUseResources;
 import sneer.commons.environments.Environments;
 import sneer.pulp.transientpropertystore.TransientPropertyStore;
 import sneer.pulp.transientpropertystore2.TransientPropertyStore2;
-import wheel.io.Jars;
 
 @Ignore
 public class TransparentPropertyStoreTest extends TestThatMightUseResources {
@@ -71,7 +71,7 @@ public class TransparentPropertyStoreTest extends TestThatMightUseResources {
 	}
 
 	private void placeBrick(Brickness container, Class<?> brick) {
-		container.placeBrick(Jars.classpathRootFor(brick), brick.getName());
+		container.placeBrick(ClassFiles.classpathRootFor(brick), brick.getName());
 	}
 
 

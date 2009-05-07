@@ -1,4 +1,4 @@
-package wheel.io;
+package sneer.software.compilers.java.tests;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,29 +6,11 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLClassLoader;
+
+import sneer.brickness.testsupport.JarBuilder;
 
 
-
-public class Jars {
-
-	public static void runAllowingForClassGC(URL jar, String classToInstantiate) throws Exception {
-		URLClassLoader loader = createGarbageCollectableClassLoader(jar);
-		loader.loadClass(classToInstantiate).newInstance();
-	}
-	
-	
-	public static URLClassLoader createGarbageCollectableClassLoader(URL jar) throws Exception {
-		return new URLClassLoader(new URL[]{jar}, bootstrapClassLoader());
-	}
-	
-	
-	public static ClassLoader bootstrapClassLoader() {
-		ClassLoader candidate = ClassLoader.getSystemClassLoader();
-		while (candidate.getParent() != null) candidate = candidate.getParent();
-		return candidate;
-	}
-
+public class JarUtils {
 
 	public static File jarGiven(Class<?> clazz) {
 		URL url = clazz.getResource(clazz.getSimpleName() + ".class");

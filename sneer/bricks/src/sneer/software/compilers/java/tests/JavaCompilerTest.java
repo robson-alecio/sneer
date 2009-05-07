@@ -17,7 +17,6 @@ import sneer.software.compilers.classpath.ClasspathFactory;
 import sneer.software.compilers.java.CompilationError;
 import sneer.software.compilers.java.JavaCompiler;
 import sneer.software.compilers.java.Result;
-import wheel.io.Jars;
 
 public class JavaCompilerTest extends BrickTest {
 
@@ -53,7 +52,7 @@ public class JavaCompilerTest extends BrickTest {
 	public void testWithExternalDependencies() throws Exception {
 		final File libFolder = createLibFolder();
 		try {
-			Jars.createJar(new File(libFolder, "lib.jar"), TestLib.class);
+			JarUtils.createJar(new File(libFolder, "lib.jar"), TestLib.class);
 			Result result = compile("class Foo extends " + TestLib.class.getName() + " {}", libFolder);
 			assertSuccess(result);
 		} finally {

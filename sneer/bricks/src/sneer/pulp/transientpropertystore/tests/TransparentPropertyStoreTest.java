@@ -7,8 +7,6 @@ import java.io.IOException;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import sneer.brickness.impl.BrickDecorator;
-import sneer.brickness.impl.BrickInstantiator;
 import sneer.brickness.impl.Brickness;
 import sneer.brickness.testsupport.TestThatMightUseResources;
 import sneer.commons.environments.Environments;
@@ -16,6 +14,7 @@ import sneer.pulp.transientpropertystore.TransientPropertyStore;
 import sneer.pulp.transientpropertystore2.TransientPropertyStore2;
 import wheel.io.Jars;
 
+@Ignore
 public class TransparentPropertyStoreTest extends TestThatMightUseResources {
 
 	@Test
@@ -53,8 +52,15 @@ public class TransparentPropertyStoreTest extends TestThatMightUseResources {
 		}});
 	}
 
+//	private BrickDecorator newPrevalentDecorator() {
+//		return new BrickDecorator() {@Override public Object decorate(Class<?> brick, Object brickImpl) {
+//			return Bubble.wrapStateMachine(brick, brickImpl, tmpDirectory());
+//		}};
+//	}
+
 	private void runWithTransparentPersistence(Runnable runnable)	throws IOException {
-		Brickness container = new Brickness(newPrevalentInstantiator(), newPrevalentDecorator());
+//		Brickness container = new Brickness(newPrevalentDecorator());
+		Brickness container = new Brickness();
 		placeBrick(container, TransientPropertyStore.class);
 		placeBrick(container, TransientPropertyStore2.class);
 		
@@ -63,19 +69,10 @@ public class TransparentPropertyStoreTest extends TestThatMightUseResources {
 		Bubble.close();
 	}
 
-	private BrickInstantiator newPrevalentInstantiator() {
-		throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
-	}
-
 	private void placeBrick(Brickness container, Class<?> brick) {
 		container.placeBrick(Jars.classpathRootFor(brick), brick.getName());
 	}
 
-	private BrickDecorator newPrevalentDecorator() {
-		return new BrickDecorator() {@Override public Object decorate(Class<?> brick, Object brickImpl) {
-			return Bubble.wrapStateMachine(brick, brickImpl, tmpDirectory());
-		}};
-	}
 
 }
 

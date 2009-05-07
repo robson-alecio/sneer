@@ -10,7 +10,7 @@
 	- [Igor] main.Sneer - Organize brick list (skin stuff goes to communicationBricks).
 
 	- [Klaus] EventReceiver - Pass owner on creation. Signal will hold reference to receiver until owner is GC'd.
-		- [Igor] Finish off simple cases. Pair with Klaus on the complicated ones.
+		- [Igor] Finish off simple cases. Pair with Klaus on complicated ones.
 
 
 TASKS

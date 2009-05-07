@@ -2,21 +2,26 @@ package sneer.pulp.natures.gui.tests;
 
 import static sneer.commons.environments.Environments.my;
 
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-import sneer.brickness.impl.*;
-import sneer.commons.environments.*;
-import sneer.commons.lang.*;
-import sneer.hardware.gui.guithread.*;
-import sneer.pulp.natures.gui.*;
-import sneer.pulp.natures.gui.tests.fixtures.*;
-import wheel.io.*;
+import sneer.brickness.Brickness;
+import sneer.brickness.BricknessFactory;
+import sneer.commons.environments.Environment;
+import sneer.commons.environments.Environments;
+import sneer.commons.lang.ByRef;
+import sneer.hardware.gui.guithread.GuiThread;
+import sneer.pulp.natures.gui.GUI;
+import sneer.pulp.natures.gui.tests.fixtures.SomeGuiBrick;
+import wheel.io.Jars;
 
 public class GUINatureTest extends Assert {
 	
-	Brickness subject = new Brickness();
+	Brickness subject = BricknessFactory.newBrickContainer();
 	
 	@Before
 	public void placeBricks() {

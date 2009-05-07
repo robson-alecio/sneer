@@ -1,6 +1,7 @@
 package spikes.sandro.summit.register;
 
-import sneer.brickness.impl.Brickness;
+import sneer.brickness.Brickness;
+import sneer.brickness.BricknessFactory;
 import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
 import sneer.pulp.reactive.Signals;
@@ -9,7 +10,7 @@ import wheel.io.Jars;
 
 public class RunMe {
 	
-	Brickness container = new Brickness();
+	Brickness container = BricknessFactory.newBrickContainer();
 	
 	RunMe(){
 		placeBricks(new Class<?>[]{

@@ -9,7 +9,7 @@ import javax.swing.SwingUtilities;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import sneer.brickness.impl.Brickness;
+import sneer.brickness.BricknessFactory;
 import sneer.brickness.testsupport.SystemBrickEnvironment;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
@@ -22,14 +22,14 @@ public class GuiBrickTest {
 	
 	@Test
 	public void guiBrickRunsInSwingThread() throws Exception {
-		final Environment environment = new Brickness().environment();
+		final Environment environment = BricknessFactory.newBrickContainer().environment();
 		final SomeGuiBrick brick = environment.provide(SomeGuiBrick.class);
 		assertSame(swingThread(), brick.currentThread());
 	}
 	
 	@Test
 	public void guiBrickRunsInContainerEnvironment() throws Exception {
-		final Environment environment = new Brickness().environment();
+		final Environment environment = BricknessFactory.newBrickContainer().environment();
 		final SomeGuiBrick brick = environment.provide(SomeGuiBrick.class);
 		assertSame(environment, brick.currentEnvironment());
 	}
@@ -53,7 +53,7 @@ public class GuiBrickTest {
 			}
 		};
 		
-		final Environment environment = new Brickness(binding).environment();
+		final Environment environment = BricknessFactory.newBrickContainer(binding).environment();
 
 		final SomeGuiBrick brick = environment.provide(SomeGuiBrick.class);
 		
@@ -83,7 +83,7 @@ public class GuiBrickTest {
 
 
 	private void runInsideTimebox() {
-		final Environment environment = new Brickness().environment();
+		final Environment environment = BricknessFactory.newBrickContainer().environment();
 		final SomeGuiBrick brick = environment.provide(SomeGuiBrick.class);
 		try {
 			brick.slowMethod();

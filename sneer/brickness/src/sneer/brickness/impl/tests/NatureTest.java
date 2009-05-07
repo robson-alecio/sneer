@@ -10,9 +10,10 @@ import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Assert;
 import org.junit.Test;
 
+import sneer.brickness.Brickness;
+import sneer.brickness.BricknessFactory;
 import sneer.brickness.ClassDefinition;
 import sneer.brickness.impl.BrickPlacementException;
-import sneer.brickness.impl.Brickness;
 import sneer.brickness.impl.IllegalNatureException;
 import sneer.brickness.impl.tests.fixtures.nature.brick.BrickOfSomeNature;
 import sneer.brickness.impl.tests.fixtures.nature.brick.impl.BrickOfSomeNatureImpl;
@@ -36,7 +37,7 @@ public class NatureTest extends Assert {
 				will(returnValue(Arrays.asList(classDef)));
 		}});
 		
-		placeBrick(new Brickness(nature), BrickOfSomeNature.class);
+		placeBrick(BricknessFactory.newBrickContainer(nature), BrickOfSomeNature.class);
 		
 		mockery.assertIsSatisfied();
 	}
@@ -45,7 +46,7 @@ public class NatureTest extends Assert {
 	public void natureWithoutImplementation() {
 		
 		try {
-			placeBrick(new Brickness(), BrickOfSomeNature.class);
+			placeBrick(BricknessFactory.newBrickContainer(), BrickOfSomeNature.class);
 			Assert.fail();
 		} catch (BrickPlacementException e) {
 			assertTrue(e.getCause() instanceof IllegalNatureException);

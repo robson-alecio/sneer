@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="spikes/src"/>
 	<classpathentry kind="src" path="tests/src"/>
-	<classpathentry kind="src" path="brickness-impl/src"/>
 	<classpathentry kind="src" path="bricks/src"/>
 	<classpathentry kind="src" path="antlips/src"/>
 	<classpathentry kind="src" path="brickness/src"/>
@@ -19,7 +18,7 @@
 	<classpathentry kind="lib" path="bricks/src/sneer/pulp/things/impl/lib/lucene-core-2.3.2.jar"/>
 	<classpathentry kind="lib" path="commons/lib/jmock-2.5.1/hamcrest-core-1.1.jar" exported="true"/>
 	<classpathentry kind="lib" path="commons/lib/jmock-2.5.1/hamcrest-library-1.1.jar" exported="true"/>
-	<classpathentry kind="lib" path="commons/lib/jmock-2.5.1/jmock-2.5.1.jar" exported="true" />
+	<classpathentry kind="lib" path="commons/lib/jmock-2.5.1/jmock-2.5.1.jar" exported="true"/>
 	<classpathentry kind="lib" path="commons/lib/jmock-2.5.1/jmock-junit4-2.5.1.jar" exported="true"/>
 	<classpathentry kind="lib" path="commons/lib/junit-4.4.jar" sourcepath="C:/java/junit-4.4-src.jar" exported="true"/>
 	<classpathentry kind="lib" path="commons/lib/commons-io-1.4.jar" sourcepath="commons/lib/commons-io-1.4-src.zip" exported="true"/>

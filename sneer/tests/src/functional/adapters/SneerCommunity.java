@@ -6,8 +6,9 @@ import main.Sneer;
 
 import org.apache.commons.lang.StringUtils;
 
+import sneer.brickness.Brickness;
+import sneer.brickness.BricknessFactory;
 import sneer.brickness.StoragePath;
-import sneer.brickness.impl.Brickness;
 import sneer.commons.environments.Environments;
 import sneer.pulp.network.Network;
 import testutils.network.InProcessNetwork;
@@ -58,7 +59,7 @@ public class SneerCommunity implements SovereignCommunity {
 			return result.getAbsolutePath();
 		}};
 		
-		return new Brickness(_network, storagePath);
+		return BricknessFactory.newBrickContainer(_network, storagePath);
 	}
 
 	private File rootDirectory(String name) {

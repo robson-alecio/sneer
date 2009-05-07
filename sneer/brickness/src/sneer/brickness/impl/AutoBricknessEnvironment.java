@@ -1,5 +1,6 @@
 package sneer.brickness.impl;
 
+import sneer.brickness.Brickness;
 import sneer.commons.environments.*;
 import static sneer.commons.environments.Environments.my;
 import wheel.io.*;

@@ -9,6 +9,7 @@ import java.util.List;
 import sneer.brickness.Brick;
 import sneer.brickness.BrickConventions;
 import sneer.brickness.BrickLayer;
+import sneer.brickness.Brickness;
 import sneer.brickness.Nature;
 import sneer.commons.environments.Bindings;
 import sneer.commons.environments.CachingEnvironment;
@@ -16,13 +17,13 @@ import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.Producer;
 
-public class Brickness implements BrickLayer {
+public class BricknessImpl implements BrickLayer, Brickness {
 	
 	private final Environment _environment;
 	private final Bindings _bindings;
 	private final ApiClassLoader _apiClassLoader = new ApiClassLoader();
 
-	public Brickness(Object... bindings) {
+	public BricknessImpl(Object... bindings) {
 		_bindings = new Bindings();
 		_bindings.bind(this);
 		_bindings.bind(bindings);

@@ -7,7 +7,8 @@ import java.io.IOException;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import sneer.brickness.impl.Brickness;
+import sneer.brickness.Brickness;
+import sneer.brickness.BricknessFactory;
 import sneer.brickness.testsupport.TestThatMightUseResources;
 import sneer.commons.environments.Environments;
 import sneer.pulp.transientpropertystore.TransientPropertyStore;
@@ -60,7 +61,7 @@ public class TransparentPropertyStoreTest extends TestThatMightUseResources {
 
 	private void runWithTransparentPersistence(Runnable runnable)	throws IOException {
 //		Brickness container = new Brickness(newPrevalentDecorator());
-		Brickness container = new Brickness();
+		Brickness container = BricknessFactory.newBrickContainer();
 		placeBrick(container, TransientPropertyStore.class);
 		placeBrick(container, TransientPropertyStore2.class);
 		

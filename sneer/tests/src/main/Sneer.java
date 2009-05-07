@@ -1,7 +1,8 @@
 package main;
 
+import sneer.brickness.Brickness;
+import sneer.brickness.BricknessFactory;
 import sneer.brickness.impl.BrickPlacementException;
-import sneer.brickness.impl.Brickness;
 import sneer.pulp.natures.gui.GUI;
 import wheel.io.Jars;
 
@@ -9,7 +10,7 @@ import wheel.io.Jars;
 public class Sneer {
 
 	public static void main(String[] ignored) throws Exception {
-		Brickness container = new Brickness(new SneerStoragePath());
+		Brickness container = BricknessFactory.newBrickContainer(new SneerStoragePath());
 		
 		placeBricks(container, natures());
 		placeBricks(container, businessBricks());

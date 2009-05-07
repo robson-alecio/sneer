@@ -6,8 +6,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import sneer.brickness.BrickLayer;
+import sneer.brickness.Brickness;
+import sneer.brickness.BricknessFactory;
 import sneer.brickness.impl.BrickPlacementException;
-import sneer.brickness.impl.Brickness;
 import sneer.brickness.impl.tests.fixtures.a.BrickA;
 import sneer.brickness.impl.tests.fixtures.b.BrickB;
 import sneer.brickness.impl.tests.fixtures.noannotation.InterfaceWithoutBrickAnnotation;
@@ -15,7 +16,7 @@ import wheel.io.Jars;
 
 public class BricknessTest extends Assert {
 	
-	Brickness subject = new Brickness();
+	Brickness subject = BricknessFactory.newBrickContainer();
 
 	protected void placeBrick(final Class<?> brick) {
 		subject.placeBrick(Jars.classpathRootFor(brick), brick.getName());

@@ -14,11 +14,6 @@ public abstract class SimpleListReceiver<T> extends VisitingListReceiver<T> {
 	protected abstract void elementRemoved(T element);
 
 	@Override
-	public void elementMoved(int oldIndex, int newIndex, T element) {
-		// No additions or removals happened.
-	}	
-	
-	@Override
 	public void elementAdded(int index, T value){
 		elementAdded(value);
 	}

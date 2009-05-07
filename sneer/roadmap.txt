@@ -1,7 +1,6 @@
 ﻿FIXES
 =========
 
-	- ListChange.Visitor - Remove elementInserted (redundant with elementAdded) and elementMoved methods.
 	- SignalChoosers - Receive owner for GC (like Signals.receive()) instead of returning a reference that has to be held.
 	
 	- [Sandro] NPE for DeleteContactWindowImpl.checkAndDelete() - Remove it from the interface and make it private.

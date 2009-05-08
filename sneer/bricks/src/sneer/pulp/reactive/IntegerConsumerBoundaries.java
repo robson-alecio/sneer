@@ -2,6 +2,6 @@ package sneer.pulp.reactive;
 
 import sneer.hardware.cpu.lang.PickyConsumer;
 
-public interface IntegerParser extends PickyConsumer<String> {
+public interface IntegerConsumerBoundaries extends PickyConsumer<Integer> {
 
 }

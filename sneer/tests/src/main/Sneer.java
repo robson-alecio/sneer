@@ -41,7 +41,7 @@ public class Sneer {
 				sneer.pulp.reactive.collections.listsorter.ListSorter.class,
 				sneer.pulp.reactive.collections.setfilter.SetFilter.class,
 				sneer.pulp.reactive.gates.logic.LogicGates.class,
-				sneer.pulp.reactive.Parsers.class,
+				sneer.pulp.reactive.Consumers.class,
 				sneer.pulp.retrier.RetrierManager.class,
 				sneer.skin.sound.loopback.LoopbackTester.class,
 				sneer.pulp.port.PortKeeper.class,
@@ -104,6 +104,8 @@ public class Sneer {
 				sneer.hardware.gui.guithread.GuiThread.class, 
 				sneer.skin.main.synth.Synth.class, 
 				sneer.skin.main.synth.scroll.SynthScrolls.class, 
+
+				sneer.hardware.io.codecs.base64.Base64.class,
 
 				sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper.class,
 				sneer.pulp.dyndns.checkip.CheckIp.class,

@@ -1,10 +1,9 @@
-package sneer.pulp.reactive.impl;
+package sneer.hardware.cpu.utils.consumers.parsers.integer.impl;
 
 import sneer.hardware.cpu.exceptions.IllegalParameter;
 import sneer.hardware.cpu.lang.PickyConsumer;
-import sneer.pulp.reactive.IntegerParser;
 
-class IntegerParserImpl implements IntegerParser {
+class IntegerParserImpl implements PickyConsumer<String> {
 
 	private PickyConsumer<Integer> _endConsumer;
 

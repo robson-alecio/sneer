@@ -51,7 +51,7 @@ class GUIImpl implements GUI {
 		}
 	}
 
-	private CtClass defineBrickMetadata(CtClass brickClass) {
+	private CtClass defineBrickMetadata(@SuppressWarnings("unused") CtClass brickClass) {
 		CtClass metadata = classPool.makeClass("natures.gui.BrickMetadata");
 		metadata.setModifiers(javassist.Modifier.PUBLIC);
 		try {

@@ -1,6 +1,8 @@
 ﻿FIXES
 =========
 
+	- [Bamboo] GUIImpl.defineBrickMetadata param is unused.
+
 	- SignalChoosers - Receive owner for GC (like Signals.receive()) instead of returning a reference that has to be held.
 	
 	- Implement ProbeManager elementRemoved to remove Contacts from Gui

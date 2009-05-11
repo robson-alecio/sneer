@@ -24,13 +24,13 @@ import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.ByRef;
 import sneer.hardware.cpu.lang.PickyConsumer;
+import sneer.hardware.cpu.utils.consumers.parsers.integer.IntegerParsers;
 import sneer.hardware.gui.Action;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccount;
 import sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper;
 import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.port.PortKeeper;
-import sneer.pulp.reactive.Consumers;
 import sneer.pulp.reactive.Signal;
 import sneer.skin.main.menu.MainMenu;
 import sneer.skin.widgets.reactive.NotificationPolicy;
@@ -93,7 +93,7 @@ class WelcomeWizardImpl extends JFrame implements WelcomeWizard {
 		_yourOwnName = newTextField(_nameKeeper.name(), _nameKeeper.nameSetter());
 		
 		PortKeeper portKeeper = my(PortKeeper.class);
-		_sneerPort = newTextField(portKeeper.port(), my(Consumers.class).newIntegerParser(portKeeper.portSetter()));
+		_sneerPort = newTextField(portKeeper.port(), my(IntegerParsers.class).newIntegerParser(portKeeper.portSetter()));
 		
 		pnl.setLayout(new GridBagLayout());
 		

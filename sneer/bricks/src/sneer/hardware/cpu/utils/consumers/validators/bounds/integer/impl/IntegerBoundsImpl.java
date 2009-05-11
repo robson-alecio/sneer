@@ -1,10 +1,9 @@
-package sneer.pulp.reactive.impl;
+package sneer.hardware.cpu.utils.consumers.validators.bounds.integer.impl;
 
 import sneer.hardware.cpu.exceptions.IllegalParameter;
 import sneer.hardware.cpu.lang.PickyConsumer;
-import sneer.pulp.reactive.IntegerConsumerBoundaries;
 
-class IntegerConsumerBoundariesImpl implements IntegerConsumerBoundaries {
+class IntegerBoundsImpl implements PickyConsumer<Integer> {
 
 	private final PickyConsumer<Integer> _endConsumer;
 
@@ -12,7 +11,7 @@ class IntegerConsumerBoundariesImpl implements IntegerConsumerBoundaries {
 	private final int _max;
 	private final String _friendlyName;
 
-	IntegerConsumerBoundariesImpl(String friendlyName, PickyConsumer<Integer> endConsumer, int min, int max) {
+	IntegerBoundsImpl(String friendlyName, PickyConsumer<Integer> endConsumer, int min, int max) {
 		_friendlyName = friendlyName;
 		_endConsumer = endConsumer;
 		_min = min;

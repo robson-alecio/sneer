@@ -10,6 +10,8 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
+import sneer.brickness.testsupport.SystemBrickEnvironment;
+import sneer.commons.environments.Environments;
 import sneer.hardware.gui.guithread.GuiThread;
 import spikes.priscila.go.GoBoard.StoneColor;
 import sneer.pulp.threads.Threads;
@@ -58,16 +60,16 @@ public class Main extends JFrame{
 	private volatile int _scrollXDelta;
 	
 	
-	public Main() {		
+	public Main() {
 		setTitle("Go");
-	    setSize(_SCREEN_SIZE, _SCREEN_SIZE);
-	    setResizable(false);
-	    setVisible(true);
+		setSize(_SCREEN_SIZE, _SCREEN_SIZE);
+		setResizable(false);
+		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-	    addMouseListener();
-	    
-	    my(Threads.class).startDaemon("Go Board Scroller", new Scroller());
+		addMouseListener();
+		
+		my(Threads.class).startDaemon("Go Board Scroller", new Scroller());
 	}
 
 	private void addMouseListener() {
@@ -146,7 +148,9 @@ public class Main extends JFrame{
 	}
 
 	public static void main(String[] args){
-    	new Main();
+		Environments.runWith(new SystemBrickEnvironment(), new Runnable(){ @Override public void run() {
+			new Main();
+		}});
 	}
 	
 	private class MouseListener extends MouseAdapter{

@@ -16,7 +16,7 @@ public interface Logger {
 	
 	ListRegister<LogWhiteListEntry> whiteListEntries();
 	EventSource<String> loggedMessages();
-	/**Default operation mode is to rethrow throwables instead of logging them for the benefit of unit tests.*/
+	/**Stops rethrowing logged throwables. Default operation mode is to rethrow throwables instead of logging them for the benefit of unit tests.*/
 	void enterRobustMode();
 
 }

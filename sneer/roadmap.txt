@@ -3,6 +3,15 @@
 
 	- [Bamboo] GUIImpl.defineBrickMetadata param is unused.
 
+	- [Sandro and Igor] ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
+
+	- [Sandro] Remove Logger Cycle.
+		- Logger extends LoggerWorker
+		- Logger.setDelegate(LoggerWorker) - Default: log messages to sysout and rethrow throwables. Remove enterRobustMode method.
+		- LogNotifier - sets the logger worker and has EventSource<String> loggedMessages();
+			- Calls LogFilter boolean acceptLog(...) - White list filter
+			- Calls String LogFormatter.formatLog(...);
+
 	- SignalChoosers - Receive owner for GC (like Signals.receive()) instead of returning a reference that has to be held.
 	
 	- Implement ProbeManager elementRemoved to remove Contacts from Gui
@@ -18,7 +27,6 @@
 
 	- Remove @Ignore and Fix WindTest.testSortedShoutsHeard
 	
-	- Remove Logger Cycle.
 
 
 TASKS
@@ -35,7 +43,6 @@ TASKS
 		- [Klaus] GuiBrick Javadoc - Revise.
 
 	- [Sandro and Igor] User Info, Contact List and Contact CRUD - Don't do any other task until:
-		- ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
 		- [Klaus] Revise code.
 
 	- [Bamboo] Create/Install ("publish") brick locally

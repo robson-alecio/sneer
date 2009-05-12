@@ -4,8 +4,8 @@ import sneer.brickness.Brick;
 import sneer.hardware.cpu.lang.PickyConsumer;
 
 @Brick
-public interface IntegerBoundsFactory {
+public interface IntegerBounds {
 
-	PickyConsumer<Integer> newIntegerBounds(String friendlyName, PickyConsumer<Integer> delegate, int min, int max);
+	PickyConsumer<Integer> newInstance(String friendlyName, PickyConsumer<Integer> delegate, int min, int max);
 
 }

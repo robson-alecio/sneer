@@ -42,7 +42,7 @@ public class Sneer {
 				sneer.pulp.reactive.collections.setfilter.SetFilter.class,
 				sneer.pulp.reactive.gates.logic.LogicGates.class,
 				sneer.hardware.cpu.utils.consumers.parsers.integer.IntegerParsers.class,
-				sneer.hardware.cpu.utils.consumers.validators.bounds.integer.IntegerBoundsFactory.class,
+				sneer.hardware.cpu.utils.consumers.validators.bounds.integer.IntegerBounds.class,
 				sneer.pulp.retrier.RetrierManager.class,
 				sneer.skin.sound.loopback.LoopbackTester.class,
 				sneer.pulp.port.PortKeeper.class,

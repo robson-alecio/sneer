@@ -2,9 +2,6 @@ package sneer.pulp.transientpropertystore.tests;
 
 import static sneer.commons.environments.Environments.my;
 
-import java.io.IOException;
-
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.brickness.Brickness;
@@ -15,13 +12,11 @@ import sneer.commons.environments.Environments;
 import sneer.pulp.transientpropertystore.TransientPropertyStore;
 import sneer.pulp.transientpropertystore2.TransientPropertyStore2;
 
-@Ignore
 public class TransparentPropertyStoreTest extends TestThatMightUseResources {
 
 	@Test
-	@Ignore
-	public void testPropertyStore() throws IOException {
-		runWithTransparentPersistence(new Runnable() { @Override public void run() {
+	public void testPropertyStore() {
+		runInNewContainer(new Runnable() { @Override public void run() {
 			TransientPropertyStore subject1 = my(TransientPropertyStore.class);
 			assertNull(subject1.get("Height"));
 			subject1.set("Height", "1,80m");
@@ -41,7 +36,7 @@ public class TransparentPropertyStoreTest extends TestThatMightUseResources {
 			
 		}});
 		
-		runWithTransparentPersistence(new Runnable() { @Override public void run() {
+		runInNewContainer(new Runnable() { @Override public void run() {
 			TransientPropertyStore subject1 = my(TransientPropertyStore.class);
 			assertEquals("1,80m", subject1.get("Height"));
 			assertEquals("85kg", subject1.get("Weight"));
@@ -53,21 +48,12 @@ public class TransparentPropertyStoreTest extends TestThatMightUseResources {
 		}});
 	}
 
-//	private BrickDecorator newPrevalentDecorator() {
-//		return new BrickDecorator() {@Override public Object decorate(Class<?> brick, Object brickImpl) {
-//			return Bubble.wrapStateMachine(brick, brickImpl, tmpDirectory());
-//		}};
-//	}
-
-	private void runWithTransparentPersistence(Runnable runnable)	throws IOException {
-//		Brickness container = new Brickness(newPrevalentDecorator());
+	private void runInNewContainer(Runnable runnable) {
 		Brickness container = BricknessFactory.newBrickContainer();
 		placeBrick(container, TransientPropertyStore.class);
 		placeBrick(container, TransientPropertyStore2.class);
 		
 		Environments.runWith(container.environment(), runnable);
-
-		Bubble.close();
 	}
 
 	private void placeBrick(Brickness container, Class<?> brick) {

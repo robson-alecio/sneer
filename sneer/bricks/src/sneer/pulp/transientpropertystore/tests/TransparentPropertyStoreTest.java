@@ -2,6 +2,7 @@ package sneer.pulp.transientpropertystore.tests;
 
 import static sneer.commons.environments.Environments.my;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.brickness.Brickness;
@@ -15,6 +16,7 @@ import sneer.pulp.transientpropertystore2.TransientPropertyStore2;
 public class TransparentPropertyStoreTest extends TestThatMightUseResources {
 
 	@Test
+	@Ignore
 	public void testPropertyStore() {
 		runInNewContainer(new Runnable() { @Override public void run() {
 			TransientPropertyStore subject1 = my(TransientPropertyStore.class);

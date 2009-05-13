@@ -1,0 +1,15 @@
+<synth>
+
+	<style id="logTextAreaStyle">
+		<opaque value="true" />
+		<font name="Verdana" size="10" />
+	    <state>
+	      <color value="WHITE" type="BACKGROUND"/>
+	      <color value="BLACK" type="FOREGROUND"/>
+	      <insets top="5" left="5" bottom="5" right="5" />
+	    </state>
+	</style>
+	<bind style="logTextAreaStyle" type="name" key="logTextArea" />
+
+
+</synth>

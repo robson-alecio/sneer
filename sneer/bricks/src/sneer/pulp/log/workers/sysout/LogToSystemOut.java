@@ -1,9 +1,9 @@
 package sneer.pulp.log.workers.sysout;
 
 import sneer.brickness.*;
-import sneer.pulp.log.LogWorker;
+import sneer.pulp.log.Worker;
 
 @Brick
-public interface LogToSystemOut extends LogWorker{
+public interface LogToSystemOut extends Worker{
 
 }

@@ -3,9 +3,10 @@ package sneer.pulp.log;
 import sneer.brickness.Brick;
 
 @Brick
-public interface Logger extends LogWorker{
+public interface Logger extends Worker{
 
-	void delegate(LogWorker worker);
+	void filter(Filter filter);
+	void delegate(Worker worker);
 	void enterRobustMode();
 	
 }

@@ -1,4 +1,4 @@
-package sneer.hardware.logging.gui;
+package sneer.hardware.log.gui;
 
 import sneer.brickness.Brick;
 

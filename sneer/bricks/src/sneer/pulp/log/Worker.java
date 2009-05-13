@@ -1,6 +1,6 @@
 package sneer.pulp.log;
 
-public interface LogWorker {
+public interface Worker {
 
 	void log(String message, Object... messageInsets);
 	void logShort(Exception e, String message, Object... insets);

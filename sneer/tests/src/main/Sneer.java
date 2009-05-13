@@ -39,6 +39,7 @@ public class Sneer {
 				sneer.pulp.events.EventNotifiers.class,
 				sneer.pulp.reactive.Signals.class,
 				sneer.pulp.reactive.collections.CollectionSignals.class,
+				sneer.pulp.log.filter.LogFilter.class,
 				sneer.pulp.log.workers.notifier.LogNotifier.class,
 
 				sneer.pulp.internetaddresskeeper.InternetAddressKeeper.class,
@@ -132,7 +133,7 @@ public class Sneer {
 
 				sneer.skin.windowboundssetter.WindowBoundsSetter.class,
 				snapps.welcomewizard.WelcomeWizard.class,
-				sneer.hardware.logging.gui.LogConsole.class,
+				sneer.hardware.log.gui.LogConsole.class,
 				sneer.hardware.gui.timebox.TimeboxedEventQueue.class,
 				sneer.hardware.gui.trayicon.TrayIcons.class,
 				sneer.skin.main.dashboard.Dashboard.class,

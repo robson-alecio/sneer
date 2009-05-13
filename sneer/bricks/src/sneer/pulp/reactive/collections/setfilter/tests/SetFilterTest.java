@@ -15,7 +15,7 @@ import sneer.pulp.reactive.collections.SetSignal;
 import sneer.pulp.reactive.collections.impl.SetRegisterImpl;
 import sneer.pulp.reactive.collections.setfilter.SetFilter;
 
-public class ListFilterTest extends BrickTest {
+public class SetFilterTest extends BrickTest {
 	
 	private final SetFilter _subject = my(SetFilter.class);
 

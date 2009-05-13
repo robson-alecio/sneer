@@ -5,12 +5,7 @@
 
 	- [Sandro and Igor] ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
 
-	- [Sandro] Remove Logger Cycle.
-		- Logger extends LoggerWorker
-		- Logger.setDelegate(LoggerWorker) - Default: log messages to sysout and rethrow throwables. Remove enterRobustMode method.
-		- LogNotifier - sets the logger worker and has EventSource<String> loggedMessages();
-			- Calls LogFilter boolean acceptLog(...) - White list filter
-			- Calls String LogFormatter.formatLog(...);
+	- [Sandro] Logger GUI
 
 	- SignalChoosers - Receive owner for GC (like Signals.receive()) instead of returning a reference that has to be held.
 	

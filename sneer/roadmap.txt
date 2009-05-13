@@ -5,7 +5,9 @@
 
 	- [Sandro and Igor] ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
 
-	- [Sandro] Logger GUI
+	- [Sandro] Logger
+		- LogFilter boolean acceptLog(...) - White list filter
+		- GUI
 
 	- SignalChoosers - Receive owner for GC (like Signals.receive()) instead of returning a reference that has to be held.
 	

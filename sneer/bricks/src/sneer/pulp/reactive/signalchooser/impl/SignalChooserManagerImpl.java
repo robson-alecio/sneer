@@ -1,7 +1,7 @@
 package sneer.pulp.reactive.signalchooser.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.collections.CollectionChange;
@@ -14,7 +14,7 @@ class SignalChooserManagerImpl<T> {
 	
 	@SuppressWarnings("unused")	private final Object _refToAvoidGc;
 
-	private final List<ElementReceiver> _elementReceivers = new ArrayList<ElementReceiver>();
+	private final Map<T, ElementReceiver> _receiversByElement = new HashMap<T, ElementReceiver>();
 	private final ListOfSignalsReceiver<T> _listOfSignalsReceiver;
 	private final Object _monitor = new Object();
 	
@@ -23,30 +23,18 @@ class SignalChooserManagerImpl<T> {
 		_refToAvoidGc = new InputReceiver(input);
 	}
 	
-	private ElementReceiver findFirstReceiver(T element) { //Fix Remove this method after bugfix (run SortTest to see the bug)
-		for(ElementReceiver receiver : _elementReceivers)
-			if(element==receiver._element)
-				return receiver;
-
-		throw new IllegalStateException("Not found any ElementReceiver for element: " + element);
-	}
-
 	private void elementRemoved(T element) {
-		synchronized (_monitor) {
-			if (signalChooser() == null) return;
-			_elementReceivers.remove(findFirstReceiver(element));
-		}
+		if (signalChooser() == null) return;
+		_receiversByElement.remove(element);
 	}
 
 	private void elementAdded(T element) {
-		synchronized (_monitor) {
-			if (signalChooser() == null) return;
+		if (signalChooser() == null) return;
 			
-			ElementReceiver receiver = new ElementReceiver(element);
-			_elementReceivers.add(receiver);
+		ElementReceiver receiver = new ElementReceiver(element);
+		_receiversByElement.put(element, receiver);
 			
-			receiver._isActive = true;
-		}
+		receiver._isActive = true;
 	}
 	
 	private SignalChooser<T> signalChooser() {
@@ -65,11 +53,7 @@ class SignalChooserManagerImpl<T> {
 		@Override
 		public void consume(Object ignored) {
 			if (!_isActive) return;
-			synchronized (_monitor) {
-				//Refactor: The line below can be deleted. Is the synchronized block still necessary with the line removed?
-				//int index = _elementReceivers.indexOf(this);
-				_listOfSignalsReceiver.elementSignalChanged( _element);
-			}
+			_listOfSignalsReceiver.elementSignalChanged( _element);
 		}
 	}
 	
@@ -88,7 +72,7 @@ class SignalChooserManagerImpl<T> {
 		}
 
 		@Override
-		public void consume(CollectionChange<T> change) {
+		synchronized public void consume(CollectionChange<T> change) {
 			for(T element: change.elementsRemoved())
 				SignalChooserManagerImpl.this.elementRemoved(element);
 			

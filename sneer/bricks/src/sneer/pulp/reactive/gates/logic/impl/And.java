@@ -2,10 +2,10 @@ package sneer.pulp.reactive.gates.logic.impl;
 
 import static sneer.commons.environments.Environments.my;
 import sneer.hardware.cpu.lang.Consumer;
+import sneer.hardware.cpu.lang.ref.weakreferencekeeper.WeakReferenceKeeper;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import wheel.reactive.impl.SignalOwnerReference;
 
 class And {
 
@@ -17,7 +17,7 @@ class And {
 		_a = a;
 		_b = b;
 
-		my(Signals.class).receive(output(), new Consumer<Boolean>(){@Override public void consume(Boolean newValueIgnored) {
+		my(Signals.class).receive(this, new Consumer<Boolean>(){@Override public void consume(Boolean newValueIgnored) {
 			refresh();
 		}}, a, b);
 	}
@@ -27,6 +27,6 @@ class And {
 	}
 
 	public Signal<Boolean> output() {
-		return new SignalOwnerReference<Boolean>(_result.output(), this);
+		return my(WeakReferenceKeeper.class).keep(_result.output(), this);
 	}
 }

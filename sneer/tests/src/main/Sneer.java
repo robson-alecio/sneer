@@ -89,6 +89,7 @@ public class Sneer {
 				sneer.pulp.tuples.TupleSpace.class,
 				snapps.watchme.WatchMe.class,
 				sneer.skin.sound.mic.Mic.class,
+				sneer.hardware.cpu.lang.ref.weakreferencekeeper.WeakReferenceKeeper.class,
 				snapps.wind.Wind.class,
 				snapps.whisper.speextuples.SpeexTuples.class,
 				sneer.pulp.probe.ProbeManager.class,

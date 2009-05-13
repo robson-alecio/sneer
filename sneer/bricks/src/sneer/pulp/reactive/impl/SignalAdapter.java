@@ -1,10 +1,11 @@
 package sneer.pulp.reactive.impl;
 
+import static sneer.commons.environments.Environments.my;
 import sneer.commons.lang.Functor;
+import sneer.hardware.cpu.lang.ref.weakreferencekeeper.WeakReferenceKeeper;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import wheel.reactive.impl.EventReceiver;
-import wheel.reactive.impl.SignalOwnerReference;
 
 class SignalAdapter<IN, OUT> {
 
@@ -23,6 +24,6 @@ class SignalAdapter<IN, OUT> {
 	}
 
 	Signal<OUT> output() {
-		return new SignalOwnerReference<OUT>(_register.output(), this);
+		return my(WeakReferenceKeeper.class).keep(_register.output(), this);
 	}
 }

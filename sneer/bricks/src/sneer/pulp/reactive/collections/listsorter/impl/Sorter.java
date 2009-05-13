@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import sneer.hardware.cpu.lang.Consumer;
+import sneer.hardware.cpu.lang.ref.weakreferencekeeper.WeakReferenceKeeper;
 import sneer.pulp.reactive.collections.CollectionChange;
 import sneer.pulp.reactive.collections.CollectionSignal;
 import sneer.pulp.reactive.collections.CollectionSignals;
@@ -15,7 +16,6 @@ import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.pulp.reactive.signalchooser.SignalChoosers;
-import wheel.reactive.impl.ListSignalOwnerReference;
 
 final class Sorter<T> implements ListOfSignalsReceiver<T>{
 
@@ -55,7 +55,7 @@ final class Sorter<T> implements ListOfSignalsReceiver<T>{
 	}
 	
 	ListSignal<T> output() {
-		return new ListSignalOwnerReference<T>(_sorted.output(), this);
+		return my(WeakReferenceKeeper.class).keep(_sorted.output(), this);
 	}
 	
 	private void elementAdded(T element) { 

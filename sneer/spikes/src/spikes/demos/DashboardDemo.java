@@ -12,7 +12,6 @@ import javax.swing.JTextArea;
 
 import sneer.brickness.testsupport.SystemBrickEnvironment;
 import sneer.commons.environments.Environments;
-import sneer.pulp.logging.out.LogToSystemOut;
 import sneer.skin.main.dashboard.Dashboard;
 import sneer.skin.main.dashboard.InstrumentPanel;
 import sneer.skin.main.instrumentregistry.Instrument;
@@ -21,7 +20,6 @@ import sneer.skin.main.instrumentregistry.InstrumentRegistry;
 
 public class DashboardDemo  {
 	public DashboardDemo() {
-		Environments.my(LogToSystemOut.class);
 		Environments.my(Dashboard.class);
 		installSampleInstrument();
 	}

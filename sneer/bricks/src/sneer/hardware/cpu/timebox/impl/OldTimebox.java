@@ -5,7 +5,7 @@ import static sneer.commons.environments.Environments.my;
 import java.util.HashSet;
 import java.util.Set;
 
-import sneer.pulp.logging.Logger;
+import sneer.pulp.log.Logger;
 import sneer.pulp.threads.Threads;
 
 abstract class OldTimebox implements Runnable { //REFACTOR Clean this up. See callers.

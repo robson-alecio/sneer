@@ -10,7 +10,7 @@ import sneer.pulp.bandwidth.BandwidthCounter;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.keymanager.KeyManager;
-import sneer.pulp.logging.Logger;
+import sneer.pulp.log.Logger;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;

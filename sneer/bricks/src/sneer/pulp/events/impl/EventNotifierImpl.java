@@ -11,7 +11,7 @@ import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.events.EventNotifier;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
-import sneer.pulp.logging.Logger;
+import sneer.pulp.log.Logger;
 
 class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 

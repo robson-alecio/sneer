@@ -12,7 +12,7 @@ import javax.swing.JTextArea;
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.hardware.gui.Action;
 import sneer.hardware.logging.gui.LogConsole;
-import sneer.pulp.logging.Logger;
+import sneer.pulp.log.workers.notifier.LogNotifier;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.main.menu.MainMenu;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
@@ -42,12 +42,12 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 
 	private void initGUI() {
 		JScrollPane scroll = new JScrollPane();
-		Logger logger = my(Logger.class);
+		LogNotifier notifier = my(LogNotifier.class);
 
 		final JTextArea txtLog = new JTextArea();
 		my(Signals.class).receive(this, new Consumer<String>() { @Override public void consume(String value) {
 			txtLog.append(value);
-		}}, logger.loggedMessages());
+		}}, notifier.loggedMessages());
 
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(scroll, BorderLayout.CENTER);

@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 import sneer.pulp.dyndns.checkip.CheckIp;
 import sneer.pulp.httpclient.HttpClient;
-import sneer.pulp.logging.Logger;
+import sneer.pulp.log.Logger;
 
 class CheckIpImpl implements CheckIp {
 	

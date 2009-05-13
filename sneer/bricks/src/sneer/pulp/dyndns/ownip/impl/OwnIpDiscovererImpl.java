@@ -14,7 +14,7 @@ import sneer.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import sneer.pulp.logging.Logger;
+import sneer.pulp.log.Logger;
 
 class OwnIpDiscovererImpl implements OwnIpDiscoverer {
 	

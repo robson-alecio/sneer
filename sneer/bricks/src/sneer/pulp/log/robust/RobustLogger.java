@@ -1,4 +1,4 @@
-package sneer.pulp.logging.robust;
+package sneer.pulp.log.robust;
 
 import sneer.brickness.Brick;
 

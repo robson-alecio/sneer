@@ -3,7 +3,6 @@ package spikes.demos;
 import static sneer.commons.environments.Environments.my;
 import sneer.brickness.testsupport.SystemBrickEnvironment;
 import sneer.commons.environments.Environments;
-import sneer.pulp.logging.out.LogToSystemOut;
 import sneer.skin.sound.player.SoundPlayer;
 
 public class SoundPlayerDemo {
@@ -11,8 +10,6 @@ public class SoundPlayerDemo {
 	private final SoundPlayer _player = my(SoundPlayer.class);
 	
 	SoundPlayerDemo() {
-		my(LogToSystemOut.class);
-
 		_player.play(SoundPlayerDemo.class.getResource("alert1.wav"));
 		_player.play(SoundPlayerDemo.class.getResource("alert2.wav"));
 		

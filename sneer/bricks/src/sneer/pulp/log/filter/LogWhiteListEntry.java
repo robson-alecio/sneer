@@ -1,4 +1,4 @@
-package sneer.pulp.logging;
+package sneer.pulp.log.filter;
 
 import sneer.brickness.Tuple;
 

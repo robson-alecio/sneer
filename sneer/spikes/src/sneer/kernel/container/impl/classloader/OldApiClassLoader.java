@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sneer.kernel.container.SneerConfig;
-import sneer.pulp.logging.Logger;
+import sneer.pulp.log.Logger;
 import static sneer.commons.environments.Environments.my;
 
 

@@ -2,7 +2,7 @@ package sneer.pulp.connection.impl;
 
 import static sneer.commons.environments.Environments.my;
 import sneer.hardware.cpu.lang.Consumer;
-import sneer.pulp.logging.Logger;
+import sneer.pulp.log.Logger;
 import sneer.pulp.network.ByteArraySocket;
 
 

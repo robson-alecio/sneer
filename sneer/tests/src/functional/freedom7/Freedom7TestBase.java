@@ -8,7 +8,6 @@ import java.io.IOException;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import sneer.pulp.logging.out.LogToSystemOut;
 import sneer.software.compilers.java.JavaCompiler;
 import functional.SovereignFunctionalTestBase;
 import functional.SovereignParty;
@@ -27,8 +26,6 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	@Test
 	@Ignore
 	public void testPublishBrickWithTupleType() throws Exception {
-		my(LogToSystemOut.class);
-		
 		System.clearProperty("freedom7.v.V.installed");
 		publisher().publishBricks(generateV());
 		assertEquals("true", System.getProperty("freedom7.v.V.installed"));

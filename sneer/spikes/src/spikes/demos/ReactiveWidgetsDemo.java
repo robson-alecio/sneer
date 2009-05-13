@@ -10,7 +10,6 @@ import sneer.brickness.testsupport.SystemBrickEnvironment;
 import sneer.commons.environments.Environments;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.hardware.gui.timebox.TimeboxedEventQueue;
-import sneer.pulp.logging.out.LogToSystemOut;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.widgets.reactive.NotificationPolicy;
@@ -21,8 +20,6 @@ import sneer.skin.widgets.reactive.Widget;
 public class ReactiveWidgetsDemo {
 
 	private ReactiveWidgetsDemo(){
-
-		my(LogToSystemOut.class);
 
 		my(TimeboxedEventQueue.class).startQueueing(500000);
 		

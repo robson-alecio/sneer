@@ -30,12 +30,17 @@ public class Sneer {
 
 	static public Class<?>[] businessBricks() {
 		return new Class<?>[] {
+				sneer.pulp.log.formatter.LogFormatter.class,
+				sneer.pulp.log.workers.sysout.LogToSystemOut.class,
+				sneer.pulp.log.Logger.class,
+
 				sneer.skin.image.ImageFactory.class,
 
 				sneer.pulp.events.EventNotifiers.class,
 				sneer.pulp.reactive.Signals.class,
 				sneer.pulp.reactive.collections.CollectionSignals.class,
-				sneer.pulp.logging.Logger.class,
+				sneer.pulp.log.workers.notifier.LogNotifier.class,
+
 				sneer.pulp.internetaddresskeeper.InternetAddressKeeper.class,
 				sneer.pulp.crypto.Crypto.class,
 				sneer.pulp.reactive.collections.listsorter.ListSorter.class,
@@ -92,7 +97,7 @@ public class Sneer {
 				snapps.wind.Wind.class,
 				snapps.whisper.speextuples.SpeexTuples.class,
 				sneer.pulp.probe.ProbeManager.class,
-				sneer.pulp.logging.robust.RobustLogger.class,
+				sneer.pulp.log.robust.RobustLogger.class,
 				
 				sneer.software.compilers.classpath.ClasspathFactory.class,
 				sneer.software.compilers.java.JavaCompiler.class,

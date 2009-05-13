@@ -17,7 +17,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import sneer.commons.io.Streams;
 import sneer.commons.lang.exceptions.NotImplementedYet;
-import sneer.pulp.logging.Logger;
+import sneer.pulp.log.Logger;
 import sneer.pulp.threads.Stepper;
 import sneer.pulp.threads.Threads;
 import sneer.skin.sound.kernel.Audio;

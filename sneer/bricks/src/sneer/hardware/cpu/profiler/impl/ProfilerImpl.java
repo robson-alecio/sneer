@@ -1,7 +1,7 @@
 package sneer.hardware.cpu.profiler.impl;
 
 import sneer.hardware.cpu.profiler.Profiler;
-import sneer.pulp.logging.Logger;
+import sneer.pulp.log.Logger;
 import static sneer.commons.environments.Environments.my;
 
 

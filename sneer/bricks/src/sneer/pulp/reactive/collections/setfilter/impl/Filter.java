@@ -27,10 +27,10 @@ final class Filter<T> {
 		_predicate = predicate;
 		 _output = new SetRegisterImpl<T>();
 		 
-		 add(_input);
+		 addElements(_input);
 		 
 		 Consumer<CollectionChange<T>> receiver = new Consumer<CollectionChange<T>>(){@Override public void consume(CollectionChange<T> change) {
-			add(change.elementsAdded());
+			addElements(change.elementsAdded());
 			remove(change.elementsRemoved());
 		}};
 		my(Signals.class).receive(this, receiver, _input);
@@ -40,7 +40,7 @@ final class Filter<T> {
 		return my(WeakReferenceKeeper.class).keep(_output.output(), this);
 	}
 
-	private void add(Iterable<T> elements) {
+	private void addElements(Iterable<T> elements) {
 		for (T element : elements)
 			add(element);
 	}

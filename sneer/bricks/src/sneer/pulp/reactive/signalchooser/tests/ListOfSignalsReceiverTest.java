@@ -39,37 +39,37 @@ public class ListOfSignalsReceiverTest extends BrickTest {
 		addElement("3");
 		addElement("4");
 		addElement(r1);
-		assertEvents("Added(1)=1, Added(2)=2, Added(3)=3, Added(4)=4, Added(5)=1, "); //[ 0, 1, 2, 3, 4, 1 ]
+		assertEvents("Added=1, Added=2, Added=3, Added=4, Added=1, "); //[ 0, 1, 2, 3, 4, 1 ]
 		
 		_listRegister.move(1, 4);
-		assertEvents("Removed(1)=1, Added(4)=1, ");	//[ 0, 4, 2, 3, 1, 1 ]
+		assertEvents("Removed=1, Added=1, ");	//[ 0, 4, 2, 3, 1, 1 ]
 		
 		r1.setter().consume("1b");
 		r2.setter().consume("2b");
-		assertEvents("Changed(1)=1b, Changed(5)=1b, Changed(2)=2b, "); //[ 0, 2b, 3, 4, 1b, 1b ]
+		assertEvents("Changed=1b, Changed=1b, Changed=2b, "); //[ 0, 2b, 3, 4, 1b, 1b ]
 
 		_listRegister.move(5, 1);
-		assertEvents("Removed(5)=1b, Added(1)=1b, "); 	//[ 0, 1b, 2b, 3, 4, 1b ]
+		assertEvents("Removed=1b, Added=1b, "); 	//[ 0, 1b, 2b, 3, 4, 1b ]
 		
 		_listRegister.removeAt(0);
 		_listRegister.removeAt(3);
 		_listRegister.removeAt(2);
-		assertEvents("Removed(0)=0, Removed(3)=4, Removed(2)=3, ");	//[ 1b, 2b, 1b ]
+		assertEvents("Removed=0, Removed=4, Removed=3, ");	//[ 1b, 2b, 1b ]
 		
 		r1.setter().consume("1c");
 		r2.setter().consume("2c");
-		assertEvents("Changed(0)=1c, Changed(2)=1c, Changed(1)=2c, "); //[ 1c, 2c, 1c ]
+		assertEvents("Changed=1c, Changed=1c, Changed=2c, "); //[ 1c, 2c, 1c ]
 		
 		_listRegister.addAt(1, r2);
-		assertEvents("Added(1)=2c, "); //[ 1c, 2c, 2c, 1c ]
+		assertEvents("Added=2c, "); //[ 1c, 2c, 2c, 1c ]
 		
 		_listRegister.move(1, 0);
 		_listRegister.move(2, 3);
-		assertEvents("Removed(1)=2c, Added(0)=2c, Removed(2)=2c, Added(3)=2c, "); //[ 2c, 1c, 1c, 2c ]
+		assertEvents("Removed=2c, Added=2c, Removed=2c, Added=2c, "); //[ 2c, 1c, 1c, 2c ]
 		
 		_listRegister.remove(r1);
 		_listRegister.remove(r1);
-		assertEvents("Removed(1)=1c, Removed(1)=1c, "); //[ 2c, 2c ]
+		assertEvents("Removed=1c, Removed=1c, "); //[ 2c, 2c ]
 		
 	}
 
@@ -104,17 +104,17 @@ public class ListOfSignalsReceiverTest extends BrickTest {
 			}};
 		}
 
-		@Override public void elementSignalChanged(int index, Register<String> element) {  
-			_recorder.record("Changed", index, value(element));}
+		@Override public void elementSignalChanged(Register<String> element) {  
+			_recorder.record("Changed", value(element));}
 		
 		@Override public void elementAdded(int index, Register<String> element) { 
-			_recorder.record("Added", index, value(element)); }
+			_recorder.record("Added", value(element)); }
 		
 		@Override public void elementRemoved(int index, Register<String> element) { 
-			_recorder.record("Removed", index, value(element)); }
+			_recorder.record("Removed", value(element)); }
 		
 		@Override public void elementReplaced(int index, Register<String> oldElement,	Register<String> newElement) { 
-			_recorder.record("Replaced", index, value(oldElement), value(newElement)); }		
+			_recorder.record("Replaced", value(oldElement), value(newElement)); }		
 
 		private String value(Register<String> element) {
 			return element.output().currentValue();
@@ -125,16 +125,12 @@ public class ListOfSignalsReceiverTest extends BrickTest {
 		
 		private StringBuilder _events = new StringBuilder();
 		
-		private void record(String name, int index, String oldValue, String newValue) {
-			record(name, ""+index, oldValue + "->" + newValue);
-		}
-		
-		private void record(String name, int index, String value) {
-			record(name, ""+index, value);
+		private void record(String name, String oldValue, String newValue) {
+			record(name, oldValue + "->" + newValue);
 		}
 
-		private void record(String name, String index, String value) {
-			_events.append(name).append('(').append(index).append(")=").append(value).append(", ");
+		private void record(String name, String value) {
+			_events.append(name).append("=").append(value).append(", ");
 		}
 
 		private void clear() {

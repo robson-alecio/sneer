@@ -31,14 +31,14 @@ class SignalChooserManagerImpl<T> {
 		throw new IllegalStateException("Not found any ElementReceiver for element: " + element);
 	}
 
-	public void elementRemoved(T element) {
+	private void elementRemoved(T element) {
 		synchronized (_monitor) {
 			if (signalChooser() == null) return;
 			_elementReceivers.remove(findFirstReceiver(element));
 		}
 	}
 
-	public void elementAdded(T element) {
+	private void elementAdded(T element) {
 		synchronized (_monitor) {
 			if (signalChooser() == null) return;
 			
@@ -66,8 +66,9 @@ class SignalChooserManagerImpl<T> {
 		public void consume(Object ignored) {
 			if (!_isActive) return;
 			synchronized (_monitor) {
-				int index = _elementReceivers.indexOf(this);
-				_listOfSignalsReceiver.elementSignalChanged( index,  _element);
+				//Refactor: The line below can be deleted. Is the synchronized block still necessary with the line removed?
+				//int index = _elementReceivers.indexOf(this);
+				_listOfSignalsReceiver.elementSignalChanged( _element);
 			}
 		}
 	}

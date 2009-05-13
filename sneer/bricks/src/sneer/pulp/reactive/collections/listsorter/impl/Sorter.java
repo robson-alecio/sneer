@@ -108,7 +108,7 @@ final class Sorter<T> implements ListOfSignalsReceiver<T>{
 	}
 
 	@Override
-	public void elementSignalChanged(int index, T element) {
+	public void elementSignalChanged(T element) {
 		move(element);
 	}
 

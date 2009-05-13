@@ -56,7 +56,7 @@ class ListSignalModel<T> extends AbstractListModel {
 		}
 
 		@Override
-		public void elementSignalChanged(final int index, final T value) {
+		public void elementSignalChanged(final T value) {
 			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
 				elementChanged(value);
 			}});			

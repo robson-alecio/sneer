@@ -25,7 +25,7 @@ class ListSignalModel<T> extends AbstractListModel {
 	ListSignalModel(ListSignal<T> input, SignalChooser<T> chooser) {
 		_input = input;
 		_chooser = chooser;
-		_refToAvoidGc = _signalChooserManagerFactory.newManager(input, new ModelChangeReceiver(_input));
+		_refToAvoidGc = _signalChooserManagerFactory.receive(input, new ModelChangeReceiver(_input));
 	}
 	
 	private class ModelChangeReceiver extends VisitingListReceiver<T> implements ListOfSignalsReceiver<T> {
@@ -56,7 +56,7 @@ class ListSignalModel<T> extends AbstractListModel {
 		}
 
 		@Override
-		public void elementSignalChanged(final int index, final T value) {
+		public void elementSignalChanged(final T value) {
 			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
 				elementChanged(value);
 			}});			

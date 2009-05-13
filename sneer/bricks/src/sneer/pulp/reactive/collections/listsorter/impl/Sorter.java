@@ -21,7 +21,7 @@ final class Sorter<T> implements ListOfSignalsReceiver<T>{
 
 	private final CollectionSignal<T> _input;
 
-	private final SignalChoosers _signalChooserManagerFactory = my(SignalChoosers.class);
+	private final SignalChoosers _signalChoosers = my(SignalChoosers.class);
 	
 	@SuppressWarnings("unused")
 	private Object _refToAvoidGc;
@@ -51,7 +51,7 @@ final class Sorter<T> implements ListOfSignalsReceiver<T>{
 			_input.addReceiver(_receiverAvoidGc);
 		}
 		
-		_refToAvoidGc = _signalChooserManagerFactory.newManager(input, this);
+		_refToAvoidGc = _signalChoosers.receive(input, this);
 	}
 	
 	ListSignal<T> output() {
@@ -108,7 +108,7 @@ final class Sorter<T> implements ListOfSignalsReceiver<T>{
 	}
 
 	@Override
-	public void elementSignalChanged(int index, T element) {
+	public void elementSignalChanged(T element) {
 		move(element);
 	}
 

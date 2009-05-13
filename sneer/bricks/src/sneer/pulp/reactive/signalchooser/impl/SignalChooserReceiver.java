@@ -43,7 +43,7 @@ class SignalChooserReceiver<T> {
 	}
 	
 	private class ElementReceiver {
-		private volatile boolean _isActive = false;
+		private boolean _isActive = false;
 
 		ElementReceiver(final T element) {
 			my(Signals.class).receive(this, new Consumer<Object>(){ @Override public void consume(Object value) {

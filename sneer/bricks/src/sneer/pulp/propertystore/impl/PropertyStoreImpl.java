@@ -14,7 +14,7 @@ import java.util.Properties;
 import sneer.brickness.StoragePath;
 import sneer.commons.io.Streams;
 import sneer.pulp.propertystore.PropertyStore;
-import sneer.pulp.logging.Logger;
+import sneer.pulp.log.Logger;
 
 class PropertyStoreImpl implements PropertyStore {
 

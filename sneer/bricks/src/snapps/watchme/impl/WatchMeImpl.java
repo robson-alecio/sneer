@@ -28,7 +28,7 @@ import sneer.pulp.events.EventSource;
 import sneer.pulp.threads.Threads;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.screenshotter.Screenshotter;
-import sneer.pulp.logging.Logger;
+import sneer.pulp.log.Logger;
 
 class WatchMeImpl implements WatchMe {
 

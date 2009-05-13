@@ -7,7 +7,7 @@ import sneer.pulp.reactive.signalchooser.SignalChoosers;
 class SignalChoosersImpl implements SignalChoosers {
 
 	@Override
-	public <T> Object newManager(CollectionSignal<T> input, ListOfSignalsReceiver<T> listOfSignalsReceiver) {
-		return new SignalChooserManagerImpl<T>(input, listOfSignalsReceiver);
+	public <T> Object receive(CollectionSignal<T> input, ListOfSignalsReceiver<T> listOfSignalsReceiver) {
+		return new SignalChooserReceiver<T>(input, listOfSignalsReceiver);
 	}
 }

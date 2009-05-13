@@ -6,5 +6,5 @@ import sneer.pulp.reactive.collections.CollectionSignal;
 @Brick
 public interface SignalChoosers {
 	
-	<T> Object newManager(CollectionSignal<T> input, ListOfSignalsReceiver<T> listOfSignalsReceiver);
+	<T> Object receive(CollectionSignal<T> input, ListOfSignalsReceiver<T> listOfSignalsReceiver);
 }

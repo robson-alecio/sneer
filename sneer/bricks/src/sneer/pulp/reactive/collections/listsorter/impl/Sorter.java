@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import sneer.hardware.cpu.lang.Consumer;
+import sneer.hardware.cpu.lang.ref.weakreferencekeeper.WeakReferenceKeeper;
 import sneer.pulp.reactive.collections.CollectionChange;
 import sneer.pulp.reactive.collections.CollectionSignal;
 import sneer.pulp.reactive.collections.CollectionSignals;
@@ -15,13 +16,12 @@ import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.pulp.reactive.signalchooser.SignalChoosers;
-import wheel.reactive.impl.ListSignalOwnerReference;
 
 final class Sorter<T> implements ListOfSignalsReceiver<T>{
 
 	private final CollectionSignal<T> _input;
 
-	private final SignalChoosers _signalChooserManagerFactory = my(SignalChoosers.class);
+	private final SignalChoosers _signalChoosers = my(SignalChoosers.class);
 	
 	@SuppressWarnings("unused")
 	private Object _refToAvoidGc;
@@ -51,11 +51,11 @@ final class Sorter<T> implements ListOfSignalsReceiver<T>{
 			_input.addReceiver(_receiverAvoidGc);
 		}
 		
-		_refToAvoidGc = _signalChooserManagerFactory.newManager(input, this);
+		_refToAvoidGc = _signalChoosers.receive(input, this);
 	}
 	
 	ListSignal<T> output() {
-		return new ListSignalOwnerReference<T>(_sorted.output(), this);
+		return my(WeakReferenceKeeper.class).keep(_sorted.output(), this);
 	}
 	
 	private void elementAdded(T element) { 
@@ -108,7 +108,7 @@ final class Sorter<T> implements ListOfSignalsReceiver<T>{
 	}
 
 	@Override
-	public void elementSignalChanged(int index, T element) {
+	public void elementSignalChanged(T element) {
 		move(element);
 	}
 

@@ -1,6 +1,11 @@
 <synth>
 
 	<style id="ScrollPane">
+		<opaque value="true" />
+		<state>
+			<color value="WHITE" type="BACKGROUND" />
+			<color value="BLACK" type="FOREGROUND" />
+		</state>
 	</style>
 	<bind style="ScrollPane" type="REGION" key="ScrollPane" />
 

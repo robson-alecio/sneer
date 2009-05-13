@@ -12,7 +12,7 @@ import sneer.pulp.connection.SocketAccepter;
 import sneer.pulp.events.EventNotifier;
 import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.events.EventSource;
-import sneer.pulp.logging.Logger;
+import sneer.pulp.log.Logger;
 import sneer.pulp.network.ByteArrayServerSocket;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;

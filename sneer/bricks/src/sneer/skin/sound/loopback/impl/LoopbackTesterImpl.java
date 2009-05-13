@@ -3,7 +3,7 @@ package sneer.skin.sound.loopback.impl;
 import java.io.ByteArrayOutputStream;
 
 import sneer.skin.sound.loopback.LoopbackTester;
-import sneer.pulp.logging.Logger;
+import sneer.pulp.log.Logger;
 import static sneer.commons.environments.Environments.my;
 
 

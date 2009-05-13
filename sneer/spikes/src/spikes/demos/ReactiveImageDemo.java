@@ -14,7 +14,6 @@ import sneer.commons.environments.Environments;
 import sneer.commons.lang.Functor;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.hardware.gui.timebox.TimeboxedEventQueue;
-import sneer.pulp.logging.out.LogToSystemOut;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.widgets.reactive.ImageWidget;
@@ -27,8 +26,6 @@ public class ReactiveImageDemo {
 	private final Image OFFLINE = getImage("sampleOff.png");
 	
 	private ReactiveImageDemo(){
-		my(LogToSystemOut.class);
-
 		my(TimeboxedEventQueue.class).startQueueing(5000);
 		
 		my(GuiThread.class).strictInvokeAndWait(new Runnable(){@Override public void run() {

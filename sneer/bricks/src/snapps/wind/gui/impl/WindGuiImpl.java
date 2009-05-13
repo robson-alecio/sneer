@@ -33,7 +33,7 @@ import snapps.wind.gui.WindGui;
 import sneer.commons.lang.ByRef;
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.hardware.gui.guithread.GuiThread;
-import sneer.pulp.logging.Logger;
+import sneer.pulp.log.Logger;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.CollectionChange;
 import sneer.pulp.reactive.collections.impl.SimpleListReceiver;

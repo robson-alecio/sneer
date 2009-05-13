@@ -15,7 +15,7 @@ import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 
 import sneer.commons.lang.exceptions.NotImplementedYet;
-import sneer.pulp.logging.Logger;
+import sneer.pulp.log.Logger;
 
 // This class is a singleton.
 

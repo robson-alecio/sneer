@@ -2,7 +2,7 @@ package sneer.pulp.exceptionhandling.impl;
 
 import sneer.commons.environments.Environments;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
-import sneer.pulp.logging.Logger;
+import sneer.pulp.log.Logger;
 
 class ExceptionHandlerImpl implements ExceptionHandler {
 

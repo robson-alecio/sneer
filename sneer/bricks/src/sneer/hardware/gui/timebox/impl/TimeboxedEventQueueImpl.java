@@ -12,7 +12,7 @@ import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
 import sneer.hardware.cpu.timebox.Timebox;
 import sneer.hardware.gui.timebox.TimeboxedEventQueue;
-import sneer.pulp.logging.Logger;
+import sneer.pulp.log.Logger;
 
 class TimeboxedEventQueueImpl extends EventQueue implements TimeboxedEventQueue {
 

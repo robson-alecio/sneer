@@ -10,7 +10,7 @@ import javax.sound.sampled.TargetDataLine;
 
 import org.xiph.speex.SpeexEncoder;
 
-import sneer.pulp.logging.Logger;
+import sneer.pulp.log.Logger;
 
 
 public class SpeexMicrophone extends Thread {

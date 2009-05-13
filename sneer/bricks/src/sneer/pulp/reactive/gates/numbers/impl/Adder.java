@@ -2,10 +2,10 @@ package sneer.pulp.reactive.gates.numbers.impl;
 
 import static sneer.commons.environments.Environments.my;
 import sneer.hardware.cpu.lang.Consumer;
+import sneer.hardware.cpu.lang.ref.weakreferencekeeper.WeakReferenceKeeper;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import wheel.reactive.impl.SignalOwnerReference;
 
 class Adder {
 
@@ -28,7 +28,7 @@ class Adder {
 	}
 
 	Signal<Integer> output() {
-		return new SignalOwnerReference<Integer>(_sum.output(), this);
+		return my(WeakReferenceKeeper.class).keep(_sum.output(), this);
 	}
 
 }

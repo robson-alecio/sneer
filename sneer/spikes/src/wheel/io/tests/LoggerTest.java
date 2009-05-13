@@ -7,7 +7,8 @@ import org.junit.Test;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.commons.lang.ByRef;
 import sneer.hardware.cpu.lang.Consumer;
-import sneer.pulp.logging.Logger;
+import sneer.pulp.log.Logger;
+import sneer.pulp.log.workers.notifier.LogNotifier;
 import sneer.pulp.reactive.Signals;
 
 
@@ -50,7 +51,7 @@ public class LoggerTest extends BrickTest {
 		final ByRef<String> observed = ByRef.newInstance();
 		my(Signals.class).receive(this, new Consumer<String>() { @Override public void consume(String msg) {
 			observed.value = msg;
-		}},my(Logger.class).loggedMessages());
+		}},my(LogNotifier.class).loggedMessages());
 
 		my(Logger.class).log(message, insets);
 		

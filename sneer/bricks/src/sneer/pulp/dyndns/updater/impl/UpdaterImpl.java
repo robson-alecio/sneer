@@ -14,7 +14,7 @@ import sneer.pulp.dyndns.updater.UnexpectedResponseException;
 import sneer.pulp.dyndns.updater.Updater;
 import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.httpclient.HttpClient;
-import sneer.pulp.logging.Logger;
+import sneer.pulp.log.Logger;
 
 class UpdaterImpl implements Updater {
 	

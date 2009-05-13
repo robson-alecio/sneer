@@ -6,14 +6,11 @@ import sneer.brickness.testsupport.SystemBrickEnvironment;
 import sneer.commons.environments.Environments;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.LightType;
-import sneer.pulp.logging.out.LogToSystemOut;
 import sneer.skin.main.dashboard.Dashboard;
 
 public class BlinkingLightsDemo {
 
 	BlinkingLightsDemo() throws Exception {
-		my(LogToSystemOut.class);
-
 		my(Dashboard.class);
 		my(BlinkingLightsGui.class);
 		BlinkingLights bl = my(BlinkingLights.class);
@@ -24,7 +21,6 @@ public class BlinkingLightsDemo {
 	}
 
 	public static void main(String[] args) throws Exception {
-		my(LogToSystemOut.class);
 		Environments.runWith(new SystemBrickEnvironment(), new Runnable(){
 			@Override public void run() {
 				try {

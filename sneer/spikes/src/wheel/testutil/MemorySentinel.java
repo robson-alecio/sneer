@@ -2,7 +2,7 @@ package wheel.testutil;
 
 import static java.lang.System.gc;
 import sneer.commons.threads.Daemon;
-import sneer.pulp.logging.Logger;
+import sneer.pulp.log.Logger;
 import sneer.pulp.threads.Threads;
 import static sneer.commons.environments.Environments.my;
 

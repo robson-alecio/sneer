@@ -25,7 +25,7 @@ class ListSignalModel<T> extends AbstractListModel {
 	ListSignalModel(ListSignal<T> input, SignalChooser<T> chooser) {
 		_input = input;
 		_chooser = chooser;
-		_refToAvoidGc = _signalChooserManagerFactory.newManager(input, new ModelChangeReceiver(_input));
+		_refToAvoidGc = _signalChooserManagerFactory.receive(input, new ModelChangeReceiver(_input));
 	}
 	
 	private class ModelChangeReceiver extends VisitingListReceiver<T> implements ListOfSignalsReceiver<T> {

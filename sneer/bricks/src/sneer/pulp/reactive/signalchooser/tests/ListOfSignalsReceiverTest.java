@@ -32,7 +32,7 @@ public class ListOfSignalsReceiverTest extends BrickTest {
 		
 		addElement("0");
 		assertEvents("");
-		_refToAvoidGc = _factory.newManager(_listRegister.output(), newListOfSignalsReceiver(_listRegister.output()));
+		_refToAvoidGc = _factory.receive(_listRegister.output(), newListOfSignalsReceiver(_listRegister.output()));
 		
 		Register<String> r1 = addElement("1");
 		Register<String> r2 = addElement("2");

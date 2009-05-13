@@ -10,7 +10,7 @@ import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import wheel.reactive.impl.EventReceiver;
 
-class SignalChooserManagerImpl<T> {
+class SignalChooserReceiver<T> {
 	
 	@SuppressWarnings("unused")	private final Object _refToAvoidGc;
 
@@ -18,7 +18,7 @@ class SignalChooserManagerImpl<T> {
 	private final ListOfSignalsReceiver<T> _listOfSignalsReceiver;
 	private final Object _monitor = new Object();
 	
-	public SignalChooserManagerImpl(CollectionSignal<T> input, ListOfSignalsReceiver<T> listOfSignalsReceiver) {
+	public SignalChooserReceiver(CollectionSignal<T> input, ListOfSignalsReceiver<T> listOfSignalsReceiver) {
 		_listOfSignalsReceiver = listOfSignalsReceiver;
 		_refToAvoidGc = new InputReceiver(input);
 	}
@@ -67,17 +67,17 @@ class SignalChooserManagerImpl<T> {
 			
 			synchronized (_monitor) {
 				for (T element : _input)
-					SignalChooserManagerImpl.this.elementAdded(element);
+					SignalChooserReceiver.this.elementAdded(element);
 			}
 		}
 
 		@Override
 		synchronized public void consume(CollectionChange<T> change) {
 			for(T element: change.elementsRemoved())
-				SignalChooserManagerImpl.this.elementRemoved(element);
+				SignalChooserReceiver.this.elementRemoved(element);
 			
 			for(T element: change.elementsAdded())
-				SignalChooserManagerImpl.this.elementAdded(element);
+				SignalChooserReceiver.this.elementAdded(element);
 		}
 		
 	}

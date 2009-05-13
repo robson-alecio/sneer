@@ -48,8 +48,8 @@ public class NatureTest extends Assert {
 			placeBrick(BricknessFactory.newBrickContainer(), BrickOfSomeNature.class);
 			Assert.fail();
 		} catch (BrickPlacementException e) {
-			assertTrue(e.getMessage().contains("Implementation for nature"));
-			assertTrue(e.getMessage().contains("not found"));
+			assertTrue(e.getMessage(), e.getMessage().contains("Implementation for nature"));
+			assertTrue(e.getMessage(), e.getMessage().contains("not found"));
 		}
 	}
 	

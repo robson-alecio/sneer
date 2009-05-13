@@ -27,7 +27,8 @@ class SignalChooserReceiver<T> {
 	
 	private void elementRemoved(T element) {
 		if (signalChooser() == null) return;
-		_receiversByElement.remove(element);
+		ElementReceiver receiver = _receiversByElement.remove(element);
+		receiver._isActive = false; //Refactor: Dispose the reception instead of setting false.
 	}
 
 	private void elementAdded(T element) {
@@ -42,17 +43,18 @@ class SignalChooserReceiver<T> {
 	}
 	
 	private class ElementReceiver {
-		private final T _element;
 		private volatile boolean _isActive = false;
 
-		ElementReceiver(T element) {
-			_element = element;
-
+		ElementReceiver(final T element) {
 			my(Signals.class).receive(this, new Consumer<Object>(){ @Override public void consume(Object value) {
 				if (!_isActive) return;
-				_listOfSignalsReceiver.elementSignalChanged( _element);
-			}}, signalChooser().signalsToReceiveFrom(_element));
+				_listOfSignalsReceiver.elementSignalChanged(element);
+			}}, signalChooser().signalsToReceiveFrom(element));
 			
+			startNotifyingReceiver();
+		}
+
+		private void startNotifyingReceiver() {
 			_isActive = true;
 		}
 

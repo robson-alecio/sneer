@@ -53,14 +53,6 @@ class WindGuiImpl implements WindGui {
 	private final ReactiveWidgetFactory _rfactory = my(ReactiveWidgetFactory.class);
 	private final JTextPane _shoutsList = new JTextPane();
 
-	private final Consumer<CollectionChange<Shout>> _windConsumer = new Consumer<CollectionChange<Shout>>(){ @Override public void consume(CollectionChange<Shout> change) {
-		for (Shout shout : change.elementsAdded()) 
-			ShoutPainter.appendShout(shout, _shoutsList);
-
-		if(!change.elementsRemoved().isEmpty())
-			ShoutPainter.repaintAllShoults(_wind.shoutsHeard(), _shoutsList);
-	}};
-	
 	private final TextWidget<JTextPane> _myShout;{
 		final Object ref[] = new Object[1];
 		my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {//Fix Use GUI Nature
@@ -69,9 +61,15 @@ class WindGuiImpl implements WindGui {
 		_myShout = (TextWidget<JTextPane>) ref[0];
 	}
 	
-	private final JScrollPane _scrollPane = my(AutoScrolls.class).create(_myShout.getMainWidget(), _wind.shoutsHeard(),  _windConsumer);{
-		_scrollPane.getViewport().add(_shoutsList);
-	}
+	private final JScrollPane _scrollPane = my(AutoScrolls.class).create( _myShout.getMainWidget(), _wind.shoutsHeard(),
+		new Consumer<CollectionChange<Shout>>() { @Override public void consume(CollectionChange<Shout> change) {
+				for (Shout shout : change.elementsAdded())
+					ShoutPainter.appendShout(shout, _shoutsList);
+
+				if (!change.elementsRemoved().isEmpty())
+					ShoutPainter.repaintAllShoults(_wind.shoutsHeard(), _shoutsList);
+			}
+		});
 	
 	public WindGuiImpl() {
 		my(InstrumentRegistry.class).registerInstrument(this);
@@ -86,6 +84,7 @@ class WindGuiImpl implements WindGui {
 	}
 
 	private void initGui() {
+		_scrollPane.getViewport().add(_shoutsList);
 		JScrollPane scrollShout = my(SynthScrolls.class).create();
 		JPanel horizontalLimit = new JPanel(){
 			@Override
@@ -138,6 +137,11 @@ class WindGuiImpl implements WindGui {
 	public int defaultHeight() {
 		return 248;
 	}
+
+	@Override
+	public String title() {
+		return "Wind";
+	}
 	
 	private final class WindClipboardSupport implements ClipboardOwner{
 		
@@ -167,10 +171,5 @@ class WindGuiImpl implements WindGui {
 			StringSelection fieldContent = new StringSelection(_shoutsList.getSelectedText());
 			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(fieldContent, this);	
 		}
-	}
-
-	@Override
-	public String title() {
-		return "Wind";
 	}
 }

@@ -128,6 +128,7 @@ public class Sneer {
 				snapps.contacts.gui.delete.DeleteContactWindow.class,
 				snapps.contacts.gui.ContactsGui.class,
 				snapps.contacts.gui.info.ContactInfoWindow.class,
+				sneer.skin.widgets.reactive.autoscroll.AutoScrolls.class,
 				snapps.wind.gui.WindGui.class,
 				snapps.whisper.gui.WhisperGui.class,
 				snapps.meter.memory.gui.MemoryMeterGui.class,

@@ -24,10 +24,8 @@ public class Sneer {
 	}
 
 	static public void placeBricks(Brickness container, Class<?>... bricks) throws BrickPlacementException {
-		for (Class<?> brick : bricks) {
-			System.out.println("placing brick: " + brick.getCanonicalName());
+		for (Class<?> brick : bricks)
 			container.placeBrick(ClassFiles.classpathRootFor(brick), brick.getName());
-		}
 	}
 
 	static public Class<?>[] businessBricks() {

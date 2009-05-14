@@ -12,20 +12,20 @@ public class LogFormatterImpl implements LogFormatter {
 
 	@Override
 	public String format(String message, Object... messageInsets) {
-		return logMessage(message, messageInsets).toString();
+		return logMessage(message, messageInsets).append("\n").toString();
 	}
 
 	@Override
 	public String format(Throwable throwable, String message, Object... messageInsets) {
 		return logMessage(message, messageInsets)
-			.append("/n")
-			.append(stackTraceToByteArray(throwable)).toString();
+			.append("\n")
+			.append(stackTraceToByteArray(throwable)).append("\n").toString();
 	}
 
 	@Override
 	public String format(Throwable throwable) {
 		return new StringBuilder()
-			.append(stackTraceToByteArray(throwable)).toString();
+			.append(stackTraceToByteArray(throwable)).append("\n").toString();
 	}
 
 	@Override

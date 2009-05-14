@@ -5,7 +5,6 @@ import static sneer.commons.environments.Environments.my;
 import java.util.Comparator;
 
 import org.jmock.Expectations;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.AssertUtils;
@@ -20,6 +19,7 @@ import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.collections.ListChange.Visitor;
 import sneer.pulp.reactive.collections.listsorter.ListSorter;
+import sneer.pulp.reactive.signalchooser.SignalChooser;
 
 public class ListSorterTest extends BrickTest {
 	
@@ -37,7 +37,10 @@ public class ListSorterTest extends BrickTest {
 	private final Signal<Integer> _50 = my(Signals.class).constant(50);
 	private final Signal<Integer> _60 = my(Signals.class).constant(60);
 
-	
+	private final SignalChooser<Signal<Integer>> _chooser = new SignalChooser<Signal<Integer>>(){ @Override public Signal<?>[] signalsToReceiveFrom(Signal<Integer> element) {
+		return new Signal<?>[]{element};
+	}};
+
 	@Test
 	public void testVisitor() {
 		checking(new Expectations(){{
@@ -61,7 +64,7 @@ public class ListSorterTest extends BrickTest {
 		src.add(_60);
 		src.remove(_60);
 
-		ListSignal<Signal<Integer>> sortedList = _sorter.sort(src.output(), integerComparator(), null);
+		ListSignal<Signal<Integer>> sortedList = _sorter.sort(src.output(), integerComparator(), _chooser);
 		Consumer<ListChange<Signal<Integer>>> consumer = new Consumer<ListChange<Signal<Integer>>>(){ @Override public void consume(ListChange<Signal<Integer>> value) {
 			value.accept(_visitor);
 		}};
@@ -88,7 +91,7 @@ public class ListSorterTest extends BrickTest {
 		src.add(_20);
 		src.add(_10);
 		
-		ListSignal<Signal<Integer>> sortedList = _sorter.sort(src.output(), integerComparator(), null);
+		ListSignal<Signal<Integer>> sortedList = _sorter.sort(src.output(), integerComparator(), _chooser);
 
 		src.add(_20);
 		src.add(_30);
@@ -119,7 +122,7 @@ public class ListSorterTest extends BrickTest {
 		src.add(_30);
 		src.add(_30);
 		
-		ListSignal<Signal<Integer>> sortedList = _sorter.sort(src.output(), integerComparator(), null);
+		ListSignal<Signal<Integer>> sortedList = _sorter.sort(src.output(), integerComparator(), _chooser);
 		
 		src.add(_20);
 		src.add(_20);
@@ -146,7 +149,7 @@ public class ListSorterTest extends BrickTest {
 		src.add(_20);
 		src.add(_10);
 		
-		ListSignal<Signal<Integer>> sortedList = _sorter.sort(src.output(), integerComparator(), null);
+		ListSignal<Signal<Integer>> sortedList = _sorter.sort(src.output(), integerComparator(), _chooser);
 		
 		assertEquals(2 , listSize(sortedList));
 		AssertUtils.assertSameContents(sortedList, _10, _20);
@@ -171,8 +174,7 @@ public class ListSorterTest extends BrickTest {
 	private int listSize(ListSignal<Signal<Integer>> sortedList) {
 		return sortedList.size().currentValue().intValue();
 	}
-	
-	@Ignore
+
 	@Test
 	public void signalChooserTest() {
 		ListRegister<Signal<Integer>> src = my(CollectionSignals.class).newListRegister();
@@ -190,7 +192,7 @@ public class ListSorterTest extends BrickTest {
 		src.add(s35);
 		src.add(s45);
 		
-		ListSignal<Signal<Integer>> sortedList = _sorter.sort(src.output(), integerComparator(), null);
+		ListSignal<Signal<Integer>> sortedList = _sorter.sort(src.output(), integerComparator(), _chooser);
 
 		src.add(s15);
 		src.add(s25);

@@ -1,19 +1,41 @@
 package sneer.pulp.log.workers.sysout.impl;
 
 import static sneer.commons.environments.Environments.my;
-import sneer.pulp.log.formatter.LogFormatter;
+
+import java.util.Arrays;
+
+import sneer.pulp.log.LogWorker;
+import sneer.pulp.log.Logger;
 import sneer.pulp.log.workers.sysout.LogToSystemOut;
 
 public class LogToSystemOutImpl implements LogToSystemOut {
 
-	private final LogFormatter _formatter = my(LogFormatter.class);
-	
-	private void log(String msg){
-		System.out.println(msg);
+	LogToSystemOutImpl(){
+		my(Logger.class).setDelegate(new SysoutLogWorker());
 	}
 	
-	@Override  public void log(String message, Object... messageInsets) {  log(_formatter.format(message, messageInsets)); }
-	@Override  public void log(Throwable throwable, String message, Object... messageInsets) { log(_formatter.format(throwable, message, messageInsets));}
-	@Override public void log(Throwable throwable) { log(_formatter.format(throwable)); }
-	@Override public void logShort(Exception e, String message, Object... messageInsets) { log(_formatter.formatShort(e, message, messageInsets));}
+	class SysoutLogWorker implements LogWorker{
+		@Override
+		public void log(Throwable throwable, String message, Object... messageInsets){
+			logMessage(message, messageInsets);
+			logThrowable(throwable);
+			System.out.println();
+		}
+
+		private void logThrowable(Throwable throwable) {
+			if (throwable==null) return;
+			throwable.printStackTrace(System.out);
+		}
+
+		private void logMessage(String message, Object... messageInsets) {
+			if (message==null) return;
+			System.out.print(message);
+			System.out.print(' ');
+			System.out.println(Arrays.toString(messageInsets));
+		}
+		
+		@Override public void log(String message, Object... messageInsets) {  log(message, Arrays.toString(messageInsets)); }
+		@Override public void log(Throwable throwable) { log(throwable, null); }
+		@Override public void logShort(Throwable throwable, String message, Object... messageInsets) { log(null, throwable.getMessage(), messageInsets);}
+	}
 }

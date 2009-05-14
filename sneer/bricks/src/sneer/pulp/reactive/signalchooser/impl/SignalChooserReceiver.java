@@ -18,7 +18,6 @@ class SignalChooserReceiver<T> {
 
 	private final Map<T, ElementReceiver> _receiversByElement = new HashMap<T, ElementReceiver>();
 	private final ListOfSignalsReceiver<T> _listOfSignalsReceiver;
-	private final Object _monitor = new Object();
 	
 	public SignalChooserReceiver(CollectionSignal<T> input, ListOfSignalsReceiver<T> listOfSignalsReceiver) {
 		_listOfSignalsReceiver = listOfSignalsReceiver;
@@ -57,7 +56,6 @@ class SignalChooserReceiver<T> {
 		private void startNotifyingReceiver() {
 			_isActive = true;
 		}
-
 	}
 	
 	private class InputReceiver implements Consumer<CollectionChange<T>> {
@@ -68,7 +66,7 @@ class SignalChooserReceiver<T> {
 			_input = input;
 			_input.addReceiver(this);
 			
-			synchronized (_monitor) {
+			synchronized (this) {
 				for (T element : _input)
 					SignalChooserReceiver.this.elementAdded(element);
 			}
@@ -82,6 +80,5 @@ class SignalChooserReceiver<T> {
 			for(T element: change.elementsAdded())
 				SignalChooserReceiver.this.elementAdded(element);
 		}
-		
 	}
 }

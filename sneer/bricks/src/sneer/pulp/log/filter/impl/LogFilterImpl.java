@@ -16,7 +16,7 @@ class LogFilterImpl implements LogFilter {
 	}
 
 	@Override
-	public boolean acceptLog(String message) {
+	public boolean acceptLogEntry(String message) {
 		//Implement
 		return true;
 	}	

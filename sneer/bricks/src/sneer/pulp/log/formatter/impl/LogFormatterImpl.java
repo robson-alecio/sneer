@@ -29,10 +29,10 @@ public class LogFormatterImpl implements LogFormatter {
 	}
 
 	@Override
-	public String formatShort(Exception e, String message, Object... insets) {
-		return logMessage(message, insets).append(' ')
-			.append(e.getClass().getSimpleName()).append(' ')
-			.append(e.getMessage()).toString();
+	public String formatShort(Throwable throwable, String message, Object... messageInsets) {
+		return logMessage(message, messageInsets).append(' ')
+			.append(throwable.getClass().getSimpleName()).append(' ')
+			.append(throwable.getMessage()).toString();
 	}
 
 	private byte[] stackTraceToByteArray(Throwable throwable) {

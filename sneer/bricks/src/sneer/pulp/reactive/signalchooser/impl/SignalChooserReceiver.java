@@ -5,6 +5,7 @@ import static sneer.commons.environments.Environments.my;
 import java.util.HashMap;
 import java.util.Map;
 
+import sneer.commons.lang.exceptions.NotImplementedYet;
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.CollectionChange;
@@ -27,14 +28,16 @@ class SignalChooserReceiver<T> {
 	private void elementRemoved(T element) {
 		if (signalChooser() == null) return;
 		ElementReceiver receiver = _receiversByElement.remove(element);
-		receiver._isActive = false; //Refactor: Dispose the reception instead of setting false.
+		if (receiver == null) return;
+		receiver._isActive = false; //Refactor: Dispose the reception (if supported) instead of setting false.
 	}
 
 	private void elementAdded(T element) {
 		if (signalChooser() == null) return;
 			
 		ElementReceiver receiver = new ElementReceiver(element);
-		_receiversByElement.put(element, receiver);
+		if (_receiversByElement.put(element, receiver) != null)
+			throw new NotImplementedYet("Duplicated elements are not supported since there is no tracking yet of the number of occurences.");
 	}
 	
 	private SignalChooser<T> signalChooser() {

@@ -5,19 +5,22 @@ import sneer.pulp.events.EventNotifier;
 import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.log.Logger;
+import sneer.pulp.log.filter.LogFilter;
 import sneer.pulp.log.formatter.LogFormatter;
 import sneer.pulp.log.workers.notifier.LogNotifier;
 
 public class LogNotifierImpl implements LogNotifier {
 
+	private final LogFilter _filter = my(LogFilter.class);
 	private final LogFormatter _formatter = my(LogFormatter.class);
 	private final EventNotifier<String> _loggedMessages = my(EventNotifiers.class).create();
 	{
-		my(Logger.class).delegate(this);
+		my(Logger.class).setDelegate(this);
 	}
 	
 	private void log(String msg){
-		_loggedMessages.notifyReceivers(msg);
+		if(_filter.acceptLog(msg))
+			_loggedMessages.notifyReceivers(msg);
 	}
 
 	@Override

@@ -1,5 +1,10 @@
 <synth>
 
+	<defaultsProperty key="LodConsoleImpl.offsetX" type="Integer" value="20"/>
+	<defaultsProperty key="LodConsoleImpl.offsetY" type="Integer" value="0"/>
+	<defaultsProperty key="LodConsoleImpl.height" type="Integer" value="150"/>
+	<defaultsProperty key="LodConsoleImpl.x" type="Integer" value="10"/>
+
 	<style id="logTextAreaStyle">
 		<opaque value="true" />
 		<font name="Verdana" size="10" />

@@ -3,7 +3,7 @@ package sneer.hardware.log.gui.impl;
 import static sneer.commons.environments.Environments.my;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.Rectangle;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -22,13 +22,19 @@ import sneer.skin.windowboundssetter.WindowBoundsSetter;
 class LogConsoleImpl extends JFrame implements LogConsole {
 
 	private final Synth _synth = my(Synth.class);
-	{_synth.load(this.getClass());}
 	
+	{_synth.load(this.getClass());}
+	private final Integer _OFFSET_X = (Integer) _synth.getDefaultProperty("LodConsoleImpl.offsetX");
+	private final Integer _OFFSET_Y = (Integer) _synth.getDefaultProperty("LodConsoleImpl.offsetY");
+	private final Integer _HEIGHT = (Integer) _synth.getDefaultProperty("LodConsoleImpl.height");
+	private final Integer _X = (Integer) _synth.getDefaultProperty("LodConsoleImpl.x");
+		
 	private final MainMenu _mainMenu = my(MainMenu.class);	
 
-	private boolean _isInitialized = false;
-
 	LogConsoleImpl(){
+		super("Sneer Log Console");
+		initGUI();
+		open();
 		addMenuAction();
 	}
 
@@ -41,7 +47,6 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 	}
 
 	private void open() {
-		if(!_isInitialized ) initGUI();
 		setVisible(true);
 	}
 
@@ -58,7 +63,8 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(scroll, BorderLayout.CENTER);
 		scroll.getViewport().add(txtLog);
-		setSize(new Dimension(400,300));
-		my(WindowBoundsSetter.class).setBestBounds(this);
+		Rectangle unused = my(WindowBoundsSetter.class).unusedArea();
+		setBounds(_X , unused.height-_HEIGHT-_OFFSET_Y, unused.width-_OFFSET_X, _HEIGHT-_OFFSET_Y);
+		
 	}
 }

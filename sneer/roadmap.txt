@@ -1,6 +1,8 @@
 ﻿FIXES
 =========
 
+	- Unignore ListSorterTest.signalChooserTest() and ListOfSignalsReceiverTest.test()
+
 	- [Bamboo] GUIImpl.defineBrickMetadata param is unused.
 
 	- [Sandro and Igor] ListSignalModel and SortedList - Fix Sort Bug (see SortTest)

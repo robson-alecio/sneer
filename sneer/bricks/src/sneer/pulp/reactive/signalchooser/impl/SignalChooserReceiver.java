@@ -1,14 +1,16 @@
 package sneer.pulp.reactive.signalchooser.impl;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import sneer.hardware.cpu.lang.Consumer;
+import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.CollectionChange;
 import sneer.pulp.reactive.collections.CollectionSignal;
 import sneer.pulp.reactive.signalchooser.ListOfSignalsReceiver;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
-import wheel.reactive.impl.EventReceiver;
 
 class SignalChooserReceiver<T> {
 	
@@ -25,7 +27,8 @@ class SignalChooserReceiver<T> {
 	
 	private void elementRemoved(T element) {
 		if (signalChooser() == null) return;
-		_receiversByElement.remove(element);
+		ElementReceiver receiver = _receiversByElement.remove(element);
+		receiver._isActive = false; //Refactor: Dispose the reception instead of setting false.
 	}
 
 	private void elementAdded(T element) {
@@ -33,28 +36,28 @@ class SignalChooserReceiver<T> {
 			
 		ElementReceiver receiver = new ElementReceiver(element);
 		_receiversByElement.put(element, receiver);
-			
-		receiver._isActive = true;
 	}
 	
 	private SignalChooser<T> signalChooser() {
 		return _listOfSignalsReceiver.signalChooser();
 	}
 	
-	private class ElementReceiver extends EventReceiver<Object> {
-		private final T _element;
-		private volatile boolean _isActive;
+	private class ElementReceiver {
+		private boolean _isActive = false;
 
-		ElementReceiver(T element) {
-			super(signalChooser().signalsToReceiveFrom(element));
-			_element = element;
+		ElementReceiver(final T element) {
+			my(Signals.class).receive(this, new Consumer<Object>(){ @Override public void consume(Object value) {
+				if (!_isActive) return;
+				_listOfSignalsReceiver.elementSignalChanged(element);
+			}}, signalChooser().signalsToReceiveFrom(element));
+			
+			startNotifyingReceiver();
 		}
 
-		@Override
-		public void consume(Object ignored) {
-			if (!_isActive) return;
-			_listOfSignalsReceiver.elementSignalChanged( _element);
+		private void startNotifyingReceiver() {
+			_isActive = true;
 		}
+
 	}
 	
 	private class InputReceiver implements Consumer<CollectionChange<T>> {

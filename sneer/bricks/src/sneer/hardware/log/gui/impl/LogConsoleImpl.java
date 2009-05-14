@@ -16,7 +16,7 @@ import sneer.pulp.log.workers.notifier.LogNotifier;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.main.menu.MainMenu;
 import sneer.skin.main.synth.Synth;
-import sneer.skin.main.synth.scroll.SynthScrolls;
+import sneer.skin.widgets.reactive.autoscroll.AutoScrolls;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
 
 class LogConsoleImpl extends JFrame implements LogConsole {
@@ -51,20 +51,22 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 	}
 
 	private void initGUI() {
-		JScrollPane scroll = my(SynthScrolls.class).create();
-		LogNotifier notifier = my(LogNotifier.class);
-
 		final JTextArea txtLog = new JTextArea();
 		_synth.attach(txtLog, "logTextArea");
 		my(Signals.class).receive(this, new Consumer<String>() { @Override public void consume(String value) {
 			txtLog.append(value);
-		}}, notifier.loggedMessages());
+		}}, my(LogNotifier.class).loggedMessages());
 
+		JScrollPane scroll = newAutoScroll();
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(scroll, BorderLayout.CENTER);
 		scroll.getViewport().add(txtLog);
 		Rectangle unused = my(WindowBoundsSetter.class).unusedArea();
 		setBounds(_X , unused.height-_HEIGHT-_OFFSET_Y, unused.width-_OFFSET_X, _HEIGHT-_OFFSET_Y);
 		
+	}
+
+	private JScrollPane newAutoScroll() {
+		return my(AutoScrolls.class).create(my(LogNotifier.class).loggedMessages());
 	}
 }

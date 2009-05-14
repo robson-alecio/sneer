@@ -41,6 +41,10 @@ public class Sneer {
 				sneer.pulp.log.filter.LogFilter.class,
 				sneer.pulp.log.formatter.LogFormatter.class,
 				sneer.pulp.log.workers.notifier.LogNotifier.class,
+				
+				sneer.pulp.exceptionhandling.ExceptionHandler.class,
+				sneer.pulp.log.receiver.file.LogToFile.class,
+				sneer.pulp.log.receiver.sysout.LogToSysOut.class,
 
 				sneer.pulp.internetaddresskeeper.InternetAddressKeeper.class,
 				sneer.pulp.crypto.Crypto.class,
@@ -68,7 +72,7 @@ public class Sneer {
 				sneer.pulp.keymanager.KeyManager.class,
 				sneer.pulp.reactive.signalchooser.SignalChoosers.class,
 				snapps.watchme.codec.ImageCodec.class,
-				sneer.pulp.exceptionhandling.ExceptionHandler.class,
+
 				sneer.pulp.connection.SocketOriginator.class,
 				sneer.pulp.serialization.Serializer.class,
 				sneer.skin.main.instrumentregistry.InstrumentRegistry.class,
@@ -131,11 +135,11 @@ public class Sneer {
 				snapps.blinkinglights.gui.BlinkingLightsGui.class,
 
 				sneer.skin.windowboundssetter.WindowBoundsSetter.class,
-				snapps.welcomewizard.WelcomeWizard.class,
-				sneer.hardware.log.gui.LogConsole.class,
 				sneer.hardware.gui.timebox.TimeboxedEventQueue.class,
 				sneer.hardware.gui.trayicon.TrayIcons.class,
 				sneer.skin.main.dashboard.Dashboard.class,
+				sneer.hardware.log.gui.LogConsole.class,
+				snapps.welcomewizard.WelcomeWizard.class,
 				
 				snapps.contacts.hardcoded.HardcodedContacts.class
 		};

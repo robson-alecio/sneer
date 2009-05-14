@@ -1,4 +1,4 @@
-package sneer.pulp.log.workers.file;
+package sneer.pulp.log.receiver.file;
 
 import sneer.brickness.Brick;
 

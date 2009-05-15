@@ -21,16 +21,6 @@
 	    </state>
 	</style>
 
-	<style id="logTextAreaStyle">
-		<opaque value="true" />
-		<font name="Verdana" size="10" />
-	    <state>
-	      <color value="WHITE" type="BACKGROUND"/>
-	      <color value="BLACK" type="FOREGROUND"/>
-	      <insets top="5" left="5" bottom="5" right="5" />
-	    </state>
-	</style>
-
 	<style id="addButtonStyle">
 		<insets top="8" left="2" right="2" />
 		<state>
@@ -58,7 +48,6 @@
 	</style>
 
 	<bind key="FilterPanel" style="filterPanelStyle" type="name"  />
-	<bind key="LogTextArea" style="logTextAreaStyle" type="name"  />
 	<bind key="AddButton" style="addButtonStyle" type="name" />
 	<bind key="DelButton" style="delButtonStyle" type="name" />
 

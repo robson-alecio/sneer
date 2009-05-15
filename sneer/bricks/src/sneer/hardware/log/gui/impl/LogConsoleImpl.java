@@ -70,7 +70,6 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 
 	private void initGUI() {
 		final JTextArea txtLog = new JTextArea();
-		_synth.attach(txtLog, "LogTextArea");
 		my(Signals.class).receive(this, new Consumer<String>() { @Override public void consume(String value) {
 			txtLog.append(value);
 		}}, my(LogNotifier.class).loggedMessages());
@@ -93,9 +92,9 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 		
 		final JTextField newInclude = new JTextField();
 		newInclude.setBorder(new TitledBorder("New Filter:"));
-		filter.add(newInclude, new GridBagConstraints(0,0,1,1,1.0,0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0,0));
+		filter.add(newInclude, new GridBagConstraints(0,0,1,1,1.0,0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(0,2,0,0), 0,0));
 		
-		filter.add(scroll2, new GridBagConstraints(0,1,1,2,1.0,1.0, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0,0));
+		filter.add(scroll2, new GridBagConstraints(0,1,1,2,1.0,1.0, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0,2,0,0), 0,0));
 		JButton addButton = new JButton();
 		JButton delButton = new JButton();
 

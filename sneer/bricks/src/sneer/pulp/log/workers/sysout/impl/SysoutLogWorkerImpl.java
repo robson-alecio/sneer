@@ -6,11 +6,11 @@ import java.util.Arrays;
 
 import sneer.pulp.log.LogWorker;
 import sneer.pulp.log.Logger;
-import sneer.pulp.log.workers.sysout.LogToSystemOut;
+import sneer.pulp.log.workers.sysout.SysoutLogWorker;
 
-public class LogToSystemOutImpl implements LogToSystemOut {
+public class SysoutLogWorkerImpl implements SysoutLogWorker {
 
-	LogToSystemOutImpl(){
+	SysoutLogWorkerImpl(){
 		my(Logger.class).setDelegate(new SysoutLogWorker());
 	}
 	

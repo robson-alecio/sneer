@@ -34,7 +34,7 @@ public class LogToSystemOutImpl implements LogToSystemOut {
 			System.out.println(Arrays.toString(messageInsets));
 		}
 		
-		@Override public void log(String message, Object... messageInsets) {  log(message, Arrays.toString(messageInsets)); }
+		@Override public void log(String message, Object... messageInsets) {  log(null, message, messageInsets); }
 		@Override public void log(Throwable throwable) { log(throwable, null); }
 		@Override public void logShort(Throwable throwable, String message, Object... messageInsets) { log(null, throwable.getMessage(), messageInsets);}
 	}

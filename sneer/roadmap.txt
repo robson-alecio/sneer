@@ -7,11 +7,6 @@
 
 	- [Sandro and Igor] ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
 
-	- [Sandro] Logger
-		- LogFilter boolean acceptLog(...) - White list filter
-		- Default log: File and GUI.
-		- GUI
-
 	- SignalChoosers - Receive owner for GC (like Signals.receive()) instead of returning a reference that has to be held.
 	
 	- Implement ProbeManager elementRemoved to remove Contacts from Gui

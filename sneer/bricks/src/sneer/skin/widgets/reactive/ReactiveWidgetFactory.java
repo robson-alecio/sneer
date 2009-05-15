@@ -33,6 +33,7 @@ public interface ReactiveWidgetFactory {
 	TextWidget<JTextPane> newTextPane(Signal<?> source, PickyConsumer<? super String> setter);
 	TextWidget<JTextPane> newTextPane(Signal<?> source, PickyConsumer<? super String> setter, NotificationPolicy notificationPolicy);
 
+	<T> ListWidget<T> newList(ListSignal<T> source);
 	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> labelProvider);
 	<T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> labelProvider,	ListCellRenderer cellRenderer);
 	<T> ListModel newListSignalModel(ListSignal<T> input, SignalChooser<T> chooser);

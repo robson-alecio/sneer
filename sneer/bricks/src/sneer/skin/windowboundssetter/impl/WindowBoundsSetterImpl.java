@@ -61,8 +61,13 @@ class WindowBoundsSetterImpl implements WindowBoundsSetter{
 
 	@Override
 	public Rectangle unusedArea() {
-		Rectangle used = SwingUtilities.getWindowAncestor(_container).getBounds();
+		Window windowAncestor = SwingUtilities.getWindowAncestor(_container);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); 
+
+		if(windowAncestor==null) 
+			return new Rectangle(0,0, screenSize.width, screenSize.height);
+		
+		Rectangle used = windowAncestor.getBounds();
 		return new Rectangle(0, 0, screenSize.width-used.width, (int)used.getMaxY());
 	}
 }

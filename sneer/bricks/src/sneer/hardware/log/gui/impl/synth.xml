@@ -2,8 +2,24 @@
 
 	<defaultsProperty key="LodConsoleImpl.offsetX" type="Integer" value="20"/>
 	<defaultsProperty key="LodConsoleImpl.offsetY" type="Integer" value="0"/>
-	<defaultsProperty key="LodConsoleImpl.height" type="Integer" value="150"/>
+	<defaultsProperty key="LodConsoleImpl.height" type="Integer" value="160"/>
 	<defaultsProperty key="LodConsoleImpl.x" type="Integer" value="10"/>
+	<defaultsProperty key="LodConsoleImpl.splitLocationPercent" type="Integer" value="80"/>
+	
+	<imageIcon id="add" path="add.png" />
+	<imageIcon id="del" path="del.png" />
+	<imageIcon id="addClick" path="addClick.png" />
+	<imageIcon id="delClick" path="delClick.png" />
+	<imageIcon id="addOver" path="addOver.png" />
+	<imageIcon id="delOver" path="delOver.png" />
+
+	<style id="filterPanelStyle">
+		<opaque value="true" />
+	    <state>
+	      <color value="WHITE" type="BACKGROUND"/>
+	      <color value="BLACK" type="FOREGROUND"/>
+	    </state>
+	</style>
 
 	<style id="logTextAreaStyle">
 		<opaque value="true" />
@@ -14,7 +30,36 @@
 	      <insets top="5" left="5" bottom="5" right="5" />
 	    </state>
 	</style>
-	<bind style="logTextAreaStyle" type="name" key="logTextArea" />
 
+	<style id="addButtonStyle">
+		<insets top="8" left="2" right="2" />
+		<state>
+			<property key="Button.icon" value="add" />
+		</state>
+		<state value="MOUSE_OVER">
+			<property key="Button.icon" value="addOver" />
+		</state>
+		<state value="PRESSED">
+			<property key="Button.icon" value="addClick" />
+		</state>
+	</style>
+
+	<style id="delButtonStyle">
+		<insets top="8" left="2" right="2" />
+		<state>
+			<property key="Button.icon" value="del" />
+		</state>
+		<state value="MOUSE_OVER">
+			<property key="Button.icon" value="delOver" />
+		</state>
+		<state value="PRESSED">
+			<property key="Button.icon" value="delClick" />
+		</state>
+	</style>
+
+	<bind key="FilterPanel" style="filterPanelStyle" type="name"  />
+	<bind key="LogTextArea" style="logTextAreaStyle" type="name"  />
+	<bind key="AddButton" style="addButtonStyle" type="name" />
+	<bind key="DelButton" style="delButtonStyle" type="name" />
 
 </synth>

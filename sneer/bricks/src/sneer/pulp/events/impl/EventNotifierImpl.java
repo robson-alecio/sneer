@@ -21,8 +21,6 @@ class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 
 	private final Consumer<Consumer<? super T>> _receiverHandler;
 
-	private final Logger _logger = my(Logger.class);
-
 	EventNotifierImpl(Consumer<Consumer<? super T>> receiverHandler) {
 		_receiverHandler = receiverHandler;
 	}
@@ -65,23 +63,23 @@ class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 		assert wasThere;
 	}
 
-	@Override
-	protected void finalize() throws Throwable {
-		ReceiverHolder<Consumer<T>>[] receivers = copyOfReceiversToAvoidConcurrentModificationAsResultOfNotifications();
-		if(receivers.length != 0) {
-			_logger.log(debugMessage(receivers));
-		}
-	}
-
-	private String debugMessage(ReceiverHolder<Consumer<T>>[] receivers) {
-		StringBuilder result = new StringBuilder();
-		result.append("Abstract notifier finalized.\n");
-		
-		for (ReceiverHolder<Consumer<T>> reference : receivers)
-			result.append("\tReceiver: " + reference._alias + "\n");
-		
-		return result.toString();
-	}
+//	@Override
+//	protected void finalize() throws Throwable {
+//		ReceiverHolder<Consumer<T>>[] receivers = copyOfReceiversToAvoidConcurrentModificationAsResultOfNotifications();
+//		if(receivers.length != 0) {
+//			my(sneer.pulp.log.Logger.class).log(debugMessage(receivers));
+//		}
+//	}
+//
+//	private String debugMessage(ReceiverHolder<Consumer<T>>[] receivers) {
+//		StringBuilder result = new StringBuilder();
+//		result.append("Abstract notifier finalized.\n");
+//		
+//		for (ReceiverHolder<Consumer<T>> reference : receivers)
+//			result.append("\tReceiver: " + reference._alias + "\n");
+//		
+//		return result.toString();
+//	}
 	
 	private ReceiverHolder<Consumer<? super T>> holderFor(
 			Consumer<? super T> receiver) {

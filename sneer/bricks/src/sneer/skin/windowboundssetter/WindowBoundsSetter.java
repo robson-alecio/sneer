@@ -1,6 +1,7 @@
 package sneer.skin.windowboundssetter;
 
 import java.awt.Container;
+import java.awt.Rectangle;
 import java.awt.Window;
 
 import sneer.brickness.Brick;
@@ -17,4 +18,5 @@ public interface WindowBoundsSetter {
 	void setBestBounds(Window window, Container container, boolean resizeHeight, int horizontal_limit);
 
 	void defaultContainer(Container container);
+	Rectangle unusedArea();
 }

@@ -12,27 +12,27 @@ public class LogFormatterImpl implements LogFormatter {
 
 	@Override
 	public String format(String message, Object... messageInsets) {
-		return logMessage(message, messageInsets).toString();
+		return logMessage(message, messageInsets).append("\n").toString();
 	}
 
 	@Override
 	public String format(Throwable throwable, String message, Object... messageInsets) {
 		return logMessage(message, messageInsets)
-			.append("/n")
-			.append(stackTraceToByteArray(throwable)).toString();
+			.append("\n")
+			.append(stackTraceToByteArray(throwable)).append("\n").toString();
 	}
 
 	@Override
 	public String format(Throwable throwable) {
 		return new StringBuilder()
-			.append(stackTraceToByteArray(throwable)).toString();
+			.append(stackTraceToByteArray(throwable)).append("\n").toString();
 	}
 
 	@Override
-	public String formatShort(Exception e, String message, Object... insets) {
-		return logMessage(message, insets).append(' ')
-			.append(e.getClass().getSimpleName()).append(' ')
-			.append(e.getMessage()).toString();
+	public String formatShort(Throwable throwable, String message, Object... messageInsets) {
+		return logMessage(message, messageInsets).append(' ')
+			.append(throwable.getClass().getSimpleName()).append(' ')
+			.append(throwable.getMessage()).toString();
 	}
 
 	private byte[] stackTraceToByteArray(Throwable throwable) {

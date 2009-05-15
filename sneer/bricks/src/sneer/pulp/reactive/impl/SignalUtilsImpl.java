@@ -19,8 +19,6 @@ class SignalUtilsImpl implements SignalUtils {
 			if (expectedValue == null && signal.currentValue() == null) return;
 			if (expectedValue != null && expectedValue.equals(signal.currentValue())) return;
 
-			System.out.println("Expected: " + expectedValue + " Found: " + signal.currentValue());
-
 			checkTimeout(t0);
 			Thread.yield(); //Optimize
 		}

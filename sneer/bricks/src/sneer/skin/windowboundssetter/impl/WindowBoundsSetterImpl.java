@@ -3,8 +3,11 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.IllegalComponentStateException;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.Window;
+
+import javax.swing.SwingUtilities;
 
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
 
@@ -54,5 +57,12 @@ class WindowBoundsSetterImpl implements WindowBoundsSetter{
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); 
 		return new Point((int) ((screenSize.getWidth()+window.getWidth())/2), 
 								 (int) ((screenSize.getHeight())/4));
+	}
+
+	@Override
+	public Rectangle unusedArea() {
+		Rectangle used = SwingUtilities.getWindowAncestor(_container).getBounds();
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); 
+		return new Rectangle(0, 0, screenSize.width-used.width, (int)used.getMaxY());
 	}
 }

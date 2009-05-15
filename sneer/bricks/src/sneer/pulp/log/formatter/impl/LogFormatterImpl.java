@@ -32,7 +32,7 @@ public class LogFormatterImpl implements LogFormatter {
 	public String formatShort(Throwable throwable, String message, Object... messageInsets) {
 		return logMessage(message, messageInsets).append(' ')
 			.append(throwable.getClass().getSimpleName()).append(' ')
-			.append(throwable.getMessage()).toString();
+			.append(throwable.getMessage()).append("\n").toString();
 	}
 
 	private byte[] stackTraceToByteArray(Throwable throwable) {

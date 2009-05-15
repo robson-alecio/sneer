@@ -40,7 +40,7 @@ public class HardcodedContactsImpl implements HardcodedContacts {
 			new ContactInfo("Douglas Giacomini", "dtgiacomini.dyndns.org", 5923),
 			new ContactInfo("Dummy", "localhost", 7777),
 			new ContactInfo("Duno", "duno.dyndns.org", 5923),
-			new ContactInfo("Igor Arouca", "igorarouca.dyndns.org", 5900),
+			new ContactInfo("Igor Arouca", "igorarouca.dyndns.org", 6789),
 			new ContactInfo("Kalecser", "kalecser.dyndns.org", 7770),
 			new ContactInfo("Klaus", "klausw.selfip.net", 5923),
 			new ContactInfo("Nell", "anelisedaux.dyndns.org", 5924),

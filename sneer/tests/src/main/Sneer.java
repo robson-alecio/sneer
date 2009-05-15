@@ -117,6 +117,7 @@ public class Sneer {
 				sneer.pulp.dyndns.ownip.OwnIpDiscoverer.class,
 				sneer.pulp.dyndns.client.DynDnsClient.class,
 				sneer.skin.windowboundssetter.WindowBoundsSetter.class,
+				sneer.skin.main.menu.MainMenu.class,
 				snapps.welcomewizard.WelcomeWizard.class,
 
 				sneer.skin.main.synth.Synth.class, 
@@ -133,7 +134,6 @@ public class Sneer {
 				snapps.blinkinglights.gui.BlinkingLightsGui.class,
 
 				snapps.watchme.gui.windows.RemoteWatchMeWindows.class,
-				sneer.skin.main.menu.MainMenu.class,
 				sneer.skin.screenshotter.Screenshotter.class,
 				snapps.watchme.WatchMe.class,
 

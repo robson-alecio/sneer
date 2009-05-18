@@ -1,7 +1,7 @@
 ﻿FIXES
 =========
 
-	- Unignore ListSorterTest.signalChooserTest() and ListOfSignalsReceiverTest.test()
+	- In-line WeakReferencKeeper. 
 
 	- [Bamboo] GUIImpl.defineBrickMetadata param is unused.
 

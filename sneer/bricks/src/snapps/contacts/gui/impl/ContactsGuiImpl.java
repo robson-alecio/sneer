@@ -30,6 +30,7 @@ import sneer.hardware.gui.images.Images;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
+import sneer.pulp.log.Logger;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
@@ -165,7 +166,6 @@ class ContactsGuiImpl implements ContactsGui {
 	}
 	
 	private final class SelectedContactSupport {
-
 		private SelectedContactSupport() {
 			final JList list = _contactList.getMainWidget();
 			ListSelectionModel selectionModel = list.getSelectionModel();
@@ -173,6 +173,8 @@ class ContactsGuiImpl implements ContactsGui {
 			
 			selectionModel.addListSelectionListener(new ListSelectionListener(){ @Override public void valueChanged(ListSelectionEvent e) {
 				Contact contact = (Contact) list.getSelectedValue();
+				my(Logger.class).log(contact.nickname().currentValue());
+				my(Logger.class).logStackTrace();
 				_selectedContact.setter().consume(contact);
 			}});
 		}

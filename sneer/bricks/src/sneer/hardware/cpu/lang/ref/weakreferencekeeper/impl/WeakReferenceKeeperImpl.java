@@ -16,7 +16,6 @@ public class WeakReferenceKeeperImpl implements WeakReferenceKeeper { // Refacto
 	{
 		my(Clock.class).wakeUpEvery(5000, new Stepper() { @Override public boolean step() {
 			forceWeakMapToCleanStaleReferences();
-			System.out.println("Keeper's Clock --> " + this.hashCode());
 			return true;
 		}});
 	}
@@ -30,6 +29,5 @@ public class WeakReferenceKeeperImpl implements WeakReferenceKeeper { // Refacto
 
 	private void forceWeakMapToCleanStaleReferences() {
 		_weakMap.size();
-		System.out.println("clean-up");
 	}
 }

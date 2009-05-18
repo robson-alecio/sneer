@@ -1,6 +1,8 @@
 ﻿FIXES
 =========
 
+	- ReceiversImpl, uncomment code and fix SignalsTest.receive.
+
 	- In-line WeakReferencKeeper. 
 
 	- [Bamboo] GUIImpl.defineBrickMetadata param is unused.

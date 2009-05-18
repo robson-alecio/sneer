@@ -66,7 +66,7 @@ class WindowBoundsSetterImpl implements WindowBoundsSetter{
 			return defaultUnusedArea(screenSize);
 
 		Window windowAncestor = SwingUtilities.getWindowAncestor(_container);
-		if(_container==null)
+		if(windowAncestor==null)
 			return defaultUnusedArea(screenSize);
 		
 		Rectangle used = windowAncestor.getBounds();

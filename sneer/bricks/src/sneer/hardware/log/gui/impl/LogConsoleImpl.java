@@ -9,10 +9,15 @@ import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
@@ -46,13 +51,14 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 	private final Integer _HEIGHT = (Integer) _synth.getDefaultProperty("LodConsoleImpl.height");
 	private final Integer _X = (Integer) _synth.getDefaultProperty("LodConsoleImpl.x");
 		
+	private final JPopupMenu _popupMenu = new JPopupMenu();
 	private final MainMenu _mainMenu = my(MainMenu.class);	
 
 	LogConsoleImpl(){
 		super("Sneer Log Console");
 		addMenuAction();
 		my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
-			initGUI();
+			initGui();
 		}});
 	}
 
@@ -68,18 +74,34 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 		setVisible(true);
 	}
 
-	private void initGUI() {
-		final JTextArea txtLog = new JTextArea();
-		my(Signals.class).receive(this, new Consumer<String>() { @Override public void consume(String value) {
-			txtLog.append(value);
-		}}, my(LogNotifier.class).loggedMessages());
+	private void initGui() {
+		JTextArea txtLog = new JTextArea();
+		txtLog.setEditable(false);
 
-		JScrollPane scroll = newAutoScroll();
+		JScrollPane scroll = newAutoScroll(txtLog);
 		getContentPane().setLayout(new BorderLayout());
-		scroll.getViewport().add(txtLog);
+		
 		Rectangle unused = my(WindowBoundsSetter.class).unusedArea();
 		setBounds(_X , unused.height-_HEIGHT-_OFFSET_Y, unused.width-_OFFSET_X, _HEIGHT-_OFFSET_Y);
 
+		JSplitPane main = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scroll, initFilterGui());
+		main.setOneTouchExpandable(true);
+		getContentPane().add(main, BorderLayout.CENTER);
+		
+		initLogReceiver(txtLog);
+		initClearLogAction(txtLog);
+		
+		setVisible(true);
+		main.setDividerLocation(_SPLIT_LOCATION);
+	}
+
+	private void initLogReceiver(final JTextArea txtLog) {
+		my(Signals.class).receive(this, new Consumer<String>() { @Override public void consume(String value) {
+			txtLog.append(value);
+		}}, my(LogNotifier.class).loggedMessages());
+	}
+
+	private JPanel initFilterGui() {
 		JPanel filter = new JPanel();
 		_synth.attach(filter, "FilterPanel");
 		filter.setLayout(new GridBagLayout());
@@ -104,28 +126,51 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 		filter.add(addButton, new GridBagConstraints(1,0,1,1,0.0,0.0, GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0,0));
 		filter.add(delButton, new GridBagConstraints(1,1,1,1,0.0,0.0, GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0,0));
 		
-		JSplitPane main = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scroll, filter);
-		main.setOneTouchExpandable(true);
-		getContentPane().add(main, BorderLayout.CENTER);
-		
+		initAddFilterAction(whiteListEntries, newInclude, addButton);
+		initDeleteFilterAction(whiteListEntries, includes, delButton);
+		return filter;
+	}
+
+	private void initAddFilterAction(
+			final ListRegister<String> whiteListEntries,
+			final JTextField newInclude, JButton addButton) {
 		addButton.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 			String value = newInclude.getText();
 			newInclude.setText("");
 			if(value.length()==0) return;
 			whiteListEntries.add(value);
 		}});
-		
+	}
+
+	private void initDeleteFilterAction(
+			final ListRegister<String> whiteListEntries,
+			final ListWidget<String> includes, JButton delButton) {
 		delButton.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 			Object[] values = includes.getMainWidget().getSelectedValues();
 			for (Object value : values) 
 				whiteListEntries.remove((String)value);
 		}});
-		
-		setVisible(true);
-		main.setDividerLocation(_SPLIT_LOCATION);
 	}
 
-	private JScrollPane newAutoScroll() {
-		return my(AutoScrolls.class).create(my(LogNotifier.class).loggedMessages());
+	private void initClearLogAction(final JTextArea txtLog) {
+		txtLog.addMouseListener(new MouseAdapter(){ 
+			JMenuItem clear = new JMenuItem("Clear Log");{
+				_popupMenu.add(clear);
+				clear.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent ae) {
+					txtLog.setText("");
+				}});			
+			}
+
+			@Override 
+			public void mouseReleased(MouseEvent e) {
+				_popupMenu.show(e.getComponent(),e.getX(),e.getY());
+			}
+		});
+	}
+
+	private JScrollPane newAutoScroll(JComponent component) {
+		JScrollPane scroll = my(AutoScrolls.class).create(my(LogNotifier.class).loggedMessages());
+		scroll.getViewport().add(component);
+		return scroll;
 	}
 }

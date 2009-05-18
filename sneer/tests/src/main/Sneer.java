@@ -31,7 +31,7 @@ public class Sneer {
 	static public Class<?>[] businessBricks() {
 		return new Class<?>[] {
 				sneer.pulp.log.Logger.class,
-				sneer.pulp.log.workers.sysout.LogToSystemOut.class,
+				sneer.pulp.log.workers.sysout.SysoutLogWorker.class,
 
 				sneer.skin.image.ImageFactory.class,
 
@@ -39,12 +39,13 @@ public class Sneer {
 				sneer.pulp.reactive.Signals.class,
 				sneer.pulp.reactive.collections.CollectionSignals.class,
 				sneer.pulp.log.filter.LogFilter.class,
+				sneer.pulp.log.stacktrace.LogStackTrace.class,
 				sneer.pulp.log.formatter.LogFormatter.class,
 				sneer.pulp.log.workers.notifier.LogNotifier.class,
 				
 				sneer.pulp.exceptionhandling.ExceptionHandler.class,
 				sneer.pulp.log.receiver.file.LogToFile.class,
-				sneer.pulp.log.receiver.sysout.LogToSysOut.class,
+				sneer.pulp.log.receiver.sysout.LogToSysout.class,
 
 				sneer.pulp.internetaddresskeeper.InternetAddressKeeper.class,
 				sneer.pulp.crypto.Crypto.class,
@@ -59,7 +60,6 @@ public class Sneer {
 				sneer.pulp.httpclient.HttpClient.class,
 				sneer.pulp.network.Network.class,
 				sneer.skin.menu.MenuFactory.class,
-				sneer.skin.main.menu.MainMenu.class,
 				sneer.skin.sound.speaker.Speaker.class,
 				sneer.pulp.distribution.filtering.TupleFilterManager.class,
 				snapps.whisper.speex.Speex.class,
@@ -78,7 +78,6 @@ public class Sneer {
 				sneer.skin.main.instrumentregistry.InstrumentRegistry.class,
 				sneer.skin.rooms.ActiveRoomKeeper.class,
 				sneer.skin.widgets.reactive.ReactiveWidgetFactory.class,
-				snapps.watchme.gui.windows.RemoteWatchMeWindows.class,
 				sneer.pulp.own.name.OwnNameKeeper.class,
 				sneer.pulp.threads.Threads.class,
 				sneer.hardware.cpu.timebox.Timebox.class,
@@ -88,7 +87,6 @@ public class Sneer {
 				sneer.skin.sound.kernel.Audio.class,
 				sneer.pulp.lang.StringUtils.class,
 				sneer.pulp.bandwidth.BandwidthCounter.class,
-				sneer.skin.screenshotter.Screenshotter.class,
 				sneer.pulp.connection.ConnectionManager.class,
 				snapps.contacts.gui.comparator.ContactComparator.class,
 				sneer.skin.sound.player.SoundPlayer.class,
@@ -97,7 +95,6 @@ public class Sneer {
 				sneer.pulp.connection.reachability.ReachabilitySentinel.class,
 				sneer.pulp.connection.SocketReceiver.class,
 				sneer.pulp.tuples.TupleSpace.class,
-				snapps.watchme.WatchMe.class,
 				sneer.skin.sound.mic.Mic.class,
 				sneer.hardware.cpu.lang.ref.weakreferencekeeper.WeakReferenceKeeper.class,
 				snapps.wind.Wind.class,
@@ -113,9 +110,6 @@ public class Sneer {
 	private static Class<?>[] communicationBricks() {
 		return new Class<?>[] {
 				sneer.hardware.gui.guithread.GuiThread.class, 
-				sneer.skin.main.synth.Synth.class, 
-				sneer.skin.main.synth.scroll.SynthScrolls.class, 
-
 				sneer.hardware.io.codecs.base64.Base64.class,
 
 				sneer.pulp.dyndns.ownaccount.DynDnsAccountKeeper.class,
@@ -123,7 +117,12 @@ public class Sneer {
 				sneer.pulp.dyndns.updater.Updater.class,
 				sneer.pulp.dyndns.ownip.OwnIpDiscoverer.class,
 				sneer.pulp.dyndns.client.DynDnsClient.class,
+				sneer.skin.windowboundssetter.WindowBoundsSetter.class,
+				sneer.skin.main.menu.MainMenu.class,
+				snapps.welcomewizard.WelcomeWizard.class,
 
+				sneer.skin.main.synth.Synth.class, 
+				sneer.skin.main.synth.scroll.SynthScrolls.class, 
 				sneer.hardware.gui.images.Images.class,
 				snapps.contacts.gui.delete.DeleteContactWindow.class,
 				snapps.contacts.gui.ContactsGui.class,
@@ -135,12 +134,14 @@ public class Sneer {
 				snapps.meter.bandwidth.gui.BandwidthMeterGui.class,
 				snapps.blinkinglights.gui.BlinkingLightsGui.class,
 
-				sneer.skin.windowboundssetter.WindowBoundsSetter.class,
+				snapps.watchme.gui.windows.RemoteWatchMeWindows.class,
+				sneer.skin.screenshotter.Screenshotter.class,
+				snapps.watchme.WatchMe.class,
+
 				sneer.hardware.gui.timebox.TimeboxedEventQueue.class,
 				sneer.hardware.gui.trayicon.TrayIcons.class,
 				sneer.skin.main.dashboard.Dashboard.class,
 				sneer.hardware.log.gui.LogConsole.class,
-				snapps.welcomewizard.WelcomeWizard.class,
 				
 				snapps.contacts.hardcoded.HardcodedContacts.class
 		};

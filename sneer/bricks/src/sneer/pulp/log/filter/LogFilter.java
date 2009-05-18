@@ -7,6 +7,6 @@ import sneer.pulp.reactive.collections.ListRegister;
 public interface LogFilter{
 
 	boolean acceptLogEntry(String message);
-	ListRegister<LogWhiteListEntry> whiteListEntries();
+	ListRegister<String> whiteListEntries();
 
 }

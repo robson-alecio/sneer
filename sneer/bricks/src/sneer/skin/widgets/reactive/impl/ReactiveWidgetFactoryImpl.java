@@ -14,6 +14,7 @@ import javax.swing.ListModel;
 import sneer.hardware.cpu.lang.PickyConsumer;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Signal;
+import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.widgets.reactive.ImageWidget;
@@ -82,6 +83,13 @@ class ReactiveWidgetFactoryImpl implements ReactiveWidgetFactory {
 	@Override public TextWidget<JTextPane> newTextPane(Signal<?> source, PickyConsumer<? super String> setter) { return newTextPane(source, setter, NotificationPolicy.OnTyping); }
 	
 	
+	@Override 
+	public <T> ListWidget<T> newList(ListSignal<T> source) {
+		return newList(source, new LabelProvider<T>(){
+			@Override public Signal<? extends Image> imageFor(T element) { return my(Signals.class).constant(null); }
+			@Override public Signal<String> labelFor(T element) { return my(Signals.class).constant((String)element);
+			}});
+	}
 	@Override
 	public <T> ListWidget<T> newList(ListSignal<T> source, LabelProvider<T> provider, ListCellRenderer cellRenderer) {
 		my(GuiThread.class).assertInGuiThread();

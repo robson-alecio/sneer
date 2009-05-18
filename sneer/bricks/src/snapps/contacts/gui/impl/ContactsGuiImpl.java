@@ -165,7 +165,6 @@ class ContactsGuiImpl implements ContactsGui {
 	}
 	
 	private final class SelectedContactSupport {
-
 		private SelectedContactSupport() {
 			final JList list = _contactList.getMainWidget();
 			ListSelectionModel selectionModel = list.getSelectionModel();

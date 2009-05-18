@@ -1,14 +1,15 @@
 package sneer.pulp.log.formatter.impl;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 
+import static sneer.commons.environments.Environments.my;
 import sneer.pulp.log.formatter.LogFormatter;
+import sneer.pulp.log.stacktrace.LogStackTrace;
 
 public class LogFormatterImpl implements LogFormatter {
 
 	private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private final LogStackTrace _logStackTrace = my(LogStackTrace.class);
 
 	@Override
 	public String format(String message, Object... messageInsets) {
@@ -19,13 +20,13 @@ public class LogFormatterImpl implements LogFormatter {
 	public String format(Throwable throwable, String message, Object... messageInsets) {
 		return logMessage(message, messageInsets)
 			.append("\n")
-			.append(stackTraceToByteArray(throwable)).append("\n").toString();
+			.append(_logStackTrace.toByteArray(throwable)).append("\n").toString();
 	}
 
 	@Override
 	public String format(Throwable throwable) {
 		return new StringBuilder()
-			.append(stackTraceToByteArray(throwable)).append("\n").toString();
+			.append(_logStackTrace.toByteArray(throwable)).append("\n").toString();
 	}
 
 	@Override
@@ -35,13 +36,6 @@ public class LogFormatterImpl implements LogFormatter {
 			.append(throwable.getMessage()).append("\n").toString();
 	}
 
-	private byte[] stackTraceToByteArray(Throwable throwable) {
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		PrintWriter _log = new PrintWriter(out, true);
-		throwable.printStackTrace(_log);
-		return out.toByteArray();
-	}
-	
 	private StringBuilder logMessage(String message, Object... messageInsets) {
 		StringBuilder result = new StringBuilder();
 		result.append('[');

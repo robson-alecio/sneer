@@ -1,16 +1,13 @@
 ﻿FIXES
 =========
 
-	- Unignore ListSorterTest.signalChooserTest() and ListOfSignalsReceiverTest.test()
+	- ReceiversImpl, uncomment code and fix SignalsTest.receive.
+
+	- In-line WeakReferencKeeper. 
 
 	- [Bamboo] GUIImpl.defineBrickMetadata param is unused.
 
 	- [Sandro and Igor] ListSignalModel and SortedList - Fix Sort Bug (see SortTest)
-
-	- [Sandro] Logger
-		- LogFilter boolean acceptLog(...) - White list filter
-		- Default log: File and GUI.
-		- GUI
 
 	- SignalChoosers - Receive owner for GC (like Signals.receive()) instead of returning a reference that has to be held.
 	

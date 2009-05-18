@@ -41,14 +41,14 @@ public class ListOfSignalsReceiverTest extends BrickTest {
 		assertEvents("Added=1, Added=2, Added=3, Added=4, ");
 
 		_listRegister.move(1, 4);
-		assertEvents("Removed=1, Added=1, ");
+		assertEvents("Added=1, Removed=1, ");
 
 		r1.setter().consume("1b");
 		r2.setter().consume("2b");
 		assertEvents("Changed=1b, Changed=2b, ");
 
 		_listRegister.move(4, 1);
-		assertEvents("Removed=1b, Added=1b, ");
+		assertEvents("Added=1b, Removed=1b, ");
 
 		_listRegister.removeAt(0);
 		_listRegister.removeAt(3);
@@ -64,7 +64,7 @@ public class ListOfSignalsReceiverTest extends BrickTest {
 
 		_listRegister.move(1, 0);
 		_listRegister.move(2, 3);
-		assertEvents("Removed=2c, Added=2c, Removed=2c, Added=2c, ");
+		assertEvents("Added=2c, Removed=2c, Added=2c, Removed=2c, ");
 
 		_listRegister.remove(r1);
 		assertEvents("Removed=1c, ");

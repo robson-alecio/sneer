@@ -173,8 +173,6 @@ class ContactsGuiImpl implements ContactsGui {
 			
 			selectionModel.addListSelectionListener(new ListSelectionListener(){ @Override public void valueChanged(ListSelectionEvent e) {
 				Contact contact = (Contact) list.getSelectedValue();
-				my(Logger.class).log(contact.nickname().currentValue());
-				my(Logger.class).logStackTrace();
 				_selectedContact.setter().consume(contact);
 			}});
 		}

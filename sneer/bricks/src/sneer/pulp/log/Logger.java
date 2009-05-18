@@ -6,5 +6,6 @@ import sneer.brickness.Brick;
 public interface Logger extends LogWorker {
 
 	void setDelegate(LogWorker worker);
+	void logStackTrace();
 	
 }

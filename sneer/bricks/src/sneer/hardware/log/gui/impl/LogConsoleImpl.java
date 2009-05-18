@@ -163,7 +163,8 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 
 			@Override 
 			public void mouseReleased(MouseEvent e) {
-				_popupMenu.show(e.getComponent(),e.getX(),e.getY());
+				if(e.isPopupTrigger())
+					_popupMenu.show(e.getComponent(),e.getX(),e.getY());
 			}
 		});
 	}

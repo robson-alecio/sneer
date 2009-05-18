@@ -7,11 +7,10 @@ import org.junit.Test;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.commons.lang.Functor;
 import sneer.hardware.cpu.lang.Consumer;
+import sneer.pulp.clock.Clock;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-
-
 
 public class SignalsTest extends BrickTest {
 
@@ -20,11 +19,11 @@ public class SignalsTest extends BrickTest {
 	@Test
 	public void adapt() {
 		Register<Integer> register = my(Signals.class).newRegister(1);
-		
+
 		Signal<String> output = _subject.adapt(register.output(), new Functor<Integer, String>() { @Override public String evaluate(Integer value) {
 			return value == 1 ? "one" : "something else";
 		}});
-		
+
 		assertEquals("one", output.currentValue());
 		register.setter().consume(42);
 		assertEquals("something else", output.currentValue());
@@ -47,7 +46,7 @@ public class SignalsTest extends BrickTest {
 		assertEquals("2 bar", output.currentValue());
 	}
 
-	@Test
+	@Test (timeout = 6000)
 	public void receive() {
 		final StringBuilder received = new StringBuilder();
 		Register<String> register1 = _subject.newRegister(null);
@@ -68,8 +67,16 @@ public class SignalsTest extends BrickTest {
 		assertEquals("nullheyfoobarbaz1baz2", received.toString());
 
 		owner = null;
-		System.gc();
-		register1.setter().consume("banana");
-		assertFalse(received.toString().contains("banana"));
+
+		do {
+			System.gc();
+			Clock clock = my(Clock.class);
+			clock.advanceTime(60000);
+			System.out.println("Test's Clock --> " + this.hashCode());
+
+			received.delete(0, received.length());
+			register1.setter().consume("something else");
+			register1.setter().consume("banana");
+		} while (received.toString().contains("banana"));
 	}
 }

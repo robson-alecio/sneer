@@ -4,6 +4,6 @@ import javax.swing.JComponent;
 
 public interface ComponentWidget<MAINCOMPONENT extends JComponent> extends Widget<MAINCOMPONENT>{
 
-	public abstract JComponent getComponent();
+	JComponent getComponent();
 
 }

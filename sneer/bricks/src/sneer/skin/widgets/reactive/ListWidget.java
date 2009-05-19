@@ -7,5 +7,6 @@ import sneer.pulp.reactive.Signal;
 public interface ListWidget<ELEMENT> extends ComponentWidget<JList>{
 
 	Signal<ELEMENT> selectedElement();
+	void clearSelection();
 
 }

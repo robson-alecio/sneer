@@ -88,4 +88,12 @@ class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 	public Signal<ELEMENT> selectedElement(){
 		return _selectedElement.output();
 	}
+	
+	@Override
+	public void clearSelection(){
+		my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
+			_selectedElement.setter().consume(null);
+			getSelectionModel().clearSelection();
+		}});
+	}	
 }

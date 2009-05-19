@@ -8,7 +8,14 @@ class SortTestElement {
 	static private int _counter;
 
 	private final RandomBoolean _isOnline = new RandomBoolean();
-	private final String _nick = "Nick" + _counter++;
+	private final String _nick; {
+		_counter++;
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < _counter; i++) 
+			builder.append("*");
+		
+		_nick = builder.toString();
+	} ;
 
 	public Signal<Boolean> isOnline() {
 		return _isOnline.output();

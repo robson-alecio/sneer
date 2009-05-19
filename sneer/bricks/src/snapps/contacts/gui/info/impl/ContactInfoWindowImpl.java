@@ -28,10 +28,13 @@ import sneer.commons.lang.Functor;
 import sneer.hardware.cpu.exceptions.IllegalParameter;
 import sneer.hardware.cpu.lang.PickyConsumer;
 import sneer.hardware.gui.guithread.GuiThread;
+import sneer.pulp.blinkinglights.BlinkingLights;
+import sneer.pulp.blinkinglights.LightType;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.pulp.internetaddresskeeper.InternetAddress;
 import sneer.pulp.internetaddresskeeper.InternetAddressKeeper;
+import sneer.pulp.log.Logger;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.main.synth.scroll.SynthScrolls;
@@ -176,14 +179,6 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 				GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5,5,5,5), 0, 0) );
 	}
 	
-	private void saveInternetAddress() {
-		InternetAddress address = _selectedAdress;
-		if(address == null || _host.getText().trim().length()==0) return;
-		
-		newInternetAddress();
-		my(InternetAddressKeeper.class).remove(address);
-	}
-
 	private void addListSelectionListestener() {
 		addresses().getSelectionModel().addListSelectionListener(
 				new ListSelectionListener(){ @Override public void valueChanged(ListSelectionEvent e) {
@@ -199,24 +194,55 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 				}});
 	}
 	
+	private void logPortValueException(Exception e) {
+		my(BlinkingLights.class).turnOn(LightType.ERROR, "Invalid Port Value: " + _port.getText(), e.getMessage(), e, 20000);
+		my(Logger.class).log("Invalid Port Value: {}", _port.getText());
+		_port.requestFocus();
+	}
+	
+	private void saveInternetAddress() {
+		try {
+			InternetAddress address = _selectedAdress;
+			if(address == null || _host.getText().trim().length()==0) return;
+			
+			if(  _selectedAdress.host().equals(_host.getText())
+			&& _selectedAdress.port()== Integer.parseInt(_port.getText())
+			&& _selectedAdress.contact() == my(ContactsGui.class).selectedContact().currentValue())
+				return;
+			
+			newInternetAddress();
+			my(InternetAddressKeeper.class).remove(address);
+			_lstAddresses.clearSelection();
+		} catch (NumberFormatException e) {
+			logPortValueException(e);			
+		}
+	}
+	
 	private void delInternetAddress() {
 		InternetAddress address = _selectedAdress;
 		if(address == null || _host.getText().trim().length()==0) return;
 		
 		my(InternetAddressKeeper.class).remove(address);
-	}
-
-	private JList addresses() {
-		return _lstAddresses.getMainWidget();
+		_lstAddresses.clearSelection();
 	}
 	
 	private void newInternetAddress() {
-		String host = _host.getText();
-		if(host==null || host.trim().length()==0) return;
-		
-		int port = Integer.parseInt(_port.getText());
-		my(InternetAddressKeeper.class).add(contact(), host, port);
-		cleanFields();
+		try{
+			String host = _host.getText();
+			if(host==null || host.trim().length()==0) return;
+			
+			int port = Integer.parseInt(_port.getText());
+			my(InternetAddressKeeper.class).add(contact(), host, port);
+			
+			_lstAddresses.clearSelection();
+			cleanFields();
+		} catch (NumberFormatException e) {
+			logPortValueException(e);			
+		}
+	}
+	
+	private JList addresses() {
+		return _lstAddresses.getMainWidget();
 	}
 
 	private void cleanFields() {

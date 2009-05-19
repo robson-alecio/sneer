@@ -72,6 +72,11 @@ class AutoScroll<T> extends JScrollPane{
 	private void initPreChangeReceiver(ListSignal<T> inputSignal) {
 		_preChangeReceiverAvoidGc = new MySimpleListReceiver(inputSignal){ @Override protected void fire() {
 			_shouldAutoscroll = isAtEnd();
+		}
+
+		@Override
+		public void elementMoved(int index, int newIndex, T newElement) {
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
 		}};
 	}
 	
@@ -80,6 +85,11 @@ class AutoScroll<T> extends JScrollPane{
 	private void initPosChangeReceiver(ListSignal<T> inputSignal) {
 		_posChangeReceiverAvoidGc = new MySimpleListReceiver(inputSignal){ @Override protected void fire() {
 				if(_shouldAutoscroll) placeAtEnd();
+		}
+
+		@Override
+		public void elementMoved(int index, int newIndex, T newElement) {
+			throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
 		}};
 	}
 	

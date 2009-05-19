@@ -61,6 +61,13 @@ class ListSignalModel<T> extends AbstractListModel {
 				elementChanged(value);
 			}});			
 		}
+		
+		@Override
+		public void elementMoved(final int index, final int newIndex, T newElement) {
+			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
+				fireContentsChanged(ListSignalModel.this, index, newIndex);
+			}});
+		}
 
 		@Override
 		public SignalChooser<T> signalChooser() {

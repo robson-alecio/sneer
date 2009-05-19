@@ -41,14 +41,14 @@ public class ListOfSignalsReceiverTest extends BrickTest {
 		assertEvents("Added=1, Added=2, Added=3, Added=4, ");
 
 		_listRegister.move(1, 4);
-		assertEvents("Added=1, Removed=1, ");
+		assertEvents("Moved=1->4, ");
 
 		r1.setter().consume("1b");
 		r2.setter().consume("2b");
 		assertEvents("Changed=1b, Changed=2b, ");
 
 		_listRegister.move(4, 1);
-		assertEvents("Added=1b, Removed=1b, ");
+		assertEvents("Moved=4->1, ");
 
 		_listRegister.removeAt(0);
 		_listRegister.removeAt(3);
@@ -64,7 +64,7 @@ public class ListOfSignalsReceiverTest extends BrickTest {
 
 		_listRegister.move(1, 0);
 		_listRegister.move(2, 3);
-		assertEvents("Added=2c, Removed=2c, Added=2c, Removed=2c, ");
+		assertEvents("Moved=1->0, Moved=2->3, ");
 
 		_listRegister.remove(r1);
 		assertEvents("Removed=1c, ");
@@ -113,9 +113,13 @@ public class ListOfSignalsReceiverTest extends BrickTest {
 		@Override public void elementReplaced(int index, Register<String> oldElement,	Register<String> newElement) { 
 			_recorder.record("Replaced", value(oldElement), value(newElement)); }		
 
+		@Override public void elementMoved(int index, int newIndex, Register<String> newElement) {
+			_recorder.record("Moved", ""+index, ""+newIndex); }	
+		
 		private String value(Register<String> element) {
 			return element.output().currentValue();
 		}
+
 	}
 	
 	private class EventRecorder {

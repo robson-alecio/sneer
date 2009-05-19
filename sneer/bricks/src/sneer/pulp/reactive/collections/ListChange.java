@@ -8,5 +8,6 @@ public interface ListChange<T> {
 		void elementAdded(int index, T element);
 		void elementRemoved(int index, T element);
 		void elementReplaced(int index, T oldElement, T newElement);
+		void elementMoved(int index, int newIndex, T newElement);
 	}
 }

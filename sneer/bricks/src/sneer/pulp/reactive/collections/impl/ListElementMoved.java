@@ -12,7 +12,6 @@ final class ListElementMoved<T> extends AbstractListValueChange<T> {
 
 	@Override
 	public void accept(Visitor<T> visitor) {
-		visitor.elementAdded( _newIndex, _element);
-		visitor.elementRemoved(_index, _element);
+		visitor.elementMoved(_index, _newIndex, _element);
 	}
 }

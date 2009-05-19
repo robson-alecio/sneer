@@ -9,7 +9,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -181,8 +180,8 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 		InternetAddress address = _selectedAdress;
 		if(address == null || _host.getText().trim().length()==0) return;
 		
-		my(InternetAddressKeeper.class).remove(address);
 		newInternetAddress();
+		my(InternetAddressKeeper.class).remove(address);
 	}
 
 	private void addListSelectionListestener() {
@@ -201,11 +200,10 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 	}
 	
 	private void delInternetAddress() {
-		InternetAddress address = (InternetAddress) addresses().getSelectedValue();
-		if(address==null) return;
+		InternetAddress address = _selectedAdress;
+		if(address == null || _host.getText().trim().length()==0) return;
 		
 		my(InternetAddressKeeper.class).remove(address);
-		((DefaultListModel)addresses().getModel()).removeElement(address);
 	}
 
 	private JList addresses() {

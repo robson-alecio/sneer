@@ -12,6 +12,7 @@ import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
@@ -75,7 +76,10 @@ class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 			@Override public void intervalRemoved(ListDataEvent e) { changeSelectionGuiToSelectedContact();}
 
 			private void changeSelectionGuiToSelectedContact() {
-				setSelectedValue(_selectedElement.output().currentValue(), true);
+				final ELEMENT element = _selectedElement.output().currentValue();
+				my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
+					setSelectedValue(element, true);
+				}});
 			}
 		});
 	}	

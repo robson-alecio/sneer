@@ -2,6 +2,7 @@ package snapps.contacts.gui.comparator.tests;
 
 import static sneer.commons.environments.Environments.my;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import snapps.contacts.gui.comparator.ContactComparator;
@@ -33,6 +34,7 @@ public class ContactComparatorTest extends BrickTest {
 	}};
 	
 	@Test
+	@Ignore
 	public void testComparator() {
 		
 		final ContactMock truea = new ContactMock("a", true);

@@ -15,8 +15,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -90,7 +88,6 @@ class ContactsGuiImpl implements ContactsGui {
 		_container.setLayout(new BorderLayout());
 		_container.add(scrollPane, BorderLayout.CENTER);
 		
-		addListModelListener();
 		addContatActions(window.actions());
 		addDefaultContactAction();
 
@@ -103,17 +100,6 @@ class ContactsGuiImpl implements ContactsGui {
 			if (e.getClickCount() > 1)
 				my(ContactActionManager.class).defaultAction().run();
 		}});
-	}
-
-	private void addListModelListener() {
-		contactList().getModel().addListDataListener(new ListDataListener(){
-			private void changeSelectionGuiToSelectedContact() {
-				contactList().setSelectedValue(_selectedContact.output().currentValue(), true);
-			}
-			@Override public void contentsChanged(ListDataEvent e) { changeSelectionGuiToSelectedContact(); }
-			@Override public void intervalAdded(ListDataEvent e) { changeSelectionGuiToSelectedContact(); }
-			@Override public void intervalRemoved(ListDataEvent e) { changeSelectionGuiToSelectedContact(); }
-		});
 	}
 
 	@Override

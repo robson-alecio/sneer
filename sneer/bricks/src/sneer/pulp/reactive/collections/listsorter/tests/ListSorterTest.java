@@ -5,6 +5,7 @@ import static sneer.commons.environments.Environments.my;
 import java.util.Comparator;
 
 import org.jmock.Expectations;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.AssertUtils;
@@ -21,6 +22,7 @@ import sneer.pulp.reactive.collections.ListChange.Visitor;
 import sneer.pulp.reactive.collections.listsorter.ListSorter;
 import sneer.pulp.reactive.signalchooser.SignalChooser;
 
+@Ignore
 public class ListSorterTest extends BrickTest {
 	
 	private final ListSorter _sorter = my(ListSorter.class);

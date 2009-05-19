@@ -101,9 +101,13 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 		JLabel labPort = new JLabel("Port:");
 		JLabel labHost = new JLabel("Host:");
 		
-		Signal<String> nickname = my(Signals.class).adaptSignal(my(ContactsGui.class).selectedContact(), new Functor<Contact, Signal<String>>() { @Override public Signal<String> evaluate(Contact contact) {
-			return contact.nickname();
-		}});
+		Signal<String> nickname = my(Signals.class).adaptSignal(
+				my(ContactsGui.class).selectedContact(), 
+				new Functor<Contact, Signal<String>>() { @Override public Signal<String> evaluate(Contact contact) {
+					if(contact==null)
+						return my(Signals.class).constant("");
+					return contact.nickname();
+				}});
 		
 		PickyConsumer<String> setter = new PickyConsumer<String>(){@Override public void consume(String value) throws IllegalParameter {
 			my(ContactManager.class).nicknameSetterFor(contact()).consume(value);

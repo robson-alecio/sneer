@@ -21,11 +21,13 @@ import javax.swing.text.JTextComponent;
 
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
-import sneer.commons.lang.exceptions.NotImplementedYet;
 import sneer.hardware.cpu.exceptions.IllegalParameter;
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.hardware.cpu.lang.PickyConsumer;
 import sneer.hardware.gui.guithread.GuiThread;
+import sneer.pulp.blinkinglights.BlinkingLights;
+import sneer.pulp.blinkinglights.LightType;
+import sneer.pulp.log.Logger;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.widgets.reactive.NotificationPolicy;
@@ -246,7 +248,9 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 		try {
 			_setter.consume(text);
 		} catch (IllegalParameter ip) {
-			throw new NotImplementedYet(ip);
+			my(BlinkingLights.class).turnOn(LightType.ERROR, "Invalid Field Value: " + text, ip.getMessage(), ip, 20000);
+			my(Logger.class).logShort(ip, "Invalid Field Value: {} - ", text);
+			requestFocus();
 		}
 	}
 	

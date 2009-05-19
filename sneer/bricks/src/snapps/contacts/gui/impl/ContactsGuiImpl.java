@@ -15,6 +15,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -59,8 +61,7 @@ class ContactsGuiImpl implements ContactsGui {
 	private final Register<Contact> _selectedContact = my(Signals.class).newRegister(null);
 	
 	private Image getImage(String key) {
-		return my(Images.class).getImage(ContactsGuiImpl.class.getResource(
-																(String) _synth.getDefaultProperty(key)));
+		return my(Images.class).getImage(ContactsGuiImpl.class.getResource((String) _synth.getDefaultProperty(key)));
 	}
 	
 	ContactsGuiImpl(){
@@ -90,9 +91,22 @@ class ContactsGuiImpl implements ContactsGui {
 		
 		addContatActions(window.actions());
 		addDefaultContactAction();
-
+		addModelListener();
+		
 		new ListContactsPopUpSupport();
 		new SelectedContactSupport();
+	}
+
+	private void addModelListener() {
+		contactList().getModel().addListDataListener(new ListDataListener(){
+			@Override public void contentsChanged(ListDataEvent e) { changeSelectionGuiToSelectedContact();}
+			@Override public void intervalAdded(ListDataEvent e) { changeSelectionGuiToSelectedContact();}
+			@Override public void intervalRemoved(ListDataEvent e) { changeSelectionGuiToSelectedContact();}
+
+			private void changeSelectionGuiToSelectedContact() {
+				contactList().setSelectedValue(_selectedContact.output().currentValue(), true);
+			}
+		});
 	}
 
 	private void addDefaultContactAction() {

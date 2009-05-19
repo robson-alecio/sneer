@@ -3,12 +3,9 @@
 	
 	- ReceiversImpl, uncomment code and fix SignalsTest.receive.
 
-	- In-line WeakReferencKeeper. 
+	- In-line WeakReferencKeeper.
 
 	- [Bamboo] GUIImpl.defineBrickMetadata param is unused.
-
-	- [Sandro and Igor] ListSignalModel and SortedList (see SortTest)
-		- List Selection bUG
 
 	- SignalChoosers - Receive owner for GC (like Signals.receive()) instead of returning a reference that has to be held.
 	

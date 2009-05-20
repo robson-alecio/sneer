@@ -54,6 +54,11 @@ class ProbeManagerImpl implements ProbeManager {
 			protected void elementRemoved(Contact contact) {
 				throw new NotImplementedYet();
 			}
+
+			@Override
+			public void elementMoved(int index, int newIndex, Contact newElement) {
+				throw new NotImplementedYet(); // Implement
+			}
 		};
 	}
 

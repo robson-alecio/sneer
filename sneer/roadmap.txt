@@ -39,6 +39,7 @@ TASKS
 
 	- [Sandro and Igor] User Info, Contact List and Contact CRUD - Don't do any other task until:
 		- [Klaus] Revise code.
+		- [Klaus] ProbeManagerImpl.java:55 - NotImplementedYet
 
 	- [Bamboo] Create/Install ("publish") brick locally
 		- Brickness - "The simplest possible container"

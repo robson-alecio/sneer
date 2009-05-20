@@ -51,6 +51,12 @@ TASKS
 	- [Klaus and Igor] build.xml/Antlipse - Revive.
 		- Cleanup wheel
 			- Cleanup Timebox - Try making TimeIsUp a Throwable instead of an Error.
+			- Package "things" could be moved to spikes;
+			- Will become brick:
+				- JavaFilter
+				- CacheMap
+				- ClassUtils
+				- MetaClass (create factory MetaClasses)
 		- Uncomment _logger field and finalize() method in EventNotifierImpl.
 		- Eliminate upward dependencies.
 	

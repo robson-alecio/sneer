@@ -207,8 +207,10 @@ class ContactInfoWindowImpl extends JFrame implements ContactInfoWindow{
 			
 			if(  _selectedAdress.host().equals(_host.getText())
 			&& _selectedAdress.port()== Integer.parseInt(_port.getText())
-			&& _selectedAdress.contact() == my(ContactsGui.class).selectedContact().currentValue())
+			&& _selectedAdress.contact() == my(ContactsGui.class).selectedContact().currentValue()){
+				_lstAddresses.clearSelection();
 				return;
+			}
 			
 			newInternetAddress();
 			my(InternetAddressKeeper.class).remove(address);

@@ -43,7 +43,6 @@ class WindListCellRenderer implements ListCellRenderer {
 
 	@Override
 	public Component getListCellRendererComponent(JList jList, Object element, int ignored2, boolean isSelected, boolean cellHasFocus) {
-		System.out.println("getListCellRendererComponent" + counter++);
 		Shout shout = (Shout)element;
 		JComponent nick = createNick(shout);
 		JComponent shoutTime = createShoutTime(shout, isSelected);

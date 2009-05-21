@@ -69,6 +69,7 @@ final class ReactiveSorter<T> implements ListOfSignalsReceiver<T>{
 		synchronized (_monitor) {
 			for (T element : change.elementsAdded()) {
 				_sorted.add(element);
+				move(element); 
 			}
 			for (T element : change.elementsRemoved()) {
 				_sorted.remove(element);

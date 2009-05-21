@@ -4,12 +4,12 @@ import java.text.SimpleDateFormat;
 
 import static sneer.commons.environments.Environments.my;
 import sneer.pulp.log.formatter.LogFormatter;
-import sneer.pulp.log.stacktrace.LogStackTrace;
+import sneer.pulp.log.stacktrace.StackTraceLogger;
 
 public class LogFormatterImpl implements LogFormatter {
 
 	private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	private final LogStackTrace _logStackTrace = my(LogStackTrace.class);
+	private final StackTraceLogger _logStackTrace = my(StackTraceLogger.class);
 
 	@Override
 	public String format(String message, Object... messageInsets) {

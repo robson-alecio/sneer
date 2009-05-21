@@ -3,8 +3,8 @@ package sneer.pulp.log.stacktrace;
 import sneer.brickness.Brick;
 
 @Brick
-public interface LogStackTrace {
+public interface StackTraceLogger {
 
-	byte[] toByteArray(Throwable throwable);
+	void logStack();
 
 }

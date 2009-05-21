@@ -4,7 +4,11 @@
 	
 	- [Igor] ReceiversImpl, uncomment code and fix SignalsTest.receive.
 	
-	- SimpleListReceiver - make package local
+	- [Igor] SimpleListReceiver - It cannot be public.
+		- Talk to Klaus about this.
+		- ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do. See ListRegisterImpl.MyOutput._notifier
+		- SetSignal - Revise it also.
+		- Make a ListSignal->SetSignal adapter brick instead of SimpleListReceiver.
 
 	- [Bamboo] GUIImpl.defineBrickMetadata param is unused.
 
@@ -70,9 +74,6 @@ TASKS
 				- Unignore TransparentPropertyStoreTest
 		- Simplify to remove all synchronization. Let the container synchronize the brick.
 			- Concurrency - Synchronize calls on Bricks, according to docs/brick_types.txt  
-
-	- [Klaus] ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do. See ListRegisterImpl.MyOutput._notifier
-		- SetSignal - Revise it also. 
 
 	- [Sandro] Webstart
 

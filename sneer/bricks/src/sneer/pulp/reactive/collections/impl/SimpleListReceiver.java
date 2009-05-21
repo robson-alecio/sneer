@@ -28,4 +28,9 @@ public abstract class SimpleListReceiver<T> extends VisitingListReceiver<T> {
 	public void elementRemoved(int index, T value) {		
 		elementRemoved(value);
 	}
+
+	@Override
+	public void elementMoved(int index, int newIndex, T newElement) {
+		//I dont care.
+	}
 }

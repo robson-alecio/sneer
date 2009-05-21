@@ -35,7 +35,6 @@ class WindListCellRenderer implements ListCellRenderer {
 	private static final int SPACE_BETWEEN_LINES = 0;
 	
 	private final LabelProvider<Shout> _labelProvider;
-	private int counter;
 	
 	WindListCellRenderer(LabelProvider<Shout> labelProvider) {
 		_labelProvider = labelProvider;

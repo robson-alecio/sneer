@@ -59,9 +59,7 @@ class DashboardImpl implements Dashboard {
 		@Override protected void elementRemoved(Instrument element) {
 			throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
 		}
-		@Override public void elementMoved(int index, int newIndex, Instrument newElement) {
-			throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
-		}};
+	};
 	
 	DashboardImpl() {
 		my(Threads.class).registerActor(new Runnable(){@Override public void run() {

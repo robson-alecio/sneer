@@ -57,7 +57,6 @@ class OutgoingAttempt {
 			return;
 		}
 		
-		my(Logger.class).log("Outgoing socket opened: " + socket);
 		_connectionManager.manageOutgoingSocket(_address.contact(), socket);
 	}
 	

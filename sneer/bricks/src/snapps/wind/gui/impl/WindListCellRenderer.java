@@ -35,7 +35,6 @@ class WindListCellRenderer implements ListCellRenderer {
 	private static final int SPACE_BETWEEN_LINES = 0;
 	
 	private final LabelProvider<Shout> _labelProvider;
-	private int counter;
 	
 	WindListCellRenderer(LabelProvider<Shout> labelProvider) {
 		_labelProvider = labelProvider;
@@ -43,7 +42,6 @@ class WindListCellRenderer implements ListCellRenderer {
 
 	@Override
 	public Component getListCellRendererComponent(JList jList, Object element, int ignored2, boolean isSelected, boolean cellHasFocus) {
-		System.out.println("getListCellRendererComponent" + counter++);
 		Shout shout = (Shout)element;
 		JComponent nick = createNick(shout);
 		JComponent shoutTime = createShoutTime(shout, isSelected);

@@ -39,7 +39,7 @@ public class Sneer {
 				sneer.pulp.reactive.Signals.class,
 				sneer.pulp.reactive.collections.CollectionSignals.class,
 				sneer.pulp.log.filter.LogFilter.class,
-				sneer.pulp.log.stacktrace.LogStackTrace.class,
+				sneer.pulp.log.stacktrace.StackTraceLogger.class,
 				sneer.pulp.log.formatter.LogFormatter.class,
 				sneer.pulp.log.workers.notifier.LogNotifier.class,
 				

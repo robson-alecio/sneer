@@ -1,7 +1,6 @@
 package sneer.software.compilers.java.impl;
 
 import static sneer.commons.environments.Environments.my;
-import sneer.pulp.log.Logger;
 
 import java.io.File;
 import java.io.IOException;

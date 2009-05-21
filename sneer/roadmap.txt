@@ -2,6 +2,12 @@
 =========
 
 	
+	- [Igor] Adapt antlips to support lib entries starting with:
+		kind="lib" exported="true"...   instead of just:
+		kind="lib"...
+
+	- [Igor] main.Sneer - Organize brick list (skin stuff goes to communicationBricks).
+
 	- [Igor] ReceiversImpl, uncomment code and fix SignalsTest.receive.
 	
 	- [Igor] SimpleListReceiver - It cannot be public.
@@ -16,12 +22,6 @@
 	
 	- Implement ProbeManager elementRemoved to remove Contacts from Gui
 	
-	- [Bamboo] Adapt antlips to support lib entries starting with:
-		kind="lib" exported="true"...   instead of just:
-		kind="lib"...
-		
-	- [Igor] main.Sneer - Organize brick list (skin stuff goes to communicationBricks).
-
 	- [Klaus] EventReceiver - Pass owner on creation. Signal will hold reference to receiver until owner is GC'd.
 		- [Igor] Finish off simple cases. Pair with Klaus on complicated ones.
 

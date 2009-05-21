@@ -21,7 +21,6 @@ class LogToFileImpl implements LogToFile {
 	File _file = new File(_persistenceConfig.get(), FILENAME);
 	
 	private LogToFileImpl(){
-		System.out.println("Log File: " + _file.getAbsolutePath());
 		my(Signals.class).receive(this, new Consumer<String>(){ @Override public void consume(String msg) {
 			log(msg);
 		}}, my(LogNotifier.class).loggedMessages());

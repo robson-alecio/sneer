@@ -30,8 +30,6 @@ class SocketHolder {
 			return;
 		}
 
-		my(Logger.class).log("New socket accepted: " + newSocket);
-
 		_socket = newSocket;
 		_activityReceiver.consume(true);
 	}

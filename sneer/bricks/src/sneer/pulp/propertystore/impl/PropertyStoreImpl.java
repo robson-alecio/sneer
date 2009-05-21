@@ -49,7 +49,7 @@ class PropertyStoreImpl implements PropertyStore {
 			in = in();
 			result.load(in);
 		} catch (FileNotFoundException e) {
-			my(Logger.class).log("No properties found yet.");
+			my(Logger.class).log("File not found: {}", file().getAbsolutePath());
 		} catch (IOException e) {
 			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		} finally {
@@ -72,7 +72,6 @@ class PropertyStoreImpl implements PropertyStore {
 	}
 
 	private InputStream in() throws IOException {
-		my(Logger.class).log("Reading Sneer properties file from: {}", FILE_NAME);
 		return new FileInputStream(file());
 	}
 

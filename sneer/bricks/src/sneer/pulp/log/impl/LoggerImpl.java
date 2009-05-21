@@ -1,9 +1,7 @@
 package sneer.pulp.log.impl;
 
-import static sneer.commons.environments.Environments.my;
 import sneer.pulp.log.LogWorker;
 import sneer.pulp.log.Logger;
-import sneer.pulp.log.stacktrace.StackTraceLogger;
 
 class LoggerImpl implements Logger {
 

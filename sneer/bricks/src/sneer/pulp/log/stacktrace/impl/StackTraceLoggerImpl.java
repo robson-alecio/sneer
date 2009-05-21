@@ -13,11 +13,13 @@ public class StackTraceLoggerImpl implements StackTraceLogger{
 	@Override
 	public void logStack() {
 		class StackTrace extends RuntimeException{};
+		my(Logger.class).log(stackToString(new StackTrace()));
+	}
+
+	@Override
+	public String stackToString(Throwable throwable) {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		PrintWriter _log = new PrintWriter(out, true);
-		new StackTrace().printStackTrace(_log);
-		String result = new String(out.toByteArray());
-		
-		my(Logger.class).log(result);
-	}
+		throwable.printStackTrace(_log);
+		return new String(out.toByteArray());	}
 }

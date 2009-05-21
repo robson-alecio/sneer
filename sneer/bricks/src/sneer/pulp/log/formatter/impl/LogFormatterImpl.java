@@ -9,7 +9,7 @@ import sneer.pulp.log.stacktrace.StackTraceLogger;
 public class LogFormatterImpl implements LogFormatter {
 
 	private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	private final StackTraceLogger _logStackTrace = my(StackTraceLogger.class);
+	private final StackTraceLogger _stackTraceLogger = my(StackTraceLogger.class);
 
 	@Override
 	public String format(String message, Object... messageInsets) {
@@ -20,13 +20,13 @@ public class LogFormatterImpl implements LogFormatter {
 	public String format(Throwable throwable, String message, Object... messageInsets) {
 		return logMessage(message, messageInsets)
 			.append("\n")
-			.append(_logStackTrace.toByteArray(throwable)).append("\n").toString();
+			.append(_stackTraceLogger.stackToString(throwable)).append("\n").toString();
 	}
 
 	@Override
 	public String format(Throwable throwable) {
 		return new StringBuilder()
-			.append(_logStackTrace.toByteArray(throwable)).append("\n").toString();
+			.append(_stackTraceLogger.stackToString(throwable)).append("\n").toString();
 	}
 
 	@Override

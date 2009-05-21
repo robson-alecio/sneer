@@ -6,5 +6,6 @@ import sneer.brickness.Brick;
 public interface StackTraceLogger {
 
 	void logStack();
+	String stackToString(Throwable throwable);
 
 }

@@ -1,13 +1,14 @@
 ﻿FIXES
 =========
-	
-	- ReceiversImpl, uncomment code and fix SignalsTest.receive.
 
-	- In-line WeakReferencKeeper.
+	
+	- [Igor] ReceiversImpl, uncomment code and fix SignalsTest.receive.
+	
+	- SimpleListReceiver - make package local
 
 	- [Bamboo] GUIImpl.defineBrickMetadata param is unused.
 
-	- SignalChoosers - Receive owner for GC (like Signals.receive()) instead of returning a reference that has to be held.
+	- SignalChoosers - Return a sneer.pulp.reactive.Reception that can de disposed, just like Signals.receive().
 	
 	- Implement ProbeManager elementRemoved to remove Contacts from Gui
 	
@@ -21,8 +22,8 @@
 		- [Igor] Finish off simple cases. Pair with Klaus on complicated ones.
 
 	- Remove @Ignore and Fix WindTest.testSortedShoutsHeard
-	
-
+			
+		
 
 TASKS
 ========

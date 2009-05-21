@@ -37,10 +37,6 @@ class RemoteWatchMeWindowsImpl implements RemoteWatchMeWindows{
 			stopReceivingScreensFrom(contact);
 		}
 
-		@Override
-		public void elementMoved(int index, int newIndex, Contact newElement) {
-			throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
-		}
 	};
 	
 	public void startReceivingScreensFrom(Contact contact) {

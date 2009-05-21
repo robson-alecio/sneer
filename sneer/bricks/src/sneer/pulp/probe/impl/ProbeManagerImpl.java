@@ -55,10 +55,6 @@ class ProbeManagerImpl implements ProbeManager {
 				throw new NotImplementedYet();
 			}
 
-			@Override
-			public void elementMoved(int index, int newIndex, Contact newElement) {
-				throw new NotImplementedYet(); // Implement
-			}
 		};
 	}
 

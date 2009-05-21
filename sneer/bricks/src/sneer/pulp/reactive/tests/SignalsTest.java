@@ -50,6 +50,7 @@ public class SignalsTest extends BrickTest {
 	@Test (timeout = 6000)
 	public void receive() {
 		final StringBuilder received = new StringBuilder();
+
 		Register<String> register1 = _subject.newRegister(null);
 		Register<String> register2 = _subject.newRegister("hey");
 

@@ -11,7 +11,6 @@ import java.util.List;
 import sneer.software.code.filefilters.java.JavaFilter;
 import sneer.software.code.metaclass.MetaClass;
 import sneer.software.code.metaclass.MetaClasses;
-import wheel.io.codegeneration.SimpleFilter;
 
 /**
  * Includes all class files outside hidden directories

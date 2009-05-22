@@ -11,12 +11,11 @@ import java.util.List;
 import sneer.software.code.filefilters.java.JavaFilter;
 import sneer.software.code.metaclass.MetaClass;
 import sneer.software.code.metaclass.MetaClasses;
-import wheel.io.codegeneration.SimpleFilter;
 
 /**
  * Includes all class files outside hidden directories
  */
-@Deprecated // Use brick 'JavaFilters' instead
+@Deprecated // This is a copy of the class sneer.software.code.filefilters.java.impl.JavaFilterImpl
 class JavaFilterImpl extends SimpleFilter implements JavaFilter {
 
 	private List<MetaClass> _cache;

@@ -1,4 +1,4 @@
-package wheel.io.codegeneration;
+package sneer.kernel.container.utils.io;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -18,7 +18,8 @@ import wheel.io.FileUtils;
 /**
  * Includes all files outside hidden directories
  */
-public class SimpleFilter extends DirectoryWalker {
+@Deprecated // This is a copy of the class sneer.software.code.filefilters.java.impl.SimpleFilterImpl
+class SimpleFilter extends DirectoryWalker {
 	
 	protected static final FileFilter JAVA_SOURCE_FILE_FILTER = new OrFileFilter(new SuffixFileFilter(".java"),  DirectoryFileFilter.INSTANCE);
 	protected static final FileFilter JAVA_CLASS_FILE_FILTER  = new OrFileFilter(new SuffixFileFilter(".class"), DirectoryFileFilter.INSTANCE);

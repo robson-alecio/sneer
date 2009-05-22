@@ -22,8 +22,7 @@ public class Bubble {
 
 	private static <T> T wrap(Object object, Prevayler prevayler, List<String> getterMethodPath) {
 		InvocationHandler handler = new Bubble(object, prevayler, getterMethodPath).handler();
-		Object proxy = Proxy.newProxyInstance(object.getClass().getClassLoader(), object.getClass().getInterfaces(), handler);
-		return (T)proxy;
+		return (T)Proxy.newProxyInstance(object.getClass().getClassLoader(), object.getClass().getInterfaces(), handler);
 	}
 
 	private Bubble(Object stateMachine, Prevayler prevayler, List<String> getterMethodPath) {

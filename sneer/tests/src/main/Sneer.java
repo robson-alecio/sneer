@@ -100,9 +100,12 @@ public class Sneer {
 				snapps.wind.Wind.class,
 				snapps.whisper.speextuples.SpeexTuples.class,
 				sneer.pulp.probe.ProbeManager.class,
-				
-				sneer.software.compilers.classpath.ClasspathFactory.class,
-				sneer.software.compilers.java.JavaCompiler.class,
+
+				sneer.software.code.classutils.ClassUtils.class,
+				sneer.software.code.filefilters.java.JavaFilters.class,
+				sneer.software.code.metaclass.MetaClasses.class,
+				sneer.software.code.compilers.classpath.ClasspathFactory.class,
+				sneer.software.code.compilers.java.JavaCompiler.class,
 				sneer.software.bricks.Bricks.class,
 		};
 	}

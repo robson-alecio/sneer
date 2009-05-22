@@ -16,11 +16,11 @@ import sneer.pulp.deployer.BrickBundle;
 import sneer.pulp.deployer.BrickFile;
 import sneer.pulp.deployer.Deployer;
 import sneer.pulp.deployer.DeployerException;
-import sneer.software.compilers.classpath.Classpath;
-import sneer.software.compilers.classpath.ClasspathFactory;
-import sneer.software.compilers.java.JavaCompiler;
-import sneer.software.compilers.java.Result;
-import wheel.io.codegeneration.MetaClass;
+import sneer.software.code.compilers.classpath.Classpath;
+import sneer.software.code.compilers.classpath.ClasspathFactory;
+import sneer.software.code.compilers.java.JavaCompiler;
+import sneer.software.code.compilers.java.Result;
+import sneer.software.code.metaclass.MetaClass;
 
 class DeployerImpl implements Deployer {
 

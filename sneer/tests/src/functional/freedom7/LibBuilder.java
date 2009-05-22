@@ -7,9 +7,9 @@ import java.util.Iterator;
 import org.apache.commons.io.FileUtils;
 
 import sneer.brickness.testsupport.JarBuilder;
-import sneer.software.compilers.java.JavaCompiler;
-import sneer.software.compilers.java.Result;
-import wheel.io.codegeneration.MetaClass;
+import sneer.software.code.compilers.java.JavaCompiler;
+import sneer.software.code.compilers.java.Result;
+import sneer.software.code.metaclass.MetaClass;
 import wheel.lang.Collections;
 
 public class LibBuilder {

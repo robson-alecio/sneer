@@ -60,4 +60,8 @@
 		<mkdir dir="${build.dir}" />
 	</target>
 	
+	<target name="webstart">
+		<ant antfile="webstart/build.xml" target="main"/>
+	</target>
+	
 </project>

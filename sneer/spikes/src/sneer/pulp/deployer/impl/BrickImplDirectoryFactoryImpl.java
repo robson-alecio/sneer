@@ -9,7 +9,8 @@ import java.util.List;
 
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 
-import wheel.io.codegeneration.SimpleFilter;
+import sneer.software.code.filefilters.java.impl.SimpleFilter;
+
 
 class BrickImplDirectoryFactoryImpl implements BrickImplDirectoryFactory {
 

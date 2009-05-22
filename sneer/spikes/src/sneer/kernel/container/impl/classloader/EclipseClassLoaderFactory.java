@@ -1,5 +1,7 @@
 package sneer.kernel.container.impl.classloader;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.io.File;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
@@ -10,9 +12,9 @@ import sneer.kernel.container.ClassLoaderFactory;
 import sneer.kernel.container.SneerConfig;
 import sneer.kernel.container.utils.io.BrickImplFilter;
 import sneer.pulp.clock.Clock;
+import sneer.software.code.classutils.ClassUtils;
+import sneer.software.code.filefilters.java.JavaFilter;
 import wheel.io.FileUtils;
-import wheel.io.codegeneration.ClassUtils;
-import wheel.io.codegeneration.JavaFilter;
 
 public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 
@@ -65,7 +67,7 @@ public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 	}
 	
 	private File eclipseTargetDirectory() {
-		return ClassUtils.rootDirectoryFor(Clock.class);
+		return my(ClassUtils.class).rootDirectoryFor(Clock.class);
 	}
 
 	@Override

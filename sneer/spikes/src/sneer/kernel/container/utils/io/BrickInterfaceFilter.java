@@ -4,11 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
-import wheel.io.codegeneration.JavaFilter;
-import wheel.io.codegeneration.MetaClass;
+import sneer.software.code.metaclass.MetaClass;
 
-
-public class BrickInterfaceFilter extends JavaFilter {
+@SuppressWarnings("deprecation")
+public class BrickInterfaceFilter extends JavaFilterImpl {
 	
 	public BrickInterfaceFilter(File root) {
 		super(root);

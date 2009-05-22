@@ -77,6 +77,38 @@ TASKS
 			- Concurrency - Synchronize calls on Bricks, according to docs/brick_types.txt  
 
 	- [Sandro] Webstart
+		- Detect presence of "home_override"/.sneer directory. See SneerStoragePath.
+			- If present: Run
+				- Instantiate brickness passing SneerStoragePath.
+				- Place CornerStone (the brick that places all other bricks)
+			- If not present:
+				- Installation Wizard. (See Monolith for titlebar and button captions)
+					"Welcome to Sneer, the first sovereign computing peer.  :)\n\n" +
+					"This wizard will prepare Sneer to run for you."
+				
+					"Sneer is free software.\n\n" +
+					"It is licensed under the terms of the GNU Affero General Public License version 3\n" +
+					"as published by the Free Software Foundation:\n" +
+					"http://www.fsf.org/licensing/licenses/agpl-3.0.html\n\n" +
+					"Do you accept these terms?"),
+				
+					"Each user of this computer can have his own Sneer setup.\n\n" +
+					"To store your setup, the following folder will be created:\n" +
+					"%1$s",sneerDirectory)
+					
+					"This is the Sneer "Dogfood" release for ADVANCED Java users.\n\n
+					please do not [to be continued]"
+					
+					"Congratulations!\n\n" +
+					"You are no longer a slave. You have just\n" +
+					"claimed your own share of the internet."),
+					
+				- Delete .sneertmp directory and subdirectories if present.
+				- Create .sneertmp directory.
+				- unzip bricks there.
+				- Rename to .sneer
+				- Goto "Run", above
+		
 
 	- Security - Discover if instruments can indirectly gain access to components from other instruments.
 	

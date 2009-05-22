@@ -1,7 +1,6 @@
 package sneer.software.code.compilers.java.impl;
 
 import static sneer.commons.environments.Environments.my;
-import sneer.pulp.log.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,7 +32,7 @@ class JavaCompilerImpl implements JavaCompiler {
 	public Result compile(List<File> sourceFiles, File destination, Classpath classpath) throws CompilerException {
 		
 		File tmpFile = createArgsFileForJavac(sourceFiles);
-		my(Logger.class).log("Compiling {} files to {}", sourceFiles.size(), destination);
+//		my(Logger.class).log("Compiling {} files to {}", sourceFiles.size(), destination);
 
 		String[] parameters = {
 				"-classpath", classpath.asJavacArgument(),
@@ -41,7 +40,7 @@ class JavaCompilerImpl implements JavaCompiler {
 				"-encoding","UTF-8",
 				"@"+tmpFile.getAbsolutePath()
 		};
-		my(Logger.class).log("compiler cli: {}",StringUtils.join(parameters, " "));
+//		my(Logger.class).log("compiler cli: {}",StringUtils.join(parameters, " "));
 
 		StringWriter writer = new StringWriter();
 		int code = Main.compile(parameters, new PrintWriter(writer));

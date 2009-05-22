@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<project name="WebStart" default="main">
+	
+	<target name="main">
+		<mkdir dir="./olaMundo" />
+		<echo>Olá Mundo!</echo>
+	</target>
+	
+</project>

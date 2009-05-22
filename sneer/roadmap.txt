@@ -25,11 +25,10 @@
 	- Implement ProbeManager elementRemoved to remove Contacts from Gui
 	
 	- [Klaus] EventReceiver - Pass owner on creation. Signal will hold reference to receiver until owner is GC'd.
-		- [Igor] Finish off simple cases. Pair with Klaus on complicated ones.
 
 	- Remove @Ignore and Fix WindTest.testSortedShoutsHeard
 
-	- Break down packages with more than one brick	
+	- Break down packages with more than one brick
 
 
 TASKS
@@ -59,9 +58,6 @@ TASKS
 	- [Klaus and Igor] build.xml/Antlipse - Revive.
 		- Cleanup wheel
 			- Cleanup Timebox - Try making TimeIsUp a Throwable instead of an Error.
-			- Will become brick:
-				- JavaFilter
-				- ClassUtils
 		- Uncomment _logger field and finalize() method in EventNotifierImpl.
 		- Eliminate upward dependencies.
 		- Start breaking 'sneer.pulp' into new package structure (hardware, software, etc), and while doing that, fix packages with more than one Brick (ex: 'sneer.pulp.reactive'). 

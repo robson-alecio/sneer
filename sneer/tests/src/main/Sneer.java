@@ -101,6 +101,7 @@ public class Sneer {
 				snapps.whisper.speextuples.SpeexTuples.class,
 				sneer.pulp.probe.ProbeManager.class,
 
+				sneer.hardware.io.file.utils.FileUtils.class,
 				sneer.software.code.classutils.ClassUtils.class,
 				sneer.software.code.filefilters.java.JavaFilters.class,
 				sneer.software.code.metaclass.MetaClasses.class,

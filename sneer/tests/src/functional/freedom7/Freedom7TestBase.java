@@ -8,7 +8,7 @@ import java.io.IOException;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import sneer.software.compilers.java.JavaCompiler;
+import sneer.software.code.compilers.java.JavaCompiler;
 import functional.SovereignFunctionalTestBase;
 import functional.SovereignParty;
 

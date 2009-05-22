@@ -18,7 +18,7 @@ import sneer.kernel.container.jar.DeploymentJarFactory;
 import sneer.pulp.deployer.DeployerException;
 import sneer.pulp.deployer.impl.filters.ImplFinder;
 import sneer.pulp.deployer.impl.filters.LibFinder;
-import wheel.io.codegeneration.MetaClass;
+import sneer.software.code.metaclass.MetaClass;
 import wheel.io.codegeneration.SimpleFilter;
 import wheel.lang.Collections;
 

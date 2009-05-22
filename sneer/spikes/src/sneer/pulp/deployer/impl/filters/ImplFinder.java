@@ -6,7 +6,7 @@ import java.util.Collection;
 
 import sneer.pulp.deployer.impl.parser.JavaSource;
 import sneer.pulp.deployer.impl.parser.JavaSourceParser;
-import wheel.io.codegeneration.SimpleFilter;
+import sneer.software.code.filefilters.java.impl.SimpleFilter;
 
 public class ImplFinder extends SimpleFilter {
 

@@ -16,7 +16,9 @@
 		- SetSignal - Revise it also.
 		- Make a ListSignal->SetSignal adapter brick instead of SimpleListReceiver.
 
-	- [Bamboo] GUIImpl.defineBrickMetadata param is unused.
+	- [Bamboo] Unused codes:
+		- GUIImpl.defineBrickMetadata param
+		- ASMMetaClass
 
 	- SignalChoosers - Return a sneer.pulp.reactive.Reception that can de disposed, just like Signals.receive().
 	

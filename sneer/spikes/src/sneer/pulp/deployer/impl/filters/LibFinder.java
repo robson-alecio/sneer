@@ -2,7 +2,8 @@ package sneer.pulp.deployer.impl.filters;
 
 import java.io.File;
 
-import wheel.io.codegeneration.SimpleFilter;
+import sneer.software.code.filefilters.java.impl.SimpleFilter;
+
 
 public class LibFinder extends SimpleFilter {
 

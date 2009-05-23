@@ -77,6 +77,8 @@ TASKS
 			- Concurrency - Synchronize calls on Bricks, according to docs/brick_types.txt  
 
 	- [Sandro] Webstart
+		- Use installer/src source folder.
+	
 		- Detect presence of the "home_override"/.sneer directory. See SneerStoragePath.
 			- If present: Run
 				- Instantiate Brickness passing SneerStoragePath as a binding.

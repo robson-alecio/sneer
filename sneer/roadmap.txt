@@ -77,10 +77,10 @@ TASKS
 			- Concurrency - Synchronize calls on Bricks, according to docs/brick_types.txt  
 
 	- [Sandro] Webstart
-		- Detect presence of "home_override"/.sneer directory. See SneerStoragePath.
+		- Detect presence of the "home_override"/.sneer directory. See SneerStoragePath.
 			- If present: Run
-				- Instantiate brickness passing SneerStoragePath.
-				- Place CornerStone (the brick that places all other bricks)
+				- Instantiate Brickness passing SneerStoragePath as a binding.
+				- Place the Threads brick. (This will cause all actors and steppers registered by other bricks to be started. Those other bricks will be placed automatically, of course)
 				
 			- If not present:
 				- Installation Wizard.
@@ -126,7 +126,8 @@ TASKS
 					Button: [Exit]
 						System.exit(0);
 				
-				- Goto "Run", above
+				- Do "Run", above
+				- Place the Coping (the brick that simply depends on all necessary bricks and will cause them to be placed) - http://www.thefreedictionary.com/coping
 				
 		
 

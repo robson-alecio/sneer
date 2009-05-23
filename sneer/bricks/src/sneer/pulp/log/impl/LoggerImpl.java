@@ -1,9 +1,7 @@
 package sneer.pulp.log.impl;
 
-import static sneer.commons.environments.Environments.my;
 import sneer.pulp.log.LogWorker;
 import sneer.pulp.log.Logger;
-import sneer.pulp.log.stacktrace.LogStackTrace;
 
 class LoggerImpl implements Logger {
 
@@ -12,12 +10,6 @@ class LoggerImpl implements Logger {
 	@Override
 	public void setDelegate(LogWorker worker) {
 		_delegate = worker;
-	}
-	
-	@Override
-	public void logStackTrace() {
-		class StackTrace extends RuntimeException{};
-		log(new String(my(LogStackTrace.class).toByteArray(new StackTrace())));
 	}
 	
 	@Override

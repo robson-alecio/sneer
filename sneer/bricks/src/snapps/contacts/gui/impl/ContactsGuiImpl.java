@@ -14,11 +14,6 @@ import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import snapps.contacts.actions.ContactAction;
 import snapps.contacts.actions.ContactActionManager;
@@ -30,7 +25,6 @@ import sneer.hardware.gui.images.Images;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
-import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.ListSignal;
@@ -58,11 +52,8 @@ class ContactsGuiImpl implements ContactsGui {
 	private ListWidget<Contact> _contactList;
 	private Container _container;
 	
-	private final Register<Contact> _selectedContact = my(Signals.class).newRegister(null);
-	
 	private Image getImage(String key) {
-		return my(Images.class).getImage(ContactsGuiImpl.class.getResource(
-																(String) _synth.getDefaultProperty(key)));
+		return my(Images.class).getImage(ContactsGuiImpl.class.getResource((String) _synth.getDefaultProperty(key)));
 	}
 	
 	ContactsGuiImpl(){
@@ -90,12 +81,10 @@ class ContactsGuiImpl implements ContactsGui {
 		_container.setLayout(new BorderLayout());
 		_container.add(scrollPane, BorderLayout.CENTER);
 		
-		addListModelListener();
 		addContatActions(window.actions());
 		addDefaultContactAction();
-
+		
 		new ListContactsPopUpSupport();
-		new SelectedContactSupport();
 	}
 
 	private void addDefaultContactAction() {
@@ -103,17 +92,6 @@ class ContactsGuiImpl implements ContactsGui {
 			if (e.getClickCount() > 1)
 				my(ContactActionManager.class).defaultAction().run();
 		}});
-	}
-
-	private void addListModelListener() {
-		contactList().getModel().addListDataListener(new ListDataListener(){
-			private void changeSelectionGuiToSelectedContact() {
-				contactList().setSelectedValue(_selectedContact.output().currentValue(), true);
-			}
-			@Override public void contentsChanged(ListDataEvent e) { changeSelectionGuiToSelectedContact(); }
-			@Override public void intervalAdded(ListDataEvent e) { changeSelectionGuiToSelectedContact(); }
-			@Override public void intervalRemoved(ListDataEvent e) { changeSelectionGuiToSelectedContact(); }
-		});
 	}
 
 	@Override
@@ -128,7 +106,7 @@ class ContactsGuiImpl implements ContactsGui {
 	
 	@Override
 	public Signal<Contact> selectedContact(){
-		return _selectedContact.output();
+		return _contactList.selectedElement();
 	}
 	
 	private void addContatActions(JPopupMenu popupMenu) {
@@ -161,19 +139,6 @@ class ContactsGuiImpl implements ContactsGui {
 			
 			Signal<Boolean> isOnline = my(ConnectionManager.class).connectionFor(contact).isOnline();
 			return my(Signals.class).adapt(isOnline, functor);
-		}
-	}
-	
-	private final class SelectedContactSupport {
-		private SelectedContactSupport() {
-			final JList list = _contactList.getMainWidget();
-			ListSelectionModel selectionModel = list.getSelectionModel();
-			selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			
-			selectionModel.addListSelectionListener(new ListSelectionListener(){ @Override public void valueChanged(ListSelectionEvent e) {
-				Contact contact = (Contact) list.getSelectedValue();
-				_selectedContact.setter().consume(contact);
-			}});
 		}
 	}
 	

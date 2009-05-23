@@ -36,6 +36,7 @@ class RemoteWatchMeWindowsImpl implements RemoteWatchMeWindows{
 		protected void elementRemoved(Contact contact) {
 			stopReceivingScreensFrom(contact);
 		}
+
 	};
 	
 	public void startReceivingScreensFrom(Contact contact) {

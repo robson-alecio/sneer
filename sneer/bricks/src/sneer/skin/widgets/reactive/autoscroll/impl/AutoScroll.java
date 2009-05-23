@@ -79,7 +79,7 @@ class AutoScroll<T> extends JScrollPane{
 	private SimpleListReceiver<T> _posChangeReceiverAvoidGc;
 	private void initPosChangeReceiver(ListSignal<T> inputSignal) {
 		_posChangeReceiverAvoidGc = new MySimpleListReceiver(inputSignal){ @Override protected void fire() {
-				if(_shouldAutoscroll) placeAtEnd();
+			if(_shouldAutoscroll) placeAtEnd();
 		}};
 	}
 	

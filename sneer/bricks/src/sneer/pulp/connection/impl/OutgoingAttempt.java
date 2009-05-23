@@ -7,7 +7,6 @@ import java.io.IOException;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.internetaddresskeeper.InternetAddress;
-import sneer.pulp.log.Logger;
 import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;
 import sneer.pulp.threads.Threads;
@@ -57,7 +56,6 @@ class OutgoingAttempt {
 			return;
 		}
 		
-		my(Logger.class).log("Outgoing socket opened: " + socket);
 		_connectionManager.manageOutgoingSocket(_address.contact(), socket);
 	}
 	

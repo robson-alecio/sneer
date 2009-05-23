@@ -39,7 +39,7 @@ public class Sneer {
 				sneer.pulp.reactive.Signals.class,
 				sneer.pulp.reactive.collections.CollectionSignals.class,
 				sneer.pulp.log.filter.LogFilter.class,
-				sneer.pulp.log.stacktrace.LogStackTrace.class,
+				sneer.pulp.log.stacktrace.StackTraceLogger.class,
 				sneer.pulp.log.formatter.LogFormatter.class,
 				sneer.pulp.log.workers.notifier.LogNotifier.class,
 				
@@ -100,9 +100,13 @@ public class Sneer {
 				snapps.wind.Wind.class,
 				snapps.whisper.speextuples.SpeexTuples.class,
 				sneer.pulp.probe.ProbeManager.class,
-				
-				sneer.software.compilers.classpath.ClasspathFactory.class,
-				sneer.software.compilers.java.JavaCompiler.class,
+
+				sneer.hardware.io.file.utils.FileUtils.class,
+				sneer.software.code.classutils.ClassUtils.class,
+				sneer.software.code.filefilters.java.JavaFilters.class,
+				sneer.software.code.metaclass.MetaClasses.class,
+				sneer.software.code.compilers.classpath.ClasspathFactory.class,
+				sneer.software.code.compilers.java.JavaCompiler.class,
 				sneer.software.bricks.Bricks.class,
 		};
 	}

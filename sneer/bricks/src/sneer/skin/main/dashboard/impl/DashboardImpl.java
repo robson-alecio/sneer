@@ -58,7 +58,8 @@ class DashboardImpl implements Dashboard {
 		@Override protected void elementPresent(Instrument instrument) { _dashboardPanel.install(instrument); }
 		@Override protected void elementRemoved(Instrument element) {
 			throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
-		}};
+		}
+	};
 	
 	DashboardImpl() {
 		my(Threads.class).registerActor(new Runnable(){@Override public void run() {

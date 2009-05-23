@@ -54,6 +54,7 @@ class ProbeManagerImpl implements ProbeManager {
 			protected void elementRemoved(Contact contact) {
 				throw new NotImplementedYet();
 			}
+
 		};
 	}
 

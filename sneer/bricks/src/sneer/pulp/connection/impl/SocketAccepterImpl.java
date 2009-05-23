@@ -92,7 +92,6 @@ class SocketAccepterImpl implements SocketAccepter {
 	
 	private void dealWith(ByteArraySocket incomingSocket) {
 		_lights.turnOffIfNecessary(_cantAcceptSocket);
-		my(Logger.class).log("Incoming socket received");
 		_notifier.notifyReceivers(incomingSocket);
 	}
 

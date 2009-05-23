@@ -8,6 +8,7 @@ import sneer.brickness.testsupport.BrickTest;
 import sneer.commons.lang.Functor;
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.clock.Clock;
+import sneer.pulp.log.Logger;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
@@ -49,6 +50,7 @@ public class SignalsTest extends BrickTest {
 	@Test (timeout = 6000)
 	public void receive() {
 		final StringBuilder received = new StringBuilder();
+
 		Register<String> register1 = _subject.newRegister(null);
 		Register<String> register2 = _subject.newRegister("hey");
 
@@ -72,7 +74,7 @@ public class SignalsTest extends BrickTest {
 			System.gc();
 			Clock clock = my(Clock.class);
 			clock.advanceTime(60000);
-			System.out.println("Test's Clock --> " + this.hashCode());
+			my(Logger.class).log("Test's Clock --> {}", this.hashCode());
 
 			received.delete(0, received.length());
 			register1.setter().consume("something else");

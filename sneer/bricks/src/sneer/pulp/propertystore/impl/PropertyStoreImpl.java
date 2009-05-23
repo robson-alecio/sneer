@@ -14,7 +14,6 @@ import java.util.Properties;
 import sneer.brickness.StoragePath;
 import sneer.commons.io.Streams;
 import sneer.pulp.propertystore.PropertyStore;
-import sneer.pulp.log.Logger;
 
 class PropertyStoreImpl implements PropertyStore {
 
@@ -48,8 +47,8 @@ class PropertyStoreImpl implements PropertyStore {
 		try {
 			in = in();
 			result.load(in);
-		} catch (FileNotFoundException e) {
-			my(Logger.class).log("No properties found yet.");
+		} catch (FileNotFoundException ignore) {
+//			my(Logger.class).log("File not found: {}", file().getAbsolutePath());
 		} catch (IOException e) {
 			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		} finally {
@@ -72,7 +71,6 @@ class PropertyStoreImpl implements PropertyStore {
 	}
 
 	private InputStream in() throws IOException {
-		my(Logger.class).log("Reading Sneer properties file from: {}", FILE_NAME);
 		return new FileInputStream(file());
 	}
 

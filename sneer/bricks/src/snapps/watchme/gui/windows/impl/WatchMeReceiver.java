@@ -8,14 +8,11 @@ import java.awt.Image;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.WindowConstants;
-
-import org.apache.commons.collections15.map.HashedMap;
 
 import snapps.watchme.WatchMe;
 import sneer.brickness.PublicKey;
@@ -39,21 +36,15 @@ class WatchMeReceiver{
 	private Widget<JFrame> _windowWidget;
 	private JLabel _imageLabel = new JLabel();
 
-	private final Map<Object, Reception> _referencesByKey = new HashedMap<Object, Reception>();
+	@SuppressWarnings("unused") private final Object _refToAvoidGc;
+	private Reception _screensReception;
 
 	WatchMeReceiver(Contact contact) {
 		_contact = contact;
-		final PublicKey key = _keyManager.keyGiven(_contact);
-
-		Reception newReception = my(Signals.class).receive(new Consumer<Contact>() {@Override public void consume(Contact contactWithNewKey) {
+		_refToAvoidGc = my(Signals.class).receive(new Consumer<Contact>() {@Override public void consume(Contact contactWithNewKey) {
 			if(contactWithNewKey != _contact) return;
-			startWindowPaint(key);
+			startWindowPaint(_keyManager.keyGiven(_contact));
 		}}, _keyManager.keyChanges());
-
-		Reception oldReception =_referencesByKey.get(key);
-		if (oldReception != null) oldReception.dispose();
-
-		_referencesByKey.put(key, newReception);
 	}
 
 	private void initGui() {
@@ -82,10 +73,10 @@ class WatchMeReceiver{
 
 
 	private void startWindowPaint(PublicKey key) {
-		if (key == null) return;
-
+		if (_screensReception != null) _screensReception.dispose();
+		
 		final EventSource<BufferedImage> screens = _watchMe.screenStreamFor(key);
-		my(Signals.class).receive(new Consumer<Image>() { @Override public void consume(Image img) {
+		_screensReception = my(Signals.class).receive(new Consumer<Image>() { @Override public void consume(Image img) {
 			if (_windowWidget == null) initGui();
 			
 			JFrame frm = _windowWidget.getMainWidget();

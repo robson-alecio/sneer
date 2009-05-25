@@ -6,7 +6,8 @@ import java.util.Set;
 
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.events.EventSource;
-import wheel.reactive.impl.EventReceiver;
+import sneer.pulp.reactive.Reception;
+import wheel.reactive.impl.ReceptionImpl;
 
 class ReceiversImpl {
 	
@@ -15,7 +16,7 @@ class ReceiversImpl {
  	static <T> void receive(Object owner, final Consumer<? super T> delegate, final EventSource<? extends T>... sources) {
 		final WeakReference<Object> weakOwner = new WeakReference<Object>(owner);
 
-		new EventReceiver<T>(sources) {
+		new ReceptionImpl<T>(sources) {
 			{ _referencesToAvoidGC.add(this); }
 
 			@Override
@@ -27,6 +28,12 @@ class ReceiversImpl {
 				delegate.consume(value);
 			}
 		};
+ 	}
+
+ 	static <T> Reception receive(final Consumer<? super T> receiver, final EventSource<? extends T>... sources) {
+		return new ReceptionImpl<T>(sources) { @Override public void consume(T value) {
+			receiver.consume(value);
+		}};
  	}
 	
 //	static <T> void receive(Object owner, final Consumer<? super T> delegate, final EventSource<? extends T>... sources) {

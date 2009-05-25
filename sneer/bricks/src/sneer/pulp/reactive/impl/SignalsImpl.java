@@ -3,6 +3,7 @@ package sneer.pulp.reactive.impl;
 import sneer.commons.lang.Functor;
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.events.EventSource;
+import sneer.pulp.reactive.Reception;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
@@ -39,5 +40,10 @@ class SignalsImpl implements Signals {
 	@Override
 	public <T> void receive(Object owner, final Consumer<? super T> delegate, EventSource<? extends T>... source) {
 		ReceiversImpl.receive(owner, delegate, source);
+	}
+
+	@Override
+	public <T> Reception receive(Consumer<? super T> receiver, EventSource<? extends T>... sources) {
+		return ReceiversImpl.receive(receiver, sources);
 	}
 }

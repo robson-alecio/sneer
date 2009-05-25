@@ -5,7 +5,7 @@ import sneer.commons.lang.Functor;
 import sneer.hardware.cpu.lang.ref.weakreferencekeeper.WeakReferenceKeeper;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import wheel.reactive.impl.EventReceiver;
+import wheel.reactive.impl.ReceptionImpl;
 
 class SignalAdapter<IN, OUT> {
 
@@ -15,9 +15,9 @@ class SignalAdapter<IN, OUT> {
 	private Register<OUT> _register = new RegisterImpl<OUT>(null);
 
 	SignalAdapter(Signal<IN> input, final Functor<IN, Signal<OUT>> functor) {
-		_refToAvoidGC = new EventReceiver<IN>(input) { @Override public void consume(IN inputValue) {
+		_refToAvoidGC = new ReceptionImpl<IN>(input) { @Override public void consume(IN inputValue) {
 			Signal<OUT> newSignal = functor.evaluate(inputValue);
-			_refToAvoidGC2 = new EventReceiver<OUT>(newSignal) { @Override public void consume(OUT value) {
+			_refToAvoidGC2 = new ReceptionImpl<OUT>(newSignal) { @Override public void consume(OUT value) {
 				_register.setter().consume(value);
 			}};
 		}};

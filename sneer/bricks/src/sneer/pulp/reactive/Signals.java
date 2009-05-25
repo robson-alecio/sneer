@@ -19,5 +19,7 @@ public interface Signals {
 
 	/** @param receiver is referenced until owner is garbage collected. Owner is weak referenced. */
 	<T> void receive(Object owner, Consumer<? super T> receiver, EventSource<? extends T>... sources);	
+
+	<T> Reception receive(Consumer<? super T> receiver, EventSource<? extends T>... sources);	
 }
 

@@ -56,7 +56,6 @@ TASKS
 
 	- [Klaus and Igor]
 		- Cleanup Commons
-			- Cleanup Timebox - Try making TimeIsUp a Throwable instead of an Error.
 		- Uncomment _logger field and finalize() method in EventNotifierImpl.
 		- Eliminate upward dependencies.
 		- Start breaking 'sneer.pulp' into new package structure (hardware, software, etc), and while doing that, fix packages with more than one Brick (ex: 'sneer.pulp.reactive'). 

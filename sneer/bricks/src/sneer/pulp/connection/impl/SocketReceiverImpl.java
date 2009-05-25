@@ -14,7 +14,7 @@ class SocketReceiverImpl implements SocketReceiver {
 	
 	private final Threads _threads = my(Threads.class);
 
-	@SuppressWarnings("unused") private Object _referenceToAvoidGc;
+	@SuppressWarnings("unused") private final Object _referenceToAvoidGc;
 
 	SocketReceiverImpl() {
 		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<ByteArraySocket>() { @Override public void consume(final ByteArraySocket socket) {

@@ -13,7 +13,7 @@ class Adder {
 	private final Signal<Integer> _a;
 	private final Signal<Integer> _b;
 
-	@SuppressWarnings("unused")	private Object _referenceToAvoidGc;
+	@SuppressWarnings("unused")	private final Object _referenceToAvoidGc;
 
 	Adder(Signal<Integer> a, Signal<Integer> b) {
 		_a = a;

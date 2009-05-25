@@ -25,7 +25,7 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 	private final Signal<?> _source;
 	private final PickyConsumer<? super String> _setter;
 
-	@SuppressWarnings("unused")	private Object _referenceToAvoidGc;
+	@SuppressWarnings("unused")	private final Object _referenceToAvoidGc;
 
 	RLabelImpl(Signal<?> text){
 		this(text, null);

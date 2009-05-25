@@ -8,11 +8,14 @@ import java.awt.Image;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.WindowConstants;
+
+import org.apache.commons.collections15.map.HashedMap;
 
 import snapps.watchme.WatchMe;
 import sneer.brickness.PublicKey;
@@ -21,6 +24,7 @@ import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.keymanager.KeyManager;
+import sneer.pulp.reactive.Reception;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.Widget;
@@ -35,15 +39,21 @@ class WatchMeReceiver{
 	private Widget<JFrame> _windowWidget;
 	private JLabel _imageLabel = new JLabel();
 
-	@SuppressWarnings("unused") private Object _referenceToAvoidGc;
+	private final Map<Object, Reception> _referencesByKey = new HashedMap<Object, Reception>();
 
 	WatchMeReceiver(Contact contact) {
 		_contact = contact;
-		
-		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<Contact>() {@Override public void consume(Contact contactWithNewKey) {
+		final PublicKey key = _keyManager.keyGiven(_contact);
+
+		Reception newReception = my(Signals.class).receive(new Consumer<Contact>() {@Override public void consume(Contact contactWithNewKey) {
 			if(contactWithNewKey != _contact) return;
-			startWindowPaint(_keyManager.keyGiven(_contact));
+			startWindowPaint(key);
 		}}, _keyManager.keyChanges());
+
+		Reception oldReception =_referencesByKey.get(key);
+		if (oldReception != null) oldReception.dispose();
+
+		_referencesByKey.put(key, newReception);
 	}
 
 	private void initGui() {
@@ -73,7 +83,7 @@ class WatchMeReceiver{
 
 	private void startWindowPaint(PublicKey key) {
 		if (key == null) return;
-		
+
 		final EventSource<BufferedImage> screens = _watchMe.screenStreamFor(key);
 		my(Signals.class).receive(new Consumer<Image>() { @Override public void consume(Image img) {
 			if (_windowWidget == null) initGui();

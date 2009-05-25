@@ -9,7 +9,7 @@ import spikes.sandro.summit.register.logger.SimpleLogger;
 
 class SimpleLoggerImpl implements SimpleLogger {
 
-	@SuppressWarnings("unused") private Object _referenceToAvoidGc;
+	@SuppressWarnings("unused") private final Object _referenceToAvoidGc;
 
 	SimpleLoggerImpl() {
 		Consumer<String> receiver = new Consumer<String>() {

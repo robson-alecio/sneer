@@ -20,7 +20,7 @@ public class ReceiverTest {
 		Register<String> register1 = my(Signals.class).newRegister(null);
 		Register<String> register2 = my(Signals.class).newRegister("hey");
 
-		@SuppressWarnings("unused") Object referenceToAvoidGc = my(Signals.class).receive(new Consumer<String>() {@Override public void consume(String value) {
+		@SuppressWarnings("unused") final Object referenceToAvoidGc = my(Signals.class).receive(new Consumer<String>() {@Override public void consume(String value) {
 			received.append(value);
 		}}, register1.output(), register2.output());
 

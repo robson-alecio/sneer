@@ -40,7 +40,7 @@ class DynDnsClientImpl implements DynDnsClient {
 
 	private State _state = new Happy();
 
-	@SuppressWarnings("unused")	private Object _referenceToAvoidGc;
+	@SuppressWarnings("unused")	private final Object _referenceToAvoidGc;
 
 	DynDnsClientImpl() {
 		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<Object>() { @Override public void consume(Object ignored) {

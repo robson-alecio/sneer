@@ -68,7 +68,7 @@ public class GoBoardPanel extends JPanel {
 	private Register<Move> _moveRegister;
 	private final StoneColor _side;
 
-	@SuppressWarnings("unused")	private Object _referenceToAvoidGc;
+	@SuppressWarnings("unused")	private final Object _referenceToAvoidGc;
 
 	public GoBoardPanel(Register<Move> moveRegister, StoneColor side) {
 		_side = side;

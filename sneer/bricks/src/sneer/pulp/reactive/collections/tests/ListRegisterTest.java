@@ -19,7 +19,7 @@ public class ListRegisterTest extends BrickTest {
 		final ListRegister<String> _subject = my(CollectionSignals.class).newListRegister();
 		final ArrayList<Integer> _sizes = new ArrayList<Integer>();
 
-		@SuppressWarnings("unused") Object referenceToAvoidGc = my(Signals.class).receive(new Consumer<Integer>() {@Override public void consume(Integer value) {
+		@SuppressWarnings("unused") final Object referenceToAvoidGc = my(Signals.class).receive(new Consumer<Integer>() {@Override public void consume(Integer value) {
 			_sizes.add(value);
 		}}, _subject.output().size());
 

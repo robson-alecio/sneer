@@ -9,7 +9,7 @@ public class Solder<T> {
 
 	private final Consumer<? super T> _delegate;
 
-	@SuppressWarnings("unused") private Object _referenceToAvoidGc;
+	@SuppressWarnings("unused") private final Object _referenceToAvoidGc;
 
 	public Solder(EventSource<? extends T> eventSource, Consumer<? super T> receiver) {
 		_delegate = receiver;

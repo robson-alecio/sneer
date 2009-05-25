@@ -1,6 +1,5 @@
 ﻿FIXES
 =========
-
 	
 	- [Igor] Adapt antlips to support lib entries starting with:
 		kind="lib" exported="true"...   instead of just:
@@ -55,8 +54,8 @@ TASKS
 			- Unignore Freedom7 tests.
 			- Make a test run a brick in a directory that is not in the system ClassLoader classpath (Eclipse classpath). It will probably fail. Implement the logic using NewContainerImpl.createApiClassLoader() to return a URLClassloader that can be extended with new classpaths for new brick interfaces;
 
-	- [Klaus and Igor] build.xml/Antlipse - Revive.
-		- Cleanup wheel
+	- [Klaus and Igor]
+		- Cleanup Commons
 			- Cleanup Timebox - Try making TimeIsUp a Throwable instead of an Error.
 		- Uncomment _logger field and finalize() method in EventNotifierImpl.
 		- Eliminate upward dependencies.

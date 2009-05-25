@@ -44,8 +44,8 @@ import sneer.skin.widgets.reactive.TextWidget;
 import sneer.skin.widgets.reactive.autoscroll.AutoScrolls;
 
 class WindGuiImpl implements WindGui {
-	
-	{my(Synth.class).load(this.getClass());}
+
+	{ my(Synth.class).load(this.getClass()); }
 
 	private Container _container;
 	private final Wind _wind = my(Wind.class);
@@ -53,7 +53,9 @@ class WindGuiImpl implements WindGui {
 	private final ReactiveWidgetFactory _rfactory = my(ReactiveWidgetFactory.class);
 	private final JTextPane _shoutsList = new JTextPane();
 
-	private final TextWidget<JTextPane> _myShout;{
+	@SuppressWarnings("unused") private Object _referenceToAvoidGc;
+
+	private final TextWidget<JTextPane> _myShout; {
 		final Object ref[] = new Object[1];
 		my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {//Fix Use GUI Nature
 			ref[0] = _rfactory.newTextPane(my(Signals.class).newRegister("").output(),  _wind.megaphone(), NotificationPolicy.OnEnterPressed);
@@ -70,7 +72,7 @@ class WindGuiImpl implements WindGui {
 					ShoutPainter.repaintAllShoults(_wind.shoutsHeard(), _shoutsList);
 			}
 		});
-	
+
 	public WindGuiImpl() {
 		my(InstrumentRegistry.class).registerInstrument(this);
 	} 
@@ -116,7 +118,7 @@ class WindGuiImpl implements WindGui {
 	}
 
 	private void initShoutReceiver() {
-		my(Signals.class).receive(this, new Consumer<CollectionChange<Shout>>() { @Override public void consume(CollectionChange<Shout> ignored) {
+		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<CollectionChange<Shout>>() { @Override public void consume(CollectionChange<Shout> ignored) {
 			shoutAlert();
 		}}, _wind.shoutsHeard());
 	}

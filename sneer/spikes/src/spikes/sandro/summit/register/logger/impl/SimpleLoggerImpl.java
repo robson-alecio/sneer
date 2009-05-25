@@ -1,13 +1,15 @@
 package spikes.sandro.summit.register.logger.impl;
 
+import static sneer.commons.environments.Environments.my;
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import spikes.sandro.summit.register.SimpleRegister;
 import spikes.sandro.summit.register.logger.SimpleLogger;
-import static sneer.commons.environments.Environments.my;
 
 class SimpleLoggerImpl implements SimpleLogger {
+
+	@SuppressWarnings("unused") private Object _referenceToAvoidGc;
 
 	SimpleLoggerImpl() {
 		Consumer<String> receiver = new Consumer<String>() {
@@ -17,6 +19,6 @@ class SimpleLoggerImpl implements SimpleLogger {
 		};
 
 		Signal<String> output = my(SimpleRegister.class).output();
-		my(Signals.class).receive(this, receiver, output);
+		_referenceToAvoidGc = my(Signals.class).receive(receiver, output);
 	}
 }

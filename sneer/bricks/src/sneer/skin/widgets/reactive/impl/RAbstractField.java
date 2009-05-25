@@ -50,6 +50,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 
 	private final Environment _environment;
 
+	@SuppressWarnings("unused")	private Object _referenceToAvoidGc;
 
 	RAbstractField(WIDGET textComponent, Signal<?> source) {
 		this(textComponent, source, null, NotificationPolicy.OnTyping);
@@ -236,7 +237,7 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	}
 	
 	private void startReceiving() {
-		my(Signals.class).receive(this, new Consumer<Object>() {@Override public void consume(final Object text) {
+		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<Object>() {@Override public void consume(final Object text) {
 			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
 				if (!_notified) return;
 				setText(valueToString(text));

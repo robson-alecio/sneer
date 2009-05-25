@@ -25,6 +25,8 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 	private final Signal<?> _source;
 	private final PickyConsumer<? super String> _setter;
 
+	@SuppressWarnings("unused")	private Object _referenceToAvoidGc;
+
 	RLabelImpl(Signal<?> text){
 		this(text, null);
 	}
@@ -33,7 +35,7 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 		_setter = setter;
 		_source = source;
 
-		my(Signals.class).receive(this, new Consumer<Object>() {@Override public void consume(final Object value) {
+		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<Object>() {@Override public void consume(final Object value) {
 			my(GuiThread.class).invokeAndWait(new Runnable() {@Override public void run() {
 				textComponent().setText(valueToString(value));
 			}});

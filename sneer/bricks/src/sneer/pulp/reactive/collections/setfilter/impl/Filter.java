@@ -24,6 +24,8 @@ final class Filter<T> {
 	private final Map<T, Consumer<?>> _receiversByElement = new HashMap<T, Consumer<?>>();
 	private final Map<T, Signal<Boolean>> _signalsByElement = new HashMap<T, Signal<Boolean>>();
 
+	@SuppressWarnings("unused") private Object _referenceToAvoidGc;
+
 	Filter(SetSignal<T> input, ReactivePredicate<T> predicate) {
 		_input = input;
 		_predicate = predicate;
@@ -35,7 +37,8 @@ final class Filter<T> {
 			addElements(change.elementsAdded());
 			remove(change.elementsRemoved());
 		}};
-		my(Signals.class).receive(this, receiver, _input);
+
+		_referenceToAvoidGc = my(Signals.class).receive(receiver, _input);
 	}
 
 	SetSignal<T> output() {

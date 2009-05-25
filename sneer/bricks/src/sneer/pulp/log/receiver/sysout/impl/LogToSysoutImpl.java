@@ -8,12 +8,14 @@ import sneer.pulp.reactive.Signals;
 
 class LogToSysoutImpl implements LogToSysout {
 
+	@SuppressWarnings("unused")	private Object _referenceToAvoidGc;
+
 	private LogToSysoutImpl(){
-		my(Signals.class).receive(this, new Consumer<String>(){ @Override public void consume(String msg) {
+		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<String>(){ @Override public void consume(String msg) {
 			log(msg);
 		}}, my(LogNotifier.class).loggedMessages());
 	}
-	
+
 	private void log(String msg){
 		System.out.print(msg);
 	}

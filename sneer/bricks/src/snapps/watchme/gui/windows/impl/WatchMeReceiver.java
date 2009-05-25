@@ -34,11 +34,13 @@ class WatchMeReceiver{
 
 	private Widget<JFrame> _windowWidget;
 	private JLabel _imageLabel = new JLabel();
-	
+
+	@SuppressWarnings("unused") private Object _referenceToAvoidGc;
+
 	WatchMeReceiver(Contact contact) {
 		_contact = contact;
 		
-		my(Signals.class).receive(this, new Consumer<Contact>() {@Override public void consume(Contact contactWithNewKey) {
+		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<Contact>() {@Override public void consume(Contact contactWithNewKey) {
 			if(contactWithNewKey != _contact) return;
 			startWindowPaint(_keyManager.keyGiven(_contact));
 		}}, _keyManager.keyChanges());
@@ -73,7 +75,7 @@ class WatchMeReceiver{
 		if (key == null) return;
 		
 		final EventSource<BufferedImage> screens = _watchMe.screenStreamFor(key);
-		my(Signals.class).receive(this, new Consumer<Image>() { @Override public void consume(Image img) {
+		my(Signals.class).receive(new Consumer<Image>() { @Override public void consume(Image img) {
 			if (_windowWidget == null) initGui();
 			
 			JFrame frm = _windowWidget.getMainWidget();
@@ -84,7 +86,7 @@ class WatchMeReceiver{
 			_imageLabel.repaint();
 		}}, screens);
 	}
-	
+
 	void dispose() {
 		if(_windowWidget==null) return;
 		

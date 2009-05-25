@@ -13,9 +13,11 @@ class SocketReceiverImpl implements SocketReceiver {
 	private final SocketAccepter _socketAccepter = my(SocketAccepter.class);
 	
 	private final Threads _threads = my(Threads.class);
-	
+
+	@SuppressWarnings("unused") private Object _referenceToAvoidGc;
+
 	SocketReceiverImpl() {
-		my(Signals.class).receive(this, new Consumer<ByteArraySocket>() { @Override public void consume(final ByteArraySocket socket) {
+		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<ByteArraySocket>() { @Override public void consume(final ByteArraySocket socket) {
 			_threads.registerActor(new Runnable(){@Override public void run() {
 				new IndividualSocketReceiver(socket);
 			}});

@@ -19,9 +19,11 @@ class LogToFileImpl implements LogToFile {
 	
 	private final StoragePath _persistenceConfig = my(StoragePath.class);	
 	File _file = new File(_persistenceConfig.get(), FILENAME);
-	
+
+	@SuppressWarnings("unused")	private Object _referenceToAvoidGc;
+
 	private LogToFileImpl(){
-		my(Signals.class).receive(this, new Consumer<String>(){ @Override public void consume(String msg) {
+		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<String>(){ @Override public void consume(String msg) {
 			log(msg);
 		}}, my(LogNotifier.class).loggedMessages());
 	}

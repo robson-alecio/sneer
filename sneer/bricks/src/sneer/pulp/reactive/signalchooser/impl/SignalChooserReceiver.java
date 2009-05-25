@@ -46,9 +46,10 @@ class SignalChooserReceiver<T> {
 	
 	private class ElementReceiver {
 		private boolean _isActive = false;
+		@SuppressWarnings("unused") private Object _referenceToAvoidGc;
 
 		ElementReceiver(final T element) {
-			my(Signals.class).receive(this, new Consumer<Object>(){ @Override public void consume(Object value) {
+			_referenceToAvoidGc = my(Signals.class).receive(new Consumer<Object>(){ @Override public void consume(Object value) {
 				if (!_isActive) return;
 				_listOfSignalsReceiver.elementSignalChanged(element);
 			}}, signalChooser().signalsToReceiveFrom(element));

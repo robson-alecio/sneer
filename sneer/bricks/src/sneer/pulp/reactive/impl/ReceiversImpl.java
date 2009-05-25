@@ -7,7 +7,6 @@ import java.util.Set;
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.reactive.Reception;
-import wheel.reactive.impl.ReceptionImpl;
 
 class ReceiversImpl {
 	

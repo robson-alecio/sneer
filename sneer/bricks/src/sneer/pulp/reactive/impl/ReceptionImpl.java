@@ -1,11 +1,11 @@
-package wheel.reactive.impl;
+package sneer.pulp.reactive.impl;
 
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.reactive.Reception;
 
 /** Instances of this class hold a reference to the EventSources (Signals) they are receiving, so that these sources are not GCd. */
-public abstract class ReceptionImpl<T> implements Consumer<T>, Reception {
+abstract class ReceptionImpl<T> implements Consumer<T>, Reception {
 	
 	private final EventSource<? extends T>[] _sourcesReferenceToAvoidGc;
 

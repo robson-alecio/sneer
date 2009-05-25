@@ -5,7 +5,6 @@ import sneer.commons.lang.Functor;
 import sneer.hardware.cpu.lang.ref.weakreferencekeeper.WeakReferenceKeeper;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
-import wheel.reactive.impl.ReceptionImpl;
 
 class SignalAdapter<IN, OUT> {
 

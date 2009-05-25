@@ -6,8 +6,6 @@
 		kind="lib" exported="true"...   instead of just:
 		kind="lib"...
 
-	- [Igor] main.Sneer - Organize brick list (skin stuff goes to communicationBricks).
-
 	- [Igor] ReceiversImpl, uncomment code and fix SignalsTest.receive.
 	
 	- [Igor] SimpleListReceiver - It cannot be public.
@@ -33,6 +31,8 @@
 
 TASKS
 ========
+
+	- [Igor] main.Sneer - Brick auto-placement.
 
 	- Gui Thread - Always call gui brick code in the gui thread. What was already done with the GuiBrickInvocationHandler does not cover callbacks. Complicated and slow weak-proxy-bubble structures would have to be created to support that. Instead, the proposed idea is:
 		- [Bamboo] Enhance at load-time the beginning of all public methods in all classes (including nested) in all gui brick impl packages.

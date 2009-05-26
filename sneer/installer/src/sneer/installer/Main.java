@@ -20,8 +20,6 @@ public class Main {
 			return;
 		}
 		
-		new OlaMundo().setTitle(sneerHome.getAbsolutePath());
-		
-		
+		new Wizard(sneerHome);
 	}
 }

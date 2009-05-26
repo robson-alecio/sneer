@@ -8,12 +8,14 @@ import java.util.Set;
 import sneer.pulp.log.Logger;
 import sneer.pulp.threads.Threads;
 
-abstract class OldTimebox implements Runnable { //REFACTOR Clean this up. See callers.
+class TimeboxRunner {
 
 	static private final int PRECISION_IN_MILLIS = 500;
-	static private final OldTimebox[] ARRAY_TYPE = new OldTimebox[0];
+	static private final TimeboxRunner[] ARRAY_TYPE = new TimeboxRunner[0];
 	
-	static private final Set<OldTimebox> _activeTimeboxes = java.util.Collections.synchronizedSet(new HashSet<OldTimebox>());
+	static private final Set<TimeboxRunner> _activeTimeboxes = java.util.Collections.synchronizedSet(new HashSet<TimeboxRunner>());
+
+	private final Runnable _toCallWhenBlocked;
 	
 	static {
 		final Threads threads = my(Threads.class);
@@ -23,25 +25,27 @@ abstract class OldTimebox implements Runnable { //REFACTOR Clean this up. See ca
 			while (true) {
 				threads.sleepWithoutInterruptions(PRECISION_IN_MILLIS);
 
-				for (OldTimebox victim : _activeTimeboxes.toArray(ARRAY_TYPE))
+				for (TimeboxRunner victim : _activeTimeboxes.toArray(ARRAY_TYPE))
 					victim.payOrDie(PRECISION_IN_MILLIS);
 			}			
 		}};
 
-		killer.setDaemon(true); //Does not use the wheel.lang.Daemon class because all of them are typically killed after each unit test.
+		killer.setDaemon(true);
 		killer.setPriority(Thread.MAX_PRIORITY);
 		killer.start();
 	}
 	
-	public OldTimebox(int durationInMillis, boolean runNow) {
+	public TimeboxRunner(int durationInMillis, Runnable toRun, Runnable toCallWhenBlocked) {
 		_millisToDie = durationInMillis;
-		if (runNow) run();
+		_toCallWhenBlocked = toCallWhenBlocked;
+		
+		try {
+			tryToRun(toRun);
+		} catch (TimeIsUp timeIsUp) {
+			diedWith(timeIsUp);
+		}
 	}
 	
-	public OldTimebox(int durationInMillis) {
-		this(durationInMillis, true);
-	}
-
 	private int _millisToDie = 0;
 	private Thread _worker;
 
@@ -51,17 +55,6 @@ abstract class OldTimebox implements Runnable { //REFACTOR Clean this up. See ca
 	private int _suicideAttemptsLeft = 5;
 	
 	
-	protected abstract void runInTimebox();
-	
-	@Override
-	final public void run() {
-		try {
-			tryToRun();
-		} catch (TimeIsUp timeIsUp) {
-			diedWith(timeIsUp);
-		}
-	}
-
 	private void diedWith(TimeIsUp timeIsUp) {
 		synchronized (_isDeadMonitor) {
 			_isDead = true;
@@ -69,10 +62,10 @@ abstract class OldTimebox implements Runnable { //REFACTOR Clean this up. See ca
 		my(Logger.class).log(timeIsUp);
 	}
 
-	private void tryToRun() {
+	private void tryToRun(Runnable toRun) {
 		try {
 			runPre();
-			runInTimebox();
+			toRun.run();
 		} finally {
 			runPost();
 		}
@@ -124,7 +117,12 @@ abstract class OldTimebox implements Runnable { //REFACTOR Clean this up. See ca
 	}
 
 
-	protected void threadBlockedNotification(Thread thread) {
+	private void threadBlockedNotification(Thread thread) {
+		if (_toCallWhenBlocked != null) {
+			_toCallWhenBlocked.run();
+			return;
+		}
+		
 		logBlockage(thread);
 	}
 

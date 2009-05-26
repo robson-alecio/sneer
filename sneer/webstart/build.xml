@@ -1,9 +1,69 @@
 <?xml version="1.0"?>
-<project name="WebStart" default="main">
+<project name="WebStart" default="main" basedir=".">
 	
-	<target name="main">
-		<mkdir dir="./olaMundo" />
-		<echo>Olá Mundo!</echo>
+	<property name="build.dir" location="./build"/>
+	<property name="jnlp.file" location="${build.dir}/sneer-bootstrap.jnlp"/>
+
+	<target name="main" depends="clean, log, makeJars, makeJnlp">
+	</target>
+
+	<target name="clean">
+		<delete dir="build"/>
+		<mkdir dir="build"/>
 	</target>
 	
+	<target name="log">
+		<property environment="env" />
+		<record name="build/log.txt" action="start" />	
+		<echo message="${env.BUILD_NUMBER}"/>
+		<echo message="${env.BUILD_ID}"/>
+		<echo message="${env.BUILD_TAG}"/>
+		<echo message="${env.JOB_NAME}"/>
+		<echo message="${env.EXECUTOR_NUMBER}"/>
+		<echo message="${env.WORKSPACE}"/>
+		<echo message="${env.HUDSON_URL}"/>
+		<record name="build/log.txt" action="stop" />
+	</target>
+	
+	<target name="makeJnlp" depends="signJars">
+		<echoxml file="build/sneer.jnlp">
+			<!--jnlp spec="1.0+" codebase="${env.HUDSON_URL}job/${env.JOB_NAME}/${env.BUILD_NUMBER}/artifact/build/" href="sneer.jnlp"-->
+			<jnlp spec="1.0+" codebase="file:///${build.dir}" href="sneer.jnlp">
+				<information>
+					<title>Sneer!</title>
+					<vendor>Sovereign Computing</vendor>
+					<description>Sovereign computing is the freedom to share information and hardware resources with your friends, any way you like.:)</description>
+					<description kind="short">Sneer is a java-based, free software platform for sovereign applications.</description>
+					<homepage href="http://sovereigncomputing.net/"/>
+				</information>
+				<update check="timeout" policy="always"/>
+				<resources>     
+					<jar href="sneer-bootstrap.jar"/>			
+					<j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+				</resources>
+				<security>
+					<all-permissions/>
+				</security>
+				<application-desc main-class="sneer.installer.OlaMundo"/>
+			</jnlp>
+		</echoxml>
+	</target>
+
+	<target name="makeJars">
+		<jar destfile="./build/sneer-bootstrap.jar">
+		    <fileset dir="../bin">
+		    	<exclude name='**/*.txt'/>
+		    	<exclude name='**/tests/**'/>
+		    	<exclude name='functional/**'/>
+		    	<exclude name='spikes/**'/>
+		    	<exclude name='antlips/**'/>
+				<exclude name='build/**'/>
+		    </fileset>
+		</jar>
+	</target>
+
+	<target name="signJars" depends="makeJars">
+		<signjar keystore="sneerKeystore" jar="./build/sneer-bootstrap.jar" alias="bihaiko" storepass="amanda"/>
+	</target>
+
 </project>

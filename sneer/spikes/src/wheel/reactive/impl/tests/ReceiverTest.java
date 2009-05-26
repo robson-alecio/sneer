@@ -20,20 +20,19 @@ public class ReceiverTest {
 		Register<String> register1 = my(Signals.class).newRegister(null);
 		Register<String> register2 = my(Signals.class).newRegister("hey");
 
-		my(Signals.class).receive(this, new Consumer<String>() {@Override public void consume(String value) {
+		@SuppressWarnings("unused") final Object referenceToAvoidGc = my(Signals.class).receive(new Consumer<String>() {@Override public void consume(String value) {
 			received.append(value);
 		}}, register1.output(), register2.output());
-		
+
 		assertEquals("nullhey", received.toString());
 
 		register1.setter().consume("foo");
 		register2.setter().consume("bar");
-		
+
 		assertEquals("nullheyfoobar", received.toString());
 
 		register1.setter().consume("baz1");
 		register2.setter().consume("baz2");
 		assertEquals("nullheyfoobarbaz1baz2", received.toString());
 	}
-
 }

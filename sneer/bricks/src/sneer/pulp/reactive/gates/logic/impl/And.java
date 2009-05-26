@@ -13,11 +13,13 @@ class And {
 	private final Signal<Boolean> _a;
 	private final Signal<Boolean> _b;
 
+	@SuppressWarnings("unused") private final Object _referenceToAvoidGc;
+
 	public And(Signal<Boolean> a, Signal<Boolean> b) {
 		_a = a;
 		_b = b;
 
-		my(Signals.class).receive(this, new Consumer<Boolean>(){@Override public void consume(Boolean newValueIgnored) {
+		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<Boolean>(){@Override public void consume(Boolean newValueIgnored) {
 			refresh();
 		}}, a, b);
 	}

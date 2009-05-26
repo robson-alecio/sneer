@@ -27,10 +27,10 @@ import sneer.pulp.clock.Clock;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.reactive.Signals;
+import sneer.pulp.threads.Threads;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.image.ImageFactory;
 import sneer.skin.screenshotter.Screenshotter;
-import sneer.pulp.threads.Threads;
 
 public class WatchMeTest extends BrickTest {
 	
@@ -70,10 +70,10 @@ public class WatchMeTest extends BrickTest {
 		
 		EventSource<BufferedImage> screens = subject2.screenStreamFor(key);
 
-		my(Signals.class).receive(this, new Consumer<BufferedImage>() {@Override public void consume(BufferedImage screen) {
+		@SuppressWarnings("unused") Object referenceToAvoidGc = my(Signals.class).receive(new Consumer<BufferedImage>() {@Override public void consume(BufferedImage screen) {
 			_screenObserved.set(screen);
 		}}, screens);
-		
+
 		_subject.startShowingMyScreen();
 		waitForImage(image1);
 

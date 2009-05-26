@@ -13,11 +13,13 @@ class Adder {
 	private final Signal<Integer> _a;
 	private final Signal<Integer> _b;
 
+	@SuppressWarnings("unused")	private final Object _referenceToAvoidGc;
+
 	Adder(Signal<Integer> a, Signal<Integer> b) {
 		_a = a;
 		_b = b;
 
-		my(Signals.class).receive(output(), new Consumer<Integer>() {@Override public void consume(Integer newValueIgnored) {
+		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<Integer>() {@Override public void consume(Integer newValueIgnored) {
 			refresh();
 		}}, a, b);
 	}

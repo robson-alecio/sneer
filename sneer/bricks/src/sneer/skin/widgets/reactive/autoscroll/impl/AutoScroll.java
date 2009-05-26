@@ -24,7 +24,9 @@ class AutoScroll<T> extends JScrollPane{
 	{ my(Synth.class).attach(this); }
 
 	private boolean _shouldAutoscroll = true;
-	
+
+	@SuppressWarnings("unused") private Object _referenceToAvoidGc;
+
 	AutoScroll(JComponent keyTypeSource, ListSignal<T> inputSignal, Consumer<CollectionChange<T>> receiver) {
 		keyTypeSource.addKeyListener(new KeyAdapter(){@Override public void keyReleased(KeyEvent e) {
 			if(_shouldAutoscroll) 
@@ -57,12 +59,12 @@ class AutoScroll<T> extends JScrollPane{
 	
 	private void initReceivers(ListSignal<T> inputSignal, Consumer<CollectionChange<T>> consumer) {
 		initPreChangeReceiver(inputSignal);		
-		my(Signals.class).receive(this, consumer, inputSignal);
+		_referenceToAvoidGc = my(Signals.class).receive(consumer, inputSignal);
 		initPosChangeReceiver(inputSignal);
 	}
 	
 	private void initReceivers(EventSource<T> eventSource) {
-		my(Signals.class).receive(this, new Consumer<T>(){ @Override public void consume(T value) {
+		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<T>(){ @Override public void consume(T value) {
 			if(_shouldAutoscroll) placeAtEnd();
 		}}, eventSource);
 	}

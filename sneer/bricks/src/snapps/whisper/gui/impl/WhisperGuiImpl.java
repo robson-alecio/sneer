@@ -41,6 +41,8 @@ class WhisperGuiImpl implements WhisperGui {
 
 	private TextWidget<JTextField> _roomField;
 
+	@SuppressWarnings("unused") private Object _referenceToAvoidGc;
+
 	WhisperGuiImpl(){
 		_synth.load(this);
 		initSynth();
@@ -78,7 +80,7 @@ class WhisperGuiImpl implements WhisperGui {
 		createWhisperButtonListener();
 		createLoopBackButtonListener();
 		
-		my(Signals.class).receive(this, new Consumer<Boolean>() { @Override public void consume(Boolean isRunning) {
+		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<Boolean>() { @Override public void consume(Boolean isRunning) {
 			_whisperButton.setSelected(isRunning);
 			_roomField.getMainWidget().setEnabled(isRunning);
 		}}, isRunning());

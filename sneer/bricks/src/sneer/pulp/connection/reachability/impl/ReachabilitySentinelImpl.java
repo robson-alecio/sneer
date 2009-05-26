@@ -22,8 +22,10 @@ class ReachabilitySentinelImpl implements ReachabilitySentinel {
 
 	private long _lastIncomingSocketTime = _clock.time();
 
+	@SuppressWarnings("unused") private final Object _referenceToAvoidGc;
+
 	{
-		my(Signals.class).receive(this, new Consumer<Object>() {@Override public void consume(Object value) {
+		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<Object>() {@Override public void consume(Object value) {
 			updateIncomingSocketTime();
 		}}, _socketAccepter.lastAcceptedSocket());
 

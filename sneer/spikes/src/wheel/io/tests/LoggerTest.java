@@ -14,6 +14,8 @@ import sneer.pulp.reactive.Signals;
 
 public class LoggerTest extends BrickTest {
 
+	@SuppressWarnings("unused")	private Object _referenceToAvoidGc;
+
 	@Test
 	public void insets() {
 		assertLog(
@@ -37,7 +39,7 @@ public class LoggerTest extends BrickTest {
 			"User is not allowed to access report: ", "TPS"
 		);
 	}
-	
+
 	@Test
 	public void noInsets() {
 		assertLog(
@@ -45,11 +47,10 @@ public class LoggerTest extends BrickTest {
 			"Hello world"
 		);
 	}
-	
-	
+
 	private void assertLog(String expected, String message, Object... insets) {
 		final ByRef<String> observed = ByRef.newInstance();
-		my(Signals.class).receive(this, new Consumer<String>() { @Override public void consume(String msg) {
+		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<String>() { @Override public void consume(String msg) {
 			observed.value = msg;
 		}},my(LogNotifier.class).loggedMessages());
 
@@ -57,6 +58,4 @@ public class LoggerTest extends BrickTest {
 		
 		assertTrue(observed.value.indexOf(expected) != -1);
 	}
-
-
 }

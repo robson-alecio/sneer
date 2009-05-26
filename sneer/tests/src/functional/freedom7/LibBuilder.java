@@ -1,5 +1,7 @@
 package functional.freedom7;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
@@ -7,10 +9,10 @@ import java.util.Iterator;
 import org.apache.commons.io.FileUtils;
 
 import sneer.brickness.testsupport.JarBuilder;
+import sneer.hardware.ram.collections.Collections;
 import sneer.software.code.compilers.java.JavaCompiler;
 import sneer.software.code.compilers.java.Result;
 import sneer.software.code.metaclass.MetaClass;
-import wheel.lang.Collections;
 
 public class LibBuilder {
 
@@ -27,7 +29,7 @@ public class LibBuilder {
 	public void build(File targetJar) throws IOException {
 		_tmpDirectory.mkdirs();
 		
-		final Result result = _compiler.compile(Collections.toList(iterateSourceFiles()), _tmpDirectory);
+		final Result result = _compiler.compile(my(Collections.class).toList(iterateSourceFiles()), _tmpDirectory);
 		if (!result.success())
 			throw new IllegalArgumentException(result.getErrorString());
 		

@@ -21,6 +21,7 @@ import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.keymanager.KeyManager;
+import sneer.pulp.reactive.Reception;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.Widget;
@@ -34,11 +35,13 @@ class WatchMeReceiver{
 
 	private Widget<JFrame> _windowWidget;
 	private JLabel _imageLabel = new JLabel();
-	
+
+	@SuppressWarnings("unused") private final Object _refToAvoidGc;
+	private Reception _screensReception;
+
 	WatchMeReceiver(Contact contact) {
 		_contact = contact;
-		
-		my(Signals.class).receive(this, new Consumer<Contact>() {@Override public void consume(Contact contactWithNewKey) {
+		_refToAvoidGc = my(Signals.class).receive(new Consumer<Contact>() {@Override public void consume(Contact contactWithNewKey) {
 			if(contactWithNewKey != _contact) return;
 			startWindowPaint(_keyManager.keyGiven(_contact));
 		}}, _keyManager.keyChanges());
@@ -70,10 +73,10 @@ class WatchMeReceiver{
 
 
 	private void startWindowPaint(PublicKey key) {
-		if (key == null) return;
+		if (_screensReception != null) _screensReception.dispose();
 		
 		final EventSource<BufferedImage> screens = _watchMe.screenStreamFor(key);
-		my(Signals.class).receive(this, new Consumer<Image>() { @Override public void consume(Image img) {
+		_screensReception = my(Signals.class).receive(new Consumer<Image>() { @Override public void consume(Image img) {
 			if (_windowWidget == null) initGui();
 			
 			JFrame frm = _windowWidget.getMainWidget();
@@ -84,7 +87,7 @@ class WatchMeReceiver{
 			_imageLabel.repaint();
 		}}, screens);
 	}
-	
+
 	void dispose() {
 		if(_windowWidget==null) return;
 		

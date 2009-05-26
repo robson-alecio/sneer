@@ -1,15 +1,17 @@
 package functional.freedom5;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
+import sneer.hardware.ram.collections.Collections;
 import sneer.pulp.reactive.collections.ListSignal;
-
-import wheel.lang.Collections;
 import functional.SovereignFunctionalTestBase;
 import functional.SovereignParty;
+
 
 public abstract class Freedom5TestBase extends SovereignFunctionalTestBase {
 	
@@ -67,7 +69,7 @@ public abstract class Freedom5TestBase extends SovereignFunctionalTestBase {
 	}
 	
 	private String concat(ListSignal<?> listSignal) {
-		List<?> sorted = Collections.sortByToString(listSignal);
+		List<?> sorted = my(Collections.class).sortByToString(listSignal);
 		return StringUtils.join(sorted, ", ");
 	}
 }

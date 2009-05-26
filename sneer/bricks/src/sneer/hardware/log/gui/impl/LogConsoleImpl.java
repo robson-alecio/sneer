@@ -52,7 +52,9 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 	private final Integer _X = (Integer) _synth.getDefaultProperty("LodConsoleImpl.x");
 		
 	private final JPopupMenu _popupMenu = new JPopupMenu();
-	private final MainMenu _mainMenu = my(MainMenu.class);	
+	private final MainMenu _mainMenu = my(MainMenu.class);
+
+	@SuppressWarnings("unused")	private Object _referenceToAvoidGc;	
 
 	LogConsoleImpl(){
 		super("Sneer Log Console");
@@ -96,7 +98,7 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 	}
 
 	private void initLogReceiver(final JTextArea txtLog) {
-		my(Signals.class).receive(this, new Consumer<String>() { @Override public void consume(String value) {
+		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<String>() { @Override public void consume(String value) {
 			txtLog.append(value);
 		}}, my(LogNotifier.class).loggedMessages());
 	}

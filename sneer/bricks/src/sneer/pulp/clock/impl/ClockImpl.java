@@ -6,7 +6,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import sneer.commons.lang.ByRef;
-import sneer.commons.lang.exceptions.NotImplementedYet;
 import sneer.hardware.cpu.timebox.Timebox;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
@@ -86,9 +85,7 @@ class ClockImpl implements Clock {
 		_exceptionHandler.shield(new Runnable() { @Override public void run() {
 			my(Timebox.class).run(10000, new Runnable() { @Override public void run() {
 				result.value = stepper.step();
-			}}, new Runnable() { @Override public void run() {
-				throw new NotImplementedYet();
-			}});
+			}}, null);
 		}});
 		return result.value;
 	}

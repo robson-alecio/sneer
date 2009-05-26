@@ -17,11 +17,11 @@ import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
+import sneer.pulp.threads.Threads;
 import spikes.priscila.go.GoBoard;
 import spikes.priscila.go.Move;
 import spikes.priscila.go.ToroidalGoBoard;
 import spikes.priscila.go.GoBoard.StoneColor;
-import sneer.pulp.threads.Threads;
 
 public class GoBoardPanel extends JPanel {
 	
@@ -67,11 +67,13 @@ public class GoBoardPanel extends JPanel {
 
 	private Register<Move> _moveRegister;
 	private final StoneColor _side;
-	
+
+	@SuppressWarnings("unused")	private final Object _referenceToAvoidGc;
+
 	public GoBoardPanel(Register<Move> moveRegister, StoneColor side) {
 		_side = side;
 		_moveRegister=moveRegister;
-		my(Signals.class).receive(this, new Consumer<Move>() { @Override public void consume(Move move) { 
+		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<Move>() { @Override public void consume(Move move) { 
 			if (move == null) return; 
 			play(move); 
 		}}, _moveRegister.output());

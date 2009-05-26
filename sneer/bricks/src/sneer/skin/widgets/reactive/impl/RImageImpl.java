@@ -26,7 +26,9 @@ class RImageImpl extends JPanel implements ImageWidget{
 
 	protected final Register<Image> _image;
 	protected final PickyConsumer<Image> _setter;
-	
+
+	@SuppressWarnings("unused") private Object _referenceToAvoidGc;
+
 	RImageImpl(Signal<Image> source) {
 		this(source, null);
 	}
@@ -40,7 +42,7 @@ class RImageImpl extends JPanel implements ImageWidget{
 	}
 
 	private void imageReceiverFor(Signal<Image> signal) {
-		my(Signals.class).receive(this, new Consumer<Image>() { @Override public void consume(final Image image) {
+		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<Image>() { @Override public void consume(final Image image) {
 			_image.setter().consume(image);
 
 			my(GuiThread.class).invokeAndWait(new Runnable() { @Override public void run() {

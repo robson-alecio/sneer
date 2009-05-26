@@ -41,8 +41,10 @@ class SocketAccepterImpl implements SocketAccepter {
 
 	private final Light _cantAcceptSocket = _lights.prepare(LightType.ERROR);
 
+	@SuppressWarnings("unused") private final Object _referenceToAvoidGc;
+
 	SocketAccepterImpl() {
-		my(Signals.class).receive(this, new Consumer<Integer>() { @Override public void consume(Integer port) {
+		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<Integer>() { @Override public void consume(Integer port) {
 			setPort(port);
 		}}, _portKeeper.port());
 		_threads.registerActor(new Runnable(){ @Override public void run() {

@@ -30,7 +30,7 @@ public class AndTest {
 
 	@Test
 	public void test() {
-		SIGNALS.receive(this, new Consumer<Boolean>(){ @Override public void consume(Boolean value) {
+		@SuppressWarnings("unused") final Object _referenceToAvoidGc = SIGNALS.receive(new Consumer<Boolean>(){ @Override public void consume(Boolean value) {
 			_recorded.add(value);
 		}}, _andResult);
 

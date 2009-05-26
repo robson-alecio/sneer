@@ -28,13 +28,11 @@ final class ProbeImpl implements Consumer<Tuple> {
 	private boolean _isOnline = false;
 	final SchedulerImpl _scheduler = new SchedulerImpl();
 
-	ProbeImpl(Contact contact, Signal<Boolean> isOnline) {
-		_contact = contact;
-		createIsOnlineReceiver(isOnline);
-	}
+	@SuppressWarnings("unused") private final Object _referenceToAvoidGc;
 
-	private void createIsOnlineReceiver(Signal<Boolean> isOnlineSignal) {
-		my(Signals.class).receive(this, new Consumer<Boolean>(){ @Override public void consume(Boolean isOnline) {
+	ProbeImpl(Contact contact, Signal<Boolean> isOnlineSignal) {
+		_contact = contact;
+		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<Boolean>(){ @Override public void consume(Boolean isOnline) {
 			dealWithIsOnline(isOnline);
 		}}, isOnlineSignal);
 	}

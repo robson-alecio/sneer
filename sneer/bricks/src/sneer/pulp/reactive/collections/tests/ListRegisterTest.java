@@ -9,8 +9,8 @@ import org.junit.Test;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.reactive.Signals;
-import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.CollectionSignals;
+import sneer.pulp.reactive.collections.ListRegister;
 
 public class ListRegisterTest extends BrickTest {
 
@@ -19,7 +19,7 @@ public class ListRegisterTest extends BrickTest {
 		final ListRegister<String> _subject = my(CollectionSignals.class).newListRegister();
 		final ArrayList<Integer> _sizes = new ArrayList<Integer>();
 
-		my(Signals.class).receive(this, new Consumer<Integer>() {@Override public void consume(Integer value) {
+		@SuppressWarnings("unused") final Object referenceToAvoidGc = my(Signals.class).receive(new Consumer<Integer>() {@Override public void consume(Integer value) {
 			_sizes.add(value);
 		}}, _subject.output().size());
 

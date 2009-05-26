@@ -11,8 +11,10 @@ import sneer.skin.widgets.reactive.Widget;
 
 class RFrameImpl extends JFrame implements Widget<JFrame> {
 
+	@SuppressWarnings("unused")	private final Object _referenceToAvoidGc;
+
 	RFrameImpl(Signal<?> titleSignal) {
-		my(Signals.class).receive(this, new Consumer<Object>() { @Override public void consume(final Object title) {
+		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<Object>() { @Override public void consume(final Object title) {
 			setTitle(valueToString(title));
 		}}, titleSignal);
 	}

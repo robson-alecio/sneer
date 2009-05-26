@@ -7,8 +7,7 @@ import org.junit.Test;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.commons.lang.Functor;
 import sneer.hardware.cpu.lang.Consumer;
-import sneer.pulp.clock.Clock;
-import sneer.pulp.log.Logger;
+import sneer.pulp.reactive.Reception;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
@@ -47,15 +46,15 @@ public class SignalsTest extends BrickTest {
 		assertEquals("2 bar", output.currentValue());
 	}
 
-	@Test (timeout = 6000)
+	@Test
 	public void receive() {
 		final StringBuilder received = new StringBuilder();
 
 		Register<String> register1 = _subject.newRegister(null);
 		Register<String> register2 = _subject.newRegister("hey");
 
-		Object owner = new Object();
-		_subject.receive(owner, new Consumer<String>() { @Override public void consume(String value) {
+		@SuppressWarnings("unused")
+		Object reception = _subject.receive(new Consumer<String>() { @Override public void consume(String value) {
 			received.append(value);
 		}}, register1.output(), register2.output());
 		assertEquals("nullhey", received.toString());
@@ -67,18 +66,49 @@ public class SignalsTest extends BrickTest {
 		register1.setter().consume("baz1");
 		register2.setter().consume("baz2");
 		assertEquals("nullheyfoobarbaz1baz2", received.toString());
+	}
 
-		owner = null;
+	@Test
+	public void receptionDisposal() {
+		final StringBuilder received = new StringBuilder();
+
+		Register<String> register = _subject.newRegister("hey");
+
+		Reception reception = _subject.receive(new Consumer<String>() { @Override public void consume(String value) {
+			received.append(value);
+		}}, register.output());
+
+		register.setter().consume("foo");
+		assertEquals("heyfoo", received.toString());
+
+		reception.dispose();
+
+		register.setter().consume("banana");
+		assertFalse(received.toString().contains("banana"));
+	}
+
+	@Test (timeout = 6000)
+	public void receptionGc() {
+		final StringBuilder received = new StringBuilder();
+
+		Register<String> register = _subject.newRegister("hey");
+
+		@SuppressWarnings("unused")
+		Object reception = _subject.receive(new Consumer<String>() { @Override public void consume(String value) {
+			received.append(value);
+		}}, register.output());
+
+		register.setter().consume("foo");
+		assertEquals("heyfoo", received.toString());
+
+		reception = null;
 
 		do {
 			System.gc();
-			Clock clock = my(Clock.class);
-			clock.advanceTime(60000);
-			my(Logger.class).log("Test's Clock --> {}", this.hashCode());
 
 			received.delete(0, received.length());
-			register1.setter().consume("something else");
-			register1.setter().consume("banana");
+			register.setter().consume("something else");
+			register.setter().consume("banana");
 		} while (received.toString().contains("banana"));
 	}
 }

@@ -13,18 +13,7 @@ class TimeboxImpl implements Timebox {
 
 	@Override
 	public void run(int durationInMillis, final Runnable toRun, final Runnable toCallWhenBlocked) {
-		new OldTimebox(durationInMillis) {
-			
-			@Override
-			protected void runInTimebox() {
-				toRun.run();
-			}
-
-			@Override
-			protected void threadBlockedNotification(Thread thread) {
-				toCallWhenBlocked.run();
-			}
-		};
+		new TimeboxRunner(durationInMillis, toRun, toCallWhenBlocked);
 	}
 
 }

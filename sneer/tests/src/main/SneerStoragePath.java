@@ -4,7 +4,7 @@ import java.io.File;
 
 import sneer.brickness.StoragePath;
 
-class SneerStoragePath implements StoragePath {
+public class SneerStoragePath implements StoragePath {
 
 	@Override
 	public String get() {

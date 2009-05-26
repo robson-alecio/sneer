@@ -36,7 +36,7 @@ public class BricknessImpl implements BrickLayer, Brickness {
 		try {
 			tryToPlaceBrick(classRootDirectory, brickName);
 		} catch (Exception e) {
-			throw new BrickPlacementException("Exception placing brick: " + brickName + ": " + e.getMessage(), e);
+			throw new BrickPlacementException("Exception placing brick: " + brickName + ": " + e.getMessage() + "(src: " + classRootDirectory.getAbsolutePath() + ")", e);
 		}
 	}
 

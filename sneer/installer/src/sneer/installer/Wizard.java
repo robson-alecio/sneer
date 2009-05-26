@@ -4,6 +4,9 @@ import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.LookAndFeel;
+import javax.swing.UIManager;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import main.SneerStoragePath;
 
@@ -14,11 +17,30 @@ public class Wizard extends JFrame{
 
 	public Wizard(File sneerHome) {
 		_sneerHome = sneerHome;
+		useNimbus();
 		welcome();
 		license();
 		dogFoodInformation();
 		configInformation();
 		congratulations();
+		useMetal();
+		startSneer();
+	}
+
+	private void startSneer() {
+		throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
+	}
+
+	private void useMetal() {
+		try {
+			UIManager.setLookAndFeel(new MetalLookAndFeel());
+		} catch (Exception ignore) {}
+	}
+
+	private void useNimbus() {
+		try {
+			UIManager.setLookAndFeel((LookAndFeel) Class.forName("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel").newInstance());
+		} catch (Exception ignore) {}
 	}
 
 	public static void main(String[] args) {

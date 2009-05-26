@@ -40,11 +40,11 @@ public class Wizard extends JFrame{
 
 	private void license() {
 		String msg = 
-			"Sneer is free software.\n\n" +
-			"It is licensed under the terms of the GNU Affero General Public License\n" +
-			"version 3 as published by the Free Software Foundation:\n" +
-			"http://www.fsf.org/licensing/licenses/agpl-3.0.html\n\n" +
-			"Do you accept these terms?";
+		"Sneer is free software.\n\n" +
+		"It is licensed under the terms of the GNU Affero General Public License\n" +
+		"version 3 as published by the Free Software Foundation:\n" +
+		"http://www.fsf.org/licensing/licenses/agpl-3.0.html\n\n" +
+		"Do you accept these terms?";
 		
 		Object[] options = {"I Accept >","I Do Not Accept"};
 		

@@ -11,8 +11,10 @@ class Adapter<IN, OUT> {
 
 	private Register<OUT> _register = new RegisterImpl<OUT>(null);
 
+	@SuppressWarnings("unused") private final Object _referenceToAvoidGc;
+
 	Adapter(Signal<IN> input, final Functor<IN, OUT> functor) {
-		ReceiversImpl.receive(this, new Consumer<IN>() { @Override public void consume(IN inputValue) {
+		_referenceToAvoidGc = ReceiversImpl.receive(new Consumer<IN>() { @Override public void consume(IN inputValue) {
 			_register.setter().consume(functor.evaluate(inputValue));
 		}}, input);
 	}

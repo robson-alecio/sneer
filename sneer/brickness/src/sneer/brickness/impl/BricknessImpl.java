@@ -22,7 +22,7 @@ public class BricknessImpl implements BrickLayer, Brickness {
 	
 	private final Environment _environment;
 	private final Bindings _bindings;
-	private final ApiClassLoader _apiClassLoader = new ApiClassLoader();
+	private final ApiClassLoader _apiClassLoader = new ApiClassLoader(BricknessImpl.class.getClassLoader());
 
 	public BricknessImpl(Object... bindings) {
 		_bindings = new Bindings();
@@ -65,7 +65,7 @@ public class BricknessImpl implements BrickLayer, Brickness {
 	}
 
 	private List<Nature> naturesFor(Class<?> brick) {
-		final Brick annotation = brick.getAnnotation(Brick.class);
+		final Brick annotation = brick.getAnnotation (Brick.class);
 		if (annotation == null) {
 			throw new BrickPlacementException("Brick '" + brick.getName() + "' is not annotated as such!");
 		}

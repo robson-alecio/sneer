@@ -31,8 +31,8 @@
 			<!--jnlp spec="1.0+" codebase="${env.HUDSON_URL}job/${env.JOB_NAME}/${env.BUILD_NUMBER}/artifact/build/" href="sneer.jnlp"-->
 			<jnlp spec="1.0+" codebase="file:///${build.dir}" href="sneer.jnlp">
 				<information>
-					<title>Sneer!</title>
-					<vendor>Sovereign Computing</vendor>
+					<title>Sneer</title>
+					<vendor>Sneer</vendor>
 					<description>Sovereign computing is the freedom to share information and hardware resources with your friends, any way you like.:)</description>
 					<description kind="short">Sneer is a java-based, free software platform for sovereign applications.</description>
 					<homepage href="http://sovereigncomputing.net/"/>

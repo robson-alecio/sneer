@@ -70,61 +70,29 @@ TASKS
 			- Concurrency - Synchronize calls on Bricks, according to docs/brick_types.txt  
 
 	- [Sandro] Webstart
-		- Use installer/src source folder.
-	
-		- Detect presence of the "home_override"/.sneer directory. See SneerStoragePath.
 			- If present: Run
 				- Instantiate Brickness passing SneerStoragePath as a binding.
 				- Place the Threads brick. (This will cause all actors and steppers registered by other bricks to be started. Those other bricks will be placed automatically, of course)
 				
 			- If not present:
 				- Installation Wizard.
+					- welcome();
+					- license();
+					- dogFoodInformation();
+					- configInformation() 
+						- Delete .sneertmp directory and subdirectories if present.
+						- Create .sneertmp directory.
+						- unzip bricks there.
+						- Rename to .sneer
 				
-					To run the monolith version, delete your ~/.sneer directory and run MainSkippingBoot.java.
-					
-					> > > See JOptionPaneUser.adaptPrompt(). < < <
-					
-					- Titlebar: Sneer Installation Wizard
-					
-					"Welcome to Sneer, the first sovereign computing peer.  :)\n\n" +
-					"This wizard will prepare Sneer to run for you."
-					Button: [Whatever >]
-				
-					"Sneer is free software.\n\n" +
-					"It is licensed under the terms of the GNU Affero General Public License\n" +
-					"version 3 as published by the Free Software Foundation:\n" +
-					"http://www.fsf.org/licensing/licenses/agpl-3.0.html\n\n" +
-					"Do you accept these terms?"),
-					Buttons: [I Accept >]  [I Do Not Accept]
-				
-					"This is the Sneer "Dogfood Release" for ADVANCED Java users.\n\n
-					"Please do not install Sneer for regular users yet."
-					Button: [Whatever >]
-					
-					"Each user of this computer can have his own Sneer setup.\n\n" +
-					"To store your setup, the following folder will be created:\n" +
-					"%1$s",sneerDirectory)
-					Button: [Whatever >]
-
-					- Delete .sneertmp directory and subdirectories if present.
-					- Create .sneertmp directory.
-					- unzip bricks there.
-					- Rename to .sneer
-				
-					"Congratulations!\n\n" +
-					"You are no longer a slave. You have just\n" +
-					"claimed your own share of the internet."),
-					Button: [Start Sneer]
-					
-					If the dialog is closed (dialog close button, Alt-F4 or ESC key) at any point before the .sneer directory is created:
-					"This wizard will now exit with no changes to your system."
-					Button: [Exit]
-						System.exit(0);
+					- congratulations()					
+						- If the dialog is closed (dialog close button, Alt-F4 or ESC key) at any point before the .sneer directory is created:
+						- "This wizard will now exit with no changes to your system."
+						- Button: [Exit]
+						- System.exit(0);
 				
 				- Do "Run", above
 				- Place the Coping (the brick that simply depends on all necessary bricks and will cause them to be placed) - http://www.thefreedictionary.com/coping
-				
-		
 
 	- Security - Discover if instruments can indirectly gain access to components from other instruments.
 	

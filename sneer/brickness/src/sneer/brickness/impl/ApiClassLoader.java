@@ -15,8 +15,8 @@ final class ApiClassLoader extends FilteredClassLoader {
 
 	private final Set<String> _packages = new HashSet<String>();
 	
-	public ApiClassLoader() {
-		super(new URL[0], ClassLoader.getSystemClassLoader(), ClassLoader.getSystemClassLoader());
+	public ApiClassLoader(ClassLoader parent) {
+		super(new URL[0], parent, parent);
 	}
 
 	@Override

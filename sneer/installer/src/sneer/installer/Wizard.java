@@ -116,6 +116,7 @@ public class Wizard extends JFrame{
 			System.exit(0);
 		}
 	}
+	
 	private void useMetal() {
 		try {
 			UIManager.setLookAndFeel(new MetalLookAndFeel());

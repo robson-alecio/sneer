@@ -10,7 +10,6 @@ import sneer.brickness.Brickness;
 import sneer.brickness.BricknessFactory;
 import sneer.brickness.StoragePath;
 import sneer.brickness.testsupport.ClassFiles;
-import sneer.commons.environments.Environments;
 import sneer.pulp.network.Network;
 import testutils.network.InProcessNetwork;
 import functional.SovereignCommunity;
@@ -32,7 +31,7 @@ public class SneerCommunity implements SovereignCommunity {
 		Brickness container = newContainer(name);
 		placeBricks(container);
 		
-		final SneerParty party = Environments.wrap(SneerParty.class, container.environment());
+		final SneerParty party = ProxyInEnvironment.newInstance(SneerParty.class, container.environment());
 		party.setOwnName(name);
 		party.setSneerPort(_nextPort++);
 		return party;

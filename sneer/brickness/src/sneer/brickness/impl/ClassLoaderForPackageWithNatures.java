@@ -38,8 +38,8 @@ final class ClassLoaderForPackageWithNatures extends ClassLoaderForPackage {
 	private Class<?> defineClassesAndReturn(List<ClassDefinition> classDefs, String classNameToReturn) throws ClassFormatError {
 		Class<?> mainClass = null;
 		for (ClassDefinition classDef : classDefs) {
-			Class<?> clazz = defineClass(classDef.name(), classDef.bytes(), 0, classDef.bytes().length);
-			if (classDef.name().equals(classNameToReturn)) {
+			Class<?> clazz = defineClass(classDef.name, classDef.bytes, 0, classDef.bytes.length);
+			if (classDef.name.equals(classNameToReturn)) {
 				if (mainClass != null) 
 					throw new IllegalStateException();
 				mainClass = clazz;

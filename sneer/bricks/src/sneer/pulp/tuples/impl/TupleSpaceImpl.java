@@ -4,6 +4,7 @@ import static sneer.commons.environments.Environments.my;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -27,8 +28,8 @@ import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.exceptionhandling.ExceptionHandler;
 import sneer.pulp.keymanager.KeyManager;
-import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.CollectionSignals;
+import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.threads.Stepper;
 import sneer.pulp.threads.Threads;
 import sneer.pulp.tuples.TupleSpace;
@@ -38,28 +39,37 @@ class TupleSpaceImpl implements TupleSpace {
 	//Refactor The synchronization will no longer be necessary when the container guarantees synchronization of model bricks.
 	class Subscription {
 
-		private final Consumer<? super Tuple> _subscriber;
+		private final WeakReference<Consumer<? super Tuple>> _subscriber;
 		private final Class<? extends Tuple> _tupleType;
 		private final Environment _environment;
 		private final BlockingQueue<Tuple> _tuplesToNotify = new LinkedBlockingQueue<Tuple>(); 
 
 		<T extends Tuple> Subscription(Consumer<? super T> subscriber, Class<T> tupleType) {
-			_subscriber = (Consumer<? super Tuple>) subscriber;
+			_subscriber = new WeakReference<Consumer<? super Tuple>>((Consumer<? super Tuple>) subscriber);
 			_tupleType = tupleType;
 			_environment = my(Environment.class);
 			
-			_threads.registerStepper(new Stepper() { @Override public boolean step() {
-				Tuple tuple = waitToPopTuple();
-				if (tuple != null) notifySubscriber(tuple);
-				return true;
-			}});
+			_threads.registerStepper(notifier());
 
 		}
 
-		private void notifySubscriber(final Tuple tuple) {
+		private Stepper notifier() {
+			return new Stepper() { @Override public boolean step() {
+				Tuple tuple = waitToPopTuple();
+				if (tuple == null) return true; //Is testing for null really necessary?
+				
+				Consumer<? super Tuple> subscriber = _subscriber.get();
+				if (subscriber == null) return false;
+				
+				notifySubscriber(subscriber, tuple);
+				return true;
+			}};
+		}
+
+		private void notifySubscriber(final Consumer<? super Tuple> subscriber, final Tuple tuple) {
 			_exceptionHandler.shield(new Runnable(){@Override public void run() {
 				Environments.runWith(_environment, new Runnable() { @Override public void run() {
-					_subscriber.consume(tuple);
+					subscriber.consume(tuple);
 				}});
 			}});
 			dispatchCounterDecrement();
@@ -83,6 +93,10 @@ class TupleSpaceImpl implements TupleSpace {
 			} catch (InterruptedException e) {
 				throw new IllegalStateException();
 			}
+		}
+
+		private boolean wasGcd() {
+			return _subscriber.get() == null;
 		}
 	}
 
@@ -164,8 +178,10 @@ class TupleSpaceImpl implements TupleSpace {
 
 
 	private void notifySubscriptions(Tuple tuple) {
-		for (Subscription subscription : _subscriptions.toArray(SUBSCRIPTION_ARRAY))
+		for (Subscription subscription : _subscriptions.toArray(SUBSCRIPTION_ARRAY)) {
+			if (subscription.wasGcd()) _subscriptions.remove(subscription);
 			subscription.filterAndNotify(tuple);
+		}
 	}
 
 
@@ -220,7 +236,7 @@ class TupleSpaceImpl implements TupleSpace {
 	@Override
 	public <T extends Tuple> void removeSubscriptionAsync(Object subscriber) {
 		for (Subscription victim : _subscriptions.toArray(SUBSCRIPTION_ARRAY))
-			if (victim._subscriber == subscriber) {
+			if (victim._subscriber.get() == subscriber) {
 				_subscriptions.remove(victim);
 				return;
 			} 

@@ -32,10 +32,6 @@ public class ThreadsMock implements Threads {
 		return _steppers.get(i);
 	}
 
-	public List<Runnable> getActors() {
-		return _actors;
-	}
-
 	@Override
 	public ClassLoader contextClassLoader() {
 		throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement

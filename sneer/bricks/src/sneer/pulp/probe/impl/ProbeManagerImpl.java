@@ -3,11 +3,10 @@ package sneer.pulp.probe.impl;
 import static sneer.commons.environments.Environments.my;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 import sneer.brickness.Tuple;
-import sneer.commons.lang.exceptions.NotImplementedYet;
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.connection.ByteConnection;
 import sneer.pulp.connection.ConnectionManager;
@@ -28,7 +27,7 @@ class ProbeManagerImpl implements ProbeManager {
 	@SuppressWarnings("unused")
 	private SimpleListReceiver<Contact> _contactListReceiverToAvoidGC;
 
-	private Set<ProbeImpl> _probes = new HashSet<ProbeImpl>();
+	private Map<Contact, ProbeImpl> _probesByContact = new HashMap<Contact, ProbeImpl>();
 	
 
 	private static final ClassLoader CLASSLOADER_FOR_TUPLES = TupleSpace.class.getClassLoader();
@@ -52,7 +51,8 @@ class ProbeManagerImpl implements ProbeManager {
 
 			@Override
 			protected void elementRemoved(Contact contact) {
-				throw new NotImplementedYet();
+				_connections.closeConnectionFor(contact);
+				_probesByContact.remove(contact);
 			}
 
 		};
@@ -65,7 +65,7 @@ class ProbeManagerImpl implements ProbeManager {
 
 	private ProbeImpl createProbe(Contact contact, ByteConnection connection) {
 		ProbeImpl result = new ProbeImpl(contact, connection.isOnline());
-		_probes.add(result);
+		_probesByContact.put(contact, result);
 		return result;
 	}
 

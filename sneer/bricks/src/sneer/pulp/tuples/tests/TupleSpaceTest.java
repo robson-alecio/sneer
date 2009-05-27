@@ -25,9 +25,10 @@ public class TupleSpaceTest extends BrickTest {
 		assertTrue(a.hashCode() == b.hashCode());
 		assertEquals(a, b);
 
-		_subject.addSubscription(TestTuple.class, new Consumer<TestTuple>(){@Override public void consume(TestTuple received) {
+		Consumer<TestTuple> refToAvoidGc = new Consumer<TestTuple>(){@Override public void consume(TestTuple received) {
 			_received = received;
-		}});
+		}};
+		_subject.addSubscription(TestTuple.class, refToAvoidGc);
 		
 		_subject.publish(a);
 		_subject.waitForAllDispatchingToFinish();

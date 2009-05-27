@@ -1,11 +1,9 @@
 package sneer.pulp.connection.impl;
 
 import static sneer.commons.environments.Environments.my;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import sneer.pulp.connection.ByteConnection;
+import sneer.commons.lang.Producer;
+import sneer.hardware.ram.collections.cachemap.CacheMap;
+import sneer.hardware.ram.collections.cachemap.CacheMaps;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.network.ByteArraySocket;
@@ -15,16 +13,13 @@ class ConnectionManagerImpl implements ConnectionManager {
 
 	private final OwnNameKeeper _nameKeeper = my(OwnNameKeeper.class);
 	
-	private final Map<Contact, ByteConnection> _connectionsByContact = new HashMap<Contact, ByteConnection>();
+	private final CacheMap<Contact, ByteConnectionImpl> _connectionsByContact = my(CacheMaps.class).newInstance();
 
 	@Override
-	public synchronized ByteConnectionImpl connectionFor(Contact contact) {
-		ByteConnectionImpl result = (ByteConnectionImpl) _connectionsByContact.get(contact);
-		if (result == null) {
-			result = new ByteConnectionImpl("" + _nameKeeper.name(), contact);
-			_connectionsByContact.put(contact, result);
-		}
-		return result;
+	public synchronized ByteConnectionImpl connectionFor(final Contact contact) {
+		return _connectionsByContact.get(contact, new Producer<ByteConnectionImpl>() { @Override public ByteConnectionImpl produce() {
+			return new ByteConnectionImpl("" + _nameKeeper.name(), contact);
+		}});
 	}
 
 	@Override
@@ -37,5 +32,12 @@ class ConnectionManagerImpl implements ConnectionManager {
 	public void manageOutgoingSocket(Contact contact, ByteArraySocket socket) {
 		ByteConnectionImpl connection = connectionFor(contact);
 		connection.manageOutgoingSocket(socket);
+	}
+
+	@Override
+	synchronized public void closeConnectionFor(Contact contact) {
+		ByteConnectionImpl connection = _connectionsByContact.remove(contact);
+		if (connection == null) return;
+		connection.close();
 	}	
 }

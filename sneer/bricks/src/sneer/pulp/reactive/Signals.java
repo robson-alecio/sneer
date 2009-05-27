@@ -17,6 +17,7 @@ public interface Signals {
 
 	<T> Register<T> newRegister(T initialValue);
 
+	<T> Reception receive(EventSource<? extends T> source, Consumer<? super T> receiver);	
 	<T> Reception receive(Consumer<? super T> receiver, EventSource<? extends T>... sources);	
 }
 

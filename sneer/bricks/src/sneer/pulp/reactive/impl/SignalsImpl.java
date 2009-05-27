@@ -41,4 +41,10 @@ class SignalsImpl implements Signals {
 	public <T> Reception receive(Consumer<? super T> receiver, EventSource<? extends T>... sources) {
 		return ReceiversImpl.receive(receiver, sources);
 	}
+
+	@Override
+	public <T> Reception receive(EventSource<? extends T> source,
+			Consumer<? super T> receiver) {
+		return receive(receiver, source);
+	}
 }

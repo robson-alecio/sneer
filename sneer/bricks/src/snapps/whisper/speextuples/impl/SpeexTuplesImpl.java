@@ -44,18 +44,21 @@ class SpeexTuplesImpl implements SpeexTuples {
 	private final Decoder _decoder = _speex.createDecoder();
 	
 	private final AtomicInteger _ids = new AtomicInteger();
+	private Consumer<PcmSoundPacket> _refToAvoidGc;
+	private Consumer<SpeexPacket> _refToAvoidGc2;
 
 	public SpeexTuplesImpl() {
 
 		final Consumer<SpeexPacket> consumer = new Consumer<SpeexPacket>(){ @Override public void consume(SpeexPacket packet) {
 			decode(packet);
 		}};
-		_tupleSpace.addSubscription(PcmSoundPacket.class, new Consumer<PcmSoundPacket>() { @Override public void consume(PcmSoundPacket packet) {
+		
+		_refToAvoidGc = new Consumer<PcmSoundPacket>() { @Override public void consume(PcmSoundPacket packet) {
 			if (!isMine(packet)) return;
 			if (encode(packet.payload.copy()))
 				flush();
-		}});
-		_tupleSpace.addSubscription(SpeexPacket.class, new Consumer<SpeexPacket>() { @Override public void consume(SpeexPacket packet) {
+		}};
+		_refToAvoidGc2 = new Consumer<SpeexPacket>() { @Override public void consume(SpeexPacket packet) {
 			if (isMine(packet))	return;
 			if (!_room.currentValue().equals(packet.room)) return;
 
@@ -64,7 +67,10 @@ class SpeexTuplesImpl implements SpeexTuples {
 				_sequencers.put(publisher, my(Sequencers.class).createSequencerFor(consumer, (short)15, (short)150));
 			
 			_sequencers.get(publisher).produceInSequence(packet, packet.sequence);
-		}});
+		}};
+		
+		_tupleSpace.addSubscription(PcmSoundPacket.class, _refToAvoidGc);
+		_tupleSpace.addSubscription(SpeexPacket.class, _refToAvoidGc2);
 	}
 
 	private short nextShort() {

@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
-import sneer.commons.lang.Producer;
 
 
 public class EnvironmentsTest extends Assert {
@@ -41,17 +40,6 @@ public class EnvironmentsTest extends Assert {
 		assertTrue(_ran);
 	}
 	
-	@Test
-	public void testBind() {
-		
-		final Producer<Object> producer = new Producer<Object>() { @Override public Object produce() {
-			_ran = true;
-			return my(Object.class);
-		}};
-		
-		final Producer<Object> proxy = Environments.wrap(Producer.class, environment(producer));
-		assertSame(_binding, proxy.produce());
-	}
 	
 	private Runnable runnable() {
 		return new Runnable() { @Override public void run() {

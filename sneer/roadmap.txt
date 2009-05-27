@@ -1,6 +1,15 @@
 ﻿FIXES
 =========
 	
+	- [Sandro] Delete option in ContactList popup menu.
+	
+	- [Igor] Method Signals.receive(source, Consumer) was created. Migrate to it all uses of receive(Consumer, sources) that have a single source.  
+
+	- [Igor] Threads.registerActor() - Delete
+		- Use registerStepper() instead.
+		- Make registerStepper keep a weak reference to the stepper.
+			- All uses of registerStepper() will have to keep a _refToAvoidGc to the stepper. 
+	
 	- [Igor] Adapt antlips to support lib entries starting with:
 		kind="lib" exported="true"...   instead of just:
 		kind="lib"...
@@ -13,23 +22,23 @@
 		- SetSignal - Revise it also.
 		- Make a ListSignal->SetSignal adapter brick instead of SimpleListReceiver.
 
-	- [Bamboo] Unused codes:
+	- [Bamboo] Unused code:
 		- GUIImpl.defineBrickMetadata param
 		- ASMMetaClass
 
 	- SignalChoosers - Return a sneer.pulp.reactive.Reception that can de disposed, just like Signals.receive().
 	
-	- Implement ProbeManager elementRemoved to remove Contacts from Gui
-	
-	- [Klaus] EventReceiver - Pass owner on creation. Signal will hold reference to receiver until owner is GC'd.
-
 	- Remove @Ignore and Fix WindTest.testSortedShoutsHeard
 
-	- Break down packages with more than one brick
+	- [Igor] Break down packages with more than one brick
 
 
 TASKS
 ========
+
+	- [Sandro] Log Filter
+		List on top: "Log Events That Contain:" (-)
+		Field on the bottom with no label: [  ] (+)
 
 	- [Igor] main.Sneer - Brick auto-placement.
 
@@ -42,10 +51,6 @@ TASKS
 			- GuiThread - Improve how environment handling is done. 
 				- Unignore GuiBrickTest.
 		- [Klaus] GuiBrick Javadoc - Revise.
-
-	- [Sandro and Igor] User Info, Contact List and Contact CRUD - Don't do any other task until:
-		- [Klaus] Revise code.
-		- [Klaus] ProbeManagerImpl.java:55 - NotImplementedYet
 
 	- [Bamboo] Create/Install ("publish") brick locally
 		- Brickness - "The simplest possible container"

@@ -15,6 +15,7 @@ import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
+import sneer.pulp.threads.Stepper;
 import sneer.pulp.threads.Threads;
 
 class ByteConnectionImpl implements ByteConnection {
@@ -31,6 +32,8 @@ class ByteConnectionImpl implements ByteConnection {
 	
 	private PacketScheduler _scheduler;
 	private Consumer<byte[]> _receiver;
+	
+	private volatile boolean _isClosed;
 
 
 	ByteConnectionImpl(String label, Contact contact) {
@@ -100,22 +103,21 @@ class ByteConnectionImpl implements ByteConnection {
 
 
 	private void startSending() {
-		_threads.registerActor(new Runnable() { @Override public void run() {
-			while (true) {
-				if (tryToSend(_scheduler.highestPriorityPacketToSend()))
-					_scheduler.previousPacketWasSent();
-				else
-					_threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify.
-			}
+		_threads.registerStepper(new Stepper() { @Override public boolean step() {
+			if (tryToSend(_scheduler.highestPriorityPacketToSend()))
+				_scheduler.previousPacketWasSent();
+			else
+				_threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify.
+			
+			return !_isClosed;
 		}});
 	}
 	
 	private void startReceiving() {
-		_threads.registerActor(new Runnable() { @Override public void run() {
-			while (true) {
-				if (!tryToReceive())
-					_threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify
-			}
+		_threads.registerStepper(new Stepper() { @Override public boolean step() {
+			if (!tryToReceive())
+				_threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify
+			return !_isClosed;
 		}});
 	}
 
@@ -149,6 +151,14 @@ class ByteConnectionImpl implements ByteConnection {
 
 		startSending();
 		startReceiving();
+	}
+
+	void close() {
+		_isClosed = true;
+		
+		ByteArraySocket socket = _socketHolder.socket();
+		if (socket == null) return;
+		crash(socket, null, "Connection closed");
 	}
 
 }

@@ -17,7 +17,7 @@ public class Sneer {
 		placeBricks(container, communicationBricks());
 	}
 
-	private static Class<?>[] natures() {
+	public static Class<?>[] natures() {
 		return new Class<?>[] {
 			GUI.class,
 		};
@@ -111,7 +111,7 @@ public class Sneer {
 		};
 	}
 
-	private static Class<?>[] communicationBricks() {
+	public static Class<?>[] communicationBricks() {
 		return new Class<?>[] {
 				sneer.hardware.gui.guithread.GuiThread.class, 
 				sneer.hardware.io.codecs.base64.Base64.class,

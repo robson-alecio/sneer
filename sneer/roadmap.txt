@@ -66,29 +66,9 @@ TASKS
 			- Concurrency - Synchronize calls on Bricks, according to docs/brick_types.txt  
 
 	- [Sandro] Webstart
-			- If present: Run
-				- Instantiate Brickness passing SneerStoragePath as a binding.
-				- Place the Threads brick. (This will cause all actors and steppers registered by other bricks to be started. Those other bricks will be placed automatically, of course)
-				
-			- If not present:
-				- Installation Wizard.
-					- welcome();
-					- license();
-					- dogFoodInformation();
-					- configInformation() 
-						- Delete .sneertmp directory and subdirectories if present.
-						- Create .sneertmp directory.
-						- unzip bricks there.
-						- Rename to .sneer
-				
-					- congratulations()					
-						- If the dialog is closed (dialog close button, Alt-F4 or ESC key) at any point before the .sneer directory is created:
-						- "This wizard will now exit with no changes to your system."
-						- Button: [Exit]
-						- System.exit(0);
-				
-				- Do "Run", above
-				- Place the Coping (the brick that simply depends on all necessary bricks and will cause them to be placed) - http://www.thefreedictionary.com/coping
+		- fix libs bug
+		- test in file system
+		- test with hudson
 
 	- Security - Discover if instruments can indirectly gain access to components from other instruments.
 	

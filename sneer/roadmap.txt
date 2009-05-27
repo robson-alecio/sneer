@@ -21,13 +21,11 @@
 
 	- SignalChoosers - Return a sneer.pulp.reactive.Reception that can de disposed, just like Signals.receive().
 	
-	- Implement ProbeManager elementRemoved to remove Contacts from Gui
+	- [Klaus] Implement ProbeManager elementRemoved to remove Contacts from Gui
 	
-	- [Klaus] EventReceiver - Pass owner on creation. Signal will hold reference to receiver until owner is GC'd.
-
 	- Remove @Ignore and Fix WindTest.testSortedShoutsHeard
 
-	- Break down packages with more than one brick
+	- [Igor] Break down packages with more than one brick
 
 
 TASKS
@@ -44,10 +42,6 @@ TASKS
 			- GuiThread - Improve how environment handling is done. 
 				- Unignore GuiBrickTest.
 		- [Klaus] GuiBrick Javadoc - Revise.
-
-	- [Sandro and Igor] User Info, Contact List and Contact CRUD - Don't do any other task until:
-		- [Klaus] Revise code.
-		- [Klaus] ProbeManagerImpl.java:55 - NotImplementedYet
 
 	- [Bamboo] Create/Install ("publish") brick locally
 		- Brickness - "The simplest possible container"

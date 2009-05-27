@@ -10,10 +10,8 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import main.SneerStoragePath;
 
-import static javax.swing.JOptionPane.OK_CANCEL_OPTION;
 import static javax.swing.JOptionPane.OK_OPTION;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
-import static javax.swing.JOptionPane.QUESTION_MESSAGE;;
 
 public class Wizard extends JFrame{
 
@@ -35,9 +33,13 @@ public class Wizard extends JFrame{
 			startSneer();
 			
 		} catch (Throwable throwable) {
-			showDialog("ERROR: \n" + throwable.getMessage(),	"Exit!");
+			showDialog("ERROR: \n" + throwable.getMessage(),	"Exit");
 			System.exit(1);
 		}
+	}
+
+	private void showDialog(String msg, Object...options) {
+		Dialogs.show(WIZARD_TITLE, msg,	options);
 	}
 
 	private void startSneer() throws Exception {
@@ -97,28 +99,6 @@ public class Wizard extends JFrame{
 	private void tryInstall() throws IOException {
 		new Installer().install(_sneerStoragePath);
 	}	
-	
-	private void showDialog(String msg, Object...options) {
-		int dialogOptions;
-		int dialogType;
-		
-		if(options.length==1){
-			dialogOptions=OK_OPTION;
-			dialogType=INFORMATION_MESSAGE;
-		}else{
-			dialogOptions=OK_CANCEL_OPTION;
-			dialogType=QUESTION_MESSAGE;
-		}
-		
-		int bnt = JOptionPane.showOptionDialog(null, msg, WIZARD_TITLE,  
-																   dialogOptions, dialogType, null,  options,  options[0]);
-		if(bnt!=OK_OPTION){
-			options = new Object[]{"Exit"};
-			JOptionPane.showOptionDialog(null, "This wizard will now exit with no changes to your system.", 
-					WIZARD_TITLE,  OK_OPTION, INFORMATION_MESSAGE, null,  options,  options[0]);
-			System.exit(0);
-		}
-	}
 	
 	private void useMetal() {
 		try {

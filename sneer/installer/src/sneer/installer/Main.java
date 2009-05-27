@@ -2,10 +2,8 @@ package sneer.installer;
 
 import java.io.File;
 
+import main.Sneer;
 import main.SneerStoragePath;
-import sneer.brickness.Brickness;
-import sneer.brickness.BricknessFactory;
-import sneer.pulp.threads.Threads;
 
 public class Main {
 	
@@ -14,9 +12,11 @@ public class Main {
 		File sneerHome = new File(sneerStoragePath.get());
 		
 		if(sneerHome.exists() && sneerHome.isDirectory()){
-			Brickness container = BricknessFactory.newBrickContainer(sneerStoragePath);
-			File classRootDirectory = new File(sneerHome, "bin");
-			container.placeBrick(classRootDirectory, Threads.class.getName());
+			try {
+				Sneer.main(args);
+			} catch (Exception e) {
+				throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			}
 			return;
 		}
 		

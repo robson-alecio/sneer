@@ -1,79 +1,88 @@
 <?xml version="1.0"?>
 <project name="WebStart" default="main" basedir=".">
-	
-	<property name="build.dir" location="./build"/>
-	<property name="jnlp.file" location="${build.dir}/sneer-bootstrap.jnlp"/>
-	<property name="jnlp.mainClass" value="sneer.installer.Main"/>
+
+	<property name="build.dir" location="./build" />
+	<property name="jnlp.file" location="${build.dir}/sneer-bootstrap.jnlp" />
+	<property name="jnlp.mainClass" value="sneer.installer.Main" />
 
 	<target name="main" depends="clean, log, copyJars, makeJars, makeJnlp, signJars">
 	</target>
 
 	<target name="clean">
-		<delete dir="build"/>
-		<mkdir dir="build"/>
+		<delete dir="build" />
+		<mkdir dir="build" />
 	</target>
-	
+
 	<target name="log">
 		<property environment="env" />
-		<record name="build/log.txt" action="start" />	
-		<echo message="${env.BUILD_NUMBER}"/>
-		<echo message="${env.BUILD_ID}"/>
-		<echo message="${env.BUILD_TAG}"/>
-		<echo message="${env.JOB_NAME}"/>
-		<echo message="${env.EXECUTOR_NUMBER}"/>
-		<echo message="${env.WORKSPACE}"/>
-		<echo message="${env.HUDSON_URL}"/>
+		<record name="build/log.txt" action="start" />
+		<echo message="${env.BUILD_NUMBER}" />
+		<echo message="${env.BUILD_ID}" />
+		<echo message="${env.BUILD_TAG}" />
+		<echo message="${env.JOB_NAME}" />
+		<echo message="${env.EXECUTOR_NUMBER}" />
+		<echo message="${env.WORKSPACE}" />
+		<echo message="${env.HUDSON_URL}" />
 		<record name="build/log.txt" action="stop" />
 	</target>
-	
+
+
 	<target name="makeJnlp">
+
+		<!--property name="env.JOB_NAME" value="sneer-webstart"/-->
+
+		<condition property="jnlp.codebase" 
+			value="${env.HUDSON_URL}job/${env.JOB_NAME}/${env.BUILD_NUMBER}/artifact/build/" 
+			else="file:///${build.dir}">
+			<equals arg1="${env.JOB_NAME}" arg2="sneer-webstart"/>
+		</condition>
+
 		<echoxml file="build/sneer.jnlp">
-			<!--jnlp spec="1.0+" codebase="${env.HUDSON_URL}job/${env.JOB_NAME}/${env.BUILD_NUMBER}/artifact/build/" href="sneer.jnlp"-->
-			<jnlp spec="1.0+" codebase="file:///${build.dir}" href="sneer.jnlp">
+			<jnlp spec="1.0+" codebase="${jnlp.codebase}" href="sneer.jnlp">
 				<information>
 					<title>Sneer</title>
 					<vendor>Sneer</vendor>
 					<description>Sovereign computing is the freedom to share information and hardware resources with your friends, any way you like.:)</description>
 					<description kind="short">Sneer is a java-based, free software platform for sovereign applications.</description>
-					<homepage href="http://sovereigncomputing.net/"/>
+					<homepage href="http://sovereigncomputing.net/" />
 				</information>
-				<update check="timeout" policy="always"/>
-				<resources>     
-					<jar href="sneer-bootstrap.jar"/>			
-					<jar href="commons-io-1.4.jar"/>			
-					<jar href="commons-lang-2.3.jar"/>			
-					<j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+				<update check="timeout" policy="always" />
+				<resources>
+					<jar href="sneer-bootstrap.jar" />
+					<jar href="commons-io-1.4.jar" />
+					<jar href="commons-lang-2.3.jar" />
+					<j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se" />
 				</resources>
 				<security>
-					<all-permissions/>
+					<all-permissions />
 				</security>
-				<application-desc main-class="${jnlp.mainClass}"/>
+				<application-desc main-class="${jnlp.mainClass}" />
 			</jnlp>
 		</echoxml>
 	</target>
 
 	<target name="makeJars">
 		<jar destfile="./build/sneer-bootstrap.jar">
-		    <fileset dir="../bin">
-		    	<exclude name='**/*.txt'/>
-				<exclude name='build/**'/>
-		    </fileset>
+			<fileset dir="../bin">
+				<exclude name='**/*.txt' />
+				<exclude name='build/**' />
+			</fileset>
 		</jar>
 	</target>
-	
-    <target name="copyJars">
-    	<copy todir="./build">
-    		<fileset dir="../commons/lib">
-    			<include name='commons-io-1.4.jar'/>
-    			<include name='commons-lang-2.3.jar'/>
-    		</fileset>
-    	</copy>
-    </target>
+
+	<target name="copyJars">
+		<copy todir="./build">
+			<fileset dir="../commons/lib">
+				<include name='commons-io-1.4.jar' />
+				<include name='commons-lang-2.3.jar' />
+			</fileset>
+		</copy>
+	</target>
 
 	<target name="signJars" depends="makeJars">
-		<signjar keystore="sneerKeystore" jar="./build/sneer-bootstrap.jar" alias="bihaiko" storepass="amanda"/>
-		<signjar keystore="sneerKeystore" jar="./build/commons-io-1.4.jar" alias="bihaiko" storepass="amanda"/>
-		<signjar keystore="sneerKeystore" jar="./build/commons-lang-2.3.jar" alias="bihaiko" storepass="amanda"/>
+		<signjar keystore="sneerKeystore" jar="./build/sneer-bootstrap.jar" alias="bihaiko" storepass="amanda" />
+		<signjar keystore="sneerKeystore" jar="./build/commons-io-1.4.jar" alias="bihaiko" storepass="amanda" />
+		<signjar keystore="sneerKeystore" jar="./build/commons-lang-2.3.jar" alias="bihaiko" storepass="amanda" />
 	</target>
 
 </project>

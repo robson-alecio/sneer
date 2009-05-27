@@ -36,10 +36,6 @@
 TASKS
 ========
 
-	- [Sandro] Log Filter
-		List on top: "Log Events That Contain:" (-)
-		Field on the bottom with no label: [  ] (+)
-
 	- [Igor] main.Sneer - Brick auto-placement.
 
 	- Gui Thread - Always call gui brick code in the gui thread. What was already done with the GuiBrickInvocationHandler does not cover callbacks. Complicated and slow weak-proxy-bubble structures would have to be created to support that. Instead, the proposed idea is:
@@ -78,6 +74,7 @@ TASKS
 		- fix libs bug
 		- test in file system
 		- test with hudson
+		- add SneerJockey Logic (restart sneer)
 
 	- Security - Discover if instruments can indirectly gain access to components from other instruments.
 	

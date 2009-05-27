@@ -1,5 +1,7 @@
 package sneer.installer;
 
+import java.io.IOException;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.LookAndFeel;
@@ -26,6 +28,7 @@ public class Wizard extends JFrame{
 		license();
 		dogFoodInformation();
 		configInformation();
+		tryInstall();
 		congratulations();
 		useMetal();
 		startSneer();
@@ -69,17 +72,28 @@ public class Wizard extends JFrame{
 		"To store your setup, the following folder will be created:\n" +
 		_sneerStoragePath.get(), 
 		
-		"Whatever >"); 
-	}	
+		"Whatever >");
+	}
 	
 	private void congratulations() {
-		showDialog(
-		"Congratulations!\n\n" +
-		"You are no longer a slave. You have just\n" +
-		"claimed your own share of the internet.", 
-
-		"Start Sneer"); 
+		Object options[] = new Object[]{"Start Sneer"}; 
+		
+		JOptionPane.showOptionDialog(null, 
+				"Congratulations!\n\n" +
+				"You are no longer a slave. You have just\n" +
+				"claimed your own share of the internet.", 
+				
+				WIZARD_TITLE,  OK_OPTION, INFORMATION_MESSAGE, null,  options,  options[0]);
 	}
+
+	private void tryInstall() {
+		try {
+			new Installer().install(_sneerStoragePath);
+		} catch (IOException e) {
+			showDialog("ERROR: \n" + e.getMessage(),	"Exit!");
+			System.exit(1);
+		}
+	}	
 	
 	private void showDialog(String msg, Object...options) {
 		int dialogOptions;

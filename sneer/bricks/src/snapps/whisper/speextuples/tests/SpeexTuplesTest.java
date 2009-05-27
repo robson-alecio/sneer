@@ -55,10 +55,11 @@ public class SpeexTuplesTest extends BrickTest {
 		
 		
 		final ByRef<SpeexPacket> packet = ByRef.newInstance();
-		_tupleSpace.addSubscription(SpeexPacket.class, new Consumer<SpeexPacket>() { @Override public void consume(SpeexPacket value) {
+		Consumer<SpeexPacket> refToAvoidGc = new Consumer<SpeexPacket>() { @Override public void consume(SpeexPacket value) {
 			assertNull(packet.value);
 			packet.value = value;
-		}});
+		}};
+		_tupleSpace.addSubscription(SpeexPacket.class, refToAvoidGc);
 		
 		setRoom("MyChannel");
 		for (byte[] frame : frames())
@@ -85,10 +86,11 @@ public class SpeexTuplesTest extends BrickTest {
 		setRoom("MyRoom");
 		
 		final ByRef<PcmSoundPacket> packet = ByRef.newInstance();
-		_tupleSpace.addSubscription(PcmSoundPacket.class, new Consumer<PcmSoundPacket>() { @Override public void consume(PcmSoundPacket value) {
+		Consumer<PcmSoundPacket> refToAvoidGc = new Consumer<PcmSoundPacket>() { @Override public void consume(PcmSoundPacket value) {
 			assertNull(packet.value);
 			packet.value = value;
-		}});
+		}};
+		_tupleSpace.addSubscription(PcmSoundPacket.class, refToAvoidGc);
 		
 		_tupleSpace.acquire(speexPacketFrom(contactKey(), speexPacketPayload, "MyRoom", (short)0));
 		// tuples with ownPublicKey should be ignored

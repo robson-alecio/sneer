@@ -12,4 +12,6 @@ public interface ConnectionManager {
 	void manageOutgoingSocket(Contact contact, ByteArraySocket socket);
 
 	ByteConnection connectionFor(Contact contact);
+
+	void closeConnectionFor(Contact contact);
 }

@@ -49,6 +49,7 @@ public class Sneer {
 
 				sneer.pulp.internetaddresskeeper.InternetAddressKeeper.class,
 				sneer.pulp.crypto.Crypto.class,
+				sneer.hardware.ram.collections.cachemap.CacheMaps.class,
 				sneer.pulp.reactive.collections.listsorter.ListSorter.class,
 				sneer.pulp.reactive.collections.setfilter.SetFilter.class,
 				sneer.pulp.reactive.gates.logic.LogicGates.class,

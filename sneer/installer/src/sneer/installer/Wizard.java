@@ -17,25 +17,31 @@ import static javax.swing.JOptionPane.QUESTION_MESSAGE;;
 
 public class Wizard extends JFrame{
 
-	private static final String WIZARD_TITLE = "Sneer Installation Wizard";
-	private SneerStoragePath _sneerStoragePath;
+	private final String WIZARD_TITLE = "Sneer Installation Wizard";
+	private final SneerStoragePath _sneerStoragePath;
 
 	Wizard(SneerStoragePath sneerStoragePath) {
 		_sneerStoragePath = sneerStoragePath;
 		
-		useNimbus();
-		welcome();
-		license();
-		dogFoodInformation();
-		configInformation();
-		tryInstall();
-		congratulations();
-		useMetal();
-		startSneer();
+		try {
+			useNimbus();
+			welcome();
+			license();
+			dogFoodInformation();
+			configInformation();
+			tryInstall();
+			congratulations();
+			useMetal();
+			startSneer();
+			
+		} catch (Throwable throwable) {
+			showDialog("ERROR: \n" + throwable.getMessage(),	"Exit!");
+			System.exit(1);
+		}
 	}
 
-	private void startSneer() {
-		new Runner().start(_sneerStoragePath);
+	private void startSneer() throws Exception {
+		new SneerJockey(_sneerStoragePath);
 	}
 
 	private void welcome() {
@@ -57,7 +63,6 @@ public class Wizard extends JFrame{
 		"I Accept >","I Do Not Accept"); 		
 	}
 	
-
 	private void dogFoodInformation() {
 		showDialog(
 		"This is the Sneer 'Dogfood Release' for ADVANCED Java users.\n\n" +
@@ -89,13 +94,8 @@ public class Wizard extends JFrame{
 			System.exit(0);
 	}
 
-	private void tryInstall() {
-		try {
-			new Installer().install(_sneerStoragePath);
-		} catch (IOException e) {
-			showDialog("ERROR: \n" + e.getMessage(),	"Exit!");
-			System.exit(1);
-		}
+	private void tryInstall() throws IOException {
+		new Installer().install(_sneerStoragePath);
 	}	
 	
 	private void showDialog(String msg, Object...options) {

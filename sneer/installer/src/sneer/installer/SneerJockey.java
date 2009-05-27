@@ -8,16 +8,23 @@ import sneer.brickness.BrickPlacementException;
 import sneer.brickness.Brickness;
 import sneer.brickness.BricknessFactory;
 
-public class Runner {
+/** This guy "plays" (runs) the latest version of Sneer, one after the other. */
+public class SneerJockey {
 
-	private File _binDir;
+	private final File _binDir;
+	private final SneerStoragePath _sneerStoragePath;
 
-	void start(SneerStoragePath sneerStoragePath) {
-		
+	public SneerJockey(SneerStoragePath sneerStoragePath) throws Exception {
+		_sneerStoragePath = sneerStoragePath;
 		_binDir = new File(sneerStoragePath.get(), "bin");
 		
-		Brickness container = BricknessFactory.newBrickContainer(sneerStoragePath);
-		
+//		while (true)
+			play();
+	}
+
+	private void play() throws Exception {
+		//TODO: add class loader
+		Brickness container = BricknessFactory.newBrickContainer(_sneerStoragePath);
 		placeBricks(container, Sneer.natures());
 		placeBricks(container, Sneer.businessBricks());
 		placeBricks(container, Sneer.communicationBricks());

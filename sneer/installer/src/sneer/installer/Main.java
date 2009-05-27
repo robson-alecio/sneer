@@ -6,12 +6,12 @@ import main.SneerStoragePath;
 
 public class Main {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		SneerStoragePath sneerStoragePath = new SneerStoragePath();
 		File sneerHome = new File(sneerStoragePath.get());
 		
 		if(sneerHome.exists() && sneerHome.isDirectory()){
-			new Runner().start(sneerStoragePath);
+			new SneerJockey(sneerStoragePath);
 			return;
 		}
 		

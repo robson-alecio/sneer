@@ -2,7 +2,6 @@ package sneer.installer;
 
 import java.io.File;
 
-import main.Sneer;
 import main.SneerStoragePath;
 
 public class Main {
@@ -12,14 +11,10 @@ public class Main {
 		File sneerHome = new File(sneerStoragePath.get());
 		
 		if(sneerHome.exists() && sneerHome.isDirectory()){
-			try {
-				Sneer.main(args);
-			} catch (Exception e) {
-				throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
-			}
+			new Runner().start(sneerStoragePath);
 			return;
 		}
 		
-		new Wizard(sneerHome);
+		new Wizard(sneerStoragePath);
 	}
 }

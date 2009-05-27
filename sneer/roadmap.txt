@@ -79,17 +79,8 @@ TASKS
 					- welcome();
 					- license();
 					- dogFoodInformation();
-					- configInformation() 
-						- Delete .sneertmp directory and subdirectories if present.
-						- Create .sneertmp directory.
-						- unzip bricks there.
-						- Rename to .sneer
-				
+					- configInformation() 				
 					- congratulations()					
-						- If the dialog is closed (dialog close button, Alt-F4 or ESC key) at any point before the .sneer directory is created:
-						- "This wizard will now exit with no changes to your system."
-						- Button: [Exit]
-						- System.exit(0);
 				
 				- Do "Run", above
 				- Place the Coping (the brick that simply depends on all necessary bricks and will cause them to be placed) - http://www.thefreedictionary.com/coping

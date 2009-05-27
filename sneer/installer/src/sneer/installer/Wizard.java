@@ -78,12 +78,15 @@ public class Wizard extends JFrame{
 	private void congratulations() {
 		Object options[] = new Object[]{"Start Sneer"}; 
 		
-		JOptionPane.showOptionDialog(null, 
+		int bnt = JOptionPane.showOptionDialog(null, 
 				"Congratulations!\n\n" +
 				"You are no longer a slave. You have just\n" +
 				"claimed your own share of the internet.", 
 				
 				WIZARD_TITLE,  OK_OPTION, INFORMATION_MESSAGE, null,  options,  options[0]);
+		
+		if(bnt!=OK_OPTION)
+			System.exit(0);
 	}
 
 	private void tryInstall() {

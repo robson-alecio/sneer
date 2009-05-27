@@ -1,6 +1,8 @@
 ﻿FIXES
 =========
 	
+	- [Igor] Method Signals.receive(source, Consumer) was created. Migrate all uses of receive(Consumer, sources) that have a single source to it.  
+	
 	- [Igor] Adapt antlips to support lib entries starting with:
 		kind="lib" exported="true"...   instead of just:
 		kind="lib"...

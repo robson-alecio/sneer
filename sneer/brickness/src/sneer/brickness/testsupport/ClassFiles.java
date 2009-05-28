@@ -12,7 +12,11 @@ public class ClassFiles {
 	public static File fileFor(Class<?> clazz) {
 		final String fileName = clazz.getCanonicalName().replace('.', '/') + ".class";
 		final URL url = clazz.getResource("/" + fileName);
-		return new File(toURI(url));
+		try {
+			return new File(toURI(url));
+		} catch (RuntimeException e) {
+			throw new IllegalStateException("Class: " + clazz + " url: " + url, e);
+		}
 	}
 
 	static public File classpathRootFor(Class<?> clazz) {

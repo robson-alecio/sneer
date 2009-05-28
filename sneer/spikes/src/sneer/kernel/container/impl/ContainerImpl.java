@@ -8,7 +8,7 @@ import java.util.Set;
 import sneer.brickness.BrickConventions;
 import sneer.brickness.StoragePath;
 import sneer.commons.environments.Environment;
-import sneer.commons.environments.Environments;
+import sneer.commons.environments.EnvironmentUtils;
 import sneer.kernel.container.ClassLoaderFactory;
 import sneer.kernel.container.ContainerException;
 import sneer.kernel.container.ContainerOld;
@@ -56,7 +56,7 @@ public class ContainerImpl implements ContainerOld {
 	private Environment composeWithBinder(Environment environment) {
 		return environment == null
 			? _binder
-			: Environments.compose(environment, _binder);
+			: EnvironmentUtils.compose(environment, _binder);
 	}
 
 	private void bindNonGuiBricks(Object... bindings) {

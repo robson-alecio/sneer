@@ -1,9 +1,16 @@
 package sneer.brickness;
 
+import sneer.brickness.impl.BricknessImpl;
 import sneer.commons.environments.Environment;
 
-public interface Brickness {
+public class Brickness {
 
-	Environment environment();
+	public static Environment newBrickContainer(Object... bindings) {
+		return new BricknessImpl(bindings);
+	}
+
+	public static Environment newBrickContainerWithApiClassLoader(ClassLoader apiClassLoader, Object... bindings) {
+		return new BricknessImpl(apiClassLoader, bindings);
+	}
 
 }

@@ -1,104 +1,66 @@
 package sneer.brickness.impl;
 
-import java.io.File;
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.List;
+import static sneer.commons.environments.Environments.my;
 
-import sneer.brickness.Brick;
-import sneer.brickness.BrickConventions;
+import java.lang.reflect.Constructor;
+
 import sneer.brickness.BrickLoadingException;
-import sneer.brickness.Brickness;
-import sneer.brickness.Nature;
-import sneer.brickness.testsupport.ClassFiles;
 import sneer.commons.environments.Bindings;
 import sneer.commons.environments.CachingEnvironment;
 import sneer.commons.environments.Environment;
-import sneer.commons.environments.Environments;
-import sneer.commons.lang.ByRef;
+import sneer.commons.environments.EnvironmentUtils;
 
-public class BricknessImpl implements Brickness {
+
+public class BricknessImpl implements Environment {
 	
 	public BricknessImpl(Object... bindings) {
 		this(BricknessImpl.class.getClassLoader(), bindings);
 	}
 
 	public BricknessImpl(ClassLoader apiClassLoader, Object... bindings) {
-		_apiClassLoader = apiClassLoader;
-		
 		_bindings = new Bindings();
 		_bindings.bind(this);
 		_bindings.bind(bindings);
+	
+		_cache = createCachingEnvironment();
 		
-		_environment = createEnvironment();
+		_brickImplLoader = new BrickImplLoader(apiClassLoader);
 	}
 
 	
-	private final Environment _environment;
 	private final Bindings _bindings;
-	private final ClassLoader _apiClassLoader;
+	private CachingEnvironment _cache;
+	private final BrickImplLoader _brickImplLoader;
 
 	
-	public Environment environment() {
-		return _environment;
+	@Override
+	public <T> T provide(Class<T> intrface) {
+		if (my(Environment.class) == null) throw new IllegalStateException("provide() cannot be called outside an environment."); //Delete this line after July 2009 if the exception is never thrown.
+		
+		return _cache.provide(intrface);
 	}
 
 	
-	private CachingEnvironment createEnvironment() {
-		return new CachingEnvironment(Environments.compose(_bindings.environment(), new Environment(){ @Override public <T> T provide(Class<T> brick) {
-			return loadBrick(ClassFiles.classpathRootFor(brick), brick.getName());
+	private CachingEnvironment createCachingEnvironment() {
+		return new CachingEnvironment(EnvironmentUtils.compose(_bindings.environment(), new Environment(){ @Override public <T> T provide(Class<T> brick) {
+			return loadBrick(brick);
 		}}));
 	}
 
 	
-	private <T> T loadBrick(File classRootDirectory, String brickName) {
+	private <T> T loadBrick(Class<T> brick) {
 		try {
-			return tryToLoadBrick(classRootDirectory, brickName);
+			return tryToLoadBrick(brick);
 		} catch (Exception e) {
-			throw new BrickLoadingException("Exception loading brick: " + brickName + ": " + e.getMessage() + "(src: " + classRootDirectory.getAbsolutePath() + ")", e);
+			throw new BrickLoadingException("Exception loading brick: " + brick + ": " + e.getMessage(), e);
 		}
 	}
 
-
-	private <T> T tryToLoadBrick(File classRootDirectory, String brickName) throws ClassNotFoundException {
-		Class<?> brick = _apiClassLoader.loadClass(brickName);
-		ClassLoader implLoader = newImplPackageLoader(classRootDirectory, brick);
-		Class<?> brickImpl = implLoader.loadClass(implNameFor(brickName));
-		
-		return (T) instantiateInEnvironment(brickImpl);
+	private <T> T tryToLoadBrick(Class<T> brick) throws ClassNotFoundException {
+		Class<?> brickImpl = _brickImplLoader.loadImplClassFor(brick);
+		return (T) instantiate(brickImpl);
 	}
 
-	private ClassLoader newImplPackageLoader(File classRootDirectory, Class<?> brick) {
-		String implPackage = BrickConventions.implPackageFor(brick.getName());
-		List<Nature> natures = naturesFor(brick);
-		return new ClassLoaderForPackage(classRootDirectory, _apiClassLoader, natures, implPackage);
-	}
-
-	
-	private List<Nature> naturesFor(Class<?> brick) {
-		final Brick annotation = brick.getAnnotation (Brick.class);
-		if (annotation == null) throw new BrickLoadingException("Brick '" + brick.getName() + "' is not annotated as such!");
-
-		return naturesImplsFor(annotation.value());
-	}
-	
-	private List<Nature> naturesImplsFor(final Class<? extends Nature>[] natureClasses) {
-		final ArrayList<Nature> result = new ArrayList<Nature>(natureClasses.length);
-		for (Class<? extends Nature> natureClass : natureClasses)
-			result.add(environment().provide(natureClass));
-		
-		return result;
-	}
-
-	
-	private Object instantiateInEnvironment(final Class<?> brickImpl) {
-		final ByRef<Object> result = ByRef.newInstance();
-		Environments.runWith(_environment, new Runnable() { @Override public void run() {
-			result.value = instantiate(brickImpl);
-		}});
-		return result.value;
-	}
-	
 	private Object instantiate(Class<?> brickImpl) {
 		try {
 			return tryToInstantiate(brickImpl);
@@ -112,12 +74,6 @@ public class BricknessImpl implements Brickness {
 		constructor.setAccessible(true);
 		return constructor.newInstance();
 	}
-
-	
-	private String implNameFor(final String brickInterfaceName) {
-		return BrickConventions.implClassNameFor(brickInterfaceName);
-	}
-
 
 }
 

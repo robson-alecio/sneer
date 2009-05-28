@@ -20,6 +20,7 @@ import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.BrickTestRunner;
 import sneer.brickness.testsupport.Contribute;
 import sneer.commons.environments.Environment;
+import sneer.commons.environments.EnvironmentUtils;
 import sneer.hardware.cpu.exceptions.Hiccup;
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.hardware.gui.images.Images;
@@ -64,7 +65,7 @@ public class WatchMeTest extends BrickTest {
 		}});
 
 		Environment container2 = my(BrickTestRunner.class).newTestEnvironment(_sharedSpace); 
-		WatchMe subject2 = container2.provide(WatchMe.class);
+		WatchMe subject2 = EnvironmentUtils.retrieveFrom(container2, WatchMe.class);
 
 		PublicKey key = _keys.ownPublicKey();
 		

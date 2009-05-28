@@ -1,22 +1,25 @@
 package main;
 
+import static sneer.commons.environments.Environments.my;
 import sneer.brickness.BrickLoadingException;
 import sneer.brickness.Brickness;
-import sneer.brickness.BricknessFactory;
+import sneer.commons.environments.Environment;
+import sneer.commons.environments.Environments;
 
 
 public class Sneer {
 
 	public static void main(String[] ignored) throws Exception {
-		Brickness container = BricknessFactory.newBrickContainer(new SneerStoragePath());
+		Environment container = Brickness.newBrickContainer(new SneerStoragePath());
 		
 		loadBricks(container, businessBricks());
 		loadBricks(container, communicationBricks());
 	}
 
-	static public void loadBricks(Brickness container, Class<?>... bricks) throws BrickLoadingException {
-		for (Class<?> brick : bricks)
-			container.environment().provide(brick);
+	static public void loadBricks(Environment container, final Class<?>... bricks) throws BrickLoadingException {
+		Environments.runWith(container, new Runnable() { @Override public void run() {
+			for (Class<?> brick : bricks) my(brick);
+		}});
 	}
 
 	static public Class<?>[] businessBricks() {

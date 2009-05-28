@@ -6,7 +6,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 
-import sneer.brickness.testsupport.SystemBrickEnvironment;
+import sneer.brickness.Brickness;
 import sneer.commons.environments.Environments;
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.hardware.gui.timebox.TimeboxedEventQueue;
@@ -71,7 +71,7 @@ public class ReactiveWidgetsDemo {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		Environments.runWith(new SystemBrickEnvironment(), new Runnable(){ @Override public void run() {
+		Environments.runWith(Brickness.newBrickContainer(), new Runnable(){ @Override public void run() {
 			try {
 				new ReactiveWidgetsDemo();
 			} catch (Exception e) {

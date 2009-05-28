@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import sneer.brickness.testsupport.BrickTestRunner;
 import sneer.commons.environments.Bindings;
 import sneer.commons.environments.Environment;
+import sneer.commons.environments.EnvironmentUtils;
 import sneer.commons.environments.Environments;
 import sneer.pulp.threads.Threads;
 
@@ -24,7 +25,7 @@ public class ThreadPoolTest {
 	public void testEnvironmentIsPropagated() throws Exception {
 		final Environment testEnvironment = new Bindings(binding).environment();
 
-		Environment environment = Environments.compose(testEnvironment, my(Environment.class));
+		Environment environment = EnvironmentUtils.compose(testEnvironment, my(Environment.class));
 
 		Environments.runWith(environment, new Runnable() { @Override public void run() {
 			subject.registerActor(new Runnable() { @Override public void run() {

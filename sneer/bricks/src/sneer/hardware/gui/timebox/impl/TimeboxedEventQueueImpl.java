@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sneer.commons.environments.Environment;
+import sneer.commons.environments.EnvironmentUtils;
 import sneer.commons.environments.Environments;
 import sneer.hardware.cpu.timebox.Timebox;
 import sneer.hardware.gui.timebox.TimeboxedEventQueue;
@@ -46,7 +47,7 @@ class TimeboxedEventQueueImpl extends EventQueue implements TimeboxedEventQueue 
 
 	@Override
 	protected void dispatchEvent(final AWTEvent event) {
-		Runnable timebox = _environment.provide(Timebox.class).prepare(_timeboxDuration, new Runnable(){ @Override public void run() {
+		Runnable timebox = EnvironmentUtils.retrieveFrom(_environment, Timebox.class).prepare(_timeboxDuration, new Runnable(){ @Override public void run() {
 			superDispatchEvent(event);
 		}}, new Runnable(){ @Override public void run() {
 			my(Logger.class).log("Starting new Gui Thread");

@@ -1,36 +1,35 @@
 package sneer.kernel.container.tests;
 
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.fail;
 import static sneer.commons.environments.Environments.my;
 
 import javax.swing.SwingUtilities;
 
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import sneer.brickness.BricknessFactory;
-import sneer.brickness.testsupport.SystemBrickEnvironment;
+import sneer.brickness.Brickness;
 import sneer.commons.environments.Environment;
+import sneer.commons.environments.EnvironmentUtils;
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.ByRef;
 import sneer.commons.lang.exceptions.NotImplementedYet;
 import sneer.hardware.gui.timebox.TimeboxedEventQueue;
 
 @Ignore
-public class GuiBrickTest {
+public class GuiBrickTest extends Assert {
 	
 	@Test
 	public void guiBrickRunsInSwingThread() throws Exception {
-		final Environment environment = BricknessFactory.newBrickContainer().environment();
-		final SomeGuiBrick brick = environment.provide(SomeGuiBrick.class);
+		final Environment environment = Brickness.newBrickContainer();
+		final SomeGuiBrick brick = EnvironmentUtils.retrieveFrom(environment, SomeGuiBrick.class);
 		assertSame(swingThread(), brick.currentThread());
 	}
 	
 	@Test
 	public void guiBrickRunsInContainerEnvironment() throws Exception {
-		final Environment environment = BricknessFactory.newBrickContainer().environment();
-		final SomeGuiBrick brick = environment.provide(SomeGuiBrick.class);
+		final Environment environment = Brickness.newBrickContainer();
+		final SomeGuiBrick brick = EnvironmentUtils.retrieveFrom(environment, SomeGuiBrick.class);
 		assertSame(environment, brick.currentEnvironment());
 	}
 
@@ -53,9 +52,9 @@ public class GuiBrickTest {
 			}
 		};
 		
-		final Environment environment = BricknessFactory.newBrickContainer(binding).environment();
+		final Environment environment = Brickness.newBrickContainer(binding);
 
-		final SomeGuiBrick brick = environment.provide(SomeGuiBrick.class);
+		final SomeGuiBrick brick = EnvironmentUtils.retrieveFrom(environment, SomeGuiBrick.class);
 		
 		assertSame(swingThread(), brick.currentThread());
 	}
@@ -67,7 +66,7 @@ public class GuiBrickTest {
 	
 	@Test
 	public void testGuiBrickRunsInsideTimebox() throws Exception {
-		Environments.runWith(new SystemBrickEnvironment(), new Runnable() { @Override public void run() {
+		Environments.runWith(Brickness.newBrickContainer(), new Runnable() { @Override public void run() {
 			
 			int timeoutForGuiEvents = 10;
 			my(TimeboxedEventQueue.class).startQueueing(timeoutForGuiEvents);
@@ -83,8 +82,8 @@ public class GuiBrickTest {
 
 
 	private void runInsideTimebox() {
-		final Environment environment = BricknessFactory.newBrickContainer().environment();
-		final SomeGuiBrick brick = environment.provide(SomeGuiBrick.class);
+		final Environment environment = Brickness.newBrickContainer();
+		final SomeGuiBrick brick = EnvironmentUtils.retrieveFrom(environment, SomeGuiBrick.class);
 		try {
 			brick.slowMethod();
 		} catch (Throwable expected) {
@@ -95,7 +94,7 @@ public class GuiBrickTest {
 
 	@Test
 	public void testNonGuiBrickRunsInCurrentThread() throws Exception {
-		final SomeVanillaBrick brick = new SystemBrickEnvironment().provide(SomeVanillaBrick.class);
+		final SomeVanillaBrick brick = EnvironmentUtils.retrieveFrom(Brickness.newBrickContainer(), SomeVanillaBrick.class);
 		assertSame(Thread.currentThread(), brick.brickThread());
 	}
 	

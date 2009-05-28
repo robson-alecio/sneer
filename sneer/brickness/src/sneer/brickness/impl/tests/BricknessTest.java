@@ -1,22 +1,28 @@
 package sneer.brickness.impl.tests;
 
+import static sneer.commons.environments.Environments.my;
+
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.brickness.BrickLoadingException;
 import sneer.brickness.Brickness;
-import sneer.brickness.BricknessFactory;
 import sneer.brickness.impl.tests.fixtures.a.BrickA;
 import sneer.brickness.impl.tests.fixtures.b.BrickB;
 import sneer.brickness.impl.tests.fixtures.noannotation.InterfaceWithoutBrickAnnotation;
+import sneer.commons.environments.Environment;
+import sneer.commons.environments.Environments;
+
 
 public class BricknessTest extends Assert {
 	
-	Brickness subject = BricknessFactory.newBrickContainer();
+	Environment subject = Brickness.newBrickContainer();
 
 	protected void loadBrick(final Class<?> brick) {
-		subject.environment().provide(brick);
+		Environments.runWith(subject, new Runnable() { @Override public void run() {
+			my(brick);
+		}});
 	}
 
 	@Test

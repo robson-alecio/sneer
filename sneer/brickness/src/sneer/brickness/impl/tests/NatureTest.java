@@ -1,5 +1,7 @@
 package sneer.brickness.impl.tests;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -12,12 +14,13 @@ import org.junit.Test;
 
 import sneer.brickness.BrickLoadingException;
 import sneer.brickness.Brickness;
-import sneer.brickness.BricknessFactory;
 import sneer.brickness.ClassDefinition;
 import sneer.brickness.impl.tests.fixtures.nature.brick.BrickOfSomeNature;
 import sneer.brickness.impl.tests.fixtures.nature.brick.impl.BrickOfSomeNatureImpl;
 import sneer.brickness.impl.tests.fixtures.nature.provider.SomeNature;
 import sneer.brickness.testsupport.ClassFiles;
+import sneer.commons.environments.Environment;
+import sneer.commons.environments.Environments;
 
 // TODO: test multiple natures
 public class NatureTest extends Assert {
@@ -36,20 +39,24 @@ public class NatureTest extends Assert {
 				will(returnValue(Arrays.asList(classDef)));
 		}});
 		
-		loadBrick(BricknessFactory.newBrickContainer(nature), BrickOfSomeNature.class);
+		loadBrick(Brickness.newBrickContainer(nature), BrickOfSomeNature.class);
 		
 		mockery.assertIsSatisfied();
 	}
 	
 	@Test (expected = BrickLoadingException.class)
 	public void natureWithoutImplementation() {
-		Brickness brickness = BricknessFactory.newBrickContainer();
-		brickness.environment().provide(BrickOfSomeNature.class);
+		final Class<BrickOfSomeNature> brick = BrickOfSomeNature.class;
+		Environment container = Brickness.newBrickContainer();
+		loadBrick(container, brick);
+	}
+
+	private void loadBrick(Environment container, final Class<?> brick) {
+		Environments.runWith(container, new Runnable() { @Override public void run() {
+			my(brick);
+		}});
 	}
 	
-	protected void loadBrick(Brickness subject, final Class<?> brick) {
-		subject.environment().provide(brick);
-	}
 
 	private byte[] bytecodeFor(final Class<?> clazz)
 			throws IOException {

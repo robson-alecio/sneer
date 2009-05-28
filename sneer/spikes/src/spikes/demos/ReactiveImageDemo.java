@@ -9,7 +9,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
-import sneer.brickness.testsupport.SystemBrickEnvironment;
+import sneer.brickness.Brickness;
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.Functor;
 import sneer.hardware.gui.guithread.GuiThread;
@@ -56,7 +56,7 @@ public class ReactiveImageDemo {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		Environments.runWith(new SystemBrickEnvironment(), new Runnable(){ @Override public void run() {
+		Environments.runWith(Brickness.newBrickContainer(), new Runnable(){ @Override public void run() {
 			try {
 				new ReactiveImageDemo();
 			} catch (Exception e) {

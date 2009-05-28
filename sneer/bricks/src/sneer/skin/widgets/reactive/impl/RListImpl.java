@@ -2,6 +2,11 @@ package sneer.skin.widgets.reactive.impl;
 
 import static sneer.commons.environments.Environments.my;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
@@ -9,8 +14,6 @@ import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.reactive.Register;
@@ -65,9 +68,18 @@ class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 		ListSelectionModel selectionModel = getSelectionModel();
 		selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
-		selectionModel.addListSelectionListener(new ListSelectionListener(){ @Override public void valueChanged(ListSelectionEvent e) {
+		addMouseListener(new MouseAdapter(){@Override public void mouseReleased(MouseEvent e) {
+			int index = locationToIndex(e.getPoint());
+			final ELEMENT element = (ELEMENT) getModel().getElementAt(index);
+			if(getSelectedValue()  != element)
+				setSelectedValue(element, true);
+			
+			changeSelectedElement(element);
+		}});
+		
+		addKeyListener(new KeyAdapter(){ @Override public void keyReleased(KeyEvent e) {
 			ELEMENT element = (ELEMENT) getSelectedValue();
-			_selectedElement.setter().consume(element);
+			changeSelectedElement(element);
 		}});
 
 		getModel().addListDataListener(new ListDataListener(){
@@ -78,11 +90,18 @@ class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 			private void changeSelectionGuiToSelectedContact() {
 				final ELEMENT element = _selectedElement.output().currentValue();
 				my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
+					if(getSelectedValue()==element)
+						return;
+					
 					setSelectedValue(element, true);
 				}});
 			}
 		});
 	}	
+	
+	private void changeSelectedElement(ELEMENT element) {
+		_selectedElement.setter().consume(element);
+	}
 	
 	@Override
 	public Signal<ELEMENT> selectedElement(){

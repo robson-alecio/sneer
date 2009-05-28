@@ -1,6 +1,9 @@
 package functional.adapters;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 import main.Sneer;
 
@@ -52,13 +55,29 @@ public class SneerCommunity implements SovereignCommunity {
 	}
 
 	private Brickness newContainer(final String name) {
+		final File rootDirectory = rootDirectory(name);
+		
 		StoragePath storagePath = new StoragePath() { @Override public String get() {
-			File result = rootDirectory(name);
+			File result = rootDirectory;
 			if (!result.exists()) result.mkdirs();
 			return result.getAbsolutePath();
 		}};
 		
-		return BricknessFactory.newBrickContainer(_network, storagePath);
+		return BricknessFactory.newBrickContainerWithApiClassLoader(apiClassLoader(rootDirectory), _network, storagePath);
+	}
+
+	private URLClassLoader apiClassLoader(File rootDirectory) {
+		File binDir = new File(rootDirectory.getAbsolutePath(),"bin");
+		if (!binDir.exists() && !binDir.mkdirs())
+			throw new IllegalStateException("Could not create temporary directory '" + binDir + "'!");
+
+		URL url;
+		try {
+			url = binDir.toURI().toURL();
+		} catch (MalformedURLException e) {
+			throw new IllegalStateException(e);
+		}
+		return new URLClassLoader(new URL[]{url}, SneerCommunity.class.getClassLoader());
 	}
 
 	private File rootDirectory(String name) {

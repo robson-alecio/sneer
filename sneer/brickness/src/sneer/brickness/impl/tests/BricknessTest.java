@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import sneer.brickness.BrickLayer;
-import sneer.brickness.BrickPlacementException;
+import sneer.brickness.BrickLoadingException;
 import sneer.brickness.Brickness;
 import sneer.brickness.BricknessFactory;
 import sneer.brickness.impl.tests.fixtures.a.BrickA;
@@ -52,17 +52,17 @@ public class BricknessTest extends Assert {
 		assertEquals("true", System.getProperty("BrickA.ran"));
 	}
 	
-	@Test(expected=BrickPlacementException.class)
+	@Test
 	public void runDependentBrickWithoutDependencies() throws Exception {
 		placeBrick(BrickB.class);
 	}
 	
-	@Test(expected=BrickPlacementException.class)
+	@Test(expected=BrickLoadingException.class)
 	public void noBrickInterfaceFound() throws Exception {
 		placeBrick(InterfaceWithoutBrickAnnotation.class);
 	}
 
-	@Test(expected=BrickPlacementException.class)
+	@Test(expected=BrickLoadingException.class)
 	public void bogusDirectory() throws Exception {
 		subject.placeBrick(new File("bogus"), "bogus");
 	}

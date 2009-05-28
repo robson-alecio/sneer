@@ -1,6 +1,6 @@
 package main;
 
-import sneer.brickness.BrickPlacementException;
+import sneer.brickness.BrickLoadingException;
 import sneer.brickness.Brickness;
 import sneer.brickness.BricknessFactory;
 import sneer.brickness.testsupport.ClassFiles;
@@ -23,7 +23,7 @@ public class Sneer {
 		};
 	}
 
-	static public void placeBricks(Brickness container, Class<?>... bricks) throws BrickPlacementException {
+	static public void placeBricks(Brickness container, Class<?>... bricks) throws BrickLoadingException {
 		for (Class<?> brick : bricks)
 			container.placeBrick(ClassFiles.classpathRootFor(brick), brick.getName());
 	}

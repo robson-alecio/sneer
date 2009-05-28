@@ -10,7 +10,7 @@ import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Assert;
 import org.junit.Test;
 
-import sneer.brickness.BrickPlacementException;
+import sneer.brickness.BrickLoadingException;
 import sneer.brickness.Brickness;
 import sneer.brickness.BricknessFactory;
 import sneer.brickness.ClassDefinition;
@@ -41,16 +41,10 @@ public class NatureTest extends Assert {
 		mockery.assertIsSatisfied();
 	}
 	
-	@Test
+	@Test (expected = BrickLoadingException.class)
 	public void natureWithoutImplementation() {
-		
-		try {
-			placeBrick(BricknessFactory.newBrickContainer(), BrickOfSomeNature.class);
-			Assert.fail();
-		} catch (BrickPlacementException e) {
-			assertTrue(e.getMessage(), e.getMessage().contains("Implementation for nature"));
-			assertTrue(e.getMessage(), e.getMessage().contains("not found"));
-		}
+		Brickness brickness = BricknessFactory.newBrickContainer();
+		brickness.environment().provide(BrickOfSomeNature.class);
 	}
 	
 	protected void placeBrick(Brickness subject, final Class<?> brick) {

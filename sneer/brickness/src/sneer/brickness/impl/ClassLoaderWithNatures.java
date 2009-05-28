@@ -1,6 +1,5 @@
 package sneer.brickness.impl;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -12,22 +11,23 @@ import org.apache.commons.io.IOUtils;
 import sneer.brickness.ClassDefinition;
 import sneer.brickness.Nature;
 
-final class ClassLoaderForPackageWithNatures extends ClassLoaderForPackage {
+abstract class ClassLoaderWithNatures extends EagerClassLoader {
 
-	private final List<Nature> _natures;
 
-	ClassLoaderForPackageWithNatures(File classRootDirectory,
-			String packageName, ClassLoader delegateForOtherPackages, List<Nature> natures) {
-		super(classRootDirectory, packageName, delegateForOtherPackages);
+	ClassLoaderWithNatures(URL[] urls, ClassLoader next, List<Nature> natures) {
+		super(urls, next);
 		_natures = natures;
 	}
+	
+	
+	private final List<Nature> _natures;
+	
 	
 	@Override
 	protected Class<?> doLoadClass(String name) throws ClassNotFoundException {
 		
 		final URL classResource = findResource(name.replace('.', '/') + ".class");
-		if (classResource == null)
-			throw new ClassNotFoundException(name);
+		if (classResource == null) throw new ClassNotFoundException(name);
 		
 		ClassDefinition originalClassDef = new ClassDefinition(name, toByteArray(classResource));
 		List<ClassDefinition> classDefs = realizeNatures(originalClassDef);
@@ -45,8 +45,7 @@ final class ClassLoaderForPackageWithNatures extends ClassLoaderForPackage {
 				mainClass = clazz;
 			}
 		}
-		if (mainClass == null)
-			throw new IllegalStateException();
+		if (mainClass == null)throw new IllegalStateException();
 		return mainClass;
 	}
 

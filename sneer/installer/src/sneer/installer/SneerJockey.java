@@ -1,7 +1,5 @@
 package sneer.installer;
 
-import java.io.File;
-
 import main.Sneer;
 import main.SneerStoragePath;
 import sneer.brickness.BrickLoadingException;
@@ -11,26 +9,24 @@ import sneer.brickness.BricknessFactory;
 /** This guy "plays" (runs) the latest version of Sneer, one after the other. */
 public class SneerJockey {
 
-	private final File _binDir;
 	private final SneerStoragePath _sneerStoragePath;
 
 	public SneerJockey(SneerStoragePath sneerStoragePath) throws Exception {
 		_sneerStoragePath = sneerStoragePath;
-		_binDir = new File(sneerStoragePath.get(), "bin");
 		
 //		while (true)
 			play();
 	}
 
 	private void play() throws Exception {
-		//TODO: add class loader
+		//TODO: add class loader:  new File(sneerStoragePath.get(), "bin");
 		Brickness container = BricknessFactory.newBrickContainer(_sneerStoragePath);
-		placeBricks(container, Sneer.businessBricks());
-		placeBricks(container, Sneer.communicationBricks());
+		loadBricks(container, Sneer.businessBricks());
+		loadBricks(container, Sneer.communicationBricks());
 	}
 
-	private void placeBricks(Brickness container, Class<?>... bricks) throws BrickLoadingException {
+	private void loadBricks(Brickness container, Class<?>... bricks) throws BrickLoadingException {
 		for (Class<?> brick : bricks)
-			container.placeBrick(_binDir, brick.getName());
+			container.environment().provide(brick);
 	}
 }

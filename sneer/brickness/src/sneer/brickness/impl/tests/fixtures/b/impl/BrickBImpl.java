@@ -7,6 +7,19 @@ import sneer.brickness.impl.tests.fixtures.b.BrickB;
 public class BrickBImpl implements BrickB {
 	{
 		System.setProperty("BrickB.classLoader", "" + getClass().getClassLoader().hashCode());
+		System.setProperty("BrickB.lib.classLoader", "" + libClassLoaderHash());
+
 		my(BrickA.class).setProperty("BrickB was here!");
 	}
+
+	private int libClassLoaderHash() {
+		try {
+//			Class<?> lib = getClass().getClassLoader().loadClass("foo.ClassInLib");
+//			return lib.newInstance().getClass().getClassLoader().hashCode();
+			return 0;
+		} catch (Exception e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
 }

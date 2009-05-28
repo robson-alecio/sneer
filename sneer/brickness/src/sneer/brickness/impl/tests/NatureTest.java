@@ -36,7 +36,7 @@ public class NatureTest extends Assert {
 				will(returnValue(Arrays.asList(classDef)));
 		}});
 		
-		placeBrick(BricknessFactory.newBrickContainer(nature), BrickOfSomeNature.class);
+		loadBrick(BricknessFactory.newBrickContainer(nature), BrickOfSomeNature.class);
 		
 		mockery.assertIsSatisfied();
 	}
@@ -47,8 +47,8 @@ public class NatureTest extends Assert {
 		brickness.environment().provide(BrickOfSomeNature.class);
 	}
 	
-	protected void placeBrick(Brickness subject, final Class<?> brick) {
-		subject.placeBrick(ClassFiles.classpathRootFor(brick), brick.getName());
+	protected void loadBrick(Brickness subject, final Class<?> brick) {
+		subject.environment().provide(brick);
 	}
 
 	private byte[] bytecodeFor(final Class<?> clazz)

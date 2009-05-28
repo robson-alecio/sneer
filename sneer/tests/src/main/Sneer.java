@@ -3,7 +3,6 @@ package main;
 import sneer.brickness.BrickLoadingException;
 import sneer.brickness.Brickness;
 import sneer.brickness.BricknessFactory;
-import sneer.brickness.testsupport.ClassFiles;
 
 
 public class Sneer {
@@ -11,13 +10,13 @@ public class Sneer {
 	public static void main(String[] ignored) throws Exception {
 		Brickness container = BricknessFactory.newBrickContainer(new SneerStoragePath());
 		
-		placeBricks(container, businessBricks());
-		placeBricks(container, communicationBricks());
+		loadBricks(container, businessBricks());
+		loadBricks(container, communicationBricks());
 	}
 
-	static public void placeBricks(Brickness container, Class<?>... bricks) throws BrickLoadingException {
+	static public void loadBricks(Brickness container, Class<?>... bricks) throws BrickLoadingException {
 		for (Class<?> brick : bricks)
-			container.placeBrick(ClassFiles.classpathRootFor(brick), brick.getName());
+			container.environment().provide(brick);
 	}
 
 	static public Class<?>[] businessBricks() {
@@ -27,9 +26,6 @@ public class Sneer {
 
 				sneer.skin.image.ImageFactory.class,
 
-				sneer.pulp.events.EventNotifiers.class,
-				//sneer.pulp.reactive.Signals.class,
-				sneer.pulp.reactive.collections.CollectionSignals.class,
 				sneer.pulp.log.filter.LogFilter.class,
 				sneer.pulp.log.stacktrace.StackTraceLogger.class,
 				sneer.pulp.log.formatter.LogFormatter.class,

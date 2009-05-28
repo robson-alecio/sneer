@@ -31,14 +31,15 @@ public class BricknessTest extends Assert {
 
 	@Test
 	@Ignore
-	public void libsRunInSameClassloaderAsBrick() throws Exception {
-		System.setProperty("BrickA.classloader", "");
+	public void libsRunInSeparateClassloaders() throws Exception {
 		System.setProperty("BrickA.lib.classloader", "");
+		System.setProperty("BrickB.lib.classloader", "");
 		loadBrick(BrickA.class);
-		String classLoaderBrick = System.getProperty("BrickA.classLoader");
-		String classLoaderLib = System.getProperty("BrickA.lib.classLoader");
+		loadBrick(BrickB.class);
+		String classLoaderA = System.getProperty("BrickA.lib.classLoader");
+		String classLoaderB = System.getProperty("BrickB.lib.classLoader");
 
-		assertEquals(classLoaderLib, classLoaderBrick);
+		assertFalse(classLoaderA.equals(classLoaderB));
 	}
 
 	@Test

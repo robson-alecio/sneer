@@ -174,6 +174,5 @@ class SneerPartyImpl implements SneerParty {
 		return _wind.shoutsHeard();
 	}
 
-	
 }
 

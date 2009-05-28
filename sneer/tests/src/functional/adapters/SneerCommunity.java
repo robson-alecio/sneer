@@ -1,6 +1,9 @@
 package functional.adapters;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 import main.Sneer;
 
@@ -9,8 +12,6 @@ import org.apache.commons.lang.StringUtils;
 import sneer.brickness.Brickness;
 import sneer.brickness.BricknessFactory;
 import sneer.brickness.StoragePath;
-import sneer.brickness.testsupport.ClassFiles;
-import sneer.commons.environments.Environments;
 import sneer.pulp.network.Network;
 import testutils.network.InProcessNetwork;
 import functional.SovereignCommunity;
@@ -30,36 +31,52 @@ public class SneerCommunity implements SovereignCommunity {
 	@Override
 	public SovereignParty createParty(final String name) {
 		Brickness container = newContainer(name);
-		placeBricks(container);
+		loadBricks(container);
 		
-		final SneerParty party = Environments.wrap(SneerParty.class, container.environment());
+		final SneerParty party = ProxyInEnvironment.newInstance(SneerParty.class, container.environment());
 		party.setOwnName(name);
 		party.setSneerPort(_nextPort++);
 		return party;
 	}
 
-	private void placeBricks(Brickness container) {
+	private void loadBricks(Brickness container) {
 		try {
-			placeBricks(container, Sneer.businessBricks());
-			placeBricks(container, SneerParty.class);
+			loadBricks(container, Sneer.businessBricks());
+			loadBricks(container, SneerParty.class);
 		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}
 	}
 
-	private void placeBricks(Brickness container, Class<?>... bricks) {
+	private void loadBricks(Brickness container, Class<?>... bricks) {
 		for (Class<?> brick : bricks)
-			container.placeBrick(ClassFiles.classpathRootFor(brick), brick.getName());
+			container.environment().provide(brick);
 	}
 
 	private Brickness newContainer(final String name) {
+		final File rootDirectory = rootDirectory(name);
+		
 		StoragePath storagePath = new StoragePath() { @Override public String get() {
-			File result = rootDirectory(name);
+			File result = rootDirectory;
 			if (!result.exists()) result.mkdirs();
 			return result.getAbsolutePath();
 		}};
 		
-		return BricknessFactory.newBrickContainer(_network, storagePath);
+		return BricknessFactory.newBrickContainerWithApiClassLoader(apiClassLoader(rootDirectory), _network, storagePath);
+	}
+
+	private URLClassLoader apiClassLoader(File rootDirectory) {
+		File binDir = new File(rootDirectory.getAbsolutePath(),"bin");
+		if (!binDir.exists() && !binDir.mkdirs())
+			throw new IllegalStateException("Could not create temporary directory '" + binDir + "'!");
+
+		URL url;
+		try {
+			url = binDir.toURI().toURL();
+		} catch (MalformedURLException e) {
+			throw new IllegalStateException(e);
+		}
+		return new URLClassLoader(new URL[]{url}, SneerCommunity.class.getClassLoader());
 	}
 
 	private File rootDirectory(String name) {

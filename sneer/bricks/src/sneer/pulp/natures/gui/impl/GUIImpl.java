@@ -18,7 +18,7 @@ class GUIImpl implements GUI {
 		
 		final ArrayList<ClassDefinition> result = new ArrayList<ClassDefinition>();
 		try {
-			final CtClass ctClass = classPool.makeClass(new ByteArrayInputStream(classDef.bytes()));
+			final CtClass ctClass = classPool.makeClass(new ByteArrayInputStream(classDef.bytes));
 			CtClass metadata = null;
 			try {
 				metadata = defineBrickMetadata(ctClass);

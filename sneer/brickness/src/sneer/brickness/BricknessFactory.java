@@ -8,4 +8,8 @@ public class BricknessFactory {
 		return new BricknessImpl(bindings);
 	}
 
+	public static Brickness newBrickContainerWithApiClassLoader(ClassLoader apiClassLoader, Object... bindings) {
+		return new BricknessImpl(apiClassLoader, bindings);
+	}
+
 }

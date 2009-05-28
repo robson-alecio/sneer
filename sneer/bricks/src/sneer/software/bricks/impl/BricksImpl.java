@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
-import sneer.brickness.BrickLayer;
+import sneer.brickness.StoragePath;
 import sneer.software.bricks.Bricks;
 import sneer.software.code.compilers.classpath.Classpath;
 import sneer.software.code.compilers.classpath.ClasspathFactory;
@@ -21,8 +21,7 @@ public class BricksImpl implements Bricks {
 	@Override
 	public void publish(File sourceDirectory) {
 		
-		final File tempOutputDir = createTempDir();
-		final Result result = compile(sourceDirectory, tempOutputDir);
+		final Result result = compile(sourceDirectory, binDirectory());
 		if (!result.success())
 			throw new CompilationError(result.getErrorString());
 		
@@ -30,8 +29,15 @@ public class BricksImpl implements Bricks {
 		if (null == brickName)
 			throw new IllegalArgumentException("Directory '" + sourceDirectory + "' contains no bricks.");
 		
-		my(BrickLayer.class).placeBrick(tempOutputDir, brickName);
-		
+		instatiate(brickName);
+	}
+
+	private void instatiate(final String brickName) {
+		try {
+			my(BricksImpl.class.getClassLoader().loadClass(brickName));
+		} catch (ClassNotFoundException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 	private String brickNameFor(Result result) {
@@ -52,9 +58,9 @@ public class BricksImpl implements Bricks {
 		return new ArrayList<File>(FileUtils.listFiles(sourceDirectory, extensions, true));
 	}
 
-	private File createTempDir() {
-		File result = new File(System.getProperty("java.io.tmpdir"), "" + System.nanoTime());
-		if (!result.mkdirs())
+	private File binDirectory() {
+		File result = new File(my(StoragePath.class).get(), "bin");
+		if (!result.exists() && !result.mkdirs())
 			throw new IllegalStateException("Could not create temporary directory '" + result + "'!");
 		return result;
 	}

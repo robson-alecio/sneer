@@ -47,18 +47,16 @@ public class BandwidthReportingTest extends BrickTest {
 		assertEquals(_IN_PACKET_SIZE, notifiedValue());
 	}
 
-	private void startAndWaitJobToFinish(ByRef<Thread> job, int index) throws InterruptedException {
-		job.value = new Thread(findActor(index));
+	private void startAndWaitJobToFinish(ByRef<Thread> job, final int index) throws InterruptedException {
+		job.value = new Thread(new Runnable() { @Override public void run() {
+			while (true) _threads.stepper(index).step();
+		}});
 		job.value.start();
 		sleepWhileJobIsAlive(job);
 	}
 
 	private void sleepWhileJobIsAlive(final ByRef<Thread> job) throws InterruptedException {
 		while(job.value.isAlive()){ Thread.sleep(100); }
-	}
-
-	private Runnable findActor(int index) {
-		return _threads.getActors().get(index);
 	}
 
 	private ByRef<Thread> initComunications(final Contact contact) {

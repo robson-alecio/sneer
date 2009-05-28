@@ -51,6 +51,8 @@ class WatchMeImpl implements WatchMe {
 	private Encoder _encoder;
 	private Cache<ImmutableByteArray> _cache;
 
+	private Consumer<ImageDeltaPacket> _consumerToAvoidGc;
+
 	@Override
 	public EventSource<BufferedImage> screenStreamFor(final PublicKey publisher) {
 		if (publisher == null)
@@ -58,7 +60,8 @@ class WatchMeImpl implements WatchMe {
 		
 		EventNotifier<BufferedImage> result = my(EventNotifiers.class).create();
 		
-		_tupleSpace.addSubscription(ImageDeltaPacket.class, imageDeltaPacketConsumer(publisher, result));
+		_consumerToAvoidGc = imageDeltaPacketConsumer(publisher, result);
+		_tupleSpace.addSubscription(ImageDeltaPacket.class, _consumerToAvoidGc);
 		
 		return result.output();
 	}

@@ -112,21 +112,21 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 		final ListWidget<String> includes = my(ReactiveWidgetFactory.class).newList(whiteListEntries.output());
 		JScrollPane scroll2 = my(SynthScrolls.class).create();
 		scroll2.getViewport().add(includes.getComponent());
-		scroll2.setBorder(new TitledBorder("Includes:"));
+		scroll2.setBorder(new TitledBorder("Log Events That Contain:"));
+		filter.add(scroll2, new GridBagConstraints(0,0,1,2,1.0,1.0, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0,2,0,0), 0,0));
 		
 		final JTextField newInclude = new JTextField();
-		newInclude.setBorder(new TitledBorder("New Filter:"));
-		filter.add(newInclude, new GridBagConstraints(0,0,1,1,1.0,0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(0,2,0,0), 0,0));
+		newInclude.setBorder(new TitledBorder(""));
+		filter.add(newInclude, new GridBagConstraints(0,2,1,1,1.0,0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(0,4,2,2), 0,0));
 		
-		filter.add(scroll2, new GridBagConstraints(0,1,1,2,1.0,1.0, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0,2,0,0), 0,0));
 		JButton addButton = new JButton();
 		JButton delButton = new JButton();
 
 		_synth.attach(addButton,"AddButton");
 		_synth.attach(delButton,"DelButton");
 		
-		filter.add(addButton, new GridBagConstraints(1,0,1,1,0.0,0.0, GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0,0));
-		filter.add(delButton, new GridBagConstraints(1,1,1,1,0.0,0.0, GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0,0));
+		filter.add(delButton, new GridBagConstraints(1,0,1,1,0.0,0.0, GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0,0));
+		filter.add(addButton, new GridBagConstraints(1,2,1,1,0.0,0.0, GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0,0));
 		
 		initAddFilterAction(whiteListEntries, newInclude, addButton);
 		initDeleteFilterAction(whiteListEntries, includes, delButton);

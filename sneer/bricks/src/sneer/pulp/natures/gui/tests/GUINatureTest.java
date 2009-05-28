@@ -6,29 +6,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import sneer.brickness.Brickness;
 import sneer.brickness.BricknessFactory;
-import sneer.brickness.testsupport.ClassFiles;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.ByRef;
 import sneer.hardware.gui.guithread.GuiThread;
-import sneer.pulp.natures.gui.GUI;
 import sneer.pulp.natures.gui.tests.fixtures.SomeGuiBrick;
 
 public class GUINatureTest extends Assert {
 	
 	Brickness subject = BricknessFactory.newBrickContainer();
 	
-	@Before
-	public void placeBricks() {
-		placeBrick(GuiThread.class);
-		placeBrick(GUI.class);
-		placeBrick(SomeGuiBrick.class);
-	}
 	
 	@Test
 	public void invocationHappensInTheSwingThread() {
@@ -72,9 +63,6 @@ public class GUINatureTest extends Assert {
 		}});
 	}
 
-	private void placeBrick(final Class<?> brick) {
-		subject.placeBrick(ClassFiles.classpathRootFor(brick), brick.getName());
-	}
 	
 	private Thread swingThread() {
 		final ByRef<Thread> swingThread = ByRef.newInstance();

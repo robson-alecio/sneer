@@ -1,38 +1,33 @@
 package sneer.pulp.reactive.impl;
 
-import java.lang.ref.WeakReference;
-import java.util.HashSet;
-import java.util.Set;
-
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.reactive.Reception;
 
 class ReceiversImpl {
-	
-	private static final Set<Object> _referencesToAvoidGC = new HashSet<Object>();
-	
- 	static <T> void receive(Object owner, final Consumer<? super T> delegate, final EventSource<? extends T>... sources) {
-		final WeakReference<Object> weakOwner = new WeakReference<Object>(owner);
 
-		new ReceptionImpl<T>(sources) {
-			{ _referencesToAvoidGC.add(this); }
+ 	/** Instances of this class hold a reference to the EventSources (Signals) they are receiving, so that these sources are not GCd. */
+ 	private static abstract class ReceptionImpl<T> implements Consumer<T>, Reception {
 
-			@Override
-			public void consume(T value) {
-				if (weakOwner.get() == null) {
-					_referencesToAvoidGC.remove(this);
-					return;
-				}
-				delegate.consume(value);
-			}
-		};
+ 		private final EventSource<? extends T>[] _sourcesReferenceToAvoidGc;
+
+ 		private ReceptionImpl(EventSource<? extends T>... eventSources) {
+ 			for (EventSource<? extends T> source : eventSources)
+ 				source.addReceiver(this);
+
+ 			_sourcesReferenceToAvoidGc = eventSources;
+ 		}
+
+ 		@Override
+ 		public void dispose() {
+ 			for (EventSource<? extends T> source : _sourcesReferenceToAvoidGc)
+ 				source.removeReceiver(this);
+ 		}
  	}
-
+ 
  	static <T> Reception receive(final Consumer<? super T> receiver, final EventSource<? extends T>... sources) {
 		return new ReceptionImpl<T>(sources) { @Override public void consume(T value) {
 			receiver.consume(value);
 		}};
  	}
-
 }

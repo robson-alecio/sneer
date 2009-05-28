@@ -1,10 +1,8 @@
 package main;
 
-import sneer.brickness.BrickPlacementException;
+import sneer.brickness.BrickLoadingException;
 import sneer.brickness.Brickness;
 import sneer.brickness.BricknessFactory;
-import sneer.brickness.testsupport.ClassFiles;
-import sneer.pulp.natures.gui.GUI;
 
 
 public class Sneer {
@@ -12,20 +10,13 @@ public class Sneer {
 	public static void main(String[] ignored) throws Exception {
 		Brickness container = BricknessFactory.newBrickContainer(new SneerStoragePath());
 		
-		placeBricks(container, natures());
-		placeBricks(container, businessBricks());
-		placeBricks(container, communicationBricks());
+		loadBricks(container, businessBricks());
+		loadBricks(container, communicationBricks());
 	}
 
-	private static Class<?>[] natures() {
-		return new Class<?>[] {
-			GUI.class,
-		};
-	}
-
-	static public void placeBricks(Brickness container, Class<?>... bricks) throws BrickPlacementException {
+	static public void loadBricks(Brickness container, Class<?>... bricks) throws BrickLoadingException {
 		for (Class<?> brick : bricks)
-			container.placeBrick(ClassFiles.classpathRootFor(brick), brick.getName());
+			container.environment().provide(brick);
 	}
 
 	static public Class<?>[] businessBricks() {
@@ -35,9 +26,6 @@ public class Sneer {
 
 				sneer.skin.image.ImageFactory.class,
 
-				sneer.pulp.events.EventNotifiers.class,
-				sneer.pulp.reactive.Signals.class,
-				sneer.pulp.reactive.collections.CollectionSignals.class,
 				sneer.pulp.log.filter.LogFilter.class,
 				sneer.pulp.log.stacktrace.StackTraceLogger.class,
 				sneer.pulp.log.formatter.LogFormatter.class,
@@ -49,6 +37,7 @@ public class Sneer {
 
 				sneer.pulp.internetaddresskeeper.InternetAddressKeeper.class,
 				sneer.pulp.crypto.Crypto.class,
+				sneer.hardware.ram.collections.cachemap.CacheMaps.class,
 				sneer.pulp.reactive.collections.listsorter.ListSorter.class,
 				sneer.pulp.reactive.collections.setfilter.SetFilter.class,
 				sneer.pulp.reactive.gates.logic.LogicGates.class,
@@ -111,7 +100,7 @@ public class Sneer {
 		};
 	}
 
-	private static Class<?>[] communicationBricks() {
+	public static Class<?>[] communicationBricks() {
 		return new Class<?>[] {
 				sneer.hardware.gui.guithread.GuiThread.class, 
 				sneer.hardware.io.codecs.base64.Base64.class,

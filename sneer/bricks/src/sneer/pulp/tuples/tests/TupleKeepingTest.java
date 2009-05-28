@@ -16,9 +16,10 @@ public class TupleKeepingTest extends BrickTest {
 	@Test (timeout = 5000)
 	public void tuplesLimitAmount() {
 
-		subject().addSubscription(KeptTuple.class, new Consumer<KeptTuple>() { @Override public void consume(KeptTuple ignored) {
+		Consumer<KeptTuple> consumerToAvoidGc = new Consumer<KeptTuple>() { @Override public void consume(KeptTuple ignored) {
 			_notificationCounter++;
-		}});
+		}};
+		subject().addSubscription(KeptTuple.class, consumerToAvoidGc);
 		
 		subject().keep(KeptTuple.class);
 		subject().publish(new KeptTuple(1));

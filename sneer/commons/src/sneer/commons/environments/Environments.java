@@ -1,6 +1,5 @@
 package sneer.commons.environments;
 
-import sneer.commons.lang.Producer;
 
 public class Environments {
 	
@@ -16,38 +15,15 @@ public class Environments {
 		}
 	}
 
-	public static <T> T produceWith(Environment environment, Producer<T> producer) {
-		final Environment previous = current();
-		_environment.set(environment);
-		try {
-			return producer.produce();
-		} finally {
-			_environment.set(previous);
-		}
-	}
-	
-	public static <T> T wrap(Class<T> intrface, Environment environment) {
-		return EnvironmentInvocationHandler.newInstance(intrface, environment);
-	}
-	
-	public static <T> T wrap(T instance, Environment environment) {
-		return EnvironmentInvocationHandler.newInstance(environment, instance);
-	}
-	
 	public static <T> T my(Class<T> need) {
 		final Environment environment = current();
-		if (environment == null)
-			cantFulfill(need);
-		if (need == Environment.class)
-			return (T) environment;
+		if (environment == null) throw new IllegalStateException("Thread " + Thread.currentThread() + " is not running in an environment.");
+		
+		if (need == Environment.class) return (T) environment;
+		
 		final T implementation = environment.provide(need);
-		if (null == implementation)
-			cantFulfill(need);
+		if (null == implementation)	throw new IllegalStateException("Environment failed to provide thread " + Thread.currentThread() + " with implementation for " + need);
 		return implementation;
-	}
-
-	private static <T> void cantFulfill(Class<T> need) {
-		throw new IllegalStateException("Unable to provide thread " + Thread.currentThread() + " with implementation for " + need);
 	}
 
 	public static Environment compose(final Environment... environments) {

@@ -1,101 +1,118 @@
 package sneer.installer;
 
-import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.LookAndFeel;
+import javax.swing.UIManager;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import main.SneerStoragePath;
 
+import static javax.swing.JOptionPane.OK_OPTION;
+import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
+
 public class Wizard extends JFrame{
 
-	private static final String WIZARD_TITLE = "Sneer Installation Wizard";
-	private final File _sneerHome;
+	private final String WIZARD_TITLE = "Sneer Installation Wizard";
+	private final SneerStoragePath _sneerStoragePath;
 
-	public Wizard(File sneerHome) {
-		_sneerHome = sneerHome;
-		welcome();
-		license();
-		dogFoodInformation();
-		configInformation();
-		congratulations();
+	Wizard(SneerStoragePath sneerStoragePath) {
+		_sneerStoragePath = sneerStoragePath;
+		
+		try {
+			useNimbus();
+			welcome();
+			license();
+			dogFoodInformation();
+			configInformation();
+			tryInstall();
+			congratulations();
+			useMetal();
+			startSneer();
+			
+		} catch (Throwable throwable) {
+			showDialog("ERROR: \n" + throwable.getMessage(),	"Exit");
+			System.exit(1);
+		}
 	}
 
-	public static void main(String[] args) {
-		new Wizard(new File(new SneerStoragePath().get()));
+	private void showDialog(String msg, Object...options) {
+		Dialogs.show(WIZARD_TITLE, msg,	options);
+	}
+
+	private void startSneer() throws Exception {
+		new SneerJockey(_sneerStoragePath);
 	}
 
 	private void welcome() {
-		String msg = 
+		showDialog(
 		"Welcome to Sneer, the first sovereign computing peer.  :)\n\n" +
-		"This wizard will prepare Sneer to run for you.";
+		"This wizard will prepare Sneer to run for you.", 
 		
-		Object[] options = {"Whatever >"};
-
-		JOptionPane.showOptionDialog(null, msg, WIZARD_TITLE, 
-			JOptionPane.OK_OPTION,
-			JOptionPane.INFORMATION_MESSAGE,
-			null,  options,  options[0]); 
+		"Whatever >"); 
 	}
 
 	private void license() {
-		String msg = 
+		showDialog(
 		"Sneer is free software.\n\n" +
 		"It is licensed under the terms of the GNU Affero General Public License\n" +
 		"version 3 as published by the Free Software Foundation:\n" +
 		"http://www.fsf.org/licensing/licenses/agpl-3.0.html\n\n" +
-		"Do you accept these terms?";
+		"Do you accept these terms?", 
 		
-		Object[] options = {"I Accept >","I Do Not Accept"};
-		
-		int bnt = JOptionPane.showOptionDialog(null, msg, WIZARD_TITLE,
-				JOptionPane.OK_CANCEL_OPTION,
-				JOptionPane.INFORMATION_MESSAGE,
-				null,  options,  options[0]); 				
-		
-		if(bnt!=JOptionPane.OK_OPTION)
-			System.exit(0);
+		"I Accept >","I Do Not Accept"); 		
 	}
 	
-
 	private void dogFoodInformation() {
-		String msg = 
+		showDialog(
 		"This is the Sneer 'Dogfood Release' for ADVANCED Java users.\n\n" +
-		"Please do not install Sneer for regular users yet.";
+		"Please do not install Sneer for regular users yet.", 
 		
-		Object[] options = {"Whatever >"};
-
-		JOptionPane.showOptionDialog(null, msg, WIZARD_TITLE, 
-			JOptionPane.OK_OPTION,
-			JOptionPane.INFORMATION_MESSAGE,
-			null,  options,  options[0]); 
+		"Whatever >"); 
 	}
 	
 	private void configInformation() {
-		String msg = 
+		showDialog(
 		"Each user of this computer can have his own Sneer setup.\n\n" +
 		"To store your setup, the following folder will be created:\n" +
-		_sneerHome.getAbsolutePath();
+		_sneerStoragePath.get(), 
 		
-		Object[] options = {"Whatever >"};
-
-		JOptionPane.showOptionDialog(null, msg, WIZARD_TITLE, 
-			JOptionPane.OK_OPTION,
-			JOptionPane.INFORMATION_MESSAGE,
-			null,  options,  options[0]); 
-	}	
+		"Whatever >");
+	}
 	
 	private void congratulations() {
-		String msg = 
-		"Congratulations!\n\n" +
-		"You are no longer a slave. You have just\n" +
-		"claimed your own share of the internet.";
+		Object options[] = new Object[]{"Start Sneer"}; 
 		
-		Object[] options = {"Start Sneer"};
+		int bnt = JOptionPane.showOptionDialog(null, 
+				"Congratulations!\n\n" +
+				"You are no longer a slave. You have just\n" +
+				"claimed your own share of the internet.", 
+				
+				WIZARD_TITLE,  OK_OPTION, INFORMATION_MESSAGE, null,  options,  options[0]);
+		
+		if(bnt!=OK_OPTION)
+			System.exit(0);
+	}
 
-		JOptionPane.showOptionDialog(null, msg, WIZARD_TITLE, 
-			JOptionPane.OK_OPTION,
-			JOptionPane.INFORMATION_MESSAGE,
-			null,  options,  options[0]); 
+	private void tryInstall() throws IOException {
+		new Installer().install(_sneerStoragePath);
+	}	
+	
+	private void useMetal() {
+		try {
+			UIManager.setLookAndFeel(new MetalLookAndFeel());
+		} catch (Exception ignore) {}
+	}
+	
+	private void useNimbus() {
+		try {
+			UIManager.setLookAndFeel((LookAndFeel) Class.forName("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel").newInstance());
+		} catch (Exception ignore) {}
+	}
+	
+	public static void main(String[] args) {
+		new Wizard(new SneerStoragePath());
 	}
 }

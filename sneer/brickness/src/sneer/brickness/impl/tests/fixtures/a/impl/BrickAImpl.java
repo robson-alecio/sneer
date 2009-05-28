@@ -6,11 +6,22 @@ class BrickAImpl implements BrickA {
 	
 	{
 		System.setProperty("BrickA.ran", "true");
-		System.setProperty("BrickA.classLoader", getClass().getClassLoader().toString());
+		System.setProperty("BrickA.classLoader", "" + getClass().getClassLoader().hashCode());
+		System.setProperty("BrickA.lib.classLoader", "" + libClassLoaderHash());
 	}
 
 	@Override
 	public void setProperty(String value) {
 		System.setProperty("BrickA.property", value);
+	}
+
+	private int libClassLoaderHash() {
+		try {
+//			Class<?> lib = getClass().getClassLoader().loadClass("foo.ClassInLib");
+//			return lib.newInstance().getClass().getClassLoader().hashCode();
+			return 0;
+		} catch (Exception e) {
+			throw new IllegalStateException(e);
+		}
 	}
 }

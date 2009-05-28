@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import sneer.brickness.Brickness;
 import sneer.brickness.BricknessFactory;
-import sneer.brickness.testsupport.ClassFiles;
 import sneer.brickness.testsupport.TestThatMightUseResources;
 import sneer.commons.environments.Environments;
 import sneer.pulp.transientpropertystore.TransientPropertyStore;
@@ -52,14 +51,7 @@ public class TransparentPropertyStoreTest extends TestThatMightUseResources {
 
 	private void runInNewContainer(Runnable runnable) {
 		Brickness container = BricknessFactory.newBrickContainer();
-		placeBrick(container, TransientPropertyStore.class);
-		placeBrick(container, TransientPropertyStore2.class);
-		
 		Environments.runWith(container.environment(), runnable);
-	}
-
-	private void placeBrick(Brickness container, Class<?> brick) {
-		container.placeBrick(ClassFiles.classpathRootFor(brick), brick.getName());
 	}
 
 

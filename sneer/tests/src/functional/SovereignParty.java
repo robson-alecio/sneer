@@ -24,7 +24,6 @@ public interface SovereignParty {
 
 	void publishBricks(File sourceDirectory);
 	
-	
 	void shout(String string);
 	ListSignal<Shout> shoutsHeard();
 

@@ -81,7 +81,7 @@ class ContactsGuiImpl implements ContactsGui {
 		_container.setLayout(new BorderLayout());
 		_container.add(scrollPane, BorderLayout.CENTER);
 		
-		addContatActions(window.actions());
+		addContactActions(window.actions());
 		addDefaultContactAction();
 		
 		new ListContactsPopUpSupport();
@@ -109,7 +109,7 @@ class ContactsGuiImpl implements ContactsGui {
 		return _contactList.selectedElement();
 	}
 	
-	private void addContatActions(JPopupMenu popupMenu) {
+	private void addContactActions(JPopupMenu popupMenu) {
 		JMenuItem add = new JMenuItem("New Contact...");
 		popupMenu.add(add);
 		
@@ -149,11 +149,11 @@ class ContactsGuiImpl implements ContactsGui {
 				int index = list.locationToIndex(e.getPoint());
 				list.getSelectionModel().setSelectionInterval(index, index);
 				if (e.isPopupTrigger())
-					tryShowContactMenu(e);
+					tryToShowContactMenu(e);
 			}});
 		}
 
-		private void tryShowContactMenu(MouseEvent e) {
+		private void tryToShowContactMenu(MouseEvent e) {
 			JPopupMenu popupMain = new JPopupMenu();	
 			for (ContactAction action : my(ContactActionManager.class).actions())
 				if (action.isVisible())

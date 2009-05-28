@@ -20,9 +20,10 @@ public class TupleSpaceResponsivenessTest extends BrickTest {
 	@Test (timeout = 1000)
 	public void test() {
 		final ByRef<Boolean> wasPublished = ByRef.newInstance(false);
-		_subject.addSubscription(TestTuple.class, new Consumer<TestTuple>() { @Override public void consume(TestTuple value) {
+		Consumer<TestTuple> refToAvoidGc = new Consumer<TestTuple>() { @Override public void consume(TestTuple value) {
 			wasPublished.value = true;
-		}});
+		}};
+		_subject.addSubscription(TestTuple.class, refToAvoidGc);
 
 		final TestTuple tuple = new TestTuple(42);
 		_subject.publish(tuple);

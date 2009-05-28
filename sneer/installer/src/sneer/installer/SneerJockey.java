@@ -25,7 +25,6 @@ public class SneerJockey {
 	private void play() throws Exception {
 		//TODO: add class loader
 		Brickness container = BricknessFactory.newBrickContainer(_sneerStoragePath);
-		placeBricks(container, Sneer.natures());
 		placeBricks(container, Sneer.businessBricks());
 		placeBricks(container, Sneer.communicationBricks());
 	}

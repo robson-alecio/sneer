@@ -4,7 +4,6 @@ import sneer.brickness.BrickLoadingException;
 import sneer.brickness.Brickness;
 import sneer.brickness.BricknessFactory;
 import sneer.brickness.testsupport.ClassFiles;
-import sneer.pulp.natures.gui.GUI;
 
 
 public class Sneer {
@@ -12,15 +11,8 @@ public class Sneer {
 	public static void main(String[] ignored) throws Exception {
 		Brickness container = BricknessFactory.newBrickContainer(new SneerStoragePath());
 		
-		placeBricks(container, natures());
 		placeBricks(container, businessBricks());
 		placeBricks(container, communicationBricks());
-	}
-
-	public static Class<?>[] natures() {
-		return new Class<?>[] {
-			GUI.class,
-		};
 	}
 
 	static public void placeBricks(Brickness container, Class<?>... bricks) throws BrickLoadingException {
@@ -36,7 +28,7 @@ public class Sneer {
 				sneer.skin.image.ImageFactory.class,
 
 				sneer.pulp.events.EventNotifiers.class,
-				sneer.pulp.reactive.Signals.class,
+				//sneer.pulp.reactive.Signals.class,
 				sneer.pulp.reactive.collections.CollectionSignals.class,
 				sneer.pulp.log.filter.LogFilter.class,
 				sneer.pulp.log.stacktrace.StackTraceLogger.class,

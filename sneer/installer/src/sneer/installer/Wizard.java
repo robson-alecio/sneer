@@ -18,24 +18,17 @@ public class Wizard extends JFrame{
 	private final String WIZARD_TITLE = "Sneer Installation Wizard";
 	private final SneerStoragePath _sneerStoragePath;
 
-	Wizard(SneerStoragePath sneerStoragePath) {
+	Wizard(SneerStoragePath sneerStoragePath) throws Exception {
 		_sneerStoragePath = sneerStoragePath;
-		
-		try {
-			useNimbus();
-			welcome();
-			license();
-			dogFoodInformation();
-			configInformation();
-			tryInstall();
-			congratulations();
-			useMetal();
-			startSneer();
-			
-		} catch (Throwable throwable) {
-			showDialog("ERROR: \n" + throwable.getMessage(),	"Exit");
-			System.exit(1);
-		}
+		useNimbus();
+		welcome();
+		license();
+		dogFoodInformation();
+		configInformation();
+		tryInstall();
+		congratulations();
+		useMetal();
+		startSneer();
 	}
 
 	private void showDialog(String msg, Object...options) {
@@ -112,7 +105,7 @@ public class Wizard extends JFrame{
 		} catch (Exception ignore) {}
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		new Wizard(new SneerStoragePath());
 	}
 }

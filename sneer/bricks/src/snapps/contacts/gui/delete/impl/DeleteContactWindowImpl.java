@@ -64,6 +64,7 @@ class DeleteContactWindowImpl extends JFrame implements DeleteContactWindow {
 		
 		_yes.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 			setVisible(false);
+			my(ContactsGui.class).clearSelection();
 			my(ContactManager.class).removeContact(contact);
 		}});
 	}

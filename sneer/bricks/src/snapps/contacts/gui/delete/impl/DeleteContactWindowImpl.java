@@ -30,8 +30,8 @@ class DeleteContactWindowImpl extends JFrame implements DeleteContactWindow {
 	}
 	
 	private void addContactEditAction() {
+
 		final ByRef<Contact> contactRef = ByRef.newInstance();
-		
 		_yes.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
 			setVisible(false);
 			my(ContactManager.class).removeContact(contactRef.value);

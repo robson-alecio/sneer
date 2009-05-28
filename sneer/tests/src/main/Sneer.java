@@ -10,6 +10,10 @@ import sneer.commons.environments.Environments;
 public class Sneer {
 
 	public static void main(String[] ignored) throws Exception {
+		new Sneer();
+	}
+	
+	public Sneer() {
 		Environment container = Brickness.newBrickContainer(new SneerStoragePath());
 		
 		loadBricks(container, businessBricks());

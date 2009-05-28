@@ -4,20 +4,20 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.jar.JarInputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-
-import main.SneerStoragePath;
-import java.util.jar.*;
 
 class Installer {
 
 	private File _sneerHome;
 	private File _sneerTmp;
 
-	Installer(SneerStoragePath sneerStoragePath) throws IOException {
-		_sneerHome = new File(sneerStoragePath.get());
+	Installer(File sneerHome) throws IOException {
+		_sneerHome = sneerHome;
 		_sneerTmp = new File(_sneerHome.getParentFile(), ".sneertmp");
 		createDirectory();
 		addBinaries();
@@ -35,25 +35,11 @@ class Installer {
 	}
 	
 	private void addBinaries() throws IOException {
-		try {
-			copyFlies(this.getClass().getResource ("../../").getFile());
+		String jarFileName = this.getClass().getResource("").toString()
+									.replace("jar:file:/", "")
+									.replace("!/sneer/installer/", "");
 			
-		} catch (NullPointerException e) {
-			String jarFileName = this.getClass().getResource("").toString()
-										.replace("jar:file:/", "")
-										.replace("!/sneer/installer/", "");
-			
-			extractFiles(jarFileName);
-		}
-	}
-
-	private void copyFlies(String srcBin) throws IOException {
-		File srcBinFile = new File(srcBin);
-		if(!(srcBinFile.exists() && srcBinFile.isDirectory()))
-			throw new IOException("Directory '" + srcBinFile.getAbsolutePath() + "' not found!");
-
-		FileUtils.writeStringToFile(new  File(_sneerTmp, "log.txt"), "copy files from: " + srcBinFile.getAbsolutePath());
-		FileUtils.copyDirectory(srcBinFile, new File(_sneerTmp, "bin"));
+		extractFiles(jarFileName);
 	}
 
 	private void extractFiles(String jarFileName) throws IOException {
@@ -90,7 +76,5 @@ class Installer {
 		}
 	}
 	
-	public static void main(String[] args) throws IOException {
-		new Installer(new SneerStoragePath());
-	}
+
 }

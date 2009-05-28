@@ -1,42 +1,36 @@
 package sneer.installer;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import main.SneerStoragePath;
-
-import static javax.swing.JOptionPane.OK_OPTION;
-import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
-
 public class Wizard extends JFrame{
 
 	private final String WIZARD_TITLE = "Sneer Installation Wizard";
-	private final SneerStoragePath _sneerStoragePath;
+	private final File _sneerHome;
 
-	Wizard(SneerStoragePath sneerStoragePath) throws Exception {
-		_sneerStoragePath = sneerStoragePath;
+	Wizard(File sneerHome) throws Exception {
+		_sneerHome = sneerHome;
+		if (sneerHome.exists()) return;
+
 		useNimbus();
+		doWizard();
+		useMetal();
+	}
+
+	private void doWizard() throws IOException {
 		welcome();
 		license();
 		dogFoodInformation();
 		configInformation();
-		tryInstall();
+		
+		new Installer(_sneerHome);
+		
 		congratulations();
-		useMetal();
-		startSneer();
-	}
-
-	private void showDialog(String msg, Object...options) {
-		Dialogs.show(WIZARD_TITLE, msg,	options);
-	}
-
-	private void startSneer() throws Exception {
-		new SneerJockey(_sneerStoragePath);
 	}
 
 	private void welcome() {
@@ -70,29 +64,20 @@ public class Wizard extends JFrame{
 		showDialog(
 		"Each user of this computer can have his own Sneer setup.\n\n" +
 		"To store your setup, the following folder will be created:\n" +
-		_sneerStoragePath.get(), 
+		_sneerHome.getAbsolutePath(), 
 		
 		"Whatever >");
 	}
 	
 	private void congratulations() {
-		Object options[] = new Object[]{"Start Sneer"}; 
-		
-		int bnt = JOptionPane.showOptionDialog(null, 
-				"Congratulations!\n\n" +
-				"You are no longer a slave. You have just\n" +
-				"claimed your own share of the internet.", 
+		Dialogs.show(WIZARD_TITLE,
+		"Congratulations!\n\n" +
+		"You are no longer a slave. You have just\n" +
+		"claimed your own share of the internet.", systemExit(),
 				
-				WIZARD_TITLE,  OK_OPTION, INFORMATION_MESSAGE, null,  options,  options[0]);
-		
-		if(bnt!=OK_OPTION)
-			System.exit(0);
+		"Start Sneer");
 	}
 
-	private void tryInstall() throws IOException {
-		new Installer(_sneerStoragePath);
-	}	
-	
 	private void useMetal() {
 		try {
 			UIManager.setLookAndFeel(new MetalLookAndFeel());
@@ -105,7 +90,20 @@ public class Wizard extends JFrame{
 		} catch (Exception ignore) {}
 	}
 	
-	public static void main(String[] args) throws Exception {
-		new Wizard(new SneerStoragePath());
+	private void showDialog(String msg, Object...options) {
+		Dialogs.show(WIZARD_TITLE, msg,	exitDialog(), options);
 	}
+
+	private Runnable exitDialog() {
+		return new Runnable() { @Override public void run() {
+			Dialogs.show(WIZARD_TITLE, "This wizard will now exit with no changes to your system.", systemExit(), "Exit");
+		}};
+	}
+
+	private Runnable systemExit() {
+		return new Runnable() { @Override public void run() {
+			System.exit(0);
+		}};
+	}
+
 }

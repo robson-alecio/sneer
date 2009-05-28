@@ -2,19 +2,23 @@ package sneer.installer;
 
 import java.io.File;
 
-import main.SneerStoragePath;
-
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-		SneerStoragePath sneerStoragePath = new SneerStoragePath();
-		File sneerHome = new File(sneerStoragePath.get());
+		new Wizard(sneerHome());
 
-		if (sneerHome.exists() && sneerHome.isDirectory()) {
-			new SneerJockey(sneerStoragePath);
-			return;
-		}
-
-		new Wizard(sneerStoragePath);
+		new SneerJockey(sneerHome());
 	}
+	
+	static private File sneerHome() {
+		return new File(userHome(), ".sneer");
+	}
+	
+	static private String userHome() {
+		String override = System.getProperty("home_override");
+		if (override != null) return override;
+		
+		return System.getProperty("user.home");
+	}
+
 }

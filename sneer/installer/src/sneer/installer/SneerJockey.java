@@ -1,35 +1,38 @@
 package sneer.installer;
 
-import static sneer.commons.environments.Environments.my;
-import main.Sneer;
-import main.SneerStoragePath;
-import sneer.brickness.BrickLoadingException;
-import sneer.brickness.Brickness;
-import sneer.commons.environments.Environment;
-import sneer.commons.environments.Environments;
+import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 /** This guy "plays" (runs) the latest version of Sneer, one after the other. */
 class SneerJockey {
 
-	private final SneerStoragePath _sneerStoragePath;
+	@SuppressWarnings("unused")
+	private final File _sneerHome;
 
-	SneerJockey(SneerStoragePath sneerStoragePath) throws Exception {
-		_sneerStoragePath = sneerStoragePath;
+	SneerJockey(File sneerHome) throws Exception {
+		_sneerHome = sneerHome;
 		
 //		while (true)
 			play();
 	}
 
 	private void play() throws Exception {
-		//TODO: add class loader:  new File(sneerStoragePath.get(), "bin");
-		Environment container = Brickness.newBrickContainer(_sneerStoragePath);
-		loadBricks(container, Sneer.businessBricks());
-		loadBricks(container, Sneer.communicationBricks());
+		//TODO: GCollectable class loader:  new File(_sneerHome, "bin");
+		//loadClass "main.Sneer".newInstance();
 	}
 
-	private void loadBricks(Environment container, final Class<?>... bricks) throws BrickLoadingException {
-		Environments.runWith(container, new Runnable() { @Override public void run() {
-			for (Class<?> brick : bricks) my(brick);
-		}});
+	public static URLClassLoader createGarbageCollectableClassLoader(URL jar) throws Exception {
+		return new URLClassLoader(new URL[]{jar}, bootstrapClassLoader());
 	}
+	
+	
+	private static ClassLoader bootstrapClassLoader() {
+		ClassLoader candidate = ClassLoader.getSystemClassLoader();
+		while (candidate.getParent() != null) candidate = candidate.getParent();
+		return candidate;
+	}
+
+
+	
 }

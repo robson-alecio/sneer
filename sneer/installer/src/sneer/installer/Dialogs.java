@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 
 abstract class Dialogs {
 
-	static void show(String title, String msg, Object...options) {
+	static void show(String title, String msg, Runnable toCallOnCancel, Object...options) {
 		int dialogOptions;
 		int dialogType;
 		
@@ -21,13 +21,7 @@ abstract class Dialogs {
 			dialogType=QUESTION_MESSAGE;
 		}
 		
-		int bnt = JOptionPane.showOptionDialog(null, msg, title,  
-																   dialogOptions, dialogType, null,  options,  options[0]);
-		if(bnt!=OK_OPTION){
-			options = new Object[]{"Exit"};
-			JOptionPane.showOptionDialog(null, "This wizard will now exit with no changes to your system.", 
-					title,  OK_OPTION, INFORMATION_MESSAGE, null,  options,  options[0]);
-			System.exit(0);
-		}
+		int bnt = JOptionPane.showOptionDialog(null, msg, title, dialogOptions, dialogType, null,  options,  options[0]);
+		if (bnt != OK_OPTION) toCallOnCancel.run();
 	}
 }

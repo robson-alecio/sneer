@@ -6,4 +6,5 @@ import sneer.brickness.Brick;
 public interface BrickA {
 
 	void setProperty(String value);
+	
 }

@@ -9,16 +9,6 @@ abstract class FilteredClassLoader extends URLClassLoader {
 
 	protected final ClassLoader _delegate;
 
-	public static URL[] toURL(File file) {
-		try {
-			return new URL[]{file.toURI().toURL()};
-		} catch (MalformedURLException e) {
-			throw new IllegalStateException(e);
-		}
-	}
-
-	protected abstract boolean accept(String className);
-
 	protected FilteredClassLoader(File classRootDirectory, ClassLoader delegateForOtherPackages) {
 		this(toURL(classRootDirectory), null /* no parent */, delegateForOtherPackages);
 	}
@@ -28,10 +18,14 @@ abstract class FilteredClassLoader extends URLClassLoader {
 		_delegate = delegateForOtherPackages;
 	}
 
+	
+	protected abstract boolean accept(String className);
+
+
 	@Override
 	protected Class<?> loadClass(String name, boolean resolve)
 			throws ClassNotFoundException {
-		if (resolve) throw new IllegalStateException(); //Since we have no subclasses, this should never happen.
+		if (resolve) throw new IllegalStateException();
 		
 		Class<?> loaded = findLoadedClass(name);
 		if (loaded != null) return loaded;
@@ -44,5 +38,14 @@ abstract class FilteredClassLoader extends URLClassLoader {
 	protected Class<?> doLoadClass(String name) throws ClassNotFoundException {
 		return super.loadClass(name, false);
 	}
+
+	private static URL[] toURL(File file) {
+		try {
+			return new URL[]{file.toURI().toURL()};
+		} catch (MalformedURLException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+
 
 }

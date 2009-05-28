@@ -1,6 +1,7 @@
 package sneer.brickness.impl.tests;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.brickness.BrickLoadingException;
@@ -26,6 +27,18 @@ public class BricknessTest extends Assert {
 		System.setProperty("BrickA.property", "");
 		loadBrick(BrickB.class);
 		assertEquals("BrickB was here!", System.getProperty("BrickA.property"));
+	}
+
+	@Test
+	@Ignore
+	public void libsRunInSameClassloaderAsBrick() throws Exception {
+		System.setProperty("BrickA.classloader", "");
+		System.setProperty("BrickA.lib.classloader", "");
+		loadBrick(BrickA.class);
+		String classLoaderBrick = System.getProperty("BrickA.classLoader");
+		String classLoaderLib = System.getProperty("BrickA.lib.classLoader");
+
+		assertEquals(classLoaderLib, classLoaderBrick);
 	}
 
 	@Test

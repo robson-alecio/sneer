@@ -167,4 +167,9 @@ class ContactsGuiImpl implements ContactsGui {
 			menu.add(new JMenuItem(new SwingActionAdapter(action)));
 		}
 	}
+
+	@Override
+	public void clearSelection() {
+		_contactList.clearSelection();
+	}
 }

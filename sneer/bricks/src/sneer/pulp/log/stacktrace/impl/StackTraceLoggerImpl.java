@@ -8,7 +8,7 @@ import java.io.PrintWriter;
 import sneer.pulp.log.Logger;
 import sneer.pulp.log.stacktrace.StackTraceLogger;
 
-public class StackTraceLoggerImpl implements StackTraceLogger{
+class StackTraceLoggerImpl implements StackTraceLogger{
 
 	@Override
 	public void logStack() {
@@ -21,5 +21,6 @@ public class StackTraceLoggerImpl implements StackTraceLogger{
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		PrintWriter _log = new PrintWriter(out, true);
 		throwable.printStackTrace(_log);
-		return new String(out.toByteArray());	}
+		return new String(out.toByteArray());
+	}
 }

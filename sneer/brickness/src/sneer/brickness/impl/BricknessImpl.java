@@ -8,7 +8,6 @@ import java.util.List;
 
 import sneer.brickness.Brick;
 import sneer.brickness.BrickConventions;
-import sneer.brickness.BrickLayer;
 import sneer.brickness.BrickLoadingException;
 import sneer.brickness.Brickness;
 import sneer.brickness.Nature;
@@ -19,7 +18,7 @@ import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.Producer;
 
-public class BricknessImpl implements BrickLayer, Brickness {
+public class BricknessImpl implements Brickness {
 	
 	private final Environment _environment;
 	private final Bindings _bindings;

@@ -1,10 +1,12 @@
 package sneer.installer;
 
+import static sneer.commons.environments.Environments.my;
 import main.Sneer;
 import main.SneerStoragePath;
 import sneer.brickness.BrickLoadingException;
 import sneer.brickness.Brickness;
-import sneer.brickness.BricknessFactory;
+import sneer.commons.environments.Environment;
+import sneer.commons.environments.Environments;
 
 /** This guy "plays" (runs) the latest version of Sneer, one after the other. */
 public class SneerJockey {
@@ -20,13 +22,14 @@ public class SneerJockey {
 
 	private void play() throws Exception {
 		//TODO: add class loader:  new File(sneerStoragePath.get(), "bin");
-		Brickness container = BricknessFactory.newBrickContainer(_sneerStoragePath);
+		Environment container = Brickness.newBrickContainer(_sneerStoragePath);
 		loadBricks(container, Sneer.businessBricks());
 		loadBricks(container, Sneer.communicationBricks());
 	}
 
-	private void loadBricks(Brickness container, Class<?>... bricks) throws BrickLoadingException {
-		for (Class<?> brick : bricks)
-			container.environment().provide(brick);
+	private void loadBricks(Environment container, final Class<?>... bricks) throws BrickLoadingException {
+		Environments.runWith(container, new Runnable() { @Override public void run() {
+			for (Class<?> brick : bricks) my(brick);
+		}});
 	}
 }

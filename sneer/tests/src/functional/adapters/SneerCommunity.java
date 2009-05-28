@@ -1,5 +1,7 @@
 package functional.adapters;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -10,12 +12,14 @@ import main.Sneer;
 import org.apache.commons.lang.StringUtils;
 
 import sneer.brickness.Brickness;
-import sneer.brickness.BricknessFactory;
 import sneer.brickness.StoragePath;
+import sneer.commons.environments.Environment;
+import sneer.commons.environments.Environments;
 import sneer.pulp.network.Network;
 import testutils.network.InProcessNetwork;
 import functional.SovereignCommunity;
 import functional.SovereignParty;
+
 
 public class SneerCommunity implements SovereignCommunity {
 
@@ -30,16 +34,16 @@ public class SneerCommunity implements SovereignCommunity {
 	
 	@Override
 	public SovereignParty createParty(final String name) {
-		Brickness container = newContainer(name);
+		Environment container = newContainer(name);
 		loadBricks(container);
 		
-		final SneerParty party = ProxyInEnvironment.newInstance(SneerParty.class, container.environment());
+		final SneerParty party = ProxyInEnvironment.newInstance(SneerParty.class, container);
 		party.setOwnName(name);
 		party.setSneerPort(_nextPort++);
 		return party;
 	}
 
-	private void loadBricks(Brickness container) {
+	private void loadBricks(Environment container) {
 		try {
 			loadBricks(container, Sneer.businessBricks());
 			loadBricks(container, SneerParty.class);
@@ -48,12 +52,13 @@ public class SneerCommunity implements SovereignCommunity {
 		}
 	}
 
-	private void loadBricks(Brickness container, Class<?>... bricks) {
-		for (Class<?> brick : bricks)
-			container.environment().provide(brick);
+	private void loadBricks(Environment container, final Class<?>... bricks) {
+		Environments.runWith(container, new Runnable() { @Override public void run() {
+			for (Class<?> brick : bricks) my(brick);
+		}});
 	}
 
-	private Brickness newContainer(final String name) {
+	private Environment newContainer(final String name) {
 		final File rootDirectory = rootDirectory(name);
 		
 		StoragePath storagePath = new StoragePath() { @Override public String get() {
@@ -62,7 +67,7 @@ public class SneerCommunity implements SovereignCommunity {
 			return result.getAbsolutePath();
 		}};
 		
-		return BricknessFactory.newBrickContainerWithApiClassLoader(apiClassLoader(rootDirectory), _network, storagePath);
+		return Brickness.newBrickContainerWithApiClassLoader(apiClassLoader(rootDirectory), _network, storagePath);
 	}
 
 	private URLClassLoader apiClassLoader(File rootDirectory) {

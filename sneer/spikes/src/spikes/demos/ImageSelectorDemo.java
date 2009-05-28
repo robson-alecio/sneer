@@ -1,20 +1,21 @@
 package spikes.demos;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.awt.Image;
 
-import sneer.brickness.testsupport.SystemBrickEnvironment;
+import sneer.brickness.Brickness;
 import sneer.commons.environments.Environments;
 import sneer.hardware.cpu.lang.Consumer;
-import sneer.skin.imgselector.ImageSelector;
 import sneer.pulp.threads.Threads;
-import static sneer.commons.environments.Environments.my;
+import sneer.skin.imgselector.ImageSelector;
 
 
 
 public class ImageSelectorDemo  {
 
 	public static void main(String[] args) throws Exception {
-		Environments.runWith(new SystemBrickEnvironment(), new Runnable(){ @Override public void run() {
+		Environments.runWith(Brickness.newBrickContainer(), new Runnable(){ @Override public void run() {
 			try {
 				ImageSelector imageSelector = Environments.my(ImageSelector.class);
 				imageSelector.open(new Consumer<Image>(){@Override public void consume(Image valueObject) {

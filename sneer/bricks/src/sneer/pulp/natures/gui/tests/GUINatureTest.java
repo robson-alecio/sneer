@@ -9,7 +9,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import sneer.brickness.Brickness;
-import sneer.brickness.BricknessFactory;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.ByRef;
@@ -18,12 +17,12 @@ import sneer.pulp.natures.gui.tests.fixtures.SomeGuiBrick;
 
 public class GUINatureTest extends Assert {
 	
-	Brickness subject = BricknessFactory.newBrickContainer();
+	Environment subject = Brickness.newBrickContainer();
 	
 	
 	@Test
 	public void invocationHappensInTheSwingThread() {
-		Environments.runWith(subject.environment(), new Runnable() { @Override public void run() {
+		Environments.runWith(subject, new Runnable() { @Override public void run() {
 			
 			assertSame(swingThread(), my(SomeGuiBrick.class).currentThread());
 			
@@ -32,8 +31,8 @@ public class GUINatureTest extends Assert {
 	
 	@Test
 	public void listenerInvocationHappensInBricknessEnvironment() {
-		Environments.runWith(subject.environment(), new Runnable() { @Override public void run() {
-			final ActionListener listener = my(SomeGuiBrick.class).listenerFor(subject.environment());
+		Environments.runWith(subject, new Runnable() { @Override public void run() {
+			final ActionListener listener = my(SomeGuiBrick.class).listenerFor(subject);
 			Environments.runWith(emptyEnvironment(), new Runnable() { @Override public void run() {
 				listener.actionPerformed(new ActionEvent(this, 0, null));
 			}});
@@ -42,9 +41,9 @@ public class GUINatureTest extends Assert {
 	
 	@Test
 	public void invocationHappensInBricknessEnvironment() {
-		Environments.runWith(subject.environment(), new Runnable() { @Override public void run() {
+		Environments.runWith(subject, new Runnable() { @Override public void run() {
 			
-			assertSame(subject.environment(), my(SomeGuiBrick.class).currentEnvironment());
+			assertSame(subject, my(SomeGuiBrick.class).currentEnvironment());
 			
 		}});
 	}
@@ -54,7 +53,7 @@ public class GUINatureTest extends Assert {
 	
 	@Test
 	public void invocationInTheSwingThreadForVoidMethod() {
-		Environments.runWith(subject.environment(), new Runnable() { @Override public void run() {
+		Environments.runWith(subject, new Runnable() { @Override public void run() {
 			assertNotSame(swingThread(), Thread.currentThread());
 			my(SomeGuiBrick.class).run(new Runnable() { @Override public void run() {
 				assertSame(swingThread(), Thread.currentThread());

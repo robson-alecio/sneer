@@ -10,7 +10,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import sneer.brickness.testsupport.SystemBrickEnvironment;
+import sneer.brickness.Brickness;
 import sneer.commons.environments.Environments;
 import sneer.skin.main.dashboard.Dashboard;
 import sneer.skin.main.dashboard.InstrumentPanel;
@@ -32,7 +32,7 @@ public class DashboardDemo  {
     }
 	
 	public static void main(String[] args) throws Exception {
-		Environments.runWith(new SystemBrickEnvironment(), new Runnable(){ @Override public void run() {
+		Environments.runWith(Brickness.newBrickContainer(), new Runnable(){ @Override public void run() {
 			new DashboardDemo();
 		}});
 	}

@@ -13,9 +13,11 @@ import org.junit.internal.runners.TestClass;
 import org.junit.internal.runners.TestMethod;
 import org.junit.runner.notification.RunNotifier;
 
+import sneer.brickness.Brickness;
 import sneer.commons.environments.Bindings;
 import sneer.commons.environments.CachingEnvironment;
 import sneer.commons.environments.Environment;
+import sneer.commons.environments.EnvironmentUtils;
 import sneer.commons.environments.Environments;
 
 public class BrickTestRunner extends JUnit4ClassRunner {
@@ -155,17 +157,17 @@ public class BrickTestRunner extends JUnit4ClassRunner {
 
 	public Environment newTestEnvironment(Object... bindings) {
 		return new CachingEnvironment(
-				Environments.compose(
+				EnvironmentUtils.compose(
 					new Bindings(bindings).environment(),
 					my(TestInstanceEnvironment.class),
-					new SystemBrickEnvironment()));
+					Brickness.newBrickContainer()));
 	}
 
 	private Environment newEnvironment() {
 		return new CachingEnvironment(
-				Environments.compose(
+				EnvironmentUtils.compose(
 					new TestInstanceEnvironment(),
-					new SystemBrickEnvironment()));
+					Brickness.newBrickContainer()));
 	}
 
 	@Override

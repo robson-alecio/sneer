@@ -2,7 +2,7 @@ package spikes.demos;
 
 import static sneer.commons.environments.Environments.my;
 import snapps.blinkinglights.gui.BlinkingLightsGui;
-import sneer.brickness.testsupport.SystemBrickEnvironment;
+import sneer.brickness.Brickness;
 import sneer.commons.environments.Environments;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.LightType;
@@ -21,7 +21,7 @@ public class BlinkingLightsDemo {
 	}
 
 	public static void main(String[] args) throws Exception {
-		Environments.runWith(new SystemBrickEnvironment(), new Runnable(){
+		Environments.runWith(Brickness.newBrickContainer(), new Runnable(){
 			@Override public void run() {
 				try {
 					new BlinkingLightsDemo();

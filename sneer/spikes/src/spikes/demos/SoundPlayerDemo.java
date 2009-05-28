@@ -1,7 +1,7 @@
 package spikes.demos;
 
 import static sneer.commons.environments.Environments.my;
-import sneer.brickness.testsupport.SystemBrickEnvironment;
+import sneer.brickness.Brickness;
 import sneer.commons.environments.Environments;
 import sneer.skin.sound.player.SoundPlayer;
 
@@ -21,7 +21,7 @@ public class SoundPlayerDemo {
 	}
 	
 	public static void main(String[] args) {
-		Environments.runWith(new SystemBrickEnvironment(), new Runnable(){ @Override public void run() {
+		Environments.runWith(Brickness.newBrickContainer(), new Runnable(){ @Override public void run() {
 			try {
 				new SoundPlayerDemo();
 			} catch (Exception e) {

@@ -17,7 +17,8 @@ public class BrickTestTest extends BrickTest {
 	
 	@Test
 	public void test() {
-		assertSame(_bar, _foo.bar());
+		BarBrick other = _foo.bar();
+		assertSame(_bar, other);
 	}
 
 }

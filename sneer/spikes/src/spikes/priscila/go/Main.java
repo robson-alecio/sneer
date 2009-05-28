@@ -1,5 +1,7 @@
 package spikes.priscila.go;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -10,12 +12,11 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
-import sneer.brickness.testsupport.SystemBrickEnvironment;
+import sneer.brickness.Brickness;
 import sneer.commons.environments.Environments;
 import sneer.hardware.gui.guithread.GuiThread;
-import spikes.priscila.go.GoBoard.StoneColor;
 import sneer.pulp.threads.Threads;
-import static sneer.commons.environments.Environments.my;
+import spikes.priscila.go.GoBoard.StoneColor;
 
 public class Main extends JFrame{
 	
@@ -148,7 +149,7 @@ public class Main extends JFrame{
 	}
 
 	public static void main(String[] args){
-		Environments.runWith(new SystemBrickEnvironment(), new Runnable(){ @Override public void run() {
+		Environments.runWith(Brickness.newBrickContainer(), new Runnable(){ @Override public void run() {
 			new Main();
 		}});
 	}

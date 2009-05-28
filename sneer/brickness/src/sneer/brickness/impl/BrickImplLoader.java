@@ -1,5 +1,7 @@
 package sneer.brickness.impl;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,18 +11,16 @@ import sneer.brickness.BrickConventions;
 import sneer.brickness.BrickLoadingException;
 import sneer.brickness.Nature;
 import sneer.brickness.testsupport.ClassFiles;
-import sneer.commons.environments.Environment;
+
 
 class BrickImplLoader {
 
-	public BrickImplLoader(ClassLoader apiClassLoader, Environment environment) {
+	public BrickImplLoader(ClassLoader apiClassLoader) {
 		_apiClassLoader = apiClassLoader;
-		_environment = environment;
 	}
 
 	
 	private final ClassLoader _apiClassLoader;
-	private final Environment _environment;
 	
 
 	Class<?> loadImplClassFor(Class<?> brick) throws ClassNotFoundException {
@@ -45,7 +45,7 @@ class BrickImplLoader {
 	private List<Nature> naturesImplsFor(final Class<? extends Nature>[] natureClasses) {
 		final ArrayList<Nature> result = new ArrayList<Nature>(natureClasses.length);
 		for (Class<? extends Nature> natureClass : natureClasses)
-			result.add(_environment.provide(natureClass));
+			result.add(my(natureClass));
 		
 		return result;
 	}

@@ -11,7 +11,6 @@ import sneer.brickness.StoragePath;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.BrickTestRunner;
 import sneer.brickness.testsupport.Contribute;
-import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
 import sneer.hardware.cpu.exceptions.FriendlyException;
 import sneer.pulp.blinkinglights.BlinkingLights;
@@ -115,7 +114,7 @@ Unacceptable Client Behavior
 		startDynDnsClient();
 		_threads.runAllActors();
 		
-		final Light light = assertBlinkingLight(error, my(Environment.class));
+		final Light light = assertBlinkingLight(error);
 		
 		my(Clock.class).advanceTime(300001);
 		
@@ -145,7 +144,7 @@ Unacceptable Client Behavior
 		startDynDnsClient();
 		_threads.runAllActors();
 		
-		final Light light = assertBlinkingLight(error, my(Environment.class));
+		final Light light = assertBlinkingLight(error);
 		
 		// new ip should be ignored while new account is not provided
 		_ownIp.setter().consume(newIp);
@@ -175,12 +174,12 @@ Unacceptable Client Behavior
 		startDynDnsClient();
 		_threads.runAllActors();
 		
-		assertBlinkingLight(error, my(Environment.class));
+		assertBlinkingLight(error);
 	}
 
 	
-	private Light assertBlinkingLight(final Exception expectedError, final Environment container) {
-		final ListSignal<Light> lights = container.provide(BlinkingLights.class).lights();
+	private Light assertBlinkingLight(final Exception expectedError) {
+		final ListSignal<Light> lights = my(BlinkingLights.class).lights();
 		assertEquals(1, lights.currentSize());
 		final Light light = lights.currentGet(0);
 		assertTrue(light.isOn());

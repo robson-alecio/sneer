@@ -1,16 +1,17 @@
 package sneer.brickness.impl;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.lang.reflect.Constructor;
 
 import sneer.brickness.BrickLoadingException;
-import sneer.brickness.Brickness;
 import sneer.commons.environments.Bindings;
 import sneer.commons.environments.CachingEnvironment;
 import sneer.commons.environments.Environment;
-import sneer.commons.environments.Environments;
-import sneer.commons.lang.ByRef;
+import sneer.commons.environments.EnvironmentUtils;
 
-public class BricknessImpl implements Brickness {
+
+public class BricknessImpl implements Environment {
 	
 	public BricknessImpl(Object... bindings) {
 		this(BricknessImpl.class.getClassLoader(), bindings);
@@ -20,25 +21,28 @@ public class BricknessImpl implements Brickness {
 		_bindings = new Bindings();
 		_bindings.bind(this);
 		_bindings.bind(bindings);
+	
+		_cache = createCachingEnvironment();
 		
-		_environment = createEnvironment();
-		
-		_brickImplLoader = new BrickImplLoader(apiClassLoader, _environment);
+		_brickImplLoader = new BrickImplLoader(apiClassLoader);
 	}
 
 	
-	private final Environment _environment;
 	private final Bindings _bindings;
+	private CachingEnvironment _cache;
 	private final BrickImplLoader _brickImplLoader;
 
 	
-	public Environment environment() {
-		return _environment;
+	@Override
+	public <T> T provide(Class<T> intrface) {
+		if (my(Environment.class) == null) throw new IllegalStateException("provide() cannot be called outside an environment."); //Delete this line after July 2009 if the exception is never thrown.
+		
+		return _cache.provide(intrface);
 	}
 
 	
-	private CachingEnvironment createEnvironment() {
-		return new CachingEnvironment(Environments.compose(_bindings.environment(), new Environment(){ @Override public <T> T provide(Class<T> brick) {
+	private CachingEnvironment createCachingEnvironment() {
+		return new CachingEnvironment(EnvironmentUtils.compose(_bindings.environment(), new Environment(){ @Override public <T> T provide(Class<T> brick) {
 			return loadBrick(brick);
 		}}));
 	}
@@ -54,17 +58,9 @@ public class BricknessImpl implements Brickness {
 
 	private <T> T tryToLoadBrick(Class<T> brick) throws ClassNotFoundException {
 		Class<?> brickImpl = _brickImplLoader.loadImplClassFor(brick);
-		return (T) instantiateInEnvironment(brickImpl);
+		return (T) instantiate(brickImpl);
 	}
 
-	private Object instantiateInEnvironment(final Class<?> brickImpl) {
-		final ByRef<Object> result = ByRef.newInstance();
-		Environments.runWith(_environment, new Runnable() { @Override public void run() {
-			result.value = instantiate(brickImpl);
-		}});
-		return result.value;
-	}
-	
 	private Object instantiate(Class<?> brickImpl) {
 		try {
 			return tryToInstantiate(brickImpl);

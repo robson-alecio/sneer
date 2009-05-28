@@ -8,7 +8,7 @@
 	- [Igor] Method Signals.receive(source, Consumer) was created. Migrate to it all uses of receive(Consumer, sources) that have a single source.  
 
 	- [Igor] Threads.registerActor() - Delete
-		- Use registerStepper() instead.
+		- Convert all to registerStepper() instead.
 		- Make registerStepper keep a weak reference to the stepper.
 			- All uses of registerStepper() will have to keep a _refToAvoidGc to the stepper. 
 	

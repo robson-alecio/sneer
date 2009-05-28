@@ -9,11 +9,11 @@ import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
 
 /** This guy "plays" (runs) the latest version of Sneer, one after the other. */
-public class SneerJockey {
+class SneerJockey {
 
 	private final SneerStoragePath _sneerStoragePath;
 
-	public SneerJockey(SneerStoragePath sneerStoragePath) throws Exception {
+	SneerJockey(SneerStoragePath sneerStoragePath) throws Exception {
 		_sneerStoragePath = sneerStoragePath;
 		
 //		while (true)

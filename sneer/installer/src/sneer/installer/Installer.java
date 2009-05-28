@@ -11,12 +11,12 @@ import org.apache.commons.io.IOUtils;
 import main.SneerStoragePath;
 import java.util.jar.*;
 
-public class Installer {
+class Installer {
 
 	private File _sneerHome;
 	private File _sneerTmp;
 
-	void install(SneerStoragePath sneerStoragePath) throws IOException {
+	Installer(SneerStoragePath sneerStoragePath) throws IOException {
 		_sneerHome = new File(sneerStoragePath.get());
 		_sneerTmp = new File(_sneerHome.getParentFile(), ".sneertmp");
 		createDirectory();
@@ -91,6 +91,6 @@ public class Installer {
 	}
 	
 	public static void main(String[] args) throws IOException {
-		new Installer().install(new SneerStoragePath());
+		new Installer(new SneerStoragePath());
 	}
 }

@@ -7,7 +7,7 @@ import static javax.swing.JOptionPane.QUESTION_MESSAGE;
 
 import javax.swing.JOptionPane;
 
-public abstract class Dialogs {
+abstract class Dialogs {
 
 	static void show(String title, String msg, Object...options) {
 		int dialogOptions;
@@ -30,5 +30,4 @@ public abstract class Dialogs {
 			System.exit(0);
 		}
 	}
-
 }

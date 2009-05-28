@@ -90,7 +90,7 @@ public class Wizard extends JFrame{
 	}
 
 	private void tryInstall() throws IOException {
-		new Installer().install(_sneerStoragePath);
+		new Installer(_sneerStoragePath);
 	}	
 	
 	private void useMetal() {

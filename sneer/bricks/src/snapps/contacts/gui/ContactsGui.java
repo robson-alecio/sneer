@@ -9,6 +9,5 @@ import sneer.skin.main.instrumentregistry.Instrument;
 public interface ContactsGui extends Instrument {
 
 	Signal<Contact> selectedContact();
-	void clearSelection();
 	
 }

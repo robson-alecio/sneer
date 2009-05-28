@@ -15,6 +15,7 @@ import snapps.contacts.actions.ContactAction;
 import snapps.contacts.actions.ContactActionManager;
 import snapps.contacts.gui.ContactsGui;
 import snapps.contacts.gui.delete.DeleteContactWindow;
+import sneer.commons.lang.ByRef;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.contacts.ContactManager;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
@@ -29,12 +30,21 @@ class DeleteContactWindowImpl extends JFrame implements DeleteContactWindow {
 	}
 	
 	private void addContactEditAction() {
+
+		final ByRef<Contact> contactRef = ByRef.newInstance();
+		_yes.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
+			setVisible(false);
+			my(ContactManager.class).removeContact(contactRef.value);
+		}});
+		
 		my(ContactActionManager.class).addContactAction(new ContactAction(){
 			@Override public boolean isEnabled() { return true; }
 			@Override public boolean isVisible() { return true; }
 			@Override public String caption() { return "Delete Contact...";}
 			@Override public void run() {
 				Contact contact = my(ContactsGui.class).selectedContact().currentValue();
+				contactRef.value = contact;
+				
 				if(contact==null) return;
 				open(contact);
 			}});
@@ -61,11 +71,5 @@ class DeleteContactWindowImpl extends JFrame implements DeleteContactWindow {
 		my(WindowBoundsSetter.class).setBestBounds(this);
 		setVisible(true);
 		setTitle("Delete '" + contact + "'?");
-		
-		_yes.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
-			setVisible(false);
-			my(ContactsGui.class).clearSelection();
-			my(ContactManager.class).removeContact(contact);
-		}});
 	}
 }

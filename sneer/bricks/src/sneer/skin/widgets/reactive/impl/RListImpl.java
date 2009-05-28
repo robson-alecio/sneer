@@ -111,8 +111,8 @@ class RListImpl<ELEMENT> extends JList implements ListWidget<ELEMENT> {
 	@Override
 	public void clearSelection(){
 		my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
-			_selectedElement.setter().consume(null);
 			getSelectionModel().clearSelection();
+			changeSelectedElement(null);
 		}});
 	}	
 }

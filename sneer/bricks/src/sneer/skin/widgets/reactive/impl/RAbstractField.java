@@ -237,12 +237,12 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	}
 	
 	private void startReceiving() {
-		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<Object>() {@Override public void consume(final Object text) {
+		_referenceToAvoidGc = my(Signals.class).receive(_source, new Consumer<Object>() {@Override public void consume(final Object text) {
 			my(GuiThread.class).invokeAndWait(new Runnable(){ @Override public void run() {
 				if (!_notified) return;
 				setText(valueToString(text));
 			}});
-		}}, _source);
+		}});
 	}
 	
 	protected void consume(String text) {

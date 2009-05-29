@@ -44,9 +44,9 @@ class SocketAccepterImpl implements SocketAccepter {
 	@SuppressWarnings("unused") private final Object _referenceToAvoidGc;
 
 	SocketAccepterImpl() {
-		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<Integer>() { @Override public void consume(Integer port) {
+		_referenceToAvoidGc = my(Signals.class).receive(_portKeeper.port(), new Consumer<Integer>() { @Override public void consume(Integer port) {
 			setPort(port);
-		}}, _portKeeper.port());
+		}});
 		_threads.registerActor(new Runnable(){ @Override public void run() {
 			listenToSneerPort();
 		}});

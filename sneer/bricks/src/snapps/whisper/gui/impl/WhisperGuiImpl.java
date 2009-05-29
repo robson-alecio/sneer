@@ -80,10 +80,10 @@ class WhisperGuiImpl implements WhisperGui {
 		createWhisperButtonListener();
 		createLoopBackButtonListener();
 		
-		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<Boolean>() { @Override public void consume(Boolean isRunning) {
+		_referenceToAvoidGc = my(Signals.class).receive(isRunning(), new Consumer<Boolean>() { @Override public void consume(Boolean isRunning) {
 			_whisperButton.setSelected(isRunning);
 			_roomField.getMainWidget().setEnabled(isRunning);
-		}}, isRunning());
+		}});
 
 	}
 	

@@ -23,9 +23,9 @@ class LogToFileImpl implements LogToFile {
 	@SuppressWarnings("unused")	private final Object _referenceToAvoidGc;
 
 	private LogToFileImpl(){
-		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<String>(){ @Override public void consume(String msg) {
+		_referenceToAvoidGc = my(Signals.class).receive(my(LogNotifier.class).loggedMessages(), new Consumer<String>(){ @Override public void consume(String msg) {
 			log(msg);
-		}}, my(LogNotifier.class).loggedMessages());
+		}});
 	}
 	
 	private void log(String msg){

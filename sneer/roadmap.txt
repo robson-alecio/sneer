@@ -5,9 +5,7 @@
 	
 	- [Sandro] Remove installer dependencies on libs.
 	
-	- [Klaus] BricknessTest.libsRunInSameClassloaderAsBrick() - unignore. Actually, libs for a brick will not run in same classloader as the brick but in their own.
-	
-	- [Igor] Method Signals.receive(source, Consumer) was created. Migrate to it all uses of receive(Consumer, sources) that have a single source.  
+	- [Klaus] BricknessTest.libsRunInSameClassloaderAsBrick() - unignore. Actually, libs for a brick will not run in same classloader as the brick but in their own.  
 
 	- [Igor] Threads.registerActor() - Delete
 		- Convert all to registerStepper() instead.

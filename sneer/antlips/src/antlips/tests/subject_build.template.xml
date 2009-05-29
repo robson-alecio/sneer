@@ -17,7 +17,6 @@
 	</target>
 	
 	<target name="test-verification" if="junit.failures">
-		<!--fail>Test failures! Check the output for details.</fail-->
 		<echo>Test failures! Check the output for details.</echo>
 	</target>
 		

@@ -1,8 +1,6 @@
 ﻿FIXES
 =========
 	
-	- [Klaus] Demonstrating git to Binhara
-	
 	- [Sandro] Installer.extractFiles() - How can this happen: if(!(src.exists() && src.isFile())) ???
 	
 	- [Sandro] Remove installer dependencies on libs.

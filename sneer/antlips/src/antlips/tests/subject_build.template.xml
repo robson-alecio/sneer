@@ -16,6 +16,9 @@
 	<target name="test" depends="test-execution, test-verification">
 	</target>
 	
+	<target name="testWithClover" depends="init-clover, test-execution, test-verification, clover-report">
+	</target>
+	
 	<target name="test-verification" if="junit.failures">
 		<echo>Test failures! Check the output for details.</echo>
 	</target>

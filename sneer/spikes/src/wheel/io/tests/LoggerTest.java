@@ -50,9 +50,9 @@ public class LoggerTest extends BrickTest {
 
 	private void assertLog(String expected, String message, Object... insets) {
 		final ByRef<String> observed = ByRef.newInstance();
-		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<String>() { @Override public void consume(String msg) {
+		_referenceToAvoidGc = my(Signals.class).receive(my(LogNotifier.class).loggedMessages(), new Consumer<String>() { @Override public void consume(String msg) {
 			observed.value = msg;
-		}},my(LogNotifier.class).loggedMessages());
+		}});
 
 		my(Logger.class).log(message, insets);
 		

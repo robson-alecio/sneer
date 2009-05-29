@@ -98,9 +98,9 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 	}
 
 	private void initLogReceiver(final JTextArea txtLog) {
-		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<String>() { @Override public void consume(String value) {
+		_referenceToAvoidGc = my(Signals.class).receive(my(LogNotifier.class).loggedMessages(), new Consumer<String>() { @Override public void consume(String value) {
 			txtLog.append(value);
-		}}, my(LogNotifier.class).loggedMessages());
+		}});
 	}
 
 	private JPanel initFilterGui() {

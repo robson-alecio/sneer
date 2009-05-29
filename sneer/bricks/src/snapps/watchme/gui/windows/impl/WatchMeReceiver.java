@@ -41,10 +41,10 @@ class WatchMeReceiver{
 
 	WatchMeReceiver(Contact contact) {
 		_contact = contact;
-		_refToAvoidGc = my(Signals.class).receive(new Consumer<Contact>() {@Override public void consume(Contact contactWithNewKey) {
+		_refToAvoidGc = my(Signals.class).receive(_keyManager.keyChanges(), new Consumer<Contact>() {@Override public void consume(Contact contactWithNewKey) {
 			if(contactWithNewKey != _contact) return;
 			startWindowPaint(_keyManager.keyGiven(_contact));
-		}}, _keyManager.keyChanges());
+		}});
 	}
 
 	private void initGui() {
@@ -76,7 +76,7 @@ class WatchMeReceiver{
 		if (_screensReception != null) _screensReception.dispose();
 		
 		final EventSource<BufferedImage> screens = _watchMe.screenStreamFor(key);
-		_screensReception = my(Signals.class).receive(new Consumer<Image>() { @Override public void consume(Image img) {
+		_screensReception = my(Signals.class).receive(screens, new Consumer<Image>() { @Override public void consume(Image img) {
 			if (_windowWidget == null) initGui();
 			
 			JFrame frm = _windowWidget.getMainWidget();
@@ -85,7 +85,7 @@ class WatchMeReceiver{
 			ImageIcon icon = new ImageIcon(img);
 			_imageLabel.setIcon(icon);
 			_imageLabel.repaint();
-		}}, screens);
+		}});
 	}
 
 	void dispose() {

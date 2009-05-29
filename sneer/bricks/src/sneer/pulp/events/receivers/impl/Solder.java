@@ -14,8 +14,8 @@ public class Solder<T> {
 	public Solder(EventSource<? extends T> eventSource, Consumer<? super T> receiver) {
 		_delegate = receiver;
 
-		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<T>() { @Override public void consume(T event) {
+		_referenceToAvoidGc = my(Signals.class).receive(eventSource, new Consumer<T>() { @Override public void consume(T event) {
 			_delegate.consume(event);
-		}}, eventSource);
+		}});
 	}
 }

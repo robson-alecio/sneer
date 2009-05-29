@@ -49,9 +49,9 @@ public class OwnIpDiscovererTest extends BrickTest {
 		
 		OwnIpDiscoverer subject = my(OwnIpDiscoverer.class);
 
-		@SuppressWarnings("unused") final Object referenceToAvoidGc = my(Signals.class).receive(new Consumer<String>() { @Override public void consume(String value) {
+		@SuppressWarnings("unused") final Object referenceToAvoidGc = my(Signals.class).receive(subject.ownIp(), new Consumer<String>() { @Override public void consume(String value) {
 			receiver.consume(value);
-		}}, subject.ownIp());
+		}});
 		
 
 		Clock clock = my(Clock.class);

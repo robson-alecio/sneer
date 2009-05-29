@@ -74,9 +74,9 @@ public class SignalsTest extends BrickTest {
 
 		Register<String> register = _subject.newRegister("hey");
 
-		Reception reception = _subject.receive(new Consumer<String>() { @Override public void consume(String value) {
+		Reception reception = _subject.receive(register.output(), new Consumer<String>() { @Override public void consume(String value) {
 			received.append(value);
-		}}, register.output());
+		}});
 
 		register.setter().consume("foo");
 		assertEquals("heyfoo", received.toString());
@@ -94,9 +94,9 @@ public class SignalsTest extends BrickTest {
 		Register<String> register = _subject.newRegister("hey");
 
 		@SuppressWarnings("unused")
-		Object reception = _subject.receive(new Consumer<String>() { @Override public void consume(String value) {
+		Object reception = _subject.receive(register.output(), new Consumer<String>() { @Override public void consume(String value) {
 			received.append(value);
-		}}, register.output());
+		}});
 
 		register.setter().consume("foo");
 		assertEquals("heyfoo", received.toString());

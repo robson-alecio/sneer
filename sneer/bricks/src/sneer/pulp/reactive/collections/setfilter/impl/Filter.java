@@ -38,7 +38,7 @@ final class Filter<T> {
 			remove(change.elementsRemoved());
 		}};
 
-		_referenceToAvoidGc = my(Signals.class).receive(receiver, _input);
+		_referenceToAvoidGc = my(Signals.class).receive(_input, receiver);
 	}
 
 	SetSignal<T> output() {

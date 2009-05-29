@@ -19,6 +19,6 @@ class SimpleLoggerImpl implements SimpleLogger {
 		};
 
 		Signal<String> output = my(SimpleRegister.class).output();
-		_referenceToAvoidGc = my(Signals.class).receive(receiver, output);
+		_referenceToAvoidGc = my(Signals.class).receive(output, receiver);
 	}
 }

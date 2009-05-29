@@ -17,10 +17,10 @@ class SocketReceiverImpl implements SocketReceiver {
 	@SuppressWarnings("unused") private final Object _referenceToAvoidGc;
 
 	SocketReceiverImpl() {
-		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<ByteArraySocket>() { @Override public void consume(final ByteArraySocket socket) {
+		_referenceToAvoidGc = my(Signals.class).receive(_socketAccepter.lastAcceptedSocket(), new Consumer<ByteArraySocket>() { @Override public void consume(final ByteArraySocket socket) {
 			_threads.registerActor(new Runnable(){@Override public void run() {
 				new IndividualSocketReceiver(socket);
 			}});
-		}}, _socketAccepter.lastAcceptedSocket());
+		}});
 	}
 }

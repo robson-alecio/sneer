@@ -11,7 +11,6 @@ class SneerJockey {
 
 	private final File _sneerHome;
 	
-	@SuppressWarnings("unused")
 	private static Object sneer;
 	private static URLClassLoader loader;
 	

@@ -7,6 +7,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
 import org.jmock.Expectations;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
@@ -15,6 +16,7 @@ import sneer.pulp.reactive.SignalUtils;
 import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.mic.Mic;
 
+@Ignore
 public class MicTest extends BrickTest {
 
 	private static final SignalUtils SIGNAL_UTILS = my(SignalUtils.class);

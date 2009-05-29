@@ -2,6 +2,7 @@ package sneer.pulp.bandwidth.tests;
 
 import static sneer.commons.environments.Environments.my;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
@@ -19,6 +20,7 @@ import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.threads.mocks.ThreadsMock;
 
+@Ignore
 public class BandwidthReportingTest extends BrickTest {
 	
 	private static final byte[] _BYTE_ARRAY_OK = my(StringUtils.class).toByteArray("OK");

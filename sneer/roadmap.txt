@@ -1,6 +1,8 @@
 ﻿FIXES
 =========
 	
+	- [Sandro] Installer.extractFiles() - How can this happen: if(!(src.exists() && src.isFile())) ???
+	
 	- [Sandro] Remove installer dependencies on libs.
 	
 	- [Klaus] BricknessTest.libsRunInSameClassloaderAsBrick() - unignore. Actually, libs for a brick will not run in same classloader as the brick but in their own.
@@ -37,6 +39,8 @@
 
 TASKS
 ========
+
+	- [Sandro] Installer with Synth
 
 	- Gui Thread - Always call gui brick code in the gui thread. What was already done with the GuiBrickInvocationHandler does not cover callbacks. Complicated and slow weak-proxy-bubble structures would have to be created to support that. Instead, the proposed idea is:
 		- [Bamboo] Enhance at load-time the beginning of all public methods in all classes (including nested) in all gui brick impl packages.

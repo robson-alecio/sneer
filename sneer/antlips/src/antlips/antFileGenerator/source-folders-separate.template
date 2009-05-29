@@ -23,11 +23,12 @@
 	</target>
 	
 	<target name="test-verification" if="junit.failures">
-		<fail>Test failures! Check the output for details.</fail>
+		<echo>Test failures! Check the output for details.</echo>
 	</target>
 		
 	<target name="test-execution" depends="compile">
 		<junit printsummary="true" failureproperty="junit.failures" fork="yes">
+			<formatter type="xml"/>
 			<sysproperty key="java.awt.headless" value="${java.awt.headless}" />
 			<classpath>
 				<path refid="classpath" />
@@ -124,66 +125,4 @@
 	       </current>
 	    </clover-report>
 	</target>
-
-	<target name="makeJavaWebStart" depends="makeJars, makeJnlp">
-	</target>
-
-	<target name="makeJars">
-		<delete dir="${webstart.dir}/build"/>
-		<mkdir dir="${webstart.dir}/build"/>
-
-		<jar destfile="${webstart.dir}/build/sneer.jar">
-		    <fileset dir="bin-kernel">
-		    	<exclude name='**/*.txt'/>
-		    	<exclude name='**/tests/**'/>
-		    </fileset>
-		    <fileset dir="${build.dir}/build">
-		    	<exclude name='**/*.txt'/>
-		    	<exclude name='**/tests/**'/>
-		    	<exclude name='functional/**'/>
-		    	<exclude name='spikes/**'/>
-		    	<exclude name='antlips/**'/>
-				<exclude name='build/**'/>
-		    </fileset>
-		</jar>
-	</target>
-
-	<target name="signJars" depends="copyJars"><%
-for (final String lib : value.libs()) { 
-	String fileName = new java.io.File(lib).getName();%>
-		<signjar keystore="${webstart.dir}/sneerKeystore" jar="${webstart.dir}/build/<%=fileName%>" alias="bihaiko" storepass="amanda"/><%}%>
-		<signjar keystore="${webstart.dir}/sneerKeystore" jar="${webstart.dir}/build/sneer.jar>" alias="bihaiko" storepass="amanda"/>	
-	</target>
-
-	<target name="makeJnlp" depends="signJars">
-		<echoxml file="${webstart.dir}/build/sneer.jnlp">
-			<jnlp spec="1.0+" codebase="file:///${webstart.dir}/build" href="sneer.jnlp">
-				<information>
-					<title>Sneer!</title>
-					<vendor>Sovereign Computing</vendor>
-					<description>Sovereign computing is the freedom to share information and hardware resources with your friends, any way you like.:)</description>
-					<description kind="short">Sneer is a java-based, free software platform for sovereign applications.</description>
-					<homepage href="http://sovereigncomputing.net/"/>
-				</information>
-				<update check="timeout" policy="always"/>
-				<resources>     
-					<jar href="sneer.jar"/><% 
-for (final String lib : value.libs()) { 
-	String fileName = new java.io.File(lib).getName();%>
-					<jar href="<%=fileName%>"/><% } %>					
-					<j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-				</resources>
-				<security>
-					<all-permissions/>
-				</security>
-				<application-desc main-class="main.MainDemo"/>
-			</jnlp>
-		</echoxml>
-	</target>
-
-	<target name="copyJars"><%
-for (final String lib : value.libs()) { %>
-		<copy todir="${webstart.dir}/build" file="<%=lib%>"/><% } %>					
-	</target>
-
 </project>

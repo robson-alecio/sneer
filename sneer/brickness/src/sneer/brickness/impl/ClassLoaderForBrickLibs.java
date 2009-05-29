@@ -13,6 +13,7 @@ import sneer.brickness.Nature;
 /** To be implemented.*/
 class ClassLoaderForBrickLibs extends ClassLoaderWithNatures {
 
+	private static final File[] EMPTY_FILE_ARRAY = new File[0];
 	private static final URL[] ARRAY_OF_URL = new URL[0];
 
 	ClassLoaderForBrickLibs(File classpath, String implPackage, List<Nature> natures, ClassLoader next) {
@@ -24,13 +25,19 @@ class ClassLoaderForBrickLibs extends ClassLoaderWithNatures {
 		
 		File libDir = new File(classpath, implPackage.replace(".", "/") + "/lib");
 
-		for (File candidate : libDir.listFiles())
+		for (File candidate : listFiles(libDir))
 			if (candidate.getName().endsWith(".jar"))
 				result.add(toURL(candidate));
 		
 		sortAlphabetically(result);
 
 		return result.toArray(ARRAY_OF_URL);
+	}
+
+	private static File[] listFiles(File libDir) {
+		File[] result = libDir.listFiles();
+		if (result == null) return EMPTY_FILE_ARRAY;
+		return result;
 	}
 
 	private static void sortAlphabetically(List<URL> list) {

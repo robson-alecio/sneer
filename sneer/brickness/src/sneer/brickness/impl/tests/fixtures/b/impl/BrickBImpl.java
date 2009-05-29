@@ -14,9 +14,8 @@ public class BrickBImpl implements BrickB {
 
 	private int libClassLoaderHash() {
 		try {
-//			Class<?> lib = getClass().getClassLoader().loadClass("foo.ClassInLib");
-//			return lib.newInstance().getClass().getClassLoader().hashCode();
-			return 0;
+			Class<?> lib = getClass().getClassLoader().loadClass("foo.ClassInLib");
+			return lib.newInstance().getClass().getClassLoader().hashCode();
 		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}

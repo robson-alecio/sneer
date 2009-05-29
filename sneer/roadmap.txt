@@ -86,14 +86,6 @@ TASKS
 
 	- Security - Discover if instruments can indirectly gain access to components from other instruments.
 	
-	- Logging - Default: Log only throwables. Have "white list" of parts of messages to log.
-			- GUI to delete or add parts of messages in the "white list" to log.
-			- Logger
-				- whileList - Transient. Will be transparently persisted later on.
-			- Bricks to listen to EventSource Logger.loggedMessages()
-				- LogToFile
-				- LogToGui
-	
 	- Versioning
 
 -------------------------------------- Standalone Brick Container

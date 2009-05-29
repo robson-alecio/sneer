@@ -24,14 +24,14 @@ class BrickImplLoader {
 	
 
 	Class<?> loadImplClassFor(Class<?> brick) throws ClassNotFoundException {
-		ClassLoader classLoader = createClassLoaderForPackage(ClassFiles.classpathRootFor(brick), brick);
-		return classLoader.loadClass(implNameFor(brick.getName()));
-	}
-
-	private ClassLoader createClassLoaderForPackage(File classRootDirectory, Class<?> brick) {
+		File path = ClassFiles.classpathRootFor(brick);
 		String implPackage = BrickConventions.implPackageFor(brick.getName());
 		List<Nature> natures = naturesFor(brick);
-		return new ClassLoaderForPackage(classRootDirectory, _apiClassLoader, natures, implPackage);
+
+		ClassLoader libClassLoader = new ClassLoaderForBrickLibs(path, implPackage, natures, _apiClassLoader);
+		ClassLoader classLoader = new ClassLoaderForPackage(path, implPackage, natures, libClassLoader);
+
+		return classLoader.loadClass(implNameFor(brick.getName()));
 	}
 
 	

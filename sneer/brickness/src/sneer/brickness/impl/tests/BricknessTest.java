@@ -3,7 +3,6 @@ package sneer.brickness.impl.tests;
 import static sneer.commons.environments.Environments.my;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.brickness.BrickLoadingException;
@@ -36,7 +35,6 @@ public class BricknessTest extends Assert {
 	}
 
 	@Test
-	@Ignore
 	public void libsRunInSeparateClassloaders() throws Exception {
 		System.setProperty("BrickA.lib.classloader", "");
 		System.setProperty("BrickB.lib.classloader", "");

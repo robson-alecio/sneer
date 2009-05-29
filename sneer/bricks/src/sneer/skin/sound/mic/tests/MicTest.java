@@ -16,7 +16,6 @@ import sneer.pulp.reactive.SignalUtils;
 import sneer.skin.sound.kernel.Audio;
 import sneer.skin.sound.mic.Mic;
 
-@Ignore
 public class MicTest extends BrickTest {
 
 	private static final SignalUtils SIGNAL_UTILS = my(SignalUtils.class);
@@ -26,6 +25,7 @@ public class MicTest extends BrickTest {
 	private final AudioFormat _format = new AudioFormat(8000, 16, 1, true, false);
 	@Contribute	private final Audio _audio = mock(Audio.class);
 	
+	@Ignore
 	@Test
 	public void testIsRunningSignal() throws LineUnavailableException {
 		checking(soundExpectations());

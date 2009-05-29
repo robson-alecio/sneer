@@ -20,7 +20,6 @@ import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.threads.mocks.ThreadsMock;
 
-@Ignore
 public class BandwidthReportingTest extends BrickTest {
 	
 	private static final byte[] _BYTE_ARRAY_OK = my(StringUtils.class).toByteArray("OK");
@@ -31,6 +30,7 @@ public class BandwidthReportingTest extends BrickTest {
 	@Contribute private final BandwidthCounter _bandwidthCounter = new BandwidthCounterMock();
 	private final ConnectionManager _connectionManager = my(ConnectionManager.class);
 	
+	@Ignore
 	@Test
 	public void test() throws InterruptedException {
 		final Contact contact = getContactMock();

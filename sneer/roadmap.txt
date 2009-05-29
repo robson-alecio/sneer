@@ -6,11 +6,6 @@
 	- [Sandro] Remove installer dependencies on libs.
 	
 	- [Klaus] BricknessTest.libsRunInSameClassloaderAsBrick() - unignore. Actually, libs for a brick will not run in same classloader as the brick but in their own.  
-
-	- [Igor] Threads.registerActor() - Delete
-		- Convert all to registerStepper() instead.
-		- Make registerStepper keep a weak reference to the stepper.
-			- All uses of registerStepper() will have to keep a _refToAvoidGc to the stepper. 
 	
 	- [Igor] Adapt antlips to support lib entries starting with:
 		kind="lib" exported="true"...   instead of just:

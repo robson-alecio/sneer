@@ -79,10 +79,10 @@ Unacceptable Client Behavior
 		}});
 		
 		startDynDnsClientOnNewEnvironment();
-		_threads.runAllActors();
+		_threads.stepAllSteppers();
 		
 		startDynDnsClientOnNewEnvironment();
-		_threads.runAllActors();
+		_threads.stepAllSteppers();
 	}
 
 	private void startDynDnsClientOnNewEnvironment() {
@@ -112,13 +112,13 @@ Unacceptable Client Behavior
 		
 
 		startDynDnsClient();
-		_threads.runAllActors();
+		_threads.stepAllSteppers();
 		
 		final Light light = assertBlinkingLight(error);
 		
 		my(Clock.class).advanceTime(300001);
 		
-		_threads.runAllActors();
+		_threads.stepAllSteppers();
 		assertFalse(light.isOn());
 	}
 	
@@ -142,7 +142,7 @@ Unacceptable Client Behavior
 		}});
 		
 		startDynDnsClient();
-		_threads.runAllActors();
+		_threads.stepAllSteppers();
 		
 		final Light light = assertBlinkingLight(error);
 		
@@ -152,7 +152,7 @@ Unacceptable Client Behavior
 		DynDnsAccount changed = new DynDnsAccount("test.dyndns.org", "test", "*test");
 		_ownAccount.setter().consume(changed);
 
-		_threads.runAllActors();
+		_threads.stepAllSteppers();
 		assertFalse(light.isOn());
 		
 	}
@@ -172,7 +172,7 @@ Unacceptable Client Behavior
 		}});
 		
 		startDynDnsClient();
-		_threads.runAllActors();
+		_threads.stepAllSteppers();
 		
 		assertBlinkingLight(error);
 	}

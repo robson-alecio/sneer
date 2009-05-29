@@ -21,6 +21,7 @@ import sneer.pulp.dyndns.updater.UpdaterException;
 import sneer.pulp.events.EventSource;
 import sneer.pulp.propertystore.PropertyStore;
 import sneer.pulp.reactive.Signals;
+import sneer.pulp.threads.Stepper;
 import sneer.pulp.threads.Threads;
 
 class DynDnsClientImpl implements DynDnsClient {
@@ -83,18 +84,24 @@ class DynDnsClientImpl implements DynDnsClient {
 	private class Requesting extends State {
 
 		private boolean _isReactionPending = false;
-		
+
+		private final Stepper _refToAvoidGc;
+
 		Requesting() {
-			_threads.registerActor(new Runnable(){ @Override public void run() {
+			_refToAvoidGc = new Stepper() { @Override public boolean step() {
 				State state = submitUpdateRequest(currentAccount(), currentIp());
 				synchronized (_stateMonitor) {
 					_state = state;
 					if (_isReactionPending)
 						_state = _state.react();
 				}
-			}});
+
+				return false;
+			}};
+
+			_threads.registerStepper(_refToAvoidGc);
 		}
-		
+
 		private State submitUpdateRequest(final DynDnsAccount account, String ip) {
 			try {
 				_updater.update(account.host, account.user, account.password, ip);

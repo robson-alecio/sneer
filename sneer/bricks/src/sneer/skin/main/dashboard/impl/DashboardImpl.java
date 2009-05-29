@@ -25,6 +25,7 @@ import sneer.pulp.own.name.OwnNameKeeper;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.impl.SimpleListReceiver;
+import sneer.pulp.threads.Stepper;
 import sneer.pulp.threads.Threads;
 import sneer.skin.main.dashboard.Dashboard;
 import sneer.skin.main.instrumentregistry.Instrument;
@@ -60,12 +61,17 @@ class DashboardImpl implements Dashboard {
 			throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
 		}
 	};
-	
+
+	private final Stepper _refToAvoidGc;
+
 	DashboardImpl() {
-		my(Threads.class).registerActor(new Runnable(){@Override public void run() {
+		_refToAvoidGc = new Stepper() { @Override public boolean step() {
 			initGuiTimebox();
 			initGui();
-		}});
+			return false;
+		}};
+
+		my(Threads.class).registerStepper(_refToAvoidGc);
 		waitUntilTheGuiThreadStarts();
 	}
 		

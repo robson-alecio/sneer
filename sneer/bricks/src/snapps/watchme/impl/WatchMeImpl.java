@@ -25,6 +25,7 @@ import sneer.pulp.datastructures.cache.CacheFactory;
 import sneer.pulp.events.EventNotifier;
 import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.events.EventSource;
+import sneer.pulp.threads.Stepper;
 import sneer.pulp.threads.Threads;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.screenshotter.Screenshotter;
@@ -52,6 +53,8 @@ class WatchMeImpl implements WatchMe {
 	private Cache<ImmutableByteArray> _cache;
 
 	private Consumer<ImageDeltaPacket> _consumerToAvoidGc;
+
+	private Stepper _refToAvoidGc;
 
 	@Override
 	public EventSource<BufferedImage> screenStreamFor(final PublicKey publisher) {
@@ -93,14 +96,20 @@ class WatchMeImpl implements WatchMe {
 	@Override
 	public void startShowingMyScreen() {
 		_isRunning = true;
-		_threads.registerActor(new Runnable(){ @Override public void run() {
-			while (_isRunning) {
+
+		_refToAvoidGc = new Stepper(){ @Override public boolean step() {
+			if(_isRunning) {
 				doPublishShot();
 				_clock.sleepAtLeast(PERIOD_IN_MILLIS);
+				return true;
 			}
+
 			_encoder = null;
 			_cache = null;
-		}});
+			return false;
+		}};
+
+		_threads.registerStepper(_refToAvoidGc);
 	}
 
 	private void doPublishShot() {

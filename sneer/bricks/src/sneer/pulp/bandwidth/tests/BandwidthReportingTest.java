@@ -2,7 +2,6 @@ package sneer.pulp.bandwidth.tests;
 
 import static sneer.commons.environments.Environments.my;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
@@ -30,7 +29,6 @@ public class BandwidthReportingTest extends BrickTest {
 	@Contribute private final BandwidthCounter _bandwidthCounter = new BandwidthCounterMock();
 	private final ConnectionManager _connectionManager = my(ConnectionManager.class);
 	
-	@Ignore
 	@Test
 	public void test() throws InterruptedException {
 		final Contact contact = getContactMock();

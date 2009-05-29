@@ -4,35 +4,37 @@ import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+import javax.swing.JOptionPane;
+
 /** This guy "plays" (runs) the latest version of Sneer, one after the other. */
 class SneerJockey {
 
-	@SuppressWarnings("unused")
 	private final File _sneerHome;
-
+	
+	@SuppressWarnings("unused")
+	private static Object sneer;
+	private static URLClassLoader loader;
+	
 	SneerJockey(File sneerHome) throws Exception {
 		_sneerHome = sneerHome;
 		
 //		while (true)
 			play();
+		JOptionPane.showMessageDialog(null, sneer.toString());
 	}
 
 	private void play() throws Exception {
-		//TODO: GCollectable class loader:  new File(_sneerHome, "bin");
-		//loadClass "main.Sneer".newInstance();
+		loader = createGarbageCollectableClassLoader(new File(_sneerHome, "bin"));
+		sneer = loader.loadClass("main.Sneer").newInstance();
 	}
 
-	public static URLClassLoader createGarbageCollectableClassLoader(URL jar) throws Exception {
-		return new URLClassLoader(new URL[]{jar}, bootstrapClassLoader());
+	public static URLClassLoader createGarbageCollectableClassLoader(File binDirectory) throws Exception {
+		return new URLClassLoader(new URL[]{ binDirectory.toURI().toURL() }, bootstrapClassLoader());
 	}
-	
-	
+
 	private static ClassLoader bootstrapClassLoader() {
 		ClassLoader candidate = ClassLoader.getSystemClassLoader();
 		while (candidate.getParent() != null) candidate = candidate.getParent();
 		return candidate;
 	}
-
-
-	
 }

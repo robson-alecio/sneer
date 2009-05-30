@@ -22,8 +22,7 @@
 	<target name="test" depends="test-execution, test-verification">
 	</target>
 	
-	<target name="testWithClover" depends="init-clover, test-execution, test-verification, clover-report">
-	</target>
+	<target name="testWithClover" depends="init-clover, test-execution, test-verification, clover"/>
 	
 	<target name="test-verification" if="junit.failures">
 		<echo>Test failures! Check the output for details.</echo>
@@ -104,8 +103,10 @@
 		<taskdef resource="cloverlib.xml" classpath="${clover.jar}"/>
 		<clover-setup initString="mycoverage.db"/>
 	</target>
-	
-	<target name="clover-report" depends="clean, init-clover, test-execution">
+
+	<target name="clover-report" depends="clean, init-clover, test-execution, clover"/>
+
+	<target name="clover">
 		<fileset dir="." id="clover.sources">
 <%
 	for (Pair<String, String> src : value.srcs()) {

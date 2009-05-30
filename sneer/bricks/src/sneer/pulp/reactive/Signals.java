@@ -7,17 +7,19 @@ import sneer.pulp.events.EventSource;
 
 @Brick
 public interface Signals {  
-	
+
 	<T> Signal<T> constant(T value);
-	
+
 	Consumer<Object> sink();
-	
+
 	<A, B> Signal<B> adapt(Signal<A> input, Functor<A, B> functor);
+
 	<A, B> Signal<B> adaptSignal(Signal<A> input, Functor<A, Signal<B>> functor);
 
 	<T> Register<T> newRegister(T initialValue);
 
 	<T> Reception receive(EventSource<? extends T> source, Consumer<? super T> receiver);	
-	<T> Reception receive(Consumer<? super T> receiver, EventSource<? extends T>... sources);	
-}
 
+	<T> Reception receive(Consumer<? super T> receiver, EventSource<? extends T>... sources);
+
+}

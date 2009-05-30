@@ -9,13 +9,6 @@
 	
 	- [Sandro] Remove installer dependencies on libs.
 	
-	- [Igor] Method Signals.receive(source, Consumer) was created. Migrate to it all uses of receive(Consumer, sources) that have a single source.  
-
-	- [Igor] Threads.registerActor() - Delete
-		- Convert all to registerStepper() instead.
-		- Make registerStepper keep a weak reference to the stepper.
-			- All uses of registerStepper() will have to keep a _refToAvoidGc to the stepper. 
-	
 	- [Igor] Adapt antlips to support lib entries starting with:
 		kind="lib" exported="true"...   instead of just:
 		kind="lib"...

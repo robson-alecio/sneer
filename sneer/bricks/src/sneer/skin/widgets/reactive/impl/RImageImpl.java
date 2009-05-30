@@ -42,14 +42,14 @@ class RImageImpl extends JPanel implements ImageWidget{
 	}
 
 	private void imageReceiverFor(Signal<Image> signal) {
-		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<Image>() { @Override public void consume(final Image image) {
+		_referenceToAvoidGc = my(Signals.class).receive(signal, new Consumer<Image>() { @Override public void consume(final Image image) {
 			_image.setter().consume(image);
 
 			my(GuiThread.class).invokeAndWait(new Runnable() { @Override public void run() {
 				revalidate();
 				repaint();
 			}});
-		}}, signal);
+		}});
 	}
 
 	@Override

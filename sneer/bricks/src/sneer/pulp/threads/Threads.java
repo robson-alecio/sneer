@@ -5,8 +5,6 @@ import sneer.brickness.Brick;
 @Brick
 public interface Threads {
 
-	void registerActor(Runnable runnable);
-
 	void registerStepper(Stepper stepper);
 
 	void waitWithoutInterruptions(Object object);

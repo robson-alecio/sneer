@@ -32,9 +32,9 @@ final class ProbeImpl implements Consumer<Tuple> {
 
 	ProbeImpl(Contact contact, Signal<Boolean> isOnlineSignal) {
 		_contact = contact;
-		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<Boolean>(){ @Override public void consume(Boolean isOnline) {
+		_referenceToAvoidGc = my(Signals.class).receive(isOnlineSignal, new Consumer<Boolean>(){ @Override public void consume(Boolean isOnline) {
 			dealWithIsOnline(isOnline);
-		}}, isOnlineSignal);
+		}});
 	}
 
 	private void dealWithIsOnline(boolean isOnline) {

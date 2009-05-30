@@ -59,14 +59,14 @@ class AutoScroll<T> extends JScrollPane{
 	
 	private void initReceivers(ListSignal<T> inputSignal, Consumer<CollectionChange<T>> consumer) {
 		initPreChangeReceiver(inputSignal);		
-		_referenceToAvoidGc = my(Signals.class).receive(consumer, inputSignal);
+		_referenceToAvoidGc = my(Signals.class).receive(inputSignal, consumer);
 		initPosChangeReceiver(inputSignal);
 	}
 	
 	private void initReceivers(EventSource<T> eventSource) {
-		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<T>(){ @Override public void consume(T value) {
+		_referenceToAvoidGc = my(Signals.class).receive(eventSource, new Consumer<T>(){ @Override public void consume(T value) {
 			if(_shouldAutoscroll) placeAtEnd();
-		}}, eventSource);
+		}});
 	}
 
 	@SuppressWarnings("unused")

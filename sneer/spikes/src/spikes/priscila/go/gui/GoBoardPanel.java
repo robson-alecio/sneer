@@ -73,10 +73,10 @@ public class GoBoardPanel extends JPanel {
 	public GoBoardPanel(Register<Move> moveRegister, StoneColor side) {
 		_side = side;
 		_moveRegister=moveRegister;
-		_referenceToAvoidGc = my(Signals.class).receive(new Consumer<Move>() { @Override public void consume(Move move) { 
+		_referenceToAvoidGc = my(Signals.class).receive(_moveRegister.output(), new Consumer<Move>() { @Override public void consume(Move move) { 
 			if (move == null) return; 
 			play(move); 
-		}}, _moveRegister.output());
+		}});
 		
 		addMouseListener();
 	    my(Threads.class).startDaemon("Go Board Scroller", new Scroller());

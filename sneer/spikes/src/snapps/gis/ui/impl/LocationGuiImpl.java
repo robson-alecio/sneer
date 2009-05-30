@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import snapps.location.LocationKeeper;
+import sneer.pulp.threads.Stepper;
 import sneer.pulp.threads.Threads;
 
 public class LocationGuiImpl {
@@ -31,10 +32,15 @@ public class LocationGuiImpl {
 
 	private final Threads _threads = my(Threads.class);
 
+	private final Stepper _refToAvoidGc;
+
 	LocationGuiImpl() {
-		_threads.registerActor(new Runnable() { @Override public void run() {
+		_refToAvoidGc = new Stepper() { @Override public boolean step() {
 			openGUI();
-		}});
+			return false;
+		}};
+
+		_threads.registerStepper(_refToAvoidGc);
 	}
 
 	private JLabel _mapHolder = new JLabel();

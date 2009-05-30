@@ -11,6 +11,7 @@ import sneer.commons.environments.Bindings;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.EnvironmentUtils;
 import sneer.commons.environments.Environments;
+import sneer.pulp.threads.Stepper;
 import sneer.pulp.threads.Threads;
 
 @RunWith(BrickTestRunner.class)
@@ -28,13 +29,16 @@ public class ThreadPoolTest {
 		Environment environment = EnvironmentUtils.compose(testEnvironment, my(Environment.class));
 
 		Environments.runWith(environment, new Runnable() { @Override public void run() {
-			subject.registerActor(new Runnable() { @Override public void run() {
+			final Stepper refToAvoidGc = new Stepper() { @Override public boolean step() {
 				assertSame(binding, Environments.my(Object.class));
 				synchronized (ranMonitor) {
 					ran = true;
 					ranMonitor.notify();
 				}
-			}});
+				return false;
+			}};
+
+			subject.registerStepper(refToAvoidGc);
 		}});
 
 		synchronized (ranMonitor) {

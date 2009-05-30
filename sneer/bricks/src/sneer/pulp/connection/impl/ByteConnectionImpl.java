@@ -34,6 +34,7 @@ class ByteConnectionImpl implements ByteConnection {
 	private Consumer<byte[]> _receiver;
 	
 	private volatile boolean _isClosed;
+	private Stepper _refToAvoidGc;
 
 
 	ByteConnectionImpl(String label, Contact contact) {
@@ -114,11 +115,13 @@ class ByteConnectionImpl implements ByteConnection {
 	}
 	
 	private void startReceiving() {
-		_threads.registerStepper(new Stepper() { @Override public boolean step() {
+		_refToAvoidGc = new Stepper() { @Override public boolean step() {
 			if (!tryToReceive())
 				_threads.sleepWithoutInterruptions(500); //Optimize Use wait/notify
 			return !_isClosed;
-		}});
+		}};
+
+		_threads.registerStepper(_refToAvoidGc);
 	}
 
 	private boolean tryToReceive() {

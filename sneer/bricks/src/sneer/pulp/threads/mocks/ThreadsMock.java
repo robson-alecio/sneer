@@ -8,7 +8,6 @@ import sneer.pulp.threads.Threads;
 
 public class ThreadsMock implements Threads {
 
-	List<Runnable> _actors = new ArrayList<Runnable>();
 	List<Stepper> _steppers = new ArrayList<Stepper>();
 
 	@Override
@@ -16,20 +15,15 @@ public class ThreadsMock implements Threads {
 		_steppers.add(stepper);
 	}
 
-	@Override
-	public synchronized void registerActor(Runnable runnable) {
-		_actors.add(runnable);
-	}
-
-	public synchronized void runAllActors(){
-		ArrayList<Runnable> copy = new ArrayList<Runnable>(_actors);
-		_actors.clear();
-		
-		for (Runnable toRun : copy) toRun.run();
-	}
-
 	public synchronized Stepper stepper(int i) {
 		return _steppers.get(i);
+	}
+
+	public synchronized void stepAllSteppers() {
+		ArrayList<Stepper> steppersCopy = new ArrayList<Stepper>(_steppers);
+		_steppers.clear();
+
+		for (Stepper stepper : steppersCopy) stepper.step();
 	}
 
 	@Override

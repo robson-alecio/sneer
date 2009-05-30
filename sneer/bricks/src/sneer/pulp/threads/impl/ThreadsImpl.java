@@ -2,6 +2,7 @@ package sneer.pulp.threads.impl;
 
 import static sneer.commons.environments.Environments.my;
 
+import java.lang.ref.WeakReference;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -75,14 +76,13 @@ class ThreadsImpl implements Threads {
 	}
 
 	@Override
-	public void registerActor(Runnable actor) {
-		startDaemon(inferThreadName(), actor);
-	}
-
-	@Override
-	public void registerStepper(final Stepper stepper) {
+	public void registerStepper(Stepper stepper) {
+		final WeakReference<Stepper> stepperWeakRef = new WeakReference<Stepper>(stepper);
 		startDaemon(inferThreadName(), new Runnable() { @Override public void run() {
-			while (stepper.step());
+			Stepper s;
+			do {
+				s = stepperWeakRef.get();
+			} while(s != null && s.step());
 		}});
 	}
 

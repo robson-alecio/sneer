@@ -18,6 +18,7 @@ import sneer.pulp.network.ByteArraySocket;
 import sneer.pulp.network.Network;
 import sneer.pulp.port.PortKeeper;
 import sneer.pulp.reactive.Signals;
+import sneer.pulp.threads.Stepper;
 import sneer.pulp.threads.Threads;
 
 class SocketAccepterImpl implements SocketAccepter {
@@ -41,15 +42,21 @@ class SocketAccepterImpl implements SocketAccepter {
 
 	private final Light _cantAcceptSocket = _lights.prepare(LightType.ERROR);
 
-	@SuppressWarnings("unused") private final Object _referenceToAvoidGc;
+	@SuppressWarnings("unused") private final Object _receptionRefToAvoidGc;
+	private final Stepper _stepperRefToAvoidGc;
+	private Stepper _refToAvoidGc;
 
 	SocketAccepterImpl() {
-		_referenceToAvoidGc = my(Signals.class).receive(_portKeeper.port(), new Consumer<Integer>() { @Override public void consume(Integer port) {
+		_receptionRefToAvoidGc = my(Signals.class).receive(_portKeeper.port(), new Consumer<Integer>() { @Override public void consume(Integer port) {
 			setPort(port);
 		}});
-		_threads.registerActor(new Runnable(){ @Override public void run() {
+
+		_stepperRefToAvoidGc = new Stepper() { @Override public boolean step() {
 			listenToSneerPort();
-		}});
+			return true;
+		}};
+
+		_threads.registerStepper(_stepperRefToAvoidGc);
 	}
 
 	@Override
@@ -65,30 +72,32 @@ class SocketAccepterImpl implements SocketAccepter {
 	}
 
     private void listenToSneerPort() {
-    	while (true) {
-    		int myPortToListen = _portToListen;
-    		crashServerSocketIfNecessary();
-    		openServerSocket(myPortToListen);	
-    		if(_serverSocket != null) startAccepting();
-    		
-    		synchronized (_portToListenMonitor) {
-    			if (myPortToListen == _portToListen)
-    				_threads.waitWithoutInterruptions(_portToListenMonitor);
-    		}
-    	}
+		int myPortToListen = _portToListen;
+		crashServerSocketIfNecessary();
+		openServerSocket(myPortToListen);	
+
+		if(_serverSocket != null) startAccepting();
+
+		synchronized (_portToListenMonitor) {
+			if (myPortToListen == _portToListen)
+				_threads.waitWithoutInterruptions(_portToListenMonitor);
+		}
     }
 	
 	private void startAccepting() {
 		_isStopped = false;
-		_threads.registerActor(new Runnable() { @Override public void run() {
-			while (!_isStopped) {
-				try {
-					dealWith(_serverSocket.accept());
-				} catch (IOException e) {
-					dealWith(e);
-				} 
+
+		_refToAvoidGc = new Stepper() { @Override public boolean step() {
+			try {
+				dealWith(_serverSocket.accept());
+			} catch (IOException e) {
+				dealWith(e);
 			}
-		}});
+
+			return !_isStopped;
+		}};
+
+		_threads.registerStepper(_refToAvoidGc);
 
 	}
 	

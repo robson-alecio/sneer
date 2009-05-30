@@ -8,6 +8,7 @@ import sneer.pulp.reactive.Signals;
 import sneer.pulp.retrier.Retrier;
 import sneer.pulp.retrier.RetrierManager;
 import sneer.pulp.retrier.Task;
+import sneer.pulp.threads.Stepper;
 import sneer.pulp.threads.Threads;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
@@ -20,7 +21,7 @@ class MicImpl implements Mic {
 	private final TupleSpace _tupleSpace = my(TupleSpace.class);
 	
 	private boolean _isOpen;
-	private Runnable _worker;
+	private Stepper _refToAvoidGc;
 	
 	private Register<Boolean> _isRunning = my(Signals.class).newRegister(false);
 	
@@ -42,13 +43,14 @@ class MicImpl implements Mic {
 	}
 
 	private void startToWorkIfNecessary() {
-		if (_worker != null) return;
+		if (_refToAvoidGc != null) return;
 
-		_worker = new Runnable(){ @Override public void run() {
+		_refToAvoidGc = new Stepper() { @Override public boolean step() {
 			work();
+			return false;
 		}};
-		
-		_threads.registerActor(_worker);
+
+		_threads.registerStepper(_refToAvoidGc);
 	}
 	
 	private void work() {
@@ -61,7 +63,7 @@ class MicImpl implements Mic {
 
 			synchronized (this) {
 				if (!_isOpen) {
-					_worker = null;
+					_refToAvoidGc = null;
 					return;
 				}
 			}

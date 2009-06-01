@@ -1,10 +1,6 @@
 ﻿FIXES
 =========
 	
-	- [Sandro] Unignore MicTest and Bandwidth.
-	
-	- [Sandro] Installer.extractFiles() - How can this happen: if(!(src.exists() && src.isFile())) ???
-	
 	- [Sandro] Remove installer dependencies on libs.
 	
 	- [Igor] Adapt antlips to support lib entries starting with:

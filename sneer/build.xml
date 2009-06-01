@@ -6,7 +6,7 @@
 	<property name="builder.project" value="antlips" />
 	
 	<target name="hudson" depends="clean, antlips.xml">
-		<ant inheritall="true" antfile="antlips.xml" target="testWithClover" />
+		<ant inheritall="true" antfile="antlips.xml" target="test" />
 	</target>
 	
 	<target name="clean" depends="delete-build-dir, antlips.xml">

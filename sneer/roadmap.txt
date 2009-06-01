@@ -25,7 +25,7 @@
 
 	- SignalChoosers - Return a sneer.pulp.reactive.Reception that can de disposed, just like Signals.receive().
 	
-	- Remove @Ignore and Fix WindTest.testSortedShoutsHeard
+	- [Sandro] Remove @Ignore and Fix WindTest.testSortedShoutsHeard
 
 	- [Igor] Break down packages with more than one brick
 
@@ -45,7 +45,6 @@ TASKS
 			- Test - Add Gui nature to gui bricks and run.
 			- GuiThread - Improve how environment handling is done. 
 				- Unignore GuiBrickTest.
-		- [Klaus] GuiBrick Javadoc - Revise.
 
 	- [Bamboo] Create/Install ("publish") brick locally
 		- Brickness - "The simplest possible container"
@@ -55,11 +54,9 @@ TASKS
 			- Make a test run a brick in a directory that is not in the system ClassLoader classpath (Eclipse classpath). It will probably fail. Implement the logic using NewContainerImpl.createApiClassLoader() to return a URLClassloader that can be extended with new classpaths for new brick interfaces;
 
 	- [Klaus and Igor]
-		- Cleanup Commons
+		- Cleanup Commons - Delete or convert to bricks
 		- Uncomment _logger field and finalize() method in EventNotifierImpl.
 		- Start breaking 'sneer.pulp' into new package structure (hardware, software, etc), and while doing that, fix packages with more than one Brick (ex: 'sneer.pulp.reactive'). 
-	
-	- Commons - Delete or convert to bricks.
 
 	- DynDns
 		- Fix: Running on more than one machine will cause redundant (abusive) updates. Do not persist last discovered IP. Do a DNS lookup every time instead.

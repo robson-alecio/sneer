@@ -1,9 +1,9 @@
 package sneer.hardware.ram.arrays.impl;
 
-import sneer.hardware.ram.arrays.Arrays;
+import sneer.hardware.ram.arrays.ImmutableArrays;
 import sneer.hardware.ram.arrays.ImmutableByteArray;
 
-class ArraysImpl implements Arrays {
+class ImmutableArraysImpl implements ImmutableArrays {
 
 	@Override
 	public ImmutableByteArray newImmutableByteArray(byte[] bufferToCopy) {

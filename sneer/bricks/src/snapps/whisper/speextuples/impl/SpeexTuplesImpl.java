@@ -14,7 +14,7 @@ import snapps.whisper.speextuples.SpeexTuples;
 import sneer.brickness.PublicKey;
 import sneer.brickness.Tuple;
 import sneer.hardware.cpu.lang.Consumer;
-import sneer.hardware.ram.arrays.Arrays;
+import sneer.hardware.ram.arrays.ImmutableArrays;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.reactive.Signal;
@@ -102,7 +102,7 @@ class SpeexTuplesImpl implements SpeexTuples {
 	
 	protected void decode(SpeexPacket packet) {
 		for (byte[] frame : _decoder.decode(packet.frames))
-			_tupleSpace.acquire(new PcmSoundPacket(packet.publisher(), packet.publicationTime(), my(Arrays.class).newImmutableByteArray(frame)));
+			_tupleSpace.acquire(new PcmSoundPacket(packet.publisher(), packet.publicationTime(), my(ImmutableArrays.class).newImmutableByteArray(frame)));
 	}
 
 	@Override

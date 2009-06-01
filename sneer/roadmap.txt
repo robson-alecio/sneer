@@ -45,7 +45,6 @@ TASKS
 			- Test - Add Gui nature to gui bricks and run.
 			- GuiThread - Improve how environment handling is done. 
 				- Unignore GuiBrickTest.
-		- [Klaus] GuiBrick Javadoc - Revise.
 
 	- [Bamboo] Create/Install ("publish") brick locally
 		- Brickness - "The simplest possible container"

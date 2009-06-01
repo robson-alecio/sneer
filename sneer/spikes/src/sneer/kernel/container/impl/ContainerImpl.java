@@ -14,7 +14,6 @@ import sneer.kernel.container.ContainerException;
 import sneer.kernel.container.ContainerOld;
 import sneer.kernel.container.SneerConfig;
 import sneer.kernel.container.impl.classloader.EclipseClassLoaderFactory;
-import sneer.skin.GuiBrick;
 
 public class ContainerImpl implements ContainerOld {
 	
@@ -41,8 +40,7 @@ public class ContainerImpl implements ContainerOld {
 		_sneerConfig = produceSneerConfig();
 		bindStorageDirectoryIfNecessary();
 		
-		
-		bindGuiBricks(bindings);
+//		bindGuiBricks(bindings);
 	}
 
 	private void bindStorageDirectoryIfNecessary() {
@@ -61,17 +59,17 @@ public class ContainerImpl implements ContainerOld {
 
 	private void bindNonGuiBricks(Object... bindings) {
 		for (Object implementation : bindings) {
-			if (implementation instanceof GuiBrick)
-				continue;
+//			if (implementation instanceof GuiBrick)
+//				continue;
 			_binder.bind(implementation);
 		}
 	}
 	
-	private void bindGuiBricks(Object... bindings) {
-		for (Object implementation : bindings)
-			if (implementation instanceof GuiBrick)
-				_binder.bind(decorate(implementation));
-	}
+//	private void bindGuiBricks(Object... bindings) {
+//		for (Object implementation : bindings)
+//			if (implementation instanceof GuiBrick)
+//				_binder.bind(decorate(implementation));
+//	}
 
 	@Override
 	public Class<?> resolve(String brickName) throws ClassNotFoundException {

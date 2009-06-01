@@ -29,7 +29,7 @@
 	</target>
 		
 	<target name="test-execution" depends="compile">
-		<junit printsummary="withOutAndErr" failureproperty="junit.failures" fork="yes">
+		<junit printsummary="true" failureproperty="junit.failures" fork="yes">
 			<formatter type="xml"/>
 			<sysproperty key="java.awt.headless" value="${java.awt.headless}" />
 			<classpath>

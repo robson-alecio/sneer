@@ -17,6 +17,7 @@ import sneer.brickness.testsupport.Contribute;
 import sneer.commons.lang.ByRef;
 import sneer.hardware.cpu.lang.Consumer;
 import sneer.hardware.ram.arrays.ImmutableArrays;
+import sneer.hardware.ram.arrays.ImmutableByteArray2D;
 import sneer.pulp.clock.Clock;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.TupleSpace;
@@ -68,7 +69,7 @@ public class SpeexTuplesTest extends BrickTest {
 		_tupleSpace.waitForAllDispatchingToFinish();
 		
 		assertNotNull(packet.value);
-		assertFrames(packet.value.frames);
+		assertFrames(packet.value.frames.copy());
 		assertEquals("MyChannel", packet.value.room);
 	}
 	
@@ -110,7 +111,11 @@ public class SpeexTuplesTest extends BrickTest {
 	}
 
 	private Tuple speexPacketFrom(PublicKey contactKey, byte[][] bs, String channel, short sequence) {
-		return new SpeexPacket(contactKey, bs, channel, sequence);
+		return new SpeexPacket(contactKey, immutable(bs), channel, sequence);
+	}
+
+	private ImmutableByteArray2D immutable(byte[][] array2D) {
+		return my(ImmutableArrays.class).newImmutableByteArray2D(array2D);
 	}
 
 	private void assertFrames(final byte[][] frames) {

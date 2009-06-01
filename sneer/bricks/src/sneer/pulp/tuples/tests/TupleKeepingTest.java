@@ -44,7 +44,7 @@ public class TupleKeepingTest extends BrickTest {
 
 	private void publishTestTuples(int amount) {
 		for (int i = 0; i < amount; i++)
-			subject().publish(new TestTuple(new int[] {i}));
+			subject().publish(new TestTuple(i));
 	}
 	
 }

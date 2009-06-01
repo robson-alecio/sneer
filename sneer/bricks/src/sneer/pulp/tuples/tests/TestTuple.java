@@ -4,10 +4,10 @@ import sneer.brickness.Tuple;
 
 public class TestTuple extends Tuple {
 
-	public final int[] intArray;
+	public final int intValue;
 	
-	TestTuple(int... pIntArray) {
-		intArray = pIntArray;
+	TestTuple(int intValue_) {
+		intValue = intValue_;
 	}
 	
 }

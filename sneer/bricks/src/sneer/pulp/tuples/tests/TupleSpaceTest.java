@@ -15,31 +15,6 @@ public class TupleSpaceTest extends BrickTest {
 
 	private final TupleSpace _subject = my(TupleSpace.class);
 	
-	private TestTuple _received;
-
-	
-	@Test
-	public void tuplesContainingArrays() {
-		TestTuple a = new TestTuple(new int[]{1, 2, 3});
-		TestTuple b = new TestTuple(new int[]{1, 2, 3});
-		assertTrue(a.hashCode() == b.hashCode());
-		assertEquals(a, b);
-
-		Consumer<TestTuple> refToAvoidGc = new Consumer<TestTuple>(){@Override public void consume(TestTuple received) {
-			_received = received;
-		}};
-		_subject.addSubscription(TestTuple.class, refToAvoidGc);
-		
-		_subject.publish(a);
-		_subject.waitForAllDispatchingToFinish();
-		assertEquals(_received, a);
-		
-		_received = null;
-		_subject.publish(b);
-		assertNull(_received);
-	}
-	
-	
 	@Test
 	public void subscriptionRemoval() {
 		final ArrayList<Tuple> tuples = new ArrayList<Tuple>();

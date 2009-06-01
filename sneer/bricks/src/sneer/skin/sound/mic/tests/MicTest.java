@@ -17,26 +17,27 @@ import sneer.skin.sound.mic.Mic;
 
 public class MicTest extends BrickTest {
 
-	private static final SignalUtils SIGNAL_UTILS = my(SignalUtils.class);
-
 	private final Mic _subject = my(Mic.class);
 	private final TargetDataLine _line = mock(TargetDataLine.class);
 	private final AudioFormat _format = new AudioFormat(8000, 16, 1, true, false);
 	@Contribute	private final Audio _audio = mock(Audio.class);
-	
+
 	@Test
 	public void testIsRunningSignal() throws LineUnavailableException {
+
 		checking(soundExpectations());
-		
-		SIGNAL_UTILS.waitForValue(false, _subject.isRunning());
-		
+
+		final SignalUtils signalUtils = my(SignalUtils.class);
+
+		signalUtils.waitForValue(false, _subject.isRunning());
+
 		_subject.open();
-		SIGNAL_UTILS.waitForValue(true, _subject.isRunning());
-		
+		signalUtils.waitForValue(true, _subject.isRunning());
+
 		_subject.close();
-		SIGNAL_UTILS.waitForValue(false, _subject.isRunning());
+		signalUtils.waitForValue(false, _subject.isRunning());
 	}
-	
+
 	private Expectations soundExpectations() throws LineUnavailableException {
 		return new Expectations() {{
 			one(_audio).tryToOpenCaptureLine(); will(returnValue(_line));

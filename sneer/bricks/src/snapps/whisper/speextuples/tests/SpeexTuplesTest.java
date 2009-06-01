@@ -43,7 +43,7 @@ public class SpeexTuplesTest extends BrickTest {
 	
 	private final SpeexTuples _subject = my(SpeexTuples.class);
 	
-	@Test
+	@Test (timeout = 2000)
 	public void testPcmToSpeex() throws Exception {
 		
 		checking(new Expectations() {{ 
@@ -74,7 +74,7 @@ public class SpeexTuplesTest extends BrickTest {
 	}
 	
 	
-	@Test
+	@Test (timeout = 2000)
 	public void testSpeexToPcm() {
 		final byte[][] speexPacketPayload = new byte[][] { {0} };
 		final byte[] pcmPacketPayload = new byte[] { 17 };

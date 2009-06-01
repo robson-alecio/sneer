@@ -1,8 +1,6 @@
 ﻿FIXES
 =========
 	
-	- [Klaus] Eliminate intermediate lib classloader when there are no libs in the brick.
-	
 	- [Sandro] Unignore MicTest and Bandwidth.
 	
 	- [Sandro] Installer.extractFiles() - How can this happen: if(!(src.exists() && src.isFile())) ???

@@ -13,11 +13,18 @@ import sneer.brickness.Nature;
 /** To be implemented.*/
 class ClassLoaderForBrickLibs extends ClassLoaderWithNatures {
 
+	public static ClassLoader newInstanceIfNecessary(File classpath, String implPackage, List<Nature> natures, ClassLoader apiClassLoader) {
+		URL[] jars = jars(classpath, implPackage);
+		return jars.length == 0
+			? null
+			: new ClassLoaderForBrickLibs(jars, natures, apiClassLoader);
+	}	
+	
 	private static final File[] EMPTY_FILE_ARRAY = new File[0];
 	private static final URL[] ARRAY_OF_URL = new URL[0];
 
-	ClassLoaderForBrickLibs(File classpath, String implPackage, List<Nature> natures, ClassLoader next) {
-		super(jars(classpath, implPackage), next, natures);
+	private ClassLoaderForBrickLibs(URL[] jars, List<Nature> natures, ClassLoader next) {
+		super(jars, next, natures);
 	}
 
 	private static URL[] jars(File classpath, String implPackage) {
@@ -28,16 +35,15 @@ class ClassLoaderForBrickLibs extends ClassLoaderWithNatures {
 		for (File candidate : listFiles(libDir))
 			if (candidate.getName().endsWith(".jar"))
 				result.add(toURL(candidate));
-		
-		sortAlphabetically(result);
 
+		sortAlphabetically(result);
+		
 		return result.toArray(ARRAY_OF_URL);
 	}
 
 	private static File[] listFiles(File libDir) {
 		File[] result = libDir.listFiles();
-		if (result == null) return EMPTY_FILE_ARRAY;
-		return result;
+		return result == null ? EMPTY_FILE_ARRAY : result;
 	}
 
 	private static void sortAlphabetically(List<URL> list) {
@@ -57,7 +63,6 @@ class ClassLoaderForBrickLibs extends ClassLoaderWithNatures {
 	@Override
 	protected boolean isEagerToLoad(String className) {
 		return findResource(className.replace(".", "/") + ".class") != null; //OPTIMIZE: Cache this and use it to load the class.
-	}	
-
+	}
 
 }

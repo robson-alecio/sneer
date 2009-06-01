@@ -13,8 +13,6 @@
 		kind="lib" exported="true"...   instead of just:
 		kind="lib"...
 
-	- [Igor] build.xml - Make it show JUnit failure details, not only "FAILED".
-
 	- [Igor] SimpleListReceiver - It cannot be public.
 		- Talk to Klaus about this.
 		- ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do. See ListRegisterImpl.MyOutput._notifier

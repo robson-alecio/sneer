@@ -19,7 +19,7 @@ import sneer.hardware.cpu.exceptions.Hiccup;
 import sneer.hardware.cpu.profiler.Profiler;
 import sneer.hardware.cpu.profiler.Profilers;
 import sneer.hardware.gui.images.Images;
-import sneer.hardware.ram.arrays.Arrays;
+import sneer.hardware.ram.arrays.ImmutableArrays;
 import sneer.skin.image.ImageFactory;
 
 class EncoderImpl implements Encoder {
@@ -64,7 +64,7 @@ class EncoderImpl implements Encoder {
 		_previousPixelsByCellCoordinate.put(Pair.of(x, y), currentPixels);
 		
 		byte[] data = _imageFactory.toPngData(img1);
-		result.add(new ImageDelta(my(Arrays.class).newImmutableByteArray(data), x, y));
+		result.add(new ImageDelta(my(ImmutableArrays.class).newImmutableByteArray(data), x, y));
 	}
 	
 }

@@ -20,15 +20,15 @@ import sneer.pulp.reactive.Signals;
 import sneer.pulp.threads.mocks.ThreadsMock;
 
 public class BandwidthReportingTest extends BrickTest {
-	
-	private static final byte[] _BYTE_ARRAY_OK = my(StringUtils.class).toByteArray("OK");
-	private static final int _IN_PACKET_SIZE = _BYTE_ARRAY_OK.length;
-	private static final int _OUT_PACKET_SIZE = 1024;
-	
+
+	private final byte[] _BYTE_ARRAY_OK = my(StringUtils.class).toByteArray("OK");
+	private final int _IN_PACKET_SIZE = _BYTE_ARRAY_OK.length;
+	private final int _OUT_PACKET_SIZE = 1024;
+
 	@Contribute private final ThreadsMock _threads = new ThreadsMock();
 	@Contribute private final BandwidthCounter _bandwidthCounter = new BandwidthCounterMock();
 	private final ConnectionManager _connectionManager = my(ConnectionManager.class);
-	
+
 	@Test
 	public void test() throws InterruptedException {
 		final Contact contact = getContactMock();
@@ -99,7 +99,7 @@ public class BandwidthReportingTest extends BrickTest {
 
 	private ByteArraySocket getByteArraySocketMock() {
 		return new ByteArraySocket(){
-			@Override public byte[] read() {	return _BYTE_ARRAY_OK;	}
+			@Override public byte[] read() { return _BYTE_ARRAY_OK; }
 			@Override public void write(byte[] array) { /*ignore*/ }
 			@Override public void crash() {/*ignore*/ }
 		};

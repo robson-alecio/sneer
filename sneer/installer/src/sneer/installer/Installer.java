@@ -48,7 +48,7 @@ class Installer {
 		
 		FileUtils.writeStringToFile(new  File(_sneerTmp, "log.txt"), "expand files from: " + src.getAbsolutePath());
 
-		if(!(src.exists() && src.isFile()))
+		if(!(src.exists()))
 			throw new IOException("File '" + src.getAbsolutePath() + "' not found!");	
 		
 		JarInputStream jis = new JarInputStream(new FileInputStream(src));

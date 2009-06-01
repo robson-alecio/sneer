@@ -1,6 +1,8 @@
 ﻿FIXES
 =========
 
+	- [Igor] Fix problem: Exception in thread "Timebox Killer" sneer.commons.lang.exceptions.NotImplementedYet: Not implemented yet :).
+
 	- [Igor] SpeexTuplesTest - Fix intermittent failure. 	
 	
 	- [Sandro] Installer.extractFiles() - How can this happen: if(!(src.exists() && src.isFile())) ???

@@ -27,8 +27,6 @@ public class WindTest extends BrickTest {
 			ShoutMock shout = new ShoutMock(""+i, i);
 			tupleSpace().publish(shout);
 		}
-		
-		assertEquals(21, _subject.shoutsHeard().currentSize());
 
 		Shout previusShout = null;
 		for (Shout _shout : _subject.shoutsHeard()) {
@@ -42,6 +40,7 @@ public class WindTest extends BrickTest {
 			previusShout = _shout;
 		}
 		
+		assertEquals(21, _subject.shoutsHeard().currentSize());
 	}
 
 	private TupleSpace tupleSpace() {

@@ -2,7 +2,6 @@ package snapps.wind.tests;
 
 import static sneer.commons.environments.Environments.my;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import snapps.wind.Shout;
@@ -12,11 +11,8 @@ import sneer.pulp.tuples.TupleSpace;
 
 public class WindTest extends BrickTest {
 
-	private Wind subject() {
-		return my(Wind.class);
-	}
+	private final Wind _subject =  my(Wind.class);
 	
-	@Ignore
 	@Test
 	public void testSortedShoutsHeard() {
 		
@@ -27,13 +23,15 @@ public class WindTest extends BrickTest {
 			tupleSpace().publish(shout);
 		}
 		
-		for (int i = 10; i > 0; i--) {
+		for (int i = 10; i >= 0; i--) {
 			ShoutMock shout = new ShoutMock(""+i, i);
 			tupleSpace().publish(shout);
 		}
 		
+		assertEquals(21, _subject.shoutsHeard().currentSize());
+
 		Shout previusShout = null;
-		for (Shout _shout : subject().shoutsHeard()) {
+		for (Shout _shout : _subject.shoutsHeard()) {
 			
 			if(previusShout==null){
 				previusShout = _shout;
@@ -44,7 +42,6 @@ public class WindTest extends BrickTest {
 			previusShout = _shout;
 		}
 		
-		assertEquals(21, subject().shoutsHeard().currentSize());
 	}
 
 	private TupleSpace tupleSpace() {

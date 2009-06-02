@@ -33,16 +33,16 @@ public class TuplePersistenceTest extends BrickTest {
 			TupleSpace subject2 = createSubject();
 			List<Tuple> kept = subject2.keptTuples();
 			assertEquals(3, kept.size());
-			assertEquals(0, ((TestTuple)kept.get(0)).intArray[0]);
-			assertEquals(1, ((TestTuple)kept.get(1)).intArray[0]);
-			assertEquals(2, ((TestTuple)kept.get(2)).intArray[0]);
+			assertEquals(0, ((TestTuple)kept.get(0)).intValue);
+			assertEquals(1, ((TestTuple)kept.get(1)).intValue);
+			assertEquals(2, ((TestTuple)kept.get(2)).intValue);
 
 		}});
 	}
 
 
 	private TestTuple tuple(int i) {
-		return new TestTuple(new int[] {i});
+		return new TestTuple(i);
 	}
 	
 	private void runInNewEnvironment(Runnable runnable) {

@@ -6,8 +6,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.commons.lang.ArrayUtils;
-
 
 public abstract class Tuple {
 
@@ -60,7 +58,6 @@ public abstract class Tuple {
 
 	private int hashCode(Object obj) {
 		if (obj == null) return 0;
-		if (obj.getClass().isArray()) return ArrayUtils.hashCode(obj);
 		return obj.hashCode();
 	}
 
@@ -81,10 +78,15 @@ public abstract class Tuple {
 		if (field.getName().equals("_publicationTime")) return ((Tuple)object)._publicationTime;
 		
 		try {
-			return field.get(object);
+			return checkForArray(field.get(object));
 		} catch (IllegalAccessException e) {
 			throw new IllegalStateException("All fields in a Tuple should be public and not static. This was not the case with: " + object.getClass() + "." + field.getName() + " Also, tuple classes declared as inner classes dont work.", e);
 		}
+	}
+
+	private Object checkForArray(Object object) {
+		if (object.getClass().isArray()) throw new IllegalStateException("Tuples cannot have fields which are arrays. Use ImmutableArrays instead. Class: " + getClass());
+		return object;
 	}
 
 	private boolean isSameFieldValue(Field field, Object other) {
@@ -96,7 +98,6 @@ public abstract class Tuple {
 
 	private boolean equals(Object myValue, Object hisValue) {
 		if (myValue == null) return hisValue == null;
-		if (myValue.getClass().isArray()) return ArrayUtils.isEquals(myValue, hisValue);
 		return myValue.equals(hisValue);
 	}
 

@@ -5,12 +5,22 @@
 	<property name="jnlp.file" location="${build.dir}/sneer-bootstrap.jnlp" />
 	<property name="jnlp.mainClass" value="sneer.installer.Main" />
 
-	<target name="main" depends="clean, log, makeJars, makeJnlp, signJars">
+	<target name="main" depends="clean, log, makeJars, makeJnlp, signJars, move">
 	</target>
 
 	<target name="clean">
 		<delete dir="build" />
 		<mkdir dir="build" />
+	</target>
+
+	<target name="move">
+		<delete dir="../../webstart" />
+		<mkdir dir="../../webstart" />
+		<copy todir="../../webstart">
+			<fileset dir="build">
+				<include name='**/*.*' />
+			</fileset>		
+		</copy>
 	</target>
 
 	<target name="log">
@@ -28,7 +38,7 @@
 
 	<target name="makeJnlp">
 		<condition property="jnlp.codebase" 
-			value="${env.HUDSON_URL}job/${env.JOB_NAME}/${env.BUILD_NUMBER}/artifact/build/" 
+			value="${env.HUDSON_URL}job/${env.JOB_NAME}/${env.BUILD_NUMBER}/artifact/webstart/" 
 			else="file:///${build.dir}">
 			<equals arg1="${env.JOB_NAME}" arg2="Sneer"/>
 		</condition>

@@ -37,12 +37,14 @@
 	</target>
 
 	<target name="makeJnlp">
+		
 		<condition property="jnlp.codebase"
 			value="${env.HUDSON_URL}job/${env.JOB_NAME}/lastStableBuild/artifact/webstart/" 
 			else="file:///${build.dir}">
 			<equals arg1="${env.JOB_NAME}" arg2="Sneer"/>
 		</condition>
-
+		<echo message="${jnlp.codebase}"/>
+	
 		<echoxml file="build/sneer.jnlp">
 			<jnlp spec="1.0+" codebase="${jnlp.codebase}" href="sneer.jnlp">
 				<information>

@@ -13,7 +13,7 @@
 		<mkdir dir="build" />
 	</target>
 
-	<target name="move" if="${env.JOB_NAME}==Sneer">
+	<target name="move">
 		<delete dir="../../webstart" />
 		<mkdir dir="../../webstart" />
 		<copy todir="../../webstart">

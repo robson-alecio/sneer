@@ -29,8 +29,6 @@
 TASKS
 ========
 
-	- [Sandro] Installer with Synth
-
 	- [Sandro] Remove from the main.Sneer list all bricks that do not have to be loaded at startup.
 
 	- Gui Thread - Always call gui brick code in the gui thread. What was already done with the GuiBrickInvocationHandler does not cover callbacks. Complicated and slow weak-proxy-bubble structures would have to be created to support that. Instead, the proposed idea is:

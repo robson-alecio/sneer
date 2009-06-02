@@ -23,7 +23,7 @@ public class WindTest extends BrickTest {
 			tupleSpace().publish(shout);
 		}
 		
-		for (int i = 10; i >= 0; i--) {
+		for (int i = 10; i > 0; i--) {
 			ShoutMock shout = new ShoutMock(""+i, i);
 			tupleSpace().publish(shout);
 		}

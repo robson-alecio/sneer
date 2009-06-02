@@ -30,7 +30,7 @@
 		<condition property="jnlp.codebase" 
 			value="${env.HUDSON_URL}job/${env.JOB_NAME}/${env.BUILD_NUMBER}/artifact/build/" 
 			else="file:///${build.dir}">
-			<equals arg1="${env.JOB_NAME}" arg2="sneer-webstart"/>
+			<equals arg1="${env.JOB_NAME}" arg2="Sneer"/>
 		</condition>
 
 		<echoxml file="build/sneer.jnlp">

@@ -5,7 +5,7 @@
 	<property name="jnlp.file" location="${build.dir}/sneer-bootstrap.jnlp" />
 	<property name="jnlp.mainClass" value="sneer.installer.Main" />
 
-	<target name="main" depends="clean, log, copyJars, makeJars, makeJnlp, signJars">
+	<target name="main" depends="clean, log, makeJars, makeJnlp, signJars">
 	</target>
 
 	<target name="clean">
@@ -26,15 +26,11 @@
 		<record name="build/log.txt" action="stop" />
 	</target>
 
-
 	<target name="makeJnlp">
-
-		<!--property name="env.JOB_NAME" value="sneer-webstart"/-->
-
 		<condition property="jnlp.codebase" 
 			value="${env.HUDSON_URL}job/${env.JOB_NAME}/${env.BUILD_NUMBER}/artifact/build/" 
 			else="file:///${build.dir}">
-			<equals arg1="${env.JOB_NAME}" arg2="sneer-webstart"/>
+			<equals arg1="${env.JOB_NAME}" arg2="Sneer"/>
 		</condition>
 
 		<echoxml file="build/sneer.jnlp">
@@ -49,8 +45,6 @@
 				<update check="timeout" policy="always" />
 				<resources>
 					<jar href="sneer-bootstrap.jar" />
-					<jar href="commons-io-1.4.jar" />
-					<jar href="commons-lang-2.3.jar" />
 					<j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se" />
 				</resources>
 				<security>
@@ -70,19 +64,8 @@
 		</jar>
 	</target>
 
-	<target name="copyJars">
-		<copy todir="./build">
-			<fileset dir="../commons/lib">
-				<include name='commons-io-1.4.jar' />
-				<include name='commons-lang-2.3.jar' />
-			</fileset>
-		</copy>
-	</target>
-
 	<target name="signJars" depends="makeJars">
 		<signjar keystore="sneerKeystore" jar="./build/sneer-bootstrap.jar" alias="bihaiko" storepass="amanda" />
-		<signjar keystore="sneerKeystore" jar="./build/commons-io-1.4.jar" alias="bihaiko" storepass="amanda" />
-		<signjar keystore="sneerKeystore" jar="./build/commons-lang-2.3.jar" alias="bihaiko" storepass="amanda" />
 	</target>
 
 </project>

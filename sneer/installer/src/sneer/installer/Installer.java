@@ -3,13 +3,9 @@ package sneer.installer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 
 class Installer {
 
@@ -25,8 +21,8 @@ class Installer {
 	}
 
 	private void createDirectory() throws IOException {
-		FileUtils.deleteDirectory(_sneerHome);
-		FileUtils.deleteDirectory(_sneerTmp);
+		IOUtils.deleteDirectory(_sneerHome);
+		IOUtils.deleteDirectory(_sneerTmp);
 		_sneerTmp.mkdirs();
 	}
 
@@ -46,9 +42,9 @@ class Installer {
 		File src = new File(jarFileName);
 		File targetRoot = new File(_sneerTmp, "bin");
 		
-		FileUtils.writeStringToFile(new  File(_sneerTmp, "log.txt"), "expand files from: " + src.getAbsolutePath());
+		IOUtils.write(new  File(_sneerTmp, "log.txt"), "expand files from: " + src.getAbsolutePath());
 
-		if(!(src.exists() && src.isFile()))
+		if(!(src.exists()))
 			throw new IOException("File '" + src.getAbsolutePath() + "' not found!");	
 		
 		JarInputStream jis = new JarInputStream(new FileInputStream(src));
@@ -63,18 +59,7 @@ class Installer {
 				continue;
         	}
         	
-			FileUtils.writeByteArrayToFile(file, readEntryBytes(jar, entry));
+        	IOUtils.write(file, IOUtils.readEntryBytes(jar, entry));
         }
 	}
-	
-	private byte[] readEntryBytes(JarFile jar, JarEntry entry) throws IOException{
-		final InputStream is = jar.getInputStream(entry);
-		try {
-			return IOUtils.toByteArray(is);
-		} finally {
-			IOUtils.closeQuietly(is);
-		}
-	}
-	
-
 }

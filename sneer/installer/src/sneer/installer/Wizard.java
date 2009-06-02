@@ -4,9 +4,6 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JFrame;
-import javax.swing.LookAndFeel;
-import javax.swing.UIManager;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 
 public class Wizard extends JFrame{
 
@@ -17,9 +14,7 @@ public class Wizard extends JFrame{
 		_sneerHome = sneerHome;
 		if (sneerHome.exists()) return;
 
-		useNimbus();
 		doWizard();
-		useMetal();
 	}
 
 	private void doWizard() throws IOException {
@@ -78,18 +73,6 @@ public class Wizard extends JFrame{
 		"Start Sneer");
 	}
 
-	private void useMetal() {
-		try {
-			UIManager.setLookAndFeel(new MetalLookAndFeel());
-		} catch (Exception ignore) {}
-	}
-	
-	private void useNimbus() {
-		try {
-			UIManager.setLookAndFeel((LookAndFeel) Class.forName("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel").newInstance());
-		} catch (Exception ignore) {}
-	}
-	
 	private void showDialog(String msg, Object...options) {
 		Dialogs.show(WIZARD_TITLE, msg,	exitDialog(), options);
 	}

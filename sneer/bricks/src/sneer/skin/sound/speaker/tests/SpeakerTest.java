@@ -27,7 +27,7 @@ public class SpeakerTest extends BrickTest {
 	@Contribute private final Audio _audio = mock(Audio.class);
 	private final SourceDataLine _line = mock(SourceDataLine.class);
 	
-	@Test
+	@Test (timeout=60000)
 	public void testSilentChannel() throws Exception {
 		checking(new Expectations());
 		
@@ -35,7 +35,7 @@ public class SpeakerTest extends BrickTest {
 		_subject.close();
 	}
 	
-	@Test
+	@Test (timeout=60000)
 	public void testOnlyTuplesFromContactsGetPlayed() throws Exception {
 		checking(new SoundExpectations());
 
@@ -50,7 +50,7 @@ public class SpeakerTest extends BrickTest {
 		_subject.close();
 	}
 	
-	@Test
+	@Test (timeout=60000)
 	public void testTuplesPublishedAfterCloseAreNotPlayed() throws Exception {
 		checking(new SoundExpectations());
 		

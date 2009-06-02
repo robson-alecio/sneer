@@ -1,6 +1,12 @@
 ﻿FIXES
 =========
+
+	- [Igor] Fix problem: Exception in thread "Timebox Killer" sneer.commons.lang.exceptions.NotImplementedYet: Not implemented yet :).
+
+	- [Igor] SpeexTuplesTest - Fix intermittent failure. 	
 	
+	- [Sandro] Environments.runWith() -> Migrate all applicable uses to EnvironmentUtils.retrieveFrom(). main.Sneer.loadBricks() is an example. 
+
 	- [Igor] Adapt antlips to support lib entries starting with:
 		kind="lib" exported="true"...   instead of just:
 		kind="lib"...
@@ -10,8 +16,6 @@
 		- ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do. See ListRegisterImpl.MyOutput._notifier
 		- SetSignal - Revise it also.
 		- Make a ListSignal->SetSignal adapter brick instead of SimpleListReceiver.
-
-	- [Sandro] Environments.runWith() -> Migrate all applicable uses to EnvironmentUtils.retrieveFrom(). main.Sneer.loadBricks() is an example. 
 
 	- [Bamboo] Unused code:
 		- GUIImpl.defineBrickMetadata param

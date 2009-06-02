@@ -19,7 +19,7 @@
 		<copy todir="../../webstart">
 			<fileset dir="build">
 				<include name='**/*.*' />
-			</fileset>		
+			</fileset>
 		</copy>
 	</target>
 

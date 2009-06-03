@@ -11,8 +11,6 @@ import org.junit.Test;
 import sneer.brickness.Brickness;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
-import sneer.commons.lang.ByRef;
-import sneer.hardware.gui.guithread.GuiThread;
 import sneer.pulp.natures.gui.tests.fixtures.SomeGuiBrick;
 
 public class GUINatureTest extends Assert {
@@ -24,7 +22,7 @@ public class GUINatureTest extends Assert {
 	public void invocationHappensInTheSwingThread() {
 		Environments.runWith(subject, new Runnable() { @Override public void run() {
 			
-			assertSame(swingThread(), my(SomeGuiBrick.class).currentThread());
+			assertTrue(isGuiThread(my(SomeGuiBrick.class).currentThread()));
 			
 		}});
 	}
@@ -54,25 +52,12 @@ public class GUINatureTest extends Assert {
 	@Test
 	public void invocationInTheSwingThreadForVoidMethod() {
 		Environments.runWith(subject, new Runnable() { @Override public void run() {
-			assertNotSame(swingThread(), Thread.currentThread());
+			assertFalse(isGuiThread(Thread.currentThread()));
 			my(SomeGuiBrick.class).run(new Runnable() { @Override public void run() {
-				assertSame(swingThread(), Thread.currentThread());
+				assertTrue(isGuiThread(Thread.currentThread()));
 			}});
 			
 		}});
-	}
-
-	
-	private Thread swingThread() {
-		final ByRef<Thread> swingThread = ByRef.newInstance();
-		try {
-			my(GuiThread.class).invokeAndWait(new Runnable() { @Override public void run() {
-				swingThread.value = Thread.currentThread();
-			}});
-		} catch (Exception e) {
-			throw new IllegalStateException(e);
-		}
-		return swingThread.value;
 	}
 
 	private Environment emptyEnvironment() {
@@ -80,5 +65,10 @@ public class GUINatureTest extends Assert {
 			return null;
 		}};
 	}
+
+	private boolean isGuiThread(Thread thread) {
+		return thread.getName().contains("AWT");
+	}
+	
 
 }

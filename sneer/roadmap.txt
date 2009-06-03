@@ -1,10 +1,13 @@
 ﻿FIXES
 =========
 
-	- [Igor] Fix problem: Exception in thread "Timebox Killer" sneer.commons.lang.exceptions.NotImplementedYet: Not implemented yet :).
+	- [Igor] Implement ThreadsMock sleepWithoutInterruptions
+		- Make threads wait on a monitor and create other method that will notifyAll, such as wakeAllSleepers.
+
+	- [Igor] Clean thread leaks during tests (see TestThatMightUseResources for details)
 
 	- [Igor] SpeexTuplesTest - Fix intermittent failure. 	
-	
+
 	- [Sandro] Environments.runWith() -> Migrate all applicable uses to EnvironmentUtils.retrieveFrom(). main.Sneer.loadBricks() is an example. 
 
 	- [Igor] Adapt antlips to support lib entries starting with:

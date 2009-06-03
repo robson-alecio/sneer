@@ -25,6 +25,8 @@ public class TupleKeepingTest extends BrickTest {
 		subject().publish(new KeptTuple(1));
 		flushCache();
 		subject().publish(new KeptTuple(1));
+		
+		subject().waitForAllDispatchingToFinish();
 
 		assertEquals(1, subject().keptTuples().size());
 		assertEquals(1, _notificationCounter);

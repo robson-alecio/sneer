@@ -5,6 +5,7 @@ import static sneer.commons.environments.Environments.my;
 import java.util.HashSet;
 import java.util.Set;
 
+import sneer.commons.threads.Daemon;
 import sneer.pulp.log.Logger;
 import sneer.pulp.threads.Threads;
 
@@ -12,16 +13,14 @@ class TimeboxRunner {
 
 	static private final int PRECISION_IN_MILLIS = 500;
 	static private final TimeboxRunner[] ARRAY_TYPE = new TimeboxRunner[0];
-	
 	static private final Set<TimeboxRunner> _activeTimeboxes = java.util.Collections.synchronizedSet(new HashSet<TimeboxRunner>());
 
 	private final Runnable _toCallWhenBlocked;
-	
+
 	static {
 		final Threads threads = my(Threads.class);
 
-		Thread killer = new Thread("Timebox Killer") { @Override public void run() {
-
+		final Thread killer = new Daemon("Timebox Killer") { @Override public void run() {
 			while (true) {
 				threads.sleepWithoutInterruptions(PRECISION_IN_MILLIS);
 
@@ -30,11 +29,9 @@ class TimeboxRunner {
 			}			
 		}};
 
-		killer.setDaemon(true);
 		killer.setPriority(Thread.MAX_PRIORITY);
-		killer.start();
 	}
-	
+
 	public TimeboxRunner(int durationInMillis, Runnable toRun, Runnable toCallWhenBlocked) {
 		_millisToDie = durationInMillis;
 		_toCallWhenBlocked = toCallWhenBlocked;
@@ -45,15 +42,14 @@ class TimeboxRunner {
 			diedWith(timeIsUp);
 		}
 	}
-	
+
 	private int _millisToDie = 0;
 	private Thread _worker;
 
 	private final Object _isDeadMonitor = new Object();
 	private boolean _isDead = false;
-	
+
 	private int _suicideAttemptsLeft = 5;
-	
 	
 	private void diedWith(TimeIsUp timeIsUp) {
 		synchronized (_isDeadMonitor) {
@@ -109,13 +105,11 @@ class TimeboxRunner {
 		TimeIsUp timeIsUp = new TimeIsUp(_worker.getStackTrace(), "Timebox ended.");
 		_worker.stop(timeIsUp);
 	}
-	
 
 	private void logBlockage(Thread thread) {
 		TimeIsUp timeIsUp = new TimeIsUp(thread.getStackTrace(), "Thread running in timebox is blocked waiting for a synchronization monitor and cannot be stopped.");
 		diedWith(timeIsUp);
 	}
-
 
 	private void threadBlockedNotification(Thread thread) {
 		if (_toCallWhenBlocked != null) {
@@ -125,5 +119,4 @@ class TimeboxRunner {
 		
 		logBlockage(thread);
 	}
-
 }

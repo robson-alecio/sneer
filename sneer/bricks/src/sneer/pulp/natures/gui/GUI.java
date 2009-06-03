@@ -8,9 +8,9 @@ import sneer.brickness.Nature;
  * 
  * The container does not allow GUI Bricks to call methods that throw Hiccup.
  * 
- * All methods of all classes annotated with @Brick(GUI.class) will be
+ * All methods of all classes in a brick annotated with @Brick(GUI.class) will be
  * instrumented at the beginning with bytecode to run in the Gui thread
- * if not already running in it. Something equivalent to:
+ * if not already running in it. Something similar to:
  * 
  *			if (!EventQueue.isDispatchThread()) {
  *				EventQueue.invokeAndWait(new Runnable(){public void run(){

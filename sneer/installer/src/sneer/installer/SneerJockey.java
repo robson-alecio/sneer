@@ -17,6 +17,8 @@ class SneerJockey {
 	SneerJockey(File sneerHome) throws Exception {
 		_sneerHome = sneerHome;
 		
+		System.setSecurityManager(new PermissiveSecurityManager());
+		
 //		while (true)
 			play();
 		JOptionPane.showMessageDialog(null, sneer.toString());

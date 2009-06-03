@@ -5,8 +5,12 @@
 	<property name="java.awt.headless" value="true" />
 	<property name="builder.project" value="antlips" />
 	
-	<target name="hudson" depends="clean, antlips.xml">
+	<target name="hudson-clover" depends="clean, antlips.xml">
 		<ant inheritall="true" antfile="antlips.xml" target="testWithClover" />
+	</target>
+	
+	<target name="hudson" depends="clean, antlips.xml">
+		<ant inheritall="true" antfile="antlips.xml" target="test" />
 	</target>
 	
 	<target name="clean" depends="delete-build-dir, antlips.xml">

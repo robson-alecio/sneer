@@ -28,11 +28,11 @@ class BrickImplLoader {
 		String implPackage = BrickConventions.implPackageFor(brick.getName());
 		List<Nature> natures = naturesFor(brick);
 
-		ClassLoader libClassLoader = new ClassLoaderForBrickLibs(path, implPackage, natures, _apiClassLoader);
-		ClassLoader classLoader = new ClassLoaderForPackage(path, implPackage, natures, libClassLoader);
-//		ClassLoader classLoader = new ClassLoaderForPackage(path, implPackage, natures, _apiClassLoader);
+		ClassLoader libsClassLoader = ClassLoaderForBrickLibs.newInstanceIfNecessary(path, implPackage, natures, _apiClassLoader);
+		ClassLoader nextClassLoader = libsClassLoader == null ? _apiClassLoader : libsClassLoader;
+		ClassLoader packageLoader = new ClassLoaderForPackage(path, implPackage, natures, nextClassLoader);
 
-		return classLoader.loadClass(implNameFor(brick.getName()));
+		return packageLoader.loadClass(implNameFor(brick.getName()));
 	}
 
 	

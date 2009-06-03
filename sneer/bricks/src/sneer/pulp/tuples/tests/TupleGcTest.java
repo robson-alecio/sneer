@@ -5,8 +5,8 @@ import static sneer.commons.environments.Environments.my;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
-import sneer.pulp.tuples.TupleSpace;
 import sneer.pulp.threads.Threads;
+import sneer.pulp.tuples.TupleSpace;
 
 public class TupleGcTest extends BrickTest {
 
@@ -33,7 +33,7 @@ public class TupleGcTest extends BrickTest {
 
 	private void publishMyTestTuples(int amount) {
 		for (int i = 0; i < amount; i++)
-			_subject.publish(new GcTestTuple(new int[] {i}));
+			_subject.publish(new GcTestTuple(i));
 	}
 	
 }

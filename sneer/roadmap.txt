@@ -1,19 +1,15 @@
 ﻿FIXES
 =========
+
+	- [Igor] Fix problem: Exception in thread "Timebox Killer" sneer.commons.lang.exceptions.NotImplementedYet: Not implemented yet :).
+
+	- [Igor] SpeexTuplesTest - Fix intermittent failure. 	
 	
-	- [Klaus] Eliminate intermediate lib classloader when there are no libs in the brick.
-	
-	- [Sandro] Unignore MicTest and Bandwidth.
-	
-	- [Sandro] Installer.extractFiles() - How can this happen: if(!(src.exists() && src.isFile())) ???
-	
-	- [Sandro] Remove installer dependencies on libs.
-	
+	- [Sandro] Environments.runWith() -> Migrate all applicable uses to EnvironmentUtils.retrieveFrom(). main.Sneer.loadBricks() is an example. 
+
 	- [Igor] Adapt antlips to support lib entries starting with:
 		kind="lib" exported="true"...   instead of just:
 		kind="lib"...
-
-	- [Igor] build.xml - Make it show JUnit failure details, not only "FAILED".
 
 	- [Igor] SimpleListReceiver - It cannot be public.
 		- Talk to Klaus about this.
@@ -21,25 +17,17 @@
 		- SetSignal - Revise it also.
 		- Make a ListSignal->SetSignal adapter brick instead of SimpleListReceiver.
 
-	- [Sandro] Environments.runWith() -> Migrate all applicable uses to EnvironmentUtils.retrieveFrom(). main.Sneer.loadBricks() is an example. 
-
 	- [Bamboo] Unused code:
 		- GUIImpl.defineBrickMetadata param
 		- ASMMetaClass
 
 	- SignalChoosers - Return a sneer.pulp.reactive.Reception that can de disposed, just like Signals.receive().
 	
-	- Remove @Ignore and Fix WindTest.testSortedShoutsHeard
-
 	- [Igor] Break down packages with more than one brick
 
 
 TASKS
 ========
-
-	- [Sandro] Installer with Synth
-
-	- [Sandro] Remove from the main.Sneer list all bricks that do not have to be loaded at startup.
 
 	- Gui Thread - Always call gui brick code in the gui thread. What was already done with the GuiBrickInvocationHandler does not cover callbacks. Complicated and slow weak-proxy-bubble structures would have to be created to support that. Instead, the proposed idea is:
 		- [Bamboo] Enhance at load-time the beginning of all public methods in all classes (including nested) in all gui brick impl packages.
@@ -49,7 +37,6 @@ TASKS
 			- Test - Add Gui nature to gui bricks and run.
 			- GuiThread - Improve how environment handling is done. 
 				- Unignore GuiBrickTest.
-		- [Klaus] GuiBrick Javadoc - Revise.
 
 	- [Bamboo] Create/Install ("publish") brick locally
 		- Brickness - "The simplest possible container"
@@ -59,11 +46,9 @@ TASKS
 			- Make a test run a brick in a directory that is not in the system ClassLoader classpath (Eclipse classpath). It will probably fail. Implement the logic using NewContainerImpl.createApiClassLoader() to return a URLClassloader that can be extended with new classpaths for new brick interfaces;
 
 	- [Klaus and Igor]
-		- Cleanup Commons
+		- Cleanup Commons - Delete or convert to bricks
 		- Uncomment _logger field and finalize() method in EventNotifierImpl.
 		- Start breaking 'sneer.pulp' into new package structure (hardware, software, etc), and while doing that, fix packages with more than one Brick (ex: 'sneer.pulp.reactive'). 
-	
-	- Commons - Delete or convert to bricks.
 
 	- DynDns
 		- Fix: Running on more than one machine will cause redundant (abusive) updates. Do not persist last discovered IP. Do a DNS lookup every time instead.
@@ -74,7 +59,6 @@ TASKS
 			- Concurrency - Synchronize calls on Bricks, according to docs/brick_types.txt  
 
 	- [Sandro] Webstart
-		- fix libs bug
 		- test in file system
 		- test with hudson
 		- add SneerJockey Logic (restart sneer)

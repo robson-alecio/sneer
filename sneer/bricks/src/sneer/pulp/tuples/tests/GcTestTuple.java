@@ -3,8 +3,8 @@ package sneer.pulp.tuples.tests;
 public class GcTestTuple extends TestTuple {
 	public final String _generation;
 
-	GcTestTuple(int[] intArray_) {
-		super(intArray_);
+	GcTestTuple(int intValue_) {
+		super(intValue_);
 		_generation = TupleGcTest._currentGeneration;
 	}
 

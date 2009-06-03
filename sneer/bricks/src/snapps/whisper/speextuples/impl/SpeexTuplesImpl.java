@@ -14,7 +14,8 @@ import snapps.whisper.speextuples.SpeexTuples;
 import sneer.brickness.PublicKey;
 import sneer.brickness.Tuple;
 import sneer.hardware.cpu.lang.Consumer;
-import sneer.hardware.ram.arrays.Arrays;
+import sneer.hardware.ram.arrays.ImmutableArrays;
+import sneer.hardware.ram.arrays.ImmutableByteArray2D;
 import sneer.pulp.distribution.filtering.TupleFilterManager;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.reactive.Signal;
@@ -88,9 +89,13 @@ class SpeexTuplesImpl implements SpeexTuples {
 	}
 
 	private void flush() {
-		_tupleSpace.publish(new SpeexPacket(_frames, _room.currentValue(), nextShort()));
+		_tupleSpace.publish(new SpeexPacket(immutable(_frames), _room.currentValue(), nextShort()));
 		_frames = newFramesArray();
 		_frameIndex = 0;
+	}
+
+	private ImmutableByteArray2D immutable(byte[][] array2D) {
+		return my(ImmutableArrays.class).newImmutableByteArray2D(array2D);
 	}
 
 	private boolean encode(final byte[] pcmBuffer) {
@@ -101,8 +106,8 @@ class SpeexTuplesImpl implements SpeexTuples {
 	}
 	
 	protected void decode(SpeexPacket packet) {
-		for (byte[] frame : _decoder.decode(packet.frames))
-			_tupleSpace.acquire(new PcmSoundPacket(packet.publisher(), packet.publicationTime(), my(Arrays.class).newImmutableByteArray(frame)));
+		for (byte[] frame : _decoder.decode(packet.frames.copy()))
+			_tupleSpace.acquire(new PcmSoundPacket(packet.publisher(), packet.publicationTime(), my(ImmutableArrays.class).newImmutableByteArray(frame)));
 	}
 
 	@Override

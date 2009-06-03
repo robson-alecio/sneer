@@ -11,7 +11,7 @@ import org.junit.Test;
 import sneer.brickness.PublicKey;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.Contribute;
-import sneer.hardware.ram.arrays.Arrays;
+import sneer.hardware.ram.arrays.ImmutableArrays;
 import sneer.pulp.keymanager.KeyManager;
 import sneer.pulp.tuples.TupleSpace;
 import sneer.skin.sound.PcmSoundPacket;
@@ -94,7 +94,7 @@ public class SpeakerTest extends BrickTest {
 	}
 	
 	private PcmSoundPacket pcmSoundPacketFor(PublicKey publicKey, final byte[] pcmPayload) {
-		return new PcmSoundPacket(publicKey, 0, my(Arrays.class).newImmutableByteArray(pcmPayload));
+		return new PcmSoundPacket(publicKey, 0, my(ImmutableArrays.class).newImmutableByteArray(pcmPayload));
 	}
 	
 	private PcmSoundPacket p1() {

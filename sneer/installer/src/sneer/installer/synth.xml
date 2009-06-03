@@ -1,0 +1,32 @@
+<synth>
+
+	<style id="default">
+		<font name="Verdana" size="13" />
+		<insets top="2" left="2" bottom="2" right="2" />
+		<state>
+			<color value="WHITE" type="BACKGROUND"/>
+		</state>		
+	</style>
+
+	<style id="button">
+		<insets top="2" left="2" bottom="5" right="2" />
+		<font name="Verdana" size="13" style="BOLD"/>
+		<state>
+			<imagePainter method="buttonBackground" path="button.png" sourceInsets="6 6 6 6" />
+		</state>
+
+		<state value="PRESSED">
+			<imagePainter method="buttonBackground" path="buttonClick.png" sourceInsets="6 6 6 6" />
+		</state>
+
+		<state value="MOUSE_OVER">
+			<imagePainter method="buttonBackground" path="buttonOver.png" sourceInsets="6 6 6 6" />
+		</state>
+	</style>
+
+	<bind style="default" type="region" key=".*" />
+	<bind style="default" type="region" key="Label" />
+	<bind style="default" type="region" key="Panel" />
+	<bind style="button" type="region" key="Button" />
+
+</synth>

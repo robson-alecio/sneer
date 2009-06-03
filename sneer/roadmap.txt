@@ -5,12 +5,8 @@
 
 	- [Igor] SpeexTuplesTest - Fix intermittent failure. 	
 	
-	- [Sandro] Installer.extractFiles() - How can this happen: if(!(src.exists() && src.isFile())) ???
-	
 	- [Sandro] Environments.runWith() -> Migrate all applicable uses to EnvironmentUtils.retrieveFrom(). main.Sneer.loadBricks() is an example. 
 
-	- [Sandro] Remove installer dependencies on libs.
-	
 	- [Igor] Adapt antlips to support lib entries starting with:
 		kind="lib" exported="true"...   instead of just:
 		kind="lib"...
@@ -27,17 +23,11 @@
 
 	- SignalChoosers - Return a sneer.pulp.reactive.Reception that can de disposed, just like Signals.receive().
 	
-	- [Sandro] Remove @Ignore and Fix WindTest.testSortedShoutsHeard
-
 	- [Igor] Break down packages with more than one brick
 
 
 TASKS
 ========
-
-	- [Sandro] Installer with Synth
-
-	- [Sandro] Remove from the main.Sneer list all bricks that do not have to be loaded at startup.
 
 	- Gui Thread - Always call gui brick code in the gui thread. What was already done with the GuiBrickInvocationHandler does not cover callbacks. Complicated and slow weak-proxy-bubble structures would have to be created to support that. Instead, the proposed idea is:
 		- [Bamboo] Enhance at load-time the beginning of all public methods in all classes (including nested) in all gui brick impl packages.
@@ -69,7 +59,6 @@ TASKS
 			- Concurrency - Synchronize calls on Bricks, according to docs/brick_types.txt  
 
 	- [Sandro] Webstart
-		- fix libs bug
 		- test in file system
 		- test with hudson
 		- add SneerJockey Logic (restart sneer)

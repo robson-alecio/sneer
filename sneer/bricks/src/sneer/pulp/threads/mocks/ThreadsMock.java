@@ -58,6 +58,11 @@ public class ThreadsMock implements Threads {
 
 	@Override
 	public void waitWithoutInterruptions(Object object) {
-		throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
+		try {
+			object.wait();
+
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

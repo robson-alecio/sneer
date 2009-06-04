@@ -47,21 +47,26 @@ public class IOUtils {
 		if (!directory.isDirectory()) 
 			throw new IllegalArgumentException(directory.getAbsolutePath() + " is not a directory");
 
-		recursiveDelete(directory);
+		deleteContents(directory);
 
 		if (!directory.delete()) 
 			throw new IOException("Unable to delete directory: " + directory.getAbsolutePath());
 	}
 
-	private static void recursiveDelete(File directory) throws IOException, FileNotFoundException {
-		for (File file : directory.listFiles()) {
-			if (!file.exists()) 
-				throw new FileNotFoundException("File does not exist: " + file.getAbsolutePath());
-			
-			if (file.isFile() && !file.delete()) 
-				throw new IOException(("Unable to delete file: " + file.getAbsolutePath()));
-			
-			deleteDirectory(file);
-		}
+	private static void deleteContents(File directory) throws IOException, FileNotFoundException {
+		File[] files = directory.listFiles();
+		if (files == null) return;
+		
+		for (File file : files) deleteFile(file);
+	}
+
+	private static void deleteFile(File file) throws FileNotFoundException, IOException {
+		if (!file.exists()) 
+			throw new FileNotFoundException("File does not exist: " + file.getAbsolutePath());
+		
+		if (file.isFile() && !file.delete()) 
+			throw new IOException(("Unable to delete file: " + file.getAbsolutePath()));
+		
+		deleteDirectory(file);
 	}
 }

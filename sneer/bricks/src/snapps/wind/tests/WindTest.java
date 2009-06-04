@@ -28,18 +28,19 @@ public class WindTest extends BrickTest {
 			tupleSpace().publish(shout);
 		}
 
-		Shout previusShout = null;
+		tupleSpace().waitForAllDispatchingToFinish();
+		Shout previousShout = null;
 		for (Shout _shout : _subject.shoutsHeard()) {
 			
-			if(previusShout==null){
-				previusShout = _shout;
+			if(previousShout==null){
+				previousShout = _shout;
 				continue;
 			}
 			
-			assertTrue(previusShout.publicationTime() < _shout.publicationTime());
-			previusShout = _shout;
+			assertTrue(previousShout.publicationTime() < _shout.publicationTime());
+			previousShout = _shout;
 		}
-		
+
 		assertEquals(21, _subject.shoutsHeard().currentSize());
 	}
 

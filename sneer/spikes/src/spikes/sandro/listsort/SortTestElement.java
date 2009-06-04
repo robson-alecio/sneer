@@ -1,7 +1,7 @@
 package spikes.sandro.listsort;
 
 import sneer.pulp.reactive.Signal;
-import wheel.reactive.impl.mocks.RandomBoolean;
+import spikes.wheel.reactive.impl.mocks.RandomBoolean;
 
 class SortTestElement {
 

@@ -23,7 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 
 import sneer.hardware.gui.images.Images;
-import wheel.testutil.MemorySentinel;
+import spikes.wheel.testutil.MemorySentinel;
 
 public class ComplexRenderingSample {
 

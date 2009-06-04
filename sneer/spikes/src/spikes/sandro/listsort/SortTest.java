@@ -28,7 +28,7 @@ import sneer.pulp.reactive.signalchooser.SignalChooser;
 import sneer.skin.widgets.reactive.LabelProvider;
 import sneer.skin.widgets.reactive.ListWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
-import wheel.reactive.impl.mocks.RandomBoolean;
+import spikes.wheel.reactive.impl.mocks.RandomBoolean;
 
 public class SortTest {
 	

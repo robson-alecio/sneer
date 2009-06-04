@@ -1,19 +1,19 @@
 package sneer.pulp.lang.impl;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.ArrayUtils;
-
+import sneer.hardware.cpu.apachecommonslang.Lang;
 import sneer.pulp.lang.StringUtils;
-
 
 class StringUtilsImpl implements StringUtils {
 
 	private static String[] reversedArrayGiven(final List<String> parts) {
 		String[] array = parts.toArray(new String[parts.size()]);
-		ArrayUtils.reverse(array);
+		my(Lang.class).arrays().reverse(array);
 
 		return array;
 	}

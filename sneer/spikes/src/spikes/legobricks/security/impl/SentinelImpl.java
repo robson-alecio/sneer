@@ -7,8 +7,8 @@ import java.util.Map;
 
 import spikes.legobricks.security.Sentinel;
 import spikes.legobricks.security.Sorry;
-import wheel.io.ui.CancelledByUser;
-import wheel.io.ui.User;
+import spikes.wheel.io.ui.CancelledByUser;
+import spikes.wheel.io.ui.User;
 
 public class SentinelImpl implements Sentinel {
 

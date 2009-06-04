@@ -2,8 +2,9 @@ package spikes.klaus.gel;
 
 import java.io.IOException;
 
-import wheel.io.network.ObjectServerSocket;
-import wheel.io.network.OldNetwork;
+import spikes.wheel.io.network.ObjectServerSocket;
+import spikes.wheel.io.network.OldNetwork;
+
 
 public class SocketReceiver {
 

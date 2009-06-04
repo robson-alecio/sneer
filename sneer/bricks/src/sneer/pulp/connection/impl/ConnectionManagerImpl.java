@@ -2,8 +2,8 @@ package sneer.pulp.connection.impl;
 
 import static sneer.commons.environments.Environments.my;
 import sneer.commons.lang.Producer;
-import sneer.hardware.ram.collections.cachemap.CacheMap;
-import sneer.hardware.ram.collections.cachemap.CacheMaps;
+import sneer.hardware.ram.maps.cachemaps.CacheMap;
+import sneer.hardware.ram.maps.cachemaps.CacheMaps;
 import sneer.pulp.connection.ConnectionManager;
 import sneer.pulp.contacts.Contact;
 import sneer.pulp.network.ByteArraySocket;

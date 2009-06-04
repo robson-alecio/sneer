@@ -6,7 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import sneer.hardware.cpu.apachecommonslang.Lang;
+import sneer.hardware.cpu.lang.Lang;
 import sneer.pulp.lang.StringUtils;
 
 class StringUtilsImpl implements StringUtils {

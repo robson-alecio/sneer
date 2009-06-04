@@ -1,22 +1,24 @@
 ﻿FIXES
 =========
 
-	- [Igor] Implement ThreadsMock sleepWithoutInterruptions
-		- Make threads wait on a monitor and create other method that will notifyAll, such as wakeAllSleepers.
-
-	- [Igor] Clean thread leaks during tests (see TestThatMightUseResources for details)
+	- [Sandro] Apache Commons - Encapsulate in bricks.
+		- sneer.hardware.cpu.lang.Lang brick - Finish it. Perform conversions to our basic types (Consumer, Functor, Pair, etc) if necessary.
+		- sneer.hardware.io.IO brick - Implement it just as above.
+		- sneer.hardware.ram.collections.Collections brick - Implement it just as above. Using newest commons collections lib (not the one with generics we are using today).
+		- Add license and notice.txt files to lib folders of all commons bricks.
 
 	- [Igor] SpeexTuplesTest - Fix intermittent failure. 	
-
-	- [Igor] Adapt antlips to support lib entries starting with:
-		kind="lib" exported="true"...   instead of just:
-		kind="lib"...
 
 	- [Igor] SimpleListReceiver - It cannot be public.
 		- Talk to Klaus about this.
 		- ListSignal - All receivers iterate through the list as they start listening. Consider making ListSignal.addReceiver notify the receiver of all contents, just like regular Signals do. See ListRegisterImpl.MyOutput._notifier
 		- SetSignal - Revise it also.
 		- Make a ListSignal->SetSignal adapter brick instead of SimpleListReceiver.
+
+	- [Igor] Implement ThreadsMock sleepWithoutInterruptions
+		- Make threads wait on a monitor and create other method that will notifyAll, such as wakeAllSleepers.
+
+	- [Igor] Clean thread leaks during tests (see TestThatMightUseResources for details)
 
 	- [Bamboo] Unused code:
 		- GUIImpl.defineBrickMetadata param
@@ -25,6 +27,10 @@
 	- SignalChoosers - Return a sneer.pulp.reactive.Reception that can de disposed, just like Signals.receive().
 	
 	- [Igor] Break down packages with more than one brick
+
+	- [Igor] Adapt antlips to support lib entries starting with:
+		kind="lib" exported="true"...   instead of just:
+		kind="lib"...
 
 
 TASKS
@@ -60,7 +66,6 @@ TASKS
 			- Concurrency - Synchronize calls on Bricks, according to docs/brick_types.txt  
 
 	- [Sandro] Webstart
-		- test in file system
 		- test with hudson
 		- add SneerJockey Logic (restart sneer)
 

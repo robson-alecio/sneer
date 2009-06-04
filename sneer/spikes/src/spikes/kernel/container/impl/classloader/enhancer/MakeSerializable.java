@@ -8,7 +8,7 @@ import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
-import sneer.kernel.container.impl.classloader.enhancer.Enhancer;
+import spikes.sneer.kernel.container.impl.classloader.enhancer.Enhancer;
 
 public class MakeSerializable implements Enhancer {
 	

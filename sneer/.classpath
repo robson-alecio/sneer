@@ -12,13 +12,14 @@
 	<classpathentry kind="lib" path="spikes/lib/asm-all-3.1.jar"/>
 	<classpathentry kind="lib" path="spikes/lib/xstream-1.2.2.jar"/>
 	<classpathentry kind="lib" path="spikes/lib/javassist.jar"/>
-	<classpathentry kind="lib" path="spikes/src/sneer/pulp/things/impl/lib/lucene-core-2.3.2.jar"/>
+	<classpathentry kind="lib" path="spikes/src/spikes/sneer/pulp/things/impl/lib/lucene-core-2.3.2.jar"/>
 	<classpathentry kind="lib" path="spikes/src/spikes/sandro/swing/layers/lib/jxlayer.jar"/>
 	<classpathentry kind="lib" path="bricks/src/snapps/wind/impl/lib/prevayler-2.3.jar" sourcepath="bricks/src/snapps/wind/impl/lib/prevayler-2.3.src.zip"/>
 	<classpathentry kind="lib" path="bricks/src/snapps/wind/impl/lib/xpp3_min-1.1.3_8.jar"/>
 	<classpathentry kind="lib" path="bricks/src/snapps/whisper/speex/impl/lib/speex.jar"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/pulp/crypto/impl/lib/bcprov-jdk16-139.jar"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/software/code/compilers/java/impl/lib/compiler-7-ea-b17-02_aug_2007.jar"/>
+	<classpathentry kind="lib" path="bricks/src/sneer/hardware/cpu/lang/impl/lib/commons-lang-2.3.jar" sourcepath="bricks/src/sneer/hardware/cpu/lang/impl/lib/commons-lang-2.3-src.zip" exported="true"/>
 	<classpathentry kind="lib" path="commons/lib/jmock-2.5.1/hamcrest-core-1.1.jar" exported="true"/>
 	<classpathentry kind="lib" path="commons/lib/jmock-2.5.1/hamcrest-library-1.1.jar" exported="true"/>
 	<classpathentry kind="lib" path="commons/lib/jmock-2.5.1/jmock-2.5.1.jar" exported="true"/>
@@ -26,7 +27,6 @@
 	<classpathentry kind="lib" path="commons/lib/junit-4.4.jar" sourcepath="commons/lib/junit-4.4-src.jar" exported="true"/>
 	<classpathentry kind="lib" path="commons/lib/commons-io-1.4.jar" sourcepath="commons/lib/commons-io-1.4-src.zip" exported="true"/>
 	<classpathentry kind="lib" path="commons/lib/collections-generic-4.01/collections-generic-4.01.jar" sourcepath="commons/lib/collections-generic-4.01/src/java" exported="true"/>
-	<classpathentry kind="lib" path="commons/lib/commons-lang-2.3.jar" sourcepath="commons/lib/commons-lang-2.3-src.zip" exported="true"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

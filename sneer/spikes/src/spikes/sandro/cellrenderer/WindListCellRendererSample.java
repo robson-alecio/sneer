@@ -39,7 +39,7 @@ import sneer.hardware.gui.images.Images;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.widgets.reactive.LabelProvider;
-import wheel.testutil.MemorySentinel;
+import spikes.wheel.testutil.MemorySentinel;
 
 class WindListCellRendererSample implements ListCellRenderer {
 

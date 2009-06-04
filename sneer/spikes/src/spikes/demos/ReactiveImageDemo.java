@@ -18,7 +18,7 @@ import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
 import sneer.skin.widgets.reactive.ImageWidget;
 import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
-import wheel.reactive.impl.mocks.RandomBoolean;
+import spikes.wheel.reactive.impl.mocks.RandomBoolean;
 
 public class ReactiveImageDemo {
 	

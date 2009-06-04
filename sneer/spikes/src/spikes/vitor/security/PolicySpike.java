@@ -8,7 +8,7 @@ import java.security.Policy;
 import java.security.ProtectionDomain;
 import java.security.Provider;
 
-import sneer.kernel.container.impl.classloader.OldBrickClassLoader;
+import spikes.sneer.kernel.container.impl.classloader.OldBrickClassLoader;
 
 public class PolicySpike extends Policy {
 

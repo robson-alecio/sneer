@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import sneer.commons.environments.Environment;
+import sneer.commons.environments.EnvironmentUtils;
 import sneer.commons.environments.Environments;
 
 
@@ -24,14 +25,10 @@ public class EnvironmentsTest extends Assert {
 	
 	@Test(expected=IllegalStateException.class)
 	public void testMyInUnsuitableEnvironment() {
-		Environments.runWith(
+		EnvironmentUtils.retrieveFrom(
 			new Environment() { @Override public <T> T provide(Class<T> intrface) {
 				return null;
-			}},
-			new Runnable() { @Override public void run() {
-				my(Runnable.class);
-			}}
-		);
+			}}, Runnable.class);
 	}
 	
 	@Test

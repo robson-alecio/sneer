@@ -2,18 +2,20 @@
 <project name="WebStart" default="main" basedir=".">
 
 	<property name="build.dir" location="./build" />
+	<property name="bin.dir" location="./build/bin" />
 	<property name="jnlp.file" location="${build.dir}/sneer-bootstrap.jnlp" />
 	<property name="jnlp.mainClass" value="sneer.installer.Main" />
 
-	<target name="main" depends="clean, log, makeJars, makeJnlp, signJars, move">
+	<target name="main" depends="clean, compile, log, makeJars, makeJnlp, signJars, move">
 	</target>
 
 	<target name="clean">
 		<delete dir="build" />
-		<mkdir dir="build" />
+		<mkdir dir="build/bin" />
 	</target>
 
-	<target name="move">
+	<target name="move">		
+		<delete dir="build/bin" />
 		<delete dir="../../webstart" />
 		<mkdir dir="../../webstart" />
 		<copy todir="../../webstart">
@@ -39,7 +41,7 @@
 	<target name="makeJnlp">
 		
 		<condition property="jnlp.codebase"
-			value="${env.HUDSON_URL}job/${env.JOB_NAME}/lastStableBuild/artifact/webstart/" 
+			value="${env.HUDSON_URL}job/${env.JOB_NAME}/${env.BUILD_NUMBER}/artifact/webstart/" 
 			else="file:///${build.dir}">
 			<equals arg1="${env.JOB_NAME}" arg2="Sneer"/>
 		</condition>
@@ -57,6 +59,7 @@
 				<update check="timeout" policy="always" />
 				<resources>
 					<jar href="sneer-bootstrap.jar" />
+					<jar href="sneer.jar" />
 					<j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se" />
 				</resources>
 				<security>
@@ -69,14 +72,39 @@
 
 	<target name="makeJars">
 		<jar destfile="./build/sneer-bootstrap.jar">
+			<fileset dir="${bin.dir}">
+				<include name='**/*.*' />
+			</fileset>
+			<fileset dir="../installer/src">
+				<include name='**/*.*' />
+				<exclude name='**/*.java' />
+			</fileset>
+		</jar>
+		<jar destfile="./build/sneer.jar">
 			<fileset dir="../bin">
 				<exclude name='**/*.txt' />
+				<exclude name='spikes/**' />
+				<exclude name='sneer/installer/**' />
 				<exclude name='build/**' />
 			</fileset>
 		</jar>
 	</target>
 
+	<target name="compile">
+
+		<javac srcdir="../installer/src"
+				destdir="${bin.dir}"
+				listfiles="true"
+				failonerror="true"
+				debug="on"
+				target="1.5"
+				encoding="utf-8">
+		</javac>
+		
+	</target>
+	
 	<target name="signJars" depends="makeJars">
+		<signjar keystore="sneerKeystore" jar="./build/sneer.jar" alias="bihaiko" storepass="amanda" />
 		<signjar keystore="sneerKeystore" jar="./build/sneer-bootstrap.jar" alias="bihaiko" storepass="amanda" />
 	</target>
 

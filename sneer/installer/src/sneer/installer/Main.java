@@ -1,7 +1,7 @@
 package sneer.installer;
 
 import java.io.File;
-import java.io.InputStream;
+import java.io.IOException;
 import java.text.ParseException;
 
 import javax.swing.UIManager;
@@ -27,16 +27,9 @@ public class Main {
 		return System.getProperty("user.home");
 	}
 
-	private static void loadSynth() throws UnsupportedLookAndFeelException, ParseException {
+	private static void loadSynth() throws UnsupportedLookAndFeelException, ParseException, IOException {
 		SynthLookAndFeel _synth = new SynthLookAndFeel();
 		UIManager.setLookAndFeel(_synth);
-		Class<?> resourceBase = Main.class;
-		InputStream is = null;
-		try{
-			is = resourceBase.getResourceAsStream("synth.xml");
-			_synth.load(is, resourceBase);
-		} finally {
-			try { is.close(); } catch (Exception ignore) { }
-		}
+		_synth.load(Main.class.getResource("synth.xml"));
 	}
 }

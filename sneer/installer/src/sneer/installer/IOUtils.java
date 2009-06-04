@@ -28,6 +28,8 @@ public class IOUtils {
 	}	
 	
 	static void write(File file, byte[] bytes) throws IOException {
+		file.getParentFile().mkdirs();
+		file.createNewFile();
         OutputStream out = new java.io.FileOutputStream(file);
         try {
             out.write(bytes);

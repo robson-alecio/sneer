@@ -1,11 +1,9 @@
 package main;
 
-import static sneer.commons.environments.Environments.my;
 import sneer.brickness.BrickLoadingException;
 import sneer.brickness.Brickness;
 import sneer.commons.environments.Environment;
-import sneer.commons.environments.Environments;
-
+import sneer.commons.environments.EnvironmentUtils;
 
 public class Sneer {
 
@@ -21,9 +19,8 @@ public class Sneer {
 	}
 
 	static public void loadBricks(Environment container, final Class<?>... bricks) throws BrickLoadingException {
-		Environments.runWith(container, new Runnable() { @Override public void run() {
-			for (Class<?> brick : bricks) my(brick);
-		}});
+		for (Class<?> brick : bricks)
+			EnvironmentUtils.retrieveFrom(container, brick);
 	}
 
 	static public Class<?>[] businessBricks() {

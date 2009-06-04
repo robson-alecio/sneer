@@ -8,8 +8,6 @@
 
 	- [Igor] SpeexTuplesTest - Fix intermittent failure. 	
 
-	- [Sandro] Environments.runWith() -> Migrate all applicable uses to EnvironmentUtils.retrieveFrom(). main.Sneer.loadBricks() is an example. 
-
 	- [Igor] Adapt antlips to support lib entries starting with:
 		kind="lib" exported="true"...   instead of just:
 		kind="lib"...
@@ -62,7 +60,6 @@ TASKS
 			- Concurrency - Synchronize calls on Bricks, according to docs/brick_types.txt  
 
 	- [Sandro] Webstart
-		- test in file system
 		- test with hudson
 		- add SneerJockey Logic (restart sneer)
 

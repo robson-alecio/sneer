@@ -4,9 +4,9 @@ import static sneer.commons.environments.Environments.my;
 
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
+import sneer.hardware.cpu.lang.Lang;
 import sneer.hardware.ram.iterables.Iterables;
 import sneer.pulp.reactive.collections.ListSignal;
 import functional.SovereignFunctionalTestBase;
@@ -70,6 +70,6 @@ public abstract class Freedom5TestBase extends SovereignFunctionalTestBase {
 	
 	private String concat(ListSignal<?> listSignal) {
 		List<?> sorted = my(Iterables.class).sortByToString(listSignal);
-		return StringUtils.join(sorted, ", ");
+		return my(Lang.class).strings().join(sorted, ", ");
 	}
 }

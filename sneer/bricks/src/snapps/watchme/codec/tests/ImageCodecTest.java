@@ -6,7 +6,6 @@ import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-import org.apache.commons.lang.SerializationUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -16,6 +15,7 @@ import snapps.watchme.codec.ImageCodec.Decoder;
 import snapps.watchme.codec.ImageCodec.Encoder;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.hardware.cpu.exceptions.Hiccup;
+import sneer.hardware.cpu.lang.Lang;
 import sneer.hardware.gui.images.Images;
 import sneer.pulp.serialization.Serializer;
 import sneer.skin.image.ImageFactory;
@@ -75,7 +75,7 @@ public class ImageCodecTest extends BrickTest {
 			decoder.applyDelta(delta);
 
 		deltas.clear();
-		int emptyDeltaSizeBytes = SerializationUtils.serialize(deltas.toArray()).length;
+		int emptyDeltaSizeBytes = my(Lang.class).serialization().serialize(deltas.toArray()).length;
 		assertTrue(deltaSizeBytes>emptyDeltaSizeBytes);
 		
 		Assert.assertTrue(my(Images.class).isSameImage(imageB, imageA));

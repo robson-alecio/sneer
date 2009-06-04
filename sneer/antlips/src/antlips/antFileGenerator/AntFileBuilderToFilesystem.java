@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 
 import sneer.commons.lang.Pair;
 import wheel.io.files.Directory;
@@ -100,7 +99,7 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 	}
 	
 	private String safeDestDir(final String destDir) {
-		return StringUtils.isEmpty(destDir)
+		return (destDir == null || destDir.isEmpty())
 			? DEFAULT_DEST_DIR
 			: destDir;
 	}

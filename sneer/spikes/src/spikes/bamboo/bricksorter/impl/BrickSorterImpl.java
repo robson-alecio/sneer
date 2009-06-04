@@ -9,9 +9,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
 import sneer.brickness.BrickConventions;
+import sneer.hardware.cpu.lang.Lang;
 import sneer.hardware.ram.graphs.DirectedGraph;
 import sneer.hardware.ram.graphs.Graphs;
 import spikes.bamboo.bricksorter.BrickSorter;
@@ -25,7 +24,7 @@ class BrickSorterImpl implements BrickSorter {
 		final DirectedGraph<Class<?>> graph = dependencyGraphFor(bricks);
 		final Collection<Class<?>> cycles = graph.detectCycle();
 		if (!cycles.isEmpty()) {
-			throw new IllegalStateException("Cycle: " + StringUtils.join(cycles, " <-> "));
+			throw new IllegalStateException("Cycle: " + my(Lang.class).strings().join(cycles, " <-> "));
 		}
 		
 		final ArrayList<Class<?>> result = new ArrayList<Class<?>>(bricks.length);

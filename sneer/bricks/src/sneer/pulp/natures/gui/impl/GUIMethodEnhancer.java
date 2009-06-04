@@ -1,16 +1,26 @@
 package sneer.pulp.natures.gui.impl;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import javassist.*;
+import javassist.CannotCompileException;
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtField;
+import javassist.CtMethod;
+import javassist.CtNewConstructor;
+import javassist.CtNewMethod;
+import javassist.NotFoundException;
 
-import org.apache.commons.collections15.*;
-import org.apache.commons.lang.*;
+import org.apache.commons.collections15.CollectionUtils;
+import org.apache.commons.collections15.Transformer;
 
-import sneer.brickness.*;
-import sneer.commons.lang.*;
-import sneer.pulp.natures.gui.*;
+import sneer.brickness.ClassDefinition;
+import sneer.commons.lang.Pair;
+import sneer.hardware.cpu.lang.Lang;
+import sneer.pulp.natures.gui.GUINatureRuntime;
+import static sneer.commons.environments.Environments.my;
 
 public class GUIMethodEnhancer {
 
@@ -114,7 +124,7 @@ public class GUIMethodEnhancer {
 	}
 
 	private String targetInvocationList(ArrayList<Pair<String, String>> thunkFields) {
-		return StringUtils.join(
+		return my(Lang.class).strings().join(
 				CollectionUtils.collect(
 					thunkFields.subList(1, thunkFields.size()),
 					Pair.<String, String>second()),
@@ -123,7 +133,7 @@ public class GUIMethodEnhancer {
 
 	private String thunkFieldAssignments(
 			ArrayList<Pair<String, String>> thunkFields) {
-		return StringUtils.join(
+		return my(Lang.class).strings().join(
 				CollectionUtils.collect(
 					thunkFields, new Transformer<Pair<String, String>, String>() { @Override public String transform(Pair<String, String> input) {
 						return "this." + input._b + " = " + input._b + ";";
@@ -131,7 +141,7 @@ public class GUIMethodEnhancer {
 	}
 
 	private String thunkParameterList(ArrayList<Pair<String, String>> thunkFields) {
-		return StringUtils.join(
+		return my(Lang.class).strings().join(
 				CollectionUtils.collect(
 					thunkFields, new Transformer<Pair<String, String>, String>() { @Override public String transform(Pair<String, String> input) {
 						return input._a + " " + input._b;

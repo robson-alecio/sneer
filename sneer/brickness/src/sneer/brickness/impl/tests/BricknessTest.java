@@ -1,7 +1,5 @@
 package sneer.brickness.impl.tests;
 
-import static sneer.commons.environments.Environments.my;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -11,7 +9,7 @@ import sneer.brickness.impl.tests.fixtures.a.BrickA;
 import sneer.brickness.impl.tests.fixtures.b.BrickB;
 import sneer.brickness.impl.tests.fixtures.noannotation.InterfaceWithoutBrickAnnotation;
 import sneer.commons.environments.Environment;
-import sneer.commons.environments.Environments;
+import sneer.commons.environments.EnvironmentUtils;
 
 
 public class BricknessTest extends Assert {
@@ -19,9 +17,7 @@ public class BricknessTest extends Assert {
 	Environment subject = Brickness.newBrickContainer();
 
 	protected void loadBrick(final Class<?> brick) {
-		Environments.runWith(subject, new Runnable() { @Override public void run() {
-			my(brick);
-		}});
+		EnvironmentUtils.retrieveFrom(subject, brick);
 	}
 
 	@Test

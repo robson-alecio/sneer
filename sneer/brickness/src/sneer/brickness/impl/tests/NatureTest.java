@@ -20,6 +20,7 @@ import sneer.brickness.impl.tests.fixtures.nature.brick.impl.BrickOfSomeNatureIm
 import sneer.brickness.impl.tests.fixtures.nature.provider.SomeNature;
 import sneer.brickness.testsupport.ClassFiles;
 import sneer.commons.environments.Environment;
+import sneer.commons.environments.EnvironmentUtils;
 import sneer.commons.environments.Environments;
 
 // TODO: test multiple natures
@@ -52,11 +53,8 @@ public class NatureTest extends Assert {
 	}
 
 	private void loadBrick(Environment container, final Class<?> brick) {
-		Environments.runWith(container, new Runnable() { @Override public void run() {
-			my(brick);
-		}});
+		EnvironmentUtils.retrieveFrom(container, brick);
 	}
-	
 
 	private byte[] bytecodeFor(final Class<?> clazz)
 			throws IOException {

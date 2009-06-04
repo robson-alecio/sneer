@@ -24,7 +24,7 @@
 		- GUIImpl.defineBrickMetadata param
 		- ASMMetaClass
 
-	- SignalChoosers - Return a sneer.pulp.reactive.Reception that can de disposed, just like Signals.receive().
+	- [Igor] SignalChoosers - Return a sneer.pulp.reactive.Reception that can de disposed, just like Signals.receive().
 	
 	- [Igor] Break down packages with more than one brick
 

@@ -11,6 +11,7 @@ import sneer.brickness.StoragePath;
 import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.BrickTestRunner;
 import sneer.brickness.testsupport.Contribute;
+import sneer.commons.environments.EnvironmentUtils;
 import sneer.commons.environments.Environments;
 import sneer.hardware.cpu.exceptions.FriendlyException;
 import sneer.pulp.blinkinglights.BlinkingLights;
@@ -86,9 +87,8 @@ Unacceptable Client Behavior
 	}
 
 	private void startDynDnsClientOnNewEnvironment() {
-		Environments.runWith(my(BrickTestRunner.class).newTestEnvironment(), new Runnable() { @Override public void run() {
-			my(DynDnsClient.class);
-		}});
+		EnvironmentUtils.retrieveFrom(my(BrickTestRunner.class).newTestEnvironment(), 
+													  DynDnsClient.class);
 	}
 	
 	@Test

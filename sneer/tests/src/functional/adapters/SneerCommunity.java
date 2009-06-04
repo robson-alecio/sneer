@@ -14,6 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import sneer.brickness.Brickness;
 import sneer.brickness.StoragePath;
 import sneer.commons.environments.Environment;
+import sneer.commons.environments.EnvironmentUtils;
 import sneer.commons.environments.Environments;
 import sneer.pulp.network.Network;
 import testutils.network.InProcessNetwork;
@@ -53,9 +54,8 @@ public class SneerCommunity implements SovereignCommunity {
 	}
 
 	private void loadBricks(Environment container, final Class<?>... bricks) {
-		Environments.runWith(container, new Runnable() { @Override public void run() {
-			for (Class<?> brick : bricks) my(brick);
-		}});
+		for (Class<?> brick : bricks)
+			EnvironmentUtils.retrieveFrom(container, brick);
 	}
 
 	private Environment newContainer(final String name) {

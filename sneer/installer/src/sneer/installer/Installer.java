@@ -33,8 +33,8 @@ class Installer {
 	private void addBinaries() throws IOException {
 		String jarFileName = this.getClass().getResource("").toString()
 									.replace("jar:file:/", "")
-									.replace("!/sneer/installer/", "");
-			
+									.replace("!/sneer/installer/", "")
+									.replace("sneer-bootstrap.jar", "sneer.jar");
 		extractFiles(jarFileName);
 	}
 

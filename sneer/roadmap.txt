@@ -60,7 +60,6 @@ TASKS
 			- Concurrency - Synchronize calls on Bricks, according to docs/brick_types.txt  
 
 	- [Sandro] Webstart
-		- test in file system
 		- test with hudson
 		- add SneerJockey Logic (restart sneer)
 

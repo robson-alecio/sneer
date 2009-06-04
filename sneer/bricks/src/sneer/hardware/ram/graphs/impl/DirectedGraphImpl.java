@@ -1,4 +1,4 @@
-package sneer.roots.collections.graphs.impl;
+package sneer.hardware.ram.graphs.impl;
 
 import static sneer.commons.environments.Environments.my;
 
@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Set;
 
 import sneer.commons.lang.Producer;
-import sneer.hardware.ram.collections.cachemap.CacheMap;
-import sneer.hardware.ram.collections.cachemap.CacheMaps;
-import sneer.roots.collections.graphs.DirectedGraph;
+import sneer.hardware.ram.graphs.DirectedGraph;
+import sneer.hardware.ram.maps.cachemaps.CacheMap;
+import sneer.hardware.ram.maps.cachemaps.CacheMaps;
 
 class DirectedGraphImpl<T> implements DirectedGraph<T> {
 

@@ -1,4 +1,4 @@
-package sneer.hardware.ram.collections.impl;
+package sneer.hardware.ram.iterables.impl;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -6,9 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import sneer.commons.lang.Functor;
-import sneer.hardware.ram.collections.Collections;
+import sneer.hardware.ram.iterables.Iterables;
 
-class CollectionsImpl implements Collections {
+class IterablesImpl implements Iterables {
 
 	@Override
 	public <T> List<T> sortByToString(Iterable<T> iterable) {

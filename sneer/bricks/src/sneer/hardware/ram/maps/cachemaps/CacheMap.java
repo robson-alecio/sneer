@@ -1,4 +1,4 @@
-package sneer.hardware.ram.collections.cachemap;
+package sneer.hardware.ram.maps.cachemaps;
 
 import java.util.Map;
 

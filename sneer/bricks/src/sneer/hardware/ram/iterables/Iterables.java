@@ -1,4 +1,4 @@
-package sneer.hardware.ram.collections;
+package sneer.hardware.ram.iterables;
 
 import java.util.Iterator;
 import java.util.List;
@@ -7,7 +7,7 @@ import sneer.brickness.Brick;
 import sneer.commons.lang.Functor;
 
 @Brick
-public interface Collections {
+public interface Iterables {
 
 	<T> List<T> sortByToString(Iterable<T> iterable);
 

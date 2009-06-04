@@ -1,4 +1,4 @@
-package sneer.roots.collections.graphs;
+package sneer.hardware.ram.graphs;
 
 import java.util.Collection;
 

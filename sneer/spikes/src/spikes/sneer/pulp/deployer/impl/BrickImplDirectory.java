@@ -12,7 +12,7 @@ import org.apache.commons.io.FilenameUtils;
 import sneer.brickness.Brick;
 import sneer.brickness.testsupport.JarBuilder;
 import sneer.commons.lang.Functor;
-import sneer.hardware.ram.collections.Collections;
+import sneer.hardware.ram.iterables.Iterables;
 import sneer.software.code.filefilters.java.impl.SimpleFilter;
 import sneer.software.code.metaclass.MetaClass;
 import spikes.sneer.kernel.container.impl.classloader.MetaClassClassLoader;
@@ -168,7 +168,7 @@ class BrickImplDirectory {
 	}
 
 	public DeploymentJar jarBinaryApi() {
-		return jar(my(Collections.class).map(_apiClassFiles, new Functor<MetaClass, JarEntrySpec>() {
+		return jar(my(Iterables.class).map(_apiClassFiles, new Functor<MetaClass, JarEntrySpec>() {
 
 			@Override
 			public JarEntrySpec evaluate(final MetaClass value) {
@@ -189,7 +189,7 @@ class BrickImplDirectory {
 	}
 
 	public DeploymentJar jarBinaryImpl() {
-		return jar(my(Collections.class).map(_implClasses._files, new Functor<File, JarEntrySpec>() { @Override public JarEntrySpec evaluate(final File value) {
+		return jar(my(Iterables.class).map(_implClasses._files, new Functor<File, JarEntrySpec>() { @Override public JarEntrySpec evaluate(final File value) {
 					return new JarEntrySpec() {
 						@Override
 						public File file() {
@@ -206,7 +206,7 @@ class BrickImplDirectory {
 	}
 
 	private DeploymentJar jarFromFiles(Iterable<File> files, String role) {
-		return jar(my(Collections.class).map(files, new Functor<File, JarEntrySpec>() { @Override public JarEntrySpec evaluate(final File value) {
+		return jar(my(Iterables.class).map(files, new Functor<File, JarEntrySpec>() { @Override public JarEntrySpec evaluate(final File value) {
 				return new JarEntrySpec() {
 					@Override
 					public File file() {

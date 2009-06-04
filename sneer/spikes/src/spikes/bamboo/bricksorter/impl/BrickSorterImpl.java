@@ -12,8 +12,8 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 import sneer.brickness.BrickConventions;
-import sneer.roots.collections.graphs.DirectedGraph;
-import sneer.roots.collections.graphs.Graphs;
+import sneer.hardware.ram.graphs.DirectedGraph;
+import sneer.hardware.ram.graphs.Graphs;
 import spikes.bamboo.bricksorter.BrickSorter;
 import spikes.sneer.kernel.container.bytecode.dependencies.DependencyFinder;
 

@@ -1,4 +1,4 @@
-package sneer.roots.collections.graphs.tests;
+package sneer.hardware.ram.graphs.tests;
 
 import static sneer.commons.environments.Environments.my;
 
@@ -10,8 +10,8 @@ import java.util.List;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
-import sneer.roots.collections.graphs.DirectedGraph;
-import sneer.roots.collections.graphs.Graphs;
+import sneer.hardware.ram.graphs.DirectedGraph;
+import sneer.hardware.ram.graphs.Graphs;
 
 public class GraphsTest extends BrickTest {
 

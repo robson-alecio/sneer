@@ -1,9 +1,9 @@
-package sneer.hardware.ram.collections.cachemap.impl;
+package sneer.hardware.ram.maps.cachemaps.impl;
 
 import java.util.HashMap;
 
 import sneer.commons.lang.Producer;
-import sneer.hardware.ram.collections.cachemap.CacheMap;
+import sneer.hardware.ram.maps.cachemaps.CacheMap;
 
 class CacheMapImpl<K, V> extends HashMap<K, V> implements CacheMap<K, V> {
 

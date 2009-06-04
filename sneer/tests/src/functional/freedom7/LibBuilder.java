@@ -9,7 +9,7 @@ import java.util.Iterator;
 import org.apache.commons.io.FileUtils;
 
 import sneer.brickness.testsupport.JarBuilder;
-import sneer.hardware.ram.collections.Collections;
+import sneer.hardware.ram.iterables.Iterables;
 import sneer.software.code.compilers.java.JavaCompiler;
 import sneer.software.code.compilers.java.Result;
 import sneer.software.code.metaclass.MetaClass;
@@ -29,7 +29,7 @@ public class LibBuilder {
 	public void build(File targetJar) throws IOException {
 		_tmpDirectory.mkdirs();
 		
-		final Result result = _compiler.compile(my(Collections.class).toList(iterateSourceFiles()), _tmpDirectory);
+		final Result result = _compiler.compile(my(Iterables.class).toList(iterateSourceFiles()), _tmpDirectory);
 		if (!result.success())
 			throw new IllegalArgumentException(result.getErrorString());
 		

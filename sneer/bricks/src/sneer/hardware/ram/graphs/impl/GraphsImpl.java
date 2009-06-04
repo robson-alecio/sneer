@@ -1,7 +1,7 @@
-package sneer.roots.collections.graphs.impl;
+package sneer.hardware.ram.graphs.impl;
 
-import sneer.roots.collections.graphs.DirectedGraph;
-import sneer.roots.collections.graphs.Graphs;
+import sneer.hardware.ram.graphs.DirectedGraph;
+import sneer.hardware.ram.graphs.Graphs;
 
 class GraphsImpl implements Graphs {
 

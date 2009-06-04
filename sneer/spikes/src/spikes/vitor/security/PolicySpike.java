@@ -8,8 +8,6 @@ import java.security.Policy;
 import java.security.ProtectionDomain;
 import java.security.Provider;
 
-import spikes.sneer.kernel.container.impl.classloader.OldBrickClassLoader;
-
 public class PolicySpike extends Policy {
 
 	@Override
@@ -57,11 +55,11 @@ public class PolicySpike extends Policy {
 //		}
 		if(permission instanceof AWTPermission) return false;
 		
-		ClassLoader cl = domain.getClassLoader();
-		if(cl instanceof OldBrickClassLoader) {
-			OldBrickClassLoader bcl = (OldBrickClassLoader) cl;
-			System.out.println("Checking "+permission+" access for: "+bcl.mainClass());
-		}
+//		ClassLoader cl = domain.getClassLoader();
+//		if(cl instanceof OldBrickClassLoader) {
+//			OldBrickClassLoader bcl = (OldBrickClassLoader) cl;
+//			System.out.println("Checking "+permission+" access for: "+bcl.mainClass());
+//		}
 		return true;
 	}
 

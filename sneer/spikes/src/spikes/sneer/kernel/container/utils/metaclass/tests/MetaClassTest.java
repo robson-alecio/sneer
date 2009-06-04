@@ -16,8 +16,8 @@ public class MetaClassTest extends BrickTest {
 	public void testMetaClass() throws Exception {
 		MetaClass metaClass = my(MetaClasses.class).metaClass(Bean.class);
 		assertTrue(metaClass.isInterface());
-		assertEquals("sneer.kernel.container.utils.metaclass.tests.bean.Bean", metaClass.getName());
-		assertEquals("sneer.kernel.container.utils.metaclass.tests.bean", metaClass.getPackageName());
+		assertEquals("spikes.sneer.kernel.container.utils.metaclass.tests.bean.Bean", metaClass.getName());
+		assertEquals("spikes.sneer.kernel.container.utils.metaclass.tests.bean", metaClass.getPackageName());
 
 		//assertTrue(metaClass.isAssignanbleTo(Object.class));
 	}

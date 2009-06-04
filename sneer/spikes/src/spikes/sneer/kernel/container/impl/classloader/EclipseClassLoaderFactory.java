@@ -8,7 +8,7 @@ import java.lang.ref.WeakReference;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import sneer.hardware.io.file.utils.FileUtils;
+import sneer.hardware.io.IO;
 import sneer.pulp.clock.Clock;
 import sneer.software.code.classutils.ClassUtils;
 import sneer.software.code.filefilters.java.JavaFilter;
@@ -45,7 +45,7 @@ public class EclipseClassLoaderFactory implements ClassLoaderFactory {
 	private ClassLoader newBrickClassLoader(Class<?> brickClass, File brickDirectory) {
 		final ClassLoader parent = brickClass.getClassLoader();
 
-		if(my(FileUtils.class).isEmpty(brickDirectory)) {
+		if(my(IO.class).files().isEmpty(brickDirectory)) {
 			//useful for eclipse development
 			return fileClassLoader(parent);
 		}

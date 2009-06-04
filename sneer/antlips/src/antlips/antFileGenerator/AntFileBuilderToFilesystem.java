@@ -8,8 +8,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.io.IOUtils;
-
 import sneer.commons.lang.Pair;
 import wheel.io.files.Directory;
 import antlips.codegeneration.Template;
@@ -59,9 +57,10 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 	private void writeAntFile(final String contents) throws IOException {
 		final OutputStream file = createOrCry(_directory, FILENAME);
 		try {
-			IOUtils.write(contents, file);
+			if (contents != null) 
+				file.write(contents.getBytes());
 		} finally {
-			IOUtils.closeQuietly(file);
+			try { file.close(); } catch (Throwable ignore) { }
 		}
 	}
 
@@ -82,10 +81,10 @@ public class AntFileBuilderToFilesystem implements AntFileBuilder {
 		final String templateName = _compileSourceFoldersTogether
 			? "source-folders-together.template"
 			: "source-folders-separate.template";
-		return IOUtils.toString(getClass().getResourceAsStream(templateName));
+		return AntUtils.readString(getClass().getResourceAsStream(templateName));
 	}
 	
-	public Iterable<Pair<String, String>> srcs() {
+    public Iterable<Pair<String, String>> srcs() {
 		return _srcs;
 	}
 

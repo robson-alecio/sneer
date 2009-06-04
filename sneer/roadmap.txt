@@ -2,7 +2,6 @@
 =========
 
 	- [Sandro] Apache Commons - Encapsulate in bricks.
-		- sneer.hardware.io.IO brick - Implement it just as above.
 		- sneer.hardware.ram.collections.Collections brick - Implement it just as above. Using newest commons collections lib (not the one with generics we are using today).
 		- Add license and notice.txt files to lib folders of all commons bricks.
 

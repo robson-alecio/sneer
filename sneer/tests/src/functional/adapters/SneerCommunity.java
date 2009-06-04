@@ -1,7 +1,5 @@
 package functional.adapters;
 
-import static sneer.commons.environments.Environments.my;
-
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,7 +13,6 @@ import sneer.brickness.Brickness;
 import sneer.brickness.StoragePath;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.EnvironmentUtils;
-import sneer.commons.environments.Environments;
 import sneer.pulp.network.Network;
 import testutils.network.InProcessNetwork;
 import functional.SovereignCommunity;

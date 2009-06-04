@@ -1,7 +1,5 @@
 package sneer.brickness.impl.tests;
 
-import static sneer.commons.environments.Environments.my;
-
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -21,7 +19,6 @@ import sneer.brickness.impl.tests.fixtures.nature.provider.SomeNature;
 import sneer.brickness.testsupport.ClassFiles;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.EnvironmentUtils;
-import sneer.commons.environments.Environments;
 
 // TODO: test multiple natures
 public class NatureTest extends Assert {

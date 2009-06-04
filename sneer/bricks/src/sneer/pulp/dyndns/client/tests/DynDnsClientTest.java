@@ -12,7 +12,6 @@ import sneer.brickness.testsupport.BrickTest;
 import sneer.brickness.testsupport.BrickTestRunner;
 import sneer.brickness.testsupport.Contribute;
 import sneer.commons.environments.EnvironmentUtils;
-import sneer.commons.environments.Environments;
 import sneer.hardware.cpu.exceptions.FriendlyException;
 import sneer.pulp.blinkinglights.BlinkingLights;
 import sneer.pulp.blinkinglights.Light;

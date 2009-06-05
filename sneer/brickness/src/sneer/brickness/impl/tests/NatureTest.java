@@ -1,9 +1,13 @@
 package sneer.brickness.impl.tests;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 
-import org.apache.commons.io.FileUtils;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
@@ -53,8 +57,25 @@ public class NatureTest extends Assert {
 		EnvironmentUtils.retrieveFrom(container, brick);
 	}
 
-	private byte[] bytecodeFor(final Class<?> clazz)
-			throws IOException {
-		return FileUtils.readFileToByteArray(ClassFiles.fileFor(clazz));
+	private byte[] bytecodeFor(final Class<?> clazz) throws IOException {
+		File file = ClassFiles.fileFor(clazz);
+
+		if (!file.exists())  throw new FileNotFoundException("File '" + file + "' does not exist");
+		if (file.isDirectory()) throw new IOException("File '" + file + "' exists but is a directory");
+		if (file.canRead() == false)  throw new IOException("File '" + file + "' cannot be read");
+		
+		InputStream in = null;
+		try {
+			in = new FileInputStream(file);
+		    ByteArrayOutputStream output = new ByteArrayOutputStream();
+			byte[] buffer = new byte[1024*4];
+			int n = 0;
+			while (-1 != (n = in.read(buffer))) 
+				output.write(buffer, 0, n);
+			
+			return output.toByteArray();
+		} finally {
+		    try {	in.close(); } catch (Throwable ignore) {}
+		}
 	}
 }

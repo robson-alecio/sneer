@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 
@@ -62,7 +61,7 @@ public abstract class TestThatMightUseResources extends AssertUtils {
 		long t0 = System.currentTimeMillis();
 		while (true) {
 			try {
-				FileUtils.deleteDirectory(tmp);
+				IOUtils.deleteDirectory(tmp);
 				return;
 			} catch (IOException e) {
 				if (System.currentTimeMillis() - t0 > 1000) {

@@ -15,7 +15,7 @@ import org.apache.commons.io.filefilter.OrFileFilter;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 
 import sneer.commons.lang.exceptions.NotImplementedYet;
-import sneer.hardware.io.file.utils.FileUtils;
+import sneer.hardware.io.IO;
 /**
  * Includes all files outside hidden directories
  */
@@ -65,7 +65,7 @@ public class SimpleFilter extends DirectoryWalker {
 	@SuppressWarnings({"unchecked", "unused"})
 	@Override
 	protected boolean handleDirectory(File directory, int depth, Collection results) throws IOException {
-		boolean ignore = ignoreDirectory(directory) || my(FileUtils.class).isEmpty(directory);
+		boolean ignore = ignoreDirectory(directory) || my(IO.class).files().isEmpty(directory);
 		return !ignore;
 	}
 

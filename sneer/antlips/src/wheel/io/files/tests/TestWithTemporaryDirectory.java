@@ -3,9 +3,10 @@ package wheel.io.files.tests;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Assert;
+
+import antlips.antFileGenerator.AntUtils;
 
 public abstract class TestWithTemporaryDirectory extends Assert {
 
@@ -36,7 +37,7 @@ public abstract class TestWithTemporaryDirectory extends Assert {
 		long t0 = System.currentTimeMillis();
 		while (true) {
 			try {
-				FileUtils.deleteDirectory(tmp);
+				AntUtils.deleteDirectory(tmp);
 				return;
 			} catch (IOException e) {
 				if (System.currentTimeMillis() - t0 > 1000) {

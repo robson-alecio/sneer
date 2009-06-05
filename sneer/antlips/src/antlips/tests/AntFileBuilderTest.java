@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +11,7 @@ import org.junit.Test;
 import wheel.io.files.Directory;
 import wheel.io.files.impl.tranzient.TransientDirectory;
 import antlips.antFileGenerator.AntFileBuilderToFilesystem;
+import antlips.antFileGenerator.AntUtils;
 import antlips.antFileGenerator.DotClasspathToAntConverter;
 import antlips.dotClasspathParser.DotClasspath;
 
@@ -73,7 +73,7 @@ public class AntFileBuilderTest {
 			DotClasspathToAntConverterTest.class
 				.getResourceAsStream(fileName);
 		
-		final String classpathWithTwoSrcTwoLibOneOutput = IOUtils.toString(resourceAsStream);
+		final String classpathWithTwoSrcTwoLibOneOutput = AntUtils.readString(resourceAsStream);
 		return classpathWithTwoSrcTwoLibOneOutput;
 	}
 }

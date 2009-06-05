@@ -3,10 +3,10 @@ package antlips.tests;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
+import antlips.antFileGenerator.AntUtils;
 import antlips.antFileGenerator.DotClasspathToAntConverter;
 import antlips.dotClasspathParser.DotClasspathParser;
 import antlips.tests.environment.FakeAntFileBuilder;
@@ -37,7 +37,7 @@ public class DotClasspathToAntConverterTest {
 			DotClasspathToAntConverterTest.class
 				.getResourceAsStream("subjectClassPathTemplate");
 		
-		final String classpathWithTwoSrcTwoLibOneOutput = IOUtils.toString(resourceAsStream);
+		final String classpathWithTwoSrcTwoLibOneOutput = AntUtils.readString(resourceAsStream);
 		return classpathWithTwoSrcTwoLibOneOutput;
 	}
 	

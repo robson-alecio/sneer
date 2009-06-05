@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Opcodes;
@@ -53,7 +52,6 @@ class ASMMetaClass extends MetaClassSupport {
 		if (_loaded)
 			return;
 
-		//System.out.println("loading meta class from: "+_classFile.getName());
 		InputStream is = null;
 		try {
 			is = new FileInputStream(_classFile);
@@ -63,8 +61,7 @@ class ASMMetaClass extends MetaClassSupport {
 		} catch (IOException e) {
 			throw new MetaClassException("Error reading meta class from: " + _classFile, e);
 		} finally {
-			if (is != null)
-				IOUtils.closeQuietly(is);
+			try { is.close(); } catch (Throwable ignore) { }
 		}
 	}
 

@@ -7,11 +7,10 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Collections;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 
 import sneer.brickness.testsupport.BrickTest;
+import sneer.hardware.io.IO;
 import sneer.software.code.compilers.classpath.Classpath;
 import sneer.software.code.compilers.classpath.ClasspathFactory;
 import sneer.software.code.compilers.java.CompilationError;
@@ -39,7 +38,7 @@ public class JavaCompilerTest extends BrickTest {
 		CompilationError error = result.getErrors().get(0);
 		assertEquals(2, error.getLineNumber());
 		assertEquals("<identifier> expected", error.getMessage());
-		assertTrue(FilenameUtils.getName(error.getFileName()).startsWith(TEST_FILE_PREFIX));
+		assertTrue(new File(error.getFileName()).getName().startsWith(TEST_FILE_PREFIX));
 	}
 
 	@Test
@@ -56,7 +55,7 @@ public class JavaCompilerTest extends BrickTest {
 			Result result = compile("class Foo extends " + TestLib.class.getName() + " {}", libFolder);
 			assertSuccess(result);
 		} finally {
-			FileUtils.deleteDirectory(libFolder);
+			my(IO.class).files().deleteDirectory(libFolder);
 		}
 	}
 		
@@ -79,7 +78,7 @@ public class JavaCompilerTest extends BrickTest {
 	private File writeSourceFile(String code) {
 		try {
 			File java = createTempFile(); 
-			FileUtils.writeStringToFile(java, code);
+			my(IO.class).files().writeStringToFile(java, code);
 			return java;
 		} catch (IOException e) {
 			throw new IllegalStateException(e);

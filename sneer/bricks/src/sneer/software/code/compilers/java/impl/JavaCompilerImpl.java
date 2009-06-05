@@ -8,9 +8,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
-
+import sneer.hardware.cpu.lang.Lang;
+import sneer.hardware.io.IO;
 import sneer.software.code.compilers.classpath.Classpath;
 import sneer.software.code.compilers.classpath.ClasspathFactory;
 import sneer.software.code.compilers.java.CompilerException;
@@ -56,7 +55,8 @@ class JavaCompilerImpl implements JavaCompiler {
 	private File createArgsFileForJavac(List<File> files) {
 		try {
 			File args = File.createTempFile("javac-", ".args");
-			FileUtils.writeStringToFile(args,StringUtils.join(files, "\n"));
+			
+			my(IO.class).files().writeStringToFile(args, my(Lang.class).strings().join(files, "\n"));
 			return args;
 		} catch(IOException e) {
 			throw new CompilerException("Can't create temp file", e);

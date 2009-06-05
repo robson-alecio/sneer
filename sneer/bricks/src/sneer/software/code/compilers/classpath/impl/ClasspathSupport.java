@@ -1,11 +1,12 @@
 package sneer.software.code.compilers.classpath.impl;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
+import sneer.hardware.cpu.lang.Lang;
 import sneer.software.code.compilers.classpath.Classpath;
 
 abstract class ClasspathSupport implements Classpath {
@@ -22,7 +23,7 @@ abstract class ClasspathSupport implements Classpath {
 			sb.append(File.pathSeparatorChar);
 		}
 		String result = sb.toString();
-		result = StringUtils.chomp(result, File.pathSeparatorChar+"");
+		result = my(Lang.class).strings().chomp(result, File.pathSeparatorChar+"");
 		return result;
 	}
 

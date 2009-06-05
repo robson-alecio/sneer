@@ -1,13 +1,14 @@
 package sneer.pulp.httpclient.impl;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.apache.commons.io.IOUtils;
-
 import sneer.commons.lang.Pair;
+import sneer.hardware.io.IO;
 import sneer.pulp.httpclient.HttpClient;
 
 class HttpClientImpl implements HttpClient {
@@ -27,9 +28,9 @@ class HttpClientImpl implements HttpClient {
 	private String readString(final URLConnection connection) throws IOException {
 		final InputStream is = connection.getInputStream();
 		try {
-			return IOUtils.toString(is);
+			return my(IO.class).streams().toString(is);
 		} finally {
-			is.close();
+			try { is.close(); } catch (Throwable ignore) { }
 		}
 	}
 }

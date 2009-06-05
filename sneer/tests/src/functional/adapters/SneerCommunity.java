@@ -1,18 +1,18 @@
 package functional.adapters;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
 import main.Sneer;
-
-import org.apache.commons.lang.StringUtils;
-
 import sneer.brickness.Brickness;
 import sneer.brickness.StoragePath;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.EnvironmentUtils;
+import sneer.hardware.cpu.lang.Lang;
 import sneer.pulp.network.Network;
 import testutils.network.InProcessNetwork;
 import functional.SovereignCommunity;
@@ -82,7 +82,7 @@ public class SneerCommunity implements SovereignCommunity {
 	}
 
 	private File rootDirectory(String name) {
-		String fileName = ".sneer-"+StringUtils.deleteWhitespace(name);
+		String fileName = ".sneer-"+my(Lang.class).strings().deleteWhitespace(name);
 		return new File(_tmpDirectory, fileName);
 		
 	}

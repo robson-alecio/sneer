@@ -5,10 +5,8 @@ import static sneer.commons.environments.Environments.my;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.io.FileUtils;
-
 import sneer.brickness.StoragePath;
+import sneer.hardware.io.IO;
 import sneer.software.bricks.Bricks;
 import sneer.software.code.compilers.classpath.Classpath;
 import sneer.software.code.compilers.classpath.ClasspathFactory;
@@ -55,7 +53,7 @@ public class BricksImpl implements Bricks {
 
 	private List<File> sourceFilesIn(File sourceDirectory) {
 		String[] extensions = { "java" };
-		return new ArrayList<File>(FileUtils.listFiles(sourceDirectory, extensions, true));
+		return new ArrayList<File>(my(IO.class).files().listFiles(sourceDirectory, extensions, true));
 	}
 
 	private File binDirectory() {

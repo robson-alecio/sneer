@@ -1,10 +1,11 @@
 package sneer.software.code.metaclass.impl;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
-
+import sneer.hardware.io.IO;
 import sneer.software.code.metaclass.MetaClass;
 
 
@@ -45,7 +46,7 @@ abstract class MetaClassSupport implements MetaClass {
 	
 	@Override
 	public byte[] bytes() throws IOException {
-		return FileUtils.readFileToByteArray(_classFile);
+		return my(IO.class).files().readFileToByteArray(_classFile);
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package sneer.pulp.crypto.impl;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -7,9 +9,9 @@ import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.Security;
 
-import org.apache.commons.io.IOUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
+import sneer.hardware.io.IO;
 import sneer.pulp.crypto.Crypto;
 import sneer.pulp.crypto.Digester;
 import sneer.pulp.crypto.Sneer1024;
@@ -49,8 +51,13 @@ class CryptoImpl implements Crypto {
 
 	@Override
 	public Sneer1024 digest(File file) throws IOException {
-		byte[] bytes = IOUtils.toByteArray(new FileInputStream(file));
-		return digest(bytes);
+		FileInputStream input = null;
+		try {
+			input = new FileInputStream(file);
+			return digest(my(IO.class).streams().toByteArray(input));
+		} finally {
+			try { input.close(); } catch (Throwable ignore) { }
+		}
 	}
 
 	@Override
@@ -80,10 +87,9 @@ class DigesterImpl implements Digester {
 	
 	@Override
 	public void update(InputStream is) throws IOException {
-		byte[] bytes = read(is);
+		byte[] bytes = my(IO.class).streams().toByteArray(is);
 		_sha512.update(bytes);
 		_whirlPool.update(bytes);
-		//System.out.println(" " + StringUtils.toHexa(bytes));
 	}
 
 	MessageDigest whirlPool() {
@@ -99,10 +105,6 @@ class DigesterImpl implements Digester {
 		System.arraycopy(sha512, 0, result, 0, sha512.length);
 		System.arraycopy(whirlPool, 0, result, sha512.length, whirlPool.length);
 		return result;
-	}
-	
-	private byte[] read(InputStream is) throws IOException {
-		return IOUtils.toByteArray(is);
 	}
 	
 }

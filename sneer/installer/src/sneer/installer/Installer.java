@@ -3,6 +3,8 @@ package sneer.installer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
@@ -11,10 +13,13 @@ class Installer {
 
 	private File _sneerHome;
 	private File _sneerTmp;
+	private File _sneerTmpBin;
 
 	Installer(File sneerHome) throws IOException {
 		_sneerHome = sneerHome;
 		_sneerTmp = new File(_sneerHome.getParentFile(), ".sneertmp");
+		_sneerTmpBin = new File(_sneerTmp, "bin");
+		
 		createDirectory();
 		addBinaries();
 		renameDirectory();
@@ -35,24 +40,41 @@ class Installer {
 									.replace("jar:file:/", "")
 									.replace("!/sneer/installer/", "")
 									.replace("sneer-bootstrap.jar", "sneer.jar");
-		extractFiles(jarFileName);
+		
+		if(!jarFileName.contains("http://")){
+			extractFiles(new File(jarFileName));
+			return;
+		}
+	
+		int index = jarFileName.indexOf("http://");
+		jarFileName = jarFileName.substring(index, jarFileName.length());
+		extractFiles(new URL(jarFileName));
 	}
 
-	private void extractFiles(String jarFileName) throws IOException {
-		File src = new File(jarFileName);
-		File targetRoot = new File(_sneerTmp, "bin");
-		
+	private void extractFiles(URL url) throws IOException {
+		File file = new File(_sneerTmp, "sneer.jar");
+		InputStream input = url.openStream();
+		IOUtils.copyToFile(input, file);
+		input.close();
+		extractFiles(file);
+	}
+	
+	private void extractFiles(File src) throws IOException {
 		IOUtils.write(new  File(_sneerTmp, "log.txt"), "expand files from: " + src.getAbsolutePath());
-
 		if(!(src.exists()))
 			throw new IOException("File '" + src.getAbsolutePath() + "' not found!");	
-		
-		JarInputStream jis = new JarInputStream(new FileInputStream(src));
+
+		FileInputStream inputStream = new FileInputStream(src);
+		extractFiles(src, inputStream);
+	}
+
+	private void extractFiles(File src, FileInputStream inputStream) throws IOException {
+		JarInputStream jis = new JarInputStream(inputStream);
 		JarFile jar = new JarFile(src);
 		JarEntry entry = null;
 		
         while ((entry = jis.getNextJarEntry()) != null) {
-        	File file = new File(targetRoot, entry.getName());
+        	File file = new File(_sneerTmpBin, entry.getName());
 
         	if(entry.isDirectory()) {
 				file.mkdirs();

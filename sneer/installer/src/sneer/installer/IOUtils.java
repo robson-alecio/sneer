@@ -69,4 +69,22 @@ public class IOUtils {
 		
 		deleteDirectory(file);
 	}
+
+	public static void copyToFile(InputStream input, File file) throws IOException {
+		file.getParentFile().mkdirs();
+		file.createNewFile();
+		
+		OutputStream output = new java.io.FileOutputStream(file);
+		try {
+		    byte[] buffer = new byte[1024 * 4];
+			long count1 = 0;
+			int n = 0;
+			while (-1 != (n = input.read(buffer))) {
+			    output.write(buffer, 0, n);
+			    count1 += n;
+			}
+        } finally {
+            try { output.close(); } catch (Throwable ignore) {}
+        }	
+	}
 }

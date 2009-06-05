@@ -15,7 +15,7 @@ import functional.SovereignParty;
 
 public abstract class Freedom5TestBase extends SovereignFunctionalTestBase {
 	
-	@Test (timeout = 5000)
+	@Test (timeout = 10000)
 	public void shoutToTheWind() {
 		
 		SovereignParty c = createParty("Cid");
@@ -44,7 +44,7 @@ public abstract class Freedom5TestBase extends SovereignFunctionalTestBase {
 	}
 	
 
-	@Test(timeout=6000)
+	@Test(timeout=10000)
 	public void canHearPastShouts() {
 		
 		a().shout("A!!!");

@@ -66,6 +66,7 @@ class Installer {
 
 		FileInputStream inputStream = new FileInputStream(src);
 		extractFiles(src, inputStream);
+		inputStream.close();
 	}
 
 	private void extractFiles(File src, FileInputStream inputStream) throws IOException {

@@ -1,6 +1,10 @@
 package sneer.hardware.io;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.Iterator;
 
 import sneer.brickness.Brick;
 
@@ -8,10 +12,20 @@ import sneer.brickness.Brick;
 public interface IO {
 
 	Files files();
+	Streams streams();
 	
 	interface Files{
 		boolean isEmpty(File file);
-		File concat(File basePath, String path);
-		File concat(String basePath, String path);
+		String concat(String basePath, String path);
+		Collection<File> listFiles(File directory, String[] extensions, boolean recursive);
+		void writeStringToFile(File file, String data) throws IOException;
+		void deleteDirectory(File directory) throws IOException;
+		Iterator<File> iterate(File directory, String[] extensions, boolean recursive);
+		byte[] readFileToByteArray(File file) throws IOException;
+	}
+	
+	interface Streams{
+		String toString(InputStream input) throws IOException;
+		byte[] toByteArray(InputStream input) throws IOException;
 	}
 }

@@ -1,7 +1,12 @@
 package sneer.hardware.cpu.lang.impl;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.SerializationUtils;
@@ -26,6 +31,17 @@ class LangImpl implements Lang {
 		@Override public String trimToNull(String str) {return StringUtils.trimToNull(str);}
 		@Override public String chomp(String str, String separator) { return StringUtils.chomp(str, separator);}
 		@Override public String deleteWhitespace(String str) {return StringUtils.deleteWhitespace(str);}
+		@Override public List<String> readLines(String input) throws IOException {
+	        BufferedReader reader = new BufferedReader(new StringReader(input));
+			List<String> list = new ArrayList<String>();
+			String line = reader.readLine();
+			while (line != null) {
+				list.add(line);
+				line = reader.readLine();
+			}
+			return list;		
+		}
+
 	};
 
 	@Override	 public Arrays arrays() { return _arrays; }

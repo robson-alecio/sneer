@@ -1,7 +1,9 @@
 package sneer.hardware.cpu.lang;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 import sneer.brickness.Brick;
 
@@ -27,6 +29,7 @@ public interface Lang {
 		String trimToNull(String str);
 		String chomp(String str, String separator);
 		String deleteWhitespace(String str);
+		List<String> readLines(String input) throws IOException;
 	}
 }
 

@@ -1,9 +1,11 @@
 package functional.freedom7;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
+import sneer.hardware.io.IO;
 
 public class SourceFileWriter {
 
@@ -14,7 +16,7 @@ public class SourceFileWriter {
 	}
 
 	public void write(String className, String code) throws IOException {
-		FileUtils.writeStringToFile(javaFile(className), "package " + packageName(className) + ";\n" + code);
+		my(IO.class).files().writeStringToFile(javaFile(className), "package " + packageName(className) + ";\n" + code);
 	}
 
 	private String packageName(String className) {

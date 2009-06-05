@@ -6,9 +6,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 
-import org.apache.commons.io.FileUtils;
-
 import sneer.brickness.testsupport.JarBuilder;
+import sneer.hardware.io.IO;
 import sneer.hardware.ram.iterables.Iterables;
 import sneer.software.code.compilers.java.JavaCompiler;
 import sneer.software.code.compilers.java.Result;
@@ -46,7 +45,7 @@ public class LibBuilder {
 	}
 
 	private Iterator<File> iterateSourceFiles() {
-		return FileUtils.iterateFiles(_srcFolder, new String[] { "java" }, true);
+		return my(IO.class).files().iterate(_srcFolder, new String[] { "java" }, true);
 	}
 
 }

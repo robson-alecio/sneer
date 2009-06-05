@@ -1,7 +1,8 @@
 package sneer.software.code.compilers.java.impl;
 
-import org.apache.commons.lang.StringUtils;
+import static sneer.commons.environments.Environments.my;
 
+import sneer.hardware.cpu.lang.Lang;
 import sneer.software.code.compilers.java.CompilationError;
 
 class CompilationErrorImpl implements CompilationError {
@@ -15,7 +16,7 @@ class CompilationErrorImpl implements CompilationError {
 	public CompilationErrorImpl(String fileName, int lineNumber, String errorMessage) {
 		_fileName = fileName;
 		_lineNumber = lineNumber;
-		_message = StringUtils.trimToNull(errorMessage);
+		_message = my(Lang.class).strings().trimToNull(errorMessage);
 	}
 
 	/* (non-Javadoc)

@@ -11,9 +11,6 @@ import java.io.InputStream;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-
 public class JarBuilder implements Closeable{
 
 	private final JarOutputStream _out;
@@ -31,13 +28,16 @@ public class JarBuilder implements Closeable{
 	}
 	
 	private void add(String entryName, InputStream is) throws IOException {
-		JarEntry je = new JarEntry(FilenameUtils.separatorsToUnix(entryName));
+		entryName = entryName.replace('\\', '/');
+		JarEntry je = new JarEntry(entryName);
 		_out.putNextEntry(je);
-		IOUtils.copy(is, _out); //This method buffers the input internally, so there is no need to use a BufferedInputStream.
+		byte[] buffer = new byte[1024*4];
+		int n = 0;
+		while (-1 != (n = is.read(buffer)))  _out.write(buffer, 0, n); 
 		is.close();
 	}
 	
-	public void close() {
-		IOUtils.closeQuietly(_out);
+    public void close() {
+		try { _out.close(); } catch (Throwable ignore) { }
 	}
 }

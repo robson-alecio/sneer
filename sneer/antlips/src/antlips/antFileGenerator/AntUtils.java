@@ -1,17 +1,19 @@
-package sneer.installer;
+package antlips.antFileGenerator;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.StringWriter;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-public class IOUtils {
+public class AntUtils {
 
-	static byte[] readEntryBytes(JarFile jar, JarEntry entry) throws IOException {
+	public static byte[] readEntryBytes(JarFile jar, JarEntry entry) throws IOException {
 		final InputStream is = jar.getInputStream(entry);
 		try {
 			ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -27,7 +29,7 @@ public class IOUtils {
 		}
 	}	
 	
-	static void write(File file, byte[] bytes) throws IOException {
+	public static void write(File file, byte[] bytes) throws IOException {
 		file.getParentFile().mkdirs();
 		file.createNewFile();
         OutputStream out = new java.io.FileOutputStream(file);
@@ -38,11 +40,11 @@ public class IOUtils {
         }	
 	}
 	
-	static void write(File file, String text) throws IOException {
+	public static void write(File file, String text) throws IOException {
          write(file, text.getBytes());
 	}	
 	
-	static void deleteDirectory(File directory) throws IOException {
+	public static void deleteDirectory(File directory) throws IOException {
 		if (!directory.exists()) return;
 		if (!directory.isDirectory()) 
 			throw new IllegalArgumentException(directory.getAbsolutePath() + " is not a directory");
@@ -65,21 +67,16 @@ public class IOUtils {
 		}
 	}
 
-	public static void copyToFile(InputStream input, File file) throws IOException {
-		file.getParentFile().mkdirs();
-		file.createNewFile();
-		
-		OutputStream output = new java.io.FileOutputStream(file);
-		try {
-		    byte[] buffer = new byte[1024 * 4];
-			long count1 = 0;
-			int n = 0;
-			while (-1 != (n = input.read(buffer))) {
-			    output.write(buffer, 0, n);
-			    count1 += n;
-			}
-        } finally {
-            try { output.close(); } catch (Throwable ignore) {}
-        }	
+	public static String readString(InputStream in) throws IOException {
+		InputStreamReader input  = new InputStreamReader(in);
+		StringWriter output = new StringWriter();
+	    char[] buffer = new char[1024 * 4];
+		long count1 = 0;
+		int n = 0;
+		while (-1 != (n = input.read(buffer))) {
+		    output.write(buffer, 0, n);
+		    count1 += n;
+		}
+		return output.toString();
 	}
 }

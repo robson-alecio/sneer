@@ -1,7 +1,5 @@
 package antlips.tests.environment;
 
-import org.apache.commons.lang.StringUtils;
-
 import antlips.antFileGenerator.AntFileBuilder;
 
 public class FakeAntFileBuilder implements AntFileBuilder {
@@ -25,7 +23,7 @@ public class FakeAntFileBuilder implements AntFileBuilder {
 	public void addCompileEntry(final String src, final String output) {
 		_statements.append("\n");
 		_statements.append("compile " + src);
-		if (!StringUtils.isEmpty(output)) {
+		if (!(output == null || output.isEmpty())) {
 			_statements.append(" to " + output);
 		}
 	}

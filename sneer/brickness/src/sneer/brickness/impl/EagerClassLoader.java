@@ -28,7 +28,7 @@ abstract class EagerClassLoader extends URLClassLoader {
 			: _next.loadClass(name);
 	}
 
-	protected Class<?> doLoadClass(String name) throws ClassNotFoundException {
+	protected Class<?> doLoadClass(String name) throws ClassNotFoundException{
 		return super.loadClass(name, false);
 	}
 

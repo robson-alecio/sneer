@@ -2,9 +2,6 @@ package sneer.software.code.metaclass.impl;
 
 import java.io.File;
 
-import org.apache.commons.io.FilenameUtils;
-
-
 class SimpleMetaClass extends MetaClassSupport {
 
 	public SimpleMetaClass(File rootDirectory, File classFile) {
@@ -18,7 +15,7 @@ class SimpleMetaClass extends MetaClassSupport {
 		if (!path.startsWith(rootPath))
 			throw new MetaClassException("Class file " + path + " on wrong directory");
 
-		_className = FilenameUtils.separatorsToUnix(path.substring(rootPath.length() + 1));
+		_className = path.substring(rootPath.length() + 1).replace('\\', '/');
 		_className = _className.substring(0, _className.indexOf(".class"));
 		_className = _className.replaceAll("/", ".");
 		_packageName = _className.substring(0, _className.lastIndexOf("."));

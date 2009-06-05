@@ -4,12 +4,10 @@ import static sneer.commons.environments.Environments.my;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
-
+import sneer.hardware.cpu.lang.Lang;
 import sneer.pulp.lang.StringUtils;
 import sneer.software.code.compilers.java.CompilationError;
 import sneer.software.code.compilers.java.CompilerException;
@@ -58,7 +56,7 @@ class CompilationResult implements Result {
 
 	private List<CompilationError> parseErrorString(String string) throws IOException {
 		List<CompilationError> result = new ArrayList<CompilationError>();
-		List<String> lines = IOUtils.readLines(new StringReader(string));
+		List<String> lines = my(Lang.class).strings().readLines(string);
 		for (String line : lines) {
 			if(line.indexOf(".java") > 0) {
 				final String[] parts = my(StringUtils.class).splitRight(line, ':', 3);

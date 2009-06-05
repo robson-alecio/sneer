@@ -13,10 +13,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
-
 import wheel.io.files.Directory;
 import wheel.io.files.impl.CloseableWithListener.Listener;
+import antlips.antFileGenerator.AntUtils;
 
 public abstract class AbstractDirectory implements Directory {
 
@@ -35,7 +34,7 @@ public abstract class AbstractDirectory implements Directory {
 		InputStream input = null;
 		try {
 			input = openFile(fileName);
-			return IOUtils.toString(input);
+			return AntUtils.readString(input);
 		} finally {
 			if (input != null) input.close();
 		}

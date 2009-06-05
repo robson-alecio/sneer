@@ -1,14 +1,11 @@
 package spikes.klaus.classloading;
 
-import java.io.File;
-
-
 public class Main extends ClassLoader {
 
 	public static void main(String[] args) throws Exception {
-		ClassLoader cl = new MyClassLoader(new File("bin"));
-		Class<?> clazz = cl.loadClass("spikes.klaus.classloading.HelloWorld");
-		clazz.newInstance();
+//		ClassLoader cl = new MyClassLoader(new File("bin"));
+//		Class<?> clazz = cl.loadClass("spikes.klaus.classloading.HelloWorld");
+//		clazz.newInstance();
 	}
 
 }

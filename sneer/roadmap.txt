@@ -6,6 +6,8 @@
 		- sneer.hardware.ram.collections.Collections brick - Implement it just as above. Using newest commons collections lib (not the one with generics we are using today).
 		- Add license and notice.txt files to lib folders of all commons bricks.
 
+	- [Sandro] Rename WelcomeWizard to UserInfo.
+
 	- [Igor] SpeexTuplesTest - Fix intermittent failure. 	
 
 	- [Igor] SimpleListReceiver - It cannot be public.
@@ -23,7 +25,7 @@
 		- GUIImpl.defineBrickMetadata param
 		- ASMMetaClass
 
-	- SignalChoosers - Return a sneer.pulp.reactive.Reception that can de disposed, just like Signals.receive().
+	- [Igor] SignalChoosers - Return a sneer.pulp.reactive.Reception that can de disposed, just like Signals.receive().
 	
 	- [Igor] Break down packages with more than one brick
 

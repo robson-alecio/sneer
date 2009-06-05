@@ -14,8 +14,8 @@ public class Sneer {
 	public Sneer() {
 		Environment container = Brickness.newBrickContainer(new SneerStoragePath());
 		
-		loadBricks(container, businessBricks());
-		loadBricks(container, communicationBricks());
+		loadBricks(container, platformBricks());
+		loadBricks(container, snappBricks());
 	}
 
 	static public void loadBricks(Environment container, final Class<?>... bricks) throws BrickLoadingException {
@@ -23,16 +23,16 @@ public class Sneer {
 			EnvironmentUtils.retrieveFrom(container, brick);
 	}
 
-	static public Class<?>[] businessBricks() {
+	public static Class<?>[] platformBricks() {
 		return new Class<?>[] {
-				sneer.pulp.log.workers.notifier.LogNotifier.class,
 				sneer.pulp.log.receiver.file.LogToFile.class,
 				sneer.pulp.log.receiver.sysout.LogToSysout.class,
-				sneer.pulp.threads.Threads.class,
+
+				sneer.pulp.clockticker.ClockTicker.class,
 		};
 	}
 
-	public static Class<?>[] communicationBricks() {
+	private static Class<?>[] snappBricks() {
 		return new Class<?>[] {
 				sneer.skin.main.menu.MainMenu.class,
 				snapps.welcomewizard.WelcomeWizard.class,
@@ -46,8 +46,9 @@ public class Sneer {
 				snapps.blinkinglights.gui.BlinkingLightsGui.class,
 				sneer.hardware.gui.trayicon.TrayIcons.class,
 				sneer.skin.main.dashboard.Dashboard.class,
-				snapps.contacts.hardcoded.HardcodedContacts.class,
 				sneer.hardware.log.gui.LogConsole.class,
+
+				snapps.contacts.hardcoded.HardcodedContacts.class,
 		};
 	}
 }

@@ -11,7 +11,7 @@ import javax.swing.plaf.synth.SynthLookAndFeel;
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-		loadSynth();
+		loadSynthLookAndFeel();
 		new Wizard(sneerHome());
 		new SneerJockey(sneerHome());
 	}
@@ -27,7 +27,7 @@ public class Main {
 		return System.getProperty("user.home");
 	}
 
-	private static void loadSynth() throws UnsupportedLookAndFeelException, ParseException, IOException {
+	private static void loadSynthLookAndFeel() throws UnsupportedLookAndFeelException, ParseException, IOException {
 		SynthLookAndFeel _synth = new SynthLookAndFeel();
 		UIManager.setLookAndFeel(_synth);
 		_synth.load(Main.class.getResource("synth.xml"));

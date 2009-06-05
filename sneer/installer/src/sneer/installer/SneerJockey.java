@@ -11,9 +11,6 @@ class SneerJockey {
 
 	private final File _sneerHome;
 	
-	private static Object sneer;
-	private static URLClassLoader loader;
-	
 	SneerJockey(File sneerHome) throws Exception {
 		_sneerHome = sneerHome;
 		
@@ -21,12 +18,13 @@ class SneerJockey {
 		
 //		while (true)
 			play();
-		JOptionPane.showMessageDialog(null, sneer.toString());
+
+		JOptionPane.showMessageDialog(null, "Sneer instantiated.");
 	}
 
 	private void play() throws Exception {
-		loader = createGarbageCollectableClassLoader(new File(_sneerHome, "bin"));
-		sneer = loader.loadClass("main.Sneer").newInstance();
+		ClassLoader loader = createGarbageCollectableClassLoader(new File(_sneerHome, "bin"));
+		loader.loadClass("main.Sneer").newInstance();
 	}
 
 	public static URLClassLoader createGarbageCollectableClassLoader(File binDirectory) throws Exception {

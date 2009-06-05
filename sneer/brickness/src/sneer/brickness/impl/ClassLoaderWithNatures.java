@@ -1,12 +1,12 @@
 package sneer.brickness.impl;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.apache.commons.io.IOUtils;
 
 import sneer.brickness.ClassDefinition;
 import sneer.brickness.Nature;
@@ -29,10 +29,14 @@ abstract class ClassLoaderWithNatures extends EagerClassLoader {
 		final URL classResource = findResource(name.replace('.', '/') + ".class");
 		if (classResource == null) throw new ClassNotFoundException(name);
 		
-		ClassDefinition originalClassDef = new ClassDefinition(name, toByteArray(classResource));
+		ClassDefinition originalClassDef;
+		try {
+			originalClassDef = new ClassDefinition(name, toByteArray(classResource));
+		} catch (IOException e) {
+			throw new ClassNotFoundException("Invalid URL (" + classResource +")", e);
+		}
 		List<ClassDefinition> classDefs = realizeNatures(originalClassDef);
 		return defineClassesAndReturn(classDefs, name);
-		
 	}
 
 	private Class<?> defineClassesAndReturn(List<ClassDefinition> classDefs, String classNameToReturn) throws ClassFormatError {
@@ -60,12 +64,13 @@ abstract class ClassLoaderWithNatures extends EagerClassLoader {
 		return classDefs;
 	}
 
-	private byte[] toByteArray(final URL classResource) {
-		try {
-			return IOUtils.toByteArray(classResource.openStream());
-		} catch (IOException e) {
-			throw new IllegalStateException(e);
-		}
-	}
-
+    public byte[] toByteArray(final URL classResource) throws IOException {
+    	InputStream input = classResource.openStream();
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024*4];
+		int n = 0;
+		while (-1 != (n = input.read(buffer))) 
+			output.write(buffer, 0, n);
+        return output.toByteArray();
+    }
 }

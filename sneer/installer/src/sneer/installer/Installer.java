@@ -3,6 +3,7 @@ package sneer.installer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -52,7 +53,9 @@ class Installer {
 
 	private void extractFiles(URL url) throws IOException {
 		File file = new File(_sneerTmp, "sneer.jar");
-		IOUtils.copyToFile(url.openStream(), file);
+		InputStream input = url.openStream();
+		IOUtils.copyToFile(input, file);
+		input.close();
 		extractFiles(file);
 	}
 	

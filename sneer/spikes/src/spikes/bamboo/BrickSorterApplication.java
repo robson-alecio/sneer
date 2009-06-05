@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.Sneer;
+
 import sneer.brickness.Brickness;
 import sneer.commons.environments.CachingEnvironment;
 import sneer.commons.environments.Environments;
@@ -19,7 +20,7 @@ public class BrickSorterApplication {
 		Environments.runWith(new CachingEnvironment(Brickness.newBrickContainer()), new Runnable() { public void run() {
 			try {
 				List<Class<?>> originalBricks = new ArrayList<Class<?>>();
-				for (Class<?> brick : Sneer.businessBricks())
+				for (Class<?> brick : bricksToSortAccordingToDependencies())
 					originalBricks.add(brick);
 				
 				for (Class<?> brick : my(BrickSorter.class).sort(originalBricks.toArray(new Class<?>[]{})))
@@ -30,6 +31,10 @@ public class BrickSorterApplication {
 				e.printStackTrace();
 			}
 		}});
+	}
+
+	private static Class<?>[] bricksToSortAccordingToDependencies() {
+		return Sneer.platformBricks();
 	}
 
 }

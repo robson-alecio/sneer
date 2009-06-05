@@ -43,7 +43,7 @@ public class SneerCommunity implements SovereignCommunity {
 
 	private void loadBricks(Environment container) {
 		try {
-			loadBricks(container, Sneer.businessBricks());
+			loadBricks(container, Sneer.platformBricks());
 			loadBricks(container, SneerParty.class);
 		} catch (Exception e) {
 			throw new IllegalStateException(e);

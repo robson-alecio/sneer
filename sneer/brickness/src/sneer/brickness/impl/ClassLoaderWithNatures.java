@@ -13,15 +13,12 @@ import sneer.brickness.Nature;
 
 abstract class ClassLoaderWithNatures extends EagerClassLoader {
 
-
 	ClassLoaderWithNatures(URL[] urls, ClassLoader next, List<Nature> natures) {
 		super(urls, next);
 		_natures = natures;
 	}
 	
-	
 	private final List<Nature> _natures;
-	
 	
 	@Override
 	protected Class<?> doLoadClass(String name) throws ClassNotFoundException {

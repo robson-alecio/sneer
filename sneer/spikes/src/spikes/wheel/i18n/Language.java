@@ -329,24 +329,12 @@ public class Language {
 			_extracted = extracted;
 		}
 
-		public void setFilename(String filename) {
-			_filename = filename;
-		}
-
 		public String getFilename() {
 			return _filename;
 		}
 
-		public void setLineNumber(int lineNumber) {
-			_lineNumber = lineNumber;
-		}
-
 		public int getLineNumber() {
 			return _lineNumber;
-		}
-
-		public void setExtracted(String extracted) {
-			_extracted = extracted;
 		}
 
 		public String getExtracted() {

@@ -4,6 +4,7 @@ import sneer.brickness.BrickLoadingException;
 import sneer.brickness.Brickness;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.EnvironmentUtils;
+import sneer.pulp.threads.Threads;
 
 public class Sneer {
 
@@ -16,11 +17,17 @@ public class Sneer {
 		
 		loadBricks(container, platformBricks());
 		loadBricks(container, snappBricks());
+		
+		loadBrick(container, Threads.class).waitUntilCrash();
 	}
 
 	static public void loadBricks(Environment container, final Class<?>... bricks) throws BrickLoadingException {
 		for (Class<?> brick : bricks)
-			EnvironmentUtils.retrieveFrom(container, brick);
+			loadBrick(container, brick);
+	}
+
+	private static <T> T loadBrick(Environment container, Class<T> brick) {
+		return EnvironmentUtils.retrieveFrom(container, brick);
 	}
 
 	public static Class<?>[] platformBricks() {

@@ -17,12 +17,12 @@ class ThreadsImpl implements Threads {
 
 	private static final Set<Object> _reactors = new HashSet<Object>();
 	private final OwnNameKeeper _ownNameKeeper = my(OwnNameKeeper.class);
+	private final Object _crashMonitor = new Object();
 
 	@Override
 	public void waitWithoutInterruptions(Object object) {
 		try {
 			object.wait();
-
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
@@ -52,11 +52,6 @@ class ThreadsImpl implements Threads {
 		} catch (InterruptedException e) {
 			throw new IllegalStateException(e);
 		}
-	}
-
-	@Override
-	public ClassLoader contextClassLoader() {
-		return Thread.currentThread().getContextClassLoader();
 	}
 
 	@Override
@@ -97,5 +92,24 @@ class ThreadsImpl implements Threads {
 
 	private static String toSimpleClassName(String className) {
 		return className.substring(className.lastIndexOf(".") + 1);
+	}
+
+	/**Waits until crashAllThreads() is called. */
+	@Override
+	public void waitUntilCrash() {
+		waitWithoutInterruptions(_crashMonitor);
+	}
+
+	@Override
+	public void crashAllThreads() {
+		doCrashAllThreads();
+		
+		synchronized (_crashMonitor) {
+			_crashMonitor.notifyAll();
+		}
+	}
+
+	private void doCrashAllThreads() {
+		throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
 	}
 }

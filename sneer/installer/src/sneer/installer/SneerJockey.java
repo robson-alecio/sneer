@@ -16,15 +16,17 @@ class SneerJockey {
 		
 		System.setSecurityManager(new PermissiveSecurityManager());
 		
-//		while (true)
-			play();
-
-		JOptionPane.showMessageDialog(null, "Sneer instantiated.");
+		while (true) play();
 	}
 
 	private void play() throws Exception {
+		JOptionPane.showMessageDialog(null, "Playing Sneer...");
+
 		ClassLoader loader = createGarbageCollectableClassLoader(new File(_sneerHome, "bin"));
 		loader.loadClass("main.Sneer").newInstance();
+		
+		JOptionPane.showMessageDialog(null, "Played Sneer...");
+
 	}
 
 	public static URLClassLoader createGarbageCollectableClassLoader(File binDirectory) throws Exception {

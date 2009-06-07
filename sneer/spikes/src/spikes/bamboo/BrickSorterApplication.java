@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.Sneer;
+import main.SneerSession;
 
 import sneer.brickness.Brickness;
 import sneer.commons.environments.CachingEnvironment;
@@ -34,7 +34,7 @@ public class BrickSorterApplication {
 	}
 
 	private static Class<?>[] bricksToSortAccordingToDependencies() {
-		return Sneer.platformBricks();
+		return SneerSession.platformBricks();
 	}
 
 }

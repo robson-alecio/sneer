@@ -19,7 +19,6 @@ import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
 import org.prevayler.foundation.serialization.XStreamSerializer;
 
-import snapps.wind.impl.bubble.Bubble;
 import sneer.brickness.StoragePath;
 import sneer.brickness.Tuple;
 import sneer.commons.environments.Environment;

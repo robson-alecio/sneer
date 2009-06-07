@@ -1,4 +1,4 @@
-package snapps.wind.impl.bubble;
+package sneer.pulp.tuples.impl;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -13,7 +13,7 @@ import sneer.hardware.cpu.lang.Consumer;
 import sneer.hardware.cpu.lang.PickyConsumer;
 
 
-public class Bubble {
+class Bubble {
 
 	public static <STATE_MACHINE> STATE_MACHINE wrapStateMachine(Prevayler prevayler) {
 		Object stateMachine = prevayler.prevalentSystem();

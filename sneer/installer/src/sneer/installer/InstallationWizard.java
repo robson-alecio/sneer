@@ -2,28 +2,29 @@ package sneer.installer;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 
 import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.plaf.synth.SynthLookAndFeel;
 
-public class Wizard extends JFrame{
+public class InstallationWizard extends JFrame{
 
 	private final String WIZARD_TITLE = "Sneer Installation Wizard";
 	private final File _sneerHome;
 
-	Wizard(File sneerHome) throws Exception {
+	InstallationWizard(File sneerHome) throws Exception {
 		_sneerHome = sneerHome;
-		if (sneerHome.exists()) return;
 
-		doWizard();
-	}
-
-	private void doWizard() throws IOException {
+		loadSynthLookAndFeel();
+		
 		welcome();
 		license();
 		dogFoodInformation();
 		configInformation();
 		
-		new Installer(_sneerHome);
+		new Installation(_sneerHome);
 		
 		congratulations();
 	}
@@ -87,6 +88,12 @@ public class Wizard extends JFrame{
 		return new Runnable() { @Override public void run() {
 			System.exit(0);
 		}};
+	}
+
+	private static void loadSynthLookAndFeel() throws UnsupportedLookAndFeelException, ParseException, IOException {
+		SynthLookAndFeel _synth = new SynthLookAndFeel();
+		UIManager.setLookAndFeel(_synth);
+		_synth.load(InstallationWizard.class.getResource("synth.xml"));
 	}
 
 }

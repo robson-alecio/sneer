@@ -9,13 +9,13 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
 
-class Installer {
+class Installation {
 
 	private File _sneerHome;
 	private File _sneerTmp;
 	private File _sneerTmpBin;
 
-	Installer(File sneerHome) throws IOException {
+	Installation(File sneerHome) throws IOException {
 		_sneerHome = sneerHome;
 		_sneerTmp = new File(_sneerHome.getParentFile(), ".sneertmp");
 		_sneerTmpBin = new File(_sneerTmp, "bin");

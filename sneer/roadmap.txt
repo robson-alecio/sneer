@@ -62,8 +62,7 @@
 		- Simplify to remove all synchronization. Let the container synchronize the brick.
 			- Concurrency - Synchronize calls on Bricks, according to docs/brick_types.txt  
 
-
--------------------------------------- Standalone Brick Container
+-------------------------------------- Standalone Dogfood Release
 
 	- Contact Connection
 		- Own Name - Show contacts' names in contact list
@@ -75,10 +74,11 @@
 		- Open Jar leak - Fix in Freedom7Test
 		- Diffs
 
+--------------------------------------- "Me Too" Dogfood Release
+
+
 	- Security
 		- Sandboxing
-
---------------------------------------- Freedom 7
 
 	- P2P Communication (Tuples) - Solve tuple flooding on the network. Discuss ideas with the team.
 		- Traffic Prioritization by tuple type

@@ -32,7 +32,7 @@
 		<condition property="jnlp.codebase"
 			value="${env.HUDSON_URL}job/${env.JOB_NAME}/${env.BUILD_NUMBER}/artifact/webstart/" 
 			else="file:///${build.dir}">
-			<equals arg1="${env.JOB_NAME}" arg2="Sneer"/>
+			<equals arg1="${env.JOB_NAME}" arg2="Installer"/>
 		</condition>
 		<echo message="${jnlp.codebase}"/>
 	

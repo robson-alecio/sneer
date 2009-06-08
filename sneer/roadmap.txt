@@ -14,6 +14,7 @@
 	- "Rebuild"
 		- [Sandro] Main menu item.
 		- [Klaus] Rebuild functionality.
+			- .classpath - Generate based on brick libs.
 
 	- Savepoints - For entire source code.
 

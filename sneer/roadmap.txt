@@ -8,6 +8,11 @@
 		- sneer.hardware.ram.collections.Collections brick - Implement it just as above. Using newest commons collections lib (not the one with generics we are using today).
 		- Add license and notice.txt files to lib folders of all commons bricks.
 
+	- [Sandro] Antlips - Delete
+
+	- [Sandro] Webstart
+		- test with hudson
+
 	- [Igor] SpeexTuplesTest - Fix intermittent failure. 	
 
 	- [Igor] SimpleListReceiver - It cannot be public.
@@ -57,9 +62,6 @@
 		- Simplify to remove all synchronization. Let the container synchronize the brick.
 			- Concurrency - Synchronize calls on Bricks, according to docs/brick_types.txt  
 
-	- [Sandro] Webstart
-		- test with hudson
-
 
 -------------------------------------- Standalone Brick Container
 
@@ -71,6 +73,7 @@
 	- MeToo
 		- Unignore Freedom7 dependency tests
 		- Open Jar leak - Fix in Freedom7Test
+		- Diffs
 
 	- Security
 		- Sandboxing

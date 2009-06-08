@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="tests/src"/>
 	<classpathentry kind="src" path="bricks/src"/>
-	<classpathentry kind="src" path="installer/src"/>
 	<classpathentry kind="src" path="brickness/src"/>
 	<classpathentry kind="src" path="antlips/src"/>
 	<classpathentry kind="src" path="commons/src"/>

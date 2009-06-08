@@ -11,6 +11,7 @@ import javax.swing.plaf.synth.SynthLookAndFeel;
 
 public class InstallationWizard extends JFrame{
 
+	private static final long serialVersionUID = 1L;
 	private final String WIZARD_TITLE = "Sneer Installation Wizard";
 	private final File _sneerHome;
 

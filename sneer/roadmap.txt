@@ -1,8 +1,6 @@
 ﻿TASKS
 =========
 
-	- [Sandro] Installer in separate project that does NOT have Sneer as a required project.
-
 	- [Sandro] Apache Commons - Encapsulate in bricks.
 		- review sneer.software.code.filefilters.java.impl. Talk to Sandro about this.
 		- sneer.hardware.ram.collections.Collections brick - Implement it just as above. Using newest commons collections lib (not the one with generics we are using today).

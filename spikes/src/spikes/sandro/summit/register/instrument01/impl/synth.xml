@@ -1,0 +1,23 @@
+<synth>
+
+	<style id="btn">
+		<insets top="7" left="7" bottom="7" right="7" />
+		<font name="Verdana" size="10" style="BOLD"/>
+		
+		<state>
+			<imagePainter method="buttonBackground" path="btn.png" sourceInsets="7 7 7 7" />
+		</state>
+		
+		<state value="MOUSE_OVER">
+			<imagePainter method="buttonBackground" path="btnOver.png" sourceInsets="7 7 7 7" />
+		</state>
+		
+		<state value="PRESSED">
+			<imagePainter method="buttonBackground" path="btnClick.png" sourceInsets="7 7 7 7" />
+		</state>
+		
+	</style>
+	
+	<bind key="MyButton" style="btn" type="name" />
+
+</synth>

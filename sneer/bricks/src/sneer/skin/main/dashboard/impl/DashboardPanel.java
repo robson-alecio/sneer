@@ -145,7 +145,8 @@ class DashboardPanel extends JPanel {
 
 		private class InstrumentGlasspane extends AbstractLayerUI<JPanel> {
 			
-			@Override protected void processMouseMotionEvent(MouseEvent event, JXLayer<JPanel> layer) {
+			@Override
+			protected void processMouseEvent(MouseEvent event, JXLayer<? extends JPanel> layer) {
 				Point mousePoint = event.getLocationOnScreen();
 				if(isMouseOverAnyToolbar(mousePoint)) 
 					return;
@@ -153,12 +154,12 @@ class DashboardPanel extends JPanel {
 				hideAndShow(mousePoint);
 			}
 			
-			@Override protected void paintLayer(Graphics2D g2, JXLayer<JPanel> layer) {
+			@Override protected void paintLayer(Graphics2D g2, JXLayer<? extends JPanel> layer) {
 				super.paintLayer(g2, layer);
 				addInstrumentFog(g2, layer);
 			}
 
-			private void addInstrumentFog(Graphics2D g2, JXLayer<JPanel> layer) {
+			private void addInstrumentFog(Graphics2D g2, JXLayer<? extends JPanel> layer) {
 				if(_toolbar.isVisible()) return;
 				g2.setColor(new Color(1f, 1f, 1f, 0.5f));
 				g2.fillRect(0, 0, layer.getWidth(), layer.getHeight());

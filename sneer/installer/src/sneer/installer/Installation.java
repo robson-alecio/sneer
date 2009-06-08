@@ -31,8 +31,9 @@ class Installation {
 		_sneerTmp.mkdirs();
 	}
 
-	private void renameDirectory() {
-		_sneerTmp.renameTo(_sneerHome);
+	private void renameDirectory() throws IOException {
+		if(_sneerTmp.renameTo(_sneerHome))
+			throw new IOException(_sneerTmp.getAbsolutePath() + " can't renamed to " + _sneerHome.getAbsolutePath());	
 	}
 	
 	private void addBinaries() throws IOException {

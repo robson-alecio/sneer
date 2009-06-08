@@ -13,6 +13,12 @@
 	- [Sandro] Webstart
 		- test with hudson
 
+	- "Rebuild"
+		- [Sandro] Main menu item.
+		- 
+
+	- Savepoints - For entire source code.
+
 	- [Igor] SpeexTuplesTest - Fix intermittent failure. 	
 
 	- [Igor] SimpleListReceiver - It cannot be public.

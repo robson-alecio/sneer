@@ -32,6 +32,7 @@ import sneer.pulp.log.filter.LogFilter;
 import sneer.pulp.log.workers.notifier.LogNotifier;
 import sneer.pulp.reactive.Signals;
 import sneer.pulp.reactive.collections.ListRegister;
+import sneer.skin.main.dashboard.Dashboard;
 import sneer.skin.main.menu.MainMenu;
 import sneer.skin.main.synth.Synth;
 import sneer.skin.main.synth.scroll.SynthScrolls;
@@ -55,6 +56,8 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 	private final MainMenu _mainMenu = my(MainMenu.class);
 
 	@SuppressWarnings("unused")	private Object _referenceToAvoidGc;	
+
+	{my(Dashboard.class);}
 
 	LogConsoleImpl(){
 		super("Sneer Log Console");

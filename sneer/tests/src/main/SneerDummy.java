@@ -6,7 +6,7 @@ public class SneerDummy {
 	
 	public static void main(String[] args) throws Exception {
 		System.setProperty("home_override", dummyHome());
-		Sneer.main(args);
+		SneerSession.main(args);
 	}
 
 	private static String dummyHome() {

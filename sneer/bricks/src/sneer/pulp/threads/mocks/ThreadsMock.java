@@ -27,11 +27,6 @@ public class ThreadsMock implements Threads {
 	}
 
 	@Override
-	public ClassLoader contextClassLoader() {
-		throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
-	}
-
-	@Override
 	public Runnable createNotifier() {
 		throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
 	}
@@ -64,5 +59,15 @@ public class ThreadsMock implements Threads {
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	@Override
+	public void waitUntilCrash() {
+		throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
+	}
+
+	@Override
+	public void crashAllThreads() {
+		throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
 	}
 }

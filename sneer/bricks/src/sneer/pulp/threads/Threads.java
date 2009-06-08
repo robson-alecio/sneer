@@ -6,19 +6,17 @@ import sneer.brickness.Brick;
 public interface Threads {
 
 	void registerStepper(Stepper stepper);
-
-	void waitWithoutInterruptions(Object object);
+	void startDaemon(String threadName, Runnable runnable);
 
 	void sleepWithoutInterruptions(long milliseconds);
+	void waitWithoutInterruptions(Object object);
+	void joinWithoutInterruptions(Thread thread);
+
+	Runnable createNotifier();
 
 	void preventFromBeingGarbageCollected(Object reactor);
 
-	void joinWithoutInterruptions(Thread thread);
-
-	ClassLoader contextClassLoader();
-
-	void startDaemon(String threadName, Runnable runnable);
-
-	Runnable createNotifier();
+	void waitUntilCrash();
+	void crashAllThreads();
 
 }

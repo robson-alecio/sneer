@@ -1,12 +1,10 @@
-﻿FIXES
+﻿TASKS
 =========
 
 	- [Sandro] Apache Commons - Encapsulate in bricks.
 		- review sneer.software.code.filefilters.java.impl. Talk to Sandro about this.
 		- sneer.hardware.ram.collections.Collections brick - Implement it just as above. Using newest commons collections lib (not the one with generics we are using today).
 		- Add license and notice.txt files to lib folders of all commons bricks.
-
-	- [Sandro] Rename WelcomeWizard to UserInfo.
 
 	- [Igor] SpeexTuplesTest - Fix intermittent failure. 	
 
@@ -29,13 +27,9 @@
 	
 	- [Igor] Break down packages with more than one brick
 
-	- [Igor] Adapt antlips to support lib entries starting with:
+	- [Igor] Dont do this without talking to Klaus. It might not be necessary: Adapt antlips to support lib entries starting with:
 		kind="lib" exported="true"...   instead of just:
 		kind="lib"...
-
-
-TASKS
-========
 
 	- Gui Thread - Always call gui brick code in the gui thread. What was already done with the GuiBrickInvocationHandler does not cover callbacks. Complicated and slow weak-proxy-bubble structures would have to be created to support that. Instead, the proposed idea is:
 		- [Bamboo] Enhance at load-time the beginning of all public methods in all classes (including nested) in all gui brick impl packages.

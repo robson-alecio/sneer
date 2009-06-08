@@ -1,35 +1,38 @@
 package sneer.installer;
 
 import java.io.File;
-import java.io.IOException;
-import java.text.ParseException;
-
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.plaf.synth.SynthLookAndFeel;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-		loadSynthLookAndFeel();
-		new Wizard(sneerHome());
-		new SneerJockey(sneerHome());
+		if (!sneerHome().exists())
+			new InstallationWizard(sneerHome());
+
+		overcomeWebstartSecurityRestrictions();
+		startSneer();
+	}
+
+	private static void startSneer() throws Exception {
+		File binDirectory = new File(sneerHome(), "bin");
+		URLClassLoader loader = new URLClassLoader(new URL[]{ binDirectory.toURI().toURL() });
+		loader.loadClass("main.Sneer").newInstance();
 	}
 	
-	static private File sneerHome() {
+	private static File sneerHome() {
 		return new File(userHome(), ".sneer");
 	}
 	
-	static private String userHome() {
+	private static String userHome() {
 		String override = System.getProperty("home_override");
 		if (override != null) return override;
 		
 		return System.getProperty("user.home");
 	}
 
-	private static void loadSynthLookAndFeel() throws UnsupportedLookAndFeelException, ParseException, IOException {
-		SynthLookAndFeel _synth = new SynthLookAndFeel();
-		UIManager.setLookAndFeel(_synth);
-		_synth.load(Main.class.getResource("synth.xml"));
+	private static void overcomeWebstartSecurityRestrictions() {
+		System.setSecurityManager(new PermissiveSecurityManager());
 	}
+
 }

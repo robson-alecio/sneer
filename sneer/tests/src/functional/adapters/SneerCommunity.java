@@ -7,7 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import main.Sneer;
+import main.SneerSession;
 import sneer.brickness.Brickness;
 import sneer.brickness.StoragePath;
 import sneer.commons.environments.Environment;
@@ -43,7 +43,7 @@ public class SneerCommunity implements SovereignCommunity {
 
 	private void loadBricks(Environment container) {
 		try {
-			loadBricks(container, Sneer.platformBricks());
+			loadBricks(container, SneerSession.platformBricks());
 			loadBricks(container, SneerParty.class);
 		} catch (Exception e) {
 			throw new IllegalStateException(e);

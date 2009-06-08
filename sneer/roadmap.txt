@@ -13,7 +13,7 @@
 
 	- "Rebuild"
 		- [Sandro] Main menu item.
-		- 
+		- [Klaus] Rebuild functionality.
 
 	- Savepoints - For entire source code.
 

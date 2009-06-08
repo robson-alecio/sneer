@@ -6,20 +6,12 @@
 	<property name="jnlp.file" location="${build.dir}/sneer.jnlp" />
 	<property name="jnlp.mainClass" value="sneer.installer.Main" />
 
-	<target name="main" depends="clean, compile, log, makeJars, makeJnlp, signJars, move">
+	<target name="main" depends="clean, compile, log, makeJars, makeJnlp, signJars">
 	</target>
 
 	<target name="clean">
 		<delete dir="${build.dir}" />
 		<mkdir dir="${bin.dir}" />
-	</target>
-
-	<target name="move">		
-		<copy todir="build">
-			<fileset dir="../sneer/build">
-				<include name='**/*.*' />
-			</fileset>
-		</copy>
 	</target>
 
 	<target name="log">

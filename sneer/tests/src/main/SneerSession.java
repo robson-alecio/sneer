@@ -42,7 +42,7 @@ public class SneerSession {
 	private static Class<?>[] snappBricks() {
 		return new Class<?>[] {
 				sneer.skin.main.menu.MainMenu.class,
-				snapps.welcomewizard.WelcomeWizard.class,
+				snapps.welcomewizard.UserInfo.class,
 				snapps.contacts.gui.delete.DeleteContactWindow.class,
 				snapps.contacts.gui.ContactsGui.class,
 				snapps.contacts.gui.info.ContactInfoWindow.class,

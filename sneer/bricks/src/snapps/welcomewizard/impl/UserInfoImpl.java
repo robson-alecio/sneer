@@ -19,7 +19,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import snapps.welcomewizard.WelcomeWizard;
+import snapps.welcomewizard.UserInfo;
 import sneer.commons.environments.Environment;
 import sneer.commons.environments.Environments;
 import sneer.commons.lang.ByRef;
@@ -38,7 +38,7 @@ import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.skin.widgets.reactive.TextWidget;
 import sneer.skin.windowboundssetter.WindowBoundsSetter;
 
-class WelcomeWizardImpl extends JFrame implements WelcomeWizard {
+class UserInfoImpl extends JFrame implements UserInfo {
 	
 	private Environment _environment;
 	private TextWidget<JTextField>  _yourOwnName;
@@ -51,7 +51,7 @@ class WelcomeWizardImpl extends JFrame implements WelcomeWizard {
 	private final OwnNameKeeper _nameKeeper = my(OwnNameKeeper.class);
 	private final MainMenu _mainMenu = my(MainMenu.class);	
 	
-	WelcomeWizardImpl() {
+	UserInfoImpl() {
 		addWelcomeWindowAction();
 
 		if(hasRequiredUserData()) return;
@@ -147,7 +147,7 @@ class WelcomeWizardImpl extends JFrame implements WelcomeWizard {
 				storeFieldData();
 				setVisible(false);
 			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(WelcomeWizardImpl.this, ex.getMessage());
+				JOptionPane.showMessageDialog(UserInfoImpl.this, ex.getMessage());
 				ex.printStackTrace();
 			}
 		}});

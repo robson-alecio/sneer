@@ -17,7 +17,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
-import org.prevayler.foundation.serialization.XStreamSerializer;
 
 import sneer.brickness.StoragePath;
 import sneer.brickness.Tuple;
@@ -144,7 +143,7 @@ class TupleSpaceImpl implements TupleSpace {
 		PrevaylerFactory factory = new PrevaylerFactory();
 		factory.configurePrevalentSystem(system);
 		factory.configurePrevalenceDirectory(directory());
-		factory.configureJournalSerializer(new XStreamSerializer());
+		factory.configureJournalSerializer(new XStreamSerializerWithClassLoader(getClass().getClassLoader()));
 		factory.configureTransactionFiltering(false);
 		return factory;
 	}

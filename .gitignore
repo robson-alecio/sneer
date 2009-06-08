@@ -1,7 +1,9 @@
 sneer/antlips.xml
-sneer/webstart/build
 sneer/bin
+sneer/build
 sneer/.byecycle
 snuggin/snuggin/bin
 webstart
+installer/bin
+installer/build
 spikes/bin

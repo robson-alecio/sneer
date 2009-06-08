@@ -1,25 +1,22 @@
 <?xml version="1.0"?>
 <project name="WebStart" default="main" basedir=".">
 
-	<property name="build.dir" location="./build" />
-	<property name="bin.dir" location="./build/bin" />
-	<property name="jnlp.file" location="${build.dir}/sneer-bootstrap.jnlp" />
+	<property name="build.dir" location="build" />
+	<property name="bin.dir" location="build/bin" />
+	<property name="jnlp.file" location="${build.dir}/sneer.jnlp" />
 	<property name="jnlp.mainClass" value="sneer.installer.Main" />
 
 	<target name="main" depends="clean, compile, log, makeJars, makeJnlp, signJars, move">
 	</target>
 
 	<target name="clean">
-		<delete dir="build" />
-		<mkdir dir="build/bin" />
+		<delete dir="${build.dir}" />
+		<mkdir dir="${bin.dir}" />
 	</target>
 
 	<target name="move">		
-		<delete dir="build/bin" />
-		<delete dir="../../webstart" />
-		<mkdir dir="../../webstart" />
-		<copy todir="../../webstart">
-			<fileset dir="build">
+		<copy todir="build">
+			<fileset dir="../sneer/build">
 				<include name='**/*.*' />
 			</fileset>
 		</copy>
@@ -47,7 +44,7 @@
 		</condition>
 		<echo message="${jnlp.codebase}"/>
 	
-		<echoxml file="build/sneer.jnlp">
+		<echoxml file="${jnlp.file}">
 			<jnlp spec="1.0+" codebase="${jnlp.codebase}" href="sneer.jnlp">
 				<information>
 					<title>Sneer</title>
@@ -70,7 +67,7 @@
 	</target>
 
 	<target name="makeJars">
-		<jar destfile="./build/sneer-bootstrap.jar">
+		<jar destfile="build/sneer-bootstrap.jar">
 			<fileset dir="${bin.dir}">
 				<include name='**/*.*' />
 			</fileset>
@@ -79,21 +76,12 @@
 				<exclude name='**/*.java' />
 			</fileset>
 		</jar>
-		<jar destfile="./build/sneer.jar">
-			<fileset dir="../bin">
-				<exclude name='**/*.txt' />
-				<exclude name='spikes/**' />
-				<exclude name='sneer/installer/**' />
-				<exclude name='build/**' />
-				<exclude name='TEST-*.txt' />
-				<exclude name='TEST-*.xml' />
-			</fileset>
-		</jar>
+		<delete dir="${bin.dir}"/>
 	</target>
 
 	<target name="compile">
 
-		<javac srcdir="../installer/src"
+		<javac srcdir="src"
 				destdir="${bin.dir}"
 				listfiles="true"
 				failonerror="true"

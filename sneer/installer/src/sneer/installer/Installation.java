@@ -53,11 +53,12 @@ class Installation {
 	}
 
 	private void extractFiles(URL url) throws IOException {
-		File file = new File(_sneerTmp, "sneer.jar");
+		File file =  File.createTempFile("", "sneer.jar");
 		InputStream input = url.openStream();
 		IOUtils.copyToFile(input, file);
 		input.close();
 		extractFiles(file);
+		file.deleteOnExit();
 	}
 	
 	private void extractFiles(File src) throws IOException {

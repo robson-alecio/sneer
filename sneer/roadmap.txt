@@ -1,10 +1,17 @@
 ﻿TASKS
 =========
 
+	- [Sandro] Installer in separate project that does NOT have Sneer as a required project.
+
 	- [Sandro] Apache Commons - Encapsulate in bricks.
 		- review sneer.software.code.filefilters.java.impl. Talk to Sandro about this.
 		- sneer.hardware.ram.collections.Collections brick - Implement it just as above. Using newest commons collections lib (not the one with generics we are using today).
 		- Add license and notice.txt files to lib folders of all commons bricks.
+
+	- [Sandro] Antlips - Delete
+
+	- [Sandro] Webstart
+		- test with hudson
 
 	- [Igor] SpeexTuplesTest - Fix intermittent failure. 	
 
@@ -27,10 +34,6 @@
 	
 	- [Igor] Break down packages with more than one brick
 
-	- [Igor] Dont do this without talking to Klaus. It might not be necessary: Adapt antlips to support lib entries starting with:
-		kind="lib" exported="true"...   instead of just:
-		kind="lib"...
-
 	- Gui Thread - Always call gui brick code in the gui thread. What was already done with the GuiBrickInvocationHandler does not cover callbacks. Complicated and slow weak-proxy-bubble structures would have to be created to support that. Instead, the proposed idea is:
 		- [Bamboo] Enhance at load-time the beginning of all public methods in all classes (including nested) in all gui brick impl packages.
 			- GUI brick constructors should execute in the gui thread
@@ -48,7 +51,6 @@
 			- Make a test run a brick in a directory that is not in the system ClassLoader classpath (Eclipse classpath). It will probably fail. Implement the logic using NewContainerImpl.createApiClassLoader() to return a URLClassloader that can be extended with new classpaths for new brick interfaces;
 
 	- [Klaus and Igor]
-		- Cleanup Commons - Delete or convert to bricks
 		- Uncomment _logger field and finalize() method in EventNotifierImpl.
 		- Start breaking 'sneer.pulp' into new package structure (hardware, software, etc), and while doing that, fix packages with more than one Brick (ex: 'sneer.pulp.reactive'). 
 
@@ -60,13 +62,6 @@
 		- Simplify to remove all synchronization. Let the container synchronize the brick.
 			- Concurrency - Synchronize calls on Bricks, according to docs/brick_types.txt  
 
-	- [Sandro] Webstart
-		- test with hudson
-		- add SneerJockey Logic (restart sneer)
-
-	- Security - Discover if instruments can indirectly gain access to components from other instruments.
-	
-	- Versioning
 
 -------------------------------------- Standalone Brick Container
 
@@ -78,6 +73,7 @@
 	- MeToo
 		- Unignore Freedom7 dependency tests
 		- Open Jar leak - Fix in Freedom7Test
+		- Diffs
 
 	- Security
 		- Sandboxing

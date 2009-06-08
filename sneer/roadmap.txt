@@ -1,8 +1,6 @@
 ﻿TASKS
 =========
 
-	- [Sandro] Installer in separate project that does NOT have Sneer as a required project.
-
 	- [Sandro] Apache Commons - Encapsulate in bricks.
 		- review sneer.software.code.filefilters.java.impl. Talk to Sandro about this.
 		- sneer.hardware.ram.collections.Collections brick - Implement it just as above. Using newest commons collections lib (not the one with generics we are using today).
@@ -12,6 +10,13 @@
 
 	- [Sandro] Webstart
 		- test with hudson
+
+	- "Rebuild"
+		- [Sandro] Main menu item.
+		- [Klaus] Rebuild functionality.
+			- .classpath - Generate based on brick libs.
+
+	- Savepoints - For entire source code.
 
 	- [Igor] SpeexTuplesTest - Fix intermittent failure. 	
 
@@ -62,8 +67,7 @@
 		- Simplify to remove all synchronization. Let the container synchronize the brick.
 			- Concurrency - Synchronize calls on Bricks, according to docs/brick_types.txt  
 
-
--------------------------------------- Standalone Brick Container
+-------------------------------------- Standalone Dogfood Release
 
 	- Contact Connection
 		- Own Name - Show contacts' names in contact list
@@ -75,10 +79,11 @@
 		- Open Jar leak - Fix in Freedom7Test
 		- Diffs
 
+--------------------------------------- "Me Too" Dogfood Release
+
+
 	- Security
 		- Sandboxing
-
---------------------------------------- Freedom 7
 
 	- P2P Communication (Tuples) - Solve tuple flooding on the network. Discuss ideas with the team.
 		- Traffic Prioritization by tuple type

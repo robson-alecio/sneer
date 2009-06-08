@@ -32,7 +32,7 @@ class Installation {
 	}
 
 	private void renameDirectory() throws IOException {
-		if(_sneerTmp.renameTo(_sneerHome))
+		if(!_sneerTmp.renameTo(_sneerHome))
 			throw new IOException(_sneerTmp.getAbsolutePath() + " can't renamed to " + _sneerHome.getAbsolutePath());	
 	}
 	

@@ -41,7 +41,7 @@ public class WindTest extends BrickTest {
 			previousShout = _shout;
 		}
 
-		assertEquals(21, _subject.shoutsHeard().currentSize());
+		assertEquals(21, _subject.shoutsHeard().size().currentValue().intValue());
 	}
 
 	private TupleSpace tupleSpace() {

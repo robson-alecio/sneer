@@ -32,14 +32,14 @@ public class ReachabilityTest extends BrickTest {
 		}});
 
 		startReachabilitySentinel();
-		assertEquals(0, _lights.lights().currentSize());
+		assertEquals(0, _lights.lights().size().currentValue().intValue());
 		
 		_clock.advanceTime(30*1000);
-		assertEquals(1, _lights.lights().currentSize());
+		assertEquals(1, _lights.lights().size().currentValue().intValue());
 		
 		ByteArraySocket socket = mock(ByteArraySocket.class);
 		_notifier.notifyReceivers(socket);
-		assertEquals(0, _lights.lights().currentSize());
+		assertEquals(0, _lights.lights().size().currentValue().intValue());
 	}
 
 	private void startReachabilitySentinel() {

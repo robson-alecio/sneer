@@ -35,7 +35,7 @@ public class BlinkingLightsTest extends BrickTest {
 	}
 
 	private void assertLightCount(int count, BlinkingLights _lights) {
-		assertEquals(count, _lights.lights().currentSize());
+		assertEquals(count, _lights.lights().size().currentValue().intValue());
 	}
 	
 	@Test

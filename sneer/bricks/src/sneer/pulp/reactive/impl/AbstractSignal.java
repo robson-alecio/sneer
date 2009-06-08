@@ -10,13 +10,12 @@ import sneer.pulp.events.EventNotifier;
 import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.reactive.Signal;
 
-
 abstract class AbstractSignal<T> implements Signal<T> {
 
 	EventNotifier<T> _notifier = my(EventNotifiers.class).create(new Consumer<Consumer<? super T>>(){@Override public void consume(Consumer<? super T> newReceiver) {
 		newReceiver.consume(currentValue());
 	}});
-	
+
 	@Override
 	public String toString() {
 		T currentValue = currentValue();
@@ -28,12 +27,13 @@ abstract class AbstractSignal<T> implements Signal<T> {
 		_notifier.notifyReceivers(value);
 	}
 
+	@Override
 	public void removeReceiver(Object receiver) {
 		_notifier.output().removeReceiver(receiver);
 	}
 
+	@Override
 	public void addReceiver(Consumer<? super T> receiver) {
 		_notifier.output().addReceiver(receiver);
-	}
-	
+	}	
 }

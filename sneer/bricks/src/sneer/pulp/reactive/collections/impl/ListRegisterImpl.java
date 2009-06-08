@@ -7,27 +7,15 @@ import java.util.Iterator;
 import java.util.List;
 
 import sneer.hardware.cpu.lang.Consumer;
-import sneer.pulp.events.EventNotifier;
-import sneer.pulp.events.EventNotifiers;
 import sneer.pulp.reactive.Register;
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.Signals;
-import sneer.pulp.reactive.collections.CollectionChange;
-import sneer.pulp.reactive.collections.ListChange;
 import sneer.pulp.reactive.collections.ListRegister;
 import sneer.pulp.reactive.collections.ListSignal;
 
 class ListRegisterImpl<VO> implements ListRegister<VO> {
-	
-	private class MyOutput implements ListSignal<VO> {
 
-		EventNotifier<ListChange<VO>> _notifier = my(EventNotifiers.class).create(new Consumer<Consumer<? super ListChange<VO>>>(){@Override public void consume(Consumer<? super ListChange<VO>> receiver) {
-			//TODO
-		}});
-
-		EventNotifier<CollectionChange<VO>> _notifier2 = my(EventNotifiers.class).create(new Consumer<Consumer<? super CollectionChange<VO>>>(){@Override public void consume(Consumer<? super CollectionChange<VO>> receiver) {
-			//TODO
-		}});
+	private class MyOutput extends AbstractListSignal<VO> {
 
 		@Override
 		public VO currentGet(int index) {
@@ -37,16 +25,6 @@ class ListRegisterImpl<VO> implements ListRegister<VO> {
 		@Override
 		public int currentIndexOf(VO element) {
 			return _list.indexOf(element);
-		}
-
-		@Override
-		public int currentSize() {
-			return _list.size();
-		}
-
-		void notifyReceivers(final AbstractListValueChange<VO> valueChange) {
-			_notifier.notifyReceivers(valueChange);
-			_notifier2.notifyReceivers(valueChange);
 		}
 
 		public Iterator<VO> iterator() {
@@ -66,33 +44,11 @@ class ListRegisterImpl<VO> implements ListRegister<VO> {
 				return new ArrayList<VO>(_list);
 			}
 		}
-
-		@Override
-		public void addListReceiver(Consumer<? super ListChange<VO>> receiver) {
-			_notifier.output().addReceiver(receiver);
-		}
-
-		@Override
-		public void removeListReceiver(Object receiver) {
-			_notifier.output().removeReceiver(receiver);	
-		}
-
-		@Override
-		public void removeReceiver(Object receiver) {
-			_notifier2.output().removeReceiver(receiver);
-		}
-
-		@Override
-		public void addReceiver(Consumer<? super CollectionChange<VO>> receiver) {
-			_notifier2.output().addReceiver(receiver);
-		}
 	}
 
-	
-	protected final List<VO> _list = new ArrayList<VO>();
-	protected final Register<Integer> _size = my(Signals.class).newRegister(0);
-	private MyOutput _output = new MyOutput();
-	
+	private final List<VO> _list = new ArrayList<VO>();
+	private final Register<Integer> _size = my(Signals.class).newRegister(0);
+	private final MyOutput _output = new MyOutput();
 
 	@Override
 	public void add(VO element) {

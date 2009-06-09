@@ -61,11 +61,6 @@ class MapRegisterImpl<K,V> implements MapRegister<K,V> {
 		}
 
 		@Override
-		public int currentSize() {
-			return _map.size();
-		}
-
-		@Override
 		public void addReceiver(Consumer<? super CollectionChange<Map.Entry<K,V>>> receiver) {
 			_notifier.output().addReceiver(receiver);		
 		}

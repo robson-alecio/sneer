@@ -179,7 +179,7 @@ Unacceptable Client Behavior
 	
 	private Light assertBlinkingLight(final Exception expectedError) {
 		final ListSignal<Light> lights = my(BlinkingLights.class).lights();
-		assertEquals(1, lights.currentSize());
+		assertEquals(1, lights.size().currentValue().intValue());
 		final Light light = lights.currentGet(0);
 		assertTrue(light.isOn());
 		if (expectedError instanceof FriendlyException) {

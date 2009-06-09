@@ -53,11 +53,6 @@ public class SetRegisterImpl<T> implements SetRegister<T> {
 		}
 
 		@Override
-		public int currentSize() {
-			return size().currentValue();
-		}
-
-		@Override
 		public Iterator<T> iterator() {
 			return _contents.iterator();
 		}

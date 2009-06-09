@@ -24,8 +24,8 @@ class JavaFilterImpl implements JavaFilter {
 	}
 
 	protected Collection<MetaClass> walkAndCollect(Collection<MetaClass> c) {
-			walk(_root, c);
-			return c;
+		walk(_root, c);
+		return c;
 	}
 
 	@Override
@@ -54,14 +54,13 @@ class JavaFilterImpl implements JavaFilter {
 	}
 
 	private void walk(File directory, int depth, Collection<MetaClass> results) {
-		int childDepth = depth + 1;
 		File[] childFiles = directory.listFiles();
+		if (childFiles == null) 
+			return;
 		
-		if (childFiles != null) 
-			for (File childFile : childFiles) 
-				if (childFile.isDirectory()) 
-					walk(childFile, childDepth, results);
-				else 
-					results.add(my(MetaClasses.class).metaClass(_root, childFile));
+		int childDepth = depth + 1;
+		for (File childFile : childFiles) 
+			if (childFile.isDirectory()) walk(childFile, childDepth, results);
+			else results.add(my(MetaClasses.class).metaClass(_root, childFile));
 	}
 }

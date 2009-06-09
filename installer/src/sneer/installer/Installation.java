@@ -37,18 +37,7 @@ class Installation {
 	}
 	
 	private void addBinaries() throws IOException {
-		String jarFileName = this.getClass().getResource("").toString()
-									.replace("jar:file:/", "")
-									.replace("!/sneer/installer/", "")
-									.replace("sneer-bootstrap.jar", "sneer.jar");
-		
-		if(!jarFileName.contains("http://")){
-			extractFiles(new File(jarFileName));
-			return;
-		}
-	
-		int index = jarFileName.indexOf("http://");
-		jarFileName = jarFileName.substring(index, jarFileName.length());
+		String jarFileName = "http://sovereigncomputing.net/hudson/job/Sneer/lastBuild/artifact/sneer/build/sneer.jar";
 		extractFiles(new URL(jarFileName));
 	}
 

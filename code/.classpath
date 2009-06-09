@@ -15,13 +15,15 @@
 	<classpathentry kind="lib" path="commons/lib/junit-4.4.jar" sourcepath="commons/lib/junit-4.4-src.jar" exported="true"/>
 
 	<classpathentry kind="lib" path="bricks/src/snapps/whisper/speex/impl/lib/speex.jar"/>
-	<classpathentry kind="lib" path="bricks/src/sneer/skin/main/dashboard/impl/lib/jxlayer.jar" sourcepath="bricks/src/sneer/skin/main/dashboard/impl/lib/jxlayer-src.zip" exported="true"/>
+	<classpathentry kind="lib" path="bricks/src/sneer/software/code/compilers/java/impl/lib/compiler-7-ea-b17-02_aug_2007.jar"/>
+	<classpathentry kind="lib" path="bricks/src/sneer/pulp/crypto/impl/lib/bcprov-jdk16-139.jar"/>
+	<classpathentry kind="lib" path="bricks/src/sneer/pulp/tuples/impl/lib/xpp3_min-1.1.4c.jar" exported="true"/>
+
 	<classpathentry kind="lib" path="bricks/src/sneer/pulp/tuples/impl/lib/prevayler-2.3.jar" sourcepath="bricks/src/sneer/pulp/tuples/impl/lib/prevayler-2.3-src.zip" exported="true"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/pulp/tuples/impl/lib/xstream-1.3.1.jar" sourcepath="bricks/src/sneer/pulp/tuples/impl/lib/xstream-1.3.1-src.zip" exported="true"/>
-	<classpathentry kind="lib" path="bricks/src/sneer/pulp/tuples/impl/lib/xpp3_min-1.1.4c.jar" exported="true"/>
-	<classpathentry kind="lib" path="bricks/src/sneer/pulp/crypto/impl/lib/bcprov-jdk16-139.jar"/>
-	<classpathentry kind="lib" path="bricks/src/sneer/software/code/compilers/java/impl/lib/compiler-7-ea-b17-02_aug_2007.jar"/>
-	<classpathentry kind="lib" path="bricks/src/sneer/hardware/cpu/lang/impl/lib/commons-lang-2.3.jar" exported="true"/>
+	<classpathentry kind="lib" path="bricks/src/sneer/skin/main/dashboard/impl/lib/jxlayer.jar" sourcepath="bricks/src/sneer/skin/main/dashboard/impl/lib/jxlayer-src.zip" exported="true"/>
+	
+	<classpathentry kind="lib" path="bricks/src/sneer/hardware/cpu/lang/impl/lib/commons-lang-2.4.jar" sourcepath="bricks/src/sneer/hardware/cpu/lang/impl/lib/commons-lang-2.4.zip" exported="true"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/hardware/io/impl/lib/commons-io-1.4.jar" sourcepath="bricks/src/sneer/hardware/io/lib/commons-io-1.4-src.zip" exported="true"/>
 	<classpathentry kind="lib" path="bricks/src/sneer/hardware/ram/collections/impl/lib/commons-collections-3.2.1.jar" sourcepath="bricks/src/sneer/hardware/ram/collections/impl/lib/commons-collections-3.2.1-src.zip" exported="true"/>
 

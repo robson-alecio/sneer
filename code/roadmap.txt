@@ -1,9 +1,6 @@
 ﻿TASKS
 =========
 
-	- [Sandro] Apache Commons - Encapsulate in bricks.
-		- Add license and notice.txt files to lib folders of all commons bricks.
-
 	- [Sandro] Antlips - Delete
 
 	- [Sandro] Webstart

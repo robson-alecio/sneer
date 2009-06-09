@@ -1,7 +1,7 @@
-sneer/antlips.xml
-sneer/bin
-sneer/build
-sneer/.byecycle
+code/antlips.xml
+code/bin
+code/build
+code/.byecycle
 snuggin/snuggin/bin
 webstart
 installer/bin

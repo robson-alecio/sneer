@@ -1,6 +1,6 @@
 package spikes.sandro.cellrenderer;
 
-import static sneer.commons.environments.Environments.my;
+import static sneer.foundation.commons.environments.Environments.my;
 
 import java.awt.Container;
 import java.awt.Dimension;
@@ -8,7 +8,7 @@ import java.awt.Dimension;
 import javax.swing.JComponent;
 import javax.swing.JWindow;
 
-import sneer.hardware.gui.guithread.GuiThread;
+import sneer.bricks.hardware.gui.guithread.GuiThread;
 
 class FixedResizerCopy {
 

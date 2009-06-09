@@ -1,10 +1,10 @@
 package spikes.snapps.location.impl;
 
-import static sneer.commons.environments.Environments.my;
-import sneer.hardware.cpu.lang.Consumer;
-import sneer.pulp.reactive.Register;
-import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.Signals;
+import static sneer.foundation.commons.environments.Environments.my;
+import sneer.bricks.hardware.cpu.lang.Consumer;
+import sneer.bricks.pulp.reactive.Register;
+import sneer.bricks.pulp.reactive.Signal;
+import sneer.bricks.pulp.reactive.Signals;
 import spikes.snapps.location.LocationKeeper;
 
 public class LocationKeeperImpl implements LocationKeeper {

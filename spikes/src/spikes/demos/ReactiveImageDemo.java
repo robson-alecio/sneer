@@ -1,6 +1,6 @@
 package spikes.demos;
 
-import static sneer.commons.environments.Environments.my;
+import static sneer.foundation.commons.environments.Environments.my;
 
 import java.awt.FlowLayout;
 import java.awt.Image;
@@ -9,15 +9,15 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
-import sneer.brickness.Brickness;
-import sneer.commons.environments.Environments;
-import sneer.commons.lang.Functor;
-import sneer.hardware.gui.guithread.GuiThread;
-import sneer.hardware.gui.timebox.TimeboxedEventQueue;
-import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.Signals;
-import sneer.skin.widgets.reactive.ImageWidget;
-import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
+import sneer.bricks.hardware.gui.guithread.GuiThread;
+import sneer.bricks.hardware.gui.timebox.TimeboxedEventQueue;
+import sneer.bricks.pulp.reactive.Signal;
+import sneer.bricks.pulp.reactive.Signals;
+import sneer.bricks.skin.widgets.reactive.ImageWidget;
+import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
+import sneer.foundation.brickness.Brickness;
+import sneer.foundation.commons.environments.Environments;
+import sneer.foundation.commons.lang.Functor;
 import spikes.wheel.reactive.impl.mocks.RandomBoolean;
 
 public class ReactiveImageDemo {
@@ -51,7 +51,7 @@ public class ReactiveImageDemo {
 		try {
 			return ImageIO.read(ReactiveImageDemo.class.getResource(fileName));
 		} catch (IOException e) {
-			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
 	}
 	

@@ -18,9 +18,9 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.store.RAMDirectory;
 
-import sneer.pulp.reactive.collections.SetRegister;
-import sneer.pulp.reactive.collections.SetSignal;
-import sneer.pulp.reactive.collections.impl.SetRegisterImpl;
+import sneer.bricks.pulp.reactive.collections.SetRegister;
+import sneer.bricks.pulp.reactive.collections.SetSignal;
+import sneer.bricks.pulp.reactive.collections.impl.SetRegisterImpl;
 import spikes.sneer.pulp.things.Thing;
 import spikes.sneer.pulp.things.ThingHome;
 
@@ -35,11 +35,11 @@ class ThingHomeImpl implements ThingHome {
 			IndexWriter index = openIndex(true);
 			index.close();
 		} catch (CorruptIndexException e) {
-			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		} catch (LockObtainFailedException e) {
-			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		} catch (IOException e) {
-			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		}
 		
 	}
@@ -68,11 +68,11 @@ class ThingHomeImpl implements ThingHome {
 		try {
 			tryToAddToIndex(thing);
 		} catch (CorruptIndexException e) {
-			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		} catch (LockObtainFailedException e) {
-			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		} catch (IOException e) {
-			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		}
 	}
 
@@ -112,13 +112,13 @@ class ThingHomeImpl implements ThingHome {
 		try {
 			return tryToSearch(tags);
 		} catch (CorruptIndexException e) {
-			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		} catch (LockObtainFailedException e) {
-			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		} catch (IOException e) {
-			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		} catch (ParseException e) {
-			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
+			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Implement Handle this exception.
 		}
 	}
 

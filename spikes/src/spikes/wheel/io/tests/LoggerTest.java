@@ -1,15 +1,15 @@
 package spikes.wheel.io.tests;
 
-import static sneer.commons.environments.Environments.my;
+import static sneer.foundation.commons.environments.Environments.my;
 
 import org.junit.Test;
 
-import sneer.brickness.testsupport.BrickTest;
-import sneer.commons.lang.ByRef;
-import sneer.hardware.cpu.lang.Consumer;
-import sneer.pulp.log.Logger;
-import sneer.pulp.log.workers.notifier.LogNotifier;
-import sneer.pulp.reactive.Signals;
+import sneer.bricks.hardware.cpu.lang.Consumer;
+import sneer.bricks.pulp.log.Logger;
+import sneer.bricks.pulp.log.workers.notifier.LogNotifier;
+import sneer.bricks.pulp.reactive.Signals;
+import sneer.foundation.brickness.testsupport.BrickTest;
+import sneer.foundation.commons.lang.ByRef;
 
 
 public class LoggerTest extends BrickTest {

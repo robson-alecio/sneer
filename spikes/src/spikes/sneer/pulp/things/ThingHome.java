@@ -1,7 +1,7 @@
 package spikes.sneer.pulp.things;
 
-import sneer.brickness.Brick;
-import sneer.pulp.reactive.collections.SetSignal;
+import sneer.bricks.pulp.reactive.collections.SetSignal;
+import sneer.foundation.brickness.Brick;
 
 @Brick
 public interface ThingHome {

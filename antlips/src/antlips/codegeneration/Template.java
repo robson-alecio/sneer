@@ -19,8 +19,8 @@ import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 import javax.tools.JavaCompiler.CompilationTask;
 
-import sneer.commons.io.Streams;
-import sneer.commons.lang.Functor;
+import sneer.foundation.commons.io.Streams;
+import sneer.foundation.commons.lang.Functor;
 
 
 public class Template {
@@ -129,9 +129,9 @@ public class Template {
 		try {
 			return templateClass.newInstance();
 		} catch (InstantiationException e) {
-			throw new sneer.commons.lang.exceptions.NotImplementedYet(e);
+			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e);
 		} catch (IllegalAccessException e) {
-			throw new sneer.commons.lang.exceptions.NotImplementedYet(e);
+			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e);
 		}
 	}
 

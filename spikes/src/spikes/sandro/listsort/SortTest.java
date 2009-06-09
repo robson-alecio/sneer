@@ -1,6 +1,6 @@
 package spikes.sandro.listsort;
 
-import static sneer.commons.environments.Environments.my;
+import static sneer.foundation.commons.environments.Environments.my;
 
 import java.awt.BorderLayout;
 import java.awt.Image;
@@ -13,21 +13,21 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import sneer.brickness.Brickness;
-import sneer.commons.environments.Environments;
-import sneer.commons.lang.ByRef;
-import sneer.hardware.gui.timebox.TimeboxedEventQueue;
-import sneer.pulp.reactive.Register;
-import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.Signals;
-import sneer.pulp.reactive.collections.CollectionSignals;
-import sneer.pulp.reactive.collections.ListRegister;
-import sneer.pulp.reactive.collections.ListSignal;
-import sneer.pulp.reactive.collections.listsorter.ListSorter;
-import sneer.pulp.reactive.signalchooser.SignalChooser;
-import sneer.skin.widgets.reactive.LabelProvider;
-import sneer.skin.widgets.reactive.ListWidget;
-import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
+import sneer.bricks.hardware.gui.timebox.TimeboxedEventQueue;
+import sneer.bricks.pulp.reactive.Register;
+import sneer.bricks.pulp.reactive.Signal;
+import sneer.bricks.pulp.reactive.Signals;
+import sneer.bricks.pulp.reactive.collections.CollectionSignals;
+import sneer.bricks.pulp.reactive.collections.ListRegister;
+import sneer.bricks.pulp.reactive.collections.ListSignal;
+import sneer.bricks.pulp.reactive.collections.listsorter.ListSorter;
+import sneer.bricks.pulp.reactive.signalchooser.SignalChooser;
+import sneer.bricks.skin.widgets.reactive.LabelProvider;
+import sneer.bricks.skin.widgets.reactive.ListWidget;
+import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
+import sneer.foundation.brickness.Brickness;
+import sneer.foundation.commons.environments.Environments;
+import sneer.foundation.commons.lang.ByRef;
 import spikes.wheel.reactive.impl.mocks.RandomBoolean;
 
 public class SortTest {

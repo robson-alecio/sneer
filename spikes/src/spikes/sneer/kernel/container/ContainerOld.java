@@ -1,6 +1,6 @@
 package spikes.sneer.kernel.container;
 
-import sneer.commons.environments.Environment;
+import sneer.foundation.commons.environments.Environment;
 
 public interface ContainerOld extends Environment {
 	

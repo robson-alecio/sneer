@@ -1,14 +1,14 @@
 package spikes.sneer.pulp.things.tests;
 
-import static sneer.commons.environments.Environments.my;
+import static sneer.foundation.commons.environments.Environments.my;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import sneer.brickness.testsupport.BrickTest;
-import sneer.commons.threads.Daemon;
-import sneer.pulp.reactive.collections.SetSignal;
-import sneer.pulp.threads.Threads;
+import sneer.bricks.pulp.reactive.collections.SetSignal;
+import sneer.bricks.pulp.threads.Threads;
+import sneer.foundation.brickness.testsupport.BrickTest;
+import sneer.foundation.commons.threads.Daemon;
 import spikes.sneer.pulp.things.Thing;
 import spikes.sneer.pulp.things.ThingHome;
 import spikes.wheel.testutil.TestDashboard;

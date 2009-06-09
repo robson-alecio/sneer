@@ -1,10 +1,10 @@
 package spikes.wheel.testutil;
 
 import static java.lang.System.gc;
-import sneer.commons.threads.Daemon;
-import sneer.pulp.log.Logger;
-import sneer.pulp.threads.Threads;
-import static sneer.commons.environments.Environments.my;
+import sneer.bricks.pulp.log.Logger;
+import sneer.bricks.pulp.threads.Threads;
+import sneer.foundation.commons.threads.Daemon;
+import static sneer.foundation.commons.environments.Environments.my;
 
 
 public class MemorySentinel {

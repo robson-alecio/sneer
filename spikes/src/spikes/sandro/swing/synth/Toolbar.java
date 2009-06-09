@@ -56,7 +56,7 @@ public class Toolbar extends JPanel{
 			is = Toolbar.class.getResourceAsStream(fileName);
 			synth.load(is, Toolbar.class);
 		} catch (Exception e) {
-			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		} finally {
 			try { is.close(); } catch (Exception e2) { /* ignore */ }
 		}

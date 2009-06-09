@@ -7,8 +7,8 @@ import org.junit.internal.runners.InitializationError;
 import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.internal.runners.TestMethod;
 
-import sneer.brickness.Brickness;
-import sneer.commons.environments.Environments;
+import sneer.foundation.brickness.Brickness;
+import sneer.foundation.commons.environments.Environments;
 
 public class Mocotoh extends JUnit4ClassRunner {
 	
@@ -25,11 +25,11 @@ public class Mocotoh extends JUnit4ClassRunner {
 					try {
 						superInvoke(test);
 					} catch (IllegalArgumentException e) {
-						throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+						throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 					} catch (IllegalAccessException e) {
-						throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+						throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 					} catch (InvocationTargetException e) {
-						throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+						throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 					}
 				}});
 			}

@@ -1,6 +1,6 @@
 package spikes.snapps.gis.ui.impl;
 
-import static sneer.commons.environments.Environments.my;
+import static sneer.foundation.commons.environments.Environments.my;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -22,8 +22,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import sneer.pulp.threads.Stepper;
-import sneer.pulp.threads.Threads;
+import sneer.bricks.pulp.threads.Stepper;
+import sneer.bricks.pulp.threads.Threads;
 import spikes.snapps.location.LocationKeeper;
 
 public class LocationGuiImpl {

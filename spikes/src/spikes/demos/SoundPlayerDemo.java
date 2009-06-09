@@ -1,9 +1,9 @@
 package spikes.demos;
 
-import static sneer.commons.environments.Environments.my;
-import sneer.brickness.Brickness;
-import sneer.commons.environments.Environments;
-import sneer.skin.sound.player.SoundPlayer;
+import static sneer.foundation.commons.environments.Environments.my;
+import sneer.bricks.skin.sound.player.SoundPlayer;
+import sneer.foundation.brickness.Brickness;
+import sneer.foundation.commons.environments.Environments;
 
 public class SoundPlayerDemo {
 	
@@ -16,7 +16,7 @@ public class SoundPlayerDemo {
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
-			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
 	}
 	

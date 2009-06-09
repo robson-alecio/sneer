@@ -1,11 +1,11 @@
 package spikes.priscila.go.gui;
 
-import static sneer.commons.environments.Environments.my;
-import sneer.brickness.Brickness;
-import sneer.commons.environments.Environments;
-import sneer.hardware.gui.guithread.GuiThread;
-import sneer.pulp.reactive.Register;
-import sneer.pulp.reactive.Signals;
+import static sneer.foundation.commons.environments.Environments.my;
+import sneer.bricks.hardware.gui.guithread.GuiThread;
+import sneer.bricks.pulp.reactive.Register;
+import sneer.bricks.pulp.reactive.Signals;
+import sneer.foundation.brickness.Brickness;
+import sneer.foundation.commons.environments.Environments;
 import spikes.priscila.go.Move;
 import spikes.priscila.go.GoBoard.StoneColor;
 

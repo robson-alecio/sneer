@@ -1,12 +1,12 @@
 package spikes.wheel.reactive.impl.tests;
 
-import static sneer.commons.environments.Environments.my;
+import static sneer.foundation.commons.environments.Environments.my;
 
 import org.junit.Test;
 
-import sneer.brickness.testsupport.BrickTest;
-import sneer.pulp.reactive.Register;
-import sneer.pulp.reactive.Signals;
+import sneer.bricks.pulp.reactive.Register;
+import sneer.bricks.pulp.reactive.Signals;
+import sneer.foundation.brickness.testsupport.BrickTest;
 import spikes.wheel.reactive.tests.LoopbackTester;
 
 public class RegisterImplTest extends BrickTest {

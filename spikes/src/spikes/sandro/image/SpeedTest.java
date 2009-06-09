@@ -17,8 +17,8 @@ import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 
-import sneer.hardware.gui.images.Images;
-import static sneer.commons.environments.Environments.my;
+import sneer.bricks.hardware.gui.images.Images;
+import static sneer.foundation.commons.environments.Environments.my;
 
 
 public class SpeedTest {

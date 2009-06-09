@@ -1,13 +1,13 @@
 package spikes.sandro.summit.register.instrument02.impl;
 
-import static sneer.commons.environments.Environments.my;
+import static sneer.foundation.commons.environments.Environments.my;
 
 import javax.swing.JTextField;
 
-import sneer.skin.main.dashboard.InstrumentPanel;
-import sneer.skin.main.instrumentregistry.InstrumentRegistry;
-import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
-import sneer.skin.widgets.reactive.TextWidget;
+import sneer.bricks.skin.main.dashboard.InstrumentPanel;
+import sneer.bricks.skin.main.instrumentregistry.InstrumentRegistry;
+import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
+import sneer.bricks.skin.widgets.reactive.TextWidget;
 import spikes.sandro.summit.register.SimpleRegister;
 import spikes.sandro.summit.register.instrument02.TextInstrument;
 

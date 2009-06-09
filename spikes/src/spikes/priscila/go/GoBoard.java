@@ -1,15 +1,15 @@
 package spikes.priscila.go;
 
-import static sneer.commons.environments.Environments.my;
+import static sneer.foundation.commons.environments.Environments.my;
 import static spikes.priscila.go.GoBoard.StoneColor.BLACK;
 import static spikes.priscila.go.GoBoard.StoneColor.WHITE;
 
 import java.util.Arrays;
 
-import sneer.pulp.reactive.Register;
-import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.Signals;
-import sneer.pulp.serialization.DeepCopier;
+import sneer.bricks.pulp.reactive.Register;
+import sneer.bricks.pulp.reactive.Signal;
+import sneer.bricks.pulp.reactive.Signals;
+import sneer.bricks.pulp.serialization.DeepCopier;
 
 public class GoBoard {
 

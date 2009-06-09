@@ -1,6 +1,6 @@
 package spikes.priscila.go.gui;
 
-import static sneer.commons.environments.Environments.my;
+import static sneer.foundation.commons.environments.Environments.my;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -12,12 +12,12 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-import sneer.hardware.cpu.lang.Consumer;
-import sneer.hardware.gui.guithread.GuiThread;
-import sneer.pulp.reactive.Register;
-import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.Signals;
-import sneer.pulp.threads.Threads;
+import sneer.bricks.hardware.cpu.lang.Consumer;
+import sneer.bricks.hardware.gui.guithread.GuiThread;
+import sneer.bricks.pulp.reactive.Register;
+import sneer.bricks.pulp.reactive.Signal;
+import sneer.bricks.pulp.reactive.Signals;
+import sneer.bricks.pulp.threads.Threads;
 import spikes.priscila.go.GoBoard;
 import spikes.priscila.go.Move;
 import spikes.priscila.go.ToroidalGoBoard;

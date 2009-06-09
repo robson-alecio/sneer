@@ -4,11 +4,11 @@
 
 package spikes.wheel.io.network.mocks;
 
-import static sneer.commons.environments.Environments.my;
+import static sneer.foundation.commons.environments.Environments.my;
 
 import java.io.IOException;
 
-import sneer.pulp.threads.Threads;
+import sneer.bricks.pulp.threads.Threads;
 import spikes.wheel.io.network.ObjectServerSocket;
 import spikes.wheel.io.network.ObjectSocket;
 

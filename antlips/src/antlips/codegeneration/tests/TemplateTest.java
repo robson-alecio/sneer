@@ -3,7 +3,7 @@ package antlips.codegeneration.tests;
 import org.junit.Assert;
 import org.junit.Test;
 
-import sneer.commons.lang.Functor;
+import sneer.foundation.commons.lang.Functor;
 import antlips.codegeneration.Template;
 
 public class TemplateTest {

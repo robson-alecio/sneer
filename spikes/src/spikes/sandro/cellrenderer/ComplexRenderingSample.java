@@ -1,6 +1,6 @@
 package spikes.sandro.cellrenderer;
 
-import static sneer.commons.environments.Environments.my;
+import static sneer.foundation.commons.environments.Environments.my;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -22,7 +22,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 
-import sneer.hardware.gui.images.Images;
+import sneer.bricks.hardware.gui.images.Images;
 import spikes.wheel.testutil.MemorySentinel;
 
 public class ComplexRenderingSample {

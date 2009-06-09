@@ -3,7 +3,7 @@ package spikes.bamboo.bricksorter;
 import java.io.IOException;
 import java.util.List;
 
-import sneer.brickness.Brick;
+import sneer.foundation.brickness.Brick;
 
 @Brick
 public interface BrickSorter {

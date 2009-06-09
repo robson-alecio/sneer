@@ -2,8 +2,8 @@ package spikes.wheel.io.ui;
 
 import java.io.File;
 
-import sneer.hardware.cpu.exceptions.FriendlyException;
-import sneer.hardware.cpu.lang.Consumer;
+import sneer.bricks.hardware.cpu.exceptions.FriendlyException;
+import sneer.bricks.hardware.cpu.lang.Consumer;
 import spikes.wheel.lang.exceptions.Catcher;
 
 

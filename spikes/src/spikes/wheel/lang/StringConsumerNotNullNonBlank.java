@@ -1,7 +1,7 @@
 package spikes.wheel.lang;
 
-import sneer.hardware.cpu.exceptions.IllegalParameter;
-import sneer.hardware.cpu.lang.PickyConsumer;
+import sneer.bricks.hardware.cpu.exceptions.IllegalParameter;
+import sneer.bricks.hardware.cpu.lang.PickyConsumer;
 
 public class StringConsumerNotNullNonBlank implements PickyConsumer<String> {
 

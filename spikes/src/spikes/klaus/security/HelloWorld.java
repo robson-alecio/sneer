@@ -1,13 +1,13 @@
 package spikes.klaus.security;
 
-import static sneer.commons.environments.Environments.my;
+import static sneer.foundation.commons.environments.Environments.my;
 
 import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JFrame;
 
-import sneer.pulp.threads.Threads;
+import sneer.bricks.pulp.threads.Threads;
 
 public class HelloWorld implements Runnable {
 

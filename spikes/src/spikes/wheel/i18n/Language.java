@@ -29,8 +29,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import sneer.hardware.gui.guithread.GuiThread;
-import static sneer.commons.environments.Environments.my;
+import sneer.bricks.hardware.gui.guithread.GuiThread;
+import static sneer.foundation.commons.environments.Environments.my;
 
 //Refactor: Break this into several classes.
 public class Language {

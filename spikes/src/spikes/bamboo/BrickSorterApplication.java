@@ -1,16 +1,16 @@
 package spikes.bamboo;
 
-import static sneer.commons.environments.Environments.my;
+import static sneer.foundation.commons.environments.Environments.my;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.SneerSession;
 
-import sneer.brickness.Brickness;
-import sneer.commons.environments.CachingEnvironment;
-import sneer.commons.environments.Environments;
+import sneer.foundation.brickness.Brickness;
+import sneer.foundation.commons.environments.CachingEnvironment;
+import sneer.foundation.commons.environments.Environments;
+import sneer.main.SneerSession;
 import spikes.bamboo.bricksorter.BrickSorter;
 
 public class BrickSorterApplication {

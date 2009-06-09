@@ -1,12 +1,12 @@
 package spikes.bamboo.mocotoh;
 
-import static sneer.commons.environments.Environments.my;
+import static sneer.foundation.commons.environments.Environments.my;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import sneer.pulp.clock.Clock;
+import sneer.bricks.pulp.clock.Clock;
 
 @RunWith(Mocotoh.class)
 public class MocotohTest extends Assert {

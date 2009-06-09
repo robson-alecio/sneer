@@ -1,15 +1,15 @@
 package spikes.wheel.reactive.impl.tests;
 
 import static org.junit.Assert.assertEquals;
-import static sneer.commons.environments.Environments.my;
+import static sneer.foundation.commons.environments.Environments.my;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import sneer.brickness.testsupport.BrickTestRunner;
-import sneer.hardware.cpu.lang.Consumer;
-import sneer.pulp.reactive.Register;
-import sneer.pulp.reactive.Signals;
+import sneer.bricks.hardware.cpu.lang.Consumer;
+import sneer.bricks.pulp.reactive.Register;
+import sneer.bricks.pulp.reactive.Signals;
+import sneer.foundation.brickness.testsupport.BrickTestRunner;
 
 @RunWith(BrickTestRunner.class)
 public class ReceiverTest {

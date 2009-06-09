@@ -1,7 +1,7 @@
 package spikes.snapps.location;
 
-import sneer.hardware.cpu.lang.Consumer;
-import sneer.pulp.reactive.Signal;
+import sneer.bricks.hardware.cpu.lang.Consumer;
+import sneer.bricks.pulp.reactive.Signal;
 
 public interface LocationKeeper {
 

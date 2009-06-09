@@ -1,6 +1,6 @@
 package spikes.priscila.go.gui;
 
-import static sneer.commons.environments.Environments.my;
+import static sneer.foundation.commons.environments.Environments.my;
 
 import java.awt.Dimension;
 
@@ -9,11 +9,11 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
-import sneer.commons.lang.Functor;
-import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.Signals;
-import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
-import sneer.skin.widgets.reactive.TextWidget;
+import sneer.bricks.pulp.reactive.Signal;
+import sneer.bricks.pulp.reactive.Signals;
+import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
+import sneer.bricks.skin.widgets.reactive.TextWidget;
+import sneer.foundation.commons.lang.Functor;
 
 public class GoScorePanel extends JPanel {
 

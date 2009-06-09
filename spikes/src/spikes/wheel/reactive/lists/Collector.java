@@ -1,11 +1,11 @@
 package spikes.wheel.reactive.lists;
 
-import static sneer.commons.environments.Environments.my;
-import sneer.commons.lang.Functor;
-import sneer.pulp.reactive.collections.ListRegister;
-import sneer.pulp.reactive.collections.ListSignal;
-import sneer.pulp.reactive.collections.CollectionSignals;
-import sneer.pulp.reactive.collections.impl.VisitingListReceiver;
+import static sneer.foundation.commons.environments.Environments.my;
+import sneer.bricks.pulp.reactive.collections.CollectionSignals;
+import sneer.bricks.pulp.reactive.collections.ListRegister;
+import sneer.bricks.pulp.reactive.collections.ListSignal;
+import sneer.bricks.pulp.reactive.collections.impl.VisitingListReceiver;
+import sneer.foundation.commons.lang.Functor;
 
 public class Collector<IN, OUT> {
 
@@ -32,7 +32,7 @@ public class Collector<IN, OUT> {
 
 		@Override
 		public void elementMoved(int index, int newIndex, IN newElement) {
-			throw new sneer.commons.lang.exceptions.NotImplementedYet(); // Implement
+			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); // Implement
 		}
 	}
 

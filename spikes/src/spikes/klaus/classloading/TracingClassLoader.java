@@ -9,7 +9,7 @@ import java.util.Enumeration;
 
 import org.apache.commons.io.FileUtils;
 
-import sneer.commons.lang.exceptions.NotImplementedYet;
+import sneer.foundation.commons.lang.exceptions.NotImplementedYet;
 
 public class TracingClassLoader extends ClassLoader {
 

@@ -1,11 +1,11 @@
 package spikes.wheel.lang.tests;
 
-import static sneer.commons.environments.Environments.my;
+import static sneer.foundation.commons.environments.Environments.my;
 
 import org.junit.Test;
 
-import sneer.brickness.testsupport.BrickTest;
-import sneer.pulp.lang.StringUtils;
+import sneer.bricks.pulp.lang.StringUtils;
+import sneer.foundation.brickness.testsupport.BrickTest;
 
 public class StringUtilsTest extends BrickTest {
 

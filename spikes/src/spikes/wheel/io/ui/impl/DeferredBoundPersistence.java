@@ -1,11 +1,11 @@
 package spikes.wheel.io.ui.impl;
 
-import static sneer.commons.environments.Environments.my;
+import static sneer.foundation.commons.environments.Environments.my;
 
 import java.awt.Rectangle;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import sneer.pulp.threads.Threads;
+import sneer.bricks.pulp.threads.Threads;
 import spikes.wheel.io.ui.BoundsPersistence;
 
 public class DeferredBoundPersistence implements BoundsPersistence {

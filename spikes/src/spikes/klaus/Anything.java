@@ -1,8 +1,8 @@
 package spikes.klaus;
 
-import static sneer.commons.environments.Environments.my;
-import sneer.commons.threads.Daemon;
-import sneer.pulp.threads.Threads;
+import static sneer.foundation.commons.environments.Environments.my;
+import sneer.bricks.pulp.threads.Threads;
+import sneer.foundation.commons.threads.Daemon;
 
 public class Anything {
 

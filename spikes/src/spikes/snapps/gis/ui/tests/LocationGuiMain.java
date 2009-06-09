@@ -1,9 +1,9 @@
 package spikes.snapps.gis.ui.tests;
 
-import sneer.brickness.Brickness;
-import sneer.commons.environments.Environment;
-import sneer.commons.environments.EnvironmentUtils;
-import sneer.pulp.threads.Threads;
+import sneer.bricks.pulp.threads.Threads;
+import sneer.foundation.brickness.Brickness;
+import sneer.foundation.commons.environments.Environment;
+import sneer.foundation.commons.environments.EnvironmentUtils;
 import spikes.snapps.gis.ui.LocationGui;
 
 public class LocationGuiMain  {

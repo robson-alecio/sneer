@@ -1,21 +1,21 @@
 package spikes.demos;
 
-import static sneer.commons.environments.Environments.my;
+import static sneer.foundation.commons.environments.Environments.my;
 
 import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 
-import sneer.brickness.Brickness;
-import sneer.commons.environments.Environments;
-import sneer.hardware.gui.guithread.GuiThread;
-import sneer.hardware.gui.timebox.TimeboxedEventQueue;
-import sneer.pulp.reactive.Register;
-import sneer.pulp.reactive.Signals;
-import sneer.skin.widgets.reactive.NotificationPolicy;
-import sneer.skin.widgets.reactive.ReactiveWidgetFactory;
-import sneer.skin.widgets.reactive.TextWidget;
-import sneer.skin.widgets.reactive.Widget;
+import sneer.bricks.hardware.gui.guithread.GuiThread;
+import sneer.bricks.hardware.gui.timebox.TimeboxedEventQueue;
+import sneer.bricks.pulp.reactive.Register;
+import sneer.bricks.pulp.reactive.Signals;
+import sneer.bricks.skin.widgets.reactive.NotificationPolicy;
+import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
+import sneer.bricks.skin.widgets.reactive.TextWidget;
+import sneer.bricks.skin.widgets.reactive.Widget;
+import sneer.foundation.brickness.Brickness;
+import sneer.foundation.commons.environments.Environments;
 
 public class ReactiveWidgetsDemo {
 

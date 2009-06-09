@@ -1,12 +1,12 @@
 package spikes.sneer.kernel.container.utils.metaclass.tests;
 
-import static sneer.commons.environments.Environments.my;
+import static sneer.foundation.commons.environments.Environments.my;
 
 import org.junit.Test;
 
-import sneer.brickness.testsupport.BrickTest;
-import sneer.software.code.metaclass.MetaClass;
-import sneer.software.code.metaclass.MetaClasses;
+import sneer.bricks.software.code.metaclass.MetaClass;
+import sneer.bricks.software.code.metaclass.MetaClasses;
+import sneer.foundation.brickness.testsupport.BrickTest;
 import spikes.sneer.kernel.container.utils.metaclass.tests.bean.Bean;
 
 

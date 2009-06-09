@@ -1,6 +1,6 @@
 package spikes.sandro.cellrenderer;
 
-import static sneer.commons.environments.Environments.my;
+import static sneer.foundation.commons.environments.Environments.my;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -35,10 +35,10 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
-import sneer.hardware.gui.images.Images;
-import sneer.pulp.reactive.Signal;
-import sneer.pulp.reactive.Signals;
-import sneer.skin.widgets.reactive.LabelProvider;
+import sneer.bricks.hardware.gui.images.Images;
+import sneer.bricks.pulp.reactive.Signal;
+import sneer.bricks.pulp.reactive.Signals;
+import sneer.bricks.skin.widgets.reactive.LabelProvider;
 import spikes.wheel.testutil.MemorySentinel;
 
 class WindListCellRendererSample implements ListCellRenderer {
@@ -169,7 +169,7 @@ class WindListCellRendererSample implements ListCellRenderer {
 		try {
 			doc.insertString(doc.getLength(), msg, doc.getStyle(style));
 		} catch (BadLocationException e) {
-			throw new sneer.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
+			throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(e); // Fix Handle this exception.
 		}
 	}
 

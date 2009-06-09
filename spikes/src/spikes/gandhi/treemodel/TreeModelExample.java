@@ -18,9 +18,9 @@ import javax.swing.event.TreeWillExpandListener;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 
-import sneer.hardware.gui.guithread.GuiThread;
-import sneer.pulp.threads.Threads;
-import static sneer.commons.environments.Environments.my;
+import sneer.bricks.hardware.gui.guithread.GuiThread;
+import sneer.bricks.pulp.threads.Threads;
+import static sneer.foundation.commons.environments.Environments.my;
 
 public class TreeModelExample extends JFrame {
 

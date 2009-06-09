@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import sneer.commons.lang.Pair;
+import sneer.foundation.commons.lang.Pair;
 import wheel.io.files.Directory;
 import antlips.codegeneration.Template;
 

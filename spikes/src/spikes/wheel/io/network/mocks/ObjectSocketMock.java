@@ -4,14 +4,14 @@
 
 package spikes.wheel.io.network.mocks;
 
-import static sneer.commons.environments.Environments.my;
+import static sneer.foundation.commons.environments.Environments.my;
 
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import sneer.pulp.serialization.DeepCopier;
-import sneer.pulp.threads.Threads;
+import sneer.bricks.pulp.serialization.DeepCopier;
+import sneer.bricks.pulp.threads.Threads;
 import spikes.wheel.io.network.ObjectSocket;
 
 

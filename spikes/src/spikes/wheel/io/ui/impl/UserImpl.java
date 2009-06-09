@@ -1,6 +1,6 @@
 package spikes.wheel.io.ui.impl;
 
-import static sneer.commons.environments.Environments.my;
+import static sneer.foundation.commons.environments.Environments.my;
 
 import java.awt.Component;
 import java.awt.Dialog;
@@ -14,10 +14,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
-import sneer.hardware.cpu.exceptions.FriendlyException;
-import sneer.hardware.cpu.lang.Consumer;
-import sneer.hardware.gui.guithread.GuiThread;
-import sneer.pulp.threads.Threads;
+import sneer.bricks.hardware.cpu.exceptions.FriendlyException;
+import sneer.bricks.hardware.cpu.lang.Consumer;
+import sneer.bricks.hardware.gui.guithread.GuiThread;
+import sneer.bricks.pulp.threads.Threads;
 import spikes.wheel.io.ui.CancelledByUser;
 import spikes.wheel.io.ui.User;
 import spikes.wheel.io.ui.Util;

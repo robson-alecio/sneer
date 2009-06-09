@@ -2,10 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/sneer"/>
 	<classpathentry kind="lib" path="lib/lucene-demos-2.3.2.jar"/>
 	<classpathentry kind="lib" path="src/spikes/sneer/pulp/things/impl/lib/lucene-core-2.3.2.jar"/>
 	<classpathentry kind="lib" path="lib/speex.jar"/>
 	<classpathentry kind="lib" path="lib/bcprov-jdk16-139.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/code"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

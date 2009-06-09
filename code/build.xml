@@ -30,7 +30,7 @@
 		<delete dir="${bin.dir}"/>
 		<mkdir dir="build/tests"/>
 		<move todir="build/tests">
-			<fileset dir="${bin.dir}">
+			<fileset dir="build">
 				<exclude name='*.*' />
 				<include name='TEST-*.txt' />
 				<include name='TEST-*.xml' />

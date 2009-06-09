@@ -25,6 +25,7 @@ import sneer.commons.lang.Functor;
 
 public class Template {
 
+	@SuppressWarnings("unchecked")
 	public static <ARG> String evaluate(String template, ARG value) {
 		return compile(template, (Class<ARG>) (value != null ? value.getClass() : Object.class)).evaluate(value);
 	}
@@ -134,6 +135,7 @@ public class Template {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private static <ARG> Class<Functor<ARG, String>> compileJavaCode(String javaCode) {
 		final JavaCompiler compiler = compiler();
 		final RAMJavaFileManager fileManager = new RAMJavaFileManager(compiler.getStandardFileManager(null, null, null));

@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<project name="sneer" default="clean-test">
+	
+	<property name="build.dir" value="bin/build" />
+	<property name="java.awt.headless" value="true" />
+	<property name="builder.project" value="antlips" />
+	
+	<target name="hudson-clover" depends="clean, antlips.xml">
+		<ant inheritall="true" antfile="antlips.xml" target="testWithClover" />
+	</target>
+	
+	<target name="hudson" depends="clean, antlips.xml">
+		<ant inheritall="true" antfile="antlips.xml" target="test" />
+	</target>
+	
+	<target name="clean" depends="delete-build-dir, antlips.xml">
+		<ant inheritall="true" antfile="antlips.xml" target="clean" />
+	</target>
+	
+	<target name="delete-build-dir">
+		<delete dir="${build.dir}" />
+	</target>
+	
+	<target name="clean-test" depends="clean, test" />
+	
+	<target name="test" depends="antlips.xml">
+		<ant inheritall="true" antfile="antlips.xml" />
+	</target>
+	
+	<target name="antlips.xml" depends="init">
+		
+		<path id="commons.lib.classpath">
+			<fileset dir="commons/lib">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${builder.project}/lib">
+				<include name="**/*.jar" />
+			</fileset>
+		</path>
+		
+		<javac destdir="${build.dir}"
+			classpathref="commons.lib.classpath"
+			listfiles="true"
+			failonerror="true"
+			debug="on"
+			encoding="utf-8"
+			source="1.6"
+         	target="1.6">
+			<src path="commons/src" />
+			<src path="${builder.project}/src" />
+		</javac>
+		
+		<java classname="antlips.GenerateAntFile" fork="true">
+			<classpath>
+				<pathelement location="${build.dir}" />
+				<pathelement location="${builder.project}/src" />
+				<path refid="commons.lib.classpath" />
+			</classpath>
+			<arg value="-separatedsourcefolders" />
+		</java>
+	</target>
+	
+	<target name="init">
+		<mkdir dir="${build.dir}" />
+	</target>
+	
+	<target name="webstart">
+		<ant antfile="webstart/build.xml" target="main"/>
+	</target>
+	
+</project>

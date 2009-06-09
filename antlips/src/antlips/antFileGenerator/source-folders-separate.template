@@ -71,7 +71,7 @@
 		<delete dir="build" />
 		<mkdir  dir="build" />
 		<jar destfile="./build/sneer.jar">
-			<fileset dir="../sneer/bin">
+			<fileset dir="../code/bin">
 				<exclude name='**/*.txt' />
 				<exclude name='spikes/**' />
 				<exclude name='sneer/installer/**' />

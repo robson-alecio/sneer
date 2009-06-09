@@ -1,71 +1,203 @@
-<?xml version="1.0"?>
-<project name="sneer" default="clean-test">
-	
-	<property name="build.dir" value="bin/build" />
-	<property name="java.awt.headless" value="true" />
-	<property name="builder.project" value="antlips" />
-	
-	<target name="hudson-clover" depends="clean, antlips.xml">
-		<ant inheritall="true" antfile="antlips.xml" target="testWithClover" />
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="AntBuild" default="test">
+
+	<property name="webstart.dir" location="webstart" />
+	<property name="build.dir" location="bin" />
+	<property name="clover.jar" location="antlips/lib/clover.jar" />
+
+	<path id="classpath">
+		<pathelement path="${build.dir}"/>
+		<pathelement path="bricks/src/sneer/hardware/ram/collections/impl/lib/commons-collections-3.2.1.jar"/>
+		<pathelement path="bricks/src/sneer/hardware/io/impl/lib/commons-io-1.4.jar"/>
+		<pathelement path="bricks/src/sneer/hardware/cpu/lang/impl/lib/commons-lang-2.4.jar"/>
+		<pathelement path="bricks/src/sneer/skin/main/dashboard/impl/lib/jxlayer.jar"/>
+		<pathelement path="bricks/src/sneer/pulp/tuples/impl/lib/xstream-1.3.1.jar"/>
+		<pathelement path="bricks/src/sneer/pulp/tuples/impl/lib/prevayler-2.3.jar"/>
+		<pathelement path="bricks/src/sneer/pulp/tuples/impl/lib/xpp3_min-1.1.4c.jar"/>
+		<pathelement path="bricks/src/sneer/pulp/crypto/impl/lib/bcprov-jdk16-139.jar"/>
+		<pathelement path="bricks/src/sneer/software/code/compilers/java/impl/lib/compiler-7-ea-b17-02_aug_2007.jar"/>
+		<pathelement path="bricks/src/snapps/whisper/speex/impl/lib/speex.jar"/>
+		<pathelement path="commons/lib/junit-4.4.jar"/>
+		<pathelement path="commons/lib/jmock-2.5.1/jmock-junit4-2.5.1.jar"/>
+		<pathelement path="commons/lib/jmock-2.5.1/jmock-2.5.1.jar"/>
+		<pathelement path="commons/lib/jmock-2.5.1/hamcrest-library-1.1.jar"/>
+		<pathelement path="commons/lib/jmock-2.5.1/hamcrest-core-1.1.jar"/>
+		<pathelement path="commons/lib/javassist.jar"/>
+		<pathelement path="commons/lib/asm-all-3.1.jar"/>
+	</path>
+
+	<target name="test" depends="test-execution, test-verification">
 	</target>
 	
-	<target name="hudson" depends="clean, antlips.xml">
-		<ant inheritall="true" antfile="antlips.xml" target="test" />
+	<target name="testWithClover" depends="init-clover, test-execution, test-verification, clover"/>
+	
+	<target name="test-verification" if="junit.failures">
+		<echo>Test failures! Check the output for details.</echo>
 	</target>
-	
-	<target name="clean" depends="delete-build-dir, antlips.xml">
-		<ant inheritall="true" antfile="antlips.xml" target="clean" />
-	</target>
-	
-	<target name="delete-build-dir">
-		<delete dir="${build.dir}" />
-	</target>
-	
-	<target name="clean-test" depends="clean, test" />
-	
-	<target name="test" depends="antlips.xml">
-		<ant inheritall="true" antfile="antlips.xml" />
-	</target>
-	
-	<target name="antlips.xml" depends="init">
-		
-		<path id="commons.lib.classpath">
-			<fileset dir="commons/lib">
-				<include name="**/*.jar" />
-			</fileset>
-			<fileset dir="${builder.project}/lib">
-				<include name="**/*.jar" />
-			</fileset>
-		</path>
-		
-		<javac destdir="${build.dir}"
-			classpathref="commons.lib.classpath"
-			listfiles="true"
-			failonerror="true"
-			debug="on"
-			encoding="utf-8"
-			source="1.6"
-         	target="1.6">
-			<src path="commons/src" />
-			<src path="${builder.project}/src" />
-		</javac>
-		
-		<java classname="antlips.GenerateAntFile" fork="true">
+
+	<target name="test-execution" depends="makejar">
+		<junit printsummary="true" failureproperty="junit.failures" fork="yes" timeout="60000">
+			<formatter type="xml"/>
+			<sysproperty key="java.awt.headless" value="${java.awt.headless}" />
 			<classpath>
-				<pathelement location="${build.dir}" />
-				<pathelement location="${builder.project}/src" />
-				<path refid="commons.lib.classpath" />
+				<path refid="classpath" />
+				<pathelement location="${clover.jar}" />
 			</classpath>
-			<arg value="-separatedsourcefolders" />
-		</java>
+			<batchtest todir="${build.dir}">
+				<fileset dir="${build.dir}">
+					<include name="**/tests/*Test.class" />
+				</fileset>
+				<formatter type="plain"/>
+			</batchtest>
+		</junit>
+	</target>
+
+	<target name="compile" depends="copy-resources">
+
+		<javac srcdir="commons/src"
+				destdir="${build.dir}"
+				listfiles="true"
+				failonerror="true"
+				debug="on"
+				target="1.5"
+				encoding="utf-8">
+			<classpath refid="classpath"/>
+		</javac>
+
+		<javac srcdir="antlips/src"
+				destdir="${build.dir}"
+				listfiles="true"
+				failonerror="true"
+				debug="on"
+				target="1.5"
+				encoding="utf-8">
+			<classpath refid="classpath"/>
+		</javac>
+
+		<javac srcdir="brickness/src"
+				destdir="${build.dir}"
+				listfiles="true"
+				failonerror="true"
+				debug="on"
+				target="1.5"
+				encoding="utf-8">
+			<classpath refid="classpath"/>
+		</javac>
+
+		<javac srcdir="bricks/src"
+				destdir="${build.dir}"
+				listfiles="true"
+				failonerror="true"
+				debug="on"
+				target="1.5"
+				encoding="utf-8">
+			<classpath refid="classpath"/>
+		</javac>
+
+		<javac srcdir="tests/src"
+				destdir="${build.dir}"
+				listfiles="true"
+				failonerror="true"
+				debug="on"
+				target="1.5"
+				encoding="utf-8">
+			<classpath refid="classpath"/>
+		</javac>
+
+	</target>
+
+	<target name="makejar" depends="compile">
+		<delete dir="build" />
+		<mkdir  dir="build" />
+		<jar destfile="./build/sneer.jar">
+			<fileset dir="../code/bin">
+				<exclude name='**/*.txt' />
+				<exclude name='spikes/**' />
+				<exclude name='sneer/installer/**' />
+				<exclude name='build/**' />
+				<exclude name='TEST-*.txt' />
+				<exclude name='TEST-*.xml' />
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="copy-resources" depends="init">
+
+		<copy todir="${build.dir}">
+			<fileset dir="commons/src">
+				<include name='**/**'/>
+				<exclude name='**/*.java'/>
+			</fileset>
+		</copy>
+
+		<copy todir="${build.dir}">
+			<fileset dir="antlips/src">
+				<include name='**/**'/>
+				<exclude name='**/*.java'/>
+			</fileset>
+		</copy>
+
+		<copy todir="${build.dir}">
+			<fileset dir="brickness/src">
+				<include name='**/**'/>
+				<exclude name='**/*.java'/>
+			</fileset>
+		</copy>
+
+		<copy todir="${build.dir}">
+			<fileset dir="bricks/src">
+				<include name='**/**'/>
+				<exclude name='**/*.java'/>
+			</fileset>
+		</copy>
+
+		<copy todir="${build.dir}">
+			<fileset dir="tests/src">
+				<include name='**/**'/>
+				<exclude name='**/*.java'/>
+			</fileset>
+		</copy>
+
 	</target>
 	
 	<target name="init">
-		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.dir}"/>
 	</target>
-	
-	<target name="webstart">
-		<ant antfile="webstart/build.xml" target="main"/>
+
+	<target name="clean">
+		<delete dir="${build.dir}"/>
 	</target>
-	
+
+	<!-- clover support -->
+	<target name="init-clover">
+		<taskdef resource="cloverlib.xml" classpath="${clover.jar}"/>
+		<clover-setup initString="mycoverage.db"/>
+	</target>
+
+	<target name="clover-report" depends="clean, init-clover, test-execution, clover"/>
+
+	<target name="clover">
+		<fileset dir="." id="clover.sources">
+			<include name="commons/src/**/*.java" />
+			<include name="antlips/src/**/*.java" />
+			<include name="brickness/src/**/*.java" />
+			<include name="bricks/src/**/*.java" />
+			<include name="tests/src/**/*.java" />
+		</fileset>
+		
+		<clover-report>
+	       <current outfile="clover.xml">
+	          <format type="xml"/>
+	       	  <fileset refid="clover.sources" />
+	       </current>
+	    </clover-report>
+		
+		<clover-report>
+	       <current outfile="clover">
+	          <format type="html"/>
+	       	  <fileset refid="clover.sources" />
+	       </current>
+	    </clover-report>
+	</target>
 </project>

@@ -27,11 +27,9 @@
 	
 	
 	<target name="finalize">
-		<delete dir="${bin.dir}"/>
 		<mkdir dir="build/tests"/>
 		<move todir="build/tests">
-			<fileset dir="build">
-				<exclude name='*.*' />
+			<fileset dir="${bin.dir}">
 				<include name='TEST-*.txt' />
 				<include name='TEST-*.xml' />
 			</fileset>

@@ -1,5 +1,7 @@
 package sneer.pulp.natures.gui.impl;
 
+import static sneer.commons.environments.Environments.my;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,15 +14,12 @@ import javassist.CtMethod;
 import javassist.CtNewConstructor;
 import javassist.CtNewMethod;
 import javassist.NotFoundException;
-
-import org.apache.commons.collections15.CollectionUtils;
-import org.apache.commons.collections15.Transformer;
-
 import sneer.brickness.ClassDefinition;
+import sneer.commons.lang.Functor;
 import sneer.commons.lang.Pair;
 import sneer.hardware.cpu.lang.Lang;
+import sneer.hardware.ram.collections.Collections;
 import sneer.pulp.natures.gui.GUINatureRuntime;
-import static sneer.commons.environments.Environments.my;
 
 public class GUIMethodEnhancer {
 
@@ -125,34 +124,27 @@ public class GUIMethodEnhancer {
 
 	private String targetInvocationList(ArrayList<Pair<String, String>> thunkFields) {
 		return my(Lang.class).strings().join(
-				CollectionUtils.collect(
-					thunkFields.subList(1, thunkFields.size()),
-					Pair.<String, String>second()),
-				", ");
-	}
-
-	private String thunkFieldAssignments(
-			ArrayList<Pair<String, String>> thunkFields) {
+			my(Collections.class).collect(
+					thunkFields.subList(1, thunkFields.size()),	Pair.<String, String>second()),	", ");
+	}	
+	
+	private String thunkFieldAssignments(ArrayList<Pair<String, String>> thunkFields) {
 		return my(Lang.class).strings().join(
-				CollectionUtils.collect(
-					thunkFields, new Transformer<Pair<String, String>, String>() { @Override public String transform(Pair<String, String> input) {
-						return "this." + input._b + " = " + input._b + ";";
-					}}), "\n");
+			my(Collections.class).collect(
+			thunkFields, new Functor<Pair<String, String>, String>() { @Override public String evaluate(Pair<String, String> input) {
+				return "this." + input._b + " = " + input._b + ";";
+			}}), "\n");
 	}
 
 	private String thunkParameterList(ArrayList<Pair<String, String>> thunkFields) {
 		return my(Lang.class).strings().join(
-				CollectionUtils.collect(
-					thunkFields, new Transformer<Pair<String, String>, String>() { @Override public String transform(Pair<String, String> input) {
-						return input._a + " " + input._b;
-					}}), ", ");
+			my(Collections.class).collect(
+			thunkFields, new Functor<Pair<String, String>, String>() { @Override public String evaluate(Pair<String, String> input) {
+					return input._a + " " + input._b;
+			}}), ", ");
 	}
 
-	private CtClass ctClassFor(final Class<?> clazz)
-			throws NotFoundException {
+	private CtClass ctClassFor(final Class<?> clazz) throws NotFoundException {
 		return _classPool.get(clazz.getName());
 	}
-
-	
-
 }

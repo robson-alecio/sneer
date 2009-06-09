@@ -2,39 +2,46 @@
 
 <project name="AntBuild" default="test">
 
-	<property name="webstart.dir" location="webstart" />
-	<property name="build.dir" location="bin" />
-	<property name="clover.jar" location="antlips/lib/clover.jar" />
-
+	<property name="bin.dir" location="build/bin" />
+	<property name="clover.jar" location="lib/clover.jar" />
+	
 	<path id="classpath">
-		<pathelement path="${build.dir}"/>
-		<pathelement path="bricks/src/sneer/hardware/ram/collections/impl/lib/commons-collections-3.2.1.jar"/>
-		<pathelement path="bricks/src/sneer/hardware/io/impl/lib/commons-io-1.4.jar"/>
-		<pathelement path="bricks/src/sneer/hardware/cpu/lang/impl/lib/commons-lang-2.4.jar"/>
-		<pathelement path="bricks/src/sneer/skin/main/dashboard/impl/lib/jxlayer.jar"/>
-		<pathelement path="bricks/src/sneer/pulp/tuples/impl/lib/xstream-1.3.1.jar"/>
-		<pathelement path="bricks/src/sneer/pulp/tuples/impl/lib/prevayler-2.3.jar"/>
-		<pathelement path="bricks/src/sneer/pulp/tuples/impl/lib/xpp3_min-1.1.4c.jar"/>
-		<pathelement path="bricks/src/sneer/pulp/crypto/impl/lib/bcprov-jdk16-139.jar"/>
-		<pathelement path="bricks/src/sneer/software/code/compilers/java/impl/lib/compiler-7-ea-b17-02_aug_2007.jar"/>
-		<pathelement path="bricks/src/snapps/whisper/speex/impl/lib/speex.jar"/>
-		<pathelement path="commons/lib/junit-4.4.jar"/>
-		<pathelement path="commons/lib/jmock-2.5.1/jmock-junit4-2.5.1.jar"/>
-		<pathelement path="commons/lib/jmock-2.5.1/jmock-2.5.1.jar"/>
-		<pathelement path="commons/lib/jmock-2.5.1/hamcrest-library-1.1.jar"/>
-		<pathelement path="commons/lib/jmock-2.5.1/hamcrest-core-1.1.jar"/>
-		<pathelement path="commons/lib/javassist.jar"/>
-		<pathelement path="commons/lib/asm-all-3.1.jar"/>
+		<pathelement path="${bin.dir}"/>
+		<fileset dir="src">
+			<include name='**/*.jar' />
+		</fileset>
+		<fileset dir="lib">
+			<include name='**/*.jar' />
+		</fileset>
 	</path>
 
+	
 	<target name="test" depends="test-execution, test-verification">
+		<antcall target="finalize"/>
 	</target>
 	
-	<target name="testWithClover" depends="init-clover, test-execution, test-verification, clover"/>
+	
+	<target name="testWithClover" depends="init-clover, test-execution, test-verification, clover">
+		<antcall target="finalize"/>		
+	</target>
+	
+	
+	<target name="finalize">
+		<delete dir="${bin.dir}"/>
+		<mkdir dir="build/tests"/>
+		<move todir="build/tests">
+			<fileset dir="${bin.dir}">
+				<exclude name='*.*' />
+				<include name='TEST-*.txt' />
+				<include name='TEST-*.xml' />
+			</fileset>
+		</move>
+	</target>
 	
 	<target name="test-verification" if="junit.failures">
 		<echo>Test failures! Check the output for details.</echo>
 	</target>
+	
 
 	<target name="test-execution" depends="makejar">
 		<junit printsummary="true" failureproperty="junit.failures" fork="yes" timeout="60000">
@@ -44,8 +51,8 @@
 				<path refid="classpath" />
 				<pathelement location="${clover.jar}" />
 			</classpath>
-			<batchtest todir="${build.dir}">
-				<fileset dir="${build.dir}">
+			<batchtest todir="${bin.dir}">
+				<fileset dir="${bin.dir}">
 					<include name="**/tests/*Test.class" />
 				</fileset>
 				<formatter type="plain"/>
@@ -53,129 +60,51 @@
 		</junit>
 	</target>
 
-	<target name="compile" depends="copy-resources">
-
-		<javac srcdir="commons/src"
-				destdir="${build.dir}"
-				listfiles="true"
-				failonerror="true"
-				debug="on"
-				target="1.5"
-				encoding="utf-8">
-			<classpath refid="classpath"/>
+	
+	<target name="compile" depends="clean, copy-resources">
+		<javac srcdir="src"	destdir="${bin.dir}" listfiles="true"
+			   failonerror="true" debug="on" target="1.5" encoding="utf-8">
+			   <classpath refid="classpath"/>
 		</javac>
-
-		<javac srcdir="antlips/src"
-				destdir="${build.dir}"
-				listfiles="true"
-				failonerror="true"
-				debug="on"
-				target="1.5"
-				encoding="utf-8">
-			<classpath refid="classpath"/>
-		</javac>
-
-		<javac srcdir="brickness/src"
-				destdir="${build.dir}"
-				listfiles="true"
-				failonerror="true"
-				debug="on"
-				target="1.5"
-				encoding="utf-8">
-			<classpath refid="classpath"/>
-		</javac>
-
-		<javac srcdir="bricks/src"
-				destdir="${build.dir}"
-				listfiles="true"
-				failonerror="true"
-				debug="on"
-				target="1.5"
-				encoding="utf-8">
-			<classpath refid="classpath"/>
-		</javac>
-
-		<javac srcdir="tests/src"
-				destdir="${build.dir}"
-				listfiles="true"
-				failonerror="true"
-				debug="on"
-				target="1.5"
-				encoding="utf-8">
-			<classpath refid="classpath"/>
-		</javac>
-
 	</target>
 
+	
 	<target name="makejar" depends="compile">
-		<delete dir="build" />
-		<mkdir  dir="build" />
-		<jar destfile="./build/sneer.jar">
-			<fileset dir="../code/bin">
+		<delete file="build/dist"/>
+		<mkdir dir="build/dist"/>
+		<jar destfile="build/dist/sneer.jar">
+			<fileset dir="${bin.dir}">
 				<exclude name='**/*.txt' />
-				<exclude name='spikes/**' />
-				<exclude name='sneer/installer/**' />
-				<exclude name='build/**' />
 				<exclude name='TEST-*.txt' />
 				<exclude name='TEST-*.xml' />
 			</fileset>
 		</jar>
 	</target>
 
-	<target name="copy-resources" depends="init">
-
-		<copy todir="${build.dir}">
-			<fileset dir="commons/src">
+	
+	<target name="copy-resources">
+		<copy todir="${bin.dir}">
+			<fileset dir="src">
 				<include name='**/**'/>
 				<exclude name='**/*.java'/>
 			</fileset>
 		</copy>
-
-		<copy todir="${build.dir}">
-			<fileset dir="antlips/src">
-				<include name='**/**'/>
-				<exclude name='**/*.java'/>
-			</fileset>
-		</copy>
-
-		<copy todir="${build.dir}">
-			<fileset dir="brickness/src">
-				<include name='**/**'/>
-				<exclude name='**/*.java'/>
-			</fileset>
-		</copy>
-
-		<copy todir="${build.dir}">
-			<fileset dir="bricks/src">
-				<include name='**/**'/>
-				<exclude name='**/*.java'/>
-			</fileset>
-		</copy>
-
-		<copy todir="${build.dir}">
-			<fileset dir="tests/src">
-				<include name='**/**'/>
-				<exclude name='**/*.java'/>
-			</fileset>
-		</copy>
-
 	</target>
 	
-	<target name="init">
-		<mkdir dir="${build.dir}"/>
-	</target>
-
+	
 	<target name="clean">
-		<delete dir="${build.dir}"/>
+		<delete dir="${bin.dir}"/>
+		<mkdir dir="${bin.dir}"/>
 	</target>
 
-	<!-- clover support -->
+
+	<target name="clover-report" depends="init-clover, test-execution, clover"/>
+
 	<target name="init-clover">
 		<taskdef resource="cloverlib.xml" classpath="${clover.jar}"/>
 		<clover-setup initString="mycoverage.db"/>
 	</target>
 
-	<target name="clover-report" depends="clean, init-clover, test-execution, clover"/>
 
 	<target name="clover">
 		<fileset dir="." id="clover.sources">

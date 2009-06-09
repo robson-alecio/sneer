@@ -6,6 +6,9 @@
 	<classpathentry kind="lib" path="src/spikes/sneer/pulp/things/impl/lib/lucene-core-2.3.2.jar"/>
 	<classpathentry kind="lib" path="lib/speex.jar"/>
 	<classpathentry kind="lib" path="lib/bcprov-jdk16-139.jar"/>
+	<classpathentry kind="lib" path="lib/junit-4.4.jar"/>
+	<classpathentry kind="lib" path="lib/javassist.jar"/>
+	<classpathentry kind="lib" path="lib/asm-all-3.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/code"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

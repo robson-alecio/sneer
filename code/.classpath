@@ -16,6 +16,7 @@
 	<classpathentry exported="true" kind="lib" path="src/sneer/bricks/hardware/io/impl/lib/commons-io-1.4.jar" sourcepath="bricks/src/sneer/hardware/io/lib/commons-io-1.4-src.zip"/>
 	<classpathentry exported="true" kind="lib" path="src/sneer/bricks/hardware/ram/collections/impl/lib/commons-collections-3.2.1.jar" sourcepath="bricks/src/sneer/hardware/ram/collections/impl/lib/commons-collections-3.2.1-src.zip"/>
 	<classpathentry kind="lib" path="src/sneer/bricks/pulp/crypto/impl/lib/bcprov-jdk16-139.jar"/>
+	<classpathentry kind="lib" path="commons/lib/junit-4.4-src.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="lib" path="src/sneer/bricks/software/code/compilers/java/impl/lib/compiler-7-ea-b17-02_aug_2007.jar"/>
 	<classpathentry kind="lib" path="src/sneer/bricks/snapps/whisper/speex/impl/lib/speex.jar"/>

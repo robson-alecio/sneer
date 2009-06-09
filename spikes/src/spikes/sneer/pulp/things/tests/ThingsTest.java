@@ -89,10 +89,9 @@ public class ThingsTest extends BrickTest {
 		find("Sala consultorio +\"3 quartos\" ", 2);
 		find("\"Sala banheiro janelas\" ", 0);
 
-		find("+Juvevê", 1);
+		find("+Juveve", 1);
 		find("+Juveve", 0);
 
-		
 	}
 
 	private void find(String tags, int thingsToFind) {
@@ -105,20 +104,20 @@ public class ThingsTest extends BrickTest {
 		String name;
 		String description;
 
-		name = "Apartamento Juvevê 2 Quartos";
-		description = "apartamento Sala Comercial em Bom estado. Bom para consultorio. Face sul. Sito a Av João Gualberto 1673 sala 41. R$42700,00 a vista. Aceita troca por carro de menor valor.";
+		name = "Apartamento Juveve 2 Quartos";
+		description = "apartamento Sala Comercial em Bom estado. Bom para consultorio. Face sul. Sito a Av Joao Gualberto 1673 sala 41. R$42700,00 a vista. Aceita troca por carro de menor valor.";
 		_subject.create(name, description);
 		
 		name = "Apartamento Residencial - Bacacheri";
-		description = "Valor: R$ 194.500,00 Area: 163,00m², mobiliado, ocupado, com playground, BELÍSSIMO APTO CONTENDO 3 QUARTOS SENDO 1 SUITE COM ARMÁRIOS E PISO EM MADEIRA, AMPLA SALA EM (L) TAMBEM COM PISO EM MADEIRA, SANCAS DE GESSO, PINTURA TEXTURIZADA, QUARTOS DE SOLTEIRO COM ARMÁRIOS,ESQUADRIS DE ALUMINIO, COZINHA COM ARMÁRIOS E AQUECIMENTO Á GÁS, PREDIO COM 02 SALÕES DE FESTAS, 02 CHURRASQUEIRAS COLETIVAS, SALÃO DE JOGOS E SALA DE GINASTICA, ARQUITETURA MODERNA E PASTILHADA. PRÓXIMO AO WALL MART DO CABRAL, BANCOS ESCOLAS FARMÁCIAS E COMERCIO EM GERAL. ESTUDO PROPOSTA COM IMÓVEL DE MAIOR VALOR EM CONDOMINIO FECHADO. CONFIRA E FAÇA SUA PROPOSTA";
+		description = "Valor: R$ 194.500,00 Area: 163,00m2, mobiliado, ocupado, com playground, BELISSIMO APTO CONTENDO 3 QUARTOS SENDO 1 SUITE COM ARMARIOS E PISO EM MADEIRA, AMPLA SALA EM (L) TAMBEM COM PISO EM MADEIRA, SANCAS DE GESSO, PINTURA TEXTURIZADA, QUARTOS DE SOLTEIRO COM ARMARIOS,ESQUADRIS DE ALUMINIO, COZINHA COM ARMARIOS E AQUECIMENTO, PREDIO COM 02 SALOES DE FESTAS, 02 CHURRASQUEIRAS COLETIVAS, SALAO DE JOGOS E SALA DE GINASTICA, ARQUITETURA MODERNA E PASTILHADA. PROXIMO AO WALL MART DO CABRAL, BANCOS ESCOLAS FARMACIAS E COMERCIO EM GERAL. ESTUDO PROPOSTA COM IMOVEL DE MAIOR VALOR EM CONDOMINIO FECHADO. CONFIRA E FACA SUA PROPOSTA";
 		_subject.create(name, description);
 
 		name = "Apartamento Residencial - Barreirinha";
-		description = "Valor: R$ 66.000,00 Area: 50,00m² apartamento no Cond. Sta. Efigênia II, 3º andar, 02 quartos, sala, cozinha, área serviço e bwc, piso taco, próximo ao Terminal Barreirinha, com ônibus, escola, Posto de Saúde. Rua Professor Guilherme Butler";
+		description = "Valor: R$ 66.000,00 Area: 50,00m2 apartamento no Cond. Sta. Efigenia II, 3o andar, 02 quartos, sala, cozinha, Area servico e bwc, piso taco, proximo ao Terminal Barreirinha, com onibus, escola, Posto de Sau�de. Rua Professor Guilherme Butler";
 		_subject.create(name, description);
 		
 		name = "Casa Residencial - Atuba";
-		description = "Valor: R$ 130.000,00 Area: 120,00m² Casa com 3 quartos sala cozinha banheiro com piso em parquet, janelas de ferro com grade toda murada e com grade na frente, quintal com deposito em alvenaria, cozinha com armarios.";
+		description = "Valor: R$ 130.000,00 Area: 120,00m2 Casa com 3 quartos sala cozinha banheiro com piso em parquet, janelas de ferro com grade toda murada e com grade na frente, quintal com deposito em alvenaria, cozinha com armarios.";
 		_subject.create(name, description);
 	}
 
@@ -128,6 +127,4 @@ public class ThingsTest extends BrickTest {
 			result.append("word" + i + " ");
 		return result.toString();
 	}
-
-	
 }

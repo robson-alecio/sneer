@@ -1,4 +1,4 @@
-package functional.freedom7;
+package functionaltests.freedom7;
 
 import static sneer.commons.environments.Environments.my;
 
@@ -9,8 +9,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import sneer.software.code.compilers.java.JavaCompiler;
-import functional.SovereignFunctionalTestBase;
-import functional.SovereignParty;
+import functionaltests.SovereignFunctionalTestBase;
+import functionaltests.SovereignParty;
 
 public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	

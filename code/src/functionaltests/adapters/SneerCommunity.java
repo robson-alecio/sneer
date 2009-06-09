@@ -1,4 +1,4 @@
-package functional.adapters;
+package functionaltests.adapters;
 
 import static sneer.commons.environments.Environments.my;
 
@@ -15,8 +15,8 @@ import sneer.commons.environments.EnvironmentUtils;
 import sneer.hardware.cpu.lang.Lang;
 import sneer.pulp.network.Network;
 import testutils.network.InProcessNetwork;
-import functional.SovereignCommunity;
-import functional.SovereignParty;
+import functionaltests.SovereignCommunity;
+import functionaltests.SovereignParty;
 
 
 public class SneerCommunity implements SovereignCommunity {

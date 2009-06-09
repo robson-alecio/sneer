@@ -1,4 +1,4 @@
-package functional;
+package functionaltests;
 
 import java.io.File;
 

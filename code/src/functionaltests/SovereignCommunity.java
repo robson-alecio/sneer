@@ -1,4 +1,4 @@
-package functional;
+package functionaltests;
 
 
 public interface SovereignCommunity {

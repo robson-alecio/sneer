@@ -1,8 +1,8 @@
-package functional.adapters;
+package functionaltests.adapters;
 
 import sneer.brickness.Brick;
 import sneer.brickness.PublicKey;
-import functional.SovereignParty;
+import functionaltests.SovereignParty;
 
 @Brick
 public interface SneerParty extends SovereignParty {

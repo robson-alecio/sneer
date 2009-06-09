@@ -1,4 +1,4 @@
-package functional.freedom7;
+package functionaltests.freedom7;
 
 import static sneer.commons.environments.Environments.my;
 

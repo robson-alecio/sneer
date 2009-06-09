@@ -1,9 +1,9 @@
-package functional.freedom1;
+package functionaltests.freedom1;
 
 import org.junit.Test;
 
-import functional.SovereignFunctionalTestBase;
-import functional.SovereignParty;
+import functionaltests.SovereignFunctionalTestBase;
+import functionaltests.SovereignParty;
 
 
 public abstract class Freedom1TestBase extends SovereignFunctionalTestBase {

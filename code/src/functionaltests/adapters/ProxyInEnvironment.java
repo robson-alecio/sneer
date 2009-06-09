@@ -1,4 +1,4 @@
-package functional.adapters;
+package functionaltests.adapters;
 
 import static sneer.commons.environments.Environments.my;
 

@@ -1,4 +1,4 @@
-package functional.freedom2;
+package functionaltests.freedom2;
 
 import static sneer.commons.environments.Environments.my;
 
@@ -6,8 +6,8 @@ import org.junit.Test;
 
 import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.SignalUtils;
-import functional.SovereignFunctionalTestBase;
-import functional.SovereignParty;
+import functionaltests.SovereignFunctionalTestBase;
+import functionaltests.SovereignParty;
 
 public abstract class Freedom2TestBase extends SovereignFunctionalTestBase {
 

@@ -1,4 +1,4 @@
-package functional.adapters.impl;
+package functionaltests.adapters.impl;
 
 import static sneer.commons.environments.Environments.my;
 
@@ -25,8 +25,8 @@ import sneer.pulp.reactive.Signal;
 import sneer.pulp.reactive.collections.ListSignal;
 import sneer.pulp.threads.Threads;
 import sneer.software.bricks.Bricks;
-import functional.SovereignParty;
-import functional.adapters.SneerParty;
+import functionaltests.SovereignParty;
+import functionaltests.adapters.SneerParty;
 
 class SneerPartyImpl implements SneerParty {
 	

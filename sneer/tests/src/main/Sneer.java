@@ -44,7 +44,7 @@ public class Sneer {
 
 	
 	private static File sneerHome() {
-		return new File(userHome(), ".sneer");
+		return new File(userHome(), "sneer");
 	}
 	
 	private static String userHome() {

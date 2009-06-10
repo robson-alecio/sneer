@@ -17,6 +17,7 @@ class Installation {
 	private File _sneerTmp;
 	private File _sneerTmpBin;
 
+	
 	Installation(File sneerHome) throws IOException {
 		_sneerHome = sneerHome;
 		_sneerTmp = new File(_sneerHome.getParentFile(), ".sneertmp");

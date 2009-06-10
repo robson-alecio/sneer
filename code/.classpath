@@ -10,7 +10,6 @@
 	<classpathentry exported="true" kind="lib" path="src/sneer/bricks/hardware/ram/collections/impl/lib/commons-collections-3.2.1.jar" sourcepath="bricks/src/sneer/hardware/ram/collections/impl/lib/commons-collections-3.2.1-src.zip"/>
 	<classpathentry kind="lib" path="src/sneer/bricks/pulp/crypto/impl/lib/bcprov-jdk16-139.jar"/>
 	<classpathentry kind="lib" path="lib/asm-all-3.1.jar"/>
-	<classpathentry kind="lib" path="lib/clover.jar"/>
 	<classpathentry kind="lib" path="lib/javassist.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.4.jar"/>
 	<classpathentry kind="lib" path="lib/jmock-2.5.1/hamcrest-core-1.1.jar"/>

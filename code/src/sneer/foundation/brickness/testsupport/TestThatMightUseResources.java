@@ -33,11 +33,28 @@ public abstract class TestThatMightUseResources extends AssertUtils {
 		for (Thread thread : activeThreadsAfterTest) {
 			if(_activeThreadsBeforeTest.contains(thread)) continue;
 
-			if (thread.getState() == Thread.State.TERMINATED) continue;
+			if (waitForTermination(thread)) continue;
 
 			final LeakingThreadStopped plug = new LeakingThreadStopped(thread, "This thread was leaked by test: " + this.getClass() + " and it's now being stopped!");
 			plug.printStackTrace();
 			thread.stop(plug);
+		}
+	}
+
+	private boolean waitForTermination(Thread thread) {
+		long t0 = System.currentTimeMillis();
+		while (true) {
+			if (thread.getState() == Thread.State.TERMINATED) return true;
+			if (System.currentTimeMillis() - t0 > 2000) return false;
+			sleep(10);
+		}
+	}
+
+	private void sleep(long millis) {
+		try {
+			Thread.sleep(millis);
+		} catch (InterruptedException e) {
+			throw new IllegalStateException(e);
 		}
 	}
 

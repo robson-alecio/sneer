@@ -3,6 +3,7 @@ package sneer.bricks.pulp.threads.mocks;
 import java.util.ArrayList;
 import java.util.List;
 
+import sneer.bricks.pulp.threads.Latch;
 import sneer.bricks.pulp.threads.Stepper;
 import sneer.bricks.pulp.threads.Threads;
 
@@ -27,7 +28,7 @@ public class ThreadsMock implements Threads {
 	}
 
 	@Override
-	public Runnable createNotifier() {
+	public Latch newLatch() {
 		throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); // Implement
 	}
 

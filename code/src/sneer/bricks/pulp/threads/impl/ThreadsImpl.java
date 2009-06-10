@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import sneer.bricks.pulp.own.name.OwnNameKeeper;
+import sneer.bricks.pulp.threads.Latch;
 import sneer.bricks.pulp.threads.Stepper;
 import sneer.bricks.pulp.threads.Threads;
 import sneer.foundation.commons.environments.Environment;
@@ -17,7 +18,7 @@ class ThreadsImpl implements Threads {
 
 	private static final Set<Object> _reactors = new HashSet<Object>();
 	private final OwnNameKeeper _ownNameKeeper = my(OwnNameKeeper.class);
-	private final Object _crashMonitor = new Object();
+	private final Latch _crash = newLatch();
 
 	@Override
 	public void waitWithoutInterruptions(Object object) {
@@ -64,10 +65,8 @@ class ThreadsImpl implements Threads {
 	}
 
 	@Override
-	public Runnable createNotifier() {
-		return new Runnable() { @Override synchronized public void run() {
-			notify();
-		}};
+	public Latch newLatch() {
+		return new LatchImpl();
 	}
 
 	@Override
@@ -97,19 +96,17 @@ class ThreadsImpl implements Threads {
 	/**Waits until crashAllThreads() is called. */
 	@Override
 	public void waitUntilCrash() {
-		waitWithoutInterruptions(_crashMonitor);
+		_crash.await();
 	}
 
 	@Override
 	public void crashAllThreads() {
-		doCrashAllThreads();
+		//doCrashAllThreads();
 		
-		synchronized (_crashMonitor) {
-			_crashMonitor.notifyAll();
-		}
+		_crash.trip();
 	}
 
-	private void doCrashAllThreads() {
-		throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); // Implement
-	}
+//	private void doCrashAllThreads() {
+//		throw new sneer.foundation.commons.lang.exceptions.NotImplementedYet(); // Implement
+//	}
 }

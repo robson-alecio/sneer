@@ -7,6 +7,7 @@ import java.text.ParseException;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.synth.SynthLookAndFeel;
 
 public class InstallationWizard extends JFrame{
@@ -28,6 +29,7 @@ public class InstallationWizard extends JFrame{
 		new Installation(_sneerHome);
 		
 		congratulations();
+		loadMetalLookAndFeel();
 	}
 
 	private void welcome() {
@@ -97,4 +99,7 @@ public class InstallationWizard extends JFrame{
 		_synth.load(InstallationWizard.class.getResource("synth.xml"));
 	}
 
+	private static void loadMetalLookAndFeel() throws UnsupportedLookAndFeelException, ParseException, IOException {
+		UIManager.setLookAndFeel(new MetalLookAndFeel());
+	}
 }

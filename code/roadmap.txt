@@ -1,6 +1,8 @@
 ﻿TASKS
 =========
 
+	- Installer Background - Gray instead of white. 	
+
 	- [Sandro] Webstart
 		- test with hudson
 

@@ -45,7 +45,7 @@ class GUIImpl implements GUI {
 
 	private void introduceMetadataInitializer(CtClass ctClass) {
 		try {
-			ctClass.makeClassInitializer().insertAfter("natures.gui.BrickMetadata.ENVIRONMENT = sneer.commons.environments.Environments.my(sneer.commons.environments.Environment.class);");
+			ctClass.makeClassInitializer().insertAfter("natures.gui.BrickMetadata.ENVIRONMENT = sneer.foundation.commons.environments.Environments.my(sneer.foundation.commons.environments.Environment.class);");
 		} catch (CannotCompileException e) {
 			throw new IllegalStateException(e);
 		}

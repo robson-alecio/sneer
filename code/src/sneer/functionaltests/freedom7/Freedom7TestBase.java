@@ -125,7 +125,7 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	}
 
 	private void writeY(SourceFileWriter writer) throws IOException {
-		writer.write("freedom7.y.Y", "@sneer.brickness.Brick public interface Y {}");
+		writer.write("freedom7.y.Y", "@sneer.foundation.brickness.Brick public interface Y {}");
 		writer.write("freedom7.y.impl.YImpl",
 				"class YImpl implements freedom7.y.Y {\n" +
 					"public YImpl() {\n" +
@@ -135,7 +135,7 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 	}
 
 	private void writeV(SourceFileWriter writer) throws IOException {
-		writer.write("freedom7.v.V", "@sneer.brickness.Brick public interface V {}");
+		writer.write("freedom7.v.V", "@sneer.foundation.brickness.Brick public interface V {}");
 		writer.write("freedom7.v.VTuple", "public class VTuple extends sneer.brickness.Tuple {}");
 		writer.write("freedom7.v.impl.VImpl",
 				"class VImpl implements freedom7.v.V {\n" +
@@ -154,7 +154,7 @@ public abstract class Freedom7TestBase extends SovereignFunctionalTestBase {
 
 	private void writeW(final SourceFileWriter writer) throws IOException {
 		writer.write("freedom7.w.W",
-				"@sneer.brickness.Brick\n" +
+				"@sneer.foundation.brickness.Brick\n" +
 				"public interface W {\n" +
 					"freedom7.y.Y y();\n" +
 				"}");

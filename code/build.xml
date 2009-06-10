@@ -16,12 +16,12 @@
 	</path>
 
 	
-	<target name="test" depends="test-execution, test-verification">
+	<target name="test" depends="makejar, test-execution, test-verification">
 		<antcall target="finalize"/>
 	</target>
 	
 	
-	<target name="testWithClover" depends="init-clover, test-execution, test-verification, clover">
+	<target name="testWithClover" depends="init-clover, compile, test-execution, test-verification, clover">
 		<antcall target="finalize"/>		
 	</target>
 	
@@ -41,7 +41,7 @@
 	</target>
 	
 
-	<target name="test-execution" depends="makejar">
+	<target name="test-execution">
 		<junit printsummary="true" failureproperty="junit.failures" fork="yes" timeout="60000">
 			<formatter type="xml"/>
 			<sysproperty key="java.awt.headless" value="${java.awt.headless}" />
@@ -106,11 +106,7 @@
 
 	<target name="clover">
 		<fileset dir="." id="clover.sources">
-			<include name="commons/src/**/*.java" />
-			<include name="antlips/src/**/*.java" />
-			<include name="brickness/src/**/*.java" />
-			<include name="bricks/src/**/*.java" />
-			<include name="tests/src/**/*.java" />
+			<include name="src/**/*.java" />
 		</fileset>
 		
 		<clover-report>

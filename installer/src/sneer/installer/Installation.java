@@ -11,13 +11,10 @@ import java.util.jar.JarInputStream;
 
 class Installation {
 
-	private final String _jarToDownload = "http://sovereigncomputing.net/hudson/job/Sneer/lastBuild/artifact/code/build/dist/sneer.jar";
-
 	private File _sneerHome;
 	private File _sneerTmp;
 	private File _sneerTmpBin;
 
-	
 	Installation(File sneerHome) throws IOException {
 		_sneerHome = sneerHome;
 		_sneerTmp = new File(_sneerHome.getParentFile(), ".sneertmp");
@@ -40,7 +37,20 @@ class Installation {
 	}
 	
 	private void addBinaries() throws IOException {
-		File file = download(new URL(_jarToDownload));
+		String jarFileName = this.getClass().getResource("").toString()
+		.replace("jar:file:/", "")
+		.replace("!/sneer/installer/", "")
+		.replace("sneer-bootstrap.jar", "sneer.jar");
+
+		if(!jarFileName.contains("http://")){
+			extractFiles(new File(jarFileName));
+			return;
+		}
+
+		int index = jarFileName.indexOf("http://");
+		jarFileName = jarFileName.substring(index, jarFileName.length());
+		File file = download(new URL(jarFileName));
+		
 		extractFiles(file);
 	}
 

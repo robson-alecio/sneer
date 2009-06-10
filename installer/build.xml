@@ -32,7 +32,7 @@
 		<condition property="jnlp.codebase"
 			value="${env.HUDSON_URL}job/${env.JOB_NAME}/${env.BUILD_NUMBER}/artifact/installer/build" 
 			else="file:///${build.dir}">
-			<equals arg1="${env.JOB_NAME}" arg2="Installer"/>
+			<equals arg1="${env.JOB_NAME}" arg2="Sneer"/>
 		</condition>
 		<echo message="${jnlp.codebase}"/>
 	
@@ -48,6 +48,7 @@
 				<update check="timeout" policy="always" />
 				<resources>
 					<jar href="sneer-bootstrap.jar" />
+					<jar href="sneer.jar" />
 					<j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se" />
 				</resources>
 				<security>
@@ -68,6 +69,7 @@
 				<exclude name='**/*.java' />
 			</fileset>
 		</jar>
+		<copy file="../code/build/dist/sneer.jar" todir="build"/>
 		<delete dir="${bin.dir}"/>
 	</target>
 
@@ -86,6 +88,7 @@
 	
 	<target name="signJars" depends="makeJars">
 		<signjar keystore="sneerKeystore" jar="./build/sneer-bootstrap.jar" alias="bihaiko" storepass="amanda" />
+		<signjar keystore="sneerKeystore" jar="./build/sneer.jar" alias="bihaiko" storepass="amanda" />
 	</target>
 
 </project>

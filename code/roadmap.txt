@@ -1,6 +1,8 @@
 ﻿TASKS
 =========
 
+	- Installer Background - Gray instead of white. 	
+
 	- [Sandro] Webstart
 		- test with hudson
 
@@ -23,6 +25,7 @@
 		- Make threads wait on a monitor and create other method that will notifyAll, such as wakeAllSleepers.
 
 	- [Igor] Clean thread leaks during tests (see TestThatMightUseResources for details)
+		- FYI: ThreadThatMightUseResources now waits up to 2000 millis for threads to terminate alone before killing them and printing their stack to System.err;
 
 	- [Bamboo] Unused code:
 		- GUIImpl.defineBrickMetadata param

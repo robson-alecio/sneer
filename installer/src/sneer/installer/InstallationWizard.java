@@ -84,6 +84,7 @@ public class InstallationWizard extends JFrame{
 	private Runnable exitDialog() {
 		return new Runnable() { @Override public void run() {
 			Dialogs.show(WIZARD_TITLE, "This wizard will now exit with no changes to your system.", systemExit(), "Exit");
+			System.exit(0);
 		}};
 	}
 

@@ -2,6 +2,8 @@ code/antlips.xml
 code/bin
 code/build
 code/.byecycle
+code/clover
+code/clover.xml
 snuggin/snuggin/bin
 webstart
 installer/bin

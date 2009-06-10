@@ -37,24 +37,13 @@ class Installation {
 	}
 	
 	private void addBinaries() throws IOException {
-		String jarFileName = this.getClass().getResource("").toString()
-		.replace("jar:file:/", "")
-		.replace("!/sneer/installer/", "")
-		.replace("sneer-bootstrap.jar", "sneer.jar");
-
-		if(!jarFileName.contains("http://")){
-			extractFiles(new File(jarFileName));
-			return;
-		}
-
-		int index = jarFileName.indexOf("http://");
-		jarFileName = jarFileName.substring(index, jarFileName.length());
-		File file = download(new URL(jarFileName));
-		
+		URL jarFileName = this.getClass().getResource("/sneer.jar");
+		IOUtils.write(new  File(_sneerTmp, "log.txt"), "jar file url: " + jarFileName.toString());
+		File file = extractJar(jarFileName);
 		extractFiles(file);
 	}
 
-	private File download(URL url) throws IOException {
+	private File extractJar(URL url) throws IOException {
 		File file =  File.createTempFile("sneer", ".jar");
 		file.deleteOnExit();
 

@@ -48,7 +48,6 @@
 				<update check="timeout" policy="always" />
 				<resources>
 					<jar href="sneer-bootstrap.jar" />
-					<jar href="sneer.jar" />
 					<j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se" />
 				</resources>
 				<security>
@@ -68,8 +67,10 @@
 				<include name='**/*.*' />
 				<exclude name='**/*.java' />
 			</fileset>
+			<fileset dir="../code/build/dist/">
+				<include name='sneer.jar' />
+			</fileset>
 		</jar>
-		<copy file="../code/build/dist/sneer.jar" todir="build"/>
 		<delete dir="${bin.dir}"/>
 	</target>
 
@@ -88,7 +89,6 @@
 	
 	<target name="signJars" depends="makeJars">
 		<signjar keystore="sneerKeystore" jar="./build/sneer-bootstrap.jar" alias="bihaiko" storepass="amanda" />
-		<signjar keystore="sneerKeystore" jar="./build/sneer.jar" alias="bihaiko" storepass="amanda" />
 	</target>
 
 </project>

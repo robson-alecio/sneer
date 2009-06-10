@@ -8,6 +8,7 @@ import java.util.TreeSet;
 import sneer.bricks.hardware.cpu.timebox.Timebox;
 import sneer.bricks.pulp.clock.Clock;
 import sneer.bricks.pulp.exceptionhandling.ExceptionHandler;
+import sneer.bricks.pulp.threads.Latch;
 import sneer.bricks.pulp.threads.Stepper;
 import sneer.bricks.pulp.threads.Threads;
 import sneer.foundation.commons.lang.ByRef;
@@ -46,11 +47,9 @@ class ClockImpl implements Clock {
 
 	@Override
 	public void sleepAtLeast(long millis) {
-		Runnable notifier = my(Threads.class).createNotifier();
-		synchronized (notifier) {
-			wakeUpInAtLeast(millis, notifier);
-			my(Threads.class).waitWithoutInterruptions(notifier);
-		}
+		Latch latch = my(Threads.class).newLatch();
+		wakeUpInAtLeast(millis, latch);
+		latch.await();
 	}
 
 	@Override

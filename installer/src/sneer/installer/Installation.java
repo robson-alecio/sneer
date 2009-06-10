@@ -11,6 +11,8 @@ import java.util.jar.JarInputStream;
 
 class Installation {
 
+	private final String _jarToDownload = "http://sovereigncomputing.net/hudson/job/Sneer/lastBuild/artifact/code/build/dist/sneer.jar";
+
 	private File _sneerHome;
 	private File _sneerTmp;
 	private File _sneerTmpBin;
@@ -37,18 +39,18 @@ class Installation {
 	}
 	
 	private void addBinaries() throws IOException {
-		String jarFileName = "http://sovereigncomputing.net/hudson/job/Sneer/lastBuild/artifact/sneer/build/sneer.jar";
-		extractFiles(new URL(jarFileName));
+		File file = download(new URL(_jarToDownload));
+		extractFiles(file);
 	}
 
-	private void extractFiles(URL url) throws IOException {
+	private File download(URL url) throws IOException {
 		File file =  File.createTempFile("sneer", ".jar");
 		file.deleteOnExit();
 
 		InputStream input = url.openStream();
 		IOUtils.copyToFile(input, file);
 		input.close();
-		extractFiles(file);
+		return file;
 	}
 	
 	private void extractFiles(File src) throws IOException {

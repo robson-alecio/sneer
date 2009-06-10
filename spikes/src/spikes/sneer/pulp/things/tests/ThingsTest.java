@@ -85,7 +85,7 @@ public class ThingsTest extends BrickTest {
 		find("Apartamento", 3);
 		find("+Apartamento +mobiliado", 1);
 		
-		find("Sala consultorio +3 +quartos", 2);
+		find("Sala consultorio +3 +quartos", 3);
 		find("Sala consultorio +\"3 quartos\" ", 2);
 		find("\"Sala banheiro janelas\" ", 0);
 
@@ -113,7 +113,7 @@ public class ThingsTest extends BrickTest {
 		_subject.create(name, description);
 
 		name = "Apartamento Residencial - Barreirinha";
-		description = "Valor: R$ 66.000,00 Area: 50,00m2 apartamento no Cond. Sta. Efigenia II, 3o andar, 02 quartos, sala, cozinha, Area servico e bwc, piso taco, proximo ao Terminal Barreirinha, com onibus, escola, Posto de Sau�de. Rua Professor Guilherme Butler";
+		description = "Valor: R$ 66.000,00 Area: 50,00m2 apartamento no Cond. Sta. Efigenia II, 3º andar, 02 quartos, sala, cozinha, Area servico e bwc, piso taco, proximo ao Terminal Barreirinha, com onibus, escola, Posto de Saúde. Rua Professor Guilherme Butler";
 		_subject.create(name, description);
 		
 		name = "Casa Residencial - Atuba";

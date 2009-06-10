@@ -85,12 +85,12 @@ public class ThingsTest extends BrickTest {
 		find("Apartamento", 3);
 		find("+Apartamento +mobiliado", 1);
 		
-		find("Sala consultorio +3 +quartos", 3);
+		find("Sala consultorio +3 +quartos", 2);
 		find("Sala consultorio +\"3 quartos\" ", 2);
 		find("\"Sala banheiro janelas\" ", 0);
 
 		find("+Juveve", 1);
-		find("+Juveve", 0);
+		find("+Juveves", 0);
 
 	}
 

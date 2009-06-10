@@ -1,8 +1,6 @@
 ﻿TASKS
 =========
 
-	- [Sandro] Antlips - Delete
-
 	- [Sandro] Webstart
 		- test with hudson
 

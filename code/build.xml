@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="AntBuild" default="test">
+<project name="Sneer" default="test">
 
 	<property name="bin.dir" location="build/bin" />
 	<property name="clover.jar" location="lib/clover.jar" />

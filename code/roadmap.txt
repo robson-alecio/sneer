@@ -3,9 +3,6 @@
 
 	- Installer Background - Gray instead of white. 	
 
-	- [Sandro] Webstart
-		- test with hudson
-
 	- "Rebuild"
 		- [Sandro] Main menu item.
 		- [Klaus] Rebuild functionality.

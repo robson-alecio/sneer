@@ -3,9 +3,6 @@
 	<style id="default">
 		<font name="Verdana" size="13" />
 		<insets top="2" left="2" bottom="2" right="2" />
-		<state>
-			<color value="WHITE" type="BACKGROUND"/>
-		</state>		
 	</style>
 
 	<style id="button">

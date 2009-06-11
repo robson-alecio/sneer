@@ -1,8 +1,6 @@
 ﻿TASKS
 =========
 
-	- Installer Background - Gray instead of white. 	
-
 	- "Rebuild"
 		- [Sandro] Main menu item.
 		- [Klaus] Rebuild functionality.

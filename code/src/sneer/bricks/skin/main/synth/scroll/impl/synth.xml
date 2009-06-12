@@ -33,8 +33,8 @@
 
 	<style id="scrollbarTrackStyle">
 	    <state>
-	        <imagePainter method="scrollBarTrackBackground" path="scroll_track_horizontal.png" direction="horizontal" center="true" />
-	        <imagePainter method="scrollBarTrackBackground" path="scroll_track_vertical.png" direction="vertical" center="true" />
+	        <imagePainter method="scrollBarTrackBackground" path="scroll_track_horizontal.png" direction="horizontal" center="true"/>
+	        <imagePainter method="scrollBarTrackBackground" path="scroll_track_vertical.png" direction="vertical" center="true"/>
 	    </state>
 	</style>
 	<bind style="scrollbarTrackStyle" type="REGION" key="ScrollBarTrack" />

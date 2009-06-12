@@ -23,15 +23,20 @@ import sneer.bricks.snapps.gis.map.MapRenderer;
 
 class MapRendererImpl implements MapRenderer{
 
-	private int _zoom = 15;
+	private int _zoom = 10;
 	private int _mapSize = 600;
+
+	@Override
+	public Signal<Image> render(Location location) {
+		return render(location, _zoom);
+	}
 	
 	@Override
-	public Signal<Image> render(final Location location) {
+	public Signal<Image> render(final Location location, final int zoom) {
 		final Register<Image> register = my(Signals.class).newRegister(null);
 		my(Threads.class).startDaemon("MapLoader",  new Runnable(){ @Override public void run() {
 			try {
-				map(location, register);
+				map(location, register, zoom);
 			} catch (IOException e) {
 				my(Logger.class).log(e);
 			}
@@ -39,9 +44,9 @@ class MapRendererImpl implements MapRenderer{
 		return register.output();
 	}
 
-	private void map(Location location, Register<Image> register) throws IOException {
+	private void map(Location location, Register<Image> register, int zoom) throws IOException {
 		BufferedImage image = null;
-		String data = "center=" + location.latitude() + "," + location.longitude() + "&zoom=" + _zoom + "&size=" + _mapSize + "x" + _mapSize
+		String data = "center=" + location.latitude() + "," + location.longitude() + "&zoom=" + zoom + "&size=" + _mapSize + "x" + _mapSize
 						  + "&key=ABQIAAAAipu2vgwNjShyGzhINGjXvRT2yXp_ZAY8_ufC3CFXhHIE1NvwkxTKgtleBywtdYBkXFEBvmkPMqvBzg";
 		URL url = new URL("http://maps.google.com/staticmap?" + data);
 		byte[] imageData = my(IO.class).streams().readBytesAndClose(url.openStream());

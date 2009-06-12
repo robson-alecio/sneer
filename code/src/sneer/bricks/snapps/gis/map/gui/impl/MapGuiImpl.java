@@ -3,14 +3,16 @@ package sneer.bricks.snapps.gis.map.gui.impl;
 import static sneer.foundation.commons.environments.Environments.my;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 import javax.swing.BoundedRangeModel;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -29,7 +31,7 @@ import sneer.bricks.snapps.gis.map.gui.MapGui;
 
 class MapGuiImpl implements MapGui{
 
-	private String _defaultAddress = "R Juquiá 114, São Paulo";
+	private String _defaultAddress = "Florianópolis";
 
 	private final JLabel _mapHolder = new JLabel();
 	private final JTextField _address = new JTextField(_defaultAddress);
@@ -37,12 +39,13 @@ class MapGuiImpl implements MapGui{
 	
 	private Reception _locationReception;
 	private Reception _imageReception;
+	private int _zoom = 10;
 
 	MapGuiImpl() {
 		my(InstrumentRegistry.class).registerInstrument(this);
 	}
 	
-	private void updateAddress(final String address) {
+	private void updateAddress(final String address, final int zoom) {
 		_address.setEnabled(false);
 		_address.update(_address.getGraphics());
 		
@@ -51,24 +54,34 @@ class MapGuiImpl implements MapGui{
 		
 		_locationReception = my(Signals.class).receive(my(Locations.class).find(address), 
 			new Consumer<Location>(){ @Override public void consume(Location value) {
-				renderLocation(value);
+				renderLocation(value, zoom);
 			}});
 	}
 
-	protected void renderLocation(Location location) {
+	protected void renderLocation(Location location, int zoom) {
+
+		if(zoom>17){
+			zoom=17;
+			_zoom=17;
+		}
+		
+		if(zoom<0){
+			zoom=0;
+			_zoom=0;
+		}
+		
 		if(location==null) return;
 		
 		if(_imageReception!=null)
 			_imageReception.dispose();
 	
-		_imageReception = my(Signals.class).receive(my(MapRenderer.class).render(location), 
+		_imageReception = my(Signals.class).receive(my(MapRenderer.class).render(location, zoom), 
 			new Consumer<Image>(){ @Override public void consume(Image value) {
 				paintImage(value);
 			}});
 	}
 
 	protected void paintImage(Image image) {
-		_address.setEnabled(true);
 
 		if(image==null) 
 			return;
@@ -78,6 +91,7 @@ class MapGuiImpl implements MapGui{
 		my(GuiThread.class).invokeLater(new Runnable(){ @Override public void run() {
 			centerScrollBar(_scroll.getVerticalScrollBar(), _scroll.getSize().height/2);
 			centerScrollBar(_scroll.getHorizontalScrollBar(), _scroll.getSize().width/2);
+			_address.setEnabled(true);
 		}});
 	}
 	
@@ -95,16 +109,32 @@ class MapGuiImpl implements MapGui{
 	@Override
 	public void init(InstrumentPanel container) {
 		container.contentPane().setLayout(new BorderLayout());
-		updateAddress(_defaultAddress);
-
-		_address.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) {
-			updateAddress(_address.getText());
-		}});
-		_mapHolder.setBackground(Color.white);
-		_scroll.getViewport().add(_mapHolder);
 		container.contentPane().add(_address, BorderLayout.NORTH);
 		container.contentPane().add(_scroll, BorderLayout.CENTER);
-		container.contentPane().setVisible(true);
+
+		_scroll.getViewport().add(_mapHolder);
+		updateAddress(_defaultAddress, _zoom);
+		
+		JMenuItem zoomIn = new JMenuItem("Zoom In");
+		container.actions().add(zoomIn);
+		zoomIn.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
+			updateAddress(_address.getText(), _zoom++);
+		}});
+		
+		JMenuItem zoomOut = new JMenuItem("Zoom Out");
+		container.actions().add(zoomOut);
+		zoomOut.addActionListener(new ActionListener(){ @Override public void actionPerformed(ActionEvent e) {
+			updateAddress(_address.getText(), _zoom++);
+		}});
+
+		_address.addActionListener(new ActionListener() { @Override public void actionPerformed(ActionEvent e) {
+			updateAddress(_address.getText(), _zoom);
+		}});
+
+		_mapHolder.addMouseWheelListener(new MouseWheelListener(){ @Override public void mouseWheelMoved(MouseWheelEvent event) {
+			_zoom = _zoom + event.getWheelRotation();
+			updateAddress(_address.getText(), _zoom);
+		}});
 	}
 
 	@Override

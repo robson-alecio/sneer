@@ -10,4 +10,5 @@ import sneer.foundation.brickness.Brick;
 public interface MapRenderer {
 
 	Signal<Image> render(Location location);
+	Signal<Image> render(Location location, int zoom);
 }

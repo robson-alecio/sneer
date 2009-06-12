@@ -56,6 +56,7 @@ public class SneerSession {
 				sneer.bricks.hardware.log.gui.LogConsole.class,
 				sneer.bricks.software.code.compilers.gui.RebuildMenu.class,
 				sneer.bricks.snapps.contacts.hardcoded.HardcodedContacts.class,
+				sneer.bricks.snapps.maps.gui.LocationGui.class,
 		};
 	}
 }

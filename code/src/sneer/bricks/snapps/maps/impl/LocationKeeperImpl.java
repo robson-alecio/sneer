@@ -1,17 +1,17 @@
-package spikes.snapps.location.impl;
+package sneer.bricks.snapps.maps.impl;
 
 import static sneer.foundation.commons.environments.Environments.my;
 import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
-import spikes.snapps.location.LocationKeeper;
+import sneer.bricks.snapps.maps.LocationKeeper;
 
-public class LocationKeeperImpl implements LocationKeeper {
+class LocationKeeperImpl implements LocationKeeper {
 
-	private Register<String> _location = my(Signals.class).newRegister(null);
-	private Register<String> _latitude = my(Signals.class).newRegister(null);
-	private Register<String> _longitude = my(Signals.class).newRegister(null);
+	private final Register<String> _location = my(Signals.class).newRegister(null);
+	private final Register<String> _latitude = my(Signals.class).newRegister(null);
+	private final Register<String> _longitude = my(Signals.class).newRegister(null);
 	
 	@Override
 	public Signal<String> location() {
@@ -42,5 +42,4 @@ public class LocationKeeperImpl implements LocationKeeper {
 	public Consumer<String> longitudeSetter() {
 		return _longitude.setter();
 	}
-
 }

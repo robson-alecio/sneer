@@ -38,6 +38,13 @@ class IOImpl implements IO {
 	private Streams _streams = new Streams(){
 		@Override public String toString(InputStream input) throws IOException { return IOUtils.toString(input); }
 		@Override public byte[] toByteArray(InputStream input) throws IOException { return IOUtils.toByteArray(input); }
+		@Override public byte[] readBytesAndClose(InputStream input) throws IOException { 
+			try {
+				return toByteArray(input);
+			}finally{
+				try { input.close(); } catch (Throwable ignore) { }
+			}
+		}
 	};
 
 	@Override

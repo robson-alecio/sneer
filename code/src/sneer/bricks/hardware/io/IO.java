@@ -27,5 +27,6 @@ public interface IO {
 	interface Streams{
 		String toString(InputStream input) throws IOException;
 		byte[] toByteArray(InputStream input) throws IOException;
+		byte[] readBytesAndClose(InputStream input) throws IOException;
 	}
 }

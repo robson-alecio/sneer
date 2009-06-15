@@ -2,6 +2,7 @@ package sneer.bricks.skin.main.dashboard.impl;
 
 import static sneer.foundation.commons.environments.Environments.my;
 
+import java.awt.Adjustable;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -32,7 +33,6 @@ import sneer.bricks.skin.main.instrumentregistry.Instrument;
 import sneer.bricks.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.bricks.skin.main.menu.MainMenu;
 import sneer.bricks.skin.main.synth.Synth;
-import sneer.bricks.skin.main.synth.scroll.SynthScrolls;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.Widget;
 import sneer.bricks.skin.windowboundssetter.WindowBoundsSetter;
@@ -49,7 +49,7 @@ class DashboardImpl implements Dashboard {
 	private final int TIMEOUT_FOR_GUI_EVENTS = (Integer) synthValue("Dashboard.TIMEOUT_FOR_GUI_EVENTS");
 	
 	private final  MainMenu _mainMenu = my(MainMenu.class);
-	private final JScrollBar _scrollBar = my(SynthScrolls.class).create().getVerticalScrollBar();
+	private final JScrollBar _scrollBar = new JScrollBar(Adjustable.VERTICAL);
 	private final DashboardPanel _dashboardPanel = new DashboardPanel(_scrollBar);
 	private final JPanel _rootPanel = new JPanel();
 

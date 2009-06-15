@@ -71,6 +71,7 @@ class DashboardPanel extends JPanel {
     	
 		add(_dashboardLayeredPane, BorderLayout.CENTER);
 		_scrollBar.getModel().addChangeListener(new ChangeListener(){ @Override public void stateChanged(ChangeEvent event) {
+			hideAllToolbars();
 			resizeInstruments();
 		}});
 		

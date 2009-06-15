@@ -15,6 +15,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
@@ -31,6 +32,7 @@ import sneer.bricks.skin.main.instrumentregistry.Instrument;
 import sneer.bricks.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.bricks.skin.main.menu.MainMenu;
 import sneer.bricks.skin.main.synth.Synth;
+import sneer.bricks.skin.main.synth.scroll.SynthScrolls;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.Widget;
 import sneer.bricks.skin.windowboundssetter.WindowBoundsSetter;
@@ -47,7 +49,8 @@ class DashboardImpl implements Dashboard {
 	private final int TIMEOUT_FOR_GUI_EVENTS = (Integer) synthValue("Dashboard.TIMEOUT_FOR_GUI_EVENTS");
 	
 	private final  MainMenu _mainMenu = my(MainMenu.class);
-	private final DashboardPanel _dashboardPanel = new DashboardPanel();
+	private final JScrollBar _scrollBar = my(SynthScrolls.class).create().getVerticalScrollBar();
+	private final DashboardPanel _dashboardPanel = new DashboardPanel(_scrollBar);
 	private final JPanel _rootPanel = new JPanel();
 
 	private Dimension _screenSize;
@@ -132,6 +135,7 @@ class DashboardImpl implements Dashboard {
 			_rootPanel.setLayout(new BorderLayout());
 			_rootPanel.add(_mainMenu.getWidget(), BorderLayout.NORTH);
 			_rootPanel.add(_dashboardPanel, BorderLayout.CENTER);
+			_rootPanel.add(_scrollBar, BorderLayout.EAST);
 			
 			addListenerToHideToolbarsWhenMouseExited();
 			

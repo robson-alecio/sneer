@@ -27,8 +27,11 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollBar;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.jdesktop.jxlayer.JXLayer;
 import org.jdesktop.jxlayer.plaf.AbstractLayerUI;
@@ -39,6 +42,7 @@ import sneer.bricks.skin.main.instrumentregistry.Instrument;
 import sneer.bricks.skin.main.synth.Synth;
 
 class DashboardPanel extends JPanel {
+
 
 	private final Synth _synth = my(Synth.class);
 	
@@ -51,16 +55,26 @@ class DashboardPanel extends JPanel {
 	private final JLayeredPane _dashboardLayeredPane = new JLayeredPane();
 	private final JPanel _instrumentsContainer = new JPanel();
 	private final List<InstrumentPanelImpl> _instrumentPanels = new ArrayList<InstrumentPanelImpl>();
+	private final JScrollBar _scrollBar;
 
 	private final InstrumentInstaller _instrumentInstaller = new InstrumentInstaller();
-	
-	DashboardPanel() {
+
+	DashboardPanel(JScrollBar scrollBar) {
+		_scrollBar = scrollBar;
 		initSynth();
 		setLayout(new BorderLayout());
     	addInstrumentPanelResizer();
 
-    	add(_dashboardLayeredPane, BorderLayout.CENTER);
-        _dashboardLayeredPane.add(_instrumentsContainer);
+    	_scrollBar.setBlockIncrement(80);
+    	_scrollBar.setUnitIncrement(40);
+    	_scrollBar.setSize(10, _scrollBar.getSize().height);
+    	
+		add(_dashboardLayeredPane, BorderLayout.CENTER);
+		_scrollBar.getModel().addChangeListener(new ChangeListener(){ @Override public void stateChanged(ChangeEvent event) {
+			resizeInstruments();
+		}});
+		
+		_dashboardLayeredPane.add(_instrumentsContainer);
         _instrumentsContainer.setLayout(new FlowLayout(FlowLayout.CENTER, 0, INTRUMENTS_GAP));
     	addComponentListener(new ComponentAdapter(){ @Override public void componentResized(ComponentEvent e) {
     		for (InstrumentPanelImpl instrument : _instrumentPanels) 
@@ -86,12 +100,32 @@ class DashboardPanel extends JPanel {
 	
 	private void addInstrumentPanelResizer() {
 		addComponentListener(new ComponentAdapter(){ @Override public void componentResized(ComponentEvent e) {
-			int x = 0;
-			int y = TOOLBAR_HEIGHT;
-			int width = getSize().width;
-			int height = getSize().height - TOOLBAR_HEIGHT;
-			_instrumentsContainer.setBounds(x, y, width, height);
+			resizeInstruments();
 		}});
+	}
+	
+	private void resizeInstruments() {
+		int x = 0;
+		int width = getSize().width;
+		int height = getSize().height - TOOLBAR_HEIGHT;
+		
+		int sum = TOOLBAR_HEIGHT;
+		for (InstrumentPanelImpl instrument : _instrumentPanels) 
+			sum = sum + instrument._instrument.defaultHeight() + INTRUMENTS_GAP;
+		int max = sum<height?height:sum;
+		
+		_scrollBar.getModel().setMinimum(0);
+		_scrollBar.getModel().setMaximum(getSize().height);
+		
+		int hidden = sum-height;
+		hidden = (hidden<0)?0:hidden;
+		
+		_scrollBar.getModel().setExtent(TOOLBAR_HEIGHT+getSize().height-hidden);
+		_instrumentsContainer.setBounds(x, TOOLBAR_HEIGHT -offset(), width, max);
+	}
+
+	private int offset() {
+		return _scrollBar.getModel().getValue();
 	}
 	
 	void install(Instrument instrument) {
@@ -241,7 +275,7 @@ class DashboardPanel extends JPanel {
 				int x = 0-INSTRUMENT_BORDER;
 				int y = pointInstrument.y - pointInstrumentContainer.y;
 				int width = getSize().width+2*INSTRUMENT_BORDER;
-				_toolbarPanel.setBounds(x + VERTICAL_MARGIN, y, width, TOOLBAR_HEIGHT);
+				_toolbarPanel.setBounds(x + VERTICAL_MARGIN, y-offset(), width, TOOLBAR_HEIGHT);
 				_mouseBlockButton.setBounds(x, y, width, TOOLBAR_HEIGHT);
 				resizeShadow(0, y);
 			}
@@ -250,7 +284,7 @@ class DashboardPanel extends JPanel {
 				int width  = _instrumentsContainer.getWidth();
 				int height = 2*SHADOW_HEIGHT + TOOLBAR_HEIGHT + getSize().height;
 				
-				_toolbarShadow.setBounds(x, y-SHADOW_HEIGHT,  width, height);
+				_toolbarShadow.setBounds(x, y-SHADOW_HEIGHT-offset(),  width, height);
 			}	
 			
 			protected void paintShadows(Graphics graph) {

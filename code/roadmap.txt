@@ -1,6 +1,8 @@
 ﻿TASKS
 =========
 
+	- [Sandro] Replace the default Java Exception handler with one that will log the exception instead of doing printStackTrace(), Click on Menu > Rebuild for an example. 
+
 	- "Rebuild"
 		- [Klaus] Rebuild functionality.
 			- .classpath - Generate based on brick libs.

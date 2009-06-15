@@ -68,6 +68,12 @@
 
 	
 	<target name="makejar" depends="compile">
+		<condition property="runOnHudson" value="true" else="false">
+			<equals arg1="${env.JOB_NAME}" arg2="Sneer"/>
+		</condition>
+		
+		<antcall target="binCopy"/>
+		
 		<delete file="build/dist"/>
 		<mkdir dir="build/dist"/>
 		<jar destfile="build/dist/sneer.jar">
@@ -81,10 +87,17 @@
 				<exclude name='**/TEST-*.txt' />
 				<exclude name='**/TEST-*.xml' />
 			</fileset>
-
 		</jar>
 	</target>
-
+	
+	<target name="binCopy" if="runOnHudson">
+		<mkdir dir="bin"/>
+		<copy todir="bin">
+			<fileset dir="${bin.dir}">
+				<include name='**/*.*'/>
+			</fileset>
+		</copy>
+	</target>
 	
 	<target name="copy-resources">
 		<copy todir="${bin.dir}">

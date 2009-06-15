@@ -15,7 +15,7 @@ public class Main {
 	}
 
 	private static void startSneer() throws Exception {
-		File binDirectory = new File(sneerHome(), "bin");
+		File binDirectory = new File(sneerHome(), "code/bin");
 		URLClassLoader loader = new URLClassLoader(new URL[]{ binDirectory.toURI().toURL() });
 		loader.loadClass("sneer.main.SneerSession").newInstance();
 	}

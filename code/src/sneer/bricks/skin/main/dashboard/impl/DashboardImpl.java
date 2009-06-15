@@ -49,7 +49,32 @@ class DashboardImpl implements Dashboard {
 	private final int TIMEOUT_FOR_GUI_EVENTS = (Integer) synthValue("Dashboard.TIMEOUT_FOR_GUI_EVENTS");
 	
 	private final  MainMenu _mainMenu = my(MainMenu.class);
-	private final JScrollBar _scrollBar = new JScrollBar(Adjustable.VERTICAL);
+	private final JScrollBar _scrollBar;{ 
+		_scrollBar = new JScrollBar(Adjustable.VERTICAL){
+			@Override public void setBounds(int x, int y, int width, int height) {
+				super.setBounds(x, y, 10, height);
+			}
+			@Override
+			public Dimension getPreferredSize() {
+				Dimension size =  super.getPreferredSize().getSize();
+				size.setSize(10, size.height);
+				return size;			}
+			
+			@Override public Dimension getMaximumSize() {
+				Dimension size =  super.getMaximumSize().getSize();
+				size.setSize(10, size.height);
+				return size;
+			}
+			
+			@Override public Dimension getSize() {
+				Dimension size =  super.getSize();
+				size.setSize(10, size.height);
+				return size;
+			}
+		};
+		my(Synth.class).attach(_scrollBar, "DashboardScrollBar");
+	}
+	
 	private final DashboardPanel _dashboardPanel = new DashboardPanel(_scrollBar);
 	private final JPanel _rootPanel = new JPanel();
 

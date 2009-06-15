@@ -43,7 +43,6 @@ import sneer.bricks.skin.main.synth.Synth;
 
 class DashboardPanel extends JPanel {
 
-
 	private final Synth _synth = my(Synth.class);
 	
 	private final int INTRUMENTS_GAP = synthValue("Dashboard.INTRUMENTS_GAP");  
@@ -61,6 +60,7 @@ class DashboardPanel extends JPanel {
 
 	DashboardPanel(JScrollBar scrollBar) {
 		_scrollBar = scrollBar;
+		
 		initSynth();
 		setLayout(new BorderLayout());
     	addInstrumentPanelResizer();

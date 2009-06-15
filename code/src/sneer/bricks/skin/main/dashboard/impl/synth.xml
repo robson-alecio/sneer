@@ -58,4 +58,31 @@
 	<bind key="InstrumentMenuBlockButton" style="button" type="name" />
 	<bind key="InstrumentTitle" style="title" type="name"/>
 
+	<style id="scrollBarArrowStyle">
+	    <state>
+	        <imagePainter method="arrowButtonForeground" path="scroll_arrow_north.png" center="true" direction="north" />
+	        <imagePainter method="arrowButtonForeground" path="scroll_arrow_south.png" center="true" direction="south" />
+	    </state>
+	</style>
+	<bind style="scrollBarArrowStyle" type="REGION" key="ArrowButton" />
+
+	<style id="scrollBarThumbStyle">
+	    <state>
+	        <imagePainter method="scrollBarThumbBackground" direction="vertical" path="scroll_grip_vertical.png" sourceInsets="0 1 0 1"/>
+	        <imagePainter method="scrollBarThumbBackground" direction="vertical" path="scroll_thumb_vertical.png" sourceInsets="6 2 6 2" />
+	    </state>
+	
+	    <state value="DISABLED"></state>
+	</style>
+	<bind style="scrollBarThumbStyle" type="REGION" key="ScrollBarThumb" />
+
+	<style id="DashboardScrollBar">
+		<opaque value="true" />
+		<state>
+			<color value="WHITE" type="BACKGROUND" />
+			<color value="BLACK" type="FOREGROUND" />
+		</state>
+	</style>
+	<bind style="DashboardScrollBar" type="NAME" key="DashboardScrollBar" />
+
 </synth>

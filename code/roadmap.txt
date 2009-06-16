@@ -1,11 +1,11 @@
 ﻿TASKS
 =========
 
-	- [Sandro] Replace the default Java Exception handler with one that will log the exception instead of doing printStackTrace(), Click on Menu > Rebuild for an example. 
-
 	- [Sandro] Installer - Recreate the "code" directory if it is deleted.
 
 	- [Sandro] WebStart - Script to install Java when user doesn't have it.
+	
+	- [Sandro] Fix LogConsole.
 
 	- "Rebuild"
 		- [Klaus] Rebuild functionality.

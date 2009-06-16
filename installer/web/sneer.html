@@ -1,0 +1,60 @@
+<HTML>
+<head>
+	<title>Sneer</title>
+</head>
+<body>
+
+<script language="JavaScript">
+	var detect = navigator.userAgent.toLowerCase();
+	var windowsIE = (checkPlatform("msie") && checkPlatform("win"));
+	init();
+
+	//*************************************************************************************************************
+
+	function init(){
+		if (windowsIE) {
+		    document.write("<OBJECT codeBase=http://java.sun.com/update/1.5.0/jinstall-1_5_0_05-windows-i586.cab" +
+		        		   " classid=clsid:5852F5ED-8BF4-11D4-A245-0080C6F74284 height=0 width=0>");
+		    document.write("	<PARAM name=app VALUE=${jnlp.url}>");
+			document.write("	<PARAM NAME=back VALUE=false>");
+			document.write("</OBJECT>");
+		 }
+		
+		if (navigator.mimeTypes && navigator.mimeTypes.length) {
+			webstartAvailable = navigator.mimeTypes['application/x-java-jnlp-file'];
+		}
+	
+		if (!webstartVersionCheck("1.6")) {
+			window.open("http://jdl.sun.com/webapps/getjava/BrowserRedirect?locale=en&host=java.com", "needdownload");
+			return;
+		}
+		
+		launchTID = setInterval('launchJNLP("${jnlp.url}")', 100);
+	}
+	
+	function checkPlatform(string){
+	    place = detect.indexOf(string) + 1;
+	    thestring = string;
+	    return place;
+	}
+
+	function webstartVersionCheck(versionString) {
+	 	navigator.plugins.refresh(true);
+	 	if (navigator.mimeTypes['application/x-java-jnlp-file'])
+	     	for (var i = 0; i < navigator.mimeTypes.length; ++i) {
+	         	pluginType = navigator.mimeTypes[i].type;
+	         	if (pluginType == "application/x-java-applet;version=" + versionString) {
+	             	return true;
+	         	}
+	      	}
+ 	}
+ 	
+	function launchJNLP(app) {
+	    clearInterval(launchTID);
+		window.location = app;
+	}
+</script>
+
+</body>
+</HTML>
+

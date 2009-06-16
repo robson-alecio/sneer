@@ -6,12 +6,21 @@
 	<property name="jnlp.file" location="${build.dir}/sneer.jnlp" />
 	<property name="jnlp.mainClass" value="sneer.installer.Main" />
 
-	<target name="main" depends="clean, compile, log, makeJars, makeJnlp, signJars">
+	<target name="main" depends="clean, compile, copy, log, makeJars, makeJnlp, signJars">
 	</target>
 
 	<target name="clean">
 		<delete dir="${build.dir}" />
 		<mkdir dir="${bin.dir}" />
+	</target>
+	
+	<target name="copy">
+		<copy todir="${build.dir}">
+			<fileset dir="web">
+				<include name='**/*.*' />
+			</fileset>
+		</copy>
+		
 	</target>
 
 	<target name="log">
@@ -35,6 +44,7 @@
 			<equals arg1="${env.JOB_NAME}" arg2="Sneer"/>
 		</condition>
 		<echo message="${jnlp.codebase}"/>
+		<replace file="${build.dir}/sneer.html" token="${jnlp.url}" value="${jnlp.codebase}/sneer.jnlp"/>
 	
 		<echoxml file="${jnlp.file}">
 			<jnlp spec="1.0+" codebase="${jnlp.codebase}" href="sneer.jnlp">
@@ -75,7 +85,6 @@
 	</target>
 
 	<target name="compile">
-
 		<javac srcdir="src"
 				destdir="${bin.dir}"
 				listfiles="true"
@@ -84,7 +93,6 @@
 				target="1.5"
 				encoding="utf-8">
 		</javac>
-		
 	</target>
 	
 	<target name="signJars" depends="makeJars">

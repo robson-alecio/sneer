@@ -67,13 +67,7 @@
 	</target>
 
 	
-	<target name="makejar" depends="compile">
-		<condition property="runOnHudson" value="true" else="false">
-			<equals arg1="${env.JOB_NAME}" arg2="Sneer"/>
-		</condition>
-		
-		<antcall target="binCopy"/>
-		
+	<target name="makejar" depends="compile, binCopy">
 		<delete file="build/dist"/>
 		<mkdir dir="build/dist"/>
 		<jar destfile="build/dist/sneer.jar">

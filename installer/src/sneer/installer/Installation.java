@@ -12,13 +12,11 @@ import java.util.jar.JarInputStream;
 class Installation {
 
 	private File _sneerHome;
-	private File _sneerTmp;
-	private File _sneerTmpCode;
+	private File _sneerInstallDir;
 
 	Installation(File sneerHome) throws IOException {
 		_sneerHome = sneerHome;
-		_sneerTmp = new File(_sneerHome.getParentFile(), ".sneertmp");
-		_sneerTmpCode = new File(_sneerTmp, "code");
+		_sneerInstallDir = new File(_sneerHome.getParentFile(), "sneer_installer");
 		
 		createDirectory();
 		addBinaries();
@@ -26,19 +24,25 @@ class Installation {
 	}
 
 	private void createDirectory() throws IOException {
-		IOUtils.deleteDirectory(_sneerHome);
-		IOUtils.deleteDirectory(_sneerTmp);
-		_sneerTmp.mkdirs();
+		IOUtils.deleteDirectory(_sneerInstallDir);
+		
+		if(_sneerHome.exists()){
+			_sneerInstallDir=_sneerHome;
+			return;
+		}
+		
+		_sneerInstallDir.mkdirs();
 	}
 
 	private void renameDirectory() throws IOException {
-		if(!_sneerTmp.renameTo(_sneerHome))
-			throw new IOException(_sneerTmp.getAbsolutePath() + " can't renamed to " + _sneerHome.getAbsolutePath());	
+		if(_sneerInstallDir == _sneerHome) return;
+		if(!_sneerInstallDir.renameTo(_sneerHome))
+			throw new IOException(_sneerInstallDir.getAbsolutePath() + " can't renamed to " + _sneerHome.getAbsolutePath());	
 	}
 	
 	private void addBinaries() throws IOException {
 		URL jarFileName = this.getClass().getResource("/sneer.jar");
-		IOUtils.write(new  File(_sneerTmp, "log.txt"), "jar file url: " + jarFileName.toString());
+		IOUtils.write(new  File(_sneerInstallDir, "log.txt"), "jar file url: " + jarFileName.toString());
 		File file = extractJar(jarFileName);
 		extractFiles(file);
 	}
@@ -54,7 +58,7 @@ class Installation {
 	}
 	
 	private void extractFiles(File src) throws IOException {
-		IOUtils.write(new  File(_sneerTmp, "log.txt"), "expand files from: " + src.getAbsolutePath());
+		IOUtils.write(new  File(_sneerInstallDir, "log.txt"), "expand files from: " + src.getAbsolutePath());
 		if(!(src.exists()))
 			throw new IOException("File '" + src.getAbsolutePath() + "' not found!");	
 
@@ -69,7 +73,7 @@ class Installation {
 		JarEntry entry = null;
 		
         while ((entry = jis.getNextJarEntry()) != null) {
-        	File file = new File(_sneerTmpCode, entry.getName());
+        	File file = new File(new File(_sneerInstallDir, "code"), entry.getName());
 
         	if(entry.isDirectory()) {
 				file.mkdirs();

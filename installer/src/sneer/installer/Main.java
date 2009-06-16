@@ -10,6 +10,9 @@ public class Main {
 		if (!sneerHome().exists())
 			new InstallationWizard(sneerHome());
 
+		if (!new File(sneerHome(), "code").exists())
+			new InstallationWizard(sneerHome());
+
 		overcomeWebstartSecurityRestrictions();
 		startSneer();
 	}

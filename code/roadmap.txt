@@ -5,6 +5,8 @@
 
 	- [Sandro] Installer - Recreate the "code" directory if it is deleted.
 
+	- [Sandro] WebStart - Script to install Java when user doesn't have it.
+
 	- "Rebuild"
 		- [Klaus] Rebuild functionality.
 			- .classpath - Generate based on brick libs.

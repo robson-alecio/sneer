@@ -2,14 +2,12 @@ package sneer.bricks.skin.widgets.reactive.impl;
 
 import static sneer.foundation.commons.environments.Environments.my;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.hardware.cpu.lang.PickyConsumer;
@@ -19,7 +17,7 @@ import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.skin.main.synth.Synth;
 import sneer.bricks.skin.widgets.reactive.TextWidget;
 
-class RLabelImpl extends JPanel implements TextWidget<JLabel>{
+class RLabelImpl extends RPanel<JLabel> implements TextWidget<JLabel>{
 
 	private final JLabel _textComponent = new JLabel();
 	private final Signal<?> _source;
@@ -70,11 +68,6 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 	public JLabel getMainWidget() {
 		return textComponent();
 	}
-
-	@Override
-	public JPanel getComponent() {
-		return this;
-	}
 	
 	@Override
 	public JComponent[] getWidgets() {
@@ -96,20 +89,5 @@ class RLabelImpl extends JPanel implements TextWidget<JLabel>{
 	
 	public JLabel textComponent() {
 		return _textComponent;
-	}
-
-	@Override
-	public Dimension getMinimumSize() {
-		return RUtil.limitSize(super.getMinimumSize());
-	}
-	
-	@Override
-	public Dimension getPreferredSize() {
-		return RUtil.limitSize(super.getPreferredSize());
-	}
-	
-	@Override
-	public Dimension getMaximumSize() {
-		return RUtil.limitSize(super.getMaximumSize());
 	}
 }

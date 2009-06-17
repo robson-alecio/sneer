@@ -90,11 +90,10 @@
 		<mkdir dir="build/dist"/>
 		<jar destfile="build/dist/sneer.jar">
 			<fileset dir=".">
+				<include name='*.*' />
 				<include name='lib/**/*.jar' />
 				<include name='bin/**/*.*' />
 				<include name='src/**/*.*' />
-				<include name='.project' />
-				<include name='.classpath' />
 				<include name='.settings/**/*.*' />
 				<exclude name='**/TEST-*.txt' />
 				<exclude name='**/TEST-*.xml' />

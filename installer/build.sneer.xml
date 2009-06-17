@@ -45,8 +45,11 @@
 			<classpath refid="pmd.lib" />
 		</taskdef>
 
+		<property name="fdc.src" location="../code/src"/>
+		<echo message="${fdc.src}"/>
+		
 		<cpd minimumTokenCount="50" format="xml" outputFile="build/cpd.xml">
-			<fileset dir="${sneer.src}">
+			<fileset dir="${fdc.src}">
 				<include name="**/*.java"/>
 			</fileset>
 		</cpd>

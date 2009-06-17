@@ -17,21 +17,38 @@ public class InstallationWizard extends JFrame{
 	private final File _sneerHome;
 
 	InstallationWizard(File sneerHome) throws Exception {
+		this(sneerHome, false);
+	}
+	
+	InstallationWizard(File sneerHome, boolean restoringCode) throws Exception {
 		_sneerHome = sneerHome;
 
 		loadSynthLookAndFeel();
-		
+		dialogsWorkflow(restoringCode);
+		loadMetalLookAndFeel();
+	}
+
+	private void dialogsWorkflow(boolean restoringCode) throws IOException {
+		if(restoringCode){
+			restore();
+			new Installation(_sneerHome);
+			return;
+		}
+			
 		welcome();
 		license();
 		dogFoodInformation();
 		configInformation();
-		
 		new Installation(_sneerHome);
-		
 		congratulations();
-		loadMetalLookAndFeel();
 	}
-
+	
+	private void restore() {
+		showDialog(
+		"Restoring Code Folder?", 
+		"Restore","Quit"); 		
+	}
+	
 	private void welcome() {
 		showDialog(
 		"Welcome to Sneer, the first sovereign computing peer.  :)\n\n" +

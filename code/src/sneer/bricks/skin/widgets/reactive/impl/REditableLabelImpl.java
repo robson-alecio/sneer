@@ -1,6 +1,5 @@
 package sneer.bricks.skin.widgets.reactive.impl;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -12,7 +11,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import sneer.bricks.hardware.cpu.lang.PickyConsumer;
@@ -20,7 +18,7 @@ import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.skin.widgets.reactive.NotificationPolicy;
 import sneer.bricks.skin.widgets.reactive.TextWidget;
 
-class REditableLabelImpl extends JPanel implements TextWidget<JTextField>{
+class REditableLabelImpl extends RPanel<JTextField> implements TextWidget<JTextField>{
 
 	private final RLabelImpl _label;
 	private final RTextFieldImpl _text;
@@ -84,11 +82,6 @@ class REditableLabelImpl extends JPanel implements TextWidget<JTextField>{
 	public JTextField getMainWidget() {
 		return _text.getMainWidget();
 	}
-
-	@Override
-	public JPanel getComponent() {
-		return this;
-	}
 	
 	@Override
 	public JComponent[] getWidgets() {
@@ -103,20 +96,5 @@ class REditableLabelImpl extends JPanel implements TextWidget<JTextField>{
 	@Override
 	public PickyConsumer<? super String> setter(){
 		return _setter;
-	}
-	
-	@Override
-	public Dimension getMinimumSize() {
-		return RUtil.limitSize(super.getMinimumSize());
-	}
-	
-	@Override
-	public Dimension getPreferredSize() {
-		return RUtil.limitSize(super.getPreferredSize());
-	}
-	
-	@Override
-	public Dimension getMaximumSize() {
-		return RUtil.limitSize(super.getMaximumSize());
 	}
 }

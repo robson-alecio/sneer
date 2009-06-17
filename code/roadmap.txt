@@ -1,6 +1,16 @@
 ﻿TASKS
 =========
 
+	- [Sandro] build.xml - Move to installer
+
+	- MyInfo - Persist
+
+	- Contact crud: persist with tuples
+        
+	- @Snapps - Detect and load on startup.
+        
+	- .sneer - Fix Tuplespace persistence. Use my(StoragePath.class)
+
 	- [Sandro] Fix LogConsole.
 
 	- [Klaus] Code - Check restore code msg ( InstallationWizard.restore() ).

@@ -11,7 +11,6 @@ import sneer.bricks.hardware.gui.trayicon.TrayIcons;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.LightType;
 import sneer.bricks.skin.main.dashboard.impl.DashboardImpl.WindowSupport;
-import sneer.bricks.skin.main.menu.MainMenu;
 
 class TrayIconSupport {
 	private final WindowSupport _windowSupport;
@@ -45,6 +44,5 @@ class TrayIconSupport {
 			@Override public void run() {	System.exit(0);
 		}};
 		trayIcon.addAction(cmd);
-		my(MainMenu.class).getSneerMenu().addAction(cmd);
 	}
 }

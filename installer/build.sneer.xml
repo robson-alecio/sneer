@@ -2,12 +2,23 @@
 
 <project name="Sneer" default="test">
 
+	<property name="build.dir" location="build" />
+	<property name="dist.dir" location="build/dist" />
 	<property name="bin.dir" location="build/bin" />
+	
 	<property name="clover.jar" location="lib/clover.jar" />
+
+	<property name="sneer.home" location="../code" />
+	<property name="sneer.src" location="../code/src" />
+	<property name="sneer.lib" location="../code/lib" />
+	<property name="sneer.bin" location="../code/bin" />
 
 	<path id="classpath">
 		<pathelement path="${bin.dir}"/>
-		<fileset dir="src">
+		<fileset dir="${sneer.src}">
+			<include name='**/*.jar' />
+		</fileset>
+		<fileset dir="${sneer.lib}">
 			<include name='**/*.jar' />
 		</fileset>
 		<fileset dir="lib">
@@ -33,13 +44,13 @@
 			<classpath refid="testability.lib" />
 		</taskdef>
 		
-		<mkdir dir="build/dist/"/>
-		<testability resultfile="build/testability.xml" print="xml">
+		<mkdir dir="${dist.dir}"/>
+		<testability resultfile="${build.dir}/testability.xml" print="xml">
 			<classpath>
 				<fileset dir="/">
-					<include name="root/.hudson/jobs/Sneer/workspace/code/build/dist/sneer.jar" />
+					<include name="root/.hudson/jobs/Sneer/workspace/installer/build/dist/sneer.jar" />
 				</fileset>
-				<fileset dir="build/dist/">
+				<fileset dir="${dist.dir}">
 					<include name="sneer.jar" />
 				</fileset>
 			</classpath>
@@ -59,7 +70,7 @@
 		</taskdef>
 
 		<cpd minimumTokenCount="50" format="xml" outputFile="build/cpd.xml">
-			<fileset dir="src">
+			<fileset dir="${sneer.src}">
 				<include name="**/*.java"/>
 			</fileset>
 		</cpd>
@@ -71,8 +82,8 @@
 
 
 	<target name="finalize">
-		<mkdir dir="build/tests"/>
-		<move todir="build/tests">
+		<mkdir dir="${build.dir}/tests"/>
+		<move todir="${build.dir}/tests">
 			<fileset dir="${bin.dir}">
 				<include name='TEST-*.txt' />
 				<include name='TEST-*.xml' />
@@ -83,7 +94,6 @@
 	<target name="test-verification" if="junit.failures">
 		<echo>Test failures! Check the output for details.</echo>
 	</target>
-
 
 	<target name="test-execution">
 		<junit printsummary="true" failureproperty="junit.failures" fork="yes" timeout="60000">
@@ -104,24 +114,18 @@
 
 
 	<target name="compile" depends="clean, copy-resources">
-		<javac srcdir="src"	destdir="${bin.dir}" listfiles="true"
-			   failonerror="true" debug="on" target="1.5" encoding="utf-8">
+		<javac srcdir="${sneer.src}" destdir="${bin.dir}" listfiles="true"
+			   failonerror="true" debug="on" target="1.6" encoding="utf-8">
 			<classpath refid="classpath"/>
 		</javac>
 	</target>
 
-
 	<target name="makejar" depends="compile, copy-bin">
-		<delete file="build/dist"/>
-		<mkdir dir="build/dist"/>
-		<jar destfile="build/dist/sneer.jar">
-			<fileset dir=".">
-				<include name='*.*' />
-				<include name='docs/**/*.*' />
-				<include name='lib/**/*.*' />
-				<include name='bin/**/*.*' />
-				<include name='src/**/*.*' />
-				<include name='.settings/**/*.*' />
+		<delete file="${dist.dir}"/>
+		<mkdir dir="${dist.dir}"/>
+		<jar destfile="${dist.dir}/sneer.jar">
+			<fileset dir="${sneer.home}">
+				<include name='**/*.*' />
 				<exclude name='**/TEST-*.txt' />
 				<exclude name='**/TEST-*.xml' />
 			</fileset>
@@ -129,8 +133,8 @@
 	</target>
 
 	<target name="copy-bin">
-		<mkdir dir="bin"/>
-		<copy todir="bin">
+		<mkdir dir="${sneer.bin}"/>
+		<copy todir="${sneer.bin}">
 			<fileset dir="${bin.dir}">
 				<include name='**/*.*'/>
 			</fileset>
@@ -139,7 +143,7 @@
 
 	<target name="copy-resources">
 		<copy todir="${bin.dir}">
-			<fileset dir="src">
+			<fileset dir="${sneer.src}">
 				<include name='**/**'/>
 				<exclude name='**/*.java'/>
 			</fileset>
@@ -148,10 +152,9 @@
 
 
 	<target name="clean">
-		<delete dir="${bin.dir}"/>
+		<delete dir="${build.dir}"/>
 		<mkdir dir="${bin.dir}"/>
 	</target>
-
 
 	<target name="init-clover">
 		<mkdir dir="clover"/>
@@ -160,10 +163,9 @@
 		<clover-setup initString="clover/bin/mycoverage.db"/>
 	</target>
 
-
 	<target name="report-clover">
 		<fileset dir="." id="clover.sources">
-			<include name="src/**/*.java" />
+			<include name="${sneer.src}/**/*.java" />
 		</fileset>
 
 		<clover-report>

@@ -9,12 +9,16 @@ import javax.swing.JOptionPane;
 
 public class Sneer {
 
+	public static void main(String[] argsIgnored) throws Exception {
+		new Sneer();
+	}
+	
 	public Sneer() throws Exception {
 		while (true) runSneerSession();
 	}
 
 	private static void runSneerSession() throws Exception {
-		ClassLoader loader = createGarbageCollectableClassLoader(new File(sneerHome(), "bin"));
+		ClassLoader loader = createGarbageCollectableClassLoader(new File(sneerHome(), "code/bin"));
 		loader.loadClass("main.SneerSession").newInstance();
 
 		WeakReference<ClassLoader> weakLoader = new WeakReference<ClassLoader>(loader);

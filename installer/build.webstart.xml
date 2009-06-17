@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
-<project name="Installer" default="main" basedir=".">
+<project name="WebStart" default="main" basedir=".">
 
 	<property name="build.dir" location="build" />
 	<property name="bin.dir" location="build/bin" />
-	<property name="jnlp.file" location="${build.dir}/sneer.jnlp" />
+	<property name="jnlp.file" location="${build.dir}/dist/sneer.jnlp" />
 	<property name="jnlp.mainClass" value="sneer.installer.Main" />
 
 	<target name="main" depends="clean, compile, copy, log, makeJars, makeJnlp, signJars">
 	</target>
 
 	<target name="clean">
-		<delete dir="${build.dir}" />
+		<delete dir="${bin.dir}" />
 		<mkdir dir="${bin.dir}" />
 	</target>
 	
 	<target name="copy">
-		<copy todir="${build.dir}">
+		<copy todir="${build.dir}/dist">
 			<fileset dir="web">
 				<include name='**/*.*' />
 			</fileset>
@@ -33,18 +33,18 @@
 		<echo message="${env.EXECUTOR_NUMBER}" />
 		<echo message="${env.WORKSPACE}" />
 		<echo message="${env.HUDSON_URL}" />
-		<record name="build/log.txt" action="stop" />
+		<record name="build/dist/log.txt" action="stop" />
 	</target>
 
 	<target name="makeJnlp">
 		
 		<condition property="jnlp.codebase"
-			value="${env.HUDSON_URL}job/${env.JOB_NAME}/${env.BUILD_NUMBER}/artifact/installer/build" 
-			else="file:///${build.dir}">
+			value="${env.HUDSON_URL}job/${env.JOB_NAME}/${env.BUILD_NUMBER}/artifact/installer/build/dist" 
+			else="file:///${build.dir}/dist">
 			<equals arg1="${env.JOB_NAME}" arg2="Sneer"/>
 		</condition>
 		<echo message="${jnlp.codebase}"/>
-		<replace file="${build.dir}/sneer.html" token="${jnlp.url}" value="${jnlp.codebase}/sneer.jnlp"/>
+		<replace file="${build.dir}/dist/sneer.html" token="${jnlp.url}" value="${jnlp.codebase}/sneer.jnlp"/>
 	
 		<echoxml file="${jnlp.file}">
 			<jnlp spec="1.0+" codebase="${jnlp.codebase}" href="sneer.jnlp">
@@ -69,15 +69,15 @@
 	</target>
 
 	<target name="makeJars">
-		<jar destfile="build/sneer-bootstrap.jar">
+		<jar destfile="build/dist/sneer-bootstrap.jar">
 			<fileset dir="${bin.dir}">
 				<include name='**/*.*' />
 			</fileset>
-			<fileset dir="../installer/src">
+			<fileset dir="src">
 				<include name='**/*.*' />
 				<exclude name='**/*.java' />
 			</fileset>
-			<fileset dir="../code/build/dist/">
+			<fileset dir="build/dist/">
 				<include name='sneer.jar' />
 			</fileset>
 		</jar>
@@ -96,7 +96,7 @@
 	</target>
 	
 	<target name="signJars" depends="makeJars">
-		<signjar keystore="sneerKeystore" jar="./build/sneer-bootstrap.jar" alias="bihaiko" storepass="amanda" />
+		<signjar keystore="sneerKeystore" jar="./build/dist/sneer-bootstrap.jar" alias="bihaiko" storepass="amanda" />
 	</target>
 
 </project>

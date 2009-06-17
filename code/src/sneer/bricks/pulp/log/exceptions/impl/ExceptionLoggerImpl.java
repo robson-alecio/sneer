@@ -5,9 +5,9 @@ import static sneer.foundation.commons.environments.Environments.my;
 import java.lang.Thread.UncaughtExceptionHandler;
 
 import sneer.bricks.pulp.log.Logger;
-import sneer.bricks.pulp.log.exceptions.ExceptionsLogger;
+import sneer.bricks.pulp.log.exceptions.ExceptionLogger;
 
-class ExceptionsLoggerImpl implements ExceptionsLogger{
+class ExceptionLoggerImpl implements ExceptionLogger{
 
 	private final Logger _logger = my(Logger.class);
 	{

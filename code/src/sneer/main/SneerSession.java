@@ -54,7 +54,7 @@ public class SneerSession {
 				sneer.bricks.hardware.gui.trayicon.TrayIcons.class,
 				sneer.bricks.skin.main.dashboard.Dashboard.class,
 				sneer.bricks.hardware.log.gui.LogConsole.class,
-				sneer.bricks.pulp.log.exceptions.ExceptionsLogger.class,
+				sneer.bricks.pulp.log.exceptions.ExceptionLogger.class,
 				sneer.bricks.software.code.compilers.gui.RebuildMenu.class,
 				sneer.bricks.snapps.contacts.hardcoded.HardcodedContacts.class,
 				sneer.bricks.snapps.gis.map.gui.MapGui.class,

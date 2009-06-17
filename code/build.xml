@@ -119,7 +119,7 @@
 		<jar destfile="build/dist/sneer.jar">
 			<fileset dir=".">
 				<include name='*.*' />
-				<include name='lib/**/*.jar' />
+				<include name='lib/**/*.*' />
 				<include name='bin/**/*.*' />
 				<include name='src/**/*.*' />
 				<include name='.settings/**/*.*' />

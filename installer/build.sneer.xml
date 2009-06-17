@@ -159,15 +159,14 @@
 	</target>
 
 	<target name="init-clover">
-		<mkdir dir="clover"/>
 		<mkdir dir="clover/bin"/>
 		<taskdef resource="cloverlib.xml" classpath="${clover.jar}"/>
 		<clover-setup initString="clover/bin/mycoverage.db"/>
 	</target>
 
 	<target name="report-clover">
-		<fileset dir="." id="clover.sources">
-			<include name="${sneer.src}/**/*.java" />
+		<fileset dir="../code/src" id="clover.sources">
+			<include name="**/*.java" />
 		</fileset>
 
 		<clover-report>

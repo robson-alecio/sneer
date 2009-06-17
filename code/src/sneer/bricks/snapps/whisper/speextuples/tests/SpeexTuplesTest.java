@@ -74,7 +74,7 @@ public class SpeexTuplesTest extends BrickTest {
 	}
 	
 	
-	@Test (timeout = 4000)
+	@Test (timeout = 8000)
 	public void testSpeexToPcm() {
 		final byte[][] speexPacketPayload = new byte[][] { {0} };
 		final byte[] pcmPacketPayload = new byte[] { 17 };

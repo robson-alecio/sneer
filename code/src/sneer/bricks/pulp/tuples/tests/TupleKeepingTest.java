@@ -13,7 +13,7 @@ public class TupleKeepingTest extends BrickTest {
 	private int _notificationCounter;
 	
 	
-	@Test (timeout = 5000)
+	@Test (timeout = 10000)
 	public void tuplesLimitAmount() {
 
 		Consumer<KeptTuple> consumerToAvoidGc = new Consumer<KeptTuple>() { @Override public void consume(KeptTuple ignored) {

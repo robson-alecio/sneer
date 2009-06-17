@@ -1,11 +1,9 @@
 ﻿TASKS
 =========
 
-	- [Sandro] Code - Do not run wizard again when code directory is deleted. Show a single dialog.
-
-	- [Sandro] WebStart - Script to install Java when user doesn't have it.
-	
 	- [Sandro] Fix LogConsole.
+
+	- [Klaus] Code - Check restore code msg ( InstallationWizard.restore() ).
 
 	- "Rebuild"
 		- [Klaus] Rebuild functionality.

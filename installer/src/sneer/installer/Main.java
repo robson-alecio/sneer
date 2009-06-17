@@ -11,7 +11,7 @@ public class Main {
 			new InstallationWizard(sneerHome());
 
 		if (!new File(sneerHome(), "code").exists())
-			new InstallationWizard(sneerHome());
+			new InstallationWizard(sneerHome(), true);
 
 		overcomeWebstartSecurityRestrictions();
 		startSneer();

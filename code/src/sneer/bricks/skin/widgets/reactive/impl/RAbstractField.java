@@ -3,7 +3,6 @@ package sneer.bricks.skin.widgets.reactive.impl;
 import static sneer.foundation.commons.environments.Environments.my;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -16,7 +15,6 @@ import java.awt.event.KeyEvent;
 import java.lang.reflect.Method;
 
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 import javax.swing.text.JTextComponent;
 
 import sneer.bricks.hardware.cpu.exceptions.IllegalParameter;
@@ -34,7 +32,7 @@ import sneer.foundation.commons.environments.Environment;
 import sneer.foundation.commons.environments.Environments;
 
 
-abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel implements TextWidget<WIDGET> {
+abstract class RAbstractField<WIDGET extends JTextComponent> extends RPanel<WIDGET> implements TextWidget<WIDGET> {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -190,11 +188,6 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	public WIDGET getMainWidget() {
 		return _textComponent;
 	}
-	
-	@Override
-	public JComponent getComponent() {
-		return this;
-	}	
 
 	@Override
 	public Signal<?> output(){
@@ -204,21 +197,6 @@ abstract class RAbstractField<WIDGET extends JTextComponent> extends JPanel impl
 	@Override
 	public PickyConsumer<? super String> setter(){
 		return _setter;
-	}
-	
-	@Override
-	public Dimension getMinimumSize() {
-		return RUtil.limitSize(super.getMinimumSize());
-	}
-	
-	@Override
-	public Dimension getPreferredSize() {
-		return RUtil.limitSize(super.getPreferredSize());
-	}
-	
-	@Override
-	public Dimension getMaximumSize() {
-		return RUtil.limitSize(super.getMaximumSize());
 	}
 	
 	private void setNotified(boolean isNotified, String newText) {

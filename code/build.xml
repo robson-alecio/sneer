@@ -4,7 +4,7 @@
 
 	<property name="bin.dir" location="build/bin" />
 	<property name="clover.jar" location="lib/clover.jar" />
-	
+
 	<path id="classpath">
 		<pathelement path="${bin.dir}"/>
 		<fileset dir="src">
@@ -15,35 +15,61 @@
 		</fileset>
 	</path>
 
-	
+
 	<target name="test" depends="makejar, test-execution, test-verification">
 		<antcall target="finalize"/>
 	</target>
 
 
-	<target name="findDuplicateCode">
-		<path id="PMD.lib">  
-			<fileset dir="lib/pmd">  
-				<include name="*.jar" />  
-			</fileset> 
+	<target name="testability">
+		
+		<path id="testability.lib">
+			<fileset dir="lib/testability">
+				<include name="*.jar" />
+			</fileset>
 		</path>
 		
-	    <taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask">
-			<classpath refid="PMD.lib" /> 
-	    </taskdef>
-	    
-		<cpd minimumTokenCount="100" format="xml" outputFile="build/cpd.xml">
-	        <fileset dir="src">
-	            <include name="**/*.java"/>
-	        </fileset>
-	    </cpd>
+		<taskdef name="testability" classname="com.google.ant.TestabilityTask">
+			<classpath refid="testability.lib" />
+		</taskdef>
+		
+		<mkdir dir="build/dist/"/>
+		<testability resultfile="build/testability.xml" print="xml">
+			<classpath>
+				<fileset dir="/">
+					<include name="root/.hudson/jobs/Sneer/workspace/code/build/dist/sneer.jar" />
+				</fileset>
+				<fileset dir="build/dist/">
+					<include name="sneer.jar" />
+				</fileset>
+			</classpath>
+		</testability>
+		
 	</target>
-	
+
+	<target name="findDuplicateCode">
+		<path id="pmd.lib">
+			<fileset dir="lib/pmd">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+
+		<taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask">
+			<classpath refid="pmd.lib" />
+		</taskdef>
+
+		<cpd minimumTokenCount="50" format="xml" outputFile="build/cpd.xml">
+			<fileset dir="src">
+				<include name="**/*.java"/>
+			</fileset>
+		</cpd>
+	</target>
+
 	<target name="clover" depends="init-clover, compile, test-execution, test-verification, report-clover">
-		<antcall target="finalize"/>		
+		<antcall target="finalize"/>
 	</target>
-	
-	
+
+
 	<target name="finalize">
 		<mkdir dir="build/tests"/>
 		<move todir="build/tests">
@@ -53,11 +79,11 @@
 			</fileset>
 		</move>
 	</target>
-	
+
 	<target name="test-verification" if="junit.failures">
 		<echo>Test failures! Check the output for details.</echo>
 	</target>
-	
+
 
 	<target name="test-execution">
 		<junit printsummary="true" failureproperty="junit.failures" fork="yes" timeout="60000">
@@ -76,32 +102,32 @@
 		</junit>
 	</target>
 
-	
+
 	<target name="compile" depends="clean, copy-resources">
 		<javac srcdir="src"	destdir="${bin.dir}" listfiles="true"
 			   failonerror="true" debug="on" target="1.5" encoding="utf-8">
-			   <classpath refid="classpath"/>
+			<classpath refid="classpath"/>
 		</javac>
 	</target>
 
-	
+
 	<target name="makejar" depends="compile, copy-bin">
 		<delete file="build/dist"/>
 		<mkdir dir="build/dist"/>
 		<jar destfile="build/dist/sneer.jar">
 			<fileset dir=".">
-				<include name='lib/**/*.jar' />
+				<include name='*.*' />
+				<include name='docs/**/*.*' />
+				<include name='lib/**/*.*' />
 				<include name='bin/**/*.*' />
 				<include name='src/**/*.*' />
-				<include name='.project' />
-				<include name='.classpath' />
 				<include name='.settings/**/*.*' />
 				<exclude name='**/TEST-*.txt' />
 				<exclude name='**/TEST-*.xml' />
 			</fileset>
 		</jar>
 	</target>
-	
+
 	<target name="copy-bin">
 		<mkdir dir="bin"/>
 		<copy todir="bin">
@@ -110,7 +136,7 @@
 			</fileset>
 		</copy>
 	</target>
-	
+
 	<target name="copy-resources">
 		<copy todir="${bin.dir}">
 			<fileset dir="src">
@@ -119,8 +145,8 @@
 			</fileset>
 		</copy>
 	</target>
-	
-	
+
+
 	<target name="clean">
 		<delete dir="${bin.dir}"/>
 		<mkdir dir="${bin.dir}"/>
@@ -139,20 +165,20 @@
 		<fileset dir="." id="clover.sources">
 			<include name="src/**/*.java" />
 		</fileset>
-		
+
 		<clover-report>
-	       <current outfile="clover/clover.xml">
-	          <format type="xml"/>
-	       	  <fileset refid="clover.sources" />
-	       </current>
-	    </clover-report>
-		
+			<current outfile="clover/clover.xml">
+				<format type="xml"/>
+				<fileset refid="clover.sources" />
+			</current>
+		</clover-report>
+
 		<clover-report>
-	       <current outfile="clover/html">
-	          <format type="html"/>
-	       	  <fileset refid="clover.sources" />
-	       </current>
-	    </clover-report>
+			<current outfile="clover/html">
+				<format type="html"/>
+				<fileset refid="clover.sources" />
+			</current>
+		</clover-report>
 	</target>
-	
+
 </project>

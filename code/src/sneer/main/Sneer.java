@@ -19,7 +19,7 @@ public class Sneer {
 
 	private static void runSneerSession() throws Exception {
 		ClassLoader loader = createGarbageCollectableClassLoader(new File(sneerHome(), "code/bin"));
-		loader.loadClass("main.SneerSession").newInstance();
+		loader.loadClass("sneer.main.SneerSession").newInstance();
 
 		WeakReference<ClassLoader> weakLoader = new WeakReference<ClassLoader>(loader);
 		loader = null;

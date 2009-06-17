@@ -31,39 +31,13 @@
 		<antcall target="finalize"/>
 	</target>
 
-
-	<target name="testability">
-		
-		<path id="testability.lib">
-			<fileset dir="lib/testability">
-				<include name="*.jar" />
-			</fileset>
-		</path>
-		
-		<taskdef name="testability" classname="com.google.ant.TestabilityTask">
-			<classpath refid="testability.lib" />
-		</taskdef>
-		
-		<copy todir="build/dist">
-			<fileset dir="/">
-				<include name='root/.hudson/jobs/Sneer/workspace/installer/build/dist/sneer.jar'/>
-			</fileset>
-		</copy>
-		
-		<testability resultfile="build/testability.xml" print="xml">
-			<classpath>
-				<fileset dir="${dist.dir}">
-					<include name="sneer.jar" />
-				</fileset>
-			</classpath>
-		</testability>
-		
-	</target>
-
 	<target name="findDuplicateCode">
 		<path id="pmd.lib">
 			<fileset dir="lib/pmd">
 				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${sneer.lib}">
+				<include name="**/*.jar" />
 			</fileset>
 		</path>
 

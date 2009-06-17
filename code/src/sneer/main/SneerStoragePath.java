@@ -4,11 +4,11 @@ import java.io.File;
 
 import sneer.foundation.brickness.StoragePath;
 
-public class SneerStoragePath implements StoragePath {
+class SneerStoragePath implements StoragePath {
 
 	@Override
 	public String get() {
-		return new File(userHome(), ".sneer").getAbsolutePath();
+		return new File(userHome(), "sneer").getAbsolutePath();
 	}
 	
 	private static String userHome() {

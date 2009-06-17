@@ -1,6 +1,8 @@
 ﻿TASKS
 =========
 
+	- Revise entire package structure.
+
 	- [Sandro] build.xml - Move to installer
 
 	- MyInfo - Persist
@@ -14,6 +16,8 @@
 	- [Sandro] Fix LogConsole.
 
 	- [Klaus] Code - Check restore code msg ( InstallationWizard.restore() ).
+
+	- [Sandro] Log Console - Separate filter into another window.
 
 	- "Rebuild"
 		- [Klaus] Rebuild functionality.

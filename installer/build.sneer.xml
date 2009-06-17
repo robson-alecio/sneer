@@ -44,11 +44,14 @@
 			<classpath refid="testability.lib" />
 		</taskdef>
 		
+		<copy todir="build/dist">
+			<fileset dir="/">
+				<include name='root/.hudson/jobs/Sneer/workspace/installer/build/dist/sneer.jar'/>
+			</fileset>
+		</copy>
+		
 		<testability resultfile="build/testability.xml" print="xml">
 			<classpath>
-				<fileset dir="/">
-					<include name="root/.hudson/jobs/Sneer/workspace/installer/build/dist/sneer.jar" />
-				</fileset>
 				<fileset dir="${dist.dir}">
 					<include name="sneer.jar" />
 				</fileset>

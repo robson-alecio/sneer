@@ -19,7 +19,25 @@
 	<target name="test" depends="makejar, test-execution, test-verification">
 		<antcall target="finalize"/>
 	</target>
-	
+
+
+	<target name="findDuplicateCode">
+		<path id="PMD.lib">  
+			<fileset dir="lib/pmd">  
+				<include name="*.jar" />  
+			</fileset> 
+		</path>
+		
+	    <taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask">
+			<classpath refid="PMD.lib" /> 
+	    </taskdef>
+	    
+		<cpd minimumTokenCount="100" format="xml" outputFile="build/cpd.xml">
+	        <fileset dir="src">
+	            <include name="**/*.java"/>
+	        </fileset>
+	    </cpd>
+	</target>
 	
 	<target name="clover" depends="init-clover, compile, test-execution, test-verification, report-clover">
 		<antcall target="finalize"/>		
@@ -67,7 +85,7 @@
 	</target>
 
 	
-	<target name="makejar" depends="compile, binCopy">
+	<target name="makejar" depends="compile, copy-bin">
 		<delete file="build/dist"/>
 		<mkdir dir="build/dist"/>
 		<jar destfile="build/dist/sneer.jar">
@@ -84,7 +102,7 @@
 		</jar>
 	</target>
 	
-	<target name="binCopy" if="runOnHudson">
+	<target name="copy-bin">
 		<mkdir dir="bin"/>
 		<copy todir="bin">
 			<fileset dir="${bin.dir}">

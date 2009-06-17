@@ -85,7 +85,7 @@
 	</target>
 
 	
-	<target name="makejar" depends="compile, binCopy">
+	<target name="makejar" depends="compile, copy-bin">
 		<delete file="build/dist"/>
 		<mkdir dir="build/dist"/>
 		<jar destfile="build/dist/sneer.jar">
@@ -102,7 +102,7 @@
 		</jar>
 	</target>
 	
-	<target name="binCopy">
+	<target name="copy-bin">
 		<mkdir dir="bin"/>
 		<copy todir="bin">
 			<fileset dir="${bin.dir}">

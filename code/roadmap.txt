@@ -3,13 +3,11 @@
 
 	- [Klaus] Revise entire package structure.
 
-	- [Sandro] build.xml - Move to installer
-
 	- MyInfo - Persist
 
 	- Contact crud: persist with tuples
         
-	- @Snapps - Detect and load on startup.
+	- [Klaus, Bamboo] @Snapps - Detect and load on startup.
         
 	- .sneer - Fix Tuplespace persistence. Use my(StoragePath.class)
 
@@ -24,6 +22,12 @@
 			- .classpath - Generate based on brick libs.
 
 	- Savepoints - For entire source code.
+
+
+	- DynDns
+		- Fix: Running on more than one machine will cause redundant (abusive) updates. Do not persist last discovered IP. Do a DNS lookup every time instead.
+		- User data - Check if persistence is ok, in the right directory.					
+
 
 	- [Igor] SpeexTuplesTest - Fix intermittent failure. 	
 
@@ -68,10 +72,6 @@
 		- Start breaking 'sneer.pulp' into new package structure (hardware, software, etc), and while doing that, fix packages with more than one Brick (ex: 'sneer.pulp.reactive'). 
 
 	- DynDns
-		- Fix: Running on more than one machine will cause redundant (abusive) updates. Do not persist last discovered IP. Do a DNS lookup every time instead.
-		- User data - Use transparent persistence to save it, not a properties file.					
-			- Transparent persistence for bricks
-				- Unignore TransparentPropertyStoreTest
 		- Simplify to remove all synchronization. Let the container synchronize the brick.
 			- Concurrency - Synchronize calls on Bricks, according to docs/brick_types.txt  
 

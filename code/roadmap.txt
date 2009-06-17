@@ -1,7 +1,7 @@
 ﻿TASKS
 =========
 
-	- Revise entire package structure.
+	- [Klaus] Revise entire package structure.
 
 	- [Sandro] build.xml - Move to installer
 

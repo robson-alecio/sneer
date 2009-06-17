@@ -44,8 +44,7 @@
 			<classpath refid="testability.lib" />
 		</taskdef>
 		
-		<mkdir dir="${dist.dir}"/>
-		<testability resultfile="${build.dir}/testability.xml" print="xml">
+		<testability resultfile="build/testability.xml" print="xml">
 			<classpath>
 				<fileset dir="/">
 					<include name="root/.hudson/jobs/Sneer/workspace/installer/build/dist/sneer.jar" />

@@ -30,18 +30,12 @@
 		</path>
 		
 		<condition property="testability.jar.dir"
-			value="../../Sneer/workspace/code/build/dist" 
+			value="/root/.hudson/jobs/Sneer-Clover/workspace/code/build/dist" 
 			else="build/dist">
 			<equals arg1="${env.JOB_NAME}" arg2="Sneer-Clover"/>
 		</condition>
 		
 		<echo message="${testability.jar.dir}/sneer.jar"/>
-		<mkdir dir="build/dist"/>
-		<copy todir="build/dist">
-			<fileset dir="${testability.jar.dir}">
-				<include name='sneer.jar'/>
-			</fileset>
-		</copy>
 			
 		<taskdef name="testability" classname="com.google.ant.TestabilityTask">
 			<classpath refid="testability.lib" />
@@ -49,7 +43,7 @@
 		
 		<testability resultfile="build/testability.xml" print="xml">
 			<classpath>
-				<fileset dir="build/dist">
+				<fileset dir="${testability.jar.dir}">
 					<include name="sneer.jar" />
 				</fileset>
 			</classpath>

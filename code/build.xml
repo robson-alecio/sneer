@@ -32,7 +32,7 @@
 			<classpath refid="PMD.lib" /> 
 	    </taskdef>
 	    
-		<cpd minimumTokenCount="100" format="xml" outputFile="build/cpd.xml">
+		<cpd minimumTokenCount="50" format="xml" outputFile="build/cpd.xml">
 	        <fileset dir="src">
 	            <include name="**/*.java"/>
 	        </fileset>

@@ -15,9 +15,11 @@
 
 	- [Sandro] Fix LogConsole.
 
-	- [Klaus] Code - Check restore code msg ( InstallationWizard.restore() ).
-
 	- [Sandro] Log Console - Separate filter into another window.
+
+	- [Sandro] "Git -> Webstart -> Git" Full Cycle - Test. Talk to Klaus.
+
+	- [Klaus] Code - Check restore code msg ( InstallationWizard.restore() ).
 
 	- "Rebuild"
 		- [Klaus] Rebuild functionality.

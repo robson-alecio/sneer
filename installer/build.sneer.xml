@@ -50,7 +50,7 @@
 		
 		<echo message="${fdc.src} --> ${output}"/>
 		
-		<cpd minimumTokenCount="50" format="xml" outputFile="${output}">
+		<cpd minimumTokenCount="50" format="xml" ignoreLiterals="true" ignoreIdentifiers="true">
 			<fileset dir="${fdc.src}">
 				<include name="**/*.java"/>
 			</fileset>

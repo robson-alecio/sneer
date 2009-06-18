@@ -5,8 +5,8 @@ import static sneer.foundation.environments.Environments.my;
 import org.jmock.Expectations;
 import org.junit.Test;
 
+import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
-import sneer.bricks.pulp.clock.Clock;
 import sneer.bricks.pulp.connection.SocketAccepter;
 import sneer.bricks.pulp.connection.reachability.ReachabilitySentinel;
 import sneer.bricks.pulp.events.EventNotifier;

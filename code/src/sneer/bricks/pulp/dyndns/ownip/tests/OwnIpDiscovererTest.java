@@ -8,7 +8,7 @@ import org.jmock.Expectations;
 import org.jmock.Sequence;
 import org.junit.Test;
 
-import sneer.bricks.pulp.clock.Clock;
+import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.pulp.dyndns.checkip.CheckIp;
 import sneer.bricks.pulp.dyndns.ownip.OwnIpDiscoverer;
 import sneer.bricks.pulp.propertystore.PropertyStore;

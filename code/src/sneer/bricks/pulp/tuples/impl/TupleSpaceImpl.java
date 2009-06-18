@@ -18,7 +18,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import org.prevayler.Prevayler;
 import org.prevayler.PrevaylerFactory;
 
-import sneer.bricks.pulp.clock.Clock;
+import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.pulp.exceptionhandling.ExceptionHandler;
 import sneer.bricks.pulp.keymanager.KeyManager;
 import sneer.bricks.pulp.reactive.collections.CollectionSignals;

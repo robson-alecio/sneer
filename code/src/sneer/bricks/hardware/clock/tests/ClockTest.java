@@ -1,4 +1,4 @@
-package sneer.bricks.pulp.clock.tests;
+package sneer.bricks.hardware.clock.tests;
 
 import static sneer.foundation.environments.Environments.my;
 
@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import sneer.bricks.pulp.clock.Clock;
+import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.pulp.threads.Stepper;
 import sneer.foundation.brickness.testsupport.BrickTest;
 

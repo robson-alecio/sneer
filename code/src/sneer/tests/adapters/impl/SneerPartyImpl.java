@@ -4,7 +4,7 @@ import static sneer.foundation.environments.Environments.my;
 
 import java.io.File;
 
-import sneer.bricks.pulp.clock.Clock;
+import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.pulp.connection.ByteConnection;
 import sneer.bricks.pulp.connection.ConnectionManager;
 import sneer.bricks.pulp.connection.SocketOriginator;

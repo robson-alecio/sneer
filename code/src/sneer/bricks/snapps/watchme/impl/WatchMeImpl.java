@@ -5,12 +5,12 @@ import static sneer.foundation.environments.Environments.my;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
+import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.exceptions.Hiccup;
 import sneer.bricks.hardware.ram.arrays.ImmutableByteArray;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.Light;
 import sneer.bricks.pulp.blinkinglights.LightType;
-import sneer.bricks.pulp.clock.Clock;
 import sneer.bricks.pulp.datastructures.cache.Cache;
 import sneer.bricks.pulp.datastructures.cache.CacheFactory;
 import sneer.bricks.pulp.events.EventNotifier;

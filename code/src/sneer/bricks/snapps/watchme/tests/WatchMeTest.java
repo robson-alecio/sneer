@@ -14,9 +14,9 @@ import org.jmock.Expectations;
 import org.jmock.Sequence;
 import org.junit.Test;
 
+import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.exceptions.Hiccup;
 import sneer.bricks.hardware.gui.images.Images;
-import sneer.bricks.pulp.clock.Clock;
 import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.keymanager.KeyManager;
 import sneer.bricks.pulp.reactive.Signals;

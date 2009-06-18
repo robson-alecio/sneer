@@ -5,9 +5,9 @@ import static sneer.foundation.environments.Environments.my;
 import org.jmock.Expectations;
 import org.junit.Test;
 
+import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.ram.arrays.ImmutableArrays;
 import sneer.bricks.hardware.ram.arrays.ImmutableByteArray2D;
-import sneer.bricks.pulp.clock.Clock;
 import sneer.bricks.pulp.keymanager.KeyManager;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.bricks.skin.rooms.ActiveRoomKeeper;

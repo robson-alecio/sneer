@@ -4,10 +4,10 @@ import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Test;
 
+import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.Light;
 import sneer.bricks.pulp.blinkinglights.LightType;
-import sneer.bricks.pulp.clock.Clock;
 import sneer.foundation.brickness.testsupport.BrickTest;
 
 public class BlinkingLightsTest extends BrickTest {

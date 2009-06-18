@@ -1,12 +1,12 @@
-package sneer.bricks.pulp.clock.impl;
+package sneer.bricks.hardware.clock.impl;
 
 import static sneer.foundation.environments.Environments.my;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.timebox.Timebox;
-import sneer.bricks.pulp.clock.Clock;
 import sneer.bricks.pulp.exceptionhandling.ExceptionHandler;
 import sneer.bricks.pulp.threads.Latch;
 import sneer.bricks.pulp.threads.Stepper;

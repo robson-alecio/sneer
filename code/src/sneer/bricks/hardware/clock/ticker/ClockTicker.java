@@ -1,4 +1,4 @@
-package sneer.bricks.pulp.clockticker;
+package sneer.bricks.hardware.clock.ticker;
 
 import sneer.foundation.brickness.Brick;
 

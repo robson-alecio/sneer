@@ -5,8 +5,8 @@ import static sneer.foundation.environments.Environments.my;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import sneer.bricks.hardware.clock.Clock;
 import sneer.bricks.hardware.cpu.lang.ref.weakreferencekeeper.WeakReferenceKeeper;
-import sneer.bricks.pulp.clock.Clock;
 import sneer.bricks.pulp.threads.Stepper;
 
 public class WeakReferenceKeeperImpl implements WeakReferenceKeeper { // Refactor: in-line this brick, it's too simple 

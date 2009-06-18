@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import sneer.bricks.pulp.clock.Clock;
+import sneer.bricks.hardware.clock.Clock;
 
 @RunWith(Mocotoh.class)
 public class MocotohTest extends Assert {

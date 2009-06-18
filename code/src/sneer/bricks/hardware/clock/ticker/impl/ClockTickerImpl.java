@@ -1,8 +1,8 @@
-package sneer.bricks.pulp.clockticker.impl;
+package sneer.bricks.hardware.clock.ticker.impl;
 
 import static sneer.foundation.environments.Environments.my;
-import sneer.bricks.pulp.clock.Clock;
-import sneer.bricks.pulp.clockticker.ClockTicker;
+import sneer.bricks.hardware.clock.Clock;
+import sneer.bricks.hardware.clock.ticker.ClockTicker;
 import sneer.bricks.pulp.threads.Stepper;
 import sneer.bricks.pulp.threads.Threads;
 

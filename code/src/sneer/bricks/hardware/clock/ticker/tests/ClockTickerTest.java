@@ -1,11 +1,11 @@
-package sneer.bricks.pulp.clockticker.tests;
+package sneer.bricks.hardware.clock.ticker.tests;
 
 import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Test;
 
-import sneer.bricks.pulp.clock.Clock;
-import sneer.bricks.pulp.clockticker.ClockTicker;
+import sneer.bricks.hardware.clock.Clock;
+import sneer.bricks.hardware.clock.ticker.ClockTicker;
 import sneer.bricks.pulp.threads.Threads;
 import sneer.foundation.brickness.testsupport.BrickTest;
 

@@ -35,7 +35,7 @@ public class SneerSession {
 				sneer.bricks.pulp.log.receiver.file.LogToFile.class,
 				sneer.bricks.pulp.log.receiver.sysout.LogToSysout.class,
 
-				sneer.bricks.pulp.clockticker.ClockTicker.class,
+				sneer.bricks.hardware.clock.ticker.ClockTicker.class,
 		};
 	}
 

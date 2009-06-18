@@ -16,9 +16,6 @@
                    HARDWARE SHARING (FREEDOM 6)
            (T4T Barter: Routing, Backups, Clustering)
 
-                      EXPRESSION (FREEDOM 5)
-                          (TupleSpace)
-
                         TRUST (FREEDOM 3)
                (Affinity, AccessControl (Sandbox))
 
@@ -28,8 +25,11 @@
                        IDENTITY (FREEDOM 1)
                         (Name, Public Key)
 
+                      EXPRESSION (FREEDOM 5)
+                          (TupleSpace)
+
                      OWN SOFTWARE (FREEDOM 7)
-           (Bricks: Install/Update/Remove, Prevalence)
+                 (Bricks: Install/Update/Remove)
 
                      OWN HARDWARE (FREEDOM 6)
                (Clock, Files, Network, GUI support)

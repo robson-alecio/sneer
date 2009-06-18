@@ -1,6 +1,6 @@
-package sneer.foundation.commons.environments;
+package sneer.foundation.environments;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 import sneer.foundation.commons.lang.ByRef;
 import sneer.foundation.commons.lang.Producer;
 

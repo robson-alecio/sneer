@@ -4,7 +4,7 @@ import static java.lang.System.gc;
 import sneer.bricks.pulp.log.Logger;
 import sneer.bricks.pulp.threads.Threads;
 import sneer.foundation.commons.threads.Daemon;
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 
 public class MemorySentinel {

@@ -1,6 +1,6 @@
 package sneer.bricks.snapps.welcomewizard.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.awt.Container;
 import java.awt.GridBagConstraints;
@@ -34,9 +34,9 @@ import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.TextWidget;
 import sneer.bricks.skin.windowboundssetter.WindowBoundsSetter;
 import sneer.bricks.snapps.welcomewizard.UserInfo;
-import sneer.foundation.commons.environments.Environment;
-import sneer.foundation.commons.environments.Environments;
 import sneer.foundation.commons.lang.ByRef;
+import sneer.foundation.environments.Environment;
+import sneer.foundation.environments.Environments;
 
 class UserInfoImpl extends JFrame implements UserInfo {
 	

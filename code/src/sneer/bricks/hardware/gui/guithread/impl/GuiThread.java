@@ -2,14 +2,14 @@ package sneer.bricks.hardware.gui.guithread.impl;
 
 import java.lang.reflect.InvocationTargetException;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 
 import javax.swing.SwingUtilities;
 
 import sneer.bricks.hardware.gui.guithread.GuiThread;
-import sneer.foundation.commons.environments.Environment;
-import sneer.foundation.commons.environments.Environments;
+import sneer.foundation.environments.Environment;
+import sneer.foundation.environments.Environments;
 
 class GuiThreadImpl implements GuiThread {
 	

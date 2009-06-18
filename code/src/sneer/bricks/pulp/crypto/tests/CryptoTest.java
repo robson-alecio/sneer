@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.crypto.tests;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import org.bouncycastle.util.encoders.Hex;
 import org.junit.Test;

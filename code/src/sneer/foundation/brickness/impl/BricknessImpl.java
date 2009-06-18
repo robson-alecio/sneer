@@ -1,14 +1,14 @@
 package sneer.foundation.brickness.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.lang.reflect.Constructor;
 
 import sneer.foundation.brickness.BrickLoadingException;
-import sneer.foundation.commons.environments.Bindings;
-import sneer.foundation.commons.environments.CachingEnvironment;
-import sneer.foundation.commons.environments.Environment;
-import sneer.foundation.commons.environments.EnvironmentUtils;
+import sneer.foundation.environments.Bindings;
+import sneer.foundation.environments.CachingEnvironment;
+import sneer.foundation.environments.Environment;
+import sneer.foundation.environments.EnvironmentUtils;
 
 
 public class BricknessImpl implements Environment {

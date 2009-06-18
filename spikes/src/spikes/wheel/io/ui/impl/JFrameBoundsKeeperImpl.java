@@ -10,7 +10,7 @@ import javax.swing.SwingUtilities;
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import spikes.wheel.io.ui.BoundsPersistence;
 import spikes.wheel.io.ui.JFrameBoundsKeeper;
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 public class JFrameBoundsKeeperImpl implements JFrameBoundsKeeper {
 

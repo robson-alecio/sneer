@@ -1,7 +1,7 @@
 package sneer.foundation.brickness;
 
 import sneer.foundation.brickness.impl.BricknessImpl;
-import sneer.foundation.commons.environments.Environment;
+import sneer.foundation.environments.Environment;
 
 public class Brickness {
 

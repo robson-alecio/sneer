@@ -1,6 +1,6 @@
 package spikes.wheel.lang.tests;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Test;
 

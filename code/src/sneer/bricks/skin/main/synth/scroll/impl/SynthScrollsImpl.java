@@ -4,7 +4,7 @@ import javax.swing.JScrollPane;
 
 import sneer.bricks.skin.main.synth.Synth;
 import sneer.bricks.skin.main.synth.scroll.SynthScrolls;
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 public class SynthScrollsImpl implements SynthScrolls {
 

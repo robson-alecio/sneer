@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.threads.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.lang.ref.WeakReference;
 import java.util.HashSet;
@@ -10,9 +10,9 @@ import sneer.bricks.pulp.own.name.OwnNameKeeper;
 import sneer.bricks.pulp.threads.Latch;
 import sneer.bricks.pulp.threads.Stepper;
 import sneer.bricks.pulp.threads.Threads;
-import sneer.foundation.commons.environments.Environment;
-import sneer.foundation.commons.environments.Environments;
 import sneer.foundation.commons.threads.Daemon;
+import sneer.foundation.environments.Environment;
+import sneer.foundation.environments.Environments;
 
 class ThreadsImpl implements Threads {
 

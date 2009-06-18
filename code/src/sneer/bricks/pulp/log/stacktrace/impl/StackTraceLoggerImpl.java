@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.log.stacktrace.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;

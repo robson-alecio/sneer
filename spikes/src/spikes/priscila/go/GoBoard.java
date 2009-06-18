@@ -1,6 +1,6 @@
 package spikes.priscila.go;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 import static spikes.priscila.go.GoBoard.StoneColor.BLACK;
 import static spikes.priscila.go.GoBoard.StoneColor.WHITE;
 

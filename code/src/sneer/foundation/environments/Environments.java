@@ -1,4 +1,4 @@
-package sneer.foundation.commons.environments;
+package sneer.foundation.environments;
 
 
 public class Environments {

@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.tuples.tests;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.util.List;
 
@@ -10,8 +10,8 @@ import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.brickness.Tuple;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.BrickTestRunner;
-import sneer.foundation.commons.environments.Environment;
-import sneer.foundation.commons.environments.Environments;
+import sneer.foundation.environments.Environment;
+import sneer.foundation.environments.Environments;
 
 public class TuplePersistenceTest extends BrickTest {
 

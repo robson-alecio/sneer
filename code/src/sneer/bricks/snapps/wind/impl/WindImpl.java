@@ -1,6 +1,6 @@
 package sneer.bricks.snapps.wind.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.util.Comparator;
 

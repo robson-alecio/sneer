@@ -26,7 +26,7 @@ import javax.swing.ImageIcon;
 import sneer.bricks.hardware.cpu.exceptions.Hiccup;
 import sneer.bricks.hardware.gui.images.Images;
 import sneer.bricks.skin.image.ImageFactory;
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 class ImageFactoryImpl implements ImageFactory {
 	

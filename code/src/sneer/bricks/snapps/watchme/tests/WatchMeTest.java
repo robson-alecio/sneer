@@ -1,6 +1,6 @@
 package sneer.bricks.snapps.watchme.tests;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
@@ -30,8 +30,8 @@ import sneer.foundation.brickness.PublicKey;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.BrickTestRunner;
 import sneer.foundation.brickness.testsupport.Contribute;
-import sneer.foundation.commons.environments.Environment;
-import sneer.foundation.commons.environments.EnvironmentUtils;
+import sneer.foundation.environments.Environment;
+import sneer.foundation.environments.EnvironmentUtils;
 
 public class WatchMeTest extends BrickTest {
 	

@@ -1,6 +1,6 @@
 package spikes.bamboo.bricksorter.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.io.IOException;
 import java.io.InputStream;

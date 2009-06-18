@@ -1,6 +1,6 @@
 package sneer.bricks.skin.widgets.reactive.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -28,8 +28,8 @@ import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.skin.widgets.reactive.NotificationPolicy;
 import sneer.bricks.skin.widgets.reactive.TextWidget;
-import sneer.foundation.commons.environments.Environment;
-import sneer.foundation.commons.environments.Environments;
+import sneer.foundation.environments.Environment;
+import sneer.foundation.environments.Environments;
 
 
 abstract class RAbstractField<WIDGET extends JTextComponent> extends RPanel<WIDGET> implements TextWidget<WIDGET> {

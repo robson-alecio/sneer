@@ -1,6 +1,6 @@
-package sneer.testutils.network;
+package sneer.functionaltests.testutils.network;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.io.IOException;
 

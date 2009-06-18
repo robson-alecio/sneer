@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.tuples.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,8 +29,8 @@ import sneer.bricks.pulp.threads.Threads;
 import sneer.bricks.pulp.tuples.TupleSpace;
 import sneer.foundation.brickness.StoragePath;
 import sneer.foundation.brickness.Tuple;
-import sneer.foundation.commons.environments.Environment;
-import sneer.foundation.commons.environments.Environments;
+import sneer.foundation.environments.Environment;
+import sneer.foundation.environments.Environments;
 
 class TupleSpaceImpl implements TupleSpace {
 

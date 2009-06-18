@@ -1,15 +1,15 @@
 package sneer.functionaltests.adapters;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import sneer.foundation.commons.environments.Environment;
-import sneer.foundation.commons.environments.Environments;
 import sneer.foundation.commons.lang.ByRef;
+import sneer.foundation.environments.Environment;
+import sneer.foundation.environments.Environments;
 
 final class ProxyInEnvironment<T> implements InvocationHandler {
 

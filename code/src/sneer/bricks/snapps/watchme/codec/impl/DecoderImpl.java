@@ -1,6 +1,6 @@
 package sneer.bricks.snapps.watchme.codec.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;

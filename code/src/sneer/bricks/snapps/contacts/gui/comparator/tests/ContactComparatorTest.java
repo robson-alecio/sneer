@@ -1,6 +1,6 @@
 package sneer.bricks.snapps.contacts.gui.comparator.tests;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Ignore;
 import org.junit.Test;

@@ -1,13 +1,13 @@
-package sneer.foundation.commons.environments.tests;
+package sneer.foundation.environments.tests;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import sneer.foundation.commons.environments.Environment;
-import sneer.foundation.commons.environments.EnvironmentUtils;
-import sneer.foundation.commons.environments.Environments;
+import sneer.foundation.environments.Environment;
+import sneer.foundation.environments.EnvironmentUtils;
+import sneer.foundation.environments.Environments;
 
 
 public class EnvironmentsTest extends Assert {

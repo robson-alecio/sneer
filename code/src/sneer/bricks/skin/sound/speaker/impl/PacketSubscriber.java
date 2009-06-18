@@ -1,6 +1,6 @@
 package sneer.bricks.skin.sound.speaker.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.keymanager.KeyManager;
 import sneer.bricks.pulp.tuples.TupleSpace;

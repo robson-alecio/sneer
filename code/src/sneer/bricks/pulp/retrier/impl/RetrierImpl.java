@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.retrier.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.cpu.exceptions.FriendlyException;
 import sneer.bricks.hardware.cpu.exceptions.Hiccup;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;

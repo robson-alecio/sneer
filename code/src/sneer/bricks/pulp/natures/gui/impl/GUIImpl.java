@@ -7,7 +7,7 @@ import java.util.*;
 import javassist.*;
 import sneer.bricks.pulp.natures.gui.*;
 import sneer.foundation.brickness.*;
-import sneer.foundation.commons.environments.*;
+import sneer.foundation.environments.*;
 
 class GUIImpl implements GUI {
 	
@@ -45,7 +45,7 @@ class GUIImpl implements GUI {
 
 	private void introduceMetadataInitializer(CtClass ctClass) {
 		try {
-			ctClass.makeClassInitializer().insertAfter("natures.gui.BrickMetadata.ENVIRONMENT = sneer.foundation.commons.environments.Environments.my(sneer.foundation.commons.environments.Environment.class);");
+			ctClass.makeClassInitializer().insertAfter("natures.gui.BrickMetadata.ENVIRONMENT = sneer.foundation.environments.Environments.my(sneer.foundation.environments.Environment.class);");
 		} catch (CannotCompileException e) {
 			throw new IllegalStateException(e);
 		}

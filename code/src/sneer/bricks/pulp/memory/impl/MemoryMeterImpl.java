@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.memory.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.pulp.clock.Clock;
 import sneer.bricks.pulp.memory.MemoryMeter;
 import sneer.bricks.pulp.reactive.Register;

@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.log.workers.sysout.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.pulp.log.LogWorker;
 import sneer.bricks.pulp.log.Logger;
 import sneer.bricks.pulp.log.formatter.LogFormatter;

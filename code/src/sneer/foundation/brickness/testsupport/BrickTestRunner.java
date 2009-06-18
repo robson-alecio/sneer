@@ -1,6 +1,6 @@
 package sneer.foundation.brickness.testsupport;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -14,11 +14,11 @@ import org.junit.internal.runners.TestMethod;
 import org.junit.runner.notification.RunNotifier;
 
 import sneer.foundation.brickness.Brickness;
-import sneer.foundation.commons.environments.Bindings;
-import sneer.foundation.commons.environments.CachingEnvironment;
-import sneer.foundation.commons.environments.Environment;
-import sneer.foundation.commons.environments.EnvironmentUtils;
-import sneer.foundation.commons.environments.Environments;
+import sneer.foundation.environments.Bindings;
+import sneer.foundation.environments.CachingEnvironment;
+import sneer.foundation.environments.Environment;
+import sneer.foundation.environments.EnvironmentUtils;
+import sneer.foundation.environments.Environments;
 
 public class BrickTestRunner extends JUnit4ClassRunner {
 

@@ -5,7 +5,7 @@ import sneer.bricks.pulp.reactive.Register;
 import sneer.bricks.pulp.reactive.Signal;
 import sneer.bricks.pulp.reactive.Signals;
 import spikes.sandro.summit.register.SimpleRegister;
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 class SimpleRegisterImpl implements SimpleRegister{
 

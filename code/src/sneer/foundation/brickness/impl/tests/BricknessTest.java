@@ -8,8 +8,8 @@ import sneer.foundation.brickness.Brickness;
 import sneer.foundation.brickness.impl.tests.fixtures.a.BrickA;
 import sneer.foundation.brickness.impl.tests.fixtures.b.BrickB;
 import sneer.foundation.brickness.impl.tests.fixtures.noannotation.InterfaceWithoutBrickAnnotation;
-import sneer.foundation.commons.environments.Environment;
-import sneer.foundation.commons.environments.EnvironmentUtils;
+import sneer.foundation.environments.Environment;
+import sneer.foundation.environments.EnvironmentUtils;
 
 
 public class BricknessTest extends Assert {

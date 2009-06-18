@@ -1,6 +1,6 @@
 package sneer.bricks.hardware.gui.trayicon.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.awt.AWTException;
 import java.awt.Image;

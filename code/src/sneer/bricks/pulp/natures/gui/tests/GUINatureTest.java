@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.natures.gui.tests;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,8 +10,8 @@ import org.junit.Test;
 
 import sneer.bricks.pulp.natures.gui.tests.fixtures.SomeGuiBrick;
 import sneer.foundation.brickness.Brickness;
-import sneer.foundation.commons.environments.Environment;
-import sneer.foundation.commons.environments.Environments;
+import sneer.foundation.environments.Environment;
+import sneer.foundation.environments.Environments;
 
 public class GUINatureTest extends Assert {
 	

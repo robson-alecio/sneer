@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.reactive;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 public interface ReactivePredicate<T> {
 

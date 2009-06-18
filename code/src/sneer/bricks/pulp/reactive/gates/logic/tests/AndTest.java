@@ -3,7 +3,7 @@ package sneer.bricks.pulp.reactive.gates.logic.tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.util.ArrayList;
 import java.util.List;

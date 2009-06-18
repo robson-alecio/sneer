@@ -1,6 +1,6 @@
 package spikes.wheel.io.network.mocks;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.io.IOException;
 import java.util.HashMap;

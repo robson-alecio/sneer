@@ -1,6 +1,6 @@
 package sneer.bricks.snapps.contacts.gui.info.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

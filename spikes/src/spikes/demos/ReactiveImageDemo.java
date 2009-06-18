@@ -1,6 +1,6 @@
 package spikes.demos;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.awt.FlowLayout;
 import java.awt.Image;
@@ -16,8 +16,8 @@ import sneer.bricks.pulp.reactive.Signals;
 import sneer.bricks.skin.widgets.reactive.ImageWidget;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.foundation.brickness.Brickness;
-import sneer.foundation.commons.environments.Environments;
 import sneer.foundation.commons.lang.Functor;
+import sneer.foundation.environments.Environments;
 import spikes.wheel.reactive.impl.mocks.RandomBoolean;
 
 public class ReactiveImageDemo {

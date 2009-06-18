@@ -1,7 +1,7 @@
 package spikes.wheel.reactive.impl.tests;
 
 import static org.junit.Assert.assertEquals;
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

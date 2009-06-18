@@ -21,8 +21,8 @@ import sneer.foundation.brickness.impl.tests.fixtures.nature.brick.BrickOfSomeNa
 import sneer.foundation.brickness.impl.tests.fixtures.nature.brick.impl.BrickOfSomeNatureImpl;
 import sneer.foundation.brickness.impl.tests.fixtures.nature.provider.SomeNature;
 import sneer.foundation.brickness.testsupport.ClassFiles;
-import sneer.foundation.commons.environments.Environment;
-import sneer.foundation.commons.environments.EnvironmentUtils;
+import sneer.foundation.environments.Environment;
+import sneer.foundation.environments.EnvironmentUtils;
 
 // TODO: test multiple natures
 public class NatureTest extends Assert {

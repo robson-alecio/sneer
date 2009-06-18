@@ -1,6 +1,6 @@
 package sneer.bricks.snapps.whisper.gui.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.awt.Container;
 import java.awt.Dimension;
@@ -26,7 +26,7 @@ import sneer.bricks.skin.sound.speaker.Speaker;
 import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.TextWidget;
 import sneer.bricks.snapps.whisper.gui.WhisperGui;
-import sneer.foundation.commons.environments.Environments;
+import sneer.foundation.environments.Environments;
 
 class WhisperGuiImpl implements WhisperGui {
 

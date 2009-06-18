@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.own.tagline.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.own.tagline.OwnTaglineKeeper;
 import sneer.bricks.pulp.reactive.Register;

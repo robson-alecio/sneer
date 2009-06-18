@@ -1,6 +1,6 @@
 package spikes.demos;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.awt.FlowLayout;
 
@@ -15,7 +15,7 @@ import sneer.bricks.skin.widgets.reactive.ReactiveWidgetFactory;
 import sneer.bricks.skin.widgets.reactive.TextWidget;
 import sneer.bricks.skin.widgets.reactive.Widget;
 import sneer.foundation.brickness.Brickness;
-import sneer.foundation.commons.environments.Environments;
+import sneer.foundation.environments.Environments;
 
 public class ReactiveWidgetsDemo {
 

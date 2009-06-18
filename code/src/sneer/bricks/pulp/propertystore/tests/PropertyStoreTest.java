@@ -1,14 +1,14 @@
 package sneer.bricks.pulp.propertystore.tests;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Test;
 
 import sneer.bricks.pulp.propertystore.PropertyStore;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.BrickTestRunner;
-import sneer.foundation.commons.environments.Environment;
-import sneer.foundation.commons.environments.Environments;
+import sneer.foundation.environments.Environment;
+import sneer.foundation.environments.Environments;
 
 public class PropertyStoreTest extends BrickTest {
 

@@ -1,6 +1,6 @@
 package sneer.bricks.skin.screenshotter.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.awt.AWTException;
 import java.awt.DisplayMode;

@@ -1,6 +1,6 @@
 package sneer.bricks.hardware.gui.timebox.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.awt.AWTEvent;
 import java.awt.EventQueue;
@@ -11,9 +11,9 @@ import java.util.List;
 import sneer.bricks.hardware.cpu.timebox.Timebox;
 import sneer.bricks.hardware.gui.timebox.TimeboxedEventQueue;
 import sneer.bricks.pulp.log.Logger;
-import sneer.foundation.commons.environments.Environment;
-import sneer.foundation.commons.environments.EnvironmentUtils;
-import sneer.foundation.commons.environments.Environments;
+import sneer.foundation.environments.Environment;
+import sneer.foundation.environments.EnvironmentUtils;
+import sneer.foundation.environments.Environments;
 
 class TimeboxedEventQueueImpl extends EventQueue implements TimeboxedEventQueue {
 

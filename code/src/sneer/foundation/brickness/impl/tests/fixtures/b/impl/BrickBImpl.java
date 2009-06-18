@@ -1,6 +1,6 @@
 package sneer.foundation.brickness.impl.tests.fixtures.b.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 import sneer.foundation.brickness.impl.tests.fixtures.a.BrickA;
 import sneer.foundation.brickness.impl.tests.fixtures.b.BrickB;
 

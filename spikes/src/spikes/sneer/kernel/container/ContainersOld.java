@@ -2,7 +2,7 @@ package spikes.sneer.kernel.container;
 
 import java.lang.reflect.Constructor;
 
-import sneer.foundation.commons.environments.Environment;
+import sneer.foundation.environments.Environment;
 
 
 public class ContainersOld {

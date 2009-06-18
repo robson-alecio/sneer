@@ -8,7 +8,7 @@ import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.internal.runners.TestMethod;
 
 import sneer.foundation.brickness.Brickness;
-import sneer.foundation.commons.environments.Environments;
+import sneer.foundation.environments.Environments;
 
 public class Mocotoh extends JUnit4ClassRunner {
 	

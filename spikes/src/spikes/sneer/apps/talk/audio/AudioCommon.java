@@ -1,6 +1,6 @@
 package spikes.sneer.apps.talk.audio;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.util.ArrayList;
 import java.util.List;

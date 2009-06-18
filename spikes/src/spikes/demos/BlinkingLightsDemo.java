@@ -1,12 +1,12 @@
 package spikes.demos;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.pulp.blinkinglights.BlinkingLights;
 import sneer.bricks.pulp.blinkinglights.LightType;
 import sneer.bricks.skin.main.dashboard.Dashboard;
 import sneer.bricks.snapps.blinkinglights.gui.BlinkingLightsGui;
 import sneer.foundation.brickness.Brickness;
-import sneer.foundation.commons.environments.Environments;
+import sneer.foundation.environments.Environments;
 
 public class BlinkingLightsDemo {
 

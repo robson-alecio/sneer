@@ -3,7 +3,7 @@
  */
 package sneer.bricks.pulp.probe.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.contacts.Contact;
 import sneer.bricks.pulp.distribution.filtering.TupleFilterManager;

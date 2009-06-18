@@ -1,6 +1,6 @@
 package spikes.sandro.summit.register.instrument02.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import javax.swing.JTextField;
 

@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.dyndns.ownaccount.tests;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package sneer.foundation.commons.environments;
+package sneer.foundation.environments;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

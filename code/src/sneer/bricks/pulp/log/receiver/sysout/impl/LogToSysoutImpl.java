@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.log.receiver.sysout.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.cpu.lang.Consumer;
 import sneer.bricks.pulp.log.receiver.sysout.LogToSysout;
 import sneer.bricks.pulp.log.workers.notifier.LogNotifier;

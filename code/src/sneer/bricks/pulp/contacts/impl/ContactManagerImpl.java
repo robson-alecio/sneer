@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.contacts.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.hardware.cpu.exceptions.IllegalParameter;
 import sneer.bricks.hardware.cpu.lang.PickyConsumer;
 import sneer.bricks.pulp.contacts.Contact;

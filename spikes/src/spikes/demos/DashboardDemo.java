@@ -15,7 +15,7 @@ import sneer.bricks.skin.main.dashboard.InstrumentPanel;
 import sneer.bricks.skin.main.instrumentregistry.Instrument;
 import sneer.bricks.skin.main.instrumentregistry.InstrumentRegistry;
 import sneer.foundation.brickness.Brickness;
-import sneer.foundation.commons.environments.Environments;
+import sneer.foundation.environments.Environments;
 
 
 public class DashboardDemo  {

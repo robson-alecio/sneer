@@ -3,8 +3,8 @@ package sneer.main;
 import sneer.bricks.pulp.threads.Threads;
 import sneer.foundation.brickness.BrickLoadingException;
 import sneer.foundation.brickness.Brickness;
-import sneer.foundation.commons.environments.Environment;
-import sneer.foundation.commons.environments.EnvironmentUtils;
+import sneer.foundation.environments.Environment;
+import sneer.foundation.environments.EnvironmentUtils;
 
 public class SneerSession {
 

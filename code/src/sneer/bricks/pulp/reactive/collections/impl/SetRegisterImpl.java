@@ -4,7 +4,7 @@
 
 package sneer.bricks.pulp.reactive.collections.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.util.Collection;
 import java.util.HashSet;

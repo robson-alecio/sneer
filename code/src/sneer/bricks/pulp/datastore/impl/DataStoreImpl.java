@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.datastore.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.pulp.datastore.DataStore;
 import sneer.bricks.pulp.propertystore.PropertyStore;
 

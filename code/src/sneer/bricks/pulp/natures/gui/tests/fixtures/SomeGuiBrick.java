@@ -4,7 +4,7 @@ import java.awt.event.*;
 
 import sneer.bricks.pulp.natures.gui.GUI;
 import sneer.foundation.brickness.Brick;
-import sneer.foundation.commons.environments.Environment;
+import sneer.foundation.environments.Environment;
 
 // TODO: callbacks
 // TODO: static methods

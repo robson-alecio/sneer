@@ -30,7 +30,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import sneer.bricks.hardware.gui.guithread.GuiThread;
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 //Refactor: Break this into several classes.
 public class Language {

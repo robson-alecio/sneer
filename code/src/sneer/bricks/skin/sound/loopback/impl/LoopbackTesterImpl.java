@@ -4,7 +4,7 @@ import java.io.ByteArrayOutputStream;
 
 import sneer.bricks.pulp.log.Logger;
 import sneer.bricks.skin.sound.loopback.LoopbackTester;
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 
 class LoopbackTesterImpl implements LoopbackTester{

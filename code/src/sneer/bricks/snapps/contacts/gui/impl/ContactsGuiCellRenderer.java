@@ -1,6 +1,6 @@
 package sneer.bricks.snapps.contacts.gui.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.awt.Component;
 import java.awt.Image;

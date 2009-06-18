@@ -7,7 +7,7 @@ import javax.swing.JComponent;
 import javax.swing.JWindow;
 
 import sneer.bricks.hardware.gui.guithread.GuiThread;
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 class Resizer {
 

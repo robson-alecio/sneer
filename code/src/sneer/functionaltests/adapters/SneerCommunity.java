@@ -1,6 +1,6 @@
 package sneer.functionaltests.adapters;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -11,12 +11,12 @@ import sneer.bricks.hardware.cpu.lang.Lang;
 import sneer.bricks.pulp.network.Network;
 import sneer.foundation.brickness.Brickness;
 import sneer.foundation.brickness.StoragePath;
-import sneer.foundation.commons.environments.Environment;
-import sneer.foundation.commons.environments.EnvironmentUtils;
+import sneer.foundation.environments.Environment;
+import sneer.foundation.environments.EnvironmentUtils;
 import sneer.functionaltests.SovereignCommunity;
 import sneer.functionaltests.SovereignParty;
+import sneer.functionaltests.testutils.network.InProcessNetwork;
 import sneer.main.SneerSession;
-import sneer.testutils.network.InProcessNetwork;
 
 
 public class SneerCommunity implements SovereignCommunity {

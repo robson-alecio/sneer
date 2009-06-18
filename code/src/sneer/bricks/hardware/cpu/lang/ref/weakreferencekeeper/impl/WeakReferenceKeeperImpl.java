@@ -1,6 +1,6 @@
 package sneer.bricks.hardware.cpu.lang.ref.weakreferencekeeper.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.util.Map;
 import java.util.WeakHashMap;

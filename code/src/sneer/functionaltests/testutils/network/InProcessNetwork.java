@@ -1,4 +1,4 @@
-package sneer.testutils.network;
+package sneer.functionaltests.testutils.network;
 
 import java.io.IOException;
 import java.util.HashMap;

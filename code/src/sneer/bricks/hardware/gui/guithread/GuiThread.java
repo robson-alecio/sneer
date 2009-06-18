@@ -1,7 +1,7 @@
 package sneer.bricks.hardware.gui.guithread;
 
 import sneer.foundation.brickness.Brick;
-import sneer.foundation.commons.environments.*;
+import sneer.foundation.environments.*;
 
 @Brick
 public interface GuiThread {

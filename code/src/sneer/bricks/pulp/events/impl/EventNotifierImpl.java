@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.events.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,7 +11,7 @@ import sneer.bricks.pulp.events.EventNotifier;
 import sneer.bricks.pulp.events.EventSource;
 import sneer.bricks.pulp.exceptionhandling.ExceptionHandler;
 import sneer.bricks.pulp.log.Logger;
-import sneer.foundation.commons.environments.Environments;
+import sneer.foundation.environments.Environments;
 
 class EventNotifierImpl<T> implements EventNotifier<T>, EventSource<T> {
 

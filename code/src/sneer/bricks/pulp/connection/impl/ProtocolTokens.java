@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.connection.impl;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 import sneer.bricks.pulp.lang.StringUtils;
 
 interface ProtocolTokens {

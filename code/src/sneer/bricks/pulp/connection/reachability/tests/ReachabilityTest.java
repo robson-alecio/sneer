@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.connection.reachability.tests;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import org.jmock.Expectations;
 import org.junit.Test;

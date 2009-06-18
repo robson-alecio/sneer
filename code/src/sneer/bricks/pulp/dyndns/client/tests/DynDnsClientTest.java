@@ -1,6 +1,6 @@
 package sneer.bricks.pulp.dyndns.client.tests;
 
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 import java.io.IOException;
 
@@ -28,7 +28,7 @@ import sneer.foundation.brickness.StoragePath;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.BrickTestRunner;
 import sneer.foundation.brickness.testsupport.Contribute;
-import sneer.foundation.commons.environments.EnvironmentUtils;
+import sneer.foundation.environments.EnvironmentUtils;
 
 public class DynDnsClientTest extends BrickTest {
 	

@@ -20,7 +20,7 @@ import javax.swing.tree.MutableTreeNode;
 
 import sneer.bricks.hardware.gui.guithread.GuiThread;
 import sneer.bricks.pulp.threads.Threads;
-import static sneer.foundation.commons.environments.Environments.my;
+import static sneer.foundation.environments.Environments.my;
 
 public class TreeModelExample extends JFrame {
 

@@ -52,7 +52,7 @@ class UserInfoImpl extends JFrame implements UserInfo {
 	private final MainMenu _mainMenu = my(MainMenu.class);	
 	
 	UserInfoImpl() {
-		addWelcomeWindowAction();
+		addOpenWindowAction();
 
 		if(hasRequiredUserData()) return;
 		
@@ -169,10 +169,10 @@ class UserInfoImpl extends JFrame implements UserInfo {
 		return field.getText().trim();
 	}
 	
-	private void addWelcomeWindowAction() {
+	private void addOpenWindowAction() {
 		Action cmd = new Action(){
-			@Override public String caption() { 	return "My Info...";	}
-			@Override	public void run() { 				open(); }
+			@Override public String caption() { return "My Info..."; }
+			@Override	public void run() { open(); }
 		};
 		_mainMenu.getSneerMenu().addAction(cmd);
 	}

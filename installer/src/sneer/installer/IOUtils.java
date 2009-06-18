@@ -3,6 +3,7 @@ package sneer.installer;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -70,7 +71,7 @@ public class IOUtils {
 		deleteDirectory(file);
 	}
 
-	public static void copyToFile(InputStream input, File file) throws IOException {
+	static void copyToFile(InputStream input, File file) throws IOException {
 		file.getParentFile().mkdirs();
 		file.createNewFile();
 		
@@ -86,5 +87,21 @@ public class IOUtils {
         } finally {
             try { output.close(); } catch (Throwable ignore) {}
         }	
+	}
+
+	static void writeEntry(JarFile jar, JarEntry entry, File file) throws IOException {
+		final InputStream is = jar.getInputStream(entry);
+		FileOutputStream output = new FileOutputStream(file);
+		try {
+			byte[] buffer = new byte[1024];
+			
+			int n = 0;
+			while (-1 != (n = is.read(buffer)))
+				output.write(buffer, 0, n);
+
+		} finally {
+			try { is.close(); } catch (Throwable ignore) { }
+			try { output.close(); } catch (Throwable ignore) { }
+		}		
 	}
 }

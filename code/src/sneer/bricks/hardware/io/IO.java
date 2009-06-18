@@ -20,6 +20,7 @@ public interface IO {
 	interface Files{
 		boolean isEmpty(File file);
 		String concat(String basePath, String path);
+		void copyDirectory(File srcDir, File destDir) throws IOException;
 		Collection<File> listFiles(File directory, String[] extensions, boolean recursive);
 		void writeStringToFile(File file, String data) throws IOException;
 		void deleteDirectory(File directory) throws IOException;

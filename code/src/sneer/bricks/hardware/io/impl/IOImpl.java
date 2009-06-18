@@ -29,6 +29,7 @@ class IOImpl implements IO {
 		}
 		
 		@Override public String concat(String basePath, String fullFilenameToAdd) { return FilenameUtils.concat(basePath, fullFilenameToAdd); }
+		@Override public void copyDirectory(File srcDir, File destDir) throws IOException { FileUtils.copyDirectory(srcDir, destDir); }
 		@Override public Collection<File> listFiles(File directory, String[] extensions, boolean recursive) { return FileUtils.listFiles(directory, extensions, recursive); }
 		@Override public void writeStringToFile(File file, String data) throws IOException { FileUtils.writeStringToFile(file, data); }
 		@Override public void deleteDirectory(File directory) throws IOException { FileUtils.deleteDirectory(directory); }

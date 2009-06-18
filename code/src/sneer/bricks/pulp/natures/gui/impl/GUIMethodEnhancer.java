@@ -124,13 +124,13 @@ public class GUIMethodEnhancer {
 
 	private String targetInvocationList(ArrayList<Pair<String, String>> thunkFields) {
 		return my(Lang.class).strings().join(
-			my(Collections.class).collect(
+			my(Collections.class).map(
 					thunkFields.subList(1, thunkFields.size()),	Pair.<String, String>second()),	", ");
 	}	
 	
 	private String thunkFieldAssignments(ArrayList<Pair<String, String>> thunkFields) {
 		return my(Lang.class).strings().join(
-			my(Collections.class).collect(
+			my(Collections.class).map(
 			thunkFields, new Functor<Pair<String, String>, String>() { @Override public String evaluate(Pair<String, String> input) {
 				return "this." + input._b + " = " + input._b + ";";
 			}}), "\n");
@@ -138,7 +138,7 @@ public class GUIMethodEnhancer {
 
 	private String thunkParameterList(ArrayList<Pair<String, String>> thunkFields) {
 		return my(Lang.class).strings().join(
-			my(Collections.class).collect(
+			my(Collections.class).map(
 			thunkFields, new Functor<Pair<String, String>, String>() { @Override public String evaluate(Pair<String, String> input) {
 					return input._a + " " + input._b;
 			}}), ", ");

@@ -7,5 +7,5 @@ import java.lang.annotation.RetentionPolicy;
 public @interface Brick {
 
 	Class<? extends Nature>[] value() default {};
-	boolean loadOnStartup() default false;
+
 }

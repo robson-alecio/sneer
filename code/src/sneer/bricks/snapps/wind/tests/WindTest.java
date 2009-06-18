@@ -13,7 +13,7 @@ public class WindTest extends BrickTest {
 
 	private final Wind _subject =  my(Wind.class);
 	
-	@Test
+	@Test(timeout = 4000)
 	public void testSortedShoutsHeard() {
 		
 		tupleSpace().publish(new ShoutMock(""+15, 15));

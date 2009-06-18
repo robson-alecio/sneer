@@ -10,7 +10,7 @@ import sneer.foundation.brickness.StoragePath;
 import sneer.foundation.brickness.testsupport.BrickTest;
 import sneer.foundation.brickness.testsupport.Contribute;
 
-public class SnappsTest extends BrickTest {
+public class SnappStarterTest extends BrickTest {
 
 
 	@Contribute final StoragePath _storagePath = new StoragePath(){@Override public String get() {

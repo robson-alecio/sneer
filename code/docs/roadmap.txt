@@ -13,8 +13,6 @@
         
 	- .sneer - Fix Tuplespace persistence. Use my(StoragePath.class)
 
-	- [Sandro] "Git -> Webstart -> Git" Full Cycle - Test. Talk to Klaus.
-
 	- [Sandro] Fix Autoscroll.
 
 	- [Sandro] Fix Wind Scroll.

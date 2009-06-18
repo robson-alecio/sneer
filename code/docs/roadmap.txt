@@ -1,6 +1,8 @@
 ﻿TASKS
 =========
 
+	- [Klaus] Revise sneer/lib with Rodrigo.
+
 	- [Klaus] Revise entire package structure.
 
 	- MyInfo - Persist

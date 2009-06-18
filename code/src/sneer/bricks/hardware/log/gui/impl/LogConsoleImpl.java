@@ -112,7 +112,6 @@ class LogConsoleImpl extends JFrame implements LogConsole {
 		final WindowBoundsSetter wbSetter = my(WindowBoundsSetter.class);
 		wbSetter.runWhenBaseContainerIsReady(new Runnable(){ @Override public void run() {
 			Rectangle unused = wbSetter.unusedArea();
-			System.out.println(unused);
 			setBounds(_X , unused.height-_HEIGHT-_OFFSET_Y, unused.width-_OFFSET_X, _HEIGHT-_OFFSET_Y);
 			setVisible(true);
 		}});
